@@ -18,22 +18,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Fetch BrogueCE assets from upstream release
-        working-directory: BrogueCE-master
+      - name: Fetch BrogueCE assets from main branch
         run: |
-          # 从上游仓库获取最新release以取得bin/assets和keymap.txt
-          RELEASE_URL=$(curl -s https://api.github.com/repos/tmewett/BrogueCE/releases/latest \
-            | grep "browser_download_url.*linux.*tar.gz" \
-            | cut -d '"' -f 4)
-          echo "Downloading: $RELEASE_URL"
-          curl -L "$RELEASE_URL" -o broguece-linux.tar.gz
-          # 解压并提取bin目录
-          tar -xzf broguece-linux.tar.gz
-          RELEASE_DIR=$(tar -tzf broguece-linux.tar.gz | head -1 | cut -d/ -f1)
-          cp -r "$RELEASE_DIR/bin" .
-          rm -rf broguece-linux.tar.gz "$RELEASE_DIR"
+          # 从main分支checkout bin目录（main分支已包含bin/assets和keymap.txt）
+          git fetch origin main
+          git checkout origin/main -- BrogueCE-master/bin
           echo "Assets ready:"
-          ls bin/assets/ | head -10
+          ls BrogueCE-master/bin/assets/ | head -10
 
       - name: Setup Emscripten
         uses: mymindstorm/setup-emsdk@v13
