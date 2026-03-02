@@ -18,6 +18,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Fetch BrogueCE assets from upstream release
+        working-directory: BrogueCE-master
+        run: |
+          # 从上游仓库获取最新release以取得bin/assets和keymap.txt
+          RELEASE_URL=$(curl -s https://api.github.com/repos/tmewett/BrogueCE/releases/latest \
+            | grep "browser_download_url.*linux.*tar.gz" \
+            | cut -d '"' -f 4)
+          echo "Downloading: $RELEASE_URL"
+          curl -L "$RELEASE_URL" -o broguece-linux.tar.gz
+          # 解压并提取bin目录
+          tar -xzf broguece-linux.tar.gz
+          RELEASE_DIR=$(tar -tzf broguece-linux.tar.gz | head -1 | cut -d/ -f1)
+          cp -r "$RELEASE_DIR/bin" .
+          rm -rf broguece-linux.tar.gz "$RELEASE_DIR"
+          echo "Assets ready:"
+          ls bin/assets/ | head -10
+
       - name: Setup Emscripten
         uses: mymindstorm/setup-emsdk@v13
         with:
@@ -37,10 +54,10 @@ jobs:
 
       - name: Create deployment summary
         run: |
-          echo "## ✅ Web Build Deployment Success" >> $GITHUB_STEP_SUMMARY
+          echo "## Build and Deploy Success" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "🌐 **Access your build at:**" >> $GITHUB_STEP_SUMMARY
+          echo "**Access your build at:**" >> $GITHUB_STEP_SUMMARY
           echo "- https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "📝 **Triggered by:** \`${{ github.ref }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "🔗 **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Triggered by:** \`${{ github.ref }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
