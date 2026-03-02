@@ -1,0 +1,43 @@
+name: Build and Deploy Web Version
+
+on:
+  push:
+    branches:
+      - claude/github-online-compilation-dUodh
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Emscripten
+        uses: mymindstorm/setup-emsdk@v13
+        with:
+          version: latest
+          actions-cache-folder: 'emsdk-cache'
+
+      - name: Build web version
+        run: |
+          chmod +x ./brogueweb/build_web.sh
+          ./brogueweb/build_web.sh
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./brogueweb/dist
+          cname: ''
+
+      - name: Create deployment summary
+        run: |
+          echo "## ✅ Web Build Deployment Success" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🌐 **Access your build at:**" >> $GITHUB_STEP_SUMMARY
+          echo "- https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📝 **Triggered by:** \`${{ github.ref }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "🔗 **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
