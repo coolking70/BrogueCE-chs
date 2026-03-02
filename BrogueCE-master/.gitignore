@@ -1,9 +1,16 @@
 *.o
 bin/*.brogue*
 bin/BrogueHighScores.txt
-bin/brogue*
-bin/*.png
+bin/brogue
+bin/parse_test*
+bin/test_*
 vars
+
+# But keep translation files and key assets
+!bin/assets/zh_CN*.json
+!bin/brogue-cmd.bat
+!bin/keymap.txt
+!bin/assets/tiles.bin
 
 # Release dirs and archives
 BrogueCE-*

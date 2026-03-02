@@ -15,11 +15,16 @@ brogueweb/android/app/build/
 brogueweb/android/.gradle/
 brogueweb/android/local.properties
 
-# Compiled binaries
-BrogueCE-master/bin/
+# Compiled binaries (but keep source assets)
 BrogueCE-master/macos/build/
 BrogueCE-master/linux/bin/
 BrogueCE-master/windows/bin/
+
+# Large binary files and compiled test utilities in bin/
+BrogueCE-master/bin/*.ttf
+BrogueCE-master/bin/*.png
+BrogueCE-master/bin/parse_test*
+BrogueCE-master/bin/test_*
 
 # APK & Android intermediates
 *.apk
