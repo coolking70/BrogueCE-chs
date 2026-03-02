@@ -1,0 +1,127 @@
+name: Build Android APK
+
+on:
+  push:
+    branches:
+      - claude/github-online-compilation-dUodh
+  workflow_dispatch:
+
+concurrency:
+  group: build-android-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Fetch BrogueCE assets from main branch
+        run: |
+          git fetch origin main
+          git checkout origin/main -- BrogueCE-master/bin
+          echo "Assets ready:"
+          ls BrogueCE-master/bin/assets/ | head -10
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Setup Emscripten
+        uses: mymindstorm/setup-emsdk@v13
+        with:
+          version: 3.1.48
+
+      - name: Build web version
+        run: |
+          chmod +x ./brogueweb/build_web.sh
+          ./brogueweb/build_web.sh
+
+      - name: Sync web to Android assets
+        run: |
+          ANDROID_ASSETS="./brogueweb/android/app/src/main/assets/public"
+          mkdir -p "$ANDROID_ASSETS"
+
+          # Copy web files to Android assets
+          cp ./brogueweb/dist/index.html "$ANDROID_ASSETS/"
+          cp ./brogueweb/dist/index-mobile.html "$ANDROID_ASSETS/" 2>/dev/null || true
+          cp ./brogueweb/dist/index.js "$ANDROID_ASSETS/" 2>/dev/null || true
+          cp ./brogueweb/dist/index.wasm "$ANDROID_ASSETS/" 2>/dev/null || true
+          cp ./brogueweb/dist/index.data "$ANDROID_ASSETS/" 2>/dev/null || true
+
+          echo "Android assets:"
+          ls -lh "$ANDROID_ASSETS"
+
+      - name: Build APK
+        run: |
+          cd ./brogueweb/android
+          chmod +x gradlew
+          ./gradlew assembleDebug --quiet
+
+          # Check if APK was built
+          APK_PATH="./app/build/outputs/apk/debug/app-debug.apk"
+          if [ -f "$APK_PATH" ]; then
+            echo "APK built successfully at: $APK_PATH"
+            ls -lh "$APK_PATH"
+          else
+            echo "ERROR: APK not found"
+            exit 1
+          fi
+
+      - name: Upload APK as artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug.apk
+          path: ./brogueweb/android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30
+
+      - name: Create Release
+        if: success()
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./brogueweb/android/app/build/outputs/apk/debug/app-debug.apk
+          tag_name: apk-${{ github.run_number }}
+          body: |
+            ## Android APK Build ${{ github.run_number }}
+
+            **Build Info:**
+            - Commit: ${{ github.sha }}
+            - Branch: ${{ github.ref }}
+            - Author: ${{ github.actor }}
+
+            **Download:**
+            Click on `app-debug.apk` below to download.
+
+            **Installation:**
+            1. Transfer APK to your Android device
+            2. Enable "Unknown Sources" in Settings → Security
+            3. Open the APK file and tap Install
+
+            Or use adb:
+            ```bash
+            adb install app-debug.apk
+            ```
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create deployment summary
+        if: success()
+        run: |
+          echo "## Android APK Build Success" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Build Details:**" >> $GITHUB_STEP_SUMMARY
+          echo "- APK Name: app-debug.apk" >> $GITHUB_STEP_SUMMARY
+          echo "- Branch: ${{ github.ref }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Download Options:**" >> $GITHUB_STEP_SUMMARY
+          echo "1. From [GitHub Release](https://github.com/${{ github.repository }}/releases)" >> $GITHUB_STEP_SUMMARY
+          echo "2. From [Artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
