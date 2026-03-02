@@ -33,6 +33,9 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          api-level: 36
+          arch: x86_64
 
       - name: Setup Emscripten
         uses: mymindstorm/setup-emsdk@v13
@@ -59,11 +62,17 @@ jobs:
           echo "Android assets:"
           ls -lh "$ANDROID_ASSETS"
 
+      - name: Configure Gradle
+        run: |
+          # Create local.properties for Android SDK location
+          echo "sdk.dir=$ANDROID_HOME" > ./brogueweb/android/local.properties
+          echo "Android SDK path configured: $ANDROID_HOME"
+
       - name: Build APK
         run: |
           cd ./brogueweb/android
           chmod +x gradlew
-          ./gradlew assembleDebug --quiet
+          ./gradlew assembleDebug
 
           # Check if APK was built
           APK_PATH="./app/build/outputs/apk/debug/app-debug.apk"
