@@ -1,0 +1,43 @@
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.claude/
+
+# Build outputs
+brogueweb/dist/
+brogueweb/emsdk/
+brogueweb/node_modules/
+brogueweb/android/app/build/
+brogueweb/android/.gradle/
+brogueweb/android/local.properties
+
+# Compiled binaries
+BrogueCE-master/bin/
+BrogueCE-master/macos/build/
+BrogueCE-master/linux/bin/
+BrogueCE-master/windows/bin/
+
+# APK & Android intermediates
+*.apk
+*.aab
+*.keystore
+
+# Gradle
+.gradle/
+*.gradle.kts.bak
+
+# CMake
+cmake-build-debug/
+cmake-build-release/
+
+# OS files
+Thumbs.db
+*.log
+
+# npm
+npm-debug.log
+yarn-error.log

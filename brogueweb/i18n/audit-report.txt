@@ -1,0 +1,187 @@
+Brogue CE i18n audit
+Generated at: 2026-02-26 11:39:26
+
+[1] Approximate count of string literals with Latin chars
+count=3184
+
+[2] Approximate count of printf-like format placeholders
+count=642
+
+[3] Pronoun template placeholders (must preserve)
+count=104
+
+[4] Top files by translatable-string density
+ 857 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Globals.c
+ 485 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Items.c
+ 231 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c
+ 172 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/variants/GlobalsRapidBrogue.c
+ 172 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/variants/GlobalsBulletBrogue.c
+ 172 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/variants/GlobalsBrogue.c
+ 140 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/platform/term.c
+ 119 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Recordings.c
+ 101 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Monsters.c
+  94 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Movement.c
+  88 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c
+  86 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Time.c
+  76 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Combat.c
+  66 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/RogueMain.c
+  64 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/platform/main.c
+  53 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Architect.c
+  46 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/SeedCatalog.c
+  32 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Wizard.c
+  30 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/platform/tiles.c
+  24 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/platform/platformdependent.c
+  16 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Rogue.h
+  11 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/platform/sdl2-platform.c
+   9 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/platform/web-platform.c
+   9 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Light.c
+   7 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Grid.c
+   5 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Math.c
+   4 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/PowerTables.c
+   4 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Buttons.c
+   3 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/platform/curses-platform.c
+   3 /Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Dijkstra.c
+
+[5] Hot spots that are layout-sensitive
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Recordings.c:649:        printString(helpText[i], mapToWindowX(5), mapToWindowY(i), &itemMessageColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Time.c:874:    x = mapToWindowX(monst->loc.x - strLenWithoutEscapes(msg) / 2);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Time.c:875:    if (x > COLS - strLenWithoutEscapes(msg)) {
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Time.c:876:        x = COLS - strLenWithoutEscapes(msg);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Movement.c:1982:        printString(KEYBOARD_LABELS ? "Exploring... press any key to stop." : "Exploring... touch anywhere to stop.",
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c:49:    versionStringLength = strLenWithoutEscapes(gameConst->versionString);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c:56:    gameModeStringLength = strLenWithoutEscapes(gameModeString);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c:329:        maxX = max(maxX, buttons[i].x + strLenWithoutEscapes(buttons[i].text));
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c:704:    maxPathLength = strLenWithoutEscapes(prompt);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c:811:            printString(prompt, x, y - 1, &itemMessageColor, dialogColor, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c:981:    printString("-- GAME STATS --", (COLS - 17 + 1) / 2, 0, &titleColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c:984:    printString(buf, offset, i, &itemMessageColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c:987:    printString(buf, offset, ++i, &itemMessageColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c:990:    printString(buf, offset, ++i, &itemMessageColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c:993:    printString(buf, offset, ++i, &itemMessageColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c:996:    printString(buf, offset, ++i, &itemMessageColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c:999:    printString(buf, offset, ++i, &itemMessageColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c:1002:    printString(buf, offset, ++i, &itemMessageColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c:1005:    printString(buf, offset, ++i, &itemMessageColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c:1008:    printString(buf, offset, ++i, &itemMessageColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c:1011:    printString(buf, offset, ++i, &itemMessageColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c:1024:    printString(buf, offset, ++i, &itemMessageColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c:1035:    printString(buf, offset, ++i, &itemMessageColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c:1038:    printString(buf, offset, ++i, &itemMessageColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c:1041:    printString(buf, offset, ++i, &itemMessageColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c:1044:    printString(buf, offset, ++i, &itemMessageColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c:1047:    printString(buf, offset, ++i, &itemMessageColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c:1062:    printString(KEYBOARD_LABELS ? "Press space or click to continue." : "Touch anywhere to continue.",
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/MainMenu.c:1063:                (COLS - strLenWithoutEscapes(KEYBOARD_LABELS ? "Press space or click to continue." : "Touch anywhere to continue.")) / 2,
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Rogue.h:3042:    void printString(const char *theString, short x, short y, const color *foreColor, const color* backColor, screenDisplayBuffer *dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Rogue.h:3043:    short wrapText(char *to, const char *sourceText, short width);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Rogue.h:3420:    short strLenWithoutEscapes(const char *str);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Buttons.c:49:    const int width = strLenWithoutEscapes(button->text);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Buttons.c:226:                && x < state->buttons[focusIndex].x + strLenWithoutEscapes(state->buttons[focusIndex].text)) {
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:403:            longestName = max(longestName, strLenWithoutEscapes(buttons[i].text));
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:412:            for (j = strLenWithoutEscapes(buttons[i].text); j < longestName; j++) {
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:523:        x += strLenWithoutEscapes(buttons[i].text) + 2; // Gap between buttons.
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:2177:                    && i < mapToWindowX(strLenWithoutEscapes(displayedMessage[MESSAGE_LINES - j - 1]))) {
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:2742:        x = (COLS - max(maxLength, strLenWithoutEscapes(prompt))) / 2;
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:2745:        rectangularShading(x - 1, y - 2, max(maxLength, strLenWithoutEscapes(prompt)) + 2,
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:2749:        printString(prompt, x, y - 1, &white, &interfaceBoxColor, NULL);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:2753:        printString(defaultEntry, x, y, &white, &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:2756:        x = mapToWindowX(strLenWithoutEscapes(prompt));
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:2759:        printString(defaultEntry, x, y, &white, &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:2768:    charNum = strLenWithoutEscapes(inputText);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:2780:        printString(suffix, charNum + x, y, &gray, &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:2784:            printString(suffix, charNum + x - 1, y, &gray, &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:2800:                printString(suffix, charNum + x + 1, y, &gray, &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:2842:    printString(message, (COLS - strLenWithoutEscapes(message)) / 2, ROWS / 2, &teal, &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:2863:    messageLength = strLenWithoutEscapes(message);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:2907:    flashMessage(message, (COLS - strLenWithoutEscapes(message)) / 2, ROWS / 2, time, &teal, &black);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:3080:        messageLength = strLenWithoutEscapes(counted);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:3185:        lines = wrapText(wrapped, folded, DCOLS);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:3232:        printString(messages[MESSAGE_ARCHIVE_LINES - offset + i], mapToWindowX(0), i, &white, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:3402:    printString(message, mapToWindowX(0), mapToWindowY(-1), &white, &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:3432:    printString(text, mapToWindowX(0), ROWS - 2, &flavorTextColor, &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:3433:    for (i = strLenWithoutEscapes(text); i < DCOLS; i++) {
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:3518:    if (strLenWithoutEscapes(displayedMessage[0]) < DCOLS - 8 || messagesUnconfirmed > 0) {
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:3519:        printString("--MORE--", COLS - 8, MESSAGE_LINES-1, &black, &white, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:3521:        printString("--MORE--", COLS - 8, MESSAGE_LINES, &black, &white, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:3532:    if (strLenWithoutEscapes(displayedMessage[0]) < DCOLS - 8 || messagesUnconfirmed > 0) {
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:3533:        printString("--MORE--", COLS - 8, MESSAGE_LINES-1, &black, &white, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:3535:        printString("        ", COLS - 8, MESSAGE_LINES-1, &black, &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:3537:        printString("--MORE--", COLS - 8, MESSAGE_LINES, &black, &white, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:3750:        printString("   -- PLAYBACK --   ", 0, printY++, &white, &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:3756:            printString("    [OUT OF SYNC]   ", 0, printY++, &badMessageColor, &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:3758:            printString("      [PAUSED]      ", 0, printY++, &gray, &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:3760:        printString("                    ", 0, printY++, &white, &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:3902:            printString("                    ", 0, i, &white, &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:3905:        printString(buf, 0, ROWS - 1, &white, &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:3914:void printString(const char *theString, short x, short y, const color *foreColor, const color *backColor, screenDisplayBuffer *dbuf) {
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:3973:short wrapText(char *to, const char *sourceText, short width) {
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4026:    wrapText(printString, theString, width); // inserts newlines as necessary
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4120:        printString(helpText[i], mapToWindowX(1), i, &itemMessageColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4183:        printString(buf, x + 2, y + i, theColor, &black, dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4200:    printString(buf, mapToWindowX((DCOLS - FEAT_NAME_LENGTH - strLenWithoutEscapes(buf)) / 2), y, &flavorTextColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4216:        printString(buf, mapToWindowX(0), y + i + 1, &itemMessageColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4221:    printString(buf, mapToWindowX((DCOLS - FEAT_NAME_LENGTH - strLenWithoutEscapes(buf)) / 2), ROWS-5, &gray, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4223:    printString(buf, mapToWindowX((DCOLS - FEAT_NAME_LENGTH - strLenWithoutEscapes(buf)) / 2), ROWS-4, &white, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4226:    printString(buf, mapToWindowX((DCOLS - FEAT_NAME_LENGTH - strLenWithoutEscapes(buf)) / 2), ROWS-2, &itemMessageColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4248:    printString("-- SCROLLS --", mapToWindowX(2), y = mapToWindowY(1), &flavorTextColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4251:    printString("-- RINGS --", mapToWindowX(2), y += gameConst->numberScrollKinds + 1, &flavorTextColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4254:    printString("-- POTIONS --", mapToWindowX(29), y = mapToWindowY(1), &flavorTextColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4257:    printString("-- STAFFS --", mapToWindowX(53), y = mapToWindowY(1), &flavorTextColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4260:    printString("-- WANDS --", mapToWindowX(53), y += NUMBER_STAFF_KINDS + 1, &flavorTextColor, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4263:    printString(KEYBOARD_LABELS ? "-- press any key to continue --" : "-- touch anywhere to continue --",
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4293:        if (strLenWithoutEscapes(list[i].description) > maxLength) {
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4294:            maxLength = strLenWithoutEscapes(list[i].description);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4302:    printString("-- HIGH SCORES --", (COLS - 17 + 1) / 2, 0, &scoreColor, &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4315:        printString(buf, leftOffset, i + 2, &scoreColor, &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4319:        printString(buf, leftOffset + 5, i + 2, &scoreColor, &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4322:        printString(list[i].date, leftOffset + 12, i + 2, &scoreColor, &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4325:        printString(list[i].description, leftOffset + 23, i + 2, &scoreColor, &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4331:    printString(KEYBOARD_LABELS ? "Press space to continue." : "Touch anywhere to continue.",
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4332:                (COLS - strLenWithoutEscapes(KEYBOARD_LABELS ? "Press space to continue." : "Touch anywhere to continue.")) / 2,
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4527:        printString("                    ", 0, y, &white, &black, 0); // Start with a blank line
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4568:        printString(buf, monst->carriedItem?2:1, y++, (dim ? &gray : &white), &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4583:        strcpy(buf + ((strLenWithoutEscapes(buf) - strLenWithoutEscapes(buf2)) / 2), buf2);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4588:        printString(buf, 0, y++, (dim ? &gray : &white), &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4625:            printString("      STARVING      ", 0, y++, &badMessageColor, &black, NULL);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4691:            printString("                    ", 0, y, &white, &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4692:            printString(buf, (20 - strLenWithoutEscapes(buf)) / 2, y++, (dim ? &darkGray : &gray), &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4697:            printString("                    ", 0, y, &white, &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4698:            printString(buf, (20 - strLenWithoutEscapes(buf)) / 2, y++, (dim ? &darkGray : &gray), &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4716:            printString("                    ", 0, y, &white, &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4717:            printString(buf, 1, y++, (dim ? &darkGray : &gray), &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4722:            printString("      Negated       ", 0, y++, (dim ? &darkPink : &pink), &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4726:                printString(hallucinationStrings[rand_range(0, 9)], 0, y++, (dim ? &darkGray : &gray), &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4728:                printString("     (Captive)      ", 0, y++, (dim ? &darkGray : &gray), &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4731:                printString("     (Helpless)     ", 0, y++, (dim ? &darkGray : &gray), &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4733:                printString("     (Sleeping)     ", 0, y++, (dim ? &darkGray : &gray), &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4735:                printString("       (Ally)       ", 0, y++, (dim ? &darkGray : &gray), &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4737:                printString("     (Fleeing)      ", 0, y++, (dim ? &darkGray : &gray), &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4741:                    printString("    (Worshiping)    ", 0, y++, (dim ? &darkGray : &gray), &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4744:                    printString("     (Guarding)     ", 0, y++, (dim ? &darkGray : &gray), &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4746:                    printString("    (Wandering)     ", 0, y++, (dim ? &darkGray : &gray), &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4749:                printString("   (Off balance)    ", 0, y++, (dim ? &darkGray : &gray), &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4751:                printString("     (Hunting)      ", 0, y++, (dim ? &darkGray : &gray), &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4757:        printString("                    ", 0, y++, (dim ? &darkGray : &gray), &black, 0);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4828:        printString(":                  ", 1, y, (dim ? &gray : &white), &black, 0);
+
+[6] UTF-8 blockers in input/render path
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/platform/platformdependent.c:44:unsigned int glyphToUnicode(enum displayGlyph glyph) {
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/platform/platform.h:92:unsigned int glyphToUnicode(enum displayGlyph glyph);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/platform/sdl2-platform.c:187:        } else if (event.type == SDL_TEXTINPUT && (unsigned char)(event.text.text[0]) < 0x80) {
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/platform/sdl2-platform.c:195:            char c = event.text.text[0];
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/platform/sdl2-platform.c:343:static int fontIndex(enum displayGlyph glyph) {
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/platform/sdl2-platform.c:356:        unsigned int code = glyphToUnicode(glyph);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/platform/sdl2-platform.c:395:    updateTile(y, x, fontIndex(inputChar),
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/platform/web-platform.c:160:    translatedChar = glyphToUnicode(inputChar);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/platform/curses-platform.c:58:            ch = glyphToUnicode(glyph);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Rogue.h:3020:    void plotCharToBuffer(enum displayGlyph inputChar, windowpos loc, const color *foreColor, const color *backColor, screenDisplayBuffer *dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/Buttons.c:114:            plotCharToBuffer(displayCharacter, (windowpos){ button->x + i, button->y }, &fColor, &bColor, dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/RogueMain.c:1268:    plotCharToBuffer(G_GOLD, mapToWindow((pos){ 2, 1 }), &yellow, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/RogueMain.c:1279:            plotCharToBuffer(G_AMULET, (windowpos){ mapToWindowX(2), min(ROWS-1, i + 1) }, &yellow, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/RogueMain.c:1290:            plotCharToBuffer(theItem->displayChar, (windowpos){ mapToWindowX(2), min(ROWS-1, i + 1) }, &yellow, &black, &dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:1808:void plotCharToBuffer(enum displayGlyph inputChar, windowpos loc, const color *foreColor, const color *backColor, screenDisplayBuffer *dbuf) {
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:3927:        plotCharToBuffer(theString[i], (windowpos){ x, y }, &fColor, backColor, dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4048:            plotCharToBuffer(printString[i], (windowpos){ px, py }, &fColor, backColor, dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4161:            plotCharToBuffer(itemCharacter, (windowpos){ x, y + i }, &itemColor, &black, dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4166:                plotCharToBuffer(G_GOOD_MAGIC, (windowpos){ x, y + i }, &goodColor, &black, dbuf);
+/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/IO.c:4168:                plotCharToBuffer(G_BAD_MAGIC, (windowpos){ x, y + i }, &badColor, &black, dbuf);

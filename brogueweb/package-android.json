@@ -1,0 +1,30 @@
+{
+  "name": "brogue-ce-zh-android",
+  "version": "1.0.0",
+  "description": "Brogue CE Chinese Localization - Android APK",
+  "private": true,
+  "scripts": {
+    "build": "npm run build-web",
+    "build-web": "echo 'Web files are pre-built in dist/'",
+    "sync": "npx cap sync",
+    "open-android": "npx cap open android",
+    "build-apk": "npx cap sync && echo 'Open Android Studio: npx cap open android'",
+    "install-deps": "npm install @capacitor/core @capacitor/cli @capacitor/android"
+  },
+  "keywords": [
+    "brogue",
+    "game",
+    "roguelike",
+    "chinese",
+    "localization"
+  ],
+  "author": "Brogue CE Community",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "@capacitor/core": "^5.0.0",
+    "@capacitor/android": "^5.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^5.0.0"
+  }
+}

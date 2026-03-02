@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>Brogue CE - 中文版</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            overflow: hidden;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 隐藏所有多余UI元素 */
+        #emscripten_logo,
+        #status,
+        #controls,
+        #progress,
+        #spinner,
+        #output,
+        textarea,
+        input[type=checkbox],
+        input[type=button],
+        a img,
+        .spinner {
+            display: none !important;
+        }
+
+        /* Canvas占满全屏 */
+        canvas#canvas {
+            width: 100vw !important;
+            height: 100vh !important;
+            border: 0 !important;
+            display: block !important;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .emscripten {
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        div.emscripten,
+        div.emscripten_border {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* 触摸操作按钮 */
+        .touch-btn {
+            position: fixed;
+            bottom: 12px;
+            z-index: 9999;
+            padding: 8px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 6px;
+            background: rgba(40, 40, 40, 0.7);
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 14px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            cursor: pointer;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            transition: background 0.15s, transform 0.1s;
+        }
+
+        .touch-btn:active {
+            background: rgba(80, 80, 80, 0.85);
+            transform: scale(0.93);
+        }
+
+        #btn-esc {
+            left: 12px;
+            display: none;
+        }
+
+        #btn-enter {
+            right: 12px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="emscripten_border">
+        <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
+    </div>
+    <!-- 保留这些元素供Emscripten内部引用，但均隐藏 -->
+    <div id="emscripten_logo"></div>
+    <div class="spinner" id="spinner"></div>
+    <div class="emscripten" id="status"></div>
+    <span id="controls"></span>
+    <progress id="progress" hidden max="100" value="0"></progress>
+    <textarea id="output" rows="8" style="display:none"></textarea>
+
+    <!-- 触摸操作按钮 (Esc/Enter) -->
+    <button id="btn-esc" class="touch-btn" aria-label="Esc 返回">Esc 返回</button>
+    <button id="btn-enter" class="touch-btn" aria-label="Enter 确认">Enter 确认</button>
+
+    <script>
+        // 触摸按钮发送键盘事件
+        function dispatchKey(keyCode, key, code) {
+            var c = document.getElementById('canvas');
+            ['keydown', 'keyup'].forEach(function (type) {
+                c.dispatchEvent(new KeyboardEvent(type, {
+                    key: key,
+                    code: code,
+                    keyCode: keyCode,
+                    which: keyCode,
+                    bubbles: true,
+                    cancelable: true
+                }));
+            });
+        }
+        document.getElementById('btn-esc').addEventListener('click', function (e) {
+            e.preventDefault();
+            dispatchKey(27, 'Escape', 'Escape');
+        });
+        document.getElementById('btn-esc').addEventListener('touchend', function (e) {
+            e.preventDefault();
+            dispatchKey(27, 'Escape', 'Escape');
+        });
+        document.getElementById('btn-enter').addEventListener('click', function (e) {
+            e.preventDefault();
+            dispatchKey(13, 'Enter', 'Enter');
+        });
+        document.getElementById('btn-enter').addEventListener('touchend', function (e) {
+            e.preventDefault();
+            dispatchKey(13, 'Enter', 'Enter');
+        });
+    </script>
+
+    <script>
+        // 触摸事件优化（移动端）
+        document.addEventListener('touchmove', function (e) {
+            e.preventDefault();
+        }, { passive: false });
+
+        // 防止双击缩放
+        var lastTouchEnd = 0;
+        document.addEventListener('touchend', function (e) {
+            var now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+
+        // 防止缩放手势
+        document.addEventListener('gesturestart', function (e) {
+            e.preventDefault();
+        });
+
+        var statusElement = document.getElementById('status');
+        var progressElement = document.getElementById('progress');
+        var spinnerElement = document.getElementById('spinner');
+        var canvasElement = document.getElementById('canvas');
+        var outputElement = document.getElementById('output');
+
+        canvasElement.addEventListener("webglcontextlost", function (e) {
+            alert("WebGL context lost. You will need to reload the page.");
+            e.preventDefault();
+        }, false);
+
+        // 追踪未翻译字串（调试用）
+        var _untranslatedSet = new Set();
+        var _origConsoleLog = console.log;
+        console.log = function () {
+            _origConsoleLog.apply(console, arguments);
+            var s = Array.from(arguments).join(' ');
+            if (s.startsWith('[未翻译] ')) {
+                var key = s.slice(7).toLowerCase();
+                _untranslatedSet.add(key);
+            }
+        };
+        window.showUntranslated = function () {
+            var arr = Array.from(_untranslatedSet).sort();
+            _origConsoleLog('=== 未翻译字串汇总 (' + arr.length + ' 条) ===');
+            arr.forEach(function (s) { _origConsoleLog(s); });
+        };
+
+        var setStatus = function (e) {
+            if (setStatus.last || (setStatus.last = { time: Date.now(), text: "" }), e !== setStatus.last.text) {
+                var t = e.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/), n = Date.now();
+                if (!(t && n - setStatus.last.time < 30)) {
+                    setStatus.last.time = n;
+                    setStatus.last.text = e;
+                    if (t) {
+                        e = t[1];
+                        progressElement.value = 100 * parseInt(t[2]);
+                        progressElement.max = 100 * parseInt(t[4]);
+                        progressElement.hidden = false;
+                        spinnerElement.hidden = false;
+                    } else {
+                        progressElement.value = null;
+                        progressElement.max = null;
+                        progressElement.hidden = true;
+                        if (!e) spinnerElement.style.display = "none";
+                    }
+                    statusElement.innerHTML = e;
+                }
+            }
+        };
+
+        var Module = {
+            print: function () {
+                var text = Array.prototype.slice.call(arguments).join(' ');
+                console.log(text);
+                if (outputElement) {
+                    outputElement.value += text + "\n";
+                    outputElement.scrollTop = outputElement.scrollHeight;
+                }
+            },
+            canvas: canvasElement,
+            setStatus: setStatus,
+            totalDependencies: 0,
+            monitorRunDependencies: function (remaining) {
+                this.totalDependencies = Math.max(this.totalDependencies, remaining);
+                setStatus(remaining
+                    ? "正在加载... (" + (this.totalDependencies - remaining) + "/" + this.totalDependencies + ")"
+                    : "加载完成。");
+            }
+        };
+
+        setStatus("正在下载...");
+        window.onerror = function (event) {
+            setStatus("发生错误，请查看浏览器控制台。");
+            spinnerElement.style.display = "none";
+            setStatus = function (e) {
+                if (e) console.error("[错误后状态] " + e);
+            };
+        };
+    </script>
+
+    <script async src="index.js"></script>
+</body>
+
+</html>
