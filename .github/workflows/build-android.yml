@@ -18,6 +18,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: 'brogueweb/package-lock.json'
+
       - name: Fetch BrogueCE assets from main branch
         run: |
           git fetch origin main
@@ -47,20 +54,19 @@ jobs:
           chmod +x ./brogueweb/build_web.sh
           ./brogueweb/build_web.sh
 
-      - name: Sync web to Android assets
+      - name: Install npm dependencies for Capacitor
         run: |
-          ANDROID_ASSETS="./brogueweb/android/app/src/main/assets/public"
-          mkdir -p "$ANDROID_ASSETS"
+          cd ./brogueweb
+          npm install
 
-          # Copy web files to Android assets
-          cp ./brogueweb/dist/index.html "$ANDROID_ASSETS/"
-          cp ./brogueweb/dist/index-mobile.html "$ANDROID_ASSETS/" 2>/dev/null || true
-          cp ./brogueweb/dist/index.js "$ANDROID_ASSETS/" 2>/dev/null || true
-          cp ./brogueweb/dist/index.wasm "$ANDROID_ASSETS/" 2>/dev/null || true
-          cp ./brogueweb/dist/index.data "$ANDROID_ASSETS/" 2>/dev/null || true
+      - name: Sync web to Android with Capacitor
+        run: |
+          cd ./brogueweb
+          # Use Capacitor CLI to sync web files to Android assets
+          npx cap sync android
 
-          echo "Android assets:"
-          ls -lh "$ANDROID_ASSETS"
+          echo "Web files synced to Android assets:"
+          find ./android/app/src/main/assets -type f | head -20
 
       - name: Configure Gradle
         run: |
@@ -72,15 +78,21 @@ jobs:
         run: |
           cd ./brogueweb/android
           chmod +x gradlew
-          ./gradlew assembleDebug
+
+          # Build APK with verbose output for debugging
+          echo "Starting Gradle build..."
+          ./gradlew assembleDebug --info 2>&1 | tail -100
 
           # Check if APK was built
           APK_PATH="./app/build/outputs/apk/debug/app-debug.apk"
           if [ -f "$APK_PATH" ]; then
-            echo "APK built successfully at: $APK_PATH"
+            echo "✅ APK built successfully!"
+            echo "Location: $APK_PATH"
             ls -lh "$APK_PATH"
           else
-            echo "ERROR: APK not found"
+            echo "❌ ERROR: APK not found at $APK_PATH"
+            echo "Available outputs:"
+            find ./app/build/outputs -type f 2>/dev/null || echo "No outputs found"
             exit 1
           fi
 
