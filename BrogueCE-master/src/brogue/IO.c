@@ -2780,6 +2780,22 @@ boolean getInputTextString(char *inputText,
         strcpy(suffix, promptSuffix);
     }
 
+    // 如果使用对话框模式，显示操作提示
+    if (useDialogBox) {
+        char buf[100];
+        char yellowColorEscape[20] = "";
+        char whiteColorEscape[20] = "";
+
+        encodeMessageColor(yellowColorEscape, 0, &yellow);
+        encodeMessageColor(whiteColorEscape, 0, &white);
+
+        sprintf(buf, "%sEsc%s返回   %sEnter%s确认",
+                yellowColorEscape, whiteColorEscape,
+                yellowColorEscape, whiteColorEscape);
+
+        printString(buf, x, y + 2, &white, &interfaceBoxColor, NULL);
+    }
+
     do {
         printString(suffix, charNum + x, y, &gray, &black, 0);
         plotCharWithColor((suffix[0] ? suffix[0] : ' '), (windowpos){ x + charNum, y }, &black, &white);
@@ -2934,6 +2950,23 @@ void waitForKeystrokeOrMouseClick() {
     } while (theEvent.eventType != KEYSTROKE && theEvent.eventType != MOUSE_UP);
 }
 
+// 显示对话框操作提示（返回和确认）
+void displayDialogActionHints(short centerX, short centerY, const color *textColor, const color *bgColor) {
+    char buf[100];
+    char yellowColorEscape[20] = "";
+    char whiteColorEscape[20] = "";
+
+    encodeMessageColor(yellowColorEscape, 0, &yellow);
+    encodeMessageColor(whiteColorEscape, 0, &white);
+
+    // 显示提示文字：Esc返回 / Enter确认
+    sprintf(buf, "%sEsc%s返回   %sEnter%s确认",
+            yellowColorEscape, whiteColorEscape,
+            yellowColorEscape, whiteColorEscape);
+
+    printString(buf, centerX - strLenWithoutEscapes(buf) / 2, centerY + 2, textColor, bgColor, NULL);
+}
+
 boolean confirm(char *prompt, boolean alsoDuringPlayback) {
     short retVal;
     brogueButton buttons[2] = {{{0}}};
@@ -2965,6 +2998,10 @@ boolean confirm(char *prompt, boolean alsoDuringPlayback) {
 
     const SavedDisplayBuffer rbuf = saveDisplayBuffer();
     retVal = printTextBox(prompt, COLS/3, ROWS/3, COLS/3, &white, &interfaceBoxColor, buttons, 2);
+
+    // 显示对话框操作提示
+    displayDialogActionHints(COLS/2, ROWS/3 + 3, &white, &interfaceBoxColor);
+
     restoreDisplayBuffer(&rbuf);
 
     if (retVal == -1 || retVal == 1) { // If they canceled or pressed no.

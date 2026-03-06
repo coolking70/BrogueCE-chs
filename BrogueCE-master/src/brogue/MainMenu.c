@@ -812,6 +812,18 @@ boolean dialogChooseFile(char *path, const char *suffix, const char *prompt) {
             rectangularShading(x - 1, y - 1, width + 1, height + 1, dialogColor, INTERFACE_OPACITY, &dbuf);
             overlayDisplayBuffer(&dbuf);
 
+            // 显示对话框操作提示
+            char bufHints[100];
+            char yellowColorEscape[20] = "";
+            char whiteColorEscape[20] = "";
+            encodeMessageColor(yellowColorEscape, 0, &yellow);
+            encodeMessageColor(whiteColorEscape, 0, &white);
+            sprintf(bufHints, "%sEsc%s返回   %s↑↓%s选择   %sEnter%s确认",
+                    yellowColorEscape, whiteColorEscape,
+                    yellowColorEscape, whiteColorEscape,
+                    yellowColorEscape, whiteColorEscape);
+            printString(bufHints, x, y + height + 1, &white, dialogColor, NULL);
+
 //          for (j=0; j<min(count - currentPageStart, FILES_ON_PAGE_MAX); j++) {
 //              strftime(fileDate, sizeof(fileDate), DATE_FORMAT, &files[currentPageStart+j].date);
 //              printf("\nSanity check BEFORE: %s, with date: %s", files[currentPageStart+j].path, fileDate);
