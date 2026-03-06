@@ -240,6 +240,7 @@
         document.addEventListener('keyup', hideFullscreenButton, true);
 
         // 监听canvas上的触摸和鼠标输入
+        var canvasElement = document.getElementById('canvas');
         canvasElement.addEventListener('touchstart', hideFullscreenButton, true);
         canvasElement.addEventListener('click', hideFullscreenButton, true);
 
@@ -294,7 +295,6 @@
         var statusElement = document.getElementById('status');
         var progressElement = document.getElementById('progress');
         var spinnerElement = document.getElementById('spinner');
-        var canvasElement = document.getElementById('canvas');
         var outputElement = document.getElementById('output');
 
         canvasElement.addEventListener("webglcontextlost", function (e) {
