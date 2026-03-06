@@ -27,28 +27,9 @@
 #include "GlobalsBase.h"
 #include "Globals.h"
 
-#ifdef EMSCRIPTEN
-#include <emscripten.h>
-EM_JS(void, showSaveButtons, (void), {
-  var e = document.getElementById('btn-esc');
-  var n = document.getElementById('btn-enter');
-  if (e)
-    e.style.display = 'block';
-  if (n)
-    n.style.display = 'block';
-});
-EM_JS(void, hideSaveButtons, (void), {
-  var e = document.getElementById('btn-esc');
-  var n = document.getElementById('btn-enter');
-  if (e)
-    e.style.display = 'none';
-  if (n)
-    n.style.display = 'none';
-});
-#else
-static void showSaveButtons(void) {}
-static void hideSaveButtons(void) {}
-#endif
+// showSaveButtons/hideSaveButtons now use the shared showDialogButtons/hideDialogButtons from IO.c
+#define showSaveButtons showDialogButtons
+#define hideSaveButtons hideDialogButtons
 
 #define RECORDING_HEADER_LENGTH                                                \
   36 // bytes at the start of the recording file to store global data

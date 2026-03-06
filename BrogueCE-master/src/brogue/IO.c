@@ -28,6 +28,27 @@
 #include "GlobalsBase.h"
 #include "Globals.h"
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+EM_JS(void, showDialogButtonsJS, (void), {
+    var e = document.getElementById('btn-esc');
+    var n = document.getElementById('btn-enter');
+    if (e) e.style.display = 'block';
+    if (n) n.style.display = 'block';
+});
+EM_JS(void, hideDialogButtonsJS, (void), {
+    var e = document.getElementById('btn-esc');
+    var n = document.getElementById('btn-enter');
+    if (e) e.style.display = 'none';
+    if (n) n.style.display = 'none';
+});
+void showDialogButtons(void) { showDialogButtonsJS(); }
+void hideDialogButtons(void) { hideDialogButtonsJS(); }
+#else
+void showDialogButtons(void) {}
+void hideDialogButtons(void) {}
+#endif
+
 #define D_DISABLE_BACKGROUND_COLORS     (WIZARD_MODE && 0)
 
 static short utf8CodepointSize(const char *s);
@@ -197,9 +218,9 @@ static short actionMenu(short x, boolean playingBack) {
         if (playingBack) {
 #ifdef ENABLE_PLAYBACK_SWITCH
             if (KEYBOARD_LABELS) {
-                sprintf(buttons[buttonCount].text,  "  %sP: %sPlay from here  ", yellowColorEscape, whiteColorEscape);
+                sprintf(buttons[buttonCount].text,  tr("  %sP: %sPlay from here  "), yellowColorEscape, whiteColorEscape);
             } else {
-                strcpy(buttons[buttonCount].text, "  Play from here  ");
+                strcpy(buttons[buttonCount].text, tr("  Play from here  "));
             }
             buttons[buttonCount].hotkey[0] = SWITCH_TO_PLAYING_KEY;
             buttonCount++;
@@ -209,18 +230,18 @@ static short actionMenu(short x, boolean playingBack) {
             buttonCount++;
 #endif
             if (KEYBOARD_LABELS) {
-                sprintf(buttons[buttonCount].text,  "  %sk: %sFaster playback  ", yellowColorEscape, whiteColorEscape);
+                sprintf(buttons[buttonCount].text,  tr("  %sk: %sFaster playback  "), yellowColorEscape, whiteColorEscape);
             } else {
-                strcpy(buttons[buttonCount].text, "  Faster playback  ");
+                strcpy(buttons[buttonCount].text, tr("  Faster playback  "));
             }
             buttons[buttonCount].hotkey[0] = UP_KEY;
             buttons[buttonCount].hotkey[1] = UP_ARROW;
             buttons[buttonCount].hotkey[2] = NUMPAD_8;
             buttonCount++;
             if (KEYBOARD_LABELS) {
-                sprintf(buttons[buttonCount].text,  "  %sj: %sSlower playback  ", yellowColorEscape, whiteColorEscape);
+                sprintf(buttons[buttonCount].text,  tr("  %sj: %sSlower playback  "), yellowColorEscape, whiteColorEscape);
             } else {
-                strcpy(buttons[buttonCount].text, "  Slower playback  ");
+                strcpy(buttons[buttonCount].text, tr("  Slower playback  "));
             }
             buttons[buttonCount].hotkey[0] = DOWN_KEY;
             buttons[buttonCount].hotkey[1] = DOWN_ARROW;
@@ -231,23 +252,23 @@ static short actionMenu(short x, boolean playingBack) {
             buttonCount++;
 
             if (KEYBOARD_LABELS) {
-                sprintf(buttons[buttonCount].text,  "%s0-9: %sFast forward to turn  ", yellowColorEscape, whiteColorEscape);
+                sprintf(buttons[buttonCount].text,  tr("%s0-9: %sFast forward to turn  "), yellowColorEscape, whiteColorEscape);
             } else {
-                strcpy(buttons[buttonCount].text, "  Fast forward to turn  ");
+                strcpy(buttons[buttonCount].text, tr("  Fast forward to turn  "));
             }
             buttons[buttonCount].hotkey[0] = '0';
             buttonCount++;
             if (KEYBOARD_LABELS) {
-                sprintf(buttons[buttonCount].text,  "  %s<:%s Previous Level  ", yellowColorEscape, whiteColorEscape);
+                sprintf(buttons[buttonCount].text,  tr("  %s<:%s Previous Level  "), yellowColorEscape, whiteColorEscape);
             } else {
-                strcpy(buttons[buttonCount].text, "  Previous Level  ");
+                strcpy(buttons[buttonCount].text, tr("  Previous Level  "));
             }
             buttons[buttonCount].hotkey[0] = ASCEND_KEY;
             buttonCount++;
             if (KEYBOARD_LABELS) {
-                sprintf(buttons[buttonCount].text,  "  %s>:%s Next Level  ", yellowColorEscape, whiteColorEscape);
+                sprintf(buttons[buttonCount].text,  tr("  %s>:%s Next Level  "), yellowColorEscape, whiteColorEscape);
             } else {
-                strcpy(buttons[buttonCount].text, "  Next Level  ");
+                strcpy(buttons[buttonCount].text, tr("  Next Level  "));
             }
             buttons[buttonCount].hotkey[0] = DESCEND_KEY;
             buttonCount++;
@@ -256,34 +277,34 @@ static short actionMenu(short x, boolean playingBack) {
             buttonCount++;
         } else {
             if (KEYBOARD_LABELS) {
-                sprintf(buttons[buttonCount].text, "  %sZ: %sRest until better  ",      yellowColorEscape, whiteColorEscape);
+                sprintf(buttons[buttonCount].text, tr("  %sZ: %sRest until better  "),      yellowColorEscape, whiteColorEscape);
             } else {
-                strcpy(buttons[buttonCount].text, "  Rest until better  ");
+                strcpy(buttons[buttonCount].text, tr("  Rest until better  "));
             }
             buttons[buttonCount].hotkey[0] = AUTO_REST_KEY;
             buttonCount++;
 
             if (KEYBOARD_LABELS) {
-                sprintf(buttons[buttonCount].text, "  %sA: %sAutopilot  ",              yellowColorEscape, whiteColorEscape);
+                sprintf(buttons[buttonCount].text, tr("  %sA: %sAutopilot  "),              yellowColorEscape, whiteColorEscape);
             } else {
-                strcpy(buttons[buttonCount].text, "  Autopilot  ");
+                strcpy(buttons[buttonCount].text, tr("  Autopilot  "));
             }
             buttons[buttonCount].hotkey[0] = AUTOPLAY_KEY;
             buttonCount++;
 
             if (KEYBOARD_LABELS) {
-                sprintf(buttons[buttonCount].text, "  %sT: %sRe-throw at last monster  ",              yellowColorEscape, whiteColorEscape);
+                sprintf(buttons[buttonCount].text, tr("  %sT: %sRe-throw at last monster  "),              yellowColorEscape, whiteColorEscape);
             } else {
-                strcpy(buttons[buttonCount].text, "  Re-throw at last monster  ");
+                strcpy(buttons[buttonCount].text, tr("  Re-throw at last monster  "));
             }
             buttons[buttonCount].hotkey[0] = RETHROW_KEY;
             buttonCount++;
 
             if (rogue.mode != GAME_MODE_EASY) {
                 if (KEYBOARD_LABELS) {
-                    sprintf(buttons[buttonCount].text, "  %s&: %sEasy mode  ",              yellowColorEscape, whiteColorEscape);
+                    sprintf(buttons[buttonCount].text, tr("  %s&: %sEasy mode  "),              yellowColorEscape, whiteColorEscape);
                 } else {
-                    strcpy(buttons[buttonCount].text, "  Easy mode  ");
+                    strcpy(buttons[buttonCount].text, tr("  Easy mode  "));
                 }
                 buttons[buttonCount].hotkey[0] = EASY_MODE_KEY;
                 buttonCount++;
@@ -295,17 +316,17 @@ static short actionMenu(short x, boolean playingBack) {
         }
 
         if (KEYBOARD_LABELS) {
-            sprintf(buttons[buttonCount].text, "  %s\\: %s[%s] Hide color effects  ",   yellowColorEscape, whiteColorEscape, rogue.trueColorMode ? "X" : " ");
+            sprintf(buttons[buttonCount].text, tr("  %s\\: %s[%s] Hide color effects  "),   yellowColorEscape, whiteColorEscape, rogue.trueColorMode ? "X" : " ");
         } else {
-            sprintf(buttons[buttonCount].text, "  [%s] Hide color effects  ",   rogue.trueColorMode ? " " : "X");
+            sprintf(buttons[buttonCount].text, tr("  [%s] Hide color effects  "),   rogue.trueColorMode ? " " : "X");
         }
         buttons[buttonCount].hotkey[0] = TRUE_COLORS_KEY;
         takeActionOurselves[buttonCount] = true;
         buttonCount++;
         if (KEYBOARD_LABELS) {
-            sprintf(buttons[buttonCount].text, "  %s]: %s[%s] Display stealth range  ", yellowColorEscape, whiteColorEscape, rogue.displayStealthRangeMode ? "X" : " ");
+            sprintf(buttons[buttonCount].text, tr("  %s]: %s[%s] Display stealth range  "), yellowColorEscape, whiteColorEscape, rogue.displayStealthRangeMode ? "X" : " ");
         } else {
-            sprintf(buttons[buttonCount].text, "  [%s] Show stealth range  ",   rogue.displayStealthRangeMode ? "X" : " ");
+            sprintf(buttons[buttonCount].text, tr("  [%s] Display stealth range  "),   rogue.displayStealthRangeMode ? "X" : " ");
         }
         buttons[buttonCount].hotkey[0] = STEALTH_RANGE_KEY;
         takeActionOurselves[buttonCount] = true;
@@ -313,9 +334,9 @@ static short actionMenu(short x, boolean playingBack) {
 
         if (hasGraphics) {
             if (KEYBOARD_LABELS) {
-                sprintf(buttons[buttonCount].text, "  %sG: %s[%c] Enable graphics  ", yellowColorEscape, whiteColorEscape, " X~"[graphicsMode]);
+                sprintf(buttons[buttonCount].text, tr("  %sG: %s[%c] Enable graphics  "), yellowColorEscape, whiteColorEscape, " X~"[graphicsMode]);
             } else {
-                sprintf(buttons[buttonCount].text, "  [%c] Enable graphics  ",   " X~"[graphicsMode]);
+                sprintf(buttons[buttonCount].text, tr("  [%c] Enable graphics  "),   " X~"[graphicsMode]);
             }
             buttons[buttonCount].hotkey[0] = GRAPHICS_KEY;
             takeActionOurselves[buttonCount] = true;
@@ -327,37 +348,37 @@ static short actionMenu(short x, boolean playingBack) {
         buttonCount++;
 
         if (KEYBOARD_LABELS) {
-            sprintf(buttons[buttonCount].text, "  %sF: %sFeats             ",   yellowColorEscape, whiteColorEscape);
+            sprintf(buttons[buttonCount].text, tr("  %sF: %sFeats             "),   yellowColorEscape, whiteColorEscape);
         } else {
-            strcpy(buttons[buttonCount].text, "  Feats             ");
+            strcpy(buttons[buttonCount].text, tr("  Feats             "));
         }
         buttons[buttonCount].hotkey[0] = FEATS_KEY;
         buttonCount++;
         if (KEYBOARD_LABELS) {
-            sprintf(buttons[buttonCount].text, "  %sD: %sDiscovered items  ",   yellowColorEscape, whiteColorEscape);
+            sprintf(buttons[buttonCount].text, tr("  %sD: %sDiscovered items  "),   yellowColorEscape, whiteColorEscape);
         } else {
-            strcpy(buttons[buttonCount].text, "  Discovered items  ");
+            strcpy(buttons[buttonCount].text, tr("  Discovered items  "));
         }
         buttons[buttonCount].hotkey[0] = DISCOVERIES_KEY;
         DEBUG {
             buttonCount++;
             if (KEYBOARD_LABELS) {
-                sprintf(buttons[buttonCount].text, "  %sC: %sCreate item or monster  ", yellowColorEscape, whiteColorEscape);
+                sprintf(buttons[buttonCount].text, tr("  %sC: %sCreate item or monster  "), yellowColorEscape, whiteColorEscape);
             } else {
-                strcpy(buttons[buttonCount].text, "  Create item or monster  ");
+                strcpy(buttons[buttonCount].text, tr("  Create item or monster  "));
             }
             buttons[buttonCount].hotkey[0] = CREATE_ITEM_MONSTER_KEY;
         }
         buttonCount++;
         if (KEYBOARD_LABELS) {
-            sprintf(buttons[buttonCount].text, "  %s~: %sView dungeon seed  ",  yellowColorEscape, whiteColorEscape);
+            sprintf(buttons[buttonCount].text, tr("  %s~: %sView dungeon seed  "),  yellowColorEscape, whiteColorEscape);
         } else {
-            strcpy(buttons[buttonCount].text, "  View dungeon seed  ");
+            strcpy(buttons[buttonCount].text, tr("  View dungeon seed  "));
         }
         buttons[buttonCount].hotkey[0] = SEED_KEY;
         buttonCount++;
         if (KEYBOARD_LABELS) { // No help button if we're not in keyboard mode.
-            sprintf(buttons[buttonCount].text, "  %s?: %sHelp  ", yellowColorEscape, whiteColorEscape);
+            sprintf(buttons[buttonCount].text, tr("  %s?: %sHelp  "), yellowColorEscape, whiteColorEscape);
             buttons[buttonCount].hotkey[0] = BROGUE_HELP_KEY;
             buttonCount++;
         }
@@ -368,33 +389,33 @@ static short actionMenu(short x, boolean playingBack) {
         if (!serverMode) {
             if (playingBack) {
                  if (KEYBOARD_LABELS) {
-                    sprintf(buttons[buttonCount].text, "  %sO: %sOpen saved game  ",        yellowColorEscape, whiteColorEscape);
+                    sprintf(buttons[buttonCount].text, tr("  %sO: %sOpen saved game  "),        yellowColorEscape, whiteColorEscape);
                 } else {
-                    strcpy(buttons[buttonCount].text, "  Open saved game  ");
+                    strcpy(buttons[buttonCount].text, tr("  Open saved game  "));
                 }
                 buttons[buttonCount].hotkey[0] = LOAD_SAVED_GAME_KEY;
                 buttonCount++;
                 if (KEYBOARD_LABELS) {
-                    sprintf(buttons[buttonCount].text, "  %sV: %sView saved recording  ",       yellowColorEscape, whiteColorEscape);
+                    sprintf(buttons[buttonCount].text, tr("  %sV: %sView saved recording  "),       yellowColorEscape, whiteColorEscape);
                 } else {
-                    strcpy(buttons[buttonCount].text, "  View saved recording  ");
+                    strcpy(buttons[buttonCount].text, tr("  View saved recording  "));
                 }
                 buttons[buttonCount].hotkey[0] = VIEW_RECORDING_KEY;
                 buttonCount++;
             } else {
                 if (KEYBOARD_LABELS) {
-                    sprintf(buttons[buttonCount].text, "  %sS: %sSave and exit  ",  yellowColorEscape, whiteColorEscape);
+                    sprintf(buttons[buttonCount].text, tr("  %sS: %sSave and exit  "),  yellowColorEscape, whiteColorEscape);
                 } else {
-                    strcpy(buttons[buttonCount].text, "  Save and exit  ");
+                    strcpy(buttons[buttonCount].text, tr("  Save and exit  "));
                 }
                 buttons[buttonCount].hotkey[0] = SAVE_GAME_KEY;
                 buttonCount++;
             }
         }
         if (KEYBOARD_LABELS) {
-            sprintf(buttons[buttonCount].text, "  %sQ: %sQuit %s  ",    yellowColorEscape, whiteColorEscape, (playingBack ? "to title screen" : "and abandon game"));
+            sprintf(buttons[buttonCount].text, tr("  %sQ: %sQuit %s  "),    yellowColorEscape, whiteColorEscape, (playingBack ? tr("to title screen") : tr("and abandon game")));
         } else {
-            sprintf(buttons[buttonCount].text, "  Quit %s  ",   (playingBack ? "to title screen" : "and abandon game"));
+            sprintf(buttons[buttonCount].text, tr("  Quit %s  "),   (playingBack ? tr("to title screen") : tr("and abandon game")));
         }
         buttons[buttonCount].hotkey[0] = QUIT_KEY;
         buttonCount++;
@@ -2780,53 +2801,15 @@ boolean getInputTextString(char *inputText,
         strcpy(suffix, promptSuffix);
     }
 
-    // 如果使用对话框模式，显示可点击的返回/确认按钮
-    short cancelBtnX = 0, cancelBtnY = 0, cancelBtnLen = 0;
-    short confirmBtnX = 0, confirmBtnY = 0, confirmBtnLen = 0;
+    // 显示 HTML 覆盖层的 Esc/Enter 触摸按钮（仅 Emscripten/Web）
     if (useDialogBox) {
-        cancelBtnX = x;
-        cancelBtnY = y + 2;
-        cancelBtnLen = 8; // "  返回  " = 8 display columns
-        confirmBtnX = x + cancelBtnLen + 2;
-        confirmBtnY = y + 2;
-        confirmBtnLen = 8; // "  确认  " = 8 display columns
-        printString("  返回  ", cancelBtnX, cancelBtnY, &white, &interfaceBoxColor, NULL);
-        printString("  确认  ", confirmBtnX, confirmBtnY, &white, &interfaceBoxColor, NULL);
+        showDialogButtons();
     }
 
     do {
         printString(suffix, charNum + x, y, &gray, &black, 0);
         plotCharWithColor((suffix[0] ? suffix[0] : ' '), (windowpos){ x + charNum, y }, &black, &white);
-
-        if (useDialogBox) {
-            // 使用 nextBrogueEvent 以同时支持键盘和鼠标
-            rogueEvent theEvent;
-            do {
-                nextBrogueEvent(&theEvent, true, false, false);
-                if (theEvent.eventType == MOUSE_UP) {
-                    // 检查是否点击了返回按钮
-                    if (theEvent.param2 == cancelBtnY
-                        && theEvent.param1 >= cancelBtnX
-                        && theEvent.param1 < cancelBtnX + cancelBtnLen) {
-                        keystroke = ESCAPE_KEY;
-                        break;
-                    }
-                    // 检查是否点击了确认按钮
-                    if (theEvent.param2 == confirmBtnY
-                        && theEvent.param1 >= confirmBtnX
-                        && theEvent.param1 < confirmBtnX + confirmBtnLen) {
-                        keystroke = RETURN_KEY;
-                        break;
-                    }
-                } else if (theEvent.eventType == KEYSTROKE) {
-                    keystroke = theEvent.param1;
-                    break;
-                }
-            } while (1);
-        } else {
-            keystroke = nextKeyPress(true);
-        }
-
+        keystroke = nextKeyPress(true);
         if (keystroke == DELETE_KEY && charNum > 0) {
             printString(suffix, charNum + x - 1, y, &gray, &black, 0);
             plotCharWithColor(' ', (windowpos){ x + charNum + strlen(suffix) - 1, y }, &black, &black);
@@ -2872,6 +2855,7 @@ boolean getInputTextString(char *inputText,
     } while (keystroke != RETURN_KEY && keystroke != ESCAPE_KEY);
 
     if (useDialogBox) {
+        hideDialogButtons();
         restoreDisplayBuffer(&rbuf);
     }
 
@@ -2977,22 +2961,6 @@ void waitForKeystrokeOrMouseClick() {
     } while (theEvent.eventType != KEYSTROKE && theEvent.eventType != MOUSE_UP);
 }
 
-// 显示对话框操作提示（返回和确认）
-void displayDialogActionHints(short centerX, short centerY, const color *textColor, const color *bgColor) {
-    char buf[100];
-    char yellowColorEscape[20] = "";
-    char whiteColorEscape[20] = "";
-
-    encodeMessageColor(yellowColorEscape, 0, &yellow);
-    encodeMessageColor(whiteColorEscape, 0, &white);
-
-    // 显示提示文字：Esc返回 / Enter确认
-    sprintf(buf, "%sEsc%s返回   %sEnter%s确认",
-            yellowColorEscape, whiteColorEscape,
-            yellowColorEscape, whiteColorEscape);
-
-    printString(buf, centerX - strLenWithoutEscapes(buf) / 2, centerY + 2, textColor, bgColor, NULL);
-}
 
 boolean confirm(char *prompt, boolean alsoDuringPlayback) {
     short retVal;
@@ -3023,9 +2991,11 @@ boolean confirm(char *prompt, boolean alsoDuringPlayback) {
     buttons[1].hotkey[3] = ESCAPE_KEY;
     buttons[1].flags |= (B_WIDE_CLICK_AREA | B_KEYPRESS_HIGHLIGHT);
 
+    showDialogButtons();
     const SavedDisplayBuffer rbuf = saveDisplayBuffer();
     retVal = printTextBox(prompt, COLS/3, ROWS/3, COLS/3, &white, &interfaceBoxColor, buttons, 2);
     restoreDisplayBuffer(&rbuf);
+    hideDialogButtons();
 
     if (retVal == -1 || retVal == 1) { // If they canceled or pressed no.
         return false;

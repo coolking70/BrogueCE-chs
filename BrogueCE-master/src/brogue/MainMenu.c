@@ -644,9 +644,11 @@ void dialogAlert(char *message) {
     strcpy(OKButton.text, tr("     确定     "));
     OKButton.hotkey[0] = RETURN_KEY;
     OKButton.hotkey[1] = ACKNOWLEDGE_KEY;
+    showDialogButtons();
     const SavedDisplayBuffer rbuf = saveDisplayBuffer();
     printTextBox(message, COLS/3, ROWS/3, COLS/3, &white, &interfaceBoxColor, &OKButton, 1);
     restoreDisplayBuffer(&rbuf);
+    hideDialogButtons();
 }
 
 static boolean stringsExactlyMatch(const char *string1, const char *string2) {
@@ -700,6 +702,7 @@ boolean dialogChooseFile(char *path, const char *suffix, const char *prompt) {
 
     suffixLength = strlen(suffix);
     files = listFiles(&count, &membuf);
+    showDialogButtons();
     const SavedDisplayBuffer rbuf = saveDisplayBuffer();
     maxPathLength = strLenWithoutEscapes(prompt);
 
@@ -856,9 +859,10 @@ boolean dialogChooseFile(char *path, const char *suffix, const char *prompt) {
 
     free(files);
     free(membuf);
+    hideDialogButtons();
 
     if (count == 0) {
-        dialogAlert("No applicable files found.");
+        dialogAlert(tr("No applicable files found."));
         return false;
     } else {
         return retval;

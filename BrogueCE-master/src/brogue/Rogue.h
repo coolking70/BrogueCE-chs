@@ -2870,6 +2870,9 @@ extern "C" {
     void setI18nLanguage(const char *langCode);
     const char *tr(const char *src);
 
+    void showDialogButtons(void);
+    void hideDialogButtons(void);
+
     int rogueMain(void);
     void printBrogueVersion(void);
     void executeEvent(rogueEvent *theEvent);

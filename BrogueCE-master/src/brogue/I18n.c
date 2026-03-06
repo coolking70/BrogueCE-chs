@@ -349,6 +349,61 @@ static const TranslationPair kFallbackTranslations[] = {
     {"throw", "投掷"},
     {"call", "命名"},
     {"Relabel", "重新命名"},
+
+    // Pause menu - gameplay actions
+    {"  %sZ: %sRest until better  ", "  %sZ: %s休息至痊愈  "},
+    {"  Rest until better  ", "  休息至痊愈  "},
+    {"  %sA: %sAutopilot  ", "  %sA: %s自动驾驶  "},
+    {"  Autopilot  ", "  自动驾驶  "},
+    {"  %sT: %sRe-throw at last monster  ", "  %sT: %s向上一目标投掷  "},
+    {"  Re-throw at last monster  ", "  向上一目标投掷  "},
+    {"  %s&: %sEasy mode  ", "  %s&: %s简单模式  "},
+    {"  Easy mode  ", "  简单模式  "},
+
+    // Pause menu - settings toggles
+    {"  %s\\: %s[%s] Hide color effects  ", "  %s\\: %s[%s] 隐藏颜色效果  "},
+    {"  [%s] Hide color effects  ", "  [%s] 隐藏颜色效果  "},
+    {"  %s]: %s[%s] Display stealth range  ", "  %s]: %s[%s] 显示潜行范围  "},
+    {"  [%s] Display stealth range  ", "  [%s] 显示潜行范围  "},
+    {"  %sG: %s[%c] Enable graphics  ", "  %sG: %s[%c] 启用图形  "},
+    {"  [%c] Enable graphics  ", "  [%c] 启用图形  "},
+
+    // Pause menu - info
+    {"  %sF: %sFeats             ", "  %sF: %s成就             "},
+    {"  Feats             ", "  成就             "},
+    {"  %sD: %sDiscovered items  ", "  %sD: %s已发现物品  "},
+    {"  Discovered items  ", "  已发现物品  "},
+    {"  %sC: %sCreate item or monster  ", "  %sC: %s创建物品或怪物  "},
+    {"  Create item or monster  ", "  创建物品或怪物  "},
+    {"  %s~: %sView dungeon seed  ", "  %s~: %s查看地牢种子  "},
+    {"  View dungeon seed  ", "  查看地牢种子  "},
+    {"  %s?: %sHelp  ", "  %s?: %s帮助  "},
+
+    // Pause menu - save/quit
+    {"  %sO: %sOpen saved game  ", "  %sO: %s打开存档  "},
+    {"  Open saved game  ", "  打开存档  "},
+    {"  %sV: %sView saved recording  ", "  %sV: %s查看回放记录  "},
+    {"  View saved recording  ", "  查看回放记录  "},
+    {"  %sS: %sSave and exit  ", "  %sS: %s保存并退出  "},
+    {"  Save and exit  ", "  保存并退出  "},
+    {"  %sQ: %sQuit %s  ", "  %sQ: %s退出 %s  "},
+    {"  Quit %s  ", "  退出 %s  "},
+    {"to title screen", "到标题画面"},
+    {"and abandon game", "并放弃游戏"},
+
+    // Playback menu items
+    {"  %sP: %sPlay from here  ", "  %sP: %s从此开始  "},
+    {"  Play from here  ", "  从此开始  "},
+    {"  %sk: %sFaster playback  ", "  %sk: %s加速回放  "},
+    {"  Faster playback  ", "  加速回放  "},
+    {"  %sj: %sSlower playback  ", "  %sj: %s减速回放  "},
+    {"  Slower playback  ", "  减速回放  "},
+    {"%s0-9: %sFast forward to turn  ", "%s0-9: %s快速转到回合  "},
+    {"  Fast forward to turn  ", "  快速转到回合  "},
+    {"  %s<:%s Previous Level  ", "  %s<:%s 上一层  "},
+    {"  Previous Level  ", "  上一层  "},
+    {"  %s>:%s Next Level  ", "  %s>:%s 下一层  "},
+    {"  Next Level  ", "  下一层  "},
 };
 
 static void skipWs(const char **p) {
