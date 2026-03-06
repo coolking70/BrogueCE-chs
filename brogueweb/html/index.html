@@ -193,8 +193,36 @@
             e.preventDefault();
             dispatchKey(13, 'Enter', 'Enter');
         });
+    </script>
 
-        // 全屏按钮逻辑
+    <script>
+        // 触摸事件优化（移动端）
+        document.addEventListener('touchmove', function (e) {
+            e.preventDefault();
+        }, { passive: false });
+
+        // 防止双击缩放
+        var lastTouchEnd = 0;
+        document.addEventListener('touchend', function (e) {
+            var now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+
+        // 防止缩放手势
+        document.addEventListener('gesturestart', function (e) {
+            e.preventDefault();
+        });
+
+        var statusElement = document.getElementById('status');
+        var progressElement = document.getElementById('progress');
+        var spinnerElement = document.getElementById('spinner');
+        var canvasElement = document.getElementById('canvas');
+        var outputElement = document.getElementById('output');
+
+        // ========== 全屏按钮逻辑（需要在canvasElement定义后） ==========
         var fullscreenBtn = document.getElementById('btn-fullscreen');
         var gameStarted = false;
 
@@ -268,34 +296,7 @@
                 fullscreenBtn.classList.add('hidden');
             }
         });
-    </script>
-
-    <script>
-        // 触摸事件优化（移动端）
-        document.addEventListener('touchmove', function (e) {
-            e.preventDefault();
-        }, { passive: false });
-
-        // 防止双击缩放
-        var lastTouchEnd = 0;
-        document.addEventListener('touchend', function (e) {
-            var now = Date.now();
-            if (now - lastTouchEnd <= 300) {
-                e.preventDefault();
-            }
-            lastTouchEnd = now;
-        }, false);
-
-        // 防止缩放手势
-        document.addEventListener('gesturestart', function (e) {
-            e.preventDefault();
-        });
-
-        var statusElement = document.getElementById('status');
-        var progressElement = document.getElementById('progress');
-        var spinnerElement = document.getElementById('spinner');
-        var canvasElement = document.getElementById('canvas');
-        var outputElement = document.getElementById('output');
+        // ========================================
 
         canvasElement.addEventListener("webglcontextlost", function (e) {
             alert("WebGL context lost. You will need to reload the page.");
