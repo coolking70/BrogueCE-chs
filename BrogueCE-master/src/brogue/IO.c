@@ -2780,26 +2780,53 @@ boolean getInputTextString(char *inputText,
         strcpy(suffix, promptSuffix);
     }
 
-    // 如果使用对话框模式，显示操作提示
+    // 如果使用对话框模式，显示可点击的返回/确认按钮
+    short cancelBtnX = 0, cancelBtnY = 0, cancelBtnLen = 0;
+    short confirmBtnX = 0, confirmBtnY = 0, confirmBtnLen = 0;
     if (useDialogBox) {
-        char buf[100];
-        char yellowColorEscape[20] = "";
-        char whiteColorEscape[20] = "";
-
-        encodeMessageColor(yellowColorEscape, 0, &yellow);
-        encodeMessageColor(whiteColorEscape, 0, &white);
-
-        sprintf(buf, "%sEsc%s返回   %sEnter%s确认",
-                yellowColorEscape, whiteColorEscape,
-                yellowColorEscape, whiteColorEscape);
-
-        printString(buf, x, y + 2, &white, &interfaceBoxColor, NULL);
+        cancelBtnX = x;
+        cancelBtnY = y + 2;
+        cancelBtnLen = 8; // "  返回  " = 8 display columns
+        confirmBtnX = x + cancelBtnLen + 2;
+        confirmBtnY = y + 2;
+        confirmBtnLen = 8; // "  确认  " = 8 display columns
+        printString("  返回  ", cancelBtnX, cancelBtnY, &white, &interfaceBoxColor, NULL);
+        printString("  确认  ", confirmBtnX, confirmBtnY, &white, &interfaceBoxColor, NULL);
     }
 
     do {
         printString(suffix, charNum + x, y, &gray, &black, 0);
         plotCharWithColor((suffix[0] ? suffix[0] : ' '), (windowpos){ x + charNum, y }, &black, &white);
-        keystroke = nextKeyPress(true);
+
+        if (useDialogBox) {
+            // 使用 nextBrogueEvent 以同时支持键盘和鼠标
+            rogueEvent theEvent;
+            do {
+                nextBrogueEvent(&theEvent, true, false, false);
+                if (theEvent.eventType == MOUSE_UP) {
+                    // 检查是否点击了返回按钮
+                    if (theEvent.param2 == cancelBtnY
+                        && theEvent.param1 >= cancelBtnX
+                        && theEvent.param1 < cancelBtnX + cancelBtnLen) {
+                        keystroke = ESCAPE_KEY;
+                        break;
+                    }
+                    // 检查是否点击了确认按钮
+                    if (theEvent.param2 == confirmBtnY
+                        && theEvent.param1 >= confirmBtnX
+                        && theEvent.param1 < confirmBtnX + confirmBtnLen) {
+                        keystroke = RETURN_KEY;
+                        break;
+                    }
+                } else if (theEvent.eventType == KEYSTROKE) {
+                    keystroke = theEvent.param1;
+                    break;
+                }
+            } while (1);
+        } else {
+            keystroke = nextKeyPress(true);
+        }
+
         if (keystroke == DELETE_KEY && charNum > 0) {
             printString(suffix, charNum + x - 1, y, &gray, &black, 0);
             plotCharWithColor(' ', (windowpos){ x + charNum + strlen(suffix) - 1, y }, &black, &black);
@@ -2982,14 +3009,14 @@ boolean confirm(char *prompt, boolean alsoDuringPlayback) {
     encodeMessageColor(yellowColorEscape, 0, KEYBOARD_LABELS ? &yellow : &white);
 
     initializeButton(&(buttons[0]));
-    sprintf(buttons[0].text, "     %sY%ses     ", yellowColorEscape, whiteColorEscape);
+    sprintf(buttons[0].text, "   %sY%s 确认   ", yellowColorEscape, whiteColorEscape);
     buttons[0].hotkey[0] = 'y';
     buttons[0].hotkey[1] = 'Y';
     buttons[0].hotkey[2] = RETURN_KEY;
     buttons[0].flags |= (B_WIDE_CLICK_AREA | B_KEYPRESS_HIGHLIGHT);
 
     initializeButton(&(buttons[1]));
-    sprintf(buttons[1].text, "     %sN%so      ", yellowColorEscape, whiteColorEscape);
+    sprintf(buttons[1].text, "   %sN%s 返回   ", yellowColorEscape, whiteColorEscape);
     buttons[1].hotkey[0] = 'n';
     buttons[1].hotkey[1] = 'N';
     buttons[1].hotkey[2] = ACKNOWLEDGE_KEY;
@@ -2998,10 +3025,6 @@ boolean confirm(char *prompt, boolean alsoDuringPlayback) {
 
     const SavedDisplayBuffer rbuf = saveDisplayBuffer();
     retVal = printTextBox(prompt, COLS/3, ROWS/3, COLS/3, &white, &interfaceBoxColor, buttons, 2);
-
-    // 显示对话框操作提示
-    displayDialogActionHints(COLS/2, ROWS/3 + 3, &white, &interfaceBoxColor);
-
     restoreDisplayBuffer(&rbuf);
 
     if (retVal == -1 || retVal == 1) { // If they canceled or pressed no.

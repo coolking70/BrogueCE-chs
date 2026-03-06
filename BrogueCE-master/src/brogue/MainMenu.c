@@ -274,10 +274,10 @@ static void initializeMainMenuButton(brogueButton *button, char *textWithHotkey,
 /// @param buttons An array of buttons to initialize
 static void initializeMainMenuButtons(brogueButton *buttons) {
 
-    initializeMainMenuButton(&(buttons[0]), "     %sN%sew Game     ", 'n', 'N', NG_NEW_GAME);
-    initializeMainMenuButton(&(buttons[1]), " *     %sP%slay       ", 'p', 'P', NG_FLYOUT_PLAY);
-    initializeMainMenuButton(&(buttons[2]), " *     %sV%siew       ", 'v', 'V', NG_FLYOUT_VIEW);
-    initializeMainMenuButton(&(buttons[3]), "       %sQ%suit       ", 'q', 'Q', NG_QUIT);
+    initializeMainMenuButton(&(buttons[0]), tr("     %sN%sew Game     "), 'n', 'N', NG_NEW_GAME);
+    initializeMainMenuButton(&(buttons[1]), tr(" *     %sP%slay       "), 'p', 'P', NG_FLYOUT_PLAY);
+    initializeMainMenuButton(&(buttons[2]), tr(" *     %sV%siew       "), 'v', 'V', NG_FLYOUT_VIEW);
+    initializeMainMenuButton(&(buttons[3]), tr("       %sQ%suit       "), 'q', 'Q', NG_QUIT);
 
     // Add a left-facing triangle to all the buttons except quit
     for (int i=0; i<MAIN_MENU_BUTTON_COUNT-1; i++) {
@@ -366,17 +366,17 @@ static void initializeFlyoutMenu(buttonState *menu, screenDisplayBuffer *shadowB
     if (rogue.nextGame == NG_FLYOUT_PLAY) {
 
         buttonCount = 4;
-        initializeMainMenuButton(&(buttons[0]), "  New %sS%seeded Game  ", 's', 'S', NG_NEW_GAME_WITH_SEED);
-        initializeMainMenuButton(&(buttons[1]), "     %sL%soad Game     ", 'l', 'L', NG_OPEN_GAME);
-        initializeMainMenuButton(&(buttons[2]), "  Change V%sa%sriant   ", 'a', 'A', NG_GAME_VARIANT);
-        initializeMainMenuButton(&(buttons[3]), "   Change %sM%sode     ", 'm', 'M', NG_GAME_MODE);
+        initializeMainMenuButton(&(buttons[0]), tr("  New %sS%seeded Game  "), 's', 'S', NG_NEW_GAME_WITH_SEED);
+        initializeMainMenuButton(&(buttons[1]), tr("     %sL%soad Game     "), 'l', 'L', NG_OPEN_GAME);
+        initializeMainMenuButton(&(buttons[2]), tr("  Change V%sa%sriant   "), 'a', 'A', NG_GAME_VARIANT);
+        initializeMainMenuButton(&(buttons[3]), tr("   Change %sM%sode     "), 'm', 'M', NG_GAME_MODE);
 
     } else if (rogue.nextGame == NG_FLYOUT_VIEW) {
 
         buttonCount = 3;
-        initializeMainMenuButton(&(buttons[0]), "   View %sR%secording  ", 'r', 'R', NG_VIEW_RECORDING);
-        initializeMainMenuButton(&(buttons[1]), "    %sH%sigh Scores    ", 'h', 'H', NG_HIGH_SCORES);
-        initializeMainMenuButton(&(buttons[2]), "    %sG%same Stats     ", 'g', 'G', NG_GAME_STATS);
+        initializeMainMenuButton(&(buttons[0]), tr("   View %sR%secording  "), 'r', 'R', NG_VIEW_RECORDING);
+        initializeMainMenuButton(&(buttons[1]), tr("    %sH%sigh Scores    "), 'h', 'H', NG_HIGH_SCORES);
+        initializeMainMenuButton(&(buttons[2]), tr("    %sG%same Stats     "), 'g', 'G', NG_GAME_STATS);
 
     } else {
         return;
@@ -406,9 +406,9 @@ static void chooseGameVariant() {
     append(textBuf, "No time? Death wish? Bullet Brogue is for you. Not best for new players!\n\n", TEXT_MAX_LENGTH);
 
     brogueButton buttons[3];
-    initializeMainMenuButton(&(buttons[0]), "  %sR%sapid Brogue     ", 'r', 'R', NG_NOTHING);
-    initializeMainMenuButton(&(buttons[1]), "     %sB%srogue        ", 'b', 'B', NG_NOTHING);
-    initializeMainMenuButton(&(buttons[2]), "   Bu%sl%slet Brogue   ", 'l', 'L', NG_NOTHING);
+    initializeMainMenuButton(&(buttons[0]), tr("  %sR%sapid Brogue     "), 'r', 'R', NG_NOTHING);
+    initializeMainMenuButton(&(buttons[1]), tr("     %sB%srogue        "), 'b', 'B', NG_NOTHING);
+    initializeMainMenuButton(&(buttons[2]), tr("   Bu%sl%slet Brogue   "), 'l', 'L', NG_NOTHING);
 
     const SavedDisplayBuffer rbuf = saveDisplayBuffer();
     gameVariantChoice = printTextBox(textBuf, 20, 7, 45, &white, &black, buttons, 3);
@@ -449,9 +449,9 @@ static void chooseGameMode() {
                     "(Your score is not saved.)", TEXT_MAX_LENGTH);
 
     brogueButton buttons[3];
-    initializeMainMenuButton(&(buttons[0]), "      %sW%sizard       ", 'w', 'W', NG_NOTHING);
-    initializeMainMenuButton(&(buttons[1]), "       %sE%sasy        ", 'e', 'E', NG_NOTHING);
-    initializeMainMenuButton(&(buttons[2]), "      %sN%sormal       ", 'n', 'N', NG_NOTHING);
+    initializeMainMenuButton(&(buttons[0]), tr("      %sW%sizard       "), 'w', 'W', NG_NOTHING);
+    initializeMainMenuButton(&(buttons[1]), tr("       %sE%sasy        "), 'e', 'E', NG_NOTHING);
+    initializeMainMenuButton(&(buttons[2]), tr("      %sN%sormal       "), 'n', 'N', NG_NOTHING);
     const SavedDisplayBuffer rbuf = saveDisplayBuffer();
     gameMode = printTextBox(textBuf, 10, 5, 66, &white, &black, buttons, 3);
     restoreDisplayBuffer(&rbuf);
@@ -641,7 +641,7 @@ void dialogAlert(char *message) {
 
     brogueButton OKButton;
     initializeButton(&OKButton);
-    strcpy(OKButton.text, "     OK     ");
+    strcpy(OKButton.text, tr("     确定     "));
     OKButton.hotkey[0] = RETURN_KEY;
     OKButton.hotkey[1] = ACKNOWLEDGE_KEY;
     const SavedDisplayBuffer rbuf = saveDisplayBuffer();
@@ -689,7 +689,7 @@ static int fileEntryCompareDates(const void *a, const void *b) {
 #define MAX_FILENAME_DISPLAY_LENGTH     53
 boolean dialogChooseFile(char *path, const char *suffix, const char *prompt) {
     short i, j, count, x, y, width, height, suffixLength, pathLength, maxPathLength, currentPageStart;
-    brogueButton buttons[FILES_ON_PAGE_MAX + 2];
+    brogueButton buttons[FILES_ON_PAGE_MAX + 3]; // +2 for arrows, +1 for back button
     fileEntry *files;
     boolean retval = false, again;
     screenDisplayBuffer dbuf;
@@ -806,51 +806,41 @@ boolean dialogChooseFile(char *path, const char *suffix, const char *prompt) {
             buttons[i].y = y + i;
         }
 
+        // 添加"返回"按钮
+        short backBtnIdx = min(count - currentPageStart, FILES_ON_PAGE_MAX) + (count > FILES_ON_PAGE_MAX ? 2 : 0);
+        initializeButton(&(buttons[backBtnIdx]));
+        strcpy(buttons[backBtnIdx].text, "    返回    ");
+        buttons[backBtnIdx].hotkey[0] = ESCAPE_KEY;
+        buttons[backBtnIdx].hotkey[1] = ACKNOWLEDGE_KEY;
+        buttons[backBtnIdx].flags &= ~B_GRADIENT;
+        buttons[backBtnIdx].flags |= B_WIDE_CLICK_AREA;
+        buttons[backBtnIdx].buttonColor = *dialogColor;
+        buttons[backBtnIdx].x = x + (width - 12) / 2;
+        buttons[backBtnIdx].y = y + height;
+
         if (count) {
             clearDisplayBuffer(&dbuf);
             printString(prompt, x, y - 1, &itemMessageColor, dialogColor, &dbuf);
-            rectangularShading(x - 1, y - 1, width + 1, height + 1, dialogColor, INTERFACE_OPACITY, &dbuf);
+            rectangularShading(x - 1, y - 1, width + 1, height + 2, dialogColor, INTERFACE_OPACITY, &dbuf);
             overlayDisplayBuffer(&dbuf);
 
-            // 显示对话框操作提示
-            char bufHints[100];
-            char yellowColorEscape[20] = "";
-            char whiteColorEscape[20] = "";
-            encodeMessageColor(yellowColorEscape, 0, &yellow);
-            encodeMessageColor(whiteColorEscape, 0, &white);
-            sprintf(bufHints, "%sEsc%s返回   %s↑↓%s选择   %sEnter%s确认",
-                    yellowColorEscape, whiteColorEscape,
-                    yellowColorEscape, whiteColorEscape,
-                    yellowColorEscape, whiteColorEscape);
-            printString(bufHints, x, y + height + 1, &white, dialogColor, NULL);
-
-//          for (j=0; j<min(count - currentPageStart, FILES_ON_PAGE_MAX); j++) {
-//              strftime(fileDate, sizeof(fileDate), DATE_FORMAT, &files[currentPageStart+j].date);
-//              printf("\nSanity check BEFORE: %s, with date: %s", files[currentPageStart+j].path, fileDate);
-//              printf("\n   (button name)Sanity check BEFORE: %s", buttons[j].text);
-//          }
-
             i = buttonInputLoop(buttons,
-                                min(count - currentPageStart, FILES_ON_PAGE_MAX) + (count > FILES_ON_PAGE_MAX ? 2 : 0),
+                                backBtnIdx + 1,
                                 x,
                                 y,
                                 width,
-                                height,
+                                height + 1,
                                 NULL);
-
-//          for (j=0; j<min(count - currentPageStart, FILES_ON_PAGE_MAX); j++) {
-//              strftime(fileDate, sizeof(fileDate), DATE_FORMAT, &files[currentPageStart+j].date);
-//              printf("\nSanity check AFTER: %s, with date: %s", files[currentPageStart+j].path, fileDate);
-//              printf("\n   (button name)Sanity check AFTER: %s", buttons[j].text);
-//          }
 
             restoreDisplayBuffer(&rbuf);
 
-            if (i < min(count - currentPageStart, FILES_ON_PAGE_MAX)) {
+            if (i == backBtnIdx || i == -1) {
+                retval = false;
+            } else if (i < min(count - currentPageStart, FILES_ON_PAGE_MAX)) {
                 if (i >= 0) {
                     retval = true;
                     strcpy(path, files[currentPageStart+i].path);
-                } else { // i is -1
+                } else {
                     retval = false;
                 }
             } else if (i == min(count - currentPageStart, FILES_ON_PAGE_MAX)) { // Up arrow

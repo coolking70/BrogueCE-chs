@@ -306,6 +306,49 @@ static const TranslationPair kFallbackTranslations[] = {
     {"--MORE--", "--更多--"},
     {"   -- PLAYBACK --   ", "   -- 回放中 --   "},
     {"      [PAUSED]      ", "      [已暂停]      "},
+
+    // Buttons and dialogs
+    {"     确定     ", "     确定     "},
+    {" *     %sH%selp       ", " *     %s帮%s助       "},
+
+    // Game in-game menu buttons
+    {"   E%sx%splore   ", "   探%s索%s   "},
+    {"   Rest (%sz%s)   ", "   休息 (%sz%s)   "},
+    {"     Rest     ", "     休息     "},
+    {"  Search (%ss%s)  ", "  搜索 (%ss%s)  "},
+    {"    Search    ", "    搜索    "},
+    {"    Menu    ", "    菜单    "},
+    {"   %sI%snventory   ", "   %s物%s品栏   "},
+
+    // Playback menu buttons
+    {"  %sP%s: Play from here  ", "  %sP%s: 从此开始  "},
+    {"  Play from here  ", "  从此开始  "},
+    {"  %sk: %sFaster playback  ", "  %sk: %s加速回放  "},
+    {"  Faster playback  ", "  加速回放  "},
+    {"  %sj: %sSlower playback  ", "  %sj: %s减速回放  "},
+    {"  Slower playback  ", "  减速回放  "},
+    {"%s0-9: %sFast forward to turn  ", "%s0-9: %s快速转到回合  "},
+    {"  Fast forward to turn  ", "  快速转到回合  "},
+    {"  %s<:%s Previous Level  ", "  %s<:%s 上一层  "},
+    {"  Previous Level  ", "  上一层  "},
+    {"  %s>:%s Next Level  ", "  %s>:%s 下一层  "},
+    {"  Next Level  ", "  下一层  "},
+
+    // Other dialog prompts
+    {"Turn on autopilot?", "启用自动驾驶？"},
+    {"Save this game and exit?", "保存游戏并退出？"},
+    {"End this game and begin a new game?", "结束此游戏并开始新游戏？"},
+    {"Quit and abandon this game? (The save will be deleted.)", "退出并放弃此游戏？（存档将被删除。）"},
+    {"No applicable files found.", "未找到适用文件。"},
+
+    // Item action menu buttons
+    {"apply", "使用"},
+    {"remove", "卸下"},
+    {"equip", "装备"},
+    {"drop", "丢弃"},
+    {"throw", "投掷"},
+    {"call", "命名"},
+    {"Relabel", "重新命名"},
 };
 
 static void skipWs(const char **p) {
