@@ -1,0 +1,756 @@
+Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我继续完善这个js重构项目
+
+## 2026-03-07 (胜负闭环完善 Win/Loss Game Loop)
+
+### Bug 修复
+- **Stats 持久化**：`GameSnapshot` 接口新增 `stats` 字段，`toSnapshot()`/`loadSnapshot()` 现在保存和恢复 kills/gold/turns/maxDepth
+- **Depth 26 下楼梯**：修复 depth 26 仍然生成 STAIRS_DOWN 的问题，现在 depth 26 是最深层
+
+### 死亡原因追踪
+- **lastDamageSource 字段**：新增 `Game.lastDamageSource` 追踪最后伤害来源
+- Monster.ts：怪物近战/远程攻击命中时设置 `lastDamageSource = monster.name`
+- Game.ts：环境伤害（火焰/蒸汽/窒息孢子/饥饿）各自设置对应 lastDamageSource
+- **具体死因**：`triggerGameOver` 现在根据 lastDamageSource 生成具体死因：
+  - "被 [怪物名] 杀死。"
+  - "溺死在深水中。" / "被岩浆焚化。" / "被火焰烧死。"
+  - "被蒸汽烫死。" / "被蔓延的死亡孢子吞噬。"
+  - "饿死了。" / "中毒身亡。"
+
+### 胜利结算页面增强
+- **GameEndOverlay.vue** 全面重写：
+  - 新增得分（Score）显示：gold + 深度奖励 + 击杀奖励 + 物品价值，胜利翻倍
+  - 新增背包物品列表，显示物品颜色和附魔值
+  - 统计标签简化
+  - 页面可滚动（适应长物品列表）
+- **triggerGameOver** 现在捕获 `gameOverInventory` 和 `gameOverScore`
+
+### i18n 中文翻译
+- 新增 10 个死因翻译 key（death.*）
+- 新增 endgame.score、endgame.inventory 翻译
+- 更新 game.entrance_blocked 为更好的中文文案（水晶拱门）
+- 更新 game.win 翻译
+
+### 构建验证
+- `npm run build` (`vue-tsc -b && vite build`) ✓ 784 modules · 零错误 · 2.59s
+
+### 变更文件
+| 文件 | 变更内容 |
+|------|---------|
+| `Game.ts` | stats 持久化、lastDamageSource、具体死因、depth 26 无下楼梯、gameOverInventory/Score |
+| `Monster.ts` | 近战/远程攻击设置 lastDamageSource |
+| `GameEndOverlay.vue` | 得分、物品列表、布局重写 |
+| `zh_CN.json` | 死因翻译、结算页翻译、入口文案更新 |
+
+## 2026-03-07 (hover/detail/translation fixes)
+
+- 参考 `ai_docs/hover_detail_translation_fixes.md` 修复 hover 与详情交互缺失：
+  - `Game.ts`：
+    - 新增 `handleInspectAt(x, y)`，支持按地图坐标查看可见怪物/物品详情。
+    - `updateHover()` 改为使用 i18next 文案，物品 hover 改用 `displayName`，避免未鉴定卷轴/法杖泄露真名。
+    - 新增 `getTerrainName()`，补全所有 `TerrainType` 的中文显示名。
+  - `GameCanvas.vue`：
+    - 阻止 canvas 默认右键菜单。
+    - 地图 `pointerup` 右键改为调用 `game.handleInspectAt(...)`，左键原移动/寻路逻辑保持不变。
+  - `InventoryOverlay.vue`：
+    - 新增“查看详情”按钮，调用 `generateItemDetail()` 写入 `activeGame.inspectTarget`。
+  - `Sidebar.vue`：
+    - 将 hover 相关周边硬编码英文标签替换为中文（深度/生命/食物/状态/行动日志、饥饿状态）。
+  - `zh_CN.json`：
+    - 新增 `hover.*`、`terrain.*`、`item.inspect` 相关翻译 key。
+
+- 待验证：
+  - 若后续继续做交互回归，可补充真实关卡中的右键怪物详情 smoke case（当前已用浏览器内注入测试物品覆盖右键/hover/背包链路）
+
+- 验证结果：
+  - `npm run build` 通过（`vue-tsc -b && vite build` 成功）。
+  - 使用 web-game Playwright client 做 smoke：
+    - 从主菜单进入游戏成功；
+    - `render_game_to_text()` 正常输出；
+    - 无新增 console/page errors；
+    - headless 截图仍为全黑，延续该仓库已知 WebGL/截图环境限制。
+  - 使用额外 Playwright 定向脚本验证：
+    - 在 test 模式下注入未鉴定药水到玩家脚下与背包；
+    - hover 文案为 `金色药水、你，位于地面`，确认使用 `displayName`，未泄露真名 `治疗药水`；
+    - 地图右键可打开详情面板，标题为 `金色药水`；
+    - 背包“查看详情”按钮可打开详情面板；
+    - 打开背包后查看详情不会关闭背包，`render_game_to_text().mode === 'inventory'`。
+
+## 2026-03-04
+
+- **Stage 4 收尾**（怪物抗性矩阵 + 玩家临时免疫 buff + i18n 清理）：
+  - `monsters.json`：为 Rat/Kobold/Jackal/Goblin 补全 `statusImmunities` 和 `statusResistTurns`
+  - `arcana.json`：新增 `charm_of_protection`（minDepth 4，cooldown 320）
+  - `Player.ts`：`temporaryImmunities` 系统——`grantTemporaryImmunity()`、`tickTemporaryImmunities()`
+  - `Game.ts`：
+    - `useArcanaItem` 新增 charm_of_protection 分支（随机 15 turn 状态免疫）
+    - `applyMonsterOnHitStatus` 先检查 `player.temporaryImmunities`
+    - `runMonsterTurns` 每回合 tick 临时免疫并记录过期日志
+    - 迁移 15 处硬编码英文日志至 i18next key + zh_CN 翻译
+  - `GameSnapshot`：新增 `player.temporaryImmunities` 和 monster `abilities` 字段以持久化
+
+- **Stage 5 地形机关**（TRAP / SECRET_DOOR / PRESSURE_PLATE）：
+  - `Grid.ts`：新增 3 个 TerrainType；Cell 增 `trapType` 和 `isDiscovered`
+  - `Architect.ts`：`placeTraps(depth)` 按深度散布陷阱（d3+）、秘密门（d4+）、压力板（d5+）
+  - `Game.ts`：`triggerTrap()`（毒气/传送/火焰）、`triggerPressurePlate()`（半径3链式触发）、`teleportPlayerRandom()`、相邻秘密门30%自动发现
+  - `GameCanvas.vue`：新增 TRAP(^)、SECRET_DOOR(#)、PRESSURE_PLATE(_) 视觉渲染
+  - `zh_CN.json`：5个 `trap.*` i18n key
+
+- **Stage 6 怪物 Roster 扩充**（10只怪物 + 能力旗标系统）：
+  - `monsters.json`：新增 bat/snake/ogre/troll/centaur/vampire（含各自抗性矩阵）
+  - `Monster.ts`：`MonsterAbility` 类型 + 行为钩子：
+    - **flying**：路径规划忽略水/熔岩地形
+    - **regenerating**：每10回合自动回1 HP
+    - **ranged**：视线2-8格内执行远程攻击
+    - **poisonous**：复用 onHitStatus 机制
+  - `zh_CN.json`：6 个 monster 名称翻译 + combat.monster_ranged_hits key
+
+- **构建验证**：`vue-tsc -b && vite build` ✓ 765 modules transformed · 零错误 · 2.54s
+
+## 2026-03-03
+
+- Stage 0/1 kickoff (parity plan execution started):
+  - Added `Game.startNewGame({ seed, mode })` with mode support (`normal/easy/wizard`) and deterministic seed capture (`currentSeed`).
+  - Added save/load snapshot APIs: `Game.toSnapshot()` and `Game.loadSnapshot()`.
+  - Added stage-1 main menu UX in App:
+    - New game (optional seed)
+    - Mode select (normal/easy/wizard)
+    - Save current game
+    - Continue from localStorage
+    - Save metadata preview in menu (depth/mode/seed/time)
+    - Delete save action
+  - Fixed menu save-state reactivity:
+    - `hasSave/saveInfo` now update immediately after save/delete/load via a reactive `storageTick`.
+  - Smoke-verified menu flow in browser automation:
+    - New game -> open menu -> save -> metadata visible -> delete save -> continue disabled.
+  - Added planning document `ai_docs/parity_plan.md` with CE gap matrix and phased checklist.
+
+- Combat log fix:
+  - Added monster attack logging in `Monster.takeTurn()` so enemy hits/misses now appear in the right-side ACTION LOG.
+  - Added matching floating text on player when monsters hit/miss, and a death log when HP drops to 0.
+  - Internationalized those combat messages via i18next keys (`combat.*`) and added zh_CN translations.
+
+- Completed stage 8.4 ("pause external game time when inventory is open"):
+  - Added `Game.isTimePaused()` and used it from render loop.
+  - `GameCanvas` ticker now exits early while inventory is open, so auto-path stepping and floating text ticks are paused.
+- Fixed input conflict for `.` key:
+  - Introduced contextual action `wait_or_stairs_down`.
+  - `.` / `。` now descends only when standing on downstairs, otherwise it performs wait/rest.
+  - Kept explicit `>` / `》` as direct stairs-down action.
+- Added automation hooks expected by the web-game workflow:
+  - `window.advanceTime(ms)` deterministic stepping wrapper.
+  - `window.render_game_to_text()` concise JSON state for Playwright-based checks.
+- Synced planning docs:
+  - Marked `ai_docs/task.md` item `8.4` as done.
+- Verification:
+  - Ran skill client: `node ~/.codex/skills/develop-web-game/scripts/web_game_playwright_client.js ...`.
+  - Captured `output/web-game/state-0.json` and `state-1.json`; state output valid and movement reflected in text.
+  - Screenshots `shot-0.png/shot-1.png` are fully black in headless mode (likely WebGL capture limitation in this environment); keep text-state checks as source of truth for now.
+  - Ran a direct Playwright assertion script to verify inventory pause: opening inventory keeps player position fixed even after `ArrowLeft` + `advanceTime`.
+
+## Notes / TODO for next agent
+
+- TypeScript strict-mode cleanup has started (imports/visibility/inventory typing fixes landed), but `npm run build` is still blocked mainly by:
+  - (Done in this round) `src/components/GameCanvas.vue` Pixi v8 typings incompatibilities
+  - (Done in this round) `src/engine/Generator/*` nullability issues
+  - (Done in this round) `src/engine/Map/Pathfinding.ts` nullability/typing issues
+- If continuing UX polish, next high-value doc item is stage `6.3` (HD tile/texture path for high-resolution displays).
+
+## 2026-03-03 (continued)
+
+- Completed Stage 0 TypeScript build unblock:
+  - `npm run build` now passes (`vue-tsc -b && vite build` successful).
+  - Fixed Pixi v8 typing mismatches in `src/components/GameCanvas.vue`:
+    - Replaced invalid `new TextStyle({ ...baseStyle })` clone pattern with shared `baseStyleOptions`.
+    - Updated entity fill typing to accept both string/number color sources.
+    - Migrated interactive shadow setup to Pixi v8 `dropShadow` object shape.
+    - Removed obsolete `baseTexture` destroy option in app teardown.
+  - Fixed strict null checks in:
+    - `src/engine/Map/Pathfinding.ts` (2D array column assertions and directional index non-null usage)
+    - `src/engine/Generator/Architect.ts` (room column guards + safe frequency fallback)
+    - `src/engine/Generator/RoomBuilder.ts` (column indexing assertions)
+
+- Validation:
+  - Build: passed.
+  - Ran Playwright skill client against `http://127.0.0.1:5173` for 2 iterations.
+  - `output/web-game/state-0.json` and `state-1.json` valid; player moved from x=38 to x=37.
+  - `output/web-game/shot-0.png` and `shot-1.png` still fully black in headless mode (same known environment issue); continue using text-state output as primary automated assertion in this environment.
+
+## 2026-03-03 (menu i18n continuation)
+
+- Completed parity plan stage-1 remaining menu i18n integration:
+  - Replaced hard-coded menu UI strings in `src/components/MainMenu.vue` with i18next keys under `menu.*`.
+  - Added mode label localization mapping in menu save metadata (`normal/easy/wizard` -> translated label).
+  - Replaced hard-coded menu/log strings in `src/App.vue` with i18next keys/defaults:
+    - start/save/load/delete save logs
+    - in-game menu button text
+  - Added corresponding `menu.*` zh_CN entries in `src/locales/zh_CN.json`.
+
+- Synced plan document:
+  - Marked `ai_docs/parity_plan.md`:
+    - stage0 `npm run build` item as done,
+    - stage1 `zh_CN` menu key integration as done.
+  - Updated next-step suggestion toward stage2 replay system.
+
+- Validation:
+  - Build: passed (`npm run build`).
+  - Playwright skill client run completed (2 iterations).
+  - State snapshots still valid (`state-0.json` / `state-1.json`, movement reflected).
+  - Headless screenshots remain black in this environment; text-state remains the reliable automated oracle.
+
+## 2026-03-03 (stage2 recording foundation)
+
+- Implemented replay stage-2 foundation: input event recording structure.
+  - In `src/engine/Core/Game.ts`:
+    - Added recording types:
+      - `RecordedInputData`
+      - `RecordedInputEvent`
+      - `GameRecording`
+    - Added runtime recording state:
+      - `recordingStartAt`
+      - `recordedInputEvents`
+      - `recordedInputIndex`
+    - Added recorder helpers:
+      - `recordInputEvent(...)`
+      - `toRecordedInputData(...)`
+      - `clearRecording()`
+      - `exportRecording()`
+    - Extended `handlePlayerAction` with source tagging (`player` / `system`) so only player-originated inputs are recorded.
+    - Marked internal/system-generated actions (auto-path, auto-explore attack, wait-or-stairs resolution, auto-pickup) as `system`.
+  - Added automation debug hook in `src/components/GameCanvas.vue`:
+    - `window.export_game_recording()` returns JSON string of `game.exportRecording()`.
+  - Cleaned remaining debug output in core loop:
+    - Removed stairs-down diagnostic `console.log`.
+    - Replaced inventory-full `console.log` with UI log message.
+
+- Plan sync:
+  - Marked `ai_docs/parity_plan.md` stage2 item "事件录制结构定义（按 turn 存输入事件）" as done.
+
+- Validation:
+  - Build passed after change.
+  - Note: this environment had intermittent sandbox restrictions launching additional ad-hoc Playwright sessions; core verification for this chunk relied on successful TypeScript build and existing automation hooks.
+
+## 2026-03-03 (stage2 replay player minimum loop)
+
+- Implemented replay stage-2 player controls (minimum loop):
+  - Engine (`src/engine/Core/Game.ts`):
+    - Added replay runtime state (`replayRecording`, `replayEvents`, `replayCursor`, `replayStatus`).
+    - Added replay APIs:
+      - `loadReplay(recording)`
+      - `replayPlay()`
+      - `replayPause()`
+      - `replayStep()`
+      - `replayRestart()`
+      - `tickReplay()`
+      - `clearReplay()`
+    - Replay executes events through `handlePlayerAction(..., 'system')` to avoid recursive re-recording.
+    - While replay is playing, direct player input is ignored.
+  - Render loop integration (`src/components/GameCanvas.vue`):
+    - Replay ticking is called in both ticker and deterministic `advanceTime(ms)` hook.
+    - `render_game_to_text` includes replay status summary fields.
+  - Menu/app integration:
+    - `src/components/MainMenu.vue`: added replay controls:
+      - save replay
+      - load replay
+      - delete replay
+      - play / pause / step / restart
+      - replay status/progress display
+    - `src/App.vue`: wired replay actions with localStorage (`brogue-web-replay-v1`).
+  - i18n:
+    - Added `menu.replay.*` labels and replay log keys to `src/locales/zh_CN.json`.
+
+- Validation:
+  - Build passed (`npm run build`).
+  - Ran Playwright skill client for smoke; screenshots updated.
+  - Limitation: current automation action payload does not start a new game from menu, so it did not regenerate fresh `state-*.json` for this iteration; replay logic verification in this chunk is based on compile success and direct code-path review.
+
+## 2026-03-03 (stage2 replay import/export + seek)
+
+- Completed stage-2 remaining replay features:
+  - Replay seek support in engine:
+    - Added `replaySeek(targetIndex)` in `src/engine/Core/Game.ts`.
+    - Refined `replayStep(silent = false)` so seek can fast-forward without replay-finished spam logs.
+  - Menu replay controls expanded in `src/components/MainMenu.vue`:
+    - Export replay JSON
+    - Import replay JSON (file chooser)
+    - Seek to event index
+  - App-level handling in `src/App.vue`:
+    - `exportReplayJson()` downloads current replay JSON.
+    - `importReplayJson(file)` parses JSON, loads replay, and stores it in localStorage.
+    - Replay seek event is wired to `activeGame.replaySeek(index)`.
+  - Added zh_CN i18n entries for replay import/export/seek and related logs.
+
+- Plan sync:
+  - Marked `ai_docs/parity_plan.md` stage2 items complete:
+    - replay player controls
+    - replay JSON import/export initial version
+
+- Validation:
+  - Build passed (`npm run build`).
+
+### Status correction
+- User feedback indicates replay feature is still not behaving correctly in practice.
+- Marked replay stage items in `ai_docs/parity_plan.md` back to pending-with-note.
+- Per user request, proceed to stage3 first; replay will be fixed after that.
+
+## 2026-03-03 (stage3 start: item data expansion)
+
+- Began stage3 per user request before replay fixes.
+- Expanded item data model with new categories:
+  - `WAND`, `STAFF`, `RING`, `CHARM`, `KEY`, `AMULET`
+  - Added optional runtime fields for charge/cooldown metadata on `Item`.
+- Added new data source:
+  - `src/data/arcana.json` with initial entries for wands/staffs/rings/charms/keys/amulets.
+- Extended loader and spawners in `src/engine/Items/ItemLoader.ts`:
+  - Added pools and spawn methods:
+    - `spawnWand`, `spawnStaff`, `spawnRing`, `spawnCharm`, `spawnKey`, `spawnAmulet`
+- Wired into floor loot generation in `src/engine/Core/Game.ts`:
+  - `populateLevel` loot table now includes the new item families by depth.
+- Updated inventory grouping in `src/components/InventoryOverlay.vue`:
+  - New category sections for WANDS/STAFFS/RINGS/CHARMS/KEYS/AMULETS.
+
+- Plan sync:
+  - Marked `ai_docs/parity_plan.md` stage3 item "数据表扩展：wand/staff/ring/charm/key/amulet" complete.
+
+- Validation:
+  - Build passed (`npm run build`).
+
+## 2026-03-03 (stage3 continuation: charge/cooldown skeleton)
+
+- Added initial stage3 mechanics scaffold for arcana items:
+  - Inventory UI:
+    - Added `Use` button for `WAND` / `STAFF` / `CHARM`.
+  - Game logic:
+    - Added `Game.useArcanaItem(item)`:
+      - wand/staff consume charges
+      - charm uses cooldown gate
+      - placeholder effects/logs for initial IDs
+    - Added per-turn resource ticking:
+      - wand/staff recharge counter and periodic charge restore
+      - charm cooldown countdown
+  - Persistence:
+    - Added save/load serialization fields for:
+      - `maxCharges`, `charges`, `rechargeTurns`, `rechargeCounter`
+      - `cooldownTurns`, `cooldownRemaining`
+
+- Validation:
+  - Build passed (`npm run build`).
+  - Playwright smoke run attempted; blocked by intermittent sandbox Playwright launch permission issue in this environment.
+
+## 2026-03-03 (stage3 completion pass)
+
+- Extended identify/recharge/uncurse flow from skeleton to playable first pass:
+  - Arcana identification:
+    - Added arcana flavor mapping in `ItemLoader` (`arcanaFlavorMap`), randomized per game init.
+    - Wands/staffs/rings/charms now show unidentified flavor names until identified.
+    - Arcana items gain `identityId` and become identified on successful use.
+  - Scroll effects expanded (`consumables.json` + `Game.readItem`):
+    - `scroll_of_remove_curse` (`remove_curse`)
+    - `scroll_of_recharging` (`recharge_item`)
+    - `identify_item` now identifies a random unidentified inventory item (including arcana).
+  - Direct inventory actions:
+    - Added `Recharge` action for wand/staff.
+    - Added `Remove Curse` action for cursed items.
+    - Added corresponding `Game.rechargeArcanaItem` and `Game.uncurseItem`.
+  - Persistence:
+    - Added snapshot field `identityId` and full load/save handling.
+
+- i18n:
+  - Added zh_CN keys for `Use`, `Recharge`, `Remove Curse`.
+
+- Plan sync:
+  - Marked stage3 items complete in `ai_docs/parity_plan.md` (first-pass completion).
+
+- Validation:
+  - Build passed (`npm run build`).
+
+## 2026-03-03 (test mode scaffolding for asset QA floors)
+
+- Added a dedicated `test` game mode entry in new game menu:
+  - `MainMenu.vue` includes mode option `测试`.
+  - Seed input is disabled when mode is `test`.
+- Implemented test-mode map generation path in `Game.generateDepth()`:
+  - Bypasses normal architect generation when `mode === 'test'`.
+  - Generates deterministic "asset QA" floor layout by depth category:
+    - weapons
+    - wands
+    - scrolls
+    - potions
+    - other items
+    - special terrain
+    - enemies
+  - One floor per category in order (cycles by depth).
+  - For each asset kind in category: one closed room with a door and one sample asset.
+- Added special map elements:
+  - `TerrainType.SIGN` and `TerrainType.RESET_PLATE`.
+  - Signs:
+    - category sign near spawn/stairs each floor;
+    - per-room sign before door describing room content.
+    - hover text includes sign content; stepping onto sign logs content.
+  - Reset plate:
+    - placed near each room sign;
+    - stepping on it resets that room to baseline (terrain/items/monsters).
+- Rendering and inspect support:
+  - `GameCanvas.vue` visual mapping for SIGN/RESET_PLATE glyphs/colors.
+  - Hover inspect text in `Game.updateHover` recognizes these terrain types.
+- Data/helper updates to support test generation:
+  - `ItemLoader` now exposes weapon/armor configs for category-driven room generation.
+
+- Validation:
+  - Build passed (`npm run build`).
+
+## 2026-03-03 (stage4 kickoff: status/combat first pass)
+
+- Continued to next phase per user instruction (replay deferred to later).
+- Added a unified creature status system in `src/entities/Creature.ts`:
+  - status ids: `paralyzed`, `invisible`, `telepathy`, `levitating`, `hallucinating`, `confused`
+  - status duration storage, refresh/stack semantics, immunities, per-turn ticking.
+- Wired status system into core loop (`src/engine/Core/Game.ts`):
+  - Player action gate: paralyzed player cannot act.
+  - Added status application helpers and per-turn status ticking with expiry logs.
+  - Added persistence for status durations in save/load snapshots (player + monsters).
+  - Added telepathy behavior in discovery: can sense monsters outside normal LoS.
+- Expanded status interactions:
+  - Confusion gas now applies status (`hallucinating` for player, `confused` for monsters).
+  - Levitating entities no longer take ground-fire damage.
+  - Arcana effects now apply concrete statuses in first pass:
+    - `staff_of_light` -> telepathy
+    - `charm_of_speed` -> levitating
+    - `wand_of_beckoning` -> paralyze nearest visible monster
+- Monster AI refinement (`src/entities/Monster.ts`):
+  - paralyzed monsters skip turn;
+  - confused monsters may wander randomly;
+  - player invisibility reduces monster detection range.
+- Combat formula pass (`src/engine/Combat/Combat.ts`):
+  - Added armor-based damage reduction when player is defender.
+  - Under-strength armor gives reduced protection penalty.
+  - Player invisibility grants hit chance bonus.
+- UI/test-state support (`src/components/GameCanvas.vue`):
+  - `render_game_to_text` now includes player status map.
+  - Telepathy reveals monsters in render/text output (cyan non-LoS marker).
+
+- Plan sync:
+  - Marked parity stage4 first item complete (framework level), kept remaining stage4 items pending with partial-progress notes.
+
+- Validation:
+  - `npm run build` passed.
+  - Ran Playwright client script (`web_game_playwright_client.js`) against `http://127.0.0.1:5173` with action payloads.
+  - `output/web-game/state-0.json` and `state-1.json` updated and include new `player.statuses` field.
+  - Screenshots are still fully black in this environment (known headless capture limitation); used text-state output as primary automated oracle.
+
+## TODO (next agent)
+
+- Continue stage4 status depth:
+  - Add direct gameplay sources for `invisible`/`hallucinating` beyond gas/arcana placeholders.
+  - Expand monster perception rules (telepathy/awareness interactions) to better match CE.
+  - Start runic trigger skeleton in combat/item model.
+- Replay system still intentionally deferred; repair after stage progression per user priority.
+
+## 2026-03-03 (stage4 continuation: runic + status sources)
+
+- Added first-pass runic item model:
+  - `Item` now includes `runicType` and `runicKnown`.
+  - Weapon/armor display name reveals runic suffix once known.
+  - Snapshot serialization now persists runic fields.
+- Added random runic roll in `ItemLoader`:
+  - weapons: `paralyzing` / `venom` (small chance)
+  - armors: `reflection` / `dampening` (small chance)
+- Added runic trigger skeleton in combat flow:
+  - Player hit can trigger weapon runic effects (`paralyzing`, extra venom damage).
+  - Monster hit on player can trigger armor runic effects (`reflection`, `dampening` heal-back).
+  - Trigger discovery marks runic as known and prints combat logs/floating text.
+- Expanded consumable/status interactions:
+  - `potion_of_confusion` now applies hallucination status to player.
+  - `potion_of_poison_burst` and `potion_of_fire_burst` now affect local environment on quaff.
+  - `scroll_of_enchantment` now enchants equipped weapon/armor and can awaken a runic effect.
+- Added gameplay impact for hallucination:
+  - Movement can randomly deviate while hallucinating.
+  - Renderer now applies occasional psychedelic glyph/color distortion to visible tiles/items/monsters during hallucination.
+
+- Validation:
+  - `npm run build` passed.
+  - Playwright client smoke run completed; latest state JSON valid and includes status field.
+  - Headless screenshots still fully black in this environment; text-state remains the reliable oracle.
+
+## TODO (next agent)
+
+- Stage4 runic follow-up:
+  - Balance proc rates and effect strengths.
+  - Add more runic families and CE-like trigger conditions.
+  - Separate runic identification from immediate trigger reveal if deeper mystery is desired.
+- Stage4 status follow-up:
+  - Add dedicated invisibility source and richer monster perception exceptions.
+  - Refine hallucination to affect inspect/log perception, not just movement/render.
+- Replay remains deferred intentionally and should still be fixed after stage progression.
+
+## 2026-03-03 (stage4 continuation: ring passives + invisibility source)
+
+- Continued phase progression with replay still deferred.
+- Added ring equipment slot support:
+  - `Player` now supports `equippedRing`.
+  - Inventory equip/unequip logic supports rings.
+  - Inventory UI marks rings as equippable/equipped.
+- Added ring passive status sync in game loop:
+  - `ring_of_awareness` grants sustained `telepathy` while equipped.
+  - `ring_of_regeneration` grants sustained `regenerating` while equipped.
+- Added dedicated invisibility source:
+  - New arcana entry `charm_of_invisibility` in `src/data/arcana.json`.
+  - `useArcanaItem` now applies `invisible` when this charm is used.
+- Added regeneration status to the core status enum and integrated with hunger/heal pacing:
+  - While regenerating, natural heal threshold is improved.
+- Save/load compatibility extended:
+  - Snapshot now stores/loads `equippedRingId`.
+
+- Validation:
+  - `npm run build` passed.
+  - Playwright smoke run completed; state snapshots updated and valid.
+  - Headless screenshots remain black in this environment; text-state remains the primary automated oracle.
+
+## TODO (next agent)
+
+- Continue stage4 depth:
+  - Add clearer UI/status indicators for passive ring auras.
+  - Balance aura durations and regeneration pacing.
+  - Expand invisibility interactions (e.g., ranged targeting, first-hit bonuses).
+- Replay still postponed by user request until later full-phase completion.
+
+## 2026-03-04 (stage4 continuation: status UX + stealth pursuit tuning)
+
+- Added status visibility in sidebar:
+  - Sidebar now displays active player statuses with remaining turn counters (e.g. `invisible(12)`, `telepathy(2)`).
+- Improved stealth pursuit behavior in monster AI:
+  - Hunting monsters now drop back to `WANDERING` when they lose LoS and player is sufficiently far.
+  - This reduces unrealistic long-distance lock-on after invis/line-break escapes.
+- Added invisibility break-on-attack behavior:
+  - When player attacks while invisible, invisibility is removed and a reveal log is printed.
+  - Keeps first-strike stealth bonus while preventing permanent melee invis abuse.
+
+- Validation:
+  - `npm run build` passed.
+  - Playwright smoke run completed; state snapshots valid.
+  - Headless screenshots still black in this environment; text-state remains primary oracle.
+
+## TODO (next agent)
+
+- Stage4 polishing:
+  - Localize new status strings/logs (currently mostly English literals).
+  - Tune detection drop-off thresholds by depth/monster archetype.
+  - Add an explicit status effect source for `paralyzed` on player side (non-gas trap/spell path).
+- Replay remains intentionally postponed until all planned stages complete.
+
+## 2026-03-04 (stage4 continuation: monster on-hit statuses + status label polish)
+
+- Added monster-driven on-hit status hooks (data-driven):
+  - Extended `MonsterData` with optional `onHitStatus`, `onHitChance`, `onHitDuration`.
+  - Wired combat application on successful monster hit (`Monster.takeTurn` -> `Game.applyMonsterOnHitStatus`).
+  - Added first config in `monsters.json`:
+    - Kobold can inflict brief confusion,
+    - Goblin can inflict brief paralysis.
+- Snapshot persistence updated for these new monster status-attack fields:
+  - save/load + test-room baseline reset paths now carry on-hit status metadata.
+- Sidebar status readability improved:
+  - Active status chips now render localized-readable labels with per-status color coding instead of raw internal IDs.
+
+- Validation:
+  - `npm run build` passed.
+  - Playwright smoke run completed; text states valid.
+  - Headless screenshots remain black in this environment; text-state remains primary oracle.
+
+## TODO (next agent)
+
+- Continue stage4 balancing:
+  - Tune per-monster status proc rates by depth.
+  - Add resist/mitigation hooks (e.g., ring/charm reducing status duration).
+  - Localize remaining new combat/status logs to i18n keys.
+- Replay still intentionally deferred until all planned stages complete.
+
+## 2026-03-04 (stage4 continuation: status config + resistance hooks + i18n)
+
+- Added central status config table:
+  - New file `src/engine/Status/statusConfig.ts` as single source of truth for status labels/colors/debuff flags.
+  - Sidebar now consumes this table instead of local hardcoded status metadata.
+- Added status resistance/mitigation hooks for player:
+  - New resistance path in `Game.applyMonsterOnHitStatus`:
+    - chance-based nullify (`status.player.resisted`),
+    - duration reduction before application.
+  - Initial resistance providers:
+    - `ring_of_awareness` helps against confusion/hallucination (and slight paralysis mitigation),
+    - `dampening` armor runic reduces negative status duration.
+- Expanded data-driven monster on-hit status support end-to-end:
+  - `MonsterData` / runtime monster fields / snapshot persistence include:
+    - `onHitStatus`, `onHitChance`, `onHitDuration`.
+- i18n pass for new stage4 logs:
+  - Replaced several newly introduced hardcoded English logs with i18next keys/defaults in `Game.ts`.
+  - Added corresponding zh_CN keys for status transitions, resistance, runic triggers, and invisibility-break message.
+
+- Validation:
+  - `npm run build` passed.
+  - Playwright smoke run completed; state snapshots valid.
+  - Headless screenshots remain black in this environment; text-state remains the reliable automated oracle.
+
+## TODO (next agent)
+
+- Continue stage4 balancing and completeness:
+  - Tune resistance numbers and proc rates by depth.
+  - Add more status sources and explicit immunity traits per monster/faction.
+  - Continue i18n key migration for remaining stage3/4 hardcoded logs.
+- Replay remains intentionally deferred until all planned stages are complete.
+
+## 2026-03-04 (stage4 continuation: explicit immunity trait + i18n expansion)
+
+- Added explicit monster status immunity trait (data-driven):
+  - `MonsterData` now supports `statusImmunities`.
+  - Runtime monster instances now load this into `statusImmunities` set.
+  - Added first immunity example in data: `Jackal` immune to `confused`.
+- Extended persistence paths for immunity + on-hit status fields:
+  - Snapshot save/load and test-room baseline reset now preserve immunity and on-hit status metadata.
+- Expanded stage4 i18n pass:
+  - Migrated additional status/combat-related logs to i18next keys in `Game.ts`.
+  - Added zh_CN keys for hallucination stumble, starvation damage warning, and beckoning-target logs.
+- Status resistance hooks from previous step remain active and now combine with explicit immunity behavior.
+
+- Validation:
+  - `npm run build` passed.
+  - Playwright smoke run completed; state snapshots valid.
+  - Headless screenshots still black in this environment; text-state remains the reliable oracle.
+
+## TODO (next agent)
+
+- Continue stage4 completion:
+  - Add more monster archetype immunities/resistances by depth.
+  - Add player-side temporary immunity buffs (e.g. charm/ring interactions).
+  - Continue migrating remaining hardcoded gameplay logs to i18n keys.
+- Replay remains intentionally deferred until all planned stages complete.
+
+## 2026-03-04 (stage4 continuation: monster resist-turns + unified monster status application)
+
+- Added monster status resistance (duration reduction) support:
+  - `MonsterData` now supports `statusResistTurns` per status id.
+  - Runtime `Monster` now stores this map and uses it via a unified status application path.
+- Added unified monster status application helper in `Game`:
+  - `applyStatusToMonster(monster, status, duration, source)` centralizes
+    - immunity checks,
+    - duration reduction from resistances,
+    - resist/immune log messages (i18n).
+- Wired major status sources through the unified monster path:
+  - Wand of Beckoning paralysis,
+  - runic paralyzing weapon proc,
+  - confusion gas application to monsters.
+- Data updates:
+  - `Jackal` keeps `confused` immunity,
+  - `Kobold` gets brief resistance to `paralyzed`,
+  - `Goblin` gets brief resistance to `confused`.
+- Added i18n keys for monster immunity/resistance logs in zh_CN.
+
+- Validation:
+  - `npm run build` passed.
+  - Playwright smoke run completed; state JSONs valid.
+  - Headless screenshots remain black in this environment; text-state remains primary oracle.
+
+## TODO (next agent)
+
+- ~~Continue stage4 finalization~~ ✅ Stage 4 Machine Blueprint System complete (2026-03-05)
+  - Created `blueprints.json` with 20 data-driven blueprint definitions
+  - Created `BlueprintEngine.ts` (weighted selection, flood-fill room finding, feature placement)
+  - Replaced 4 hardcoded machine generators in `Architect.ts`
+  - Added `spawnBlueprintItem`/`resolveBlueprintMonster` to `Game.ts`
+  - Added `machineNumber` to `Grid.ts` `Cell`
+  - Build: 0 errors, 779 modules
+  - Changed files: `BlueprintEngine.ts` [NEW], `blueprints.json` [NEW], `Architect.ts`, `Game.ts`, `Grid.ts`
+- ~~Continue to stage5: 战斗公式精确化~~ ✅ Stage 5 Combat Formula Precision complete (2026-03-05)
+  - Created `CombatFormulas.ts` (pure math: `netEnchant`, `hitProbability`, `defenseFraction`, `clumpedRoll`, runic chances)
+  - Rewrote `Combat.ts` with CE-accurate hit (`accuracy × 0.987^defense`), damage scaling, backstab 3x, clumped rolls
+  - Added `accuracy`/`defense` to `MonsterData`/`Monster` (used by `monsters_ce2.json`)
+  - Added `applyWeaponRunicEffect` (enchantment-scaled triggers) with 3 new weapon runics: force, slaying, mercy
+  - Added 3 new armor runics: absorption, reprisal, immunity
+  - Build: 0 errors, 780 modules
+  - Changed files: `CombatFormulas.ts` [NEW], `Combat.ts`, `Monster.ts`, `Game.ts`, `ItemLoader.ts`
+- Continue to stage6: Dijkstra 热力图 + 高级寻路
+- Replay remains intentionally deferred until all planned phases are complete.
+
+## 2026-03-05 (第三阶段完成: 环境与地形深化 Environment & Terrain Deepening ✅)
+
+### 地形扩充 (Terrain Expansion)
+- `Grid.ts`：新增 `WEB`、`BLOOD`、`MUD` 三种 TerrainType
+- `GameCanvas.vue`：为三种新地形添加视觉渲染 (颜色/字符映射)
+- `Architect.ts`：按深度生成泥潭 (depth≥3) 和蛛网 (depth≥4)
+- `Monster.ts`：重构为 `tryMoveTo()` 方法，统一处理蛛网缠绕/泥潭减速效果
+- `Game.ts`：玩家移动加入蛛网 (定身挣脱概率) 和泥潭 (双倍耗时) 判定
+
+### 血迹系统 (Blood Splatter)
+- `Game.ts`：新增 `spawnBlood()` helper 方法
+- 玩家近战攻击命中后自动在目标位置生成血迹
+- `Monster.ts`：怪物攻击玩家时也在战斗位置生成血迹
+
+### 气体引擎强化 (Gas Engine - Cellular Automata)
+- `Gas.ts`：重写 `updateGases()` 为高级细胞自动机模型 (浓度消散/扩散/混合)
+- 新增 `GasType.CREEPING_DEATH` (窒息孢子气体)
+- `GameCanvas.vue`：为窒息孢子添加深红色视觉渲染
+- `Game.ts` `applyEnvironmentalEffects()`：
+  - 毒气：改为施加 `poisoned` 状态而非直接扣血
+  - 混乱气体：施加 `hallucinating`/`confused` 状态
+  - 窒息孢子：每回合 10 点伤害
+
+### 火焰蔓延与植被循环 (Fire Spread & Vegetation Cycle)
+- `Gas.ts` `updateFires()`：
+  - 蛛网 (`WEB`) 加入可燃物列表
+  - 扩散概率从 30% → 40% 增强火焰波浪效果
+  - 新增 `CHARRED_FLOOR` 极低概率 (0.05%) 重新长出 `GRASS`/`FOLIAGE` 的再生机制
+
+### 深水/岩浆致死判定 (Instant Death Mechanics)
+- `Creature.ts`：`StatusId` 新增 `flying` 和 `immune_fire`
+- `statusConfig.ts`：补充飞行/火焰免疫的 label 和颜色
+- `Game.ts` `applyEnvironmentalEffects()`：
+  - `WATER_DEEP`：非飞行/漂浮实体立即淹死
+  - `LAVA`：非飞行且非火免实体立即焚死
+  - 怪物能力 (`abilities`) 也纳入飞行/火免判定
+  - 新增岩浆物品焚毁逻辑 (items in lava are destroyed)
+- 火焰伤害增加 `immune_fire` 豁免检查
+
+### 液体表面物品拾取限制 (Liquid Surface Item Pickup)
+- `Game.ts` `pickup` action：
+  - 深水中的物品需要飞行/漂浮才能拾取
+  - 岩浆中的物品需要飞行/火免才能拾取
+
+### 构建与测试验证
+- `npm run build` (`vue-tsc -b && vite build`) ✓ 777 modules · 零错误 · 4.31s
+- Browser Agent 实机验证 100+ 回合：
+  - 深水淹死判定正常 (玩家+怪物)
+  - 血迹渲染正常
+  - 泥潭地形可见
+  - 游戏稳定无崩溃
+
+### 相关文件变更清单
+| 文件 | 变更内容 |
+|------|---------|
+| `Grid.ts` | 新增 WEB/BLOOD/MUD TerrainType |
+| `GameCanvas.vue` | 新增 WEB/BLOOD/MUD/CREEPING_DEATH 渲染 |
+| `Architect.ts` | 按深度生成泥潭和蛛网 |
+| `Monster.ts` | tryMoveTo() 重构 + 血迹生成 |
+| `Game.ts` | 蛛网/泥潭移动、血迹、深水/岩浆致死、物品焚毁、气体效果 |
+| `Gas.ts` | updateFires() 重写 + updateGases() CA 重构 + CREEPING_DEATH |
+| `Creature.ts` | StatusId 新增 flying/immune_fire |
+| `statusConfig.ts` | 新增飞行/火焰免疫配置 |
+
+## 2026-03-07 (第七阶段: UI 与体验打磨 - 详情说明界面 Inspect Panels)
+
+### Detail Generator & Data
+- `monsters_ce2.json`, `weapons.json`, `armors.json`: Added translated flavor text descriptions from original Brogue CE.
+- `DetailGenerator.ts`: Created to parse combat formulas, statuses, abilities, and build a localized formatted output array of sections (Base Attributes, Combat Analysis, etc.).
+
+### UI Overlay (`DetailPanel.vue`)
+- Implemented a centered, floating overlay panel to display entity stats.
+- Auto-updates content if the target changes.
+- Pressing `Esc` or `x` closes the panel.
+
+### Examine & Auto-Explore Integration
+- `Game.ts` & `Input.ts`: `x` key maps to the newly unified examine/explore logic.
+- When pressing `x`:
+  - The game scans for the nearest visible monster or item.
+  - If found and not yet examined, it opens the detail panel (`inspectTarget`).
+  - To prevent re-triggering on the same entity during auto-explore, `Game.ts` now uses a persistent `Set` (`examinedEntityIds`) to track seen entities.
+  - If nothing new is visible, it falls back seamlessly to `auto_explore`.
+  - Closing the detail panel with `x` immediately resumes auto-exploration.
+
+### Bug Fixes
+- **Clear App Crash**: Fixed an issue where returning to the main menu and starting a new game threw a `Cannot read properties of null (reading 'clear')` error by ensuring `activeGame.onRenderRequested` is cleared on `GameCanvas.vue` unmount.
+- **Horde Generation**: Fixed an issue where depth 1 was incorrectly spawning Goblins. `Game.ts` now properly filters out any horde definitions containing `HORDE_MACHINE_` flags from standard natural spawning.

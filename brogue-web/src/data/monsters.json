@@ -1,0 +1,1439 @@
+[
+    {
+        "id": "rat",
+        "name": "Rat",
+        "char": "r",
+        "color": 11163187,
+        "hp": 6,
+        "damage": "1d3",
+        "minDepth": 1,
+        "maxDepth": 3,
+        "goldDropChance": 0.1,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [],
+        "abilityFlags": [],
+        "statusImmunities": [
+            "confused"
+        ],
+        "statusResistTurns": {
+            "paralyzed": 1
+        },
+        "description": "老鼠是浅层地牢的拾荒者，永远在寻找腐烂的动物残骸。"
+    },
+    {
+        "id": "kobold",
+        "name": "Kobold",
+        "char": "k",
+        "color": 14502570,
+        "hp": 7,
+        "damage": "1d4",
+        "minDepth": 1,
+        "maxDepth": 5,
+        "goldDropChance": 0.3,
+        "itemDropChance": 0.1,
+        "behaviorFlags": [],
+        "abilityFlags": [],
+        "onHitStatus": "confused",
+        "onHitChance": 0.08,
+        "onHitDuration": 2,
+        "statusResistTurns": {
+            "paralyzed": 2,
+            "hallucinating": 1
+        },
+        "description": "狗头人是上层地牢的蜥蜴型类人生物。"
+    },
+    {
+        "id": "jackal",
+        "name": "Jackal",
+        "char": "j",
+        "color": 12560717,
+        "hp": 8,
+        "damage": "2d4",
+        "minDepth": 2,
+        "maxDepth": 6,
+        "goldDropChance": 0,
+        "itemDropChance": 0,
+        "behaviorFlags": [],
+        "abilityFlags": [],
+        "statusImmunities": [
+            "confused"
+        ],
+        "statusResistTurns": {
+            "hallucinating": 1,
+            "paralyzed": 1
+        },
+        "description": "豺狼在洞窟中巡逻，寻找入侵者用它强有力的颚部撕裂。"
+    },
+    {
+        "id": "eel",
+        "name": "Eel",
+        "char": "e",
+        "color": 13421772,
+        "hp": 18,
+        "damage": "3d7",
+        "minDepth": 2,
+        "maxDepth": 12,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_RESTRICTED_TO_LIQUID",
+            "MONST_IMMUNE_TO_WATER",
+            "MONST_SUBMERGES",
+            "MONST_FLITS",
+            "MONST_NEVER_SLEEPS"
+        ],
+        "abilityFlags": [],
+        "description": "电鳗悄无声息地穿过地下湖泊，等待毫无戒备的猎物踏入黑暗的水域。"
+    },
+    {
+        "id": "monkey",
+        "name": "Monkey",
+        "char": "m",
+        "color": 13421772,
+        "hp": 12,
+        "damage": "1d3",
+        "minDepth": 2,
+        "maxDepth": 8,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [],
+        "abilityFlags": [
+            "MA_HIT_STEAL_FLEE"
+        ],
+        "description": "调皮捣蛋的猴子以偷取冒险者的闪亮饰品为生。"
+    },
+    {
+        "id": "bloat",
+        "name": "Bloat",
+        "char": "b",
+        "color": 13421772,
+        "hp": 4,
+        "damage": "1d1",
+        "minDepth": 2,
+        "maxDepth": 9,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_FLIES",
+            "MONST_FLITS"
+        ],
+        "abilityFlags": [
+            "MA_KAMIKAZE",
+            "MA_DF_ON_DEATH"
+        ],
+        "description": "一个致命气体的囊泡将浮球托浮在空中，它薄薄的血管膜将在最轻微的刺激下破裂。"
+    },
+    {
+        "id": "pit_bloat",
+        "name": "Pit bloat",
+        "char": "b",
+        "color": 13421772,
+        "hp": 4,
+        "damage": "1d1",
+        "minDepth": 5,
+        "maxDepth": 14,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_FLIES",
+            "MONST_FLITS"
+        ],
+        "abilityFlags": [
+            "MA_KAMIKAZE",
+            "MA_DF_ON_DEATH"
+        ],
+        "description": "这种罕见的浮球亚种充满了一种奇特的蒸汽，如果释放出来，会导致它脚下的地板消失。"
+    },
+    {
+        "id": "goblin",
+        "name": "Goblin",
+        "char": "g",
+        "color": 5592405,
+        "hp": 15,
+        "damage": "2d5",
+        "minDepth": 3,
+        "maxDepth": 8,
+        "goldDropChance": 0.5,
+        "itemDropChance": 0.2,
+        "behaviorFlags": [],
+        "abilityFlags": [
+            "MA_ATTACKS_PENETRATE",
+            "MA_AVOID_CORRIDORS"
+        ],
+        "onHitStatus": "paralyzed",
+        "onHitChance": 0.12,
+        "onHitDuration": 1,
+        "statusImmunities": [
+            "hallucinating"
+        ],
+        "statusResistTurns": {
+            "confused": 2
+        },
+        "description": "肮脏的小灵长类动物，部落式的哥布林经常成群结队地旅行，携带临时制作的石矛。"
+    },
+    {
+        "id": "goblin_conjurer",
+        "name": "Goblin conjurer",
+        "char": "g",
+        "color": 13421772,
+        "hp": 10,
+        "damage": "2d4",
+        "minDepth": 4,
+        "maxDepth": 10,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_MAINTAINS_DISTANCE",
+            "MONST_CAST_SPELLS_SLOWLY",
+            "MONST_CARRY_ITEM_25"
+        ],
+        "abilityFlags": [
+            "MA_CAST_SUMMON",
+            "MA_AVOID_CORRIDORS"
+        ],
+        "description": "这个哥布林身上覆盖着闪烁的符文，脉动着力量。它可以召唤出幻影之刃来攻击敌人。"
+    },
+    {
+        "id": "goblin_mystic",
+        "name": "Goblin mystic",
+        "char": "g",
+        "color": 13421772,
+        "hp": 10,
+        "damage": "2d4",
+        "minDepth": 4,
+        "maxDepth": 10,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_MAINTAINS_DISTANCE",
+            "MONST_CARRY_ITEM_25"
+        ],
+        "abilityFlags": [
+            "MA_AVOID_CORRIDORS"
+        ],
+        "description": "这个哥布林不携带武器，眼睛闪烁着金色的光芒。它可以施展强大的护盾魔法来保护同伴免受伤害。"
+    },
+    {
+        "id": "goblin_totem",
+        "name": "Goblin totem",
+        "char": "t",
+        "color": 13421772,
+        "hp": 30,
+        "damage": "1d1",
+        "minDepth": 1,
+        "maxDepth": 26,
+        "machineOnly": true,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_IMMUNE_TO_WEBS",
+            "MONST_NEVER_SLEEPS",
+            "MONST_IMMOBILE",
+            "MONST_INANIMATE",
+            "MONST_WILL_NOT_USE_STAIRS"
+        ],
+        "abilityFlags": [],
+        "description": "哥布林制作了这个临时图腾，并赋予它萨满力量。"
+    },
+    {
+        "id": "pink_jelly",
+        "name": "Pink jelly",
+        "char": "j",
+        "color": 13421772,
+        "hp": 50,
+        "damage": "1d3",
+        "minDepth": 3,
+        "maxDepth": 11,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_NEVER_SLEEPS"
+        ],
+        "abilityFlags": [
+            "MA_CLONE_SELF_ON_DEFEND"
+        ],
+        "description": "这团腐蚀性的粉红色凝胶在地面上滑行，寻找温暖的食物。"
+    },
+    {
+        "id": "toad",
+        "name": "Toad",
+        "char": "t",
+        "color": 13421772,
+        "hp": 18,
+        "damage": "1d4",
+        "minDepth": 3,
+        "maxDepth": 10,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [],
+        "abilityFlags": [
+            "MA_HIT_HALLUCINATE"
+        ],
+        "description": "巨大的疣蟾蜍分泌出一种强效的致幻黏液，使与之接触的任何生物感官混乱。"
+    },
+    {
+        "id": "vampire_bat",
+        "name": "Vampire bat",
+        "char": "b",
+        "color": 13421772,
+        "hp": 18,
+        "damage": "2d6",
+        "minDepth": 3,
+        "maxDepth": 10,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_FLIES",
+            "MONST_FLITS"
+        ],
+        "abilityFlags": [
+            "MA_TRANSFERENCE"
+        ],
+        "description": "经常成群猎食，皮翼和敏锐的感官引导吸血蝙蝠准确无误地找到猎物。"
+    },
+    {
+        "id": "arrow_turret",
+        "name": "Arrow turret",
+        "char": "t",
+        "color": 13421772,
+        "hp": 30,
+        "damage": "2d6",
+        "minDepth": 4,
+        "maxDepth": 14,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_TURRET"
+        ],
+        "abilityFlags": [],
+        "description": "嵌入墙壁的机械装置，弹簧驱动的箭塔会向入侵者发射一轮又一轮的箭矢。"
+    },
+    {
+        "id": "acid_mound",
+        "name": "Acid mound",
+        "char": "m",
+        "color": 13421772,
+        "hp": 15,
+        "damage": "1d3",
+        "minDepth": 3,
+        "maxDepth": 10,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_DEFEND_DEGRADE_WEAPON"
+        ],
+        "abilityFlags": [
+            "MA_HIT_DEGRADE_ARMOR"
+        ],
+        "description": "酸性土堆轻柔地在地面上蠕动，在它的路径上留下嘶嘶作响的粘液痕迹。"
+    },
+    {
+        "id": "centipede",
+        "name": "Centipede",
+        "char": "c",
+        "color": 13421772,
+        "hp": 20,
+        "damage": "4d12",
+        "minDepth": 4,
+        "maxDepth": 12,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [],
+        "abilityFlags": [
+            "MA_CAUSES_WEAKNESS"
+        ],
+        "description": "这只巨大蜈蚣的门齿充满了可怕的毒液，会慢慢杀死它的猎物。"
+    },
+    {
+        "id": "ogre",
+        "name": "Ogre",
+        "char": "o",
+        "color": 7831550,
+        "hp": 55,
+        "damage": "9d13",
+        "minDepth": 5,
+        "maxDepth": 12,
+        "goldDropChance": 0.8,
+        "itemDropChance": 0.3,
+        "behaviorFlags": [
+            "MONST_MALE",
+            "MONST_FEMALE"
+        ],
+        "abilityFlags": [
+            "MA_AVOID_CORRIDORS",
+            "MA_ATTACKS_STAGGER"
+        ],
+        "statusImmunities": [
+            "confused",
+            "hallucinating"
+        ],
+        "statusResistTurns": {
+            "paralyzed": 3,
+            "confused": 3
+        },
+        "description": "这个笨拙的生物携带着一根巨大的棍棒，可以用令人难以置信的力量挥舞。"
+    },
+    {
+        "id": "bog_monster",
+        "name": "Bog monster",
+        "char": "b",
+        "color": 13421772,
+        "hp": 55,
+        "damage": "3d4",
+        "minDepth": 6,
+        "maxDepth": 18,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_RESTRICTED_TO_LIQUID",
+            "MONST_SUBMERGES",
+            "MONST_FLITS",
+            "MONST_FLEES_NEAR_DEATH"
+        ],
+        "abilityFlags": [
+            "MA_SEIZES"
+        ],
+        "description": "可怕的沼泽怪物栖息在充满泥浆的沼泽表面之下。当猎物踏入泥泞时，它会用苍白的触手缠住毫无防备的受害者，挤压其生命。"
+    },
+    {
+        "id": "ogre_totem",
+        "name": "Ogre totem",
+        "char": "t",
+        "color": 13421772,
+        "hp": 70,
+        "damage": "1d1",
+        "minDepth": 1,
+        "maxDepth": 26,
+        "machineOnly": true,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_IMMUNE_TO_WEBS",
+            "MONST_NEVER_SLEEPS",
+            "MONST_IMMOBILE",
+            "MONST_INANIMATE",
+            "MONST_WILL_NOT_USE_STAIRS"
+        ],
+        "abilityFlags": [],
+        "description": "精通秘术的远古食人魔组装了这个图腾，并赋予它神秘力量。"
+    },
+    {
+        "id": "spider",
+        "name": "Spider",
+        "char": "s",
+        "color": 13421772,
+        "hp": 20,
+        "damage": "3d4",
+        "minDepth": 4,
+        "maxDepth": 12,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_IMMUNE_TO_WEBS",
+            "MONST_CAST_SPELLS_SLOWLY",
+            "MONST_ALWAYS_USE_ABILITY"
+        ],
+        "abilityFlags": [
+            "MA_POISONS"
+        ],
+        "description": "蜘蛛的红色眼睛穿透黑暗，寻找敌人用它的蛛网缠住并用致命毒液溶解。"
+    },
+    {
+        "id": "spark_turret",
+        "name": "Spark turret",
+        "char": "t",
+        "color": 13421772,
+        "hp": 80,
+        "damage": "1d1",
+        "minDepth": 6,
+        "maxDepth": 16,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_TURRET"
+        ],
+        "abilityFlags": [],
+        "description": "这个装置嗡嗡作响，充满电荷，其嵌入的水晶和魔法符文可以将致命的电弧引向入侵者。"
+    },
+    {
+        "id": "wisp",
+        "name": "Wisp",
+        "char": "w",
+        "color": 13421772,
+        "hp": 10,
+        "damage": "1d1",
+        "minDepth": 4,
+        "maxDepth": 10,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_IMMUNE_TO_FIRE",
+            "MONST_FLIES",
+            "MONST_FLITS",
+            "MONST_NEVER_SLEEPS",
+            "MONST_FIERY",
+            "MONST_DIES_IF_NEGATED"
+        ],
+        "abilityFlags": [
+            "MA_HIT_BURN"
+        ],
+        "description": "一团飘渺的蓝色火焰在空中翩翩起舞，随着超凡脱俗的节奏闪烁跳动。"
+    },
+    {
+        "id": "wraith",
+        "name": "Wraith",
+        "char": "w",
+        "color": 13421772,
+        "hp": 50,
+        "damage": "6d13",
+        "minDepth": 7,
+        "maxDepth": 18,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_FLEES_NEAR_DEATH"
+        ],
+        "abilityFlags": [],
+        "description": "幽灵空洞的眼窝从它消瘦的身躯上饥饿地凝视着世界，它长长的血迹斑斑的指甲不停地在空中摸索着新的猎物。"
+    },
+    {
+        "id": "zombie",
+        "name": "Zombie",
+        "char": "z",
+        "color": 13421772,
+        "hp": 80,
+        "damage": "7d12",
+        "minDepth": 5,
+        "maxDepth": 14,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [],
+        "abilityFlags": [],
+        "description": "僵尸是一种被诅咒的、早已被遗忘的仪式的产物。腐烂的肉从骨头上成片地垂落，散发出一种令人作呕的易燃恶臭。"
+    },
+    {
+        "id": "troll",
+        "name": "Troll",
+        "char": "t",
+        "color": 5592405,
+        "hp": 65,
+        "damage": "10d15",
+        "minDepth": 8,
+        "maxDepth": 15,
+        "goldDropChance": 0.6,
+        "itemDropChance": 0.25,
+        "behaviorFlags": [
+            "MONST_MALE",
+            "MONST_FEMALE"
+        ],
+        "abilityFlags": [],
+        "statusResistTurns": {
+            "paralyzed": 2,
+            "confused": 2
+        },
+        "abilities": [
+            "regenerating"
+        ],
+        "description": "一个巨大的、畸形的生物，覆盖着痰和疣，巨魔再生速度极快，攻击力惊人。很多冒险者的旅程都在它畸形的手中终结。"
+    },
+    {
+        "id": "ogre_shaman",
+        "name": "Ogre shaman",
+        "char": "o",
+        "color": 13421772,
+        "hp": 45,
+        "damage": "5d9",
+        "minDepth": 6,
+        "maxDepth": 14,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_MAINTAINS_DISTANCE",
+            "MONST_CAST_SPELLS_SLOWLY",
+            "MONST_MALE",
+            "MONST_FEMALE"
+        ],
+        "abilityFlags": [
+            "MA_CAST_SUMMON",
+            "MA_AVOID_CORRIDORS"
+        ],
+        "description": "这只食人魔虽然年老体弱，但它在体力上失去的，却在神秘力量上获得了更多。"
+    },
+    {
+        "id": "naga",
+        "name": "Naga",
+        "char": "n",
+        "color": 13421772,
+        "hp": 75,
+        "damage": "7d11",
+        "minDepth": 8,
+        "maxDepth": 18,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_IMMUNE_TO_WATER",
+            "MONST_SUBMERGES",
+            "MONST_NEVER_SLEEPS",
+            "MONST_FEMALE"
+        ],
+        "abilityFlags": [
+            "MA_ATTACKS_ALL_ADJACENT"
+        ],
+        "description": "蛇形的纳迦栖息在地下水域中，浮出水面攻击毫无防备的冒险者。"
+    },
+    {
+        "id": "salamander",
+        "name": "Salamander",
+        "char": "s",
+        "color": 13421772,
+        "hp": 60,
+        "damage": "5d11",
+        "minDepth": 7,
+        "maxDepth": 14,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_IMMUNE_TO_FIRE",
+            "MONST_SUBMERGES",
+            "MONST_NEVER_SLEEPS",
+            "MONST_FIERY",
+            "MONST_MALE"
+        ],
+        "abilityFlags": [
+            "MA_ATTACKS_EXTEND"
+        ],
+        "description": "一条被火焰环绕的蛇，携带着燃烧的鞭子，火蜥蜴栖息在火焰湖中，当感知到附近的受害者时就会出现，身后留下一串发光的余烬。"
+    },
+    {
+        "id": "explosive_bloat",
+        "name": "Explosive bloat",
+        "char": "b",
+        "color": 13421772,
+        "hp": 10,
+        "damage": "1d1",
+        "minDepth": 6,
+        "maxDepth": 16,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_FLIES",
+            "MONST_FLITS"
+        ],
+        "abilityFlags": [
+            "MA_KAMIKAZE",
+            "MA_DF_ON_DEATH"
+        ],
+        "description": "这种罕见的浮球亚种只不过是一层薄膜包裹着一个充满高爆气体的囊泡。最轻微的刺激都会导致它以壮观而致命的方式破裂。"
+    },
+    {
+        "id": "dar_blademaster",
+        "name": "Dar blademaster",
+        "char": "d",
+        "color": 13421772,
+        "hp": 35,
+        "damage": "5d9",
+        "minDepth": 9,
+        "maxDepth": 20,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_CARRY_ITEM_25",
+            "MONST_MALE",
+            "MONST_FEMALE"
+        ],
+        "abilityFlags": [
+            "MA_AVOID_CORRIDORS"
+        ],
+        "description": "深渊之中的精灵，暗精灵剑圣以惊人的速度跃向敌人，展开致命的剑术。"
+    },
+    {
+        "id": "dar_priestess",
+        "name": "Dar priestess",
+        "char": "d",
+        "color": 13421772,
+        "hp": 20,
+        "damage": "2d5",
+        "minDepth": 9,
+        "maxDepth": 20,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_MAINTAINS_DISTANCE",
+            "MONST_CARRY_ITEM_25",
+            "MONST_FEMALE"
+        ],
+        "abilityFlags": [
+            "MA_AVOID_CORRIDORS"
+        ],
+        "description": "暗精灵女祭司携带着一堆宗教遗物，行走时发出叮当声。"
+    },
+    {
+        "id": "dar_battlemage",
+        "name": "Dar battlemage",
+        "char": "d",
+        "color": 13421772,
+        "hp": 20,
+        "damage": "1d3",
+        "minDepth": 9,
+        "maxDepth": 20,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_MAINTAINS_DISTANCE",
+            "MONST_CARRY_ITEM_25",
+            "MONST_MALE",
+            "MONST_FEMALE"
+        ],
+        "abilityFlags": [
+            "MA_AVOID_CORRIDORS"
+        ],
+        "description": "暗精灵战斗法师的眼睛像余烬一样发光，双手散发着神秘的热量。"
+    },
+    {
+        "id": "acidic_jelly",
+        "name": "Acidic jelly",
+        "char": "j",
+        "color": 13421772,
+        "hp": 60,
+        "damage": "2d6",
+        "minDepth": 8,
+        "maxDepth": 17,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_DEFEND_DEGRADE_WEAPON"
+        ],
+        "abilityFlags": [
+            "MA_HIT_DEGRADE_ARMOR",
+            "MA_CLONE_SELF_ON_DEFEND"
+        ],
+        "description": "以酸性土堆为食的果冻最终会表现出猎物的特征，腐蚀任何与之接触的未受保护的武器或护甲。"
+    },
+    {
+        "id": "centaur",
+        "name": "Centaur",
+        "char": "c",
+        "color": 12243038,
+        "hp": 35,
+        "damage": "4d8",
+        "minDepth": 6,
+        "maxDepth": 14,
+        "goldDropChance": 0.4,
+        "itemDropChance": 0.2,
+        "behaviorFlags": [
+            "MONST_MAINTAINS_DISTANCE",
+            "MONST_MALE"
+        ],
+        "abilityFlags": [],
+        "statusResistTurns": {
+            "paralyzed": 1
+        },
+        "abilities": [
+            "ranged"
+        ],
+        "description": "半人半马的半人马是弓箭专家——猎人和坐骑融为一体的生物。"
+    },
+    {
+        "id": "underworm",
+        "name": "Underworm",
+        "char": "u",
+        "color": 13421772,
+        "hp": 80,
+        "damage": "18d22",
+        "minDepth": 10,
+        "maxDepth": 22,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_NEVER_SLEEPS"
+        ],
+        "abilityFlags": [],
+        "description": "一种来自地球最深处的奇怪而可怕的生物，比食人魔还大，却能挤过微小的缝隙。饥饿时会钻入洞穴壁后休眠——通常数月之久——直到感知到附近猎物的震动。"
+    },
+    {
+        "id": "sentinel",
+        "name": "Sentinel",
+        "char": "g",
+        "color": 13421772,
+        "hp": 50,
+        "damage": "1d1",
+        "minDepth": 6,
+        "maxDepth": 16,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_TURRET",
+            "MONST_CAST_SPELLS_SLOWLY",
+            "MONST_DIES_IF_NEGATED"
+        ],
+        "abilityFlags": [],
+        "description": "一座无法辨认的人形古代雕像，哨兵高举着一颗闪烁着古老守护魔法的水晶。哨兵总是成组出现，每个都会试图修复对其他哨兵造成的伤害。"
+    },
+    {
+        "id": "dart_turret",
+        "name": "Dart turret",
+        "char": "t",
+        "color": 13421772,
+        "hp": 20,
+        "damage": "1d2",
+        "minDepth": 4,
+        "maxDepth": 14,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_TURRET"
+        ],
+        "abilityFlags": [
+            "MA_CAUSES_WEAKNESS"
+        ],
+        "description": "这种弹簧驱动的装置发射浸有削弱力量毒素的飞镖。"
+    },
+    {
+        "id": "kraken",
+        "name": "Kraken",
+        "char": "k",
+        "color": 13421772,
+        "hp": 120,
+        "damage": "15d20",
+        "minDepth": 12,
+        "maxDepth": 24,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_RESTRICTED_TO_LIQUID",
+            "MONST_IMMUNE_TO_WATER",
+            "MONST_SUBMERGES",
+            "MONST_FLITS",
+            "MONST_NEVER_SLEEPS",
+            "MONST_FLEES_NEAR_DEATH"
+        ],
+        "abilityFlags": [
+            "MA_SEIZES"
+        ],
+        "description": "这个触手噩梦会从地下水域中浮出，缠住并吞噬任何愚蠢到踏入其湖泊的生物。"
+    },
+    {
+        "id": "lich",
+        "name": "Lich",
+        "char": "l",
+        "color": 13421772,
+        "hp": 35,
+        "damage": "2d6",
+        "minDepth": 13,
+        "maxDepth": 25,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_MAINTAINS_DISTANCE",
+            "MONST_CARRY_ITEM_25",
+            "MONST_NO_POLYMORPH"
+        ],
+        "abilityFlags": [
+            "MA_CAST_SUMMON"
+        ],
+        "description": "一位古代术士的干枯形体，被黑暗法术和对权力的贪欲所驱动。它的灵魂通过一个始终随身携带的护命匣锚定在现实中，除非护命匣被摧毁，否则巫妖无法被杀死。"
+    },
+    {
+        "id": "phylactery",
+        "name": "Phylactery",
+        "char": "e",
+        "color": 13421772,
+        "hp": 30,
+        "damage": "1d1",
+        "minDepth": 1,
+        "maxDepth": 26,
+        "machineOnly": true,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_IMMUNE_TO_WEBS",
+            "MONST_NEVER_SLEEPS",
+            "MONST_IMMOBILE",
+            "MONST_INANIMATE",
+            "MONST_ALWAYS_HUNTING",
+            "MONST_WILL_NOT_USE_STAIRS",
+            "MONST_DIES_IF_NEGATED"
+        ],
+        "abilityFlags": [
+            "MA_CAST_SUMMON",
+            "MA_ENTER_SUMMONS"
+        ],
+        "description": "这颗宝石是数个世纪前一个黑暗仪式的核心，它束缚了一位古老而可怕的术士的灵魂。赶快摧毁宝石，趁巫妖还没有聚集力量重生肉体形态！"
+    },
+    {
+        "id": "pixie",
+        "name": "Pixie",
+        "char": "p",
+        "color": 13421772,
+        "hp": 10,
+        "damage": "1d3",
+        "minDepth": 8,
+        "maxDepth": 18,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_MAINTAINS_DISTANCE",
+            "MONST_FLIES",
+            "MONST_FLITS",
+            "MONST_MALE",
+            "MONST_FEMALE"
+        ],
+        "abilityFlags": [],
+        "description": "一个微小的人形生物在幽暗中闪烁，翅膀拍打的嗡嗡声被间断的高音笑声所打断。它在体力上的不足，通过丰富的恶作剧魔法能力来弥补。"
+    },
+    {
+        "id": "phantom",
+        "name": "Phantom",
+        "char": "p",
+        "color": 13421772,
+        "hp": 35,
+        "damage": "12d18",
+        "minDepth": 10,
+        "maxDepth": 22,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_INVISIBLE",
+            "MONST_FLITS",
+            "MONST_FLIES",
+            "MONST_IMMUNE_TO_WEBS"
+        ],
+        "abilityFlags": [],
+        "description": "幻影在空旷的背景下展现出哀伤的愤怒轮廓，在清澈的空气中隐形穿过地牢，身后留下发光的灵质液滴和受害者的惨叫。"
+    },
+    {
+        "id": "flame_turret",
+        "name": "Flame turret",
+        "char": "t",
+        "color": 13421772,
+        "hp": 40,
+        "damage": "1d2",
+        "minDepth": 7,
+        "maxDepth": 16,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_TURRET"
+        ],
+        "abilityFlags": [],
+        "description": "这个地狱装置向入侵者喷射火焰。"
+    },
+    {
+        "id": "imp",
+        "name": "Imp",
+        "char": "i",
+        "color": 13421772,
+        "hp": 35,
+        "damage": "4d9",
+        "minDepth": 9,
+        "maxDepth": 20,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [],
+        "abilityFlags": [
+            "MA_HIT_STEAL_FLEE"
+        ],
+        "description": "这个诡计多端的恶魔以惊人的速度移动，乐于偷取敌人的物品并闪现离开。"
+    },
+    {
+        "id": "fury",
+        "name": "Fury",
+        "char": "f",
+        "color": 13421772,
+        "hp": 19,
+        "damage": "6d11",
+        "minDepth": 11,
+        "maxDepth": 22,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_NEVER_SLEEPS",
+            "MONST_FLIES"
+        ],
+        "abilityFlags": [],
+        "description": "由无形愤怒凝聚成的生物，复仇女神潮湿的翅膀在黑暗中大声拍打。"
+    },
+    {
+        "id": "revenant",
+        "name": "Revenant",
+        "char": "r",
+        "color": 13421772,
+        "hp": 30,
+        "damage": "15d20",
+        "minDepth": 14,
+        "maxDepth": 26,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_IMMUNE_TO_WEAPONS"
+        ],
+        "abilityFlags": [],
+        "description": "这个不死的怨灵在地球的深处毫无畏惧地游荡，免疫常规攻击。"
+    },
+    {
+        "id": "tentacle_horror",
+        "name": "Tentacle horror",
+        "char": "t",
+        "color": 13421772,
+        "hp": 120,
+        "damage": "25d35",
+        "minDepth": 13,
+        "maxDepth": 26,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [],
+        "abilityFlags": [],
+        "description": "这个翻腾的、高耸的肉质触手噩梦在世界的深处滑行。触手恐魔令人难以置信的力量和再生能力使它成为地牢中最可怕的生物之一。"
+    },
+    {
+        "id": "golem",
+        "name": "Golem",
+        "char": "g",
+        "color": 13421772,
+        "hp": 400,
+        "damage": "4d8",
+        "minDepth": 14,
+        "maxDepth": 26,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_REFLECT_50",
+            "MONST_DIES_IF_NEGATED"
+        ],
+        "abilityFlags": [],
+        "description": "由古老而不知疲倦的魔法驱动的雕像，傀儡不会再生，攻击力只有中等水平，但它的石质形体在崩塌成碎石之前可以承受难以置信的伤害。"
+    },
+    {
+        "id": "dragon",
+        "name": "Dragon",
+        "char": "d",
+        "color": 13421772,
+        "hp": 150,
+        "damage": "25d50",
+        "minDepth": 16,
+        "maxDepth": 26,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_IMMUNE_TO_FIRE",
+            "MONST_CARRY_ITEM_100"
+        ],
+        "abilityFlags": [
+            "MA_ATTACKS_ALL_ADJACENT"
+        ],
+        "description": "世界最深处的古蛇，龙的庞大身躯掩盖了它闪电般的速度，证明了它令人惊叹的力量。一团不灭的白热火焰在它鳞片覆盖的身躯内燃烧，很少有人能在它的烈焰鞭笞下存活片刻。"
+    },
+    {
+        "id": "goblin_warlord",
+        "name": "Goblin warlord",
+        "char": "g",
+        "color": 13421772,
+        "hp": 30,
+        "damage": "3d6",
+        "minDepth": 5,
+        "maxDepth": 12,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_MAINTAINS_DISTANCE",
+            "MONST_CARRY_ITEM_25"
+        ],
+        "abilityFlags": [
+            "MA_CAST_SUMMON",
+            "MA_ATTACKS_PENETRATE",
+            "MA_AVOID_CORRIDORS"
+        ],
+        "description": "比其他哥布林更高大、更强壮、更聪明，战争领主指挥着同族的忠诚，并能召唤他们参战。"
+    },
+    {
+        "id": "black_jelly",
+        "name": "Black jelly",
+        "char": "j",
+        "color": 13421772,
+        "hp": 120,
+        "damage": "3d8",
+        "minDepth": 11,
+        "maxDepth": 22,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [],
+        "abilityFlags": [
+            "MA_CLONE_SELF_ON_DEFEND"
+        ],
+        "description": "这团漆黑的凝胶既罕见又致命。地牢中很少有生物能承受它的腐蚀性攻击。小心。"
+    },
+    {
+        "id": "vampire",
+        "name": "Vampire",
+        "char": "v",
+        "color": 8914958,
+        "hp": 75,
+        "damage": "4d15",
+        "minDepth": 12,
+        "maxDepth": 20,
+        "goldDropChance": 0.9,
+        "itemDropChance": 0.5,
+        "behaviorFlags": [
+            "MONST_FLEES_NEAR_DEATH",
+            "MONST_MALE"
+        ],
+        "abilityFlags": [
+            "MA_TRANSFERENCE",
+            "MA_DF_ON_DEATH",
+            "MA_CAST_SUMMON",
+            "MA_ENTER_SUMMONS"
+        ],
+        "onHitStatus": "paralyzed",
+        "onHitChance": 0.15,
+        "onHitDuration": 2,
+        "statusImmunities": [
+            "poisoned"
+        ],
+        "statusResistTurns": {
+            "confused": 2,
+            "hallucinating": 2
+        },
+        "abilities": [
+            "regenerating"
+        ],
+        "description": "这个吸血鬼在地下深处过着孤独的生活，吞噬任何不幸接近其巢穴的温血生物。"
+    },
+    {
+        "id": "flamedancer",
+        "name": "Flamedancer",
+        "char": "f",
+        "color": 13421772,
+        "hp": 65,
+        "damage": "3d8",
+        "minDepth": 10,
+        "maxDepth": 20,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_MAINTAINS_DISTANCE",
+            "MONST_IMMUNE_TO_FIRE",
+            "MONST_FIERY"
+        ],
+        "abilityFlags": [
+            "MA_HIT_BURN"
+        ],
+        "description": "来自另一个存在位面的元素生物，地狱火舞者燃烧的强度如此之高，以至于令人痛苦地无法直视。"
+    },
+    {
+        "id": "spectral_blade",
+        "name": "Spectral blade",
+        "char": "w",
+        "color": 13421772,
+        "hp": 1,
+        "damage": "1d1",
+        "minDepth": 1,
+        "maxDepth": 26,
+        "machineOnly": true,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_INANIMATE",
+            "MONST_NEVER_SLEEPS",
+            "MONST_FLIES",
+            "MONST_WILL_NOT_USE_STAIRS",
+            "MONST_DIES_IF_NEGATED",
+            "MONST_IMMUNE_TO_WEBS",
+            "MONST_NOT_LISTED_IN_SIDEBAR"
+        ],
+        "abilityFlags": [],
+        "description": "超自然的力量凝聚形成了这把闪烁的、飘渺的武器。"
+    },
+    {
+        "id": "spectral_sword",
+        "name": "Spectral sword",
+        "char": "w",
+        "color": 13421772,
+        "hp": 1,
+        "damage": "1d1",
+        "minDepth": 1,
+        "maxDepth": 26,
+        "machineOnly": true,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_INANIMATE",
+            "MONST_NEVER_SLEEPS",
+            "MONST_FLIES",
+            "MONST_WILL_NOT_USE_STAIRS",
+            "MONST_DIES_IF_NEGATED",
+            "MONST_IMMUNE_TO_WEBS"
+        ],
+        "abilityFlags": [],
+        "description": "束缚在你装备中的超自然能量涌出，投射出这个幽灵影像。"
+    },
+    {
+        "id": "stone_guardian",
+        "name": "Stone guardian",
+        "char": "g",
+        "color": 13421772,
+        "hp": 1000,
+        "damage": "12d17",
+        "minDepth": 1,
+        "maxDepth": 26,
+        "machineOnly": true,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_INANIMATE",
+            "MONST_NEVER_SLEEPS",
+            "MONST_ALWAYS_HUNTING",
+            "MONST_IMMUNE_TO_FIRE",
+            "MONST_IMMUNE_TO_WEAPONS",
+            "MONST_WILL_NOT_USE_STAIRS",
+            "MONST_DIES_IF_NEGATED",
+            "MONST_ALWAYS_USE_ABILITY",
+            "MONST_GETS_TURN_ON_ACTIVATION"
+        ],
+        "abilityFlags": [
+            "MA_REFLECT_100"
+        ],
+        "description": "守卫房间的是一座手持战斧的骑士风化石像，通过无形的附魔丝线与地板上发光的符文相连。"
+    },
+    {
+        "id": "winged_guardian",
+        "name": "Winged guardian",
+        "char": "w",
+        "color": 13421772,
+        "hp": 1000,
+        "damage": "12d17",
+        "minDepth": 1,
+        "maxDepth": 26,
+        "machineOnly": true,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_INANIMATE",
+            "MONST_NEVER_SLEEPS",
+            "MONST_ALWAYS_HUNTING",
+            "MONST_IMMUNE_TO_FIRE",
+            "MONST_IMMUNE_TO_WEAPONS",
+            "MONST_WILL_NOT_USE_STAIRS",
+            "MONST_DIES_IF_NEGATED",
+            "MONST_GETS_TURN_ON_ACTIVATION",
+            "MONST_ALWAYS_USE_ABILITY"
+        ],
+        "abilityFlags": [
+            "MA_REFLECT_100"
+        ],
+        "description": "一座挥剑天使的雕像俯瞰着房间，通过无形的附魔丝线与地板上发光的符文相连。"
+    },
+    {
+        "id": "guardian_spirit",
+        "name": "Guardian spirit",
+        "char": "g",
+        "color": 13421772,
+        "hp": 1000,
+        "damage": "5d12",
+        "minDepth": 1,
+        "maxDepth": 26,
+        "machineOnly": true,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_INANIMATE",
+            "MONST_NEVER_SLEEPS",
+            "MONST_IMMUNE_TO_FIRE",
+            "MONST_IMMUNE_TO_WEAPONS",
+            "MONST_DIES_IF_NEGATED",
+            "MONST_ALWAYS_USE_ABILITY"
+        ],
+        "abilityFlags": [
+            "MA_REFLECT_100"
+        ],
+        "description": "一个手持战斧的骑士的幽灵轮廓在周围投射出飘渺的光芒。"
+    },
+    {
+        "id": "Warden_of_Yendor",
+        "name": "Warden of Yendor",
+        "char": "w",
+        "color": 13421772,
+        "hp": 1000,
+        "damage": "12d17",
+        "minDepth": 1,
+        "maxDepth": 26,
+        "machineOnly": true,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_NEVER_SLEEPS",
+            "MONST_ALWAYS_HUNTING",
+            "MONST_INVULNERABLE",
+            "MONST_NO_POLYMORPH"
+        ],
+        "abilityFlags": [],
+        "description": "一个不朽的存在穿行于地牢中，执着地追猎着被夺走的东西……以及夺走它的人。"
+    },
+    {
+        "id": "eldritch_totem",
+        "name": "Eldritch totem",
+        "char": "t",
+        "color": 13421772,
+        "hp": 80,
+        "damage": "1d1",
+        "minDepth": 1,
+        "maxDepth": 26,
+        "machineOnly": true,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_IMMUNE_TO_WEBS",
+            "MONST_NEVER_SLEEPS",
+            "MONST_IMMOBILE",
+            "MONST_INANIMATE",
+            "MONST_ALWAYS_HUNTING",
+            "MONST_WILL_NOT_USE_STAIRS",
+            "MONST_GETS_TURN_ON_ACTIVATION",
+            "MONST_ALWAYS_USE_ABILITY"
+        ],
+        "abilityFlags": [
+            "MA_CAST_SUMMON"
+        ],
+        "description": "这个图腾坐落在一个散发着奇异能量的召唤法阵的中心。"
+    },
+    {
+        "id": "mirrored_totem",
+        "name": "Mirrored totem",
+        "char": "t",
+        "color": 13421772,
+        "hp": 80,
+        "damage": "1d1",
+        "minDepth": 1,
+        "maxDepth": 26,
+        "machineOnly": true,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_IMMUNE_TO_WEBS",
+            "MONST_NEVER_SLEEPS",
+            "MONST_IMMOBILE",
+            "MONST_INANIMATE",
+            "MONST_ALWAYS_HUNTING",
+            "MONST_WILL_NOT_USE_STAIRS",
+            "MONST_GETS_TURN_ON_ACTIVATION",
+            "MONST_ALWAYS_USE_ABILITY",
+            "MONST_IMMUNE_TO_WEAPONS",
+            "MONST_IMMUNE_TO_FIRE"
+        ],
+        "abilityFlags": [
+            "MA_REFLECT_100"
+        ],
+        "description": "一个齐肩高的镜面棱柱在黑暗中闪烁。"
+    },
+    {
+        "id": "unicorn",
+        "name": "Unicorn",
+        "char": "u",
+        "color": 13421772,
+        "hp": 40,
+        "damage": "2d10",
+        "minDepth": 1,
+        "maxDepth": 26,
+        "machineOnly": true,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_MAINTAINS_DISTANCE",
+            "MONST_MALE",
+            "MONST_FEMALE"
+        ],
+        "abilityFlags": [],
+        "description": "独角兽飘逸的鬃毛和尾巴闪烁着彩虹光芒，它的角散发着治愈和保护魔法的光辉，它的眼睛恳求你永远追逐梦想。"
+    },
+    {
+        "id": "ifrit",
+        "name": "Ifrit",
+        "char": "i",
+        "color": 13421772,
+        "hp": 40,
+        "damage": "5d13",
+        "minDepth": 1,
+        "maxDepth": 26,
+        "machineOnly": true,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_IMMUNE_TO_FIRE",
+            "MONST_FLIES",
+            "MONST_MALE"
+        ],
+        "abilityFlags": [],
+        "description": "一场旋转的沙漠风暴被赋予人形，伊芙利特的双弯刀在黑暗中闪烁，眼中燃烧着超凡的热忱。"
+    },
+    {
+        "id": "phoenix",
+        "name": "Phoenix",
+        "char": "p",
+        "color": 13421772,
+        "hp": 30,
+        "damage": "4d10",
+        "minDepth": 1,
+        "maxDepth": 26,
+        "machineOnly": true,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_IMMUNE_TO_FIRE",
+            "MONST_FLIES",
+            "MONST_NO_POLYMORPH"
+        ],
+        "abilityFlags": [],
+        "description": "这只传说中的鸟闪耀着灿烂的光芒，翅膀在拍打空气时像余烬一样噼啪作响。传说当它死去时，一枚蛋会形成，一只新生的凤凰将从灰烬中升起。"
+    },
+    {
+        "id": "phoenix_egg",
+        "name": "Phoenix egg",
+        "char": "e",
+        "color": 13421772,
+        "hp": 50,
+        "damage": "1d1",
+        "minDepth": 1,
+        "maxDepth": 26,
+        "machineOnly": true,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_IMMUNE_TO_FIRE",
+            "MONST_IMMUNE_TO_WEBS",
+            "MONST_NEVER_SLEEPS",
+            "MONST_IMMOBILE",
+            "MONST_INANIMATE",
+            "MONST_WILL_NOT_USE_STAIRS",
+            "MONST_NO_POLYMORPH",
+            "MONST_ALWAYS_HUNTING",
+            "MONST_IMMUNE_TO_WEAPONS"
+        ],
+        "abilityFlags": [
+            "MA_CAST_SUMMON",
+            "MA_ENTER_SUMMONS"
+        ],
+        "description": "安放在冷却灰烬的巢穴中，凤凰蛋的半透明膜显露出一个逐秒变亮的蛋黄。"
+    },
+    {
+        "id": "mangrove_dryad",
+        "name": "Mangrove dryad",
+        "char": "a",
+        "color": 13421772,
+        "hp": 70,
+        "damage": "2d8",
+        "minDepth": 1,
+        "maxDepth": 26,
+        "machineOnly": true,
+        "goldDropChance": 0.05,
+        "itemDropChance": 0.05,
+        "behaviorFlags": [
+            "MONST_IMMUNE_TO_WEBS",
+            "MONST_ALWAYS_USE_ABILITY",
+            "MONST_MAINTAINS_DISTANCE",
+            "MONST_NO_POLYMORPH",
+            "MONST_MALE",
+            "MONST_FEMALE"
+        ],
+        "abilityFlags": [],
+        "description": "这位红树林树精与大地同龄，她苍老扭曲的身躯蕴含着古老的力量。当被激怒时，她能召唤自然之力束缚敌人并将其撕成碎片。"
+    }
+]

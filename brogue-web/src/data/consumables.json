@@ -1,0 +1,264 @@
+{
+    "potions": [
+        {
+            "id": "potion_of_life",
+            "trueName": "Potion of Life",
+            "effect": "heal_full",
+            "minDepth": 1,
+            "maxDepth": 26,
+            "description": "完全恢复你的生命值，并解除中毒、饥饿等减益状态，极为珍贵。"
+        },
+        {
+            "id": "potion_of_healing",
+            "trueName": "Potion of Healing",
+            "effect": "heal_partial",
+            "minDepth": 1,
+            "maxDepth": 26,
+            "description": "恢复约40%的最大生命值。是最基础的治疗药剂。"
+        },
+        {
+            "id": "potion_of_strength",
+            "trueName": "Potion of Strength",
+            "effect": "gain_strength",
+            "minDepth": 1,
+            "maxDepth": 26,
+            "description": "永久增加1点力量，使你能装备更强力的武器和护甲。"
+        },
+        {
+            "id": "potion_of_fire_immunity",
+            "trueName": "Potion of Fire Immunity",
+            "effect": "resist_fire",
+            "minDepth": 1,
+            "maxDepth": 26,
+            "description": "临时获得火焰免疫，免疫所有火焰伤害。若已着火则立即扑灭。"
+        },
+        {
+            "id": "potion_of_invisibility",
+            "trueName": "Potion of Invisibility",
+            "effect": "become_invisible",
+            "minDepth": 1,
+            "maxDepth": 26,
+            "description": "短暂变为隐形，令大多数敌人无法看见你，适合潜行或逃脱。"
+        },
+        {
+            "id": "potion_of_levitation",
+            "trueName": "Potion of Levitation",
+            "effect": "levitate",
+            "minDepth": 1,
+            "maxDepth": 26,
+            "description": "短暂悬浮，可越过陷阱、水域和其他地面障碍，但移动时视野略有模糊。"
+        },
+        {
+            "id": "potion_of_telepathy",
+            "trueName": "Potion of Telepathy",
+            "effect": "telepathy",
+            "minDepth": 1,
+            "maxDepth": 26,
+            "description": "临时获得心灵感应，可感知当前层所有怪物的位置，即使隔墙也能察觉。"
+        },
+        {
+            "id": "potion_of_haste",
+            "trueName": "Potion of Speed",
+            "effect": "speed",
+            "minDepth": 1,
+            "maxDepth": 26,
+            "description": "短暂大幅提升移动和攻击速度，让你行动如风。"
+        },
+        {
+            "id": "potion_of_detect_magic",
+            "trueName": "Potion of Detect Magic",
+            "effect": "detect_magic",
+            "minDepth": 1,
+            "maxDepth": 26,
+            "description": "探测并标记附近区域的所有魔法物品，包括隐藏的诅咒道具。"
+        },
+        {
+            "id": "potion_of_descent",
+            "trueName": "Potion of Descent",
+            "effect": "fall_down",
+            "minDepth": 2,
+            "maxDepth": 26,
+            "description": "地板突然碎裂，使你跌落至下一层并受到少量伤害。危险但可用于逃脱。"
+        },
+        {
+            "id": "potion_of_incineration",
+            "trueName": "Potion of Incineration",
+            "effect": "fire_burst",
+            "minDepth": 3,
+            "maxDepth": 26,
+            "description": "引发剧烈的火焰爆炸，对周围区域造成大量火焰伤害并点燃地面。"
+        },
+        {
+            "id": "potion_of_poison",
+            "trueName": "Potion of Poison",
+            "effect": "poison_burst",
+            "minDepth": 2,
+            "maxDepth": 26,
+            "description": "散发毒气，使你和附近怪物中毒，持续受到毒素伤害直至解毒或时间流逝。"
+        },
+        {
+            "id": "potion_of_confusion",
+            "trueName": "Potion of Confusion",
+            "effect": "confusion_burst",
+            "minDepth": 1,
+            "maxDepth": 26,
+            "description": "释放混乱气体，使你和附近怪物短暂迷失方向，移动方向变得随机。"
+        },
+        {
+            "id": "potion_of_paralysis",
+            "trueName": "Potion of Paralysis",
+            "effect": "paralyze_burst",
+            "minDepth": 2,
+            "maxDepth": 26,
+            "description": "释放麻痹气雾，使你和附近怪物短暂完全瘫痪，无法行动。"
+        },
+        {
+            "id": "potion_of_hallucination",
+            "trueName": "Potion of Hallucination",
+            "effect": "hallucinate_burst",
+            "minDepth": 1,
+            "maxDepth": 26,
+            "description": "导致严重幻觉，看到的怪物和地形将以随机外观显示，难以判断真实情况。"
+        },
+        {
+            "id": "potion_of_creeping_death",
+            "trueName": "Potion of Creeping Death",
+            "effect": "creeping_death",
+            "minDepth": 4,
+            "maxDepth": 26,
+            "description": "散布致命的蔓延性腐朽，在周围生成地衣并逐渐扩散，极为危险。"
+        }
+    ],
+    "scrolls": [
+        {
+            "id": "scroll_of_enchantment",
+            "trueName": "Scroll of Enchanting",
+            "effect": "enchant_item",
+            "minDepth": 1,
+            "maxDepth": 26,
+            "description": "对装备的武器或护甲施加+1附魔，多次使用可叠加，是提升实力的关键资源。"
+        },
+        {
+            "id": "scroll_of_identify",
+            "trueName": "Scroll of Identify",
+            "effect": "identify_item",
+            "minDepth": 1,
+            "maxDepth": 26,
+            "description": "鉴定一件未知道具，揭示其真实名称、魔法属性以及是否被诅咒。"
+        },
+        {
+            "id": "scroll_of_teleportation",
+            "trueName": "Scroll of Teleportation",
+            "effect": "teleport_random",
+            "minDepth": 1,
+            "maxDepth": 26,
+            "description": "将你瞬间传送至当前层的随机位置。危急时可用于脱险，但目标不可预测。"
+        },
+        {
+            "id": "scroll_of_magic_mapping",
+            "trueName": "Scroll of Magic Mapping",
+            "effect": "reveal_map",
+            "minDepth": 1,
+            "maxDepth": 26,
+            "description": "揭示当前层的完整地图，包括所有房间、通道和特殊区域，但不显示物品和怪物。"
+        },
+        {
+            "id": "scroll_of_remove_curse",
+            "trueName": "Scroll of Remove Curse",
+            "effect": "remove_curse",
+            "minDepth": 1,
+            "maxDepth": 26,
+            "description": "解除所有已装备道具上的诅咒，使你得以取下原本无法摘除的被诅咒物品。"
+        },
+        {
+            "id": "scroll_of_recharging",
+            "trueName": "Scroll of Recharging",
+            "effect": "recharge_item",
+            "minDepth": 2,
+            "maxDepth": 26,
+            "description": "立即为所有法杖和魔杖恢复使用次数，在弹药耗尽时尤为宝贵。"
+        },
+        {
+            "id": "scroll_of_protect_weapon",
+            "trueName": "Scroll of Protect Weapon",
+            "effect": "protect_weapon",
+            "minDepth": 2,
+            "maxDepth": 26,
+            "description": "对持有的武器施加魔法保护，使其永久免疫锈蚀、腐蚀和诅咒的影响。"
+        },
+        {
+            "id": "scroll_of_protect_armor",
+            "trueName": "Scroll of Protect Armor",
+            "effect": "protect_armor",
+            "minDepth": 2,
+            "maxDepth": 26,
+            "description": "对穿戴的护甲施加魔法保护，使其永久免疫腐蚀、削弱和诅咒的影响。"
+        },
+        {
+            "id": "scroll_of_negation",
+            "trueName": "Scroll of Negation",
+            "effect": "negate_burst",
+            "minDepth": 4,
+            "maxDepth": 26,
+            "description": "发出魔法脉冲，解除周围区域所有生物身上的魔法效果，对己对敌均有效。"
+        },
+        {
+            "id": "scroll_of_sanctuary",
+            "trueName": "Scroll of Sanctuary",
+            "effect": "sanctuary_burst",
+            "minDepth": 3,
+            "maxDepth": 26,
+            "description": "在你所在位置刻下神圣符文，怪物将避开这些符文标记的区域，形成安全区。"
+        },
+        {
+            "id": "scroll_of_shattering",
+            "trueName": "Scroll of Shattering",
+            "effect": "shatter_burst",
+            "minDepth": 3,
+            "maxDepth": 26,
+            "description": "震碎周围的石墙，开辟新的通道，也可用于破坏特殊石质结构。"
+        },
+        {
+            "id": "scroll_of_discord",
+            "trueName": "Scroll of Discord",
+            "effect": "discord_burst",
+            "minDepth": 4,
+            "maxDepth": 26,
+            "description": "使视野内所有怪物相互仇恨，令其混战厮杀，是对付怪物群的强力手段。"
+        },
+        {
+            "id": "scroll_of_summon_monsters",
+            "trueName": "Scroll of Summon Monsters",
+            "effect": "summon_monsters",
+            "minDepth": 2,
+            "maxDepth": 26,
+            "description": "在你附近随机召唤出多只怪物，极为危险，误读此卷轴可能致命。"
+        },
+        {
+            "id": "scroll_of_amnesia",
+            "trueName": "Scroll of Amnesia",
+            "effect": "amnesia",
+            "minDepth": 1,
+            "maxDepth": 26,
+            "description": "使你遗忘已探索过的地图区域，将视野外的地形信息从记忆中抹去。"
+        }
+    ],
+    "food": [
+        {
+            "id": "ration_of_food",
+            "trueName": "Ration of Food",
+            "effect": "nourish",
+            "minDepth": 1,
+            "maxDepth": 26,
+            "description": "一份干粮，可补充大量饱食度，防止因饥饿而失去生命值。"
+        },
+        {
+            "id": "mango",
+            "trueName": "Mango",
+            "effect": "nourish",
+            "minDepth": 10,
+            "maxDepth": 26,
+            "description": "一颗来自地下的神奇芒果，补充饱食度的同时略微恢复生命值。"
+        }
+    ]
+}

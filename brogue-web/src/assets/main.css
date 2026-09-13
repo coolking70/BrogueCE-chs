@@ -1,0 +1,62 @@
+/* 
+  src/assets/main.css 
+  Global variables and resets for Brogue Web modern UI
+*/
+
+:root {
+  /* Color Palette - Deep Dark / High Contrast */
+  --bg-dark: #09090b;
+  --bg-panel: rgba(24, 24, 27, 0.75);
+  --bg-panel-solid: #18181b;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --border-glow: rgba(136, 192, 208, 0.3);
+  
+  --text-primary: #f4f4f5;
+  --text-secondary: #a1a1aa;
+  
+  /* Semantic Colors */
+  --color-hp: #ef4444;
+  --color-hp-bg: #450a0a;
+  --color-gold: #fbbf24;
+  --color-accent: #38bdf8;
+  
+  /* Typography */
+  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Fira Code', 'Courier New', monospace;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar styling for a sleek look */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Glassmorphism Panel Base */
+.glass-panel {
+  background: var(--bg-panel);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+}

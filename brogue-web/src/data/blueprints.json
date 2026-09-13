@@ -1,0 +1,892 @@
+[
+    {
+        "id": "reward_library",
+        "name": "Library",
+        "depthRange": [
+            3,
+            15
+        ],
+        "roomSize": [
+            12,
+            30
+        ],
+        "frequency": 8,
+        "category": "reward",
+        "flags": [
+            "BP_ROOM",
+            "BP_REWARD",
+            "BP_PURGE_INTERIOR"
+        ],
+        "features": [
+            {
+                "itemCategory": "SCROLL",
+                "instanceCount": [
+                    2,
+                    4
+                ],
+                "personalSpace": 2,
+                "flags": [
+                    "MF_GENERATE_ITEM"
+                ]
+            },
+            {
+                "terrain": "SIGN",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "flags": [
+                    "MF_NEAR_ORIGIN"
+                ],
+                "signText": "一座古老的藏书室"
+            }
+        ]
+    },
+    {
+        "id": "reward_consumables",
+        "name": "Supply Cache",
+        "depthRange": [
+            2,
+            12
+        ],
+        "roomSize": [
+            8,
+            20
+        ],
+        "frequency": 10,
+        "category": "reward",
+        "flags": [
+            "BP_ROOM",
+            "BP_REWARD"
+        ],
+        "features": [
+            {
+                "itemCategory": "POTION",
+                "instanceCount": [
+                    1,
+                    2
+                ],
+                "personalSpace": 1,
+                "flags": [
+                    "MF_GENERATE_ITEM"
+                ]
+            },
+            {
+                "itemCategory": "SCROLL",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "personalSpace": 1,
+                "flags": [
+                    "MF_GENERATE_ITEM"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "reward_pedestals",
+        "name": "Treasure Vault",
+        "depthRange": [
+            5,
+            20
+        ],
+        "roomSize": [
+            10,
+            25
+        ],
+        "frequency": 5,
+        "category": "reward",
+        "flags": [
+            "BP_ROOM",
+            "BP_REWARD",
+            "BP_PURGE_INTERIOR"
+        ],
+        "doorTerrain": "LOCKED_DOOR",
+        "features": [
+            {
+                "itemCategory": "WEAPON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "personalSpace": 2,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_ALTAR"
+                ]
+            },
+            {
+                "itemCategory": "ARMOR",
+                "instanceCount": [
+                    0,
+                    1
+                ],
+                "personalSpace": 2,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_ALTAR"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "reward_kennel",
+        "name": "Kennel",
+        "depthRange": [
+            4,
+            18
+        ],
+        "roomSize": [
+            6,
+            15
+        ],
+        "frequency": 6,
+        "category": "reward",
+        "flags": [
+            "BP_ROOM",
+            "BP_REWARD"
+        ],
+        "doorTerrain": "LOCKED_DOOR",
+        "features": [
+            {
+                "monsterId": "_random_ally_",
+                "instanceCount": [
+                    1,
+                    2
+                ],
+                "personalSpace": 1,
+                "flags": [
+                    "MF_GENERATE_MONSTER",
+                    "MF_MONSTER_IS_ALLY",
+                    "MF_MONSTER_IS_CAGED"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "reward_commutation",
+        "name": "Commutation Altar",
+        "depthRange": [
+            6,
+            20
+        ],
+        "roomSize": [
+            10,
+            20
+        ],
+        "frequency": 4,
+        "category": "reward",
+        "flags": [
+            "BP_ROOM",
+            "BP_REWARD",
+            "BP_PURGE_INTERIOR"
+        ],
+        "features": [
+            {
+                "terrain": "ALTAR",
+                "instanceCount": [
+                    2,
+                    3
+                ],
+                "personalSpace": 2,
+                "flags": [
+                    "MF_ALTAR_GROUP"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "vestibule_locked",
+        "name": "Locked Vestibule",
+        "depthRange": [
+            2,
+            26
+        ],
+        "roomSize": [
+            6,
+            20
+        ],
+        "frequency": 12,
+        "category": "vestibule",
+        "flags": [
+            "BP_ROOM"
+        ],
+        "doorTerrain": "LOCKED_DOOR",
+        "features": [
+            {
+                "itemCategory": "_random_good_",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "personalSpace": 0,
+                "flags": [
+                    "MF_GENERATE_ITEM"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "vestibule_flammable",
+        "name": "Flammable Barricade",
+        "depthRange": [
+            3,
+            12
+        ],
+        "roomSize": [
+            8,
+            18
+        ],
+        "frequency": 6,
+        "category": "vestibule",
+        "flags": [
+            "BP_ROOM"
+        ],
+        "features": [
+            {
+                "terrain": "GRASS",
+                "instanceCount": [
+                    6,
+                    12
+                ],
+                "flags": [
+                    "MF_FILL_DOORWAY"
+                ]
+            },
+            {
+                "itemCategory": "_random_good_",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "personalSpace": 0,
+                "flags": [
+                    "MF_GENERATE_ITEM"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "vestibule_guardian",
+        "name": "Guardian Chamber",
+        "depthRange": [
+            6,
+            20
+        ],
+        "roomSize": [
+            10,
+            25
+        ],
+        "frequency": 7,
+        "category": "vestibule",
+        "flags": [
+            "BP_ROOM"
+        ],
+        "doorTerrain": "LOCKED_DOOR",
+        "features": [
+            {
+                "monsterId": "_depth_appropriate_",
+                "instanceCount": [
+                    1,
+                    2
+                ],
+                "personalSpace": 1,
+                "flags": [
+                    "MF_GENERATE_MONSTER"
+                ]
+            },
+            {
+                "itemCategory": "_random_good_",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "personalSpace": 0,
+                "flags": [
+                    "MF_GENERATE_ITEM"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "vestibule_pit_traps",
+        "name": "Pit Trap Corridor",
+        "depthRange": [
+            4,
+            15
+        ],
+        "roomSize": [
+            8,
+            20
+        ],
+        "frequency": 5,
+        "category": "vestibule",
+        "flags": [
+            "BP_ROOM"
+        ],
+        "features": [
+            {
+                "terrain": "TRAP",
+                "trapType": "fire",
+                "instanceCount": [
+                    3,
+                    6
+                ],
+                "flags": [
+                    "MF_SCATTER"
+                ]
+            },
+            {
+                "itemCategory": "_random_good_",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "personalSpace": 0,
+                "flags": [
+                    "MF_GENERATE_ITEM"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_rat_trap",
+        "name": "Rat Trap",
+        "depthRange": [
+            2,
+            8
+        ],
+        "roomSize": [
+            8,
+            18
+        ],
+        "frequency": 8,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM"
+        ],
+        "doorTerrain": "LOCKED_DOOR",
+        "features": [
+            {
+                "monsterId": "rat",
+                "instanceCount": [
+                    3,
+                    6
+                ],
+                "personalSpace": 0,
+                "flags": [
+                    "MF_GENERATE_MONSTER"
+                ]
+            },
+            {
+                "itemCategory": "KEY",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_KEY_DISPOSABLE"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_fire_trap",
+        "name": "Fire Trap Room",
+        "depthRange": [
+            5,
+            15
+        ],
+        "roomSize": [
+            10,
+            25
+        ],
+        "frequency": 6,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM",
+            "BP_PURGE_INTERIOR"
+        ],
+        "doorTerrain": "LOCKED_DOOR",
+        "features": [
+            {
+                "terrain": "GRASS",
+                "instanceCount": [
+                    8,
+                    16
+                ],
+                "flags": [
+                    "MF_SCATTER"
+                ]
+            },
+            {
+                "terrain": "TRAP",
+                "trapType": "fire",
+                "instanceCount": [
+                    2,
+                    4
+                ],
+                "flags": [
+                    "MF_SCATTER"
+                ]
+            },
+            {
+                "itemCategory": "_random_good_",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "personalSpace": 0,
+                "flags": [
+                    "MF_GENERATE_ITEM"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_flood_trap",
+        "name": "Flood Trap",
+        "depthRange": [
+            4,
+            12
+        ],
+        "roomSize": [
+            10,
+            20
+        ],
+        "frequency": 5,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM",
+            "BP_PURGE_INTERIOR"
+        ],
+        "doorTerrain": "LOCKED_DOOR",
+        "features": [
+            {
+                "terrain": "WATER_SHALLOW",
+                "instanceCount": [
+                    6,
+                    12
+                ],
+                "flags": [
+                    "MF_SCATTER"
+                ]
+            },
+            {
+                "terrain": "WATER_DEEP",
+                "instanceCount": [
+                    2,
+                    4
+                ],
+                "flags": [
+                    "MF_SCATTER"
+                ]
+            },
+            {
+                "itemCategory": "_random_good_",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "personalSpace": 0,
+                "flags": [
+                    "MF_GENERATE_ITEM"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_poison_gas",
+        "name": "Poison Gas Chamber",
+        "depthRange": [
+            5,
+            18
+        ],
+        "roomSize": [
+            10,
+            20
+        ],
+        "frequency": 6,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM"
+        ],
+        "doorTerrain": "LOCKED_DOOR",
+        "features": [
+            {
+                "terrain": "TRAP",
+                "trapType": "poison_gas",
+                "instanceCount": [
+                    3,
+                    6
+                ],
+                "flags": [
+                    "MF_SCATTER"
+                ]
+            },
+            {
+                "terrain": "PRESSURE_PLATE",
+                "instanceCount": [
+                    2,
+                    3
+                ],
+                "flags": [
+                    "MF_SCATTER"
+                ]
+            },
+            {
+                "itemCategory": "_random_good_",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "personalSpace": 0,
+                "flags": [
+                    "MF_GENERATE_ITEM"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_web_room",
+        "name": "Web Room",
+        "depthRange": [
+            4,
+            14
+        ],
+        "roomSize": [
+            8,
+            20
+        ],
+        "frequency": 6,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM"
+        ],
+        "doorTerrain": "LOCKED_DOOR",
+        "features": [
+            {
+                "terrain": "WEB",
+                "instanceCount": [
+                    6,
+                    12
+                ],
+                "flags": [
+                    "MF_SCATTER"
+                ]
+            },
+            {
+                "monsterId": "_spider_",
+                "instanceCount": [
+                    1,
+                    3
+                ],
+                "personalSpace": 0,
+                "flags": [
+                    "MF_GENERATE_MONSTER"
+                ]
+            },
+            {
+                "itemCategory": "_random_good_",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "personalSpace": 0,
+                "flags": [
+                    "MF_GENERATE_ITEM"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_lava_moat",
+        "name": "Lava Moat",
+        "depthRange": [
+            8,
+            20
+        ],
+        "roomSize": [
+            12,
+            30
+        ],
+        "frequency": 4,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM",
+            "BP_PURGE_INTERIOR"
+        ],
+        "features": [
+            {
+                "terrain": "LAVA",
+                "instanceCount": [
+                    8,
+                    20
+                ],
+                "flags": [
+                    "MF_RING"
+                ]
+            },
+            {
+                "itemCategory": "_random_good_",
+                "instanceCount": [
+                    1,
+                    2
+                ],
+                "personalSpace": 0,
+                "flags": [
+                    "MF_GENERATE_ITEM"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_boss",
+        "name": "Boss Chamber",
+        "depthRange": [
+            10,
+            26
+        ],
+        "roomSize": [
+            15,
+            35
+        ],
+        "frequency": 3,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM",
+            "BP_PURGE_INTERIOR"
+        ],
+        "doorTerrain": "LOCKED_DOOR",
+        "features": [
+            {
+                "monsterId": "_depth_boss_",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "personalSpace": 3,
+                "flags": [
+                    "MF_GENERATE_MONSTER"
+                ]
+            },
+            {
+                "monsterId": "_depth_appropriate_",
+                "instanceCount": [
+                    2,
+                    4
+                ],
+                "personalSpace": 0,
+                "flags": [
+                    "MF_GENERATE_MONSTER"
+                ]
+            },
+            {
+                "itemCategory": "_random_good_",
+                "instanceCount": [
+                    1,
+                    2
+                ],
+                "personalSpace": 0,
+                "flags": [
+                    "MF_GENERATE_ITEM"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "area_swamp",
+        "name": "Swamp",
+        "depthRange": [
+            3,
+            10
+        ],
+        "roomSize": [
+            15,
+            40
+        ],
+        "frequency": 8,
+        "category": "thematic",
+        "flags": [
+            "BP_NO_INTERIOR_FLAG"
+        ],
+        "features": [
+            {
+                "terrain": "BOG",
+                "instanceCount": [
+                    10,
+                    25
+                ],
+                "flags": [
+                    "MF_SCATTER"
+                ]
+            },
+            {
+                "terrain": "MUD",
+                "instanceCount": [
+                    4,
+                    8
+                ],
+                "flags": [
+                    "MF_SCATTER"
+                ]
+            },
+            {
+                "terrain": "WATER_SHALLOW",
+                "instanceCount": [
+                    3,
+                    6
+                ],
+                "flags": [
+                    "MF_SCATTER"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "area_bloodflower",
+        "name": "Bloodflower Garden",
+        "depthRange": [
+            5,
+            18
+        ],
+        "roomSize": [
+            12,
+            30
+        ],
+        "frequency": 5,
+        "category": "thematic",
+        "flags": [
+            "BP_NO_INTERIOR_FLAG"
+        ],
+        "features": [
+            {
+                "terrain": "FOLIAGE",
+                "instanceCount": [
+                    8,
+                    16
+                ],
+                "flags": [
+                    "MF_SCATTER"
+                ]
+            },
+            {
+                "terrain": "BLOOD",
+                "instanceCount": [
+                    4,
+                    8
+                ],
+                "flags": [
+                    "MF_SCATTER"
+                ]
+            },
+            {
+                "terrain": "GRASS",
+                "instanceCount": [
+                    3,
+                    6
+                ],
+                "flags": [
+                    "MF_SCATTER"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "area_camp",
+        "name": "Monster Camp",
+        "depthRange": [
+            2,
+            8
+        ],
+        "roomSize": [
+            10,
+            25
+        ],
+        "frequency": 7,
+        "category": "thematic",
+        "flags": [
+            "BP_NO_INTERIOR_FLAG"
+        ],
+        "features": [
+            {
+                "monsterId": "_depth_appropriate_",
+                "instanceCount": [
+                    2,
+                    4
+                ],
+                "personalSpace": 1,
+                "flags": [
+                    "MF_GENERATE_MONSTER"
+                ]
+            },
+            {
+                "itemCategory": "POTION",
+                "instanceCount": [
+                    0,
+                    1
+                ],
+                "personalSpace": 0,
+                "flags": [
+                    "MF_GENERATE_ITEM"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "area_shrine",
+        "name": "Shrine",
+        "depthRange": [
+            4,
+            15
+        ],
+        "roomSize": [
+            8,
+            18
+        ],
+        "frequency": 6,
+        "category": "thematic",
+        "flags": [
+            "BP_ROOM",
+            "BP_PURGE_INTERIOR"
+        ],
+        "features": [
+            {
+                "terrain": "ALTAR",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "personalSpace": 2,
+                "flags": [
+                    "MF_NEAR_ORIGIN"
+                ]
+            },
+            {
+                "terrain": "SIGN",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "flags": [
+                    "MF_NEAR_ORIGIN"
+                ],
+                "signText": "一座古老的神祠"
+            },
+            {
+                "itemCategory": "_random_good_",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "personalSpace": 0,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_ALTAR"
+                ]
+            }
+        ]
+    }
+]

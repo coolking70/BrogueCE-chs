@@ -1,0 +1,393 @@
+/**
+ * src/engine/UI/DetailGenerator.ts
+ * Generates detail description text for monsters and items,
+ * modeled after CE's monsterDetails() and itemDetails().
+ */
+
+import type { Item } from '../Items/Item';
+import { ItemCategory } from '../Items/Item';
+import type { Monster } from '../../entities/Monster';
+import { MonsterState } from '../../entities/Monster';
+import { hitProbability, netEnchant, damageFraction, strengthModifier } from '../Combat/CombatFormulas';
+
+// ---------- Helper types ----------
+
+export interface DetailInfo {
+    /** Entity symbol character */
+    char: string;
+    /** Entity display color (hex) */
+    color: number;
+    /** Entity display name */
+    name: string;
+    /** Multi-line detail text sections */
+    sections: DetailSection[];
+}
+
+export interface DetailSection {
+    /** Optional section header */
+    header?: string;
+    /** Lines of text within the section */
+    lines: DetailLine[];
+}
+
+export interface DetailLine {
+    text: string;
+    color?: string; // CSS color string, e.g. '#ff4444'
+}
+
+// ---------- Runic description tables ----------
+
+const weaponRunicDescriptions: Record<string, string> = {
+    paralyzing: '每次攻击有概率麻痹目标数回合。',
+    venom: '每次攻击有概率对目标施加致命毒素。',
+    quietus: '每次攻击有概率瞬间击杀目标。',
+    vampirism: '攻击会吸取目标生命值来治愈自身。',
+    speed: '攻击后有概率获得额外攻击机会。',
+    confusion: '每次攻击有概率使目标陷入混乱。',
+    force: '每次攻击有概率将目标击退数格。',
+    slaying: '对特定种类的怪物造成即死效果。',
+    mercy: '攻击不会将目标生命值降至 1 以下。',
+};
+
+const armorRunicDescriptions: Record<string, string> = {
+    reflection: '受击时有概率将 50% 的伤害反弹给攻击者。',
+    dampening: '受击时有概率回复少量生命值。',
+    mutuality: '受击时有概率将全额伤害共享给攻击者。',
+    respiration: '免疫有害气体的影响。',
+    vitality: '持续缓慢再生生命值。',
+    absorption: '受击时有概率完全吸收伤害。',
+    reprisal: '受击时有概率将 75% 的伤害返还给攻击者。',
+    immunity: '完全免疫特定种类怪物的攻击。',
+};
+
+// ---------- Monster ability / behavior description ----------
+
+const abilityFlagDescriptions: Record<string, string> = {
+    MA_HIT_HALLUCINATE: '攻击会导致产生幻觉',
+    MA_HIT_STEAL_FLEE: '攻击会偷取物品并逃跑',
+    MA_HIT_BURN: '攻击会点燃目标',
+    MA_TRANSFERENCE: '攻击会吸取生命',
+    MA_CAUSES_WEAKNESS: '攻击会削弱力量',
+    MA_POISONS: '攻击会施加毒素',
+    MA_HIT_DEGRADE_ARMOR: '攻击会腐蚀护甲',
+    MA_CLONE_SELF_ON_DEFEND: '受到伤害时会分裂',
+    MA_KAMIKAZE: '自爆攻击',
+    MA_DF_ON_DEATH: '死亡时触发特殊效果',
+    MA_SEIZES: '会抓住并束缚猎物',
+    MA_ATTACKS_PENETRATE: '攻击可以穿透',
+    MA_ATTACKS_ALL_ADJACENT: '攻击所有相邻的目标',
+    MA_ATTACKS_EXTEND: '攻击范围延长',
+    MA_ATTACKS_STAGGER: '攻击会击退目标',
+    MA_CAST_SUMMON: '可以召唤其他怪物',
+    MA_ENTER_SUMMONS: '可以进入召唤物中',
+    MA_AVOID_CORRIDORS: '避开走廊',
+    MA_REFLECT_100: '反射所有远程法术',
+};
+
+const behaviorFlagDescriptions: Record<string, string> = {
+    MONST_INVISIBLE: '隐形',
+    MONST_INANIMATE: '无生命物体',
+    MONST_IMMOBILE: '无法移动',
+    MONST_FLIES: '飞行',
+    MONST_FLITS: '移动飘忽不定',
+    MONST_IMMUNE_TO_FIRE: '免疫火焰',
+    MONST_IMMUNE_TO_WEAPONS: '免疫武器伤害',
+    MONST_IMMUNE_TO_WEBS: '不会被蛛网缠绕',
+    MONST_FLEES_NEAR_DEATH: '生命值低时会逃跑',
+    MONST_DEFEND_DEGRADE_WEAPON: '被击中时会腐蚀武器',
+    MONST_MAINTAINS_DISTANCE: '保持距离作战',
+    MONST_RESTRICTED_TO_LIQUID: '限制在液体中',
+    MONST_SUBMERGES: '可以潜入水中',
+    MONST_FIERY: '身体炽热',
+    MONST_INVULNERABLE: '无敌',
+    MONST_REFLECT_50: '有概率反射法术',
+    MONST_NEVER_SLEEPS: '从不睡觉',
+    MONST_DIES_IF_NEGATED: '被消除时死亡',
+    MONST_NO_POLYMORPH: '免疫变形',
+};
+
+// ---------- Monster detail generator ----------
+
+export function generateMonsterDetail(
+    monster: Monster,
+    playerHP: number,
+    playerStrength: number,
+    playerDefense: number,
+    playerWeaponDamage: [number, number] | null, // [low, high]
+    playerWeaponEnchant: number,
+    playerWeaponStrReq: number,
+    _playerArmorBase?: number,
+    _playerArmorEnchant?: number,
+    _playerArmorStrReq?: number
+): DetailInfo {
+    const sections: DetailSection[] = [];
+
+    // --- Flavor text ---
+    const desc = monster.description || '';
+    if (desc) {
+        sections.push({
+            lines: [{ text: desc, color: '#aaaacc' }]
+        });
+    }
+
+    // --- Basic stats ---
+    const statsLines: DetailLine[] = [];
+    statsLines.push({ text: `生命值: ${monster.hp}/${monster.maxHp}`, color: '#66ccff' });
+
+    const dmgStr = monster.damageString;
+    if (dmgStr) {
+        statsLines.push({ text: `伤害: ${dmgStr}` });
+    }
+
+    // Accuracy and defense
+    const monAcc = monster.accuracy ?? 100;
+    const monDef = monster.defense ?? 0;
+    if (monAcc !== 100) statsLines.push({ text: `精度: ${monAcc}` });
+    if (monDef > 0) statsLines.push({ text: `防御: ${monDef}` });
+
+    // Move / attack speed
+    const moveSpd = monster.moveSpeed ?? 100;
+    const atkSpd = monster.attackSpeed ?? 100;
+    if (moveSpd < 100) statsLines.push({ text: '移动速度较快', color: '#ff8844' });
+    else if (moveSpd > 100) statsLines.push({ text: '移动速度较慢' });
+    if (atkSpd < 100) statsLines.push({ text: '攻击速度较快', color: '#ff8844' });
+    else if (atkSpd > 100) statsLines.push({ text: '攻击速度较慢' });
+
+    const regen = monster.regenTurns;
+    if (regen !== undefined && regen > 0 && regen <= 1) {
+        statsLines.push({ text: '再生极快', color: '#44ff44' });
+    } else if (regen !== undefined && regen > 0 && regen <= 5) {
+        statsLines.push({ text: '再生较快', color: '#44ff44' });
+    }
+
+    sections.push({ header: '基本属性', lines: statsLines });
+
+    // --- Combat analysis ---
+    const combatLines: DetailLine[] = [];
+
+    // Monster hitting player
+    const monHitProb = hitProbability(monAcc, playerDefense);
+    combatLines.push({
+        text: `该怪物有 ${monHitProb}% 的概率命中你。`,
+        color: monHitProb > 50 ? '#ff6644' : '#ffcc44'
+    });
+
+    // Parse monster damage
+    const mDmg = parseDamage(dmgStr);
+    if (mDmg && playerHP > 0) {
+        const avgDmg = (mDmg[0] + mDmg[1]) / 2;
+        const pctOfHP = Math.round(100 * avgDmg / playerHP);
+        combatLines.push({
+            text: `平均每击造成你当前生命值的 ${pctOfHP}% 伤害。`,
+            color: pctOfHP > 30 ? '#ff4444' : '#ffaa44'
+        });
+
+        // Hits to kill player
+        const hitsToKill = Math.max(1, Math.ceil(playerHP / Math.max(1, mDmg[1])));
+        combatLines.push({
+            text: `最坏情况下，${hitsToKill} 击可击败你。`,
+            color: hitsToKill <= 3 ? '#ff4444' : '#cccccc'
+        });
+    }
+
+    // Player hitting monster
+    if (playerWeaponDamage) {
+        const wNE = netEnchant(playerWeaponEnchant, playerStrength, playerWeaponStrReq);
+        const playerHitProb = hitProbability(100, monDef, wNE);
+        combatLines.push({
+            text: `你有 ${playerHitProb}% 的概率命中该怪物。`,
+            color: playerHitProb > 70 ? '#44ff44' : '#ffcc44'
+        });
+
+        const pAvg = (playerWeaponDamage[0] + playerWeaponDamage[1]) / 2;
+        const scaledAvg = pAvg * damageFraction(wNE);
+        if (monster.hp > 0) {
+            const pctOfMonHP = Math.round(100 * scaledAvg / monster.hp);
+            combatLines.push({
+                text: `平均每击造成该怪物当前生命值的 ${pctOfMonHP}% 伤害。`,
+                color: '#88ff88'
+            });
+
+            const hitsFromPlayer = Math.max(1, Math.ceil(monster.hp / Math.max(1, playerWeaponDamage[1] * damageFraction(wNE))));
+            combatLines.push({
+                text: `最少 ${hitsFromPlayer} 击可击败该怪物。`,
+                color: '#cccccc'
+            });
+        }
+    }
+
+    sections.push({ header: '战斗分析', lines: combatLines });
+
+    // --- Abilities ---
+    const abilityLines: DetailLine[] = [];
+    const abilityFlags: string[] = Array.from(monster.abilityFlags);
+    const behaviorFlags: string[] = Array.from(monster.behaviorFlags);
+
+    for (const flag of behaviorFlags) {
+        const desc = behaviorFlagDescriptions[flag];
+        if (desc) abilityLines.push({ text: desc, color: '#ccaaff' });
+    }
+    for (const flag of abilityFlags) {
+        const desc = abilityFlagDescriptions[flag];
+        if (desc) abilityLines.push({ text: desc, color: '#ccaaff' });
+    }
+
+    if (abilityLines.length > 0) {
+        sections.push({ header: '特殊能力', lines: abilityLines });
+    }
+
+    // --- State ---
+    const stateLines: DetailLine[] = [];
+    const state = monster.state;
+    if (state === MonsterState.ASLEEP) stateLines.push({ text: '正在睡眠', color: '#8888ff' });
+    else if (state === MonsterState.WANDERING) stateLines.push({ text: '正在巡逻', color: '#88ff88' });
+    else if (state === MonsterState.HUNTING) stateLines.push({ text: '正在追击', color: '#ff4444' });
+    else if (state === MonsterState.FLEEING) stateLines.push({ text: '正在逃跑', color: '#ffcc44' });
+
+    if (stateLines.length > 0) {
+        sections.push({ header: '状态', lines: stateLines });
+    }
+
+    return {
+        char: monster.char,
+        color: typeof monster.color === 'number' ? monster.color : 0xffffff,
+        name: monster.name,
+        sections
+    };
+}
+
+// ---------- Item detail generator ----------
+
+export function generateItemDetail(
+    item: Item,
+    playerStrength: number
+): DetailInfo {
+    const sections: DetailSection[] = [];
+
+    // --- Description ---
+    const desc = (item as any).description || '';
+    if (desc) {
+        sections.push({
+            lines: [{ text: desc, color: '#aaaacc' }]
+        });
+    }
+
+    // --- Weapon stats ---
+    if (item.category === ItemCategory.WEAPON) {
+        const statsLines: DetailLine[] = [];
+        if (item.damage) {
+            const [lo, hi] = parseDamage(item.damage) || [0, 0];
+            statsLines.push({ text: `基础伤害: ${item.damage} (${lo}~${hi})` });
+
+            // With enchantment
+            if (item.enchantment !== 0) {
+                const strReq = item.strengthRequired || 12;
+                const ne = netEnchant(item.enchantment, playerStrength, strReq);
+                const frac = damageFraction(ne);
+                const eLo = Math.max(1, Math.round(lo * frac));
+                const eHi = Math.max(1, Math.round(hi * frac));
+                statsLines.push({
+                    text: `实际伤害: ${eLo}~${eHi} (附魔 ${item.enchantment > 0 ? '+' : ''}${item.enchantment})`,
+                    color: item.enchantment > 0 ? '#44ff44' : '#ff4444'
+                });
+            }
+        }
+        if (item.strengthRequired) {
+            const mod = strengthModifier(playerStrength, item.strengthRequired);
+            statsLines.push({
+                text: `力量需求: ${item.strengthRequired} (你的力量: ${playerStrength}, ${mod >= 0 ? '盈余' : '不足'})`,
+                color: mod >= 0 ? '#44ff44' : '#ff4444'
+            });
+        }
+        if (item.isCursed) {
+            statsLines.push({ text: '被诅咒', color: '#ff4444' });
+        }
+        sections.push({ header: '武器属性', lines: statsLines });
+    }
+
+    // --- Armor stats ---
+    if (item.category === ItemCategory.ARMOR) {
+        const statsLines: DetailLine[] = [];
+        if (item.armor !== undefined) {
+            statsLines.push({ text: `基础护甲值: ${item.armor}` });
+            if (item.enchantment !== 0) {
+                const strReq = item.strengthRequired || 12;
+                const ne = netEnchant(item.enchantment, playerStrength, strReq);
+                const frac = damageFraction(ne);
+                const effectiveArmor = Math.round(item.armor * frac);
+                statsLines.push({
+                    text: `实际护甲值: ${effectiveArmor} (附魔 ${item.enchantment > 0 ? '+' : ''}${item.enchantment})`,
+                    color: item.enchantment > 0 ? '#44ff44' : '#ff4444'
+                });
+            }
+        }
+        if (item.strengthRequired) {
+            const mod = strengthModifier(playerStrength, item.strengthRequired);
+            statsLines.push({
+                text: `力量需求: ${item.strengthRequired} (你的力量: ${playerStrength}, ${mod >= 0 ? '盈余' : '不足'})`,
+                color: mod >= 0 ? '#44ff44' : '#ff4444'
+            });
+        }
+        if (item.isCursed) {
+            statsLines.push({ text: '被诅咒', color: '#ff4444' });
+        }
+        sections.push({ header: '护甲属性', lines: statsLines });
+    }
+
+    // --- Runic ---
+    if (item.runicType && item.runicKnown) {
+        const runicLines: DetailLine[] = [];
+        if (item.category === ItemCategory.WEAPON) {
+            const runicDesc = weaponRunicDescriptions[item.runicType];
+            if (runicDesc) runicLines.push({ text: runicDesc, color: '#ffcc44' });
+        } else if (item.category === ItemCategory.ARMOR) {
+            const runicDesc = armorRunicDescriptions[item.runicType];
+            if (runicDesc) runicLines.push({ text: runicDesc, color: '#ffcc44' });
+        }
+        if (runicLines.length > 0) {
+            sections.push({ header: `附魔: ${item.runicType}`, lines: runicLines });
+        }
+    }
+
+    // --- Consumable info ---
+    if (item.category === ItemCategory.WAND || item.category === ItemCategory.STAFF) {
+        const statsLines: DetailLine[] = [];
+        if (item.charges !== undefined && item.maxCharges !== undefined) {
+            statsLines.push({ text: `充能: ${item.charges}/${item.maxCharges}` });
+        }
+        if (item.rechargeTurns) {
+            statsLines.push({ text: `充能速度: 每 ${item.rechargeTurns} 回合` });
+        }
+        sections.push({ header: '法器属性', lines: statsLines });
+    }
+
+    if (item.category === ItemCategory.CHARM) {
+        const statsLines: DetailLine[] = [];
+        if (item.cooldownTurns) {
+            statsLines.push({ text: `冷却回合: ${item.cooldownTurns}` });
+        }
+        if (item.cooldownRemaining) {
+            statsLines.push({ text: `剩余冷却: ${item.cooldownRemaining}`, color: '#ff8844' });
+        }
+        sections.push({ header: '护符属性', lines: statsLines });
+    }
+
+    return {
+        char: item.char,
+        color: item.color,
+        name: item.displayName,
+        sections
+    };
+}
+
+// ---------- Helper ----------
+
+function parseDamage(dmgStr: string | undefined): [number, number] | null {
+    if (!dmgStr) return null;
+    // Format: "NdM" e.g. "2d5"
+    const m = dmgStr.match(/(\d+)d(\d+)/);
+    if (!m) return null;
+    const n = parseInt(m[1]!);
+    const d = parseInt(m[2]!);
+    return [n, n * d];
+}

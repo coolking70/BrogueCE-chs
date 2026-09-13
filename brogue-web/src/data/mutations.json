@@ -1,0 +1,161 @@
+[
+    {
+        "id": "explosive",
+        "name": "explosive",
+        "color": 16744192,
+        "healthFactor": 0.5,
+        "moveSpeedFactor": 1.0,
+        "attackSpeedFactor": 1.0,
+        "defenseFactor": 0.5,
+        "damageFactor": 1.0,
+        "abilityFlags": [
+            "MA_DF_ON_DEATH"
+        ],
+        "behaviorFlags": [
+            "MONST_SUBMERGES"
+        ],
+        "forbiddenFlags": [],
+        "forbiddenAbilityFlags": [],
+        "description": "A rare mutation will cause it to explode violently when it dies."
+    },
+    {
+        "id": "infested",
+        "name": "infested",
+        "color": 8433737,
+        "healthFactor": 0.5,
+        "moveSpeedFactor": 1.0,
+        "attackSpeedFactor": 1.0,
+        "defenseFactor": 0.5,
+        "damageFactor": 1.0,
+        "abilityFlags": [
+            "MA_DF_ON_DEATH"
+        ],
+        "behaviorFlags": [],
+        "forbiddenFlags": [],
+        "forbiddenAbilityFlags": [],
+        "description": "It has been infested by deadly lichen spores; poisonous fungus will spread from its corpse when it dies."
+    },
+    {
+        "id": "agile",
+        "name": "agile",
+        "color": 55551,
+        "healthFactor": 1.0,
+        "moveSpeedFactor": 0.5,
+        "attackSpeedFactor": 1.0,
+        "defenseFactor": 1.5,
+        "damageFactor": 1.0,
+        "abilityFlags": [],
+        "behaviorFlags": [
+            "MONST_FLEES_NEAR_DEATH"
+        ],
+        "forbiddenFlags": [
+            "MONST_FLEES_NEAR_DEATH"
+        ],
+        "forbiddenAbilityFlags": [],
+        "description": "A rare mutation greatly enhances its mobility."
+    },
+    {
+        "id": "juggernaut",
+        "name": "juggernaut",
+        "color": 9130026,
+        "healthFactor": 3.0,
+        "moveSpeedFactor": 2.0,
+        "attackSpeedFactor": 2.0,
+        "defenseFactor": 0.75,
+        "damageFactor": 2.0,
+        "abilityFlags": [
+            "MA_ATTACKS_STAGGER"
+        ],
+        "behaviorFlags": [],
+        "forbiddenFlags": [
+            "MONST_MAINTAINS_DISTANCE"
+        ],
+        "forbiddenAbilityFlags": [],
+        "description": "A rare mutation has hardened its flesh, increasing its health and power but compromising its speed."
+    },
+    {
+        "id": "grappling",
+        "name": "grappling",
+        "color": 13808780,
+        "healthFactor": 1.5,
+        "moveSpeedFactor": 1.0,
+        "attackSpeedFactor": 1.0,
+        "defenseFactor": 0.5,
+        "damageFactor": 1.0,
+        "abilityFlags": [
+            "MA_SEIZES"
+        ],
+        "behaviorFlags": [],
+        "forbiddenFlags": [
+            "MONST_MAINTAINS_DISTANCE"
+        ],
+        "forbiddenAbilityFlags": [
+            "MA_SEIZES"
+        ],
+        "description": "A rare mutation has caused suckered tentacles to sprout from its frame, increasing its health and allowing it to grapple with its prey."
+    },
+    {
+        "id": "vampiric",
+        "name": "vampiric",
+        "color": 16711680,
+        "healthFactor": 1.0,
+        "moveSpeedFactor": 1.0,
+        "attackSpeedFactor": 1.0,
+        "defenseFactor": 1.0,
+        "damageFactor": 1.0,
+        "abilityFlags": [
+            "MA_TRANSFERENCE"
+        ],
+        "behaviorFlags": [],
+        "forbiddenFlags": [
+            "MONST_MAINTAINS_DISTANCE"
+        ],
+        "forbiddenAbilityFlags": [
+            "MA_TRANSFERENCE"
+        ],
+        "description": "A rare mutation allows it to heal itself with every attack."
+    },
+    {
+        "id": "toxic",
+        "name": "toxic",
+        "color": 32768,
+        "healthFactor": 1.0,
+        "moveSpeedFactor": 1.0,
+        "attackSpeedFactor": 2.0,
+        "defenseFactor": 1.0,
+        "damageFactor": 0.2,
+        "abilityFlags": [
+            "MA_CAUSES_WEAKNESS",
+            "MA_POISONS"
+        ],
+        "behaviorFlags": [],
+        "forbiddenFlags": [
+            "MONST_MAINTAINS_DISTANCE"
+        ],
+        "forbiddenAbilityFlags": [
+            "MA_CAUSES_WEAKNESS",
+            "MA_POISONS"
+        ],
+        "description": "A rare mutation causes it to poison its victims and sap their strength with every attack."
+    },
+    {
+        "id": "reflective",
+        "name": "reflective",
+        "color": 52945,
+        "healthFactor": 1.0,
+        "moveSpeedFactor": 1.0,
+        "attackSpeedFactor": 1.0,
+        "defenseFactor": 1.0,
+        "damageFactor": 1.0,
+        "abilityFlags": [],
+        "behaviorFlags": [
+            "MONST_REFLECT_50"
+        ],
+        "forbiddenFlags": [
+            "MONST_REFLECT_50",
+            "MONST_ALWAYS_USE_ABILITY"
+        ],
+        "forbiddenAbilityFlags": [],
+        "description": "A rare mutation has coated its flesh with reflective scales."
+    }
+]

@@ -1,0 +1,1465 @@
+[
+  {
+    "id": "you",
+    "name": "You",
+    "char": "p",
+    "color": "playerInLightColorColor",
+    "hp": 30,
+    "defense": 0,
+    "accuracy": 100,
+    "damage": "1d2",
+    "regen": 20,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_MALE",
+      "MONST_FEMALE"
+    ],
+    "abilityFlags": []
+  },
+  {
+    "id": "rat",
+    "name": "Rat",
+    "char": "r",
+    "color": "grayColor",
+    "hp": 6,
+    "defense": 0,
+    "accuracy": 80,
+    "damage": "1d3",
+    "regen": 20,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "kobold",
+    "name": "Kobold",
+    "char": "k",
+    "color": "goblinColorColor",
+    "hp": 7,
+    "defense": 0,
+    "accuracy": 80,
+    "damage": "1d4",
+    "regen": 20,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "jackal",
+    "name": "Jackal",
+    "char": "j",
+    "color": "jackalColorColor",
+    "hp": 8,
+    "defense": 0,
+    "accuracy": 70,
+    "damage": "2d4",
+    "regen": 20,
+    "moveSpeed": 50,
+    "attackSpeed": 100,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "eel",
+    "name": "Eel",
+    "char": "e",
+    "color": "eelColorColor",
+    "hp": 18,
+    "defense": 27,
+    "accuracy": 100,
+    "damage": "3d7",
+    "regen": 5,
+    "moveSpeed": 50,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_RESTRICTED_TO_LIQUID",
+      "MONST_IMMUNE_TO_WATER",
+      "MONST_SUBMERGES",
+      "MONST_FLITS",
+      "MONST_NEVER_SLEEPS"
+    ],
+    "abilityFlags": []
+  },
+  {
+    "id": "monkey",
+    "name": "Monkey",
+    "char": "m",
+    "color": "ogreColorColor",
+    "hp": 12,
+    "defense": 17,
+    "accuracy": 100,
+    "damage": "1d3",
+    "regen": 20,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [],
+    "abilityFlags": [
+      "MA_HIT_STEAL_FLEE"
+    ]
+  },
+  {
+    "id": "bloat",
+    "name": "Bloat",
+    "char": "b",
+    "color": "poisonGasColorColor",
+    "hp": 4,
+    "defense": 0,
+    "accuracy": 100,
+    "damage": "NaNdundefined",
+    "regen": null,
+    "moveSpeed": null,
+    "attackSpeed": null,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "0",
+    "name": "0",
+    "char": "0",
+    "color": "5Color",
+    "hp": 100,
+    "defense": 100,
+    "accuracy": null,
+    "damage": "0dundefined",
+    "regen": null,
+    "moveSpeed": 0,
+    "attackSpeed": null,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "pit_bloat",
+    "name": "Pit bloat",
+    "char": "b",
+    "color": "lightBlueColor",
+    "hp": 4,
+    "defense": 0,
+    "accuracy": 100,
+    "damage": "NaNdundefined",
+    "regen": null,
+    "moveSpeed": null,
+    "attackSpeed": null,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "0",
+    "name": "0",
+    "char": "0",
+    "color": "5Color",
+    "hp": 100,
+    "defense": 100,
+    "accuracy": null,
+    "damage": "0dundefined",
+    "regen": null,
+    "moveSpeed": 0,
+    "attackSpeed": null,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "goblin",
+    "name": "Goblin",
+    "char": "g",
+    "color": "goblinColorColor",
+    "hp": 15,
+    "defense": 10,
+    "accuracy": 70,
+    "damage": "2d5",
+    "regen": 20,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [],
+    "abilityFlags": [
+      "MA_ATTACKS_PENETRATE",
+      "MA_AVOID_CORRIDORS"
+    ]
+  },
+  {
+    "id": "goblin_conjurer",
+    "name": "Goblin conjurer",
+    "char": "g",
+    "color": "goblinConjurerColorColor",
+    "hp": 10,
+    "defense": 10,
+    "accuracy": 70,
+    "damage": "2d4",
+    "regen": 20,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_MAINTAINS_DISTANCE",
+      "MONST_CAST_SPELLS_SLOWLY",
+      "MONST_CARRY_ITEM_25"
+    ],
+    "abilityFlags": [
+      "MA_CAST_SUMMON",
+      "MA_AVOID_CORRIDORS"
+    ]
+  },
+  {
+    "id": "goblin_mystic",
+    "name": "Goblin mystic",
+    "char": "g",
+    "color": "goblinMysticColorColor",
+    "hp": 10,
+    "defense": 10,
+    "accuracy": 70,
+    "damage": "2d4",
+    "regen": 20,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_MAINTAINS_DISTANCE",
+      "MONST_CARRY_ITEM_25"
+    ],
+    "abilityFlags": [
+      "MA_AVOID_CORRIDORS"
+    ]
+  },
+  {
+    "id": "goblin_totem",
+    "name": "Goblin totem",
+    "char": "t",
+    "color": "orangeColor",
+    "hp": 30,
+    "defense": 0,
+    "accuracy": 0,
+    "damage": "NaNdundefined",
+    "regen": null,
+    "moveSpeed": null,
+    "attackSpeed": null,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "0",
+    "name": "0",
+    "char": "0",
+    "color": "0Color",
+    "hp": 100,
+    "defense": 300,
+    "accuracy": null,
+    "damage": "NaNdundefined",
+    "regen": null,
+    "moveSpeed": 0,
+    "attackSpeed": 0,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "pink_jelly",
+    "name": "Pink jelly",
+    "char": "j",
+    "color": "pinkJellyColorColor",
+    "hp": 50,
+    "defense": 0,
+    "accuracy": 85,
+    "damage": "1d3",
+    "regen": 0,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_NEVER_SLEEPS"
+    ],
+    "abilityFlags": [
+      "MA_CLONE_SELF_ON_DEFEND"
+    ]
+  },
+  {
+    "id": "toad",
+    "name": "Toad",
+    "char": "t",
+    "color": "toadColorColor",
+    "hp": 18,
+    "defense": 0,
+    "accuracy": 90,
+    "damage": "1d4",
+    "regen": 10,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [],
+    "abilityFlags": [
+      "MA_HIT_HALLUCINATE"
+    ]
+  },
+  {
+    "id": "vampire_bat",
+    "name": "Vampire bat",
+    "char": "b",
+    "color": "grayColor",
+    "hp": 18,
+    "defense": 25,
+    "accuracy": 100,
+    "damage": "2d6",
+    "regen": 20,
+    "moveSpeed": 50,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_FLIES",
+      "MONST_FLITS"
+    ],
+    "abilityFlags": [
+      "MA_TRANSFERENCE"
+    ]
+  },
+  {
+    "id": "arrow_turret",
+    "name": "Arrow turret",
+    "char": "t",
+    "color": "blackColor",
+    "hp": 30,
+    "defense": 0,
+    "accuracy": 90,
+    "damage": "2d6",
+    "regen": 0,
+    "moveSpeed": 100,
+    "attackSpeed": 250,
+    "behaviorFlags": [
+      "MONST_TURRET"
+    ],
+    "abilityFlags": []
+  },
+  {
+    "id": "acid_mound",
+    "name": "Acid mound",
+    "char": "m",
+    "color": "acidBackColorColor",
+    "hp": 15,
+    "defense": 10,
+    "accuracy": 70,
+    "damage": "1d3",
+    "regen": 5,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_DEFEND_DEGRADE_WEAPON"
+    ],
+    "abilityFlags": [
+      "MA_HIT_DEGRADE_ARMOR"
+    ]
+  },
+  {
+    "id": "centipede",
+    "name": "Centipede",
+    "char": "c",
+    "color": "centipedeColorColor",
+    "hp": 20,
+    "defense": 20,
+    "accuracy": 80,
+    "damage": "4d12",
+    "regen": 20,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [],
+    "abilityFlags": [
+      "MA_CAUSES_WEAKNESS"
+    ]
+  },
+  {
+    "id": "ogre",
+    "name": "Ogre",
+    "char": "o",
+    "color": "ogreColorColor",
+    "hp": 55,
+    "defense": 60,
+    "accuracy": 125,
+    "damage": "9d13",
+    "regen": 20,
+    "moveSpeed": 100,
+    "attackSpeed": 200,
+    "behaviorFlags": [
+      "MONST_MALE",
+      "MONST_FEMALE"
+    ],
+    "abilityFlags": [
+      "MA_AVOID_CORRIDORS",
+      "MA_ATTACKS_STAGGER"
+    ]
+  },
+  {
+    "id": "bog_monster",
+    "name": "Bog monster",
+    "char": "b",
+    "color": "krakenColorColor",
+    "hp": 55,
+    "defense": 60,
+    "accuracy": 5000,
+    "damage": "3d4",
+    "regen": 3,
+    "moveSpeed": 200,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_RESTRICTED_TO_LIQUID",
+      "MONST_SUBMERGES",
+      "MONST_FLITS",
+      "MONST_FLEES_NEAR_DEATH"
+    ],
+    "abilityFlags": [
+      "MA_SEIZES"
+    ]
+  },
+  {
+    "id": "ogre_totem",
+    "name": "Ogre totem",
+    "char": "t",
+    "color": "greenColor",
+    "hp": 70,
+    "defense": 0,
+    "accuracy": 0,
+    "damage": "NaNdundefined",
+    "regen": null,
+    "moveSpeed": null,
+    "attackSpeed": null,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "0",
+    "name": "0",
+    "char": "0",
+    "color": "0Color",
+    "hp": 100,
+    "defense": 400,
+    "accuracy": null,
+    "damage": "NaNdundefined",
+    "regen": null,
+    "moveSpeed": 0,
+    "attackSpeed": 0,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "spider",
+    "name": "Spider",
+    "char": "s",
+    "color": "whiteColor",
+    "hp": 20,
+    "defense": 70,
+    "accuracy": 90,
+    "damage": "3d4",
+    "regen": 20,
+    "moveSpeed": 100,
+    "attackSpeed": 200,
+    "behaviorFlags": [
+      "MONST_IMMUNE_TO_WEBS",
+      "MONST_CAST_SPELLS_SLOWLY",
+      "MONST_ALWAYS_USE_ABILITY"
+    ],
+    "abilityFlags": [
+      "MA_POISONS"
+    ]
+  },
+  {
+    "id": "spark_turret",
+    "name": "Spark turret",
+    "char": "t",
+    "color": "lightningColorColor",
+    "hp": 80,
+    "defense": 0,
+    "accuracy": 100,
+    "damage": "NaNdundefined",
+    "regen": null,
+    "moveSpeed": null,
+    "attackSpeed": null,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "0",
+    "name": "0",
+    "char": "0",
+    "color": "0Color",
+    "hp": 100,
+    "defense": 150,
+    "accuracy": 0,
+    "damage": "NaNdundefined",
+    "regen": null,
+    "moveSpeed": 0,
+    "attackSpeed": 0,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "wisp",
+    "name": "Wisp",
+    "char": "w",
+    "color": "wispLightColorColor",
+    "hp": 10,
+    "defense": 90,
+    "accuracy": 100,
+    "damage": "NaNdundefined",
+    "regen": null,
+    "moveSpeed": null,
+    "attackSpeed": null,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "0",
+    "name": "0",
+    "char": "0",
+    "color": "5Color",
+    "hp": 100,
+    "defense": 100,
+    "accuracy": null,
+    "damage": "NaNdundefined",
+    "regen": null,
+    "moveSpeed": 0,
+    "attackSpeed": 0,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "wraith",
+    "name": "Wraith",
+    "char": "w",
+    "color": "wraithColorColor",
+    "hp": 50,
+    "defense": 60,
+    "accuracy": 120,
+    "damage": "6d13",
+    "regen": 5,
+    "moveSpeed": 50,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_FLEES_NEAR_DEATH"
+    ],
+    "abilityFlags": []
+  },
+  {
+    "id": "zombie",
+    "name": "Zombie",
+    "char": "z",
+    "color": "vomitColorColor",
+    "hp": 80,
+    "defense": 0,
+    "accuracy": 120,
+    "damage": "7d12",
+    "regen": 0,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "troll",
+    "name": "Troll",
+    "char": "t",
+    "color": "trollColorColor",
+    "hp": 65,
+    "defense": 70,
+    "accuracy": 125,
+    "damage": "10d15",
+    "regen": 1,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_MALE",
+      "MONST_FEMALE"
+    ],
+    "abilityFlags": []
+  },
+  {
+    "id": "ogre_shaman",
+    "name": "Ogre shaman",
+    "char": "o",
+    "color": "greenColor",
+    "hp": 45,
+    "defense": 40,
+    "accuracy": 100,
+    "damage": "5d9",
+    "regen": 20,
+    "moveSpeed": 100,
+    "attackSpeed": 200,
+    "behaviorFlags": [
+      "MONST_MAINTAINS_DISTANCE",
+      "MONST_CAST_SPELLS_SLOWLY",
+      "MONST_MALE",
+      "MONST_FEMALE"
+    ],
+    "abilityFlags": [
+      "MA_CAST_SUMMON",
+      "MA_AVOID_CORRIDORS"
+    ]
+  },
+  {
+    "id": "naga",
+    "name": "Naga",
+    "char": "n",
+    "color": "trollColorColor",
+    "hp": 75,
+    "defense": 70,
+    "accuracy": 150,
+    "damage": "7d11",
+    "regen": 10,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_IMMUNE_TO_WATER",
+      "MONST_SUBMERGES",
+      "MONST_NEVER_SLEEPS",
+      "MONST_FEMALE"
+    ],
+    "abilityFlags": [
+      "MA_ATTACKS_ALL_ADJACENT"
+    ]
+  },
+  {
+    "id": "salamander",
+    "name": "Salamander",
+    "char": "s",
+    "color": "salamanderColorColor",
+    "hp": 60,
+    "defense": 70,
+    "accuracy": 150,
+    "damage": "5d11",
+    "regen": 10,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_IMMUNE_TO_FIRE",
+      "MONST_SUBMERGES",
+      "MONST_NEVER_SLEEPS",
+      "MONST_FIERY",
+      "MONST_MALE"
+    ],
+    "abilityFlags": [
+      "MA_ATTACKS_EXTEND"
+    ]
+  },
+  {
+    "id": "explosive_bloat",
+    "name": "Explosive bloat",
+    "char": "b",
+    "color": "orangeColor",
+    "hp": 10,
+    "defense": 0,
+    "accuracy": 100,
+    "damage": "NaNdundefined",
+    "regen": null,
+    "moveSpeed": null,
+    "attackSpeed": null,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "0",
+    "name": "0",
+    "char": "0",
+    "color": "5Color",
+    "hp": 100,
+    "defense": 100,
+    "accuracy": null,
+    "damage": "NaNdundefined",
+    "regen": null,
+    "moveSpeed": 0,
+    "attackSpeed": null,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "dar_blademaster",
+    "name": "Dar blademaster",
+    "char": "d",
+    "color": "purpleColor",
+    "hp": 35,
+    "defense": 70,
+    "accuracy": 160,
+    "damage": "5d9",
+    "regen": 20,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_CARRY_ITEM_25",
+      "MONST_MALE",
+      "MONST_FEMALE"
+    ],
+    "abilityFlags": [
+      "MA_AVOID_CORRIDORS"
+    ]
+  },
+  {
+    "id": "dar_priestess",
+    "name": "Dar priestess",
+    "char": "d",
+    "color": "darPriestessColorColor",
+    "hp": 20,
+    "defense": 60,
+    "accuracy": 100,
+    "damage": "2d5",
+    "regen": 20,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_MAINTAINS_DISTANCE",
+      "MONST_CARRY_ITEM_25",
+      "MONST_FEMALE"
+    ],
+    "abilityFlags": [
+      "MA_AVOID_CORRIDORS"
+    ]
+  },
+  {
+    "id": "dar_battlemage",
+    "name": "Dar battlemage",
+    "char": "d",
+    "color": "darMageColorColor",
+    "hp": 20,
+    "defense": 60,
+    "accuracy": 100,
+    "damage": "1d3",
+    "regen": 20,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_MAINTAINS_DISTANCE",
+      "MONST_CARRY_ITEM_25",
+      "MONST_MALE",
+      "MONST_FEMALE"
+    ],
+    "abilityFlags": [
+      "MA_AVOID_CORRIDORS"
+    ]
+  },
+  {
+    "id": "acidic_jelly",
+    "name": "Acidic jelly",
+    "char": "j",
+    "color": "acidBackColorColor",
+    "hp": 60,
+    "defense": 0,
+    "accuracy": 115,
+    "damage": "2d6",
+    "regen": 0,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_DEFEND_DEGRADE_WEAPON"
+    ],
+    "abilityFlags": [
+      "MA_HIT_DEGRADE_ARMOR",
+      "MA_CLONE_SELF_ON_DEFEND"
+    ]
+  },
+  {
+    "id": "centaur",
+    "name": "Centaur",
+    "char": "c",
+    "color": "tanColorColor",
+    "hp": 35,
+    "defense": 50,
+    "accuracy": 175,
+    "damage": "4d8",
+    "regen": 20,
+    "moveSpeed": 50,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_MAINTAINS_DISTANCE",
+      "MONST_MALE"
+    ],
+    "abilityFlags": []
+  },
+  {
+    "id": "underworm",
+    "name": "Underworm",
+    "char": "u",
+    "color": "wormColorColor",
+    "hp": 80,
+    "defense": 40,
+    "accuracy": 160,
+    "damage": "18d22",
+    "regen": 3,
+    "moveSpeed": 150,
+    "attackSpeed": 200,
+    "behaviorFlags": [
+      "MONST_NEVER_SLEEPS"
+    ],
+    "abilityFlags": []
+  },
+  {
+    "id": "sentinel",
+    "name": "Sentinel",
+    "char": "g",
+    "color": "sentinelColorColor",
+    "hp": 50,
+    "defense": 0,
+    "accuracy": 0,
+    "damage": "NaNdundefined",
+    "regen": null,
+    "moveSpeed": null,
+    "attackSpeed": null,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "0",
+    "name": "0",
+    "char": "0",
+    "color": "0Color",
+    "hp": 100,
+    "defense": 175,
+    "accuracy": null,
+    "damage": "NaNdundefined",
+    "regen": null,
+    "moveSpeed": 0,
+    "attackSpeed": 0,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "dart_turret",
+    "name": "Dart turret",
+    "char": "t",
+    "color": "centipedeColorColor",
+    "hp": 20,
+    "defense": 0,
+    "accuracy": 140,
+    "damage": "1d2",
+    "regen": 0,
+    "moveSpeed": 100,
+    "attackSpeed": 250,
+    "behaviorFlags": [
+      "MONST_TURRET"
+    ],
+    "abilityFlags": [
+      "MA_CAUSES_WEAKNESS"
+    ]
+  },
+  {
+    "id": "kraken",
+    "name": "Kraken",
+    "char": "k",
+    "color": "krakenColorColor",
+    "hp": 120,
+    "defense": 0,
+    "accuracy": 150,
+    "damage": "15d20",
+    "regen": 1,
+    "moveSpeed": 50,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_RESTRICTED_TO_LIQUID",
+      "MONST_IMMUNE_TO_WATER",
+      "MONST_SUBMERGES",
+      "MONST_FLITS",
+      "MONST_NEVER_SLEEPS",
+      "MONST_FLEES_NEAR_DEATH"
+    ],
+    "abilityFlags": [
+      "MA_SEIZES"
+    ]
+  },
+  {
+    "id": "lich",
+    "name": "Lich",
+    "char": "l",
+    "color": "whiteColor",
+    "hp": 35,
+    "defense": 80,
+    "accuracy": 175,
+    "damage": "2d6",
+    "regen": 0,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_MAINTAINS_DISTANCE",
+      "MONST_CARRY_ITEM_25",
+      "MONST_NO_POLYMORPH"
+    ],
+    "abilityFlags": [
+      "MA_CAST_SUMMON"
+    ]
+  },
+  {
+    "id": "phylactery",
+    "name": "Phylactery",
+    "char": "e",
+    "color": "lichLightColorColor",
+    "hp": 30,
+    "defense": 0,
+    "accuracy": 0,
+    "damage": "NaNdundefined",
+    "regen": null,
+    "moveSpeed": null,
+    "attackSpeed": null,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "0",
+    "name": "0",
+    "char": "0",
+    "color": "0Color",
+    "hp": 100,
+    "defense": 150,
+    "accuracy": null,
+    "damage": "NaNdundefined",
+    "regen": null,
+    "moveSpeed": 0,
+    "attackSpeed": 0,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "pixie",
+    "name": "Pixie",
+    "char": "p",
+    "color": "pixieColorColor",
+    "hp": 10,
+    "defense": 90,
+    "accuracy": 100,
+    "damage": "1d3",
+    "regen": 20,
+    "moveSpeed": 50,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_MAINTAINS_DISTANCE",
+      "MONST_FLIES",
+      "MONST_FLITS",
+      "MONST_MALE",
+      "MONST_FEMALE"
+    ],
+    "abilityFlags": []
+  },
+  {
+    "id": "phantom",
+    "name": "Phantom",
+    "char": "p",
+    "color": "ectoplasmColorColor",
+    "hp": 35,
+    "defense": 70,
+    "accuracy": 160,
+    "damage": "12d18",
+    "regen": 0,
+    "moveSpeed": 50,
+    "attackSpeed": 200,
+    "behaviorFlags": [
+      "MONST_INVISIBLE",
+      "MONST_FLITS",
+      "MONST_FLIES",
+      "MONST_IMMUNE_TO_WEBS"
+    ],
+    "abilityFlags": []
+  },
+  {
+    "id": "flame_turret",
+    "name": "Flame turret",
+    "char": "t",
+    "color": "lavaForeColorColor",
+    "hp": 40,
+    "defense": 0,
+    "accuracy": 150,
+    "damage": "1d2",
+    "regen": 0,
+    "moveSpeed": 100,
+    "attackSpeed": 250,
+    "behaviorFlags": [
+      "MONST_TURRET"
+    ],
+    "abilityFlags": []
+  },
+  {
+    "id": "imp",
+    "name": "Imp",
+    "char": "i",
+    "color": "pinkColor",
+    "hp": 35,
+    "defense": 90,
+    "accuracy": 225,
+    "damage": "4d9",
+    "regen": 10,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [],
+    "abilityFlags": [
+      "MA_HIT_STEAL_FLEE"
+    ]
+  },
+  {
+    "id": "fury",
+    "name": "Fury",
+    "char": "f",
+    "color": "darkRedColor",
+    "hp": 19,
+    "defense": 90,
+    "accuracy": 200,
+    "damage": "6d11",
+    "regen": 20,
+    "moveSpeed": 50,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_NEVER_SLEEPS",
+      "MONST_FLIES"
+    ],
+    "abilityFlags": []
+  },
+  {
+    "id": "revenant",
+    "name": "Revenant",
+    "char": "r",
+    "color": "ectoplasmColorColor",
+    "hp": 30,
+    "defense": 0,
+    "accuracy": 200,
+    "damage": "15d20",
+    "regen": 0,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_IMMUNE_TO_WEAPONS"
+    ],
+    "abilityFlags": []
+  },
+  {
+    "id": "tentacle_horror",
+    "name": "Tentacle horror",
+    "char": "t",
+    "color": "centipedeColorColor",
+    "hp": 120,
+    "defense": 95,
+    "accuracy": 225,
+    "damage": "25d35",
+    "regen": 1,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "golem",
+    "name": "Golem",
+    "char": "g",
+    "color": "grayColor",
+    "hp": 400,
+    "defense": 70,
+    "accuracy": 225,
+    "damage": "4d8",
+    "regen": 0,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_REFLECT_50",
+      "MONST_DIES_IF_NEGATED"
+    ],
+    "abilityFlags": []
+  },
+  {
+    "id": "dragon",
+    "name": "Dragon",
+    "char": "d",
+    "color": "dragonColorColor",
+    "hp": 150,
+    "defense": 90,
+    "accuracy": 250,
+    "damage": "25d50",
+    "regen": 20,
+    "moveSpeed": 50,
+    "attackSpeed": 200,
+    "behaviorFlags": [
+      "MONST_IMMUNE_TO_FIRE",
+      "MONST_CARRY_ITEM_100"
+    ],
+    "abilityFlags": [
+      "MA_ATTACKS_ALL_ADJACENT"
+    ]
+  },
+  {
+    "id": "goblin_warlord",
+    "name": "Goblin warlord",
+    "char": "g",
+    "color": "blueColor",
+    "hp": 30,
+    "defense": 17,
+    "accuracy": 100,
+    "damage": "3d6",
+    "regen": 20,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_MAINTAINS_DISTANCE",
+      "MONST_CARRY_ITEM_25"
+    ],
+    "abilityFlags": [
+      "MA_CAST_SUMMON",
+      "MA_ATTACKS_PENETRATE",
+      "MA_AVOID_CORRIDORS"
+    ]
+  },
+  {
+    "id": "black_jelly",
+    "name": "Black jelly",
+    "char": "j",
+    "color": "blackColor",
+    "hp": 120,
+    "defense": 0,
+    "accuracy": 130,
+    "damage": "3d8",
+    "regen": 0,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [],
+    "abilityFlags": [
+      "MA_CLONE_SELF_ON_DEFEND"
+    ]
+  },
+  {
+    "id": "vampire",
+    "name": "Vampire",
+    "char": "v",
+    "color": "whiteColor",
+    "hp": 75,
+    "defense": 60,
+    "accuracy": 120,
+    "damage": "4d15",
+    "regen": 6,
+    "moveSpeed": 50,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_FLEES_NEAR_DEATH",
+      "MONST_MALE"
+    ],
+    "abilityFlags": [
+      "MA_TRANSFERENCE",
+      "MA_DF_ON_DEATH",
+      "MA_CAST_SUMMON",
+      "MA_ENTER_SUMMONS"
+    ]
+  },
+  {
+    "id": "flamedancer",
+    "name": "Flamedancer",
+    "char": "f",
+    "color": "whiteColor",
+    "hp": 65,
+    "defense": 80,
+    "accuracy": 120,
+    "damage": "3d8",
+    "regen": 0,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_MAINTAINS_DISTANCE",
+      "MONST_IMMUNE_TO_FIRE",
+      "MONST_FIERY"
+    ],
+    "abilityFlags": [
+      "MA_HIT_BURN"
+    ]
+  },
+  {
+    "id": "spectral_blade",
+    "name": "Spectral blade",
+    "char": "w",
+    "color": "spectralBladeColorColor",
+    "hp": 1,
+    "defense": 0,
+    "accuracy": 150,
+    "damage": "1d1",
+    "regen": 0,
+    "moveSpeed": 50,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_INANIMATE",
+      "MONST_NEVER_SLEEPS",
+      "MONST_FLIES",
+      "MONST_WILL_NOT_USE_STAIRS",
+      "MONST_DIES_IF_NEGATED",
+      "MONST_IMMUNE_TO_WEBS",
+      "MONST_NOT_LISTED_IN_SIDEBAR"
+    ],
+    "abilityFlags": []
+  },
+  {
+    "id": "spectral_sword",
+    "name": "Spectral sword",
+    "char": "w",
+    "color": "spectralImageColorColor",
+    "hp": 1,
+    "defense": 0,
+    "accuracy": 150,
+    "damage": "1d1",
+    "regen": 0,
+    "moveSpeed": 50,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_INANIMATE",
+      "MONST_NEVER_SLEEPS",
+      "MONST_FLIES",
+      "MONST_WILL_NOT_USE_STAIRS",
+      "MONST_DIES_IF_NEGATED",
+      "MONST_IMMUNE_TO_WEBS"
+    ],
+    "abilityFlags": []
+  },
+  {
+    "id": "stone_guardian",
+    "name": "Stone guardian",
+    "char": "g",
+    "color": "whiteColor",
+    "hp": 1000,
+    "defense": 0,
+    "accuracy": 200,
+    "damage": "12d17",
+    "regen": 0,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_INANIMATE",
+      "MONST_NEVER_SLEEPS",
+      "MONST_ALWAYS_HUNTING",
+      "MONST_IMMUNE_TO_FIRE",
+      "MONST_IMMUNE_TO_WEAPONS",
+      "MONST_WILL_NOT_USE_STAIRS",
+      "MONST_DIES_IF_NEGATED",
+      "MONST_ALWAYS_USE_ABILITY",
+      "MONST_GETS_TURN_ON_ACTIVATION"
+    ],
+    "abilityFlags": [
+      "MA_REFLECT_100"
+    ]
+  },
+  {
+    "id": "winged_guardian",
+    "name": "Winged guardian",
+    "char": "w",
+    "color": "blueColor",
+    "hp": 1000,
+    "defense": 0,
+    "accuracy": 200,
+    "damage": "12d17",
+    "regen": 0,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_INANIMATE",
+      "MONST_NEVER_SLEEPS",
+      "MONST_ALWAYS_HUNTING",
+      "MONST_IMMUNE_TO_FIRE",
+      "MONST_IMMUNE_TO_WEAPONS",
+      "MONST_WILL_NOT_USE_STAIRS",
+      "MONST_DIES_IF_NEGATED",
+      "MONST_GETS_TURN_ON_ACTIVATION",
+      "MONST_ALWAYS_USE_ABILITY"
+    ],
+    "abilityFlags": [
+      "MA_REFLECT_100"
+    ]
+  },
+  {
+    "id": "guardian_spirit",
+    "name": "Guardian spirit",
+    "char": "g",
+    "color": "spectralImageColorColor",
+    "hp": 1000,
+    "defense": 0,
+    "accuracy": 200,
+    "damage": "5d12",
+    "regen": 0,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_INANIMATE",
+      "MONST_NEVER_SLEEPS",
+      "MONST_IMMUNE_TO_FIRE",
+      "MONST_IMMUNE_TO_WEAPONS",
+      "MONST_DIES_IF_NEGATED",
+      "MONST_ALWAYS_USE_ABILITY"
+    ],
+    "abilityFlags": [
+      "MA_REFLECT_100"
+    ]
+  },
+  {
+    "id": "Warden_of_Yendor",
+    "name": "Warden of Yendor",
+    "char": "w",
+    "color": "yendorLightColorColor",
+    "hp": 1000,
+    "defense": 0,
+    "accuracy": 300,
+    "damage": "12d17",
+    "regen": 0,
+    "moveSpeed": 200,
+    "attackSpeed": 200,
+    "behaviorFlags": [
+      "MONST_NEVER_SLEEPS",
+      "MONST_ALWAYS_HUNTING",
+      "MONST_INVULNERABLE",
+      "MONST_NO_POLYMORPH"
+    ],
+    "abilityFlags": []
+  },
+  {
+    "id": "eldritch_totem",
+    "name": "Eldritch totem",
+    "char": "t",
+    "color": "glyphColorColor",
+    "hp": 80,
+    "defense": 0,
+    "accuracy": 0,
+    "damage": "NaNdundefined",
+    "regen": null,
+    "moveSpeed": null,
+    "attackSpeed": null,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "0",
+    "name": "0",
+    "char": "0",
+    "color": "0Color",
+    "hp": 100,
+    "defense": 100,
+    "accuracy": null,
+    "damage": "0dundefined",
+    "regen": null,
+    "moveSpeed": 0,
+    "attackSpeed": 0,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "mirrored_totem",
+    "name": "Mirrored totem",
+    "char": "t",
+    "color": "beckonColorColor",
+    "hp": 80,
+    "defense": 0,
+    "accuracy": 0,
+    "damage": "NaNdundefined",
+    "regen": null,
+    "moveSpeed": null,
+    "attackSpeed": null,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "0",
+    "name": "0",
+    "char": "0",
+    "color": "0Color",
+    "hp": 100,
+    "defense": 100,
+    "accuracy": null,
+    "damage": "0dundefined",
+    "regen": null,
+    "moveSpeed": 100,
+    "attackSpeed": null,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "unicorn",
+    "name": "Unicorn",
+    "char": "u",
+    "color": "whiteColor",
+    "hp": 40,
+    "defense": 60,
+    "accuracy": 175,
+    "damage": "2d10",
+    "regen": 20,
+    "moveSpeed": 50,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_MAINTAINS_DISTANCE",
+      "MONST_MALE",
+      "MONST_FEMALE"
+    ],
+    "abilityFlags": []
+  },
+  {
+    "id": "ifrit",
+    "name": "Ifrit",
+    "char": "i",
+    "color": "ifritColorColor",
+    "hp": 40,
+    "defense": 75,
+    "accuracy": 175,
+    "damage": "5d13",
+    "regen": 1,
+    "moveSpeed": 50,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_IMMUNE_TO_FIRE",
+      "MONST_FLIES",
+      "MONST_MALE"
+    ],
+    "abilityFlags": []
+  },
+  {
+    "id": "phoenix",
+    "name": "Phoenix",
+    "char": "p",
+    "color": "phoenixColorColor",
+    "hp": 30,
+    "defense": 70,
+    "accuracy": 175,
+    "damage": "4d10",
+    "regen": 0,
+    "moveSpeed": 50,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_IMMUNE_TO_FIRE",
+      "MONST_FLIES",
+      "MONST_NO_POLYMORPH"
+    ],
+    "abilityFlags": []
+  },
+  {
+    "id": "phoenix_egg",
+    "name": "Phoenix egg",
+    "char": "e",
+    "color": "phoenixColorColor",
+    "hp": 50,
+    "defense": 0,
+    "accuracy": 0,
+    "damage": "NaNdundefined",
+    "regen": null,
+    "moveSpeed": null,
+    "attackSpeed": null,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "0",
+    "name": "0",
+    "char": "0",
+    "color": "0Color",
+    "hp": 100,
+    "defense": 150,
+    "accuracy": null,
+    "damage": "NaNdundefined",
+    "regen": null,
+    "moveSpeed": 0,
+    "attackSpeed": 0,
+    "behaviorFlags": [],
+    "abilityFlags": []
+  },
+  {
+    "id": "mangrove_dryad",
+    "name": "Mangrove dryad",
+    "char": "a",
+    "color": "tanColorColor",
+    "hp": 70,
+    "defense": 60,
+    "accuracy": 175,
+    "damage": "2d8",
+    "regen": 6,
+    "moveSpeed": 100,
+    "attackSpeed": 100,
+    "behaviorFlags": [
+      "MONST_IMMUNE_TO_WEBS",
+      "MONST_ALWAYS_USE_ABILITY",
+      "MONST_MAINTAINS_DISTANCE",
+      "MONST_NO_POLYMORPH",
+      "MONST_MALE",
+      "MONST_FEMALE"
+    ],
+    "abilityFlags": []
+  }
+]

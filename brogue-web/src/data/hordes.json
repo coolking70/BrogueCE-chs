@@ -1,0 +1,1728 @@
+[
+  {
+    "leader": "RAT",
+    "members": [],
+    "minLevel": 1,
+    "maxLevel": 3,
+    "frequency": 100,
+    "flags": []
+  },
+  {
+    "leader": "RAT",
+    "members": [
+      {
+        "type": "RAT",
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "minLevel": 1,
+    "maxLevel": 3,
+    "frequency": 80,
+    "flags": []
+  },
+  {
+    "leader": "KOBOLD",
+    "members": [],
+    "minLevel": 1,
+    "maxLevel": 5,
+    "frequency": 100,
+    "flags": []
+  },
+  {
+    "leader": "KOBOLD",
+    "members": [
+      {
+        "type": "KOBOLD",
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "minLevel": 1,
+    "maxLevel": 4,
+    "frequency": 80,
+    "flags": []
+  },
+  {
+    "leader": "JACKAL",
+    "members": [],
+    "minLevel": 2,
+    "maxLevel": 6,
+    "frequency": 100,
+    "flags": []
+  },
+  {
+    "leader": "JACKAL",
+    "members": [
+      {
+        "type": "JACKAL",
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "minLevel": 2,
+    "maxLevel": 6,
+    "frequency": 80,
+    "flags": []
+  },
+  {
+    "leader": "EEL",
+    "members": [],
+    "minLevel": 2,
+    "maxLevel": 17,
+    "frequency": 100,
+    "flags": []
+  },
+  {
+    "leader": "GOBLIN_TOTEM",
+    "members": [
+      {
+        "type": "GOBLIN",
+        "minCount": 2,
+        "maxCount": 4
+      }
+    ],
+    "minLevel": 5,
+    "maxLevel": 13,
+    "frequency": 100,
+    "flags": [
+      "HORDE_NO_PERIODIC_SPAWN"
+    ]
+  },
+  {
+    "leader": "ARROW_TURRET",
+    "members": [],
+    "minLevel": 5,
+    "maxLevel": 13,
+    "frequency": 100,
+    "flags": [
+      "HORDE_NO_PERIODIC_SPAWN"
+    ]
+  },
+  {
+    "leader": "VAMPIRE_BAT",
+    "members": [
+      {
+        "type": "VAMPIRE_BAT",
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "minLevel": 6,
+    "maxLevel": 13,
+    "frequency": 70,
+    "flags": [
+      "HORDE_NEVER_OOD"
+    ]
+  },
+  {
+    "leader": "BOG_MONSTER",
+    "members": [],
+    "minLevel": 7,
+    "maxLevel": 14,
+    "frequency": 80,
+    "flags": [
+      "HORDE_NEVER_OOD"
+    ]
+  },
+  {
+    "leader": "EEL",
+    "members": [
+      {
+        "type": "EEL",
+        "minCount": 2,
+        "maxCount": 4
+      }
+    ],
+    "minLevel": 8,
+    "maxLevel": 22,
+    "frequency": 70,
+    "flags": []
+  },
+  {
+    "leader": "GOBLIN_TOTEM",
+    "members": [
+      {
+        "type": "GOBLIN_TOTEM",
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "GOBLIN_CONJURER",
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "GOBLIN_MYSTIC",
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "GOBLIN",
+        "minCount": 3,
+        "maxCount": 5
+      }
+    ],
+    "minLevel": 10,
+    "maxLevel": 17,
+    "frequency": 80,
+    "flags": [
+      "HORDE_NO_PERIODIC_SPAWN"
+    ]
+  },
+  {
+    "leader": "SPARK_TURRET",
+    "members": [],
+    "minLevel": 11,
+    "maxLevel": 18,
+    "frequency": 100,
+    "flags": [
+      "HORDE_NO_PERIODIC_SPAWN"
+    ]
+  },
+  {
+    "leader": "OGRE_TOTEM",
+    "members": [
+      {
+        "type": "OGRE",
+        "minCount": 2,
+        "maxCount": 4
+      }
+    ],
+    "minLevel": 12,
+    "maxLevel": 19,
+    "frequency": 60,
+    "flags": [
+      "HORDE_NO_PERIODIC_SPAWN"
+    ]
+  },
+  {
+    "leader": "BOG_MONSTER",
+    "members": [
+      {
+        "type": "BOG_MONSTER",
+        "minCount": 2,
+        "maxCount": 4
+      }
+    ],
+    "minLevel": 12,
+    "maxLevel": 26,
+    "frequency": 100,
+    "flags": []
+  },
+  {
+    "leader": "NAGA",
+    "members": [],
+    "minLevel": 13,
+    "maxLevel": 20,
+    "frequency": 100,
+    "flags": []
+  },
+  {
+    "leader": "SALAMANDER",
+    "members": [],
+    "minLevel": 13,
+    "maxLevel": 20,
+    "frequency": 100,
+    "flags": []
+  },
+  {
+    "leader": "DART_TURRET",
+    "members": [],
+    "minLevel": 15,
+    "maxLevel": 22,
+    "frequency": 100,
+    "flags": [
+      "HORDE_NO_PERIODIC_SPAWN"
+    ]
+  },
+  {
+    "leader": "FLAME_TURRET",
+    "members": [],
+    "minLevel": 14,
+    "maxLevel": 24,
+    "frequency": 100,
+    "flags": [
+      "HORDE_NO_PERIODIC_SPAWN"
+    ]
+  },
+  {
+    "leader": "KRAKEN",
+    "members": [],
+    "minLevel": 15,
+    "maxLevel": 30,
+    "frequency": 100,
+    "flags": []
+  },
+  {
+    "leader": "KRAKEN",
+    "members": [
+      {
+        "type": "KRAKEN",
+        "minCount": 5,
+        "maxCount": 10
+      }
+    ],
+    "minLevel": 30,
+    "maxLevel": null,
+    "frequency": 100,
+    "flags": []
+  },
+  {
+    "leader": "GOBLIN_CONJURER",
+    "members": [
+      {
+        "type": "SPECTRAL_BLADE",
+        "minCount": 3,
+        "maxCount": 5
+      }
+    ],
+    "minLevel": 0,
+    "maxLevel": 0,
+    "frequency": 100,
+    "flags": [
+      "HORDE_IS_SUMMONED",
+      "HORDE_DIES_ON_LEADER_DEATH"
+    ]
+  },
+  {
+    "leader": "OGRE_SHAMAN",
+    "members": [
+      {
+        "type": "OGRE",
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
+    "minLevel": 0,
+    "maxLevel": 0,
+    "frequency": 100,
+    "flags": [
+      "HORDE_IS_SUMMONED"
+    ]
+  },
+  {
+    "leader": "VAMPIRE",
+    "members": [
+      {
+        "type": "VAMPIRE_BAT",
+        "minCount": 3,
+        "maxCount": 3
+      }
+    ],
+    "minLevel": 0,
+    "maxLevel": 0,
+    "frequency": 100,
+    "flags": [
+      "HORDE_IS_SUMMONED"
+    ]
+  },
+  {
+    "leader": "LICH",
+    "members": [
+      {
+        "type": "PHANTOM",
+        "minCount": 2,
+        "maxCount": 3
+      }
+    ],
+    "minLevel": 0,
+    "maxLevel": 0,
+    "frequency": 100,
+    "flags": [
+      "HORDE_IS_SUMMONED"
+    ]
+  },
+  {
+    "leader": "LICH",
+    "members": [
+      {
+        "type": "FURY",
+        "minCount": 2,
+        "maxCount": 3
+      }
+    ],
+    "minLevel": 0,
+    "maxLevel": 0,
+    "frequency": 100,
+    "flags": [
+      "HORDE_IS_SUMMONED"
+    ]
+  },
+  {
+    "leader": "PHYLACTERY",
+    "members": [
+      {
+        "type": "LICH",
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
+    "minLevel": 0,
+    "maxLevel": 0,
+    "frequency": 100,
+    "flags": [
+      "HORDE_IS_SUMMONED"
+    ]
+  },
+  {
+    "leader": "GOBLIN_CHIEFTAN",
+    "members": [
+      {
+        "type": "GOBLIN_CONJURER",
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "GOBLIN",
+        "minCount": 3,
+        "maxCount": 4
+      }
+    ],
+    "minLevel": 0,
+    "maxLevel": 0,
+    "frequency": 100,
+    "flags": [
+      "HORDE_IS_SUMMONED",
+      "HORDE_SUMMONED_AT_DISTANCE"
+    ]
+  },
+  {
+    "leader": "PHOENIX_EGG",
+    "members": [
+      {
+        "type": "PHOENIX",
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
+    "minLevel": 0,
+    "maxLevel": 0,
+    "frequency": 100,
+    "flags": [
+      "HORDE_IS_SUMMONED"
+    ]
+  },
+  {
+    "leader": "ELDRITCH_TOTEM",
+    "members": [
+      {
+        "type": "SPECTRAL_BLADE",
+        "minCount": 4,
+        "maxCount": 7
+      }
+    ],
+    "minLevel": 0,
+    "maxLevel": 0,
+    "frequency": 100,
+    "flags": [
+      "HORDE_IS_SUMMONED",
+      "HORDE_DIES_ON_LEADER_DEATH"
+    ]
+  },
+  {
+    "leader": "ELDRITCH_TOTEM",
+    "members": [
+      {
+        "type": "FURY",
+        "minCount": 2,
+        "maxCount": 3
+      }
+    ],
+    "minLevel": 0,
+    "maxLevel": 0,
+    "frequency": 100,
+    "flags": [
+      "HORDE_IS_SUMMONED",
+      "HORDE_DIES_ON_LEADER_DEATH"
+    ]
+  },
+  {
+    "leader": "MONKEY",
+    "members": [
+      {
+        "type": "KOBOLD",
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "minLevel": 1,
+    "maxLevel": 5,
+    "frequency": 10,
+    "flags": [
+      "HORDE_LEADER_CAPTIVE",
+      "HORDE_NEVER_OOD"
+    ]
+  },
+  {
+    "leader": "GOBLIN",
+    "members": [
+      {
+        "type": "GOBLIN",
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "minLevel": 3,
+    "maxLevel": 7,
+    "frequency": 10,
+    "flags": [
+      "HORDE_LEADER_CAPTIVE",
+      "HORDE_NEVER_OOD"
+    ]
+  },
+  {
+    "leader": "OGRE",
+    "members": [
+      {
+        "type": "GOBLIN",
+        "minCount": 3,
+        "maxCount": 5
+      }
+    ],
+    "minLevel": 4,
+    "maxLevel": 10,
+    "frequency": 10,
+    "flags": [
+      "HORDE_LEADER_CAPTIVE",
+      "HORDE_NEVER_OOD"
+    ]
+  },
+  {
+    "leader": "GOBLIN_MYSTIC",
+    "members": [
+      {
+        "type": "KOBOLD",
+        "minCount": 3,
+        "maxCount": 7
+      }
+    ],
+    "minLevel": 5,
+    "maxLevel": 11,
+    "frequency": 10,
+    "flags": [
+      "HORDE_LEADER_CAPTIVE",
+      "HORDE_NEVER_OOD"
+    ]
+  },
+  {
+    "leader": "OGRE",
+    "members": [
+      {
+        "type": "OGRE",
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "minLevel": 8,
+    "maxLevel": 15,
+    "frequency": 20,
+    "flags": [
+      "HORDE_LEADER_CAPTIVE",
+      "HORDE_NEVER_OOD"
+    ]
+  },
+  {
+    "leader": "TROLL",
+    "members": [
+      {
+        "type": "TROLL",
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "minLevel": 14,
+    "maxLevel": 19,
+    "frequency": 10,
+    "flags": [
+      "HORDE_LEADER_CAPTIVE",
+      "HORDE_NEVER_OOD"
+    ]
+  },
+  {
+    "leader": "CENTAUR",
+    "members": [
+      {
+        "type": "TROLL",
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "minLevel": 12,
+    "maxLevel": 19,
+    "frequency": 10,
+    "flags": [
+      "HORDE_LEADER_CAPTIVE",
+      "HORDE_NEVER_OOD"
+    ]
+  },
+  {
+    "leader": "TROLL",
+    "members": [
+      {
+        "type": "OGRE",
+        "minCount": 2,
+        "maxCount": 3
+      },
+      {
+        "type": "OGRE_SHAMAN",
+        "minCount": 0,
+        "maxCount": 1
+      }
+    ],
+    "minLevel": 17,
+    "maxLevel": 19,
+    "frequency": 10,
+    "flags": [
+      "HORDE_LEADER_CAPTIVE",
+      "HORDE_NEVER_OOD"
+    ]
+  },
+  {
+    "leader": "DAR_BLADEMASTER",
+    "members": [
+      {
+        "type": "TROLL",
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "minLevel": 12,
+    "maxLevel": 19,
+    "frequency": 10,
+    "flags": [
+      "HORDE_LEADER_CAPTIVE",
+      "HORDE_NEVER_OOD"
+    ]
+  },
+  {
+    "leader": "NAGA",
+    "members": [
+      {
+        "type": "SALAMANDER",
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "minLevel": 14,
+    "maxLevel": 20,
+    "frequency": 10,
+    "flags": [
+      "HORDE_LEADER_CAPTIVE",
+      "HORDE_NEVER_OOD"
+    ]
+  },
+  {
+    "leader": "SALAMANDER",
+    "members": [
+      {
+        "type": "NAGA",
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "minLevel": 13,
+    "maxLevel": 20,
+    "frequency": 10,
+    "flags": [
+      "HORDE_LEADER_CAPTIVE",
+      "HORDE_NEVER_OOD"
+    ]
+  },
+  {
+    "leader": "TROLL",
+    "members": [
+      {
+        "type": "SALAMANDER",
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "minLevel": 13,
+    "maxLevel": 19,
+    "frequency": 10,
+    "flags": [
+      "HORDE_LEADER_CAPTIVE",
+      "HORDE_NEVER_OOD"
+    ]
+  },
+  {
+    "leader": "IMP",
+    "members": [
+      {
+        "type": "FURY",
+        "minCount": 2,
+        "maxCount": 4
+      }
+    ],
+    "minLevel": 18,
+    "maxLevel": 26,
+    "frequency": 10,
+    "flags": [
+      "HORDE_LEADER_CAPTIVE",
+      "HORDE_NEVER_OOD"
+    ]
+  },
+  {
+    "leader": "PIXIE",
+    "members": [
+      {
+        "type": "IMP",
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "minLevel": 14,
+    "maxLevel": 21,
+    "frequency": 10,
+    "flags": [
+      "HORDE_LEADER_CAPTIVE",
+      "HORDE_NEVER_OOD"
+    ]
+  },
+  {
+    "leader": "DAR_BLADEMASTER",
+    "members": [
+      {
+        "type": "FURY",
+        "minCount": 2,
+        "maxCount": 4
+      }
+    ],
+    "minLevel": 18,
+    "maxLevel": 26,
+    "frequency": 10,
+    "flags": [
+      "HORDE_LEADER_CAPTIVE",
+      "HORDE_NEVER_OOD"
+    ]
+  },
+  {
+    "leader": "DAR_BLADEMASTER",
+    "members": [
+      {
+        "type": "IMP",
+        "minCount": 2,
+        "maxCount": 3
+      }
+    ],
+    "minLevel": 18,
+    "maxLevel": 26,
+    "frequency": 10,
+    "flags": [
+      "HORDE_LEADER_CAPTIVE",
+      "HORDE_NEVER_OOD"
+    ]
+  },
+  {
+    "leader": "DAR_PRIESTESS",
+    "members": [
+      {
+        "type": "FURY",
+        "minCount": 2,
+        "maxCount": 4
+      }
+    ],
+    "minLevel": 18,
+    "maxLevel": 26,
+    "frequency": 10,
+    "flags": [
+      "HORDE_LEADER_CAPTIVE",
+      "HORDE_NEVER_OOD"
+    ]
+  },
+  {
+    "leader": "DAR_BATTLEMAGE",
+    "members": [
+      {
+        "type": "IMP",
+        "minCount": 2,
+        "maxCount": 3
+      }
+    ],
+    "minLevel": 18,
+    "maxLevel": 26,
+    "frequency": 10,
+    "flags": [
+      "HORDE_LEADER_CAPTIVE",
+      "HORDE_NEVER_OOD"
+    ]
+  },
+  {
+    "leader": "TENTACLE_HORROR",
+    "members": [
+      {
+        "type": "DAR_BLADEMASTER",
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "DAR_PRIESTESS",
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "DAR_BATTLEMAGE",
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
+    "minLevel": 20,
+    "maxLevel": 26,
+    "frequency": 10,
+    "flags": [
+      "HORDE_LEADER_CAPTIVE",
+      "HORDE_NEVER_OOD"
+    ]
+  },
+  {
+    "leader": "GOLEM",
+    "members": [
+      {
+        "type": "DAR_BLADEMASTER",
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "DAR_PRIESTESS",
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "DAR_BATTLEMAGE",
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
+    "minLevel": 18,
+    "maxLevel": 25,
+    "frequency": 10,
+    "flags": [
+      "HORDE_LEADER_CAPTIVE",
+      "HORDE_NEVER_OOD"
+    ]
+  },
+  {
+    "leader": "GOBLIN_CHIEFTAN",
+    "members": [
+      {
+        "type": "GOBLIN_MYSTIC",
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "GOBLIN",
+        "minCount": 2,
+        "maxCount": 3
+      }
+    ],
+    "minLevel": 2,
+    "maxLevel": 10,
+    "frequency": 50,
+    "flags": [
+      "HORDE_MACHINE_BOSS"
+    ]
+  },
+  {
+    "leader": "BLACK_JELLY",
+    "members": [],
+    "minLevel": 5,
+    "maxLevel": 15,
+    "frequency": 50,
+    "flags": [
+      "HORDE_MACHINE_BOSS"
+    ]
+  },
+  {
+    "leader": "VAMPIRE",
+    "members": [],
+    "minLevel": 10,
+    "maxLevel": null,
+    "frequency": 50,
+    "flags": [
+      "HORDE_MACHINE_BOSS"
+    ]
+  },
+  {
+    "leader": "FLAMEDANCER",
+    "members": [],
+    "minLevel": 10,
+    "maxLevel": null,
+    "frequency": 50,
+    "flags": [
+      "HORDE_MACHINE_BOSS"
+    ]
+  },
+  {
+    "leader": "EEL",
+    "members": [],
+    "minLevel": 2,
+    "maxLevel": 7,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_WATER_MONSTER"
+    ]
+  },
+  {
+    "leader": "EEL",
+    "members": [
+      {
+        "type": "EEL",
+        "minCount": 2,
+        "maxCount": 4
+      }
+    ],
+    "minLevel": 5,
+    "maxLevel": 15,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_WATER_MONSTER"
+    ]
+  },
+  {
+    "leader": "KRAKEN",
+    "members": [],
+    "minLevel": 12,
+    "maxLevel": null,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_WATER_MONSTER"
+    ]
+  },
+  {
+    "leader": "KRAKEN",
+    "members": [
+      {
+        "type": "EEL",
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "minLevel": 12,
+    "maxLevel": null,
+    "frequency": 80,
+    "flags": [
+      "HORDE_MACHINE_WATER_MONSTER"
+    ]
+  },
+  {
+    "leader": "OGRE",
+    "members": [],
+    "minLevel": 4,
+    "maxLevel": 13,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_CAPTIVE",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "NAGA",
+    "members": [],
+    "minLevel": 12,
+    "maxLevel": 20,
+    "frequency": 50,
+    "flags": [
+      "HORDE_MACHINE_CAPTIVE",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "GOBLIN_MYSTIC",
+    "members": [],
+    "minLevel": 2,
+    "maxLevel": 8,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_CAPTIVE",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "TROLL",
+    "members": [],
+    "minLevel": 10,
+    "maxLevel": 20,
+    "frequency": 50,
+    "flags": [
+      "HORDE_MACHINE_CAPTIVE",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "DAR_BLADEMASTER",
+    "members": [],
+    "minLevel": 8,
+    "maxLevel": 16,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_CAPTIVE",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "DAR_PRIESTESS",
+    "members": [],
+    "minLevel": 8,
+    "maxLevel": 14,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_CAPTIVE",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "WRAITH",
+    "members": [],
+    "minLevel": 11,
+    "maxLevel": 20,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_CAPTIVE",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "GOLEM",
+    "members": [],
+    "minLevel": 17,
+    "maxLevel": 23,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_CAPTIVE",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "TENTACLE_HORROR",
+    "members": [],
+    "minLevel": 20,
+    "maxLevel": null,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_CAPTIVE",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "DRAGON",
+    "members": [],
+    "minLevel": 23,
+    "maxLevel": null,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_CAPTIVE",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "GOBLIN",
+    "members": [],
+    "minLevel": 1,
+    "maxLevel": 6,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_STATUE"
+    ]
+  },
+  {
+    "leader": "OGRE",
+    "members": [],
+    "minLevel": 6,
+    "maxLevel": 12,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_STATUE"
+    ]
+  },
+  {
+    "leader": "WRAITH",
+    "members": [],
+    "minLevel": 10,
+    "maxLevel": 17,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_STATUE"
+    ]
+  },
+  {
+    "leader": "NAGA",
+    "members": [],
+    "minLevel": 12,
+    "maxLevel": 19,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_STATUE"
+    ]
+  },
+  {
+    "leader": "TROLL",
+    "members": [],
+    "minLevel": 14,
+    "maxLevel": 21,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_STATUE"
+    ]
+  },
+  {
+    "leader": "GOLEM",
+    "members": [],
+    "minLevel": 21,
+    "maxLevel": 30,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_STATUE"
+    ]
+  },
+  {
+    "leader": "DRAGON",
+    "members": [],
+    "minLevel": 29,
+    "maxLevel": null,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_STATUE"
+    ]
+  },
+  {
+    "leader": "TENTACLE_HORROR",
+    "members": [],
+    "minLevel": 29,
+    "maxLevel": null,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_STATUE"
+    ]
+  },
+  {
+    "leader": "ARROW_TURRET",
+    "members": [],
+    "minLevel": 5,
+    "maxLevel": 13,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_TURRET"
+    ]
+  },
+  {
+    "leader": "SPARK_TURRET",
+    "members": [],
+    "minLevel": 11,
+    "maxLevel": 18,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_TURRET"
+    ]
+  },
+  {
+    "leader": "DART_TURRET",
+    "members": [],
+    "minLevel": 15,
+    "maxLevel": 22,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_TURRET"
+    ]
+  },
+  {
+    "leader": "FLAME_TURRET",
+    "members": [],
+    "minLevel": 17,
+    "maxLevel": 24,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_TURRET"
+    ]
+  },
+  {
+    "leader": "BOG_MONSTER",
+    "members": [],
+    "minLevel": 12,
+    "maxLevel": 26,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_MUD"
+    ]
+  },
+  {
+    "leader": "KRAKEN",
+    "members": [],
+    "minLevel": 17,
+    "maxLevel": 26,
+    "frequency": 30,
+    "flags": [
+      "HORDE_MACHINE_MUD"
+    ]
+  },
+  {
+    "leader": "MONKEY",
+    "members": [],
+    "minLevel": 1,
+    "maxLevel": 5,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_KENNEL",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "GOBLIN",
+    "members": [],
+    "minLevel": 1,
+    "maxLevel": 8,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_KENNEL",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "GOBLIN_CONJURER",
+    "members": [],
+    "minLevel": 2,
+    "maxLevel": 9,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_KENNEL",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "GOBLIN_MYSTIC",
+    "members": [],
+    "minLevel": 2,
+    "maxLevel": 9,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_KENNEL",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "OGRE",
+    "members": [],
+    "minLevel": 7,
+    "maxLevel": 17,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_KENNEL",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "TROLL",
+    "members": [],
+    "minLevel": 12,
+    "maxLevel": 21,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_KENNEL",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "NAGA",
+    "members": [],
+    "minLevel": 13,
+    "maxLevel": 23,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_KENNEL",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "SALAMANDER",
+    "members": [],
+    "minLevel": 9,
+    "maxLevel": 20,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_KENNEL",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "IMP",
+    "members": [],
+    "minLevel": 15,
+    "maxLevel": 26,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_KENNEL",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "PIXIE",
+    "members": [],
+    "minLevel": 11,
+    "maxLevel": 21,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_KENNEL",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "DAR_BLADEMASTER",
+    "members": [],
+    "minLevel": 9,
+    "maxLevel": null,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_KENNEL",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "DAR_PRIESTESS",
+    "members": [],
+    "minLevel": 12,
+    "maxLevel": null,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_KENNEL",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "DAR_BATTLEMAGE",
+    "members": [],
+    "minLevel": 13,
+    "maxLevel": null,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_KENNEL",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "MONKEY",
+    "members": [],
+    "minLevel": 1,
+    "maxLevel": 5,
+    "frequency": 100,
+    "flags": [
+      "HORDE_VAMPIRE_FODDER",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "GOBLIN",
+    "members": [],
+    "minLevel": 1,
+    "maxLevel": 8,
+    "frequency": 100,
+    "flags": [
+      "HORDE_VAMPIRE_FODDER",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "GOBLIN_CONJURER",
+    "members": [],
+    "minLevel": 2,
+    "maxLevel": 9,
+    "frequency": 100,
+    "flags": [
+      "HORDE_VAMPIRE_FODDER",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "GOBLIN_MYSTIC",
+    "members": [],
+    "minLevel": 2,
+    "maxLevel": 9,
+    "frequency": 100,
+    "flags": [
+      "HORDE_VAMPIRE_FODDER",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "OGRE",
+    "members": [],
+    "minLevel": 5,
+    "maxLevel": 15,
+    "frequency": 100,
+    "flags": [
+      "HORDE_VAMPIRE_FODDER",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "TROLL",
+    "members": [],
+    "minLevel": 10,
+    "maxLevel": 19,
+    "frequency": 100,
+    "flags": [
+      "HORDE_VAMPIRE_FODDER",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "NAGA",
+    "members": [],
+    "minLevel": 9,
+    "maxLevel": 20,
+    "frequency": 100,
+    "flags": [
+      "HORDE_VAMPIRE_FODDER",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "IMP",
+    "members": [],
+    "minLevel": 15,
+    "maxLevel": null,
+    "frequency": 100,
+    "flags": [
+      "HORDE_VAMPIRE_FODDER",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "PIXIE",
+    "members": [],
+    "minLevel": 11,
+    "maxLevel": 21,
+    "frequency": 100,
+    "flags": [
+      "HORDE_VAMPIRE_FODDER",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "DAR_BLADEMASTER",
+    "members": [],
+    "minLevel": 9,
+    "maxLevel": null,
+    "frequency": 100,
+    "flags": [
+      "HORDE_VAMPIRE_FODDER",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "DAR_PRIESTESS",
+    "members": [],
+    "minLevel": 12,
+    "maxLevel": null,
+    "frequency": 100,
+    "flags": [
+      "HORDE_VAMPIRE_FODDER",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "DAR_BATTLEMAGE",
+    "members": [],
+    "minLevel": 13,
+    "maxLevel": null,
+    "frequency": 100,
+    "flags": [
+      "HORDE_VAMPIRE_FODDER",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  },
+  {
+    "leader": "MONKEY",
+    "members": [],
+    "minLevel": 1,
+    "maxLevel": 14,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_THIEF"
+    ]
+  },
+  {
+    "leader": "IMP",
+    "members": [],
+    "minLevel": 15,
+    "maxLevel": null,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_THIEF"
+    ]
+  },
+  {
+    "leader": "MONKEY",
+    "members": [],
+    "minLevel": 1,
+    "maxLevel": 5,
+    "frequency": 100,
+    "flags": [
+      "HORDE_SACRIFICE_TARGET"
+    ]
+  },
+  {
+    "leader": "GOBLIN",
+    "members": [],
+    "minLevel": 3,
+    "maxLevel": 10,
+    "frequency": 100,
+    "flags": [
+      "HORDE_SACRIFICE_TARGET"
+    ]
+  },
+  {
+    "leader": "OGRE",
+    "members": [],
+    "minLevel": 7,
+    "maxLevel": 13,
+    "frequency": 100,
+    "flags": [
+      "HORDE_SACRIFICE_TARGET"
+    ]
+  },
+  {
+    "leader": "TROLL",
+    "members": [],
+    "minLevel": 12,
+    "maxLevel": 19,
+    "frequency": 100,
+    "flags": [
+      "HORDE_SACRIFICE_TARGET"
+    ]
+  },
+  {
+    "leader": "WRAITH",
+    "members": [],
+    "minLevel": 10,
+    "maxLevel": 17,
+    "frequency": 100,
+    "flags": [
+      "HORDE_SACRIFICE_TARGET"
+    ]
+  },
+  {
+    "leader": "NAGA",
+    "members": [],
+    "minLevel": 13,
+    "maxLevel": 20,
+    "frequency": 100,
+    "flags": [
+      "HORDE_SACRIFICE_TARGET"
+    ]
+  },
+  {
+    "leader": "DAR_BLADEMASTER",
+    "members": [],
+    "minLevel": 10,
+    "maxLevel": 20,
+    "frequency": 100,
+    "flags": [
+      "HORDE_SACRIFICE_TARGET"
+    ]
+  },
+  {
+    "leader": "GOLEM",
+    "members": [],
+    "minLevel": 21,
+    "maxLevel": null,
+    "frequency": 100,
+    "flags": [
+      "HORDE_SACRIFICE_TARGET"
+    ]
+  },
+  {
+    "leader": "REVENANT",
+    "members": [],
+    "minLevel": 21,
+    "maxLevel": null,
+    "frequency": 100,
+    "flags": [
+      "HORDE_SACRIFICE_TARGET"
+    ]
+  },
+  {
+    "leader": "TENTACLE_HORROR",
+    "members": [],
+    "minLevel": 21,
+    "maxLevel": null,
+    "frequency": 100,
+    "flags": [
+      "HORDE_SACRIFICE_TARGET"
+    ]
+  },
+  {
+    "leader": "UNICORN",
+    "members": [],
+    "minLevel": 1,
+    "maxLevel": null,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_LEGENDARY_ALLY",
+      "HORDE_ALLIED_WITH_PLAYER"
+    ]
+  },
+  {
+    "leader": "IFRIT",
+    "members": [],
+    "minLevel": 1,
+    "maxLevel": null,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_LEGENDARY_ALLY",
+      "HORDE_ALLIED_WITH_PLAYER"
+    ]
+  },
+  {
+    "leader": "PHOENIX_EGG",
+    "members": [],
+    "minLevel": 1,
+    "maxLevel": null,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_LEGENDARY_ALLY",
+      "HORDE_ALLIED_WITH_PLAYER"
+    ]
+  },
+  {
+    "leader": "ANCIENT_SPIRIT",
+    "members": [],
+    "minLevel": 1,
+    "maxLevel": null,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_LEGENDARY_ALLY",
+      "HORDE_ALLIED_WITH_PLAYER"
+    ]
+  },
+  {
+    "leader": "GOBLIN",
+    "members": [],
+    "minLevel": 1,
+    "maxLevel": 10,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_GOBLIN_WARREN"
+    ]
+  },
+  {
+    "leader": "GOBLIN_CONJURER",
+    "members": [],
+    "minLevel": 1,
+    "maxLevel": 10,
+    "frequency": 60,
+    "flags": [
+      "HORDE_MACHINE_GOBLIN_WARREN"
+    ]
+  },
+  {
+    "leader": "GOBLIN_TOTEM",
+    "members": [
+      {
+        "type": "GOBLIN",
+        "minCount": 2,
+        "maxCount": 4
+      }
+    ],
+    "minLevel": 5,
+    "maxLevel": 13,
+    "frequency": 100,
+    "flags": [
+      "HORDE_MACHINE_GOBLIN_WARREN"
+    ]
+  },
+  {
+    "leader": "GOBLIN",
+    "members": [
+      {
+        "type": "GOBLIN",
+        "minCount": 2,
+        "maxCount": 3
+      },
+      {
+        "type": "GOBLIN_MYSTIC",
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "JACKAL",
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "minLevel": 6,
+    "maxLevel": 12,
+    "frequency": 40,
+    "flags": [
+      "HORDE_MACHINE_GOBLIN_WARREN"
+    ]
+  },
+  {
+    "leader": "GOBLIN_CONJURER",
+    "members": [
+      {
+        "type": "GOBLIN_CONJURER",
+        "minCount": 0,
+        "maxCount": 1
+      },
+      {
+        "type": "GOBLIN_MYSTIC",
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
+    "minLevel": 7,
+    "maxLevel": 15,
+    "frequency": 40,
+    "flags": [
+      "HORDE_MACHINE_GOBLIN_WARREN"
+    ]
+  },
+  {
+    "leader": "GOBLIN_TOTEM",
+    "members": [
+      {
+        "type": "GOBLIN_TOTEM",
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "GOBLIN_CONJURER",
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "GOBLIN_MYSTIC",
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "GOBLIN",
+        "minCount": 3,
+        "maxCount": 5
+      }
+    ],
+    "minLevel": 10,
+    "maxLevel": 17,
+    "frequency": 80,
+    "flags": [
+      "HORDE_MACHINE_GOBLIN_WARREN"
+    ]
+  },
+  {
+    "leader": "GOBLIN",
+    "members": [
+      {
+        "type": "GOBLIN",
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "minLevel": 3,
+    "maxLevel": 7,
+    "frequency": 10,
+    "flags": [
+      "HORDE_MACHINE_GOBLIN_WARREN",
+      "HORDE_LEADER_CAPTIVE"
+    ]
+  }
+]

@@ -1,0 +1,300 @@
+{
+  "wands": [
+    {
+      "id": "wand_of_fire",
+      "name": "Wand of Fire",
+      "minDepth": 4,
+      "maxDepth": 26,
+      "weight": 2,
+      "maxCharges": 2,
+      "rechargeTurns": 220,
+      "color": 16744192,
+      "description": "向目标方向发射火球，沿途点燃所有可燃物。对密集怪物群极为有效，但注意不要引燃自身。"
+    },
+    {
+      "id": "wand_of_lightning",
+      "name": "Wand of Lightning",
+      "minDepth": 2,
+      "maxDepth": 26,
+      "weight": 2,
+      "maxCharges": 2,
+      "rechargeTurns": 250,
+      "color": 3394815,
+      "description": "发射一道闪电，可穿透直线上所有目标造成伤害，对排成一列的怪物伤害加倍。"
+    },
+    {
+      "id": "wand_of_teleportation",
+      "name": "Wand of Teleportation",
+      "minDepth": 1,
+      "maxDepth": 26,
+      "weight": 2,
+      "maxCharges": 4,
+      "rechargeTurns": 150,
+      "color": 13408767,
+      "description": "将指定目标传送至当前层的随机位置，可用于驱散包围的敌人或为盟友解围。"
+    },
+    {
+      "id": "wand_of_slowness",
+      "name": "Wand of Slowness",
+      "minDepth": 2,
+      "maxDepth": 26,
+      "weight": 2,
+      "maxCharges": 3,
+      "rechargeTurns": 180,
+      "color": 6737151,
+      "description": "使目标怪物的移动和攻击速度减半，持续较长时间，给你创造逃脱或反击的机会。"
+    },
+    {
+      "id": "wand_of_invisibility",
+      "name": "Wand of Invisibility",
+      "minDepth": 2,
+      "maxDepth": 26,
+      "weight": 2,
+      "maxCharges": 3,
+      "rechargeTurns": 200,
+      "color": 8978431,
+      "description": "使目标（可以是自身或怪物）短暂隐形，隐形状态下难以被敌人察觉。"
+    },
+    {
+      "id": "wand_of_empowerment",
+      "name": "Wand of Empowerment",
+      "minDepth": 4,
+      "maxDepth": 26,
+      "weight": 1,
+      "maxCharges": 1,
+      "rechargeTurns": 500,
+      "color": 16777113,
+      "description": "赋予盟友永久性能力提升，每次游戏中每只怪物只能被强化一次，是培养强力盟友的关键。"
+    },
+    {
+      "id": "wand_of_beckoning",
+      "name": "Wand of Beckoning",
+      "minDepth": 2,
+      "maxDepth": 26,
+      "weight": 2,
+      "maxCharges": 3,
+      "rechargeTurns": 160,
+      "color": 10066329,
+      "description": "强制将目标怪物拉至你正前方相邻位置，可用于打断怪物的逃跑或将远距离目标拉近。"
+    }
+  ],
+  "staffs": [
+    {
+      "id": "staff_of_fire",
+      "name": "Staff of Fire",
+      "minDepth": 4,
+      "maxDepth": 26,
+      "weight": 4,
+      "maxCharges": 2,
+      "rechargeTurns": 300,
+      "color": 16744192,
+      "description": "发射强力火焰弹，造成大量火焰伤害并大范围点燃地面，可随附魔升级威力。"
+    },
+    {
+      "id": "staff_of_lightning",
+      "name": "Staff of Lightning",
+      "minDepth": 4,
+      "maxDepth": 26,
+      "weight": 4,
+      "maxCharges": 2,
+      "rechargeTurns": 320,
+      "color": 3394815,
+      "description": "释放连锁闪电，在直线上对所有目标造成高额伤害，穿透能力随附魔等级提升。"
+    },
+    {
+      "id": "staff_of_poison",
+      "name": "Staff of Poison",
+      "minDepth": 3,
+      "maxDepth": 26,
+      "weight": 4,
+      "maxCharges": 3,
+      "rechargeTurns": 250,
+      "color": 5635925,
+      "description": "向目标注入剧毒，使其持续受到毒素伤害，附魔等级越高毒素越强、持续越久。"
+    },
+    {
+      "id": "staff_of_healing",
+      "name": "Staff of Healing",
+      "minDepth": 3,
+      "maxDepth": 26,
+      "weight": 4,
+      "maxCharges": 3,
+      "rechargeTurns": 280,
+      "color": 5636095,
+      "description": "大量恢复目标的生命值，对盟友使用效果尤佳，是保持盟友战斗力的重要手段。"
+    },
+    {
+      "id": "staff_of_haste",
+      "name": "Staff of Haste",
+      "minDepth": 3,
+      "maxDepth": 26,
+      "weight": 4,
+      "maxCharges": 3,
+      "rechargeTurns": 280,
+      "color": 16777113,
+      "description": "大幅提升目标的移动和攻击速度，对自身使用可快速撤离或连续攻击。"
+    },
+    {
+      "id": "staff_of_conjuration",
+      "name": "Staff of Conjuration",
+      "minDepth": 3,
+      "maxDepth": 26,
+      "weight": 4,
+      "maxCharges": 2,
+      "rechargeTurns": 200,
+      "color": 13421823,
+      "description": "在附近召唤出多个幽灵刀刃协助战斗，附魔等级越高召唤数量越多，伤害越强。"
+    },
+    {
+      "id": "staff_of_light",
+      "name": "Staff of Light",
+      "minDepth": 1,
+      "maxDepth": 26,
+      "weight": 4,
+      "maxCharges": 4,
+      "rechargeTurns": 120,
+      "color": 16767436,
+      "description": "发射一道耀眼光束，照亮目标区域并致盲途中的怪物，令其短暂无法行动。"
+    }
+  ],
+  "rings": [
+    {
+      "id": "ring_of_regeneration",
+      "name": "Ring of Regeneration",
+      "minDepth": 4,
+      "maxDepth": 26,
+      "weight": 1,
+      "color": 16766976,
+      "description": "持续加快生命值恢复速度，附魔等级越高回复越快，对持久战至关重要。"
+    },
+    {
+      "id": "ring_of_awareness",
+      "name": "Ring of Awareness",
+      "minDepth": 2,
+      "maxDepth": 26,
+      "weight": 1,
+      "color": 11184895,
+      "description": "提高发现隐藏门、陷阱和秘密通道的概率，附魔等级越高感知范围越广。"
+    },
+    {
+      "id": "ring_of_stealth",
+      "name": "Ring of Stealth",
+      "minDepth": 2,
+      "maxDepth": 26,
+      "weight": 1,
+      "color": 10066329,
+      "description": "大幅降低你的行动噪音，使远处的怪物更难察觉到你，附魔等级越高效果越强。"
+    },
+    {
+      "id": "ring_of_transference",
+      "name": "Ring of Transference",
+      "minDepth": 4,
+      "maxDepth": 26,
+      "weight": 1,
+      "color": 16711680,
+      "description": "攻击怪物时按比例吸取其生命值，附魔等级越高吸血量越多，是持续战斗的强力保障。"
+    },
+    {
+      "id": "ring_of_wisdom",
+      "name": "Ring of Wisdom",
+      "minDepth": 3,
+      "maxDepth": 26,
+      "weight": 1,
+      "color": 8978431,
+      "description": "加快法杖和魔杖的充能速度，附魔等级越高充能越快，让你更频繁地使用魔法。"
+    },
+    {
+      "id": "ring_of_clairvoyance",
+      "name": "Ring of Clairvoyance",
+      "minDepth": 3,
+      "maxDepth": 26,
+      "weight": 1,
+      "color": 3394815,
+      "description": "持续显示你周围一定范围内的隐藏信息，附魔等级越高透视范围越大。"
+    }
+  ],
+  "charms": [
+    {
+      "id": "charm_of_protection",
+      "name": "Charm of Protection",
+      "minDepth": 4,
+      "maxDepth": 26,
+      "weight": 1,
+      "cooldownTurns": 320,
+      "color": 16777113,
+      "description": "激活时为你生成一道魔法护盾，大幅提升防御能力并抵挡部分伤害，有冷却时间。"
+    },
+    {
+      "id": "charm_of_health",
+      "name": "Charm of Health",
+      "minDepth": 3,
+      "maxDepth": 26,
+      "weight": 1,
+      "cooldownTurns": 300,
+      "color": 5636095,
+      "description": "激活时快速恢复大量生命值，附魔等级越高回复量越大，可用于紧急救治。"
+    },
+    {
+      "id": "charm_of_invisibility",
+      "name": "Charm of Invisibility",
+      "minDepth": 5,
+      "maxDepth": 26,
+      "weight": 1,
+      "cooldownTurns": 340,
+      "color": 8978431,
+      "description": "激活时短暂变为完全隐形，令所有敌人无法察觉你，适合潜行和逃脱险境。"
+    },
+    {
+      "id": "charm_of_speed",
+      "name": "Charm of Speed",
+      "minDepth": 6,
+      "maxDepth": 26,
+      "weight": 1,
+      "cooldownTurns": 360,
+      "color": 5623295,
+      "description": "激活时短暂大幅提升移动和攻击速度，效果比药水更强，可连续行动多次。"
+    },
+    {
+      "id": "charm_of_telepathy",
+      "name": "Charm of Telepathy",
+      "minDepth": 3,
+      "maxDepth": 26,
+      "weight": 1,
+      "cooldownTurns": 280,
+      "color": 11184895,
+      "description": "激活时短暂感知当前层所有怪物的位置，即使隔墙也能看穿，便于规划路线。"
+    },
+    {
+      "id": "charm_of_fire_immunity",
+      "name": "Charm of Fire Immunity",
+      "minDepth": 4,
+      "maxDepth": 26,
+      "weight": 1,
+      "cooldownTurns": 300,
+      "color": 16744192,
+      "description": "激活时短暂免疫所有火焰伤害，可放心穿越火场或应对喷火怪物的攻击。"
+    }
+  ],
+  "keys": [
+    {
+      "id": "iron_key",
+      "name": "Iron Key",
+      "minDepth": 2,
+      "maxDepth": 26,
+      "weight": 1,
+      "color": 12566463,
+      "description": "一把铁钥匙，可以开启地下城中的锁门，通往新的区域。"
+    }
+  ],
+  "amulets": [
+    {
+      "id": "amulet_of_yendor",
+      "name": "Amulet of Yendor",
+      "minDepth": 26,
+      "maxDepth": 26,
+      "weight": 1,
+      "color": 16766720,
+      "description": "传说中的延多护符，深藏于地下城最底层。取得它并逃出地下城是你最终的目标。"
+    }
+  ]
+}

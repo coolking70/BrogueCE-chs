@@ -1,0 +1,358 @@
+# brogue-web 还原度攻坚路线图（2026-09-13 制定）
+
+基线文档：`parity_gap_analysis.md`（差距清单）+ `parity_gap_review.md`（核验与更正）。
+**`parity_plan.md` 与 `task.md` 已过期，不再作为依据。**
+
+## 排序原则
+
+1. **先建验收网，再动引擎。** 目前零测试，任何公式级改动都无法证明不回退。
+2. **数据 > 调度 > 行为 > 生成器。** 数据断层（怪物属性、horde、开局装备）改动量最小、体感收益最大；tick 调度是后续一切速度机制的地基；地牢生成器是最大工程，放最后。
+3. **每个任务必须能独立验收**，且不依赖后续任务才能看出效果。
+
+## 里程碑
+
+| 阶段 | 内容 | 预估 | 门禁 |
+|---|---|---|---|
+| **P0** | 测试与验收基建 | 小 | `npm test` 绿，冒烟 2000 回合不崩 |
+| **P1** | 数据与开局地基（本轮重点） | 中 | 怪物有真实 acc/def/regen/speed；D1-D26 各层陆生怪正常刷出；开局有匕首/皮甲/飞镖/口粮 |
+| **P2** | tick 制时间系统 | 中 | 豺狼双倍速、食人魔慢攻、haste/slow 真实生效 |
+| **P3** | 战斗与物品行为真实化 | 大 | 符文走 CE 概率公式；9 个占位卷轴落地；法杖成长曲线 + 瞄准 |
+| **P4** | 怪物行为（远程/召唤/分裂/自爆/特殊怪修正） | 大 | 炮塔与施法者远程生效；Warden 不可杀 |
+| **P5** | 地牢生成器与环境重写 | 最大 | 走廊/环路/四类湖泊/promoteTile |
+| **P6** | 存档-回放-盟友-收尾 | 中 | 同 seed 读档后楼层内容不变 |
+
+本文档只详细展开 **P0 与 P1**（可立即外包执行）。P2 起在前一阶段验收后再细化。
+
+---
+
+# P0：测试与验收基建
+
+## P0-1 引入 vitest + 纯函数黄金测试
+
+**为什么**：`CombatFormulas.ts` 是全项目移植最忠实的部分，但也是后续最容易被改坏的部分。必须先用 CE 的实际数值锁死。
+
+**改什么**
+- `package.json` 加 `vitest`（devDep）与 `"test": "vitest run"`、`"test:watch": "vitest"`。
+- 新建 `src/engine/Combat/CombatFormulas.test.ts`，对 `strengthModifier / netEnchant / accuracyFraction / defenseFraction / hitProbability / armorProtection / clumpedRoll` 写黄金值断言。黄金值从 `BrogueCE-master/src/brogue/Combat.c` 与 `PowerTables.c` 推导，**每条断言的注释必须写明 CE 源文件与行号**。
+- 新建 `src/engine/Random.test.ts`：同 seed 连续取 1000 个数，快照比对，锁死 RNG 序列。
+
+**验收**
+- `npm test` 全绿，`npm run build` 仍全绿。
+- 故意把 `accuracyFraction` 的 1.065 改成 1.06，测试必须失败（执行者需在报告中贴出这次反向验证的输出）。
+
+## P0-2 headless 冒烟与确定性 harness
+
+**为什么**：`Game.ts` 除 `Game.ts:4320` 一行 `window` 守卫外不依赖 DOM，可直接在 node 里跑。这是唯一可行的自动化验收手段。
+
+**改什么**
+- 新建 `src/test/harness.ts`：导出 `createHeadlessGame(seed, mode)`（内部完成 i18next 的最小 init，所有文案走 `defaultValue`）与 `runTurns(game, n, policy)`，policy 默认为"随机合法方向移动 + 遇敌攻击"。
+- 新建 `src/test/smoke.test.ts`：
+  - 固定 seed 跑 2000 回合不抛异常；
+  - 同 seed 两次生成，D1-D5 的地图 terrain 指纹（逐格 terrain 的哈希）必须一致；
+  - 断言 D1-D26 每层生成后 `monsters.length > 0`（**当前会失败，这是 P1-2 的红灯测试，允许先标 `.fails()` 或 skip 并注明**）。
+
+**验收**
+- `npm test` 绿（红灯测试显式标注）。
+- 报告中给出：2000 回合跑完耗时、期间触发的日志条数、有无 unhandled rejection。
+
+---
+
+# P1：数据与开局地基
+
+> 四个任务彼此独立，可并行；但都必须在 P0 合入之后开始。
+
+## P1-1 合并 `monsters_ce2.json` 的真实属性
+
+**背景**：运行时用的 `monsters.json`（67 条）没有 `accuracy/defense/regen/moveSpeed/attackSpeed`，`Monster.ts:104-109` 全落默认值。带全部真实数值的 `monsters_ce2.json`（67 条）是死文件，全仓库无引用。后果：`CombatFormulas` 里忠实移植的 `0.987^defense` 永远等于 1，troll 不回血、豺狼不加速。
+
+**改什么**
+- 写一次性脚本（放 `scripts/merge_monster_stats.cjs`，可提交），以 `id` 为键把 ce2 的 `accuracy / defense / regen / moveSpeed / attackSpeed` 合并进 `monsters.json`。
+- **冲突处理规则（必须严格遵守）**：`monsters.json` 现有的 `minDepth / maxDepth / behaviorFlags / abilityFlags / statusImmunities / statusResistTurns / onHit* / goldDropChance / itemDropChance / description / color` **一律保留，不被 ce2 覆盖**。只新增上述 5 个数值字段。
+- 合并后与 `BrogueCE-master/src/variants/GlobalsBrogue.c` 的 `monsterCatalog` **逐条复核这 5 个字段**，列出所有不一致项并以 CE 为准修正。
+- 删除 `src/data/monsters_ce.json`（已知含损坏数据）与 `src/data/monsters_ce2.json`（合并后即死）。
+- `Monster.ts` 的 `?? 100 / ?? 0` 默认值保留作兜底，但新增一条构建期校验：任何缺这 5 个字段的条目在 `initConsumables` 同级的加载点 `console.warn`。
+
+**验收**
+- 新增 `src/data/monsters.test.ts`：断言 67 条**全部**具备 5 个字段且在合理区间（accuracy 0-300、defense 0-200、moveSpeed/attackSpeed 均为 100 的倍数或 CE 原值）。
+- 抽查断言：`rat` acc=80 def=0 regen=20；`jackal` moveSpeed=50；`ogre` attackSpeed=200；`troll` regen>0。数值以 CE `GlobalsBrogue.c` 为准，断言注释注明行号。
+- 报告中给出"复核 CE 后修正了哪些条目"的完整清单。
+
+## P1-2 重新提取 `hordes.json`（**当前最严重的单点缺陷**）
+
+**背景**：CE `hordeCatalog_Brogue`（`GlobalsBrogue.c:744` 起，至 `};` 共 175 条）中常规可刷 58 条；`hordes.json` 只有 132 条，常规可刷仅 **15 条**，且构成为 `RAT×2 KOBOLD×2 JACKAL×2 EEL×2 VAMPIRE_BAT BOG_MONSTER×2 NAGA SALAMANDER KRAKEN×2` —— 深度 5 和 10 各只有 4 条可用且以水生怪为主。**goblin/ogre/troll/wraith 等陆生主力从不自然刷出**，中深层地牢事实上接近空场。
+
+**改什么**
+- 写解析脚本 `scripts/extract_hordes.cjs`，从 `GlobalsBrogue.c` 的 `hordeCatalog_Brogue[]` 完整提取 **175 条**，字段：`leader / members[{type,minCount,maxCount}] / minLevel / maxLevel / frequency / spawnsIn / machine / flags`。注意 CE 的结构体是位置参数且尾部字段可省略，**省略即默认值**（`spawnsIn=0`、`machine=0`、`flags=0`），不要把省略当 null 丢弃。
+- `Game.ts:711-723` 的 flag 过滤**保持不变**（它是忠于 CE 的），只需确认新数据进来后常规池 ≈58 条。
+- `Game.ts:730` 的均匀随机改为 **frequency 加权抽取**（CE `pickHordeType`：在候选集中按 frequency 累加权重抽样）。删掉那条 `Should be weighted random` 注释。
+- 补 **out-of-depth**：CE 有 10% 概率用 `depth + rand(1, 3)` 的档位抽 horde（带 `HORDE_NEVER_OOD` 的候选排除）。
+- 补 **periodic spawn fuse**：每层生成时设 `monsterSpawnFuse = rand(125, 175)`，归零时刷一个 horde 并重置。CE 参考 `Time.c` 的 `monsterSpawnFuse` 与 `spawnPeriodicHorde`。
+
+**验收**
+- `hordes.json` 条数 = 175；flag 过滤后常规池条数 ≥ 55。
+- 新增 `src/data/hordes.test.ts`：对 D1/D3/D5/D8/D12/D17/D22/D26 各断言"可用 horde 数 ≥ 8"且"领袖种类中陆生怪占比 > 50%"。
+- 加权正确性测试：固定 seed 抽 10000 次 D5 horde，统计频次与各 horde 的 frequency 比例偏差 < 5%。
+- 用 P0-2 的 harness：D1-D26 逐层生成，打印每层怪物种类与数量表，**贴进报告**。这张表是人工验收的主要依据。
+
+## P1-3 开局装备（**最小改动、最大体感**）
+
+**背景**：`Game.ts:272-318` `startNewGame()` 里**没有任何 `inventory.addItem`**，玩家赤手空拳、无甲、无口粮开局。CE（`RogueMain.c:420-443`）给：口粮 ×1、匕首（已鉴定+已装备）、飞镖 ×15、皮甲（已鉴定+已装备）。
+
+**改什么**
+- `startNewGame()` 末尾（`new Player(...)` 之后、`generateDepth` 之前）按 CE 顺序发放：口粮 → 匕首（`enchantment=0`、清除 cursed/runic、`identify`、`equip`）→ 飞镖 ×15（同样清干净并 identify）→ 皮甲（同上，equip）。**发放顺序必须与 CE 一致**，因为它影响 RNG 消耗顺序。
+- 飞镖需要 `weapons.json` 新增 `dart` 条目（CE：`{5, 3, 10, ...}` 系，具体数值查 `GlobalsBrogue.c` 的 `weaponTable`）。若当前 `Item` 模型不支持 `quantity` 堆叠，**本任务只做到"背包里有 15 支飞镖"**，投掷命中公式留给 P3，并在报告中显式说明这一边界。
+- easy/wizard 模式的属性覆盖逻辑保持不变。
+
+**验收**
+- 新增测试：新开局后 `player.inventory` 含 4 类物品；`equippedWeapon.id === 'dagger'`、`equippedArmor.id === 'leather_armor'`；两者 `isCursed === false`、`enchantment === 0`、已 identified。
+- 手动：起新局，背包面板能看到 4 项，匕首与皮甲标为已装备。
+
+## P1-4 饥饿与回血对齐 CE
+
+**背景**（见 `parity_gap_review.md` B1）：网页版 10 回合/HP 在 maxHp=30 时恰好等于 CE 的 300 回合回满，**并非快 30 倍**；真正的偏差是不随 maxHp 缩放、阈值语义错、无中毒禁回血。
+
+**改什么**
+- `Player.ts:20-21`：`nutrition / maxNutrition` 12000 → **2150**（CE `STOMACH_SIZE`）。
+- 饥饿阈值改为 CE 语义：`HUNGER_THRESHOLD = 350`（Hungry 提示）、`WEAK_THRESHOLD = 150`（Weak，附带 CE 的力量惩罚）、`FAINT_THRESHOLD = 50`（Faint，随机失去回合）、`<= 0` 饿死。**这些阈值不再影响回血速度。**
+- 回血改为 CE 模型：目标是"`TURNS_FOR_FULL_REGEN = 300` 回合回满当前 `maxHp`"，即每回合回 `maxHp / 300` 并用累加器处理小数，而非固定 10 回合/HP。
+- 中毒（`poisoned`）期间回血归零。
+- 口粮 nutrition 恢复量对齐 CE（ration 1800 / mango 1550，见 `parity_gap_analysis` 附录）。
+- `Sidebar.vue` 的饥饿状态展示同步新阈值。
+
+**验收**
+- 新增测试：`maxHp=30` 从 1 HP 起静止 300 回合后回满；把 `maxHp` 设为 100，同样 300 回合回满（证明已随上限缩放）。
+- 新增测试：`poisoned` 状态下 300 回合 HP 不增长。
+- 新增测试：不进食时 2150 回合后进入饿死判定；期间在 350/150/50 三点各触发一次状态变更日志。
+- 手动：跑一局到 D3，确认口粮压力明显存在但不至于开局即饿。
+
+---
+
+# 给执行 AI 的提示词
+
+下面每段可直接整段投给执行方。**每段一个任务，不要合并**。
+
+---
+
+## 提示词 · P0-1
+
+```
+项目：/Users/coolking70/Documents/同步空间/brogue/brogue-web
+参考基线（只读）：/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src
+
+任务：为这个项目引入 vitest，并为战斗公式与 RNG 建立黄金值回归测试。这是后续所有引擎改动的验收网，本次不要改动任何游戏逻辑。
+
+必做：
+1. package.json 添加 devDependency vitest，添加 scripts: "test": "vitest run", "test:watch": "vitest"。
+2. 新建 src/engine/Combat/CombatFormulas.test.ts，覆盖 strengthModifier / netEnchant /
+   accuracyFraction / damageFraction / defenseFraction / hitProbability / armorProtection /
+   clumpedRoll。黄金值必须从 BrogueCE-master/src/brogue/Combat.c 与 PowerTables.c 推导，
+   每条断言上方注释写明 CE 的源文件与行号。clumpedRoll 用固定 seed 跑 10000 次断言分布
+   的均值与极值边界，不要断言单次结果。
+3. 新建 src/engine/Random.test.ts：同一 seed 连续取 1000 个数做快照，锁死 RNG 序列。
+
+约束：
+- 不修改 src/ 下任何现有实现文件的逻辑。若发现公式与 CE 不符，**不要修正**，改为写一条
+  it.todo 或 it.fails 并在报告里列出，由我判断。
+- npm run build 必须保持全绿。
+
+交付报告需包含：
+- npm test 与 npm run build 的完整输出尾部；
+- 反向验证：把 accuracyFraction 里的 1.065 临时改成 1.06，贴出测试失败的输出，然后改回；
+- 发现的任何与 CE 不符之处的清单（不修）。
+```
+
+---
+
+## 提示词 · P0-2
+
+```
+项目：/Users/coolking70/Documents/同步空间/brogue/brogue-web
+前置：P0-1 已合入（vitest 可用）。
+
+任务：建立 headless 测试 harness 与冒烟测试。Game.ts 除第 4320 行一处 window 守卫外不依赖
+DOM，可直接在 node 环境运行。本次不要改动游戏逻辑。
+
+必做：
+1. 新建 src/test/harness.ts：
+   - createHeadlessGame(seed: number, mode?: GameMode)：内部完成 i18next 的最小 init
+     （lng 任意，资源为空，全部文案走各调用点已有的 defaultValue），返回 Game 实例。
+   - runTurns(game, n, policy?)：默认 policy 为"有相邻敌人则攻击，否则随机选一个合法方向移动"。
+   - terrainFingerprint(grid)：把整层 terrain 逐格拼成字符串后做稳定哈希，用于确定性比对。
+2. 新建 src/test/smoke.test.ts：
+   - 固定 seed 跑 2000 回合，全程不抛异常、无 unhandled rejection；
+   - 同一 seed 生成两次，D1..D5 的 terrainFingerprint 必须两两相等；
+   - 断言 D1..D26 每层生成后 monsters.length > 0。
+3. 第 3 条断言**预期当前会失败**（已知 horde 数据缺陷）。请用 it.fails 或 it.skip 标注，
+   并在测试文件里写明 "红灯：待 P1-2 修复后转为正式断言"。不要为了让它变绿去改生成逻辑。
+
+交付报告需包含：
+- npm test 输出；
+- 2000 回合的耗时、期间 logger 产生的消息条数；
+- 第 3 条断言实际失败在哪些深度（列出 D1-D26 逐层的怪物数量）。
+```
+
+---
+
+## 提示词 · P1-1
+
+```
+项目：/Users/coolking70/Documents/同步空间/brogue/brogue-web
+参考基线（只读）：/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/variants/GlobalsBrogue.c 的 monsterCatalog
+前置：P0 已合入。
+
+背景：运行时加载的 src/data/monsters.json（67 条）缺少 accuracy / defense / regen /
+moveSpeed / attackSpeed 五个字段，Monster.ts:104-109 全部落到默认值 accuracy=100 /
+defense=0 / regen=0 / speed=100。后果是 CombatFormulas 里忠实移植的 0.987^defense 恒等于 1，
+troll 不回血、豺狼不加速。带真实数值的 src/data/monsters_ce2.json（同样 67 条）是死文件，
+全仓库无 import。
+
+任务：把真实数值合并进运行时数据表。
+
+必做：
+1. 新建可提交的脚本 scripts/merge_monster_stats.cjs，以 id 为键，把 monsters_ce2.json 的
+   accuracy / defense / regen / moveSpeed / attackSpeed 合并进 monsters.json。
+2. 冲突规则（严格遵守）：monsters.json 已有的 minDepth / maxDepth / behaviorFlags /
+   abilityFlags / statusImmunities / statusResistTurns / onHit* / goldDropChance /
+   itemDropChance / description / color 一律保留，绝不被 ce2 覆盖。只新增那 5 个字段。
+3. 合并完成后，逐条对照 GlobalsBrogue.c 的 monsterCatalog 复核这 5 个字段，发现不一致以
+   CE 为准修正，并把修正清单写进报告。
+4. 删除 src/data/monsters_ce.json 与 src/data/monsters_ce2.json（前者已知含损坏数据，
+   后者合并后即为死文件）。注意 DetailGenerator.ts 可能引用过 ce2 的 description，
+   删除前先确认引用情况。
+5. 新建 src/data/monsters.test.ts：断言 67 条全部具备这 5 个字段且取值在合理区间；
+   抽查 rat / jackal / ogre / troll 的具体数值（以 CE 为准，断言注释写明 GlobalsBrogue.c 行号）。
+
+约束：
+- 不改动战斗公式、不改动 AI。本任务只动数据与数据加载。
+- npm test 与 npm run build 必须全绿。
+
+交付报告需包含：
+- 复核 CE 后修正了哪些怪物的哪些字段（完整清单）；
+- 合并前后，用 P0 的 harness 固定 seed 各跑 500 回合，对比玩家的命中率与受伤总量
+  （证明 defense 真的开始生效了）。
+```
+
+---
+
+## 提示词 · P1-2
+
+```
+项目：/Users/coolking70/Documents/同步空间/brogue/brogue-web
+参考基线（只读）：/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/variants/GlobalsBrogue.c
+  —— hordeCatalog_Brogue[] 从第 744 行开始，到其后第一个 "};" 结束，共 175 条。
+前置：P0 已合入。
+
+背景（这是当前最严重的单点缺陷）：src/data/hordes.json 只有 132 条，经 Game.ts:711-723 的
+flag 过滤后常规可刷仅 15 条，构成为 RAT×2 KOBOLD×2 JACKAL×2 EEL×2 VAMPIRE_BAT
+BOG_MONSTER×2 NAGA SALAMANDER KRAKEN×2 —— 深度 5 和 10 各只有 4 条可用且以水生怪为主，
+而深水在地图上只有 0-2 团 blob。结果是 goblin / ogre / troll / wraith 等陆生主力从不自然
+刷出，中深层地牢事实上接近空场。CE 里常规可刷的 horde 有 58 条。
+
+注意：Game.ts:711-723 的 flag 过滤本身是**忠于 CE 的**（CE 同样把 CAPTIVE / SUMMONED /
+MACHINE_* 排除在常规刷怪之外），不要放宽它。问题出在数据提取漏了 43 条常规 horde。
+
+任务：
+1. 新建可提交的脚本 scripts/extract_hordes.cjs，从 GlobalsBrogue.c 完整提取 175 条 horde，
+   字段：leader / members[{type,minCount,maxCount}] / minLevel / maxLevel / frequency /
+   spawnsIn / machine / flags。CE 的结构体是位置参数且尾部字段可省略，**省略即默认值**
+   （spawnsIn=0、machine=0、flags=0），不要把省略当成 null 丢掉整条。生成新的 hordes.json。
+2. Game.ts:730 的均匀随机改为 frequency 加权抽取，对齐 CE 的 pickHordeType
+   （候选集内按 frequency 累加权重抽样）。删除那条 "Should be weighted random" 注释。
+3. 补 out-of-depth：10% 概率用 depth + rand(1,3) 的档位抽 horde，带 HORDE_NEVER_OOD 的
+   候选排除。
+4. 补周期刷怪：每层生成时设 monsterSpawnFuse = rand(125,175)，每回合递减，归零时刷一个
+   horde 并重置。参考 CE Time.c 的 monsterSpawnFuse / spawnPeriodicHorde。
+
+验收（必须全部通过）：
+- hordes.json 条数 = 175；经现有 flag 过滤后常规池 >= 55。
+- 新建 src/data/hordes.test.ts：对 D1/D3/D5/D8/D12/D17/D22/D26 各断言"可用 horde 数 >= 8"
+  且"领袖种类中陆生怪占比 > 50%"。
+- 加权正确性：固定 seed 在 D5 抽 10000 次，统计频次与各 horde frequency 的比例偏差 < 5%。
+- 把 P0-2 smoke.test.ts 里那条被标红灯的 "每层 monsters.length > 0" 断言转为正式断言并通过。
+- npm run build 全绿。
+
+交付报告需包含：
+- 用 harness 固定 seed 生成 D1-D26，输出每层的怪物种类与数量表（贴全表，这是人工验收依据）；
+- 修复前后的这张表对比。
+```
+
+---
+
+## 提示词 · P1-3
+
+```
+项目：/Users/coolking70/Documents/同步空间/brogue/brogue-web
+参考基线（只读）：/Users/coolking70/Documents/同步空间/brogue/BrogueCE-master/src/brogue/RogueMain.c:420-443
+前置：P0 已合入。
+
+背景：Game.ts:272-318 的 startNewGame() 里没有任何 inventory.addItem 调用，玩家赤手空拳、
+无甲、无口粮开局。CE 给的是：口粮 ×1、匕首（已鉴定+已装备）、飞镖 ×15、皮甲（已鉴定+已装备）。
+
+任务：对齐开局装备。
+
+必做：
+1. 在 startNewGame() 中 new Player(...) 之后、generateDepth(...) 之前，按 CE 的顺序发放：
+   口粮 → 匕首 → 飞镖×15 → 皮甲。顺序必须与 CE 一致，因为它影响 RNG 消耗顺序（后续回放
+   系统依赖这一点）。
+2. 匕首与皮甲：enchantment = 0，清除 cursed 与 runic 标记，标记为已鉴定，并直接 equip。
+   飞镖：enchantment = 0，清除 cursed/runic，标记为已鉴定，不装备。
+3. weapons.json 目前没有 dart，需要新增，数值查 GlobalsBrogue.c 的 weaponTable 中的 DART 条目。
+4. 若当前 Item 模型不支持 quantity 堆叠：本任务只做到"背包里有 15 支飞镖"这一步（可以是
+   quantity 字段也可以是 15 个实例，选改动小的），**投掷命中公式不在本任务范围内**，请在
+   报告中显式说明这个边界，不要顺手去改投掷逻辑。
+5. easy / wizard 模式的 maxHp / strength 覆盖逻辑保持不变。
+
+验收：
+- 新增测试：新开局后 inventory 含这 4 类物品；equippedWeapon 是 dagger、equippedArmor 是
+  leather armor；两者 isCursed === false、enchantment === 0、已 identified。
+- npm test 与 npm run build 全绿。
+- 手动：起新局打开背包面板，截图贴进报告。
+```
+
+---
+
+## 提示词 · P1-4
+
+```
+项目：/Users/coolking70/Documents/同步空间/brogue/brogue-web
+参考基线（只读）：BrogueCE-master/src/brogue/Rogue.h:1123-1127、Items.c、Time.c
+前置：P0 已合入。
+
+背景与一处常见误判：Player.ts:83-84 当前是"nutrition > 6000 时每 10 回合回 1 HP"。在
+maxHp=30 下满血耗时恰好 300 回合，与 CE 的 TURNS_FOR_FULL_REGEN=300 一致，**所以回血速度
+本身并没有快 30 倍**。真正的偏差是另外三条，请只修这三条加食量：
+
+1. 回血不随 maxHp 缩放。CE 的语义是"无论上限多少，300 回合回满"，网页版固定 10 回合/HP，
+   maxHp 一旦成长反而比 CE 慢。改为每回合回 maxHp/300，用累加器处理小数。
+2. 饥饿阈值语义错。CE 的 350/150/50 是 Hungry / Weak / Faint 的提示与惩罚阈值，
+   **不改变回血速度**；网页版把 6000/2000 当成了回血档位。请移除回血与饥饿档位的耦合。
+3. 中毒期间 CE 回血归零，网页版无此判定。
+
+必做：
+- Player.ts:20-21 的 nutrition / maxNutrition 从 12000 改为 2150（CE STOMACH_SIZE）。
+- 阈值改为 HUNGER_THRESHOLD=350 / WEAK_THRESHOLD=150 / FAINT_THRESHOLD=50 / <=0 饿死，
+  各自的提示与惩罚对齐 CE（Weak 的力量惩罚、Faint 的随机失去回合）。
+- 回血改为上面第 1 条的模型；poisoned 时归零。
+- 口粮的 nutrition 恢复量对齐 CE：ration 1800、mango 1550。
+- Sidebar.vue 的饥饿状态显示同步新阈值。
+
+验收：
+- 新增测试：maxHp=30 从 1 HP 起静止 300 回合回满；maxHp 改为 100 后同样 300 回合回满。
+- 新增测试：poisoned 状态下 300 回合 HP 不增长。
+- 新增测试：不进食 2150 回合后进入饿死判定，期间在 350/150/50 三点各触发一次状态变更。
+- 手动：跑一局到 D3，报告食物压力的主观体感（是否开局即饿）。
+- npm test 与 npm run build 全绿。
+```
+
+---
+
+# 验收流程
+
+每个任务回来后按这四步走，任何一步不过就打回：
+
+1. **门禁**：`npm test` 与 `npm run build` 全绿（要求执行方贴输出尾部，不接受"我验证过了"）。
+2. **取证**：逐条比对该任务"验收"小节的条目，缺一条即打回。数据类任务必须贴出对照表。
+3. **越界检查**：`git diff --stat` 看改动范围是否越出任务边界。P1 各任务**不应**触碰 `Architect.ts` / `BlueprintEngine.ts` / `Gas.ts` / `Bolt.ts`。
+4. **回归**：跑 P0-2 的 2000 回合冒烟 + 人工起一局玩到 D3。
+
+P1 全部合入后，再更新 `parity_gap_analysis.md` 的对应条目状态，然后展开 P2（tick 制时间系统）的细化方案。
