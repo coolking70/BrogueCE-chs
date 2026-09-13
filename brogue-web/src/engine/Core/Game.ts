@@ -1137,13 +1137,13 @@ export class Game {
                     m,
                     this.player.hp,
                     this.player.strength,
-                    this.player.equippedArmor?.armor ?? 0,
+                    0, // 已废弃占位：防御由 DetailGenerator 内部用下方 armor 三元组经 playerDefense() 计算
                     [n || 1, (n || 1) * (d || 2)],
                     this.player.equippedWeapon?.enchantment ?? 0,
                     this.player.equippedWeapon?.strengthRequired ?? 12,
                     this.player.equippedArmor?.armor ?? 0,
                     this.player.equippedArmor?.enchantment ?? 0,
-                    this.player.equippedArmor?.strengthRequired ?? 12
+                    this.player.equippedArmor?.strengthRequired ?? 0 // 缺省口径对齐 Combat.ts 的 || 0
                 );
                 return;
             }
@@ -1187,13 +1187,13 @@ export class Game {
                 monster,
                 this.player.hp,
                 this.player.strength,
-                this.player.equippedArmor?.armor ?? 0,
+                0, // 已废弃占位：防御由 DetailGenerator 内部用下方 armor 三元组经 playerDefense() 计算
                 [n || 1, (n || 1) * (d || 2)],
                 this.player.equippedWeapon?.enchantment ?? 0,
                 this.player.equippedWeapon?.strengthRequired ?? 12,
                 this.player.equippedArmor?.armor ?? 0,
                 this.player.equippedArmor?.enchantment ?? 0,
-                this.player.equippedArmor?.strengthRequired ?? 12
+                this.player.equippedArmor?.strengthRequired ?? 0 // 缺省口径对齐 Combat.ts 的 || 0
             );
             return;
         }

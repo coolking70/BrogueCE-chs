@@ -8,7 +8,7 @@ import type { Item } from '../Items/Item';
 import { ItemCategory } from '../Items/Item';
 import type { Monster } from '../../entities/Monster';
 import { MonsterState } from '../../entities/Monster';
-import { hitProbability, netEnchant, damageFraction, strengthModifier } from '../Combat/CombatFormulas';
+import { hitProbability, netEnchant, damageFraction, strengthModifier, playerDefense } from '../Combat/CombatFormulas';
 import { CombatSystem } from '../Combat/Combat';
 
 // ---------- Helper types ----------
@@ -109,17 +109,25 @@ const behaviorFlagDescriptions: Record<string, string> = {
 
 // ---------- Monster detail generator ----------
 
+/**
+ * 生成怪物详情面板。
+ *
+ * 玩家防御不在调用方预先计算：本函数内部用 (playerArmorBase, playerArmorEnchant,
+ * playerArmorStrReq) 三元组调用 playerDefense()（CE Items.c:8515-8523，×10 内部
+ * 标度），与实战结算（Combat.ts attack 的玩家受击分支）共用同一真相来源，保证
+ * "该怪物有 X% 概率命中你"与实战命中判定同源。
+ */
 export function generateMonsterDetail(
     monster: Monster,
     playerHP: number,
     playerStrength: number,
-    playerDefense: number,
+    _playerDefense: number, // @deprecated 已废弃：旧乘法口径的防御值占位参数，本函数不再读取
     playerWeaponDamage: [number, number] | null, // [low, high]
     playerWeaponEnchant: number,
     playerWeaponStrReq: number,
-    _playerArmorBase?: number,
-    _playerArmorEnchant?: number,
-    _playerArmorStrReq?: number
+    playerArmorBase?: number,
+    playerArmorEnchant?: number,
+    playerArmorStrReq?: number
 ): DetailInfo {
     const sections: DetailSection[] = [];
 
@@ -167,7 +175,13 @@ export function generateMonsterDetail(
     const combatLines: DetailLine[] = [];
 
     // Monster hitting player
-    const monHitProb = hitProbability(monAcc, playerDefense);
+    // 与实战完全相同的输入与缺省口径：armor 为 0 视同无甲（防御 0，同 Combat.ts
+    // 的 truthy 守卫），strengthRequired 缺省 0（同 Combat.ts 的 `|| 0`）。
+    const armorBase = playerArmorBase ?? 0;
+    const effectivePlayerDefense = armorBase > 0
+        ? playerDefense(armorBase, playerArmorEnchant ?? 0, playerStrength, playerArmorStrReq ?? 0)
+        : 0;
+    const monHitProb = hitProbability(monAcc, effectivePlayerDefense);
     combatLines.push({
         text: `该怪物有 ${monHitProb}% 的概率命中你。`,
         color: monHitProb > 50 ? '#ff6644' : '#ffcc44'
@@ -257,6 +271,18 @@ export function generateMonsterDetail(
     };
 }
 
+// ---------- Display helpers ----------
+
+/** 净附魔含 0.25 步进的力量修正，可能出现一位小数；去浮点尾噪后转显示串。 */
+function trimFloatStr(v: number): string {
+    return String(Math.round(v * 100) / 100);
+}
+
+/** 同上，但正数带 + 前缀（附魔标注惯例）。 */
+function signedTrimFloatStr(v: number): string {
+    return (v > 0 ? '+' : '') + trimFloatStr(v);
+}
+
 // ---------- Item detail generator ----------
 
 export function generateItemDetail(
@@ -310,15 +336,17 @@ export function generateItemDetail(
     if (item.category === ItemCategory.ARMOR) {
         const statsLines: DetailLine[] = [];
         if (item.armor !== undefined) {
-            statsLines.push({ text: `基础护甲值: ${item.armor}` });
-            if (item.enchantment !== 0) {
-                const strReq = item.strengthRequired || 12;
-                const ne = netEnchant(item.enchantment, playerStrength, strReq);
-                const frac = damageFraction(ne);
-                const effectiveArmor = Math.round(item.armor * frac);
+            // CE 加法防御模型（Items.c:8515-8523）：显示防御 = armor + 净附魔
+            // （含力量修正）。旧乘法"减伤值"口径已随 P1-11 废弃。
+            const strReq = item.strengthRequired || 12;
+            const ne = netEnchant(item.enchantment, playerStrength, strReq);
+            statsLines.push({ text: `基础防御值: ${item.armor}` });
+            if (ne !== 0 || item.enchantment !== 0) {
+                const effectiveArmor = item.armor + ne;
+                const strengthNote = ne !== item.enchantment ? '，含力量修正' : '';
                 statsLines.push({
-                    text: `实际护甲值: ${effectiveArmor} (附魔 ${item.enchantment > 0 ? '+' : ''}${item.enchantment})`,
-                    color: item.enchantment > 0 ? '#44ff44' : '#ff4444'
+                    text: `实际防御值: ${trimFloatStr(effectiveArmor)} (净附魔 ${signedTrimFloatStr(ne)}${strengthNote})`,
+                    color: ne > 0 ? '#44ff44' : ne < 0 ? '#ff4444' : undefined
                 });
             }
         }
