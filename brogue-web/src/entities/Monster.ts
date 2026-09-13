@@ -341,6 +341,34 @@ export class Monster extends Creature {
         }
 
         if (this.state === MonsterState.HUNTING) {
+            // CE Monsters.c:343-360/390：discordant 怪物敌我不分，会把相邻的其他
+            // 怪物也当作攻击目标（对玩家仍视为敌人）。置于"丢失视野掉回 WANDERING"
+            // 判定之前，使看不到玩家的 discordant 怪也会转身撕咬身边同类。
+            if (this.hasStatus('discordant')) {
+                // 方向顺序与下方 confused/WANDERING 分支的 dirs 保持一致（8 方向去重）
+                const dirs8 = [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, 1], [-1, 1], [1, -1]];
+                for (const [dx, dy] of dirs8) {
+                    const other = game.getMonsterAt(this.loc.x + dx!, this.loc.y + dy!);
+                    if (other && other !== this && other.hp > 0) {
+                        const result = CombatSystem.attack(this, other);
+                        if (result.damage > 0) {
+                            logger.log(i18next.t('combat.discordant_hits', {
+                                attacker: this.name, target: other.name, damage: result.damage,
+                                defaultValue: `The ${this.name} turns on the ${other.name} for ${result.damage} damage!`
+                            }), '#ff88aa');
+                            game.spawnFloatingText(`-${result.damage}`, other.loc.x, other.loc.y, 0xff5555);
+                            game.spawnBlood(other.loc.x, other.loc.y);
+                        } else {
+                            logger.log(i18next.t('combat.discordant_misses', {
+                                attacker: this.name, target: other.name,
+                                defaultValue: `The ${this.name} misses the ${other.name}.`
+                            }), '#aaaaaa');
+                        }
+                        return;
+                    }
+                }
+            }
+
             if (!canSeePlayer && distToPlayer > playerDetectRange + 2) {
                 this.state = MonsterState.WANDERING;
                 return;

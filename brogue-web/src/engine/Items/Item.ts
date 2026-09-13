@@ -39,6 +39,8 @@ export class Item implements Entity {
     public armor?: number;
     public strengthRequired?: number;
     public isCursed: boolean = false;
+    /** CE ITEM_PROTECTED：防酸蚀/防负附魔豁免（护甲/武器保护卷轴打上） */
+    public isProtected: boolean = false;
     public enchantment: number = 0;
     public runicType?: string;
     public runicKnown: boolean = false;

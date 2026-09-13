@@ -21,6 +21,8 @@ export const STATUS_CONFIG: Record<StatusId, StatusConfigEntry> = {
     slowed: { id: 'slowed', label: '缓慢', color: '#d6d3d1', isDebuff: true },
     weakened: { id: 'weakened', label: '虚弱', color: '#a8a29e', isDebuff: true },
     flying: { id: 'flying', label: '飞行', color: '#bae6fd', isDebuff: false },
-    immune_fire: { id: 'immune_fire', label: '火焰免疫', color: '#fca5a5', isDebuff: false }
+    immune_fire: { id: 'immune_fire', label: '火焰免疫', color: '#fca5a5', isDebuff: false },
+    // CE discordColor（GlobalsBrogue.c）：discordBlast 的 "unsettling purple radiation"
+    discordant: { id: 'discordant', label: '不和', color: '#c084fc', isDebuff: true }
 };
 

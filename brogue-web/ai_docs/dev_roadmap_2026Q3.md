@@ -92,6 +92,28 @@ P1-4 只做了核心四条偏差，以下 CE 行为仍缺（均附 CE 出处）�
 另：web 自创的 `regenerating` 状态（CE 无 `STATUS_REGENERATING`）被保留，
 加速幅度沿用旧实现的 0.6 倍回满时间。属 web 扩展，重构时需决定去留。
 
+## P1-15 `isProtected` 接入实际生效点（P1-8a 建立字段但无消费方）
+
+P1-8a 给 `Item` 加了 `isProtected`（protect 卷轴设置、存档持久化），但**当前没有任何
+游戏机制读取它**。应接入的点：
+
+- **防酸怪腐蚀**：`Monster.ts:434` 附近，`MA_HIT_DEGRADE_ARMOR` 类怪物直接
+  `enchantment -= 1`，未检查 `isProtected`。CE 中被保护的装备豁免此效果。
+- **防负附魔**：CE 的 `checkForDisenchantment` 豁免。web 尚无该系统，
+  需与 §3.4 的鉴定/诅咒系统一并做。
+
+## P1-16 剩余 3 个占位卷轴（需新系统支撑）
+
+- `negate_burst` → CE `negationBlast`（Items.c:8004）：剥夺范围内生物的魔法能力
+  与装备附魔，需要"魔法剥夺"系统
+- `sanctuary_burst` → CE（Items.c:7941）：在玩家周围铺设怪物无法进入的地形，
+  需要地形铺设能力
+- `shatter_burst` → CE `crystalize(9)`（Items.c:8007）：把半径内的墙变成水晶墙，
+  需要地形改造 + 视野重算
+
+另：**`amnesia` 是 web 自创，CE 无此卷轴**（parity_gap_analysis.md §10.4）。
+P1-8a 按指示未动。删除与否是产品决策，待定。
+
 ## P1-12 水生 horde 的落点匹配（P1-2b 忠实实现 CE 约束后的副作用）
 
 CE 的 horde 有 `spawnsIn` 字段（如 EEL/KRAKEN 为 DEEP_WATER），`randomMatchingLocation`

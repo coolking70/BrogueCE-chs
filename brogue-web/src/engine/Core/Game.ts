@@ -61,6 +61,8 @@ const AMULET_LEVEL = 26;
 /** RogueMain.c:403 / Time.c:2324 monsterSpawnFuse = rand_range(125, 175) */
 const SPAWN_FUSE_MIN = 125;
 const SPAWN_FUSE_MAX = 175;
+/** Items.c:4899 discordBlast：monst->status[STATUS_DISCORDANT] = 30（CE 无独立常量，硬编码） */
+const DISCORD_DURATION = 30;
 
 /**
  * HORDE_MACHINE_ONLY 复合标志的成员（Rogue.h:2049-2055）。
@@ -108,6 +110,7 @@ export interface GameSnapshotItem {
     armor?: number;
     strengthRequired?: number;
     isCursed: boolean;
+    isProtected?: boolean;
     enchantment: number;
     runicType?: string;
     runicKnown?: boolean;
@@ -2346,6 +2349,8 @@ export class Game {
                         break;
                     case 'teleport_random':
                         logger.log(i18next.t('scroll.teleport', { defaultValue: 'You are suddenly teleported!' }), '#ff44ff');
+                        // Items.c:7803 SCROLL_TELEPORT: teleport(&player, INVALID_POS, true)
+                        this.teleportPlayerRandom();
                         break;
                     case 'identify_item':
                         if (!this.identifyRandomItem()) {
@@ -2372,18 +2377,12 @@ export class Game {
                         }
                         break;
                     case 'protect_weapon':
-                        if (this.player.equippedWeapon) {
-                            logger.log(i18next.t('scroll.protect_weapon', { defaultValue: 'A golden glow surrounds your weapon.' }), '#ffffaa');
-                        } else {
-                            logger.log(i18next.t('scroll.protect_fail', { defaultValue: 'You have no weapon to protect.' }), '#aaaaaa');
-                        }
+                        // Items.c:7922-7938 SCROLL_PROTECT_WEAPON
+                        this.protectEquippedGear(this.player.equippedWeapon, 'weapon');
                         break;
                     case 'protect_armor':
-                        if (this.player.equippedArmor) {
-                            logger.log(i18next.t('scroll.protect_armor', { defaultValue: 'A golden glow surrounds your armor.' }), '#ffffaa');
-                        } else {
-                            logger.log(i18next.t('scroll.protect_fail', { defaultValue: 'You have no armor to protect.' }), '#aaaaaa');
-                        }
+                        // Items.c:7906-7921 SCROLL_PROTECT_ARMOR
+                        this.protectEquippedGear(this.player.equippedArmor, 'armor');
                         break;
                     case 'negate_burst':
                         logger.log(i18next.t('scroll.negate_burst', { defaultValue: 'A wave of silence radiates from the scroll.' }), '#888888');
@@ -2395,10 +2394,12 @@ export class Game {
                         logger.log(i18next.t('scroll.shatter', { defaultValue: 'The ground shakes violently!' }), '#ffaa88');
                         break;
                     case 'discord_burst':
-                        logger.log(i18next.t('scroll.discord', { defaultValue: 'Monsters around you burst into a frenzy.' }), '#ff6666');
+                        // Items.c:8011 SCROLL_DISCORD: discordBlast("the scroll", DCOLS)
+                        this.discordBlastFromPlayer('the scroll');
                         break;
                     case 'summon_monsters':
-                        logger.log(i18next.t('scroll.summon', { defaultValue: 'Monsters materialize from the shadows!' }), '#ff4444');
+                        // Items.c:7977-7990 SCROLL_SUMMON_MONSTER
+                        this.summonMonstersAroundPlayer();
                         break;
                     case 'amnesia':
                         logger.log(i18next.t('scroll.amnesia', { defaultValue: 'Your memory of this level is wiped clean.' }), '#aaaaaa');
@@ -3007,6 +3008,117 @@ export class Game {
         target.rechargeCounter = 0;
         logger.log(`${target.name} crackles with restored power.`, '#66ddff');
         return true;
+    }
+
+    /**
+     * Items.c:7906-7938 SCROLL_PROTECT_ARMOR / SCROLL_PROTECT_WEAPON：
+     * 对应装备打上 ITEM_PROTECTED（web 字段 isProtected），并对该件 uncurse
+     * （Items.c:7740 uncurse 只清诅咒标志、不动负附魔，故不复用整包解咒的
+     * removeCurseFromInventory——那会把 enchantment 负值清零，语义不同）。
+     * 无对应装备时 "but it quickly disperses."，卷轴照常消耗。
+     */
+    private protectEquippedGear(gear: Item | null, kind: 'weapon' | 'armor'): void {
+        if (!gear) {
+            logger.log(i18next.t('scroll.protect_fail', {
+                defaultValue: 'A protective golden light surrounds you, but it quickly disperses.'
+            }), '#aaaaaa');
+            return;
+        }
+        gear.isProtected = true;
+        logger.log(i18next.t(kind === 'weapon' ? 'scroll.protect_weapon' : 'scroll.protect_armor', {
+            name: gear.displayName,
+            defaultValue: `A protective golden light covers your ${gear.displayName}.`
+        }), '#ffffaa');
+        if (gear.isCursed) {
+            gear.isCursed = false;
+            logger.log(i18next.t('scroll.protect_uncurse', {
+                name: gear.displayName,
+                defaultValue: `A malevolent force leaves your ${gear.displayName}.`
+            }), '#88ffcc');
+        }
+    }
+
+    /**
+     * Items.c:4883-4902 discordBlast(emitterName, DCOLS)：
+     * 对视野内（IN_FIELD_OF_VIEW）、距玩家 ≤ DCOLS 的非无生命/非无敌怪物
+     * 施加 discordant 状态 30 回合（Items.c:4899 硬编码）。
+     * MONST_INANIMATE/MONST_INVULNERABLE 豁免同 CE（Items.c:4896）。
+     */
+    private discordBlastFromPlayer(emitterName: string): void {
+        logger.log(i18next.t('scroll.discord', {
+            emitter: emitterName,
+            defaultValue: `${emitterName} emits a wave of unsettling purple radiation!`
+        }), '#c084fc');
+
+        const px = this.player.loc.x;
+        const py = this.player.loc.y;
+        for (const m of this.monsters) {
+            if (m.hp <= 0) continue;
+            if (m.hasBehavior('MONST_INANIMATE') || m.hasAbility('MONST_INVULNERABLE')) continue;
+            // CE 为 IN_FIELD_OF_VIEW（玩家 FOV）；web 用玩家→怪物的实时视线判定，
+            // 等价且不依赖渲染流程的 FOV 缓存刷新
+            if (!this.hasLineOfSight(px, py, m.loc.x, m.loc.y)) continue;
+            const distSq = (px - m.loc.x) * (px - m.loc.x) + (py - m.loc.y) * (py - m.loc.y);
+            if (distSq > DCOLS * DCOLS) continue;
+            this.applyStatusToMonster(m, 'discordant', DISCORD_DURATION);
+        }
+    }
+
+    /**
+     * Items.c:7977-7990 SCROLL_SUMMON_MONSTER：
+     * 至多 25 轮尝试，每轮对玩家 8 邻格依次判定——格子可通行、无怪物
+     * （CE 为 !T_OBSTRUCTS_PASSABILITY && !HAS_MONSTER）且 10% 掷骰命中时，
+     * 在该格经 spawnHorde(0, ...) 抽取并生成一只怪物，总数上限 3。
+     * CE spawnHorde 的禁用集 HORDE_LEADER_CAPTIVE | HORDE_NO_PERIODIC_SPAWN |
+     * HORDE_IS_SUMMONED | HORDE_MACHINE_ONLY 与 HORDE_PERIODIC_FORBIDDEN_FLAGS
+     * 完全一致，out-of-depth 掷骰同样适用；生成后 wakeUp(monst) → HUNTING。
+     * 差异：CE 每次 spawnHorde 落下整队（领袖+成员），单次召唤可超 3 只；
+     * web 按验收口径钳制"场上新增 ≤3 只"，每只取抽中 horde 的领袖种类。
+     */
+    private summonMonstersAroundPlayer(): void {
+        const nbDirs = [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, -1], [-1, 1], [1, -1]];
+        let numberOfMonsters = 0;
+
+        for (let j = 0; j < 25 && numberOfMonsters < 3; j++) {
+            for (const [dx, dy] of nbDirs) {
+                if (numberOfMonsters >= 3) break;
+                const x = this.player.loc.x + dx!;
+                const y = this.player.loc.y + dy!;
+                const cell = this.grid.getCell(x, y);
+                if (!cell || !cell.isPassable || this.getMonsterAt(x, y)) continue;
+                if (!rng.randPercent(10)) continue;
+
+                // CE spawnHorde(0, ...)：10% out-of-depth + 禁用集过滤 + frequency 加权抽 horde
+                const spawn = this.rollSpawnDepth(this.depth);
+                const forbidden = spawn.outOfDepth
+                    ? [...HORDE_PERIODIC_FORBIDDEN_FLAGS, 'HORDE_NEVER_OOD']
+                    : HORDE_PERIODIC_FORBIDDEN_FLAGS;
+                const horde = this.pickHordeType(this.hordeCandidates(spawn.depth, forbidden));
+                if (!horde) continue;
+
+                const mData = (monsterData as MonsterData[]).find(m => m.id === horde.leader.toLowerCase());
+                if (!mData) continue;
+                const mon = new Monster(x, y, mData);
+                this.applyRandomMutation(mon, this.depth);
+                mon.state = MonsterState.HUNTING; // Items.c:7987 wakeUp(monst)
+                this.monsters.push(mon);
+                numberOfMonsters++;
+            }
+        }
+
+        if (numberOfMonsters > 1) {
+            logger.log(i18next.t('scroll.summon_many', {
+                defaultValue: 'The fabric of space ripples, and monsters appear!'
+            }), '#ff4444');
+        } else if (numberOfMonsters === 1) {
+            logger.log(i18next.t('scroll.summon_one', {
+                defaultValue: 'The fabric of space ripples, and a monster appears!'
+            }), '#ff4444');
+        } else {
+            logger.log(i18next.t('scroll.summon', {
+                defaultValue: 'The fabric of space boils violently around you, but nothing happens.'
+            }), '#aaaaaa');
+        }
     }
 
     public enterThrowMode(item: Item) {
@@ -3695,6 +3807,7 @@ export class Game {
             armor: item.armor,
             strengthRequired: item.strengthRequired,
             isCursed: item.isCursed,
+            isProtected: item.isProtected,
             enchantment: item.enchantment,
             runicType: item.runicType,
             runicKnown: item.runicKnown,
@@ -3720,6 +3833,8 @@ export class Game {
         item.armor = s.armor;
         item.strengthRequired = s.strengthRequired;
         item.isCursed = s.isCursed;
+        // 旧存档无 isProtected 字段，回落为 false
+        item.isProtected = s.isProtected ?? false;
         item.enchantment = s.enchantment;
         item.runicType = s.runicType;
         item.runicKnown = !!s.runicKnown;
