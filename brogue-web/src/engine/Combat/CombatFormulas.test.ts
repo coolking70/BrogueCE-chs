@@ -16,7 +16,7 @@ import {
     damageFraction,
     defenseFraction,
     hitProbability,
-    armorProtection,
+    playerDefense,
     clumpedRoll,
 } from './CombatFormulas';
 import { Random } from '../Random';
@@ -161,29 +161,67 @@ describe('hitProbability — CE Combat.c:116-147', () => {
     });
 });
 
-describe('armorProtection', () => {
-    // ⚠️ 与 CE 不符项（只锁行为，不顺手修正，详见交付报告）：
-    // 当前 web 实现为乘法 baseArmor * 1.065^netEnch（CombatFormulas.ts:87-90），
-    // 而 CE 是加法：defense = (armor*FP_FACTOR + netEnchant*10) / FP_FACTOR，
-    // armor 字段本身为 ×10 定点（显示值 = armor/10 + enchant，Items.c:1544），
-    // 即每点净附魔恰好 +1 防御，最后钳制 ≥0（Items.c:8515-8523）。
-    // 以下测试锁定当前实现行为，防止其在无决策的情况下漂移。
-    it('当前实现（乘法 1.065^netEnch）的行为快照', () => {
-        expect(armorProtection(4, 2, 16, 14)).toBe(5); // 4*1.065^2.5 = 4.6820 → 5
-        expect(armorProtection(8, 0, 16, 15)).toBe(8); // 8*1.065^0.25 = 8.1269 → 8
-        expect(armorProtection(5, -4, 16, 16)).toBe(4); // 5*1.065^-4 = 3.8866 → 4
-        expect(armorProtection(6, 10, 30, 16)).toBe(14); // 6*1.065^13.5 = 14.0401 → 14
-        expect(armorProtection(0, 10, 16, 16)).toBe(0); // 基础 0 保持 0
+describe('playerDefense — CE Items.c:8515-8523（加法模型）', () => {
+    // CE Items.c:8517-8519:
+    //   enchant = netEnchant(theItem);   // 含力量修正（Combat.c:76-83），已钳 [-20,50]
+    //   player.info.defense = (theItem->armor * FP_FACTOR + enchant * 10) / FP_FACTOR;
+    //   if (player.info.defense < 0) player.info.defense = 0;   // 8520-8522
+    // theItem->armor 为 ×10 定点（leather 30 = 显示 3；显示值 = armor/10 + enchant1，
+    // Items.c:1544），armors.json 存显示值 → 内部防御值 = (armor + netEnchant) * 10。
+    // 每点净附魔恰好 +10 内部（+1 显示）防御，纯加法；该值只进命中率公式
+    // （Combat.c:140），CE 护甲不从伤害中扣任何点数。
+
+    // 原 it.fails 占位转正（P0-1 钉子）：scale armor(4) +2、力量盈余 +0.5
+    // → 显示防御 4 + 2.5 = 6.5，内部值 65（Items.c:8519）。
+    // 旧乘法实现返回 5，已于本次按 CE 改为加法后转绿。
+    it('黄金值：scale(4) +2 附魔、力量盈余 +0.5 → 内部防御 65（Items.c:8519）', () => {
+        expect(playerDefense(4, 2, 16, 14)).toBe(65);
     });
 
-    // CE Items.c:8519 + 8520-8521 的加法公式（黄金值）：
-    // scale armor(4) +2、力量盈余 +0.5 → CE defense = 4 + 2.5 = 6.5（×10 定点后为 65）。
-    // 当前乘法实现返回 5。it.fails 精确钉住「当前实现 ≠ CE 黄金值」这一事实；
-    // 将来按 CE 改为加法后此测试会转红，即提示把下面的 it.todo 落地为正式断言。
-    it.fails('【与 CE 不符】当前乘法实现返回 5，CE 加法公式的黄金值是 6.5（Items.c:8519）', () => {
-        expect(armorProtection(4, 2, 16, 14)).toBe(6.5);
+    // 原 it.todo 落地：断言 base + netEnchant（钳 0）
+    it('加法模型黄金值：base + netEnchant（×10 标度）', () => {
+        // leather(3) +0、力量恰好 → 内部 30（显示 3，Items.c:1544 口径）
+        expect(playerDefense(3, 0, 10, 10)).toBe(30);
+        // plate(11) +0、力量恰好 → 内部 110
+        expect(playerDefense(11, 0, 19, 19)).toBe(110);
+        // plate(11) +3、力量恰好 → 内部 140
+        expect(playerDefense(11, 3, 19, 19)).toBe(140);
+        // 0.25 步进（力量盈余 +0.25）：3 + 0.25 = 3.25 显示 → 32.5 内部
+        expect(playerDefense(3, 0, 11, 10)).toBe(32.5);
+        // banded(7) -4、力量恰好 → (7-4)*10 = 30
+        expect(playerDefense(7, -4, 15, 15)).toBe(30);
+        // 基础 0：净附魔仍按加法生效（0 + 2)*10 = 20；CE 对 defense 的唯一
+        // 特殊处理就是 <0 钳 0（8520-8522），基础 0 无额外归零规则
+        expect(playerDefense(0, 2, 16, 16)).toBe(20);
     });
-    it.todo('armorProtection 待按 CE 加法公式重写后断言 base + netEnchant（钳 0）；见 Items.c:8515-8523');
+
+    // 验收断言：每点净附魔使内部防御值恰好 +10（加法，非乘法）
+    it('每点净附魔使内部防御值 +10（含 0.25 步进的 +2.5）', () => {
+        // 力量恰好时：附魔 +1 → +10
+        expect(playerDefense(4, 3, 14, 14) - playerDefense(4, 2, 14, 14)).toBe(10);
+        expect(playerDefense(11, 4, 19, 19) - playerDefense(11, 3, 19, 19)).toBe(10);
+        // 力量盈余路径同样线性：力量 +4 → +1 净附魔 → +10 内部
+        expect(playerDefense(4, 0, 18, 14) - playerDefense(4, 0, 14, 14)).toBe(10);
+        // 力量欠缺路径：-1 力量 → -2.5 净附魔 → -25 内部
+        expect(playerDefense(4, 0, 13, 14) - playerDefense(4, 0, 14, 14)).toBe(-25);
+        // 0.25 步进：+0.25 净附魔 → +2.5 内部
+        expect(playerDefense(4, 0.25, 14, 14) - playerDefense(4, 0, 14, 14)).toBe(2.5);
+    });
+
+    // 验收断言：负值钳到 0（CE Items.c:8520-8522）
+    it('净防御为负时钳到 0（Items.c:8520-8522，边界必测）', () => {
+        // (3 - 4)*10 = -10 → 0
+        expect(playerDefense(3, -4, 10, 10)).toBe(0);
+        // 恰好为 0 的边界保留：(3 - 3)*10 = 0 → 0
+        expect(playerDefense(3, -3, 10, 10)).toBe(0);
+        // 深度负附魔受 netEnchant 下界 [-20] 约束后再钳 0：(3 - 20)*10 → 0
+        expect(playerDefense(3, -20, 10, 10)).toBe(0);
+        // 力量欠缺拖垮附魔：plate(11) -2 附魔、欠缺 1 力量 → (11 - 4.5)*10 = 65 仍为正
+        expect(playerDefense(11, -2, 18, 19)).toBe(65);
+        // 欠缺 3 力量 → (11 - 9.5)*10 = 15；欠缺 4 → (11-12)*10 = -10 → 0
+        expect(playerDefense(11, -2, 16, 19)).toBe(15);
+        expect(playerDefense(11, -2, 15, 19)).toBe(0);
+    });
 });
 
 describe('clumpedRoll — CE Combat.c:46-57 注释 / Math.c:40-59 randClumpedRange', () => {

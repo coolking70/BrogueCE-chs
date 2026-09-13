@@ -12,7 +12,7 @@ import {
     netEnchant,
     hitProbability,
     damageFraction,
-    armorProtection,
+    playerDefense,
     clumpedRoll,
     runicWeaponChance
 } from './CombatFormulas';
@@ -20,7 +20,7 @@ import {
 export interface AttackResult {
     damage: number;
     weaponName?: string;
-    /** True if the attack hit (even if damage was reduced to 0 by armor) */
+    /** True if the attack hit (damage is dealt in full; CE armor never reduces damage) */
     hit: boolean;
     /** True if the defender was sleeping/unaware (triple damage) */
     backstab: boolean;
@@ -67,10 +67,12 @@ export class CombatSystem {
         if (defender instanceof Monster) {
             defenderDefense = defender.defense;
         } else if (defender instanceof Player) {
-            // Player defense comes from equipped armor
+            // Player defense comes from equipped armor.
+            // CE 内部 ×10 标度（Items.c:8515-8523），只降低被命中概率（Combat.c:140），
+            // 不参与伤害结算——CE 的护甲没有任何"减伤"步骤。
             if (defender.equippedArmor && defender.equippedArmor.armor) {
                 const strReq = defender.equippedArmor.strengthRequired || 0;
-                defenderDefense = armorProtection(
+                defenderDefense = playerDefense(
                     defender.equippedArmor.armor,
                     defender.equippedArmor.enchantment,
                     defender.strength,
@@ -138,17 +140,8 @@ export class CombatSystem {
             damage = Math.floor(damage * 1.5);
         }
 
-        // Apply armor reduction for attacks against the player
-        if (defender instanceof Player && defender.equippedArmor?.armor) {
-            const strReq = defender.equippedArmor.strengthRequired || 0;
-            const protection = armorProtection(
-                defender.equippedArmor.armor,
-                defender.equippedArmor.enchantment,
-                defender.strength,
-                strReq
-            );
-            damage -= protection;
-        }
+        // CE 护甲不参与伤害结算：防御值已在上面进入命中率掷骰（Combat.c:140），
+        // 命中后按伤害骰全额扣血，没有任何"护甲减伤"步骤（全 CE 源码无此实现）。
 
         // Minimum 1 damage on a hit
         if (damage < 1) damage = 1;

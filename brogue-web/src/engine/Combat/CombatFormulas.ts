@@ -74,20 +74,31 @@ export function hitProbability(
 }
 
 /**
- * Armor protection value accounting for enchantment and strength.
- * CE uses: armor * defenseFraction(netEnchant(armor))
- * But we simplify: base armor + enchantment bonus
+ * Player defense value in CE's internal ×10 fixed-point scale.
+ *
+ * CE Items.c:8515-8523 (recalculateEquipmentBonuses):
+ *   enchant = netEnchant(theItem);                     // 含力量修正，已钳 [-20,50]
+ *   player.info.defense = (theItem->armor * FP_FACTOR + enchant * 10) / FP_FACTOR;
+ *   if (player.info.defense < 0) player.info.defense = 0;
+ * 其中 theItem->armor 为 ×10 定点（leather 30 = 显示 3，显示值 = armor/10 + enchant1，
+ * 见 Items.c:1544），armors.json 存显示值，故内部防御值 = (armor + netEnchant) * 10。
+ * 每点净附魔恰好 +10 内部（+1 显示）防御——纯加法，无乘法项。
+ *
+ * ⚠ 该值只喂命中率公式（Combat.c:140
+ *   hitProbability = accuracy * defenseFraction(defense * FP_FACTOR) / FP_FACTOR，
+ *   defenseFraction 见 PowerTables.c:184-204）。CE 护甲不从伤害里扣任何点数。
+ *
+ * 与 CE 的量化差异：CE 定点存储会把 ×10 值截断为整数（如 32.5 → 32），web 保留
+ * float 理想值，与 defenseFraction 等既有约定的误差口径一致（≤0.05 显示点）。
  */
-export function armorProtection(
+export function playerDefense(
     baseArmor: number,
     enchantment: number,
     playerStrength: number,
     requiredStrength: number
 ): number {
     const netEnch = netEnchant(enchantment, playerStrength, requiredStrength);
-    // Each point of net enchant multiplies armor by ~1.065
-    const protection = baseArmor * damageFraction(netEnch);
-    return Math.max(0, Math.round(protection));
+    return Math.max(0, (baseArmor + netEnch) * 10);
 }
 
 /**

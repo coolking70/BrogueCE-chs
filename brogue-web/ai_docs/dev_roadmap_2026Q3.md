@@ -114,6 +114,20 @@ P1-8a 给 `Item` 加了 `isProtected`（protect 卷轴设置、存档持久化�
 另：**`amnesia` 是 web 自创，CE 无此卷轴**（parity_gap_analysis.md §10.4）。
 P1-8a 按指示未动。删除与否是产品决策，待定。
 
+## P1-17 展示层护甲口径对齐（P1-11 排查发现，玩家可见的错误数值）
+
+P1-11 把护甲改为 CE 的加法防御模型后，展示层仍是旧口径：
+
+1. **`DetailGenerator.ts:310-321`**：物品详情的"实际护甲值"仍按旧乘法
+   `round(item.armor * damageFraction(ne))` 展示，应为 `armor + netEnchant`（显示值口径）。
+2. **`Game.ts:1136-1146` 与 `1186-1197`**（更严重，且是**既有**错误）：
+   调用 `generateMonsterDetail` 时把 `player.equippedArmor?.armor ?? 0`——
+   即**原始显示值**（皮甲 3）——当作 `playerDefense` 参数传入，
+   `DetailGenerator.ts:170` 据此算 `hitProbability`。于是怪物详情里
+   "该怪物有 X% 概率命中你"**长期低估被命中概率**；P1-11 后实战已用 ×10+附魔标度，
+   偏差进一步放大。函数签名里 `_playerArmorBase/_playerArmorEnchant/_playerArmorStrReq`
+   三个下划线占位参数正是为此预留，可直接复用。
+
 ## P1-12 水生 horde 的落点匹配（P1-2b 忠实实现 CE 约束后的副作用）
 
 CE 的 horde 有 `spawnsIn` 字段（如 EEL/KRAKEN 为 DEEP_WATER），`randomMatchingLocation`
