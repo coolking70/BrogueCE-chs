@@ -9,6 +9,7 @@ import { ItemCategory } from '../Items/Item';
 import type { Monster } from '../../entities/Monster';
 import { MonsterState } from '../../entities/Monster';
 import { hitProbability, netEnchant, damageFraction, strengthModifier } from '../Combat/CombatFormulas';
+import { CombatSystem } from '../Combat/Combat';
 
 // ---------- Helper types ----------
 
@@ -172,10 +173,10 @@ export function generateMonsterDetail(
         color: monHitProb > 50 ? '#ff6644' : '#ffcc44'
     });
 
-    // Parse monster damage
-    const mDmg = parseDamage(dmgStr);
+    // Parse monster damage（复用 CombatSystem.parseDamageString，与战斗结算同一套解析）
+    const mDmg = dmgStr ? CombatSystem.parseDamageString(dmgStr) : null;
     if (mDmg && playerHP > 0) {
-        const avgDmg = (mDmg[0] + mDmg[1]) / 2;
+        const avgDmg = (mDmg.min + mDmg.max) / 2;
         const pctOfHP = Math.round(100 * avgDmg / playerHP);
         combatLines.push({
             text: `平均每击造成你当前生命值的 ${pctOfHP}% 伤害。`,
@@ -183,7 +184,7 @@ export function generateMonsterDetail(
         });
 
         // Hits to kill player
-        const hitsToKill = Math.max(1, Math.ceil(playerHP / Math.max(1, mDmg[1])));
+        const hitsToKill = Math.max(1, Math.ceil(playerHP / Math.max(1, mDmg.max)));
         combatLines.push({
             text: `最坏情况下，${hitsToKill} 击可击败你。`,
             color: hitsToKill <= 3 ? '#ff4444' : '#cccccc'
@@ -276,7 +277,7 @@ export function generateItemDetail(
     if (item.category === ItemCategory.WEAPON) {
         const statsLines: DetailLine[] = [];
         if (item.damage) {
-            const [lo, hi] = parseDamage(item.damage) || [0, 0];
+            const { min: lo, max: hi } = CombatSystem.parseDamageString(item.damage);
             statsLines.push({ text: `基础伤害: ${item.damage} (${lo}~${hi})` });
 
             // With enchantment
@@ -378,16 +379,4 @@ export function generateItemDetail(
         name: item.displayName,
         sections
     };
-}
-
-// ---------- Helper ----------
-
-function parseDamage(dmgStr: string | undefined): [number, number] | null {
-    if (!dmgStr) return null;
-    // Format: "NdM" e.g. "2d5"
-    const m = dmgStr.match(/(\d+)d(\d+)/);
-    if (!m) return null;
-    const n = parseInt(m[1]!);
-    const d = parseInt(m[2]!);
-    return [n, n * d];
 }

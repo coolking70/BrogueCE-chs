@@ -42,6 +42,7 @@ export interface GameSnapshotItem {
     category: number;
     loc: Pos;
     weight: number;
+    quantity?: number;
     damage?: string;
     armor?: number;
     strengthRequired?: number;
@@ -3458,6 +3459,7 @@ export class Game {
             category: item.category,
             loc: { x: item.loc.x, y: item.loc.y },
             weight: item.weight,
+            quantity: item.quantity,
             damage: item.damage,
             armor: item.armor,
             strengthRequired: item.strengthRequired,
@@ -3481,6 +3483,8 @@ export class Game {
         item.id = s.id;
         item.loc = { x: s.loc.x, y: s.loc.y };
         item.weight = s.weight;
+        // 旧存档无 quantity 字段，回落为 Item 默认堆叠数 1
+        item.quantity = s.quantity ?? 1;
         item.damage = s.damage;
         item.armor = s.armor;
         item.strengthRequired = s.strengthRequired;
