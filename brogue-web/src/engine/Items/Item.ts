@@ -49,6 +49,9 @@ export class Item implements Entity {
     public cooldownTurns?: number;
     public cooldownRemaining?: number;
 
+    /** 堆叠数量，对齐 CE item->quantity；当前仅开局飞镖（×15）使用 */
+    public quantity: number = 1;
+
     constructor(name: string, char: string, color: number, category: ItemCategory) {
         this.id = rng.randRange(1, 100000000);
         this.name = name;

@@ -313,6 +313,41 @@ export class Game {
             this.player.strength = 18;
         }
 
+        // 开局装备对齐 BrogueCE RogueMain.c:420-443：口粮 → 匕首 → 飞镖×15 → 皮甲。
+        // 发放顺序不可调整：物品创建与生成会消耗全局 rng，回放系统依赖该顺序的确定性。
+        const ration = ItemLoader.spawnFood('ration_of_food', -1, -1);
+        if (ration) this.player.inventory.addItem(ration);
+
+        const dagger = ItemLoader.spawnWeapon('dagger', -1, -1);
+        if (dagger) {
+            dagger.enchantment = 0;
+            dagger.isCursed = false;
+            dagger.runicType = undefined;
+            dagger.runicKnown = true;
+            this.player.inventory.addItem(dagger);
+            this.player.equip(dagger);
+        }
+
+        const dart = ItemLoader.spawnWeapon('dart', -1, -1);
+        if (dart) {
+            dart.enchantment = 0;
+            dart.isCursed = false;
+            dart.runicType = undefined;
+            dart.runicKnown = true;
+            dart.quantity = 15;
+            this.player.inventory.addItem(dart);
+        }
+
+        const leatherArmor = ItemLoader.spawnArmor('leather_armor', -1, -1);
+        if (leatherArmor) {
+            leatherArmor.enchantment = 0;
+            leatherArmor.isCursed = false;
+            leatherArmor.runicType = undefined;
+            leatherArmor.runicKnown = true;
+            this.player.inventory.addItem(leatherArmor);
+            this.player.equip(leatherArmor);
+        }
+
         this.generateDepth(false, true);
         this.needsRender = true;
         this.update();
