@@ -3,52 +3,30 @@
     "leader": "RAT",
     "members": [],
     "minLevel": 1,
-    "maxLevel": 3,
-    "frequency": 100,
-    "flags": []
-  },
-  {
-    "leader": "RAT",
-    "members": [
-      {
-        "type": "RAT",
-        "minCount": 1,
-        "maxCount": 2
-      }
-    ],
-    "minLevel": 1,
-    "maxLevel": 3,
-    "frequency": 80,
+    "maxLevel": 5,
+    "frequency": 150,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": []
   },
   {
     "leader": "KOBOLD",
     "members": [],
     "minLevel": 1,
-    "maxLevel": 5,
-    "frequency": 100,
-    "flags": []
-  },
-  {
-    "leader": "KOBOLD",
-    "members": [
-      {
-        "type": "KOBOLD",
-        "minCount": 1,
-        "maxCount": 2
-      }
-    ],
-    "minLevel": 1,
-    "maxLevel": 4,
-    "frequency": 80,
+    "maxLevel": 6,
+    "frequency": 150,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": []
   },
   {
     "leader": "JACKAL",
     "members": [],
-    "minLevel": 2,
-    "maxLevel": 6,
+    "minLevel": 1,
+    "maxLevel": 3,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": []
   },
   {
@@ -57,12 +35,14 @@
       {
         "type": "JACKAL",
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 3
       }
     ],
-    "minLevel": 2,
-    "maxLevel": 6,
-    "frequency": 80,
+    "minLevel": 3,
+    "maxLevel": 7,
+    "frequency": 50,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": []
   },
   {
@@ -71,6 +51,120 @@
     "minLevel": 2,
     "maxLevel": 17,
     "frequency": 100,
+    "spawnsIn": "DEEP_WATER",
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "MONKEY",
+    "members": [],
+    "minLevel": 2,
+    "maxLevel": 9,
+    "frequency": 50,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "BLOAT",
+    "members": [],
+    "minLevel": 2,
+    "maxLevel": 13,
+    "frequency": 30,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "PIT_BLOAT",
+    "members": [],
+    "minLevel": 2,
+    "maxLevel": 13,
+    "frequency": 10,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "BLOAT",
+    "members": [
+      {
+        "type": "BLOAT",
+        "minCount": 0,
+        "maxCount": 2
+      }
+    ],
+    "minLevel": 14,
+    "maxLevel": 26,
+    "frequency": 30,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "PIT_BLOAT",
+    "members": [
+      {
+        "type": "PIT_BLOAT",
+        "minCount": 0,
+        "maxCount": 2
+      }
+    ],
+    "minLevel": 14,
+    "maxLevel": 26,
+    "frequency": 10,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "EXPLOSIVE_BLOAT",
+    "members": [],
+    "minLevel": 10,
+    "maxLevel": 26,
+    "frequency": 10,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "GOBLIN",
+    "members": [],
+    "minLevel": 3,
+    "maxLevel": 10,
+    "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "GOBLIN_CONJURER",
+    "members": [],
+    "minLevel": 3,
+    "maxLevel": 10,
+    "frequency": 60,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "TOAD",
+    "members": [],
+    "minLevel": 4,
+    "maxLevel": 11,
+    "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "PINK_JELLY",
+    "members": [],
+    "minLevel": 4,
+    "maxLevel": 13,
+    "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": []
   },
   {
@@ -85,6 +179,8 @@
     "minLevel": 5,
     "maxLevel": 13,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 62,
     "flags": [
       "HORDE_NO_PERIODIC_SPAWN"
     ]
@@ -95,9 +191,37 @@
     "minLevel": 5,
     "maxLevel": 13,
     "frequency": 100,
+    "spawnsIn": "WALL",
+    "machine": 0,
     "flags": [
       "HORDE_NO_PERIODIC_SPAWN"
     ]
+  },
+  {
+    "leader": "MONKEY",
+    "members": [
+      {
+        "type": "MONKEY",
+        "minCount": 2,
+        "maxCount": 4
+      }
+    ],
+    "minLevel": 5,
+    "maxLevel": 13,
+    "frequency": 20,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "VAMPIRE_BAT",
+    "members": [],
+    "minLevel": 6,
+    "maxLevel": 13,
+    "frequency": 30,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
   },
   {
     "leader": "VAMPIRE_BAT",
@@ -111,9 +235,78 @@
     "minLevel": 6,
     "maxLevel": 13,
     "frequency": 70,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_NEVER_OOD"
     ]
+  },
+  {
+    "leader": "ACID_MOUND",
+    "members": [],
+    "minLevel": 6,
+    "maxLevel": 13,
+    "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "GOBLIN",
+    "members": [
+      {
+        "type": "GOBLIN",
+        "minCount": 2,
+        "maxCount": 3
+      },
+      {
+        "type": "GOBLIN_MYSTIC",
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "JACKAL",
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "minLevel": 6,
+    "maxLevel": 12,
+    "frequency": 40,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "GOBLIN_CONJURER",
+    "members": [
+      {
+        "type": "GOBLIN_CONJURER",
+        "minCount": 0,
+        "maxCount": 1
+      },
+      {
+        "type": "GOBLIN_MYSTIC",
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
+    "minLevel": 7,
+    "maxLevel": 15,
+    "frequency": 40,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "CENTIPEDE",
+    "members": [],
+    "minLevel": 7,
+    "maxLevel": 14,
+    "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
   },
   {
     "leader": "BOG_MONSTER",
@@ -121,9 +314,21 @@
     "minLevel": 7,
     "maxLevel": 14,
     "frequency": 80,
+    "spawnsIn": "MUD",
+    "machine": 0,
     "flags": [
       "HORDE_NEVER_OOD"
     ]
+  },
+  {
+    "leader": "OGRE",
+    "members": [],
+    "minLevel": 7,
+    "maxLevel": 13,
+    "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
   },
   {
     "leader": "EEL",
@@ -137,6 +342,70 @@
     "minLevel": 8,
     "maxLevel": 22,
     "frequency": 70,
+    "spawnsIn": "DEEP_WATER",
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "ACID_MOUND",
+    "members": [
+      {
+        "type": "ACID_MOUND",
+        "minCount": 2,
+        "maxCount": 4
+      }
+    ],
+    "minLevel": 9,
+    "maxLevel": 13,
+    "frequency": 30,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "SPIDER",
+    "members": [],
+    "minLevel": 9,
+    "maxLevel": 16,
+    "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "DAR_BLADEMASTER",
+    "members": [
+      {
+        "type": "DAR_BLADEMASTER",
+        "minCount": 0,
+        "maxCount": 1
+      }
+    ],
+    "minLevel": 10,
+    "maxLevel": 14,
+    "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "WILL_O_THE_WISP",
+    "members": [],
+    "minLevel": 10,
+    "maxLevel": 17,
+    "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "WRAITH",
+    "members": [],
+    "minLevel": 10,
+    "maxLevel": 17,
+    "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": []
   },
   {
@@ -166,6 +435,8 @@
     "minLevel": 10,
     "maxLevel": 17,
     "frequency": 80,
+    "spawnsIn": null,
+    "machine": 62,
     "flags": [
       "HORDE_NO_PERIODIC_SPAWN"
     ]
@@ -176,9 +447,31 @@
     "minLevel": 11,
     "maxLevel": 18,
     "frequency": 100,
+    "spawnsIn": "WALL",
+    "machine": 0,
     "flags": [
       "HORDE_NO_PERIODIC_SPAWN"
     ]
+  },
+  {
+    "leader": "ZOMBIE",
+    "members": [],
+    "minLevel": 11,
+    "maxLevel": 18,
+    "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "TROLL",
+    "members": [],
+    "minLevel": 12,
+    "maxLevel": 19,
+    "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
   },
   {
     "leader": "OGRE_TOTEM",
@@ -192,6 +485,8 @@
     "minLevel": 12,
     "maxLevel": 19,
     "frequency": 60,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_NO_PERIODIC_SPAWN"
     ]
@@ -208,6 +503,8 @@
     "minLevel": 12,
     "maxLevel": 26,
     "frequency": 100,
+    "spawnsIn": "MUD",
+    "machine": 0,
     "flags": []
   },
   {
@@ -216,6 +513,8 @@
     "minLevel": 13,
     "maxLevel": 20,
     "frequency": 100,
+    "spawnsIn": "DEEP_WATER",
+    "machine": 0,
     "flags": []
   },
   {
@@ -224,6 +523,50 @@
     "minLevel": 13,
     "maxLevel": 20,
     "frequency": 100,
+    "spawnsIn": "LAVA",
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "OGRE_SHAMAN",
+    "members": [
+      {
+        "type": "OGRE",
+        "minCount": 1,
+        "maxCount": 3
+      }
+    ],
+    "minLevel": 14,
+    "maxLevel": 20,
+    "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "CENTAUR",
+    "members": [
+      {
+        "type": "CENTAUR",
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
+    "minLevel": 14,
+    "maxLevel": 21,
+    "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "ACID_JELLY",
+    "members": [],
+    "minLevel": 14,
+    "maxLevel": 21,
+    "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": []
   },
   {
@@ -232,9 +575,21 @@
     "minLevel": 15,
     "maxLevel": 22,
     "frequency": 100,
+    "spawnsIn": "WALL",
+    "machine": 0,
     "flags": [
       "HORDE_NO_PERIODIC_SPAWN"
     ]
+  },
+  {
+    "leader": "PIXIE",
+    "members": [],
+    "minLevel": 14,
+    "maxLevel": 21,
+    "frequency": 80,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
   },
   {
     "leader": "FLAME_TURRET",
@@ -242,9 +597,53 @@
     "minLevel": 14,
     "maxLevel": 24,
     "frequency": 100,
+    "spawnsIn": "WALL",
+    "machine": 0,
     "flags": [
       "HORDE_NO_PERIODIC_SPAWN"
     ]
+  },
+  {
+    "leader": "DAR_BLADEMASTER",
+    "members": [
+      {
+        "type": "DAR_BLADEMASTER",
+        "minCount": 0,
+        "maxCount": 1
+      },
+      {
+        "type": "DAR_PRIESTESS",
+        "minCount": 0,
+        "maxCount": 1
+      }
+    ],
+    "minLevel": 15,
+    "maxLevel": 17,
+    "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "PINK_JELLY",
+    "members": [
+      {
+        "type": "PINK_JELLY",
+        "minCount": 0,
+        "maxCount": 1
+      },
+      {
+        "type": "DAR_PRIESTESS",
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
+    "minLevel": 17,
+    "maxLevel": 23,
+    "frequency": 70,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
   },
   {
     "leader": "KRAKEN",
@@ -252,6 +651,194 @@
     "minLevel": 15,
     "maxLevel": 30,
     "frequency": 100,
+    "spawnsIn": "DEEP_WATER",
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "PHANTOM",
+    "members": [],
+    "minLevel": 16,
+    "maxLevel": 23,
+    "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "WRAITH",
+    "members": [
+      {
+        "type": "WRAITH",
+        "minCount": 1,
+        "maxCount": 4
+      }
+    ],
+    "minLevel": 16,
+    "maxLevel": 23,
+    "frequency": 80,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "IMP",
+    "members": [],
+    "minLevel": 17,
+    "maxLevel": 24,
+    "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "DAR_BLADEMASTER",
+    "members": [
+      {
+        "type": "DAR_BLADEMASTER",
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "DAR_PRIESTESS",
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "DAR_BATTLEMAGE",
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
+    "minLevel": 18,
+    "maxLevel": 25,
+    "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "FURY",
+    "members": [
+      {
+        "type": "FURY",
+        "minCount": 2,
+        "maxCount": 4
+      }
+    ],
+    "minLevel": 18,
+    "maxLevel": 26,
+    "frequency": 80,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "REVENANT",
+    "members": [],
+    "minLevel": 19,
+    "maxLevel": 27,
+    "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "GOLEM",
+    "members": [],
+    "minLevel": 21,
+    "maxLevel": 30,
+    "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "TENTACLE_HORROR",
+    "members": [],
+    "minLevel": 22,
+    "maxLevel": 39,
+    "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "PHYLACTERY",
+    "members": [],
+    "minLevel": 22,
+    "maxLevel": 39,
+    "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "DRAGON",
+    "members": [],
+    "minLevel": 24,
+    "maxLevel": 39,
+    "frequency": 70,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "DRAGON",
+    "members": [
+      {
+        "type": "DRAGON",
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
+    "minLevel": 27,
+    "maxLevel": 39,
+    "frequency": 30,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "GOLEM",
+    "members": [
+      {
+        "type": "GOLEM",
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "DAR_PRIESTESS",
+        "minCount": 0,
+        "maxCount": 1
+      },
+      {
+        "type": "DAR_BATTLEMAGE",
+        "minCount": 0,
+        "maxCount": 1
+      }
+    ],
+    "minLevel": 27,
+    "maxLevel": 39,
+    "frequency": 80,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "GOLEM",
+    "members": [
+      {
+        "type": "GOLEM",
+        "minCount": 5,
+        "maxCount": 10
+      }
+    ],
+    "minLevel": 30,
+    "maxLevel": 39,
+    "frequency": 20,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": []
   },
   {
@@ -264,8 +851,47 @@
       }
     ],
     "minLevel": 30,
-    "maxLevel": null,
+    "maxLevel": 39,
     "frequency": 100,
+    "spawnsIn": "DEEP_WATER",
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "TENTACLE_HORROR",
+    "members": [
+      {
+        "type": "TENTACLE_HORROR",
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "REVENANT",
+        "minCount": 2,
+        "maxCount": 4
+      }
+    ],
+    "minLevel": 32,
+    "maxLevel": 39,
+    "frequency": 20,
+    "spawnsIn": null,
+    "machine": 0,
+    "flags": []
+  },
+  {
+    "leader": "DRAGON",
+    "members": [
+      {
+        "type": "DRAGON",
+        "minCount": 3,
+        "maxCount": 5
+      }
+    ],
+    "minLevel": 34,
+    "maxLevel": 39,
+    "frequency": 20,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": []
   },
   {
@@ -280,6 +906,8 @@
     "minLevel": 0,
     "maxLevel": 0,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_IS_SUMMONED",
       "HORDE_DIES_ON_LEADER_DEATH"
@@ -297,6 +925,8 @@
     "minLevel": 0,
     "maxLevel": 0,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_IS_SUMMONED"
     ]
@@ -313,6 +943,8 @@
     "minLevel": 0,
     "maxLevel": 0,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_IS_SUMMONED"
     ]
@@ -329,6 +961,8 @@
     "minLevel": 0,
     "maxLevel": 0,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_IS_SUMMONED"
     ]
@@ -345,6 +979,8 @@
     "minLevel": 0,
     "maxLevel": 0,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_IS_SUMMONED"
     ]
@@ -361,6 +997,8 @@
     "minLevel": 0,
     "maxLevel": 0,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_IS_SUMMONED"
     ]
@@ -382,6 +1020,8 @@
     "minLevel": 0,
     "maxLevel": 0,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_IS_SUMMONED",
       "HORDE_SUMMONED_AT_DISTANCE"
@@ -399,6 +1039,8 @@
     "minLevel": 0,
     "maxLevel": 0,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_IS_SUMMONED"
     ]
@@ -415,6 +1057,8 @@
     "minLevel": 0,
     "maxLevel": 0,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_IS_SUMMONED",
       "HORDE_DIES_ON_LEADER_DEATH"
@@ -432,6 +1076,8 @@
     "minLevel": 0,
     "maxLevel": 0,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_IS_SUMMONED",
       "HORDE_DIES_ON_LEADER_DEATH"
@@ -449,6 +1095,8 @@
     "minLevel": 1,
     "maxLevel": 5,
     "frequency": 10,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_LEADER_CAPTIVE",
       "HORDE_NEVER_OOD"
@@ -466,6 +1114,8 @@
     "minLevel": 3,
     "maxLevel": 7,
     "frequency": 10,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_LEADER_CAPTIVE",
       "HORDE_NEVER_OOD"
@@ -483,6 +1133,8 @@
     "minLevel": 4,
     "maxLevel": 10,
     "frequency": 10,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_LEADER_CAPTIVE",
       "HORDE_NEVER_OOD"
@@ -500,6 +1152,8 @@
     "minLevel": 5,
     "maxLevel": 11,
     "frequency": 10,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_LEADER_CAPTIVE",
       "HORDE_NEVER_OOD"
@@ -517,6 +1171,8 @@
     "minLevel": 8,
     "maxLevel": 15,
     "frequency": 20,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_LEADER_CAPTIVE",
       "HORDE_NEVER_OOD"
@@ -534,6 +1190,8 @@
     "minLevel": 14,
     "maxLevel": 19,
     "frequency": 10,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_LEADER_CAPTIVE",
       "HORDE_NEVER_OOD"
@@ -551,6 +1209,8 @@
     "minLevel": 12,
     "maxLevel": 19,
     "frequency": 10,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_LEADER_CAPTIVE",
       "HORDE_NEVER_OOD"
@@ -573,6 +1233,8 @@
     "minLevel": 17,
     "maxLevel": 19,
     "frequency": 10,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_LEADER_CAPTIVE",
       "HORDE_NEVER_OOD"
@@ -590,6 +1252,8 @@
     "minLevel": 12,
     "maxLevel": 19,
     "frequency": 10,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_LEADER_CAPTIVE",
       "HORDE_NEVER_OOD"
@@ -607,6 +1271,8 @@
     "minLevel": 14,
     "maxLevel": 20,
     "frequency": 10,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_LEADER_CAPTIVE",
       "HORDE_NEVER_OOD"
@@ -624,6 +1290,8 @@
     "minLevel": 13,
     "maxLevel": 20,
     "frequency": 10,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_LEADER_CAPTIVE",
       "HORDE_NEVER_OOD"
@@ -641,6 +1309,8 @@
     "minLevel": 13,
     "maxLevel": 19,
     "frequency": 10,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_LEADER_CAPTIVE",
       "HORDE_NEVER_OOD"
@@ -658,6 +1328,8 @@
     "minLevel": 18,
     "maxLevel": 26,
     "frequency": 10,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_LEADER_CAPTIVE",
       "HORDE_NEVER_OOD"
@@ -675,6 +1347,8 @@
     "minLevel": 14,
     "maxLevel": 21,
     "frequency": 10,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_LEADER_CAPTIVE",
       "HORDE_NEVER_OOD"
@@ -692,6 +1366,8 @@
     "minLevel": 18,
     "maxLevel": 26,
     "frequency": 10,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_LEADER_CAPTIVE",
       "HORDE_NEVER_OOD"
@@ -709,6 +1385,8 @@
     "minLevel": 18,
     "maxLevel": 26,
     "frequency": 10,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_LEADER_CAPTIVE",
       "HORDE_NEVER_OOD"
@@ -726,6 +1404,8 @@
     "minLevel": 18,
     "maxLevel": 26,
     "frequency": 10,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_LEADER_CAPTIVE",
       "HORDE_NEVER_OOD"
@@ -743,6 +1423,8 @@
     "minLevel": 18,
     "maxLevel": 26,
     "frequency": 10,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_LEADER_CAPTIVE",
       "HORDE_NEVER_OOD"
@@ -770,6 +1452,8 @@
     "minLevel": 20,
     "maxLevel": 26,
     "frequency": 10,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_LEADER_CAPTIVE",
       "HORDE_NEVER_OOD"
@@ -797,6 +1481,8 @@
     "minLevel": 18,
     "maxLevel": 25,
     "frequency": 10,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_LEADER_CAPTIVE",
       "HORDE_NEVER_OOD"
@@ -819,6 +1505,8 @@
     "minLevel": 2,
     "maxLevel": 10,
     "frequency": 50,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_BOSS"
     ]
@@ -829,6 +1517,8 @@
     "minLevel": 5,
     "maxLevel": 15,
     "frequency": 50,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_BOSS"
     ]
@@ -837,8 +1527,10 @@
     "leader": "VAMPIRE",
     "members": [],
     "minLevel": 10,
-    "maxLevel": null,
+    "maxLevel": 40,
     "frequency": 50,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_BOSS"
     ]
@@ -847,8 +1539,10 @@
     "leader": "FLAMEDANCER",
     "members": [],
     "minLevel": 10,
-    "maxLevel": null,
+    "maxLevel": 40,
     "frequency": 50,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_BOSS"
     ]
@@ -859,6 +1553,8 @@
     "minLevel": 2,
     "maxLevel": 7,
     "frequency": 100,
+    "spawnsIn": "DEEP_WATER",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_WATER_MONSTER"
     ]
@@ -875,6 +1571,8 @@
     "minLevel": 5,
     "maxLevel": 15,
     "frequency": 100,
+    "spawnsIn": "DEEP_WATER",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_WATER_MONSTER"
     ]
@@ -883,8 +1581,10 @@
     "leader": "KRAKEN",
     "members": [],
     "minLevel": 12,
-    "maxLevel": null,
+    "maxLevel": 40,
     "frequency": 100,
+    "spawnsIn": "DEEP_WATER",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_WATER_MONSTER"
     ]
@@ -899,8 +1599,10 @@
       }
     ],
     "minLevel": 12,
-    "maxLevel": null,
+    "maxLevel": 40,
     "frequency": 80,
+    "spawnsIn": "DEEP_WATER",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_WATER_MONSTER"
     ]
@@ -911,6 +1613,8 @@
     "minLevel": 4,
     "maxLevel": 13,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_CAPTIVE",
       "HORDE_LEADER_CAPTIVE"
@@ -922,6 +1626,8 @@
     "minLevel": 12,
     "maxLevel": 20,
     "frequency": 50,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_CAPTIVE",
       "HORDE_LEADER_CAPTIVE"
@@ -933,6 +1639,8 @@
     "minLevel": 2,
     "maxLevel": 8,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_CAPTIVE",
       "HORDE_LEADER_CAPTIVE"
@@ -944,6 +1652,8 @@
     "minLevel": 10,
     "maxLevel": 20,
     "frequency": 50,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_CAPTIVE",
       "HORDE_LEADER_CAPTIVE"
@@ -955,6 +1665,8 @@
     "minLevel": 8,
     "maxLevel": 16,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_CAPTIVE",
       "HORDE_LEADER_CAPTIVE"
@@ -966,6 +1678,8 @@
     "minLevel": 8,
     "maxLevel": 14,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_CAPTIVE",
       "HORDE_LEADER_CAPTIVE"
@@ -977,6 +1691,8 @@
     "minLevel": 11,
     "maxLevel": 20,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_CAPTIVE",
       "HORDE_LEADER_CAPTIVE"
@@ -988,6 +1704,8 @@
     "minLevel": 17,
     "maxLevel": 23,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_CAPTIVE",
       "HORDE_LEADER_CAPTIVE"
@@ -997,8 +1715,10 @@
     "leader": "TENTACLE_HORROR",
     "members": [],
     "minLevel": 20,
-    "maxLevel": null,
+    "maxLevel": 26,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_CAPTIVE",
       "HORDE_LEADER_CAPTIVE"
@@ -1008,8 +1728,10 @@
     "leader": "DRAGON",
     "members": [],
     "minLevel": 23,
-    "maxLevel": null,
+    "maxLevel": 26,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_CAPTIVE",
       "HORDE_LEADER_CAPTIVE"
@@ -1021,6 +1743,8 @@
     "minLevel": 1,
     "maxLevel": 6,
     "frequency": 100,
+    "spawnsIn": "STATUE_DORMANT",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_STATUE"
     ]
@@ -1031,6 +1755,8 @@
     "minLevel": 6,
     "maxLevel": 12,
     "frequency": 100,
+    "spawnsIn": "STATUE_DORMANT",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_STATUE"
     ]
@@ -1041,6 +1767,8 @@
     "minLevel": 10,
     "maxLevel": 17,
     "frequency": 100,
+    "spawnsIn": "STATUE_DORMANT",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_STATUE"
     ]
@@ -1051,6 +1779,8 @@
     "minLevel": 12,
     "maxLevel": 19,
     "frequency": 100,
+    "spawnsIn": "STATUE_DORMANT",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_STATUE"
     ]
@@ -1061,6 +1791,8 @@
     "minLevel": 14,
     "maxLevel": 21,
     "frequency": 100,
+    "spawnsIn": "STATUE_DORMANT",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_STATUE"
     ]
@@ -1071,6 +1803,8 @@
     "minLevel": 21,
     "maxLevel": 30,
     "frequency": 100,
+    "spawnsIn": "STATUE_DORMANT",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_STATUE"
     ]
@@ -1079,8 +1813,10 @@
     "leader": "DRAGON",
     "members": [],
     "minLevel": 29,
-    "maxLevel": null,
+    "maxLevel": 40,
     "frequency": 100,
+    "spawnsIn": "STATUE_DORMANT",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_STATUE"
     ]
@@ -1089,8 +1825,10 @@
     "leader": "TENTACLE_HORROR",
     "members": [],
     "minLevel": 29,
-    "maxLevel": null,
+    "maxLevel": 40,
     "frequency": 100,
+    "spawnsIn": "STATUE_DORMANT",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_STATUE"
     ]
@@ -1101,6 +1839,8 @@
     "minLevel": 5,
     "maxLevel": 13,
     "frequency": 100,
+    "spawnsIn": "TURRET_DORMANT",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_TURRET"
     ]
@@ -1111,6 +1851,8 @@
     "minLevel": 11,
     "maxLevel": 18,
     "frequency": 100,
+    "spawnsIn": "TURRET_DORMANT",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_TURRET"
     ]
@@ -1121,6 +1863,8 @@
     "minLevel": 15,
     "maxLevel": 22,
     "frequency": 100,
+    "spawnsIn": "TURRET_DORMANT",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_TURRET"
     ]
@@ -1131,6 +1875,8 @@
     "minLevel": 17,
     "maxLevel": 24,
     "frequency": 100,
+    "spawnsIn": "TURRET_DORMANT",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_TURRET"
     ]
@@ -1141,6 +1887,8 @@
     "minLevel": 12,
     "maxLevel": 26,
     "frequency": 100,
+    "spawnsIn": "MACHINE_MUD_DORMANT",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_MUD"
     ]
@@ -1151,6 +1899,8 @@
     "minLevel": 17,
     "maxLevel": 26,
     "frequency": 30,
+    "spawnsIn": "MACHINE_MUD_DORMANT",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_MUD"
     ]
@@ -1161,6 +1911,8 @@
     "minLevel": 1,
     "maxLevel": 5,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_KENNEL",
       "HORDE_LEADER_CAPTIVE"
@@ -1172,6 +1924,8 @@
     "minLevel": 1,
     "maxLevel": 8,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_KENNEL",
       "HORDE_LEADER_CAPTIVE"
@@ -1183,6 +1937,8 @@
     "minLevel": 2,
     "maxLevel": 9,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_KENNEL",
       "HORDE_LEADER_CAPTIVE"
@@ -1194,6 +1950,8 @@
     "minLevel": 2,
     "maxLevel": 9,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_KENNEL",
       "HORDE_LEADER_CAPTIVE"
@@ -1205,6 +1963,8 @@
     "minLevel": 7,
     "maxLevel": 17,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_KENNEL",
       "HORDE_LEADER_CAPTIVE"
@@ -1216,6 +1976,8 @@
     "minLevel": 12,
     "maxLevel": 21,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_KENNEL",
       "HORDE_LEADER_CAPTIVE"
@@ -1227,6 +1989,8 @@
     "minLevel": 13,
     "maxLevel": 23,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_KENNEL",
       "HORDE_LEADER_CAPTIVE"
@@ -1238,6 +2002,8 @@
     "minLevel": 9,
     "maxLevel": 20,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_KENNEL",
       "HORDE_LEADER_CAPTIVE"
@@ -1249,6 +2015,8 @@
     "minLevel": 15,
     "maxLevel": 26,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_KENNEL",
       "HORDE_LEADER_CAPTIVE"
@@ -1260,6 +2028,8 @@
     "minLevel": 11,
     "maxLevel": 21,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_KENNEL",
       "HORDE_LEADER_CAPTIVE"
@@ -1269,8 +2039,10 @@
     "leader": "DAR_BLADEMASTER",
     "members": [],
     "minLevel": 9,
-    "maxLevel": null,
+    "maxLevel": 26,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_KENNEL",
       "HORDE_LEADER_CAPTIVE"
@@ -1280,8 +2052,10 @@
     "leader": "DAR_PRIESTESS",
     "members": [],
     "minLevel": 12,
-    "maxLevel": null,
+    "maxLevel": 26,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_KENNEL",
       "HORDE_LEADER_CAPTIVE"
@@ -1291,8 +2065,10 @@
     "leader": "DAR_BATTLEMAGE",
     "members": [],
     "minLevel": 13,
-    "maxLevel": null,
+    "maxLevel": 26,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_KENNEL",
       "HORDE_LEADER_CAPTIVE"
@@ -1304,6 +2080,8 @@
     "minLevel": 1,
     "maxLevel": 5,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_VAMPIRE_FODDER",
       "HORDE_LEADER_CAPTIVE"
@@ -1315,6 +2093,8 @@
     "minLevel": 1,
     "maxLevel": 8,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_VAMPIRE_FODDER",
       "HORDE_LEADER_CAPTIVE"
@@ -1326,6 +2106,8 @@
     "minLevel": 2,
     "maxLevel": 9,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_VAMPIRE_FODDER",
       "HORDE_LEADER_CAPTIVE"
@@ -1337,6 +2119,8 @@
     "minLevel": 2,
     "maxLevel": 9,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_VAMPIRE_FODDER",
       "HORDE_LEADER_CAPTIVE"
@@ -1348,6 +2132,8 @@
     "minLevel": 5,
     "maxLevel": 15,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_VAMPIRE_FODDER",
       "HORDE_LEADER_CAPTIVE"
@@ -1359,6 +2145,8 @@
     "minLevel": 10,
     "maxLevel": 19,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_VAMPIRE_FODDER",
       "HORDE_LEADER_CAPTIVE"
@@ -1370,6 +2158,8 @@
     "minLevel": 9,
     "maxLevel": 20,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_VAMPIRE_FODDER",
       "HORDE_LEADER_CAPTIVE"
@@ -1379,8 +2169,10 @@
     "leader": "IMP",
     "members": [],
     "minLevel": 15,
-    "maxLevel": null,
+    "maxLevel": 26,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_VAMPIRE_FODDER",
       "HORDE_LEADER_CAPTIVE"
@@ -1392,6 +2184,8 @@
     "minLevel": 11,
     "maxLevel": 21,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_VAMPIRE_FODDER",
       "HORDE_LEADER_CAPTIVE"
@@ -1401,8 +2195,10 @@
     "leader": "DAR_BLADEMASTER",
     "members": [],
     "minLevel": 9,
-    "maxLevel": null,
+    "maxLevel": 26,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_VAMPIRE_FODDER",
       "HORDE_LEADER_CAPTIVE"
@@ -1412,8 +2208,10 @@
     "leader": "DAR_PRIESTESS",
     "members": [],
     "minLevel": 12,
-    "maxLevel": null,
+    "maxLevel": 26,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_VAMPIRE_FODDER",
       "HORDE_LEADER_CAPTIVE"
@@ -1423,8 +2221,10 @@
     "leader": "DAR_BATTLEMAGE",
     "members": [],
     "minLevel": 13,
-    "maxLevel": null,
+    "maxLevel": 26,
     "frequency": 100,
+    "spawnsIn": "MONSTER_CAGE_CLOSED",
+    "machine": 0,
     "flags": [
       "HORDE_VAMPIRE_FODDER",
       "HORDE_LEADER_CAPTIVE"
@@ -1436,6 +2236,8 @@
     "minLevel": 1,
     "maxLevel": 14,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_THIEF"
     ]
@@ -1444,8 +2246,10 @@
     "leader": "IMP",
     "members": [],
     "minLevel": 15,
-    "maxLevel": null,
+    "maxLevel": 40,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_THIEF"
     ]
@@ -1456,6 +2260,8 @@
     "minLevel": 1,
     "maxLevel": 5,
     "frequency": 100,
+    "spawnsIn": "STATUE_INSTACRACK",
+    "machine": 0,
     "flags": [
       "HORDE_SACRIFICE_TARGET"
     ]
@@ -1466,6 +2272,8 @@
     "minLevel": 3,
     "maxLevel": 10,
     "frequency": 100,
+    "spawnsIn": "STATUE_INSTACRACK",
+    "machine": 0,
     "flags": [
       "HORDE_SACRIFICE_TARGET"
     ]
@@ -1476,6 +2284,8 @@
     "minLevel": 7,
     "maxLevel": 13,
     "frequency": 100,
+    "spawnsIn": "STATUE_INSTACRACK",
+    "machine": 0,
     "flags": [
       "HORDE_SACRIFICE_TARGET"
     ]
@@ -1486,6 +2296,8 @@
     "minLevel": 12,
     "maxLevel": 19,
     "frequency": 100,
+    "spawnsIn": "STATUE_INSTACRACK",
+    "machine": 0,
     "flags": [
       "HORDE_SACRIFICE_TARGET"
     ]
@@ -1496,6 +2308,8 @@
     "minLevel": 10,
     "maxLevel": 17,
     "frequency": 100,
+    "spawnsIn": "STATUE_INSTACRACK",
+    "machine": 0,
     "flags": [
       "HORDE_SACRIFICE_TARGET"
     ]
@@ -1506,6 +2320,8 @@
     "minLevel": 13,
     "maxLevel": 20,
     "frequency": 100,
+    "spawnsIn": "STATUE_INSTACRACK",
+    "machine": 0,
     "flags": [
       "HORDE_SACRIFICE_TARGET"
     ]
@@ -1516,6 +2332,8 @@
     "minLevel": 10,
     "maxLevel": 20,
     "frequency": 100,
+    "spawnsIn": "STATUE_INSTACRACK",
+    "machine": 0,
     "flags": [
       "HORDE_SACRIFICE_TARGET"
     ]
@@ -1524,8 +2342,10 @@
     "leader": "GOLEM",
     "members": [],
     "minLevel": 21,
-    "maxLevel": null,
+    "maxLevel": 40,
     "frequency": 100,
+    "spawnsIn": "STATUE_INSTACRACK",
+    "machine": 0,
     "flags": [
       "HORDE_SACRIFICE_TARGET"
     ]
@@ -1534,8 +2354,10 @@
     "leader": "REVENANT",
     "members": [],
     "minLevel": 21,
-    "maxLevel": null,
+    "maxLevel": 40,
     "frequency": 100,
+    "spawnsIn": "STATUE_INSTACRACK",
+    "machine": 0,
     "flags": [
       "HORDE_SACRIFICE_TARGET"
     ]
@@ -1544,8 +2366,10 @@
     "leader": "TENTACLE_HORROR",
     "members": [],
     "minLevel": 21,
-    "maxLevel": null,
+    "maxLevel": 40,
     "frequency": 100,
+    "spawnsIn": "STATUE_INSTACRACK",
+    "machine": 0,
     "flags": [
       "HORDE_SACRIFICE_TARGET"
     ]
@@ -1554,8 +2378,10 @@
     "leader": "UNICORN",
     "members": [],
     "minLevel": 1,
-    "maxLevel": null,
+    "maxLevel": 40,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_LEGENDARY_ALLY",
       "HORDE_ALLIED_WITH_PLAYER"
@@ -1565,8 +2391,10 @@
     "leader": "IFRIT",
     "members": [],
     "minLevel": 1,
-    "maxLevel": null,
+    "maxLevel": 40,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_LEGENDARY_ALLY",
       "HORDE_ALLIED_WITH_PLAYER"
@@ -1576,8 +2404,10 @@
     "leader": "PHOENIX_EGG",
     "members": [],
     "minLevel": 1,
-    "maxLevel": null,
+    "maxLevel": 40,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_LEGENDARY_ALLY",
       "HORDE_ALLIED_WITH_PLAYER"
@@ -1587,8 +2417,10 @@
     "leader": "ANCIENT_SPIRIT",
     "members": [],
     "minLevel": 1,
-    "maxLevel": null,
+    "maxLevel": 40,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_LEGENDARY_ALLY",
       "HORDE_ALLIED_WITH_PLAYER"
@@ -1600,6 +2432,8 @@
     "minLevel": 1,
     "maxLevel": 10,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_GOBLIN_WARREN"
     ]
@@ -1610,6 +2444,8 @@
     "minLevel": 1,
     "maxLevel": 10,
     "frequency": 60,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_GOBLIN_WARREN"
     ]
@@ -1626,6 +2462,8 @@
     "minLevel": 5,
     "maxLevel": 13,
     "frequency": 100,
+    "spawnsIn": null,
+    "machine": 62,
     "flags": [
       "HORDE_MACHINE_GOBLIN_WARREN"
     ]
@@ -1652,6 +2490,8 @@
     "minLevel": 6,
     "maxLevel": 12,
     "frequency": 40,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_GOBLIN_WARREN"
     ]
@@ -1673,6 +2513,8 @@
     "minLevel": 7,
     "maxLevel": 15,
     "frequency": 40,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_GOBLIN_WARREN"
     ]
@@ -1704,6 +2546,8 @@
     "minLevel": 10,
     "maxLevel": 17,
     "frequency": 80,
+    "spawnsIn": null,
+    "machine": 62,
     "flags": [
       "HORDE_MACHINE_GOBLIN_WARREN"
     ]
@@ -1720,6 +2564,8 @@
     "minLevel": 3,
     "maxLevel": 7,
     "frequency": 10,
+    "spawnsIn": null,
+    "machine": 0,
     "flags": [
       "HORDE_MACHINE_GOBLIN_WARREN",
       "HORDE_LEADER_CAPTIVE"
