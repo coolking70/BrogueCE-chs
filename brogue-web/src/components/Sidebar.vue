@@ -4,20 +4,23 @@ import { activeGame } from '../engine/Core/Game';
 import { logger } from '../engine/Systems/Logger';
 import type { LogMessage } from '../engine/Systems/Logger';
 import { STATUS_CONFIG } from '../engine/Status/statusConfig';
+import { STOMACH_SIZE, HUNGER_THRESHOLD, WEAK_THRESHOLD, FAINT_THRESHOLD } from '../entities/Player';
 
 const playerHp = ref(0);
 const playerMaxHp = ref(0);
 const playerDepth = ref(1);
-const playerNutrition = ref(12000);
+const playerNutrition = ref(STOMACH_SIZE);
 const logs = ref<LogMessage[]>([]);
 const hoverText = ref('');
 const playerStatuses = ref<string[]>([]);
 
+// Tiers mirror Player.computeHungerState: thresholds are CE Rogue.h:1125-1127
 const getNutritionStatus = (nutrition: number) => {
-    if (nutrition > 6000) return { text: '饱食', color: '#4ade80' };
-    if (nutrition > 2000) return { text: '饥饿', color: '#facc15' };
-    if (nutrition > 0) return { text: '极度饥饿', color: '#f87171' };
-    return { text: '虚脱', color: '#b91c1c' };
+    if (nutrition <= 0) return { text: '饿死', color: '#b91c1c' };
+    if (nutrition <= FAINT_THRESHOLD) return { text: '昏厥', color: '#ef4444' };
+    if (nutrition <= WEAK_THRESHOLD) return { text: '虚弱', color: '#f87171' };
+    if (nutrition <= HUNGER_THRESHOLD) return { text: '饥饿', color: '#facc15' };
+    return { text: '饱食', color: '#4ade80' };
 };
 
 let pollInterval: number;

@@ -77,6 +77,21 @@
 - 抽查断言：`rat` acc=80 def=0 regen=20；`jackal` moveSpeed=50；`ogre` attackSpeed=200；`troll` regen>0。数值以 CE `GlobalsBrogue.c` 为准，断言注释注明行号。
 - 报告中给出"复核 CE 后修正了哪些条目"的完整清单。
 
+## P1-14 饥饿系统的 CE 行为补全（P1-4 列出、未实现）
+
+P1-4 只做了核心四条偏差，以下 CE 行为仍缺（均附 CE 出处）：
+
+- 瘫痪（paralyzed）期间不消耗 nutrition（`Time.c:2214-2215`）
+- 携带 Amulet of Yendor 时 nutrition 仅 20% 概率消耗（`Time.c:2216`）
+- nutrition ≤ 1 且包内有食物时强制进食（`Time.c:949-963`）
+- 饥饿提示在无食物时追加 "and have no food"（`Time.c:930-934`）
+- 不够饿时进食提示 "not yet hungry"（`Items.c:7482`）
+- 回血速率受 `regenerationBonus`（再生戒指附魔）修正
+  （`Items.c:8742-8745`、`PowerTables.c:134`）——依赖戒指系统，见 §3.2
+
+另：web 自创的 `regenerating` 状态（CE 无 `STATUS_REGENERATING`）被保留，
+加速幅度沿用旧实现的 0.6 倍回满时间。属 web 扩展，重构时需决定去留。
+
 ## P1-12 水生 horde 的落点匹配（P1-2b 忠实实现 CE 约束后的副作用）
 
 CE 的 horde 有 `spawnsIn` 字段（如 EEL/KRAKEN 为 DEEP_WATER），`randomMatchingLocation`

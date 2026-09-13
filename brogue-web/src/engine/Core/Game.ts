@@ -6,12 +6,12 @@ import { Grid, TerrainType, DCOLS, DROWS, LightType } from '../Map/Grid';
 import { Architect } from '../Generator/Architect';
 import type { MachineResult } from '../Generator/BlueprintEngine';
 import blueprintData from '../../data/blueprints.json';
-import { Player } from '../../entities/Player';
+import { Player, type HungerState } from '../../entities/Player';
 import { Monster } from '../../entities/Monster';
 import { CombatSystem } from '../Combat/Combat';
 import { weaponParalysisDuration, weaponConfusionDuration, weaponForceDistance } from '../Combat/CombatFormulas';
 import { ItemCategory, Item } from '../Items/Item';
-import { ItemLoader } from '../Items/ItemLoader';
+import { ItemLoader, type ConsumableConfig } from '../Items/ItemLoader';
 import { rng } from '../Random';
 import monsterData from '../../data/monsters.json';
 import hordeData from '../../data/hordes.json';
@@ -2305,7 +2305,9 @@ export class Game {
                 logger.log(i18next.t('food.eat', { name: item.displayName, defaultValue: `You eat the ${item.displayName}.` }), '#cccccc');
 
                 if (data.effect === 'nourish') {
-                    this.player.nutrition = this.player.maxNutrition;
+                    // CE Items.c:7491: nutrition = min(food.power + nutrition, STOMACH_SIZE)
+                    const restore = (data as ConsumableConfig & { nutrition?: number }).nutrition ?? 0;
+                    this.player.nutrition = Math.min(this.player.maxNutrition, this.player.nutrition + restore);
                     logger.log(i18next.t('food.nourish', { defaultValue: 'That tasted great! You feel full.' }), '#44ff44');
                 }
 
@@ -3560,6 +3562,26 @@ export class Game {
         }
     }
 
+    /** CE Time.c:937-948 — one message per hunger-tier crossing, no repeat while it persists. */
+    private logHungerTransition(state: HungerState) {
+        switch (state) {
+            case 'hungry':
+                logger.log(i18next.t('status.player.hungry', { defaultValue: 'You are hungry.' }), '#ffcc00');
+                break;
+            case 'weak':
+                logger.log(i18next.t('status.player.weak_with_hunger', { defaultValue: 'You feel weak with hunger.' }), '#ff9900');
+                break;
+            case 'faint':
+                logger.log(i18next.t('status.player.faint_with_hunger', { defaultValue: 'You feel faint with hunger.' }), '#ff6600');
+                break;
+            case 'starving':
+                logger.log(i18next.t('status.player.starving_to_death', { defaultValue: 'You are starving to death!' }), '#ff0000');
+                break;
+            default:
+                break;
+        }
+    }
+
     private runMonsterTurns() {
         // Very basic loop for now
         this.monsters = this.monsters.filter(m => m.hp > 0);
@@ -3578,16 +3600,14 @@ export class Game {
         // Apply fire/gas damage to everyone
         this.applyEnvironmentalEffects();
 
-        // Player Hunger 
+        // Player Hunger
         const nutritionState = this.player.updateNutrition();
         if (nutritionState === 'starving') {
             this.lastDamageSource = 'starvation';
-            logger.log(
-                i18next.t('status.player.starving_damage', {
-                    defaultValue: 'You are starving and losing health!'
-                }),
-                '#ff0000'
-            );
+        }
+        const hungerTransition = this.player.consumeHungerTransition();
+        if (hungerTransition) {
+            this.logHungerTransition(hungerTransition);
         }
 
         this.tickArcanaResources();
