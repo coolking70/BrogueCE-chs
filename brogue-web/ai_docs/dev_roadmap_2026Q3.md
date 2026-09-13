@@ -68,7 +68,7 @@
 **改什么**
 - 写一次性脚本（放 `scripts/merge_monster_stats.cjs`，可提交），以 `id` 为键把 ce2 的 `accuracy / defense / regen / moveSpeed / attackSpeed` 合并进 `monsters.json`。
 - **冲突处理规则（必须严格遵守）**：`monsters.json` 现有的 `minDepth / maxDepth / behaviorFlags / abilityFlags / statusImmunities / statusResistTurns / onHit* / goldDropChance / itemDropChance / description / color` **一律保留，不被 ce2 覆盖**。只新增上述 5 个数值字段。
-- 合并后与 `BrogueCE-master/src/variants/GlobalsBrogue.c` 的 `monsterCatalog` **逐条复核这 5 个字段**，列出所有不一致项并以 CE 为准修正。
+- 合并后与 `BrogueCE-master/src/brogue/Globals.c:1025` 的 `monsterCatalog`（**不在 variants/GlobalsBrogue.c**） **逐条复核这 5 个字段**，列出所有不一致项并以 CE 为准修正。
 - 删除 `src/data/monsters_ce.json`（已知含损坏数据）与 `src/data/monsters_ce2.json`（合并后即死）。
 - `Monster.ts` 的 `?? 100 / ?? 0` 默认值保留作兜底，但新增一条构建期校验：任何缺这 5 个字段的条目在 `initConsumables` 同级的加载点 `console.warn`。
 
@@ -76,6 +76,37 @@
 - 新增 `src/data/monsters.test.ts`：断言 67 条**全部**具备 5 个字段且在合理区间（accuracy 0-300、defense 0-200、moveSpeed/attackSpeed 均为 100 的倍数或 CE 原值）。
 - 抽查断言：`rat` acc=80 def=0 regen=20；`jackal` moveSpeed=50；`ogre` attackSpeed=200；`troll` regen>0。数值以 CE `GlobalsBrogue.c` 为准，断言注释注明行号。
 - 报告中给出"复核 CE 后修正了哪些条目"的完整清单。
+
+## P1-7 怪物伤害记法修正（**本轮验收发现，当前最严重的数据缺陷**）
+
+**症状**：`monsters.json` 的 `damage` 把 CE 的 `{min,max}` 直接写成了 `"MINdMAX"`，
+但 `Combat.parseDamageString("XdY")` 的语义是 `min=X, max=X*Y`。于是 **43/67 只怪物
+伤害被放大，平均 4.4 倍，最高 17 倍**：
+
+| 怪物 | web 记法 | web 实际伤害 | CE 伤害 | 均值倍数 |
+|---|---|---|---|---|
+| dragon | `25d50` | **25-1250** | 25-50 | 17.0x |
+| tentacle_horror | `25d35` | 25-875 | 25-35 | 15.0x |
+| underworm | `18d22` | 18-396 | 18-22 | 10.3x |
+| kraken / revenant | `15d20` | 15-300 | 15-20 | 9.0x |
+| troll | `10d15` | **10-150** | 10-15 | 6.4x |
+| ogre | `9d13` | **9-117** | 9-13 | 5.7x |
+
+玩家满血 30 HP——**一只 ogre 或 troll 的单次攻击就能把玩家秒杀数次**。这是与
+P1-5 武器表完全同类的错误（`{min,max}` 被误写为 `MINdMAX`），只是发生在怪物侧。
+
+**改法**：与 P1-5 一致，改用 `1dN+M` 记法（`N = max−min+1`，`M = min−1`），
+使 `parseDamageString` 解析出的 min/max 与 CE 一致且 clumping=1。
+注意 CE 怪物的 clumpFactor 并非全为 1（如 eel `{3,7,2}`、ogre `{9,13,2}`），
+但 `Combat.ts` 当前硬编码 clumping=1 忽略该值，故本任务先对齐 min/max，
+clumpFactor 待 clumping 接线时一并处理（记入 P3）。
+
+**另有 12 只 CE damage 为 `{0,0,0}`（不攻击）的怪物**，web 写成占位 `"1d1"`
+（bloat / 各类 totem / turret / wisp / sentinel / phylactery / phoenix_egg 等），
+改 0 会牵动 Combat 的最小伤害下限逻辑，需连同处理。
+
+**优先级**：应排在 P1-2 之前。当前中深层怪物的伤害数值是错的，
+任何基于实战的平衡观察都不可信。
 
 ## P1-2 重新提取 `hordes.json`（**当前最严重的单点缺陷**）
 
