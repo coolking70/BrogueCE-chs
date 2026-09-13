@@ -828,20 +828,32 @@ export class Game {
                 : HORDE_POPULATE_FORBIDDEN_FLAGS;
             const candidates = this.hordeCandidates(spawn.depth, forbidden);
 
-            // Monsters.c:830-868：failsafe 50 —— 加权抽 horde 后检查落格地形（spawnsIn），
-            // 不匹配则重抽 horde 重选落格（CE 同样在重试时重掷 pickHordeType）
+            // Monsters.c:830-868：failsafe 50 —— 先抽 horde，再依其 spawnsIn 地形感知找落格
+            //（CE randomMatchingLocation(loc, FLOOR, NOTHING, spawnsIn ? spawnsIn : -1)）：
+            // spawnsIn 有值走全图地形匹配（findTerrainSpawnLocation），为空仍从 FLOOR
+            // 池取格（保持既有行为）；找不到匹配格则重抽 horde（CE 同样在重试时重掷
+            // pickHordeType）
             let hData: HordeEntry | null = null;
             let centerPos: Pos | null = null;
-            for (let failsafe = 50; failsafe > 0 && floorTiles.length > 0; failsafe--) {
+            for (let failsafe = 50; failsafe > 0; failsafe--) {
                 const cand = this.pickHordeType(candidates);
                 if (!cand) break;
-                const idx = rng.randRange(0, floorTiles.length - 1);
-                const pos = floorTiles[idx]!;
-                if (this.hordeFitsTerrain(cand, pos)) {
-                    hData = cand;
-                    centerPos = pos;
-                    floorTiles.splice(idx, 1);
-                    break;
+                if (cand.spawnsIn) {
+                    const pos = this.findTerrainSpawnLocation(cand.spawnsIn);
+                    if (pos) {
+                        hData = cand;
+                        centerPos = pos;
+                        break;
+                    }
+                } else if (floorTiles.length > 0) {
+                    const idx = rng.randRange(0, floorTiles.length - 1);
+                    const pos = floorTiles[idx]!;
+                    if (this.hordeFitsTerrain(cand, pos)) {
+                        hData = cand;
+                        centerPos = pos;
+                        floorTiles.splice(idx, 1);
+                        break;
+                    }
                 }
             }
             if (!hData || !centerPos) continue;
@@ -962,19 +974,74 @@ export class Game {
         return { depth: depthLevel, outOfDepth: false };
     }
 
+    /** spawnsIn 名 → 目标地形（CE tile 枚举 → TerrainType），hordeFitsTerrain 与
+     *  findTerrainSpawnLocation 共用，保证两处口径永不漂移。 */
+    private static readonly SPAWNS_IN_TERRAIN: Record<string, TerrainType> = {
+        DEEP_WATER: TerrainType.WATER_DEEP,
+        SHALLOW_WATER: TerrainType.WATER_SHALLOW,
+        MUD: TerrainType.MUD,
+        LAVA: TerrainType.LAVA,
+    };
+
     /** Monsters.c:809-819：horde 落格地形约束（spawnsIn）。 */
     private hordeFitsTerrain(h: HordeEntry, pos: Pos): boolean {
         if (!h.spawnsIn) return true;
-        const cell = this.grid.getCell(pos.x, pos.y);
-        if (!cell) return false;
-        switch (h.spawnsIn) {
-            case 'DEEP_WATER': return cell.terrain === TerrainType.WATER_DEEP;
-            case 'SHALLOW_WATER': return cell.terrain === TerrainType.WATER_SHALLOW;
-            case 'MUD': return cell.terrain === TerrainType.MUD;
-            case 'LAVA': return cell.terrain === TerrainType.LAVA;
-            // STATUE_*/CAGE/TURRET/WALL 等生成期专用落点不匹配普通地板（CE 同样重抽）
-            default: return false;
+        const target = Game.SPAWNS_IN_TERRAIN[h.spawnsIn];
+        // STATUE_*/CAGE/TURRET/WALL 等生成期专用落点不匹配普通地图格（CE 同样重抽）
+        if (target === undefined) return false;
+        return this.grid.getCell(pos.x, pos.y)?.terrain === target;
+    }
+
+    /**
+     * CE Architect.c:3822 randomMatchingLocation 的 spawnsIn 路径（terrainType >= 0）：
+     * 全图收集 terrain 匹配 spawnsIn 的格子并随机取一（等价 CE 的拒绝采样均匀分布），
+     * 排除 CE 的占用约束 HAS_MONSTER / HAS_PLAYER / HAS_ITEM / IS_IN_MACHINE
+     * （楼梯 terrain 与目标地形互斥，无需单独排除）。玩家切比雪夫距离 <= 5 的格
+     * 与 FLOOR 落点池同口径排除（CE 入口楼梯 FOV 重试 25 次的 web 代理），
+     * 再按调用方 Monsters.c:836 的 passableArcCount(loc) > 1 排除走廊/路口格。
+     * 无合法格返回 null → 调用方按 Monsters.c:835 的 failsafe 50 重抽 horde。
+     */
+    private findTerrainSpawnLocation(spawnsIn: string): Pos | null {
+        const target = Game.SPAWNS_IN_TERRAIN[spawnsIn];
+        if (target === undefined) return null;
+        const pool: Pos[] = [];
+        for (let x = 1; x < DCOLS - 1; x++) {
+            for (let y = 1; y < DROWS - 1; y++) {
+                const cell = this.grid.getCell(x, y);
+                if (!cell || cell.terrain !== target) continue;
+                if (cell.machineNumber !== 0) continue; // CE IS_IN_MACHINE
+                if (this.getMonsterAt(x, y)) continue; // CE HAS_MONSTER
+                if (this.player.loc.x === x && this.player.loc.y === y) continue; // CE HAS_PLAYER
+                if (this.items.some(it => it.loc.x === x && it.loc.y === y)) continue; // CE HAS_ITEM
+                // 与 FLOOR 池同一玩家距离口径（"Don't spawn right on top of player"）
+                if (Math.abs(x - this.player.loc.x) <= 5 && Math.abs(y - this.player.loc.y) <= 5) continue;
+                if (this.passableArcCount(x, y) > 1) continue; // CE Monsters.c:836
+                pool.push({ x, y });
+            }
         }
+        if (pool.length === 0) return null;
+        return pool[rng.randRange(0, pool.length - 1)]!;
+    }
+
+    /**
+     * CE Architect.c:171 passableArcCount：绕格一周统计 8 邻域"可通行↔不可通行"
+     * 的弧段切换数（0=开阔地，1=贴墙，2=走廊，3+=路口）。web 的 cell.isPassable
+     * 对应 CE cellIsPassableOrDoor（门在两侧均计为可通行）。
+     */
+    private passableArcCount(x: number, y: number): number {
+        // CE GlobalsBase.c:39 cDirs（保持环游顺序）
+        const C_DIRS: ReadonlyArray<readonly [number, number]> = [
+            [0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1],
+        ];
+        const passable = (cx: number, cy: number): boolean =>
+            this.grid.getCell(cx, cy)?.isPassable === true;
+        let arcs = 0;
+        for (let dir = 0; dir < 8; dir++) {
+            const [nx, ny] = C_DIRS[dir]!;
+            const [ox, oy] = C_DIRS[(dir + 7) % 8]!;
+            if (passable(x + nx, y + ny) !== passable(x + ox, y + oy)) arcs++;
+        }
+        return arcs / 2;
     }
 
     /**

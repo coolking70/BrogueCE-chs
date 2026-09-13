@@ -128,6 +128,15 @@ P1-11 把护甲改为 CE 的加法防御模型后，展示层仍是旧口径：
    偏差进一步放大。函数签名里 `_playerArmorBase/_playerArmorEnchant/_playerArmorStrReq`
    三个下划线占位参数正是为此预留，可直接复用。
 
+## P1-19 蓝图宝藏落点可能在墙里（P1-12 验收发现，玩家可见）
+
+`BlueprintEngine.ts:185-189` 把 machine/vault 房的宝藏直接放在 `findSuitableRoom`
+返回房间的**质心**。非凸房间的质心可能是不可通行格——实例：seed=424242 的 D22，
+Wand of Fire 落在墙里，**玩家拿不到**。
+
+该路径不经 `floorTiles`，与 P1-12 的落点修复无关，是既有缺陷。
+修法：宝藏落点应从房间内的可通行格中选，而非几何质心。
+
 ## P1-12 水生 horde 的落点匹配（P1-2b 忠实实现 CE 约束后的副作用）
 
 CE 的 horde 有 `spawnsIn` 字段（如 EEL/KRAKEN 为 DEEP_WATER），`randomMatchingLocation`
