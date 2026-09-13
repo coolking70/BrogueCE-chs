@@ -116,6 +116,47 @@
 - 新增测试：新开局后 `player.inventory` 含 4 类物品；`equippedWeapon.id === 'dagger'`、`equippedArmor.id === 'leather_armor'`；两者 `isCursed === false`、`enchantment === 0`、已 identified。
 - 手动：起新局，背包面板能看到 4 项，匕首与皮甲标为已装备。
 
+## P1-5 武器表全面对齐 CE（**P1-3 验收时新发现，优先级高**）
+
+**背景**：`parity_gap_analysis.md` §3.1 只数了武器条数（15 vs 12），从未核对数值。P1-3 验收时实测
+`weapons.json` 与 CE `Globals.c:1582` 的 `weaponTable` **逐条不符**：
+
+| 武器 | web力量 | CE力量 | web伤害 | CE伤害 | 均值倍差 |
+|---|---|---|---|---|---|
+| dagger | 10 | 12 | 1d4 | 3-4 | 1.4x |
+| whip | 10 | 14 | 1d4 | 3-5 | 1.6x |
+| rapier | 11 | 15 | 1d6 | 3-5 | 1.1x |
+| sword | 12 | 14 | 2d4 | 7-9 | 1.6x |
+| mace | 13 | 16 | 2d5 | 16-20 | **3.0x** |
+| broadsword | 17 | 19 | 3d5 | 14-22 | 2.0x |
+| war hammer | 19 | 20 | 4d5 | 25-35 | **2.5x** |
+
+**全部 strengthRequired 偏低 1-4 点，全部伤害偏低 1.1-3.0 倍**（只有 dart 与 war pike 的力量值正确）。
+
+**连带影响（这是它优先级高的原因）**：
+- CE 匕首需求力量 12 = 玩家初始力量，是刻意的"恰好匹配"；web 的 10 白送玩家 +2 富余 → +0.5 netEnchant → 约 3% 命中加成。
+- CE 好符文触发率的修正项是 `1 − min(0.99, 平均基础伤害/18)`。基础伤害错 2-3 倍，**P3 的符文公式即使照搬 CE 也算不对**。所以本任务必须排在 P3 之前。
+
+**改什么**：按 `Globals.c:1582` 起的 weaponTable 逐条修正 12 件武器的 `strengthRequired` 与伤害范围；
+注意 CE 的 `randomRange{min,max,clumpFactor}` 第三项是集中系数，web 的 `"XdY"` 记法需同时表达 min/max/clumping
+（`Combat.parseDamageString` 的 clumping 目前被 `Combat.ts` 硬编码为 1 忽略——见 P0-1 报告不符项 #3，一并处理）。
+护甲表（`armors.json`）同样需要对照 `armorTable` 核一遍。
+
+**验收**：新增 `src/data/weapons.test.ts`，对全部 12 件武器断言 str 与伤害 min/max 与 CE 一致（注释注明 Globals.c 行号）。
+
+## P1-6 两处小回归修复（P1-3 与 P1-5 各引入一处）
+
+**① 存档快照丢 quantity**：`GameSnapshotItem`（`Game.ts:37`）不序列化 `quantity`，
+导致**读档后 15 支飞镖回落为 1 支**。改 `toSnapshot`/`loadSnapshot` 两处各加一行，
+补一条存读档往返测试。
+
+**② 详情面板伤害显示错**：`DetailGenerator.ts` 的本地 `parseDamage` 正则是 `(\d+)d(\d+)`，
+不识别 P1-5 引入的 `+Z` 后缀，导致物品详情面板每件武器都显示错伤害——
+mace `1d5+15` 显示 `1~5`（应 `16~20`）、war hammer `1d11+24` 显示 `1~11`（应 `25~35`）。
+战斗结算不受影响（走 `Combat.parseDamageString`，解析正确），是纯展示层缺陷。
+**正确修法不是补正则，而是直接复用 `Combat.parseDamageString`**，消除这个重复实现——
+DetailGenerator 里维护第二套伤害解析本身就是缺陷根源。补一条断言 `1dN+M` 显示正确的测试。
+
 ## P1-4 饥饿与回血对齐 CE
 
 **背景**（见 `parity_gap_review.md` B1）：网页版 10 回合/HP 在 maxHp=30 时恰好等于 CE 的 300 回合回满，**并非快 30 倍**；真正的偏差是不随 maxHp 缩放、阈值语义错、无中毒禁回血。

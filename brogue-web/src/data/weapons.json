@@ -2,64 +2,64 @@
     {
         "id": "dagger",
         "name": "Dagger",
-        "strengthRequired": 10,
-        "damage": "1d4",
+        "strengthRequired": 12,
+        "damage": "1d2+2",
         "weight": 5,
         "description": "一把普通的铁质匕首，配有磨损的木柄。匕首在成功的偷袭中造成五倍伤害而非三倍伤害。"
     },
     {
         "id": "whip",
         "name": "Whip",
-        "strengthRequired": 10,
-        "damage": "1d4",
+        "strengthRequired": 14,
+        "damage": "1d3+2",
         "weight": 6,
         "description": "这条编织皮革鞭子的抽打可以剥树皮，它能攻击最远五格之外的敌人。"
     },
     {
         "id": "spear",
         "name": "Spear",
-        "strengthRequired": 11,
-        "damage": "2d3",
+        "strengthRequired": 13,
+        "damage": "1d2+3",
         "weight": 8,
         "description": "一根尖头铁制的细长木杆。矛的长度使你能同时攻击相邻的敌人和其正后方的敌人。"
     },
     {
         "id": "rapier",
         "name": "Rapier",
-        "strengthRequired": 11,
-        "damage": "1d6",
+        "strengthRequired": 15,
+        "damage": "1d3+2",
         "weight": 7,
         "description": "这把刀刃纤细而柔韧，专为敏捷快速的战斗而设计。它造成的伤害较低，但攻击速度是其他武器的两倍。如果你与敌人之间有一格距离并直接向其移动，你将发动毁灭性的突刺攻击，造成三倍伤害且永不落空。"
     },
     {
         "id": "sword",
         "name": "Sword",
-        "strengthRequired": 12,
-        "damage": "2d4",
+        "strengthRequired": 14,
+        "damage": "1d3+6",
         "weight": 10,
         "description": "锋利的钢刀刃在黑暗中闪烁着令人安心的光芒。"
     },
     {
         "id": "mace",
         "name": "Mace",
-        "strengthRequired": 13,
-        "damage": "2d5",
+        "strengthRequired": 16,
+        "damage": "1d5+15",
         "weight": 15,
         "description": "武器头部的铁制凸缘每次沉重一击都会造成可观的伤害。由于其重量，命中后需要额外一回合恢复，并会将对手击退。"
     },
     {
         "id": "axe",
         "name": "Axe",
-        "strengthRequired": 14,
-        "damage": "2d5",
+        "strengthRequired": 15,
+        "damage": "1d3+6",
         "weight": 18,
         "description": "这把斧头上钝的铁刃在黑暗中闪烁。其挥砍的弧度使你能同时攻击所有相邻的敌人。"
     },
     {
         "id": "flail",
         "name": "Flail",
-        "strengthRequired": 15,
-        "damage": "3d4",
+        "strengthRequired": 17,
+        "damage": "1d7+8",
         "weight": 20,
         "description": "这个带刺的铁球可以在移动中甩动铁链，使你在两个与敌人相邻的格子间移动时获得一次免费攻击。"
     },
@@ -74,8 +74,8 @@
     {
         "id": "broadsword",
         "name": "Broadsword",
-        "strengthRequired": 17,
-        "damage": "3d5",
+        "strengthRequired": 19,
+        "damage": "1d9+13",
         "weight": 25,
         "description": "这把高耸的刀刃通过将重量投入每一次切割来造成巨大伤害。"
     },
@@ -83,16 +83,25 @@
         "id": "war_pike",
         "name": "War Pike",
         "strengthRequired": 18,
-        "damage": "3d5",
+        "damage": "1d5+10",
         "weight": 26,
         "description": "一根长钢杆，末端是锋利的尖刃。战矛的长度使你能同时攻击相邻的敌人和其正后方的敌人。"
     },
     {
         "id": "war_hammer",
         "name": "War Hammer",
-        "strengthRequired": 19,
-        "damage": "4d5",
+        "strengthRequired": 20,
+        "damage": "1d11+24",
         "weight": 30,
         "description": "很少有生物能承受这团铅和钢的碾压，但只有最强壮的冒险者才能有效地挥舞它。由于其重量，命中后需要额外一回合恢复，并会将对手击退。"
+    },
+    {
+        "id": "dart",
+        "name": "Dart",
+        "strengthRequired": 10,
+        "damage": "1d3+1",
+        "weight": 2,
+        "description": "这些简单的金属飞镖经配重后能稳定飞行，手腕轻弹便能刺伤猎物。",
+        "source": "CE 来源：BrogueCE-master/src/brogue/Globals.c:1600（weaponTable DART 条目：frequency=0, marketValue=15, strengthRequired=10, power=0, range={2,4,1}）。damage 1d3+1 经 Combat.parseDamageString 解析为 min=1+1=2 / max=1*3+1=4 / clumping=1，与 CE range {2,4,1} 完全一致（旧值 \"2d2\" 的 min/max 虽同为 2/4，但 clumping=2 与 CE 的 1 不符）；weight 为 web 侧自定（CE 表无 weight 列）。"
     }
 ]
