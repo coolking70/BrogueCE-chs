@@ -89,7 +89,16 @@
 - 补 **periodic spawn fuse**：每层生成时设 `monsterSpawnFuse = rand(125, 175)`，归零时刷一个 horde 并重置。CE 参考 `Time.c` 的 `monsterSpawnFuse` 与 `spawnPeriodicHorde`。
 
 **验收**
+
+> 2026-09-14 更新（P0-2 实测修正）：原计划的"每层 `monsters.length > 0`"红灯断言**不成立**——
+> 每层固定刷 3-5 个 horde，池非空即不会有空层，该断言恒真。真正的量化指标是**物种覆盖**：
+> 当前常规 horde 池（领袖+成员）只能产出 **9 个物种**（BOG_MONSTER / EEL / JACKAL / KOBOLD /
+> KRAKEN / NAGA / RAT / SALAMANDER / VAMPIRE_BAT），占 67 种的 13%。P0-2 逐层表里出现的
+> Spider / Pixie / Dragon / Golem / Lich / Wraith 等**全部来自笼子与蓝图机关**——
+> 即 CE 中属于特殊/俘虏/机关的内容，在网页版被迫承担了常规生态的职能。
+
 - `hordes.json` 条数 = 175；flag 过滤后常规池条数 ≥ 55。
+- **常规 horde 池（领袖+成员）可产出的物种数 ≥ 40**（当前 9）。这是本任务的核心指标。
 - 新增 `src/data/hordes.test.ts`：对 D1/D3/D5/D8/D12/D17/D22/D26 各断言"可用 horde 数 ≥ 8"且"领袖种类中陆生怪占比 > 50%"。
 - 加权正确性测试：固定 seed 抽 10000 次 D5 horde，统计频次与各 horde 的 frequency 比例偏差 < 5%。
 - 用 P0-2 的 harness：D1-D26 逐层生成，打印每层怪物种类与数量表，**贴进报告**。这张表是人工验收的主要依据。
@@ -268,7 +277,10 @@ MACHINE_* 排除在常规刷怪之外），不要放宽它。问题出在数据�
 - 新建 src/data/hordes.test.ts：对 D1/D3/D5/D8/D12/D17/D22/D26 各断言"可用 horde 数 >= 8"
   且"领袖种类中陆生怪占比 > 50%"。
 - 加权正确性：固定 seed 在 D5 抽 10000 次，统计频次与各 horde frequency 的比例偏差 < 5%。
-- 把 P0-2 smoke.test.ts 里那条被标红灯的 "每层 monsters.length > 0" 断言转为正式断言并通过。
+- **常规 horde 池（领袖+成员合计）可产出的物种数 >= 40**（当前仅 9 种：BOG_MONSTER /
+  EEL / JACKAL / KOBOLD / KRAKEN / NAGA / RAT / SALAMANDER / VAMPIRE_BAT）。这是核心指标。
+- 把 P0-2 smoke.test.ts 里的 it.todo('c-placeholder') 落地为上面这条物种覆盖断言。
+  注意："每层 monsters.length > 0" 当前已恒真（每层固定刷 3-5 个 horde），不是有效指标。
 - npm run build 全绿。
 
 交付报告需包含：
