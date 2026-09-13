@@ -149,8 +149,15 @@ export class CombatSystem {
         // --- Check for runic trigger ---
         let triggeredRunic: string | undefined;
         if (weaponRunic && attacker instanceof Player && attacker.equippedWeapon) {
-            const enchant = attacker.equippedWeapon.enchantment;
-            const triggerChance = runicWeaponChance(enchant);
+            // CE Combat.c:666-677：触发率取 runicWeaponChance——内部按 CE netEnchant
+            // （含力量修正，PowerTables.c:306-308）与武器基础伤害中值计算；此处传
+            // 已算好的净附魔 weaponEnchant 与 parseDamageString 的基础伤害区间
+            // （与 CE range.lowerBound/upperBound 同口径）。
+            const triggerChance = runicWeaponChance(
+                weaponEnchant ?? attacker.equippedWeapon.enchantment,
+                weaponRunic,
+                { damageMin: parts.min, damageMax: parts.max }
+            );
             // Backstab doubles runic chance (CE: min(chance*2, (chance+100)/2))
             let adjustedChance = triggerChance;
             if (backstab && adjustedChance < 100) {

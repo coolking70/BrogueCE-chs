@@ -18,6 +18,8 @@ import {
     hitProbability,
     playerDefense,
     clumpedRoll,
+    runicWeaponChance,
+    RUNIC_WEAPON_BAD_CHANCE,
 } from './CombatFormulas';
 import { Random } from '../Random';
 
@@ -307,9 +309,121 @@ describe('clumpedRoll — CE Combat.c:46-57 注释 / Math.c:40-59 randClumpedRan
 
 // ─── 以下导出不在本次必测清单内，且与 CE 存在差异，仅立占位（详见交付报告）───
 describe('与 CE 不符的占位（暂不实现黄金值断言）', () => {
-    it.todo('runicWeaponChance：web 为 7+4*ench 线性近似；CE 为按符文类型分表的 100-(1-k)^x（PowerTables.c:220-345），且依赖武器基础伤害');
     it.todo('weaponSlowDuration：web 为 3+floor(ench/2)；CE 为 (ench+2)^2/3（PowerTables.c:102）');
     it.todo('weaponConfusionDuration：web 为 3+floor(ench*0.75)；CE 为 max(3, ench*3/2)（PowerTables.c:100）');
     it.todo('weaponImageCount：web 为 1+floor(ench/3)；CE 为 clamp(ench/3, 1, 7)（PowerTables.c:103）');
     it.todo('weaponForceDistance：web 为 floor(ench/2)+2（min 1）；CE 为 max(4, ench*2+2)（PowerTables.c:101）');
+});
+
+// ─── runicWeaponChance：CE PowerTables.c:220-345 的逐值移植（原 it.todo 落地）───
+describe('runicWeaponChance — CE PowerTables.c:220-345', () => {
+    // 武器基础伤害口径：weapons.json 记法经 CombatSystem.parseDamageString 解析出的
+    // {min,max} 与 CE Globals.c weaponTable 的 range{lowerBound,upperBound} 逐项一致：
+    //   dagger     "1d2+2"   → {3,4}   （Globals.c:1583）
+    //   rapier     "1d3+2"   → {3,5}   （Globals.c:1588）
+    //   mace       "1d5+15"  → {16,20} （Globals.c:1591）
+    //   war hammer "1d11+24" → {25,35} （Globals.c:1592）
+    const DAGGER = { damageMin: 3, damageMax: 4 }; // adj=(3+4)/2=3 → modifier=1-3/18=5/6
+    const RAPIER = { damageMin: 3, damageMax: 5 }; // adj=4
+    const MACE = { damageMin: 16, damageMax: 20 }; // adj=18（CE 中为 STAGGER 武器）
+    const HAMMER = { damageMin: 25, damageMax: 35 }; // adj=30 → modifier=1-0.99=0.01
+
+    it('黄金值：匕首(低伤)+speed——高伤惩罚低，触发率随附魔快速上升（POW_16 表，PowerTables.c:221-230、311-328）', () => {
+        // modifier = 1 - 3/18 = 5/6；表下标 = floor(4·e·5/6)，chance = 100-表值/FP
+        // e=1: idx 3（T=57502）→ 13；e=3: idx 10（42381）→ 36；e=4: idx 13（37186）→ 44
+        // e=6: idx 20（27407）→ 59；e=10: idx 33（15551）→ 77；e=20: idx 66（4346）→ 95
+        expect(runicWeaponChance(1, 'speed', DAGGER)).toBe(13);
+        expect(runicWeaponChance(3, 'speed', DAGGER)).toBe(36);
+        expect(runicWeaponChance(4, 'speed', DAGGER)).toBe(44);
+        expect(runicWeaponChance(6, 'speed', DAGGER)).toBe(59);
+        expect(runicWeaponChance(10, 'speed', DAGGER)).toBe(77);
+        expect(runicWeaponChance(20, 'speed', DAGGER)).toBe(95);
+    });
+
+    it('黄金值：战锤(高伤)+speed——modifier≈0.01，原始查表值极小（PowerTables.c:321 高伤惩罚）', () => {
+        // e=4: idx 0 → 0 → 下限抬到 4；e=25: idx 1（62740）→ 5 → 下限抬到 25
+        expect(runicWeaponChance(4, 'speed', HAMMER)).toBe(4);
+        expect(runicWeaponChance(25, 'speed', HAMMER)).toBe(25);
+    });
+
+    it('黄金值：quietus（p=0.06，POW_6 表，PowerTables.c:273-283）', () => {
+        expect(runicWeaponChance(6, 'quietus', DAGGER)).toBe(27); // idx 20（48097）
+        expect(runicWeaponChance(12, 'quietus', DAGGER)).toBe(47); // idx 40（35298）
+        expect(runicWeaponChance(20, 'quietus', DAGGER)).toBe(64); // idx 66（23209）
+    });
+
+    it('黄金值：paralyzing/confusion/force 各用各自的 p 表（PowerTables.c:251-272、231-240）', () => {
+        expect(runicWeaponChance(7, 'paralyzing', DAGGER)).toBe(35); // POW_7 idx 17（48142）
+        expect(runicWeaponChance(4, 'confusion', DAGGER)).toBe(32); // POW_11 idx 13（43585）
+        expect(runicWeaponChance(3, 'force', DAGGER)).toBe(34); // POW_15 idx 10（43654）
+        expect(runicWeaponChance(9, 'force', DAGGER)).toBe(71); // POW_15 idx 30（19369）
+    });
+
+    it('与闭式公式 100·(1-(1-p)^(e·modifier)) 一致——差异仅剩表下标的 0.25 量化（≤3.5pp）', () => {
+        // CE 表即 (1-p)^x × 65536（与理想值差 ≤1/65536），下标取 floor(4·e·m)；
+        // 量化使整数百分比结果与连续闭式最多差约 3.1pp（全参数域实测），此处留 3.5 余量
+        const P: Record<string, number> = { speed: 0.16, quietus: 0.06, paralyzing: 0.07, confusion: 0.11, force: 0.15 };
+        for (const [kind, p] of Object.entries(P)) {
+            for (const weapon of [DAGGER, RAPIER, MACE, HAMMER]) {
+                // CE 为整数除法（PowerTables.c:311-312），匕首 (3+4)/2 → 3 而非 3.5
+                const adj = Math.floor((weapon.damageMin + weapon.damageMax) / 2);
+                const m = 1 - Math.min(0.99, adj / 18);
+                for (let e = 0; e <= 50; e++) {
+                    // 闭式值套用 CE 同款钳制 clamp(chance, max(1, e), 100)（PowerTables.c:342）
+                    const closed = Math.min(100, Math.max(100 * (1 - Math.pow(1 - p, e * m)), 1, e));
+                    const actual = runicWeaponChance(e, kind, weapon);
+                    expect(Math.abs(actual - closed)).toBeLessThanOrEqual(3.5);
+                }
+            }
+        }
+    });
+
+    it('W_SLAYING 非概率触发，恒返回 0（PowerTables.c:300-302）', () => {
+        expect(runicWeaponChance(10, 'slaying', DAGGER)).toBe(0);
+        expect(runicWeaponChance(50, 'slaying', HAMMER)).toBe(0);
+        expect(runicWeaponChance(0, 'slaying', DAGGER)).toBe(0);
+        expect(runicWeaponChance(-3, 'slaying', DAGGER)).toBe(0);
+    });
+
+    it('有害/表外符文固定 15（PowerTables.c:303-305；mercy=CE 有害符文，vampirism/venom 为 web 自创按同口径）', () => {
+        expect(runicWeaponChance(10, 'mercy', DAGGER)).toBe(RUNIC_WEAPON_BAD_CHANCE);
+        expect(runicWeaponChance(20, 'vampirism', DAGGER)).toBe(RUNIC_WEAPON_BAD_CHANCE);
+        expect(runicWeaponChance(20, 'venom', DAGGER)).toBe(RUNIC_WEAPON_BAD_CHANCE);
+        expect(runicWeaponChance(-5, 'mercy', HAMMER)).toBe(RUNIC_WEAPON_BAD_CHANCE);
+        // CE 有表但 web 未实装的种类（multiplicity/slowing）按本轮边界不移植 → 表外口径
+        expect(runicWeaponChance(10, 'multiplicity', DAGGER)).toBe(RUNIC_WEAPON_BAD_CHANCE);
+        expect(runicWeaponChance(10, 'slowing', DAGGER)).toBe(RUNIC_WEAPON_BAD_CHANCE);
+        // 单参兼容形态（无类别信息）——旧调用点 armor_model_effect.test.ts 的形态
+        expect(runicWeaponChance(10)).toBe(RUNIC_WEAPON_BAD_CHANCE);
+    });
+
+    it('负附魔与 0 附魔 → 1（末尾下限 max(1, e) 抬升；PowerTables.c:323-324 归零后经 342 行下限）', () => {
+        // 注：任务预设"负附魔→0"与 CE 不符——323-324 行先归零，但 342 行
+        // clamp(chance, max(1, e), 100) 把下限抬到 1。以 CE 实现为准，见交付报告。
+        expect(runicWeaponChance(-3, 'speed', DAGGER)).toBe(1);
+        expect(runicWeaponChance(-20, 'quietus', DAGGER)).toBe(1);
+        expect(runicWeaponChance(0, 'speed', DAGGER)).toBe(1);
+    });
+
+    it('下限 max(1, e) 生效的高伤武器场景：战锤原始查表值近 0，被抬到 e（PowerTables.c:340-342）', () => {
+        expect(runicWeaponChance(2, 'speed', HAMMER)).toBe(2); // 原始 0
+        expect(runicWeaponChance(5, 'speed', HAMMER)).toBe(5); // 原始 0
+        expect(runicWeaponChance(10, 'speed', HAMMER)).toBe(10); // 原始 0
+        expect(runicWeaponChance(25, 'speed', HAMMER)).toBe(25); // 原始 5 < 25
+        expect(runicWeaponChance(50, 'speed', HAMMER)).toBe(50); // 原始 9 < 50
+    });
+
+    it('迟滞/迅捷攻速修正（web 数据暂无对应标志，用合成上下文验证 CE PowerTables.c:314-316、331-338）', () => {
+        // mace adj=18，STAGGER 先把伤害折半为 9（modifier=0.5）：e4 查表 30 → 1-(1-0.3)² = 51
+        expect(runicWeaponChance(4, 'speed', { ...MACE, attacksStagger: true })).toBe(51);
+        // rapier adj=4：e4 查表 41 → 1-√(1-0.41) = 23（CE fp_sqrt 定点开方的 float 近似）
+        expect(runicWeaponChance(4, 'speed', { ...RAPIER, attacksQuickly: true })).toBe(23);
+        // 迅捷不叠加伤害折半——CE 317-319 行已注释停用：rapier 无 stagger 标志时 adj=4
+        expect(runicWeaponChance(4, 'speed', RAPIER)).toBe(41);
+    });
+
+    it('无武器上下文时按无高伤惩罚（modifier=1）处理，不抛错', () => {
+        // adj 取 0 → modifier=1：e=4 → idx 16 → 100-trunc(100·32628/65536) = 51
+        expect(runicWeaponChance(4, 'speed')).toBe(51);
+    });
 });
