@@ -331,14 +331,50 @@ export function runicWeaponChance(
     return chance;
 }
 
+// ─── 护甲符文强度（CE PowerTables.c:106-123 的忠实移植）───
+// CE 护甲符文没有统一触发率：reflection 查表、absorption/reprisal/mutuality
+// 恒触发（强度只由净附魔决定）。入参一律取 netEnchant 口径（含力量修正、
+// 钳 [-20,50]，与 playerDefense 同源）。
+
+/** CE PowerTables.c:106：armorReprisalPercent = max(5, (int)(enchant·5/FP_FACTOR))。
+ * fixpt 截断即 floor(e·5)（e 可为 0.25 步进的分数，如 e=1.5 → 7）；下限 5。 */
+export function armorReprisalPercent(enchant: number): number {
+    return Math.max(5, Math.trunc(enchant * 5));
+}
+
+/** CE PowerTables.c:107：armorAbsorptionMax = max(1, (int)(enchant/FP_FACTOR))，即 max(1, floor(e))。 */
+export function armorAbsorptionMax(enchant: number): number {
+    return Math.max(1, Math.trunc(enchant));
+}
+
+/** CE PowerTables.c:110-119 的 POW_REFLECT 原表：0.85^x × 65536，x 从 0.25 到 50、
+ * 0.25 步进（200 项）。与 round(0.85^x·65536) 有 ≤1 的生成噪声，内嵌原表保证逐值一致。 */
+const POW_REFLECT = [
+    62926, 60421, 58015, 55705, 53487, 51358, 49313, 47349, 45464, 43654, 41916, 40247, 38644, 37106, 35628, 34210,
+    32848, 31540, 30284, 29078, 27920, 26809, 25741, 24716, 23732, 22787, 21880, 21009, 20172, 19369, 18598, 17857,
+    17146, 16464, 15808, 15179, 14574, 13994, 13437, 12902, 12388, 11895, 11421, 10967, 10530, 10111, 9708, 9321,
+    8950, 8594, 8252, 7923, 7608, 7305, 7014, 6735, 6466, 6209, 5962, 5724, 5496, 5278, 5067, 4866,
+    4672, 4486, 4307, 4136, 3971, 3813, 3661, 3515, 3375, 3241, 3112, 2988, 2869, 2755, 2645, 2540,
+    2439, 2341, 2248, 2159, 2073, 1990, 1911, 1835, 1762, 1692, 1624, 1559, 1497, 1438, 1380, 1325,
+    1273, 1222, 1173, 1127, 1082, 1039, 997, 958, 919, 883, 848, 814, 781, 750, 720, 692,
+    664, 638, 612, 588, 564, 542, 520, 500, 480, 461, 442, 425, 408, 391, 376, 361,
+    346, 333, 319, 307, 294, 283, 271, 261, 250, 240, 231, 221, 213, 204, 196, 188,
+    181, 173, 166, 160, 153, 147, 141, 136, 130, 125, 120, 115, 111, 106, 102, 98,
+    94, 90, 87, 83, 80, 77, 74, 71, 68, 65, 62, 60, 58, 55, 53, 51,
+    49, 47, 45, 43, 41, 40, 38, 37, 35, 34, 32, 31, 30, 29, 27, 26,
+    25, 24, 23, 22, 21, 21, 20, 19,
+];
+
 /**
- * Runic armor trigger chance.
- * Similar scaling, slightly lower base.
- * Approximation: 5 + enchant * 3, clamped [3, 80]
+ * 反射符文触发率（百分比 0-100）。CE PowerTables.c:109-123 reflectionChance 的忠实移植：
+ * idx = clamp(trunc(e·4) - 1, 0, 199)（表以 x=0.25 起，故减一），
+ * chance = clamp(100 - trunc(100·POW_REFLECT[idx]/65536), 1, 100)。
+ * 与连续闭式 clamp(100·(1-0.85^e), 1, 100) 差 ≤1 个百分点（定点截断 + 表噪声）。
+ * CE 中 reflection 只对投掷物/法术生效（Items.c:4969 projectileReflects），不作用于近战。
  */
-export function runicArmorChance(enchantment: number): number {
-    const chance = 5 + enchantment * 3;
-    return Math.max(3, Math.min(80, Math.round(chance)));
+export function reflectionChance(enchant: number): number {
+    const idx = Math.max(0, Math.min(POW_REFLECT.length - 1, Math.trunc(enchant * 4) - 1));
+    return Math.max(1, Math.min(100, 100 - Math.trunc((100 * POW_REFLECT[idx]!) / 65536)));
 }
 
 /**

@@ -9,7 +9,7 @@ import blueprintData from '../../data/blueprints.json';
 import { Player, type HungerState } from '../../entities/Player';
 import { Monster } from '../../entities/Monster';
 import { CombatSystem } from '../Combat/Combat';
-import { weaponParalysisDuration, weaponConfusionDuration, weaponForceDistance } from '../Combat/CombatFormulas';
+import { weaponParalysisDuration, weaponConfusionDuration, weaponForceDistance, netEnchant, reflectionChance, armorAbsorptionMax, armorReprisalPercent } from '../Combat/CombatFormulas';
 import { ItemCategory, Item } from '../Items/Item';
 import { ItemLoader, type ConsumableConfig } from '../Items/ItemLoader';
 import { rng } from '../Random';
@@ -3540,7 +3540,20 @@ export class Game {
         const armor = this.player.equippedArmor;
         if (!armor?.runicType) return;
 
-        if (armor.runicType === 'reflection' && rng.randPercent(22)) {
+        // CE 以 melee 形参区分近战/远程（Combat.c:896 applyArmorRunicEffect）。
+        // web 仅有的两个调用点（Monster.ts 远程分支 dist>1 / 近战分支 dist<=1）
+        // 以攻击者相邻性等价区分。
+        const melee =
+            Math.abs(attacker.loc.x - this.player.loc.x) <= 1 &&
+            Math.abs(attacker.loc.y - this.player.loc.y) <= 1;
+
+        // 符文强度吃 netEnchant（含力量修正、钳 [-20,50]），与 P1-11 的 playerDefense
+        // 同源；取值口径与 Combat.ts:73-78 一致（strengthRequired 缺省 0）。
+        const netEnch = netEnchant(armor.enchantment ?? 0, this.player.strength, armor.strengthRequired ?? 0);
+
+        if (armor.runicType === 'reflection' && !melee && rng.randPercent(reflectionChance(netEnch))) {
+            // CE：reflection 只作用于投掷物/法术（Items.c:4969 projectileReflects），
+            // 对近战永不触发；触发率 reflectionChance(netEnchant)（PowerTables.c:109-123）。
             const reflected = Math.max(1, Math.floor(incomingDamage * 0.5));
             attacker.takeDamage(reflected);
             armor.runicKnown = true;
@@ -3556,22 +3569,44 @@ export class Game {
             return;
         }
 
-        if (armor.runicType === 'mutuality' && rng.randPercent(30)) {
-            attacker.takeDamage(incomingDamage);
-            armor.runicKnown = true;
-            logger.log(
-                i18next.t('runic.armor.mutuality', {
-                    target: attacker.name,
-                    damage: incomingDamage,
-                    defaultValue: `Your armor shares your pain, returning ${incomingDamage} damage to the ${attacker.name}!`
-                }),
-                '#ddaaff'
+        if (armor.runicType === 'mutuality' && melee) {
+            // CE Combat.c:976-1024（A_MUTUALITY）：恒触发（无概率判定）；伤害与相邻
+            // 敌方均摊 share = (damage + count) / (count + 1)（C 整数除法），攻击者本身
+            // 不计入摊派名单（Combat.c:987 monst != attacker）。CE 的 applyArmorRunicEffect
+            // 唯一调用点在近战 attack() 内（Combat.c:1272 恒传 melee=true），故远程不触发。
+            const hitList = this.monsters.filter(m =>
+                m !== attacker &&
+                m.hp > 0 &&
+                !m.isAlly &&
+                !m.hasBehavior('MONST_IMMUNE_TO_WEAPONS') &&
+                !m.hasBehavior('MONST_INVULNERABLE') &&
+                Math.abs(m.loc.x - this.player.loc.x) <= 1 &&
+                Math.abs(m.loc.y - this.player.loc.y) <= 1
             );
-            this.spawnFloatingText(`-${incomingDamage}`, attacker.loc.x, attacker.loc.y, 0xddaaff);
+            const count = hitList.length;
+            if (count > 0 && incomingDamage > 0) {
+                const share = Math.floor((incomingDamage + count) / (count + 1));
+                // web 的伤害在调用前已落地：把"伤害降为 share"建模为回补差值
+                this.player.hp = Math.min(this.player.maxHp, this.player.hp + (incomingDamage - share));
+                for (const m of hitList) {
+                    m.takeDamage(share);
+                    this.spawnFloatingText(`-${share}`, m.loc.x, m.loc.y, 0xddaaff);
+                }
+                armor.runicKnown = true;
+                logger.log(
+                    i18next.t('runic.armor.mutuality', {
+                        target: attacker.name,
+                        damage: share,
+                        defaultValue: `Your armor pulses, and the damage is shared with the adjacent enemies!`
+                    }),
+                    '#ddaaff'
+                );
+            }
             return;
         }
 
         if (armor.runicType === 'vitality' && rng.randPercent(15)) {
+            // web 自创符文（CE 无 A_VITALITY），本轮保留现有行为。
             this.applyTimedStatus(this.player, 'regenerating', 15);
             armor.runicKnown = true;
             logger.log(
@@ -3584,6 +3619,8 @@ export class Game {
         }
 
         if (armor.runicType === 'respiration' && rng.randPercent(20)) {
+            // CE 语义为毒气/蒸汽的常驻免疫（Time.c:411-424、Monsters.c:1414），
+            // 与受击无关；效果与触发事件均不同，本轮保留现有行为（差异见报告）。
             this.player.grantTemporaryImmunity('burning' as any, 1);
             this.player.grantTemporaryImmunity('confused' as any, 1);
             armor.runicKnown = true;
@@ -3597,6 +3634,8 @@ export class Game {
         }
 
         if (armor.runicType === 'dampening' && rng.randPercent(25)) {
+            // CE 语义为爆炸伤害的常驻吸收（Time.c:355-367），与受击无关；
+            // 本轮保留现有行为（差异见报告）。
             const healBack = Math.min(incomingDamage, 2);
             this.player.hp = Math.min(this.player.maxHp, this.player.hp + healBack);
             armor.runicKnown = true;
@@ -3610,23 +3649,37 @@ export class Game {
             this.spawnFloatingText(`+${healBack}`, this.player.loc.x, this.player.loc.y, 0xaaffaa);
         }
 
-        if (armor.runicType === 'absorption' && rng.randPercent(18)) {
-            // Absorb all damage from this hit
-            this.player.hp = Math.min(this.player.maxHp, this.player.hp + incomingDamage);
-            armor.runicKnown = true;
-            logger.log(
-                i18next.t('runic.armor.absorption', {
-                    damage: incomingDamage,
-                    defaultValue: `Your armor absorbs ${incomingDamage} damage completely!`
-                }),
-                '#aaddff'
-            );
-            this.spawnFloatingText(`+${incomingDamage}`, this.player.loc.x, this.player.loc.y, 0xaaddff);
+        if (armor.runicType === 'absorption' && melee) {
+            // CE Combat.c:1026-1035（A_ABSORPTION）：恒触发（无概率判定），每次受击
+            // damage -= rand_range(1, armorAbsorptionMax(netEnchant))（PowerTables.c:107）；
+            // 仅全额吸收时提示并自动鉴定（Combat.c:1030-1034），部分吸收静默。
+            // CE 唯一调用点在近战 attack() 内（Combat.c:1272），故远程不触发。
+            const absorbRoll = rng.randRange(1, armorAbsorptionMax(netEnch));
+            const absorbed = Math.min(absorbRoll, incomingDamage);
+            if (absorbed > 0) {
+                this.player.hp = Math.min(this.player.maxHp, this.player.hp + absorbed);
+            }
+            if (absorbRoll >= incomingDamage) {
+                armor.runicKnown = true;
+                logger.log(
+                    i18next.t('runic.armor.absorption', {
+                        damage: absorbed,
+                        defaultValue: `Your armor pulses and absorbs the blow!`
+                    }),
+                    '#aaddff'
+                );
+                this.spawnFloatingText(`+${absorbed}`, this.player.loc.x, this.player.loc.y, 0xaaddff);
+            }
             return;
         }
 
-        if (armor.runicType === 'reprisal' && rng.randPercent(22)) {
-            const reprisalDmg = Math.max(1, Math.floor(incomingDamage * 0.75));
+        if (armor.runicType === 'reprisal' && melee &&
+            !attacker.hasBehavior('MONST_INANIMATE') &&
+            !attacker.hasBehavior('MONST_INVULNERABLE')) {
+            // CE Combat.c:1037-1056（A_REPRISAL）：仅近战、恒触发（无概率判定），
+            // 反弹 armorReprisalPercent(netEnchant)% 伤害（PowerTables.c:106）：
+            // max(1, percent * damage / 100)（C 整数除法）。
+            const reprisalDmg = Math.max(1, Math.trunc((armorReprisalPercent(netEnch) * incomingDamage) / 100));
             attacker.takeDamage(reprisalDmg);
             armor.runicKnown = true;
             logger.log(
@@ -3641,8 +3694,11 @@ export class Game {
             return;
         }
 
-        if (armor.runicType === 'immunity' && rng.randPercent(100)) {
-            // Always blocks a specific monster type (simplified: blocks all damage)
+        if (armor.runicType === 'immunity') {
+            // CE Combat.c:1058-1063（A_IMMUNITY）：被动常驻、无概率判定，仅当攻击者
+            // 属于护甲的 vorpalEnemy 类别时伤害归零（monsterIsInClass）。web 物品模型
+            // 尚无 vorpalEnemy 字段（本轮不可改 Item.ts），类别门无法落地——保留全额
+            // 抵挡效果，仅移除恒真的 randPercent(100)（类别判定差距见报告）。
             this.player.hp = Math.min(this.player.maxHp, this.player.hp + incomingDamage);
             armor.runicKnown = true;
             logger.log(
