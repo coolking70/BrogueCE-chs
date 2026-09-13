@@ -77,6 +77,26 @@
 - 抽查断言：`rat` acc=80 def=0 regen=20；`jackal` moveSpeed=50；`ogre` attackSpeed=200；`troll` regen>0。数值以 CE `GlobalsBrogue.c` 为准，断言注释注明行号。
 - 报告中给出"复核 CE 后修正了哪些条目"的完整清单。
 
+## P1-12 水生 horde 的落点匹配（P1-2b 忠实实现 CE 约束后的副作用）
+
+CE 的 horde 有 `spawnsIn` 字段（如 EEL/KRAKEN 为 DEEP_WATER），`randomMatchingLocation`
+会把它们落进对应地形。web 的开局铺怪落点池只收集普通 `FLOOR` 格，周期刷怪也排除水格，
+于是 `hordeFitsTerrain` 恒假 → failsafe 重抽跳过，**水生 horde 两条路径都刷不出来**。
+
+需要给落点收集补"按 spawnsIn 匹配的地形格"来源。注意这与 §5 的湖泊生成相关——
+当前深水只有 0-2 团 blob，即使落点匹配修好，水生怪的出现率仍会偏低。
+
+## P1-13 修复 monster_stats_effect.test.ts 的统计脆弱性
+
+`monster_stats_effect.test.ts:194` 断言 `legacy.hits === legacy.attacks` 严格相等，
+但 `Monster.ts` 的游走分支使用未播种 `Math.random()`，且 `Game.ts` 的幻态绊趔
+（hallucinating 35% 偏转移动）会把"预期攻击"偏成移动，使命中数少于攻击数。
+实测在 P1-1 基线上即偶发失败（143 vs 146、185 vs 186），复跑即绿。
+
+**这对自动化循环是实际风险**：偶发失败会让验收误判一个好轮次。
+改为断言比率区间（如 hits/attacks > 0.95）而非严格相等。
+根治要等 `Math.random()` 收进 seeded rng（见 P6 前置条件）。
+
 ## P1-7 怪物伤害记法修正（**本轮验收发现，当前最严重的数据缺陷**）
 
 **症状**：`monsters.json` 的 `damage` 把 CE 的 `{min,max}` 直接写成了 `"MINdMAX"`，

@@ -17,6 +17,7 @@ import monsterData from '../../data/monsters.json';
 import hordeData from '../../data/hordes.json';
 import mutationData from '../../data/mutations.json';
 import type { MonsterData, MonsterAbility, MutationData } from '../../entities/Monster';
+import { MonsterState } from '../../entities/Monster';
 import { Direction, type Pos } from '../../types';
 import type { StatusId } from '../../entities/Creature';
 import { timeSystem } from '../Systems/Time';
@@ -33,6 +34,66 @@ import { STATUS_CONFIG } from '../Status/statusConfig';
 import { getBoltForItem, boltPath, buildBoltFrames, BoltEffect, type BoltConfig, type BoltFrame, type BoltResult } from '../Combat/Bolt';
 
 export type GameMode = 'normal' | 'easy' | 'wizard' | 'test';
+
+export interface HordeMemberEntry {
+    type: string;
+    minCount: number;
+    maxCount: number;
+}
+
+export interface HordeEntry {
+    leader: string;
+    members: HordeMemberEntry[];
+    minLevel: number;
+    maxLevel: number;
+    frequency: number;
+    spawnsIn: string | null;
+    machine: number;
+    flags: string[];
+}
+
+// ---- CE horde 抽取常量（BrogueCE-master/src） ----
+
+/** GlobalsBrogue.c:1024 monsterOutOfDepthChance = 10 */
+const MONSTER_OUT_OF_DEPTH_CHANCE = 10;
+/** GlobalsBrogue.c:43 AMULET_LEVEL = 26 */
+const AMULET_LEVEL = 26;
+/** RogueMain.c:403 / Time.c:2324 monsterSpawnFuse = rand_range(125, 175) */
+const SPAWN_FUSE_MIN = 125;
+const SPAWN_FUSE_MAX = 175;
+
+/**
+ * HORDE_MACHINE_ONLY 复合标志的成员（Rogue.h:2049-2055）。
+ * 注意 HORDE_SACRIFICE_TARGET 与 HORDE_VAMPIRE_FODDER 都在其中，不单独列出。
+ */
+export const HORDE_MACHINE_ONLY_FLAGS: readonly string[] = [
+    'HORDE_MACHINE_BOSS',
+    'HORDE_MACHINE_WATER_MONSTER',
+    'HORDE_MACHINE_CAPTIVE',
+    'HORDE_MACHINE_STATUE',
+    'HORDE_MACHINE_TURRET',
+    'HORDE_MACHINE_MUD',
+    'HORDE_MACHINE_KENNEL',
+    'HORDE_VAMPIRE_FODDER',
+    'HORDE_MACHINE_LEGENDARY_ALLY',
+    'HORDE_MACHINE_THIEF',
+    'HORDE_MACHINE_GOBLIN_WARREN',
+    'HORDE_SACRIFICE_TARGET',
+];
+
+/** 开局铺怪禁用集（Monsters.c:1090 populateMonsters -> spawnHorde） */
+export const HORDE_POPULATE_FORBIDDEN_FLAGS: readonly string[] = [
+    'HORDE_IS_SUMMONED',
+    ...HORDE_MACHINE_ONLY_FLAGS,
+];
+
+/** 周期刷怪禁用集（Monsters.c:1133 spawnPeriodicHorde -> spawnHorde） */
+export const HORDE_PERIODIC_FORBIDDEN_FLAGS: readonly string[] = [
+    'HORDE_IS_SUMMONED',
+    'HORDE_LEADER_CAPTIVE',
+    'HORDE_NO_PERIODIC_SPAWN',
+    ...HORDE_MACHINE_ONLY_FLAGS,
+];
 
 export interface GameSnapshotItem {
     id: number;
@@ -233,6 +294,9 @@ export class Game {
     public mode: GameMode = 'normal';
     public currentSeed: number = 0;
 
+    // Time.c:2666 每回合递减；归零触发周期刷怪（Monsters.c:1128 spawnPeriodicHorde）
+    public monsterSpawnFuse: number = 0;
+
     // Endgame & Stats
     public isGameOver: boolean = false;
     public gameOverWon: boolean = false;
@@ -304,6 +368,8 @@ export class Game {
         this.currentTestCategory = null;
 
         this.player = new Player(Math.floor(DCOLS / 2), Math.floor(DROWS / 2));
+        // RogueMain.c:403：monsterSpawnFuse 在开局时初始化（先于首层生成，保证 rng 流稳定）
+        this.monsterSpawnFuse = rng.randRange(SPAWN_FUSE_MIN, SPAWN_FUSE_MAX);
         if (this.mode === 'easy') {
             this.player.maxHp = 45;
             this.player.hp = 45;
@@ -744,73 +810,40 @@ export class Game {
             }
         }
 
-        // Horde generation
-        const validHordes = (hordeData as any[]).filter(h => {
-            if (h.minLevel !== null && depth < h.minLevel) return false;
-            if (h.maxLevel !== null && depth > h.maxLevel) return false;
-            if (h.frequency === null || h.frequency <= 0) return false;
+        // Horde generation —— CE Monsters.c:1085 populateMonsters：
+        // 数量 = min(20, 6 + 3*max(0, depth - AMULET_LEVEL))（D26 前基数恒为 6），
+        // 随后 60% 概率反复 +1（期望约 +1.5）
+        let numHordes = Math.min(20, 6 + 3 * Math.max(0, depth - AMULET_LEVEL));
+        while (rng.randPercent(60)) numHordes++;
 
-            const invalidFlags = [
-                'HORDE_IS_SUMMONED', 'HORDE_LEADER_CAPTIVE', 'HORDE_SACRIFICE_TARGET',
-                'HORDE_VAMPIRE_FODDER', 'HORDE_NO_PERIODIC_SPAWN'
-            ];
-            if (h.flags.some((f: string) => invalidFlags.includes(f) || f.startsWith('HORDE_MACHINE_'))) return false;
-            return true;
-        });
-
-        // Spawn 3 to 5 hordes per level
-        const numHordes = rng.randRange(3, 5);
         for (let i = 0; i < numHordes && floorTiles.length > 0; i++) {
-            if (validHordes.length === 0) break;
+            // Monsters.c:797-805 spawnHorde：10% out-of-depth（深度 1 不触发），
+            // OOD 抽取时禁用集额外加上 HORDE_NEVER_OOD
+            const spawn = this.rollSpawnDepth(depth);
+            const forbidden = spawn.outOfDepth
+                ? [...HORDE_POPULATE_FORBIDDEN_FLAGS, 'HORDE_NEVER_OOD']
+                : HORDE_POPULATE_FORBIDDEN_FLAGS;
+            const candidates = this.hordeCandidates(spawn.depth, forbidden);
 
-            // Should be weighted random, but using uniform for now
-            const hData = validHordes[rng.randRange(0, validHordes.length - 1)];
-
-            const centerIdx = rng.randRange(0, floorTiles.length - 1);
-            const centerPos = floorTiles.splice(centerIdx, 1)[0]!;
-
-            const leaderType = hData.leader.toLowerCase();
-            const leaderMData = (monsterData as MonsterData[]).find(m => m.id === leaderType);
-
-            if (leaderMData) {
-                const leaderMon = new Monster(centerPos.x, centerPos.y, leaderMData);
-                this.applyRandomMutation(leaderMon, depth);
-                this.monsters.push(leaderMon);
-
-                // Spawn members nearby
-                for (const member of hData.members) {
-                    const count = rng.randRange(member.minCount, member.maxCount);
-                    const memberType = member.type.toLowerCase();
-                    const memberMData = (monsterData as MonsterData[]).find(m => m.id === memberType);
-                    if (!memberMData) continue;
-
-                    for (let c = 0; c < count; c++) {
-                        searchLoop: for (let r = 1; r <= 5; r++) {
-                            // Find a random free spot in a ring of radius `r`
-                            // To keep it simple, checking all spots and picking the first valid one
-                            for (let dx = -r; dx <= r; dx++) {
-                                for (let dy = -r; dy <= r; dy++) {
-                                    if (Math.abs(dx) !== r && Math.abs(dy) !== r) continue;
-                                    const nx = centerPos.x + dx;
-                                    const ny = centerPos.y + dy;
-                                    const cell = this.grid.getCell(nx, ny);
-                                    if (cell && cell.isPassable && !this.monsters.some(m => m.loc.x === nx && m.loc.y === ny) && !(this.player.loc.x === nx && this.player.loc.y === ny)) {
-                                        const mon = new Monster(nx, ny, memberMData);
-                                        this.applyRandomMutation(mon, depth);
-                                        this.monsters.push(mon);
-
-                                        // Remove from floorTiles to avoid item overlaps
-                                        const ftIdx = floorTiles.findIndex(ft => ft.x === nx && ft.y === ny);
-                                        if (ftIdx !== -1) floorTiles.splice(ftIdx, 1);
-
-                                        break searchLoop;
-                                    }
-                                }
-                            }
-                        }
-                    }
+            // Monsters.c:830-868：failsafe 50 —— 加权抽 horde 后检查落格地形（spawnsIn），
+            // 不匹配则重抽 horde 重选落格（CE 同样在重试时重掷 pickHordeType）
+            let hData: HordeEntry | null = null;
+            let centerPos: Pos | null = null;
+            for (let failsafe = 50; failsafe > 0 && floorTiles.length > 0; failsafe--) {
+                const cand = this.pickHordeType(candidates);
+                if (!cand) break;
+                const idx = rng.randRange(0, floorTiles.length - 1);
+                const pos = floorTiles[idx]!;
+                if (this.hordeFitsTerrain(cand, pos)) {
+                    hData = cand;
+                    centerPos = pos;
+                    floorTiles.splice(idx, 1);
+                    break;
                 }
             }
+            if (!hData || !centerPos) continue;
+
+            this.spawnHordeAt(hData, centerPos, depth, false, floorTiles);
         }
 
         const numItems = rng.randRange(3, 6);
@@ -882,6 +915,175 @@ export class Game {
                 this.items.push(item);
             }
         }
+    }
+
+    /**
+     * Monsters.c:511 pickHordeType 的候选集：frequency > 0、不含任何禁用 flag、
+     * 深度窗口 minLevel <= depth <= maxLevel（CE 硬窗口口径）。
+     * depth 传 null 时跳过深度窗口（仅供统计候选池规模）。
+     */
+    public hordeCandidates(depth: number | null, forbiddenFlags: readonly string[]): HordeEntry[] {
+        return (hordeData as HordeEntry[]).filter(h =>
+            h.frequency > 0 &&
+            (depth === null || (depth >= h.minLevel && depth <= h.maxLevel)) &&
+            !h.flags.some(f => forbiddenFlags.includes(f))
+        );
+    }
+
+    /**
+     * Monsters.c:511 pickHordeType —— 按 frequency 加权抽取：
+     * index = rand_range(1, Σfrequency)，遍历候选命中 index <= frequency 者即为选中。
+     */
+    public pickHordeType(candidates: HordeEntry[]): HordeEntry | null {
+        const possCount = candidates.reduce((sum, h) => sum + h.frequency, 0);
+        if (possCount <= 0) return null;
+        let index = rng.randRange(1, possCount);
+        for (const h of candidates) {
+            if (index <= h.frequency) return h;
+            index -= h.frequency;
+        }
+        return null;
+    }
+
+    /**
+     * Monsters.c:797-805 spawnHorde 的 out-of-depth 掷骰：
+     * 10% 概率（深度 1 不触发）从 depthLevel + rand_range(1, min(5, depthLevel/2))
+     * 的更深层抽 horde；越过 amuletLevel 则钳回 max(depthLevel, amuletLevel)。
+     */
+    public rollSpawnDepth(depthLevel: number): { depth: number; outOfDepth: boolean } {
+        if (depthLevel > 1 && rng.randPercent(MONSTER_OUT_OF_DEPTH_CHANCE)) {
+            let depth = depthLevel + rng.randRange(1, Math.min(5, Math.floor(depthLevel / 2)));
+            if (depth > AMULET_LEVEL) depth = Math.max(depthLevel, AMULET_LEVEL);
+            return { depth, outOfDepth: true };
+        }
+        return { depth: depthLevel, outOfDepth: false };
+    }
+
+    /** Monsters.c:809-819：horde 落格地形约束（spawnsIn）。 */
+    private hordeFitsTerrain(h: HordeEntry, pos: Pos): boolean {
+        if (!h.spawnsIn) return true;
+        const cell = this.grid.getCell(pos.x, pos.y);
+        if (!cell) return false;
+        switch (h.spawnsIn) {
+            case 'DEEP_WATER': return cell.terrain === TerrainType.WATER_DEEP;
+            case 'SHALLOW_WATER': return cell.terrain === TerrainType.WATER_SHALLOW;
+            case 'MUD': return cell.terrain === TerrainType.MUD;
+            case 'LAVA': return cell.terrain === TerrainType.LAVA;
+            // STATUE_*/CAGE/TURRET/WALL 等生成期专用落点不匹配普通地板（CE 同样重抽）
+            default: return false;
+        }
+    }
+
+    /**
+     * 生成一条 horde：领袖落 centerPos，成员在其周围环搜落格。
+     * wandering=true 时领袖与成员状态置为 WANDERING（Time.c:2331-2340 周期刷怪语义）。
+     * floorTiles 传入时把成员落格从中移除，避免后续物品生成落在怪物脚下。
+     */
+    private spawnHordeAt(h: HordeEntry, centerPos: Pos, depth: number, wandering: boolean, floorTiles?: Pos[]): boolean {
+        const leaderMData = (monsterData as MonsterData[]).find(m => m.id === h.leader.toLowerCase());
+        if (!leaderMData) return false;
+
+        const leaderMon = new Monster(centerPos.x, centerPos.y, leaderMData);
+        if (h.flags.includes('HORDE_LEADER_CAPTIVE')) {
+            // Monsters.c:872-877：笼中俘虏 —— 上锁不行动、状态 WANDERING、HP 折至 1/4+1
+            leaderMon.isCaged = true;
+            leaderMon.state = MonsterState.WANDERING;
+            leaderMon.hp = Math.floor(leaderMon.maxHp / 4) + 1;
+        }
+        this.applyRandomMutation(leaderMon, depth);
+        if (wandering) leaderMon.state = MonsterState.WANDERING;
+        this.monsters.push(leaderMon);
+
+        // Spawn members nearby
+        for (const member of h.members) {
+            const count = rng.randRange(member.minCount, member.maxCount);
+            const memberMData = (monsterData as MonsterData[]).find(m => m.id === member.type.toLowerCase());
+            if (!memberMData) continue;
+
+            for (let c = 0; c < count; c++) {
+                searchLoop: for (let r = 1; r <= 5; r++) {
+                    // Find a random free spot in a ring of radius `r`
+                    // To keep it simple, checking all spots and picking the first valid one
+                    for (let dx = -r; dx <= r; dx++) {
+                        for (let dy = -r; dy <= r; dy++) {
+                            if (Math.abs(dx) !== r && Math.abs(dy) !== r) continue;
+                            const nx = centerPos.x + dx;
+                            const ny = centerPos.y + dy;
+                            const cell = this.grid.getCell(nx, ny);
+                            if (cell && cell.isPassable && !this.monsters.some(m => m.loc.x === nx && m.loc.y === ny) && !(this.player.loc.x === nx && this.player.loc.y === ny)) {
+                                const mon = new Monster(nx, ny, memberMData);
+                                this.applyRandomMutation(mon, depth);
+                                if (wandering) mon.state = MonsterState.WANDERING;
+                                this.monsters.push(mon);
+
+                                // Remove from floorTiles to avoid item overlaps
+                                if (floorTiles) {
+                                    const ftIdx = floorTiles.findIndex(ft => ft.x === nx && ft.y === ny);
+                                    if (ftIdx !== -1) floorTiles.splice(ftIdx, 1);
+                                }
+
+                                break searchLoop;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Monsters.c:1101 getRandomMonsterSpawnLocation 的 web 等价：
+     * 候选格 = 可通行、非有害地形（熔岩/深渊）、非楼梯、无怪物、非玩家位、
+     * 且不在玩家当前视野内（IN_FIELD_OF_VIEW 排除）；
+     * 优先离玩家足够远（切比雪夫距离 >= floor(DCOLS/2)，近似 CE 的
+     * 路径距离场 >= DCOLS/2 阈值），无远格则回退到任意视野外合法格。
+     */
+    private findPeriodicSpawnLocation(): Pos | null {
+        const far: Pos[] = [];
+        const near: Pos[] = [];
+        const minFarDist = Math.floor(DCOLS / 2);
+        for (let x = 1; x < DCOLS - 1; x++) {
+            for (let y = 1; y < DROWS - 1; y++) {
+                const cell = this.grid.getCell(x, y);
+                if (!cell || !cell.isPassable) continue;
+                if (cell.isVisible) continue;
+                if (cell.terrain === TerrainType.LAVA || cell.terrain === TerrainType.CHASM) continue;
+                if (cell.terrain === TerrainType.STAIRS_UP || cell.terrain === TerrainType.STAIRS_DOWN) continue;
+                if (this.getMonsterAt(x, y)) continue;
+                if (this.player.loc.x === x && this.player.loc.y === y) continue;
+                const isFar = Math.max(Math.abs(x - this.player.loc.x), Math.abs(y - this.player.loc.y)) >= minFarDist;
+                (isFar ? far : near).push({ x, y });
+            }
+        }
+        const pool = far.length > 0 ? far : near;
+        if (pool.length === 0) return null;
+        return pool[rng.randRange(0, pool.length - 1)]!;
+    }
+
+    /**
+     * Monsters.c:1128 spawnPeriodicHorde —— 周期刷怪：随机取视野外落点，
+     * 用周期刷怪禁用集加权抽 horde 生成，领袖与随从均为 WANDERING。
+     */
+    public spawnPeriodicHorde(): boolean {
+        if (this.mode === 'test') return false;
+        const loc = this.findPeriodicSpawnLocation();
+        if (!loc) return false;
+
+        const spawn = this.rollSpawnDepth(this.depth);
+        const forbidden = spawn.outOfDepth
+            ? [...HORDE_PERIODIC_FORBIDDEN_FLAGS, 'HORDE_NEVER_OOD']
+            : HORDE_PERIODIC_FORBIDDEN_FLAGS;
+
+        // Monsters.c:814-828：落点固定时逐次重抽 horde 直到 spawnsIn 匹配（failsafe 50）
+        for (let failsafe = 50; failsafe > 0; failsafe--) {
+            const cand = this.pickHordeType(this.hordeCandidates(spawn.depth, forbidden));
+            if (!cand) return false;
+            if (this.hordeFitsTerrain(cand, loc)) {
+                return this.spawnHordeAt(cand, loc, this.depth, true);
+            }
+        }
+        return false;
     }
 
     private posKey(x: number, y: number) {
@@ -3401,6 +3603,15 @@ export class Game {
         }
 
         this.stats.turns++;
+
+        // Time.c:2666 / 2322：每回合 monsterSpawnFuse--，归零触发周期刷怪并重置 fuse
+        if (this.mode !== 'test') {
+            this.monsterSpawnFuse--;
+            if (this.monsterSpawnFuse <= 0) {
+                this.spawnPeriodicHorde();
+                this.monsterSpawnFuse = rng.randRange(SPAWN_FUSE_MIN, SPAWN_FUSE_MAX);
+            }
+        }
 
         if (this.player.hp <= 0 && !this.isGameOver) {
             let deathReason: string;

@@ -8,6 +8,12 @@
  *     至其后第一个 `};`），以及同文件 L43-44 的 AMULET_LEVEL / DEEPEST_LEVEL
  *   - BrogueCE-master/src/brogue/Rogue.h            hordeFlags / machineTypes /
  *     tileType / monsterTypes 枚举（数值一律从枚举解析，不硬编码）
+ *   - BrogueCE-master/src/brogue/Globals.c          monsterCatalog（creatureType
+ *     数组，条目顺序与 monsterTypes 枚举一一对应）——用于把 horde 表里的
+ *     MK_* 枚举名映射为 CE 目录显示名的规范形式（大写、空格转下划线）。
+ *     枚举名与目录名存在历史不一致（如 MK_GOBLIN_CHIEFTAN → "goblin warlord"），
+ *     而 web 侧 monsters.json 的 id 正是目录显示名的小写下划线形式，
+ *     故 horde 表必须存映射后的名字，否则 Game.ts 按 id 查表会静默失配。
  *
  * C 结构体是位置初始化，尾部字段可省略，省略即 0：
  *   spawnsIn=0 -> null、machine=0 -> 0、flags=0 -> []（与旧 hordes.json 的
@@ -35,7 +41,8 @@ function locateCeDir() {
     for (const dir of candidates) {
         if (
             fs.existsSync(path.join(dir, 'src', 'variants', 'GlobalsBrogue.c')) &&
-            fs.existsSync(path.join(dir, 'src', 'brogue', 'Rogue.h'))
+            fs.existsSync(path.join(dir, 'src', 'brogue', 'Rogue.h')) &&
+            fs.existsSync(path.join(dir, 'src', 'brogue', 'Globals.c'))
         ) {
             return dir;
         }
@@ -214,12 +221,73 @@ function extractCatalogEntries(source) {
     return { entries, startLine };
 }
 
+// ---------- monsterCatalog 名字映射（Globals.c） ----------
+
+/**
+ * 从 Globals.c 的 creatureType monsterCatalog[] 按顺序提取目录显示名。
+ * 条目形如 `{0, "rat", G_RAT, ...}`（首个字段为占位 0，第二个字段是名字字符串），
+ * 条目顺序与 Rogue.h monsterTypes 枚举一一对应。
+ */
+function extractCatalogDisplayNames(globalsC) {
+    const marker = 'creatureType monsterCatalog[NUMBER_MONSTER_KINDS] = {';
+    const start = globalsC.indexOf(marker);
+    if (start === -1) throw new Error('Globals.c 中找不到 monsterCatalog');
+    let depth = 0;
+    let i = globalsC.indexOf('{', start);
+    const bodyStart = i + 1;
+    for (; i < globalsC.length; i++) {
+        if (globalsC[i] === '{') depth++;
+        else if (globalsC[i] === '}') {
+            depth--;
+            if (depth === 0) break;
+        }
+    }
+    const body = globalsC
+        .slice(bodyStart, i)
+        .replace(/\/\*[\s\S]*?\*\//g, ' ')
+        .split('\n')
+        .map(stripComment)
+        .join(' ');
+    const names = [];
+    for (const m of body.matchAll(/\{\s*0\s*,\s*"([^"]+)"/g)) {
+        names.push(m[1]);
+    }
+    return names;
+}
+
+/**
+ * MK_* 枚举名 -> 目录显示名的规范形式（大写、空格转下划线）。
+ * monsterCatalog 的索引与 monsterTypes 枚举一一对应，据此自动建全表映射，
+ * 不逐条硬编码；绝大多数物种映射是恒等（RAT -> RAT），仅名字漂移的物种
+ * （如 MK_GOBLIN_CHIEFTAN -> GOBLIN_WARLORD）会被改写。
+ */
+function buildEnumToCatalogName(monsterTypes, displayNames) {
+    const enumNames = [...monsterTypes.keys()].filter((n) => n !== 'NUMBER_MONSTER_KINDS');
+    if (enumNames.length !== displayNames.length) {
+        throw new Error(
+            `monsterTypes 枚举数(${enumNames.length}) 与 monsterCatalog 条目数(${displayNames.length}) 不一致`
+        );
+    }
+    if (displayNames[0] !== 'you') {
+        throw new Error(`monsterCatalog 首条应为 "you"，实际为 "${displayNames[0]}"`);
+    }
+    const map = new Map();
+    const renamed = [];
+    for (let i = 0; i < enumNames.length; i++) {
+        const enumShort = enumNames[i].replace(/^MK_/, '');
+        const canonical = displayNames[i].toUpperCase().replace(/ /g, '_');
+        map.set(enumShort, canonical);
+        if (canonical !== enumShort) renamed.push(`${enumNames[i]} -> ${canonical}`);
+    }
+    return { map, renamed };
+}
+
 // ---------- 单条 horde 解析 ----------
 
 const EXPECTED_MAX_TOKENS = 10; // leader, n, {members}, {{counts}}, minL, maxL, freq, spawnsIn, machine, flags
 
 function parseHordeEntry(entry, ctx) {
-    const { evaluate, tileTypes, machineTypes, monsterTypes, flagNames } = ctx;
+    const { evaluate, tileTypes, machineTypes, monsterTypes, flagNames, enumToCatalogName } = ctx;
     const tokens = splitTopLevel(entry.line);
     if (tokens.length < 7 || tokens.length > EXPECTED_MAX_TOKENS) {
         throw new Error(`L${entry.lineNo}: 字段数异常(${tokens.length}): ${entry.line}`);
@@ -227,10 +295,11 @@ function parseHordeEntry(entry, ctx) {
 
     const leaderMatch = tokens[0].match(/^MK_(\w+)$/);
     if (!leaderMatch) throw new Error(`L${entry.lineNo}: leader 不是 MK_* 形式: ${tokens[0]}`);
-    const leader = leaderMatch[1];
     if (!monsterTypes.has(tokens[0])) {
         throw new Error(`L${entry.lineNo}: leader ${tokens[0]} 不在 monsterTypes 枚举中`);
     }
+    // 枚举名 -> 目录显示名规范形式（修复枚举名与目录名漂移导致的查表失配）
+    const leader = enumToCatalogName.get(leaderMatch[1]);
 
     const numberOfMemberTypes = parseInt(tokens[1], 10);
     if (!Number.isInteger(numberOfMemberTypes) || numberOfMemberTypes < 0 || numberOfMemberTypes > 5) {
@@ -241,7 +310,7 @@ function parseHordeEntry(entry, ctx) {
         if (s === '0') return null;
         if (!/^MK_\w+$/.test(s)) throw new Error(`L${entry.lineNo}: member 非法: ${s}`);
         if (!monsterTypes.has(s)) throw new Error(`L${entry.lineNo}: member ${s} 不在 monsterTypes 枚举中`);
-        return s.replace(/^MK_/, '');
+        return enumToCatalogName.get(s.replace(/^MK_/, ''));
     });
 
     // numberOfMemberTypes=0 时 member list / memberCount 均为 {0} 占位，直接跳过
@@ -325,21 +394,42 @@ function parseHordeEntry(entry, ctx) {
     };
 }
 
-// ---------- 过滤与统计（口径与 Game.ts 748-759 一致，亦为 CE 口径） ----------
+// ---------- 过滤与统计（CE 两套口径，Monsters.c） ----------
 
-const EXCLUDED_FLAGS = new Set([
-    'HORDE_IS_SUMMONED',
-    'HORDE_LEADER_CAPTIVE',
-    'HORDE_SACRIFICE_TARGET',
+// HORDE_MACHINE_ONLY 复合标志覆盖的成员（Rogue.h hordeFlags 枚举）
+const HORDE_MACHINE_ONLY_FLAGS = new Set([
+    'HORDE_MACHINE_BOSS',
+    'HORDE_MACHINE_WATER_MONSTER',
+    'HORDE_MACHINE_CAPTIVE',
+    'HORDE_MACHINE_STATUE',
+    'HORDE_MACHINE_TURRET',
+    'HORDE_MACHINE_MUD',
+    'HORDE_MACHINE_KENNEL',
     'HORDE_VAMPIRE_FODDER',
-    'HORDE_NO_PERIODIC_SPAWN',
+    'HORDE_MACHINE_LEGENDARY_ALLY',
+    'HORDE_MACHINE_THIEF',
+    'HORDE_MACHINE_GOBLIN_WARREN',
+    'HORDE_SACRIFICE_TARGET',
 ]);
 
-function isRegularHorde(h) {
-    return (
-        h.frequency > 0 &&
-        !h.flags.some((f) => EXCLUDED_FLAGS.has(f) || f.startsWith('HORDE_MACHINE_'))
-    );
+// 开局铺怪禁用集（Monsters.c:1090 populateMonsters -> spawnHorde）
+const POPULATE_FORBIDDEN = new Set(['HORDE_IS_SUMMONED', ...HORDE_MACHINE_ONLY_FLAGS]);
+
+// 周期刷怪禁用集（Monsters.c:1133 spawnPeriodicHorde -> spawnHorde）；
+// VAMPIRE_FODDER / SACRIFICE_TARGET 已含于 MACHINE_ONLY，不单列
+const PERIODIC_FORBIDDEN = new Set([
+    'HORDE_IS_SUMMONED',
+    'HORDE_LEADER_CAPTIVE',
+    'HORDE_NO_PERIODIC_SPAWN',
+    ...HORDE_MACHINE_ONLY_FLAGS,
+]);
+
+function isPopulateHorde(h) {
+    return h.frequency > 0 && !h.flags.some((f) => POPULATE_FORBIDDEN.has(f));
+}
+
+function isPeriodicHorde(h) {
+    return h.frequency > 0 && !h.flags.some((f) => PERIODIC_FORBIDDEN.has(f));
 }
 
 // ---------- 主流程 ----------
@@ -348,6 +438,7 @@ function main() {
     const ceDir = locateCeDir();
     const globalsC = fs.readFileSync(path.join(ceDir, 'src', 'variants', 'GlobalsBrogue.c'), 'utf8');
     const rogueH = fs.readFileSync(path.join(ceDir, 'src', 'brogue', 'Rogue.h'), 'utf8');
+    const brogueGlobalsC = fs.readFileSync(path.join(ceDir, 'src', 'brogue', 'Globals.c'), 'utf8');
 
     const defines = parseDefines(globalsC);
     for (const key of ['AMULET_LEVEL', 'DEEPEST_LEVEL']) {
@@ -355,15 +446,23 @@ function main() {
     }
 
     const tileTypes = new Set(parseEnum(rogueH, 'tileType', defines, new Map()).keys());
-    const monsterTypes = new Set(parseEnum(rogueH, 'monsterTypes', defines, new Map()).keys());
+    const monsterTypes = parseEnum(rogueH, 'monsterTypes', defines, new Map());
     const machineTypes = parseEnum(rogueH, 'machineTypes', defines, new Map());
     const hordeFlags = parseEnum(rogueH, 'hordeFlags', defines, new Map());
     const flagNames = new Set(hordeFlags.keys());
 
+    // MK_* 枚举名 -> 目录显示名规范形式（monsterCatalog 与 monsterTypes 按索引对齐）
+    const { map: enumToCatalogName, renamed } = buildEnumToCatalogName(
+        monsterTypes,
+        extractCatalogDisplayNames(brogueGlobalsC)
+    );
+
     const evaluate = makeEvaluator(defines, new Map());
     const { entries, startLine } = extractCatalogEntries(globalsC);
 
-    const hordes = entries.map((e) => parseHordeEntry(e, { evaluate, tileTypes, machineTypes, monsterTypes, flagNames }));
+    const hordes = entries.map((e) =>
+        parseHordeEntry(e, { evaluate, tileTypes, machineTypes, monsterTypes, flagNames, enumToCatalogName })
+    );
 
     // ---- 自检 ----
     const problems = [];
@@ -374,24 +473,26 @@ function main() {
     };
 
     const total = hordes.length;
-    const regular = hordes.filter(isRegularHorde);
+    const populatePool = hordes.filter(isPopulateHorde);
+    const periodicPool = hordes.filter(isPeriodicHorde);
     const captives = hordes.filter((h) => h.flags.includes('HORDE_LEADER_CAPTIVE'));
 
     check('总条数', total, 175);
-    check('常规池条数', regular.length, 58);
+    check('开局铺怪池条数（Monsters.c:1090 口径）', populatePool.length, 85);
+    check('周期刷怪池条数（Monsters.c:1133 口径）', periodicPool.length, 58);
     check('HORDE_LEADER_CAPTIVE 条数', captives.length, 56);
 
-    // 常规池物种覆盖（领袖 + 全部成员）
-    const regularSpecies = new Set();
-    for (const h of regular) {
-        regularSpecies.add(h.leader);
-        for (const m of h.members) regularSpecies.add(m.type);
+    // 开局池物种覆盖（领袖 + 全部成员）
+    const populateSpecies = new Set();
+    for (const h of populatePool) {
+        populateSpecies.add(h.leader);
+        for (const m of h.members) populateSpecies.add(m.type);
     }
 
-    // 各深度可用常规 horde 数（CE 硬窗口口径：minLevel <= d <= maxLevel）
+    // 各深度可用开局 horde 数（CE pickHordeType 的硬窗口口径：minLevel <= d <= maxLevel）
     const perDepth = {};
     for (let d = 1; d <= defines.get('DEEPEST_LEVEL'); d++) {
-        perDepth[d] = regular.filter((h) => h.minLevel <= d && d <= h.maxLevel).length;
+        perDepth[d] = populatePool.filter((h) => h.minLevel <= d && d <= h.maxLevel).length;
     }
 
     // clumpFactor 备查清单（!= 1 的条目）
@@ -406,16 +507,28 @@ function main() {
     console.log(`CE 源: ${ceDir}`);
     console.log(`hordeCatalog_Brogue 起始行: ${startLine}`);
     console.log(`总条数: ${total}（锚点 175）`);
-    console.log(`常规池条数: ${regular.length}（锚点 58）`);
+    console.log(`开局铺怪池条数: ${populatePool.length}（锚点 85）`);
+    console.log(`周期刷怪池条数: ${periodicPool.length}（锚点 58）`);
     console.log(`HORDE_LEADER_CAPTIVE 条数: ${captives.length}（锚点 56）`);
-    console.log(`常规池物种数: ${regularSpecies.size}`);
+    console.log(`开局池中 LEADER_CAPTIVE 条数: ${populatePool.filter((h) => h.flags.includes('HORDE_LEADER_CAPTIVE')).length}`);
+    console.log(`枚举名 -> 目录名 改写条目: ${renamed.length ? renamed.join(', ') : '（无）'}`);
+    console.log(`开局池物种数: ${populateSpecies.size}`);
     console.log(`AMULET_LEVEL=${defines.get('AMULET_LEVEL')}  DEEPEST_LEVEL=${defines.get('DEEPEST_LEVEL')}`);
-    console.log('各深度常规 horde 数:', JSON.stringify(perDepth));
+    console.log('各深度开局 horde 数:', JSON.stringify(perDepth));
     console.log('clumpFactor != 1:', clumpNotes.length ? clumpNotes : '（无）');
+    // 零失配核验：全表 leader + member 的映射名必须能在 monsters.json 按 id 找到
     const webMonsters = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'src', 'data', 'monsters.json'), 'utf8'));
     const webIds = new Set(webMonsters.map((m) => m.id.toUpperCase()));
-    const missingInWeb = [...regularSpecies].filter((s) => !webIds.has(s));
-    console.log(`常规池物种中 web monsters.json 缺失（按 CE 名）: ${missingInWeb.length ? missingInWeb.join(', ') : '（无）'}`);
+    const allSpecies = new Set();
+    for (const h of hordes) {
+        allSpecies.add(h.leader);
+        for (const m of h.members) allSpecies.add(m.type);
+    }
+    const missingInWeb = [...allSpecies].filter((s) => !webIds.has(s));
+    console.log(`全表物种中 web monsters.json 缺失（映射后）: ${missingInWeb.length ? missingInWeb.join(', ') : '（无，零失配）'}`);
+    if (missingInWeb.length) {
+        problems.push(`monsters.json 缺失物种（映射后）: ${missingInWeb.join(', ')}`);
+    }
 
     if (problems.length) {
         console.error('\n自检失败，不写文件：');
