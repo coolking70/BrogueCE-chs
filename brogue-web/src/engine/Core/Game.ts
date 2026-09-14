@@ -1856,7 +1856,12 @@ export class Game {
             for (const m of this.monsters) {
                 const cell = this.grid.getCell(m.loc.x, m.loc.y);
                 const telepathyRevealed = this.player.hasStatus('telepathy') && m.hp > 0;
-                if (cell && (cell.isVisible || telepathyRevealed) && m.hp > 0) {
+                // P4-3：CE Monsters.c:200-203 monsterIsHidden —— MONST_INVISIBLE 的怪物
+                // （phantom）对非队友观察者恒定隐藏，忽略视野/光照/相邻，唯一的例外是
+                // telepathy（IO.c:1264 canSeeMonster 配合 monsterRevealed 显示幽灵符号，
+                // 这里简化为：仍能"察觉存在"但不能像正常怪物一样直接看见）。
+                const trulyInvisible = m.isTrulyInvisible() && !this.player.hasStatus('telepathy');
+                if (cell && (cell.isVisible || telepathyRevealed) && m.hp > 0 && !trulyInvisible) {
                     currentVisMonsters.add(m);
                     if (!this.visibleMonsters.has(m)) {
                         const seeMsg = i18next.t('vision.see_monster', { monster: m.name, defaultValue: `You see a ${m.name}.` });
@@ -2910,6 +2915,37 @@ export class Game {
     /**
      * Apply the bolt's effect at its impact position and along its path.
      */
+    /**
+     * P4-3：玩家直接施法的伤害类 bolt（FIRE/LIGHTNING）不走 CombatSystem.attack，
+     * 是 target.takeDamage(magnitude) 硬编码调用——这里补上 CE 的两条豁免：
+     *   - MONST_INVULNERABLE（Combat.c:1806 inflictDamage）：伤害归零，不掉血。
+     *   - MA_REFLECT_100/MONST_REFLECT_50（Items.c:4978-4983 projectileReflects，
+     *     GlobalsBrogue.c boltCatalog "flame"/"lightning" 均无 BF_NEVER_REFLECTS）：
+     *     伤害改记到玩家自己身上（弹道折返给施法者，Items.c:5681 reflectBolt）。
+     * 返回 true 表示伤害按原计划打在 target 身上（调用方继续走命中消息分支）；
+     * 返回 false 表示伤害被吞掉或反射（调用方跳过"命中"消息，改由这里的消息负责）。
+     */
+    private applyDirectBoltDamage(target: Creature, magnitude: number, reflectKey: string, reflectDefault: string): boolean {
+        if (target instanceof Monster && target.isInvulnerable()) {
+            logger.log(i18next.t('bolt.invulnerable_no_effect', {
+                target: target.name,
+                defaultValue: `The ${target.name} is unaffected.`
+            }), '#aaaaaa');
+            return false;
+        }
+        if (target instanceof Monster) {
+            const chance = target.reflectChance();
+            if (chance > 0 && rng.randPercent(chance)) {
+                this.player.takeDamage(magnitude);
+                logger.log(i18next.t(reflectKey, { target: target.name, defaultValue: reflectDefault }), '#99ddff');
+                this.spawnFloatingText(`-${magnitude}`, this.player.loc.x, this.player.loc.y, 0x99ddff);
+                return false;
+            }
+        }
+        target.takeDamage(magnitude);
+        return true;
+    }
+
     private applyBoltEffect(result: BoltResult, item: Item) {
         const { effect, magnitude, impactPos, path } = result;
 
@@ -2922,8 +2958,7 @@ export class Game {
             case BoltEffect.FIRE: {
                 // Ignite on impact and deal damage
                 this.environment.ignite(impactPos.x, impactPos.y);
-                if (target) {
-                    target.takeDamage(magnitude);
+                if (target && this.applyDirectBoltDamage(target, magnitude, 'bolt.fire_reflect', `The ${target.name} deflects the fire back at you!`)) {
                     logger.log(i18next.t('bolt.fire_hit', {
                         name: item.name, target: target.name, damage: magnitude,
                         defaultValue: `${item.name} scorches the ${target.name} for ${magnitude} damage!`
@@ -2935,7 +2970,7 @@ export class Game {
                             defaultValue: `The ${target.name} burns to death.`
                         }), '#ff8800');
                     }
-                } else {
+                } else if (!target) {
                     logger.log(i18next.t('bolt.fire_impact', {
                         name: item.name,
                         defaultValue: `A burst of fire leaps from ${item.name}!`
@@ -2956,7 +2991,9 @@ export class Game {
                         mon => mon.hp > 0 && mon.loc.x === p.x && mon.loc.y === p.y
                     );
                     if (m) {
-                        m.takeDamage(magnitude);
+                        if (!this.applyDirectBoltDamage(m, magnitude, 'bolt.lightning_reflect', `The ${m.name} deflects the lightning back at you!`)) {
+                            continue;
+                        }
                         totalDamage += magnitude;
                         this.spawnFloatingText(`-${magnitude}`, m.loc.x, m.loc.y, 0x33ccff);
                         logger.log(i18next.t('bolt.lightning_hit', {
@@ -3148,18 +3185,29 @@ export class Game {
 
             case BoltEffect.NEGATION: {
                 if (target) {
-                    // Remove all status effects from the target
-                    if ('statusDurations' in target) {
-                        const sd = (target as any).statusDurations as Record<string, number>;
-                        for (const k of Object.keys(sd)) {
-                            sd[k] = 0;
+                    // P4-3：CE Items.c:4483-4491 negate() —— MONST_DIES_IF_NEGATED 的怪物
+                    // 被 negation 命中时直接死亡，而不是清状态（"是纯魔法造物，一旦
+                    // 被消除魔法就无法维持存在"）。
+                    if (target instanceof Monster && target.diesIfNegated()) {
+                        logger.log(i18next.t('bolt.negation_dies', {
+                            name: item.name, target: target.name,
+                            defaultValue: `${target.name} falls to the ground, lifeless!`
+                        }), '#ffffff');
+                        target.takeDamage(target.hp);
+                    } else {
+                        // Remove all status effects from the target
+                        if ('statusDurations' in target) {
+                            const sd = (target as any).statusDurations as Record<string, number>;
+                            for (const k of Object.keys(sd)) {
+                                sd[k] = 0;
+                            }
                         }
+                        target.refreshSpeeds(); // P2-2：haste/slowed 被清，衍生速度立即复原
+                        logger.log(i18next.t('bolt.negation_hit', {
+                            name: item.name, target: target.name,
+                            defaultValue: `${item.name} negates all magic on the ${target.name}!`
+                        }), '#ffffff');
                     }
-                    target.refreshSpeeds(); // P2-2：haste/slowed 被清，衍生速度立即复原
-                    logger.log(i18next.t('bolt.negation_hit', {
-                        name: item.name, target: target.name,
-                        defaultValue: `${item.name} negates all magic on the ${target.name}!`
-                    }), '#ffffff');
                 } else {
                     logger.log(i18next.t('bolt.negation_miss', { name: item.name, defaultValue: `${item.name} fires but finds no target.` }), '#ffffff');
                 }
@@ -3248,7 +3296,29 @@ export class Game {
                 if (meta.effect === BoltEffect.FIRE || meta.effect === BoltEffect.DRAGONFIRE) {
                     this.environment.ignite(target.loc.x, target.loc.y);
                 }
-                const result = CombatSystem.attack(caster, target);
+                // P4-3：CE GlobalsBrogue.c boltCatalog —— "spark"/"flame"/"dragonfire"
+                // 都没有 BF_NEVER_REFLECTS，可被 MA_REFLECT_100/MONST_REFLECT_50 反射；
+                // "arrow"(DISTANCE_ATTACK)/"poisoned dart"(POISON_DART) 标了
+                // BF_NEVER_REFLECTS，永不反射。反射目标是原施法者 caster
+                // （Items.c:5681 reflectBolt(originLoc...) 把弹道折返给发射者）。
+                const canReflect = meta.effect === BoltEffect.SPARK
+                    || meta.effect === BoltEffect.FIRE
+                    || meta.effect === BoltEffect.DRAGONFIRE;
+                const targetReflectChance = (canReflect && target instanceof Monster) ? target.reflectChance() : 0;
+                const reflects = targetReflectChance > 0 && rng.randPercent(targetReflectChance);
+
+                const result = CombatSystem.attack(caster, target, {
+                    isWeaponAttack: false,
+                    damageTarget: reflects ? caster : undefined,
+                });
+                if (reflects) {
+                    logCast('bolt.monster_cast_reflect', `${targetName} deflects the ${ceBoltName} back at ${casterLabel}!`, '#99ddff');
+                    if (result.damage > 0) {
+                        this.spawnFloatingText(`-${result.damage}`, caster.loc.x, caster.loc.y, 0x99ddff);
+                        if (isPlayer) this.lastDamageSource = target.name;
+                    }
+                    break;
+                }
                 if (result.damage > 0) {
                     if (isPlayer) this.lastDamageSource = caster.name;
                     this.spawnFloatingText(`-${result.damage}`, target.loc.x, target.loc.y, 0xff5555);
@@ -3324,6 +3394,14 @@ export class Game {
             }
 
             case BoltEffect.NEGATION: {
+                // P4-3：CE Items.c:4483-4491 negate() —— MONST_DIES_IF_NEGATED 直接死亡
+                // 而非清状态（wisp/golem/spectral blade 等"纯魔法造物"被己方以外的
+                // negation bolt 命中时会发生，例如敌对怪物对玩家的召唤物施放 negation）。
+                if (!isPlayer && (target as Monster).diesIfNegated()) {
+                    logCast('bolt.monster_cast_negation_dies', `${targetName} falls to the ground, lifeless!`, '#ffffff');
+                    (target as Monster).takeDamage((target as Monster).hp);
+                    break;
+                }
                 const durations = (target.statusDurations as unknown) as Record<string, number>;
                 for (const k of Object.keys(durations)) durations[k] = 0;
                 if (!isPlayer) (target as Monster).refreshSpeeds();

@@ -15,6 +15,7 @@ import { ItemLoader } from '../engine/Items/ItemLoader';
 import type { StatusId } from './Creature';
 import { TerrainType } from '../engine/Map/Grid';
 import { MONSTER_BOLT_TABLE, BoltEffect } from '../engine/Combat/Bolt';
+import { reflectionChance } from '../engine/Combat/CombatFormulas';
 
 // ----- P4-1b：怪物远程法术施放 -----
 //
@@ -365,6 +366,58 @@ export class Monster extends Creature {
 
     public hasAbility(flag: string): boolean {
         return this.abilityFlags.has(flag);
+    }
+
+    /**
+     * P4-3：CE Combat.c:1806 inflictDamage — MONST_INVULNERABLE 使一切伤害
+     * （近战/投掷/法术/环境）直接归零，是全 CE 唯一给 Warden of Yendor 用的
+     * "打不死"标记（Globals.c 检索确认全表仅此一只）。
+     */
+    public isInvulnerable(): boolean {
+        return this.hasBehavior('MONST_INVULNERABLE');
+    }
+
+    /**
+     * P4-3：CE Combat.c:1243-1245 attack() —— MONST_IMMUNE_TO_WEAPONS 只把
+     * "武器伤害"（近战 attacker->info.damage / Items.c:6812 投掷武器伤害）
+     * 计算为 0，不经过 inflictDamage 的统一豁免（inflictDamage 本身只认
+     * MONST_INVULNERABLE）。法术 bolt、火焰等其它伤害源不检查这个标志，
+     * 因此仍然有效——不是免疫一切。
+     */
+    public isImmuneToWeapons(): boolean {
+        return this.hasBehavior('MONST_IMMUNE_TO_WEAPONS');
+    }
+
+    /**
+     * P4-3：CE Items.c:4978-4983 projectileReflects —— MA_REFLECT_100 令任意
+     * 可反射 bolt（未标 BF_NEVER_REFLECTS）100% 反射回施法者；MONST_REFLECT_50
+     * 等价于额外叠加 +4 附魔的反射护甲（netReflectionLevel += 4*FP_FACTOR），
+     * 再走 PowerTables.c:109-123 reflectionChance 查表得到百分比。
+     * 返回 0-100 的反射概率；两个标志都没有时返回 0。
+     */
+    public reflectChance(): number {
+        if (this.hasAbility('MA_REFLECT_100')) return 100;
+        if (this.hasBehavior('MONST_REFLECT_50')) return reflectionChance(4);
+        return 0;
+    }
+
+    /**
+     * P4-3：CE Items.c:4483-4491 negate() —— 被 negation 命中时，
+     * MONST_DIES_IF_NEGATED 的怪物不是清状态，而是直接 killCreature。
+     */
+    public diesIfNegated(): boolean {
+        return this.hasBehavior('MONST_DIES_IF_NEGATED');
+    }
+
+    /**
+     * P4-3：CE Monsters.c:200-203 monsterIsHidden —— STATUS_INVISIBLE（由
+     * MONST_INVISIBLE 在 initializeStatus 里恒设为 1000，Monsters.c:3920）
+     * 且不在气体中时，对非队友观察者恒定隐藏，不因相邻/未修 telepathy 而例外。
+     * web 侧用于 Game.update() 的可见怪物集合过滤（telepathy 例外见调用处，
+     * 对应 CE canSeeMonster 通过 monsterRevealed 在有 telepathy 时显示幽灵符号）。
+     */
+    public isTrulyInvisible(): boolean {
+        return this.hasBehavior('MONST_INVISIBLE');
     }
 
     /**
