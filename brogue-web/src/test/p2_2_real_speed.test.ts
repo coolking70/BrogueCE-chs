@@ -1,3 +1,8 @@
+/**
+ * ⚠️ F 节的 play 快照断言锁定的是 P2-3（客观时间迁移）之前的状态。
+ * P2-3 起该快照已被 p2_3_baseline.json 取代，此条 skip 保留为阶段证据。
+ * A–E 节（真实速度/动画同源/输入锁）与 levels 段仍然有效，未动。
+ */
 /// <reference types="node" />
 /**
  * src/test/p2_2_real_speed.test.ts — P2-2：真实速度 + 逐次动画 + 输入锁
@@ -469,7 +474,7 @@ describe('P2-2 F: p2_2_baseline 一致性', () => {
         expect(mismatches).toEqual([]);
     }, 300000);
 
-    it('4 seed × 400 回合玩法状态与 p2_2_baseline 一致', () => {
+    it.skip('4 seed × 400 回合玩法状态与 p2_2_baseline 一致', () => {
         const mismatches: string[] = [];
         for (const seed of SEEDS) {
             const game = createHeadlessGame(seed);

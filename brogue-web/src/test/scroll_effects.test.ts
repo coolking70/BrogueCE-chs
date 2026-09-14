@@ -205,7 +205,7 @@ describe('discord_burst 卷轴（Items.c:8011 → discordBlast）', () => {
         expect(readScroll(game, 'scroll_of_discord')).toBe(true);
 
         expect(goblin.hasStatus('discordant')).toBe(true);
-        expect(goblin.getStatusDuration('discordant')).toBe(30);
+        expect(goblin.getStatusDuration('discordant')).toBe(29)  // P2-3 起 eatItem/readItem 为完整回合：施加效果后同一动作的客观块随即递减 1（CE 同构）。;
         // CE Items.c:4896：MONST_INANIMATE（无生命）豁免 discord
         expect(totem.hasStatus('discordant')).toBe(false);
     });

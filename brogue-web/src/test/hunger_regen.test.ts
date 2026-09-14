@@ -173,7 +173,7 @@ describe('偏差4：食物恢复量 ration 1800 / mango 1550', () => {
         expect(p.inventory.addItem(ration!)).toBe(true);
         p.nutrition = 100;
         game.eatItem(ration!);
-        expect(p.nutrition).toBe(1900);
+        expect(p.nutrition).toBe(1899)  // P2-3 起 eatItem/readItem 为完整回合：施加效果后同一动作的客观块随即递减 1（CE 同构）。;
     });
 
     it('恢复量不超过 maxNutrition 上限（CE Items.c:7491 的 min）', () => {
@@ -183,7 +183,9 @@ describe('偏差4：食物恢复量 ration 1800 / mango 1550', () => {
         p.inventory.addItem(ration);
         p.nutrition = 2100;
         game.eatItem(ration);
-        expect(p.nutrition).toBe(STOMACH_SIZE);
+        // P2-3 起 eatItem 为完整回合：先 min(2100+1800, STOMACH_SIZE)=2150 封顶，
+        // 随后同一动作的客观块递减 1（CE 同构：eat() → playerTurnEnded() → decrementPlayerStatus）。
+        expect(p.nutrition).toBe(STOMACH_SIZE - 1);
         expect(p.nutrition).toBeLessThanOrEqual(p.maxNutrition);
     });
 
@@ -194,6 +196,6 @@ describe('偏差4：食物恢复量 ration 1800 / mango 1550', () => {
         p.inventory.addItem(mango);
         p.nutrition = 100;
         game.eatItem(mango);
-        expect(p.nutrition).toBe(1650);
+        expect(p.nutrition).toBe(1649)  // P2-3 起 eatItem/readItem 为完整回合：施加效果后同一动作的客观块随即递减 1（CE 同构）。;
     });
 });

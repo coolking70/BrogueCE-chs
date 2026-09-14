@@ -300,6 +300,11 @@ export class Game {
     // Time.c:2666 每回合递减；归零触发周期刷怪（Monsters.c:1128 spawnPeriodicHorde）
     public monsterSpawnFuse: number = 0;
 
+    // CE rogue.ticksTillUpdateEnvironment（RogueMain.c:404 初值 100）：客观时间门。
+    // P2-3 起作为 advancementLoop soonestTurn 的第三候选（Time.c:2651-2652），
+    // 每 100 tick 触发一次 objectiveTimeBlock。
+    public ticksTillUpdateEnvironment: number = 100;
+
     // Endgame & Stats
     public isGameOver: boolean = false;
     public gameOverWon: boolean = false;
@@ -374,6 +379,8 @@ export class Game {
         this.player = new Player(Math.floor(DCOLS / 2), Math.floor(DROWS / 2));
         // RogueMain.c:403：monsterSpawnFuse 在开局时初始化（先于首层生成，保证 rng 流稳定）
         this.monsterSpawnFuse = rng.randRange(SPAWN_FUSE_MIN, SPAWN_FUSE_MAX);
+        // RogueMain.c:404：客观时间门复位
+        this.ticksTillUpdateEnvironment = 100;
         if (this.mode === 'easy') {
             this.player.maxHp = 45;
             this.player.hp = 45;
@@ -1957,6 +1964,8 @@ export class Game {
                 if (this.depth > 1) {
                     this.depth--;
                     this.generateDepth(true);
+                    // CE RogueMain.c:562：换层时 synchronizePlayerTimeState
+                    this.synchronizePlayerTimeState();
                     logger.log(i18next.t('game.ascend', { depth: this.depth, defaultValue: `You ascend to depth ${this.depth}.` }), '#ffff00');
                 } else {
                     const hasAmulet = this.player.inventory.items.some(i => i.category === ItemCategory.AMULET && (i as any).identityId === 'amulet_of_yendor');
@@ -1978,6 +1987,8 @@ export class Game {
             if (cell && cell.terrain === TerrainType.STAIRS_DOWN) {
                 this.depth++;
                 this.generateDepth(false);
+                // CE RogueMain.c:562：换层时 synchronizePlayerTimeState
+                this.synchronizePlayerTimeState();
                 logger.log(i18next.t('game.descend', { depth: this.depth, defaultValue: `You descend to depth ${this.depth}.` }), '#ffff00');
             } else {
                 logger.log(i18next.t('game.no_stairs_down', { defaultValue: 'There are no stairs down here.' }), '#aaaaaa');
@@ -2260,7 +2271,9 @@ export class Game {
             logger.log(i18next.t('item.equip', { name: item.name, defaultValue: `You equipped the ${item.name}.` }), '#88ff88');
             this.syncEquipmentStatuses();
             this.needsRender = true;
-            timeSystem.currentTick += 100;
+            // CE Items.c:4024 equip() 以 playerTurnEnded() 收尾——完整回合
+            timeSystem.currentTick += this.player.movementSpeed;
+            this.playerTurnEnded();
         } else {
             logger.log(i18next.t('item.equip_fail', { name: item.name, defaultValue: `You cannot equip the ${item.name}.` }), '#ff8888');
         }
@@ -2271,7 +2284,9 @@ export class Game {
         logger.log(i18next.t('item.unequip', { name: item.name, defaultValue: `You took off the ${item.name}.` }), '#aaaaaa');
         this.syncEquipmentStatuses();
         this.needsRender = true;
-        timeSystem.currentTick += 100;
+        // CE Items.c:8349 unequipItem 成功路径以 playerTurnEnded() 收尾——完整回合
+        timeSystem.currentTick += this.player.movementSpeed;
+        this.playerTurnEnded();
     }
 
     public dropItem(item: Item) {
@@ -2282,7 +2297,9 @@ export class Game {
             this.items.push(item);
             logger.log(i18next.t('item.drop', { name: item.name, defaultValue: `Dropped ${item.name}.` }), '#aaaaaa');
             this.needsRender = true;
-            timeSystem.currentTick += 50;
+            // CE Items.c:8390 drop() 以 playerTurnEnded() 收尾——完整回合
+            timeSystem.currentTick += this.player.movementSpeed;
+            this.playerTurnEnded();
         }
     }
 
@@ -2377,7 +2394,9 @@ export class Game {
             }
 
             this.needsRender = true;
-            timeSystem.currentTick += 100;
+            // CE Items.c:7633 apply()：POTION 分支后统一 playerTurnEnded()——完整回合
+            timeSystem.currentTick += this.player.movementSpeed;
+            this.playerTurnEnded();
         }
     }
 
@@ -2404,7 +2423,9 @@ export class Game {
             }
 
             this.needsRender = true;
-            timeSystem.currentTick += 100;
+            // CE Items.c:7633 apply()：FOOD 分支后统一 playerTurnEnded()——完整回合
+            timeSystem.currentTick += this.player.movementSpeed;
+            this.playerTurnEnded();
         }
     }
 
@@ -2500,7 +2521,9 @@ export class Game {
             }
 
             this.needsRender = true;
-            timeSystem.currentTick += 100;
+            // CE Items.c:7633 apply()：SCROLL 分支后统一 playerTurnEnded()——完整回合
+            timeSystem.currentTick += this.player.movementSpeed;
+            this.playerTurnEnded();
         }
     }
 
@@ -3261,7 +3284,9 @@ export class Game {
             }
 
             this.needsRender = true;
-            timeSystem.currentTick += 100;
+            // CE Items.c:7173 throwItem() 以 playerTurnEnded() 收尾——完整回合
+            timeSystem.currentTick += this.player.movementSpeed;
+            this.playerTurnEnded();
         }
     }
 
@@ -3799,6 +3824,12 @@ export class Game {
 
     private tickCreatureStatuses() {
         const playerExpired = this.player.tickStatuses();
+        // CE Time.c:2261-2273：玩家 haste/slow 到期时恢复 info 基准速度并
+        // synchronizePlayerTimeState（客观门对齐玩家剩余 tick）。web 的速度
+        // 恢复由 tickStatuses → refreshSpeeds 完成，这里补同步调用。
+        if (playerExpired.includes('haste') || playerExpired.includes('hasted') || playerExpired.includes('slowed')) {
+            this.synchronizePlayerTimeState();
+        }
         for (const status of playerExpired) {
             if (status === 'invisible') logger.log(i18next.t('status.player.invisible_off', { defaultValue: 'You are no longer invisible.' }), '#cccccc');
             if (status === 'telepathy') logger.log(i18next.t('status.player.telepathy_off', { defaultValue: 'Your telepathic sense fades.' }), '#cccccc');
@@ -3849,6 +3880,14 @@ export class Game {
     }
 
     /**
+     * CE Time.c:2435-2438 synchronizePlayerTimeState：速度变化（haste/slow 到期）
+     * 与换层时调用，把客观时间门对齐到玩家剩余 tick。
+     */
+    public synchronizePlayerTimeState(): void {
+        this.ticksTillUpdateEnvironment = this.player.ticksUntilTurn;
+    }
+
+    /**
      * CE Time.c:2468 playerTurnEnded —— 玩家回合结束后的"最近事件推进"调度：
      * 玩家动作计时累加进 ticksUntilTurn，随后 while 循环里反复求 soonestTurn
      * （全部存活怪物与玩家剩余 tick 的最小值），把所有怪物批量扣减这么多 tick，
@@ -3859,7 +3898,10 @@ export class Game {
      * 怪物行动耗时在 advancementLoop 内按行动类型落账——攻击/施法出口由
      * Monster.endTurnWithAttack 置 attackSpeed（MONST_CAST_SPELLS_SLOWLY ×2），
      * 移动与跳过（麻痹/俘虏/入迷，CE Time.c:2731）由循环统一置 movementSpeed。
-     * 客观时间门（ticksTillUpdateEnvironment）仍留待 P2-3。
+     *
+     * P2-3 客观时间：soonestTurn 加入第三候选 ticksTillUpdateEnvironment
+     * （CE Time.c:2651-2652）；门归零时 +100 并执行 objectiveTimeBlock
+     * （CE Time.c:2653-2712）。
      *
      * 动画分帧（决策 E1）：animationEnabled=false（headless/默认）时一次性同步
      * 跑完整个循环 + 收尾，与 P2-1 逐格等价（速度本身除外）；true 时启动
@@ -3905,9 +3947,22 @@ export class Game {
                     soonestTurn = m.ticksUntilTurn;
                 }
             }
+            // CE Time.c:2652：客观时间门是 soonestTurn 的第三候选。
+            if (this.ticksTillUpdateEnvironment < soonestTurn) {
+                soonestTurn = this.ticksTillUpdateEnvironment;
+            }
 
             for (const m of this.monsters) {
                 if (m.hp > 0) m.ticksUntilTurn -= soonestTurn;
+            }
+
+            // CE Time.c:2653-2655：客观时间门推进，归零则 +100 并执行客观块。
+            this.ticksTillUpdateEnvironment -= soonestTurn;
+            if (this.ticksTillUpdateEnvironment <= 0) {
+                this.ticksTillUpdateEnvironment += 100;
+                this.objectiveTimeBlock();
+                // CE Time.c:2713-2715：岩浆/毒气等致死后立即退出推进
+                if (this.isGameOver) return;
             }
 
             // CE Time.c:2720-2745：归零怪物行动。行动耗时按类型落账：
@@ -3918,6 +3973,7 @@ export class Game {
             // moveSpeed/attackSpeed 是"当前值"，直接写即生效（legacy 回置
             // 依赖此语义），重算反而会覆盖外部写入。
             for (const m of this.monsters) {
+                if (this.isGameOver) break; // CE Time.c:2721 的 gameHasEnded 守卫
                 if (m.hp > 0 && m.ticksUntilTurn <= 0) {
                     m.takeTurn(this, stealthRange);
                     if (m.ticksUntilTurn <= 0) {
@@ -3928,43 +3984,37 @@ export class Game {
             }
 
             this.player.ticksUntilTurn -= soonestTurn;
+            if (this.isGameOver) return; // CE Time.c:2756-2758
         }
     }
 
-    /** 回合收尾：推进循环结束（或动画播完/兜底中止）后必须恰好执行一次。 */
-    private finishTurnEpilogue() {
-        // Let environment update
-        this.environment.updateFires();
-        this.environment.updateGases();
-
-        // Apply fire/gas damage to everyone
-        this.applyEnvironmentalEffects();
-
-        // Player Hunger
-        const nutritionState = this.player.updateNutrition();
-        if (nutritionState === 'starving') {
-            this.lastDamageSource = 'starvation';
-        }
-        const hungerTransition = this.player.consumeHungerTransition();
-        if (hungerTransition) {
-            this.logHungerTransition(hungerTransition);
-        }
-
+    /**
+     * CE Time.c:2657-2712 客观时间块：每 100 tick（客观时间）恰好执行一次，
+     * 与玩家动作数解耦——haste（50 tick/动作）下两次动作才触发一次，
+     * slowed（200 tick/动作）下一次动作触发两次。
+     *
+     * 与 CE 的逐条对照：
+     * - rechargeItemsIncrementally(1) → tickArcanaResources()（法杖/魔杖充能、护符冷却）
+     * - processIncrementalAutoID()    → web 无渐进鉴定系统，跳过（报告已列）
+     * - rogue.monsterSpawnFuse--      → monsterSpawnFuse--，归零触发周期刷怪
+     *                                   （CE 触发点在 decrementPlayerStatus 尾部，
+     *                                   Time.c:2322-2325，同属客观块）
+     * - decrementMonsterStatus(monst) → tickCreatureStatuses()（web 合并实现
+     *   玩家+怪物状态；玩家 haste/slow 到期处按 CE Time.c:2261-2273 调用
+     *   synchronizePlayerTimeState）
+     * - updateEnvironment()           → updateFires/updateGases + applyEnvironmentalEffects
+     *   （web 的 applyEnvironmentalEffects 同时覆盖 CE 的
+     *   applyInstantTileEffectsToCreature——深渊/岩浆/燃烧的瞬时结算）
+     * - decrementPlayerStatus()       → tickTemporaryImmunities + tickNutrition
+     *   （营养递减与饥饿档位在 CE 位于 decrementPlayerStatus 内、由客观块调用；
+     *   回血/饥饿伤害则是主观的，见 finishTurnEpilogue 的 recoverPerTurn）
+     * - DFChance 地形特征生成 / monstersApproachStairs → web 无对应系统，跳过（报告已列）
+     */
+    private objectiveTimeBlock(): void {
         this.tickArcanaResources();
-        const expiredImmunities = this.player.tickTemporaryImmunities();
-        for (const im of expiredImmunities) {
-            logger.log(i18next.t('status.player.immunity_off', { status: this.getStatusLabel(im), defaultValue: `Your immunity to ${this.getStatusLabel(im)} fades.` }), '#cccccc');
-        }
-        this.tickCreatureStatuses();
 
-        if (this.mode === 'wizard') {
-            // Wizard mode in stage-1 is intentionally permissive.
-            this.player.hp = this.player.maxHp;
-        }
-
-        this.stats.turns++;
-
-        // Time.c:2666 / 2322：每回合 monsterSpawnFuse--，归零触发周期刷怪并重置 fuse
+        // Time.c:2666 / Monsters.c:1128：每 100 tick monsterSpawnFuse--，
+        // 归零触发周期刷怪并重置 fuse（CE 触发在 decrementPlayerStatus 尾部）
         if (this.mode !== 'test') {
             this.monsterSpawnFuse--;
             if (this.monsterSpawnFuse <= 0) {
@@ -3972,6 +4022,49 @@ export class Game {
                 this.monsterSpawnFuse = rng.randRange(SPAWN_FUSE_MIN, SPAWN_FUSE_MAX);
             }
         }
+
+        this.tickCreatureStatuses();
+
+        // Let environment update
+        this.environment.updateFires();
+        this.environment.updateGases();
+
+        // Apply fire/gas damage to everyone
+        this.applyEnvironmentalEffects();
+
+        const expiredImmunities = this.player.tickTemporaryImmunities();
+        for (const im of expiredImmunities) {
+            logger.log(i18next.t('status.player.immunity_off', { status: this.getStatusLabel(im), defaultValue: `Your immunity to ${this.getStatusLabel(im)} fades.` }), '#cccccc');
+        }
+
+        this.player.tickNutrition();
+        const hungerTransition = this.player.consumeHungerTransition();
+        if (hungerTransition) {
+            this.logHungerTransition(hungerTransition);
+        }
+    }
+
+    /**
+     * 回合收尾：推进循环结束（或动画播完/兜底中止）后必须恰好执行一次。
+     *
+     * P2-3 起"主观/客观分离"：环境演化、物品充能、玩家/怪物状态递减、
+     * 营养递减、spawnFuse 均已迁入 objectiveTimeBlock（每 100 tick，客观）；
+     * 这里只保留 CE do 循环（Time.c:2494-2545）的每玩家动作部分——
+     * 饥饿伤害与回血（recoverPerTurn）、回合数、死亡结算。
+     */
+    private finishTurnEpilogue() {
+        // 主观饥饿结算：饥饿伤害 / 回血（CE Time.c:2523-2541，每玩家动作一次）
+        const recovery = this.player.recoverPerTurn();
+        if (recovery === 'starving') {
+            this.lastDamageSource = 'starvation';
+        }
+
+        if (this.mode === 'wizard') {
+            // Wizard mode in stage-1 is intentionally permissive.
+            this.player.hp = this.player.maxHp;
+        }
+
+        this.stats.turns++;
 
         if (this.player.hp <= 0 && !this.isGameOver) {
             let deathReason: string;

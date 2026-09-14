@@ -7,6 +7,7 @@ import { Creature, type StatusId } from './Creature';
 import { Direction } from '../types';
 import { Inventory } from '../engine/Items/Inventory';
 import { Item, ItemCategory } from '../engine/Items/Item';
+import { rng } from '../engine/Random';
 
 // Hunger/regen constants aligned with Brogue CE (Rogue.h:1123-1127)
 export const TURNS_FOR_FULL_REGEN = 300; // Rogue.h:1123
@@ -92,6 +93,68 @@ export class Player extends Creature {
         return transition;
     }
 
+    /**
+     * 客观时间块调用（每 100 tick 一次；CE decrementPlayerStatus 的营养段，
+     * Time.c:2213-2220——营养递减与 checkNutrition 都在客观块内）：
+     * 营养 -1 并更新饥饿档位、记录跨档。
+     * CE 守卫照搬：麻痹时不耗营养；携带任意护符（AMULET）时仅 20% 概率消耗
+     * （Time.c:2214-2219，无护符短路不掷骰）。
+     */
+    public tickNutrition(): HungerState {
+        this.hungerTransition = null;
+
+        if (!this.hasStatus('paralyzed')) {
+            if (this.nutrition > 0) {
+                const hasAmulet = this.inventory.items.some(i => i.category === ItemCategory.AMULET);
+                if (!hasAmulet || rng.randPercent(20)) {
+                    this.nutrition -= 1;
+                }
+            }
+        }
+
+        const prevState = this.hungerState;
+        const nextState = this.computeHungerState();
+        if (nextState !== prevState) {
+            this.hungerTransition = nextState;
+        }
+        this.hungerState = nextState;
+        return nextState;
+    }
+
+    /**
+     * 主观收尾调用（每玩家动作一次；CE Time.c:2523-2541 playerTurnEnded 的
+     * do 循环段）：饥饿伤害与回血都是每玩家动作结算，不随客观块加倍。
+     * 返回 'starving' 表示本动作发生了饥饿扣血（供 lastDamageSource 归因）。
+     */
+    public recoverPerTurn(): HungerState {
+        // Starvation: nutrition exhausted, 1 HP lost per turn (Time.c:2525-2530)
+        if (this.nutrition <= 0) {
+            this.hp -= 1;
+            return 'starving';
+        }
+
+        // Regeneration: full pool in TURNS_FOR_FULL_REGEN turns; halted while poisoned
+        // and while already at full HP (Time.c:2531-2541)
+        if (this.hp < this.maxHp && !this.hasStatus('poisoned')) {
+            this.regenCarry += this.regenRatePerTurn();
+            if (this.regenCarry >= 1) {
+                const wholeHp = Math.floor(this.regenCarry);
+                this.hp = Math.min(this.maxHp, this.hp + wholeHp);
+                this.regenCarry -= wholeHp;
+                if (this.hp >= this.maxHp) {
+                    this.regenCarry = 0;
+                }
+            }
+        }
+
+        return 'normal';
+    }
+
+    /**
+     * @deprecated P2-3 起引擎侧拆分为 tickNutrition（客观）+ recoverPerTurn（主观）。
+     * 本方法仅供既有测试（hunger_regen.test.ts 对裸 Player 的直接调用）保持原语义，
+     * 引擎代码不得再调用。
+     */
     public updateNutrition(): HungerState {
         this.hungerTransition = null;
 
