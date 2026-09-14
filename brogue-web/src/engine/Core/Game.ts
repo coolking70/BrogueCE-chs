@@ -3903,9 +3903,13 @@ export class Game {
      * （CE Time.c:2651-2652）；门归零时 +100 并执行 objectiveTimeBlock
      * （CE Time.c:2653-2712）。
      *
-     * 动画分帧（决策 E1）：animationEnabled=false（headless/默认）时一次性同步
-     * 跑完整个循环 + 收尾，与 P2-1 逐格等价（速度本身除外）；true 时启动
-     * 分步推进，每次怪物行动单独渲染一帧，期间输入被锁（见 beginAdvancement）。
+     * 动画节奏（决策 E1-修订，CE Time.c:2704 口径）：animationEnabled=false
+     * （headless/默认）时一次性同步跑完整个循环 + 收尾，与 P2-1 逐格等价
+     * （速度本身除外）；true 时启动分步推进，但生成器只在慢回合（玩家 >100
+     * tick）的 100-tick 客观块处 yield 暂停点——常规动作零插帧，一次 step
+     * 即跑完，期间输入被锁（见 beginAdvancement）。自动寻路/自动探索
+     * （isAutoTraveling，对应 CE rogue.playbackFastForward）直接走同步路径，
+     * 全程不进分步、不暂停。
      */
     private playerTurnEnded() {
         this.monsters = this.monsters.filter(m => m.hp > 0);
@@ -3923,7 +3927,7 @@ export class Game {
             this.player.ticksUntilTurn = 0;
         }
 
-        if (this.animationEnabled) {
+        if (this.animationEnabled && !this.isAutoTraveling()) {
             this.beginAdvancement(stealthRange);
             return;
         }
@@ -3935,11 +3939,15 @@ export class Game {
     }
 
     /**
-     * CE Time.c:2643-2752 推进主循环的可分步版本：每个怪物行动后 yield 一次，
-     * 供动画模式逐帧消费；同步模式一次性跑完（生成器同源，保证两条路径的
-     * 调度语义永不漂移）。
+     * CE Time.c:2643-2752 推进主循环的可分步版本。E1-修订口径：只在慢回合的
+     * 100-tick 客观块处 yield 一次暂停请求（毫秒数），供动画模式渲染暂停点
+     * 画面并等待；怪物行动不再单独成帧。同步模式一次性跑完（生成器同源，
+     * 保证两条路径的调度语义永不漂移）。
      */
-    private *advancementLoop(stealthRange: number): Generator<void, void, void> {
+    private *advancementLoop(stealthRange: number): Generator<number, void, void> {
+        // CE Time.c:2471：fastForward 是 playerTurnEnded 内的局部变量，
+        // 置位后本回合不再进入暂停分支（E1-修订：锁存，至多暂停一次）
+        let fastForward = false;
         while (this.player.ticksUntilTurn > 0) {
             let soonestTurn = this.player.ticksUntilTurn;
             for (const m of this.monsters) {
@@ -3963,6 +3971,15 @@ export class Game {
                 this.objectiveTimeBlock();
                 // CE Time.c:2713-2715：岩浆/毒气等致死后立即退出推进
                 if (this.isGameOver) return;
+                // CE Time.c:2704-2707：仅当玩家本次动作慢于一个标准回合
+                //（>100 tick；此刻玩家 tick 尚未递减，口径与 CE 一致）才暂停。
+                // 自动寻路/探索对应 rogue.playbackFastForward——锁存但不暂停。
+                if (this.player.ticksUntilTurn > 100 && !fastForward) {
+                    fastForward = true;
+                    if (!this.isAutoTraveling()) {
+                        yield Game.ANIMATION_PAUSE_MS; // pauseAnimation(25, PAUSE_BEHAVIOR_DEFAULT)
+                    }
+                }
             }
 
             // CE Time.c:2720-2745：归零怪物行动。行动耗时按类型落账：
@@ -3972,6 +3989,8 @@ export class Game {
             // Time.c:2731 的不行动口径）。注意此处不 refreshSpeeds——公有
             // moveSpeed/attackSpeed 是"当前值"，直接写即生效（legacy 回置
             // 依赖此语义），重算反而会覆盖外部写入。
+            // E1-修订：怪物行动不 yield——常规动作一次性跑完后统一渲染
+            // （CE 连"豺狼 50 tick 走两步"也不单独成帧）。
             for (const m of this.monsters) {
                 if (this.isGameOver) break; // CE Time.c:2721 的 gameHasEnded 守卫
                 if (m.hp > 0 && m.ticksUntilTurn <= 0) {
@@ -3979,7 +3998,6 @@ export class Game {
                     if (m.ticksUntilTurn <= 0) {
                         m.ticksUntilTurn = m.movementSpeed;
                     }
-                    yield; // P2-2 逐次动画：每次怪物行动单独一帧
                 }
             }
 
@@ -4089,24 +4107,39 @@ export class Game {
         this.needsRender = true;
     }
 
-    // ---- P2-2 逐次动画 + 输入锁（决策 E1）----
+    // ---- P2-4 CE 口径动画（决策 E1-修订）+ 输入锁 ----
 
     /**
      * 动画开关：headless（harness/默认构造）为 false——playerTurnEnded 同步跑完，
-     * 测试零开销、不阻塞；GameCanvas 挂载时置 true，怪物行动改为逐帧演出。
+     * 测试零开销、不阻塞；GameCanvas 挂载时置 true。
+     *
+     * E1-修订（CE Time.c:2704 口径）：不再"每次怪物行动单独成帧"——
+     * 常规动作（玩家 ≤100 tick）推进全程零插帧、一次性渲染；只有玩家动作
+     * 慢于一个标准回合（>100 tick）时，在 100-tick 客观块处暂停
+     * ANIMATION_PAUSE_MS，本回合锁存至多一次；自动寻路/自动探索全程不暂停。
      */
     public animationEnabled: boolean = false;
-    /** 一次怪物行动帧的展示时长（ms）。80ms ≈ 12.5 行动/秒：单步移动可辨认、成群怪不拖沓。 */
-    public animationStepIntervalMs: number = 80;
+    /**
+     * 慢回合在 100-tick 客观块处的暂停时长（ms）。
+     * CE Time.c:2704 pauseAnimation(25, PAUSE_BEHAVIOR_DEFAULT)：Rogue.h:3057
+     * 签名为 `pauseAnimation(short milliseconds, ...)`——参数即毫秒；
+     * pauseBrogue（IO.c:2371）先 commitDraws() 渲染当前画面再延迟。
+     * 原 P2-2 的 animationStepIntervalMs（80ms × 每次怪物行动）随逐次动画
+     * 模型一并移除——新模型没有"每行动帧"的概念，唯一的时间常量就是这里的
+     * 暂停时长。
+     */
+    public static readonly ANIMATION_PAUSE_MS = 25;
     /** 输入锁硬上限（ms）：推进无论因何种原因卡住，超时后强制快进收尾。 */
     private static readonly ANIMATION_LOCK_TIMEOUT_MS = 5000;
 
-    /** 推进进行中（怪物行动动画未播完）。配合 animationLockDeadline 构成自过期锁。 */
+    /** 推进进行中（慢回合的暂停点未消费完/收尾未跑）。配合 animationLockDeadline 构成自过期锁。 */
     public isAdvancing = false;
     /** 推进循环内捕获的最近异常（保底路径的诊断/测试观测点，正常推进恒为 null）。 */
     public lastAdvancementError: unknown = null;
+    /** 消费下一步之前需等待的毫秒数；>0 表示正停在动画暂停点（CE pauseAnimation 期间）。 */
+    public pendingPauseMs = 0;
 
-    private advancementIter: Generator<void, void, void> | null = null;
+    private advancementIter: Generator<number, void, void> | null = null;
     private animationAccumulatorMs = 0;
     private animationLockDeadline = 0;
 
@@ -4116,10 +4149,31 @@ export class Game {
      *    ANIMATION_LOCK_TIMEOUT_MS 后自动失效（自过期，绝不永久卡死）；
      * ② finishAdvancement 的 try/finally 式收尾——异常、超时、正常完成三条
      *    路径都汇入同一处解锁逻辑。
+     * 常规动作（≤100 tick）生成器零 yield，下一个渲染帧即解锁，玩家无感。
      */
     public isInputLocked(): boolean {
         return this.isAdvancing && Date.now() < this.animationLockDeadline;
     }
+
+    /**
+     * CE rogue.playbackFastForward 的 web 对应（Rogue.h:2523 "disables drawing
+     * and prevents pauses"）：自动寻路 / 自动探索 / 鼠标行进期间，推进不做
+     * 任何动画暂停。playerTurnEnded 入口据此直接走同步路径（零插帧、零锁），
+     * advancementLoop 的暂停点据此跳过 yield（双保险，位置对应 CE 循环内
+     * `rogue.playbackFastForward ||` 短路项）。
+     *
+     * 三个信号：inAutoTravelStep 是 stepAutoPath 调用栈内的显式标志——
+     * 路径最后一步会先 shift() 清空 autoPath 再结算回合，到达终点的拾取
+     * 回合同样发生在 autoPath 清空之后，仅靠 autoPath.length 会把这些步
+     * 误判成普通回合而重新引入卡顿；autoPath/isMouseTraveling 覆盖
+     * stepAutoPath 之外的状态（如路径已设好、步进还没开始的间隙）。
+     */
+    public isAutoTraveling(): boolean {
+        return this.inAutoTravelStep || this.autoPath.length > 0 || this.isMouseTraveling;
+    }
+
+    /** stepAutoPath 调用栈内为 true（try/finally 保证复位），见 isAutoTraveling。 */
+    private inAutoTravelStep = false;
 
     /** 动画模式入口：建立分步推进并锁输入。收尾在 finishAdvancement。 */
     private beginAdvancement(stealthRange: number): void {
@@ -4127,21 +4181,29 @@ export class Game {
         this.isAdvancing = true;
         this.lastAdvancementError = null;
         this.animationAccumulatorMs = 0;
+        this.pendingPauseMs = 0;
         this.animationLockDeadline = Date.now() + Game.ANIMATION_LOCK_TIMEOUT_MS;
     }
 
-    /** 渲染循环驱动：按 animationStepIntervalMs 的节拍消费推进步。 */
+    /**
+     * 渲染循环驱动：停在暂停点时按 pendingPauseMs 等待（CE pauseAnimation
+     * 的 25ms——期间画面已渲染出暂停点状态），否则每个渲染帧消费一步。
+     */
     public tickAdvancement(deltaMs: number): void {
         if (!this.isAdvancing || !this.advancementIter) return;
         this.animationAccumulatorMs += deltaMs;
-        while (this.isAdvancing && this.animationAccumulatorMs >= this.animationStepIntervalMs) {
-            this.animationAccumulatorMs -= this.animationStepIntervalMs;
-            this.stepAdvancement();
-        }
+        if (this.animationAccumulatorMs < this.pendingPauseMs) return;
+        this.animationAccumulatorMs = 0;
+        this.pendingPauseMs = 0;
+        this.stepAdvancement();
     }
 
     /**
-     * 消费一步推进（一次怪物行动）。返回推进是否仍在进行。
+     * 消费一步推进。返回推进是否仍在进行：
+     * - 慢回合推进到 100-tick 客观块暂停点：记录 pendingPauseMs、渲染暂停点
+     *   画面（CE pauseBrogue 先 commitDraws 再延迟），返回 true；
+     * - 生成器跑完（常规回合在这里一步完成，全程零中间帧）：收尾解锁，
+     *   返回 false。
      * 异常/超时路径在内部收尾解锁后返回 false，绝不向外泄漏锁死的局面。
      */
     public stepAdvancement(): boolean {
@@ -4157,6 +4219,8 @@ export class Game {
                 this.finishAdvancement();
                 return false;
             }
+            // 暂停点：先渲染当前状态再等待（r.value = 暂停毫秒数）
+            this.pendingPauseMs = r.value;
             this.needsRender = true;
             this.update();
         } catch (err) {
@@ -4179,6 +4243,7 @@ export class Game {
         this.advancementIter = null;
         this.isAdvancing = false;
         this.animationAccumulatorMs = 0;
+        this.pendingPauseMs = 0;
         const aborted = this.player.ticksUntilTurn > 0;
         if (iter) {
             try {
@@ -4200,6 +4265,7 @@ export class Game {
         this.advancementIter = null;
         this.isAdvancing = false;
         this.animationAccumulatorMs = 0;
+        this.pendingPauseMs = 0;
         if (iter) {
             try {
                 iter.return();
@@ -5025,6 +5091,18 @@ export class Game {
         // （GameCanvas 的 ticker 会持续重试，解锁后自然继续）
         if (this.isInputLocked()) return;
 
+        // P2-4：本步连同其触发的攻击/拾取/回合结算一律按自动行进口径处理
+        // （playerTurnEnded 同步推进、不暂停、不加锁）。try/finally 保证
+        // 异常路径也复位。
+        this.inAutoTravelStep = true;
+        try {
+            this.stepAutoPathInner();
+        } finally {
+            this.inAutoTravelStep = false;
+        }
+    }
+
+    private stepAutoPathInner() {
         let shouldPause = false;
         const next = this.autoPath[0];
         if (!next) return;

@@ -1,5 +1,9 @@
 <script lang="ts">
 import { rng, RNGType } from '../engine/Random';
+import { DCOLS, DROWS } from '../types';
+
+/** 地图单元格像素边长（与 setup 内共用，模块级以便 computeMapOffset 使用）。 */
+export const TILE_SIZE = 16;
 
 /**
  * 幻觉渲染专用的纯视觉随机：必须走 COSMETIC 流，不得污染玩法（SUBSTANTIVE）流。
@@ -26,6 +30,21 @@ export function cosmeticPick<T>(list: readonly T[]): T {
         rng.setRNG(RNGType.RNG_SUBSTANTIVE);
     }
 }
+
+/**
+ * 地图在画布容器内的居中偏移（P2-4 居中修复）。
+ *
+ * 只能传**画布容器**的实际尺寸（flex 布局扣除 Sidebar 后的剩余区域），
+ * 不能传窗口尺寸（innerWidth/innerHeight）——那会把 340px 侧栏算进居中，
+ * 地图整体右移约 170px，右侧被侧栏压住、鼠标命中区随之错位。
+ * 导出供测试锁定该口径（p2_4_animation_cadence.test.ts）。
+ */
+export function computeMapOffset(viewportWidth: number, viewportHeight: number): { offsetX: number; offsetY: number } {
+    return {
+        offsetX: Math.max(0, (viewportWidth - DCOLS * TILE_SIZE) / 2),
+        offsetY: Math.max(0, (viewportHeight - DROWS * TILE_SIZE) / 2),
+    };
+}
 </script>
 
 <script setup lang="ts">
@@ -35,14 +54,17 @@ import { Application, Text, TextStyle, Graphics, Container } from 'pixi.js';
 import { TerrainType } from '../engine/Map/Grid';
 import { GasType } from '../engine/Environment/Gas';
 import { ColorUtils } from '../engine/Map/Color';
-import { DCOLS, DROWS, Direction } from '../types';
+// DCOLS/DROWS 已在上方 <script lang="ts"> 模块块导入（computeMapOffset 用），
+// 同一模块内重复声明绑定会报错，这里只取 setup 独有的 Direction。
+import { Direction } from '../types';
 import { activeGame } from '../engine/Core/Game';
 import { inputManager } from '../engine/Input';
 import { MonsterState } from '../entities/Monster';
 
 const canvasContainer = ref<HTMLDivElement | null>(null);
 let pixiApp: Application | null = null;
-const TILE_SIZE = 16;
+// P2-4：居中/命中区随容器尺寸变化重算（挂载时建立，卸载时断开）
+let resizeObserver: ResizeObserver | null = null;
 
 // --- Terrain definitions ---
 function getTerrainVisual(terrain: TerrainType, isVisible: boolean): { char: string; color: string; bgColor: number | null } {
@@ -124,9 +146,12 @@ onMounted(async () => {
       fill: '#ffffff',
     } as const;
 
-    // Compute centering offset
-    const offsetX = Math.max(0, (window.innerWidth  - DCOLS * TILE_SIZE) / 2);
-    const offsetY = Math.max(0, (window.innerHeight - DROWS * TILE_SIZE) / 2);
+    // P2-4 居中修复：地图居中与鼠标命中区一律基于**画布容器**的实际尺寸。
+    // 旧实现用窗口视口尺寸（innerWidth/innerHeight）——把 340px 侧栏算进居中，
+    // 地图整体右移约 170px 被侧栏遮挡。offset 在 resize 时由 ResizeObserver
+    // 重算（observe 建立于图层创建之后），四个图层与 hitArea 同步更新。
+    let offsetX = 0;
+    let offsetY = 0;
 
     // ---------- Pre-allocated tile layer ----------
     // One Graphics for bg rectangles (batch-drawn every frame)
@@ -207,9 +232,37 @@ onMounted(async () => {
     pixiApp.stage.addChild(entityLayer);
     pixiApp.stage.addChild(floatLayer);
 
+    // 居中偏移与命中区的一次性落地：以容器实际尺寸重算并同步到
+    // 四个图层与 stage.hitArea。挂载时调用一次；此后由 ResizeObserver 驱动。
+    const applyLayout = () => {
+        const el = canvasContainer.value;
+        if (!el || !pixiApp) return;
+        // 用容器 clientWidth/Height 而非 pixiApp.screen：resizeTo 的渲染器
+        // 尺寸要等 Pixi 下一个渲染帧才跟上（queueResize），clientWidth 是
+        // 布局完成后的即时真值，且能覆盖非 window 尺寸变化（如侧栏增减）。
+        const { offsetX: ox, offsetY: oy } = computeMapOffset(el.clientWidth, el.clientHeight);
+        offsetX = ox;
+        offsetY = oy;
+        bgGraphics.position.set(offsetX, offsetY);
+        tileLayer.position.set(offsetX, offsetY);
+        entityLayer.position.set(offsetX, offsetY);
+        floatLayer.position.set(offsetX, offsetY);
+        // 命中区 = 画布容器区域（stage 坐标即 CSS 像素，autoDensity）。
+        // 旧实现用 window 尺寸，侧栏右侧的点击会被映射到错误的格子。
+        pixiApp.stage.hitArea = new PIXI.Rectangle(0, 0, el.clientWidth, el.clientHeight);
+    };
+
+    applyLayout();
+    // 窗口 resize（容器随之变宽变高）与任何布局变化都会触发 ResizeObserver；
+    // 比起 window resize 事件，它还覆盖"窗口不变但布局变"的场景。
+    resizeObserver = new ResizeObserver(() => applyLayout());
+    resizeObserver.observe(canvasContainer.value);
+
     const game = activeGame;
-    // P2-2 逐次动画（决策 E1）：UI 挂载后启用分步推进——每次怪物行动单独
-    // 渲染一帧，期间 handlePlayerAction/stepAutoPath 内部的输入锁拒绝玩家操作。
+    // P2-4 动画节奏（决策 E1-修订，CE Time.c:2704 口径）：UI 挂载后启用分步
+    // 推进——常规动作（≤100 tick）零插帧、下一渲染帧即完成；慢回合（>100
+    // tick）在 100-tick 客观块处暂停 25ms 各一次；自动寻路/探索在引擎侧直接
+    // 同步推进（isAutoTraveling），不再每步吃动画。推进进行中输入锁生效。
     // headless（无渲染）环境不挂载本组件，animationEnabled 保持 false，同步推进。
     game.animationEnabled = true;
     inputManager.setCallback((action, data) => {
@@ -514,7 +567,7 @@ onMounted(async () => {
 
     // Mouse interactions
     pixiApp.stage.eventMode = 'static';
-    pixiApp.stage.hitArea = new PIXI.Rectangle(0, 0, window.innerWidth, window.innerHeight);
+    // hitArea 初值已在 applyLayout 中按容器尺寸设置（含 ResizeObserver 跟随）
 
     pixiApp.stage.on('pointermove', (e) => {
         const localPt = tileLayer.toLocal(e.global);
@@ -567,7 +620,8 @@ onMounted(async () => {
     pixiApp.ticker.add((ticker) => {
         game.tickReplay();
 
-        // P2-2：驱动逐次动画（按帧间隔消费怪物行动步；推进进行中输入锁生效）
+        // P2-4：驱动分步推进（常规回合一步跑完；慢回合停在暂停点时按
+        // pendingPauseMs 节流；推进进行中输入锁生效）
         game.tickAdvancement(ticker.deltaMS);
 
         if (game.isTimePaused()) {
@@ -606,6 +660,11 @@ onUnmounted(() => {
   // 避免遗留一个只能等 5s 超时才解锁的输入锁
   activeGame.animationEnabled = false;
   activeGame.discardInFlightAdvancement();
+
+  if (resizeObserver) {
+    resizeObserver.disconnect();
+    resizeObserver = null;
+  }
 
   delete (window as Window & { advanceTime?: (ms: number) => void }).advanceTime;
   delete (window as Window & { render_game_to_text?: () => string }).render_game_to_text;
