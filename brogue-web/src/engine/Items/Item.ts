@@ -38,6 +38,13 @@ export class Item implements Entity {
     public damage?: string;
     public armor?: number;
     public strengthRequired?: number;
+    /**
+     * P4-7：CE 物品旗标（Rogue.h:1376-1380），生成时按武器种类赋予
+     * （Items.c:209-236）：whip=ITEM_ATTACKS_EXTEND、spear/war_pike=
+     * ITEM_ATTACKS_PENETRATE、axe=ITEM_ATTACKS_ALL_ADJACENT、
+     * mace/war_hammer=ITEM_ATTACKS_STAGGER。当前仅武器几何/钝器口径使用。
+     */
+    public flags?: string[];
     public isCursed: boolean = false;
     /** CE ITEM_PROTECTED：防酸蚀/防负附魔豁免（护甲/武器保护卷轴打上） */
     public isProtected: boolean = false;

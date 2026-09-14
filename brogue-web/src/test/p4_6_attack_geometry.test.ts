@@ -360,15 +360,21 @@ describe('P4-6 对照组与旗标分发', () => {
         expect(diag.hp).toBeLessThan(dBefore);
     });
 
-    it('留痕（本轮明确不做·玩家侧武器几何）：weapons.json 里 Whip/Spear/Axe/' +
-        'War Pike 的 flags 目前全为空，CE 给它们的是 ITEM_ATTACKS_EXTEND / ' +
-        'ITEM_ATTACKS_PENETRATE / ITEM_ATTACKS_ALL_ADJACENT。本轮不碰 ' +
-        'weapons.json、不做玩家攻击路径 —— 该断言固化现状，P4-7 实现时应反转。', () => {
+    it('留痕（P4-7 已反转）：weapons.json 的 Whip/Spear/Axe/War Pike 现已携带 ' +
+        'CE Items.c:209-236 按种类赋予的物品旗标（EXTEND / PENETRATE / ' +
+        'ALL_ADJACENT）。本断言是 P4-6 §7.1 留痕测试的预埋反转（原断言：flags ' +
+        '全空，"P4-7 实现时应反转"）；玩家侧几何行为见 ' +
+        'p4_7_player_weapon_geometry.test.ts。', () => {
         const weapons = weaponsDataJson as Array<{ id: string; flags?: string[] }>;
-        for (const id of ['whip', 'spear', 'axe', 'war_pike']) {
+        const expectFlags = (id: string, ...flags: string[]) => {
             const w = weapons.find(x => x.id === id);
             expect(w, `weapons.json 应存在 ${id}`).toBeDefined();
-            expect(w!.flags ?? [], `${id} 的 flags 应仍为空（玩家侧几何留给 P4-7）`).toHaveLength(0);
-        }
+            expect(w!.flags ?? [], `${id} 的 flags 应为 ${flags.join('/')}`)
+                .toEqual(flags);
+        };
+        expectFlags('whip', 'ITEM_ATTACKS_EXTEND');
+        expectFlags('spear', 'ITEM_ATTACKS_PENETRATE');
+        expectFlags('war_pike', 'ITEM_ATTACKS_PENETRATE');
+        expectFlags('axe', 'ITEM_ATTACKS_ALL_ADJACENT');
     });
 });

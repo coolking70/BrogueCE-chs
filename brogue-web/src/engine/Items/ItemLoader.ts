@@ -389,6 +389,8 @@ export class ItemLoader {
         weapon.weight = data.weight || 0;
         weapon.damage = data.damage;
         weapon.strengthRequired = data.strengthRequired;
+        // P4-7：CE 按武器种类赋予的物品旗标（Items.c:209-236）随数据下发
+        if (data.flags) weapon.flags = [...data.flags];
 
         // 20% chance for modifier
         if (rng.randPercent(20)) {

@@ -13,6 +13,7 @@
         "strengthRequired": 14,
         "damage": "1d3+2",
         "weight": 6,
+        "flags": ["ITEM_ATTACKS_EXTEND"],
         "description": "这条编织皮革鞭子的抽打可以剥树皮，它能攻击最远五格之外的敌人。"
     },
     {
@@ -21,6 +22,7 @@
         "strengthRequired": 13,
         "damage": "1d2+3",
         "weight": 8,
+        "flags": ["ITEM_ATTACKS_PENETRATE"],
         "description": "一根尖头铁制的细长木杆。矛的长度使你能同时攻击相邻的敌人和其正后方的敌人。"
     },
     {
@@ -45,6 +47,7 @@
         "strengthRequired": 16,
         "damage": "1d5+15",
         "weight": 15,
+        "flags": ["ITEM_ATTACKS_STAGGER"],
         "description": "武器头部的铁制凸缘每次沉重一击都会造成可观的伤害。由于其重量，命中后需要额外一回合恢复，并会将对手击退。"
     },
     {
@@ -53,6 +56,7 @@
         "strengthRequired": 15,
         "damage": "1d3+6",
         "weight": 18,
+        "flags": ["ITEM_ATTACKS_ALL_ADJACENT"],
         "description": "这把斧头上钝的铁刃在黑暗中闪烁。其挥砍的弧度使你能同时攻击所有相邻的敌人。"
     },
     {
@@ -86,6 +90,7 @@
         "strengthRequired": 18,
         "damage": "1d5+10",
         "weight": 26,
+        "flags": ["ITEM_ATTACKS_PENETRATE"],
         "description": "一根长钢杆，末端是锋利的尖刃。战矛的长度使你能同时攻击相邻的敌人和其正后方的敌人。"
     },
     {
@@ -94,6 +99,7 @@
         "strengthRequired": 20,
         "damage": "1d11+24",
         "weight": 30,
+        "flags": ["ITEM_ATTACKS_STAGGER"],
         "description": "很少有生物能承受这团铅和钢的碾压，但只有最强壮的冒险者才能有效地挥舞它。由于其重量，命中后需要额外一回合恢复，并会将对手击退。"
     },
     {

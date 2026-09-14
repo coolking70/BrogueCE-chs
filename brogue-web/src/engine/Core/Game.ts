@@ -2234,67 +2234,33 @@ export class Game {
                     this.player.seized = false;
                 }
 
-                if (blockingMonster) {
-                    // Attack
-                    const res = CombatSystem.attack(this.player, blockingMonster);
-                    if (this.player.hasStatus('invisible')) {
-                        this.player.setStatusDuration('invisible', 0);
-                        logger.log(
-                            i18next.t('status.player.invisible_break_attack', {
-                                defaultValue: 'You reveal yourself as you strike.'
-                            }),
-                            '#cccccc'
-                        );
-                    }
-                    if (res.hit && res.damage > 0) {
-                        const weaponStr = res.weaponName === 'bare hands' ? i18next.t('combat.bare_hands', { defaultValue: 'bare hands' }) : res.weaponName;
-                        if (res.backstab) {
-                            logger.log(i18next.t('combat.backstab', { monster: blockingMonster.name, damage: res.damage, weapon: weaponStr, defaultValue: `You backstab the ${blockingMonster.name} for ${res.damage} damage!` }), '#ff4444');
-                        } else {
-                            logger.log(i18next.t('combat.hit', { monster: blockingMonster.name, damage: res.damage, weapon: weaponStr, defaultValue: `You hit the ${blockingMonster.name} for ${res.damage} damage with ${weaponStr}.` }), '#ffcc00');
-                        }
-                        this.spawnFloatingText(`-${res.damage}`, blockingMonster.loc.x, blockingMonster.loc.y, 0xff5555);
-                        // Handle runic trigger (enchantment-scaled chance computed in Combat.ts)
-                        if (res.triggeredRunic) {
-                            this.applyWeaponRunicEffect(blockingMonster, res.damage, res.triggeredRunic);
-                        } else {
-                            this.tryTriggerWeaponRunic(blockingMonster, res.damage);
-                        }
-                        this.spawnBlood(blockingMonster.loc.x, blockingMonster.loc.y);
-                        // P4-4：CE splitMonster(defender, attacker)（Combat.c:1424，attack() 主路径）。
-                        this.trySplitMonster(blockingMonster, this.player);
-                    } else {
-                        logger.log(i18next.t('combat.miss', { monster: blockingMonster.name, defaultValue: `You missed the ${blockingMonster.name}.` }), '#888888');
-                        this.spawnFloatingText(i18next.t('combat.miss_float', { defaultValue: 'Miss' }), blockingMonster.loc.x, blockingMonster.loc.y, 0xaaaaaa);
-                    }
-
-                    // Check if monster died
-                    if (blockingMonster.hp <= 0) {
-                        logger.log(i18next.t('combat.defeat', { monster: blockingMonster.name, defaultValue: `You defeated the ${blockingMonster.name}!` }), '#ffaa00');
-                        this.stats.kills++;
-
-                        // Handle Drops
-                        if (rng.randPercent(Math.floor(blockingMonster.goldDropChance * 100))) {
-                            const goldItem = new Item('Gold', '$', 0xffda75, ItemCategory.GOLD);
-                            goldItem.loc = { ...blockingMonster.loc };
-                            this.items.push(goldItem);
-                        }
-
-                        if (rng.randPercent(Math.floor(blockingMonster.itemDropChance * 100))) {
-                            const isWeapon = rng.randPercent(50);
-                            let droppedObj;
-                            if (isWeapon) {
-                                droppedObj = ItemLoader.spawnWeapon(rng.randPercent(50) ? 'dagger' : 'sword', blockingMonster.loc.x, blockingMonster.loc.y);
-                            } else {
-                                droppedObj = ItemLoader.spawnArmor(rng.randPercent(50) ? 'leather_armor' : 'chain_mail', blockingMonster.loc.x, blockingMonster.loc.y);
-                            }
-                            if (droppedObj) this.items.push(droppedObj);
-                        }
+                // P4-7：CE Movement.c:1175-1186 —— 移动未被阻挡时（目标格可通行，
+                // 或格内是 MONST_ATTACKABLE_THRU_WALLS 目标）先试鞭、再试矛；出手即
+                // 耗掉本回合（CE：playerRecoversFromAttacking(true) + playerTurnEnded），
+                // 不落回普通移动/攻击。CE 的 diagonalBlocked 起步守卫不移植（web 全局
+                // 无对角墙角判定，P4-5 起同口径，见报告）。
+                const destCell = this.grid.getCell(newX, newY);
+                const moveNotBlocked = !!destCell?.isPassable ||
+                    (!!blockingMonster && blockingMonster.hasBehavior('MONST_ATTACKABLE_THRU_WALLS'));
+                if (moveNotBlocked && this.tryPlayerWeaponGeometryAttack(dx, dy)) {
+                    this.needsRender = true;
+                    this.playerRecoversFromAttacking(true);
+                    timeSystem.currentTick += this.player.attackSpeed;
+                } else if (blockingMonster) {
+                    // Attack —— P4-7：CE Movement.c:1216-1247，buildHitList
+                    // （sweep = 武器带 ITEM_ATTACKS_ALL_ADJACENT，Combat.c:2049-2090）
+                    // + 攻击循环（循环内复查目标存活，对应 CE MB_IS_DYING 复查）。
+                    const hitList = this.buildPlayerMeleeHitList(blockingMonster);
+                    let anyAttackHit = false;
+                    for (const target of hitList) {
+                        if (target.hp <= 0) continue;
+                        if (this.resolvePlayerMeleeAttackOn(target)) anyAttackHit = true;
                     }
 
                     this.needsRender = true;
-                    // CE Time.c:2438：攻击耗时 = attackSpeed，在结算处累加
-                    this.playerRecoversFromAttacking();
+                    // CE Time.c:2438：攻击耗时 = attackSpeed，在结算处累加；
+                    // P4-7：钝器命中时 2×attackSpeed（Time.c:2442-2444）
+                    this.playerRecoversFromAttacking(anyAttackHit);
                     timeSystem.currentTick += this.player.attackSpeed;
                 } else if (this.player.seized) {
                     // P4-5：CE Movement.c:1267-1297（MB_SEIZED 检查，playerMoves()
@@ -4316,16 +4282,243 @@ export class Game {
         }
     }
 
+    // ------------------------------------------------------------------
+    // P4-7：玩家武器攻击几何 + 钝器口径（CE 以玩家为攻击者的分支）
+    //
+    // 与 P4-6 怪物侧的关系：几何语义（射程/受阻/倒序/横扫覆盖）逐条镜像
+    // Monster.ts 的 performWhipAttack/performSpearAttack/performSweepAttack，
+    // 但不直接复用其函数体——那些是 Monster 的私有方法且结算出口是怪物侧
+    // 消息（ally/discordant/hostile 三种 voice），玩家攻击有独立的结算词汇
+    // 与后置处理（武器符文/偷袭/掉落/经验）；本轮文件边界也不允许改
+    // Monster.ts 把它们提炼成共享模块。可复用的部分（8 向旋转表、射线逐格
+    // 口径、willAttackTarget 判定、倒序循环）均按同构方式落地，见各方法注释。
+    // ------------------------------------------------------------------
+
+    /**
+     * P4-7：CE monsterWillAttackTarget 的玩家版，与 Monster.willAttackTarget
+     * 同口径：存活、非被囚禁（isCaged ≈ MB_CAPTIVE）、敌对。
+     */
+    private playerWillAttackTarget(defender: Monster): boolean {
+        if (defender.hp <= 0) return false;
+        if (defender.isCaged) return false;
+        return monstersAreEnemies(this.player, defender);
+    }
+
+    /**
+     * P4-7：CE buildHitList（Combat.c:2049-2090）玩家侧。非 sweep（武器无
+     * ITEM_ATTACKS_ALL_ADJACENT）照 CE 返回 [defender]；sweep 以主目标方向为
+     * 起点旋转遍历 8 邻格（CE 原文的 nbDirs/cDirs 表混用只影响命中顺序、覆盖
+     * 集合即 8 邻格全覆盖——P4-6 §3.2 同口径，单表旋转），逐格要求
+     * playerWillAttackTarget 且（格可通行 或 目标 MONST_ATTACKABLE_THRU_WALLS）。
+     * 偏离 CE 的一处保守取舍：sweep 过滤后为空的唯一情形是主目标本身不可攻击
+     * （盟友/被囚禁）——此时落回 [primary] 保留 web 既有"撞谁打谁"的行为
+     * （CE 该场景在 Movement.c:1155 就整体跳过攻击块，且误伤盟友要走
+     * abortAttack 确认提示，本轮明确不做），避免出现"穿过盟友走位"的回归。
+     */
+    private buildPlayerMeleeHitList(primary: Monster): Monster[] {
+        if (!this.player.equippedWeapon?.flags?.includes('ITEM_ATTACKS_ALL_ADJACENT')) {
+            return [primary];
+        }
+        const dirs8: ReadonlyArray<readonly [number, number]> =
+            [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [-1, 1], [1, -1], [1, 1]];
+        const dx = Math.sign(primary.loc.x - this.player.loc.x);
+        const dy = Math.sign(primary.loc.y - this.player.loc.y);
+        let dir = dirs8.findIndex(d => d[0] === dx && d[1] === dy);
+        if (dir < 0) dir = 0; // CE：dir==NO_DIRECTION 时取 UP（主目标必相邻，实际不可达）
+        const hitList: Monster[] = [];
+        for (let i = 0; i < 8; i++) {
+            const d = dirs8[(dir + i) % 8]!;
+            const tx = this.player.loc.x + d[0];
+            const ty = this.player.loc.y + d[1];
+            const cell = this.grid.getCell(tx, ty);
+            if (!cell) continue; // CE coordinatesAreInMap
+            const defender = this.getMonsterAt(tx, ty);
+            if (!defender || !this.playerWillAttackTarget(defender)) continue;
+            if (!cell.isPassable && !defender.hasBehavior('MONST_ATTACKABLE_THRU_WALLS')) continue;
+            hitList.push(defender);
+        }
+        return hitList.length > 0 ? hitList : [primary];
+    }
+
+    /**
+     * P4-7：CE Movement.c:1175-1186 玩家侧入口——朝方向移动/攻击时先试鞭
+     * （handleWhipAttacks）再试矛（handleSpearAttacks），出手即返回 true（耗回
+     * 合，不落回普通移动）。斧不在其中：CE 的横扫只挂在"目标格有怪"的普通
+     * 近战分支（buildHitList sweep）。dx/dy 统一取符号归一成 8 向单位步。
+     */
+    private tryPlayerWeaponGeometryAttack(dx: number, dy: number): boolean {
+        const flags = this.player.equippedWeapon?.flags;
+        if (!flags?.length) return false;
+        const ux = Math.sign(dx);
+        const uy = Math.sign(dy);
+        if (ux === 0 && uy === 0) return false;
+        if (flags.includes('ITEM_ATTACKS_EXTEND') && this.playerWhipAttack(ux, uy)) return true;
+        if (flags.includes('ITEM_ATTACKS_PENETRATE') && this.playerSpearAttack(ux, uy)) return true;
+        return false;
+    }
+
+    /**
+     * P4-7：CE handleWhipAttacks（Movement.c:855-912）玩家分支 + getImpactLoc
+     * （Items.c:4300-4332，maxDistance=5、returnLastEmptySpace=false、BOLT_WHIP），
+     * 射线口径与 Monster.performWhipAttack 同构：沿方向逐格推进，第一个"未隐藏
+     * 的活物"或"阻挡通行/视线的格子"就是打击点；打击点上没有可攻击的敌人就
+     * 不出手（返回 false，调用方照常移动）。玩家分支的 canSeeMonster 复查
+     *（Movement.c:893）与怪物侧同款简化：web 无照明级可见性 targeting，
+     * 只按 invisible 状态近似 monsterIsHidden（P4-1b 起同口径）。
+     */
+    private playerWhipAttack(dirX: number, dirY: number): boolean {
+        let strike: Monster | undefined;
+        for (let i = 0; i < 5; i++) {
+            const tx = this.player.loc.x + (1 + i) * dirX;
+            const ty = this.player.loc.y + (1 + i) * dirY;
+            const cell = this.grid.getCell(tx, ty);
+            if (!cell) break; // CE isPosInMap：射线出图
+            const c = this.getMonsterAt(tx, ty);
+            if (c && !c.hasStatus('invisible')) {
+                // 未隐藏的活物挡弹（CE getImpactLoc 的 monster 分支，隐藏者被穿过）
+                strike = c;
+                break;
+            }
+            if (!cell.isPassable || cell.isOpaque) {
+                // 阻挡通行/视线的格子截停：打击点落在墙格上 → monsterAtLoc 为空
+                break;
+            }
+        }
+        if (!strike || !this.playerWillAttackTarget(strike)) return false;
+        this.resolvePlayerMeleeAttackOn(strike);
+        return true;
+    }
+
+    /**
+     * P4-7：CE handleSpearAttacks（Movement.c:917-1023）玩家分支，射线口径与
+     * Monster.performSpearAttack 同构：沿方向收集至多 2 格上的敌人（贴脸 i==0
+     * 无条件算数；远处那格要求目标未隐藏），收集时目标格必须可通行（或目标带
+     * MONST_ATTACKABLE_THRU_WALLS），中途遇阻挡通行/视线的格子即 break（:976-979）。
+     * ★ CE Movement.c:1005-1009：攻击顺序人为倒序（先远后近），注释原文
+     *   "Artificially reverse the order of the attacks, so that spears of
+     *   force can send both monsters flying."——照实现，测试锁死。
+     */
+    private playerSpearAttack(dirX: number, dirY: number): boolean {
+        const hitList: Monster[] = [];
+        let proceed = false;
+        for (let i = 0; i < 2; i++) {
+            const tx = this.player.loc.x + (1 + i) * dirX;
+            const ty = this.player.loc.y + (1 + i) * dirY;
+            const cell = this.grid.getCell(tx, ty);
+            if (!cell) break; // CE isPosInMap
+            const defender = this.getMonsterAt(tx, ty);
+            if (defender &&
+                (cell.isPassable || defender.hasBehavior('MONST_ATTACKABLE_THRU_WALLS')) &&
+                this.playerWillAttackTarget(defender)) {
+                hitList.push(defender);
+                if (i === 0 || !defender.hasStatus('invisible')) {
+                    proceed = true;
+                }
+            }
+            if (!cell.isPassable || cell.isOpaque) {
+                break;
+            }
+        }
+        if (!proceed) return false;
+        // CE Movement.c:1007-1009：先打远的、后打近的（倒序）
+        for (let i = hitList.length - 1; i >= 0; i--) {
+            this.resolvePlayerMeleeAttackOn(hitList[i]!);
+        }
+        return true;
+    }
+
+    /**
+     * P4-7：玩家近战对单个目标的完整结算——从 handlePlayerAction 的既有
+     * 内联块原样抽出（消息/隐身现形/漂浮文字/符文/血迹/分裂/击杀掉落），
+     * 普通近战循环与鞭/矛几何出口共用，保证几何击杀与贴脸击杀走完全相同的
+     * 后置处理。返回该次攻击是否命中。
+     * 末尾的钝器击退对应 CE Combat.c:1398-1401（attack() 内、命中且目标存活
+     * 的分支）：复用 P4-5 的 processStaggerHit（invulnerable/immobile/inanimate/
+     * caged 豁免、终点不可站则不推）。武器几何旗标与 STAGGER 互斥（一把武器
+     * 只有一种），放在共享出口里与 CE 的 attack() 内位置一致。
+     */
+    private resolvePlayerMeleeAttackOn(target: Monster): boolean {
+        const res = CombatSystem.attack(this.player, target);
+        if (this.player.hasStatus('invisible')) {
+            this.player.setStatusDuration('invisible', 0);
+            logger.log(
+                i18next.t('status.player.invisible_break_attack', {
+                    defaultValue: 'You reveal yourself as you strike.'
+                }),
+                '#cccccc'
+            );
+        }
+        if (res.hit && res.damage > 0) {
+            const weaponStr = res.weaponName === 'bare hands' ? i18next.t('combat.bare_hands', { defaultValue: 'bare hands' }) : res.weaponName;
+            if (res.backstab) {
+                logger.log(i18next.t('combat.backstab', { monster: target.name, damage: res.damage, weapon: weaponStr, defaultValue: `You backstab the ${target.name} for ${res.damage} damage!` }), '#ff4444');
+            } else {
+                logger.log(i18next.t('combat.hit', { monster: target.name, damage: res.damage, weapon: weaponStr, defaultValue: `You hit the ${target.name} for ${res.damage} damage with ${weaponStr}.` }), '#ffcc00');
+            }
+            this.spawnFloatingText(`-${res.damage}`, target.loc.x, target.loc.y, 0xff5555);
+            // Handle runic trigger (enchantment-scaled chance computed in Combat.ts)
+            if (res.triggeredRunic) {
+                this.applyWeaponRunicEffect(target, res.damage, res.triggeredRunic);
+            } else {
+                this.tryTriggerWeaponRunic(target, res.damage);
+            }
+            this.spawnBlood(target.loc.x, target.loc.y);
+            // P4-4：CE splitMonster(defender, attacker)（Combat.c:1424，attack() 主路径）。
+            this.trySplitMonster(target, this.player);
+        } else {
+            logger.log(i18next.t('combat.miss', { monster: target.name, defaultValue: `You missed the ${target.name}.` }), '#888888');
+            this.spawnFloatingText(i18next.t('combat.miss_float', { defaultValue: 'Miss' }), target.loc.x, target.loc.y, 0xaaaaaa);
+        }
+
+        // Check if monster died
+        if (target.hp <= 0) {
+            logger.log(i18next.t('combat.defeat', { monster: target.name, defaultValue: `You defeated the ${target.name}!` }), '#ffaa00');
+            this.stats.kills++;
+
+            // Handle Drops
+            if (rng.randPercent(Math.floor(target.goldDropChance * 100))) {
+                const goldItem = new Item('Gold', '$', 0xffda75, ItemCategory.GOLD);
+                goldItem.loc = { ...target.loc };
+                this.items.push(goldItem);
+            }
+
+            if (rng.randPercent(Math.floor(target.itemDropChance * 100))) {
+                const isWeapon = rng.randPercent(50);
+                let droppedObj;
+                if (isWeapon) {
+                    droppedObj = ItemLoader.spawnWeapon(rng.randPercent(50) ? 'dagger' : 'sword', target.loc.x, target.loc.y);
+                } else {
+                    droppedObj = ItemLoader.spawnArmor(rng.randPercent(50) ? 'leather_armor' : 'chain_mail', target.loc.x, target.loc.y);
+                }
+                if (droppedObj) this.items.push(droppedObj);
+            }
+        }
+
+        // P4-7：钝器击退（CE Combat.c:1398-1401；"命中且目标存活"对应 CE 的
+        // else-survive 分支，P4-5 口径与 Monster.ts 三处近战出口一致）
+        if (res.hit && !res.kamikazeSelfDestruct && !res.seized && target.hp > 0 &&
+            this.player.equippedWeapon?.flags?.includes('ITEM_ATTACKS_STAGGER')) {
+            this.processStaggerHit(this.player, target);
+        }
+        return res.hit;
+    }
+
     /**
      * CE Time.c:2438-2450 playerRecoversFromAttacking：玩家攻击的回合耗时在
      * 攻击结算处累加进 ticksUntilTurn，playerTurnEnded 的 ==0 分支因此跳过
      * movementSpeed——攻击耗时 = attackSpeed（haste/slow 同步生效）。
-     * CE 的 ITEM_ATTACKS_STAGGER/QUICKLY 武器修正分支无法实现：web 武器数据
-     * 模型没有 flags 字段（weapons.json 无该键，Item.ts 本轮禁改），详见报告。
+     * P4-7：ITEM_ATTACKS_STAGGER 分支落地（Time.c:2442-2444）——钝器命中时
+     * 额外恢复一个完整攻击回合（+= 2×attackSpeed）；anAttackHit 对应 CE 形参
+     * （普通近战传 anyAttackHit，鞭/矛几何出口按 CE Movement.c:1178 字面传 true）。
+     * ITEM_ATTACKS_QUICKLY（刺剑双倍攻速，Time.c:2445-2446）仍不在本轮范围。
      */
-    private playerRecoversFromAttacking(): void {
+    private playerRecoversFromAttacking(anAttackHit: boolean): void {
         if (this.player.ticksUntilTurn >= 0) {
-            this.player.ticksUntilTurn += this.player.attackSpeed;
+            if (this.player.equippedWeapon?.flags?.includes('ITEM_ATTACKS_STAGGER') && anAttackHit) {
+                this.player.ticksUntilTurn += 2 * this.player.attackSpeed;
+            } else {
+                this.player.ticksUntilTurn += this.player.attackSpeed;
+            }
         }
     }
 
