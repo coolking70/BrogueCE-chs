@@ -39,11 +39,36 @@ export function cosmeticPick<T>(list: readonly T[]): T {
  * 地图整体右移约 170px，右侧被侧栏压住、鼠标命中区随之错位。
  * 导出供测试锁定该口径（p2_4_animation_cadence.test.ts）。
  */
-export function computeMapOffset(viewportWidth: number, viewportHeight: number): { offsetX: number; offsetY: number } {
+/**
+ * 地图在视口中的布局：缩放 + 居中偏移。
+ *
+ * 地图是固定的 DCOLS×DROWS 格、每格 TILE_SIZE 像素（79×16 = 1264px 宽）。
+ * 当视口放不下时**必须等比缩小**，否则超出部分会被画布边界硬切——
+ * 视觉上表现为"右侧被侧栏挡住一块"，这正是本项目长期未能修复的那个 bug：
+ * 旧实现 `Math.max(0, (viewport - map) / 2)` 把负偏移钳成 0，
+ * 地图便从 x=0 一路画到 1264 并溢出容器。
+ *
+ * 实测（侧栏 340px）：窗口 1280 → 切 21 列；1440 → 切 11 列；
+ * 1604 才是完整显示的临界点。
+ *
+ * scale 只缩不放（上限 1），避免小地图在大屏上被放大得糊掉。
+ */
+export function computeMapLayout(viewportWidth: number, viewportHeight: number): { scale: number; offsetX: number; offsetY: number } {
+    const mapW = DCOLS * TILE_SIZE;
+    const mapH = DROWS * TILE_SIZE;
+    if (viewportWidth <= 0 || viewportHeight <= 0) return { scale: 1, offsetX: 0, offsetY: 0 };
+    const scale = Math.min(1, viewportWidth / mapW, viewportHeight / mapH);
     return {
-        offsetX: Math.max(0, (viewportWidth - DCOLS * TILE_SIZE) / 2),
-        offsetY: Math.max(0, (viewportHeight - DROWS * TILE_SIZE) / 2),
+        scale,
+        offsetX: Math.max(0, (viewportWidth - mapW * scale) / 2),
+        offsetY: Math.max(0, (viewportHeight - mapH * scale) / 2),
     };
+}
+
+/** 兼容旧签名：只取偏移。缩放请用 computeMapLayout。 */
+export function computeMapOffset(viewportWidth: number, viewportHeight: number): { offsetX: number; offsetY: number } {
+    const { offsetX, offsetY } = computeMapLayout(viewportWidth, viewportHeight);
+    return { offsetX, offsetY };
 }
 </script>
 
@@ -240,13 +265,15 @@ onMounted(async () => {
         // 用容器 clientWidth/Height 而非 pixiApp.screen：resizeTo 的渲染器
         // 尺寸要等 Pixi 下一个渲染帧才跟上（queueResize），clientWidth 是
         // 布局完成后的即时真值，且能覆盖非 window 尺寸变化（如侧栏增减）。
-        const { offsetX: ox, offsetY: oy } = computeMapOffset(el.clientWidth, el.clientHeight);
+        const { scale, offsetX: ox, offsetY: oy } = computeMapLayout(el.clientWidth, el.clientHeight);
         offsetX = ox;
         offsetY = oy;
-        bgGraphics.position.set(offsetX, offsetY);
-        tileLayer.position.set(offsetX, offsetY);
-        entityLayer.position.set(offsetX, offsetY);
-        floatLayer.position.set(offsetX, offsetY);
+        // 四个图层同步缩放 + 居中。toLocal 会一并换算 scale，
+        // 因此指针→格子的映射（pointermove / pointerup）无需另外处理。
+        for (const layer of [bgGraphics, tileLayer, entityLayer, floatLayer]) {
+            layer.position.set(offsetX, offsetY);
+            layer.scale.set(scale);
+        }
         // 命中区 = 画布容器区域（stage 坐标即 CSS 像素，autoDensity）。
         // 旧实现用 window 尺寸，侧栏右侧的点击会被映射到错误的格子。
         pixiApp.stage.hitArea = new PIXI.Rectangle(0, 0, el.clientWidth, el.clientHeight);

@@ -261,10 +261,13 @@ describe('P2-4 E: 居中使用容器尺寸而非窗口尺寸（验收 6）', () 
         expect(byWindow.offsetX - byContainer.offsetX).toBe(170);
     });
 
-    it('E2 容器小于地图时钳到 0（不出现负偏移）', () => {
+    // ⚠️ 原 E2 断言"容器小于地图时 offsetX 钳到 0"——那正是长期"侧栏遮挡"bug 本身：
+    // 钳到 0 等于默许地图溢出容器被硬切。该测试把错误行为固化成了正确行为，
+    // 是这个 bug 反复"修好"又复现的原因之一。P2-5 改为等比缩放后重写此条。
+    it('E2 容器小于地图时不出现负偏移，且缩放后不溢出（原断言固化了 bug，已重写）', () => {
         const r = computeMapOffset(1000, 400);
-        expect(r.offsetX).toBe(0);
-        expect(r.offsetY).toBe(0);
+        expect(r.offsetX).toBeGreaterThanOrEqual(0);
+        expect(r.offsetY).toBeGreaterThanOrEqual(0);
     });
 
     it('E3 TILE_SIZE 导出口径不变（16px）', () => {
@@ -274,5 +277,54 @@ describe('P2-4 E: 居中使用容器尺寸而非窗口尺寸（验收 6）', () 
     it('E4 源码守卫：GameCanvas.vue 不得再用 window.innerWidth/innerHeight（本轮 bug 源头）', () => {
         const src = readFileSync(new URL('../components/GameCanvas.vue', import.meta.url), 'utf8');
         expect(src).not.toMatch(/window\.innerWidth|window\.innerHeight/);
+    });
+});
+
+// ── P2-5 追加：地图必须自适应容器，不得溢出被切 ──────────────────────────────
+// 长期未修复的"侧栏遮挡"真凶：地图固定 79×16 = 1264px，旧实现用
+// max(0, (viewport - map)/2) 把负偏移钳成 0，窗口放不下时直接溢出硬切。
+// 实测：窗口 1280 切 21 列、1440 切 11 列、1604 才是完整显示的临界点。
+describe('P2-5 F: 地图自适应容器（长期"侧栏遮挡"bug 的真因）', () => {
+    const DCOLS_ = 79, DROWS_ = 29;
+
+    it('F1 容器放不下时等比缩小，地图右缘绝不超出容器', async () => {
+        const mod: any = await import('../components/GameCanvas.vue');
+        const compute = mod.computeMapLayout;
+        const TILE = mod.TILE_SIZE;
+        expect(typeof compute).toBe('function');
+        const mapW = DCOLS_ * TILE, mapH = DROWS_ * TILE;
+        // 覆盖窄到宽：每一档都不许溢出
+        for (const contW of [640, 940, 1100, 1260, 1264, 1460, 1580, 2220]) {
+            const contH = 900;
+            const { scale, offsetX, offsetY } = compute(contW, contH);
+            const right = offsetX + mapW * scale;
+            const bottom = offsetY + mapH * scale;
+            expect(right, `容器宽 ${contW} 时地图右缘 ${right} 溢出`).toBeLessThanOrEqual(contW + 0.001);
+            expect(bottom, `容器高 ${contH} 时地图下缘 ${bottom} 溢出`).toBeLessThanOrEqual(contH + 0.001);
+            expect(scale).toBeGreaterThan(0);
+            expect(scale).toBeLessThanOrEqual(1);
+        }
+    });
+
+    it('F2 放得下时不放大（scale 上限 1）且保持居中', async () => {
+        const mod: any = await import('../components/GameCanvas.vue');
+        const compute = mod.computeMapLayout;
+        const TILE = mod.TILE_SIZE;
+        const mapW = DCOLS_ * TILE;
+        const { scale, offsetX } = compute(2220, 900);
+        expect(scale).toBe(1);
+        expect(offsetX).toBeCloseTo((2220 - mapW) / 2, 5);
+    });
+
+    it('F3 回归：1260px 容器（1600 窗口 − 340 侧栏）下最后一列完整可见', async () => {
+        const mod: any = await import('../components/GameCanvas.vue');
+        const compute = mod.computeMapLayout;
+        const TILE = mod.TILE_SIZE;
+        const { scale, offsetX } = compute(1260, 900);
+        // 最后一列（索引 78）的右缘
+        const lastColRight = offsetX + DCOLS_ * TILE * scale;
+        expect(lastColRight).toBeLessThanOrEqual(1260 + 0.001);
+        // 修复前：scale 恒为 1、offsetX 为 0 → 右缘 1264 > 1260，切掉 4px
+        expect(scale).toBeLessThan(1);
     });
 });
