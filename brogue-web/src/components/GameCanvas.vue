@@ -1,5 +1,6 @@
 <script lang="ts">
 import { rng, RNGType } from '../engine/Random';
+import type { MapScaleMode } from '../engine/Settings';
 import { DCOLS, DROWS } from '../types';
 
 /** 地图单元格像素边长（与 setup 内共用，模块级以便 computeMapOffset 使用）。 */
@@ -40,7 +41,7 @@ export function cosmeticPick<T>(list: readonly T[]): T {
  * 导出供测试锁定该口径（p2_4_animation_cadence.test.ts）。
  */
 /**
- * 地图在视口中的布局：缩放 + 居中偏移。
+ * 地图在视口中的布局：缩放 + 居中偏移（P2-6 起支持两种缩放模式）。
  *
  * 地图是固定的 DCOLS×DROWS 格、每格 TILE_SIZE 像素（79×16 = 1264px 宽）。
  * 当视口放不下时**必须等比缩小**，否则超出部分会被画布边界硬切——
@@ -51,15 +52,42 @@ export function cosmeticPick<T>(list: readonly T[]): T {
  * 实测（侧栏 340px）：窗口 1280 → 切 21 列；1440 → 切 11 列；
  * 1604 才是完整显示的临界点。
  *
- * scale 只缩不放（上限 1），避免小地图在大屏上被放大得糊掉。
+ * uniform（默认，= P2-5 现状）：scale 只缩不放（上限 1），避免小地图在大屏上
+ * 被放大得糊掉；多余空间留黑边，方格保持正方形。
+ *
+ * stretch（CE 口径，platform/tiles.c:782-803）：x 方向按 outputWidth/格数、
+ * y 方向按 outputHeight/格数**各自铺满**，两方向独立缩放、不保持宽高比，
+ * 允许放大、无黑边。CE 用 `(x+1)*W/C - x*W/C` 的整除写法把余数摊到各格、
+ * 使相邻格边界严丝合缝；web 用连续缩放 `viewportWidth/mapW` 达成同一效果
+ * （右缘恰好 = 容器宽，无 1px 缝隙）。
+ *
+ * `scale` 是兼容字段，仅 uniform 模式有意义（= scaleX = scaleY）；
+ * stretch 模式下两方向缩放不同，请一律使用 scaleX/scaleY。
  */
-export function computeMapLayout(viewportWidth: number, viewportHeight: number): { scale: number; offsetX: number; offsetY: number } {
+export function computeMapLayout(
+    viewportWidth: number,
+    viewportHeight: number,
+    mode: MapScaleMode = 'uniform',
+): { scale: number; scaleX: number; scaleY: number; offsetX: number; offsetY: number } {
     const mapW = DCOLS * TILE_SIZE;
     const mapH = DROWS * TILE_SIZE;
-    if (viewportWidth <= 0 || viewportHeight <= 0) return { scale: 1, offsetX: 0, offsetY: 0 };
+    if (viewportWidth <= 0 || viewportHeight <= 0) {
+        return { scale: 1, scaleX: 1, scaleY: 1, offsetX: 0, offsetY: 0 };
+    }
+    if (mode === 'stretch') {
+        return {
+            scale: 1,
+            scaleX: viewportWidth / mapW,
+            scaleY: viewportHeight / mapH,
+            offsetX: 0,
+            offsetY: 0,
+        };
+    }
     const scale = Math.min(1, viewportWidth / mapW, viewportHeight / mapH);
     return {
         scale,
+        scaleX: scale,
+        scaleY: scale,
         offsetX: Math.max(0, (viewportWidth - mapW * scale) / 2),
         offsetY: Math.max(0, (viewportHeight - mapH * scale) / 2),
     };
@@ -73,7 +101,7 @@ export function computeMapOffset(viewportWidth: number, viewportHeight: number):
 </script>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 import * as PIXI from 'pixi.js';
 import { Application, Text, TextStyle, Graphics, Container } from 'pixi.js';
 import { TerrainType } from '../engine/Map/Grid';
@@ -85,11 +113,14 @@ import { Direction } from '../types';
 import { activeGame } from '../engine/Core/Game';
 import { inputManager } from '../engine/Input';
 import { MonsterState } from '../entities/Monster';
+import { displaySettings } from '../engine/Settings';
 
 const canvasContainer = ref<HTMLDivElement | null>(null);
 let pixiApp: Application | null = null;
 // P2-4：居中/命中区随容器尺寸变化重算（挂载时建立，卸载时断开）
 let resizeObserver: ResizeObserver | null = null;
+// P2-6：地图缩放模式切换的 watch 停止器（onMounted 内创建，onUnmounted 内停止）
+let stopScaleModeWatch: (() => void) | null = null;
 
 // --- Terrain definitions ---
 function getTerrainVisual(terrain: TerrainType, isVisible: boolean): { char: string; color: string; bgColor: number | null } {
@@ -265,14 +296,19 @@ onMounted(async () => {
         // 用容器 clientWidth/Height 而非 pixiApp.screen：resizeTo 的渲染器
         // 尺寸要等 Pixi 下一个渲染帧才跟上（queueResize），clientWidth 是
         // 布局完成后的即时真值，且能覆盖非 window 尺寸变化（如侧栏增减）。
-        const { scale, offsetX: ox, offsetY: oy } = computeMapLayout(el.clientWidth, el.clientHeight);
+        const { scaleX, scaleY, offsetX: ox, offsetY: oy } = computeMapLayout(
+            el.clientWidth,
+            el.clientHeight,
+            displaySettings.mapScaleMode,
+        );
         offsetX = ox;
         offsetY = oy;
-        // 四个图层同步缩放 + 居中。toLocal 会一并换算 scale，
-        // 因此指针→格子的映射（pointermove / pointerup）无需另外处理。
+        // 四个图层同步缩放 + 居中。toLocal 走完整的仿射逆矩阵，x/y 缩放不同
+        // （stretch 模式）也会被正确换算，因此指针→格子的映射
+        // （pointermove / pointerup）无需另外处理。
         for (const layer of [bgGraphics, tileLayer, entityLayer, floatLayer]) {
             layer.position.set(offsetX, offsetY);
-            layer.scale.set(scale);
+            layer.scale.set(scaleX, scaleY);
         }
         // 命中区 = 画布容器区域（stage 坐标即 CSS 像素，autoDensity）。
         // 旧实现用 window 尺寸，侧栏右侧的点击会被映射到错误的格子。
@@ -281,9 +317,14 @@ onMounted(async () => {
 
     applyLayout();
     // 窗口 resize（容器随之变宽变高）与任何布局变化都会触发 ResizeObserver；
-    // 比起 window resize 事件，它还覆盖"窗口不变但布局变"的场景。
+    // 比起 window resize 事件，它还覆盖"窗口不变但布局变"的场景
+    // （如侧栏在固定/按比例间切换导致容器宽度变化）。
     resizeObserver = new ResizeObserver(() => applyLayout());
     resizeObserver.observe(canvasContainer.value);
+
+    // P2-6：地图缩放模式切换不改变容器尺寸（ResizeObserver 不会触发），
+    // 需显式走同一条 applyLayout 重算路径，设置变更即时生效、无需刷新页面。
+    stopScaleModeWatch = watch(() => displaySettings.mapScaleMode, () => applyLayout());
 
     const game = activeGame;
     // P2-4 动画节奏（决策 E1-修订，CE Time.c:2704 口径）：UI 挂载后启用分步
@@ -692,6 +733,9 @@ onUnmounted(() => {
     resizeObserver.disconnect();
     resizeObserver = null;
   }
+
+  stopScaleModeWatch?.();
+  stopScaleModeWatch = null;
 
   delete (window as Window & { advanceTime?: (ms: number) => void }).advanceTime;
   delete (window as Window & { render_game_to_text?: () => string }).render_game_to_text;

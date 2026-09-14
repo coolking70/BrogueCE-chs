@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import type { GameMode } from '../engine/Core/Game';
+import { displaySettings, isMapScaleMode, isSidebarWidthMode } from '../engine/Settings';
 
 defineProps<{
   hasSave: boolean;
@@ -81,6 +82,24 @@ watch(mode, (m) => {
     seedInput.value = '';
   }
 });
+
+// P2-6 显示设置：直接读写全局响应式 store（Settings.ts 内自动持久化），
+// 变更即时生效（GameCanvas 的 watch / Sidebar 的 computed 均会跟随），
+// 无需事件冒泡到 App.vue，也无需刷新页面。select 产出 string，
+// 经类型守卫收窄后再写入，避免非法值进 store。
+const mapScaleModel = computed({
+  get: () => displaySettings.mapScaleMode,
+  set: (v: string) => {
+    if (isMapScaleMode(v)) displaySettings.mapScaleMode = v;
+  },
+});
+
+const sidebarWidthModel = computed({
+  get: () => displaySettings.sidebarWidthMode,
+  set: (v: string) => {
+    if (isSidebarWidthMode(v)) displaySettings.sidebarWidthMode = v;
+  },
+});
 </script>
 
 <template>
@@ -125,6 +144,25 @@ watch(mode, (m) => {
         <button :disabled="!hasReplay" @click="emit('export-replay-json')">{{ t('menu.replay.export_json', { defaultValue: 'Export JSON' }) }}</button>
         <button @click="triggerReplayImport">{{ t('menu.replay.import_json', { defaultValue: 'Import JSON' }) }}</button>
         <button v-if="hasReplay" class="danger-btn" @click="emit('delete-replay')">{{ t('menu.replay.delete', { defaultValue: 'Delete Replay' }) }}</button>
+      </div>
+
+      <!-- P2-6 显示设置：等比 = web 现状（方格正方形、留黑边）；
+           拉伸铺满 / 按比例 = CE 口径（tiles.c:782-803、侧栏恒占 20%）。 -->
+      <div class="display-group">
+        <label class="field">
+          <span>{{ t('menu.display.map_scale', { defaultValue: '地图缩放' }) }}</span>
+          <select v-model="mapScaleModel">
+            <option value="uniform">{{ t('menu.display.map_scale.uniform', { defaultValue: '等比' }) }}</option>
+            <option value="stretch">{{ t('menu.display.map_scale.stretch', { defaultValue: '拉伸铺满' }) }}</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>{{ t('menu.display.sidebar_width', { defaultValue: '侧栏宽度' }) }}</span>
+          <select v-model="sidebarWidthModel">
+            <option value="fixed">{{ t('menu.display.sidebar_width.fixed', { defaultValue: '固定' }) }}</option>
+            <option value="proportional">{{ t('menu.display.sidebar_width.proportional', { defaultValue: '按比例' }) }}</option>
+          </select>
+        </label>
       </div>
       <input
         ref="replayFileInput"
@@ -224,6 +262,17 @@ input {
   gap: 8px;
   flex-wrap: wrap;
   margin-top: 8px;
+}
+
+.display-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.display-group .field {
+  flex: 1;
+  margin-bottom: 0;
 }
 
 button {

@@ -112,7 +112,7 @@ describe('D2 生成池排他：自创条目不在任何生成池中', () => {
         expect(ItemLoader.genWands.length).toBe(ItemLoader.wands.length - INVENTED.wands.length);
         expect(ItemLoader.genStaffs.length).toBe(ItemLoader.staffs.length - INVENTED.staffs.length);
         expect(ItemLoader.genWeapons.length).toBe(ItemLoader.weapons.length - INVENTED.weapons.length);
-    }, 120000);
+    });
 
     it('符文生成池不含自创符文，全量符号表仍含之', () => {
         const genWeapon = ItemLoader.GENERATED_WEAPON_RUNICS as readonly string[];
@@ -133,7 +133,7 @@ describe('D2 生成池排他：自创条目不在任何生成池中', () => {
             ['paralyzing', 'quietus', 'speed', 'confusion', 'force', 'slaying', 'mercy']));
         expect(genArmor).toEqual(expect.arrayContaining(
             ['reflection', 'dampening', 'mutuality', 'respiration', 'absorption', 'reprisal', 'immunity']));
-    }, 120000);
+    });
 });
 
 describe('D2 退池而非删除：自创条目仍可被直接构造', () => {
@@ -147,7 +147,7 @@ describe('D2 退池而非删除：自创条目仍可被直接构造', () => {
         const halberd = ItemLoader.spawnWeapon('halberd', 0, 0);
         expect(halberd).not.toBeNull();
         expect(halberd!.damage).toBe('3d4'); // 数据原样保留
-    }, 120000);
+    });
 });
 
 describe('D2 附魔卷轴送符文路径（enchantEquippedItem）：自创符文 0 出现', () => {
@@ -220,7 +220,7 @@ describe('D2 附魔卷轴送符文路径（enchantEquippedItem）：自创符文
         for (const r of ItemLoader.GENERATED_ARMOR_RUNICS) {
             expect(armorCounts.get(r) ?? 0, `CE 护甲符文 ${r} 在附魔路径出现过多（池不完整？）`).toBeGreaterThanOrEqual(20);
         }
-    }, 120000);
+    });
 });
 
 describe('D2 随机流大量采样：自创符文 0 出现', () => {
@@ -319,5 +319,5 @@ describe('D2 整层生成扫描：20 seed × D1-D26 遇不到任何自创项', (
         for (const cat of ['POTION', 'SCROLL', 'WAND', 'STAFF', 'RING', 'CHARM', 'WEAPON', 'ARMOR']) {
             expect(byCategory.get(cat) ?? 0, `类别 ${cat} 在 520 层中一次都未生成（池被清空？）`).toBeGreaterThan(0);
         }
-    }, 120000);
+    });
 });

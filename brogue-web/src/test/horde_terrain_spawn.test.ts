@@ -106,7 +106,7 @@ describe('地形感知落点 — randomMatchingLocation 语义（CE Architect.c:
         expect(leader, 'EEL 领袖应落在所选深水格上').toBeDefined();
         expect(leader!.name.toLowerCase()).toBe('eel'); // D5 <= 10 不触发变异，无前缀
         expect(game.grid.getCell(leader!.loc.x, leader!.loc.y)?.terrain).toBe(TerrainType.WATER_DEEP);
-    }, 120000);
+    });
 
     it('findTerrainSpawnLocation 只返回目标地形格，且排除玩家近旁与已占用格', () => {
         const game = createHeadlessGame(STAMP_SEED);
@@ -121,7 +121,7 @@ describe('地形感知落点 — randomMatchingLocation 语义（CE Architect.c:
             expect(Math.max(Math.abs(pos!.x - px), Math.abs(pos!.y - py))).toBeGreaterThan(5);
             expect(game.getMonsterAt(pos!.x, pos!.y)).toBeUndefined();
         }
-    }, 120000);
+    });
 
     it('无深水格时返回 null（调用方据此在 failsafe 50 内重抽 horde）', () => {
         const game = createHeadlessGame(STAMP_SEED);
@@ -140,7 +140,7 @@ describe('地形感知落点 — randomMatchingLocation 语义（CE Architect.c:
         expect(privates(game).findTerrainSpawnLocation('LAVA')).toBeNull();
         // STATUE_* 等生成期专用落点不在映射表内 → null（CE 同样重抽）
         expect(privates(game).findTerrainSpawnLocation('STATUE_INSTACRACK')).toBeNull();
-    }, 120000);
+    });
 
     it('D8 候选池含两条 EEL horde 且加权抽取可命中（修复的前提条件）', () => {
         const game = createHeadlessGame(STAMP_SEED);
@@ -155,7 +155,7 @@ describe('地形感知落点 — randomMatchingLocation 语义（CE Architect.c:
         // 两条合计 freq 170 / 全池 1440 ≈ 11.8%，固定 seed 下应稳定落在 8%-16%
         expect(eelPicks).toBeGreaterThan(80);
         expect(eelPicks).toBeLessThan(160);
-    }, 120000);
+    });
 
     it('passableArcCount 弧段计数（CE Architect.c:171）：计数有界且与邻域可通行性一致', () => {
         const game = createHeadlessGame(STAMP_SEED);
@@ -186,7 +186,7 @@ describe('地形感知落点 — randomMatchingLocation 语义（CE Architect.c:
         }
         expect(openCells, '地图应同时存在开阔地与贴墙格两类样本').toBeGreaterThan(0);
         expect(wallAdjacent).toBeGreaterThan(0);
-    }, 120000);
+    });
 });
 
 describe('地形感知落点 — 无 spawnsIn 的 horde 行为不变（仍落普通地板格）', () => {
@@ -213,7 +213,7 @@ describe('地形感知落点 — 无 spawnsIn 的 horde 行为不变（仍落普
         // DEEP_WATER：只认 WATER_DEEP（FLOOR 上不匹配 → failsafe 重抽）
         expect(privates(game).hordeFitsTerrain(eel, waterPos)).toBe(true);
         expect(privates(game).hordeFitsTerrain(eel, floorPos!)).toBe(false);
-    }, 120000);
+    });
 
     it('仅作为无 spawnsIn horde 领袖出现的物种，经 horde 循环落格必在 FLOOR 上', () => {
         // toad/centipede/spider/wisp/zombie/acidic_jelly/explosive_bloat 在 hordes.json 中
@@ -241,7 +241,7 @@ describe('地形感知落点 — 无 spawnsIn 的 horde 行为不变（仍落普
         // 恰好落在边界上）。改为下限区间——目的只是确认"确实抽到了足够样本"，
         // 而非锁定某个精确值。见 project_conventions.md §四。
         expect(checked, '应实际覆盖到该组物种的样本').toBeGreaterThanOrEqual(20);
-    }, 120000);
+    });
 });
 
 describe('地形感知落点 — 既有 floorTiles 用法未被破坏（楼梯 / 物品）', () => {
@@ -291,7 +291,7 @@ describe('地形感知落点 — 既有 floorTiles 用法未被破坏（楼梯 /
         if (onImpassable.length > 0) {
             console.log(`[horde_terrain_spawn] 既有行为记录（machine/vault 质心落墙，与本次修复无关）：\n  ${onImpassable.join('\n  ')}`);
         }
-    }, 120000);
+    });
 });
 
 describe('修复验收 — 水生 horde 实际刷出 + 多 seed × D1-D26 统计（对照修复前 = 0 次）', () => {
@@ -312,7 +312,7 @@ describe('修复验收 — 水生 horde 实际刷出 + 多 seed × D1-D26 统计
         }
         expect(game.monsters.length).toBeGreaterThan(before);
         expect(eelOnWater, '重复铺怪后应有 EEL 经由 populateLevel 落在深水格（修复前恒为 0）').toBeGreaterThan(0);
-    }, 120000);
+    });
 
     it('多 seed × D1-D26 全流程统计：水生 horde 出现次数 / 层数占比 / 无深水层数', () => {
         // CE hordes 目录中 spawnsIn 的水生/泥沼/熔岩物种（普通池子集）
@@ -407,5 +407,5 @@ describe('修复验收 — 水生 horde 实际刷出 + 多 seed × D1-D26 统计
 
         // 修复核心断言：修复前 horde 循环的水生落格恒为 0
         expect(onTarget, '应有水生怪精确落在 spawnsIn 目标地形（修复前 = 0）').toBeGreaterThan(0);
-    }, 120000);
+    });
 });

@@ -1,10 +1,24 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { activeGame } from '../engine/Core/Game';
 import { logger } from '../engine/Systems/Logger';
 import type { LogMessage } from '../engine/Systems/Logger';
 import { STATUS_CONFIG } from '../engine/Status/statusConfig';
 import { STOMACH_SIZE, HUNGER_THRESHOLD, WEAK_THRESHOLD, FAINT_THRESHOLD } from '../entities/Player';
+import { computeSidebarWidth, displaySettings } from '../engine/Settings';
+
+// P2-6：侧栏宽度模式（固定 340px / 按容器宽 20% 且不低于最小宽度）。
+// 侧栏是 app-layout（100vw flex 行）的直接子元素，容器宽即窗口宽；
+// 与地图不同，这里用 window.innerWidth 是正确口径（地图必须用画布容器尺寸，
+// 见 GameCanvas.computeMapLayout 的注释）。
+const containerWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1280);
+const onWindowResize = () => {
+  containerWidth.value = window.innerWidth;
+};
+const sidebarStyle = computed(() => {
+  const w = computeSidebarWidth(containerWidth.value, displaySettings.sidebarWidthMode);
+  return { width: `${w}px`, minWidth: `${w}px`, maxWidth: `${w}px` };
+});
 
 const playerHp = ref(0);
 const playerMaxHp = ref(0);
@@ -26,6 +40,7 @@ const getNutritionStatus = (nutrition: number) => {
 let pollInterval: number;
 
 onMounted(() => {
+  window.addEventListener('resize', onWindowResize);
   // Poll state because the engine is pure TS
   pollInterval = window.setInterval(() => {
     if (activeGame && activeGame.player) {
@@ -47,12 +62,13 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+  window.removeEventListener('resize', onWindowResize);
   clearInterval(pollInterval);
 });
 </script>
 
 <template>
-  <div class="sidebar glass-panel">
+  <div class="sidebar glass-panel" :style="sidebarStyle">
     
     <!-- Title Area -->
     <div class="brand-header">
@@ -123,9 +139,8 @@ onUnmounted(() => {
 
 <style scoped>
 .sidebar {
-  width: 340px;
-  min-width: 340px;
-  max-width: 340px;
+  /* 宽度由 computeSidebarWidth 按设置（固定/按比例）以内联样式驱动，
+     三值同步避免 flex 压缩或撑开；固定模式 = 原来的 340px 现状。 */
   height: 100vh;
   display: flex;
   flex-direction: column;
