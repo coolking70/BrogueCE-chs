@@ -19,7 +19,7 @@ import mutationData from '../../data/mutations.json';
 import type { MonsterData, MonsterAbility, MutationData } from '../../entities/Monster';
 import { MonsterState } from '../../entities/Monster';
 import { Direction, type Pos } from '../../types';
-import { ensureEntityIdAbove, TICKS_PER_TURN, type StatusId } from '../../entities/Creature';
+import { ensureEntityIdAbove, type StatusId } from '../../entities/Creature';
 import { timeSystem } from '../Systems/Time';
 import { generateMonsterDetail, generateItemDetail, type DetailInfo } from '../UI/DetailGenerator';
 import { logger } from '../Systems/Logger';
@@ -352,6 +352,7 @@ export class Game {
         this.visibleMonsters.clear();
         this.visibleItems.clear();
         this.autoPath = [];
+        this.discardInFlightAdvancement();
         this.everSeenItems.clear();
         this.everSeenMonsters.clear();
         this.isMouseTraveling = false;
@@ -1300,6 +1301,7 @@ export class Game {
         monster.maxHp = m.maxHp;
         monster.state = m.state as any;
         monster.statusDurations = { ...(m.statusDurations ?? {}) };
+        monster.refreshSpeeds(); // P2-2：状态直写绕过 applyStatus，需显式重算衍生速度
         monster.damageString = m.damageString;
         monster.goldDropChance = m.goldDropChance;
         monster.itemDropChance = m.itemDropChance;
@@ -1852,6 +1854,9 @@ export class Game {
 
     public replayStep(silent: boolean = false) {
         if (!this.replayRecording) return;
+        // P2-2 输入锁：动画推进期间回放步同样不得插入（否则会在怪物行动的
+        // 半途落地玩家动作，破坏逐次演出的因果顺序）
+        if (this.isInputLocked()) return;
         if (this.replayCursor >= this.replayEvents.length) {
             this.replayStatus = 'finished';
             return;
@@ -1902,6 +1907,12 @@ export class Game {
             return;
         }
 
+        // P2-2 输入锁（决策 E1）：怪物行动动画播完之前，玩家输入一律忽略
+        // （不录制、不生效）。system 源不受锁约束——harness/脚本驱动必须始终可用。
+        if (source === 'player' && this.isInputLocked()) {
+            return;
+        }
+
         if (source === 'player') {
             this.recordInputEvent(action, data);
         }
@@ -1913,7 +1924,7 @@ export class Game {
                 }),
                 '#ff9999'
             );
-            timeSystem.currentTick += 100;
+            timeSystem.currentTick += this.player.movementSpeed;
             this.playerTurnEnded();
             return;
         }
@@ -2092,7 +2103,9 @@ export class Game {
                     }
 
                     this.needsRender = true;
-                    timeSystem.currentTick += 100;
+                    // CE Time.c:2438：攻击耗时 = attackSpeed，在结算处累加
+                    this.playerRecoversFromAttacking();
+                    timeSystem.currentTick += this.player.attackSpeed;
                 } else if (this.grid.getCell(newX, newY)?.terrain === TerrainType.LOCKED_DOOR) {
                     const keyItem = this.player.inventory.items.find((i: import('../Items/Item').Item) => i.category === ItemCategory.KEY);
                     if (keyItem) {
@@ -2118,7 +2131,7 @@ export class Game {
                         }
 
                         this.needsRender = true;
-                        timeSystem.currentTick += 100;
+                        timeSystem.currentTick += this.player.movementSpeed;
                     } else {
                         logger.log(i18next.t('door.locked', { defaultValue: 'The door is locked. You need a key.' }), '#ffaa88');
                         this.needsRender = true;
@@ -2159,7 +2172,8 @@ export class Game {
                             }
 
                             this.needsRender = true;
-                            timeSystem.currentTick += 50;
+                            // CE 无祭坛取物优惠耗时：与普通移动一样收满 movementSpeed
+                            timeSystem.currentTick += this.player.movementSpeed;
                         } else {
                             logger.log(i18next.t('game.inventory_full', { defaultValue: 'Your inventory is full.' }), '#ff8888');
                         }
@@ -2168,7 +2182,7 @@ export class Game {
                         this.player.loc.x = newX;
                         this.player.loc.y = newY;
                         this.needsRender = true;
-                        timeSystem.currentTick += 100;
+                        timeSystem.currentTick += this.player.movementSpeed;
                         this.handleSpecialTileEntry();
                     }
                 } else if (this.canMoveTo(newX, newY)) {
@@ -2181,7 +2195,7 @@ export class Game {
                                 logger.log(i18next.t('env.break_web', { defaultValue: 'You break the web.' }), '#aaaaaa');
                             }
                             this.needsRender = true;
-                            timeSystem.currentTick += 100;
+                            timeSystem.currentTick += this.player.movementSpeed;
                             if (this.needsRender) this.playerTurnEnded();
                             return;
                         }
@@ -2192,12 +2206,9 @@ export class Game {
                     this.player.loc.y = newY;
                     this.needsRender = true;
 
-                    const nextCell = this.grid.getCell(newX, newY);
-                    if ((currentCell && currentCell.terrain === TerrainType.MUD) || (nextCell && nextCell.terrain === TerrainType.MUD)) {
-                        timeSystem.currentTick += 200; // Moving through mud takes twice the time
-                    } else {
-                        timeSystem.currentTick += 100;
-                    }
+                    // CE 的玩家移动耗时与地形无关（Time.c:2604 只看 movementSpeed）；
+                    // web 原有的"泥泞 ×2"为自创口径，按 D1 移除。
+                    timeSystem.currentTick += this.player.movementSpeed;
 
                     this.handleSpecialTileEntry();
                 }
@@ -2208,7 +2219,7 @@ export class Game {
 
             } else {
                 // rest
-                timeSystem.currentTick += 100;
+                timeSystem.currentTick += this.player.movementSpeed;
                 this.playerTurnEnded();
             }
         } else if (action === 'pickup') {
@@ -2234,7 +2245,8 @@ export class Game {
                     logger.log(i18next.t('item.pickup', { name: item.displayName, defaultValue: `You picked up ${item.displayName}.` }), '#ffffff');
                     this.items.splice(itemIndex, 1);
                     this.needsRender = true;
-                    timeSystem.currentTick += 50; // Pick up takes half a turn
+                    // CE 拾取无"半回合"优惠（自创口径移除），收满 movementSpeed
+                    timeSystem.currentTick += this.player.movementSpeed;
                     this.playerTurnEnded();
                 } else {
                     logger.log(i18next.t('game.inventory_full', { defaultValue: 'Your inventory is full.' }), '#ff8888');
@@ -2957,6 +2969,7 @@ export class Game {
                             sd[k] = 0;
                         }
                     }
+                    target.refreshSpeeds(); // P2-2：haste/slowed 被清，衍生速度立即复原
                     logger.log(i18next.t('bolt.negation_hit', {
                         name: item.name, target: target.name,
                         defaultValue: `${item.name} negates all magic on the ${target.name}!`
@@ -3823,17 +3836,34 @@ export class Game {
     }
 
     /**
+     * CE Time.c:2438-2450 playerRecoversFromAttacking：玩家攻击的回合耗时在
+     * 攻击结算处累加进 ticksUntilTurn，playerTurnEnded 的 ==0 分支因此跳过
+     * movementSpeed——攻击耗时 = attackSpeed（haste/slow 同步生效）。
+     * CE 的 ITEM_ATTACKS_STAGGER/QUICKLY 武器修正分支无法实现：web 武器数据
+     * 模型没有 flags 字段（weapons.json 无该键，Item.ts 本轮禁改），详见报告。
+     */
+    private playerRecoversFromAttacking(): void {
+        if (this.player.ticksUntilTurn >= 0) {
+            this.player.ticksUntilTurn += this.player.attackSpeed;
+        }
+    }
+
+    /**
      * CE Time.c:2468 playerTurnEnded —— 玩家回合结束后的"最近事件推进"调度：
      * 玩家动作计时累加进 ticksUntilTurn，随后 while 循环里反复求 soonestTurn
      * （全部存活怪物与玩家剩余 tick 的最小值），把所有怪物批量扣减这么多 tick，
      * 让归零的怪物行动，直到玩家重新可行动（ticksUntilTurn 归零）。
      *
-     * P2-1 恒速口径：所有速度一律 TICKS_PER_TURN(100)——玩家动作耗时恒
-     * （CE Time.c:2602 的 movementSpeed 路径），怪物行动后恒满（CE monstersTurn
-     * 各出口的 movementSpeed/attackSpeed 在恒 100 下收敛为同一值）。因此循环体
-     * 恰好迭代一次、每只怪物行动一次，与替换前的"逐只各行动一次"逐格一致；
-     * 差异化耗时与真实速度留待 P2-2，客观时间门（ticksTillUpdateEnvironment）
-     * 留待 P2-3。
+     * P2-2 真实速度口径：玩家动作耗时 = player.movementSpeed（攻击走
+     * playerRecoversFromAttacking 的 attackSpeed，CE Time.c:2604/2438）；
+     * 怪物行动耗时在 advancementLoop 内按行动类型落账——攻击/施法出口由
+     * Monster.endTurnWithAttack 置 attackSpeed（MONST_CAST_SPELLS_SLOWLY ×2），
+     * 移动与跳过（麻痹/俘虏/入迷，CE Time.c:2731）由循环统一置 movementSpeed。
+     * 客观时间门（ticksTillUpdateEnvironment）仍留待 P2-3。
+     *
+     * 动画分帧（决策 E1）：animationEnabled=false（headless/默认）时一次性同步
+     * 跑完整个循环 + 收尾，与 P2-1 逐格等价（速度本身除外）；true 时启动
+     * 分步推进，每次怪物行动单独渲染一帧，期间输入被锁（见 beginAdvancement）。
      */
     private playerTurnEnded() {
         this.monsters = this.monsters.filter(m => m.hp > 0);
@@ -3841,19 +3871,33 @@ export class Game {
 
         const stealthRange = this.calculateStealthRange();
 
-        // CE Time.c:2602-2606：== 0 时累加 movementSpeed（本轮恒 TICKS_PER_TURN）；
-        // < 0 分支对应 CE 的免费回合残留（player.ticksUntilTurn = -1），web 侧
-        // 本轮没有产生负值的路径，保留分支仅为结构对齐。
+        // CE Time.c:2604-2609：== 0 时累加 movementSpeed（攻击路径已在
+        // playerRecoversFromAttacking 里累加过 attackSpeed，不会进此分支）；
+        // < 0 分支对应 CE 的免费回合残留（player.ticksUntilTurn = -1）。
+        this.player.refreshSpeeds();
         if (this.player.ticksUntilTurn === 0) {
-            this.player.ticksUntilTurn += TICKS_PER_TURN;
+            this.player.ticksUntilTurn += this.player.movementSpeed;
         } else if (this.player.ticksUntilTurn < 0) {
             this.player.ticksUntilTurn = 0;
         }
 
-        // CE Time.c:2643-2752 推进主循环。soonestTurn 的第三个候选
-        // rogue.ticksTillUpdateEnvironment 及其归零时的客观时间挂钩
-        // （法杖充能、渐进鉴定、刷怪 fuse、怪物状态递减、updateEnvironment）
-        // 本轮不迁移，维持下方原有的每动作一次挂载点。
+        if (this.animationEnabled) {
+            this.beginAdvancement(stealthRange);
+            return;
+        }
+
+        const iter = this.advancementLoop(stealthRange);
+        let step = iter.next();
+        while (!step.done) step = iter.next();
+        this.finishTurnEpilogue();
+    }
+
+    /**
+     * CE Time.c:2643-2752 推进主循环的可分步版本：每个怪物行动后 yield 一次，
+     * 供动画模式逐帧消费；同步模式一次性跑完（生成器同源，保证两条路径的
+     * 调度语义永不漂移）。
+     */
+    private *advancementLoop(stealthRange: number): Generator<void, void, void> {
         while (this.player.ticksUntilTurn > 0) {
             let soonestTurn = this.player.ticksUntilTurn;
             for (const m of this.monsters) {
@@ -3866,20 +3910,29 @@ export class Game {
                 if (m.hp > 0) m.ticksUntilTurn -= soonestTurn;
             }
 
-            // CE Time.c:2720-2745：归零怪物行动。CE 中麻痹/入迷/俘虏在
-            // Time.c:2727-2732 跳过行动但同样把 ticks 重置为 movementSpeed，
-            // web 的跳过判定在 takeTurn 内部早退——两条路在恒 100 口径下
-            // 都收敛为"行动或跳过后 ticks 恒满"。
+            // CE Time.c:2720-2745：归零怪物行动。行动耗时按类型落账：
+            // 攻击/施法出口在 Monster.takeTurn 内已置 attackSpeed（含
+            // MONST_CAST_SPELLS_SLOWLY ×2）；移动/跳过（麻痹/俘虏/入迷等
+            // takeTurn 早退）留 <= 0，由这里统一置 movementSpeed（CE
+            // Time.c:2731 的不行动口径）。注意此处不 refreshSpeeds——公有
+            // moveSpeed/attackSpeed 是"当前值"，直接写即生效（legacy 回置
+            // 依赖此语义），重算反而会覆盖外部写入。
             for (const m of this.monsters) {
                 if (m.hp > 0 && m.ticksUntilTurn <= 0) {
                     m.takeTurn(this, stealthRange);
-                    m.ticksUntilTurn = TICKS_PER_TURN;
+                    if (m.ticksUntilTurn <= 0) {
+                        m.ticksUntilTurn = m.movementSpeed;
+                    }
+                    yield; // P2-2 逐次动画：每次怪物行动单独一帧
                 }
             }
 
             this.player.ticksUntilTurn -= soonestTurn;
         }
+    }
 
+    /** 回合收尾：推进循环结束（或动画播完/兜底中止）后必须恰好执行一次。 */
+    private finishTurnEpilogue() {
         // Let environment update
         this.environment.updateFires();
         this.environment.updateGases();
@@ -3941,6 +3994,126 @@ export class Game {
         }
 
         this.needsRender = true;
+    }
+
+    // ---- P2-2 逐次动画 + 输入锁（决策 E1）----
+
+    /**
+     * 动画开关：headless（harness/默认构造）为 false——playerTurnEnded 同步跑完，
+     * 测试零开销、不阻塞；GameCanvas 挂载时置 true，怪物行动改为逐帧演出。
+     */
+    public animationEnabled: boolean = false;
+    /** 一次怪物行动帧的展示时长（ms）。80ms ≈ 12.5 行动/秒：单步移动可辨认、成群怪不拖沓。 */
+    public animationStepIntervalMs: number = 80;
+    /** 输入锁硬上限（ms）：推进无论因何种原因卡住，超时后强制快进收尾。 */
+    private static readonly ANIMATION_LOCK_TIMEOUT_MS = 5000;
+
+    /** 推进进行中（怪物行动动画未播完）。配合 animationLockDeadline 构成自过期锁。 */
+    public isAdvancing = false;
+    /** 推进循环内捕获的最近异常（保底路径的诊断/测试观测点，正常推进恒为 null）。 */
+    public lastAdvancementError: unknown = null;
+
+    private advancementIter: Generator<void, void, void> | null = null;
+    private animationAccumulatorMs = 0;
+    private animationLockDeadline = 0;
+
+    /**
+     * 玩家输入是否被锁定。锁有两个独立保险：
+     * ① deadline 比对——即便收尾代码因任何原因没有执行，锁也会在
+     *    ANIMATION_LOCK_TIMEOUT_MS 后自动失效（自过期，绝不永久卡死）；
+     * ② finishAdvancement 的 try/finally 式收尾——异常、超时、正常完成三条
+     *    路径都汇入同一处解锁逻辑。
+     */
+    public isInputLocked(): boolean {
+        return this.isAdvancing && Date.now() < this.animationLockDeadline;
+    }
+
+    /** 动画模式入口：建立分步推进并锁输入。收尾在 finishAdvancement。 */
+    private beginAdvancement(stealthRange: number): void {
+        this.advancementIter = this.advancementLoop(stealthRange);
+        this.isAdvancing = true;
+        this.lastAdvancementError = null;
+        this.animationAccumulatorMs = 0;
+        this.animationLockDeadline = Date.now() + Game.ANIMATION_LOCK_TIMEOUT_MS;
+    }
+
+    /** 渲染循环驱动：按 animationStepIntervalMs 的节拍消费推进步。 */
+    public tickAdvancement(deltaMs: number): void {
+        if (!this.isAdvancing || !this.advancementIter) return;
+        this.animationAccumulatorMs += deltaMs;
+        while (this.isAdvancing && this.animationAccumulatorMs >= this.animationStepIntervalMs) {
+            this.animationAccumulatorMs -= this.animationStepIntervalMs;
+            this.stepAdvancement();
+        }
+    }
+
+    /**
+     * 消费一步推进（一次怪物行动）。返回推进是否仍在进行。
+     * 异常/超时路径在内部收尾解锁后返回 false，绝不向外泄漏锁死的局面。
+     */
+    public stepAdvancement(): boolean {
+        if (!this.isAdvancing || !this.advancementIter) return false;
+        if (Date.now() >= this.animationLockDeadline) {
+            // 保底①：锁超时——快进剩余调度并立即收尾解锁
+            this.finishAdvancement();
+            return false;
+        }
+        try {
+            const r = this.advancementIter.next();
+            if (r.done) {
+                this.finishAdvancement();
+                return false;
+            }
+            this.needsRender = true;
+            this.update();
+        } catch (err) {
+            // 保底②：推进循环抛异常——记录证据、收尾、解锁（不吞掉证据）
+            this.lastAdvancementError = err;
+            this.finishAdvancement();
+            return false;
+        }
+        return this.isAdvancing;
+    }
+
+    /**
+     * 收束一次分步推进：三条路径（正常完成/超时快进/异常）全部汇入这里，
+     * 释放输入锁并恰好执行一次回合收尾。若推进被中止（收尾时玩家仍欠 tick，
+     * 即超时快进或异常路径），放弃本回合剩余调度、玩家行动权立即交还；
+     * 未行动的怪物保留各自剩余 tick，随后续回合自然结算。
+     */
+    private finishAdvancement(): void {
+        const iter = this.advancementIter;
+        this.advancementIter = null;
+        this.isAdvancing = false;
+        this.animationAccumulatorMs = 0;
+        const aborted = this.player.ticksUntilTurn > 0;
+        if (iter) {
+            try {
+                iter.return();
+            } catch {
+                // 生成器可能已因异常终止，忽略
+            }
+        }
+        if (aborted) {
+            this.player.ticksUntilTurn = 0;
+        }
+        this.finishTurnEpilogue();
+        this.update();
+    }
+
+    /** 场景重建（新游戏/读档/回放）时丢弃可能在途的推进，避免继承卡死的输入锁。 */
+    public discardInFlightAdvancement(): void {
+        const iter = this.advancementIter;
+        this.advancementIter = null;
+        this.isAdvancing = false;
+        this.animationAccumulatorMs = 0;
+        if (iter) {
+            try {
+                iter.return();
+            } catch {
+                // 同 finishAdvancement：生成器可能已终止
+            }
+        }
     }
 
     private tickArcanaResources() {
@@ -4162,6 +4335,7 @@ export class Game {
         this.player.nutrition = snapshot.player.nutrition;
         this.player.maxNutrition = snapshot.player.maxNutrition;
         this.player.statusDurations = { ...(snapshot.player.statusDurations ?? {}) };
+        this.player.refreshSpeeds(); // P2-2：状态直写绕过 applyStatus，需显式重算衍生速度
         this.player.inventory.items = snapshot.player.inventory.map((it) => this.deserializeItem(it));
         this.player.equippedWeapon = this.player.inventory.items.find((it) => it.id === snapshot.player.equippedWeaponId) ?? null;
         this.player.equippedArmor = this.player.inventory.items.find((it) => it.id === snapshot.player.equippedArmorId) ?? null;
@@ -4193,6 +4367,7 @@ export class Game {
             monster.maxHp = m.maxHp;
             monster.state = m.state as any;
             monster.statusDurations = { ...(m.statusDurations ?? {}) };
+            monster.refreshSpeeds(); // P2-2：状态直写绕过 applyStatus，需显式重算衍生速度
             monster.damageString = m.damageString;
             monster.goldDropChance = m.goldDropChance;
             monster.itemDropChance = m.itemDropChance;
@@ -4211,6 +4386,7 @@ export class Game {
         this.visibleMonsters.clear();
         this.visibleItems.clear();
         this.autoPath = [];
+        this.discardInFlightAdvancement();
         this.everSeenItems.clear();
         this.everSeenMonsters.clear();
         this.levels.clear();
@@ -4418,6 +4594,8 @@ export class Game {
 
     public handleMouseTravel(x: number, y: number) {
         if (this.isInventoryOpen) return;
+        // P2-2 输入锁：动画期间不接受新的鼠标寻路
+        if (this.isInputLocked()) return;
 
         if (this.isThrowing && this.throwItemTarget) {
             this.throwItemAt(this.throwItemTarget, x, y);
@@ -4750,6 +4928,9 @@ export class Game {
 
     public stepAutoPath() {
         if (this.autoPath.length === 0 || this.isInventoryOpen) return;
+        // P2-2 输入锁：怪物行动动画播完之前，自动探索/寻路不得推进下一步
+        // （GameCanvas 的 ticker 会持续重试，解锁后自然继续）
+        if (this.isInputLocked()) return;
 
         let shouldPause = false;
         const next = this.autoPath[0];
@@ -4761,10 +4942,10 @@ export class Game {
             const blockMob = this.getMonsterAt(next.x, next.y);
             if (blockMob) {
                 // Path blocked by monster, attack it!
+                // （回合推进由 handlePlayerAction 的移动=攻击分支完成；
+                //   原先此处再补一次 playerTurnEnded 属双重推进 bug，P2-2 修复）
                 this.handlePlayerAction('move', { x: next.x - this.player.loc.x, y: next.y - this.player.loc.y }, 'system');
                 // Do not clear autoPath, keep trying to move to destination unless user interrupts later.
-                timeSystem.currentTick += 100;
-                this.playerTurnEnded();
                 return;
             }
 
@@ -4795,10 +4976,10 @@ export class Game {
             }
 
             if (adjacentMonster && !shouldPause) {
+                // （回合推进由 handlePlayerAction 完成；原先的双重 playerTurnEnded
+                //   已修，理由同上）
                 this.handlePlayerAction('move', { x: adjacentMonster.loc.x - this.player.loc.x, y: adjacentMonster.loc.y - this.player.loc.y }, 'system');
                 this.autoPath = [];
-                timeSystem.currentTick += 100;
-                this.playerTurnEnded();
                 return;
             }
 
@@ -4846,7 +5027,7 @@ export class Game {
             }
         }
 
-        timeSystem.currentTick += 100;
+        timeSystem.currentTick += this.player.movementSpeed;
         this.playerTurnEnded();
     }
 

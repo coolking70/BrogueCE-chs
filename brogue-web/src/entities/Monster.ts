@@ -3,7 +3,7 @@
  * Base Monster class mirroring Brogue's monster initialization
  */
 
-import { Creature, TICKS_PER_TURN } from './Creature';
+import { Creature } from './Creature';
 import { rng } from '../engine/Random';
 import type { Game } from '../engine/Core/Game';
 import { Pathfind } from '../engine/Map/Pathfind';
@@ -86,8 +86,13 @@ export class Monster extends Creature {
 
     // Movement & Combat speeds
     public regenTurns: number = 0;
-    public moveSpeed: number = 100;
-    public attackSpeed: number = 100;
+    // CE info.movementSpeed / info.attackSpeed（monsterCatalog 基准值，P1-1 起
+    // 来自 monsters.json）。基准必须存私有字段：公有的 moveSpeed/attackSpeed
+    // 是"当前行动耗时"（CE creature->movementSpeed/attackSpeed，含 haste/slow
+    // 修正）——调度器、DetailGenerator 与 monster_stats_effect 的 legacy 回置
+    // 都按原字段名直接读写"当前值"，写即生效。
+    private baseMoveSpeed: number = 100;
+    private baseAttackSpeed: number = 100;
     public accuracy: number = 100;
     public defense: number = 0;
 
@@ -102,12 +107,15 @@ export class Monster extends Creature {
         this.maxHp = data.hp;
         this.hp = data.hp;
         this.damageString = data.damage;
-        // Monsters.c:116 initializeMonster：ticksUntilTurn = info.movementSpeed。
-        // P2-1 恒速口径：不读 data.moveSpeed 的真实值，一律满速 TICKS_PER_TURN。
-        this.ticksUntilTurn = TICKS_PER_TURN;
+        // Monsters.c:119-120：movementSpeed/attackSpeed 当前值由 info 基准推导
+        // （无状态时即基准值）。
         this.regenTurns = data.regen ?? 0;
-        this.moveSpeed = data.moveSpeed ?? 100;
-        this.attackSpeed = data.attackSpeed ?? 100;
+        this.baseMoveSpeed = data.moveSpeed ?? 100;
+        this.baseAttackSpeed = data.attackSpeed ?? 100;
+        this.refreshSpeeds();
+        // Monsters.c:116 initializeMonster：ticksUntilTurn = info.movementSpeed。
+        // P2-1 恒 TICKS_PER_TURN；P2-2 起取真实值（速度是"行动花费"，豺狼 50 双倍速）。
+        this.ticksUntilTurn = this.moveSpeed;
         this.accuracy = data.accuracy ?? 100;
         this.defense = data.defense ?? 0;
         this.onHitStatus = data.onHitStatus;
@@ -142,6 +150,27 @@ export class Monster extends Creature {
         return this.behaviorFlags.has(flag);
     }
 
+    /**
+     * 公有 moveSpeed/attackSpeed = "当前行动耗时"（CE creature->movementSpeed /
+     * ->attackSpeed）：moveSpeed 以存取器别名到 Creature.movementSpeed，保证
+     * 直接写 m.moveSpeed（legacy 回置、调试）立即对调度生效。
+     */
+    public get moveSpeed(): number { return this.movementSpeed; }
+    public set moveSpeed(v: number) { this.movementSpeed = v; }
+
+    /** info 基准（CE monst->info.movementSpeed）：mutate() 改写基准后由 refreshSpeeds 生效。 */
+    protected override get infoMovementSpeed(): number { return this.baseMoveSpeed; }
+    protected override get infoAttackSpeed(): number { return this.baseAttackSpeed; }
+
+    /**
+     * CE Monsters.c（monstersTurn 各攻击/施法出口）：行动耗时 = attackSpeed，
+     * MONST_CAST_SPELLS_SLOWLY 者减半行动频率（×2）。移动出口不在此赋值——
+     * 由 Game 推进循环统一置 movementSpeed（CE Time.c:2731 的跳过口径同源）。
+     */
+    private endTurnWithAttack(): void {
+        this.ticksUntilTurn = this.attackSpeed * (this.hasBehavior('MONST_CAST_SPELLS_SLOWLY') ? 2 : 1);
+    }
+
     public mutate(m: MutationData) {
         this.mutation = m;
         // Prepend mutation name (e.g. "explosive rat")
@@ -151,8 +180,13 @@ export class Monster extends Creature {
         // Apply stat multipliers
         this.maxHp = Math.max(1, Math.floor(this.maxHp * m.healthFactor));
         this.hp = this.maxHp;
-        this.moveSpeed = Math.floor(this.moveSpeed * m.moveSpeedFactor);
-        this.attackSpeed = Math.floor(this.attackSpeed * m.attackSpeedFactor);
+        this.baseMoveSpeed = Math.floor(this.baseMoveSpeed * m.moveSpeedFactor);
+        this.baseAttackSpeed = Math.floor(this.baseAttackSpeed * m.attackSpeedFactor);
+        // CE generateMonster 的顺序是 mutateMonster → initializeMonster：初始
+        // ticksUntilTurn 与当前速度都取"突变后"的 info 基准。web 的 mutate 在
+        // 构造之后调用，这里补齐两条初始化语义。
+        this.refreshSpeeds();
+        this.ticksUntilTurn = this.moveSpeed;
 
         // Adjust damage (only modifying the dice count 'A' in 'AdB')
         const match = this.damageString.match(/^(\d+)d(\d+)$/);
@@ -222,6 +256,7 @@ export class Monster extends Creature {
                     } else {
                         logger.log(i18next.t('combat.ally_misses', { ally: this.name, target: target.name, defaultValue: `Your ${this.name} misses the ${target.name}.` }), '#aaaaaa');
                     }
+                    this.endTurnWithAttack();
                     return;
                 }
 
@@ -242,6 +277,8 @@ export class Monster extends Creature {
                     } else {
                         logger.log(i18next.t('combat.ally_misses', { ally: this.name, target: target.name, defaultValue: `Your ${this.name} misses the ${target.name}.` }), '#aaaaaa');
                     }
+                    this.endTurnWithAttack();
+                    return;
                 } else {
                     const isFlying = this.abilities.has('flying') || this.hasBehavior('MONST_FLIES');
                     const path = Pathfind.findPath(game.grid, this.loc.x, this.loc.y, target.loc.x, target.loc.y, (x, y) => {
@@ -367,6 +404,7 @@ export class Monster extends Creature {
                                 defaultValue: `The ${this.name} misses the ${other.name}.`
                             }), '#aaaaaa');
                         }
+                        this.endTurnWithAttack();
                         return;
                     }
                 }
@@ -405,6 +443,7 @@ export class Monster extends Creature {
                 } else {
                     logger.log(i18next.t('combat.monster_misses_you', { monster: this.name, defaultValue: `The ${this.name} misses you.` }), '#aaaaaa');
                 }
+                this.endTurnWithAttack();
                 return;
             }
 
@@ -460,6 +499,7 @@ export class Monster extends Creature {
                         0xaaaaaa
                     );
                 }
+                this.endTurnWithAttack();
             } else {
                 // Move towards or away from player depending on MAINTAINS_DISTANCE
                 if (this.hasBehavior('MONST_MAINTAINS_DISTANCE') && canSeePlayer && distToPlayer < 3) {

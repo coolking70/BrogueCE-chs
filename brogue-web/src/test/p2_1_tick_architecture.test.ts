@@ -1,3 +1,11 @@
+/**
+ * ⚠️ 本文件的 A 段与 B1/B3 锁定的是 P2-1 的**过渡期不变量**（"所有速度恒为 100、
+ * 行为与 P2-1 前逐格一致"）。P2-2 已按设计放开真实速度，该不变量正当作废，
+ * 相应断言由 src/test/p2_2_real_speed.test.ts 接管（A2 豺狼双动、A3 食人魔半速、
+ * F 段新基线一致性）。
+ *
+ * 此处保留为历史记录并 skip，不删除——它们是"P2-1 确实做到了零行为变化"的证据。
+ */
 /// <reference types="node" />
 /**
  * src/test/p2_1_tick_architecture.test.ts — P2-1：tick 制调度架构替换，零行为变化
@@ -104,7 +112,7 @@ describe('P2-1 A: 与 p2_baseline 逐项一致（零行为变化）', () => {
         expect(mismatches).toEqual([]);
     }, 300000);
 
-    it('4 seed × 400 回合玩法状态：玩家坐标 HP / 所在层 / 全部怪物位置与 HP 一致', () => {
+    it.skip('4 seed × 400 回合玩法状态：玩家坐标 HP / 所在层 / 全部怪物位置与 HP 一致', () => {
         const mismatches: string[] = [];
         for (const seed of SEEDS) {
             const got = capturePlay(seed);
@@ -127,7 +135,7 @@ describe('P2-1 A: 与 p2_baseline 逐项一致（零行为变化）', () => {
 });
 
 describe('P2-1 B: ticksUntilTurn 真实驱动调度（对抗性）', () => {
-    it('B1 字段存在且初始口径正确：怪物满 TICKS_PER_TURN、玩家 0', () => {
+    it.skip('B1 字段存在且初始口径正确：怪物满 TICKS_PER_TURN、玩家 0', () => {
         const game = createHeadlessGame(777);
         expect(game.monsters.length).toBeGreaterThan(0);
         expect(game.player.ticksUntilTurn).toBe(0);
@@ -136,7 +144,7 @@ describe('P2-1 B: ticksUntilTurn 真实驱动调度（对抗性）', () => {
         }
     });
 
-    it('B3 恒速口径：一个玩家动作后每只存活怪物恰好行动一次、ticks 归满、玩家归零', () => {
+    it.skip('B3 恒速口径：一个玩家动作后每只存活怪物恰好行动一次、ticks 归满、玩家归零', () => {
         const game = createHeadlessGame(20260914);
         const spies = game.monsters
             .filter(m => m.hp > 0)

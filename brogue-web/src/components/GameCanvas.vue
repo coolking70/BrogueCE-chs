@@ -208,6 +208,10 @@ onMounted(async () => {
     pixiApp.stage.addChild(floatLayer);
 
     const game = activeGame;
+    // P2-2 逐次动画（决策 E1）：UI 挂载后启用分步推进——每次怪物行动单独
+    // 渲染一帧，期间 handlePlayerAction/stepAutoPath 内部的输入锁拒绝玩家操作。
+    // headless（无渲染）环境不挂载本组件，animationEnabled 保持 false，同步推进。
+    game.animationEnabled = true;
     inputManager.setCallback((action, data) => {
         game.handlePlayerAction(action, data);
         game.update();
@@ -560,8 +564,11 @@ onMounted(async () => {
 
     let pathingTimer = 0;
     // Floating text animation ticker
-    pixiApp.ticker.add(() => {
+    pixiApp.ticker.add((ticker) => {
         game.tickReplay();
+
+        // P2-2：驱动逐次动画（按帧间隔消费怪物行动步；推进进行中输入锁生效）
+        game.tickAdvancement(ticker.deltaMS);
 
         if (game.isTimePaused()) {
             return;
@@ -595,6 +602,11 @@ onMounted(async () => {
 });
 
 onUnmounted(() => {
+  // P2-2：组件卸载后没有 ticker 驱动动画了，关闭分步推进并丢弃在途推进，
+  // 避免遗留一个只能等 5s 超时才解锁的输入锁
+  activeGame.animationEnabled = false;
+  activeGame.discardInFlightAdvancement();
+
   delete (window as Window & { advanceTime?: (ms: number) => void }).advanceTime;
   delete (window as Window & { render_game_to_text?: () => string }).render_game_to_text;
   delete (window as Window & { export_game_recording?: () => string }).export_game_recording;

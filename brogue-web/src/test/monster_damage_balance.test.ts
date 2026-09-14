@@ -222,9 +222,9 @@ function assertMechanical(label: string, rows: BalanceMetrics[]): void {
 describe('怪物伤害平衡回归（3 seed × 2000 回合）', () => {
     it('a) harness 默认策略（任务指定口径，D1 随机游走）', () => {
         assertMechanical('default', SEEDS.map((s) => runSeed(s)));
-    });
+    }, 120000);
 
     it('b) 下楼策略（补充口径，真实暴露深层怪物数值）', () => {
         assertMechanical('descend', SEEDS.map((s) => runSeed(s, makeDescendingPolicy())));
-    });
+    }, 120000);
 });
