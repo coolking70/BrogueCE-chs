@@ -252,6 +252,13 @@ export class Monster extends Creature {
      *  CE spawnHorde 同样经 spawnMinions 落地，一并设置 leader，见 P4-2 报告）
      *  两处赋值，countMinions 读取。 */
     public leader: Monster | null = null;
+    /**
+     * P4-8：CE bookkeepingFlags & MB_GIVEN_UP_ON_SCENT。MONST_ALWAYS_HUNTING
+     * 怪物顺气味走到死路（isLocalScentMaximum）时置位，此后改为直接寻路追玩家
+     * （CE Monsters.c:3466-3469/3477-3481 的 pathTowardCreature 兜底）；
+     * 重见玩家时清除（CE Monsters.c:2101/3234 的简化口径：重见即清）。
+     */
+    public givenUpOnScent: boolean = false;
 
     // Movement & Combat speeds
     public regenTurns: number = 0;
@@ -985,6 +992,26 @@ export class Monster extends Creature {
             }
         }
 
+        // P4-8 返工：CE updateMonsterState（Monsters.c:1718 起）每回合用
+        // awareOfTarget 重算感知，追踪态丢失感知 → 回 WANDERING（Monsters.c:
+        // 1776-1779；wanderToward(lastSeenPlayerAt) 因 web 无 lastSeen 记账
+        // 退化为普通 WANDERING，见报告）。ALWAYS_HUNTING 在 CE 里是
+        // updateMonsterState 的首分支（1725-1731）：强制保持 TRACKING 并直接
+        // return，awareOfTarget 根本不被调用——这里同样短路，既豁免硬截断
+        // 也不消耗 RNG 流。IMMOBILE 怪在上方 862 行已早退（web 炮塔无
+        // 沉睡/唤醒状态机，CE 的 IMMOBILE 感知分支本轮不接线，见报告取舍）。
+        // 不 return：CE 里 updateMonsterState 只改状态，怪物本回合继续以
+        // 新状态行动（Web 落入下方 WANDERING 分支，同构）。
+        if (this.state === MonsterState.HUNTING && !this.hasBehavior('MONST_ALWAYS_HUNTING')) {
+            const awareOfPlayer = game.scent.awareOfTarget(
+                game.grid, this.loc.x, this.loc.y, game.player.loc.x, game.player.loc.y,
+                { alwaysHunting: false, immobile: isImmobile, tracking: true, stealthRange }
+            );
+            if (!awareOfPlayer) {
+                this.state = MonsterState.WANDERING;
+            }
+        }
+
         if (this.hasStatus('confused')) {
             if (rng.randPercent(70)) {
                 const dirs = [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, 1], [-1, 1], [1, -1]];
@@ -1039,6 +1066,11 @@ export class Monster extends Creature {
         }
 
         if (this.state === MonsterState.HUNTING) {
+            // P4-8：CE 在重获视野/贴近玩家时清 MB_GIVEN_UP_ON_SCENT
+            //（Monsters.c:2101/3234，简化为"重见即清"）。
+            if (canSeePlayer) {
+                this.givenUpOnScent = false;
+            }
             // CE Monsters.c:343-360/390：discordant 怪物敌我不分，会把相邻的其他
             // 怪物也当作攻击目标（对玩家仍视为敌人）。置于"丢失视野掉回 WANDERING"
             // 判定之前，使看不到玩家的 discordant 怪也会转身撕咬身边同类。
@@ -1089,10 +1121,13 @@ export class Monster extends Creature {
                 }
             }
 
-            if (!canSeePlayer && distToPlayer > playerDetectRange + 2) {
-                this.state = MonsterState.WANDERING;
-                return;
-            }
+            // P4-8 返工更正：CE 的追踪怪有两条放弃路径——①气味死路（本分支，
+            // scentDirection 无路 + isLocalScentMaximum + 不在玩家视野内 →
+            // MONSTER_WANDERING，Monsters.c:3475-3484）；②气味太陈旧/太远
+            // （awareOfTarget 的 awareness*3 硬截断与 3% 丢目标，经
+            // updateMonsterState → MONSTER_WANDERING，Monsters.c:1776-1779）。
+            // ②已在本回合开头（唤醒判定之后）接线。原先"按直线距离丢目标"
+            // 的旧实现确实与 CE 不符，但正确替代是感知判定而非无截断。
 
             // P4-1b：原 abilities.has('ranged') 远程桩已移除，理由同上（ally 分支
             // 注释）——centaur 的 DISTANCE_ATTACK 现在完全走 tryUseBolt 出口。
@@ -1220,7 +1255,50 @@ export class Monster extends Creature {
                     return;
                 }
 
+                // P4-8：气味移动与直寻共用的移动准入（monsterAvoids 的 web 近似，
+                // 与既有直寻/移动同口径：地形可进 + 无怪物 + 非玩家格）。
                 const isLiquidOnly = this.hasBehavior('MONST_RESTRICTED_TO_LIQUID');
+                const scentCanEnter = (x: number, y: number): boolean => {
+                    const c = game.grid.getCell(x, y);
+                    if (!c) return false;
+                    if (isFlying) return !c.isOpaque && !game.getMonsterAt(x, y) && !(game.player.loc.x === x && game.player.loc.y === y);
+                    if (isLiquidOnly) {
+                        const isLiquid = c.terrain === TerrainType.WATER_SHALLOW || c.terrain === TerrainType.WATER_DEEP;
+                        return isLiquid && !game.getMonsterAt(x, y) && !(game.player.loc.x === x && game.player.loc.y === y);
+                    }
+                    return c.isPassable && !game.getMonsterAt(x, y) && !(game.player.loc.x === x && game.player.loc.y === y);
+                };
+
+                if (!canSeePlayer && !(this.hasBehavior('MONST_ALWAYS_HUNTING') && this.givenUpOnScent)) {
+                    // P4-8：CE Monsters.c:3473 —— 看不见玩家时顺气味梯度上坡移动
+                    //（scentDirection：8 邻域取气味最大且严格大于当前格的一格，
+                    // 含 CE 的对角弥散重试）。
+                    const step = game.scent.stepDirection(game.grid, this.loc.x, this.loc.y, { canEnter: scentCanEnter });
+                    if (step) {
+                        this.tryMoveTo(this.loc.x + step[0], this.loc.y + step[1], game);
+                        return;
+                    }
+                    if (!game.scent.isLocalScentMaximum(game.grid, this.loc.x, this.loc.y)) {
+                        // 有更浓的邻格但进不去（被占/不可进）：本回合原地（CE 同）
+                        return;
+                    }
+                    // 气味死路（局部最大）：
+                    if (this.hasBehavior('MONST_ALWAYS_HUNTING')) {
+                        // CE Monsters.c:3466-3469 + 3477-3481：放弃气味改直接寻路
+                        //（pathTowardCreature + MB_GIVEN_UP_ON_SCENT）。落入下方直寻。
+                        this.givenUpOnScent = true;
+                    } else {
+                        // CE Monsters.c:3482-3484：死路且不在玩家视野内 → 回游荡。
+                        //（CE 还有 wanderToward(lastSeenPlayerAt)，web 无 lastSeen
+                        // 记账，退化为普通 WANDERING，见报告。）
+                        // 在玩家视野内的死路：原地保持追踪（CE：不做任何移动）。
+                        if (!game.grid.getCell(this.loc.x, this.loc.y)?.isVisible) {
+                            this.state = MonsterState.WANDERING;
+                        }
+                        return;
+                    }
+                }
+
                 const path = Pathfind.findPath(game.grid, this.loc.x, this.loc.y, game.player.loc.x, game.player.loc.y, (x, y) => {
                     const c = game.grid.getCell(x, y);
                     if (!c) return false;

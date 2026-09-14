@@ -218,6 +218,13 @@ describe('discord_burst 卷轴（Items.c:8011 → discordBlast）', () => {
 
         attacker.state = MonsterState.HUNTING;
         attacker.setStatusDuration('discordant', 30);
+        // P4-8 返工：awareOfTarget 生效后，追踪怪保持追踪的前提是玩家气味可达
+        //（perceived ≤ awareness*3，Monsters.c:1669-1676）。本测试直调 takeTurn、
+        // 玩家从未行动，气味图全空会让攻击者在第 1 回合被 CE 判定丢目标
+        //（Monsters.c:1776-1779 → WANDERING，discord 分支在 HUNTING 内不再执行）。
+        // 全真掩码盖章 = 玩家气味可达全场：attacker perceived = 4 ≤ awareness 16。
+        game.scent.update(game.grid, game.player.loc.x, game.player.loc.y,
+            Array.from({ length: game.grid.width }, () => new Array<boolean>(game.grid.height).fill(true)));
         const victimHpBefore = victim.hp;
 
         attacker.takeTurn(game, 8);
@@ -261,6 +268,12 @@ describe('discord_burst 卷轴（Items.c:8011 → discordBlast）', () => {
             attacker.state = MonsterState.HUNTING;
             attacker.setStatusDuration('discordant', 30);
             const victim = placeMonster(game, 'jackal', 5 + dx!, 5 + dy!);
+
+            // P4-8 返工：同上——直调 takeTurn 的舞台需保证攻击者气味可达玩家
+            //（perceived = scentDistance((5,5),(2,2)) = 9 ≤ awareness 16），
+            // 否则 CE 丢失判定会在第 1 回合把它切回 WANDERING。
+            game.scent.update(game.grid, game.player.loc.x, game.player.loc.y,
+                Array.from({ length: game.grid.width }, () => new Array<boolean>(game.grid.height).fill(true)));
 
             attacker.takeTurn(game, 8);
 

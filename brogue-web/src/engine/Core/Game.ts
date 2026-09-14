@@ -2,7 +2,7 @@
  * src/engine/Core/Game.ts
  * Main game state and orchestration
  */
-import { Grid, TerrainType, DCOLS, DROWS, LightType } from '../Map/Grid';
+import { Grid, TerrainType, DCOLS, DROWS } from '../Map/Grid';
 import { Architect } from '../Generator/Architect';
 import type { MachineResult } from '../Generator/BlueprintEngine';
 import blueprintData from '../../data/blueprints.json';
@@ -24,6 +24,7 @@ import { timeSystem } from '../Systems/Time';
 import { generateMonsterDetail, generateItemDetail, type DetailInfo } from '../UI/DetailGenerator';
 import { logger } from '../Systems/Logger';
 import { Pathfind } from '../Map/Pathfind';
+import { ScentMap, obstructsScent } from '../Map/Scent';
 import i18next from 'i18next';
 
 import { EnvironmentManager } from '../Environment/Gas';
@@ -304,6 +305,11 @@ export class Game {
     // P2-3 起作为 advancementLoop soonestTurn 的第三候选（Time.c:2651-2652），
     // 每 100 tick 触发一次 objectiveTimeBlock。
     public ticksTillUpdateEnvironment: number = 100;
+
+    // P4-8：当前层的气味图（CE scentMap + rogue.scentTurnNumber）。每层生成时
+    // 换新图（CE 跨层留存 levels[d].scentMap，web 不做多层留存）；每玩家回合
+    // 在 playerTurnEnded 的主观时间块里重刷一次（CE Time.c:2610）。
+    public scent: ScentMap = new ScentMap(DCOLS, DROWS);
 
     // Endgame & Stats
     public isGameOver: boolean = false;
@@ -599,6 +605,8 @@ export class Game {
             this.environment = new EnvironmentManager(this.grid);
             this.fov = new FOVSys(this.grid);
             this.lightMap = new LightMap(this.grid);
+            // P4-8：新层新气味图（CE 跨层留存 levels[d].scentMap，web 不做）
+            this.scent = new ScentMap(DCOLS, DROWS);
 
             // Fresh state for new level
             this.monsters = [];
@@ -1497,6 +1505,8 @@ export class Game {
         this.environment = new EnvironmentManager(this.grid);
         this.fov = new FOVSys(this.grid);
         this.lightMap = new LightMap(this.grid);
+        // P4-8：test 层同样换新气味图
+        this.scent = new ScentMap(DCOLS, DROWS);
 
         for (let x = 0; x < DCOLS; x++) {
             for (let y = 0; y < DROWS; y++) {
@@ -2078,6 +2088,9 @@ export class Game {
     }
 
     public handlePlayerAction(action: string, data?: unknown, source: 'player' | 'system' = 'player') {
+        // P4-8 返工：justRested 每次输入先清零，仅 wait 分支置位（CE IO.c:2521-2527
+        // 的 REST/PERIOD/NUMPAD5 置位、Time.c:2874 回合末清除的等价口径）。
+        this.justRested = false;
         if (source === 'player' && this.replayStatus === 'playing') {
             return;
         }
@@ -2392,6 +2405,7 @@ export class Game {
 
             } else {
                 // rest
+                this.justRested = true; // P4-8 返工：CE rogue.justRested（IO.c:2521-2524）
                 timeSystem.currentTick += this.player.movementSpeed;
                 this.playerTurnEnded();
             }
@@ -3706,21 +3720,57 @@ export class Game {
         }
     }
 
+    /**
+     * CE rogue.justRested 的 web 近似：本回合的输入是否为等待。
+     * CE 里 REST/PERIOD/NUMPAD5 每次按键置位（IO.c:2521-2527）、回合末清除
+     * （Time.c:2874）；web 在 handlePlayerAction 入口清零、wait 分支置位，
+     * 供 calculateStealthRange 的"刚休息过再减半"消费。
+     */
+    private justRested: boolean = false;
+
+    /**
+     * P4-8 返工：CE currentStealthRange()（Time.c:791-832）的口径对齐。
+     * 旧实现（基数 3 + 护甲 weight − 2 + 光照 +4）为自创公式，与 CE 无一处
+     * 对应，据此算出的 awareness 皮筋比 CE 短约三倍。
+     *
+     * 逐项对照（取舍详情见 ai_docs/p4_8_scent_map_report.md）：
+     *   - 隐身恒 1                    Time.c:795-797  ✅ 照抄
+     *   - 基数 14                     Time.c:793      ✅ 照抄
+     *   - playerInDarkness 再减半     Light.c:283-287 ❌ 略去——web 无"矿灯可被
+     *     调暗"概念（Cell.light 全工程无写入方，旧公式的 LIT+4 实为死代码）
+     *   - IS_IN_SHADOW 减半（可叠加） Light.c:222 一族 ✅ 近似为恒处于阴影：
+     *     CE 里矿灯不驱散阴影（Light.c:70-71 注释），而 web 目前唯一光源就是
+     *     玩家自己的火把（addLight(player)），故玩家恒在阴影中 → 减半一次。
+     *     将来接入岩浆/火把等地形光源时应改为查询玩家格。
+     *   - 护甲力量需求加成            Time.c:784-790  ✅ max(0, strengthRequired − 12)
+     *   - 刚休息过（本回合是等待）减半 Time.c:813-815  ✅ justRested 近似为
+     *     "本回合输入是 wait"（CE IO.c:2521-2527 的 REST/PERIOD/NUMPAD5）
+     *   - STATUS_AGGRAVATING          Time.c:817-819  ❌ 略去——web 无该状态
+     *   - 戒指 stealthBonus           Time.c:822-824  ❌ 略去——web 未实装
+     *     （ring_of_stealth 属 D2 自创池，无代码消费）
+     *   - 下限钳制 2 / 1              Time.c:826-829  ✅ 照抄
+     */
     private calculateStealthRange(): number {
-        // Base range
-        let range = 3;
+        if (this.player.hasStatus('invisible')) return 1;
 
-        // Armor penalty
-        if (this.player.equippedArmor) {
-            range += Math.max(0, this.player.equippedArmor.weight - 2);
+        let range = 14;
+        // IS_IN_SHADOW 的 web 近似：玩家恒处于阴影（唯一光源是自己的矿灯类火把）
+        range = Math.floor(range / 2);
+
+        const armor = this.player.equippedArmor;
+        if (armor) {
+            range += Math.max(0, (armor.strengthRequired || 0) - 12);
         }
 
-        // Lighting modifier (if standing in light, much easier to see)
-        const playerCell = this.grid.getCell(this.player.loc.x, this.player.loc.y);
-        if (playerCell && playerCell.light === LightType.LIT) {
-            range += 4;
+        if (this.justRested) {
+            range = Math.ceil(range / 2);
         }
 
+        if (range < 2 && !this.justRested) {
+            range = 2;
+        } else if (range < 1) {
+            range = 1;
+        }
         return range;
     }
 
@@ -4797,6 +4847,25 @@ export class Game {
         } else if (this.player.ticksUntilTurn < 0) {
             this.player.ticksUntilTurn = 0;
         }
+
+        // ---- P4-8：气味（CE Time.c:2506-2510 + Time.c:2610，主观玩家时间块）----
+        // 每玩家回合恰好一次：先推进 scentTurnNumber（隐身 +10，否则 +3，对应
+        // Time.c:2506-2509），再整图重刷气味（updateScent，Time.c:2610——CE 里
+        // 两处都在 playerTurnEnded 内、怪物推进循环之前）。挂在 100-tick 客观块
+        // 是错误实现：haste（50 tick/动作）下会漏刷、slowed（200 tick/动作）下
+        // 会一回合刷两次。
+        this.scent.turnNumber += this.player.hasStatus('invisible') ? 10 : 3;
+        if (this.scent.turnNumber > 20000) {
+            this.scent.resetTurnNumber(); // CE Time.c:2511-2513 → resetScentTurnNumber
+        }
+        this.scent.update(
+            this.grid,
+            this.player.loc.x,
+            this.player.loc.y,
+            // CE 半径为 DCOLS * FP_FACTOR（Time.c:770-771，等效无圆形截断）；
+            // web 取 DCOLS + DROWS ≥ 地图对角线，同样不截断任何格。
+            this.fov.computeFOVMask(this.player.loc.x, this.player.loc.y, DCOLS + DROWS, obstructsScent)
+        );
 
         if (this.animationEnabled && !this.isAutoTraveling()) {
             this.beginAdvancement(stealthRange);
