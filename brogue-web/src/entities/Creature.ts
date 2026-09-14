@@ -49,6 +49,16 @@ export class Creature implements Entity {
      */
     public ticksUntilTurn: number;
 
+    // ---- P4-5：CE bookkeepingFlags 里与近战特殊能力相关的两位 ----
+    // Combat.c:1212-1237（attack() 内 MA_SEIZES 分支）用这两个布尔位互相
+    // 协调"谁抓着谁"；CE 是位掩码里的两个 flag（MB_SEIZED/MB_SEIZING），
+    // web 直接拆成两个具名布尔字段，语义与命名一一对应，不新造抽象。
+    /** CE bookkeepingFlags & MB_SEIZED：本对象被某个 MA_SEIZES 攻击者抓住，
+     *  移动前必须先确认抓它的怪物是否还活着挨着自己（Movement.c:1267-1297）。 */
+    public seized: boolean = false;
+    /** CE bookkeepingFlags & MB_SEIZING：本对象正抓着某个猎物。 */
+    public seizing: boolean = false;
+
     // ---- P2-2 真实速度（CE creature->movementSpeed / ->attackSpeed）----
     // 语义注意：speed 是"行动一次要花多少 tick"，值越小越快（Time.c:2451 起
     // 的推进循环按剩余 tick 排序）。CE info 基准：玩家恒 100/100，怪物来自

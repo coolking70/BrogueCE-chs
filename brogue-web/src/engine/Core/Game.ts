@@ -7,7 +7,7 @@ import { Architect } from '../Generator/Architect';
 import type { MachineResult } from '../Generator/BlueprintEngine';
 import blueprintData from '../../data/blueprints.json';
 import { Player, type HungerState } from '../../entities/Player';
-import { Monster, applyShieldStatus, monstersAreTeammates } from '../../entities/Monster';
+import { Monster, applyShieldStatus, monstersAreTeammates, monstersAreEnemies } from '../../entities/Monster';
 import { CombatSystem } from '../Combat/Combat';
 import { weaponParalysisDuration, weaponConfusionDuration, weaponForceDistance, netEnchant, reflectionChance, armorAbsorptionMax, armorReprisalPercent } from '../Combat/CombatFormulas';
 import { ItemCategory, Item } from '../Items/Item';
@@ -2225,6 +2225,15 @@ export class Game {
 
                 const blockingMonster = this.getMonsterAt(newX, newY);
 
+                // P4-5：CE Movement.c:1296 failsafe —— MB_SEIZED 置位但抓取者已经
+                // 不在相邻处（多半是被杀死后从 this.monsters 里被 playerTurnEnded
+                // 过滤掉了，见 findLiveSeizer 注释），清掉陈旧标记，本回合按正常
+                // 移动/攻击流程走（不提前 return，紧接着下面的 blockingMonster
+                // 判断与移动分支照常执行）。
+                if (this.player.seized && !this.findLiveSeizer()) {
+                    this.player.seized = false;
+                }
+
                 if (blockingMonster) {
                     // Attack
                     const res = CombatSystem.attack(this.player, blockingMonster);
@@ -2287,6 +2296,23 @@ export class Game {
                     // CE Time.c:2438：攻击耗时 = attackSpeed，在结算处累加
                     this.playerRecoversFromAttacking();
                     timeSystem.currentTick += this.player.attackSpeed;
+                } else if (this.player.seized) {
+                    // P4-5：CE Movement.c:1267-1297（MB_SEIZED 检查，playerMoves()
+                    // 内，在攻击分支之后、地形判定之前——移动进空地才会走到这里，
+                    // 撞向抓着自己的怪物本身仍然是正常攻击，已经由上面的
+                    // blockingMonster 分支处理，不受这里影响）。
+                    // 已知简化：CE 这里区分"首次按键（committed=false，取消按键不
+                    // 耗回合）"与"已提交/看不见抓取者（耗回合但不移动）"两段式；
+                    // web 的 handlePlayerAction 每次调用即对应一次已提交的单步
+                    // 输入，没有"排队按键、可取消"的上层缓冲，因此统一按 CE 的
+                    // committed 分支处理：耗掉这一回合、玩家原地不动，见报告。
+                    const seizer = this.findLiveSeizer()!;
+                    logger.log(i18next.t('combat.player_seized_struggle', {
+                        monster: seizer.name,
+                        defaultValue: `You struggle but the ${seizer.name} is holding you!`
+                    }), '#ff8888');
+                    timeSystem.currentTick += this.player.movementSpeed;
+                    this.playerTurnEnded();
                 } else if (this.grid.getCell(newX, newY)?.terrain === TerrainType.LOCKED_DOOR) {
                     const keyItem = this.player.inventory.items.find((i: import('../Items/Item').Item) => i.category === ItemCategory.KEY);
                     if (keyItem) {
@@ -4348,6 +4374,61 @@ export class Game {
             }
         }
         return count;
+    }
+
+    /**
+     * P4-5：CE processStaggerHit（Combat.c:1118-1136），从 specialHit()
+     * （Combat.c:534，只在"命中且未杀死目标"的 else-survive 分支里调用，
+     * 见 Combat.c:1385-1406：inflictDamage 杀死目标时直接进 if 分支
+     * return，走不到 specialHit）沿"攻击者→被击者"方向把目标推开一格：
+     * 目标坐标各轴分别 clamp(-1,1) 后加到当前坐标；若越界/终点是墙/终点
+     * 已有人（怪物或玩家）占用，则什么都不发生。复核结论（写入报告）：
+     * 紧邻的 MA_POISONS（Combat.c:524）与 MA_CAUSES_WEAKNESS（Combat.c:529）
+     * 都带 `&& damage > 0`，MA_ATTACKS_STAGGER（Combat.c:534）单独一行、
+     * 没有这个条件——照实现，不比照邻居补上 damage>0。
+     * 调用方（Monster.ts 三处近战出口）用 `!kamikazeSelfDestruct && hit` 做
+     * 门槛，对应"命中"这一前提；"未被杀死"由调用方在调用前检查 defender.hp>0
+     * （对应 CE 的 kill/survive 分支二选一）。
+     * 已知简化：不检查 CE 的 MB_CAPTIVE，用 web 的 isCaged（拘禁待救援怪物，
+     * 语义等价——见 Monster.ts:225）近似；不做 diagonalBlocked 式对角墙角检查
+     * （web 的 canMoveTo 本身不含对角穿墙判定，与既有移动/寻路代码同口径）。
+     */
+    /**
+     * P4-5：CE Movement.c:1267-1297 的搜索循环——在 this.monsters（已死怪物
+     * 在上一次 playerTurnEnded 里被过滤掉，见该函数顶部的
+     * `this.monsters = this.monsters.filter(m => m.hp > 0)`）里找一个仍然
+     * seizing、与玩家为敌、且与玩家相邻的怪物。找不到即代表抓取者已经死亡
+     * 或已经不再相邻，对应 CE "杀死抓取者后自动解除抓取"的行为——这里没有
+     * 另开一条"死亡时清 MB_SEIZED"的分支，而是复用 CE 原本的实现方式：
+     * 搜索失败就是失败，调用方据此清空 player.seized。
+     */
+    private findLiveSeizer(): Monster | undefined {
+        return this.monsters.find(m =>
+            m.hp > 0 && m.seizing &&
+            monstersAreEnemies(m, this.player) &&
+            Math.max(Math.abs(m.loc.x - this.player.loc.x), Math.abs(m.loc.y - this.player.loc.y)) === 1
+        );
+    }
+
+    // public：与 trySplitMonster 不同，这个方法只在 Monster.ts（另一个模块）的
+    // 三处近战出口被调用，没有 Game.ts 内部自身的调用点——保持 private 会被
+    // vue-tsc 的 noUnusedLocals 判定为"未使用"（跨模块的 `(game as any)` 调用
+    // 对类型检查器不可见）。调用方仍按项目既有约定用 `(game as any)` 转接，
+    // 这里只是把可见性开放到匹配实际调用面。
+    public processStaggerHit(attacker: Creature, defender: Creature): void {
+        if (defender instanceof Monster &&
+            (defender.isInvulnerable() || defender.hasBehavior('MONST_IMMOBILE') ||
+                defender.hasBehavior('MONST_INANIMATE') || defender.isCaged)) {
+            return;
+        }
+        const clamp1 = (v: number) => Math.max(-1, Math.min(1, v));
+        const newX = clamp1(defender.loc.x - attacker.loc.x) + defender.loc.x;
+        const newY = clamp1(defender.loc.y - attacker.loc.y) + defender.loc.y;
+        if (!this.canMoveTo(newX, newY)) return;
+        if (this.getMonsterAt(newX, newY)) return;
+        if (this.player.loc.x === newX && this.player.loc.y === newY) return;
+        defender.loc.x = newX;
+        defender.loc.y = newY;
     }
 
     /**

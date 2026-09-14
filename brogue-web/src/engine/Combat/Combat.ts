@@ -32,6 +32,13 @@ export interface AttackResult {
      * "自爆"消息，而不是把 damage===0 当成"没打中"处理。
      */
     kamikazeSelfDestruct?: boolean;
+    /**
+     * P4-5：CE MA_SEIZES（Combat.c:1212-1237）——攻击者第一次贴身命中不是攻击，
+     * 是"抓住"：伤害恒为 0，双方 seizing/seized 标记置位，直接 return false
+     * （早于 attackHit 命中掷骰）。true 时 hit 恒为 false、damage 恒为 0，
+     * 调用方应据此显示专门的"抓住"消息，而不是当成普通 miss。
+     */
+    seized?: boolean;
 }
 
 export class CombatSystem {
@@ -123,9 +130,29 @@ export class CombatSystem {
             return { damage: 0, weaponName, hit: true, backstab: false, kamikazeSelfDestruct: true };
         }
 
+        // --- P4-5: MA_SEIZES (Combat.c:1212-1237) ---
+        // CE 条件：attacker 带 MA_SEIZES，且"不是（attacker 已经在抓 && defender
+        // 已经被抓）"——即两个标记还没有同时置位时，这一下贴脸就是"抓住"而不是
+        // 攻击：双方标记置位，伤害恒 0，直接 return false，不参与 attackHit 命中
+        // 掷骰（比下面的命中率计算更早）。调用方（web 假定进 attack() 时双方
+        // 已经相邻，距离判定由各调用点的 distToPlayer<=1 保证，对应 CE 的
+        // distanceBetween==1 检查）。
+        if (attacker instanceof Monster && attacker.hasAbility('MA_SEIZES') &&
+            (!attacker.seizing || !defender.seized)) {
+            attacker.seizing = true;
+            defender.seized = true;
+            return { damage: 0, weaponName, hit: false, backstab: false, seized: true };
+        }
+
         // --- Calculate hit probability ---
         let hitProb: number;
         if (autoHit) {
+            hitProb = 100;
+        } else if (defender.seized && attacker.seizing) {
+            // P4-5：CE hitProbability()（Combat.c:125-130）——猎物被抓住后无法闪避
+            // 抓着自己的攻击者（defender SEIZED && attacker SEIZING → 直接返回 100）。
+            // 这让"抓住→下一口必中"成为 MA_SEIZES 的核心威胁；若把这一击仍然交给
+            // 命中率公式，accuracy 低的抓取者抓住后反而很难咬到，与 CE 不符。
             hitProb = 100;
         } else {
             hitProb = hitProbability(attackerAccuracy, defenderDefense, weaponEnchant);
@@ -214,6 +241,23 @@ export class CombatSystem {
         // Apply damage (P4-3: reflected hits redirect to opts.damageTarget, e.g. the caster)
         const applyTo = opts?.damageTarget ?? defender;
         if (damage > 0) {
+            // --- P4-5: MA_TRANSFERENCE (Combat.c:1849-1871, inflictDamage()) ---
+            // 前置条件：defender（这里是实际承伤对象 applyTo，对应 CE reflectBolt
+            // 换靶后传进 inflictDamage 的 defender）不是 MONST_INANIMATE/
+            // MONST_INVULNERABLE。transferenceAmount = min(damage, 承伤对象当前HP)
+            // ——不能超过对方剩余血量；再按"攻击者是否是盟友"取 40%/90%（整数除法，
+            // 向零截断，与 C 的 short 除法同口径）。复核结论（写入报告）：CE
+            // `attacker->currentHP += transferenceAmount` 紧跟着只有玩家血量
+            // 归零的判断，没有 maxHP 上限——这里照实现，不做 clamp。
+            // 玩家戒指 rogue.transference 不在本轮范围，只接怪物/变异的 MA_TRANSFERENCE。
+            if (attacker instanceof Monster && attacker.hasAbility('MA_TRANSFERENCE') &&
+                !(applyTo instanceof Monster && (applyTo.hasBehavior('MONST_INANIMATE') || applyTo.isInvulnerable()))) {
+                const cappedAmount = Math.min(damage, applyTo.hp);
+                const transferAmount = attacker.isAlly
+                    ? Math.trunc(cappedAmount * 4 / 10)  // allies: 40% recovery rate
+                    : Math.trunc(cappedAmount * 9 / 10); // enemies: 90% recovery rate
+                attacker.hp += transferAmount; // 有意不 clamp 到 maxHp，见上方注释
+            }
             applyTo.takeDamage(damage);
         }
 

@@ -575,6 +575,13 @@ export class Monster extends Creature {
                             ally: this.name, target: target.name,
                             defaultValue: `Your ${this.name} explodes against the ${target.name}!`
                         }), '#ff8800');
+                    } else if (result.seized) {
+                        // P4-5：CE MA_SEIZES（Combat.c:1212-1237）——第一次贴脸不是
+                        // 攻击而是抓住，伤害恒 0，不算命中也不算 miss。
+                        logger.log(i18next.t('combat.ally_seizes', {
+                            ally: this.name, target: target.name,
+                            defaultValue: `Your ${this.name} seizes the ${target.name}!`
+                        }), '#ffcc88');
                     } else if (result.damage > 0) {
                         logger.log(i18next.t('combat.ally_hits', {
                             ally: this.name, target: target.name, damage: result.damage,
@@ -592,6 +599,13 @@ export class Monster extends Creature {
                         (game as any).trySplitMonster(target, this);
                     } else {
                         logger.log(i18next.t('combat.ally_misses', { ally: this.name, target: target.name, defaultValue: `Your ${this.name} misses the ${target.name}.` }), '#aaaaaa');
+                    }
+                    // P4-5：CE specialHit()（Combat.c:534）只在"命中且未被杀死"时
+                    // 调用 processStaggerHit——kamikaze/seize 分支已经 return，不会
+                    // 走到这里；miss（result.hit===false）也被 !result.hit 排除。
+                    if (result.hit && !result.kamikazeSelfDestruct && !result.seized &&
+                        target.hp > 0 && this.hasAbility('MA_ATTACKS_STAGGER')) {
+                        (game as any).processStaggerHit(this, target);
                     }
                     this.endTurnWithAttack();
                     return;
@@ -712,6 +726,11 @@ export class Monster extends Creature {
                                 attacker: this.name, target: other.name,
                                 defaultValue: `The ${this.name} explodes against the ${other.name}!`
                             }), '#ff8800');
+                        } else if (result.seized) {
+                            logger.log(i18next.t('combat.discordant_seizes', {
+                                attacker: this.name, target: other.name,
+                                defaultValue: `The ${this.name} seizes the ${other.name}!`
+                            }), '#ffcc88');
                         } else if (result.damage > 0) {
                             logger.log(i18next.t('combat.discordant_hits', {
                                 attacker: this.name, target: other.name, damage: result.damage,
@@ -725,6 +744,11 @@ export class Monster extends Creature {
                                 attacker: this.name, target: other.name,
                                 defaultValue: `The ${this.name} misses the ${other.name}.`
                             }), '#aaaaaa');
+                        }
+                        // P4-5：同上（ally 分支）——命中且未被杀死时才推。
+                        if (result.hit && !result.kamikazeSelfDestruct && !result.seized &&
+                            other.hp > 0 && this.hasAbility('MA_ATTACKS_STAGGER')) {
+                            (game as any).processStaggerHit(this, other);
                         }
                         this.endTurnWithAttack();
                         return;
@@ -755,6 +779,14 @@ export class Monster extends Creature {
                         i18next.t('combat.kamikaze_short', { defaultValue: 'Boom!' }),
                         game.player.loc.x, game.player.loc.y, 0xff8800
                     );
+                } else if (result.seized) {
+                    // P4-5：CE MA_SEIZES（Combat.c:1212-1237）——第一次贴脸抓住玩家，
+                    // 伤害恒 0，不进入命中率判定；玩家的移动解除见
+                    // Game.handlePlayerAction 'move' 分支的 player.seized 检查。
+                    logger.log(i18next.t('combat.monster_seizes_you', {
+                        monster: this.name,
+                        defaultValue: `The ${this.name} seizes you!`
+                    }), '#ffcc88');
                 } else if (result.damage > 0) {
                     game.lastDamageSource = this.name;
                     logger.log(i18next.t('combat.monster_hits_you', {
@@ -803,6 +835,12 @@ export class Monster extends Creature {
                         game.player.loc.y,
                         0xaaaaaa
                     );
+                }
+                // P4-5：同上——命中且未被杀死时才推（kamikaze/seize 分支已经不会
+                // 走到这里之外的判断，此处再显式排除一次以防未来分支顺序调整）。
+                if (result.hit && !result.kamikazeSelfDestruct && !result.seized &&
+                    game.player.hp > 0 && this.hasAbility('MA_ATTACKS_STAGGER')) {
+                    (game as any).processStaggerHit(this, game.player);
                 }
                 this.endTurnWithAttack();
             } else {
