@@ -601,6 +601,31 @@ P4-4 也沿用了这个权宜做法（只接 bloat 的毒气与 explosive bloat 
 只在单点生成**，与 dungeon/surface 层的扩散语义不同。
 
 
+## P1-24 淹死 / 熔岩烧死的怪物根本没死（P4-4 验收探针撞见，玩家可见）
+
+`Creature.die()`（`src/entities/Creature.ts:157`）只做两件事：
+把 `char` 改成 `'%'`、把 `color` 改成暗红。**它不把 hp 归零**，
+而 `Monster` 没有覆盖它。
+
+`Game.applyEnvironmentalEffects()` 里深水与熔岩两个分支把 `entity.die()`
+当作唯一致死手段（其余分支如蒸汽/蔓延死亡都是先 `hp -= N` 再判 `hp <= 0`，
+不受影响）。结果是怪物"淹死/被烧死"之后满血留在 `this.monsters` 里，
+`playerTurnEnded` 的 `filter(m => m.hp > 0)` 永远清不掉它。
+
+实测（验收方探针，种子 20260914，一只 6 HP 老鼠）：
+```
+[深水] 结算后 hp 6->6 char='%' 清扫前在列表=true 清扫后仍在列表=true
+[熔岩] 结算后 hp 6->6 char='%' 清扫前在列表=true 清扫后仍在列表=true
+```
+即：显示成尸体 `%`、继续行动继续攻击，且死亡消息每回合重播一次。
+
+必做：让 `die()` 成为真正的致死收口（至少把 hp 归零），并复核全部
+`entity.die()` 调用点的语义。注意 P4-4 新增的 `triggerDeathFeatures`
+是按 `hp <= 0` 扫描的——修好 `die()` 后，淹死/烧死的膨胀怪会开始正常触发
+死亡地形，这是对齐 CE 的正确行为（CE 只在 `MB_IS_FALLING` 时抑制），
+但要补一条测试确认不会因此在水里生成火。
+
+
 ---
 
 # 验收流程
