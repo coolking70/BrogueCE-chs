@@ -182,22 +182,38 @@ export class BlueprintEngine {
             const region = this.floodFillRoom(seed, bp.roomSize[1]);
 
             if (region.length >= bp.roomSize[0] && region.length <= bp.roomSize[1]) {
-                // Find center
+                // Center: region 内距质心最近的格子。算术质心不保证属于 region
+                //（L 形、环形等非凸房间会落在墙上），而 Game.ts 把 center 用作
+                // machine 宝藏的落点，必须是玩家能站上去的格子。
+                // 取"离质心最近的 region 格"保持"尽量居中"的意图；
+                // 距离相同（平方欧氏）时保留 flood-fill 序中最先出现者，确定性成立。
                 let cx = 0, cy = 0;
                 for (const p of region) { cx += p.x; cy += p.y; }
                 cx = Math.round(cx / region.length);
                 cy = Math.round(cy / region.length);
 
-                // Find door candidate (a cell adjacent to a wall)
+                let center: Pos = region[0]!;
+                let bestDist = Infinity;
+                for (const p of region) {
+                    const d = (p.x - cx) * (p.x - cx) + (p.y - cy) * (p.y - cy);
+                    if (d < bestDist) {
+                        bestDist = d;
+                        center = p;
+                    }
+                }
+
+                // Find door candidate (a cell adjacent to a wall).
+                // center 不作为门格：门地形（LOCKED_DOOR/DOOR）若盖在 center 上，
+                // 会把 Game.ts 之后放在 center 的宝藏封进不可通行格。
                 let doorPos: Pos | null = null;
                 for (const p of region) {
-                    if (this.hasAdjacentWall(p.x, p.y)) {
+                    if ((p.x !== center.x || p.y !== center.y) && this.hasAdjacentWall(p.x, p.y)) {
                         doorPos = p;
                         break;
                     }
                 }
 
-                return { cells: region, center: { x: cx, y: cy }, door: doorPos };
+                return { cells: region, center, door: doorPos };
             }
         }
 
@@ -288,6 +304,10 @@ export class BlueprintEngine {
         const availableCells = [...room.cells];
         rng.shuffleList(availableCells);
         const usedCells = new Set<string>();
+        // center 保留给宝藏：feature 地形（如 key_flood_trap 的 WATER_DEEP、
+        // key_lava_moat 的 LAVA）与 feature 物品都不得落在 center 上，
+        // 否则 Game.ts 之后放在 center 的宝藏会躺进不可通行格。
+        usedCells.add(`${room.center.x},${room.center.y}`);
 
         for (const feature of bp.features) {
             const count = rng.randRange(feature.instanceCount[0], feature.instanceCount[1]);

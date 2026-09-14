@@ -137,6 +137,18 @@ Wand of Fire 落在墙里，**玩家拿不到**。
 该路径不经 `floorTiles`，与 P1-12 的落点修复无关，是既有缺陷。
 修法：宝藏落点应从房间内的可通行格中选，而非几何质心。
 
+## P1-20 仍有 16 件物品落在上锁门上（P1-19 后的残留）
+
+P1-19 把"落在不可通行格"的物品从 44 件降到 16 件（4 seed × D1-D26，
+共 1851 件地面物品）。剩余 16 件**全部落在 `LOCKED_DOOR`（terrain 21）上**，
+而 `LOCKED_DOOR` 在 `isPassable` 中不可通行 → 玩家拿不到。
+
+实例：seed=424242 D14/D17 的 Scroll of Enchanting、seed=20260913 D13 的
+Potion of Life、seed=777 D22 的 Wand of Teleportation。
+
+来自与 blueprint center 不同的放置路径（P1-19 已防住 center 与 doorPos 重合、
+以及 feature 地形盖住 center 两种情况）。需定位该路径并加落格校验。
+
 ## P1-12 水生 horde 的落点匹配（P1-2b 忠实实现 CE 约束后的副作用）
 
 CE 的 horde 有 `spawnsIn` 字段（如 EEL/KRAKEN 为 DEEP_WATER），`randomMatchingLocation`

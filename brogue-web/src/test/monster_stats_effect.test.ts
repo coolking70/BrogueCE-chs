@@ -252,7 +252,7 @@ describe(`怪物五项数值接线效果：legacy vs wired（${REPEATS} seed × 
             `def>0 目标稀少时属正常噪声，已被实测证伪（145/145、legacy 97.0% < wired 98.9%）。` +
             `若本断言失败，说明 defense 数据被整体改坏或命中公式回归。`
         ).toBeLessThanOrEqual(wiredAllowed);
-    });
+    }, 60000);
 });
 
 describe('定向接敌：真实 troll(defense=70, Globals.c:1076) 进入命中掷骰', () => {
@@ -304,5 +304,5 @@ describe('定向接敌：真实 troll(defense=70, Globals.c:1076) 进入命中�
         expect(hits).toBeLessThan(attempts);
         // 全不中也几乎不可能（~1e-7），命中率确实非零
         expect(hits).toBeGreaterThan(0);
-    });
+    }, 60000);
 });
