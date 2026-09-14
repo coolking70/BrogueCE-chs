@@ -308,6 +308,14 @@ export class BlueprintEngine {
         // key_lava_moat 的 LAVA）与 feature 物品都不得落在 center 上，
         // 否则 Game.ts 之后放在 center 的宝藏会躺进不可通行格。
         usedCells.add(`${room.center.x},${room.center.y}`);
+        // door 同理：doorPos 已在上一步（若 bp.doorTerrain 存在）写成门地形
+        // （常见 LOCKED_DOOR，不可通行），但此刻仍留在 availableCells 里，
+        // 若不排除，findFeaturePosition 可能把 MF_GENERATE_ITEM（_random_good_/
+        // KEY 等）feature 的坐标选到它头上，物品就直接躺进了刚铺好的门格
+        // （玩家永远拿不到）。P1-20：24 件高价值物品落在 LOCKED_DOOR 上的根因。
+        if (doorPos) {
+            usedCells.add(`${doorPos.x},${doorPos.y}`);
+        }
 
         for (const feature of bp.features) {
             const count = rng.randRange(feature.instanceCount[0], feature.instanceCount[1]);
