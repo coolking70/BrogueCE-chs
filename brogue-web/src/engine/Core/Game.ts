@@ -19,7 +19,7 @@ import mutationData from '../../data/mutations.json';
 import type { MonsterData, MonsterAbility, MutationData } from '../../entities/Monster';
 import { MonsterState } from '../../entities/Monster';
 import { Direction, type Pos } from '../../types';
-import type { StatusId } from '../../entities/Creature';
+import { ensureEntityIdAbove, type StatusId } from '../../entities/Creature';
 import { timeSystem } from '../Systems/Time';
 import { generateMonsterDetail, generateItemDetail, type DetailInfo } from '../UI/DetailGenerator';
 import { logger } from '../Systems/Logger';
@@ -3056,10 +3056,10 @@ export class Game {
             target.runicKnown = true;
         } else if ((target.category === ItemCategory.WEAPON || target.category === ItemCategory.ARMOR) && rng.randPercent(20)) {
             if (target.category === ItemCategory.WEAPON) {
-                const runics = ['paralyzing', 'venom', 'quietus', 'vampirism', 'speed', 'confusion', 'force', 'slaying', 'mercy'];
+                const runics = ItemLoader.GENERATED_WEAPON_RUNICS;
                 target.runicType = runics[rng.randRange(0, runics.length - 1)];
             } else {
-                const runics = ['reflection', 'dampening', 'mutuality', 'respiration', 'vitality', 'absorption', 'reprisal', 'immunity'];
+                const runics = ItemLoader.GENERATED_ARMOR_RUNICS;
                 target.runicType = runics[rng.randRange(0, runics.length - 1)];
             }
             target.runicKnown = true;
@@ -4066,6 +4066,16 @@ export class Game {
 
     public loadSnapshot(snapshot: GameSnapshot): boolean {
         if (!snapshot || snapshot.version !== 1) return false;
+
+        // 实体 id 是模块级单调计数器（见 Creature.ts）。存档里的 id 可能来自
+        // 更早的进程、已远超当前计数器值，必须先把计数器推到存档最大 id 之上，
+        // 否则读档后新建的怪物/物品会与存档实体撞号。
+        ensureEntityIdAbove(Math.max(
+            0,
+            ...snapshot.monsters.map((m) => m.id),
+            ...snapshot.items.map((it) => it.id),
+            ...snapshot.player.inventory.map((it) => it.id)
+        ));
 
         this.mode = snapshot.mode;
         this.currentSeed = rng.seedRandomGenerator(snapshot.seed);

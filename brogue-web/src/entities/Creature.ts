@@ -9,6 +9,22 @@ import { Direction } from '../types';
 export type StatusId = 'paralyzed' | 'invisible' | 'telepathy' | 'levitating' | 'hallucinating' | 'confused' | 'regenerating' | 'haste' | 'poisoned' | 'slowed' | 'hasted' | 'weakened' | 'flying' | 'immune_fire' | 'discordant';
 type StatusStackMode = 'refresh' | 'stack';
 
+// 实体 ID 用模块级单调递增计数器：ID 只需唯一、不需随机。
+// 若用 RNG 生成，每创建一个实体就消耗一次玩法随机数，会严重污染 SUBSTANTIVE 流。
+// 读档路径必须调用 ensureEntityIdAbove 把计数器推到存档最大 id 之上，
+// 否则读档后新建实体会与存档实体撞号（见 Game.loadSnapshot）。
+let nextEntityId = 1;
+
+export function allocateEntityId(): number {
+    return nextEntityId++;
+}
+
+export function ensureEntityIdAbove(maxInUseId: number): void {
+    if (nextEntityId <= maxInUseId) {
+        nextEntityId = maxInUseId + 1;
+    }
+}
+
 export class Creature implements Entity {
     public id: number;
     public loc: Pos;
@@ -21,7 +37,7 @@ export class Creature implements Entity {
     public statusImmunities: Set<StatusId>;
 
     constructor(x: number, y: number, name: string, char: string, color: number) {
-        this.id = Math.floor(Math.random() * 1000000); // Simple ID generation
+        this.id = allocateEntityId();
         this.loc = { x, y };
         this.name = name;
         this.char = char;

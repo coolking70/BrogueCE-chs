@@ -1,3 +1,33 @@
+<script lang="ts">
+import { rng, RNGType } from '../engine/Random';
+
+/**
+ * 幻觉渲染专用的纯视觉随机：必须走 COSMETIC 流，不得污染玩法（SUBSTANTIVE）流。
+ * 渲染次数取决于帧率/窗口大小/玩家是否在看，若留在玩法流会让玩法随渲染而变。
+ *
+ * 成对用法对齐 CE 的 assureCosmeticRNG / restoreRNG（Rogue.h:1282-1283）：
+ * 切到 COSMETIC -> 取数 -> 用完必须切回（try/finally 保证异常路径也恢复）。
+ * 导出是为了让确定性测试直接断言"渲染不污染玩法流"（p2_0_seeded_rng.test.ts）。
+ */
+export function cosmeticPercent(percent: number): boolean {
+    rng.setRNG(RNGType.RNG_COSMETIC);
+    try {
+        return rng.randPercent(percent);
+    } finally {
+        rng.setRNG(RNGType.RNG_SUBSTANTIVE);
+    }
+}
+
+export function cosmeticPick<T>(list: readonly T[]): T {
+    rng.setRNG(RNGType.RNG_COSMETIC);
+    try {
+        return list[rng.randRange(0, list.length - 1)]!;
+    } finally {
+        rng.setRNG(RNGType.RNG_SUBSTANTIVE);
+    }
+}
+</script>
+
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
 import * as PIXI from 'pixi.js';
@@ -253,9 +283,9 @@ onMounted(async () => {
                         color = '#222222';
                         if (bgColor !== null) bgColor = 0x050505;
                     }
-                    if (hallucinating && Math.random() < 0.15) {
-                        color = hallucinationColors[Math.floor(Math.random() * hallucinationColors.length)]!;
-                        char = hallucinationChars[Math.floor(Math.random() * hallucinationChars.length)]!;
+                    if (hallucinating && cosmeticPercent(15)) {
+                        color = cosmeticPick(hallucinationColors);
+                        char = cosmeticPick(hallucinationChars);
                     }
                 } else if (cell.hasMemory) {
                     // Out of sight memory
@@ -323,9 +353,9 @@ onMounted(async () => {
         for (const item of game.items) {
             const cell = game.grid.getCell(item.loc.x, item.loc.y);
             if (cell?.isVisible) {
-                const renderChar = hallucinating && Math.random() < 0.3 ? '!' : item.char;
-                const renderColor = hallucinating && Math.random() < 0.3
-                    ? hallucinationColors[Math.floor(Math.random() * hallucinationColors.length)]!
+                const renderChar = hallucinating && cosmeticPercent(30) ? '!' : item.char;
+                const renderColor = hallucinating && cosmeticPercent(30)
+                    ? cosmeticPick(hallucinationColors)
                     : item.color;
                 placeEntity(renderChar, renderColor, item.loc.x, item.loc.y, true);
             } else if (cell?.hasMemory) {
@@ -349,9 +379,9 @@ onMounted(async () => {
                     } else if (m.state === MonsterState.ASLEEP) {
                         renderColor = 0x6688aa; // deep cold blue/gray if asleep
                     }
-                    if (hallucinating && Math.random() < 0.35) {
-                        renderColor = hallucinationColors[Math.floor(Math.random() * hallucinationColors.length)]!;
-                        renderChar = hallucinationChars[Math.floor(Math.random() * hallucinationChars.length)]!;
+                    if (hallucinating && cosmeticPercent(35)) {
+                        renderColor = cosmeticPick(hallucinationColors);
+                        renderChar = cosmeticPick(hallucinationChars);
                     }
                     
                     placeEntity(renderChar, renderColor, m.loc.x, m.loc.y, true);

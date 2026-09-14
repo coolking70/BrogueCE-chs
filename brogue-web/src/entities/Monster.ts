@@ -288,9 +288,9 @@ export class Monster extends Creature {
         }
 
         if (this.hasStatus('confused')) {
-            if (Math.random() < 0.7) {
+            if (rng.randPercent(70)) {
                 const dirs = [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, 1], [-1, 1], [1, -1]];
-                const dir = dirs[Math.floor(Math.random() * dirs.length)]!;
+                const dir = dirs[rng.randRange(0, dirs.length - 1)]!;
                 const nx = this.loc.x + dir[0]!;
                 const ny = this.loc.y + dir[1]!;
                 const c = game.grid.getCell(nx, ny);
@@ -507,9 +507,9 @@ export class Monster extends Creature {
             }
         } else if (this.state === MonsterState.WANDERING) {
             // Wander randomly 20% of the time
-            if (Math.random() < 0.2) {
+            if (rng.randPercent(20)) {
                 const dirs = [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, 1], [-1, 1], [1, -1]];
-                const dir = dirs[Math.floor(Math.random() * dirs.length)]!;
+                const dir = dirs[rng.randRange(0, dirs.length - 1)]!;
                 const nx = this.loc.x + dir[0]!;
                 const ny = this.loc.y + dir[1]!;
                 const c = game.grid.getCell(nx, ny);

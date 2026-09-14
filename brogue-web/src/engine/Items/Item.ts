@@ -5,7 +5,7 @@
 
 import type { Entity, Pos } from '../../types';
 import { ItemLoader } from './ItemLoader';
-import { rng } from '../Random';
+import { allocateEntityId } from '../../entities/Creature';
 
 export enum ItemCategory {
     WEAPON,
@@ -55,7 +55,9 @@ export class Item implements Entity {
     public quantity: number = 1;
 
     constructor(name: string, char: string, color: number, category: ItemCategory) {
-        this.id = rng.randRange(1, 100000000);
+        // id 只需唯一：走单调计数器（与 Creature 共用一个序列），
+        // 不消耗玩法随机流（原 rng.randRange(1, 100000000) 每件物品烧掉一次抽取）。
+        this.id = allocateEntityId();
         this.name = name;
         this.char = char;
         this.color = color;
