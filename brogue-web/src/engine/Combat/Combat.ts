@@ -26,6 +26,12 @@ export interface AttackResult {
     backstab: boolean;
     /** Runic that triggered, if any */
     triggeredRunic?: string;
+    /**
+     * P4-4：CE MA_KAMIKAZE（Combat.c:1159-1162）——攻击者代替造成伤害而自毁。
+     * true 时 damage 恒为 0，defender 完全未受影响；调用方应据此显示专门的
+     * "自爆"消息，而不是把 damage===0 当成"没打中"处理。
+     */
+    kamikazeSelfDestruct?: boolean;
 }
 
 export class CombatSystem {
@@ -105,6 +111,16 @@ export class CombatSystem {
         // Backstab: sleeping, paralyzed, or unaware targets take triple damage
         if (defenderAsleep || defenderStuck) {
             backstab = true;
+        }
+
+        // --- P4-4: MA_KAMIKAZE (Combat.c:1159-1162) ---
+        // CE 的检查在 attackHit() 掷骰之前（line 1159 早于 line 1240 的命中判定）：
+        // 自爆怪物的攻击永远"成功"，不参与命中率——攻击者直接自毁代替造成伤害，
+        // defender 完全不受影响。三只膨胀怪的 damage 都是 0d1，真正的杀伤来自
+        // 死亡时触发的 DF（Game.triggerDeathFeatures），不是这次攻击本身。
+        if (attacker instanceof Monster && attacker.hasAbility('MA_KAMIKAZE')) {
+            attacker.takeDamage(attacker.hp);
+            return { damage: 0, weaponName, hit: true, backstab: false, kamikazeSelfDestruct: true };
         }
 
         // --- Calculate hit probability ---

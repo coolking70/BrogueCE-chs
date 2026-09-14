@@ -7,7 +7,7 @@ import { Architect } from '../Generator/Architect';
 import type { MachineResult } from '../Generator/BlueprintEngine';
 import blueprintData from '../../data/blueprints.json';
 import { Player, type HungerState } from '../../entities/Player';
-import { Monster, applyShieldStatus } from '../../entities/Monster';
+import { Monster, applyShieldStatus, monstersAreTeammates } from '../../entities/Monster';
 import { CombatSystem } from '../Combat/Combat';
 import { weaponParalysisDuration, weaponConfusionDuration, weaponForceDistance, netEnchant, reflectionChance, armorAbsorptionMax, armorReprisalPercent } from '../Combat/CombatFormulas';
 import { ItemCategory, Item } from '../Items/Item';
@@ -2252,6 +2252,8 @@ export class Game {
                             this.tryTriggerWeaponRunic(blockingMonster, res.damage);
                         }
                         this.spawnBlood(blockingMonster.loc.x, blockingMonster.loc.y);
+                        // P4-4：CE splitMonster(defender, attacker)（Combat.c:1424，attack() 主路径）。
+                        this.trySplitMonster(blockingMonster, this.player);
                     } else {
                         logger.log(i18next.t('combat.miss', { monster: blockingMonster.name, defaultValue: `You missed the ${blockingMonster.name}.` }), '#888888');
                         this.spawnFloatingText(i18next.t('combat.miss_float', { defaultValue: 'Miss' }), blockingMonster.loc.x, blockingMonster.loc.y, 0xaaaaaa);
@@ -2969,6 +2971,9 @@ export class Game {
                             target: target.name,
                             defaultValue: `The ${target.name} burns to death.`
                         }), '#ff8800');
+                    } else {
+                        // P4-4：CE Items.c:5213 splitMonster —— bolt 命中怪物时同样触发分裂。
+                        this.trySplitMonster(target, this.player);
                     }
                 } else if (!target) {
                     logger.log(i18next.t('bolt.fire_impact', {
@@ -3005,6 +3010,9 @@ export class Game {
                                 target: m.name,
                                 defaultValue: `The ${m.name} is electrocuted!`
                             }), '#55ddff');
+                        } else {
+                            // P4-4：同 FIRE 分支，Items.c:5213 splitMonster。
+                            this.trySplitMonster(m, this.player);
                         }
                     }
                 }
@@ -3311,6 +3319,13 @@ export class Game {
                     isWeaponAttack: false,
                     damageTarget: reflects ? caster : undefined,
                 });
+                if (result.kamikazeSelfDestruct) {
+                    // P4-4：目前带 bolts 的怪物没有一只同时是 MA_KAMIKAZE（膨胀怪没有
+                    // bolts），这里只是让 CombatSystem.attack 的通用出口在未来出现
+                    // 这种组合时行为正确，不静默吞掉自爆语义。
+                    logCast('bolt.monster_cast_kamikaze', `${casterLabel} bursts before the spell lands!`, '#ff8800');
+                    break;
+                }
                 if (reflects) {
                     logCast('bolt.monster_cast_reflect', `${targetName} deflects the ${ceBoltName} back at ${casterLabel}!`, '#99ddff');
                     if (result.damage > 0) {
@@ -3342,6 +3357,9 @@ export class Game {
                     if (!isPlayer && (target as Monster).hp <= 0) {
                         // 怪物互殴致死：与既有 discordant 近战分支同口径，留给
                         // playerTurnEnded 的 filter(m.hp>0) 统一清理，不在这里重复。
+                    } else if (!isPlayer) {
+                        // P4-4：Items.c:5213 splitMonster —— bolt 命中怪物（此处目标非玩家）时同样触发分裂。
+                        this.trySplitMonster(target as Monster, caster);
                     }
                 } else {
                     logCast('bolt.monster_cast_miss', `${casterLabel} tries to hit ${targetName} with ${ceBoltName} but misses.`, '#aaaaaa');
@@ -4317,7 +4335,180 @@ export class Game {
      * （isAutoTraveling，对应 CE rogue.playbackFastForward）直接走同步路径，
      * 全程不进分步、不暂停。
      */
+    /**
+     * CE alliedCloneCount（Combat.c:180-208）。P4-4：只统计当前驻留的
+     * this.monsters——web 不像 CE 那样同时把相邻楼层的怪物列表留在内存里，
+     * 上限 100 在实践中不会被触碰，不影响可观察行为（报告已登记此简化）。
+     */
+    private alliedCloneCount(monst: Monster): number {
+        let count = 0;
+        for (const m of this.monsters) {
+            if (m !== monst && m.typeId === monst.typeId && monstersAreTeammates(m, monst)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
+     * CE splitMonster（Combat.c:222-310）。P4-4：MA_CLONE_SELF_ON_DEFEND 的
+     * 果冻类怪物受到伤害后（仍存活），在其所在的同阵营连通怪物群外缘随机选
+     * 一格复制自身，血量对半（向上取整，CE `(currentHP+1)/2`）。
+     *
+     * 已知简化（详见报告）：
+     *   - 用 grid.isPassable 且非深水/熔岩近似 CE 的 monsterAvoids（web 没有
+     *     该函数的完整移植，无法区分"该怪物具体会不会踩火/踩网"等精细规则）。
+     *   - 分裂体不继承父代已学行为——直接用 monsters.json 重新构造即天然满足
+     *     CE 这条限制；变异（mutation）沿用父代，对齐 CE "mutation effects are
+     *     inherited, they're not learned abilities"。
+     *   - 不处理 CE 末尾"非飞行怪清除 1000 tick 悬浮状态"的边角情形（分裂体
+     *     本就不会带着这个状态出生）。
+     */
+    private trySplitMonster(defender: Monster, attacker: Creature): void {
+        if (!defender.hasAbility('MA_CLONE_SELF_ON_DEFEND')) return;
+        if (defender.hp <= 0) return;
+        if (this.alliedCloneCount(defender) >= 100) return;
+
+        const key = (x: number, y: number) => `${x},${y}`;
+        const dirs4: Array<[number, number]> = [[0, -1], [0, 1], [-1, 0], [1, 0]];
+
+        // 1) 连通同阵营怪物群（4 方向 flood fill）；攻击者相邻时预先并入该组
+        //    （CE 注释：让果冻能在走廊里分裂到玩家背后）。
+        const inGroup = new Set<string>();
+        inGroup.add(key(defender.loc.x, defender.loc.y));
+        const dist = Math.max(Math.abs(defender.loc.x - attacker.loc.x), Math.abs(defender.loc.y - attacker.loc.y));
+        if (dist <= 1 && this.grid.isValidPos(attacker.loc.x, attacker.loc.y)) {
+            inGroup.add(key(attacker.loc.x, attacker.loc.y));
+        }
+        const queue: Array<{ x: number; y: number }> = [{ x: defender.loc.x, y: defender.loc.y }];
+        while (queue.length > 0) {
+            const cur = queue.shift()!;
+            for (const [dx, dy] of dirs4) {
+                const nx = cur.x + dx, ny = cur.y + dy;
+                if (!this.grid.isValidPos(nx, ny)) continue;
+                const k = key(nx, ny);
+                if (inGroup.has(k)) continue;
+                const m = this.getMonsterAt(nx, ny);
+                if (m && monstersAreTeammates(m, defender)) {
+                    inGroup.add(k);
+                    queue.push({ x: nx, y: ny });
+                }
+            }
+        }
+
+        // 2) 群外缘的合格空格（两阶段扫描，与 CE 的 monsterGrid/eligibleGrid
+        //    双重 x-major/y-minor 循环同序，保证同种子下选点可复现）。
+        const eligibleSet = new Set<string>();
+        for (let x = 0; x < DCOLS; x++) {
+            for (let y = 0; y < DROWS; y++) {
+                if (!inGroup.has(key(x, y))) continue;
+                for (const [dx, dy] of dirs4) {
+                    const nx = x + dx, ny = y + dy;
+                    if (!this.grid.isValidPos(nx, ny)) continue;
+                    const nk = key(nx, ny);
+                    if (inGroup.has(nk) || eligibleSet.has(nk)) continue;
+                    const cell = this.grid.getCell(nx, ny);
+                    if (!cell || !cell.isPassable) continue;
+                    if (cell.terrain === TerrainType.LAVA || cell.terrain === TerrainType.WATER_DEEP) continue;
+                    if (this.player.loc.x === nx && this.player.loc.y === ny) continue;
+                    if (this.getMonsterAt(nx, ny)) continue;
+                    eligibleSet.add(nk);
+                }
+            }
+        }
+        if (eligibleSet.size === 0) return; // CE：无合格格子则不分裂，也不扣血
+
+        const eligibleList: Array<{ x: number; y: number }> = [];
+        for (let x = 0; x < DCOLS; x++) {
+            for (let y = 0; y < DROWS; y++) {
+                if (eligibleSet.has(key(x, y))) eligibleList.push({ x, y });
+            }
+        }
+        const idx = rng.randRange(1, eligibleList.length) - 1; // CE: rand_range(1, eligibleLocationCount)
+        const spot = eligibleList[idx]!;
+
+        // 3) 血量对半（先于克隆，CE 顺序：currentHP=(currentHP+1)/2 → cloneMonster）
+        defender.hp = Math.ceil(defender.hp / 2);
+
+        const cloneData = (monsterData as MonsterData[]).find(d => d.id === defender.typeId);
+        if (!cloneData) return;
+        const clone = new Monster(spot.x, spot.y, cloneData);
+        if (defender.mutation) {
+            clone.mutate(defender.mutation);
+        }
+        clone.hp = defender.hp;
+        clone.maxHp = defender.maxHp;
+        clone.isAlly = defender.isAlly;
+        clone.leader = defender.leader;
+        clone.state = defender.state;
+        clone.ticksUntilTurn = Math.max(clone.ticksUntilTurn, 101); // CE: max(ticksUntilTurn, 101)
+        this.monsters.push(clone);
+
+        logger.log(i18next.t('combat.monster_splits', {
+            name: defender.name,
+            defaultValue: `The ${defender.name} splits in two!`
+        }), '#88ff88');
+        this.needsRender = true;
+    }
+
+    /**
+     * CE Combat.c:1963-1990（MA_DF_ON_DEATH 分支）。P4-4：为 hp<=0 且未处理过
+     * 的怪物触发一次死亡地形效果，deathEffectTriggered 保证只触发一次。
+     * 从两处调用（playerTurnEnded 顶部、finishTurnEpilogue 开头）覆盖
+     * "玩家行动本身杀死目标"与"推进循环内怪物互殴/环境效果杀死目标"两种
+     * 时序，尽量做到同回合触发，而不是拖到下一次 playerTurnEnded 才生效。
+     *
+     * 本轮只接了两种：
+     *   - bloat → DF_BLOAT_DEATH（毒气，Globals.c:654 GAS 层，startprob 当
+     *     体积单点喷发）。web 的 addGas density 上限 0-100（非 CE 的 2000
+     *     "体积"量纲），取项目既有毒气类道具/陷阱的满值 100（Game.ts 的
+     *     poison_burst 药水、地板陷阱均用 80-100），不新发明映射公式。
+     *   - explosive_bloat → DF_BLOAT_EXPLOSION（GAS_EXPLOSION 地形，
+     *     Globals.c:496 T_IS_FIRE|T_CAUSES_EXPLOSIVE_DAMAGE——覆盖在原有地形
+     *     之上，不检查底下能不能烧）。web 没有瞬时范围爆炸伤害机制，复用
+     *     environment.igniteForced 覆盖死亡格 + 四方向相邻格；用 igniteForced
+     *     而不是 ignite 是验收打回后的修正——ignite() 只对 GRASS/FOLIAGE/
+     *     BOG/DOOR 生效，地牢里绝大多数格子是石地板，用它会导致"这只怪物的
+     *     全部存在意义在常见情况下不发生"（见报告"验收打回"一节）。伤害交给
+     *     既有的"燃烧中每回合掉血"结算，不新造爆炸伤害公式。
+     * 未接（报告已登记，均为已知缺口，非本轮范围）：
+     *   - pit_bloat 的 DF_HOLE_POTION 需要洞/坠落地形，web 无坠落子系统
+     *     （fall_down 只打印日志）——pit bloat 本轮只自爆，不生成洞。
+     *   - vampire 的 DF_BLOOD_EXPLOSION 是纯血迹装饰，web 无血迹层。
+     */
+    private triggerDeathFeatures(): void {
+        for (const m of this.monsters) {
+            if (m.hp > 0) continue;
+            if (m.deathEffectTriggered) continue;
+            if (!m.hasAbility('MA_DF_ON_DEATH')) continue;
+            m.deathEffectTriggered = true;
+
+            if (m.typeId === 'bloat') {
+                this.environment.addGas(m.loc.x, m.loc.y, 2 /* GasType.POISON */, 100);
+                logger.log(i18next.t('death.bloat_gas', {
+                    name: m.name,
+                    defaultValue: `The ${m.name} releases a cloud of caustic gas!`
+                }), '#88ff88');
+                this.needsRender = true;
+            } else if (m.typeId === 'explosive_bloat') {
+                // P4-4 验收打回修正：用 igniteForced（不看地形可燃性），不是 ignite。
+                this.environment.igniteForced(m.loc.x, m.loc.y);
+                const dirs4: Array<[number, number]> = [[0, -1], [0, 1], [-1, 0], [1, 0]];
+                for (const [dx, dy] of dirs4) {
+                    this.environment.igniteForced(m.loc.x + dx, m.loc.y + dy);
+                }
+                logger.log(i18next.t('death.bloat_explosion', {
+                    name: m.name,
+                    defaultValue: `The ${m.name} explodes in a burst of flame!`
+                }), '#ff8800');
+                this.needsRender = true;
+            }
+            // pit_bloat / vampire：本轮不接，见函数注释。
+        }
+    }
+
     private playerTurnEnded() {
+        this.triggerDeathFeatures();
         this.monsters = this.monsters.filter(m => m.hp > 0);
         this.syncEquipmentStatuses();
 
@@ -4477,6 +4668,11 @@ export class Game {
      * 饥饿伤害与回血（recoverPerTurn）、回合数、死亡结算。
      */
     private finishTurnEpilogue() {
+        // P4-4：推进循环（怪物互殴/环境效果）内产生的死亡在本回合结束前补触发一次，
+        // 与 playerTurnEnded 顶部那次合起来覆盖"玩家动作本身杀死目标"与"推进循环
+        // 内杀死目标"两种时序；deathEffectTriggered 保证不会被处理两次。
+        this.triggerDeathFeatures();
+
         // 主观饥饿结算：饥饿伤害 / 回血（CE Time.c:2523-2541，每玩家动作一次）
         const recovery = this.player.recoverPerTurn();
         if (recovery === 'starving') {

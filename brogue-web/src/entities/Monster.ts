@@ -225,6 +225,13 @@ export class Monster extends Creature {
     public isCaged: boolean = false;
     public mutation?: MutationData;
     public description: string = '';
+    /**
+     * P4-4：CE MA_DF_ON_DEATH（Combat.c:1963-1990）的一次性触发闸门。
+     * Game.triggerDeathFeatures 在 playerTurnEnded/finishTurnEpilogue 两处
+     * 都会扫描 hp<=0 的怪物（覆盖"玩家行动内击杀"与"推进循环内击杀"两种
+     * 时序），靠这个字段保证同一只怪物只触发一次死亡地形效果。
+     */
+    public deathEffectTriggered: boolean = false;
     /** P4-1b：CE monsterCatalog.bolts（P4-1a 数据），驱动 tryUseBolt。 */
     public bolts: string[] = [];
     /** P4-2：monsters.json 的怪物种类 id（如 'goblin_conjurer'），对应 CE
@@ -539,6 +546,12 @@ export class Monster extends Creature {
                 if (!game.grid.getCell(other.loc.x, other.loc.y)?.isVisible) continue;
 
                 const dist = Math.max(Math.abs(this.loc.x - other.loc.x), Math.abs(this.loc.y - other.loc.y));
+                // P4-4：CE monsterFleesFrom（Monsters.c:2979-2982）—— 不主动冲向
+                // MA_KAMIKAZE 目标（膨胀怪），已经贴脸的除外（不阻止已经相邻的近战，
+                // 那部分由下面 minDist<=1 分支正常处理）。web 没有 monsterFleesFrom
+                // 的完整移植（它还管无敌怪物/献祭目标等，本轮只接 kamikaze 这一条，
+                // 其余在报告里登记为已知缺口）。
+                if (dist > 1 && other.hasAbility('MA_KAMIKAZE')) continue;
                 if (dist < minDist) {
                     minDist = dist;
                     target = other;
@@ -555,7 +568,14 @@ export class Monster extends Creature {
                 // 与 CE monstUseBolt 的语义不符，故整段移除（详见报告）。
                 if (minDist <= 1) {
                     const result = CombatSystem.attack(this, target);
-                    if (result.damage > 0) {
+                    if (result.kamikazeSelfDestruct) {
+                        // P4-4：CE MA_KAMIKAZE（Combat.c:1159-1162）——攻击者代替
+                        // 造成伤害而自毁，早于命中掷骰，不会走"miss"分支。
+                        logger.log(i18next.t('combat.ally_kamikaze', {
+                            ally: this.name, target: target.name,
+                            defaultValue: `Your ${this.name} explodes against the ${target.name}!`
+                        }), '#ff8800');
+                    } else if (result.damage > 0) {
                         logger.log(i18next.t('combat.ally_hits', {
                             ally: this.name, target: target.name, damage: result.damage,
                             defaultValue: `Your ${this.name} hits the ${target.name} for ${result.damage} damage.`
@@ -567,6 +587,9 @@ export class Monster extends Creature {
                             // Actually, Game's applyStatusToMonster exists!
                             (game as any).applyStatusToMonster(target, this.onHitStatus, this.onHitDuration, 'poison');
                         }
+                        // P4-4：CE splitMonster(defender, attacker)（Combat.c:1424）——
+                        // 命中后，若目标带 MA_CLONE_SELF_ON_DEFEND 且仍存活，尝试分裂。
+                        (game as any).trySplitMonster(target, this);
                     } else {
                         logger.log(i18next.t('combat.ally_misses', { ally: this.name, target: target.name, defaultValue: `Your ${this.name} misses the ${target.name}.` }), '#aaaaaa');
                     }
@@ -684,13 +707,19 @@ export class Monster extends Creature {
                     const other = game.getMonsterAt(this.loc.x + dx!, this.loc.y + dy!);
                     if (other && other !== this && other.hp > 0) {
                         const result = CombatSystem.attack(this, other);
-                        if (result.damage > 0) {
+                        if (result.kamikazeSelfDestruct) {
+                            logger.log(i18next.t('combat.discordant_kamikaze', {
+                                attacker: this.name, target: other.name,
+                                defaultValue: `The ${this.name} explodes against the ${other.name}!`
+                            }), '#ff8800');
+                        } else if (result.damage > 0) {
                             logger.log(i18next.t('combat.discordant_hits', {
                                 attacker: this.name, target: other.name, damage: result.damage,
                                 defaultValue: `The ${this.name} turns on the ${other.name} for ${result.damage} damage!`
                             }), '#ff88aa');
                             game.spawnFloatingText(`-${result.damage}`, other.loc.x, other.loc.y, 0xff5555);
                             game.spawnBlood(other.loc.x, other.loc.y);
+                            (game as any).trySplitMonster(other, this);
                         } else {
                             logger.log(i18next.t('combat.discordant_misses', {
                                 attacker: this.name, target: other.name,
@@ -714,7 +743,19 @@ export class Monster extends Creature {
             // Adjacent to player -> Melee Attack!
             if (distToPlayer <= 1) {
                 const result = CombatSystem.attack(this, game.player);
-                if (result.damage > 0) {
+                if (result.kamikazeSelfDestruct) {
+                    // P4-4：CE MA_KAMIKAZE（Combat.c:1159-1162）——攻击者自毁代替
+                    // 造成伤害；三只膨胀怪的 damage 都是 0d1，本来也打不出伤害，
+                    // 真正的杀伤来自死亡触发的 DF（Game.triggerDeathFeatures）。
+                    logger.log(i18next.t('combat.monster_kamikaze', {
+                        monster: this.name,
+                        defaultValue: `The ${this.name} lunges at you and bursts!`
+                    }), '#ff8800');
+                    game.spawnFloatingText(
+                        i18next.t('combat.kamikaze_short', { defaultValue: 'Boom!' }),
+                        game.player.loc.x, game.player.loc.y, 0xff8800
+                    );
+                } else if (result.damage > 0) {
                     game.lastDamageSource = this.name;
                     logger.log(i18next.t('combat.monster_hits_you', {
                         monster: this.name,
