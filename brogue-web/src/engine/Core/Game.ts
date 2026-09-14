@@ -1097,6 +1097,13 @@ export class Game {
                                 const mon = new Monster(nx, ny, memberMData);
                                 this.applyRandomMutation(mon, depth);
                                 if (wandering) mon.state = MonsterState.WANDERING;
+                                // P4-2：CE spawnHorde 对常规（非召唤）horde 同样经
+                                // spawnMinions 落地成员，无条件设置 leader/MB_FOLLOWER
+                                // （Monsters.c:742-744）。web 补上 leader 关系，使
+                                // countMinions 统计"某召唤者已有多少直接随从"时，
+                                // 对本身就是常规 horde 领袖（如 goblin warlord 麾下的
+                                // 哥布林战队）的召唤者也能算对既有随从数。
+                                mon.leader = leaderMon;
                                 this.monsters.push(mon);
 
                                 // Remove from floorTiles to avoid item overlaps
@@ -1113,6 +1120,162 @@ export class Game {
             }
         }
         return true;
+    }
+
+    /**
+     * P4-2：在 center 周围按半径 1..5 做环形扫描，取第一个可站立、无怪物/玩家
+     * 占用的格子。纯确定性扫描顺序，不消耗 RNG——与 spawnHordeAt 现有的成员
+     * 落格搜索同一口径（该处历史实现即如此，未抽出复用是为了不触碰既有
+     * spawnHordeAt 的行为面，见报告"边界"一节）。
+     */
+    private findNearbySpawnSpot(center: Pos): Pos | null {
+        for (let r = 1; r <= 5; r++) {
+            for (let dx = -r; dx <= r; dx++) {
+                for (let dy = -r; dy <= r; dy++) {
+                    if (Math.abs(dx) !== r && Math.abs(dy) !== r) continue;
+                    const nx = center.x + dx;
+                    const ny = center.y + dy;
+                    const cell = this.grid.getCell(nx, ny);
+                    if (!cell || !cell.isPassable) continue;
+                    if (this.getMonsterAt(nx, ny)) continue;
+                    if (this.player.loc.x === nx && this.player.loc.y === ny) continue;
+                    return { x: nx, y: ny };
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * P4-2：CE summonMinions 的 HORDE_SUMMONED_AT_DISTANCE 分支（Monsters.c:
+     * 1005-1012，goblin warlord 专用）——"全图、玩家视野外、路径可达"的落点池。
+     * CE 用 calculateDistances 做带地形代价的 Dijkstra、上限 DCOLS/2；web 简化
+     * 为等权 8 邻域 BFS（代价恒为 1）、同样的 DCOLS/2 步数上限，如实记为简化
+     * （CLAIRVOYANT_VISIBLE 等透视可见性在 web 无对应概念，一并跳过，只排除
+     * 当前 FOV 内的格子）。
+     */
+    private findSummonAtDistanceLocations(from: Pos): Pos[] {
+        const maxDist = Math.floor(DCOLS / 2);
+        const dist = new Map<string, number>();
+        const key = (x: number, y: number) => `${x},${y}`;
+        const queue: Pos[] = [from];
+        dist.set(key(from.x, from.y), 0);
+        let qi = 0;
+        while (qi < queue.length) {
+            const cur = queue[qi++]!;
+            const d = dist.get(key(cur.x, cur.y))!;
+            if (d >= maxDist) continue;
+            for (let dx = -1; dx <= 1; dx++) {
+                for (let dy = -1; dy <= 1; dy++) {
+                    if (dx === 0 && dy === 0) continue;
+                    const nx = cur.x + dx;
+                    const ny = cur.y + dy;
+                    const k = key(nx, ny);
+                    if (dist.has(k)) continue;
+                    const cell = this.grid.getCell(nx, ny);
+                    if (!cell || !cell.isPassable) continue;
+                    if (cell.terrain === TerrainType.LAVA || cell.terrain === TerrainType.CHASM) continue;
+                    dist.set(k, d + 1);
+                    queue.push({ x: nx, y: ny });
+                }
+            }
+        }
+
+        const result: Pos[] = [];
+        for (const [k, d] of dist) {
+            if (d === 0 || d > maxDist) continue; // 排除起点自身
+            const parts = k.split(',');
+            const x = Number(parts[0]);
+            const y = Number(parts[1]);
+            const cell = this.grid.getCell(x, y);
+            if (!cell || cell.isVisible) continue; // 玩家 FOV 外
+            if (this.getMonsterAt(x, y)) continue;
+            if (this.player.loc.x === x && this.player.loc.y === y) continue;
+            result.push({ x, y });
+        }
+        return result;
+    }
+
+    /**
+     * P4-2：CE summonMinions（Monsters.c:985）。对照：
+     *   hordeID = pickHordeType(0, summonerType, 0, 0)   → hordeCandidates
+     *             （HORDE_IS_SUMMONED && leader==summonerType，无深度窗口、
+     *             无禁用 flag）+ pickHordeType（既有加权抽取，未改签名，
+     *             见报告"pickHordeType 是否需要扩展签名"一节）
+     *   if hordeID<0 return false                        → horde 为 null 早退
+     *   MA_ENTER_SUMMONS：先把召唤者从 this.monsters 移除（用重新赋值而非
+     *     splice，避免破坏 advancementLoop 那个正在进行中的 for-of，见报告）
+     *   spawnMinions(hordeID, summoner, true, false)      → 按 horde.members
+     *     落格生成，leader/isAlly/state 继承自 summoner（CE monst->leader=
+     *     leader；monst->creatureState=leader->creatureState），
+     *     ticksUntilTurn=101（Monsters.c:1034，防止本 tick 立即行动）
+     *   HORDE_SUMMONED_AT_DISTANCE                        → findSummonAtDistanceLocations
+     *     后逐个随机分配（对应 CE randomLocationInGrid 逐个 teleport）
+     *   canSeeMonster(summoner) 消息                       → 简化为固定英文/中文
+     *     兜底消息，不做"仅可见时才提示"的门（P4-1b 报告已记同类简化）
+     * 已知简化（未实现，登记不做）：
+     *   - MA_ENTER_SUMMONS 的 carriedMonster/demoteMonsterFromLeadership
+     *     （召唤者变成新生怪物的"乘客"，日后被摧毁怪物复活召唤者）——web 没有
+     *     carriedMonster 概念，任务验收口径本身也只要求"自身从场上消失、
+     *     同时出现新怪物"，未要求这层复活机制，故不做，报告已说明。
+     *   - itemPossible 参数（spawnMinions 召唤路径固定传 false，web 落地的
+     *     Monster 构造本来就不带物品，天然一致，不需要额外处理）。
+     * 返回值：是否至少召到一只随从（供未来调用方判断用，当前调用方
+     * Monster.trySummon 按 CE 语义不依赖这个返回值决定是否耗费本回合）。
+     */
+    public summonMinionsFor(summoner: Monster): boolean {
+        const candidates = (hordeData as HordeEntry[]).filter(h =>
+            h.flags.includes('HORDE_IS_SUMMONED') && h.leader.toLowerCase() === summoner.typeId.toLowerCase()
+        );
+        const horde = this.pickHordeType(candidates);
+        if (!horde) return false;
+
+        const enterSummons = summoner.hasAbility('MA_ENTER_SUMMONS');
+        if (enterSummons) {
+            // 重新赋值（而非 splice）：不破坏调用方 advancementLoop 里正在
+            // 进行中的 for (const m of this.monsters) 迭代（splice 当前元素
+            // 会导致该 for-of 跳过下一个怪物，见报告"RNG/迭代安全"一节）。
+            this.monsters = this.monsters.filter(m => m !== summoner);
+        }
+
+        const spawned: Monster[] = [];
+        for (const member of horde.members) {
+            const count = rng.randRange(member.minCount, member.maxCount);
+            const memberMData = (monsterData as MonsterData[]).find(m => m.id === member.type.toLowerCase());
+            if (!memberMData) continue;
+            for (let c = 0; c < count; c++) {
+                const pos = this.findNearbySpawnSpot(summoner.loc);
+                if (!pos) continue;
+                const mon = new Monster(pos.x, pos.y, memberMData);
+                mon.leader = summoner;
+                mon.isAlly = summoner.isAlly;
+                mon.state = summoner.state;
+                mon.ticksUntilTurn = 101; // CE Monsters.c:1034
+                this.monsters.push(mon);
+                spawned.push(mon);
+            }
+        }
+
+        const atLeastOneMinion = spawned.length > 0;
+
+        if (atLeastOneMinion && horde.flags.includes('HORDE_SUMMONED_AT_DISTANCE')) {
+            const pool = this.findSummonAtDistanceLocations(summoner.loc);
+            for (const mon of spawned) {
+                if (pool.length === 0) break;
+                const idx = rng.randRange(0, pool.length - 1);
+                const dest = pool.splice(idx, 1)[0]!;
+                mon.loc = { x: dest.x, y: dest.y };
+            }
+        }
+
+        if (atLeastOneMinion) {
+            logger.log(i18next.t('monster.summon_minions', {
+                name: summoner.name,
+                defaultValue: `${summoner.name} incants darkly!`
+            }), '#c084fc');
+        }
+
+        return atLeastOneMinion;
     }
 
     /**

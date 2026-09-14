@@ -48,6 +48,26 @@ export function monstersAreEnemies(a: Creature, b: Creature): boolean {
 }
 
 /**
+ * P4-2：CE monsterSummons（Monsters.c:2418）的随从计数部分。
+ *   盟友召唤者（isAlly）→ 统计所有 isAlly 怪物（含召唤者自身，CE 原样如此：
+ *   for-loop 遍历包含 summoner 本身，summoner->creatureState==ALLY 时自己也
+ *   会被算作一个"盟友"，不是笔误，照搬）。
+ *   敌方召唤者 → 只统计 leader === 召唤者的直接随从（对应 CE
+ *   MB_FOLLOWER && target->leader==monst；web 用 leader!==null 作为
+ *   MB_FOLLOWER 的等价判据，二者在本项目里总是同步设置，见 Game.summonMinionsFor
+ *   与 spawnHordeAt）。
+ * 已知简化：CE 盟友召唤者还会跨层统计上下深度的盟友数（levels[depth-2]/
+ * levels[depth]），web 单层地图模型没有"未加载深度的怪物列表"可查，
+ * 故只统计当前层——按任务说明，此处简化并在报告中说明。
+ */
+export function countMinions(caster: Monster, allMonsters: readonly Monster[]): number {
+    if (caster.isAlly) {
+        return allMonsters.filter(m => m.isAlly).length;
+    }
+    return allMonsters.filter(m => m.leader === caster).length;
+}
+
+/**
  * BE_SHIELDING 的"是否已被护盾"判定。web 的 StatusId（Creature.ts，本轮禁改）
  * 没有 'shielded' 项，护盾状态改用 statusDurations 上一个不在 StatusId 联合
  * 类型里的运行时 key 存放——Creature.tickStatuses() 按 Object.entries 遍历，
@@ -206,6 +226,16 @@ export class Monster extends Creature {
     public description: string = '';
     /** P4-1b：CE monsterCatalog.bolts（P4-1a 数据），驱动 tryUseBolt。 */
     public bolts: string[] = [];
+    /** P4-2：monsters.json 的怪物种类 id（如 'goblin_conjurer'），对应 CE
+     *  monsterID 枚举——summonMinionsFor 靠它匹配 hordes.json 的 leader 字段。
+     *  与 Creature.id（每个实例独一无二的存档实体 id，number）是两码事。 */
+    public typeId: string = '';
+    /** P4-2：CE creature->leader + bookkeepingFlags&MB_FOLLOWER 的合并等价——
+     *  非 null 即视为"是某召唤者/horde 领袖的直接随从"（MB_FOLLOWER）。
+     *  由 Game.summonMinionsFor（召唤）与 Game.spawnHordeAt（常规 horde 成员，
+     *  CE spawnHorde 同样经 spawnMinions 落地，一并设置 leader，见 P4-2 报告）
+     *  两处赋值，countMinions 读取。 */
+    public leader: Monster | null = null;
 
     // Movement & Combat speeds
     public regenTurns: number = 0;
@@ -261,6 +291,7 @@ export class Monster extends Creature {
         }
         this.description = data.description ?? '';
         this.bolts = Array.isArray(data.bolts) ? [...data.bolts] : [];
+        this.typeId = data.id;
         // 70% chance to start asleep, otherwise wandering
         // CE logic: MONST_NEVER_SLEEPS or MONST_ALWAYS_HUNTING means they never start asleep.
         if (this.hasBehavior('MONST_NEVER_SLEEPS') || this.hasBehavior('MONST_ALWAYS_HUNTING')) {
@@ -337,6 +368,43 @@ export class Monster extends Creature {
     }
 
     /**
+     * P4-2：CE monsterSummons（Monsters.c:2418）。对照：
+     *   if (!(abilityFlags & MA_CAST_SUMMON)) return false;
+     *   minionCount = countMinions(...)                          → countMinions()
+     *   if (alwaysUse && minionCount < 50)                       → summonMinionsFor
+     *   else if (MA_ENTER_SUMMONS): if (!rand_range(0,7))        → 1/8，summonMinionsFor
+     *   else if ((非盟友 || minionCount<5) && !rand_range(0, n²*3+1)) → summonMinionsFor
+     * CE 在"RNG 判定通过、决定尝试召唤"时即返回 true（即便 summonMinions 内部
+     * 因找不到 hordeID 而实际没召到任何随从）——本项目 hordes.json 给每个
+     * MA_CAST_SUMMON 怪物都配了至少一条 HORDE_IS_SUMMONED 条目（见报告核对
+     * 表），这个"判定过了但没召到"的分支在当前数据下不可达，此处仍按 CE
+     * 字面语义实现（不因数据凑巧而简化判定本身）。
+     */
+    public trySummon(game: Game): boolean {
+        if (!this.hasAbility('MA_CAST_SUMMON')) return false;
+
+        const alwaysUse = this.hasBehavior('MONST_ALWAYS_USE_ABILITY');
+        const minionCount = countMinions(this, game.monsters);
+
+        let attempt = false;
+        if (alwaysUse && minionCount < 50) {
+            attempt = true;
+        } else if (this.hasAbility('MA_ENTER_SUMMONS')) {
+            attempt = rng.randRange(0, 7) === 0;
+        } else if ((!this.isAlly || minionCount < 5) && rng.randRange(0, minionCount * minionCount * 3 + 1) === 0) {
+            attempt = true;
+        }
+
+        if (!attempt) return false;
+
+        game.summonMinionsFor(this);
+        // CE Monsters.c:3139：monstUseMagic 返回 true 的出口统一耗时（召唤与
+        // 施法 bolt 共用同一处 tick 赋值），与 tryUseBolt 复用同一私有方法。
+        this.endTurnWithAttack();
+        return true;
+    }
+
+    /**
      * CE monstUseBolt（Monsters.c:2786）。对照：
      *   if (!bolts[0]) return false;                              → 空数组早退
      *   for target in [player, ...monsters]:                      → candidates 遍历（player 优先，同 CE）
@@ -389,6 +457,11 @@ export class Monster extends Creature {
         // 与 CE 一致（generallyValidBoltTarget 只在 discordant+WANDERING 时
         // 排斥玩家目标，不整体禁止 WANDERING 施法）。
         if (this.state !== MonsterState.ASLEEP) {
+            // P4-2：CE monstUseMagic = monsterSummons(monst, always) || monstUseBolt(monst)——
+            // 召唤先于 bolt 判定，命中即用掉本回合，同一入口不再试 bolt。
+            if (this.trySummon(game)) {
+                return;
+            }
             if (this.tryUseBolt(game)) {
                 return;
             }
