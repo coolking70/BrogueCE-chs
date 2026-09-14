@@ -19,7 +19,7 @@ import mutationData from '../../data/mutations.json';
 import type { MonsterData, MonsterAbility, MutationData } from '../../entities/Monster';
 import { MonsterState } from '../../entities/Monster';
 import { Direction, type Pos } from '../../types';
-import { ensureEntityIdAbove, type StatusId } from '../../entities/Creature';
+import { ensureEntityIdAbove, TICKS_PER_TURN, type StatusId } from '../../entities/Creature';
 import { timeSystem } from '../Systems/Time';
 import { generateMonsterDetail, generateItemDetail, type DetailInfo } from '../UI/DetailGenerator';
 import { logger } from '../Systems/Logger';
@@ -1914,7 +1914,7 @@ export class Game {
                 '#ff9999'
             );
             timeSystem.currentTick += 100;
-            this.runMonsterTurns();
+            this.playerTurnEnded();
             return;
         }
 
@@ -2182,7 +2182,7 @@ export class Game {
                             }
                             this.needsRender = true;
                             timeSystem.currentTick += 100;
-                            if (this.needsRender) this.runMonsterTurns();
+                            if (this.needsRender) this.playerTurnEnded();
                             return;
                         }
                     }
@@ -2203,13 +2203,13 @@ export class Game {
                 }
 
                 if (this.needsRender) {
-                    this.runMonsterTurns();
+                    this.playerTurnEnded();
                 }
 
             } else {
                 // rest
                 timeSystem.currentTick += 100;
-                this.runMonsterTurns();
+                this.playerTurnEnded();
             }
         } else if (action === 'pickup') {
             const itemIndex = this.items.findIndex(i => i.loc.x === this.player.loc.x && i.loc.y === this.player.loc.y);
@@ -2235,7 +2235,7 @@ export class Game {
                     this.items.splice(itemIndex, 1);
                     this.needsRender = true;
                     timeSystem.currentTick += 50; // Pick up takes half a turn
-                    this.runMonsterTurns();
+                    this.playerTurnEnded();
                 } else {
                     logger.log(i18next.t('game.inventory_full', { defaultValue: 'Your inventory is full.' }), '#ff8888');
                 }
@@ -2535,7 +2535,7 @@ export class Game {
                 logger.log(i18next.t('item.identify', { name: item.name, defaultValue: `You identify ${item.name}.` }), '#00ffff');
             }
             timeSystem.currentTick += 100;
-            this.runMonsterTurns();
+            this.playerTurnEnded();
             return;
         }
 
@@ -2571,7 +2571,7 @@ export class Game {
 
         this.needsRender = true;
         timeSystem.currentTick += 100;
-        this.runMonsterTurns();
+        this.playerTurnEnded();
     }
 
     // ----- Bolt Zapping System -----
@@ -3001,7 +3001,7 @@ export class Game {
         item.rechargeCounter = 0;
         logger.log(`${item.name} is fully recharged.`, '#66ddff');
         timeSystem.currentTick += 100;
-        this.runMonsterTurns();
+        this.playerTurnEnded();
         return true;
     }
 
@@ -3014,7 +3014,7 @@ export class Game {
         if (item.enchantment < 0) item.enchantment = 0;
         logger.log(i18next.t('scroll.dark_aura', { name: item.name, defaultValue: `A dark aura leaves ${item.name}.` }), '#88ffcc');
         timeSystem.currentTick += 100;
-        this.runMonsterTurns();
+        this.playerTurnEnded();
         return true;
     }
 
@@ -3822,15 +3822,62 @@ export class Game {
         }
     }
 
-    private runMonsterTurns() {
-        // Very basic loop for now
+    /**
+     * CE Time.c:2468 playerTurnEnded —— 玩家回合结束后的"最近事件推进"调度：
+     * 玩家动作计时累加进 ticksUntilTurn，随后 while 循环里反复求 soonestTurn
+     * （全部存活怪物与玩家剩余 tick 的最小值），把所有怪物批量扣减这么多 tick，
+     * 让归零的怪物行动，直到玩家重新可行动（ticksUntilTurn 归零）。
+     *
+     * P2-1 恒速口径：所有速度一律 TICKS_PER_TURN(100)——玩家动作耗时恒
+     * （CE Time.c:2602 的 movementSpeed 路径），怪物行动后恒满（CE monstersTurn
+     * 各出口的 movementSpeed/attackSpeed 在恒 100 下收敛为同一值）。因此循环体
+     * 恰好迭代一次、每只怪物行动一次，与替换前的"逐只各行动一次"逐格一致；
+     * 差异化耗时与真实速度留待 P2-2，客观时间门（ticksTillUpdateEnvironment）
+     * 留待 P2-3。
+     */
+    private playerTurnEnded() {
         this.monsters = this.monsters.filter(m => m.hp > 0);
         this.syncEquipmentStatuses();
 
         const stealthRange = this.calculateStealthRange();
 
-        for (const m of this.monsters) {
-            m.takeTurn(this, stealthRange);
+        // CE Time.c:2602-2606：== 0 时累加 movementSpeed（本轮恒 TICKS_PER_TURN）；
+        // < 0 分支对应 CE 的免费回合残留（player.ticksUntilTurn = -1），web 侧
+        // 本轮没有产生负值的路径，保留分支仅为结构对齐。
+        if (this.player.ticksUntilTurn === 0) {
+            this.player.ticksUntilTurn += TICKS_PER_TURN;
+        } else if (this.player.ticksUntilTurn < 0) {
+            this.player.ticksUntilTurn = 0;
+        }
+
+        // CE Time.c:2643-2752 推进主循环。soonestTurn 的第三个候选
+        // rogue.ticksTillUpdateEnvironment 及其归零时的客观时间挂钩
+        // （法杖充能、渐进鉴定、刷怪 fuse、怪物状态递减、updateEnvironment）
+        // 本轮不迁移，维持下方原有的每动作一次挂载点。
+        while (this.player.ticksUntilTurn > 0) {
+            let soonestTurn = this.player.ticksUntilTurn;
+            for (const m of this.monsters) {
+                if (m.hp > 0 && m.ticksUntilTurn < soonestTurn) {
+                    soonestTurn = m.ticksUntilTurn;
+                }
+            }
+
+            for (const m of this.monsters) {
+                if (m.hp > 0) m.ticksUntilTurn -= soonestTurn;
+            }
+
+            // CE Time.c:2720-2745：归零怪物行动。CE 中麻痹/入迷/俘虏在
+            // Time.c:2727-2732 跳过行动但同样把 ticks 重置为 movementSpeed，
+            // web 的跳过判定在 takeTurn 内部早退——两条路在恒 100 口径下
+            // 都收敛为"行动或跳过后 ticks 恒满"。
+            for (const m of this.monsters) {
+                if (m.hp > 0 && m.ticksUntilTurn <= 0) {
+                    m.takeTurn(this, stealthRange);
+                    m.ticksUntilTurn = TICKS_PER_TURN;
+                }
+            }
+
+            this.player.ticksUntilTurn -= soonestTurn;
         }
 
         // Let environment update
@@ -4717,7 +4764,7 @@ export class Game {
                 this.handlePlayerAction('move', { x: next.x - this.player.loc.x, y: next.y - this.player.loc.y }, 'system');
                 // Do not clear autoPath, keep trying to move to destination unless user interrupts later.
                 timeSystem.currentTick += 100;
-                this.runMonsterTurns();
+                this.playerTurnEnded();
                 return;
             }
 
@@ -4751,7 +4798,7 @@ export class Game {
                 this.handlePlayerAction('move', { x: adjacentMonster.loc.x - this.player.loc.x, y: adjacentMonster.loc.y - this.player.loc.y }, 'system');
                 this.autoPath = [];
                 timeSystem.currentTick += 100;
-                this.runMonsterTurns();
+                this.playerTurnEnded();
                 return;
             }
 
@@ -4800,7 +4847,7 @@ export class Game {
         }
 
         timeSystem.currentTick += 100;
-        this.runMonsterTurns();
+        this.playerTurnEnded();
     }
 
     public triggerGameOver(won: boolean, reason?: string) {

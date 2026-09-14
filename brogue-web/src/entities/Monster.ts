@@ -3,7 +3,7 @@
  * Base Monster class mirroring Brogue's monster initialization
  */
 
-import { Creature } from './Creature';
+import { Creature, TICKS_PER_TURN } from './Creature';
 import { rng } from '../engine/Random';
 import type { Game } from '../engine/Core/Game';
 import { Pathfind } from '../engine/Map/Pathfind';
@@ -102,6 +102,9 @@ export class Monster extends Creature {
         this.maxHp = data.hp;
         this.hp = data.hp;
         this.damageString = data.damage;
+        // Monsters.c:116 initializeMonster：ticksUntilTurn = info.movementSpeed。
+        // P2-1 恒速口径：不读 data.moveSpeed 的真实值，一律满速 TICKS_PER_TURN。
+        this.ticksUntilTurn = TICKS_PER_TURN;
         this.regenTurns = data.regen ?? 0;
         this.moveSpeed = data.moveSpeed ?? 100;
         this.attackSpeed = data.attackSpeed ?? 100;
