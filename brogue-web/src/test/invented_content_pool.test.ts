@@ -4,15 +4,18 @@
  * 自创清单及 CE 证据（复核于 BrogueCE-master 源码）：
  *  - scroll_of_amnesia  ：CE 全源码无 "amnesia"（scrollTable_Brogue 14 种无此条）
  *  - potion_of_healing   ：potionTable_Brogue 16 种无 healing/extra healing
+ *  - potion_of_poison    ：potionTable_Brogue 16 种无 poison（CE 的毒来自毒气陷阱
+ *     GAS_TRAP_POISON / creeping death 药水/毒镖，均非"毒药水"）
  *  - wand_of_fire / wand_of_lightning：wandTable_Brogue 9 种无火/闪电魔杖（火/闪电是 staff）
  *  - staff_of_light      ：staffTable 12 种无 light 法杖
- *  - halberd             ：weaponTable 15 种无 halberd
+ *  - halberd             ：weaponTable 15 种无 halberd（CE 全源码 grep 零命中）
  *  - 武器符文 vampirism / venom：weaponRunicNames 10 种（speed/quietus/paralysis/
  *    multiplicity/slowing/confusion/force/slaying/mercy/plenty）无此二项
  *  - 护甲符文 vitality    ：armorRunicNames 11 种无 vitality
  *
  * 验收条款：
- *  1) 固定多 seed 大量生成，断言自创项出现 0 次（含整层生成 D1-D26 与符文随机流）；
+ *  1) 固定多 seed 大量生成，断言自创项出现 0 次（含整层生成 D1-D26、符文随机流、
+ *     以及附魔卷轴 20% 送符文路径 enchantEquippedItem——它也是真实游玩中的随机池）；
  *  2) 被排除条目仍存在于数据/代码中、可被直接构造（证明是退池而非删除）；
  *  3) 反真空断言：生成仍大量发生、CE 符文仍出现（防止"池子被清空导致 0 次"的假阴性）。
  *
@@ -31,7 +34,7 @@ import weaponsJson from '../data/weapons.json';
 
 /** web 自创、本轮退出生成池的全部条目 */
 const INVENTED = {
-    potions: ['potion_of_healing'],
+    potions: ['potion_of_healing', 'potion_of_poison'],
     scrolls: ['scroll_of_amnesia'],
     wands: ['wand_of_fire', 'wand_of_lightning'],
     staffs: ['staff_of_light'],
@@ -43,6 +46,7 @@ const INVENTED = {
 /** 全部自创条目的直接显示名（harness 空资源下 tn() 原样返回英文名），供整层扫描兜底比对 */
 const INVENTED_DISPLAY_NAMES = new Set([
     'Potion of Healing',
+    'Potion of Poison',
     'Scroll of Amnesia',
     'Wand of Fire',
     'Wand of Lightning',
@@ -79,7 +83,9 @@ function identityOf(item: Item): string {
 
 describe('D2 生成池排他：自创条目不在任何生成池中', () => {
     it('gen* 生成池不含自创条目，且全量数组仍含之（退池而非删除）', () => {
-        expect(ItemLoader.genPotions.map(p => p.id)).not.toContain('potion_of_healing');
+        for (const id of INVENTED.potions) {
+            expect(ItemLoader.genPotions.map(p => p.id)).not.toContain(id);
+        }
         expect(ItemLoader.genScrolls.map(s => s.id)).not.toContain('scroll_of_amnesia');
         for (const id of INVENTED.wands) {
             expect(ItemLoader.genWands.map(w => w.id)).not.toContain(id);
@@ -88,14 +94,18 @@ describe('D2 生成池排他：自创条目不在任何生成池中', () => {
         expect(ItemLoader.genWeapons.map(w => w.id)).not.toContain('halberd');
 
         // 全量数据仍完整保留
-        expect(potionsJson.map(p => p.id)).toContain('potion_of_healing');
+        for (const id of INVENTED.potions) {
+            expect(potionsJson.map(p => p.id)).toContain(id);
+        }
         expect(scrollsJson.map(s => s.id)).toContain('scroll_of_amnesia');
         for (const id of INVENTED.wands) expect(wandsJson.map(w => w.id)).toContain(id);
         expect(staffsJson.map(s => s.id)).toContain('staff_of_light');
         expect(weaponsJsonArr.map(w => w.id)).toContain('halberd');
 
         // json 标记与 gen 池大小严格对应（防止"漏标"或"全量被误删"）
-        expect(potionsJson.find(p => p.id === 'potion_of_healing')?.excludeFromGeneration).toBe(true);
+        for (const id of INVENTED.potions) {
+            expect(potionsJson.find(p => p.id === id)?.excludeFromGeneration).toBe(true);
+        }
         expect(scrollsJson.find(s => s.id === 'scroll_of_amnesia')?.excludeFromGeneration).toBe(true);
         expect(ItemLoader.genPotions.length).toBe(ItemLoader.potions.length - INVENTED.potions.length);
         expect(ItemLoader.genScrolls.length).toBe(ItemLoader.scrolls.length - INVENTED.scrolls.length);
@@ -130,12 +140,86 @@ describe('D2 退池而非删除：自创条目仍可被直接构造', () => {
     it('spawnXxx(自创 id) 仍返回完整物品', () => {
         expect(ItemLoader.spawnScroll('scroll_of_amnesia', 0, 0)).not.toBeNull();
         expect(ItemLoader.spawnPotion('potion_of_healing', 0, 0)).not.toBeNull();
+        expect(ItemLoader.spawnPotion('potion_of_poison', 0, 0)).not.toBeNull();
         expect(ItemLoader.spawnWand('wand_of_fire', 0, 0)).not.toBeNull();
         expect(ItemLoader.spawnWand('wand_of_lightning', 0, 0)).not.toBeNull();
         expect(ItemLoader.spawnStaff('staff_of_light', 0, 0)).not.toBeNull();
         const halberd = ItemLoader.spawnWeapon('halberd', 0, 0);
         expect(halberd).not.toBeNull();
         expect(halberd!.damage).toBe('3d4'); // 数据原样保留
+    }, 120000);
+});
+
+describe('D2 附魔卷轴送符文路径（enchantEquippedItem）：自创符文 0 出现', () => {
+    // 附魔卷轴对无符文装备有 20% 概率随机授符文，是真实游玩中的随机抽取池，
+    // 必须同样只从 GENERATED_*_RUNICS 取值。
+    // 每次迭代消耗固定 rng 抽取（randPercent 必抽；命中后再抽 randRange），固定 seed 下完全确定。
+    it('8000 次附魔：武器/护甲只授 CE 符文，vampirism/venom/vitality 出现 0 次', () => {
+        const weaponCounts = new Map<string, number>();
+        const armorCounts = new Map<string, number>();
+        let weaponGrants = 0;
+        let armorGrants = 0;
+
+        const TRAILS = 8000;
+        for (const seed of [123_456, 654_321]) {
+            rng.seedRandomGenerator(seed);
+            const game = createHeadlessGame(seed);
+            const g = game as unknown as {
+                player: { equippedWeapon: Item | null; equippedArmor: Item | null };
+                enchantEquippedItem(): boolean;
+            };
+
+            // —— 武器阶段：初始装备的武器为附魔对象 ——
+            expect(g.player.equippedWeapon).not.toBeNull();
+            for (let i = 0; i < TRAILS; i++) {
+                const weapon = g.player.equippedWeapon!;
+                (weapon as unknown as { runicType?: string }).runicType = undefined;
+                (weapon as unknown as { enchantment: number }).enchantment = 0;
+                if (g.enchantEquippedItem()) {
+                    const rt = (weapon as unknown as { runicType?: string }).runicType;
+                    if (rt) {
+                        weaponGrants++;
+                        weaponCounts.set(rt, (weaponCounts.get(rt) ?? 0) + 1);
+                    }
+                }
+            }
+
+            // —— 护甲阶段：临时摘下武器，使附魔对象落到护甲上 ——
+            const savedWeapon = g.player.equippedWeapon;
+            g.player.equippedWeapon = null;
+            expect(g.player.equippedArmor).not.toBeNull();
+            for (let i = 0; i < TRAILS; i++) {
+                const armor = g.player.equippedArmor!;
+                (armor as unknown as { runicType?: string }).runicType = undefined;
+                (armor as unknown as { enchantment: number }).enchantment = 0;
+                if (g.enchantEquippedItem()) {
+                    const rt = (armor as unknown as { runicType?: string }).runicType;
+                    if (rt) {
+                        armorGrants++;
+                        armorCounts.set(rt, (armorCounts.get(rt) ?? 0) + 1);
+                    }
+                }
+            }
+            g.player.equippedWeapon = savedWeapon;
+        }
+
+        // 自创符文必须 0 次
+        for (const r of INVENTED.weaponRunics) {
+            expect(weaponCounts.get(r) ?? 0, `附魔路径授予了自创武器符文 ${r}`).toBe(0);
+        }
+        for (const r of INVENTED.armorRunics) {
+            expect(armorCounts.get(r) ?? 0, `附魔路径授予了自创护甲符文 ${r}`).toBe(0);
+        }
+
+        // 反真空：20% 命中率 × 16000 次 ≈ 3200 次授予，且每个 CE 符文都真实出现过
+        expect(weaponGrants).toBeGreaterThan(1000);
+        expect(armorGrants).toBeGreaterThan(1000);
+        for (const r of ItemLoader.GENERATED_WEAPON_RUNICS) {
+            expect(weaponCounts.get(r) ?? 0, `CE 武器符文 ${r} 在附魔路径出现过多（池不完整？）`).toBeGreaterThanOrEqual(20);
+        }
+        for (const r of ItemLoader.GENERATED_ARMOR_RUNICS) {
+            expect(armorCounts.get(r) ?? 0, `CE 护甲符文 ${r} 在附魔路径出现过多（池不完整？）`).toBeGreaterThanOrEqual(20);
+        }
     }, 120000);
 });
 
