@@ -4,6 +4,7 @@
  */
 
 import { Creature } from './Creature';
+import { Player } from './Player';
 import { rng } from '../engine/Random';
 import type { Game } from '../engine/Core/Game';
 import { Pathfind } from '../engine/Map/Pathfind';
@@ -13,6 +14,124 @@ import i18next from 'i18next';
 import { ItemLoader } from '../engine/Items/ItemLoader';
 import type { StatusId } from './Creature';
 import { TerrainType } from '../engine/Map/Grid';
+import { MONSTER_BOLT_TABLE, BoltEffect } from '../engine/Combat/Bolt';
+
+// ----- P4-1b：怪物远程法术施放 -----
+//
+// 对照 CE Monsters.c 的 monstUseBolt/generallyValidBoltTarget/
+// specificallyValidBoltTarget（见 ai_docs/p4_1b_monster_casting_report.md
+// 的逐段对照）。web 没有 CE 的 MONSTER_ALLY/MONSTER_TRACKING_SCENT 等完整
+// creatureState 谱系，也没有 MB_MARKED_FOR_SACRIFICE、STATUS_ENTRANCED 等，
+// 下面按"够用且可测"的口径做了必要简化，均在报告里逐条说明，不静默偷工。
+
+/** 阵营：player 阵营含玩家本身与所有 isAlly 怪物；hostile 阵营是其余怪物。 */
+type Faction = 'player' | 'hostile';
+
+function factionOf(c: Creature): Faction {
+    if (c instanceof Player) return 'player';
+    if (c instanceof Monster) return c.isAlly ? 'player' : 'hostile';
+    return 'hostile';
+}
+
+/** CE monstersAreTeammates 的简化版：同阵营且都不处于 discordant。 */
+export function monstersAreTeammates(a: Creature, b: Creature): boolean {
+    if (a === b) return false;
+    if (a.hasStatus('discordant') || b.hasStatus('discordant')) return false;
+    return factionOf(a) === factionOf(b);
+}
+
+/** CE monstersAreEnemies 的简化版：阵营不同，或任一方 discordant（六亲不认）。 */
+export function monstersAreEnemies(a: Creature, b: Creature): boolean {
+    if (a === b) return false;
+    if (a.hasStatus('discordant') || b.hasStatus('discordant')) return true;
+    return factionOf(a) !== factionOf(b);
+}
+
+/**
+ * BE_SHIELDING 的"是否已被护盾"判定。web 的 StatusId（Creature.ts，本轮禁改）
+ * 没有 'shielded' 项，护盾状态改用 statusDurations 上一个不在 StatusId 联合
+ * 类型里的运行时 key 存放——Creature.tickStatuses() 按 Object.entries 遍历，
+ * 对任意 key 都通用，到期会被自动清除，行为与其它状态一致。
+ * 已知限制：CE 的护盾会挡伤害，但 CombatSystem.attack 的伤害结算在
+ * Combat.ts（本轮禁改）里，这里没有打通"护盾挡伤害"的机械效果，只实现了
+ * "目标是否已被护盾覆盖"这个判定 + 状态展示，见报告。
+ */
+const SHIELD_STATUS_KEY = 'shielded';
+export function isShielded(c: Creature): boolean {
+    return (((c.statusDurations as unknown) as Record<string, number>)[SHIELD_STATUS_KEY] ?? 0) > 0;
+}
+export function applyShieldStatus(c: Creature, duration: number): void {
+    const durations = (c.statusDurations as unknown) as Record<string, number>;
+    const current = durations[SHIELD_STATUS_KEY] ?? 0;
+    durations[SHIELD_STATUS_KEY] = Math.max(current, duration);
+}
+
+/**
+ * CE generallyValidBoltTarget（Monsters.c:2543）。省略：MB_MARKED_FOR_SACRIFICE
+ * 分支（web 无献祭机制）、MB_SUBMERGED 判定（web 无潜水簿记，用 invisible 状态
+ * 近似 monsterIsHidden）。
+ */
+export function generallyValidBoltTarget(caster: Monster, target: Creature, game: Game): boolean {
+    if (caster === target) return false;
+    if (caster.hasStatus('discordant') && caster.state === MonsterState.WANDERING && target === game.player) {
+        return false;
+    }
+    if (target.hasStatus('invisible')) return false;
+    return game.hasLineOfSight(caster.loc.x, caster.loc.y, target.loc.x, target.loc.y);
+}
+
+/**
+ * CE specificallyValidBoltTarget（Monsters.c:2596）。只覆盖 MONSTER_BOLT_TABLE
+ * 里登记的 13 个已映射 bolt；effect===null（已知缺口）与 BLINKING 由调用方
+ * （tryUseBolt）提前过滤，不会走到这里。
+ * 省略的分支：BF_NEVER_REFLECTS/反射判定（web 无护甲反射对怪物生效的路径）、
+ * forbiddenMonsterFlags（仅对 BECKONING 目标做了 MONST_IMMOBILE 近似）、
+ * BE_NEGATION 完整的九路判断（简化为"目标是敌人且处于可驱散状态"）。
+ */
+export function specificallyValidBoltTarget(caster: Monster, target: Creature, ceBoltName: string, game: Game): boolean {
+    const meta = MONSTER_BOLT_TABLE[ceBoltName];
+    if (!meta || meta.effect === null || meta.effect === BoltEffect.BLINKING) return false;
+
+    if (meta.targetAllies && !monstersAreTeammates(caster, target)) return false;
+    if (meta.targetEnemies && !monstersAreEnemies(caster, target)) return false;
+    if (meta.targetEnemies && target instanceof Monster && target.hasBehavior('MONST_INVULNERABLE')) return false;
+    if (meta.fiery && target.hasStatus('immune_fire')) return false;
+
+    switch (meta.effect) {
+        case BoltEffect.DISCORD:
+            if (target.hasStatus('discordant') || target === game.player) return false;
+            break;
+        case BoltEffect.NEGATION:
+            // 简化版 BE_NEGATION：只在目标（敌方）身上确有可驱散的增益/护盾时才放。
+            if (!(target.hasStatus('hasted') || target.hasStatus('telepathy') || isShielded(target))) {
+                return false;
+            }
+            break;
+        case BoltEffect.SLOW:
+            if (target.hasStatus('slowed')) return false;
+            break;
+        case BoltEffect.HASTE:
+            if (target.hasStatus('hasted')) return false;
+            break;
+        case BoltEffect.SHIELDING:
+            if (isShielded(target)) return false;
+            break;
+        case BoltEffect.HEALING:
+            if (target.hp >= target.maxHp) return false;
+            break;
+        case BoltEffect.BECKONING: {
+            if (target instanceof Monster && (target.hasBehavior('MONST_IMMOBILE') || target.hasBehavior('MONST_TURRET'))) {
+                return false;
+            }
+            const dist = Math.max(Math.abs(caster.loc.x - target.loc.x), Math.abs(caster.loc.y - target.loc.y));
+            if (dist <= 1) return false;
+            break;
+        }
+        default:
+            break;
+    }
+    return true;
+}
 
 export enum MonsterState {
     ASLEEP,
@@ -49,6 +168,8 @@ export interface MonsterData {
     behaviorFlags?: string[];
     abilityFlags?: string[];
     description?: string;
+    /** P4-1a：CE monsterCatalog.bolts，去 BOLT_ 前缀、保持源码顺序。见 Bolt.ts MONSTER_BOLT_TABLE。 */
+    bolts?: string[];
 }
 
 export interface MutationData {
@@ -83,6 +204,8 @@ export class Monster extends Creature {
     public isCaged: boolean = false;
     public mutation?: MutationData;
     public description: string = '';
+    /** P4-1b：CE monsterCatalog.bolts（P4-1a 数据），驱动 tryUseBolt。 */
+    public bolts: string[] = [];
 
     // Movement & Combat speeds
     public regenTurns: number = 0;
@@ -137,6 +260,7 @@ export class Monster extends Creature {
             this.abilityFlags = new Set<string>(data.abilityFlags);
         }
         this.description = data.description ?? '';
+        this.bolts = Array.isArray(data.bolts) ? [...data.bolts] : [];
         // 70% chance to start asleep, otherwise wandering
         // CE logic: MONST_NEVER_SLEEPS or MONST_ALWAYS_HUNTING means they never start asleep.
         if (this.hasBehavior('MONST_NEVER_SLEEPS') || this.hasBehavior('MONST_ALWAYS_HUNTING')) {
@@ -212,6 +336,40 @@ export class Monster extends Creature {
         return this.abilityFlags.has(flag);
     }
 
+    /**
+     * CE monstUseBolt（Monsters.c:2786）。对照：
+     *   if (!bolts[0]) return false;                              → 空数组早退
+     *   for target in [player, ...monsters]:                      → candidates 遍历（player 优先，同 CE）
+     *     if generallyValidBoltTarget(caster, target):             → 视线 + 通用过滤
+     *       for bolt in caster.bolts:                              → 按 monsters.json 原始顺序（P4-1a 已核实）
+     *         if bolt.effect == BE_BLINKING: continue;              → specificallyValidBoltTarget 内部已直接拒绝
+     *         if specificallyValidBoltTarget(caster, target, bolt):
+     *           if ALWAYS_USE_ABILITY || rand_percent(30):
+     *             cast; return true;
+     *           // 否则不 break，继续尝试该目标的下一个 bolt（CE 原样：无 else）
+     * 返回 true 表示本回合已经用掉（调用方据此 return，不再移动/近战）。
+     */
+    public tryUseBolt(game: Game): boolean {
+        if (this.bolts.length === 0) return false;
+
+        const candidates: Creature[] = [game.player, ...game.monsters.filter(m => m !== this && m.hp > 0)];
+        for (const target of candidates) {
+            if (target.hp <= 0) continue;
+            if (!generallyValidBoltTarget(this, target, game)) continue;
+
+            for (const ceBoltName of this.bolts) {
+                if (!specificallyValidBoltTarget(this, target, ceBoltName, game)) continue;
+                if (this.hasBehavior('MONST_ALWAYS_USE_ABILITY') || rng.randPercent(30)) {
+                    game.castMonsterBolt(this, target, ceBoltName);
+                    // CE Monsters.c:3139：施法出口耗时 = attackSpeed（CAST_SPELLS_SLOWLY ×2）。
+                    this.endTurnWithAttack();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public takeTurn(game: Game, stealthRange: number) {
         if (this.hp <= 0) return;
         if (this.hasStatus('paralyzed')) return;
@@ -223,6 +381,27 @@ export class Monster extends Creature {
                 this.hp = Math.min(this.maxHp, this.hp + 1);
                 this.regenCounter = 0;
             }
+        }
+
+        // P4-1b：CE monstUseMagic 在移动/近战之前优先尝试（monstersTurn 各出口
+        // 调用 monstUseMagic 都在移动决策之前）。沉睡怪物不参与（CE 沉睡怪物
+        // 根本不进 monstersTurn）；ALLY 与 HUNTING/WANDERING 共用同一个出口，
+        // 与 CE 一致（generallyValidBoltTarget 只在 discordant+WANDERING 时
+        // 排斥玩家目标，不整体禁止 WANDERING 施法）。
+        if (this.state !== MonsterState.ASLEEP) {
+            if (this.tryUseBolt(game)) {
+                return;
+            }
+        }
+
+        // CE MONST_IMMOBILE："monster won't move or perform melee attacks"；
+        // MONST_TURRET 隐含 MONST_IMMOBILE（Rogue.h:2093）。web 的 behaviorFlags
+        // 只存了 "MONST_TURRET" 这个复合标记（未展开成员 flags），这里按语义
+        // 一并当作不可移动/不可近战处理。施法失败（未命中目标/未过 30%）时
+        // 本回合无其它动作——不会像旧的 'ranged' 占位那样退化成普通近战/移动。
+        const isImmobile = this.hasBehavior('MONST_IMMOBILE') || this.hasBehavior('MONST_TURRET');
+        if (isImmobile) {
+            return;
         }
 
         if (this.isAlly) {
@@ -242,24 +421,12 @@ export class Monster extends Creature {
 
             if (target) {
                 // We have an enemy
-                if (this.abilities.has('ranged') && minDist > 1 && minDist <= 8) {
-                    const result = CombatSystem.attack(this, target);
-                    if (result.damage > 0) {
-                        logger.log(i18next.t('combat.ally_ranged_hits', {
-                            ally: this.name, target: target.name, damage: result.damage,
-                            defaultValue: `Your ${this.name} shoots the ${target.name} for ${result.damage} damage.`
-                        }), '#88ff88');
-                        game.spawnFloatingText(`-${result.damage}`, target.loc.x, target.loc.y, 0xff5555);
-                        if (this.onHitStatus && this.onHitDuration > 0 && rng.randPercent(Math.floor(this.onHitChance * 100))) {
-                            game.applyMonsterOnHitStatus(target.name, this.onHitStatus, this.onHitDuration);
-                        }
-                    } else {
-                        logger.log(i18next.t('combat.ally_misses', { ally: this.name, target: target.name, defaultValue: `Your ${this.name} misses the ${target.name}.` }), '#aaaaaa');
-                    }
-                    this.endTurnWithAttack();
-                    return;
-                }
-
+                // P4-1b：原先此处有 abilities.has('ranged') 的桩（minDist<=8 时走
+                // CombatSystem.attack 冒充远程）。核实后 web 侧唯一同时带
+                // abilities:['ranged'] 与 bolts 的怪物是 centaur（DISTANCE_ATTACK），
+                // 已被上面新增的 tryUseBolt 出口接管；继续保留这个桩会导致
+                // "30% 施法判定 miss 后又白嫖一次等效远程攻击"的双重远程，
+                // 与 CE monstUseBolt 的语义不符，故整段移除（详见报告）。
                 if (minDist <= 1) {
                     const result = CombatSystem.attack(this, target);
                     if (result.damage > 0) {
@@ -415,37 +582,8 @@ export class Monster extends Creature {
                 return;
             }
 
-            // Ranged ability: stay back and attack from distance
-            if (this.abilities.has('ranged') && canSeePlayer && distToPlayer > 1 && distToPlayer <= 8) {
-                const result = CombatSystem.attack(this, game.player);
-                if (result.damage > 0) {
-                    game.lastDamageSource = this.name;
-                    logger.log(i18next.t('combat.monster_ranged_hits', {
-                        monster: this.name,
-                        damage: result.damage,
-                        defaultValue: `The ${this.name} shoots you for ${result.damage} damage.`
-                    }), '#ff8866');
-                    game.spawnFloatingText(`-${result.damage}`, game.player.loc.x, game.player.loc.y, 0xff5555);
-                    game.spawnBlood(game.player.loc.x, game.player.loc.y);
-                    game.tryTriggerArmorRunic(this, result.damage);
-                    if (this.onHitStatus && this.onHitDuration > 0 && rng.randPercent(Math.floor(this.onHitChance * 100))) {
-                        game.applyMonsterOnHitStatus(this.name, this.onHitStatus, this.onHitDuration);
-                    }
-                    if (this.hasAbility('MA_POISONS')) {
-                        game.applyMonsterOnHitStatus(this.name, 'poisoned', result.damage * 2);
-                    }
-                    if (this.hasAbility('MA_CAUSES_WEAKNESS')) {
-                        game.applyMonsterOnHitStatus(this.name, 'weakened', 15);
-                    }
-                    if (this.hasAbility('MA_HIT_HALLUCINATE')) {
-                        game.applyMonsterOnHitStatus(this.name, 'hallucinating', 15);
-                    }
-                } else {
-                    logger.log(i18next.t('combat.monster_misses_you', { monster: this.name, defaultValue: `The ${this.name} misses you.` }), '#aaaaaa');
-                }
-                this.endTurnWithAttack();
-                return;
-            }
+            // P4-1b：原 abilities.has('ranged') 远程桩已移除，理由同上（ally 分支
+            // 注释）——centaur 的 DISTANCE_ATTACK 现在完全走 tryUseBolt 出口。
 
             // Adjacent to player -> Melee Attack!
             if (distToPlayer <= 1) {

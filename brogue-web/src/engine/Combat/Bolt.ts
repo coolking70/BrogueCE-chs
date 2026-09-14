@@ -99,6 +99,69 @@ export function getBoltForItem(identityId: string): BoltConfig | undefined {
     return configs.find(c => c.id === identityId);
 }
 
+// ----- Monster-cast bolt metadata (P4-1b) -----
+//
+// monsters.json 的 `bolts` 字段（P4-1a 接入）存的是 CE boltType 去 BOLT_ 前缀的
+// 原始名字（如 "SPARK"、"SLOW_2"），不是 web 的 BoltEffect。这张表把 CE bolt 名
+// 映射到 BoltEffect + CE boltCatalog（GlobalsBrogue.c:58-87）里与"怪物该不该对
+// 这个目标放这个 bolt"直接相关的字段：BF_TARGET_ALLIES/BF_TARGET_ENEMIES、
+// BF_FIERY、以及 magnitude（仅供报告/调试参考，实际伤害走 CombatSystem.attack，
+// 详见 Monster.ts 的施法实现与本轮报告）。
+//
+// effect: null 的两项（SPIDERWEB / ANCIENT_SPIRIT_VINES）是 P4-1a 报告登记的
+// 已知缺口——CE 里是 BE_NONE + 铺地形（spawnDungeonFeature），web 的 BoltEffect
+// 模型是"命中生物产生效果"，两者不是一回事。本轮不实现，登记在表里只是为了让
+// monstUseBolt 的遍历逻辑能识别到"这是已知的、故意不做的 bolt"而不是漏看的
+// 未知名字（见 Monster.tryUseBolt 的过滤逻辑与测试里的显式断言）。
+export interface MonsterBoltMeta {
+    /** null = 已知缺口，不实现（见上）。 */
+    effect: BoltEffect | null;
+    targetAllies: boolean;
+    targetEnemies: boolean;
+    /** BF_FIERY：不对免疫火焰的目标发射。 */
+    fiery: boolean;
+    /** CE boltCatalog 的 magnitude 列，供参考/报告用。 */
+    magnitude: number;
+}
+
+export const MONSTER_BOLT_TABLE: Record<string, MonsterBoltMeta> = {
+    // GlobalsBrogue.c:80 protection magic — BE_SHIELDING, BF_TARGET_ALLIES
+    SHIELDING: { effect: BoltEffect.SHIELDING, targetAllies: true, targetEnemies: false, fiery: false, magnitude: 5 },
+    // GlobalsBrogue.c:78 haste spell — BE_HASTE, BF_TARGET_ALLIES
+    HASTE: { effect: BoltEffect.HASTE, targetAllies: true, targetEnemies: false, fiery: false, magnitude: 2 },
+    // GlobalsBrogue.c:82 spark — BE_DAMAGE, BF_TARGET_ENEMIES | BF_ELECTRIC
+    SPARK: { effect: BoltEffect.SPARK, targetAllies: false, targetEnemies: true, fiery: false, magnitude: 1 },
+    // GlobalsBrogue.c:85 arrow — BE_ATTACK, BF_TARGET_ENEMIES（炮塔/半人马普通远程攻击）
+    DISTANCE_ATTACK: { effect: BoltEffect.DISTANCE_ATTACK, targetAllies: false, targetEnemies: true, fiery: false, magnitude: 1 },
+    // GlobalsBrogue.c:77 healing magic — BE_HEALING, BF_TARGET_ALLIES
+    HEALING: { effect: BoltEffect.HEALING, targetAllies: true, targetEnemies: false, fiery: false, magnitude: 5 },
+    // GlobalsBrogue.c:70 blink trajectory — CE 在 monstUseBolt 里显式 continue 跳过
+    // （BLINKING 在别处处理，本轮不实现），这里登记仅供过滤表查得到。
+    BLINKING: { effect: BoltEffect.BLINKING, targetAllies: false, targetEnemies: false, fiery: false, magnitude: 5 },
+    // GlobalsBrogue.c:64 negation magic — BE_NEGATION, BF_TARGET_ENEMIES
+    NEGATION: { effect: BoltEffect.NEGATION, targetAllies: false, targetEnemies: true, fiery: false, magnitude: 10 },
+    // GlobalsBrogue.c:74 spell of discord — BE_DISCORD, BF_TARGET_ENEMIES
+    DISCORD: { effect: BoltEffect.DISCORD, targetAllies: false, targetEnemies: true, fiery: false, magnitude: 10 },
+    // GlobalsBrogue.c:86 poisoned dart — BE_ATTACK, BF_TARGET_ENEMIES
+    POISON_DART: { effect: BoltEffect.POISON_DART, targetAllies: false, targetEnemies: true, fiery: false, magnitude: 1 },
+    // GlobalsBrogue.c:69 flame — BE_DAMAGE, BF_TARGET_ENEMIES | BF_FIERY
+    FIRE: { effect: BoltEffect.FIRE, targetAllies: false, targetEnemies: true, fiery: true, magnitude: 4 },
+    // GlobalsBrogue.c:84 dragonfire — BE_DAMAGE, BF_TARGET_ENEMIES | BF_FIERY
+    DRAGONFIRE: { effect: BoltEffect.DRAGONFIRE, targetAllies: false, targetEnemies: true, fiery: true, magnitude: 18 },
+    // GlobalsBrogue.c:65 beckoning spell — BE_BECKONING, BF_TARGET_ENEMIES
+    BECKONING: { effect: BoltEffect.BECKONING, targetAllies: false, targetEnemies: true, fiery: false, magnitude: 10 },
+    // GlobalsBrogue.c:79 slowing spell（弱化变体，magnitude=2）— BE_SLOW 与
+    // BOLT_SLOW 共用同一个 boltEffect（P4-1a 报告已核实），映射到同一个
+    // web BoltEffect.SLOW。
+    SLOW_2: { effect: BoltEffect.SLOW, targetAllies: false, targetEnemies: true, fiery: false, magnitude: 2 },
+    // 已知缺口，见上方说明。
+    SPIDERWEB: { effect: null, targetAllies: false, targetEnemies: true, fiery: false, magnitude: 10 },
+    ANCIENT_SPIRIT_VINES: { effect: null, targetAllies: false, targetEnemies: true, fiery: false, magnitude: 5 },
+};
+
+/** 已知但本轮故意不实现的 CE bolt 名（供测试显式断言，防止悄悄新增未登记名字）。 */
+export const KNOWN_GAP_MONSTER_BOLT_NAMES: readonly string[] = ['SPIDERWEB', 'ANCIENT_SPIRIT_VINES'];
+
 // ----- Line-of-sight path (Bresenham) -----
 
 /**

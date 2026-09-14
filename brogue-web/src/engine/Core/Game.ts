@@ -7,7 +7,7 @@ import { Architect } from '../Generator/Architect';
 import type { MachineResult } from '../Generator/BlueprintEngine';
 import blueprintData from '../../data/blueprints.json';
 import { Player, type HungerState } from '../../entities/Player';
-import { Monster } from '../../entities/Monster';
+import { Monster, applyShieldStatus } from '../../entities/Monster';
 import { CombatSystem } from '../Combat/Combat';
 import { weaponParalysisDuration, weaponConfusionDuration, weaponForceDistance, netEnchant, reflectionChance, armorAbsorptionMax, armorReprisalPercent } from '../Combat/CombatFormulas';
 import { ItemCategory, Item } from '../Items/Item';
@@ -19,7 +19,7 @@ import mutationData from '../../data/mutations.json';
 import type { MonsterData, MonsterAbility, MutationData } from '../../entities/Monster';
 import { MonsterState } from '../../entities/Monster';
 import { Direction, type Pos } from '../../types';
-import { ensureEntityIdAbove, type StatusId } from '../../entities/Creature';
+import { ensureEntityIdAbove, type StatusId, type Creature } from '../../entities/Creature';
 import { timeSystem } from '../Systems/Time';
 import { generateMonsterDetail, generateItemDetail, type DetailInfo } from '../UI/DetailGenerator';
 import { logger } from '../Systems/Logger';
@@ -31,7 +31,7 @@ import { FOVSys } from '../Lighting/FOV';
 import { LightMap } from '../Lighting/LightMap';
 import { FloatingText } from '../Visuals/FloatingText';
 import { STATUS_CONFIG } from '../Status/statusConfig';
-import { getBoltForItem, boltPath, buildBoltFrames, BoltEffect, type BoltConfig, type BoltFrame, type BoltResult } from '../Combat/Bolt';
+import { getBoltForItem, boltPath, buildBoltFrames, BoltEffect, MONSTER_BOLT_TABLE, type BoltConfig, type BoltFrame, type BoltResult } from '../Combat/Bolt';
 
 export type GameMode = 'normal' | 'easy' | 'wizard' | 'test';
 
@@ -3023,6 +3023,171 @@ export class Game {
                 break;
         }
 
+    }
+
+    /**
+     * P4-1b：怪物施法的效果落地出口，被 Monster.tryUseBolt 调用（对应 CE
+     * monsterCastSpell，Monsters.c:2764）。
+     *
+     * 设计取舍（"泛化 applyBoltEffect 但不破坏玩家路径"，详见报告）：没有
+     * 直接改造上面那个巨大的、按 item 措辞的 applyBoltEffect switch——它的每个
+     * 分支都绑死了"物品名 + 固定打玩家/固定回怪物"的叙事假设（如 HASTE/
+     * SHIELDING 分支硬编码 this.player），改起来风险远大于收益。这里另开一个
+     * 面向"施法者可以是怪物、目标可以是玩家或任意怪物"的精简出口，复用同一套
+     * 底层原语（boltPath/buildBoltFrames 做路径与动画、applyStatusToMonster/
+     * applyTimedStatus 做状态、environment.ignite 做点火、CombatSystem.attack
+     * 做伤害判定），两条路径共享地基但不共享分支体，玩家原有调用
+     * （zapBoltFromPlayer → applyBoltEffect）逐字节未改动。
+     *
+     * 伤害类 bolt（SPARK/FIRE/DRAGONFIRE/POISON_DART/DISTANCE_ATTACK）不走
+     * CE zap() 的 bolt 专属伤害公式——那个公式在 Combat.ts/CombatFormulas.ts
+     * （本轮禁改）里没有对应实现，重新发明一套会绕开项目既有的命中/防御/
+     * onHit 状态管线。改用 CombatSystem.attack(caster, target)：这正是 P4-1a
+     * 之前 'ranged' 占位桩已经在用的既有口径（centaur 等），伤害走怪物自己的
+     * damageString，命中率/onHit（MA_POISONS 等）全部沿用，是本项目对"怪物
+     * 远程攻击伤害"的既定简化，不是本轮新发明的。
+     */
+    public castMonsterBolt(caster: Monster, target: Creature, ceBoltName: string): void {
+        const meta = MONSTER_BOLT_TABLE[ceBoltName];
+        if (!meta || meta.effect === null) return; // 已知缺口/未映射，不应该走到这里
+
+        const isPlayer = target === this.player;
+        const targetName = isPlayer ? i18next.t('bolt.target_you', { defaultValue: 'you' }) : (target as Monster).name;
+
+        // 动画：复用 boltPath/buildBoltFrames，用一个仅供施法出口使用的最小 BoltConfig。
+        const path = boltPath(caster.loc, target.loc, 40);
+        const visualBolt: BoltConfig = {
+            id: `monster_bolt_${ceBoltName.toLowerCase()}`,
+            name: ceBoltName,
+            effect: meta.effect,
+            magnitude: meta.magnitude,
+            char: '*',
+            color: 0xffcc66,
+            maxRange: 0,
+            piercing: false,
+            selfTargeting: false,
+        };
+        this.pendingBoltFrames = buildBoltFrames(path, visualBolt);
+        this.currentBoltFrameIndex = 0;
+        this.boltAnimStartTime = Date.now();
+
+        const casterLabel = caster.name;
+        const logCast = (key: string, defaultValue: string, color: string) => {
+            logger.log(i18next.t(key, { caster: casterLabel, target: targetName, defaultValue }), color);
+        };
+
+        switch (meta.effect) {
+            case BoltEffect.SPARK:
+            case BoltEffect.DISTANCE_ATTACK:
+            case BoltEffect.POISON_DART:
+            case BoltEffect.FIRE:
+            case BoltEffect.DRAGONFIRE: {
+                if (meta.effect === BoltEffect.FIRE || meta.effect === BoltEffect.DRAGONFIRE) {
+                    this.environment.ignite(target.loc.x, target.loc.y);
+                }
+                const result = CombatSystem.attack(caster, target);
+                if (result.damage > 0) {
+                    if (isPlayer) this.lastDamageSource = caster.name;
+                    this.spawnFloatingText(`-${result.damage}`, target.loc.x, target.loc.y, 0xff5555);
+                    if (isPlayer) {
+                        this.spawnBlood(target.loc.x, target.loc.y);
+                        this.tryTriggerArmorRunic(caster, result.damage);
+                    }
+                    logCast('bolt.monster_cast_hit', `${casterLabel} hits ${targetName} with ${ceBoltName} for ${result.damage} damage!`, '#ff8866');
+                    if (isPlayer && caster.onHitStatus && caster.onHitDuration > 0 && rng.randPercent(Math.floor(caster.onHitChance * 100))) {
+                        this.applyMonsterOnHitStatus(caster.name, caster.onHitStatus, caster.onHitDuration);
+                    }
+                    if (isPlayer && caster.hasAbility('MA_POISONS')) {
+                        this.applyMonsterOnHitStatus(caster.name, 'poisoned', result.damage * 2);
+                    }
+                    if (isPlayer && caster.hasAbility('MA_CAUSES_WEAKNESS')) {
+                        this.applyMonsterOnHitStatus(caster.name, 'weakened', 15);
+                    }
+                    if (isPlayer && caster.hasAbility('MA_HIT_HALLUCINATE')) {
+                        this.applyMonsterOnHitStatus(caster.name, 'hallucinating', 15);
+                    }
+                    if (!isPlayer && (target as Monster).hp <= 0) {
+                        // 怪物互殴致死：与既有 discordant 近战分支同口径，留给
+                        // playerTurnEnded 的 filter(m.hp>0) 统一清理，不在这里重复。
+                    }
+                } else {
+                    logCast('bolt.monster_cast_miss', `${casterLabel} tries to hit ${targetName} with ${ceBoltName} but misses.`, '#aaaaaa');
+                }
+                break;
+            }
+
+            case BoltEffect.HEALING: {
+                const amount = Math.max(1, Math.round(target.maxHp * 0.25));
+                const healed = Math.min(target.maxHp - target.hp, amount);
+                target.hp += healed;
+                this.spawnFloatingText(`+${healed}`, target.loc.x, target.loc.y, 0x44ff88);
+                logCast('bolt.monster_cast_heal', `${casterLabel} heals ${targetName} for ${healed} HP!`, '#44ff88');
+                break;
+            }
+
+            case BoltEffect.HASTE: {
+                if (isPlayer) {
+                    this.applyTimedStatus(this.player, 'hasted', 15);
+                } else {
+                    this.applyStatusToMonster(target as Monster, 'hasted', 15, 'magic');
+                }
+                logCast('bolt.monster_cast_haste', `${casterLabel} hastes ${targetName}!`, '#ffff88');
+                break;
+            }
+
+            case BoltEffect.SHIELDING: {
+                applyShieldStatus(target, 15);
+                logCast('bolt.monster_cast_shield', `${casterLabel} shields ${targetName}!`, '#ffffcc');
+                break;
+            }
+
+            case BoltEffect.SLOW: {
+                if (isPlayer) {
+                    this.applyTimedStatus(this.player, 'slowed', meta.magnitude >= 10 ? 20 : 10);
+                } else {
+                    this.applyStatusToMonster(target as Monster, 'slowed', meta.magnitude >= 10 ? 20 : 10, 'magic');
+                }
+                logCast('bolt.monster_cast_slow', `${casterLabel} slows ${targetName}!`, '#888888');
+                break;
+            }
+
+            case BoltEffect.DISCORD: {
+                // CE case BE_DISCORD 已在 specificallyValidBoltTarget 里排除了玩家目标。
+                if (!isPlayer) {
+                    this.applyStatusToMonster(target as Monster, 'discordant', DISCORD_DURATION, 'magic');
+                }
+                logCast('bolt.monster_cast_discord', `${casterLabel} sows discord in ${targetName}!`, '#ff88ff');
+                break;
+            }
+
+            case BoltEffect.NEGATION: {
+                const durations = (target.statusDurations as unknown) as Record<string, number>;
+                for (const k of Object.keys(durations)) durations[k] = 0;
+                if (!isPlayer) (target as Monster).refreshSpeeds();
+                else this.player.refreshSpeeds();
+                logCast('bolt.monster_cast_negation', `${casterLabel} negates the magic on ${targetName}!`, '#ffffff');
+                break;
+            }
+
+            case BoltEffect.BECKONING: {
+                const dx = Math.sign(caster.loc.x - target.loc.x);
+                const dy = Math.sign(caster.loc.y - target.loc.y);
+                const newX = target.loc.x + dx * 2;
+                const newY = target.loc.y + dy * 2;
+                const destCell = this.grid.getCell(newX, newY);
+                if (destCell && destCell.terrain !== TerrainType.WALL && destCell.terrain !== TerrainType.GRANITE && !this.getMonsterAt(newX, newY)) {
+                    target.loc.x = newX;
+                    target.loc.y = newY;
+                }
+                logCast('bolt.monster_cast_beckon', `${casterLabel} beckons ${targetName} closer!`, '#88ccff');
+                break;
+            }
+
+            default:
+                break;
+        }
+
+        this.needsRender = true;
     }
 
     public rechargeArcanaItem(item: Item): boolean {
