@@ -22,6 +22,8 @@ export interface ConsumableConfig {
     effect: string;
     minDepth: number;
     maxDepth: number;
+    /** D2：true = web 自创条目（CE 无对应），保留定义与效果实现，但退出生成池 */
+    excludeFromGeneration?: boolean;
 }
 
 export interface ArcanaConfig {
@@ -34,7 +36,12 @@ export interface ArcanaConfig {
     maxCharges?: number;
     rechargeTurns?: number;
     cooldownTurns?: number;
+    /** D2：true = web 自创条目（CE 无对应），保留定义与效果实现，但退出生成池 */
+    excludeFromGeneration?: boolean;
 }
+
+/** 「是否参与生成」字段名：与 data json 中的约定一致 */
+type Poolable = { excludeFromGeneration?: boolean };
 
 export class ItemLoader {
     public static weapons = weaponsData as any[];
@@ -48,6 +55,45 @@ export class ItemLoader {
     public static charms = arcanaData.charms as ArcanaConfig[];
     public static keys = arcanaData.keys as ArcanaConfig[];
     public static amulets = arcanaData.amulets as ArcanaConfig[];
+
+    // ---- 生成池（D2：自创条目退出生成池，而非删除） ----
+    // 上方 * 全量数组供直接构造（spawnXxx 按 id 查全量）与测试模式资产使用；
+    // 下方 gen* 才是随机生成/掉落允许抽取的池子。新增自创条目时只需在
+    // json 里标 excludeFromGeneration: true，无需改生成代码。
+    public static genPotions = ItemLoader.filterPool(ItemLoader.potions);
+    public static genScrolls = ItemLoader.filterPool(ItemLoader.scrolls);
+    public static genFood = ItemLoader.filterPool(ItemLoader.food);
+    public static genWands = ItemLoader.filterPool(ItemLoader.wands);
+    public static genStaffs = ItemLoader.filterPool(ItemLoader.staffs);
+    public static genRings = ItemLoader.filterPool(ItemLoader.rings);
+    public static genCharms = ItemLoader.filterPool(ItemLoader.charms);
+    public static genKeys = ItemLoader.filterPool(ItemLoader.keys);
+    public static genAmulets = ItemLoader.filterPool(ItemLoader.amulets);
+    public static genWeapons = ItemLoader.filterPool(ItemLoader.weapons);
+    public static genArmors = ItemLoader.filterPool(ItemLoader.armors);
+
+    private static filterPool<T extends Poolable>(arr: T[]): T[] {
+        return arr.filter(x => !x.excludeFromGeneration);
+    }
+
+    // ---- 符文池（D2：venom/vampirism/vitality 为 web 自创，退出生成池） ----
+    // CE 权威表：weaponRunicNames（Globals.c）10 种、armorRunicNames 11 种。
+    // web 效果实现保留全部条目（Combat/Game 分支未动），池子只保留 CE 对应项。
+    // 'paralyzing' 对应 CE 的 "paralysis" 符文（拼写差异，非自创）。
+    public static readonly ALL_WEAPON_RUNICS = [
+        'paralyzing', 'venom', 'quietus', 'vampirism', 'speed',
+        'confusion', 'force', 'slaying', 'mercy'
+    ] as const;
+    public static readonly GENERATED_WEAPON_RUNICS = [
+        'paralyzing', 'quietus', 'speed', 'confusion', 'force', 'slaying', 'mercy'
+    ] as const;
+    public static readonly ALL_ARMOR_RUNICS = [
+        'reflection', 'dampening', 'mutuality', 'respiration', 'vitality',
+        'absorption', 'reprisal', 'immunity'
+    ] as const;
+    public static readonly GENERATED_ARMOR_RUNICS = [
+        'reflection', 'dampening', 'mutuality', 'respiration', 'absorption', 'reprisal', 'immunity'
+    ] as const;
 
     // Mappings from true ID to fake name/color
     public static potionFlavorMap = new Map<string, { name: string, color: number }>();
@@ -352,7 +398,7 @@ export class ItemLoader {
             }
         }
         if (rng.randPercent(12)) {
-            const runics = ['paralyzing', 'venom', 'quietus', 'vampirism', 'speed', 'confusion', 'force', 'slaying', 'mercy'];
+            const runics = ItemLoader.GENERATED_WEAPON_RUNICS;
             weapon.runicType = runics[rng.randRange(0, runics.length - 1)];
         }
 
@@ -377,7 +423,7 @@ export class ItemLoader {
             }
         }
         if (rng.randPercent(10)) {
-            const runics = ['reflection', 'dampening', 'mutuality', 'respiration', 'vitality', 'absorption', 'reprisal', 'immunity'];
+            const runics = ItemLoader.GENERATED_ARMOR_RUNICS;
             armor.runicType = runics[rng.randRange(0, runics.length - 1)];
         }
 

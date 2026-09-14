@@ -14,6 +14,7 @@
             "effect": "heal_partial",
             "minDepth": 1,
             "maxDepth": 26,
+            "excludeFromGeneration": true,
             "description": "恢复约40%的最大生命值。是最基础的治疗药剂。"
         },
         {
@@ -240,6 +241,7 @@
             "effect": "amnesia",
             "minDepth": 1,
             "maxDepth": 26,
+            "excludeFromGeneration": true,
             "description": "使你遗忘已探索过的地图区域，将视野外的地形信息从记忆中抹去。"
         }
     ],

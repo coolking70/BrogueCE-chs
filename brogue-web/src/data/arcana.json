@@ -9,6 +9,7 @@
       "maxCharges": 2,
       "rechargeTurns": 220,
       "color": 16744192,
+      "excludeFromGeneration": true,
       "description": "向目标方向发射火球，沿途点燃所有可燃物。对密集怪物群极为有效，但注意不要引燃自身。"
     },
     {
@@ -20,6 +21,7 @@
       "maxCharges": 2,
       "rechargeTurns": 250,
       "color": 3394815,
+      "excludeFromGeneration": true,
       "description": "发射一道闪电，可穿透直线上所有目标造成伤害，对排成一列的怪物伤害加倍。"
     },
     {
@@ -154,6 +156,7 @@
       "maxCharges": 4,
       "rechargeTurns": 120,
       "color": 16767436,
+      "excludeFromGeneration": true,
       "description": "发射一道耀眼光束，照亮目标区域并致盲途中的怪物，令其短暂无法行动。"
     }
   ],

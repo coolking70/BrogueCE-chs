@@ -454,22 +454,22 @@ export class Game {
         // Resolve by category
         switch (category) {
             case 'SCROLL': {
-                const scrolls = ItemLoader.scrolls;
+                const scrolls = ItemLoader.genScrolls;
                 if (scrolls.length > 0) return ItemLoader.spawnScroll(scrolls[rng.randRange(0, scrolls.length - 1)]!.id, x, y);
                 return null;
             }
             case 'POTION': {
-                const potions = ItemLoader.potions;
+                const potions = ItemLoader.genPotions;
                 if (potions.length > 0) return ItemLoader.spawnPotion(potions[rng.randRange(0, potions.length - 1)]!.id, x, y);
                 return null;
             }
             case 'WEAPON': {
-                const weapons = ItemLoader.getWeaponConfigs();
+                const weapons = ItemLoader.genWeapons;
                 if (weapons.length > 0) return ItemLoader.spawnWeapon(weapons[rng.randRange(0, weapons.length - 1)]!.id, x, y);
                 return null;
             }
             case 'ARMOR': {
-                const armors = ItemLoader.getArmorConfigs();
+                const armors = ItemLoader.genArmors;
                 if (armors.length > 0) return ItemLoader.spawnArmor(armors[rng.randRange(0, armors.length - 1)]!.id, x, y);
                 return null;
             }
@@ -478,19 +478,19 @@ export class Game {
                 // Pick a random high-value item
                 const roll = rng.randRange(0, 5);
                 if (roll === 0) {
-                    const wands = ItemLoader.wands.filter(w => depth >= w.minDepth && depth <= w.maxDepth);
+                    const wands = ItemLoader.genWands.filter(w => depth >= w.minDepth && depth <= w.maxDepth);
                     if (wands.length > 0) return ItemLoader.spawnWand(wands[rng.randRange(0, wands.length - 1)]!.id, x, y);
                 }
                 if (roll === 1) {
-                    const staffs = ItemLoader.staffs.filter(s => depth >= s.minDepth && depth <= s.maxDepth);
+                    const staffs = ItemLoader.genStaffs.filter(s => depth >= s.minDepth && depth <= s.maxDepth);
                     if (staffs.length > 0) return ItemLoader.spawnStaff(staffs[rng.randRange(0, staffs.length - 1)]!.id, x, y);
                 }
                 if (roll === 2) {
-                    const rings = ItemLoader.rings.filter(r => depth >= r.minDepth && depth <= r.maxDepth);
+                    const rings = ItemLoader.genRings.filter(r => depth >= r.minDepth && depth <= r.maxDepth);
                     if (rings.length > 0) return ItemLoader.spawnRing(rings[rng.randRange(0, rings.length - 1)]!.id, x, y);
                 }
                 if (roll === 3) {
-                    const charms = ItemLoader.charms.filter(c => depth >= c.minDepth && depth <= c.maxDepth);
+                    const charms = ItemLoader.genCharms.filter(c => depth >= c.minDepth && depth <= c.maxDepth);
                     if (charms.length > 0) return ItemLoader.spawnCharm(charms[rng.randRange(0, charms.length - 1)]!.id, x, y);
                 }
                 if (roll === 4) return ItemLoader.spawnScroll('scroll_of_enchantment', x, y);
@@ -683,7 +683,12 @@ export class Game {
             if (rng.randPercent(50)) {
                 treasure = ItemLoader.spawnScroll('scroll_of_enchanting', machine.center.x, machine.center.y);
             } else {
-                treasure = ItemLoader.spawnWand('wand_of_fire', machine.center.x, machine.center.y);
+                // D2：原为硬编码 spawnWand('wand_of_fire')（web 自创，退出生成池），
+                // 改为从魔杖生成池按深度抽取；池空则不放置宝藏。
+                const validWands = ItemLoader.genWands.filter(w => depth >= w.minDepth && depth <= w.maxDepth);
+                if (validWands.length > 0) {
+                    treasure = ItemLoader.spawnWand(validWands[rng.randRange(0, validWands.length - 1)]!.id, machine.center.x, machine.center.y);
+                }
             }
             if (treasure) this.items.push(treasure);
         }
@@ -696,16 +701,16 @@ export class Game {
                 let vaultItem = null;
 
                 if (randType === 0) {
-                    const validWands = ItemLoader.wands.filter(w => depth >= w.minDepth && depth <= w.maxDepth);
+                    const validWands = ItemLoader.genWands.filter(w => depth >= w.minDepth && depth <= w.maxDepth);
                     if (validWands.length > 0) vaultItem = ItemLoader.spawnWand(validWands[rng.randRange(0, validWands.length - 1)]!.id, pos.x, pos.y);
                 } else if (randType === 1) {
-                    const validStaffs = ItemLoader.staffs.filter(s => depth >= s.minDepth && depth <= s.maxDepth);
+                    const validStaffs = ItemLoader.genStaffs.filter(s => depth >= s.minDepth && depth <= s.maxDepth);
                     if (validStaffs.length > 0) vaultItem = ItemLoader.spawnStaff(validStaffs[rng.randRange(0, validStaffs.length - 1)]!.id, pos.x, pos.y);
                 } else if (randType === 2) {
-                    const validRings = ItemLoader.rings.filter(r => depth >= r.minDepth && depth <= r.maxDepth);
+                    const validRings = ItemLoader.genRings.filter(r => depth >= r.minDepth && depth <= r.maxDepth);
                     if (validRings.length > 0) vaultItem = ItemLoader.spawnRing(validRings[rng.randRange(0, validRings.length - 1)]!.id, pos.x, pos.y);
                 } else if (randType === 3) {
-                    const validCharms = ItemLoader.charms.filter(c => depth >= c.minDepth && depth <= c.maxDepth);
+                    const validCharms = ItemLoader.genCharms.filter(c => depth >= c.minDepth && depth <= c.maxDepth);
                     if (validCharms.length > 0) vaultItem = ItemLoader.spawnCharm(validCharms[rng.randRange(0, validCharms.length - 1)]!.id, pos.x, pos.y);
                 } else {
                     vaultItem = ItemLoader.spawnScroll('scroll_of_enchantment', pos.x, pos.y);
@@ -736,10 +741,10 @@ export class Game {
             if (rng.randPercent(40)) {
                 // Charms or rings
                 if (rng.randPercent(50)) {
-                    const validRings = ItemLoader.rings.filter(r => depth >= r.minDepth && depth <= r.maxDepth);
+                    const validRings = ItemLoader.genRings.filter(r => depth >= r.minDepth && depth <= r.maxDepth);
                     if (validRings.length > 0) treasure = ItemLoader.spawnRing(validRings[rng.randRange(0, validRings.length - 1)]!.id, vault.center.x, vault.center.y);
                 } else {
-                    const validCharms = ItemLoader.charms.filter(c => depth >= c.minDepth && depth <= c.maxDepth);
+                    const validCharms = ItemLoader.genCharms.filter(c => depth >= c.minDepth && depth <= c.maxDepth);
                     if (validCharms.length > 0) treasure = ItemLoader.spawnCharm(validCharms[rng.randRange(0, validCharms.length - 1)]!.id, vault.center.x, vault.center.y);
                 }
             } else {
@@ -875,50 +880,50 @@ export class Game {
                 const id = rng.randPercent(50) ? 'leather_armor' : 'chain_mail';
                 item = ItemLoader.spawnArmor(id, pos.x, pos.y);
             } else if (randType === 2) {
-                const validPotions = ItemLoader.potions.filter(p => depth >= p.minDepth && depth <= p.maxDepth);
+                const validPotions = ItemLoader.genPotions.filter(p => depth >= p.minDepth && depth <= p.maxDepth);
                 if (validPotions.length > 0) {
                     const id = validPotions[rng.randRange(0, validPotions.length - 1)]!.id;
                     item = ItemLoader.spawnPotion(id, pos.x, pos.y);
                 }
             } else if (randType === 3) {
-                const validScrolls = ItemLoader.scrolls.filter(s => depth >= s.minDepth && depth <= s.maxDepth);
+                const validScrolls = ItemLoader.genScrolls.filter(s => depth >= s.minDepth && depth <= s.maxDepth);
                 if (validScrolls.length > 0) {
                     const id = validScrolls[rng.randRange(0, validScrolls.length - 1)]!.id;
                     item = ItemLoader.spawnScroll(id, pos.x, pos.y);
                 }
             } else if (randType === 4) {
-                const validWands = ItemLoader.wands.filter(w => depth >= w.minDepth && depth <= w.maxDepth);
+                const validWands = ItemLoader.genWands.filter(w => depth >= w.minDepth && depth <= w.maxDepth);
                 if (validWands.length > 0) {
                     const id = validWands[rng.randRange(0, validWands.length - 1)]!.id;
                     item = ItemLoader.spawnWand(id, pos.x, pos.y);
                 }
             } else if (randType === 5) {
-                const validStaffs = ItemLoader.staffs.filter(s => depth >= s.minDepth && depth <= s.maxDepth);
+                const validStaffs = ItemLoader.genStaffs.filter(s => depth >= s.minDepth && depth <= s.maxDepth);
                 if (validStaffs.length > 0) {
                     const id = validStaffs[rng.randRange(0, validStaffs.length - 1)]!.id;
                     item = ItemLoader.spawnStaff(id, pos.x, pos.y);
                 }
             } else if (randType === 6) {
-                const validRings = ItemLoader.rings.filter(r => depth >= r.minDepth && depth <= r.maxDepth);
+                const validRings = ItemLoader.genRings.filter(r => depth >= r.minDepth && depth <= r.maxDepth);
                 if (validRings.length > 0) {
                     const id = validRings[rng.randRange(0, validRings.length - 1)]!.id;
                     item = ItemLoader.spawnRing(id, pos.x, pos.y);
                 }
             } else if (randType === 7) {
-                const validCharms = ItemLoader.charms.filter(c => depth >= c.minDepth && depth <= c.maxDepth);
+                const validCharms = ItemLoader.genCharms.filter(c => depth >= c.minDepth && depth <= c.maxDepth);
                 if (validCharms.length > 0) {
                     const id = validCharms[rng.randRange(0, validCharms.length - 1)]!.id;
                     item = ItemLoader.spawnCharm(id, pos.x, pos.y);
                 }
             } else if (randType === 8) {
                 if (rng.randPercent(10)) {
-                    const validAmulets = ItemLoader.amulets.filter(a => depth >= a.minDepth && depth <= a.maxDepth);
+                    const validAmulets = ItemLoader.genAmulets.filter(a => depth >= a.minDepth && depth <= a.maxDepth);
                     if (validAmulets.length > 0) {
                         const id = validAmulets[rng.randRange(0, validAmulets.length - 1)]!.id;
                         item = ItemLoader.spawnAmulet(id, pos.x, pos.y);
                     }
                 } else {
-                    const validKeys = ItemLoader.keys.filter(k => depth >= k.minDepth && depth <= k.maxDepth);
+                    const validKeys = ItemLoader.genKeys.filter(k => depth >= k.minDepth && depth <= k.maxDepth);
                     if (validKeys.length > 0) {
                         const id = validKeys[rng.randRange(0, validKeys.length - 1)]!.id;
                         item = ItemLoader.spawnKey(id, pos.x, pos.y);
