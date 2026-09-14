@@ -570,6 +570,37 @@ maxHp=30 下满血耗时恰好 300 回合，与 CE 的 TURNS_FOR_FULL_REGEN=300 
 - npm test 与 npm run build 全绿。
 ```
 
+## P1-22 下坠药水完全没有实现（P4-4 勘察发现，玩家可见）
+
+`Game.ts` 的 `case 'fall_down'` 只打印一行 `potion.descent`
+（"The floor opens beneath you!"），**之后什么都不做**——玩家不会下潜，
+深度不变，药水等于白喝。全仓没有任何换层/坠落代码路径。
+
+连带影响（已在 P4-4 中明确排除出范围）：
+- CE 的 pit bloat 死亡时铺 `DF_HOLE_POTION`（洞），把踩在上面的生物送到下一层。
+  web 无坠落子系统，故 P4-4 只实现它的自爆，不产生洞。
+- CE `killCreature` 里 `MA_DF_ON_DEATH` 的 `!(bookkeepingFlags & MB_IS_FALLING)`
+  守卫在 web 无从对应。
+
+必做：实现真正的坠落——玩家/怪物落到下一层、受坠落伤害、洞地形本身。
+这是一个子系统，不是一行修复。做完后回头补 pit bloat 的洞。
+
+## P1-23 web 没有 DF（地形特征）系统
+
+CE 的 `spawnDungeonFeature` + `dungeonFeatureCatalog`（`Globals.c:603`，219 条）
+是"在某格铺开一片地形/气体"的统一设施，被死亡掉落、药水、陷阱、蓝图、bolt
+大量复用。web 完全没有它——`Bolt.ts:112` 已有一条注释承认这是已知缺口。
+
+现状是每个需要铺地形的地方各自直接调 `environment.addGas` / `ignite`，
+参数靠手写（例如下坠药水的 `addGas(x, y, 2, 70)` 中的 70 没有 CE 依据）。
+P4-4 也沿用了这个权宜做法（只接 bloat 的毒气与 explosive bloat 的火）。
+
+必做：建立 DF 目录与 `spawnDungeonFeature`，含 startProb/probDecr 的扩散算法、
+`DFF_*` 旗标、`subsequentDF` 链式触发；再把现有各处硬编码调用改为查表。
+注意 `Globals.c:600` 的注释：**gas 层的 DF 用 startprob 当体积、忽略 probdecr、
+只在单点生成**，与 dungeon/surface 层的扩散语义不同。
+
+
 ---
 
 # 验收流程
