@@ -154,6 +154,14 @@ export function specificallyValidBoltTarget(caster: Monster, target: Creature, c
     return true;
 }
 
+/** P4-6：CE monsterAtLoc 的 web 等价（含玩家）：该格上的玩家或存活怪物。 */
+function creatureAtLoc(game: Game, x: number, y: number): Creature | undefined {
+    if (game.player.hp > 0 && game.player.loc.x === x && game.player.loc.y === y) {
+        return game.player;
+    }
+    return game.getMonsterAt(x, y);
+}
+
 export enum MonsterState {
     ASLEEP,
     WANDERING,
@@ -498,6 +506,316 @@ export class Monster extends Creature {
         return false;
     }
 
+    // ------------------------------------------------------------------
+    // P4-6：三种攻击几何（怪物侧）
+    //
+    // CE 事实（本轮已独立确认，详见 ai_docs/p4_6_attack_geometry_report.md）：
+    //   - MA_ATTACKS_PENETRATE    = 矛：直线穿透至多 2 格
+    //     （handleSpearAttacks 门控，Movement.c:934 —— Rogue.h:2120 的注释
+    //       "like an axe" 写反了，以代码为准）
+    //   - MA_ATTACKS_ALL_ADJACENT = 斧：横扫全部相邻敌人
+    //     （buildHitList(..., sweep=true)，Monsters.c:3879 —— Rogue.h:2121
+    //       的注释同样写反）
+    //   - MA_ATTACKS_EXTEND       = 鞭：沿直线远距离单体（射程 5）
+    //     （handleWhipAttacks 门控，Movement.c:873 —— 这条注释是对的）
+    // ------------------------------------------------------------------
+
+    /**
+     * P4-6：CE monsterWillAttackTarget（Monsters.c:336）的 web 简化口径：
+     * 敌对（monstersAreEnemies 已含 discordant 六亲不认）且存活、非被囚禁
+     * （MB_CAPTIVE → isCaged）。省略 entranced/ally 细分（web 无该状态谱系），
+     * 与 P4-5 findLiveSeizer 的判定同口径。
+     */
+    private willAttackTarget(defender: Creature): boolean {
+        if (defender.hp <= 0) return false;
+        if (defender instanceof Monster && defender.isCaged) return false;
+        return monstersAreEnemies(this, defender);
+    }
+
+    /**
+     * P4-6：CE handleWhipAttacks（Movement.c:855-912）怪物分支 + getImpactLoc
+     * （Items.c:4300-4332，maxDistance=5、returnLastEmptySpace=false、BOLT_WHIP）：
+     * 沿攻击方向逐格推进，第一个"未隐藏的活物"或"阻挡通行/视线的格子"就是
+     * 打击点；打击点上没有可攻击的敌人就不出手（返回 false，调用方照常移动）。
+     * 简化（任务书授权）：CE 用 zap(BOLT_WHIP) 做表现与结算，web 没有 bolt
+     * 系统，直接用既有近战结算 CombatSystem.attack 打打击点上那一个目标，
+     * 不为此新建 bolt 子系统（BE_ATTACK 类 bolt 的结算本就等价于近战攻击）。
+     * 省略：diagonalBlocked（web 全局无对角墙角判定，P4-5 起同口径）。
+     */
+    private performWhipAttack(game: Game, dirX: number, dirY: number,
+        voice: 'ally' | 'discordant' | 'hostile' = 'hostile'): boolean {
+        let strike: Creature | undefined;
+        for (let i = 0; i < 5; i++) {
+            const tx = this.loc.x + (1 + i) * dirX;
+            const ty = this.loc.y + (1 + i) * dirY;
+            const cell = game.grid.getCell(tx, ty);
+            if (!cell) break; // CE isPosInMap：射线出图
+            const c = creatureAtLoc(game, tx, ty);
+            if (c && !c.hasStatus('invisible')) {
+                // 未隐藏的活物挡弹（CE getImpactLoc 的 monster 分支，隐藏者被穿过）
+                strike = c;
+                break;
+            }
+            if (!cell.isPassable || cell.isOpaque) {
+                // 阻挡通行/视线的格子截停：strikeLoc 落在墙格上，
+                // monsterAtLoc(墙格) 为空 → 不出手（Movement.c:888 的射程 5 由
+                // 本循环 i<5 体现）
+                break;
+            }
+        }
+        if (!strike || !this.willAttackTarget(strike)) return false;
+        this.resolveGeometryAttackOn(game, strike, voice);
+        this.endTurnWithAttack();
+        return true;
+    }
+
+    /**
+     * P4-6：CE handleSpearAttacks（Movement.c:917-1023）怪物分支：
+     * 沿方向收集至多 2 格上的敌人（贴脸那格 i==0 无条件算数；远处那格要求
+     * 目标未隐藏——对怪物攻击者只需查 monsterIsHidden，web 用 invisible 状态
+     * 近似，P4-1b 起同口径）；收集时目标格必须不阻挡通行（或目标带
+     * MONST_ATTACKABLE_THRU_WALLS，如墙里的 turret），中途遇到阻挡通行/视线
+     * 的格子就 break（穿不过墙）。
+     * ★ CE Movement.c:1005-1009：攻击顺序人为倒序（先远后近），注释原文
+     *   "Artificially reverse the order of the attacks, so that spears of
+     *   force can send both monsters flying."——照实现，测试锁死。
+     */
+    private performSpearAttack(game: Game, dirX: number, dirY: number,
+        voice: 'ally' | 'discordant' | 'hostile' = 'hostile'): boolean {
+        const hitList: Creature[] = [];
+        let proceed = false;
+        for (let i = 0; i < 2; i++) {
+            const tx = this.loc.x + (1 + i) * dirX;
+            const ty = this.loc.y + (1 + i) * dirY;
+            const cell = game.grid.getCell(tx, ty);
+            if (!cell) break; // CE isPosInMap
+            const defender = creatureAtLoc(game, tx, ty);
+            if (defender &&
+                (cell.isPassable ||
+                    (defender instanceof Monster && defender.hasBehavior('MONST_ATTACKABLE_THRU_WALLS'))) &&
+                this.willAttackTarget(defender)) {
+                hitList.push(defender);
+                if (i === 0 || !defender.hasStatus('invisible')) {
+                    proceed = true;
+                }
+            }
+            if (!cell.isPassable || cell.isOpaque) {
+                // CE Movement.c:976-979：矛穿不过阻挡通行/视线的格子
+                break;
+            }
+        }
+        if (!proceed) return false;
+        // CE Movement.c:1007-1009：先打远的、后打近的（倒序）
+        for (let i = hitList.length - 1; i >= 0; i--) {
+            this.resolveGeometryAttackOn(game, hitList[i]!, voice);
+        }
+        this.endTurnWithAttack();
+        return true;
+    }
+
+    /**
+     * P4-6：CE buildHitList（Combat.c:2049-2090）sweep 分支 + Monsters.c:3881-3889
+     * 攻击循环：以主目标方向为起点旋转遍历 8 个邻格，把"可攻击的敌人"全部
+     * 扫掉。CE 原文用 nbDirs 求 dir、却拿去索引 cDirs——两张表顺序不同
+     * （GlobalsBase.c:38-39），净效果是 8 个邻格全覆盖、只有命中顺序受影响；
+     * web 统一用一张 8 向表旋转，覆盖集合与 CE 完全一致，不逐格复刻这个
+     * 表混用（如实取舍，见报告）。
+     * 横扫只打 monsterWillAttackTarget 为真的目标（不误伤同阵营），墙里的
+     * 目标除非 MONST_ATTACKABLE_THRU_WALLS 否则不打；攻击循环内重查存活
+     * （CE Monsters.c:3884 的 MB_IS_DYING 复查）。
+     */
+    private performSweepAttack(game: Game, primaryTarget: Creature,
+        voice: 'ally' | 'discordant' | 'hostile' = 'hostile'): void {
+        const dirs8: ReadonlyArray<readonly [number, number]> =
+            [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [-1, 1], [1, -1], [1, 1]];
+        const dx = Math.sign(primaryTarget.loc.x - this.loc.x);
+        const dy = Math.sign(primaryTarget.loc.y - this.loc.y);
+        let dir = dirs8.findIndex(d => d[0] === dx && d[1] === dy);
+        if (dir < 0) dir = 0; // CE：dir==NO_DIRECTION 时取 UP；primary 必相邻，实际不可达
+        for (let i = 0; i < 8; i++) {
+            const d = dirs8[(dir + i) % 8]!;
+            const tx = this.loc.x + d[0];
+            const ty = this.loc.y + d[1];
+            const cell = game.grid.getCell(tx, ty);
+            if (!cell) continue; // CE coordinatesAreInMap
+            const defender = creatureAtLoc(game, tx, ty);
+            if (!defender || defender.hp <= 0 || !this.willAttackTarget(defender)) continue;
+            if (!cell.isPassable &&
+                !(defender instanceof Monster && defender.hasBehavior('MONST_ATTACKABLE_THRU_WALLS'))) continue;
+            this.resolveGeometryAttackOn(game, defender, voice);
+        }
+        this.endTurnWithAttack();
+    }
+
+    /**
+     * P4-6：相邻近战出口的几何分发（对应 CE moveMonster 里"目标格有怪"的
+     * 路径：handleWhipAttacks → handleSpearAttacks → buildHitList(sweep)）。
+     * 鞭落空（如目标隐身且身后无人）时照 CE 落回普通近战；矛在相邻场景必然
+     * proceed（i==0 命中即成立）；斧横扫恒耗回合（CE Monsters.c:3871 在攻击
+     * 循环之前就置 ticksUntilTurn）。返回 true 表示本回合已被几何攻击耗掉。
+     */
+    private tryGeometryMeleeAdjacent(game: Game, primaryTarget: Creature,
+        voice: 'ally' | 'discordant' | 'hostile' = 'hostile'): boolean {
+        const dx = Math.sign(primaryTarget.loc.x - this.loc.x);
+        const dy = Math.sign(primaryTarget.loc.y - this.loc.y);
+        if (this.hasAbility('MA_ATTACKS_EXTEND') && this.performWhipAttack(game, dx, dy, voice)) return true;
+        if (this.hasAbility('MA_ATTACKS_PENETRATE') && this.performSpearAttack(game, dx, dy, voice)) return true;
+        if (this.hasAbility('MA_ATTACKS_ALL_ADJACENT')) {
+            this.performSweepAttack(game, primaryTarget, voice);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * P4-6：几何攻击的单目标结算 + 既有近战出口的后置处理（消息/漂浮文字/
+     * onHit 状态/分裂/击退），口径与 takeTurn 的三个既有近战出口一致：
+     * 目标为玩家走 HUNTING 出口同款、为怪物按 voice 使用对应出口的既有消息键
+     * （ally/discordant 出口各有自己的消息词汇，几何攻击发生在哪个出口就沿用
+     * 哪个出口的说法；hostile 对怪物的几何攻击用新键）。新增 i18n 键只带
+     * defaultValue（harness 空资源回退 defaultValue，zh_CN 资源文件不在本轮
+     * 文件边界内）。
+     */
+    private resolveGeometryAttackOn(game: Game, target: Creature, voice: 'ally' | 'discordant' | 'hostile'): void {
+        const result = CombatSystem.attack(this, target);
+        if (result.kamikazeSelfDestruct) {
+            // 仅变异注入场景可达（五种几何怪原生无 MA_KAMIKAZE）
+            const kamikazeKey = voice === 'ally' ? 'combat.ally_kamikaze'
+                : voice === 'discordant' ? 'combat.discordant_kamikaze'
+                : 'combat.geometry_kamikaze';
+            logger.log(i18next.t(kamikazeKey, {
+                attacker: this.name, target: target.name,
+                defaultValue: `The ${this.name} bursts against the ${target.name}!`
+            }), '#ff8800');
+        } else if (result.seized) {
+            const seizeKey = voice === 'ally' ? 'combat.ally_seizes'
+                : voice === 'discordant' ? 'combat.discordant_seizes'
+                : 'combat.geometry_seizes';
+            logger.log(i18next.t(seizeKey, {
+                attacker: this.name, target: target.name,
+                defaultValue: `The ${this.name} seizes the ${target.name}!`
+            }), '#ffcc88');
+        } else if (target === game.player) {
+            if (result.damage > 0) {
+                game.lastDamageSource = this.name;
+                logger.log(i18next.t('combat.monster_hits_you', {
+                    monster: this.name,
+                    damage: result.damage,
+                    defaultValue: `The ${this.name} hits you for ${result.damage} damage.`
+                }), '#ff6666');
+                game.spawnFloatingText(`-${result.damage}`, game.player.loc.x, game.player.loc.y, 0xff5555);
+                game.spawnBlood(game.player.loc.x, game.player.loc.y);
+                game.tryTriggerArmorRunic(this, result.damage);
+                if (this.onHitStatus && this.onHitDuration > 0 && rng.randPercent(Math.floor(this.onHitChance * 100))) {
+                    game.applyMonsterOnHitStatus(this.name, this.onHitStatus, this.onHitDuration);
+                }
+                if (this.hasAbility('MA_POISONS')) {
+                    game.applyMonsterOnHitStatus(this.name, 'poisoned', result.damage * 2);
+                }
+                if (this.hasAbility('MA_CAUSES_WEAKNESS')) {
+                    game.applyMonsterOnHitStatus(this.name, 'weakened', 15);
+                }
+                if (this.hasAbility('MA_HIT_HALLUCINATE')) {
+                    game.applyMonsterOnHitStatus(this.name, 'hallucinating', 15);
+                }
+                if (this.hasAbility('MA_HIT_DEGRADE_ARMOR')) {
+                    if (game.player.equippedArmor && game.player.equippedArmor.enchantment > -3) {
+                        game.player.equippedArmor.enchantment -= 1;
+                        logger.log(i18next.t('combat.armor_degraded', { defaultValue: 'Your armor is corroded by acid!' }), '#ffaaaa');
+                    }
+                }
+                if (this.hasAbility('MA_HIT_STEAL_FLEE')) {
+                    this.state = MonsterState.FLEEING;
+                    logger.log(i18next.t('combat.monkey_steals', { defaultValue: `The ${this.name} grabs something and flees!` }), '#ffffaa');
+                }
+                if (game.player.hp <= 0) {
+                    logger.log(i18next.t('combat.you_have_been_slain', {
+                        defaultValue: 'You have been slain.'
+                    }), '#ff0000');
+                }
+            } else {
+                logger.log(i18next.t('combat.monster_misses_you', {
+                    monster: this.name,
+                    defaultValue: `The ${this.name} misses you.`
+                }), '#aaaaaa');
+                game.spawnFloatingText(
+                    i18next.t('combat.miss_short', { defaultValue: 'Miss' }),
+                    game.player.loc.x,
+                    game.player.loc.y,
+                    0xaaaaaa
+                );
+            }
+        } else {
+            // 打怪物：按 voice 沿用对应出口的既有消息键（ally/discordant），
+            // hostile 对怪物的几何攻击用新键
+            const hitKey = voice === 'ally' ? 'combat.ally_hits'
+                : voice === 'discordant' ? 'combat.discordant_hits'
+                : 'combat.geometry_hits_monster';
+            const missKey = voice === 'ally' ? 'combat.ally_misses'
+                : voice === 'discordant' ? 'combat.discordant_misses'
+                : 'combat.geometry_misses_monster';
+            if (result.damage > 0) {
+                logger.log(i18next.t(hitKey, {
+                    attacker: this.name, target: target.name, damage: result.damage,
+                    defaultValue: voice === 'discordant'
+                        ? `The ${this.name} turns on the ${target.name} for ${result.damage} damage!`
+                        : `The ${this.name} hits the ${target.name} for ${result.damage} damage.`
+                }), '#ff88aa');
+                game.spawnFloatingText(`-${result.damage}`, target.loc.x, target.loc.y, 0xff5555);
+                game.spawnBlood(target.loc.x, target.loc.y);
+                (game as any).trySplitMonster(target, this);
+                if (this.onHitStatus && this.onHitDuration > 0 && rng.randPercent(Math.floor(this.onHitChance * 100))) {
+                    (game as any).applyStatusToMonster(target, this.onHitStatus, this.onHitDuration, 'poison');
+                }
+            } else {
+                logger.log(i18next.t(missKey, {
+                    attacker: this.name, target: target.name,
+                    defaultValue: `The ${this.name} misses the ${target.name}.`
+                }), '#aaaaaa');
+            }
+        }
+        // P4-5 口径：命中且目标存活才推（CE specialHit 只在 defender 存活分支调用）
+        if (result.hit && !result.kamikazeSelfDestruct && !result.seized &&
+            target.hp > 0 && this.hasAbility('MA_ATTACKS_STAGGER')) {
+            (game as any).processStaggerHit(this, target);
+        }
+    }
+
+    /**
+     * P4-6：主目标是否恰在本怪物某条 8 向射线上；返回射线步数（≥1），不在
+     * 任何射线上返回 0。CE 的追击方向来自 scentDirection（Monsters.c:3473/3488，
+     * 指向目标的 8 向梯度，不绕开友军）——所以直线上 2 格内的矛 / 5 格内的
+     * 鞭在追击途中就出手，这是远程几何的主要触发方式。
+     */
+    private rayStepsTo(target: Creature): number {
+        const vx = target.loc.x - this.loc.x;
+        const vy = target.loc.y - this.loc.y;
+        const k = Math.max(Math.abs(vx), Math.abs(vy));
+        if (k < 1) return 0;
+        const dx = Math.sign(vx);
+        const dy = Math.sign(vy);
+        return (vx === dx * k && vy === dy * k) ? k : 0;
+    }
+
+    /**
+     * P4-6：追击（尚不相邻）阶段的鞭/矛尝试，沿"直指目标"的射线（CE
+     * scentDirection → moveMonster 的同构）。命中即耗回合并返回 true。
+     * 只在目标恰在 8 向射线上时尝试（CE 的射线也只沿 8 向延伸，斜线上
+     * 不在射线延长线的目标本来就打不到）。
+     */
+    private tryGeometryRayTo(game: Game, target: Creature,
+        voice: 'ally' | 'discordant' | 'hostile' = 'hostile'): boolean {
+        if (!this.hasAbility('MA_ATTACKS_EXTEND') && !this.hasAbility('MA_ATTACKS_PENETRATE')) {
+            return false;
+        }
+        if (this.rayStepsTo(target) === 0) return false;
+        const dx = Math.sign(target.loc.x - this.loc.x);
+        const dy = Math.sign(target.loc.y - this.loc.y);
+        if (this.hasAbility('MA_ATTACKS_EXTEND') && this.performWhipAttack(game, dx, dy, voice)) return true;
+        if (this.hasAbility('MA_ATTACKS_PENETRATE') && this.performSpearAttack(game, dx, dy, voice)) return true;
+        return false;
+    }
+
     public takeTurn(game: Game, stealthRange: number) {
         if (this.hp <= 0) return;
         if (this.hasStatus('paralyzed')) return;
@@ -567,6 +885,11 @@ export class Monster extends Creature {
                 // "30% 施法判定 miss 后又白嫖一次等效远程攻击"的双重远程，
                 // 与 CE monstUseBolt 的语义不符，故整段移除（详见报告）。
                 if (minDist <= 1) {
+                    // P4-6：斧/矛/鞭的相邻近战几何分发（CE moveMonster 在普通
+                    // attack 之前先试鞭/矛，sweep 替换单体近战）。
+                    if (this.tryGeometryMeleeAdjacent(game, target, 'ally')) {
+                        return;
+                    }
                     const result = CombatSystem.attack(this, target);
                     if (result.kamikazeSelfDestruct) {
                         // P4-4：CE MA_KAMIKAZE（Combat.c:1159-1162）——攻击者代替
@@ -610,6 +933,11 @@ export class Monster extends Creature {
                     this.endTurnWithAttack();
                     return;
                 } else {
+                    // P4-6：盟友追击途中先沿"直指目标"的射线试鞭/矛（CE
+                    // moveMonster 的几何检查先于移动，见 tryGeometryRayTo 注释）。
+                    if (this.tryGeometryRayTo(game, target, this.isAlly ? 'ally' : 'hostile')) {
+                        return;
+                    }
                     const isFlying = this.abilities.has('flying') || this.hasBehavior('MONST_FLIES');
                     const path = Pathfind.findPath(game.grid, this.loc.x, this.loc.y, target.loc.x, target.loc.y, (x, y) => {
                         const c = game.grid.getCell(x, y);
@@ -720,6 +1048,11 @@ export class Monster extends Creature {
                 for (const [dx, dy] of dirs8) {
                     const other = game.getMonsterAt(this.loc.x + dx!, this.loc.y + dy!);
                     if (other && other !== this && other.hp > 0) {
+                        // P4-6：同 ally 分支——discordant 怪的近战同样先过几何分发
+                        // （CE 同一条 moveMonster 路径，不区分阵营来源）。
+                        if (this.tryGeometryMeleeAdjacent(game, other, 'discordant')) {
+                            return;
+                        }
                         const result = CombatSystem.attack(this, other);
                         if (result.kamikazeSelfDestruct) {
                             logger.log(i18next.t('combat.discordant_kamikaze', {
@@ -766,6 +1099,11 @@ export class Monster extends Creature {
 
             // Adjacent to player -> Melee Attack!
             if (distToPlayer <= 1) {
+                // P4-6：同 ally 分支——怪物贴脸玩家的近战先过几何分发
+                // （矛会顺带打中玩家身后的目标，斧会扫掉全部相邻敌人）。
+                if (this.tryGeometryMeleeAdjacent(game, game.player)) {
+                    return;
+                }
                 const result = CombatSystem.attack(this, game.player);
                 if (result.kamikazeSelfDestruct) {
                     // P4-4：CE MA_KAMIKAZE（Combat.c:1159-1162）——攻击者自毁代替
@@ -874,6 +1212,14 @@ export class Monster extends Creature {
                     return;
                 }
 
+                // P4-6：追击途中先沿"直指玩家"的射线试鞭/矛（CE 追击方向来自
+                // scentDirection，不绕开友军——Monsters.c:3473/3488 → 3817-3818；
+                // 置于 MAINTAINS_DISTANCE 判定之后：保持距离的怪先撤退，撤退方向
+                // 上的几何尝试由 tryMoveTo 的移动钩子承担，与 CE 一致）。
+                if (this.tryGeometryRayTo(game, game.player)) {
+                    return;
+                }
+
                 const isLiquidOnly = this.hasBehavior('MONST_RESTRICTED_TO_LIQUID');
                 const path = Pathfind.findPath(game.grid, this.loc.x, this.loc.y, game.player.loc.x, game.player.loc.y, (x, y) => {
                     const c = game.grid.getCell(x, y);
@@ -926,6 +1272,21 @@ export class Monster extends Creature {
                 }
                 return; // Stuck, do not move
             }
+        }
+
+        // P4-6：CE moveMonster（Monsters.c:3809-3822）——怪物每次"尝试朝某方向
+        // 移动/攻击"时，先于移动本身尝试鞭（MA_ATTACKS_EXTEND）与矛
+        // （MA_ATTACKS_PENETRATE）：命中即耗掉回合且不移动。这是鞭 5 格 /
+        // 矛 2 格远程几何的触发路径（追击/游荡/溃逃的每一步都先过这里，与
+        // CE 把 handleWhipAttacks/handleSpearAttacks 挂在 moveMonster 内同构；
+        // 位置在蛛网挣扎之后，与 CE 的检查顺序一致——被缠住的怪物先挣扎，
+        // 不出手）。斧（ALL_ADJACENT）不在此处——CE 的横扫只挂在"目标格
+        // 有怪"的近战分支（buildHitList），移动分支不横扫。
+        const stepDx = Math.sign(nx - this.loc.x);
+        const stepDy = Math.sign(ny - this.loc.y);
+        if (stepDx !== 0 || stepDy !== 0) {
+            if (this.hasAbility('MA_ATTACKS_EXTEND') && this.performWhipAttack(game, stepDx, stepDy)) return;
+            if (this.hasAbility('MA_ATTACKS_PENETRATE') && this.performSpearAttack(game, stepDx, stepDy)) return;
         }
 
         this.loc.x = nx;
