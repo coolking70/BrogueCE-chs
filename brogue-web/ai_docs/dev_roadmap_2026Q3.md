@@ -701,6 +701,44 @@ P4-8 已经撞上一次：气味追踪 + stealthRange 对齐 CE + 3% 掷骰三�
 **不得由开发方自行刷新**（这条已写进 night_plan 的铁律与各轮任务书）。
 
 
+## P1-31 玩家出生/换乘落位在楼梯格上（P4-9 返工定位，已波及 safety map）
+
+CE 进场落位明确**避开楼梯**（RogueMain.c:839-869）：先把 `player.loc` 置为
+`upLoc`/`downLoc`，随后在 4 邻域找一个满足
+`!T_PATHING_BLOCKER && !(HAS_MONSTER | HAS_STAIRS | IS_IN_MACHINE)` 的格子落位；
+4 邻域都不合格则退到 `getQualifyingPathLocNear` 继续找。**玩家从不站在楼梯上。**
+
+web 直接把玩家放到楼梯坐标（`Game.ts:851-855`）：
+```ts
+this.player.loc.x = stairsUpPos.x;
+this.player.loc.y = stairsUpPos.y;
+```
+验收探针实测 5 个种子，开局玩家格地形码全部是 `13`（STAIRS_UP）。
+
+### 已造成的后果
+
+P4-9 的 safety map 因此**整张图退化成平面**：`buildSafetyMap` 里楼梯禁入循环把
+玩家格的 `playerCostMap` 从 1 覆盖回 −1，唯一种子零入队、第一段 Dijkstra 零传播，
+全图只剩 30000 与 −111 两个值，`safetyNextStep` 在 60 个抽查格上给出方向 **0 个**
+（逃跑怪全部原地不动）。
+
+P4-9 采取的是**局部规避**：把玩家格修正移到楼梯禁入循环之后。这是对 CE 的
+**有意偏离**，仅存在于"玩家站在楼梯格"这一 CE 进场不可达的状态。
+开发方如实指出：**CE 自己在玩家站楼梯时安全图同样会退化成平图**——那是 CE 的
+边角行为，不是 CE 的 bug；web 的问题在于把这个边角状态变成了常态。
+
+### 必做
+
+按 CE 的 4 邻域搜索实现落位，玩家不再站在楼梯格上。完成后：
+- 回退 P4-9 §十三 记录的那处有意偏离，恢复严格的 CE 顺序；
+- 复核 P4-9 的 T8（零改造关卡上的梯度断言）仍然通过。
+
+### 注意
+
+这会改变玩家出生坐标，**`p2_3_baseline` 的 play 段与 `generation_baseline` 都可能
+变红**。按 Phase C 的基线策略处理：如实报告，由验收方判断后授权重捕获。
+
+
 ---
 
 # 验收流程
