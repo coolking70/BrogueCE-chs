@@ -1559,6 +1559,14 @@ export class Game {
         this.lightMap = new LightMap(this.grid);
         // P4-8：test 层同样换新气味图
         this.scent = new ScentMap(DCOLS, DROWS);
+        // P1-34：loopMap 必须随层重算。test 分支在 generateDepth（591-599）提前
+        // return，永远到不了 normal 路径末尾的 `this.loopMap = analyzeLoopMap(
+        // this.grid)`；若不在此重算，实例上残留的是**上一个 normal 局**（Game
+        // 构造器以"当前时间"种子跑的那次生成）的环路图——时间种子是秒级精度，
+        // 同一秒内建的局共享同一张陈旧图、跨秒则不同，p4_9_safety_map 的 T2/T7
+        // 因此间歇性翻红（同种子两次 run 的 IN_LOOP 集合不同）。analyzeLoopMap
+        // 纯函数、零 RNG 消耗，不移动随机流（见 ai_docs/p1_34_flaky_determinism_report.md）。
+        this.loopMap = analyzeLoopMap(this.grid);
 
         for (let x = 0; x < DCOLS; x++) {
             for (let y = 0; y < DROWS; y++) {
