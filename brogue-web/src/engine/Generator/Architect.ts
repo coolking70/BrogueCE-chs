@@ -5,6 +5,7 @@
 
 import { Grid, TerrainType, DCOLS, DROWS } from '../Map/Grid';
 import { lakeDisruptsPassability, terrainAllowsMove } from '../Map/Connectivity';
+import { fillLakes, cleanUpLakeBoundaries, buildABridge } from '../Map/LakeSystem';
 import { addLoops, applyLoopDoorSites, MINIMUM_PATHING_DISTANCE, LOOP_DOOR_PERCENT, DEEPEST_LEVEL } from '../Map/LoopMap';
 import { rng } from '../Random';
 import { RoomType, ROOM_TYPE_COUNT } from '../../types';
@@ -215,8 +216,13 @@ export class Architect {
     /**
      * 生成步骤 0-3：重置画布、carveDungeon（首房间 + attachRooms）、
      * grid→地形落位、addLoops 环路、环境叠加（含 P1-29 湖泊连通性闸门）。
+     * C-2 起叠加阶段末尾依次执行 fillLakes（四类液体 + 镶边）、
+     * cleanUpLakeBoundaries、while(buildABridge())——见
+     * designEnvironmentOvelays 头注与 src/engine/Map/LakeSystem.ts。
      * 返回时**全部干地必然属同一个连通块**——这是湖泊闸门
      * 的合同，测试可直接对本阶段断言连通性（p1_29_lake_connectivity.test.ts）。
+     * （岩浆/硫矿按 canMoveTo 口径可走，只会扩大干地集合；清理阶段带
+     * "不可降低可走性"守卫，见 LakeSystem.ts 头注。）
      * 注意：步骤 5 的机器阶段（buildMachines）可能在此之后切断连通
      *（BlueprintEngine 的锁门/特征水深水不受本闸门约束，属独立缺陷，
      * 见 ai_docs/p1_29_lake_connectivity_report.md），不属于本合同范围。
@@ -670,9 +676,31 @@ export class Architect {
         return true;
     }
 
+    /**
+     * 环境叠加层（C-2 后的管线）：
+     * 1. 浅水/草/树/泥/网等**可踏入**叠加层照 web 原样直铺（web 自创内容，
+     *    C-6 runAutogenerators 落地前的对应物）——但跳过 lakeMap 成员格，
+     *    保持"液体优先"与既有行为一致（此前深水先落地、后续叠加层只盖
+     *    FLOOR，效果相同）。
+     * 2. 深水（唯一不可踏入的叠加层）经 P1-29 闸门选址后**不再直接落地**，
+     *    而是记入 lakeMap——对应 CE designLakes 只标记 lakeMap 的语义
+     *    （Architect.c:2674-2681 复制进 lakeMap，不动 LIQUID 层）。
+     * 3. fillLakes（CE 2709-2730）：逐连通组件 liquidType 抽四类液体之一
+     *    （本轮 CHASM 候选剔除，见 LakeSystem 头注），fillLake(±4) 灌注并
+     *    合并邻近湖，createWreath 镶边。
+     * 4. cleanUpLakeBoundaries（CE 1856-1912）打通相邻同类湖。
+     * 5. while (buildABridge())（CE 2786-2876）架桥。CHASM 本轮不生成 →
+     *    恒无处可架，但 RNG 消耗与 CE 一致。
+     *
+     * 与 CE digDungeon（2926-2966）的顺序差异：CE 的清理与架桥在
+     * addMachines 之后；web 的机器阶段在 Game.generateLevel 里位于
+     * generateTerrain 之后（Game.ts 本轮禁改，无法交错）——机器格不受
+     * 本轮两个阶段影响的行为由 machineNumber/选址闸门各自保证。
+     * removeDiagonalOpenings / finishDoors / finishWalls（C-3）与
+     * runAutogenerators（C-6）本轮不做，留痕见 c_2_lakes_e2e 测试。
+     */
     private designEnvironmentOvelays(depth: number) {
-        // Brogue generates lakes by stamping blobs and making sure they don't block chokepoints.
-        // For our simplified TS version, we'll stamp a few water and grass patches directly onto FLOOR tiles.
+        const lakeMap = new Set<number>();
 
         const overlays = [
             { type: TerrainType.WATER_SHALLOW, count: rng.randRange(1, 4), char: '~', color: 0x3366cc, name: 'shallow water' },
@@ -691,6 +719,7 @@ export class Architect {
         for (const overlay of overlays) {
             // P1-29：不可踏入的叠加层（canMoveTo 口径，现役仅深水）会隔断移动，
             // 放置前必须过 CE 的连通性闸门；可踏入的（浅水/草/树/泥/网）不用。
+            // C-2：闸门通过的深水不直接落地，记入 lakeMap 待 fillLakes 统一灌注。
             const gated = !terrainAllowsMove(overlay.type);
             for (let i = 0; i < overlay.count; i++) {
                 // Generate a random organic shape
@@ -701,7 +730,7 @@ export class Architect {
                 const blob = RoomBuilder.createBlobOnGrid(blobMap, 5, 4, 4, scaleW, scaleH, 50, "ffffftttt", "ffffttttt");
 
                 if (gated) {
-                    this.placeGatedLakeBlob(blobMap, blob, overlay);
+                    this.placeGatedLakeBlob(blobMap, blob, overlay, lakeMap);
                     continue;
                 }
 
@@ -709,7 +738,9 @@ export class Architect {
                 for (let attempt = 0; attempt < 10; attempt++) {
                     const cx = rng.randRange(1, DCOLS - blob.width - 2);
                     const cy = rng.randRange(1, DROWS - blob.height - 2);
+                    const centerKey = (cy + Math.floor(blob.height / 2)) * DCOLS + cx + Math.floor(blob.width / 2);
 
+                    if (lakeMap.has(centerKey)) continue; // 湖格不再是 FLOOR（此前由"深水已落地"间接保证）
                     if (this.grid.getCell(cx + Math.floor(blob.width / 2), cy + Math.floor(blob.height / 2))?.terrain === TerrainType.FLOOR) {
                         // Stamp the blob
                         for (let bx = 0; bx < blob.width; bx++) {
@@ -719,6 +750,7 @@ export class Architect {
                                 if (blobMap[blob.minX + bx]![blob.minY + by] === 1) {
                                     const gx = cx + bx;
                                     const gy = cy + by;
+                                    if (lakeMap.has(gy * DCOLS + gx)) continue; // 同上
                                     if (this.grid.isValidPos(gx, gy) && this.grid.getCell(gx, gy)?.terrain === TerrainType.FLOOR) {
                                         this.grid.setTerrain(gx, gy, overlay.type, overlay.char, overlay.color);
                                     }
@@ -730,6 +762,13 @@ export class Architect {
                 }
             }
         }
+
+        // C-2：CE digDungeon 湖泊后四步中的三步（第四步 runAutogenerators 属 C-6）。
+        fillLakes(this.grid, lakeMap, depth);
+        cleanUpLakeBoundaries(this.grid);
+        while (buildABridge(this.grid, depth)) {
+            // 桥数可从 BRIDGE 地形计数观测；本轮 CHASM 不生成，此处恒不进入。
+        }
     }
 
     /**
@@ -740,11 +779,19 @@ export class Architect {
      * 假想放置后用 lakeDisruptsPassability（Architect.c:2588）验证干地
      * 仍连通，通过才落地；不通过换位重试，次数用尽就**跳过这个湖**
      * （CE 语义：不硬塞）。返回是否放置成功。
+     *
+     * C-2：lakeMap 非 null 时改为 CE designLakes 的完整语义——成功只把
+     * 候选格**记入 lakeMap**（CE 2674-2681 `lakeMap[...] = true`，不碰
+     * LIQUID 层），液体由 LakeSystem.fillLakes 统一灌注；且已收进 lakeMap
+     * 的格子在本格验证时视作阻断（CE lakeFloodFill 2578 `!lakeMap[...]`），
+     * 与"先落地的深水不可走"逐格等价。3 参调用（既有测试契约）保持原
+     * 行为：成功直接落地 overlay 地形。
      */
     private placeGatedLakeBlob(
         blobMap: RoomBuilder.RoomGrid,
         blob: { minX: number, minY: number, width: number, height: number },
-        overlay: { type: TerrainType, char: string, color: number }
+        overlay: { type: TerrainType, char: string, color: number },
+        lakeMap?: Set<number>
     ): boolean {
         for (let attempt = 0; attempt < LAKE_PLACEMENT_ATTEMPTS; attempt++) {
             const cx = rng.randRange(1, DCOLS - blob.width - 2);
@@ -763,13 +810,19 @@ export class Architect {
             }
             if (candidate.length === 0) continue; // 盖不到任何地板，等于没放
 
-            const laked = new Set(candidate.map(p => p.y * this.grid.width + p.x));
-            if (lakeDisruptsPassability(this.grid, (x, y) => laked.has(y * this.grid.width + x))) {
+            // 候选湖 + 已收录的湖（CE lakeMap）都视作阻断物参与连通性验证。
+            const blocked = new Set<number>(lakeMap);
+            for (const p of candidate) blocked.add(p.y * this.grid.width + p.x);
+            if (lakeDisruptsPassability(this.grid, (x, y) => blocked.has(y * this.grid.width + x))) {
                 continue; // 会切断关卡，换位重试
             }
 
-            for (const p of candidate) {
-                this.grid.setTerrain(p.x, p.y, overlay.type, overlay.char, overlay.color);
+            if (lakeMap) {
+                for (const p of candidate) lakeMap.add(p.y * this.grid.width + p.x);
+            } else {
+                for (const p of candidate) {
+                    this.grid.setTerrain(p.x, p.y, overlay.type, overlay.char, overlay.color);
+                }
             }
             Architect.lakeGateStats.placed++;
             return true;
