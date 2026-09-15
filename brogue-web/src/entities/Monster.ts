@@ -416,8 +416,10 @@ export class Monster extends Creature {
 
     public mutate(m: MutationData) {
         this.mutation = m;
-        // Prepend mutation name (e.g. "explosive rat")
-        this.name = m.name + ' ' + this.name;
+        // P1-30：变异名经 i18n 组装，语序与连接符收在资源键里（zh_CN
+        // "mutation.<id>" 为"爆裂的{{name}}"式插值；harness 空资源回退英文
+        // "explosive rat"）。CE mutationCatalog.title 见 Globals.c:1396 起。
+        this.name = i18next.t('mutation.' + m.id, { name: this.name, defaultValue: m.name + ' ' + this.name });
         this.color = m.color;
 
         // Apply stat multipliers
