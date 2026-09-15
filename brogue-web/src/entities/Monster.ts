@@ -9,6 +9,7 @@ import { rng } from '../engine/Random';
 import type { Game } from '../engine/Core/Game';
 import { Pathfind } from '../engine/Map/Pathfind';
 import { getSafetyMapForMonster, safetyNextStep } from '../engine/Map/SafetyMap';
+import type { WaypointSystem } from '../engine/Map/WaypointMap';
 import { CombatSystem } from '../engine/Combat/Combat';
 import { logger } from '../engine/Systems/Logger';
 import i18next from 'i18next';
@@ -268,6 +269,23 @@ export class Monster extends Creature {
      * 用全局实时图；察觉不到 → 只拍一次，此后一直用这张旧图继续逃。
      */
     public safetySnapshot: number[][] | null = null;
+
+    /**
+     * P4-10：CE monst->targetWaypointIndex（Monsters.c:127，初值 -1）。
+     * WANDERING 怪物朝该 waypoint 的距离图下坡走，到达/失效后由
+     * chooseNewWanderDestination 换点。
+     */
+    public targetWaypointIndex: number = -1;
+
+    /**
+     * P4-10：CE monst->waypointAlreadyVisited（Monsters.c:128-129，定长
+     * MAX_WAYPOINT_COUNT=40，≈50% 初始已访问均衡）。web 惰性初始化：CE 在
+     * initializeMonster（生成期）就为每只怪消耗 40 次 rand_range(0,1)，照搬会
+     * 移动生成期 RNG 流、打红 generation_baseline（任务书禁刷新基线）；改在
+     * 玩法期首次触碰 waypoint 系统时消费同分布的 40 次种子掷骰。由
+     * WaypointSystem.ensureVisitedInitialized 负责，不要手动赋值。
+     */
+    public waypointAlreadyVisited: boolean[] | null = null;
 
     // Movement & Combat speeds
     public regenTurns: number = 0;
@@ -1412,20 +1430,62 @@ export class Monster extends Creature {
                 }
             }
         } else if (this.state === MonsterState.WANDERING) {
-            // Wander randomly 20% of the time
-            if (rng.randPercent(20)) {
-                const dirs = [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, 1], [-1, 1], [1, -1]];
-                const dir = dirs[rng.randRange(0, dirs.length - 1)]!;
-                const nx = this.loc.x + dir[0]!;
-                const ny = this.loc.y + dir[1]!;
-                const c = game.grid.getCell(nx, ny);
-                const isLiquidTile = c && (c.terrain === TerrainType.WATER_SHALLOW || c.terrain === TerrainType.WATER_DEEP);
-                const canEnter = c && (this.hasBehavior('MONST_RESTRICTED_TO_LIQUID') ? isLiquidTile : c.isPassable);
-                if (canEnter && !game.getMonsterAt(nx, ny)) {
-                    this.tryMoveTo(nx, ny, game);
+            // P4-10：CE Monsters.c:3602-3615——游荡 = 朝目标 waypoint 的距离图
+            // 下坡走（nextStep(map, loc, monst, false)，正向对角优先级）；目标
+            // 失效或无路 → chooseNewWanderDestination 换点再试；仍无路 → 如
+            // flitting 随机走一步（Monsters.c:3618-3619 randValidDirectionFrom）。
+            // 取代旧的"20% 概率随机走"占位实现——CE 的游荡怪沿 waypoint 有
+            // 目的地巡逻，不是布朗运动。
+            const wp = game.waypoints as WaypointSystem;
+            let dir: readonly [number, number] | null = null;
+            if (wp.count > 0 && wp.isValidWanderDestination(this, this.targetWaypointIndex, game.wpContext())) {
+                dir = wp.nextStep(this.targetWaypointIndex, this, game.wpContext());
+            }
+            // Monsters.c:3608-3615：无效或无下坡（含"已站在 waypoint 上"——
+            // 0 距离无更陡邻格）→ 换点。isValidWanderDestination 的 nextStep
+            // 与 CE 一样会被重复求值，保持同构、不求聪明。
+            if (dir === null || !wp.isValidWanderDestination(this, this.targetWaypointIndex, game.wpContext())) {
+                wp.chooseNewWanderDestination(this, game.wpContext());
+                if (wp.isValidWanderDestination(this, this.targetWaypointIndex, game.wpContext())) {
+                    dir = wp.nextStep(this.targetWaypointIndex, this, game.wpContext());
                 }
             }
+            if (dir === null) {
+                // Monsters.c:3618-3619：仍无路 → 随机合法方向（深水里的鳗鱼
+                // 就是这么游荡的）。count==0 时先于掷骰返回，CE Movement.c:693
+                // 的防 OOS 注释同款。
+                dir = this.randFlittingDirection(game);
+            }
+            if (dir !== null) {
+                this.tryMoveTo(this.loc.x + dir[0]!, this.loc.y + dir[1]!, game);
+            }
         }
+    }
+
+    /**
+     * P4-10：CE Movement.c:674 randValidDirectionFrom(monst, x, y, true) 的 web
+     * 近似——8 邻域内随机挑一个可进入方向。diagonalBlocked web 无对应，省略；
+     * 占格排除比 CE 保守（CE 靠 moveMonster 处理阻挡/交换，web 的 tryMoveTo
+     * 不会，不排除会叠怪）。count==0 时先于 randRange 返回（CE 同款防 OOS）。
+     */
+    private randFlittingDirection(game: Game): readonly [number, number] | null {
+        const dirs: ReadonlyArray<readonly [number, number]> =
+            [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [-1, 1], [1, -1], [1, 1]];
+        const valid: Array<readonly [number, number]> = [];
+        for (const [dx, dy] of dirs) {
+            const nx = this.loc.x + dx!;
+            const ny = this.loc.y + dy!;
+            const c = game.grid.getCell(nx, ny);
+            if (!c) continue;
+            const isLiquidTile = c.terrain === TerrainType.WATER_SHALLOW || c.terrain === TerrainType.WATER_DEEP;
+            const canEnter = this.hasBehavior('MONST_RESTRICTED_TO_LIQUID') ? isLiquidTile : c.isPassable;
+            if (canEnter && !game.getMonsterAt(nx, ny) &&
+                !(game.player.loc.x === nx && game.player.loc.y === ny)) {
+                valid.push([dx!, dy!]);
+            }
+        }
+        if (valid.length === 0) return null;
+        return valid[rng.randRange(0, valid.length - 1)]!;
     }
 
     private tryMoveTo(nx: number, ny: number, game: any) {

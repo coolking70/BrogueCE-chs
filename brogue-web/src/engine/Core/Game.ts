@@ -26,6 +26,7 @@ import { logger } from '../Systems/Logger';
 import { Pathfind } from '../Map/Pathfind';
 import { ScentMap, obstructsScent } from '../Map/Scent';
 import { buildSafetyMap, allocShortGrid, SAFETY_MAX_DISTANCE } from '../Map/SafetyMap';
+import { WaypointSystem, WAYPOINT_SIGHT_RADIUS, type WaypointContext } from '../Map/WaypointMap';
 import i18next from 'i18next';
 
 import { EnvironmentManager } from '../Environment/Gas';
@@ -332,6 +333,14 @@ export class Game {
     public safetyMap: number[][] = allocShortGrid(DCOLS, DROWS, SAFETY_MAX_DISTANCE);
     public updatedSafetyMapThisTurn: boolean = false;
 
+    // P4-10：waypoint 系统（CE rogue.wpCoordinates/wpDistance/wpCount/
+    // wpRefreshTicker）。构建在 generateDepth 的生成决策全部完成之后
+    //（CE RogueMain.c:707：digDungeon → placeStairs → initializeLevel →
+    // setUpWaypoints）；重访缓存层同样重建（CE RogueMain.c:771）；每 100 tick
+    // 客观块滚动刷新一个（CE Time.c:2710-2714）。构建内部对流做了隔离
+    //（RogueMain.c:691-707/733-735 的快照/恢复复刻），不移动 RNG 流。
+    public waypoints: WaypointSystem = new WaypointSystem();
+
     // Endgame & Stats
     public isGameOver: boolean = false;
     public gameOverWon: boolean = false;
@@ -572,6 +581,9 @@ export class Game {
     private generateDepth(isGoingUp: boolean = false, isFirstLevel: boolean = false) {
         if (this.mode === 'test') {
             this.generateTestDepth(isFirstLevel);
+            // P4-10：test 层同样建 waypoint（CE RogueMain.c:707 的位置——
+            // 该层的全部生成决策已完成之后）。
+            this.rebuildWaypoints();
             this.fov.computeFOV(this.player.loc.x, this.player.loc.y, 10);
             this.onRenderRequested?.();
             return;
@@ -642,6 +654,13 @@ export class Game {
                 architect.machineResults
             );
         }
+
+        // P4-10：waypoint 构建。CE RogueMain.c:707 的位置——新层的全部生成
+        // 决策（地形/物品/怪物）已由上方 populateLevel 完成；重访层（cached
+        // 分支）对应 RogueMain.c:771 的"恢复后再建"。setUpWaypoints 内部做了
+        // CE RogueMain.c:691-707/733-735 的流隔离（快照/恢复），shuffleList
+        // 的抽取不落在主流上，对生成基线与玩法序列都是零扰动。
+        this.rebuildWaypoints();
 
         // 3. Force full refresh
         this.fov.computeFOV(this.player.loc.x, this.player.loc.y, 10);
@@ -4938,6 +4957,33 @@ export class Game {
     }
 
     /**
+     * P4-10：WaypointSystem 的宿主环境结构面（CE 侧散落在全局的
+     * getFOVMask/monsterAtLoc/player 引用）。FOV 以 T_OBSTRUCTS_SCENT 为遮挡
+     * （web 近似 obstructsScent）、半径 WAYPOINT_SIGHT_RADIUS——与气味图同源，
+     * CE Architect.c:3048 同款。
+     */
+    public wpContext(): WaypointContext {
+        return {
+            grid: this.grid,
+            monsters: this.monsters,
+            computeWaypointFOV: (x, y) => this.fov.computeFOVMask(x, y, WAYPOINT_SIGHT_RADIUS, obstructsScent),
+            isOccupiedByMonster: (x, y) => this.getMonsterAt(x, y) !== undefined,
+            playerLoc: this.player.loc,
+        };
+    }
+
+    /**
+     * P4-10：waypoint 全量重建。对应 CE setUpWaypoints 的三个调用时机：
+     *   - 关卡生成决策完成之后（generateDepth 两个分支的汇合点，RogueMain.c:707）
+     *   - 重访缓存层恢复之后（同一位置，RogueMain.c:771）
+     *   - 地形剧变之后（Items.c:5558 BE_TUNNELING）——web 尚无挖掘/洪水类
+     *     地形剧变（P4-9 报告同款登记），本方法是预留的接入点。
+     */
+    public rebuildWaypoints(): void {
+        this.waypoints.setUpWaypoints(this.wpContext());
+    }
+
+    /**
      * CE Time.c:2643-2752 推进主循环的可分步版本。E1-修订口径：只在慢回合的
      * 100-tick 客观块处 yield 一次暂停请求（毫秒数），供动画模式渲染暂停点
      * 画面并等待；怪物行动不再单独成帧。同步模式一次性跑完（生成器同源，
@@ -5059,6 +5105,11 @@ export class Game {
         if (hungerTransition) {
             this.logHungerTransition(hungerTransition);
         }
+
+        // P4-10：滚动 waypoint 刷新（CE Time.c:2710-2714）——客观时间块的
+        // 最后一步（CE 里在 monstersApproachStairs 之后）。每 100 tick 恰好
+        // 重算一个 waypoint；全量重建只在关卡生成/重访时发生。
+        this.waypoints.rollingRefresh(this.wpContext());
     }
 
     /**
