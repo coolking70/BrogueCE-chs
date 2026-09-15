@@ -165,7 +165,14 @@ export class Creature implements Entity {
     }
 
     protected die() {
-        // Handle death
+        // P1-24 死亡收口：CE killCreature 最后把 currentHP 归零（Combat.c:2042），
+        // 并靠 MB_IS_DYING|MB_HAS_DIED 位幂等（Combat.c:1938-1941）。web 没有
+        // bookkeeping 位，hp<=0 本身就是"已死"判据——triggerDeathFeatures、
+        // playerTurnEnded 清扫、takeTurn 早退、checkEntity 消息闸全部以此为
+        // 准，归零后这些下游恰好各结算一次。此前只改外观不归零，深水/熔岩
+        // 分支（applyEnvironmentalEffects 把 die() 当唯一致死手段）杀死的
+        // 怪物满血赖在 this.monsters 里，死亡消息每回合重播。
+        this.hp = 0;
         this.char = '%';
         this.color = 0x880000;
     }
