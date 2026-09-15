@@ -16,6 +16,16 @@ type StatusStackMode = 'refresh' | 'stack';
  */
 export const TICKS_PER_TURN = 100;
 
+/**
+ * CE initializeStatus 给旗标派生状态设的时长（Monsters.c:3913-3920，字面 1000，
+ * 源码注释 "won't decrease"）。真正的"不衰减"由 isStatusPermanent 钩子保证
+ * （CE updateMonsterStatus 对带旗标者跳过递减，Monsters.c:1852-1856、
+ * 1963-1967）；本常量只是载体值，取同字面值便于与 CE 对照。
+ * P1-28 起 Monster.syncFlagDerivedStatuses 用它回填 MONST_FLIES /
+ * MONST_IMMUNE_TO_FIRE 的派生状态。
+ */
+export const PERMANENT_STATUS_DURATION = 1000;
+
 // 实体 ID 用模块级单调递增计数器：ID 只需唯一、不需随机。
 // 若用 RNG 生成，每创建一个实体就消耗一次玩法随机数，会严重污染 SUBSTANTIVE 流。
 // 读档路径必须调用 ensureEntityIdAbove 把计数器推到存档最大 id 之上，
@@ -137,10 +147,18 @@ export class Creature implements Entity {
         return true;
     }
 
+    /**
+     * 旗标派生的永久状态不随回合衰减。CE updateMonsterStatus 只在生物不带
+     * 对应旗标时才递减 STATUS_LEVITATING / STATUS_IMMUNE_TO_FIRE
+     * （Monsters.c:1852-1856、1963-1967），Monster 覆写本钩子复刻该条款。
+     */
+    protected isStatusPermanent(_id: StatusId): boolean { return false; }
+
     public tickStatuses(): StatusId[] {
         const expired: StatusId[] = [];
         const entries = Object.entries(this.statusDurations) as Array<[StatusId, number]>;
         for (const [id, turns] of entries) {
+            if (this.isStatusPermanent(id)) continue;
             const next = turns - 1;
             if (next <= 0) {
                 delete this.statusDurations[id];

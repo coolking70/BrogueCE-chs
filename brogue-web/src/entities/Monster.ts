@@ -13,6 +13,7 @@ import { logger } from '../engine/Systems/Logger';
 import i18next from 'i18next';
 import { ItemLoader } from '../engine/Items/ItemLoader';
 import type { StatusId } from './Creature';
+import { PERMANENT_STATUS_DURATION } from './Creature';
 import { TerrainType } from '../engine/Map/Grid';
 import { MONSTER_BOLT_TABLE, BoltEffect } from '../engine/Combat/Bolt';
 import { reflectionChance } from '../engine/Combat/CombatFormulas';
@@ -309,6 +310,13 @@ export class Monster extends Creature {
         if (Array.isArray(data.behaviorFlags)) {
             this.behaviorFlags = new Set<string>(data.behaviorFlags);
         }
+        // P1-28：CE initializeStatus（Monsters.c:3904-3928）的 web 复刻——旗标
+        // 在进入玩法前翻译成永久状态（详见 syncFlagDerivedStatuses）。CE 全部
+        // 环境/目标判定只读 status 通道，web 此前缺这一层，monsters.json 写在
+        // behaviorFlags 的 MONST_FLIES / MONST_IMMUNE_TO_FIRE 对
+        // applyEnvironmentalEffects 等 status/abilities 读取点完全不可见
+        // （abilities 通道全库无写入者，真实数据恒空）。
+        this.syncFlagDerivedStatuses();
         if (Array.isArray(data.abilityFlags)) {
             this.abilityFlags = new Set<string>(data.abilityFlags);
         }
@@ -326,6 +334,37 @@ export class Monster extends Creature {
 
     public hasBehavior(flag: string): boolean {
         return this.behaviorFlags.has(flag);
+    }
+
+    /**
+     * P1-28：CE initializeStatus（Monsters.c:3904-3928）的 web 复刻——把
+     * behaviorFlags 里的永久特性翻译成对应状态（MONST_FLIES →
+     * STATUS_LEVITATING=1000，MONST_IMMUNE_TO_FIRE →
+     * STATUS_IMMUNE_TO_FIRE=1000）。CE 的下游消费点（熔岩 Time.c:183-190、
+     * 火焰地形 exposeCreatureToFire Time.c:28-35、fiery bolt 目标筛选
+     * Monsters.c:2624 等）只读 status，旗标经此翻译生效；不衰减由
+     * isStatusPermanent 保证（CE updateMonsterStatus，Monsters.c:1852-1856 /
+     * 1963-1967）。注意 CE 的 MONST_FLITS（飘忽移动）不翻译——它不是飞行，
+     * 不豁免熔岩/压力板（web 现无对应机制，无需处理）。
+     * 公有以便 negate 后重推导：web 的 negate 只清 statusDurations、不实现
+     * NEGATABLE_TRAITS 旗标剥离（CE Items.c:4483-4520 为临时剥离、到期恢复），
+     * 若不回填，被消除魔法的飞行/火免怪物会永久失去特性（CE 语义是临时的，
+     * web 取"旗标恒在"口径，与 negate 前行为一致）。
+     */
+    public syncFlagDerivedStatuses(): void {
+        if (this.hasBehavior('MONST_FLIES')) {
+            this.setStatusDuration('levitating', PERMANENT_STATUS_DURATION);
+        }
+        if (this.hasBehavior('MONST_IMMUNE_TO_FIRE')) {
+            this.setStatusDuration('immune_fire', PERMANENT_STATUS_DURATION);
+        }
+    }
+
+    /** 见 Creature.isStatusPermanent：带旗标者的派生状态不随回合衰减。 */
+    protected override isStatusPermanent(id: StatusId): boolean {
+        if (id === 'levitating') return this.hasBehavior('MONST_FLIES');
+        if (id === 'immune_fire') return this.hasBehavior('MONST_IMMUNE_TO_FIRE');
+        return false;
     }
 
     /**
@@ -384,6 +423,10 @@ export class Monster extends Creature {
         if (m.behaviorFlags) {
             for (const f of m.behaviorFlags) this.behaviorFlags.add(f);
         }
+        // P1-28：突变新增旗标同样要翻译成永久状态（CE 无突变系统，无对应
+        // 条款；与构造路径保持同一翻译层）。当前 mutations.json 不含
+        // MONST_FLIES / MONST_IMMUNE_TO_FIRE，本调用是防御性的。
+        this.syncFlagDerivedStatuses();
     }
 
     public hasAbility(flag: string): boolean {

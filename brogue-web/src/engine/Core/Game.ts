@@ -3229,6 +3229,11 @@ export class Game {
                                 sd[k] = 0;
                             }
                         }
+                        // P1-28：web 的 negate 不剥离 behaviorFlags（CE 的
+                        // NEGATABLE_TRAITS 临时剥离+到期恢复未实现），旗标恒在，
+                        // 故清空后立即重推导旗标派生状态——否则飞行/火免怪物
+                        // 会被一次 negate 永久剥夺特性，CE 语义只是临时。
+                        if (target instanceof Monster) target.syncFlagDerivedStatuses();
                         target.refreshSpeeds(); // P2-2：haste/slowed 被清，衍生速度立即复原
                         logger.log(i18next.t('bolt.negation_hit', {
                             name: item.name, target: target.name,
@@ -3441,6 +3446,8 @@ export class Game {
                 }
                 const durations = (target.statusDurations as unknown) as Record<string, number>;
                 for (const k of Object.keys(durations)) durations[k] = 0;
+                // P1-28：同 scroll 侧——negate 不剥旗标，清空后重推导派生状态。
+                if (!isPlayer) (target as Monster).syncFlagDerivedStatuses();
                 if (!isPlayer) (target as Monster).refreshSpeeds();
                 else this.player.refreshSpeeds();
                 logCast('bolt.monster_cast_negation', `${casterLabel} negates the magic on ${targetName}!`, '#ffffff');
@@ -5574,7 +5581,14 @@ export class Game {
             }
 
             // Fire
-            if (cell.isBurning && !entity.hasStatus('levitating') && !(entity.abilities && entity.abilities.has('immune_fire')) && !entity.hasStatus('immune_fire')) {
+            // CE 口径（Time.c:527 → exposeCreatureToFire Time.c:28-35）：火焰
+            // 地形只豁免火焰免疫（STATUS_IMMUNE_TO_FIRE，旗标怪经
+            // Monster.syncFlagDerivedStatuses 恒持有）与 MONST_INVULNERABLE
+            // （P1-28 补齐，原实现缺）；另有 MB_SUBMERGED 与"非悬浮+灭火地形"
+            // 两条 web 无对应物。原实现的 !hasStatus('levitating') 豁免在 CE
+            // 不存在——火焰地形照烧悬浮生物（Time.c:527 无悬浮条款），且它会让
+            // 旗标飞行怪物经派生悬浮状态获得 CE 没有的火免，故移除。
+            if (cell.isBurning && !entity.hasStatus('immune_fire') && !(entity.abilities && entity.abilities.has('immune_fire')) && !(entity.isInvulnerable && entity.isInvulnerable())) {
                 entity.hp -= 2; // Flat 2 damage for now
                 if (entity === this.player) {
                     this.lastDamageSource = 'fire';
