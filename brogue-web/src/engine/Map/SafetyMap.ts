@@ -17,9 +17,9 @@
  * 已知 web 侧取舍（详见 ai_docs/p4_9_safety_map_report.md）：
  *   - CE 常量 PDS_FORBIDDEN=-1 / PDS_OBSTRUCTION=-2（Rogue.h:2782-2783）。
  *     注意 Pathfinding.ts 内部的 30000/29999 是它自己的等价物，两者不同源。
- *   - 楼梯禁入与玩家格修正的执行顺序与 CE 相反（玩家修正后行）：CE 靠进场
- *     落位保证玩家不站楼梯（RogueMain.c:839-869），web 玩家出生在楼梯上，
- *     照抄顺序会杀死第一段扫描的唯一种子、全图退化为平图（见报告）。
+ *   - 楼梯禁入与玩家格修正：已按 CE 字面顺序（Time.c:1833-1843，玩家修正
+ *     在前）。P4-9 曾因 web 玩家出生在楼梯上把两段对调（登记的有意偏离），
+ *     P1-31 修复进层落位后按回退条件恢复 CE 顺序——见 buildSafetyMap 内注。
  *   - IN_LOOP 无 web 数据源：ctx.isInLoop 由 Game 恒接 false（机制保留、可注入测试）。
  *   - T_SACRED 无 web 地形：谓词恒 false，分支结构保留。
  *   - T_SPONTANEOUSLY_IGNITES（brimstone）无 web 地形，见报告。
@@ -192,16 +192,19 @@ export function buildSafetyMap(ctx: SafetyMapContext): number[][] {
         }
     }
 
-    // CE：上/下楼梯格两张图都禁入（rogue.upLoc/downLoc；web 无存储坐标，
-    // 按地形扫描取得，见报告）。CE 原文此赋值在玩家格修正之前——CE 靠
-    // 进场落位保证玩家永不站在楼梯上（RogueMain.c:839-869：先置
-    // player.loc = upLoc 再向 4 邻域找无 HAS_STAIRS 的格子落位），冲突不可达。
-    // web 玩家开局就站在 STAIRS_UP 上（放置偏差，见报告"与预设不符"），
-    // 若照抄顺序，玩家格 cost 被打回 -1，第一段扫描的种子条件 cost>0 失败，
-    // 零种子零传播，全图退化为 -111 平图（验收打回的实锤根因）。
-    // 故 web 侧把玩家格修正放在楼梯禁入之后：玩家所在格保留为种子；
-    // 楼梯对怪物的禁入（monsterCost）语义不变。除"玩家站在楼梯格"这一
-    // CE 不可达（进场时）/退化（露营时）状态外，与 CE 逐格一致。
+    // CE Time.c:1833-1843 的字面顺序：先玩家格修正（safetyMap=0 /
+    // playerCost=1 / monsterCost=禁入），后楼梯禁入（rogue.upLoc/downLoc
+    // 两格；web 无存储坐标，按地形扫描取得，见报告）。注意这个顺序的
+    // 含义：若玩家站在楼梯上，后行的楼梯禁入会把唯一种子的代价打回 -1、
+    // 全图退化为平图——CE 靠进层落位保证玩家永不站楼梯（RogueMain.c:
+    // 839-869：先置楼梯位再向 4 邻域找无 HAS_STAIRS 的格子），冲突状态
+    // 不可达。P4-9 曾因 web 玩家出生在楼梯上（放置偏差）把两段对调，
+    // 属登记过的有意偏离；P1-31 修复落位后按其预告的回退条件恢复本
+    // CE 顺序（对调状态下的平图语义由 p1_31_35 测试按 CE 原样锁死）。
+    safetyMap[ctx.playerX]![ctx.playerY] = 0;
+    playerCostMap[ctx.playerX]![ctx.playerY] = 1;
+    monsterCostMap[ctx.playerX]![ctx.playerY] = CE_PDS_FORBIDDEN;
+
     for (let i = 0; i < grid.width; i++) {
         for (let j = 0; j < grid.height; j++) {
             const t = grid.getCell(i, j)?.terrain;
@@ -211,10 +214,6 @@ export function buildSafetyMap(ctx: SafetyMapContext): number[][] {
             }
         }
     }
-
-    safetyMap[ctx.playerX]![ctx.playerY] = 0;
-    playerCostMap[ctx.playerX]![ctx.playerY] = 1;
-    monsterCostMap[ctx.playerX]![ctx.playerY] = CE_PDS_FORBIDDEN;
 
     // 第一次扫描：safetyMap = 玩家视角的"接近成本"
     const scanner = new DijkstraMap(grid.width, grid.height);
