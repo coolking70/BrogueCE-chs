@@ -56,10 +56,29 @@ P1-37 因此加了一条 `cell.machineNumber === 0` 排除——**属"web 侧必
 
 ## P1-38 / P1-39 / P1-40（2026-09-16 C-4 勘察登记，详见 `c_4_scoping_note.md`）
 
-- **P1-38 通行判据三口径不一**：`Grid.setTerrain` 的 `isPassable`、`Game.canMoveTo`、
-  `Pathfinding.calculateMap` 的成本图三者对 **LOCKED_DOOR / WATER_DEEP / CHASM** 的裁决互相矛盾。
-  所有 Dijkstra 图（气味/安全/路径点）因此认为深水与上锁的门可以走。
-  **这是我两次量错连通性的同一个病根，也是 P1-25 的病根。归 C-4a 统一。**
+- **P1-38 通行判据分裂**（**2026-09-17 由 C-4a 执行方纠正机制，验收方复核确认**）：
+  我原先写的因果链是"`Pathfinding.calculateMap` 读 `cell.isPassable`，所以各 Dijkstra
+  图认为深水与上锁的门可走"。**这条是错的**：`calculateMap` 在生产代码中**零调用点**
+  （P4-9 之后四个消费方各自造 cost 图走 `batchScan`）。
+
+  **真实情况比我写的更碎**：四个消费方**各自直接读 `cell.isPassable`，再各打各的补丁**——
+  `Scent.ts:37/48` 额外加上 CHASM/LAVA/WATER_DEEP；`SafetyMap.ts:118/347` 反过来
+  **减去** SECRET_DOOR 与 CHASM；`WaypointMap.ts:235/352` 只减去 SECRET_DOOR。
+  即同一个"能不能走"，全库有**五套**答案（`isPassable` 本体 + 四套补丁），
+  且没有任何一处以 CE 的旗标为准。
+
+  `Grid.setTerrain` 的 `isPassable` 启发式与 `canMoveTo` / `terrainAllowsMove` 的分歧
+  （LOCKED_DOOR / WATER_DEEP / CHASM 三者裁决相反）依然成立，
+  **真正的翻转点是 `setTerrain` 的启发式，不是 `Pathfinding.ts`。**
+
+  C-4a 已建成 `TerrainCatalog.ts` 并把 `canMoveTo` / `terrainAllowsMove` 迁为查表
+  （`!blocksPassability && !isDeepWater`，逐位等价）。**剩余部分归 C-4a-1**：
+  把 `setTerrain` 的启发式与四处消费方补丁一并收敛到属性表。
+  C-4a 已量出翻转的代价：改用 `isPathingBlocker` 会产生**语义分歧 10657 格**
+  （LAVA 3262 / WATER_DEEP 3141 / TRAP 1986 / LOCKED_DOOR 1022 /
+  INERT_BRIMSTONE 833 / PRESSURE_PLATE 413），另有 SECRET_DOOR 数值分歧 1585 格
+  （距离图不变）。
+
 - **P1-39 web 禁止游深水，偏离 CE**：CE `Globals.c:413` DEEP_WATER 不含
   `T_OBSTRUCTS_PASSABILITY`，带 `TM_ALLOWS_SUBMERGING | TM_STAND_IN_TILE`，
   `T_IS_DEEP_WATER`（`Rogue.h:1937`）的语义是"50% 偷走物品"而非"不可进入"。

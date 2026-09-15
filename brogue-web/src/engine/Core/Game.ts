@@ -3,6 +3,7 @@
  * Main game state and orchestration
  */
 import { Grid, TerrainType, DCOLS, DROWS } from '../Map/Grid';
+import { blocksPassability, isDeepWater } from '../Map/TerrainCatalog';
 import { Architect } from '../Generator/Architect';
 import type { MachineResult } from '../Generator/BlueprintEngine';
 import blueprintData from '../../data/blueprints.json';
@@ -6241,16 +6242,11 @@ export class Game {
         const cell = this.grid.getCell(x, y);
         if (!cell) return false;
 
-        // Simplified collision
-        const t = cell.terrain;
-        if (t === TerrainType.GRANITE || t === TerrainType.WALL || t === TerrainType.SECRET_DOOR || t === TerrainType.LOCKED_DOOR) {
-            return false;
-        }
-        if (t === TerrainType.WATER_DEEP) {
-            return false;
-        }
-
-        return true;
+        // C-4a：查表口径——!(T_OBSTRUCTS_PASSABILITY | T_IS_DEEP_WATER)
+        // （TerrainCatalog.ts，CE Rogue.h:1924/1937）。对全部 TerrainType 与
+        // 旧硬编码清单 {GRANITE, WALL, SECRET_DOOR, LOCKED_DOOR, WATER_DEEP}
+        // 逐位一致（c_4a_terrain_catalog.test.ts 的迁移安全性用例全枚举钉死）。
+        return !blocksPassability(cell.terrain) && !isDeepWater(cell.terrain);
     }
 
     public hasLineOfSight(x0: number, y0: number, x1: number, y1: number): boolean {

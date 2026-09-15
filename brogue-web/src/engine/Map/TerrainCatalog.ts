@@ -1,0 +1,388 @@
+/**
+ * src/engine/Map/TerrainCatalog.ts — 地形属性表（C-4a）
+ *
+ * 数据全部从 CE 源码逐条抄录（BrogueCE-master/src/brogue/，只读）：
+ * - `Rogue.h:1905-1921` `struct floorTileType`：字段序为
+ *   displayChar, foreColor, backColor, drawPriority, chanceToIgnite,
+ *   fireType, discoverType, promoteType, promoteChance, glowLight,
+ *   flags, mechFlags。drawPriority 已由 C-4a-0 的 DRAW_PRIORITY 承载
+ *   （Grid.ts），本表补齐其余属性。
+ * - `Rogue.h:1923-1957` `enum terrainFlagCatalog`（T_*）；
+ *   `Rogue.h:1959-1988` `enum terrainMechanicalFlagCatalog`（TM_*）。
+ * - `Globals.c:315-…` `tileCatalog[]`：每条的行号写在表项注释里。
+ *
+ * C-4a 轮边界（任务书"明确不做"）：
+ * - fireType / discoverType / promoteType / promoteChance / chanceToIgnite
+ *   本轮**有数据、无读者**（留痕测试 c_4a_terrain_catalog.test.ts 钉死
+ *   生产代码零读取点）；C-4b（DF 目录）/ C-4c（promoteTile）接入行为。
+ * - DF 值本轮以 CE 目录名（字符串）存档；C-4b 建立数值 DF 枚举后应替换。
+ * - promoteChance 按 CE 原始单位存档（Rogue.h:1915：百分之之一百分点/回合，
+ *   即实际概率 = 值 × 1/10000；如 10000 = 100%/回合，负值 = CE 的倒计时式
+ *   概率，语义见 Globals.c:317 注释）。
+ * - chanceToIgnite 按 CE 原始单位存档（百分数 0-100）。
+ */
+import { TerrainType } from './Grid';
+
+/** CE `Rogue.h:97` `#define Fl(N) ((unsigned long) 1 << (N))`。 */
+const Fl = (n: number): number => 1 << n;
+
+// ── T_* 旗标（CE Rogue.h:1924-1945，逐条行号）──────────────────────────────
+export const T_OBSTRUCTS_PASSABILITY       = Fl(0);  // :1924 无法穿过
+export const T_OBSTRUCTS_VISION            = Fl(1);  // :1925 挡视线
+export const T_OBSTRUCTS_ITEMS             = Fl(2);  // :1926 物品不可放
+export const T_OBSTRUCTS_SURFACE_EFFECTS   = Fl(3);  // :1927 草/血等不可覆
+export const T_OBSTRUCTS_GAS               = Fl(4);  // :1928 阻挡气体渗透
+export const T_OBSTRUCTS_DIAGONAL_MOVEMENT = Fl(5);  // :1929 不可绕行对角
+export const T_SPONTANEOUSLY_IGNITES       = Fl(6);  // :1930 怪物回避（自燃体）
+export const T_AUTO_DESCENT                = Fl(7);  // :1931 坠层 + 2d6 伤害
+export const T_LAVA_INSTA_DEATH            = Fl(8);  // :1932 非免疫即死
+export const T_CAUSES_POISON               = Fl(9);  // :1933 10 点毒
+export const T_IS_FLAMMABLE                = Fl(10); // :1934 可燃
+export const T_IS_FIRE                     = Fl(11); // :1935 是火，点燃邻格
+export const T_ENTANGLES                   = Fl(12); // :1936 缠绕（蛛网）
+export const T_IS_DEEP_WATER               = Fl(13); // :1937 深水：卷走物品
+export const T_CAUSES_DAMAGE               = Fl(14); // :1938 每回合伤害
+export const T_CAUSES_NAUSEA               = Fl(15); // :1939 恶心
+export const T_CAUSES_PARALYSIS            = Fl(16); // :1940 麻痹
+export const T_CAUSES_CONFUSION            = Fl(17); // :1941 混乱
+export const T_CAUSES_HEALING              = Fl(18); // :1942 每回合回 20%
+export const T_IS_DF_TRAP                  = Fl(19); // :1943 踩上触发 fireType DF
+export const T_CAUSES_EXPLOSIVE_DAMAGE     = Fl(20); // :1944 爆炸伤害
+export const T_SACRED                      = Fl(21); // :1945 敌对怪物回避
+
+// ── T_* 复合旗标（CE Rogue.h:1947-1956 逐字抄录）─────────────────────────
+export const T_OBSTRUCTS_SCENT =
+    T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION | T_AUTO_DESCENT |
+    T_LAVA_INSTA_DEATH | T_IS_DEEP_WATER | T_SPONTANEOUSLY_IGNITES;            // :1947
+export const T_PATHING_BLOCKER =
+    T_OBSTRUCTS_PASSABILITY | T_AUTO_DESCENT | T_IS_DF_TRAP |
+    T_LAVA_INSTA_DEATH | T_IS_DEEP_WATER | T_IS_FIRE |
+    T_SPONTANEOUSLY_IGNITES;                                                    // :1948
+export const T_DIVIDES_LEVEL =
+    T_OBSTRUCTS_PASSABILITY | T_AUTO_DESCENT | T_IS_DF_TRAP |
+    T_LAVA_INSTA_DEATH | T_IS_DEEP_WATER;                                       // :1949
+export const T_LAKE_PATHING_BLOCKER =
+    T_AUTO_DESCENT | T_LAVA_INSTA_DEATH | T_IS_DEEP_WATER |
+    T_SPONTANEOUSLY_IGNITES;                                                    // :1950
+export const T_WAYPOINT_BLOCKER =
+    T_OBSTRUCTS_PASSABILITY | T_AUTO_DESCENT | T_IS_DF_TRAP |
+    T_LAVA_INSTA_DEATH | T_IS_DEEP_WATER | T_SPONTANEOUSLY_IGNITES;             // :1951
+export const T_MOVES_ITEMS = T_IS_DEEP_WATER | T_LAVA_INSTA_DEATH;              // :1952
+export const T_CAN_BE_BRIDGED = T_AUTO_DESCENT;                                 // :1953
+export const T_OBSTRUCTS_EVERYTHING =
+    T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION | T_OBSTRUCTS_ITEMS |
+    T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS |
+    T_OBSTRUCTS_DIAGONAL_MOVEMENT;                                              // :1954
+export const T_HARMFUL_TERRAIN =
+    T_CAUSES_POISON | T_IS_FIRE | T_CAUSES_DAMAGE | T_CAUSES_PARALYSIS |
+    T_CAUSES_CONFUSION | T_CAUSES_EXPLOSIVE_DAMAGE;                             // :1955
+export const T_RESPIRATION_IMMUNITIES =
+    T_CAUSES_DAMAGE | T_CAUSES_CONFUSION | T_CAUSES_PARALYSIS |
+    T_CAUSES_NAUSEA;                                                            // :1956
+
+// ── TM_* 机械旗标（CE Rogue.h:1960-1985，逐条行号）────────────────────────
+export const TM_IS_SECRET                       = Fl(0);   // :1960
+export const TM_PROMOTES_WITH_KEY               = Fl(1);   // :1961
+export const TM_PROMOTES_WITHOUT_KEY            = Fl(2);   // :1962
+export const TM_PROMOTES_ON_CREATURE            = Fl(3);   // :1963
+export const TM_PROMOTES_ON_ITEM                = Fl(4);   // :1964
+export const TM_PROMOTES_ON_ITEM_PICKUP         = Fl(5);   // :1965
+export const TM_PROMOTES_ON_PLAYER_ENTRY        = Fl(6);   // :1966
+export const TM_PROMOTES_ON_SACRIFICE_ENTRY     = Fl(7);   // :1967
+export const TM_PROMOTES_ON_ELECTRICITY         = Fl(8);   // :1968
+export const TM_ALLOWS_SUBMERGING               = Fl(9);   // :1969
+export const TM_IS_WIRED                        = Fl(10);  // :1970
+export const TM_IS_CIRCUIT_BREAKER              = Fl(11);  // :1971
+export const TM_GAS_DISSIPATES                  = Fl(12);  // :1972
+export const TM_GAS_DISSIPATES_QUICKLY          = Fl(13);  // :1973
+export const TM_EXTINGUISHES_FIRE               = Fl(14);  // :1974
+export const TM_VANISHES_UPON_PROMOTION         = Fl(15);  // :1975
+export const TM_REFLECTS_BOLTS                  = Fl(16);  // :1976
+export const TM_STAND_IN_TILE                   = Fl(17);  // :1977
+export const TM_LIST_IN_SIDEBAR                 = Fl(18);  // :1978
+export const TM_VISUALLY_DISTINCT               = Fl(19);  // :1979
+export const TM_BRIGHT_MEMORY                   = Fl(20);  // :1980
+export const TM_EXPLOSIVE_PROMOTE               = Fl(21);  // :1981
+export const TM_CONNECTS_LEVEL                  = Fl(22);  // :1982
+export const TM_INTERRUPT_EXPLORATION_WHEN_SEEN = Fl(23);  // :1983
+export const TM_INVERT_WHEN_HIGHLIGHTED         = Fl(24);  // :1984
+export const TM_SWAP_ENCHANTS_ACTIVATION        = Fl(25);  // :1985
+export const TM_PROMOTES_ON_STEP =
+    TM_PROMOTES_ON_CREATURE | TM_PROMOTES_ON_ITEM;                              // :1987
+
+/** 每种地形的 CE 属性（Globals.c tileCatalog 列序见文件头）。 */
+export interface TerrainFlagsEntry {
+    /** CE `flags` 列（T_* 的并集）。 */
+    readonly flags: number;
+    /** CE `mechFlags` 列（TM_* 的并集）。 */
+    readonly mechFlags: number;
+    /** CE `chanceToIgnite` 列（百分数；邻居有火时点燃概率）。 */
+    readonly chanceToIgnite: number;
+    /** CE `fireType` 列（点燃时生成的 DF 名；0 = 无）。 */
+    readonly fireType: string;
+    /** CE `discoverType` 列（搜索成功/踩上显形时生成的 DF 名；0 = 无）。 */
+    readonly discoverType: string;
+    /** CE `promoteType` 列（晋升目标 DF 名；0 = 无）。 */
+    readonly promoteType: string;
+    /** CE `promoteChance` 列（×1/10000 每回合）。 */
+    readonly promoteChance: number;
+    /** true = web 独有地形，CE 无同名条目（取值理由见表项注释）。 */
+    readonly webOnly: boolean;
+}
+
+const e = (
+    flags: number,
+    mechFlags: number,
+    chanceToIgnite: number,
+    fireType: string,
+    discoverType: string,
+    promoteType: string,
+    promoteChance: number,
+    webOnly = false
+): TerrainFlagsEntry => ({ flags, mechFlags, chanceToIgnite, fireType, discoverType, promoteType, promoteChance, webOnly });
+
+/**
+ * 地形属性表（CE Globals.c:315 `tileCatalog[]` 的 web 投影）。
+ *
+ * 每条的 CE 出处行号写在表项注释；CE 目录名 → web 成员名的映射沿用
+ * Grid.ts DRAW_PRIORITY 的既有对照（同名直迁，异名对照见各条）。
+ * 表完整性（全 TerrainType 键覆盖）由 c_4a_terrain_catalog.test.ts 在
+ * 运行时钉死——esbuild 只剥类型，缺键要到运行时才暴露（undefined）。
+ */
+export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
+    // CE NOTHING，Globals.c:321
+    [TerrainType.NOTHING]: e(0, 0, 0, 'DF_PLAIN_FIRE', '', '', 0),
+
+    // CE GRANITE，Globals.c:322：T_OBSTRUCTS_EVERYTHING（Rogue.h:1954 六旗标并集）
+    [TerrainType.GRANITE]: e(
+        T_OBSTRUCTS_EVERYTHING, TM_STAND_IN_TILE,
+        0, 'DF_PLAIN_FIRE', '', '', 0
+    ),
+
+    // CE FLOOR，Globals.c:323
+    [TerrainType.FLOOR]: e(0, 0, 0, 'DF_PLAIN_FIRE', '', '', 0),
+
+    // CE WALL，Globals.c:327：T_OBSTRUCTS_EVERYTHING
+    [TerrainType.WALL]: e(
+        T_OBSTRUCTS_EVERYTHING, TM_STAND_IN_TILE,
+        0, 'DF_PLAIN_FIRE', '', '', 0
+    ),
+
+    // CE DOOR，Globals.c:328。注意 CE 的门不挡通行（无 T_OBSTRUCTS_PASSABILITY，
+    // 玩家走入时 TM_PROMOTES_ON_STEP 晋升为 OPEN_DOOR）；挡视线与气体。
+    [TerrainType.DOOR]: e(
+        T_OBSTRUCTS_VISION | T_OBSTRUCTS_GAS | T_IS_FLAMMABLE,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_STEP | TM_VISUALLY_DISTINCT,
+        50, 'DF_EMBERS', '', 'DF_OPEN_DOOR', 0
+    ),
+
+    // CE OPEN_DOOR，Globals.c:329
+    [TerrainType.OPEN_DOOR]: e(
+        T_IS_FLAMMABLE,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT,
+        50, 'DF_EMBERS', '', 'DF_CLOSED_DOOR', 10000
+    ),
+
+    // CE SHALLOW_WATER，Globals.c:414
+    [TerrainType.WATER_SHALLOW]: e(
+        0,
+        TM_STAND_IN_TILE | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING,
+        0, 'DF_STEAM_ACCUMULATION', '', '', 0
+    ),
+
+    // CE DEEP_WATER，Globals.c:413。T_IS_DEEP_WATER 是"深水"的判据位。
+    [TerrainType.WATER_DEEP]: e(
+        T_IS_FLAMMABLE | T_IS_DEEP_WATER,
+        TM_ALLOWS_SUBMERGING | TM_STAND_IN_TILE | TM_EXTINGUISHES_FIRE,
+        100, 'DF_STEAM_ACCUMULATION', '', '', 0
+    ),
+
+    // CE CHASM，Globals.c:416：T_AUTO_DESCENT（坠层），不挡通行、不挡视线。
+    [TerrainType.CHASM]: e(
+        T_AUTO_DESCENT, TM_STAND_IN_TILE,
+        0, 'DF_PLAIN_FIRE', '', '', 0
+    ),
+
+    // CE LAVA，Globals.c:420：T_LAVA_INSTA_DEATH，不挡通行。
+    [TerrainType.LAVA]: e(
+        T_LAVA_INSTA_DEATH, TM_STAND_IN_TILE | TM_ALLOWS_SUBMERGING,
+        0, 'DF_OBSIDIAN', '', '', 0
+    ),
+
+    // CE GRASS，Globals.c:447
+    [TerrainType.GRASS]: e(
+        T_IS_FLAMMABLE, TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION,
+        15, 'DF_PLAIN_FIRE', '', '', 0
+    ),
+
+    // CE FOLIAGE，Globals.c:472：挡视线但可走（无 T_OBSTRUCTS_PASSABILITY）。
+    [TerrainType.FOLIAGE]: e(
+        T_OBSTRUCTS_VISION | T_IS_FLAMMABLE,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_STEP,
+        15, 'DF_PLAIN_FIRE', '', 'DF_TRAMPLED_FOLIAGE', 0
+    ),
+
+    // webOnly：web BOG = 可燃沼泽。显示与语义近亲是 CE MUD（Globals.c:415，
+    // CE 的 MUD 用的正是 G_BOG 字形），但 web 现行行为把 BOG 与 GRASS/FOLIAGE
+    // 同列点火对象（Gas.ts:59/142），故 flags 记 T_IS_FLAMMABLE 而非照抄
+    // MUD 的 0——CE 无"可燃沼泽"条目，此取值是对 web 现状的忠实记录。
+    [TerrainType.BOG]: e(T_IS_FLAMMABLE, 0, 0, '', '', '', 0, true),
+
+    // CE UP_STAIRS，Globals.c:334
+    [TerrainType.STAIRS_UP]: e(
+        T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_SURFACE_EFFECTS,
+        TM_PROMOTES_ON_STEP | TM_STAND_IN_TILE | TM_LIST_IN_SIDEBAR |
+        TM_VISUALLY_DISTINCT | TM_BRIGHT_MEMORY |
+        TM_INTERRUPT_EXPLORATION_WHEN_SEEN | TM_INVERT_WHEN_HIGHLIGHTED,
+        0, 'DF_PLAIN_FIRE', '', 'DF_REPEL_CREATURES', 0
+    ),
+
+    // CE DOWN_STAIRS，Globals.c:333（旗标与 UP_STAIRS 完全相同）
+    [TerrainType.STAIRS_DOWN]: e(
+        T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_SURFACE_EFFECTS,
+        TM_PROMOTES_ON_STEP | TM_STAND_IN_TILE | TM_LIST_IN_SIDEBAR |
+        TM_VISUALLY_DISTINCT | TM_BRIGHT_MEMORY |
+        TM_INTERRUPT_EXPLORATION_WHEN_SEEN | TM_INVERT_WHEN_HIGHLIGHTED,
+        0, 'DF_PLAIN_FIRE', '', 'DF_REPEL_CREATURES', 0
+    ),
+
+    // webOnly：web CHARRED_FLOOR = 燃烧后的地面（Game.ts:6381 火熄后写、
+    // Gas.ts:128 复燃判定）。CE 无对应条目——CE 的表现是 FLOOR 地面上覆
+    // ASH（Globals.c:461，SURFACE 层）；web 把它做成了 DUNGEON 层对 FLOOR
+    // 的就地替换。零旗标（可走、可视、不助燃自身的复燃逻辑由 isBurning 承担）。
+    [TerrainType.CHARRED_FLOOR]: e(0, 0, 0, '', '', '', 0, true),
+
+    // webOnly：web SIGN = 告示牌（Game.ts:1824 D1 深度牌、2036 手稿行），
+    // 踩上显示文字。CE 无 sign。显示近亲是 CE SACRED_GLYPH（Globals.c:479，
+    // drawPriority 同取 7 的原因），但其 T_SACRED（敌对怪物回避）是圣徽的
+    // 行为语义，web SIGN 不具备——故只借显示位、不抄 T_SACRED，取零旗标。
+    [TerrainType.SIGN]: e(0, 0, 0, '', '', '', 0, true),
+
+    // webOnly：web RESET_PLATE = 测试用重置踏板（Game.ts:2039 放置、6333
+    // 踩上重置房间）。CE 无对应物；机制近亲是 MACHINE_PRESSURE_PLATE_USED
+    // （Globals.c:403，踩后惰性板、零旗标）——RESET_PLATE 同为"踩板且无
+    // DF 陷阱语义"，取零旗标。
+    [TerrainType.RESET_PLATE]: e(0, 0, 0, '', '', '', 0, true),
+
+    // CE GAS_TRAP_POISON（可见态），Globals.c:378。web TRAP 恒可见（隐藏态
+    // 95 不适用），trapType（poison_gas/teleport/fire）由 Cell.trapType 承载；
+    // CE 无 teleport 陷阱（web 自创，D2 决策不入生成池），取毒气陷阱为基准。
+    [TerrainType.TRAP]: e(
+        T_IS_DF_TRAP, TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT,
+        0, 'DF_POISON_GAS_CLOUD', '', '', 0
+    ),
+
+    // CE SECRET_DOOR，Globals.c:330：外观即花岗岩（T_OBSTRUCTS_EVERYTHING），
+    // TM_IS_SECRET + discoverType=DF_SHOW_DOOR 由搜索显形。
+    [TerrainType.SECRET_DOOR]: e(
+        T_OBSTRUCTS_EVERYTHING | T_IS_FLAMMABLE,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_SECRET,
+        50, 'DF_EMBERS', 'DF_SHOW_DOOR', '', 0
+    ),
+
+    // CE MACHINE_PRESSURE_PLATE，Globals.c:402：踩上晋升为 USED 板并消失。
+    // web PRESSURE_PLATE（Architect.ts:462 放置、Game.ts:6386 踩上触发半径
+    // 3 内陷阱后变 FLOOR）与之语义对应（触发 + 用后消失）。
+    [TerrainType.PRESSURE_PLATE]: e(
+        T_IS_DF_TRAP,
+        TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_STEP | TM_IS_WIRED |
+        TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT,
+        0, '', '', 'DF_MACHINE_PRESSURE_PLATE_USED', 0
+    ),
+
+    // CE LOCKED_DOOR，Globals.c:331：T_OBSTRUCTS_EVERYTHING（挡通行！web
+    // 旧启发式把它当可走，属 P1-38 记录的分歧，本轮留痕不翻转）。
+    [TerrainType.LOCKED_DOOR]: e(
+        T_OBSTRUCTS_EVERYTHING,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_WITH_KEY |
+        TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT | TM_BRIGHT_MEMORY |
+        TM_INTERRUPT_EXPLORATION_WHEN_SEEN | TM_INVERT_WHEN_HIGHLIGHTED,
+        50, 'DF_EMBERS', '', 'DF_OPEN_IRON_DOOR_INERT', 0
+    ),
+
+    // CE ALTAR_INERT，Globals.c:362
+    [TerrainType.ALTAR]: e(
+        T_OBSTRUCTS_SURFACE_EFFECTS, TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT,
+        0, '', '', '', 0
+    ),
+
+    // CE SPIDERWEB，Globals.c:470：缠绕 + 可燃 + 可走。
+    [TerrainType.WEB]: e(
+        T_ENTANGLES | T_IS_FLAMMABLE,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT,
+        100, 'DF_PLAIN_FIRE', '', '', 0
+    ),
+
+    // CE RED_BLOOD，Globals.c:453
+    [TerrainType.BLOOD]: e(0, TM_STAND_IN_TILE, 0, 'DF_PLAIN_FIRE', '', '', 0),
+
+    // CE MUD，Globals.c:415
+    [TerrainType.MUD]: e(
+        0, TM_STAND_IN_TILE | TM_ALLOWS_SUBMERGING,
+        0, 'DF_PLAIN_FIRE', '', 'DF_METHANE_GAS_PUFF', 100
+    ),
+
+    // CE CHASM_EDGE，Globals.c:417：零旗标（可走；归属层为 LIQUID 是
+    // C-4a-0 的勘察修正，见 TERRAIN_HOME_LAYER 注释）。
+    [TerrainType.CHASM_EDGE]: e(0, 0, 0, 'DF_PLAIN_FIRE', '', '', 0),
+
+    // CE OBSIDIAN，Globals.c:427：零旗标（岩浆冷却后的地面）。
+    [TerrainType.OBSIDIAN]: e(0, 0, 0, 'DF_PLAIN_FIRE', '', '', 0),
+
+    // CE BRIDGE，Globals.c:428：绳桥面，可走、可燃。
+    [TerrainType.BRIDGE]: e(
+        T_IS_FLAMMABLE, TM_VANISHES_UPON_PROMOTION,
+        50, 'DF_BRIDGE_FIRE', '', '', 0
+    ),
+
+    // CE BRIDGE_EDGE，Globals.c:430：桥端桩点（SURFACE 层），可走、可燃。
+    [TerrainType.BRIDGE_EDGE]: e(
+        T_IS_FLAMMABLE, TM_VANISHES_UPON_PROMOTION,
+        50, 'DF_PLAIN_FIRE', '', '', 0
+    ),
+
+    // CE INERT_BRIMSTONE，Globals.c:426：T_SPONTANEOUSLY_IGNITES（自燃体，
+    // 硫矿湖湖体），800 = 8%/回合晋升 ACTIVE_BRIMSTONE。
+    [TerrainType.INERT_BRIMSTONE]: e(
+        T_SPONTANEOUSLY_IGNITES, 0,
+        0, 'DF_INERT_BRIMSTONE', '', 'DF_ACTIVE_BRIMSTONE', 800
+    ),
+};
+
+// ── 派生判据（名字照 CE，语义 = 旗标位测试；CE Movement/Dijkstra 等处
+//    以 cellHasTerrainFlag(p, T_xxx) 的形态使用这些名字）───────────────────
+
+/** CE `cellHasTerrainFlag(…, T_OBSTRUCTS_PASSABILITY)`（Rogue.h:1924）。 */
+export function blocksPassability(t: TerrainType): boolean {
+    return (TERRAIN_FLAGS[t].flags & T_OBSTRUCTS_PASSABILITY) !== 0;
+}
+
+/** CE `cellHasTerrainFlag(…, T_PATHING_BLOCKER)`（Rogue.h:1948 七旗标并集）。 */
+export function isPathingBlocker(t: TerrainType): boolean {
+    return (TERRAIN_FLAGS[t].flags & T_PATHING_BLOCKER) !== 0;
+}
+
+/** CE `cellHasTerrainFlag(…, T_OBSTRUCTS_VISION)`（Rogue.h:1925）。 */
+export function blocksVision(t: TerrainType): boolean {
+    return (TERRAIN_FLAGS[t].flags & T_OBSTRUCTS_VISION) !== 0;
+}
+
+/** CE `cellHasTerrainFlag(…, T_OBSTRUCTS_ITEMS)`（Rogue.h:1926）。 */
+export function obstructsItems(t: TerrainType): boolean {
+    return (TERRAIN_FLAGS[t].flags & T_OBSTRUCTS_ITEMS) !== 0;
+}
+
+/** CE `cellHasTerrainFlag(…, T_OBSTRUCTS_DIAGONAL_MOVEMENT)`（Rogue.h:1929）。 */
+export function obstructsDiagonalMovement(t: TerrainType): boolean {
+    return (TERRAIN_FLAGS[t].flags & T_OBSTRUCTS_DIAGONAL_MOVEMENT) !== 0;
+}
+
+/** CE `cellHasTerrainFlag(…, T_IS_DEEP_WATER)`（Rogue.h:1937）。 */
+export function isDeepWater(t: TerrainType): boolean {
+    return (TERRAIN_FLAGS[t].flags & T_IS_DEEP_WATER) !== 0;
+}
+
+/** CE `cellHasTerrainFlag(…, T_IS_FLAMMABLE)`（Rogue.h:1934）。 */
+export function isFlammable(t: TerrainType): boolean {
+    return (TERRAIN_FLAGS[t].flags & T_IS_FLAMMABLE) !== 0;
+}

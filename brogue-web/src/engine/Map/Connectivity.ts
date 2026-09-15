@@ -17,6 +17,7 @@
  *    CE 用 4 向是因 CE 的对角移动受防挤墙规则约束。
  */
 import { Grid, TerrainType } from './Grid';
+import { blocksPassability, isDeepWater } from './TerrainCatalog';
 
 export const DIRS8: ReadonlyArray<readonly [number, number]> = [
     [0, -1], [0, 1], [-1, 0], [1, 0],
@@ -25,15 +26,14 @@ export const DIRS8: ReadonlyArray<readonly [number, number]> = [
 
 /** Game.canMoveTo（Game.ts）地形判据的镜像。
  *  p1_29_lake_connectivity.test.ts 把两者按 TerrainType 全枚举逐格比对钉死；
- *  改动 Game.canMoveTo 的排除清单时必须同步这里，反之亦然。 */
+ *  改动 Game.canMoveTo 的排除清单时必须同步这里，反之亦然。
+ *
+ *  C-4a：改为查表实现——`!(T_OBSTRUCTS_PASSABILITY | T_IS_DEEP_WATER)`
+ *  （TerrainCatalog.ts，CE Rogue.h:1924/1937）。对全部 TerrainType 与旧
+ *  硬编码清单 {GRANITE, WALL, SECRET_DOOR, LOCKED_DOOR, WATER_DEEP} 逐位
+ *  一致（c_4a_terrain_catalog.test.ts 的迁移安全性用例全枚举钉死）。 */
 export function terrainAllowsMove(terrain: TerrainType): boolean {
-    return !(
-        terrain === TerrainType.GRANITE ||
-        terrain === TerrainType.WALL ||
-        terrain === TerrainType.SECRET_DOOR ||
-        terrain === TerrainType.LOCKED_DOOR ||
-        terrain === TerrainType.WATER_DEEP
-    );
+    return !blocksPassability(terrain) && !isDeepWater(terrain);
 }
 
 /**
