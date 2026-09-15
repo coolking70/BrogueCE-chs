@@ -66,6 +66,19 @@ const SPAWN_FUSE_MAX = 175;
 const DISCORD_DURATION = 30;
 
 /**
+ * D2 标志：web 自创的"深水淹死"（怪物/玩家站在深水格即死）。
+ * CE 无此机制——全 CE 源码 grep drown 零匹配；深水 tile（Globals.c:413 DEEP_WATER）
+ * 不带任何伤害旗标，坠入深水零伤害（Time.c:1146-1150 "You fall into deep water,
+ * unharmed."）。CE 的地形旗标定义：
+ *   Rogue.h:1932  T_LAVA_INSTA_DEATH = Fl(8)   // kills any non-levitating non-fire-immune creature instantly
+ *   Rogue.h:1937  T_IS_DEEP_WATER    = Fl(13)  // steals items 50% of the time and moves them around randomly
+ * 即：唯一的即死地形是熔岩，深水只偷物品、不杀任何东西。
+ * 按决策 D2（自创内容保留代码、退出生效路径）置 false；二次开发如需恢复
+ * 该自创机制，改回 true 即可。
+ */
+const WEB_ONLY_DEEP_WATER_DROWNING: boolean = false;
+
+/**
  * HORDE_MACHINE_ONLY 复合标志的成员（Rogue.h:2049-2055）。
  * 注意 HORDE_SACRIFICE_TARGET 与 HORDE_VAMPIRE_FODDER 都在其中，不单独列出。
  */
@@ -5520,18 +5533,35 @@ export class Game {
             if (!cell) return;
 
             // Deep Water / Lava Death
+            // 深水不致死（P1-27，决策 D2）：CE 的深水没有任何伤害（T_IS_DEEP_WATER
+            // 只偷物品，Rogue.h:1937；坠落零伤害 Time.c:1146-1150），web 的淹死是
+            // 自创内容，已通过 WEB_ONLY_DEEP_WATER_DROWNING 退出生效路径。
+            // CE 深水的真实行为（50% 冲走携带物并随机移位，Time.c:556-590）属独立
+            // 轮次，本轮不实现。悬浮/飞行生物照旧不进本分支。
             const isFlying = entity.hasStatus('flying') || entity.hasStatus('levitating') || (entity.abilities && entity.abilities.has('flying'));
             if (cell.terrain === TerrainType.WATER_DEEP && !isFlying) {
-                if (entity === this.player) {
-                    this.lastDamageSource = '';
-                    logger.log(i18next.t('env.player_drowns', { defaultValue: 'You plunge into the dark water and drown.' }), '#0044ff');
-                    this.triggerGameOver(false, i18next.t('death.drowned', { defaultValue: 'Drowned in deep water.' }));
-                } else {
-                    logger.log(i18next.t('env.monster_drowns', { name: name, defaultValue: `The ${name} drowns.` }), '#8888aa');
-                    entity.die();
+                if (WEB_ONLY_DEEP_WATER_DROWNING) {
+                    // ---- web 自创"深水淹死"，按 D2 退出实际生效路径，代码原样保留 ----
+                    if (entity === this.player) {
+                        this.lastDamageSource = '';
+                        logger.log(i18next.t('env.player_drowns', { defaultValue: 'You plunge into the dark water and drown.' }), '#0044ff');
+                        this.triggerGameOver(false, i18next.t('death.drowned', { defaultValue: 'Drowned in deep water.' }));
+                    } else {
+                        logger.log(i18next.t('env.monster_drowns', { name: name, defaultValue: `The ${name} drowns.` }), '#8888aa');
+                        entity.die();
+                    }
+                    return;
                 }
-                return;
-            } else if (cell.terrain === TerrainType.LAVA && !isFlying && !entity.hasStatus('immune_fire') && !(entity.abilities && entity.abilities.has('immune_fire'))) {
+            } else if (cell.terrain === TerrainType.LAVA && !isFlying
+                && !entity.hasStatus('immune_fire')
+                && !(entity.abilities && entity.abilities.has('immune_fire'))
+                && !(entity.isInvulnerable && entity.isInvulnerable())) {
+                // 熔岩豁免对齐 CE applyInstantTileEffectsToCreature（Time.c:183-190）：
+                // 悬浮（STATUS_LEVITATING）、火焰免疫（STATUS_IMMUNE_TO_FIRE）、
+                // 无敌（MONST_INVULNERABLE，全 CE 仅 Warden of Yendor 使用）。
+                // CE 条款里的 T_ENTANGLES|T_OBSTRUCTS_PASSABILITY 与 TM_EXTINGUISHES_FIRE
+                // 两个地形条件对纯岩浆 tile 恒假（Globals.c:420 LAVA 无这些旗标），
+                // web 按地形类型分支即等价。
                 if (entity === this.player) {
                     this.lastDamageSource = '';
                     logger.log(i18next.t('env.player_incinerated', { defaultValue: 'You are incinerated by the lava!' }), '#ff4400');
