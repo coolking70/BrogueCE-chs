@@ -24,6 +24,7 @@ import { timeSystem } from '../Systems/Time';
 import { generateMonsterDetail, generateItemDetail, type DetailInfo } from '../UI/DetailGenerator';
 import { logger } from '../Systems/Logger';
 import { Pathfind } from '../Map/Pathfind';
+import { DijkstraMap, MAX_DISTANCE } from '../Map/Pathfinding';
 import { ScentMap, obstructsScent } from '../Map/Scent';
 import { buildSafetyMap, allocShortGrid, SAFETY_MAX_DISTANCE } from '../Map/SafetyMap';
 import { analyzeLoopMap, emptyLoopMap } from '../Map/LoopMap';
@@ -218,6 +219,8 @@ export interface LevelState {
     items: Item[];
     visibleMonsters: Set<Monster>;
     visibleItems: Set<Item>;
+    /** P1-31：该层的机器格集合（CE pmap machineNumber 派生），随层缓存。 */
+    machineCells?: Set<number>;
 }
 
 export type RecordedInputData = number | { x: number; y: number } | string | null;
@@ -349,6 +352,12 @@ export class Game {
     // 客观块滚动刷新一个（CE Time.c:2710-2714）。构建内部对流做了隔离
     //（RogueMain.c:691-707/733-735 的快照/恢复复刻），不移动 RNG 流。
     public waypoints: WaypointSystem = new WaypointSystem();
+
+    // P1-31：本层机器格（CE pmap 的 IS_IN_MACHINE 旗标，Architect.c 生成期
+    // 写入 machineNumber）。数据源是 BlueprintEngine 的 MachineResult.cells，
+    // 仅新层生成期可得：重访层经 LevelState 缓存随层走；快照 schema 无此
+    // 字段，读档后为空集（P1-35 复核登记，落位检查在该层退化为不查机器）。
+    private machineCells: Set<number> = new Set();
 
     // Endgame & Stats
     public isGameOver: boolean = false;
@@ -608,7 +617,8 @@ export class Game {
                 monsters: this.monsters,
                 items: this.items,
                 visibleMonsters: this.visibleMonsters,
-                visibleItems: this.visibleItems
+                visibleItems: this.visibleItems,
+                machineCells: this.machineCells
             });
         }
 
@@ -624,21 +634,22 @@ export class Game {
             this.items = cached.items;
             this.visibleMonsters = cached.visibleMonsters;
             this.visibleItems = cached.visibleItems;
+            this.machineCells = cached.machineCells ?? new Set();
 
-            // Reposition player to stairs
+            // Reposition player to stairs（P1-31：落位走 CE RogueMain.c:837-869，
+            // 先置楼梯位再向 4 邻域找合格格——不再直接站上楼梯）
             const targetStairType = isGoingUp ? TerrainType.STAIRS_DOWN : TerrainType.STAIRS_UP;
-            let foundStair = false;
+            let entryStair: Pos | null = null;
             for (let x = 0; x < this.grid.width; x++) {
                 for (let y = 0; y < this.grid.height; y++) {
                     if (this.grid.getCell(x, y)?.terrain === targetStairType) {
-                        this.player.loc.x = x;
-                        this.player.loc.y = y;
-                        foundStair = true;
+                        entryStair = { x, y };
                         break;
                     }
                 }
-                if (foundStair) break;
+                if (entryStair) break;
             }
+            if (entryStair) this.placePlayerOnLevelEntry(entryStair);
         } else {
             // 1. Generate new level
             this.stats.maxDepth = Math.max(this.stats.maxDepth, this.depth);
@@ -689,6 +700,12 @@ export class Game {
         cages: Array<{ door: Pos, cells: Pos[] }> = [],
         machineResults: MachineResult[] = []
     ) {
+        // P1-31：本层机器格（CE pmap IS_IN_MACHINE，落位排除项之一）。
+        this.machineCells = new Set();
+        for (const mr of machineResults) {
+            for (const c of mr.cells) this.machineCells.add(c.y * DCOLS + c.x);
+        }
+
         // Collect all valid floor tiles
         const floorTiles: Pos[] = [];
         for (let x = 1; x < DCOLS - 1; x++) {
@@ -876,15 +893,9 @@ export class Game {
             }
         }
 
-        if (!isFirstLevel) {
-            if (isGoingUp && stairsDownPos) {
-                this.player.loc.x = stairsDownPos.x;
-                this.player.loc.y = stairsDownPos.y;
-            } else if (!isGoingUp && stairsUpPos) {
-                this.player.loc.x = stairsUpPos.x;
-                this.player.loc.y = stairsUpPos.y;
-            }
-        }
+        // （P1-31：进层落位不再在此处直接站上楼梯——移到本方法末尾、
+        // 怪物/物品全部布设完成之后执行，与 CE RogueMain.c:817 "Position
+        // the player" 的时序一致，HAS_MONSTER 排除项才有数据可用。）
 
         // Horde generation —— CE Monsters.c:1085 populateMonsters：
         // 数量 = min(20, 6 + 3*max(0, depth - AMULET_LEVEL))（D26 前基数恒为 6），
@@ -1003,6 +1014,152 @@ export class Game {
                 this.items.push(item);
             }
         }
+
+        // P1-31：进层落位（CE RogueMain.c:817-869 "Position the player"，
+        // 在全部生成决策完成之后执行）。CE stairDirection=±1 时先把玩家
+        // 置于目标楼梯位、再向 4 邻域找合格格；web 首层的"强制 vestibule
+        // 楼梯压着出生点"对应 CE stairDirection=0（fell into the level），
+        // 以当前出生点（即 vestibule 楼梯格）为目标走同一 4 邻域规则挪离
+        // 楼梯（与 CE getQualifyingLocNear 的口径差异在报告登记）。
+        if (!isFirstLevel) {
+            const entryStair = isGoingUp ? stairsDownPos : stairsUpPos;
+            if (entryStair) this.placePlayerOnLevelEntry(entryStair);
+        } else {
+            this.placePlayerOnLevelEntry({ x: this.player.loc.x, y: this.player.loc.y });
+        }
+    }
+
+    /**
+     * P1-31：进层落位。CE RogueMain.c:837-869 逐句对应：
+     *   1. 先把玩家置于目标格（楼梯）；
+     *   2. 按 CE 方向枚举序（Rogue.h:413-422：UP/DOWN/LEFT/RIGHT = 北/南/西/东）
+     *      找第一个"不阻挡通行、且无怪物/楼梯/机器"的邻格落位
+     *      （CE：!cellHasTerrainFlag(loc, T_PATHING_BLOCKER) &&
+     *        !(pmap flags & (HAS_MONSTER | HAS_STAIRS | IS_IN_MACHINE)))；
+     *   3. 4 邻域全不合格 → 退到 getQualifyingPathLocNear（Grid.c:287）：
+     *      以目标格为源的 dijkstra 扫描取"路径最近的合格格"。
+     * 共同路径（2）零 RNG 消耗；兜底（3）的并列取一在 CE 即消费随机数
+     *（deterministic=false），web 同样走 rng——仅在病态地形触发。
+     */
+    private placePlayerOnLevelEntry(target: Pos): void {
+        this.player.loc.x = target.x;
+        this.player.loc.y = target.y;
+        const DIRS4: ReadonlyArray<readonly [number, number]> =
+            [[0, -1], [0, 1], [-1, 0], [1, 0]]; // CE UP/DOWN/LEFT/RIGHT
+        for (const [dx, dy] of DIRS4) {
+            const x = target.x + dx!;
+            const y = target.y + dy!;
+            if (this.entryQualifiesForPlacement(x, y)) {
+                this.player.loc.x = x;
+                this.player.loc.y = y;
+                return;
+            }
+        }
+        const loc = this.findQualifyingPathLocNear(target);
+        if (loc) {
+            this.player.loc.x = loc.x;
+            this.player.loc.y = loc.y;
+        }
+        // 无解：维持楼梯位。CE 在 Grid.c:347-356 还有路径无关的
+        // getQualifyingLocNear 第二重兜底（web 的环形近似见
+        // findQualifyingPathLocNear 尾部）；两者都失败属病态地图，CE 亦无解。
+    }
+
+    /**
+     * P1-31：落位合格格判定。CE 两个旗标面（Rogue.h:1948）的 web 近似：
+     *   - T_PATHING_BLOCKER = T_OBSTRUCTS_PASSABILITY | T_AUTO_DESCENT |
+     *     T_IS_DF_TRAP | T_LAVA_INSTA_DEATH | T_IS_DEEP_WATER | T_IS_FIRE |
+     *     T_SPONTANEOUSLY_IGNITES —— web：!isPassable（墙/花岗岩/深渊/密门）
+     *     或 LAVA / WATER_DEEP / TRAP / 燃烧中；
+     *   - HAS_MONSTER → getMonsterAt；HAS_STAIRS → 楼梯地形；
+     *     IS_IN_MACHINE → machineCells（本层生成期数据）。
+     * 楼梯本身不含 T_PATHING_BLOCKER（Globals.c:333-334），故 HAS_STAIRS
+     * 必须单独排除——CE 的 4 邻域循环同样单列。
+     */
+    private entryQualifiesForPlacement(x: number, y: number): boolean {
+        const cell = this.grid.getCell(x, y);
+        if (!cell) return false;
+        if (!cell.isPassable) return false;
+        if (cell.terrain === TerrainType.LAVA ||
+            cell.terrain === TerrainType.WATER_DEEP ||
+            cell.terrain === TerrainType.TRAP ||
+            cell.isBurning) return false;
+        if (cell.terrain === TerrainType.STAIRS_UP ||
+            cell.terrain === TerrainType.STAIRS_DOWN) return false;
+        if (this.getMonsterAt(x, y)) return false;
+        if (this.machineCells.has(y * DCOLS + x)) return false;
+        return true;
+    }
+
+    /**
+     * P1-31：CE Grid.c:287 getQualifyingPathLocNear 的 web 端口
+     *（调用面 RogueMain.c:854-858：blockingTerrainFlags=T_DIVIDES_LEVEL、
+     * forbiddenTerrainFlags=T_PATHING_BLOCKER、forbiddenMapFlags=
+     * HAS_MONSTER|HAS_STAIRS|IS_IN_MACHINE、hallwaysAllowed=true、
+     * deterministic=false）。路径代价按 T_DIVIDES_LEVEL 阻断（该类地形
+     * 不可穿过），结果格按 T_PATHING_BLOCKER + 三项占用旗标过滤，取
+     * "路径距离最小"的合格格；并列时 CE 用 rand_range 随机取一，web 同
+     *（rng）。CE 末端还有一重路径无关的 getQualifyingLocNear 兜底，web 以
+     * 切比雪夫环搜索近似（同旗标面、同随机取一）。
+     */
+    private findQualifyingPathLocNear(target: Pos): Pos | null {
+        const width = this.grid.width;
+        const height = this.grid.height;
+        const cost = allocShortGrid(width, height, 1);
+        const dist = allocShortGrid(width, height, MAX_DISTANCE);
+        for (let x = 0; x < width; x++) {
+            for (let y = 0; y < height; y++) {
+                const cell = this.grid.getCell(x, y);
+                // CE T_DIVIDES_LEVEL（Rogue.h:1949）：不可作为路径的地形
+                const dividesLevel = !cell || !cell.isPassable ||
+                    cell.terrain === TerrainType.LAVA ||
+                    cell.terrain === TerrainType.WATER_DEEP ||
+                    cell.terrain === TerrainType.TRAP;
+                if (dividesLevel) cost[x]![y] = -1; // CE PDS_FORBIDDEN
+            }
+        }
+        // CE Grid.c:324-326：源格距离 1、代价强制 1（楼梯可作路径起点）
+        dist[target.x]![target.y] = 1;
+        cost[target.x]![target.y] = 1;
+        const scanner = new DijkstraMap(width, height);
+        scanner.batchScan(dist, cost, true); // CE dijkstraScan(grid, costMap, true)
+
+        let best = MAX_DISTANCE;
+        const ties: Pos[] = [];
+        for (let x = 1; x < width - 1; x++) {
+            for (let y = 1; y < height - 1; y++) {
+                const d = dist[x]![y]!;
+                if (d <= 0 || d >= MAX_DISTANCE || d > best) continue;
+                if (!this.entryQualifiesForPlacement(x, y)) continue;
+                if (d < best) {
+                    best = d;
+                    ties.length = 0;
+                }
+                ties.push({ x, y });
+            }
+        }
+        if (ties.length > 0) {
+            return ties.length === 1 ? ties[0]! : ties[rng.randRange(0, ties.length - 1)]!;
+        }
+        // CE Grid.c:347-356 的 getQualifyingLocNear 兜底（路径无关）：
+        // 切比雪夫环由近及远，首个含合格格的环内随机取一。
+        for (let r = 1; r <= Math.max(width, height); r++) {
+            const ring: Pos[] = [];
+            for (let dx = -r; dx <= r; dx++) {
+                for (let dy = -r; dy <= r; dy++) {
+                    if (Math.max(Math.abs(dx!), Math.abs(dy!)) !== r) continue;
+                    const x = target.x + dx!;
+                    const y = target.y + dy!;
+                    if (x <= 0 || y <= 0 || x >= width - 1 || y >= height - 1) continue;
+                    if (!this.entryQualifiesForPlacement(x, y)) continue;
+                    ring.push({ x, y });
+                }
+            }
+            if (ring.length > 0) {
+                return ring.length === 1 ? ring[0]! : ring[rng.randRange(0, ring.length - 1)]!;
+            }
+        }
+        return null;
     }
 
     /**
@@ -1552,6 +1709,7 @@ export class Game {
         this.signTexts.clear();
         this.resetPlateRoomByPos.clear();
         this.testRooms.clear();
+        this.machineCells.clear(); // P1-31：test 层无机器（防上一层残留）
 
         this.grid = new Grid(DCOLS, DROWS);
         this.environment = new EnvironmentManager(this.grid);
@@ -5618,6 +5776,24 @@ export class Game {
         if (snapshot.stats) {
             this.stats = { ...snapshot.stats };
         }
+
+        // P1-35：读档后生成期派生态必须与当前网格自洽。loopMap 是网格的纯
+        // 函数（P1-34 同一不变式的读档面），不重算就会沿用读档前那一局的
+        // 环路图——safety map 的 IN_LOOP -=10 偏好按错误环路生效，静默失效。
+        // analyzeLoopMap 纯函数、零 RNG 消耗，不影响读档的随机流。
+        this.loopMap = analyzeLoopMap(this.grid);
+        // P1-35 复核顺带补：waypoint 同为生成期派生态（CE 在重访层恢复后
+        // 重建，RogueMain.c:771），不重建则漫游怪按上一局的 waypoint 走。
+        // 构建内部流隔离，不动 RNG。
+        this.rebuildWaypoints();
+        // P1-35 复核顺带补：气味图快照 schema 无对应字段，陈局气味残留会
+        // 误导嗅觉追踪——重置为空图（CE 语义是恢复 levels[d].scentMap，
+        // web 缺数据源，报告登记）。
+        this.scent = new ScentMap(DCOLS, DROWS);
+        // P1-35 复核顺带补：机器格快照 schema 无对应字段，清空防上一层
+        // 残留（落位检查在本层退化为不查机器，报告登记）。
+        this.machineCells = new Set();
+
         this.visibleMonsters.clear();
         this.visibleItems.clear();
         this.autoPath = [];
