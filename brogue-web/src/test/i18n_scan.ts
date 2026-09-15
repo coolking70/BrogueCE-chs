@@ -64,12 +64,14 @@ const TEST_FILE_PATTERN = /\.(test|spec)\.[cm]?[jt]sx?$/;
 // ---------------------------------------------------------------------------
 
 const CALL_START = /(?:\bi18next\s*\.\s*t|\$t)\s*\(/y;
+/** P1-37：logger.log( 的调用起点（裸字符串硬编码检测用）。 */
+const LOG_CALL_START = /\blogger\s*\.\s*log\s*\(/y;
 
-/** 从 pos 起判定是否是 t( 调用，是则返回 '(' 之后的下标，否则返回 -1。 */
-function matchCallStart(code: string, pos: number): number {
-    CALL_START.lastIndex = pos;
-    const m = CALL_START.exec(code);
-    return m ? CALL_START.lastIndex : -1;
+/** 从 pos 起判定是否命中调用起点，是则返回 '(' 之后的下标，否则返回 -1。 */
+function matchCalleeStart(callee: RegExp, code: string, pos: number): number {
+    callee.lastIndex = pos;
+    const m = callee.exec(code);
+    return m ? callee.lastIndex : -1;
 }
 
 /**
@@ -142,10 +144,10 @@ function skipQuoted(code: string, pos: number, quote: string): number {
 }
 
 /**
- * 主扫描：返回代码中所有 t( 调用点的 '(' 位置。
+ * 主扫描：返回代码中所有指定形态调用的 '(' 位置。
  * 只在代码态（非注释、非字符串/模板/正则内部）识别。
  */
-function findCallSites(code: string): number[] {
+function findCallStarts(code: string, callee: RegExp, firstChars: string): number[] {
     const hits: number[] = [];
     let i = 0;
     let prevMeaningful = ''; // 上一个非空白字符（判断正则/除法歧义用）
@@ -165,11 +167,11 @@ function findCallSites(code: string): number[] {
             }
             i++; prevMeaningful = '/'; continue;
         }
-        if (c === 'i' || c === '$') {
-            const afterParen = matchCallStart(code, i);
+        if (firstChars.includes(c)) {
+            const afterParen = matchCalleeStart(callee, code, i);
             if (afterParen > 0) {
-                // 排除标识符尾巴（如 foo$i18next / x$i18next.t：词边界已由 \b 与 \$t
-                // 前置条件保证，这里再确认前一个字符不是标识符成分）
+                // 排除标识符尾巴（\b 与 \$ 前置条件之外，这里再确认
+                // 前一个字符不是标识符成分）
                 const prev = i > 0 ? code[i - 1]! : '';
                 if (!/[\w$]/.test(prev)) {
                     hits.push(afterParen);
@@ -180,6 +182,10 @@ function findCallSites(code: string): number[] {
         i++;
     }
     return hits;
+}
+
+function findCallSites(code: string): number[] {
+    return findCallStarts(code, CALL_START, 'i$');
 }
 
 // ---------------------------------------------------------------------------
@@ -445,6 +451,74 @@ function splitCallArgs(code: string, openParen: number): { start: number; end: n
         i++;
     }
     return args.filter(a => code.slice(a.start, a.end).trim() !== '');
+}
+
+// ---------------------------------------------------------------------------
+// P1-37：logger.log( 首参裸字符串检测（P1-30 红灯管不到的盲区）。
+// i18n 闸门只扫 t() 的键——绕过 i18n 直接把字面量塞进 logger.log 的文案
+// （P1-37 修掉的六条法杖充能/符文英文就是这条通道进来的）它看不见。
+// ---------------------------------------------------------------------------
+
+export interface HardcodedLogHit {
+    file: string;
+    line: number;
+    snippet: string;
+    /** 首参的静态文本（模板字符串取拼接后的静态段；纯插值模板为空串） */
+    text: string;
+    /** 静态文本含 ASCII 字母——英文硬编码，玩家可见的语言缺陷（红灯项） */
+    hasAsciiLetters: boolean;
+}
+
+/**
+ * 提取 logger.log( 首参为裸字符串/模板时的静态文本；首参是变量、
+ * i18next.t(...) 等则返回 null（不走硬编码通道，不归本扫描器管）。
+ */
+function firstArgBareString(code: string, paren: number): string | null {
+    let i = skipWs(code, paren);
+    const c = code[i];
+    if (c === '\'' || c === '"') {
+        const end = skipQuoted(code, i, c);
+        return decodeEscapes(code.slice(i + 1, end - 1));
+    }
+    if (c === '`') {
+        let j = i + 1;
+        let chunk = '';
+        while (j < code.length) {
+            const ch = code[j]!;
+            if (ch === '\\') { chunk += decodeEscapes(code.slice(j, j + 2)); j += 2; continue; }
+            if (ch === '`') break;
+            if (ch === '$' && code[j + 1] === '{') { j = skipTemplateHole(code, j + 1); continue; }
+            chunk += ch;
+            j++;
+        }
+        return chunk;
+    }
+    return null;
+}
+
+/** 扫描 src/ 下 logger.log(...) 首参为裸字符串字面量/模板的调用点。 */
+export function findHardcodedLogStrings(srcDir: string): HardcodedLogHit[] {
+    const files: string[] = [];
+    walk(srcDir, files);
+    files.sort();
+
+    const hits: HardcodedLogHit[] = [];
+    for (const file of files) {
+        const rel = relative(srcDir, file).split(sep).join('/');
+        const code = readFileSync(file, 'utf-8');
+        for (const paren of findCallStarts(code, LOG_CALL_START, 'l')) {
+            const text = firstArgBareString(code, paren);
+            if (text === null || text.trim() === '') continue;
+            hits.push({
+                file: rel,
+                line: code.slice(0, paren).split('\n').length,
+                snippet: code.slice(Math.max(0, paren - 40), paren + 60).replace(/\s+/g, ' ').trim(),
+                text,
+                hasAsciiLetters: /[A-Za-z]/.test(text),
+            });
+        }
+    }
+    return hits;
 }
 
 // ---------------------------------------------------------------------------

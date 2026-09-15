@@ -1,5 +1,17 @@
 # brogue-web 还原度攻坚路线图（2026-09-13 制定）
 
+## P1-41（2026-09-16 P1-37 验收时登记）
+
+**怪群成员铺开用环形扫描而非路径距离。** `Game.ts` 的成员落位是按切比雪夫半径
+r=1..5 的环形扫描、不看连通性；CE `spawnMinions`（`Monsters.c:703-733`）走
+`getQualifyingPathLocNear`，**按路径距离**落位。差别的后果是：CE 靠"锁门封住的
+密库在路径上走不进去"结构性地把成员挡在机器外（它的禁忌旗标里并没有
+`IS_IN_MACHINE`），而 web 的环形扫描会把怪物直接塞进封死的宝库。
+
+P1-37 因此加了一条 `cell.machineNumber === 0` 排除——**属"web 侧必要、CE 无对应"
+一类**（先例：P1-33 的 `gateSealsOnlyInterior`）。改成路径距离落位后，
+**那条排除应当随之取消**。
+
 ## P1-38 / P1-39 / P1-40（2026-09-16 C-4 勘察登记，详见 `c_4_scoping_note.md`）
 
 - **P1-38 通行判据三口径不一**：`Grid.setTerrain` 的 `isPassable`、`Game.canMoveTo`、

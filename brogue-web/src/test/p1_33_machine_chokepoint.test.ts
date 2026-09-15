@@ -13,7 +13,8 @@
  *     内部沿 chokeMap 非递增路径扩展，恰好盖住门后死角；
  *   - gateSealsOnlyInterior（web 侧必要、CE 无对应）：8 向移动下锁门
  *     假想验证，会夹带封死别处的门位一律否决；
- *   - 机器内部裸地板转 CHARRED_FLOOR：CE 的楼梯/物品/怪群回避 IS_IN_MACHINE
+ *   - 机器内部裸地板转 CHARRED_FLOOR（**P1-37 已拆除**，改为牌堆直接按
+ *     machineNumber 排除）：CE 的楼梯/物品/怪群回避 IS_IN_MACHINE
  *     （Architect.c:3543/3597/3712/3738）在 web 的等价物——populateLevel 的
  *     楼梯/钥匙/护符全部从 `terrain === FLOOR` 牌堆抽取（Game.ts 本轮禁改）。
  *
@@ -165,11 +166,17 @@ describe('P1-33 机器阶段不切断关卡', () => {
                         machines++;
                         if (mr.needsKey) locked++;
                         const cellSet = new Set(mr.cells.map(p => `${p.x},${p.y}`));
+                        // 验收方 P1-37 后反转（原断言："机器内部没有裸 FLOOR"）。
+                        // 那条断言钉的是 CHARRED_FLOOR 冒充 IS_IN_MACHINE 这个
+                        // 权宜之计本身——P1-37 把权宜拆掉、改为牌堆直接按
+                        // machineNumber 排除，它就必然翻红，与本轮任务直接矛盾。
+                        // 现在钉更直接也更强的合同：机器内部每一格都真的带
+                        // machineNumber（牌堆排除正是以它为键），而不是靠地形冒充。
                         for (const p of mr.cells) {
-                            if (grid.getCell(p.x, p.y)?.terrain === TerrainType.FLOOR) {
+                            if (grid.getCell(p.x, p.y)?.machineNumber === 0) {
                                 structureViolations.push(
-                                    `seed${seed}/D${d} ${mr.blueprintId} 内部 (${p.x},${p.y}) 仍是 FLOOR` +
-                                    `（密库地板退出楼梯牌堆的转换被回退？）`);
+                                    `seed${seed}/D${d} ${mr.blueprintId} 内部 (${p.x},${p.y}) 的 machineNumber 为 0` +
+                                    `（机器旗标没铺满内部，楼梯/物品牌堆的排除会漏掉这格）`);
                                 break;
                             }
                         }

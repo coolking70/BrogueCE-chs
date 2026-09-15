@@ -195,6 +195,8 @@ export interface GameSnapshot {
         burnDuration: number;
         isPassable: boolean;
         isOpaque: boolean;
+        /** P1-37：机器旗标（IS_IN_MACHINE 等价物）随存档往返；0 缺省省体积，旧存档视为无机器。 */
+        machineNumber?: number;
     }>;
     gasGrid: Array<{
         x: number;
@@ -354,9 +356,9 @@ export class Game {
     public waypoints: WaypointSystem = new WaypointSystem();
 
     // P1-31：本层机器格（CE pmap 的 IS_IN_MACHINE 旗标，Architect.c 生成期
-    // 写入 machineNumber）。数据源是 BlueprintEngine 的 MachineResult.cells，
-    // 仅新层生成期可得：重访层经 LevelState 缓存随层走；快照 schema 无此
-    // 字段，读档后为空集（P1-35 复核登记，落位检查在该层退化为不查机器）。
+    // 写入 machineNumber）。数据源是 BlueprintEngine 的 MachineResult.cells。
+    // P1-37 起旗标本身随存档往返（快照 grid 的 machineNumber 字段），读档时
+    // 从网格重建本集合——落位检查不再在读档层退化（P1-35 的登记已闭环）。
     private machineCells: Set<number> = new Set();
 
     // Endgame & Stats
@@ -707,14 +709,21 @@ export class Game {
         }
 
         // Collect all valid floor tiles
+        // P1-37：牌堆排除机器格（machineNumber≠0 = CE 的 IS_IN_MACHINE，
+        // Rogue.h:1113）。CE 的楼梯（Architect.c:3712/3738）、随机物品
+        // （3597）、漫游怪群（3543）落点一律回避该旗标；web 的楼梯/护符/
+        // 钥匙/随机物品/怪群领袖统一从本牌堆抽取，此处一处排除全部覆盖。
+        // P1-33 曾以"宝库地板改判 CHARRED_FLOOR"达成同样效果（当时 Game.ts
+        // 禁改），P1-37 起用地形类型冒充旗标的做法废除，宝库恢复普通地板。
         const floorTiles: Pos[] = [];
         for (let x = 1; x < DCOLS - 1; x++) {
             for (let y = 1; y < DROWS - 1; y++) {
-                if (this.grid.getCell(x, y)?.terrain === TerrainType.FLOOR) {
-                    // Don't spawn right on top of player
-                    if (Math.abs(x - this.player.loc.x) > 5 || Math.abs(y - this.player.loc.y) > 5) {
-                        floorTiles.push({ x, y });
-                    }
+                const cell = this.grid.getCell(x, y);
+                if (!cell || cell.terrain !== TerrainType.FLOOR) continue;
+                if (cell.machineNumber !== 0) continue; // CE IS_IN_MACHINE
+                // Don't spawn right on top of player
+                if (Math.abs(x - this.player.loc.x) > 5 || Math.abs(y - this.player.loc.y) > 5) {
+                    floorTiles.push({ x, y });
                 }
             }
         }
@@ -1310,7 +1319,26 @@ export class Game {
                             const nx = centerPos.x + dx;
                             const ny = centerPos.y + dy;
                             const cell = this.grid.getCell(nx, ny);
-                            if (cell && cell.isPassable && !this.monsters.some(m => m.loc.x === nx && m.loc.y === ny) && !(this.player.loc.x === nx && this.player.loc.y === ny)) {
+                            // P1-37 + 验收方复核后的正确理由（执行方原引
+                            // Monsters.c:809-819 → Architect.c:3543 不成立：
+                            // 前者是 hordeID 重选循环，后者是"领袖撞上玩家/楼梯"
+                            // 的重定位回退；成员铺开的真实对应物 spawnMinions
+                            // Monsters.c:703-733 的禁忌旗标只有
+                            // (HAS_PLAYER | HAS_STAIRS) 与 HAS_MONSTER，
+                            // **不含 IS_IN_MACHINE**）。
+                            //
+                            // 但排除本身是必要的，理由在 web 侧：CE 的成员经
+                            // getQualifyingPathLocNear 按**路径距离**落位，
+                            // 锁门封住的密库在路径上走不进去，于是 CE 无需旗标
+                            // 就结构性地把成员挡在了机器外面；web 这里是按
+                            // 切比雪夫半径的**环形扫描**（上面的 r=1..5），
+                            // 不看连通性——不排除就会把怪物直接塞进封死的宝库。
+                            // 这与 P1-33 的 gateSealsOnlyInterior 同属
+                            // "web 侧必要、CE 无对应"一类。
+                            // 代价：移动 RNG 值序（424242/D26 楼梯位移）。
+                            // 已登记 P1-41：把成员铺开改成路径距离落位，
+                            // 届时这条排除应当随之取消。
+                            if (cell && cell.isPassable && cell.machineNumber === 0 && !this.monsters.some(m => m.loc.x === nx && m.loc.y === ny) && !(this.player.loc.x === nx && this.player.loc.y === ny)) {
                                 const mon = new Monster(nx, ny, memberMData);
                                 this.applyRandomMutation(mon, depth);
                                 if (wandering) mon.state = MonsterState.WANDERING;
@@ -1501,6 +1529,8 @@ export class Game {
      * 且不在玩家当前视野内（IN_FIELD_OF_VIEW 排除）；
      * 优先离玩家足够远（切比雪夫距离 >= floor(DCOLS/2)，近似 CE 的
      * 路径距离场 >= DCOLS/2 阈值），无远格则回退到任意视野外合法格。
+     * P1-37：CE 的远格池不排机器、回退池排 IS_IN_MACHINE（Monsters.c:1110
+     * 的 getTerrainGrid 第二次调用才加入该旗标）——两池口径照搬。
      */
     private findPeriodicSpawnLocation(): Pos | null {
         const far: Pos[] = [];
@@ -1516,6 +1546,9 @@ export class Game {
                 if (this.getMonsterAt(x, y)) continue;
                 if (this.player.loc.x === x && this.player.loc.y === y) continue;
                 const isFar = Math.max(Math.abs(x - this.player.loc.x), Math.abs(y - this.player.loc.y)) >= minFarDist;
+                // CE 回退池的 IS_IN_MACHINE 排除：远格池不排，无远格可退时
+                // （near 池）才回避机器（Monsters.c:1110 第二次 getTerrainGrid）
+                if (!isFar && cell.machineNumber !== 0) continue;
                 (isFar ? far : near).push({ x, y });
             }
         }
@@ -3711,12 +3744,12 @@ export class Game {
         if (typeof item.maxCharges !== 'number') return false;
         const current = item.charges ?? 0;
         if (current >= item.maxCharges) {
-            logger.log(`${item.name} is already fully charged.`, '#aaaaaa');
+            logger.log(i18next.t('item.already_charged', { name: item.name, defaultValue: `${item.name} is already fully charged.` }), '#aaaaaa');
             return false;
         }
         item.charges = item.maxCharges;
         item.rechargeCounter = 0;
-        logger.log(`${item.name} is fully recharged.`, '#66ddff');
+        logger.log(i18next.t('item.fully_recharged', { name: item.name, defaultValue: `${item.name} is fully recharged.` }), '#66ddff');
         timeSystem.currentTick += 100;
         this.playerTurnEnded();
         return true;
@@ -3724,7 +3757,7 @@ export class Game {
 
     public uncurseItem(item: Item): boolean {
         if (!item.isCursed) {
-            logger.log(`${item.name} is not cursed.`, '#aaaaaa');
+            logger.log(i18next.t('item.not_cursed', { name: item.name, defaultValue: `${item.name} is not cursed.` }), '#aaaaaa');
             return false;
         }
         item.isCursed = false;
@@ -3758,7 +3791,7 @@ export class Game {
         if (!cursed) return false;
         cursed.isCursed = false;
         if (cursed.enchantment < 0) cursed.enchantment = 0;
-        logger.log(`${cursed.name} is no longer cursed.`, '#88ffcc');
+        logger.log(i18next.t('item.uncursed', { name: cursed.name, defaultValue: `${cursed.name} is no longer cursed.` }), '#88ffcc');
         return true;
     }
 
@@ -3780,7 +3813,9 @@ export class Game {
                 target.runicType = runics[rng.randRange(0, runics.length - 1)];
             }
             target.runicKnown = true;
-            logger.log(`${target.name} awakens a ${target.runicType} rune!`, '#88ccff');
+            // {{runic}} 暂为内部 id（如 paralyzing）——符文名的中文映射是既有
+            // 缺口（物品名显示 {paralyzing} 同病），本轮只接 i18n 框架，登记报告。
+            logger.log(i18next.t('item.runic_awakened', { name: target.name, runic: target.runicType, defaultValue: `${target.name} awakens a ${target.runicType} rune!` }), '#88ccff');
         }
         return true;
     }
@@ -3795,7 +3830,7 @@ export class Game {
         const target = candidates[rng.randRange(0, candidates.length - 1)]!;
         target.charges = target.maxCharges;
         target.rechargeCounter = 0;
-        logger.log(`${target.name} crackles with restored power.`, '#66ddff');
+        logger.log(i18next.t('item.power_restored', { name: target.name, defaultValue: `${target.name} crackles with restored power.` }), '#66ddff');
         return true;
     }
 
@@ -4810,6 +4845,10 @@ export class Game {
             const weaponStr = res.weaponName === 'bare hands' ? i18next.t('combat.bare_hands', { defaultValue: 'bare hands' }) : res.weaponName;
             if (res.backstab) {
                 logger.log(i18next.t('combat.backstab', { monster: target.name, damage: res.damage, weapon: weaponStr, defaultValue: `You backstab the ${target.name} for ${res.damage} damage!` }), '#ff4444');
+            } else if (lungeAttack) {
+                // B-1 登记项由 P1-37 补齐：CE 对突进命中追加"（猛烈突刺）"
+                // 措辞（Combat.c:1298-1299），中文 UI 走专用文案。
+                logger.log(i18next.t('combat.lunge_hit', { monster: target.name, damage: res.damage, weapon: weaponStr, defaultValue: `You hit the ${target.name} for ${res.damage} damage with a vicious lunge!` }), '#ffcc00');
             } else {
                 logger.log(i18next.t('combat.hit', { monster: target.name, damage: res.damage, weapon: weaponStr, defaultValue: `You hit the ${target.name} for ${res.damage} damage with ${weaponStr}.` }), '#ffcc00');
             }
@@ -5609,7 +5648,7 @@ export class Game {
                     if (item.rechargeCounter >= turns) {
                         item.charges += 1;
                         item.rechargeCounter = 0;
-                        logger.log(`${item.name} regains a charge.`, '#66ddff');
+                        logger.log(i18next.t('item.regains_charge', { name: item.name, defaultValue: `${item.name} regains a charge.` }), '#66ddff');
                     }
                 }
             } else if (item.category === ItemCategory.CHARM) {
@@ -5698,7 +5737,9 @@ export class Game {
                     isBurning: cell.isBurning,
                     burnDuration: cell.burnDuration,
                     isPassable: cell.isPassable,
-                    isOpaque: cell.isOpaque
+                    isOpaque: cell.isOpaque,
+                    // P1-37：机器旗标穿存档。0 不写（绝大多数格子无机器，省体积）
+                    ...(cell.machineNumber !== 0 ? { machineNumber: cell.machineNumber } : {})
                 });
             }
         }
@@ -5799,6 +5840,8 @@ export class Game {
             cell.burnDuration = c.burnDuration;
             cell.isPassable = c.isPassable;
             cell.isOpaque = c.isOpaque;
+            // P1-37：机器旗标随存档恢复（缺省 0 = 旧存档无此字段，视为无机器）。
+            cell.machineNumber = c.machineNumber ?? 0;
         }
 
         this.environment = new EnvironmentManager(this.grid);
@@ -5878,8 +5921,15 @@ export class Game {
         // web 缺数据源，报告登记）。
         this.scent = new ScentMap(DCOLS, DROWS);
         // P1-35 复核顺带补：机器格快照 schema 无对应字段，清空防上一层
-        // 残留（落位检查在本层退化为不查机器，报告登记）。
+        // 残留。P1-37 起旗标本身随存档往返（grid 格的 machineNumber 字段），
+        // 据此重建——落位检查不再在读档层退化。
         this.machineCells = new Set();
+        for (let x = 0; x < this.grid.width; x++) {
+            for (let y = 0; y < this.grid.height; y++) {
+                const cell = this.grid.getCell(x, y);
+                if (cell && cell.machineNumber !== 0) this.machineCells.add(y * DCOLS + x);
+            }
+        }
 
         this.visibleMonsters.clear();
         this.visibleItems.clear();
@@ -6538,7 +6588,7 @@ export class Game {
         // Ensure path is still valid space
         if (!this.canMoveTo(next.x, next.y)) {
             this.autoPath = [];
-            logger.log('Path blocked.', '#ffaa88');
+            logger.log(i18next.t('move.path_blocked', { defaultValue: 'Path blocked.' }), '#ffaa88');
             this.needsRender = true;
             return;
         }

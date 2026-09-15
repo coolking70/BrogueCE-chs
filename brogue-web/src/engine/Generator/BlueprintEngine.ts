@@ -184,7 +184,7 @@ export class BlueprintEngine {
      * 也不属于既有机器"的格子，说明这把锁会夹带封死别处（8 向移动下
      * 割点覆盖不了的夹带口袋——seed31337/D12 的坏层成因），否决该门位。
      * 语义与 P1-29 湖泊闸门一致：放置前证明不切断。泛洪自然穿过未上锁
-     * 的既有机器（炭化地板可走）；既有锁门机器内部不可达但其格
+     * 的既有机器（普通地板可走）；既有锁门机器内部不可达但其格
      * machineNumber≠0，豁免。
      */
     private gateSealsOnlyInterior(gate: Pos, interiorCells: Pos[]): boolean {
@@ -531,22 +531,18 @@ export class BlueprintEngine {
             }
         }
 
-        // 5. Vault floors: bare FLOOR inside the machine becomes CHARRED_FLOOR.
-        // CE 对机器内部有全局的"内容回避"：楼梯（placeStairs 的 avoidedFlags，
-        // Architect.c:3712/3738）、随机物品（populateItems，3597）、漫游怪群
-        // （spawnHorde，3543）全都避开 IS_IN_MACHINE。web 的这些内容统一出自
-        // Game.populateLevel 的 `terrain === FLOOR` 牌堆（本轮禁改 Game.ts），
-        // 密库地板若保持 FLOOR，下楼梯/护符/钥匙会被抽进锁门死角的密库——
-        // 割点选址封住了旧坏层，却会制造"楼梯在库里"的新坏层。CHARRED_FLOOR
-        // 在 web 机械惰性（只有燃烧余烬写入它）、canMoveTo 可通行、渲染与
-        // 余烬一致（'.' 0x554433），用它把机器内部整体退出牌堆，等价复刻
-        // CE 的 IS_IN_MACHINE 回避（连"钥匙掉进锁死的密库"这一隐患一并消除）。
-        for (const p of room.cells) {
-            const cell = this.grid.getCell(p.x, p.y);
-            if (cell && cell.terrain === TerrainType.FLOOR) {
-                this.grid.setTerrain(p.x, p.y, TerrainType.CHARRED_FLOOR, '.', 0x554433);
-            }
-        }
+        // 5. 机器旗标（P1-37）：本方法第 1 步已把 room.cells 全部写入
+        // cell.machineNumber（web 的 IS_IN_MACHINE 等价物，CE Rogue.h:1113，
+        // 楼梯 Architect.c:3712/3738、随机物品 3597、漫游怪群 3543 的落点
+        // 回避它）。P1-33 曾在此把机器内部裸 FLOOR 整体改判 CHARRED_FLOOR，
+        // 让它们退出 Game.populateLevel 的 `terrain === FLOOR` 牌堆——那是
+        // Game.ts 禁改轮次的权宜：玩家会看到宝库一片"烧焦的地面"，且
+        // Gas.updateFires 的焦土长草（Gas.ts:128）作用在宝库地板上、每格
+        // 每回合白白消耗 RNG。现在 populateLevel 直接按 machineNumber 排除
+        // 机器格，地板恢复普通 FLOOR，本步骤不再改判任何地形。
+
+        // 内容牌堆回避的另一半在 Game.populateLevel（棋盘同源：按
+        // machineNumber≠0 排除），两处必须同进同退。
 
         return {
             blueprintId: bp.id,
