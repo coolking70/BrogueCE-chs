@@ -384,7 +384,27 @@ describe('P2-3 F: p2_3_baseline 一致性', () => {
         expect(mismatches).toEqual([]);
     }, 300000);
 
-    it('4 seed × 400 回合玩法状态与 p2_3_baseline 一致（本轮后的新基准）', () => {
+    /**
+     * ★ P1-26（2026-09-15）退役本断言——为何 skip：
+     *
+     * 它逐字比对 400 回合后的玩家坐标/HP/深度/每只怪物@坐标:血量，
+     * 是一份"相位快照"。作为**当时**（P2-3）的基准记录它有效，但作为
+     * 永久回归闸门它是错的：任何**有意的**玩法行为改动都必然打红它——
+     * P4-8（气味追踪 + stealthRange + 3% 掷骰）已经打红过一次，只能由
+     * 验收方授权重捕获；P4-9（safety map）/P4-10（waypoint）乃至 Phase C
+     * 每一步都注定再撞。它抓不出真回归（每次都"预期会变"），只会制造
+     * "顺手刷新基线"的压力，训练所有人把红灯当背景音——这与上方
+     * levels 段的退役是同一个毛病。
+     *
+     * 生成与玩法的持续回归检测改由不依赖坐标的不变量承担：
+     * src/test/p1_26_invariants.test.ts（5 种子 × D1-D26 的楼梯存在性、
+     * 上下楼梯连通、可走格占比、生成不抛异常、同种子决定性），
+     * 以及 generation_baseline.test.ts 的滚动基线。
+     *
+     * 用例体保留不删：fixture p2_3_baseline.json 的 play 段仍被它引用，
+     * 且它仍是 P2-3 阶段"当时玩法状态"的可查证据（与 levels 段同待遇）。
+     */
+    it.skip('4 seed × 400 回合玩法状态与 p2_3_baseline 一致（本轮后的新基准）——P1-26 退役：相位快照当回归闸门会拦住一切有意改动，见上方注释', () => {
         const mismatches: string[] = [];
         for (const seed of SEEDS) {
             const game = createHeadlessGame(seed);
