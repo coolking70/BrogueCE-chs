@@ -8,7 +8,8 @@
  *                         rand_percent(60) && depth<最深层 ? DOOR : FLOOR）
  *   - analyzeMap 前三步    Architect.c:192-244（IN_LOOP 初始化 + checkLoopiness
  *                         剥离 + auditLoop 泛洪去除多余标记）；chokepoint/chokeMap
- *                         部分（246-336）本轮**显式不做**（属 Phase C 后续）
+ *                         部分（246-336）由 P1-33 以 analyzeChokeMap 移植（见文件
+ *                         尾段；与 analyzeLoopMap 的口径差异在该函数头注说明）
  *   - checkLoopiness      Architect.c:57-118（cDirs 顺时针扫 8 邻域数串）
  *   - auditLoop           Architect.c:121-136
  *   - PDS_OBSTRUCTION=-2  Rogue.h:2783（与 Pathfinding.ts 内部的 30000 不同源，
@@ -33,6 +34,7 @@
  */
 import { Grid, TerrainType, DCOLS, DROWS, type Cell } from './Grid';
 import { DijkstraMap } from './Pathfinding';
+import { terrainAllowsMove, DIRS8 } from './Connectivity';
 import { rng } from '../Random';
 import type { Pos } from '../../types';
 
@@ -319,23 +321,11 @@ export function emptyLoopMap(): boolean[][] {
 }
 
 /**
- * CE Architect.c:192-244 analyzeMap 的 IN_LOOP 三步（chokepoint/chokeMap
- * 部分——246-336——本轮显式不做，calculateChokeMap 分支留痕跳过）：
- *   1) 初始化：阻挡格清 IN_LOOP，其余置 IN_LOOP（200-212）；
- *   2) 逐格 checkLoopiness 剥离"其实不在环上"的标记（214-218）；
- *   3) auditLoop(0,0) 泛洪 + 去除"四周无非环邻格"的多余标记（220-244）。
- * 返回逐格 IN_LOOP 布尔图。确定性：纯函数，不消费 RNG。
+ * CE analyzeMap 步骤 2+3 的公共体（214-244）：checkLoopiness 剥离 +
+ * auditLoop(0,0) 泛洪去除多余标记。analyzeLoopMap 与 analyzeChokeMap
+ * 共用（CE 里两者本是同一函数 analyzeMap 的前后段）。
  */
-export function analyzeLoopMap(grid: Grid): boolean[][] {
-    const loop: boolean[][] = [];
-    for (let x = 0; x < DCOLS; x++) {
-        loop[x] = new Array<boolean>(DROWS);
-        for (let y = 0; y < DROWS; y++) {
-            const cell = grid.getCell(x, y);
-            loop[x]![y] = !!cell && !blocksPathing(cell); // 步骤 1
-        }
-    }
-
+function pruneLoopMarkings(loop: boolean[][]): void {
     stripNonLoopyCells(loop); // 步骤 2
 
     // 步骤 3：auditLoop(0, 0, grid)（CE 221-222）+ 去除多余标记（224-244）
@@ -357,5 +347,230 @@ export function analyzeLoopMap(grid: Grid): boolean[][] {
             }
         }
     }
+}
+
+/**
+ * CE Architect.c:192-244 analyzeMap 的 IN_LOOP 三步：
+ *   1) 初始化：阻挡格清 IN_LOOP，其余置 IN_LOOP（200-212）；
+ *   2) 逐格 checkLoopiness 剥离"其实不在环上"的标记（214-218）；
+ *   3) auditLoop(0,0) 泛洪 + 去除"四周无非环邻格"的多余标记（220-244）。
+ * 返回逐格 IN_LOOP 布尔图。确定性：纯函数，不消费 RNG。
+ */
+export function analyzeLoopMap(grid: Grid): boolean[][] {
+    const loop: boolean[][] = [];
+    for (let x = 0; x < DCOLS; x++) {
+        loop[x] = new Array<boolean>(DROWS);
+        for (let y = 0; y < DROWS; y++) {
+            const cell = grid.getCell(x, y);
+            loop[x]![y] = !!cell && !blocksPathing(cell); // 步骤 1
+        }
+    }
+
+    pruneLoopMarkings(loop);
     return loop;
+}
+
+// ---------------------------------------------------------------------------
+// P1-33：chokepoint / chokeMap（CE analyzeMap 的后半段，Architect.c:246-336，
+// 以及 floodFillCount 140-165）。机器选址据此只挑"堵住之后封死死角"的割点
+// 当门（buildAMachine 的 BP_ROOM 分支，Architect.c:1080-1095）。
+// ---------------------------------------------------------------------------
+
+/** CE chokeMap 的初始/墙值（Architect.c:284 `chokeMap[i][j] = 30000`）。 */
+export const CE_CHOKE_UNREACHABLE = 30000;
+/** CE Architect.c:318 "CellCounts less than 4 are not useful, so we skip those cases." */
+export const CE_CHOKE_MIN_CELLS = 4;
+/** CE machineData.gateCandidates[50]（Rogue.h）+ Architect.c:1089 `totalFreq < 50`。 */
+export const CE_GATE_CANDIDATE_CAP = 50;
+/**
+ * 洪泛早停上限（web 性能优化，决策等价）：count > 40 的区域一律记 41。
+ * chokeMap 的全部消费者只有三处——门位候选窗（blueprints.json 的
+ * roomSize[1] 最大 40，41 恒落窗外）、门位赋值（41 < 30000 照常成立）、
+ * 内部扩展（41 大于任何 ≤40 的门值，照常拒入）——三处对"真值 154"与
+ * "封顶 41"的判定逐位相同。前提是 roomSize[1] ≤ 40，由
+ * p1_33_machine_chokepoint.test.ts 的元断言看守；引入更大密库蓝图时必须
+ * 同步上调此值。CE 本体不限（floodFillCount 返回精确计数）。
+ */
+export const CE_CHOKE_COUNT_CAP = 41;
+
+/** analyzeChokeMap 的产物（CE 的 passMap / IS_CHOKEPOINT / IS_GATE_SITE / chokeMap）。 */
+export interface ChokeAnalysis {
+    /** 可通行图（本实现的口径见函数头注）。 */
+    passMap: boolean[][];
+    /** CE IS_CHOKEPOINT（Rogue.h:1103）。 */
+    chokepoint: boolean[][];
+    /** CE IS_GATE_SITE（Rogue.h:1104"consider placing a locked door here"）。 */
+    gateSite: boolean[][];
+    /** CE chokeMap：割点=堵住后封死的格数；非割点=被某割点洪泛覆盖时的计数。 */
+    chokeMap: number[][];
+}
+
+/**
+ * CE Architect.c:140-165 floodFillCount：从起点对 passMap 真格泛洪，
+ * 返回泛洪格数并经 visited 列表交出洪泛集。CE 的 `passMap==2 → 5000`
+ * 分支在 analyzeMap 里无写入点（passMap 只赋 true/false），属死分支不移植；
+ * CE 对 IS_IN_AREA_MACHINE 起点计 10000 的惩罚同理：机器格在调用方已从
+ * passMap 剔除，洪泛集不可能含机器格。
+ *
+ * 与 CE 的三点实现差异（判定等价，理由见各自注释）：
+ *   - 8 向泛洪（CE 4 向递归）：web 移动是 8 向，P1-29 已确立同口径；
+ *   - count > CE_CHOKE_COUNT_CAP 早停并封顶（CE 返回精确计数）；
+ *   - 显式栈 + 印戳访问表（CE 递归 + 调用方每次清 results 全图）：
+ *     洪泛集与计数阶独立，与遍历序无关。
+ */
+function floodFillCount(
+    startIdx: number,
+    passFlat: Uint8Array,
+    stamps: Int32Array,
+    epoch: number,
+    visited: number[]
+): number {
+    let count = 1;
+    stamps[startIdx] = epoch;
+    visited.push(startIdx);
+    const stack: number[] = [startIdx];
+    while (stack.length > 0 && count <= CE_CHOKE_COUNT_CAP) {
+        const idx = stack.pop()!;
+        const x = idx % DCOLS;
+        const y = (idx - x) / DCOLS;
+        for (const [dx, dy] of DIRS8) {
+            const nx = x + dx!, ny = y + dy!;
+            if (nx < 0 || nx >= DCOLS || ny < 0 || ny >= DROWS) continue;
+            const nIdx = ny * DCOLS + nx;
+            if (stamps[nIdx] === epoch || passFlat[nIdx] === 0) continue;
+            stamps[nIdx] = epoch;
+            visited.push(nIdx);
+            count++;
+            stack.push(nIdx);
+            if (count > CE_CHOKE_COUNT_CAP) break;
+        }
+    }
+    return Math.min(count, CE_CHOKE_COUNT_CAP);
+}
+
+/**
+ * CE Architect.c:192-336 analyzeMap(calculateChokeMap=true) 的完整移植
+ * （IN_LOOP 三步 + chokepoint 标记 + chokeMap），供机器选址使用。
+ *
+ * 与 analyzeLoopMap（C-0，Game 运行期 IN_LOOP，CE passMap 口径）的关系：
+ * CE 里两者是同一函数；web 拆成两个入口，因为判定"玩家走不走得到"的
+ * web 口径与 CE 的 T_PATHING_BLOCKER 不同源——本函数的 passMap 用
+ * **terrainAllowsMove**（Game.canMoveTo 的镜像，p1_29 的闸门判据，测试钉死）：
+ * SECRET_DOOR / TRAP 等的处理与 CE 不同。理由：chokeMap 的产出唯一消费者
+ * 是"锁门封死角"，而验收口径是 canMoveTo 泛洪（p1_26/p1_29 端到端）——
+ * 口径不一致时（如 CE 视密门为通路、web 视为死墙），分析认为"封住的只是
+ * 小死角"而 canMoveTo 实际封住更大区域，就会漏切。CE 的 IN_LOOP 消费者
+ * （怪物/寻路）不受此影响，analyzeLoopMap 保持 CE 口径不动。
+ *
+ * 确定性：纯函数，不消费 RNG。isMachineCell：机器格（CE IS_IN_ROOM_MACHINE）
+ * 在 chokeMap 阶段从 passMap 剔除（CE 285-288），默认 machineNumber !== 0。
+ */
+export function analyzeChokeMap(
+    grid: Grid,
+    isMachineCell: (cell: Cell) => boolean = (cell) => cell.machineNumber !== 0
+): ChokeAnalysis {
+    // 步骤 1（CE 200-212）：passMap 与 IN_LOOP 同源初始化
+    const passMap: boolean[][] = [];
+    const loop: boolean[][] = [];
+    for (let x = 0; x < DCOLS; x++) {
+        passMap[x] = new Array<boolean>(DROWS);
+        loop[x] = new Array<boolean>(DROWS);
+        for (let y = 0; y < DROWS; y++) {
+            const cell = grid.getCell(x, y);
+            const passable = !!cell && terrainAllowsMove(cell.terrain);
+            passMap[x]![y] = passable;
+            loop[x]![y] = passable;
+        }
+    }
+
+    pruneLoopMarkings(loop); // 步骤 2+3（CE 214-244，与 analyzeLoopMap 共用）
+
+    // 步骤 4（CE 246-270）：标记 IS_CHOKEPOINT。仅内部格（i/j ∈ [1, 尺寸-2]），
+    // 可通行、不在环上；绕格一周数 passability 跳变，第 3 次跳变时若
+    // 上下皆墙或左右皆墙（夹缝）→ 割点。直走廊格恰 2 次跳变，不是割点。
+    const chokepoint: boolean[][] = [];
+    for (let x = 0; x < DCOLS; x++) chokepoint[x] = new Array<boolean>(DROWS).fill(false);
+    for (let i = 1; i < DCOLS - 1; i++) {
+        for (let j = 1; j < DROWS - 1; j++) {
+            if (!passMap[i]![j] || loop[i]![j]) continue;
+            let passableArcCount = 0;
+            for (let dir = 0; dir < 8; dir++) {
+                const oldX = i + CDIRS[(dir + 7) % 8]![0]!;
+                const oldY = j + CDIRS[(dir + 7) % 8]![1]!;
+                const newX = i + CDIRS[dir]![0]!;
+                const newY = j + CDIRS[dir]![1]!;
+                const newPass = inMap(newX, newY) && passMap[newX]![newY];
+                const oldPass = inMap(oldX, oldY) && passMap[oldX]![oldY];
+                if (newPass !== oldPass) {
+                    if (++passableArcCount > 2) {
+                        if ((!passMap[i - 1]![j] && !passMap[i + 1]![j])
+                            || (!passMap[i]![j - 1] && !passMap[i]![j + 1])) {
+                            chokepoint[i]![j] = true;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    // 步骤 5（CE 275-336）：chokeMap。先全图置 30000 并剔除机器格，
+    // 然后对每个"邻着开阔格"的割点：假想堵住它，向割点每侧泛洪计数——
+    // 某侧格数 ≥4 时，该侧所有格取更小值，割点本身记 IS_GATE_SITE。
+    const chokeMap: number[][] = [];
+    const gateSite: boolean[][] = [];
+    for (let x = 0; x < DCOLS; x++) {
+        chokeMap[x] = new Array<number>(DROWS).fill(CE_CHOKE_UNREACHABLE);
+        gateSite[x] = new Array<boolean>(DROWS).fill(false);
+        for (let y = 0; y < DROWS; y++) {
+            const cell = grid.getCell(x, y);
+            if (cell && isMachineCell(cell)) passMap[x]![y] = false; // CE 285-288
+        }
+    }
+    // 泛洪用的扁平化工作区（印戳免清零；CE 是调用方每次清全图 results）
+    const passFlat = new Uint8Array(DCOLS * DROWS);
+    for (let x = 0; x < DCOLS; x++) {
+        for (let y = 0; y < DROWS; y++) {
+            if (passMap[x]![y]) passFlat[y * DCOLS + x] = 1;
+        }
+    }
+    const stamps = new Int32Array(DCOLS * DROWS);
+    let epoch = 0;
+    const visited: number[] = [];
+
+    for (let i = 0; i < DCOLS; i++) {
+        for (let j = 0; j < DROWS; j++) {
+            if (!passMap[i]![j] || !chokepoint[i]![j]) continue;
+            for (let dir = 0; dir < 4; dir++) {
+                const newX = i + NB_DIRS[dir]![0]!;
+                const newY = j + NB_DIRS[dir]![1]!;
+                if (!inMap(newX, newY) || !passMap[newX]![newY] || chokepoint[newX]![newY]) continue;
+                // (newX,newY) 是开阔格、(i,j) 是割点：假想堵住割点，从开阔格起洪泛
+                passFlat[j * DCOLS + i] = 0;
+                epoch++;
+                visited.length = 0;
+                const cellCount = floodFillCount(newY * DCOLS + newX, passFlat, stamps, epoch, visited);
+                passFlat[j * DCOLS + i] = 1;
+
+                if (cellCount < CE_CHOKE_MIN_CELLS) continue; // CE 318：太小的死角无用
+                // 洪泛侧所有格取更小值，并清 IS_GATE_SITE（CE 322-330 的
+                // 全图扫描等价收紧为只扫洪泛集——集合外格不满足 grid[i2][j2]）
+                for (const idx of visited) {
+                    const x2 = idx % DCOLS;
+                    const y2 = (idx - x2) / DCOLS;
+                    if (cellCount < chokeMap[x2]![y2]!) {
+                        chokeMap[x2]![y2] = cellCount;
+                        gateSite[x2]![y2] = false;
+                    }
+                }
+                // 割点本身取更小值并记 IS_GATE_SITE（CE 333-337）
+                if (cellCount < chokeMap[i]![j]!) {
+                    chokeMap[i]![j] = cellCount;
+                    gateSite[i]![j] = true;
+                }
+            }
+        }
+    }
+
+    return { passMap, chokepoint, gateSite, chokeMap };
 }

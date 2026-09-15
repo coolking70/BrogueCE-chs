@@ -9,7 +9,7 @@
  * 三者同属"算出/使用坐标但未验证其可通行性"，Game.ts 把 center 用作全游戏最有价值
  * 物品（scroll_of_enchantment / potion_of_life / ring_* / charm_* 等）的落点 → 玩家永远拿不到。
  *
- * 三个用例：
+ * 四个用例：
  * 1) 单元级：手工构造 L 形 region（其质心确定落在墙格上），断言返回的 center
  *    属于 region。修复前该断言失败（center=质心=墙格），反向验证见交付报告。
  * 2)+3) 全局扫描（共享同一次生成遍历）：多 seed × D1..D26 走真实生成链路
@@ -18,6 +18,8 @@
  *    断言 a) 所有 machine 的 center / door 都属于自身 cells 且格可通行
  *    （Game.canMoveTo 语义）；b) 所有落在 center 上的宝藏物品落格可通行。
  *    含题设反例 seed=424242（其 D22 曾把 Wand of Fire 封进 LOCKED_DOOR 格）。
+ * 4) 元断言（P1-36）：isCenterTreasure 点名的 id/前缀必须真实存在于数据表——
+ *    防拼写错误、退池、改名让判据静默空转（历史教训见 CENTER_TREASURE_IDS 注）。
  *
  * 可通行判据与 Game.canMoveTo(Game.ts:4377) 完全同源：WALL / GRANITE / SECRET_DOOR /
  * LOCKED_DOOR / WATER_DEEP 不可通行，其余可通行。
@@ -33,6 +35,8 @@ import type { Pos } from '../types';
 import type { Game } from '../engine/Core/Game';
 import { rng } from '../engine/Random';
 import { createHeadlessGame } from './harness';
+import consumablesData from '../data/consumables.json';
+import arcanaData from '../data/arcana.json';
 
 // ---------- 公共小件 ----------
 
@@ -83,18 +87,30 @@ function itemId(item: unknown): string {
     return o.consumableId ?? o.identityId ?? `category#${o.category}`;
 }
 
+/**
+ * isCenterTreasure 点名的显式宝藏 id 与前缀（P1-36 元断言的对象）。
+ * 历史教训：这里曾写 'scroll_of_enchanting'（拼写错误，数据表无此键）、
+ * 'wand_of_fire'（已按 D2 退池）——两条判据长期恒 false、护栏空转，而
+ * 任何测试都不报错。P1-36 元断言（见下方用例 d）把"列表点名的东西必须
+ * 真实存在"钉死：以后数据表改名、物品退池、id 拼错，立即翻红。
+ *
+ * P1-33 补记：'wand_' 前缀是本守卫**当前唯一有真实样本**的 center 宝藏——
+ * Game.populateLevel 旧式机器循环的宝藏分支：50% 走
+ * spawnScroll('scroll_of_enchanting')（拼写错误，ItemLoader 查无此 id 返
+ * null，分支恒死——Game.ts 本轮禁改，登记在 P1-33 报告"边界外发现"），
+ * 另 50% 从生成池抽真魔杖放在 machine.center 上。修复前用例 c) 的样本
+ * 其实是"随机通用掉落恰好落在 center 坐标"的巧合（牌堆当时还含机器格）；
+ * P1-33 把机器内部退出楼梯/物品牌堆后巧合消失，center 宝藏只剩魔杖分支。
+ */
+export const CENTER_TREASURE_IDS: readonly string[] = ['scroll_of_enchantment', 'potion_of_life'];
+export const CENTER_TREASURE_PREFIXES: readonly string[] = ['ring_', 'charm_', 'wand_'];
+
 /** 题设点名了 5 类由 center 放置的宝藏（rings/charms 走 trapVaults 路径）。 */
 function isCenterTreasure(item: unknown): boolean {
     const id = itemId(item);
     return (
-        // 验收方 C-1 修正：原写 'scroll_of_enchanting'，**consumables.json 里根本
-        // 没有这个键**（真实 id 是 scroll_of_enchantment），且 'wand_of_fire' 已按
-        // D2 退出生成池——两条判据长期恒 false。这条守卫因此一直近乎空转，
-        // 本体断言此前通过靠的是 ring_/charm_ 的坐标巧合。详见 P1-36。
-        id === 'scroll_of_enchantment' ||
-        id === 'potion_of_life' ||
-        id.startsWith('ring_') ||
-        id.startsWith('charm_')
+        CENTER_TREASURE_IDS.includes(id) ||
+        CENTER_TREASURE_PREFIXES.some(p => id.startsWith(p))
     );
 }
 
@@ -310,4 +326,46 @@ describe('蓝图宝藏落点（machine center）可通行性', () => {
         expect(treasuresAtCenter).toBeGreaterThan(0);
         expect(treasureViolations).toEqual([]);
     }, 180_000);
+
+    it('d) 元断言（P1-36）：isCenterTreasure 点名的 id 必须真实存在于数据表，前缀必须仍命中真实物品', () => {
+        // 数据表全量 id 集（consumables.json：potions/scrolls/food；arcana.json：
+        // wands/staffs/rings/charms/keys/amulets）。注意这里查的是**数据表存在性**
+        // ——正是 'scroll_of_enchanting'（拼错）与 'wand_of_fire'（退池）当年
+        // 溜过去的地方；生成池口径的进一步收缩由各自的池测试把守。
+        const allIds = new Set<string>();
+        const addTable = (table: unknown): void => {
+            for (const entry of table as Array<{ id?: string }>) {
+                if (typeof entry?.id === 'string' && entry.id.length > 0) allIds.add(entry.id);
+            }
+        };
+        const consumables = consumablesData as Record<string, unknown>;
+        for (const key of Object.keys(consumables)) addTable(consumables[key]);
+        const arcana = arcanaData as Record<string, unknown>;
+        for (const key of Object.keys(arcana)) addTable(arcana[key]);
+        expect(allIds.size, '数据表为空——id 数据导入方式失效，本断言已空转').toBeGreaterThan(0);
+
+        // 1) 显式点名的每个 id 必须存在（startsWith 前缀判据除外——它们下面单查）
+        const missing = CENTER_TREASURE_IDS.filter(id => !allIds.has(id));
+        expect(
+            missing,
+            `isCenterTreasure 点名的 id 在数据表中不存在（拼写错误或已删项）——` +
+            `判据恒 false、护栏空转（P1-36 的教训正是 'scroll_of_enchanting' 与 ` +
+            `'wand_of_fire'）：\n${missing.join('\n')}`
+        ).toEqual([]);
+
+        // 2) 每个前缀判据必须仍命中至少一个真实 id（防整族改名/退池后判据静默空转）
+        const deadPrefixes = CENTER_TREASURE_PREFIXES.filter(
+            p => ![...allIds].some(id => id.startsWith(p))
+        );
+        expect(
+            deadPrefixes,
+            `isCenterTreasure 的前缀判据在数据表中已无任何命中（整族退池或改名？）` +
+            `——判据恒 false、护栏空转：\n${deadPrefixes.join('\n')}`
+        ).toEqual([]);
+
+        // 3) 护栏非空转自检：判据集合必须真的能命中东西（显式 id 或前缀）
+        const alive = CENTER_TREASURE_IDS.some(id => allIds.has(id))
+            || CENTER_TREASURE_PREFIXES.some(p => [...allIds].some(id => id.startsWith(p)));
+        expect(alive, 'isCenterTreasure 的全部判据都命不中任何真实 id').toBe(true);
+    });
 });
