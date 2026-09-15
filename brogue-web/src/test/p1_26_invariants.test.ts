@@ -18,10 +18,9 @@
  *
  * P1-29 已落地：湖泊连通性验证（CE Architect.c:2588-2688 语义）已进入
  * Architect，本断言自"已知 bug 留痕恰好 11"改为**严格 0**。
- * 注意： Architect.generateTerrain（房间+湖泊+陷阱阶段）之后的机器阶段
- * （BlueprintEngine 锁门/特征水深水）仍可能切断连通——那是不受湖泊闸门
- * 约束的独立缺陷，本断言若因此翻红，即它在履行追踪职责；
- * 解剖与证据链见 ai_docs/p1_29_lake_connectivity_report.md。
+ * P1-33 已落地：机器阶段（BlueprintEngine 锁门/特征水深水）的切断缺陷
+ * 已用 chokeMap 门位选址根治，坏层集合现为**空集**——本断言翻红即
+ * 生成期新回归，不再是留痕职责。
  */
 import { describe, it, expect } from 'vitest';
 import { createHeadlessGame, terrainFingerprint } from './harness';
@@ -33,23 +32,13 @@ const SEEDS = [424242, 777, 20260913, 31337, 20260916];
 const MAX_DEPTH = 26;
 
 /**
- * 下楼梯不可达层数。P1-29 已把**湖泊造成的**不可达清零（验收方独立探针复核：
- * 10 种子 × D1-D26 = 260 层，湖泊阶段完成态全部连通）。
- *
- * 剩下的 2 层由**机器阶段**造成，不是湖泊、也不是回归——见路线图 P1-33。
- * C-1 合并后实测（2026-09-15，5 种子）：424242/D19（从上楼梯可达 783/902 格）、
- * 20260916/D16（728/969 格）；p1_29 端到端 10 种子扫描在此基础上多 999/D18
- * （477 格），全部同因（p1_29 的湖泊阶段断言全绿排除湖泊致）。
- * 机制同 seed777/D15 的解剖：LOCKED_DOOR/特征水深水恰好卡在走廊割点上——
- * 地牢增密后 BlueprintEngine 可落位点变多，同一缺陷命中率上升。
- *
- * 故此处沿用项目一贯的显式留痕：断言"恰好等于 2"而非 0，用"恰好"使变好变坏
- * 都翻红。P1-33 修复后请改回 0 并删掉本段说明。
- * 任何不可达都是真问题：要么生成期回归，要么机器阶段的独立缺陷
- * （锁门/特征水不受 P1-29 湖泊闸门约束，见
- * ai_docs/p1_29_lake_connectivity_report.md §与预设不符之处）。
+ * 下楼梯不可达层数，要求严格 0。P1-29 已把**湖泊造成的**不可达清零；
+ * 剩下的机器阶段坏层（424242/D19、20260916/D16、999/D18——LOCKED_DOOR/
+ * 特征水深水卡在走廊割点上）已由 P1-33（chokeMap 门位选址 + 锁门验证 +
+ * 密库地板退出楼梯牌堆）根治：15 种子 × D1-D26 复验坏层=0
+ * （p1_33_machine_chokepoint.test.ts）。任何翻红都是生成期新回归。
  */
-const KNOWN_UNREACHABLE_STAIRS_LEVELS = 2; // 424242/D19、20260916/D16——机器阶段致（P1-33）；湖泊致已由 P1-29 清零
+const KNOWN_UNREACHABLE_STAIRS_LEVELS = 0; // P1-29（湖泊致）+ P1-33（机器致）先后清零
 
 /**
  * 可走格占比的宽区间（占全格比例）。2026-09-15 C-1 合并后实测 130 层为
@@ -182,7 +171,7 @@ describe('P1-26 生成器不变量（5 种子 × D1-D26，不依赖坐标）', (
         expect(problems, `楼梯存在性被破坏：\n${problems.join('\n')}`).toEqual([]);
     });
 
-    it('上楼梯能走到下楼梯——湖泊致已清零（P1-29）；留痕：机器阶段仍致 2 层不可达，待 P1-33', () => {
+    it('上楼梯能走到下楼梯——严格 0（P1-29 清湖泊致、P1-33 清机器致）', () => {
         const bad = getFirstPass().filter((s) => s.down && !s.downReachable);
         const detail = bad
             .map((s) => `seed${s.seed}/D${s.depth}: 从上楼梯可达 ${s.reach}/${s.walkable} 格`)

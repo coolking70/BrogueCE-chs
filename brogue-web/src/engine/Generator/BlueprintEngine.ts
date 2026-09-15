@@ -2,9 +2,18 @@
  * src/engine/Generator/BlueprintEngine.ts
  * Data-driven machine blueprint system.
  * Reads from blueprints.json and places machines in the dungeon.
+ *
+ * P1-33：机器选址对齐 CE——锁门/特征地形只落在"堵住后恰好封死一个死角"
+ * 的割点上（CE buildAMachine 的 BP_ROOM 分支，Architect.c:1080-1095：
+ * IS_GATE_SITE ∧ !IS_IN_MACHINE ∧ roomSize[0] ≤ chokeMap ≤ roomSize[1]），
+ * 不再把 LOCKED_DOOR 放进任意连通块（旧 findSuitableRoom 的门可能卡在
+ * 通往关卡其余部分的唯一通路上，切断下楼梯——P1-33 的病灶）。
+ * 修复前基线（15 种子 × D1-D26）：1920 台机器、坏层 5 个。
  */
 
 import { Grid, TerrainType, DCOLS, DROWS } from '../Map/Grid';
+import { analyzeChokeMap, CE_GATE_CANDIDATE_CAP, type ChokeAnalysis } from '../Map/LoopMap';
+import { terrainAllowsMove, DIRS8 } from '../Map/Connectivity';
 import { rng } from '../Random';
 import type { Pos } from '../../types';
 import blueprintData from '../../data/blueprints.json';
@@ -116,9 +125,16 @@ export class BlueprintEngine {
     /**
      * Main entry point: build all machines for the current level.
      * Returns an array of MachineResult for Game.ts to populate with items/monsters.
+     *
+     * P1-33 选址（CE Architect.c:1080-1095）：每次尝试先 analyzeChokeMap，
+     * 只从 IS_GATE_SITE 割点里挑"被封区域大小落在蓝图 roomSize 区间"的格子
+     * 当门。CE 在 buildAMachine 的每次尝试里都重跑 analyzeMap(true)；web 在
+     * "尝试失败不改地形"的前提下缓存（地形未变 ⇒ 分析逐位相同，等价且省算），
+     * 建成一台即失效。
      */
     public buildMachines(): MachineResult[] {
         const results: MachineResult[] = [];
+        let analysis: ChokeAnalysis | null = null;
 
         // Decide how many machines to attempt based on depth
         const maxMachines = Math.min(2 + Math.floor(this.depth / 3), 6);
@@ -129,12 +145,15 @@ export class BlueprintEngine {
             const bp = this.selectBlueprint();
             if (!bp) continue;
 
-            const room = this.findSuitableRoom(bp);
+            if (!analysis) analysis = analyzeChokeMap(this.grid);
+
+            const room = this.findGateRoom(bp, analysis);
             if (!room) continue;
 
             const result = this.applyBlueprint(bp, room);
             if (result) {
                 results.push(result);
+                analysis = null; // 地形已变，下一台重新分析
             }
         }
 
@@ -160,10 +179,132 @@ export class BlueprintEngine {
     }
 
     /**
+     * 锁门验证（P1-33，web 侧必要、CE 无对应步骤）：假想把门格堵上
+     * （8 向泛洪绕开门格），若泛洪未达的可走格里还有"不属于本机器内部、
+     * 也不属于既有机器"的格子，说明这把锁会夹带封死别处（8 向移动下
+     * 割点覆盖不了的夹带口袋——seed31337/D12 的坏层成因），否决该门位。
+     * 语义与 P1-29 湖泊闸门一致：放置前证明不切断。泛洪自然穿过未上锁
+     * 的既有机器（炭化地板可走）；既有锁门机器内部不可达但其格
+     * machineNumber≠0，豁免。
+     */
+    private gateSealsOnlyInterior(gate: Pos, interiorCells: Pos[]): boolean {
+        const interior = new Set(interiorCells.map(p => p.y * DCOLS + p.x));
+        const walkable = (x: number, y: number): boolean => {
+            const cell = this.grid.getCell(x, y);
+            return !!cell && terrainAllowsMove(cell.terrain);
+        };
+
+        // 种子：门外第一个可走、非机器、非本机器内部的格
+        let seed = -1;
+        outer:
+        for (let x = 0; x < DCOLS; x++) {
+            for (let y = 0; y < DROWS; y++) {
+                if (x === gate.x && y === gate.y) continue;
+                if (interior.has(y * DCOLS + x)) continue;
+                if ((this.grid.getCell(x, y)?.machineNumber ?? 0) !== 0) continue;
+                if (walkable(x, y)) {
+                    seed = y * DCOLS + x;
+                    break outer;
+                }
+            }
+        }
+        if (seed < 0) return false; // 找不到门外世界，无法验证 → 拒绝
+
+        const seen = new Set<number>([seed]);
+        const stack: number[] = [seed];
+        while (stack.length > 0) {
+            const k = stack.pop()!;
+            const x = k % DCOLS, y = Math.floor(k / DCOLS);
+            for (const [dx, dy] of DIRS8) {
+                const nx = x + dx!, ny = y + dy!;
+                if (nx < 0 || nx >= DCOLS || ny < 0 || ny >= DROWS) continue;
+                if (nx === gate.x && ny === gate.y) continue; // 假想堵门
+                const nk = ny * DCOLS + nx;
+                if (seen.has(nk) || !walkable(nx, ny)) continue;
+                seen.add(nk);
+                stack.push(nk);
+            }
+        }
+
+        for (let x = 0; x < DCOLS; x++) {
+            for (let y = 0; y < DROWS; y++) {
+                const k = y * DCOLS + x;
+                if (seen.has(k) || interior.has(k)) continue;
+                if ((this.grid.getCell(x, y)?.machineNumber ?? 0) !== 0) continue;
+                if (walkable(x, y)) return false; // 会被这把锁误封的格子
+            }
+        }
+        return true;
+    }
+
+    /**
+     * P1-33：CE buildAMachine BP_ROOM 分支（Architect.c:1080-1147）的选址。
+     * 候选门 = IS_GATE_SITE ∧ 未属机器 ∧ chokeMap ∈ 蓝图 roomSize 区间
+     * （即"堵住这格只封死一个 roomSize 大小的死角"），光栅序收集、上限
+     * CE_GATE_CANDIDATE_CAP（CE gateCandidates[50]），随机取一为门（gate），
+     * 再从门出发把内部按 chokeMap 扩展出来（CE addTileToMachineInteriorAndIterate）。
+     * 返回 cells=内部、door=门格、center=宝藏落点（内部中距质心最近且非门格）。
+     * 无候选或内部扩展撞上其他机器 → null（CE 返回 false 换蓝图重试）。
+     */
+    private findGateRoom(
+        bp: BlueprintDef,
+        analysis: ChokeAnalysis
+    ): { cells: Pos[]; center: Pos; door: Pos } | null {
+        const candidates: Pos[] = [];
+        for (let x = 0; x < DCOLS && candidates.length < CE_GATE_CANDIDATE_CAP; x++) {
+            for (let y = 0; y < DROWS && candidates.length < CE_GATE_CANDIDATE_CAP; y++) {
+                if (!analysis.gateSite[x]![y]) continue;
+                if ((this.grid.getCell(x, y)?.machineNumber ?? 0) !== 0) continue; // CE !IS_IN_MACHINE
+                const choke = analysis.chokeMap[x]![y]!;
+                if (choke < bp.roomSize[0] || choke > bp.roomSize[1]) continue;
+                candidates.push({ x, y });
+            }
+        }
+        if (candidates.length === 0) return null; // CE 1108-1122：无合格门位，放弃该蓝图
+
+        const gate = candidates[rng.randRange(0, candidates.length - 1)]!;
+        const cells = mapMachineInterior(this.grid, analysis, gate);
+        if (!cells) return null;
+        if (!this.gateSealsOnlyInterior(gate, cells)) return null; // 会误封别处 → 弃用该门位
+
+        // center：内部格中距质心最近者，排除门格（门格可能被 doorTerrain 写成
+        // LOCKED_DOOR；blueprint_center 的合同是 center/door 同属 cells、互不重合、
+        // center 可通行——内部格都来自 passMap（terrainAllowsMove 口径），可通行
+        // 天然成立）。
+        let cx = 0, cy = 0;
+        let n = 0;
+        for (const p of cells) {
+            if (p.x === gate.x && p.y === gate.y) continue;
+            cx += p.x; cy += p.y; n++;
+        }
+        if (n === 0) return null; // 内部只有门格一格：无宝藏落点
+        cx = Math.round(cx / n);
+        cy = Math.round(cy / n);
+        let center: Pos = cells[0]!.x === gate.x && cells[0]!.y === gate.y ? cells[1]! : cells[0]!;
+        let bestDist = Infinity;
+        for (const p of cells) {
+            if (p.x === gate.x && p.y === gate.y) continue;
+            const d = (p.x - cx) * (p.x - cx) + (p.y - cy) * (p.y - cy);
+            if (d < bestDist) {
+                bestDist = d;
+                center = p;
+            }
+        }
+
+        return { cells, center, door: gate };
+    }
+
+    /**
      * Find a contiguous region of FLOOR tiles that satisfies the blueprint's roomSize constraint.
      * Uses flood-fill from random floor tiles.
+     *
+     * P1-33 起**不再是生产选址路径**（buildMachines 改走 findGateRoom）：任意
+     * BFS 连通块上的"门"可能落在唯一通路上，切断关卡（本轮病灶，坏层 5/390）。
+     * 保留本体是因为 blueprint_center.test.ts 用例 a) 以它钉"center 属于 region"
+     * 的选点合同，且该合同对 findGateRoom 的 center 选点同样生效；P1-33 的
+     * 对抗性测试也以它作"旧选址会切层"的对照实现（public 仅为可测）。
      */
-    private findSuitableRoom(bp: BlueprintDef): { cells: Pos[]; center: Pos; door: Pos | null } | null {
+    public findSuitableRoom(bp: BlueprintDef): { cells: Pos[]; center: Pos; door: Pos | null } | null {
         // Collect all non-machine floor tiles
         const candidates: Pos[] = [];
         for (let x = 2; x < DCOLS - 2; x++) {
@@ -390,6 +531,23 @@ export class BlueprintEngine {
             }
         }
 
+        // 5. Vault floors: bare FLOOR inside the machine becomes CHARRED_FLOOR.
+        // CE 对机器内部有全局的"内容回避"：楼梯（placeStairs 的 avoidedFlags，
+        // Architect.c:3712/3738）、随机物品（populateItems，3597）、漫游怪群
+        // （spawnHorde，3543）全都避开 IS_IN_MACHINE。web 的这些内容统一出自
+        // Game.populateLevel 的 `terrain === FLOOR` 牌堆（本轮禁改 Game.ts），
+        // 密库地板若保持 FLOOR，下楼梯/护符/钥匙会被抽进锁门死角的密库——
+        // 割点选址封住了旧坏层，却会制造"楼梯在库里"的新坏层。CHARRED_FLOOR
+        // 在 web 机械惰性（只有燃烧余烬写入它）、canMoveTo 可通行、渲染与
+        // 余烬一致（'.' 0x554433），用它把机器内部整体退出牌堆，等价复刻
+        // CE 的 IS_IN_MACHINE 回避（连"钥匙掉进锁死的密库"这一隐患一并消除）。
+        for (const p of room.cells) {
+            const cell = this.grid.getCell(p.x, p.y);
+            if (cell && cell.terrain === TerrainType.FLOOR) {
+                this.grid.setTerrain(p.x, p.y, TerrainType.CHARRED_FLOOR, '.', 0x554433);
+            }
+        }
+
         return {
             blueprintId: bp.id,
             category: bp.category,
@@ -445,6 +603,46 @@ export class BlueprintEngine {
             }
         }
     }
+}
+
+/**
+ * CE addTileToMachineInteriorAndIterate（Architect.c:404-434）的移植：
+ * 从门格出发把机器内部映射出来。扩展约束（CE 417-421）：
+ *   chokeMap[邻] <= chokeMap[当前]——只往"被堵住后同样封死"的方向长，
+ *   因此内部恰好是门后那块死角，绝不会漫进通往关卡其余部分的通路
+ * （通路格的 chokeMap 是整片外侧区域的大小或 30000，恒大于门的死角值）。
+ * CE 的中止条件里 HAS_ITEM 一支在 web 不成立（机器阶段物品尚未落地，
+ * 只有 MachineResult 指令），"触及其他机器即放弃"一支对应 machineNumber
+ * ——web 已建机器的门格在新鲜分析里不是 IS_GATE_SITE（已从 passMap 剔除），
+ * 故 CE 的"非门位机器格"豁免不会出现，统一为"触及任何机器格即放弃"。
+ * CE 递归实现，这里用显式栈：扩展集是"沿非递增 chokeMap 路径可达格"，
+ * 与遍历序无关，中止判定（存在已达格邻接机器格）同样是阶独立的。
+ * 返回内部格列表（含门格）；撞机器返回 null。
+ */
+export function mapMachineInterior(
+    grid: Grid,
+    analysis: ChokeAnalysis,
+    gate: Pos
+): Pos[] | null {
+    const key = (x: number, y: number): number => y * DCOLS + x;
+    const interior = new Set<number>([key(gate.x, gate.y)]);
+    const stack: Pos[] = [{ x: gate.x, y: gate.y }];
+    while (stack.length > 0) {
+        const cur = stack.pop()!;
+        for (const [dx, dy] of [[0, -1], [0, 1], [-1, 0], [1, 0]]) {
+            const nx = cur.x + dx!;
+            const ny = cur.y + dy!;
+            if (nx < 0 || nx >= DCOLS || ny < 0 || ny >= DROWS) continue;
+            if ((grid.getCell(nx, ny)?.machineNumber ?? 0) !== 0) return null; // CE 410-414
+            const nk = key(nx, ny);
+            if (interior.has(nk)) continue;
+            if (analysis.chokeMap[nx]![ny]! <= analysis.chokeMap[cur.x]![cur.y]!) {
+                interior.add(nk); // CE 417-421
+                stack.push({ x: nx, y: ny });
+            }
+        }
+    }
+    return [...interior].map(k => ({ x: k % DCOLS, y: Math.floor(k / DCOLS) }));
 }
 
 /** Reset the machine number counter (call when generating a new level) */

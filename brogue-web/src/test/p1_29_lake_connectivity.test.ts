@@ -16,10 +16,9 @@
  * 判据与工具在 src/engine/Map/Connectivity.ts；湖泊阶段完成态的连通性
  * 合同由 Architect.generateTerrain 承载。
  *
- * ★ 已知边界：机器阶段（BlueprintEngine 的锁门与特征水深水）发生在
- * 湖泊闸门之后、不受其约束，可能仍切断连通（本轮 10 种子实测 2/260 层，
- * 与预设不符之处详见 ai_docs/p1_29_lake_connectivity_report.md）。
- * 端到端断言因此钉的是"坏层集合恰为该已知机器缺陷集"，而非空集。
+ * ★ P1-33 前的已知边界（机器阶段在湖泊闸门之后动地形，可能切断连通）
+ *   已由 P1-33（chokeMap 门位选址）根治：端到端断言现为**空集**。
+ *   若翻红即是新回归（机器阶段或湖泊阶段），按生成期回归排查。
  */
 import { describe, it, expect } from 'vitest';
 import { Architect } from '../engine/Generator/Architect';
@@ -44,15 +43,11 @@ const MAX_DEPTH = 26;
  * - seed20260916/D16：可达 728 格；
  * - seed999/D18：可达 477 格。
  * 机制同 seed777/D15 的历史解剖：机器锁门/特征水深水恰好卡在走廊割点上
- * （P1-33 已知缺陷，修复后本集合应为空集）。
- *
- * C-1 合并后更新：addLoops 的 shuffleList 与增密再次移动生成期 RNG 流，
- * 所有地图随之改变，"哪几层恰好被机器阶段切断"随之换了层、且命中数从
- * 2 层升至 3 层（地牢增密后 BlueprintEngine 可落位点变多，同一缺陷命中率
- * 上升——不是湖泊回归，p1_26 的 5 种子集 [424242/D19、20260916/D16] 是
- * 本集合的子集，同口径互证）。
+ * ——**P1-33（chokeMap 门位选址 + 锁门验证 + 密库地板退出楼梯牌堆）已把
+ * 该缺陷根治，本集合为空集**。15 种子 × D1-D26 复验（p1_33_machine_chokepoint
+ * 测试）坏层=0。若本断言再翻红，即是生成期新回归，不是留痕。
  */
-const KNOWN_MACHINE_STAGE_BAD_LEVELS = ['20260916/D16', '424242/D19', '999/D18']; // 按字典序，断言比较的是排序后数组
+const KNOWN_MACHINE_STAGE_BAD_LEVELS: string[] = []; // P1-33 后为空集；断言比较的是排序后数组
 
 type Pos = { x: number; y: number };
 
