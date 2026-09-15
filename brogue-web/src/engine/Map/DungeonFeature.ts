@@ -1,0 +1,681 @@
+/**
+ * src/engine/Map/DungeonFeature.ts — CE 地形特征（dungeon feature）子系统（C-4b）
+ *
+ * 纯库：生产代码零调用点（留痕测试钉死，调用方全部在 C-4c）。
+ * 三个算法与一个连通性检查，全部照 CE 源码移植（BrogueCE-master/src/brogue/
+ * Architect.c，只读）：
+ *   - spawnMapDF            Architect.c:3278-3330（扩散波前）
+ *   - fillSpawnMap          Architect.c:3208-3276（按 drawPriority 落层）
+ *   - spawnDungeonFeature   Architect.c:3359-3495（外壳：GAS 特例 / 连通性
+ *     否决 / DFF_CLEAR_* 跨层清理 / subsequentDF 链）
+ *   - levelIsDisconnectedWithBlockingMap  Architect.c:3137-3198
+ *     （connectCell :3109-3129；cellIsPassableOrDoor :48-55）
+ *
+ * 复核出的 CE 实现要点（本轮逐条打开核对过）：
+ *   1. spawnMapDF 的波前是 **4 向**：`nbDirs`（GlobalsBase.c:38）前 4 项为
+ *      {0,-1},{0,1},{-1,0},{1,0}，循环 `dir<4`；8 向是错误实现。
+ *   2. 每波结束 `startProb -= probDec`，while 条件 `madeChange && startProb > 0`
+ *      在下一波**开始前**检查——衰减到 ≤0 即停，不会以 0% 掷骰。
+ *   3. `T_OBSTRUCTS_SURFACE_EFFECTS` 阻挡扩散，但**该格正是 propagationTerrain
+ *      时豁免**（Architect.c:3303 的 `||` 右支）；requirePropTerrain 时目标格
+ *      还必须**有** propagationTerrain（:3302）。
+ *   4. `t > 100` 收敛分支（:3314-3325）：波前值改写为 2、旧格改写为 1、
+ *      t 归 2——防止代际计数器无限增大；老格不再作为波源。
+ *   5. 种子格无条件先标记；仅当 requirePropTerrain 且种子格自身没有
+ *      propagationTerrain 时，结束时把种子格清回 0（:3327-3329）。
+ *   6. fillSpawnMap 的覆盖判据是 `旧 drawPriority >= 新 drawPriority`
+ *      （数字小=优先级高；`>=` 含相等，CE :3228），superpriority 跳过比较；
+ *      `blockedByOtherLayers` 用 `highestPriorityLayer(x,y,skipGas=true)`
+ *      （Movement.c:64-80）再比一次；`layer == SURFACE` 且格上有
+ *      T_OBSTRUCTS_SURFACE_EFFECTS 时禁止写入（:3230）。未落格的 spawnMap
+ *      值清 0——"spawnmap 反映实际建了什么"（:3271），subsequentDF 的
+ *      DFF_SUBSEQ_EVERYWHERE 因此只落在真建出来的格上。
+ *   7. spawnDungeonFeature：GAS 层不走扩散，直接
+ *      `volume += startProbability` 并写 GAS 层（:3384-3390；web 的 Cell 无
+ *      volume 字段，增量在结果对象 `gasVolumeAdded` 登记）；tile=0 是合法
+ *      无地形 DF，footprint=原点一格（:3415-3421）；连通性否决条件 =
+ *      abortIfBlocking && 无 DFF_PERMIT_BLOCKING && (tile 带
+ *      T_PATHING_BLOCKER || DFF_TREAT_AS_BLOCKING)（:3378-3381）；两个
+ *      DFF_CLEAR_* 的跨层清理发生在 fill 之后（:3423-3440），作用域是
+ *      **fill 后的** blockingMap（fillSpawnMap 会把它改写成实际落点）。
+ *
+ * 连通性检查为何新写而不复用（任务书 §二.3 的裁决，详见
+ * ai_docs/c_4b_dungeon_feature_report.md）：CE 的
+ * levelIsDisconnectedWithBlockingMap 是"波及带两侧区域是否在被影响带内部
+ * 相触"的**局域**判据（填死整个死角口袋会放行），且 4 向、通行判据含
+ * 密门/锁门豁免（cellIsPassableOrDoor）；web 的
+ * Connectivity.lakeDisruptsPassability 是"全部干地仍属一个 8 向连通块"的
+ * **全局**判据（会否决 CE 放行的死角填埋），BlueprintEngine 的
+ * gateSealsOnlyInterior 是"单格门 + machineNumber 豁免"的另一个问题。
+ * 三者判据与算法形状都不同，不能互相替代。Connectivity.ts 本轮禁改，
+ * 也无需改——新函数放在本文件。
+ *
+ * 与 CE 的有意差异（登记表，均为游戏侧副作用，库无法承载）：
+ *   ┌──────────────────────────────┬──────────────────────────────────────┐
+ *   │ CE 行为                      │ web 处置                              │
+ *   ├──────────────────────────────┼──────────────────────────────────────┤
+ *   │ refreshCell 刷新/玩家脚下的  │ 参数不入签名；调用方（C-4c）负责      │
+ *   │ 即时地形效果/物品点燃        │                                       │
+ *   │ CAUGHT_FIRE_THIS_TURN (:3235)│ 结果对象 caughtFireCells（无生产存储）│
+ *   │ rogue.staleLoopMap (:3243)   │ 结果对象 pathingChanged               │
+ *   │ message/playerCanSee (:3370) │ 结果对象 message（视野门控属 C-4c；   │
+ *   │                              │ messageDisplayed 不跟踪）             │
+ *   │ evacuateCreatures (:3332)    │ 结果对象 evacuationRequired 置位，    │
+ *   │                              │ 不搬怪（任务书 §三明确不做）          │
+ *   │ aggravateMonsters (:3443)    │ 结果对象 aggravateRadius              │
+ *   │ colorFlash/createFlare       │ 不实现（数据仍登记在目录）            │
+ *   │ updatedMapToShoreThisTurn    │ 结果对象 touchesShoreMap              │
+ *   │ (:3481-3485)                 │                                       │
+ *   │ DFF_RESURRECT_ALLY (:3365)   │ 目录 19 条不含；运行时遇到即抛错      │
+ *   │ pmap.volume (GAS, :3385)     │ Cell 无 volume 字段（Grid.ts 禁改）； │
+ *   │                              │ 结果对象 gasVolumeAdded 登记          │
+ *   └──────────────────────────────┴──────────────────────────────────────┘
+ */
+import type { Pos } from '../../types';
+import { rng } from '../Random';
+import {
+    DungeonLayer,
+    DRAW_PRIORITY,
+    Grid,
+    TerrainType,
+} from './Grid';
+import {
+    T_AUTO_DESCENT,
+    T_IS_DEEP_WATER,
+    T_IS_FIRE,
+    T_LAVA_INSTA_DEATH,
+    T_OBSTRUCTS_PASSABILITY,
+    T_OBSTRUCTS_SURFACE_EFFECTS,
+    T_PATHING_BLOCKER,
+    TERRAIN_FLAGS,
+    TM_CONNECTS_LEVEL,
+    TM_IS_SECRET,
+    TM_PROMOTES_WITH_KEY,
+} from './TerrainCatalog';
+import {
+    DFF_AGGRAVATES_MONSTERS,
+    DFF_BLOCKED_BY_OTHER_LAYERS,
+    DFF_CLEAR_LOWER_PRIORITY_TERRAIN,
+    DFF_CLEAR_OTHER_TERRAIN,
+    DFF_EVACUATE_CREATURES_FIRST,
+    DFF_PERMIT_BLOCKING,
+    DFF_RESURRECT_ALLY,
+    DFF_SUBSEQ_EVERYWHERE,
+    DFF_SUPERPRIORITY,
+    DFF_TREAT_AS_BLOCKING,
+    DUNGEON_FEATURE_CATALOG,
+} from './DungeonFeatureCatalog';
+import type { DF, DungeonFeatureEntry } from './DungeonFeatureCatalog';
+
+/** CE `nbDirs[0..3]`（GlobalsBase.c:38）——4 向正交，顺序逐项一致。 */
+const DIRS4: ReadonlyArray<readonly [number, number]> = [
+    [0, -1], [0, 1], [-1, 0], [1, 0],
+];
+
+/**
+ * CE `dungeonFeature`（Rogue.h:1886-1902）的字段投影——spawnDungeonFeature
+ * 的入参形态（CE 收 `dungeonFeature*`，调用方可传目录条目或改写副本）。
+ * tile=NOTHING(0) 是合法的"无地形 DF"；propagationTerrain=NOTHING(0) 表示
+ * 无传播地形限制；subsequentDF 走目录解析（CE 0 = 无 → null）。
+ */
+export interface DungeonFeature {
+    tile: TerrainType;
+    layer: DungeonLayer;
+    startProbability: number;
+    probabilityDecrement: number;
+    flags: number;
+    propagationTerrain: TerrainType;
+    subsequentDF: DF | null;
+    description: string;
+    lightFlare: string;
+    flashColor: string;
+    effectRadius: number;
+}
+
+/** spawnMap：CE `char spawnMap[DCOLS][DROWS]`，值 = 代际计数器（≤101，
+ *  t>100 收敛分支把它压回 {0,1,2}）。下标 = y * width + x。 */
+export type SpawnMap = Uint8Array;
+
+export function createSpawnMap(grid: Grid): SpawnMap {
+    return new Uint8Array(grid.width * grid.height);
+}
+
+// ── CE 查格谓词（四层旗标按位或；Globals.c:581-597 / Architect.c:40-46）───
+
+/** CE terrainFlags(p)（Globals.c:581）：四层 TERRAIN_FLAGS 的 flags 按位或。 */
+function cellTerrainFlags(grid: Grid, x: number, y: number): number {
+    const cell = grid.getCell(x, y);
+    if (!cell) return 0;
+    let f = 0;
+    for (let l = 0; l < DungeonLayer.COUNT; l++) {
+        f |= TERRAIN_FLAGS[cell.layers[l]!].flags;
+    }
+    return f;
+}
+
+/** CE terrainMechFlags(loc)（Globals.c:590）。
+ *
+ *  验收方注：执行方原本在这里写成解构读取，为的是绕开
+ *  `c_4a_terrain_catalog.test.ts` E 组那条"生产代码零读取点"的静态扫描
+ *  （该文件当时不在它的允许修改清单里，它如实申报了）。
+ *  **那样做会让留痕断言说谎**——读者确实存在了，断言却仍报"零读者"，
+ *  是一次自造的假绿。正确处理是翻转那条留痕（已做，白名单化），
+ *  并把扫描正则加固到能捕获解构形态（也已做）。代码恢复直白写法。 */
+function cellTerrainMechFlags(grid: Grid, x: number, y: number): number {
+    const cell = grid.getCell(x, y);
+    if (!cell) return 0;
+    let f = 0;
+    for (let l = 0; l < DungeonLayer.COUNT; l++) {
+        f |= TERRAIN_FLAGS[cell.layers[l]!].mechFlags;
+    }
+    return f;
+}
+
+/** CE cellHasTerrainType（Architect.c:40-46）：四层任一等于该地形。 */
+function cellHasTerrainType(grid: Grid, x: number, y: number, t: TerrainType): boolean {
+    const cell = grid.getCell(x, y);
+    if (!cell) return false;
+    for (let l = 0; l < DungeonLayer.COUNT; l++) {
+        if (cell.layers[l] === t) return true;
+    }
+    return false;
+}
+
+/** CE cellHasTerrainFlag（Architect.c:30-33）。 */
+function cellHasTerrainFlag(grid: Grid, x: number, y: number, flagMask: number): boolean {
+    return (flagMask & cellTerrainFlags(grid, x, y)) !== 0;
+}
+
+/** CE cellIsPassableOrDoor（Architect.c:48-55）：无 T_PATHING_BLOCKER 直接过；
+ *  否则需同时带 (TM_IS_SECRET | TM_PROMOTES_WITH_KEY | TM_CONNECTS_LEVEL)
+ *  与 T_OBSTRUCTS_PASSABILITY——密门/锁门/连通层视为可通行。 */
+function cellIsPassableOrDoor(grid: Grid, x: number, y: number): boolean {
+    if (!cellHasTerrainFlag(grid, x, y, T_PATHING_BLOCKER)) {
+        return true;
+    }
+    return (
+        cellHasTerrainMechFlagMask(grid, x, y,
+            TM_IS_SECRET | TM_PROMOTES_WITH_KEY | TM_CONNECTS_LEVEL)
+        && cellHasTerrainFlag(grid, x, y, T_OBSTRUCTS_PASSABILITY)
+    );
+}
+
+function cellHasTerrainMechFlagMask(grid: Grid, x: number, y: number, flagMask: number): boolean {
+    return (flagMask & cellTerrainMechFlags(grid, x, y)) !== 0;
+}
+
+// ── spawnMapDF（CE Architect.c:3278-3330）─────────────────────────────────
+
+/**
+ * 从 (x, y) 起做衰减概率的 4 向扩散波前，把"将被打上地形的格"写进 spawnMap
+ * （值 = 代际计数器）。RNG 消耗顺序照 CE：扫描 x 外层 y 内层、dir 0..3，
+ * 每个候选格一次 `rng.randPercent(startProb)`（CE rand_percent，Math.c:62）。
+ */
+export function spawnMapDF(
+    grid: Grid,
+    x: number,
+    y: number,
+    propagationTerrain: TerrainType,
+    requirePropTerrain: boolean,
+    startProb: number,
+    probDec: number,
+    spawnMap: SpawnMap
+): void {
+    const W = grid.width;
+    const idx = (px: number, py: number): number => py * W + px;
+
+    spawnMap[idx(x, y)] = 1; // CE：spawnMap[x][y] = t = 1
+    let t = 1;
+
+    let madeChange = true;
+    while (madeChange && startProb > 0) {
+        madeChange = false;
+        t++;
+        for (let i = 0; i < grid.width; i++) {
+            for (let j = 0; j < grid.height; j++) {
+                if (spawnMap[idx(i, j)] === t - 1) {
+                    for (let dir = 0; dir < 4; dir++) {
+                        const x2 = i + DIRS4[dir]![0]!;
+                        const y2 = j + DIRS4[dir]![1]!;
+                        if (grid.isValidPos(x2, y2)
+                            && (!requirePropTerrain
+                                || (propagationTerrain > 0
+                                    && cellHasTerrainType(grid, x2, y2, propagationTerrain)))
+                            && (!cellHasTerrainFlag(grid, x2, y2, T_OBSTRUCTS_SURFACE_EFFECTS)
+                                || (propagationTerrain > 0
+                                    && cellHasTerrainType(grid, x2, y2, propagationTerrain)))
+                            && rng.randPercent(startProb)) {
+                            spawnMap[idx(x2, y2)] = t;
+                            madeChange = true;
+                        }
+                    }
+                }
+            }
+        }
+        startProb -= probDec;
+        if (t > 100) {
+            // CE :3314-3325 收敛分支：波前 → 2，其余已标记 → 1，t 归 2。
+            for (let i = 0; i < grid.width; i++) {
+                for (let j = 0; j < grid.height; j++) {
+                    const k = idx(i, j);
+                    if (spawnMap[k] === t) {
+                        spawnMap[k] = 2;
+                    } else if (spawnMap[k]! > 0) {
+                        spawnMap[k] = 1;
+                    }
+                }
+            }
+            t = 2;
+        }
+    }
+    if (requirePropTerrain && !cellHasTerrainType(grid, x, y, propagationTerrain)) {
+        spawnMap[idx(x, y)] = 0;
+    }
+}
+
+// ── fillSpawnMap（CE Architect.c:3208-3276）───────────────────────────────
+
+export interface FillSpawnMapOutcome {
+    /** CE 返回值：是否真的建了至少一格。 */
+    accomplishedSomething: boolean;
+    /** CAUGHT_FIRE_THIS_TURN 登记（CE :3235-3238）：新地形是火、被覆盖层
+     *  不是火的格。web 无对应格旗标，交 C-4c/游戏循环消费。 */
+    caughtFireCells: Pos[];
+    /** rogue.staleLoopMap 登记（CE :3240-3244）：T_PATHING_BLOCKER 归属变化。 */
+    pathingChanged: boolean;
+}
+
+/**
+ * 按 spawnMap 落层写地形。判据（CE :3223-3233，与顺序一致）：
+ *   spawnMap 已标记 && 该层尚不是目标地形 && (superpriority || 旧优先级数字
+ *   >= 新优先级数字) && !(SURFACE 层 && 格带 T_OBSTRUCTS_SURFACE_EFFECTS)
+ *   && (!blockedByOtherLayers || 最高优先层(skipGas) 的优先级数字 >= 新的)。
+ * 未落格的 spawnMap 值清 0（CE :3271）。
+ */
+export function fillSpawnMap(
+    grid: Grid,
+    layer: DungeonLayer,
+    surfaceTileType: TerrainType,
+    spawnMap: SpawnMap,
+    blockedByOtherLayers: boolean,
+    superpriority: boolean
+): FillSpawnMapOutcome {
+    const W = grid.width;
+    const idx = (px: number, py: number): number => py * W + px;
+    let accomplishedSomething = false;
+    const caughtFireCells: Pos[] = [];
+    let pathingChanged = false;
+
+    const newPrio = DRAW_PRIORITY[surfaceTileType];
+    const newFlags = TERRAIN_FLAGS[surfaceTileType].flags;
+
+    for (let i = 0; i < grid.width; i++) {
+        for (let j = 0; j < grid.height; j++) {
+            const cell = grid.getCell(i, j);
+            if (!cell) {
+                spawnMap[idx(i, j)] = 0;
+                continue;
+            }
+            const oldTile = cell.layers[layer]!;
+            const oldFlags = TERRAIN_FLAGS[oldTile].flags;
+            if (
+                // spawnMap 已标记，
+                spawnMap[idx(i, j)]
+                // 且该层还不是目标地形，
+                && oldTile !== surfaceTileType
+                // 且旧地形的优先级数字更大或相等（除非 superpriority），
+                && (superpriority || DRAW_PRIORITY[oldTile] >= newPrio)
+                // 且不会往被禁止的 SURFACE 层里画，
+                && !(layer === DungeonLayer.SURFACE
+                    && cellHasTerrainFlag(grid, i, j, T_OBSTRUCTS_SURFACE_EFFECTS))
+                // 且（如要求）不违反该格最高优先层的优先级。
+                && (!blockedByOtherLayers
+                    || DRAW_PRIORITY[cell.layers[grid.highestPriorityLayer(i, j, true)]!] >= newPrio)
+            ) {
+                if ((newFlags & T_IS_FIRE) && !(oldFlags & T_IS_FIRE)) {
+                    caughtFireCells.push({ x: i, y: j });
+                }
+                if ((oldFlags & T_PATHING_BLOCKER) !== (newFlags & T_PATHING_BLOCKER)) {
+                    pathingChanged = true;
+                }
+                // 落层！（Grid.ts setTerrainLayer：只写该层，不动其他层。）
+                grid.setTerrainLayer(i, j, layer, surfaceTileType);
+                accomplishedSomething = true;
+            } else {
+                spawnMap[idx(i, j)] = 0; // spawnmap 反映实际建了什么（CE :3271）
+            }
+        }
+    }
+    return { accomplishedSomething, caughtFireCells, pathingChanged };
+}
+
+// ── levelIsDisconnectedWithBlockingMap（CE Architect.c:3137-3198）─────────
+
+/**
+ * CE :3109-3129 connectCell 的迭代版（泛洪结果与递归序无关）。
+ * blockingMap 为 null 时忽略阻断（CE 传 NULL 的展开相位）。
+ */
+function floodConnect(
+    grid: Grid,
+    startX: number,
+    startY: number,
+    zoneLabel: number,
+    blockingMap: SpawnMap | null,
+    zoneMap: Int16Array
+): number {
+    const W = grid.width;
+    const idx = (px: number, py: number): number => py * W + px;
+    let size = 0;
+    const stack: number[] = [idx(startX, startY)];
+    zoneMap[idx(startX, startY)] = zoneLabel;
+    while (stack.length > 0) {
+        const k = stack.pop()!;
+        const cx = k % W;
+        const cy = Math.floor(k / W);
+        size++;
+        for (let dir = 0; dir < 4; dir++) {
+            const nx = cx + DIRS4[dir]![0]!;
+            const ny = cy + DIRS4[dir]![1]!;
+            if (!grid.isValidPos(nx, ny)) continue;
+            const nk = idx(nx, ny);
+            if (zoneMap[nk] !== 0) continue;
+            if (blockingMap && blockingMap[nk]) continue;
+            if (!cellIsPassableOrDoor(grid, nx, ny)) continue;
+            zoneMap[nk] = zoneLabel;
+            stack.push(nk);
+        }
+    }
+    return size;
+}
+
+/**
+ * CE levelIsDisconnectedWithBlockingMap（Architect.c:3137-3198）的逐相位移植：
+ *   1. 以"贴着 blockingMap 的可通行格"为种子做 4 向分区（阻断生效）；
+ *   2. 令各区漫进 blockingMap 里（阻断豁免，CE 传 NULL）；
+ *   3. 两区相触 ⟹ 该 DF 足迹会切断关卡。返回 0 = 不断；!countRegionSize 时
+ *      相触返回 1；countRegionSize 时返回相触区对中较小者的格数。
+ * 通行判据是 cellIsPassableOrDoor（含密门/锁门豁免），不是 web 的
+ * terrainAllowsMove——差异见文件头。
+ */
+export function levelIsDisconnectedWithBlockingMap(
+    grid: Grid,
+    blockingMap: SpawnMap,
+    countRegionSize: boolean
+): number {
+    const W = grid.width;
+    const H = grid.height;
+    const idx = (px: number, py: number): number => py * W + px;
+    const zoneMap = new Int16Array(W * H);
+    const zoneSizes: number[] = [];
+
+    // 相位 1：贴阻断带的可通行格为种子成区（CE :3149-3162）。
+    for (let i = 1; i < W - 1; i++) {
+        for (let j = 1; j < H - 1; j++) {
+            const k = idx(i, j);
+            if (cellIsPassableOrDoor(grid, i, j) && zoneMap[k] === 0 && !blockingMap[k]) {
+                let borders = false;
+                for (let dir = 0; dir < 4; dir++) {
+                    const nx = i + DIRS4[dir]![0]!;
+                    const ny = j + DIRS4[dir]![1]!;
+                    if (nx >= 0 && ny >= 0 && nx < W && ny < H && blockingMap[idx(nx, ny)]) {
+                        borders = true;
+                        break;
+                    }
+                }
+                if (borders) {
+                    zoneSizes.push(floodConnect(grid, i, j, zoneSizes.length + 1, blockingMap, zoneMap));
+                }
+            }
+        }
+    }
+
+    // 相位 2：各区漫进阻断带（阻断豁免；CE :3164-3177，单趟扫描）。
+    for (let i = 1; i < W - 1; i++) {
+        for (let j = 1; j < H - 1; j++) {
+            const k = idx(i, j);
+            if (blockingMap[k] && zoneMap[k] === 0 && cellIsPassableOrDoor(grid, i, j)) {
+                for (let dir = 0; dir < 4; dir++) {
+                    const nx = i + DIRS4[dir]![0]!;
+                    const ny = j + DIRS4[dir]![1]!;
+                    if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue;
+                    const borderingZone = zoneMap[idx(nx, ny)]!;
+                    if (borderingZone !== 0) {
+                        floodConnect(grid, i, j, borderingZone, null, zoneMap);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    // 相位 3：两区相触即切断（CE :3179-3197）。
+    let smallestQualifyingZoneSize = 10000;
+    for (let i = 1; i < W - 1; i++) {
+        for (let j = 1; j < H - 1; j++) {
+            const k = idx(i, j);
+            if (zoneMap[k] !== 0) {
+                for (let dir = 0; dir < 4; dir++) {
+                    const nx = i + DIRS4[dir]![0]!;
+                    const ny = j + DIRS4[dir]![1]!;
+                    if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue;
+                    const borderingZone = zoneMap[idx(nx, ny)]!;
+                    if (zoneMap[k] !== borderingZone && borderingZone !== 0) {
+                        if (!countRegionSize) {
+                            return 1;
+                        }
+                        smallestQualifyingZoneSize = Math.min(smallestQualifyingZoneSize, zoneSizes[zoneMap[k]! - 1]!);
+                        smallestQualifyingZoneSize = Math.min(smallestQualifyingZoneSize, zoneSizes[borderingZone - 1]!);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    return smallestQualifyingZoneSize < 10000 ? smallestQualifyingZoneSize : 0;
+}
+
+// ── 目录条目 → 算法入参（缺 tile 的登记条目在此响亮失败）─────────────────
+
+/** 把目录条目转成 spawnDungeonFeature 入参。tile 登记（null）的条目抛错——
+ *  CE 对这些 DF 的行为在 web 无忠实语义可给，静默跳过会让 C-4c 接出
+ *  "永不触发的晋升链"，故按项目授权反驳条款拒绝并点名缺的 tile。 */
+export function catalogFeature(df: DF): DungeonFeature {
+    const entry: DungeonFeatureEntry | undefined = DUNGEON_FEATURE_CATALOG[df];
+    if (!entry) {
+        throw new Error(`DUNGEON_FEATURE_CATALOG 缺 DF#${df}（本轮闭包未抄录该条目）`);
+    }
+    if (entry.tile === null) {
+        throw new Error(
+            `DF#${df}（${entry.ceTile}）引用了 web 尚不存在的 tileType，登记未实现（C-4b 目录）；`
+            + `新增该地形后在本轮报告的缺 tile 清单对号翻转`
+        );
+    }
+    return {
+        tile: entry.tile,
+        layer: entry.layer,
+        startProbability: entry.startProbability,
+        probabilityDecrement: entry.probabilityDecrement,
+        flags: entry.flags,
+        propagationTerrain: entry.propagationTerrain ?? TerrainType.NOTHING,
+        subsequentDF: entry.subsequentDF,
+        description: entry.description,
+        lightFlare: entry.lightFlare,
+        flashColor: entry.flashColor,
+        effectRadius: entry.effectRadius,
+    };
+}
+
+// ── spawnDungeonFeature（CE Architect.c:3359-3495）────────────────────────
+
+export interface SpawnFeatureResult {
+    /** CE 返回值：false 仅当被连通性否决；"因优先级一格没建"仍算成功
+     *  （CE :3410 注释）。 */
+    succeeded: boolean;
+    /** 实际落层的格（fill 后 blockingMap 的非零集；CE :3409 注释——fill 会
+     *  把 spawnMap 改写成实际落点）。 */
+    builtCells: Pos[];
+    caughtFireCells: Pos[];
+    pathingChanged: boolean;
+    /** GAS 特例的 volume 增量（CE :3385 `pmap.volume += startProbability`；
+     *  web Cell 无 volume 字段，登记待游戏侧接管）。 */
+    gasVolumeAdded: number;
+    /** DFF_EVACUATE_CREATURES_FIRST 置位（evacuateCreatures 未实现）。 */
+    evacuationRequired: boolean;
+    /** CE description（非空即登记；playerCanSee 门控与 messageDisplayed
+     *  一次性语义属游戏侧）。 */
+    message: string | null;
+    /** DFF_AGGRAVATES_MONSTERS && effectRadius 时的聚怪半径登记。 */
+    aggravateRadius: number | null;
+    /** CE :3481-3485：tile 带 T_IS_DEEP_WATER | T_LAVA_INSTA_DEATH |
+     *  T_AUTO_DESCENT 时 CE 会置 updatedMapToShoreThisTurn = false。 */
+    touchesShoreMap: boolean;
+}
+
+/**
+ * 生成一个地形特征。GAS 层走 volume 累加特例；其余层走
+ * spawnMapDF →（需要时）连通性否决 → fillSpawnMap → DFF_CLEAR_* 跨层清理
+ * → subsequentDF 链（DFF_SUBSEQ_EVERYWHERE 时逐实际落点递归）。
+ */
+export function spawnDungeonFeature(
+    grid: Grid,
+    x: number,
+    y: number,
+    feat: DungeonFeature,
+    abortIfBlocking: boolean
+): SpawnFeatureResult {
+    const result: SpawnFeatureResult = {
+        succeeded: false,
+        builtCells: [],
+        caughtFireCells: [],
+        pathingChanged: false,
+        gasVolumeAdded: 0,
+        evacuationRequired: false,
+        message: feat.description || null,
+        aggravateRadius: null,
+        touchesShoreMap: false,
+    };
+
+    if (feat.flags & DFF_RESURRECT_ALLY) {
+        // CE :3365-3368 resurrectAlly——游戏侧，目录 19 条不含此旗标。
+        throw new Error('DFF_RESURRECT_ALLY 未实现（C-4b 登记；复活属游戏侧）');
+    }
+
+    const W = grid.width;
+    const idx = (px: number, py: number): number => py * W + px;
+    const blockingMap = createSpawnMap(grid); // CE :3375 zeroOutGrid
+
+    // CE :3377-3381：是否按"会堵路"处理。
+    const blocking = !!(
+        abortIfBlocking
+        && !(feat.flags & DFF_PERMIT_BLOCKING)
+        && ((TERRAIN_FLAGS[feat.tile].flags & T_PATHING_BLOCKER)
+            || (feat.flags & DFF_TREAT_AS_BLOCKING))
+    );
+
+    if (feat.tile !== TerrainType.NOTHING) {
+        if (feat.layer === DungeonLayer.GAS) {
+            // CE :3384-3390：GAS 层特例——不扩散，volume 累加，仅原点。
+            grid.setTerrainLayer(x, y, DungeonLayer.GAS, feat.tile);
+            result.gasVolumeAdded = feat.startProbability;
+            result.succeeded = true;
+        } else {
+            spawnMapDF(
+                grid,
+                x, y,
+                feat.propagationTerrain,
+                feat.propagationTerrain !== TerrainType.NOTHING,
+                feat.startProbability,
+                feat.probabilityDecrement,
+                blockingMap
+            );
+            if (!blocking || levelIsDisconnectedWithBlockingMap(grid, blockingMap, false) === 0) {
+                if (feat.flags & DFF_EVACUATE_CREATURES_FIRST) {
+                    // CE :3399-3401 evacuateCreatures——游戏侧，登记不实现。
+                    result.evacuationRequired = true;
+                }
+                const fill = fillSpawnMap(
+                    grid,
+                    feat.layer,
+                    feat.tile,
+                    blockingMap,
+                    !!(feat.flags & DFF_BLOCKED_BY_OTHER_LAYERS),
+                    !!(feat.flags & DFF_SUPERPRIORITY)
+                ); // CE :3409 注释：fill 会把 spawnMap 改写成实际落点
+                result.caughtFireCells = fill.caughtFireCells;
+                result.pathingChanged = fill.pathingChanged;
+                result.succeeded = true; // CE :3410：只有堵了关卡才算失败
+            } else {
+                result.succeeded = false;
+            }
+        }
+    } else {
+        // CE :3415-3421：无地形 DF——footprint = 原点一格，自动成功。
+        blockingMap[idx(x, y)] = 1;
+        result.succeeded = true;
+        if (feat.flags & DFF_EVACUATE_CREATURES_FIRST) {
+            result.evacuationRequired = true;
+        }
+    }
+
+    if (result.succeeded) {
+        // 实际落点 = fill（或无地形分支）之后的 blockingMap 非零集；
+        // SUBSEQ_EVERYWHERE 遍历的正是它（CE :3469-3476），无地形 DF 也含原点。
+        for (let i = 0; i < grid.width; i++) {
+            for (let j = 0; j < grid.height; j++) {
+                if (blockingMap[idx(i, j)]) {
+                    result.builtCells.push({ x: i, y: j });
+                }
+            }
+        }
+    }
+
+    if (result.succeeded
+        && (feat.flags & (DFF_CLEAR_LOWER_PRIORITY_TERRAIN | DFF_CLEAR_OTHER_TERRAIN))) {
+        // CE :3423-3440：跨层清理，作用域是 fill 后的 blockingMap；
+        // CLEAR_LOWER 保留优先级数字 ≤ 新 tile 的层（更强的地形不动）。
+        for (let i = 0; i < grid.width; i++) {
+            for (let j = 0; j < grid.height; j++) {
+                if (!blockingMap[idx(i, j)]) continue;
+                const cell = grid.getCell(i, j)!;
+                for (let layer = 0; layer < DungeonLayer.COUNT; layer++) {
+                    if (layer === feat.layer || layer === DungeonLayer.GAS) continue;
+                    if (feat.flags & DFF_CLEAR_LOWER_PRIORITY_TERRAIN) {
+                        if (DRAW_PRIORITY[cell.layers[layer]!] <= DRAW_PRIORITY[feat.tile]) {
+                            continue;
+                        }
+                    }
+                    grid.setTerrainLayer(
+                        i, j,
+                        layer,
+                        layer === DungeonLayer.DUNGEON ? TerrainType.FLOOR : TerrainType.NOTHING
+                    );
+                }
+            }
+        }
+    }
+
+    if (result.succeeded) {
+        if ((feat.flags & DFF_AGGRAVATES_MONSTERS) && feat.effectRadius) {
+            result.aggravateRadius = feat.effectRadius; // CE :3443-3445，登记
+        }
+        result.touchesShoreMap = !!(
+            feat.tile
+            && (TERRAIN_FLAGS[feat.tile].flags
+                & (T_IS_DEEP_WATER | T_LAVA_INSTA_DEATH | T_AUTO_DESCENT))
+        );
+    }
+
+    if (result.succeeded && feat.subsequentDF) {
+        // CE :3467-3480：subsequentDF 经目录解析（缺 tile 的登记条目在此抛错）。
+        const sub = catalogFeature(feat.subsequentDF);
+        if (feat.flags & DFF_SUBSEQ_EVERYWHERE) {
+            for (const p of result.builtCells) {
+                spawnDungeonFeature(grid, p.x, p.y, sub, abortIfBlocking);
+            }
+        } else {
+            spawnDungeonFeature(grid, x, y, sub, abortIfBlocking);
+        }
+    }
+
+    return result;
+}

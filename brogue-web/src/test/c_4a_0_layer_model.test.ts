@@ -340,19 +340,28 @@ describe('C-4a-0 确定性（同种子 → 四层逐格逐层相等）', () => {
 });
 
 describe('C-4a-0 留痕（本轮明确不做的事，断言现状）', () => {
-    it('留痕：生产代码中 setTerrainLayer 调用点数为 0（C-4a 接管后反转本断言）', () => {
-        // C-4a 实现层感知生成时本断言要翻转为"调用点只出现在清单许可的文件"。
+    it('留痕（已反转，C-4b）：setTerrainLayer 调用点只出现在清单许可的文件', () => {
+        // 原断言（C-4a-0）："生产代码中 setTerrainLayer 调用点数为 0"。
+        // C-4b 的 fillSpawnMap 按 CE Architect.c:3246 逐格落层，必然调用它，
+        // 按本断言自带的指示翻转为白名单式（B-1 反转范本）：
+        // 许可清单 = fillSpawnMap 所在的算法文件。C-4c 接生成/晋升调用后
+        // 若 setTerrainLayer 出现新的调用文件，把文件加进下方 ALLOWLIST
+        // 并在任务报告里说明，其余任何出现都翻红（越界守卫保留）。
+        const ALLOWLIST = new Set([
+            'engine/Map/DungeonFeature.ts', // C-4b：fillSpawnMap / DFF_CLEAR_* 跨层清理
+        ]);
         const srcDir = fileURLToPath(new URL('../', import.meta.url));
         const prodFiles = collectFiles(srcDir).filter((f) => !f.split(sep).includes('test'));
         const offenders: string[] = [];
         for (const f of prodFiles) {
+            const rel = relative(srcDir, f);
             readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
-                if (/\.setTerrainLayer\s*\(/.test(line)) {
-                    offenders.push(`${relative(srcDir, f)}:${i + 1}: ${line.trim()}`);
+                if (/\.setTerrainLayer\s*\(/.test(line) && !ALLOWLIST.has(rel.split(sep).join('/'))) {
+                    offenders.push(`${rel}:${i + 1}: ${line.trim()}`);
                 }
             });
         }
-        expect(offenders, `生产代码不得调用 setTerrainLayer：\n${offenders.join('\n')}`).toEqual([]);
+        expect(offenders, `setTerrainLayer 调用点超出许可清单 ${[...ALLOWLIST].join(', ')}：\n${offenders.join('\n')}`).toEqual([]);
     });
 
     it('留痕：GAS 层恒空（气体走独立 Gas.ts 网格；C-4a 接入 CE 气体层后反转）', () => {

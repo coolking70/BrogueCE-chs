@@ -251,25 +251,37 @@ describe('C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（全 31 �
 });
 
 describe('C-4a E：留痕（本轮明确不做的事，断言现状）', () => {
-    it('留痕：promote/fire 类字段在生产代码中零读取点（C-4b/C-4c 接读者后，把豁免文件改为其读者清单）', () => {
-        // 本轮这些字段"有数据、无读者"（任务书 §三）。静态扫描
-        // src/engine + src/entities + src/components 的非注释代码：
-        // 属性读取形态 .fireType / .promoteType / … 一次都不允许出现。
-        // C-4b（DF 目录）或 C-4c（promoteTile）接入行为后，本断言应翻转为
-        // "读者只出现在清单许可的文件"。
+    // 验收方 C-4b 后翻转（原断言："生产代码零读取点"）。
+    // C-4b 的 DungeonFeature.ts 合法地成为了 mechFlags 的第一个读者。
+    //
+    // ★ 同时加固了扫描正则 ★
+    // 执行方当时为了让这条断言继续绿，把 `entry.mechFlags` 写成了
+    // `const { mechFlags } = entry`——**语义不变、正则不匹配**。
+    // 它如实申报了，但那样做会让留痕断言说谎：读者确实存在，断言仍报零读者，
+    // 是一次自造的假绿。留痕测试若能被改写形态绕过，就不是门禁而是装饰。
+    // 现在正则同时捕获点号读取与解构读取两种形态。
+    const PROMOTE_FIELD_READERS = new Set([
+        'engine/Map/DungeonFeature.ts',   // C-4b：mechFlags（cellIsPassableOrDoor 的密门/锁门豁免）
+    ]);
+    it('留痕：promote/fire 类字段的生产读者只出现在白名单文件（C-4c 接 promoteTile 时扩清单）', () => {
         const srcDir = fileURLToPath(new URL('../', import.meta.url));
         const prodFiles = collectFiles(srcDir).filter((f) => !f.split(sep).includes('test'));
         const offenders: string[] = [];
-        const pattern = /\.(fireType|discoverType|promoteType|promoteChance|chanceToIgnite|mechFlags)\b/;
+        const FIELDS = 'fireType|discoverType|promoteType|promoteChance|chanceToIgnite|mechFlags';
+        // 形态一：点号成员访问。形态二：解构（含重命名 { mechFlags: mf }）。
+        const dotPattern = new RegExp(`\\.(${FIELDS})\\b`);
+        const destructurePattern = new RegExp(`\\{[^}]*\\b(${FIELDS})\\b[^{]*\\}\\s*=`);
         for (const f of prodFiles) {
+            const rel = relative(srcDir, f).split(sep).join('/');
+            if (PROMOTE_FIELD_READERS.has(rel)) continue;
             readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
                 const codeOnly = line.replace(/\/\/.*$/, '');
-                if (pattern.test(codeOnly)) {
-                    offenders.push(`${relative(srcDir, f)}:${i + 1}: ${line.trim()}`);
+                if (dotPattern.test(codeOnly) || destructurePattern.test(codeOnly)) {
+                    offenders.push(`${rel}:${i + 1}: ${line.trim()}`);
                 }
             });
         }
-        expect(offenders, `promote/fire 类字段出现了生产读者（本轮约定无读者）：\n${offenders.join('\n')}`).toEqual([]);
+        expect(offenders, `promote/fire 类字段出现了白名单之外的生产读者：\n${offenders.join('\n')}`).toEqual([]);
     });
 
     it('留痕：setTerrain 启发式现状 = P1-38 分歧表（接 CE 判据的轮次须先更新测量报告再翻转本断言）', () => {
