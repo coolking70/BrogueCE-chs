@@ -26,6 +26,7 @@ import { logger } from '../Systems/Logger';
 import { Pathfind } from '../Map/Pathfind';
 import { ScentMap, obstructsScent } from '../Map/Scent';
 import { buildSafetyMap, allocShortGrid, SAFETY_MAX_DISTANCE } from '../Map/SafetyMap';
+import { analyzeLoopMap, emptyLoopMap } from '../Map/LoopMap';
 import { WaypointSystem, WAYPOINT_SIGHT_RADIUS, type WaypointContext } from '../Map/WaypointMap';
 import i18next from 'i18next';
 
@@ -332,6 +333,14 @@ export class Game {
     //（Time.c:2618-2626），其余由 getSafetyMap 惰性触发（Monsters.c:2386/2392）。
     public safetyMap: number[][] = allocShortGrid(DCOLS, DROWS, SAFETY_MAX_DISTANCE);
     public updatedSafetyMapThisTurn: boolean = false;
+
+    // C-0：当前层的环路图（CE pmap 的 IN_LOOP 标志，Architect.c:192-244
+    // analyzeMap 前三步）。进层时随地形确定性重算（生成完成 + 缓存恢复都算，
+    // 对应 CE 的逐层 pmap flags；纯函数、零 RNG 消耗）。safety map 的
+    // IN_LOOP -=10 分支由此供数（Time.c:1925-1927）。CE 运行期另有
+    // staleLoopMap 触发的回合期重算（Time.c:2554-2556），web 本轮无地形
+    // 晋升的中央挂钩，暂只在进层时计算（LoopMap.ts 头注已登记）。
+    public loopMap: boolean[][] = emptyLoopMap();
 
     // P4-10：waypoint 系统（CE rogue.wpCoordinates/wpDistance/wpCount/
     // wpRefreshTicker）。构建在 generateDepth 的生成决策全部完成之后
@@ -660,6 +669,9 @@ export class Game {
         // 分支）对应 RogueMain.c:771 的"恢复后再建"。setUpWaypoints 内部做了
         // CE RogueMain.c:691-707/733-735 的流隔离（快照/恢复），shuffleList
         // 的抽取不落在主流上，对生成基线与玩法序列都是零扰动。
+        // C-0：环路图同样在两层落地后确定性重算（CE 的 IN_LOOP 是逐层
+        // pmap flags；analyzeLoopMap 纯函数、不消费 RNG）。
+        this.loopMap = analyzeLoopMap(this.grid);
         this.rebuildWaypoints();
 
         // 3. Force full refresh
@@ -4941,7 +4953,8 @@ export class Game {
     /**
      * P4-9：CE Time.c:1791 updateSafetyMap。构建详情见 SafetyMap.buildSafetyMap；
      * CE 在函数首行置位 rogue.updatedSafetyMapThisTurn（Time.c:1795），web 侧
-     * 由本方法在构建后置位。IN_LOOP web 无数据源，恒 false（报告登记）。
+     * 由本方法在构建后置位。C-0 起 isInLoop 由 loopMap 供数（Time.c:1925-1927
+     * 的 IN_LOOP -=10 分支生效）。
      */
     public updateSafetyMap(): void {
         this.safetyMap = buildSafetyMap({
@@ -4951,7 +4964,7 @@ export class Game {
             playerLevitating: this.player.hasStatus('levitating'),
             playerImmuneToFire: this.player.hasStatus('immune_fire'),
             monsterAt: (x, y) => this.getMonsterAt(x, y),
-            isInLoop: () => false,
+            isInLoop: (x, y) => this.loopMap[x]?.[y] === true,
         });
         this.updatedSafetyMapThisTurn = true;
     }

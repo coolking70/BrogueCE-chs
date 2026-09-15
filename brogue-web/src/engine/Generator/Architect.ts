@@ -5,6 +5,7 @@
 
 import { Grid, TerrainType, DCOLS, DROWS } from '../Map/Grid';
 import { lakeDisruptsPassability, terrainAllowsMove } from '../Map/Connectivity';
+import { addLoops, applyLoopDoorSites, MINIMUM_PATHING_DISTANCE } from '../Map/LoopMap';
 import { rng } from '../Random';
 import { RoomType, ROOM_TYPE_COUNT } from '../../types';
 import type { DungeonProfile, Pos } from '../../types';
@@ -22,6 +23,12 @@ export class Architect {
     public trapVaults: Array<{ door: Pos, center: Pos, trapType: 'fire' | 'poison_gas' }> = [];
     public cages: Array<{ door: Pos, cells: Pos[] }> = [];
     public machineResults: MachineResult[] = [];
+    /** C-0：本轮 generateTerrain 里 addLoops 开出的门位落位坐标（raster 序）。
+     *  仅供测试/观测（真实环路存在性断言的锚点），不参与任何生成决策。 */
+    public loopDoorSites: Pos[] = [];
+    /** C-0：addLoops 扫描时的短整 work grid（1=地板 2=门位 0=墙，湖泊之前
+     *  的真实拓扑快照）。仅供测试/观测，不参与任何生成决策。 */
+    public loopWorkGrid: number[][] | null = null;
 
     /** P1-29 湖泊闸门的进程级累计（供测试/报告观测"20 次尝试全失败被跳过"
      *  的频率）。仅在 placeGatedLakeBlob 里递增。 */
@@ -46,6 +53,8 @@ export class Architect {
                 this.grid.setTerrain(x, y, TerrainType.GRANITE, ' ', 0x333333);
             }
         }
+        this.loopDoorSites = [];
+        this.loopWorkGrid = null;
 
         // 1. Initial Room (Entrance)
         const roomMap = RoomBuilder.createEmptyRoomGrid();
@@ -58,6 +67,15 @@ export class Architect {
             corridorChance: 10
         };
         this.attachRooms(dpBasic, 40, 15);
+
+        // 2.5 C-0：地牢环路（CE digDungeon 第 3 步，Architect.c:2897
+        // `addLoops(grid, 20)`——carveDungeon 之后、grid→pmap 落位之前；
+        // web 对应位置即房间生长之后、湖泊叠加之前）。新门位按 CE
+        // Architect.c:2900-2904 落成 DOOR/FLOOR（attachRooms 已落的门有
+        // 自己的等价落位，不重掷——见 LoopMap.addLoops 头注）。
+        const loop = addLoops(this.grid, MINIMUM_PATHING_DISTANCE);
+        this.loopWorkGrid = loop.work;
+        this.loopDoorSites = applyLoopDoorSites(this.grid, loop.newSites, depth);
 
         // 3. Generate Lakes and Foliage overlays
         this.designEnvironmentOvelays(depth);

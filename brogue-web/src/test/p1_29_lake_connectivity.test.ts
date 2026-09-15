@@ -46,7 +46,11 @@ const MAX_DEPTH = 26;
  * 证据链（分阶段快照 + 逐格 diff）见 ai_docs/p1_29_lake_connectivity_report.md。
  * 修复该机器缺陷后，本集合应更新为空集。
  */
-const KNOWN_MACHINE_STAGE_BAD_LEVELS = ['777/D15', '999/D12'];
+// C-0（addLoops）后更新：坏层**仍是 2 层但换了层**。addLoops 的 shuffleList 移动了
+// 生成期 RNG 流，所有地图随之改变，于是"哪两层恰好被机器阶段切断"也换了——
+// 这不是回归，机器阶段的缺陷本身没变（见路线图 P1-33）。
+// 验收方实测：20260916/D23 从上楼梯可达 280 格；1/D12 可达 12 格。
+const KNOWN_MACHINE_STAGE_BAD_LEVELS = ['1/D12', '20260916/D23']; // 按字典序，断言比较的是排序后数组
 
 type Pos = { x: number; y: number };
 
@@ -190,8 +194,11 @@ describe('P1-29 湖泊连通性', () => {
         console.log(`[p1_29] 端到端扫描：260 层，坏层=${bad.join('、') || '无'}，` +
             `深水格=${deepTotal} 浅水格=${shallowTotal}`);
 
+        // 验收方修正：原断言左侧 `bad` 是测量顺序、右侧恒 `.sort()`，
+        // 只有当测量顺序恰好等于字典序时才通过——原集合 ['777/D15','999/D12']
+        // 是靠巧合过的。两侧同时排序才是稳定判据。
         expect(
-            bad,
+            [...bad].sort(),
             `端到端坏层集合与已知机器阶段缺陷集不符。\n` +
             `已知集：${KNOWN_MACHINE_STAGE_BAD_LEVELS.join('、')}（成因与证据链见 ` +
             `ai_docs/p1_29_lake_connectivity_report.md §与预设不符之处）。\n` +
