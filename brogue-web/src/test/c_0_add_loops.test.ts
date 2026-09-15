@@ -511,33 +511,63 @@ describe('C-0 地牢环路（addLoops）+ IN_LOOP', () => {
     });
 
     it('C3 末态对照：全管线关卡（经湖泊+机器）的可通行图割点率受控（树状退化即翻红）', () => {
+        // 2026-09-15 校准（C-1 验收补做；失灵变体为生产代码临时改坏实测后
+        // 还原，数据见 ai_docs/c_1_room_profile_report.md §验收补做）：
+        //
+        // 归因更正①（测量 bug）：旧断言报的"单层峰值 9.7%"其实是**跨层累计率**——
+        // levelRate 用了累计的 artTotal/axisTotal（在 424242/D7 扫完时达到峰值，
+        // 随后被低割点层稀释），并非单层值。真实单层分布（52 层，决定性生成）：
+        // avg 4.95%、p95 13.22%、max 15.45%（424242/D7）。
+        //
+        // 归因更正②（不是 P1-33）：真实峰值层 424242/D7 无锁门、深水仅 5 格、
+        // 主连通块占比 100%；52 层割点率前 5 名全是 D2-D9 浅层。把全部割点格
+        // 按形态分类：100% 是"恰好两个相对正交邻格"的 1 宽走廊中段（0 例外），
+        // 浅层（D1-9）割点率 7.7% vs 深层 3.1%。这是 CE 走廊房（attachHallwayTo）
+        // + CE 深度曲线（浅层 corridorChance 90→70）的忠实形态——1 宽长走廊的
+        // 中段格在拓扑上就是割点。旧阈值 8% 标定于 C-0 时代 corridorChance
+        // 从未生效（走廊数为 0）的稀疏生成器，对齐 CE 后走廊首次出现，割点率
+        // 上升是对齐的直接结果，不是环路机制失灵（C1/C2/A6 全绿互证）。
+        //
+        // 新阈值与失灵锚点（生产 vs 跳过 addLoops 的树状退化，同 52 层实测）：
+        //   avg  4.95% vs 8.62%（+74%）；p95 13.22% vs 17.42%；max 15.45% vs 21.23%
+        //   avg<6%：环路丢失约一半即翻红，树状退化稳红；
+        //   p95<16%：个别极端层（允许 2/52 层越出）不假红，全线树状退化稳红。
+        //   峰值保留为观测打印，不作断言（防个别极端层假红）。
         let artTotal = 0;
         let axisTotal = 0;
-        let maxRate = 0;
+        const levelRates: number[] = [];
         gameSweep(HEAVY_SEEDS, (game) => {
+            let art = 0;
+            let axis = 0;
             for (let x = 0; x < DCOLS; x++) {
                 for (let y = 0; y < DROWS; y++) {
                     const cell = game.grid.getCell(x, y);
                     if (!cell || !terrainAllowsMove(cell.terrain)) continue;
                     const cls = cutVertexClass(game.grid, { x, y });
                     if (cls === 'noAxis') continue;
+                    axis++;
                     axisTotal++;
-                    if (cls === 'cut') artTotal++;
+                    if (cls === 'cut') { art++; artTotal++; }
                 }
             }
-            const levelRate = artTotal / Math.max(1, axisTotal);
-            maxRate = Math.max(maxRate, levelRate);
+            levelRates.push(art / Math.max(1, axis));
         });
         const avg = artTotal / axisTotal;
+        const sorted = [...levelRates].sort((a, b) => a - b);
+        const p95 = sorted[Math.min(sorted.length - 1, Math.ceil(0.95 * sorted.length) - 1)]!;
+        const maxRate = sorted[sorted.length - 1]!;
         expect(
             avg,
-            `52 层平均割点率 ${(avg * 100).toFixed(1)}% ≥ 5%——地牢接近树状（环路丢失或被机器抹平）`
-        ).toBeLessThan(0.05);
+            `52 层平均割点率 ${(avg * 100).toFixed(1)}% ≥ 6%——地牢接近树状` +
+            `（环路丢失或被机器抹平；同口径树状退化实测 8.62%）`
+        ).toBeLessThan(0.06);
         expect(
-            maxRate,
-            `单层割点率峰值 ${(maxRate * 100).toFixed(1)}% ≥ 8%——存在近乎树状的层`
-        ).toBeLessThan(0.08);
-        console.log(`[c_0] C3 末态割点=${artTotal}/${axisTotal}（平均 ${(avg * 100).toFixed(1)}%），单层峰值=${(maxRate * 100).toFixed(1)}%`);
+            p95,
+            `单层割点率 95 分位 ${(p95 * 100).toFixed(1)}% ≥ 16%——割点率分布整体右移，` +
+            `尾部层已近乎树状（生产 p95 实测 13.22%，树状退化 17.42%；个别极端层不应触发本断言）`
+        ).toBeLessThan(0.16);
+        console.log(`[c_0] C3 末态割点=${artTotal}/${axisTotal}（平均 ${(avg * 100).toFixed(1)}%），` +
+            `单层 p95=${(p95 * 100).toFixed(1)}%，峰值（观测）=${(maxRate * 100).toFixed(1)}%`);
     });
 
     it('D1 决定性：同种子两次生成 → 指纹/loopMap/门位/work grid 逐一一致', () => {

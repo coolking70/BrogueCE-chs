@@ -7,7 +7,7 @@
  *   - door 候选可与 center 重合 → LOCKED_DOOR 门地形盖在 center 上，把宝藏封死；
  *   - feature 地形（key_flood_trap 的 WATER_DEEP 等）可落在 center 上。
  * 三者同属"算出/使用坐标但未验证其可通行性"，Game.ts 把 center 用作全游戏最有价值
- * 物品（scroll_of_enchanting / wand_of_fire 等）的落点 → 玩家永远拿不到。
+ * 物品（scroll_of_enchantment / potion_of_life / ring_* / charm_* 等）的落点 → 玩家永远拿不到。
  *
  * 三个用例：
  * 1) 单元级：手工构造 L 形 region（其质心确定落在墙格上），断言返回的 center
@@ -87,8 +87,11 @@ function itemId(item: unknown): string {
 function isCenterTreasure(item: unknown): boolean {
     const id = itemId(item);
     return (
-        id === 'scroll_of_enchanting' ||
-        id === 'wand_of_fire' ||
+        // 验收方 C-1 修正：原写 'scroll_of_enchanting'，**consumables.json 里根本
+        // 没有这个键**（真实 id 是 scroll_of_enchantment），且 'wand_of_fire' 已按
+        // D2 退出生成池——两条判据长期恒 false。这条守卫因此一直近乎空转，
+        // 本体断言此前通过靠的是 ring_/charm_ 的坐标巧合。详见 P1-36。
+        id === 'scroll_of_enchantment' ||
         id === 'potion_of_life' ||
         id.startsWith('ring_') ||
         id.startsWith('charm_')
@@ -99,7 +102,11 @@ function isCenterTreasure(item: unknown): boolean {
 // 需要更大样本时用 BP_CENTER_SCAN_SEEDS 追加，如：
 //   BP_CENTER_SCAN_SEEDS=$(seq -s, 100 139) npx vitest run --disableConsoleIntercept \
 //     src/test/blueprint_center.test.ts
-const DEFAULT_SCAN_SEEDS = [424242, 20260913, 1];
+// 验收方 C-1 修正：默认种子从 3 个扩到 12 个。
+// C-1（房间剖面对齐 CE）让地牢开阔约 3 倍，宝藏落在 machine center 上的概率随之
+// 降低，原来 3 个种子扫不到任何样本，用例 c) 的前置断言（样本数 > 0）因此翻红——
+// 这不是回归，是样本量不足。实测 40 种子稳定有样本；取 12 个在覆盖与耗时间折中。
+const DEFAULT_SCAN_SEEDS = [424242, 20260913, 1, 777, 31337, 20260916, 42, 999, 12345, 55555, 31415, 27182];
 const SCAN_SEEDS: number[] = [
     ...DEFAULT_SCAN_SEEDS,
     ...(proc?.env?.BP_CENTER_SCAN_SEEDS ?? '')

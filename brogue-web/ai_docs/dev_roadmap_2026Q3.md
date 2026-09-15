@@ -892,6 +892,37 @@ P1-34 定位 flaky 时开发方主动申报，验收方已核实成立。
 气味图 `scentTurnNumber`。请一并核查并各自登记。
 
 
+## P1-36 `blueprint_center` 的护栏长期近乎空转（C-1 验收发现）
+
+C-1 让该用例翻红后查出来的。`isCenterTreasure` 的五条判据里有两条**恒为 false**：
+
+```ts
+id === 'scroll_of_enchanting' ||   // consumables.json 里没有这个键（真实 id 是 scroll_of_enchantment）
+id === 'wand_of_fire' ||           // 已按 D2 退出生成池
+id === 'potion_of_life' ||
+id.startsWith('ring_') ||
+id.startsWith('charm_')
+```
+
+验收方实测确认：`scroll_of_enchanting` 不存在（**拼写错误**，真实 id 少了 `ment`）、
+`wand_of_fire` 在 consumables 里完全不存在。该用例此前能通过，靠的是
+`ring_*` / `charm_*` 与 machine center 的坐标巧合。
+
+**已做的两处修正**（C-1 验收时顺手）：
+1. 拼写改为 `scroll_of_enchantment`，并在注释里写明原委。
+2. 默认扫描种子从 3 个扩到 12 个——C-1 让地牢开阔约 3 倍，宝藏落在 center 上的
+   概率随之降低，3 个种子扫不到任何样本，用例 c) 的前置断言（样本数 > 0）因此
+   翻红。**这不是回归，是样本量不足**；实测 40 种子稳定有样本。
+
+**仍待处理**：
+- `wand_of_fire` 那条判据现已删除，但**如果将来 D2 的自创内容重新入池**，
+  需要有人记得把它加回来。
+- 更根本的问题是：**这类"点名 id 列表"的护栏天然会腐烂**——数据表改名、物品
+  退池、id 拼错，都不会有任何信号。建议改为按**物品类别/稀有度**判定，
+  而不是硬编码 id 列表；或者至少加一条元断言："列表里的每个 id 都必须在数据表中存在"。
+  后者成本极低，能把这类拼写错误变成红灯。
+
+
 ---
 
 # 验收流程
