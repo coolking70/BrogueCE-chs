@@ -12,6 +12,13 @@
  * 随之改写——机制覆盖不变，载体换成 CE 真实存在的即死地形熔岩，或改断言
  * "深水不致死"这一新事实；逐条映射见该报告的补做章节。
  *
+ * P1-28 补做（2026-09-15，验收打回后授权改写本文件）：initializeStatus 翻译层
+ * （MONST_FLIES → 永久悬浮，Monsters.c:3904-3928）使"膨胀怪死于岩浆"在 CE 与
+ * web 均不可达——验收 2 原"岩浆里的 explosive bloat 烧死后照样爆燃"一条改为
+ * 留痕测试：数据层锁死不可达前提，可达半边（岩浆致死不抑制死亡 DF 闸门）由
+ * "带 MA_DF_ON_DEATH 且不飞"的真实载体（explosive 变异 troll / vampire）继续锁。
+ * 逐条映射见 ai_docs/p1_28_flag_channel_report.md 的验收打回补做章节。
+ *
  * CE 对照（见 ai_docs/p1_24_death_sink_report.md）：
  *   - killCreature 最后 currentHP = 0          Combat.c:2042
  *   - MB_IS_DYING|MB_HAS_DIED 幂等守卫          Combat.c:1938-1941
@@ -22,7 +29,9 @@
  *   - DF_BLOAT_EXPLOSION = 表层 GAS_EXPLOSION 火格，爆炸伤害只豁免
  *     STATUS_EXPLOSION_IMMUNITY 与 MB_SUBMERGED，没有"站在水里"豁免
  *                                              Time.c:343-345
- * 结论：水中/岩浆中死亡的膨胀怪照常触发死亡地形——本文件把该结论锁死。
+ * 结论：水中死亡的膨胀怪（CE 可达：飞行怪可盘旋于水面被砍死）照常触发死亡
+ * 地形——本文件把该结论锁死；岩浆半边的前提在 P1-28 后不可达，锁法改为留痕
+ * 测试（见验收 2 首条）。
  *
  * 对抗性测试与"能捕获的具体错误实现"逐条标注在每个 it() 前的注释里；
  * 反向验证（真实改坏代码、跑出失败、贴输出、再还原）见报告。
@@ -30,13 +39,15 @@
 import { describe, it, expect } from 'vitest';
 import { createHeadlessGame } from './harness';
 import { Game } from '../engine/Core/Game';
-import { Monster, type MonsterData } from '../entities/Monster';
+import { Monster, type MonsterData, type MutationData } from '../entities/Monster';
 import { TerrainType } from '../engine/Map/Grid';
 import { GasType } from '../engine/Environment/Gas';
 import { logger } from '../engine/Systems/Logger';
 import monsterDataJson from '../data/monsters.json';
+import mutationDataJson from '../data/mutations.json';
 
 const MONSTER_DATA = monsterDataJson as MonsterData[];
+const MUTATION_DATA = mutationDataJson as MutationData[];
 
 function monsterDataById(id: string): MonsterData {
     const row = MONSTER_DATA.find(m => m.id === id);
@@ -252,28 +263,95 @@ describe('P1-24 验收 1：die() 归零 hp，怪物真的被移出列表', () =>
 // 路径（triggerDeathFeatures 不读地形），仅地形标签不同、无独立判别力——按
 // 任务书授权合并进该对照组（浅水角保留）；"深水不抑制死亡地形"这一角由下方
 // 深水爆燃条接管（深水格上点火，比毒气更贴近水真正可能抑制的对象——火）。
+//
+// P1-28 补做：岩浆角原以"explosive bloat 烧死后照样爆燃"为载体；翻译层派生
+// 永久悬浮后该前提不可达（CE 三只膨胀怪全带 MONST_FLIES；唯一不飞的 vampire
+// 其血迹 DF web 未实现），改为留痕测试——闸门半边由"带 MA_DF_ON_DEATH 且不飞"
+// 的真实载体（explosive 变异 troll / vampire）继续锁，DF 内容半边由深水爆燃条
+// 继续锁（triggerDeathFeatures 不读地形，与岩浆同一代码路径）。
 // ---------------------------------------------------------------------------
-describe('P1-24 验收 2：水中/岩浆中死亡的死亡地形照常触发', () => {
-    it('对抗性④（续）：岩浆里的 explosive bloat 烧死后照样爆燃——死亡格与四邻点燃。' +
-        'CE 岩浆致死走 killCreature(monst, false)（Time.c:218），DF 不被抑制。' +
-        '"岩浆里就不用点火"的错误实现会在 isBurning 断言上失败。', () => {
-        const game = createHeadlessGame(29);
-        clearToOpenRoom(game);
-        setTile(game, 7, 6, TerrainType.LAVA); // 邻格保持 FLOOR，观察四邻点火
+describe('P1-24 验收 2：水中死亡的死亡地形照常触发（DF 内容）；岩浆死亡不抑制死亡 DF 闸门（P1-28 后留痕）', () => {
+    it('留痕（P1-28 验收打回后重写，原前提不可达）：岩浆致死的死亡 DF 闸门不被抑制，' +
+        '载体为"带 MA_DF_ON_DEATH 且不飞"的怪。原载体"岩浆里的 explosive bloat 烧死后' +
+        '照样爆燃"考的机制是「岩浆致死走 killCreature(monst, false)（Time.c:218），' +
+        '死亡地形不被抑制」；P1-28 的 initializeStatus 翻译层使该前提不可达——deathDF ' +
+        '内容已在 web 实现的只有 bloat / explosive_bloat（Globals.c:1037-1038 / ' +
+        '1084-1085），二者全带 MONST_FLIES，经翻译层（Monsters.c:3904-3928）派生永久' +
+        '悬浮，CE 里永远不可能死于岩浆；CE 唯一不飞的 MA_DF_ON_DEATH 怪 vampire ' +
+        '(Globals.c:1131-1132) 的 DF_BLOOD_EXPLOSION 是纯血迹装饰，web 无血迹层' +
+        '（P4-4 登记未实现），"照样爆燃"式的 DF 内容断言无载体。' +
+        '本条改为三段：①数据层锁死不可达的全部前提（旗标来源、翻译层派生、catalog ' +
+        '不飞集合、变异通道旗标）——monsters.json / mutations.json 漂移或翻译层改动' +
+        '即在此翻红，提示前提可能恢复可达；②可达半边继续锁原机制：explosive 变异 ' +
+        'troll（D11-15 可自然出现、不飞、可走入岩浆——CE 完全可达的状态）与 vampire ' +
+        '被岩浆烧死后 deathEffectTriggered 必须翻 true——"岩浆里就不用触发死亡 DF"的' +
+        '错误实现在此挂掉；③现状留痕：二者的 DF 内容（DF_MUTATION_EXPLOSION / ' +
+        'DF_BLOOD_EXPLOSION）web 尚无实现分支（triggerDeathFeatures 仅按 typeId 认 ' +
+        'bloat/explosive_bloat 两分支），故无毒气、无点燃——此负向断言在内容实现之日' +
+        '翻红，届时应改回真实内容断言。"死亡地形不被地形抑制"的 DF 内容半边由下一条' +
+        '深水爆燃继续锁（triggerDeathFeatures 不读地形，与岩浆同一代码路径）。', () => {
+        // ---- ① 数据层：不可达前提的完整锁死 ----
+        // A1：deathDF 内容已实现的两只怪全带 MONST_FLIES，且构造即得永久悬浮
+        //     （旗标来源与翻译层派生，各锁一半）
+        for (const id of ['bloat', 'explosive_bloat']) {
+            const d = monsterDataById(id);
+            expect(d.abilityFlags).toContain('MA_DF_ON_DEATH');
+            expect(d.behaviorFlags).toContain('MONST_FLIES');
+            expect(new Monster(2, 2, d).hasStatus('levitating')).toBe(true);
+        }
+        // A2：catalog 里"带 MA_DF_ON_DEATH 且不飞"的怪恰为 vampire（其血迹 DF 无实现）
+        expect(
+            MONSTER_DATA
+                .filter(d => (d.abilityFlags ?? []).includes('MA_DF_ON_DEATH')
+                    && !(d.behaviorFlags ?? []).includes('MONST_FLIES'))
+                .map(d => d.id)
+        ).toEqual(['vampire']);
+        // A3：变异通道授予 MA_DF_ON_DEATH（explosive / infested）且不授予 MONST_FLIES
+        //     ——不飞的死亡 DF 怪只能经此通道出现，这是行为载体的来源
+        const dfMutations = MUTATION_DATA.filter(m => m.abilityFlags.includes('MA_DF_ON_DEATH'));
+        expect(dfMutations.map(m => m.id).sort()).toEqual(['explosive', 'infested']);
+        expect(dfMutations.every(m => !(m.behaviorFlags ?? []).includes('MONST_FLIES'))).toBe(true);
 
-        const bloat = new Monster(7, 6, monsterDataById('explosive_bloat'));
-        game.monsters.push(bloat);
+        // ---- ② 行为层（可达半边）：explosive 变异 troll——"带 MA_DF_ON_DEATH 且
+        //         不飞"的真实实例（CE：D11-15 可自然出现，不飞可入岩浆）----
+        const game = createHeadlessGame(35);
+        clearToOpenRoom(game);
+        setTile(game, 7, 6, TerrainType.LAVA); // 邻格保持 FLOOR，观察四邻
+
+        const carrier = new Monster(7, 6, monsterDataById('troll'));
+        carrier.mutate(MUTATION_DATA.find(m => m.id === 'explosive')!);
+        expect(carrier.hasAbility('MA_DF_ON_DEATH')).toBe(true); // 前置：变异挂上死亡 DF
+        expect(carrier.hasStatus('levitating')).toBe(false);     // 前置：不飞（岩浆致死可达）
+        game.monsters.push(carrier);
 
         priv(game).applyEnvironmentalEffects();
-        expect(bloat.hp).toBe(0);
+        expect(carrier.hp).toBe(0); // 熔岩致死照常收口
         priv(game).triggerDeathFeatures();
+        expect(carrier.deathEffectTriggered).toBe(true); // 岩浆致死不抑制死亡 DF 闸门
 
-        expect(game.grid.getCell(7, 6)?.isBurning).toBe(true);
-        expect(game.grid.getCell(7, 5)?.isBurning).toBe(true);
-        expect(game.grid.getCell(7, 7)?.isBurning).toBe(true);
-        expect(game.grid.getCell(6, 6)?.isBurning).toBe(true);
-        expect(game.grid.getCell(8, 6)?.isBurning).toBe(true);
-        expect(bloat.deathEffectTriggered).toBe(true);
+        // ---- ③ 现状留痕：DF_MUTATION_EXPLOSION web 无实现——无毒气、无点燃。
+        //         负向断言：内容实现之日翻红，届时改回真实内容断言。----
+        expect(game.grid.getCell(7, 6)?.isBurning).toBe(false);
+        for (const [dx, dy] of [[0, -1], [0, 1], [-1, 0], [1, 0]] as Array<[number, number]>) {
+            expect(game.grid.getCell(7 + dx, 6 + dy)?.isBurning).toBe(false);
+        }
+        // gasGrid 是预分配网格：空位 = density 0（GasType.NONE），不缺席
+        expect(game.environment.gasGrid[6]?.[7]?.density ?? 0).toBe(0);
+
+        // ---- ②（续）：vampire——catalog 唯一不飞的 MA_DF_ON_DEATH 怪，同证闸门半边 ----
+        const game2 = createHeadlessGame(36);
+        clearToOpenRoom(game2);
+        setTile(game2, 7, 6, TerrainType.LAVA);
+
+        const vampire = new Monster(7, 6, monsterDataById('vampire'));
+        expect(vampire.hasStatus('levitating')).toBe(false); // 前置：不飞
+        game2.monsters.push(vampire);
+
+        priv(game2).applyEnvironmentalEffects();
+        expect(vampire.hp).toBe(0);
+        priv(game2).triggerDeathFeatures();
+        expect(vampire.deathEffectTriggered).toBe(true);     // 闸门同样不被岩浆抑制
+        expect(game2.grid.getCell(7, 6)?.isBurning).toBe(false); // 血迹 DF 同样未实现
     });
 
     it('对抗性④（续，P1-27 载体重写）：深水里的 explosive bloat 被玩家砍死后照样爆燃——' +

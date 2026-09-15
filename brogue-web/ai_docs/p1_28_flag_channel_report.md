@@ -334,3 +334,147 @@ RNG 流未移动，基线零变红。
 | npm run build 绿、两条输出尾部贴报告 | ✅ §七 |
 | 基线（fixtures）不刷新、既有测试不改 | ✅ 基线全绿未动；既有测试文件零改动（含 p1_24） |
 | 与预设不符之处报告开头单列 | ✅ §〇（1 门禁互斥 + 2 通道死路加重情节 + 3 火焰分支两处 CE 偏差顺带对齐） |
+
+---
+
+# 补做（2026-09-15，验收打回后）：p1_24 岩浆条换载体——判定不可达，改为留痕测试
+
+> 本节是验收方对 §〇.1 申报的裁决落地："授权你改 `src/test/p1_24_death_sink.test.ts`"。
+> 改动仅此一个测试文件（+95/−17），`src/engine/`、`src/entities/`、`src/data/*.json`、
+> fixtures、其它测试文件零改动（反向验证的临时改坏已精确还原，见本节四）。
+
+## 一、方案判定：方案甲不可行（遍历记录），走方案乙
+
+任务书方案甲要求"CE 里不飞、且 deathDF 在 web 有实现"的怪。两条通道遍历：
+
+**通道 A：monsterCatalog 固定旗标**（Globals.c，全表检索 `MA_DF_ON_DEATH`，恰 4 条）：
+
+| 怪 | 位置 | 飞行旗标 | deathDF | web 内容实现 |
+|---|---|---|---|---|
+| bloat | Globals.c:1037-1038 | MONST_FLIES\|MONST_FLITS | DF_BLOAT_DEATH（毒气） | ✅ triggerDeathFeatures 毒气分支 |
+| pit bloat | Globals.c:1039-1040 | MONST_FLIES\|MONST_FLITS | DF_HOLE_POTION | ❌（本轮不接） |
+| explosive bloat | Globals.c:1084-1085 | MONST_FLIES\|MONST_FLITS | DF_BLOAT_EXPLOSION（爆燃） | ✅ igniteForced 分支 |
+| vampire | Globals.c:1131-1132 | 无（MONST_FLEES_NEAR_DEATH\|MONST_MALE） | DF_BLOOD_EXPLOSION（血迹装饰） | ❌ web 无血迹层（P4-4 登记） |
+
+三只有"已实现内容"的全飞 → 经 initializeStatus 派生永久悬浮 → 岩浆致死不可达；
+唯一不飞的 vampire，其 DF 是纯装饰、web 无血迹层 → "照样爆燃"式内容断言无东西可断言。
+
+**通道 B：mutationCatalog 变异授予**（Globals.c:1397-1400，`explosive`/`infested` 变异
+给任意怪 graft MA_DF_ON_DEATH）：web 已实现变异系统（Game.applyRandomMutation，D11 起；
+`Monster.mutate` 把 MA_DF_ON_DEATH 加入 abilityFlags）。不飞怪 + explosive 变异在 CE
+完全可达（如 troll，深度 8-15 与变异深度重叠），**但它也不满足方案甲**——
+`triggerDeathFeatures` 只按 typeId 认 bloat/explosive_bloat 两个内容分支，
+DF_MUTATION_EXPLOSION 无实现分支，内容断言同样无东西可断言。
+
+**结论：两通道合并后，"能死于岩浆 ∧ deathDF 内容已实现"的怪不存在，方案甲不可行，
+按任务书预设走方案乙。**
+
+## 二、原断言 → 新断言的机制映射（任务书硬要求）
+
+原断言（对抗性④（续））考的机制：**岩浆致死走 `killCreature(monst, false)`
+（Time.c:218 已复核），死亡地形不被抑制——"岩浆里就不用点火"的错误实现必须挂掉**。
+
+该机制拆成两个半边，处置各不同：
+
+- **闸门半边**（MA_DF_ON_DEATH 分支不被岩浆否决，Combat.c:1963-1965 已复核：
+  只看 `administrativeDeath` 与 `MB_IS_FALLING`）——**由新留痕测试继续锁**：
+  载体换成两个 CE 真可达的"带 MA_DF_ON_DEATH 且不飞"实例——
+  ① explosive 变异 troll（D11-15 可自然出现、不飞、可走入岩浆，经真实 `mutate()` 构造）；
+  ② vampire（catalog 唯一不飞的 MA_DF_ON_DEATH 怪）。二者被岩浆烧死后
+  `deathEffectTriggered` 必须翻 true，"岩浆里就不用触发死亡 DF"的错误实现在此挂掉。
+- **内容半边**（DF 在死亡格照常铺开）——岩浆角在 web 无载体（§一），
+  **由既有深水爆燃条接管**："深水里被玩家砍死的 explosive bloat 照样爆燃"锁的是同一条
+  代码路径（triggerDeathFeatures 不读地形），本轮复核该条仍然绿。
+  这正是任务书方案乙指定的接管关系。
+
+新测试共三段断言（描述文字已同步改写，与实际断言一致）：
+
+1. **数据层锁死不可达前提**（任一变动翻红、提示恢复真实载体）：
+   A1 bloat/explosive_bloat 带 MONST_FLIES 且构造即得永久悬浮（旗标来源与翻译层各锁一半）；
+   A2 catalog "MA_DF_ON_DEATH 且不飞"集合恰为 `['vampire']`；
+   A3 授予 MA_DF_ON_DEATH 的变异恰为 `['explosive','infested']` 且都不授予 MONST_FLIES。
+2. **行为层可达半边**：变异 troll（seed 35）与 vampire（seed 36）熔岩烧死 +
+   `deathEffectTriggered === true`。
+3. **现状留痕**：二者死亡格与四邻不点燃、无毒气（DF 内容未实现的负向断言）——
+   内容实现之日此断言翻红，届时改回真实内容断言。
+
+非 `it.skip`、非删测试转绿：13 条 → 13 条，1:1 替换。
+
+## 三、同文件其余测试的前提可达性核对（任务书要求）
+
+逐条核对结论：**已核对无其它**。用 rat 的 7 条（对抗性①②③及续）——rat 无
+MONST_FLIES/火免/无敌，熔岩/燃烧格/蒸汽前提全部保持可达；深水爆燃条与验收 3 两条
+——死亡来自玩家近战（近战不读悬浮），且"飞行怪盘旋于水面"在 CE 可达；
+验收 4 两条是玩家侧，与怪物旗标无关。本轮全文件 13/13 绿与之互证。
+
+## 四、反向验证（真实改坏 → 真实失败输出 → 还原）
+
+在 `Game.triggerDeathFeatures` 闸门前临时插入错误实现
+`if (cell.terrain === LAVA) continue;`（"岩浆里就不用触发死亡 DF"），跑本文件：
+
+```
+ ❯ src/test/p1_24_death_sink.test.ts (13 tests | 1 failed) 149ms
+     × 留痕（P1-28 验收打回后重写，原前提不可达）：岩浆致死的死亡 DF 闸门不被抑制，……
+AssertionError: expected false to be true // Object.is equality
+    330|         expect(carrier.deathEffectTriggered).toBe(true); // 岩浆致死不抑制死亡 DF 闸门
+ Test Files  1 failed (1)
+      Tests  1 failed | 12 passed (13)
+```
+
+唯一红即新留痕测试（变异载体在闸门断言上命中）；深水爆燃条保持绿（破坏只针对岩浆，
+证明两半边各自独立锁着）。随后逐字还原，`git diff --stat` 复核 `src/engine/` 零残留：
+
+```
+ brogue-web/src/test/p1_24_death_sink.test.ts | 112 +++++++++++++++++++++++----
+ 1 file changed, 95 insertions(+), 17 deletions(-)
+```
+
+## 五、门禁（真实输出尾部）
+
+### 5.1 npm test（--no-file-parallelism，按仓库记忆的验收口径）——绿
+
+```
+ Test Files  44 passed (44)
+      Tests  473 passed | 7 skipped | 5 todo (485)
+ Start at  10:12:36
+ Duration  34.51s (transform 417ms, setup 0ms, import 1.71s, tests 29.42s, environment 7ms)
+```
+
+条目账：上轮 472 passed + 1 failed（即 §〇.1 那条）= 473 可跑；本轮 1:1 替换后
+473 passed + 0 failed。473 ≥ 472 达标。
+
+### 5.2 npm run build——绿
+
+```
+ dist/assets/index-PxqeKR4G.js               923.43 kB │ gzip: 291.35 kB
+(!) Some chunks are larger than 500 kB after minification. …（既有体积提示，非错误）
+✓ built in 1.41s
+```
+
+## 六、本轮验收条款逐条对照
+
+| 任务书条款 | 状态 |
+|---|---|
+| 先判断再动手，二选一 | ✅ §一：两通道遍历后确认方案甲不可行，走方案乙 |
+| 留痕测试必须真的断言点什么，不许 skip/删测试转绿 | ✅ 三段断言（数据锁 + 可达半边行为锁 + 未实现内容负向留痕），13→13 条 1:1 |
+| 写明原断言考什么 → 新断言如何继续考（或由哪条接管） | ✅ §二：闸门半边由新测试锁，内容半边由深水爆燃条接管（复核仍绿） |
+| 测试描述文字与实际断言一致 | ✅ 描述整段重写，逐句对应三段断言 |
+| 顺带核对同文件其它测试前提 | ✅ §三：已核对无其它 |
+| 文件边界（只动 p1_24_death_sink.test.ts / 新增测试文件） | ✅ diff 仅该文件；engine/entities/data/fixtures/其它测试零改动 |
+| npm test 全绿 ≥472 + build 绿 + 真实输出尾部 | ✅ §五：473 passed / build ✓ |
+| 报告追加到本文件、标明验收打回补做 | ✅ 即本节 |
+
+## 七、与预设不符之处（本节任务书）
+
+1. **任务书的遍历范围只覆盖 monsterCatalog，未提 mutationCatalog**——"CE 里唯一不飞
+   的 MA_DF_ON_DEATH 怪是 vampire"在 catalog 范围内成立（已复核），但 mutationCatalog
+   （Globals.c:1397-1400）的 explosive/infested 变异会给任意怪（含不飞怪）graft
+   MA_DF_ON_DEATH，且 web 变异系统已实现。不改变方案判定（变异怪的 DF 内容同样无
+   web 实现，方案甲仍不可行），但上一轮报告 §〇.1 里"web 突变系统也是可行载体"的
+   说法仅在"闸门载体"意义上成立，在"内容断言载体"意义上不成立。
+2. **"换成 vampire 后没有东西可断言"不完全成立**：DF 内容（血迹）确实无可断言，
+   但 MA_DF_ON_DEATH **闸门**（deathEffectTriggered 翻 true）是 web 已实现的
+   typeId 无关逻辑，对 vampire 可断言——新测试据此把闸门半边也锁上，而不只做
+   数据层留痕。
+3. 其余预设（行号锚点 Time.c:218 / Combat.c:1963-1965 / Globals.c 各条）全部复核
+   无误。
