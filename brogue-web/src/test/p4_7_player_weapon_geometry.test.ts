@@ -394,9 +394,10 @@ describe('P4-7 数据留痕', () => {
         expectFlags('mace', 'ITEM_ATTACKS_STAGGER');
         expectFlags('war_hammer', 'ITEM_ATTACKS_STAGGER');
         expectFlags('halberd');   // 自创条目：不持有 CE 旗标
-        expectFlags('dagger');
-        expectFlags('rapier');
-        expectFlags('flail');
+        // B-1 后：这三件武器已按 CE Items.c:209-236 带上各自旗标
+        expectFlags('dagger', 'ITEM_SNEAK_ATTACK_BONUS');
+        expectFlags('rapier', 'ITEM_ATTACKS_QUICKLY', 'ITEM_LUNGE_ATTACKS');
+        expectFlags('flail', 'ITEM_PASS_ATTACKS');
         expectFlags('sword');
         expectFlags('broadsword');
         expectFlags('dart');
@@ -406,15 +407,28 @@ describe('P4-7 数据留痕', () => {
         expect(hammer?.flags).toEqual(['ITEM_ATTACKS_STAGGER']);
     });
 
-    it('留痕（本轮明确不做项）：dagger 的 ITEM_SNEAK_ATTACK_BONUS、rapier 的 ' +
+    it('留痕（B-1 已反转）：dagger 的 ITEM_SNEAK_ATTACK_BONUS、rapier 的 ' +
         'ITEM_ATTACKS_QUICKLY|ITEM_LUNGE_ATTACKS、flail 的 ITEM_PASS_ATTACKS ' +
-        '均未实现 —— 数据里没有、行为上也断言普通武器无几何（对照组已覆盖）。', () => {
-        const CE_FLAGS = ['ITEM_SNEAK_ATTACK_BONUS', 'ITEM_ATTACKS_QUICKLY',
+        '现已按 CE Items.c:209-236 落到数据里；行为见 b_1_weapon_specials.test.ts。', () => {
+        // 本断言是 P4-7 留痕测试的预埋反转（原断言：这四个旗标一个都不该出现，
+        // "本轮明确不做"）。B-1 已实现，故改为逐件断言其精确旗标集合。
+        const expectExactly = (id: string, ...flags: string[]) => {
+            const w = WEAPONS.find(x => x.id === id);
+            expect(w, `weapons.json 应存在 ${id}`).toBeDefined();
+            expect((w!.flags ?? []).slice().sort(), `${id} 的 B-1 旗标`)
+                .toEqual(flags.slice().sort());
+        };
+        expectExactly('dagger', 'ITEM_SNEAK_ATTACK_BONUS');
+        expectExactly('rapier', 'ITEM_ATTACKS_QUICKLY', 'ITEM_LUNGE_ATTACKS');
+        expectExactly('flail', 'ITEM_PASS_ATTACKS');
+
+        // 其余武器**不得**沾上这四个旗标（B-1 的越界守卫）
+        const B1_FLAGS = ['ITEM_SNEAK_ATTACK_BONUS', 'ITEM_ATTACKS_QUICKLY',
             'ITEM_LUNGE_ATTACKS', 'ITEM_PASS_ATTACKS'] as const;
         for (const w of WEAPONS) {
-            for (const f of CE_FLAGS) {
-                expect(w.flags ?? [], `${w.id} 不应携带 ${f}（本轮明确不做）`)
-                    .not.toContain(f);
+            if (['dagger', 'rapier', 'flail'].includes(w.id)) continue;
+            for (const f of B1_FLAGS) {
+                expect(w.flags ?? [], `${w.id} 不该携带 ${f}`).not.toContain(f);
             }
         }
     });
