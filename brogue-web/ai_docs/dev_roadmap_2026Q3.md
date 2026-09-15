@@ -829,7 +829,7 @@ seed999/D12: 下楼梯可达=false  可达 118/180  深水=38 上锁门=1
 并删掉该文件里对应的说明段落。
 
 
-## P1-34 `p4_9_safety_map` T2 在全量运行中约 50% 概率翻红（C-0 后出现）
+## ~~P1-34~~ 已修复（见提交 fix(P1-34)）：test 局带着上一个随机地牢的陈旧环路图
 
 C-0 合入后观察到：`src/test/p4_9_safety_map.test.ts` 的
 「T2 双重扫描 + 数值变换的解析解：密封走廊值 = 27-x」在**全量** `npm test` 中
@@ -863,6 +863,33 @@ T2 事后把房间挖成密封走廊，而 `updateSafetyMap` 里的 `isInLoop` �
 
 flaky 测试比失败更有害——它训练所有人"红了就重跑"，而这正是 P1-26 退役相位
 快照要治的同一个病：**红灯一旦变成背景音，真回归就再也拦不住了。**
+
+
+## P1-35 读档后环路偏好静默失效（P1-34 的同族隐患）
+
+P1-34 定位 flaky 时开发方主动申报，验收方已核实成立。
+
+`Game.loadSnapshot` 从存档重建网格后，**既不恢复也不重算 `loopMap`**
+（快照 schema 里也没有这个字段）。于是读档后 `isInLoop` 返回的是
+**读档前那一局**的环路图——与当前地图无关。
+
+后果：P4-9 safety map 的 `IN_LOOP -= 10` 偏好在读档后按一张错误的环路图生效，
+怪物逃跑路线会偏离。不会崩溃、不会报错，**静默失效**。
+
+这与 P1-34 是同一个不变式的两处漏洞：**`loopMap` 必须始终等于当前网格的
+`analyzeLoopMap` 结果**。P1-34 补上了 `generateTestDepth` 那处，`loadSnapshot`
+这处未动（不在该轮文件边界内）。
+
+### 必做
+
+在 `loadSnapshot` 重建网格之后补 `this.loopMap = analyzeLoopMap(this.grid)`。
+`analyzeLoopMap` 是纯函数、零 RNG 消耗，不影响读档的随机流。
+
+### 顺带复核
+
+存档往返还有没有别的"生成期派生态"没被恢复也没被重算？
+已知候选：waypoint 系统（`WaypointSystem` 的 `coordinates`/`distanceMaps`）、
+气味图 `scentTurnNumber`。请一并核查并各自登记。
 
 
 ---
