@@ -8,6 +8,7 @@ import { Player } from './Player';
 import { rng } from '../engine/Random';
 import type { Game } from '../engine/Core/Game';
 import { Pathfind } from '../engine/Map/Pathfind';
+import { getSafetyMapForMonster, safetyNextStep } from '../engine/Map/SafetyMap';
 import { CombatSystem } from '../engine/Combat/Combat';
 import { logger } from '../engine/Systems/Logger';
 import i18next from 'i18next';
@@ -260,6 +261,13 @@ export class Monster extends Creature {
      * 重见玩家时清除（CE Monsters.c:2101/3234 的简化口径：重见即清）。
      */
     public givenUpOnScent: boolean = false;
+
+    /**
+     * P4-9：CE monst->safetyMap——察觉不到玩家的逃跑者的私有 safety map
+     * 快照。getSafetyMap（Monsters.c:2380-2400）：察觉 → 释放（置 null）并
+     * 用全局实时图；察觉不到 → 只拍一次，此后一直用这张旧图继续逃。
+     */
+    public safetySnapshot: number[][] | null = null;
 
     // Movement & Combat speeds
     public regenTurns: number = 0;
@@ -1083,26 +1091,71 @@ export class Monster extends Creature {
                 this.state = MonsterState.WANDERING;
                 return;
             } else {
-                // Move away from player
-                let bestScore = -Infinity;
-                let bestCell = null;
-                for (let dx = -1; dx <= 1; dx++) {
-                    for (let dy = -1; dy <= 1; dy++) {
-                        if (dx === 0 && dy === 0) continue;
-                        const nx = this.loc.x + dx;
-                        const ny = this.loc.y + dy;
-                        const c = game.grid.getCell(nx, ny);
-                        if (c && (isFlying ? !c.isOpaque : c.isPassable) && !game.getMonsterAt(nx, ny) && !(game.player.loc.x === nx && game.player.loc.y === ny)) {
-                            const dist = Math.max(Math.abs(nx - game.player.loc.x), Math.abs(ny - game.player.loc.y));
-                            if (dist > bestScore) {
-                                bestScore = dist;
-                                bestCell = { x: nx, y: ny };
-                            }
+                // P4-9：顺 safety map 下坡逃（CE Monsters.c:3503
+                // `dir = nextStep(getSafetyMap(monst), monst->loc, NULL, true)`）。
+                // getSafetyMap 的双路径（实时图 / 察觉不到玩家的怪物私有快照）
+                // 在 getSafetyMapForMonster 内（Monsters.c:2380-2400）。
+                // 取代旧的"切比雪夫最远邻格"贪心——它只看直线距离不看连通性，
+                // 会一头扎进死胡同（本轮的核心病灶）。
+                const safetyCanEnter = (x: number, y: number): boolean => {
+                    const c = game.grid.getCell(x, y);
+                    if (!c) return false;
+                    if (isFlying ? c.isOpaque : !c.isPassable) return false;
+                    return !game.getMonsterAt(x, y) && !(game.player.loc.x === x && game.player.loc.y === y);
+                };
+                const map = getSafetyMapForMonster(game, this);
+                const dir = safetyNextStep(map, game.grid, this.loc.x, this.loc.y);
+                if (dir && safetyCanEnter(this.loc.x + dir[0], this.loc.y + dir[1])) {
+                    this.tryMoveTo(this.loc.x + dir[0]!, this.loc.y + dir[1]!, game);
+                    return;
+                }
+                if (dir && dir[0] !== 0 && dir[1] !== 0) {
+                    // CE 的 moveMonster 兜底（Monsters.c:3510-3512 的
+                    // moveMonsterPassivelyTowards）近似：对角下坡格被挡时，
+                    // 尝试它的两个正交分量（CE 逐轴向目标滑动的简化口径）。
+                    const orthogonal: Array<readonly [number, number]> =
+                        [[this.loc.x + dir[0], this.loc.y], [this.loc.x, this.loc.y + dir[1]]];
+                    for (const [cx, cy] of orthogonal) {
+                        if (safetyCanEnter(cx, cy)) {
+                            this.tryMoveTo(cx, cy, game);
+                            return;
                         }
                     }
                 }
-                if (bestCell) {
-                    this.tryMoveTo(bestCell.x, bestCell.y, game);
+                // 走投无路（Monsters.c:3513-3523）：CE 会反击贴脸的敌人（玩家
+                // 优先，且 STATUS_MAGICAL_FEAR 豁免——web 无该状态；CE 还会扫
+                // 贴脸的其他怪物，web 无该目标谱系，见报告）。web 只处理贴脸
+                // 玩家：过几何分发后走标准近战。
+                if (distToPlayer <= 1) {
+                    if (this.tryGeometryMeleeAdjacent(game, game.player)) {
+                        return;
+                    }
+                    const result = CombatSystem.attack(this, game.player);
+                    if (result.kamikazeSelfDestruct) {
+                        logger.log(i18next.t('combat.monster_kamikaze', {
+                            monster: this.name,
+                            defaultValue: `The ${this.name} lunges at you and bursts!`
+                        }), '#ff8800');
+                    } else if (result.seized) {
+                        logger.log(i18next.t('combat.monster_seizes_you', {
+                            monster: this.name,
+                            defaultValue: `The ${this.name} seizes you!`
+                        }), '#ffcc88');
+                    } else if (result.damage > 0) {
+                        game.lastDamageSource = this.name;
+                        logger.log(i18next.t('combat.monster_hits_you', {
+                            monster: this.name, damage: result.damage,
+                            defaultValue: `The ${this.name} hits you for ${result.damage} damage.`
+                        }), '#ff6666');
+                        game.spawnFloatingText(`-${result.damage}`, game.player.loc.x, game.player.loc.y, 0xff5555);
+                        game.spawnBlood(game.player.loc.x, game.player.loc.y);
+                    } else {
+                        logger.log(i18next.t('combat.monster_misses_you', {
+                            monster: this.name,
+                            defaultValue: `The ${this.name} misses you.`
+                        }), '#aaaaaa');
+                    }
+                    this.endTurnWithAttack();
                 }
                 return;
             }

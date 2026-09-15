@@ -25,6 +25,7 @@ import { generateMonsterDetail, generateItemDetail, type DetailInfo } from '../U
 import { logger } from '../Systems/Logger';
 import { Pathfind } from '../Map/Pathfind';
 import { ScentMap, obstructsScent } from '../Map/Scent';
+import { buildSafetyMap, allocShortGrid, SAFETY_MAX_DISTANCE } from '../Map/SafetyMap';
 import i18next from 'i18next';
 
 import { EnvironmentManager } from '../Environment/Gas';
@@ -323,6 +324,13 @@ export class Game {
     // 换新图（CE 跨层留存 levels[d].scentMap，web 不做多层留存）；每玩家回合
     // 在 playerTurnEnded 的主观时间块里重刷一次（CE Time.c:2610）。
     public scent: ScentMap = new ScentMap(DCOLS, DROWS);
+
+    // P4-9：safety map（CE 全局 safetyMap，Time.c:1791 updateSafetyMap 构建）。
+    // 每玩家回合最多重算一次（rogue.updatedSafetyMapThisTurn，Rogue.h:2452）：
+    // 回合开始清零（Time.c:2616），有可见逃跑怪时主动预更新一次
+    //（Time.c:2618-2626），其余由 getSafetyMap 惰性触发（Monsters.c:2386/2392）。
+    public safetyMap: number[][] = allocShortGrid(DCOLS, DROWS, SAFETY_MAX_DISTANCE);
+    public updatedSafetyMapThisTurn: boolean = false;
 
     // Endgame & Stats
     public isGameOver: boolean = false;
@@ -4887,6 +4895,19 @@ export class Game {
             this.fov.computeFOVMask(this.player.loc.x, this.player.loc.y, DCOLS + DROWS, obstructsScent)
         );
 
+        // ---- P4-9：safety map 的回合期管理（CE Time.c:2616-2626，主观玩家块、
+        // 怪物推进之前）----先清"本回合已重算"闩锁；再扫描怪物表，若存在所在格
+        // 在玩家 FOV 内的逃跑怪则主动预更新一次并停（break）——本回合内其余
+        // 逃跑怪（含看不见玩家的）都复用这张图，getSafetyMap 不再重算。
+        this.updatedSafetyMapThisTurn = false;
+        for (const m of this.monsters) {
+            if (m.hp > 0 && m.state === MonsterState.FLEEING &&
+                this.grid.getCell(m.loc.x, m.loc.y)?.isVisible) {
+                this.updateSafetyMap();
+                break;
+            }
+        }
+
         if (this.animationEnabled && !this.isAutoTraveling()) {
             this.beginAdvancement(stealthRange);
             return;
@@ -4896,6 +4917,24 @@ export class Game {
         let step = iter.next();
         while (!step.done) step = iter.next();
         this.finishTurnEpilogue();
+    }
+
+    /**
+     * P4-9：CE Time.c:1791 updateSafetyMap。构建详情见 SafetyMap.buildSafetyMap；
+     * CE 在函数首行置位 rogue.updatedSafetyMapThisTurn（Time.c:1795），web 侧
+     * 由本方法在构建后置位。IN_LOOP web 无数据源，恒 false（报告登记）。
+     */
+    public updateSafetyMap(): void {
+        this.safetyMap = buildSafetyMap({
+            grid: this.grid,
+            playerX: this.player.loc.x,
+            playerY: this.player.loc.y,
+            playerLevitating: this.player.hasStatus('levitating'),
+            playerImmuneToFire: this.player.hasStatus('immune_fire'),
+            monsterAt: (x, y) => this.getMonsterAt(x, y),
+            isInLoop: () => false,
+        });
+        this.updatedSafetyMapThisTurn = true;
     }
 
     /**
