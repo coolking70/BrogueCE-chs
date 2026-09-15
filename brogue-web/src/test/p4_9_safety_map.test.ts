@@ -360,13 +360,24 @@ describe('P4-9: safety map（怪物逃跑寻路）', () => {
         //     铺满可达域，取值数同样塌缩到个位数——两处都过不了 ≥10 这条线。
         for (const seed of [42, 20260915]) {
             const game = createHeadlessGame(seed); // normal 模式：真实生成，零改造
-            const px = game.player.loc.x;
-            const py = game.player.loc.y;
 
-            // 舞台自洽：web 玩家出生态就站在楼梯上（放置偏差，报告登记）——
-            // 这正是打回探针的场景，梯度必须在此状态下成立。
-            const startTerrain = game.grid.getCell(px, py)?.terrain;
-            expect(startTerrain === TerrainType.STAIRS_UP || startTerrain === TerrainType.STAIRS_DOWN).toBe(true);
+            // 舞台（P1-31 后由验收方改写）：本条守的是"**真实关卡上、玩家实际所在
+            // 位置**，safety map 必须有梯度且给得出逃跑方向"——即 P4-9 打回时
+            // 实测"全图只有 30000/-111 两个值、60 个可达格 0 个有方向"的那种退化
+            // 必须被拦住。
+            //
+            // 原断言依赖"web 玩家出生就站在楼梯上"这个**放置偏差**当舞台；
+            // P1-31 已按 CE（RogueMain.c:845-851 的 4 邻域搜索排除 HAS_STAIRS）
+            // 修好落位，该前提失效。
+            //
+            // 验收方曾试图改成"显式把玩家传送到楼梯格"来保留原场景，实测梯度
+            // 只有 16.4% 的可达格有方向——但那是 **CE 自己的边角行为**
+            // （玩家格被楼梯禁入覆盖 → 唯一种子不入队 → 平图），CE 进场根本
+            // 到不了那个状态。断言一个 CE 不保证的性质是错的，已回退。
+            // 现在用玩家的自然落位，这也正是玩家真实会处的位置。
+            const startTerrain = game.grid.getCell(game.player.loc.x, game.player.loc.y)?.terrain;
+            expect(startTerrain === TerrainType.STAIRS_UP || startTerrain === TerrainType.STAIRS_DOWN,
+                'P1-31 后玩家不应再落在楼梯格上').toBe(false);
 
             game.updateSafetyMap(); // 走真实接线（CE Time.c:1791 updateSafetyMap）
             const m = game.safetyMap;
