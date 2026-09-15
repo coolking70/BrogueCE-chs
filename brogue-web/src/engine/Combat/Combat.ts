@@ -6,7 +6,7 @@
 
 import { Creature } from '../../entities/Creature';
 import { Player } from '../../entities/Player';
-import { Monster } from '../../entities/Monster';
+import { Monster, MonsterState } from '../../entities/Monster';
 import { rng } from '../Random';
 import {
     netEnchant,
@@ -24,6 +24,13 @@ export interface AttackResult {
     hit: boolean;
     /** True if the defender was sleeping/unaware (triple damage) */
     backstab: boolean;
+    /**
+     * B-1：CE attack() 的第三形参（Combat.c:1139）——刺剑突进攻击
+     * （ITEM_LUNGE_ATTACKS 移动攻击）。突进与偷袭共用同一倍率触发集与
+     * 自动命中（Combat.c:1239/1260），但不进符文触发率翻倍集（Combat.c:1420
+     * 只收 sneakAttack || asleep || paralyzed），也不置 backstab 消息位。
+     */
+    lunge?: boolean;
     /** Runic that triggered, if any */
     triggeredRunic?: string;
     /**
@@ -62,6 +69,13 @@ export class CombatSystem {
          * 只有伤害的落点被换掉，对应 CE reflectBolt 把弹道折返给原施法者。
          */
         damageTarget?: Creature;
+        /**
+         * B-1：CE attack(attacker, defender, lungeAttack) 第三形参——刺剑突进
+         * （Movement.c:1482-1483 对 hitList 结算时按武器 LUNGE 旗标传入）。
+         * 效果：①该击自动命中（Combat.c:1239 的 || 短路）；
+         * ②伤害吃 ×3/×5 偷袭倍率（Combat.c:1259-1268）。
+         */
+        lungeAttack?: boolean;
     }): AttackResult {
         let attackerAccuracy = 100; // Player base accuracy
         let defenderDefense = 0;
@@ -110,16 +124,32 @@ export class CombatSystem {
         }
 
         // --- Auto-hit conditions ---
-        const defenderStuck = defender.hasStatus('paralyzed');
-        const defenderAsleep = (defender instanceof Monster) &&
-            (defender.state === 0 /* ASLEEP */);
-        const autoHit = defenderStuck || defenderAsleep;
+        // B-1：触发集对齐 CE attack()（Combat.c:1190-1196 + 1239）：
+        //   - defenderWasAsleep   = 目标 MONSTER_SLEEPING（Combat.c:1196-1198）
+        //   - defenderWasParalyzed = STATUS_PARALYZED > 0（Combat.c:1199）
+        //   - sneakAttack         = 玩家攻击 WANDERING 目标（Combat.c:1193-1195；
+        //     CE 的 creatureState==WANDERING 天然排除盟友，web 的 isAlly 是独立
+        //     维度，须显式排除）
+        //   - lungeAttack         = 突进（opts 传入，Movement.c:1482-1483）
+        // CE Combat.c:1190-1194：MONST_INANIMATE 目标（镜像等无生命物）身上
+        // 三类偷袭标志一律清零——web 原实现漏了这层守卫，此处照 CE 补上。
+        const inanimateDefender = (defender instanceof Monster) &&
+            defender.hasBehavior('MONST_INANIMATE');
+        const defenderStuck = !inanimateDefender && defender.hasStatus('paralyzed');
+        const defenderAsleep = !inanimateDefender && (defender instanceof Monster) &&
+            (defender.state === MonsterState.ASLEEP);
+        const sneakAttack = !inanimateDefender && (attacker instanceof Player) &&
+            (defender instanceof Monster) && !defender.isAlly &&
+            defender.state === MonsterState.WANDERING;
+        const lungeAttack = opts?.lungeAttack === true;
 
         // Backstab: sleeping, paralyzed, or unaware targets take triple damage
-        if (defenderAsleep || defenderStuck) {
+        if (defenderAsleep || defenderStuck || sneakAttack) {
             backstab = true;
         }
 
+        // 偷袭触发集整体自动命中（CE Combat.c:1239 的 || 短路，attackHit 不掷）。
+        const autoHit = backstab || lungeAttack;
         // --- P4-4: MA_KAMIKAZE (Combat.c:1159-1162) ---
         // CE 的检查在 attackHit() 掷骰之前（line 1159 早于 line 1240 的命中判定）：
         // 自爆怪物的攻击永远"成功"，不参与命中率——攻击者直接自毁代替造成伤害，
@@ -188,9 +218,18 @@ export class CombatSystem {
             damage = Math.max(1, Math.floor(damage * 0.5));
         }
 
-        // Backstab triple damage
-        if (backstab) {
-            damage *= 3;
+        // B-1：CE Combat.c:1259-1268 —— 偷袭触发集（sneakAttack || asleep ||
+        // paralyzed || lungeAttack）命中时只乘【一次】倍率：玩家装备匕首
+        //（ITEM_SNEAK_ATTACK_BONUS）×5，否则通用 ×3。web 原本只有 asleep/
+        // paralyzed 两支触发 ×3（基线已存在），本轮补上 sneakAttack(WANDERING)
+        // 与 lungeAttack 两支触发和匕首的 ×5 升档。
+        // 注意：backstab 字段保留"符文触发率翻倍集"语义（CE Combat.c:1419-1421
+        // 只收 sneakAttack || asleep || paralyzed，不含 lungeAttack），突进只
+        // 走下面的倍率与自动命中，不置 backstab。
+        if (backstab || lungeAttack) {
+            const daggerSneak = attacker instanceof Player &&
+                attacker.equippedWeapon?.flags?.includes('ITEM_SNEAK_ATTACK_BONUS');
+            damage *= daggerSneak ? 5 : 3;
         }
 
         // Invisibility bonus (+50% damage)
@@ -261,7 +300,7 @@ export class CombatSystem {
             applyTo.takeDamage(damage);
         }
 
-        return { damage, weaponName, hit: true, backstab, triggeredRunic };
+        return { damage, weaponName, hit: true, backstab, lunge: lungeAttack, triggeredRunic };
     }
 
     /**

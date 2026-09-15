@@ -2605,14 +2605,40 @@ export class Game {
                         }
                     }
 
+                    // B-1：CE Movement.c:1368-1400 —— 突进/连枷目标在移动
+                    // 【前】收集（连枷判据需要移动前坐标；突进看移动方向两格
+                    // 之外），移动【后】结算（Movement.c:1480-1492）。
+                    // 挣扎出网的 return 分支在上面：没动成就没有移动攻击。
+                    const specialTargets = this.buildLungeFlailHitList(dx, dy, newX, newY);
+
                     // Move
                     this.player.loc.x = newX;
                     this.player.loc.y = newY;
                     this.needsRender = true;
 
-                    // CE 的玩家移动耗时与地形无关（Time.c:2604 只看 movementSpeed）；
-                    // web 原有的"泥泞 ×2"为自创口径，按 D1 移除。
-                    timeSystem.currentTick += this.player.movementSpeed;
+                    if (specialTargets.length > 0) {
+                        // B-1：CE Movement.c:1480-1492 —— 先移动后攻击；结算完
+                        // 才 playerRecoversFromAttacking（攻击口径记进
+                        // ticksUntilTurn，下方 playerTurnEnded 的 ==0 分支因此
+                        // 跳过 movementSpeed——本回合耗时 = attackSpeed，刺剑
+                        // 为 attackSpeed/2，与 CE 逐 tick 同构）。刺剑突进的
+                        // lungeAttack 形参按武器旗标传入（CE Movement.c:1483）。
+                        const lungeWeapon = !!this.player.equippedWeapon?.flags?.includes('ITEM_LUNGE_ATTACKS');
+                        let anySpecialHit = false;
+                        for (const target of specialTargets) {
+                            if (target.hp <= 0) continue;
+                            if (this.resolvePlayerMeleeAttackOn(target, lungeWeapon)) anySpecialHit = true;
+                        }
+                        // CE 的突进/连枷回合没有独立的 movementSpeed 开销：
+                        // playerTurnEnded 只在 ticksUntilTurn==0 时补 movementSpeed，
+                        // 攻击恢复已抢占该分支——currentTick 口径同步按攻击耗时记。
+                        timeSystem.currentTick += this.player.attackSpeed;
+                        this.playerRecoversFromAttacking(anySpecialHit);
+                    } else {
+                        // CE 的玩家移动耗时与地形无关（Time.c:2604 只看 movementSpeed）；
+                        // web 原有的"泥泞 ×2"为自创口径，按 D1 移除。
+                        timeSystem.currentTick += this.player.movementSpeed;
+                    }
 
                     this.handleSpecialTileEntry();
                 }
@@ -4580,6 +4606,58 @@ export class Game {
     }
 
     /**
+     * B-1：CE Movement.c:1368-1400 —— 突进（ITEM_LUNGE_ATTACKS）与连枷
+     * （ITEM_PASS_ATTACKS）的移动攻击目标收集，在玩家实际移动【前】调用
+     * （连枷判据需要移动前坐标），移动【后】由调用方结算（Movement.c:1480-1492）。
+     *   - 突进（Movement.c:1369-1391）：只看移动方向两格之外（player.loc +
+     *     2*方向单位向量）那一格；目标须可见或已揭示、是敌人、非盟友、未在
+     *     死亡中、不在阻挡通行的格内（除非 MONST_ATTACKABLE_THRU_WALLS）。
+     *   - 连枷（buildFlailHitList，Movement.c:1025-1048）：遍历全部怪物，
+     *     ★核心判据是"与移动前、移动后两格都相邻"（Chebyshev 距离均为 1，
+     *     Monsters.c distanceBetween）——连枷是在两格之间挥过去的，不是
+     *     "打所有相邻敌人"；其余过滤同突进（canSeeMonster → 敌人/非盟友/
+     *     未死亡/格可通行或可隔墙打）。
+     * 简化口径（与 P4-7 鞭/矛同款）：canSeeMonster/monsterRevealed 以
+     * !invisible 近似（web 无照明级 targeting 视野）；敌我判定走
+     * playerWillAttackTarget（存活+非被囚禁+敌对）再显式排除 isAlly
+     *（对应 CE 的 creatureState != MONSTER_ALLY，web 两维度独立）。
+     * abortAttack 确认提示（误伤盟友/酸怪）本轮明确不做——盟友根本进不了
+     * 名单（见上），酸怪照打。hitList 顺序：突进目标占首、连枷随后（CE 同）。
+     */
+    private buildLungeFlailHitList(dx: number, dy: number, newX: number, newY: number): Monster[] {
+        const flags = this.player.equippedWeapon?.flags;
+        if (!flags?.length) return [];
+        const ux = Math.sign(dx);
+        const uy = Math.sign(dy);
+        if (ux === 0 && uy === 0) return [];
+        const hitList: Monster[] = [];
+        const canStrike = (m: Monster, cell: { isPassable: boolean } | null | undefined): boolean =>
+            !!cell &&
+            this.playerWillAttackTarget(m) &&
+            !m.isAlly &&
+            !m.hasStatus('invisible') &&
+            (cell.isPassable || m.hasBehavior('MONST_ATTACKABLE_THRU_WALLS'));
+        // 突进：两格之外的那一格（Movement.c:1370-1391）
+        if (flags.includes('ITEM_LUNGE_ATTACKS')) {
+            const tx = this.player.loc.x + 2 * ux;
+            const ty = this.player.loc.y + 2 * uy;
+            const cell = this.grid.getCell(tx, ty);   // CE coordinatesAreInMap
+            const m = cell ? this.getMonsterAt(tx, ty) : undefined;
+            if (m && canStrike(m, cell)) hitList.push(m);
+        }
+        // 连枷：同时与移动前、移动后两格相邻（Movement.c:1025-1048）
+        if (flags.includes('ITEM_PASS_ATTACKS')) {
+            for (const m of this.monsters) {
+                if (hitList.includes(m)) continue;
+                if (Math.max(Math.abs(m.loc.x - this.player.loc.x), Math.abs(m.loc.y - this.player.loc.y)) !== 1) continue;
+                if (Math.max(Math.abs(m.loc.x - newX), Math.abs(m.loc.y - newY)) !== 1) continue;
+                if (canStrike(m, this.grid.getCell(m.loc.x, m.loc.y))) hitList.push(m);
+            }
+        }
+        return hitList;
+    }
+
+    /**
      * P4-7：CE buildHitList（Combat.c:2049-2090）玩家侧。非 sweep（武器无
      * ITEM_ATTACKS_ALL_ADJACENT）照 CE 返回 [defender]；sweep 以主目标方向为
      * 起点旋转遍历 8 邻格（CE 原文的 nbDirs/cDirs 表混用只影响命中顺序、覆盖
@@ -4711,9 +4789,14 @@ export class Game {
      * 的分支）：复用 P4-5 的 processStaggerHit（invulnerable/immobile/inanimate/
      * caged 豁免、终点不可站则不推）。武器几何旗标与 STAGGER 互斥（一把武器
      * 只有一种），放在共享出口里与 CE 的 attack() 内位置一致。
+     * B-1：lungeAttack 对应 CE attack() 第三形参——刺剑突进结算时传 true
+     *（Movement.c:1482-1483 按武器 LUNGE 旗标），该击自动命中且吃 ×3 倍率
+     * （Combat.c:1239/1259-1268）；连枷/普通近战传 false。呈现差异登记：
+     * CE 对突进命中追加"（猛烈突刺）"措辞（Combat.c:1298），web 复用普通
+     * 命中文案——补专用文案需新增 zh_CN.json 键，在本轮文件边界外（见报告）。
      */
-    private resolvePlayerMeleeAttackOn(target: Monster): boolean {
-        const res = CombatSystem.attack(this.player, target);
+    private resolvePlayerMeleeAttackOn(target: Monster, lungeAttack = false): boolean {
+        const res = CombatSystem.attack(this.player, target, lungeAttack ? { lungeAttack: true } : undefined);
         if (this.player.hasStatus('invisible')) {
             this.player.setStatusDuration('invisible', 0);
             logger.log(
@@ -4785,12 +4868,16 @@ export class Game {
      * P4-7：ITEM_ATTACKS_STAGGER 分支落地（Time.c:2442-2444）——钝器命中时
      * 额外恢复一个完整攻击回合（+= 2×attackSpeed）；anAttackHit 对应 CE 形参
      * （普通近战传 anyAttackHit，鞭/矛几何出口按 CE Movement.c:1178 字面传 true）。
-     * ITEM_ATTACKS_QUICKLY（刺剑双倍攻速，Time.c:2445-2446）仍不在本轮范围。
+     * B-1：ITEM_ATTACKS_QUICKLY 分支落地（Time.c:2445-2446）——刺剑恢复减半
+     *（attackSpeed/2，向下取整），分支优先级照 CE：STAGGER（且命中）>
+     * QUICKLY > 普通。
      */
     private playerRecoversFromAttacking(anAttackHit: boolean): void {
         if (this.player.ticksUntilTurn >= 0) {
             if (this.player.equippedWeapon?.flags?.includes('ITEM_ATTACKS_STAGGER') && anAttackHit) {
                 this.player.ticksUntilTurn += 2 * this.player.attackSpeed;
+            } else if (this.player.equippedWeapon?.flags?.includes('ITEM_ATTACKS_QUICKLY')) {
+                this.player.ticksUntilTurn += Math.floor(this.player.attackSpeed / 2);
             } else {
                 this.player.ticksUntilTurn += this.player.attackSpeed;
             }
