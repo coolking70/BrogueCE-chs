@@ -32,7 +32,14 @@ export enum TerrainType {
     ALTAR,
     WEB,
     BLOOD,
-    MUD
+    MUD,
+    // C-2 新增（CE Globals.c 目录对应物；只追加在尾部，既有枚举值不变——
+    // terrainFingerprint 按数值哈希，中间插值会重排全部既有指纹）：
+    CHASM_EDGE,      // CE Globals.c:417 深渊边缘，无旗标可走；随 CHASM 液体使用（本轮 CHASM 不生成）
+    OBSIDIAN,        // CE Globals.c:427 黑曜石地面，无旗标可走；硫矿湖的镶边（createWreath）
+    BRIDGE,          // CE Globals.c:428 绳桥，T_IS_FLAMMABLE 可走；buildABridge 落在 CHASM 上（本轮真实生成中为 0）
+    BRIDGE_EDGE,     // CE Globals.c:430 桥端桩点，可走；buildABridge 落在两端岸格上
+    INERT_BRIMSTONE  // CE Globals.c:426 惰性硫矿，T_SPONTANEOUSLY_IGNITES（液态湖体；点火链属 C-4）
 }
 
 export enum LightType {
