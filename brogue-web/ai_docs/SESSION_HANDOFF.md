@@ -1,7 +1,7 @@
 # 会话交接（滚动更新，读这一份即可接手）
 
 > **本文取代 `night_plan_2026-09-15.md`**（那份已定格为历史记录，勿参照）。
-> 最后更新：2026-09-16 傍晚，C-2 跑中。
+> 最后更新：2026-09-16 夜，C-2 已提交（586bfc4），P1-37 与 C-3 并行跑中。
 > **每次验收通过并提交后，必须回来更新「当前状态」与「队列」两节。**
 
 ---
@@ -19,42 +19,56 @@
 
 ---
 
-## 当前状态（2026-09-16）
+## 当前状态（2026-09-16 夜）
 
-- 测试：**580 passed 零红**（C-2 合并前的干净读数），build 绿。
+- 测试：**604 passed / 8 skipped / 5 todo，59 文件零红**（无执行方占 CPU 时的干净读数），build 绿。
 - **Phase D（怪物行为）全部完成**（P4-1 ~ P4-10）。
-- **Phase C 进行中**：C-0（环路）、C-1（房间剖面）已完成；**C-2（湖泊四类液体）跑中**。
+- **Phase C**：C-0（环路）、C-1（房间剖面）、C-2（湖泊四类液体 + 镶边 + 打通 + 建桥）已完成；
+  **C-3（墙面与门）跑中**。
 - **Phase B**：B-1（匕首/刺剑/连枷）已完成；鉴定系统、投掷武器、占位物品仍欠。
+- **P1-37（机器旗标 + 六条硬编码英文）跑中**。
+
+### C-2 留下的两条必须记住的事
+
+1. **`T_CAN_BE_BRIDGED = T_AUTO_DESCENT`——桥只架深渊，深水不可架桥。**
+   CHASM 暂不生成（等 C-5 坠落子系统），所以真实关卡里桥恒 0；
+   `buildABridge` 已按 CE 忠实实现、由 6 个构造场景钉死，C-5 解禁后自动出现。
+   任何"为什么一座桥都没有"的疑问到此为止，不要去改 `buildABridge`。
+2. **枚举成员是 `WATER_DEEP` 不是 `DEEP_WATER`。** 写错不报错——
+   vitest 走 esbuild 只剥类型不检查，运行时得 `undefined`；
+   只有 `npm run build` 的 `vue-tsc` 会报 TS2339。
+   **任何让人困惑的测试失败，先跑一遍 build。**
 
 ### ★ 并行执行期间，全量测试结果不可信
 
-实测教训：`invented_content_pool` 单独跑 6/6 绿、耗时 **53 秒**，而全局超时 120 秒；
+实测教训：`invented_content_pool` 单独跑 6/6 绿、耗时 **53 秒**，而当时全局超时 120 秒；
 C-2 的 zcode 在另一 worktree 里也反复跑 vitest，两边抢 CPU，于是
 `armor_model_effect` / `horde_terrain_spawn` / `invented_content_pool` /
-`monster_stats_effect` / `p1_29` 这些**重型长跑测试集体超时翻红**。
+`monster_stats_effect` / `p1_29` 这些**重型长跑测试集体超时翻红**。发生过两次。
 
-**规矩**：
+**C-2 后已治本**：`vite.config.ts` 的 `testTimeout` 上调至 **300s**、`hookTimeout` 120s。
+理由与代价写在该文件注释里——**假红比慢更有害，它训练所有人把红灯当背景音**；
+代价是真正挂死的用例要 300s 才浮出水面。
+
+**规矩仍然有效**：
 1. 执行方在跑时，全量读数只作参考；
 2. 看到重型测试翻红，**先单独重跑该文件**再下结论；
 3. **提交前的最终门禁必须在没有执行方占用 CPU 时跑一遍**。
 
-已知重型测试（单跑即接近超时线）：`invented_content_pool`(53s)、
-`armor_model_effect`、`monster_stats_effect`、`horde_terrain_spawn`、
-`p1_29_lake_connectivity`、`p1_33_machine_chokepoint`、`c_0_add_loops`。
-
----
+已知重型测试（单跑耗时实测）：`c_0_add_loops` **148s**、`p1_29_lake_connectivity` 71s、
+`invented_content_pool` 52s，另有 `armor_model_effect`、`monster_stats_effect`、
+`horde_terrain_spawn`、`p1_33_machine_chokepoint`。**没有一个声明显式超时**，全靠全局值。
 
 ## 队列
 
 | # | 轮次 | 状态 | 任务书 |
 |---|---|---|---|
-| 1 | **C-2** 湖泊四类液体 + 镶边 + 打通 + 建桥 | 🟡 跑中 | `tasks/c-2.prompt.md` |
-| 2 | **P1-37 + i18n 硬编码** | ⬜ 待写 | 见下 |
-| 3 | **C-3** finishWalls / finishDoors / removeDiagonalOpenings | ⬜ 待写 | 见下 |
-| 4 | **C-4** promoteTile 生命周期 + DF 目录（吸收 P1-23） | ⬜ 待写 | 大工程 |
-| 5 | **C-5** 坠落子系统（吸收 P1-22） | ⬜ 待写 | 大工程 |
-| 6 | **C-6** runAutogenerators | ⬜ 待写 | |
-| 7 | **C-7** 光照目录 + 动态视野 + 矿灯深度衰减 | ⬜ 待写 | |
+| 1 | **P1-37** 机器旗标 + 六条硬编码英文 | 🟡 跑中 `wt-p1-37` | `tasks/p1-37.prompt.md` |
+| 2 | **C-3** finishWalls / finishDoors / removeDiagonalOpenings | 🟡 跑中 `wt-c-3` | `tasks/c-3.prompt.md` |
+| 3 | **C-4** promoteTile 生命周期 + DF 目录（吸收 P1-23，含 C-2 登记的硫矿点火链） | ⬜ 待写 | 大工程 |
+| 4 | **C-5** 坠落子系统（吸收 P1-22）—— **解禁 CHASM 与桥梁** | ⬜ 待写 | 大工程 |
+| 5 | **C-6** runAutogenerators | ⬜ 待写 | |
+| 6 | **C-7** 光照目录 + 动态视野 + 矿灯深度衰减 | ⬜ 待写 | |
 | — | Phase B 余项：鉴定系统 / 投掷武器 / 占位物品 | ⬜ | 大工程 |
 
 **并行配对规则**：只并行"允许修改"清单真正不相交的轮次；
