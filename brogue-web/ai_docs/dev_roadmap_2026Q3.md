@@ -739,6 +739,58 @@ P4-9 采取的是**局部规避**：把玩家格修正移到楼梯禁入循环�
 变红**。按 Phase C 的基线策略处理：如实报告，由验收方判断后授权重捕获。
 
 
+## P1-32 web 没有按层种子隔离——每层长什么样取决于你在上一层打了多少怪
+
+P4-10 实测发现，验收方逐条核实。
+
+### CE 的做法
+
+**开局就把全部层的种子定好**（RogueMain.c:257-268）：
+```c
+for (i = 0; i < gameConst->deepestLevel + 1; i++) {
+    levels[i].levelSeed = rand_64bits();        // 或 backward-compatible 的双段式
+    if (levels[i].levelSeed == 0) levels[i].levelSeed = i + 1;
+}
+```
+
+**每层生成时整段隔离**（RogueMain.c:676-738）：
+```c
+do { oldSeed = rand_64bits(); } while (oldSeed == 0);   // 存主流状态
+seedRandomGenerator(levels[depth-1].levelSeed);          // 切到该层专属种子
+    digDungeon(); placeStairs(); initializeLevel(); setUpWaypoints(); ...
+seedRandomGenerator(oldSeed);                            // 切回主流
+```
+
+结论：**整个地牢在开局就确定了**。生成消耗多少随机数，对主流零扰动；
+反过来，玩法期消耗多少随机数，也不影响任何一层长什么样。
+
+### web 的现状
+
+`grep -rn "levelSeed|oldSeed|seedRandomGenerator" src/` 只有两处播种：
+`Game.ts:383`（开局）与 `Game.ts:5515`（读档）。**`levelSeed` 概念不存在，
+没有任何隔离。**
+
+### 两个具体后果
+
+1. **下楼前多打几只怪，第二层就不一样了。** 玩法期的每一次随机消耗都会推移
+   后续所有层的生成。这与 CE 的"地牢开局即确定"是本质区别，也影响
+   种子分享与复现（同种子不同打法 = 不同地牢）。
+2. **`generation_baseline.json` 极度脆弱。** 改动 D1 生成的任何一步，都会把
+   D2-D26 全线推红——P4-10 首轮就撞上了（D1 多出 2290 次抽取导致全红）。
+   Phase C 每一步都会遇到同样的放大效应。
+
+### 与 Phase C 的关系
+
+**建议在 Phase C 正式开工前做掉。** 补上按层种子隔离后：
+- 改动某一层的生成不再波及其它层，基线从"全线红"变成"只有被改的那层红"，
+  回归探测的信噪比大幅提升；
+- P4-10 为 waypoint 构建单独加的快照/恢复（局部规避）可以回退，改用统一机制。
+
+注意：这会**一次性改变所有种子的地牢**（此后每层由 levelSeed 决定而非累积流），
+故 `generation_baseline` 需在本条落地时重捕获一次，且应当是 Phase C 开工前的
+最后一次"全线重捕获"。
+
+
 ---
 
 # 验收流程
