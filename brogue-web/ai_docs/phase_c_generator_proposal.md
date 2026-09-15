@@ -227,11 +227,17 @@ C-0 到 C-3 每一步都会让 `generation_baseline.json` 全线变红，"基线
 |---|---|---|
 | 1 | P4-9 safety map（Phase D 收尾） | `tasks/p4-9.prompt.md` |
 | 2 | P4-10 waypoint（Phase D 收尾） | `tasks/p4-10.prompt.md` |
-| 3 | **P1-26** 不变量断言（Phase C 前置） | `tasks/p1-26.prompt.md` |
-| 4 | **P1-29** 湖泊连通性修复 | `tasks/p1-29.prompt.md` |
-| 5 | **C-0** `addLoops` 环路 | 待写 |
-| 6 | Phase B 武器三项（匕首背刺 / 刺剑突进 / 连枷移动攻击） | 待写 |
-| 7 | Phase C 正篇 C-1 起 | 待写 |
+| 3 | **P1-30** i18n 键存在性红灯 + 补齐缺口 | `tasks/p1-30.prompt.md` |
+| 4 | **P1-26** 不变量断言（Phase C 前置） | `tasks/p1-26.prompt.md` |
+| 5 | **P1-29** 湖泊连通性修复 | `tasks/p1-29.prompt.md` |
+| 6 | **C-0** `addLoops` 环路 | 待写 |
+| 7 | Phase B 武器三项（匕首背刺 / 刺剑突进 / 连枷移动攻击） | 待写 |
+| 8 | Phase C 正篇 C-1 起 | 待写 |
+
+P1-30 插在此处的理由（2026-09-16 拍板）：i18n 的 `defaultValue` 是一条无声降级
+通道，实测 21% 的调用点已落到英文，且**每轮新功能都在扩大缺口**。装红灯的成本
+极低（一条扫描测试），越早装上，Phase C 那些轮次积累的英文残留越少。
+详见 `ai_docs/i18n_risk_assessment.md`。
 
 ### 起草期间的一处自我更正
 
