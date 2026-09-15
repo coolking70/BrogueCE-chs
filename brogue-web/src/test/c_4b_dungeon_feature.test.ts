@@ -689,7 +689,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
 });
 
 describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
-    it('F1 留痕：DF 子系统符号的生产引用只出现在 Map/ 的两个新文件（C-4c 接调用方后改白名单）', () => {
+    it('F1 留痕：DF 子系统符号的生产引用只出现在白名单文件（C-4d 接线机器时再扩清单）', () => {
         const srcDir = fileURLToPath(new URL('../', import.meta.url));
         const collect = (dir: string, out: string[] = []): string[] => {
             for (const name of readdirSync(dir)) {
@@ -699,9 +699,11 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
             }
             return out;
         };
+        // 验收方 C-4c 后扩清单（按 F1 标题自带的指示："C-4c 接调用方后改白名单"）。
         const allowed = new Set([
             'engine/Map/DungeonFeature.ts',
             'engine/Map/DungeonFeatureCatalog.ts',
+            'engine/Map/Promotion.ts',   // C-4c：promoteTile 经 spawnDungeonFeature 落地 DF
         ]);
         const pattern = /spawnDungeonFeature|spawnMapDF|fillSpawnMap|levelIsDisconnectedWithBlockingMap|catalogFeature|createSpawnMap|DUNGEON_FEATURE_CATALOG|DF_MISSING_TILES/;
         const offenders: string[] = [];
@@ -717,7 +719,11 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
         expect(offenders, `DF 子系统被生产代码引用（本轮是纯库）：\n${offenders.join('\n')}`).toEqual([]);
     });
 
-    it('F2 留痕：promoteTile 本体不存在（C-4c 实现；其 spawns DF 的路径是 Time.c:1244 的移植）', () => {
+    // 验收方 C-4c 后翻转（原断言："promoteTile 本体不存在"）。
+    // C-4c 已按设计实现它，这条留痕到期——这是留痕机制按设计工作的又一例：
+    // 断言标题自己写明了"C-4c 实现"，验收时无需重新判断这条红是回归还是预期。
+    const PROMOTE_TILE_DEFINERS = new Set(['engine/Map/Promotion.ts']);
+    it('F2 留痕：promoteTile 只在白名单文件出现（C-4d 接线机器分支时复核此清单）', () => {
         const srcDir = fileURLToPath(new URL('../', import.meta.url));
         const offenders: string[] = [];
         const collect = (dir: string, out: string[] = []): string[] => {
@@ -733,13 +739,14 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
         // 那些不是代码引用。
         for (const f of collect(srcDir).filter((p) => !p.split(sep).includes('test'))) {
             const rel = relative(srcDir, f).split(sep).join('/');
+            if (PROMOTE_TILE_DEFINERS.has(rel)) continue;
             readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
                 if (/\bpromoteTile\s*\(/.test(line.replace(/\/\/.*$/, ''))) {
                     offenders.push(`${rel}:${i + 1}: ${line.trim()}`);
                 }
             });
         }
-        expect(offenders, `promoteTile 不得在本轮出现：\n${offenders.join('\n')}`).toEqual([]);
+        expect(offenders, `promoteTile 出现在白名单之外的生产文件：\n${offenders.join('\n')}`).toEqual([]);
     });
 
     it('F3 留痕：生产生成路径"每格至多一层非空"+ GAS 恒空未破（本轮库未接入生产）', () => {

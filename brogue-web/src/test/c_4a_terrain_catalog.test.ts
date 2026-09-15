@@ -262,8 +262,9 @@ describe('C-4a E：留痕（本轮明确不做的事，断言现状）', () => {
     // 现在正则同时捕获点号读取与解构读取两种形态。
     const PROMOTE_FIELD_READERS = new Set([
         'engine/Map/DungeonFeature.ts',   // C-4b：mechFlags（cellIsPassableOrDoor 的密门/锁门豁免）
+        'engine/Map/Promotion.ts',        // C-4c：promoteTile/两趟驱动读 promoteType/promoteChance/fireType/mechFlags（本文件 C 组同样钉其取值）
     ]);
-    it('留痕：promote/fire 类字段的生产读者只出现在白名单文件（C-4c 接 promoteTile 时扩清单）', () => {
+    it('留痕（已按自带指示扩清单，C-4c）：promote/fire 类字段的生产读者只出现在白名单文件', () => {
         const srcDir = fileURLToPath(new URL('../', import.meta.url));
         const prodFiles = collectFiles(srcDir).filter((f) => !f.split(sep).includes('test'));
         const offenders: string[] = [];

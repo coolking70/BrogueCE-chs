@@ -141,9 +141,11 @@ export function createSpawnMap(grid: Grid): SpawnMap {
 }
 
 // ── CE 查格谓词（四层旗标按位或；Globals.c:581-597 / Architect.c:40-46）───
+// C-4c 起导出：Promotion.ts 的两趟驱动复用同一批 CE 谓词（单份实现，
+// 避免两处各抄一份 OR 循环日后漂移）。
 
 /** CE terrainFlags(p)（Globals.c:581）：四层 TERRAIN_FLAGS 的 flags 按位或。 */
-function cellTerrainFlags(grid: Grid, x: number, y: number): number {
+export function cellTerrainFlags(grid: Grid, x: number, y: number): number {
     const cell = grid.getCell(x, y);
     if (!cell) return 0;
     let f = 0;
@@ -161,7 +163,8 @@ function cellTerrainFlags(grid: Grid, x: number, y: number): number {
  *  **那样做会让留痕断言说谎**——读者确实存在了，断言却仍报"零读者"，
  *  是一次自造的假绿。正确处理是翻转那条留痕（已做，白名单化），
  *  并把扫描正则加固到能捕获解构形态（也已做）。代码恢复直白写法。 */
-function cellTerrainMechFlags(grid: Grid, x: number, y: number): number {
+/** CE terrainMechFlags(loc)（Globals.c:590）。 */
+export function cellTerrainMechFlags(grid: Grid, x: number, y: number): number {
     const cell = grid.getCell(x, y);
     if (!cell) return 0;
     let f = 0;

@@ -29,6 +29,13 @@ import { DijkstraMap, MAX_DISTANCE } from '../Map/Pathfinding';
 import { ScentMap, obstructsScent } from '../Map/Scent';
 import { buildSafetyMap, allocShortGrid, SAFETY_MAX_DISTANCE } from '../Map/SafetyMap';
 import { analyzeLoopMap, emptyLoopMap } from '../Map/LoopMap';
+import {
+    promoteOnItemPickup,
+    promoteOnItemPlaced,
+    promoteOnStep,
+    runPromotionUpdate,
+    type PromotionUpdateResult,
+} from '../Map/Promotion';
 import { WaypointSystem, WAYPOINT_SIGHT_RADIUS, type WaypointContext } from '../Map/WaypointMap';
 import i18next from 'i18next';
 
@@ -334,6 +341,14 @@ export class Game {
     // P2-3 起作为 advancementLoop soonestTurn 的第三候选（Time.c:2651-2652），
     // 每 100 tick 触发一次 objectiveTimeBlock。
     public ticksTillUpdateEnvironment: number = 100;
+
+    // C-4c：最近一次晋升驱动的结果（测量/测试读取；不进存档——驱动无跨回合
+    // 状态，唯一跨回合量 caughtFireRemaining 已回喂 pendingCaughtFireCells）。
+    public lastPromotionUpdate: PromotionUpdateResult | null = null;
+
+    // C-4c：CE pmap CAUGHT_FIRE_THIS_TURN 的跨回合存活部分（CE Time.c:1668
+    // 只在下一回合记账趟清）。web 无格旗标，由 Game 持有、按 CE 语义回喂驱动。
+    private pendingCaughtFireCells: Pos[] = [];
 
     // P4-8：当前层的气味图（CE scentMap + rogue.scentTurnNumber）。每层生成时
     // 换新图（CE 跨层留存 levels[d].scentMap，web 不做多层留存）；每玩家回合
@@ -2742,6 +2757,12 @@ export class Game {
                     }
                     logger.log(i18next.t('item.pickup', { name: item.displayName, defaultValue: `You picked up ${item.displayName}.` }), '#ffffff');
                     this.items.splice(itemIndex, 1);
+                    // C-4c：TM_PROMOTES_ON_ITEM_PICKUP（CE Items.c:819-829
+                    // removeItemAt）。当前 31 地形零载体，调用为结构性忠实；
+                    // 实际触发数见 c_4c 报告（0）。
+                    for (const r of promoteOnItemPickup(this.grid, this.player.loc.x, this.player.loc.y)) {
+                        if (r.mutated) this.needsRender = true;
+                    }
                     this.needsRender = true;
                     // CE 拾取无"半回合"优惠（自创口径移除），收满 movementSpeed
                     timeSystem.currentTick += this.player.movementSpeed;
@@ -2782,6 +2803,11 @@ export class Game {
             this.syncEquipmentStatuses();
             item.loc = { x: this.player.loc.x, y: this.player.loc.y };
             this.items.push(item);
+            // C-4c：TM_PROMOTES_ON_ITEM（CE Items.c:1278-1286，物品落格时）。
+            // 当前 31 地形零载体，调用为结构性忠实；实际触发数 0（报告）。
+            for (const r of promoteOnItemPlaced(this.grid, this.player.loc.x, this.player.loc.y)) {
+                if (r.mutated) this.needsRender = true;
+            }
             logger.log(i18next.t('item.drop', { name: item.name, defaultValue: `Dropped ${item.name}.` }), '#aaaaaa');
             this.needsRender = true;
             // CE Items.c:8390 drop() 以 playerTurnEnded() 收尾——完整回合
@@ -5427,6 +5453,31 @@ export class Game {
 
         this.tickCreatureStatuses();
 
+        // C-4c：CE updateEnvironment 的晋升段（Time.c:1619-1684）——两趟随机
+        // 晋升 + 记账趟。位置对应 CE 客观块里的 updateEnvironment（:2695，
+        // 在 decrementPlayerStatus 之前）；web 的 updateFires/updateGases 承担
+        // CE 的火/气体段，CE 的"晋升在火之前"次序据此保持。
+        this.lastPromotionUpdate = runPromotionUpdate(this.grid, {
+            keyOnTileAt: (x, y) => this.items.some(
+                (it) => it.category === ItemCategory.KEY && it.loc.x === x && it.loc.y === y
+            ),
+            caughtFireCells: this.pendingCaughtFireCells,
+        });
+        this.pendingCaughtFireCells = this.lastPromotionUpdate.caughtFireRemaining;
+        if (this.lastPromotionUpdate.renderDirty) {
+            this.needsRender = true;
+        }
+        // DF 消息（CE :3370 message/playerCanSee 门控的游戏侧消费）：
+        // 原点格对玩家可见才播，一次 spawn 至多一条。CE 目录描述是源文英文，
+        // 与 CE 侧一致直记，不走 i18n（无键可译；报告已登记）。
+        for (const p of this.lastPromotionUpdate.promotions) {
+            if (p.spawn?.message && p.spawn.builtCells.some(
+                (c) => this.grid.getCell(c.x, c.y)?.isVisible
+            )) {
+                logger.log(p.spawn.message, '#aaaaaa');
+            }
+        }
+
         // Let environment update
         this.environment.updateFires();
         this.environment.updateGases();
@@ -6350,6 +6401,17 @@ export class Game {
                 logger.log(i18next.t('trap.secret_door_found', { defaultValue: 'You discovered a hidden door!' }), '#ffff88');
                 this.needsRender = true;
             }
+        }
+
+        // C-4c：TM_PROMOTES_ON_STEP 的玩家侧触发（CE Time.c:278-288
+        // pressurePlate 的 ON_CREATURE 分支；玩家入场即 ON_CREATURE）。
+        // 放在既有特化处理之后：PRESSURE_PLATE 已被 web 自己的
+        // triggerPressurePlate 写成 FLOOR，这里的逐层扫描自然不会再看见它
+        // （web 板语义吸收了 CE 的板晋升）；DOOR 在上方无分支，从这里走
+        // CE 链（vanish→DF_OPEN_DOOR）真正开门。
+        const stepResults = promoteOnStep(this.grid, this.player.loc.x, this.player.loc.y);
+        for (const r of stepResults) {
+            if (r.mutated) this.needsRender = true;
         }
     }
 

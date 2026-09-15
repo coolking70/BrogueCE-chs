@@ -349,6 +349,7 @@ describe('C-4a-0 留痕（本轮明确不做的事，断言现状）', () => {
         // 并在任务报告里说明，其余任何出现都翻红（越界守卫保留）。
         const ALLOWLIST = new Set([
             'engine/Map/DungeonFeature.ts', // C-4b：fillSpawnMap / DFF_CLEAR_* 跨层清理
+            'engine/Map/Promotion.ts',      // C-4c：promoteTile 的 TM_VANISHES_UPON_PROMOTION 清层（CE Time.c:1258-1261 按层写）
         ]);
         const srcDir = fileURLToPath(new URL('../', import.meta.url));
         const prodFiles = collectFiles(srcDir).filter((f) => !f.split(sep).includes('test'));
