@@ -20,7 +20,9 @@ import i18next from 'i18next';
 import { Game, type GameMode } from '../engine/Core/Game';
 import { logger } from '../engine/Systems/Logger';
 import { rng } from '../engine/Random';
-import type { Grid } from '../engine/Map/Grid';
+import { TerrainType, type Grid } from '../engine/Map/Grid';
+
+const SECRET_DOOR_TERRAIN = TerrainType.SECRET_DOOR;
 
 /** Game 上对测试有用但非 public 的成员（只读访问，不做任何写入/绕过逻辑）。
  *  Omit 技巧：同名属性在 Game 里是 private，直接交叉会被 TS 归约为 never。 */
@@ -166,4 +168,38 @@ export function terrainFingerprint(grid: Grid): string {
         hash = Math.imul(hash, 0x01000193);
     }
     return `${(hash >>> 0).toString(16).padStart(8, '0')}:${serialized.length}`;
+}
+
+/**
+ * 连通性**分析**口径：在实际移动判据之上放行密门。
+ *
+ * ★ 这不是放宽，是对齐 CE 自己的分析口径 ★
+ *
+ * CE 判断关卡是否连通时，本来就把密门当通路：
+ *   - `Architect.c:202-203`（analyzeMap）：passMap 置 false 的条件是
+ *     `T_PATHING_BLOCKER && !TM_IS_SECRET`；
+ *   - `Architect.c:50-56`（cellIsPassableOrDoor）：同样豁免 TM_IS_SECRET；
+ *   - `Globals.c:330`：SECRET_DOOR 的 mechFlags 带 TM_IS_SECRET。
+ * web 侧已有同款对应物 `LoopMap.blocksPathing`（环分析视密门为通路）。
+ *
+ * 为什么 C-3 之后才需要它：C-3 之前 web 几乎不生成密门，字面口径
+ * （密门=墙）与分析口径没有可观测差别；C-3 让密门按 CE 概率如实生成
+ * （D26 封顶 67%，实测 5 种子 × D1-D26 共 327 扇）之后，字面口径在
+ * p1_26/p1_29/p1_33 上给出 **68/390 层假阳性**，实测全部满足
+ * "把密门视作门后即完全连通"。
+ *
+ * **阈值一律不放宽**：这三处的坏层门槛仍是严格 0。换的是判据口径。
+ * 仍能抓住的错误实现：任何把通路真正堵死的回归（墙/深水/上锁的门/
+ * 机器封区/湖泊切割）——密门放行不会让它们蒙混过关。
+ *
+ * ⚠️ 它的前提是"玩家找得到密门"。web 的发现机制远弱于 CE
+ * （见路线图 P1-42），在那条补上之前，这个口径对**玩家实际可玩性**
+ * 是乐观的。生成器层面的连通性判据用它是对的；不要用它论证"关卡可玩"。
+ */
+export function analysisAllowsMove(
+    grid: Grid,
+    baseAllows: (x: number, y: number) => boolean,
+): (x: number, y: number) => boolean {
+    return (x, y) => baseAllows(x, y)
+        || grid.getCell(x, y)?.terrain === SECRET_DOOR_TERRAIN;
 }

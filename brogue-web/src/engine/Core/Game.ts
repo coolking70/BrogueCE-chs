@@ -772,6 +772,11 @@ export class Game {
             }
 
             // Spawn Treasure in the machine room
+            // P1-43 同类（未实测触发，但同一暴露面）：machine.center 只被
+            // p1_33 要求 canMoveTo 可通行，而 canMoveTo 对岩浆放行——
+            // 护城河类蓝图的中心若落在岩浆上，宝物同样会掉进岩浆。
+            const centerCell = this.grid.getCell(machine.center.x, machine.center.y);
+            if (!centerCell || centerCell.terrain === TerrainType.LAVA) continue;
             // Let's just pick one random good item: scroll of enchanting or wand of fire
             let treasure;
             if (rng.randPercent(50)) {
@@ -790,6 +795,17 @@ export class Game {
         // Spawn items on Altars
         for (const altarRoom of altars) {
             for (const pos of altarRoom.positions) {
+                // P1-43（C-3 验收时由执行方在范围外发现、验收方单独修）：
+                // 祭坛落格池未排除岩浆。key_lava_moat 一类蓝图的护城河格会
+                // 混进 altarRoom.positions，于是附魔卷轴落在岩浆上——
+                // 实测 seed777/D7 的 scroll_of_enchantment @ (26,12) terrain=LAVA。
+                // 此前没暴露只是因为 RNG 流恰好没把它送到那里，C-3 移动 RNG 流
+                // 后 p1_20 立刻翻红；它是潜伏的真 bug，不是 C-3 的回归。
+                // CE 依据：物品落位一律回避 `T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER`，
+                // 而岩浆的 T_LAVA_INSTA_DEATH 正在 T_PATHING_BLOCKER 里
+                // （`Rogue.h:1948`）——CE 不会把物品放到岩浆上。
+                const altarCell = this.grid.getCell(pos.x, pos.y);
+                if (!altarCell || altarCell.terrain === TerrainType.LAVA) continue;
                 // Altar items should be highly desirable. Let's spawn random wands, staffs, rings, charms, or enchants.
                 const randType = rng.randRange(0, 4);
                 let vaultItem = null;
@@ -885,6 +901,16 @@ export class Game {
 
             // Spawn items
             for (const spawn of mr.itemSpawns) {
+                // P1-43：蓝图特征落点可能选中护城河的岩浆格（key_lava_moat 一类），
+                // 物品于是掉进岩浆——实测 seed777/D7 scroll_of_enchantment
+                // @ (26,12) terrain=LAVA。CE 的物品落位一律回避
+                // `T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER`，岩浆的
+                // T_LAVA_INSTA_DEATH 正在后者里（`Rogue.h:1948`）。
+                // 这里是消费点兜底（一处覆盖全部蓝图物品）；**根治应在
+                // BlueprintEngine 的特征选址**——见路线图 P1-43，
+                // 那样机器不会因此静默少一件宝物。
+                const spawnCell = this.grid.getCell(spawn.pos.x, spawn.pos.y);
+                if (!spawnCell || spawnCell.terrain === TerrainType.LAVA) continue;
                 const item = this.spawnBlueprintItem(spawn.category, spawn.id, spawn.pos.x, spawn.pos.y, depth);
                 if (item) this.items.push(item);
             }

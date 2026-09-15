@@ -224,13 +224,16 @@ describe('C-2 实测（15 种子 × D1-D26 真实生成）', () => {
         console.log(`[c_2] 留痕：${SEEDS.length * MAX_DEPTH} 层深渊族地形总数 = ${total}（CHASM 不生成 → 桥无料可架，buildABridge 每层空转）`);
     }, HEAVY);
 
-    it('留痕（C-3）：removeDiagonalOpenings 未做，斜向豁口仍存在——C-3 落地后此断言应翻转为 0', () => {
+    // C-2 立的留痕，C-3 落地后由验收方按其自带指示翻转（原断言：斜向豁口 > 0）。
+    // 这是留痕机制少数一次**按设计工作**的实例：断言消息自己写明了翻转条件，
+    // 验收时无需重新判断"这条红是回归还是预期"。
+    it('C-3 已落地：removeDiagonalOpenings 扫到收敛，斜向豁口恒为 0', () => {
         const rows = getSweep();
         const total = sum(rows, r => r.diagonalOpenings);
         const levels = rows.filter(r => r.diagonalOpenings > 0).length;
-        console.log(`[c_2] 留痕（C-3）：斜向豁口总数 = ${total}，分布层数 = ${levels}/${rows.length}`);
-        expect(total, 'CE digDungeon 在湖泊后有 removeDiagonalOpenings（本轮属 C-3 不做）；' +
-            '若本断言翻红说明斜向豁口消失——查 C-3 是否被提前实现或生成结构损坏').toBeGreaterThan(0);
+        console.log(`[c_2] C-3 后：斜向豁口总数 = ${total}，残留层数 = ${levels}/${rows.length}`);
+        expect(total, 'CE digDungeon 在湖泊后有 removeDiagonalOpenings（C-3 已实现）；' +
+            '若本断言翻红说明它没扫到收敛，或后续阶段又制造了新的斜向豁口').toBe(0);
     }, HEAVY);
 
     it('湖泊阶段合同：干地全连通 + cleanUpLakeBoundaries 幂等（真实关卡）', () => {

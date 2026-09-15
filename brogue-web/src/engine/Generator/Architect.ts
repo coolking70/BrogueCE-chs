@@ -6,6 +6,10 @@
 import { Grid, TerrainType, DCOLS, DROWS } from '../Map/Grid';
 import { lakeDisruptsPassability, terrainAllowsMove } from '../Map/Connectivity';
 import { fillLakes, cleanUpLakeBoundaries, buildABridge } from '../Map/LakeSystem';
+import {
+    removeDiagonalOpenings, finishDoors, finishWalls,
+    type DiagonalFinishStats, type DoorFinishStats, type WallFinishStats,
+} from '../Map/WallDoorFinish';
 import { addLoops, applyLoopDoorSites, MINIMUM_PATHING_DISTANCE, LOOP_DOOR_PERCENT, DEEPEST_LEVEL } from '../Map/LoopMap';
 import { rng } from '../Random';
 import { RoomType, ROOM_TYPE_COUNT } from '../../types';
@@ -209,6 +213,16 @@ export class Architect {
     /** C-1 观测：本层经走廊（attachHallwayTo）落位的房间数。仅供观测。 */
     public hallwayRoomsBuilt: number = 0;
 
+    /** C-3 观测：本层 removeDiagonalOpenings 的统计（generateTerrain 重置）。
+     *  仅供测试/报告观测，不参与任何生成决策。 */
+    public diagonalFinishStats: DiagonalFinishStats = { passes: 0, removed: 0 };
+    /** C-3 观测：本层 finishDoors 的统计（generateLevel 重置）。仅供观测。 */
+    public doorFinishStats: DoorFinishStats | null = null;
+    /** C-3 观测：本层两次 finishWalls 调用的实参与计数（generateTerrain 重置，
+     *  下标 0 = 第 5 步 false、下标 1 = 第 14 步 true）。仅供观测——
+     *  实参写反的对抗断言打在这里。 */
+    public finishWallsCalls: WallFinishStats[] = [];
+
     constructor() {
         this.grid = new Grid(DCOLS, DROWS);
     }
@@ -260,6 +274,15 @@ export class Architect {
         const loop = addLoops(this.grid, MINIMUM_PATHING_DISTANCE);
         this.loopWorkGrid = loop.work;
         this.loopDoorSites = applyLoopDoorSites(this.grid, loop.newSites, depth);
+
+        // 2.97 C-3：finishWalls(false)（CE digDungeon 第 5 步，Architect.c:2909，
+        // 湖泊之前只查四正暴露）。CE 的调用在 grid→地形落位之后、designLakes
+        // 之前；web 的 addLoops 消费 Grid 地形（C-0 结构）故落在门位落位之后，
+        // 相对湖泊阶段的位置与 CE 一致。
+        this.diagonalFinishStats = { passes: 0, removed: 0 };
+        this.doorFinishStats = null;
+        this.finishWallsCalls = [];
+        this.finishWallsCalls.push(finishWalls(this.grid, false));
 
         // 3. Generate Lakes and Foliage overlays
         this.designEnvironmentOvelays(depth);
@@ -359,6 +382,15 @@ export class Architect {
                 }
             }
         }
+
+        // C-3：finishDoors（CE digDungeon 第 13 步，Architect.c:2971）——
+        // 孤儿门移除 + 密门升级。机器内部的门由 Cell.machineNumber 豁免
+        //（CE 2738-2739 `machineNumber == 0` 同款；BlueprintEngine 落位时写入）。
+        this.doorFinishStats = finishDoors(this.grid, depth);
+
+        // C-3：finishWalls(true)（CE digDungeon 第 14 步，Architect.c:2974：
+        // 含对角暴露的最终墙面收尾）。
+        this.finishWallsCalls.push(finishWalls(this.grid, true));
 
         return this.grid;
     }
@@ -696,7 +728,9 @@ export class Architect {
      * addMachines 之后；web 的机器阶段在 Game.generateLevel 里位于
      * generateTerrain 之后（Game.ts 本轮禁改，无法交错）——机器格不受
      * 本轮两个阶段影响的行为由 machineNumber/选址闸门各自保证。
-     * removeDiagonalOpenings / finishDoors / finishWalls（C-3）与
+     * removeDiagonalOpenings（C-3）在 fillLakes 之后、cleanUpLakeBoundaries
+     * 之前执行（CE 第 8 步位置）；finishDoors / finishWalls(true)（C-3）在
+     * generateLevel 的机器阶段之后（CE 第 13/14 步位置），见上。
      * runAutogenerators（C-6）本轮不做，留痕见 c_2_lakes_e2e 测试。
      */
     private designEnvironmentOvelays(depth: number) {
@@ -765,6 +799,11 @@ export class Architect {
 
         // C-2：CE digDungeon 湖泊后四步中的三步（第四步 runAutogenerators 属 C-6）。
         fillLakes(this.grid, lakeMap, depth);
+        // C-3：removeDiagonalOpenings（CE digDungeon 第 8 步，Architect.c:2936：
+        // fillLakes 之后、addMachines/cleanUpLakeBoundaries 之前；web 的机器
+        // 阶段在 Game.generateLevel，清理与架桥受 Game.ts 禁改约束已在
+        // 机器前执行——相对湖泊的位置与 CE 一致）。
+        this.diagonalFinishStats = removeDiagonalOpenings(this.grid);
         cleanUpLakeBoundaries(this.grid);
         while (buildABridge(this.grid, depth)) {
             // 桥数可从 BRIDGE 地形计数观测；本轮 CHASM 不生成，此处恒不进入。

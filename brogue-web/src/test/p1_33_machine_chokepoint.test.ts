@@ -38,7 +38,7 @@ import { analyzeChokeMap } from '../engine/Map/LoopMap';
 import { Grid, TerrainType, DCOLS, DROWS } from '../engine/Map/Grid';
 import { terrainAllowsMove, DIRS8 } from '../engine/Map/Connectivity';
 import { rng } from '../engine/Random';
-import { createHeadlessGame, terrainFingerprint } from './harness';
+import { createHeadlessGame, terrainFingerprint, analysisAllowsMove } from './harness';
 import blueprintData from '../data/blueprints.json';
 import type { Game } from '../engine/Core/Game';
 
@@ -103,6 +103,10 @@ function buildPureCorridorMap(): Grid {
 function flood(grid: Grid, start: Pos, blocked: (x: number, y: number) => boolean = () => false): Set<number> {
     const seen = new Set<number>();
     if (blocked(start.x, start.y)) return seen;
+    const passes = analysisAllowsMove(grid, (x, y) => {
+        const c = grid.getCell(x, y);
+        return !!c && terrainAllowsMove(c.terrain);
+    });
     const cell = grid.getCell(start.x, start.y);
     if (!cell || !terrainAllowsMove(cell.terrain)) return seen;
     seen.add(start.y * DCOLS + start.x);
@@ -114,8 +118,7 @@ function flood(grid: Grid, start: Pos, blocked: (x: number, y: number) => boolea
             if (nx < 0 || nx >= DCOLS || ny < 0 || ny >= DROWS) continue;
             const key = ny * DCOLS + nx;
             if (seen.has(key) || blocked(nx, ny)) continue;
-            const c = grid.getCell(nx, ny);
-            if (!c || !terrainAllowsMove(c.terrain)) continue;
+            if (!passes(nx, ny)) continue;
             seen.add(key);
             queue.push({ x: nx, y: ny });
         }
@@ -214,7 +217,17 @@ describe('P1-33 机器阶段不切断关卡', () => {
                         structureViolations.push(`seed${seed}/D${d} 楼梯落在机器格内`);
                     }
 
-                    // 硬指标：从上楼梯 8 向 canMoveTo 泛洪必须覆盖下楼梯。
+                    // 硬指标：从上楼梯 8 向泛洪必须覆盖下楼梯。
+                    // C-3 后由验收方把判据从 canMoveTo 的字面口径改为 CE 的
+                    // **分析口径**：放行密门。依据 Architect.c:202-203
+                    // （analyzeMap 的 passMap 条件是 T_PATHING_BLOCKER &&
+                    // !TM_IS_SECRET）与 Architect.c:50-56 cellIsPassableOrDoor，
+                    // SECRET_DOOR 带 TM_IS_SECRET（Globals.c:330）——
+                    // **CE 判断连通性时本来就把密门当通路**。
+                    // C-3 让密门按 CE 概率如实生成后，字面口径会给出 68/390
+                    // 假阳性，实测全部满足"视密门为门后即完全连通"。
+                    // **阈值不放宽**：坏层仍要求严格 0，换的是口径不是门槛。
+                    const stairsRule = analysisAllowsMove(grid, canMoveTo);
                     const seen = new Set<number>([up.y * grid.width + up.x]);
                     const queue: Pos[] = [up];
                     while (queue.length > 0) {
@@ -223,7 +236,7 @@ describe('P1-33 机器阶段不切断关卡', () => {
                             const nx = p.x + dx!, ny = p.y + dy!;
                             if (nx < 0 || ny < 0 || nx >= grid.width || ny >= grid.height) continue;
                             const key = ny * grid.width + nx;
-                            if (seen.has(key) || !canMoveTo(nx, ny)) continue;
+                            if (seen.has(key) || !stairsRule(nx, ny)) continue;
                             seen.add(key);
                             queue.push({ x: nx, y: ny });
                         }

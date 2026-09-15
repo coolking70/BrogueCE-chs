@@ -26,7 +26,7 @@ import { lakeDisruptsPassability, terrainAllowsMove, DIRS8 } from '../engine/Map
 import { Grid, TerrainType, DCOLS, DROWS } from '../engine/Map/Grid';
 import { createEmptyRoomGrid, drawRectangleOnGrid, type RoomGrid } from '../engine/Generator/RoomBuilder';
 import { rng } from '../engine/Random';
-import { createHeadlessGame, terrainFingerprint } from './harness';
+import { createHeadlessGame, terrainFingerprint, analysisAllowsMove } from './harness';
 import type { Game } from '../engine/Core/Game';
 
 const LAKE_OVERLAY = { type: TerrainType.WATER_DEEP, char: '~', color: 0x1133aa };
@@ -166,6 +166,8 @@ describe('P1-29 湖泊连通性', () => {
                 if (!up || !down) continue;
                 // 与 p1_26 同款判据：Game.canMoveTo 本体（只读转型），8 向。
                 const canMoveTo = (game as unknown as { canMoveTo(x: number, y: number): boolean }).canMoveTo.bind(game);
+                // C-3 后：洪泛按 CE 的分析口径放行密门（harness.analysisAllowsMove）。
+                const e2eRule = analysisAllowsMove(grid, canMoveTo);
                 const seen = new Set<number>([up.y * grid.width + up.x]);
                 const queue: Pos[] = [up];
                 while (queue.length > 0) {
@@ -175,7 +177,7 @@ describe('P1-29 湖泊连通性', () => {
                         const ny = p.y + dy;
                         if (nx < 0 || ny < 0 || nx >= grid.width || ny >= grid.height) continue;
                         const key = ny * grid.width + nx;
-                        if (seen.has(key) || !canMoveTo(nx, ny)) continue;
+                        if (seen.has(key) || !e2eRule(nx, ny)) continue;
                         seen.add(key);
                         queue.push({ x: nx, y: ny });
                     }

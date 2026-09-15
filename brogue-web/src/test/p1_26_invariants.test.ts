@@ -23,7 +23,7 @@
  * 生成期新回归，不再是留痕职责。
  */
 import { describe, it, expect } from 'vitest';
-import { createHeadlessGame, terrainFingerprint } from './harness';
+import { createHeadlessGame, terrainFingerprint, analysisAllowsMove } from './harness';
 import { TerrainType, type Grid } from '../engine/Map/Grid';
 import type { Game } from '../engine/Core/Game';
 
@@ -69,6 +69,11 @@ const DIRS8: ReadonlyArray<readonly [number, number]> = [
 /** 游戏的实际移动规则：只读转型后直接调用 Game 的私有 canMoveTo。 */
 function realMoveRule(game: Game): MovePredicate {
     return (x, y) => (game as unknown as { canMoveTo(x: number, y: number): boolean }).canMoveTo(x, y);
+}
+
+/** 连通性分析口径：放行密门。理由与限制见 harness.ts 的 analysisAllowsMove。 */
+function analysisRule(game: Game, grid: Grid): MovePredicate {
+    return analysisAllowsMove(grid, realMoveRule(game));
 }
 
 interface LevelScan {
@@ -124,7 +129,9 @@ function scanLevel(game: Game, seed: number, depth: number): LevelScan {
     let reach = -1;
     let downReachable = false;
     if (up) {
-        const seen = flood(grid, up, passable);
+        // 可走格计数 walkable 仍按 canMoveTo 的字面口径；
+        // 洪泛按 CE 的分析口径（放行密门）。见 analysisRule 的注释。
+        const seen = flood(grid, up, analysisRule(game, grid));
         reach = seen.size;
         downReachable = !!down && seen.has(down.y * grid.width + down.x);
     }
