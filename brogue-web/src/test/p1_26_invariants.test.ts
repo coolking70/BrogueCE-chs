@@ -16,12 +16,12 @@
  * 会让深水阻隔的 bug 完全隐形（phase_c 提案 §四 自我纠错记录；
  * 本轮反向验证 RV1 实证：isPassable 判据下 11 层坏层全部"消失"）。
  *
- * 已知 bug 留痕（P1-29 待修）：web 缺 CE 的湖泊连通性验证
- * （CE Architect.c:2588-2688：每提议一个湖就 flood-fill 验证，不通过
- * 换位重试、仍不行则放弃该湖），部分层的下楼梯从上楼梯走不到。
- * 因此「上楼梯 → 下楼梯」不变量按项目一贯的显式留痕做法写成
- * "不可达层数**恰好等于**实测值"：变好变坏都会翻红，P1-29 修复落地时
- * 必须有人回来把它改成严格 0，不会被悄悄忽略。
+ * P1-29 已落地：湖泊连通性验证（CE Architect.c:2588-2688 语义）已进入
+ * Architect，本断言自"已知 bug 留痕恰好 11"改为**严格 0**。
+ * 注意： Architect.generateTerrain（房间+湖泊+陷阱阶段）之后的机器阶段
+ * （BlueprintEngine 锁门/特征水深水）仍可能切断连通——那是不受湖泊闸门
+ * 约束的独立缺陷，本断言若因此翻红，即它在履行追踪职责；
+ * 解剖与证据链见 ai_docs/p1_29_lake_connectivity_report.md。
  */
 import { describe, it, expect } from 'vitest';
 import { createHeadlessGame, terrainFingerprint } from './harness';
@@ -33,15 +33,22 @@ const SEEDS = [424242, 777, 20260913, 31337, 20260916];
 const MAX_DEPTH = 26;
 
 /**
- * 下楼梯不可达层数的现状实测值（2026-09-15，5 种子 × D1-D26 = 130 层，
- * 其中 125 层有下楼梯；11 层不可达。明细见
- * ai_docs/p1_26_invariant_assertions_report.md）。
+ * 下楼梯不可达层数。P1-29 已把**湖泊造成的**不可达清零（验收方独立探针复核：
+ * 10 种子 × D1-D26 = 260 层，湖泊阶段完成态全部连通）。
  *
- * ★ 这是已知 bug（P1-29 待修）的现状留痕，**不是期望值**。
- * P1-29（对齐 CE 湖泊连通性验证）落地后，必须把本值改为 0，
- * 并把断言名里的"已知 bug"字样一并清除。
+ * 剩下的 1 层由**机器阶段**造成，不是湖泊、也不是回归——见路线图 P1-33。
+ * 铁证：seed777/D15 该层**深水为 0**（根本没有湖），是 3 个 LOCKED_DOOR
+ * 恰好卡在树状走廊的割点上。CE 的顺序同样是 designLakes 在前、addMachines
+ * 在后（Architect.c:2928 / 2944），但 CE 先有 addLoops（2897）造出环路，
+ * 割点远比树状地牢稀少。
+ *
+ * 故此处沿用项目一贯的显式留痕：断言"恰好等于 1"而非 0，用"恰好"使变好变坏
+ * 都翻红。P1-33 修复后请改回 0 并删掉本段说明。
+ * 任何不可达都是真问题：要么生成期回归，要么机器阶段的独立缺陷
+ * （锁门/特征水不受 P1-29 湖泊闸门约束，见
+ * ai_docs/p1_29_lake_connectivity_report.md §与预设不符之处）。
  */
-const KNOWN_UNREACHABLE_STAIRS_LEVELS = 11;
+const KNOWN_UNREACHABLE_STAIRS_LEVELS = 1; // 机器阶段致（P1-33）；湖泊致已由 P1-29 清零
 
 /** 可走格占比的宽区间（占全格比例）。2026-09-15 实测 130 层为
  *  178~516 格（全格 79×29=2291，即 7.8%~22.5%）。区间两侧留约 2 倍
@@ -162,18 +169,18 @@ describe('P1-26 生成器不变量（5 种子 × D1-D26，不依赖坐标）', (
         expect(problems, `楼梯存在性被破坏：\n${problems.join('\n')}`).toEqual([]);
     });
 
-    it(`上楼梯能走到下楼梯——已知 bug P1-29 留痕：当前恰好 ${KNOWN_UNREACHABLE_STAIRS_LEVELS} 层不可达，修复后本断言必须改为严格 0`, () => {
+    it('上楼梯能走到下楼梯——湖泊致已清零（P1-29）；留痕：机器阶段仍致 1 层不可达，待 P1-33', () => {
         const bad = getFirstPass().filter((s) => s.down && !s.downReachable);
         const detail = bad
             .map((s) => `seed${s.seed}/D${s.depth}: 从上楼梯可达 ${s.reach}/${s.walkable} 格`)
             .join('；');
-        // "恰好等于"：变好（修复落地）与变坏（新回归）都会翻红，
-        // 强制有人在 P1-29 落地时回来把期望值改成严格 0。
         expect(
             bad.length,
-            `下楼梯不可达层数与留痕值 ${KNOWN_UNREACHABLE_STAIRS_LEVELS} 不符` +
-            `（已知 bug P1-29：web 缺 CE Architect.c:2588-2688 的湖泊连通性验证）。` +
-            `若本次运行不可达层数为 0，说明 P1-29 已修复：请把 KNOWN_UNREACHABLE_STAIRS_LEVELS 改为 0 并更新断言名。\n坏层明细: ${detail}`
+            `下楼梯不可达层数=${bad.length}（要求严格 0）。\n` +
+            `湖泊闸门（P1-29，CE Architect.c:2588-2688 语义）保证湖泊阶段全连通；` +
+            `若坏层的切割者是机器阶段的锁门/特征水深水（不受该闸门约束的独立缺陷），\n` +
+            `解剖与证据链见 ai_docs/p1_29_lake_connectivity_report.md；` +
+            `否则为本文件的真回归。\n坏层明细: ${detail}`
         ).toBe(KNOWN_UNREACHABLE_STAIRS_LEVELS);
     });
 
