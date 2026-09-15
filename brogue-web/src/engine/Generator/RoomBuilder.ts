@@ -224,17 +224,100 @@ export function createBlobOnGrid(
     return { minX: startX, minY: startY, width: blobWidth, height: blobHeight };
 }
 
+/**
+ * CE Architect.c:1971-2003 designCavern：元胞自动机 blob（5 轮、55% 播种、
+ * 出生串 "ffffffttt" / 存活串 "ffffttttt"——CE 原值；旧 web 实现的出生串
+ * "ffffftttt" 与 CE 不符，本轮纠正）。min/max 语义与 CE 相同：
+ * (minWidth, maxWidth, minHeight, maxHeight) 映射到 blob 的宽高上下限。
+ */
 export function designCavern(grid: RoomGrid, minW: number, maxW: number, minH: number, maxH: number) {
-    createBlobOnGrid(grid, 5, minW, minH, maxW, maxH, 55, "ffffftttt", "ffffttttt");
+    createBlobOnGrid(grid, 5, minW, minH, maxW, maxH, 55, "ffffffttt", "ffffttttt");
 }
 
-// Additional rooms (Cross, Chunky, Entrance) can be implemented here...
-export function designCrossRoom(grid: RoomGrid) {
-    const w1 = rng.randRange(3, 12);
-    const h1 = rng.randRange(2, 5);
-    const w2 = rng.randRange(3, 12);
-    const h2 = rng.randRange(2, 5);
+/**
+ * CE Architect.c:2005-2021 designEntranceRoom：深度 1 的入口房——
+ * 底部中央的倒 T（竖 8×10 + 横 20×5），坐标相对全图画布（web 与 CE 同为
+ * 79×29，CE Rogue.h:120-128/174 与 web types/index.ts:46-50 逐项一致）。
+ */
+export function designEntranceRoom(grid: RoomGrid) {
+    const roomWidth = 8;
+    const roomHeight = 10;
+    const roomWidth2 = 20;
+    const roomHeight2 = 5;
+    const roomX = Math.floor(DCOLS / 2) - Math.floor(roomWidth / 2) - 1;
+    const roomY = DROWS - roomHeight - 2;
+    const roomX2 = Math.floor(DCOLS / 2) - Math.floor(roomWidth2 / 2) - 1;
+    const roomY2 = DROWS - roomHeight2 - 2;
 
-    drawRectangleOnGrid(grid, Math.floor((DCOLS - w1) / 2), Math.floor((DROWS - h1) / 2), w1, h1, 1);
-    drawRectangleOnGrid(grid, Math.floor((DCOLS - w2) / 2), Math.floor((DROWS - h2) / 2), w2, h2, 1);
+    drawRectangleOnGrid(grid, roomX, roomY, roomWidth, roomHeight, 1);
+    drawRectangleOnGrid(grid, roomX2, roomY2, roomWidth2, roomHeight2, 1);
+}
+
+/**
+ * CE Architect.c:2023-2041 designCrossRoom：两条相互垂直、带随机偏移的
+ * 矩形组成的十字房。-5/+5 的平移把十字锚回画布中部（CE 原样移植，
+ * 含 C 整数除法语义：正数域用 Math.floor）。
+ */
+export function designCrossRoom(grid: RoomGrid) {
+    const roomWidth = rng.randRange(3, 12);
+    const roomX = rng.randRange(Math.max(0, Math.floor(DCOLS / 2) - (roomWidth - 1)), Math.min(DCOLS, Math.floor(DCOLS / 2)));
+    const roomWidth2 = rng.randRange(4, 20);
+    const roomX2 = (roomX + Math.floor(roomWidth / 2) + rng.randRange(0, 2) + rng.randRange(0, 2) - 3) - Math.floor(roomWidth2 / 2);
+
+    const roomHeight = rng.randRange(3, 7);
+    const roomY = Math.floor(DROWS / 2) - roomHeight;
+
+    const roomHeight2 = rng.randRange(2, 5);
+    const roomY2 = Math.floor(DROWS / 2) - roomHeight2 - (rng.randRange(0, 2) + rng.randRange(0, 1));
+
+    drawRectangleOnGrid(grid, roomX - 5, roomY + 5, roomWidth, roomHeight, 1);
+    drawRectangleOnGrid(grid, roomX2 - 5, roomY2 + 5, roomWidth2, roomHeight2, 1);
+}
+
+/**
+ * CE Architect.c:2043-2061 designSymmetricalCrossRoom：轴对称的小十字。
+ * minorWidth/minorHeight 的奇偶修正保证十字完全对称。
+ */
+export function designSymmetricalCrossRoom(grid: RoomGrid) {
+    const majorWidth = rng.randRange(4, 8);
+    const majorHeight = rng.randRange(4, 5);
+    let minorWidth = rng.randRange(3, 4);
+
+    if (majorHeight % 2 === 0) {
+        minorWidth -= 1;
+    }
+    let minorHeight = 3;
+    if (majorWidth % 2 === 0) {
+        minorHeight -= 1;
+    }
+
+    drawRectangleOnGrid(grid, Math.floor((DCOLS - majorWidth) / 2), Math.floor((DROWS - minorHeight) / 2), majorWidth, minorHeight, 1);
+    drawRectangleOnGrid(grid, Math.floor((DCOLS - minorWidth) / 2), Math.floor((DROWS - majorHeight) / 2), minorWidth, majorHeight, 1);
+}
+
+/**
+ * CE Architect.c:2091-2124 designChunkyRoom：从中心圆出发、逐个在已有
+ * 地板上叠圆的"碎块房"。边界框随块扩展（min/max 钳制与 CE 一致）。
+ */
+export function designChunkyRoom(grid: RoomGrid) {
+    const chunkCount = rng.randRange(2, 8);
+    let minX = Math.floor(DCOLS / 2) - 3;
+    let maxX = Math.floor(DCOLS / 2) + 3;
+    let minY = Math.floor(DROWS / 2) - 3;
+    let maxY = Math.floor(DROWS / 2) + 3;
+
+    drawCircleOnGrid(grid, Math.floor(DCOLS / 2), Math.floor(DROWS / 2), 2, 1);
+
+    for (let i = 0; i < chunkCount;) {
+        const x = rng.randRange(minX, maxX);
+        const y = rng.randRange(minY, maxY);
+        if (grid[x]?.[y]) {
+            drawCircleOnGrid(grid, x, y, 2, 1);
+            i++;
+            minX = Math.max(1, Math.min(x - 3, minX));
+            maxX = Math.min(DCOLS - 2, Math.max(x + 3, maxX));
+            minY = Math.max(1, Math.min(y - 3, minY));
+            maxY = Math.min(DROWS - 2, Math.max(y + 3, maxY));
+        }
+    }
 }

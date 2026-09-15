@@ -5,7 +5,7 @@
 
 import { Grid, TerrainType, DCOLS, DROWS } from '../Map/Grid';
 import { lakeDisruptsPassability, terrainAllowsMove } from '../Map/Connectivity';
-import { addLoops, applyLoopDoorSites, MINIMUM_PATHING_DISTANCE } from '../Map/LoopMap';
+import { addLoops, applyLoopDoorSites, MINIMUM_PATHING_DISTANCE, LOOP_DOOR_PERCENT, DEEPEST_LEVEL } from '../Map/LoopMap';
 import { rng } from '../Random';
 import { RoomType, ROOM_TYPE_COUNT } from '../../types';
 import type { DungeonProfile, Pos } from '../../types';
@@ -15,6 +15,169 @@ import type { MachineResult } from './BlueprintEngine';
 
 /** 每个湖的放置尝试次数。CE Architect.c:2659 `for (k=0; k<20; k++)`。 */
 const LAKE_PLACEMENT_ATTEMPTS = 20;
+
+// ---------------------------------------------------------------------------
+// C-1：房间剖面与深度曲线（CE carveDungeon，Architect.c:2456-2478）
+// ---------------------------------------------------------------------------
+
+/**
+ * CE dungeonProfileCatalog（Globals.c:934-947，任务书未给位置、本轮自查）。
+ * roomFrequencies 下标 = RoomType（Globals.c:935-943 的注释）：
+ *   0 十字房 / 1 对称小十字 / 2 小房间 / 3 圆房 / 4 碎块房 /
+ *   5 洞穴 / 6 大洞窟（满层）/ 7 入口房。
+ * DP_GOBLIN_WARREN / DP_SENTINEL_SANCTUARY（机器专用剖面）本轮不移植——
+ * web 的机器走数据驱动的 BlueprintEngine，与 CE addMachines 不同源。
+ */
+export const DUNGEON_PROFILE_CATALOG = {
+    /** Globals.c:946 `{{2, 1, 1, 1, 7, 1, 0, 0}, 10}` */
+    DP_BASIC: { roomFrequencies: [2, 1, 1, 1, 7, 1, 0, 0], corridorChance: 10 } as DungeonProfile,
+    /** Globals.c:947 `{{10, 0, 0, 3, 7, 10, 10, 0}, 0}` */
+    DP_BASIC_FIRST_ROOM: { roomFrequencies: [10, 0, 0, 3, 7, 10, 10, 0], corridorChance: 0 } as DungeonProfile,
+} as const;
+
+/** CE gameConst->amuletLevel = 26（web 口径即 LoopMap.DEEPEST_LEVEL：护符层）。 */
+const AMULET_LEVEL = DEEPEST_LEVEL;
+
+/** CE carveDungeon Architect.c:2473 `attachRooms(grid, &theDP, 35, 35)`。 */
+const CE_ROOM_ATTACH_ATTEMPTS = 35;
+const CE_MAX_ROOM_COUNT = 35;
+
+/** CE Rogue.h:1157-1158。 */
+const CAVE_MIN_WIDTH = 50;
+const CAVE_MIN_HEIGHT = 20;
+
+/** CE Rogue.h:1137-1140。 */
+const HORIZONTAL_CORRIDOR_MIN_LENGTH = 5;
+const HORIZONTAL_CORRIDOR_MAX_LENGTH = 15;
+const VERTICAL_CORRIDOR_MIN_LENGTH = 2;
+const VERTICAL_CORRIDOR_MAX_LENGTH = 9;
+
+/** CE nbDirs（GlobalsBase.c:38）前四向：UP/DOWN/LEFT/RIGHT。 */
+const NB4: ReadonlyArray<readonly [number, number]> = [[0, -1], [0, 1], [-1, 0], [1, 0]];
+/** CE enum directions 的四向序（Rogue.h）；NO_DIRECTION = -1。 */
+const DIR_UP = 0;
+const DIR_DOWN = 1;
+const NO_DIRECTION = -1;
+/** CE oppositeDirection（Math.c）：UP↔DOWN、LEFT↔RIGHT。 */
+const OPPOSITE_DIRECTION = [1, 0, 3, 2];
+
+/**
+ * CE Architect.c:1951-1969 insertRoomAt：从 roomMap 的锚格（门位）出发，
+ * 把与锚连通的房间格（4 向泛洪）盖到 dungeon 上（值为 1）。CE 是递归实现，
+ * 这里用显式栈复刻同一泛洪集（大洞窟上百格，避免深递归）。
+ */
+function workInsertRoomAt(
+    dungeonMap: RoomBuilder.RoomGrid,
+    roomMap: RoomBuilder.RoomGrid,
+    roomToDungeonX: number,
+    roomToDungeonY: number,
+    xRoom: number,
+    yRoom: number
+): void {
+    dungeonMap[xRoom + roomToDungeonX]![yRoom + roomToDungeonY] = 1;
+    const stack: Pos[] = [{ x: xRoom, y: yRoom }];
+    while (stack.length > 0) {
+        const p = stack.pop()!;
+        for (let dir = 0; dir < 4; dir++) {
+            const newX = p.x + NB4[dir]![0]!;
+            const newY = p.y + NB4[dir]![1]!;
+            if (coordinatesAreInMap(newX, newY)
+                && roomMap[newX]![newY]
+                && coordinatesAreInMap(newX + roomToDungeonX, newY + roomToDungeonY)
+                && dungeonMap[newX + roomToDungeonX]![newY + roomToDungeonY] === 0) {
+                dungeonMap[newX + roomToDungeonX]![newY + roomToDungeonY] = 1;
+                stack.push({ x: newX, y: newY });
+            }
+        }
+    }
+}
+
+function coordinatesAreInMap(x: number, y: number): boolean {
+    return x >= 0 && x < DCOLS && y >= 0 && y < DROWS;
+}
+
+/**
+ * CE Architect.c:2426 的 descentPercent：
+ * `clamp(100 * (depthLevel - 1) / (amuletLevel - 1), 0, 100)`，C 整数除法。
+ */
+export function dungeonDescentPercent(depth: number): number {
+    const raw = Math.floor((100 * (depth - 1)) / (AMULET_LEVEL - 1));
+    return Math.min(100, Math.max(0, raw));
+}
+
+/** CE Architect.c:2425-2434。原地修改（CE 收的是指针，调用方传剖面副本）。 */
+export function adjustDungeonProfileForDepth(theProfile: DungeonProfile, depth: number): void {
+    const descentPercent = dungeonDescentPercent(depth);
+    theProfile.roomFrequencies[0] = (theProfile.roomFrequencies[0] ?? 0) + Math.floor((20 * (100 - descentPercent)) / 100);
+    theProfile.roomFrequencies[1] = (theProfile.roomFrequencies[1] ?? 0) + Math.floor((10 * (100 - descentPercent)) / 100);
+    theProfile.roomFrequencies[3] = (theProfile.roomFrequencies[3] ?? 0) + Math.floor((7 * (100 - descentPercent)) / 100);
+    theProfile.roomFrequencies[5] = (theProfile.roomFrequencies[5] ?? 0) + Math.floor((10 * descentPercent) / 100);
+    theProfile.corridorChance += Math.floor((80 * (100 - descentPercent)) / 100);
+}
+
+/** CE Architect.c:2436-2448：深度 1 恒入口房；此后大洞窟频率随深度线性上升。 */
+export function adjustDungeonFirstRoomProfileForDepth(theProfile: DungeonProfile, depth: number): void {
+    const descentPercent = dungeonDescentPercent(depth);
+    if (depth === 1) {
+        for (let i = 0; i < ROOM_TYPE_COUNT; i++) {
+            theProfile.roomFrequencies[i] = 0;
+        }
+        theProfile.roomFrequencies[7] = 1;
+    } else {
+        theProfile.roomFrequencies[6] = (theProfile.roomFrequencies[6] ?? 0) + Math.floor((50 * descentPercent) / 100);
+    }
+}
+
+function cloneDungeonProfile(dp: DungeonProfile): DungeonProfile {
+    return { roomFrequencies: dp.roomFrequencies.slice(), corridorChance: dp.corridorChance };
+}
+
+/**
+ * CE Grid.c:224 randomLocationInGrid：取第 index 个（index 随机）值为
+ * validValue 的格。无候选时返回 (-1,-1) 且**不消耗 RNG**（CE 同）。
+ */
+function randomLocationInGrid(grid: RoomBuilder.RoomGrid, validValue: number): Pos {
+    let count = 0;
+    for (let x = 0; x < DCOLS; x++) {
+        for (let y = 0; y < DROWS; y++) {
+            if (grid[x]![y] === validValue) count++;
+        }
+    }
+    if (count <= 0) return { x: -1, y: -1 };
+    let index = rng.randRange(0, count - 1);
+    for (let x = 0; x < DCOLS; x++) {
+        for (let y = 0; y < DROWS; y++) {
+            if (grid[x]![y] === validValue) {
+                if (index === 0) return { x, y };
+                index--;
+            }
+        }
+    }
+    return { x: -1, y: -1 }; // 不可达（count 已验证 > 0）
+}
+
+/**
+ * CE Architect.c:2126-2150 directionOfDoorSite：格 (x,y) 若恰有一个方向 d
+ * 使其**对侧**（-d）是地板（值 1），返回 d（门朝 d 开）；多于一个方向或
+ * 已占用返回 NO_DIRECTION。
+ */
+function directionOfDoorSite(grid: RoomBuilder.RoomGrid, x: number, y: number): number {
+    if (grid[x]![y]) return NO_DIRECTION;
+    let solutionDir = NO_DIRECTION;
+    for (let dir = 0; dir < 4; dir++) {
+        const newX = x + NB4[dir]![0]!;
+        const newY = y + NB4[dir]![1]!;
+        const oppX = x - NB4[dir]![0]!;
+        const oppY = y - NB4[dir]![1]!;
+        if (coordinatesAreInMap(newX, newY) && coordinatesAreInMap(oppX, oppY) && grid[oppX]![oppY] === 1) {
+            if (solutionDir !== NO_DIRECTION) {
+                return NO_DIRECTION; // 两个方向都能开门 → 不是门位
+            }
+            solutionDir = dir;
+        }
+    }
+    return solutionDir;
+}
 
 export class Architect {
     public grid: Grid;
@@ -34,13 +197,25 @@ export class Architect {
      *  的频率）。仅在 placeGatedLakeBlob 里递增。 */
     public static lakeGateStats = { placed: 0, skipped: 0 };
 
+    /** C-1 观测：本层 designRandomRoom 的房型抽取计数（下标=RoomType，
+     *  含首房间那次抽取）。仅供测试/报告观测，不参与任何生成决策。 */
+    public roomTypeDraws: number[] = new Array(ROOM_TYPE_COUNT).fill(0);
+    /** C-1 观测：本层首房间的房型（designRandomRoom 的 doorSites=null 调用）。
+     *  CE 语义：深度 1 恒为 RoomType.ENTRANCE_ROOM。仅供观测。 */
+    public firstRoomType: number = -1;
+    /** C-1 观测：本层 attachRooms 成功落位的房间数（不含首房间）。仅供观测。 */
+    public roomsBuilt: number = 0;
+    /** C-1 观测：本层经走廊（attachHallwayTo）落位的房间数。仅供观测。 */
+    public hallwayRoomsBuilt: number = 0;
+
     constructor() {
         this.grid = new Grid(DCOLS, DROWS);
     }
 
     /**
-     * 生成步骤 0-3：重置画布、入口房、房间生长、环境叠加（含 P1-29 湖泊
-     * 连通性闸门）。返回时**全部干地必然属同一个连通块**——这是湖泊闸门
+     * 生成步骤 0-3：重置画布、carveDungeon（首房间 + attachRooms）、
+     * grid→地形落位、addLoops 环路、环境叠加（含 P1-29 湖泊连通性闸门）。
+     * 返回时**全部干地必然属同一个连通块**——这是湖泊闸门
      * 的合同，测试可直接对本阶段断言连通性（p1_29_lake_connectivity.test.ts）。
      * 注意：步骤 5 的机器阶段（buildMachines）可能在此之后切断连通
      *（BlueprintEngine 的锁门/特征水深水不受本闸门约束，属独立缺陷，
@@ -55,24 +230,27 @@ export class Architect {
         }
         this.loopDoorSites = [];
         this.loopWorkGrid = null;
+        this.roomTypeDraws = new Array(ROOM_TYPE_COUNT).fill(0);
+        this.firstRoomType = -1;
+        this.roomsBuilt = 0;
+        this.hallwayRoomsBuilt = 0;
 
-        // 1. Initial Room (Entrance)
-        const roomMap = RoomBuilder.createEmptyRoomGrid();
-        RoomBuilder.designCrossRoom(roomMap);
-        this.insertRoomAt(0, 0, roomMap);
+        // 1-2. carveDungeon（CE Architect.c:2456-2478）：首房间（深度剖面
+        // 调整后的 DP_BASIC_FIRST_ROOM）+ attachRooms（DP_BASIC + 深度调整，
+        // attempts=35, maxRoomCount=35）。产出 CE digDungeon 语义的短整
+        // work grid（0 花岗岩 / 1 地板 / 2 门位）。
+        const work = this.carveDungeon(depth);
 
-        // 2. Grow Dungeon
-        const dpBasic: DungeonProfile = {
-            roomFrequencies: [2, 1, 1, 1, 7, 1, 0, 0],
-            corridorChance: 10
-        };
-        this.attachRooms(dpBasic, 40, 15);
+        // 2.9 grid→地形落位（CE digDungeon Architect.c:2898-2905）：
+        // 1→FLOOR；2→rand_percent(60) 且非最深层 ? DOOR : FLOOR。
+        // CE 的落位在 addLoops 之后统一做；web 的 addLoops 消费 Grid 地形
+        //（C-0 结构），故这里先落位——门位在 extractWorkGrid 里仍映射回 2，
+        // 对 addLoops 的语义与 CE 等价（代价 1、不是候选）。
+        this.translateWorkGridToTerrain(work, depth);
 
-        // 2.5 C-0：地牢环路（CE digDungeon 第 3 步，Architect.c:2897
-        // `addLoops(grid, 20)`——carveDungeon 之后、grid→pmap 落位之前；
-        // web 对应位置即房间生长之后、湖泊叠加之前）。新门位按 CE
-        // Architect.c:2900-2904 落成 DOOR/FLOOR（attachRooms 已落的门有
-        // 自己的等价落位，不重掷——见 LoopMap.addLoops 头注）。
+        // 2.95 C-0：地牢环路（CE digDungeon 第 3 步，Architect.c:2897
+        // `addLoops(grid, 20)`）。新门位按 CE Architect.c:2900-2904 落成
+        // DOOR/FLOOR（attachRooms 已落的门有同一落位规则，见上）。
         const loop = addLoops(this.grid, MINIMUM_PATHING_DISTANCE);
         this.loopWorkGrid = loop.work;
         this.loopDoorSites = applyLoopDoorSites(this.grid, loop.newSites, depth);
@@ -81,6 +259,66 @@ export class Architect {
         this.designEnvironmentOvelays(depth);
 
         return this.grid;
+    }
+
+    /**
+     * CE carveDungeon（Architect.c:2456-2478）的移植：在短整 work grid 上
+     * 凿出首房间与 attachRooms 的房间/走廊，返回 0/1/2 网格。
+     */
+    private carveDungeon(depth: number): RoomBuilder.RoomGrid {
+        const work = RoomBuilder.createEmptyRoomGrid();
+
+        const theDP = cloneDungeonProfile(DUNGEON_PROFILE_CATALOG.DP_BASIC);
+        adjustDungeonProfileForDepth(theDP, depth);
+        const theFirstRoomDP = cloneDungeonProfile(DUNGEON_PROFILE_CATALOG.DP_BASIC_FIRST_ROOM);
+        adjustDungeonFirstRoomProfileForDepth(theFirstRoomDP, depth);
+
+        // CE Architect.c:2465：首房间直接画进 grid（无 doorSites、无走廊）。
+        this.designRandomRoom(work, false, null, theFirstRoomDP.roomFrequencies);
+
+        // web 合同适配（非 CE 内容）：Game.ts 把 D1 玩家出生点与上楼梯钉在
+        // 画布中心 (DCOLS/2, DROWS/2)（Game.ts:424 与 populateLevel 的
+        // "Default vestibule"），而 CE 的入口房在底部中央、不覆盖该点
+        //（CE 自己把 D1 上楼梯锚在 (DCOLS-1)/2-1, DROWS-2，RogueMain.c:246）。
+        // 中心凿 3×3 前厅 + 3 格宽走廊接到入口房顶部，保证中心是连通地板、
+        // 且出生点 8 邻域可走（1 宽走廊会让玩家开局卡在瓶颈格，
+        // p4_7/monster_stats_effect 的接敌场景在窄井里无法成立）。
+        if (depth === 1) {
+            const cx = Math.floor(DCOLS / 2);
+            const cy = Math.floor(DROWS / 2);
+            for (let x = cx - 1; x <= cx + 1; x++) {
+                for (let y = cy - 1; y <= Math.min(cy + 1, DROWS - 3); y++) {
+                    work[x]![y] = 1;
+                }
+                for (let y = cy + 2; y < DROWS - 2; y++) {
+                    if (work[x]![y] === 1) break; // 已接到入口房
+                    work[x]![y] = 1;
+                }
+            }
+        }
+
+        this.attachRooms(work, theDP, CE_ROOM_ATTACH_ATTEMPTS, CE_MAX_ROOM_COUNT);
+        return work;
+    }
+
+    /** CE digDungeon Architect.c:2898-2905：work grid → 地形落位。 */
+    private translateWorkGridToTerrain(work: RoomBuilder.RoomGrid, depth: number): void {
+        for (let x = 0; x < DCOLS; x++) {
+            for (let y = 0; y < DROWS; y++) {
+                if (work[x]![y] === 1) {
+                    this.grid.setTerrain(x, y, TerrainType.FLOOR, '.', 0x888888);
+                } else if (work[x]![y] === 2) {
+                    // CE：rand_percent(60) && depthLevel < deepestLevel ? DOOR : FLOOR
+                    //（C 的 && 短路：先掷骰）。非最深层口径同 LoopMap.applyLoopDoorSites。
+                    const asDoor = rng.randPercent(LOOP_DOOR_PERCENT) && depth < DEEPEST_LEVEL;
+                    if (asDoor) {
+                        this.grid.setTerrain(x, y, TerrainType.DOOR, '+', 0xaa8844);
+                    } else {
+                        this.grid.setTerrain(x, y, TerrainType.FLOOR, '.', 0x888888);
+                    }
+                }
+            }
+        }
     }
 
     public generateLevel(depth: number): Grid {
@@ -189,185 +427,247 @@ export class Architect {
         }
     }
 
-    private attachRooms(dp: DungeonProfile, maxAttempts: number, maxRooms: number) {
-        let roomsBuilt = 1;
+    /**
+     * CE attachRooms（Architect.c:2367-2423）的移植：在超空间 roomMap 里
+     * 造房间（按 corridorChance 决定是否接走廊），把 roomMap 在全图洗牌序
+     * 的每个位置上"滑动"，直到 doorSites 对得上既有地板的墙格（唯一门位
+     * 方向 + 3×3 光环净空），落位并把门格标成 2。
+     * roomsBuilt 从 0 计（CE 同，不含首房间），至多 maxRoomCount、至多
+     * attempts 次尝试；最后 5 次尝试不接走廊（CE `roomsAttempted <= attempts - 5`）。
+     */
+    private attachRooms(work: RoomBuilder.RoomGrid, dp: DungeonProfile, attempts: number, maxRoomCount: number): void {
+        // CE fillSequentialList + shuffleList（Math.c:66/83，Fisher-Yates）。
+        const sCoord: number[] = [];
+        for (let v = 0; v < DCOLS * DROWS; v++) sCoord.push(v);
+        rng.shuffleList(sCoord);
+
         const roomMap = RoomBuilder.createEmptyRoomGrid();
+        let roomsBuilt = 0;
+        for (let roomsAttempted = 0; roomsBuilt < maxRoomCount && roomsAttempted < attempts; roomsAttempted++) {
+            // Build a room in hyperspace.
+            for (let x = 0; x < DCOLS; x++) roomMap[x]!.fill(0);
+            const doorSites: Pos[] = [];
+            for (let d = 0; d < 4; d++) doorSites.push({ x: -1, y: -1 });
+            const attachHallway = roomsAttempted <= attempts - 5 && rng.randPercent(dp.corridorChance);
+            this.designRandomRoom(roomMap, attachHallway, doorSites, dp.roomFrequencies);
 
-        // Very basic room attachment. We look for a wall adjacent to a floor, and try
-        // to stamp a room there. Fully replicating Brogue's doorSites logic implies
-        // searching the perimeter for valid door locations.
+            // Slide hyperspace across real space until the room matches up with a wall.
+            for (let i = 0; i < DCOLS * DROWS; i++) {
+                const x = Math.floor(sCoord[i]! / DROWS);
+                const y = sCoord[i]! % DROWS;
+                const dir = directionOfDoorSite(work, x, y);
+                if (dir === NO_DIRECTION) continue;
+                const oppDir = OPPOSITE_DIRECTION[dir]!;
+                if (doorSites[oppDir]!.x === -1) continue;
+                const offX = x - doorSites[oppDir]!.x;
+                const offY = y - doorSites[oppDir]!.y;
+                if (!this.workRoomFitsAt(work, roomMap, offX, offY)) continue;
 
-        for (let attempt = 0; attempt < maxAttempts && roomsBuilt < maxRooms; attempt++) {
-            this.designRandomRoom(roomMap, dp);
-
-            // Try to find a place to attach
-            const attachPoint = this.findAttachPoint(roomMap);
-            if (attachPoint) {
-                this.insertRoomAt(attachPoint.x, attachPoint.y, roomMap);
-
-                // Cut a door
-                if (attachPoint.doorX > 0 && attachPoint.doorY > 0) {
-                    const isDoor = rng.randPercent(40);
-                    if (isDoor) {
-                        const isOpen = rng.randPercent(50);
-                        if (isOpen) {
-                            this.grid.setTerrain(attachPoint.doorX, attachPoint.doorY, TerrainType.OPEN_DOOR, "'", 0xaa8844);
-                        } else {
-                            this.grid.setTerrain(attachPoint.doorX, attachPoint.doorY, TerrainType.DOOR, '+', 0xaa8844);
-                        }
-                    } else {
-                        this.grid.setTerrain(attachPoint.doorX, attachPoint.doorY, TerrainType.FLOOR, '.', 0x888888);
-                    }
-                }
-
+                // Room fits here.
+                workInsertRoomAt(work, roomMap, offX, offY, doorSites[oppDir]!.x, doorSites[oppDir]!.y);
+                work[x]![y] = 2; // Door site.
                 roomsBuilt++;
+                if (attachHallway) this.hallwayRoomsBuilt++;
+                break;
             }
         }
+        this.roomsBuilt = roomsBuilt;
     }
 
-    private designRandomRoom(roomMap: RoomBuilder.RoomGrid, dp: DungeonProfile) {
-        // Clear roomMap
-        for (let x = 0; x < DCOLS; x++) roomMap[x]?.fill(0);
-
-        // Choose weighted room
-        const sum = dp.roomFrequencies.reduce((a, b) => a + b, 0);
-        let randIndex = rng.randRange(0, sum - 1);
-        let selectedType = RoomType.SMALL_ROOM;
-
+    /**
+     * CE designRandomRoom（Architect.c:2274-2316）的移植：按频率加权抽房型
+     * 并画到 grid 上；doorSites 非 null 时计算四个方向的候选门位，必要时
+     * （attachHallway）接一条走廊并把门位搬到走廊末端。
+     */
+    private designRandomRoom(grid: RoomBuilder.RoomGrid, attachHallway: boolean, doorSites: Pos[] | null, roomTypeFrequencies: number[]): void {
+        let sum = 0;
         for (let i = 0; i < ROOM_TYPE_COUNT; i++) {
-            const frequency = dp.roomFrequencies[i] ?? 0;
+            sum += roomTypeFrequencies[i] ?? 0;
+        }
+        let randIndex = rng.randRange(0, sum - 1);
+        let i = 0;
+        for (; i < ROOM_TYPE_COUNT; i++) {
+            const frequency = roomTypeFrequencies[i] ?? 0;
             if (randIndex < frequency) {
-                selectedType = i;
-                break;
+                break; // "i" is our room type.
             }
             randIndex -= frequency;
         }
-
-        switch (selectedType) {
+        if (i < ROOM_TYPE_COUNT) {
+            this.roomTypeDraws[i] = (this.roomTypeDraws[i] ?? 0) + 1;
+            if (doorSites === null) this.firstRoomType = i;
+        }
+        switch (i) {
             case RoomType.CROSS_ROOM:
-                RoomBuilder.designCrossRoom(roomMap);
+                RoomBuilder.designCrossRoom(grid);
+                break;
+            case RoomType.SMALL_SYMMETRICAL_CROSS_ROOM:
+                RoomBuilder.designSymmetricalCrossRoom(grid);
                 break;
             case RoomType.SMALL_ROOM:
-            case RoomType.SMALL_SYMMETRICAL_CROSS_ROOM:
-                RoomBuilder.designSmallRoom(roomMap);
+                RoomBuilder.designSmallRoom(grid);
                 break;
             case RoomType.CIRCULAR_ROOM:
-                RoomBuilder.designCircularRoom(roomMap);
-                break;
-            case RoomType.CAVE:
-                RoomBuilder.designCavern(roomMap, 4, 12, 4, 12);
-                break;
-            case RoomType.CAVERN:
-                RoomBuilder.designCavern(roomMap, 15, DCOLS - 2, 10, DROWS - 2);
+                RoomBuilder.designCircularRoom(grid);
                 break;
             case RoomType.CHUNKY_ROOM:
-            case RoomType.ENTRANCE_ROOM:
-            default:
-                RoomBuilder.designSmallRoom(roomMap); // Fallback
+                RoomBuilder.designChunkyRoom(grid);
                 break;
+            case RoomType.CAVE:
+                // CE Architect.c:2301-2312：洞穴房三选一（紧凑 / 南北长大 /
+                // 东西长大）。
+                switch (rng.randRange(0, 2)) {
+                    case 0:
+                        RoomBuilder.designCavern(grid, 3, 12, 4, 8); // Compact cave room.
+                        break;
+                    case 1:
+                        RoomBuilder.designCavern(grid, 3, 12, 15, DROWS - 2); // Large north-south cave room.
+                        break;
+                    default:
+                        RoomBuilder.designCavern(grid, 20, DROWS - 2, 4, 8); // Large east-west cave room.
+                        break;
+                }
+                break;
+            case RoomType.CAVERN:
+                RoomBuilder.designCavern(grid, CAVE_MIN_WIDTH, DCOLS - 2, CAVE_MIN_HEIGHT, DROWS - 2);
+                break;
+            case RoomType.ENTRANCE_ROOM:
+                RoomBuilder.designEntranceRoom(grid);
+                break;
+            default:
+                break;
+        }
+
+        if (doorSites) {
+            this.chooseRandomDoorSites(grid, doorSites);
+            if (attachHallway) {
+                let dir = rng.randRange(0, 3);
+                for (let k = 0; doorSites[dir]!.x === -1 && k < 3; k++) {
+                    dir = (dir + 1) % 4; // Each room will have at least 2 valid directions for doors.
+                }
+                this.attachHallwayTo(grid, doorSites);
+            }
         }
     }
 
-    private findAttachPoint(roomMap: RoomBuilder.RoomGrid): { x: number, y: number, doorX: number, doorY: number } | null {
-        // Try up to 200 random spots on the map perimeter
-        for (let attempt = 0; attempt < 200; attempt++) {
-            const rx = rng.randRange(1, DCOLS - 2);
-            const ry = rng.randRange(1, DROWS - 2);
+    /**
+     * CE chooseRandomDoorSites（Architect.c:2152-2205）：对房间的每个空格
+     * 判定唯一门位方向，再向房间外射线 10 格确认不与房间自身相交；然后
+     * 每个方向用 randomLocationInGrid 抽一个门位（无候选的方向不消耗 RNG）。
+     */
+    private chooseRandomDoorSites(roomMap: RoomBuilder.RoomGrid, doorSites: Pos[]): void {
+        const scratch = RoomBuilder.createEmptyRoomGrid();
+        for (let x = 0; x < DCOLS; x++) {
+            for (let y = 0; y < DROWS; y++) {
+                scratch[x]![y] = roomMap[x]![y]!;
+            }
+        }
 
-            // Is this a granite next to a floor?
-            if (this.grid.getCell(rx, ry)?.terrain === TerrainType.GRANITE) {
-                const adj = this.getAdjacentFloor(rx, ry);
-                if (adj) {
-                    const dx = rx - adj.x;
-                    const dy = ry - adj.y;
-                    const targetX = rx + dx;
-                    const targetY = ry + dy;
-
-                    if (!this.grid.isValidPos(targetX, targetY)) continue;
-
-                    // Collect floor tiles from the roomMap to serve as attachment anchors
-                    const anchors: Pos[] = [];
-                    for (let x = 1; x < DCOLS - 1; x++) {
-                        for (let y = 1; y < DROWS - 1; y++) {
-                            if (roomMap[x]![y] === 1) { // 1 is FLOOR
-                                anchors.push({ x, y });
-                            }
-                        }
+        for (let i = 0; i < DCOLS; i++) {
+            for (let j = 0; j < DROWS; j++) {
+                if (scratch[i]![j]) continue;
+                const dir = directionOfDoorSite(roomMap, i, j);
+                if (dir === NO_DIRECTION) continue;
+                // Trace a ray 10 spaces outward to make sure it doesn't intersect the room.
+                let newX = i + NB4[dir]![0]!;
+                let newY = j + NB4[dir]![1]!;
+                let doorSiteFailed = false;
+                for (let k = 0; k < 10 && coordinatesAreInMap(newX, newY) && !doorSiteFailed; k++) {
+                    if (scratch[newX]![newY]) {
+                        doorSiteFailed = true;
                     }
-
-                    if (anchors.length > 0) {
-                        // Shuffle anchors
-                        for (let i = anchors.length - 1; i > 0; i--) {
-                            const j = rng.randRange(0, i);
-                            const temp = anchors[i] as Pos;
-                            anchors[i] = anchors[j] as Pos;
-                            anchors[j] = temp;
-                        }
-
-                        // Try up to 20 random anchors
-                        for (let i = 0; i < Math.min(20, anchors.length); i++) {
-                            const anchor = anchors[i] as Pos;
-                            const offsetX = targetX - anchor.x;
-                            const offsetY = targetY - anchor.y;
-
-                            if (this.roomFitsAt(roomMap, offsetX, offsetY)) {
-                                return { x: offsetX, y: offsetY, doorX: rx, doorY: ry };
-                            }
-                        }
-                    }
+                    newX += NB4[dir]![0]!;
+                    newY += NB4[dir]![1]!;
+                }
+                if (!doorSiteFailed) {
+                    scratch[i]![j] = dir + 2; // 不与 0/1 冲突
                 }
             }
         }
-        return null;
+
+        for (let dir = 0; dir < 4; dir++) {
+            doorSites[dir] = randomLocationInGrid(scratch, dir + 2);
+        }
     }
 
-    private getAdjacentFloor(x: number, y: number): Pos | null {
-        const dirs: Array<readonly [number, number]> = [[0, -1], [0, 1], [-1, 0], [1, 0]];
-        for (const d of dirs) {
-            const nx = x + d[0];
-            const ny = y + d[1];
-            if (this.grid.isValidPos(nx, ny) && this.grid.getCell(nx, ny)?.terrain === TerrainType.FLOOR) {
-                return { x: nx, y: ny };
+    /**
+     * CE attachHallwayTo（Architect.c:2207-2272）：从房间的一个门位向外
+     * 凿一条直走廊（横 5-15 / 竖 2-9），再把门位搬到走廊末端（15% 概率
+     * 允许斜向出口——即四个方向都尝试指到末端格的邻格）。
+     */
+    private attachHallwayTo(grid: RoomBuilder.RoomGrid, doorSites: Pos[]): void {
+        const dirs = [0, 1, 2, 3];
+        rng.shuffleList(dirs);
+        let dir = NO_DIRECTION;
+        let i = 0;
+        for (; i < 4; i++) {
+            dir = dirs[i]!;
+            const ds = doorSites[dir]!;
+            if (ds.x !== -1 && ds.y !== -1
+                && coordinatesAreInMap(
+                    ds.x + NB4[dir]![0]! * HORIZONTAL_CORRIDOR_MAX_LENGTH,
+                    ds.y + NB4[dir]![1]! * VERTICAL_CORRIDOR_MAX_LENGTH)) {
+                break; // That's our direction!
             }
         }
-        return null;
+        if (i === 4) {
+            return; // No valid direction for hallways.
+        }
+
+        let length: number;
+        if (dir === DIR_UP || dir === DIR_DOWN) {
+            length = rng.randRange(VERTICAL_CORRIDOR_MIN_LENGTH, VERTICAL_CORRIDOR_MAX_LENGTH);
+        } else {
+            length = rng.randRange(HORIZONTAL_CORRIDOR_MIN_LENGTH, HORIZONTAL_CORRIDOR_MAX_LENGTH);
+        }
+
+        let x = doorSites[dir]!.x;
+        let y = doorSites[dir]!.y;
+        for (let k = 0; k < length; k++) {
+            if (coordinatesAreInMap(x, y)) {
+                grid[x]![y] = 1;
+            }
+            x += NB4[dir]![0]!;
+            y += NB4[dir]![1]!;
+        }
+        // Now (x, y) points at the last interior cell of the hallway.
+        x = Math.min(Math.max(x - NB4[dir]![0]!, 0), DCOLS - 1);
+        y = Math.min(Math.max(y - NB4[dir]![1]!, 0), DROWS - 1);
+        const allowObliqueHallwayExit = rng.randPercent(15);
+        for (let dir2 = 0; dir2 < 4; dir2++) {
+            const newX = x + NB4[dir2]![0]!;
+            const newY = y + NB4[dir2]![1]!;
+            if ((dir2 !== dir && !allowObliqueHallwayExit)
+                || !coordinatesAreInMap(newX, newY)
+                || grid[newX]![newY]) {
+                doorSites[dir2] = { x: -1, y: -1 };
+            } else {
+                doorSites[dir2] = { x: newX, y: newY };
+            }
+        }
     }
 
-    private roomFitsAt(roomMap: RoomBuilder.RoomGrid, offsetX: number, offsetY: number): boolean {
-        // Simple overlapping check
-        for (let x = 0; x < DCOLS; x++) {
-            const roomColumn = roomMap[x];
-            if (!roomColumn) continue;
-            for (let y = 0; y < DROWS; y++) {
-                if (roomColumn[y]! > 0) {
-                    const gx = x + offsetX;
-                    const gy = y + offsetY;
-                    if (!this.grid.isValidPos(gx, gy)) return false;
-
-                    const cell = this.grid.getCell(gx, gy);
-                    if (cell && cell.terrain !== TerrainType.GRANITE) {
-                        return false;
+    /**
+     * CE roomFitsAt（Architect.c:2318-2344）：房间每个格子的 3×3 邻域
+     * （含对角）都必须在图内且是花岗岩（work==0）——房间之间永远隔着
+     * 至少一圈墙，门位格（2）同样挤占邻域。
+     */
+    private workRoomFitsAt(work: RoomBuilder.RoomGrid, roomMap: RoomBuilder.RoomGrid, roomToWorkX: number, roomToWorkY: number): boolean {
+        for (let xRoom = 0; xRoom < DCOLS; xRoom++) {
+            for (let yRoom = 0; yRoom < DROWS; yRoom++) {
+                if (!roomMap[xRoom]![yRoom]) continue;
+                const xDungeon = xRoom + roomToWorkX;
+                const yDungeon = yRoom + roomToWorkY;
+                for (let i = xDungeon - 1; i <= xDungeon + 1; i++) {
+                    for (let j = yDungeon - 1; j <= yDungeon + 1; j++) {
+                        if (!coordinatesAreInMap(i, j) || (work[i]![j] ?? 0) > 0) {
+                            return false;
+                        }
                     }
                 }
             }
         }
         return true;
-    }
-
-    private insertRoomAt(offsetX: number, offsetY: number, roomMap: RoomBuilder.RoomGrid) {
-        for (let x = 0; x < DCOLS; x++) {
-            const roomColumn = roomMap[x];
-            if (!roomColumn) continue;
-            for (let y = 0; y < DROWS; y++) {
-                if (roomColumn[y]! > 0) {
-                    const gx = x + offsetX;
-                    const gy = y + offsetY;
-                    if (this.grid.isValidPos(gx, gy)) {
-                        this.grid.setTerrain(gx, gy, TerrainType.FLOOR, '.', 0x888888);
-                    }
-                }
-            }
-        }
     }
 
     private designEnvironmentOvelays(depth: number) {
