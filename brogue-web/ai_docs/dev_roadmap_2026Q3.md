@@ -1,5 +1,23 @@
 # brogue-web 还原度攻坚路线图（2026-09-13 制定）
 
+## P1-38 / P1-39 / P1-40（2026-09-16 C-4 勘察登记，详见 `c_4_scoping_note.md`）
+
+- **P1-38 通行判据三口径不一**：`Grid.setTerrain` 的 `isPassable`、`Game.canMoveTo`、
+  `Pathfinding.calculateMap` 的成本图三者对 **LOCKED_DOOR / WATER_DEEP / CHASM** 的裁决互相矛盾。
+  所有 Dijkstra 图（气味/安全/路径点）因此认为深水与上锁的门可以走。
+  **这是我两次量错连通性的同一个病根，也是 P1-25 的病根。归 C-4a 统一。**
+- **P1-39 web 禁止游深水，偏离 CE**：CE `Globals.c:413` DEEP_WATER 不含
+  `T_OBSTRUCTS_PASSABILITY`，带 `TM_ALLOWS_SUBMERGING | TM_STAND_IN_TILE`，
+  `T_IS_DEEP_WATER`（`Rogue.h:1937`）的语义是"50% 偷走物品"而非"不可进入"。
+  玩家现在只能绕湖走。归 C-4a 之后单独一轮（连着潜水与丢物品判定）。
+- **P1-40 `setTerrain` 启发式未随 C-2 五个新枚举更新**：它们落进默认分支，
+  恰好都正确纯属侥幸。归 C-4a 根治。
+
+**C-4 已判定不可作为单轮投出**——web 没有分层、没有地形属性表、没有 DF 目录。
+拆为 C-4a（地形属性表 + 统一口径）/ C-4b（DF 目录）/ C-4c（promoteTile 两趟驱动），
+另有一个待用户裁决的前置问题：**要不要迁移 CE 的四层地形模型**。见勘察笔记。
+
+
 ## 项目边界决策（2026-09-16 拍板）
 
 **D4：brogue-web 是独立项目，不与其他项目共用文件。**
