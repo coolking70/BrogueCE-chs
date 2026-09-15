@@ -187,6 +187,12 @@ export interface GameSnapshot {
         x: number;
         y: number;
         terrain: TerrainType;
+        /**
+         * C-4a-0：四层地形快照（CE pmap layers[NUMBER_TERRAIN_LAYERS]）。
+         * 旧存档（无此字段）按 setTerrain 语义还原：terrain 进归属层、
+         * 其余三层置 NOTHING——loadSnapshot 里钉死这条兼容路径。
+         */
+        layers?: TerrainType[];
         char: string;
         color: number;
         isExplored: boolean;
@@ -277,7 +283,8 @@ interface TestRoomState {
     baselineTerrains: Array<{
         x: number;
         y: number;
-        terrain: TerrainType;
+        /** C-4a-0：改存四层（此前为单值 terrain）；重置时按层直填还原。 */
+        layers: TerrainType[];
         char: string;
         color: number;
         isPassable: boolean;
@@ -2059,7 +2066,7 @@ export class Game {
                         baselineTerrains.push({
                             x,
                             y,
-                            terrain: cell.terrain,
+                            layers: [...cell.layers],
                             char: cell.char,
                             color: cell.color,
                             isPassable: cell.isPassable,
@@ -5756,6 +5763,7 @@ export class Game {
                     x,
                     y,
                     terrain: cell.terrain,
+                    layers: [...cell.layers],
                     char: cell.char,
                     color: cell.color,
                     isExplored: cell.isExplored,
@@ -5856,9 +5864,25 @@ export class Game {
         this.depth = snapshot.depth;
         this.grid = new Grid(DCOLS, DROWS);
         for (const c of snapshot.grid) {
-            this.grid.setTerrain(c.x, c.y, c.terrain, c.char, c.color);
             const cell = this.grid.getCell(c.x, c.y);
             if (!cell) continue;
+            if (c.layers) {
+                // C-4a-0 新格式：四层原样还原。不走 setTerrainLayer——
+                // "生产代码零调用点"的留痕约束；直填 layers 与存档逐层
+                // 状态一一对应，也不动 char/color 之外的任何派生位。
+                cell.layers = [
+                    c.layers[0] ?? TerrainType.NOTHING,
+                    c.layers[1] ?? TerrainType.NOTHING,
+                    c.layers[2] ?? TerrainType.NOTHING,
+                    c.layers[3] ?? TerrainType.NOTHING
+                ];
+                cell.char = c.char;
+                cell.color = c.color;
+            } else {
+                // 旧格式（只有 terrain 字段）：按 setTerrain 语义还原——
+                // terrain 进归属层、其余三层置 NOTHING。
+                this.grid.setTerrain(c.x, c.y, c.terrain, c.char, c.color);
+            }
             cell.isExplored = c.isExplored;
             cell.hasMemory = c.hasMemory;
             cell.isVisible = false;
@@ -6269,9 +6293,13 @@ export class Game {
         this.monsters = this.monsters.filter((m) => !this.isInsideTestRoom(room, m.loc.x, m.loc.y));
 
         for (const terrain of room.baselineTerrains) {
-            this.grid.setTerrain(terrain.x, terrain.y, terrain.terrain, terrain.char, terrain.color);
+            // C-4a-0：按层直填还原（基线 cells 至多一层非空，与原 setTerrain
+            // 逐位等价）；char/color/通行位照旧由基线值覆盖。
             const cell = this.grid.getCell(terrain.x, terrain.y);
             if (!cell) continue;
+            cell.layers = [...terrain.layers];
+            cell.char = terrain.char;
+            cell.color = terrain.color;
             cell.isPassable = terrain.isPassable;
             cell.isOpaque = terrain.isOpaque;
             cell.isBurning = false;

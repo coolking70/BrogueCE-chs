@@ -1,6 +1,20 @@
 /**
  * src/engine/Map/Grid.ts
  * Grid and Cell structures reflecting Brogue's 2D map.
+ *
+ * C-4a-0：迁移 CE 的四层地形模型（结构迁移，行为逐位不变）。
+ *
+ * CE 事实来源（BrogueCE-master/src/brogue/，只读）：
+ * - `Rogue.h:1293-1300` `enum dungeonLayers { NO_LAYER=-1, DUNGEON, LIQUID, GAS,
+ *   SURFACE, NUMBER_TERRAIN_LAYERS }` —— 每格四层地形同时存在。
+ * - `Movement.c:64-80` `highestPriorityLayer()` —— 遍历四层取 drawPriority
+ *   最小者（数字越小优先级越高）；严格 `<` 使同优先级时层序在前者胜出；
+ *   全空时返回层 0（DUNGEON 层，该层存 NOTHING，故对外的地形值是 NOTHING）。
+ * - `Globals.c:315` `tileCatalog` 第 4 列 drawPriority。
+ *
+ * 本轮刻意保持"每格只有一层非 NOTHING"：setTerrain = 写归属层 + 清空其余
+ * 三层，因此 `terrain` getter 与迁移前的覆盖式赋值逐位等价。
+ * C-4a 再把"清空其余三层"换成"只清 CE 会清的"。
  */
 import type { Pos } from '../../types';
 import { DCOLS, DROWS } from '../../types';
@@ -49,16 +63,238 @@ export enum LightType {
 }
 
 /**
+ * CE `Rogue.h:1293-1300` 的 `enum dungeonLayers` 逐值对应。
+ * 顺序照 CE：GAS 在 SURFACE 之前（直觉顺序是错的，CE 就是这样）。
+ * NO_LAYER = -1 属于查询失败哨兵，不是存储层，本轮不引入。
+ */
+export enum DungeonLayer {
+    DUNGEON = 0, // 地基层（墙、地板、门等）
+    LIQUID,      // 液体层（水、岩浆、深渊、桥面等）
+    GAS,         // 气体层——web 的气体走独立 Gas.ts 网格，本层恒空（C-4a 前提）
+    SURFACE,     // 表面层（草、网、血等）
+    COUNT
+}
+
+/**
+ * drawPriority 表——CE `Globals.c:315` tileCatalog 第 4 列（数字越小优先级越高）。
+ *
+ * 逐条出处（CE 目录名 → web 成员）：
+ *   NOTHING=CE NOTHING 100；GRANITE 0；FLOOR 95；WALL 0；DOOR 8；OPEN_DOOR 25；
+ *   WATER_SHALLOW=CE SHALLOW_WATER 55；WATER_DEEP=CE DEEP_WATER 40；CHASM 40；
+ *   LAVA 40；GRASS 60；FOLIAGE 45；STAIRS_UP=CE UP_STAIRS 30；
+ *   STAIRS_DOWN=CE DOWN_STAIRS 30；SECRET_DOOR 0；LOCKED_DOOR 15；
+ *   ALTAR=CE ALTAR_INERT 17；WEB=CE SPIDERWEB 19；BLOOD=CE RED_BLOOD 80；
+ *   MUD 55；CHASM_EDGE 80；OBSIDIAN 50；BRIDGE 45；BRIDGE_EDGE 45；
+ *   INERT_BRIMSTONE 40。
+ *
+ * web 独有地形取最接近的 CE 对应物（依据见报告）：
+ *   BOG=55（CE 无 BOG 条目；最接近的是 MUD——CE 的 MUD 用的正是 G_BOG 字形，
+ *         语义同为沼泽泥泞液面， prio 55）；
+ *   CHARRED_FLOOR=95（CE 无对应物；web 的焦土是 DUNGEON 层对 FLOOR 的替换
+ *         而非表面覆盖物，须与 FLOOR 同档才保持"就是地面"的显示/语义）；
+ *   SIGN=7（CE 无 sign；最接近的"地面上的人为标记"是 SACRED_GLYPH 7）；
+ *   RESET_PLATE=15（对应物 MACHINE_PRESSURE_PLATE 15）；
+ *   TRAP=30（CE 可见陷阱 GAS_TRAP_POISON/FLAMETHROWER 等均 30；隐藏态 95 不适用——
+ *         web 的 TRAP 恒可见）；
+ *   PRESSURE_PLATE=15（对应物 MACHINE_PRESSURE_PLATE 15）。
+ */
+export const DRAW_PRIORITY: Record<TerrainType, number> = {
+    [TerrainType.NOTHING]: 100,
+    [TerrainType.GRANITE]: 0,
+    [TerrainType.FLOOR]: 95,
+    [TerrainType.WALL]: 0,
+    [TerrainType.DOOR]: 8,
+    [TerrainType.OPEN_DOOR]: 25,
+    [TerrainType.WATER_SHALLOW]: 55,
+    [TerrainType.WATER_DEEP]: 40,
+    [TerrainType.CHASM]: 40,
+    [TerrainType.LAVA]: 40,
+    [TerrainType.GRASS]: 60,
+    [TerrainType.FOLIAGE]: 45,
+    [TerrainType.BOG]: 55,
+    [TerrainType.STAIRS_UP]: 30,
+    [TerrainType.STAIRS_DOWN]: 30,
+    [TerrainType.CHARRED_FLOOR]: 95,
+    [TerrainType.SIGN]: 7,
+    [TerrainType.RESET_PLATE]: 15,
+    [TerrainType.TRAP]: 30,
+    [TerrainType.SECRET_DOOR]: 0,
+    [TerrainType.PRESSURE_PLATE]: 15,
+    [TerrainType.LOCKED_DOOR]: 15,
+    [TerrainType.ALTAR]: 17,
+    [TerrainType.WEB]: 19,
+    [TerrainType.BLOOD]: 80,
+    [TerrainType.MUD]: 55,
+    [TerrainType.CHASM_EDGE]: 80,
+    [TerrainType.OBSIDIAN]: 50,
+    [TerrainType.BRIDGE]: 45,
+    [TerrainType.BRIDGE_EDGE]: 45,
+    [TerrainType.INERT_BRIMSTONE]: 40
+};
+
+/**
+ * 归属层表——每种地形写入哪一层。
+ *
+ * CE 写入点依据（逐条）：
+ * - DUNGEON 层：Architect.c:844/848（花岗岩）、2495（FLOOR，湖底铺垫）、
+ *   2511（GRANITE 补洞）、2753（finishDoors：DOOR/FLOOR/SECRET_DOOR）、
+ *   2903（门）；3721（DOWN_STAIRS）。陷阱类 DF 目录全为 DUNGEON
+ *   （Globals.c:625-631）；MACHINE_PRESSURE_PLATE_USED DF 为 DUNGEON
+ *   （Globals.c:815 附近）。
+ * - LIQUID 层：fillLake Architect.c:2561 `layers[LIQUID] = liquid`
+ *   （DEEP_WATER/CHASM/LAVA/INERT_BRIMSTONE 湖体）；createWreath
+ *   Architect.c:2698 `layers[LIQUID] = shallowLiquid`（浅水镶边——注意
+ *   CHASM_EDGE 与 OBSIDIAN 作为 lakeType 的 shallow 产物同样进 LIQUID）；
+ *   绳桥 Architect.c:2831/2863 `layers[LIQUID] = BRIDGE`；MUD 由 DF 目录
+ *   两条 `{MUD, LIQUID, ...}`（Globals.c:892/905）落入 LIQUID。
+ * - SURFACE 层：GRASS/DEAD_GRASS/FOLIAGE DF 目录（Globals.c:610-614）；
+ *   RED_BLOOD 等 DF（Globals.c:640 附近）；SPIDERWEB DF 两条
+ *   （Globals.c:681-682 附近，均 SURFACE）；ASH DF（SURFACE）；
+ *   BRIDGE_EDGE Architect.c:2833-2834/2865-2866 `layers[SURFACE]`。
+ * - GAS 层：本轮恒空（web 气体走独立 Gas.ts 网格，不在层内）。
+ *
+ * 与任务书归属表的两处分歧（以 CE 为准，详见报告）：
+ *   CHASM_EDGE → LIQUID（任务书写了 SURFACE；CE DF 目录
+ *   `{CHASM_EDGE, LIQUID, 100, 100, 0}` + createWreath 写 LIQUID）；
+ *   OBSIDIAN → LIQUID（同上：liquidType case 3 的 shallow=OBSIDIAN，
+ *   createWreath 把 shallow 写进 LIQUID）。
+ * web 自造地形的归属（CE 无对应写入点，按语义归类）：
+ *   BOG → LIQUID（沼泽液面，同 MUD）；CHARRED_FLOOR/SIGN/RESET_PLATE →
+ *   DUNGEON（对 FLOOR 的就地替换，与 FLOOR 同层）。
+ */
+export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
+    [TerrainType.NOTHING]: DungeonLayer.DUNGEON,
+    [TerrainType.GRANITE]: DungeonLayer.DUNGEON,
+    [TerrainType.FLOOR]: DungeonLayer.DUNGEON,
+    [TerrainType.WALL]: DungeonLayer.DUNGEON,
+    [TerrainType.DOOR]: DungeonLayer.DUNGEON,
+    [TerrainType.OPEN_DOOR]: DungeonLayer.DUNGEON,
+    [TerrainType.WATER_SHALLOW]: DungeonLayer.LIQUID,
+    [TerrainType.WATER_DEEP]: DungeonLayer.LIQUID,
+    [TerrainType.CHASM]: DungeonLayer.LIQUID,
+    [TerrainType.LAVA]: DungeonLayer.LIQUID,
+    [TerrainType.GRASS]: DungeonLayer.SURFACE,
+    [TerrainType.FOLIAGE]: DungeonLayer.SURFACE,
+    [TerrainType.BOG]: DungeonLayer.LIQUID,
+    [TerrainType.STAIRS_UP]: DungeonLayer.DUNGEON,
+    [TerrainType.STAIRS_DOWN]: DungeonLayer.DUNGEON,
+    [TerrainType.CHARRED_FLOOR]: DungeonLayer.DUNGEON,
+    [TerrainType.SIGN]: DungeonLayer.DUNGEON,
+    [TerrainType.RESET_PLATE]: DungeonLayer.DUNGEON,
+    [TerrainType.TRAP]: DungeonLayer.DUNGEON,
+    [TerrainType.SECRET_DOOR]: DungeonLayer.DUNGEON,
+    [TerrainType.PRESSURE_PLATE]: DungeonLayer.DUNGEON,
+    [TerrainType.LOCKED_DOOR]: DungeonLayer.DUNGEON,
+    [TerrainType.ALTAR]: DungeonLayer.DUNGEON,
+    [TerrainType.WEB]: DungeonLayer.SURFACE,
+    [TerrainType.BLOOD]: DungeonLayer.SURFACE,
+    [TerrainType.MUD]: DungeonLayer.LIQUID,
+    [TerrainType.CHASM_EDGE]: DungeonLayer.LIQUID,
+    [TerrainType.OBSIDIAN]: DungeonLayer.LIQUID,
+    [TerrainType.BRIDGE]: DungeonLayer.LIQUID,
+    [TerrainType.BRIDGE_EDGE]: DungeonLayer.SURFACE,
+    [TerrainType.INERT_BRIMSTONE]: DungeonLayer.LIQUID
+};
+
+/** CE Movement.c:64-80 的纯数据版：对一层快照取最高优先层。 */
+export function highestPriorityLayerOf(layers: readonly TerrainType[], skipGas: boolean = false): DungeonLayer {
+    let bestPriority = 10000;
+    let best = DungeonLayer.DUNGEON;
+    for (let tt = 0; tt < DungeonLayer.COUNT; tt++) {
+        if (tt === DungeonLayer.GAS && skipGas) {
+            continue;
+        }
+        const t = layers[tt]!;
+        // 注意 `layers[tt] &&`：CE 以"非零"判层非空，NOTHING=0 恰为空层哨兵
+        if (t !== TerrainType.NOTHING && DRAW_PRIORITY[t] < bestPriority) {
+            bestPriority = DRAW_PRIORITY[t];
+            best = tt as DungeonLayer;
+        }
+    }
+    return best;
+}
+
+/**
+ * 跨层清除的干跑计数（仅测试消费，生产代码零读取点）。
+ *
+ * setTerrain 每次清掉"其他层里非 NOTHING 的内容"时记一笔
+ * (被清的层, 被清的地形, 新写入的地形)。本轮"每格只有一层非空"，
+ * 这些事件就是 C-4a 放开清空后会出现分歧的位置与规模的实测来源。
+ */
+export interface CrossLayerClearStat {
+    layer: DungeonLayer;
+    from: TerrainType;
+    to: TerrainType;
+    count: number;
+}
+
+const crossLayerClearCounts = new Map<string, number>();
+
+function recordCrossLayerClear(layer: DungeonLayer, from: TerrainType, to: TerrainType): void {
+    const key = `${layer}:${from}:${to}`;
+    crossLayerClearCounts.set(key, (crossLayerClearCounts.get(key) ?? 0) + 1);
+}
+
+/** 聚合视图（测试与测量报告用）；生产代码不得调用。 */
+export function getCrossLayerClearStats(): CrossLayerClearStat[] {
+    const out: CrossLayerClearStat[] = [];
+    for (const [key, count] of crossLayerClearCounts) {
+        const [layer, from, to] = key.split(':').map(Number) as [DungeonLayer, TerrainType, TerrainType];
+        out.push({ layer, from, to, count });
+    }
+    return out.sort((a, b) =>
+        a.layer - b.layer || a.from - b.from || a.to - b.to
+    );
+}
+
+/** 清零计数（测试隔离用）。 */
+export function resetCrossLayerClearStats(): void {
+    crossLayerClearCounts.clear();
+}
+
+/** 把 t 写进它的归属层并清空其余三层（不动 char/color/启发式）。 */
+function writeTerrainHome(cell: Cell, t: TerrainType): void {
+    const home = TERRAIN_HOME_LAYER[t];
+    for (let l = 0; l < DungeonLayer.COUNT; l++) {
+        cell.layers[l] = l === home ? t : TerrainType.NOTHING;
+    }
+}
+
+/**
  * Represents a single tile on the map.
  */
 export class Cell {
     public x: number;
     public y: number;
 
-    // Base features
-    public terrain: TerrainType = TerrainType.NOTHING;
+    // C-4a-0：四层地形（CE Rogue.h pmap.cells 的 layers[NUMBER_TERRAIN_LAYERS]）。
+    // 不变量（本轮）：至多一层非 NOTHING；terrain 的读写都经由下方访问器。
+    public layers: TerrainType[] = [
+        TerrainType.NOTHING,
+        TerrainType.NOTHING,
+        TerrainType.NOTHING,
+        TerrainType.NOTHING
+    ];
+
     public char: string = ' ';
     public color: number = 0x000000;
+
+    /**
+     * 有效地形 = 最高优先层的地形（CE Movement.c:64 highestPriorityLayer 语义：
+     * drawPriority 最小者；同优先级先遇到的层胜；全空返回 NOTHING）。
+     *
+     * 保留可写访问器的原因：库内存在 8 处直接赋值点（Game.ts×4、LakeSystem.ts、
+     * Gas.ts×4、Monster.ts——后三者在本轮禁改清单里），plain-field 语义 =
+     * "t 进归属层、其余层清空、不碰 char/color/通行启发式"，setter 原样复刻，
+     * 这些调用点因此一行不改而行为逐位不变。
+     */
+    get terrain(): TerrainType {
+        return this.layers[highestPriorityLayerOf(this.layers)]!;
+    }
+
+    set terrain(t: TerrainType) {
+        writeTerrainHome(this, t);
+    }
 
     // Flags for state
     public isExplored: boolean = false;
@@ -133,24 +369,58 @@ export class Grid {
         return x >= 0 && x < this.width && y >= 0 && y < this.height;
     }
 
+    /**
+     * CE Movement.c:64 `highestPriorityLayer` 的 Grid 入口。
+     * 返回层索引（不是地形）；全空时返回 DUNGEON 层（CE 的 best=0 初始化），
+     * 此时该层存 NOTHING——要拿地形值请读 `cell.terrain`。
+     */
+    public highestPriorityLayer(x: number, y: number, skipGas: boolean = false): DungeonLayer {
+        const cell = this.getCell(x, y);
+        if (!cell) return DungeonLayer.DUNGEON;
+        return highestPriorityLayerOf(cell.layers, skipGas);
+    }
+
+    /**
+     * 层感知写入口（C-4a-0 新增，本轮生产代码零调用点，仅测试行使；
+     * C-4a 起由生成器/环境系统接管）。只写该层，不动其他层，
+     * 也不动 char/color/通行启发式。
+     */
+    public setTerrainLayer(x: number, y: number, layer: DungeonLayer, terrain: TerrainType): void {
+        const cell = this.getCell(x, y);
+        if (cell) {
+            cell.layers[layer] = terrain;
+        }
+    }
+
     public setTerrain(x: number, y: number, terrain: TerrainType, char: string = ' ', color: number = 0xFFFFFF) {
         const cell = this.getCell(x, y);
         if (cell) {
-            cell.terrain = terrain;
+            // 干跑测量：新写入地形的归属层之外若存有非 NOTHING 内容，逐层记一笔。
+            const home = TERRAIN_HOME_LAYER[terrain];
+            for (let l = 0; l < DungeonLayer.COUNT; l++) {
+                if (l === home) continue;
+                const old = cell.layers[l]!;
+                if (old !== TerrainType.NOTHING) {
+                    recordCrossLayerClear(l as DungeonLayer, old, terrain);
+                }
+            }
+            writeTerrainHome(cell, terrain);
             cell.char = char;
             cell.color = color;
             // Basic heuristics for passability / opacity.
+            // （本轮行为不变：getter 恒等于写入值；对 getter 求值是为 C-4a 预留形状）
+            const effective = cell.terrain;
             cell.isPassable = (
-                terrain !== TerrainType.WALL &&
-                terrain !== TerrainType.GRANITE &&
-                terrain !== TerrainType.CHASM &&
-                terrain !== TerrainType.SECRET_DOOR
+                effective !== TerrainType.WALL &&
+                effective !== TerrainType.GRANITE &&
+                effective !== TerrainType.CHASM &&
+                effective !== TerrainType.SECRET_DOOR
             );
             cell.isOpaque = (
-                terrain === TerrainType.WALL ||
-                terrain === TerrainType.GRANITE ||
-                terrain === TerrainType.DOOR ||
-                terrain === TerrainType.SECRET_DOOR
+                effective === TerrainType.WALL ||
+                effective === TerrainType.GRANITE ||
+                effective === TerrainType.DOOR ||
+                effective === TerrainType.SECRET_DOOR
             );
         }
     }
