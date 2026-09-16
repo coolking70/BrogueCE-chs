@@ -29,27 +29,31 @@ export class InputManager {
 
         if (this.onActionCallback) {
             switch (e.key) {
+                // ── 移动：纯 vi 键 + 方向键（P1-46，2026-09-17 用户裁决）──
+                //
+                // 原先 web 在 vi 键之上还绑了一套 WASD，那**一次性占掉了四个
+                // CE 命令键**——CE 只用 vi 键移动（`Rogue.h:1161-1172`），
+                // 而 `w`/`a`/`s`/`d` 在 CE 里全是命令：
+                //   w = SWAP_KEY(:1186)   a = APPLY_KEY(:1182)
+                //   s = SEARCH_KEY(:1177) d = DROP_KEY(:1189)
+                // P1-42 的主动搜索就是因此无处安放。"使用"与"丢弃"是 Phase B
+                // 必然要接的，再拖下去每轮都要重撞一次，故本次一并让出。
+                //
+                // 方向键不是 CE 的东西，但不与任何 CE 命令冲突，保留。
+                // 键位自定义功能留给二次开发（用户裁决时明确延后）。
                 case 'ArrowUp':
-                case 'w':
-                case 'W':
                 case 'k':
                     this.onActionCallback('move', Direction.UP);
                     break;
                 case 'ArrowDown':
-                case 's':
-                case 'S':
                 case 'j':
                     this.onActionCallback('move', Direction.DOWN);
                     break;
                 case 'ArrowLeft':
-                case 'a':
-                case 'A':
                 case 'h':
                     this.onActionCallback('move', Direction.LEFT);
                     break;
                 case 'ArrowRight':
-                case 'd':
-                case 'D':
                 case 'l':
                     this.onActionCallback('move', Direction.RIGHT);
                     break;
@@ -58,6 +62,12 @@ export class InputManager {
                 case 'u': this.onActionCallback('move', Direction.UPRIGHT); break;
                 case 'b': this.onActionCallback('move', Direction.DOWNLEFT); break;
                 case 'n': this.onActionCallback('move', Direction.DOWNRIGHT); break;
+                // CE SEARCH_KEY（`Rogue.h:1177`）。P1-42 把引擎侧动作接好了，
+                // 一直缺的就是这一行——`s` 让出来之后终于能接上。
+                case 's':
+                case 'S':
+                    this.onActionCallback('search');
+                    break;
                 case '.':
                 case '。':
                     this.onActionCallback('wait_or_stairs_down');
