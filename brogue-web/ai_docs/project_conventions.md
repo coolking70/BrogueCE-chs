@@ -242,3 +242,30 @@ C-4b 合法地需要 `mechFlags`，但那条测试当时不在它的允许修改
 2. 写留形代码时，**能用测试固定的部分就固定**——例如方向表这类纯数据，
    即使分支不可达，也可以直接断言表的内容等于 CE 原值；
 3. 报告里标注"结构性不可达"时，**同时标注"激活轮需重核"**。
+
+## 写"允许修改"清单前，先 grep 出真实路径（2026-09-17 立，连续两轮踩同一个坑）
+
+「留痕授权清单」解决的是**测试文件**漏授权；但连续两轮暴露出另一半问题——
+**生产文件也会漏，而且根因不同：范围写对了，文件路径靠猜。**
+
+- **C-5**：范围里明写了 P1-22 下坠药水，那必然要加 `DF_HOLE_POTION` 条目，
+  但清单没有 `DungeonFeatureCatalog.ts`；
+- **B-1a**：范围里明写了"修 `DetailGenerator` 的信息泄露"（B-0 已定位），
+  清单却写成"`src/components/` 下详情面板相关"——它实际在 `src/engine/UI/`。
+
+两次都不是执行方越界，是验收方的清单与自己写的范围对不上。
+
+**规矩：写清单前，对范围里点名的每个东西 grep 出它的真实位置。**
+
+```bash
+# 例：范围提到 DetailGenerator 与 identifiedItems
+grep -rln "DetailGenerator\|identifiedItems" src/ | grep -v "^src/test/"
+# 例：范围提到"接某条 DF 链"
+#   → DungeonFeatureCatalog.ts / DungeonFeature.ts 默认进清单
+```
+
+**两条默认规则**（免得每次都想）：
+1. 凡范围含"**接某条 DF / 地形 / 机制链**"的，
+   `DungeonFeatureCatalog.ts` + `DungeonFeature.ts` + `TerrainCatalog.ts` 默认进清单；
+2. 凡范围含"**修某处显示 / 泄露**"的，先 grep 出承载那处显示的文件，
+   不要按目录习惯猜（web 的 UI 代码分散在 `src/engine/UI/` 与 `src/components/` 两处）。
