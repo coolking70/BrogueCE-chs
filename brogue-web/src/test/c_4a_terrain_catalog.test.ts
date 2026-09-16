@@ -34,6 +34,7 @@ import {
     TM_ALLOWS_SUBMERGING, TM_EXTINGUISHES_FIRE, TM_PROMOTES_WITH_KEY,
     TM_IS_SECRET, TM_VANISHES_UPON_PROMOTION, TM_STAND_IN_TILE, TM_VISUALLY_DISTINCT,
     TM_GAS_DISSIPATES, TM_GAS_DISSIPATES_QUICKLY,
+    TM_EXPLOSIVE_PROMOTE,
     blocksPassability, isPathingBlocker, blocksVision,
     obstructsItems, obstructsDiagonalMovement, isDeepWater, isFlammable,
     isFireTerrain,
@@ -121,7 +122,9 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         // F-2a：EMBERS/ASH 入列（CE Globals.c:469/461，火寿命链载体），32 → 34。
         // G-1：POISON_GAS/CONFUSION_GAS/STEAM 入列（CE Globals.c:502/503/508，
         // 气体迁层的三种可产气体载体），34 → 37。
-        expect(names.length).toBe(37);
+        // G-2：GAS_FIRE/METHANE_GAS 入列（CE Globals.c:495/507，燃气之火 +
+        // 第六种气体 tile），37 → 39。
+        expect(names.length).toBe(39);
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             const entry = TERRAIN_FLAGS[t];
@@ -243,6 +246,36 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
             expect(DRAW_PRIORITY[t], `${TerrainType[t]} prio`).toBe(35);
             expect(TERRAIN_HOME_LAYER[t], `${TerrainType[t]} 归属`).toBe(L.GAS);
         }
+    });
+
+    it('G-2 新增条目：GAS_FIRE（Globals.c:495）/ METHANE_GAS（:507）逐字段钉死', () => {
+        // 捕获的错误实现：
+        //   - 给 GAS_FIRE 抄上 T_IS_FLAMMABLE（CE ign 列为 0——火地形不是
+        //     可燃物，给它可燃会让火段点燃它自己）；
+        //   - GAS_FIRE 的 promoteChance 抄成 PLAIN_FIRE 的 500（CE 原值
+        //     8000——燃气之火 80%/回合自熄，比明火衰老快 16 倍）；
+        //   - 给 METHANE_GAS 抄任何消散旗标（CE 沼气永不自散）或漏抄
+        //     TM_EXPLOSIVE_PROMOTE（爆轰分支的载体，漏了爆轰永远不可达）。
+        expect(TERRAIN_FLAGS[C.GAS_FIRE]!.flags).toBe(T_IS_FIRE);
+        expect(TERRAIN_FLAGS[C.GAS_FIRE]!.mechFlags).toBe(
+            TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT
+        );
+        expect(TERRAIN_FLAGS[C.GAS_FIRE]!.chanceToIgnite).toBe(0);
+        expect(TERRAIN_FLAGS[C.GAS_FIRE]!.fireType).toBe('');
+        expect(TERRAIN_FLAGS[C.GAS_FIRE]!.promoteType).toBe('');
+        expect(TERRAIN_FLAGS[C.GAS_FIRE]!.promoteChance, 'CE 原值 8000（80%/回合自熄）').toBe(8000);
+        expect(TERRAIN_FLAGS[C.METHANE_GAS]!.flags).toBe(T_IS_FLAMMABLE);
+        expect(TERRAIN_FLAGS[C.METHANE_GAS]!.mechFlags).toBe(
+            TM_STAND_IN_TILE | TM_EXPLOSIVE_PROMOTE
+        );
+        expect(TERRAIN_FLAGS[C.METHANE_GAS]!.chanceToIgnite).toBe(100);
+        expect(TERRAIN_FLAGS[C.METHANE_GAS]!.fireType).toBe('DF_GAS_FIRE');
+        expect(TERRAIN_FLAGS[C.METHANE_GAS]!.promoteType).toBe('DF_EXPLOSION_FIRE');
+        expect(TERRAIN_FLAGS[C.METHANE_GAS]!.promoteChance).toBe(0);
+        expect(DRAW_PRIORITY[C.GAS_FIRE]).toBe(10);
+        expect(DRAW_PRIORITY[C.METHANE_GAS]).toBe(35);
+        expect(TERRAIN_HOME_LAYER[C.GAS_FIRE], '燃气之火是 SURFACE 火地形（G-1 §八.1）').toBe(L.SURFACE);
+        expect(TERRAIN_HOME_LAYER[C.METHANE_GAS]).toBe(L.GAS);
     });
 
     it('F-2a 守卫：Grid.FIRE_TERRAIN_TYPES（isBurning 派生集）≡ T_IS_FIRE 旗标载体集', () => {

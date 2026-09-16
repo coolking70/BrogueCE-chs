@@ -415,6 +415,37 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
         TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY,
         0, 'DF_GAS_FIRE', '', '', 0
     ),
+
+    // ── G-2：CE Globals.c:495 GAS_FIRE（燃气之火）与 :507 METHANE_GAS（沼气）──
+    // GAS_FIRE：DF_GAS_FIRE 的载体，可燃气体被点燃时铺在 SURFACE 的火地形。
+    // 全字段照抄 CE：
+    //   T_IS_FIRE；(STAND_IN_TILE|VANISHES_UPON_PROMOTION|VISUALLY_DISTINCT)；
+    //   ign 0（自身不可燃——火段的暴露循环是"火点燃邻格"，火的 flags 不是
+    //   T_IS_FLAMMABLE，不会被自己再点燃）；fireType 0；promoteType 0（''）；
+    //   promoteChance 8000（80%/回合自熄——与 PLAIN_FIRE 的 500 同一套概率
+    //   衰老机制：VANISHES + promoteType=0 ⇒ promoteTile 只清层不落新 DF，
+    //   CE Time.c:1254-1266 + :1271 `if (DFType)` 守卫）。"燃气烧完地上留火"
+    //   的"留"就是它、"80%/回合自熄"也是它。glowLight（FIRE_LIGHT）登记不迁移。
+    [TerrainType.GAS_FIRE]: e(
+        T_IS_FIRE,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT,
+        0, '', '', '', 8000
+    ),
+
+    // METHANE_GAS：第六种气体 tile。全字段照抄 CE：
+    //   T_IS_FLAMMABLE（ign 100）；TM_STAND_IN_TILE | TM_EXPLOSIVE_PROMOTE
+    //   （爆轰链载体——exposeTileToFire 数 8 邻的 T_IS_FIRE|T_OBSTRUCTS_GAS
+    //   |TM_EXPLOSIVE_PROMOTE，≥8 时 promoteTile 走 promoteType
+    //   DF_EXPLOSION_FIRE（爆轰圈），否则走 fireType DF_GAS_FIRE（小火））；
+    //   **无 TM_GAS_DISSIPATES(_QUICKLY)**——CE 沼气永不自散，只能被点燃、
+    //   被类型竞争压制或逃出层外；promoteChance 0。web 载体：MUD 的
+    //   promoteType DF_METHANE_GAS_PUFF（promoteChance 100，C-4a 起数据就在，
+    //   G-2 起 tile 齐备、链条真实行走）。glowLight（NO_LIGHT）无对应列。
+    [TerrainType.METHANE_GAS]: e(
+        T_IS_FLAMMABLE,
+        TM_STAND_IN_TILE | TM_EXPLOSIVE_PROMOTE,
+        100, 'DF_GAS_FIRE', '', 'DF_EXPLOSION_FIRE', 0
+    ),
 };
 
 // ── 派生判据（名字照 CE，语义 = 旗标位测试；CE Movement/Dijkstra 等处

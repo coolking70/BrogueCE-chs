@@ -363,9 +363,11 @@ describe('F-1 对抗⑦（G-1 反转）：火不写 GAS 层；气体住进 GAS �
             for (let y = 0; y < game.grid.height; y++) {
                 const gasTile = game.grid.getCell(x, y)!.layers[L.GAS]!;
                 // 守卫（原断言的火侧半边）：GAS 层只允许气体地形。
+                // G-2 扩集合：METHANE_GAS 入列（第六种气体 tile 已迁移）。
                 if (gasTile !== C.NOTHING) {
                     expect(
-                        gasTile === C.POISON_GAS || gasTile === C.CONFUSION_GAS || gasTile === C.STEAM,
+                        gasTile === C.POISON_GAS || gasTile === C.CONFUSION_GAS || gasTile === C.STEAM
+                            || gasTile === C.METHANE_GAS,
                         `GAS 层在 (${x},${y}) 出现非气体地形 ${TerrainType[gasTile]}`
                     ).toBe(true);
                 }

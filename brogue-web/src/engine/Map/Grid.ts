@@ -74,7 +74,19 @@ export enum TerrainType {
     // DF_GAS_FIRE 也照抄。只追加在尾部（既有枚举值不变）。
     POISON_GAS,
     CONFUSION_GAS,
-    STEAM
+    STEAM,
+    // G-2：CE Globals.c:495 GAS_FIRE（燃气之火）与 :507 METHANE_GAS（沼气）。
+    // GAS_FIRE 是十种 T_IS_FIRE 地形之一、落 SURFACE 层（G-1 §八.1 实测：
+    // CE Globals.c:741 {GAS_FIRE, SURFACE, 0, 0}）——它是 DF_GAS_FIRE 的
+    // 载体：可燃气体被点燃时 CE 把这块火地形铺到 SURFACE、同时 GAS 层体积
+    // 清零（Time.c:1361-1368），promoteChance=8000（80%/回合自熄，promoteType=0
+    // + VANISHES 即"消失"）。METHANE_GAS 是第六种气体 tile：可燃（ign 100）、
+    // TM_EXPLOSIVE_PROMOTE（爆轰链载体）、无消散旗标（永不自散，CE 原样）；
+    // 载体 = MUD 的 promoteType DF_METHANE_GAS_PUFF（promoteChance 100，
+    // 1%/回合冒气，web MUD 自 C-4a 起携带该数据、此前因缺 tile 缓办）。
+    // 只追加在尾部（既有枚举值不变）。
+    GAS_FIRE,
+    METHANE_GAS
 }
 
 export enum LightType {
@@ -162,7 +174,12 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     // 气体(35)盖得住地板(95)/草(60)，盖不住网(19)/门(8)——与 CE 渲染口径一致。
     [TerrainType.POISON_GAS]: 35,
     [TerrainType.CONFUSION_GAS]: 35,
-    [TerrainType.STEAM]: 35
+    [TerrainType.STEAM]: 35,
+    // G-2：GAS_FIRE 10（CE Globals.c:495 第 4 列，与 PLAIN_FIRE 同档——都是
+    // 压得住草(60)/网(19)、压不住门(8)/墙(0)的火地形）；METHANE_GAS 35
+    // （CE Globals.c:507 第 4 列，气体 tile 同为 35）。
+    [TerrainType.GAS_FIRE]: 10,
+    [TerrainType.METHANE_GAS]: 35
 };
 
 /**
@@ -239,7 +256,12 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     // {POISON_GAS, GAS, …}）。
     [TerrainType.POISON_GAS]: DungeonLayer.GAS,
     [TerrainType.CONFUSION_GAS]: DungeonLayer.GAS,
-    [TerrainType.STEAM]: DungeonLayer.GAS
+    [TerrainType.STEAM]: DungeonLayer.GAS,
+    // G-2：GAS_FIRE → SURFACE（CE Globals.c:741 {GAS_FIRE, SURFACE, 0, 0}，
+    // DF 目录的 layer 列同证；G-1 §八.1 实测翻正——它是火地形不是气体）；
+    // METHANE_GAS → GAS（CE Globals.c:507，"// gas layer" 注释块内）。
+    [TerrainType.GAS_FIRE]: DungeonLayer.SURFACE,
+    [TerrainType.METHANE_GAS]: DungeonLayer.GAS
 };
 
 /**
@@ -251,13 +273,15 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
  * 恒等断言与 TERRAIN_FLAGS 的旗标载体集合双向锁死（漏登记/多登记都翻红，
  * 失败信息指向本注释）。
  *
- * 现有载体（CE 行号）：PLAIN_FIRE（Globals.c:492，F-1 引入）。
- * CE 其余八种火地形（GAS_FIRE / GAS_EXPLOSION / BRIMSTONE_FIRE /
+ * 现有载体（CE 行号）：PLAIN_FIRE（Globals.c:492，F-1 引入）、
+ * GAS_FIRE（Globals.c:495，G-2 引入——DF_GAS_FIRE 的载体，燃气烧完地上留火）。
+ * CE 其余七种火地形（GAS_EXPLOSION / BRIMSTONE_FIRE /
  * FLAMEDANCER_FIRE / DART_EXPLOSION / ITEM_FIRE / CREATURE_FIRE / 火源家具）
- * web 尚无——G 链 / F-2c 落地时随目录条目在此补行。
+ * web 尚无——F-2c 等轮次落地时随目录条目在此补行。
  */
 export const FIRE_TERRAIN_TYPES: readonly TerrainType[] = [
-    TerrainType.PLAIN_FIRE
+    TerrainType.PLAIN_FIRE,
+    TerrainType.GAS_FIRE
 ];
 
 /** CE Movement.c:64-80 的纯数据版：对一层快照取最高优先层。 */

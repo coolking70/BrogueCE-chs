@@ -61,7 +61,9 @@ export enum DF {
     DF_BRIDGE_FALL                 = 99,  // :1590
     DF_PLAIN_FIRE                  = 100, // :1592
     DF_GAS_FIRE                    = 101, // :1593（G-1：气体 tile 的 fireType 引用它；
-                                          // 载体 tile GAS_FIRE 未迁移，登记 G-2）
+                                          // tile GAS_FIRE 已于 G-2 迁移接线）
+    DF_EXPLOSION_FIRE              = 102, // :1594（G-2：METHANE_GAS.promoteType 引用它；
+                                          // 载体 tile GAS_EXPLOSION 未迁移，登记 F-2c）
     DF_BRIMSTONE_FIRE              = 104, // :1596
     DF_BRIDGE_FIRE                 = 105, // :1597
     DF_EMBERS                      = 107, // :1599
@@ -105,7 +107,8 @@ export interface DungeonFeatureEntry {
 
 /**
  * DF 目录（CE Globals.c:603-932 中本轮闭包涉及的条目；C-4b 19 条、
- * F-2a 增 DF_ASH 至 20、G-1 增 DF_GAS_FIRE 至 21）。
+ * F-2a 增 DF_ASH 至 20、G-1 增 DF_GAS_FIRE 至 21、G-2 增 DF_EXPLOSION_FIRE
+ * 至 22 并给 4 条 GAS 层 DF / 燃气火 DF 填上 tile）。
  *
  * 字段序照 CE 目录行注释（Globals.c:604）：
  *   tileType / layer / start / decr / fl / txt / flare / fCol / fRad /
@@ -130,17 +133,22 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
         subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0,
     },
 
-    // {STEAM, GAS, 15, 0, 0} —— 水上点火的水汽积聚（GAS 层 volume 特例）
+    // {STEAM, GAS, 15, 0, 0} —— 水上点火的水汽积聚（GAS 层 volume 特例）。
+    // G-2 接线：tile STEAM 已迁（G-1）。CE 蒸汽源：深水 chanceToIgnite=100
+    // 被火段点燃 → promoteTile(LIQUID, useFireDF) 走到本 DF → 每回合 +15
+    // 体积的持续蒸汽（web 自创的"30% 冒 325"一次性分支同轮退役）。
     [DF.DF_STEAM_ACCUMULATION]: {
-        id: DF.DF_STEAM_ACCUMULATION, ceLine: 666, ceTile: 'STEAM', tile: null,
+        id: DF.DF_STEAM_ACCUMULATION, ceLine: 666, ceTile: 'STEAM', tile: TerrainType.STEAM,
         layer: DungeonLayer.GAS, startProbability: 15, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: '', lightFlare: '', flashColor: '', effectRadius: 0,
     },
 
-    // {METHANE_GAS, GAS, 2, 0, 0} —— 泥沼晋升的沼气一缕
+    // {METHANE_GAS, GAS, 2, 0, 0} —— 泥沼晋升的沼气一缕。
+    // G-2 接线：tile METHANE_GAS 随本轮迁入；载体 = MUD.promoteType
+    // （promoteChance 100，1%/回合）——CE Globals.c:415 原数据，链条真实行走。
     [DF.DF_METHANE_GAS_PUFF]: {
-        id: DF.DF_METHANE_GAS_PUFF, ceLine: 667, ceTile: 'METHANE_GAS', tile: null,
+        id: DF.DF_METHANE_GAS_PUFF, ceLine: 667, ceTile: 'METHANE_GAS', tile: TerrainType.METHANE_GAS,
         layer: DungeonLayer.GAS, startProbability: 2, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: '', lightFlare: '', flashColor: '', effectRadius: 0,
@@ -238,13 +246,27 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     // {GAS_FIRE, SURFACE, 0, 0, 0} —— 燃气之火（G-1 新增条目：POISON_GAS/
     // CONFUSION_GAS 的 fireType 引用它；GAS_FIRE 是十种 T_IS_FIRE 地形之一
     // （Globals.c:495，SURFACE 层——注意**不是** GAS 层，F-0 §3.2 表未记
-    // layer 列，本轮实测翻正）。tile 未迁移（G-2 接线 24 条 GAS DF 时随
-    // 燃气燃烧链落地）；在它落地前，exposeTileToFire 对可燃气体的 promoteTile
-    // 走 promoteTile 的缺 tile 缓办（volume 清零怪癖在 Promotion.ts 已接，
-    // CE Time.c:1361-1368）。
+    // layer 列，G-1 实测翻正）。G-2 接线：tile GAS_FIRE 已迁——燃气点燃时
+    // promoteTile 走到本 DF，火地形落 SURFACE（"燃气烧完地上留火"），
+    // GAS 层体积清零的怪癖（Time.c:1361-1368）+ promoteChance 8000 的
+    // 80%/回合自熄完整成形；G-1 时代的缺 tile 缓办随之退役。
     [DF.DF_GAS_FIRE]: {
-        id: DF.DF_GAS_FIRE, ceLine: 741, ceTile: 'GAS_FIRE', tile: null,
+        id: DF.DF_GAS_FIRE, ceLine: 741, ceTile: 'GAS_FIRE', tile: TerrainType.GAS_FIRE,
         layer: DungeonLayer.SURFACE, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {GAS_EXPLOSION, SURFACE, 60, 17, 0} —— 甲烷爆轰圈（G-2 新增条目：
+    // METHANE_GAS 的 promoteType 引用它；TM_EXPLOSIVE_PROMOTE 格被点燃且
+    // 8 邻全为 T_IS_FIRE|T_OBSTRUCTS_GAS|TM_EXPLOSIVE_PROMOTE 时走爆轰）。
+    // tile GAS_EXPLOSION 未迁移（爆炸地形归 F-2c），条目登记 tile=null、
+    // 爆轰落地走 promoteTile 的整链缓办——届时填 tile 后爆炸圈自动成形。
+    // start=60/decr=17 是 CE 原值的衰减扩散波前（c_4c C1 闸门：非 GAS
+    // 扩散条目 probDec>0，本条 17 ✓）。
+    [DF.DF_EXPLOSION_FIRE]: {
+        id: DF.DF_EXPLOSION_FIRE, ceLine: 742, ceTile: 'GAS_EXPLOSION', tile: null,
+        layer: DungeonLayer.SURFACE, startProbability: 60, probabilityDecrement: 17,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: '', lightFlare: '', flashColor: '', effectRadius: 0,
     },
@@ -287,9 +309,13 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     },
 
     // {POISON_GAS, GAS, 1000, 0, 0, "a cloud of caustic gas…"} —— 陷阱毒气
-    //（TRAP 的 T_IS_DF_TRAP fireType；GAS 层 volume 特例）
+    //（TRAP 的 T_IS_DF_TRAP fireType；GAS 层 volume 特例）。
+    // G-2 接线：tile POISON_GAS 已迁（G-1）。web 的毒气陷阱调用点
+    // （Game.triggerTrap）今日仍直呼 addGas(1000)（G-1 折算后的同量口径，
+    // 体积结果与本 DF 逐位等价）；改走 DF 生成家族属调用方接线，本轮裁定
+    // 不动（i18n 消息归并问题，登记报告）。
     [DF.DF_POISON_GAS_CLOUD]: {
-        id: DF.DF_POISON_GAS_CLOUD, ceLine: 770, ceTile: 'POISON_GAS', tile: null,
+        id: DF.DF_POISON_GAS_CLOUD, ceLine: 770, ceTile: 'POISON_GAS', tile: TerrainType.POISON_GAS,
         layer: DungeonLayer.GAS, startProbability: 1000, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: 'a cloud of caustic gas sprays upward from the floor!',
@@ -312,14 +338,15 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
  *  F-2a 翻正：DF_PLAIN_FIRE（PLAIN_FIRE 地形 F-1 已有）、DF_EMBERS /
  *  DF_ASH（EMBERS/ASH 地形本轮新增）摘除，11 → 9。
  *  G-1 增补：DF_GAS_FIRE（GAS_FIRE tile 未迁移）入列，9 → 10。
- *  注：STEAM / POISON_GAS / METHANE_GAS 的 tile 本轮虽已迁移（G-1 的
- *  气体地形），但它们的 DF 属"24 条 GAS 层 DF 接线"（G-2 范围），条目
- *  保持 tile: null 不提前接线。 */
+ *  G-2 翻正：DF_STEAM_ACCUMULATION / DF_METHANE_GAS_PUFF /
+ *  DF_POISON_GAS_CLOUD / DF_GAS_FIRE 四条接线摘除（10 → 6）；
+ *  增补 DF_EXPLOSION_FIRE（GAS_EXPLOSION tile 未迁移，登记 F-2c），
+ *  6 → 7。注：ROT_GAS / STENCH_SMOKE_GAS / PARALYSIS_GAS / DARKNESS_CLOUD /
+ *  HEALING_CLOUD 的 DF（及 dewar×4、喷口、药水云等 24 条 GAS 目录的其余）
+ *  本轮**未入目录**——载体盘点后无 web 载体的气体只登记不迁移（报告
+ *  载体盘点表），故不在本清单。 */
 export const DF_MISSING_TILES: readonly DF[] = [
-    DF.DF_STEAM_ACCUMULATION,      // STEAM（tile 已存在，接线归 G-2）
-    DF.DF_METHANE_GAS_PUFF,        // METHANE_GAS（tile 未迁移）
-    DF.DF_POISON_GAS_CLOUD,        // POISON_GAS（tile 已存在，接线归 G-2）
-    DF.DF_GAS_FIRE,                // GAS_FIRE（tile 未迁移）
+    DF.DF_EXPLOSION_FIRE,          // GAS_EXPLOSION（tile 未迁移，登记 F-2c）
     DF.DF_TRAMPLED_FOLIAGE,        // TRAMPLED_FOLIAGE
     DF.DF_ACTIVE_BRIMSTONE,        // ACTIVE_BRIMSTONE
     DF.DF_BRIMSTONE_FIRE,          // BRIMSTONE_FIRE

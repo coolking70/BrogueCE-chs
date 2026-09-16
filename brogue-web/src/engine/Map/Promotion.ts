@@ -271,9 +271,12 @@ export function promoteTile(
             x, y, layer,
             layer === DungeonLayer.DUNGEON ? TerrainType.FLOOR : TerrainType.NOTHING
         );
-        // CE :1262-1264 GAS 层连 volume 清零。G-1 起 Cell.volume 存在，
-        // 本分支由此接上（当前目录内 GAS 层 tile 均无 VANISHES 旗标，
-        // 分支尚未被真实行使——G-2 的 GAS_FIRE 落地时生效）。
+        // CE :1262-1264 GAS 层连 volume 清零。G-1 起 Cell.volume 存在。
+        // G-2 复核：本分支**仍未被真实行使**——G-1 预测"GAS_FIRE 落地时
+        // 生效"不成立：GAS_FIRE 是 SURFACE 层火地形（Globals.c:741），
+        // 它的 VANISHES 走上方通用的清层路径（清 SURFACE，不动 volume）。
+        // CE 现目录的 GAS 层 tile 均无 VANISHES 旗标，本分支是对 CE 数据
+        // 的忠实留形（未来若有带 VANISHES 的气体 tile 才会走到）。
         if (layer === DungeonLayer.GAS) {
             const vanishCell = grid.getCell(x, y);
             if (vanishCell) vanishCell.volume = 0;
@@ -530,9 +533,14 @@ const FIRE_DIRS4: ReadonlyArray<readonly [number, number]> = [
     [0, -1], [0, 1], [-1, 0], [1, 0],
 ];
 
-/** CE 全部 8 向（GlobalsBase.c:38 nbDirs）——TM_EXPLOSIVE_PROMOTE 邻居计数用。 */
+/** CE 全 8 向（GlobalsBase.c:38 nbDirs）——TM_EXPLOSIVE_PROMOTE 邻居计数用。
+ *  G-2 修复：原抄写把 {1,-1} 重复了一次、漏了 {1,1}（"dirs8 漏 [1,1]"
+ *  的历史事故形态再现）——在爆轰分支不可达时无观测后果，G-2 让
+ *  TM_EXPLOSIVE_PROMOTE 载体（METHANE_GAS）落地、分支被激活前修正。
+ *  错误形态的观测后果：甲烷格若 (1,-1) 方向可燃而 (1,1) 方向不燃，
+ *  计数会把 (1,-1) 数两次、(1,1) 不数——7 邻火 + 1 空角的格会被误爆轰。 */
 const ALL_DIRS8: ReadonlyArray<readonly [number, number]> = [
-    [0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, -1], [-1, 1], [1, -1],
+    [0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [-1, 1], [1, -1], [1, 1],
 ];
 
 export interface ExposeTileResult {
@@ -555,9 +563,9 @@ export interface ExposeTileResult {
  *   5. alwaysIgnite || rand_percent(ignitionChance) → 点燃：所有可燃层依次
  *      promoteTile(useFireDF = !explosivePromotion)（:1358-1372）。甲烷爆轰
  *      分支（TM_EXPLOSIVE_PROMOTE + 8 邻计数 ≥8，:1347-1356）照抄——
- *      web 现目录无 TM_EXPLOSIVE_PROMOTE 载体，分支今天不可达
- *      （G-2 甲烷落地时行使）；GAS 层可燃物"只清 volume 不清层"的 CE
- *      怪癖（:1361-1368）G-1 起已接（见下方实现内注释）。
+ *      G-2 起 METHANE_GAS 载体落地、分支真实可达（爆轰的 DF_EXPLOSION_FIRE
+ *      落地因 GAS_EXPLOSION tile 未迁移而缓办，登记 F-2c）；GAS 层可燃物
+ *      "只清 volume 不清层"的 CE 怪癖（:1361-1368）G-1 起已接（见下方实现内注释）。
  */
 export function exposeTileToFire(
     grid: Grid,
@@ -600,8 +608,10 @@ export function exposeTileToFire(
     if (alwaysIgnite || (ignitionChance && rng.randPercent(ignitionChance))) { // CE :1347
         result.ignited = true;
 
-        // 爆轰邻居计数（CE :1348-1356）：web 无 TM_EXPLOSIVE_PROMOTE 载体
-        // ——结构性不可达，照抄留形供 G-2（甲烷接线）行使。
+        // 爆轰邻居计数（CE :1348-1356）：G-2 起 METHANE_GAS 携带
+        // TM_EXPLOSIVE_PROMOTE，分支真实可达——爆轰（≥8）时 promoteTile 走
+        // promoteType DF_EXPLOSION_FIRE（tile GAS_EXPLOSION 未迁移，落地
+        // 缓办登记 F-2c），普通点燃走 fireType DF_GAS_FIRE（燃气之火）。
         let explosivePromotion = false;
         if (cellTerrainMechFlags(grid, x, y) & TM_EXPLOSIVE_PROMOTE) {
             let explosiveNeighborCount = 0;

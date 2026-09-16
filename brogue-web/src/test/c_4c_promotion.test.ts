@@ -313,8 +313,9 @@ describe('C-4c B：两趟驱动（CE Time.c:1619-1684）', () => {
         const r = runPromotionUpdate(g, { keyOnTileAt: () => false });
         expect(r.rngDraws, '2 门 + 1 泥 = 3 次掷骰').toBe(3);
         expect(rng.randomNumbersGenerated - before, 'randRange 恰好调 3 次（RNG 流审计）').toBe(3);
-        // 门已关（chance 0）；泥的晋升目标 tile 缺失被缓办、格仍是 MUD（chance 100）
-        // ——下一趟仍掷 1 次（缓办条目继续留在掷骰池，CE 语义：晋升没发生）。
+        // 门已关（chance 0）；泥的晋升目标 DF_METHANE_GAS_PUFF 自 G-2 起
+        // tile 齐备：掷中（1%）会真冒 2 体积沼气，泥本身不消耗（无 VANISHES）
+        // ——无论中签与否格仍是 MUD，下一趟仍掷 1 次（CE 语义：泥是长期源）。
         const r2 = runPromotionUpdate(g, { keyOnTileAt: () => false });
         expect(r2.rngDraws, '只剩 MUD 的 1 次').toBe(1);
     });

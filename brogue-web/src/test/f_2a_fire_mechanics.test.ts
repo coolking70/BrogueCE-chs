@@ -268,25 +268,48 @@ describe('F-2a 对抗⑧：火链三条 DF 零 RNG、probDec 约定结构性成�
     });
 });
 
-describe('F-2a 对抗⑨（留痕，G-1 翻转）：水体本轮不可被点燃', () => {
-    it('深水可燃（chanceToIgnite 100）但其 fireType DF_STEAM_ACCUMULATION 是' +
-        'GAS 层 DF、tile 缺失 → promoteTile 整链缓办：水面完好、无火、无 GAS 层写入。' +
-        'G-1 接 CE 蒸汽来源（§5.3-9）时本断言到期：届时深水被点燃消耗、落蒸汽。', () => {
+describe('F-2a 对抗⑨（留痕，G-2 反转）：水体被点燃产出持续蒸汽', () => {
+    // 原断言（F-2a 留痕）："深水的 fireType DF_STEAM_ACCUMULATION 是 GAS 层
+    // DF、tile 缺失 → promoteTile 整链缓办：水面完好、无火、无 GAS 层写入"。
+    // G-2 接线 CE 蒸汽来源（F-0 §5.3-9）后前提到期，按 B-1 范本翻转为
+    // 断言新事实：深水可燃（chanceToIgnite 100）且 fireType 落地——
+    //   直燃一次 = +15 体积蒸汽落 GAS 层（CE Globals.c:666 start 列）；
+    //   火贴水每回合火段重暴露 = 每回合 +15 的**持续**源（一次性实现的
+    //   "30% 冒 325" web 自创分支同轮退役）。
+    // 守卫保留：水层永不被消耗（DF 不带 VANISHES，水是源不是燃料）。
+    it('深水被直燃一次 +15 蒸汽；火贴水时蒸汽总量逐回合增长（持续源）', () => {
         const game = createHeadlessGame(42);
         openRoom(game);
         game.grid.setTerrain(10, 6, C.WATER_DEEP, '~', 0x1133aa);
-        // 直燃旁路（CE 里这会点燃深水产蒸汽）：本轮必须原地不动。
+        // 直燃旁路：CE 里这会点燃深水产蒸汽——G-2 起真的产。
         const r = exposeTileToFire(game.grid, 10, 6, true);
         const water = game.grid.getCell(10, 6)!;
-        expect(water.layers[L.LIQUID], '深水必须原样保留').toBe(C.WATER_DEEP);
+        expect(water.layers[L.LIQUID], '深水必须原样保留（蒸汽源不是燃料）').toBe(C.WATER_DEEP);
         expect(water.isBurning, '深水不得挂火地形').toBe(false);
-        expect(water.layers[L.GAS], 'GAS 层恒空（C-4a-0 留痕在 F-2a 全程有效）').toBe(C.NOTHING);
-        // 火贴水烧 20 回合：水格依旧（蔓延暴露也点不着——同一缓办路径）。
-        placeFire(game, 8, 6);
-        for (let i = 0; i < 20; i++) tickEnv(game, 1);
+        expect(water.layers[L.GAS], '蒸汽落在被点燃水格的 GAS 层').toBe(C.STEAM);
+        expect(water.volume, 'DF_STEAM_ACCUMULATION start=15（Globals.c:666）').toBe(15);
+        expect(r.ignited, 'CE 语义：可燃层掷中即"点燃"').toBe(true);
+        // 火贴水烧 6 回合：每回合火段重暴露水格 → +15/回合持续注入，
+        // 快消散（QUICK 档期望 −1/回合）远追不上——总量单调上涨。
+        // 错误实现：把蒸汽源写成一次性（注入后衰减）——总量曲线下降，翻红。
+        placeFire(game, 9, 6);
+        tickEnv(game, 1);
+        const totalAt = (): number => {
+            let s = 0;
+            for (let x = 0; x < game.grid.width; x++) {
+                for (let y = 0; y < game.grid.height; y++) s += game.grid.getCell(x, y)!.volume;
+            }
+            return s;
+        };
+        const v1 = totalAt();
+        tickEnv(game, 2);
+        const v3 = totalAt();
+        tickEnv(game, 3);
+        const v6 = totalAt();
         expect(game.grid.getCell(10, 6)!.layers[L.LIQUID]).toBe(C.WATER_DEEP);
         expect(game.grid.getCell(10, 6)!.isBurning).toBe(false);
-        expect(r.ignited, 'CE 语义里点燃"发生"了（可燃层掷中），只是落地缓办').toBe(true);
+        expect(v3, `蒸汽总量必须增长（持续源）：v1=${v1} v3=${v3}`).toBeGreaterThan(v1);
+        expect(v6, `蒸汽总量必须继续增长：v3=${v3} v6=${v6}`).toBeGreaterThan(v3);
     });
 });
 

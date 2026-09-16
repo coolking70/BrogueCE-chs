@@ -556,9 +556,9 @@ describe('C-4b D：levelIsDisconnectedWithBlockingMap（CE Architect.c:3137-3198
 });
 
 describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () => {
-    it('E1 恰 21 条（F-2a 增补 DF_ASH；G-1 增补 DF_GAS_FIRE），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）', () => {
+    it('E1 恰 22 条（F-2a 增补 DF_ASH；G-1 增补 DF_GAS_FIRE；G-2 增补 DF_EXPLOSION_FIRE），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）', () => {
         const keys = Object.keys(DUNGEON_FEATURE_CATALOG);
-        expect(keys.length).toBe(21);
+        expect(keys.length).toBe(22);
         expect(DF.DF_SHOW_DOOR).toBe(13);
         expect(DF.DF_REPEL_CREATURES).toBe(40);
         expect(DF.DF_ASH, 'F-2a：EMBERS.promoteType 的载体（Rogue.h:1524）').toBe(49);
@@ -574,6 +574,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         expect(DF.DF_BRIDGE_FALL).toBe(99);
         expect(DF.DF_PLAIN_FIRE).toBe(100);
         expect(DF.DF_GAS_FIRE, 'G-1：气体 tile 的 fireType 载体（Rogue.h:1593）').toBe(101);
+        expect(DF.DF_EXPLOSION_FIRE, 'G-2：METHANE_GAS.promoteType 的载体（Rogue.h:1594）').toBe(102);
         expect(DF.DF_BRIMSTONE_FIRE).toBe(104);
         expect(DF.DF_BRIDGE_FIRE).toBe(105);
         expect(DF.DF_EMBERS).toBe(107);
@@ -610,7 +611,8 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // 集合相等：目录里多一条（闭包外）或少一条（漏抄）都翻红。
         const catalogKeys = new Set(Object.keys(DUNGEON_FEATURE_CATALOG).map(Number) as DF[]);
         expect([...closure].sort((a, b) => a - b)).toEqual([...catalogKeys].sort((a, b) => a - b));
-        expect(catalogKeys.size, 'F-2a：DF_ASH 入闭包 19→20；G-1：DF_GAS_FIRE（气体 fireType 起点）入闭包 20→21').toBe(21);
+        expect(catalogKeys.size, 'F-2a：DF_ASH 入闭包 19→20；G-1：DF_GAS_FIRE 入闭包 20→21；' +
+            'G-2：DF_EXPLOSION_FIRE（经 METHANE_GAS.promoteType）入闭包 21→22').toBe(22);
     });
 
     it('E3 字段抽查：BRIDGE_FALL_PREP 的 prop/200/100、BRIDGE_FIRE 的描述与 tile=0、其余代表条目', () => {
@@ -657,32 +659,60 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         expect(steam.startProbability, 'GAS 层 DF 的 start 列即 volume（CE Globals.c:600 注释）').toBe(15);
         expect(steam.probabilityDecrement).toBe(0);
 
+        // G-2 接线：三条 GAS 层 DF 的 tile 列填上（tile 归属层必须同为 GAS
+        // ——tile 填错层的实现在此翻红）。
+        expect(gas.tile, 'G-2：DF_POISON_GAS_CLOUD 的 tile 接线').toBe(C.POISON_GAS);
+        expect(steam.tile, 'G-2：DF_STEAM_ACCUMULATION 的 tile 接线').toBe(C.STEAM);
+        const puff = DUNGEON_FEATURE_CATALOG[DF.DF_METHANE_GAS_PUFF]!;
+        expect(puff.ceLine).toBe(667);
+        expect(puff.tile, 'G-2：DF_METHANE_GAS_PUFF 的 tile 接线').toBe(C.METHANE_GAS);
+        expect(puff.startProbability).toBe(2);
+        for (const df of [DF.DF_POISON_GAS_CLOUD, DF.DF_STEAM_ACCUMULATION, DF.DF_METHANE_GAS_PUFF]) {
+            const e = DUNGEON_FEATURE_CATALOG[df]!;
+            expect(e.layer, `${DF[df]} 是 GAS 层 DF`).toBe(L.GAS);
+            expect(e.probabilityDecrement, 'GAS 层 DF 的 decr 恒无效（Architect.c:3381-3387 特例）').toBe(0);
+        }
+
         // G-1：DF_GAS_FIRE（Globals.c:741 {GAS_FIRE, SURFACE, 0, 0}）——
         // layer 是 SURFACE（GAS_FIRE 是十种 T_IS_FIRE 地形之一，不是气体层
-        // 地形；F-0 §3.2 表未记 layer 列，本轮实测翻正）。tile 登记 null
-        // （GAS_FIRE tile 归 G-2）。
+        // 地形；F-0 §3.2 表未记 layer 列，G-1 实测翻正）。
+        // G-2 接线：tile GAS_FIRE 已迁——"把 DF_GAS_FIRE 按 GAS 层接线"
+        // 的错误实现（layer 改 GAS / tile 认成气体）在此翻红。
         const gasFire = DUNGEON_FEATURE_CATALOG[DF.DF_GAS_FIRE]!;
         expect(gasFire.ceLine).toBe(741);
         expect(gasFire.ceTile).toBe('GAS_FIRE');
-        expect(gasFire.tile).toBeNull();
-        expect(gasFire.layer).toBe(L.SURFACE);
+        expect(gasFire.tile, 'G-2：DF_GAS_FIRE 的 tile 接线（SURFACE 火地形）').toBe(C.GAS_FIRE);
+        expect(gasFire.layer, 'DF_GAS_FIRE 的 layer 是 SURFACE 不是 GAS（G-1 §八.1）').toBe(L.SURFACE);
         expect(gasFire.startProbability).toBe(0);
+
+        // G-2：DF_EXPLOSION_FIRE（Globals.c:742 {GAS_EXPLOSION, SURFACE, 60, 17}）
+        // —— METHANE_GAS 的爆轰 promoteType；GAS_EXPLOSION tile 未迁移，
+        // 条目登记 tile=null（爆轰落地缓办，登记 F-2c）。
+        const boom = DUNGEON_FEATURE_CATALOG[DF.DF_EXPLOSION_FIRE]!;
+        expect(boom.ceLine).toBe(742);
+        expect(boom.ceTile).toBe('GAS_EXPLOSION');
+        expect(boom.tile).toBeNull();
+        expect(boom.layer).toBe(L.SURFACE);
+        expect(boom.startProbability).toBe(60);
+        expect(boom.probabilityDecrement).toBe(17);
     });
 
-    it('E4 缺 tile 登记恰 10 条（F-2a 后 9；G-1 增 DF_GAS_FIRE → 10）：' +
-        'catalogFeature 对其抛错点名；对其余 11 条正常转换', () => {
+    it('E4 缺 tile 登记恰 7 条（G-1 后 10；G-2 摘除 4 条已接线 GAS/GAS_FIRE DF、增补 DF_EXPLOSION_FIRE）：' +
+        'catalogFeature 对其抛错点名；对其余 15 条正常转换', () => {
         const all = Object.keys(DUNGEON_FEATURE_CATALOG).map(Number) as DF[];
         const missing = new Set(DF_MISSING_TILES);
-        expect(DF_MISSING_TILES.length).toBe(10);
+        expect(DF_MISSING_TILES.length).toBe(7);
         // 登记条目确实都是 tile=null，且抛错带 CE tile 名。
         for (const id of DF_MISSING_TILES) {
             expect(DUNGEON_FEATURE_CATALOG[id]!.tile, `DF#${id} 应为 null tile`).toBeNull();
             expect(() => catalogFeature(id), `DF#${id} 应拒绝`).toThrow(/tileType/);
             expect(() => catalogFeature(id)).toThrow(new RegExp(DUNGEON_FEATURE_CATALOG[id]!.ceTile));
         }
-        // 其余 11 条（9 有 tile + 2 tileless）转换成功且字段保真。
+        // 其余 15 条（13 有 tile + 2 tileless）转换成功且字段保真。
         // F-2a 翻正位：DF_PLAIN_FIRE.tile=PLAIN_FIRE、DF_EMBERS.tile=EMBERS、
         // 新增 DF_ASH.tile=ASH——三者现在必须能正常转换（放回 missing 会红）。
+        // G-2 翻正位：DF_POISON_GAS_CLOUD / DF_STEAM_ACCUMULATION /
+        // DF_METHANE_GAS_PUFF / DF_GAS_FIRE 四条接线（放回 missing 会红）。
         for (const id of all) {
             if (missing.has(id)) continue;
             const entry = DUNGEON_FEATURE_CATALOG[id]!;
@@ -695,6 +725,10 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         expect(catalogFeature(DF.DF_PLAIN_FIRE).tile, 'F-2a：火地形已存在，DF 必须能落地').toBe(C.PLAIN_FIRE);
         expect(catalogFeature(DF.DF_EMBERS).tile).toBe(C.EMBERS);
         expect(catalogFeature(DF.DF_ASH).tile).toBe(C.ASH);
+        expect(catalogFeature(DF.DF_POISON_GAS_CLOUD).tile, 'G-2 接线').toBe(C.POISON_GAS);
+        expect(catalogFeature(DF.DF_STEAM_ACCUMULATION).tile, 'G-2 接线').toBe(C.STEAM);
+        expect(catalogFeature(DF.DF_METHANE_GAS_PUFF).tile, 'G-2 接线').toBe(C.METHANE_GAS);
+        expect(catalogFeature(DF.DF_GAS_FIRE).tile, 'G-2 接线').toBe(C.GAS_FIRE);
         // tileless 两条件名字单（防有人把"登记"与"tile=0"混掉）。
         expect(catalogFeature(DF.DF_REPEL_CREATURES).tile).toBe(C.NOTHING);
         expect(catalogFeature(DF.DF_BRIDGE_FIRE).tile).toBe(C.NOTHING);

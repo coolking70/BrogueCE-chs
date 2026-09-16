@@ -44,8 +44,11 @@
  *     效果代码引用（D2：保留代码），但无 TerrainType 载体、不参与层存储，
  *     addGas 对其返回 false（留痕见 g_1 测试）；GameType.FIRE 死枚举随
  *     P1-45 幽灵气写者一起删除。
- * 火侧入口（ignite / igniteForced / updateFires / takeNewlyCaughtFire）
- * 语义不变——火侧是本轮的反向哨兵（任务书 §三）。
+ * 火侧入口（ignite / igniteForced / updateFires / takeNewlyCaughtFire）的
+ * 蔓延/寿命/燃烧状态机语义不变（G-2 反向哨兵）；G-2 的唯一火侧改动是
+ * 退役 updateFires 里 web 自创的"30% 冒 325"一次性蒸汽分支——CE 蒸汽源
+ * （水体被火段点燃 → DF_STEAM_ACCUMULATION 每回合 +15）经 DF 管线自动
+ * 接管，见 updateFires 注释。
  */
 
 import { Grid, DCOLS, DROWS, DungeonLayer, TerrainType, TERRAIN_HOME_LAYER } from '../Map/Grid';
@@ -74,8 +77,15 @@ export enum GasType {
     CONFUSION = TerrainType.CONFUSION_GAS,
     STEAM = TerrainType.STEAM,
     /**
+     * G-2：CE Globals.c:507 METHANE_GAS（沼气）迁入 GAS 层后的枚举成员。
+     * 与 POISON 等同构：数值 = GAS 层 TerrainType 值。永不自散（CE 无消散
+     * 旗标）、可燃（ign 100）、TM_EXPLOSIVE_PROMOTE 爆轰载体；web 载体 =
+     * MUD 的 promoteType DF_METHANE_GAS_PUFF（1%/回合）。
+     */
+    METHANE = TerrainType.METHANE_GAS,
+    /**
      * D2 留痕：web 自创气体，CE 无对应 tile（F-0 §2.1/§5.2-5），故无层载体。
-     * 数值故意取在 TerrainType 值域之外（当前最大 36）：万一被误写入层，
+     * 数值故意取在 TerrainType 值域之外（当前最大 38）：万一被误写入层，
      * TERRAIN_FLAGS 查表得到 undefined 会响亮崩溃而不是静默污染。
      * 生成池已排空（Game 侧 D2 过滤），正常游戏不可达。
      */
@@ -239,12 +249,14 @@ export class EnvironmentManager {
      *      只剩火陷阱的自转化（Game.triggerTrap），本分支substrate变稀是
      *      §二.3 的既授权后果；
      *   2. CE 火段（Time.c:1688-1700，Promotion.runFireUpdate：12 次暴露
-     *      封顶、4 邻 chanceToIgnite 掷骰、可燃物经 promoteTile 消耗）；
-     *   3. 蒸汽分支（web 自创机制原样保留，量纲按 G-1 折算）：燃烧格贴水
-     *      30% 冒蒸汽。旧值 50 是 0-100 密度口径；G-1 折算为 325 =
-     *      DF_STEAM_PUFF 的 startProbability（Globals.c:665，CE 蒸汽一缕的
-     *      体积）——机制的 CE 对应物（水体自身被点燃 → DF_STEAM_ACCUMULATION）
-     *      归 G-2 接线。
+     *      封顶、4 邻 chanceToIgnite 掷骰、可燃物经 promoteTile 消耗）。
+     *
+     * G-2 退役登记：web 自创的"火贴水 30% 冒 325 蒸汽"一次性分支已删——
+     * CE 的蒸汽源是水体自身（WATER_DEEP chanceToIgnite=100、fireType
+     * DF_STEAM_ACCUMULATION）被火段点燃 → 每回合 +15 体积的持续蒸汽，
+     * 全部经 runFireUpdate → exposeTileToFire → promoteTile → DF 管线自动
+     * 发生，不需要本文件任何额外代码。新旧蒸汽曲线对比见 G-2 报告
+     * （旧：250→0 的一次性烟团；新：+15/回合持续注入直到火熄）。
      *
      * `caughtFireCells`：调用方持有的当前起火格集（Game.pendingCaughtFireCells，
      * CE CAUGHT_FIRE_THIS_TURN 在火段时点的存活半边），火段对它们不重复暴露。
@@ -269,29 +281,9 @@ export class EnvironmentManager {
         }
 
         // 2. CE 火段（12 封顶 / 4 邻 / chanceToIgnite / promoteTile 消耗可燃层）。
+        // 深水（T_IS_FLAMMABLE, ign 100, fireType DF_STEAM_ACCUMULATION）被
+        // 火段点燃即产出持续蒸汽——CE 蒸汽源，G-2 起真实生效。
         const fired = runFireUpdate(this.grid, { caughtFireCells });
-
-        // 3. Steam: fire adjacent to water（web 自创，8 邻口径原样保留）。
-        for (let x = 0; x < this.grid.width; x++) {
-            for (let y = 0; y < this.grid.height; y++) {
-                const cell = this.grid.getCell(x, y);
-                if (!cell?.isBurning) continue;
-                const dirs = [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, 1], [-1, 1], [1, -1]];
-                for (const [dx, dy] of dirs) {
-                    const ncell = this.grid.getCell(x + dx!, y + dy!);
-                    if (!ncell) continue;
-                    // 水面判定查 LIQUID 层——火盖在水上（SURFACE）时有效地形
-                    // 是火（F-1 起的口径，原样保留）。
-                    if (ncell.layers[DungeonLayer.LIQUID] === TerrainType.WATER_SHALLOW || ncell.layers[DungeonLayer.LIQUID] === TerrainType.WATER_DEEP) {
-                        if (rng.randPercent(30)) {
-                            // G-1 量纲折算：50（旧 0-100 口径）→ 325
-                            // （DF_STEAM_PUFF，Globals.c:665）。
-                            this.addGas(x + dx!, y + dy!, GasType.STEAM, 325);
-                        }
-                    }
-                }
-            }
-        }
 
         for (const pos of regrowths) {
             const cell = this.grid.getCell(pos.x, pos.y);

@@ -205,7 +205,9 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
         // F-2a 扩两行：EMBERS/ASH（CE Globals.c:469/461，DF {EMBERS|ASH, SURFACE}，
         // 火寿命链 PLAIN_FIRE→EMBERS→ASH 的载体）——本轮提前授权的两张
         // 全量表随行更新（穷尽性质不变）。
-        for (const t of [C.GRASS, C.FOLIAGE, C.WEB, C.BLOOD, C.BRIDGE_EDGE, C.PLAIN_FIRE, C.EMBERS, C.ASH]) {
+        // G-2 扩一行：GAS_FIRE（CE Globals.c:495，DF {GAS_FIRE, SURFACE}）——
+        // 燃气之火与 PLAIN_FIRE 同落 SURFACE（G-1 §八.1 的 layer 实测）。
+        for (const t of [C.GRASS, C.FOLIAGE, C.WEB, C.BLOOD, C.BRIDGE_EDGE, C.PLAIN_FIRE, C.EMBERS, C.ASH, C.GAS_FIRE]) {
             expect(homeLayerViaSetTerrain(t), `terrain ${t}`).toBe(L.SURFACE);
         }
         for (const t of [
@@ -236,6 +238,8 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.POISON_GAS]: L.GAS, // G-1（CE Globals.c:502/503/508——气体归 GAS 层）
             [C.CONFUSION_GAS]: L.GAS,
             [C.STEAM]: L.GAS,
+            [C.GAS_FIRE]: L.SURFACE, // G-2（CE Globals.c:495 火地形落 SURFACE，:741 DF layer 同证）
+            [C.METHANE_GAS]: L.GAS, // G-2（CE Globals.c:507 第六种气体 tile）
         });
         expect(DRAW_PRIORITY).toEqual({
             [C.NOTHING]: 100, [C.GRANITE]: 0, [C.FLOOR]: 95, [C.WALL]: 0,
@@ -252,6 +256,8 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.POISON_GAS]: 35, // G-1（CE Globals.c:502-508 第 4 列，气体同为 35）
             [C.CONFUSION_GAS]: 35,
             [C.STEAM]: 35,
+            [C.GAS_FIRE]: 10, // G-2（CE Globals.c:495 第 4 列，与 PLAIN_FIRE 同档）
+            [C.METHANE_GAS]: 35, // G-2（CE Globals.c:507 第 4 列，气体同为 35）
         });
     });
 });
