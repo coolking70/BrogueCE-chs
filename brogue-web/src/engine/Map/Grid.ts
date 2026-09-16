@@ -86,7 +86,15 @@ export enum TerrainType {
     // 1%/回合冒气，web MUD 自 C-4a 起携带该数据、此前因缺 tile 缓办）。
     // 只追加在尾部（既有枚举值不变）。
     GAS_FIRE,
-    METHANE_GAS
+    METHANE_GAS,
+    // G-3：CE Globals.c:506 PARALYSIS_GAS（麻痹气体）——第七种气体 tile，
+    // 全字段照抄（T_IS_FLAMMABLE | T_CAUSES_PARALYSIS、
+    // TM_GAS_DISSIPATES_QUICKLY、ign 100、fireType DF_GAS_FIRE，条目见
+    // TerrainCatalog）。web 载体 = potion_of_paralysis：CE 喝/扔麻痹药水
+    // 都是原地爆出本气云（Items.c:6994/8118 → DF_PARALYSIS_GAS_CLOUD_POTION
+    // {PARALYSIS_GAS, GAS, 1000}，Globals.c:778）。只追加在尾部（既有枚举
+    // 值不变）。
+    PARALYSIS_GAS
 }
 
 export enum LightType {
@@ -179,7 +187,9 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     // 压得住草(60)/网(19)、压不住门(8)/墙(0)的火地形）；METHANE_GAS 35
     // （CE Globals.c:507 第 4 列，气体 tile 同为 35）。
     [TerrainType.GAS_FIRE]: 10,
-    [TerrainType.METHANE_GAS]: 35
+    [TerrainType.METHANE_GAS]: 35,
+    // G-3：PARALYSIS_GAS 35（CE Globals.c:506 第 4 列，气体 tile 同为 35）。
+    [TerrainType.PARALYSIS_GAS]: 35
 };
 
 /**
@@ -261,7 +271,10 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     // DF 目录的 layer 列同证；G-1 §八.1 实测翻正——它是火地形不是气体）；
     // METHANE_GAS → GAS（CE Globals.c:507，"// gas layer" 注释块内）。
     [TerrainType.GAS_FIRE]: DungeonLayer.SURFACE,
-    [TerrainType.METHANE_GAS]: DungeonLayer.GAS
+    [TerrainType.METHANE_GAS]: DungeonLayer.GAS,
+    // G-3：PARALYSIS_GAS → GAS（CE Globals.c:506，"// gas layer" 注释块内；
+    // DF_PARALYSIS_GAS_CLOUD_POTION 的 layer 列同证，Globals.c:778）。
+    [TerrainType.PARALYSIS_GAS]: DungeonLayer.GAS
 };
 
 /**

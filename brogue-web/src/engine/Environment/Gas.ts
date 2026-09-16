@@ -84,6 +84,16 @@ export enum GasType {
      */
     METHANE = TerrainType.METHANE_GAS,
     /**
+     * G-3：CE Globals.c:506 PARALYSIS_GAS（麻痹气体）迁入 GAS 层后的枚举
+     * 成员。与前五种同构：数值 = GAS 层 TerrainType 值。QUICK 档消散、
+     * 可燃（ign 100 → DF_GAS_FIRE）、效果 = T_CAUSES_PARALYSIS
+     * （Time.c:471-497：站进即 STATUS_PARALYZED、无阈值、每回合 max(…,20)
+     * 刷新——Game.applyEnvironmentalEffects 判定）。web 载体 =
+     * potion_of_paralysis 改线（CE Items.c:6994/8118，云体积 1000 =
+     * DF_PARALYSIS_GAS_CLOUD_POTION 的 startProbability）。
+     */
+    PARALYSIS = TerrainType.PARALYSIS_GAS,
+    /**
      * D2 留痕：web 自创气体，CE 无对应 tile（F-0 §2.1/§5.2-5），故无层载体。
      * 数值故意取在 TerrainType 值域之外（当前最大 38）：万一被误写入层，
      * TERRAIN_FLAGS 查表得到 undefined 会响亮崩溃而不是静默污染。

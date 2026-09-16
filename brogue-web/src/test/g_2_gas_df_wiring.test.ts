@@ -388,26 +388,35 @@ describe('G-2 对抗⑥：G-1 扩散算法不被本轮意外改动（经 DF 管�
 // 对抗⑦：无载体的 tile 被接成空转链 / 未迁移气体只登记
 // ---------------------------------------------------------------------------
 describe('G-2 对抗⑦：未迁移气体只登记（载体盘点表的显式留痕）', () => {
-    it('ROT/STENCH/PARALYSIS/DARKNESS/HEALING 五气体无 tile 载体、无 GasType 成员、无 DF 条目', () => {
-        // "只登记"的形态（本断言即登记）：这五种气体本轮不迁 tile——
+    // G-3 翻转（原断言"五气体无 tile 载体"）：PARALYSIS_GAS 于 G-3 拿到
+    // 真载体（potion_of_paralysis 改线，CE Items.c:6994/8118）而出列；
+    // 其余四气体仍无载体，只登记的半边原样保留。原断言内容存档：
+    // "ROT/STENCH/PARALYSIS/DARKNESS/HEALING 五气体无 tile 成员、
+    // 无 GasType 成员、无 DF 条目"。
+    it('ROT/STENCH/DARKNESS/HEALING 四气体无 tile 载体、无 GasType 成员、无 DF 条目（G-3 翻转：PARALYSIS 出列）', () => {
+        // "只登记"的形态（本断言即登记）：这四种气体不迁 tile——
         // 它们没有 TerrainType/GasType 成员、不在目录里。接成空转链的
         // 错误实现（tile 迁了但无生产写入点、或 DF 条目 tile=null 挂着
         // 无人触发）在这组结构性断言下无所遁形。
         const names = (TerrainType as unknown as Record<string, unknown>);
-        for (const n of ['ROT_GAS', 'STENCH_SMOKE_GAS', 'PARALYSIS_GAS', 'DARKNESS_CLOUD', 'HEALING_CLOUD']) {
+        for (const n of ['ROT_GAS', 'STENCH_SMOKE_GAS', 'DARKNESS_CLOUD', 'HEALING_CLOUD']) {
             expect(names[n], `${n} 不得有 tile 成员（载体盘点：无 web 载体，只登记）`).toBeUndefined();
         }
         const gasNames = (GasType as unknown as Record<string, unknown>);
-        for (const n of ['ROT', 'STENCH', 'PARALYSIS', 'DARKNESS', 'HEALING']) {
+        for (const n of ['ROT', 'STENCH', 'DARKNESS', 'HEALING']) {
             expect(gasNames[n], `GasType.${n} 不得存在`).toBeUndefined();
         }
-        // 值域对照：G-2 迁移的两个新成员必须在位（防止有人把本断言连坐删掉）。
+        // 值域对照：G-2/G-3 迁移的成员必须在位（防止有人把本断言连坐删掉）。
         expect(isGasTerrain(C.METHANE_GAS), 'METHANE_GAS 已迁，有载体').toBe(true);
         expect(names['GAS_FIRE']).toBeDefined();
+        expect(isGasTerrain(C.PARALYSIS_GAS), 'G-3：PARALYSIS_GAS 已迁，载体 = 麻痹药水').toBe(true);
+        expect(names['PARALYSIS_GAS']).toBeDefined();
         // 24 条 GAS 目录里无载体的条目不入 DF 目录（登记 ≠ 抄目录）：
         // DF_ROT_GAS_*（32/41）、DF_DEWAR_*（71-74）、DF_STENCH_*（217/218）、
-        // DF_DARKNESS_POTION（134）、DF_BLOODFLOWER_POD_BURST（70）等都不在。
-        for (const id of [32, 41, 70, 71, 72, 73, 74, 134, 217, 218]) {
+        // DF_DARKNESS_POTION（134）、DF_BLOODFLOWER_POD_BURST（70）、
+        // DF_PARALYSIS_GAS_CLOUD_POTION（159，G-3 走 addGas 直注、不入目录
+        // ——同 G-1 毒药水先例）都不在。
+        for (const id of [32, 41, 70, 71, 72, 73, 74, 134, 159, 217, 218]) {
             expect(DUNGEON_FEATURE_CATALOG[id as DF], `DF#${id} 不得提前入目录`).toBeUndefined();
         }
     });

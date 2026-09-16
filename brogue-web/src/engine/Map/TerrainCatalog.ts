@@ -446,6 +446,22 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
         TM_STAND_IN_TILE | TM_EXPLOSIVE_PROMOTE,
         100, 'DF_GAS_FIRE', '', 'DF_EXPLOSION_FIRE', 0
     ),
+
+    // ── G-3：CE Globals.c:506 PARALYSIS_GAS（麻痹气体）────────────────────
+    // 全字段照抄 CE：T_IS_FLAMMABLE | T_CAUSES_PARALYSIS（麻痹效果判定在
+    // Game.applyEnvironmentalEffects，Time.c:471-497——站进即上
+    // STATUS_PARALYZED、无阈值、每回合 max(…,20) 刷新）；
+    // TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY（50%/轮 −1，QUICK 档）；
+    // ign 100、fireType DF_GAS_FIRE（与其他可燃气体同链：被点燃 → 燃气之火）。
+    // promoteChance 0。web 载体：potion_of_paralysis 改线（Game 药水分支
+    // → addGas 1000 = DF_PARALYSIS_GAS_CLOUD_POTION 的 startProbability，
+    // Globals.c:778；喝 Items.c:8117-8120 / 扔 Items.c:6994-6997）。
+    // glowLight（NO_LIGHT）无对应列，登记不迁移。
+    [TerrainType.PARALYSIS_GAS]: e(
+        T_IS_FLAMMABLE | T_CAUSES_PARALYSIS,
+        TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY,
+        100, 'DF_GAS_FIRE', '', '', 0
+    ),
 };
 
 // ── 派生判据（名字照 CE，语义 = 旗标位测试；CE Movement/Dijkstra 等处

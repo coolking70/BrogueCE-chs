@@ -3,7 +3,7 @@
  * Main game state and orchestration
  */
 import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer } from '../Map/Grid';
-import { blocksPassability, isDeepWater, TERRAIN_FLAGS, T_IS_FIRE, TM_EXTINGUISHES_FIRE } from '../Map/TerrainCatalog';
+import { blocksPassability, isDeepWater, TERRAIN_FLAGS, T_IS_FIRE, T_CAUSES_CONFUSION, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE } from '../Map/TerrainCatalog';
 import { cellTerrainMechFlags } from '../Map/DungeonFeature';
 import { Architect } from '../Generator/Architect';
 import type { MachineResult } from '../Generator/BlueprintEngine';
@@ -2913,8 +2913,18 @@ export class Game {
                         logger.log(i18next.t('potion.confusion_burst', { defaultValue: 'Reality bends and shimmers around you!' }), '#cc99ff');
                         break;
                     case 'paralyze_burst':
-                        this.applyTimedStatus(this.player, 'paralyzed', 8);
+                        // G-3：CE 喝麻痹药水不是直上状态，而是原地爆出麻痹
+                        // 气云（Items.c:8117-8120 → DF_PARALYSIS_GAS_CLOUD_
+                        // POTION，Globals.c:778 {PARALYSIS_GAS, GAS, 1000}；
+                        // 扔掷同款 Items.c:6994-6997）。玩家自己站在云里，
+                        // 由气体效果判定上 STATUS_PARALYZED（max(…,20)，
+                        // Time.c:493-495）——"自食其果"是 CE 原味。云体积
+                        // 1000（G-1 折算口径同毒药水）；CE 的 &pink 光效
+                        // 半径 4 属渲染列，web 无光效列，登记不迁移。
+                        // 既有 key 的文案（"你被定身了！"）描述的正是随后
+                        // 到来的麻痹结局，沿用（仅增键边界的折中，见报告）。
                         logger.log(i18next.t('potion.paralyze_burst', { defaultValue: 'You are frozen in place!' }), '#cc99ff');
+                        this.environment.addGas(this.player.loc.x, this.player.loc.y, GasType.PARALYSIS, 1000);
                         break;
                     case 'hallucinate_burst':
                         this.applyTimedStatus(this.player, 'hallucinating', 20);
@@ -5740,7 +5750,7 @@ export class Game {
 
         if (this.player.hp <= 0 && !this.isGameOver) {
             let deathReason: string;
-            if (this.lastDamageSource && this.lastDamageSource !== 'fire' && this.lastDamageSource !== 'steam' && this.lastDamageSource !== 'creeping death' && this.lastDamageSource !== 'starvation' && this.lastDamageSource !== 'poison') {
+            if (this.lastDamageSource && this.lastDamageSource !== 'fire' && this.lastDamageSource !== 'steam' && this.lastDamageSource !== 'creeping death' && this.lastDamageSource !== 'starvation' && this.lastDamageSource !== 'poison' && this.lastDamageSource !== 'caustic gas') {
                 deathReason = i18next.t('death.killed_by', { monster: this.lastDamageSource, defaultValue: `Killed by a ${this.lastDamageSource}.` });
             } else if (this.lastDamageSource === 'fire') {
                 deathReason = i18next.t('death.burned', { defaultValue: 'Burned to death.' });
@@ -5752,6 +5762,11 @@ export class Game {
                 deathReason = i18next.t('death.starved', { defaultValue: 'Starved to death.' });
             } else if (this.lastDamageSource === 'poison') {
                 deathReason = i18next.t('death.poisoned', { defaultValue: 'Died of poison.' });
+            } else if (this.lastDamageSource === 'caustic gas') {
+                // G-3：POISON_GAS 按 CE 是直接伤害（T_CAUSES_DAMAGE），死因
+                // 引 tile description（Time.c:622-625 "Killed by %s"，
+                // "a cloud of caustic gas"）。
+                deathReason = i18next.t('death.caustic_gas', { defaultValue: 'Killed by a cloud of caustic gas.' });
             } else {
                 deathReason = i18next.t('death.unknown', { defaultValue: 'Killed by unknown causes.' });
             }
@@ -6485,36 +6500,109 @@ export class Game {
                 this.environment.ignite(x, y);
             }
 
-            // Gas
+            // Gas —— G-3 重裁（F-0 §5.3-10/11）：
+            // CE 的气体效果判定**无阈值**（站进即判，Time.c:421-497 的
+            // 恶心/混乱/麻痹 + :592-655 的伤害），状态每回合 max() 刷新
+            // （`status = max(status, N)`——web applyStatus 'refresh' 即
+            // Math.max 语义）；伤害按 `max(1, maxHP/15)` 比例
+            // （applyGradualTileEffectsToCreature，Time.c:596-598，ticks=100）。
+            // 分派按 GAS 层 tile 的 T_CAUSES_* 旗标（CE cellHasTerrainFlag
+            // 语义），只看 tile 不看体积——燃气点燃后 volume=0 而 GAS 层
+            // tile 暂留的收层前窗口（Time.c:1361-1368 怪癖）CE 同样命中。
+            // 旧 0-100 时代的 CONFUSION/STEAM 密度 >20 阈值是 web 自创参数，
+            // 随本轮退役；POISON_GAS 按 CE 是 T_CAUSES_DAMAGE 直接伤害
+            // （不是上 'poisoned' 状态——CE 的毒状态走 addPoison，与气体
+            // 无关）；CREEPING_DEATH 分支是 D2 留痕（无层载体，不可达）。
             if (this.environment) {
-                const gas = this.environment.gasGrid[x]?.[y];
-                if (gas && gas.density > 0) {
-                    // G-1：gas.density 语义已是 CE volume；>0 / >20 阈值的
-                    // 效果判定本轮按任务书 §三 保持不动（阈值与比例伤害归
-                    // G-3）。GasType 已改基到 GAS 层地形值，字面量退役。
-                    if (gas.type === GasType.POISON) {
-                        // Apply poisoned status instead of flat damage
-                        const applied = entity === this.player
-                            ? entity.applyStatus('poisoned', 5)
-                            : this.applyStatusToMonster(entity as Monster, 'poisoned', 5, 'gas');
-                        if (entity === this.player && applied) {
-                            logger.log(i18next.t('env.player_poison_gas', { defaultValue: 'You breathe in toxic fumes!' }), '#aaeeaa');
+                const gasTile = cell.layers[DungeonLayer.GAS]!;
+                if (gasTile !== TerrainType.NOTHING) {
+                    const gasFlags = TERRAIN_FLAGS[gasTile].flags;
+                    // CE Time.c:411-424 的 respiration 判定以
+                    // `cellHasTerrainFlag(T_RESPIRATION_IMMUNITIES)` 为前置
+                    // （:409-412）——甲烷等无该组旗标的气体不进豁免块，
+                    // 也不触发自动鉴定。伤害/混乱/麻痹/恶心四旗标入组
+                    // （Rogue.h:1956）。
+                    const respirationImmune = (gasFlags & T_RESPIRATION_IMMUNITIES) !== 0
+                        && entity === this.player
+                        && this.player.equippedArmor?.runicType === 'respiration';
+                    if (respirationImmune && !this.player.equippedArmor!.runicKnown) {
+                        this.player.equippedArmor!.runicKnown = true;
+                        logger.log(i18next.t('runic.armor.respiration_gas', { defaultValue: 'Your armor trembles and a pocket of clean air swirls around you.' }), '#66ffff');
+                    }
+
+                    // 混乱气体（T_CAUSES_CONFUSION，Time.c:443-470）：
+                    // STATUS_CONFUSED = max(…, 25)，豁免 MONST_INANIMATE /
+                    // MONST_INVULNERABLE；玩家看得见且首次上状态时惊醒
+                    // 睡眠怪（:448-452，creatureState → TRACKING_SCENT）。
+                    if ((gasFlags & T_CAUSES_CONFUSION) !== 0 && !respirationImmune) {
+                        const exempt = entity !== this.player
+                            && ((entity as Monster).hasBehavior('MONST_INANIMATE')
+                                || (entity as Monster).isInvulnerable());
+                        if (!exempt) {
+                            // CE :449 的惊醒判据是"本回合赋值前 STATUS_CONFUSED
+                            // 为 0"（外层还有 canDirectlySeeMonster——web 对应
+                            // visibleMonsters），不是"本次刷新生效"。
+                            const wasConfused = entity.getStatusDuration('confused') > 0;
+                            const applied = entity === this.player
+                                ? entity.applyStatus('confused', 25)
+                                : this.applyStatusToMonster(entity as Monster, 'confused', 25, 'gas');
+                            if (entity === this.player && applied) {
+                                logger.log(i18next.t('env.player_confused_gas', { defaultValue: 'The confusion gas clouds your mind!' }), '#cc99ff');
+                            }
+                            if (!wasConfused && applied && entity !== this.player
+                                && this.visibleMonsters.has(entity as Monster)
+                                && (entity as Monster).state === MonsterState.ASLEEP) {
+                                (entity as Monster).state = MonsterState.HUNTING;
+                            }
                         }
-                    } else if (gas.type === GasType.CONFUSION && gas.density > 20) {
-                        const applied = entity === this.player
-                            ? entity.applyStatus('hallucinating', 6)
-                            : this.applyStatusToMonster(entity as Monster, 'confused', 6, 'gas');
-                        if (entity === this.player && applied) {
-                            logger.log(i18next.t('env.player_confused_gas', { defaultValue: 'The confusion gas clouds your mind!' }), '#cc99ff');
+                    }
+
+                    // 麻痹气体（T_CAUSES_PARALYSIS，Time.c:471-497）：
+                    // STATUS_PARALYZED = max(…, 20)，豁免同混乱 + 潜水
+                    // （web 无潜水簿记，登记退化）。CE 不惊醒睡眠怪。
+                    if ((gasFlags & T_CAUSES_PARALYSIS) !== 0 && !respirationImmune) {
+                        const exempt = entity !== this.player
+                            && ((entity as Monster).hasBehavior('MONST_INANIMATE')
+                                || (entity as Monster).isInvulnerable());
+                        if (!exempt) {
+                            const applied = entity === this.player
+                                ? entity.applyStatus('paralyzed', 20)
+                                : this.applyStatusToMonster(entity as Monster, 'paralyzed', 20, 'gas');
+                            if (entity === this.player && applied) {
+                                logger.log(i18next.t('status.player.paralyzed', { defaultValue: 'You are paralyzed!' }), '#ff9999');
+                            }
                         }
-                    } else if (gas.type === GasType.STEAM && gas.density > 20) {
-                        entity.hp -= 1;
-                        if (entity === this.player) {
-                            this.lastDamageSource = 'steam';
-                            logger.log(i18next.t('env.player_scalded', { defaultValue: 'The steam scalds you!' }), '#cccccc');
+                    }
+
+                    // 有害气体伤害（T_CAUSES_DAMAGE，Time.c:592-640）：
+                    // damage = max(1, maxHP/15 * ticks/100)（ticks=100 即
+                    // max(1, ⌊maxHP/15⌋)——大怪更怕毒气，小怪保底 1）。
+                    // 豁免 MONST_INANIMATE / MONST_INVULNERABLE / 潜水 +
+                    // 玩家 respiration 符文（:614-624）。悬浮不豁免
+                    // （CE 的悬浮守卫只在毒藤 T_CAUSES_POISON 分支）。
+                    if ((gasFlags & T_CAUSES_DAMAGE) !== 0 && !respirationImmune) {
+                        const exempt = entity !== this.player
+                            && ((entity as Monster).hasBehavior('MONST_INANIMATE')
+                                || (entity as Monster).isInvulnerable());
+                        if (!exempt) {
+                            const damage = Math.max(1, Math.floor(entity.maxHp / 15));
+                            entity.hp -= damage;
+                            if (entity === this.player) {
+                                this.lastDamageSource = gasTile === TerrainType.STEAM ? 'steam' : 'caustic gas';
+                                const msgKey = gasTile === TerrainType.STEAM
+                                    ? 'env.player_scalded'
+                                    : 'env.player_poison_gas';
+                                logger.log(i18next.t(msgKey, {
+                                    defaultValue: gasTile === TerrainType.STEAM
+                                        ? 'The steam scalds you!'
+                                        : 'You breathe in toxic fumes!'
+                                }), gasTile === TerrainType.STEAM ? '#cccccc' : '#aaeeaa');
+                            }
+                            if (entity.hp <= 0 && entity !== this.player) entity.die();
                         }
-                        if (entity.hp <= 0 && entity !== this.player) entity.die();
-                    } else if (gas.type === GasType.CREEPING_DEATH) {
+                    }
+
+                    if (this.environment.gasGrid[x]?.[y]?.type === GasType.CREEPING_DEATH) {
                         // D2 留痕：本分支随 creeping_death 退池后不可达
                         //（GasType.CREEPING_DEATH 无层载体，addGas 拒绝写入），
                         // 按口径保留代码。

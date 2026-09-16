@@ -248,7 +248,7 @@ describe('P1-24 验收 1：die() 归零 hp，怪物真的被移出列表', () =>
         '不残留负 hp（重复结算实现会把它扣成 -1 或更低）。', () => {
         const game = createHeadlessGame(27);
         clearToOpenRoom(game);
-        game.environment.addGas(7, 6, GasType.STEAM, 50); // density>20 才结算
+        game.environment.addGas(7, 6, GasType.STEAM, 50); // G-3 起无阈值站进即结算；rat maxHp=6 → max(1,⌊6/15⌋)=1，伤害不变
 
         const victim = new Monster(7, 6, monsterDataById('rat'));
         victim.hp = 1;

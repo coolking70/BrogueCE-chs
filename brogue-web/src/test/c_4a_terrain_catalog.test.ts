@@ -30,7 +30,7 @@ import {
     T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_LAKE_PATHING_BLOCKER,
     T_WAYPOINT_BLOCKER, T_OBSTRUCTS_SCENT, T_MOVES_ITEMS,
     T_OBSTRUCTS_EVERYTHING,
-    T_CAUSES_DAMAGE, T_CAUSES_CONFUSION,
+    T_CAUSES_DAMAGE, T_CAUSES_CONFUSION, T_CAUSES_PARALYSIS,
     TM_ALLOWS_SUBMERGING, TM_EXTINGUISHES_FIRE, TM_PROMOTES_WITH_KEY,
     TM_IS_SECRET, TM_VANISHES_UPON_PROMOTION, TM_STAND_IN_TILE, TM_VISUALLY_DISTINCT,
     TM_GAS_DISSIPATES, TM_GAS_DISSIPATES_QUICKLY,
@@ -124,7 +124,9 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         // 气体迁层的三种可产气体载体），34 → 37。
         // G-2：GAS_FIRE/METHANE_GAS 入列（CE Globals.c:495/507，燃气之火 +
         // 第六种气体 tile），37 → 39。
-        expect(names.length).toBe(39);
+        // G-3：PARALYSIS_GAS 入列（CE Globals.c:506，麻痹气体——载体 =
+        // potion_of_paralysis 改线），39 → 40。
+        expect(names.length).toBe(40);
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             const entry = TERRAIN_FLAGS[t];
@@ -276,6 +278,24 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         expect(DRAW_PRIORITY[C.METHANE_GAS]).toBe(35);
         expect(TERRAIN_HOME_LAYER[C.GAS_FIRE], '燃气之火是 SURFACE 火地形（G-1 §八.1）').toBe(L.SURFACE);
         expect(TERRAIN_HOME_LAYER[C.METHANE_GAS]).toBe(L.GAS);
+    });
+
+    it('G-3 新增条目：PARALYSIS_GAS（CE Globals.c:506）逐字段钉死', () => {
+        // 捕获的错误实现：
+        //   - 漏抄 T_CAUSES_PARALYSIS（效果判定失效——站进麻痹气不上状态）；
+        //   - 消散档抄 SLOW（CE 是 QUICK，Globals.c:506 第 12 列
+        //     TM_GAS_DISSIPATES_QUICKLY）；
+        //   - 漏抄 T_IS_FLAMMABLE / fireType（CE 与 POISON/CONFUSION 同链：
+        //     ign 100、被点燃 → DF_GAS_FIRE）；
+        //   - drawPriority / 归属层写错。
+        expect(TERRAIN_FLAGS[C.PARALYSIS_GAS]!.flags).toBe(T_IS_FLAMMABLE | T_CAUSES_PARALYSIS);
+        expect(TERRAIN_FLAGS[C.PARALYSIS_GAS]!.mechFlags).toBe(TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY);
+        expect(TERRAIN_FLAGS[C.PARALYSIS_GAS]!.chanceToIgnite).toBe(100);
+        expect(TERRAIN_FLAGS[C.PARALYSIS_GAS]!.fireType).toBe('DF_GAS_FIRE');
+        expect(TERRAIN_FLAGS[C.PARALYSIS_GAS]!.promoteType).toBe('');
+        expect(TERRAIN_FLAGS[C.PARALYSIS_GAS]!.promoteChance).toBe(0);
+        expect(DRAW_PRIORITY[C.PARALYSIS_GAS]).toBe(35);
+        expect(TERRAIN_HOME_LAYER[C.PARALYSIS_GAS]).toBe(L.GAS);
     });
 
     it('F-2a 守卫：Grid.FIRE_TERRAIN_TYPES（isBurning 派生集）≡ T_IS_FIRE 旗标载体集', () => {

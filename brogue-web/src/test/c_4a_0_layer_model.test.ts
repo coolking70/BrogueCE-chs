@@ -240,6 +240,7 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.STEAM]: L.GAS,
             [C.GAS_FIRE]: L.SURFACE, // G-2（CE Globals.c:495 火地形落 SURFACE，:741 DF layer 同证）
             [C.METHANE_GAS]: L.GAS, // G-2（CE Globals.c:507 第六种气体 tile）
+            [C.PARALYSIS_GAS]: L.GAS, // G-3（CE Globals.c:506 麻痹气体，:778 DF layer 同证）
         });
         expect(DRAW_PRIORITY).toEqual({
             [C.NOTHING]: 100, [C.GRANITE]: 0, [C.FLOOR]: 95, [C.WALL]: 0,
@@ -258,6 +259,7 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.STEAM]: 35,
             [C.GAS_FIRE]: 10, // G-2（CE Globals.c:495 第 4 列，与 PLAIN_FIRE 同档）
             [C.METHANE_GAS]: 35, // G-2（CE Globals.c:507 第 4 列，气体同为 35）
+            [C.PARALYSIS_GAS]: 35, // G-3（CE Globals.c:506 第 4 列，气体同为 35）
         });
     });
 });
