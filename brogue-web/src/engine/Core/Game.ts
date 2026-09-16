@@ -3,7 +3,7 @@
  * Main game state and orchestration
  */
 import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer } from '../Map/Grid';
-import { blocksPassability, isDeepWater, TERRAIN_FLAGS, T_IS_FIRE, T_CAUSES_CONFUSION, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE } from '../Map/TerrainCatalog';
+import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_IS_FIRE, T_CAUSES_CONFUSION, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_PATHING_BLOCKER, T_OBSTRUCTS_PASSABILITY, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY } from '../Map/TerrainCatalog';
 import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, spawnDungeonFeature } from '../Map/DungeonFeature';
 import { DF } from '../Map/DungeonFeatureCatalog';
 import { Architect } from '../Generator/Architect';
@@ -38,6 +38,7 @@ import {
     runPromotionUpdate,
     type PromotionUpdateResult,
 } from '../Map/Promotion';
+import { CE_DEEPEST_LEVEL } from '../Map/LakeSystem';
 import { WaypointSystem, WAYPOINT_SIGHT_RADIUS, type WaypointContext } from '../Map/WaypointMap';
 import i18next from 'i18next';
 
@@ -338,6 +339,32 @@ export class Game {
 
     // Callback to trigger re-renders
     public onRenderRequested: (() => void) | null = null;
+
+    /**
+     * C-5：CE confirm(char *prompt, boolean defaultAnswer)（IO.c）的引擎侧钩子——
+     * 跳入已知深渊前的确认（Movement.c:1303-1322）。UI 轮把确认对话框接到
+     * onConfirmRequest 上；钩子为 null（headless/未接线）时按"确认"处理，
+     * 与 CE defaultAnswer 分支的差异登记在 C-5 报告。
+     */
+    public onConfirmRequest: ((message: string) => boolean) | null = null;
+
+    /**
+     * C-5：CE player.bookkeepingFlags & MB_IS_FALLING 的 web 等价位（Player
+     * 在禁改清单，位挂在 Game 上）。置位点：踩渊之后（Movement.c:1474-1476）、
+     * 下坠药水（Items.c:8098-8100）、环境结算（Time.c:168-176）；结算点：
+     * playerTurnEnded 顶部（Time.c:2480-2486）与推进循环的即时检查
+     * （Time.c:2866-2871），两处都走 playerFalls()。
+     */
+    private playerFalling: boolean = false;
+
+    /**
+     * C-5：坠到"下一层"的怪物幸存者的暂存区（CE prependCreature 到
+     * levels[rogue.depthLevel].monsters，Time.c:1567-1570——目标层此时可能
+     * 尚未生成）。键 = 目标层深度；generateDepth 的新层分支在 populateLevel
+     * 之后取走（restoreMonster-lite 重定位后并入 this.monsters）；
+     * 目标层已缓存时直接并入缓存层的怪物表。
+     */
+    private pendingFallenByDepth: Map<number, Monster[]> = new Map();
 
     private needsRender: boolean = true;
     public isInventoryOpen: boolean = false;
@@ -729,6 +756,25 @@ export class Game {
                 architect.machines, architect.altars, architect.trapVaults, architect.cages,
                 architect.machineResults
             );
+
+            // C-5：取走坠到本层的怪物幸存者（CE startLevel "Load up next
+            // level's monsters and items, since one might have fallen from
+            // above"——RogueMain.c:673-676；重定位= restoreMonster 的
+            // MB_PREPLACED 分支，Architect.c:3537-3550）。CE 用
+            // getQualifyingPathLocNear，web 复用 P1-31 的同口径端口。
+            const fallen = this.pendingFallenByDepth.get(this.depth);
+            if (fallen && fallen.length > 0) {
+                this.pendingFallenByDepth.delete(this.depth);
+                for (const m of fallen) {
+                    const spot = this.findQualifyingPathLocNear(m.loc);
+                    if (spot) {
+                        m.loc.x = spot.x;
+                        m.loc.y = spot.y;
+                    }
+                    m.preplaced = false; // CE :3548 清 MB_PREPLACED
+                    this.monsters.push(m);
+                }
+            }
         }
 
         // P4-10：waypoint 构建。CE RogueMain.c:707 的位置——新层的全部生成
@@ -2723,6 +2769,16 @@ export class Game {
                         this.handleSpecialTileEntry();
                     }
                 } else if (this.canMoveTo(newX, newY)) {
+                    // C-5：CE Movement.c:1303-1322——踩**已发现**的渊格前的确认。
+                    // 前置条件逐条照抄：目标格已发现（DISCOVERED|MAGIC_MAPPED）、
+                    // 玩家非悬浮（STATUS_LEVITATING<=1）、非混乱（STATUS_CONFUSED）、
+                    // 目标带 T_AUTO_DESCENT、(未被缠 || TM_PROMOTES_ON_PLAYER_ENTRY)、
+                    // 非 TM_IS_SECRET。拒绝即取消按键（cancelKeystroke）——不移动、
+                    // 不耗回合。未知渊格无提示（蒙眼跳坑是 CE 原味）。
+                    if (this.diveConfirmationNeeded(newX, newY)
+                        && !this.requestConfirm(i18next.t('fall.confirm', { defaultValue: 'Dive into the depths?' }))) {
+                        return;
+                    }
                     const currentCell = this.grid.getCell(this.player.loc.x, this.player.loc.y);
                     if (currentCell && currentCell.terrain === TerrainType.WEB) {
                         if (rng.randPercent(50)) {
@@ -2774,6 +2830,13 @@ export class Game {
                     }
 
                     this.handleSpecialTileEntry();
+
+                    // C-5：CE Movement.c:1474-1476——移动完成后站在渊格上只置
+                    // MB_IS_FALLING，坠落由紧随其后的 playerTurnEnded 顶部结算
+                    //（CE Time.c:2480-2486），不是踩上瞬间。
+                    if (this.creatureShouldFall(this.player)) {
+                        this.playerFalling = true;
+                    }
                 }
 
                 if (this.needsRender) {
@@ -2896,7 +2959,19 @@ export class Game {
                         logger.log(i18next.t('potion.strength', { defaultValue: 'You feel stronger!' }), '#ff4444');
                         break;
                     case 'fall_down':
+                        // C-5（吸收 P1-22）：CE Items.c:8095-8100 POTION_DESCENT——
+                        // 原地铺 DF_HOLE_POTION（HOLE_EDGE 波前 + subsequentDF
+                        // DF_HOLE_2 落 HOLE），非悬浮则置 MB_IS_FALLING；坠落由
+                        // 本动作末尾的 playerTurnEnded（Items.c:7633 apply() 收口）
+                        // 顶部结算。悬浮时洞照开、人不坠（CE 原味）。
                         logger.log(i18next.t('potion.descent', { defaultValue: 'The floor opens beneath you!' }), '#ff8844');
+                        {
+                            const hole = catalogFeature(DF.DF_HOLE_POTION);
+                            spawnDungeonFeature(this.grid, this.player.loc.x, this.player.loc.y, hole, false);
+                        }
+                        if (!this.player.hasStatus('levitating')) {
+                            this.playerFalling = true;
+                        }
                         break;
                     case 'fire_burst':
                         logger.log(i18next.t('potion.fire_burst', { defaultValue: 'Flames burst out of the bottle!' }), '#ffaa00');
@@ -5357,9 +5432,12 @@ export class Game {
      *     新落爆炸格的起火登记并入 pendingCaughtFireCells（CE 旗标即时生效，
      *     下一晋升趟跳过其衰老掷骰）。
      * 未接（报告已登记，均为已知缺口，非本轮范围）：
-     *   - pit_bloat 的 DF_HOLE_POTION 需要洞/坠落地形，web 无坠落子系统
-     *     （fall_down 只打印日志）——pit bloat 本轮只自爆，不生成洞。
      *   - vampire 的 DF_BLOOD_EXPLOSION 是纯血迹装饰，web 无血迹层。
+     * C-5 接线 pit_bloat：CE monsterCatalog Globals.c:1039 的死亡 DFType =
+     * DF_HOLE_POTION（与 killCreature 的 MA_DF_ON_DEATH 分支同款链路，
+     * Combat.c:1965-1967，refreshCell=true / abortIfBlocking=false）——尸体
+     * 脚下炸出 HOLE_EDGE 波前 + 原点 HOLE（T_AUTO_DESCENT），站在上面的
+     * 生物由回合末的坠落结算收走。
      */
     private triggerDeathFeatures(): void {
         for (const m of this.monsters) {
@@ -5397,14 +5475,358 @@ export class Game {
                     defaultValue: `The ${m.name} explodes in a burst of flame!`
                 }), '#ff8800');
                 this.needsRender = true;
+            } else if (m.typeId === 'pit_bloat') {
+                // C-5：DF_HOLE_POTION 链（见函数注释）。abortIfBlocking=false
+                // 与 CE :1965 的第四参一致——洞允许切断关卡。
+                spawnDungeonFeature(this.grid, m.loc.x, m.loc.y, catalogFeature(DF.DF_HOLE_POTION), false);
+                this.needsRender = true;
             }
-            // pit_bloat / vampire：本轮不接，见函数注释。
+            // vampire：本轮不接，见函数注释（DF_BLOOD_EXPLOSION 无血迹层）。
         }
+    }
+
+    // =========================================================================
+    // C-5：坠落子系统（CHASM/HOLE 的 T_AUTO_DESCENT 消费端）
+    //
+    // CE 事实来源（BrogueCE-master/src/brogue/，只读）：
+    //   - monsterShouldFall        Time.c:110-116（悬浮/缠绕/墙/MC_PREPLACED 豁免）
+    //   - 置位点（回合末才坠）     Time.c:168-176（玩家置位后 return，怪物只置位）
+    //   - playerFalls              Time.c:1122-1180（怪物随落 → 换层 → 伤害）
+    //   - monstersFall             Time.c:1530-1583（6-12 clump2；守卫类必死；
+    //                              幸存者 prependCreature 到下一层）
+    //   - playerTurnEnded 坠落门   Time.c:2480-2492（先玩家后怪物）
+    //   - 推进循环即时门           Time.c:2866-2871
+    //   - 落位                     RogueMain.c:820-841（旧渊格坐标为心的
+    //                              getQualifyingLocNear + 围湖逃生检查）
+    //   - 跳渊确认                 Movement.c:1303-1322
+    //   - 数值                     gameConst.fallDamageMin/Max = 8/10
+    //                              （variants/GlobalsBrogue.c:1044-1045）
+    // =========================================================================
+
+    /** CE gameConst.fallDamageMin/Max（GlobalsBrogue.c:1044-1045）。 */
+    private static readonly FALL_DAMAGE_MIN = 8;
+    private static readonly FALL_DAMAGE_MAX = 10;
+
+    /** CE confirm() 的 web 钩子转发；未接线时按"确认"处理（见字段注记）。 */
+    private requestConfirm(message: string): boolean {
+        if (this.onConfirmRequest) return this.onConfirmRequest(message);
+        return true;
+    }
+
+    /**
+     * CE Movement.c:1303-1322 的前置条件串（返回 true = 需要确认）。
+     * 目标格必须已发现、玩家非悬浮/非混乱、目标带 T_AUTO_DESCENT、
+     * （未被缠 || 带 TM_PROMOTES_ON_PLAYER_ENTRY）、非 TM_IS_SECRET。
+     * F-1 口径：旗标判据全部跨层。
+     */
+    private diveConfirmationNeeded(newX: number, newY: number): boolean {
+        const cell = this.grid.getCell(newX, newY);
+        if (!cell) return false;
+        if (!cell.isDiscovered) return false;                       // DISCOVERED | MAGIC_MAPPED
+        if (this.player.hasStatus('levitating')) return false;      // STATUS_LEVITATING <= 1
+        if (this.player.hasStatus('hallucinating')) return false;   // !STATUS_CONFUSED
+        if (!cell.layers.some(isAutoDescent)) return false;         // T_AUTO_DESCENT
+        const entangled = cell.layers.some((t) => (TERRAIN_FLAGS[t].flags & T_ENTANGLES) !== 0);
+        const mechFlags = cellTerrainMechFlags(this.grid, newX, newY);
+        if (entangled && !(mechFlags & TM_PROMOTES_ON_PLAYER_ENTRY)) return false;
+        if (mechFlags & TM_IS_SECRET) return false;                 // !TM_IS_SECRET
+        return true;
+    }
+
+    /**
+     * CE monsterShouldFall（Time.c:110-116）——玩家与怪物同式。悬浮豁免
+     * （web 怪物的 MONST_FLIES 已折进 hasStatus('levitating')）；渊格判据
+     * 跨层；被缠/占位不可坠（CE T_ENTANGLES | T_OBSTRUCTS_PASSABILITY）；
+     * MB_PREPLACED（刚坠下来的幸存者）不坠。
+     */
+    private creatureShouldFall(entity: Player | Monster): boolean {
+        if (entity.hasStatus('levitating')) return false;
+        const x = entity.loc.x;
+        const y = entity.loc.y;
+        const cell = this.grid.getCell(x, y);
+        if (!cell) return false;
+        let flags = 0;
+        for (let l = 0; l < DungeonLayer.COUNT; l++) {
+            flags |= TERRAIN_FLAGS[cell.layers[l]!].flags;
+        }
+        if (!(flags & T_AUTO_DESCENT)) return false;
+        if (flags & (T_ENTANGLES | T_OBSTRUCTS_PASSABILITY)) return false;
+        if (entity !== this.player && (entity as Monster).preplaced) return false;
+        return true;
+    }
+
+    /**
+     * CE playerFalls（Time.c:1122-1180）逐段移植。调用前提：playerFalling
+     * 已置位（Time.c:2480 或 :2866 的两个结算门）。次序照抄 CE：
+     *   1. 脚下渊/洞 tile 的 flavor 文案（:1133-1141；web tile 无 flavorText
+     *      列，按地形值分派 i18n 键）；
+     *   2. monstersFall()——怪物先于换层随落（:1124 注释原文：怪物必须与
+     *      玩家一起坠落，而不是悬在上一层）；
+     *   3. 清 MB_IS_FALLING | MB_SEIZED | MB_SEIZING（:1137）；
+     *      CE :1138 rogue.disturbed = true → web 同义：中断自动寻路；
+     *   4. 非 40 层：depthLevel++ → startLevel（generateDepth(false) +
+     *      synchronizePlayerTimeState，与楼梯流同一对入口）→ 旧渊格坐标
+     *      为心的落位（RogueMain.c:820-841）→ randClumpedRange(8,10,2)
+     *      落地伤害——深水零伤害（:1146-1150）、TM_ALLOWS_SUBMERGING 减半
+     *      （:1156-1158，CE 整除）、其余全额（:1159-1163，经 inflictDamage：
+     *      不吃护甲减免、MONST_INVULNERABLE 免疫；web 护盾本就不挡伤害，
+     *      与全库现状同口径，登记）；
+     *   5. 40 层：没有下一层可坠——"奇怪的力量" + 随机传送（:1164-1167，
+     *      teleport(&player, INVALID_POS, true)）。
+     */
+    private playerFalls(): void {
+        const px = this.player.loc.x;
+        const py = this.player.loc.y;
+
+        // CE :1133-1141：坠落 flavor 文案（tile 的 T_AUTO_DESCENT 层优先：
+        // CHASM 在 LIQUID、HOLE 在 SURFACE，CE layerWithFlag 层序即此）。
+        const cell = this.grid.getCell(px, py);
+        if (cell?.layers.includes(TerrainType.CHASM)) {
+            logger.log(i18next.t('fall.flavor_chasm', { defaultValue: 'You plunge downward into the chasm!' }), '#ff8844');
+        } else if (cell?.layers.includes(TerrainType.HOLE)) {
+            logger.log(i18next.t('fall.flavor_hole', { defaultValue: 'You plunge downward into the hole!' }), '#ff8844');
+        } else {
+            logger.log(i18next.t('fall.plunge', { defaultValue: 'You plunge downward!' }), '#ff8844');
+        }
+
+        // CE :1124：怪物随落（换层之前——幸存者入下一层，亡者不留）。
+        this.monstersFall();
+
+        // CE :1137-1138。
+        this.playerFalling = false;
+        this.player.seized = false;
+        this.autoPath = [];
+
+        if (this.depth < CE_DEEPEST_LEVEL) {
+            this.depth++;
+            // CE :1141 startLevel(rogue.depthLevel - 1, 0)——非楼梯入口
+            //（stairDirection==0），web 与楼梯共用 generateDepth(false)，
+            // 落位差异在下一行修正。
+            this.generateDepth(false);
+            this.synchronizePlayerTimeState();
+
+            // CE RogueMain.c:820-841：以旧渊格 (px,py) 为心落位。
+            this.placePlayerOnFallLanding(px, py);
+
+            // CE :1143-1162：落地伤害。
+            const landX = this.player.loc.x;
+            const landY = this.player.loc.y;
+            const landCell = this.grid.getCell(landX, landY);
+            let damage = rng.randClumpedRange(Game.FALL_DAMAGE_MIN, Game.FALL_DAMAGE_MAX, 2);
+            if (landCell && landCell.layers.some(isDeepWater)) {
+                logger.log(i18next.t('fall.unharmed_deep_water', { defaultValue: 'You fall into deep water, unharmed.' }), '#6688ff');
+            } else {
+                if (landCell
+                    && (cellTerrainMechFlags(this.grid, landX, landY) & TM_ALLOWS_SUBMERGING)) {
+                    damage = Math.floor(damage / 2); // CE :1157 damage /= 2（浅水/沼减半）
+                }
+                logger.log(i18next.t('fall.injured', { defaultValue: 'You are injured by the fall.' }), '#ff6666');
+                this.player.hp -= damage;
+                if (this.player.hp <= 0) {
+                    // CE :1161-1163 killCreature + gameOver("Killed by a fall")
+                    this.triggerGameOver(false, i18next.t('death.fall', { defaultValue: 'Killed by a fall.' }));
+                    return;
+                }
+            }
+        } else {
+            // CE :1164-1167：最深层——奇怪的力量 + 随机传送。
+            logger.log(i18next.t('fall.strange_force', { defaultValue: 'A strange force seizes you as you fall.' }), '#cc99ff');
+            this.teleportPlayerRandom();
+        }
+        this.needsRender = true;
+    }
+
+    /**
+     * CE monstersFall（Time.c:1530-1583）。对每个置位者（MB_IS_FALLING 或
+     * monsterShouldFall）：
+     *   - 可见 → "X 坠落消失在视线之外！"（:1548-1560，CE 自带的中文串）；
+     *   - MONST_GETS_TURN_ON_ACTIVATION（守卫类/图腾）必死（:1553-1556，注释
+     *     原文：绝不能活到下一层挡路）；
+     *   - 其余 randClumpedRange(6, 12, 2)（:1558，注意与玩家的 8-10 是两张表）；
+     *     幸存 → 清坠落位、置 MB_PREPLACED、送下一层（:1561-1577）；亡 → die。
+     * 本层移除在扫描后统一执行（CE 的 removeCreature 即时摘链，web 迭代
+     * this.monsters 快照后过滤——结果集相同）。
+     */
+    private monstersFall(): void {
+        const fellOut = new Set<Monster>();
+        for (const m of [...this.monsters]) {
+            if (m.hp <= 0 || fellOut.has(m)) continue;
+            if (!m.falling && !this.creatureShouldFall(m)) continue;
+            m.falling = true;
+
+            const loc = this.grid.getCell(m.loc.x, m.loc.y);
+            if (loc?.isVisible) {
+                logger.log(i18next.t('fall.monster_plunges', {
+                    name: m.name,
+                    defaultValue: `The ${m.name} plunges out of sight!`,
+                }), '#aaaaaa');
+                this.needsRender = true;
+            }
+
+            if (m.hasBehavior('MONST_GETS_TURN_ON_ACTIVATION')) {
+                (m as unknown as { die(): void }).die(); // CE :1553-1556
+            } else {
+                // CE :1558 inflictDamage(NULL, monst, …)：无敌者免伤，余者全额。
+                let died = false;
+                if (!m.isInvulnerable()) {
+                    m.hp -= rng.randClumpedRange(6, 12, 2);
+                    if (m.hp <= 0) died = true;
+                }
+                if (!died) {
+                    // CE :1561-1577：幸存者转层（leadership 降格与
+                    // targetCorpseLoc 清理 web 无载体，登记）。
+                    m.falling = false;
+                    m.preplaced = true;
+                    fellOut.add(m);
+                    const targetDepth = this.depth + 1;
+                    const cached = this.levels.get(targetDepth);
+                    if (cached) {
+                        cached.monsters.push(m);
+                    } else if (targetDepth <= CE_DEEPEST_LEVEL) {
+                        const q = this.pendingFallenByDepth.get(targetDepth);
+                        if (q) q.push(m);
+                        else this.pendingFallenByDepth.set(targetDepth, [m]);
+                    }
+                    // 目标深度 > 40：CE 的 levels[] 容器恒可写而玩家不可达；
+                    // web 无该容器，幸存者就地消失（登记）。
+                } else {
+                    (m as unknown as { die(): void }).die();
+                }
+            }
+        }
+        if (fellOut.size > 0) {
+            this.monsters = this.monsters.filter((m) => !fellOut.has(m));
+        }
+    }
+
+    /**
+     * CE RogueMain.c:820-841（startLevel 的 stairDirection==0 落位）：以旧渊格
+     * 坐标为心，getQualifyingLocNear（Grid.c:347-356，切比雪夫环由近及远、
+     * 环内随机取一）找落点——阻挡集 = T_PATHING_BLOCKER **去掉深水**（可以
+     * 落进深水），占用排除 = HAS_MONSTER | HAS_ITEM | HAS_STAIRS |
+     * IS_IN_MACHINE。落进深水时做"能不能游出来"检查：到最近干地的
+     * pathingDistance（游泳口径，深水不算阻断）不可达（CE 30000）= 围湖，
+     * 挪到干地落点。
+     */
+    private placePlayerOnFallLanding(cx: number, cy: number): void {
+        const landingOk = (x: number, y: number): boolean => {
+            const cell = this.grid.getCell(x, y);
+            if (!cell) return false;
+            for (const t of cell.layers) {
+                if (t === TerrainType.NOTHING) continue;
+                const flags = TERRAIN_FLAGS[t].flags;
+                // (T_PATHING_BLOCKER & ~T_IS_DEEP_WATER)：深水可落。
+                if ((flags & T_PATHING_BLOCKER) && !(flags & T_IS_DEEP_WATER)) return false;
+            }
+            if (this.getMonsterAt(x, y)) return false;
+            if (cell.layers.includes(TerrainType.STAIRS_UP)
+                || cell.layers.includes(TerrainType.STAIRS_DOWN)) return false;
+            if (this.items.some((it) => it.loc.x === x && it.loc.y === y)) return false;
+            if (this.machineCells.has(y * DCOLS + x)) return false;
+            return true;
+        };
+        const strictDry = (x: number, y: number): boolean => {
+            const cell = this.grid.getCell(x, y);
+            if (!cell) return false;
+            return !cell.layers.some((t) => t !== TerrainType.NOTHING
+                && (TERRAIN_FLAGS[t].flags & T_PATHING_BLOCKER) !== 0);
+        };
+        const ringPick = (pred: (x: number, y: number) => boolean): Pos | null => {
+            const maxR = Math.max(this.grid.width, this.grid.height);
+            for (let r = 1; r <= maxR; r++) {
+                const ring: Pos[] = [];
+                for (let dx = -r; dx <= r; dx++) {
+                    for (let dy = -r; dy <= r; dy++) {
+                        if (Math.max(Math.abs(dx), Math.abs(dy)) !== r) continue;
+                        const x = cx + dx;
+                        const y = cy + dy;
+                        if (x <= 0 || y <= 0 || x >= this.grid.width - 1 || y >= this.grid.height - 1) continue;
+                        if (!pred(x, y)) continue;
+                        ring.push({ x, y });
+                    }
+                }
+                if (ring.length > 0) {
+                    return ring.length === 1 ? ring[0]! : ring[rng.randRange(0, ring.length - 1)]!;
+                }
+            }
+            return null;
+        };
+
+        let loc = ringPick(landingOk);
+        if (!loc) return; // 病态地图：CE 亦无解（getQualifyingLocNear 失败）。
+
+        if (this.grid.getCell(loc.x, loc.y)!.layers.some(isDeepWater)) {
+            // CE :827-839：围湖检查——游泳口径的 pathingDistance 到最近干地。
+            const dryLoc = ringPick(strictDry);
+            if (dryLoc && this.fallPathDistance(loc, dryLoc, true) === null) {
+                loc = dryLoc; // CE :836-838：游不出去 → 落到干地。
+            }
+        }
+
+        this.player.loc.x = loc.x;
+        this.player.loc.y = loc.y;
+    }
+
+    /**
+     * CE pathingDistance（Dijkstra.c:252）的局部 8 向 BFS（uniform 代价）。
+     * allowSwim=true 时深水不算阻断（T_PATHING_BLOCKER & ~T_IS_DEEP_WATER，
+     * CE RogueMain.c:835 的调用形态）；不可达返回 null（CE 距离图 30000）。
+     */
+    private fallPathDistance(from: Pos, to: Pos, allowSwim: boolean): number | null {
+        const blocked = (x: number, y: number): boolean => {
+            const cell = this.grid.getCell(x, y);
+            if (!cell) return true;
+            for (const t of cell.layers) {
+                if (t === TerrainType.NOTHING) continue;
+                const flags = TERRAIN_FLAGS[t].flags;
+                if (!(flags & T_PATHING_BLOCKER)) continue;
+                if (allowSwim && (flags & T_IS_DEEP_WATER)) continue;
+                return true;
+            }
+            return false;
+        };
+        if (blocked(to.x, to.y)) return null;
+        const key = (x: number, y: number): number => y * this.grid.width + x;
+        const dist = new Map<number, number>([[key(to.x, to.y), 0]]);
+        const queue: Array<{ x: number, y: number }> = [{ x: to.x, y: to.y }];
+        const DIRS8: ReadonlyArray<readonly [number, number]> = [
+            [0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, -1], [-1, 1], [1, 1],
+        ];
+        while (queue.length > 0) {
+            const p = queue.shift()!;
+            const d = dist.get(key(p.x, p.y))!;
+            if (p.x === from.x && p.y === from.y) return d;
+            for (const [dx, dy] of DIRS8) {
+                const nx = p.x + dx;
+                const ny = p.y + dy;
+                if (nx < 0 || ny < 0 || nx >= this.grid.width || ny >= this.grid.height) continue;
+                const k = key(nx, ny);
+                if (dist.has(k) || blocked(nx, ny)) continue;
+                dist.set(k, d + 1);
+                queue.push({ x: nx, y: ny });
+            }
+        }
+        return null;
     }
 
     private playerTurnEnded() {
         this.triggerDeathFeatures();
         this.monsters = this.monsters.filter(m => m.hp > 0);
+
+        // C-5：CE Time.c:2480-2486——玩家坠落在回合一切其余结算之前
+        //（handleXPXP 之后、monstersFall 与推进循环之前）。playerFalls 内部
+        // 会先让怪物随落（monstersFall，Time.c:1124），随后整段 return：
+        // 坠落回合没有气味刷新、没有怪物推进。
+        if (this.playerFalling) {
+            this.playerFalls();
+            return;
+        }
+
+        // C-5：CE Time.c:2486-2492——每个玩家回合末怪物坠落（注释原文：
+        // 走得比环境更新更快的怪物不能悬在渊上行动）。CE :2492 位于
+        // updateSafetyMap/气味等主观块之前；web 对应插在此处。
+        this.monstersFall();
+
         this.syncEquipmentStatuses();
 
         const stealthRange = this.calculateStealthRange();
@@ -5556,6 +5978,13 @@ export class Game {
             if (this.ticksTillUpdateEnvironment <= 0) {
                 this.ticksTillUpdateEnvironment += 100;
                 this.objectiveTimeBlock();
+                // C-5：CE Time.c:2866-2871——客观块内（环境瞬时结算）置位的
+                // 玩家坠落旗标在本圈循环立即结算（CE 的 do-while 每圈在
+                // applyInstantTileEffectsToCreature(&player) 之后检查）。
+                if (this.playerFalling) {
+                    this.playerFalls();
+                    return;
+                }
                 // CE Time.c:2713-2715：岩浆/毒气等致死后立即退出推进
                 if (this.isGameOver) return;
                 // CE Time.c:2704-2707：仅当玩家本次动作慢于一个标准回合
@@ -5645,6 +6074,10 @@ export class Game {
         // F-2b：燃烧伤害结算在 tickCreatureStatuses 内（CE Time.c:2581-2591 /
         // Monsters.c:1877-1901），随本调用在环境段之后执行。
         this.tickCreatureStatuses();
+
+        // C-5：CE updateEnvironment 的第一条语句（Time.c:1597 monstersFall）
+        // ——100-tick 客观块内的渊上怪物在此坠落（先于晋升/火/气各段）。
+        this.monstersFall();
 
         // C-4c：CE updateEnvironment 的晋升段（Time.c:1619-1684）——两趟随机
         // 晋升 + 记账趟。位置对应 CE 客观块里的 updateEnvironment（:2695，
@@ -6580,6 +7013,19 @@ export class Game {
 
             const cell = this.grid?.getCell(x, y);
             if (!cell) return;
+
+            // C-5：CE applyInstantTileEffectsToCreature 坠落段（Time.c:168-176，
+            // 位于岩浆段之前）——渊上生物置坠落位。玩家置位后 CE 直接 return
+            //（跳过本格其余地形效果）；怪物只置位不返回，继续本格其余结算
+            //（"handled at end of turn"）。结算点在 playerTurnEnded 顶部与
+            // 客观块的 monstersFall。
+            if (this.creatureShouldFall(entity)) {
+                if (entity === this.player) {
+                    this.playerFalling = true;
+                    return;
+                }
+                (entity as Monster).falling = true;
+            }
 
             // Deep Water / Lava Death
             // 深水不致死（P1-27，决策 D2）：CE 的深水没有任何伤害（T_IS_DEEP_WATER

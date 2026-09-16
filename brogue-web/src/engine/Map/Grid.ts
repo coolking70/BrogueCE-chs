@@ -104,7 +104,15 @@ export enum TerrainType {
     // T_CAUSES_EXPLOSIVE_DAMAGE（Rogue.h:1944：瞬时 max(15-20, maxHP/2)、
     // 免疫窗五回合——结算在 Game.resolveExplosionDamage，Time.c:343-353）。
     // 只追加在尾部（既有枚举值不变）。
-    GAS_EXPLOSION
+    GAS_EXPLOSION,
+    // C-5：CE Globals.c:442 HOLE 与 :444 HOLE_EDGE（"// surface layer" 注释
+    // 块）——下坠药水/pit bloat 的死亡 DF（DF_HOLE_POTION → DF_HOLE_2）铺出
+    // 的洞族地形：HOLE 带 T_AUTO_DESCENT（与 CHASM 同族的坠层判据位，
+    // Time.c:110 monsterShouldFall 消费），HOLE_EDGE 零旗标（洞口的"半透明
+    // 地面"）。两族 tile 的差异只在字形/优先级/镶边文案，玩法语义同 CHASM。
+    // 只追加在尾部（既有枚举值不变）。
+    HOLE,
+    HOLE_EDGE
 }
 
 export enum LightType {
@@ -202,7 +210,11 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.PARALYSIS_GAS]: 35,
     // F-2c：GAS_EXPLOSION 10（CE Globals.c:496 第 4 列，与 PLAIN_FIRE/GAS_FIRE
     // 同档的火地形——压得住草(60)/网(19)，压不住门(8)/墙(0)）。
-    [TerrainType.GAS_EXPLOSION]: 10
+    [TerrainType.GAS_EXPLOSION]: 10,
+    // C-5：CE HOLE 9 / HOLE_EDGE 50（Globals.c:442/444 第 4 列）。HOLE 的 9
+    // 与火同档（洞是"压得住草/网"的强地形）；HOLE_EDGE 50 与 OBSIDIAN 同档。
+    [TerrainType.HOLE]: 9,
+    [TerrainType.HOLE_EDGE]: 50
 };
 
 /**
@@ -291,7 +303,12 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     // F-2c：GAS_EXPLOSION → SURFACE（CE DF 目录 :742 {GAS_EXPLOSION, SURFACE,
     // 60, 17} 与 :654 {GAS_EXPLOSION, SURFACE, 350, 100} 的 layer 列同证；
     // tile 本体在 Globals.c:496 "// fire tiles" 注释块——它是火地形不是气体）。
-    [TerrainType.GAS_EXPLOSION]: DungeonLayer.SURFACE
+    [TerrainType.GAS_EXPLOSION]: DungeonLayer.SURFACE,
+    // C-5：HOLE / HOLE_EDGE → SURFACE（CE DF 目录 :756 {HOLE, SURFACE, 200, 100}
+    // 与 :782 {HOLE_EDGE, SURFACE, 300, 100, …} 的 layer 列同证；tile 本体在
+    // Globals.c:442/444 的 "// surface layer" 注释块）。
+    [TerrainType.HOLE]: DungeonLayer.SURFACE,
+    [TerrainType.HOLE_EDGE]: DungeonLayer.SURFACE
 };
 
 /**

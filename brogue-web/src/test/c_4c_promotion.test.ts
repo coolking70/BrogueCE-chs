@@ -503,7 +503,25 @@ describe('C-4c E：§五 实测测量（真实关卡、多种子；只测量不�
             // 弱不变量（防测量口径失效，不钉规模）：
             expect(total.blocks).toBeGreaterThan(0);
             if (depth === 20) {
-                expect(total.brimstoneStart, 'D20 应出现硫矿湖（CE_MINIMUM_BRIMSTONE_LEVEL 起）').toBeGreaterThan(0);
+                // C-5 注：CHASM 解禁后 D20 液体候选从 {0,1,3} 扩为 {0,1,2,3}，
+                // 原"固定 7 种子 D20 必有硫矿湖"的采样前提失效（本轮实测这 7
+                // 个种子恰好全抽中岩浆/深水/深渊）。不变量本身不变（≥17 层有
+                // 硫矿候选），采样面扩为 40 种子的生成期盘点（不含 40 回合
+                // 演化——该不变量只关乎出现率，与晋升驱动无关）。
+                let brimSeeds = 0;
+                for (let s = 1; s <= 40; s++) {
+                    const g2 = createHeadlessGame(900 + s);
+                    g2.depth = 20;
+                    (g2 as unknown as { generateDepth(f: boolean, s: boolean): void }).generateDepth(false, false);
+                    let n = 0;
+                    for (let x = 0; x < g2.grid.width; x++) {
+                        for (let y = 0; y < g2.grid.height; y++) {
+                            if (g2.grid.getCell(x, y)!.terrain === TerrainType.INERT_BRIMSTONE) n++;
+                        }
+                    }
+                    if (n > 0) brimSeeds++;
+                }
+                expect(brimSeeds, 'D20 × 40 种子全无硫矿湖——minimumBrimstoneLevel 起的硫矿候选丢失').toBeGreaterThan(0);
             }
         }
     });
@@ -544,6 +562,11 @@ describe('C-4c E：§五 实测测量（真实关卡、多种子；只测量不�
             `  负值（扩散型）载体：${negative.join('；') || '（无——负值分支在 web 当前内容下是死数据）'}`
         );
         expect(active.length, '活数据必须有（否则驱动纯空转，测量口径错）').toBeGreaterThan(0);
-        expect(negative.length, 'CE 11 种负值地形全不在 web 31 地形内（C-4a 抄录范围使然）').toBe(0);
+        // C-5 反转（原留痕：'CE 11 种负值地形全不在 web 31 地形内（C-4a 抄录
+        // 范围使然）'，expected 0）：HOLE/HOLE_EDGE（洞族，CE Globals.c:442/444
+        // 原值 -1000/-500）随坠落子系统入列——负值扩散分支从死数据变为活数据。
+        // 越界守卫（不放宽）：负值地形必须是且仅是 CE 洞族这两条、取 CE 原值。
+        expect(negative.sort(), 'C-5 后负值载体必须是且仅是 CE 洞族两条（HOLE:-1000/HOLE_EDGE:-500）')
+            .toEqual(['HOLE:-1000', 'HOLE_EDGE:-500']);
     });
 });

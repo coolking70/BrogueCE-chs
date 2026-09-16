@@ -72,6 +72,12 @@ export enum DF {
     DF_OBSIDIAN                    = 109, // :1601
     DF_POISON_GAS_CLOUD            = 125, // :1620
     DF_MACHINE_PRESSURE_PLATE_USED = 154, // :1663
+    DF_HOLE_2                      = 115, // :1608（C-5：DF_HOLE_POTION 的 subsequentDF，
+                                          // Globals.c:782 目录行引用它；tile HOLE 已同轮迁移）
+    DF_HOLE_DRAIN                  = 116, // :1609（C-5：HOLE.promoteType 的载体，
+                                          // Globals.c:442 目录行引用它）
+    DF_HOLE_POTION                 = 135, // :1632（C-5：POTION_DESCENT 的药水 DF
+                                          // 与 pit bloat 的死亡 DFType，Globals.c:1039）
 }
 
 /** 目录条目 = CE 结构体的 web 投影（messageDisplayed 除外——它依赖玩家
@@ -348,6 +354,41 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
         layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // ── C-5：洞族三条（下坠药水 / pit bloat 的坠落载体）────────────────────
+
+    // {HOLE, SURFACE, 200, 100, 0} —— 洞本体（DF_HOLE_POTION 的 subsequentDF；
+    // HOLE tile 带 T_AUTO_DESCENT，站上去的生物回合末坠落）。
+    [DF.DF_HOLE_2]: {
+        id: DF.DF_HOLE_2, ceLine: 756, ceTile: 'HOLE', tile: TerrainType.HOLE,
+        layer: DungeonLayer.SURFACE, startProbability: 200, probabilityDecrement: 100,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {HOLE_EDGE, SURFACE, 0, 0, 0} —— 洞合拢（HOLE.promoteChance=-1000 的
+    // 晋升落点：洞自行回填成 HOLE_EDGE，随后由 VANISHES_UPON_PROMOTION 消退）。
+    [DF.DF_HOLE_DRAIN]: {
+        id: DF.DF_HOLE_DRAIN, ceLine: 757, ceTile: 'HOLE_EDGE', tile: TerrainType.HOLE_EDGE,
+        layer: DungeonLayer.SURFACE, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {HOLE_EDGE, SURFACE, 300, 100, 0, "", 0, &darkBlue, 3, 0, DF_HOLE_2} ——
+    // 下坠药水（Items.c:8097 POTION_DESCENT）与 pit bloat 死亡 DFType
+    // （Globals.c:1039 monsterCatalog）共用：先铺 HOLE_EDGE 波前（300/100），
+    // 再经 subsequentDF 在原点落 HOLE。effectRadius 3 是 &darkBlue 光效的
+    // 视觉列（G-3 同款裁定：web 无光效列，登记不迁移）。调用点两处以
+    // abortIfBlocking=false 传入（CE refreshCell=true, abortIfBlocking=false
+    // ——洞允许切断关卡，靠 promoteChance 负值自行合拢）。
+    [DF.DF_HOLE_POTION]: {
+        id: DF.DF_HOLE_POTION, ceLine: 782, ceTile: 'HOLE_EDGE', tile: TerrainType.HOLE_EDGE,
+        layer: DungeonLayer.SURFACE, startProbability: 300, probabilityDecrement: 100,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: DF.DF_HOLE_2,
+        description: '', lightFlare: '', flashColor: 'darkBlue', effectRadius: 3,
     },
 };
 

@@ -128,7 +128,9 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         // potion_of_paralysis 改线），39 → 40。
         // F-2c：GAS_EXPLOSION 入列（CE Globals.c:496，爆炸之火——载体 =
         // DF_EXPLOSION_FIRE / DF_BLOAT_EXPLOSION），40 → 41。
-        expect(names.length).toBe(41);
+        // C-5：HOLE/HOLE_EDGE 入列（CE Globals.c:442/444，洞族——载体 =
+        // DF_HOLE_POTION / DF_HOLE_2，下坠药水与 pit bloat 的坠落载体），41 → 43。
+        expect(names.length).toBe(43);
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             const entry = TERRAIN_FLAGS[t];

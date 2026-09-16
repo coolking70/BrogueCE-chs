@@ -269,6 +269,21 @@ export class Monster extends Creature {
      * 用全局实时图；察觉不到 → 只拍一次，此后一直用这张旧图继续逃。
      */
     public safetySnapshot: number[][] | null = null;
+    /**
+     * C-5：CE bookkeepingFlags & MB_IS_FALLING（Rogue.h:2160"在回合末下坠"）。
+     * 由 Game.applyEnvironmentalEffects（CE Time.c:168-176 同位）置位；
+     * Game.monstersFall（CE Time.c:1530）结算——置位者即使本回合内离开了
+     * 渊格也照坠（CE :1537 的 `MB_IS_FALLING ||` 分支）。
+     */
+    public falling: boolean = false;
+    /**
+     * C-5：CE bookkeepingFlags & MB_PREPLACED——"随层预放置"位。坠层幸存者
+     * （CE Time.c:1562）置位：a) monsterShouldFall 豁免（CE Time.c:115，防
+     * 落到下一层渊格立即连坠）；b) Game 在层生成后据此把幸存者重定位到合格
+     * 格（CE restoreMonster Architect.c:3537-3550：MB_PREPLACED 强制走
+     * getQualifyingPathLocNear），重定位后清除（CE :3548）。
+     */
+    public preplaced: boolean = false;
 
     /**
      * P4-10：CE monst->targetWaypointIndex（Monsters.c:127，初值 -1）。

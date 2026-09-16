@@ -479,6 +479,30 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
         TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT,
         0, '', '', '', 10000
     ),
+
+    // ── C-5：CE Globals.c:442 HOLE（洞，"// surface layer" 注释块）─────────
+    // 全字段照抄 CE：T_AUTO_DESCENT（坠层判据位，与 CHASM 同族——消费点
+    // Time.c:110 monsterShouldFall / Time.c:168 applyInstantTileEffects）；
+    // TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION；ign 0；fireType
+    // DF_PLAIN_FIRE；promoteType DF_HOLE_DRAIN（:757 {HOLE_EDGE, SURFACE,
+    // 0, 0}）+ promoteChance -1000（负值 = CE 的"暴露越多合得越快"：
+    // Promotion.ts 首趟对每个 4 向开敞邻居 +1000，Time.c:1627-1642）——
+    // 药水/pit bloat 炸出的洞约十回合内自行合拢。glowLight（NO_LIGHT）
+    // 无对应列。drawPriority 9 / 归属层 SURFACE 见 Grid.ts。
+    [TerrainType.HOLE]: e(
+        T_AUTO_DESCENT,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION,
+        0, 'DF_PLAIN_FIRE', '', 'DF_HOLE_DRAIN', -1000
+    ),
+
+    // CE Globals.c:444 HOLE_EDGE（洞口的半透明地面）。零旗标（可走）；
+    // TM_VANISHES_UPON_PROMOTION；promoteChance -500（同上负值机制）。
+    // 载体 = DF_HOLE_POTION（:782，start 300/decr 100 的铺展波）。
+    [TerrainType.HOLE_EDGE]: e(
+        0,
+        TM_VANISHES_UPON_PROMOTION,
+        0, 'DF_PLAIN_FIRE', '', '', -500
+    ),
 };
 
 // ── 派生判据（名字照 CE，语义 = 旗标位测试；CE Movement/Dijkstra 等处
@@ -512,6 +536,17 @@ export function obstructsDiagonalMovement(t: TerrainType): boolean {
 /** CE `cellHasTerrainFlag(…, T_IS_DEEP_WATER)`（Rogue.h:1937）。 */
 export function isDeepWater(t: TerrainType): boolean {
     return (TERRAIN_FLAGS[t].flags & T_IS_DEEP_WATER) !== 0;
+}
+
+/**
+ * CE `cellHasTerrainFlag(…, T_AUTO_DESCENT)`（Rogue.h:1931）的单地形形态（C-5）。
+ * 跨层的问法对 cell.layers 逐层调用——CHASM 在 LIQUID、HOLE 在 SURFACE，
+ * 火盖在渊上时有效地形按全层 OR 判定（F-1 同款口径）。
+ * 消费点：Game 的坠落结算（Time.c:110 monsterShouldFall）与跳渊确认
+ * （Movement.c:1303-1322）；T_AUTO_DESCENT = T_CAN_BE_BRIDGED（:1953）。
+ */
+export function isAutoDescent(t: TerrainType): boolean {
+    return (TERRAIN_FLAGS[t].flags & T_AUTO_DESCENT) !== 0;
 }
 
 /** CE `cellHasTerrainFlag(…, T_IS_FLAMMABLE)`（Rogue.h:1934）。 */

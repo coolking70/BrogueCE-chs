@@ -215,13 +215,21 @@ describe('C-2 实测（15 种子 × D1-D26 真实生成）', () => {
         expect(sum(rows, r => r.obsidian)).toBeGreaterThan(0);
     }, HEAVY);
 
-    it('留痕：深渊族地形恒 0（CHASM/CHASM_EDGE/BRIDGE/BRIDGE_EDGE）——C-5 坠落落地后解除', () => {
+    it('C-5 已反转（原留痕：深渊族地形恒 0——C-5 坠落落地后解除）：真实生成中出现深渊族，' +
+        '且干地连通合同不被深渊破坏', () => {
+        // 原断言内容（留痕存档）：expect(chasmFamily 总数).toBe(0)——"风险裁决 1
+        // （CHASM 不生成）被推翻却未同步坠落子系统"。C-5 按该留痕自带的指示反转：
+        // liquidType 候选域中的 2 已加回、CE T_AUTO_DESCENT 坠落语义已补
+        // （Game.playerFalls / monstersFall / 跳渊确认）。
+        // 越界守卫（不放宽）：干地全连通合同（下一用例）原样生效——深渊属于
+        // 生成闸门的"阻断集"（CE lakeDisruptsPassability 的 T_PATHING_BLOCKER），
+        // 它的出现不得制造不连通层。
         const rows = getSweep();
         const total = sum(rows, r => r.chasmFamily);
-        expect(total,
-            '深渊族地形出现——风险裁决 1（CHASM 不生成）被推翻却未同步坠落子系统（P1-22/C-5）。' +
-            '若 C-5 已落地，请删除本断言、把 liquidType 候选域中的 2 加回，并以 CE T_AUTO_DESCENT 语义补坠落。').toBe(0);
-        console.log(`[c_2] 留痕：${SEEDS.length * MAX_DEPTH} 层深渊族地形总数 = ${total}（CHASM 不生成 → 桥无料可架，buildABridge 每层空转）`);
+        console.log(`[c_2→C-5] ${SEEDS.length * MAX_DEPTH} 层深渊族地形总数 = ${total}`);
+        expect(total, 'C-5 解禁后真实生成仍全无深渊族地形——liquidType 候选域被重新剔除').toBeGreaterThan(0);
+        const chasmLevels = rows.filter(r => r.chasmFamily > 0).length;
+        console.log(`[c_2→C-5] 出现深渊族的层数 = ${chasmLevels}/${rows.length}`);
     }, HEAVY);
 
     // C-2 立的留痕，C-3 落地后由验收方按其自带指示翻转（原断言：斜向豁口 > 0）。

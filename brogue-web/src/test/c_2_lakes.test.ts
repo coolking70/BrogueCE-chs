@@ -117,21 +117,28 @@ function pathDistance(g: Grid, sx: number, sy: number, tx: number, ty: number): 
 }
 
 describe('C-2 liquidType：深度门槛与液体→镶边契约（CE 2518-2550）', () => {
-    it('对抗 AD-A1：深度门槛——D1-3 无岩浆/硫矿（恒深水），D4-16 无硫矿，D17-39 三类齐现', () => {
-        const shallow = drawEnsemble(1, 901); // D1（同 D2/D3）：randMin=1 ∧ CHASM 剔除 → 候选域 = {1}
-        expect(shallow.every(r => r.deep === TerrainType.WATER_DEEP),
-            'D1-3 应恒深水；出现别的液体 = 深度门槛写反或 CHASM 禁令失守').toBe(true);
+    it('对抗 AD-A1：深度门槛——D1-3 无岩浆/硫矿（深水或深渊），D4-16 无硫矿，D17-39 四类齐现', () => {
+        // C-5 翻转：候选域恢复 CE 原样（含 2=深渊）。D1-3 的 randMin=1 →
+        // 候选 {1,2} = 深水/深渊二选一，仍不得出现岩浆/硫矿。
+        const shallow = drawEnsemble(1, 901);
+        expect(shallow.every(r => r.deep === TerrainType.WATER_DEEP || r.deep === TerrainType.CHASM),
+            'D1-3 应只有深水/深渊；出现别的液体 = 深度门槛写反').toBe(true);
+        expect(shallow.some(r => r.deep === TerrainType.WATER_DEEP), 'D1 400 抽全无深水 = 深水候选丢失').toBe(true);
+        expect(shallow.some(r => r.deep === TerrainType.CHASM), 'D1 400 抽全无深渊 = C-5 解禁未生效').toBe(true);
 
-        const mid = drawEnsemble(10, 902); // D4-16：候选 {0,1}（岩浆/深水），无硫矿
+        const mid = drawEnsemble(10, 902); // D4-16：候选 {0,1,2}（岩浆/深水/深渊），无硫矿
         expect(mid.some(r => r.deep === TerrainType.LAVA), 'D10 候选域含岩浆，400 抽全无 = 岩浆被错误排除').toBe(true);
         expect(mid.every(r => r.deep !== TerrainType.INERT_BRIMSTONE),
             'D10 < minimumBrimstoneLevel(17)，出现硫矿 = 深度门槛写反').toBe(true);
 
-        const deep = drawEnsemble(20, 903); // D17-39：候选 {0,1,3}
+        const deep = drawEnsemble(20, 903); // D17-39：候选 {0,1,2,3}
         expect(deep.some(r => r.deep === TerrainType.INERT_BRIMSTONE),
             'D20 ≥ 17，400 抽全无硫矿 = 硫矿被错误排除（深层不出硫矿）').toBe(true);
         expect(deep.some(r => r.deep === TerrainType.LAVA), 'D20 岩浆应仍然可选').toBe(true);
-        expect(deep.every(r => r.deep !== TerrainType.CHASM), 'CHASM 已按风险裁决剔除，出现即禁令失守').toBe(true);
+        // C-5 翻转：原断言"D20 无 CHASM"随解禁到期；新事实 = 四类液体全部齐现
+        //（((3/4)^400) ≈ 0 的漏抽概率，漏即候选域又被收窄）。
+        expect(deep.some(r => r.deep === TerrainType.CHASM), 'D20 400 抽全无深渊 = CHASM 候选被重新剔除').toBe(true);
+        expect(deep.some(r => r.deep === TerrainType.WATER_DEEP), 'D20 深水候选丢失').toBe(true);
     });
 
     it('对抗 AD-A2：最深层特例——depth=40 恒深水（CE 2526-2528）', () => {
@@ -140,7 +147,7 @@ describe('C-2 liquidType：深度门槛与液体→镶边契约（CE 2518-2550�
             `deepestLevel(${CE_DEEPEST_LEVEL}) 应强制 rand=1（深水）；出现别的液体 = 最深层特例缺失`).toBe(true);
     });
 
-    it('对抗 AD-A3：液体→镶边契约——岩浆不镶边、深水镶浅水×2、硫矿镶黑曜石×2', () => {
+    it('对抗 AD-A3：液体→镶边契约——岩浆不镶边、深水镶浅水×2、深渊镶渊缘×1、硫矿镶黑曜石×2', () => {
         for (const depth of [1, 4, 10, 17, 25, 39, 40]) {
             for (const r of drawEnsemble(depth, 905)) {
                 if (r.deep === TerrainType.LAVA) {
@@ -149,6 +156,9 @@ describe('C-2 liquidType：深度门槛与液体→镶边契约（CE 2518-2550�
                         .toEqual([TerrainType.NOTHING, 0]);
                 } else if (r.deep === TerrainType.WATER_DEEP) {
                     expect([r.shallow, r.shallowWidth], `D${depth} 深水镶边应为浅水×2`).toEqual([TerrainType.WATER_SHALLOW, 2]);
+                } else if (r.deep === TerrainType.CHASM) {
+                    // C-5：CE case 2（Architect.c:2537-2539）——渊缘×1。
+                    expect([r.shallow, r.shallowWidth], `D${depth} 深渊镶边应为渊缘×1`).toEqual([TerrainType.CHASM_EDGE, 1]);
                 } else if (r.deep === TerrainType.INERT_BRIMSTONE) {
                     expect([r.shallow, r.shallowWidth], `D${depth} 硫矿镶边应为黑曜石×2`).toEqual([TerrainType.OBSIDIAN, 2]);
                 }
@@ -156,14 +166,26 @@ describe('C-2 liquidType：深度门槛与液体→镶边契约（CE 2518-2550�
         }
     });
 
-    it('留痕：liquidType 全深度域（1..40）永不产生 CHASM / CHASM_EDGE（风险裁决 1）', () => {
+    it('C-5 已反转（原留痕：liquidType 全深度域永不产生深渊族——风险裁决 1）：' +
+        '候选域恢复 CE 原样后，深渊族在全深度域出现且镶边契约恒成立', () => {
+        // 原断言内容（留痕存档）：for 全深度域 expect(r.deep === CHASM ||
+        // r.shallow === CHASM_EDGE).toBe(false)——"CHASM 禁令被解除却未同步
+        // 坠落子系统"。C-5（坠落子系统）落地，按该留痕自带的指示反转：
+        // 候选域中的 2 已加回、坠落本体已接（Game.playerFalls/monstersFall）。
+        // 越界守卫（不放宽）：只认 {CHASM → CHASM_EDGE ×1} 这一种深渊族形态，
+        // 且 D40 最深层特例（恒深水）不被解禁冲掉。
+        let chasmDraws = 0;
         for (let depth = 1; depth <= CE_DEEPEST_LEVEL; depth++) {
             for (const r of drawEnsemble(depth, 906)) {
-                expect(r.deep === TerrainType.CHASM || r.shallow === TerrainType.CHASM_EDGE,
-                    `D${depth} 出现深渊族液体——CHASM 禁令被解除却未同步坠落子系统；` +
-                    'C-5（坠落）落地时应删除本断言并把候选域中的 2 加回').toBe(false);
+                if (r.deep === TerrainType.CHASM) {
+                    chasmDraws++;
+                    expect([r.shallow, r.shallowWidth],
+                        `D${depth} 深渊族的镶边形态被改（CE case 2：CHASM_EDGE×1）`)
+                        .toEqual([TerrainType.CHASM_EDGE, 1]);
+                }
             }
         }
+        expect(chasmDraws, '全深度域 400×40 抽全无深渊 = C-5 解禁未生效或又被剔除').toBeGreaterThan(0);
     });
 });
 
@@ -200,9 +222,15 @@ describe('C-2 fillLakes：灌注、合并与镶边（CE 2554-2570 / 2692-2730）
         for (let x = 4; x < 7; x++) for (let y = 6; y < 9; y++) lake.add(y * 30 + x);
         for (let x = 10; x < 13; x++) for (let y = 6; y < 9; y++) lake.add(y * 30 + x);
 
-        rng.seedRandomGenerator(908); // D1：恒深水
+        rng.seedRandomGenerator(908); // D1：深水/深渊二选一（C-5 解禁后候选域含 2）
         fillLakes(g, lake, 1);
-        expect(count(g, TerrainType.WATER_DEEP), '两湖应被 ±4 窗合并成一个组件全部灌注').toBe(18);
+        // C-5 注：原断言钉死"D1 恒深水 = 18 格 WATER_DEEP"，其前提（D1 候选域
+        // 剔除 2）已随解禁到期。合并守卫本身不放宽：18 格湖体必须被 ±4 窗
+        // 合并成一个组件、灌注同一种液体（深水或深渊二选一，CE liquidType）。
+        const water = count(g, TerrainType.WATER_DEEP);
+        const chasm = count(g, TerrainType.CHASM);
+        expect(water + chasm, '两湖应被 ±4 窗合并成一个组件全部灌注（18 格湖体）').toBe(18);
+        expect(water === 0 || chasm === 0, '一次抽取的液体必须单一（合并组件不得混液）').toBe(true);
         expect(lake.size).toBe(0);
     });
 });
@@ -338,12 +366,19 @@ describe('C-2 buildABridge：桥只架深渊、且必须值得架（CE 2786-2876
         expect(bridgeUntilDone(g, 1), '全程贴墙的深渊不该架桥（CE 2822-2826 foundExposure）').toBe(0);
     });
 
-    it('深渊带完全切断（无绕行，pathingDistance=PDS_FORBIDDEN=-1）→ 不架桥且不崩溃', () => {
+    it('C-5 已反转（原断言：无绕行 → 不架桥，据"C-2 留形 pathingDistance 不可达=-1"）：' +
+        '无绕行的全高深渊带恰恰必须架桥（CE Dijkstra.c:247 pdsClear 30000——' +
+        '不可达距离 30000 使比值判据恒真，这正是桥存在的意义）', () => {
+        // 原断言内容（留痕存档）：expect(bridgeUntilDone(g, 1)).toBe(0)——
+        // 它把 C-2 留形实现里"不可达返回 -1"的错误行为钉成了合同。C-5 §六
+        // 逐字重核判定该实现错误：CE pathingDistance 的距离图以 30000 清空
+        // （PDS_FORBIDDEN=-1 是 calculateDistances 的代价标记，非距离值），
+        // 100*30000/(k-i) > ratio 恒真 → 必须架桥。新事实：同一场景架桥 > 0。
         rng.seedRandomGenerator(914);
         const g = makeGrid(30, 20, TerrainType.GRANITE);
         stamp(g, 1, 1, 28, 18, TerrainType.FLOOR);
         stamp(g, 12, 1, 4, 18, TerrainType.CHASM); // y1-18 全高深渊，无任何绕行
-        expect(bridgeUntilDone(g, 1), '落点不可达时比值条件为假（CE PDS_FORBIDDEN=-1）').toBe(0);
+        expect(bridgeUntilDone(g, 1), '干地被深渊带完全切断时必须架桥（比值判据对 30000 恒真）').toBeGreaterThan(0);
     });
 
     it('决定性：同种子同网格 → 架桥决策逐一相同', () => {

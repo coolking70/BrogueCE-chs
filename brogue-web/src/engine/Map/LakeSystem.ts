@@ -14,11 +14,11 @@
  *   depthAccelerator = 1, minimumLavaLevel = 4,
  *   minimumBrimstoneLevel = 17, deepestLevel = DEEPEST_LEVEL = 40。
  *
- * 本轮三个风险点的裁决（详见 ai_docs/c_2_lakes_report.md）：
- * 1. CHASM 不生成：CE 深渊 = T_AUTO_DESCENT（坠到下一层），web 无坠落子系统
- *    （P1-22/C-5）；而"让深渊暂等价于不可通行"必须改 Game.canMoveTo——本轮
- *    禁改文件。按任务书许可把 rand 取值域中的 2 显式剔除，留痕测试钉住
- *    "深渊族地形恒 0"，C-5 落地后随坠落子系统一并解除。
+ * 本轮三个风险点的裁决（详见 ai_docs/c_2_lakes_report.md；1 已由 C-5 反转）：
+ * 1. CHASM 生成（C-5 解禁）：CE 深渊 = T_AUTO_DESCENT（坠到下一层）。C-2 时
+ *    web 无坠落子系统而显式剔除候选（留痕测试钉住"深渊族恒 0"）；C-5 补上
+ *    坠落（Game.playerFalls/monstersFall，消费 Time.c:110/168 的
+ *    monsterShouldFall 语义）后候选域恢复 CE 原样，桥梁随之出现。
  * 2. LAVA 生成：即死通道已在 P1-28 落地（Game.applyEnvironmentalEffects，
  *    豁免 = 悬浮 / 火焰免疫 / MONST_INVULNERABLE，对齐 CE Time.c:183-190）；
  *    canMoveTo 不排除岩浆（P1-25）→ 岩浆湖不可能制造"不可达"，只会造成
@@ -42,9 +42,9 @@
  *   可走格，可能打破 P1-29 闸门保证过的干地连通。守卫：主体格可走而
  *   目标格不可走时跳过该次转换。
  * - 桥只架在 CHASM 上（CE T_CAN_BE_BRIDGED = T_AUTO_DESCENT，**深水不可
- *   架桥**）；本轮 CHASM 不生成 → 真实生成中 BRIDGE/BRIDGE_EDGE 恒 0，
- *   buildABridge 每层仍按 CE 照常消耗 RNG（比值 2 抽 + 两张洗牌）并空转
- *   返回 false。C-5 解除 CHASM 禁令后桥梁自动开始出现。
+ *   架桥**）；C-2～C-4 期间 CHASM 不生成 → 真实生成中 BRIDGE/BRIDGE_EDGE
+ *   恒 0，buildABridge 每层仍按 CE 照常消耗 RNG（比值 2 抽 + 两张洗牌）并
+ *   空转返回 false。C-5 解禁后桥梁自动开始出现。
  */
 import { Grid, TerrainType, DCOLS, DROWS } from './Grid';
 import { terrainAllowsMove } from './Connectivity';
@@ -132,20 +132,16 @@ export interface LakeLiquid {
  *   rand = rand_range(randMin, randMax); if (depth == 40) rand = 1;
  *   0=岩浆(无镶边) / 1=深水(浅水×2) / 2=深渊(渊缘×1) / 3=硫矿(黑曜石×2)。
  *
- * 风险裁决 1：候选域剔除 2（CHASM）。CE 的 rand_range 仍在 [randMin,randMax]
- * 域上等价收窄为"从非深渊候选里均匀抽一个"——D1-3 恒深水、D4-16 岩浆/深水
- * 各半、D17-39 三者均分、D40 强制深水。深渊分支保留在 switch 里（CE 原文
- * 对照），但取值域收窄后不可达；C-5 坠落子系统落地后把 2 加回候选域即可。
+ * C-5 解禁（风险裁决 1 反转）：抽取恢复 CE 原文 `rand_range(randMin, randMax)`——
+ * C-2 时代"从候选数组剔除 2"的收窄随坠落子系统落地退役（T_AUTO_DESCENT 的
+ * 消费点：Game 坠落结算 + 跳渊确认，本轮已接上；桥梁随之自动开始生成）。
+ * 抽取次数与 C-2 实现相同（仍是一次 rand_range），仅取值域恢复。
  */
 export function liquidType(depth: number): LakeLiquid {
     const randMin = depth < CE_MINIMUM_LAVA_LEVEL ? 1 : 0;
     const randMax = depth < CE_MINIMUM_BRIMSTONE_LEVEL ? 2 : 3;
 
-    const candidates: number[] = [];
-    for (let v = randMin; v <= randMax; v++) {
-        if (v !== 2) candidates.push(v); // CHASM 剔除（风险裁决 1，显式登记）
-    }
-    let rand = candidates[rng.randRange(0, candidates.length - 1)]!;
+    let rand = rng.randRange(randMin, randMax);
     // CE 2526-2528：最深层恒深水（抽骰照常消耗，随后覆盖——RNG 语义与 CE 一致）。
     if (depth === CE_DEEPEST_LEVEL) {
         rand = 1;
@@ -157,7 +153,7 @@ export function liquidType(depth: number): LakeLiquid {
         case 1:
             return { deep: TerrainType.WATER_DEEP, shallow: TerrainType.WATER_SHALLOW, shallowWidth: 2 };
         case 2:
-            // 取值域收窄后不可达；保留 CE 原文分支作对照（Architect.c:2537-2539）。
+            // CE 2537-2539：深渊 + 渊缘×1（C-5 解禁后真实可达）。
             return { deep: TerrainType.CHASM, shallow: TerrainType.CHASM_EDGE, shallowWidth: 1 };
         default:
             return { deep: TerrainType.INERT_BRIMSTONE, shallow: TerrainType.OBSIDIAN, shallowWidth: 2 };
@@ -352,16 +348,23 @@ export function cleanUpLakeBoundaries(grid: Grid): void {
  * CE pathingDistance（Dijkstra.c:252 → calculateDistances:198-231）的 web
  * 对应物：8 向、代价 1 的均匀代价搜索（= BFS），阻挡集 = T_PATHING_BLOCKER。
  * canUseSecretDoors=true：已发现的暗门可通行（web: SECRET_DOOR + isDiscovered）。
- * 不可达返回 CE 的 PDS_FORBIDDEN = -1（Rogue.h:2782）。
+ * 不可达返回 CE 距离图的清空值 30000（Dijkstra.c:247 `pdsClear(&map, 30000)`
+ * ——C-5 逐字重核翻正：C-2 版误返回 -1 并注释为 PDS_FORBIDDEN，但那是
+ * calculateDistances 的**代价**标记（Rogue.h:2782），不是距离值；比值判据
+ * `100 * pd / (k-i) > ratio` 里 30000 = "绕不过去必须架桥"（CE 桥的主场景），
+ * -1 则恒假、桥永不生成）。目标格本身是阻挡地形时提前返回（CE 语义：
+ * calculateDistances 无条件置目标距离 0，此形态在 buildABridge 的调用里
+ * 不可达——落点已由 isLand 过滤；保留 web 防御分支并单独注记）。
  */
 function pathingDistance(grid: Grid, x1: number, y1: number, x2: number, y2: number): number {
+    const PDS_UNREACHABLE = 30000; // CE Dijkstra.c:247 pdsClear(&map, 30000)
     const blocked = (x: number, y: number): boolean => {
         const cell = grid.getCell(x, y);
         if (!cell) return true;
         if (isSecretTerrain(cell.terrain) && cell.isDiscovered) return false; // CE Dijkstra.c:213-217
         return (ceTerrainFlags(cell.terrain) & T_PATHING_BLOCKER) !== 0;
     };
-    if (blocked(x2, y2)) return -1;
+    if (blocked(x2, y2)) return -1; // 防御分支：buildABridge 调用面不可达（见上注）
     const dist = new Map<number, number>([[cellKey(grid, x2, y2), 0]]);
     const queue: Array<{ x: number, y: number }> = [{ x: x2, y: y2 }];
     const DIRS8: ReadonlyArray<readonly [number, number]> = [
@@ -381,7 +384,7 @@ function pathingDistance(grid: Grid, x1: number, y1: number, x2: number, y2: num
             queue.push({ x: nx, y: ny });
         }
     }
-    return -1;
+    return PDS_UNREACHABLE;
 }
 
 /**

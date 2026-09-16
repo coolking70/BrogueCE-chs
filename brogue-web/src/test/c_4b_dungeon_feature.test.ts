@@ -556,9 +556,9 @@ describe('C-4b D：levelIsDisconnectedWithBlockingMap（CE Architect.c:3137-3198
 });
 
 describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () => {
-    it('E1 恰 23 条（F-2a 增补 DF_ASH；G-1 增补 DF_GAS_FIRE；G-2 增补 DF_EXPLOSION_FIRE；F-2c 增补 DF_BLOAT_EXPLOSION），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）', () => {
+    it('E1 恰 26 条（F-2a 增补 DF_ASH；G-1 增补 DF_GAS_FIRE；G-2 增补 DF_EXPLOSION_FIRE；F-2c 增补 DF_BLOAT_EXPLOSION；C-5 增补 DF_HOLE_POTION/DF_HOLE_2/DF_HOLE_DRAIN），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）', () => {
         const keys = Object.keys(DUNGEON_FEATURE_CATALOG);
-        expect(keys.length).toBe(23);
+        expect(keys.length).toBe(26);
         expect(DF.DF_SHOW_DOOR).toBe(13);
         expect(DF.DF_BLOAT_EXPLOSION, 'F-2c：explosive bloat 的死亡 DF（Rogue.h:1508，Globals.c:1084 DFType 引用）').toBe(35);
         expect(DF.DF_REPEL_CREATURES).toBe(40);
@@ -582,6 +582,9 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         expect(DF.DF_OBSIDIAN).toBe(109);
         expect(DF.DF_POISON_GAS_CLOUD).toBe(125);
         expect(DF.DF_MACHINE_PRESSURE_PLATE_USED).toBe(154);
+        expect(DF.DF_HOLE_2, 'C-5：DF_HOLE_POTION.subsequentDF 的载体（Rogue.h:1608）').toBe(115);
+        expect(DF.DF_HOLE_DRAIN, 'C-5：HOLE.promoteType 的载体（Rogue.h:1609）').toBe(116);
+        expect(DF.DF_HOLE_POTION, 'C-5：POTION_DESCENT / pit bloat 的 DF（Rogue.h:1632）').toBe(135);
     });
 
     it('E2 闭包自洽：TerrainCatalog 字符串起点 + subsequentDF 展开 == 目录键集（多抄/漏抄/悬空全翻红）', () => {
@@ -603,6 +606,10 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // （Globals.c:1084，web 消费点 Game.triggerDeathFeatures）——按第二
         // 起点登记（闭包守卫不变：目录键集仍须与闭包恰好相等）。
         start.add(DF.DF_BLOAT_EXPLOSION);
+        // C-5：DF_HOLE_POTION 同款第二起点——不经 TerrainCatalog 字符串，
+        // 起点是 POTION_DESCENT（Items.c:8097）与 pit bloat 死亡 DFType
+        // （Globals.c:1039），web 消费点 Game.quaffItem / triggerDeathFeatures。
+        start.add(DF.DF_HOLE_POTION);
         // 沿 subsequentDF 闭包展开（悬空引用在此翻红）。
         const closure = new Set<DF>();
         const queue = [...start];
@@ -619,7 +626,9 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         expect([...closure].sort((a, b) => a - b)).toEqual([...catalogKeys].sort((a, b) => a - b));
         expect(catalogKeys.size, 'F-2a：DF_ASH 入闭包 19→20；G-1：DF_GAS_FIRE 入闭包 20→21；' +
             'G-2：DF_EXPLOSION_FIRE（经 METHANE_GAS.promoteType）入闭包 21→22；' +
-            'F-2c：DF_BLOAT_EXPLOSION（经 bloat 的 DFType）入闭包 22→23').toBe(23);
+            'F-2c：DF_BLOAT_EXPLOSION（经 bloat 的 DFType）入闭包 22→23；' +
+            'C-5：DF_HOLE_POTION（药水/pit bloat 起点）→ DF_HOLE_2 → DF_HOLE_DRAIN' +
+            '（经 HOLE.promoteType）入闭包 23→26').toBe(26);
     });
 
     it('E3 字段抽查：BRIDGE_FALL_PREP 的 prop/200/100、BRIDGE_FIRE 的描述与 tile=0、其余代表条目', () => {
