@@ -63,7 +63,9 @@ export enum DF {
     DF_GAS_FIRE                    = 101, // :1593（G-1：气体 tile 的 fireType 引用它；
                                           // tile GAS_FIRE 已于 G-2 迁移接线）
     DF_EXPLOSION_FIRE              = 102, // :1594（G-2：METHANE_GAS.promoteType 引用它；
-                                          // 载体 tile GAS_EXPLOSION 未迁移，登记 F-2c）
+                                          // 载体 tile GAS_EXPLOSION 已于 F-2c 迁移接线）
+    DF_BLOAT_EXPLOSION             = 35,  // :1508（F-2c：bloat 的 MA_DF_ON_DEATH DFType，
+                                          // Globals.c:1084 monsterCatalog 引用它）
     DF_BRIMSTONE_FIRE              = 104, // :1596
     DF_BRIDGE_FIRE                 = 105, // :1597
     DF_EMBERS                      = 107, // :1599
@@ -108,7 +110,8 @@ export interface DungeonFeatureEntry {
 /**
  * DF 目录（CE Globals.c:603-932 中本轮闭包涉及的条目；C-4b 19 条、
  * F-2a 增 DF_ASH 至 20、G-1 增 DF_GAS_FIRE 至 21、G-2 增 DF_EXPLOSION_FIRE
- * 至 22 并给 4 条 GAS 层 DF / 燃气火 DF 填上 tile）。
+ * 至 22 并给 4 条 GAS 层 DF / 燃气火 DF 填上 tile、F-2c 增 DF_BLOAT_EXPLOSION
+ * 至 23 并给 DF_EXPLOSION_FIRE 填上 tile——GAS_EXPLOSION 地形同轮落地）。
  *
  * 字段序照 CE 目录行注释（Globals.c:604）：
  *   tileType / layer / start / decr / fl / txt / flare / fCol / fRad /
@@ -260,15 +263,30 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     // {GAS_EXPLOSION, SURFACE, 60, 17, 0} —— 甲烷爆轰圈（G-2 新增条目：
     // METHANE_GAS 的 promoteType 引用它；TM_EXPLOSIVE_PROMOTE 格被点燃且
     // 8 邻全为 T_IS_FIRE|T_OBSTRUCTS_GAS|TM_EXPLOSIVE_PROMOTE 时走爆轰）。
-    // tile GAS_EXPLOSION 未迁移（爆炸地形归 F-2c），条目登记 tile=null、
-    // 爆轰落地走 promoteTile 的整链缓办——届时填 tile 后爆炸圈自动成形。
-    // start=60/decr=17 是 CE 原值的衰减扩散波前（c_4c C1 闸门：非 GAS
-    // 扩散条目 probDec>0，本条 17 ✓）。
+    // F-2c 接线：tile GAS_EXPLOSION 已迁（Globals.c:496），爆炸圈经既有
+    // spawnMapDF（60/17 概率衰减波前）→ fillSpawnMap 自动成形——G-2 预测
+    // 成立，DF_MISSING_TILES 同步摘除。
     [DF.DF_EXPLOSION_FIRE]: {
-        id: DF.DF_EXPLOSION_FIRE, ceLine: 742, ceTile: 'GAS_EXPLOSION', tile: null,
+        id: DF.DF_EXPLOSION_FIRE, ceLine: 742, ceTile: 'GAS_EXPLOSION',
+        tile: TerrainType.GAS_EXPLOSION,
         layer: DungeonLayer.SURFACE, startProbability: 60, probabilityDecrement: 17,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {GAS_EXPLOSION, SURFACE, 350, 100, 0, "", EXPLOSION_FLARE_LIGHT} ——
+    // bloat 自爆（F-2c 新增条目：monsterCatalog 里 explosive bloat 的 DFType
+    // 引用它，Globals.c:1084；killCreature 经 MA_DF_ON_DEATH 播出，
+    // Combat.c:1965-1967，refreshCell=true——落到生物脚下当场结算爆炸伤害）。
+    // 与 DF_EXPLOSION_FIRE 同 tile 不同参数：350/100 的波前更大（bloat 的
+    // 爆炸半径明显大于甲烷爆轰）。description 为空（CE 如此）；光效
+    // EXPLOSION_FLARE_LIGHT web 无对应列，登记不迁移。
+    [DF.DF_BLOAT_EXPLOSION]: {
+        id: DF.DF_BLOAT_EXPLOSION, ceLine: 654, ceTile: 'GAS_EXPLOSION',
+        tile: TerrainType.GAS_EXPLOSION,
+        layer: DungeonLayer.SURFACE, startProbability: 350, probabilityDecrement: 100,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: 'EXPLOSION_FLARE_LIGHT', flashColor: '', effectRadius: 0,
     },
 
     // {BRIMSTONE_FIRE, SURFACE, 0, 0, 0} —— 硫矿火（web 无此 tile，登记）
@@ -341,12 +359,13 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
  *  G-2 翻正：DF_STEAM_ACCUMULATION / DF_METHANE_GAS_PUFF /
  *  DF_POISON_GAS_CLOUD / DF_GAS_FIRE 四条接线摘除（10 → 6）；
  *  增补 DF_EXPLOSION_FIRE（GAS_EXPLOSION tile 未迁移，登记 F-2c），
- *  6 → 7。注：ROT_GAS / STENCH_SMOKE_GAS / PARALYSIS_GAS / DARKNESS_CLOUD /
+ *  6 → 7。F-2c 翻正：DF_EXPLOSION_FIRE（GAS_EXPLOSION 地形本轮新增）
+ *  摘除、同轮接线的 DF_BLOAT_EXPLOSION 直接带完整 tile 入目录不入列，
+ *  7 → 6。注：ROT_GAS / STENCH_SMOKE_GAS / PARALYSIS_GAS / DARKNESS_CLOUD /
  *  HEALING_CLOUD 的 DF（及 dewar×4、喷口、药水云等 24 条 GAS 目录的其余）
  *  本轮**未入目录**——载体盘点后无 web 载体的气体只登记不迁移（报告
  *  载体盘点表），故不在本清单。 */
 export const DF_MISSING_TILES: readonly DF[] = [
-    DF.DF_EXPLOSION_FIRE,          // GAS_EXPLOSION（tile 未迁移，登记 F-2c）
     DF.DF_TRAMPLED_FOLIAGE,        // TRAMPLED_FOLIAGE
     DF.DF_ACTIVE_BRIMSTONE,        // ACTIVE_BRIMSTONE
     DF.DF_BRIMSTONE_FIRE,          // BRIMSTONE_FIRE

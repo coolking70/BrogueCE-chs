@@ -462,6 +462,23 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
         TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY,
         100, 'DF_GAS_FIRE', '', '', 0
     ),
+
+    // ── F-2c：CE Globals.c:496 GAS_EXPLOSION（爆炸之火）────────────────────
+    // 全字段照抄 CE，无偏离：
+    //   T_IS_FIRE | T_CAUSES_EXPLOSIVE_DAMAGE（Rogue.h:1944：瞬时
+    //   max(15-20, maxHP/2)、同生物五回合免疫——结算在 Game 的
+    //   resolveExplosionDamage，Time.c:343-353 applyInstantTileEffectsToCreature
+    //   爆炸段）；(STAND_IN_TILE | VANISHES_UPON_PROMOTION | VISUALLY_DISTINCT)；
+    //   ign 0；fireType 0；promoteType 0（''）；promoteChance 10000（=100%/回合
+    //   必定晋升 + VANISHES + promoteType 0 ⇒ 瞬时地形：落地的下一个晋升趟即
+    //   清层消失，Time.c:1254-1271 的通用机制）。glowLight（EXPLOSION_LIGHT）
+    //   web 无对应列，登记不迁移。载体：DF_EXPLOSION_FIRE（甲烷爆轰圈，
+    //   Globals.c:742）与 DF_BLOAT_EXPLOSION（bloat 自爆，Globals.c:654）。
+    [TerrainType.GAS_EXPLOSION]: e(
+        T_IS_FIRE | T_CAUSES_EXPLOSIVE_DAMAGE,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT,
+        0, '', '', '', 10000
+    ),
 };
 
 // ── 派生判据（名字照 CE，语义 = 旗标位测试；CE Movement/Dijkstra 等处

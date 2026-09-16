@@ -3,8 +3,9 @@
  * Main game state and orchestration
  */
 import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer } from '../Map/Grid';
-import { blocksPassability, isDeepWater, TERRAIN_FLAGS, T_IS_FIRE, T_CAUSES_CONFUSION, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE } from '../Map/TerrainCatalog';
-import { cellTerrainMechFlags } from '../Map/DungeonFeature';
+import { blocksPassability, isDeepWater, TERRAIN_FLAGS, T_IS_FIRE, T_CAUSES_CONFUSION, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE } from '../Map/TerrainCatalog';
+import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, spawnDungeonFeature } from '../Map/DungeonFeature';
+import { DF } from '../Map/DungeonFeatureCatalog';
 import { Architect } from '../Generator/Architect';
 import type { MachineResult } from '../Generator/BlueprintEngine';
 import blueprintData from '../../data/blueprints.json';
@@ -5340,14 +5341,16 @@ export class Game {
      *     体积单点喷发；原注释的 654 为行号漂移，本轮实测翻正）。G-1 起
      *     量纲即 CE 体积：注入 2000 = DF_BLOAT_DEATH 的 startProbability，
      *     旧 0-100 密度口径（满值 100）已随量纲退役。
-     *   - explosive_bloat → DF_BLOAT_EXPLOSION（GAS_EXPLOSION 地形，
-     *     Globals.c:496 T_IS_FIRE|T_CAUSES_EXPLOSIVE_DAMAGE——覆盖在原有地形
-     *     之上，不检查底下能不能烧）。web 没有瞬时范围爆炸伤害机制，复用
-     *     environment.igniteForced 覆盖死亡格 + 四方向相邻格；用 igniteForced
-     *     而不是 ignite 是验收打回后的修正——ignite() 只对 GRASS/FOLIAGE/
-     *     BOG/DOOR 生效，地牢里绝大多数格子是石地板，用它会导致"这只怪物的
-     *     全部存在意义在常见情况下不发生"（见报告"验收打回"一节）。伤害交给
-     *     既有的"燃烧中每回合掉血"结算，不新造爆炸伤害公式。
+     *   - explosive_bloat → DF_BLOAT_EXPLOSION（F-2c 翻正：CE 原链是
+     *     killCreature 的 MA_DF_ON_DEATH 分支 Combat.c:1965-1967 以
+     *     refreshCell=true 播 deathDF，Globals.c:1084 的 DFType =
+     *     DF_BLOAT_EXPLOSION（Globals.c:654，GAS_EXPLOSION tile，start 350 /
+     *     decr 100）。web 此前用 igniteForced×5 近似（F-2b §十.2 登记），
+     *     现改走 DF 铺设 + 落格瞬时爆炸伤害（fillSpawnMap refresh 分支的
+     *     web 等价，applyInstantExplosionAt）——伤害是 max(15-20, maxHP/2)
+     *     的瞬时结算，与后续燃烧（火点燃生物）是两笔，不合并。
+     *     新落爆炸格的起火登记并入 pendingCaughtFireCells（CE 旗标即时生效，
+     *     下一晋升趟跳过其衰老掷骰）。
      * 未接（报告已登记，均为已知缺口，非本轮范围）：
      *   - pit_bloat 的 DF_HOLE_POTION 需要洞/坠落地形，web 无坠落子系统
      *     （fall_down 只打印日志）——pit bloat 本轮只自爆，不生成洞。
@@ -5370,11 +5373,19 @@ export class Game {
                 }), '#88ff88');
                 this.needsRender = true;
             } else if (m.typeId === 'explosive_bloat') {
-                // P4-4 验收打回修正：用 igniteForced（不看地形可燃性），不是 ignite。
-                this.environment.igniteForced(m.loc.x, m.loc.y);
-                const dirs4: Array<[number, number]> = [[0, -1], [0, 1], [-1, 0], [1, 0]];
-                for (const [dx, dy] of dirs4) {
-                    this.environment.igniteForced(m.loc.x + dx, m.loc.y + dy);
+                // F-2c：CE 原链（Combat.c:1965-1967）——死亡 DF 经 DF 管线
+                // 铺设，爆炸 tile 落到生物脚下当场结算瞬时伤害。石地板照铺
+                // （fillSpawnMap 的 drawPriority 判据），与旧 igniteForced
+                // 近似的"四方向火焰"形态一并退役。
+                const feat = catalogFeature(DF.DF_BLOAT_EXPLOSION);
+                const spawn = spawnDungeonFeature(this.grid, m.loc.x, m.loc.y, feat, false);
+                this.applyInstantExplosionAt(spawn.builtCells);
+                // CE :3235：新落火地形当场登记 CAUGHT_FIRE_THIS_TURN。
+                if (spawn.caughtFireCells.length > 0) {
+                    this.pendingCaughtFireCells = [
+                        ...this.pendingCaughtFireCells,
+                        ...spawn.caughtFireCells,
+                    ];
                 }
                 logger.log(i18next.t('death.bloat_explosion', {
                     name: m.name,
@@ -5683,6 +5694,19 @@ export class Game {
         if (fireCaught.length > 0) {
             this.pendingCaughtFireCells = [...this.pendingCaughtFireCells, ...fireCaught];
         }
+        // F-2c：火段的爆炸落格（甲烷爆轰 → DF_EXPLOSION_FIRE）在落格瞬间
+        // 结算（CE fillSpawnMap refresh 分支 Architect.c:3255-3260——发生在
+        // 火段内部、updateVolumetricMedia 之前，故排干点在 updateGases 前）。
+        // 顺带覆盖晋升趟落下的爆炸地形（本轮目录无此路径；CE promoteTile
+        // :1268 同样 refreshCell=true，防御性对齐）。
+        const explosiveCells = this.environment.takeExplosiveSpawnCells();
+        for (const p of this.lastPromotionUpdate.promotions) {
+            if (p.spawn) explosiveCells.push(...p.spawn.builtCells);
+        }
+        for (const p of this.lastPromotionUpdate.withoutKeyPromotions) {
+            if (p.spawn) explosiveCells.push(...p.spawn.builtCells);
+        }
+        this.applyInstantExplosionAt(explosiveCells);
         // G-1：CE Time.c:1600-1616——先全场探测 GAS 层非空，非空才
         // `updateVolumetricMedia()` 连调**两次**（:1606 注释 "// update gases
         // twice"；一次调用 = 一轮 8 邻体积均分，两轮 = 气体每回合推进约
@@ -6418,6 +6442,131 @@ export class Game {
         }
     }
 
+    // =========================================================================
+    // F-2c：CE 的爆炸瞬时伤害（T_CAUSES_EXPLOSIVE_DAMAGE，Rogue.h:1944）
+    //
+    // 结算点：applyInstantTileEffectsToCreature 爆炸段（Time.c:343-396）——
+    // 位于蜘蛛网段之后、毒气段之前；触发路径三条：tile 落到生物脚下
+    // （fillSpawnMap refresh 分支 Architect.c:3255-3260，killCreature 的
+    // 死亡 DF 与火段的甲烷爆轰都走它）、生物每回合行动（Monsters.c:3348/3701）、
+    // 玩家客观块（Time.c:2671）——web 对应 applyEnvironmentalEffects（每客观块）
+    // 加两条落格瞬间的调用点。
+    //
+    // 载体申报：'explosion_immunity' 不在 StatusId 联合里（src/entities/
+    // Creature.ts，禁改清单），免疫窗走 statusDurations 逃生舱键——复刻
+    // F-2b 'burning' 的既有模式（Record<string, number> 视角读写），
+    // tickStatuses 对全键的每回合递减恰好复刻 CE 的免疫递减
+    // （玩家 Time.c:2298-2300 / 怪物 updateMonsterStatus 的 default 分支
+    // Monsters.c:2138-2142）。
+    // =========================================================================
+    /** CE STATUS_EXPLOSION_IMMUNITY 上状态时长（Time.c:348 的字面 5）。 */
+    private static readonly EXPLOSION_IMMUNITY_TURNS = 5;
+
+    private explosionImmunityDuration(entity: Player | Monster | Creature): number {
+        return ((entity.statusDurations as unknown) as Record<string, number>)['explosion_immunity'] ?? 0;
+    }
+
+    private setExplosionImmunityDuration(entity: Player | Monster | Creature, turns: number): void {
+        const durations = (entity.statusDurations as unknown) as Record<string, number>;
+        if (turns > 0) {
+            durations['explosion_immunity'] = turns;
+        } else {
+            delete durations['explosion_immunity'];
+        }
+    }
+
+    /**
+     * CE Time.c:343-353 的爆炸段逐条移植：
+     *   守卫——T_CAUSES_EXPLOSIVE_DAMAGE（cellHasTerrainFlag 四层并集语义，
+     *   cellTerrainFlags）、STATUS_EXPLOSION_IMMUNITY 为 0、
+     *   !MB_SUBMERGED（web 无潜水簿记，F-2b 同款登记退化）。
+     *   伤害——rand_range(15,20) 后取 max(·, maxHP/2)（CE :345-346：
+     *   `damage = max(damage, monst->info.maxHP / 2)`，是**最大生命**的一半，
+     *   不是当前血量的 50%——任务书转述有误，已按 CE 翻正）。
+     *   上免疫——status = 5（Time.c:347，无 maxStatus 记账）。
+     *   玩家——flavor 文案 + dampening 符文吸收（Time.c:352-359：完全挡下
+     *   本次伤害 + 自动鉴定）+ 扣血 + 死亡铭牌（"Killed by a violent
+     *   explosion" 经 lastDamageSource → finishTurnEpilogue 的 killed_by）。
+     *   怪物——睡眠惊醒（:369-371）→ 扣血 → 死亡/幸存消息。
+     * 返回是否实际结算了一次伤害（测试与调用方判据）。
+     */
+    private resolveExplosionDamage(entity: Player | Monster): boolean {
+        if (entity.hp <= 0) return false;
+        const x = entity.loc.x;
+        const y = entity.loc.y;
+        const cell = this.grid.getCell(x, y);
+        if (!cell) return false;
+        if (!(cellTerrainFlags(this.grid, x, y) & T_CAUSES_EXPLOSIVE_DAMAGE)) return false;
+        if (this.explosionImmunityDuration(entity) > 0) return false;
+
+        let damage = rng.randRange(15, 20);
+        damage = Math.max(damage, Math.floor(entity.maxHp / 2));
+        this.setExplosionImmunityDuration(entity, Game.EXPLOSION_IMMUNITY_TURNS);
+
+        if (entity === this.player) {
+            logger.log(i18next.t('env.player_explosion_hit', { defaultValue: 'The force of the explosion slams into you.' }), '#ffff44');
+            // CE Time.c:352-359：dampening 护甲符文完全吸收爆炸伤害并自动鉴定。
+            if (this.player.equippedArmor?.runicType === 'dampening') {
+                logger.log(i18next.t('runic.armor.dampening_explosion', { defaultValue: 'Your armor pulses and absorbs the damage.' }), '#66ffff');
+                this.player.equippedArmor.runicKnown = true;
+                return true;
+            }
+            this.lastDamageSource = 'violent explosion';
+            entity.hp -= damage;
+            return true;
+        }
+
+        const monst = entity as Monster;
+        // CE :369-371：睡眠中的怪物被爆炸惊醒（→ TRACKING_SCENT，web 同义 HUNTING）。
+        if (monst.state === MonsterState.ASLEEP) {
+            monst.state = MonsterState.HUNTING;
+        }
+        const visible = cell.isVisible;
+        monst.hp -= damage;
+        if (monst.hp <= 0) {
+            if (visible) {
+                logger.log(i18next.t('env.monster_dies_in_explosion', {
+                    name: monst.name,
+                    defaultValue: `The ${monst.name} dies in a violent explosion.`
+                }), '#ff8844');
+            }
+            (monst as unknown as { die(): void }).die();
+        } else if (visible) {
+            logger.log(i18next.t('env.monster_engulfed_explosion', {
+                name: monst.name,
+                defaultValue: `A violent explosion engulfs the ${monst.name}.`
+            }), '#ffcc66');
+        }
+        return true;
+    }
+
+    /**
+     * CE fillSpawnMap refresh 分支（Architect.c:3255-3260）的爆炸部分：
+     * 爆炸 tile 新落到某格时，对该格上的生物**当场**结算
+     * applyInstantTileEffectsToCreature——这是"瞬时伤害"的出处（不经燃烧
+     * 状态、不等下一个客观块）。免疫窗守卫在 resolveExplosionDamage 内，
+     * 同一块多格命中同一生物只结算一次（首格上免疫，后续格被窗挡住——
+     * CE 同款：applyInstantTileEffectsToCreature 每次调用都查 status）。
+     * 调用点：bloat 死亡 DF（triggerDeathFeatures）、甲烷爆轰（火段后排干
+     * takeExplosiveSpawnCells）、晋升趟落下的爆炸地形（本轮目录无此路径，
+     * 防御性覆盖与 CE promoteTile refreshCell=true 对齐）。
+     */
+    private applyInstantExplosionAt(cells: Pos[]): void {
+        if (cells.length === 0) return;
+        const px = this.player.loc.x;
+        const py = this.player.loc.y;
+        for (const p of cells) {
+            if (p.x === px && p.y === py) {
+                this.resolveExplosionDamage(this.player);
+            }
+            for (const m of this.monsters) {
+                if (m.hp > 0 && m.loc.x === p.x && m.loc.y === p.y) {
+                    this.resolveExplosionDamage(m);
+                }
+            }
+        }
+    }
+
     private applyEnvironmentalEffects() {
         const checkEntity = (entity: any, name: string) => {
             if (entity.hp <= 0) return;
@@ -6499,6 +6648,12 @@ export class Game {
                 // 簿记（登记退化；水格已被上面的灭火分支扑灭，且水体链本身缓办）。
                 this.environment.ignite(x, y);
             }
+
+            // Explosion —— F-2c：爆炸瞬时伤害（Time.c:343-396，位于蜘蛛网段
+            // 之后、毒气段 :411 之前的同一函数内——web 对应插在火段与气段
+            // 之间）。守卫与免疫窗都在 resolveExplosionDamage 内；落格瞬间的
+            // 另外两个调用点见 applyInstantExplosionAt。
+            this.resolveExplosionDamage(entity);
 
             // Gas —— G-3 重裁（F-0 §5.3-10/11）：
             // CE 的气体效果判定**无阈值**（站进即判，Time.c:421-497 的

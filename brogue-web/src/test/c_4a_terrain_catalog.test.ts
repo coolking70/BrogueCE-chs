@@ -126,7 +126,9 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         // 第六种气体 tile），37 → 39。
         // G-3：PARALYSIS_GAS 入列（CE Globals.c:506，麻痹气体——载体 =
         // potion_of_paralysis 改线），39 → 40。
-        expect(names.length).toBe(40);
+        // F-2c：GAS_EXPLOSION 入列（CE Globals.c:496，爆炸之火——载体 =
+        // DF_EXPLOSION_FIRE / DF_BLOAT_EXPLOSION），40 → 41。
+        expect(names.length).toBe(41);
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             const entry = TERRAIN_FLAGS[t];

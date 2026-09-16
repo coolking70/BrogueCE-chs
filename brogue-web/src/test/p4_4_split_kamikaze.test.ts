@@ -336,7 +336,18 @@ describe('P4-4 验收 3：死亡地形 — bloat 毒气 / explosive bloat 爆燃
         expect(bloat.deathEffectTriggered).toBe(true);
     });
 
-    it('explosive bloat 死亡在原地及四方向邻格点燃火焰（可燃地形 GRASS，用作与下一条"默认石地板"对照）', () => {
+    // 验收方 F-2c 后翻转（原名："explosive bloat 死亡在原地及四方向邻格点燃
+    // 火焰（可燃地形 GRASS，用作与下一条"默认石地板"对照）"）。
+    //
+    // 过期的是**实现形态假设**（F-2b 时代的 igniteForced×5：死亡格 + 恰四
+    // 正交邻格的确定性火焰），不是断言意图（"bloat 爆炸真实落地"）。F-2c 起
+    // 走 CE 原链：死亡 DF = DF_BLOAT_EXPLOSION（Globals.c:654，
+    // {GAS_EXPLOSION, SURFACE, 350, 100}），圈形是概率衰减 BFS——
+    // spawnMapDF 的种子格（死亡格）无条件标记，第一波四邻概率 350%（≥100，
+    // 必中）——所以"死亡格 + 四邻"这五格仍然必然落地，但落的是
+    // GAS_EXPLOSION（爆炸地形），且波 2/3（250%/150%，同样必中）还会铺到
+    // BFS 距离 2-3 的更远格。守卫语义保留：五格必中在两种实现下都成立。
+    it('F-2c 翻转：explosive bloat 死亡铺 GAS_EXPLOSION 爆炸圈——死亡格与四邻必中（第一波 350%≥100），爆炸地形是火', () => {
         const game = createHeadlessGame(13);
         clearToOpenRoom(game);
         for (let x = 6; x <= 8; x++) {
@@ -352,19 +363,31 @@ describe('P4-4 验收 3：死亡地形 — bloat 毒气 / explosive bloat 爆燃
 
         priv(game).triggerDeathFeatures();
 
+        // 五格（死亡格 + 四正交邻）必为爆炸地形 GAS_EXPLOSION——
+        // 若实现退回 igniteForced（落 PLAIN_FIRE）或漏铺任何一格，这里翻红。
+        expect(game.grid.getCell(7, 6)?.layers.includes(TerrainType.GAS_EXPLOSION)).toBe(true);
+        expect(game.grid.getCell(7, 5)?.layers.includes(TerrainType.GAS_EXPLOSION)).toBe(true);
+        expect(game.grid.getCell(7, 7)?.layers.includes(TerrainType.GAS_EXPLOSION)).toBe(true);
+        expect(game.grid.getCell(6, 6)?.layers.includes(TerrainType.GAS_EXPLOSION)).toBe(true);
+        expect(game.grid.getCell(8, 6)?.layers.includes(TerrainType.GAS_EXPLOSION)).toBe(true);
+        // GAS_EXPLOSION 携带 T_IS_FIRE（Globals.c:496）——isBurning 判据成立。
         expect(game.grid.getCell(7, 6)?.isBurning).toBe(true);
-        expect(game.grid.getCell(7, 5)?.isBurning).toBe(true);
-        expect(game.grid.getCell(7, 7)?.isBurning).toBe(true);
-        expect(game.grid.getCell(6, 6)?.isBurning).toBe(true);
-        expect(game.grid.getCell(8, 6)?.isBurning).toBe(true);
     });
 
-    it('验收打回修正：explosive bloat 死亡在默认（不可燃）石地板上也必须点燃死亡格与四方向邻格。' +
-        '这是本轮真正要保证的场景——地牢里绝大多数格子不是 GRASS。' +
-        '对抗性⑥：若"强制点燃"被误实现成直接调用老的 ignite()（检查地形白名单），' +
-        '这条用例会在石地板上全部落空。', () => {
+    // 验收方 F-2c 后翻转（原名："验收打回修正：explosive bloat 死亡在默认
+    // （不可燃）石地板上也必须点燃死亡格与四方向邻格…"）。
+    //
+    // P4-4 时代这条守卫的靶子是 ignite() 白名单误实现；F-2b 时代的靶子是
+    // igniteForced 的强制点燃；F-2c 起 bloat 走 DF 管线（spawnDungeonFeature
+    // → fillSpawnMap 的 drawPriority 判据）——石地板（prio 95 ≥ 爆炸 10）
+    // 照铺，守卫意图（"石头地上也要炸"）原样保留，判据从 isBurning 换成
+    // GAS_EXPLOSION 落格。**原"对角格不应被点燃"断言删除**：那是
+    // igniteForced×5 形态自带的形状，CE 的爆炸圈是概率 BFS（对角格 (8,5)
+    // 的 BFS 距离是 2，第二波 250%≥100 必中）——该断言对 CE 本就是错的，
+    // 翻转依据见 ai_docs/f_2c_explosion_report.md。
+    it('F-2c 翻转：explosive bloat 死亡在默认（不可燃）石地板上也铺开 GAS_EXPLOSION 爆炸圈（DF 管线不看可燃性）', () => {
         const game = createHeadlessGame(19);
-        clearToOpenRoom(game); // clearToOpenRoom 铺的是 TerrainType.FLOOR，不在 ignite() 白名单里
+        clearToOpenRoom(game); // clearToOpenRoom 铺的是 TerrainType.FLOOR——石地板
         expect(game.grid.getCell(7, 6)?.terrain).toBe(TerrainType.FLOOR);
 
         const bloat = new Monster(7, 6, monsterDataById('explosive_bloat'));
@@ -373,57 +396,62 @@ describe('P4-4 验收 3：死亡地形 — bloat 毒气 / explosive bloat 爆燃
 
         priv(game).triggerDeathFeatures();
 
-        expect(game.grid.getCell(7, 6)?.isBurning).toBe(true);
-        expect(game.grid.getCell(7, 5)?.isBurning).toBe(true);
-        expect(game.grid.getCell(7, 7)?.isBurning).toBe(true);
-        expect(game.grid.getCell(6, 6)?.isBurning).toBe(true);
-        expect(game.grid.getCell(8, 6)?.isBurning).toBe(true);
-        // 对角格不应被点燃（爆炸只覆盖四方向，与分裂的四方向约束同口径）。
-        expect(game.grid.getCell(8, 5)?.isBurning).toBeFalsy();
+        expect(game.grid.getCell(7, 6)?.layers.includes(TerrainType.GAS_EXPLOSION)).toBe(true);
+        expect(game.grid.getCell(7, 5)?.layers.includes(TerrainType.GAS_EXPLOSION)).toBe(true);
+        expect(game.grid.getCell(7, 7)?.layers.includes(TerrainType.GAS_EXPLOSION)).toBe(true);
+        expect(game.grid.getCell(6, 6)?.layers.includes(TerrainType.GAS_EXPLOSION)).toBe(true);
+        expect(game.grid.getCell(8, 6)?.layers.includes(TerrainType.GAS_EXPLOSION)).toBe(true);
     });
 
-    // 验收方 F-2b 后翻正（原名："…走完整回合结算后真的掉血（不是只读 isBurning）"）。
-    //
-    // 过期的是**实现细节假设**，不是断言意图：F-2b 把燃烧改成生物自身的状态
-    // （CE STATUS_BURNING），于是 CE 客观块的原序生效——环境段 `applyEnvironmentalEffects`
-    // 负责**点火**（Time.c:2671），状态段 `tickCreatureStatuses` 才**结算伤害**
-    // （Time.c:2677 / :2581-2591）。原测试只调一次环境段就断言掉血，
-    // 那是"环境段即伤害段"的旧模型。
-    //
-    // **守卫语义完整保留、未放宽**：把"必须掉血"拆成两段各自断言——
-    // 环境段后必须挂上燃烧状态、状态段后必须掉血。漏掉任一段都会翻红。
-    //
-    // 另：CE 里 bloat 爆炸对生物的伤害其实来自 GAS_EXPLOSION 地形的
-    // `T_CAUSES_EXPLOSIVE_DAMAGE` 瞬时伤害（Globals.c:496 + DF_BLOAT_EXPLOSION:654），
-    // 与燃烧状态无关——那条归 **F-2c**，本断言不代表爆炸伤害已按 CE 实现。
-    it('F-2b 翻正：站在爆炸格上的生物，环境段挂燃烧状态、状态段真的掉血', () => {
+    // 验收方 F-2c 后翻转（原名："F-2b 翻正：站在爆炸格上的生物，环境段挂
+    // 燃烧状态、状态段真的掉血"；再上一版是 P4-4 的"走完整回合结算后真的
+    // 掉血"）。F-2b 在注释里预告的那条归本轮：CE 真爆炸落地
+    // （T_CAUSES_EXPLOSIVE_DAMAGE，Rogue.h:1944）后，伤害结构是**两笔**——
+    //   第 1 笔（瞬时）：爆炸 tile 落到生物脚下当场结算
+    //     max(rand_range(15,20), maxHP/2)（Time.c:343-353 经 fillSpawnMap
+    //     refresh 分支 Architect.c:3255），不经燃烧状态、不等客观块；
+    //   第 2 笔（燃烧）：爆炸铺的火再把生物点燃（TIME.c:527 exposeCreatureToFire），
+    //     燃烧状态每回合结算 rand_range(1,3)（Time.c:2581-2591）。
+    // 两笔必须分离：把爆炸合并进燃烧（只点状态不瞬伤）或把两笔混成一笔的
+    // 实现都会在下述断言翻红。免疫窗（同生物五回合）使环境段的重复爆炸
+    // 判定为 no-op——第 1 笔不会在环境段被再扣一次。
+    it('F-2c 翻转：爆炸伤害瞬时不经燃烧状态（第 1 笔 max(15-20, maxHP/2)），燃烧是后续另一笔（第 2 笔 1-3）', () => {
         const game = createHeadlessGame(20);
         clearToOpenRoom(game);
 
         const victim = new Monster(8, 6, monsterDataById('rat'));
-        victim.hp = victim.maxHp;
+        victim.maxHp = 100; // maxHP/2 = 50 > 20 ≥ rand_range(15,20)：伤害恒为 50（确定性）
+        victim.hp = 100;
         game.monsters.push(victim);
 
         const bloat = new Monster(7, 6, monsterDataById('explosive_bloat'));
         bloat.hp = 0;
         game.monsters.push(bloat);
 
-        const hpBefore = victim.hp;
+        // ---- 第 1 笔：triggerDeathFeatures 落格瞬时（CE fillSpawnMap refresh）。
         priv(game).triggerDeathFeatures();
+        expect(victim.hp, '爆炸瞬时伤害 = max(15-20, maxHP/2) = 50——不瞬伤的实现在此翻红').toBe(50);
+        expect(
+            priv(game).burningDuration(victim),
+            '第 1 笔不得借道燃烧状态（瞬时不经燃烧）'
+        ).toBe(0);
 
-        // 环境段：点火（CE Time.c:2671）。F-2b 起它只挂状态、不结算伤害。
+        // ---- 环境段（CE Time.c:2671）：爆炸铺的火把受害者点燃（第 2 笔载体），
+        // 但爆炸伤害本身被五回合免疫窗挡住，不再扣。
         priv(game).applyEnvironmentalEffects();
         expect(
             priv(game).burningDuration(victim),
-            '环境段后受害者没挂上燃烧状态——爆炸格的火没点着它'
+            '环境段后受害者挂上燃烧状态——爆炸的火点燃它（第 2 笔的载体）'
         ).toBeGreaterThan(0);
+        expect(victim.hp, '免疫窗内环境段不得重复扣爆炸伤害（两笔分离的另一半）').toBe(50);
 
-        // 状态段：燃烧结算（CE Time.c:2677 → :2581-2591，rand_range(1,3)）。
+        // ---- 状态段（CE Time.c:2677 → :2581-2591）：燃烧结算 1-3（第 2 笔）。
         priv(game).tickCreatureStatuses();
         expect(
             victim.hp,
-            '状态段后没掉血——燃烧状态挂上了却不结算伤害'
-        ).toBeLessThan(hpBefore);
+            '状态段后燃烧掉血 1-3（第 2 笔）——燃烧状态挂上了却不结算会翻红'
+        ).toBeGreaterThanOrEqual(47);
+        expect(victim.hp, '燃烧第 2 笔至多 3 点（不是再爆一次 50——两笔不合并）').toBeLessThan(50);
     });
 
     it('对抗性⑤：同一只怪物的死亡地形效果只能触发一次。' +

@@ -207,7 +207,9 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
         // 全量表随行更新（穷尽性质不变）。
         // G-2 扩一行：GAS_FIRE（CE Globals.c:495，DF {GAS_FIRE, SURFACE}）——
         // 燃气之火与 PLAIN_FIRE 同落 SURFACE（G-1 §八.1 的 layer 实测）。
-        for (const t of [C.GRASS, C.FOLIAGE, C.WEB, C.BLOOD, C.BRIDGE_EDGE, C.PLAIN_FIRE, C.EMBERS, C.ASH, C.GAS_FIRE]) {
+        // F-2c 扩一行：GAS_EXPLOSION（CE Globals.c:496，DF :742/:654 layer 列
+        // 同证）——爆炸之火同为 SURFACE 层火地形。
+        for (const t of [C.GRASS, C.FOLIAGE, C.WEB, C.BLOOD, C.BRIDGE_EDGE, C.PLAIN_FIRE, C.EMBERS, C.ASH, C.GAS_FIRE, C.GAS_EXPLOSION]) {
             expect(homeLayerViaSetTerrain(t), `terrain ${t}`).toBe(L.SURFACE);
         }
         for (const t of [
@@ -241,6 +243,7 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.GAS_FIRE]: L.SURFACE, // G-2（CE Globals.c:495 火地形落 SURFACE，:741 DF layer 同证）
             [C.METHANE_GAS]: L.GAS, // G-2（CE Globals.c:507 第六种气体 tile）
             [C.PARALYSIS_GAS]: L.GAS, // G-3（CE Globals.c:506 麻痹气体，:778 DF layer 同证）
+            [C.GAS_EXPLOSION]: L.SURFACE, // F-2c（CE Globals.c:496 火地形落 SURFACE，:742/:654 DF layer 同证）
         });
         expect(DRAW_PRIORITY).toEqual({
             [C.NOTHING]: 100, [C.GRANITE]: 0, [C.FLOOR]: 95, [C.WALL]: 0,
@@ -260,6 +263,7 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.GAS_FIRE]: 10, // G-2（CE Globals.c:495 第 4 列，与 PLAIN_FIRE 同档）
             [C.METHANE_GAS]: 35, // G-2（CE Globals.c:507 第 4 列，气体同为 35）
             [C.PARALYSIS_GAS]: 35, // G-3（CE Globals.c:506 第 4 列，气体同为 35）
+            [C.GAS_EXPLOSION]: 10, // F-2c（CE Globals.c:496 第 4 列，与 PLAIN_FIRE 同档）
         });
     });
 });

@@ -556,10 +556,11 @@ describe('C-4b D：levelIsDisconnectedWithBlockingMap（CE Architect.c:3137-3198
 });
 
 describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () => {
-    it('E1 恰 22 条（F-2a 增补 DF_ASH；G-1 增补 DF_GAS_FIRE；G-2 增补 DF_EXPLOSION_FIRE），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）', () => {
+    it('E1 恰 23 条（F-2a 增补 DF_ASH；G-1 增补 DF_GAS_FIRE；G-2 增补 DF_EXPLOSION_FIRE；F-2c 增补 DF_BLOAT_EXPLOSION），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）', () => {
         const keys = Object.keys(DUNGEON_FEATURE_CATALOG);
-        expect(keys.length).toBe(22);
+        expect(keys.length).toBe(23);
         expect(DF.DF_SHOW_DOOR).toBe(13);
+        expect(DF.DF_BLOAT_EXPLOSION, 'F-2c：explosive bloat 的死亡 DF（Rogue.h:1508，Globals.c:1084 DFType 引用）').toBe(35);
         expect(DF.DF_REPEL_CREATURES).toBe(40);
         expect(DF.DF_ASH, 'F-2a：EMBERS.promoteType 的载体（Rogue.h:1524）').toBe(49);
         expect(DF.DF_STEAM_ACCUMULATION).toBe(43);
@@ -597,6 +598,11 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
                 start.add(id!);
             }
         }
+        // F-2c：DF_BLOAT_EXPLOSION 不经 TerrainCatalog 字符串（其载体 tile
+        // 条目的三链字段全空），起点是怪物侧 monsterCatalog 的 DFType 列
+        // （Globals.c:1084，web 消费点 Game.triggerDeathFeatures）——按第二
+        // 起点登记（闭包守卫不变：目录键集仍须与闭包恰好相等）。
+        start.add(DF.DF_BLOAT_EXPLOSION);
         // 沿 subsequentDF 闭包展开（悬空引用在此翻红）。
         const closure = new Set<DF>();
         const queue = [...start];
@@ -612,7 +618,8 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         const catalogKeys = new Set(Object.keys(DUNGEON_FEATURE_CATALOG).map(Number) as DF[]);
         expect([...closure].sort((a, b) => a - b)).toEqual([...catalogKeys].sort((a, b) => a - b));
         expect(catalogKeys.size, 'F-2a：DF_ASH 入闭包 19→20；G-1：DF_GAS_FIRE 入闭包 20→21；' +
-            'G-2：DF_EXPLOSION_FIRE（经 METHANE_GAS.promoteType）入闭包 21→22').toBe(22);
+            'G-2：DF_EXPLOSION_FIRE（经 METHANE_GAS.promoteType）入闭包 21→22；' +
+            'F-2c：DF_BLOAT_EXPLOSION（经 bloat 的 DFType）入闭包 22→23').toBe(23);
     });
 
     it('E3 字段抽查：BRIDGE_FALL_PREP 的 prop/200/100、BRIDGE_FIRE 的描述与 tile=0、其余代表条目', () => {
@@ -685,23 +692,38 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         expect(gasFire.layer, 'DF_GAS_FIRE 的 layer 是 SURFACE 不是 GAS（G-1 §八.1）').toBe(L.SURFACE);
         expect(gasFire.startProbability).toBe(0);
 
-        // G-2：DF_EXPLOSION_FIRE（Globals.c:742 {GAS_EXPLOSION, SURFACE, 60, 17}）
-        // —— METHANE_GAS 的爆轰 promoteType；GAS_EXPLOSION tile 未迁移，
-        // 条目登记 tile=null（爆轰落地缓办，登记 F-2c）。
+        // G-2 新增、F-2c 接线：DF_EXPLOSION_FIRE（Globals.c:742
+        // {GAS_EXPLOSION, SURFACE, 60, 17}）—— METHANE_GAS 的爆轰
+        // promoteType；GAS_EXPLOSION tile 已迁（F-2c，Globals.c:496），
+        // 爆轰圈经既有管线真实落地。
         const boom = DUNGEON_FEATURE_CATALOG[DF.DF_EXPLOSION_FIRE]!;
         expect(boom.ceLine).toBe(742);
         expect(boom.ceTile).toBe('GAS_EXPLOSION');
-        expect(boom.tile).toBeNull();
+        expect(boom.tile, 'F-2c：DF_EXPLOSION_FIRE 的 tile 接线（爆炸地形）').toBe(C.GAS_EXPLOSION);
         expect(boom.layer).toBe(L.SURFACE);
         expect(boom.startProbability).toBe(60);
         expect(boom.probabilityDecrement).toBe(17);
+
+        // F-2c 新增：DF_BLOAT_EXPLOSION（Globals.c:654
+        // {GAS_EXPLOSION, SURFACE, 350, 100, 0, "", EXPLOSION_FLARE_LIGHT}）
+        // —— explosive bloat 的死亡 DF（Globals.c:1084 DFType 引用，
+        // Combat.c:1965-1967 killCreature 播出）。与爆轰圈同 tile 不同参数。
+        const bloat = DUNGEON_FEATURE_CATALOG[DF.DF_BLOAT_EXPLOSION]!;
+        expect(bloat.ceLine).toBe(654);
+        expect(bloat.ceTile).toBe('GAS_EXPLOSION');
+        expect(bloat.tile).toBe(C.GAS_EXPLOSION);
+        expect(bloat.layer).toBe(L.SURFACE);
+        expect(bloat.startProbability).toBe(350);
+        expect(bloat.probabilityDecrement).toBe(100);
+        expect(bloat.description).toBe('');
+        expect(bloat.lightFlare).toBe('EXPLOSION_FLARE_LIGHT');
     });
 
-    it('E4 缺 tile 登记恰 7 条（G-1 后 10；G-2 摘除 4 条已接线 GAS/GAS_FIRE DF、增补 DF_EXPLOSION_FIRE）：' +
-        'catalogFeature 对其抛错点名；对其余 15 条正常转换', () => {
+    it('E4 缺 tile 登记恰 6 条（G-1 后 10；G-2 摘 4 增 1；F-2c 摘除 DF_EXPLOSION_FIRE——GAS_EXPLOSION tile 已迁）：' +
+        'catalogFeature 对其抛错点名；对其余 17 条正常转换', () => {
         const all = Object.keys(DUNGEON_FEATURE_CATALOG).map(Number) as DF[];
         const missing = new Set(DF_MISSING_TILES);
-        expect(DF_MISSING_TILES.length).toBe(7);
+        expect(DF_MISSING_TILES.length).toBe(6);
         // 登记条目确实都是 tile=null，且抛错带 CE tile 名。
         for (const id of DF_MISSING_TILES) {
             expect(DUNGEON_FEATURE_CATALOG[id]!.tile, `DF#${id} 应为 null tile`).toBeNull();
@@ -729,6 +751,8 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         expect(catalogFeature(DF.DF_STEAM_ACCUMULATION).tile, 'G-2 接线').toBe(C.STEAM);
         expect(catalogFeature(DF.DF_METHANE_GAS_PUFF).tile, 'G-2 接线').toBe(C.METHANE_GAS);
         expect(catalogFeature(DF.DF_GAS_FIRE).tile, 'G-2 接线').toBe(C.GAS_FIRE);
+        expect(catalogFeature(DF.DF_EXPLOSION_FIRE).tile, 'F-2c 接线').toBe(C.GAS_EXPLOSION);
+        expect(catalogFeature(DF.DF_BLOAT_EXPLOSION).tile, 'F-2c 接线').toBe(C.GAS_EXPLOSION);
         // tileless 两条件名字单（防有人把"登记"与"tile=0"混掉）。
         expect(catalogFeature(DF.DF_REPEL_CREATURES).tile).toBe(C.NOTHING);
         expect(catalogFeature(DF.DF_BRIDGE_FIRE).tile).toBe(C.NOTHING);
@@ -761,6 +785,10 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
             'engine/Map/DungeonFeatureCatalog.ts',
             'engine/Map/Promotion.ts',   // C-4c：promoteTile 经 spawnDungeonFeature 落地 DF
             'engine/Environment/Gas.ts', // F-2a：火段点火入口（exposeTileToFire/DF_PLAIN_FIRE spawn）
+            'engine/Core/Game.ts',       // F-2c：bloat 死亡 DF（DF_BLOAT_EXPLOSION）
+                                         // 经 catalogFeature+spawnDungeonFeature 铺设
+                                         // + 落格瞬时爆炸伤害（MA_DF_ON_DEATH，
+                                         // Combat.c:1965-1967 的 web 等价）
         ]);
         const pattern = /spawnDungeonFeature|spawnMapDF|fillSpawnMap|levelIsDisconnectedWithBlockingMap|catalogFeature|createSpawnMap|DUNGEON_FEATURE_CATALOG|DF_MISSING_TILES/;
         const offenders: string[] = [];

@@ -98,6 +98,7 @@ import { rng } from '../Random';
 import { DungeonLayer, DRAW_PRIORITY, Grid, TerrainType } from './Grid';
 import {
     TERRAIN_FLAGS,
+    T_CAUSES_EXPLOSIVE_DAMAGE,
     T_IS_FLAMMABLE,
     T_IS_FIRE,
     T_OBSTRUCTS_GAS,
@@ -549,6 +550,11 @@ export interface ExposeTileResult {
     /** 本次点燃经 promoteTile → spawnDungeonFeature 新落到火地形的格
      *  （CE pmap CAUGHT_FIRE_THIS_TURN 的登记集，交调用方喂回下一趟晋升）。 */
     caughtFireCells: Pos[];
+    /** F-2c：本次点燃新落下的、带 T_CAUSES_EXPLOSIVE_DAMAGE 的地形格
+     *  （CE fillSpawnMap refresh 分支 Architect.c:3255-3260 当场对格上生物
+     *  跑 applyInstantTileEffectsToCreature——web 的调用方据此在落格瞬间
+     *  结算爆炸伤害；甲烷爆轰经 DF_EXPLOSION_FIRE 走到这里）。 */
+    explosiveSpawnCells: Pos[];
 }
 
 /**
@@ -563,8 +569,10 @@ export interface ExposeTileResult {
  *   5. alwaysIgnite || rand_percent(ignitionChance) → 点燃：所有可燃层依次
  *      promoteTile(useFireDF = !explosivePromotion)（:1358-1372）。甲烷爆轰
  *      分支（TM_EXPLOSIVE_PROMOTE + 8 邻计数 ≥8，:1347-1356）照抄——
- *      G-2 起 METHANE_GAS 载体落地、分支真实可达（爆轰的 DF_EXPLOSION_FIRE
- *      落地因 GAS_EXPLOSION tile 未迁移而缓办，登记 F-2c）；GAS 层可燃物
+ *      G-2 起 METHANE_GAS 载体落地、分支真实可达；F-2c 起 promoteType
+ *      DF_EXPLOSION_FIRE 的 tile（GAS_EXPLOSION）已迁，爆轰圈真实落地
+ *      （爆炸格的落格瞬间结算见 ExposeTileResult.explosiveSpawnCells）；
+ *      GAS 层可燃物
  *      "只清 volume 不清层"的 CE 怪癖（:1361-1368）G-1 起已接（见下方实现内注释）。
  */
 export function exposeTileToFire(
@@ -574,7 +582,7 @@ export function exposeTileToFire(
     alwaysIgnite: boolean
 ): ExposeTileResult {
     const cell = grid.getCell(x, y);
-    const result: ExposeTileResult = { ignited: false, caughtFireCells: [] };
+    const result: ExposeTileResult = { ignited: false, caughtFireCells: [], explosiveSpawnCells: [] };
     if (!cell) return result;
 
     const flags = cellTerrainFlags(grid, x, y);
@@ -610,8 +618,8 @@ export function exposeTileToFire(
 
         // 爆轰邻居计数（CE :1348-1356）：G-2 起 METHANE_GAS 携带
         // TM_EXPLOSIVE_PROMOTE，分支真实可达——爆轰（≥8）时 promoteTile 走
-        // promoteType DF_EXPLOSION_FIRE（tile GAS_EXPLOSION 未迁移，落地
-        // 缓办登记 F-2c），普通点燃走 fireType DF_GAS_FIRE（燃气之火）。
+        // promoteType DF_EXPLOSION_FIRE（F-2c 起载体 tile GAS_EXPLOSION 已迁，
+        // 爆轰圈真实落地），普通点燃走 fireType DF_GAS_FIRE（燃气之火）。
         let explosivePromotion = false;
         if (cellTerrainMechFlags(grid, x, y) & TM_EXPLOSIVE_PROMOTE) {
             let explosiveNeighborCount = 0;
@@ -645,6 +653,13 @@ export function exposeTileToFire(
                     for (const p of r.spawn.caughtFireCells) {
                         result.caughtFireCells.push(p);
                     }
+                    // F-2c：落下的爆炸地形登记给调用方（落格瞬间结算，
+                    // CE fillSpawnMap refresh 分支 Architect.c:3255-3260）。
+                    for (const p of r.spawn.builtCells) {
+                        if (cellTerrainFlags(grid, p.x, p.y) & T_CAUSES_EXPLOSIVE_DAMAGE) {
+                            result.explosiveSpawnCells.push(p);
+                        }
+                    }
                 }
             }
         }
@@ -663,6 +678,11 @@ export interface FireUpdateResult {
     /** 火段新点起的火格（CE :3235 经 spawnDungeonFeature 登记的
      *  CAUGHT_FIRE_THIS_TURN 增量）；调用方并入下一回合的 skip 集。 */
     caughtFireCells: Pos[];
+    /** F-2c：火段内新落下的爆炸地形格（含 TM_EXPLOSIVE_PROMOTE 甲烷的
+     *  爆轰产物 DF_EXPLOSION_FIRE → GAS_EXPLOSION）。CE fillSpawnMap 的
+     *  refresh 分支在落格瞬间对格上生物跑 applyInstantTileEffectsToCreature
+     *  （Architect.c:3255-3260），调用方（Game）据此即时结算爆炸伤害。 */
+    explosiveSpawnCells: Pos[];
 }
 
 /**
@@ -677,7 +697,7 @@ export function runFireUpdate(
     grid: Grid,
     opts: FireUpdateOptions
 ): FireUpdateResult {
-    const result: FireUpdateResult = { caughtFireCells: [] };
+    const result: FireUpdateResult = { caughtFireCells: [], explosiveSpawnCells: [] };
 
     // CE :1598-1603：本回合暴露计数清零。
     for (let i = 0; i < grid.width; i++) {
@@ -698,11 +718,13 @@ export function runFireUpdate(
             if (!caught.has(idx(i, j)) && (cellTerrainFlags(grid, i, j) & T_IS_FIRE)) {
                 const self = exposeTileToFire(grid, i, j, false); // CE :1691
                 for (const p of self.caughtFireCells) caught.add(idx(p.x, p.y));
+                result.explosiveSpawnCells.push(...self.explosiveSpawnCells);
                 for (const [dx, dy] of FIRE_DIRS4) { // CE :1692-1699
                     const nx = i + dx, ny = j + dy;
                     if (grid.isValidPos(nx, ny)) {
                         const r = exposeTileToFire(grid, nx, ny, false);
                         for (const p of r.caughtFireCells) caught.add(idx(p.x, p.y));
+                        result.explosiveSpawnCells.push(...r.explosiveSpawnCells);
                     }
                 }
             }

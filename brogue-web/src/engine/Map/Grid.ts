@@ -94,7 +94,17 @@ export enum TerrainType {
     // 都是原地爆出本气云（Items.c:6994/8118 → DF_PARALYSIS_GAS_CLOUD_POTION
     // {PARALYSIS_GAS, GAS, 1000}，Globals.c:778）。只追加在尾部（既有枚举
     // 值不变）。
-    PARALYSIS_GAS
+    PARALYSIS_GAS,
+    // F-2c：CE Globals.c:496 GAS_EXPLOSION（爆炸之火）——第八种火地形，
+    // 落 SURFACE 层（CE DF 目录 :742 {GAS_EXPLOSION, SURFACE, 60, 17} 的
+    // layer 列同证）。它是 DF_EXPLOSION_FIRE（甲烷爆轰圈）与
+    // DF_BLOAT_EXPLOSION（bloat 自爆）的载体 tile：瞬时爆炸地形
+    // （promoteChance 10000 = 每回合必定晋升，VANISHES_UPON_PROMOTION +
+    // promoteType 0 ⇒ 下一晋升趟即消失），flags 带
+    // T_CAUSES_EXPLOSIVE_DAMAGE（Rogue.h:1944：瞬时 max(15-20, maxHP/2)、
+    // 免疫窗五回合——结算在 Game.resolveExplosionDamage，Time.c:343-353）。
+    // 只追加在尾部（既有枚举值不变）。
+    GAS_EXPLOSION
 }
 
 export enum LightType {
@@ -189,7 +199,10 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.GAS_FIRE]: 10,
     [TerrainType.METHANE_GAS]: 35,
     // G-3：PARALYSIS_GAS 35（CE Globals.c:506 第 4 列，气体 tile 同为 35）。
-    [TerrainType.PARALYSIS_GAS]: 35
+    [TerrainType.PARALYSIS_GAS]: 35,
+    // F-2c：GAS_EXPLOSION 10（CE Globals.c:496 第 4 列，与 PLAIN_FIRE/GAS_FIRE
+    // 同档的火地形——压得住草(60)/网(19)，压不住门(8)/墙(0)）。
+    [TerrainType.GAS_EXPLOSION]: 10
 };
 
 /**
@@ -274,7 +287,11 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     [TerrainType.METHANE_GAS]: DungeonLayer.GAS,
     // G-3：PARALYSIS_GAS → GAS（CE Globals.c:506，"// gas layer" 注释块内；
     // DF_PARALYSIS_GAS_CLOUD_POTION 的 layer 列同证，Globals.c:778）。
-    [TerrainType.PARALYSIS_GAS]: DungeonLayer.GAS
+    [TerrainType.PARALYSIS_GAS]: DungeonLayer.GAS,
+    // F-2c：GAS_EXPLOSION → SURFACE（CE DF 目录 :742 {GAS_EXPLOSION, SURFACE,
+    // 60, 17} 与 :654 {GAS_EXPLOSION, SURFACE, 350, 100} 的 layer 列同证；
+    // tile 本体在 Globals.c:496 "// fire tiles" 注释块——它是火地形不是气体）。
+    [TerrainType.GAS_EXPLOSION]: DungeonLayer.SURFACE
 };
 
 /**
@@ -287,14 +304,17 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
  * 失败信息指向本注释）。
  *
  * 现有载体（CE 行号）：PLAIN_FIRE（Globals.c:492，F-1 引入）、
- * GAS_FIRE（Globals.c:495，G-2 引入——DF_GAS_FIRE 的载体，燃气烧完地上留火）。
- * CE 其余七种火地形（GAS_EXPLOSION / BRIMSTONE_FIRE /
+ * GAS_FIRE（Globals.c:495，G-2 引入——DF_GAS_FIRE 的载体，燃气烧完地上留火）、
+ * GAS_EXPLOSION（Globals.c:496，F-2c 引入——DF_EXPLOSION_FIRE/DF_BLOAT_EXPLOSION
+ * 的载体，瞬时爆炸地形，T_CAUSES_EXPLOSIVE_DAMAGE 在手）。
+ * CE 其余六种火地形（BRIMSTONE_FIRE /
  * FLAMEDANCER_FIRE / DART_EXPLOSION / ITEM_FIRE / CREATURE_FIRE / 火源家具）
- * web 尚无——F-2c 等轮次落地时随目录条目在此补行。
+ * web 尚无——后续轮次落地时随目录条目在此补行。
  */
 export const FIRE_TERRAIN_TYPES: readonly TerrainType[] = [
     TerrainType.PLAIN_FIRE,
-    TerrainType.GAS_FIRE
+    TerrainType.GAS_FIRE,
+    TerrainType.GAS_EXPLOSION
 ];
 
 /** CE Movement.c:64-80 的纯数据版：对一层快照取最高优先层。 */

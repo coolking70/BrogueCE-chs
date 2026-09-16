@@ -131,6 +131,12 @@ export class EnvironmentManager {
      *  CE 里这些格的旗标在 pmap 上即时生效；web 的旗标等价物归 Game 所有，
      *  入口与客观块不同步，用队列衔接。 */
     private fireCaughtQueue: Pos[] = [];
+    /** F-2c：火段（updateFires → runFireUpdate）新落下的爆炸地形格
+     *  （甲烷爆轰 DF_EXPLOSION_FIRE → GAS_EXPLOSION）。CE 的 fillSpawnMap
+     *  refresh 分支（Architect.c:3255-3260）在落格瞬间对格上生物跑
+     *  applyInstantTileEffectsToCreature；web 由 Game 在火段后排干本队列
+     *  即时结算。 */
+    private explosiveSpawnQueue: Pos[] = [];
 
     constructor(grid: Grid) {
         this.grid = grid;
@@ -253,6 +259,19 @@ export class EnvironmentManager {
     }
 
     /**
+     * F-2c：排干火段攒下的爆炸地形落格（见 explosiveSpawnQueue）。
+     * 调用时点 = 客观块火段之后（Game.objectiveTimeBlock）：CE 里爆炸 tile
+     * 落到生物脚下当场结算 applyInstantTileEffectsToCreature
+     * （Architect.c:3255-3260），爆炸伤害是瞬时的、不经燃烧状态。
+     */
+    public takeExplosiveSpawnCells(): Pos[] {
+        if (this.explosiveSpawnQueue.length === 0) return [];
+        const out = this.explosiveSpawnQueue;
+        this.explosiveSpawnQueue = [];
+        return out;
+    }
+
+    /**
      * 客观块火段（Game.objectiveTimeBlock 每百 tick 调一次）：
      *   1. 复燃分支（web 自创，原样保留）：焦土 0.05%/回合再生草——本轮起
      *      火烧尽的产物是 EMBERS/ASH（CE 口径），CHARRED_FLOOR 的剩余生产者
@@ -294,6 +313,8 @@ export class EnvironmentManager {
         // 深水（T_IS_FLAMMABLE, ign 100, fireType DF_STEAM_ACCUMULATION）被
         // 火段点燃即产出持续蒸汽——CE 蒸汽源，G-2 起真实生效。
         const fired = runFireUpdate(this.grid, { caughtFireCells });
+        // F-2c：火段的爆炸落格（甲烷爆轰）进队列，Game 在火段后排干结算。
+        this.explosiveSpawnQueue.push(...fired.explosiveSpawnCells);
 
         for (const pos of regrowths) {
             const cell = this.grid.getCell(pos.x, pos.y);

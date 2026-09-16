@@ -421,12 +421,19 @@ describe('G-2 对抗⑦：未迁移气体只登记（载体盘点表的显式留
         }
     });
 
-    it('DF_EXPLOSION_FIRE 登记为缺 tile（爆炸归 F-2c）：catalogFeature 抛错点名 GAS_EXPLOSION', () => {
-        // 守卫半边：登记不是删除——爆轰链的数据前提（目录条目 + 缺 tile
-        // 名单）必须在位，F-2c 填 tile 后爆炸圈自动成形。
-        expect(DF_MISSING_TILES).toContain(DF.DF_EXPLOSION_FIRE);
-        expect(() => catalogFeature(DF.DF_EXPLOSION_FIRE)).toThrow(/GAS_EXPLOSION/);
-        expect(DF_MISSING_TILES, '缺 tile 名单恰 7 条（G-2 后）').toHaveLength(7);
+    // 验收方 F-2c 后翻转（原名："DF_EXPLOSION_FIRE 登记为缺 tile（爆炸归
+    // F-2c）：catalogFeature 抛错点名 GAS_EXPLOSION"）。G-2 把条目备好、
+    // tile 留 null 登记进 DF_MISSING_TILES 并预测"填 tile 后爆炸圈自动成形"；
+    // F-2c 迁移 GAS_EXPLOSION tile（Globals.c:496）并填 tile，本留痕的前提
+    // （tile 缺失）失效。守卫语义反转为新事实：条目完整接线 + 摘出名单
+    // （名单守卫保留：仍恰 6 条，防"接线顺手删登记"）。
+    it('F-2c 翻转：DF_EXPLOSION_FIRE 已接线（tile GAS_EXPLOSION 已迁），catalogFeature 正常转换且不在缺 tile 名单', () => {
+        expect(DF_MISSING_TILES, 'F-2c 后缺 tile 名单恰 6 条').not.toContain(DF.DF_EXPLOSION_FIRE);
+        expect(DF_MISSING_TILES).toHaveLength(6);
+        const f = catalogFeature(DF.DF_EXPLOSION_FIRE);
+        expect(f.tile).toBe(C.GAS_EXPLOSION);
+        expect(f.startProbability).toBe(60);
+        expect(f.probabilityDecrement).toBe(17);
     });
 });
 
@@ -454,18 +461,26 @@ describe('G-2 对抗⑧：爆轰分支激活 + 8 邻计数逐向正确（ALL_DIR
             .map(([a, b]) => `${a},${b}`)
     );
 
-    it('8 邻全火 → 爆轰路（promoteType DF_EXPLOSION_FIRE）→ 因 GAS_EXPLOSION 缺 tile 缓办', () => {
+    // 验收方 F-2c 后翻转（原名："…→ 因 GAS_EXPLOSION 缺 tile 缓办"）。
+    // G-2 时代爆轰判定可达但落地缓办（DF_EXPLOSION_FIRE tile=null）；F-2c
+    // 迁移 tile 后预测兑现——爆轰圈真实成形。守卫语义保留并加强：
+    // 分支选路（promoteType 而非 fireType）由"落的是 GAS_EXPLOSION、
+    // 不是 GAS_FIRE"钉死；体积先清零的 CE :1362 怪癖断言原样保留。
+    it('F-2c 翻转：8 邻全火 → 爆轰路（promoteType DF_EXPLOSION_FIRE）→ GAS_EXPLOSION 爆炸圈真实落地', () => {
         const grid = methaneWithFires(ALL8);
         const r = exposeTileToFire(grid, 4, 4, true);
         expect(r.ignited).toBe(true);
-        // 爆轰 = useFireDF=false → promoteType。GAS_EXPLOSION tile 未迁移
-        // （登记 F-2c）⇒ 缓办记录点名它——"tile 不在的必须仍然缓办"。
-        // （缓办不是空转：爆轰判定本身发生了，这里钉的是分支选路。）
-        expect(r.caughtFireCells, '爆轰未落地：无新火登记').toEqual([]);
+        // 爆轰 = useFireDF=false → promoteType：落 GAS_EXPLOSION（爆炸圈，
+        // 起码覆盖原点格），而不是普通点燃的 GAS_FIRE。
         const cell = grid.getCell(4, 4)!;
         expect(cell.volume, 'CE :1362 怪癖在爆轰路同样生效：体积先清零').toBe(0);
-        // 普通点燃路（fireType DF_GAS_FIRE）不被爆轰路污染：SURFACE 无 GAS_FIRE。
-        expect(cell.layers[L.SURFACE], '爆轰未落地 → 不留燃气之火').not.toBe(C.GAS_FIRE);
+        expect(cell.layers[L.SURFACE], '爆轰落下的是爆炸地形 GAS_EXPLOSION').toBe(C.GAS_EXPLOSION);
+        // 分支选路守卫：普通点燃的产物 GAS_FIRE 不得出现（错走 fireType 的
+        // 实现在此翻红）。
+        expect(cell.layers[L.SURFACE], '爆轰不走 fireType：不留燃气之火').not.toBe(C.GAS_FIRE);
+        // 落格登记：爆炸格带 T_CAUSES_EXPLOSIVE_DAMAGE，进 explosiveSpawnCells
+        // （调用方据此在落格瞬间结算爆炸伤害——CE fillSpawnMap refresh 分支）。
+        expect(r.explosiveSpawnCells.length, '爆轰落格登记爆炸瞬时结算点').toBeGreaterThan(0);
     });
 
     it('唯 (1,1) 角为地板（7 火邻）→ 不爆轰、走 fireType 留燃气之火——' +
