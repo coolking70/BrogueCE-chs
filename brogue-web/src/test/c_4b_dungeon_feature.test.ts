@@ -556,9 +556,9 @@ describe('C-4b D：levelIsDisconnectedWithBlockingMap（CE Architect.c:3137-3198
 });
 
 describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () => {
-    it('E1 恰 20 条（F-2a 增补 DF_ASH），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）', () => {
+    it('E1 恰 21 条（F-2a 增补 DF_ASH；G-1 增补 DF_GAS_FIRE），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）', () => {
         const keys = Object.keys(DUNGEON_FEATURE_CATALOG);
-        expect(keys.length).toBe(20);
+        expect(keys.length).toBe(21);
         expect(DF.DF_SHOW_DOOR).toBe(13);
         expect(DF.DF_REPEL_CREATURES).toBe(40);
         expect(DF.DF_ASH, 'F-2a：EMBERS.promoteType 的载体（Rogue.h:1524）').toBe(49);
@@ -573,6 +573,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         expect(DF.DF_BRIDGE_FALL_PREP).toBe(98);
         expect(DF.DF_BRIDGE_FALL).toBe(99);
         expect(DF.DF_PLAIN_FIRE).toBe(100);
+        expect(DF.DF_GAS_FIRE, 'G-1：气体 tile 的 fireType 载体（Rogue.h:1593）').toBe(101);
         expect(DF.DF_BRIMSTONE_FIRE).toBe(104);
         expect(DF.DF_BRIDGE_FIRE).toBe(105);
         expect(DF.DF_EMBERS).toBe(107);
@@ -609,7 +610,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // 集合相等：目录里多一条（闭包外）或少一条（漏抄）都翻红。
         const catalogKeys = new Set(Object.keys(DUNGEON_FEATURE_CATALOG).map(Number) as DF[]);
         expect([...closure].sort((a, b) => a - b)).toEqual([...catalogKeys].sort((a, b) => a - b));
-        expect(catalogKeys.size, 'F-2a：EMBERS.promoteType=DF_ASH 入闭包，19 → 20').toBe(20);
+        expect(catalogKeys.size, 'F-2a：DF_ASH 入闭包 19→20；G-1：DF_GAS_FIRE（气体 fireType 起点）入闭包 20→21').toBe(21);
     });
 
     it('E3 字段抽查：BRIDGE_FALL_PREP 的 prop/200/100、BRIDGE_FIRE 的描述与 tile=0、其余代表条目', () => {
@@ -655,13 +656,24 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         expect(steam.ceLine).toBe(666);
         expect(steam.startProbability, 'GAS 层 DF 的 start 列即 volume（CE Globals.c:600 注释）').toBe(15);
         expect(steam.probabilityDecrement).toBe(0);
+
+        // G-1：DF_GAS_FIRE（Globals.c:741 {GAS_FIRE, SURFACE, 0, 0}）——
+        // layer 是 SURFACE（GAS_FIRE 是十种 T_IS_FIRE 地形之一，不是气体层
+        // 地形；F-0 §3.2 表未记 layer 列，本轮实测翻正）。tile 登记 null
+        // （GAS_FIRE tile 归 G-2）。
+        const gasFire = DUNGEON_FEATURE_CATALOG[DF.DF_GAS_FIRE]!;
+        expect(gasFire.ceLine).toBe(741);
+        expect(gasFire.ceTile).toBe('GAS_FIRE');
+        expect(gasFire.tile).toBeNull();
+        expect(gasFire.layer).toBe(L.SURFACE);
+        expect(gasFire.startProbability).toBe(0);
     });
 
-    it('E4 缺 tile 登记恰 9 条（F-2a 翻正 DF_PLAIN_FIRE/DF_EMBERS 后 11 → 9）：' +
+    it('E4 缺 tile 登记恰 10 条（F-2a 后 9；G-1 增 DF_GAS_FIRE → 10）：' +
         'catalogFeature 对其抛错点名；对其余 11 条正常转换', () => {
         const all = Object.keys(DUNGEON_FEATURE_CATALOG).map(Number) as DF[];
         const missing = new Set(DF_MISSING_TILES);
-        expect(DF_MISSING_TILES.length).toBe(9);
+        expect(DF_MISSING_TILES.length).toBe(10);
         // 登记条目确实都是 tile=null，且抛错带 CE tile 名。
         for (const id of DF_MISSING_TILES) {
             expect(DUNGEON_FEATURE_CATALOG[id]!.tile, `DF#${id} 应为 null tile`).toBeNull();

@@ -13,10 +13,13 @@
  *   - 对抗③后半：燃烧的深水不再"时长 1 → 两回合后原样熄灭"（火寿命改为
  *     概率衰老）→ 熄灭改为手动摘火层（测试口径），守卫语义不变。
  *   继续锁定的 F-1 事实：isBurning ≡ 跨层有火地形（F-2a 起为派生 getter）、
- *   A 类读者经 isBurning 看见火、GAS 层恒空、持久化往返、旧存档迁移。
+ *   A 类读者经 isBurning 看见火、持久化往返、旧存档迁移。
+ *   （"GAS 层恒空"留痕已由 G-1 反转：气体迁入 GAS 层；火侧不写 GAS 层的
+ *   守卫半边保留在对抗⑦。）
  */
 import { describe, it, expect } from 'vitest';
 import { createHeadlessGame } from './harness';
+import { GasType } from '../engine/Environment/Gas';
 import type { Game } from '../engine/Core/Game';
 import type { GameSnapshot } from '../engine/Core/Game';
 import { TerrainType, DungeonLayer, DRAW_PRIORITY, TERRAIN_HOME_LAYER } from '../engine/Map/Grid';
@@ -333,22 +336,53 @@ describe('F-1 对抗⑥：持久化往返（存一半即红）', () => {
     }
 });
 
-describe('F-1 对抗⑦：GAS 层恒空（C-4a-0 留痕在 F-1/F-2a 全程有效）', () => {
-    it('点火/蔓延/衰老/注气全过程中任何格的 GAS 层不得被写。' +
-        '错误实现：把火写进 GAS 层（CE 火 DF 全在 SURFACE，F-0 §3.2）。', () => {
+describe('F-1 对抗⑦（G-1 反转）：火不写 GAS 层；气体住进 GAS 层', () => {
+    // 原断言（C-4a-0 留痕，F-1/F-2a 全程有效）："点火/蔓延/衰老/注气全过程
+    // 中任何格的 GAS 层不得被写"。G-1 把气体迁入 GAS 层，"注气不写层"的
+    // 前提到期；按 B-1 范本翻转为"断言新事实 + 保留越界守卫"：
+    //   新事实：注气后 GAS 层持有点名格的气体地形（气体真的住在层里）；
+    //   守卫保留：火系全流程（点火/蔓延/衰老）依旧不得在 GAS 层留下任何
+    //   内容——CE 火 DF 全在 SURFACE（F-0 §3.2），把火写进 GAS 层的错误
+    //   实现依旧在此翻红。
+    it('注气写入 GAS 层（POISON_GAS 落在注入格）；点火/蔓延/衰老全程 GAS 层', () => {
         const game = createHeadlessGame(42);
         openRoom(game);
         for (let x = 6; x <= 10; x++) game.grid.setTerrain(x, 6, C.GRASS, '"', 0x33aa33);
         game.grid.setTerrain(8, 4, C.GRASS, '"', 0x33aa33);
         game.environment.ignite(8, 4);
         game.environment.ignite(6, 6);
-        game.environment.addGas(8, 8, 2 /* GasType.POISON */, 50);
+        // G-1：注入 50 体积毒气（旧 0-100 密度口径的字面量 2/50 退役）。
+        expect(game.environment.addGas(8, 8, GasType.POISON, 50)).toBe(true);
+        // 新事实（即时）：注入格的 GAS 层即刻持有 POISON_GAS + 50 体积
+        // ——气体真的住在层里，且 addGas 不再钳制到 100。
+        const injected = game.grid.getCell(8, 8)!;
+        expect(injected.layers[L.GAS]).toBe(C.POISON_GAS);
+        expect(injected.volume).toBe(50);
         for (let i = 0; i < 16; i++) tickEnv(game, 1);
         for (let x = 0; x < game.grid.width; x++) {
             for (let y = 0; y < game.grid.height; y++) {
-                expect(game.grid.getCell(x, y)!.layers[L.GAS], `GAS 层在 (${x},${y}) 被误写`).toBe(C.NOTHING);
+                const gasTile = game.grid.getCell(x, y)!.layers[L.GAS]!;
+                // 守卫（原断言的火侧半边）：GAS 层只允许气体地形。
+                if (gasTile !== C.NOTHING) {
+                    expect(
+                        gasTile === C.POISON_GAS || gasTile === C.CONFUSION_GAS || gasTile === C.STEAM,
+                        `GAS 层在 (${x},${y}) 出现非气体地形 ${TerrainType[gasTile]}`
+                    ).toBe(true);
+                }
+                expect(gasTile, `火被误写进 GAS 层 (${x},${y})`).not.toBe(C.PLAIN_FIRE);
             }
         }
+        // 新事实（持续）：16 回合后毒气仍以某种形态存于 GAS 层——CE 的
+        // SLOW 档消散每轮期望 −0.4，50 体积损失 ≈ 6；扩散摊薄后部分体积
+        // 会以"不可见残气"（layers[GAS]=NOTHING、volume>0，随机舍入的
+        // CE 语义）存在，所以按体积总量断言而不是按可见类型。
+        let totalVolume = 0;
+        for (let x = 0; x < game.grid.width; x++) {
+            for (let y = 0; y < game.grid.height; y++) {
+                totalVolume += game.grid.getCell(x, y)!.volume;
+            }
+        }
+        expect(totalVolume, '毒气体积必须仍在（消散 + chasm 逃逸之外体积守恒）').toBeGreaterThan(0);
     });
 });
 

@@ -1,63 +1,109 @@
 /**
  * src/engine/Environment/Gas.ts
- * Manages gas spread and effects (fire, poison, steam)
+ * Gas subsystem: CE 的体积气体模型（G-1 起本文件是 updateVolumetricMedia 的宿主）
  *
- * F-2a：火焰机制对齐 CE（本文件不再持有火的事实来源）。
+ * G-1 形态（任务书 §二：F-0 §5.3 第 6/7/8 条 + 量纲 + P1-45）：
+ * 气体的"是什么"住在 Grid.Cell.layers[GAS]（TerrainType.POISON_GAS /
+ * CONFUSION_GAS / STEAM，CE Globals.c:502/503/508），"有多少"住在
+ * Cell.volume（CE pmap.volume，Rogue.h:1307，unsigned short 0-65535）。
+ * gasGrid 是这两者的只读镜像，仅供渲染（GameCanvas 在禁改文件）与
+ * 存档/效果查询消费；镜像与事实来源的同步点只有三个：addGas（单格）、
+ * updateGases（全量，每轮末尾）、syncGasMirror（全量，外部写入 GAS 层后
+ * 由调用方触发，如 spawnDungeonFeature 的 GAS 分支）。
  *
- * F-1 形态：isBurning/burnDuration 状态机双写 SURFACE 层 PLAIN_FIRE，
- * 火的寿命是 burnDuration 硬倒计时、蔓延是 8 邻 × 40%、烧尽一律 CHARRED_FLOOR。
- * F-2a 起（任务书 §二.1/2/3）改为 CE 模型，本文件只保留三个入口：
- *   - ignite(x,y)        = CE exposeTileToFire(x,y,true)（Items.c:5217/5445
- *                          "burninate"——弹道/火杖/怪物火系的直燃旁路：
- *                          跳过掷骰、但尊重可燃性与 12 次暴露封顶）；
- *   - igniteForced(x,y)  = CE 的火 DF 生成家族（药水/爆炸类：DF 直接把火
- *                          地形铺上任何地表，DF_PLAIN_FIRE 单点零 RNG），
- *                          经 spawnDungeonFeature 走 fillSpawnMap——
- *                          T_OBSTRUCTS_SURFACE_EFFECTS 守卫（火落不进
- *                          楼梯/祭坛，Architect.c:3230）与 drawPriority
- *                          判据由该路径免费获得（F-1 §七.2 预测成真）；
- *   - updateFires()      = CE updateEnvironment 的火段（Time.c:1688-1700，
- *                          移植在 Promotion.runFireUpdate）+ web 既有
- *                          "火贴水冒蒸汽"（web 自创，本轮原样保留，
- *                          §5.3-9 的 CE 蒸汽来源归 G 链）。
- * 火的寿命 = PLAIN_FIRE promoteChance 500 的概率衰老（runPromotionUpdate
- * 每回合驱动；几何分布均值约 20 回合），烧完产物 = EMBERS → ASH
- * （CE Globals.c:492/469/461）。isBurning 是"跨层挂着 T_IS_FIRE 地形"的
- * 纯派生读数（Grid.Cell getter），web 自创的 burnDuration/burnTerrain
- * 已随倒计时模型退役。
+ * updateGases() = CE updateVolumetricMedia（Time.c:1383-1479）逐行移植：
+ *   - 8 邻（nbDirs，GlobalsBase.c:38）体积均分：sum/(1+8邻)；
+ *   - 随机舍入：rand_range(0, numSpaces-1) < sum%numSpaces 时 +1
+ *     （Time.c:1408-1410）——守恒在期望意义上成立；
+ *   - chasm/trapdoor（T_AUTO_DESCENT）numSpaces++：气体逃出层外
+ *     （Time.c:1404-1406）；
+ *   - 类型竞争：本格类型 ≠ 邻域最大体积者的类型且新体积 >3 时整体换型；
+ *     换型前若已有别的气，新体积压到 3（Time.c:1427-1431，"otherwise
+ *     interactions between gases are crazy"）；
+ *   - 消散二档：TM_GAS_DISSIPATES_QUICKLY 50%/轮 −1、TM_GAS_DISSIPATES
+ *     20%/轮 −1（读 tile 的机械旗标，Time.c:1437-1444）——档位住在
+ *     TerrainCatalog 的气体条目里；METHANE/DARKNESS 无旗标即永不自散；
+ *   - T_OBSTRUCTS_GAS 格里被困的气瞬时散给能存的邻居（:1446-1474）；
+ *   - CE 的 uint16 回绕语义用 Uint16Array 承载（newGasVolume），与 CE
+ *     逐位一致。
+ * 调用节奏在 Game.objectiveTimeBlock：先全场探测 GAS 层非空（CE
+ * Time.c:1600-1613），非空才连调两次（Time.c:1606 注释 "// update gases
+ * twice"）。探测守卫同时保住无气体回合的 RNG 流——本函数每格每轮各消耗
+ * 一次 rand_range（随机舍入），空跑会白烧 2×DCOLS×DROWS 次抽取。
  *
  * 与 CE 的有意差异（登记表）：
- *   - 深水/浅水"被点燃"（CE chanceToIgnite=100 → DF_STEAM_ACCUMULATION，
- *     §5.3-9）本轮不接：promoteTile 对缺 tile 的 GAS 层 DF 整链缓办，
- *     水格暴露后原地不动——蒸汽侧归 G 链。
- *   - BOG（webOnly）目录记录 T_IS_FLAMMABLE 但无 fireType：直燃时
- *     promoteTile 无 DF 可落，BOG 不再可点燃（web 旧白名单行为退役）。
- *   - 火烧到生物仍是 Game.applyEnvironmentalEffects 的固定 2 点（§三：
- *     CE 两段燃烧状态机归 F-2b）。
+ *   - randRange(0,0) 在 web 不消耗抽取（CE rand_range(0,0) 消耗）：只影响
+ *     流位置记账，web 流本就独立，行为无差；
+ *   - volume 写入口钳制 65535（CE uint16 回绕）：触顶需单格 ≥4 支 dewar
+ *     叠加，实际不可达，登记；
+ *   - addGas 是 CE 没有的概念，其语义按 CE GAS 层 DF 特例
+ *     （Architect.c:3384-3386 `volume += startProb; layers[GAS] = tile`）
+ *     折算——体积加法、类型无条件换型，不再是 web 旧的"amount > density
+ *     才顶替"（那套混液规则随 0-100 量纲一起退役）；
+ *   - GasType.CREEPING_DEATH（web 自创，CE 无此气体）保留枚举值供渲染/
+ *     效果代码引用（D2：保留代码），但无 TerrainType 载体、不参与层存储，
+ *     addGas 对其返回 false（留痕见 g_1 测试）；GameType.FIRE 死枚举随
+ *     P1-45 幽灵气写者一起删除。
+ * 火侧入口（ignite / igniteForced / updateFires / takeNewlyCaughtFire）
+ * 语义不变——火侧是本轮的反向哨兵（任务书 §三）。
  */
 
-import { Grid, DCOLS, DROWS, DungeonLayer, TerrainType } from '../Map/Grid';
+import { Grid, DCOLS, DROWS, DungeonLayer, TerrainType, TERRAIN_HOME_LAYER } from '../Map/Grid';
 import { rng } from '../Random';
+import {
+    TERRAIN_FLAGS,
+    T_AUTO_DESCENT,
+    T_OBSTRUCTS_GAS,
+    TM_GAS_DISSIPATES,
+    TM_GAS_DISSIPATES_QUICKLY,
+} from '../Map/TerrainCatalog';
+import { cellTerrainFlags, catalogFeature, spawnDungeonFeature } from '../Map/DungeonFeature';
 import { DF } from '../Map/DungeonFeatureCatalog';
-import { catalogFeature, spawnDungeonFeature } from '../Map/DungeonFeature';
 import { exposeTileToFire, runFireUpdate } from '../Map/Promotion';
 import type { Pos } from '../../types';
 
+/**
+ * 气体类型。G-1 起数值 = 对应 GAS 层 TerrainType 的枚举值（同一存储，
+ * 同一比较口径），渲染层（GameCanvas）的 `gas.type === GasType.X` 比较因此
+ * 无需改动。web 旧枚举值（POISON=2 等）随 0-100 量纲一起退役——
+ * 旧存档里的旧值会被 loadSnapshot 的 addGas 校验拒绝（登记报告）。
+ */
 export enum GasType {
-    NONE = 0,
-    FIRE = 1,
-    POISON = 2,
-    CONFUSION = 3,
-    STEAM = 4,
-    CREEPING_DEATH = 5
+    NONE = TerrainType.NOTHING,
+    POISON = TerrainType.POISON_GAS,
+    CONFUSION = TerrainType.CONFUSION_GAS,
+    STEAM = TerrainType.STEAM,
+    /**
+     * D2 留痕：web 自创气体，CE 无对应 tile（F-0 §2.1/§5.2-5），故无层载体。
+     * 数值故意取在 TerrainType 值域之外（当前最大 36）：万一被误写入层，
+     * TERRAIN_FLAGS 查表得到 undefined 会响亮崩溃而不是静默污染。
+     * 生成池已排空（Game 侧 D2 过滤），正常游戏不可达。
+     */
+    CREEPING_DEATH = 250
 }
 
+/** 该类型是否有 GAS 层载体（即是否为注册过的气体地形）。 */
+export function isGasTerrain(t: number): boolean {
+    return TERRAIN_HOME_LAYER[t as TerrainType] === DungeonLayer.GAS;
+}
+
+/**
+ * gasGrid 镜像条目。`density` 字段名保留（渲染/存档接口在禁改/既有文件），
+ * G-1 起语义 = CE volume（0-65535，不再是 0-100）。type = layers[GAS] 的
+ * 原值（GasType 常量与其数值相等，比较两可）。type=NONE 而 density>0 是
+ * 合法状态（CE 随机舍入的"不可见残气"，无旗标不消散、可被后续云团收编）。
+ */
 export interface GasCell {
     type: GasType;
-    density: number; // 0-100
+    density: number; // = CE volume（G-1 起不再是 0-100）
 }
 
 export class EnvironmentManager {
+    /**
+     * 渲染/存档镜像（只读消费）。事实来源是 grid 各格的 layers[GAS]+volume；
+     * 同步点：addGas（单格）、updateGases（每轮末全量）、syncGasMirror（外部
+     * 直写 GAS 层后调用方触发）、clearGasAt。
+     */
     public gasGrid: GasCell[][] = [];
     private grid: Grid;
     /** F-2a：点火入口（ignite/igniteForced）攒下的 CAUGHT_FIRE_THIS_TURN
@@ -77,20 +123,64 @@ export class EnvironmentManager {
         }
     }
 
-    public addGas(x: number, y: number, type: GasType, amount: number) {
-        if (!this.grid.isValidPos(x, y)) return;
+    /**
+     * 往 (x,y) 注入 amount 体积的 type 气体。CE 没有 addGas 概念；语义按
+     * CE GAS 层 DF 特例（Architect.c:3384-3386）折算：
+     *   volume += amount（钳 65535），layers[GAS] = type（无条件换型）。
+     * 对无层载体的类型（CREEPING_DEATH / NONE / 任意非气体地形）拒绝写入
+     * 并返回 false——P1-45 幽灵气（Game.ts 旧 creeping_death 药水写
+     * type=1=FIRE 的占位气）的结构性防复发；旧存档里的遗留气体（旧枚举值）
+     * 在 loadSnapshot 处被同一校验丢弃（登记报告）。
+     */
+    public addGas(x: number, y: number, type: GasType, amount: number): boolean {
+        if (!this.grid.isValidPos(x, y)) return false;
+        if (!isGasTerrain(type)) return false;
 
-        const cell = this.gasGrid[x]![y]!;
-        if (cell.type === GasType.NONE || cell.type === type) {
-            cell.type = type;
-            cell.density = Math.min(100, cell.density + amount);
-        } else {
-            // Very simplified gas mixing (override if strong enough)
-            if (amount > cell.density) {
-                cell.type = type;
-                cell.density = amount;
+        const cell = this.grid.getCell(x, y)!;
+        cell.volume = Math.min(65535, cell.volume + amount);
+        // GasType 的气体成员与 GAS 层 TerrainType 同值同义（枚举双身份），
+        // TS 视两枚举为不相交类型，经 number 中转定位。
+        cell.layers[DungeonLayer.GAS] = type as unknown as TerrainType;
+        this.syncMirrorAt(x, y);
+        return true;
+    }
+
+    /** 清除一格的气体（体积 + GAS 层）。房间基线还原用（Game.ts）。 */
+    public clearGasAt(x: number, y: number): void {
+        const cell = this.grid.getCell(x, y);
+        if (!cell) return;
+        cell.volume = 0;
+        cell.layers[DungeonLayer.GAS] = TerrainType.NOTHING;
+        this.syncMirrorAt(x, y);
+    }
+
+    /** CE Time.c:1600-1613 的探测：场上是否还有气体（GAS 层非空）。 */
+    public hasVolumetricGas(): boolean {
+        for (let x = 0; x < this.grid.width; x++) {
+            for (let y = 0; y < this.grid.height; y++) {
+                if (this.grid.getCell(x, y)!.layers[DungeonLayer.GAS] !== TerrainType.NOTHING) {
+                    return true;
+                }
             }
         }
+        return false;
+    }
+
+    /** 全量重建镜像（外部路径直写 GAS 层后的对账口）。 */
+    public syncGasMirror(): void {
+        for (let x = 0; x < this.grid.width; x++) {
+            for (let y = 0; y < this.grid.height; y++) {
+                this.syncMirrorAt(x, y);
+            }
+        }
+    }
+
+    private syncMirrorAt(x: number, y: number): void {
+        const cell = this.grid.getCell(x, y);
+        const entry = this.gasGrid[x]?.[y];
+        if (!cell || !entry) return;
+        entry.type = cell.layers[DungeonLayer.GAS] as unknown as GasType;
+        entry.density = cell.volume;
     }
 
     /**
@@ -150,8 +240,11 @@ export class EnvironmentManager {
      *      §二.3 的既授权后果；
      *   2. CE 火段（Time.c:1688-1700，Promotion.runFireUpdate：12 次暴露
      *      封顶、4 邻 chanceToIgnite 掷骰、可燃物经 promoteTile 消耗）；
-     *   3. 蒸汽分支（web 自创，原样保留 8 邻口径）：燃烧格贴水 30% 冒
-     *      50 密度蒸汽——CE 的蒸汽来自水体自身被点燃（§5.3-9），归 G 链。
+     *   3. 蒸汽分支（web 自创机制原样保留，量纲按 G-1 折算）：燃烧格贴水
+     *      30% 冒蒸汽。旧值 50 是 0-100 密度口径；G-1 折算为 325 =
+     *      DF_STEAM_PUFF 的 startProbability（Globals.c:665，CE 蒸汽一缕的
+     *      体积）——机制的 CE 对应物（水体自身被点燃 → DF_STEAM_ACCUMULATION）
+     *      归 G-2 接线。
      *
      * `caughtFireCells`：调用方持有的当前起火格集（Game.pendingCaughtFireCells，
      * CE CAUGHT_FIRE_THIS_TURN 在火段时点的存活半边），火段对它们不重复暴露。
@@ -191,7 +284,9 @@ export class EnvironmentManager {
                     // 是火（F-1 起的口径，原样保留）。
                     if (ncell.layers[DungeonLayer.LIQUID] === TerrainType.WATER_SHALLOW || ncell.layers[DungeonLayer.LIQUID] === TerrainType.WATER_DEEP) {
                         if (rng.randPercent(30)) {
-                            this.addGas(x + dx!, y + dy!, GasType.STEAM, 50);
+                            // G-1 量纲折算：50（旧 0-100 口径）→ 325
+                            // （DF_STEAM_PUFF，Globals.c:665）。
+                            this.addGas(x + dx!, y + dy!, GasType.STEAM, 325);
                         }
                     }
                 }
@@ -215,84 +310,129 @@ export class EnvironmentManager {
         return fired.caughtFireCells;
     }
 
-    public updateGases() {
-        const newGrid: GasCell[][] = [];
-        for (let x = 0; x < DCOLS; x++) {
-            newGrid[x] = [];
-            for (let y = 0; y < DROWS; y++) {
-                newGrid[x]![y] = { type: this.gasGrid[x]![y]!.type, density: this.gasGrid[x]![y]!.density };
-            }
-        }
+    // CE nbDirs 全 8 向（GlobalsBase.c:38）——顺序逐项一致（前 4 正交、
+    // 后 4 对角）。求和/计数与顺序无关，但照抄以保持逐行可对读。
+    private static readonly NB_DIRS8: ReadonlyArray<readonly [number, number]> = [
+        [0, -1], [0, 1], [-1, 0], [1, 0],
+        [-1, -1], [-1, 1], [1, -1], [1, 1],
+    ];
 
-        for (let x = 0; x < DCOLS; x++) {
-            for (let y = 0; y < DROWS; y++) {
-                const cell = this.gasGrid[x]![y]!;
-                if (cell.density <= 0) continue;
+    /**
+     * CE updateVolumetricMedia（Time.c:1383-1479）逐行移植。一次调用 =
+     * 一轮 8 邻体积均分；每玩家回合跑两轮的节奏由 Game.objectiveTimeBlock
+     * 掌握（CE updateEnvironment 的探测 + "// update gases twice"）。
+     * RNG 消耗（与 CE 同序）：每个不挡气的格每轮一次随机舍入
+     * rand_range(0, numSpaces-1)；有体积且带消散旗标的格再加一次
+     * rand_percent(50/20)。扫描次序 i 外层 j 内层。
+     */
+    public updateGases(): void {
+        const grid = this.grid;
+        const W = grid.width;
+        const H = grid.height;
+        const idx = (px: number, py: number): number => py * W + px;
 
-                // Natural dissipation
-                let dissipationRate = 2;
-                if (cell.type === GasType.STEAM) dissipationRate = 5;
-                if (cell.type === GasType.CREEPING_DEATH) dissipationRate = 1;
+        // CE `unsigned short newGasVolume[DCOLS][DROWS]`：Uint16Array 复刻
+        // CE 的 uint16 回绕语义（Time.c:1387）。
+        const newGasVolume = new Uint16Array(W * H);
 
-                newGrid[x]![y]!.density -= dissipationRate;
-                if (newGrid[x]![y]!.density <= 0 && this.gasGrid[x]![y]!.type === newGrid[x]![y]!.type) {
-                    newGrid[x]![y]!.type = GasType.NONE;
-                    newGrid[x]![y]!.density = 0;
-                }
+        const obstructsGas = (x: number, y: number): boolean =>
+            (cellTerrainFlags(grid, x, y) & T_OBSTRUCTS_GAS) !== 0;
 
-                if (cell.density > 10) {
-                    const dirs = [[0, -1], [0, 1], [-1, 0], [1, 0]];
-                    for (const [dx, dy] of dirs) {
-                        const nx = x + dx!;
-                        const ny = y + dy!;
-                        if (!this.grid.isValidPos(nx, ny)) continue;
-
-                        const terrainCell = this.grid.getCell(nx, ny);
-                        if (!terrainCell || terrainCell.isOpaque) continue; // Don't spread into walls/doors
-
-                        // Creeping death does not spread onto grass/foliage/bog
-                        if (cell.type === GasType.CREEPING_DEATH) {
-                            if (terrainCell.terrain === TerrainType.GRASS || terrainCell.terrain === TerrainType.FOLIAGE || terrainCell.terrain === TerrainType.BOG) {
-                                continue;
-                            }
+        for (let i = 0; i < W; i++) {
+            for (let j = 0; j < H; j++) {
+                const cell = grid.getCell(i, j)!;
+                if (!obstructsGas(i, j)) {
+                    // CE :1401-1424：邻域闭集（自身 + 8 个不挡气的在图邻居）
+                    // 的体积和与"最大体积者的类型"（平局归自己）。
+                    let sum = cell.volume;
+                    let numSpaces = 1;
+                    let highestNeighborVolume = cell.volume;
+                    let gasType = cell.layers[DungeonLayer.GAS]!;
+                    for (const [dx, dy] of EnvironmentManager.NB_DIRS8) {
+                        const newX = i + dx;
+                        const newY = j + dy;
+                        if (!grid.isValidPos(newX, newY)) continue;
+                        if (obstructsGas(newX, newY)) continue;
+                        const n = grid.getCell(newX, newY)!;
+                        sum += n.volume;
+                        numSpaces++;
+                        if (n.volume > highestNeighborVolume) {
+                            highestNeighborVolume = n.volume;
+                            gasType = n.layers[DungeonLayer.GAS]!;
                         }
-
-                        const neighbor = newGrid[nx]![ny]!;
-                        // Simple diffusion pressure
-                        const spreadAmount = Math.floor(cell.density * 0.15); // 15% spreads to each neighbor
-
-                        // Creeping Death spreads aggressively
-                        const actualSpread = cell.type === GasType.CREEPING_DEATH ? Math.floor(cell.density * 0.25) : spreadAmount;
-
-                        if (neighbor.type === GasType.NONE || neighbor.type === cell.type) {
-                            neighbor.type = cell.type;
-                            neighbor.density = Math.min(100, neighbor.density + actualSpread);
-                            newGrid[x]![y]!.density -= actualSpread; // Conservation of volume
-                        } else if (neighbor.type !== cell.type) {
-                            // Heavy gas replaces lighter gas
-                            if (cell.density > neighbor.density + 20) {
-                                neighbor.type = cell.type;
-                                neighbor.density = actualSpread;
-                                newGrid[x]![y]!.density -= actualSpread;
+                    }
+                    // CE :1404-1406：chasm/trapdoor 格 numSpaces++——
+                    // 气体从此逃出层外（分母变大、总量减少）。
+                    if ((cellTerrainFlags(grid, i, j) & T_AUTO_DESCENT) !== 0) {
+                        numSpaces++;
+                    }
+                    // CE :1408-1410：均分 + 随机舍入。
+                    let nv = Math.floor(sum / Math.max(1, numSpaces));
+                    if (rng.randRange(0, numSpaces - 1) < (sum % numSpaces)) {
+                        nv++; // stochastic rounding
+                    }
+                    // CE :1427-1431：类型竞争。邻域最大者的类型 ≠ 本格类型且
+                    // 新体积 >3 → 整体换型；换型前已有别的气的，新体积压到 3
+                    // （"otherwise interactions between gases are crazy"）。
+                    // 本格类型 == 最大者类型，或新体积 ≤3：保持原状。
+                    if (cell.layers[DungeonLayer.GAS] !== gasType && nv > 3) {
+                        if (cell.layers[DungeonLayer.GAS] !== TerrainType.NOTHING) {
+                            nv = Math.min(3, nv);
+                        }
+                        cell.layers[DungeonLayer.GAS] = gasType;
+                    } else if (cell.layers[DungeonLayer.GAS] !== TerrainType.NOTHING && nv < 1) {
+                        // CE :1432-1436：体积归零即收层（不可见残气 volume
+                        // 可暂存于 NOTHING 层，CE 同——见文件头 GasCell 注）。
+                        cell.layers[DungeonLayer.GAS] = TerrainType.NOTHING;
+                    }
+                    // CE :1437-1444：消散二档（读"当前"GAS 层 tile 的旗标——
+                    // 换型/收层之后的值，CE 同序）。旧体积为 0 不掷。
+                    if (cell.volume > 0) {
+                        const mech = TERRAIN_FLAGS[cell.layers[DungeonLayer.GAS]!].mechFlags;
+                        if (mech & TM_GAS_DISSIPATES_QUICKLY) {
+                            if (rng.randPercent(50)) nv -= 1;
+                        } else if (mech & TM_GAS_DISSIPATES) {
+                            if (rng.randPercent(20)) nv -= 1;
+                        }
+                    }
+                    newGasVolume[idx(i, j)] = nv;
+                } else if (cell.volume > 0) {
+                    // CE :1446-1474：挡气格里被困的气，瞬时散给能存的邻居
+                    // （整除均分；够 1 体积才换型），自身清零。
+                    let numSpaces = 0;
+                    for (const [dx, dy] of EnvironmentManager.NB_DIRS8) {
+                        const newX = i + dx;
+                        const newY = j + dy;
+                        if (grid.isValidPos(newX, newY) && !obstructsGas(newX, newY)) {
+                            numSpaces++;
+                        }
+                    }
+                    if (numSpaces > 0) {
+                        for (const [dx, dy] of EnvironmentManager.NB_DIRS8) {
+                            const newX = i + dx;
+                            const newY = j + dy;
+                            if (!grid.isValidPos(newX, newY)) continue;
+                            if (obstructsGas(newX, newY)) continue;
+                            newGasVolume[idx(newX, newY)] = newGasVolume[idx(newX, newY)]! + Math.floor(cell.volume / numSpaces);
+                            if (Math.floor(cell.volume / numSpaces) > 0) {
+                                grid.getCell(newX, newY)!.layers[DungeonLayer.GAS] =
+                                    cell.layers[DungeonLayer.GAS]!;
                             }
                         }
                     }
+                    newGasVolume[idx(i, j)] = 0;
+                    cell.layers[DungeonLayer.GAS] = TerrainType.NOTHING;
                 }
             }
         }
 
-        // Clean up and clamp
-        for (let x = 0; x < DCOLS; x++) {
-            for (let y = 0; y < DROWS; y++) {
-                if (newGrid[x]![y]!.density <= 0) {
-                    newGrid[x]![y]!.type = GasType.NONE;
-                    newGrid[x]![y]!.density = 0;
-                } else if (newGrid[x]![y]!.density > 100) {
-                    newGrid[x]![y]!.density = 100;
-                }
+        // CE :1472-1478：终局写回。
+        for (let i = 0; i < W; i++) {
+            for (let j = 0; j < H; j++) {
+                grid.getCell(i, j)!.volume = newGasVolume[idx(i, j)]!;
             }
         }
 
-        this.gasGrid = newGrid;
+        this.syncGasMirror();
     }
 }

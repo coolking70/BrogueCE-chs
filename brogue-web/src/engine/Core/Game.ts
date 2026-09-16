@@ -40,7 +40,17 @@ import {
 import { WaypointSystem, WAYPOINT_SIGHT_RADIUS, type WaypointContext } from '../Map/WaypointMap';
 import i18next from 'i18next';
 
-import { EnvironmentManager } from '../Environment/Gas';
+/**
+ * D2（G-1 / P1-45）：从随机生成池排除的 web 自创药水。
+ * potion_of_creeping_death：CE 无 creeping death 药水（F-0 §5.2-5），且其
+ * 旧实现写的是 GasType.FIRE 幽灵气（P1-45）。权威排池机制（consumables.json
+ * 的 excludeFromGeneration 标记）在禁改数据文件里，本轮按
+ * ItemLoader.GENERATED_*_RUNICS 的"代码侧排池"先例在抽取点过滤；
+ * 数据侧标记与 ItemLoader.genPotions 的收口留给数据文件轮次。
+ */
+const D2_EXCLUDED_POTIONS: ReadonlySet<string> = new Set(['potion_of_creeping_death']);
+
+import { EnvironmentManager, GasType } from '../Environment/Gas';
 import { FOVSys } from '../Lighting/FOV';
 import { LightMap } from '../Lighting/LightMap';
 import { FloatingText } from '../Visuals/FloatingText';
@@ -221,7 +231,9 @@ export interface GameSnapshot {
     gasGrid: Array<{
         x: number;
         y: number;
+        /** G-1 起 = GAS 层地形值（GasType 常量与其相等）；type/density 语义 = CE layers[GAS]/volume。 */
         type: number;
+        /** G-1 起 = CE volume（0-65535），字段名保留为旧存档兼容。 */
         density: number;
     }>;
     stats?: {
@@ -557,7 +569,14 @@ export class Game {
                 return null;
             }
             case 'POTION': {
-                const potions = ItemLoader.genPotions;
+                // D2（G-1 / P1-45）：potion_of_creeping_death 是 web 自创
+                // （CE 无 creeping death 药水，F-0 §5.2-5），退出生成池。
+                // 权威机制（consumables.json 的 excludeFromGeneration）在
+                // 禁改数据文件里，本轮按 ItemLoader.GENERATED_*_RUNICS 的
+                // "代码侧排池"先例在此过滤（g_1 报告 §P1-45 登记）。
+                const potions = ItemLoader.genPotions.filter(
+                    (p) => !D2_EXCLUDED_POTIONS.has(p.id)
+                );
                 if (potions.length > 0) return ItemLoader.spawnPotion(potions[rng.randRange(0, potions.length - 1)]!.id, x, y);
                 return null;
             }
@@ -1028,7 +1047,10 @@ export class Game {
                 const id = rng.randPercent(50) ? 'leather_armor' : 'chain_mail';
                 item = ItemLoader.spawnArmor(id, pos.x, pos.y);
             } else if (randType === 2) {
-                const validPotions = ItemLoader.genPotions.filter(p => depth >= p.minDepth && depth <= p.maxDepth);
+                // D2（G-1 / P1-45）：creeping_death 退出生成池（同上）。
+                const validPotions = ItemLoader.genPotions
+                    .filter(p => depth >= p.minDepth && depth <= p.maxDepth)
+                    .filter(p => !D2_EXCLUDED_POTIONS.has(p.id));
                 if (validPotions.length > 0) {
                     const id = validPotions[rng.randRange(0, validPotions.length - 1)]!.id;
                     item = ItemLoader.spawnPotion(id, pos.x, pos.y);
@@ -2881,7 +2903,10 @@ export class Game {
                         break;
                     case 'poison_burst':
                         logger.log(i18next.t('potion.poison_burst', { defaultValue: 'A toxic cloud billows around you!' }), '#88ff88');
-                        this.environment.addGas(this.player.loc.x, this.player.loc.y, 2, 70);
+                        // G-1 量纲折算：70（旧 0-100 密度）→ 1000 =
+                        // DF_POISON_GAS_CLOUD_POTION 的 startProbability
+                        // （Globals.c:779；半径 4 的铺展由体积扩散自然长出）。
+                        this.environment.addGas(this.player.loc.x, this.player.loc.y, GasType.POISON, 1000);
                         break;
                     case 'confusion_burst':
                         this.applyTimedStatus(this.player, 'hallucinating', 12);
@@ -2896,7 +2921,14 @@ export class Game {
                         logger.log(i18next.t('potion.hallucinate_burst', { defaultValue: 'The world transforms into a swirling kaleidoscope of colors!' }), '#cc99ff');
                         break;
                     case 'creeping_death':
-                        this.environment.addGas(this.player.loc.x, this.player.loc.y, 1, 100); // Will add actual caustic gas later
+                        // P1-45（G-1）：占位的 `addGas(x, y, 1, 100)` 删除——
+                        // 字面量 1 即旧 GasType.FIRE，喷出的是一团不渲染、无
+                        // 效果、却占格扩散并挡住真气体的"幽灵气"（F-0 §2.2）。
+                        // GasType.FIRE 死枚举随之退役；GasType 本身也已改基到
+                        // GAS 层地形值，1 现在是 GRANITE，任何残留写法都会被
+                        // addGas 的载体校验拒绝。creeping_death 是 web 自创
+                        // 内容（CE 无此药水/气体，F-0 §5.2-5），按 D2 保留
+                        // 本效果分支但退出生成池（见 D2_EXCLUDED_POTIONS）。
                         logger.log(i18next.t('potion.creeping_death', { defaultValue: 'A terrifying green gas fills the area!' }), '#88ff88');
                         break;
                     case 'resist_fire':
@@ -4079,9 +4111,13 @@ export class Game {
                         const dirs = [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, 1], [-1, 1], [1, -1]];
                         for (const [dx, dy] of dirs) this.environment.igniteForced(tx + dx!, ty + dy!);
                     } else if (data.effect === 'poison_burst') {
-                        this.environment.addGas(tx, ty, 2 /* POISON */, 100);
+                        // G-1 折算：100 → 1000（DF_POISON_GAS_CLOUD_POTION，
+                        // Globals.c:779——怪物药水溅射的最近亲 DF，F-0 §3.3）。
+                        this.environment.addGas(tx, ty, GasType.POISON, 1000);
                     } else if (data.effect === 'confusion_burst') {
-                        this.environment.addGas(tx, ty, 3 /* CONFUSION */, 100);
+                        // G-1 折算：100 → 1000（DF_CONFUSION_GAS_CLOUD_POTION，
+                        // Globals.c:779）。
+                        this.environment.addGas(tx, ty, GasType.CONFUSION, 1000);
                     } else if (data.effect === 'heal_full') {
                         const mob = this.getMonsterAt(tx, ty);
                         if (mob) {
@@ -5290,10 +5326,10 @@ export class Game {
      * 时序，尽量做到同回合触发，而不是拖到下一次 playerTurnEnded 才生效。
      *
      * 本轮只接了两种：
-     *   - bloat → DF_BLOAT_DEATH（毒气，Globals.c:654 GAS 层，startprob 当
-     *     体积单点喷发）。web 的 addGas density 上限 0-100（非 CE 的 2000
-     *     "体积"量纲），取项目既有毒气类道具/陷阱的满值 100（Game.ts 的
-     *     poison_burst 药水、地板陷阱均用 80-100），不新发明映射公式。
+     *   - bloat → DF_BLOAT_DEATH（毒气，Globals.c:653 GAS 层，startprob 当
+     *     体积单点喷发；原注释的 654 为行号漂移，本轮实测翻正）。G-1 起
+     *     量纲即 CE 体积：注入 2000 = DF_BLOAT_DEATH 的 startProbability，
+     *     旧 0-100 密度口径（满值 100）已随量纲退役。
      *   - explosive_bloat → DF_BLOAT_EXPLOSION（GAS_EXPLOSION 地形，
      *     Globals.c:496 T_IS_FIRE|T_CAUSES_EXPLOSIVE_DAMAGE——覆盖在原有地形
      *     之上，不检查底下能不能烧）。web 没有瞬时范围爆炸伤害机制，复用
@@ -5315,7 +5351,9 @@ export class Game {
             m.deathEffectTriggered = true;
 
             if (m.typeId === 'bloat') {
-                this.environment.addGas(m.loc.x, m.loc.y, 2 /* GasType.POISON */, 100);
+                // G-1 折算：100（旧 0-100 密度）→ 2000 = DF_BLOAT_DEATH 的
+                // startProbability（Globals.c:653，CE 的 bloat 毒气体积）。
+                this.environment.addGas(m.loc.x, m.loc.y, GasType.POISON, 2000);
                 logger.log(i18next.t('death.bloat_gas', {
                     name: m.name,
                     defaultValue: `The ${m.name} releases a cloud of caustic gas!`
@@ -5617,6 +5655,13 @@ export class Game {
                 logger.log(p.spawn.message, '#aaaaaa');
             }
         }
+        // G-1：晋升链若接出了 GAS 层 DF（Architect.c:3384 volume 累加走
+        // Cell.volume），镜像须对账一次。当前目录尚无已接线的 GAS DF
+        // （归 G-2），本分支今天不可达——防御性对账，接线后即为活路径。
+        if (this.lastPromotionUpdate.promotions.some((p) => (p.spawn?.gasVolumeAdded ?? 0) > 0)
+            || this.lastPromotionUpdate.withoutKeyPromotions.some((p) => (p.spawn?.gasVolumeAdded ?? 0) > 0)) {
+            this.environment.syncGasMirror();
+        }
 
         // Let environment update
         // F-2a：updateFires 即 CE updateEnvironment 的火段（Time.c:1688-1700，
@@ -5628,7 +5673,17 @@ export class Game {
         if (fireCaught.length > 0) {
             this.pendingCaughtFireCells = [...this.pendingCaughtFireCells, ...fireCaught];
         }
-        this.environment.updateGases();
+        // G-1：CE Time.c:1600-1616——先全场探测 GAS 层非空，非空才
+        // `updateVolumetricMedia()` 连调**两次**（:1606 注释 "// update gases
+        // twice"；一次调用 = 一轮 8 邻体积均分，两轮 = 气体每回合推进约
+        // 2 格、消散期望也 ×2——QUICK 档约 −1.0/回合、SLOW 档约 −0.4）。
+        // 探测守卫同时保住无气体回合的 RNG 流：updateVolumetricMedia 每格
+        // 每轮各消耗一次随机舍入掷骰，空跑一回合就要白烧 2×DCOLS×DROWS 次
+        // 抽取并移动后续一切随机事件（CE 的探测就是干这个的）。
+        if (this.environment.hasVolumetricGas()) {
+            this.environment.updateGases();
+            this.environment.updateGases();
+        }
 
         // （F-2b：applyEnvironmentalEffects 已上移到晋升驱动之前——见块首注释。
         // 燃烧/毒气等对生物的结算因此使用本块火/气演化**之前**的状态，与 CE
@@ -5988,6 +6043,11 @@ export class Game {
             for (let y = 0; y < this.grid.height; y++) {
                 const gas = this.environment.gasGrid[x]?.[y];
                 if (!gas || gas.density <= 0) continue;
+                // G-1：type=NONE 的不可见残气（CE 随机舍入的 volume 孤儿）
+                // 不入档——无渲染无效果，且 addGas 的载体校验本来就会拒绝
+                // NONE；旧档里 0-100 口径的旧枚举值则被 addGas 校验统一
+                // 丢弃（登记报告）。
+                if (gas.type === GasType.NONE) continue;
                 gasGrid.push({
                     x,
                     y,
@@ -6115,8 +6175,11 @@ export class Game {
         }
 
         this.environment = new EnvironmentManager(this.grid);
+        // G-1：addGas 自带载体校验——旧档（0-100 口径的旧枚举值 2/3/4/5，
+        // 以及 P1-45 幽灵气的 1）不再是合法 GAS 层地形值，统一被拒绝丢弃；
+        // 新档的值就是 GAS 层地形原值，精确还原。
         for (const g of snapshot.gasGrid) {
-            this.environment.addGas(g.x, g.y, g.type as any, g.density);
+            this.environment.addGas(g.x, g.y, g.type as GasType, g.density);
         }
         this.fov = new FOVSys(this.grid);
         this.lightMap = new LightMap(this.grid);
@@ -6426,7 +6489,10 @@ export class Game {
             if (this.environment) {
                 const gas = this.environment.gasGrid[x]?.[y];
                 if (gas && gas.density > 0) {
-                    if (gas.type === 2 /* GasType.POISON */) {
+                    // G-1：gas.density 语义已是 CE volume；>0 / >20 阈值的
+                    // 效果判定本轮按任务书 §三 保持不动（阈值与比例伤害归
+                    // G-3）。GasType 已改基到 GAS 层地形值，字面量退役。
+                    if (gas.type === GasType.POISON) {
                         // Apply poisoned status instead of flat damage
                         const applied = entity === this.player
                             ? entity.applyStatus('poisoned', 5)
@@ -6434,21 +6500,24 @@ export class Game {
                         if (entity === this.player && applied) {
                             logger.log(i18next.t('env.player_poison_gas', { defaultValue: 'You breathe in toxic fumes!' }), '#aaeeaa');
                         }
-                    } else if (gas.type === 3 /* GasType.CONFUSION */ && gas.density > 20) {
+                    } else if (gas.type === GasType.CONFUSION && gas.density > 20) {
                         const applied = entity === this.player
                             ? entity.applyStatus('hallucinating', 6)
                             : this.applyStatusToMonster(entity as Monster, 'confused', 6, 'gas');
                         if (entity === this.player && applied) {
                             logger.log(i18next.t('env.player_confused_gas', { defaultValue: 'The confusion gas clouds your mind!' }), '#cc99ff');
                         }
-                    } else if (gas.type === 4 /* GasType.STEAM */ && gas.density > 20) {
+                    } else if (gas.type === GasType.STEAM && gas.density > 20) {
                         entity.hp -= 1;
                         if (entity === this.player) {
                             this.lastDamageSource = 'steam';
                             logger.log(i18next.t('env.player_scalded', { defaultValue: 'The steam scalds you!' }), '#cccccc');
                         }
                         if (entity.hp <= 0 && entity !== this.player) entity.die();
-                    } else if (gas.type === 5 /* GasType.CREEPING_DEATH */) {
+                    } else if (gas.type === GasType.CREEPING_DEATH) {
+                        // D2 留痕：本分支随 creeping_death 退池后不可达
+                        //（GasType.CREEPING_DEATH 无层载体，addGas 拒绝写入），
+                        // 按口径保留代码。
                         entity.hp -= 10;
                         if (entity === this.player) {
                             this.lastDamageSource = 'creeping death';
@@ -6645,10 +6714,10 @@ export class Game {
             cell.isOpaque = terrain.isOpaque;
             // F-2a：isBurning 是派生读数（基线无火 ⇒ 复位后恒 false），
             // 原直写三行（isBurning/burnDuration/burnTerrain）随倒计时模型退役。
-            const gas = this.environment.gasGrid[terrain.x]?.[terrain.y];
-            if (gas) {
-                gas.density = 0;
-            }
+            // G-1：气体的事实来源在 layers[GAS]+volume（gasGrid 只是镜像），
+            // 清气必须清真相——旧写法（只清镜像）会让气在下一 updateGases
+            // 全量重建镜像时复活。
+            this.environment.clearGasAt(terrain.x, terrain.y);
         }
 
         for (const itemSnapshot of room.baselineItems) {
@@ -6865,7 +6934,9 @@ export class Game {
         switch (cell.trapType) {
             case 'poison_gas':
                 logger.log(i18next.t('trap.poison_gas', { defaultValue: 'You step on a poison gas trap! Toxic fumes billow out!' }), '#88ff88');
-                this.environment.addGas(x, y, 2 /* POISON */, 80);
+                // G-1 折算：80 → 1000 = DF_POISON_GAS_CLOUD 的 startProbability
+                // （Globals.c:770，毒气陷阱的原生 DF；接线本身归 G-2）。
+                this.environment.addGas(x, y, GasType.POISON, 1000);
                 break;
             case 'teleport':
                 logger.log(i18next.t('trap.teleport', { defaultValue: 'You step on a teleport trap! You are whisked away!' }), '#ff88ff');
@@ -7010,7 +7081,15 @@ export class Game {
         }
 
         const separator = i18next.t('hover.separator', { defaultValue: '、' });
-        const tName = this.getTerrainName(cell.terrain);
+        // G-1：hover 的地形名优先取 GAS 层（CE tileText/tileFlavor 走
+        // highestPriorityLayer(x,y,false)——含气层，Movement.c:106/113；
+        // 站进毒气时 CE 悬浮提示显示"a cloud of caustic gas"）。
+        // terrain getter 本身固定 skipGas（Grid.ts G-1 注：玩法读者走旗标
+        // 并集世界），显示侧的气体偏好在这里补。
+        const gasTile = cell.layers[DungeonLayer.GAS]!;
+        const tName = this.getTerrainName(
+            gasTile !== TerrainType.NOTHING ? gasTile : cell.terrain
+        );
 
         let baseText = '';
         if (entities.length > 0) {

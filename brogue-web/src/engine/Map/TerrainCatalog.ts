@@ -383,6 +383,38 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
         TM_STAND_IN_TILE,
         0, 'DF_PLAIN_FIRE', '', '', 0
     ),
+
+    // ── G-1：CE 气体 tile（Globals.c:502-508，"// gas layer" 注释块）────────
+    // 三条全字段照抄 CE，无偏离。要点：
+    //   - 消散档位是 tile 机械旗标（updateVolumetricMedia 每轮读一次）：
+    //     POISON_GAS = TM_GAS_DISSIPATES（20%/轮 −1 体积），
+    //     CONFUSION_GAS / STEAM = TM_GAS_DISSIPATES_QUICKLY（50%/轮）。
+    //     这直接推翻 web 旧"定值消散"下 POISON≡CONFUSION 的恒等式。
+    //   - POISON_GAS / CONFUSION_GAS 可燃（T_IS_FLAMMABLE，ign 100），
+    //     fireType 全为 DF_GAS_FIRE（CE 数据如此；STEAM ign=0 不可燃但
+    //     fireType 列仍登记 DF_GAS_FIRE——照抄原表）。
+    //   - promoteChance 全 0：气体不自衰老，只靠体积消散/被点燃。
+    //   - glowLight（CONFUSION_GAS_LIGHT 等）web 无对应列，登记不迁移。
+    // CE Globals.c:502 POISON_GAS
+    [TerrainType.POISON_GAS]: e(
+        T_IS_FLAMMABLE | T_CAUSES_DAMAGE,
+        TM_STAND_IN_TILE | TM_GAS_DISSIPATES,
+        100, 'DF_GAS_FIRE', '', '', 0
+    ),
+
+    // CE Globals.c:503 CONFUSION_GAS
+    [TerrainType.CONFUSION_GAS]: e(
+        T_IS_FLAMMABLE | T_CAUSES_CONFUSION,
+        TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY,
+        100, 'DF_GAS_FIRE', '', '', 0
+    ),
+
+    // CE Globals.c:508 STEAM（不可燃——flags 无 T_IS_FLAMMABLE）
+    [TerrainType.STEAM]: e(
+        T_CAUSES_DAMAGE,
+        TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY,
+        0, 'DF_GAS_FIRE', '', '', 0
+    ),
 };
 
 // ── 派生判据（名字照 CE，语义 = 旗标位测试；CE Movement/Dijkstra 等处

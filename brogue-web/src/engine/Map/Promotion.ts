@@ -271,8 +271,13 @@ export function promoteTile(
             x, y, layer,
             layer === DungeonLayer.DUNGEON ? TerrainType.FLOOR : TerrainType.NOTHING
         );
-        // CE :1262-1264 GAS 层连 volume 清零——web Cell 无 volume 字段
-        // （Grid.ts 禁改；web GAS 层恒空，无可清），登记即可。
+        // CE :1262-1264 GAS 层连 volume 清零。G-1 起 Cell.volume 存在，
+        // 本分支由此接上（当前目录内 GAS 层 tile 均无 VANISHES 旗标，
+        // 分支尚未被真实行使——G-2 的 GAS_FIRE 落地时生效）。
+        if (layer === DungeonLayer.GAS) {
+            const vanishCell = grid.getCell(x, y);
+            if (vanishCell) vanishCell.volume = 0;
+        }
         result.vanished = true;
         result.mutated = true;
     }
@@ -550,9 +555,9 @@ export interface ExposeTileResult {
  *   5. alwaysIgnite || rand_percent(ignitionChance) → 点燃：所有可燃层依次
  *      promoteTile(useFireDF = !explosivePromotion)（:1358-1372）。甲烷爆轰
  *      分支（TM_EXPLOSIVE_PROMOTE + 8 邻计数 ≥8，:1347-1356）照抄——
- *      web 现目录无 TM_EXPLOSIVE_PROMOTE 载体、GAS 层恒空，分支今天不可达
- *      （G-1 甲烷落地时行使）；GAS 层可燃物只清 volume 的 CE 怪癖在 web 无
- *      对应物（web Cell 无 volume、GAS 层恒空），登记不实现。
+ *      web 现目录无 TM_EXPLOSIVE_PROMOTE 载体，分支今天不可达
+ *      （G-2 甲烷落地时行使）；GAS 层可燃物"只清 volume 不清层"的 CE
+ *      怪癖（:1361-1368）G-1 起已接（见下方实现内注释）。
  */
 export function exposeTileToFire(
     grid: Grid,
@@ -595,8 +600,8 @@ export function exposeTileToFire(
     if (alwaysIgnite || (ignitionChance && rng.randPercent(ignitionChance))) { // CE :1347
         result.ignited = true;
 
-        // 爆轰邻居计数（CE :1348-1356）：web 无 TM_EXPLOSIVE_PROMOTE 载体、
-        // GAS 层恒空——结构性不可达，照抄留形供 G-1 行使。
+        // 爆轰邻居计数（CE :1348-1356）：web 无 TM_EXPLOSIVE_PROMOTE 载体
+        // ——结构性不可达，照抄留形供 G-2（甲烷接线）行使。
         let explosivePromotion = false;
         if (cellTerrainMechFlags(grid, x, y) & TM_EXPLOSIVE_PROMOTE) {
             let explosiveNeighborCount = 0;
@@ -614,10 +619,17 @@ export function exposeTileToFire(
 
         // 可燃层依次被消耗（CE :1358-1372）：promoteTile 的 useFireDF =
         // !explosivePromotion——普通点燃走 fireType，爆轰走 promoteType。
+        // CE :1361-1368 的怪癖（注释自认"flammable gas burns its volume
+        // away"）：GAS 层可燃物（POISON/CONFUSION_GAS 等）先清 volume
+        // 再 promoteTile，且不清层（层由下一次 updateVolumetricMedia 在
+        // volume<1 时收走）。G-1 起 volume 存在，本分支由此接上；
+        // promoteTile 对 DF_GAS_FIRE 的缺 tile 缓办只挡 GAS_FIRE 落地
+        // （G-2），不影响这一步的体积消耗。
         for (let layer = 0; layer < DungeonLayer.COUNT; layer++) {
             if (TERRAIN_FLAGS[cell.layers[layer]!]!.flags & T_IS_FLAMMABLE) {
-                // CE 对 GAS 层可燃物只清 pmap.volume 不清层（Time.c:1364-1368
-                // 注释自认的怪癖）；web GAS 层恒空、Cell 无 volume，登记不实现。
+                if (layer === DungeonLayer.GAS) {
+                    cell.volume = 0; // CE :1362：Flammable gas burns its volume away.
+                }
                 const r = promoteTile(grid, x, y, layer, !explosivePromotion);
                 if (r.spawn) {
                     for (const p of r.spawn.caughtFireCells) {

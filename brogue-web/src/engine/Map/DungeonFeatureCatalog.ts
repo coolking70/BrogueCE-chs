@@ -60,6 +60,8 @@ export enum DF {
     DF_BRIDGE_FALL_PREP            = 98,  // :1589
     DF_BRIDGE_FALL                 = 99,  // :1590
     DF_PLAIN_FIRE                  = 100, // :1592
+    DF_GAS_FIRE                    = 101, // :1593（G-1：气体 tile 的 fireType 引用它；
+                                          // 载体 tile GAS_FIRE 未迁移，登记 G-2）
     DF_BRIMSTONE_FIRE              = 104, // :1596
     DF_BRIDGE_FIRE                 = 105, // :1597
     DF_EMBERS                      = 107, // :1599
@@ -102,7 +104,8 @@ export interface DungeonFeatureEntry {
 }
 
 /**
- * DF 目录（CE Globals.c:603-932 中本轮闭包涉及的 19 条）。
+ * DF 目录（CE Globals.c:603-932 中本轮闭包涉及的条目；C-4b 19 条、
+ * F-2a 增 DF_ASH 至 20、G-1 增 DF_GAS_FIRE 至 21）。
  *
  * 字段序照 CE 目录行注释（Globals.c:604）：
  *   tileType / layer / start / decr / fl / txt / flare / fCol / fRad /
@@ -232,6 +235,20 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
         description: '', lightFlare: '', flashColor: '', effectRadius: 0,
     },
 
+    // {GAS_FIRE, SURFACE, 0, 0, 0} —— 燃气之火（G-1 新增条目：POISON_GAS/
+    // CONFUSION_GAS 的 fireType 引用它；GAS_FIRE 是十种 T_IS_FIRE 地形之一
+    // （Globals.c:495，SURFACE 层——注意**不是** GAS 层，F-0 §3.2 表未记
+    // layer 列，本轮实测翻正）。tile 未迁移（G-2 接线 24 条 GAS DF 时随
+    // 燃气燃烧链落地）；在它落地前，exposeTileToFire 对可燃气体的 promoteTile
+    // 走 promoteTile 的缺 tile 缓办（volume 清零怪癖在 Promotion.ts 已接，
+    // CE Time.c:1361-1368）。
+    [DF.DF_GAS_FIRE]: {
+        id: DF.DF_GAS_FIRE, ceLine: 741, ceTile: 'GAS_FIRE', tile: null,
+        layer: DungeonLayer.SURFACE, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
     // {BRIMSTONE_FIRE, SURFACE, 0, 0, 0} —— 硫矿火（web 无此 tile，登记）
     [DF.DF_BRIMSTONE_FIRE]: {
         id: DF.DF_BRIMSTONE_FIRE, ceLine: 744, ceTile: 'BRIMSTONE_FIRE', tile: null,
@@ -290,14 +307,19 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     },
 };
 
-/** 本轮登记"CE 有 tileType 而 web 没有地形"的目录条目 id 清单
+/** 登记"CE 有 tileType 而 web 没有地形"的目录条目 id 清单
  *  （新增地形轮次的输入；测试钉死，新地形落地后逐一翻正）。
  *  F-2a 翻正：DF_PLAIN_FIRE（PLAIN_FIRE 地形 F-1 已有）、DF_EMBERS /
- *  DF_ASH（EMBERS/ASH 地形本轮新增）摘除，11 → 9。 */
+ *  DF_ASH（EMBERS/ASH 地形本轮新增）摘除，11 → 9。
+ *  G-1 增补：DF_GAS_FIRE（GAS_FIRE tile 未迁移）入列，9 → 10。
+ *  注：STEAM / POISON_GAS / METHANE_GAS 的 tile 本轮虽已迁移（G-1 的
+ *  气体地形），但它们的 DF 属"24 条 GAS 层 DF 接线"（G-2 范围），条目
+ *  保持 tile: null 不提前接线。 */
 export const DF_MISSING_TILES: readonly DF[] = [
-    DF.DF_STEAM_ACCUMULATION,      // STEAM
-    DF.DF_METHANE_GAS_PUFF,        // METHANE_GAS
-    DF.DF_POISON_GAS_CLOUD,        // POISON_GAS
+    DF.DF_STEAM_ACCUMULATION,      // STEAM（tile 已存在，接线归 G-2）
+    DF.DF_METHANE_GAS_PUFF,        // METHANE_GAS（tile 未迁移）
+    DF.DF_POISON_GAS_CLOUD,        // POISON_GAS（tile 已存在，接线归 G-2）
+    DF.DF_GAS_FIRE,                // GAS_FIRE（tile 未迁移）
     DF.DF_TRAMPLED_FOLIAGE,        // TRAMPLED_FOLIAGE
     DF.DF_ACTIVE_BRIMSTONE,        // ACTIVE_BRIMSTONE
     DF.DF_BRIMSTONE_FIRE,          // BRIMSTONE_FIRE

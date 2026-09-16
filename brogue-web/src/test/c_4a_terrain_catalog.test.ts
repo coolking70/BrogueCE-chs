@@ -30,8 +30,10 @@ import {
     T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_LAKE_PATHING_BLOCKER,
     T_WAYPOINT_BLOCKER, T_OBSTRUCTS_SCENT, T_MOVES_ITEMS,
     T_OBSTRUCTS_EVERYTHING,
+    T_CAUSES_DAMAGE, T_CAUSES_CONFUSION,
     TM_ALLOWS_SUBMERGING, TM_EXTINGUISHES_FIRE, TM_PROMOTES_WITH_KEY,
     TM_IS_SECRET, TM_VANISHES_UPON_PROMOTION, TM_STAND_IN_TILE, TM_VISUALLY_DISTINCT,
+    TM_GAS_DISSIPATES, TM_GAS_DISSIPATES_QUICKLY,
     blocksPassability, isPathingBlocker, blocksVision,
     obstructsItems, obstructsDiagonalMovement, isDeepWater, isFlammable,
     isFireTerrain,
@@ -117,7 +119,9 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         const names = Object.keys(TerrainType).filter((k) => Number.isNaN(Number(k)));
         // F-1：PLAIN_FIRE 入列（CE Globals.c:492），31 → 32。
         // F-2a：EMBERS/ASH 入列（CE Globals.c:469/461，火寿命链载体），32 → 34。
-        expect(names.length).toBe(34);
+        // G-1：POISON_GAS/CONFUSION_GAS/STEAM 入列（CE Globals.c:502/503/508，
+        // 气体迁层的三种可产气体载体），34 → 37。
+        expect(names.length).toBe(37);
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             const entry = TERRAIN_FLAGS[t];
@@ -210,6 +214,35 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         expect(TERRAIN_FLAGS[C.ASH]!.promoteChance).toBe(0);
         expect(DRAW_PRIORITY[C.ASH]).toBe(80);
         expect(TERRAIN_HOME_LAYER[C.ASH]).toBe(L.SURFACE);
+    });
+
+    it('G-1 新增条目：POISON_GAS（Globals.c:502）/ CONFUSION_GAS（:503）/ STEAM（:508）逐字段钉死', () => {
+        // 气体 tile 的关键事实：
+        //   - 消散档位是机械旗标（updateVolumetricMedia 每轮读）：POISON
+        //     SLOW（20%）、CONFUSION/STEAM QUICK（50%）——web 旧"定值消散"
+        //     下 POISON≡CONFUSION 的恒等式在此破缺；
+        //   - POISON/CONFUSION 可燃（ign 100，fireType DF_GAS_FIRE），
+        //     STEAM 不可燃（flags 无 T_IS_FLAMMABLE）；
+        //   - drawPriority 全 35；归属层全 GAS。
+        // 捕获的错误实现：给 STEAM 抄 T_IS_FLAMMABLE、给 POISON 抄 QUICK
+        // 档、把 drawPriority 写成别的值。
+        expect(TERRAIN_FLAGS[C.POISON_GAS]!.flags).toBe(T_IS_FLAMMABLE | T_CAUSES_DAMAGE);
+        expect(TERRAIN_FLAGS[C.POISON_GAS]!.mechFlags).toBe(TM_STAND_IN_TILE | TM_GAS_DISSIPATES);
+        expect(TERRAIN_FLAGS[C.POISON_GAS]!.chanceToIgnite).toBe(100);
+        expect(TERRAIN_FLAGS[C.POISON_GAS]!.fireType).toBe('DF_GAS_FIRE');
+        expect(TERRAIN_FLAGS[C.POISON_GAS]!.promoteChance).toBe(0);
+        expect(TERRAIN_FLAGS[C.CONFUSION_GAS]!.flags).toBe(T_IS_FLAMMABLE | T_CAUSES_CONFUSION);
+        expect(TERRAIN_FLAGS[C.CONFUSION_GAS]!.mechFlags).toBe(TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY);
+        expect(TERRAIN_FLAGS[C.CONFUSION_GAS]!.chanceToIgnite).toBe(100);
+        expect(TERRAIN_FLAGS[C.CONFUSION_GAS]!.fireType).toBe('DF_GAS_FIRE');
+        expect(TERRAIN_FLAGS[C.STEAM]!.flags).toBe(T_CAUSES_DAMAGE);
+        expect(TERRAIN_FLAGS[C.STEAM]!.mechFlags).toBe(TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY);
+        expect(TERRAIN_FLAGS[C.STEAM]!.chanceToIgnite).toBe(0);
+        expect(isFlammable(C.STEAM), 'STEAM 不可燃（CE flags 无 T_IS_FLAMMABLE）').toBe(false);
+        for (const t of [C.POISON_GAS, C.CONFUSION_GAS, C.STEAM]) {
+            expect(DRAW_PRIORITY[t], `${TerrainType[t]} prio`).toBe(35);
+            expect(TERRAIN_HOME_LAYER[t], `${TerrainType[t]} 归属`).toBe(L.GAS);
+        }
     });
 
     it('F-2a 守卫：Grid.FIRE_TERRAIN_TYPES（isBurning 派生集）≡ T_IS_FIRE 旗标载体集', () => {
@@ -333,6 +366,9 @@ describe('C-4a E：留痕（本轮明确不做的事，断言现状）', () => {
     const PROMOTE_FIELD_READERS = new Set([
         'engine/Map/DungeonFeature.ts',   // C-4b：mechFlags（cellIsPassableOrDoor 的密门/锁门豁免）
         'engine/Map/Promotion.ts',        // C-4c：promoteTile/两趟驱动读 promoteType/promoteChance/fireType/mechFlags（本文件 C 组同样钉其取值）
+        'engine/Environment/Gas.ts',      // G-1：updateVolumetricMedia 读 GAS 层 tile 的 mechFlags
+                                          // （TM_GAS_DISSIPATES / TM_GAS_DISSIPATES_QUICKLY，
+                                          //  CE Time.c:1437-1444）——消散档位住在目录里
     ]);
     it('留痕（已按自带指示扩清单，C-4c）：promote/fire 类字段的生产读者只出现在白名单文件', () => {
         const srcDir = fileURLToPath(new URL('../', import.meta.url));

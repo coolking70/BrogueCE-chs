@@ -113,7 +113,7 @@ describe('C-4a-0 highestPriorityLayer 语义（CE Movement.c:64-80）', () => {
         expect(cell.terrain).toBe(C.WALL);
     });
 
-    it('skipGas 跳过 GAS 层（CE skipGas 形参逐位照搬）', () => {
+    it('skipGas 跳过 GAS 层（CE skipGas 形参逐位照搬）；terrain getter 固定 skipGas（G-1）', () => {
         // GAS 里的 GRASS(60) 比 SURFACE 里的 BLOOD(80) 优先级更高：
         // 不跳过 → GAS 胜；跳过 → SURFACE 胜。
         const { g, cell } = gridWith([
@@ -122,7 +122,13 @@ describe('C-4a-0 highestPriorityLayer 语义（CE Movement.c:64-80）', () => {
         ]);
         expect(g.highestPriorityLayer(1, 1, false)).toBe(L.GAS);
         expect(g.highestPriorityLayer(1, 1, true)).toBe(L.SURFACE);
-        expect(cell.terrain).toBe(C.GRASS);
+        // G-1 反转（原断言：cell.terrain toBe C.GRASS，即 getter 含气层）：
+        // CE 的"含气 effective terrain"只服务显示/风味/记忆与 respiration
+        // （Movement.c:106/113/2569、Items.c:7030、Time.c:69），玩法逻辑全走
+        // 旗标并集；web 的 .terrain 读者（寻路/安全图/生成器）对应后者，
+        // getter 固定 skipGas=true（Grid.ts G-1 注）。气体显示由 gasGrid
+        // 覆盖层与 hover 的 GAS 优先（Game 侧）承载。
+        expect(cell.terrain, 'terrain getter 固定 skipGas（G-1）').toBe(C.BLOOD);
     });
 });
 
@@ -227,6 +233,9 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.BLOOD]: L.SURFACE, [C.BRIDGE_EDGE]: L.SURFACE,
             [C.PLAIN_FIRE]: L.SURFACE, // F-1（CE Globals.c:492）
             [C.EMBERS]: L.SURFACE, [C.ASH]: L.SURFACE, // F-2a（CE Globals.c:469/461）
+            [C.POISON_GAS]: L.GAS, // G-1（CE Globals.c:502/503/508——气体归 GAS 层）
+            [C.CONFUSION_GAS]: L.GAS,
+            [C.STEAM]: L.GAS,
         });
         expect(DRAW_PRIORITY).toEqual({
             [C.NOTHING]: 100, [C.GRANITE]: 0, [C.FLOOR]: 95, [C.WALL]: 0,
@@ -240,6 +249,9 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.BLOOD]: 80,
             [C.PLAIN_FIRE]: 10, // F-1（CE Globals.c:492）
             [C.EMBERS]: 70, [C.ASH]: 80, // F-2a（CE Globals.c:469/461 原值）
+            [C.POISON_GAS]: 35, // G-1（CE Globals.c:502-508 第 4 列，气体同为 35）
+            [C.CONFUSION_GAS]: 35,
+            [C.STEAM]: 35,
         });
     });
 });
@@ -373,17 +385,45 @@ describe('C-4a-0 留痕（本轮明确不做的事，断言现状）', () => {
         expect(offenders, `setTerrainLayer 调用点超出许可清单 ${[...ALLOWLIST].join(', ')}：\n${offenders.join('\n')}`).toEqual([]);
     });
 
-    it('留痕：GAS 层恒空（气体走独立 Gas.ts 网格；C-4a 接入 CE 气体层后反转）', () => {
+    it('留痕（已反转，G-1）：生成不产气——生成链走完后 GAS 层仍恒空；注气则入层', () => {
+        // 原断言（C-4a-0）："任何深度的生成链走完后 GAS 层全 NOTHING"
+        // （前提：气体走独立 Gas.ts 网格）。G-1 把气体迁入 GAS 层后，
+        // "永不写入"的前提到期；本断言翻转为双向：
+        //   ① 守卫半边保留：生成链本身依旧不产气（气体是回合期现象，
+        //      生成器没有 GAS 层写入点）——生成后 GAS 层恒空的现状不变；
+        //   ② 新事实：注入气体并推进一回合后，GAS 层持有点名格的气体
+        //      地形 + 体积（G-1 的迁层主张本身）。
         for (const seed of [424242, 20260916]) {
             const g: any = createHeadlessGame(seed);
             for (const depth of [1, 5, 12, 26]) {
                 if (depth > 1) { g.depth = depth; g.generateDepth(false, false); }
                 for (let x = 0; x < g.grid.width; x++) {
                     for (let y = 0; y < g.grid.height; y++) {
-                        expect(g.grid.getCell(x, y)!.layers[L.GAS]).toBe(C.NOTHING);
+                        expect(g.grid.getCell(x, y)!.layers[L.GAS], `seed=${seed} D${depth} (${x},${y}) 生成不产气`).toBe(C.NOTHING);
                     }
                 }
             }
+            // ②（只在 D1 行使，避免全图扫描×深度×种子的浪费）：
+            // 找一块真实地板注入（生成图没有坐标保证）。
+            let spot: { x: number; y: number } | null = null;
+            for (let x = 1; x < g.grid.width - 1 && !spot; x++) {
+                for (let y = 1; y < g.grid.height - 1 && !spot; y++) {
+                    if (g.grid.getCell(x, y)!.terrain === C.FLOOR) spot = { x, y };
+                }
+            }
+            expect(spot, '生成图必有人工地板').not.toBeNull();
+            expect(g.environment.addGas(spot!.x, spot!.y, C.POISON_GAS /* = GasType.POISON */, 1000)).toBe(true);
+            (g as unknown as { objectiveTimeBlock(): void }).objectiveTimeBlock();
+            const spotCell = g.grid.getCell(spot!.x, spot!.y)!;
+            expect(spotCell.layers[L.GAS] === C.POISON_GAS
+                || spotCell.layers[L.GAS] === C.NOTHING, '注气后该格 GAS 层应持有（或已被均分暂收走）气体地形').toBe(true);
+            let gasCells = 0;
+            for (let x = 0; x < g.grid.width; x++) {
+                for (let y = 0; y < g.grid.height; y++) {
+                    if (g.grid.getCell(x, y)!.layers[L.GAS] !== C.NOTHING) gasCells++;
+                }
+            }
+            expect(gasCells, '注气后 GAS 层必须非空（G-1 迁层）').toBeGreaterThan(0);
         }
     });
 
@@ -417,7 +457,8 @@ describe('C-4a-0 干跑测量：15 种子 × D1-D26 跨层清除事件表', () =
 
         // 弱不变量：真实生成必然发生过跨层覆盖（生成器把地板改湖、把草改地板…）。
         expect(total, '跨层清除事件总数应 > 0').toBeGreaterThan(0);
-        // GAS 层恒空 → 不存在"清掉 GAS 层内容"的事件。
+        // 生成链不产气（G-1 反转后的守卫半边，见上方留痕用例）→
+        // 不存在"清掉 GAS 层内容"的事件。
         const gasEvents = stats.filter((s) => s.layer === L.GAS);
         expect(gasEvents, 'GAS 层不应有任何被清除事件').toEqual([]);
 

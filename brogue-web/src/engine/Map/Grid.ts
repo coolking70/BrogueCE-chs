@@ -65,7 +65,16 @@ export enum TerrainType {
     // 两者都是 SURFACE 层纯装饰（零旗标：不点燃邻格、不可燃、可通行）。
     // 只追加在尾部（terrainFingerprint 按数值哈希，既有值不变）。
     EMBERS,
-    ASH
+    ASH,
+    // G-1：CE 气体 tile（Globals.c:502/503/508）——气体迁入 GAS 层后的载体。
+    // CE 的气体就是 GAS 层地形：updateVolumetricMedia 搬运的是
+    // layers[GAS] + pmap.volume（Rogue.h:1307，unsigned short 0-65535）。
+    // 消散档位住在 tile 的 TM_GAS_DISSIPATES(_QUICKLY) 旗标里，可燃性
+    // （POISON/CONFUSION 带 T_IS_FLAMMABLE，STEAM 不带）与 fireType
+    // DF_GAS_FIRE 也照抄。只追加在尾部（既有枚举值不变）。
+    POISON_GAS,
+    CONFUSION_GAS,
+    STEAM
 }
 
 export enum LightType {
@@ -148,7 +157,12 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     // 表面层：余烬/灰烬压不住火（10）、草（60）、网（19），但会被血（80）同级
     // 竞争——CE fillSpawnMap 判据（Architect.c:3228）原样生效。
     [TerrainType.EMBERS]: 70,
-    [TerrainType.ASH]: 80
+    [TerrainType.ASH]: 80,
+    // G-1：CE 气体 tile 的 drawPriority 全部为 35（Globals.c:502-508 第 4 列）。
+    // 气体(35)盖得住地板(95)/草(60)，盖不住网(19)/门(8)——与 CE 渲染口径一致。
+    [TerrainType.POISON_GAS]: 35,
+    [TerrainType.CONFUSION_GAS]: 35,
+    [TerrainType.STEAM]: 35
 };
 
 /**
@@ -219,7 +233,13 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     // F-2a：DF_EMBERS {EMBERS, SURFACE}（Globals.c:747）、
     // DF_ASH {ASH, SURFACE}（Globals.c:672，执行方逐字段复核）。
     [TerrainType.EMBERS]: DungeonLayer.SURFACE,
-    [TerrainType.ASH]: DungeonLayer.SURFACE
+    [TerrainType.ASH]: DungeonLayer.SURFACE,
+    // G-1：CE 气体 tile 归 GAS 层（Globals.c:502-508 全组在 "// gas layer"
+    // 注释块下；DF 目录的气体条目 layer 列同为 GAS，如 DF_POISON_GAS_CLOUD
+    // {POISON_GAS, GAS, …}）。
+    [TerrainType.POISON_GAS]: DungeonLayer.GAS,
+    [TerrainType.CONFUSION_GAS]: DungeonLayer.GAS,
+    [TerrainType.STEAM]: DungeonLayer.GAS
 };
 
 /**
@@ -324,16 +344,34 @@ export class Cell {
     public color: number = 0x000000;
 
     /**
+     * G-1：CE pmap 的 volume 字段（Rogue.h:1307 `unsigned short volume`，
+     * 0-65535）——GAS 层的体积量纲。CE 的"气有多少"住在 volume，"是什么气"
+     * 住在 layers[GAS]；updateVolumetricMedia（Time.c:1383-1479）搬运的就是
+     * 这一对。写入口：Gas.addGas / DungeonFeature 的 GAS 分支（Architect.c:3384
+     * `volume += startProbability`）；promoteTile 的 vanish 在 GAS 层连 volume
+     * 一起清（Time.c:1262-1264）。
+     * 注：CE 是 uint16 回绕语义，web 用普通 number + 写入口 65535 钳制
+     * （回绕只在单格 ≥4 支 dewar 叠加时才可能触到，钳制偏离已登记报告）。
+     */
+    public volume: number = 0;
+
+    /**
      * 有效地形 = 最高优先层的地形（CE Movement.c:64 highestPriorityLayer 语义：
      * drawPriority 最小者；同优先级先遇到的层胜；全空返回 NOTHING）。
      *
-     * 保留可写访问器的原因：库内存在 8 处直接赋值点（Game.ts×4、LakeSystem.ts、
-     * Gas.ts×4、Monster.ts——后三者在本轮禁改清单里），plain-field 语义 =
-     * "t 进归属层、其余层清空、不碰 char/color/通行启发式"，setter 原样复刻，
-     * 这些调用点因此一行不改而行为逐位不变。
+     * G-1 起固定 skipGas=true（跳过 GAS 层）。依据（CE 调用面逐点复核）：
+     * CE 里"含气体的 effectively terrain"只服务显示/风味/记忆
+     * （tileFlavor/tileText Movement.c:106/113、storeMemories Movement.c:2569、
+     * 药瓶 "into" 文案 Items.c:7030）与 respiration 判定（Time.c:69）；
+     * 玩法逻辑（通行/寻路/伤害/AI）全部走 cellHasTerrainFlag 的四层旗标并集，
+     * 从不消费含气的 effective terrain。web 的 .terrain 读者（寻路/安全图/
+     * 生成器/落位）对应的正是 CE 的旗标并集世界——若让气体(prio 35)参与
+     * getter 竞争，"毒气盖着的岩浆"会被当成毒气放行。web 渲染与悬浮提示
+     * 不经本 getter 取气（渲染走 gasGrid 覆盖层；hover 在 Game 侧单独优先
+     * GAS 层，对齐 CE tileText 语义）。
      */
     get terrain(): TerrainType {
-        return this.layers[highestPriorityLayerOf(this.layers)]!;
+        return this.layers[highestPriorityLayerOf(this.layers, true)]!;
     }
 
     set terrain(t: TerrainType) {

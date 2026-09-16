@@ -16,6 +16,7 @@ import { createHeadlessGame } from './harness';
 import { Game } from '../engine/Core/Game';
 import { Monster, type MonsterData } from '../entities/Monster';
 import { TerrainType } from '../engine/Map/Grid';
+import { GasType } from '../engine/Environment/Gas';
 import { rng } from '../engine/Random';
 import { CombatSystem } from '../engine/Combat/Combat';
 import monsterDataJson from '../data/monsters.json';
@@ -317,7 +318,7 @@ describe('P4-4 验收 2：自爆 — bloat/pit_bloat/explosive_bloat', () => {
 // 验收 3：MA_DF_ON_DEATH — bloat 毒气 / explosive bloat 爆燃
 // ---------------------------------------------------------------------------
 describe('P4-4 验收 3：死亡地形 — bloat 毒气 / explosive bloat 爆燃', () => {
-    it('bloat 死亡在原地释放毒气（GasType.POISON, density=100）', () => {
+    it('bloat 死亡在原地释放毒气（GasType.POISON，G-1 起注入 CE 体积 2000）', () => {
         const game = createHeadlessGame(12);
         clearToOpenRoom(game);
 
@@ -328,7 +329,9 @@ describe('P4-4 验收 3：死亡地形 — bloat 毒气 / explosive bloat 爆燃
         priv(game).triggerDeathFeatures();
 
         const gasCell = game.environment.gasGrid[7]![6]!;
-        expect(gasCell.type).toBe(2); // GasType.POISON
+        // G-1 翻正：GasType 改基到 GAS 层地形值（旧枚举值 2 = TerrainType.FLOOR，
+        // 与新 POISON 不再同值）；density 语义 = CE volume（bloat 注入 2000）。
+        expect(gasCell.type).toBe(GasType.POISON);
         expect(gasCell.density).toBeGreaterThan(0);
         expect(bloat.deathEffectTriggered).toBe(true);
     });

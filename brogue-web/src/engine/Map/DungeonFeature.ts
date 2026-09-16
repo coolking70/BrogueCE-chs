@@ -31,8 +31,9 @@
  *      值清 0——"spawnmap 反映实际建了什么"（:3271），subsequentDF 的
  *      DFF_SUBSEQ_EVERYWHERE 因此只落在真建出来的格上。
  *   7. spawnDungeonFeature：GAS 层不走扩散，直接
- *      `volume += startProbability` 并写 GAS 层（:3384-3390；web 的 Cell 无
- *      volume 字段，增量在结果对象 `gasVolumeAdded` 登记）；tile=0 是合法
+ *      `volume += startProbability` 并写 GAS 层（:3384-3386；G-1 起
+ *      volume 直接落在 Cell.volume 上，结果对象 `gasVolumeAdded` 仍登记）；
+ *      tile=0 是合法
  *      无地形 DF，footprint=原点一格（:3415-3421）；连通性否决条件 =
  *      abortIfBlocking && 无 DFF_PERMIT_BLOCKING && (tile 带
  *      T_PATHING_BLOCKER || DFF_TREAT_AS_BLOCKING)（:3378-3381）；两个
@@ -67,8 +68,9 @@
  *   │ updatedMapToShoreThisTurn    │ 结果对象 touchesShoreMap              │
  *   │ (:3481-3485)                 │                                       │
  *   │ DFF_RESURRECT_ALLY (:3365)   │ 目录 19 条不含；运行时遇到即抛错      │
- *   │ pmap.volume (GAS, :3385)     │ Cell 无 volume 字段（Grid.ts 禁改）； │
- *   │                              │ 结果对象 gasVolumeAdded 登记          │
+ *   │ pmap.volume (GAS, :3385)     │ G-1 起 Cell.volume 直接累加           │
+ *   │                              │ （CE uint16 回绕 → 65535 钳制）；     │
+ *   │                              │ 结果对象 gasVolumeAdded 仍登记        │
  *   └──────────────────────────────┴──────────────────────────────────────┘
  */
 import type { Pos } from '../../types';
@@ -520,7 +522,7 @@ export interface SpawnFeatureResult {
     caughtFireCells: Pos[];
     pathingChanged: boolean;
     /** GAS 特例的 volume 增量（CE :3385 `pmap.volume += startProbability`；
-     *  web Cell 无 volume 字段，登记待游戏侧接管）。 */
+     *  G-1 起同时直接累加进 Cell.volume——此字段保留为返回值审计口径）。 */
     gasVolumeAdded: number;
     /** DFF_EVACUATE_CREATURES_FIRST 置位（evacuateCreatures 未实现）。 */
     evacuationRequired: boolean;
@@ -577,8 +579,17 @@ export function spawnDungeonFeature(
 
     if (feat.tile !== TerrainType.NOTHING) {
         if (feat.layer === DungeonLayer.GAS) {
-            // CE :3384-3390：GAS 层特例——不扩散，volume 累加，仅原点。
-            grid.setTerrainLayer(x, y, DungeonLayer.GAS, feat.tile);
+            // CE :3384-3386：GAS 层特例——不扩散，volume 累加，仅原点，
+            // 类型无条件换型（`volume += startProb; layers[GAS] = tile`）。
+            // G-1 起 Cell.volume 存在，体积直接落在格上（不再是只登记）；
+            // gasVolumeAdded 保留为返回值口径（测试与调用方审计用）。
+            // CE 的 volume 是 unsigned short 回绕；web 钳制在 65535
+            // （触顶需单格 ≥4 支 dewar 叠加，偏离登记报告）。
+            const cell = grid.getCell(x, y);
+            if (cell) {
+                cell.volume = Math.min(65535, cell.volume + feat.startProbability);
+                grid.setTerrainLayer(x, y, DungeonLayer.GAS, feat.tile);
+            }
             result.gasVolumeAdded = feat.startProbability;
             result.succeeded = true;
         } else {
