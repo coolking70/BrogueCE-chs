@@ -556,11 +556,12 @@ describe('C-4b D：levelIsDisconnectedWithBlockingMap（CE Architect.c:3137-3198
 });
 
 describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () => {
-    it('E1 恰 19 条，且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）', () => {
+    it('E1 恰 20 条（F-2a 增补 DF_ASH），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）', () => {
         const keys = Object.keys(DUNGEON_FEATURE_CATALOG);
-        expect(keys.length).toBe(19);
+        expect(keys.length).toBe(20);
         expect(DF.DF_SHOW_DOOR).toBe(13);
         expect(DF.DF_REPEL_CREATURES).toBe(40);
+        expect(DF.DF_ASH, 'F-2a：EMBERS.promoteType 的载体（Rogue.h:1524）').toBe(49);
         expect(DF.DF_STEAM_ACCUMULATION).toBe(43);
         expect(DF.DF_METHANE_GAS_PUFF).toBe(44);
         expect(DF.DF_TRAMPLED_FOLIAGE).toBe(61);
@@ -608,7 +609,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // 集合相等：目录里多一条（闭包外）或少一条（漏抄）都翻红。
         const catalogKeys = new Set(Object.keys(DUNGEON_FEATURE_CATALOG).map(Number) as DF[]);
         expect([...closure].sort((a, b) => a - b)).toEqual([...catalogKeys].sort((a, b) => a - b));
-        expect(catalogKeys.size).toBe(19);
+        expect(catalogKeys.size, 'F-2a：EMBERS.promoteType=DF_ASH 入闭包，19 → 20').toBe(20);
     });
 
     it('E3 字段抽查：BRIDGE_FALL_PREP 的 prop/200/100、BRIDGE_FIRE 的描述与 tile=0、其余代表条目', () => {
@@ -656,17 +657,20 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         expect(steam.probabilityDecrement).toBe(0);
     });
 
-    it('E4 缺 tile 登记恰 11 条：catalogFeature 对其抛错点名；对其余 8 条正常转换', () => {
+    it('E4 缺 tile 登记恰 9 条（F-2a 翻正 DF_PLAIN_FIRE/DF_EMBERS 后 11 → 9）：' +
+        'catalogFeature 对其抛错点名；对其余 11 条正常转换', () => {
         const all = Object.keys(DUNGEON_FEATURE_CATALOG).map(Number) as DF[];
         const missing = new Set(DF_MISSING_TILES);
-        expect(DF_MISSING_TILES.length).toBe(11);
+        expect(DF_MISSING_TILES.length).toBe(9);
         // 登记条目确实都是 tile=null，且抛错带 CE tile 名。
         for (const id of DF_MISSING_TILES) {
             expect(DUNGEON_FEATURE_CATALOG[id]!.tile, `DF#${id} 应为 null tile`).toBeNull();
             expect(() => catalogFeature(id), `DF#${id} 应拒绝`).toThrow(/tileType/);
             expect(() => catalogFeature(id)).toThrow(new RegExp(DUNGEON_FEATURE_CATALOG[id]!.ceTile));
         }
-        // 其余 8 条（6 有 tile + 2 tileless）转换成功且字段保真。
+        // 其余 11 条（9 有 tile + 2 tileless）转换成功且字段保真。
+        // F-2a 翻正位：DF_PLAIN_FIRE.tile=PLAIN_FIRE、DF_EMBERS.tile=EMBERS、
+        // 新增 DF_ASH.tile=ASH——三者现在必须能正常转换（放回 missing 会红）。
         for (const id of all) {
             if (missing.has(id)) continue;
             const entry = DUNGEON_FEATURE_CATALOG[id]!;
@@ -676,6 +680,9 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
             expect(f.startProbability).toBe(entry.startProbability);
             expect(f.subsequentDF).toBe(entry.subsequentDF);
         }
+        expect(catalogFeature(DF.DF_PLAIN_FIRE).tile, 'F-2a：火地形已存在，DF 必须能落地').toBe(C.PLAIN_FIRE);
+        expect(catalogFeature(DF.DF_EMBERS).tile).toBe(C.EMBERS);
+        expect(catalogFeature(DF.DF_ASH).tile).toBe(C.ASH);
         // tileless 两条件名字单（防有人把"登记"与"tile=0"混掉）。
         expect(catalogFeature(DF.DF_REPEL_CREATURES).tile).toBe(C.NOTHING);
         expect(catalogFeature(DF.DF_BRIDGE_FIRE).tile).toBe(C.NOTHING);
@@ -700,10 +707,14 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
             return out;
         };
         // 验收方 C-4c 后扩清单（按 F1 标题自带的指示："C-4c 接调用方后改白名单"）。
+        // F-2a 扩 Gas.ts：火段的点火入口（ignite=exposeTileToFire 直燃、
+        // igniteForced=DF_PLAIN_FIRE 生成）成为 DF 子系统的第一个火侧消费者
+        // （任务书 §四提前授权的留痕到期翻转；越界守卫保留——白名单外仍全红）。
         const allowed = new Set([
             'engine/Map/DungeonFeature.ts',
             'engine/Map/DungeonFeatureCatalog.ts',
             'engine/Map/Promotion.ts',   // C-4c：promoteTile 经 spawnDungeonFeature 落地 DF
+            'engine/Environment/Gas.ts', // F-2a：火段点火入口（exposeTileToFire/DF_PLAIN_FIRE spawn）
         ]);
         const pattern = /spawnDungeonFeature|spawnMapDF|fillSpawnMap|levelIsDisconnectedWithBlockingMap|catalogFeature|createSpawnMap|DUNGEON_FEATURE_CATALOG|DF_MISSING_TILES/;
         const offenders: string[] = [];

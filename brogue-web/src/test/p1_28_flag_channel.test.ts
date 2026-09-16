@@ -226,7 +226,7 @@ describe('P1-28：火焰地形分支对齐 exposeCreatureToFire', () => {
         clearToOpenRoom(game);
         // F-1 改写（经公共入口点火）：原直写 cell.isBurning/burnDuration，
         // 火成地形后由 igniteForced 双写承载。五处同型，逐一替换。
-        game.environment.igniteForced(7, 6, 5);
+        game.environment.igniteForced(7, 6);
 
         const wisp = new Monster(7, 6, monsterDataById('wisp'));
         game.monsters.push(wisp);
@@ -242,7 +242,7 @@ describe('P1-28：火焰地形分支对齐 exposeCreatureToFire', () => {
         const game = createHeadlessGame(20260916);
         clearToOpenRoom(game);
         // F-1 改写（经公共入口点火），见上。
-        game.environment.igniteForced(7, 6, 5);
+        game.environment.igniteForced(7, 6);
 
         const rat = new Monster(7, 6, monsterDataById('rat'));
         rat.hp = 10;
@@ -259,7 +259,7 @@ describe('P1-28：火焰地形分支对齐 exposeCreatureToFire', () => {
         const game = createHeadlessGame(20260916);
         clearToOpenRoom(game);
         // F-1 改写（经公共入口点火），见上。
-        game.environment.igniteForced(7, 6, 5);
+        game.environment.igniteForced(7, 6);
 
         const warden = new Monster(7, 6, monsterDataById('Warden_of_Yendor'));
         game.monsters.push(warden);
@@ -276,7 +276,7 @@ describe('P1-28：火焰地形分支对齐 exposeCreatureToFire', () => {
         const game = createHeadlessGame(20260916);
         clearToOpenRoom(game);
         // F-1 改写（经公共入口点火），见上。
-        game.environment.igniteForced(7, 6, 5);
+        game.environment.igniteForced(7, 6);
 
         const bat = new Monster(7, 6, monsterDataById('vampire_bat'));
         expect(bat.hasStatus('levitating')).toBe(true); // 派生悬浮确实在位
@@ -294,7 +294,7 @@ describe('P1-28：火焰地形分支对齐 exposeCreatureToFire', () => {
         const game = createHeadlessGame(20260916);
         clearToOpenRoom(game);
         // F-1 改写（经公共入口点火），见上。
-        game.environment.igniteForced(4, 5, 5);
+        game.environment.igniteForced(4, 5);
         game.player.applyStatus('levitating', 10);
         expect(game.player.hasStatus('levitating')).toBe(true);
 

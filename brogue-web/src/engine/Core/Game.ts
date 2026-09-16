@@ -205,14 +205,13 @@ export interface GameSnapshot {
         color: number;
         isExplored: boolean;
         hasMemory: boolean;
-        isBurning: boolean;
-        burnDuration: number;
         /**
-         * F-1：起火时记录的有效地形（点火前原身），烧尽分支的判据。
-         * 旧存档无此字段：isBurning 时回落为 terrain（旧存档火不成地形，
-         * terrain 就是原身），否则 NOTHING。
+         * F-2a：isBurning 现为"跨层挂火地形"的派生读数（Grid.Cell getter），
+         * 快照里仍随写（新存档与 layers 恒一致，读档经对账分支空转；
+         * 旧存档迁移语义见 loadSnapshot）。burnDuration/burnTerrain 随
+         * 倒计时模型退役——旧存档数据里的同名字段读档时忽略。
          */
-        burnTerrain?: TerrainType;
+        isBurning: boolean;
         isPassable: boolean;
         isOpaque: boolean;
         /** P1-37：机器旗标（IS_IN_MACHINE 等价物）随存档往返；0 缺省省体积，旧存档视为无机器。 */
@@ -2872,9 +2871,12 @@ export class Game {
                         break;
                     case 'fire_burst':
                         logger.log(i18next.t('potion.fire_burst', { defaultValue: 'Flames burst out of the bottle!' }), '#ffaa00');
-                        this.environment.ignite(this.player.loc.x, this.player.loc.y);
-                        this.environment.ignite(this.player.loc.x + 1, this.player.loc.y);
-                        this.environment.ignite(this.player.loc.x - 1, this.player.loc.y);
+                        // F-2a：CE 焚化类药水是 DF 生成家族（DF_INCINERATION_POTION
+                        // {PLAIN_FIRE, SURFACE, 100, 37}，Globals.c:781——火地形
+                        // 直接铺上，不看底下可不可燃），走 igniteForced。
+                        this.environment.igniteForced(this.player.loc.x, this.player.loc.y);
+                        this.environment.igniteForced(this.player.loc.x + 1, this.player.loc.y);
+                        this.environment.igniteForced(this.player.loc.x - 1, this.player.loc.y);
                         break;
                     case 'poison_burst':
                         logger.log(i18next.t('potion.poison_burst', { defaultValue: 'A toxic cloud billows around you!' }), '#88ff88');
@@ -4058,10 +4060,11 @@ export class Game {
 
                     // Apply splash effect
                     if (data.effect === 'fire_burst') {
-                        this.environment.ignite(tx, ty);
+                        // F-2a：同 fire_burst 药水——CE 焚化类 = DF 生成家族。
+                        this.environment.igniteForced(tx, ty);
                         // Ignite neighbors
                         const dirs = [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, 1], [-1, 1], [1, -1]];
-                        for (const [dx, dy] of dirs) this.environment.ignite(tx + dx!, ty + dy!);
+                        for (const [dx, dy] of dirs) this.environment.igniteForced(tx + dx!, ty + dy!);
                     } else if (data.effect === 'poison_burst') {
                         this.environment.addGas(tx, ty, 2 /* POISON */, 100);
                     } else if (data.effect === 'confusion_burst') {
@@ -5542,12 +5545,23 @@ export class Game {
         // 晋升 + 记账趟。位置对应 CE 客观块里的 updateEnvironment（:2695，
         // 在 decrementPlayerStatus 之前）；web 的 updateFires/updateGases 承担
         // CE 的火/气体段，CE 的"晋升在火之前"次序据此保持。
+        // F-2a：CE 的 CAUGHT_FIRE_THIS_TURN 在点燃瞬间生效（Architect.c:3235），
+        // 下一 updateEnvironment 的晋升段据此跳过新火格的衰老掷骰（:1625）。
+        // web 的旗标等价物归 Game 所有：玩家动作期间 ignite/igniteForced 攒下
+        // 的登记必须在本块晋升驱动**之前**并入 skip 集，否则新点的火会被
+        // 立即衰老（实测：起火当块即变 EMBERS、永不蔓延）。
+        const queuedFire = this.environment.takeNewlyCaughtFire();
+        const caughtFireSkip = queuedFire.length > 0
+            ? [...this.pendingCaughtFireCells, ...queuedFire]
+            : this.pendingCaughtFireCells;
         this.lastPromotionUpdate = runPromotionUpdate(this.grid, {
             keyOnTileAt: (x, y) => this.items.some(
                 (it) => it.category === ItemCategory.KEY && it.loc.x === x && it.loc.y === y
             ),
-            caughtFireCells: this.pendingCaughtFireCells,
+            caughtFireCells: caughtFireSkip,
         });
+        // F-2a：CE :1665-1668 的记账趟语义——上回合遗留的起火登记在此清空，
+        // 只有记账趟之后 WITHOUT_KEY 晋升新点的火存活到下一回合。
         this.pendingCaughtFireCells = this.lastPromotionUpdate.caughtFireRemaining;
         if (this.lastPromotionUpdate.renderDirty) {
             this.needsRender = true;
@@ -5564,7 +5578,15 @@ export class Game {
         }
 
         // Let environment update
-        this.environment.updateFires();
+        // F-2a：updateFires 即 CE updateEnvironment 的火段（Time.c:1688-1700，
+        // Promotion.runFireUpdate）。火段新登记的起火格（新点的火 + 上一玩家
+        // 动作里 ignite/igniteForced 攒下的队列）并入 pendingCaughtFireCells，
+        // 下一客观块的晋升驱动据此跳过它们的衰老掷骰（CE :1625 一格一回合
+        // 至多晋升/衰老一次的语义）。遗留集不清丢：CE 的旗标活到下一记账趟。
+        const fireCaught = this.environment.updateFires(this.pendingCaughtFireCells);
+        if (fireCaught.length > 0) {
+            this.pendingCaughtFireCells = [...this.pendingCaughtFireCells, ...fireCaught];
+        }
         this.environment.updateGases();
 
         // Apply fire/gas damage to everyone
@@ -5911,8 +5933,6 @@ export class Game {
                     isExplored: cell.isExplored,
                     hasMemory: cell.hasMemory,
                     isBurning: cell.isBurning,
-                    burnDuration: cell.burnDuration,
-                    burnTerrain: cell.burnTerrain,
                     isPassable: cell.isPassable,
                     isOpaque: cell.isOpaque,
                     // P1-37：机器旗标穿存档。0 不写（绝大多数格子无机器，省体积）
@@ -6029,22 +6049,21 @@ export class Game {
             cell.isExplored = c.isExplored;
             cell.hasMemory = c.hasMemory;
             cell.isVisible = false;
-            cell.isBurning = c.isBurning;
-            cell.burnDuration = c.burnDuration;
-            // F-1：烧尽判据原身。新存档显式携带；旧存档（火不成地形）回落
-            // 为 terrain——彼时 terrain 就是起火前的原身。
-            cell.burnTerrain = c.burnTerrain ?? (c.isBurning ? c.terrain : TerrainType.NOTHING);
+            // F-2a：burnDuration/burnTerrain 随倒计时模型退役；isBurning 是
+            // 派生读数不直写——旧存档迁移经下方对账分支写层（读的是存档
+            // 数据里的 c.isBurning，不是派生位）。
             cell.isPassable = c.isPassable;
             cell.isOpaque = c.isOpaque;
             // P1-37：机器旗标随存档恢复（缺省 0 = 旧存档无此字段，视为无机器）。
             cell.machineNumber = c.machineNumber ?? 0;
-            // F-1 镜像对账：isBurning 与火地形层必须一致。新存档两侧由双写
-            // 保证，对账是空转；旧存档（isBurning=true 而层里无火）在此补写
-            // SURFACE 火地形，反常组合（无火标志却有火地形）则摘除。
+            // F-1 起的镜像对账（F-2a 语义更新）：isBurning 恒等于层里的火地形。
+            // 新存档两侧由派生保证，对账是空转；旧存档（数据 isBurning=true
+            // 而层里无火——F-1 前的火不成地形）在此补写 SURFACE 火地形，
+            // 反常组合（无火标志却有火地形）则摘除。
             const hadFire = cell.layers.some((t) => (TERRAIN_FLAGS[t].flags & T_IS_FIRE) !== 0);
-            if (cell.isBurning && !hadFire) {
+            if (c.isBurning && !hadFire) {
                 cell.layers[DungeonLayer.SURFACE] = TerrainType.PLAIN_FIRE;
-            } else if (!cell.isBurning && hadFire) {
+            } else if (!c.isBurning && hadFire) {
                 for (let l = 0; l < cell.layers.length; l++) {
                     if ((TERRAIN_FLAGS[cell.layers[l]!].flags & T_IS_FIRE) !== 0) {
                         cell.layers[l] = TerrainType.NOTHING;
@@ -6461,9 +6480,8 @@ export class Game {
             cell.color = terrain.color;
             cell.isPassable = terrain.isPassable;
             cell.isOpaque = terrain.isOpaque;
-            cell.isBurning = false;
-            cell.burnDuration = 0;
-            cell.burnTerrain = TerrainType.NOTHING; // F-1：基线无火，烧尽判据一并复位
+            // F-2a：isBurning 是派生读数（基线无火 ⇒ 复位后恒 false），
+            // 原直写三行（isBurning/burnDuration/burnTerrain）随倒计时模型退役。
             const gas = this.environment.gasGrid[terrain.x]?.[terrain.y];
             if (gas) {
                 gas.density = 0;
@@ -6692,11 +6710,13 @@ export class Game {
                 break;
             case 'fire':
                 logger.log(i18next.t('trap.fire', { defaultValue: 'You step on a fire trap!' }), '#ff6600');
-                this.environment.ignite(x, y);
-                this.environment.ignite(x + 1, y);
-                this.environment.ignite(x - 1, y);
-                this.environment.ignite(x, y + 1);
-                this.environment.ignite(x, y - 1);
+                // F-2a：CE 火焰喷射陷阱是 DF 生成家族（DF_FLAMETHROWER
+                // {PLAIN_FIRE, SURFACE, 100, 37}，Globals.c:746），走 igniteForced。
+                this.environment.igniteForced(x, y);
+                this.environment.igniteForced(x + 1, y);
+                this.environment.igniteForced(x - 1, y);
+                this.environment.igniteForced(x, y + 1);
+                this.environment.igniteForced(x, y - 1);
                 break;
         }
         // One-time use: convert to floor

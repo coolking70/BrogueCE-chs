@@ -20,7 +20,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { TerrainType, Grid, DungeonLayer as L, DRAW_PRIORITY, TERRAIN_HOME_LAYER } from '../engine/Map/Grid';
+import { TerrainType, Grid, DungeonLayer as L, DRAW_PRIORITY, TERRAIN_HOME_LAYER, FIRE_TERRAIN_TYPES } from '../engine/Map/Grid';
 import {
     TERRAIN_FLAGS,
     T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS,
@@ -116,7 +116,8 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
     it('全 TerrainType 键覆盖且字段结构齐全——拼写错/缺键在此翻红而非得 undefined', () => {
         const names = Object.keys(TerrainType).filter((k) => Number.isNaN(Number(k)));
         // F-1：PLAIN_FIRE 入列（CE Globals.c:492），31 → 32。
-        expect(names.length).toBe(32);
+        // F-2a：EMBERS/ASH 入列（CE Globals.c:469/461，火寿命链载体），32 → 34。
+        expect(names.length).toBe(34);
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             const entry = TERRAIN_FLAGS[t];
@@ -160,9 +161,11 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
     });
 
     it('F-1 新增条目：PLAIN_FIRE（CE Globals.c:492）逐字段钉死', () => {
-        // 唯一允许的偏离是 promoteChance：CE 500（5%/回合概率衰老→EMBERS）
-        // 是 F-2a 行为；web 记 0——照抄会让晋升驱动每回合对每个燃烧格掷骰、
-        // 移动 RNG 流。glowLight（FIRE_LIGHT）web 无对应列，登记不迁移。
+        // F-2a 翻正：promoteChance 0 → 500（CE 原值）。F-1 曾记 0 保
+        // burnDuration 倒计时模型；F-2a 起火寿命 = 概率衰老（5%/回合 →
+        // EMBERS，几何分布均值约 20 回合），由 runPromotionUpdate 驱动。
+        // 本断言的注释与反向（照抄成别的值）都以 CE 行为准。
+        // glowLight（FIRE_LIGHT）web 无对应列，登记不迁移。
         expect(TERRAIN_FLAGS[C.PLAIN_FIRE]!.flags).toBe(T_IS_FIRE);
         expect(TERRAIN_FLAGS[C.PLAIN_FIRE]!.mechFlags).toBe(
             TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT
@@ -171,7 +174,7 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         expect(TERRAIN_FLAGS[C.PLAIN_FIRE]!.fireType).toBe('');
         expect(TERRAIN_FLAGS[C.PLAIN_FIRE]!.discoverType).toBe('');
         expect(TERRAIN_FLAGS[C.PLAIN_FIRE]!.promoteType).toBe('DF_EMBERS');
-        expect(TERRAIN_FLAGS[C.PLAIN_FIRE]!.promoteChance).toBe(0);
+        expect(TERRAIN_FLAGS[C.PLAIN_FIRE]!.promoteChance, 'F-2a 翻正：CE 原值 500（5%/回合衰老）').toBe(500);
         expect(TERRAIN_FLAGS[C.PLAIN_FIRE]!.webOnly).toBe(false);
         // 派生判据：是火、不可燃（火地形自身 chanceToIgnite=0——点火概率
         // 住在可燃地形一侧，CE 十种火地形无一例外）、不挡通行/视线。
@@ -182,6 +185,46 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         // drawPriority 与归属层（CE：prio 10 压草 60、输门 8；DF 落 SURFACE）。
         expect(DRAW_PRIORITY[C.PLAIN_FIRE]).toBe(10);
         expect(TERRAIN_HOME_LAYER[C.PLAIN_FIRE]).toBe(L.SURFACE);
+    });
+
+    it('F-2a 新增条目：EMBERS（CE Globals.c:469）与 ASH（:461）逐字段钉死', () => {
+        // EMBERS：余烬——零旗标是 CE 的关键事实（flags 列字面为 (0)）：
+        // 余烬不是火（不点燃邻格、不可燃），只是 PLAIN_FIRE 衰老的落点、
+        // 自己再以 3%/回合衰老成 ASH。捕获的错误实现：给 EMBERS 抄上
+        // T_IS_FIRE（它会重新参与火段）或漏掉 promoteChance=300（灰烬链断）。
+        expect(TERRAIN_FLAGS[C.EMBERS]!.flags).toBe(0);
+        expect(TERRAIN_FLAGS[C.EMBERS]!.mechFlags).toBe(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION);
+        expect(TERRAIN_FLAGS[C.EMBERS]!.chanceToIgnite).toBe(0);
+        expect(TERRAIN_FLAGS[C.EMBERS]!.fireType).toBe('DF_PLAIN_FIRE');
+        expect(TERRAIN_FLAGS[C.EMBERS]!.promoteType).toBe('DF_ASH');
+        expect(TERRAIN_FLAGS[C.EMBERS]!.promoteChance).toBe(300);
+        expect(isFireTerrain(C.EMBERS), '余烬不是火（CE flags=(0)）').toBe(false);
+        expect(isFlammable(C.EMBERS)).toBe(false);
+        expect(DRAW_PRIORITY[C.EMBERS]).toBe(70);
+        expect(TERRAIN_HOME_LAYER[C.EMBERS]).toBe(L.SURFACE);
+
+        // ASH：终点载体——零旗标、零衰老（CE 里永久留存）。
+        expect(TERRAIN_FLAGS[C.ASH]!.flags).toBe(0);
+        expect(TERRAIN_FLAGS[C.ASH]!.mechFlags).toBe(TM_STAND_IN_TILE);
+        expect(TERRAIN_FLAGS[C.ASH]!.promoteType).toBe('');
+        expect(TERRAIN_FLAGS[C.ASH]!.promoteChance).toBe(0);
+        expect(DRAW_PRIORITY[C.ASH]).toBe(80);
+        expect(TERRAIN_HOME_LAYER[C.ASH]).toBe(L.SURFACE);
+    });
+
+    it('F-2a 守卫：Grid.FIRE_TERRAIN_TYPES（isBurning 派生集）≡ T_IS_FIRE 旗标载体集', () => {
+        // Cell.isBurning 的 getter 用本集合判火（Grid.ts 不能反向 import
+        // TerrainCatalog，数据登记了两份）。本断言把两份双向锁死：
+        // 新火地形（G 链的 GAS_FIRE 等）落地时漏改 Grid.ts 在此翻红，
+        // 失败信息指向 Grid.ts 的 FIRE_TERRAIN_TYPES 注释。
+        const flagCarriers = (Object.keys(TerrainType) as unknown as string[])
+            .filter((k) => Number.isNaN(Number(k)))
+            .map((k) => (TerrainType as unknown as Record<string, TerrainType>)[k]!)
+            .filter((t) => (TERRAIN_FLAGS[t].flags & T_IS_FIRE) !== 0);
+        expect(flagCarriers, '本断言失败 = 目录里的火地形集合变了').toEqual([...FIRE_TERRAIN_TYPES]);
+        for (const t of FIRE_TERRAIN_TYPES) {
+            expect(isFireTerrain(t), `${TerrainType[t]} 应带 T_IS_FIRE 旗标`).toBe(true);
+        }
     });
 });
 

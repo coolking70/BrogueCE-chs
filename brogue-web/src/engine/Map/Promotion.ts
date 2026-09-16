@@ -95,11 +95,16 @@
  */
 import type { Pos } from '../../types';
 import { rng } from '../Random';
-import { DungeonLayer, Grid, TerrainType } from './Grid';
+import { DungeonLayer, DRAW_PRIORITY, Grid, TerrainType } from './Grid';
 import {
     TERRAIN_FLAGS,
+    T_IS_FLAMMABLE,
+    T_IS_FIRE,
+    T_OBSTRUCTS_GAS,
     T_OBSTRUCTS_PASSABILITY,
     T_PATHING_BLOCKER,
+    TM_EXPLOSIVE_PROMOTE,
+    TM_EXTINGUISHES_FIRE,
     TM_IS_WIRED,
     TM_PROMOTES_ON_ITEM,
     TM_PROMOTES_ON_ITEM_PICKUP,
@@ -508,5 +513,184 @@ export function runPromotionUpdate(
         .map((r) => r.deferred)
         .filter((d): d is DeferredPromotion => d !== null);
 
+    return result;
+}
+
+// ── CE updateEnvironment 的火段（Time.c:1688-1700）与 exposeTileToFire
+//    （Time.c:1306-1377）——F-2a 移植。CE 里这两段与 promoteTile 同在
+//    Time.c，web 对应地与 promoteTile 同在本文件。────────────────────────────
+
+/** CE nbDirs 前 4 项——火段对每个火格暴露的 4 个正交邻（Time.c:1692-1699）。 */
+const FIRE_DIRS4: ReadonlyArray<readonly [number, number]> = [
+    [0, -1], [0, 1], [-1, 0], [1, 0],
+];
+
+/** CE 全部 8 向（GlobalsBase.c:38 nbDirs）——TM_EXPLOSIVE_PROMOTE 邻居计数用。 */
+const ALL_DIRS8: ReadonlyArray<readonly [number, number]> = [
+    [0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, -1], [-1, 1], [1, -1],
+];
+
+export interface ExposeTileResult {
+    /** CE 返回值：是否点燃（含 alwaysIgnite 直燃与掷骰命中）。 */
+    ignited: boolean;
+    /** 本次点燃经 promoteTile → spawnDungeonFeature 新落到火地形的格
+     *  （CE pmap CAUGHT_FIRE_THIS_TURN 的登记集，交调用方喂回下一趟晋升）。 */
+    caughtFireCells: Pos[];
+}
+
+/**
+ * CE exposeTileToFire（Time.c:1306-1377）逐段移植：
+ *   1. 非 T_IS_FLAMMABLE（四层并集）或本回合已暴露 ≥12 次 → 直接 false
+ *      （Time.c:1308-1311；每格每回合 12 次点火尝试封顶）。
+ *   2. exposedToFire++（:1317）。
+ *   3. 选"最佳灭火层"：TM_EXTINGUISHING_FIRE 层中 drawPriority 最小者
+ *      （:1319-1330，bestExtinguishingPriority 初值 1000）。
+ *   4. ignitionChance = 各可燃层中（GAS 层，或 drawPriority ≤ 灭火层优先级）
+ *      最大的 chanceToIgnite（:1332-1345）。
+ *   5. alwaysIgnite || rand_percent(ignitionChance) → 点燃：所有可燃层依次
+ *      promoteTile(useFireDF = !explosivePromotion)（:1358-1372）。甲烷爆轰
+ *      分支（TM_EXPLOSIVE_PROMOTE + 8 邻计数 ≥8，:1347-1356）照抄——
+ *      web 现目录无 TM_EXPLOSIVE_PROMOTE 载体、GAS 层恒空，分支今天不可达
+ *      （G-1 甲烷落地时行使）；GAS 层可燃物只清 volume 的 CE 怪癖在 web 无
+ *      对应物（web Cell 无 volume、GAS 层恒空），登记不实现。
+ */
+export function exposeTileToFire(
+    grid: Grid,
+    x: number,
+    y: number,
+    alwaysIgnite: boolean
+): ExposeTileResult {
+    const cell = grid.getCell(x, y);
+    const result: ExposeTileResult = { ignited: false, caughtFireCells: [] };
+    if (!cell) return result;
+
+    const flags = cellTerrainFlags(grid, x, y);
+    if (!(flags & T_IS_FLAMMABLE) || cell.exposedToFire >= 12) {
+        return result; // CE :1308-1311
+    }
+    cell.exposedToFire++; // CE :1317
+
+    // 最佳灭火层优先级（CE :1319-1330）。
+    let bestExtinguishingPriority = 1000;
+    for (let layer = 0; layer < DungeonLayer.COUNT; layer++) {
+        const tile = TERRAIN_FLAGS[cell.layers[layer]!]!;
+        if ((tile.mechFlags & TM_EXTINGUISHES_FIRE)
+            && DRAW_PRIORITY[cell.layers[layer]!] < bestExtinguishingPriority) {
+            bestExtinguishingPriority = DRAW_PRIORITY[cell.layers[layer]!];
+        }
+    }
+
+    // 最易燃合格层的点火概率（CE :1332-1345）。
+    let ignitionChance = 0;
+    for (let layer = 0; layer < DungeonLayer.COUNT; layer++) {
+        const terrain = cell.layers[layer]!;
+        const tile = TERRAIN_FLAGS[terrain]!;
+        if ((tile.flags & T_IS_FLAMMABLE)
+            && (layer === DungeonLayer.GAS || DRAW_PRIORITY[terrain] <= bestExtinguishingPriority)
+            && tile.chanceToIgnite > ignitionChance) {
+            ignitionChance = tile.chanceToIgnite;
+        }
+    }
+
+    if (alwaysIgnite || (ignitionChance && rng.randPercent(ignitionChance))) { // CE :1347
+        result.ignited = true;
+
+        // 爆轰邻居计数（CE :1348-1356）：web 无 TM_EXPLOSIVE_PROMOTE 载体、
+        // GAS 层恒空——结构性不可达，照抄留形供 G-1 行使。
+        let explosivePromotion = false;
+        if (cellTerrainMechFlags(grid, x, y) & TM_EXPLOSIVE_PROMOTE) {
+            let explosiveNeighborCount = 0;
+            for (const [dx, dy] of ALL_DIRS8) {
+                const nx = x + dx, ny = y + dy;
+                if (!grid.isValidPos(nx, ny)) continue;
+                const nFlags = cellTerrainFlags(grid, nx, ny);
+                const nMech = cellTerrainMechFlags(grid, nx, ny);
+                if ((nFlags & (T_IS_FIRE | T_OBSTRUCTS_GAS)) || (nMech & TM_EXPLOSIVE_PROMOTE)) {
+                    explosiveNeighborCount++;
+                }
+            }
+            if (explosiveNeighborCount >= 8) explosivePromotion = true;
+        }
+
+        // 可燃层依次被消耗（CE :1358-1372）：promoteTile 的 useFireDF =
+        // !explosivePromotion——普通点燃走 fireType，爆轰走 promoteType。
+        for (let layer = 0; layer < DungeonLayer.COUNT; layer++) {
+            if (TERRAIN_FLAGS[cell.layers[layer]!]!.flags & T_IS_FLAMMABLE) {
+                // CE 对 GAS 层可燃物只清 pmap.volume 不清层（Time.c:1364-1368
+                // 注释自认的怪癖）；web GAS 层恒空、Cell 无 volume，登记不实现。
+                const r = promoteTile(grid, x, y, layer, !explosivePromotion);
+                if (r.spawn) {
+                    for (const p of r.spawn.caughtFireCells) {
+                        result.caughtFireCells.push(p);
+                    }
+                }
+            }
+        }
+    }
+    return result;
+}
+
+export interface FireUpdateOptions {
+    /** 本回合已登记的起火格（CE pmap CAUGHT_FIRE_THIS_TURN 在火段时点的
+     *  存活集：上一回合火段的遗留 + 本回合记账趟后 WITHOUT_KEY 晋升新点的火）。
+     *  火段不重复暴露它们（Time.c:1690）。 */
+    caughtFireCells?: Pos[];
+}
+
+export interface FireUpdateResult {
+    /** 火段新点起的火格（CE :3235 经 spawnDungeonFeature 登记的
+     *  CAUGHT_FIRE_THIS_TURN 增量）；调用方并入下一回合的 skip 集。 */
+    caughtFireCells: Pos[];
+}
+
+/**
+ * CE updateEnvironment 的火段（Time.c:1688-1700）：每个 T_IS_FIRE 且本回合
+ * 未登记起火的格，先暴露自身、再依次暴露 4 个正交邻（nbDirs 前 4 项）。
+ * CE 在 updateEnvironment 开头清全图 exposedToFire（:1598-1603）——web 的
+ * exposedToFire 只被火段读写，清零放在本函数开头即同一时点。
+ * 扫描次序照 CE：i 外层 j 内层、自身先于邻居、邻居按 nbDirs 序——RNG 消耗
+ * 顺序与 CE 一致。
+ */
+export function runFireUpdate(
+    grid: Grid,
+    opts: FireUpdateOptions
+): FireUpdateResult {
+    const result: FireUpdateResult = { caughtFireCells: [] };
+
+    // CE :1598-1603：本回合暴露计数清零。
+    for (let i = 0; i < grid.width; i++) {
+        for (let j = 0; j < grid.height; j++) {
+            const cell = grid.getCell(i, j);
+            if (cell) cell.exposedToFire = 0;
+        }
+    }
+
+    const W = grid.width;
+    const idx = (px: number, py: number): number => py * W + px;
+    // 火段的活 skip 集：入参遗留 + 本段内新登记的（CE 旗标是活的，
+    // :1690 的判定在同一段扫描里即时可见——新点的火当回合不再被暴露）。
+    const caught = new Set<number>((opts.caughtFireCells ?? []).map((p) => idx(p.x, p.y)));
+
+    for (let i = 0; i < grid.width; i++) {
+        for (let j = 0; j < grid.height; j++) {
+            if (!caught.has(idx(i, j)) && (cellTerrainFlags(grid, i, j) & T_IS_FIRE)) {
+                const self = exposeTileToFire(grid, i, j, false); // CE :1691
+                for (const p of self.caughtFireCells) caught.add(idx(p.x, p.y));
+                for (const [dx, dy] of FIRE_DIRS4) { // CE :1692-1699
+                    const nx = i + dx, ny = j + dy;
+                    if (grid.isValidPos(nx, ny)) {
+                        const r = exposeTileToFire(grid, nx, ny, false);
+                        for (const p of r.caughtFireCells) caught.add(idx(p.x, p.y));
+                    }
+                }
+            }
+        }
+    }
+    for (const k of caught) {
+        // 只回吐"火段新登记的"（入参遗留由调用方自持，见 Game.objectiveTimeBlock）。
+        if (!(opts.caughtFireCells ?? []).some((p) => idx(p.x, p.y) === k)) {
+            result.caughtFireCells.push({ x: k % W, y: Math.floor(k / W) });
+        }
+    }
     return result;
 }

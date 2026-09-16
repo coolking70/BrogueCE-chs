@@ -55,12 +55,17 @@ export enum TerrainType {
     BRIDGE_EDGE,     // CE Globals.c:430 桥端桩点，可走；buildABridge 落在两端岸格上
     INERT_BRIMSTONE, // CE Globals.c:426 惰性硫矿，T_SPONTANEOUSLY_IGNITES（液态湖体；点火链属 C-4）
     // F-1：CE Globals.c:492 PLAIN_FIRE（十种 T_IS_FIRE 地形中 web 唯一用得上的：
-    // 燃烧状态机 ignite/igniteForced 的地形镜像）。落 SURFACE 层（CE 火 DF 全在
-    // SURFACE）；drawPriority 10 压制草(60)/网(19)——CE 渲染口径：门(8)/墙(0)
-    // 仍盖住火。CE 的 promoteChance=500（5%/回合概率衰老 → DF_EMBERS）在 web
-    // 目录里记 0：衰老是 F-2a 行为，照抄会让晋升驱动每回合对每个燃烧格掷骰、
-    // 移动 RNG 流（TerrainCatalog 条目注释详述）。
-    PLAIN_FIRE
+    // 点火链（exposeTileToFire/ignite/igniteForced）落出的火地形）。落 SURFACE
+    // 层（CE 火 DF 全在 SURFACE）；drawPriority 10 压制草(60)/网(19)——CE 渲染
+    // 口径：门(8)/墙(0)仍盖住火。promoteChance=500（5%/回合概率衰老 → EMBERS）
+    // 由 F-2a 接通（TerrainCatalog 条目注释详述）。
+    PLAIN_FIRE,
+    // F-2a：CE Globals.c:469 EMBERS（余烬）与 :461 ASH（灰烬）——CE 火寿命链
+    // PLAIN_FIRE →(promoteChance 500)→ EMBERS →(300)→ ASH 的中间/终点载体，
+    // 两者都是 SURFACE 层纯装饰（零旗标：不点燃邻格、不可燃、可通行）。
+    // 只追加在尾部（terrainFingerprint 按数值哈希，既有值不变）。
+    EMBERS,
+    ASH
 }
 
 export enum LightType {
@@ -138,7 +143,12 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.BRIDGE]: 45,
     [TerrainType.BRIDGE_EDGE]: 45,
     [TerrainType.INERT_BRIMSTONE]: 40,
-    [TerrainType.PLAIN_FIRE]: 10
+    [TerrainType.PLAIN_FIRE]: 10,
+    // F-2a：CE EMBERS 70 / ASH 80（Globals.c:469/461 原值）。两者都是纯装饰
+    // 表面层：余烬/灰烬压不住火（10）、草（60）、网（19），但会被血（80）同级
+    // 竞争——CE fillSpawnMap 判据（Architect.c:3228）原样生效。
+    [TerrainType.EMBERS]: 70,
+    [TerrainType.ASH]: 80
 };
 
 /**
@@ -205,8 +215,30 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     [TerrainType.BRIDGE]: DungeonLayer.LIQUID,
     [TerrainType.BRIDGE_EDGE]: DungeonLayer.SURFACE,
     [TerrainType.INERT_BRIMSTONE]: DungeonLayer.LIQUID,
-    [TerrainType.PLAIN_FIRE]: DungeonLayer.SURFACE
+    [TerrainType.PLAIN_FIRE]: DungeonLayer.SURFACE,
+    // F-2a：DF_EMBERS {EMBERS, SURFACE}（Globals.c:747）、
+    // DF_ASH {ASH, SURFACE}（Globals.c:672，执行方逐字段复核）。
+    [TerrainType.EMBERS]: DungeonLayer.SURFACE,
+    [TerrainType.ASH]: DungeonLayer.SURFACE
 };
+
+/**
+ * T_IS_FIRE 旗标载体集合（CE Globals.c 目录里带 T_IS_FIRE 的 tile 的 web 投影）。
+ *
+ * 用途：Cell.isBurning 派生 getter 的判据集。放在本文件（而非从 TerrainCatalog
+ * 引入）是因为依赖方向只能是 TerrainCatalog → Grid（属性表按枚举键控），
+ * 反向 import 会成环——数据因此在此登记一份，由 c_4a_terrain_catalog 的
+ * 恒等断言与 TERRAIN_FLAGS 的旗标载体集合双向锁死（漏登记/多登记都翻红，
+ * 失败信息指向本注释）。
+ *
+ * 现有载体（CE 行号）：PLAIN_FIRE（Globals.c:492，F-1 引入）。
+ * CE 其余八种火地形（GAS_FIRE / GAS_EXPLOSION / BRIMSTONE_FIRE /
+ * FLAMEDANCER_FIRE / DART_EXPLOSION / ITEM_FIRE / CREATURE_FIRE / 火源家具）
+ * web 尚无——G 链 / F-2c 落地时随目录条目在此补行。
+ */
+export const FIRE_TERRAIN_TYPES: readonly TerrainType[] = [
+    TerrainType.PLAIN_FIRE
+];
 
 /** CE Movement.c:64-80 的纯数据版：对一层快照取最高优先层。 */
 export function highestPriorityLayerOf(layers: readonly TerrainType[], skipGas: boolean = false): DungeonLayer {
@@ -322,19 +354,29 @@ export class Cell {
 
     // Environmental states
     /**
-     * F-1 双写镜像的燃烧位：与"本格 SURFACE 层挂着 T_IS_FIRE 地形"恒等
-     * （由 Gas.ts 状态机的全部写入点维护，快照/读档由 Game 对账）。
-     * A 类读者（渲染/落位/三张寻路图）读本位即等价于查火地形。
+     * F-2a：CE pmap.exposedToFire（Time.c:1308/1317-1319）——本回合内该格
+     * 已被 exposeTileToFire 尝试点燃的次数；≥12 时拒绝再暴露（每格每回合
+     * 12 次封顶）。每回合火段开始时清零（Time.c:1598-1603）。
+     * 不设为 getter：它就是 CE 的可变格状态，由 Promotion.runFireUpdate 独占读写。
      */
-    public isBurning: boolean = false;
-    public burnDuration: number = 0;
+    public exposedToFire: number = 0;
+
     /**
-     * F-1：起火时记录的有效地形（点火前该格是什么）。燃烧会把它在归属层的
-     * 原身替换/盖成 PLAIN_FIRE，烧尽分支据此决定"变 CHARRED_FLOOR 还是
-     * 原样熄灭"——旧实现读 cell.terrain，火成地形后原身信息只能显式携带。
-     * 仅在 isBurning 期间有意义，熄灭时清回 NOTHING。
+     * 燃烧判据：本格跨层挂着 T_IS_FIRE 地形（CE 语义：cellHasTerrainFlag
+     * (T_IS_FIRE) 的四层并集，Globals.c:581-597）。F-2a 起为纯派生 getter——
+     * 火地形经 CE 的 DF 生成管线（按优先级落层的填充步 + 晋升原语）落地与
+     * 衰老，不再存在"另一个事实来源"，镜像脱钩一类 bug 从结构上消失。
+     *
+     * 载体集合见 FIRE_TERRAIN_TYPES（本文件尾部）：c_4a 的恒等断言把
+     * "该集合"与"TERRAIN_FLAGS 里带 T_IS_FIRE 旗标的地形集合"双向锁死，
+     * 新火地形落地时漏改会当场翻红。
      */
-    public burnTerrain: TerrainType = TerrainType.NOTHING;
+    get isBurning(): boolean {
+        for (const t of FIRE_TERRAIN_TYPES) {
+            if (this.layers.includes(t)) return true;
+        }
+        return false;
+    }
 
     // Trap metadata (for TRAP and PRESSURE_PLATE terrain)
     public trapType: 'poison_gas' | 'teleport' | 'fire' | null = null;

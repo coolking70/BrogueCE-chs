@@ -348,20 +348,40 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
         0, 'DF_INERT_BRIMSTONE', '', 'DF_ACTIVE_BRIMSTONE', 800
     ),
 
-    // CE PLAIN_FIRE，Globals.c:492（F-1 新增地形）。
-    // flags/mechFlags/chanceToIgnite/fireType/promoteType 照抄 CE：
-    // T_IS_FIRE；(STAND_IN_TILE|VANISHES_UPON_PROMOTION|VISUALLY_DISTINCT)；
-    // ign 0；fireType 0；promoteType DF_EMBERS。
-    // ★ 唯一偏离 CE 的字段：promoteChance 记 0（CE 500）。CE 的概率衰老
-    // （5%/回合 promoteTile → DF_EMBERS）是 F-2a 行为；照抄 500 会让
-    // runPromotionUpdate 每回合对每个燃烧格掷一次骰——移动 RNG 流、
-    // 全部 F-0 基线曲线失真，且晋升目标 DF_EMBERS 的 tile 仍是登记缺口
-    // （缓办）。F-1 的火寿命仍是 burnDuration 倒计时，本字段休眠。
+    // CE PLAIN_FIRE，Globals.c:492（F-1 新增地形；F-2a 接通概率衰老）。
+    // 全字段照抄 CE，无偏离：
+    //   T_IS_FIRE；(STAND_IN_TILE|VANISHES_UPON_PROMOTION|VISUALLY_DISTINCT)；
+    //   ign 0；fireType 0；promoteType DF_EMBERS；promoteChance 500（5%/回合
+    //   概率衰老 → EMBERS，几何分布均值约 20 回合——CE 火的全部"寿命模型"，
+    //   Time.c:1643-1645 掷骰 / :1244-1290 promoteTile）。
+    // F-1 曾把 promoteChance 记 0（保 burnDuration 倒计时、不移 RNG 流），
+    // F-2a 按任务书 §二.2 翻正为 500 并由 runPromotionUpdate 自然驱动。
     // glowLight（FIRE_LIGHT）web 无对应列，登记不迁移。
     [TerrainType.PLAIN_FIRE]: e(
         T_IS_FIRE,
         TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT,
-        0, '', '', 'DF_EMBERS', 0
+        0, '', '', 'DF_EMBERS', 500
+    ),
+
+    // CE EMBERS，Globals.c:469（F-2a 新增地形：PLAIN_FIRE 衰老的落点，
+    // DF_EMBERS 的载体）。照抄 CE：零旗标（余烬不是火——不点燃邻格、不可燃，
+    // Globals.c:469 flags 列为 (0)）；drawPriority 70（Grid.ts DRAW_PRIORITY）；
+    // VANISHES_UPON_PROMOTION；fireType DF_PLAIN_FIRE（CE 数据如此，但零旗标
+    // 下不可燃，永不走 fire 轴）；promoteType DF_ASH、promoteChance 300
+    // （3%/回合烧成灰烬）。glowLight（EMBER_LIGHT）登记不迁移。
+    [TerrainType.EMBERS]: e(
+        0,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION,
+        0, 'DF_PLAIN_FIRE', '', 'DF_ASH', 300
+    ),
+
+    // CE ASH，Globals.c:461（F-2a 新增地形：EMBERS 衰老的落点，DF_ASH 的
+    // 载体）。照抄 CE：零旗标、TM_STAND_IN_TILE、promoteChance 0（灰烬不再
+    // 衰老，CE 里永久留存直到被其他 DF 覆盖）。drawPriority 80。
+    [TerrainType.ASH]: e(
+        0,
+        TM_STAND_IN_TILE,
+        0, 'DF_PLAIN_FIRE', '', '', 0
     ),
 };
 

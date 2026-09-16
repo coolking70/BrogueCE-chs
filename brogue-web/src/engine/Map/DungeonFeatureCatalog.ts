@@ -12,7 +12,8 @@
  *   2. 它们经 subsequentDF 链到的条目（DF_INERT_BRIMSTONE →
  *      DF_BRIMSTONE_FIRE；DF_BRIDGE_FIRE → DF_BRIDGE_FALL →
  *      DF_BRIDGE_FALL_PREP）——**闭包完整，无悬空引用**（测试钉死）。
- *   合计 19 条，每条注明 CE 行号。
+ *   合计 19 条，每条注明 CE 行号。（F-2a 增补 DF_ASH 至 20 条：
+ *   EMBERS 的晋升目标 DF_ASH 的闭包要求。）
  *
  * tile 归属：CE 条目的 tileType 列若在 web 的 31 个 TerrainType 里有对应物，
  * `tile` 记该成员；**没有的记 null（登记不实现，不为它现造地形）**，
@@ -47,6 +48,7 @@ export const DFF_CLEAR_LOWER_PRIORITY_TERRAIN = 1 << 10; // :1821 清空落点�
 export enum DF {
     DF_SHOW_DOOR                   = 13,  // Rogue.h:1484
     DF_REPEL_CREATURES             = 40,  // :1515
+    DF_ASH                         = 49,  // :1524（F-2a：EMBERS promoteType 的载体）
     DF_STEAM_ACCUMULATION          = 43,  // :1518
     DF_METHANE_GAS_PUFF            = 44,  // :1519
     DF_TRAMPLED_FOLIAGE            = 61,  // :1542
@@ -141,6 +143,15 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
         description: '', lightFlare: '', flashColor: '', effectRadius: 0,
     },
 
+    // {ASH, SURFACE, 0, 0, 0} —— 灰烬（EMBERS promoteChance=300 的衰老落点；
+    // F-2a 随 EMBERS 地形一起落地，tile 完整）
+    [DF.DF_ASH]: {
+        id: DF.DF_ASH, ceLine: 672, ceTile: 'ASH', tile: TerrainType.ASH,
+        layer: DungeonLayer.SURFACE, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
     // {TRAMPLED_FOLIAGE, SURFACE, 0, 0, 0} —— 踩过的灌木丛
     [DF.DF_TRAMPLED_FOLIAGE]: {
         id: DF.DF_TRAMPLED_FOLIAGE, ceLine: 688, ceTile: 'TRAMPLED_FOLIAGE', tile: null,
@@ -211,10 +222,11 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
         description: '', lightFlare: 'GENERIC_FLASH_LIGHT', flashColor: '', effectRadius: 0,
     },
 
-    // {PLAIN_FIRE, SURFACE, 0, 0, 0} —— 平火（web 火走 Gas.ts/燃烧状态，
-    // 无 PLAIN_FIRE 地形，登记）
+    // {PLAIN_FIRE, SURFACE, 0, 0, 0} —— 平火（F-2a：tile 翻正 PLAIN_FIRE；
+    // 点火链 promoteTile(useFireDF) 的落点。start=0：单点、零 RNG——
+    // CE spawnMapDF 的 while(startProb>0) 不执行，符合 probDec 约定）
     [DF.DF_PLAIN_FIRE]: {
-        id: DF.DF_PLAIN_FIRE, ceLine: 740, ceTile: 'PLAIN_FIRE', tile: null,
+        id: DF.DF_PLAIN_FIRE, ceLine: 740, ceTile: 'PLAIN_FIRE', tile: TerrainType.PLAIN_FIRE,
         layer: DungeonLayer.SURFACE, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: '', lightFlare: '', flashColor: '', effectRadius: 0,
@@ -239,9 +251,10 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
         lightFlare: 'FALLEN_TORCH_FLASH_LIGHT', flashColor: '', effectRadius: 0,
     },
 
-    // {EMBERS, SURFACE, 0, 0, 0} —— 余烬（点一次的），web 无 EMBERS tile，登记
+    // {EMBERS, SURFACE, 0, 0, 0} —— 余烬（F-2a：tile 翻正 EMBERS；PLAIN_FIRE
+    // promoteChance=500 的衰老落点、门/密门/锁门 fireType 的烧毁产物）
     [DF.DF_EMBERS]: {
-        id: DF.DF_EMBERS, ceLine: 747, ceTile: 'EMBERS', tile: null,
+        id: DF.DF_EMBERS, ceLine: 747, ceTile: 'EMBERS', tile: TerrainType.EMBERS,
         layer: DungeonLayer.SURFACE, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: '', lightFlare: '', flashColor: '', effectRadius: 0,
@@ -278,10 +291,10 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
 };
 
 /** 本轮登记"CE 有 tileType 而 web 没有地形"的目录条目 id 清单
- *  （新增地形轮次的输入；测试钉死，新地形落地后逐一翻正）。 */
+ *  （新增地形轮次的输入；测试钉死，新地形落地后逐一翻正）。
+ *  F-2a 翻正：DF_PLAIN_FIRE（PLAIN_FIRE 地形 F-1 已有）、DF_EMBERS /
+ *  DF_ASH（EMBERS/ASH 地形本轮新增）摘除，11 → 9。 */
 export const DF_MISSING_TILES: readonly DF[] = [
-    DF.DF_PLAIN_FIRE,              // PLAIN_FIRE
-    DF.DF_EMBERS,                  // EMBERS
     DF.DF_STEAM_ACCUMULATION,      // STEAM
     DF.DF_METHANE_GAS_PUFF,        // METHANE_GAS
     DF.DF_POISON_GAS_CLOUD,        // POISON_GAS

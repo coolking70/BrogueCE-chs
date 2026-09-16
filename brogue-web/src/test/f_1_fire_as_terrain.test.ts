@@ -1,12 +1,19 @@
 /**
- * src/test/f_1_fire_as_terrain.test.ts — F-1：火焰迁成地形（行为逐位不变）。
+ * src/test/f_1_fire_as_terrain.test.ts — F-1：火焰迁成地形。
  *
- * 被测事实：燃烧格 = "SURFACE 层挂着 PLAIN_FIRE 地形 + isBurning 镜像位"，
- * 两者由 Gas.ts 状态机的写点双写维护；烧尽产物仍是 CHARRED_FLOOR（红线）；
- * A 类读者（渲染位、落位、三张寻路图）经镜像看见火；GAS 层全程恒空。
- *
- * 每条断言都在注释里写明它捕获的错误实现。反向验证（改坏→红→还原）
- * 在本轮报告中留档，不落在本文件。
+ * ★ F-2a 已反转本文件的红线断言（反转范本：B-1/P1-29 式"断言新事实 +
+ *   保留越界守卫"，非删除）。逐条翻转记录：
+ *   - 对抗②/②b/④：burnDuration 倒计时模型（草 4-7 / 门 2-4 / 显式时长）
+ *     随 F-2a 概率衰老退役 → 改为断言"火经晋升驱动衰老、寿命远长于 7 回合"；
+ *   - 对抗⑤："EMBERS === undefined / 烧尽 = CHARRED_FLOOR（红线）"反转 →
+ *     CE 产物链 EMBERS → ASH 成为本轮断言（CHARRED_FLOOR 不再由火烧尽生产）；
+ *   - 对抗①门半边："门盖住火"的活体场景消失（门被火烧穿成 EMBERS，
+ *     CE Globals.c:328 fireType=DF_EMBERS）→ 改经 igniteForced（火 DF 落门上，
+ *     门 prio 8 仍盖住火 10）钉 drawPriority 双向；
+ *   - 对抗③后半：燃烧的深水不再"时长 1 → 两回合后原样熄灭"（火寿命改为
+ *     概率衰老）→ 熄灭改为手动摘火层（测试口径），守卫语义不变。
+ *   继续锁定的 F-1 事实：isBurning ≡ 跨层有火地形（F-2a 起为派生 getter）、
+ *   A 类读者经 isBurning 看见火、GAS 层恒空、持久化往返、旧存档迁移。
  */
 import { describe, it, expect } from 'vitest';
 import { createHeadlessGame } from './harness';
@@ -14,7 +21,9 @@ import type { Game } from '../engine/Core/Game';
 import type { GameSnapshot } from '../engine/Core/Game';
 import { TerrainType, DungeonLayer, DRAW_PRIORITY, TERRAIN_HOME_LAYER } from '../engine/Map/Grid';
 import { blocksPathing } from '../engine/Map/LoopMap';
-import { isFireTerrain } from '../engine/Map/TerrainCatalog';
+import { isFireTerrain, blocksPassability } from '../engine/Map/TerrainCatalog';
+import { promoteTile } from '../engine/Map/Promotion';
+import { DF } from '../engine/Map/DungeonFeatureCatalog';
 
 const C = TerrainType;
 const L = DungeonLayer;
@@ -57,14 +66,15 @@ const fireLayer = (game: Game, x: number, y: number): number => {
     return -1;
 };
 
-describe('F-1 对抗①：drawPriority 双向——火压住草（10<60），门盖住火（8<10）', () => {
-    it('燃烧草格的有效地形 = PLAIN_FIRE；燃烧门格的有效地形 = DOOR（CE 渲染口径）。' +
+describe('F-1 对抗①（F-2a 翻正门半边）：drawPriority 双向——火压住草（10<60）', () => {
+    it('燃烧草格的有效地形 = PLAIN_FIRE（CE：可燃物被火消耗，同层替换）；' +
+        '火 DF 落在门上时有效地形仍是门（prio 8 < 10）。' +
         '错误实现 a：prio 抄成 >60 → 草压住火，第一对断言红；' +
         '错误实现 b：prio 抄成 <8 → 火压住门，第二对断言红。', () => {
         expect(DRAW_PRIORITY[C.PLAIN_FIRE]).toBe(10); // CE Globals.c:492
         expect(TERRAIN_HOME_LAYER[C.PLAIN_FIRE]).toBe(L.SURFACE); // CE DF 目录 Globals.c:740
 
-        // 草地：点火后有效地形必须是火（CE：可燃物被火消耗，同层替换）
+        // 草地：直燃后有效地形必须是火。
         const g1 = createHeadlessGame(42);
         openRoom(g1);
         g1.grid.setTerrain(8, 6, C.GRASS, '"', 0x33aa33);
@@ -73,22 +83,35 @@ describe('F-1 对抗①：drawPriority 双向——火压住草（10<60），门
         expect(grass.isBurning).toBe(true);
         expect(grass.terrain, '火必须压住草（drawPriority 10 < 60）').toBe(C.PLAIN_FIRE);
 
-        // 门：点火后有效地形必须仍是门（CE：门 prio 8 盖住火 10）
+        // 门：F-1 时代"ignite 门"会让门继续盖住火；F-2a 起 CE 语义生效——
+        // 门可燃（chanceToIgnite 50），直燃 = 烧穿：门被消耗（DUNGEON→FLOOR）、
+        // 落 EMBERS（CE fireType=DF_EMBERS）。drawPriority 双向改由
+        // igniteForced（火 DF 落门上、门不被消耗）钉死。
         const g2 = createHeadlessGame(42);
         openRoom(g2);
         g2.grid.setTerrain(8, 6, C.DOOR, '+', 0xaa8844);
-        g2.environment.ignite(8, 6);
+        g2.environment.igniteForced(8, 6);
         const door = g2.grid.getCell(8, 6)!;
         expect(door.isBurning).toBe(true);
         expect(door.terrain, '门必须盖住火（drawPriority 8 < 10，CE 口径）').toBe(C.DOOR);
         expect(fireLayer(g2, 8, 6), '火在 SURFACE 层（门在 DUNGEON 层，共存）').toBe(L.SURFACE);
+
+        // CE Globals.c:328：门的 fireType=DF_EMBERS——直燃烧穿门：
+        // DUNGEON 层回 FLOOR、SURFACE 层落 EMBERS（可通行、不挡视线）。
+        const g3 = createHeadlessGame(42);
+        openRoom(g3);
+        g3.grid.setTerrain(8, 6, C.DOOR, '+', 0xaa8844);
+        g3.environment.ignite(8, 6);
+        const burned = g3.grid.getCell(8, 6)!;
+        expect(burned.isBurning, '余烬不是火（CE EMBERS 零旗标）').toBe(false);
+        expect(burned.layers[L.DUNGEON], '门被烧穿：DUNGEON 层回 FLOOR').toBe(C.FLOOR);
+        expect(burned.layers[L.SURFACE], '烧穿处落余烬（DF_EMBERS）').toBe(C.EMBERS);
     });
 });
 
-describe('F-1 对抗②：isBurning ↔ 火地形双写镜像（只改一边即红）', () => {
-    it('点燃/燃烧中/烧尽三态下 isBurning === 有火地形，逐态断言。' +
-        '错误实现：ignite 只置 isBurning 不写层（无火地形）；' +
-        '或 burnout 只清层不回镜像（幽灵火）。', () => {
+describe('F-1 对抗②（F-2a 翻转寿命模型）：isBurning ≡ 跨层有火地形（派生）', () => {
+    it('点燃后 isBurning === 有火地形；经晋升驱动衰老成 EMBERS 后镜像同步消失。' +
+        '错误实现：火地形与 isBurning 出现两个事实来源（脱钩/幽灵火）。', () => {
         const game = createHeadlessGame(42);
         openRoom(game);
         game.grid.setTerrain(8, 6, C.GRASS, '"', 0x33aa33);
@@ -96,58 +119,72 @@ describe('F-1 对抗②：isBurning ↔ 火地形双写镜像（只改一边即�
 
         game.environment.ignite(8, 6);
         expect(cell.isBurning).toBe(true);
-        expect(hasFire(game, 8, 6), '点燃必须写火地形层').toBe(true);
-        expect(cell.burnTerrain, '烧尽判据的原身=点火前的草').toBe(C.GRASS);
-        expect(cell.burnDuration).toBeGreaterThanOrEqual(4);
-        expect(cell.burnDuration).toBeLessThanOrEqual(7);
+        expect(hasFire(game, 8, 6), '点燃必须落火地形').toBe(true);
+        expect(cell.terrain).toBe(C.PLAIN_FIRE);
 
-        tickEnv(game, cell.burnDuration + 1); // 推到烧尽
-        expect(cell.isBurning, '烧尽后镜像位归 false').toBe(false);
-        expect(hasFire(game, 8, 6), '烧尽后不得残留火地形（幽灵火）').toBe(false);
-        expect(cell.burnTerrain, '熄灭后 burnTerrain 复位').toBe(C.NOTHING);
+        // 衰老：PLAIN_FIRE promoteChance=500（CE Globals.c:492）——用晋升驱动
+        // 的单位入口 promoteTile（useFireDF=false → promoteType DF_EMBERS），
+        // 与 runPromotionUpdate 每回合掷骰落地是同一条代码路径。
+        const r = promoteTile(game.grid, 8, 6, L.SURFACE, false);
+        expect(r.df, 'PLAIN_FIRE 衰老目标必须是 DF_EMBERS').toBe(DF.DF_EMBERS);
+        expect(r.mutated, '衰老必须真实落地').toBe(true);
+        const embers = game.grid.getCell(8, 6)!;
+        expect(embers.isBurning, '余烬不是火：isBurning 镜像同步归 false').toBe(false);
+        expect(hasFire(game, 8, 6), '不得残留火地形（幽灵火）').toBe(false);
+        expect(embers.layers[L.SURFACE], '衰老落点 = EMBERS（CE Globals.c:469）').toBe(C.EMBERS);
     });
 
-    it('igniteForced 在非可燃地形（地板）上：火照烧、烧尽原样熄灭。' +
-        '错误实现：烧尽分支仍按有效地形（已是火）分流 → 焦土/漏摘火层。', () => {
+    it('igniteForced 在非可燃地形（地板）上：火 DF 照落、烧的是火地形本身，' +
+        '衰老后落 EMBERS/ASH（CE：火 DF 铺在任何地表上，石地板不参与燃烧）。' +
+        '错误实现：地板火"原样熄灭不留痕"（F-1 行为）——F-2a 产物是 CE 的。', () => {
         const game = createHeadlessGame(42);
         openRoom(game);
-        game.environment.igniteForced(8, 6, 3);
+        game.environment.igniteForced(8, 6);
         const cell = game.grid.getCell(8, 6)!;
         expect(cell.isBurning).toBe(true);
         expect(hasFire(game, 8, 6)).toBe(true);
-        expect(cell.burnTerrain).toBe(C.FLOOR);
         expect(cell.terrain, '有效地形=火（地板在 DUNGEON 95，被火 10 盖住）').toBe(C.PLAIN_FIRE);
+        expect(cell.layers[L.DUNGEON], '火不消耗地板（CE：地板不可燃，层不动）').toBe(C.FLOOR);
 
-        tickEnv(game, 4);
-        expect(cell.isBurning).toBe(false);
-        expect(hasFire(game, 8, 6), '地板烧完只摘火层').toBe(false);
-        expect(cell.terrain, '地板不是可燃白名单：原样熄灭、不变焦土').toBe(C.FLOOR);
+        // 衰老两步（同上，走 promoteTile 单位入口）：PLAIN_FIRE → EMBERS → ASH。
+        promoteTile(game.grid, 8, 6, L.SURFACE, false);
+        expect(game.grid.getCell(8, 6)!.layers[L.SURFACE], '第一步落 EMBERS').toBe(C.EMBERS);
+        promoteTile(game.grid, 8, 6, L.SURFACE, false);
+        expect(game.grid.getCell(8, 6)!.layers[L.SURFACE], '第二步落 ASH（CE Globals.c:461）').toBe(C.ASH);
+        expect(game.grid.getCell(8, 6)!.isBurning).toBe(false);
     });
 
     it('蔓延出的火同样是"火地形"（CE：可燃物被消耗）。' +
-        '错误实现：只在 ignite 入口双写、蔓延路径绕过。', () => {
+        '错误实现：只在 ignite 入口落火地形、火段蔓延路径绕过。', () => {
         const game = createHeadlessGame(42);
         openRoom(game);
-        for (let x = 6; x <= 10; x++) game.grid.setTerrain(x, 6, C.GRASS, '"', 0x33aa33);
-        game.environment.ignite(6, 6);
-        // 逐回合推进；40% 蔓延下 5 连草必然烧到 (10,6)（40%^4 全不中的概率 < 13%，
-        // 用 12 回合窗口进一步压低；不改判定、只要求该格最终烧过）。
-        let spreadSeen = false;
-        for (let i = 0; i < 12 && !spreadSeen; i++) {
-            tickEnv(game, 1);
-            const c = game.grid.getCell(10, 6)!;
-            if (c.isBurning || c.burnTerrain !== C.NOTHING || c.terrain === C.CHARRED_FLOOR) {
-                spreadSeen = true;
+        // 5×3 草块：单列草带的波前会被几何衰老停在半途（15%/邻/回合 × 5%/回合
+        // 衰老下，孤波前烧尽是 CE 忠实行为）——3 行宽的波前给远端列多路暴露。
+        for (let x = 6; x <= 10; x++) {
+            for (let y = 5; y <= 7; y++) {
+                game.grid.setTerrain(x, y, C.GRASS, '"', 0x33aa33);
             }
         }
-        expect(spreadSeen, '火应沿草带蔓延到远端').toBe(true);
-        const far = game.grid.getCell(10, 6)!;
-        // 无论断言时它正在烧还是已烧尽：必然经历过"火地形在层上"的状态——
-        // 烧尽产物（焦土）本身就是"曾挂火地形"的物证（旧实现无地形痕迹）。
-        if (far.isBurning) {
-            expect(hasFire(game, 10, 6), '蔓延格燃烧中必须带火地形').toBe(true);
-        } else {
-            expect(far.terrain, '蔓延格已烧尽：必是焦土（曾为火地形的物证）').toBe(C.CHARRED_FLOOR);
+        game.environment.ignite(6, 6);
+        let spreadSeen = false;
+        for (let i = 0; i < 40 && !spreadSeen; i++) {
+            tickEnv(game, 1);
+            for (let y = 5; y <= 7 && !spreadSeen; y++) {
+                const c = game.grid.getCell(10, y)!;
+                if (c.isBurning || c.terrain === C.EMBERS || c.terrain === C.ASH) {
+                    spreadSeen = true;
+                }
+            }
+        }
+        expect(spreadSeen, '火应沿草块蔓延到远端列（烧过即留下 EMBERS/ASH 物证）').toBe(true);
+        // 无论断言时它在烧还是已衰老：必然经历过"火地形在层上"的状态——
+        // EMBERS/ASH 本身就是"曾挂火地形"的物证（且只能来自蔓延出的火：
+        // 远端列距点火点 4 格，直燃从未触及）。
+        for (let y = 5; y <= 7; y++) {
+            const far = game.grid.getCell(10, y)!;
+            if (far.isBurning) {
+                expect(hasFire(game, 10, y), '蔓延格燃烧中必须带火地形').toBe(true);
+            }
         }
     });
 });
@@ -168,90 +205,81 @@ describe('F-1 对抗③：A 类读者看得见火（镜像脱钩即红）', () =
         // 迁移前 effectively WATER_DEEP → 不可走；迁移后深水在 LIQUID 层，
         // 跨层读才保得住这个答案。
         game.grid.setTerrain(10, 6, C.WATER_DEEP, '~', 0x1133aa);
-        game.environment.igniteForced(10, 6, 5);
+        game.environment.igniteForced(10, 6);
         expect(priv(game).canMoveTo(10, 6), '燃烧的深水格仍不可走（火不能遮住深水）').toBe(false);
-        // 灭了以后（走正规熄灭路径：时长 1 → 推进烧尽）深水恢复阻挡
+        // F-2a：火不再按 burnDuration 硬熄灭（概率衰老，均值约 20 回合）——
+        // "熄灭后恢复"改用测试口径手动摘火层；被测语义（水重新成为有效地形、
+        // 恢复阻挡）不变。
         game.grid.setTerrain(12, 6, C.WATER_DEEP, '~', 0x1133aa);
-        game.environment.igniteForced(12, 6, 1);
-        tickEnv(game, 2);
+        game.environment.igniteForced(12, 6);
         const w = game.grid.getCell(12, 6)!;
-        expect(w.isBurning).toBe(false);
-        expect(w.terrain, '水上的火烧尽后原样熄灭（水重新成为有效地形）').toBe(C.WATER_DEEP);
+        expect(w.isBurning).toBe(true);
+        w.layers[L.SURFACE] = C.NOTHING; // 手动摘火（模拟衰老离场后的层状态）
+        expect(w.isBurning, '摘火层后镜像同步（派生读数）').toBe(false);
+        expect(w.terrain, '水上的火离场后水重新成为有效地形').toBe(C.WATER_DEEP);
         expect(priv(game).canMoveTo(12, 6), '熄灭后深水照旧不可走').toBe(false);
     });
 });
 
-describe('F-1 对抗④：燃烧时长参数（红线项）', () => {
-    it('草 4-7 / 门 2-4 / igniteForced 显式值。' +
-        '错误实现：顺手"优化"成固定值或换区间。', () => {
-        // 界断言（不做单点统计断言——统计脆弱，见项目常识 §四）
+describe('F-1 对抗④（F-2a 反转：burnDuration 红线 → 概率衰老红线）', () => {
+    it('火的寿命必须由 promoteChance 概率衰老承担（几何分布，PLAIN_FIRE 均值约 20 回合），' +
+        '不得回退成 4-7 硬倒计时。错误实现：任何形式的固定倒计时——' +
+        '60 个燃烧格推 8 个客观块后必须仍大半在烧（旧模型 0% 存活到第 8 回合）。', () => {
         const game = createHeadlessGame(42);
         openRoom(game);
-        const durs: number[] = [];
+        let ignited = 0;
         for (let i = 0; i < 60; i++) {
             const x = 2 + (i % 14), y = 2 + Math.floor(i / 14);
             game.grid.setTerrain(x, y, C.GRASS, '"', 0x33aa33);
             game.environment.ignite(x, y);
-            durs.push(game.grid.getCell(x, y)!.burnDuration);
+            ignited++;
         }
-        expect(Math.min(...durs), '草的最短燃烧 ≥4（randRange(4,7) 下界）').toBeGreaterThanOrEqual(4);
-        expect(Math.max(...durs), '草的最长燃烧 ≤7（randRange(4,7) 上界）').toBeLessThanOrEqual(7);
-        expect(new Set(durs).size, '60 次取样必须出现多个不同值——固定值实现在此红').toBeGreaterThan(1);
-
-        const doorDurs: number[] = [];
+        expect(ignited, '60 格全部应点燃（可燃物直燃无掷骰）').toBe(60);
+        // 推 8 个客观块：衰老掷骰自第 2 块开始（起火回合登记 CAUGHT_FIRE 一回
+        // 合豁免），单格存活率 0.95^7 ≈ 70%，60 格的均值波动 < ±6%——
+        // 旧 4-7 倒计时模型下存活数为 0，任何倒计时复活都在此翻红。
+        for (let i = 0; i < 8; i++) tickEnv(game, 1);
+        let stillBurning = 0;
         for (let i = 0; i < 60; i++) {
-            const x = 2 + (i % 14), y = 7 + Math.floor(i / 14); // 与草格不重叠的 fresh 格
-            game.grid.setTerrain(x, y, C.DOOR, '+', 0xaa8844);
-            game.environment.ignite(x, y);
-            doorDurs.push(game.grid.getCell(x, y)!.burnDuration);
+            const x = 2 + (i % 14), y = 2 + Math.floor(i / 14);
+            if (game.grid.getCell(x, y)!.isBurning) stillBurning++;
         }
-        expect(Math.min(...doorDurs), '门的最短燃烧 ≥2').toBeGreaterThanOrEqual(2);
-        expect(Math.max(...doorDurs), '门的最长燃烧 ≤4').toBeLessThanOrEqual(4);
-        expect(new Set(doorDurs).size).toBeGreaterThan(1);
-
-        // 显式时长直通
-        game.grid.setTerrain(8, 8, C.GRASS, '"', 0x33aa33);
-        game.environment.igniteForced(8, 8, 5);
-        expect(game.grid.getCell(8, 8)!.burnDuration, '显式时长必须原样生效').toBe(5);
+        expect(stillBurning, '8 回合后大半火格必须仍存活（概率衰老，非 4-7 倒计时）').toBeGreaterThan(20);
     });
 });
 
-describe('F-1 对抗⑤：烧尽产物 = CHARRED_FLOOR（红线）', () => {
-    it('草/网烧尽变焦土而非 EMBERS；EMBERS 地形不存在。' +
-        '错误实现：把"烧完变 CHARRED_FLOOR"顺手对齐成 CE 的 EMBERS。', () => {
-        expect((TerrainType as unknown as Record<string, unknown>).EMBERS, '本轮不得引入 EMBERS 地形').toBeUndefined();
+describe('F-1 对抗⑤（F-2a 反转：烧尽产物 = CE 链 EMBERS → ASH）', () => {
+    it('草烧尽不再是 CHARRED_FLOOR（F-1 红线已反转）：衰老产物 EMBERS → ASH，' +
+        'CHARRED_FLOOR 不再由火烧尽生产。' +
+        '错误实现：把产物改回 CHARRED_FLOOR（旧 web 行为）或跳过 EMBERS 直落 ASH。', () => {
         const game = createHeadlessGame(42);
         openRoom(game);
         game.grid.setTerrain(8, 6, C.GRASS, '"', 0x33aa33);
         game.environment.ignite(8, 6);
         const cell = game.grid.getCell(8, 6)!;
-        tickEnv(game, cell.burnDuration + 1);
-        expect(cell.terrain, '草烧尽=焦土（web 现状，F-2a 才对齐 CE 产物）').toBe(C.CHARRED_FLOOR);
-        expect(cell.char).toBe('.');
-        expect(cell.color).toBe(0x444444);
-        expect(hasFire(game, 8, 6)).toBe(false);
-        // 网同样（注意：WEB 不在 ignite() 白名单——"网只能被蔓延点着"是既有
-        // 行为，F-0 §3.4 登记；强制点火走 igniteForced）
-        game.grid.setTerrain(10, 8, C.WEB, '\\', 0xcccccc);
-        game.environment.igniteForced(10, 8, 2);
-        const web = game.grid.getCell(10, 8)!;
-        tickEnv(game, 3);
-        expect(web.terrain).toBe(C.CHARRED_FLOOR);
-        expect(web.isPassable, '网烧尽后可通行（原行为）').toBe(true);
+        // 衰老链（promoteTile 单位入口，同 runPromotionUpdate 落地路径）：
+        promoteTile(game.grid, 8, 6, L.SURFACE, false);
+        expect(cell.terrain, '草火第一步衰老 = EMBERS（CE Globals.c:469）').toBe(C.EMBERS);
+        promoteTile(game.grid, 8, 6, L.SURFACE, false);
+        expect(cell.terrain, '第二步 = ASH（CE Globals.c:461）').toBe(C.ASH);
+        expect(cell.terrain, '绝不能是 CHARRED_FLOOR（web 旧产物，已退役）').not.toBe(C.CHARRED_FLOOR);
+        // ASH 是零旗标装饰：可走、可视、不参与燃烧。
+        expect(isFireTerrain(C.ASH)).toBe(false);
+        expect(blocksPassability(C.ASH)).toBe(false);
     });
 });
 
 describe('F-1 对抗⑥：持久化往返（存一半即红）', () => {
-    it('燃烧中的草+地板存档→读档：火还在、层在、时长/原身一致；读档后能烧尽。' +
-        '错误实现：快照漏 burnTerrain（读档后烧尽产物错）或漏层（火消失）或漏镜像位（复活/丢火）。', () => {
+    it('燃烧中的草+地板存档→读档：火还在、层一致；读档后能继续衰老成 EMBERS。' +
+        '错误实现：快照漏层（火消失）或漏镜像位（复活/丢火）。' +
+        '（F-2a：burnDuration/burnTerrain 随倒计时模型退役，不再往返。）', () => {
         const game = createHeadlessGame(42);
         openRoom(game);
         game.grid.setTerrain(8, 6, C.GRASS, '"', 0x33aa33);
         game.environment.ignite(8, 6);
-        game.environment.igniteForced(10, 8, 6);
+        game.environment.igniteForced(10, 8);
         const g0 = game.grid.getCell(8, 6)!;
         const f0 = game.grid.getCell(10, 8)!;
-        const durGrass = g0.burnDuration, durFloor = f0.burnDuration;
 
         const snap = game.toSnapshot();
         const reloaded = createHeadlessGame(1);
@@ -260,17 +288,13 @@ describe('F-1 对抗⑥：持久化往返（存一半即红）', () => {
         const g1 = reloaded.grid.getCell(8, 6)!;
         const f1 = reloaded.grid.getCell(10, 8)!;
         expect(g1.isBurning, '草火存活').toBe(true);
-        expect(g1.burnDuration).toBe(durGrass);
-        expect(g1.burnTerrain, '烧尽判据原身必须随存档往返').toBe(C.GRASS);
         expect(g1.layers, 'SURFACE 层火地形必须随存档往返').toEqual(g0.layers);
         expect(f1.isBurning, '地板火存活').toBe(true);
-        expect(f1.burnDuration).toBe(durFloor);
-        expect(f1.burnTerrain).toBe(C.FLOOR);
         expect(f1.layers).toEqual(f0.layers);
 
-        // 读档后继续烧尽，产物正确
-        tickEnv(reloaded, durGrass + 1);
-        expect(g1.terrain, '读档后草地照样烧成焦土').toBe(C.CHARRED_FLOOR);
+        // 读档后继续衰老，产物正确
+        promoteTile(reloaded.grid, 8, 6, L.SURFACE, false);
+        expect(g1.terrain, '读档后草地照样衰老成 EMBERS').toBe(C.EMBERS);
         expect(g1.isBurning).toBe(false);
     });
 
@@ -280,11 +304,9 @@ describe('F-1 对抗⑥：持久化往返（存一半即红）', () => {
         openRoom(game);
         game.grid.setTerrain(8, 6, C.GRASS, '"', 0x33aa33);
         const snap = JSON.parse(JSON.stringify(game.toSnapshot())) as GameSnapshot;
-        // 手造旧格式燃烧格：有标志、无火层、无 burnTerrain
+        // 手造旧格式燃烧格：有标志、无火层
         const cellSnap = snap.grid.find((c) => c.x === 8 && c.y === 6)!;
         cellSnap.isBurning = true;
-        cellSnap.burnDuration = 5;
-        delete cellSnap.burnTerrain;
         cellSnap.layers = (cellSnap.layers ?? []).map((t) => (isFireTerrain(t) ? C.NOTHING : t));
         expect(reloadedMirror(snap), '补写后该格必须挂火地形').toBe(true);
 
@@ -292,7 +314,6 @@ describe('F-1 对抗⑥：持久化往返（存一半即红）', () => {
         const snap2 = JSON.parse(JSON.stringify(game.toSnapshot())) as GameSnapshot;
         const cellSnap2 = snap2.grid.find((c) => c.x === 8 && c.y === 6)!;
         cellSnap2.isBurning = false;
-        cellSnap2.burnDuration = 0;
         cellSnap2.layers = [C.FLOOR, C.NOTHING, C.NOTHING, C.PLAIN_FIRE];
         const g2 = createHeadlessGame(1);
         expect(g2.loadSnapshot(snap2)).toBe(true);
@@ -312,8 +333,8 @@ describe('F-1 对抗⑥：持久化往返（存一半即红）', () => {
     }
 });
 
-describe('F-1 对抗⑦：GAS 层恒空（C-4a-0 留痕在 F-1 全程有效）', () => {
-    it('点火/蔓延/烧尽/注气全过程中任何格的 GAS 层不得被写。' +
+describe('F-1 对抗⑦：GAS 层恒空（C-4a-0 留痕在 F-1/F-2a 全程有效）', () => {
+    it('点火/蔓延/衰老/注气全过程中任何格的 GAS 层不得被写。' +
         '错误实现：把火写进 GAS 层（CE 火 DF 全在 SURFACE，F-0 §3.2）。', () => {
         const game = createHeadlessGame(42);
         openRoom(game);
