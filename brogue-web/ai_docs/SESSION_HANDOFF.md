@@ -91,11 +91,28 @@ C-4a-0 与 C-4a 都用了同一个套路，它奏效：
 | `f_1_fire_as_terrain.test.ts` | 火的红线项（EMBERS、固定 2 伤害、promoteChance 0） |
 | `p1_24` / `p1_28` | 直接写 `cell.isBurning` 的地方 |
 
-**★ 清单要 grep 出来，不要凭记忆 ★**（2026-09-16 第 4 次漏授权后补）：
+**★ 清单要 grep 出来，而且必须搜两段 ★**（2026-09-17 第 5 次漏授权后修正）：
+
+第一次立这条时我只搜了"本轮的**主题**"，G-3 于是又漏了一个——
+`c_4a_terrain_catalog.test.ts` 钉的是 `TERRAIN_FLAGS` 全量表，
+G-3 新增 `ROT_GAS` 等地形必然打红它，但那文件**一个气体关键词都没有**。
+
+**正确的搜法是两段并集**：
+
 ```bash
-# 例：G-1 要改气体，先找出所有断言气体的既有测试
-grep -rln "GasType\|gasGrid\|addGas\|density\|DungeonLayer.GAS" src/test/*.ts
+# ① 结构性穷尽表——凡新增地形/DF/枚举成员的轮次都会打红它们，与主题无关
+grep -rln "TERRAIN_FLAGS\|DRAW_PRIORITY\|TERRAIN_HOME_LAYER\|\
+DUNGEON_FEATURE_CATALOG\|DF_MISSING_TILES\|toEqual({" src/test/*.ts
+
+# ② 本轮主题关键词——例如气体轮
+grep -rln "GasType\|gasGrid\|addGas\|volume\|DungeonLayer.GAS" src/test/*.ts
 ```
+
+**①式的当前结果（2026-09-17）**：`c_4a_0_layer_model` / `c_4a_terrain_catalog` /
+`c_4b_dungeon_feature` / `c_4c_promotion` / `f_1_fire_as_terrain` /
+`f_2a_fire_mechanics` / `g_2_gas_df_wiring` / `p1_42_secret_door_search` /
+`p2_6_display_settings`。
+**凡本轮要新增任何地形、DF 或枚举成员，这九个默认全部进允许清单。**
 **再加一步：读上一轮报告的"给下一轮的登记清单"。**
 F-2b 明写了"气体曲线哨兵有两份等价实现（f_2a 对抗⑪ / f_2b 对抗⑦），
 G-1 改气体时两处一起翻"；F-2a 明写了"届时 p4_4 进允许清单"——
