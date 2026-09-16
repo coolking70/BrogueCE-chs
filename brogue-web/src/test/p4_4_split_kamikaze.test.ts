@@ -379,7 +379,21 @@ describe('P4-4 验收 3：死亡地形 — bloat 毒气 / explosive bloat 爆燃
         expect(game.grid.getCell(8, 5)?.isBurning).toBeFalsy();
     });
 
-    it('验收打回修正：站在爆炸格上的生物走完整回合结算后真的掉血（不是只读 isBurning）', () => {
+    // 验收方 F-2b 后翻正（原名："…走完整回合结算后真的掉血（不是只读 isBurning）"）。
+    //
+    // 过期的是**实现细节假设**，不是断言意图：F-2b 把燃烧改成生物自身的状态
+    // （CE STATUS_BURNING），于是 CE 客观块的原序生效——环境段 `applyEnvironmentalEffects`
+    // 负责**点火**（Time.c:2671），状态段 `tickCreatureStatuses` 才**结算伤害**
+    // （Time.c:2677 / :2581-2591）。原测试只调一次环境段就断言掉血，
+    // 那是"环境段即伤害段"的旧模型。
+    //
+    // **守卫语义完整保留、未放宽**：把"必须掉血"拆成两段各自断言——
+    // 环境段后必须挂上燃烧状态、状态段后必须掉血。漏掉任一段都会翻红。
+    //
+    // 另：CE 里 bloat 爆炸对生物的伤害其实来自 GAS_EXPLOSION 地形的
+    // `T_CAUSES_EXPLOSIVE_DAMAGE` 瞬时伤害（Globals.c:496 + DF_BLOAT_EXPLOSION:654），
+    // 与燃烧状态无关——那条归 **F-2c**，本断言不代表爆炸伤害已按 CE 实现。
+    it('F-2b 翻正：站在爆炸格上的生物，环境段挂燃烧状态、状态段真的掉血', () => {
         const game = createHeadlessGame(20);
         clearToOpenRoom(game);
 
@@ -393,12 +407,20 @@ describe('P4-4 验收 3：死亡地形 — bloat 毒气 / explosive bloat 爆燃
 
         const hpBefore = victim.hp;
         priv(game).triggerDeathFeatures();
-        // (game as any).applyEnvironmentalEffects 是 Game 内部推进循环用的私有步骤，
-        // 直接调用它走一次完整的"燃烧格造成伤害"结算，与 fire_burst 药水等既有
-        // 用法走的是同一条路径（Game.ts applyEnvironmentalEffects 的 isBurning 分支）。
-        priv(game).applyEnvironmentalEffects();
 
-        expect(victim.hp).toBeLessThan(hpBefore);
+        // 环境段：点火（CE Time.c:2671）。F-2b 起它只挂状态、不结算伤害。
+        priv(game).applyEnvironmentalEffects();
+        expect(
+            priv(game).burningDuration(victim),
+            '环境段后受害者没挂上燃烧状态——爆炸格的火没点着它'
+        ).toBeGreaterThan(0);
+
+        // 状态段：燃烧结算（CE Time.c:2677 → :2581-2591，rand_range(1,3)）。
+        priv(game).tickCreatureStatuses();
+        expect(
+            victim.hp,
+            '状态段后没掉血——燃烧状态挂上了却不结算伤害'
+        ).toBeLessThan(hpBefore);
     });
 
     it('对抗性⑤：同一只怪物的死亡地形效果只能触发一次。' +

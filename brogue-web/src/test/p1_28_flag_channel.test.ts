@@ -82,8 +82,14 @@ function priv(game: Game): any {
 }
 
 function tickEnvironment(game: Game, turns: number): void {
+    // F-2b 翻正（仅 helper，断言见下）：燃烧伤害从"环境分支平扣"迁到
+    // 状态递减轨（Game.tickCreatureStatuses → resolveBurningDamage，CE
+    // 怪物轨 Monsters.c:1877）。单次循环 = 客观块的两个结算段，次序对齐
+    // F-2b 后的 objectiveTimeBlock：环境段（点火/灭火）先于状态段（伤害），
+    // 即 CE Time.c:2671 → :2677 的块内序。
     for (let i = 0; i < turns; i++) {
         priv(game).applyEnvironmentalEffects();
+        priv(game).tickCreatureStatuses();
     }
 }
 
@@ -217,6 +223,14 @@ describe('P1-28：旗标派生的永久状态不随回合衰减', () => {
 // ---------------------------------------------------------------------------
 // 火焰地形分支的 CE 形状（exposeCreatureToFire，Time.c:28-35/527-530）
 // ---------------------------------------------------------------------------
+// 【F-2b 翻正记录】本 describe 原锁定"站燃烧格每轮平扣 2"（P1-28 时代的
+// 环境分支直接扣血）。F-2b 落地 CE 燃烧状态机（STATUS_BURNING：上状态
+// Time.c:59-60、伤害 rand_range(1,3) Monsters.c:1877-1901）后，"平扣 2"
+// 红线到期，反转为状态机事实：踩火当块先挂状态（环境段，块内递减后剩 6）、
+// 随后结算段按 1-3 掉血（CE Time.c:2671 tile → :2677 decrement 的块内序）。
+// 原断言内容（rat hp 10 → tick 2 → 6；bat/悬浮玩家 tick 1 → −2）按 B-1
+// 范本以注释留档；时长/灭火/点燃所踩地形的细对抗在 f_2b_creature_burning.test.ts。
+// ---------------------------------------------------------------------------
 describe('P1-28：火焰地形分支对齐 exposeCreatureToFire', () => {
     it('对抗性④：Wisp 站在燃烧格上不受伤——火免旗标在火焰地形处同样生效' +
         '（CE：T_IS_FIRE → exposeCreatureToFire，STATUS_IMMUNE_TO_FIRE 直接' +
@@ -237,8 +251,12 @@ describe('P1-28：火焰地形分支对齐 exposeCreatureToFire', () => {
         expect(wisp.char).not.toBe('%');
     });
 
-    it('对照组：rat 站燃烧格每轮平扣 2 点且不死透——锁定火焰分支本身仍然工作' +
-        '（防止"顺手把火焰分支关掉"），同时锁定伤害额（多扣/少扣都红）。', () => {
+    it('对照组：rat 站燃烧格当块先挂燃烧状态（7−1=6）、同块按 CE ' +
+        'rand_range(1,3) 掉血——锁定火焰分支本身仍然工作（防止"顺手把火焰' +
+        '分支关掉"）。【F-2b 翻正】原断言为平扣 2（hp 10 → tick 2 → 6），随' +
+        '燃烧状态机到期。捕获的错误实现：①状态没挂上/火分支失效（hp 与状态' +
+        '均不动）；②退回平扣旧实现（伤害恒 2，脱离 1-3 支撑集的分布锁）；' +
+        '③时长写错（叠加实现烧几块后 >6）。', () => {
         const game = createHeadlessGame(20260916);
         clearToOpenRoom(game);
         // F-1 改写（经公共入口点火），见上。
@@ -248,9 +266,18 @@ describe('P1-28：火焰地形分支对齐 exposeCreatureToFire', () => {
         rat.hp = 10;
         game.monsters.push(rat);
 
-        tickEnvironment(game, 2);
+        tickEnvironment(game, 1);
+        // 踩火当块：环境段挂 7、结算段掉血 1-3 并递减到 6
+        //（CE Time.c:2671 tile → :2677 decrement 的块内序）。
+        expect(priv(game).burningDuration(rat)).toBe(6);
+        expect(rat.hp).toBeGreaterThanOrEqual(7);
+        expect(rat.hp).toBeLessThanOrEqual(9);
 
-        expect(rat.hp).toBe(6); // 10 - 2×2：恰好两轮平扣
+        tickEnvironment(game, 1);
+        // 续烧：环境段刷新 max(6,7)=7、结算段再递减回 6——恒 6（非叠加）。
+        expect(priv(game).burningDuration(rat)).toBe(6);
+        expect(rat.hp).toBeLessThanOrEqual(8);
+        expect(rat.hp).toBeGreaterThanOrEqual(4);
     });
 
     it('对抗性⑤：MONST_INVULNERABLE 的 Warden 站燃烧格不受伤——CE ' +
@@ -269,10 +296,12 @@ describe('P1-28：火焰地形分支对齐 exposeCreatureToFire', () => {
         expect(warden.hp).toBe(warden.maxHp);
     });
 
-    it('对抗性⑥：旗标飞行的 vampire_bat 站燃烧格照样受伤——CE 火焰地形不豁免' +
-        '悬浮生物（Time.c:527 无悬浮条款），原 web 的 !hasStatus(\'levitating\') ' +
-        '豁免会让 bat 经派生悬浮状态获得 CE 没有的火免（本轮移除该豁免）。' +
-        '捕获的错误实现：保留悬浮豁免只补旗标翻译。', () => {
+    it('对抗性⑥：旗标飞行的 vampire_bat 站燃烧格照样被点燃并掉血——CE 火焰' +
+        '地形不豁免悬浮生物（Time.c:527 无悬浮条款），原 web 的 ' +
+        '!hasStatus(\'levitating\') 豁免会让 bat 经派生悬浮状态获得 CE 没有的' +
+        '火免（本轮移除该豁免）。【F-2b 翻正】原断言为悬浮 tick 1 平扣 2；' +
+        '新事实：悬浮照样挂上燃烧状态并按 1-3 掉血。捕获的错误实现：恢复悬浮' +
+        '豁免（bat 拿不到燃烧状态、不掉血）。', () => {
         const game = createHeadlessGame(20260916);
         clearToOpenRoom(game);
         // F-1 改写（经公共入口点火），见上。
@@ -285,12 +314,17 @@ describe('P1-28：火焰地形分支对齐 exposeCreatureToFire', () => {
 
         tickEnvironment(game, 1);
 
-        expect(bat.hp).toBe(8); // 悬浮不豁免火焰地形：照样平扣 2
+        // 悬浮不豁免火焰地形：状态挂上（7−1=6）、当块掉血 1-3。
+        expect(priv(game).burningDuration(bat)).toBe(6);
+        expect(bat.hp).toBeLessThan(10);
+        expect(bat.hp).toBeGreaterThanOrEqual(7);
     });
 
-    it('对抗性⑥（玩家侧）：悬浮药水状态下的玩家站燃烧格照样受伤——CE 玩家' +
+    it('对抗性⑥（玩家侧）：悬浮药水状态下的玩家站燃烧格照样被点燃——CE 玩家' +
         '悬浮踩火同样被 exposeCreatureToFire 点燃（Time.c:8085 玩家同条款）。' +
-        '捕获的错误实现：怪物侧移除了悬浮豁免、玩家侧残留（分支拆成两半）。', () => {
+        '【F-2b 翻正】原断言为悬浮玩家 tick 1 平扣 2；新事实同怪物侧：挂状态、' +
+        '同块 1-3 掉血。捕获的错误实现：怪物侧移除悬浮豁免、玩家侧残留（分支' +
+        '拆成两半），或任一侧恢复悬浮豁免。', () => {
         const game = createHeadlessGame(20260916);
         clearToOpenRoom(game);
         // F-1 改写（经公共入口点火），见上。
@@ -300,7 +334,8 @@ describe('P1-28：火焰地形分支对齐 exposeCreatureToFire', () => {
 
         tickEnvironment(game, 1);
 
-        expect(game.player.hp).toBe(game.player.maxHp - 2);
+        expect(priv(game).burningDuration(game.player)).toBe(6);
+        expect(game.player.hp).toBeLessThan(game.player.maxHp);
         expect(game.isGameOver).toBe(false);
     });
 });

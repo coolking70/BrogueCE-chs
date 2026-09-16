@@ -3,7 +3,8 @@
  * Main game state and orchestration
  */
 import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer } from '../Map/Grid';
-import { blocksPassability, isDeepWater, TERRAIN_FLAGS, T_IS_FIRE } from '../Map/TerrainCatalog';
+import { blocksPassability, isDeepWater, TERRAIN_FLAGS, T_IS_FIRE, TM_EXTINGUISHES_FIRE } from '../Map/TerrainCatalog';
+import { cellTerrainMechFlags } from '../Map/DungeonFeature';
 import { Architect } from '../Generator/Architect';
 import type { MachineResult } from '../Generator/BlueprintEngine';
 import blueprintData from '../../data/blueprints.json';
@@ -2899,7 +2900,19 @@ export class Game {
                         logger.log(i18next.t('potion.creeping_death', { defaultValue: 'A terrifying green gas fills the area!' }), '#88ff88');
                         break;
                     case 'resist_fire':
-                        this.player.grantTemporaryImmunity('burning' as any, 50);
+                        // P1-44 修复（F-2b）：CE POTION_FIRE_IMMUNITY（Items.c:8188-8193）——
+                        // status[IMMUNE_TO_FIRE] = magnitude（randClump(range)，
+                        // GlobalsBrogue.c:672 火免药水 range={150,150,0} ⇒ 恒 150），
+                        // 且若正在燃烧立即扑灭。原实现 grantTemporaryImmunity
+                        // ('burning' as any, 50) 三重断线：'burning' 不在 StatusId
+                        // 联合；temporaryImmunities 全库唯一读者是近战 on-hit 状态
+                        // （applyMonsterOnHitStatus）；火焰伤害查的是 immune_fire
+                        // 状态——药水实际什么都没做（时长 50 同为自创，一并按 CE
+                        // 翻正；相邻药水的同族时长漂移登记给物品表轮）。
+                        this.applyTimedStatus(this.player, 'immune_fire', 150);
+                        if (this.burningDuration(this.player) > 0) {
+                            this.extinguishCreatureFire(this.player);
+                        }
                         logger.log(i18next.t('potion.resist_fire', { defaultValue: 'You feel comfortably cool.' }), '#88ccff');
                         break;
                     case 'become_invisible':
@@ -4614,7 +4627,8 @@ export class Game {
         if (armor.runicType === 'respiration' && rng.randPercent(20)) {
             // CE 语义为毒气/蒸汽的常驻免疫（Time.c:411-424、Monsters.c:1414），
             // 与受击无关；效果与触发事件均不同，本轮保留现有行为（差异见报告）。
-            this.player.grantTemporaryImmunity('burning' as any, 1);
+            // F-2b：原 'burning' as any 一行删除——temporaryImmunities 对燃烧
+            // 无任何读者（P1-44 三重断线登记），是纯死代码；行为零变化。
             this.player.grantTemporaryImmunity('confused' as any, 1);
             armor.runicKnown = true;
             logger.log(
@@ -4706,6 +4720,12 @@ export class Game {
     }
 
     private tickCreatureStatuses() {
+        // F-2b：燃烧状态伤害（CE 玩家 Time.c:2581-2591 playerTurnEnded /
+        // 怪 Monsters.c:1877-1901）在状态递减之前结算（CE 玩家序）。
+        this.resolveBurningDamage(this.player);
+        for (const m of this.monsters) {
+            this.resolveBurningDamage(m);
+        }
         const playerExpired = this.player.tickStatuses();
         // CE Time.c:2261-2273：玩家 haste/slow 到期时恢复 info 基准速度并
         // synchronizePlayerTimeState（客观门对齐玩家剩余 tick）。web 的速度
@@ -4722,6 +4742,11 @@ export class Game {
             if (status === 'confused' || status === 'hallucinating') {
                 logger.log(i18next.t('status.player.disoriented_off', { defaultValue: 'Your thoughts become clear again.' }), '#cccccc');
             }
+            // F-2b：燃烧自然燃尽（CE Time.c:2588 !--status → extinguishFireOnCreature
+            // 的 "you are no longer on fire."）；蹚水灭火走 extinguishCreatureFire，
+            // 不经过这条。（tickStatuses 返回类型是 StatusId[]，但逃生舱键
+            // 'burning' 会在运行时出现——按存储侧同款口径比较字符串。）
+            if ((status as string) === 'burning') logger.log(i18next.t('status.player.burning_off', { defaultValue: 'You are no longer on fire.' }), '#cccccc');
         }
 
         for (const m of this.monsters) {
@@ -5515,12 +5540,14 @@ export class Game {
      * - rogue.monsterSpawnFuse--      → monsterSpawnFuse--，归零触发周期刷怪
      *                                   （CE 触发点在 decrementPlayerStatus 尾部，
      *                                   Time.c:2322-2325，同属客观块）
+     * - applyInstantTileEffectsToCreature（怪物 :2671 / 玩家 :2698）
+     *       → applyEnvironmentalEffects（F-2b 起合并上移到块首：
+     *         CE 怪物轨的"tile 先于 decrement"是燃烧状态机的实质次序）
      * - decrementMonsterStatus(monst) → tickCreatureStatuses()（web 合并实现
-     *   玩家+怪物状态；玩家 haste/slow 到期处按 CE Time.c:2261-2273 调用
-     *   synchronizePlayerTimeState）
-     * - updateEnvironment()           → updateFires/updateGases + applyEnvironmentalEffects
-     *   （web 的 applyEnvironmentalEffects 同时覆盖 CE 的
-     *   applyInstantTileEffectsToCreature——深渊/岩浆/燃烧的瞬时结算）
+     *   玩家+怪物状态，紧随环境段；燃烧伤害结算在其内。玩家 haste/slow 到期
+     *   处按 CE Time.c:2261-2273 调用 synchronizePlayerTimeState）
+     * - updateEnvironment()           → 晋升驱动 + updateFires/updateGases
+     *   （CE 的"晋升在火之前"次序据此保持）
      * - decrementPlayerStatus()       → tickTemporaryImmunities + tickNutrition
      *   （营养递减与饥饿档位在 CE 位于 decrementPlayerStatus 内、由客观块调用；
      *   回血/饥饿伤害则是主观的，见 finishTurnEpilogue 的 recoverPerTurn）
@@ -5539,6 +5566,20 @@ export class Game {
             }
         }
 
+        // Let environment update
+        // F-2b：环境瞬时结算从块尾上移到晋升驱动之前，使块内次序对齐 CE
+        // 客观块的怪物轨：applyInstantTileEffectsToCreature（Time.c:2671，
+        // 踩火上状态/蹚水灭火/着火生物点燃所踩格）先于
+        // decrementMonsterStatus（:2677，燃烧伤害结算）。落地燃烧状态机后
+        // 该次序有实质语义：踩火当块"先挂状态、随后结算掉血"；蹚水当块
+        // "先扑灭、结算段空转不掉血"。（CE 玩家轨是 per-action 的
+        // playerTurnEnded 伤害 :2581 + 块尾 tile :2698；web 按 P2-3 既有的
+        // 合并口径与怪物轨并轨，块内"环境→递减"对两轨取 CE 怪物序。
+        // 差异登记：合并后玩家着火的首块伤害比 CE 提前一个动作出现。）
+        this.applyEnvironmentalEffects();
+
+        // F-2b：燃烧伤害结算在 tickCreatureStatuses 内（CE Time.c:2581-2591 /
+        // Monsters.c:1877-1901），随本调用在环境段之后执行。
         this.tickCreatureStatuses();
 
         // C-4c：CE updateEnvironment 的晋升段（Time.c:1619-1684）——两趟随机
@@ -5589,8 +5630,9 @@ export class Game {
         }
         this.environment.updateGases();
 
-        // Apply fire/gas damage to everyone
-        this.applyEnvironmentalEffects();
+        // （F-2b：applyEnvironmentalEffects 已上移到晋升驱动之前——见块首注释。
+        // 燃烧/毒气等对生物的结算因此使用本块火/气演化**之前**的状态，与 CE
+        // :2671 怪物 tile 段先于 updateEnvironment :2695 的取态一致。）
 
         const expiredImmunities = this.player.tickTemporaryImmunities();
         for (const im of expiredImmunities) {
@@ -6182,6 +6224,122 @@ export class Game {
         return true;
     }
 
+    // =========================================================================
+    // F-2b：CE 的生物燃烧状态机（STATUS_BURNING，Rogue.h:2000）
+    //
+    // 载体申报：'burning' 不在 StatusId 联合里（src/entities/Creature.ts:9，
+    // 本轮禁改清单，任务书 §三 明示"停下来申报，不擅自动"），状态载体走
+    // statusDurations 的逃生舱键——复用 Monster.ts SHIELD_STATUS_KEY 的既有
+    // 模式（Record<string, number> 视角读写）。收益：tickStatuses 对全键的
+    // 每回合递减恰好复刻 CE 的燃烧寿命递减（Time.c:2588 / Monsters.c:1880），
+    // 快照（玩家 Game.ts:5971 / 怪物 :5988 的 statusDurations 整对象往返）
+    // 与 Sidebar 状态栏（遍历 statusDurations 查 STATUS_CONFIG）免费搭车。
+    // =========================================================================
+    /** CE STATUS_BURNING 上状态时长（Time.c:59-60 max(,7) 的字面 7）。 */
+    private static readonly BURNING_DURATION_TURNS = 7;
+
+    private burningDuration(entity: Player | Monster | Creature): number {
+        return ((entity.statusDurations as unknown) as Record<string, number>)['burning'] ?? 0;
+    }
+
+    private setBurningDuration(entity: Player | Monster | Creature, turns: number): void {
+        const durations = (entity.statusDurations as unknown) as Record<string, number>;
+        if (turns > 0) {
+            durations['burning'] = turns;
+        } else {
+            delete durations['burning'];
+        }
+    }
+
+    /**
+     * CE Time.c:2088-2098 extinguishFireOnCreature：清状态；玩家提示一句
+     * （"you are no longer on fire."），怪物静默；光色/视野刷新 web 无对应
+     * 矿灯光色系统，登记退化。
+     */
+    private extinguishCreatureFire(entity: Player | Monster): void {
+        if (this.burningDuration(entity) <= 0) return;
+        this.setBurningDuration(entity, 0);
+        if (entity === this.player) {
+            logger.log(i18next.t('status.player.burning_off', { defaultValue: 'You are no longer on fire.' }), '#cccccc');
+        }
+    }
+
+    /** CE cellHasTMFlag(loc, TM)（Time.c:34-35/:227 的判据）：全层 mechFlags
+     *  的并集查询，复用 DungeonFeature.cellTerrainMechFlags（C-4b 的白名单
+     *  读者，c_4a E 留痕的扫描字段不经本文件出现）。 */
+    private cellExtinguishesFire(x: number, y: number): boolean {
+        return (cellTerrainMechFlags(this.grid, x, y) & TM_EXTINGUISHES_FIRE) !== 0;
+    }
+
+    /**
+     * CE Time.c:28-61 exposeCreatureToFire 逐条移植：
+     * 豁免（命中即 return，Time.c:30-35）——
+     *   1. MB_IS_DYING（web 的已死判据 = hp<=0，Creature.die 归零口径）；
+     *   2. STATUS_IMMUNE_TO_FIRE（旗标怪经 P1-28 的 syncFlagDerivedStatuses
+     *      恒持有永久 immune_fire，通道自然生效）；
+     *   3. MONST_INVULNERABLE（全 CE 仅 Warden of Yendor）；
+     *   4. MB_SUBMERGED——web 无潜水簿记（Monster.ts generallyValidBoltTarget
+     *      同款登记），不实现；
+     *   5. (!STATUS_LEVITATING && 踩 TM_EXTINGUISHES_FIRE)——注意 CE 源码
+     *      Time.c:34-35 的括号只包住这两条的合取：悬浮生物悬在灭火层上方，
+     *      既不会被水免掉点火（火盖水的格子照烧它），也不会被水扑灭
+     *      （:228 的灭火守卫同款 !levitating）。
+     * 上状态（:59-60）：status = max(status, 7)——刷新而非叠加；首回合
+     * （原 status==0）播报"着火"，玩家自己 / 可见怪物（CE canDirectlySeeMonster，
+     * web 以格子可见度近似）。
+     */
+    private exposeCreatureToFire(entity: Player | Monster): void {
+        if (entity.hp <= 0) return;
+        if (entity.hasStatus('immune_fire')) return;
+        if (entity !== this.player && (entity as Monster).isInvulnerable()) return;
+        const cell = this.grid?.getCell(entity.loc.x, entity.loc.y);
+        if (!cell) return;
+        if (!entity.hasStatus('levitating') && this.cellExtinguishesFire(entity.loc.x, entity.loc.y)) return;
+
+        const current = this.burningDuration(entity);
+        if (current === 0) {
+            if (entity === this.player) {
+                logger.log(i18next.t('status.player.burning_on', { defaultValue: 'You catch fire!' }), '#ff6644');
+            } else if (cell.isVisible) {
+                logger.log(i18next.t('status.monster.burning_on', { monster: entity.name, defaultValue: `The ${entity.name} catches fire!` }), '#ff8866');
+            }
+        }
+        this.setBurningDuration(entity, Math.max(current, Game.BURNING_DURATION_TURNS));
+    }
+
+    /**
+     * 燃烧状态的每回合伤害结算。CE 玩家在 playerTurnEnded（Time.c:2581-2591）、
+     * 怪物在 updateMonsterStatus（Monsters.c:1877-1901）；web 按 P2-3 的合并
+     * 口径在客观块结算（与 poisoned 等状态同轨，haste/slow 下的每动作/每行动
+     * 差异随之合并——既有登记口径）。先结算伤害后递减与 CE 玩家序一致
+     * （Time.c:2582 伤害在 :2588 递减之前）；递减本身由 tickStatuses 统一完成。
+     *
+     * 免伤不免递减：CE 的掷骰在豁免判定之前（Time.c:2582、Monsters.c:1882
+     * 均先 rand_range 后查 IMMUNE/INVULNERABLE），RNG 消耗顺序据此保持。
+     * MONST_FIERY 不递减（Monsters.c:1879-1881）：web 数据里全部 FIERY 怪
+     * 同时 IMMUNE_TO_FIRE、永不入烧，该分支登记不实现（报告 §载体盘点）。
+     */
+    private resolveBurningDamage(entity: Player | Monster): void {
+        if (entity.hp <= 0) return;
+        if (this.burningDuration(entity) <= 0) return;
+        const damage = rng.randRange(1, 3); // CE rand_range(1,3)，免疫者照掷
+        if (!entity.hasStatus('immune_fire')
+            && !(entity !== this.player && (entity as Monster).isInvulnerable())) {
+            entity.hp -= damage;
+            if (entity === this.player) {
+                this.lastDamageSource = 'fire';
+                if (entity.hp <= 0) {
+                    // 死亡结算本体在 finishTurnEpilogue 的 hp<=0 清扫
+                    // （lastDamageSource='fire' → death.burned），此处只补铭牌。
+                    logger.log(i18next.t('env.player_burned_death', { defaultValue: 'You have burned to death.' }), '#ff0000');
+                }
+            } else if (entity.hp <= 0) {
+                logger.log(i18next.t('env.burns_to_death', { name: entity.name, defaultValue: `The ${entity.name} burns to death.` }), '#888888');
+                (entity as unknown as { die(): void }).die();
+            }
+        }
+    }
+
     private applyEnvironmentalEffects() {
         const checkEntity = (entity: any, name: string) => {
             if (entity.hp <= 0) return;
@@ -6235,28 +6393,33 @@ export class Game {
             }
 
             // Fire
-            // CE 口径（Time.c:527 → exposeCreatureToFire Time.c:28-35）：火焰
-            // 地形只豁免火焰免疫（STATUS_IMMUNE_TO_FIRE，旗标怪经
-            // Monster.syncFlagDerivedStatuses 恒持有）与 MONST_INVULNERABLE
-            // （P1-28 补齐，原实现缺）；另有 MB_SUBMERGED 与"非悬浮+灭火地形"
-            // 两条 web 无对应物。原实现的 !hasStatus('levitating') 豁免在 CE
-            // 不存在——火焰地形照烧悬浮生物（Time.c:527 无悬浮条款），且它会让
-            // 旗标飞行怪物经派生悬浮状态获得 CE 没有的火免，故移除。
-            if (cell.isBurning && !entity.hasStatus('immune_fire') && !(entity.abilities && entity.abilities.has('immune_fire')) && !(entity.isInvulnerable && entity.isInvulnerable())) {
-                entity.hp -= 2; // Flat 2 damage for now
-                if (entity === this.player) {
-                    this.lastDamageSource = 'fire';
-                    logger.log(i18next.t('env.player_burning', { defaultValue: 'You burn in the flames!' }), '#ff4444');
-                }
+            // F-2b：CE 两段模型的生物侧（Time.c:226-232 灭火 / :527-540 上状态
+            // 与点燃所踩地形）。原"站燃烧格平扣 2"随燃烧状态机退役：站火格只
+            // 上 STATUS_BURNING 状态（exposeCreatureToFire），伤害由燃烧状态
+            // 每回合结算（tickCreatureStatuses → resolveBurningDamage，
+            // CE 玩家 Time.c:2581-2591 / 怪 Monsters.c:1877-1901）。
+            // 灭火先于点火（CE 同一函数内 :227 先于 :527）：燃烧生物蹚进
+            // 灭火层先被扑灭；悬浮生物不被水扑灭（!levitating 守卫，Time.c:228）。
+            if (this.burningDuration(entity) > 0
+                && !entity.hasStatus('levitating')
+                && !(entity !== this.player && (entity as Monster).hasBehavior('MONST_FIERY'))
+                && this.cellExtinguishesFire(x, y)) {
+                // CE :229 MONST_ATTACKABLE_THRU_WALLS 守卫：web 无该旗标载体，登记退化。
+                this.extinguishCreatureFire(entity);
+            }
 
-                if (entity.hp <= 0) {
-                    if (entity === this.player) {
-                        logger.log(i18next.t('env.player_burned_death', { defaultValue: 'You have burned to death.' }), '#ff0000');
-                    } else {
-                        logger.log(i18next.t('env.burns_to_death', { name: name, defaultValue: `The ${name} burns to death.` }), '#888888');
-                        entity.die();
-                    }
-                }
+            if (cell.isBurning) {
+                // CE Time.c:527-528：踩 T_IS_FIRE → exposeCreatureToFire。
+                // 豁免（MB_IS_DYING / IMMUNE_TO_FIRE / MONST_INVULNERABLE /
+                // MB_SUBMERGED / 非悬浮+灭火层）全在 exposeCreatureToFire 内。
+                this.exposeCreatureToFire(entity);
+            } else if (this.burningDuration(entity) > 0) {
+                // CE Time.c:529-540（else if：已火格无需再点）：着火生物点燃
+                // 所踩的可燃非火格——alwaysIgnite 直燃（Gas.ignite 即 CE :539
+                // exposeTileToFire(x,y,true)，可燃性与 12 次暴露封顶由其自守）。
+                // CE :538 的 MB_SUBMERGED|MB_IS_FALLING 守卫：web 无潜水/坠落
+                // 簿记（登记退化；水格已被上面的灭火分支扑灭，且水体链本身缓办）。
+                this.environment.ignite(x, y);
             }
 
             // Gas

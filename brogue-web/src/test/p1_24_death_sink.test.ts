@@ -210,7 +210,11 @@ describe('P1-24 验收 1：die() 归零 hp，怪物真的被移出列表', () =>
     it('对抗性③：hp -= N 之后才调用 die() 的既有路径不得被改成重复结算——' +
         '火焰致死的尸体 hp 必须精确停在 0（CE 口径），不能是负数。' +
         '捕获的错误实现：把 die() 写成"再补一刀"（如 hp -= maxHp 确保死亡），' +
-        '2 HP 的受害者被火焰扣到 0 后又被补刀扣成负数，=== 0 断言失败。', () => {
+        '受害者被火焰扣到 0 后又被补刀扣成负数，=== 0 断言失败。' +
+        '【F-2b 翻正】原断言"2 HP 恰好一烧即死"（环境分支平扣 2）随燃烧状态机' +
+        '到期：环境首过只上 STATUS_BURNING（Time.c:527→:59-60），伤害来自燃烧' +
+        '结算段的 rand_range(1,3)（Time.c:2582/Monsters.c:1882）——故先挂状态、' +
+        '再以 1 HP 走一回合结算（任意掷骰必死）。die() 归零守卫原样保留。', () => {
         const game = createHeadlessGame(26);
         clearToOpenRoom(game);
         // F-1 改写（经公共入口点火）：原先直写 cell.isBurning/burnDuration；
@@ -219,17 +223,23 @@ describe('P1-24 验收 1：die() 归零 hp，怪物真的被移出列表', () =>
         game.environment.igniteForced(7, 6);
 
         const victim = new Monster(7, 6, monsterDataById('rat'));
-        victim.hp = 2; // 恰好一烧即死
+        victim.hp = 1; // 任意 1-3 掷骰必死（hp=2 会被掷出的 1 留活口）
         game.monsters.push(victim);
 
         const { calls, restore } = wrapLog();
         try {
+            // 客观块次序（F-2b 起）：环境段（踩火挂 STATUS_BURNING，Time.c:2671）
+            // 先于状态段（燃烧结算 rand_range(1,3)，:2677）——一个循环内
+            // "挂状态 + 掉血"连续发生，hp=1 必死；第二循环验证尸体不再结算。
             priv(game).applyEnvironmentalEffects();
+            priv(game).tickCreatureStatuses();
+            priv(game).applyEnvironmentalEffects();
+            priv(game).tickCreatureStatuses();
         } finally {
             restore();
         }
 
-        expect(victim.hp).toBe(0); // 精确 0：既不是 -4（重复结算），也没被漏杀
+        expect(victim.hp).toBe(0); // 精确 0：既不是负数（重复结算），也没被漏杀
         expect(victim.char).toBe('%');
         expect(calls.filter(t => t.includes('burns to death')).length).toBe(1);
     });
