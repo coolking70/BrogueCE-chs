@@ -834,7 +834,12 @@ export class Game {
             // Let's just pick one random good item: scroll of enchanting or wand of fire
             let treasure;
             if (rng.randPercent(50)) {
-                treasure = ItemLoader.spawnScroll('scroll_of_enchanting', machine.center.x, machine.center.y);
+                // 验收方 2026-09-17 修：原为 'scroll_of_enchanting'，而 json 里
+                // 只有 'scroll_of_enchantment'（614/880 行都拼对了，只有这里错）
+                // ——机器房宝藏的 50% 分支一直**静默落空**。
+                // P1-33 验收时就登记过（"宝藏 scroll 分支恒死，禁改未动"），
+                // B-0 勘察再次撞见，已烂过十余轮，不该再拖。
+                treasure = ItemLoader.spawnScroll('scroll_of_enchantment', machine.center.x, machine.center.y);
             } else {
                 // D2：原为硬编码 spawnWand('wand_of_fire')（web 自创，退出生成池），
                 // 改为从魔杖生成池按深度抽取；池空则不放置宝藏。
