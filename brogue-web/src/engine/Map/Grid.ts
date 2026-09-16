@@ -317,6 +317,12 @@ export class Cell {
     // Whether a SECRET_DOOR has been discovered
     public isDiscovered: boolean = false;
 
+    // P1-42：CE SEARCHED_FROM_HERE（Rogue.h:1090）——玩家站在本格时已做过
+    // 一次低强度自动搜索；同一格不重复触发（CE Time.c:2544-2549 的
+    // "only once per tile"）。CE 是 pmap flags 位、随层新建，web 是 Cell
+    // 字段、随 Grid 新建，生命周期一致。仅由 Game 的自动搜索读写。
+    public autoSearched: boolean = false;
+
     // Altar linking (if > 0, picking an item from this altar destroys all others with the same ID)
     public altarGroupId: number | null = null;
 

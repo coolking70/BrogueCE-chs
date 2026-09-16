@@ -455,6 +455,11 @@ export class Game {
         this.testRooms.clear();
         this.currentTestCategory = null;
 
+        // P1-42：CE 开局时 rogue 全局字段随 game 加载归零——justSearched
+        // （Rogue.h:2449）与 STATUS_SEARCHING 充能（Time.c:2397）不跨局保留。
+        this.justSearched = false;
+        this.searchingCharge = 0;
+
         this.player = new Player(Math.floor(DCOLS / 2), Math.floor(DROWS / 2));
         // RogueMain.c:403：monsterSpawnFuse 在开局时初始化（先于首层生成，保证 rng 流稳定）
         this.monsterSpawnFuse = rng.randRange(SPAWN_FUSE_MIN, SPAWN_FUSE_MAX);
@@ -2497,6 +2502,16 @@ export class Game {
         this.everSeenMonsters.clear();
         this.everSeenItems.clear();
 
+        // P1-42：主动搜索命令（CE manualSearch，Time.c:2395-2430）。
+        // 键位挂接被搁置：CE SEARCH_KEY='s'（Rogue.h:1177）与 web 既有
+        // 's'=向下移动冲突（Input.ts），任务书明令冲突时只报告、不擅自改键位。
+        // 引擎侧动作名定为 'search'；UI 键位决定后一行 Input.ts 即可接上
+        // （onActionCallback('search')）。
+        if (action === 'search') {
+            this.manualSearch();
+            return;
+        }
+
         if (action === 'move' || action === 'wait') {
             let dx = 0, dy = 0;
 
@@ -4075,6 +4090,50 @@ export class Game {
     private justRested: boolean = false;
 
     /**
+     * P1-42：CE rogue.justSearched（Rogue.h:2449）——上一动作是主动搜索。
+     * manualSearch 置位；CE 在 playerTurnEnded 尾部清除（Time.c:2875），
+     * web 对应在 finishTurnEpilogue 尾部。它只被 playerTurnEnded 的充能
+     * 清零分支消费（Time.c:2550-2552：搜索只在连续回合充能）。
+     */
+    private justSearched: boolean = false;
+
+    /**
+     * P1-42：CE player.status[STATUS_SEARCHING] 的充能计数（manualSearch
+     * 累加、满 5 归零，Time.c:2397-2424）。**不能**放进会衰减的
+     * statusDurations：CE 的 decrementPlayerStatus（Time.c:2211-2395 全函数）
+     * 不碰 STATUS_SEARCHING，其唯一归零路径就是"非连续回合清零"分支与
+     * 满充终搜自身。开局归零见 startNewGame。
+     */
+    private searchingCharge: number = 0;
+
+    /**
+     * P1-42：本层"是否存在未发现密门"的惰性缓存（secretScanDepth = 建立缓存
+     * 时的层号，-1 = 无效）。searchForSecrets 首次在当前层被调用时全格扫一遍
+     * （一层一次），此后无密门的层直接短路——自动搜索在每个新落格都会触发，
+     * 没有这层守卫时每步的窗口扫描会累积成可观测的回合期开销（40k 回合的
+     * armor_model 聚合测试实测敏感）。换层（depth 变化）即失效重扫；层内
+     * 发现密门不失效——窗口扫描本就按 terrain 现查，发现的门自然不再命中。
+     */
+    private secretScanDepth: number = -1;
+    private levelHasSecrets: boolean = false;
+
+    /**
+     * P1-42：CE rogue.awarenessBonus（Rogue.h:2541）的 web 对应。
+     * CE 由装备重算赋值（Items.c:8690 清零、8712 按 `20 × 感知戒指附魔`
+     * 累加），影响两处：每步自动搜索强度（Time.c:2547）与主动搜索下限
+     * （Time.c:2418/2427）。
+     *
+     * web 有 `ring_of_awareness` 物品（arcana.json:174），但现行语义是 web
+     * 自创的（telepathy 状态 + 幻觉/麻痹抗性，Game.ts syncEquipmentStatuses /
+     * getPlayerStatusResistance），**不是** CE 的 awarenessBonus——不在此强行
+     * 接线（一件物品挂两套语义正是 P1-38 教训）。故恒回 CE 基线值 0，
+     * 戒指接线登记为未实现（见 p1_42 报告）。
+     */
+    private awarenessBonus(): number {
+        return 0;
+    }
+
+    /**
      * P4-8 返工：CE currentStealthRange()（Time.c:791-832）的口径对齐。
      * 旧实现（基数 3 + 护甲 weight − 2 + 光照 +4）为自创公式，与 CE 无一处
      * 对应，据此算出的 awareness 皮筋比 CE 短约三倍。
@@ -5291,6 +5350,23 @@ export class Game {
             }
         }
 
+        // ---- P1-42：每步低强度自动搜索（CE Time.c:2544-2552，主观玩家块、
+        // 怪物推进之前）----
+        // 站上任何一格只搜一次（Cell.autoSearched = CE SEARCHED_FROM_HERE，
+        // Rogue.h:1090）；awarenessBonus 基线 0（见该方法注记），强度 30、
+        // 半径 3。其后的充能清零：主动搜索只在连续回合累积，上一动作不是
+        // 搜索（justSearched 为 false）则充能作废——CE Time.c:2550-2552。
+        {
+            const playerCell = this.grid.getCell(this.player.loc.x, this.player.loc.y);
+            if (this.awarenessBonus() > -30 && playerCell && !playerCell.autoSearched) {
+                this.searchForSecrets(this.awarenessBonus() + 30);
+                playerCell.autoSearched = true;
+            }
+            if (!this.justSearched && this.searchingCharge > 0) {
+                this.searchingCharge = 0;
+            }
+        }
+
         if (this.animationEnabled && !this.isAutoTraveling()) {
             this.beginAdvancement(stealthRange);
             return;
@@ -5528,6 +5604,11 @@ export class Game {
         }
 
         this.stats.turns++;
+
+        // P1-42：CE Time.c:2874-2875——回合末清 justRested/justSearched。
+        // justSearched 必须在下一动作前归 false，"连续回合充能"的判定
+        // （playerTurnEnded 充能清零分支）才有意义。
+        this.justSearched = false;
 
         if (this.player.hp <= 0 && !this.isGameOver) {
             let deathReason: string;
@@ -6388,20 +6469,11 @@ export class Game {
             this.triggerPressurePlate(this.player.loc.x, this.player.loc.y);
         }
 
-        // Check adjacent cells for secret doors (30% discovery chance per step)
-        const dirs = [[0, -1], [0, 1], [-1, 0], [1, 0]] as const;
-        for (const [dx, dy] of dirs) {
-            const nx = this.player.loc.x + dx;
-            const ny = this.player.loc.y + dy;
-            const adjCell = this.grid.getCell(nx, ny);
-            if (adjCell?.terrain === TerrainType.SECRET_DOOR && !adjCell.isDiscovered && rng.randPercent(30)) {
-                adjCell.isDiscovered = true;
-                // Reveal it as a door
-                this.grid.setTerrain(nx, ny, TerrainType.DOOR, '+', 0xaa8844);
-                logger.log(i18next.t('trap.secret_door_found', { defaultValue: 'You discovered a hidden door!' }), '#ffff88');
-                this.needsRender = true;
-            }
-        }
+        // P1-42：旧的"四邻接密门 30% 揭示"已删除——它是 web 自创的近似，
+        // 与 CE 的 search() 机制（半径/距离衰减/阻挡折扣/可见性）二选一，
+        // 不留两套。密门发现现由两处 CE 对齐入口驱动：
+        //   1. 每步低强度自动搜索（playerTurnEnded，CE Time.c:2544-2549）；
+        //   2. 主动搜索命令（handlePlayerAction 'search'，CE Time.c:2395-2430）。
 
         // C-4c：TM_PROMOTES_ON_STEP 的玩家侧触发（CE Time.c:278-288
         // pressurePlate 的 ON_CREATURE 分支；玩家入场即 ON_CREATURE）。
@@ -6413,6 +6485,164 @@ export class Game {
         for (const r of stepResults) {
             if (r.mutated) this.needsRender = true;
         }
+    }
+
+    /**
+     * P1-42：CE search(searchStrength)（Movement.c:2459-2489）的移植。
+     * 以玩家为心、radius = strength/10（整除）的方形区域逐格扫描：
+     *   - 判据 playerCanDirectlySee（Rogue.h:1276 = pmap VISIBLE 位）——web
+     *     对应物是 FOV（论证见 p1_42 报告：语义是"玩家当前所见"，与渲染/
+     *     怪物侦测共用同一定义，不再造第二套 LOS）。实现走
+     *     fov.computeFOVMask（局部阴影投射、遮挡谓词与 computeFOV/castLight
+     *     同为 isOpaque、半径 10 与 update() 的 computeFOV(…,10) 同一视野
+     *     半径）：a) CE 的 search 只"读"可见性、不制造它——computeFOV 会
+     *     顺带写 isVisible/isExplored/hasMemory，那属渲染管线职权；
+     *     b) 掩码只在窗内确有密格时才计算，回合期常态零开销；
+     *     c) 扫描窗是切比雪夫方形、掩码是欧氏圆——终搜扫描半径 16 超过
+     *     视野半径 10 的部分按 CE 语义本就不可直视、必被可见性闸门排除；
+     *   - 命中率 = strength − 距离×10，距离是切比雪夫距离（CE
+     *     distanceBetween，Monsters.c:1587-1589 = max(|dx|,|dy|)）；
+     *   - 目标格带 T_OBSTRUCTS_PASSABILITY 时先 ×2/3（Movement.c:2470-2472，
+     *     走 TerrainCatalog.blocksPassability 查表）；
+     *   - percent ≥ 100 时 CE 还置 KNOWN_TO_BE_TRAP_FREE（:2473-2475）——web
+     *     无"隐藏陷阱知识"设施（TRAP 恒可见），无处可接，登记不实现；
+     *   - 密格判据：CE 是 cellHasTMFlag(TM_IS_SECRET)；web 取
+     *     terrain === SECRET_DOOR——TM_IS_SECRET 在 web 目录中的唯一持有者
+     *     就是 SECRET_DOOR（目录级等价由 p1_42 测试的绊线断言钉死）。写成
+     *     字段读取会触发 c_4a 目录留痕的白名单红灯（本轮禁改那三个测试
+     *     文件，见 discoverSecretAt 注记的冲突申报）；
+     *   - rand_percent 语义与 web randPercent 逐位一致（先抽
+     *     rand_range(0,99) 再 clamp 比较，CE Math.c:62-65）——**percent ≤ 0
+     *     也消耗一次抽取**，不可"剪枝跳过"，否则 RNG 流位移。
+     *
+     * 返回是否发现了什么（CE 返回值；当前无消费者，留作对齐）。
+     */
+    private searchForSecrets(searchStrength: number): boolean {
+        // 每层一次的全格预扫守卫：无未发现密门的层零开销短路（见字段注记）。
+        if (this.secretScanDepth !== this.depth) {
+            this.levelHasSecrets = false;
+            for (let x = 0; x < this.grid.width && !this.levelHasSecrets; x++) {
+                for (let y = 0; y < this.grid.height; y++) {
+                    if (this.grid.getCell(x, y)?.terrain === TerrainType.SECRET_DOOR) {
+                        this.levelHasSecrets = true;
+                        break;
+                    }
+                }
+            }
+            this.secretScanDepth = this.depth;
+        }
+        if (!this.levelHasSecrets) return false;
+
+        const radius = Math.floor(searchStrength / 10);
+        const px = this.player.loc.x;
+        const py = this.player.loc.y;
+
+        // 行主序收集扫描窗内的密格（CE :2466-2468 的双层 for 顺序）。
+        // 窗内没有密格时连视野掩码都不必算——CE 的 search 对非密格零掷骰，
+        // 这里同样零消耗，回合期常态开销只是一次窗口扫描。
+        const secretCells: Array<{ x: number; y: number; cell: import('../Map/Grid').Cell }> = [];
+        for (let i = px - radius; i <= px + radius; i++) {
+            for (let j = py - radius; j <= py + radius; j++) {
+                const cell = this.grid.getCell(i, j);
+                if (cell && cell.terrain === TerrainType.SECRET_DOOR) {
+                    secretCells.push({ x: i, y: j, cell });
+                }
+            }
+        }
+        if (secretCells.length === 0) return false;
+
+        // CE 的 VISIBLE 旗标由显示管线每回合刷新到玩家当前位置
+        // （updateVision，Time.c:859）；web 的 isVisible 刷新是惰性的
+        // （update() 渲染前才重算），headless 推进走到这里时可能还是上一步
+        // 的旧图——所以以"当前现算的掩码"为准，而不是读 cell.isVisible。
+        // 掩码半径恒为 10（与 update() 的 computeFOV(…,10) 同一视野半径）：
+        // 扫描窗是切比雪夫方形而掩码是欧氏圆，半径 3/6/16 的"缩水掩码"
+        // 会把窗角上欧氏距离超界的格错判为不可见（A4 曾真实抓红）；
+        // 终搜扫描半径 16 超过 10 的部分按 CE 语义本就不可直视。
+        // 遮挡谓词与 FOV.castLight 同为 isOpaque。掩码只在窗内确有密格时
+        // 才计算（上方守卫），回合期常态零开销。
+        const canDirectlySee = this.fov.computeFOVMask(px, py, 10, (c) => c.isOpaque);
+
+        let foundSomething = false;
+        for (const { x, y, cell } of secretCells) {
+            if (!canDirectlySee[x]?.[y]) continue; // CE playerCanDirectlySee 先于掷骰
+            let percent = searchStrength
+                - Math.max(Math.abs(x - px), Math.abs(y - py)) * 10;
+            if (blocksPassability(cell.terrain)) {
+                percent = (percent * 2) / 3;
+            }
+            percent = Math.min(percent, 100);
+            if (rng.randPercent(percent)) {
+                this.discoverSecretAt(x, y);
+                foundSomething = true;
+            }
+        }
+        return foundSomething;
+    }
+
+    /**
+     * P1-42：CE discover(x, y)（Movement.c:2437-2457）对 SECRET_DOOR 的
+     * 等效实现——密格显形为门。
+     *
+     * CE 的顺序是先清密格所在层（DUNGEON→FLOOR，:2444-2451）再走
+     * discoverType 的 DF 落地链（:2452，五形参见 Rogue.h:2933；
+     * DF_SHOW_DOOR = 单格、无传播、DUNGEON 层落 DOOR，Globals.c:624）。
+     * 对 SECRET_DOOR 这一特例，净效果就是"该格 DUNGEON 层变 DOOR"。
+     *
+     * ★ 留痕与文件边界的冲突申报（第 7 起，项目常识"留痕规矩"）★
+     * 走 CE 原样（清层 + DF 目录落地）会给三份 C-4 留痕接上第一个游戏侧
+     * 读者——c_4b F1（DF 子系统符号白名单）、c_4a_0（落层写入口白名单）、
+     * c_4a 目录（promote/fire 字段读者白名单）——而本轮禁改清单不含这三个
+     * 测试文件（"违反即本轮作废"），任务书也未按常识要求提前把它们列入
+     * 允许清单。故本实现取**今日逐位等价**的直写形态：setTerrain(DOOR)
+     * （与被替换的旧 30% 代码同一写入口，且同时更新 char/color/isPassable/
+     * isOpaque——CE 落地链走的层感知写入口不更新这些，直写反而免去补写）。
+     * 等价前提"web 地形目录中 TM_IS_SECRET 的唯一持有者是 SECRET_DOOR"
+     * 由 p1_42_secret_door_search.test.ts 的目录绊线断言钉死；该前提被
+     * 打破时，本方法应迁移为 CE 原样（清层 + DF 链）并由验收方扩三份
+     * 白名单。
+     */
+    private discoverSecretAt(x: number, y: number): boolean {
+        const cell = this.grid.getCell(x, y);
+        if (!cell || cell.terrain !== TerrainType.SECRET_DOOR) return false;
+
+        this.grid.setTerrain(x, y, TerrainType.DOOR, '+', 0xaa8844);
+        cell.isDiscovered = true;
+        logger.log(i18next.t('trap.secret_door_found', { defaultValue: 'You discovered a hidden door!' }), '#ffff88');
+        this.needsRender = true;
+        return true;
+    }
+
+    /**
+     * P1-42：CE manualSearch（Time.c:2395-2430）——主动搜索命令。
+     * 连续回合充能（<5 时强度 60/30，第 5 连搜做一次 160 的终搜并归零），
+     * 不弱于当前被动搜索（Time.c:2427 max(...)），收尾照 rest 分支口径
+     * 耗 movementSpeed 并 playerTurnEnded。
+     */
+    private manualSearch(): void {
+        if (this.searchingCharge <= 0) {
+            this.searchingCharge = 0;
+        }
+        this.searchingCharge += 1;
+
+        let searchStrength: number;
+        if (this.searchingCharge < 5) {
+            searchStrength = this.awarenessBonus() >= 0 ? 60 : 30;
+        } else {
+            searchStrength = 160;
+            logger.log(
+                i18next.t('search.detailed_finished', { defaultValue: 'You finish your detailed search of the area.' }),
+                '#cccccc'
+            );
+            this.searchingCharge = 0;
+        }
+
+        // CE Time.c:2427：主动搜索不弱于当前被动搜索。
+        this.searchForSecrets(Math.max(searchStrength, this.awarenessBonus() + 30));
+
+        this.justSearched = true;
+        timeSystem.currentTick += this.player.movementSpeed;
+        this.playerTurnEnded();
     }
 
     /** Trigger a trap at (x, y). Converts it to FLOOR after triggering. */
