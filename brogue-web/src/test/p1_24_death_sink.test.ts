@@ -213,9 +213,10 @@ describe('P1-24 验收 1：die() 归零 hp，怪物真的被移出列表', () =>
         '2 HP 的受害者被火焰扣到 0 后又被补刀扣成负数，=== 0 断言失败。', () => {
         const game = createHeadlessGame(26);
         clearToOpenRoom(game);
-        const cell = game.grid.getCell(7, 6)!;
-        cell.isBurning = true; // 燃烧格：每轮对格上生物 -2
-        cell.burnDuration = 5;
+        // F-1 改写（经公共入口点火）：原先直写 cell.isBurning/burnDuration；
+        // 火成地形后燃烧由 environment.igniteForced 双写承载（isBurning ↔
+        // SURFACE 层 PLAIN_FIRE），直写会造出无火地形的脱钩态。
+        game.environment.igniteForced(7, 6, 5);
 
         const victim = new Monster(7, 6, monsterDataById('rat'));
         victim.hp = 2; // 恰好一烧即死

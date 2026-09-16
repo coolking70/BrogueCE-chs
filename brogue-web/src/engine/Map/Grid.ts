@@ -53,7 +53,14 @@ export enum TerrainType {
     OBSIDIAN,        // CE Globals.c:427 黑曜石地面，无旗标可走；硫矿湖的镶边（createWreath）
     BRIDGE,          // CE Globals.c:428 绳桥，T_IS_FLAMMABLE 可走；buildABridge 落在 CHASM 上（本轮真实生成中为 0）
     BRIDGE_EDGE,     // CE Globals.c:430 桥端桩点，可走；buildABridge 落在两端岸格上
-    INERT_BRIMSTONE  // CE Globals.c:426 惰性硫矿，T_SPONTANEOUSLY_IGNITES（液态湖体；点火链属 C-4）
+    INERT_BRIMSTONE, // CE Globals.c:426 惰性硫矿，T_SPONTANEOUSLY_IGNITES（液态湖体；点火链属 C-4）
+    // F-1：CE Globals.c:492 PLAIN_FIRE（十种 T_IS_FIRE 地形中 web 唯一用得上的：
+    // 燃烧状态机 ignite/igniteForced 的地形镜像）。落 SURFACE 层（CE 火 DF 全在
+    // SURFACE）；drawPriority 10 压制草(60)/网(19)——CE 渲染口径：门(8)/墙(0)
+    // 仍盖住火。CE 的 promoteChance=500（5%/回合概率衰老 → DF_EMBERS）在 web
+    // 目录里记 0：衰老是 F-2a 行为，照抄会让晋升驱动每回合对每个燃烧格掷骰、
+    // 移动 RNG 流（TerrainCatalog 条目注释详述）。
+    PLAIN_FIRE
 }
 
 export enum LightType {
@@ -96,7 +103,8 @@ export enum DungeonLayer {
  *   RESET_PLATE=15（对应物 MACHINE_PRESSURE_PLATE 15）；
  *   TRAP=30（CE 可见陷阱 GAS_TRAP_POISON/FLAMETHROWER 等均 30；隐藏态 95 不适用——
  *         web 的 TRAP 恒可见）；
- *   PRESSURE_PLATE=15（对应物 MACHINE_PRESSURE_PLATE 15）。
+ *   PRESSURE_PLATE=15（对应物 MACHINE_PRESSURE_PLATE 15）；
+ *   PLAIN_FIRE=10（CE Globals.c:492 原值；F-1）。
  */
 export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.NOTHING]: 100,
@@ -129,7 +137,8 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.OBSIDIAN]: 50,
     [TerrainType.BRIDGE]: 45,
     [TerrainType.BRIDGE_EDGE]: 45,
-    [TerrainType.INERT_BRIMSTONE]: 40
+    [TerrainType.INERT_BRIMSTONE]: 40,
+    [TerrainType.PLAIN_FIRE]: 10
 };
 
 /**
@@ -161,6 +170,8 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
  * web 自造地形的归属（CE 无对应写入点，按语义归类）：
  *   BOG → LIQUID（沼泽液面，同 MUD）；CHARRED_FLOOR/SIGN/RESET_PLATE →
  *   DUNGEON（对 FLOOR 的就地替换，与 FLOOR 同层）。
+ *   PLAIN_FIRE → SURFACE（CE DF_PLAIN_FIRE {PLAIN_FIRE, SURFACE, 0, 0}，
+ *   Globals.c:740；F-0 §3.2：十种火 DF 无一例外落 SURFACE——F-1）。
  */
 export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     [TerrainType.NOTHING]: DungeonLayer.DUNGEON,
@@ -193,7 +204,8 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     [TerrainType.OBSIDIAN]: DungeonLayer.LIQUID,
     [TerrainType.BRIDGE]: DungeonLayer.LIQUID,
     [TerrainType.BRIDGE_EDGE]: DungeonLayer.SURFACE,
-    [TerrainType.INERT_BRIMSTONE]: DungeonLayer.LIQUID
+    [TerrainType.INERT_BRIMSTONE]: DungeonLayer.LIQUID,
+    [TerrainType.PLAIN_FIRE]: DungeonLayer.SURFACE
 };
 
 /** CE Movement.c:64-80 的纯数据版：对一层快照取最高优先层。 */
@@ -309,8 +321,20 @@ export class Cell {
     public isOpaque: boolean = false;
 
     // Environmental states
+    /**
+     * F-1 双写镜像的燃烧位：与"本格 SURFACE 层挂着 T_IS_FIRE 地形"恒等
+     * （由 Gas.ts 状态机的全部写入点维护，快照/读档由 Game 对账）。
+     * A 类读者（渲染/落位/三张寻路图）读本位即等价于查火地形。
+     */
     public isBurning: boolean = false;
     public burnDuration: number = 0;
+    /**
+     * F-1：起火时记录的有效地形（点火前该格是什么）。燃烧会把它在归属层的
+     * 原身替换/盖成 PLAIN_FIRE，烧尽分支据此决定"变 CHARRED_FLOOR 还是
+     * 原样熄灭"——旧实现读 cell.terrain，火成地形后原身信息只能显式携带。
+     * 仅在 isBurning 期间有意义，熄灭时清回 NOTHING。
+     */
+    public burnTerrain: TerrainType = TerrainType.NOTHING;
 
     // Trap metadata (for TRAP and PRESSURE_PLATE terrain)
     public trapType: 'poison_gas' | 'teleport' | 'fire' | null = null;

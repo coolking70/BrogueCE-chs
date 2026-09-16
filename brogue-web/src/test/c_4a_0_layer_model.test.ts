@@ -195,7 +195,10 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
     });
 
     it('表面地形必须落 SURFACE，结构地形必须落 DUNGEON', () => {
-        for (const t of [C.GRASS, C.FOLIAGE, C.WEB, C.BLOOD, C.BRIDGE_EDGE]) {
+        // F-1 扩一行：PLAIN_FIRE（CE Globals.c:492，DF {PLAIN_FIRE, SURFACE}）
+        // ——本文件不在 F-1 允许清单，此为执行方申报后的最小翻转
+        // （"仅为新增火地形条目"，与 c_4a 同一口径），三处：本行、下方两张表。
+        for (const t of [C.GRASS, C.FOLIAGE, C.WEB, C.BLOOD, C.BRIDGE_EDGE, C.PLAIN_FIRE]) {
             expect(homeLayerViaSetTerrain(t), `terrain ${t}`).toBe(L.SURFACE);
         }
         for (const t of [
@@ -221,6 +224,7 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.OBSIDIAN]: L.LIQUID,
             [C.GRASS]: L.SURFACE, [C.FOLIAGE]: L.SURFACE, [C.WEB]: L.SURFACE,
             [C.BLOOD]: L.SURFACE, [C.BRIDGE_EDGE]: L.SURFACE,
+            [C.PLAIN_FIRE]: L.SURFACE, // F-1（申报的最小翻转，见上）
         });
         expect(DRAW_PRIORITY).toEqual({
             [C.NOTHING]: 100, [C.GRANITE]: 0, [C.FLOOR]: 95, [C.WALL]: 0,
@@ -232,6 +236,7 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.BRIDGE_EDGE]: 45, [C.MUD]: 55, [C.BOG]: 55, [C.CHASM_EDGE]: 80,
             [C.OBSIDIAN]: 50, [C.GRASS]: 60, [C.FOLIAGE]: 45, [C.WEB]: 19,
             [C.BLOOD]: 80,
+            [C.PLAIN_FIRE]: 10, // F-1（CE Globals.c:492；申报的最小翻转，见上）
         });
     });
 });

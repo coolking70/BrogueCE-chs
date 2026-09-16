@@ -2,8 +2,8 @@
  * src/engine/Core/Game.ts
  * Main game state and orchestration
  */
-import { Grid, TerrainType, DCOLS, DROWS } from '../Map/Grid';
-import { blocksPassability, isDeepWater } from '../Map/TerrainCatalog';
+import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer } from '../Map/Grid';
+import { blocksPassability, isDeepWater, TERRAIN_FLAGS, T_IS_FIRE } from '../Map/TerrainCatalog';
 import { Architect } from '../Generator/Architect';
 import type { MachineResult } from '../Generator/BlueprintEngine';
 import blueprintData from '../../data/blueprints.json';
@@ -207,6 +207,12 @@ export interface GameSnapshot {
         hasMemory: boolean;
         isBurning: boolean;
         burnDuration: number;
+        /**
+         * F-1：起火时记录的有效地形（点火前原身），烧尽分支的判据。
+         * 旧存档无此字段：isBurning 时回落为 terrain（旧存档火不成地形，
+         * terrain 就是原身），否则 NOTHING。
+         */
+        burnTerrain?: TerrainType;
         isPassable: boolean;
         isOpaque: boolean;
         /** P1-37：机器旗标（IS_IN_MACHINE 等价物）随存档往返；0 缺省省体积，旧存档视为无机器。 */
@@ -672,7 +678,7 @@ export class Game {
             let entryStair: Pos | null = null;
             for (let x = 0; x < this.grid.width; x++) {
                 for (let y = 0; y < this.grid.height; y++) {
-                    if (this.grid.getCell(x, y)?.terrain === targetStairType) {
+                    if (this.grid.getCell(x, y)?.layers.includes(targetStairType)) { // F-1 跨层判定
                         entryStair = { x, y };
                         break;
                     }
@@ -747,7 +753,7 @@ export class Game {
         for (let x = 1; x < DCOLS - 1; x++) {
             for (let y = 1; y < DROWS - 1; y++) {
                 const cell = this.grid.getCell(x, y);
-                if (!cell || cell.terrain !== TerrainType.FLOOR) continue;
+                if (!cell || !cell.layers.includes(TerrainType.FLOOR)) continue; // F-1 跨层判定
                 if (cell.machineNumber !== 0) continue; // CE IS_IN_MACHINE
                 // Don't spawn right on top of player
                 if (Math.abs(x - this.player.loc.x) > 5 || Math.abs(y - this.player.loc.y) > 5) {
@@ -1174,10 +1180,11 @@ export class Game {
             for (let y = 0; y < height; y++) {
                 const cell = this.grid.getCell(x, y);
                 // CE T_DIVIDES_LEVEL（Rogue.h:1949）：不可作为路径的地形
+                // （F-1：跨层判定，火盖在深水/陷阱上不改变本判据——CE 全层 OR）
                 const dividesLevel = !cell || !cell.isPassable ||
-                    cell.terrain === TerrainType.LAVA ||
-                    cell.terrain === TerrainType.WATER_DEEP ||
-                    cell.terrain === TerrainType.TRAP;
+                    cell.layers.includes(TerrainType.LAVA) ||
+                    cell.layers.includes(TerrainType.WATER_DEEP) ||
+                    cell.layers.includes(TerrainType.TRAP);
                 if (dividesLevel) cost[x]![y] = -1; // CE PDS_FORBIDDEN
             }
         }
@@ -1282,7 +1289,7 @@ export class Game {
         const target = Game.SPAWNS_IN_TERRAIN[h.spawnsIn];
         // STATUE_*/CAGE/TURRET/WALL 等生成期专用落点不匹配普通地图格（CE 同样重抽）
         if (target === undefined) return false;
-        return this.grid.getCell(pos.x, pos.y)?.terrain === target;
+        return this.grid.getCell(pos.x, pos.y)?.layers.includes(target) ?? false; // F-1 跨层判定
     }
 
     /**
@@ -1301,7 +1308,7 @@ export class Game {
         for (let x = 1; x < DCOLS - 1; x++) {
             for (let y = 1; y < DROWS - 1; y++) {
                 const cell = this.grid.getCell(x, y);
-                if (!cell || cell.terrain !== target) continue;
+                if (!cell || !cell.layers.includes(target)) continue; // F-1 跨层判定
                 if (cell.machineNumber !== 0) continue; // CE IS_IN_MACHINE
                 if (this.getMonsterAt(x, y)) continue; // CE HAS_MONSTER
                 if (this.player.loc.x === x && this.player.loc.y === y) continue; // CE HAS_PLAYER
@@ -1473,7 +1480,7 @@ export class Game {
                     if (dist.has(k)) continue;
                     const cell = this.grid.getCell(nx, ny);
                     if (!cell || !cell.isPassable) continue;
-                    if (cell.terrain === TerrainType.LAVA || cell.terrain === TerrainType.CHASM) continue;
+                    if (cell.layers.includes(TerrainType.LAVA) || cell.layers.includes(TerrainType.CHASM)) continue; // F-1 跨层判定
                     dist.set(k, d + 1);
                     queue.push({ x: nx, y: ny });
                 }
@@ -1595,8 +1602,9 @@ export class Game {
                 const cell = this.grid.getCell(x, y);
                 if (!cell || !cell.isPassable) continue;
                 if (cell.isVisible) continue;
-                if (cell.terrain === TerrainType.LAVA || cell.terrain === TerrainType.CHASM) continue;
-                if (cell.terrain === TerrainType.STAIRS_UP || cell.terrain === TerrainType.STAIRS_DOWN) continue;
+                // F-1：跨层判定（火盖在岩浆/深渊/楼梯上不改变落点排除）
+                if (cell.layers.includes(TerrainType.LAVA) || cell.layers.includes(TerrainType.CHASM)) continue;
+                if (cell.layers.includes(TerrainType.STAIRS_UP) || cell.layers.includes(TerrainType.STAIRS_DOWN)) continue;
                 if (this.getMonsterAt(x, y)) continue;
                 if (this.player.loc.x === x && this.player.loc.y === y) continue;
                 const isFar = Math.max(Math.abs(x - this.player.loc.x), Math.abs(y - this.player.loc.y)) >= minFarDist;
@@ -2446,7 +2454,7 @@ export class Game {
 
         if (action === 'stairs_up') {
             const cell = this.grid.getCell(this.player.loc.x, this.player.loc.y);
-            if (cell && cell.terrain === TerrainType.STAIRS_UP) {
+            if (cell && cell.layers.includes(TerrainType.STAIRS_UP)) { // F-1 跨层判定
                 if (this.depth > 1) {
                     this.depth--;
                     this.generateDepth(true);
@@ -2470,7 +2478,7 @@ export class Game {
 
         if (action === 'stairs_down') {
             const cell = this.grid.getCell(this.player.loc.x, this.player.loc.y);
-            if (cell && cell.terrain === TerrainType.STAIRS_DOWN) {
+            if (cell && cell.layers.includes(TerrainType.STAIRS_DOWN)) { // F-1 跨层判定
                 this.depth++;
                 this.generateDepth(false);
                 // CE RogueMain.c:562：换层时 synchronizePlayerTimeState
@@ -2484,7 +2492,7 @@ export class Game {
 
         if (action === 'wait_or_stairs_down') {
             const cell = this.grid.getCell(this.player.loc.x, this.player.loc.y);
-            if (cell && cell.terrain === TerrainType.STAIRS_DOWN) {
+            if (cell && cell.layers.includes(TerrainType.STAIRS_DOWN)) { // F-1 跨层判定
                 this.handlePlayerAction('stairs_down', undefined, 'system');
             } else {
                 this.handlePlayerAction('wait', undefined, 'system');
@@ -2607,7 +2615,7 @@ export class Game {
                     }), '#ff8888');
                     timeSystem.currentTick += this.player.movementSpeed;
                     this.playerTurnEnded();
-                } else if (this.grid.getCell(newX, newY)?.terrain === TerrainType.LOCKED_DOOR) {
+                } else if (this.grid.getCell(newX, newY)?.layers.includes(TerrainType.LOCKED_DOOR)) { // F-1 跨层判定
                     const keyItem = this.player.inventory.items.find((i: import('../Items/Item').Item) => i.category === ItemCategory.KEY);
                     if (keyItem) {
                         this.player.inventory.removeItem(keyItem);
@@ -2637,7 +2645,7 @@ export class Game {
                         logger.log(i18next.t('door.locked', { defaultValue: 'The door is locked. You need a key.' }), '#ffaa88');
                         this.needsRender = true;
                     }
-                } else if (this.grid.getCell(newX, newY)?.terrain === TerrainType.ALTAR) {
+                } else if (this.grid.getCell(newX, newY)?.layers.includes(TerrainType.ALTAR)) { // F-1 跨层判定
                     const altarItemIdx = this.items.findIndex(i => i.loc.x === newX && i.loc.y === newY);
                     if (altarItemIdx > -1) {
                         const altarItem = this.items[altarItemIdx]!;
@@ -2652,7 +2660,7 @@ export class Game {
                                 for (let x = 1; x < DCOLS - 1; x++) {
                                     for (let y = 1; y < DROWS - 1; y++) {
                                         const c = this.grid.getCell(x, y);
-                                        if (c && c.terrain === TerrainType.ALTAR && c.altarGroupId === groupId) {
+                                        if (c && c.layers.includes(TerrainType.ALTAR) && c.altarGroupId === groupId) { // F-1 跨层判定
                                             c.terrain = TerrainType.CHARRED_FLOOR;
                                             c.char = '.';
                                             c.color = 0x333333;
@@ -2757,11 +2765,12 @@ export class Game {
                 const cell = this.grid.getCell(this.player.loc.x, this.player.loc.y);
 
                 const isFlying = this.player.hasStatus('flying') || this.player.hasStatus('levitating');
-                if (cell && cell.terrain === TerrainType.WATER_DEEP && !isFlying) {
+                // F-1 跨层判定：火盖在深水/岩浆上不改变"够不着"判据
+                if (cell && cell.layers.includes(TerrainType.WATER_DEEP) && !isFlying) {
                     logger.log(i18next.t('item.deep_water_reach', { defaultValue: `The ${item.name} is deep underwater.` }), '#aaaaaa');
                     return;
                 }
-                if (cell && cell.terrain === TerrainType.LAVA && !isFlying && !this.player.hasStatus('immune_fire')) {
+                if (cell && cell.layers.includes(TerrainType.LAVA) && !isFlying && !this.player.hasStatus('immune_fire')) {
                     logger.log(i18next.t('item.lava_reach', { defaultValue: `The ${item.name} is submerged in lava.` }), '#ff4444');
                     return;
                 }
@@ -3407,7 +3416,7 @@ export class Game {
                         const rx = rng.randRange(0, DCOLS - 1);
                         const ry = rng.randRange(0, DROWS - 1);
                         const rc = this.grid.getCell(rx, ry);
-                        if (rc && rc.terrain === TerrainType.FLOOR) {
+                        if (rc && rc.layers.includes(TerrainType.FLOOR)) { // F-1 跨层判定
                             dest = { x: rx, y: ry };
                             break;
                         }
@@ -5203,7 +5212,7 @@ export class Game {
                     if (inGroup.has(nk) || eligibleSet.has(nk)) continue;
                     const cell = this.grid.getCell(nx, ny);
                     if (!cell || !cell.isPassable) continue;
-                    if (cell.terrain === TerrainType.LAVA || cell.terrain === TerrainType.WATER_DEEP) continue;
+                    if (cell.layers.includes(TerrainType.LAVA) || cell.layers.includes(TerrainType.WATER_DEEP)) continue; // F-1 跨层判定
                     if (this.player.loc.x === nx && this.player.loc.y === ny) continue;
                     if (this.getMonsterAt(nx, ny)) continue;
                     eligibleSet.add(nk);
@@ -5903,6 +5912,7 @@ export class Game {
                     hasMemory: cell.hasMemory,
                     isBurning: cell.isBurning,
                     burnDuration: cell.burnDuration,
+                    burnTerrain: cell.burnTerrain,
                     isPassable: cell.isPassable,
                     isOpaque: cell.isOpaque,
                     // P1-37：机器旗标穿存档。0 不写（绝大多数格子无机器，省体积）
@@ -6021,10 +6031,26 @@ export class Game {
             cell.isVisible = false;
             cell.isBurning = c.isBurning;
             cell.burnDuration = c.burnDuration;
+            // F-1：烧尽判据原身。新存档显式携带；旧存档（火不成地形）回落
+            // 为 terrain——彼时 terrain 就是起火前的原身。
+            cell.burnTerrain = c.burnTerrain ?? (c.isBurning ? c.terrain : TerrainType.NOTHING);
             cell.isPassable = c.isPassable;
             cell.isOpaque = c.isOpaque;
             // P1-37：机器旗标随存档恢复（缺省 0 = 旧存档无此字段，视为无机器）。
             cell.machineNumber = c.machineNumber ?? 0;
+            // F-1 镜像对账：isBurning 与火地形层必须一致。新存档两侧由双写
+            // 保证，对账是空转；旧存档（isBurning=true 而层里无火）在此补写
+            // SURFACE 火地形，反常组合（无火标志却有火地形）则摘除。
+            const hadFire = cell.layers.some((t) => (TERRAIN_FLAGS[t].flags & T_IS_FIRE) !== 0);
+            if (cell.isBurning && !hadFire) {
+                cell.layers[DungeonLayer.SURFACE] = TerrainType.PLAIN_FIRE;
+            } else if (!cell.isBurning && hadFire) {
+                for (let l = 0; l < cell.layers.length; l++) {
+                    if ((TERRAIN_FLAGS[cell.layers[l]!].flags & T_IS_FIRE) !== 0) {
+                        cell.layers[l] = TerrainType.NOTHING;
+                    }
+                }
+            }
         }
 
         this.environment = new EnvironmentManager(this.grid);
@@ -6153,7 +6179,9 @@ export class Game {
             // CE 深水的真实行为（50% 冲走携带物并随机移位，Time.c:556-590）属独立
             // 轮次，本轮不实现。悬浮/飞行生物照旧不进本分支。
             const isFlying = entity.hasStatus('flying') || entity.hasStatus('levitating') || (entity.abilities && entity.abilities.has('flying'));
-            if (cell.terrain === TerrainType.WATER_DEEP && !isFlying) {
+            // F-1 跨层判定：火盖在深水/岩浆上不改变致死地形判据
+            //（CE applyInstantTileEffectsToCreature 的 cellHasTerrainFlag 是全层 OR）
+            if (cell.layers.includes(TerrainType.WATER_DEEP) && !isFlying) {
                 if (WEB_ONLY_DEEP_WATER_DROWNING) {
                     // ---- web 自创"深水淹死"，按 D2 退出实际生效路径，代码原样保留 ----
                     if (entity === this.player) {
@@ -6166,7 +6194,7 @@ export class Game {
                     }
                     return;
                 }
-            } else if (cell.terrain === TerrainType.LAVA && !isFlying
+            } else if (cell.layers.includes(TerrainType.LAVA) && !isFlying
                 && !entity.hasStatus('immune_fire')
                 && !(entity.abilities && entity.abilities.has('immune_fire'))
                 && !(entity.isInvulnerable && entity.isInvulnerable())) {
@@ -6260,7 +6288,7 @@ export class Game {
             const item = this.items[i];
             if (!item) continue;
             const itemCell = this.grid.getCell(item.loc.x, item.loc.y);
-            if (itemCell && itemCell.terrain === TerrainType.LAVA) {
+            if (itemCell && itemCell.layers.includes(TerrainType.LAVA)) { // F-1 跨层判定
                 // Potions might shatter or boil, but for now they just burn up
                 logger.log(i18next.t('item.destroyed_lava', { name: item.name, defaultValue: `${item.name} burns up in the lava.` }), '#aa5555');
                 this.items.splice(i, 1);
@@ -6328,7 +6356,7 @@ export class Game {
                 const ny = curr.y + d[1];
                 const nextCell = this.grid.getCell(nx, ny);
                 if (nextCell && this.grid.isValidPos(nx, ny) &&
-                    nextCell.terrain !== TerrainType.WATER_DEEP &&
+                    !nextCell.layers.includes(TerrainType.WATER_DEEP) && // F-1 跨层判定
                     (nextCell.isPassable || !nextCell.isExplored)) {
                     const key = `${nx},${ny}`;
                     if (!visited.has(key)) {
@@ -6378,7 +6406,10 @@ export class Game {
         // （TerrainCatalog.ts，CE Rogue.h:1924/1937）。对全部 TerrainType 与
         // 旧硬编码清单 {GRANITE, WALL, SECRET_DOOR, LOCKED_DOOR, WATER_DEEP}
         // 逐位一致（c_4a_terrain_catalog.test.ts 的迁移安全性用例全枚举钉死）。
-        return !blocksPassability(cell.terrain) && !isDeepWater(cell.terrain);
+        // F-1：按 CE cellHasTerrainFlag 的四层并集口径逐层判定——火盖在水上
+        // （SURFACE 层 PLAIN_FIRE）时有效地形不再是深水，跨层读才能保住
+        // "深水不可走"（CE Movement 的判据本就是全层 OR）。
+        return !cell.layers.some((t) => blocksPassability(t) || isDeepWater(t));
     }
 
     public hasLineOfSight(x0: number, y0: number, x1: number, y1: number): boolean {
@@ -6432,6 +6463,7 @@ export class Game {
             cell.isOpaque = terrain.isOpaque;
             cell.isBurning = false;
             cell.burnDuration = 0;
+            cell.burnTerrain = TerrainType.NOTHING; // F-1：基线无火，烧尽判据一并复位
             const gas = this.environment.gasGrid[terrain.x]?.[terrain.y];
             if (gas) {
                 gas.density = 0;
@@ -6453,19 +6485,21 @@ export class Game {
         const cell = this.grid.getCell(this.player.loc.x, this.player.loc.y);
         if (!cell) return;
 
-        if (cell.terrain === TerrainType.SIGN) {
+        // F-1：以下判定全部跨层——火盖在机关/陷阱上（SURFACE）时不吞掉
+        // 踩上效果（CE 的 TM_PROMOTES_ON_* 触发同样逐层扫）。
+        if (cell.layers.includes(TerrainType.SIGN)) {
             const text = this.signTexts.get(this.posKey(this.player.loc.x, this.player.loc.y));
             if (text) {
                 logger.log(`告示牌：${text}`, '#ffee88');
             }
-        } else if (cell.terrain === TerrainType.RESET_PLATE) {
+        } else if (cell.layers.includes(TerrainType.RESET_PLATE)) {
             const roomId = this.resetPlateRoomByPos.get(this.posKey(this.player.loc.x, this.player.loc.y));
             if (typeof roomId === 'number') {
                 this.resetTestRoom(roomId);
             }
-        } else if (cell.terrain === TerrainType.TRAP) {
+        } else if (cell.layers.includes(TerrainType.TRAP)) {
             this.triggerTrap(this.player.loc.x, this.player.loc.y, cell);
-        } else if (cell.terrain === TerrainType.PRESSURE_PLATE) {
+        } else if (cell.layers.includes(TerrainType.PRESSURE_PLATE)) {
             this.triggerPressurePlate(this.player.loc.x, this.player.loc.y);
         }
 
@@ -6523,7 +6557,7 @@ export class Game {
             this.levelHasSecrets = false;
             for (let x = 0; x < this.grid.width && !this.levelHasSecrets; x++) {
                 for (let y = 0; y < this.grid.height; y++) {
-                    if (this.grid.getCell(x, y)?.terrain === TerrainType.SECRET_DOOR) {
+                    if (this.grid.getCell(x, y)?.layers.includes(TerrainType.SECRET_DOOR)) { // F-1 跨层判定
                         this.levelHasSecrets = true;
                         break;
                     }
@@ -6544,7 +6578,7 @@ export class Game {
         for (let i = px - radius; i <= px + radius; i++) {
             for (let j = py - radius; j <= py + radius; j++) {
                 const cell = this.grid.getCell(i, j);
-                if (cell && cell.terrain === TerrainType.SECRET_DOOR) {
+                if (cell && cell.layers.includes(TerrainType.SECRET_DOOR)) { // F-1 跨层判定
                     secretCells.push({ x: i, y: j, cell });
                 }
             }
@@ -6604,7 +6638,7 @@ export class Game {
      */
     private discoverSecretAt(x: number, y: number): boolean {
         const cell = this.grid.getCell(x, y);
-        if (!cell || cell.terrain !== TerrainType.SECRET_DOOR) return false;
+        if (!cell || !cell.layers.includes(TerrainType.SECRET_DOOR)) return false; // F-1 跨层判定
 
         this.grid.setTerrain(x, y, TerrainType.DOOR, '+', 0xaa8844);
         cell.isDiscovered = true;
@@ -6679,7 +6713,7 @@ export class Game {
                 const nx = px + dx;
                 const ny = py + dy;
                 const cell = this.grid.getCell(nx, ny);
-                if (cell?.terrain === TerrainType.TRAP) {
+                if (cell?.layers.includes(TerrainType.TRAP)) { // F-1 跨层判定
                     this.triggerTrap(nx, ny, cell);
                 }
             }
@@ -6822,7 +6856,7 @@ export class Game {
             this.hoveredText = baseText;
         }
 
-        if (cell.terrain === TerrainType.SIGN) {
+        if (cell.layers.includes(TerrainType.SIGN)) { // F-1 跨层判定
             const signText = this.signTexts.get(this.posKey(x, y));
             if (signText) {
                 this.hoveredText = `${this.hoveredText} ${signText}`;

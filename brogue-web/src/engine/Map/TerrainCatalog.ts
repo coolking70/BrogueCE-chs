@@ -347,6 +347,22 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
         T_SPONTANEOUSLY_IGNITES, 0,
         0, 'DF_INERT_BRIMSTONE', '', 'DF_ACTIVE_BRIMSTONE', 800
     ),
+
+    // CE PLAIN_FIRE，Globals.c:492（F-1 新增地形）。
+    // flags/mechFlags/chanceToIgnite/fireType/promoteType 照抄 CE：
+    // T_IS_FIRE；(STAND_IN_TILE|VANISHES_UPON_PROMOTION|VISUALLY_DISTINCT)；
+    // ign 0；fireType 0；promoteType DF_EMBERS。
+    // ★ 唯一偏离 CE 的字段：promoteChance 记 0（CE 500）。CE 的概率衰老
+    // （5%/回合 promoteTile → DF_EMBERS）是 F-2a 行为；照抄 500 会让
+    // runPromotionUpdate 每回合对每个燃烧格掷一次骰——移动 RNG 流、
+    // 全部 F-0 基线曲线失真，且晋升目标 DF_EMBERS 的 tile 仍是登记缺口
+    // （缓办）。F-1 的火寿命仍是 burnDuration 倒计时，本字段休眠。
+    // glowLight（FIRE_LIGHT）web 无对应列，登记不迁移。
+    [TerrainType.PLAIN_FIRE]: e(
+        T_IS_FIRE,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT,
+        0, '', '', 'DF_EMBERS', 0
+    ),
 };
 
 // ── 派生判据（名字照 CE，语义 = 旗标位测试；CE Movement/Dijkstra 等处
@@ -385,4 +401,14 @@ export function isDeepWater(t: TerrainType): boolean {
 /** CE `cellHasTerrainFlag(…, T_IS_FLAMMABLE)`（Rogue.h:1934）。 */
 export function isFlammable(t: TerrainType): boolean {
     return (TERRAIN_FLAGS[t].flags & T_IS_FLAMMABLE) !== 0;
+}
+
+/**
+ * CE `cellHasTerrainFlag(…, T_IS_FIRE)`（Rogue.h:1935）的单地形形态（F-1）。
+ * 注意语义差：CE 的 cellHasTerrainFlag 是四层并集；本函数只回答"这个地形
+ * 是不是火"。跨层的问法请对 cell.layers 逐层调用（见 Gas/Game 的用法）——
+ * 火在 web 只写 SURFACE 层，但读者不应依赖这一条。
+ */
+export function isFireTerrain(t: TerrainType): boolean {
+    return (TERRAIN_FLAGS[t].flags & T_IS_FIRE) !== 0;
 }
