@@ -304,10 +304,11 @@ export function generateItemDetail(
         const statsLines: DetailLine[] = [];
         if (item.damage) {
             const { min: lo, max: hi } = CombatSystem.parseDamageString(item.damage);
+            // 基础伤害是种类数据（CE itemName/详情对未鉴定也显示类型已知信息）
             statsLines.push({ text: `基础伤害: ${item.damage} (${lo}~${hi})` });
 
-            // With enchantment
-            if (item.enchantment !== 0) {
+            // B-1a 反泄露（CE Items.c:1488-1493）：附魔修正只在实例已鉴定后显示。
+            if (item.isIdentified && item.enchantment !== 0) {
                 const strReq = item.strengthRequired || 12;
                 const ne = netEnchant(item.enchantment, playerStrength, strReq);
                 const frac = damageFraction(ne);
@@ -326,9 +327,8 @@ export function generateItemDetail(
                 color: mod >= 0 ? '#44ff44' : '#ff4444'
             });
         }
-        if (item.isCursed) {
-            statsLines.push({ text: '被诅咒', color: '#ff4444' });
-        }
+        // B-1a 反泄露：诅咒不预亮（CE 全源码无"详情面板显示诅咒"的分支——
+        // 玩家经穿戴后摘不下来得知，Items.c:7110；或鉴定卷轴整件亮）。
         sections.push({ header: '武器属性', lines: statsLines });
     }
 
@@ -338,16 +338,20 @@ export function generateItemDetail(
         if (item.armor !== undefined) {
             // CE 加法防御模型（Items.c:8515-8523）：显示防御 = armor + 净附魔
             // （含力量修正）。旧乘法"减伤值"口径已随 P1-11 废弃。
-            const strReq = item.strengthRequired || 12;
-            const ne = netEnchant(item.enchantment, playerStrength, strReq);
+            // B-1a 反泄露：净附魔段只在实例已鉴定后显示（同武器，CE 对未鉴定
+            // 装备只给类型已知信息与力量需求）。
             statsLines.push({ text: `基础防御值: ${item.armor}` });
-            if (ne !== 0 || item.enchantment !== 0) {
-                const effectiveArmor = item.armor + ne;
-                const strengthNote = ne !== item.enchantment ? '，含力量修正' : '';
-                statsLines.push({
-                    text: `实际防御值: ${trimFloatStr(effectiveArmor)} (净附魔 ${signedTrimFloatStr(ne)}${strengthNote})`,
-                    color: ne > 0 ? '#44ff44' : ne < 0 ? '#ff4444' : undefined
-                });
+            if (item.isIdentified) {
+                const strReq = item.strengthRequired || 12;
+                const ne = netEnchant(item.enchantment, playerStrength, strReq);
+                if (ne !== 0 || item.enchantment !== 0) {
+                    const effectiveArmor = item.armor + ne;
+                    const strengthNote = ne !== item.enchantment ? '，含力量修正' : '';
+                    statsLines.push({
+                        text: `实际防御值: ${trimFloatStr(effectiveArmor)} (净附魔 ${signedTrimFloatStr(ne)}${strengthNote})`,
+                        color: ne > 0 ? '#44ff44' : ne < 0 ? '#ff4444' : undefined
+                    });
+                }
             }
         }
         if (item.strengthRequired) {
@@ -357,9 +361,7 @@ export function generateItemDetail(
                 color: mod >= 0 ? '#44ff44' : '#ff4444'
             });
         }
-        if (item.isCursed) {
-            statsLines.push({ text: '被诅咒', color: '#ff4444' });
-        }
+        // B-1a 反泄露：诅咒不预亮（同武器段注）。
         sections.push({ header: '护甲属性', lines: statsLines });
     }
 
@@ -381,8 +383,19 @@ export function generateItemDetail(
     // --- Consumable info ---
     if (item.category === ItemCategory.WAND || item.category === ItemCategory.STAFF) {
         const statsLines: DetailLine[] = [];
-        if (item.charges !== undefined && item.maxCharges !== undefined) {
-            statsLines.push({ text: `充能: ${item.charges}/${item.maxCharges}` });
+        // B-1a 反泄露（CE Items.c:1611-1634 / 1650-1653）：充能只在实例层已知
+        // （ITEM_IDENTIFIED / ITEM_MAX_CHARGES_KNOWN）时显示；未识别魔杖显示
+        // 使用次数（enchant2 计数，Items.c:7435）而非充能。
+        if (item.isIdentified) {
+            if (item.charges !== undefined && item.maxCharges !== undefined) {
+                statsLines.push({ text: `充能: ${item.charges}/${item.maxCharges}` });
+            }
+        } else if (item.maxChargesKnown) {
+            if (item.maxCharges !== undefined) {
+                statsLines.push({ text: `充能上限: ${item.maxCharges}（当前余量未知）` });
+            }
+        } else if (item.category === ItemCategory.WAND && (item.timesUsed ?? 0) > 0) {
+            statsLines.push({ text: `已使用 ${item.timesUsed} 次（充能未知）`, color: '#aaaaff' });
         }
         if (item.rechargeTurns) {
             statsLines.push({ text: `充能速度: 每 ${item.rechargeTurns} 回合` });

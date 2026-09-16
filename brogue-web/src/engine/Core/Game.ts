@@ -532,6 +532,8 @@ export class Game {
             dagger.isCursed = false;
             dagger.runicType = undefined;
             dagger.runicKnown = true;
+            // B-1a：CE RogueMain.c:423-425 开局匕首 identify(theItem)——实例全亮
+            dagger.identified = true;
             this.player.inventory.addItem(dagger);
             this.player.equip(dagger);
         }
@@ -543,6 +545,7 @@ export class Game {
             dart.runicType = undefined;
             dart.runicKnown = true;
             dart.quantity = 15;
+            dart.identified = true; // CE RogueMain.c:431-433
             this.player.inventory.addItem(dart);
         }
 
@@ -552,6 +555,7 @@ export class Game {
             leatherArmor.isCursed = false;
             leatherArmor.runicType = undefined;
             leatherArmor.runicKnown = true;
+            leatherArmor.identified = true; // CE RogueMain.c:439-441
             this.player.inventory.addItem(leatherArmor);
             this.player.equip(leatherArmor);
         }
@@ -2892,6 +2896,14 @@ export class Game {
     public equipItem(item: Item) {
         if (this.player.equip(item)) {
             logger.log(i18next.t('item.equip', { name: item.name, defaultValue: `You equipped the ${item.name}.` }), '#88ff88');
+            // B-1a：CE Items.c:8583-8586——clairvoyance/light/stealth 三戒指戴上
+            // 即 identifyItemKind（效果立即可感，无隐藏价值；web 无 light 戒指，
+            // 清单在 ItemLoader.INSTANT_ID_RING_KINDS）。CE 无消息，静默亮。
+            if (item.category === ItemCategory.RING
+                && ItemLoader.isInstantIdentifyRing(item)
+                && !(ItemLoader.identifiedItems.has((item as any).identityId))) {
+                ItemLoader.identifyItemKind(item);
+            }
             this.syncEquipmentStatuses();
             this.needsRender = true;
             // CE Items.c:4024 equip() 以 playerTurnEnded() 收尾——完整回合
@@ -3063,7 +3075,9 @@ export class Game {
                 }
 
                 if (!ItemLoader.identifiedItems.has(trueId)) {
-                    ItemLoader.identify(trueId);
+                    // B-1a：CE Items.c:8199-8205 喝药水 autoIdentify（种类亮），
+                    // 经 identifyItemKind 走"最后一种类升格"联动。
+                    ItemLoader.identifyItemKind(item);
                     logger.log(i18next.t('item.identified_as', { name: item.name, defaultValue: `It was a ${item.name}!` }), '#00ffff');
                 }
             }
@@ -3133,6 +3147,14 @@ export class Game {
                         this.teleportPlayerRandom();
                         break;
                     case 'identify_item':
+                        // B-1a（反驳 B-0 §1.4 表格第 2 行）：CE Items.c:7776-7781——
+                        // 读 identify 卷轴先 identify(theItem) 亮自身种类并宣告
+                        // "this is a scroll of identify."，然后才让玩家选目标。
+                        // "用完不自亮"的例外只有 enchanting（Items.c:8019-8026）。
+                        if (!ItemLoader.identifiedItems.has(trueId)) {
+                            ItemLoader.identifyItemKind(item);
+                        }
+                        logger.log(i18next.t('scroll.reveal_identify', { defaultValue: 'This is a scroll of identify.' }), '#00ffff');
                         if (!this.identifyRandomItem()) {
                             logger.log(i18next.t('scroll.identify_fail', { defaultValue: 'Nothing new to identify.' }), '#aaaaaa');
                         } else {
@@ -3189,8 +3211,14 @@ export class Game {
                         break;
                 }
 
-                if (!ItemLoader.identifiedItems.has(trueId)) {
-                    ItemLoader.identify(trueId);
+                // B-1a：CE Items.c:8019-8026——卷轴用完即亮种类，例外是
+                // enchanting（永不自亮）与 identify（上 case 已提前自亮，此处
+                // 跳过避免重复消息）。web id 对齐：scroll_of_enchantment ≙
+                // SCROLL_ENCHANTING、scroll_of_identify ≙ SCROLL_IDENTIFY。
+                if (!ItemLoader.identifiedItems.has(trueId)
+                    && trueId !== 'scroll_of_enchantment'
+                    && trueId !== 'scroll_of_identify') {
+                    ItemLoader.identifyItemKind(item);
                     logger.log(i18next.t('item.was_a', { name: item.name, defaultValue: `It was a ${item.name}!` }), '#00ffff');
                 }
             }
@@ -3251,14 +3279,23 @@ export class Game {
 
         const charges = item.charges ?? 0;
         if (charges <= 0) {
+            // B-1a：CE Items.c:7420-7424——对耗尽的法器再施放会打上
+            // ITEM_MAX_CHARGES_KNOWN（"it must be depleted"），此后名称/面板
+            // 可显示 [?/上限]。
+            item.maxChargesKnown = true;
             logger.log(i18next.t('arcana.no_charges', { name: item.name, defaultValue: `${item.name} has no charges.` }), '#ff8888');
             return;
         }
 
         item.charges = charges - 1;
         item.rechargeCounter = item.rechargeCounter ?? 0;
+        // B-1a：CE Items.c:7435——魔杖每次放电 enchant2++（未识别时显示
+        // "已使用 N 次"）。法杖不计数（CE 只对 WAND 递增）。
+        if (item.category === ItemCategory.WAND) {
+            item.timesUsed = (item.timesUsed ?? 0) + 1;
+        }
         if (identityId && !ItemLoader.identifiedItems.has(identityId)) {
-            ItemLoader.identify(identityId);
+            ItemLoader.identifyItemKind(item);
             logger.log(i18next.t('item.identify', { name: item.name, defaultValue: `You identify ${item.name}.` }), '#00ffff');
         }
 
@@ -3990,20 +4027,24 @@ export class Game {
         return true;
     }
 
+    /**
+     * B-1a：鉴定卷轴的目标选择。CE 是玩家指定（promptForItemOfType，
+     * Items.c:7774-7802），web 维持既有"随机挑一件"的简化（目标指定 UI 归
+     * B-1b，B-0 §5.3-2 已登记）——但揭示语义本轮对齐 CE identify()：
+     * 目标池按 ITEM_CAN_BE_IDENTIFIED 过滤（先整包 updateIdentifiableItem
+     * 扫一遍，对应 CE 的 updateIdentifiableItems，Items.c:7719-7727），
+     * 命中者实例全亮（附魔+符文）并亮种类。
+     */
     private identifyRandomItem(): boolean {
-        const candidates = this.player.inventory.items.filter((invItem) => {
-            const consumableId = (invItem as any).consumableId as string | undefined;
-            const identityId = (invItem as any).identityId as string | undefined;
-            return (consumableId && !ItemLoader.identifiedItems.has(consumableId))
-                || (identityId && !ItemLoader.identifiedItems.has(identityId));
-        });
+        for (const invItem of this.player.inventory.items) {
+            ItemLoader.updateIdentifiableItem(invItem);
+        }
+        const candidates = this.player.inventory.items.filter((invItem) => invItem.canBeIdentified);
         if (candidates.length === 0) return false;
         const target = candidates[rng.randRange(0, candidates.length - 1)]!;
-        const consumableId = (target as any).consumableId as string | undefined;
-        const identityId = (target as any).identityId as string | undefined;
-        const id = consumableId ?? identityId;
-        if (!id) return false;
-        ItemLoader.identify(id);
+        // 注意：武器/护甲没有种类 id（识别只发生在实例层），不得因缺 id 早退——
+        // identifyInstance 对无种类类别只亮实例，正是 CE identify() 的语义。
+        ItemLoader.identifyInstance(target);
         logger.log(i18next.t('item.identify_target', { name: target.name, defaultValue: `You identify ${target.name}.` }), '#00ffff');
         return true;
     }
@@ -4188,9 +4229,11 @@ export class Game {
                 logger.log(i18next.t('throw.shatter', { name: item.displayName, defaultValue: `You throw the ${item.displayName}. It shatters!` }), '#ffaa00');
 
                 if (data) {
-                    // Identify if not identified
+                    // Identify if not identified（B-1a：经 identifyItemKind 走升格联动；
+                    // CE Items.c:6988-7050 投掷药水碎裂即 autoIdentify——B-2 将按
+                    // "7 种功能性药水才亮"的细分重核本分支）
                     if (!ItemLoader.identifiedItems.has(trueId)) {
-                        ItemLoader.identify(trueId);
+                        ItemLoader.identifyItemKind(item);
                         logger.log(i18next.t('item.was_a', { name: item.name, defaultValue: `It was a ${item.name}!` }), '#00ffff');
                     }
 
@@ -5155,6 +5198,18 @@ export class Game {
             logger.log(i18next.t('combat.defeat', { monster: target.name, defaultValue: `You defeated the ${target.name}!` }), '#ffaa00');
             this.stats.kills++;
 
+            // B-1a：CE Combat.c:1427-1430——玩家近战击杀非无生命怪
+            //（MB_WEAPON_AUTO_ID 在怪物生成时对非 MONST_INANIMATE 恒置，
+            // Monsters.c:157-159）时扣减装备武器的熟悉度计数，满 20 杀实例亮。
+            if (!target.hasBehavior('MONST_INANIMATE')
+                && ItemLoader.decrementWeaponAutoIDTimer(this.player.equippedWeapon)) {
+                const weapon = this.player.equippedWeapon!;
+                logger.log(i18next.t('item.familiar_weapon', {
+                    name: weapon.displayName,
+                    defaultValue: `You are now familiar enough with your weapon to identify it: ${weapon.displayName}.`
+                }), '#00ffff');
+            }
+
             // Handle Drops
             if (rng.randPercent(Math.floor(target.goldDropChance * 100))) {
                 const goldItem = new Item('Gold', '$', 0xffda75, ItemCategory.GOLD);
@@ -6049,6 +6104,11 @@ export class Game {
     private objectiveTimeBlock(): void {
         this.tickArcanaResources();
 
+        // B-1a：CE Time.c:2664 processIncrementalAutoID——护甲/戒指的穿戴熟悉度
+        // 在客观时间块内扣减（每 100 tick 恰好 1，与 rechargeItemsIncrementally(1)
+        // 同源）。门槛 1000/1500 见 ItemLoader.ARMOR/RING_DELAY_TO_AUTO_ID。
+        this.processIncrementalAutoID();
+
         // Time.c:2666 / Monsters.c:1128：每 100 tick monsterSpawnFuse--，
         // 归零触发周期刷怪并重置 fuse（CE 触发在 decrementPlayerStatus 尾部）
         if (this.mode !== 'test') {
@@ -6406,6 +6466,32 @@ export class Game {
         }
     }
 
+    /**
+     * B-1a：CE Time.c:1987-2024 processIncrementalAutoID——对护甲与戒指
+     * （CE 是 armor/ringLeft/ringRight 三槽；web 单戒指槽）的穿戴熟悉度倒计时。
+     * 调用点在客观时间块内（Time.c:2664），每块恰好扣 1。揭示时的玩家可见
+     * 消息（Time.c:2001-2003 "you are now familiar enough with your ... to
+     * identify it."）在这里播；揭示状态本身的落账在 ItemLoader。
+     */
+    private processIncrementalAutoID(): void {
+        const armor = this.player.equippedArmor;
+        const armorRevealed = ItemLoader.decrementWornFamiliarity(armor);
+        if (armorRevealed === 'armor' && armor) {
+            logger.log(i18next.t('item.familiar_armor', {
+                name: armor.displayName,
+                defaultValue: `You are now familiar enough with your armor to identify it: ${armor.displayName}.`
+            }), '#00ffff');
+        }
+        const ring = this.player.equippedRing;
+        const ringRevealed = ItemLoader.decrementWornFamiliarity(ring);
+        if (ringRevealed === 'ring' && ring) {
+            logger.log(i18next.t('item.familiar_ring', {
+                name: ring.displayName,
+                defaultValue: `You are now familiar enough with your ring to identify it: ${ring.displayName}.`
+            }), '#00ffff');
+        }
+    }
+
     private tickArcanaResources() {
         for (const item of this.player.inventory.items) {
             if (item.category === ItemCategory.WAND || item.category === ItemCategory.STAFF) {
@@ -6487,6 +6573,19 @@ export class Game {
         }
         if (s.consumableId) {
             (item as any).consumableId = s.consumableId;
+        }
+        // B-1a：实例未知态不进存档（P1-48，归 B-1b）。读档按 spawn 语义重建：
+        // 五个可未知类别回到未识别（instance identified=false），其余类别视为
+        // 无未知态。副作用（登记报告）：开局三件套读档后 displayName 暂时失去
+        // 已鉴定态，随 B-1b 持久化一并消除。
+        const cat = item.category;
+        if (cat === ItemCategory.WEAPON || cat === ItemCategory.ARMOR || cat === ItemCategory.POTION
+            || cat === ItemCategory.SCROLL || cat === ItemCategory.WAND || cat === ItemCategory.STAFF
+            || cat === ItemCategory.RING) {
+            item.identified = false;
+            item.canBeIdentified = true;
+        } else {
+            item.identified = true;
         }
         return item;
     }
