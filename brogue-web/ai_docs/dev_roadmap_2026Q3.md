@@ -18,6 +18,26 @@ CE 的物品落位一律回避 `T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER`，
 这个 bug 潜伏已久，此前没暴露只是因为 RNG 流恰好没把物品送到那里；
 C-3 移动 RNG 流后 `p1_20_item_placement` 立刻翻红。**它不是 C-3 的回归。**
 
+## P1-44 / P1-45（2026-09-17 F-0 测绘时发现，验收方已逐条复核）
+
+- **P1-44 抗火药水什么也没做。** `Game.ts:2876` 的 `resist_fire` 分支写的是
+  `grantTemporaryImmunity('burning' as any, 50)`——那个 `as any` 是自认：
+  **`'burning'` 在 `StatusId` 联合类型里根本不存在**（`Creature.ts:9`，实查 0 处）。
+  而且 `temporaryImmunities` **全库唯一读者**是 `applyMonsterOnHitStatus`
+  （`Game.ts:4199`，只拦怪物命中施加的状态）；火焰伤害查的是
+  `hasStatus('immune_fire')`（`Game.ts:2749/6089/6117`）。
+  三重错位：键名不存在、存的通道没人在火伤路径上读、查的是另一个键。
+  同一毛病还在 `Game.ts:4546` 重复了一次（4547 的 `'confused'` 倒是合法键）。
+  **归 F-2a**（火机制轮）一并修。
+
+- **P1-45 "幽灵气"：`creeping_death` 药水往气网写 `GasType.FIRE`。**
+  `Game.ts:2872` 是 `addGas(x, y, 1, 100)`，字面量 `1` 就是 `GasType.FIRE`，
+  旁边的注释 `// Will add actual caustic gas later` 是自认的占位。
+  后果：喷出一团**不渲染、无效果、却占格且扩散**的气，还会挡住后到的真气体。
+  交接文档原先记的"`GasType.FIRE` 是死枚举"**需要修正**——零读者成立，
+  但**有一个写者**。`creeping_death` 本身是 web 自创内容（D2：退出实际游戏），
+  **归 G-1**（气体轮）连同 volume 量纲折算一起处理。
+
 ## P1-42（2026-09-16 C-3 验收时登记，**优先级高**）
 
 **web 的密门发现机制远弱于 CE，而 C-3 之后关卡连通性开始依赖它。**

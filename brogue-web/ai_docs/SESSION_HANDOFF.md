@@ -225,7 +225,9 @@ P4-9 有 7 条对抗性测试全绿，而真实关卡上 safety map 是整张平
   `generateTestDepth`(P1-34)、`loadSnapshot`(P1-35)、waypoint 距离图、气味图。
   **新增任何"生成期派生态"时，检查所有重建网格的路径。**
 - `environment.ignite()` 只点燃草/植被/沼泽/门；无视地形点火用 `igniteForced()`。
-- `GasType.FIRE` 是死枚举；火焰伤害的真实来源是 `cell.isBurning`。
+- `GasType.FIRE` **零读者但有一个写者**（F-0 修正）：`Game.ts:2872` 的
+  `creeping_death` 药水 `addGas(x, y, 1, 100)` 喷的是"幽灵气"——不渲染、
+  无效果、却占格扩散并挡住真气体（P1-45）。火焰伤害的真实来源仍是 `cell.isBurning`。
 - 伤害记法 `"XdY"` → `{min:X, max:X*Y, clumping:X}`，**不是 min-max**。
 - i18n：`defaultValue` 是无声降级通道。P1-30 已装红灯（扫描所有 `t()` 键），
   但**对硬编码英文字符串无效**。
