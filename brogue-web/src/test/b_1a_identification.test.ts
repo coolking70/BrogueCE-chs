@@ -19,6 +19,12 @@
  *
  * CE 权威出处见 ItemLoader.ts 内注释块（B-1a 引用清单）。
  * 留痕测试（本轮明确不做）见文件尾部 describe 块，均注明反转轮次。
+ *
+ * B-1c 更正（2026-09-17）：A11 第二例注释里的 "web 药水表无 potion_of_speed"
+ * 是 B-1a 的事实错误——CE POTION_SPEED 在 web 的 id 是 `potion_of_haste`
+ * （consumables.json，trueName "Potion of Speed"），善意药水类实为 8 种。
+ * ItemLoader.MAGIC_POLARITY 的键已随之更正，本文件断言未受影响（当时也
+ * 只断言"不得升格"）。
  */
 import { describe, it, expect, beforeAll } from 'vitest';
 import { readFileSync } from 'node:fs';
@@ -423,8 +429,9 @@ describe('A11: 最后一种类自动升格（CE Items.c:6635-6673）', () => {
         // CE 语义：某极性类剩 1 种未识别时，需"本类极性已被揭示（B-1c 前恒否）"
         // 或"对侧极性类全识别"才升格。恶意药水类含退池的 poison/creeping_death
         // （恒不识别）→ 恶意类升格结构性不可达；同时它也压住"善意剩 1"的升格。
-        // web 药水表无 potion_of_speed（CE 有、web 缺，B-0 §5.1-9 目录缺口），
-        // 善意类现为 7 种。
+        // B-1c 更正：CE POTION_SPEED 在 web 的 id 是 potion_of_haste（B-1a 把键
+        // 写成了 potion_of_speed，B-0 §5.1-9 的"目录缺口"结论不成立），
+        // 善意药水类实为 8 种。本例只断言"不得升格"，不受种类数影响。
         const benign = ['potion_of_life', 'potion_of_strength', 'potion_of_telepathy', 'potion_of_levitation',
             'potion_of_detect_magic', 'potion_of_fire_immunity', 'potion_of_invisibility'];
         expect(benign.every(id => ItemLoader.potions.some(p => p.id === id))).toBe(true);
@@ -694,15 +701,31 @@ describe('留痕：三占位卷轴仍为日志占位（→ B-3 反转）', () =>
     });
 });
 
-describe('留痕：detect magic 极性系统未实装（→ B-1c 反转）', () => {
-    it('喝 detect magic 只亮该种类，无极性揭示/恶意确认机制', () => {
+describe('已反转（B-1c）：detect magic 极性系统已实装（原"未实装"留痕）', () => {
+    /**
+     * 原留痕断言（B-1a 立）：
+     *     expect((ItemLoader as ...).magicPolarityRevealed).toBeUndefined();
+     * 即"ItemLoader 上根本没有极性揭示这个状态"。B-1c 接上 detect magic 后
+     * 该前提失效（CE itemTable.magicPolarityRevealed，Rogue.h:1436 →
+     * ItemLoader.magicPolarityRevealed:Set<kindId>）。
+     * 按项目规矩反转 = 断言新事实 + 保留越界守卫，不是删掉。
+     */
+    it('喝 detect magic：既亮该种类，也揭示背包内其余种类的极性', () => {
         const game = createHeadlessGame(42, 'test');
         isolatePlayer(game);
         const potion = ItemLoader.spawnPotion('potion_of_detect_magic', -1, -1)!;
+        const other = ItemLoader.spawnPotion('potion_of_incineration', -1, -1)!;
         game.player.inventory.addItem(potion);
+        game.player.inventory.addItem(other);
         game.quaffItem(potion);
         expect(ItemLoader.identifiedItems.has('potion_of_detect_magic')).toBe(true);
-        // B-1c 将引入 magicPolarityRevealed 状态与使用前确认——届时反转
-        expect((ItemLoader as unknown as Record<string, unknown>).magicPolarityRevealed).toBeUndefined();
+        // 原断言到期：极性状态现在真实存在，且 detect magic 写进了它
+        expect(ItemLoader.magicPolarityRevealed).toBeInstanceOf(Set);
+        expect(ItemLoader.isPolarityRevealed('potion_of_incineration')).toBe(true);
+        // 越界守卫①：揭示极性 ≠ 揭示真名——那瓶焚化药水的种类仍未识别
+        expect(ItemLoader.identifiedItems.has('potion_of_incineration')).toBe(false);
+        expect(other.displayName).not.toBe(other.name);
+        // 越界守卫②：没被照到的种类不得被顺手揭示
+        expect(ItemLoader.isPolarityRevealed('potion_of_paralysis')).toBe(false);
     });
 });

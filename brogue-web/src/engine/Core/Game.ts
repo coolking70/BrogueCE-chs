@@ -161,6 +161,8 @@ export interface GameSnapshotItem {
     identified?: boolean;
     canBeIdentified?: boolean;
     maxChargesKnown?: boolean;
+    /** B-1c：≙ ITEM_MAGIC_DETECTED；旧存档无此键 → false（未被 detect magic 照过）。 */
+    magicDetected?: boolean;
     timesUsed?: number;
     consumableId?: string;
     maxCharges?: number;
@@ -226,6 +228,12 @@ export interface GameSnapshot {
     identifiedItems?: string[];
     /** B-1b：玩家绰号（ItemLoader.callTitles 的落盘形态；Map 不能直接 JSON 化）。 */
     callTitles?: Record<string, string>;
+    /**
+     * B-1c：detect magic 揭示过极性的种类集（CE itemTable.magicPolarityRevealed
+     * 的快照等价物，Rogue.h:1436）。旧存档无此字段 → initConsumables 的开局
+     * 全零兜底（等同"极性揭示丢失"，与 B-1c 前行为一致）。
+     */
+    magicPolarityRevealed?: string[];
     grid: Array<{
         x: number;
         y: number;
@@ -520,6 +528,8 @@ export class Game {
         this.isMouseTraveling = false;
         this.isInventoryOpen = false;
         this.pendingIdentify = false;
+        // B-1c：恶意品确认待决态不得跨场景泄漏（与 pendingIdentify 同处复位）
+        this.pendingUseConfirm = null;
         this.isThrowing = false;
         this.throwItemTarget = null;
         this.hoveredCell = null;
@@ -2981,8 +2991,143 @@ export class Game {
         }
     }
 
-    public quaffItem(item: Item) {
+    // ===== B-1c：detect magic 极性揭示（CE Items.c:8027-8038 / 8137-8185）=====
+
+    /**
+     * 等待玩家确认的"恶意品使用"目标（CE 的 confirm() 是阻塞模态，web 没有；
+     * 沿用 B-1b 的 pendingIdentify 同款待决态，由 InventoryOverlay 轮询渲染）。
+     * null = 无待决。
+     */
+    public pendingUseConfirm: Item | null = null;
+
+    /**
+     * CE Items.c:8050-8052（喝）与 7757-7759（读）的前置条件，逐字复刻：
+     *     magicCharDiscoverySuffix(category, kind) == -1
+     *     && ((flags & ITEM_MAGIC_DETECTED) || kindTable.identified)
+     * 语义：**只有当玩家已经有理由知道这是坏东西时**才拦一道。两个析取项
+     * 缺一不可——
+     *  - 漏掉 `== -1`：连生命药水都要确认；
+     *  - 漏掉后半段：从没鉴定过、也没被 detect magic 照过的未知瓶子被提前
+     *    剧透"这是坏东西"（反泄露，B-1a §2.3 同一类错误）。
+     * 注意后半段读的是**实例**旗标 magicDetected，不是种类级的
+     * magicPolarityRevealed——CE 在这里刻意用实例粒度。
+     */
+    public requiresMalevolentUseConfirmation(item: Item): boolean {
+        if (ItemLoader.magicCharDiscoverySuffix(item) !== -1) return false;
+        const kindId = (item as any).consumableId as string | undefined;
+        const kindIdentified = !!kindId && ItemLoader.identifiedItems.has(kindId);
+        return item.magicDetected || kindIdentified;
+    }
+
+    /** 待决确认的提示文案（CE 的两种 sprintf，Items.c:8054-8058 / 7761-7765）。 */
+    public malevolentUseConfirmPrompt(item: Item): string {
+        const kindId = (item as any).consumableId as string | undefined;
+        const kindIdentified = !!kindId && ItemLoader.identifiedItems.has(kindId);
+        const name = item.displayName;
+        if (item.category === ItemCategory.SCROLL) {
+            return kindIdentified
+                ? i18next.t('item.confirm_read_known', { name, defaultValue: `Really read a scroll of ${name}?` })
+                : i18next.t('item.confirm_read_cursed', { defaultValue: 'Really read a cursed scroll?' });
+        }
+        return kindIdentified
+            ? i18next.t('item.confirm_drink_known', { name, defaultValue: `Really drink a potion of ${name}?` })
+            : i18next.t('item.confirm_drink_cursed', { defaultValue: 'Really drink a cursed potion?' });
+    }
+
+    /** 玩家点"确认"：重入使用路径（CE confirm() 返回 true 后继续原函数）。 */
+    public confirmPendingUse(): boolean {
+        const target = this.pendingUseConfirm;
+        if (!target) return false;
+        this.pendingUseConfirm = null;
+        if (target.category === ItemCategory.SCROLL) {
+            this.readItem(target, true);
+        } else {
+            this.quaffItem(target, true);
+        }
+        return true;
+    }
+
+    /** 玩家点"取消"：CE `return false`——不消耗物品、不推进回合。 */
+    public cancelPendingUse(): void {
+        this.pendingUseConfirm = null;
+    }
+
+    /**
+     * 共用的确认闸：需要确认且尚未确认时挂起待决态并返回 true（调用方立即
+     * 返回，不消耗物品也不推进回合，对齐 CE 的 `return false`）。
+     */
+    private gateMalevolentUse(item: Item, confirmed: boolean): boolean {
+        if (confirmed || !this.requiresMalevolentUseConfirmation(item)) {
+            this.pendingUseConfirm = null;
+            return false;
+        }
+        this.pendingUseConfirm = item;
+        logger.log(this.malevolentUseConfirmPrompt(item), '#ffcc44');
+        this.needsRender = true;
+        return true;
+    }
+
+    /**
+     * CE POTION_DETECT_MAGIC（Items.c:8137-8185）。三轮遍历 + 收口：
+     *  1. 本层地面物品（CAN_BE_DETECTED）→ detectMagicOnItem；有极性的记
+     *     hadEffectOnLevel。CE 还会给格子打 pmap ITEM_DETECTED（:8144）供
+     *     地面 sigil 渲染——web 的 Grid.Cell 无此旗标且渲染层不在本轮边界内，
+     *     留痕测试钉住（b_1c_detect_magic.test.ts 尾部）；
+     *  2. 怪物携带品——**web 无载体**：Creature/Monster 没有 carriedItem 字段
+     *     （全库 grep 零命中），CE 的这一轮在 web 结构性缺席，登记在报告；
+     *  3. 背包物品 → detectMagicOnItem；有极性且不是药水自己的记 hadEffectOnPack
+     *     （CE :8164 "Don't allow the potion of detect magic to detect itself"）；
+     *  4. 有任何效果 → tryIdentifyLastItemKinds(HAS_INTRINSIC_POLARITY) + 三选一
+     *     的"感到魔法气息"消息；否则报"感到没有魔法"。
+     *
+     * ★ 零掷骰：全程只读写状态，不碰 rng（任务书 §四硬门禁，哨兵 S1 钉住）。
+     */
+    private applyDetectMagic(theItem: Item): void {
+        let hadEffectOnLevel = false;
+        let hadEffectOnPack = false;
+
+        for (const floorItem of this.items) {
+            if (!ItemLoader.CAN_BE_DETECTED.has(floorItem.category)) continue;
+            ItemLoader.detectMagicOnItem(floorItem);
+            if (ItemLoader.itemMagicPolarity(floorItem) !== 0) {
+                hadEffectOnLevel = true;
+            }
+        }
+
+        for (const packItem of this.player.inventory.items) {
+            if (!ItemLoader.CAN_BE_DETECTED.has(packItem.category)) continue;
+            ItemLoader.detectMagicOnItem(packItem);
+            if (ItemLoader.itemMagicPolarity(packItem) !== 0 && packItem !== theItem) {
+                hadEffectOnPack = true;
+            }
+        }
+        // CE 里被喝的药水此刻**仍在** packItems 里（consumePackItem 在 switch 之后），
+        // 因此它自己也会被 detectMagicOnItem 照到（只是不计入 hadEffectOnPack）。
+        // web 的 quaffItem 在进入效果前就把它移出了背包，这里显式补上这一次调用，
+        // 保持"喝完之后该种类的极性已揭示"与 CE 一致。
+        if (ItemLoader.CAN_BE_DETECTED.has(theItem.category)) {
+            ItemLoader.detectMagicOnItem(theItem);
+        }
+
+        if (hadEffectOnLevel || hadEffectOnPack) {
+            ItemLoader.tryIdentifyLastItemKindsAllPolarityCategories();
+            if (hadEffectOnLevel && hadEffectOnPack) {
+                logger.log(i18next.t('potion.detect_magic', { defaultValue: 'you can somehow feel the presence of magic on the level and in your pack.' }), '#aaaaff');
+            } else if (hadEffectOnLevel) {
+                logger.log(i18next.t('potion.detect_magic_level', { defaultValue: 'you can somehow feel the presence of magic on the level.' }), '#aaaaff');
+            } else {
+                logger.log(i18next.t('potion.detect_magic_pack', { defaultValue: 'you can somehow feel the presence of magic in your pack.' }), '#aaaaff');
+            }
+        } else {
+            logger.log(i18next.t('potion.detect_magic_none', { defaultValue: 'you can somehow feel the absence of magic on the level and in your pack.' }), '#aaaaff');
+        }
+    }
+
+    public quaffItem(item: Item, confirmed: boolean = false) {
         if (item.category !== ItemCategory.POTION) return;
+        // B-1c：CE Items.c:8050-8060——恶意且玩家已知时先 confirm，取消即
+        // `return false`（不消耗药水、不推进回合）。
+        if (this.gateMalevolentUse(item, confirmed)) return;
 
         // Remove from inventory
         if (this.player.inventory.removeItem(item)) {
@@ -3105,7 +3250,8 @@ export class Game {
                         logger.log(i18next.t('potion.speed', { defaultValue: 'Everything around you seems to slow down.' }), '#ffffaa');
                         break;
                     case 'detect_magic':
-                        logger.log(i18next.t('potion.detect_magic', { defaultValue: 'You sense magical auras nearby.' }), '#aaaaff');
+                        // B-1c：CE Items.c:8137-8185 POTION_DETECT_MAGIC
+                        this.applyDetectMagic(item);
                         break;
                     default:
                         logger.log(i18next.t('potion.unknown', { defaultValue: 'It tastes weird.' }), '#aaaaaa');
@@ -3156,8 +3302,10 @@ export class Game {
         }
     }
 
-    public readItem(item: Item) {
+    public readItem(item: Item, confirmed: boolean = false) {
         if (item.category !== ItemCategory.SCROLL) return;
+        // B-1c：CE Items.c:7757-7767——同款恶意品确认（读卷轴分支）。
+        if (this.gateMalevolentUse(item, confirmed)) return;
 
         if (this.player.inventory.removeItem(item)) {
             const trueId = (item as any).consumableId;
@@ -6599,6 +6747,8 @@ export class Game {
             identified: item.identified,
             canBeIdentified: item.canBeIdentified,
             maxChargesKnown: item.maxChargesKnown,
+            // B-1c：实例 ITEM_MAGIC_DETECTED 进存档
+            magicDetected: item.magicDetected,
             timesUsed: item.timesUsed,
             consumableId: (item as any).consumableId,
             maxCharges: item.maxCharges,
@@ -6658,6 +6808,8 @@ export class Game {
             item.maxChargesKnown = s.maxChargesKnown ?? false;
             item.timesUsed = s.timesUsed ?? 0;
         }
+        // B-1c：实例 ITEM_MAGIC_DETECTED 落账；旧存档无此键 → false
+        item.magicDetected = s.magicDetected ?? false;
         return item;
     }
 
@@ -6749,6 +6901,8 @@ export class Game {
             // B-1b：全局种类鉴定态与绰号进存档（P1-48；Map 落盘为普通对象）
             identifiedItems: [...ItemLoader.identifiedItems],
             callTitles: Object.fromEntries(ItemLoader.callTitles),
+            // B-1c：种类级极性揭示进存档
+            magicPolarityRevealed: [...ItemLoader.magicPolarityRevealed],
             grid: gridCells,
             gasGrid,
             stats: { ...this.stats }
@@ -6785,6 +6939,13 @@ export class Game {
             ItemLoader.callTitles.clear();
             for (const [kindId, title] of Object.entries(snapshot.callTitles)) {
                 ItemLoader.callTitles.set(kindId, title);
+            }
+        }
+        // B-1c：极性揭示回放（initConsumables 已清零；旧存档停在全零）
+        if (snapshot.magicPolarityRevealed) {
+            ItemLoader.magicPolarityRevealed.clear();
+            for (const kindId of snapshot.magicPolarityRevealed) {
+                ItemLoader.magicPolarityRevealed.add(kindId);
             }
         }
 
@@ -6944,6 +7105,8 @@ export class Game {
         this.isMouseTraveling = false;
         this.isInventoryOpen = false;
         this.pendingIdentify = false;
+        // B-1c：恶意品确认待决态不得跨场景泄漏（与 pendingIdentify 同处复位）
+        this.pendingUseConfirm = null;
         this.isThrowing = false;
         this.throwItemTarget = null;
         this.hoveredCell = null;

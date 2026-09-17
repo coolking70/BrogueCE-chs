@@ -316,7 +316,12 @@ function expectedDefense(tier: Tier, mode: 'legacy' | 'wired'): number {
 }
 
 describe(`护甲模型改造前后配对对照（${TIERS.length} 档 × ${SEEDS} seed × ${TURNS} 回合）`, () => {
-    it(`聚合对比：玩家被命中率 / 累计受伤 / 死亡次数`, { timeout: 180_000 }, () => {
+    // 验收方 2026-09-17 上调 180s → 360s：本用例是 5 档 × 20 种子 × 400 回合的
+    // 聚合测试，在**跨链并行**下已两次被自己的看门狗饿死
+    // （B-1b 验收一次、B-1c 验收一次，后者实测 247s 被 180s 砍掉；
+    // 空载单跑 96s）。并行已是常态，180s 的余量不够。
+    // 注意：全局 `testTimeout` 对它无效——它自带 timeout，以本行为准。
+    it(`聚合对比：玩家被命中率 / 累计受伤 / 死亡次数`, { timeout: 360_000 }, () => {
         const results: Record<string, { legacy: Agg; wired: Agg }> = {};
         for (const tier of TIERS) {
             const legacy = newAgg();

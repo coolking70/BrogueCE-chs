@@ -93,6 +93,13 @@ export class Item implements Entity {
     public identified?: boolean;
     public canBeIdentified: boolean = false;
     public maxChargesKnown: boolean = false;
+    /**
+     * B-1c：≙ CE ITEM_MAGIC_DETECTED（Rogue.h:1372）——这一件被 detect magic
+     * 照过。它是**实例**旗标，与种类级的 magicPolarityRevealed 并列：
+     * CE 的恶意品使用确认（Items.c:7757/8050）读的正是它，背包 sigil
+     * （Items.c:3611）也读它。随 GameSnapshotItem 持久化（B-1b 的字段族）。
+     */
+    public magicDetected: boolean = false;
     /** 魔杖已放电次数（CE enchant2，Items.c:7435；未识别时显示"已使用 N 次"） */
     public timesUsed?: number;
     public rechargeTurns?: number;

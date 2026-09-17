@@ -17,10 +17,17 @@ const selectedItem = ref<Item | null>(null);
 const pendingIdentify = ref(false);
 const callTarget = ref<Item | null>(null);
 const callText = ref('');
+// B-1c：恶意品使用确认的待决态（引擎 Game.pendingUseConfirm 的镜像）
+const pendingUseConfirm = ref<Item | null>(null);
+const pendingUseConfirmText = ref('');
 
 const updateInventoryState = () => {
     isVisible.value = activeGame.isInventoryOpen;
     pendingIdentify.value = activeGame.pendingIdentify;
+    pendingUseConfirm.value = activeGame.pendingUseConfirm;
+    pendingUseConfirmText.value = activeGame.pendingUseConfirm
+        ? activeGame.malevolentUseConfirmPrompt(activeGame.pendingUseConfirm)
+        : '';
     if (isVisible.value) {
         inventoryItems.value = [...activeGame.player.inventory.items];
     }
@@ -132,6 +139,37 @@ const isCallable = (item: Item) => {
         && !ItemLoader.identifiedItems.has(kindId);
 };
 
+// ── B-1c：极性 sigil（CE Items.c:3611-3625 的背包列渲染）──────────────
+// CE：ITEM_MAGIC_DETECTED 且非护符时，在物品字符前插一个符号——
+//   极性 +1 → G_GOOD_MAGIC（实心带杠圆，U+29F3，善意色）
+//   极性 -1 → G_BAD_MAGIC （空心带杠圆，U+29F2，恶意色）
+//   极性  0 → '-'（黄色，"照过了，没魔法"）
+// 未被照过的物品**不显示任何符号**（显示 = 泄露）。
+const magicSigil = (item: Item): string => {
+    if (!item.magicDetected || item.category === ItemCategory.AMULET) return '';
+    const polarity = ItemLoader.itemMagicPolarity(item);
+    if (polarity === 1) return '\u29F3';
+    if (polarity === -1) return '\u29F2';
+    return '-';
+};
+const magicSigilColor = (item: Item): string => {
+    const polarity = ItemLoader.itemMagicPolarity(item);
+    if (polarity === 1) return '#44ff88';
+    if (polarity === -1) return '#ff6666';
+    return '#ffff44';
+};
+
+// ── B-1c：恶意品使用确认（CE confirm()，Items.c:8054-8060 / 7761-7767）──
+const confirmMalevolentUse = () => {
+    activeGame.confirmPendingUse();
+    updateInventoryState();
+    closeInventory();
+};
+const cancelMalevolentUse = () => {
+    activeGame.cancelPendingUse();
+    updateInventoryState();
+};
+
 const selectItem = (item: Item) => {
     selectedItem.value = selectedItem.value?.id === item.id ? null : item;
 };
@@ -172,11 +210,14 @@ const performDrop = (item: Item) => {
 
 const performQuaff = (item: Item) => {
     activeGame.quaffItem(item);
+    // B-1c：被确认闸拦下时不关面板——确认行就在这一行下方渲染
+    if (activeGame.pendingUseConfirm) { updateInventoryState(); return; }
     closeInventory();
 };
 
 const performRead = (item: Item) => {
     activeGame.readItem(item);
+    if (activeGame.pendingUseConfirm) { updateInventoryState(); return; }
     closeInventory();
 };
 
@@ -240,6 +281,8 @@ const confirmCall = () => {
                        :class="{ 'selected-row': selectedItem?.id === entry.item.id,
                                  'identify-candidate': pendingIdentify && entry.item.canBeIdentified }">
                     <span class="item-letter">{{ entry.letter }})</span>
+                    <!-- B-1c：detect magic 极性符号（CE Items.c:3611-3625） -->
+                    <span class="item-sigil" :style="{ color: magicSigilColor(entry.item) }">{{ magicSigil(entry.item) }}</span>
                     <span class="item-char" :style="{ color: colorToCss(entry.item.color) }">{{ entry.item.char }}</span>
                     <span class="item-name">
                        {{ getLocalizedName(entry.item.displayName) }}
@@ -264,6 +307,12 @@ const confirmCall = () => {
                      <button @click="performThrow(entry.item)" class="action-btn">{{ t('Throw') || 'Throw' }}</button>
                      <button @click="performDrop(entry.item)" class="action-btn danger">{{ t('Drop') || 'Drop' }}</button>
                   </div>
+                  <!-- B-1c：恶意品使用确认（CE confirm()，Items.c:8054-8060） -->
+                  <div v-if="pendingUseConfirm?.id === entry.item.id" class="item-actions confirm-row">
+                    <span class="confirm-label">{{ pendingUseConfirmText }}</span>
+                    <button @click="confirmMalevolentUse()" class="action-btn danger">{{ t('Yes') || 'Yes' }}</button>
+                    <button @click="cancelMalevolentUse()" class="action-btn">{{ t('No') || 'No' }}</button>
+                  </div>
                   <!-- B-1b：call 绰号输入（CE getInputTextString，Items.c:1423） -->
                   <div v-if="callTarget?.id === entry.item.id" class="item-actions call-input-row">
                     <span class="call-label">{{ t('Call them:') || 'Call them:' }}</span>
@@ -285,6 +334,22 @@ const confirmCall = () => {
 </template>
 
 <style scoped>
+.item-sigil {
+  display: inline-block;
+  width: 1em;
+  text-align: center;
+  font-weight: bold;
+}
+
+.confirm-row {
+  align-items: center;
+}
+
+.confirm-label {
+  color: #ffcc44;
+  margin-right: 8px;
+}
+
 .inventory-overlay {
   position: absolute;
   top: 0;

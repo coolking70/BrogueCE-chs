@@ -204,7 +204,12 @@ export class ItemLoader {
         potion_of_telepathy: 1,       // telepathy
         potion_of_levitation: 1,      // levitation
         potion_of_detect_magic: 1,    // detect magic
-        potion_of_speed: 1,           // speed
+        // B-1c 更正：CE POTION_SPEED 在 web 的 id 是 `potion_of_haste`
+        // （consumables.json，trueName "Potion of Speed"、effect "speed"）。
+        // B-1a 写成 `potion_of_speed` → 该键在表里恒查不到，速度药水此前
+        // 落在"无极性"（0）而不参与善意分组；B-0 §5.1-9 "web 缺速度药水"
+        // 的目录缺口结论同样不成立。见 b_1c 报告 §与预设不符。
+        potion_of_haste: 1,           // speed
         potion_of_fire_immunity: 1,   // fire immunity
         potion_of_invisibility: 1,    // invisibility
         potion_of_poison: -1,         // caustic gas（CE 原生，web 误退池，B-4 回池）
@@ -267,15 +272,165 @@ export class ItemLoader {
         }
     }
 
-    /** detect magic 的极性揭示（B-1c 载体）。B-1a 阶段恒 false——留形挂点。 */
-    private static isPolarityRevealed(_kindId: string): boolean {
-        return false;
+    /**
+     * B-1c：种类级"极性已被 detect magic 揭示"（CE itemTable.magicPolarityRevealed，
+     * Rogue.h:1436）。CE 把它与 identified 并列存在 itemTable 里、随存档往返；
+     * web 用与 identifiedItems 同款的种类 id 集合表达，随 GameSnapshot 持久化。
+     * 新局清零：CE resetItemTableEntry（Items.c:8777）——见 initConsumables。
+     */
+    public static magicPolarityRevealed = new Set<string>();
+
+    // 注意：下面两个类别集合必须**惰性**构造。ItemLoader.ts 与 Item.ts 是循环
+    // 依赖（Item 引 ItemLoader 取风味表，ItemLoader 引 Item 的枚举），静态字段
+    // 初始化器在模块求值期就跑，那时 ItemCategory 还是 undefined（实测：
+    // "Cannot read properties of undefined (reading 'POTION')"）。static getter
+    // 的求值推迟到第一次读取，绕开这个时序。
+    private static _hasIntrinsicPolarity: ReadonlySet<ItemCategory> | null = null;
+    private static _canBeDetected: ReadonlySet<ItemCategory> | null = null;
+
+    /** CE HAS_INTRINSIC_POLARITY（Rogue.h:768）= POTION|SCROLL|RING|WAND|STAFF。 */
+    public static get HAS_INTRINSIC_POLARITY(): ReadonlySet<ItemCategory> {
+        if (!this._hasIntrinsicPolarity) {
+            this._hasIntrinsicPolarity = new Set([
+                ItemCategory.POTION, ItemCategory.SCROLL, ItemCategory.RING,
+                ItemCategory.WAND, ItemCategory.STAFF,
+            ]);
+        }
+        return this._hasIntrinsicPolarity;
     }
 
     /**
-     * CE tryIdentifyLastItemKind（Items.c:6635-6656）的无 detect magic 分支：
-     * 某极性类只剩一种未识别时，若对侧极性类已全识别，则把最后一种升格。
-     * 带极性揭示的半支见 isPolarityRevealed（B-1c 接线）。
+     * CE CAN_BE_DETECTED（Rogue.h:770）= WEAPON|ARMOR|POTION|SCROLL|RING|CHARM|
+     * WAND|STAFF|AMULET。食物 / 金币 / 钥匙 / 宝石不在内。
+     */
+    public static get CAN_BE_DETECTED(): ReadonlySet<ItemCategory> {
+        if (!this._canBeDetected) {
+            this._canBeDetected = new Set([
+                ItemCategory.WEAPON, ItemCategory.ARMOR, ItemCategory.POTION, ItemCategory.SCROLL,
+                ItemCategory.RING, ItemCategory.CHARM, ItemCategory.WAND, ItemCategory.STAFF,
+                ItemCategory.AMULET,
+            ]);
+        }
+        return this._canBeDetected;
+    }
+
+    /** 种类固有极性的表查（CE itemTable[kind].magicPolarity）；表外种类记 0。 */
+    public static kindPolarity(kindId: string | undefined): number {
+        if (!kindId) return 0;
+        return this.MAGIC_POLARITY[kindId] ?? 0;
+    }
+
+    /** detect magic 的极性揭示（CE itemTable[kind].magicPolarityRevealed）。 */
+    public static isPolarityRevealed(kindId: string | undefined): boolean {
+        return !!kindId && this.magicPolarityRevealed.has(kindId);
+    }
+
+    /**
+     * CE itemMagicPolarity（Items.c:8267-8299）：这一**件**的极性。
+     * 注意它与"种类固有极性"不是一回事——武器/护甲/戒指按实例的诅咒与附魔算，
+     * 魔杖充能耗尽时降为 0，护符恒 +1；只有药水/卷轴/法杖/护符查种类表。
+     * 返回 1 善意 / -1 恶意 / 0 无魔法。
+     */
+    public static itemMagicPolarity(item: Item): number {
+        const kindId = kindIdOf(item);
+        switch (item.category) {
+            case ItemCategory.WEAPON:
+            case ItemCategory.ARMOR:
+            case ItemCategory.RING:
+                // CE :8272-8277 / :8287-8293（两段同构）
+                if (item.isCursed || item.enchantment < 0) return -1;
+                if (item.enchantment > 0) return 1;
+                return 0;
+            case ItemCategory.WAND:
+                // CE :8278-8281：充能为 0 的魔杖无魔法可言；否则**贯穿**到表查。
+                if (item.charges === 0) return 0;
+                return this.kindPolarity(kindId);
+            case ItemCategory.CHARM:
+                // CE :8283-8285 同样是表查，但 charmTable_Brogue 的 magicPolarity
+                // 列**全部为 +1**（GlobalsBrogue.c 逐行复核 12 条，含被注释掉的
+                // fear 在内无一例外），与 magicCharDiscoverySuffix(CHARM) 恒 1 一致。
+                // web 的 MAGIC_POLARITY 只收五张风味表，护符不在其中 → 直接给常量，
+                // 避免查表落到 0（护符被 detect magic 照到时该显示善意 sigil）。
+                return 1;
+            case ItemCategory.SCROLL:
+            case ItemCategory.POTION:
+            case ItemCategory.STAFF:
+                return this.kindPolarity(kindId);
+            case ItemCategory.AMULET:
+                return 1; // CE :8295-8296
+            default:
+                return 0; // 食物/金币/钥匙：CE :8297-8298
+        }
+    }
+
+    /**
+     * CE magicCharDiscoverySuffix（Items.c:8213-8262）。**不是** magicPolarity 的
+     * 同义词：它是一张与种类表并行的硬编码开关表，用于发现屏与"恶意品使用前
+     * 确认"的前置条件（Items.c:7757 读卷轴 / 8050 喝药水）。
+     * 逐行复核 CE 与 web 的差异：
+     *  - POTION / SCROLL：CE 的 -1 名单与 potionTable/scrollTable 的 magicPolarity
+     *    列逐条一致（GlobalsBrogue.c:665-698 复核），故这里查同一张表；
+     *  - RING：CE 恒 0（:8250-8252），**与 ringTable 全 +1 的 magicPolarity 相反**；
+     *  - CHARM：CE 恒 1（:8253-8255）；
+     *  - WAND / STAFF：CE 查 boltCatalog[power].flags & BF_TARGET_ALLIES（:8243-8249）。
+     *    web 没有"法器种类 → bolt 旗标"这张表（MONSTER_BOLT_TABLE 是怪物施法用的，
+     *    按 CE bolt 名索引，不含 wand/staff 的 power 列），**结构性无载体**：
+     *    此处恒返回 0 并由留痕测试钉住。CE 的两个消费点都只吃 POTION/SCROLL，
+     *    本轮不受影响；补上 bolt 目录的那一轮必须回来重核这段。
+     */
+    public static magicCharDiscoverySuffix(item: Item): number {
+        switch (item.category) {
+            case ItemCategory.POTION:
+            case ItemCategory.SCROLL:
+                return this.kindPolarity(kindIdOf(item));
+            case ItemCategory.RING:
+                return 0;
+            case ItemCategory.CHARM:
+                return 1;
+            case ItemCategory.WAND:
+            case ItemCategory.STAFF:
+                return 0; // 结构性无载体（见上）——激活轮需重核 CE :8243-8249
+            default:
+                return 0;
+        }
+    }
+
+    /**
+     * CE detectMagicOnItem（Items.c:8027-8038）。三件事，顺序与 CE 一致：
+     *  1. 若类别有固有极性 → 该**种类**的 magicPolarityRevealed 置真；
+     *  2. 这一**件**打 ITEM_MAGIC_DETECTED；
+     *  3. 武器/护甲且 附魔恰为 0 且 无符文 → identify()（没有秘密可留，直接全亮）。
+     * 注意 3 的条件是 `enchant1 == 0`，不是 `<= 0`——负附魔的武器护甲不自亮。
+     */
+    public static detectMagicOnItem(item: Item): void {
+        const kindId = kindIdOf(item);
+        if (kindId && this.HAS_INTRINSIC_POLARITY.has(item.category)) {
+            this.magicPolarityRevealed.add(kindId);
+        }
+        item.magicDetected = true;
+        if ((item.category === ItemCategory.WEAPON || item.category === ItemCategory.ARMOR)
+            && item.enchantment === 0 && !item.runicType) {
+            this.identifyInstance(item);
+        }
+    }
+
+    /**
+     * CE magicPolarityRevealedItemKindCount（Items.c:6609-6624）：某类别某极性里
+     * "极性已知"的种类数——**identified 或 magicPolarityRevealed 都算**。
+     */
+    private static polarityKnownCount(kinds: string[], polarity: 1 | -1): number {
+        return kinds.filter(k => this.MAGIC_POLARITY[k] === polarity
+            && (this.identifiedItems.has(k) || this.magicPolarityRevealed.has(k))).length;
+    }
+
+    /**
+     * CE tryIdentifyLastItemKind（Items.c:6634-6653）：某极性类只剩一种未识别时，
+     * 若 (a) 该种类的极性已被揭示，或 (b) 对侧极性类的**极性全部已知**
+     * （CE :6647-6648 的 oppositeRevealedCount == oppositeCount），则升格。
+     *
+     * B-1c 更正 B-1a：(b) 此前写成 "对侧全部 identified"，漏掉了 CE 计数函数里
+     * 的 `|| magicPolarityRevealed`——那是极性揭示进入升格规则的**第二个**入口。
+     * 只接上 isPolarityRevealed 并不能激活它（见报告 §B-1a 预测验证）。
      */
     private static tryIdentifyLastItemKind(category: ItemCategory, polarity: 1 | -1): void {
         const kinds = this.kindsOfFlavoredCategory(category);
@@ -283,20 +438,28 @@ export class ItemLoader {
         const unidentified = inClass.filter(k => !this.identifiedItems.has(k));
         if (unidentified.length !== 1) return;
         const lastKind = unidentified[0]!;
-        const opposite = kinds.filter(k => this.MAGIC_POLARITY[k] === -polarity);
-        const oppositeAllIdentified = opposite.every(k => this.identifiedItems.has(k));
-        if (this.isPolarityRevealed(lastKind) || oppositeAllIdentified) {
+        const oppositeCount = kinds.filter(k => this.MAGIC_POLARITY[k] === -polarity).length;
+        const oppositeKnownCount = this.polarityKnownCount(kinds, -polarity as 1 | -1);
+        if (this.isPolarityRevealed(lastKind) || oppositeKnownCount === oppositeCount) {
             this.identifiedItems.add(lastKind);
         }
     }
 
     /** CE tryIdentifyLastItemKinds（Items.c:6658-6673）：只对带固有极性的类别跑。 */
     private static tryIdentifyLastItemKinds(category: ItemCategory): void {
-        if (category === ItemCategory.POTION || category === ItemCategory.SCROLL
-            || category === ItemCategory.RING || category === ItemCategory.WAND
-            || category === ItemCategory.STAFF) {
+        if (this.HAS_INTRINSIC_POLARITY.has(category)) {
             this.tryIdentifyLastItemKind(category, 1);
             this.tryIdentifyLastItemKind(category, -1);
+        }
+    }
+
+    /**
+     * CE tryIdentifyLastItemKinds(HAS_INTRINSIC_POLARITY)（Items.c:8172，
+     * detect magic 药水的收口）：对**全部**带固有极性的类别各跑一遍升格。
+     */
+    public static tryIdentifyLastItemKindsAllPolarityCategories(): void {
+        for (const category of this.HAS_INTRINSIC_POLARITY) {
+            this.tryIdentifyLastItemKinds(category);
         }
     }
 
@@ -545,6 +708,8 @@ export class ItemLoader {
         // B-1b：绰号随新局清零（CE resetItemTableEntry，Items.c:8778-8779）。
         // loadSnapshot 先走本方法再从快照回放，两全。
         this.callTitles.clear();
+        // B-1c：极性揭示随新局清零（CE resetItemTableEntry，Items.c:8777）。
+        this.magicPolarityRevealed.clear();
 
         // B-1a：CE 开局清零（shuffleFlavors → resetItemTableEntry，Items.c:8775-8800）
         // 只清五张风味表；护符表预置 identified=true（GlobalsBrogue.c:714-726，
