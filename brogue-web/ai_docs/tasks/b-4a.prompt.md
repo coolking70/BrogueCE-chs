@@ -169,6 +169,26 @@ B-3（三张占位卷轴 negation / sanctuary / shattering）刚刚落地，它*
 若你发现 B-3 的产物与本轮冲突（尤其 `Item.ts` 的字段、`Game.ts` 的卷轴分支），
 在反驳节说明，**以 main 上的既成事实为准**，不要回退 B-3。
 
+### 4.1 B-3 已落地，以下是它交给你的既成事实
+
+- 新增了 4 个地形（`FORCEFIELD` / `FORCEFIELD_MELT` / `CRYSTAL_WALL` / `SACRED_GLYPH`）
+  与 3 条 DF，`TerrainType` 已从 43 涨到 **47**，`DUNGEON_FEATURE_CATALOG` 从 28 涨到 **31**，
+  `DF_MISSING_TILES` 从 6 涨到 **7**。
+- `AutoGenerator.ts` 的两条 `CRYSTAL_WALL` 缺口（序 1 / 序 33）**地形侧已就位，但仍未接线**，
+  且 **`DF_CRYSTAL_WALL` 本身还没进 web 的 DF 目录**
+  （CE `Globals.c:607` `{CRYSTAL_WALL, DUNGEON, 200, 50, DFF_CLEAR_OTHER_TERRAIN}`）。
+  **本轮（B-4a）依然不要碰 `AutoGenerator.ts`** —— 那条线归 B-4b 评估。
+
+### 4.2 ⚠️ 写授权清单前必读：第三段 grep
+
+`project_conventions.md` 刚刚新增了**漏授权的第四种形态**（B-3 踩的）：
+**跨轮公共目录被按主题命名的测试文件钉死**，主题 grep 永远搜不到。
+
+本轮**大改物品表**，等于往 `weaponTable` / `armorTable` / `potionTable` /
+`scrollTable` 这些公共目录里增删条目。**动手前先按目录标识符 grep 整个测试树**，
+而不是按「物品 / 生成 / 附魔」这类主题词。B-3 实测：
+**加一个地形要看 7 个测试文件** —— 加一类物品同理。
+
 ## 5. 允许修改的文件
 
 **生产代码：**
