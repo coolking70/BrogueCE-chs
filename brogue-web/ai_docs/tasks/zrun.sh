@@ -14,6 +14,17 @@ if [ "$ACTUAL" != "$PINNED_VERSION" ]; then
 fi
 
 PROMPT_FILE="$1"; CWD="$2"; MODE="$3"; DENY="${4:-}"; shift 3; [ $# -gt 0 ] && shift
+
+# mode 白名单闸门：内核只认这四个值。传别的（例如按 Claude Code 习惯写
+# acceptEdits）内核会直接退出且不吐 JSON，于是下游 PARSE_FAIL 报的是
+# "Expecting value: line 1 column 1"——与**配额耗尽**的报错字符串一模一样，
+# 极易误判成撞了 5 小时上限。2026-09-17 投 B-3 时真踩过一次。
+case "$MODE" in
+  build|edit|plan|yolo) ;;
+  *) echo "ABORT: --mode '$MODE' 不是内核认的值。只能是 build / edit / plan / yolo。" >&2
+     echo "       （注意：这不是配额问题。传错 mode 的 PARSE_FAIL 与配额耗尽同字符串。）" >&2
+     exit 92 ;;
+esac
 OUT="${ZRUN_OUT:-/tmp/zrun-last.json}"
 
 # 前置注入项目常识（无状态会话不继承跨轮认知）
