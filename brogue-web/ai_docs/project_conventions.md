@@ -319,3 +319,56 @@ grep -rn "rechargeArcanaItem\|uncurseItem" src/ | grep -v "^src/engine/Core/Game
    确认它翻红。B-1c 正是靠这一步发现自己的哨兵调错了层。
 3. 任务书里写"本轮不许移动 RNG 流"时，**要指明是哪一期**，
    并给出对应的判据文件；只写 `generation_baseline` 是不够的。
+
+---
+
+## 漏授权的第四种形态：跨轮公共目录被主题测试钉死（B-3，2026-09-17）
+
+前三种形态（结构性穷举表 / 生产文件真实路径 / 被删的公开名）已记在上面。
+B-3 又漏了两条，机理是**同一种新形态**：
+
+- `c_4c_promotion.test.ts` 钉「全库负 `promoteChance` 载体必须是且仅是这几条」
+  —— B-3 新增 `FORCEFIELD:-200` / `FORCEFIELD_MELT:-10000`，撞红；
+- `g_2_gas_df_wiring.test.ts` 钉 `DF_MISSING_TILES` 恰 6 条
+  —— B-3 的 `DF_SHATTERING_SPELL` 缺 `RUBBLE` tile 入列，6→7，撞红。
+
+**为什么两段 grep 抓不到**：这两个断言**扫的是全库公共目录**，
+但它们所在的**文件名是按主题起的**（promotion / gas）。
+按本轮主题关键词（scroll / negation / sanctuary / shatter）grep，
+永远搜不到「气体接线测试」里那条 DF 名单守卫。
+
+**根因**：公共目录是**跨轮共享的**，而钉它的断言是**按主题分散存放的**。
+两者的命名空间不重合，所以主题 grep 必然漏。
+
+### 对策：写授权清单时加**第三段 grep —— 按目录标识符搜，不按主题搜**
+
+本轮凡是**往任何公共目录里加条目**（地形、DF、光照、层归属、绘制优先级……），
+就把该目录的**标识符**本身拿去 grep 整个测试树：
+
+```bash
+for sym in TERRAIN_FLAGS DUNGEON_FEATURE_CATALOG DF_MISSING_TILES \
+           LIGHT_CATALOG TERRAIN_HOME_LAYER DRAW_PRIORITY; do
+  echo "== $sym =="; grep -rl "\b$sym\b" src/test --include="*.test.ts"
+done
+```
+
+2026-09-17 实测的引用面（**远比直觉宽**）：
+
+| 公共目录 | 被几个测试文件钉 | 其中"主题完全不相干"的 |
+|---|---|---|
+| `TERRAIN_FLAGS` | **7** | `g_3_gas_effects`、`p1_42_secret_door_search`、`c_4c_promotion` |
+| `DUNGEON_FEATURE_CATALOG` | 4 | `f_2a_fire_mechanics`、`g_2_gas_df_wiring` |
+| `TERRAIN_HOME_LAYER` | 4 | `f_1_fire_as_terrain`、`g_2_gas_df_wiring` |
+| `DRAW_PRIORITY` | 4 | `f_1_fire_as_terrain`、`c_4b_dungeon_feature` |
+| `DF_MISSING_TILES` | 2 | `g_2_gas_df_wiring` |
+
+**加一个地形 = 至少要看 7 个测试文件**，这个数字应该成为写任务书时的默认预期。
+
+### 撞红后怎么修：守卫要**顺延，不要放宽**
+
+这两条守卫的原意都是「挡住有人塞进非 CE 的东西 / 顺手删掉登记」。
+正确修法是**把新条目按 CE 原值补进期望值、继续全等钉死**，
+而不是改成 `toBeGreaterThan` 或删掉断言。B-3 的两处都按此修：
+`negative` 仍全等钉四条、`DF_MISSING_TILES` 仍全等钉长度。
+
+**放宽守卫是把债转移给下一轮**，和硬填哨兵数值是同一种错误。
