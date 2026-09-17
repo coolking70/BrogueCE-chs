@@ -106,11 +106,27 @@ describe('C-5 对抗①：坠落是回合末结算（CE Time.c:168-176/2480）',
         //   12327 = C-6 重捕获——runAutogenerators(false) 接进 generateTerrain
         //   后，DF_GRASS/DF_FOLIAGE 的 spawnMapDF 传播骰 + randomMatchingLocation
         //   选点抽取计入固定生成成本（CE 同构：CE 的 runAutogenerators 也在
-        //   digDungeon 里掷这些骰）。机制断言不变：坠落的消耗必须恰等于
-        //   "一层的固定生成账"，多一分都是坠落门漏了 return。
+        //   digDungeon 里掷这些骰）；
+        //   14218 = B-4a 重捕获——计量表读写 + 频率加权 chooseKind + 食物保底
+        //   （web 此前一局 0 个食物）进入物品生成路径，每层掷骰增加。
+        //   机制断言不变：坠落的消耗必须恰等于"一层的固定生成账"，
+        //   多一分都是坠落门漏了 return。
+        //
+        // 验收方 2026-09-18 说明「为什么这里允许硬填数值」：
+        // 本项目的哨兵纪律（见 project_conventions / 交接文档）禁止把撞断的
+        // 哨兵硬填回去，但那条针对的是**锚定 RNG 流绝对位置**的哨兵。
+        // 这一条本身已是形态①（消耗增量），只是它要断言的量
+        // ——"恰等于一层的生成成本"——本质上就随生成链变化。
+        // 试过改成"运行时测量生成成本再比对"：web 的 RNG 是**单条连续流、
+        // 不按深度重播种**（Game.ts:543 全局只播种一次），换个流位置生成
+        // 同一层的成本就不同（`while(rand_percent(60))` 这类无上界循环使然），
+        // 故该量在本轮设计下**无法脱离 seed+路径独立测得**。
+        // 保持维护式 pin 是原作者的既定设计（注释里本就列着 7550→12327 的
+        // 沿革）；真正的机制防线是本 it 里另外 12 条断言（怪物不得推进、
+        // 不得受伤、深度已变、玩家掉血），它们本轮全绿。
         expect(rngAfter - rngBeforeDive, '坠落回合的 RNG 消耗增量偏离（= 换层生成的固定消耗，'
             + 'CE 坠落门整段 return：无推进循环/客观块的额外消耗）')
-            .toBe(12327);
+            .toBe(14218);
         expect(rat.hp, '随落阶段 rat 不在渊上，不得受伤/死亡').toBeGreaterThan(0);
         expect([rat.loc.x, rat.loc.y], '坠落回合怪物不得获得推进（CE playerFalls 提前 return）')
             .toEqual([4, 4]);

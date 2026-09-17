@@ -107,8 +107,21 @@ export class Item implements Entity {
     public cooldownTurns?: number;
     public cooldownRemaining?: number;
 
-    /** 堆叠数量，对齐 CE item->quantity；当前仅开局飞镖（×15）使用 */
+    /** 堆叠数量，对齐 CE item->quantity；开局飞镖（×15）与投掷物生成（5-18 / 3-6）使用 */
     public quantity: number = 1;
+    /**
+     * B-4a：≙ CE item->quiverNumber（Items.c:271，投掷物生成时
+     * rand_range(1, 60000)）；CE 的快速投掷目标轮换键。web 投掷交互
+     * 消费此字段前仅作生成侧留形。
+     */
+    public quiverNumber?: number;
+    /**
+     * B-4a：≙ CE item->vorpalEnemy（chooseVorpalEnemy 的类别名，Items.c:7667-7679）。
+     * 仅 W_SLAYING 武器与 A_IMMUNITY 护甲在生成时写入。战斗侧类别门
+     * （Combat.c:133/402/669）web 未接线（monsterClass 成员名册缺失）——
+     * 字段为激活留形，激活轮需接类别成员表并重核 CE。
+     */
+    public vorpalEnemy?: string;
 
     constructor(name: string, char: string, color: number, category: ItemCategory) {
         // id 只需唯一：走单调计数器（与 Creature 共用一个序列），

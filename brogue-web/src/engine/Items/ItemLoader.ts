@@ -27,6 +27,14 @@ export interface ConsumableConfig {
     effect: string;
     minDepth: number;
     maxDepth: number;
+    /** B-4a：食物的 CE power 列（ration 1800 / mango 1550，Globals.c:1577-1579），供食物保底公式。 */
+    nutrition?: number;
+    /**
+     * B-4a：CE itemTable.frequency 列（variants/GlobalsBrogue.c:665-699 逐行搬运）。
+     * 0 = 基表频率为零（enchanting / life / strength），只能经计量表临时写入频率
+     * 才可能被抽中（CE populateItems 开头 memcpy 备份、结尾还原的语义，Items.c:569-580）。
+     */
+    frequency?: number;
     /** D2：true = web 自创条目（CE 无对应），保留定义与效果实现，但退出生成池 */
     excludeFromGeneration?: boolean;
 }
@@ -36,6 +44,8 @@ export interface ArcanaConfig {
     name: string;
     minDepth: number;
     maxDepth: number;
+    /** B-4a：CE itemTable.frequency 列（wandTable 全 3 / staffTable 逐种 / ringTable 全 1 / charmTable 逐种）。 */
+    frequency?: number;
     weight: number;
     color: number;
     maxCharges?: number;
@@ -99,6 +109,302 @@ export class ItemLoader {
     public static readonly GENERATED_ARMOR_RUNICS = [
         'reflection', 'dampening', 'mutuality', 'respiration', 'absorption', 'reprisal', 'immunity'
     ] as const;
+
+    // =====================================================================
+    // B-4a：物品生成规则对齐 CE（「生成什么」）——计量表 / 加权抽取 / 附魔模型
+    // CE 权威出处（逐字复核）：
+    //   - meteredItemsGenerationTable_Brogue  variants/GlobalsBrogue.c:627-658（30 条）
+    //   - meteredItemGenerationTable 结构体   Rogue.h:1451-1462
+    //   - populateItems 计量机制四段          Items.c:569-580（备份/还原）/ 577-579（每层加频）
+    //                                         / 674-686（写回工作表）/ 700-716（阈值+硬保底）
+    //                                         / 740-752（生成后扣减）
+    //   - chooseKind                          Items.c:409-420（1 次 rand_range(1, total)）
+    //   - pickItemCategory                    Items.c:85-107；权重表 GlobalsBrogue.c:109
+    //   - 武器附魔/符文/投掷物                Items.c:209-276；护甲 Items.c:278-309
+    //   - randomDepthOffset                   Items.c:668-672
+    //   - 食物保底                            Items.c:685-691；POW_FOOD Items.c:551-555
+    //   - chooseVorpalEnemy / lotteryDraw     Items.c:7667-7679 / 7648-7662；类别表 Globals.c:1416-1432
+    // =====================================================================
+
+    /** CE gameConst->numberScrollKinds（meteredItems 索引的「先卷轴后药水」分界）。 */
+    public static readonly CE_NUMBER_SCROLL_KINDS = 14;
+
+    /**
+     * CE meteredItemsGenerationTable_Brogue 全 30 条，顺序与 CE 逐条对齐
+     * （前 14 条 = scrollTable 顺序，后 16 条 = potionTable 顺序）。
+     * 占位条目（incrementFrequency 全 0）不能省：它们是索引的一部分，
+     * numberSpawned 在对应种类生成时同样递增（Items.c:740-752 无 increment 门）。
+     * webId = web 目录 id；null = web 尚无该种类（目录缺口，登记不补）。
+     */
+    public static readonly CE_METERED_ITEMS_TABLE: readonly {
+        category: 'SCROLL' | 'POTION';
+        ceKind: string;
+        webId: string | null;
+        initialFrequency: number;
+        incrementFrequency: number;
+        decrementFrequency: number;
+        genMultiplier: number;
+        genIncrement: number;
+        levelScaling: number;
+        levelGuarantee: number;
+        itemNumberGuarantee: number;
+    }[] = [
+        // ---- 14 卷轴（scrollTable_Brogue 顺序）----
+        { category: 'SCROLL', ceKind: 'SCROLL_ENCHANTING',        webId: 'scroll_of_enchantment',    initialFrequency: 60, incrementFrequency: 30, decrementFrequency: 50, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'SCROLL', ceKind: 'SCROLL_IDENTIFY',          webId: 'scroll_of_identify',       initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'SCROLL', ceKind: 'SCROLL_TELEPORT',          webId: 'scroll_of_teleportation',  initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelGuarantee: 0, itemNumberGuarantee: 0, levelScaling: 0 },
+        { category: 'SCROLL', ceKind: 'SCROLL_REMOVE_CURSE',      webId: 'scroll_of_remove_curse',   initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'SCROLL', ceKind: 'SCROLL_RECHARGING',        webId: 'scroll_of_recharging',     initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'SCROLL', ceKind: 'SCROLL_PROTECT_ARMOR',     webId: 'scroll_of_protect_armor',  initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'SCROLL', ceKind: 'SCROLL_PROTECT_WEAPON',    webId: 'scroll_of_protect_weapon', initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'SCROLL', ceKind: 'SCROLL_SANCTUARY',         webId: 'scroll_of_sanctuary',      initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'SCROLL', ceKind: 'SCROLL_MAGIC_MAPPING',     webId: 'scroll_of_magic_mapping',  initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'SCROLL', ceKind: 'SCROLL_NEGATION',          webId: 'scroll_of_negation',       initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'SCROLL', ceKind: 'SCROLL_SHATTERING',        webId: 'scroll_of_shattering',     initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'SCROLL', ceKind: 'SCROLL_DISCORD',           webId: 'scroll_of_discord',        initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'SCROLL', ceKind: 'SCROLL_AGGRAVATE_MONSTER', webId: null,                       initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'SCROLL', ceKind: 'SCROLL_SUMMON_MONSTER',    webId: 'scroll_of_summon_monsters', initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        // ---- 16 药水（potionTable_Brogue 顺序）----
+        { category: 'POTION', ceKind: 'POTION_LIFE',          webId: 'potion_of_life',           initialFrequency: 0, incrementFrequency: 34, decrementFrequency: 150, genMultiplier: 4, genIncrement: 3, levelScaling: 1, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'POTION', ceKind: 'POTION_STRENGTH',      webId: 'potion_of_strength',       initialFrequency: 40, incrementFrequency: 17, decrementFrequency: 50, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'POTION', ceKind: 'POTION_TELEPATHY',     webId: 'potion_of_telepathy',      initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'POTION', ceKind: 'POTION_LEVITATION',    webId: 'potion_of_levitation',     initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'POTION', ceKind: 'POTION_DETECT_MAGIC',  webId: 'potion_of_detect_magic',   initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'POTION', ceKind: 'POTION_SPEED',         webId: 'potion_of_haste',          initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'POTION', ceKind: 'POTION_FIRE_IMMUNITY', webId: 'potion_of_fire_immunity',  initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'POTION', ceKind: 'POTION_INVISIBILITY',  webId: 'potion_of_invisibility',   initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'POTION', ceKind: 'POTION_POISON',        webId: 'potion_of_poison',         initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'POTION', ceKind: 'POTION_PARALYSIS',     webId: 'potion_of_paralysis',      initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'POTION', ceKind: 'POTION_HALLUCINATION', webId: 'potion_of_hallucination',  initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'POTION', ceKind: 'POTION_CONFUSION',     webId: 'potion_of_confusion',      initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'POTION', ceKind: 'POTION_INCINERATION',  webId: 'potion_of_incineration',   initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'POTION', ceKind: 'POTION_DARKNESS',      webId: null,                       initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'POTION', ceKind: 'POTION_DESCENT',       webId: 'potion_of_descent',        initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'POTION', ceKind: 'POTION_LICHEN',        webId: 'potion_of_creeping_death', initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+    ];
+
+    /**
+     * CE rogue.meteredItems 的开局初始化（RogueMain.c:229-252）：
+     * frequency = initialFrequency，numberSpawned = 0。
+     */
+    public static initMeteredItems(): { frequency: number; numberSpawned: number }[] {
+        return this.CE_METERED_ITEMS_TABLE.map(e => ({
+            frequency: e.initialFrequency,
+            numberSpawned: 0,
+        }));
+    }
+
+    /**
+     * CE Items.c:577-579：每层入口给计量表加 incrementFrequency
+     * （原样：只对全表逐条 +，不筛 increment 是否为 0——加 0 无副作用，保留 CE 形）。
+     */
+    public static incrementMeteredItems(metered: { frequency: number }[]): void {
+        for (let i = 0; i < this.CE_METERED_ITEMS_TABLE.length; i++) {
+            metered[i]!.frequency += this.CE_METERED_ITEMS_TABLE[i]!.incrementFrequency;
+        }
+    }
+
+    /**
+     * CE chooseKind（Items.c:409-420）逐字移植：
+     * 1 次 rand_range(1, totalFrequencies)（totalFrequencies 用 max(0,f) 累加），
+     * 走表时比较用**原始 frequency**、扣减用 max(0,·)——负频率条目永不被抽中。
+     * 返回命中下标。
+     */
+    public static chooseKind(frequencies: readonly number[]): number {
+        let totalFrequencies = 0;
+        for (const f of frequencies) totalFrequencies += Math.max(0, f);
+        let randomFrequency = rng.randRange(1, totalFrequencies);
+        let i = 0;
+        for (; randomFrequency > frequencies[i]!; i++) {
+            randomFrequency -= Math.max(0, frequencies[i]!);
+        }
+        return i;
+    }
+
+    /**
+     * CE pickItemCategory（Items.c:85-107）的 web 移植：allowed 类别权重求和，
+     * 1 次 rand_range(1, sum)，按 CE 的 13 槽顺序走表。
+     * 权重表 itemGenerationProbabilities_Brogue（GlobalsBrogue.c:109）：
+     * {GOLD:50, SCROLL:42, POTION:52, STAFF:3, WAND:3, WEAPON:10, ARMOR:8,
+     *  FOOD:2, RING:3, CHARM:2, AMULET:0, GEM:0, KEY:0}。
+     * 生成调用恒传 ALL_ITEMS & ~GOLD（金币另投，B-4b），故 GOLD 不参与求和；
+     * AMULET/GEM/KEY 权重 0，同样不可达——槽位保留仅为对齐 CE 走表顺序。
+     */
+    /**
+     * CE pickItemCategory 的权重表（itemGenerationProbabilities_Brogue，
+     * GlobalsBrogue.c:109）：{GOLD:50, SCROLL:42, POTION:52, STAFF:3, WAND:3,
+     * WEAPON:10, ARMOR:8, FOOD:2, RING:3, CHARM:2, AMULET:0, GEM:0, KEY:0}。
+     * ★ 惰性构造：ItemLoader↔Item 循环依赖（见下方 _hasIntrinsicPolarity 的
+     *   注释）——静态字段初始化器在模块求值期拿到 undefined 的 ItemCategory。
+     *   GEM 无 web 类别而省略（CE 走表时其权重 0，行为等价）。
+     */
+    private static _ceItemGenProbs: readonly { category: ItemCategory; weight: number }[] | null = null;
+    public static get CE_ITEM_GENERATION_PROBABILITIES(): readonly { category: ItemCategory; weight: number }[] {
+        if (!this._ceItemGenProbs) {
+            this._ceItemGenProbs = [
+                { category: ItemCategory.GOLD, weight: 50 },
+                { category: ItemCategory.SCROLL, weight: 42 },
+                { category: ItemCategory.POTION, weight: 52 },
+                { category: ItemCategory.STAFF, weight: 3 },
+                { category: ItemCategory.WAND, weight: 3 },
+                { category: ItemCategory.WEAPON, weight: 10 },
+                { category: ItemCategory.ARMOR, weight: 8 },
+                { category: ItemCategory.FOOD, weight: 2 },
+                { category: ItemCategory.RING, weight: 3 },
+                { category: ItemCategory.CHARM, weight: 2 },
+                { category: ItemCategory.AMULET, weight: 0 },
+                { category: ItemCategory.KEY, weight: 0 },
+            ];
+        }
+        return this._ceItemGenProbs;
+    }
+
+    /** CE pickItemCategory 的 web 版（excludeGold 恒真——web 生成期从不抽金币）。 */
+    public static pickItemCategory(): ItemCategory {
+        let sum = 0;
+        for (const slot of this.CE_ITEM_GENERATION_PROBABILITIES) {
+            if (slot.category !== ItemCategory.GOLD) sum += slot.weight;
+        }
+        let randIndex = rng.randRange(1, sum);
+        for (let i = 0; ; i++) {
+            const slot = this.CE_ITEM_GENERATION_PROBABILITIES[i]!;
+            if (slot.category === ItemCategory.GOLD) continue;
+            if (randIndex <= slot.weight) return slot.category;
+            randIndex -= slot.weight;
+        }
+    }
+
+    /**
+     * CE POW_FOOD（Items.c:551-555）：b^1.35 定点表（×65536），下标 = 深度-1。
+     * 原表 40 项全量搬运，供食物保底公式（Items.c:685-691）使用。
+     */
+    public static readonly CE_POW_FOOD: readonly number[] = [
+        65536, 167059, 288797, 425854, 575558, 736180, 906488, 1085553, 1272645,
+        1467168, 1668630, 1876612, 2090756, 2310749, 2536314, 2767208, 3003211,
+        3244126, 3489773, 3739989, 3994624, 4253540, 4516609, 4783712, 5054741,
+        5329591, 5608167, 5890379, 6176141, 6465373, 6758000, 7053950, 7353155,
+        7655551, 7961076, 8269672, 8581283, 8895856, 9213341, 9533687, 9856849,
+        10182782, 10511443, 10842789, 11176783, 11513384, 11852556, 12194264,
+        12538472, 12885148,
+    ];
+
+    /**
+     * CE 食物保底判据（Items.c:685-691）逐字移植：
+     *   (foodSpawned + power/3) * 4 * FP_FACTOR
+     *     <= (POW_FOOD[d-1] + randomDepthOffset * FP_FACTOR) * power * 45/100
+     * CE 整数除法只在 45/100 处发生一次；FP_FACTOR = 65536。
+     * power = foodTable[RATION].power = 1800（web 侧取 ration_of_food.nutrition）。
+     */
+    public static foodGuaranteeTriggered(foodSpawned: number, depth: number, randomDepthOffset: number): boolean {
+        const ration = this.food.find(f => f.id === 'ration_of_food');
+        if (!ration) return false;
+        const power = ration.nutrition ?? 1800; // CE foodTable[RATION].power
+        const powFood = this.CE_POW_FOOD[depth - 1] ?? 0;
+        const lhs = (foodSpawned + Math.floor(power / 3)) * 4 * 65536;
+        const rhs = Math.floor((powFood + randomDepthOffset * 65536) * power * 45 / 100);
+        return lhs <= rhs;
+    }
+
+    /**
+     * CE 符文枚举 → web runicType 串的映射表（下标 = CE 枚举值）。
+     * 武器（Rogue.h enum weaponEnchants）：0-7 好符文（NUMBER_GOOD=8），
+     * 8=W_MERCY（坏）、9=W_PLENTY（坏）。web 未实现的种类记 null——
+     * 掷骰照常消耗（对齐 CE 的 RNG 流），只是不落符文（登记：multiplicity/
+     * slowing/plenty 的效果实现轮补齐后回表）。
+     */
+    public static readonly WEAPON_RUNIC_BY_CE_INDEX: readonly (string | null)[] = [
+        'speed',       // W_SPEED
+        'quietus',     // W_QUIETUS
+        'paralyzing',  // W_PARALYSIS（web 拼写差异）
+        null,          // W_MULTIPLICITY —— web 未实现
+        null,          // W_SLOWING —— web 未实现
+        'confusion',   // W_CONFUSION
+        'force',       // W_FORCE
+        'slaying',     // W_SLAYING
+        'mercy',       // W_MERCY（CE 列入坏符文段 rand_range(8,9)）
+        null,          // W_PLENTY —— web 未实现
+    ];
+
+    /**
+     * 护甲（Rogue.h enum armorEnchants）：0-7 好（NUMBER_GOOD=A_BURDEN=8），
+     * 8=A_BURDEN、9=A_VULNERABILITY、10=A_IMMOLATION（坏段 rand_range(8,10)）。
+     * web 未实现 multiplicity/burden/vulnerability/immolation → null。
+     */
+    public static readonly ARMOR_RUNIC_BY_CE_INDEX: readonly (string | null)[] = [
+        null,          // A_MULTIPLICITY —— web 未实现
+        'mutuality',   // A_MUTUALITY
+        'absorption',  // A_ABSORPTION
+        'reprisal',    // A_REPRISAL
+        'immunity',    // A_IMMUNITY
+        'reflection',  // A_REFLECTION
+        'respiration', // A_RESPIRATION
+        'dampening',   // A_DAMPENING
+        null,          // A_BURDEN —— web 未实现
+        null,          // A_VULNERABILITY —— web 未实现
+        null,          // A_IMMOLATION —— web 未实现
+    ];
+
+    /** CE 武器坏符文段：rand_range(NUMBER_GOOD(=8), NUMBER_RUNIC-1(=9))。 */
+    public static readonly CE_NUMBER_GOOD_WEAPON_ENCHANT_KINDS = 8;
+    public static readonly CE_NUMBER_WEAPON_RUNIC_KINDS = 10;
+    /** CE 护甲坏符文段：rand_range(NUMBER_GOOD(=8), NUMBER_ENCHANT-1(=10))。 */
+    public static readonly CE_NUMBER_GOOD_ARMOR_ENCHANT_KINDS = 8;
+    public static readonly CE_NUMBER_ARMOR_ENCHANT_KINDS = 11;
+
+    /**
+     * CE monsterClassCatalog（Globals.c:1416-1432）的 (name, frequency, maxDepth)
+     * 全 15 类。成员表（MK_* 名册）web 尚无对应体系，战斗侧类别门
+     * （W_SLAYING 必杀 / A_IMMUNITY 免伤，Combat.c:133/402/669）未接线——
+     * 生成侧只复刻 chooseVorpalEnemy 的抽取行为与 RNG 消耗。
+     */
+    private static readonly CE_MONSTER_CLASSES: readonly {
+        name: string; frequency: number; maxDepth: number;
+    }[] = [
+        { name: 'abomination', frequency: 10, maxDepth: -1 },
+        { name: 'dar',         frequency: 10, maxDepth: 22 },
+        { name: 'animal',      frequency: 10, maxDepth: 10 },
+        { name: 'goblin',      frequency: 10, maxDepth: 10 },
+        { name: 'ogre',        frequency: 10, maxDepth: 16 },
+        { name: 'dragon',      frequency: 10, maxDepth: -1 },
+        { name: 'undead',      frequency: 10, maxDepth: -1 },
+        { name: 'jelly',       frequency: 10, maxDepth: 15 },
+        { name: 'turret',      frequency: 5,  maxDepth: 18 },
+        { name: 'infernal',    frequency: 10, maxDepth: -1 },
+        { name: 'mage',        frequency: 10, maxDepth: -1 },
+        { name: 'waterborne',  frequency: 10, maxDepth: 17 },
+        { name: 'airborne',    frequency: 10, maxDepth: 15 },
+        { name: 'fireborne',   frequency: 10, maxDepth: 12 },
+        { name: 'troll',       frequency: 10, maxDepth: 15 },
+    ];
+
+    /**
+     * CE chooseVorpalEnemy（Items.c:7667-7679）+ lotteryDraw（:7648-7662）：
+     * 超过 maxDepth 的类别频率清 0（maxDepth<=0 = 无限深），1 次
+     * rand_range(0, sum-1) 走表。depth = 生成时所在层（rogue.depthLevel）。
+     */
+    public static chooseVorpalEnemy(depth: number): string {
+        const freqs = this.CE_MONSTER_CLASSES.map(c =>
+            (c.maxDepth <= 0 || depth <= c.maxDepth) ? c.frequency : 0);
+        let maxFreq = 0;
+        for (const f of freqs) maxFreq += f;
+        let randIndex = rng.randRange(0, maxFreq - 1);
+        for (let i = 0; i < freqs.length; i++) {
+            if (freqs[i]! > randIndex) return this.CE_MONSTER_CLASSES[i]!.name;
+            randIndex -= freqs[i]!;
+        }
+        return this.CE_MONSTER_CLASSES[0]!.name; // 不可达（CE brogueAssert(false) 同位）
+    }
+
+    /** CE weaponTable.range.lowerBound 的 web 等价（damage 记法的 min）。
+     *  与 Combat.parseDamageString 同口径；内联以免 ItemLoader→Combat→
+     *  Monster→ItemLoader 循环导入（Monster.ts:16 引 ItemLoader）。 */
+    private static damageLowerBound(ds: string): number {
+        const m = ds.match(/^(\d+)d(\d+)(?:\+(\d+))?$/);
+        if (m) return parseInt(m[1]!, 10) + (m[3] ? parseInt(m[3], 10) : 0);
+        const r = ds.match(/^(\d+)-(\d+)$/);
+        if (r) return parseInt(r[1]!, 10);
+        return parseInt(ds, 10) || 1;
+    }
 
     // Mappings from true ID to fake name/color
     public static potionFlavorMap = new Map<string, { name: string, color: number }>();
@@ -856,7 +1162,15 @@ export class ItemLoader {
         return this.armors.map((a) => ({ ...a }));
     }
 
-    public static spawnWeapon(id: string, x: number, y: number): Item | null {
+    /**
+     * CE 投掷武器三种类（Items.c:265 的 DART/INCENDIARY_DART/JAVELIN 判定）。
+     * kind 判定对齐 CE 枚举语义；web 的 id 即种类名。
+     */
+    private static readonly THROWING_WEAPON_KINDS: ReadonlySet<string> = new Set([
+        'dart', 'incendiary_dart', 'javelin',
+    ]);
+
+    public static spawnWeapon(id: string, x: number, y: number, depth?: number): Item | null {
         const data = this.weapons.find(w => w.id === id);
         if (!data) return null;
 
@@ -865,56 +1179,109 @@ export class ItemLoader {
         weapon.weight = data.weight || 0;
         weapon.damage = data.damage;
         weapon.strengthRequired = data.strengthRequired;
-        // P4-7：CE 按武器种类赋予的物品旗标（Items.c:209-236）随数据下发
+        // P4-7：CE 按武器种类赋予的物品旗标（Items.c:209-236）随数据下发。
+        // 旗标先于附魔分支就位：它们参与好符文的阈值计算（CE :249-253）。
         if (data.flags) weapon.flags = [...data.flags];
 
-        // 20% chance for modifier
-        if (rng.randPercent(20)) {
-            weapon.enchantment = rng.randRange(-1, 2);
-            if (weapon.enchantment < 0) {
+        // ---- B-4a：CE 附魔/符文模型（Items.c:237-263）逐字移植 ----
+        if (rng.randPercent(40)) {
+            weapon.enchantment += rng.randRange(1, 3);
+            if (rng.randPercent(50)) {
+                // 诅咒（CE :244-252）
+                weapon.enchantment *= -1;
                 weapon.isCursed = true;
+                if (rng.randPercent(33)) {
+                    // 坏符文：rand_range(NUMBER_GOOD, NUMBER_RUNIC-1) = rand_range(8, 9)
+                    const ceIdx = rng.randRange(
+                        this.CE_NUMBER_GOOD_WEAPON_ENCHANT_KINDS,
+                        this.CE_NUMBER_WEAPON_RUNIC_KINDS - 1);
+                    weapon.runicType = this.WEAPON_RUNIC_BY_CE_INDEX[ceIdx] ?? undefined;
+                    // CE 同步置 ITEM_RUNIC；web 的"有符文"由 runicType 承载——
+                    // 映射为 null（种类未实现）时该件无符文，但掷骰已消耗（对齐流）。
+                }
+            } else {
+                // 好符文阈值：rand_range(3,10) * (STAGGER?2:1) / (QUICKLY?2:1) / (EXTEND?2:1)
+                //   > damage.lowerBound。C 整数除法从左到右，每步取整，顺序不可重排。
+                let v = rng.randRange(3, 10);
+                v = v * (weapon.flags?.includes('ITEM_ATTACKS_STAGGER') ? 2 : 1);
+                v = Math.floor(v / (weapon.flags?.includes('ITEM_ATTACKS_QUICKLY') ? 2 : 1));
+                v = Math.floor(v / (weapon.flags?.includes('ITEM_ATTACKS_EXTEND') ? 2 : 1));
+                if (v > this.damageLowerBound(weapon.damage ?? '1d4')) {
+                    const ceIdx = rng.randRange(0, this.CE_NUMBER_GOOD_WEAPON_ENCHANT_KINDS - 1);
+                    weapon.runicType = this.WEAPON_RUNIC_BY_CE_INDEX[ceIdx] ?? undefined;
+                    if (weapon.runicType === 'slaying') {
+                        // W_SLAYING → chooseVorpalEnemy()（CE :257-259）
+                        weapon.vorpalEnemy = this.chooseVorpalEnemy(depth ?? 1);
+                    }
+                } else {
+                    // 无上界长尾（CE :261-263）
+                    while (rng.randPercent(10)) {
+                        weapon.enchantment++;
+                    }
+                }
             }
         }
-        if (rng.randPercent(12)) {
-            const runics = ItemLoader.GENERATED_WEAPON_RUNICS;
-            weapon.runicType = runics[rng.randRange(0, runics.length - 1)];
+        // ---- 投掷物「先掷后剥」（CE Items.c:265-274）----
+        // 位于附魔分支**之后**：投掷武器照样掷完 40% 及全部嵌套骰，只是结果被
+        // 事后抹掉。绝对不可"优化"成提前 return——那会少消耗随机数、移动 RNG 流。
+        if (this.THROWING_WEAPON_KINDS.has(id)) {
+            weapon.quantity = id === 'incendiary_dart' ? rng.randRange(3, 6) : rng.randRange(5, 18);
+            weapon.quiverNumber = rng.randRange(1, 60000);
+            weapon.isCursed = false;            // flags &= ~(ITEM_CURSED | ITEM_RUNIC)
+            weapon.runicType = undefined;
+            weapon.enchantment = 0;             // 投掷武器不能附魔
         }
-
-        // B-1a：实例未知态 + 熟悉度计数器（CE Items.c:275 charges=weaponKillsToAutoID，
-        // 未鉴定品打 CAN_BE_IDENTIFIED——Items.c:1146-1148 同款）
         weapon.identified = false;
         weapon.canBeIdentified = true;
-        weapon.charges = this.WEAPON_KILLS_TO_AUTO_ID;
+        weapon.charges = this.WEAPON_KILLS_TO_AUTO_ID; // CE Items.c:275：杀 20 敌自动鉴定
 
         return weapon;
     }
 
-    public static spawnArmor(id: string, x: number, y: number): Item | null {
+    public static spawnArmor(id: string, x: number, y: number, depth?: number): Item | null {
         const data = this.armors.find(a => a.id === id);
         if (!data) return null;
 
         const armor = new Item(tn(data.name), ']', 0x888888, ItemCategory.ARMOR);
         armor.loc = { x, y };
         armor.weight = data.weight || 0;
+        // CE：theItem->armor = randClump(armorTable.range)。CE 六种护甲的 range
+        // 全部是 {N,N,0}（退化区间），randClumpedRange 上界<=下界时**不消耗随机数**
+        // 直接返回（Math.c:43-45）——故 web 直接取显示值与 CE 行为一致。
         armor.armor = data.armor;
         armor.strengthRequired = data.strengthRequired;
 
-        // 20% chance for modifier
-        if (rng.randPercent(20)) {
-            armor.enchantment = rng.randRange(-1, 2);
-            if (armor.enchantment < 0) {
-                armor.isCursed = true;
-            }
-        }
-        if (rng.randPercent(10)) {
-            const runics = ItemLoader.GENERATED_ARMOR_RUNICS;
-            armor.runicType = runics[rng.randRange(0, runics.length - 1)];
-        }
-
-        // B-1a：实例未知态 + 穿着熟悉度计数器（CE Items.c:285 charges=armorDelayToAutoID）
+        // ---- B-4a：CE 护甲附魔/符文模型（Items.c:286-308）——独立于武器，勿混用 ----
         armor.identified = false;
         armor.canBeIdentified = true;
-        armor.charges = this.ARMOR_DELAY_TO_AUTO_ID;
+        armor.charges = this.ARMOR_DELAY_TO_AUTO_ID; // CE Items.c:285
+        if (rng.randPercent(40)) {
+            armor.enchantment += rng.randRange(1, 3);
+            if (rng.randPercent(50)) {
+                armor.enchantment *= -1;
+                armor.isCursed = true;
+                if (rng.randPercent(33)) {
+                    // 坏符文：rand_range(NUMBER_GOOD(=8), NUMBER_ENCHANT-1(=10))
+                    const ceIdx = rng.randRange(
+                        this.CE_NUMBER_GOOD_ARMOR_ENCHANT_KINDS,
+                        this.CE_NUMBER_ARMOR_ENCHANT_KINDS - 1);
+                    armor.runicType = this.ARMOR_RUNIC_BY_CE_INDEX[ceIdx] ?? undefined;
+                }
+            } else if (rng.randRange(0, 95) > (armor.armor ?? 0) * 10) {
+                // 好符文：rand_range(0,95) > armor（CE 内部 ×10 标度，30..110）。
+                // 护甲越重越容易出好符文——与武器的 damage 阈值机制不同源。
+                const ceIdx = rng.randRange(0, this.CE_NUMBER_GOOD_ARMOR_ENCHANT_KINDS - 1);
+                armor.runicType = this.ARMOR_RUNIC_BY_CE_INDEX[ceIdx] ?? undefined;
+                if (armor.runicType === 'immunity') {
+                    // A_IMMUNITY → chooseVorpalEnemy()（CE :302-304）
+                    armor.vorpalEnemy = this.chooseVorpalEnemy(depth ?? 1);
+                }
+            } else {
+                while (rng.randPercent(10)) {
+                    armor.enchantment++;
+                }
+            }
+        }
 
         return armor;
     }

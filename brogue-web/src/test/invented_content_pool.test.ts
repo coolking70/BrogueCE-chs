@@ -4,14 +4,22 @@
  * 自创清单及 CE 证据（复核于 BrogueCE-master 源码）：
  *  - scroll_of_amnesia  ：CE 全源码无 "amnesia"（scrollTable_Brogue 14 种无此条）
  *  - potion_of_healing   ：potionTable_Brogue 16 种无 healing/extra healing
- *  - potion_of_poison    ：potionTable_Brogue 16 种无 poison（CE 的毒来自毒气陷阱
- *     GAS_TRAP_POISON / creeping death 药水/毒镖，均非"毒药水"）
  *  - wand_of_fire / wand_of_lightning：wandTable_Brogue 9 种无火/闪电魔杖（火/闪电是 staff）
  *  - staff_of_light      ：staffTable 12 种无 light 法杖
  *  - halberd             ：weaponTable 15 种无 halberd（CE 全源码 grep 零命中）
  *  - 武器符文 vampirism / venom：weaponRunicNames 10 种（speed/quietus/paralysis/
  *    multiplicity/slowing/confusion/force/slaying/mercy/plenty）无此二项
  *  - 护甲符文 vitality    ：armorRunicNames 11 种无 vitality
+ *
+ * ★ B-4a 反转（2026-09-17）：potion_of_poison 曾列为本清单的自创项，依据是
+ *   "potionTable_Brogue 16 种无 poison"。该前提**有误**：CE 的 POTION_POISON
+ *   显示名为 "caustic gas"（potionTable_Brogue 第 9 条，GlobalsBrogue.c:673，
+ *   frequency=15，恶意 -1），web 的 potion_of_poison（effect=poison_burst，
+ *   addGas(POISON,1000)）正是它的载体。B-4a 起回池：
+ *   json 已去 excludeFromGeneration、frequency=15；本测试原断言
+ *   "poison 不在 genPotions / 整层生成 0 出现 / json 标记 true" 全部反转为
+ *   "poison 在池中且可生成"（见 POISON_RESTORED 测试）。potion_of_healing
+ *   仍是自创、维持退池。
  *
  * 验收条款：
  *  1) 固定多 seed 大量生成，断言自创项出现 0 次（含整层生成 D1-D26、符文随机流、
@@ -32,9 +40,9 @@ import consumablesJson from '../data/consumables.json';
 import arcanaJson from '../data/arcana.json';
 import weaponsJson from '../data/weapons.json';
 
-/** web 自创、本轮退出生成池的全部条目 */
+/** web 自创、本轮退出生成池的全部条目（B-4a 起 potion_of_poison 已反转回池） */
 const INVENTED = {
-    potions: ['potion_of_healing', 'potion_of_poison'],
+    potions: ['potion_of_healing'],
     scrolls: ['scroll_of_amnesia'],
     wands: ['wand_of_fire', 'wand_of_lightning'],
     staffs: ['staff_of_light'],
@@ -46,7 +54,6 @@ const INVENTED = {
 /** 全部自创条目的直接显示名（harness 空资源下 tn() 原样返回英文名），供整层扫描兜底比对 */
 const INVENTED_DISPLAY_NAMES = new Set([
     'Potion of Healing',
-    'Potion of Poison',
     'Scroll of Amnesia',
     'Wand of Fire',
     'Wand of Lightning',
@@ -140,13 +147,28 @@ describe('D2 退池而非删除：自创条目仍可被直接构造', () => {
     it('spawnXxx(自创 id) 仍返回完整物品', () => {
         expect(ItemLoader.spawnScroll('scroll_of_amnesia', 0, 0)).not.toBeNull();
         expect(ItemLoader.spawnPotion('potion_of_healing', 0, 0)).not.toBeNull();
-        expect(ItemLoader.spawnPotion('potion_of_poison', 0, 0)).not.toBeNull();
         expect(ItemLoader.spawnWand('wand_of_fire', 0, 0)).not.toBeNull();
         expect(ItemLoader.spawnWand('wand_of_lightning', 0, 0)).not.toBeNull();
         expect(ItemLoader.spawnStaff('staff_of_light', 0, 0)).not.toBeNull();
         const halberd = ItemLoader.spawnWeapon('halberd', 0, 0);
         expect(halberd).not.toBeNull();
         expect(halberd!.damage).toBe('3d4'); // 数据原样保留
+    });
+});
+
+/**
+ * B-4a 反转断言：potion_of_poison = CE POTION_POISON（caustic gas，
+ * GlobalsBrogue.c:673，frequency=15）。原 D2 退池依据（"potionTable 无 poison"）
+ * 是把显示名当了 kind 名——反转后它必须在生成池中，且数据侧无退池标记。
+ */
+describe('B-4a 反转：potion_of_poison 回池（CE 原生 caustic gas）', () => {
+    it('poison 在 genPotions 中、json 无退池标记、frequency=15', () => {
+        expect(ItemLoader.genPotions.map(p => p.id)).toContain('potion_of_poison');
+        const row = potionsJson.find(p => p.id === 'potion_of_poison');
+        expect(row).toBeDefined();
+        expect(row?.excludeFromGeneration).toBeUndefined();
+        expect((row as unknown as { frequency?: number })?.frequency).toBe(15);
+        expect(ItemLoader.spawnPotion('potion_of_poison', 0, 0)).not.toBeNull();
     });
 });
 
@@ -271,7 +293,10 @@ describe('D2 随机流大量采样：自创符文 0 出现', () => {
         const totalWeaponRunics = [...weaponRunicCounts.values()].reduce((s, n) => s + n, 0);
         const totalArmorRunics = [...armorRunicCounts.values()].reduce((s, n) => s + n, 0);
         expect(totalWeaponRunics).toBeGreaterThan(300);
-        expect(totalArmorRunics).toBeGreaterThan(150);
+        // B-4a 重定标：CE 附魔模型下护甲符文本征率 ≈ 0.4×0.5×(好符文段均值)×7/8
+        // ≈ 4-6%（3600 次 → 理论 ~170-210；坏符文段全为未实现种类故不计入）。
+        // 旧模型 10% 均匀符文给出 ~377。反真空语义不变：断裂的池子应≈0。
+        expect(totalArmorRunics).toBeGreaterThan(100);
         for (const r of ItemLoader.GENERATED_WEAPON_RUNICS) {
             expect(weaponRunicCounts.get(r) ?? 0, `CE 武器符文 ${r} 出现过少`).toBeGreaterThanOrEqual(5);
         }

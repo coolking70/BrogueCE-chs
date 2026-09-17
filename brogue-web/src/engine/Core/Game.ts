@@ -44,12 +44,14 @@ import { WaypointSystem, WAYPOINT_SIGHT_RADIUS, type WaypointContext } from '../
 import i18next from 'i18next';
 
 /**
- * D2（G-1 / P1-45）：从随机生成池排除的 web 自创药水。
- * potion_of_creeping_death：CE 无 creeping death 药水（F-0 §5.2-5），且其
- * 旧实现写的是 GasType.FIRE 幽灵气（P1-45）。权威排池机制（consumables.json
- * 的 excludeFromGeneration 标记）在禁改数据文件里，本轮按
- * ItemLoader.GENERATED_*_RUNICS 的"代码侧排池"先例在抽取点过滤；
- * 数据侧标记与 ItemLoader.genPotions 的收口留给数据文件轮次。
+ * D2（G-1 / P1-45）：从随机生成池排除的药水。
+ * potion_of_creeping_death：B-4a 复核更正——它是 **CE 原生**药水（=POTION_LICHEN，
+ * "creeping death"，potionTable_Brogue 末条 GlobalsBrogue.c:681，frequency=7），
+ * F-0 §5.2-5 "CE 无 creeping death 药水"的判语与 CE 源码不符。维持退池的真实
+ * 理由是：web 的效果分支是纯 stub（只打日志，无 lichen），且 DF_LICHEN_PLANTED
+ * 缺载体（THROWN_FUNCTIONAL_POTION_EFFECTS 注释同此口径）——生成"什么都不做
+ * 的药水"比不生成更糟。载体补齐轮回池（登记于 B-4a 报告）。
+ * 数据侧的收口（consumables.json excludeFromGeneration 标记）留给数据文件轮次。
  */
 const D2_EXCLUDED_POTIONS: ReadonlySet<string> = new Set(['potion_of_creeping_death']);
 
@@ -439,6 +441,16 @@ export class Game {
     public mode: GameMode = 'normal';
     public currentSeed: number = 0;
 
+    /**
+     * B-4a：≙ CE rogue.meteredItems（RogueMain.c:229-252 开局初始化；
+     * Items.c:577-579 每层入口加频、674-686 写回、740-752 生成后扣减）。
+     * 语义与索引全按 ItemLoader.CE_METERED_ITEMS_TABLE（前 14 卷轴后 16 药水）。
+     * 未入 GameSnapshot——存读档会重置计量（与 B-1a 字段族同批缺口，登记）。
+     */
+    private meteredItems: { frequency: number; numberSpawned: number }[] = ItemLoader.initMeteredItems();
+    /** B-4a：≙ CE rogue.foodSpawned（Items.c:697/732，食物保底公式的累计口径）。 */
+    private foodSpawned: number = 0;
+
     // Time.c:2666 每回合递减；归零触发周期刷怪（Monsters.c:1128 spawnPeriodicHorde）
     public monsterSpawnFuse: number = 0;
 
@@ -538,6 +550,10 @@ export class Game {
         this.levels.clear();
         this.monsters = [];
         this.items = [];
+        // B-4a：计量表与食物累计随新局清零（CE initializeRogue 的
+        // RogueMain.c:229-252 / rogue.foodSpawned 初值 0）。
+        this.meteredItems = ItemLoader.initMeteredItems();
+        this.foodSpawned = 0;
         this.visibleMonsters.clear();
         this.visibleItems.clear();
         this.autoPath = [];
@@ -627,6 +643,165 @@ export class Game {
         this.update();
     }
 
+    /**
+     * B-4a：populateItems 逐件生成决策（CE Items.c:667-756 的 web 移植）。
+     * 顺序对齐 CE：食物保底 → 计量阈值/硬保底 → pickItemCategory 加权抽类别
+     * → chooseKind 加权抽种类 → 生成后计量扣减。落位沿用 web 既有 floorTiles.pop()
+     * （CE 的物品落位热力图 / 食物与力量药水的非热力落位归 B-4b，本轮不动）。
+     *
+     * 与 CE 的两处已登记偏差：
+     *  - numItems 仍走 web 的 randRange(3,6)（CE 的 3+while(rand_percent(60)) 归 B-4b）；
+     *  - 深度门（minDepth/maxDepth）不再参与此类抽取：CE 的 chooseKind 无深度门，
+     *    web 的 minDepth/maxDepth 列为 web 自创口径（登记于报告）。
+     */
+    private spawnPopulateItem(depth: number, randomDepthOffset: number, pos: Pos): Item | null {
+        const table = ItemLoader.CE_METERED_ITEMS_TABLE;
+
+        // ---- CE Items.c:674-686：把计量表频率写回工作表 ----
+        // 只写 incrementFrequency != 0 的条目。CE 的落点是 scrollTable[j]（j<14）
+        // 或 potionTable[j - numberScrollKinds]（j>=14）——web 由条目自带的 webId
+        // 承载落点，配对恒为 table[j] ↔ meteredItems[j]（表序即 CE 序）。
+        const meteredFreq = new Map<string, number>();
+        for (let j = 0; j < table.length; j++) {
+            const e = table[j]!;
+            if (e.incrementFrequency === 0) continue;
+            if (e.webId) meteredFreq.set(e.webId, this.meteredItems[j]!.frequency);
+        }
+
+        // ---- CE Items.c:685-691：食物保底（营养下限）----
+        if (ItemLoader.foodGuaranteeTriggered(this.foodSpawned, depth, randomDepthOffset)) {
+            const id = this.chooseKindFromPool(ItemLoader.genFood.map(f => f.id), ItemLoader.genFood.map(f => f.frequency), meteredFreq);
+            const item = id ? ItemLoader.spawnFood(id, pos.x, pos.y) : null;
+            if (item) {
+                this.foodSpawned += ItemLoader.food.find(f => f.id === id)?.nutrition ?? 0;
+                // CE 对每件生成物都跑扣减循环（FOOD 无匹配条目 → 无事发生）
+                this.decrementMeteredForSpawn(ItemCategory.FOOD, id!);
+                return item;
+            }
+        }
+
+        // ---- CE Items.c:700-716：计量阈值强制生成 + 按层硬保底 ----
+        // CE 语义：全表按序找**第一条**命中阈值或硬保底的条目，命中即整件
+        // 生成该种类（跳过 pickItemCategory）。
+        for (let j = 0; j < table.length; j++) {
+            const e = table[j]!;
+            const m = this.meteredItems[j]!;
+            const thresholdHit = e.levelScaling !== 0
+                && m.numberSpawned * e.genMultiplier + e.genIncrement < depth * e.levelScaling + randomDepthOffset;
+            const guaranteeHit = depth === e.levelGuarantee
+                && m.numberSpawned < e.itemNumberGuarantee;
+            if (!thresholdHit && !guaranteeHit) continue;
+            if (!e.webId) break; // 目录缺该种类（登记），退回普通抽取
+            const item = this.spawnConsumableById(e.webId, e.category, pos);
+            if (item) {
+                this.decrementMeteredForSpawn(
+                    e.category === 'SCROLL' ? ItemCategory.SCROLL : ItemCategory.POTION,
+                    e.webId);
+                return item;
+            }
+        }
+
+        // ---- CE Items.c:88-107 pickItemCategory：类别加权抽取 ----
+        const category = ItemLoader.pickItemCategory();
+        let id: string | null = null;
+        switch (category) {
+            case ItemCategory.SCROLL:
+                id = this.chooseKindFromPool(ItemLoader.genScrolls.map(s => s.id), ItemLoader.genScrolls.map(s => s.frequency), meteredFreq);
+                break;
+            case ItemCategory.POTION: {
+                // D2（G-1 / P1-45）：creeping_death 维持退池——CE 原生（=POTION_LICHEN，
+                // GlobalsBrogue.c:681，先前"web 自创"的判语有误，见 B-4a 报告），
+                // 但 web 的效果是纯 stub 且 DF_LICHEN_PLANTED 缺载体，生成"什么都不做
+                // 的药水"比不生成更糟。载体补齐轮回池。
+                const pool = ItemLoader.genPotions.filter(p => !D2_EXCLUDED_POTIONS.has(p.id));
+                id = this.chooseKindFromPool(pool.map(p => p.id), pool.map(p => p.frequency), meteredFreq);
+                break;
+            }
+            case ItemCategory.WEAPON:
+                id = this.chooseKindFromPool(ItemLoader.genWeapons.map(w => w.id), ItemLoader.genWeapons.map(w => w.frequency), meteredFreq);
+                break;
+            case ItemCategory.ARMOR:
+                id = this.chooseKindFromPool(ItemLoader.genArmors.map(a => a.id), ItemLoader.genArmors.map(a => a.frequency), meteredFreq);
+                break;
+            case ItemCategory.FOOD:
+                id = this.chooseKindFromPool(ItemLoader.genFood.map(f => f.id), ItemLoader.genFood.map(f => f.frequency), meteredFreq);
+                break;
+            case ItemCategory.WAND:
+                id = this.chooseKindFromPool(ItemLoader.genWands.map(w => w.id), ItemLoader.genWands.map(w => w.frequency), meteredFreq);
+                break;
+            case ItemCategory.STAFF:
+                id = this.chooseKindFromPool(ItemLoader.genStaffs.map(s => s.id), ItemLoader.genStaffs.map(s => s.frequency), meteredFreq);
+                break;
+            case ItemCategory.RING:
+                id = this.chooseKindFromPool(ItemLoader.genRings.map(r => r.id), ItemLoader.genRings.map(r => r.frequency), meteredFreq);
+                break;
+            case ItemCategory.CHARM:
+                id = this.chooseKindFromPool(ItemLoader.genCharms.map(c => c.id), ItemLoader.genCharms.map(c => c.frequency), meteredFreq);
+                break;
+            default:
+                return null; // KEY/AMULET 权重 0，不可达；GOLD 不参与生成期抽取
+        }
+        if (!id) return null;
+        const item = this.spawnKindById(category, id, pos, depth);
+        if (item) {
+            // CE Items.c:740-752：普通抽取路径同样要在生成后扣减计量表——
+            // 漏掉这一步会让 enchanting/life/strength 的频率只涨不跌（首轮
+            // 实测：附魔卷轴 72/局、life 药水 22 只/局，全部因此而来）。
+            this.decrementMeteredForSpawn(category, id);
+        }
+        return item;
+    }
+
+    /** CE chooseKind 的池化封装：ids/freqs 等长，计量覆盖值优先于基表频率。 */
+    private chooseKindFromPool(ids: string[], freqs: Array<number | undefined>, meteredFreq: Map<string, number>): string | null {
+        if (ids.length === 0) return null;
+        const effective = ids.map((id, i) => meteredFreq.get(id) ?? freqs[i] ?? 10);
+        return ids[ItemLoader.chooseKind(effective)] ?? null;
+    }
+
+    /** 卷轴/药水共用 spawn（计量强制分支用）。 */
+    private spawnConsumableById(id: string, category: 'SCROLL' | 'POTION', pos: Pos): Item | null {
+        return category === 'SCROLL'
+            ? ItemLoader.spawnScroll(id, pos.x, pos.y)
+            : ItemLoader.spawnPotion(id, pos.x, pos.y);
+    }
+
+    private spawnKindById(category: ItemCategory, id: string, pos: Pos, depth: number): Item | null {
+        switch (category) {
+            case ItemCategory.SCROLL: return ItemLoader.spawnScroll(id, pos.x, pos.y);
+            case ItemCategory.POTION: return ItemLoader.spawnPotion(id, pos.x, pos.y);
+            case ItemCategory.WEAPON: return ItemLoader.spawnWeapon(id, pos.x, pos.y, depth);
+            case ItemCategory.ARMOR: return ItemLoader.spawnArmor(id, pos.x, pos.y, depth);
+            case ItemCategory.FOOD: return ItemLoader.spawnFood(id, pos.x, pos.y);
+            case ItemCategory.WAND: return ItemLoader.spawnWand(id, pos.x, pos.y);
+            case ItemCategory.STAFF: return ItemLoader.spawnStaff(id, pos.x, pos.y);
+            case ItemCategory.RING: return ItemLoader.spawnRing(id, pos.x, pos.y);
+            case ItemCategory.CHARM: return ItemLoader.spawnCharm(id, pos.x, pos.y);
+            default: return null;
+        }
+    }
+
+    /**
+     * CE Items.c:740-752：生成后扣减。对**每一件**生成物跑全表：
+     * category/kind 双匹配的条目 frequency -= decrementFrequency、numberSpawned++。
+     * 占位条目（decrement=0）同样 numberSpawned++（CE 无 increment 门）。
+     * 配对锚点：table[j] ↔ meteredItems[j] 一一对应；任何"按目录序 +14 之类的
+     * 换算"都会错位（反向验证②的打击面）。
+     */
+    private decrementMeteredForSpawn(category: ItemCategory, kindId: string | undefined): void {
+        const ceCat = category === ItemCategory.SCROLL ? 'SCROLL'
+            : category === ItemCategory.POTION ? 'POTION' : null;
+        if (!ceCat || !kindId) return;
+        const table = ItemLoader.CE_METERED_ITEMS_TABLE;
+        for (let j = 0; j < table.length; j++) {
+            const e = table[j]!;
+            if (e.category === ceCat && e.webId === kindId) {
+                this.meteredItems[j]!.frequency -= e.decrementFrequency;
+                this.meteredItems[j]!.numberSpawned++;
+            }
+        }
+    }
+
     private applyRandomMutation(mon: Monster, depth: number) {
         if (depth <= 10) return;
         if (mon.hasBehavior('MONST_NEVER_MUTATED') || mon.hasBehavior('MONST_INANIMATE') || mon.hasAbility('MA_NEVER_MUTATED') || mon.isCaged) return;
@@ -663,11 +838,9 @@ export class Game {
                 return null;
             }
             case 'POTION': {
-                // D2（G-1 / P1-45）：potion_of_creeping_death 是 web 自创
-                // （CE 无 creeping death 药水，F-0 §5.2-5），退出生成池。
-                // 权威机制（consumables.json 的 excludeFromGeneration）在
-                // 禁改数据文件里，本轮按 ItemLoader.GENERATED_*_RUNICS 的
-                // "代码侧排池"先例在此过滤（g_1 报告 §P1-45 登记）。
+                // D2（B-4a 更正口径）：creeping_death 是 CE 原生 POTION_LICHEN
+                // （GlobalsBrogue.c:681），但 web 效果为 stub 且 DF_LICHEN_PLANTED
+                // 缺载体——真实理由与回池条件见 D2_EXCLUDED_POTIONS 处注释。
                 const potions = ItemLoader.genPotions.filter(
                     (p) => !D2_EXCLUDED_POTIONS.has(p.id)
                 );
@@ -676,12 +849,12 @@ export class Game {
             }
             case 'WEAPON': {
                 const weapons = ItemLoader.genWeapons;
-                if (weapons.length > 0) return ItemLoader.spawnWeapon(weapons[rng.randRange(0, weapons.length - 1)]!.id, x, y);
+                if (weapons.length > 0) return ItemLoader.spawnWeapon(weapons[rng.randRange(0, weapons.length - 1)]!.id, x, y, depth);
                 return null;
             }
             case 'ARMOR': {
                 const armors = ItemLoader.genArmors;
-                if (armors.length > 0) return ItemLoader.spawnArmor(armors[rng.randRange(0, armors.length - 1)]!.id, x, y);
+                if (armors.length > 0) return ItemLoader.spawnArmor(armors[rng.randRange(0, armors.length - 1)]!.id, x, y, depth);
                 return null;
             }
             case 'KEY': return ItemLoader.spawnKey('iron_key', x, y);
@@ -1176,76 +1349,20 @@ export class Game {
         }
 
         const numItems = rng.randRange(3, 6);
+
+        // B-4a：CE Items.c:668-672——每层一次的 randomDepthOffset（depth>2 时
+        // 两次独立 rand_range(-1,1)，三角分布；不是一次 rand_range(-2,2)）。
+        let randomDepthOffset = 0;
+        if (this.depth > 2) {
+            randomDepthOffset = rng.randRange(-1, 1) + rng.randRange(-1, 1);
+        }
+        // CE Items.c:577-579：每层入口给计量表加 incrementFrequency。
+        ItemLoader.incrementMeteredItems(this.meteredItems);
+
         for (let i = 0; i < numItems && floorTiles.length > 0; i++) {
             const pos = floorTiles.pop()!;
-
-            // Temporary expanded loot table
-            const randType = rng.randRange(0, 9);
-            let item;
-            if (randType === 0) {
-                const id = rng.randPercent(50) ? 'dagger' : 'sword';
-                item = ItemLoader.spawnWeapon(id, pos.x, pos.y);
-            } else if (randType === 1) {
-                const id = rng.randPercent(50) ? 'leather_armor' : 'chain_mail';
-                item = ItemLoader.spawnArmor(id, pos.x, pos.y);
-            } else if (randType === 2) {
-                // D2（G-1 / P1-45）：creeping_death 退出生成池（同上）。
-                const validPotions = ItemLoader.genPotions
-                    .filter(p => depth >= p.minDepth && depth <= p.maxDepth)
-                    .filter(p => !D2_EXCLUDED_POTIONS.has(p.id));
-                if (validPotions.length > 0) {
-                    const id = validPotions[rng.randRange(0, validPotions.length - 1)]!.id;
-                    item = ItemLoader.spawnPotion(id, pos.x, pos.y);
-                }
-            } else if (randType === 3) {
-                const validScrolls = ItemLoader.genScrolls.filter(s => depth >= s.minDepth && depth <= s.maxDepth);
-                if (validScrolls.length > 0) {
-                    const id = validScrolls[rng.randRange(0, validScrolls.length - 1)]!.id;
-                    item = ItemLoader.spawnScroll(id, pos.x, pos.y);
-                }
-            } else if (randType === 4) {
-                const validWands = ItemLoader.genWands.filter(w => depth >= w.minDepth && depth <= w.maxDepth);
-                if (validWands.length > 0) {
-                    const id = validWands[rng.randRange(0, validWands.length - 1)]!.id;
-                    item = ItemLoader.spawnWand(id, pos.x, pos.y);
-                }
-            } else if (randType === 5) {
-                const validStaffs = ItemLoader.genStaffs.filter(s => depth >= s.minDepth && depth <= s.maxDepth);
-                if (validStaffs.length > 0) {
-                    const id = validStaffs[rng.randRange(0, validStaffs.length - 1)]!.id;
-                    item = ItemLoader.spawnStaff(id, pos.x, pos.y);
-                }
-            } else if (randType === 6) {
-                const validRings = ItemLoader.genRings.filter(r => depth >= r.minDepth && depth <= r.maxDepth);
-                if (validRings.length > 0) {
-                    const id = validRings[rng.randRange(0, validRings.length - 1)]!.id;
-                    item = ItemLoader.spawnRing(id, pos.x, pos.y);
-                }
-            } else if (randType === 7) {
-                const validCharms = ItemLoader.genCharms.filter(c => depth >= c.minDepth && depth <= c.maxDepth);
-                if (validCharms.length > 0) {
-                    const id = validCharms[rng.randRange(0, validCharms.length - 1)]!.id;
-                    item = ItemLoader.spawnCharm(id, pos.x, pos.y);
-                }
-            } else if (randType === 8) {
-                if (rng.randPercent(10)) {
-                    const validAmulets = ItemLoader.genAmulets.filter(a => depth >= a.minDepth && depth <= a.maxDepth);
-                    if (validAmulets.length > 0) {
-                        const id = validAmulets[rng.randRange(0, validAmulets.length - 1)]!.id;
-                        item = ItemLoader.spawnAmulet(id, pos.x, pos.y);
-                    }
-                } else {
-                    const validKeys = ItemLoader.genKeys.filter(k => depth >= k.minDepth && depth <= k.maxDepth);
-                    if (validKeys.length > 0) {
-                        const id = validKeys[rng.randRange(0, validKeys.length - 1)]!.id;
-                        item = ItemLoader.spawnKey(id, pos.x, pos.y);
-                    }
-                }
-            }
-
-            if (item) {
-                this.items.push(item);
-            }
+            const item = this.spawnPopulateItem(this.depth, randomDepthOffset, pos);
+            if (item) this.items.push(item);
         }
 
         // P1-31：进层落位（CE RogueMain.c:817-869 "Position the player"，
@@ -2038,7 +2155,7 @@ export class Game {
         if (category === 'weapons') {
             assets = ItemLoader.getWeaponConfigs().map((cfg) => ({
                 roomName: cfg.name,
-                spawn: (x, y) => ({ item: ItemLoader.spawnWeapon(cfg.id, x, y) ?? undefined })
+                spawn: (x, y) => ({ item: ItemLoader.spawnWeapon(cfg.id, x, y, this.depth) ?? undefined })
             }));
         } else if (category === 'wands') {
             assets = ItemLoader.wands.map((cfg) => ({
@@ -2059,7 +2176,7 @@ export class Game {
             assets = [
                 ...ItemLoader.getArmorConfigs().map((cfg) => ({
                     roomName: cfg.name,
-                    spawn: (x: number, y: number) => ({ item: ItemLoader.spawnArmor(cfg.id, x, y) ?? undefined })
+                    spawn: (x: number, y: number) => ({ item: ItemLoader.spawnArmor(cfg.id, x, y, this.depth) ?? undefined })
                 })),
                 ...ItemLoader.staffs.map((cfg) => ({
                     roomName: cfg.name,
@@ -2142,7 +2259,7 @@ export class Game {
                 ...weaponRunics.map((r) => ({
                     roomName: `W: ${r}`,
                     spawn: (x: number, y: number) => {
-                        const item = ItemLoader.spawnWeapon('dagger', x, y);
+                        const item = ItemLoader.spawnWeapon('dagger', x, y, this.depth);
                         if (item) {
                             item.runicType = r;
                             item.enchantment = 10;
@@ -2154,7 +2271,7 @@ export class Game {
                 ...armorRunics.map((r) => ({
                     roomName: `A: ${r}`,
                     spawn: (x: number, y: number) => {
-                        const item = ItemLoader.spawnArmor('leather_armor', x, y);
+                        const item = ItemLoader.spawnArmor('leather_armor', x, y, this.depth);
                         if (item) {
                             item.runicType = r;
                             item.enchantment = 10;
@@ -6059,9 +6176,9 @@ export class Game {
                 const isWeapon = rng.randPercent(50);
                 let droppedObj;
                 if (isWeapon) {
-                    droppedObj = ItemLoader.spawnWeapon(rng.randPercent(50) ? 'dagger' : 'sword', target.loc.x, target.loc.y);
+                    droppedObj = ItemLoader.spawnWeapon(rng.randPercent(50) ? 'dagger' : 'sword', target.loc.x, target.loc.y, this.depth);
                 } else {
-                    droppedObj = ItemLoader.spawnArmor(rng.randPercent(50) ? 'leather_armor' : 'chain_mail', target.loc.x, target.loc.y);
+                    droppedObj = ItemLoader.spawnArmor(rng.randPercent(50) ? 'leather_armor' : 'chain_mail', target.loc.x, target.loc.y, this.depth);
                 }
                 if (droppedObj) this.items.push(droppedObj);
             }

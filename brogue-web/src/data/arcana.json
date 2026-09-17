@@ -33,7 +33,8 @@
       "maxCharges": 4,
       "rechargeTurns": 150,
       "color": 13408767,
-      "description": "将指定目标传送至当前层的随机位置，可用于驱散包围的敌人或为盟友解围。"
+      "description": "将指定目标传送至当前层的随机位置，可用于驱散包围的敌人或为盟友解围。",
+      "frequency": 3
     },
     {
       "id": "wand_of_slowness",
@@ -44,7 +45,8 @@
       "maxCharges": 3,
       "rechargeTurns": 180,
       "color": 6737151,
-      "description": "使目标怪物的移动和攻击速度减半，持续较长时间，给你创造逃脱或反击的机会。"
+      "description": "使目标怪物的移动和攻击速度减半，持续较长时间，给你创造逃脱或反击的机会。",
+      "frequency": 3
     },
     {
       "id": "wand_of_invisibility",
@@ -55,7 +57,8 @@
       "maxCharges": 3,
       "rechargeTurns": 200,
       "color": 8978431,
-      "description": "使目标（可以是自身或怪物）短暂隐形，隐形状态下难以被敌人察觉。"
+      "description": "使目标（可以是自身或怪物）短暂隐形，隐形状态下难以被敌人察觉。",
+      "frequency": 3
     },
     {
       "id": "wand_of_empowerment",
@@ -66,7 +69,8 @@
       "maxCharges": 1,
       "rechargeTurns": 500,
       "color": 16777113,
-      "description": "赋予盟友永久性能力提升，每次游戏中每只怪物只能被强化一次，是培养强力盟友的关键。"
+      "description": "赋予盟友永久性能力提升，每次游戏中每只怪物只能被强化一次，是培养强力盟友的关键。",
+      "frequency": 3
     },
     {
       "id": "wand_of_beckoning",
@@ -77,7 +81,8 @@
       "maxCharges": 3,
       "rechargeTurns": 160,
       "color": 10066329,
-      "description": "强制将目标怪物拉至你正前方相邻位置，可用于打断怪物的逃跑或将远距离目标拉近。"
+      "description": "强制将目标怪物拉至你正前方相邻位置，可用于打断怪物的逃跑或将远距离目标拉近。",
+      "frequency": 3
     }
   ],
   "staffs": [
@@ -90,7 +95,8 @@
       "maxCharges": 2,
       "rechargeTurns": 300,
       "color": 16744192,
-      "description": "发射强力火焰弹，造成大量火焰伤害并大范围点燃地面，可随附魔升级威力。"
+      "description": "发射强力火焰弹，造成大量火焰伤害并大范围点燃地面，可随附魔升级威力。",
+      "frequency": 15
     },
     {
       "id": "staff_of_lightning",
@@ -101,7 +107,8 @@
       "maxCharges": 2,
       "rechargeTurns": 320,
       "color": 3394815,
-      "description": "释放连锁闪电，在直线上对所有目标造成高额伤害，穿透能力随附魔等级提升。"
+      "description": "释放连锁闪电，在直线上对所有目标造成高额伤害，穿透能力随附魔等级提升。",
+      "frequency": 15
     },
     {
       "id": "staff_of_poison",
@@ -112,7 +119,8 @@
       "maxCharges": 3,
       "rechargeTurns": 250,
       "color": 5635925,
-      "description": "向目标注入剧毒，使其持续受到毒素伤害，附魔等级越高毒素越强、持续越久。"
+      "description": "向目标注入剧毒，使其持续受到毒素伤害，附魔等级越高毒素越强、持续越久。",
+      "frequency": 10
     },
     {
       "id": "staff_of_healing",
@@ -123,7 +131,8 @@
       "maxCharges": 3,
       "rechargeTurns": 280,
       "color": 5636095,
-      "description": "大量恢复目标的生命值，对盟友使用效果尤佳，是保持盟友战斗力的重要手段。"
+      "description": "大量恢复目标的生命值，对盟友使用效果尤佳，是保持盟友战斗力的重要手段。",
+      "frequency": 5
     },
     {
       "id": "staff_of_haste",
@@ -134,7 +143,8 @@
       "maxCharges": 3,
       "rechargeTurns": 280,
       "color": 16777113,
-      "description": "大幅提升目标的移动和攻击速度，对自身使用可快速撤离或连续攻击。"
+      "description": "大幅提升目标的移动和攻击速度，对自身使用可快速撤离或连续攻击。",
+      "frequency": 5
     },
     {
       "id": "staff_of_conjuration",
@@ -145,7 +155,8 @@
       "maxCharges": 2,
       "rechargeTurns": 200,
       "color": 13421823,
-      "description": "在附近召唤出多个幽灵刀刃协助战斗，附魔等级越高召唤数量越多，伤害越强。"
+      "description": "在附近召唤出多个幽灵刀刃协助战斗，附魔等级越高召唤数量越多，伤害越强。",
+      "frequency": 8
     },
     {
       "id": "staff_of_light",
@@ -168,7 +179,8 @@
       "maxDepth": 26,
       "weight": 1,
       "color": 16766976,
-      "description": "持续加快生命值恢复速度，附魔等级越高回复越快，对持久战至关重要。"
+      "description": "持续加快生命值恢复速度，附魔等级越高回复越快，对持久战至关重要。",
+      "frequency": 1
     },
     {
       "id": "ring_of_awareness",
@@ -177,7 +189,8 @@
       "maxDepth": 26,
       "weight": 1,
       "color": 11184895,
-      "description": "提高发现隐藏门、陷阱和秘密通道的概率，附魔等级越高感知范围越广。"
+      "description": "提高发现隐藏门、陷阱和秘密通道的概率，附魔等级越高感知范围越广。",
+      "frequency": 1
     },
     {
       "id": "ring_of_stealth",
@@ -186,7 +199,8 @@
       "maxDepth": 26,
       "weight": 1,
       "color": 10066329,
-      "description": "大幅降低你的行动噪音，使远处的怪物更难察觉到你，附魔等级越高效果越强。"
+      "description": "大幅降低你的行动噪音，使远处的怪物更难察觉到你，附魔等级越高效果越强。",
+      "frequency": 1
     },
     {
       "id": "ring_of_transference",
@@ -195,7 +209,8 @@
       "maxDepth": 26,
       "weight": 1,
       "color": 16711680,
-      "description": "攻击怪物时按比例吸取其生命值，附魔等级越高吸血量越多，是持续战斗的强力保障。"
+      "description": "攻击怪物时按比例吸取其生命值，附魔等级越高吸血量越多，是持续战斗的强力保障。",
+      "frequency": 1
     },
     {
       "id": "ring_of_wisdom",
@@ -204,7 +219,8 @@
       "maxDepth": 26,
       "weight": 1,
       "color": 8978431,
-      "description": "加快法杖和魔杖的充能速度，附魔等级越高充能越快，让你更频繁地使用魔法。"
+      "description": "加快法杖和魔杖的充能速度，附魔等级越高充能越快，让你更频繁地使用魔法。",
+      "frequency": 1
     },
     {
       "id": "ring_of_clairvoyance",
@@ -213,7 +229,8 @@
       "maxDepth": 26,
       "weight": 1,
       "color": 3394815,
-      "description": "持续显示你周围一定范围内的隐藏信息，附魔等级越高透视范围越大。"
+      "description": "持续显示你周围一定范围内的隐藏信息，附魔等级越高透视范围越大。",
+      "frequency": 1
     }
   ],
   "charms": [
@@ -225,7 +242,8 @@
       "weight": 1,
       "cooldownTurns": 320,
       "color": 16777113,
-      "description": "激活时为你生成一道魔法护盾，大幅提升防御能力并抵挡部分伤害，有冷却时间。"
+      "description": "激活时为你生成一道魔法护盾，大幅提升防御能力并抵挡部分伤害，有冷却时间。",
+      "frequency": 5
     },
     {
       "id": "charm_of_health",
@@ -235,7 +253,8 @@
       "weight": 1,
       "cooldownTurns": 300,
       "color": 5636095,
-      "description": "激活时快速恢复大量生命值，附魔等级越高回复量越大，可用于紧急救治。"
+      "description": "激活时快速恢复大量生命值，附魔等级越高回复量越大，可用于紧急救治。",
+      "frequency": 5
     },
     {
       "id": "charm_of_invisibility",
@@ -245,7 +264,8 @@
       "weight": 1,
       "cooldownTurns": 340,
       "color": 8978431,
-      "description": "激活时短暂变为完全隐形，令所有敌人无法察觉你，适合潜行和逃脱险境。"
+      "description": "激活时短暂变为完全隐形，令所有敌人无法察觉你，适合潜行和逃脱险境。",
+      "frequency": 5
     },
     {
       "id": "charm_of_speed",
@@ -255,7 +275,8 @@
       "weight": 1,
       "cooldownTurns": 360,
       "color": 5623295,
-      "description": "激活时短暂大幅提升移动和攻击速度，效果比药水更强，可连续行动多次。"
+      "description": "激活时短暂大幅提升移动和攻击速度，效果比药水更强，可连续行动多次。",
+      "frequency": 5
     },
     {
       "id": "charm_of_telepathy",
@@ -265,7 +286,8 @@
       "weight": 1,
       "cooldownTurns": 280,
       "color": 11184895,
-      "description": "激活时短暂感知当前层所有怪物的位置，即使隔墙也能看穿，便于规划路线。"
+      "description": "激活时短暂感知当前层所有怪物的位置，即使隔墙也能看穿，便于规划路线。",
+      "frequency": 3
     },
     {
       "id": "charm_of_fire_immunity",
@@ -275,7 +297,8 @@
       "weight": 1,
       "cooldownTurns": 300,
       "color": 16744192,
-      "description": "激活时短暂免疫所有火焰伤害，可放心穿越火场或应对喷火怪物的攻击。"
+      "description": "激活时短暂免疫所有火焰伤害，可放心穿越火场或应对喷火怪物的攻击。",
+      "frequency": 3
     }
   ],
   "keys": [

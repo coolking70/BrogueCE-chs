@@ -6,7 +6,8 @@
             "effect": "heal_full",
             "minDepth": 1,
             "maxDepth": 26,
-            "description": "完全恢复你的生命值，并解除中毒、饥饿等减益状态，极为珍贵。"
+            "description": "完全恢复你的生命值，并解除中毒、饥饿等减益状态，极为珍贵。",
+            "frequency": 0
         },
         {
             "id": "potion_of_healing",
@@ -23,7 +24,8 @@
             "effect": "gain_strength",
             "minDepth": 1,
             "maxDepth": 26,
-            "description": "永久增加1点力量，使你能装备更强力的武器和护甲。"
+            "description": "永久增加1点力量，使你能装备更强力的武器和护甲。",
+            "frequency": 0
         },
         {
             "id": "potion_of_fire_immunity",
@@ -31,7 +33,8 @@
             "effect": "resist_fire",
             "minDepth": 1,
             "maxDepth": 26,
-            "description": "临时获得火焰免疫，免疫所有火焰伤害。若已着火则立即扑灭。"
+            "description": "临时获得火焰免疫，免疫所有火焰伤害。若已着火则立即扑灭。",
+            "frequency": 15
         },
         {
             "id": "potion_of_invisibility",
@@ -39,7 +42,8 @@
             "effect": "become_invisible",
             "minDepth": 1,
             "maxDepth": 26,
-            "description": "短暂变为隐形，令大多数敌人无法看见你，适合潜行或逃脱。"
+            "description": "短暂变为隐形，令大多数敌人无法看见你，适合潜行或逃脱。",
+            "frequency": 15
         },
         {
             "id": "potion_of_levitation",
@@ -47,7 +51,8 @@
             "effect": "levitate",
             "minDepth": 1,
             "maxDepth": 26,
-            "description": "短暂悬浮，可越过陷阱、水域和其他地面障碍，但移动时视野略有模糊。"
+            "description": "短暂悬浮，可越过陷阱、水域和其他地面障碍，但移动时视野略有模糊。",
+            "frequency": 15
         },
         {
             "id": "potion_of_telepathy",
@@ -55,7 +60,8 @@
             "effect": "telepathy",
             "minDepth": 1,
             "maxDepth": 26,
-            "description": "临时获得心灵感应，可感知当前层所有怪物的位置，即使隔墙也能察觉。"
+            "description": "临时获得心灵感应，可感知当前层所有怪物的位置，即使隔墙也能察觉。",
+            "frequency": 20
         },
         {
             "id": "potion_of_haste",
@@ -63,7 +69,8 @@
             "effect": "speed",
             "minDepth": 1,
             "maxDepth": 26,
-            "description": "短暂大幅提升移动和攻击速度，让你行动如风。"
+            "description": "短暂大幅提升移动和攻击速度，让你行动如风。",
+            "frequency": 10
         },
         {
             "id": "potion_of_detect_magic",
@@ -71,7 +78,8 @@
             "effect": "detect_magic",
             "minDepth": 1,
             "maxDepth": 26,
-            "description": "探测并标记附近区域的所有魔法物品，包括隐藏的诅咒道具。"
+            "description": "探测并标记附近区域的所有魔法物品，包括隐藏的诅咒道具。",
+            "frequency": 20
         },
         {
             "id": "potion_of_descent",
@@ -79,7 +87,8 @@
             "effect": "fall_down",
             "minDepth": 2,
             "maxDepth": 26,
-            "description": "地板突然碎裂，使你跌落至下一层并受到少量伤害。危险但可用于逃脱。"
+            "description": "地板突然碎裂，使你跌落至下一层并受到少量伤害。危险但可用于逃脱。",
+            "frequency": 15
         },
         {
             "id": "potion_of_incineration",
@@ -87,7 +96,8 @@
             "effect": "fire_burst",
             "minDepth": 3,
             "maxDepth": 26,
-            "description": "引发剧烈的火焰爆炸，对周围区域造成大量火焰伤害并点燃地面。"
+            "description": "引发剧烈的火焰爆炸，对周围区域造成大量火焰伤害并点燃地面。",
+            "frequency": 15
         },
         {
             "id": "potion_of_poison",
@@ -95,8 +105,8 @@
             "effect": "poison_burst",
             "minDepth": 2,
             "maxDepth": 26,
-            "excludeFromGeneration": true,
-            "description": "散发毒气，使你和附近怪物中毒，持续受到毒素伤害直至解毒或时间流逝。"
+            "description": "散发毒气，使你和附近怪物中毒，持续受到毒素伤害直至解毒或时间流逝。",
+            "frequency": 15
         },
         {
             "id": "potion_of_confusion",
@@ -104,7 +114,8 @@
             "effect": "confusion_burst",
             "minDepth": 1,
             "maxDepth": 26,
-            "description": "释放混乱气体，使你和附近怪物短暂迷失方向，移动方向变得随机。"
+            "description": "释放混乱气体，使你和附近怪物短暂迷失方向，移动方向变得随机。",
+            "frequency": 15
         },
         {
             "id": "potion_of_paralysis",
@@ -112,7 +123,8 @@
             "effect": "paralyze_burst",
             "minDepth": 2,
             "maxDepth": 26,
-            "description": "释放麻痹气雾，使你和附近怪物短暂完全瘫痪，无法行动。"
+            "description": "释放麻痹气雾，使你和附近怪物短暂完全瘫痪，无法行动。",
+            "frequency": 10
         },
         {
             "id": "potion_of_hallucination",
@@ -120,7 +132,8 @@
             "effect": "hallucinate_burst",
             "minDepth": 1,
             "maxDepth": 26,
-            "description": "导致严重幻觉，看到的怪物和地形将以随机外观显示，难以判断真实情况。"
+            "description": "导致严重幻觉，看到的怪物和地形将以随机外观显示，难以判断真实情况。",
+            "frequency": 10
         },
         {
             "id": "potion_of_creeping_death",
@@ -128,7 +141,8 @@
             "effect": "creeping_death",
             "minDepth": 4,
             "maxDepth": 26,
-            "description": "散布致命的蔓延性腐朽，在周围生成地衣并逐渐扩散，极为危险。"
+            "description": "散布致命的蔓延性腐朽，在周围生成地衣并逐渐扩散，极为危险。",
+            "frequency": 7
         }
     ],
     "scrolls": [
@@ -138,7 +152,8 @@
             "effect": "enchant_item",
             "minDepth": 1,
             "maxDepth": 26,
-            "description": "对装备的武器或护甲施加+1附魔，多次使用可叠加，是提升实力的关键资源。"
+            "description": "对装备的武器或护甲施加+1附魔，多次使用可叠加，是提升实力的关键资源。",
+            "frequency": 0
         },
         {
             "id": "scroll_of_identify",
@@ -146,7 +161,8 @@
             "effect": "identify_item",
             "minDepth": 1,
             "maxDepth": 26,
-            "description": "鉴定一件未知道具，揭示其真实名称、魔法属性以及是否被诅咒。"
+            "description": "鉴定一件未知道具，揭示其真实名称、魔法属性以及是否被诅咒。",
+            "frequency": 30
         },
         {
             "id": "scroll_of_teleportation",
@@ -154,7 +170,8 @@
             "effect": "teleport_random",
             "minDepth": 1,
             "maxDepth": 26,
-            "description": "将你瞬间传送至当前层的随机位置。危急时可用于脱险，但目标不可预测。"
+            "description": "将你瞬间传送至当前层的随机位置。危急时可用于脱险，但目标不可预测。",
+            "frequency": 10
         },
         {
             "id": "scroll_of_magic_mapping",
@@ -162,7 +179,8 @@
             "effect": "reveal_map",
             "minDepth": 1,
             "maxDepth": 26,
-            "description": "揭示当前层的完整地图，包括所有房间、通道和特殊区域，但不显示物品和怪物。"
+            "description": "揭示当前层的完整地图，包括所有房间、通道和特殊区域，但不显示物品和怪物。",
+            "frequency": 12
         },
         {
             "id": "scroll_of_remove_curse",
@@ -170,7 +188,8 @@
             "effect": "remove_curse",
             "minDepth": 1,
             "maxDepth": 26,
-            "description": "解除所有已装备道具上的诅咒，使你得以取下原本无法摘除的被诅咒物品。"
+            "description": "解除所有已装备道具上的诅咒，使你得以取下原本无法摘除的被诅咒物品。",
+            "frequency": 15
         },
         {
             "id": "scroll_of_recharging",
@@ -178,7 +197,8 @@
             "effect": "recharge_item",
             "minDepth": 2,
             "maxDepth": 26,
-            "description": "立即为所有法杖和魔杖恢复使用次数，在弹药耗尽时尤为宝贵。"
+            "description": "立即为所有法杖和魔杖恢复使用次数，在弹药耗尽时尤为宝贵。",
+            "frequency": 12
         },
         {
             "id": "scroll_of_protect_weapon",
@@ -186,7 +206,8 @@
             "effect": "protect_weapon",
             "minDepth": 2,
             "maxDepth": 26,
-            "description": "对持有的武器施加魔法保护，使其永久免疫锈蚀、腐蚀和诅咒的影响。"
+            "description": "对持有的武器施加魔法保护，使其永久免疫锈蚀、腐蚀和诅咒的影响。",
+            "frequency": 10
         },
         {
             "id": "scroll_of_protect_armor",
@@ -194,7 +215,8 @@
             "effect": "protect_armor",
             "minDepth": 2,
             "maxDepth": 26,
-            "description": "对穿戴的护甲施加魔法保护，使其永久免疫腐蚀、削弱和诅咒的影响。"
+            "description": "对穿戴的护甲施加魔法保护，使其永久免疫腐蚀、削弱和诅咒的影响。",
+            "frequency": 10
         },
         {
             "id": "scroll_of_negation",
@@ -202,7 +224,8 @@
             "effect": "negate_burst",
             "minDepth": 4,
             "maxDepth": 26,
-            "description": "发出魔法脉冲，解除周围区域所有生物身上的魔法效果，对己对敌均有效。"
+            "description": "发出魔法脉冲，解除周围区域所有生物身上的魔法效果，对己对敌均有效。",
+            "frequency": 8
         },
         {
             "id": "scroll_of_sanctuary",
@@ -210,7 +233,8 @@
             "effect": "sanctuary_burst",
             "minDepth": 3,
             "maxDepth": 26,
-            "description": "在你所在位置刻下神圣符文，怪物将避开这些符文标记的区域，形成安全区。"
+            "description": "在你所在位置刻下神圣符文，怪物将避开这些符文标记的区域，形成安全区。",
+            "frequency": 10
         },
         {
             "id": "scroll_of_shattering",
@@ -218,7 +242,8 @@
             "effect": "shatter_burst",
             "minDepth": 3,
             "maxDepth": 26,
-            "description": "震碎周围的石墙，开辟新的通道，也可用于破坏特殊石质结构。"
+            "description": "震碎周围的石墙，开辟新的通道，也可用于破坏特殊石质结构。",
+            "frequency": 8
         },
         {
             "id": "scroll_of_discord",
@@ -226,7 +251,8 @@
             "effect": "discord_burst",
             "minDepth": 4,
             "maxDepth": 26,
-            "description": "使视野内所有怪物相互仇恨，令其混战厮杀，是对付怪物群的强力手段。"
+            "description": "使视野内所有怪物相互仇恨，令其混战厮杀，是对付怪物群的强力手段。",
+            "frequency": 8
         },
         {
             "id": "scroll_of_summon_monsters",
@@ -234,7 +260,8 @@
             "effect": "summon_monsters",
             "minDepth": 2,
             "maxDepth": 26,
-            "description": "在你附近随机召唤出多只怪物，极为危险，误读此卷轴可能致命。"
+            "description": "在你附近随机召唤出多只怪物，极为危险，误读此卷轴可能致命。",
+            "frequency": 10
         },
         {
             "id": "scroll_of_amnesia",
@@ -254,7 +281,8 @@
             "nutrition": 1800,
             "minDepth": 1,
             "maxDepth": 26,
-            "description": "一份干粮，可补充大量饱食度，防止因饥饿而失去生命值。"
+            "description": "一份干粮，可补充大量饱食度，防止因饥饿而失去生命值。",
+            "frequency": 3
         },
         {
             "id": "mango",
@@ -263,7 +291,8 @@
             "nutrition": 1550,
             "minDepth": 10,
             "maxDepth": 26,
-            "description": "一颗来自地下的神奇芒果，补充饱食度的同时略微恢复生命值。"
+            "description": "一颗来自地下的神奇芒果，补充饱食度的同时略微恢复生命值。",
+            "frequency": 1
         }
     ]
 }
