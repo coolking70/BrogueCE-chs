@@ -391,8 +391,8 @@ C-2 的 zcode 在另一 worktree 里也反复跑 vitest，两边抢 CPU，于是
 |---|---|---|---|
 | 1 | ~~**B-2** 投掷~~ | ✅ 已合 `829c726` | `tasks/b-2.prompt.md` |
 | 2 | ~~**C-7** 光照目录 + 矿灯衰减~~ | ✅ 已合 `6c3a34a` | `tasks/c-7.prompt.md` |
-| 3 | **B-3** 三占位卷轴（negation / sanctuary / shattering） | 🟡 跑中 `wt-b-3` | `tasks/b-3.prompt.md` |
-| 4 | **B-4a** 生成规则——「生成什么」（**独占**，移动 RNG 流） | ⬜ 任务书就绪 | `tasks/b-4a.prompt.md` |
+| 3 | ~~**B-3** 三占位卷轴~~ | ✅ 已合 `526b9db`（全量 81 文件 1007 绿） | `tasks/b-3.prompt.md` |
+| 4 | **B-4a** 生成规则——「生成什么」（**独占**，移动 RNG 流） | 🟡 跑中 `wt-b-4a` | `tasks/b-4a.prompt.md` |
 | 5 | **B-4b** 生成规则——「落在哪/多少」（**独占**，移动 RNG 流） | ⬜ 待写 | 热力图落位 / 金币 / 钥匙 140-166 / 每层数量 |
 | 6 | **UI/渲染轮** | ⬜ 待写、**且暂不可测** | 见下方「为什么 UI 轮被推后」 |
 | — | 中小 P1：P1-39 深水可游 / P1-41 成员铺开改路径距离 / C-4a-1 收敛通行判据 / i18n 扫描器模板字符串盲区 | ⬜ | 可合并；P1-41 属生成期，应挂在 B-4b 之后 |
@@ -408,6 +408,17 @@ C-2 的 zcode 在另一 worktree 里也反复跑 vitest，两边抢 CPU，于是
 渲染层只负责把它画出去。抽完之后 P1-47 / EMBERS-ASH-PLAIN_FIRE / 燃烧视觉 /
 地面符号才有可测的落点。**不要在没有这个缝之前投 UI 轮**——
 那一轮会产出一堆无法证伪的断言。
+
+### B-3 交给 B-4b 的登记（2026-09-17）
+
+- `AutoGenerator.ts` 序 1 / 序 33 两条 `CRYSTAL_WALL` 缺口：**地形侧已就位**
+  （B-3 新增了 `CRYSTAL_WALL` tile），但 **`DF_CRYSTAL_WALL` 仍未入 web 的 DF 目录**
+  （CE `Globals.c:607` `{CRYSTAL_WALL, DUNGEON, 200, 50, DFF_CLEAR_OTHER_TERRAIN}`）。
+  接线时要连 DF 条目一起补，`c_4b` 的 E1 会 31→32。**接线即移动生成流**，只能在独占轮做。
+- 圣徽是**十字 5 格**（中心 + 4 正邻，CE 100/100 波前），不是单格——UI 轮注意。
+- B-3 登记的 deferral：`colorFlash` 等纯视觉、`IMPREGNABLE`（唯一置位源 `BP_IMPREGNABLE`
+  在机器系统，web 缺）、碎石 DF 落地（web 无 `RUBBLE`）、`freeCaptivesEmbeddedAt`、
+  `charmRechargeDelay`、per-cell `ITEM_DETECTED`。
 
 ### B-4 为什么拆成两轮
 
