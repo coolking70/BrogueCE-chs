@@ -8,6 +8,10 @@
 .claude/
 
 # Build outputs
+# output/ 是探针跑图留下的截图与状态转储（非构建产物、非源码）。
+# 忽略它是为了让 `git status --short` 保持"干净=无事"的信号强度——
+# 夜间无人值守时，一个常驻的 ?? 条目会训练人把噪音当背景音。
+output/
 brogueweb/dist/
 brogueweb/emsdk/
 brogueweb/node_modules/
