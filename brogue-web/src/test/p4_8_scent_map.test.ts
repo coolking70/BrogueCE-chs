@@ -187,69 +187,82 @@ describe('P4-8 B: 怪物顺气味追踪', () => {
     //   · 在 B-4a 上跑 40 个 seed：**5 个成功**（12.5%）。
     //   两边成功率统计上一致（约 10%），所以 B-4a **没有改变追踪行为**，
     //   只是把流位置挪开了那颗走运的骰子。
-    //   · 另一佐证：在 main 上**只加一句建场后重播种、不改任何其他代码**，
-    //     本条同样翻红。
     //
-    // 顺带排除的两个误判：
-    //   · 不是"鼠在追踪态下走下坡"——新增的逐步上坡断言（见下）在两边的
-    //     全部 seed 上都绿；
-    //   · 不止是 CE 的 3% 丢目标（`Monsters.c:1674-1680` awareOfTarget：
-    //     追踪中且在潜行半径外时每回合 `rand_percent(97)` 保持目标）。
-    //     10 回合累计丢失约 26%，远不足以解释约 90% 的失败率。
+    // ── AI-1 结案（2026-09-18）：低成功率是 CE 本来的行为，另有两处 web 偏差已修 ──
     //
-    // **本轮处置**：把 seed 显式钉到一个可过值（恢复原有保证，不放宽也不加强
-    // 结局断言），并补上一条**与 seed 无关**的逐步性质断言。
-    //
-    // **⚠️ 登记未决（归 AI 轮，不在 B-4a 范围）**：
-    // 为什么一只 HUNTING 的鼠，在 10 回合里走完 7 格直线走廊的成功率只有约 10%？
-    // 若这是 web 的追踪实现与 CE 有偏差（例如气味梯度在门格附近非单调、
-    // 导致过早落入"局部最大 → 放弃"路径 ①），那是一个**真实的 AI 缺陷**，
-    // 而本条测试此前用挑 seed 的方式把它掩盖了。查清前不要把结局断言当作
-    // "追踪行为正确"的证据。
-    it('T5 追踪怪顺梯度上坡、把门当气味跳板，直至贴脸（下坡/原地/弃味实现皆败）', () => {
-        // seed 显式钉死：B-4a 流下实测可过（40 seed 扫描命中之一）。
-        const game = createScentGame(20330368);
-        for (let y: number = CARVE.y1; y <= CARVE.y2; y++) {
-            if (y !== 15) setWall(game, 52, y);
-        }
-        setDoor(game, 52, 15);
-        teleportPlayer(game, 44, 15);
-        // 玩家从 (44,15) 穿门走到 (54,15)：10 步给整条走廊盖章（门格因 || 留味）
-        for (let i = 0; i < 10; i++) moveOnce(game, 1, 0);
-        expect(game.player.loc.x).toBe(54);
-        waitOnce(game);
-
-        const rat = spawnRat(game, 46, 15); // 站在玩家来时的轨迹上
-        expect(rat.state).toBe(MonsterState.HUNTING);
-        expect(game.scent.get(46, 15)).toBeGreaterThan(0);
-        expect(game.hasLineOfSight(rat.loc.x, rat.loc.y, game.player.loc.x, game.player.loc.y))
-            .toBe(false); // 门挡视线：怪物确实看不见玩家
-
-        let caught = false;
-        for (let i = 0; i < 10 && !caught; i++) {
-            const bx = rat.loc.x, by = rat.loc.y, bState = rat.state;
-            const scentBefore = game.scent.get(bx, by);
-            waitOnce(game);
-            const moved = rat.loc.x !== bx || rat.loc.y !== by;
-            // 与 seed 无关的性质断言：**前后都仍是 HUNTING** 的那一步，
-            // 必须是气味严格上坡。下坡（argmin）实现在第一步就会被抓住。
-            // 前后都要求 HUNTING，是因为 CE 的 3% 丢目标发生在回合内的状态
-            // 更新阶段（先于移动）——刚丢目标那一步是以 WANDERING 身份走的，
-            // 本就允许下坡，不该由本断言管辖。
-            if (bState === MonsterState.HUNTING && rat.state === MonsterState.HUNTING && moved) {
-                expect(
-                    game.scent.get(rat.loc.x, rat.loc.y),
-                    `追踪态下走了非上坡的一步 (${bx},${by})→(${rat.loc.x},${rat.loc.y})`,
-                ).toBeGreaterThan(scentBefore);
+    // 诊断结论（详见 ai_docs/ai_1_report.md 与 ai_1_scent_tracking.test.ts）：
+    //   1. **CE 本来如此**：玩家原地 wait → justRested → stealthRange 7→4
+    //      （CE Time.c:813-815）→ awareness = 8、硬截断 = 24。而 T5 场景里
+    //      门西侧气味每格比东侧旧 2、鼠每向东一步 perceived 恰好 +1：从 20
+    //      起步，第 6 步 perceived=25 > 24 必撞截断。**纯追踪 7 步贴脸在 CE
+    //      里也不可能**；CE 的鼠同样只能靠"丢目标 → WANDERING 沿 waypoint
+    //      游荡 → 贴脸重唤醒"蹭到玩家。这是 CE 潜行机制（rest 甩尾）的设计
+    //      本意，不是缺陷。
+    //   2. **web 曾有两处真实偏差（本轮已修），使截断从第 6 步提前到第 2 步**：
+    //      a) 门回弹：web 玩家踩门的开门（handleSpecialTileEntry）先于本回合
+    //         环境晋升（OPEN_DOOR promoteChance=10000 → 关回），而 CE 是
+    //         updateEnvironment(:2695 关门) 在先、applyInstantTileEffects
+    //         (:2698 开门) 在后——玩家站在门上时门保持开。修复：Game.ts
+    //         客观块晋升段后补玩家所站格 promoteOnStep。
+    //      b) 派生位残留：promote 链走 Grid.setTerrainLayer（只写层），
+    //         isOpaque 残留 DOOR 的 true → obstructsScent 把开着的门继续当
+    //         遮挡物，updateScent 掩码穿不过门洞。修复：setTerrainLayer 内
+    //         随层写重算派生位。两修后门西侧气味 = 1013..1023，与 CE 时序
+    //         手推逐位一致（AI-1 前 = 1012..1022）。
+    //   3. **结局断言改概率口径（本条反转）**：修后 60 seeds（20260916 起
+    //      透明序列）实测 caught 14/60 = 23.3%；二项 95% CI ≈ [13%, 36%]。
+    //      区间外扩到 [10%, 40%] 以容纳 40 seeds 的批次波动（sd≈6.6pp，
+    //      ±2σ≈±13pp）。能杀死的错误实现：argmin 下坡/原地（≈0%，到不了
+    //      门前）；删掉感知判定或截断（≈0.97^7≈81%，纯追踪贴脸，超上限）；
+    //      丢目标后不游荡（纯追踪第 6 步截断 → 0%，破下限）。原"单 seed
+    //      钉 20330368 + 全程 HUNTING"断言已删除——它过的方式是游荡撞运，
+    //      不是追踪正确，构成"挑 seed 的假保证"。
+    it('T5 追踪怪顺梯度上坡、把门当气味跳板；结局按 CE 实带断言成功率（AI-1 改写）', () => {
+        const N = 40;
+        let caughtCount = 0;
+        for (let s = 0; s < N; s++) {
+            const game = createScentGame(20260916 + s); // 透明序列，不挑 seed
+            for (let y: number = CARVE.y1; y <= CARVE.y2; y++) {
+                if (y !== 15) setWall(game, 52, y);
             }
-            caught = chebyshev(rat.loc.x, rat.loc.y, game.player.loc.x, game.player.loc.y) <= 1;
+            setDoor(game, 52, 15);
+            teleportPlayer(game, 44, 15);
+            // 玩家从 (44,15) 穿门走到 (54,15)：10 步给整条走廊盖章（门格因 || 留味）
+            for (let i = 0; i < 10; i++) moveOnce(game, 1, 0);
+            expect(game.player.loc.x).toBe(54);
+            waitOnce(game);
+
+            const rat = spawnRat(game, 46, 15); // 站在玩家来时的轨迹上
+            expect(rat.state).toBe(MonsterState.HUNTING);
+            expect(game.scent.get(46, 15)).toBeGreaterThan(0);
+            expect(game.hasLineOfSight(rat.loc.x, rat.loc.y, game.player.loc.x, game.player.loc.y))
+                .toBe(false); // 门挡视线：怪物确实看不见玩家
+
+            let caught = false;
+            for (let i = 0; i < 10 && !caught; i++) {
+                const bx = rat.loc.x, by = rat.loc.y, bState = rat.state;
+                const scentBefore = game.scent.get(bx, by);
+                waitOnce(game);
+                const moved = rat.loc.x !== bx || rat.loc.y !== by;
+                // 与 seed 无关的性质断言：**前后都仍是 HUNTING** 的那一步，
+                // 必须是气味严格上坡。下坡（argmin）实现在第一步就会被抓住。
+                // 前后都要求 HUNTING，是因为 CE 的 3% 丢目标发生在回合内的状态
+                // 更新阶段（先于移动）——刚丢目标那一步是以 WANDERING 身份走的，
+                // 本就允许下坡，不该由本断言管辖。
+                if (bState === MonsterState.HUNTING && rat.state === MonsterState.HUNTING && moved) {
+                    expect(
+                        game.scent.get(rat.loc.x, rat.loc.y),
+                        `追踪态下走了非上坡的一步 (${bx},${by})→(${rat.loc.x},${rat.loc.y})`,
+                    ).toBeGreaterThan(scentBefore);
+                }
+                caught = chebyshev(rat.loc.x, rat.loc.y, game.player.loc.x, game.player.loc.y) <= 1;
+            }
+            if (caught) caughtCount++;
         }
-        // 下坡（argmin）实现会向 x 减小方向走；原地/弃味实现到不了门前——
-        // 两者都到不了 x>=52，更不可能贴脸。
-        expect(caught).toBe(true);
-        expect(rat.loc.y).toBe(15);                    // 全程沿走廊，没有跑偏
-        expect(rat.loc.x).toBeGreaterThanOrEqual(52);  // 踩过门格（|| 的怪物侧效果）
-        expect(rat.state).toBe(MonsterState.HUNTING);  // 全程未丢目标
+        // 下坡（argmin）/原地/弃味实现到不了 x>=52，更不可能贴脸 → 远低于下限；
+        // 删掉感知判定/截断的实现 7 步纯追踪贴脸 → 远超上限。
+        expect(caughtCount, `40 seeds 成功 ${caughtCount} 个，超出 CE 实带 [10%, 40%]`).toBeGreaterThanOrEqual(N * 0.10);
+        expect(caughtCount).toBeLessThanOrEqual(N * 0.40);
     });
 
     it('T6 绕拐角：L 形墙隔断视线，怪物顺气味锥钻过拐角、绕过横臂东端贴脸玩家', () => {

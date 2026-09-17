@@ -384,7 +384,24 @@ describe('D：Game 集成（真实事件链）', () => {
             promos.some((p) => p.sourceTerrain === C.OPEN_DOOR),
             '本回合客观块应记录一次 OPEN_DOOR→DOOR 的自动关门（说明踩踏开门已生效）'
         ).toBe(true);
-        expect(game.grid.getCell(px + 2, py)!.layers[L.DUNGEON], '回合结束时门已自动关上').toBe(C.DOOR);
+        // ── AI-1 反转（验收方 2026-09-18 补授权：本文件不在 AI-1 清单内，验收方漏项）──
+        // 原留痕：「回合结束时门已自动关上」，expected DOOR。
+        // AI-1 查清 web 此前把踩踏开门放在**移动分支**里、先于环境晋升，
+        // 于是同回合的关门晋升把它又弹回 DOOR——与 CE 的客观块顺序相反。
+        // CE `Time.c` 的顺序是：
+        //     updateEnvironment()                  // :2695 关门晋升在前
+        //     decrementPlayerStatus();
+        //     applyInstantTileEffectsToCreature(&player);  // :2698 玩家所站格开门在后
+        // 即**玩家脚下的门在回合末是开着的**（人站在门口，门不会在你身上关上），
+        // 玩家走开之后才在身后关上。AI-1 把开门补到晋升段之后，语义随之对齐。
+        //
+        // 反转后断言新事实，并保留越界守卫：关门晋升仍必须在本回合发生过
+        // （上面那条 sourceTerrain === OPEN_DOOR 的断言），
+        // 只是玩家所站的这一格被随后的 instant tile effect 重新开启。
+        expect(
+            game.grid.getCell(px + 2, py)!.layers[L.DUNGEON],
+            '回合末玩家脚下的门应是开着的（CE Time.c:2695 关门晋升 → :2698 玩家所站格开门）'
+        ).toBe(C.OPEN_DOOR);
     });
 
     it('D2 踩楼梯触发 DF_REPEL_CREATURES（tile=NOTHING 的合法无地形 DF；驱离登记未实现）', () => {

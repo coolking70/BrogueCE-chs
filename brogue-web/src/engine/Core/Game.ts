@@ -7202,6 +7202,21 @@ export class Game {
             ),
             caughtFireCells: caughtFireSkip,
         });
+        // AI-1：CE Time.c:2698——客观块内玩家所站格的 TM_PROMOTES_ON_CREATURE
+        // 晋升（applyInstantTileEffectsToCreature(&player)）发生在 updateEnvironment
+        // 的晋升段（:2695）**之后**：OPEN_DOOR 自带 promoteChance=10000
+        // （Globals.c:329，rand_range(0,10000)<10000 ≈ 必然关门），玩家踩着门时
+        // 晋升段先把开着的门关回，踩门晋升随即再次打开——净效果是"玩家站在
+        // 门上时门保持开着，走开后门才在身后关上"（CE 原味）。web 此前唯一的
+        // 踩门开门点在移动分支（handleSpecialTileEntry，先于本块的晋升驱动），
+        // 开门被同一回合的环境晋升立即回弹——门西侧的气味（updateScent 的
+        // T_OBSTRUCTS_SCENT 掩码穿不过关着的门）因此比 CE 少刷新一轮。此处按
+        // CE 顺序补踩门晋升；promoteTile 本体无 RNG（Promotion.ts），不移流。
+        const playerStepPromotions = promoteOnStep(this.grid, this.player.loc.x, this.player.loc.y);
+        if (playerStepPromotions.length > 0) {
+            this.lastPromotionUpdate.promotions.push(...playerStepPromotions);
+            if (playerStepPromotions.some((r) => r.mutated)) this.needsRender = true;
+        }
         // F-2a：CE :1665-1668 的记账趟语义——上回合遗留的起火登记在此清空，
         // 只有记账趟之后 WITHOUT_KEY 晋升新点的火存活到下一回合。
         this.pendingCaughtFireCells = this.lastPromotionUpdate.caughtFireRemaining;

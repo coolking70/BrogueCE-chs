@@ -599,12 +599,32 @@ export class Grid {
     /**
      * 层感知写入口（C-4a-0 新增，本轮生产代码零调用点，仅测试行使；
      * C-4a 起由生成器/环境系统接管）。只写该层，不动其他层，
-     * 也不动 char/color/通行启发式。
+     * 也不动 char/color。
+     * AI-1：通行/遮挡派生位随层写刷新（此前只在 setTerrain 重算）。晋升链
+     * （Promotion 的 VANISHES 清层与 DF 落格都走本入口）把 DOOR 晋升成
+     * OPEN_DOOR 时 isOpaque 残留 true，obstructsScent（Scent.ts 的
+     * T_OBSTRUCTS_SCENT 近似）继续把开着的门当遮挡物，updateScent 掩码
+     * 穿不过门洞。推导口径与 setTerrain 相同；黑名单成员（WALL/GRANITE/
+     * DOOR/SECRET_DOOR）home 层都是 DUNGEON，SURFACE/GAS 层写入时
+     * effective 不变、派生位因此中性。
      */
     public setTerrainLayer(x: number, y: number, layer: DungeonLayer, terrain: TerrainType): void {
         const cell = this.getCell(x, y);
         if (cell) {
             cell.layers[layer] = terrain;
+            const effective = cell.terrain;
+            cell.isPassable = (
+                effective !== TerrainType.WALL &&
+                effective !== TerrainType.GRANITE &&
+                effective !== TerrainType.CHASM &&
+                effective !== TerrainType.SECRET_DOOR
+            );
+            cell.isOpaque = (
+                effective === TerrainType.WALL ||
+                effective === TerrainType.GRANITE ||
+                effective === TerrainType.DOOR ||
+                effective === TerrainType.SECRET_DOOR
+            );
         }
     }
 
