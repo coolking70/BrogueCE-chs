@@ -27,6 +27,7 @@ import { DungeonLayer, Grid, TerrainType, DRAW_PRIORITY } from '../engine/Map/Gr
 import { TERRAIN_FLAGS } from '../engine/Map/TerrainCatalog';
 import {
     DF,
+    DFF_ACTIVATE_DORMANT_MONSTER,
     DFF_CLEAR_LOWER_PRIORITY_TERRAIN,
     DFF_CLEAR_OTHER_TERRAIN,
     DFF_EVACUATE_CREATURES_FIRST,
@@ -556,11 +557,14 @@ describe('C-4b D：levelIsDisconnectedWithBlockingMap（CE Architect.c:3137-3198
 });
 
 describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () => {
-    it('E1 恰 28 条（F-2a 增补 DF_ASH；G-1 增补 DF_GAS_FIRE；G-2 增补 DF_EXPLOSION_FIRE；F-2c 增补 DF_BLOAT_EXPLOSION；C-5 增补 DF_HOLE_POTION/DF_HOLE_2/DF_HOLE_DRAIN；C-6 增补 DF_GRASS/DF_FOLIAGE），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）', () => {
+    it('E1 恰 31 条（C-6 增补 DF_GRASS/DF_FOLIAGE；B-3 增补 DF_FORCEFIELD_MELT/DF_SACRED_GLYPHS/DF_SHATTERING_SPELL），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）', () => {
         const keys = Object.keys(DUNGEON_FEATURE_CATALOG);
-        expect(keys.length).toBe(28);
+        expect(keys.length).toBe(31);
         expect(DF.DF_GRASS, 'C-6：runAutogenerators 表 index 3 的 DFType（Rogue.h:1473，Globals.c:609）').toBe(4);
         expect(DF.DF_FOLIAGE, 'C-6：表 index 8 的 DFType（Rogue.h:1477，Globals.c:613）').toBe(8);
+        expect(DF.DF_FORCEFIELD_MELT, 'B-3：FORCEFIELD.promoteType 的载体（Rogue.h:1527，Globals.c:675）').toBe(52);
+        expect(DF.DF_SACRED_GLYPHS, 'B-3：SCROLL_SANCTUARY 的 DF（Rogue.h:1528，Globals.c:676）').toBe(53);
+        expect(DF.DF_SHATTERING_SPELL, 'B-3：crystalize 的 DF（Rogue.h:1531，Globals.c:679）').toBe(56);
         expect(DF.DF_SHOW_DOOR).toBe(13);
         expect(DF.DF_BLOAT_EXPLOSION, 'F-2c：explosive bloat 的死亡 DF（Rogue.h:1508，Globals.c:1084 DFType 引用）').toBe(35);
         expect(DF.DF_REPEL_CREATURES).toBe(40);
@@ -617,6 +621,15 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // 消费点 runAutogenerators → spawnDungeonFeature）。
         start.add(DF.DF_GRASS);
         start.add(DF.DF_FOLIAGE);
+        // B-3：DF_SACRED_GLYPHS / DF_SHATTERING_SPELL 第二起点——不经
+        // TerrainCatalog 字符串（SACRED_GLYPH tile 的三链字段全空；RUBBLE web
+        // 无 tile）。起点是卷轴调用点：SCROLL_SANCTUARY（Items.c:7942）与
+        // crystalize 的 per-cell spawn（Items.c:4917），web 消费点
+        // Game.sanctuaryFromPlayer / crystalizeFromPlayer。
+        // DF_FORCEFIELD_MELT 不需要第二起点——经 FORCEFIELD.promoteType
+        // 字符串自动入闭包。
+        start.add(DF.DF_SACRED_GLYPHS);
+        start.add(DF.DF_SHATTERING_SPELL);
         // 沿 subsequentDF 闭包展开（悬空引用在此翻红）。
         const closure = new Set<DF>();
         const queue = [...start];
@@ -636,7 +649,9 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
             'F-2c：DF_BLOAT_EXPLOSION（经 bloat 的 DFType）入闭包 22→23；' +
             'C-5：DF_HOLE_POTION（药水/pit bloat 起点）→ DF_HOLE_2 → DF_HOLE_DRAIN' +
             '（经 HOLE.promoteType）入闭包 23→26；' +
-            'C-6：DF_GRASS/DF_FOLIAGE（自动生成器表 index 3/8 起点）入闭包 26→28').toBe(28);
+            'C-6：DF_GRASS/DF_FOLIAGE（自动生成器表 index 3/8 起点）入闭包 26→28；' +
+            'B-3：DF_FORCEFIELD_MELT（经 FORCEFIELD.promoteType）+ DF_SACRED_GLYPHS' +
+            '/DF_SHATTERING_SPELL（卷轴起点）入闭包 28→31').toBe(31);
     });
 
     it('E3 字段抽查：BRIDGE_FALL_PREP 的 prop/200/100、BRIDGE_FIRE 的描述与 tile=0、其余代表条目', () => {
@@ -734,13 +749,45 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         expect(bloat.probabilityDecrement).toBe(100);
         expect(bloat.description).toBe('');
         expect(bloat.lightFlare).toBe('EXPLOSION_FLARE_LIGHT');
+
+        // B-3 新增三条：FORCEFIELD_MELT（Globals.c:675 {FORCEFIELD_MELT,
+        // SURFACE, 0, 0}）、SACRED_GLYPHS（:676 {SACRED_GLYPH, SURFACE,
+        // 100, 100, 0, "", EMPOWERMENT_LIGHT}）、SHATTERING_SPELL（:679
+        // {RUBBLE, SURFACE, 0, 0, DFF_ACTIVATE_DORMANT_MONSTER}，行号由
+        // 枚举对齐 + :677/:678 双锚推得）。
+        const melt = DUNGEON_FEATURE_CATALOG[DF.DF_FORCEFIELD_MELT]!;
+        expect(melt.ceLine).toBe(675);
+        expect(melt.ceTile).toBe('FORCEFIELD_MELT');
+        expect(melt.tile).toBe(C.FORCEFIELD_MELT);
+        expect(melt.layer).toBe(L.SURFACE);
+        expect(melt.startProbability).toBe(0);
+        expect(melt.subsequentDF).toBeNull();
+
+        const glyph = DUNGEON_FEATURE_CATALOG[DF.DF_SACRED_GLYPHS]!;
+        expect(glyph.ceLine).toBe(676);
+        expect(glyph.ceTile).toBe('SACRED_GLYPH');
+        expect(glyph.tile).toBe(C.SACRED_GLYPH);
+        expect(glyph.layer).toBe(L.SURFACE);
+        expect(glyph.startProbability).toBe(100);
+        expect(glyph.probabilityDecrement).toBe(100);
+        expect(glyph.lightFlare).toBe('EMPOWERMENT_LIGHT');
+        expect(glyph.flags).toBe(0);
+
+        const shatter = DUNGEON_FEATURE_CATALOG[DF.DF_SHATTERING_SPELL]!;
+        expect(shatter.ceLine).toBe(679);
+        expect(shatter.ceTile).toBe('RUBBLE');
+        expect(shatter.tile, 'RUBBLE web 无地形 → 登记 null（入 DF_MISSING_TILES）').toBeNull();
+        expect(shatter.layer).toBe(L.SURFACE);
+        expect(shatter.startProbability).toBe(0);
+        expect(shatter.probabilityDecrement).toBe(0);
+        expect(shatter.flags).toBe(DFF_ACTIVATE_DORMANT_MONSTER);
     });
 
-    it('E4 缺 tile 登记恰 6 条（G-1 后 10；G-2 摘 4 增 1；F-2c 摘除 DF_EXPLOSION_FIRE——GAS_EXPLOSION tile 已迁）：' +
-        'catalogFeature 对其抛错点名；对其余 17 条正常转换', () => {
+    it('E4 缺 tile 登记恰 7 条（G-2 后 6；B-3 增 DF_SHATTERING_SPELL——RUBBLE tile web 无）：' +
+        'catalogFeature 对其抛错点名；对其余条目正常转换', () => {
         const all = Object.keys(DUNGEON_FEATURE_CATALOG).map(Number) as DF[];
         const missing = new Set(DF_MISSING_TILES);
-        expect(DF_MISSING_TILES.length).toBe(6);
+        expect(DF_MISSING_TILES.length).toBe(7);
         // 登记条目确实都是 tile=null，且抛错带 CE tile 名。
         for (const id of DF_MISSING_TILES) {
             expect(DUNGEON_FEATURE_CATALOG[id]!.tile, `DF#${id} 应为 null tile`).toBeNull();

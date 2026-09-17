@@ -16,7 +16,10 @@ import { Game } from '../engine/Core/Game';
 import { ItemCategory, Item } from '../engine/Items/Item';
 import { ItemLoader } from '../engine/Items/ItemLoader';
 import { Monster, MonsterState, type MonsterData } from '../entities/Monster';
-import { TerrainType } from '../engine/Map/Grid';
+import { TerrainType, DungeonLayer } from '../engine/Map/Grid';
+import { TERRAIN_FLAGS, T_SACRED, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION } from '../engine/Map/TerrainCatalog';
+import { SAFETY_MAX_DISTANCE } from '../engine/Map/SafetyMap';
+import { rng } from '../engine/Random';
 import monsterDataJson from '../data/monsters.json';
 import { logger } from '../engine/Systems/Logger';
 
@@ -286,5 +289,261 @@ describe('discord_burst 卷轴（Items.c:8011 → discordBlast）', () => {
                 );
             }
         }
+    });
+});
+
+// ═══════════════════════════════════════════════════════════════════════════
+// B-3：三张占位卷轴补实（negation / sanctuary / shattering）
+// CE 出处：negationBlast（Items.c:4827-4881，卷轴侧 :8004-8006）、
+// SCROLL_SANCTUARY（:7941-7943 → DF_SACRED_GLYPHS Globals.c:676）、
+// crystalize（:4904-4939，卷轴侧 :8007-8010 crystalize(9)）。
+// ═══════════════════════════════════════════════════════════════════════════
+
+/** 全图铺平成 FLOOR、清空怪物与物品的受控竞技场（测距/测 FOV 的前提）。 */
+function flattenArena(game: Game): void {
+    game.monsters = [];
+    game.items = [];
+    for (let x = 0; x < game.grid.width; x++) {
+        for (let y = 0; y < game.grid.height; y++) {
+            game.grid.setTerrain(x, y, TerrainType.FLOOR, '.', 0x888888);
+        }
+    }
+}
+
+/** 造一件地面物品（直接入 this.items，loc 即落点）。 */
+function placeItem(game: Game, item: Item, x: number, y: number): Item {
+    item.loc = { x, y };
+    game.items.push(item);
+    return item;
+}
+
+/** 一件"+3 带符文、被诅咒、已被探魔"的未鉴定地面武器（negation 的靶子）。 */
+function cursedRunicWeapon(): Item {
+    const w = new Item('dagger', '/', 0xcccccc, ItemCategory.WEAPON);
+    w.enchantment = 3;
+    w.runicType = 'quietus';
+    w.runicKnown = false;
+    w.isCursed = true;
+    w.magicDetected = true;
+    w.identified = false;
+    w.canBeIdentified = true;
+    w.charges = 5;      // 武器的 charges 复用为熟悉度倒计时（CE Items.c:275）
+    w.timesUsed = 2;    // ≙ CE enchant2
+    return w;
+}
+
+describe('B-3 negation_burst 卷轴（Items.c:8004 → negationBlast :4827-4881）', () => {
+    it('视野内+距离内的怪被清魔法；diesIfNegated 的当场死；距离外的完全不受影响', () => {
+        const game = createHeadlessGame(20260914);
+        flattenArena(game);
+        game.player.loc = { x: 1, y: 1 };
+        // web 地图 79×29：DCOLS² = 6241。(77,27) 距 (1,1) 的欧氏距离² =
+        // 76²+26² = 6452 > 6241（距离外），但切比雪夫距离 76 ≤ 79 且全平地
+        // LOS 通畅（视野内）——这是距离判据（欧氏²）的真正闸门。
+        const goblin = placeMonster(game, 'goblin', 5, 5);
+        const wisp = placeMonster(game, 'wisp', 6, 5); // MONST_DIES_IF_NEGATED
+        const far = placeMonster(game, 'goblin', 77, 27);
+        goblin.setStatusDuration('hasted', 20);
+        goblin.setStatusDuration('discordant', 30);
+        far.setStatusDuration('hasted', 20);
+        const farHpBefore = far.hp;
+
+        giveScroll(game, 'scroll_of_negation');
+        expect(readScroll(game, 'scroll_of_negation')).toBe(true);
+
+        // 视野内、距离内：状态被清空
+        expect(goblin.hasStatus('hasted')).toBe(false);
+        expect(goblin.hasStatus('discordant')).toBe(false);
+        expect(goblin.hp).toBeGreaterThan(0);
+        // diesIfNegated：当场死（CE :4844 "This can be fatal."）
+        expect(wisp.hp).toBeLessThanOrEqual(0);
+        // 视野内、距离外：完全不受影响（欧氏²判据；切比雪夫错误实现在此翻红）
+        expect(far.hasStatus('hasted')).toBe(true);
+        expect(far.hp).toBe(farHpBefore);
+
+        // B-3 §7.8：卷轴用完即亮种类（CE Items.c:8016-8026，首次使用即断言）
+        expect(ItemLoader.identifiedItems.has('scroll_of_negation')).toBe(true);
+    });
+
+    it('玩家自己的状态也被清（CE :4834 negate(&player) 先于怪物循环、无消息）', () => {
+        const game = createHeadlessGame(20260914);
+        flattenArena(game);
+        game.player.setStatusDuration('hasted', 20);
+        game.player.setStatusDuration('slowed', 20);
+
+        giveScroll(game, 'scroll_of_negation');
+        expect(readScroll(game, 'scroll_of_negation')).toBe(true);
+
+        expect(game.player.hasStatus('hasted')).toBe(false);
+        expect(game.player.hasStatus('slowed')).toBe(false);
+    });
+
+    it('地面物品：附魔归零/符文消失/自动鉴定/解咒/探魔标记清除；距离外的原样不动', () => {
+        const game = createHeadlessGame(20260914);
+        flattenArena(game);
+        game.player.loc = { x: 1, y: 1 };
+        const near = placeItem(game, cursedRunicWeapon(), 5, 5);      // 32 ≤ 6241
+        const far = placeItem(game, cursedRunicWeapon(), 77, 27);     // 6452 > 6241
+        const wand = new Item('wand', '/', 0xdd88ff, ItemCategory.WAND);
+        wand.charges = 3;
+        wand.maxChargesKnown = false;
+        wand.timesUsed = 2;
+        placeItem(game, wand, 4, 5);
+
+        giveScroll(game, 'scroll_of_negation');
+        expect(readScroll(game, 'scroll_of_negation')).toBe(true);
+
+        // CE :4855-4859 WEAPON：enchant1=enchant2=charges=0，符文与保护消失，
+        // identify() 自动鉴定（含种类）；:4851 探魔/诅咒标记无条件清除。
+        expect(near.enchantment).toBe(0);
+        expect(near.timesUsed).toBe(0);
+        expect(near.charges).toBe(0);
+        expect(near.runicType).toBeUndefined();
+        expect(near.runicKnown).toBe(false);
+        expect(near.isProtected).toBe(false);
+        expect(near.isCursed).toBe(false);
+        expect(near.magicDetected).toBe(false);
+        expect(near.identified).toBe(true);
+        // CE :4865-4866 WAND：清剩余充能（不动 enchant2=timesUsed）、上限已知
+        expect(wand.charges).toBe(0);
+        expect(wand.maxChargesKnown).toBe(true);
+        expect(wand.timesUsed).toBe(2);
+        // 距离外：逐字段原样不动
+        expect(far.enchantment).toBe(3);
+        expect(far.runicType).toBe('quietus');
+        expect(far.isCursed).toBe(true);
+        expect(far.magicDetected).toBe(true);
+        expect(far.identified).toBe(false);
+    });
+});
+
+describe('B-3 sanctuary_burst 卷轴（Items.c:7941-7943 → DF_SACRED_GLYPHS）', () => {
+    it('脚下与 4 正邻的 SURFACE 层落 SACRED_GLYPH（100/100 十字波前），T_SACRED 旗标成立', () => {
+        const game = createHeadlessGame(20260914);
+        flattenArena(game);
+        game.player.loc = { x: 10, y: 10 };
+
+        giveScroll(game, 'scroll_of_sanctuary');
+        expect(readScroll(game, 'scroll_of_sanctuary')).toBe(true);
+
+        for (const [x, y] of [[10, 10], [9, 10], [11, 10], [10, 9], [10, 11]] as const) {
+            const cell = game.grid.getCell(x, y)!;
+            expect(cell.layers[DungeonLayer.SURFACE], `(${x},${y}) SURFACE 层`).toBe(TerrainType.SACRED_GLYPH);
+            expect(cell.terrain, `(${x},${y}) 有效地形（prio 7 胜出）`).toBe(TerrainType.SACRED_GLYPH);
+            expect(TERRAIN_FLAGS[cell.terrain].flags & T_SACRED, `(${x},${y}) T_SACRED`).toBeTruthy();
+        }
+        // 十字波前是 4 向：对角格不该被波及
+        expect(game.grid.getCell(11, 11)!.layers[DungeonLayer.SURFACE]).toBe(TerrainType.NOTHING);
+
+        expect(ItemLoader.identifiedItems.has('scroll_of_sanctuary')).toBe(true);
+    });
+
+    it('行为终点（反空转链）：SafetyMap 把圣徽格判为怪物禁入——读卷轴前后同一格的图值必须改变', () => {
+        const game = createHeadlessGame(20260914);
+        flattenArena(game);
+        game.player.loc = { x: 10, y: 10 };
+        game.updateSafetyMap();
+        const before = game.safetyMap[11]![10]!; // 将落圣徽的邻格，此刻是普通地板
+
+        giveScroll(game, 'scroll_of_sanctuary');
+        expect(readScroll(game, 'scroll_of_sanctuary')).toBe(true);
+
+        game.updateSafetyMap();
+        // CE Time.c:1813-1817：T_SACRED → monsterCost = PDS_FORBIDDEN；
+        // 第二趟 dijkstra 后被重置回哨兵值 30000（SafetyMap.ts 的落地口径）。
+        expect(before, '圣徽落下前：普通地板，怪物可达').not.toBe(SAFETY_MAX_DISTANCE);
+        expect(game.safetyMap[11]![10], '圣徽落下后：怪物禁入').toBe(SAFETY_MAX_DISTANCE);
+        // 玩家侧不被阻：圣徽之外两格远的普通地板保持有限值（玩家代价 1 的
+        // 传播没有把圣徽当障碍——CE playerCost=1）。玩家格自身按 CE 的
+        // 玩家格修正（monsterCost=PDS_FORBIDDEN）同样落 30000，不在此断言。
+        expect(game.safetyMap[12]![10], '圣徽旁边的普通地板仍可达').not.toBe(SAFETY_MAX_DISTANCE);
+    });
+});
+
+describe('B-3 shatter_burst 卷轴（Items.c:8007-8010 → crystalize(9)）', () => {
+    it('半径 9 内的墙变 FORCEFIELD；半径外的墙不变；边界格变 CRYSTAL_WALL（非 FORCEFIELD）', () => {
+        const game = createHeadlessGame(20260914);
+        flattenArena(game);
+        game.player.loc = { x: 5, y: 5 };
+        game.grid.setTerrain(10, 5, TerrainType.WALL);  // 距离 5 ≤ 9 → FORCEFIELD
+        game.grid.setTerrain(16, 5, TerrainType.WALL);  // 距离 11 > 9 → 不变
+        game.grid.setTerrain(0, 5, TerrainType.WALL);   // 边界格（i==0），距离 5 ≤ 9 → CRYSTAL_WALL
+
+        giveScroll(game, 'scroll_of_shattering');
+        expect(readScroll(game, 'scroll_of_shattering')).toBe(true);
+
+        const inner = game.grid.getCell(10, 5)!;
+        expect(inner.layers[DungeonLayer.DUNGEON]).toBe(TerrainType.FORCEFIELD);
+        expect(TERRAIN_FLAGS[inner.terrain].flags & T_OBSTRUCTS_PASSABILITY).toBeTruthy();
+        expect(game.grid.getCell(16, 5)!.layers[DungeonLayer.DUNGEON]).toBe(TerrainType.WALL);
+        // CE :4928-4929 "boundary walls turn to crystal"——DF 之后覆写，末值是晶墙
+        expect(game.grid.getCell(0, 5)!.layers[DungeonLayer.DUNGEON]).toBe(TerrainType.CRYSTAL_WALL);
+        // 启发式同步：FORCEFIELD 不挡视线 → isOpaque 立即翻假
+        expect(inner.isOpaque).toBe(false);
+
+        expect(ItemLoader.identifiedItems.has('scroll_of_shattering')).toBe(true);
+    });
+
+    it('视野：挡视线的墙被打碎后，玩家当场看到墙后（updateVision 不等回合结算）', () => {
+        const game = createHeadlessGame(20260914);
+        flattenArena(game);
+        game.player.loc = { x: 5, y: 5 };
+        game.grid.setTerrain(10, 5, TerrainType.WALL);
+        // 先用一次 updateVision 建立基线：墙影里的 (12,5) 不可见
+        (game as unknown as { updateVision(): void }).updateVision();
+        expect(game.grid.getCell(12, 5)!.isVisible).toBe(false);
+
+        giveScroll(game, 'scroll_of_shattering');
+        expect(readScroll(game, 'scroll_of_shattering')).toBe(true);
+
+        // crystalize 收尾的 updateVision（CE :4935）已当场重算：力场墙不挡视线
+        expect(game.grid.getCell(10, 5)!.layers[DungeonLayer.DUNGEON]).toBe(TerrainType.FORCEFIELD);
+        expect(game.grid.getCell(12, 5)!.isVisible).toBe(true);
+    });
+
+    it('对抗②场景：DUNGEON 层的 DOOR 被圣徽盖住（glyph prio 7 < door 8，有效地形是圣徽）仍须被晶化——读 layers[DUNGEON] 而非 cell.terrain', () => {
+        const game = createHeadlessGame(20260914);
+        flattenArena(game);
+        game.player.loc = { x: 5, y: 5 };
+        game.grid.setTerrainLayer(10, 5, DungeonLayer.DUNGEON, TerrainType.DOOR);
+        game.grid.setTerrainLayer(10, 5, DungeonLayer.SURFACE, TerrainType.SACRED_GLYPH);
+        // 此时 cell.terrain = SACRED_GLYPH（7 < 8），但它不挡视线；
+        // 挡视线的是 DUNGEON 层的 DOOR（CE Items.c:4914 读 layers[DUNGEON]）
+        expect(game.grid.getCell(10, 5)!.terrain).toBe(TerrainType.SACRED_GLYPH);
+
+        giveScroll(game, 'scroll_of_shattering');
+        expect(readScroll(game, 'scroll_of_shattering')).toBe(true);
+
+        expect(game.grid.getCell(10, 5)!.layers[DungeonLayer.DUNGEON]).toBe(TerrainType.FORCEFIELD);
+    });
+});
+
+describe('B-3 交互期掷骰哨兵（rng.randomNumbersGenerated 增量口径，B-1b 验证过的判据）', () => {
+    /** test 层 + 全平地 + 无怪无物：回合结算零噪声（periodic spawn 在 test 模式短路）。 */
+    function cleanTestGame(): Game {
+        const game = createHeadlessGame(20260917, 'test');
+        flattenArena(game);
+        game.player.loc = { x: 20, y: 10 };
+        return game;
+    }
+
+    function measureConsumption(game: Game, id: string): number {
+        giveScroll(game, id); // 物品生成的掷骰发生在重播种之前
+        rng.seedRandomGenerator(777);
+        const before = rng.randomNumbersGenerated;
+        expect(readScroll(game, id)).toBe(true);
+        return rng.randomNumbersGenerated - before;
+    }
+
+    it('negation：读一次消耗 0 次随机数（CE negationBlast 全程零掷骰）', () => {
+        expect(measureConsumption(cleanTestGame(), 'scroll_of_negation')).toBe(0);
+    });
+
+    it('sanctuary：读一次消耗 4 次（DF_SACRED_GLYPHS 100/100 十字波前：4 正邻各掷一次 rand_percent(100)）', () => {
+        expect(measureConsumption(cleanTestGame(), 'scroll_of_sanctuary')).toBe(4);
+    });
+
+    it('shattering：读一次消耗 0 次（crystalize 无掷骰；DF_SHATTERING_SPELL start=0 零消耗且 tile 无载体跳过）', () => {
+        expect(measureConsumption(cleanTestGame(), 'scroll_of_shattering')).toBe(0);
     });
 });

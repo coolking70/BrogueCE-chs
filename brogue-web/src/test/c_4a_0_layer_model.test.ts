@@ -209,13 +209,17 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
         // 燃气之火与 PLAIN_FIRE 同落 SURFACE（G-1 §八.1 的 layer 实测）。
         // F-2c 扩一行：GAS_EXPLOSION（CE Globals.c:496，DF :742/:654 layer 列
         // 同证）——爆炸之火同为 SURFACE 层火地形。
-        for (const t of [C.GRASS, C.FOLIAGE, C.WEB, C.BLOOD, C.BRIDGE_EDGE, C.PLAIN_FIRE, C.EMBERS, C.ASH, C.GAS_FIRE, C.GAS_EXPLOSION]) {
+        // B-3 扩四行：FORCEFIELD/FORCEFIELD_MELT/SACRED_GLYPH → SURFACE、
+        // CRYSTAL_WALL → DUNGEON（CE DF 目录 :674/:675/:676/:607 layer 列同证；
+        // crystalize 对 FORCEFIELD/CRYSTAL_WALL 的 DUNGEON 直写是调用点行为，
+        // setTerrain 归属仍按 DF 目录）。
+        for (const t of [C.GRASS, C.FOLIAGE, C.WEB, C.BLOOD, C.BRIDGE_EDGE, C.PLAIN_FIRE, C.EMBERS, C.ASH, C.GAS_FIRE, C.GAS_EXPLOSION, C.FORCEFIELD, C.FORCEFIELD_MELT, C.SACRED_GLYPH]) {
             expect(homeLayerViaSetTerrain(t), `terrain ${t}`).toBe(L.SURFACE);
         }
         for (const t of [
             C.GRANITE, C.FLOOR, C.WALL, C.DOOR, C.OPEN_DOOR, C.SECRET_DOOR,
             C.LOCKED_DOOR, C.STAIRS_UP, C.STAIRS_DOWN, C.ALTAR, C.SIGN,
-            C.RESET_PLATE, C.PRESSURE_PLATE, C.TRAP, C.CHARRED_FLOOR,
+            C.RESET_PLATE, C.PRESSURE_PLATE, C.TRAP, C.CHARRED_FLOOR, C.CRYSTAL_WALL,
         ]) {
             expect(homeLayerViaSetTerrain(t), `terrain ${t}`).toBe(L.DUNGEON);
         }
@@ -245,6 +249,9 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.PARALYSIS_GAS]: L.GAS, // G-3（CE Globals.c:506 麻痹气体，:778 DF layer 同证）
             [C.GAS_EXPLOSION]: L.SURFACE, // F-2c（CE Globals.c:496 火地形落 SURFACE，:742/:654 DF layer 同证）
             [C.HOLE]: L.SURFACE, [C.HOLE_EDGE]: L.SURFACE, // C-5（CE Globals.c:442/444；:756/:782 DF layer 同证）
+            [C.FORCEFIELD]: L.SURFACE, [C.FORCEFIELD_MELT]: L.SURFACE, // B-3（CE :674/:675 DF layer 同证）
+            [C.CRYSTAL_WALL]: L.DUNGEON, // B-3（CE :607 {CRYSTAL_WALL, DUNGEON}）
+            [C.SACRED_GLYPH]: L.SURFACE, // B-3（CE :676 {SACRED_GLYPH, SURFACE}）
         });
         expect(DRAW_PRIORITY).toEqual({
             [C.NOTHING]: 100, [C.GRANITE]: 0, [C.FLOOR]: 95, [C.WALL]: 0,
@@ -266,6 +273,9 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.PARALYSIS_GAS]: 35, // G-3（CE Globals.c:506 第 4 列，气体同为 35）
             [C.GAS_EXPLOSION]: 10, // F-2c（CE Globals.c:496 第 4 列，与 PLAIN_FIRE 同档）
             [C.HOLE]: 9, [C.HOLE_EDGE]: 50, // C-5（CE Globals.c:442/444 第 4 列原值）
+            [C.FORCEFIELD]: 0, [C.FORCEFIELD_MELT]: 0, // B-3（CE Globals.c:477/478 第 4 列）
+            [C.CRYSTAL_WALL]: 0, // B-3（CE Globals.c:338 第 4 列）
+            [C.SACRED_GLYPH]: 7, // B-3（CE Globals.c:479 第 4 列）
         });
     });
 });

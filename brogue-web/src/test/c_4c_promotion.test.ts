@@ -566,7 +566,13 @@ describe('C-4c E：§五 实测测量（真实关卡、多种子；只测量不�
         // 范围使然）'，expected 0）：HOLE/HOLE_EDGE（洞族，CE Globals.c:442/444
         // 原值 -1000/-500）随坠落子系统入列——负值扩散分支从死数据变为活数据。
         // 越界守卫（不放宽）：负值地形必须是且仅是 CE 洞族这两条、取 CE 原值。
-        expect(negative.sort(), 'C-5 后负值载体必须是且仅是 CE 洞族两条（HOLE:-1000/HOLE_EDGE:-500）')
-            .toEqual(['HOLE:-1000', 'HOLE_EDGE:-500']);
+        // B-3 再扩（验收方 2026-09-17 补授权——本条不在 B-3 任务书清单内，
+        // 是验收方两段 grep 的漏项，由执行方如实登记后验收方补修）：
+        // 力场族随「碎裂」卷轴入列。CE 原值 Globals.c:477 FORCEFIELD = -200、
+        // :478 FORCEFIELD_MELT = -10000，两者都走 TM_VANISHES_UPON_PROMOTION
+        // 的消融链。守卫**不放宽**：仍要求负值载体是且仅是这四条、取 CE 原值，
+        // 目的一如既往是挡住"随手塞个非 CE 负值进来"。
+        expect(negative.sort(), 'B-3 后负值载体必须是且仅是 CE 洞族两条 + 力场族两条，且取 CE 原值')
+            .toEqual(['FORCEFIELD:-200', 'FORCEFIELD_MELT:-10000', 'HOLE:-1000', 'HOLE_EDGE:-500'].sort());
     });
 });

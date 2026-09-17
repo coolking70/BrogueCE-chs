@@ -30,11 +30,13 @@ import {
     T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_LAKE_PATHING_BLOCKER,
     T_WAYPOINT_BLOCKER, T_OBSTRUCTS_SCENT, T_MOVES_ITEMS,
     T_OBSTRUCTS_EVERYTHING,
+    T_SACRED,
     T_CAUSES_DAMAGE, T_CAUSES_CONFUSION, T_CAUSES_PARALYSIS,
     TM_ALLOWS_SUBMERGING, TM_EXTINGUISHES_FIRE, TM_PROMOTES_WITH_KEY,
     TM_IS_SECRET, TM_VANISHES_UPON_PROMOTION, TM_STAND_IN_TILE, TM_VISUALLY_DISTINCT,
     TM_GAS_DISSIPATES, TM_GAS_DISSIPATES_QUICKLY,
     TM_EXPLOSIVE_PROMOTE,
+    TM_PROMOTES_ON_CREATURE, TM_REFLECTS_BOLTS,
     blocksPassability, isPathingBlocker, blocksVision,
     obstructsItems, obstructsDiagonalMovement, isDeepWater, isFlammable,
     isFireTerrain,
@@ -130,7 +132,10 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         // DF_EXPLOSION_FIRE / DF_BLOAT_EXPLOSION），40 → 41。
         // C-5：HOLE/HOLE_EDGE 入列（CE Globals.c:442/444，洞族——载体 =
         // DF_HOLE_POTION / DF_HOLE_2，下坠药水与 pit bloat 的坠落载体），41 → 43。
-        expect(names.length).toBe(43);
+        // B-3：FORCEFIELD/FORCEFIELD_MELT/CRYSTAL_WALL/SACRED_GLYPH 入列
+        //（CE Globals.c:477/478/338/479，三张卷轴 negation/sanctuary/shattering
+        // 的载体地形），43 → 47。
+        expect(names.length).toBe(47);
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             const entry = TERRAIN_FLAGS[t];
@@ -302,6 +307,57 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         expect(TERRAIN_HOME_LAYER[C.PARALYSIS_GAS]).toBe(L.GAS);
     });
 
+    it('B-3 新增条目：FORCEFIELD（Globals.c:477）/ FORCEFIELD_MELT（:478）逐字段钉死', () => {
+        // 捕获的错误实现：
+        //   - FORCEFIELD 的 promoteChance 写成正数 200（CE 是 **-200**，负值 =
+        //     扩散型晋升：Promotion.ts 每个合格 4 向开敞邻居 +200/回合）；
+        //   - promoteType 漏 DF_FORCEFIELD_MELT（消融链断——水晶永不融化）；
+        //   - 漏 TM_PROMOTES_ON_CREATURE 或 TM_VANISHES_UPON_PROMOTION；
+        //   - 旗标漏 T_OBSTRUCTS_GAS / T_OBSTRUCTS_DIAGONAL_MOVEMENT；
+        //   - glowLight 漏 FORCEFIELD_LIGHT。
+        for (const t of [C.FORCEFIELD, C.FORCEFIELD_MELT]) {
+            expect(TERRAIN_FLAGS[t]!.flags).toBe(
+                T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_GAS | T_OBSTRUCTS_DIAGONAL_MOVEMENT);
+            expect(TERRAIN_FLAGS[t]!.mechFlags).toBe(
+                TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_CREATURE);
+            expect(TERRAIN_FLAGS[t]!.chanceToIgnite).toBe(0);
+            expect(TERRAIN_FLAGS[t]!.glowLight).toBeDefined();
+        }
+        expect(TERRAIN_FLAGS[C.FORCEFIELD]!.promoteType).toBe('DF_FORCEFIELD_MELT');
+        expect(TERRAIN_FLAGS[C.FORCEFIELD]!.promoteChance).toBe(-200);
+        expect(TERRAIN_FLAGS[C.FORCEFIELD_MELT]!.promoteType).toBe('');
+        expect(TERRAIN_FLAGS[C.FORCEFIELD_MELT]!.promoteChance).toBe(-10000);
+        expect(DRAW_PRIORITY[C.FORCEFIELD]).toBe(0);
+        expect(DRAW_PRIORITY[C.FORCEFIELD_MELT]).toBe(0);
+        expect(TERRAIN_HOME_LAYER[C.FORCEFIELD]).toBe(L.SURFACE);
+        expect(TERRAIN_HOME_LAYER[C.FORCEFIELD_MELT]).toBe(L.SURFACE);
+    });
+
+    it('B-3 新增条目：CRYSTAL_WALL（Globals.c:338）与 SACRED_GLYPH（:479）逐字段钉死', () => {
+        // CRYSTAL_WALL 捕获的错误实现：
+        //   - 抄成挡视线（CE flags 无 T_OBSTRUCTS_VISION——水晶墙后看得见，
+        //     这正是 crystalize 打通视野断言的地形面前提）；
+        //   - 漏 TM_REFLECTS_BOLTS；fireType 漏 DF_PLAIN_FIRE（CE 数据如此）；
+        //   - glowLight 漏 CRYSTAL_WALL_LIGHT；drawPriority 写非 0。
+        expect(TERRAIN_FLAGS[C.CRYSTAL_WALL]!.flags).toBe(
+            T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS |
+            T_OBSTRUCTS_SURFACE_EFFECTS | T_OBSTRUCTS_DIAGONAL_MOVEMENT);
+        expect(TERRAIN_FLAGS[C.CRYSTAL_WALL]!.mechFlags).toBe(TM_STAND_IN_TILE | TM_REFLECTS_BOLTS);
+        expect(TERRAIN_FLAGS[C.CRYSTAL_WALL]!.fireType).toBe('DF_PLAIN_FIRE');
+        expect(TERRAIN_FLAGS[C.CRYSTAL_WALL]!.promoteType).toBe('');
+        expect(TERRAIN_FLAGS[C.CRYSTAL_WALL]!.promoteChance).toBe(0);
+        expect(DRAW_PRIORITY[C.CRYSTAL_WALL]).toBe(0);
+        expect(TERRAIN_HOME_LAYER[C.CRYSTAL_WALL]).toBe(L.DUNGEON);
+        // SACRED_GLYPH：T_SACRED 的 web 唯一载体（SafetyMap.isSacred 的判据位）；
+        // 零机械旗标、零晋升、prio 7、SURFACE 层。
+        expect(TERRAIN_FLAGS[C.SACRED_GLYPH]!.flags).toBe(T_SACRED);
+        expect(TERRAIN_FLAGS[C.SACRED_GLYPH]!.mechFlags).toBe(0);
+        expect(TERRAIN_FLAGS[C.SACRED_GLYPH]!.promoteType).toBe('');
+        expect(TERRAIN_FLAGS[C.SACRED_GLYPH]!.fireType).toBe('');
+        expect(DRAW_PRIORITY[C.SACRED_GLYPH]).toBe(7);
+        expect(TERRAIN_HOME_LAYER[C.SACRED_GLYPH]).toBe(L.SURFACE);
+    });
+
     it('F-2a 守卫：Grid.FIRE_TERRAIN_TYPES（isBurning 派生集）≡ T_IS_FIRE 旗标载体集', () => {
         // Cell.isBurning 的 getter 用本集合判火（Grid.ts 不能反向 import
         // TerrainCatalog，数据登记了两份）。本断言把两份双向锁死：
@@ -389,11 +445,22 @@ describe('C-4a C：派生判据语义（混用别名化 / 抄错的可观测后�
     });
 });
 
-describe('C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（全 31 枚举逐位）', () => {
+describe('C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时点的枚举全集逐位）', () => {
+    // B-3 注：本组等价断言的论域是 **C-4a 迁移时点存在的地形**——那之后
+    // 落地的 CE 墙族 tile（B-3 的 FORCEFIELD/FORCEFIELD_MELT/CRYSTAL_WALL，
+    // CE Globals.c:477/478/338，T_OBSTRUCTS_PASSABILITY 挡通行）没有"旧
+    // 硬编码判据"可言（旧清单诞生时它们不存在），等价比较对它们无定义，
+    // 按 B-1 反转范本列入 POST_LEGACY_TILES 跳过，其 CE 正确判定由 B-3
+    // 的逐字段块（flags 断言）钉死。SACRED_GLYPH 不挡通行，两边同为 true，
+    // 留在等价论域内。
+    const POST_LEGACY_TILES = new Set<TerrainType>([
+        C.FORCEFIELD, C.FORCEFIELD_MELT, C.CRYSTAL_WALL,
+    ]);
     it('terrainAllowsMove（查表）≡ 旧排除清单 {GRANITE,WALL,SECRET_DOOR,LOCKED_DOOR,WATER_DEEP}', () => {
         const names = Object.keys(TerrainType).filter((k) => Number.isNaN(Number(k)));
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
+            if (POST_LEGACY_TILES.has(t)) continue; // 迁移后新增，无旧判据（见组注）
             expect(terrainAllowsMove(t), `${TerrainType[t]}`).toBe(legacyAllowsMove(t));
         }
     });
@@ -404,8 +471,25 @@ describe('C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（全 31 �
         const names = Object.keys(TerrainType).filter((k) => Number.isNaN(Number(k)));
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
+            if (POST_LEGACY_TILES.has(t)) continue; // 迁移后新增，无旧判据（见组注）
             game.grid.setTerrain(20, 20, t);
             expect(canMoveTo(20, 20), `${TerrainType[t]}`).toBe(legacyAllowsMove(t));
+        }
+    });
+
+    it('B-3：迁移后新增的墙族 tile 的通行判定 = CE 查表口径（挡通行、不进旧清单）', () => {
+        // 上面两条跳过的三张 tile 在这里按 CE 语义正向钉死：
+        // T_OBSTRUCTS_PASSABILITY ⇒ terrainAllowsMove/canMoveTo 均为 false
+        //（水晶/力场墙是墙）；SACRED_GLYPH 不挡通行 ⇒ true。
+        for (const t of [C.FORCEFIELD, C.FORCEFIELD_MELT, C.CRYSTAL_WALL]) {
+            expect(terrainAllowsMove(t), `terrainAllowsMove(${TerrainType[t]})`).toBe(false);
+        }
+        expect(terrainAllowsMove(C.SACRED_GLYPH), 'terrainAllowsMove(SACRED_GLYPH)').toBe(true);
+        const game = createHeadlessGame(424242);
+        const canMoveTo = (game as unknown as { canMoveTo(x: number, y: number): boolean }).canMoveTo.bind(game);
+        for (const t of [C.FORCEFIELD, C.FORCEFIELD_MELT, C.CRYSTAL_WALL]) {
+            game.grid.setTerrain(20, 20, t);
+            expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(false);
         }
     });
 });

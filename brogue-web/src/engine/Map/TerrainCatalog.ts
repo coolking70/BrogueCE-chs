@@ -525,6 +525,58 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
         TM_VANISHES_UPON_PROMOTION,
         0, 'DF_PLAIN_FIRE', '', '', -500
     ),
+
+    // ── B-3：水晶/圣徽 tile（Globals.c:477-479 与 :338）────────────────────
+
+    // CE FORCEFIELD，Globals.c:477：SCROLL_SHATTERING 的 crystalize 打碎的墙
+    // 先变它（Items.c:4916 直写 DUNGEON 层）。promoteChance -200 = 负值扩散型
+    // （Promotion.ts 第一趟：每个合格 4 向开敞邻居 +200/回合 → 晋升掷骰 →
+    // DF_FORCEFIELD_MELT），"绿水晶肉眼可见地消融"。DF 目录 :674
+    // {FORCEFIELD, SURFACE, 100, 50} 是机器侧写入口（web 未接）。
+    // glowLight = FORCEFIELD_LIGHT（:477 原列）。
+    [TerrainType.FORCEFIELD]: e(
+        T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_GAS | T_OBSTRUCTS_DIAGONAL_MOVEMENT,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_CREATURE,
+        0, '', '', 'DF_FORCEFIELD_MELT', -200,
+        false, LightKind.FORCEFIELD_LIGHT
+    ),
+
+    // CE FORCEFIELD_MELT，Globals.c:478：消融中的水晶。同旗标同光照；
+    // promoteChance -10000——邻居开敞即高概率晋升，且 promoteType 0（''）
+    // + VANISHES ⇒ promoteTile 只清层消失（CE Time.c:1254-1271 通用机制）。
+    [TerrainType.FORCEFIELD_MELT]: e(
+        T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_GAS | T_OBSTRUCTS_DIAGONAL_MOVEMENT,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_CREATURE,
+        0, '', '', '', -10000,
+        false, LightKind.FORCEFIELD_LIGHT
+    ),
+
+    // CE CRYSTAL_WALL，Globals.c:338："边界墙化晶"（crystalize 的边界覆写，
+    // Items.c:4928-4929）与 DF_CRYSTAL_WALL（Globals.c:607，C-6 自动生成器
+    // 待激活缺口的载体 tile）。带 T_OBSTRUCTS_ITEMS/SURFACE_EFFECTS/
+    // DIAGONAL_MOVEMENT 但**不挡视线**（无 T_OBSTRUCTS_VISION——水晶墙后
+    // 的东西看得见）；TM_REFLECTS_BOLTS 反弹法杖 bolt；fireType
+    // DF_PLAIN_FIRE（可被点燃轴烧毁，CE 数据如此）。glowLight =
+    // CRYSTAL_WALL_LIGHT（:338 原列）。
+    [TerrainType.CRYSTAL_WALL]: e(
+        T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS |
+        T_OBSTRUCTS_SURFACE_EFFECTS | T_OBSTRUCTS_DIAGONAL_MOVEMENT,
+        TM_STAND_IN_TILE | TM_REFLECTS_BOLTS,
+        0, 'DF_PLAIN_FIRE', '', '', 0,
+        false, LightKind.CRYSTAL_WALL_LIGHT
+    ),
+
+    // CE SACRED_GLYPH，Globals.c:479：SCROLL_SANCTUARY 的 DF_SACRED_GLYPHS
+    // （Globals.c:676，SURFACE 层 100/100 十字波前）落在地上的圣徽。
+    // T_SACRED（敌对怪物回避）的 web 唯一载体——消费点 =
+    // SafetyMap.isSacred（B-3 起：谓词从恒 false 激活为真读位）。
+    // drawPriority 7（web 的 SIGN 当年借的显示位就是它）；glowLight =
+    // SACRED_GLYPH_LIGHT（:479 原列）。
+    [TerrainType.SACRED_GLYPH]: e(
+        T_SACRED, 0,
+        0, '', '', '', 0,
+        false, LightKind.SACRED_GLYPH_LIGHT
+    ),
 };
 
 // ── 派生判据（名字照 CE，语义 = 旗标位测试；CE Movement/Dijkstra 等处

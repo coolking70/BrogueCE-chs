@@ -87,6 +87,12 @@ export enum DF {
                                           // tile GRASS 同轮已具备）
     DF_FOLIAGE                     = 8,   // :1477（C-6：表 index 8 的 DFType，
                                           // Globals.c:613；tile FOLIAGE 同轮已具备）
+    DF_FORCEFIELD_MELT             = 52,  // :1527（B-3：FORCEFIELD.promoteType
+                                          // 的载体，Globals.c:675 目录行）
+    DF_SACRED_GLYPHS               = 53,  // :1528（B-3：SCROLL_SANCTUARY 的 DF，
+                                          // Items.c:7942 → Globals.c:676 目录行）
+    DF_SHATTERING_SPELL            = 56,  // :1531（B-3：crystalize 每个命中格的
+                                          // DF，Items.c:4917 → Globals.c:679 目录行）
 }
 
 /** 目录条目 = CE 结构体的 web 投影（messageDisplayed 除外——它依赖玩家
@@ -419,6 +425,48 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
         flags: DFF_BLOCKED_BY_OTHER_LAYERS, cePropagationTerrain: '', propagationTerrain: null,
         subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0,
     },
+
+    // ── B-3：三张卷轴（negation/sanctuary/shattering）的 DF ────────────────
+
+    // {FORCEFIELD_MELT, SURFACE, 0, 0, 0} —— 消融中的水晶（B-3：FORCEFIELD
+    // tile 的 promoteType 载体；start=0 → 原点一格、零 RNG）。FORCEFIELD_MELT
+    // tile 同轮已迁（Globals.c:478）。
+    [DF.DF_FORCEFIELD_MELT]: {
+        id: DF.DF_FORCEFIELD_MELT, ceLine: 675, ceTile: 'FORCEFIELD_MELT',
+        tile: TerrainType.FORCEFIELD_MELT,
+        layer: DungeonLayer.SURFACE, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {SACRED_GLYPH, SURFACE, 100, 100, 0, "", EMPOWERMENT_LIGHT} —— 圣徽
+    //（B-3：SCROLL_SANCTUARY 落在玩家脚下，Items.c:7941-7943 五参形态
+    // spawnDungeonFeature(x, y, feat, refreshCell=true, abortIfBlocking=false)）。
+    // start=100/decr=100：spawnMapDF 十字波前——中心格无条件 + 4 正邻各掷一次
+    // rand_percent(100)（必中），共 5 格圣徽（CE 的 "forming glyphS" 即此）。
+    // EMPOWERMENT_LIGHT 光效列 web 无对应（登记不迁移）。tile SACRED_GLYPH
+    // 同轮已迁（Globals.c:479）。
+    [DF.DF_SACRED_GLYPHS]: {
+        id: DF.DF_SACRED_GLYPHS, ceLine: 676, ceTile: 'SACRED_GLYPH',
+        tile: TerrainType.SACRED_GLYPH,
+        layer: DungeonLayer.SURFACE, startProbability: 100, probabilityDecrement: 100,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: 'EMPOWERMENT_LIGHT', flashColor: '', effectRadius: 0,
+    },
+
+    // {RUBBLE, SURFACE, 0, 0, DFF_ACTIVATE_DORMANT_MONSTER} —— 碎石（B-3：
+    // crystalize 在每个命中格 spawned，Items.c:4917）。CE 行号按 DF 枚举
+    // （Rogue.h:1531 DF_SHATTERING_SPELL=56）对齐目录表推得 :679——上下行
+    // :677 DF_LICHEN_GROW / :678 DF_TUNNELIZE 双重锚定。start=0 → 只标记
+    // 原点格；tile RUBBLE web 无对应地形 → tile null 登记（入
+    // DF_MISSING_TILES，留待 RUBBLE 地形落地的轮次翻正）；唤醒休眠怪旗标
+    // 同属游戏侧登记未实现。
+    [DF.DF_SHATTERING_SPELL]: {
+        id: DF.DF_SHATTERING_SPELL, ceLine: 679, ceTile: 'RUBBLE', tile: null,
+        layer: DungeonLayer.SURFACE, startProbability: 0, probabilityDecrement: 0,
+        flags: DFF_ACTIVATE_DORMANT_MONSTER, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
 };
 
 /** 登记"CE 有 tileType 而 web 没有地形"的目录条目 id 清单
@@ -442,4 +490,5 @@ export const DF_MISSING_TILES: readonly DF[] = [
     DF.DF_OPEN_IRON_DOOR_INERT,    // OPEN_IRON_DOOR_INERT
     DF.DF_BRIDGE_FALL_PREP,        // BRIDGE_FALLING
     DF.DF_MACHINE_PRESSURE_PLATE_USED, // MACHINE_PRESSURE_PLATE_USED
+    DF.DF_SHATTERING_SPELL,        // RUBBLE（B-3：crystalize 的碎石 tile，web 无）
 ];

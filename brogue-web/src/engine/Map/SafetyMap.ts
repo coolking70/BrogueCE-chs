@@ -21,11 +21,13 @@
  *     在前）。P4-9 曾因 web 玩家出生在楼梯上把两段对调（登记的有意偏离），
  *     P1-31 修复进层落位后按回退条件恢复 CE 顺序——见 buildSafetyMap 内注。
  *   - IN_LOOP 无 web 数据源：ctx.isInLoop 由 Game 恒接 false（机制保留、可注入测试）。
- *   - T_SACRED 无 web 地形：谓词恒 false，分支结构保留。
+ *   - T_SACRED（sacred glyph）：B-3 起 SACRED_GLYPH 地形落地，isSacred 为
+ *     真读位（此前恒 false 的留形谓词已激活）。
  *   - T_SPONTANEOUSLY_IGNITES（brimstone）无 web 地形，见报告。
  */
 
 import { Grid, TerrainType } from './Grid';
+import { TERRAIN_FLAGS, T_SACRED } from './TerrainCatalog';
 import { DijkstraMap } from './Pathfinding';
 
 /** CE Rogue.h:2782（CE 原文就是 -1，不是 Pathfinding.ts 内部的 29999）。 */
@@ -72,10 +74,16 @@ export interface SafetyMapContext {
     isInLoop(x: number, y: number): boolean;
 }
 
-/** CE T_SACRED：web 无对应地形，谓词恒 false（分支结构保留）。 */
+/**
+ * CE T_SACRED（Rogue.h:1945）：圣徽格——玩家可通行、怪物禁入
+ * （Time.c:1813-1817 的 else-if 分支体）。
+ * B-3 起 web 有真载体（SACRED_GLYPH，Globals.c:479，SCROLL_SANCTUARY 落地），
+ * 谓词从恒 false 激活为真读位。激活时分支体已按 CE 逐字重核：
+ * playerCost=1 / monsterCost=PDS_FORBIDDEN，无遗漏条件（CE 该分支不叠加
+ * 其他判定）。
+ */
 function isSacred(cell: { terrain: TerrainType }): boolean {
-    void cell;
-    return false;
+    return (TERRAIN_FLAGS[cell.terrain].flags & T_SACRED) !== 0;
 }
 
 /** web 的 MonsterState 数值枚举（Monster.ts：ASLEEP/WANDERING/HUNTING/FLEEING）。

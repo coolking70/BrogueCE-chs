@@ -112,7 +112,22 @@ export enum TerrainType {
     // 地面"）。两族 tile 的差异只在字形/优先级/镶边文案，玩法语义同 CHASM。
     // 只追加在尾部（既有枚举值不变）。
     HOLE,
-    HOLE_EDGE
+    HOLE_EDGE,
+    // B-3：三张卷轴（negation/sanctuary/shattering）的载体 tile。
+    //   FORCEFIELD / FORCEFIELD_MELT（CE Globals.c:477/478）——crystalize
+    //     打碎的墙先变 FORCEFIELD（Items.c:4916 直写 DUNGEON 层），再经
+    //     负 promoteChance（-200/-10000，C-4c 扩散型晋升）逐步消融；
+    //   CRYSTAL_WALL（CE Globals.c:338）——crystalize 的边界覆写
+    //     （Items.c:4928-4929 "boundary walls turn to crystal"）；也是
+    //     DF_CRYSTAL_WALL（Globals.c:607，C-6 自动生成器待激活缺口）的载体；
+    //   SACRED_GLYPH（CE Globals.c:479）——SCROLL_SANCTUARY 的
+    //     DF_SACRED_GLYPHS（Globals.c:676）落在 SURFACE 的圣徽，
+    //     T_SACRED 消费点 = SafetyMap.isSacred（B-3 激活）。
+    // 只追加在尾部（既有枚举值不变）。
+    FORCEFIELD,
+    FORCEFIELD_MELT,
+    CRYSTAL_WALL,
+    SACRED_GLYPH
 }
 
 export enum LightType {
@@ -214,7 +229,14 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     // C-5：CE HOLE 9 / HOLE_EDGE 50（Globals.c:442/444 第 4 列）。HOLE 的 9
     // 与火同档（洞是"压得住草/网"的强地形）；HOLE_EDGE 50 与 OBSIDIAN 同档。
     [TerrainType.HOLE]: 9,
-    [TerrainType.HOLE_EDGE]: 50
+    [TerrainType.HOLE_EDGE]: 50,
+    // B-3：FORCEFIELD 0 / FORCEFIELD_MELT 0 / CRYSTAL_WALL 0（CE Globals.c:
+    // 477/478/338 第 4 列——三者都是墙档强地形）；SACRED_GLYPH 7（:479 第 4 列，
+    // 与 web SIGN 借用的正是同一位）。
+    [TerrainType.FORCEFIELD]: 0,
+    [TerrainType.FORCEFIELD_MELT]: 0,
+    [TerrainType.CRYSTAL_WALL]: 0,
+    [TerrainType.SACRED_GLYPH]: 7
 };
 
 /**
@@ -308,7 +330,17 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     // 与 :782 {HOLE_EDGE, SURFACE, 300, 100, …} 的 layer 列同证；tile 本体在
     // Globals.c:442/444 的 "// surface layer" 注释块）。
     [TerrainType.HOLE]: DungeonLayer.SURFACE,
-    [TerrainType.HOLE_EDGE]: DungeonLayer.SURFACE
+    [TerrainType.HOLE_EDGE]: DungeonLayer.SURFACE,
+    // B-3：FORCEFIELD / FORCEFIELD_MELT / SACRED_GLYPH → SURFACE、
+    // CRYSTAL_WALL → DUNGEON（CE DF 目录 layer 列同证：:674 {FORCEFIELD,
+    // SURFACE}、:675 {FORCEFIELD_MELT, SURFACE}、:676 {SACRED_GLYPH, SURFACE}、
+    // :607 {CRYSTAL_WALL, DUNGEON}）。注意 crystalize（Items.c:4916/4929）把
+    // FORCEFIELD/CRYSTAL_WALL 直写 DUNGEON 层，不走 setTerrain 归属——
+    // 那是调用点的 CE 字面行为，与本表（setTerrain 的归属）并行不悖。
+    [TerrainType.FORCEFIELD]: DungeonLayer.SURFACE,
+    [TerrainType.FORCEFIELD_MELT]: DungeonLayer.SURFACE,
+    [TerrainType.CRYSTAL_WALL]: DungeonLayer.DUNGEON,
+    [TerrainType.SACRED_GLYPH]: DungeonLayer.SURFACE
 };
 
 /**

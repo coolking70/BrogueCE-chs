@@ -444,8 +444,15 @@ describe('G-2 对抗⑦：未迁移气体只登记（载体盘点表的显式留
     // （tile 缺失）失效。守卫语义反转为新事实：条目完整接线 + 摘出名单
     // （名单守卫保留：仍恰 6 条，防"接线顺手删登记"）。
     it('F-2c 翻转：DF_EXPLOSION_FIRE 已接线（tile GAS_EXPLOSION 已迁），catalogFeature 正常转换且不在缺 tile 名单', () => {
-        expect(DF_MISSING_TILES, 'F-2c 后缺 tile 名单恰 6 条').not.toContain(DF.DF_EXPLOSION_FIRE);
-        expect(DF_MISSING_TILES).toHaveLength(6);
+        // B-3 顺延（验收方 2026-09-17 补授权——同样是两段 grep 的漏项）：
+        // DF_MISSING_TILES 是**跨轮公共登记表**，任何新增"web 无对应 tile"的
+        // DF 都会把它顶长，而它偏偏钉在一个按主题命名的气体测试里——
+        // 按主题关键词 grep 永远搜不到它。6 → 7：B-3 的 DF_SHATTERING_SPELL
+        // 需要 RUBBLE（CE Globals.c:679 `{RUBBLE, SURFACE, 0, 0,
+        // DFF_ACTIVATE_DORMANT_MONSTER}`），web 无该地形，故照惯例 tile 留 null
+        // 并登记。名单守卫的原意（防"接线顺手删登记"）保持不变。
+        expect(DF_MISSING_TILES, 'F-2c 后 DF_EXPLOSION_FIRE 已摘出缺 tile 名单').not.toContain(DF.DF_EXPLOSION_FIRE);
+        expect(DF_MISSING_TILES).toHaveLength(7);
         const f = catalogFeature(DF.DF_EXPLOSION_FIRE);
         expect(f.tile).toBe(C.GAS_EXPLOSION);
         expect(f.startProbability).toBe(60);

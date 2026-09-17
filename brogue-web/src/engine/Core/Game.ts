@@ -3,10 +3,10 @@
  * Main game state and orchestration
  */
 import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer } from '../Map/Grid';
-import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_IS_FIRE, T_CAUSES_CONFUSION, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_PATHING_BLOCKER, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY } from '../Map/TerrainCatalog';
+import { blocksPassability, blocksVision, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_IS_FIRE, T_CAUSES_CONFUSION, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_PATHING_BLOCKER, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY } from '../Map/TerrainCatalog';
 import { isPathingBlocker } from '../Map/TerrainCatalog';
 import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, spawnDungeonFeature } from '../Map/DungeonFeature';
-import { DF } from '../Map/DungeonFeatureCatalog';
+import { DF, DUNGEON_FEATURE_CATALOG } from '../Map/DungeonFeatureCatalog';
 import { Architect } from '../Generator/Architect';
 import type { MachineResult } from '../Generator/BlueprintEngine';
 import blueprintData from '../../data/blueprints.json';
@@ -3567,13 +3567,17 @@ export class Game {
                         this.protectEquippedGear(this.player.equippedArmor, 'armor');
                         break;
                     case 'negate_burst':
-                        logger.log(i18next.t('scroll.negate_burst', { defaultValue: 'A wave of silence radiates from the scroll.' }), '#888888');
+                        // Items.c:8004-8006 SCROLL_NEGATION: negationBlast("the scroll", DCOLS)
+                        this.negationBlastFromPlayer('the scroll');
                         break;
                     case 'sanctuary_burst':
-                        logger.log(i18next.t('scroll.sanctuary', { defaultValue: 'A circle of holy light forms around you.' }), '#ffffaa');
+                        // Items.c:7941-7943 SCROLL_SANCTUARY: 脚下 DF_SACRED_GLYPHS
+                        this.sanctuaryFromPlayer();
                         break;
                     case 'shatter_burst':
-                        logger.log(i18next.t('scroll.shatter', { defaultValue: 'The ground shakes violently!' }), '#ffaa88');
+                        // Items.c:8007-8010 SCROLL_SHATTERING: 先消息后 crystalize(9)
+                        logger.log(i18next.t('scroll.shatter', { defaultValue: 'the scroll emits a wave of turquoise light that pierces the nearby walls!' }), '#40e0d0');
+                        this.crystalizeFromPlayer(9);
                         break;
                     case 'discord_burst':
                         // Items.c:8011 SCROLL_DISCORD: discordBlast("the scroll", DCOLS)
@@ -4118,26 +4122,16 @@ export class Game {
                     // P4-3：CE Items.c:4483-4491 negate() —— MONST_DIES_IF_NEGATED 的怪物
                     // 被 negation 命中时直接死亡，而不是清状态（"是纯魔法造物，一旦
                     // 被消除魔法就无法维持存在"）。
-                    if (target instanceof Monster && target.diesIfNegated()) {
+                    if (this.negateCreatureMagic(target) === 'died') {
                         logger.log(i18next.t('bolt.negation_dies', {
                             name: item.name, target: target.name,
                             defaultValue: `${target.name} falls to the ground, lifeless!`
                         }), '#ffffff');
-                        target.takeDamage(target.hp);
                     } else {
-                        // Remove all status effects from the target
-                        if ('statusDurations' in target) {
-                            const sd = (target as any).statusDurations as Record<string, number>;
-                            for (const k of Object.keys(sd)) {
-                                sd[k] = 0;
-                            }
-                        }
-                        // P1-28：web 的 negate 不剥离 behaviorFlags（CE 的
-                        // NEGATABLE_TRAITS 临时剥离+到期恢复未实现），旗标恒在，
-                        // 故清空后立即重推导旗标派生状态——否则飞行/火免怪物
-                        // 会被一次 negate 永久剥夺特性，CE 语义只是临时。
-                        if (target instanceof Monster) target.syncFlagDerivedStatuses();
-                        target.refreshSpeeds(); // P2-2：haste/slowed 被清，衍生速度立即复原
+                        // P1-28 注（negate 不剥离 behaviorFlags——CE 的
+                        // NEGATABLE_TRAITS 临时剥离+到期恢复未实现，旗标恒在，
+                        // 清空后由 negateCreatureMagic 内的 syncFlagDerivedStatuses
+                        // 重推导旗标派生状态）、P2-2（refreshSpeeds）同前。
                         logger.log(i18next.t('bolt.negation_hit', {
                             name: item.name, target: target.name,
                             defaultValue: `${item.name} negates all magic on the ${target.name}!`
@@ -4342,18 +4336,14 @@ export class Game {
                 // P4-3：CE Items.c:4483-4491 negate() —— MONST_DIES_IF_NEGATED 直接死亡
                 // 而非清状态（wisp/golem/spectral blade 等"纯魔法造物"被己方以外的
                 // negation bolt 命中时会发生，例如敌对怪物对玩家的召唤物施放 negation）。
-                if (!isPlayer && (target as Monster).diesIfNegated()) {
+                // 助手对玩家目标也走清状态支（diesIfNegated 是 Monster 专属判定）。
+                const outcome = this.negateCreatureMagic(target);
+                if (!isPlayer && outcome === 'died') {
                     logCast('bolt.monster_cast_negation_dies', `${targetName} falls to the ground, lifeless!`, '#ffffff');
-                    (target as Monster).takeDamage((target as Monster).hp);
-                    break;
+                } else {
+                    // P1-28 / P2-2 的重推导与速度复原已并入 negateCreatureMagic。
+                    logCast('bolt.monster_cast_negation', `${casterLabel} negates the magic on ${targetName}!`, '#ffffff');
                 }
-                const durations = (target.statusDurations as unknown) as Record<string, number>;
-                for (const k of Object.keys(durations)) durations[k] = 0;
-                // P1-28：同 scroll 侧——negate 不剥旗标，清空后重推导派生状态。
-                if (!isPlayer) (target as Monster).syncFlagDerivedStatuses();
-                if (!isPlayer) (target as Monster).refreshSpeeds();
-                else this.player.refreshSpeeds();
-                logCast('bolt.monster_cast_negation', `${casterLabel} negates the magic on ${targetName}!`, '#ffffff');
                 break;
             }
 
@@ -4518,6 +4508,232 @@ export class Game {
                 defaultValue: `A malevolent force leaves your ${gear.displayName}.`
             }), '#88ffcc');
         }
+    }
+
+    /**
+     * negate() 的"清魔法"本体（B-3 抽取；此前在玩家 bolt 与怪物施法两处
+     * NEGATION 分支各有一份，AoE 的 negationBlast 是第三个调用方——不复制
+     * 第三份）。CE Items.c:4465 negate(creature*) 的 web 投影：
+     *   - MONST_DIES_IF_NEGATED（仅怪物）→ 当场致死（killCreature(monst,false)
+     *     的 web 等价口径 = takeDamage(hp)，P4-3 起沿用），返回 'died'；
+     *   - 否则清空全部状态时长 → MONST 则 syncFlagDerivedStatuses（P1-28：
+     *     web negate 不剥 behaviorFlags，旗标派生状态须重推导）→
+     *     refreshSpeeds（P2-2：haste/slowed 清后衍生速度立即复原），返回
+     *     'negated'。
+     * CE negate() 其余支线（abilityFlags 剥离 / mutation 清除 / bolts 剥离 /
+     * NEGATABLE_TRAITS 临时剥离）web 无载体，登记未实现（P1-28 注）。
+     */
+    private negateCreatureMagic(target: Creature): 'died' | 'negated' {
+        if (target instanceof Monster && target.diesIfNegated()) {
+            target.takeDamage(target.hp);
+            return 'died';
+        }
+        const sd = target.statusDurations as Record<string, number>;
+        for (const k of Object.keys(sd)) {
+            sd[k] = 0;
+        }
+        if (target instanceof Monster) target.syncFlagDerivedStatuses();
+        target.refreshSpeeds();
+        return 'negated';
+    }
+
+    /**
+     * Items.c:4827-4881 negationBlast(emitterName, distance)——SCROLL_NEGATION
+     * 的 AoE（Items.c:8004-8006，distance = DCOLS）。discordBlast 的同构姊妹：
+     *   1. 消息 "emits a numbing torrent of anti-magic!"（:4831）；
+     *   2. colorFlash（:4833）web 无视觉系统载体，跳过（登记）；
+     *   3. 先 negate(&player)（:4834，玩家自己也吃——状态全清，无消息）；
+     *   4. 怪物循环（:4836-4846）：命中条件 = IN_FIELD_OF_VIEW **且**
+     *      欧氏距离² ≤ distance²（web 的 FOV 口径沿 discordBlastFromPlayer：
+     *      玩家→怪物实时视线判定）；diesIfNegated 当场死（CE 注释
+     *      "This can be fatal."），否则清魔法（"is stripped of special
+     *      traits" 消息在 CE negate() 尾部 :4548-4552）；
+     *   5. 地面物品循环（:4847-4880）：同样的 FOV + 距离² 条件——**只作用
+     *      于地面物品**（CE 遍历 floorItems，不含玩家背包/装备）；先无条件
+     *      清 ITEM_MAGIC_DETECTED | ITEM_CURSED，再按 category 分派
+     *      （WEAPON/ARMOR 附魔归零+符文消失+自动鉴定 / STAFF·WAND 充能清零 /
+     *      RING 揭示 +0 / CHARM 重置充能延迟）。
+     */
+    private negationBlastFromPlayer(emitterName: string): void {
+        logger.log(i18next.t('scroll.negate_burst', {
+            emitter: emitterName,
+            defaultValue: `${emitterName} emits a numbing torrent of anti-magic!`
+        }), '#ff99ee');
+
+        // CE :4834 negate(&player)——先于怪物循环，玩家自己的魔法也被清。
+        this.negateCreatureMagic(this.player);
+
+        const px = this.player.loc.x;
+        const py = this.player.loc.y;
+        const distance = DCOLS;
+        for (const m of this.monsters) {
+            if (m.hp <= 0) continue;
+            if (!this.hasLineOfSight(px, py, m.loc.x, m.loc.y)) continue;
+            const distSq = (px - m.loc.x) * (px - m.loc.x) + (py - m.loc.y) * (py - m.loc.y);
+            if (distSq > distance * distance) continue;
+            if (this.negateCreatureMagic(m) === 'died') {
+                logger.log(i18next.t('scroll.negation_monster_dies', {
+                    target: m.name,
+                    defaultValue: `${m.name} falls to the ground, lifeless!`
+                }), '#ffffff');
+            } else {
+                // CE negate() 尾部 :4548-4552 的 per-monster combatMessage。
+                logger.log(i18next.t('scroll.negation_stripped', {
+                    target: m.name,
+                    defaultValue: `${m.name} is stripped of special traits!`
+                }), '#ffffff');
+            }
+        }
+
+        // CE :4847 floorItems——web 的地面物品容器 = this.items（背包在
+        // player.inventory，不经此表）。
+        for (const theItem of this.items) {
+            if (!this.hasLineOfSight(px, py, theItem.loc.x, theItem.loc.y)) continue;
+            const distSq = (px - theItem.loc.x) * (px - theItem.loc.x) + (py - theItem.loc.y) * (py - theItem.loc.y);
+            if (distSq > distance * distance) continue;
+
+            theItem.magicDetected = false; // CE ITEM_MAGIC_DETECTED（:4851）
+            theItem.isCursed = false;      // CE ITEM_CURSED
+            switch (theItem.category) {
+                case ItemCategory.WEAPON:
+                case ItemCategory.ARMOR: {
+                    // CE :4855 enchant1 = enchant2 = charges = 0：web 的
+                    // enchantment ≙ enchant1、timesUsed ≙ enchant2（B-1a 字段
+                    // 注）；charges 在武器/护甲上是**熟悉度倒计时**的复用位
+                    // （CE Items.c:275/285 杀 20 敌/穿 1000 回合）——CE 在这里
+                    // 确实把它一并清零，照抄。
+                    theItem.enchantment = 0;
+                    theItem.timesUsed = 0;
+                    theItem.charges = 0;
+                    // CE :4856 清 ITEM_RUNIC | RUNIC_HINTED | RUNIC_IDENTIFIED |
+                    // ITEM_PROTECTED → 符文与保护消失。
+                    theItem.runicType = undefined;
+                    theItem.runicKnown = false;
+                    theItem.isProtected = false;
+                    // CE :4857 identify(theItem)：自动鉴定（实例全亮 + 亮种类；
+                    // 在符文已清之后调用，CE identify() 内的 runic 分支自然不触发）。
+                    ItemLoader.identifyInstance(theItem);
+                    // CE :4858 清 pmap ITEM_DETECTED + :4859 refreshDungeonCell
+                    // —— web 无 per-cell 物品探知标记（detect magic 走实例旗标
+                    // magicDetected），无载体，跳过（登记）。
+                    break;
+                }
+                case ItemCategory.STAFF:
+                    theItem.charges = 0; // CE :4862
+                    break;
+                case ItemCategory.WAND:
+                    // CE :4865-4866：清**剩余充能**（charges），不动 enchant2
+                    // （web timesUsed 已放电计数）；并揭示充能上限。
+                    theItem.charges = 0;
+                    theItem.maxChargesKnown = true;
+                    break;
+                case ItemCategory.RING:
+                    // CE :4869-4871：附魔归零 + ITEM_IDENTIFIED——揭示它现在是
+                    // +0，但**不必然**揭示是哪种戒指（种类识别在 identifyItemKind
+                    // 之外，这里不走 identifyInstance）。
+                    theItem.enchantment = 0;
+                    theItem.identified = true;
+                    ItemLoader.updateIdentifiableItem(theItem); // CE updateIdentifiableItems()
+                    break;
+                case ItemCategory.CHARM:
+                    // CE :4874 charges = charmRechargeDelay(kind, enchant1)。
+                    // web 无护身符充能延迟系统（charmRechargeDelay 无实现、
+                    // charms 无充能语义），登记 deferral——不能清零充能充数
+                    // （CE 语义是"重置为再充能延迟"，不是清空）。
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Items.c:7941-7943 SCROLL_SANCTUARY：玩家脚下落 DF_SACRED_GLYPHS
+     * （Globals.c:676 {SACRED_GLYPH, SURFACE, 100, 100, 0, "",
+     * EMPOWERMENT_LIGHT}），然后打消息。CE 五参形态
+     * spawnDungeonFeature(x, y, feat, refreshCell=true, abortIfBlocking=false)
+     * ——web 签名无 refreshCell（渲染侧自理），第四参即 abortIfBlocking。
+     * start=100/decr=100 的十字波前：中心格 + 4 正邻各一枚圣徽（CE 的
+     * "forming glyphS where they alight"）。
+     */
+    private sanctuaryFromPlayer(): void {
+        spawnDungeonFeature(this.grid, this.player.loc.x, this.player.loc.y,
+            catalogFeature(DF.DF_SACRED_GLYPHS), false);
+        logger.log(i18next.t('scroll.sanctuary', {
+            defaultValue: 'sprays of color arc to the ground, forming glyphs where they alight.'
+        }), '#ffffaa');
+    }
+
+    /**
+     * Items.c:4904-4939 crystalize(radius)——SCROLL_SHATTERING 的本体
+     * （Items.c:8007-8010 卷轴侧先打消息再 crystalize(9)）。逐条：
+     *   1. 全图扫描：欧氏距离² ≤ radius² 且非 IMPREGNABLE（:4911-4912——
+     *      IMPREGNABLE 是 pmap 旗标，唯一置位源是机器蓝图 BP_IMPREGNABLE
+     *      （Architect.c:938），web 无机器系统，该位恒 0，守卫结构性为真，
+     *      登记无载体）；
+     *   2. 仅当该格 **DUNGEON 层**的 tile 带 T_OBSTRUCTS_PASSABILITY |
+     *      T_OBSTRUCTS_VISION 才处理（:4914——读 layers[DUNGEON]，不是
+     *      cell.terrain 的最高优先级结果，否则盖了 SURFACE 层的墙被漏判）；
+     *   3. layers[DUNGEON] = FORCEFIELD（:4916，直写层）→ 原地 spawn
+     *      DF_SHATTERING_SPELL（:4917，碎石 tile web 无载体，DF 条目登记）；
+     *   4. 格上有怪：MONST_ATTACKABLE_THRU_WALLS → 致死（inflictLethalDamage
+     *      + killCreature 的 web 等价口径 = takeDamage(hp)）；否则
+     *      freeCaptivesEmbeddedAt——web 无嵌墙俘虏载体（机器系统缺口），登记；
+     *   5. 边界格覆写 CRYSTAL_WALL（:4928-4929 "boundary walls turn to
+     *      crystal"——在 DF 之后，顺序照 CE）；
+     *   6. 收尾 updateVision（:4935）——crystalize 当场改了视线阻挡，
+     *      必须立即重算，不能等回合结算。
+     *   colorFlash/displayLevel/refreshSideBar（:4936-4938）web 无对应载体，
+     *   以 needsRender 收尾。
+     *   启发式同步：web FOV/寻路读 cell.isOpaque/isPassable（setTerrain 的
+     *   旧口径），直写层不经过 setTerrain，故按新 DUNGEON 地形重算——
+     *   FORCEFIELD/CRYSTAL_WALL 都不挡视线 ⇒ 墙碎后玩家当场看穿。
+     */
+    private crystalizeFromPlayer(radius: number): void {
+        const px = this.player.loc.x;
+        const py = this.player.loc.y;
+        for (let i = 0; i < DCOLS; i++) {
+            for (let j = 0; j < DROWS; j++) {
+                const distSq = (px - i) * (px - i) + (py - j) * (py - j);
+                if (distSq > radius * radius) continue; // CE :4911 欧氏距离²
+                const cell = this.grid.getCell(i, j);
+                if (!cell) continue;
+                // CE :4912 `!(pmap.flags & IMPREGNABLE)`：web 无机器蓝图系统，
+                // 该位恒 0——守卫结构性为真（登记无载体）。
+                const dungeonTile = cell.layers[DungeonLayer.DUNGEON]!;
+                // CE :4914：读 DUNGEON 层的旗标，不是 cell.terrain 的竞速结果。
+                if (!(TERRAIN_FLAGS[dungeonTile].flags & (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION))) continue;
+
+                cell.layers[DungeonLayer.DUNGEON] = TerrainType.FORCEFIELD; // CE :4916
+                // CE :4917 spawnDungeonFeature(DF_SHATTERING_SPELL)：该 DF 的
+                // tile 是 RUBBLE（Globals.c:679，start=0 只落原点一格碎石），
+                // web 无 RUBBLE 地形（登记于 DF_MISSING_TILES），catalogFeature
+                // 对 null tile 抛错——落地无载体，spawn 跳过（零 RNG，CE 的
+                // start=0 波前同样只标记原点）。RUBBLE 落地的轮次翻正为
+                // 无条件 catalogFeature + spawnDungeonFeature。
+                if (DUNGEON_FEATURE_CATALOG[DF.DF_SHATTERING_SPELL]?.tile !== null) {
+                    spawnDungeonFeature(this.grid, i, j, catalogFeature(DF.DF_SHATTERING_SPELL), false);
+                }
+
+                const monst = this.getMonsterAt(i, j); // CE :4919 HAS_MONSTER
+                if (monst) {
+                    if (monst.hasBehavior('MONST_ATTACKABLE_THRU_WALLS')) {
+                        monst.takeDamage(monst.hp); // CE :4922-4923 的 web 等价口径
+                    }
+                    // CE :4925 freeCaptivesEmbeddedAt(i, j)：web 无嵌墙俘虏
+                    // 载体（机器系统缺口），登记 deferral。
+                }
+                if (i === 0 || i === DCOLS - 1 || j === 0 || j === DROWS - 1) {
+                    cell.layers[DungeonLayer.DUNGEON] = TerrainType.CRYSTAL_WALL; // CE :4928-4929（DF 之后覆写）
+                }
+                // 启发式同步（见方法注）：FOV 遮挡 = cell.isOpaque。
+                const eff = cell.terrain;
+                cell.isPassable = !blocksPassability(eff);
+                cell.isOpaque = blocksVision(eff);
+            }
+        }
+        this.updateVision(); // CE :4935 updateVision(false)——当场重算
+        this.needsRender = true;
     }
 
     /**

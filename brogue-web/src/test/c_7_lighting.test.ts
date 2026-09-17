@@ -153,7 +153,7 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         [TerrainType.STAIRS_UP]: 0,
         [TerrainType.STAIRS_DOWN]: 0,
         [TerrainType.CHARRED_FLOOR]: 0,                              // webOnly
-        [TerrainType.SIGN]: 0,                                       // webOnly（非 SACRED_GLYPH）
+        [TerrainType.SIGN]: 0,                                       // webOnly（借用 SACRED_GLYPH 的显示位；B-3 起真 SACRED_GLYPH 地形另列）
         [TerrainType.RESET_PLATE]: 0,
         [TerrainType.TRAP]: 0,
         [TerrainType.SECRET_DOOR]: 0,
@@ -180,6 +180,11 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         [TerrainType.GAS_EXPLOSION]: LightKind.EXPLOSION_LIGHT,      // Globals.c:496
         [TerrainType.HOLE]: 0,                                       // Globals.c:442 NO_LIGHT（发光洞是 HOLE_GLOW）
         [TerrainType.HOLE_EDGE]: 0,                                  // Globals.c:444 NO_LIGHT
+        // B-3 四条（CE 原列）：
+        [TerrainType.FORCEFIELD]: LightKind.FORCEFIELD_LIGHT,        // Globals.c:477
+        [TerrainType.FORCEFIELD_MELT]: LightKind.FORCEFIELD_LIGHT,   // Globals.c:478
+        [TerrainType.CRYSTAL_WALL]: LightKind.CRYSTAL_WALL_LIGHT,    // Globals.c:338
+        [TerrainType.SACRED_GLYPH]: LightKind.SACRED_GLYPH_LIGHT,    // Globals.c:479
     };
 
     it('全 tile 的 glowLight 逐值等于 CE 原列（结构性穷尽）', () => {
@@ -190,7 +195,7 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         }
     });
 
-    it('非零恰 7 个，且都指向有载体的目录条目', () => {
+    it('非零恰 10 个，且都指向有载体的目录条目', () => {
         const nonzero = Object.entries(TERRAIN_FLAGS)
             .filter(([, v]) => v.glowLight !== LightKind.NO_LIGHT)
             .map(([k]) => Number(k) as TerrainType)
@@ -199,6 +204,10 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
             TerrainType.LAVA, TerrainType.ALTAR, TerrainType.EMBERS,
             TerrainType.CONFUSION_GAS, TerrainType.GAS_FIRE,
             TerrainType.GAS_EXPLOSION, TerrainType.PLAIN_FIRE,
+            // B-3：三张卷轴的水晶/圣徽 tile（FORCEFIELD_MELT 与 FORCEFIELD
+            // 共用 FORCEFIELD_LIGHT）。
+            TerrainType.FORCEFIELD, TerrainType.FORCEFIELD_MELT,
+            TerrainType.CRYSTAL_WALL, TerrainType.SACRED_GLYPH,
         ].sort((a, b) => a - b));
         for (const t of nonzero) {
             expect(LIGHT_CATALOG[TERRAIN_FLAGS[t].glowLight]).toBeDefined();
@@ -556,6 +565,12 @@ describe('C-7 载体边界留痕', () => {
         'BURNING_CREATURE_LIGHT', // 载体：STATUS_BURNING（F-2b 状态机）
         'LAVA_LIGHT', 'EMBER_LIGHT', 'FIRE_LIGHT',
         'EXPLOSION_LIGHT', 'CONFUSION_GAS_LIGHT', 'CANDLE_LIGHT', // 载体：web 既有 tile
+        // B-3 反转（按本留痕自带指示）：三张卷轴落地 FORCEFIELD /
+        // FORCEFIELD_MELT / CRYSTAL_WALL / SACRED_GLYPH 四种 tile
+        // （Globals.c:477/478/338/479），glowLight 列即这三种光——载体就是
+        // tile 本身，updateVision 的发光地形扫描（Game.ts 逐层读
+        // TERRAIN_FLAGS.glowLight → paintLight）会真实点亮它们。
+        'FORCEFIELD_LIGHT', 'CRYSTAL_WALL_LIGHT', 'SACRED_GLYPH_LIGHT',
     ]);
 
     function* prodTsFiles(dir: string): Generator<string> {
