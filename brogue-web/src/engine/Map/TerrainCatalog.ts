@@ -22,6 +22,7 @@
  * - chanceToIgnite 按 CE 原始单位存档（百分数 0-100）。
  */
 import { TerrainType } from './Grid';
+import { LightKind } from './LightCatalog';
 
 /** CE `Rogue.h:97` `#define Fl(N) ((unsigned long) 1 << (N))`。 */
 const Fl = (n: number): number => 1 << n;
@@ -126,6 +127,11 @@ export interface TerrainFlagsEntry {
     readonly promoteType: string;
     /** CE `promoteChance` 列（×1/10000 每回合）。 */
     readonly promoteChance: number;
+    /**
+     * CE `glowLight` 列（C-7 补齐）：`lightCatalog` 下标（LightKind；0 = NO_LIGHT）。
+     * 消费方 = LightMap 的 CE 式 updateLighting（Globals.c:208-240 逐层扫描）。
+     */
+    readonly glowLight: number;
     /** true = web 独有地形，CE 无同名条目（取值理由见表项注释）。 */
     readonly webOnly: boolean;
 }
@@ -138,8 +144,9 @@ const e = (
     discoverType: string,
     promoteType: string,
     promoteChance: number,
-    webOnly = false
-): TerrainFlagsEntry => ({ flags, mechFlags, chanceToIgnite, fireType, discoverType, promoteType, promoteChance, webOnly });
+    webOnly = false,
+    glowLight: number = LightKind.NO_LIGHT
+): TerrainFlagsEntry => ({ flags, mechFlags, chanceToIgnite, fireType, discoverType, promoteType, promoteChance, webOnly, glowLight });
 
 /**
  * 地形属性表（CE Globals.c:315 `tileCatalog[]` 的 web 投影）。
@@ -204,9 +211,11 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
     ),
 
     // CE LAVA，Globals.c:420：T_LAVA_INSTA_DEATH，不挡通行。
+    // C-7：glowLight = LAVA_LIGHT（Globals.c:432 原列）。
     [TerrainType.LAVA]: e(
         T_LAVA_INSTA_DEATH, TM_STAND_IN_TILE | TM_ALLOWS_SUBMERGING,
-        0, 'DF_OBSIDIAN', '', '', 0
+        0, 'DF_OBSIDIAN', '', '', 0,
+        false, LightKind.LAVA_LIGHT
     ),
 
     // CE GRASS，Globals.c:447
@@ -301,9 +310,11 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
     ),
 
     // CE ALTAR_INERT，Globals.c:362
+    // C-7：glowLight = CANDLE_LIGHT（Globals.c:362 原列——CE 的烛光祭坛）。
     [TerrainType.ALTAR]: e(
         T_OBSTRUCTS_SURFACE_EFFECTS, TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT,
-        0, '', '', '', 0
+        0, '', '', '', 0,
+        false, LightKind.CANDLE_LIGHT
     ),
 
     // CE SPIDERWEB，Globals.c:470：缠绕 + 可燃 + 可走。
@@ -356,11 +367,12 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
     //   Time.c:1643-1645 掷骰 / :1244-1290 promoteTile）。
     // F-1 曾把 promoteChance 记 0（保 burnDuration 倒计时、不移 RNG 流），
     // F-2a 按任务书 §二.2 翻正为 500 并由 runPromotionUpdate 自然驱动。
-    // glowLight（FIRE_LIGHT）web 无对应列，登记不迁移。
+    // C-7：glowLight = FIRE_LIGHT（Globals.c:492 原列，登记不迁移已翻转）。
     [TerrainType.PLAIN_FIRE]: e(
         T_IS_FIRE,
         TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT,
-        0, '', '', 'DF_EMBERS', 500
+        0, '', '', 'DF_EMBERS', 500,
+        false, LightKind.FIRE_LIGHT
     ),
 
     // CE EMBERS，Globals.c:469（F-2a 新增地形：PLAIN_FIRE 衰老的落点，
@@ -368,11 +380,13 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
     // Globals.c:469 flags 列为 (0)）；drawPriority 70（Grid.ts DRAW_PRIORITY）；
     // VANISHES_UPON_PROMOTION；fireType DF_PLAIN_FIRE（CE 数据如此，但零旗标
     // 下不可燃，永不走 fire 轴）；promoteType DF_ASH、promoteChance 300
-    // （3%/回合烧成灰烬）。glowLight（EMBER_LIGHT）登记不迁移。
+    // （3%/回合烧成灰烬）。C-7：glowLight = EMBER_LIGHT（Globals.c:469 原列，
+    // 登记不迁移已翻转）。
     [TerrainType.EMBERS]: e(
         0,
         TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION,
-        0, 'DF_PLAIN_FIRE', '', 'DF_ASH', 300
+        0, 'DF_PLAIN_FIRE', '', 'DF_ASH', 300,
+        false, LightKind.EMBER_LIGHT
     ),
 
     // CE ASH，Globals.c:461（F-2a 新增地形：EMBERS 衰老的落点，DF_ASH 的
@@ -394,7 +408,8 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
     //     fireType 全为 DF_GAS_FIRE（CE 数据如此；STEAM ign=0 不可燃但
     //     fireType 列仍登记 DF_GAS_FIRE——照抄原表）。
     //   - promoteChance 全 0：气体不自衰老，只靠体积消散/被点燃。
-    //   - glowLight（CONFUSION_GAS_LIGHT 等）web 无对应列，登记不迁移。
+    //   - glowLight：CONFUSION_GAS = CONFUSION_GAS_LIGHT（Globals.c:503 原列，
+    //     C-7 迁移）；POISON_GAS / STEAM 在 CE 即 NO_LIGHT。
     // CE Globals.c:502 POISON_GAS
     [TerrainType.POISON_GAS]: e(
         T_IS_FLAMMABLE | T_CAUSES_DAMAGE,
@@ -403,10 +418,12 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
     ),
 
     // CE Globals.c:503 CONFUSION_GAS
+    // C-7：glowLight = CONFUSION_GAS_LIGHT（原列，登记不迁移已翻转）。
     [TerrainType.CONFUSION_GAS]: e(
         T_IS_FLAMMABLE | T_CAUSES_CONFUSION,
         TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY,
-        100, 'DF_GAS_FIRE', '', '', 0
+        100, 'DF_GAS_FIRE', '', '', 0,
+        false, LightKind.CONFUSION_GAS_LIGHT
     ),
 
     // CE Globals.c:508 STEAM（不可燃——flags 无 T_IS_FLAMMABLE）
@@ -425,11 +442,13 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
     //   promoteChance 8000（80%/回合自熄——与 PLAIN_FIRE 的 500 同一套概率
     //   衰老机制：VANISHES + promoteType=0 ⇒ promoteTile 只清层不落新 DF，
     //   CE Time.c:1254-1266 + :1271 `if (DFType)` 守卫）。"燃气烧完地上留火"
-    //   的"留"就是它、"80%/回合自熄"也是它。glowLight（FIRE_LIGHT）登记不迁移。
+    //   的"留"就是它、"80%/回合自熄"也是它。C-7：glowLight = FIRE_LIGHT
+    //   （Globals.c:495 原列，登记不迁移已翻转）。
     [TerrainType.GAS_FIRE]: e(
         T_IS_FIRE,
         TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT,
-        0, '', '', '', 8000
+        0, '', '', '', 8000,
+        false, LightKind.FIRE_LIGHT
     ),
 
     // METHANE_GAS：第六种气体 tile。全字段照抄 CE：
@@ -440,7 +459,7 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
     //   **无 TM_GAS_DISSIPATES(_QUICKLY)**——CE 沼气永不自散，只能被点燃、
     //   被类型竞争压制或逃出层外；promoteChance 0。web 载体：MUD 的
     //   promoteType DF_METHANE_GAS_PUFF（promoteChance 100，C-4a 起数据就在，
-    //   G-2 起 tile 齐备、链条真实行走）。glowLight（NO_LIGHT）无对应列。
+    //   G-2 起 tile 齐备、链条真实行走）。glowLight：CE 原列即 NO_LIGHT。
     [TerrainType.METHANE_GAS]: e(
         T_IS_FLAMMABLE,
         TM_STAND_IN_TILE | TM_EXPLOSIVE_PROMOTE,
@@ -456,7 +475,7 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
     // promoteChance 0。web 载体：potion_of_paralysis 改线（Game 药水分支
     // → addGas 1000 = DF_PARALYSIS_GAS_CLOUD_POTION 的 startProbability，
     // Globals.c:778；喝 Items.c:8117-8120 / 扔 Items.c:6994-6997）。
-    // glowLight（NO_LIGHT）无对应列，登记不迁移。
+    // glowLight：CE 原列即 NO_LIGHT。
     [TerrainType.PARALYSIS_GAS]: e(
         T_IS_FLAMMABLE | T_CAUSES_PARALYSIS,
         TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY,
@@ -471,13 +490,15 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
     //   爆炸段）；(STAND_IN_TILE | VANISHES_UPON_PROMOTION | VISUALLY_DISTINCT)；
     //   ign 0；fireType 0；promoteType 0（''）；promoteChance 10000（=100%/回合
     //   必定晋升 + VANISHES + promoteType 0 ⇒ 瞬时地形：落地的下一个晋升趟即
-    //   清层消失，Time.c:1254-1271 的通用机制）。glowLight（EXPLOSION_LIGHT）
-    //   web 无对应列，登记不迁移。载体：DF_EXPLOSION_FIRE（甲烷爆轰圈，
-    //   Globals.c:742）与 DF_BLOAT_EXPLOSION（bloat 自爆，Globals.c:654）。
+    //   清层消失，Time.c:1254-1271 的通用机制）。C-7：glowLight =
+    //   EXPLOSION_LIGHT（Globals.c:496 原列，登记不迁移已翻转）。
+    //   载体：DF_EXPLOSION_FIRE（甲烷爆轰圈，Globals.c:742）与
+    //   DF_BLOAT_EXPLOSION（bloat 自爆，Globals.c:654）。
     [TerrainType.GAS_EXPLOSION]: e(
         T_IS_FIRE | T_CAUSES_EXPLOSIVE_DAMAGE,
         TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT,
-        0, '', '', '', 10000
+        0, '', '', '', 10000,
+        false, LightKind.EXPLOSION_LIGHT
     ),
 
     // ── C-5：CE Globals.c:442 HOLE（洞，"// surface layer" 注释块）─────────
@@ -487,8 +508,9 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
     // DF_PLAIN_FIRE；promoteType DF_HOLE_DRAIN（:757 {HOLE_EDGE, SURFACE,
     // 0, 0}）+ promoteChance -1000（负值 = CE 的"暴露越多合得越快"：
     // Promotion.ts 首趟对每个 4 向开敞邻居 +1000，Time.c:1627-1642）——
-    // 药水/pit bloat 炸出的洞约十回合内自行合拢。glowLight（NO_LIGHT）
-    // 无对应列。drawPriority 9 / 归属层 SURFACE 见 Grid.ts。
+    // 药水/pit bloat 炸出的洞约十回合内自行合拢。glowLight：CE 原列即
+    // NO_LIGHT（发光洞是挖地杖链的 HOLE_GLOW，web 无此 tile——C-7 登记）。
+    // drawPriority 9 / 归属层 SURFACE 见 Grid.ts。
     [TerrainType.HOLE]: e(
         T_AUTO_DESCENT,
         TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION,

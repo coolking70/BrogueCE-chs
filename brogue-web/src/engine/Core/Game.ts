@@ -56,6 +56,16 @@ const D2_EXCLUDED_POTIONS: ReadonlySet<string> = new Set(['potion_of_creeping_de
 import { EnvironmentManager, GasType } from '../Environment/Gas';
 import { FOVSys } from '../Lighting/FOV';
 import { LightMap } from '../Lighting/LightMap';
+import {
+    LIGHT_CATALOG,
+    LightKind,
+    VISIBILITY_THRESHOLD,
+    minersLightBaseRadiusFixpt,
+    minersLightColorAtDepth,
+    updateMinersLightRadius,
+    type LightSourceDef,
+    type MinersLightState,
+} from '../Map/LightCatalog';
 import { FloatingText } from '../Visuals/FloatingText';
 import { STATUS_CONFIG } from '../Status/statusConfig';
 import { getBoltForItem, boltPath, buildBoltFrames, BoltEffect, MONSTER_BOLT_TABLE, type BoltConfig, type BoltFrame, type BoltResult } from '../Combat/Bolt';
@@ -357,6 +367,14 @@ export class Game {
     public fov!: FOVSys;
     public lightMap!: LightMap;
     public player: Player;
+    /**
+     * C-7：CE rogue.minersLight 的动态两列（Rogue.h:2486-2487）——基础半径
+     * 随深度衰减（RogueMain.c:666-670），每次 updateVision 前由
+     * refreshMinersLight 重算（纯函数、不消费 RNG；CE 的触发点
+     * Items.c:4692/8090/8728 在 web 的载体缺口见该方法注释）。
+     */
+    public minersLight: MinersLightState = { radiusHundredths: 0, radialFadeToPercent: 35 };
+    private minersLightBaseFixpt: number = 0;
     public autoPath: Pos[] = [];
     public monsters: Monster[] = [];
     public items: Item[] = [];
@@ -733,7 +751,7 @@ export class Game {
             // P4-10：test 层同样建 waypoint（CE RogueMain.c:707 的位置——
             // 该层的全部生成决策已完成之后）。
             this.rebuildWaypoints();
-            this.fov.computeFOV(this.player.loc.x, this.player.loc.y, 10);
+            this.updateVision(); // C-7：CE updateVision 全链（原 computeFOV(10) 代理退役）
             this.onRenderRequested?.();
             return;
         }
@@ -836,7 +854,10 @@ export class Game {
         this.rebuildWaypoints();
 
         // 3. Force full refresh
-        this.fov.computeFOV(this.player.loc.x, this.player.loc.y, 10);
+        // C-7：CE RogueMain.c:671 进层时 updateColors + updateRingBonuses
+        // （级联 updateMinersLightRadius）+ updateVision 的对应位置——
+        // updateVision 内部先重算矿灯半径再做光照/可见性。
+        this.updateVision();
         this.onRenderRequested?.();
     }
 
@@ -2307,13 +2328,156 @@ export class Game {
         this.needsRender = true;
     }
 
+    // =========================================================================
+    // C-7：CE 视野+光照管线（updateVision Time.c:859-913 → updateLighting
+    // Light.c:208-240 → VISIBLE 阈值 Movement.c:2582-2589）。
+    // 旧实现（fov.computeFOV(player, 10) + addLight(player, 8, '#ffccaa')）
+    // 的"半径 10/8 硬编码"是 CE 无界 FOV + 光照阈值的 web 代理，本轮按 CE
+    // 语义翻正：VISIBLE = 几何 FOV（无界，T_OBSTRUCTS_VISION 遮挡）
+    // ∧ 三通道光强和 > VISIBILITY_THRESHOLD(50)。
+    // =========================================================================
+
+    /**
+     * 矿灯半径重算。CE 的触发点与本轮载体现状：
+     * - 进新层重置基础半径（RogueMain.c:666-671 → updateRingBonuses 级联）——
+     *   本轮每次 updateVision 前重算（纯函数，值只随 depth 变化，等价）。
+     * - 光明戒指增减（Items.c:8728，updateRingBonuses 末尾）——web 无
+     *   ring_of_light 载体（D2 池/数据文件禁改），lightMultiplier 恒 1，登记。
+     * - 黑暗状态增减（Items.c:8090 喝药 / :4692 解除）——web 无
+     *   potion_of_darkness 载体，STATUS_DARKNESS 恒 0，登记。
+     * - 水中减半（Light.c:150-152，rogue.inWater）——web 无该状态载体，恒 0，登记。
+     */
+    private refreshMinersLight(): void {
+        this.minersLightBaseFixpt = minersLightBaseRadiusFixpt(this.depth);
+        this.minersLight = updateMinersLightRadius(this.minersLightBaseFixpt, {
+            lightMultiplier: 1,
+            darknessStatus: 0,
+            darknessMax: 0,
+            inWater: 0,
+        });
+    }
+
+    /** 矿灯作为 paintLight 输入（color = 随深度插值的 minersLightColor）。 */
+    private minersLightDef(): LightSourceDef {
+        const st = this.minersLight;
+        return {
+            color: minersLightColorAtDepth(this.depth),
+            radius: { lowerBound: st.radiusHundredths, upperBound: st.radiusHundredths, clumpFactor: 1 },
+            radialFadeToPercent: st.radialFadeToPercent,
+            passThroughCreatures: true, // Globals.c:958 原列
+        };
+    }
+
+    /** CE getFOVMask 的 HAS_MONSTER|HAS_PLAYER 遮挡谓词（Light.c:85）。 */
+    private hasCreatureAtForLight(x: number, y: number): boolean {
+        if (this.player.loc.x === x && this.player.loc.y === y) return true;
+        return this.monsters.some((m) => m.hp > 0 && m.loc.x === x && m.loc.y === y);
+    }
+
+    /**
+     * CE Light.c:283-287 playerInDarkness：玩家格三通道光强全部低于
+     * 矿灯色 −10（+10 余量）——潜行范围减半判据之一（Time.c:798）。
+     */
+    private playerInDarkness(): boolean {
+        const ch = this.lightMap.lightAt(this.player.loc.x, this.player.loc.y);
+        if (!ch) return true;
+        const mc = minersLightColorAtDepth(this.depth);
+        return ch.r + 10 < mc.red && ch.g + 10 < mc.green && ch.b + 10 < mc.blue;
+    }
+
+    /**
+     * CE updateVision 的 web 全链：几何 FOV 掩码（无界）→ 清光 → 泼发光
+     * 地形/燃烧生物/矿灯 → 按"掩码 ∧ 光强>50"写 isVisible（并随可见标记
+     * isExplored/hasMemory，保持 web 既有行为）→ 折算渲染馈送。
+     * 除 depth 读取外全程零 RNG 消费（paintLight 确定性口径见 LightMap.ts 头注释）。
+     */
+    private updateVision(): void {
+        this.refreshMinersLight();
+
+        // Time.c:873：FOV 掩码半径 (DCOLS+DROWS)*FP_FACTOR ≈ 无界；
+        // 遮挡 T_OBSTRUCTS_VISION = cell.isOpaque。
+        const mask = this.fov.computeFOVMask(
+            this.player.loc.x, this.player.loc.y, DCOLS + DROWS,
+            (cell) => cell.isOpaque
+        );
+
+        const lm = this.lightMap;
+        lm.clearLighting(); // Light.c:216-226：清零 + 全图 IS_IN_SHADOW
+
+        // 1. 发光地形（Light.c:228-240：逐层扫描 tileCatalog.glowLight）
+        const creatureBlocker = (x: number, y: number) => this.hasCreatureAtForLight(x, y);
+        for (let x = 0; x < DCOLS; x++) {
+            for (let y = 0; y < DROWS; y++) {
+                const cell = this.grid.getCell(x, y);
+                if (!cell) continue;
+                for (const t of cell.layers) {
+                    if (t === TerrainType.NOTHING) continue;
+                    const glow = TERRAIN_FLAGS[t]?.glowLight ?? LightKind.NO_LIGHT;
+                    if (glow !== LightKind.NO_LIGHT) {
+                        lm.paintLight({
+                            light: LIGHT_CATALOG[glow]!,
+                            x, y,
+                            hasCreatureAt: creatureBlocker,
+                        });
+                    }
+                }
+            }
+        }
+
+        // 2. 燃烧生物的光（Light.c:249-251：STATUS_BURNING 且非 MONST_FIERY；
+        //    CE 的遍历含玩家自己——updateLighting 的 handledPlayer 模式）
+        const burningLight = LIGHT_CATALOG[LightKind.BURNING_CREATURE_LIGHT]!;
+        const paintBurning = (entity: Player | Monster, fiery: boolean): void => {
+            if (fiery) return;
+            if (this.burningDuration(entity) > 0) {
+                lm.paintLight({
+                    light: burningLight,
+                    x: entity.loc.x, y: entity.loc.y,
+                    hasCreatureAt: creatureBlocker,
+                });
+            }
+        };
+        paintBurning(this.player, false);
+        for (const m of this.monsters) {
+            if (m.hp > 0) paintBurning(m, m.hasBehavior('MONST_FIERY'));
+        }
+
+        // 3. 矿灯（Light.c:269：isMinersLight=true → 不驱散阴影、不圆截断）
+        lm.paintLight({
+            light: this.minersLightDef(),
+            x: this.player.loc.x, y: this.player.loc.y,
+            isMinersLight: true,
+            maintainShadows: true,
+        });
+
+        // 4. VISIBLE（Movement.c:2582-2589）：IN_FIELD_OF_VIEW ∧ 光强和>50
+        //    （CE 还有 !CLAIRVOYANT_DARKENED——web 无该机制，登记）。
+        for (let x = 0; x < DCOLS; x++) {
+            for (let y = 0; y < DROWS; y++) {
+                const cell = this.grid.getCell(x, y);
+                if (!cell) continue;
+                const visible = mask[x]![y]! && lm.lightSumAt(x, y) > VISIBILITY_THRESHOLD;
+                cell.isVisible = visible;
+                if (visible) {
+                    cell.isExplored = true;
+                    cell.hasMemory = true;
+                }
+            }
+        }
+
+        // 5. 渲染馈送（GameCanvas 消费 getLight 接口不变——引擎数据升级，
+        //    渲染层零改动）
+        lm.fillRenderFromLighting();
+    }
+
     public update() {
         // Run events until it's the player's turn 
         // OR the queue is empty
 
         if (this.needsRender && this.onRenderRequested) {
             // Update FOV & Lighting before rendering
-            this.fov.computeFOV(this.player.loc.x, this.player.loc.y, 10);
+            // C-7：CE updateVision 全链（掩码→光照→VISIBLE 阈值→渲染馈送）
+            this.updateVision();
 
             // Check discoveries
             const currentVisMonsters = new Set<Monster>();
@@ -2351,15 +2515,9 @@ export class Game {
             this.visibleMonsters = currentVisMonsters;
             this.visibleItems = currentVisItems;
 
-            // Recompute dynamic lights
-            this.lightMap.clear();
-
-            // 1. Ambient lighting (very dark blue/grey base) or just 0
-            // For real Brogue feel, the FOV boundary acts as light boundary.
-            // We'll have the Player cast a yellowish torch light.
-            this.lightMap.addLight(this.player.loc.x, this.player.loc.y, 8, '#ffccaa', 100);
-
-            // 2. Add other glowing entities (lava, glowing items, etc) here later.
+            // C-7：动态光照已并入 updateVision（地形光/燃烧生物/矿灯按 CE
+            // Light.c:208-240 顺序泼入，渲染馈送由 fillRenderFromLighting 折算）。
+            // 旧的"玩家火把 addLight(player, 8, '#ffccaa')"随矿灯管线退役。
 
             this.onRenderRequested();
             this.needsRender = false;
@@ -4561,12 +4719,12 @@ export class Game {
      * 逐项对照（取舍详情见 ai_docs/p4_8_scent_map_report.md）：
      *   - 隐身恒 1                    Time.c:795-797  ✅ 照抄
      *   - 基数 14                     Time.c:793      ✅ 照抄
-     *   - playerInDarkness 再减半     Light.c:283-287 ❌ 略去——web 无"矿灯可被
-     *     调暗"概念（Cell.light 全工程无写入方，旧公式的 LIT+4 实为死代码）
-     *   - IS_IN_SHADOW 减半（可叠加） Light.c:222 一族 ✅ 近似为恒处于阴影：
-     *     CE 里矿灯不驱散阴影（Light.c:70-71 注释），而 web 目前唯一光源就是
-     *     玩家自己的火把（addLight(player)），故玩家恒在阴影中 → 减半一次。
-     *     将来接入岩浆/火把等地形光源时应改为查询玩家格。
+     *   - playerInDarkness 再减半     Light.c:283-287 ✅ C-7 接线（光照管线
+     *     落地后按玩家格三通道光强实时判定；黑暗药水载体仍缺，暂只由
+     *     地形暗光触发）
+     *   - IS_IN_SHADOW 减半（可叠加） Light.c:222 一族 ✅ C-7 翻正为查询
+     *     玩家格（P4-8 时期的"恒减半"近似退役：矿灯不驱散阴影（Light.c:70-71
+     *     注释），岩浆/烛光等地形光驱散——与 CE 语义一致）
      *   - 护甲力量需求加成            Time.c:784-790  ✅ max(0, strengthRequired − 12)
      *   - 刚休息过（本回合是等待）减半 Time.c:813-815  ✅ justRested 近似为
      *     "本回合输入是 wait"（CE IO.c:2521-2527 的 REST/PERIOD/NUMPAD5）
@@ -4579,8 +4737,18 @@ export class Game {
         if (this.player.hasStatus('invisible')) return 1;
 
         let range = 14;
-        // IS_IN_SHADOW 的 web 近似：玩家恒处于阴影（唯一光源是自己的矿灯类火把）
-        range = Math.floor(range / 2);
+        // C-7 翻正 P4-8 的"恒处于阴影"近似（CE Time.c:798-806）：
+        //   - playerInDarkness（Light.c:283-287）：玩家格三通道光强全部
+        //     低于矿灯色−10 → 减半；
+        //   - IS_IN_SHADOW（Light.c:97-99：矿灯不驱散阴影，地形/生物正色光
+        //     驱散）→ 再减半，可叠加。周边无光源时玩家仍恒在阴影中（与
+        //     CE 一致），站进岩浆/祭坛烛光等光照范围则恢复。
+        if (this.playerInDarkness()) {
+            range = Math.floor(range / 2);
+        }
+        if (this.lightMap.inShadowAt(this.player.loc.x, this.player.loc.y)) {
+            range = Math.floor(range / 2);
+        }
 
         const armor = this.player.equippedArmor;
         if (armor) {
@@ -6112,6 +6280,14 @@ export class Game {
         this.monstersFall();
 
         this.syncEquipmentStatuses();
+
+        // C-7 收尾轮补的每回合视野刷新：CE 里 updateVision 由每个动作结算
+        // 路径 eager 调用（Movement.c:1942 移动 / Combat.c:802,968 攻击 /
+        // Items.c:5509,5551 等），故 Time.c:2610 主观块读 currentStealthRange
+        // 时 pmap 光照/IS_IN_SHADOW 恒新鲜。web 旧状只挂渲染钩子，headless
+        // 或"动作已提交、渲染未跑"的窗口里光照是陈旧的——潜行会按玩家旧
+        // 位置的暗态误判（p4_9 T1/T5 实证）。全程零 RNG 消费，不动生成流。
+        this.updateVision();
 
         const stealthRange = this.calculateStealthRange();
 
