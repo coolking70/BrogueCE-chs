@@ -289,6 +289,28 @@ export class ItemLoader {
     ];
 
     /**
+     * CE POW_GOLD（Items.c:545-549）：b^3.05，b = 0..25 共 26 项。
+     * 金币产量调度的基表：aggregateGoldLowerBound(d) = POW_GOLD[d] + 320*d、
+     * aggregateGoldUpperBound(d) = POW_GOLD[d] + 420*d（宏，Items.c:550-551），
+     * d = depthLevel * depthAccelerator - 1（Brogue 变体 depthAccelerator=1，
+     * GlobalsBrogue.c:1019）。B-4b 逐数字抄录。
+     */
+    public static readonly CE_POW_GOLD: readonly number[] = [
+        0, 1, 8, 28, 68, 135, 236, 378, 568, 813, 1122, 1500, 1956, 2497, 3131,
+        3864, 4705, 5660, 6738, 7946, 9292, 10783, 12427, 14232, 16204, 18353,
+    ];
+
+    /** CE Items.c:550-551 aggregateGoldLowerBound 宏。 */
+    public static aggregateGoldLowerBound(d: number): number {
+        return (this.CE_POW_GOLD[d] ?? 0) + 320 * d;
+    }
+
+    /** CE Items.c:551 aggregateGoldUpperBound 宏。 */
+    public static aggregateGoldUpperBound(d: number): number {
+        return (this.CE_POW_GOLD[d] ?? 0) + 420 * d;
+    }
+
+    /**
      * CE 食物保底判据（Items.c:685-691）逐字移植：
      *   (foodSpawned + power/3) * 4 * FP_FACTOR
      *     <= (POW_FOOD[d-1] + randomDepthOffset * FP_FACTOR) * power * 45/100
@@ -1358,6 +1380,19 @@ export class ItemLoader {
         key.weight = data.weight;
         key.identified = true; // CE makeItemInto：钥匙无未知态
         return key;
+    }
+
+    /**
+     * B-4b：生成期金币堆（CE Items.c:375-377 generateItem 的 GOLD 分支）。
+     * quantity 由调用方按 rand_range(50 + depth*10*accel, 100 + depth*15*accel)
+     * 掷出后传入；CE 金币无名称词条、恒 ITEM_IDENTIFIED、无未知态。
+     */
+    public static spawnGold(quantity: number, x: number, y: number): Item | null {
+        const gold = new Item(tn('Gold'), '$', 0xffda75, ItemCategory.GOLD);
+        gold.loc = { x, y };
+        gold.quantity = quantity;
+        gold.identified = true;
+        return gold;
     }
 
     public static spawnAmulet(id: string, x: number, y: number): Item | null {

@@ -510,6 +510,13 @@ describe('C-4a E：留痕（本轮明确不做的事，断言现状）', () => {
         'engine/Environment/Gas.ts',      // G-1：updateVolumetricMedia 读 GAS 层 tile 的 mechFlags
                                           // （TM_GAS_DISSIPATES / TM_GAS_DISSIPATES_QUICKLY，
                                           //  CE Time.c:1437-1444）——消散档位住在目录里
+        'engine/Items/ItemSpawnHeatMap.ts', // B-4b：物品落位热力图。读 mechFlags 是为了
+                                          // 逐字实现 CE 的两个通行谓词——
+                                          // isPassableOrSecretDoor（TM_IS_SECRET，密门算可通行，
+                                          // 泛洪要穿过它才能给密室加 +3000 热度）与
+                                          // cellIsPassableOrDoor（CE Architect.c:48：
+                                          // TM_IS_SECRET | TM_PROMOTES_WITH_KEY | TM_CONNECTS_LEVEL，
+                                          // passableArcCount 的邻格判据）。属合法首读者。
     ]);
     it('留痕（已按自带指示扩清单，C-4c）：promote/fire 类字段的生产读者只出现在白名单文件', () => {
         const srcDir = fileURLToPath(new URL('../', import.meta.url));

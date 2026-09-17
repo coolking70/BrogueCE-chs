@@ -129,14 +129,23 @@ describe('B-4a 计量表·产物侧（区间来自 10-seed 纯测量，见报告
     const countOf = (seed: number, id: string): number =>
         itemsOf(seed).filter(i => identityOf(i) === id).length;
 
-    it('附魔卷轴整局总数落在测量带内（测量 43-68/局；带宽余量 [30, 90]）', () => {
+    // B-4b 顺延（验收方 2026-09-18 补授权：本文件不在 B-4b 清单内，是验收方漏项）。
+    // 原带 [30,90] 捕获自 B-4a 当时的 43-68/局——那时**结构性投放点还在**。
+    // B-4b 拆掉了 legacy machines 循环（50% 附魔卷轴宝藏）与祭坛逐格 20% 投放，
+    // 实测降到 **21-32/局（8 seed，mean 27.9）**。带随之顺延为 [15, 40]：
+    // 下限挡住「计量 increment/decrement 接反导致跌穿」，
+    // 上限挡住「结构性投放点被加回 / 计量只涨不跌」。**不是放宽，是跟着事实平移。**
+    //
+    // ⚠️ 仍未到 CE 量级：CE 一局的附魔卷轴约 12-15 张。剩余落差的主因已由 B-4b
+    // 登记（报告 §8.5）——`spawnBlueprintItem` 在蓝图只给 SCROLL/POTION 类别、
+    // 不给具体 id 时是**均匀抽取**，而 CE 走 chooseKind 频率加权。
+    // 那条属 B-4a 的改造域，B-4b 不回改，留作后续小轮。
+    it('附魔卷轴整局总数落在测量带内（B-4b 后实测 21-32/局；带宽余量 [15, 40]）', () => {
         for (const seed of SEEDS) {
             const n = countOf(seed, 'scroll_of_enchantment');
-            expect(n, `seed${seed} 附魔卷轴 ${n} 张/局`).toBeGreaterThanOrEqual(30);
-            expect(n, `seed${seed} 附魔卷轴 ${n} 张/局`).toBeLessThanOrEqual(90);
+            expect(n, `seed${seed} 附魔卷轴 ${n} 张/局`).toBeGreaterThanOrEqual(15);
+            expect(n, `seed${seed} 附魔卷轴 ${n} 张/局`).toBeLessThanOrEqual(40);
         }
-        // 旧实现的等概率表给出 ~52/局且与计量无关；计量机制若失效（频率只涨不跌），
-        // 产出会向 60+/局上漂并越过上限；若 increment/decrement 接反则会跌穿下限。
     });
 
     it('life 药水整局总数落在测量带内（测量 15-27/局；带宽余量 [9, 36]）', () => {

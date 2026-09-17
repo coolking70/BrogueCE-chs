@@ -319,11 +319,23 @@ describe('蓝图宝藏落点（machine center）可通行性', () => {
         expect(centerViolations).toEqual([]);
     }, 180_000);
 
-    it('c) 所有落在 machine center 上的宝藏物品，其落格必须可通行', () => {
+    // ── B-4b 反转（验收方 2026-09-18 补授权：本文件不在 B-4b 清单内，是验收方漏项）──
+    // 原留痕：「非空转护栏——扫描必须真的覆盖到 center 宝藏」，expected > 0。
+    // B-4b **删除了 machine center 的宝藏投放循环**：那是 web 自创的
+    // 「每个机器房中心塞一件好东西」，CE 的蓝图 feature 表里没有对应物
+    // （CE 每个 feature 实例只摆一件、且由蓝图显式声明），它和祭坛每格 20%
+    // 一起构成了 P1-50 里附魔卷轴每局 48-68 张的结构性来源。
+    // 于是 center 宝藏恒为 0，原护栏的前提失效。
+    //
+    // 按本项目的留痕反转规矩：**断言新事实，而不是删掉断言**。
+    // 护栏语义反转为「center 宝藏投放已拆除」——若有人把这个自创投放点
+    // 加回来，本条立刻红。落格可通行的原断言保留（恒真但零成本，
+    // 且一旦将来按 CE 蓝图正式接入 center 物品，它会继续生效）。
+    it('c) 反转：machine center 的自创宝藏投放已拆除（B-4b），且如有 center 物品其落格必可通行', () => {
         const { treasuresAtCenter, treasureViolations } = runScan();
         for (const v of treasureViolations.slice(0, 60)) console.log('[bp-center] 宝藏违例:', v);
-        // 非空转护栏：扫描必须真的覆盖到 center 宝藏，否则断言无意义
-        expect(treasuresAtCenter).toBeGreaterThan(0);
+        expect(treasuresAtCenter, 'center 宝藏投放应已被 B-4b 拆除（若 >0 说明自创投放点被加回）')
+            .toBe(0);
         expect(treasureViolations).toEqual([]);
     }, 180_000);
 

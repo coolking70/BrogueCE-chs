@@ -5,6 +5,8 @@
 import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer } from '../Map/Grid';
 import { blocksPassability, blocksVision, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_IS_FIRE, T_CAUSES_CONFUSION, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_PATHING_BLOCKER, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY } from '../Map/TerrainCatalog';
 import { isPathingBlocker } from '../Map/TerrainCatalog';
+// B-4b：物品落位热力图与食物落位原语（CE Items.c:463-535 / Architect.c:171,3822）
+import { ItemSpawnHeatMap, passableArcCount, randomMatchingLocation } from '../Items/ItemSpawnHeatMap';
 import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, spawnDungeonFeature } from '../Map/DungeonFeature';
 import { DF, DUNGEON_FEATURE_CATALOG } from '../Map/DungeonFeatureCatalog';
 import { Architect } from '../Generator/Architect';
@@ -185,6 +187,12 @@ export interface GameSnapshotItem {
     cooldownTurns?: number;
     cooldownRemaining?: number;
     identityId?: string;
+    /**
+     * B-4b：钥匙→锁的绑定（CE item.keyLoc，Rogue.h:1417）。空数组/缺键
+     * ≙ 无绑定（旧存档与无绑定钥匙）；解锁交互当前不消费它，
+     * 仅作为钥匙-锁对应关系的存档面。
+     */
+    keyLoc?: Array<{ loc: Pos; machine: number }>;
 }
 
 export interface GameSnapshot {
@@ -450,6 +458,13 @@ export class Game {
     private meteredItems: { frequency: number; numberSpawned: number }[] = ItemLoader.initMeteredItems();
     /** B-4a：≙ CE rogue.foodSpawned（Items.c:697/732，食物保底公式的累计口径）。 */
     private foodSpawned: number = 0;
+    /**
+     * B-4b：≙ CE rogue.goldGenerated（Items.c:781 每堆金币生成时累加；
+     * :602/:604 的产量调度读它）。仅生成期金币堆计入——web 的怪物金币掉落
+     * （goldDropChance，CE 无此机制）不计入，与 CE 的 goldGenerated 口径一致。
+     * 未入 GameSnapshot（与 meteredItems/foodSpawned 同批缺口，登记）。
+     */
+    private goldGenerated: number = 0;
 
     // Time.c:2666 每回合递减；归零触发周期刷怪（Monsters.c:1128 spawnPeriodicHorde）
     public monsterSpawnFuse: number = 0;
@@ -554,6 +569,8 @@ export class Game {
         // RogueMain.c:229-252 / rogue.foodSpawned 初值 0）。
         this.meteredItems = ItemLoader.initMeteredItems();
         this.foodSpawned = 0;
+        // B-4b：金币产量计数随新局清零（CE RogueMain.c:384）。
+        this.goldGenerated = 0;
         this.visibleMonsters.clear();
         this.visibleItems.clear();
         this.autoPath = [];
@@ -646,15 +663,18 @@ export class Game {
     /**
      * B-4a：populateItems 逐件生成决策（CE Items.c:667-756 的 web 移植）。
      * 顺序对齐 CE：食物保底 → 计量阈值/硬保底 → pickItemCategory 加权抽类别
-     * → chooseKind 加权抽种类 → 生成后计量扣减。落位沿用 web 既有 floorTiles.pop()
-     * （CE 的物品落位热力图 / 食物与力量药水的非热力落位归 B-4b，本轮不动）。
+     * → chooseKind 加权抽种类 → 生成后计量扣减。
+     * B-4b 起**落位不再由本方法决定**：物品以占位坐标生成，落位（热力图 /
+     * 食物例外路径）由 populateLevel 的主循环按 CE Items.c:726-739 的顺序执行。
      *
      * 与 CE 的两处已登记偏差：
-     *  - numItems 仍走 web 的 randRange(3,6)（CE 的 3+while(rand_percent(60)) 归 B-4b）；
      *  - 深度门（minDepth/maxDepth）不再参与此类抽取：CE 的 chooseKind 无深度门，
      *    web 的 minDepth/maxDepth 列为 web 自创口径（登记于报告）。
      */
-    private spawnPopulateItem(depth: number, randomDepthOffset: number, pos: Pos): Item | null {
+    private spawnPopulateItem(depth: number, randomDepthOffset: number): Item | null {
+        // B-4b：占位坐标——落位由调用方在生成决策之后按 CE 顺序另行选择
+        //（CE：generateItem 在先、选点在后），生成函数只产出不选址。
+        const pos = { x: 0, y: 0 };
         const table = ItemLoader.CE_METERED_ITEMS_TABLE;
 
         // ---- CE Items.c:674-686：把计量表频率写回工作表 ----
@@ -857,7 +877,11 @@ export class Game {
                 if (armors.length > 0) return ItemLoader.spawnArmor(armors[rng.randRange(0, armors.length - 1)]!.id, x, y, depth);
                 return null;
             }
-            case 'KEY': return ItemLoader.spawnKey('iron_key', x, y);
+            case 'KEY':
+                // B-4b：钥匙由锁具驱动（数量 == 锁数，见 machineResults 循环），
+                // 类别级 KEY feature 不再发无绑定钥匙。显式指定 id 的 KEY 物品
+                // （下方 id 分支）保留给未来的任务钥匙类蓝图——当前无调用者。
+                return null;
             case '_random_good_': {
                 // Pick a random high-value item
                 const roll = rng.randRange(0, 5);
@@ -990,9 +1014,10 @@ export class Game {
             this.visibleItems.clear();
 
             // 2. Populate level with monsters and items, and STAIRS
+            // （B-4b：architect.machines 不再传入——legacy machines 循环已删）
             this.populateLevel(
                 this.depth, isGoingUp, isFirstLevel,
-                architect.machines, architect.altars, architect.trapVaults, architect.cages,
+                architect.trapVaults, architect.cages,
                 architect.machineResults
             );
 
@@ -1038,8 +1063,6 @@ export class Game {
         depth: number,
         isGoingUp: boolean = false,
         isFirstLevel: boolean = false,
-        machines: Array<{ door: Pos, center: Pos }> = [],
-        altars: Array<{ door: Pos, positions: Pos[], groupId: number }> = [],
         trapVaults: Array<{ door: Pos, center: Pos, trapType: 'fire' | 'poison_gas' }> = [],
         cages: Array<{ door: Pos, cells: Pos[] }> = [],
         machineResults: MachineResult[] = []
@@ -1089,6 +1112,28 @@ export class Game {
             this.grid.setTerrain(stairsUpPos.x, stairsUpPos.y, TerrainType.STAIRS_UP, '<', 0xffaa00);
         }
 
+        // B-4b：CE Items.c:608-655——物品落位热力图（上行梯泛洪 → 归零 pass →
+        // totalHeat）。**构建零 RNG**，故提前到一切内容物（护符/钥匙/怪群/物品）
+        // 落位之前：归零 pass 的失败保护会把「泛洪不可达的孤岛」改成 WALL
+        //（CE 同款，Items.c:620-624），必须发生在任何物品进牌堆格之前，
+        // 否则已落位的钥匙会被新墙掩埋（本轮实测 seed777/D25 真实发生）。
+        // 机器格（IS_IN_MACHINE）在归零 pass 里被先置 0、不会触发改墙
+        //（CE 语义同：锁死的机器房内部没有热、也不改墙）。
+        // CE 在 populateItems 内构建（楼梯之后、物品之前）；web 的
+        // populateLevel 把两段合并在同一方法里，此处即「populateItems 开头」。
+        const heatMap = ItemSpawnHeatMap.build(
+            this.grid,
+            stairsUpPos ?? { x: this.player.loc.x, y: this.player.loc.y },
+            { machineCells: this.machineCells }
+        );
+        // 失败保护改墙后，牌堆里可能残留已变 WALL 的格——清出去，
+        // 保证钥匙/护符/怪群领袖后续从牌堆取格仍然全部可站立。
+        for (let i = floorTiles.length - 1; i >= 0; i--) {
+            const t = floorTiles[i]!;
+            const c = this.grid.getCell(t.x, t.y);
+            if (!c || !c.isPassable) floorTiles.splice(i, 1);
+        }
+
         // Spawn Amulet of Yendor on bottom floor
         if (this.depth === 26 && floorTiles.length > 0) {
             const hasAmuletInWorld = this.items.some(i => i.category === ItemCategory.AMULET && (i as any).identityId === 'amulet_of_yendor');
@@ -1104,100 +1149,18 @@ export class Game {
             }
         }
 
-        // Spawn keys and treasures for Machine Rooms
-        for (const machine of machines) {
-            // Spawn Key somewhere in the level
-            if (floorTiles.length > 0) {
-                const keyPos = floorTiles.pop()!;
-                const key = ItemLoader.spawnKey('iron_key', keyPos.x, keyPos.y);
-                if (key) this.items.push(key);
-            }
-
-            // Spawn Treasure in the machine room
-            // P1-43 同类（未实测触发，但同一暴露面）：machine.center 只被
-            // p1_33 要求 canMoveTo 可通行，而 canMoveTo 对岩浆放行——
-            // 护城河类蓝图的中心若落在岩浆上，宝物同样会掉进岩浆。
-            const centerCell = this.grid.getCell(machine.center.x, machine.center.y);
-            // 验收方 2026-09-17 修正判据（S-1 的改造哨兵抓到的真阳性）：
-            // P1-43 当初我写的是硬编码 `terrain === LAVA`，**口径太窄**——
-            // C-6 的地图上产物落到了 `INERT_BRIMSTONE`（自燃硫矿）格。
-            // CE 的物品落位判据是 `T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER`
-            // （`Rogue.h:1948` 的并集含 T_SPONTANEOUSLY_IGNITES / T_LAVA_INSTA_DEATH /
-            // T_AUTO_DESCENT / T_IS_DEEP_WATER…），而 C-4a 早就把它做成了
-            // `isPathingBlocker`——我当时没用它，这正是"统一判据"要防的事。
-            if (!centerCell || isPathingBlocker(centerCell.terrain)) continue;
-            // Let's just pick one random good item: scroll of enchanting or wand of fire
-            let treasure;
-            if (rng.randPercent(50)) {
-                // 验收方 2026-09-17 修：原为 'scroll_of_enchanting'，而 json 里
-                // 只有 'scroll_of_enchantment'（614/880 行都拼对了，只有这里错）
-                // ——机器房宝藏的 50% 分支一直**静默落空**。
-                // P1-33 验收时就登记过（"宝藏 scroll 分支恒死，禁改未动"），
-                // B-0 勘察再次撞见，已烂过十余轮，不该再拖。
-                treasure = ItemLoader.spawnScroll('scroll_of_enchantment', machine.center.x, machine.center.y);
-            } else {
-                // D2：原为硬编码 spawnWand('wand_of_fire')（web 自创，退出生成池），
-                // 改为从魔杖生成池按深度抽取；池空则不放置宝藏。
-                const validWands = ItemLoader.genWands.filter(w => depth >= w.minDepth && depth <= w.maxDepth);
-                if (validWands.length > 0) {
-                    treasure = ItemLoader.spawnWand(validWands[rng.randRange(0, validWands.length - 1)]!.id, machine.center.x, machine.center.y);
-                }
-            }
-            if (treasure) this.items.push(treasure);
-        }
-
-        // Spawn items on Altars
-        for (const altarRoom of altars) {
-            for (const pos of altarRoom.positions) {
-                // P1-43（C-3 验收时由执行方在范围外发现、验收方单独修）：
-                // 祭坛落格池未排除岩浆。key_lava_moat 一类蓝图的护城河格会
-                // 混进 altarRoom.positions，于是附魔卷轴落在岩浆上——
-                // 实测 seed777/D7 的 scroll_of_enchantment @ (26,12) terrain=LAVA。
-                // 此前没暴露只是因为 RNG 流恰好没把它送到那里，C-3 移动 RNG 流
-                // 后 p1_20 立刻翻红；它是潜伏的真 bug，不是 C-3 的回归。
-                // CE 依据：物品落位一律回避 `T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER`，
-                // 而岩浆的 T_LAVA_INSTA_DEATH 正在 T_PATHING_BLOCKER 里
-                // （`Rogue.h:1948`）——CE 不会把物品放到岩浆上。
-                const altarCell = this.grid.getCell(pos.x, pos.y);
-                // 验收方 2026-09-17 修正判据（S-1 的改造哨兵抓到的真阳性）：
-                // P1-43 当初我写的是硬编码 `terrain === LAVA`，**口径太窄**——
-                // C-6 的地图上产物落到了 `INERT_BRIMSTONE`（自燃硫矿）格。
-                // CE 的物品落位判据是 `T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER`
-                // （`Rogue.h:1948` 的并集含 T_SPONTANEOUSLY_IGNITES / T_LAVA_INSTA_DEATH /
-                // T_AUTO_DESCENT / T_IS_DEEP_WATER…），而 C-4a 早就把它做成了
-                // `isPathingBlocker`——我当时没用它，这正是"统一判据"要防的事。
-                if (!altarCell || isPathingBlocker(altarCell.terrain)) continue;
-                // Altar items should be highly desirable. Let's spawn random wands, staffs, rings, charms, or enchants.
-                const randType = rng.randRange(0, 4);
-                let vaultItem = null;
-
-                if (randType === 0) {
-                    const validWands = ItemLoader.genWands.filter(w => depth >= w.minDepth && depth <= w.maxDepth);
-                    if (validWands.length > 0) vaultItem = ItemLoader.spawnWand(validWands[rng.randRange(0, validWands.length - 1)]!.id, pos.x, pos.y);
-                } else if (randType === 1) {
-                    const validStaffs = ItemLoader.genStaffs.filter(s => depth >= s.minDepth && depth <= s.maxDepth);
-                    if (validStaffs.length > 0) vaultItem = ItemLoader.spawnStaff(validStaffs[rng.randRange(0, validStaffs.length - 1)]!.id, pos.x, pos.y);
-                } else if (randType === 2) {
-                    const validRings = ItemLoader.genRings.filter(r => depth >= r.minDepth && depth <= r.maxDepth);
-                    if (validRings.length > 0) vaultItem = ItemLoader.spawnRing(validRings[rng.randRange(0, validRings.length - 1)]!.id, pos.x, pos.y);
-                } else if (randType === 3) {
-                    const validCharms = ItemLoader.genCharms.filter(c => depth >= c.minDepth && depth <= c.maxDepth);
-                    if (validCharms.length > 0) vaultItem = ItemLoader.spawnCharm(validCharms[rng.randRange(0, validCharms.length - 1)]!.id, pos.x, pos.y);
-                } else {
-                    vaultItem = ItemLoader.spawnScroll('scroll_of_enchantment', pos.x, pos.y);
-                }
-
-                if (!vaultItem) {
-                    // Fallback
-                    vaultItem = ItemLoader.spawnPotion('potion_of_life', pos.x, pos.y);
-                }
-
-                if (vaultItem) {
-                    // Mark as floating / special color to stand out on the altar
-                    this.items.push(vaultItem);
-                }
-            }
-        }
+        // B-4b：删除两个 web 自创的「结构性投放点」（登记于报告）：
+        // 1) legacy machines 循环——每锁房发一把钥匙（与下方 machineResults
+        //    循环重复，钥匙 ×2 的根源）+ 每房 50% 硬编码附魔卷轴/随机魔杖宝藏
+        //    （CE 的机器房宝物只来自蓝图 feature 表的 MF_GENERATE_ITEM 条目，
+        //    即下方 itemSpawns 路径；CE 无「机器房另发宝藏」机制）。
+        // 2) 祭坛逐格投放循环——每个 ALTAR 格 20% 附魔卷轴 / 兜底 life 药水
+        //    （CE GlobalsBrogue.c:218/269/279：feature 表每实例每条目恰一件，
+        //    且 Commutation Altars（:232-237）本就无物品）。祭坛房的物品同样
+        //    只走 itemSpawns。B-4a 实测的「附魔 60/局、life 18/局压不下来」
+        //    主要由这两个循环贡献，此处是本轮唯一的拆除杠杆。
+        // P1-43/P1-20 的落格可通行性判据（isPathingBlocker）对 itemSpawns
+        // 路径仍生效（见下方消费点），判据不因本删除而松动。
 
         // Spawn items and keys for Trap Vaults (usually require a key if locked, but traps are just open rooms sometimes; here they are locked)
         for (const vault of trapVaults) {
@@ -1252,16 +1215,33 @@ export class Game {
         }
 
         // --- Blueprint Engine Machine Spawning ---
+        // B-4b：钥匙由锁具驱动（CE populateItems 零钥匙——Items.c:673 起的
+        // 主循环不含 KEY；钥匙只来自与锁具绑定的蓝图 feature 条目，
+        // GlobalsBrogue.c:250/258/262/300，且带 ITEM_IS_KEY，经
+        // MF_OUTSOURCE_ITEM_TO_MACHINE 放进「守卫机器」）。web 口径：
+        // 一个 LOCKED_DOOR 锁（needsKey 机器的门）⇔ 恰一把铁钥匙，
+        // key.keyLoc 记录锁位与机器号（CE keyMatchesLocation 的两个匹配键）。
+        // 放置沿用 floorTiles 牌堆（机器格已排除，钥匙永不落机器内——
+        // CE 的 MF_OUTSOURCE 语义在 web 的最小近似，守卫机器留形待激活）。
         for (const mr of machineResults) {
             // Spawn keys for locked doors
-            if (mr.needsKey && floorTiles.length > 0) {
+            if (mr.needsKey && mr.door && floorTiles.length > 0) {
                 const keyPos = floorTiles.pop()!;
                 const key = ItemLoader.spawnKey('iron_key', keyPos.x, keyPos.y);
-                if (key) this.items.push(key);
+                if (key) {
+                    key.keyLoc = [{ loc: { x: mr.door.x, y: mr.door.y }, machine: mr.machineNumber }];
+                    this.items.push(key);
+                }
             }
 
             // Spawn items
             for (const spawn of mr.itemSpawns) {
+                // B-4b：KEY 类 feature 物品跳过——钥匙总量恒等于锁数，
+                // 蓝图里的 KEY 条目（如 key_rat_trap 的室内钥匙）不再额外
+                // 发钥匙。key_rat_trap 的室内钥匙原本躺在本机器锁门之内
+                // （无钥匙不可达，死货）；若未来蓝图需要「守卫钥匙」语义，
+                // 应给它接 MF_OUTSOURCE（放到别的机器里）后再恢复此处。
+                if (spawn.category === 'KEY') continue;
                 // P1-43：蓝图特征落点可能选中护城河的岩浆格（key_lava_moat 一类），
                 // 物品于是掉进岩浆——实测 seed777/D7 scroll_of_enchantment
                 // @ (26,12) terrain=LAVA。CE 的物品落位一律回避
@@ -1348,7 +1328,48 @@ export class Game {
             this.spawnHordeAt(hData, centerPos, depth, false, floorTiles);
         }
 
-        const numItems = rng.randRange(3, 6);
+        // ── B-4b：CE Items.c:565-608 populateItems 的数量与调度半边 ──────────
+        // 每层物品数 = 3 + 无上界几何分布（60% 反复 +1）+ 深度加成。
+        // （旧实现 randRange(3,6) 是均匀分布、有上界，分布形状与 CE 不同。）
+        let numItems = 3;
+        while (rng.randPercent(60)) numItems++;
+        if (this.depth <= 2) {
+            numItems += 2; // CE: "4 extra items to kickstart your career as a rogue"
+        } else if (this.depth <= 4) {
+            numItems++;
+        }
+        // CE Items.c:582：numberOfItems += gameConst->extraItemsPerLevel。
+        // Brogue 变体该值为 0（GlobalsBrogue.c:1032，逐字核对）。
+        // CE Items.c:570-572：depthLevel > amuletLevel 时走 lumenstone 分支
+        //（numberOfItems = lumenstoneDistribution[...], numberOfGoldPiles = 0）。
+        // web 无流明石系统且 DEEPEST_LEVEL == AMULET_LEVEL == 26，分支结构性
+        // 不可达——照抄留形：激活流明石时需补 lumenstoneDistribution 表
+        //（GlobalsBrogue.c:105：{3,3,3,2,2,2,2,2,1,1,1,1,1,1}）并重核 CE。
+
+        // CE Items.c:590-596：金币堆数 = min(5, depth*depthAccelerator/4)，
+        // 然后 60% 起每轮递减 15 的奖励循环（60→45→30→15→0），上限 10。
+        // depthAccelerator = 1（GlobalsBrogue.c:1019）。
+        let numGoldPiles = Math.min(5, Math.floor(this.depth * 1 / 4));
+        for (let goldBonusProbability = 60;
+             rng.randPercent(goldBonusProbability) && numGoldPiles <= 10;
+             goldBonusProbability -= 15) {
+            numGoldPiles++;
+        }
+        // CE Items.c:597-608：产量调度——past goldAdjustmentStartDepth（=6，
+        // GlobalsBrogue.c:1033）后按上一深度为止的 goldGenerated 与
+        // POW_GOLD[d] ± 320d/420d 比较，堆数 ±2；d = depth*accelerator - 1。
+        if (this.depth >= 6) {
+            const d = this.depth * 1 - 1;
+            if (this.goldGenerated < ItemLoader.aggregateGoldLowerBound(d)) {
+                numGoldPiles += 2;
+            } else if (this.goldGenerated > ItemLoader.aggregateGoldUpperBound(d)) {
+                numGoldPiles -= 2;
+            }
+        }
+        if (numGoldPiles < 0) numGoldPiles = 0;
+
+        // 热力图已在本方法开头（楼梯之后）构建（B-4b：零 RNG，提前构建
+        // 以使失败保护改墙先于一切内容物落位）——此处直接使用。
 
         // B-4a：CE Items.c:668-672——每层一次的 randomDepthOffset（depth>2 时
         // 两次独立 rand_range(-1,1)，三角分布；不是一次 rand_range(-2,2)）。
@@ -1359,10 +1380,68 @@ export class Game {
         // CE Items.c:577-579：每层入口给计量表加 incrementFrequency。
         ItemLoader.incrementMeteredItems(this.meteredItems);
 
-        for (let i = 0; i < numItems && floorTiles.length > 0; i++) {
-            const pos = floorTiles.pop()!;
-            const item = this.spawnPopulateItem(this.depth, randomDepthOffset, pos);
-            if (item) this.items.push(item);
+        // CE Items.c:663-767：主物品循环。生成决策（spawnPopulateItem）在先、
+        // 选点在后——普通物品走热力图（heat 加权，密门后房间被偏好），
+        // 食物与力量药水走 randomMatchingLocation 且不落走廊（CE 注释：
+        // "Food and gain strength don't follow the heat map."）。
+        for (let i = 0; i < numItems; i++) {
+            const item = this.spawnPopulateItem(this.depth, randomDepthOffset);
+            if (!item) continue;
+            const isFood = item.category === ItemCategory.FOOD;
+            const isStrengthPotion = item.category === ItemCategory.POTION
+                && (item as any).consumableId === 'potion_of_strength';
+            let loc: Pos | null;
+            if (isFood || isStrengthPotion) {
+                // CE Items.c:729-734：do { randomMatchingLocation(FLOOR, NOTHING, -1) }
+                // while (passableArcCount > 1)。占用判据对齐 CE 的
+                // HAS_MONSTER|HAS_STAIRS|HAS_ITEM|IS_IN_MACHINE（HAS_PLAYER 不查——
+                // CE populateItems 时玩家尚未进层）。CE 的 while 无次数上限；
+                // web 加 50 次上限防病态图挂死，耗尽则退回热力图（登记偏差）。
+                loc = null;
+                for (let tries = 0; tries < 50; tries++) {
+                    const cand = randomMatchingLocation(this.grid, {
+                        dungeonType: TerrainType.FLOOR,
+                        liquidType: TerrainType.NOTHING,
+                        isOccupied: (x, y) => {
+                            if (this.getMonsterAt(x, y)) return true;
+                            if (this.items.some(it => it.loc.x === x && it.loc.y === y)) return true;
+                            const c = this.grid.getCell(x, y);
+                            if (c && (c.terrain === TerrainType.STAIRS_UP || c.terrain === TerrainType.STAIRS_DOWN)) return true;
+                            return false;
+                        },
+                        isMachineCell: (x, y) => this.machineCells.has(y * DCOLS + x),
+                    });
+                    if (!cand) break;
+                    if (passableArcCount(this.grid, cand.x, cand.y) <= 1) {
+                        loc = cand;
+                        break;
+                    }
+                }
+                if (!loc) loc = heatMap.getItemSpawnLoc();
+            } else {
+                loc = heatMap.getItemSpawnLoc();
+            }
+            if (!loc) continue; // CE：totalHeat 耗尽是 assert 级病态；丢弃该件（登记偏差）
+            item.loc = { x: loc.x, y: loc.y };
+            this.items.push(item);
+            // CE Items.c:736-738：对每件生成物（含食物路径）都在其落点降温。
+            heatMap.coolHeatMapAt(loc.x, loc.y);
+        }
+
+        // CE Items.c:769-783：金币——主物品循环排除 GOLD（"so it's not a
+        // punishment"），堆数与产量调度见上；每堆 quantity =
+        // rand_range(50 + depth*10*accel, 100 + depth*15*accel)（Items.c:377），
+        // 走热力图落位，并计入 goldGenerated。
+        for (let i = 0; i < numGoldPiles; i++) {
+            const quantity = rng.randRange(50 + this.depth * 10 * 1, 100 + this.depth * 15 * 1);
+            const loc = heatMap.getItemSpawnLoc();
+            if (!loc) break;
+            heatMap.coolHeatMapAt(loc.x, loc.y);
+            const gold = ItemLoader.spawnGold(quantity, loc.x, loc.y);
+            if (gold) {
+                this.items.push(gold);
+                this.goldGenerated += quantity;
+            }
         }
 
         // P1-31：进层落位（CE RogueMain.c:817-869 "Position the player"，
@@ -3228,8 +3307,10 @@ export class Game {
                 }
 
                 if (this.player.inventory.addItem(item)) {
+                    // B-4b：金币拾取按堆叠数量入账（CE Items.c:781 同口径——
+                    // 生成堆的 quantity 在生成时掷出；原 +10 硬编码是占位）。
                     if (item.category === ItemCategory.GOLD) {
-                        this.stats.gold += 10; // Or whatever gold value
+                        this.stats.gold += item.quantity;
                     }
                     logger.log(i18next.t('item.pickup', { name: item.displayName, defaultValue: `You picked up ${item.displayName}.` }), '#ffffff');
                     this.items.splice(itemIndex, 1);
@@ -7513,7 +7594,9 @@ export class Game {
             rechargeCounter: item.rechargeCounter,
             cooldownTurns: item.cooldownTurns,
             cooldownRemaining: item.cooldownRemaining,
-            identityId: (item as any).identityId
+            identityId: (item as any).identityId,
+            // B-4b：钥匙绑定随存档往返（无绑定为空数组，JSON 落盘保留 []）
+            keyLoc: item.keyLoc.map(k => ({ loc: { x: k.loc.x, y: k.loc.y }, machine: k.machine }))
         };
     }
 
@@ -7544,6 +7627,10 @@ export class Game {
         }
         if (s.consumableId) {
             (item as any).consumableId = s.consumableId;
+        }
+        // B-4b：钥匙绑定还原（旧存档无键 → 保持默认空数组）
+        if (s.keyLoc) {
+            item.keyLoc = s.keyLoc.map(k => ({ loc: { x: k.loc.x, y: k.loc.y }, machine: k.machine }));
         }
         // B-1b：实例鉴定态直接落账（P1-48 反转 B-1a 的"按 spawn 语义重建"）。
         // 旧存档（B-1b 前，无 identified 键）保持旧行为：可未知类别按 spawn
