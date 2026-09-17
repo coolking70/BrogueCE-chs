@@ -429,3 +429,65 @@ T5 号称「下坡/原地/弃味实现皆败」，但**正确实现也有约 90%
 而 `noUnusedLocals` / `noUnusedParameters` 写在 `tsconfig.app.json` 里，
 **只有 `npm run build`（`vue-tsc -b`）才应用**。
 B-3 因此把一个 TS6133 放进了 main。**门禁一律以 `npm run build` 为准。**
+
+---
+
+## 漏授权的第五种形态：静态扫描型留痕钉的是「代码形态」（B-4b，2026-09-18）
+
+前四种已记在上面。B-4b 又撞出第五种，而且它对**前面三段 grep 全免疫**。
+
+`c_4a_terrain_catalog` 的 E 组有一条扫描器：遍历全部生产文件，
+断言「读 `.mechFlags` / `.promoteType` / `.chanceToIgnite` 这类字段的，
+只能是白名单里的文件」。它钉的既不是主题、也不是公共目录标识符，
+而是**一种代码形态**。于是：
+
+- 按主题 grep（heat map / 落位 / 金币）——搜不到，文件名叫「地形目录」；
+- 按目录标识符 grep（`TERRAIN_FLAGS` 等）——也搜不到，它钉的是字段访问写法。
+
+B-4b 新建 `ItemSpawnHeatMap.ts`，里面为实现 CE 的 `isPassableOrSecretDoor`
+与 `cellIsPassableOrDoor`（`Architect.c:48`）而读了 `TM_IS_SECRET` 等 mech 旗标
+——**完全合法的首读者**，照样被扫描器判红。
+
+### 对策：第四段 grep —— 拿扫描器自己的 pattern 去搜
+
+写授权清单时，若本轮会**新建生产文件**或**在生产文件里新读某类字段**，
+就把扫描器的正则拿来自己跑一遍：
+
+```bash
+grep -rn "\.mechFlags\|\.promoteType\|\.promoteChance\|\.fireType\|\.chanceToIgnite\|\.discoverType" \
+     src/engine --include="*.ts" -l
+```
+
+命中的文件（以及扫描器所在的测试文件）全部进授权清单。
+
+**至此四段 grep 齐了**：① 本轮主题 → ② 结构性穷举表 → ③ 跨轮公共目录标识符
+→ ④ 扫描器钉的代码形态。
+
+---
+
+## vitest 单 worker 复用下的模块级单例跨文件泄漏（B-4b 实测）
+
+`--fileParallelism=false` 时多个测试文件复用同一 worker，
+**模块级单例（`rng`、`ItemLoader` 的静态态）会跨文件带状态**。
+
+实测：把 `generation_baseline` 排在 `b_1a` 之前跑，会翻转 b_1a 的
+「诅咒绝不进名字」用例——因为 `spawnArmor` 的符文掷骰依赖进入时的 rng 流位置。
+
+**规矩**：自测时**不要**用自定义文件组合的结果下结论，
+尤其别把「生成重」的文件排在位置敏感用例之前。
+**全量字母序门禁（`npx vitest run --fileParallelism=false` 不带文件参数）是唯一最终口径。**
+
+---
+
+## 「改墙类」生成期网格变异必须先于一切内容物落位（B-4b 实测）
+
+B-4b 把热力图建在物品循环处（即内容物落位**之后**），
+归零 pass 的「孤岛改墙」失败保护于是把一个已经落了钥匙的地板格改成了 WALL
+——`p1_20` 真实翻红（seed777/D25 Iron Key @ (9,6) terrain=WALL）。
+
+修复：热力图构建（零 RNG）提前到楼梯之后、一切内容物之前，
+并在构建后清洗牌堆里已变墙的格。**这同时也是更忠实的 CE 还原**
+（CE 的 `populateItems` 本就在物品落位前构建热力图）。
+
+**通用规矩**：任何在 populate 阶段**改写地形**的步骤，
+都要自查它相对钥匙/护符/怪群/物品落位的**时序**。
