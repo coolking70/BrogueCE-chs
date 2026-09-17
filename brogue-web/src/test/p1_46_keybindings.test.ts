@@ -96,4 +96,12 @@ describe('P1-46 键位：移动回到纯 vi 键，CE 命令键让出', () => {
             expect(press(key), `'${key}' 已被占用——接 CE 命令时请更新本留痕`).toEqual([]);
         }
     });
+
+    it('B-2：CE THROW_KEY t 已接投掷入口（Rogue.h:1183）', () => {
+        // 对抗性：t 没接上（[]）、接错动作（'move' 等）都翻红。
+        expect(press('t'), `'t' 应触发 throw_item 动作`).toEqual([['throw_item', undefined]]);
+        // CE 大写 T 是 RETHROW_KEY（Rogue.h:1184，重扔上一件）——web 无
+        // lastItemThrown 簿记，B-2 明确不接；它也不得被顺手接成移动或投掷。
+        expect(press('T'), `'T'(RETHROW) 未接，不得映射到其它动作`).toEqual([]);
+    });
 });

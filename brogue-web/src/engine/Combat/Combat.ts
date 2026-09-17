@@ -7,6 +7,7 @@
 import { Creature } from '../../entities/Creature';
 import { Player } from '../../entities/Player';
 import { Monster, MonsterState } from '../../entities/Monster';
+import type { Item } from '../Items/Item';
 import { rng } from '../Random';
 import {
     netEnchant,
@@ -332,5 +333,65 @@ export class CombatSystem {
         // Fallback: treat as a constant
         const val = parseInt(ds, 10) || 1;
         return { min: val, max: val, clumping: 1 };
+    }
+
+    /**
+     * B-2：投掷武器命中结算 —— CE hitMonsterWithProjectileWeapon（Items.c:6771-6860）
+     * 的命中/伤害核心。与近战 attack() 的系统性差异（CE 原样，逐条复核）：
+     *  - 命中掷骰走 attackHit 语义（Combat.c:149-158）：只有 STUCK/PARALYZED/CAPTIVE
+     *    自动命中；睡觉/游荡**不**自动命中、没有偷袭倍率（attack() 的
+     *    `defenderWasAsleep || sneakAttack || lungeAttack ||` 短路在 attackHit 之外）。
+     *  - 伤害 = randClump(damage) × damageFraction(netEnchant)（Items.c:6819-6821），
+     *    无背刺 ×3/×5，无 invisible ×1.5。
+     *  - MONST_IMMUNE_TO_WEAPONS | MONST_INVULNERABLE → 伤害恒 0（Items.c:6817-6818），
+     *    且 **不掷伤害骰**（C 三目先判豁免再掷骰）。
+     *  - 符文触发只在目标**存活**时掷（Items.c:6845-6849 的 else 分支——击杀分支
+     *    不调 magicWeaponHit，与近战 attack() 恒调、内部再挡 MB_IS_DYING 不同）。
+     * CE 把投掷物临时换手（equipItem → attackHit → 换回，Items.c:6804-6811）只为
+     * 让命中吃投掷物净附魔；web 直接把净附魔传进 hitProbability，等价。
+     * web 无 STATUS_ENTRANCED / 魔法恐惧 / MB_CAPTIVE 载体，对应豁免分支不迁移
+     *（登记见 b_2 报告）。
+     */
+    public static resolveThrownWeapon(
+        thrower: Player,
+        defender: Monster,
+        item: Item
+    ): { hit: boolean; damage: number; killed: boolean; triggeredRunic?: string } {
+        const strReq = item.strengthRequired || 0;
+        const enchant = netEnchant(item.enchantment, thrower.strength, strReq);
+
+        // CE attackHit（Combat.c:149-158）。web StatusId 无 stuck/captive
+        //（蛛网定身/囚笼机制未实装），自动命中集只有 paralyzed 有载体。
+        const autoHit = defender.hasStatus('paralyzed');
+        const hit = autoHit || rng.randPercent(hitProbability(100, defender.defense, enchant));
+        if (!hit) {
+            return { hit: false, damage: 0, killed: false };
+        }
+
+        // CE Items.c:6817-6821：豁免在三目里先判，豁免时不掷伤害骰。
+        const immune = defender.isInvulnerable() || defender.isImmuneToWeapons();
+        let damage = 0;
+        if (!immune) {
+            const parts = CombatSystem.parseDamageString(item.damage || '1d3');
+            damage = clumpedRoll(parts.min, parts.max, parts.clumping,
+                (lo, hi) => rng.randRange(lo, hi));
+            damage = Math.round(damage * damageFraction(enchant));
+        }
+
+        defender.takeDamage(damage);
+        const killed = defender.hp <= 0;
+
+        // CE Items.c:6845-6849：magicWeaponHit 只在非击杀分支调用。
+        let triggeredRunic: string | undefined;
+        if (!killed && item.runicType) {
+            const parts = CombatSystem.parseDamageString(item.damage || '1d3');
+            const chance = runicWeaponChance(enchant, item.runicType,
+                { damageMin: parts.min, damageMax: parts.max });
+            if (rng.randPercent(chance)) {
+                triggeredRunic = item.runicType;
+            }
+        }
+
+        return { hit: true, damage, killed, triggeredRunic };
     }
 }

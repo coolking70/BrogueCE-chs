@@ -3,7 +3,7 @@
  * Main game state and orchestration
  */
 import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer } from '../Map/Grid';
-import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_IS_FIRE, T_CAUSES_CONFUSION, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_PATHING_BLOCKER, T_OBSTRUCTS_PASSABILITY, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY } from '../Map/TerrainCatalog';
+import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_IS_FIRE, T_CAUSES_CONFUSION, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_PATHING_BLOCKER, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY } from '../Map/TerrainCatalog';
 import { isPathingBlocker } from '../Map/TerrainCatalog';
 import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, spawnDungeonFeature } from '../Map/DungeonFeature';
 import { DF } from '../Map/DungeonFeatureCatalog';
@@ -23,7 +23,7 @@ import mutationData from '../../data/mutations.json';
 import type { MonsterData, MonsterAbility, MutationData } from '../../entities/Monster';
 import { MonsterState } from '../../entities/Monster';
 import { Direction, type Pos } from '../../types';
-import { ensureEntityIdAbove, type StatusId, type Creature } from '../../entities/Creature';
+import { ensureEntityIdAbove, allocateEntityId, type StatusId, type Creature } from '../../entities/Creature';
 import { timeSystem } from '../Systems/Time';
 import { generateMonsterDetail, generateItemDetail, type DetailInfo } from '../UI/DetailGenerator';
 import { logger } from '../Systems/Logger';
@@ -2747,6 +2747,18 @@ export class Game {
             return;
         }
 
+        if (action === 'throw_item') {
+            // B-2：CE THROW_KEY（Rogue.h:1183）。CE 是同步的"扔什么?→扔哪里?"
+            // 双提示；web 无同步提示层，近似为打开背包由玩家点物品的 Throw
+            // 按钮再点目标格（B-1b identify 异步偏差的同款架构代价，登记）。
+            // 瘫痪时走上方 paralyzed 分支被拦（CE 投掷也须能行动）。
+            if (this.pendingIdentify) return;
+            if (!this.isInventoryOpen) {
+                this.isInventoryOpen = true;
+            }
+            return;
+        }
+
         if (action === 'auto_explore') {
             this.handleAutoExplore();
             return;
@@ -4597,66 +4609,279 @@ export class Game {
         logger.log(i18next.t('throw.select_target', { name: item.displayName, defaultValue: `Select a target to throw the ${item.displayName}.` }), '#ffffff');
     }
 
+    /**
+     * CE 投掷射程（Items.c:7130）：12 + 2 × max(力量 − 虚弱量 − 12, 2)。
+     * 注意下限是 2 不是 0——力 12 也能扔 16 格。web 的 weakened 状态时长
+     * ≙ CE status[STATUS_WEAKENED]（虚弱量）。
+     */
+    private throwMaxDistance(): number {
+        const weakness = this.player.statusDurations['weakened'] ?? 0;
+        return 12 + 2 * Math.max(this.player.strength - weakness - 12, 2);
+    }
+
+    /**
+     * B-2：CE getQualifyingLocNear（Monsters.c:3960-4024，deterministic=false）
+     * 的投掷落点版（Items.c:7058）：forbiddenTerrain = T_OBSTRUCTS_ITEMS |
+     * T_OBSTRUCTS_PASSABILITY，forbiddenMap = HAS_ITEM；环序扫描（k=0 即
+     * 目标格自身）计合格格数，rand_range(1, candidateLocs) 抽第 N 个。
+     * 与 CE 的偏差：web randRange(1,1) 因上界≤下界短路**不消耗**掷骰
+     *（CE 会消耗一次）——只影响流位置，不影响落点分布，登记报告。
+     * 候选格不存在时 CE 是未初始化的 UB（实际不可达），web 回退目标格。
+     */
+    private qualifyingThrowLanding(target: Pos): Pos {
+        const qualifies = (x: number, y: number): boolean => {
+            if (!this.grid.isValidPos(x, y)) return false;
+            if (cellTerrainFlags(this.grid, x, y) & (T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_PASSABILITY)) return false;
+            return !this.items.some(i => i.loc.x === x && i.loc.y === y);
+        };
+        const maxR = Math.max(DROWS, DCOLS);
+        let candidateLocs = 0;
+        for (let k = 0; k < maxR && !candidateLocs; k++) {
+            for (let x = target.x - k; x <= target.x + k; x++) {
+                for (let y = target.y - k; y <= target.y + k; y++) {
+                    if (x === target.x - k || x === target.x + k || y === target.y - k || y === target.y + k) {
+                        if (qualifies(x, y)) candidateLocs++;
+                    }
+                }
+            }
+        }
+        if (candidateLocs === 0) return target;
+        let randIndex = rng.randRange(1, candidateLocs);
+        for (let k = 0; k < maxR; k++) {
+            for (let x = target.x - k; x <= target.x + k; x++) {
+                for (let y = target.y - k; y <= target.y + k; y++) {
+                    if (x === target.x - k || x === target.x + k || y === target.y - k || y === target.y + k) {
+                        if (qualifies(x, y) && --randIndex === 0) {
+                            return { x, y };
+                        }
+                    }
+                }
+            }
+        }
+        return target; // 不可达（candidateLocs>0 时必然命中）
+    }
+
+    /**
+     * CE 投掷药水的"功能性 7 种"（Items.c:6986-7026）→ web 载体（按 effect 名）：
+     *   POTION_POISON      → poison_burst      addGas(POISON,1000)   （既有，G-1 折算）
+     *   POTION_CONFUSION   → confusion_burst   addGas(CONFUSION,1000)（既有，G-1 折算）
+     *   POTION_PARALYSIS   → paralyze_burst    addGas(PARALYSIS,1000)（G-3 同款）
+     *   POTION_INCINERATION→ fire_burst        igniteForced 3×3      （既有，F-2a）
+     *   POTION_DESCENT     → fall_down         DF_HOLE_POTION        （C-5 的 DF 已在目录）
+     *   POTION_DARKNESS    → web 无该药水种类 —— 只登记不实现
+     *   POTION_LICHEN      → potion_of_creeping_death 被 D2 退池且无
+     *                        DF_LICHEN_PLANTED —— 只登记不实现
+     * 载体在池的功能性药水才 autoIdentify（B-1a 的"全部亮"简化本轮反转）。
+     */
+    private static readonly THROWN_FUNCTIONAL_POTION_EFFECTS: ReadonlySet<string> =
+        new Set(['poison_burst', 'confusion_burst', 'paralyze_burst', 'fire_burst', 'fall_down']);
+
+    /**
+     * CE Items.c:7036-7046 幻觉药水投掷特例：碎裂无害不亮，除非
+     * (a) 这一件被 detect magic 照过（ITEM_MAGIC_DETECTED），或
+     * (b) 善意药水种类全部已知（magicPolarityRevealedItemKindCount == 8，
+     *     GlobalsBulletBrogue.c:1065 numberGoodPotionKinds=8；web 善意药水
+     *     同为 8 种，B-1c 已核）。
+     */
+    private thrownPotionAutoIdentifies(item: Item, effect: string | undefined): boolean {
+        if (effect === 'hallucinate_burst') {
+            if (item.magicDetected) return true;
+            const good = ItemLoader.potions
+                .map(p => p.id)
+                .filter(id => ItemLoader.kindPolarity(id) === 1);
+            const known = good.filter(id =>
+                ItemLoader.identifiedItems.has(id) || ItemLoader.isPolarityRevealed(id));
+            return known.length === good.length && good.length > 0;
+        }
+        return !!effect && Game.THROWN_FUNCTIONAL_POTION_EFFECTS.has(effect);
+    }
+
     public throwItemAt(item: Item, tx: number, ty: number) {
         this.isThrowing = false;
         this.throwItemTarget = null;
 
         if (!this.grid.isValidPos(tx, ty)) return;
 
-        if (this.player.inventory.removeItem(item)) {
-            // Check if item is a potion
-            if (item.category === ItemCategory.POTION) {
-                const trueId = (item as any).consumableId;
-                const data = ItemLoader.potions.find(p => p.id === trueId);
+        // CE throwCommand（Items.c:7099-7111）：已装备且是最后一件 → 诅咒装备
+        // 扔不出去（取消，不耗回合）。confirm 弹层是 UI 债，登记。
+        const isEquippedWeapon = this.player.equippedWeapon === item;
+        if (isEquippedWeapon && item.quantity <= 1 && item.isCursed) {
+            logger.log(i18next.t('throw.cursed_equipped', {
+                name: item.displayName,
+                defaultValue: `You cannot unequip your ${item.displayName}; it appears to be cursed.`
+            }), '#ff9999');
+            return;
+        }
 
-                logger.log(i18next.t('throw.shatter', { name: item.displayName, defaultValue: `You throw the ${item.displayName}. It shatters!` }), '#ffaa00');
+        const origin = { ...this.player.loc };
+        const maxDistance = this.throwMaxDistance();
 
-                if (data) {
-                    // Identify if not identified（B-1a：经 identifyItemKind 走升格联动；
-                    // CE Items.c:6988-7050 投掷药水碎裂即 autoIdentify——B-2 将按
-                    // "7 种功能性药水才亮"的细分重核本分支）
-                    if (!ItemLoader.identifiedItems.has(trueId)) {
-                        ItemLoader.identifyItemKind(item);
-                        logger.log(i18next.t('item.was_a', { name: item.name, defaultValue: `It was a ${item.name}!` }), '#00ffff');
+        // CE throwCommand 尾段（Items.c:7152-7162）：先备好"飞行的那一件"，
+        // 再更新背包。堆叠 >1：数量 -1，克隆件（quantity=1）起飞；
+        // 最后一件：整件移出背包（已装备则先卸下）。
+        let thrown: Item;
+        if (item.quantity > 1) {
+            item.quantity--;
+            thrown = Object.assign(
+                new Item(item.name, item.char, item.color, item.category), item);
+            // Object.assign 会把源件 id 一并覆盖过来——堆叠件与飞行件必须
+            // 是两个可区分实体（落地拾回、按 id 查找都依赖这一点）
+            thrown.id = allocateEntityId();
+            thrown.quantity = 1;
+            thrown.loc = { ...origin };
+        } else {
+            this.player.inventory.removeItem(item);
+            if (isEquippedWeapon) this.player.unequip(item);
+            thrown = item;
+            thrown.loc = { ...origin };
+        }
+
+        // —— 弹道（CE throwItem，Items.c:6882-6947）——
+        // BOLT_NONE 取线（web 复用 boltPath 的 Bresenham 近似，怪物弹道同款）；
+        // 逐格推进、上限 maxDistance；命中第一个非潜水生物即结算（web 无
+        // 潜水簿记，不跳过任何怪——登记）；遇墙/挡视格退一格落地。
+        const path = boltPath(origin, { x: tx, y: ty });
+        let x = origin.x, y = origin.y;
+        let hitSomethingSolid = false;
+        for (let i = 0; i < path.length && i < maxDistance; i++) {
+            x = path[i]!.x;
+            y = path[i]!.y;
+
+            const monst = this.getMonsterAt(x, y);
+            if (monst && monst.hp > 0) {
+                if (thrown.category === ItemCategory.WEAPON) {
+                    // CE Items.c:6906-6921：命中 → 结算后投掷物消失；
+                    // 未命中 → break，投掷物落在怪物所在格的合格邻格。
+                    // CE 的 aggro（TRACKING_SCENT，Items.c:6791-6801）在掷骰前
+                    // 置位——miss 也激怒。web 无 ENTRANCED/魔法恐惧/CAPTIVE
+                    // 豁免分支，仅保留盟友与逃跑怪不激怒的近似（登记）。
+                    if (!monst.isAlly && monst.state !== MonsterState.FLEEING) {
+                        monst.state = MonsterState.HUNTING;
                     }
-
-                    // Apply splash effect
-                    if (data.effect === 'fire_burst') {
-                        // F-2a：同 fire_burst 药水——CE 焚化类 = DF 生成家族。
-                        this.environment.igniteForced(tx, ty);
-                        // Ignite neighbors
-                        const dirs = [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, 1], [-1, 1], [1, -1]];
-                        for (const [dx, dy] of dirs) this.environment.igniteForced(tx + dx!, ty + dy!);
-                    } else if (data.effect === 'poison_burst') {
-                        // G-1 折算：100 → 1000（DF_POISON_GAS_CLOUD_POTION，
-                        // Globals.c:779——怪物药水溅射的最近亲 DF，F-0 §3.3）。
-                        this.environment.addGas(tx, ty, GasType.POISON, 1000);
-                    } else if (data.effect === 'confusion_burst') {
-                        // G-1 折算：100 → 1000（DF_CONFUSION_GAS_CLOUD_POTION，
-                        // Globals.c:779）。
-                        this.environment.addGas(tx, ty, GasType.CONFUSION, 1000);
-                    } else if (data.effect === 'heal_full') {
-                        const mob = this.getMonsterAt(tx, ty);
-                        if (mob) {
-                            mob.hp = mob.maxHp;
-                            logger.log(i18next.t('monster.looks_healthy', { name: mob.name, defaultValue: `The ${mob.name} looks healthy.` }), '#44ff44');
-                        } else if (tx === this.player.loc.x && ty === this.player.loc.y) {
-                            this.player.hp = this.player.maxHp;
+                    const res = CombatSystem.resolveThrownWeapon(this.player, monst, thrown);
+                    if (res.hit) {
+                        if (res.killed) {
+                            logger.log(i18next.t('throw.killed', {
+                                weapon: thrown.displayName, monster: monst.name,
+                                defaultValue: `The thrown ${thrown.displayName} killed the ${monst.name}!`
+                            }), '#ffaa00');
+                            this.stats.kills++;
+                        } else {
+                            logger.log(i18next.t('throw.hit', {
+                                weapon: thrown.displayName, monster: monst.name, damage: res.damage,
+                                defaultValue: `The ${thrown.displayName} hit the ${monst.name} for ${res.damage} damage.`
+                            }), '#ffcc00');
+                            // CE Items.c:6845-6849：符文只在目标存活时触发
+                            //（resolveThrownWeapon 同口径只在存活时掷）。
+                            if (res.triggeredRunic) {
+                                this.applyWeaponRunicEffect(monst, res.damage, res.triggeredRunic);
+                            }
                         }
+                        this.spawnBlood(monst.loc.x, monst.loc.y);
+                        this.needsRender = true;
+                        timeSystem.currentTick += this.player.movementSpeed;
+                        this.playerTurnEnded();
+                        return;
                     }
+                    logger.log(i18next.t('throw.miss', {
+                        weapon: thrown.displayName, monster: monst.name,
+                        defaultValue: `The thrown ${thrown.displayName} missed the ${monst.name}.`
+                    }), '#888888');
                 }
-            } else {
-                // Not a potion, just drops it there
-                logger.log(i18next.t('throw.generic', { name: item.displayName, defaultValue: `You throw the ${item.displayName}.` }), '#aaaaaa');
-                item.loc = { x: tx, y: ty };
-                this.items.push(item);
+                break;
             }
 
-            this.needsRender = true;
-            // CE Items.c:7173 throwItem() 以 playerTurnEnded() 收尾——完整回合
-            timeSystem.currentTick += this.player.movementSpeed;
-            this.playerTurnEnded();
+            // CE Items.c:6926-6950：撞上挡通行/挡视格 → 退一格（point-blank
+            // 撞墙则落在原地），hitSomethingSolid 供药水碎裂判定。
+            if (cellTerrainFlags(this.grid, x, y) & (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION)) {
+                i--;
+                if (i >= 0) {
+                    x = path[i]!.x;
+                    y = path[i]!.y;
+                } else {
+                    x = origin.x;
+                    y = origin.y;
+                }
+                hitSomethingSolid = true;
+                break;
+            }
+
+            if (x === tx && y === ty) break; // CE Items.c:6946 到达目标格
         }
+
+        // —— 药水碎裂（CE Items.c:6949-7047）——
+        // 条件：撞了东西，或落点不是坠层格（T_AUTO_DESCENT）。扔进洞里的
+        // 药水不碎，整瓶落到合格邻格（CE 原样）。
+        if (thrown.category === ItemCategory.POTION) {
+            const trueId = (thrown as any).consumableId as string | undefined;
+            const data = ItemLoader.potions.find(p => p.id === trueId);
+            const effect = data?.effect;
+            const shatters = hitSomethingSolid ||
+                !(cellTerrainFlags(this.grid, x, y) & T_AUTO_DESCENT);
+            if (shatters) {
+                logger.log(i18next.t('throw.shatter', {
+                    name: thrown.displayName,
+                    defaultValue: `You throw the ${thrown.displayName}. It shatters!`
+                }), '#ffaa00');
+
+                if (this.thrownPotionAutoIdentifies(thrown, effect)) {
+                    // CE Items.c:7028 autoIdentify——功能性药水（或达成特例的
+                    // 幻觉药水）碎裂即种类亮，经 identifyItemKind 走升格联动。
+                    if (!ItemLoader.identifiedItems.has(trueId ?? '')) {
+                        ItemLoader.identifyItemKind(thrown);
+                        logger.log(i18next.t('item.was_a', {
+                            name: thrown.name,
+                            defaultValue: `It was a ${thrown.name}!`
+                        }), '#00ffff');
+                    }
+                }
+
+                if (effect === 'fire_burst') {
+                    // F-2a：同 fire_burst 药水——CE 焚化类 = DF 生成家族。
+                    this.environment.igniteForced(x, y);
+                    const dirs = [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, 1], [-1, 1], [1, -1]];
+                    for (const [dx, dy] of dirs) this.environment.igniteForced(x + dx!, y + dy!);
+                } else if (effect === 'poison_burst') {
+                    // G-1 折算：DF_POISON_GAS_CLOUD_POTION startProbability 1000
+                    //（Globals.c:779）。
+                    this.environment.addGas(x, y, GasType.POISON, 1000);
+                } else if (effect === 'confusion_burst') {
+                    // G-1 折算：DF_CONFUSION_GAS_CLOUD_POTION（Globals.c:779）。
+                    this.environment.addGas(x, y, GasType.CONFUSION, 1000);
+                } else if (effect === 'paralyze_burst') {
+                    // G-3 同款：DF_PARALYSIS_GAS_CLOUD_POTION → addGas 1000
+                    //（Items.c:6994-6997 投掷与喝同链）。
+                    this.environment.addGas(x, y, GasType.PARALYSIS, 1000);
+                } else if (effect === 'fall_down') {
+                    // C-5：DF_HOLE_POTION（HOLE_EDGE 波前 + subsequentDF DF_HOLE_2
+                    // 落 HOLE）。CE 不对落点生物即时结算坠层（Items.c:7030-7033
+                    // 的 applyInstantTileEffectsToCreature 是注释掉的死代码）。
+                    spawnDungeonFeature(this.grid, x, y, catalogFeature(DF.DF_HOLE_POTION), false);
+                }
+                // 非功能性药水（含幻觉特例未达成时）：CE"splashes harmlessly"，
+                // 无效果、不自亮（ce2 残留的 heal_full 投掷满血分支已按 CE 删除）。
+
+                this.needsRender = true;
+                timeSystem.currentTick += this.player.movementSpeed;
+                this.playerTurnEnded();
+                return; // 药水碎裂即消失（CE Items.c:7052）
+            }
+            // 未碎裂：落到洞边合格格（走下方通用落地）。
+        }
+
+        // —— 通用落地（CE Items.c:7055-7061）——
+        logger.log(i18next.t('throw.generic', {
+            name: thrown.displayName,
+            defaultValue: `You throw the ${thrown.displayName}.`
+        }), '#aaaaaa');
+        const dropLoc = this.qualifyingThrowLanding({ x, y });
+        thrown.loc = { ...dropLoc };
+        this.items.push(thrown);
+
+        this.needsRender = true;
+        // CE Items.c:7173 throwItem() 以 playerTurnEnded() 收尾——完整回合
+        timeSystem.currentTick += this.player.movementSpeed;
+        this.playerTurnEnded();
     }
 
     /**

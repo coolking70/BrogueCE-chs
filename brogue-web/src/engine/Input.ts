@@ -68,6 +68,13 @@ export class InputManager {
                 case 'S':
                     this.onActionCallback('search');
                     break;
+                // B-2：CE THROW_KEY（`Rogue.h:1183`）。P1-46 把移动键回归纯 vi 键
+                // 后 `t` 空闲，接上投掷入口。CE 的大写 `T` 是 RETHROW_KEY
+                //（`Rogue.h:1184`，重扔上一件）——web 无 lastItemThrown 簿记，
+                // 不接（b_2 报告登记），也不得悄悄映射到其它动作。
+                case 't':
+                    this.onActionCallback('throw_item');
+                    break;
                 case '.':
                 case '。':
                     this.onActionCallback('wait_or_stairs_down');

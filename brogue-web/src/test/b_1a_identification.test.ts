@@ -37,7 +37,7 @@ import { Item, ItemCategory } from '../engine/Items/Item';
 import { ItemLoader } from '../engine/Items/ItemLoader';
 import { cellTerrainFlags } from '../engine/Map/DungeonFeature';
 import { T_OBSTRUCTS_ITEMS, T_PATHING_BLOCKER, T_IS_DF_TRAP } from '../engine/Map/TerrainCatalog';
-import { Monster, type MonsterData } from '../entities/Monster';
+import { Monster, MonsterState, type MonsterData } from '../entities/Monster';
 import { generateItemDetail, type DetailInfo } from '../engine/UI/DetailGenerator';
 import monsterDataJson from '../data/monsters.json';
 
@@ -714,18 +714,42 @@ describe('已反转（B-1b）：免费解咒/充能作弊面已移除（原"仍�
     });
 });
 
-describe('留痕：投掷仍是"传送+落地"，无弹道无伤害（→ B-2 反转）', () => {
-    it('扔剑到空地：剑落地、相邻怪不掉血、无命中结算', () => {
+describe('已反转（B-2）：投掷已是"弹道+命中+落地"，不再是传送+落地', () => {
+    /**
+     * 原留痕断言（B-1a 立）：
+     *     game.throwItemAt(wpn, 6, 6); // 空地
+     *     expect(items.some(i => i.id === wpn.id && loc == (6,6))).toBe(true);
+     *     expect(rat.hp).toBe(hpBefore); // 对怪物零效果
+     * B-2 按 CE Items.c:6772-7066 实装逐格弹道、命中掷骰、伤害与合格落点后，
+     * "投掷对怪物零效果"的前提失效。反转 = 断言新事实 + 保留越界守卫，
+     * 不是删掉；完整对抗矩阵（弹道逐格/命中骰/未中落地/堆叠递减/药水细分/
+     * 熟悉度反常留痕/交互期哨兵）在 b_2_throwing.test.ts。
+     */
+    it('扔武器到弹道上的怪：有命中结算（掉血或被激怒，不再零效果）', () => {
+        const game = createHeadlessGame(42, 'test');
+        isolatePlayer(game);
+        const dart = ItemLoader.spawnWeapon('dart', -1, -1)!;
+        dart.quantity = 5;
+        game.player.inventory.addItem(dart);
+        const rat = makeMonster(game, 'rat', 6, 5); // 恰在 (5,5)→(6,5) 的弹道上
+        const hpBefore = rat.hp;
+
+        game.throwItemAt(dart, 6, 5);
+        // 命中（掉血/击杀）或未命中（CE Items.c:6791-6801 掷骰前置 TRACKING_SCENT，
+        // miss 也激怒→HUNTING）——旧世界"零效果"必居其一之外。
+        const engaged = rat.hp < hpBefore || rat.state === MonsterState.HUNTING;
+        expect(engaged, '投掷在弹道命中怪物却无任何结算').toBe(true);
+        // 越界守卫：堆叠只递减 1（CE Items.c:7160-7162），不得整包消失
+        expect(dart.quantity).toBe(4);
+    });
+
+    it('越界守卫：扔到空地的物品仍落在目标格（原留痕的存活部分）', () => {
         const game = createHeadlessGame(42, 'test');
         isolatePlayer(game);
         const wpn = ItemLoader.spawnWeapon('sword', -1, -1)!;
         game.player.inventory.addItem(wpn);
-        const rat = makeMonster(game, 'rat', 5, 6);
-        const hpBefore = rat.hp;
-
-        game.throwItemAt(wpn, 6, 6); // 空地
+        game.throwItemAt(wpn, 6, 6); // 空地，弹道无阻挡
         expect(game.items.some(i => i.id === wpn.id && i.loc.x === 6 && i.loc.y === 6)).toBe(true);
-        expect(rat.hp).toBe(hpBefore); // 对怪物零效果
     });
 });
 
