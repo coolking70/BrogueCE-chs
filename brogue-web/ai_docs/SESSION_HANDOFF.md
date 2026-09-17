@@ -1,9 +1,86 @@
 # 会话交接（滚动更新，读这一份即可接手）
 
 > **本文取代 `night_plan_2026-09-15.md`**（那份已定格为历史记录，勿参照）。
-> 最后更新：2026-09-17 下午。F/G 链完成；C 链只剩 C-7；B 链做到 B-1c。
-> **第三对并行：B-2（投掷）+ C-7（光照，C 链收口）跑中。**
+> 最后更新：**2026-09-18 01:00**。F/G/C 链全部完成；B 链做到 B-3。
+> **B-4a（生成什么）跑中；B-4b（落在哪/多少）任务书已就绪待投。**
 > **每次验收通过并提交后，必须回来更新「当前状态」与「队列」两节。**
+
+---
+
+## ★ 夜间接班（新上下文从这里开始读）
+
+### 1. 现在在跑什么
+
+| 轮次 | 工作树 | 分支 | 输出 |
+|---|---|---|---|
+| **B-4a** 物品生成规则「生成什么」 | `…/wt-b-4a` | `round/b-4a` | `/tmp/zrun-b-4a.json` |
+
+查活口（**不要写 `until` 轮询循环**，历史上留下过 11 个僵尸等待进程）：
+
+```bash
+pgrep -f zrun.sh >/dev/null && echo 跑中 || echo 已退出
+cd <工作树>/brogue-web && git status --short     # 空 = 还在读源码，有改动 = 在写了
+```
+
+后台任务完成时会**自动通知**，不需要主动等。
+
+### 2. 验收固定七步（每轮都一样）
+
+1. 读执行方报告的七个小节，**先看 `## 对任务书的反驳`** —— 它常常是对的；
+2. **独立复核反驳里的要害事实**（打开 CE 源码自己看，别信报告）；
+3. 核对 `git status --short` 的改动文件**是否全在授权清单内**；
+4. 读 `## 需要追加授权的测试` —— 那是**验收方自己的漏项**，
+   由验收方补修，**守卫要顺延不要放宽**（见「第四种形态」一节）；
+5. 跑**全量串行门禁**（`npx vitest run --fileParallelism=false`，约 18 分钟，
+   必须在没有执行方抢 CPU 时跑）；
+6. 工作树 `git add -A && git commit` 快照 → 主库 `git merge --squash round/<名>` → 提交 → `git push origin main`；
+7. `git worktree remove <路径> --force`，更新本文的「队列」节。
+
+### 3. 下一步队列（按顺序，**B-4a / B-4b 都是独占轮，不可并行**）
+
+1. **B-4a** 跑中 → 验收 → 合并
+2. **B-4b**（任务书 `tasks/b-4b.prompt.md` 已就绪）→ 投 → 验收 → 合并
+3. 小轮：`DF_CRYSTAL_WALL` 入目录 + `AutoGenerator.ts` 两条缺口接线（**移动生成流，独占**）
+4. 渲染纯重构轮（把 cell→appearance 抽成纯函数）→ 之后才谈 UI 轮
+5. 中小 P1 合并轮（P1-39 / P1-41 / C-4a-1 / i18n 模板字符串盲区）
+
+### 4. 投一轮的完整命令（照抄改名即可）
+
+```bash
+cd "/Users/coolking70/Documents/同步空间/brogue/brogue-web"
+R=b-4b   # ← 改这里
+WT=/private/tmp/claude-501/-Users-coolking70-Documents------brogue/8ee12a9f-9b98-4460-8396-dd8dbcd34c7b/wt-$R
+git worktree add -b round/$R "$WT" HEAD
+ln -s "$PWD/node_modules" "$WT/brogue-web/node_modules"     # 不软链则 vitest 不可用
+ZRUN_OUT=/tmp/zrun-$R.json bash ai_docs/tasks/zrun.sh   "$WT/brogue-web/ai_docs/tasks/$R.prompt.md" "$WT/brogue-web" yolo
+```
+
+四条铁律：
+- **先提交任务书，再建工作树**（否则工作树里没有任务书）；
+- **每轮独立 `ZRUN_OUT`**（共用 `/tmp/zrun-last.json` 会互相覆盖 → `Extra data` 报错）；
+- **mode 只能是 `build`/`edit`/`plan`/`yolo`**（已加白名单闸门，退出码 92）；
+- 用 `run_in_background` 启动才有完成通知。
+
+### 5. 时间窗
+
+- GLM **23:00–09:00 免费不限量**；免费夜间时段**到 9 月 20 日结束**。
+- 另有一条**5 小时滚动上限**，与免费窗口无关，撞上会 `PARSE_FAIL`。
+- 撞限额时**活可能已经干完了** —— 先读工作树产物判断完整度，再决定重跑。
+  历史上 B-2 / C-7 都是被杀在「写最终报告」那一步，产物完好，
+  用「补完任务书」（明写"产物完好、不要推倒重来"）救回了 2315 行。
+
+### 6. 三种 `PARSE_FAIL` 的分辨（**第一件事永远是直连内核看 stderr**）
+
+| 报错 | 原因 |
+|---|---|
+| `Expecting value: line 1 column 1` | 内核没吐 JSON：**配额耗尽 或 mode 非法** |
+| `Extra data: line N column 1` | 两轮并行写了同一个 `ZRUN_OUT` |
+
+探针（注意用内核认的 mode，否则探针自己也踩坑）：
+
+```bash
+node /Applications/ZCode.app/Contents/Resources/glm/zcode.cjs   --prompt "reply OK" --cwd /tmp --mode plan --json 2>&1 | head -c 400
+```
 
 ---
 
