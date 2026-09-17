@@ -88,22 +88,6 @@ function expectMirrorMatchesTruth(game: Game): void {
     }
 }
 
-/** F-0/g_1 探针同款取景点（草地/灌木、离玩家 8 格外、randRange 抽取）。 */
-function probeSpot(game: Game): { x: number; y: number } {
-    const px = game.player.loc.x, py = game.player.loc.y;
-    const cands: { x: number; y: number }[] = [];
-    for (let x = 0; x < game.grid.width; x++) {
-        for (let y = 0; y < game.grid.height; y++) {
-            const cell = game.grid.getCell(x, y)!;
-            if (Math.max(Math.abs(x - px), Math.abs(y - py)) < 8) continue;
-            if (cell.terrain === C.GRASS || cell.terrain === C.FOLIAGE) cands.push({ x, y });
-        }
-    }
-    const spot = cands[rng.randRange(0, cands.length - 1)] ?? null;
-    expect(spot, '基线取景点必须仍存在（生成链未动的旁证）').not.toBeNull();
-    return spot!;
-}
-
 beforeEach(() => {
     rng.seedRandomGenerator(20260916);
 });
@@ -281,68 +265,88 @@ describe('G-2 对抗③④：DF_GAS_FIRE 接线完整成形（缓办没撤除的
 });
 
 // ---------------------------------------------------------------------------
-// 对抗⑤：火侧回归哨兵（本轮不许碰火）
+// 对抗⑤：火侧回归哨兵（S-1 改造：test 层合成火场——对流位移免疫）
 // ---------------------------------------------------------------------------
-describe('G-2 对抗⑤：火侧曲线回归哨兵（与 g_1 对抗⑧ 的 seed42 互补）', () => {
-    it('FIRE-NAT seed2026 点火蔓延曲线逐位等于 F-2a §一 基线', () => {
-        const game = createHeadlessGame(2026);
-        const spot = probeSpot(game);
-        // ★ C-5 后由验收方重捕获（取景点与曲线一并更新）★
-        // 翻红成因是**布景移位**而非机制变化：深渊解禁改写了地图，
-        // probeSpot 随机选中的草地格随之改变，断言死在"取景点应仍为"那一行，
-        // 火根本还没点着。独立证据：F/G 链的 66 条**机制型**测试
-        // （f_1/f_2a/f_2b/f_2c/g_1，跑在构造场景上、与地图无关）全数通过；
-        // 执行方另做了对照实验——临时恢复 C-2 的抽取后 43/43 逐位回绿。
-        //
-        // ⚠️ 本哨兵**锚定真实地图**，任何改变生成的轮次（C-6、B-4 等）
-        // 都会让它翻红并需要同样的重捕获。它在 g_2 与 g_3 有**两份等价实现**，
-        // 翻正时两处一起改。
-        expect(spot.x === 10 && spot.y === 10, 'seed2026 取景点应仍为 (10,10)').toBe(true);
-        game.environment.ignite(spot.x, spot.y);
-        const series: number[] = [];
-        for (let t = 0; t < 40; t++) {
-            if (game.isGameOver) break;
-            game.handlePlayerAction('wait', undefined, 'system');
-            let b = 0;
-            for (let x = 0; x < game.grid.width; x++) {
-                for (let y = 0; y < game.grid.height; y++) {
-                    if (game.grid.getCell(x, y)?.isBurning) b++;
-                }
-            }
-            series.push(b);
+/** S-1 合成火场公共驱动：mode='test' 层不经真实生成器，全图覆写密封地板房 +
+ *  shape 指定的草地形、清怪清物、搭后重播种再点火——曲线只由火机制决定，
+ *  任何改生成的轮次（C-5/C-6/后续）都不再触碰它。与 g_3 对抗⑨ 同场景同基线
+ *  （等价副本，翻正时两处一起改）。 */
+function syntheticFireField(game: Game, shape: (g: Game) => void, reseed: number, ignite: { x: number; y: number }, ticks: number): number[] {
+    const W = game.grid.width, H = game.grid.height;
+    for (let x = 0; x < W; x++) {
+        for (let y = 0; y < H; y++) {
+            const border = x === 0 || y === 0 || x === W - 1 || y === H - 1;
+            game.grid.setTerrain(x, y, border ? C.WALL : C.FLOOR, border ? '#' : '.', border ? 0x444444 : 0x888888);
         }
-        // 2026-09-16 复跑基线（G-2 前后逐位一致——蒸汽分支退役未动 RNG 流）。
+    }
+    shape(game);
+    game.monsters.length = 0;
+    game.items.length = 0;
+    game.player.loc.x = 4;
+    game.player.loc.y = 4;
+    rng.seedRandomGenerator(reseed);
+    game.environment.ignite(ignite.x, ignite.y);
+    const series: number[] = [];
+    for (let t = 0; t < ticks; t++) {
+        if (game.isGameOver) break;
+        game.handlePlayerAction('wait', undefined, 'system');
+        let b = 0;
+        for (let x = 0; x < game.grid.width; x++) {
+            for (let y = 0; y < game.grid.height; y++) {
+                if (game.grid.getCell(x, y)?.isBurning) b++;
+            }
+        }
+        series.push(b);
+    }
+    return series;
+}
+
+/** 火场 B：全幅草地被十字街一分为四（象限间不蔓延，只观测单象限动力学）。 */
+function fieldB(game: Game): void {
+    const W = game.grid.width, H = game.grid.height;
+    const mx = Math.floor(W / 2), my = Math.floor(H / 2);
+    for (let x = 2; x < W - 2; x++) {
+        for (let y = 2; y < H - 2; y++) {
+            if (x === mx || x === mx + 1 || y === my || y === my + 1) continue;
+            game.grid.setTerrain(x, y, C.GRASS, '"', 0x33aa33);
+        }
+    }
+}
+
+/** 火场 C：蜂窝孔草地（(x+2y)%5==0 抽掉一格）——蔓延沿碎块推进，形态与
+ *  实心块完全不同的第二条独立曲线。 */
+function fieldC(game: Game): void {
+    for (let x = 8; x <= 30; x++) {
+        for (let y = 6; y <= 20; y++) {
+            if ((x + 2 * y) % 5 === 0) continue;
+            game.grid.setTerrain(x, y, C.GRASS, '"', 0x33aa33);
+        }
+    }
+}
+
+describe('G-2 对抗⑤：火侧曲线回归哨兵（S-1 改造：test 层合成火场 B/C）', () => {
+    it('火场 B（seed2026 场景流复位）十字街四象限草地：点火蔓延曲线逐位 = S-1 基线。' +
+        '错误实现：本轮顺手改动火侧蔓延概率/衰老掷骰/4 邻判据——曲线形态立变。' +
+        '原 FIRE-NAT seed2026 哨兵锚定真实地图取景点 + 真实怪物 AI 流位置' +
+        '（C-5/C-6 两次实证漂移），S-1 起改锚全合成场景。', () => {
+        const game = createHeadlessGame(2026, 'test');
+        const series = syntheticFireField(game, fieldB, 2026, { x: 19, y: 7 }, 40);
+        // 2026-09-17 S-1 实跑基线（火场 B）。
         expect(series).toEqual([
-            1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 3, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0,
+            2, 4, 6, 4, 4, 5, 8, 9, 8, 10, 10, 10, 12, 15, 16, 17, 21, 22, 23, 28,
+            31, 36, 37, 38, 41, 44, 45, 47, 51, 54, 59, 61, 66, 70, 72, 73, 73, 72, 76, 78,
         ]);
     });
 
-    it('FIRE-NAT seed777 点火蔓延曲线逐位等于 C-5 后重捕获基线（玩家第 22 回合死亡截断）', () => {
-        const game = createHeadlessGame(777);
-        const spot = probeSpot(game);
-        // 同上（C-5 重捕获）。⚠️ seed777 的新布景下玩家会在第 22 回合死亡，
-        // 循环因 isGameOver 提前结束——所以这条序列只有 22 项。
-        // 这使它比另两条更脆弱（依赖玩家存活），下次改生成时优先考虑换种子。
-        expect(spot.x === 14 && spot.y === 5, 'seed777 取景点应仍为 (14,5)').toBe(true);
-        game.environment.ignite(spot.x, spot.y);
-        const series: number[] = [];
-        for (let t = 0; t < 40; t++) {
-            if (game.isGameOver) break;
-            game.handlePlayerAction('wait', undefined, 'system');
-            let b = 0;
-            for (let x = 0; x < game.grid.width; x++) {
-                for (let y = 0; y < game.grid.height; y++) {
-                    if (game.grid.getCell(x, y)?.isBurning) b++;
-                }
-            }
-            series.push(b);
-        }
-        expect(series[0]).toBe(1);
-        // 逐位基线（31 条——wait-only 策略下玩家于第 31 回合死亡，
-        // isGameOver 截断；与 F-0 探针同形）。
+    it('火场 C（seed777 场景流复位）蜂窝孔草地：点火蔓延曲线逐位 = S-1 基线。' +
+        '原 seed777 哨兵依赖玩家第 22 回合死亡截断（文件自注"更脆弱"），' +
+        '合成场景下玩家与火隔离，40 回合全程可观测，脆弱点一并消除。', () => {
+        const game = createHeadlessGame(777, 'test');
+        const series = syntheticFireField(game, fieldC, 777, { x: 20, y: 13 }, 40);
+        // 2026-09-17 S-1 实跑基线（火场 C）。
         expect(series).toEqual([
-            1, 1, 1, 2, 3, 4, 5, 6, 7, 9, 8, 10, 13, 13, 13, 14, 14, 14, 16, 18, 19, 19,
+            1, 1, 1, 1, 1, 1, 1, 2, 3, 3, 3, 4, 3, 3, 3, 4, 4, 5, 5, 6,
+            6, 7, 9, 11, 13, 14, 16, 12, 13, 13, 12, 12, 11, 13, 13, 13, 14, 15, 16, 16,
         ]);
     });
 });

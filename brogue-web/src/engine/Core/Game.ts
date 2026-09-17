@@ -4,6 +4,7 @@
  */
 import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer } from '../Map/Grid';
 import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_IS_FIRE, T_CAUSES_CONFUSION, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_PATHING_BLOCKER, T_OBSTRUCTS_PASSABILITY, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY } from '../Map/TerrainCatalog';
+import { isPathingBlocker } from '../Map/TerrainCatalog';
 import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, spawnDungeonFeature } from '../Map/DungeonFeature';
 import { DF } from '../Map/DungeonFeatureCatalog';
 import { Architect } from '../Generator/Architect';
@@ -923,7 +924,14 @@ export class Game {
             // p1_33 要求 canMoveTo 可通行，而 canMoveTo 对岩浆放行——
             // 护城河类蓝图的中心若落在岩浆上，宝物同样会掉进岩浆。
             const centerCell = this.grid.getCell(machine.center.x, machine.center.y);
-            if (!centerCell || centerCell.terrain === TerrainType.LAVA) continue;
+            // 验收方 2026-09-17 修正判据（S-1 的改造哨兵抓到的真阳性）：
+            // P1-43 当初我写的是硬编码 `terrain === LAVA`，**口径太窄**——
+            // C-6 的地图上产物落到了 `INERT_BRIMSTONE`（自燃硫矿）格。
+            // CE 的物品落位判据是 `T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER`
+            // （`Rogue.h:1948` 的并集含 T_SPONTANEOUSLY_IGNITES / T_LAVA_INSTA_DEATH /
+            // T_AUTO_DESCENT / T_IS_DEEP_WATER…），而 C-4a 早就把它做成了
+            // `isPathingBlocker`——我当时没用它，这正是"统一判据"要防的事。
+            if (!centerCell || isPathingBlocker(centerCell.terrain)) continue;
             // Let's just pick one random good item: scroll of enchanting or wand of fire
             let treasure;
             if (rng.randPercent(50)) {
@@ -957,7 +965,14 @@ export class Game {
                 // 而岩浆的 T_LAVA_INSTA_DEATH 正在 T_PATHING_BLOCKER 里
                 // （`Rogue.h:1948`）——CE 不会把物品放到岩浆上。
                 const altarCell = this.grid.getCell(pos.x, pos.y);
-                if (!altarCell || altarCell.terrain === TerrainType.LAVA) continue;
+                // 验收方 2026-09-17 修正判据（S-1 的改造哨兵抓到的真阳性）：
+                // P1-43 当初我写的是硬编码 `terrain === LAVA`，**口径太窄**——
+                // C-6 的地图上产物落到了 `INERT_BRIMSTONE`（自燃硫矿）格。
+                // CE 的物品落位判据是 `T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER`
+                // （`Rogue.h:1948` 的并集含 T_SPONTANEOUSLY_IGNITES / T_LAVA_INSTA_DEATH /
+                // T_AUTO_DESCENT / T_IS_DEEP_WATER…），而 C-4a 早就把它做成了
+                // `isPathingBlocker`——我当时没用它，这正是"统一判据"要防的事。
+                if (!altarCell || isPathingBlocker(altarCell.terrain)) continue;
                 // Altar items should be highly desirable. Let's spawn random wands, staffs, rings, charms, or enchants.
                 const randType = rng.randRange(0, 4);
                 let vaultItem = null;
@@ -1062,7 +1077,14 @@ export class Game {
                 // BlueprintEngine 的特征选址**——见路线图 P1-43，
                 // 那样机器不会因此静默少一件宝物。
                 const spawnCell = this.grid.getCell(spawn.pos.x, spawn.pos.y);
-                if (!spawnCell || spawnCell.terrain === TerrainType.LAVA) continue;
+                // 验收方 2026-09-17 修正判据（S-1 的改造哨兵抓到的真阳性）：
+                // P1-43 当初我写的是硬编码 `terrain === LAVA`，**口径太窄**——
+                // C-6 的地图上产物落到了 `INERT_BRIMSTONE`（自燃硫矿）格。
+                // CE 的物品落位判据是 `T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER`
+                // （`Rogue.h:1948` 的并集含 T_SPONTANEOUSLY_IGNITES / T_LAVA_INSTA_DEATH /
+                // T_AUTO_DESCENT / T_IS_DEEP_WATER…），而 C-4a 早就把它做成了
+                // `isPathingBlocker`——我当时没用它，这正是"统一判据"要防的事。
+                if (!spawnCell || isPathingBlocker(spawnCell.terrain)) continue;
                 const item = this.spawnBlueprintItem(spawn.category, spawn.id, spawn.pos.x, spawn.pos.y, depth);
                 if (item) this.items.push(item);
             }

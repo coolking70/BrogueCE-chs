@@ -265,26 +265,37 @@ describe('G-1 对抗⑦：类型竞争与 3 体积压制（Time.c:1427-1431）',
 });
 
 // ---------------------------------------------------------------------------
-// 对抗⑧：火侧回归哨兵（任务书 §六.2 点名）
+// 对抗⑧：火侧回归哨兵（S-1 改造：test 层合成火场——对流位移免疫）
 // ---------------------------------------------------------------------------
-describe('G-1 对抗⑧：火侧曲线回归哨兵（本轮不许碰火）', () => {
-    it('FIRE-NAT seed42 点火蔓延曲线逐位等于 F-2a §一 基线', () => {
-        const game = createHeadlessGame(42);
-        // 找一块玩家 8 格外的可燃草地（F-0 探针同款判定）。
-        let spot: { x: number; y: number } | null = null;
-        const px = game.player.loc.x, py = game.player.loc.y;
-        const cands: { x: number; y: number }[] = [];
-        for (let x = 0; x < game.grid.width; x++) {
-            for (let y = 0; y < game.grid.height; y++) {
-                const cell = game.grid.getCell(x, y)!;
-                if (Math.max(Math.abs(x - px), Math.abs(y - py)) < 8) continue;
-                if (cell.terrain === C.GRASS || cell.terrain === C.FOLIAGE) cands.push({ x, y });
-            }
+/** S-1 火场 A（16×12 实心草块；f_2c 对抗⑩ 同款副本，翻正时两处一起改）：
+ *  mode='test' 层不经真实生成器，全图覆写密封地板房、清怪清物，搭后重播种——
+ *  蔓延/衰老曲线只由火机制决定，任何改生成的轮次都不再触碰它。 */
+function fireFieldA(game: Game): void {
+    const W = game.grid.width, H = game.grid.height;
+    for (let x = 0; x < W; x++) {
+        for (let y = 0; y < H; y++) {
+            const border = x === 0 || y === 0 || x === W - 1 || y === H - 1;
+            game.grid.setTerrain(x, y, border ? C.WALL : C.FLOOR, border ? '#' : '.', border ? 0x444444 : 0x888888);
         }
-        spot = cands[rng.randRange(0, cands.length - 1)] ?? null;
-        expect(spot, 'F-0 基线的取景点必须仍存在').not.toBeNull();
-        expect(spot!.x === 5 && spot!.y === 20, 'seed42 取景点应仍为 (5,20)（生成链未动）').toBe(true);
-        game.environment.ignite(spot!.x, spot!.y);
+    }
+    for (let x = 10; x <= 25; x++) {
+        for (let y = 8; y <= 19; y++) game.grid.setTerrain(x, y, C.GRASS, '"', 0x33aa33);
+    }
+    game.monsters.length = 0;
+    game.items.length = 0;
+    game.player.loc.x = 4;
+    game.player.loc.y = 4;
+}
+
+describe('G-1 对抗⑧：火侧曲线回归哨兵（S-1 改造：test 层合成火场 A）', () => {
+    it('草块点火蔓延-衰老曲线逐位等于 S-1 基线。错误实现：本轮顺手改动火侧' +
+        '蔓延概率/衰老掷骰/4 邻判据——曲线形态立变（本轮不许碰火的守卫保留）。' +
+        '原 FIRE-NAT seed42 哨兵锚定真实地图取景点 + 真实怪物 AI 流位置' +
+        '（C-5/C-6 两次实证漂移），S-1 起改锚全合成场景。', () => {
+        const game = createHeadlessGame(42, 'test');
+        fireFieldA(game);
+        rng.seedRandomGenerator(42); // 场景搭好后显式重播种
+        game.environment.ignite(17, 13);
         const series: number[] = [];
         for (let t = 0; t < 40; t++) {
             if (game.isGameOver) break;
@@ -297,10 +308,10 @@ describe('G-1 对抗⑧：火侧曲线回归哨兵（本轮不许碰火）', () 
             }
             series.push(b);
         }
-        // 2026-09-16 F-2a 实跑基线（f_2a 报告 §一；本轮复跑逐位一致）。
+        // 2026-09-17 S-1 实跑基线（火场 A；与 f_2c 对抗⑩ 同基线）。
         expect(series).toEqual([
-            1, 1, 1, 2, 3, 5, 6, 6, 6, 6, 7, 6, 6, 7, 7, 7, 7, 7, 6, 6,
-            6, 6, 6, 5, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 5, 5,
+            2, 3, 6, 11, 13, 14, 16, 19, 20, 23, 23, 25, 27, 28, 28, 31, 32, 34, 36, 39,
+            42, 47, 53, 57, 61, 63, 64, 67, 71, 70, 69, 66, 64, 64, 65, 65, 64, 62, 63, 64,
         ]);
     });
 });

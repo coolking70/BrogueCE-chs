@@ -329,20 +329,100 @@ describe('C-0 地牢环路（addLoops）+ IN_LOOP', () => {
         }
     });
 
-    it('A4 对抗：判据写反（< 而非 >）→ 蜂窝化，门位总数暴涨（> 正确对照 ×3）', () => {
-        let correct = 0;
-        let inverted = 0;
-        stageSweep(HEAVY_SEEDS, (arch) => {
-            const input = trueScanInput(arch);
-            correct += flawedScan(input, 'none').flat().filter((v) => v === WORK_DOOR_SITE).length;
-            inverted += flawedScan(input, 'inverted').flat().filter((v) => v === WORK_DOOR_SITE).length;
-        });
-        expect(correct, '正确对照门位数=0（addLoops 未生效）').toBeGreaterThan(0);
+    it('A4 对抗（S-1 改造：锚定合成输入）：判据写反（< 而非 >）→ 蜂窝化，' +
+        '门位总数暴涨（> 正确对照 ×3）', () => {
+        // S-1 改造说明。原版把对照与写反变体都跑在 HEAVY_SEEDS 的 52 个真实
+        // 层上——门位数本身随流位移重抽，比值守卫在随机地图上临界（C-6 实测
+        // 2.978 vs 门槛 3，掷硬币式翻红）。S-1 改锚**合成工作网格**（0=墙
+        // 1=地板，薄墙结构——真实地牢的形态），两个变体在同一常量输入上运行，
+        // 门位数成为精确常量，比值守卫不再有抽样运气：
+        //   A) 华夫格：内部 1 厚墙按 6 格划分 5×5 小间、每段墙中点开 1 格——
+        //      任意内墙两侧的绕行距离都 < MINIMUM_PATHING_DISTANCE：
+        //      correct（>20 才开）一门不开、inverted（<20 即开）每墙必开
+        //      （蜂窝化的结构性形态，实测 190 门）。
+        //   B) 双走道：y=6/y=8 两条走廊夹 1 厚墙，右端 x=76 竖连——离连接口
+        //      越远侧壁距离越远：correct 在远端开真环边门（实测 2 门）、
+        //      inverted 只在近端开冗余门（实测 8 门）。
+        // 汇总（2026-09-17 S-1 实跑录制）：correct=6，inverted=198，比值 33×。
+        // ×3 门槛保留（任务书"阈值不许松"），但因输入已常量化，门槛余量从
+        // 临界 2.978 变为结构性 33×。有牙性：把本测试的 open 判据写反
+        // （即 inverted 变体）后 correct/inverted 互换，ratio 断言立即翻红。
+        const work: number[][] = [];
+        for (let x = 0; x < DCOLS; x++) work[x] = new Array<number>(DROWS).fill(0);
+        for (let x = 9; x <= 47; x++) {
+            for (let y = 4; y <= 26; y++) {
+                if (x % 6 === 0 || y % 6 === 0) continue;
+                work[x]![y] = 1;
+            }
+        }
+        for (const wx of [12, 18, 24, 30, 36, 42]) {
+            for (const wy of [9, 15, 21]) work[wx]![wy] = 1; // 墙列中点开口
+        }
+        for (const wy of [6, 12, 18, 24]) {
+            for (const wx of [15, 21, 27, 33, 39, 45]) work[wx]![wy] = 1; // 墙行中点开口
+        }
+        for (let x = 2; x <= 8; x++) for (let y = 15; y <= 16; y++) work[x]![y] = 1; // 入口走道
+        for (const y of [6, 8]) for (let x = 50; x <= 76; x++) work[x]![y] = 1;
+        for (let y = 6; y <= 8; y++) work[76]![y] = 1;
+
+        const inMap = (x: number, y: number): boolean => x >= 0 && x < DCOLS && y >= 0 && y < DROWS;
+
+        function scan(flaw: 'none' | 'inverted'): number[][] {
+            const w = work.map((col) => col.slice());
+            const costMap: number[][] = [];
+            for (let x = 0; x < DCOLS; x++) {
+                costMap[x] = new Array<number>(DROWS);
+                for (let y = 0; y < DROWS; y++) costMap[x]![y] = w[x]![y] === 0 ? -2 : 1;
+            }
+            const scanner = new DijkstraMap(DCOLS, DROWS);
+            const pathMap: number[][] = [];
+            for (let x = 0; x < DCOLS; x++) pathMap[x] = new Array<number>(DROWS).fill(30000);
+            for (let x = 0; x < DCOLS; x++) {
+                for (let y = 0; y < DROWS; y++) {
+                    if (w[x]![y] !== 0) continue;
+                    for (const [dx, dy] of [[1, 0], [0, 1]] as const) {
+                        const nx = x + dx!, ox = x - dx!, ny = y + dy!, oy = y - dy!;
+                        if (!inMap(nx, ny) || !inMap(ox, oy)) continue;
+                        if (!(w[nx]![ny] === WORK_FLOOR && w[ox]![oy] === WORK_FLOOR)) continue;
+                        for (let px = 0; px < DCOLS; px++) pathMap[px]!.fill(30000);
+                        pathMap[nx]![ny] = 0;
+                        scanner.batchScan(pathMap, costMap, false);
+                        const dist = pathMap[ox]![oy]!;
+                        const open = flaw === 'inverted'
+                            ? dist < MINIMUM_PATHING_DISTANCE
+                            : dist > MINIMUM_PATHING_DISTANCE;
+                        if (open) {
+                            w[x]![y] = WORK_DOOR_SITE;
+                            costMap[x]![y] = 1;
+                            break;
+                        }
+                    }
+                }
+            }
+            return w;
+        }
+
+        const correctW = scan('none');
+        const invertedW = scan('inverted');
+        const count = (w: number[][]): number => w.flat().filter((v) => v === WORK_DOOR_SITE).length;
+        const correct = count(correctW);
+        const inverted = count(invertedW);
+        let waffleInverted = 0;
+        for (let x = 9; x <= 47; x++) {
+            for (let y = 4; y <= 26; y++) {
+                if (invertedW[x]![y] === WORK_DOOR_SITE) waffleInverted++;
+            }
+        }
+        console.log(`[c_0] A4(合成输入) 正确对照=${correct} 判据写反=${inverted}（比值 ${(inverted / Math.max(1, correct)).toFixed(1)}×；华夫格 inverted=${waffleInverted}）`);
+
+        // 常量输入 ⇒ 常量输出：偏移说明扫描器/判据变了（登记到报告再更新）。
+        expect(correct, '正确对照门位数漂移（合成输入下应为常量 6：双走道真环边 2 + 华夫格远端 4）').toBe(6);
+        expect(inverted, '判据写反变体门位数漂移（合成输入下应为常量 198）').toBe(198);
+        expect(waffleInverted, '蜂窝化守卫：华夫格内 inverted 门位数应恒 190').toBe(190);
         expect(
             inverted,
             `判据写反的变体门位数=${inverted}，未暴涨（应 > 正确对照 ${correct} ×3）——A4 无牙`
         ).toBeGreaterThan(correct * 3);
-        console.log(`[c_0] A4 正确对照=${correct} 判据写反=${inverted}（52 层合计）`);
     });
 
     it('A5 对抗：漏 costMap[x][y]=1 同步更新 → 后续候选用过时距离，门位合计严格偏多', () => {

@@ -196,8 +196,21 @@ describe('P2-1 B: ticksUntilTurn 真实驱动调度（对抗性）', () => {
 
     it('B2b 剩余 tick 更少的怪物先行动；推进循环多轮迭代后其带走非零余量', () => {
         const game = createHeadlessGame(777);
-        const fast = game.monsters.find(m => m.hp > 0 && !m.isCaged);
-        expect(fast).toBeDefined();
+        // ★ 验收方 2026-09-17 去随机化（C-6 改怪池后本用例翻红）★
+        //
+        // 原先取 `game.monsters.find(...)` ——**数组里第一只**非笼活怪。
+        // 它的 `movementSpeed` 取决于生成出来的怪池，而下面的 tick 算术
+        // （50-50 归零 → 行动 +movementSpeed → 再扣 50）依赖该速度恰为
+        // `TICKS_PER_TURN`。C-6 的自动生成器换了怪池，第一只不再是那个速度，
+        // 断言就崩了——**被测的是调度循环，却让生成器决定了被测对象**。
+        //
+        // 改为显式挑一只速度等于 TICKS_PER_TURN 的怪：调度循环的被测语义不变
+        // （仍需场上有其它怪来触发第 2 轮迭代），但不再受怪池变化影响。
+        // 这与 S-1 那轮对 8 个哨兵做的去随机化是同一条纪律。
+        const fast = game.monsters.find(
+            m => m.hp > 0 && !m.isCaged && m.movementSpeed === TICKS_PER_TURN,
+        );
+        expect(fast, `场上没有速度 = ${TICKS_PER_TURN} 的怪（怪池变化导致前提落空）`).toBeDefined();
         fast!.ticksUntilTurn = 50; // 注入：比 TICKS_PER_TURN 快半拍
         const spyFast = vi.spyOn(fast!, 'takeTurn');
 

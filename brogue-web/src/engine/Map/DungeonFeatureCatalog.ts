@@ -13,7 +13,11 @@
  *      DF_BRIMSTONE_FIRE；DF_BRIDGE_FIRE → DF_BRIDGE_FALL →
  *      DF_BRIDGE_FALL_PREP）——**闭包完整，无悬空引用**（测试钉死）。
  *   合计 19 条，每条注明 CE 行号。（F-2a 增补 DF_ASH 至 20 条：
- *   EMBERS 的晋升目标 DF_ASH 的闭包要求。）
+ *   EMBERS 的晋升目标 DF_ASH 的闭包要求。G-1 增 DF_GAS_FIRE、G-2 增
+ *   DF_EXPLOSION_FIRE、F-2c 增 DF_BLOAT_EXPLOSION、C-5 增 DF_HOLE_POTION/
+ *   DF_HOLE_2/DF_HOLE_DRAIN 至 26 条；C-6 增 DF_GRASS/DF_FOLIAGE 至 28 条
+ *   ——runAutogenerators 表 index 3/8 的 DFType，第二起点登记在
+ *   c_4b 测试 E2。）
  *
  * tile 归属：CE 条目的 tileType 列若在 web 的 31 个 TerrainType 里有对应物，
  * `tile` 记该成员；**没有的记 null（登记不实现，不为它现造地形）**，
@@ -78,6 +82,11 @@ export enum DF {
                                           // Globals.c:442 目录行引用它）
     DF_HOLE_POTION                 = 135, // :1632（C-5：POTION_DESCENT 的药水 DF
                                           // 与 pit bloat 的死亡 DFType，Globals.c:1039）
+    DF_GRASS                       = 4,   // :1473（C-6：autoGenerator 表 index 3
+                                          // 的 DFType，Globals.c:609 目录行；
+                                          // tile GRASS 同轮已具备）
+    DF_FOLIAGE                     = 8,   // :1477（C-6：表 index 8 的 DFType，
+                                          // Globals.c:613；tile FOLIAGE 同轮已具备）
 }
 
 /** 目录条目 = CE 结构体的 web 投影（messageDisplayed 除外——它依赖玩家
@@ -389,6 +398,26 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
         flags: 0, cePropagationTerrain: '', propagationTerrain: null,
         subsequentDF: DF.DF_HOLE_2,
         description: '', lightFlare: '', flashColor: 'darkBlue', effectRadius: 3,
+    },
+
+    // {GRASS, SURFACE, 75, 5, DFF_BLOCKED_BY_OTHER_LAYERS} —— 草地扩散（C-6：
+    // runAutogenerators 表 index 3 的 DFType，深度 1-10，数量 = (1000-80d)/100，
+    // frequency 0 纯公式）。tile GRASS web 已有（SURFACE 层）。
+    [DF.DF_GRASS]: {
+        id: DF.DF_GRASS, ceLine: 609, ceTile: 'GRASS', tile: TerrainType.GRASS,
+        layer: DungeonLayer.SURFACE, startProbability: 75, probabilityDecrement: 5,
+        flags: DFF_BLOCKED_BY_OTHER_LAYERS, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {FOLIAGE, SURFACE, 100, 33, (DFF_BLOCKED_BY_OTHER_LAYERS)} —— 树丛扩散
+    //（C-6：表 index 8 的 DFType，深度 1-8，数量 = (1000-333d)/100 再叠加
+    // frequency 15 追加）。tile FOLIAGE web 已有（SURFACE 层）。
+    [DF.DF_FOLIAGE]: {
+        id: DF.DF_FOLIAGE, ceLine: 613, ceTile: 'FOLIAGE', tile: TerrainType.FOLIAGE,
+        layer: DungeonLayer.SURFACE, startProbability: 100, probabilityDecrement: 33,
+        flags: DFF_BLOCKED_BY_OTHER_LAYERS, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0,
     },
 };
 

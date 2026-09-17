@@ -384,6 +384,9 @@ describe('C-4a-0 留痕（本轮明确不做的事，断言现状）', () => {
         const ALLOWLIST = new Set([
             'engine/Map/DungeonFeature.ts', // C-4b：fillSpawnMap / DFF_CLEAR_* 跨层清理
             'engine/Map/Promotion.ts',      // C-4c：promoteTile 的 TM_VANISHES_UPON_PROMOTION 清层（CE Time.c:1258-1261 按层写）
+            'engine/Map/AutoGenerator.ts',  // C-6：runAutogenerators 的 terrain 分支
+                                            //（CE Architect.c:1829-1838 `layers[layer] = terrain`；
+                                            // 当前为留形分支——真实目录无 wired terrain 条目）
         ]);
         const srcDir = fileURLToPath(new URL('../', import.meta.url));
         const prodFiles = collectFiles(srcDir).filter((f) => !f.split(sep).includes('test'));

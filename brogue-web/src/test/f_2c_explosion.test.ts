@@ -378,48 +378,72 @@ describe('F-2c 对抗⑨：玩家受击铭牌与 dampening 符文吸收', () => 
 // ---------------------------------------------------------------------------
 // 对抗⑩⑪：双向回归哨兵（本轮不许碰火侧/气体侧）
 // ---------------------------------------------------------------------------
-describe('F-2c 对抗⑩：火侧回归哨兵（FIRE-NAT seed42，与 g_1 对抗⑧同基线）', () => {
-    it('FIRE-NAT seed42 点火蔓延曲线逐位等于 F-2a §一 基线——本轮任何改动不得移动火侧行为/RNG 流', () => {
-        const game = createHeadlessGame(42);
-        let spot: { x: number; y: number } | null = null;
-        const px = game.player.loc.x, py = game.player.loc.y;
-        const cands: { x: number; y: number }[] = [];
-        for (let x = 0; x < game.grid.width; x++) {
-            for (let y = 0; y < game.grid.height; y++) {
-                const cell = game.grid.getCell(x, y)!;
-                if (Math.max(Math.abs(x - px), Math.abs(y - py)) < 8) continue;
-                if (cell.terrain === C.GRASS || cell.terrain === C.FOLIAGE) cands.push({ x, y });
-            }
+// ---------------------------------------------------------------------------
+// 对抗⑩：火侧回归哨兵（S-1 改造：test 层合成火场——对流位移免疫）
+// ---------------------------------------------------------------------------
+/** S-1 火场 A（16×12 实心草块）：mode='test' 层不经真实生成器，全图覆写
+ *  密封地板房、草块内点火。场景内无怪无物无共享流系统，搭后重播种——
+ *  蔓延/衰老曲线只由火机制决定，任何改生成的轮次（C-5/C-6/后续）都不再
+ *  触碰它。与 g_1 对抗⑧ 同场景同基线（等价副本，翻正时两处一起改）。 */
+function fireFieldA(game: Game): void {
+    const W = game.grid.width, H = game.grid.height;
+    for (let x = 0; x < W; x++) {
+        for (let y = 0; y < H; y++) {
+            const border = x === 0 || y === 0 || x === W - 1 || y === H - 1;
+            game.grid.setTerrain(x, y, border ? C.WALL : C.FLOOR, border ? '#' : '.', border ? 0x444444 : 0x888888);
         }
-        spot = cands[rng.randRange(0, cands.length - 1)] ?? null;
-        expect(spot, 'F-0 基线的取景点必须仍存在').not.toBeNull();
-        expect(spot!.x === 5 && spot!.y === 20, 'seed42 取景点应仍为 (5,20)（生成链未动）').toBe(true);
-        game.environment.ignite(spot!.x, spot!.y);
+    }
+    for (let x = 10; x <= 25; x++) {
+        for (let y = 8; y <= 19; y++) game.grid.setTerrain(x, y, C.GRASS, '"', 0x33aa33);
+    }
+    game.monsters.length = 0;
+    game.items.length = 0;
+    game.player.loc.x = 4;
+    game.player.loc.y = 4;
+}
+
+function countBurning(game: Game): number {
+    let b = 0;
+    for (let x = 0; x < game.grid.width; x++) {
+        for (let y = 0; y < game.grid.height; y++) {
+            if (game.grid.getCell(x, y)?.isBurning) b++;
+        }
+    }
+    return b;
+}
+
+describe('F-2c 对抗⑩：火侧回归哨兵（S-1 改造：test 层合成火场 A）', () => {
+    it('草块点火蔓延-衰老曲线逐位等于 S-1 基线（seed42 场景流复位）。' +
+        '错误实现：本轮顺手改动火蔓延概率/衰老掷骰/4 邻判据——曲线形态立变。' +
+        '原 FIRE-NAT 哨兵锚定真实地图 + 真实怪物 AI 的流位置（C-5/C-6 两次实证' +
+        '漂移），S-1 起改锚全合成场景。', () => {
+        const game = createHeadlessGame(42, 'test');
+        fireFieldA(game);
+        rng.seedRandomGenerator(42); // 场景搭好后显式重播种
+        game.environment.ignite(17, 13);
         const series: number[] = [];
         for (let t = 0; t < 40; t++) {
             if (game.isGameOver) break;
             game.handlePlayerAction('wait', undefined, 'system');
-            let b = 0;
-            for (let x = 0; x < game.grid.width; x++) {
-                for (let y = 0; y < game.grid.height; y++) {
-                    if (game.grid.getCell(x, y)?.isBurning) b++;
-                }
-            }
-            series.push(b);
+            series.push(countBurning(game));
         }
-        // 2026-09-16 F-2a 实跑基线（g_1_gas_volumetric 对抗⑧同源照抄）。
+        // 2026-09-17 S-1 实跑基线（火场 A，前段蔓延、后段蔓延-衰老平衡）。
+        // 衰老被拆（火永生）→ 曲线持续上涨翻红；蔓延被拆 → 恒 1-2 翻红；
+        // 任何新增掷骰 → 流位移 → 逐位翻红。
         expect(series).toEqual([
-            1, 1, 1, 2, 3, 5, 6, 6, 6, 6, 7, 6, 6, 7, 7, 7, 7, 7, 6, 6,
-            6, 6, 6, 5, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 5, 5,
+            2, 3, 6, 11, 13, 14, 16, 19, 20, 23, 23, 25, 27, 28, 28, 31, 32, 34, 36, 39,
+            42, 47, 53, 57, 61, 63, 64, 67, 71, 70, 69, 66, 64, 64, 65, 65, 64, 62, 63, 64,
         ]);
     });
 });
 
-describe('F-2c 对抗⑪：气体侧回归哨兵（紧凑签名——完整 14 回合基线仍在 f_2b 对抗⑦/f_2a 对抗⑪）', () => {
-    it('POISON 100 体积注入 (10,8) 后前 5 个客观块的中心格体积 + 全场总体积签名逐位一致——' +
-        'updateGases/addGas/客观块次序被本轮顺手改动的实现在此翻红', () => {
-        const game = createHeadlessGame(42);
-        openRoom(game);
+describe('F-2c 对抗⑪：气体侧回归哨兵（S-1 改造：test 层全隔离场景）', () => {
+    it('POISON 100 体积注入 (10,8) 后前 5 个客观块的中心格体积 + 全场总体积签名' +
+        '逐位一致（完整 14 回合全格基线仍在 f_2b 对抗⑦/f_2a 对抗⑪）——' +
+        'updateGases/addGas/客观块次序被顺手改动的实现在此翻红', () => {
+        const game = createHeadlessGame(42, 'test');
+        fireFieldAFloor(game);
+        rng.seedRandomGenerator(20260917); // 场景搭好后显式重播种
         game.environment.addGas(10, 8, GasType.POISON, 100);
         const center: number[] = [];
         const total: number[] = [];
@@ -436,10 +460,24 @@ describe('F-2c 对抗⑪：气体侧回归哨兵（紧凑签名——完整 14 �
             center.push(c);
             total.push(sum);
         }
-        // 2026-09-17 F-2c 实跑基线（G-1 体积模型下 POISON 的消散/扩散；
-        // 与 f_2b 对抗⑦的 14 回合全格基线同源——本条只取中心格与总量两个
-        // 投影做紧凑哨兵）。
-        expect(center).toEqual([11, 5, 3, 2, 1]);
-        expect(total).toEqual([98, 86, 89, 99, 102]);
+        // 2026-09-17 S-1 实跑基线（test 层全隔离场景；原 2026-09-17 F-2c 基线
+        // 锚定真实地图流位置，C-6 实证漂移）。
+        expect(center).toEqual([11, 6, 4, 2, 2]);
+        expect(total).toEqual([102, 101, 94, 91, 80]);
     });
 });
+
+/** 对抗⑪ 的场景：与火场 A 同款密封地板房（不铺草——气体用例无火）。 */
+function fireFieldAFloor(game: Game): void {
+    const W = game.grid.width, H = game.grid.height;
+    for (let x = 0; x < W; x++) {
+        for (let y = 0; y < H; y++) {
+            const border = x === 0 || y === 0 || x === W - 1 || y === H - 1;
+            game.grid.setTerrain(x, y, border ? C.WALL : C.FLOOR, border ? '#' : '.', border ? 0x444444 : 0x888888);
+        }
+    }
+    game.monsters.length = 0;
+    game.items.length = 0;
+    game.player.loc.x = 4;
+    game.player.loc.y = 4;
+}

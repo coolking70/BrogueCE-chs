@@ -580,11 +580,16 @@ describe('C-3 管线集成', () => {
         expect(componentBad, `非机器可走格（密门视作通路）存在不连通块：\n${componentBad.slice(0, 10).join('\n')}`).toEqual([]);
     }, 600_000);
 
-    it('T14 留痕（明确不做）：C-6 自动物 / C-4 promoteTile / C-5 坠落 / 主动搜索行动', () => {
-        // C-6：digDungeon 第 7/10 步 runAutogenerators 无 web 对应物
-        //（web 自创 overlay 仍是占位）。C-6 落地后删除本断言。
-        expect((Architect.prototype as unknown as Record<string, unknown>).runAutogenerators,
-            'runAutogenerators 已出现——C-6 已落地，请删除本留痕并复核 overlay 占位退出').toBeUndefined();
+    it('T14 留痕（明确不做）：C-4 promoteTile(ACTIVE 态) / 主动搜索行动', () => {
+        // C-6：原首条断言（"runAutogenerators 无 web 对应物，出现即删"）已按
+        // 其自带指示删除——C-6 已落地（src/engine/Map/AutoGenerator.ts，
+        // 两趟接线见 Generator/Architect.ts）。"复核 overlay 占位退出"的结论：
+        // web 自创 overlay（浅水/草/树/泥/网 blob + 深水闸门）仍保留——深水
+        // overlay 是 C-2 湖泊管线的 lakeMap 来源，拔除属管线级改动，C-6 任务书
+        // 未授权；与 CE 自动生成器草/树的重复供给已列入 c_6 报告"与预设不符"，
+        // 由验收方裁决何时退池。
+        // （原断言内容存档：expect(Architect.prototype.runAutogenerators)
+        //     .toBeUndefined()——"runAutogenerators 已出现——C-6 已落地"）
 
         // C-4：DF 目录 / promoteTile 未实现。CE 硫矿点火链的 ACTIVE_BRIMSTONE
         // 终态地形不存在于 web 枚举。C-4 落地后删除本断言。

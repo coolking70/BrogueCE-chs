@@ -101,9 +101,16 @@ describe('C-5 对抗①：坠落是回合末结算（CE Time.c:168-176/2480）',
         // 错误实现会放行随后的完整 playerTurnEnded（推进循环+客观块），
         // 额外消耗 RNG，增量立即偏离。pin 值捕获自正确实现（seed 固定）。
         const rngAfter = rng.randomNumbersGenerated;
+        // pin 值 = D2 一层的完整生成成本，随生成链 legitimately 变化：
+        //   7550 = C-5 捕获（C-6 前）；
+        //   12327 = C-6 重捕获——runAutogenerators(false) 接进 generateTerrain
+        //   后，DF_GRASS/DF_FOLIAGE 的 spawnMapDF 传播骰 + randomMatchingLocation
+        //   选点抽取计入固定生成成本（CE 同构：CE 的 runAutogenerators 也在
+        //   digDungeon 里掷这些骰）。机制断言不变：坠落的消耗必须恰等于
+        //   "一层的固定生成账"，多一分都是坠落门漏了 return。
         expect(rngAfter - rngBeforeDive, '坠落回合的 RNG 消耗增量偏离（= 换层生成的固定消耗，'
             + 'CE 坠落门整段 return：无推进循环/客观块的额外消耗）')
-            .toBe(7550);
+            .toBe(12327);
         expect(rat.hp, '随落阶段 rat 不在渊上，不得受伤/死亡').toBeGreaterThan(0);
         expect([rat.loc.x, rat.loc.y], '坠落回合怪物不得获得推进（CE playerFalls 提前 return）')
             .toEqual([4, 4]);
@@ -163,61 +170,88 @@ describe('C-5 对抗②：悬浮豁免（CE monsterShouldFall Time.c:110-116）'
 // 对抗③：坠落伤害参数（clump2、深水零伤、浅水减半）
 // ---------------------------------------------------------------------------
 describe('C-5 对抗③：落地伤害（CE Time.c:1143-1162；GlobalsBrogue.c:1044-45）', () => {
-    /** 预生成第 2 层并在其上钉一个落点，回到第 1 层造渊跳下去，返回实际伤害。 */
-    function fallDamageWithLanding(seed: number, landing: TerrainType): number {
-        const game = createHeadlessGame(seed);
-        clearToOpenRoom(game);
+    // S-1 改造（对流位移免疫）：原版每样本换种子重开两层的生成（40 样本），
+    // 样本集整体随流位移重抽——任务书实测 C-6 下 40 样本方差 0.522 翻红而
+    // [8,10] 仍过，纯属抽样运气。改造后：单局内连坠，层缓存恢复（零生成掷骰），
+    // 样本只由坠落机制自身的伤害骰决定，对地图/流位移结构性免疫。
+    //
+    // ★ 授权反驳（S-1 实测，修正原版的分布假设）★
+    // randClumpedRange(8,10,2) 的真实分布是 {8: 1/4, 9: 1/2, 10: 1/4}：
+    // numSides = ⌊(10−8)/2⌋ = 1，remainder = 0，两次 randRange(0,1) 各出 {0,1}。
+    // 其方差恰为 0.5——原版注释"clump=2 的方差 ≈ 1/3"与"阈值 <0.5"把门槛
+    // 正好压在正确实现的真值上，这是原版掷硬币式翻红的根因（n=40 时
+    // P(样本方差 < 0.5) ≈ 50%）。
+    //
+    // 新判据（n=240，比原版 n=40 扩 6 倍降噪）：
+    //   - 支撑集 [8,10] 逐样本硬断言（min/max 写反 2d10/2d8 在此结构性翻红）；
+    //   - 中值 9 的出现次数 ∈ [99,141]（二项(240, 1/2)，±3σ ≈ 120±26.0）。
+    //     捕获的错误实现：
+    //     · clump=1（均匀 {8,9,10}）：E[count9]=80，σ≈7.3 → ≥99 的概率 <0.1%；
+    //     · "恒定 9"平扣复辟（p1_28 锚定的错误类）：count9=240 ≫ 141；
+    //     · 任何把分布往两端或单边挪的改动（概率质量挪动 > ~8%）。
+    //     误红率：正确实现下 P(count9 ∉ [99,141]) ≈ 0.3%。
+    it('干地落点：240 连坠样本全部落在 [8,10]，中值 9 的频数落在二项 ±3σ 带内', () => {
+        const game = createHeadlessGame(7000);
         const g = priv(game);
-        // 先到第 2 层并缓存，再回第 1 层。
-        game.depth = 2;
-        g.generateDepth(false);
-        // 清掉第 2 层原生怪/物：落点合格判据排除 HAS_MONSTER|HAS_ITEM，
-        // 原生占据会让环搜索落到别处（实测踩过这个坑）。
+        // 场景搭设：先清出开放房，再预生成第 2 层并钉落点口袋，回第 1 层。
         game.monsters.length = 0;
         game.items.length = 0;
-        // 同理清机器格（machineNumber 在 cell 上，setTerrain 不清除；缓存里
-        // 存的是同一个 Set 引用，这里清了恢复时也是空的）。
-        (priv(game).machineCells as Set<number>).clear();
-        // 落点：以渊格坐标 (7,6) 为心的环搜索——把 (7,6) 周围全封墙，
-        // 只在距离 2 处留一个目标地形格（唯一合格落点）。
+        for (let x = 1; x < 30; x++) {
+            for (let y = 1; y < 20; y++) {
+                game.grid.setTerrain(x, y, TerrainType.WALL, '#', 0x444444);
+            }
+        }
+        for (let x = 2; x <= 16; x++) {
+            for (let y = 2; y <= 12; y++) {
+                game.grid.setTerrain(x, y, TerrainType.FLOOR, '.', 0x888888);
+            }
+        }
+        game.depth = 2;
+        g.generateDepth(false);
+        // 清掉第 2 层原生怪/物与机器格（落点合格判据排除 HAS_MONSTER|HAS_ITEM；
+        // machineNumber 在 cell 上，setTerrain 不清除——同原版口径）。
+        game.monsters.length = 0;
+        game.items.length = 0;
+        (g.machineCells as Set<number>).clear();
+        // 落点口袋：渊格 (7,6) 周围封墙，距离 2 处留 (9,6)、游泳出口 (10,6)。
         for (let x = 4; x <= 10; x++) {
             for (let y = 4; y <= 8; y++) {
                 if (Math.max(Math.abs(x - 7), Math.abs(y - 6)) >= 1) {
-                    setTile(game, x, y, TerrainType.WALL, '#', 0x444444);
+                    game.grid.setTerrain(x, y, TerrainType.WALL, '#', 0x444444);
                 }
             }
         }
-        setTile(game, 9, 6, landing);
-        // 游泳出口（CE RogueMain.c:827-839：落进深水先查"能不能游出去"，
-        // 围湖会直接被挪去干地——不在 (10,6) 开口，(9,6) 就是封闭水池，
-        // 落点会被 CE 条款改写，深水零伤断言就测不到了）。
-        setTile(game, 10, 6, TerrainType.FLOOR);
+        game.grid.setTerrain(9, 6, TerrainType.FLOOR, '.', 0x888888);
+        game.grid.setTerrain(10, 6, TerrainType.FLOOR, '.', 0x888888);
         game.depth = 1;
-        g.generateDepth(true); // 恢复缓存的第 1 层
-        game.player.hp = game.player.maxHp;
-        game.player.loc.x = 5;
-        game.player.loc.y = 6;
-        setTile(game, 7, 6, TerrainType.CHASM, ' ', 0x222222);
-        game.handlePlayerAction('move', { x: 1, y: 0 }, 'system');
-        game.handlePlayerAction('move', { x: 1, y: 0 }, 'system');
-        expect(game.depth, `seed${seed}：跳渊未换层`).toBe(2);
-        return game.player.maxHp - game.player.hp;
-    }
+        g.generateDepth(true); // 恢复缓存的第 1 层（levels Map 按层号持久，可反复往返）
 
-    it('干地落点：伤害全部落在 [8,10]（randClumpedRange(8,10,2)）且分布收紧'
-        + '——clump 参数写错（=1）或 min/max 写反（2d10 vs 2d8）都会越界或方差爆炸', () => {
         const damages: number[] = [];
-        for (let i = 0; i < 40; i++) {
-            damages.push(fallDamageWithLanding(7000 + i * 13, TerrainType.FLOOR));
+        for (let i = 0; i < 240; i++) {
+            if (game.depth === 2) {
+                game.depth = 1; // generateDepth 不自行改层号——调用方先设（原版同款）
+                g.generateDepth(true);
+                expect(game.depth, `第 ${i} 轮：层缓存恢复失败`).toBe(1);
+            }
+            game.player.hp = game.player.maxHp;
+            game.player.loc.x = 5;
+            game.player.loc.y = 6;
+            game.grid.setTerrain(7, 6, TerrainType.CHASM, ' ', 0x222222);
+            game.handlePlayerAction('move', { x: 1, y: 0 }, 'system');
+            game.handlePlayerAction('move', { x: 1, y: 0 }, 'system');
+            expect(game.depth, `第 ${i} 轮：跳渊未换层`).toBe(2);
+            damages.push(game.player.maxHp - game.player.hp);
         }
-        expect(Math.min(...damages), `实测最小伤害 ${Math.min(...damages)}——低于 CE 下界 8`).toBeGreaterThanOrEqual(8);
-        expect(Math.max(...damages), `实测最大伤害 ${Math.max(...damages)}——高于 CE 上界 10`).toBeLessThanOrEqual(10);
-        // clump=2 的方差 ≈ 1/3；clump=1（均匀 {8,9,10}）的方差 ≈ 2/3。
-        // 40 样本的样本方差 >0.5 在 clump=2 下概率 <0.1%，clump=1 下期望 0.667。
-        const mean = damages.reduce((a, b) => a + b, 0) / damages.length;
-        const variance = damages.reduce((a, b) => a + (b - mean) * (b - mean), 0) / (damages.length - 1);
-        expect(variance, `样本方差 ${variance.toFixed(3)}——clump 参数或取值域写错（期望 ≈0.33）`).toBeLessThan(0.5);
-    }, 200_000);
+
+        expect(Math.min(...damages), `实测最小伤害 ${Math.min(...damages)}——低于 CE 下界 8`)
+            .toBeGreaterThanOrEqual(8);
+        expect(Math.max(...damages), `实测最大伤害 ${Math.max(...damages)}——高于 CE 上界 10`)
+            .toBeLessThanOrEqual(10);
+        const count9 = damages.filter(d => d === 9).length;
+        expect(count9, `中值 9 出现 ${count9}/240 次，须在 [99,141]（二项(240,½) ±3σ）；` +
+            'clump=1 的 E=80、恒定 9 的 E=240 都在此翻红').toBeGreaterThanOrEqual(99);
+        expect(count9).toBeLessThanOrEqual(141);
+    }, 60_000);
 
     it('深水落点零伤害（CE :1146-1150 "unharmed"）；浅水落点减半（CE :1156-1158 ' +
         'TM_ALLOWS_SUBMERGING，damage /= 2 整除）', () => {
@@ -228,6 +262,37 @@ describe('C-5 对抗③：落地伤害（CE Time.c:1143-1162；GlobalsBrogue.c:1
             .toBeGreaterThanOrEqual(4);
         expect(shallow).toBeLessThanOrEqual(5);
     }, 60_000);
+
+    /** 深水/浅水单样本（保留原版逐种子形态：落点地形是断言对象，每样本独立造层）。 */
+    function fallDamageWithLanding(seed: number, landing: TerrainType): number {
+        const game = createHeadlessGame(seed);
+        clearToOpenRoom(game);
+        const g = priv(game);
+        game.depth = 2;
+        g.generateDepth(false);
+        game.monsters.length = 0;
+        game.items.length = 0;
+        (g.machineCells as Set<number>).clear();
+        for (let x = 4; x <= 10; x++) {
+            for (let y = 4; y <= 8; y++) {
+                if (Math.max(Math.abs(x - 7), Math.abs(y - 6)) >= 1) {
+                    setTile(game, x, y, TerrainType.WALL, '#', 0x444444);
+                }
+            }
+        }
+        setTile(game, 9, 6, landing);
+        setTile(game, 10, 6, TerrainType.FLOOR);
+        game.depth = 1;
+        g.generateDepth(true);
+        game.player.hp = game.player.maxHp;
+        game.player.loc.x = 5;
+        game.player.loc.y = 6;
+        setTile(game, 7, 6, TerrainType.CHASM, ' ', 0x222222);
+        game.handlePlayerAction('move', { x: 1, y: 0 }, 'system');
+        game.handlePlayerAction('move', { x: 1, y: 0 }, 'system');
+        expect(game.depth, `seed${seed}：跳渊未换层`).toBe(2);
+        return game.player.maxHp - game.player.hp;
+    }
 });
 
 // ---------------------------------------------------------------------------
@@ -403,11 +468,21 @@ describe('C-5 对抗⑦：下坠药水与 pit bloat 的洞', () => {
 });
 
 // ---------------------------------------------------------------------------
-// 对抗⑧：火侧回归哨兵（合成场景，与地图/RNG 流无关）
+// 对抗⑧：火侧回归哨兵（S-1 改造：test 层合成场景——"与地图无关"这次为真）
 // ---------------------------------------------------------------------------
-describe('C-5 对抗⑧：火侧哨兵（合成场景逐位曲线——本轮不得触碰火行为）', () => {
-    it('草地上点火蔓延曲线逐位恒定（场景自建、流复位，不受地图生成变化影响）', () => {
-        const game = createHeadlessGame(1);
+// 原版（C-5 立）在真实生成的地图上铺合成草地并复位流，自注"不受地图生成
+// 变化影响"——C-6 实证不成立：handlePlayerAction 的完整回合里怪物 AI 与火
+// 共享全局流，地图变 → 怪物耗骰形态变 → 火骰漂移。S-1 改造补上缺的那半：
+//   1. mode='test' —— 层生成走 generateTestDepth 合成层（Game.ts:720），
+//      结构性绕开真实生成器，改生成的轮次触达不了本场景；
+//   2. 清怪清物 —— 场景内无共享全局流的其它系统（mode='test' 同时免周期刷怪）；
+//   3. 场景搭好后显式重播种（原版已有，保留）。
+// 守卫保留：蔓延概率/衰老掷骰/点燃判据被顺手改动 → 曲线逐位翻红。
+describe('C-5 对抗⑧：火侧哨兵（S-1 改造：test 层全隔离场景）', () => {
+    it('草地上点火蔓延曲线逐位恒定（test 层 + 流复位，对流位移结构性免疫）', () => {
+        const game = createHeadlessGame(1, 'test');
+        game.monsters.length = 0;
+        game.items.length = 0;
         // 合成场景：10x8 草地嵌在地板里。
         for (let x = 4; x <= 13; x++) {
             for (let y = 4; y <= 11; y++) {
@@ -427,14 +502,12 @@ describe('C-5 对抗⑧：火侧哨兵（合成场景逐位曲线——本轮不
             }
             series.push(b);
         }
-        console.log('[c_5 火哨兵曲线]', JSON.stringify(series));
         expect(series.length).toBe(14);
         // 蔓延应真实发生（火行为被改坏的任何形态都会挪动曲线）。
         expect(Math.max(...series), '火未蔓延——ignite/蔓延行为被本轮改动').toBeGreaterThan(3);
-        // 逐位基线（C-5 捕获，20260927 流复位）：确定性。任何对火行为/概率
-        // 衰老/蔓延判据的改动都会挪动这条曲线——C-5 对其逐位不动。
+        // 逐位基线（S-1 捕获，20260927 流复位 + test 层）：确定性。
         expect(series, '火侧曲线漂移——本轮触碰了火/RNG 行为（登记到报告）').toEqual([
-            1, 1, 1, 3, 6, 6, 6, 7, 8, 8, 8, 11, 11, 11,
+            1, 2, 2, 2, 4, 5, 7, 8, 10, 8, 8, 8, 9, 8,
         ]);
     });
 });

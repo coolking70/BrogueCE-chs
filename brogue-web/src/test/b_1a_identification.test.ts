@@ -35,6 +35,8 @@ import { createHeadlessGame } from './harness';
 import { Game } from '../engine/Core/Game';
 import { Item, ItemCategory } from '../engine/Items/Item';
 import { ItemLoader } from '../engine/Items/ItemLoader';
+import { cellTerrainFlags } from '../engine/Map/DungeonFeature';
+import { T_OBSTRUCTS_ITEMS, T_PATHING_BLOCKER, T_IS_DF_TRAP } from '../engine/Map/TerrainCatalog';
 import { Monster, type MonsterData } from '../entities/Monster';
 import { generateItemDetail, type DetailInfo } from '../engine/UI/DetailGenerator';
 import monsterDataJson from '../data/monsters.json';
@@ -493,57 +495,101 @@ describe('A12: 鉴定卷轴 = 实例全亮 + 种类亮（CE identify()，Items.c
     });
 });
 
-describe('A13: RNG 流哨兵（任务书 §四：本轮不许移动 RNG 流）', () => {
+describe('A13: 物品生成哨兵（S-1 改造：结构合法性 + 同种子双跑确定性）', () => {
     /**
-     * 基线取自 B-1a 改动落地后（与改动前逐位一致——本轮零掷骰消耗，
-     * generation_baseline 同日复测绿）。签名 = 全链 D1..D26 逐层物品
-     * `类别|种类|坐标|附魔|诅咒|符文|数量` 排序拼接后的 FNV-1a。
-     * 任何"新增随机抽取/改变池大小/调整发放顺序"的改动都会打红本哨兵：
-     * 请先查清成因；确属有意移动 RNG 流的轮次（如 B-4）应重采并说明。
+     * S-1 改造说明。原 A13 = 全链 D1..D26 逐层物品签名硬编码（seed 42/2026），
+     * 锚定的是**地图生成 + RNG 流位置**的复合产物——与 g_2/g_3 的 FIRE-NAT
+     * 同类，C-5/C-6 两次实证：任何改生成的轮次都会让它翻红，而它翻红既可能
+     * 是"物品放置被改"（真阳性）也可能是"地图/流被改"（假阳性），两种成因
+     * 在输出签名里不可分离。S-1 把它拆成两个**对流位移免疫**的守卫：
+     *
+     *  L1 落格合法性（形态③性质断言）：全链每一件生成物品都落在物品合法格
+     *     ——CE 物品落位一律回避 T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER
+     *     （Rogue.h:1926/:1948；web 的 floorTiles 牌堆、P1-43 岩浆修复同源）。
+     *     捕获的错误实现：牌堆判据被绕开/删除（物品进墙、岩浆、深渊）。
+     *  L2 同种子双跑确定性：同 seed 重播种后全链物品签名必须逐位一致。
+     *     捕获的错误实现：生成链里任何**非确定性**掷骰（Math.random 类泄漏、
+     *     时间种子漏网）——两次全链跑不完全一致，立即翻红。这是地形指纹
+     *     测试（"同一次运行内两次生成一致"口径）在物品侧的对应物。
+     *
+     * **守卫降级登记**：原 A13 对"新增抽取/改变池大小/调整发放顺序"的逐位
+     * 流敏感性**不再由本哨兵承担**——生成期逐位流权威在 generation_baseline
+     * fixture（验收方随生成轮重锚）。物品生成逻辑的其余错误形态由
+     * p1_20_item_placement / invented_content_pool / monster_damage_balance
+     * 等内容级哨兵承担。
+     *
+     * ★ 已知违例口（边界外发现，只登记不修——修复轮应收紧为 0）★
+     * HEAD 实测 2 件宝物落在 T_IS_DF_TRAP 格上（seed42/D25 Ring of
+     * Clairvoyance @(28,2)；seed2026/D8 Staff of Conjuration @(4,14)），
+     * 成因：trap vault 宝物直接放 vault.center（陷阱正中）。T_IS_DF_TRAP ∈
+     * T_PATHING_BLOCKER（Rogue.h:1948），CE 不会把物品放上陷阱。L1 因此把
+     * T_IS_DF_TRAP 单列豁免计数（≤2），其余旗标（T_OBSTRUCTS_ITEMS、
+     * 岩浆、深渊等）仍为严格 0。
      */
-    // ★ 合并到含 C-5 的 main 后由验收方重锚 ★
-    // B-1a 从 C-5 合并之前的 main 分叉，这份签名测的是**改深渊之前**的地图；
-    // 合并后深渊湖改写了地形与 RNG 流，签名自然对不上。
-    //
-    // **B-1a 本身没有移动 RNG 流**——同一次运行里 `generation_baseline` 是绿的
-    // （它已按 C-5 重捕获过），那才是"本轮不许移动 RNG 流"的权威判据。
-    // 本哨兵是**地图锚定**的，与 g_2/g_3 的 FIRE-NAT 同类。
-    //
-    // ⚠️ 并行执行的固有成本：两轮并行、其中一轮改生成时，
-    // 另一轮的地图锚定哨兵在**合并时**必然要重锚。
-    // 下次可考虑把签名建在构造地图上以消除这个耦合。
-    const SENTINEL: Record<number, string[]> = {
-        42: ['c2cc20da', 'ebc8e850', '5933111b', 'd1e66360', 'f75f1f5e', '1660d5fd', '9d13aff9', '131a0b8a', 'b6eff72f', 'a02c4acc', '8f142bf5', '383c937b', '25fd4f18', 'e5b0e317', '3f9e07a6', 'f6cc3e25', '3aab5dd2', 'e10d4edb', '9524ee39', '3e552400', '18cbb09a', 'c9d01613', 'af016dff', 'cdf53b38', 'ee4f5333', 'e24b4410'],
-        2026: ['cd41797c', 'cfc4a6d3', '00997c2c', 'e507d4c8', '5662546a', '8198545e', '218f0734', '9f88b23c', '1c901519', 'ba8c3d91', '1f9b2f6a', 'a1aac62d', '90d90acd', 'e05cf4c3', '10d4f82f', 'e4c0a7e5', 'b09e3025', 'a3e6ddf3', '15d0dba4', '9720899e', '97e6535b', '8a46ab84', '8d2f0fdf', '89875e85', 'c54b5532', '39a5ee50'],
-    };
 
-    function fnv1a(s: string): string {
-        let h = 0x811c9dc5;
-        for (let i = 0; i < s.length; i++) {
-            h ^= s.charCodeAt(i);
-            h = Math.imul(h, 0x01000193);
+    const SENTINEL_SEEDS = [42, 2026];
+
+    function walkChain(seed: number, visit: (game: Game, depth: number) => void): void {
+        const game = createHeadlessGame(seed);
+        visit(game, 1);
+        for (let d = 2; d <= 26; d++) {
+            (game as unknown as { depth: number }).depth = d;
+            (game as unknown as { generateDepth(isGoingUp: boolean, isFirstLevel: boolean): void }).generateDepth(false, false);
+            visit(game, d);
         }
-        return (h >>> 0).toString(16).padStart(8, '0');
     }
 
-    it('seed 42 / 2026 全链逐层物品签名与基线逐位一致', () => {
+    it('L1 全链 D1..D26 每件生成物品都落在物品合法格（CE T_OBSTRUCTS_ITEMS|T_PATHING_BLOCKER 回避）', () => {
+        for (const seed of SENTINEL_SEEDS) {
+            walkChain(seed, (game, depth) => {
+                for (const it of game.items) {
+                    const flags = cellTerrainFlags(game.grid, it.loc.x, it.loc.y);
+                    const hardBad = flags & (T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER) & ~T_IS_DF_TRAP;
+                    expect(hardBad, `seed${seed}/D${depth} ${it.name} @ (${it.loc.x},${it.loc.y}) ` +
+                        `落在物品非法格（旗标位 ${hardBad}）——落位判据被绕开/删除。` +
+                        `修复指引（p1_43 同族）：Game.ts 的 altar/vault/floorTiles 落格池` +
+                        `只查了 terrain===LAVA 的窄口径，应改用完整旗标谓词 ` +
+                        `T_OBSTRUCTS_ITEMS|T_PATHING_BLOCKER（Rogue.h:1926/:1948）；` +
+                        `修复落地后本哨兵即绿，届时无需改本断言。`)
+                        .toBe(0);
+                }
+            });
+        }
+        // 已知违例口：trap vault 宝物落 vault.center = T_IS_DF_TRAP 格。
+        // 当前恰 2 处（见 describe 头注）；修复轮到来时把常量改 0 并删本口。
+        let trapViolations = 0;
+        for (const seed of SENTINEL_SEEDS) {
+            walkChain(seed, (game) => {
+                for (const it of game.items) {
+                    if (cellTerrainFlags(game.grid, it.loc.x, it.loc.y) & T_IS_DF_TRAP) trapViolations++;
+                }
+            });
+        }
+        expect(trapViolations, '陷阱格物品数漂移（当前已知口为 2，新增=新的非法落位路径）')
+            .toBeLessThanOrEqual(2);
+    });
+
+    it('L2 同种子双跑全链物品签名逐位一致（非确定性掷骰——Math.random 类泄漏——在此翻红）', () => {
         const catName = (c: ItemCategory): string => ItemCategory[c] ?? String(c);
         const kindOf = (it: Item): string => (it as any).consumableId ?? (it as any).identityId ?? it.name;
         const sigKey = (it: Item): string =>
             `${catName(it.category)}|${kindOf(it)}|${it.loc.x},${it.loc.y}|e${it.enchantment}|c${it.isCursed ? 1 : 0}|r${it.runicType ?? '-'}|q${it.quantity}`;
-
-        for (const [seed, expected] of Object.entries(SENTINEL)) {
-            const game = createHeadlessGame(Number(seed));
+        const run = (): string[] => {
             const hashes: string[] = [];
-            const dump = () => hashes.push(fnv1a([...game.items].map(sigKey).sort().join(';')));
-            dump();
-            for (let d = 2; d <= 26; d++) {
-                game.depth = d;
-                (game as unknown as { generateDepth(isGoingUp: boolean, isFirstLevel: boolean): void }).generateDepth(false, false);
-                dump();
-            }
-            expect(hashes, `seed=${seed} 的物品生成签名漂移——RNG 流被移动了`).toEqual(expected);
-        }
+            let fnv = 0x811c9dc5;
+            const push = (line: string): void => {
+                for (let i = 0; i < line.length; i++) {
+                    fnv ^= line.charCodeAt(i);
+                    fnv = Math.imul(fnv, 0x01000193);
+                }
+                hashes.push((fnv >>> 0).toString(16).padStart(8, '0'));
+            };
+            walkChain(42, (game) => push([...game.items].map(sigKey).sort().join(';')));
+            return hashes;
+        };
+        const a = run();
+        const b = run();
+        expect(b, '同 seed 两次全链生成的物品签名不一致——生成链存在非确定性掷骰').toEqual(a);
     });
 });
 

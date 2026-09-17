@@ -23,7 +23,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { DungeonLayer, Grid, TerrainType } from '../engine/Map/Grid';
+import { DungeonLayer, Grid, TerrainType, DRAW_PRIORITY } from '../engine/Map/Grid';
 import { TERRAIN_FLAGS } from '../engine/Map/TerrainCatalog';
 import {
     DF,
@@ -556,9 +556,11 @@ describe('C-4b D：levelIsDisconnectedWithBlockingMap（CE Architect.c:3137-3198
 });
 
 describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () => {
-    it('E1 恰 26 条（F-2a 增补 DF_ASH；G-1 增补 DF_GAS_FIRE；G-2 增补 DF_EXPLOSION_FIRE；F-2c 增补 DF_BLOAT_EXPLOSION；C-5 增补 DF_HOLE_POTION/DF_HOLE_2/DF_HOLE_DRAIN），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）', () => {
+    it('E1 恰 28 条（F-2a 增补 DF_ASH；G-1 增补 DF_GAS_FIRE；G-2 增补 DF_EXPLOSION_FIRE；F-2c 增补 DF_BLOAT_EXPLOSION；C-5 增补 DF_HOLE_POTION/DF_HOLE_2/DF_HOLE_DRAIN；C-6 增补 DF_GRASS/DF_FOLIAGE），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）', () => {
         const keys = Object.keys(DUNGEON_FEATURE_CATALOG);
-        expect(keys.length).toBe(26);
+        expect(keys.length).toBe(28);
+        expect(DF.DF_GRASS, 'C-6：runAutogenerators 表 index 3 的 DFType（Rogue.h:1473，Globals.c:609）').toBe(4);
+        expect(DF.DF_FOLIAGE, 'C-6：表 index 8 的 DFType（Rogue.h:1477，Globals.c:613）').toBe(8);
         expect(DF.DF_SHOW_DOOR).toBe(13);
         expect(DF.DF_BLOAT_EXPLOSION, 'F-2c：explosive bloat 的死亡 DF（Rogue.h:1508，Globals.c:1084 DFType 引用）').toBe(35);
         expect(DF.DF_REPEL_CREATURES).toBe(40);
@@ -610,6 +612,11 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // 起点是 POTION_DESCENT（Items.c:8097）与 pit bloat 死亡 DFType
         // （Globals.c:1039），web 消费点 Game.quaffItem / triggerDeathFeatures。
         start.add(DF.DF_HOLE_POTION);
+        // C-6：DF_GRASS / DF_FOLIAGE 第二起点——不经 TerrainCatalog 字符串，
+        // 起点是 autoGenerator 表 index 3/8 的 DFType 列（GlobalsBrogue.c:117/122，
+        // 消费点 runAutogenerators → spawnDungeonFeature）。
+        start.add(DF.DF_GRASS);
+        start.add(DF.DF_FOLIAGE);
         // 沿 subsequentDF 闭包展开（悬空引用在此翻红）。
         const closure = new Set<DF>();
         const queue = [...start];
@@ -628,7 +635,8 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
             'G-2：DF_EXPLOSION_FIRE（经 METHANE_GAS.promoteType）入闭包 21→22；' +
             'F-2c：DF_BLOAT_EXPLOSION（经 bloat 的 DFType）入闭包 22→23；' +
             'C-5：DF_HOLE_POTION（药水/pit bloat 起点）→ DF_HOLE_2 → DF_HOLE_DRAIN' +
-            '（经 HOLE.promoteType）入闭包 23→26').toBe(26);
+            '（经 HOLE.promoteType）入闭包 23→26；' +
+            'C-6：DF_GRASS/DF_FOLIAGE（自动生成器表 index 3/8 起点）入闭包 26→28').toBe(28);
     });
 
     it('E3 字段抽查：BRIDGE_FALL_PREP 的 prop/200/100、BRIDGE_FIRE 的描述与 tile=0、其余代表条目', () => {
@@ -798,6 +806,9 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                                          // 经 catalogFeature+spawnDungeonFeature 铺设
                                          // + 落格瞬时爆炸伤害（MA_DF_ON_DEATH，
                                          // Combat.c:1965-1967 的 web 等价）
+            'engine/Map/AutoGenerator.ts', // C-6：runAutogenerators 表驱动
+                                           // catalogFeature+spawnDungeonFeature
+                                           //（CE Architect.c:1811-1814）
         ]);
         const pattern = /spawnDungeonFeature|spawnMapDF|fillSpawnMap|levelIsDisconnectedWithBlockingMap|catalogFeature|createSpawnMap|DUNGEON_FEATURE_CATALOG|DF_MISSING_TILES/;
         const offenders: string[] = [];
@@ -843,7 +854,17 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
         expect(offenders, `promoteTile 出现在白名单之外的生产文件：\n${offenders.join('\n')}`).toEqual([]);
     });
 
-    it('F3 留痕：生产生成路径"每格至多一层非空"+ GAS 恒空未破（本轮库未接入生产）', () => {
+    it('F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限草/树形态 + GAS 恒空', () => {
+        // 原断言（C-4b）："生产生成路径每格至多一层非空"（前提：DF 库未接入
+        // 生产生成）。C-6 把 runAutogenerators 接进 generateTerrain：DF_GRASS/
+        // DF_FOLIAGE 经 fillSpawnMap 的 setTerrainLayer 落 SURFACE 层、
+        // DUNGEON 保持 FLOOR（CE 语义：草长在地板上，两层数据并存）——
+        // "至多一层"前提到期。翻转后守卫保留且更细：
+        //   ① 单层格：任意一层非空、其余全空（现状形态不变）；
+        //   ② 两层格：只允许 DUNGEON=FLOOR + SURFACE∈(GRASS,FOLIAGE)——
+        //      出现任何其他多层组合（如生成期写 GAS、桥/火在生成期叠层）
+        //      仍在本断言翻红；
+        //   ③ GAS 层恒空不变（生成链无 GAS 写入点；气体是回合期现象）。
         for (const seed of [424242, 777]) {
             const g: any = createHeadlessGame(seed);
             for (const depth of [1, 9]) {
@@ -851,11 +872,34 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                 for (let x = 0; x < g.grid.width; x++) {
                     for (let y = 0; y < g.grid.height; y++) {
                         const cell = g.grid.getCell(x, y)!;
-                        let nonEmpty = 0;
+                        const nonEmpty: number[] = [];
                         for (let l = 0; l < L.COUNT; l++) {
-                            if (cell.layers[l] !== C.NOTHING) nonEmpty++;
+                            if (cell.layers[l] !== C.NOTHING) nonEmpty.push(l);
                         }
-                        expect(nonEmpty, `seed=${seed} D${depth} (${x},${y}) 每格至多一层非空`).toBeLessThanOrEqual(1);
+                        expect(nonEmpty.length, `seed=${seed} D${depth} (${x},${y}) 至多两层（C-6 后上界）`).toBeLessThanOrEqual(2);
+                        if (nonEmpty.length === 2) {
+                            expect([C.GRASS, C.FOLIAGE],
+                                `seed=${seed} D${depth} (${x},${y}) 两层格的 SURFACE 必须是 C-6 草/树`).toContain(cell.layers[L.SURFACE]);
+                            // 基座按 CE fillSpawnMap 优先级门（Architect.c:3228
+                            // `旧 prio >= 新 prio`）判定合法形态：
+                            //   DUNGEON=FLOOR（草/树长在地板上，主形态）；
+                            //   LIQUID=WATER_SHALLOW（仅 FOLIAGE 45 盖浅水 55；
+                            //     GRASS 60 > 55 被挡）、CHASM_EDGE（渊缘草）、
+                            //     OBSIDIAN（硫矿镶边上的树，深层才可能出现）。
+                            const baseOk: Array<[number, TerrainType]> = [
+                                [L.DUNGEON, C.FLOOR],
+                                [L.LIQUID, C.WATER_SHALLOW],
+                                [L.LIQUID, C.CHASM_EDGE],
+                                [L.LIQUID, C.OBSIDIAN],
+                            ];
+                            const surf = cell.layers[L.SURFACE] as TerrainType;
+                            const ok = baseOk.some(([l, t]) =>
+                                cell.layers[l] === t
+                                && DRAW_PRIORITY[t] >= DRAW_PRIORITY[surf]);
+                            expect(ok,
+                                `seed=${seed} D${depth} (${x},${y}) 两层组合 ` +
+                                nonEmpty.sort().join(',') + ` 不满足 CE 优先级门`).toBe(true);
+                        }
                         expect(cell.layers[L.GAS], `seed=${seed} D${depth} (${x},${y}) GAS 恒空`).toBe(C.NOTHING);
                     }
                 }

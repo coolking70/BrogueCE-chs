@@ -362,63 +362,81 @@ describe('G-3 对抗⑧：结构守卫（空转链防复发 + 新 tile 字段）
 });
 
 // ---------------------------------------------------------------------------
-// 对抗⑨：火侧回归哨兵（任务书 §六.1：FIRE-NAT 逐位一致）
+// 对抗⑨：火侧回归哨兵（S-1 改造：test 层合成火场——对流位移免疫）
 // ---------------------------------------------------------------------------
-describe('G-3 对抗⑨：火侧哨兵（G-2 对抗⑤ 同基线复跑）', () => {
-    function burnCurve(game: Game, spot: { x: number; y: number }): number[] {
-        game.environment.ignite(spot.x, spot.y);
-        const series: number[] = [];
-        for (let t = 0; t < 40; t++) {
-            if (game.isGameOver) break;
-            game.handlePlayerAction('wait', undefined, 'system');
-            let b = 0;
-            for (let x = 0; x < game.grid.width; x++) {
-                for (let y = 0; y < game.grid.height; y++) {
-                    if (game.grid.getCell(x, y)?.isBurning) b++;
-                }
-            }
-            series.push(b);
+/** S-1 合成火场公共驱动（g_2 对抗⑤ 同款副本，翻正时两处一起改）：
+ *  mode='test' 层不经真实生成器，全图覆写密封地板房 + shape 草地形、清怪清物、
+ *  搭后重播种再点火——曲线只由火机制决定，任何改生成的轮次都不再触碰它。 */
+function syntheticFireField(game: Game, shape: (g: Game) => void, reseed: number, ignite: { x: number; y: number }, ticks: number): number[] {
+    const W = game.grid.width, H = game.grid.height;
+    for (let x = 0; x < W; x++) {
+        for (let y = 0; y < H; y++) {
+            const border = x === 0 || y === 0 || x === W - 1 || y === H - 1;
+            game.grid.setTerrain(x, y, border ? C.WALL : C.FLOOR, border ? '#' : '.', border ? 0x444444 : 0x888888);
         }
-        return series;
     }
-
-    function probeSpot(game: Game): { x: number; y: number } {
-        const px = game.player.loc.x, py = game.player.loc.y;
-        const cands: { x: number; y: number }[] = [];
+    shape(game);
+    game.monsters.length = 0;
+    game.items.length = 0;
+    game.player.loc.x = 4;
+    game.player.loc.y = 4;
+    rng.seedRandomGenerator(reseed);
+    game.environment.ignite(ignite.x, ignite.y);
+    const series: number[] = [];
+    for (let t = 0; t < ticks; t++) {
+        if (game.isGameOver) break;
+        game.handlePlayerAction('wait', undefined, 'system');
+        let b = 0;
         for (let x = 0; x < game.grid.width; x++) {
             for (let y = 0; y < game.grid.height; y++) {
-                const cell = game.grid.getCell(x, y)!;
-                if (Math.max(Math.abs(x - px), Math.abs(y - py)) < 8) continue;
-                if (cell.terrain === C.GRASS || cell.terrain === C.FOLIAGE) cands.push({ x, y });
+                if (game.grid.getCell(x, y)?.isBurning) b++;
             }
         }
-        const spot = cands[rng.randRange(0, cands.length - 1)] ?? null;
-        expect(spot, '基线取景点必须仍存在').not.toBeNull();
-        return spot!;
+        series.push(b);
     }
+    return series;
+}
 
-    it('FIRE-NAT seed2026 逐位 = F-2a §一 基线（效果重裁不烧火侧 RNG 流）', () => {
-        const game = createHeadlessGame(2026);
-        const spot = probeSpot(game);
-        // ★ C-5 后由验收方重捕获 ★ 翻红成因是**布景移位**而非机制变化——
-        // 深渊解禁改写地图，probeSpot 选中的草地格随之改变，断言死在取景点那行。
-        // 独立证据：F/G 链 66 条机制型测试（构造场景、与地图无关）全数通过。
-        // ⚠️ 本哨兵锚定真实地图，任何改生成的轮次都需同样重捕获；
-        // 它在 g_2 与 g_3 有两份等价实现，翻正时两处一起改。
-        expect(spot.x === 10 && spot.y === 10).toBe(true);
-        expect(burnCurve(game, spot)).toEqual([
-            1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 3, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0,
+/** 火场 B：全幅草地被十字街一分为四（象限间不蔓延，只观测单象限动力学）。 */
+function fieldB(game: Game): void {
+    const W = game.grid.width, H = game.grid.height;
+    const mx = Math.floor(W / 2), my = Math.floor(H / 2);
+    for (let x = 2; x < W - 2; x++) {
+        for (let y = 2; y < H - 2; y++) {
+            if (x === mx || x === mx + 1 || y === my || y === my + 1) continue;
+            game.grid.setTerrain(x, y, C.GRASS, '"', 0x33aa33);
+        }
+    }
+}
+
+/** 火场 C：蜂窝孔草地（(x+2y)%5==0 抽掉一格）——蔓延沿碎块推进。 */
+function fieldC(game: Game): void {
+    for (let x = 8; x <= 30; x++) {
+        for (let y = 6; y <= 20; y++) {
+            if ((x + 2 * y) % 5 === 0) continue;
+            game.grid.setTerrain(x, y, C.GRASS, '"', 0x33aa33);
+        }
+    }
+}
+
+describe('G-3 对抗⑨：火侧哨兵（S-1 改造：test 层合成火场 B/C，与 g_2 对抗⑤ 同基线复跑）', () => {
+    it('火场 B（seed2026 场景流复位）逐位 = S-1 基线（效果重裁不烧火侧行为）', () => {
+        const game = createHeadlessGame(2026, 'test');
+        const series = syntheticFireField(game, fieldB, 2026, { x: 19, y: 7 }, 40);
+        // 2026-09-17 S-1 实跑基线（火场 B；与 g_2 对抗⑤ 同基线）。
+        expect(series).toEqual([
+            2, 4, 6, 4, 4, 5, 8, 9, 8, 10, 10, 10, 12, 15, 16, 17, 21, 22, 23, 28,
+            31, 36, 37, 38, 41, 44, 45, 47, 51, 54, 59, 61, 66, 70, 72, 73, 73, 72, 76, 78,
         ]);
     });
 
-    it('FIRE-NAT seed777 逐位 = C-5 后重捕获基线（玩家第 22 回合死亡截断）', () => {
-        const game = createHeadlessGame(777);
-        const spot = probeSpot(game);
-        // 同上。⚠️ seed777 新布景下玩家第 22 回合死亡，序列因此截断为 22 项。
-        expect(spot.x === 14 && spot.y === 5).toBe(true);
-        expect(burnCurve(game, spot)).toEqual([
-            1, 1, 1, 2, 3, 4, 5, 6, 7, 9, 8, 10, 13, 13, 13, 14, 14, 14, 16, 18, 19, 19,
+    it('火场 C（seed777 场景流复位）逐位 = S-1 基线', () => {
+        const game = createHeadlessGame(777, 'test');
+        const series = syntheticFireField(game, fieldC, 777, { x: 20, y: 13 }, 40);
+        // 2026-09-17 S-1 实跑基线（火场 C；与 g_2 对抗⑤ 同基线）。
+        expect(series).toEqual([
+            1, 1, 1, 1, 1, 1, 1, 2, 3, 3, 3, 4, 3, 3, 3, 4, 4, 5, 5, 6,
+            6, 7, 9, 11, 13, 14, 16, 12, 13, 13, 12, 12, 11, 13, 13, 13, 14, 15, 16, 16,
         ]);
     });
 });

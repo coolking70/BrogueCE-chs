@@ -11,6 +11,7 @@ import {
     type DiagonalFinishStats, type DoorFinishStats, type WallFinishStats,
 } from '../Map/WallDoorFinish';
 import { addLoops, applyLoopDoorSites, MINIMUM_PATHING_DISTANCE, LOOP_DOOR_PERCENT, DEEPEST_LEVEL } from '../Map/LoopMap';
+import { runAutogenerators, type AutoGeneratorRunStats } from '../Map/AutoGenerator';
 import { rng } from '../Random';
 import { RoomType, ROOM_TYPE_COUNT } from '../../types';
 import type { DungeonProfile, Pos } from '../../types';
@@ -223,6 +224,14 @@ export class Architect {
      *  实参写反的对抗断言打在这里。 */
     public finishWallsCalls: WallFinishStats[] = [];
 
+    // C-6 观测：本层两趟 runAutogenerators 的统计（generateTerrain 重置；
+    // 下两者仅供测试/报告观测，不参与任何生成决策）。
+    // nonMachine = CE digDungeon 第 7 步（fillLakes 后）、machine = 第 10 步
+    //（机器阶段后）。machine 趟本轮应恒为空统计（机器条目全无载体，登记见
+    // AutoGenerator.ts）——翻红即"无载体条目被接成空转链"。
+    public autogenNonMachine: AutoGeneratorRunStats | null = null;
+    public autogenMachine: AutoGeneratorRunStats | null = null;
+
     constructor() {
         this.grid = new Grid(DCOLS, DROWS);
     }
@@ -254,6 +263,8 @@ export class Architect {
         this.firstRoomType = -1;
         this.roomsBuilt = 0;
         this.hallwayRoomsBuilt = 0;
+        this.autogenNonMachine = null;
+        this.autogenMachine = null;
 
         // 1-2. carveDungeon（CE Architect.c:2456-2478）：首房间（深度剖面
         // 调整后的 DP_BASIC_FIRST_ROOM）+ attachRooms（DP_BASIC + 深度调整，
@@ -382,6 +393,14 @@ export class Architect {
                 }
             }
         }
+
+        // C-6：runAutogenerators(true)——CE digDungeon 第 10 步
+        //（Architect.c:2952：addMachines 之后、cleanUpLakeBoundaries 之前；
+        // web 的湖泊清理/架桥因 Game.ts 禁改已前移，C-2 头注登记在案，
+        // 故本趟落在机器阶段之后、finishDoors 之前，相对机器的位置与 CE 一致）。
+        // 机器条目（CE MT_*）本轮全无载体，本趟预期零动作、零 RNG 消耗
+        //（c_6 测试钉死——翻红即无载体条目被接成空转链）。
+        this.autogenMachine = runAutogenerators(this.grid, depth, true);
 
         // C-3：finishDoors（CE digDungeon 第 13 步，Architect.c:2971）——
         // 孤儿门移除 + 密门升级。机器内部的门由 Cell.machineNumber 豁免
@@ -728,10 +747,10 @@ export class Architect {
      * addMachines 之后；web 的机器阶段在 Game.generateLevel 里位于
      * generateTerrain 之后（Game.ts 本轮禁改，无法交错）——机器格不受
      * 本轮两个阶段影响的行为由 machineNumber/选址闸门各自保证。
-     * removeDiagonalOpenings（C-3）在 fillLakes 之后、cleanUpLakeBoundaries
-     * 之前执行（CE 第 8 步位置）；finishDoors / finishWalls(true)（C-3）在
-     * generateLevel 的机器阶段之后（CE 第 13/14 步位置），见上。
-     * runAutogenerators（C-6）本轮不做，留痕见 c_2_lakes_e2e 测试。
+     * removeDiagonalOpenings（C-3）在 fillLakes → runAutogenerators(false)（C-6）
+     * 之后、cleanUpLakeBoundaries 之前执行（CE 第 7→8 步位置）；
+     * finishDoors / finishWalls(true)（C-3）在 generateLevel 的机器阶段与
+     * runAutogenerators(true)（C-6）之后（CE 第 10→13/14 步位置），见上。
      */
     private designEnvironmentOvelays(depth: number) {
         const lakeMap = new Set<number>();
@@ -797,8 +816,16 @@ export class Architect {
             }
         }
 
-        // C-2：CE digDungeon 湖泊后四步中的三步（第四步 runAutogenerators 属 C-6）。
+        // C-2：CE digDungeon 湖泊后四步中的三步（第四步 runAutogenerators
+        // 属 C-6，已在本函数上方接线）。
         fillLakes(this.grid, lakeMap, depth);
+
+        // C-6：runAutogenerators(false)——CE digDungeon 第 7 步
+        //（Architect.c:2933：fillLakes 之后、removeDiagonalOpenings 之前）。
+        // 非机器条目（草/树/装饰 DF 等）；未接条目在 AutoGenerator 内先于
+        // 任何 RNG 消耗跳过（载体盘点见 AutoGenerator.ts 头注）。
+        this.autogenNonMachine = runAutogenerators(this.grid, depth, false);
+
         // C-3：removeDiagonalOpenings（CE digDungeon 第 8 步，Architect.c:2936：
         // fillLakes 之后、addMachines/cleanUpLakeBoundaries 之前；web 的机器
         // 阶段在 Game.generateLevel，清理与架桥受 Game.ts 禁改约束已在

@@ -21,7 +21,7 @@
 import { describe, it, expect } from 'vitest';
 import { createHeadlessGame } from './harness';
 import { Game, HORDE_POPULATE_FORBIDDEN_FLAGS, type HordeEntry } from '../engine/Core/Game';
-import { TerrainType, DCOLS, DROWS } from '../engine/Map/Grid';
+import { TerrainType, DungeonLayer, DCOLS, DROWS } from '../engine/Map/Grid';
 import { ItemCategory } from '../engine/Items/Item';
 import hordesJson from '../data/hordes.json';
 
@@ -231,8 +231,15 @@ describe('地形感知落点 — 无 spawnsIn 的 horde 行为不变（仍落普
                     if (m.isCaged) continue; // 笼子随机池：既有路径，绕过 horde 循环
                     const cell = game.grid.getCell(m.loc.x, m.loc.y);
                     if (cell?.machineNumber) continue; // 蓝图/机器房：既有路径
-                    const terrain = game.grid.getCell(m.loc.x, m.loc.y)?.terrain;
-                    expect(terrain, `seed=${seed} D${d} ${m.name} 应落普通地板格`).toBe(TerrainType.FLOOR);
+                    // C-6 到期更新：原断言 `terrain === FLOOR` 的前提是生成期
+                    // 不存在"地板上的表面覆盖物"（web 旧 overlay 草用覆盖式写法、
+                    // 会把 DUNGEON 层清空，故 effective==GRASS 的格不在 FLOOR 池）。
+                    // C-6 的 CE 草/树经 setTerrainLayer 落 SURFACE、DUNGEON 保持
+                    // FLOOR——草盖的地板正是 CE 的合法落怪点（CE 怪物常年站在
+                    // 草地上）。守卫本意保留：落格必须是真实地板（DUNGEON 层
+                    // ===FLOOR），墙/液体/渊格的 DUNGEON 层均非 FLOOR，照旧翻红。
+                    expect(cell!.layers[DungeonLayer.DUNGEON],
+                        `seed=${seed} D${d} ${m.name} 应落真实地板格（DUNGEON 层）`).toBe(TerrainType.FLOOR);
                     checked++;
                 }
             }
