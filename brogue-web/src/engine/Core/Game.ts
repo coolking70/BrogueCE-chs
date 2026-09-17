@@ -153,6 +153,15 @@ export interface GameSnapshotItem {
     enchantment: number;
     runicType?: string;
     runicKnown?: boolean;
+    /**
+     * B-1b：实例鉴定态随存档往返（P1-48）。identified 三态语义与内存一致：
+     * undefined（JSON 落盘时丢键）≙ 无未知态；旧存档无这些字段 → deserializeItem
+     * 按 B-1b 前的 spawn 语义重建（读档即"鉴定态全丢"旧行为）。
+     */
+    identified?: boolean;
+    canBeIdentified?: boolean;
+    maxChargesKnown?: boolean;
+    timesUsed?: number;
     consumableId?: string;
     maxCharges?: number;
     charges?: number;
@@ -180,7 +189,11 @@ export interface GameSnapshot {
         inventory: GameSnapshotItem[];
         equippedWeaponId: number | null;
         equippedArmorId: number | null;
+        /** B-1b：戒指双槽。equippedRingId 是 B-1b 前单槽存档的遗留字段，
+         *  仅在 loadSnapshot 兼容读取（→ 左槽），新存档不写入。 */
         equippedRingId?: number | null;
+        ringLeftId?: number | null;
+        ringRightId?: number | null;
         temporaryImmunities?: Partial<Record<StatusId, number>>;
     };
     monsters: Array<{
@@ -204,6 +217,15 @@ export interface GameSnapshot {
         abilities?: string[];
     }>;
     items: GameSnapshotItem[];
+    /**
+     * B-1b：全局种类鉴定态随存档往返（P1-48；对应 CE itemTable.identified /
+     * callTitle 的快照架构等价物——CE 走回放存档隐式持久，web 必须显式进快照，
+     * B-0 §1.8）。旧存档无此字段 → initConsumables 的开局态兜底（鉴定丢失，
+     * 与 B-1b 前行为一致）。
+     */
+    identifiedItems?: string[];
+    /** B-1b：玩家绰号（ItemLoader.callTitles 的落盘形态；Map 不能直接 JSON 化）。 */
+    callTitles?: Record<string, string>;
     grid: Array<{
         x: number;
         y: number;
@@ -369,6 +391,16 @@ export class Game {
     private needsRender: boolean = true;
     public isInventoryOpen: boolean = false;
 
+    /**
+     * B-1b：鉴定卷轴的目标待选态（CE promptForItemOfType，Items.c:7783-7802）。
+     * CE 是读卷轴回合内同步选目标且不可取消（do-while 强制选到合法目标为止）；
+     * web 的 UI 是异步弹层——读卷轴的回合先正常推进（与 CE 同为整回合），
+     * 弹层点选后立即落账、不再消耗回合（CE 的选择本身零回合成本）。
+     * 选择期间复用背包弹层并封锁其余输入（escape/toggle 也不得关闭）。
+     * 不进存档：读档/新局重置（挂起中的选择不跨场景）。
+     */
+    public pendingIdentify: boolean = false;
+
     public isThrowing: boolean = false;
     public throwItemTarget: Item | null = null;
 
@@ -487,6 +519,7 @@ export class Game {
         this.everSeenMonsters.clear();
         this.isMouseTraveling = false;
         this.isInventoryOpen = false;
+        this.pendingIdentify = false;
         this.isThrowing = false;
         this.throwItemTarget = null;
         this.hoveredCell = null;
@@ -2509,11 +2542,15 @@ export class Game {
         }
 
         if (action === 'toggle_inventory') {
+            // B-1b：鉴定目标选择中不得关闭弹层（CE Items.c:7791 do-while
+            // 强制选到合法目标，ESC 会重新进入提示）
+            if (this.pendingIdentify) return;
             this.isInventoryOpen = !this.isInventoryOpen;
             return;
         }
 
         if (action === 'escape') {
+            if (this.pendingIdentify) return;
             if (this.isInventoryOpen) {
                 this.isInventoryOpen = false;
             }
@@ -2579,7 +2616,8 @@ export class Game {
         }
 
         // Intercept inputs if inventory is open (except toggle)
-        if (this.isInventoryOpen) {
+        // B-1b：鉴定目标待选期间同样封锁（双保险；待选时 isInventoryOpen 恒 true）
+        if (this.isInventoryOpen || this.pendingIdentify) {
             return;
         }
 
@@ -3151,14 +3189,16 @@ export class Game {
                         // 读 identify 卷轴先 identify(theItem) 亮自身种类并宣告
                         // "this is a scroll of identify."，然后才让玩家选目标。
                         // "用完不自亮"的例外只有 enchanting（Items.c:8019-8026）。
+                        // B-1b：目标改为玩家指定（CE promptForItemOfType，
+                        // Items.c:7783-7802）；无可鉴物品时 "everything in your
+                        // pack is already identified."——两种情况卷轴都照常消耗
+                        // （CE "regardless, the scroll is consumed"）。
                         if (!ItemLoader.identifiedItems.has(trueId)) {
                             ItemLoader.identifyItemKind(item);
                         }
                         logger.log(i18next.t('scroll.reveal_identify', { defaultValue: 'This is a scroll of identify.' }), '#00ffff');
-                        if (!this.identifyRandomItem()) {
-                            logger.log(i18next.t('scroll.identify_fail', { defaultValue: 'Nothing new to identify.' }), '#aaaaaa');
-                        } else {
-                            logger.log(i18next.t('scroll.identify', { defaultValue: 'A flash of insight enters your mind!' }), '#ffff44');
+                        if (!this.beginIdentifySelection()) {
+                            logger.log(i18next.t('scroll.identify_fail', { defaultValue: 'Everything in your pack is already identified.' }), '#aaaaaa');
                         }
                         break;
                     case 'enchant_item':
@@ -3998,54 +4038,69 @@ export class Game {
         this.needsRender = true;
     }
 
-    public rechargeArcanaItem(item: Item): boolean {
-        if (item.category !== ItemCategory.WAND && item.category !== ItemCategory.STAFF) return false;
-        if (typeof item.maxCharges !== 'number') return false;
-        const current = item.charges ?? 0;
-        if (current >= item.maxCharges) {
-            logger.log(i18next.t('item.already_charged', { name: item.name, defaultValue: `${item.name} is already fully charged.` }), '#aaaaaa');
+    /**
+     * B-1b：鉴定卷轴的目标指定（CE promptForItemOfType，Items.c:7783-7802）。
+     * 先整包 updateIdentifiableItem 扫一遍（≙ CE updateIdentifiableItems，
+     * Items.c:7719-7727），无可鉴目标返回 false（"everything in your pack is
+     * already identified."，卷轴照常消耗）；否则进入待选态并弹出背包
+     * （复用背包弹层承载选择 UI，见 InventoryOverlay）。
+     * 零掷骰：目标是玩家决定——B-1a 旧 identifyRandomItem 的 randRange 抽取
+     * 随本方法移除。
+     */
+    private beginIdentifySelection(): boolean {
+        for (const invItem of this.player.inventory.items) {
+            ItemLoader.updateIdentifiableItem(invItem);
+        }
+        if (!this.player.inventory.items.some((invItem) => invItem.canBeIdentified)) {
             return false;
         }
-        item.charges = item.maxCharges;
-        item.rechargeCounter = 0;
-        logger.log(i18next.t('item.fully_recharged', { name: item.name, defaultValue: `${item.name} is fully recharged.` }), '#66ddff');
-        timeSystem.currentTick += 100;
-        this.playerTurnEnded();
-        return true;
-    }
-
-    public uncurseItem(item: Item): boolean {
-        if (!item.isCursed) {
-            logger.log(i18next.t('item.not_cursed', { name: item.name, defaultValue: `${item.name} is not cursed.` }), '#aaaaaa');
-            return false;
-        }
-        item.isCursed = false;
-        if (item.enchantment < 0) item.enchantment = 0;
-        logger.log(i18next.t('scroll.dark_aura', { name: item.name, defaultValue: `A dark aura leaves ${item.name}.` }), '#88ffcc');
-        timeSystem.currentTick += 100;
-        this.playerTurnEnded();
+        this.pendingIdentify = true;
+        this.isInventoryOpen = true;
+        this.needsRender = true;
         return true;
     }
 
     /**
-     * B-1a：鉴定卷轴的目标选择。CE 是玩家指定（promptForItemOfType，
-     * Items.c:7774-7802），web 维持既有"随机挑一件"的简化（目标指定 UI 归
-     * B-1b，B-0 §5.3-2 已登记）——但揭示语义本轮对齐 CE identify()：
-     * 目标池按 ITEM_CAN_BE_IDENTIFIED 过滤（先整包 updateIdentifiableItem
-     * 扫一遍，对应 CE 的 updateIdentifiableItems，Items.c:7719-7727），
-     * 命中者实例全亮（附魔+符文）并亮种类。
+     * B-1b：玩家在待选弹层点选目标（CE do-while 循环的合法出口，
+     * Items.c:7788-7802）。非法目标（不在背包 / 无可鉴之处）返回 false 并
+     * 留在待选态——对齐 CE "选到合法目标为止"的强制语义。落账走
+     * identifyInstance：实例全亮（附魔+符文）并亮种类。选择本身零回合成本
+     * （CE 在读卷轴的同一回合内同步完成）。
      */
-    private identifyRandomItem(): boolean {
-        for (const invItem of this.player.inventory.items) {
-            ItemLoader.updateIdentifiableItem(invItem);
+    public chooseIdentifyTarget(item: Item): boolean {
+        if (!this.pendingIdentify) return false;
+        if (!this.player.inventory.items.includes(item)) return false;
+        ItemLoader.updateIdentifiableItem(item);
+        if (!item.canBeIdentified) return false;
+        this.pendingIdentify = false;
+        this.isInventoryOpen = false;
+        ItemLoader.identifyInstance(item);
+        logger.log(i18next.t('scroll.identify', { defaultValue: 'A flash of insight enters your mind!' }), '#ffff44');
+        logger.log(i18next.t('item.identify_target', { name: item.displayName, defaultValue: `You identify the ${item.displayName}.` }), '#00ffff');
+        this.needsRender = true;
+        return true;
+    }
+
+    /**
+     * B-1b：call——给未识别的风味种类起绰号（CE call()，Items.c:1347-1437）。
+     * 只对五张风味种类表（药水/卷轴/法杖/魔杖/戒指）开放且种类未识别；
+     * 已识别 → "you already know what that is."（Items.c:1384/1440）。
+     * CE 对武器/护甲/护符/食物等的 call 转题字（inscribeItem，per-item
+     * inscription，Items.c:1373-1381）——web 尚无题字功能，Call 入口不对这些
+     * 类别开放（登记报告）。空/纯空白文本 = 清除绰号（Items.c:1429-1432）。
+     */
+    public callItem(item: Item, title: string): boolean {
+        const kindId = ((item as any).consumableId ?? (item as any).identityId) as string | undefined;
+        const hasKindTable = item.category === ItemCategory.POTION || item.category === ItemCategory.SCROLL
+            || item.category === ItemCategory.WAND || item.category === ItemCategory.STAFF
+            || item.category === ItemCategory.RING;
+        if (!kindId || !hasKindTable) return false;
+        if (ItemLoader.identifiedItems.has(kindId)) {
+            logger.log(i18next.t('item.already_known', { defaultValue: 'You already know what that is.' }), '#aaaaaa');
+            return false;
         }
-        const candidates = this.player.inventory.items.filter((invItem) => invItem.canBeIdentified);
-        if (candidates.length === 0) return false;
-        const target = candidates[rng.randRange(0, candidates.length - 1)]!;
-        // 注意：武器/护甲没有种类 id（识别只发生在实例层），不得因缺 id 早退——
-        // identifyInstance 对无种类类别只亮实例，正是 CE identify() 的语义。
-        ItemLoader.identifyInstance(target);
-        logger.log(i18next.t('item.identify_target', { name: target.name, defaultValue: `You identify ${target.name}.` }), '#00ffff');
+        ItemLoader.callKind(kindId, title);
+        logger.log(i18next.t('item.called_as', { name: item.displayName, defaultValue: `They are now known as "${item.displayName}".` }), '#dd88ff');
         return true;
     }
 
@@ -4430,14 +4485,17 @@ export class Game {
         let nullifyChance = 0;
         let durationReduction = 0;
 
-        const ringIdentity = (this.player.equippedRing as any)?.identityId as string | undefined;
-        if (ringIdentity === 'ring_of_awareness') {
-            if (status === 'confused' || status === 'hallucinating') {
-                nullifyChance += 0.25;
-                durationReduction += 1;
-            } else if (status === 'paralyzed') {
-                nullifyChance += 0.1;
-                durationReduction += 1;
+        // B-1b：双戒指槽都要吃 awareness 抗性（CE updateRingBonuses 遍历两槽）
+        for (const ring of this.player.rings()) {
+            const ringIdentity = (ring as any)?.identityId as string | undefined;
+            if (ringIdentity === 'ring_of_awareness') {
+                if (status === 'confused' || status === 'hallucinating') {
+                    nullifyChance += 0.25;
+                    durationReduction += 1;
+                } else if (status === 'paralyzed') {
+                    nullifyChance += 0.1;
+                    durationReduction += 1;
+                }
             }
         }
 
@@ -4514,13 +4572,14 @@ export class Game {
     }
 
     private syncEquipmentStatuses() {
-        const ring = this.player.equippedRing;
-        if (!ring) return;
-        const identityId = (ring as any).identityId as string | undefined;
-        if (identityId === 'ring_of_awareness') {
-            this.player.setStatusDuration('telepathy', 2);
-        } else if (identityId === 'ring_of_regeneration') {
-            this.player.setStatusDuration('regenerating', 2);
+        // B-1b：双戒指槽（CE updateRingBonuses 语义，两槽都生效）
+        for (const ring of this.player.rings()) {
+            const identityId = (ring as any).identityId as string | undefined;
+            if (identityId === 'ring_of_awareness') {
+                this.player.setStatusDuration('telepathy', 2);
+            } else if (identityId === 'ring_of_regeneration') {
+                this.player.setStatusDuration('regenerating', 2);
+            }
         }
     }
 
@@ -6467,28 +6526,28 @@ export class Game {
     }
 
     /**
-     * B-1a：CE Time.c:1987-2024 processIncrementalAutoID——对护甲与戒指
-     * （CE 是 armor/ringLeft/ringRight 三槽；web 单戒指槽）的穿戴熟悉度倒计时。
-     * 调用点在客观时间块内（Time.c:2664），每块恰好扣 1。揭示时的玩家可见
-     * 消息（Time.c:2001-2003 "you are now familiar enough with your ... to
+     * B-1a：CE Time.c:1987-2024 processIncrementalAutoID——对护甲与两枚戒指
+     * （CE autoIdentifyItems[3] = {armor, ringLeft, ringRight}，Time.c:1988-1991；
+     * web 双槽自 B-1b 起）的穿戴熟悉度倒计时。调用点在客观时间块内
+     * （Time.c:2664），每块每件恰好扣 1。揭示时的玩家可见消息
+     * （Time.c:2001-2003 "you are now familiar enough with your ... to
      * identify it."）在这里播；揭示状态本身的落账在 ItemLoader。
      */
     private processIncrementalAutoID(): void {
-        const armor = this.player.equippedArmor;
-        const armorRevealed = ItemLoader.decrementWornFamiliarity(armor);
-        if (armorRevealed === 'armor' && armor) {
-            logger.log(i18next.t('item.familiar_armor', {
-                name: armor.displayName,
-                defaultValue: `You are now familiar enough with your armor to identify it: ${armor.displayName}.`
-            }), '#00ffff');
-        }
-        const ring = this.player.equippedRing;
-        const ringRevealed = ItemLoader.decrementWornFamiliarity(ring);
-        if (ringRevealed === 'ring' && ring) {
-            logger.log(i18next.t('item.familiar_ring', {
-                name: ring.displayName,
-                defaultValue: `You are now familiar enough with your ring to identify it: ${ring.displayName}.`
-            }), '#00ffff');
+        for (const item of [this.player.equippedArmor, ...this.player.rings()]) {
+            const revealed = ItemLoader.decrementWornFamiliarity(item);
+            if (revealed === 'armor' && item) {
+                logger.log(i18next.t('item.familiar_armor', {
+                    name: item.displayName,
+                    defaultValue: `You are now familiar enough with your armor to identify it: ${item.displayName}.`
+                }), '#00ffff');
+            }
+            if (revealed === 'ring' && item) {
+                logger.log(i18next.t('item.familiar_ring', {
+                    name: item.displayName,
+                    defaultValue: `You are now familiar enough with your ring to identify it: ${item.displayName}.`
+                }), '#00ffff');
+            }
         }
     }
 
@@ -6535,6 +6594,12 @@ export class Game {
             enchantment: item.enchantment,
             runicType: item.runicType,
             runicKnown: item.runicKnown,
+            // B-1b：实例鉴定态进存档（P1-48）。identified=undefined 的物品
+            // （金币/食物/钥匙/护符等无未知态类别）JSON 落盘时自然丢键。
+            identified: item.identified,
+            canBeIdentified: item.canBeIdentified,
+            maxChargesKnown: item.maxChargesKnown,
+            timesUsed: item.timesUsed,
             consumableId: (item as any).consumableId,
             maxCharges: item.maxCharges,
             charges: item.charges,
@@ -6574,18 +6639,24 @@ export class Game {
         if (s.consumableId) {
             (item as any).consumableId = s.consumableId;
         }
-        // B-1a：实例未知态不进存档（P1-48，归 B-1b）。读档按 spawn 语义重建：
-        // 五个可未知类别回到未识别（instance identified=false），其余类别视为
-        // 无未知态。副作用（登记报告）：开局三件套读档后 displayName 暂时失去
-        // 已鉴定态，随 B-1b 持久化一并消除。
-        const cat = item.category;
-        if (cat === ItemCategory.WEAPON || cat === ItemCategory.ARMOR || cat === ItemCategory.POTION
-            || cat === ItemCategory.SCROLL || cat === ItemCategory.WAND || cat === ItemCategory.STAFF
-            || cat === ItemCategory.RING) {
-            item.identified = false;
-            item.canBeIdentified = true;
+        // B-1b：实例鉴定态直接落账（P1-48 反转 B-1a 的"按 spawn 语义重建"）。
+        // 旧存档（B-1b 前，无 identified 键）保持旧行为：可未知类别按 spawn
+        // 语义重建为未识别——读档即"鉴定全丢"的 B-1b 前既定迁移语义。
+        if (s.identified === undefined) {
+            const cat = item.category;
+            if (cat === ItemCategory.WEAPON || cat === ItemCategory.ARMOR || cat === ItemCategory.POTION
+                || cat === ItemCategory.SCROLL || cat === ItemCategory.WAND || cat === ItemCategory.STAFF
+                || cat === ItemCategory.RING) {
+                item.identified = false;
+                item.canBeIdentified = true;
+            } else {
+                item.identified = true;
+            }
         } else {
-            item.identified = true;
+            item.identified = s.identified;
+            item.canBeIdentified = s.canBeIdentified ?? false;
+            item.maxChargesKnown = s.maxChargesKnown ?? false;
+            item.timesUsed = s.timesUsed ?? 0;
         }
         return item;
     }
@@ -6650,7 +6721,8 @@ export class Game {
                 inventory: this.player.inventory.items.map((it) => this.serializeItem(it)),
                 equippedWeaponId: this.player.equippedWeapon?.id ?? null,
                 equippedArmorId: this.player.equippedArmor?.id ?? null,
-                equippedRingId: this.player.equippedRing?.id ?? null,
+                ringLeftId: this.player.ringLeft?.id ?? null,
+                ringRightId: this.player.ringRight?.id ?? null,
                 temporaryImmunities: { ...this.player.temporaryImmunities }
             },
             monsters: this.monsters.map((m) => ({
@@ -6674,6 +6746,9 @@ export class Game {
                 abilities: Array.from(m.abilities)
             })),
             items: this.items.map((it) => this.serializeItem(it)),
+            // B-1b：全局种类鉴定态与绰号进存档（P1-48；Map 落盘为普通对象）
+            identifiedItems: [...ItemLoader.identifiedItems],
+            callTitles: Object.fromEntries(ItemLoader.callTitles),
             grid: gridCells,
             gasGrid,
             stats: { ...this.stats }
@@ -6696,6 +6771,22 @@ export class Game {
         this.mode = snapshot.mode;
         this.currentSeed = rng.seedRandomGenerator(snapshot.seed);
         ItemLoader.initConsumables();
+
+        // B-1b：读档恢复全局种类鉴定态与绰号（P1-48）。initConsumables 已把
+        // 两者清到开局态；旧存档（无字段）就停留在开局态 = B-1b 前"鉴定全丢"
+        // 的既定迁移行为。
+        if (snapshot.identifiedItems) {
+            ItemLoader.identifiedItems.clear();
+            for (const kindId of snapshot.identifiedItems) {
+                ItemLoader.identifiedItems.add(kindId);
+            }
+        }
+        if (snapshot.callTitles) {
+            ItemLoader.callTitles.clear();
+            for (const [kindId, title] of Object.entries(snapshot.callTitles)) {
+                ItemLoader.callTitles.set(kindId, title);
+            }
+        }
 
         logger.messages = [];
         timeSystem.currentTick = 0;
@@ -6771,7 +6862,10 @@ export class Game {
         this.player.inventory.items = snapshot.player.inventory.map((it) => this.deserializeItem(it));
         this.player.equippedWeapon = this.player.inventory.items.find((it) => it.id === snapshot.player.equippedWeaponId) ?? null;
         this.player.equippedArmor = this.player.inventory.items.find((it) => it.id === snapshot.player.equippedArmorId) ?? null;
-        this.player.equippedRing = this.player.inventory.items.find((it) => it.id === snapshot.player.equippedRingId) ?? null;
+        // B-1b：双戒指槽；旧存档的单槽 equippedRingId 迁移为左槽
+        const legacyRingId = snapshot.player.ringLeftId ?? snapshot.player.equippedRingId ?? null;
+        this.player.ringLeft = this.player.inventory.items.find((it) => it.id === legacyRingId) ?? null;
+        this.player.ringRight = this.player.inventory.items.find((it) => it.id === snapshot.player.ringRightId) ?? null;
         this.player.temporaryImmunities = { ...(snapshot.player.temporaryImmunities ?? {}) };
 
         this.monsters = snapshot.monsters.map((m) => {
@@ -6849,6 +6943,7 @@ export class Game {
         this.levels.clear();
         this.isMouseTraveling = false;
         this.isInventoryOpen = false;
+        this.pendingIdentify = false;
         this.isThrowing = false;
         this.throwItemTarget = null;
         this.hoveredCell = null;

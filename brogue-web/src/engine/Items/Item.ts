@@ -29,6 +29,22 @@ function usedTimesLabel(times: number): string {
     return i18next.t('item.used_times', { times, defaultValue: enDefault });
 }
 
+/**
+ * B-1b：called 绰号显示（CE itemName 五个风味分支的 called 中间态——
+ * "potion called X"/"scroll called X"…，Items.c:1565-1567/1582-1584/
+ * 1601-1603/1641-1643/1667-1669）。t() 必须在语句层：i18n 门禁的扫描器
+ * 遇到模板字面量会整体跳过（B-1a 教训，p1_30_i18n_gate）。
+ */
+function calledLabel(categoryWord: 'potion' | 'scroll' | 'wand' | 'staff' | 'ring', title: string): string {
+    switch (categoryWord) {
+        case 'potion': return i18next.t('item.called_potion', { title, defaultValue: 'potion called {{title}}' });
+        case 'scroll': return i18next.t('item.called_scroll', { title, defaultValue: 'scroll called {{title}}' });
+        case 'wand': return i18next.t('item.called_wand', { title, defaultValue: 'wand called {{title}}' });
+        case 'staff': return i18next.t('item.called_staff', { title, defaultValue: 'staff called {{title}}' });
+        case 'ring': return i18next.t('item.called_ring', { title, defaultValue: 'ring called {{title}}' });
+    }
+}
+
 export class Item implements Entity {
     public id: number;
     public char: string;
@@ -113,6 +129,10 @@ export class Item implements Entity {
                 if (!consumableId) return this.name;
                 const isIdentified = ItemLoader.identifiedItems.has(consumableId);
                 if (isIdentified) return this.name;
+                // B-1b：called 分支（CE Items.c:1582-1584）——优先级在 identified
+                // 之后、风味之前；种类识别后绰号自动失效（上一分支短路）。
+                const potionCall = ItemLoader.callTitles.get(consumableId);
+                if (potionCall) return calledLabel('potion', potionCall);
                 const flavor = ItemLoader.potionFlavorMap.get(consumableId);
                 return flavor ? flavor.name : ItemLoader.translateName('Unknown Potion');
             }
@@ -121,6 +141,9 @@ export class Item implements Entity {
                 if (!consumableId) return this.name;
                 const isIdentified = ItemLoader.identifiedItems.has(consumableId);
                 if (isIdentified) return this.name;
+                // B-1b：called 分支（CE Items.c:1565-1567）
+                const scrollCall = ItemLoader.callTitles.get(consumableId);
+                if (scrollCall) return calledLabel('scroll', scrollCall);
                 return ItemLoader.scrollFlavorMap.get(consumableId) || ItemLoader.translateName('Unknown Scroll');
             }
             case ItemCategory.WEAPON:
@@ -156,7 +179,14 @@ export class Item implements Entity {
                 const kindKnown = !identityId || ItemLoader.identifiedItems.has(identityId);
                 const flavor = identityId ? ItemLoader.arcanaFlavorMap.get(identityId) : undefined;
                 const usedTimes = this.timesUsed ?? 0;
-                const root = (!kindKnown && flavor) ? flavor : this.name;
+                // B-1b：called 分支替换名根（CE Items.c:1601-1603/1641-1643）——
+                // 充能/使用次数详情仍拼在绰号之后（CE includeDetails 与名根正交）。
+                const arcanaCall = (!kindKnown && identityId) ? ItemLoader.callTitles.get(identityId) : undefined;
+                const root = kindKnown
+                    ? this.name
+                    : arcanaCall
+                        ? calledLabel(this.category === ItemCategory.WAND ? 'wand' : 'staff', arcanaCall)
+                        : (flavor ?? this.name);
 
                 if (this.category === ItemCategory.WAND) {
                     if (this.isIdentified || this.maxChargesKnown) {
@@ -180,6 +210,9 @@ export class Item implements Entity {
             case ItemCategory.RING: {
                 const identityId = (this as any).identityId as string | undefined;
                 if (identityId && !ItemLoader.identifiedItems.has(identityId)) {
+                    // B-1b：called 分支（CE Items.c:1667-1669）
+                    const ringCall = ItemLoader.callTitles.get(identityId);
+                    if (ringCall) return calledLabel('ring', ringCall);
                     const flavor = ItemLoader.arcanaFlavorMap.get(identityId);
                     if (flavor) return flavor;
                 }

@@ -4,6 +4,7 @@ import { useTranslation } from 'i18next-vue';
 import { activeGame } from '../engine/Core/Game';
 import { ItemCategory } from '../engine/Items/Item';
 import type { Item } from '../engine/Items/Item';
+import { ItemLoader } from '../engine/Items/ItemLoader';
 import { logger } from '../engine/Systems/Logger';
 import { generateItemDetail } from '../engine/UI/DetailGenerator';
 
@@ -11,9 +12,15 @@ import { generateItemDetail } from '../engine/UI/DetailGenerator';
 const isVisible = ref(false);
 const inventoryItems = ref<Item[]>([]);
 const selectedItem = ref<Item | null>(null);
+// B-1b：鉴定目标待选态与 call 输入态（引擎态是普通单例，沿用本组件 100ms
+// 轮询的既有模式镜像进 ref）
+const pendingIdentify = ref(false);
+const callTarget = ref<Item | null>(null);
+const callText = ref('');
 
 const updateInventoryState = () => {
     isVisible.value = activeGame.isInventoryOpen;
+    pendingIdentify.value = activeGame.pendingIdentify;
     if (isVisible.value) {
         inventoryItems.value = [...activeGame.player.inventory.items];
     }
@@ -100,7 +107,8 @@ const isEquippable = (item: Item) => {
 const isEquipped = (item: Item) => {
     return activeGame.player.equippedWeapon?.id === item.id
         || activeGame.player.equippedArmor?.id === item.id
-        || activeGame.player.equippedRing?.id === item.id;
+        || activeGame.player.ringLeft?.id === item.id
+        || activeGame.player.ringRight?.id === item.id;
 };
 
 const isPotion = (item: Item) => item.category === ItemCategory.POTION;
@@ -108,10 +116,34 @@ const isScroll = (item: Item) => item.category === ItemCategory.SCROLL;
 const isFood = (item: Item) => item.category === ItemCategory.FOOD;
 const isArcanaUsable = (item: Item) =>
     item.category === ItemCategory.WAND || item.category === ItemCategory.STAFF || item.category === ItemCategory.CHARM;
-const isRechargeable = (item: Item) => item.category === ItemCategory.WAND || item.category === ItemCategory.STAFF;
+
+// B-1b：call 只对五张风味种类表开放（CE call() Items.c:1423-1425 的
+// tableForItemCategory 判定）；已识别种类与 CE 转题字的类别（武器/护甲/
+// 护符等）不出现 Call 按钮（web 无题字功能，登记报告）。
+const FLAVORED_CATEGORIES = new Set([
+    ItemCategory.POTION, ItemCategory.SCROLL, ItemCategory.WAND, ItemCategory.STAFF, ItemCategory.RING,
+]);
+const kindIdOf = (item: Item): string | undefined =>
+    (item as unknown as { consumableId?: string }).consumableId
+    ?? (item as unknown as { identityId?: string }).identityId;
+const isCallable = (item: Item) => {
+    const kindId = kindIdOf(item);
+    return !!kindId && FLAVORED_CATEGORIES.has(item.category)
+        && !ItemLoader.identifiedItems.has(kindId);
+};
 
 const selectItem = (item: Item) => {
     selectedItem.value = selectedItem.value?.id === item.id ? null : item;
+};
+
+// B-1b：鉴定卷轴目标选择模式——行点击被拦截为"指定目标"，只有
+// canBeIdentified 的物品可选中（CE promptForItemOfType 只列合法目标）。
+const selectItemOrIdentify = (item: Item) => {
+    if (pendingIdentify.value) {
+        if (item.canBeIdentified) performIdentifySelect(item);
+        return;
+    }
+    selectItem(item);
 };
 
 const performInspect = (item: Item) => {
@@ -163,14 +195,27 @@ const performUse = (item: Item) => {
     closeInventory();
 };
 
-const performRecharge = (item: Item) => {
-    activeGame.rechargeArcanaItem(item);
-    closeInventory();
+// ── B-1b：鉴定卷轴目标指定与 call 绰号 ─────────────────────────────
+const performIdentifySelect = (item: Item) => {
+    activeGame.chooseIdentifyTarget(item);
+    updateInventoryState();
 };
 
-const performUncurse = (item: Item) => {
-    activeGame.uncurseItem(item);
-    closeInventory();
+const openCallInput = (item: Item) => {
+    callTarget.value = item;
+    callText.value = ItemLoader.callTitles.get(kindIdOf(item) ?? '') ?? '';
+};
+
+const cancelCall = () => {
+    callTarget.value = null;
+    callText.value = '';
+};
+
+const confirmCall = () => {
+    if (!callTarget.value) return;
+    activeGame.callItem(callTarget.value, callText.value);
+    cancelCall();
+    updateInventoryState();
 };
 </script>
 
@@ -183,12 +228,17 @@ const performUncurse = (item: Item) => {
       </div>
       
       <div class="modal-content">
+        <div v-if="pendingIdentify" class="identify-banner">
+          {{ t('Identify what? (choose a highlighted item)') || 'Identify what? (choose a highlighted item)' }}
+        </div>
         <div v-if="inventoryItems.length > 0">
            <div v-for="(items, category) in groupedItems" :key="category" class="category-block">
               <h3 class="category-title">{{ t(category) || category }}</h3>
               <ul class="item-list">
                 <li v-for="entry in items" :key="entry.letter" class="item-wrapper">
-                  <div class="item-row" @click="selectItem(entry.item)" :class="{ 'selected-row': selectedItem?.id === entry.item.id }">
+                  <div class="item-row" @click="selectItemOrIdentify(entry.item)"
+                       :class="{ 'selected-row': selectedItem?.id === entry.item.id,
+                                 'identify-candidate': pendingIdentify && entry.item.canBeIdentified }">
                     <span class="item-letter">{{ entry.letter }})</span>
                     <span class="item-char" :style="{ color: colorToCss(entry.item.color) }">{{ entry.item.char }}</span>
                     <span class="item-name">
@@ -199,20 +249,28 @@ const performUncurse = (item: Item) => {
                        </span>
                     </span>
                   </div>
-                  <div v-if="selectedItem?.id === entry.item.id" class="item-actions">
+                  <div v-if="selectedItem?.id === entry.item.id && !pendingIdentify" class="item-actions">
                      <button @click="performInspect(entry.item)" class="action-btn">{{ t('item.inspect', { defaultValue: '查看详情' }) }}</button>
                      <button v-if="isEquippable(entry.item) && !isEquipped(entry.item)" @click="performEquip(entry.item)" class="action-btn">{{ t('Equip') || 'Equip' }}</button>
                      <button v-if="isEquippable(entry.item) && isEquipped(entry.item)" @click="performUnequip(entry.item)" class="action-btn">{{ t('Unequip') || 'Unequip' }}</button>
-                     
+
                      <button v-if="isPotion(entry.item)" @click="performQuaff(entry.item)" class="action-btn">{{ t('Quaff') || 'Quaff' }}</button>
                      <button v-if="isScroll(entry.item)" @click="performRead(entry.item)" class="action-btn">{{ t('Read') || 'Read' }}</button>
                      <button v-if="isFood(entry.item)" @click="performEat(entry.item)" class="action-btn">{{ t('Eat') || 'Eat' }}</button>
                      <button v-if="isArcanaUsable(entry.item)" @click="performUse(entry.item)" class="action-btn">{{ t('Use') || 'Use' }}</button>
-                     <button v-if="isRechargeable(entry.item)" @click="performRecharge(entry.item)" class="action-btn">{{ t('Recharge') || 'Recharge' }}</button>
-                     <button v-if="entry.item.isCursed" @click="performUncurse(entry.item)" class="action-btn">{{ t('Remove Curse') || 'Remove Curse' }}</button>
+
+                     <button v-if="isCallable(entry.item)" @click="openCallInput(entry.item)" class="action-btn">{{ t('Call') || 'Call' }}</button>
 
                      <button @click="performThrow(entry.item)" class="action-btn">{{ t('Throw') || 'Throw' }}</button>
                      <button @click="performDrop(entry.item)" class="action-btn danger">{{ t('Drop') || 'Drop' }}</button>
+                  </div>
+                  <!-- B-1b：call 绰号输入（CE getInputTextString，Items.c:1423） -->
+                  <div v-if="callTarget?.id === entry.item.id" class="item-actions call-input-row">
+                    <span class="call-label">{{ t('Call them:') || 'Call them:' }}</span>
+                    <input v-model="callText" class="call-input" maxlength="29"
+                           @keyup.enter="confirmCall" :placeholder="t('max 29 chars') || 'max 29 chars'" />
+                    <button @click="confirmCall" class="action-btn">{{ t('Name it') || 'Name it' }}</button>
+                    <button @click="cancelCall" class="action-btn danger">{{ t('Cancel') || 'Cancel' }}</button>
                   </div>
                 </li>
               </ul>
@@ -301,6 +359,54 @@ const performUncurse = (item: Item) => {
   padding: 1.5rem;
   overflow-y: auto;
   flex: 1;
+}
+
+/* B-1b：鉴定目标选择横幅与候选高亮 */
+.identify-banner {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: rgba(0, 255, 255, 0.08);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  color: #7fe9e9;
+  font-family: var(--font-main);
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.item-row.identify-candidate {
+  cursor: pointer;
+  background: rgba(0, 255, 255, 0.06);
+}
+.item-row.identify-candidate:hover {
+  background: rgba(0, 255, 255, 0.14);
+}
+
+/* B-1b：call 绰号输入行 */
+.call-input-row {
+  align-items: center;
+}
+.call-label {
+  color: var(--text-secondary);
+  font-family: var(--font-main);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+.call-input {
+  flex: 1;
+  min-width: 120px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  color: #e4e4e7;
+  padding: 6px 10px;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  outline: none;
+}
+.call-input:focus {
+  border-color: rgba(221, 136, 255, 0.6);
 }
 
 .category-block {

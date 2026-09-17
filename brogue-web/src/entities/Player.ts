@@ -22,7 +22,13 @@ export class Player extends Creature {
     public inventory: Inventory;
     public equippedWeapon: Item | null = null;
     public equippedArmor: Item | null = null;
-    public equippedRing: Item | null = null;
+    /**
+     * B-1b：戒指双槽（CE rogue.ringLeft/ringRight，Rogue.h:2461-2462；装备分配
+     * Items.c:8560-8566——左槽优先、双占时 equipItem 返回 false）。原单槽
+     * equippedRing 删除；存档兼容见 Game.loadSnapshot（旧档 equippedRingId → 左槽）。
+     */
+    public ringLeft: Item | null = null;
+    public ringRight: Item | null = null;
     public strength: number = 12;
     public lastMoveDirection: Direction | null = null;
 
@@ -74,7 +80,13 @@ export class Player extends Creature {
             this.equippedArmor = item;
             return true;
         } else if (item.category === ItemCategory.RING) {
-            this.equippedRing = item;
+            // CE Items.c:8560-8566：左槽优先；双占时拒绝（"no available ring slot"）
+            if (this.ringLeft && this.ringRight) return false;
+            if (this.ringLeft) {
+                this.ringRight = item;
+            } else {
+                this.ringLeft = item;
+            }
             return true;
         }
         return false;
@@ -83,7 +95,16 @@ export class Player extends Creature {
     public unequip(item: Item) {
         if (this.equippedWeapon?.id === item.id) this.equippedWeapon = null;
         if (this.equippedArmor?.id === item.id) this.equippedArmor = null;
-        if (this.equippedRing?.id === item.id) this.equippedRing = null;
+        if (this.ringLeft?.id === item.id) this.ringLeft = null;
+        if (this.ringRight?.id === item.id) this.ringRight = null;
+    }
+
+    /** 两枚戴着的戒指（护甲/武器另行），供遍历熟悉度与戒指效果的调用方使用。 */
+    public rings(): Item[] {
+        const out: Item[] = [];
+        if (this.ringLeft) out.push(this.ringLeft);
+        if (this.ringRight) out.push(this.ringRight);
+        return out;
     }
 
     /** Hunger state entered this turn, or null if unchanged. Consumed once by the caller. */

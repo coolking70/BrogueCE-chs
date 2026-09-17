@@ -306,40 +306,27 @@ describe('P1-37 硬编码文案：真实 zh_CN 资源下渲染为中文', () => 
     it('AD5a: 充能/诅咒/解咒文案无英文字母（六条登记项 + 两条漏网项的渲染面）', () => {
         const game = createHeadlessGame(20260916);
 
-        // 满充魔杖再充 → "已经满了"
-        const full = makeWand();
-        let restore = captureLog();
-        game.rechargeArcanaItem(full);
-        restore();
-        const fullMsg = messages.find(m => m.includes('充能已经满了'));
-        expect(fullMsg, `应渲染中文"充能已经满了"，实际日志：${messages.join(' | ')}`).toBeDefined();
-        expect(fullMsg, '硬编码英文仍以英文渲染').not.toMatch(/[A-Za-z]/);
-
-        // 半充魔杖充能 → "完全恢复了"
-        const wand = makeWand();
-        wand.charges = 0;
-        restore = captureLog();
-        game.rechargeArcanaItem(wand);
-        restore();
-        const rechargedMsg = messages.find(m => m.includes('充能完全恢复了'));
-        expect(rechargedMsg, `应渲染中文"充能完全恢复了"，实际日志：${messages.join(' | ')}`).toBeDefined();
-        expect(rechargedMsg).not.toMatch(/[A-Za-z]/);
-
-        // 未诅咒物品解咒 → "没有被诅咒"
-        const clean = ItemLoader.spawnWeapon('dagger', 0, 0)!;
-        restore = captureLog();
-        game.uncurseItem(clean);
-        restore();
-        const notCursedMsg = messages.find(m => m.includes('没有被诅咒'));
-        expect(notCursedMsg, `应渲染中文"没有被诅咒"，实际日志：${messages.join(' | ')}`).toBeDefined();
-        expect(notCursedMsg).not.toMatch(/[A-Za-z]/);
+        // ★ B-1b 后由验收方摘除三条到期断言 ★
+        //
+        // 原先这里用 `rechargeArcanaItem` / `uncurseItem` 当**载体**，断言
+        // "充能已经满了" / "充能完全恢复了" / "没有被诅咒" 三条文案渲染成中文。
+        // B-1b 按 D2 把这两个 web 自创的**免费按钮**整体删除（连同其 i18n 键），
+        // 于是这三条断言**随功能一起到期**——被测的代码路径与文案都不存在了。
+        //
+        // 本用例的目的（"这些文案不以裸英文渲染"）对**存活下来的**文案完全保留：
+        // 下面四条（背包解咒 / 慢充自然回复 / 充能卷轴 / 焦土）一字未动，
+        // 守卫性质未放宽。
+        //
+        // 教训（已写进 project_conventions）：**删除类改动的 grep 关键词
+        // 必须是"被删的公开名"**（`rechargeArcanaItem` / `uncurseItem`），
+        // 而不是功能主题词——验收方的两段 grep 正是因此漏掉了这个引用者。
 
         // 背包解咒 → "不再受诅咒"
         const cursed = ItemLoader.spawnWeapon('sword', 0, 0)!;
         cursed.isCursed = true;
         cursed.enchantment = -1;
         game.player.inventory.items.push(cursed);
-        restore = captureLog();
+        let restore = captureLog();
         (game as unknown as { removeCurseFromInventory(): boolean }).removeCurseFromInventory();
         restore();
         const uncursedMsg = messages.find(m => m.includes('不再受诅咒'));

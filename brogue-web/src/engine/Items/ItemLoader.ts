@@ -108,6 +108,30 @@ export class ItemLoader {
     // Which IDs have been identified by the player
     public static identifiedItems = new Set<string>();
 
+    /**
+     * B-1b：玩家给未识别风味种类起的绰号（CE itemTable.callTitle/called，
+     * Rogue.h:1426-1427）。键 = 种类 id（consumableId/identityId）。
+     * CE 语义（call()，Items.c:1347-1437）：
+     *  - 只对五张风味种类表存在且种类未识别的物品开放（Items.c:1423-1425）；
+     *  - 写入同时置 called=true（Items.c:1427-1428）；空文本 = 清除绰号
+     *    （callTitle[0]='\0' + called=false，Items.c:1429-1432）——web 用
+     *    "Map 里有无键" 表达 called，callKind(空串) 即 delete；
+     *  - 种类识别后绰号不再显示（itemName 的 identified 分支短路，
+     *    Items.c:1558/1578/1598/1638/1663），条目本身保留到新局；
+     *  - 新局清零（resetItemTableEntry，Items.c:8778-8779）——见 initConsumables。
+     * 持久化随 GameSnapshot.callTitles（P1-48，B-1b）。
+     */
+    public static callTitles = new Map<string, string>();
+
+    /** CE call() 的落账段（Items.c:1423-1432）：空/纯空白文本清除绰号。 */
+    public static callKind(kindId: string, title: string): void {
+        if (title.trim()) {
+            this.callTitles.set(kindId, title.trim());
+        } else {
+            this.callTitles.delete(kindId);
+        }
+    }
+
     // ---- B-1a：两层未知态模型的层 1（种类）与被动揭示引擎 ----
     // CE 权威出处（BrogueCE-master/src/）：
     //   - 熟悉度门槛：variants/GlobalsBrogue.c:1040-1042
@@ -518,6 +542,9 @@ export class ItemLoader {
         this.scrollFlavorMap.clear();
         this.arcanaFlavorMap.clear();
         this.identifiedItems.clear();
+        // B-1b：绰号随新局清零（CE resetItemTableEntry，Items.c:8778-8779）。
+        // loadSnapshot 先走本方法再从快照回放，两全。
+        this.callTitles.clear();
 
         // B-1a：CE 开局清零（shuffleFlavors → resetItemTableEntry，Items.c:8775-8800）
         // 只清五张风味表；护符表预置 identified=true（GlobalsBrogue.c:714-726，

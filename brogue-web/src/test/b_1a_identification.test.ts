@@ -21,6 +21,9 @@
  * 留痕测试（本轮明确不做）见文件尾部 describe 块，均注明反转轮次。
  */
 import { describe, it, expect, beforeAll } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import i18next from 'i18next';
 import { createHeadlessGame } from './harness';
 import { Game } from '../engine/Core/Game';
@@ -447,6 +450,11 @@ describe('A12: 鉴定卷轴 = 实例全亮 + 种类亮（CE identify()，Items.c
         const scroll = ItemLoader.spawnScroll('scroll_of_identify', -1, -1)!;
         game.player.inventory.addItem(scroll);
         game.readItem(scroll);
+        // B-1b（原断言到期）：目标改为玩家指定（CE promptForItemOfType，
+        // Items.c:7783-7802）——readItem 只进入待选态，落账在玩家点选时
+        // （这里以玩家身份选 wpn；"仍随机挑"的错误实现由 b_1b 测试文件对抗）
+        expect(game.pendingIdentify).toBe(true);
+        expect(game.chooseIdentifyTarget(wpn)).toBe(true);
 
         expect(wpn.identified).toBe(true);
         expect(wpn.runicKnown).toBe(true); // CE：RUNIC_IDENTIFIED | RUNIC_HINTED
@@ -533,63 +541,123 @@ describe('A13: RNG 流哨兵（任务书 §四：本轮不许移动 RNG 流）',
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 留痕测试：本轮明确不做（任务书 §三）。断言现状；反转轮次见各条注释。
+// 留痕反转区（B-1b 落地）。原 B-1a 留痕断言已按"反转 = 断言新事实 + 保留越界
+// 守卫"改造；原断言内容保留在注释里，供回溯。
 // ─────────────────────────────────────────────────────────────────────────────
-describe('留痕：鉴定态不进存档（P1-48 → B-1b 反转本组断言）', () => {
-    it('快照无任何鉴定字段；读档后种类鉴定集与实例旗标全部丢失', () => {
+describe('已反转（B-1b）：鉴定态进存档（原 P1-48 留痕）', () => {
+    /**
+     * 原留痕断言（B-1a 立）：快照无任何鉴定字段；读档后种类鉴定集与实例
+     * 旗标全部丢失。B-1b 持久化落地，本组反转为断言新事实：
+     * 种类集 + 实例旗标 + 绰号全部随存档往返。反向（只存一半）的对抗由
+     * b_1b_identification_persistence.test.ts 承担。
+     */
+    it('快照携带鉴定字段；读档后种类集、实例旗标、绰号全部还原', () => {
         const game = createHeadlessGame(42);
         ItemLoader.identifiedItems.add('potion_of_life');
+        ItemLoader.callKind('potion_of_life', '生命的味道');
         const wpn = ItemLoader.spawnWeapon('sword', -1, -1)!;
         wpn.enchantment = 2;
         wpn.identified = true;
         game.player.inventory.addItem(wpn);
 
         const snap = game.toSnapshot();
-        // 快照 schema 无鉴定字段（B-1b 将新增 identified/identifiedItems 等——届时反转）
-        expect(Object.keys(snap).some(k => k.toLowerCase().includes('identif'))).toBe(false);
-        expect(Object.keys(snap.player.inventory[0]!).some(k => k.toLowerCase().includes('identif'))).toBe(false);
+        // 快照 schema 现在携带鉴定字段（原留痕断言"无 identif* 字段"已到期）
+        expect(snap.identifiedItems).toContain('potion_of_life');
+        expect(snap.callTitles?.['potion_of_life']).toBe('生命的味道');
+        const snapWpn = snap.player.inventory.find((s) => s.name === 'Sword')!;
+        expect(snapWpn.identified).toBe(true);
+        expect(snapWpn.canBeIdentified).toBe(true);
 
-        // 读档：种类集被 initConsumables 清空（只剩护符/护符石预亮），实例旗标按 spawn 语义重建
+        // 读档：种类集、实例旗标、绰号全部还原（原断言"读档后全丢"已到期）
         const reloaded = createHeadlessGame(1);
         reloaded.loadSnapshot(snap);
-        expect(ItemLoader.identifiedItems.has('potion_of_life')).toBe(false);
+        expect(ItemLoader.identifiedItems.has('potion_of_life')).toBe(true);
+        expect(ItemLoader.callTitles.get('potion_of_life')).toBe('生命的味道');
         const wpn2 = reloaded.player.inventory.items.find(i => i.category === ItemCategory.WEAPON && i.name.includes('Sword'));
-        expect(wpn2?.identified).toBe(false);
-        expect(wpn2?.displayName).toBe('Sword'); // 读档后暂失已鉴定态（B-1b 持久化后消除）
+        expect(wpn2?.identified).toBe(true);
+        expect(wpn2?.displayName).toBe('Sword +2');
     });
 });
 
-describe('留痕：call/inscribe 未实现（→ B-1b 反转）', () => {
-    it('ItemLoader 无 call 绰号 API；未识别品显示名不含 "called"', () => {
-        expect((ItemLoader as unknown as Record<string, unknown>).callItem).toBeUndefined();
-        expect((ItemLoader as unknown as Record<string, unknown>).callTitle).toBeUndefined();
+describe('已反转（B-1b）：call 绰号已实现（原"call/inscribe 未实现"留痕）', () => {
+    /**
+     * 原留痕断言（B-1a 立）：ItemLoader 无 call 绰号 API；未识别品显示名
+     * 不含 "called"。B-1b 落地 callTitle（Map）与 called 显示分支。
+     * 越界守卫保留：CE 对武器/护甲等无风味表类别的 call 转题字
+     * （inscribeItem，Items.c:1373-1381）——web 仍无题字，callItem 必须
+     * 拒绝这些类别（不得静默起绰号）。
+     */
+    it('callKind 落账 + 显示名进入 called 态；武器仍不可 call（题字未实现）', () => {
+        expect(typeof (ItemLoader as unknown as Record<string, unknown>).callKind).toBe('function');
+        expect(ItemLoader.callTitles).toBeInstanceOf(Map);
+
+        const game = createHeadlessGame(42, 'test');
         const potion = ItemLoader.spawnPotion('potion_of_life', -1, -1)!;
-        expect(potion.displayName).not.toContain('called');
+        expect(potion.displayName).not.toContain('called'); // 还没起绰号：风味名
+        game.callItem(potion, 'red bull');
+        expect(ItemLoader.callTitles.get('potion_of_life')).toBe('red bull');
+        expect(potion.displayName).toMatch(/called red bull|称为「red bull」/);
+
+        // 越界守卫：武器没有风味种类表，callItem 拒绝（原"无 call API"留痕
+        // 的精神由这条继承——题字轮到来前，武器不得被起绰号）
+        const wpn = ItemLoader.spawnWeapon('sword', -1, -1)!;
+        expect(game.callItem(wpn, 'stabby')).toBe(false);
+        expect(ItemLoader.callTitles.size).toBe(1); // 只有药水那条
     });
 });
 
-describe('留痕：戒指单槽（→ B-1b 反转）', () => {
-    it('Player 无 ringLeft/ringRight；戴第二枚顶掉第一枚', () => {
+describe('已反转（B-1b）：戒指双槽（原"戒指单槽"留痕）', () => {
+    /**
+     * 原留痕断言（B-1a 立）：Player 无 ringLeft/ringRight；戴第二枚顶掉
+     * 第一枚。B-1b 双槽落地（CE Items.c:8560-8566：左槽优先、双占拒绝）。
+     */
+    it('Player 有 ringLeft/ringRight；第二枚进右槽不顶掉第一枚；双占拒绝', () => {
         const game = createHeadlessGame(42, 'test');
         isolatePlayer(game);
-        const player = game.player as unknown as Record<string, unknown>;
-        expect(player.ringLeft).toBeUndefined();
-        expect(player.ringRight).toBeUndefined();
         const r1 = ItemLoader.spawnRing('ring_of_regeneration', -1, -1)!;
         const r2 = ItemLoader.spawnRing('ring_of_wisdom', -1, -1)!;
+        const r3 = ItemLoader.spawnRing('ring_of_stealth', -1, -1)!;
         game.player.inventory.addItem(r1);
         game.player.inventory.addItem(r2);
+        game.player.inventory.addItem(r3);
         game.equipItem(r1);
         game.equipItem(r2);
-        expect(game.player.equippedRing?.id).toBe(r2.id);
+        // 原断言"第二枚顶掉第一枚（equippedRing === r2）"已到期：
+        // 现在两枚同戴，第三枚被拒绝（CE "no available ring slot"）
+        expect(game.player.ringLeft?.id).toBe(r1.id);
+        expect(game.player.ringRight?.id).toBe(r2.id);
+        expect(game.player.equip(r3)).toBe(false);
+        expect(game.player.ringLeft?.id).toBe(r1.id);
+        expect(game.player.ringRight?.id).toBe(r2.id);
     });
 });
 
-describe('留痕：免费解咒/充能作弊面仍在线（→ B-1b 移除时反转）', () => {
-    it('Game.uncurseItem / rechargeArcanaItem 存在且可免费用', () => {
+describe('已反转（B-1b）：免费解咒/充能作弊面已移除（原"仍在线"留痕）', () => {
+    /**
+     * 原留痕断言（B-1a 立）：Game.uncurseItem / rechargeArcanaItem 存在且可
+     * 免费用。B-1b 按 D2 移除（CE 无此入口：解咒走 remove curse 卷轴的
+     * removeCurseFromInventory，充能走 recharging 卷轴的 rechargeRandomArcana）。
+     * 越界守卫：真正等价的方法必须仍然在位——移除作弊面不得伤及卷轴路径。
+     */
+    it('Game.uncurseItem / rechargeArcanaItem 已不存在；卷轴等价物仍在位', () => {
         const game = createHeadlessGame(42, 'test');
-        expect(typeof (game as unknown as Record<string, unknown>).uncurseItem).toBe('function');
-        expect(typeof (game as unknown as Record<string, unknown>).rechargeArcanaItem).toBe('function');
+        // 原断言"typeof === 'function'"已到期：方法本体删除
+        expect((game as unknown as Record<string, unknown>).uncurseItem).toBeUndefined();
+        expect((game as unknown as Record<string, unknown>).rechargeArcanaItem).toBeUndefined();
+        // 越界守卫：卷轴路径（CE 有）不受移除影响
+        expect(typeof (game as unknown as Record<string, unknown>).removeCurseFromInventory).toBe('function');
+        expect(typeof (game as unknown as Record<string, unknown>).rechargeRandomArcana).toBe('function');
+    });
+
+    it('InventoryOverlay 不再引用两个免费方法（静态守卫，防按钮复活）', () => {
+        // 读组件源码扫属性访问（activeGame.rechargeArcanaItem / activeGame.uncurseItem）
+        // ——这两个名字是 Game 的公开成员，按钮若复活必须原样出现，改局部
+        // 变量名藏不住。直接对**生产文件**断言零引用。
+        const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), '..', 'components', 'InventoryOverlay.vue'), 'utf-8');
+        expect(src).not.toMatch(/rechargeArcanaItem|uncurseItem/);
+        // 免费充能/解咒按钮的旧文案载体（isRechargeable / performRecharge /
+        // performUncurse）也须一并退场
+        expect(src).not.toMatch(/isRechargeable|performRecharge|performUncurse/);
     });
 });
 
