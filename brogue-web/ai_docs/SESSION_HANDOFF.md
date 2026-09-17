@@ -264,6 +264,23 @@ node /Applications/ZCode.app/Contents/Resources/glm/zcode.cjs \
 zrun.sh 的 python 解析段抛异常（`zrun.sh:38`）。所以 `PARSE_FAIL` = 内核没出 JSON，
 配额只是其中一种原因，别直接等同。
 
+**第三种原因：`--mode` 传了内核不认的值（2026-09-17 踩到）。**
+`zrun.sh` 的第三个参数直传内核，而内核**只认 `build` / `edit` / `plan` / `yolo`**。
+验收方投 B-3 时按 Claude Code 的习惯写了 `acceptEdits`，内核回
+`Unsupported --mode value: acceptEdits.` 后直接退出、不吐 JSON，
+于是 PARSE_FAIL 的报错字符串与配额耗尽**一模一样**（`Expecting value: line 1 column 1`）。
+
+所以三种 `PARSE_FAIL` 要这样分：
+
+| 报错 | 原因 | 分辨法 |
+|---|---|---|
+| `Expecting value: line 1 column 1 (char 0)` | 内核没吐 JSON：**配额耗尽 或 参数非法** | 直连内核探一句，看 stderr 到底说的是 `[1308] 已达到上限` 还是 `Unsupported --mode value` |
+| `Extra data: line N column 1` | 两轮并行写同一个输出文件 | 给每轮指定独立 `ZRUN_OUT` |
+
+**教训**：`PARSE_FAIL` 之后**第一件事永远是直连内核看 stderr**，
+不要凭报错字符串直接认定是配额——它至少有两种成因共用同一个字符串。
+探针要用**内核认的 mode**，否则探针自己也会撞同一个坑。
+
 **撞限额时活可能已经干完了**：F-2a 就是在吐最终回复那一步挂的，
 报告无占位符、门禁章节已填。**先读报告判断完整度，再决定重跑**。
 
