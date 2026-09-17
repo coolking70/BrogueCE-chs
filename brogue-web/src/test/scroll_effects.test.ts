@@ -17,7 +17,7 @@ import { ItemCategory, Item } from '../engine/Items/Item';
 import { ItemLoader } from '../engine/Items/ItemLoader';
 import { Monster, MonsterState, type MonsterData } from '../entities/Monster';
 import { TerrainType, DungeonLayer } from '../engine/Map/Grid';
-import { TERRAIN_FLAGS, T_SACRED, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION } from '../engine/Map/TerrainCatalog';
+import { TERRAIN_FLAGS, T_SACRED, T_OBSTRUCTS_PASSABILITY } from '../engine/Map/TerrainCatalog';
 import { SAFETY_MAX_DISTANCE } from '../engine/Map/SafetyMap';
 import { rng } from '../engine/Random';
 import monsterDataJson from '../data/monsters.json';

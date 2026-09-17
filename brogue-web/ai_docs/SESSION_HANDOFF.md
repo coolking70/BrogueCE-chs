@@ -32,7 +32,14 @@ cd <工作树>/brogue-web && git status --short     # 空 = 还在读源码，�
 4. 读 `## 需要追加授权的测试` —— 那是**验收方自己的漏项**，
    由验收方补修，**守卫要顺延不要放宽**（见「第四种形态」一节）；
 5. 跑**全量串行门禁**（`npx vitest run --fileParallelism=false`，约 18 分钟，
-   必须在没有执行方抢 CPU 时跑）；
+   必须在没有执行方抢 CPU 时跑）**外加 `npm run build`**——
+   ⚠️ **不要用 `npx tsc --noEmit` 当类型门禁**，它解析的是根 `tsconfig.json`，
+   而项目真正的严格度（`noUnusedLocals` / `noUnusedParameters`）写在
+   `tsconfig.app.json` 里，**只有 `npm run build`（`vue-tsc -b`）才会应用**。
+   2026-09-18 实证：B-3 合并时 `tsc --noEmit` 零输出，但 `npm run build`
+   报 `scroll_effects.test.ts(20,60) TS6133`——一个未使用的导入被放进了 main，
+   直到 B-4a 的执行方报告里提到"原树就存在"才暴露。**这是验收方的门禁漏洞，
+   不是执行方的错**；
 6. 工作树 `git add -A && git commit` 快照 → 主库 `git merge --squash round/<名>` → 提交 → `git push origin main`；
 7. `git worktree remove <路径> --force`，更新本文的「队列」节。
 
