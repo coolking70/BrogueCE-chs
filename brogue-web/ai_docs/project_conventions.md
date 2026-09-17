@@ -269,3 +269,30 @@ grep -rln "DetailGenerator\|identifiedItems" src/ | grep -v "^src/test/"
    `DungeonFeatureCatalog.ts` + `DungeonFeature.ts` + `TerrainCatalog.ts` 默认进清单；
 2. 凡范围含"**修某处显示 / 泄露**"的，先 grep 出承载那处显示的文件，
    不要按目录习惯猜（web 的 UI 代码分散在 `src/engine/UI/` 与 `src/components/` 两处）。
+
+
+## 漏授权的第三种形态：删除类改动要 grep「被删的公开名」（2026-09-17 B-1b 实证）
+
+到 B-1b 为止，"任务书授权清单漏了文件"已出现**三种不同形态**，
+每种的 grep 关键词不同，缺一不可：
+
+| 形态 | 漏的是什么 | grep 什么 |
+|---|---|---|
+| ① 结构性穷尽表 | 钉死全量表的**测试** | `TERRAIN_FLAGS\|DRAW_PRIORITY\|TERRAIN_HOME_LAYER\|DUNGEON_FEATURE_CATALOG\|DF_MISSING_TILES\|toEqual({` |
+| ② 生产文件真实路径 | 范围点名的东西**实际在哪个文件** | 范围里点名的每个符号（`DetailGenerator`、`identifiedItems`…） |
+| ③ **被删符号的引用者** | 谁在用**将被删除**的公开名 | **被删的公开名本身** |
+
+**③ 的实证**：B-1b 被要求按 D2 删除 `rechargeArcanaItem` / `uncurseItem`
+两个 web 自创的免费按钮。`p1_37` 的 AD5a **把这两个方法当载体**去断言
+i18n 文案渲染成中文——它既不在结构性穷尽表里，主题词也对不上
+（它的主题是"机器旗标与 i18n"，不是"鉴定"）。两段 grep 双双落空。
+
+**规矩**：凡本轮范围含"删除/重命名某个公开符号"，
+**必须额外 grep 那个符号名本身**，把所有引用者放进允许清单：
+
+```bash
+grep -rn "rechargeArcanaItem\|uncurseItem" src/ | grep -v "^src/engine/Core/Game.ts"
+```
+
+**并且要预判"载体式引用"**：测试可能只是**借用**某个方法去测别的东西
+（如 AD5a 借它测 i18n），这类引用者从主题上完全看不出来。
