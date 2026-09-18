@@ -40,6 +40,45 @@ C-3 移动 RNG 流后 `p1_20_item_placement` 立刻翻红。**它不是 C-3 的�
 **P1-33 验收时就登记过，烂了十余轮**，B-0 再次撞见后由验收方当场修掉。
 修复移动 RNG 流（74 处基线差异，因该分支此前恒返回 null 不消耗掷骰），基线已授权重捕获。
 
+## P1-25 判语更正（2026-09-18 验收方复核，**原登记的缺陷描述是错的**）
+
+原登记：「击退的落点判定用了 `canMoveTo`，深水/熔岩口径不一致」，
+言下之意是**把怪物击退进岩浆属于 bug**。**这条不成立。**
+
+CE 的 `processStaggerHit`（`Combat.c:1118-1136`）逐字：
+
+```c
+if ((defender->info.flags & (MONST_INVULNERABLE | MONST_IMMOBILE | MONST_INANIMATE))
+    || (defender->bookkeepingFlags & MB_CAPTIVE)
+    || cellHasTerrainFlag(defender->loc, T_OBSTRUCTS_PASSABILITY)) return;
+short newX = clamp(defender->loc.x - attacker->loc.x, -1, 1) + defender->loc.x;
+short newY = clamp(defender->loc.y - attacker->loc.y, -1, 1) + defender->loc.y;
+if (coordinatesAreInMap(newX, newY)
+    && !cellHasTerrainFlag((pos){newX, newY}, T_OBSTRUCTS_PASSABILITY)
+    && !(pmap[newX][newY].flags & (HAS_MONSTER | HAS_PLAYER))) {
+    setMonsterLocation(defender, (pos){newX, newY});
+}
+```
+
+落点判据是 **`T_OBSTRUCTS_PASSABILITY`，不是 `T_PATHING_BLOCKER`** ——
+熔岩/深水/深渊都**不在** `T_OBSTRUCTS_PASSABILITY` 里，
+所以 **CE 明确允许把怪物击退进岩浆**。这是特性不是缺陷。
+
+### 真正的差异（待查清后再定轮次）
+
+1. **CE 的 stagger 只推一格**；web `Game.ts:5766` 的多格循环是
+   **`W_FORCE` 符文**（`weaponForceDistance(enchant)`）的效果，属另一套机制 ——
+   **两者不可混为一谈**，验收方原先混了。
+2. web 的 stagger 侧缺 CE 的四道前置守卫
+   （`MONST_INVULNERABLE` / `MONST_IMMOBILE` / `MONST_INANIMATE` / `MB_CAPTIVE`，
+   以及"被击退者自己站在阻挡格上则不推"）。
+3. web 只查 `getMonsterAt`，**漏了 `HAS_PLAYER`** —— 怪物可能被击退到玩家身上。
+4. `W_FORCE` 的 CE 落点判据**尚未查清**（不在 `Combat.c` 的 `case W_FORCE` 附近），
+   需要单独定位后才能判断 web 的多格循环是否忠实。
+
+**归属**：需要一轮专门的战斗机制勘察，**不要塞进杂项合并轮** ——
+验收方两次在浅根据上险些写错任务书，这条的根据还不够。
+
 ## 蓝图旗标审计表（2026-09-18 V-1b，验收方已复核 CE 命中数）
 
 web 的 `BlueprintEngine` 活跃识别 **7 个** `MF_*` 旗标
