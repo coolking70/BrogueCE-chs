@@ -57,6 +57,11 @@ ps aux | grep node | grep -v grep | awk '$3>50 {print $2, $3"%"}'
    直到 B-4a 的执行方报告里提到"原树就存在"才暴露。**这是验收方的门禁漏洞，
    不是执行方的错**；
 6. 工作树 `git add -A && git commit` 快照 → 主库 `git merge --squash round/<名>` → 提交 → `git push origin main`；
+   ⚠️ **squash-merge 之后若还补修了文件，必须 `git add` 再 commit。**
+   `git merge --squash` 只把合并内容放进**索引**，你随后手改的文件是**未暂存**的，
+   `git commit`（不带 -a）**不会带上它们**。2026-09-18 因此把一个红测试推上了 main
+   （门禁跑在工作树上是绿的，工作树有修复而 HEAD 没有——**门禁结果与被提交的状态不对应**）。
+   **提交前先 `git status --short` 确认没有 ` M` 残留；门禁前确认工作树与索引一致。**
 7. `git worktree remove <路径> --force`，更新本文的「队列」节。
 
 ### 3. 下一步队列（按顺序，**B-4a / B-4b 都是独占轮，不可并行**）
