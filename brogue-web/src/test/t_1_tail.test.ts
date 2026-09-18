@@ -165,16 +165,25 @@ describe('T-1 A：spawnBlueprintItem 无 id 分支 = chooseKind 基表加权（C
         const rows = perSeed.map(r => `seed${r.seed}\tenchant=${r.ench}\tlife=${r.life}\tstrength=${r.str}\t蓝图无id抽取=${JSON.stringify(r.bp)}`).join('\n');
         console.log(`[t_1] 整局产出（T-1 加权后，4 seed）:\n${rows}`);
 
-        // 实测带（改造后 4 seed：ench 24-31 / life 16-23 / str 恒 9，报告 §纯测量数据）；
-        // 带宽 = 实测 ± 余量。下限挡「计量 increment/decrement 接反跌穿」，
-        // 上限挡「结构性投放点被加回」（B-4b 前的 48-68/局即破上限）。
+        // 实测带。下限挡「计量 increment/decrement 接反跌穿」，
+        // 上限挡「结构性投放点被加回」。
         // 注意：等概率回退**不会**破本带（类别抽取每局个位数，见仪表行）——
         // 它由 AD-A1/AD-A2 的分布断言拦住。
+        //
+        // ── V-1a 顺延（验收方 2026-09-18 补授权：本文件不在 V-1a 清单内，
+        //    是验收方的漏项；而 V-0 §6 其实**预告过**本文件会撞红，我没读到）──
+        // T-1 当时的带捕获自 ench 24-31 / life 16-23，那时 `_random_good_` 还在。
+        // V-1a 删掉了它（web 自创、CE 全源码无此概念，roll4 直投附魔卷轴、
+        // roll5 直投生命药水），实测降到 **ench 13-16 / life 6-7**，
+        // 双双落进 CE 量级（CE 附魔卷轴约 12-15/局）。
+        // 带随之跟随实测平移为 ench [8,20] / life [2,12]——**不是放宽，是跟着事实走**：
+        // 上限 20 仍能挡住「直投被加回」（加回即 24-31，必破），
+        // 下限 8 仍能挡住「计量接反跌穿」。
         for (const r of perSeed) {
-            expect(r.ench, `seed${r.seed} 附魔卷轴 ${r.ench}/局`).toBeGreaterThanOrEqual(18);
-            expect(r.ench, `seed${r.seed} 附魔卷轴 ${r.ench}/局`).toBeLessThanOrEqual(38);
-            expect(r.life, `seed${r.seed} life ${r.life}/局`).toBeGreaterThanOrEqual(10);
-            expect(r.life, `seed${r.seed} life ${r.life}/局`).toBeLessThanOrEqual(30);
+            expect(r.ench, `seed${r.seed} 附魔卷轴 ${r.ench}/局`).toBeGreaterThanOrEqual(8);
+            expect(r.ench, `seed${r.seed} 附魔卷轴 ${r.ench}/局`).toBeLessThanOrEqual(20);
+            expect(r.life, `seed${r.seed} life ${r.life}/局`).toBeGreaterThanOrEqual(2);
+            expect(r.life, `seed${r.seed} life ${r.life}/局`).toBeLessThanOrEqual(12);
             expect(r.str, `seed${r.seed} strength ${r.str}/局`).toBeGreaterThanOrEqual(5);
             expect(r.str, `seed${r.seed} strength ${r.str}/局`).toBeLessThanOrEqual(14);
         }
