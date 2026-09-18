@@ -812,7 +812,10 @@ export class Monster extends Creature {
                     game.applyMonsterOnHitStatus(this.name, 'hallucinating', 15);
                 }
                 if (this.hasAbility('MA_HIT_DEGRADE_ARMOR')) {
-                    if (game.player.equippedArmor && game.player.equippedArmor.enchantment > -3) {
+                    // I-1：ITEM_PROTECTED 豁免（CE Combat.c:425-431——带保护则完全
+                    // 跳过腐蚀，无任何消息；isProtected 由 protect_weapon/armor
+                    // 卷轴置位，Game.protectEquippedGear）。
+                    if (game.player.equippedArmor && !game.player.equippedArmor.isProtected && game.player.equippedArmor.enchantment > -3) {
                         game.player.equippedArmor.enchantment -= 1;
                         logger.log(i18next.t('combat.armor_degraded', { defaultValue: 'Your armor is corroded by acid!' }), '#ffaaaa');
                     }
@@ -1314,7 +1317,10 @@ export class Monster extends Creature {
                         game.applyMonsterOnHitStatus(this.name, 'hallucinating', 15);
                     }
                     if (this.hasAbility('MA_HIT_DEGRADE_ARMOR')) {
-                        if (game.player.equippedArmor && game.player.equippedArmor.enchantment > -3) {
+                        // I-1：ITEM_PROTECTED 豁免（CE Combat.c:425-431——带保护则
+                        // 完全跳过腐蚀，无任何消息）。与 resolveGeometryAttackOn
+                        // 的近战支同款（P4-6 几何分发的两处落点都要过这道门）。
+                        if (game.player.equippedArmor && !game.player.equippedArmor.isProtected && game.player.equippedArmor.enchantment > -3) {
                             game.player.equippedArmor.enchantment -= 1;
                             logger.log(i18next.t('combat.armor_degraded', { defaultValue: 'Your armor is corroded by acid!' }), '#ffaaaa');
                         }

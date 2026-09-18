@@ -439,18 +439,17 @@ export function itemAppearance(item: Item, ctx: EntityAppearanceContext): Entity
  * hp ≤ 0 不画（原 if (m.hp > 0) 门）；可见时盟友绿 / 睡眠冷蓝；
  * 不可见但心灵感应时画 '#66ccff' 剪影。
  *
- * ⚠️ UI-1 第 2 条 deferral（2026-09-18 登记）：CE 对燃烧怪物的视觉是
- * **发光不是改字形/颜色**——updateLighting() 给非 MONST_FIERY 的燃烧怪泼
- * BURNING_CREATURE_LIGHT（Light.c:250，fireBoltColor {500,150,0}，半径
- * 300-400）。那笔光进的是玩法光网格（tmap.light，Time.c:894 每回合重刷，
- * 参与 VISIBLE/黑暗判定），web 的等价接线点在 Game.updateVision 的生物光
- * 循环里——Game.ts 本轮禁改（C-8 并行保护），故登记顺延：
- * **激活轮 = 在 Game.updateVision 里为
- * `burningDuration(m) > 0 && !m.isFiery` 的怪物 paintLight(BURNING_CREATURE_LIGHT)**，
- * 渲染侧（本文件）届时零改动、自动受益。
- * 在那之前，本函数对燃烧怪物**不做任何事**——禁止自创 CE 没有的"燃烧染色"
- * （用户裁决：优先还原 CE 的逻辑结构，避免原创差异引起连锁反应）。
- * 留痕测试：ui_1_rendering.test.ts「燃烧怪物无专属外观」。
+ * ✅ UI-1 第 2 条（2026-09-18 登记 deferral；C-7 激活、I-1 钉行为）：CE 对燃烧
+ * 怪物的视觉是**发光不是改字形/颜色**——updateLighting() 给非 MONST_FIERY 的
+ * 燃烧怪泼 BURNING_CREATURE_LIGHT（Light.c:249-251，fireBoltColor {500,150,0}，
+ * 半径 300-400）。那笔光进玩法光网格（tmap.light，Time.c:894 每回合重刷，
+ * 参与 VISIBLE/黑暗判定）。web 已在 Game.updateVision 的生物光循环接上
+ * paintBurning（commit 6c3a34a，条件 `burningDuration > 0 && !FIERY`，含玩家
+ * ——CE handledPlayer 模式）；行为面（光网格含火光、FIERY 不叠加、邻格受光）
+ * 由 i_1_interaction.test.ts 钉死。
+ * 本函数此后也**永远不做任何事**：禁止自创 CE 没有的"燃烧染色"（用户裁决：
+ * 优先还原 CE 的逻辑结构，避免原创差异引起连锁反应）——染色禁令不随激活失效。
+ * 形式守卫：ui_1_rendering.test.ts「燃烧状态不改变怪物外观」。
  */
 export function monsterAppearance(monster: Monster, ctx: EntityAppearanceContext): EntityVisual | null {
     if (monster.hp <= 0) {

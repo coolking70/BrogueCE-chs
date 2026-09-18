@@ -8,7 +8,10 @@
  *  - 火焰三态字形/颜色：Globals.c:461/469/492 + Globals.c:136/157（颜色 0-100 标度）
  *    + platform/platformdependent.c:123/173（字形）+ web-platform.c:170-175（×255/100 截断）。
  *  - 燃烧怪物 = 光不是字形：Light.c:250（BURNING_CREATURE_LIGHT，仅非 MONST_FIERY），
- *    位于 updateLighting()（玩法光，Time.c:894）——web 引擎侧本轮禁改，deferral。
+ *    位于 updateLighting()（玩法光，Time.c:894）——引擎侧已由 C-7 接上
+ *    （Game.updateVision 的 paintBurning，commit 6c3a34a）；行为面钉死在
+ *    i_1_interaction.test.ts（I-1）。本文件保留的只是**形式守卫**：
+ *    外观层永不读燃烧态（发光 ≠ 染色，UI-1 §3.5 用户裁决）。
  *  - 探测魔法符号：IO.c:1215-1245（分支顺序 HAS_PLAYER → 探测物 → HAS_MONSTER）、
  *    IO.c:1120-1121（monsterWithDetectedItem 定义，含 !canSeeMonster）、
  *    platform/platformdependent.c:125/131/132（G_AMULET/G_GOOD_MAGIC/G_BAD_MAGIC）、
@@ -159,15 +162,17 @@ describe('UI-1 第 1 条：EMBERS / ASH / PLAIN_FIRE 的 CE 渲染', () => {
     }
 });
 
-// ════════════════════════ 第 2 条：燃烧怪物（deferral 留痕）════════════════════════
+// ════════════════ 第 2 条：燃烧怪物（留痕已反转：C-7 接上光，I-1 钉行为）════════════════
 
-describe('UI-1 第 2 条：燃烧怪物——CE 是发光不是改字形，引擎侧 deferral', () => {
+describe('UI-1 第 2 条：燃烧怪物——CE 是发光不是改字形（光已在 C-7 接线；I-1 补行为钉死）', () => {
     it('燃烧状态不改变怪物外观（谁在这里加"燃烧染色"谁红——CE 没有这种机制）', () => {
         // CE Light.c:250：燃烧怪的视觉是 paintLight(BURNING_CREATURE_LIGHT)，
         // getCellAppearance 不读 STATUS_BURNING——字形/颜色零变化。
-        // web 的那笔光属于 updateLighting 的等价管线（Game.updateVision，本轮禁改），
-        // deferral 见 monsterAppearance 注释；激活轮接上后本断言应保持绿
-        // （外观函数依旧不读燃烧态，光在 lightGrid 里另行生效）。
+        // 【留痕反转记录，I-1】原断言名"引擎侧 deferral"已过期：引擎侧的
+        // paintBurning 已由 C-7（commit 6c3a34a）接进 Game.updateVision，
+        // 行为面（光网格含火光、FIERY 不叠加）由 i_1_interaction.test.ts 钉死。
+        // 本断言是**形式守卫**，激活后必须保持绿：外观函数依旧不读燃烧态，
+        // 光只在 lightGrid 里生效——染色是 CE 没有的东西，UI-1 明令禁止。
         const ctx = {
             cellVisible: true, cellHasMemory: false, telepathy: false,
             hallucinating: false, cosmetic: noopCosmetic,
