@@ -40,6 +40,28 @@ C-3 移动 RNG 流后 `p1_20_item_placement` 立刻翻红。**它不是 C-3 的�
 **P1-33 验收时就登记过，烂了十余轮**，B-0 再次撞见后由验收方当场修掉。
 修复移动 RNG 流（74 处基线差异，因该分支此前恒返回 null 不消耗掷骰），基线已授权重捕获。
 
+## 蓝图旗标审计表（2026-09-18 V-1b，验收方已复核 CE 命中数）
+
+web 的 `BlueprintEngine` 活跃识别 **7 个** `MF_*` 旗标
+（`MF_ALTAR` / `MF_ALTAR_GROUP` / `MF_GENERATE_ITEM` / `MF_GENERATE_MONSTER` /
+`MF_MONSTER_IS_ALLY` / `MF_MONSTER_IS_CAGED` / `MF_NEAR_ORIGIN`），
+外加本轮新增的 `MF_ALTERNATIVE` / `MF_ALTERNATIVE_2`。
+`blueprints.json` 里另有四个旗标引擎完全忽略：
+
+| 旗标 | CE 树命中 | 性质 | 处置 |
+|---|---|---|---|
+| `MF_KEY_DISPOSABLE` | **15 处** | **真 CE 旗标**（`Rogue.h:2615`）：该机器的钥匙在本位置用后自毁。写入 `Architect.c:1523/1526` → `keyLoc[i].disposableHere`；消费在 `Movement.c:643-660`。CE 载体四条：Kennel / Vampire lair / Legendary ally / Plain locked door | **钥匙系统轮**：`keyLoc` 扩 `disposableHere` 维 + 使用端消费。**依赖外包/领养先落地**，故排在 V-1c 之后 |
+| `MF_FILL_DOORWAY` | **0 处** | **web 自创词元** | **V-2 整体替换**。CE 同意图 = `WOODEN_BARRICADE` + `MF_PERMIT_BLOCKING｜MF_BUILD_AT_ORIGIN`（`GlobalsBrogue.c:311`）；web 现用 GRASS 模拟路障，载体缺失 → D2 退池留形 |
+| `MF_RING` | **0 处** | **web 自创词元** | **V-2 整体替换**。CE 的熔岩护城河（`GlobalsBrogue.c:420-427`）= `LAVA {60,60}` LIQUID + `MF_REPEAT_UNTIL_NO_PROGRESS` 填满 + `DF_LAVA_RETRACTABLE` 退岩浆 |
+| `MF_SCATTER` | **0 处** | **web 自创词元** | **V-2 整体替换**。CE 分场景表达：铺满 = `MF_EVERYWHERE`；液体 = `MF_REPEAT_UNTIL_NO_PROGRESS`；散布 = 大 `instanceCount` + `personalSpace` |
+
+⚠️ **这张表纠正了验收方的一个前提**：我原以为这四个都是「CE 有而 web 没实现」的旗标，
+于是 V-1b 的任务书要求"查清它们在 CE 里的确切语义"。实际**只有第一个是 CE 旗标**，
+另外三个在 CE 全树零命中 —— **不存在可查的 CE 语义**。
+可查的是「CE 用什么机制表达同一意图」，所以它们不是补实现对象，而是 V-2 的**整体替换**对象。
+删掉这三个旗标本身**零行为变化**（引擎本就不认），风险在随之而来的
+`instanceCount` / 地形重写。
+
 ## UI-1 事实清单（2026-09-18 预检，验收方逐条回源码复核）
 
 **这批事实经过三方核对**：验收方起草 → MiMo 独立核对 → 验收方回 CE 源码复验。

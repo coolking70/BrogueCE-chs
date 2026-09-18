@@ -81,8 +81,18 @@ ps aux | grep node | grep -v grep | awk '$3>50 {print $2, $3"%"}'
    explosion_immunity 不显示/onConfirmRequest 接线/CE 三通道光照），
    第 2 条燃烧发光按 CE 结构登记 deferral（属引擎侧玩法光，非渲染层属性）。
    **合并态全量门禁 89 文件 / 1152 绿 + build 绿**
-9. **V-1b**（引擎轮，**高风险**）：`MF_ALTERNATIVE`(+`_2`)、抽签资格过滤、
-   `BP_REWARD` 顶层配额；外包/领养递归 + 失败回滚可再拆 V-1c
+9. ~~V-1b~~ ✅ 已合 `705226d` —— **范围经补勘察后缩小**：只实现
+   `MF_ALTERNATIVE`(+`_2`)（V-2 的硬前置，否则基座大奖会双份发放）。
+   顺带产出蓝图旗标审计表（见路线图）
+10. **V-1c**（**全项目风险最高的一轮**，独占）：抽签资格过滤 + 奖励房配额
+    + 递归外包/领养 + 失败回滚。
+    **这四件相互耦合，不能再拆**——资格过滤没有递归就会让 vestibule/key_guard
+    蓝图一个都建不起来；配额没有资格过滤就会把所有机器一起砍。
+    CE 依据：`blueprintQualifies`（`Architect.c:455-468`）、
+    配额公式 `(rewardRoomsGenerated + count) * 4 + 2 < depth`（`:1757-1775`，
+    常量 `GlobalsBrogue.c:1026-1029`，跨层计数器在 `RogueMain.c:292` 清零）、
+    递归与回滚（`:1543-1575`，10 次重试 + 子机器产物回传父机器）。
+    **投前先走第三方 CE 事实预检。**
 10. **V-2** `blueprints.json` 按 CE 全表重写（含把解题工具补回那 10 台机器）
 11. 小轮可凑：戒指目录缺 `light`/`reaping`（web 6 / CE 8）、i18n 扫描器模板字符串盲区、
     P1-25 击退落点判据、`BlueprintEngine.ts:454` 注释残留 `_random_good_`
