@@ -552,6 +552,11 @@ C-2 的 zcode 在另一 worktree 里也反复跑 vitest，两边抢 CPU，于是
 | — | ~~`Game.ts:3510-3594` 六条硬编码英文~~ ✅ **已随 B-1a/B-3 清掉**（2026-09-18 验收方复核：该段未走 i18n 的 `logger.log` 为 0；全库仅剩 `Game.ts:8624` 一条中文硬串，低） | ✅ |
 | — | 突进的"猛烈突刺"专用措辞需加 i18n 键（B-1 登记） | 低 |
 
+**⚠️ 订正（2026-09-18）**：本文件此前记载「`onConfirmRequest` 未接线，
+默认 confirm 而 CE 默认 reject」——**后半句是错的**。CE `IO.c:2946-2975`：
+Enter 映射到 Yes、Esc 与 `ACKNOWLEDGE_KEY` 映射到 No，且 `retVal` 非 -1 非 1
+一律返回 true。详见路线图「UI-1 事实清单」第 9 条。
+
 ---
 
 ## 验收流程（每轮照做）
