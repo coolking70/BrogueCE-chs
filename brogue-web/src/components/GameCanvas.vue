@@ -104,15 +104,15 @@ export function computeMapOffset(viewportWidth: number, viewportHeight: number):
 import { onMounted, onUnmounted, ref, watch } from 'vue';
 import * as PIXI from 'pixi.js';
 import { Application, Text, TextStyle, Graphics, Container } from 'pixi.js';
-import { TerrainType } from '../engine/Map/Grid';
-import { GasType } from '../engine/Environment/Gas';
-import { ColorUtils } from '../engine/Map/Color';
+// R-1 渲染纯重构：格子/实体「画什么字符、什么颜色」的决策已抽到
+// Appearance.ts 纯函数（ctx 显式注入），本组件只保留 Pixi 绘制。
+// 结构守卫（r_1_appearance.test.ts）钉死本文件不得再出现外观决策。
+import { cellAppearance, itemAppearance, monsterAppearance, playerAppearance, type CosmeticRng } from '../engine/UI/Appearance';
 // DCOLS/DROWS 已在上方 <script lang="ts"> 模块块导入（computeMapOffset 用），
 // 同一模块内重复声明绑定会报错，这里只取 setup 独有的 Direction。
 import { Direction } from '../types';
 import { activeGame } from '../engine/Core/Game';
 import { inputManager } from '../engine/Input';
-import { MonsterState } from '../entities/Monster';
 import { displaySettings } from '../engine/Settings';
 
 const canvasContainer = ref<HTMLDivElement | null>(null);
@@ -121,67 +121,6 @@ let pixiApp: Application | null = null;
 let resizeObserver: ResizeObserver | null = null;
 // P2-6：地图缩放模式切换的 watch 停止器（onMounted 内创建，onUnmounted 内停止）
 let stopScaleModeWatch: (() => void) | null = null;
-
-// --- Terrain definitions ---
-function getTerrainVisual(terrain: TerrainType, isVisible: boolean): { char: string; color: string; bgColor: number | null } {
-    let char = ' ';
-    let color = '#000000';
-    let bgColor: number | null = null;
-
-    switch (terrain) {
-        case TerrainType.GRANITE:
-            char = '#'; color = '#444455'; break;
-        case TerrainType.FLOOR:
-            char = '.'; color = '#aaaaaa'; bgColor = 0x222233; break;
-        case TerrainType.DOOR:
-            char = '+'; color = '#aa8844'; bgColor = 0x332211; break;
-        case TerrainType.OPEN_DOOR:
-            char = "'"; color = '#aa8844'; bgColor = 0x221800; break;
-        case TerrainType.WATER_SHALLOW:
-            char = '~'; color = '#3366cc'; bgColor = 0x112244; break;
-        case TerrainType.WATER_DEEP:
-            char = '~'; color = '#1133aa'; bgColor = 0x001133; break;
-        case TerrainType.GRASS:
-            char = '"'; color = '#33aa33'; bgColor = 0x113311; break;
-        case TerrainType.FOLIAGE:
-            char = '♠'; color = '#228822'; bgColor = 0x112211; break;
-        case TerrainType.STAIRS_DOWN:
-            char = '>'; color = '#00aaff'; bgColor = 0x222233; break;
-        case TerrainType.STAIRS_UP:
-            char = '<'; color = '#ffaa00'; bgColor = 0x222233; break;
-        case TerrainType.SIGN:
-            char = '§'; color = '#ffee88'; bgColor = 0x332b11; break;
-        case TerrainType.RESET_PLATE:
-            char = '⊙'; color = '#66ccff'; bgColor = 0x113344; break;
-        case TerrainType.TRAP:
-            char = '^'; color = '#cc4400'; bgColor = 0x220800; break;
-        case TerrainType.SECRET_DOOR:
-            // Render as wall so it looks hidden
-            char = '#'; color = '#555566'; break;
-        case TerrainType.PRESSURE_PLATE:
-            char = '_'; color = '#44cc44'; bgColor = 0x112211; break;
-        case TerrainType.LOCKED_DOOR:
-            char = '+'; color = '#dd9933'; bgColor = 0x331100; break;
-        case TerrainType.ALTAR:
-            char = '_'; color = '#ffffcc'; bgColor = 0x443311; break;
-        case TerrainType.WEB:
-            char = '\\'; color = '#cccccc'; bgColor = 0x222222; break;
-        case TerrainType.BLOOD:
-            char = '%'; color = '#aa2222'; bgColor = 0x330000; break;
-        case TerrainType.MUD:
-            char = '~'; color = '#664422'; bgColor = 0x221100; break;
-        default:
-            char = ' '; break;
-    }
-
-    // Dim explored but not currently visible tiles
-    if (!isVisible) {
-        color = '#333333';
-        if (bgColor !== null) bgColor = 0x111111;
-    }
-
-    return { char, color, bgColor };
-}
 
 onMounted(async () => {
   if (canvasContainer.value) {
@@ -342,8 +281,10 @@ onMounted(async () => {
         // ---- Background rectangles (batch draw) ----
         bgGraphics.clear();
         const hallucinating = !!game.player.statusDurations.hallucinating;
-        const hallucinationColors = ['#ff66ff', '#66ffff', '#ffff66', '#ff9966', '#99ff66'];
-        const hallucinationChars = ['*', '?', '!', '~', '&'];
+        const telepathyRevealed = !!game.player.statusDurations.telepathy;
+        // 幻觉等纯视觉随机走 COSMETIC 流（见模块块 cosmeticPercent/cosmeticPick），
+        // 以 ctx 注入外观纯函数——本组件不再做任何"画什么"的决策。
+        const cosmetic: CosmeticRng = { percent: cosmeticPercent, pick: cosmeticPick };
 
         // ---- Tiles ----
         for (let x = 0; x < DCOLS; x++) {
@@ -351,78 +292,23 @@ onMounted(async () => {
                 const cell = game.grid.getCell(x, y);
                 const sprite = tileSprites[x]![y]!;
 
-                if (!cell || (!cell.isExplored && !cell.isVisible)) {
+                // 该格画什么（字形/颜色/燃烧/气体/光照/记忆/幻觉）全部由
+                // 纯函数决定；null = 未探索且不可见，什么都不画。
+                const visual = cell
+                    ? cellAppearance(cell, {
+                        gas: game.environment.gasGrid[x]?.[y],
+                        light: game.lightMap.getLight(x, y),
+                        hallucinating,
+                        cosmetic,
+                    })
+                    : null;
+
+                if (!visual) {
                     sprite.visible = false;
                     continue;
                 }
 
-                let { char, color, bgColor } = getTerrainVisual(cell.terrain, cell.isVisible);
-
-                // Apply Environmental Overrides (Gas & Fire)
-                if (cell.isVisible) {
-                    if (cell.isBurning) {
-                        char = '*';
-                        color = '#ffaa00';
-                        bgColor = 0xcc2200;
-                    }
-
-                    const gas = game.environment.gasGrid[x]?.[y];
-                    if (gas && gas.density > 0) {
-                        if (gas.type === GasType.POISON) {
-                            bgColor = 0x660066;
-                            if (!cell.isBurning) { char = '~'; color = '#ff55ff'; }
-                        } else if (gas.type === GasType.STEAM) {
-                            bgColor = 0xaaaaaa;
-                            if (!cell.isBurning) { char = '*'; color = '#ffffff'; }
-                        } else if (gas.type === GasType.CONFUSION) {
-                            bgColor = 0x006666;
-                            if (!cell.isBurning) { char = '?'; color = '#55ffff'; }
-                        } else if (gas.type === GasType.CREEPING_DEATH) {
-                            bgColor = 0x440000;
-                            if (!cell.isBurning) { char = '~'; color = '#ff4444'; }
-                        }
-                    }
-                }
-
-                // Apply dynamic lighting if the cell is currently visible
-                // For memory/explored cells, we just dim them significantly.
-                if (cell.isVisible) {
-                    const light = game.lightMap.getLight(x, y);
-                    if (light && light.intensity > 0) {
-                        // Blend the text color with the light color
-                        const baseColorRgb = ColorUtils.hexToRGB(color);
-                        
-                        // We use an Additive/Mix blend depending on light intensity.
-                        // Brogue uses a complex multiply/add system. Here we'll do a simple proportion mix
-                        // towards the light color based on intensity, but capped so we don't wash out.
-                        const finalColorRgb = ColorUtils.mix(baseColorRgb, light.color, light.intensity * 0.8);
-                        color = ColorUtils.rgbToHex(finalColorRgb);
-
-                        if (bgColor !== null) {
-                            const baseBgRgb = ColorUtils.hexToRGB(bgColor);
-                            const finalBgRgb = ColorUtils.mix(baseBgRgb, light.color, light.intensity * 0.5);
-                            bgColor = parseInt(ColorUtils.rgbToHex(finalBgRgb).replace('#', ''), 16);
-                        }
-                    } else {
-                        // Visible but completely unlit = very dark
-                        color = '#222222';
-                        if (bgColor !== null) bgColor = 0x050505;
-                    }
-                    if (hallucinating && cosmeticPercent(15)) {
-                        color = cosmeticPick(hallucinationColors);
-                        char = cosmeticPick(hallucinationChars);
-                    }
-                } else if (cell.hasMemory) {
-                    // Out of sight memory
-                    if (cell.terrain === TerrainType.STAIRS_UP || cell.terrain === TerrainType.STAIRS_DOWN) {
-                        // Stairs stay fully or mostly bright
-                        color = '#ffffff';
-                        if (bgColor !== null) bgColor = 0x222222;
-                    } else {
-                        color = '#333333';
-                        if (bgColor !== null) bgColor = 0x111111;
-                    }
-                }
+                const { char, color, bgColor } = visual;
 
                 // Update background rect
                 if (bgColor !== null) {
@@ -477,47 +363,36 @@ onMounted(async () => {
         // Items
         for (const item of game.items) {
             const cell = game.grid.getCell(item.loc.x, item.loc.y);
-            if (cell?.isVisible) {
-                const renderChar = hallucinating && cosmeticPercent(30) ? '!' : item.char;
-                const renderColor = hallucinating && cosmeticPercent(30)
-                    ? cosmeticPick(hallucinationColors)
-                    : item.color;
-                placeEntity(renderChar, renderColor, item.loc.x, item.loc.y, true);
-            } else if (cell?.hasMemory) {
-                // Render memory item faintly
-                placeEntity(item.char, '#666666', item.loc.x, item.loc.y, false);
+            const visual = itemAppearance(item, {
+                cellVisible: !!cell?.isVisible,
+                cellHasMemory: !!cell?.hasMemory,
+                telepathy: telepathyRevealed,
+                hallucinating,
+                cosmetic,
+            });
+            if (visual) {
+                placeEntity(visual.char, visual.color, item.loc.x, item.loc.y, visual.interactive);
             }
         }
 
         // Monsters
         for (const m of game.monsters) {
-            if (m.hp > 0) {
-                const cell = game.grid.getCell(m.loc.x, m.loc.y);
-                const telepathyRevealed = !!game.player.statusDurations.telepathy;
-                if (cell?.isVisible) {
-                    // Dim sleeping monsters slightly, or maybe draw them normally
-                    let renderColor: string | number = m.color;
-                    let renderChar = m.char;
-
-                    if (m.isAlly) {
-                        renderColor = '#88ff88'; // green for allies
-                    } else if (m.state === MonsterState.ASLEEP) {
-                        renderColor = 0x6688aa; // deep cold blue/gray if asleep
-                    }
-                    if (hallucinating && cosmeticPercent(35)) {
-                        renderColor = cosmeticPick(hallucinationColors);
-                        renderChar = cosmeticPick(hallucinationChars);
-                    }
-                    
-                    placeEntity(renderChar, renderColor, m.loc.x, m.loc.y, true);
-                } else if (telepathyRevealed) {
-                    placeEntity(m.char, '#66ccff', m.loc.x, m.loc.y, false);
-                }
+            const cell = game.grid.getCell(m.loc.x, m.loc.y);
+            const visual = monsterAppearance(m, {
+                cellVisible: !!cell?.isVisible,
+                cellHasMemory: !!cell?.hasMemory,
+                telepathy: telepathyRevealed,
+                hallucinating,
+                cosmetic,
+            });
+            if (visual) {
+                placeEntity(visual.char, visual.color, m.loc.x, m.loc.y, visual.interactive);
             }
         }
 
         // Player (always visible)
-        placeEntity(game.player.char, '#ffcc00', game.player.loc.x, game.player.loc.y, false);
+        const playerVisual = playerAppearance(game.player);
+        placeEntity(playerVisual.char, playerVisual.color, game.player.loc.x, game.player.loc.y, playerVisual.interactive);
 
         // Hide unused entity sprites
         for (let i = entityIdx; i < MAX_ENTITY_SPRITES; i++) {
