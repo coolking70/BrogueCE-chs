@@ -143,19 +143,23 @@ describe('B-4a 计量表·产物侧（区间来自 10-seed 纯测量，见报告
     // （t_1 仪表行），对整局附魔卷轴的贡献 ≈ 1-2 张，不是超标主因；
     // 余量主要来自 `_random_good_`（web 自创类别，roll4 直投附魔卷轴，
     // 每局 58-66 次抽取 × 1/6 ≈ 10-11 张）——已登记 T-1 报告，留待验收方裁决。
-    it('附魔卷轴整局总数落在测量带内（B-4b 后实测 21-32/局；带宽余量 [15, 40]）', () => {
+    // V-1a 平移（任务书授权「跟随实测平移，不是放宽」）：拆掉 _random_good_
+    // 直投后 10 seed 实测 ench 13-16/局（原 21-32）、life 6-7/局（原 15-27）。
+    // 蓝图路径对两者贡献归零，剩余全部来自 populateItems 计量路径（CE 同构）。
+    // 上限仍挡直投回流（改造前值破上限）；下限挡计量机制被误伤。
+    it('附魔卷轴整局总数落在测量带内（V-1a 后实测 13-16/局；带宽余量 [8, 20]）', () => {
         for (const seed of SEEDS) {
             const n = countOf(seed, 'scroll_of_enchantment');
-            expect(n, `seed${seed} 附魔卷轴 ${n} 张/局`).toBeGreaterThanOrEqual(15);
-            expect(n, `seed${seed} 附魔卷轴 ${n} 张/局`).toBeLessThanOrEqual(40);
+            expect(n, `seed${seed} 附魔卷轴 ${n} 张/局`).toBeGreaterThanOrEqual(8);
+            expect(n, `seed${seed} 附魔卷轴 ${n} 张/局`).toBeLessThanOrEqual(20);
         }
     });
 
-    it('life 药水整局总数落在测量带内（测量 15-27/局；带宽余量 [9, 36]）', () => {
+    it('life 药水整局总数落在测量带内（V-1a 后实测 6-7/局；带宽余量 [2, 12]）', () => {
         for (const seed of SEEDS) {
             const n = countOf(seed, 'potion_of_life');
-            expect(n, `seed${seed} life 药水 ${n} 只/局`).toBeGreaterThanOrEqual(9);
-            expect(n, `seed${seed} life 药水 ${n} 只/局`).toBeLessThanOrEqual(36);
+            expect(n, `seed${seed} life 药水 ${n} 只/局`).toBeGreaterThanOrEqual(2);
+            expect(n, `seed${seed} life 药水 ${n} 只/局`).toBeLessThanOrEqual(12);
         }
     });
 

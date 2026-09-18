@@ -274,11 +274,21 @@ describe('B-4b 每层数量与落位（真实生成链）', () => {
         const loop = analyzeLoopMap(game.grid);
         const popItems = spy.items.filter(s => s.depth === game.depth && s.item).map(s => s.item);
         expect(popItems.length, '本层应有真实人口物品').toBeGreaterThan(0);
+        // V-1a 修正断言范围（原断言对全部人口物品要求 IN_LOOP=false）：
+        // CE Items.c:729-734——食物与力量药水**不走热力图**，落位是
+        // do { randomMatchingLocation(FLOOR, NOTHING, -1) } while (passableArcCount > 1)，
+        // 只回避走廊弧；randomMatchingLocation 不查环，CE 本就允许它们落
+        // IN_LOOP 格（V-1a 移动生成流后 seed424242/D10 实测一枚干粮落环上格，
+        // 与 CE 语义一致，非回归）。热力图路径物品的 IN_LOOP 断言保留原严度。
+        const followsHeatMap = (it: any) => !(it.category === ItemCategory.FOOD
+            || (it.category === ItemCategory.POTION && (it as any).consumableId === 'potion_of_strength'));
         for (const it of popItems) {
             const { x, y } = it.loc;
             const idx = y * DCOLS + x;
             expect(game.machineCells.has(idx), `人口物品 (${x},${y}) 落机器格`).toBe(false);
-            expect(loop[x]![y], `人口物品 (${x},${y}) 落 IN_LOOP 格`).toBe(false);
+            if (followsHeatMap(it)) {
+                expect(loop[x]![y], `人口物品 (${x},${y}) 落 IN_LOOP 格`).toBe(false);
+            }
             expect(passableArcCount(game.grid, x, y), `人口物品 (${x},${y}) 落走廊弧格`).toBeLessThanOrEqual(1);
             expect(cellIsIllegalForItems(game, x, y), `人口物品 (${x},${y}) 落物品非法格`).toBe(false);
         }

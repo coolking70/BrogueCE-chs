@@ -850,6 +850,34 @@ export class Game {
             return null;
         }
 
+        // V-1a：多类别掩码（CE machineFeature.itemCategory 是位掩码，如神祠
+        // "Shrine -- safe haven…" 的 (POTION|SCROLL|WEAPON|ARMOR|RING)，
+        // GlobalsBrogue.c:561-565）。blueprints.json 以 '|' 连接的字符串转录。
+        // CE 消费端是**两段抽取**（Architect.c:1504 generateItem(掩码, -1) →
+        // makeItemInto Items.c:171-179）：先 pickItemCategory(掩码)（Items.c:85-107：
+        // 按 13 槽定序、itemGenerationProbabilities_Brogue 类别加权选出一个类别），
+        // 再在选中类别内 chooseKind 基表频率选 kind——不是把五类合成一张池子
+        // 单次加权。递归进下方单类别分支即复用 T-1 已对齐的第二段。
+        if (category.includes('|')) {
+            const maskSet = new Set(category.split('|').map(s => s.trim()).filter(s => s.length > 0));
+            // CE_ITEM_GENERATION_PROBABILITIES 即 CE 13 槽走表序
+            // （GOLD,SCROLL,POTION,STAFF,WAND,WEAPON,ARMOR,FOOD,RING,CHARM,AMULET,GEM,KEY；
+            // web 省略权重 0 的 GEM——B-4b 已登记行为等价）。掩码不含 GOLD，无需特例。
+            const slots = ItemLoader.CE_ITEM_GENERATION_PROBABILITIES.filter(s => maskSet.has(ItemCategory[s.category]));
+            let sum = 0;
+            for (const s of slots) sum += s.weight;
+            // CE sum==0 时原样返回掩码、makeItemInto 落 default 报错——web 掩码
+            // 只含常规类别（各带正权重），此分支仅作防御，与 CE 的 fail 行为同向。
+            if (sum <= 0) return null;
+            let roll = rng.randRange(1, sum);
+            for (const s of slots) {
+                if (roll <= s.weight) {
+                    return this.spawnBlueprintItem(ItemCategory[s.category], undefined, x, y, depth);
+                }
+                roll -= s.weight;
+            }
+        }
+
         // Resolve by category.
         // P1-53（T-1）：无 id 分支改走 chooseKind 基表频率加权（CE 的蓝图/feature
         // 类别物品路径：Architect.c:1504 generateItem(feature->itemCategory,
@@ -903,33 +931,22 @@ export class Game {
                 }
                 return null;
             }
+            case 'RING': {
+                // V-1a：掩码路径的第五类。与上方四支同构：chooseKind 基表加权
+                // （CE 环之戒全 8 种基频 1，web 现有 6 种亦全为 1——light/reaping
+                // 目录缺口登记不补）。CE 环生成无深度门（makeItemInto 直用全表）。
+                const rings = ItemLoader.genRings;
+                if (rings.length > 0) {
+                    const pick = ItemLoader.chooseKind(rings.map(r => r.frequency ?? 0));
+                    return ItemLoader.spawnRing(rings[pick]!.id, x, y);
+                }
+                return null;
+            }
             case 'KEY':
                 // B-4b：钥匙由锁具驱动（数量 == 锁数，见 machineResults 循环），
                 // 类别级 KEY feature 不再发无绑定钥匙。显式指定 id 的 KEY 物品
                 // （下方 id 分支）保留给未来的任务钥匙类蓝图——当前无调用者。
                 return null;
-            case '_random_good_': {
-                // Pick a random high-value item
-                const roll = rng.randRange(0, 5);
-                if (roll === 0) {
-                    const wands = ItemLoader.genWands.filter(w => depth >= w.minDepth && depth <= w.maxDepth);
-                    if (wands.length > 0) return ItemLoader.spawnWand(wands[rng.randRange(0, wands.length - 1)]!.id, x, y);
-                }
-                if (roll === 1) {
-                    const staffs = ItemLoader.genStaffs.filter(s => depth >= s.minDepth && depth <= s.maxDepth);
-                    if (staffs.length > 0) return ItemLoader.spawnStaff(staffs[rng.randRange(0, staffs.length - 1)]!.id, x, y);
-                }
-                if (roll === 2) {
-                    const rings = ItemLoader.genRings.filter(r => depth >= r.minDepth && depth <= r.maxDepth);
-                    if (rings.length > 0) return ItemLoader.spawnRing(rings[rng.randRange(0, rings.length - 1)]!.id, x, y);
-                }
-                if (roll === 3) {
-                    const charms = ItemLoader.genCharms.filter(c => depth >= c.minDepth && depth <= c.maxDepth);
-                    if (charms.length > 0) return ItemLoader.spawnCharm(charms[rng.randRange(0, charms.length - 1)]!.id, x, y);
-                }
-                if (roll === 4) return ItemLoader.spawnScroll('scroll_of_enchantment', x, y);
-                return ItemLoader.spawnPotion('potion_of_life', x, y);
-            }
             default:
                 return null;
         }

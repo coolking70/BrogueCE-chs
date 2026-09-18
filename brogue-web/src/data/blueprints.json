@@ -213,19 +213,7 @@
             "BP_ROOM"
         ],
         "doorTerrain": "LOCKED_DOOR",
-        "features": [
-            {
-                "itemCategory": "_random_good_",
-                "instanceCount": [
-                    1,
-                    1
-                ],
-                "personalSpace": 0,
-                "flags": [
-                    "MF_GENERATE_ITEM"
-                ]
-            }
-        ]
+        "features": []
     },
     {
         "id": "vestibule_flammable",
@@ -252,17 +240,6 @@
                 ],
                 "flags": [
                     "MF_FILL_DOORWAY"
-                ]
-            },
-            {
-                "itemCategory": "_random_good_",
-                "instanceCount": [
-                    1,
-                    1
-                ],
-                "personalSpace": 0,
-                "flags": [
-                    "MF_GENERATE_ITEM"
                 ]
             }
         ]
@@ -295,17 +272,6 @@
                 "flags": [
                     "MF_GENERATE_MONSTER"
                 ]
-            },
-            {
-                "itemCategory": "_random_good_",
-                "instanceCount": [
-                    1,
-                    1
-                ],
-                "personalSpace": 0,
-                "flags": [
-                    "MF_GENERATE_ITEM"
-                ]
             }
         ]
     },
@@ -335,17 +301,6 @@
                 ],
                 "flags": [
                     "MF_SCATTER"
-                ]
-            },
-            {
-                "itemCategory": "_random_good_",
-                "instanceCount": [
-                    1,
-                    1
-                ],
-                "personalSpace": 0,
-                "flags": [
-                    "MF_GENERATE_ITEM"
                 ]
             }
         ]
@@ -431,17 +386,6 @@
                 "flags": [
                     "MF_SCATTER"
                 ]
-            },
-            {
-                "itemCategory": "_random_good_",
-                "instanceCount": [
-                    1,
-                    1
-                ],
-                "personalSpace": 0,
-                "flags": [
-                    "MF_GENERATE_ITEM"
-                ]
             }
         ]
     },
@@ -482,17 +426,6 @@
                 ],
                 "flags": [
                     "MF_SCATTER"
-                ]
-            },
-            {
-                "itemCategory": "_random_good_",
-                "instanceCount": [
-                    1,
-                    1
-                ],
-                "personalSpace": 0,
-                "flags": [
-                    "MF_GENERATE_ITEM"
                 ]
             }
         ]
@@ -535,17 +468,6 @@
                 "flags": [
                     "MF_SCATTER"
                 ]
-            },
-            {
-                "itemCategory": "_random_good_",
-                "instanceCount": [
-                    1,
-                    1
-                ],
-                "personalSpace": 0,
-                "flags": [
-                    "MF_GENERATE_ITEM"
-                ]
             }
         ]
     },
@@ -587,17 +509,6 @@
                 "flags": [
                     "MF_GENERATE_MONSTER"
                 ]
-            },
-            {
-                "itemCategory": "_random_good_",
-                "instanceCount": [
-                    1,
-                    1
-                ],
-                "personalSpace": 0,
-                "flags": [
-                    "MF_GENERATE_ITEM"
-                ]
             }
         ]
     },
@@ -627,17 +538,6 @@
                 ],
                 "flags": [
                     "MF_RING"
-                ]
-            },
-            {
-                "itemCategory": "_random_good_",
-                "instanceCount": [
-                    1,
-                    2
-                ],
-                "personalSpace": 0,
-                "flags": [
-                    "MF_GENERATE_ITEM"
                 ]
             }
         ]
@@ -681,17 +581,6 @@
                 "personalSpace": 0,
                 "flags": [
                     "MF_GENERATE_MONSTER"
-                ]
-            },
-            {
-                "itemCategory": "_random_good_",
-                "instanceCount": [
-                    1,
-                    2
-                ],
-                "personalSpace": 0,
-                "flags": [
-                    "MF_GENERATE_ITEM"
                 ]
             }
         ]
@@ -876,7 +765,7 @@
                 "signText": "一座古老的神祠"
             },
             {
-                "itemCategory": "_random_good_",
+                "itemCategory": "POTION|SCROLL|WEAPON|ARMOR|RING",
                 "instanceCount": [
                     1,
                     1
