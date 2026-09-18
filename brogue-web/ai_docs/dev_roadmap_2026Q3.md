@@ -110,13 +110,46 @@ T-1 照 CE 把该分支改成了 `chooseKind` 基表加权（实现正确，CE �
 中间路（类别掩码参数化）——两者都会留下一个 CE 不存在的入口，
 差异会继续存在并要求后续每一轮重新判断。
 
-### 实施计划：V 链（库房/蓝图忠实度），三轮
+### 实施计划：V 链（库房/蓝图忠实度）
 
-| 轮次 | 性质 | 内容 |
-|---|---|---|
-| **V-0** | **纯勘察，零代码** | 把 web 的 11 个蓝图逐一对上 CE 原型（含行号）；记录逐蓝图的类别掩码、`MF_ALTERNATIVE` 语义、以及 vestibule/库房的结构分工；产出对应表与分轮计划 |
-| **V-1** | 数据/掩码 | 按 V-0 的表逐条落地类别掩码与显式 kind（基座的附魔/生命二选一） |
-| **V-2** | **结构轮** | 奖励从 vestibule 迁到其该在的库房机器；动 `BlueprintEngine`，移动生成流，独占 |
+**V-0 已完成（`683abc9`），并推翻了验收方原定的两分法。** 见 `ai_docs/v_0_survey.md`。
+
+V-0 的核心论据：**CE 的类别掩码大多挂在新结构上才有意义**——
+守卫房的 `MF_GENERATE_ITEM` 放的是**固定 kind 的解题工具**（燃烧弹、传送卷轴、
+沉降药水……），不是"随机好物"。只换掩码不换结构，会得到
+「每个守卫房躺一把随机武器」的怪胎。
+
+**改按三轮推进：**
+
+| 轮次 | 性质 | 内容 | 风险 |
+|---|---|---|---|
+| **V-1a** | 纯数据小轮 | 删 `_random_good_` 与 11 处引用；受影响蓝图先删室内奖励 feature（CE 这些机器本就不放自产奖励）；`area_shrine` 改五类掩码（T-1 的 `chooseKind` 路径零代码可用）。**立即斩断附魔卷轴与 life 药水的超标主因** | 低；但移动生成流 → 独占 + 重捕获基线 |
+| **V-1b** | **引擎轮** | `MF_ALTERNATIVE`(+`_2`)、抽签资格过滤（`blueprintQualifies`）、`BP_REWARD` 顶层配额（metering）；外包/领养递归 + 失败回滚可再拆 V-1c | **高**——动 `BlueprintEngine`，本项目最脆区域 |
+| **V-2** | 纯数据 | `blueprints.json` 按 CE 全表逐字重写；无地形/DF 载体的蓝图按 D2 移出生成池、留形待激活，**不近似模拟** | 中 |
+
+### V-0 查出的、此前不知道的三件事
+
+1. **`MF_ALTERNATIVE` 在 web 完全未实现。** CE 在 `Architect.c:1291-1316`：
+   构建循环**之前**一次性把带该旗标的 feature 全标 skip，再
+   `rand_range(1, N)` 选一个 un-skip；`MF_ALTERNATIVE` 与 `MF_ALTERNATIVE_2`
+   各独立掷一次。**若 V-1 先引入 CE 掩码而不实现它，基座会同时躺附魔卷轴
+   和生命药水——双份发放。** 这是必须先于数据落地的机制。
+2. **机器密度是第二个放大器**（与 `_random_good_` 相互独立）：
+   web 每层 `min(2 + ⌊depth/3⌋, 6)` 台机器；CE 约**每 4 层 1 间**奖励房
+   （全局计数 + 15%/层机会）。**差一个数量级。**
+   只拆 `_random_good_` 不改密度，发放量仍会偏高。
+3. **`_random_good_` 的 roll 5 直投 `potion_of_life`** —— life 药水超标
+   与附魔卷轴**同源**，V-1a 会一并解决。
+
+### V-0 登记的不确定与缺口（V-1b 之前需补勘察）
+
+- web 的钥匙锁具**缺 kind 维度**：CE 有 `KEY_DOOR` / `KEY_CAGE` / `KEY_PORTAL`，
+  web 只有单一 `iron_key`；
+- `rewardRoomsGenerated` 在 web 无跨层载体（CE 的全局配额靠它）；
+- `MF_BUILD_ANYWHERE_ON_LEVEL` 的落位排除集未逐行核对（`Architect.c` ~1429-1445）；
+- web 引擎只认 **7 个** `MF_*` 旗标，数据里 `MF_SCATTER` / `MF_RING` /
+  `MF_FILL_DOORWAY` / `MF_KEY_DISPOSABLE` 全是**死旗标**；
+  蓝图的 `category` 字段（vestibule/reward/key_guard/thematic）**无任何生产消费者**。
 
 **先做 V-0 的理由**：验收方对本条的成本判断**已经错过一次**
 （原以为是「抄 11 行」，查证后发现 CE 的 vestibule 生成的是**钥匙**、
