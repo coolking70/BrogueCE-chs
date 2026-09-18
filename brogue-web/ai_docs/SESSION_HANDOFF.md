@@ -47,8 +47,10 @@ ps aux | grep node | grep -v grep | awk '$3>50 {print $2, $3"%"}'
 3. 核对 `git status --short` 的改动文件**是否全在授权清单内**；
 4. 读 `## 需要追加授权的测试` —— 那是**验收方自己的漏项**，
    由验收方补修，**守卫要顺延不要放宽**（见「第四种形态」一节）；
-5. 跑**全量串行门禁**（`npx vitest run --fileParallelism=false`，约 18 分钟，
-   必须在没有执行方抢 CPU 时跑）**外加 `npm run build`**——
+5. 跑**全量门禁**（`npx vitest run` —— ⚠️ **2026-09-18 起不要再加
+   `--fileParallelism=false`**：实测并行 411s vs 串行 1432s，**快 3.5 倍且同样零红**，
+   而强制串行正是跨文件泄漏的病因，见 `project_conventions.md` 的「门禁跑法更正」）
+   **外加 `npm run build`**——
    ⚠️ **不要用 `npx tsc --noEmit` 当类型门禁**，它解析的是根 `tsconfig.json`，
    而项目真正的严格度（`noUnusedLocals` / `noUnusedParameters`）写在
    `tsconfig.app.json` 里，**只有 `npm run build`（`vue-tsc -b`）才会应用**。
