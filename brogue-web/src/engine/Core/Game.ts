@@ -850,31 +850,57 @@ export class Game {
             return null;
         }
 
-        // Resolve by category
+        // Resolve by category.
+        // P1-53（T-1）：无 id 分支改走 chooseKind 基表频率加权（CE 的蓝图/feature
+        // 类别物品路径：Architect.c:1504 generateItem(feature->itemCategory,
+        // feature->itemKind) → makeItemInto（Items.c:171）itemKind<0 →
+        // chooseKind（Items.c:409-420））。两处 CE 语义要点：
+        //   1. **无深度门**——CE 的物品种类抽取不存在深度过滤（makeItemInto 直用
+        //      全表），web 原 SCROLL/POTION/WEAPON/ARMOR 分支同样无过滤，故此处
+        //      直接对全表加权，不是「先过滤再加权」；
+        //   2. **用基表频率、不带计量覆盖**——CE 的计量频率只在 populateItems
+        //      内部写回工作表且有 memcpy 备份/还原（Items.c:569-580），蓝图机器
+        //      在 digDungeon 期先于 populateItems，见到的是基表。因此 enchanting
+        //      / life / strength（基频 0）从本路径**永不被抽中**（等概率时代
+        //      它们照常出现，是 B-4b 登记的附魔卷轴超标主因）。
         switch (category) {
             case 'SCROLL': {
                 const scrolls = ItemLoader.genScrolls;
-                if (scrolls.length > 0) return ItemLoader.spawnScroll(scrolls[rng.randRange(0, scrolls.length - 1)]!.id, x, y);
+                if (scrolls.length > 0) {
+                    const pick = ItemLoader.chooseKind(scrolls.map(s => s.frequency ?? 0));
+                    return ItemLoader.spawnScroll(scrolls[pick]!.id, x, y);
+                }
                 return null;
             }
             case 'POTION': {
                 // D2（B-4a 更正口径）：creeping_death 是 CE 原生 POTION_LICHEN
                 // （GlobalsBrogue.c:681），但 web 效果为 stub 且 DF_LICHEN_PLANTED
                 // 缺载体——真实理由与回池条件见 D2_EXCLUDED_POTIONS 处注释。
+                // （登记偏差：CE 的 lichen 基频 7 参与加权；web 先剔除再在剩余
+                // 池内归一化。）
                 const potions = ItemLoader.genPotions.filter(
                     (p) => !D2_EXCLUDED_POTIONS.has(p.id)
                 );
-                if (potions.length > 0) return ItemLoader.spawnPotion(potions[rng.randRange(0, potions.length - 1)]!.id, x, y);
+                if (potions.length > 0) {
+                    const pick = ItemLoader.chooseKind(potions.map(p => p.frequency ?? 0));
+                    return ItemLoader.spawnPotion(potions[pick]!.id, x, y);
+                }
                 return null;
             }
             case 'WEAPON': {
                 const weapons = ItemLoader.genWeapons;
-                if (weapons.length > 0) return ItemLoader.spawnWeapon(weapons[rng.randRange(0, weapons.length - 1)]!.id, x, y, depth);
+                if (weapons.length > 0) {
+                    const pick = ItemLoader.chooseKind(weapons.map(w => w.frequency ?? 0));
+                    return ItemLoader.spawnWeapon(weapons[pick]!.id, x, y, depth);
+                }
                 return null;
             }
             case 'ARMOR': {
                 const armors = ItemLoader.genArmors;
-                if (armors.length > 0) return ItemLoader.spawnArmor(armors[rng.randRange(0, armors.length - 1)]!.id, x, y, depth);
+                if (armors.length > 0) {
+                    const pick = ItemLoader.chooseKind(armors.map(a => a.frequency ?? 0));
+                    return ItemLoader.spawnArmor(armors[pick]!.id, x, y, depth);
+                }
                 return null;
             }
             case 'KEY':

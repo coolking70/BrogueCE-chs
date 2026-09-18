@@ -50,6 +50,9 @@ export const DFF_CLEAR_LOWER_PRIORITY_TERRAIN = 1 << 10; // :1821 清空落点�
 /** CE `enum dungeonFeatureTypes`（Rogue.h:1469 起，DF_GRANITE_COLUMN=1）的成员。
  *  只列本轮闭包涉及的 19 个；id 与 CE 逐一对位（测试钉死）。 */
 export enum DF {
+    DF_CRYSTAL_WALL                = 2,   // :1471（T-1：autoGenerator 表 index 1
+                                          // 的 DFType，Globals.c:607 目录行；
+                                          // tile CRYSTAL_WALL B-3 已迁）
     DF_SHOW_DOOR                   = 13,  // Rogue.h:1484
     DF_REPEL_CREATURES             = 40,  // :1515
     DF_ASH                         = 49,  // :1524（F-2a：EMBERS promoteType 的载体）
@@ -133,6 +136,8 @@ export interface DungeonFeatureEntry {
  * F-2a 增 DF_ASH 至 20、G-1 增 DF_GAS_FIRE 至 21、G-2 增 DF_EXPLOSION_FIRE
  * 至 22 并给 4 条 GAS 层 DF / 燃气火 DF 填上 tile、F-2c 增 DF_BLOAT_EXPLOSION
  * 至 23 并给 DF_EXPLOSION_FIRE 填上 tile——GAS_EXPLOSION 地形同轮落地）。
+ * 其后 C-5/C-6/B-3 的增补见各条目注释（现 31 条）；T-1 增 DF_CRYSTAL_WALL
+ * 至 32——CRYSTAL_WALL 地形 B-3 已迁，本轮接通 autoGenerator 表 index 1。
  *
  * 字段序照 CE 目录行注释（Globals.c:604）：
  *   tileType / layer / start / decr / fl / txt / flare / fCol / fRad /
@@ -423,6 +428,18 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
         id: DF.DF_FOLIAGE, ceLine: 613, ceTile: 'FOLIAGE', tile: TerrainType.FOLIAGE,
         layer: DungeonLayer.SURFACE, startProbability: 100, probabilityDecrement: 33,
         flags: DFF_BLOCKED_BY_OTHER_LAYERS, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {CRYSTAL_WALL, DUNGEON, 200, 50, DFF_CLEAR_OTHER_TERRAIN} —— 水晶墙扩散
+    //（T-1：runAutogenerators 表 index 1 的 DFType，深度 14-40，数量 =
+    // (-325+25d)/100 再叠加 frequency 15 追加）。tile CRYSTAL_WALL B-3 已迁
+    //（Globals.c:338）；DFF_CLEAR_OTHER_TERRAIN 的跨层清理 C-4b 已实现
+    //（DungeonFeature.ts 对应 CE Architect.c:3423-3440），非半残接线。
+    [DF.DF_CRYSTAL_WALL]: {
+        id: DF.DF_CRYSTAL_WALL, ceLine: 607, ceTile: 'CRYSTAL_WALL', tile: TerrainType.CRYSTAL_WALL,
+        layer: DungeonLayer.DUNGEON, startProbability: 200, probabilityDecrement: 50,
+        flags: DFF_CLEAR_OTHER_TERRAIN, cePropagationTerrain: '', propagationTerrain: null,
         subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0,
     },
 

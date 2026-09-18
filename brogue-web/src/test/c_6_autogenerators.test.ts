@@ -15,9 +15,9 @@
  *   AD-7 无载体条目被接成空转链（真实目录 machine 趟零 RNG 消耗）
  *   AD-8 接线与管线位置（两趟调用点存在且统计归位）
  * 反向哨兵：
- *   S-1 火与气体：本轮目录无任何火/气体条目被接（wired 集 = {3,8}），
- *       加上既有 f 链/g 链/c_5 套件（合成场景）不动——真实地图锚定的
- *       FIRE-NAT 哨兵（g_2/g_3）预期翻红，重捕获归验收方（C-5 先例）。
+ *   S-1 火与气体：真实目录 wired 集只落草/树/水晶墙（C-6 = {3,8}；
+ *       T-1 增 {1,33}），加上既有 f 链/g 链/c_5 套件（合成场景）不动——
+ *       真实地图锚定的 FIRE-NAT 哨兵（g_2/g_3）预期翻红，重捕获归验收方（C-5 先例）。
  *   S-2 坏层闸门：p1_26/p1_29/p1_33 在其自身文件复跑（本轮不触碰）。
  */
 import { describe, it, expect } from 'vitest';
@@ -336,10 +336,13 @@ describe('C-6 表保真：49 条逐行对照 CE（GlobalsBrogue.c:114-170）', (
         // 深水基座枚举名陷阱（任务书预警：成员是 WATER_DEEP 不是 DEEP_WATER）。
         expect(AUTO_GENERATOR_CATALOG[10]!.requiredLiquidFoundationType).toBe(TerrainType.WATER_DEEP);
         expect(AUTO_GENERATOR_CATALOG[10]!.ceDf).toBe('DF_BUILD_ALGAE_WELL');
-        // wired 集恰为草/树两条。
-        expect(WIRED_AUTOGENERATOR_INDEXES, 'C-6 接入集（载体盘点表裁决）').toEqual([3, 8]);
+        // wired 集：T-1 前为草/树两条；T-1 接线 index 1（DF_CRYSTAL_WALL，
+        // DF 条目补入目录）与 index 33（直接铺 CRYSTAL_WALL 地形，tile B-3 迁入）。
+        expect(WIRED_AUTOGENERATOR_INDEXES, 'C-6 接入集 + T-1 增补（载体盘点表裁决）').toEqual([1, 3, 8, 33]);
         expect(AUTO_GENERATOR_CATALOG[3]!.df).toBeDefined();
         expect(AUTO_GENERATOR_CATALOG[8]!.df).toBeDefined();
+        expect(AUTO_GENERATOR_CATALOG[1]!.df).toBeDefined();
+        expect(AUTO_GENERATOR_CATALOG[33]!.terrain).toBe(TerrainType.CRYSTAL_WALL);
         // dewars 是唯一的 terrain+DF 双列条目族（CE 34-37 行）。
         for (const i of [34, 35, 36, 37]) {
             expect(AUTO_GENERATOR_CATALOG[i]!.ceTerrain.startsWith('DEWAR_'), `行 ${i} 应是 dewar`).toBe(true);
@@ -438,18 +441,19 @@ describe('C-6 集成：真实目录在真实生成里的行为', () => {
         expect(total, 'D1-10 草实例合计为 0——自动生成器整段没跑').toBeGreaterThan(20);
     });
 
-    it('哨兵 S-1：本轮只落草/树（GRASS/FOLIAGE），不新增任何火/气体/坠落族地形', () => {
-        // 自动生成器当前 wired 集只有 DF_GRASS/DF_FOLIAGE（两个 SURFACE 层
-        // 装饰 DF）；机器趟恒空（上两条已断言）。本条把"这两趟总共只可能
-        // 写 GRASS/FOLIAGE"钉成表级事实：wired 条目的 df tile 与 terrain
-        // 字段只能是这两个值。有人往 wired 集加火/气体/坠落条目而不改本
-        // 断言时，须先过 F/G/C-5 哨兵套件复核。
+    it('哨兵 S-1（T-1 顺延）：wired 条目只落草/树/水晶墙（GRASS/FOLIAGE/CRYSTAL_WALL），不新增任何火/气体/坠落族地形', () => {
+        // 自动生成器当前 wired 集 = {1, 3, 8, 33}：C-6 的两个 SURFACE 层装饰
+        // DF + T-1 的水晶墙两条（DF 扩散落 DUNGEON 层 + 最深层直接铺）；
+        // 机器趟恒空（上两条已断言）。本条把"wired 条目只可能写这三种
+        // 地形"钉成表级事实：wired 条目的 df tile 与 terrain 字段只能是
+        // 这三个值。有人往 wired 集加火/气体/坠落条目而不改本断言时，须先
+        // 过 F/G/C-5 哨兵套件复核。
         for (const i of WIRED_AUTOGENERATOR_INDEXES) {
             const e = AUTO_GENERATOR_CATALOG[i]!;
             const tile = e.df !== null ? e.ceDf : e.ceTerrain;
-            expect(['DF_GRASS', 'DF_FOLIAGE'], `wired 条目 ${i}（${tile}）超出本轮裁决集`).toContain(tile);
+            expect(['DF_GRASS', 'DF_FOLIAGE', 'DF_CRYSTAL_WALL', 'CRYSTAL_WALL'], `wired 条目 ${i}（${tile}）超出裁决集`).toContain(tile);
         }
-        expect(WIRED_AUTOGENERATOR_INDEXES).toEqual([3, 8]);
+        expect(WIRED_AUTOGENERATOR_INDEXES).toEqual([1, 3, 8, 33]);
     });
 });
 
@@ -500,15 +504,18 @@ describe('C-6 留痕：未接条目登记（每条写明激活轮）', () => {
         // 逐条翻 'wired'（MT 数值为 Rogue.h:2668-2753 逐位推算，激活轮重核）。
     });
 
-    it('留痕 T4：装饰/植物/dewar 族未接——随各自 tile 落地轮反转', () => {
-        const noTileRows = [1, 2, 4, 5, 6, 7, 9, 10, 11, 12, 33, 34, 35, 36, 37];
+    it('留痕 T4（T-1 反转 index 1/33）：装饰/植物/dewar 族未接——随各自 tile 落地轮反转', () => {
+        // T-1 反转：index 1（DF_CRYSTAL_WALL，DF 条目补齐）与 index 33
+        //（直接铺 CRYSTAL_WALL 地形）已接，从本留痕摘除、移入 AD-7 的
+        // wired 集断言（守卫顺延，不放宽）。原断言含 1 与 33。
+        const noTileRows = [2, 4, 5, 6, 7, 9, 10, 11, 12, 34, 35, 36, 37];
         for (const i of noTileRows) {
             expect(AUTO_GENERATOR_CATALOG[i]!.carrier, `index ${i} 应保持 no-tile`).toBe('no-tile');
         }
-        // 激活指示：CRYSTAL_WALL(1,33)/LUMINESCENT_FUNGUS(2,38 归 C-7)/
-        // DEAD_GRASS(4,5)/BONES(6)/RUBBLE(7)/FUNGUS_FOREST(9)/
-        // 藻井链(10)/STATUE_INERT(11,12)/DEWAR 四兄弟(34-37，容器 tile +
-        // DF_CARPET_AREA 的 CARPET tile)。每落一个 tile 就翻对应条目。
+        // 激活指示：LUMINESCENT_FUNGUS(2,38 归 C-7)/DEAD_GRASS(4,5)/BONES(6)/
+        // RUBBLE(7)/FUNGUS_FOREST(9)/藻井链(10)/STATUE_INERT(11,12)/
+        // DEWAR 四兄弟(34-37，容器 tile + DF_CARPET_AREA 的 CARPET tile)。
+        // 每落一个 tile 就翻对应条目。
     });
 
     it('留痕 T5：index 0（granite column）是 CE 上游死条目——除非上游修复，永不接', () => {

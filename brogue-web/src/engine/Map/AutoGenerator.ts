@@ -32,6 +32,8 @@
  *   - 接（carrier 'wired'）：下标 3（DF_GRASS）、8（DF_FOLIAGE）——两者的
  *     DF tile（GRASS/FOLIAGE）web 已有，DF 目录条目 C-6 补齐，传播/优先级/
  *     连通性语义由 DungeonFeature.ts 的 C-4b 移植承载。
+ *     T-1 增补：下标 1（DF_CRYSTAL_WALL，DF 条目本轮补齐）、
+ *     33（直接铺 CRYSTAL_WALL 地形）——tile 均为 B-3 迁入的 CRYSTAL_WALL。
  *   - 不接：'no-tile'（CE tile web 无对应物，含全部陷阱 tile——web 的通用
  *     TRAP 是自创语义、不同源，不得冒充）；'no-machine'（CE MT_* 机器在 web
  *     无对应物——web 的 BlueprintEngine 走自造 blueprints.json）；'c7-light'
@@ -146,11 +148,11 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
     },
     {
         ceLine: 115, index: 1, terrain: null, ceTerrain: '0', layer: DUNGEON,
-        df: null, ceDf: 'DF_CRYSTAL_WALL', ceDfId: 2, machine: 0, ceMachine: '0',
+        df: DF.DF_CRYSTAL_WALL, ceDf: 'DF_CRYSTAL_WALL', ceDfId: 2, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: TerrainType.WALL, requiredLiquidFoundationType: NOTHING,
         minDepth: 14, maxDepth: 40, frequency: 15, minNumberIntercept: -325, minNumberSlope: 25, maxNumber: 5,
-        carrier: 'no-tile',
-        note: 'DF 落 CRYSTAL_WALL tile（Globals.c:607 {CRYSTAL_WALL, DUNGEON, 200, 50, DFF_CLEAR_OTHER_TERRAIN}）——web 无该地形。激活轮需新增地形 + DF 条目。',
+        carrier: 'wired',
+        note: 'T-1 接线：DF 落 CRYSTAL_WALL tile（Globals.c:607 {CRYSTAL_WALL, DUNGEON, 200, 50, DFF_CLEAR_OTHER_TERRAIN}）——tile B-3 迁入、DF 条目 T-1 补入目录，跨层清理语义 C-4b 已实现。',
     },
     {
         ceLine: 116, index: 2, terrain: null, ceTerrain: '0', layer: DUNGEON,
@@ -403,12 +405,12 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
         note: 'STEAM_VENT tile 无（蒸汽孔洞周期喷汽；G 链气体机制已收口，但 tile 不在）。',
     },
     {
-        ceLine: 151, index: 33, terrain: null, ceTerrain: 'CRYSTAL_WALL', layer: DUNGEON,
+        ceLine: 151, index: 33, terrain: TerrainType.CRYSTAL_WALL, ceTerrain: 'CRYSTAL_WALL', layer: DUNGEON,
         df: null, ceDf: '0', ceDfId: 0, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: TerrainType.WALL, requiredLiquidFoundationType: NOTHING,
         minDepth: 40, maxDepth: 40, frequency: 100, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 600,
-        carrier: 'no-tile',
-        note: '最深层直接铺 CRYSTAL_WALL 地形——tile 无（同 index 1）。',
+        carrier: 'wired',
+        note: 'T-1 接线：最深层直接铺 CRYSTAL_WALL 地形——tile B-3 迁入（TERRAIN_HOME_LAYER DUNGEON，Globals.c:338）。',
     },
     // ---- Dewars（GlobalsBrogue.c:153-157）----
     // 四条同构：铺 DEWAR_*_GAS 地形 + 同点 spawn DF_CARPET_AREA（地毯）。
@@ -699,11 +701,10 @@ export function runAutogenerators(
                     }
                 }
                 // CE：terrain 分支——带 drawPriority 门槛与单格连通性否决。
-                // ⚠️ 留形分支：当前真实目录无 wired 的 terrain 条目（全部
-                // 'no-tile'/'c7-light'），本分支只被测试的合成目录行使；
-                // **激活轮必须逐字符重核 CE Architect.c:1818-1838**（本链已
-                // 两次在留形分支里翻出抄写错误：ALL_DIRS8 重向、
-                // pathingDistance 不可达哨兵值）。
+                // T-1 激活记录：本分支此前是留形（真实目录无 wired terrain 条目），
+                // T-1 接线 index 33 时已逐字符重核 CE Architect.c——drawPriority
+                // 门槛（:1824-1825）、T_PATHING_BLOCKER 连通性否决（:1830-1831）、
+                // `layers[gen->layer] = gen->terrain`（:1834）三段与本实现逐条一致。
                 if (gen.terrain !== null) {
                     const cell = grid.getCell(loc.x, loc.y)!;
                     const currentTerrain = cell.layers[gen.layer]!;

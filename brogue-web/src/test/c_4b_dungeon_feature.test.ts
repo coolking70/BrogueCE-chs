@@ -557,9 +557,10 @@ describe('C-4b D：levelIsDisconnectedWithBlockingMap（CE Architect.c:3137-3198
 });
 
 describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () => {
-    it('E1 恰 31 条（C-6 增补 DF_GRASS/DF_FOLIAGE；B-3 增补 DF_FORCEFIELD_MELT/DF_SACRED_GLYPHS/DF_SHATTERING_SPELL），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）', () => {
+    it('E1 恰 32 条（C-6 增补 DF_GRASS/DF_FOLIAGE；B-3 增补 DF_FORCEFIELD_MELT/DF_SACRED_GLYPHS/DF_SHATTERING_SPELL；T-1 增补 DF_CRYSTAL_WALL），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）', () => {
         const keys = Object.keys(DUNGEON_FEATURE_CATALOG);
-        expect(keys.length).toBe(31);
+        expect(keys.length).toBe(32);
+        expect(DF.DF_CRYSTAL_WALL, 'T-1：runAutogenerators 表 index 1 的 DFType（Rogue.h:1471，Globals.c:607）').toBe(2);
         expect(DF.DF_GRASS, 'C-6：runAutogenerators 表 index 3 的 DFType（Rogue.h:1473，Globals.c:609）').toBe(4);
         expect(DF.DF_FOLIAGE, 'C-6：表 index 8 的 DFType（Rogue.h:1477，Globals.c:613）').toBe(8);
         expect(DF.DF_FORCEFIELD_MELT, 'B-3：FORCEFIELD.promoteType 的载体（Rogue.h:1527，Globals.c:675）').toBe(52);
@@ -621,6 +622,11 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // 消费点 runAutogenerators → spawnDungeonFeature）。
         start.add(DF.DF_GRASS);
         start.add(DF.DF_FOLIAGE);
+        // T-1：DF_CRYSTAL_WALL 第二起点——不经 TerrainCatalog 字符串
+        //（CRYSTAL_WALL tile 的三链字段只有 fireType=DF_PLAIN_FIRE），起点是
+        // autoGenerator 表 index 1 的 DFType 列（GlobalsBrogue.c:115，消费点
+        // runAutogenerators → spawnDungeonFeature，同 DF_GRASS 先例）。
+        start.add(DF.DF_CRYSTAL_WALL);
         // B-3：DF_SACRED_GLYPHS / DF_SHATTERING_SPELL 第二起点——不经
         // TerrainCatalog 字符串（SACRED_GLYPH tile 的三链字段全空；RUBBLE web
         // 无 tile）。起点是卷轴调用点：SCROLL_SANCTUARY（Items.c:7942）与
@@ -651,7 +657,8 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
             '（经 HOLE.promoteType）入闭包 23→26；' +
             'C-6：DF_GRASS/DF_FOLIAGE（自动生成器表 index 3/8 起点）入闭包 26→28；' +
             'B-3：DF_FORCEFIELD_MELT（经 FORCEFIELD.promoteType）+ DF_SACRED_GLYPHS' +
-            '/DF_SHATTERING_SPELL（卷轴起点）入闭包 28→31').toBe(31);
+            '/DF_SHATTERING_SPELL（卷轴起点）入闭包 28→31；' +
+            'T-1：DF_CRYSTAL_WALL（自动生成器表 index 1 起点）入闭包 31→32').toBe(32);
     });
 
     it('E3 字段抽查：BRIDGE_FALL_PREP 的 prop/200/100、BRIDGE_FIRE 的描述与 tile=0、其余代表条目', () => {
@@ -858,17 +865,75 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                                            //（CE Architect.c:1811-1814）
         ]);
         const pattern = /spawnDungeonFeature|spawnMapDF|fillSpawnMap|levelIsDisconnectedWithBlockingMap|catalogFeature|createSpawnMap|DUNGEON_FEATURE_CATALOG|DF_MISSING_TILES/;
+        // T-1（AI-1 登记）：原实现只剥 `//` 行注释，写在 /* */ 块注释里的
+        // DF 符号字样会被误判为生产读者（AI-1 写新注释时实际踩到，被迫改写
+        // 措辞绕开）。改为整文件小型状态机：
+        //   - 行/块注释 → 等长空白（保留换行，行号稳定）；
+        //   - '' / "" / `` 字符串（含 \ 转义）原样保留——字符串里的 `/*`、
+        //     `//` 不被误当注释开头（否则会吞掉后续真实代码、制造假阴），
+        //     字符串里的 pattern 字样仍参与匹配（沿用旧口径：注释豁免、
+        //     字符串不豁免）。
+        const stripComments = (src: string): string => {
+            let out = '';
+            let i = 0;
+            let mode: 'code' | 'line' | 'block' | 'squote' | 'dquote' | 'template' = 'code';
+            while (i < src.length) {
+                const c = src[i]!;
+                const d = src[i + 1] ?? '';
+                if (mode === 'code') {
+                    if (c === '/' && d === '/') { mode = 'line'; out += '  '; i += 2; continue; }
+                    if (c === '/' && d === '*') { mode = 'block'; out += '  '; i += 2; continue; }
+                    if (c === "'") { mode = 'squote'; out += c; i++; continue; }
+                    if (c === '"') { mode = 'dquote'; out += c; i++; continue; }
+                    if (c === '`') { mode = 'template'; out += c; i++; continue; }
+                    out += c; i++; continue;
+                }
+                if (mode === 'line') {
+                    if (c === '\n') { mode = 'code'; out += c; } else { out += ' '; }
+                    i++; continue;
+                }
+                if (mode === 'block') {
+                    if (c === '*' && d === '/') { mode = 'code'; out += '  '; i += 2; continue; }
+                    out += c === '\n' ? '\n' : ' ';
+                    i++; continue;
+                }
+                // 字符串态：转义对原样跳过；闭引号回 code 态。
+                if (c === '\\') { out += c + d; i += 2; continue; }
+                const quote = mode === 'squote' ? "'" : mode === 'dquote' ? '"' : '`';
+                if (c === quote) mode = 'code';
+                out += c; i++;
+            }
+            return out;
+        };
         const offenders: string[] = [];
         for (const f of collect(srcDir).filter((p) => !p.split(sep).includes('test'))) {
             const rel = relative(srcDir, f).split(sep).join('/');
             if (allowed.has(rel)) continue;
-            readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
-                if (pattern.test(line.replace(/\/\/.*$/, ''))) {
+            stripComments(readFileSync(f, 'utf8')).split('\n').forEach((line, i) => {
+                if (pattern.test(line)) {
                     offenders.push(`${rel}:${i + 1}: ${line.trim()}`);
                 }
             });
         }
         expect(offenders, `DF 子系统被生产代码引用（本轮是纯库）：\n${offenders.join('\n')}`).toEqual([]);
+
+        // T-1 D 组断言（AI-1 登记的误报场景）：扫描器行为本身的合成探针——
+        //   行 1 块注释里的 DF 符号必须被豁免（旧实现误判为生产读者）；
+        //   行 3 字符串里的 DF 符号仍按生产读者计（旧口径：字符串不豁免）；
+        //   行 3 字符串里的 `/*` 不得被当成注释开头吞掉行 4（假阴形态）。
+        const probe = [
+            'const a = 1;',
+            '/* engine/Map/DungeonFeatureCatalog.ts spawnDungeonFeature 示意 */',
+            '// DUNGEON_FEATURE_CATALOG（行注释，维持豁免）',
+            'const s = "not a comment /* DUNGEON_FEATURE_CATALOG";',
+            'const d = 2;',
+        ].join('\n');
+        const probeLines = stripComments(probe).split('\n');
+        expect(pattern.test(probeLines[0]!), '探针 0：普通代码无符号 → 不匹配').toBe(false);
+        expect(pattern.test(probeLines[1]!), '块注释里的 DF 符号字样必须被豁免（T-1 修复点）').toBe(false);
+        expect(pattern.test(probeLines[2]!), '行注释维持豁免').toBe(false);
+        expect(pattern.test(probeLines[3]!), '字符串里的 DF 符号仍按生产读者计（旧口径不变）').toBe(true);
+        expect(pattern.test(probeLines[4]!), '字符串里的 /* 不得吞掉后续代码（假阴守卫）').toBe(false);
     });
 
     // 验收方 C-4c 后翻转（原断言："promoteTile 本体不存在"）。
