@@ -25,6 +25,39 @@ cd <工作树>/brogue-web && ls -lat $(git status --short | awk '{print $2}') | 
 ps aux | grep node | grep -v grep | awk '$3>50 {print $2, $3"%"}'
 ```
 
+### ★ GUI 驱动的轮次怎么监控（2026-09-18 起，CLI 坏掉后的备用路径）
+
+ZCode 的 CLI 入口在 2026-09-18 的 provider 运行时迁移后无法创建模型
+（见下方第四种 PARSE_FAIL），备用路径是**直接驱动 ZCode 桌面端**发起轮次。
+此时没有后台任务的完成通知，改用 **agentboard 的 HTTP 接口**监控：
+
+```bash
+python3 ai_docs/tasks/abstat.py
+```
+
+它读 `https://localhost:8443/api/state`（自签证书，脚本内已关校验），
+输出每个会话的 **状态 / 已跑时长 / 静默时长 / 标题 / 模型 / 最近动态**。
+agentboard **自动发现** ZCode 会话（`source: discovered`，无需配 hook），
+连它用的账户与模型都能看到，例如
+`account:bigmodel-individual-coding-plan/GLM-5.3-Flash` ——
+这一条还能**顺带确认计费走的是 coding plan 而不是按量**。
+
+注意：自动发现的会话**不写进** `~/.agentboard/state.json`（那里只有 hook 上报的
+Claude Code / Codex），只在服务端内存里，**必须走 HTTP 接口读**。
+
+判完成看两处：`status` 变 `done`，以及工作树里报告文件出现、`git status` 稳定。
+**不要写 `until` 轮询循环**（历史上留下过 11 个僵尸等待进程），有理由时查一次即可。
+
+### ★ 用 GUI 发起轮次的要点
+
+1. **项目不用换**：让任务自己 `cd <worktree>/brogue-web`，ZCode 任务有完整 shell 权限；
+2. **任务书不用传**：它已在工作树磁盘上，提示词只需一句
+   「按 `ai_docs/tasks/<轮次>.prompt.md` 执行」——
+   验收方一开始试图把 4000 字粘进去，撞上"后台模式下剪贴板不可用"，
+   绕了很久才想明白**应该让应用自己去磁盘上取，而不是把东西送进应用**；
+3. 文件选择面板在后台模式下**不接受导航输入**（双击/回车/展开三角都无效），
+   要突破得接管整个屏幕——所以别走"把工作树加成新项目"那条路。
+
 ⚠️ **三个会让你误判成"进程死了"的陷阱（2026-09-18 各踩过一次）：**
 
 1. **`pgrep -f "zcode.cjs"` 查不到内核 ≠ 内核已死。** 内核的命令行是
