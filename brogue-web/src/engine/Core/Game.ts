@@ -10,7 +10,14 @@ import { ItemSpawnHeatMap, passableArcCount, randomMatchingLocation } from '../I
 import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, spawnDungeonFeature } from '../Map/DungeonFeature';
 import { DF, DUNGEON_FEATURE_CATALOG } from '../Map/DungeonFeatureCatalog';
 import { Architect } from '../Generator/Architect';
-import type { MachineResult } from '../Generator/BlueprintEngine';
+// V-1c：奖励房配额计数器是 CE rogue.rewardRoomsGenerated 的 web 载体——
+// run 级全局，开局清零（RogueMain.c:292 等价）并随存档往返（见快照字段注）。
+import {
+    getRewardRoomsGenerated,
+    setRewardRoomsGenerated,
+    resetRewardRoomsGenerated,
+    type MachineResult
+} from '../Generator/BlueprintEngine';
 import blueprintData from '../../data/blueprints.json';
 import { Player, type HungerState } from '../../entities/Player';
 import { Monster, applyShieldStatus, monstersAreTeammates, monstersAreEnemies } from '../../entities/Monster';
@@ -255,6 +262,14 @@ export interface GameSnapshot {
      * 全零兜底（等同"极性揭示丢失"，与 B-1c 前行为一致）。
      */
     magicPolarityRevealed?: string[];
+    /**
+     * V-1c：跨层奖励房配额计数器（CE rogue.rewardRoomsGenerated，Rogue.h:2504）
+     * 随存档往返。它在 BlueprintEngine 的配额公式里抑制"约每 4 层 1 间"之外的
+     * 额外奖励房——不进快照的话，读档后配额重新从 0 计数，奖励房泛滥。
+     * 旧存档无此字段 → 按 0 兜底（CE 语义的"开局态"；旧档本身出自无配额版本，
+     * 无更准的恢复目标）。
+     */
+    rewardRoomsGenerated?: number;
     grid: Array<{
         x: number;
         y: number;
@@ -560,6 +575,10 @@ export class Game {
         ItemLoader.initConsumables();
         logger.messages = [];
         timeSystem.currentTick = 0;
+
+        // V-1c：奖励房配额计数随新局清零（CE RogueMain.c:292）。必须先于首层
+        // 生成——配额公式按它决定本层建几台奖励机器。
+        resetRewardRoomsGenerated();
 
         this.depth = 1;
         this.levels.clear();
@@ -7804,6 +7823,8 @@ export class Game {
             callTitles: Object.fromEntries(ItemLoader.callTitles),
             // B-1c：种类级极性揭示进存档
             magicPolarityRevealed: [...ItemLoader.magicPolarityRevealed],
+            // V-1c：跨层奖励房配额计数随存档往返
+            rewardRoomsGenerated: getRewardRoomsGenerated(),
             grid: gridCells,
             gasGrid,
             stats: { ...this.stats }
@@ -7849,6 +7870,10 @@ export class Game {
                 ItemLoader.magicPolarityRevealed.add(kindId);
             }
         }
+
+        // V-1c：奖励房配额计数恢复。旧存档无此字段 → 0（"开局态"兜底，
+        // 见 GameSnapshot.rewardRoomsGenerated 注）。
+        setRewardRoomsGenerated(snapshot.rewardRoomsGenerated ?? 0);
 
         logger.messages = [];
         timeSystem.currentTick = 0;

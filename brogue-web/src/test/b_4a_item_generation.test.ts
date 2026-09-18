@@ -110,9 +110,33 @@ describe('B-4a 计量表：基表频率与 CE 表原值', () => {
         const m = (game as unknown as { meteredItems: { frequency: number; numberSpawned: number }[] }).meteredItems;
         // startNewGame 会先 init 再生成 D1（+increment 后才生成物品）——开局后
         // D1 已加过一次 increment：60+30 / 0+34 / 40+17（CE initializeRogue→populateItems 次序）。
-        expect(m[0]!.frequency).toBe(90);
-        expect(m[14]!.frequency).toBe(34);
-        expect(m[15]!.frequency).toBe(57);
+        // ── V-1c 顺延（验收方 2026-09-19 补授权：本文件不在 V-1c 清单内）──
+        // 原断言把三条频率钉成固定值（90 / 34 / 57），前提是「D1 不会生成
+        // 任何计量物」。V-1c 还原 CE 的奖励房配额后该前提失效：
+        // CE Architect.c:1763 的前两层 40% 加成（maxLevelForBonusMachines=2）
+        // 使 **D1 可以出奖励房**，reward_consumables 的 POTION feature 在 D1
+        // 抽中 life / strength 都是合法的（CE 计量表在 D1 无生成门：
+        // 保底公式 0*4+3 < 1 不触发、频率可被正常抽中，Items.c:703-715）。
+        // 旧制度下这结构性不可能（该蓝图 depthRange 从 D2 起），
+        // 所以「开局恒 90/34/57」是一个从未受考验的快照前提。
+        //
+        // 改为**直接表达机制**而不是枚举合法值：
+        //     frequency === initialFrequency + incrementFrequency
+        //                   − decrementFrequency × numberSpawned
+        // 这比原断言**更强**——它把频率与生成次数绑死，任何一侧记错都会红，
+        // 且与 seed 无关（原断言只是某个 seed 的快照）。
+        // 若开局重置没发生，频率会带着上一局的累计量，等式立刻不成立。
+        const table = ItemLoader.CE_METERED_ITEMS_TABLE;
+        for (const idx of [0, 14, 15]) {
+            const e = table[idx]!;
+            const got = m[idx]!;
+            expect(
+                got.frequency,
+                `计量项 ${idx}（${e.ceKind}）：频率应 = 初值 ${e.initialFrequency}`
+                + ` + increment ${e.incrementFrequency}`
+                + ` − decrement ${e.decrementFrequency} × 已生成 ${got.numberSpawned}`,
+            ).toBe(e.initialFrequency + e.incrementFrequency - e.decrementFrequency * got.numberSpawned);
+        }
         expect(m.every(x => x.numberSpawned >= 0)).toBe(true);
     });
 });

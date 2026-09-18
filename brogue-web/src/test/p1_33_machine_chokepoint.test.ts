@@ -32,7 +32,7 @@
  */
 import { describe, it, expect } from 'vitest';
 import { Architect } from '../engine/Generator/Architect';
-import { BlueprintEngine, mapMachineInterior } from '../engine/Generator/BlueprintEngine';
+import { BlueprintEngine, mapMachineInterior, resetRewardRoomsGenerated } from '../engine/Generator/BlueprintEngine';
 import type { BlueprintDef, MachineResult } from '../engine/Generator/BlueprintEngine';
 import { analyzeChokeMap } from '../engine/Map/LoopMap';
 import { Grid, TerrainType, DCOLS, DROWS } from '../engine/Map/Grid';
@@ -253,16 +253,23 @@ describe('P1-33 机器阶段不切断关卡', () => {
         const levels = perLevel.length;
         const avg = (perLevel.reduce((a, b) => a + b, 0) / levels).toFixed(2);
         const nonZero = perLevel.filter(n => n > 0).length;
-        console.log(`[p1_33] 修复后 15 种子 × D1-D26 = ${levels} 层：坏层=${bad.join('、') || '无'}；` +
+        console.log(`[p1_33] V-1c 后 15 种子 × D1-D26 = ${levels} 层：坏层=${bad.join('、') || '无'}；` +
             `机器 ${machines} 台（平均 ${avg}/层，零机器层 ${levels - nonZero}），锁门机器 ${locked} 台。` +
-            `修复前基线：1920 台（4.92/层）、坏层 5。`);
+            `历史基线：P1-33 时 1920 台（4.92/层，全类别）；V-1c 起顶层抽签只剩 CE 配额的奖励机器` +
+            `（约每 4 层 1 间 + 15% 加成，CE addMachines Architect.c:1757-1775），实测 87 台（0.22/层）。`);
 
         expect(bad, `端到端存在不可达层（机器阶段仍在切断关卡）：\n${bad.join('\n')}`).toEqual([]);
-        // 反"少放机器蒙混"：数值为固定种子上的确定性实测（修复前 1920/1318）。
+        // 反"少放机器蒙混"：数值为固定种子上的确定性实测（V-1c 后 87 台）。
         // 有意改动选址参数使数量变化时，应核对后更新此下限，而不是静默放行。
-        expect(machines, `机器总数 ${machines} 低于防塌缩下限（选址可能在静默拒绝一切）`).toBeGreaterThanOrEqual(1200);
-        expect(locked, `锁门机器 ${locked} 台低于防塌缩下限（宝库锁可能被静默丢弃）`).toBeGreaterThanOrEqual(700);
-        expect(levels - nonZero, `零机器层数超出防塌缩上限`).toBeLessThanOrEqual(40);
+        // （V-1c 前的口径是 ≥1200 台——那时全类别每层 min(2+⌊d/3⌋,6) 同池抽；
+        //   配额制下奖励机器本就稀少，下限按新语义重校准，仍能拦住
+        //   "选址静默拒绝一切"的塌缩回归。）
+        expect(machines, `机器总数 ${machines} 低于防塌缩下限（选址可能在静默拒绝一切）`).toBeGreaterThanOrEqual(50);
+        expect(locked, `锁门机器 ${locked} 台低于防塌缩下限（宝库锁可能被静默丢弃）`).toBeGreaterThanOrEqual(15);
+        // 反塌缩的分布面：配额下多数层合法地没有机器（CE 语义），原
+        // "零机器层 ≤ 40"的口径失效；改为"有机器的层必须仍有一定 spread"
+        //（V-1c 实测 73/390 ≈ 19%，CE 约 25% + 加成的量级）。
+        expect(nonZero, `有机器层数 ${nonZero} 低于防塌缩下限（配额/抽签可能整体失效）`).toBeGreaterThanOrEqual(40);
         expect(structureViolations, `机器结构合同被破坏：\n${structureViolations.slice(0, 20).join('\n')}`).toEqual([]);
     }, 600_000);
 
@@ -410,6 +417,10 @@ describe('P1-33 机器阶段不切断关卡', () => {
 
     it('e) 决定性：同种子同深度的机器布局与地形指纹逐一一致', () => {
         const run = (): string[] => {
+            // V-1c：配额计数器（CE rogue.rewardRoomsGenerated）是 run 级全局——
+            // 两次 run() 必须从同一起点开始，否则第二次的配额决策整体后移，
+            // 与"同种子可复现"的前提矛盾（同 C-4a-0 的"完整生成链"口径）。
+            resetRewardRoomsGenerated();
             rng.seedRandomGenerator(424242);
             const arch = new Architect();
             const lines: string[] = [];

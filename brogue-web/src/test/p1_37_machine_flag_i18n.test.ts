@@ -156,7 +156,10 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
             }
         }
 
-        expect(machinesSeen, '扫到的机器数异常（生成器或记录器失效）').toBeGreaterThan(300);
+        // V-1c 重校准（原 >300 是全类别同池抽时代的口径）：顶层抽签只剩
+        // CE 配额的奖励机器（约每 4 层 1 间 + 15% 加成），5 种子 × D1-26
+        // 实测约 29 台。本断言只防"生成器或记录器整体失效"，不钉数量。
+        expect(machinesSeen, '扫到的机器数异常（生成器或记录器失效）').toBeGreaterThanOrEqual(12);
         expect(violations, `内容落点闯入机器格 ${violations.length} 处：\n${violations.slice(0, 20).join('\n')}`).toEqual([]);
     });
 

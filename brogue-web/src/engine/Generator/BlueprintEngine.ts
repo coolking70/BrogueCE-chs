@@ -11,9 +11,11 @@
  * 修复前基线（15 种子 × D1-D26）：1920 台机器、坏层 5 个。
  */
 
-import { Grid, TerrainType, DCOLS, DROWS } from '../Map/Grid';
+import { Grid, TerrainType, DCOLS, DROWS, type Cell } from '../Map/Grid';
 import { analyzeChokeMap, CE_GATE_CANDIDATE_CAP, type ChokeAnalysis } from '../Map/LoopMap';
 import { terrainAllowsMove, DIRS8 } from '../Map/Connectivity';
+import { DijkstraMap, MAX_DISTANCE } from '../Map/Pathfinding';
+import { allocShortGrid } from '../Map/SafetyMap';
 import { rng } from '../Random';
 import type { Pos } from '../../types';
 import blueprintData from '../../data/blueprints.json';
@@ -28,6 +30,14 @@ export interface FeatureDef {
     monsterId?: string;
     hordeId?: string;
     instanceCount: [number, number];
+    /**
+     * V-1c：CE machineFeature.minimumInstanceCount（Rogue.h:2714 一带）的
+     * web 载体——本 feature 实际落位实例数达不到它时整机失败回滚
+     * （CE Architect.c:1676-1687）。web 数据不携带该字段，缺省取
+     * instanceCount[0]（web 的 [min,max] 掷骰区间下沿即"至少要建几个"的
+     * 自然读法）；V-2 重写数据时可按 CE 原值显式给出。
+     */
+    minimumInstanceCount?: number;
     personalSpace?: number;
     flags: string[];
     signText?: string;
@@ -61,6 +71,15 @@ export interface MachineResult {
     needsKey: boolean;
     /** Altar group ID if any */
     altarGroupId: number | null;
+    /**
+     * V-1c：递归子机器（MF_OUTSOURCE_ITEM_TO_MACHINE / MF_BUILD_VESTIBULE
+     * 建立的领养/前厅机器）。CE 把子机器的产物并进父机器的 spawnedItems /
+     * spawnedMonsters 缓冲（Architect.c:1555-1567），父机器失败时一并释放；
+     * web 的等价物是把子 MachineResult 挂在这里——父机器 applyBlueprint 失败
+     * 返回 null 时整个对象被丢弃，子机器不产生任何孤儿；成功时由
+     * buildMachines 扁平化后交给 Game.populateLevel（钥匙/物品/怪物逐台消费）。
+     */
+    subMachines: MachineResult[];
 }
 
 // ----- Terrain string→enum map -----
@@ -111,71 +130,243 @@ const TERRAIN_VISUALS: Record<string, { char: string; color: number }> = {
 
 let nextMachineNumber = 1;
 
+/**
+ * V-1c：跨层奖励房配额计数器。CE rogue.rewardRoomsGenerated（Rogue.h:2504
+ * "// to meter the number of reward machines"）：开局清零（RogueMain.c:292）、
+ * 每建成一台奖励机器 +1（Architect.c:1772）、配额公式按它抑制后续层数量。
+ * 它是 **run 级全局**而非每层状态——web 侧必须进存档快照（Game.toSnapshot /
+ * loadSnapshot），否则读档后配额重新计数、奖励房再次泛滥。
+ */
+let rewardRoomsGenerated = 0;
+
+/** CE RogueMain.c:292 `rogue.rewardRoomsGenerated = 0`（开局清零）。 */
+export function resetRewardRoomsGenerated(): void {
+    rewardRoomsGenerated = 0;
+}
+
+/** 存档快照读口（Game.toSnapshot）。 */
+export function getRewardRoomsGenerated(): number {
+    return rewardRoomsGenerated;
+}
+
+/** 存档恢复写口（Game.loadSnapshot）。 */
+export function setRewardRoomsGenerated(n: number): void {
+    rewardRoomsGenerated = n;
+}
+
+// ---------------------------------------------------------------------------
+// V-1c：抽签资格过滤与顶层配额（CE blueprintQualifies / addMachines）
+// ---------------------------------------------------------------------------
+
+/** CE variants/GlobalsBrogue.c:1026-1029（Brogue 变体常量，已逐字核对）。 */
+const MACHINES_PER_LEVEL_SUPPRESSION_MULTIPLIER = 4;
+const MACHINES_PER_LEVEL_SUPPRESSION_OFFSET = 2;
+const MACHINES_PER_LEVEL_INCREASE_FACTOR = 1;
+const MAX_LEVEL_FOR_BONUS_MACHINES = 2;
+/** CE GlobalsBrogue.c:1030 `.deepestLevelForMachines = AMULET_LEVEL`。 */
+const DEEPEST_LEVEL_FOR_MACHINES = 26;
+
+export const BP_ADOPT_ITEM = 'BP_ADOPT_ITEM';
+export const BP_VESTIBULE = 'BP_VESTIBULE';
+export const BP_REWARD = 'BP_REWARD';
+
+/** V-1c：findGateRoom 的三态结果（见该方法头注）。 */
+type GateSelection =
+    | { kind: 'room'; cells: Pos[]; center: Pos; door: Pos }
+    | { kind: 'noCandidates' }
+    | { kind: 'retry' };
+
+/** V-1c：整层可变格状态快照（CE p->levelBackup 的 web 形态，见 backupLevel）。 */
+type LevelBackup = Array<{
+    layers: TerrainType[]; char: string; color: number;
+    isPassable: boolean; isOpaque: boolean;
+    machineNumber: number; trapType: Cell['trapType']; altarGroupId: number | null;
+}>;
+
+/**
+ * web `category` 字段 ↔ CE BP_* 旗标的映射（本轮开始消费 category——
+ * V-0 查明它此前无任何生产消费者）。
+ *
+ * 对应关系核对（CE blueprintCatalog_Brogue，variants/GlobalsBrogue.c）：
+ *   - CE 前厅机器带 BP_VESTIBULE（:299 一带 9 条），只能由 MF_BUILD_VESTIBULE
+ *     递归建立 → web category "vestibule"；
+ *   - CE 领养/守卫机器带 BP_ADOPT_ITEM（:348 一带 16 条），只能由
+ *     MF_OUTSOURCE_ITEM_TO_MACHINE 递归建立 → web category "key_guard"；
+ *   - CE 奖励机器带 BP_REWARD（:214 一带），顶层配额抽签的
+ *     requiredMachineFlags 就是它 → web category "reward"（web 数据里
+ *     5 条 reward_* 蓝图的 flags 数组也确实带着 BP_REWARD 字符串）；
+ *   - CE 无 "thematic" 对应位：CE 的风味机器走 autoGeneratorCatalog 的
+ *     MT_* 条目（如 MT_SWAMP_AREA），与顶层抽签完全无关——web 的
+ *     area_* 蓝图是该机制的 web 自创替身，映射为空集（无资格位），
+ *     因此它们不再被顶层抽中（D2：自创内容退池留形）。
+ */
+const CATEGORY_TO_BP_FLAGS: Record<string, readonly string[]> = {
+    reward: [BP_REWARD],
+    vestibule: [BP_VESTIBULE],
+    key_guard: [BP_ADOPT_ITEM],
+    thematic: [],
+};
+
+/** 蓝图的有效 BP 旗标集 = flags 数组 ∪ category 映射。 */
+function effectiveBpFlags(bp: BlueprintDef): Set<string> {
+    const s = new Set(bp.flags);
+    for (const f of CATEGORY_TO_BP_FLAGS[bp.category] ?? []) s.add(f);
+    return s;
+}
+
+/**
+ * V-1c：CE blueprintQualifies（Architect.c:455-468）的直译。
+ * requiredFlags 是 CE requiredMachineFlags 位串的 web 形态（字符串数组）：
+ *   - 深度区间必须覆盖当前层；
+ *   - 蓝图必须拥有全部被要求的旗标（CE `~flags & required`）；
+ *   - BP_ADOPT_ITEM / BP_VESTIBULE **只有在被显式要求时**才可被选中
+ *     （CE 的两条 NOT-unless-required 守卫）——所以顶层抽签（只要求
+ *     BP_REWARD）永远抽不到前厅/守卫蓝图，它们只能由递归建立。
+ */
+export function blueprintQualifies(
+    bp: BlueprintDef,
+    depth: number,
+    requiredFlags: readonly string[]
+): boolean {
+    if (bp.depthRange[0] > depth || bp.depthRange[1] < depth) return false;
+    const eff = effectiveBpFlags(bp);
+    for (const r of requiredFlags) {
+        if (!eff.has(r)) return false;
+    }
+    if (eff.has(BP_ADOPT_ITEM) && !requiredFlags.includes(BP_ADOPT_ITEM)) return false;
+    if (eff.has(BP_VESTIBULE) && !requiredFlags.includes(BP_VESTIBULE)) return false;
+    return true;
+}
+
 export class BlueprintEngine {
     private grid: Grid;
     private depth: number;
     private blueprints: BlueprintDef[];
 
-    constructor(grid: Grid, depth: number) {
+    constructor(grid: Grid, depth: number, blueprints?: BlueprintDef[]) {
         this.grid = grid;
         this.depth = depth;
-        this.blueprints = blueprintData as BlueprintDef[];
+        this.blueprints = blueprints ?? (blueprintData as BlueprintDef[]);
     }
 
     /**
      * Main entry point: build all machines for the current level.
      * Returns an array of MachineResult for Game.ts to populate with items/monsters.
      *
-     * P1-33 选址（CE Architect.c:1080-1095）：每次尝试先 analyzeChokeMap，
-     * 只从 IS_GATE_SITE 割点里挑"被封区域大小落在蓝图 roomSize 区间"的格子
-     * 当门。CE 在 buildAMachine 的每次尝试里都重跑 analyzeMap(true)；web 在
-     * "尝试失败不改地形"的前提下缓存（地形未变 ⇒ 分析逐位相同，等价且省算），
-     * 建成一台即失效。
+     * V-1c：本方法改为 CE addMachines（Architect.c:1742-1776）的直译——
+     * 顶层只建奖励机器（requiredMachineFlags = BP_REWARD 的抽签），数量由
+     * 跨层配额公式给出（"约每 4 层 1 间" + 前 2 层 40% 加成），不再是 web
+     * 自创的每层 min(2+⌊depth/3⌋, 6) 台全类别同池抽。CE 的另两个顶层调用
+     * ——Bullet Brogue 的 L1 兵器库与 D26 的 MT_AMULET_AREA——在 web 数据
+     * 无对应蓝图（D2 退池留形，归 V-2 数据轮）。
+     *
+     * P1-33 选址合同不变：每次建造尝试仍走 findGateRoom 的 chokepoint 门位
+     * （CE Architect.c:1080-1095）+ gateSealsOnlyInterior 误封否决。
      */
     public buildMachines(): MachineResult[] {
-        const results: MachineResult[] = [];
-        let analysis: ChokeAnalysis | null = null;
-
-        // Decide how many machines to attempt based on depth
-        const maxMachines = Math.min(2 + Math.floor(this.depth / 3), 6);
-
-        for (let attempt = 0; attempt < maxMachines * 3; attempt++) {
-            if (results.length >= maxMachines) break;
-
-            const bp = this.selectBlueprint();
-            if (!bp) continue;
-
-            if (!analysis) analysis = analyzeChokeMap(this.grid);
-
-            const room = this.findGateRoom(bp, analysis);
-            if (!room) continue;
-
-            const result = this.applyBlueprint(bp, room);
-            if (result) {
-                results.push(result);
-                analysis = null; // 地形已变，下一台重新分析
-            }
+        // 奖励房配额（CE Architect.c:1757-1766）：
+        //   保底 while——"try to build at least one every four levels on average"；
+        //   加成 while——前 2 层且一间未建时 40%，此后固定 15%，逐次掷骰累加。
+        let machineCount = 0;
+        while (this.depth <= DEEPEST_LEVEL_FOR_MACHINES
+            && (rewardRoomsGenerated + machineCount) * MACHINES_PER_LEVEL_SUPPRESSION_MULTIPLIER
+            + MACHINES_PER_LEVEL_SUPPRESSION_OFFSET
+            < this.depth * MACHINES_PER_LEVEL_INCREASE_FACTOR) {
+            machineCount++;
+        }
+        let randomMachineFactor = (this.depth <= MAX_LEVEL_FOR_BONUS_MACHINES
+            && (rewardRoomsGenerated + machineCount) === 0 ? 40 : 15);
+        while (rng.randPercent(Math.max(randomMachineFactor, 15 * MACHINES_PER_LEVEL_INCREASE_FACTOR))
+            && machineCount < 100) {
+            randomMachineFactor = 15;
+            machineCount++;
         }
 
+        const results: MachineResult[] = [];
+        // CE Architect.c:1768-1775：failsafe 50 次抽签建造，建成才核销配额。
+        // 子机器深扁平化输出（CE 把子孙机器的产物逐级并入顶层缓冲——
+        // :1555-1567 的合并是递归生效的：子机器的 spawnedItems 已含其
+        // 自己的子机器产物；web 用深展开等价）。
+        const flatten = (r: MachineResult): MachineResult[] =>
+            [r, ...r.subMachines.flatMap(flatten)];
+        for (let failsafe = 50; machineCount > 0 && failsafe > 0; failsafe--) {
+            const built = this.buildAMachine([BP_REWARD], null, null);
+            if (built) {
+                machineCount--;
+                rewardRoomsGenerated++;
+                results.push(...flatten(built));
+            }
+        }
         return results;
     }
 
-    /** Select a blueprint appropriate for the current depth using weighted random */
-    private selectBlueprint(): BlueprintDef | null {
-        const eligible = this.blueprints.filter(bp =>
-            this.depth >= bp.depthRange[0] && this.depth <= bp.depthRange[1]
-        );
-        if (eligible.length === 0) return null;
+    /**
+     * V-1c：CE buildAMachine（Architect.c:984-1734）的 web 形态。
+     *
+     * @param requiredFlags CE requiredMachineFlags（web 字符串数组形态）；
+     *                      顶层配额传 [BP_REWARD]，递归领养/前厅各传其位。
+     * @param adoptiveItem  待领养物品指令（CE adoptiveItem，仅递归领养非 null）。
+     * @param origin        前厅机器的落位锚点（CE originX/Y，门位坐标）。
+     * @returns 建成的父机器（子机器挂 subMachines）；失败返回 null（已回滚）。
+     *
+     * 循环结构逐字对齐 CE 的 do-while：failsafe 初值 10、先减后判（至多 9 次
+     * 尝试）；每次尝试重掷蓝图（chooseBP）；BP_ROOM 无合格门位 → 立即放弃
+     * （CE :1108-1122，不烧剩余 failsafe）；内部扩展失败/门位误封 → tryAgain
+     * 换蓝图重来（CE :1099 与 P1-33 的 web 必要守卫）。**point of no return**
+     * 在选址成功之后（CE :1222 copyMap(pmap, levelBackup)）：此后任何失败
+     * （递归子机器 10 次全败、feature 实例数不达 minimumInstanceCount）都
+     * 恢复备份并返回 null（CE :1576-1583 / :1676-1687）。
+     */
+    private buildAMachine(
+        requiredFlags: readonly string[],
+        adoptiveItem: MachineResult['itemSpawns'][number] | null,
+        origin: Pos | null
+    ): MachineResult | null {
+        let failsafe = 10;
+        do {
+            failsafe--;
+            if (failsafe <= 0) return null; // CE :1004-1026：10 次尝试用尽
 
-        let totalFreq = 0;
-        for (const bp of eligible) totalFreq += bp.frequency;
+            // chooseBP（CE :1028-1061）：资格过滤 + 频率加权抽签，每次尝试重掷。
+            const eligible = this.blueprints.filter(bp => blueprintQualifies(bp, this.depth, requiredFlags));
+            let totalFreq = 0;
+            for (const bp of eligible) totalFreq += bp.frequency;
+            if (totalFreq <= 0) return null; // CE :1040-1052：目录里没有合格蓝图
 
-        let roll = rng.randRange(1, totalFreq);
-        for (const bp of eligible) {
-            roll -= bp.frequency;
-            if (roll <= 0) return bp;
-        }
-        return eligible[eligible.length - 1]!;
+            let roll = rng.randRange(1, totalFreq);
+            let bp = eligible[eligible.length - 1]!;
+            for (const b of eligible) {
+                roll -= b.frequency;
+                if (roll <= 0) { bp = b; break; }
+            }
+
+            const effFlags = effectiveBpFlags(bp);
+            let room: { cells: Pos[]; center: Pos; door: Pos | null };
+            if (effFlags.has(BP_VESTIBULE)) {
+                // CE :1120-1140：前厅机器必须有传入落位，填充失败立即放弃整机
+                //（不设 tryAgain——CE 字面行为）。origin 的 ≤0 哨位判定同
+                // CE :988 chooseLocation 的字面口径。
+                if (!origin || origin.x <= 0 || origin.y <= 0) return null;
+                const interior = this.fillVestibuleInterior(bp, origin);
+                if (!interior) return null;
+                room = { cells: interior, center: origin, door: origin };
+            } else {
+                // BP_ROOM（web 全部非前厅蓝图的形态，CE :1080-1118）。
+                // retry 即 CE 的 tryAgain：continue 回到 do 顶（failsafe 先减，
+                // 与 CE while(tryAgain) 的迭代语义逐字一致）换蓝图重试。
+                const analysis = analyzeChokeMap(this.grid);
+                const sel = this.findGateRoom(bp, analysis);
+                if (sel.kind === 'retry') continue;
+                if (sel.kind === 'noCandidates') return null;
+                room = { cells: sel.cells, center: sel.center, door: sel.door };
+            }
+
+            // —— point of no return（CE :1222）：备份整层，动手。 ——
+            const backup = this.backupLevel();
+            const result = this.applyBlueprint(bp, room, { adoptiveItem });
+            if (result) return result;
+            this.restoreLevel(backup); // CE :1578/:1681 copyMap(p->levelBackup, pmap)
+        } while (true);
     }
 
     /**
@@ -246,10 +437,19 @@ export class BlueprintEngine {
      * 返回 cells=内部、door=门格、center=宝藏落点（内部中距质心最近且非门格）。
      * 无候选或内部扩展撞上其他机器 → null（CE 返回 false 换蓝图重试）。
      */
+    /**
+     * V-1c：选址结果三分（对应 CE buildAMachine 的三种走向）：
+     *   room         — 选址成功，可以动手（过了 point of no return 的门槛）；
+     *   noCandidates — 无合格门位，立即放弃整机（CE :1108-1122 return false，
+     *                  不烧剩余 failsafe）；
+     *   retry        — 内部扩展失败（CE addTileToMachineInteriorAndIterate
+     *                  false → tryAgain）或 web 必要的误封否决拦截（P1-33），
+     *                  换蓝图重试。
+     */
     private findGateRoom(
         bp: BlueprintDef,
         analysis: ChokeAnalysis
-    ): { cells: Pos[]; center: Pos; door: Pos } | null {
+    ): GateSelection {
         const candidates: Pos[] = [];
         for (let x = 0; x < DCOLS && candidates.length < CE_GATE_CANDIDATE_CAP; x++) {
             for (let y = 0; y < DROWS && candidates.length < CE_GATE_CANDIDATE_CAP; y++) {
@@ -260,12 +460,12 @@ export class BlueprintEngine {
                 candidates.push({ x, y });
             }
         }
-        if (candidates.length === 0) return null; // CE 1108-1122：无合格门位，放弃该蓝图
+        if (candidates.length === 0) return { kind: 'noCandidates' }; // CE 1108-1122：无合格门位，放弃该蓝图
 
         const gate = candidates[rng.randRange(0, candidates.length - 1)]!;
         const cells = mapMachineInterior(this.grid, analysis, gate);
-        if (!cells) return null;
-        if (!this.gateSealsOnlyInterior(gate, cells)) return null; // 会误封别处 → 弃用该门位
+        if (!cells) return { kind: 'retry' };
+        if (!this.gateSealsOnlyInterior(gate, cells)) return { kind: 'retry' }; // 会误封别处 → 弃用该门位
 
         // center：内部格中距质心最近者，排除门格（门格可能被 doorTerrain 写成
         // LOCKED_DOOR；blueprint_center 的合同是 center/door 同属 cells、互不重合、
@@ -277,7 +477,7 @@ export class BlueprintEngine {
             if (p.x === gate.x && p.y === gate.y) continue;
             cx += p.x; cy += p.y; n++;
         }
-        if (n === 0) return null; // 内部只有门格一格：无宝藏落点
+        if (n === 0) return { kind: 'retry' }; // 内部只有门格一格：无宝藏落点，换位重试
         cx = Math.round(cx / n);
         cy = Math.round(cy / n);
         let center: Pos = cells[0]!.x === gate.x && cells[0]!.y === gate.y ? cells[1]! : cells[0]!;
@@ -291,7 +491,7 @@ export class BlueprintEngine {
             }
         }
 
-        return { cells, center, door: gate };
+        return { kind: 'room', cells, center, door: gate };
     }
 
     /**
@@ -404,13 +604,20 @@ export class BlueprintEngine {
     /**
      * Apply a blueprint to a found room region.
      * Marks cells, places terrain features, and returns spawn instructions.
+     *
+     * V-1c：返回值可为 null = 建造失败（调用方 buildAMachine 已在选址成功时
+     * 备份整层，失败后负责恢复——CE :1576-1583 / :1676-1687 的两处回滚）。
+     * 新增 ctx.adoptiveItem：递归领养时父机器交来的物品指令（CE adoptiveItem）。
      */
     private applyBlueprint(
         bp: BlueprintDef,
-        room: { cells: Pos[]; center: Pos; door: Pos | null }
+        room: { cells: Pos[]; center: Pos; door: Pos | null },
+        ctx: { adoptiveItem?: MachineResult['itemSpawns'][number] | null } = {}
     ): MachineResult | null {
         const machineNum = nextMachineNumber++;
         const flags = new Set(bp.flags);
+        const effFlags = effectiveBpFlags(bp);
+        const subMachines: MachineResult[] = [];
 
         // 1. Mark all cells as belonging to this machine
         for (const p of room.cells) {
@@ -499,11 +706,13 @@ export class BlueprintEngine {
             if (skipFeature[feat]) continue; // CE Architect.c:1329：未被选中的替代 feature 整条跳过
             const count = rng.randRange(feature.instanceCount[0], feature.instanceCount[1]);
             const fFlags = new Set(feature.flags);
+            let placed = 0;
 
             for (let inst = 0; inst < count; inst++) {
                 // Find a placement position
                 const pos = this.findFeaturePosition(availableCells, usedCells, room.center, feature, fFlags);
                 if (!pos) break;
+                placed++;
 
                 usedCells.add(`${pos.x},${pos.y}`);
 
@@ -547,15 +756,51 @@ export class BlueprintEngine {
                     }
                 }
 
-                // Generate item spawn instructions
-                if (fFlags.has('MF_GENERATE_ITEM') && feature.itemCategory) {
-                    itemSpawns.push({
+                // Generate item spawn instructions.
+                // V-1c（CE :1495-1541）：领养优先——BP_ADOPT_ITEM 机器的
+                // MF_ADOPT_ITEM feature 消耗父机器交来的物品（只领一次，
+                // CE :1503 "can be adopted only once"），不再自产；自产物
+                // 带 MF_OUTSOURCE_ITEM_TO_MACHINE 时不落本机（CE :1533-1539
+                // 非外包才 placeItemAt），指令交由下面的递归块交给子机器。
+                let theItem: MachineResult['itemSpawns'][number] | null = null;
+                if (ctx.adoptiveItem && fFlags.has('MF_ADOPT_ITEM') && effFlags.has(BP_ADOPT_ITEM)) {
+                    theItem = { ...ctx.adoptiveItem, pos: { x: pos.x, y: pos.y } };
+                    itemSpawns.push(theItem);
+                    ctx.adoptiveItem = null;
+                } else if (fFlags.has('MF_GENERATE_ITEM') && feature.itemCategory) {
+                    theItem = {
                         category: feature.itemCategory,
                         id: feature.itemId,
                         pos: { x: pos.x, y: pos.y },
                         isAltar: fFlags.has('MF_ALTAR')
-                    });
+                    };
+                    if (!fFlags.has('MF_OUTSOURCE_ITEM_TO_MACHINE')) {
+                        itemSpawns.push(theItem);
+                    }
                 }
+
+                // V-1c：递归外包 / 前厅（CE :1543-1575，结构逐字）——
+                // 10 次重试建子机器；任一次成功即把子机器并入本机器
+                // （CE :1555-1567 并入 spawnedItems/Monsters 缓冲的 web 等价），
+                // 10 次全败 → 整机失败（CE :1576-1583，备份由 buildAMachine 恢复）。
+                // CE 每次重试前把领养物品从地面/背包摘链的注释（:1546-1551）在
+                // web 结构性成立：物品指令不在网格上，失败的子机器结果整体丢弃，
+                // 无"留在地上"的残骸可摘。
+                if (fFlags.has('MF_OUTSOURCE_ITEM_TO_MACHINE') || fFlags.has('MF_BUILD_VESTIBULE')) {
+                    let success = false;
+                    for (let i = 10; i > 0; i--) {
+                        if (fFlags.has('MF_OUTSOURCE_ITEM_TO_MACHINE') && theItem) {
+                            const sub = this.buildAMachine([BP_ADOPT_ITEM], theItem, null);
+                            if (sub) { subMachines.push(sub); success = true; }
+                        } else if (fFlags.has('MF_BUILD_VESTIBULE')) {
+                            const sub = this.buildAMachine([BP_VESTIBULE], null, { x: pos.x, y: pos.y });
+                            if (sub) { subMachines.push(sub); success = true; }
+                        }
+                        if (success) break;
+                    }
+                    if (!success) return null;
+                }
+                theItem = null;
 
                 // Generate monster spawn instructions
                 if (fFlags.has('MF_GENERATE_MONSTER') && feature.monsterId) {
@@ -566,6 +811,15 @@ export class BlueprintEngine {
                         isCaged: fFlags.has('MF_MONSTER_IS_CAGED')
                     });
                 }
+            }
+
+            // V-1c：CE :1676-1687——本 feature 实际落位数达不到
+            // minimumInstanceCount（web 缺省 = instanceCount[0]，见 FeatureDef 注）
+            // → 整机失败（备份由 buildAMachine 恢复）。web 今天的失败源是
+            // findFeaturePosition 找不到可落格（房间太小/格子被占光）。
+            const minInstances = feature.minimumInstanceCount ?? feature.instanceCount[0];
+            if (placed < minInstances && !fFlags.has('MF_REPEAT_UNTIL_NO_PROGRESS')) {
+                return null;
             }
         }
 
@@ -592,8 +846,120 @@ export class BlueprintEngine {
             itemSpawns,
             monsterSpawns,
             needsKey,
-            altarGroupId
+            altarGroupId,
+            subMachines
         };
+    }
+
+    /**
+     * V-1c：CE fillInteriorForVestibuleMachine（Architect.c:674-730）的直译。
+     * 前厅机器从门位（origin）出发：Dijkstra 扫距（机器格与不可通行格为禁地，
+     * 4 向——CE dijkstraScan(..., false)），目标尺寸 rand_range(roomSize)，
+     * 按"距离 = k"的外壳序（sCols/sRows 洗牌）收集内部格。
+     *
+     * 与 CE 的两处留形差异（当前数据下皆结构性不可达，激活轮需重核）：
+     *   - CE :706-710 的 HAS_ITEM 中止：机器阶段物品尚为指令、不在网格上，
+     *     web 无从触发；
+ *   - cost 口径用 web 的 PDS_FORBIDDEN 约定（Game.findQualifyingPathLocNear
+ *     同款：!isPassable ∪ LAVA ∪ WATER_DEEP ∪ TRAP），非 CE
+ *     populateGenericCostMap 的逐地形代价——P1-33 已登记的同族偏差。
+ * CE :715-723 的 BP_TREAT_AS_BLOCKING / BP_REQUIRE_BLOCKING 连通性复核
+ * **本轮刻意未接线**：levelIsDisconnectedWithBlockingMap 属 DF 子系统，
+ * 生产引用受 c_4b F1 留痕扫描器白名单钉死（本轮授权清单不含该测试），
+ * 且当前数据零载体、检查结构性不可达——接线留给激活轮，届时按该测试
+ * 标题预告的流程扩白名单。
+ */
+    private fillVestibuleInterior(bp: BlueprintDef, origin: Pos): Pos[] | null {
+        const goal = rng.randRange(bp.roomSize[0], bp.roomSize[1]);
+
+        const dist = allocShortGrid(DCOLS, DROWS, MAX_DISTANCE);
+        const cost = allocShortGrid(DCOLS, DROWS, 1);
+        for (let x = 0; x < DCOLS; x++) {
+            for (let y = 0; y < DROWS; y++) {
+                const cell = this.grid.getCell(x, y);
+                const forbidden = !cell || !cell.isPassable
+                    || cell.layers.includes(TerrainType.LAVA)
+                    || cell.layers.includes(TerrainType.WATER_DEEP)
+                    || cell.layers.includes(TerrainType.TRAP)
+                    || cell.machineNumber !== 0; // CE :680-684：不得吞并既有机器
+                if (forbidden) cost[x]![y] = -1; // web PDS_FORBIDDEN 约定
+            }
+        }
+        dist[origin.x]![origin.y] = 0; // CE :681
+        cost[origin.x]![origin.y] = 1; // CE :688
+        const scanner = new DijkstraMap(DCOLS, DROWS);
+        scanner.batchScan(dist, cost, false); // CE dijkstraScan(distanceMap, costMap, false)
+
+        // CE :692-704：距离外壳序 + 洗牌的列/行序。
+        const sCols: number[] = [];
+        for (let v = 0; v < DCOLS; v++) sCols.push(v);
+        rng.shuffleList(sCols);
+        const sRows: number[] = [];
+        for (let v = 0; v < DROWS; v++) sRows.push(v);
+        rng.shuffleList(sRows);
+
+        const cells: Pos[] = [];
+        for (let k = 0; k < 1000 && cells.length < goal; k++) {
+            for (const x of sCols) {
+                for (const y of sRows) {
+                    if (cells.length >= goal) break;
+                    if (dist[x]![y] === k) {
+                        cells.push({ x, y });
+                        // CE :706-710 的 HAS_ITEM 中止在 web 结构性不可达（见头注）。
+                    }
+                }
+            }
+        }
+        // CE :715-723 的 BP_TREAT_AS_BLOCKING / BP_REQUIRE_BLOCKING 复核
+        // 本轮未接线（原因见头注）——激活轮补上。
+        return cells;
+    }
+
+    /**
+     * V-1c：CE copyMap(pmap, p->levelBackup)（Architect.c:1222，point of no
+     * return）的 web 形态——快照整层全部格子的可变状态。恢复时逐格写回，
+     * 语义等价 CE 的整图 memcpy。机器阶段的改动面（setTerrain 写
+     * layers/char/color/isPassable/isOpaque；applyBlueprint 另写
+     * machineNumber/trapType/altarGroupId）是这里的快照子集；其余字段
+     * （探索/视野/气味等）在生成期无人写入，一并快照只为省去取舍错误。
+     */
+    private backupLevel(): LevelBackup {
+        const snap: LevelBackup = [];
+        for (let x = 0; x < DCOLS; x++) {
+            for (let y = 0; y < DROWS; y++) {
+                const c = this.grid.getCell(x, y)!;
+                snap.push({
+                    layers: [...c.layers],
+                    char: c.char,
+                    color: c.color,
+                    isPassable: c.isPassable,
+                    isOpaque: c.isOpaque,
+                    machineNumber: c.machineNumber,
+                    trapType: c.trapType,
+                    altarGroupId: c.altarGroupId
+                });
+            }
+        }
+        return snap;
+    }
+
+    /** CE copyMap(p->levelBackup, pmap)（:1578/:1681）的 web 形态。 */
+    private restoreLevel(snap: LevelBackup): void {
+        let i = 0;
+        for (let x = 0; x < DCOLS; x++) {
+            for (let y = 0; y < DROWS; y++) {
+                const c = this.grid.getCell(x, y)!;
+                const s = snap[i++]!;
+                c.layers = [...s.layers];
+                c.char = s.char;
+                c.color = s.color;
+                c.isPassable = s.isPassable;
+                c.isOpaque = s.isOpaque;
+                c.machineNumber = s.machineNumber;
+                c.trapType = s.trapType;
+                c.altarGroupId = s.altarGroupId;
+            }
+        }
     }
 
     /** Find a cell for placing a feature, respecting flags and personal space */

@@ -109,6 +109,8 @@ describe('C-5 对抗①：坠落是回合末结算（CE Time.c:168-176/2480）',
         //   digDungeon 里掷这些骰）；
         //   14218 = B-4a 重捕获——计量表读写 + 频率加权 chooseKind + 食物保底
         //   （web 此前一局 0 个食物）进入物品生成路径，每层掷骰增加；
+        //   10611 = V-1c 重捕获——机器数量从 3.89/层降到 0.22/层（CE 奖励房配额
+        //   还原），生成期掷骰大幅减少，故本轮是沿革里**唯一下降**的一次；
         //   15344 = B-4b 重捕获——数量公式改为 CE 的无上界几何分布、
         //   热力图选点 rand_range(1,totalHeat)、金币堆数与产量调度进入生成路径。
         //   15339 = V-1a 重捕获——拆掉 _random_good_ 直投（删六选一掷骰与
@@ -132,7 +134,7 @@ describe('C-5 对抗①：坠落是回合末结算（CE Time.c:168-176/2480）',
         // 不得受伤、深度已变、玩家掉血），它们本轮全绿。
         expect(rngAfter - rngBeforeDive, '坠落回合的 RNG 消耗增量偏离（= 换层生成的固定消耗，'
             + 'CE 坠落门整段 return：无推进循环/客观块的额外消耗）')
-            .toBe(15339);
+            .toBe(10611);
         expect(rat.hp, '随落阶段 rat 不在渊上，不得受伤/死亡').toBeGreaterThan(0);
         expect([rat.loc.x, rat.loc.y], '坠落回合怪物不得获得推进（CE playerFalls 提前 return）')
             .toEqual([4, 4]);
