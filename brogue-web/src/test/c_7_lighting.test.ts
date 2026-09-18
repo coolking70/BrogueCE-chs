@@ -476,7 +476,7 @@ describe('C-7 updateVision 集成（CE Time.c:859 → Light.c:208 → Movement.c
         expect(game.grid.getCell(px + 5 * dir, py)!.isVisible).toBe(false);                      // 但墙挡了 LOS
     });
 
-    it('渲染馈送：getLight 接口拿到矿灯光（GameCanvas 消费格式不变）', () => {
+    it('渲染馈送：getLight 接口拿到矿灯光（UI-1 起渲染改走 lightAt 三通道，本接口保留为兼容面）', () => {
         const game = createHeadlessGame(77034);
         carvePlain(game);
         game.depth = 1;
@@ -617,12 +617,17 @@ describe('C-7 载体边界留痕', () => {
         // 补列值；渲染轮接入 flare 族时同理发落。
     });
 
-    it('留痕：渲染层（src/components/）仍只消费 getLight 旧接口、不直接 import 光照目录（渲染表现归 UI 轮）', () => {
+    it('留痕（UI-1 第 7 条已反转，2026-09-18）：渲染层消费 lightAt 三通道做 CE 乘法，仍不得直接 import 光照目录/paintLight', () => {
         const compDir = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'components');
         if (!fs.existsSync(compDir)) return;
         for (const file of prodTsFiles(compDir)) {
             const text = fs.readFileSync(file, 'utf8');
             expect(text).not.toMatch(/LightCatalog|LIGHT_CATALOG|paintLight/);
         }
+        // 原留痕断言"仍消费 getLight 旧接口、渲染表现归 UI 轮"——UI-1 就是那轮，
+        // 按留痕反转为新事实：GameCanvas 经 LightMap.lightAt 取 CE tmap.light
+        // 三通道（乘法决策在 Appearance.ts，组件内仍是纯接线）。
+        const canvas = fs.readFileSync(path.join(compDir, 'GameCanvas.vue'), 'utf8');
+        expect(canvas).toMatch(/lightMap\.lightAt\(/);
     });
 });

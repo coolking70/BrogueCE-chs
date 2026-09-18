@@ -2,10 +2,10 @@
  * R-1（渲染纯重构轮）：「格子/实体 → 外观」的纯决策函数。
  *
  * 从 GameCanvas.vue 的 render()（原 341-563 行）与 getTerrainVisual
- * （原 126-184 行）**逐字搬运**而来——本轮（R-1）是结构先行、行为逐位不变：
- * 不新增、不修改任何视觉效果。颜色值、字形、优先级、可见/记忆态的处理
- * 全部保持原样，包括那些看起来像缺陷的分支（幻觉物品的双重掷骰、
- * 无渲染分支的 PARALYSIS/METHANE 气体等）——它们是下一轮 UI-1 的落点。
+ * （原 126-184 行）**逐字搬运**而来——R-1（渲染纯重构轮）是结构先行、
+ * 行为逐位不变；UI-1（2026-09-18）在这条缝上偿还七条渲染欠账中的
+ * 六条（火焰三态、探魔符号、PARALYSIS/METHANE 气体、explosion_immunity
+ * 隐藏、光照逐通道乘法；燃烧怪发光 deferral 见 monsterAppearance 注释）。
  *
  * 核心价值：把原先对全局 `game` 的隐式依赖（gasGrid / lightMap /
  * player.statusDurations / 幻觉 RNG）变成**显式参数**（ctx），
@@ -19,10 +19,79 @@
 import { TerrainType, type Cell } from '../Map/Grid';
 import { ColorUtils } from '../Map/Color';
 import { GasType, type GasCell } from '../Environment/Gas';
-import type { LightCell } from '../Lighting/LightMap';
+import type { LightChannels } from '../Lighting/LightMap';
 import { MonsterState, type Monster } from '../../entities/Monster';
 import type { Player } from '../../entities/Player';
-import type { Item } from '../Items/Item';
+import { Item, ItemCategory } from '../Items/Item';
+import { ItemLoader } from '../Items/ItemLoader';
+
+// ── UI-1 新增的 CE 字形/颜色常量（逐值核对 BrogueCE-master/src/platform/）──
+
+/** CE G_FIRE 的图形平台字形（platformdependent.c:123 → U_FLIPPED_V，platform.h:6 = 0x22CF）。 */
+export const G_FIRE_CHAR = '⋏';
+/** CE G_ASHES 的字形（platformdependent.c:173 → '\''，两平台一致）——ASH 与 EMBERS 同字形（Globals.c:461/469）。 */
+export const G_ASHES_CHAR = "'";
+/** CE G_GOOD_MAGIC（platformdependent.c:131 → U_FILLED_CIRCLE_BARS，platform.h:23 = 0x29F3）。 */
+export const G_GOOD_MAGIC_CHAR = '⧳';
+/** CE G_BAD_MAGIC（platformdependent.c:132 → U_CIRCLE_BARS，platform.h:22 = 0x29F2）。 */
+export const G_BAD_MAGIC_CHAR = '⧲';
+/** CE G_AMULET（platformdependent.c:125 → U_ANKH，platform.h:9 = 0x2640）。 */
+export const G_AMULET_CHAR = '♀';
+
+/**
+ * CE 颜色 → web 字节的换算：CE web 平台是 `(unsigned char)(v * 255 / 100)`
+ * （web-platform.c:170-175，整型截断）。fireForeColor = {70,20,0}（Globals.c:136）
+ * → 70*255/100=178=0xB2、20*255/100=51=0x33。
+ */
+export const FIRE_FORE_COLOR = '#b23300';
+/** ashForeColor = {20,20,20}（Globals.c:157）→ #333333。 */
+export const ASH_FORE_COLOR = '#333333';
+/** goodMessageColor = {60,50,100}（Globals.c:278）→ #997fff。 */
+export const GOOD_MAGIC_COLOR = '#997fff';
+/** badMessageColor = {100,50,60}（Globals.c:279）→ #ff7f99。 */
+export const BAD_MAGIC_COLOR = '#ff7f99';
+/** CE white → #ffffff（探测出的护符符号前景，IO.c:1231）。 */
+export const AMULET_MAGIC_COLOR = '#ffffff';
+/** PARALYSIS_GAS 的 backColor = &pink = {100,60,66}（Globals.c:506 + GlobalsBase.c:100）→ #ff99a8；web 沿用既有气体惯例减半做底色。 */
+export const PARALYSIS_GAS_BG = 0x7f4c54;
+/** METHANE_GAS 的 backColor = &methaneColor = {45,60,15}（Globals.c:507 + :254）→ #729926；同上减半。 */
+export const METHANE_GAS_BG = 0x394c13;
+/** CE 气体 tile 的 displayChar 是 ' '（Globals.c:502-507）——CE 只用颜色区分气体；
+ * web 既有气体分支习惯配一个可读字形，这里沿用最中性的 '~'（与 POISON 同形，
+ * 区分靠色，与 CE 的「色辨气体」一致）。 */
+export const GAS_OVERLAY_CHAR = '~';
+export const PARALYSIS_GAS_FG = '#ff99aa';
+export const METHANE_GAS_FG = '#b3d94c';
+
+/** CE LIGHT_SMOOTHING_THRESHOLD（Rogue.h:180）——超过它的光强按平方根压回。 */
+const LIGHT_SMOOTHING_THRESHOLD = 150;
+
+/**
+ * CE adjustedLightValue（IO.c:1732-1737）：x ≤ 150 原样；否则
+ * fp_sqrt(x*FP/150)*150/FP = trunc(sqrt(x/150)*150)。
+ */
+function adjustedLightValue(x: number): number {
+    if (x <= LIGHT_SMOOTHING_THRESHOLD) return x;
+    return Math.trunc(Math.sqrt(x / LIGHT_SMOOTHING_THRESHOLD) * LIGHT_SMOOTHING_THRESHOLD);
+}
+
+/**
+ * CE applyColorMultiplier（IO.c:1517-1530）的 web 字节版：每通道
+ * base * multiplier / 100，整数截断，出界钳回字节域（CE plotCharWithColor
+ * 的 0..100 钳位，IO.c:1778-1783）。
+ */
+function multiplyByLightChannels(hex: string | number, light: LightChannels): string {
+    const base = ColorUtils.hexToRGB(hex);
+    const channel = (byte: number, lv: number): number => {
+        const m = adjustedLightValue(Math.max(0, lv));
+        return Math.max(0, Math.min(255, Math.trunc((byte * m) / 100)));
+    };
+    return ColorUtils.rgbToHex({
+        r: channel(base.r, light.r),
+        g: channel(base.g, light.g),
+        b: channel(base.b, light.b),
+    });
+}
 
 /**
  * 幻觉渲染的调色板/字形表——原样搬自 GameCanvas render() 的
@@ -64,8 +133,24 @@ export interface EntityVisual {
 export interface CellAppearanceContext {
     /** 该格气体镜像条目（无气体或越界时 undefined）。 */
     gas: GasCell | undefined;
-    /** 该格累积光照（无光时 null）。 */
-    light: LightCell | null;
+    /**
+     * 该格的 CE 三通道累积光（LightMap.lightAt ≙ CE tmap[x][y].light[3]，
+     * 0-100 标度、可超 100 表示过亮）。UI-1 第 7 条起渲染按 CE 的
+     * applyColorMultiplier 逐通道乘法消费它，不再用旧 {color,intensity} 混合。
+     */
+    lightChannels: LightChannels | null;
+    /**
+     * 该格的地面物品（CE itemAtLoc(loc)；渲染层每帧从 game.items 建索引传入）。
+     * 探测魔法符号（IO.c:1219-1236 左支）的载体。
+     */
+    groundItem: Item | null;
+    /**
+     * 怪物携带的物品（CE monst->carriedItem，IO.c:1120-1121 右支的载体）。
+     * 非 null 时生产者必须已保证该怪物不可被看见（!canSeeMonster 已折入）。
+     * **web Monster 当前没有 carriedItem 字段**——GameCanvas 恒传 null，
+     * 本支为留形分支，等怪物载物轮接上。
+     */
+    carriedItem: Item | null;
     /** 玩家是否处于幻觉（game.player.statusDurations.hallucinating 的布尔化）。 */
     hallucinating: boolean;
     /** 幻觉用纯视觉随机（生产 = GameCanvas 的 cosmeticPercent/Pick）。 */
@@ -90,13 +175,12 @@ export interface EntityAppearanceContext {
 }
 
 /**
- * 地形的基础外观（不含气体/光照/幻觉/记忆覆盖）。
+ * 地形的基础外观（不含气体/光照/幻觉/记忆/探测符号覆盖）。
  * 逐字搬自 GameCanvas.vue 原 getTerrainVisual（126-184 行）。
  *
- * ⚠️ 登记给 UI-1 的欠账（本轮不修）：NOTHING/WALL/CHASM/LAVA/BOG/
- * CHARRED_FLOOR 以及 C-2/F/G/C-5/B-3 追加的全部地形都落在 default
- * 分支——即 EMBERS/ASH/PLAIN_FIRE（火寿命链）、FORCEFIELD/CRYSTAL_WALL/
- * SACRED_GLYPH（B-3 载体）等目前**没有专属字形/颜色**。
+ * UI-1 第 1 条（2026-09-18）给火寿命链补了 CE 外观（见 case 段注释）；
+ * 仍落 default 的还有 NOTHING/WALL/CHASM/LAVA/BOG/CHARRED_FLOOR 与
+ * C-2/C-5/B-3 追加的地形（FORCEFIELD/CRYSTAL_WALL/SACRED_GLYPH 等）。
  */
 export function terrainAppearance(terrain: TerrainType, isVisible: boolean): TerrainVisual {
     let char = ' ';
@@ -145,6 +229,22 @@ export function terrainAppearance(terrain: TerrainType, isVisible: boolean): Ter
             char = '%'; color = '#aa2222'; bgColor = 0x330000; break;
         case TerrainType.MUD:
             char = '~'; color = '#664422'; bgColor = 0x221100; break;
+        // ── UI-1 第 1 条：火寿命链的 CE 外观（Globals.c:461/469/492/495）──
+        // PLAIN_FIRE/GAS_FIRE 都是 G_FIRE + fireForeColor（GAS_EXPLOSION 是 web
+        // 的爆炸火载体，视觉同 PLAIN_FIRE——CE 爆炸留下的就是 plain fire）；
+        // ASH 与 EMBERS 同为 G_ASHES 字形，靠前景色区分（ashForeColor/fireForeColor）；
+        // 三者 backColor 均为 0（不画底色）。drawPriority（10/70/80，数值小者优先，
+        // Rogue.h:1910）在 web 的单值 cell.terrain 模型里无可观察载体，不迁移。
+        case TerrainType.PLAIN_FIRE:
+            char = G_FIRE_CHAR; color = FIRE_FORE_COLOR; break;
+        case TerrainType.GAS_FIRE:
+            char = G_FIRE_CHAR; color = FIRE_FORE_COLOR; break;
+        case TerrainType.GAS_EXPLOSION:
+            char = G_FIRE_CHAR; color = FIRE_FORE_COLOR; break;
+        case TerrainType.EMBERS:
+            char = G_ASHES_CHAR; color = FIRE_FORE_COLOR; break;
+        case TerrainType.ASH:
+            char = G_ASHES_CHAR; color = ASH_FORE_COLOR; break;
         default:
             char = ' '; break;
     }
@@ -159,8 +259,8 @@ export function terrainAppearance(terrain: TerrainType, isVisible: boolean): Ter
 }
 
 /**
- * 一个格子最终画成什么：地形基础外观 + 燃烧/气体/光照/幻觉/记忆覆盖。
- * 逐字搬自 render() 瓦片段（原 349-441 行）的**决策部分**；绘制
+ * 一个格子最终画成什么：地形基础外观 + 探测魔法符号 + 气体/光照/幻觉/记忆覆盖。
+ * 决策结构逐字对齐 CE getCellAppearance（IO.c:1096-1441）的 web 等价物；绘制
  * （bgGraphics 矩形与 Text sprite 更新）仍在 GameCanvas.vue。
  *
  * 返回 null = 该格什么都不画（未探索且不可见——对应渲染层原
@@ -170,24 +270,30 @@ export function terrainAppearance(terrain: TerrainType, isVisible: boolean): Ter
  * pick 字形）逐字保留——COSMETIC 流的消耗序列属于可观察行为
  * （p2_0_seeded_rng 钉过其形态）。
  *
- * ⚠️ 登记给 UI-1 的欠账（本轮不修）：气体渲染只认 POISON/STEAM/CONFUSION/
- * CREEPING_DEATH 四种，G-2/G-3 的 METHANE/PARALYSIS 没有视觉分支。
+ * UI-1（2026-09-18）落地：探魔符号（第 3 条）、PARALYSIS/METHANE 气体
+ * （第 4 条）、光照逐通道乘法（第 7 条）；燃烧格的 '*' 覆盖层同时移除——
+ * 火视觉由地形本体承载（CE 无独立燃烧覆盖层，见 terrainAppearance case 段）。
  */
 export function cellAppearance(cell: Cell, ctx: CellAppearanceContext): TerrainVisual | null {
+    // CE IO.c:1219-1240：探测魔法符号。它压过地形/记忆字形，且不受
+    // 「未探索即不画」的门限制（detect magic 的本意就是照出未探索区的物品）。
+    const detected = detectedMagicAppearance(cell, ctx);
     if (!cell.isExplored && !cell.isVisible) {
-        return null;
+        if (!detected) return null;
+        return {
+            char: detected.char,
+            color: detected.color,
+            // CE 对这种格子不做任何乘法/平均（IO.c:1349-1359 "do nothing"）——
+            // 底色取未变暗的基础值。
+            bgColor: terrainAppearance(cell.terrain, true).bgColor,
+        };
     }
 
     let { char, color, bgColor } = terrainAppearance(cell.terrain, cell.isVisible);
 
-    // Apply Environmental Overrides (Gas & Fire)
+    // Apply Environmental Overrides (Gas) —— 燃烧覆盖层已移除（UI-1 第 1 条：
+    // 火视觉 = 地形本体；Grid.isBurning 仍供气体的 !isBurning 守卫使用）。
     if (cell.isVisible) {
-        if (cell.isBurning) {
-            char = '*';
-            color = '#ffaa00';
-            bgColor = 0xcc2200;
-        }
-
         const gas = ctx.gas;
         if (gas && gas.density > 0) {
             if (gas.type === GasType.POISON) {
@@ -203,27 +309,36 @@ export function cellAppearance(cell: Cell, ctx: CellAppearanceContext): TerrainV
                 bgColor = 0x440000;
                 if (!cell.isBurning) { char = '~'; color = '#ff4444'; }
             }
+            // UI-1 第 4 条：G-2/G-3 的两种气体补上视觉分支（取值依据见常量注释）。
+            else if (gas.type === GasType.PARALYSIS) {
+                bgColor = PARALYSIS_GAS_BG;
+                if (!cell.isBurning) { char = GAS_OVERLAY_CHAR; color = PARALYSIS_GAS_FG; }
+            } else if (gas.type === GasType.METHANE) {
+                bgColor = METHANE_GAS_BG;
+                if (!cell.isBurning) { char = GAS_OVERLAY_CHAR; color = METHANE_GAS_FG; }
+            }
         }
+    }
+
+    // CE IO.c:1219-1240：符号字形压过地形/气体字形（右支可出现在可见格上——
+    // 怪物隐形但格子亮着；左支只在 !playerCanSeeOrSense 的格子上出现）。
+    if (detected) {
+        char = detected.char;
+        color = detected.color;
     }
 
     // Apply dynamic lighting if the cell is currently visible
     // For memory/explored cells, we just dim them significantly.
     if (cell.isVisible) {
-        const light = ctx.light;
-        if (light && light.intensity > 0) {
-            // Blend the text color with the light color
-            const baseColorRgb = ColorUtils.hexToRGB(color);
-
-            // We use an Additive/Mix blend depending on light intensity.
-            // Brogue uses a complex multiply/add system. Here we'll do a simple proportion mix
-            // towards the light color based on intensity, but capped so we don't wash out.
-            const finalColorRgb = ColorUtils.mix(baseColorRgb, light.color, light.intensity * 0.8);
-            color = ColorUtils.rgbToHex(finalColorRgb);
-
+        const light = ctx.lightChannels;
+        if (light && (light.r > 0 || light.g > 0 || light.b > 0)) {
+            // UI-1 第 7 条：CE 的光照是**逐通道乘法**（IO.c:1434-1437 对前景与
+            // 背景各做一次 applyColorMultiplier，乘数 = adjustedLightValue 后的
+            // tmap.light），不是向光色按强度混合——光色本身就在乘数通道里，
+            // 过亮（>100）的通道会把颜色抬向饱和。
+            color = multiplyByLightChannels(color, light);
             if (bgColor !== null) {
-                const baseBgRgb = ColorUtils.hexToRGB(bgColor);
-                const finalBgRgb = ColorUtils.mix(baseBgRgb, light.color, light.intensity * 0.5);
-                bgColor = parseInt(ColorUtils.rgbToHex(finalBgRgb).replace('#', ''), 16);
+                bgColor = parseInt(multiplyByLightChannels(bgColor, light).replace('#', ''), 16);
             }
         } else {
             // Visible but completely unlit = very dark
@@ -234,6 +349,9 @@ export function cellAppearance(cell: Cell, ctx: CellAppearanceContext): TerrainV
             color = ctx.cosmetic.pick(HALLUCINATION_COLORS);
             char = ctx.cosmetic.pick(HALLUCINATION_CHARS);
         }
+    } else if (detected) {
+        // CE IO.c:1349-1359：不可见格上有探测物（或探出的怪物）时
+        // "do nothing"——不做记忆变暗、不乘光，符号与底色保持全亮。
     } else if (cell.hasMemory) {
         // Out of sight memory
         if (cell.terrain === TerrainType.STAIRS_UP || cell.terrain === TerrainType.STAIRS_DOWN) {
@@ -247,6 +365,49 @@ export function cellAppearance(cell: Cell, ctx: CellAppearanceContext): TerrainV
     }
 
     return { char, color, bgColor };
+}
+
+/**
+ * CE getCellAppearance 的探测魔法符号段（IO.c:1219-1240）：
+ *
+ *   左支：地面物品已探测出魔法（web 载体 = item.magicDetected，B-1c）且
+ *         itemMagicPolarity ≠ 0，且**看不见该格**（CE !playerCanSeeOrSense，
+ *         Rogue.h:1278 = ANY_KIND_OF_VISIBLE → web cell.isVisible）；
+ *   右支：怪物携带的已探测魔法物品且**看不见该怪物**（IO.c:1120-1121，
+ *         含 !canSeeMonster——web 无怪物载物载体，carriedItem 恒 null 留形）。
+ *
+ * 两支守卫的对象不同（格 vs 怪），是**析取**不合并；右支命中时 theItem 取
+ * 携带物（IO.c:1123-1125），即左支让位于右支。
+ *
+ * 符号（图形平台映射，platformdependent.c:123-132）：护符 → G_AMULET + white；
+ * polarity -1 → G_BAD_MAGIC + badMessageColor；+1 → G_GOOD_MAGIC +
+ * goodMessageColor。CE 内层还有 polarity == 0 → cellChar = 0 的防御分支，
+ * 但两支守卫都要求 polarity ≠ 0（0 是 falsy 过不了守卫），结构性不可达，不迁移。
+ */
+function detectedMagicAppearance(cell: Cell, ctx: CellAppearanceContext): { char: string; color: string } | null {
+    const carried = ctx.carriedItem;
+    const monsterWithDetectedItem = !!(carried
+        && carried.magicDetected
+        && ItemLoader.itemMagicPolarity(carried) !== 0);
+
+    let theItem: Item | null;
+    if (monsterWithDetectedItem) {
+        theItem = carried; // IO.c:1123-1125：携带物优先于地面物
+    } else {
+        theItem = ctx.groundItem;
+        // 左支守卫：物品已探测 + 有极性 + 看不见【格子】
+        if (!theItem || !theItem.magicDetected || cell.isVisible) return null;
+        if (ItemLoader.itemMagicPolarity(theItem) === 0) return null;
+    }
+
+    if (!theItem.magicDetected || ItemLoader.itemMagicPolarity(theItem) === 0) return null;
+
+    if (theItem.category === ItemCategory.AMULET) {
+        return { char: G_AMULET_CHAR, color: AMULET_MAGIC_COLOR };
+    }
+    const polarity = ItemLoader.itemMagicPolarity(theItem);
+    if (polarity === -1) return { char: G_BAD_MAGIC_CHAR, color: BAD_MAGIC_COLOR };
+    return { char: G_GOOD_MAGIC_CHAR, color: GOOD_MAGIC_COLOR };
 }
 
 /**
@@ -278,8 +439,18 @@ export function itemAppearance(item: Item, ctx: EntityAppearanceContext): Entity
  * hp ≤ 0 不画（原 if (m.hp > 0) 门）；可见时盟友绿 / 睡眠冷蓝；
  * 不可见但心灵感应时画 '#66ccff' 剪影。
  *
- * ⚠️ 登记给 UI-1 的欠账（本轮不修）：燃烧的怪物没有专属视觉
- * （CE 有 burning 状态显示）；心灵感应剪影没有"地面符号"辅助。
+ * ⚠️ UI-1 第 2 条 deferral（2026-09-18 登记）：CE 对燃烧怪物的视觉是
+ * **发光不是改字形/颜色**——updateLighting() 给非 MONST_FIERY 的燃烧怪泼
+ * BURNING_CREATURE_LIGHT（Light.c:250，fireBoltColor {500,150,0}，半径
+ * 300-400）。那笔光进的是玩法光网格（tmap.light，Time.c:894 每回合重刷，
+ * 参与 VISIBLE/黑暗判定），web 的等价接线点在 Game.updateVision 的生物光
+ * 循环里——Game.ts 本轮禁改（C-8 并行保护），故登记顺延：
+ * **激活轮 = 在 Game.updateVision 里为
+ * `burningDuration(m) > 0 && !m.isFiery` 的怪物 paintLight(BURNING_CREATURE_LIGHT)**，
+ * 渲染侧（本文件）届时零改动、自动受益。
+ * 在那之前，本函数对燃烧怪物**不做任何事**——禁止自创 CE 没有的"燃烧染色"
+ * （用户裁决：优先还原 CE 的逻辑结构，避免原创差异引起连锁反应）。
+ * 留痕测试：ui_1_rendering.test.ts「燃烧怪物无专属外观」。
  */
 export function monsterAppearance(monster: Monster, ctx: EntityAppearanceContext): EntityVisual | null {
     if (monster.hp <= 0) {

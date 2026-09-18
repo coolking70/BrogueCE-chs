@@ -26,8 +26,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { TerrainType, Cell } from '../engine/Map/Grid';
 import { GasType, type GasCell } from '../engine/Environment/Gas';
-import { ColorUtils } from '../engine/Map/Color';
-import type { LightCell } from '../engine/Lighting/LightMap';
+import type { LightChannels } from '../engine/Lighting/LightMap';
 import {
     terrainAppearance,
     cellAppearance,
@@ -37,6 +36,15 @@ import {
     entityAppearance,
     HALLUCINATION_COLORS,
     HALLUCINATION_CHARS,
+    G_FIRE_CHAR,
+    G_ASHES_CHAR,
+    FIRE_FORE_COLOR,
+    ASH_FORE_COLOR,
+    PARALYSIS_GAS_BG,
+    METHANE_GAS_BG,
+    PARALYSIS_GAS_FG,
+    METHANE_GAS_FG,
+    GAS_OVERLAY_CHAR,
     type CosmeticRng,
     type CellAppearanceContext,
     type EntityAppearanceContext,
@@ -87,22 +95,24 @@ const EXPECTED_VISIBLE: Record<TerrainType, { char: string; color: string; bgCol
     [TerrainType.WEB]: { char: '\\', color: '#cccccc', bgColor: 0x222222 },
     [TerrainType.BLOOD]: { char: '%', color: '#aa2222', bgColor: 0x330000 },
     [TerrainType.MUD]: { char: '~', color: '#664422', bgColor: 0x221100 },
-    // ── 以下成员全部落在 default（重构前如此，行为逐位保留）──
+    // ── UI-1 第 1 条（2026-09-18 反转：火寿命链已有 CE 外观，不再是 default）──
+    [TerrainType.PLAIN_FIRE]: { char: G_FIRE_CHAR, color: FIRE_FORE_COLOR, bgColor: null },   // F-1 落地，UI-1 反转
+    [TerrainType.EMBERS]: { char: G_ASHES_CHAR, color: FIRE_FORE_COLOR, bgColor: null },      // F-2a 落地，UI-1 反转
+    [TerrainType.ASH]: { char: G_ASHES_CHAR, color: ASH_FORE_COLOR, bgColor: null },          // F-2a 落地，UI-1 反转
+    // ── 以下成员仍走 default（R-1 时如此；GAS_FIRE/GAS_EXPLOSION 同属 UI-1
+    // 反转——CE 里它们与 PLAIN_FIRE 同为 G_FIRE + fireForeColor）──
+    [TerrainType.GAS_FIRE]: { char: G_FIRE_CHAR, color: FIRE_FORE_COLOR, bgColor: null },     // G-2，UI-1 反转
+    [TerrainType.GAS_EXPLOSION]: { char: G_FIRE_CHAR, color: FIRE_FORE_COLOR, bgColor: null },// F-2c，UI-1 反转
+    [TerrainType.POISON_GAS]: DEFAULT_LOOK,       // G-1（气体视觉走 gasGrid 覆盖层）
+    [TerrainType.CONFUSION_GAS]: DEFAULT_LOOK,
+    [TerrainType.STEAM]: DEFAULT_LOOK,
+    [TerrainType.METHANE_GAS]: DEFAULT_LOOK,      // G-2（气体视觉走 gasGrid 覆盖层）
+    [TerrainType.PARALYSIS_GAS]: DEFAULT_LOOK,    // G-3（同上）
     [TerrainType.CHASM_EDGE]: DEFAULT_LOOK,       // C-2
     [TerrainType.OBSIDIAN]: DEFAULT_LOOK,         // C-2
     [TerrainType.BRIDGE]: DEFAULT_LOOK,           // C-2
     [TerrainType.BRIDGE_EDGE]: DEFAULT_LOOK,      // C-2
     [TerrainType.INERT_BRIMSTONE]: DEFAULT_LOOK,  // C-2
-    [TerrainType.PLAIN_FIRE]: DEFAULT_LOOK,       // F-1（火寿命链无渲染——UI-1 欠账）
-    [TerrainType.EMBERS]: DEFAULT_LOOK,           // F-2a（同上）
-    [TerrainType.ASH]: DEFAULT_LOOK,              // F-2a（同上）
-    [TerrainType.POISON_GAS]: DEFAULT_LOOK,       // G-1（气体视觉走 gasGrid 覆盖层）
-    [TerrainType.CONFUSION_GAS]: DEFAULT_LOOK,
-    [TerrainType.STEAM]: DEFAULT_LOOK,
-    [TerrainType.GAS_FIRE]: DEFAULT_LOOK,         // G-2
-    [TerrainType.METHANE_GAS]: DEFAULT_LOOK,      // G-2
-    [TerrainType.PARALYSIS_GAS]: DEFAULT_LOOK,    // G-3
-    [TerrainType.GAS_EXPLOSION]: DEFAULT_LOOK,    // F-2c
     [TerrainType.HOLE]: DEFAULT_LOOK,             // C-5
     [TerrainType.HOLE_EDGE]: DEFAULT_LOOK,        // C-5
     [TerrainType.FORCEFIELD]: DEFAULT_LOOK,       // B-3
@@ -145,10 +155,19 @@ function scriptedCosmetic(percents: boolean[]): ScriptedCosmetic {
     };
 }
 
-const WHITE_LIGHT: LightCell = { color: { r: 255, g: 255, b: 255 }, intensity: 50 };
+/** CE 量级的满强白光三通道（矿灯色 {180,180,180} 一类；乘数 1.0 的Identity 光）。 */
+const IDENTITY_LIGHT: LightChannels = { r: 100, g: 100, b: 100 };
 
 function cellCtx(overrides: Partial<CellAppearanceContext> = {}): CellAppearanceContext {
-    return { gas: undefined, light: null, hallucinating: false, cosmetic: scriptedCosmetic([]), ...overrides };
+    return {
+        gas: undefined,
+        lightChannels: null,
+        groundItem: null,
+        carriedItem: null,
+        hallucinating: false,
+        cosmetic: scriptedCosmetic([]),
+        ...overrides,
+    };
 }
 
 function entityCtx(overrides: Partial<EntityAppearanceContext> = {}): EntityAppearanceContext {
@@ -222,24 +241,48 @@ describe('R-1 cellAppearance：未探索 / 可见 / 记忆 三态', () => {
         expect(cellAppearance(makeCell(TerrainType.DOOR, { visible: true }), cellCtx())).toEqual({
             char: '+', color: '#222222', bgColor: 0x050505,
         });
-        // intensity = 0 同样走"无光"分支
+        // 全零通道同样走"无光"分支
         expect(
-            cellAppearance(makeCell(TerrainType.DOOR, { visible: true }), cellCtx({ light: { color: { r: 255, g: 0, b: 0 }, intensity: 0 } })),
+            cellAppearance(makeCell(TerrainType.DOOR, { visible: true }), cellCtx({ lightChannels: { r: 0, g: 0, b: 0 } })),
         ).toEqual({ char: '+', color: '#222222', bgColor: 0x050505 });
     });
 
-    it('可见且有光 → 前景按 intensity×0.8、背景按 intensity×0.5 向光色混合', () => {
+    it('可见但有光 → CE 逐通道乘法：{100,100,100} 是恒等乘数，颜色原样', () => {
+        // UI-1 第 7 条反转：旧实现是向光色按 intensity×0.8/0.5 混合；
+        // 现在是 CE applyColorMultiplier（IO.c:1517-1530），乘数 =
+        // adjustedLightValue(通道)/100——{100,100,100} 时乘数恰为 1。
         const visual = cellAppearance(
             makeCell(TerrainType.FLOOR, { visible: true }),
-            cellCtx({ light: WHITE_LIGHT }),
+            cellCtx({ lightChannels: IDENTITY_LIGHT }),
         )!;
-        // 期望值按原实现同款 ColorUtils 公式推导（前景 mix 50×0.8=40%，背景 50×0.5=25%）
-        const fg = ColorUtils.rgbToHex(ColorUtils.mix(ColorUtils.hexToRGB('#aaaaaa'), WHITE_LIGHT.color, 40));
-        const bg = parseInt(ColorUtils.rgbToHex(ColorUtils.mix(ColorUtils.hexToRGB(0x222233), WHITE_LIGHT.color, 25)).replace('#', ''), 16);
-        expect(visual).toEqual({ char: '.', color: fg, bgColor: bg });
-        // 具体值锚点（防 ColorUtils 一起改导致推导失真）：#aaaaaa+白光40% = #cccccc，bg = 0x595966
-        expect(visual.color).toBe('#cccccc');
-        expect(visual.bgColor).toBe(0x595966);
+        expect(visual).toEqual({ char: '.', color: '#aaaaaa', bgColor: 0x222233 });
+    });
+
+    it('可见但弱光 → 逐通道线性变暗（trunc(base*50/100)），不再被抬向光色', () => {
+        const visual = cellAppearance(
+            makeCell(TerrainType.FLOOR, { visible: true }),
+            cellCtx({ lightChannels: { r: 50, g: 50, b: 50 } }),
+        )!;
+        expect(visual.color).toBe('#555555');  // trunc(170*50/100)=85
+        expect(visual.bgColor).toBe(0x111119); // (34,34,51)→(17,17,25)
+    });
+
+    it('过亮光（>100）先平方根压回再乘，颜色向饱和抬升——旧混合公式给不出的效果', () => {
+        // adjusted(180) = trunc(sqrt(180/150)*150) = 164（IO.c:1732-1737）
+        const visual = cellAppearance(
+            makeCell(TerrainType.FLOOR, { visible: true }),
+            cellCtx({ lightChannels: { r: 180, g: 180, b: 180 } }),
+        )!;
+        expect(visual.color).toBe('#ffffff');  // trunc(170*164/100)=278 → 钳 255
+        expect(visual.bgColor).toBe(0x373753); // 34*164/100=55, 51*164/100=83
+    });
+
+    it('有色光是逐通道的：红通道亮、绿蓝通道灭 → 基色只剩红（混向单色的旧公式必红）', () => {
+        const visual = cellAppearance(
+            makeCell(TerrainType.FLOOR, { visible: true }),
+            cellCtx({ lightChannels: { r: 100, g: 20, b: 0 } }),
+        )!;
+        expect(visual.color).toBe('#aa2200'); // (170*1, 170*0.2, 170*0) → (170,34,0)
     });
 
     it('记忆态（已探索未可见）普通地形 → #333333 / 0x111111', () => {
@@ -266,90 +309,91 @@ describe('R-1 cellAppearance：未探索 / 可见 / 记忆 三态', () => {
 });
 
 describe('R-1 cellAppearance：燃烧 / 气体 / 幻觉覆盖', () => {
-    it('可见燃烧格（PLAIN_FIRE）无光 → "*" 字形 + 近黑（燃烧色被无光分支压暗，原行为）', () => {
+    it('可见燃烧格（PLAIN_FIRE）无光 → CE 火字形压暗、无底色（UI-1 反转：不再有 "*" 覆盖层）', () => {
         const visual = cellAppearance(makeCell(TerrainType.PLAIN_FIRE, { visible: true }), cellCtx())!;
-        expect(visual.char).toBe('*');
+        expect(visual.char).toBe(G_FIRE_CHAR);
         expect(visual.color).toBe('#222222');
-        expect(visual.bgColor).toBe(0x050505);
+        expect(visual.bgColor).toBeNull(); // CE PLAIN_FIRE backColor = 0，无光分支不改 null
     });
 
-    it('可见燃烧格 + 光 → "*" + 燃烧色向光色混合', () => {
+    it('可见燃烧格 + 恒等光 → "*" 覆盖层已移除，CE 火外观原样可见（UI-1 反转）', () => {
         const visual = cellAppearance(
             makeCell(TerrainType.PLAIN_FIRE, { visible: true }),
-            cellCtx({ light: { color: { r: 255, g: 255, b: 255 }, intensity: 100 } }),
+            cellCtx({ lightChannels: IDENTITY_LIGHT }),
         )!;
-        expect(visual.char).toBe('*');
-        expect(visual.color).toBe('#ffeecc'); // mix(#ffaa00, white, 80)
-        expect(visual.bgColor).toBe(0xe5907f); // mix(0xcc2200, white, 50)
+        expect(visual.char).toBe(G_FIRE_CHAR);
+        expect(visual.color).toBe(FIRE_FORE_COLOR);
+        expect(visual.bgColor).toBeNull(); // CE PLAIN_FIRE backColor = 0
     });
 
-    it('毒气覆盖可见格：bg 0x660066、"~"/#ff55ff（再经光照混合）', () => {
+    it('毒气覆盖可见格：bg 0x660066、"~"/#ff55ff（恒等光下原样）', () => {
         const visual = cellAppearance(
             makeCell(TerrainType.FLOOR, { visible: true }),
-            cellCtx({ gas: gas(GasType.POISON), light: WHITE_LIGHT }),
+            cellCtx({ gas: gas(GasType.POISON), lightChannels: IDENTITY_LIGHT }),
         )!;
         expect(visual.char).toBe('~');
-        expect(visual.color).toBe('#ff99ff'); // mix(#ff55ff, white, 40)
-        expect(visual.bgColor).toBe(0x8c3f8c); // mix(0x660066, white, 25)
+        expect(visual.color).toBe('#ff55ff');
+        expect(visual.bgColor).toBe(0x660066);
     });
 
-    it('燃烧 + 毒气并存：bg 仍被毒气覆盖，但字形保住 "*"（!isBurning 守卫）', () => {
+    it('燃烧格 + 毒气并存：bg 仍被毒气覆盖，但字形保住火字形（!isBurning 守卫；UI-1 后字形 = CE 火字形）', () => {
         const visual = cellAppearance(
             makeCell(TerrainType.PLAIN_FIRE, { visible: true }),
-            cellCtx({ gas: gas(GasType.POISON), light: { color: { r: 255, g: 255, b: 255 }, intensity: 100 } }),
+            cellCtx({ gas: gas(GasType.POISON), lightChannels: IDENTITY_LIGHT }),
         )!;
-        expect(visual.char).toBe('*');
-        expect(visual.color).toBe('#ffeecc'); // 燃烧色 #ffaa00（不被毒气字形覆盖）
-        expect(visual.bgColor).toBe(0xb27fb2); // mix(0x660066, white, 50) —— 毒气 bg 后写生效
+        expect(visual.char).toBe(G_FIRE_CHAR);
+        expect(visual.color).toBe(FIRE_FORE_COLOR); // 火前景不被毒气字形覆盖
+        expect(visual.bgColor).toBe(0x660066);      // 毒气 bg 后写生效
     });
 
-    it('四种有渲染分支的气体各就各位（bg 覆盖 + 字形/颜色）', () => {
-        const lit = { color: { r: 255, g: 255, b: 255 }, intensity: 100 };
-        const combos: Array<[GasType, string, string]> = [
-            [GasType.POISON, '~', '#ff55ff'],
-            [GasType.STEAM, '*', '#ffffff'],
-            [GasType.CONFUSION, '?', '#55ffff'],
-            [GasType.CREEPING_DEATH, '~', '#ff4444'],
+    it('六种气体各就各位（bg 覆盖 + 字形/颜色；PARALYSIS/METHANE 为 UI-1 第 4 条反转）', () => {
+        const combos: Array<[GasType, string, string, number]> = [
+            [GasType.POISON, '~', '#ff55ff', 0x660066],
+            [GasType.STEAM, '*', '#ffffff', 0xaaaaaa],
+            [GasType.CONFUSION, '?', '#55ffff', 0x006666],
+            [GasType.CREEPING_DEATH, '~', '#ff4444', 0x440000],
+            [GasType.PARALYSIS, GAS_OVERLAY_CHAR, PARALYSIS_GAS_FG, PARALYSIS_GAS_BG],
+            [GasType.METHANE, GAS_OVERLAY_CHAR, METHANE_GAS_FG, METHANE_GAS_BG],
         ];
-        for (const [type, char, color] of combos) {
+        for (const [type, char, color, bg] of combos) {
             const visual = cellAppearance(
                 makeCell(TerrainType.FLOOR, { visible: true }),
-                cellCtx({ gas: gas(type), light: lit }),
+                cellCtx({ gas: gas(type), lightChannels: IDENTITY_LIGHT }),
             )!;
             expect(visual.char, `GasType[${type}] 字形`).toBe(char);
-            expect(visual.color, `GasType[${type}] 颜色`).toBe(ColorUtils.rgbToHex(ColorUtils.mix(ColorUtils.hexToRGB(color), lit.color, 80)));
-        }
-        // 对应 bg：POISON 0x660066 / STEAM 0xaaaaaa / CONFUSION 0x006666 / CREEPING_DEATH 0x440000
-        const bgs: Array<[GasType, number]> = [
-            [GasType.POISON, 0x660066],
-            [GasType.STEAM, 0xaaaaaa],
-            [GasType.CONFUSION, 0x006666],
-            [GasType.CREEPING_DEATH, 0x440000],
-        ];
-        for (const [type, bg] of bgs) {
-            const visual = cellAppearance(
-                makeCell(TerrainType.FLOOR, { visible: true }),
-                cellCtx({ gas: gas(type), light: lit }),
-            )!;
-            expect(visual.bgColor, `GasType[${type}] bg`).toBe(parseInt(ColorUtils.rgbToHex(ColorUtils.mix(ColorUtils.hexToRGB(bg), lit.color, 50)).replace('#', ''), 16));
+            expect(visual.color, `GasType[${type}] 颜色`).toBe(color);
+            expect(visual.bgColor, `GasType[${type}] bg`).toBe(bg);
         }
     });
 
     it('气体 density=0 → 无覆盖（原 if (gas && gas.density > 0) 门）', () => {
         const visual = cellAppearance(
             makeCell(TerrainType.FLOOR, { visible: true }),
-            cellCtx({ gas: gas(GasType.POISON, 0), light: WHITE_LIGHT }),
+            cellCtx({ gas: gas(GasType.POISON, 0), lightChannels: IDENTITY_LIGHT }),
         )!;
         expect(visual.char).toBe('.');
-        expect(visual.bgColor).toBe(0x595966); // 与"无气体+白光"完全一致
+        expect(visual.color).toBe('#aaaaaa'); // 与"无气体+恒等光"完全一致
+        expect(visual.bgColor).toBe(0x222233);
     });
 
-    it('PARALYSIS/METHANE 气体没有渲染分支（现状钉死——UI-1 欠账，勿当回归修）', () => {
-        const visual = cellAppearance(
-            makeCell(TerrainType.FLOOR, { visible: true }),
-            cellCtx({ gas: gas(GasType.PARALYSIS, 999), light: WHITE_LIGHT }),
+    it('PARALYSIS/METHANE 气体现在有渲染分支（UI-1 第 4 条反转旧留痕：此前钉死"无分支"）', () => {
+        // 旧留痕断言（R-1 时）："PARALYSIS/METHANE 气体没有渲染分支（现状钉死——UI-1 欠账）"
+        // UI-1 偿还该欠账，按「留痕反转」改为断言新事实。
+        for (const type of [GasType.PARALYSIS, GasType.METHANE]) {
+            const visual = cellAppearance(
+                makeCell(TerrainType.FLOOR, { visible: true }),
+                cellCtx({ gas: gas(type, 999), lightChannels: IDENTITY_LIGHT }),
+            )!;
+            expect(visual.char, `GasType[${type}]`).not.toBe('.');
+            expect(visual.bgColor, `GasType[${type}]`).not.toBe(0x222233);
+        }
+        // 燃烧格上气体字形让位（!isBurning 守卫在两个新分支同样生效）
+        const onFire = cellAppearance(
+            makeCell(TerrainType.GAS_FIRE, { visible: true }),
+            cellCtx({ gas: gas(GasType.METHANE, 999), lightChannels: IDENTITY_LIGHT }),
         )!;
-        expect(visual).toEqual({ char: '.', color: '#cccccc', bgColor: 0x595966 });
+        expect(onFire.char).toBe(G_FIRE_CHAR);
+        expect(onFire.bgColor).toBe(METHANE_GAS_BG);
     });
 
     it('幻觉：percent(15) 中 → 取幻觉色/字形（发生在无光压暗之后）；不中 → 原样', () => {

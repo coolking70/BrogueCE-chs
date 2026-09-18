@@ -287,17 +287,29 @@ onMounted(async () => {
         const cosmetic: CosmeticRng = { percent: cosmeticPercent, pick: cosmeticPick };
 
         // ---- Tiles ----
+        // UI-1 第 3 条接线：地面物品索引（探测魔法符号需要知道格子上有什么）。
+        // 每帧建一次 O(items)，避免 3713 格 × 线性扫描。
+        const itemAtCell = new Map<string, (typeof game.items)[number]>();
+        for (const item of game.items) {
+            itemAtCell.set(`${item.loc.x},${item.loc.y}`, item);
+        }
+
         for (let x = 0; x < DCOLS; x++) {
             for (let y = 0; y < DROWS; y++) {
                 const cell = game.grid.getCell(x, y);
                 const sprite = tileSprites[x]![y]!;
 
-                // 该格画什么（字形/颜色/燃烧/气体/光照/记忆/幻觉）全部由
+                // 该格画什么（字形/颜色/气体/光照/记忆/幻觉/探测符号）全部由
                 // 纯函数决定；null = 未探索且不可见，什么都不画。
+                // lightChannels = CE tmap.light 三通道（LightMap.lightAt），
+                // UI-1 第 7 条起渲染按 CE 乘法消费；groundItem/carriedItem =
+                // 探测魔法符号的 ctx 取值（web Monster 无载物载体，恒 null 留形）。
                 const visual = cell
                     ? cellAppearance(cell, {
                         gas: game.environment.gasGrid[x]?.[y],
-                        light: game.lightMap.getLight(x, y),
+                        lightChannels: game.lightMap.lightAt(x, y),
+                        groundItem: itemAtCell.get(`${x},${y}`) ?? null,
+                        carriedItem: null,
                         hallucinating,
                         cosmetic,
                     })

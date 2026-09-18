@@ -37,3 +37,28 @@ export const STATUS_CONFIG: Record<BurningStatusId, StatusConfigEntry> = {
     burning: { id: 'burning', label: '燃烧', color: '#fb923c', isDebuff: true }
 };
 
+/**
+ * UI-1 第 5 条：CE statusEffectCatalog 中显示名为**空串**的状态
+ * （Globals.c:1794-1821）：STATUS_EXPLOSION_IMMUNITY / STATUS_NUTRITION /
+ * STATUS_ENTERS_LEVEL_IN / STATUS_ENRAGED——CE 有意不在侧栏显示它们
+ * （IO.c:4823 的 `statusEffectCatalog[i].name[0]` 门）。
+ *
+ * ⚠️ 路线图 P1-47 原登记「explosion_immunity 显示裸键名 → 补中文标签」
+ * 方向是反的：按 CE 的正确处置是**不显示**。
+ *
+ * web 侧核对（2026-09-18）：statusDurations 的逃生舱键里只有
+ * 'explosion_immunity' 命中本表——'burning' 在 CE 有名（"Burning"），
+ * nutrition 不进 statusDurations（走专门的饥饿部件，CE 同款，IO.c:4786），
+ * enters_level_in / enraged 两个键 web 尚无写入点。
+ */
+export const CE_EMPTY_NAME_STATUSES: ReadonlySet<string> = new Set(['explosion_immunity']);
+
+/**
+ * CE IO.c:4823 `name[0]` 门的 web 等价：false = 侧栏不得显示该状态。
+ * 未登记进 STATUS_CONFIG 的键仍返回 true（保持既有「未知键裸显」的
+ * 调试可见性，CE 无此情形、不作收缩）。
+ */
+export function isSidebarVisibleStatus(id: string): boolean {
+    return !CE_EMPTY_NAME_STATUSES.has(id);
+}
+

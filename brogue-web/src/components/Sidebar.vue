@@ -3,7 +3,7 @@ import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { activeGame } from '../engine/Core/Game';
 import { logger } from '../engine/Systems/Logger';
 import type { LogMessage } from '../engine/Systems/Logger';
-import { STATUS_CONFIG } from '../engine/Status/statusConfig';
+import { STATUS_CONFIG, isSidebarVisibleStatus } from '../engine/Status/statusConfig';
 import { STOMACH_SIZE, HUNGER_THRESHOLD, WEAK_THRESHOLD, FAINT_THRESHOLD } from '../entities/Player';
 import { computeSidebarWidth, displaySettings } from '../engine/Settings';
 
@@ -49,8 +49,10 @@ onMounted(() => {
       playerDepth.value = activeGame.depth;
       playerNutrition.value = activeGame.player.nutrition;
       hoverText.value = activeGame.hoveredText;
+      // UI-1 第 5 条：CE 有意不显示的状态（explosion_immunity 等，见
+      // statusConfig.CE_EMPTY_NAME_STATUSES）不进侧栏（CE IO.c:4823 name[0] 门）。
       playerStatuses.value = Object.entries(activeGame.player.statusDurations)
-        .filter(([, turns]) => (turns ?? 0) > 0)
+        .filter(([id, turns]) => (turns ?? 0) > 0 && isSidebarVisibleStatus(id))
         .map(([id, turns]) => {
           const meta = (STATUS_CONFIG as Record<string, { label: string; color: string }>)[id] ?? { label: id, color: '#dbeafe' };
           return `${meta.label}|${turns}|${meta.color}`;

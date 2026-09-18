@@ -1,3 +1,23 @@
+<script lang="ts">
+// UI-1 第 6 条：Game.onConfirmRequest（C-5 落下的钩子，Game.ts:408）的生产侧接线。
+// 引擎的 requestConfirm 是**同步**契约（CE confirm() 在文本框里自旋等键，IO.c:2946-2975），
+// 所以这里用浏览器原生 confirm()——它是 web 平台唯一能同步阻塞等答案的模态，
+// 且按键语义与 CE 完全同构：Enter = OK = Yes（CE RETURN_KEY 挂在 Yes 钮，
+// IO.c:2956）、Esc = Cancel = No（CE ESCAPE_KEY 挂在 No 钮，IO.c:2966；
+// ACKNOWLEDGE_KEY = ' ' 同样映射 No，Rogue.h:1179）。
+// 纯逻辑（回放/自动寻路旁路）拆成可单测的导出函数；测试见 ui_1_rendering.test.ts。
+import type { Game } from './engine/Core/Game';
+
+export function wireConfirmRequest(game: Game): void {
+    game.onConfirmRequest = (message: string): boolean => {
+        // CE IO.c:2941-2943：回放/自动演示期间 confirm 一律放行（"oh yes he did"），
+        // 否则回放会在对话框上卡死、自动化会被阻塞。
+        if (game.replayStatus === 'playing' || game.isAutoTraveling()) return true;
+        return window.confirm(message);
+    };
+}
+</script>
+
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import i18next from 'i18next';
@@ -14,6 +34,10 @@ import { logger } from './engine/Systems/Logger';
 
 const SAVE_KEY = 'brogue-web-save-v1';
 const REPLAY_KEY = 'brogue-web-replay-v1';
+
+// UI-1 第 6 条：把引擎确认钩子接到本组件（headless/测试环境不挂载 App，
+// 钩子保持 null → requestConfirm 按"确认"处理，与 C-5 申报一致）。
+wireConfirmRequest(activeGame);
 
 const gameStarted = ref(false);
 const menuOpen = ref(true);
