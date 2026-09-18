@@ -75,6 +75,7 @@
  */
 import type { Pos } from '../../types';
 import { rng } from '../Random';
+import { terrainAllowsMove } from './Connectivity';
 import {
     DungeonLayer,
     DRAW_PRIORITY,
@@ -479,6 +480,134 @@ export function levelIsDisconnectedWithBlockingMap(
     return smallestQualifyingZoneSize < 10000 ? smallestQualifyingZoneSize : 0;
 }
 
+// ── levelIsDisconnectedOnMovementGraph（C-8）──────────────────────────────
+
+/** CE nbDirs（GlobalsBase.c:38）八向全序；web 移动无对角穿墙限制，分区、
+ *  蔓延与相触判定都按 8 向。 */
+const DIRS8: ReadonlyArray<readonly [number, number]> = [
+    [0, -1], [0, 1], [-1, 0], [1, 0],
+    [-1, -1], [1, -1], [-1, 1], [1, 1],
+];
+
+/**
+ * C-8：levelIsDisconnectedWithBlockingMap 的 **web 移动图同形变体**。
+ *
+ * 为什么需要第二个口径（C-8 诊断结论，seed12/D25 类坏层的根因，30 seed
+ * × D1-D26 扫描唯一坏层）：CE 判据在「cellIsPassableOrDoor 图」（CHASM/
+ * LAVA/TRAP 算阻挡）上评估；web 的移动图（canMoveTo 镜像 ∪ SECRET_DOOR，
+ * P1-29/T12 口径）把 CHASM/LAVA 视作可走。DF 足迹与这类地形合围出的切断，
+ * 在 CE 图里"远侧本是孤岛、不贴带、不成 zone"，相位 1 无种子、相位 3 无
+ * 相触，于是放行——seed12/D25 的 DF_CRYSTAL_WALL 7 格足迹在 web 图上把
+ * 808 格干地切成 436/367（上/下行楼梯分居两块，卡死局），CE 判据返回 0。
+ *
+ * 算法与 CE 三相位逐一同形（Architect.c:3149-3197），差异只有两处，与
+ * P1-29 湖泊闸门同一裁决先例（4 向 CE 判据 → 8 向 web 移动图）：
+ *   1. 通行判据 = terrainAllowsMove ∪ SECRET_DOOR（canMoveTo 镜像口径）；
+ *   2. 分区、漫带、相触全部 8 向。
+ *
+ * 纯泛洪，**零 RNG 消耗**；只在 CE 判据与 web 图结论之外**加严**（两查
+ * 并列，任一判切断即否决），不影响任何既有放行结果。
+ */
+export function levelIsDisconnectedOnMovementGraph(
+    grid: Grid,
+    blockingMap: SpawnMap
+): boolean {
+    const W = grid.width;
+    const H = grid.height;
+    const idx = (px: number, py: number): number => py * W + px;
+    const movementPassable = (px: number, py: number): boolean => {
+        const c = grid.getCell(px, py);
+        return !!c && (terrainAllowsMove(c.terrain) || c.terrain === TerrainType.SECRET_DOOR);
+    };
+    const zoneMap = new Int16Array(W * H);
+
+    /** 8 向泛洪。waiveBand=true 时无视阻断带（CE 相位 2 传 NULL 的对应），
+     *  但已标号格永不重标。返回本区格数。 */
+    const flood = (sx: number, sy: number, label: number, waiveBand: boolean): number => {
+        let size = 0;
+        const stack: number[] = [idx(sx, sy)];
+        zoneMap[idx(sx, sy)] = label;
+        while (stack.length > 0) {
+            const k = stack.pop()!;
+            const cx = k % W;
+            const cy = Math.floor(k / W);
+            size++;
+            for (const [dx, dy] of DIRS8) {
+                const nx = cx + dx!;
+                const ny = cy + dy!;
+                if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue;
+                const nk = idx(nx, ny);
+                if (zoneMap[nk] !== 0) continue;
+                if (!waiveBand && blockingMap[nk]) continue;
+                if (!movementPassable(nx, ny)) continue;
+                zoneMap[nk] = label;
+                stack.push(nk);
+            }
+        }
+        return size;
+    };
+
+    // 相位 1：贴阻断带的可通行格为种子成区（阻断生效；CE :3149-3162）。
+    let zoneCount = 0;
+    for (let i = 1; i < W - 1; i++) {
+        for (let j = 1; j < H - 1; j++) {
+            const k = idx(i, j);
+            if (zoneMap[k] !== 0 || blockingMap[k] || !movementPassable(i, j)) continue;
+            let borders = false;
+            for (const [dx, dy] of DIRS8) {
+                const nx = i + dx!;
+                const ny = j + dy!;
+                if (nx >= 0 && ny >= 0 && nx < W && ny < H && blockingMap[idx(nx, ny)]) {
+                    borders = true;
+                    break;
+                }
+            }
+            if (borders) {
+                zoneCount++;
+                flood(i, j, zoneCount, false);
+            }
+        }
+    }
+
+    // 相位 2：各区漫进阻断带里本次会被改写成阻挡的可走格（阻断豁免；
+    // CE :3164-3177 单趟扫描，带内已是墙的格不成员——它们不是新切断源）。
+    for (let i = 1; i < W - 1; i++) {
+        for (let j = 1; j < H - 1; j++) {
+            const k = idx(i, j);
+            if (!blockingMap[k] || zoneMap[k] !== 0 || !movementPassable(i, j)) continue;
+            for (const [dx, dy] of DIRS8) {
+                const nx = i + dx!;
+                const ny = j + dy!;
+                if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue;
+                const borderingZone = zoneMap[idx(nx, ny)]!;
+                if (borderingZone !== 0) {
+                    flood(i, j, borderingZone, true);
+                    break;
+                }
+            }
+        }
+    }
+
+    // 相位 3：不同区 8 向相触即切断（CE :3179-3197）。
+    for (let i = 1; i < W - 1; i++) {
+        for (let j = 1; j < H - 1; j++) {
+            const k = idx(i, j);
+            const zone = zoneMap[k]!;
+            if (zone === 0) continue;
+            for (const [dx, dy] of DIRS8) {
+                const nx = i + dx!;
+                const ny = j + dy!;
+                if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue;
+                const borderingZone = zoneMap[idx(nx, ny)]!;
+                if (borderingZone !== 0 && borderingZone !== zone) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
 // ── 目录条目 → 算法入参（缺 tile 的登记条目在此响亮失败）─────────────────
 
 /** 把目录条目转成 spawnDungeonFeature 入参。tile 登记（null）的条目抛错——
@@ -602,7 +731,15 @@ export function spawnDungeonFeature(
                 feat.probabilityDecrement,
                 blockingMap
             );
-            if (!blocking || levelIsDisconnectedWithBlockingMap(grid, blockingMap, false) === 0) {
+
+            // C-8：连通性否决 = CE 判据 与 web 移动图判据 **并列加严**——
+            // 任一判切断即放弃本次放置（两查都是纯泛洪，零 RNG 消耗；
+            // 未切断的层上行为与判定成本之外零差异，生成基线不受影响）。
+            // CE 单查的盲区（CHASM/LAVA 在 web 图可走导致的"孤岛不贴带"）
+            // 见 levelIsDisconnectedOnMovementGraph 头注。
+            if (!blocking
+                || (levelIsDisconnectedWithBlockingMap(grid, blockingMap, false) === 0
+                    && !levelIsDisconnectedOnMovementGraph(grid, blockingMap))) {
                 if (feat.flags & DFF_EVACUATE_CREATURES_FIRST) {
                     // CE :3399-3401 evacuateCreatures——游戏侧，登记不实现。
                     result.evacuationRequired = true;
