@@ -18,9 +18,25 @@
 查活口（**不要写 `until` 轮询循环**，历史上留下过 11 个僵尸等待进程）：
 
 ```bash
+# ① 包装进程
 pgrep -f zrun.sh >/dev/null && echo 跑中 || echo 已退出
-cd <工作树>/brogue-web && git status --short     # 空 = 还在读源码，有改动 = 在写了
+# ② 真正可靠的两条：文件 mtime 在推进 + 有高 CPU 的 node
+cd <工作树>/brogue-web && ls -lat $(git status --short | awk '{print $2}') | head -5
+ps aux | grep node | grep -v grep | awk '$3>50 {print $2, $3"%"}'
 ```
+
+⚠️ **三个会让你误判成"进程死了"的陷阱（2026-09-18 各踩过一次）：**
+
+1. **`pgrep -f "zcode.cjs"` 查不到内核 ≠ 内核已死。** 内核的命令行是
+   `node --experimental-import-meta-resolve --require .../… `，
+   `zcode.cjs` 未必落在 pgrep 匹配到的那段里。**本晚两次误报。**
+2. **输出文件是空的 ≠ 失败。** 投轮命令常套 `| tail -N`，管道**缓冲到结束**才输出；
+   运行中期看永远是空。
+3. **`$ZRUN_OUT` 是 0 字节 ≠ 失败。** 内核只在**最后**吐 JSON，
+   重定向在开始时就把文件建好了，中途一直是 0 字节。
+
+**判据只看两条**：工作树文件 mtime 是否在推进；有没有高 CPU 的 node 进程。
+（执行方自测时跑的是 vitest，也会是一个 100% CPU 的 node——那同样是健康信号。）
 
 后台任务完成时会**自动通知**，不需要主动等。
 
