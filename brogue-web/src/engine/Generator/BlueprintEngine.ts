@@ -458,7 +458,45 @@ export class BlueprintEngine {
             usedCells.add(`${doorPos.x},${doorPos.y}`);
         }
 
-        for (const feature of bp.features) {
+        // V-1b：MF_ALTERNATIVE / MF_ALTERNATIVE_2 —— CE Architect.c:1291-1318
+        // 直译（alternativeFlags[2] = {MF_ALTERNATIVE, MF_ALTERNATIVE_2}，
+        // Architect.c:997）。在 feature 构建循环之前一次性决定：对每个替代
+        // 集合，先把带旗标的 feature 全部标记 skip 并计数 totalFreq；集合
+        // 非空时掷**一次** rand_range(1, totalFreq)，按顺序数到第 randIndex
+        // 个时 un-skip（只建这一个，其余不建；被选中者随后照常按自身
+        // instanceCount 全建）。两个集合独立，各消耗一次掷骰（集合为空则
+        // 一次也不掷）。注意 CE 的两轮是串行覆盖：带双旗标的 feature 即使
+        // 在第一轮被选中，第二轮的 skip 标记也会把它重新标掉（随后可能
+        // 再次被选中）——这是 CE 循环结构的字面行为，不是 bug。
+        // 当前 blueprints.json 无任何带这两旗标的 feature（totalFreq 恒 0、
+        // 零掷骰），生成流逐位不变；V-2 数据落地后此机制防止替代集合
+        // 全部同时生成（CE 基座大奖=附魔卷轴或生命药水二选一）。
+        const skipFeature: boolean[] = bp.features.map(() => false);
+        for (let j = 0; j <= 1; j++) {
+            const altFlag = j === 0 ? 'MF_ALTERNATIVE' : 'MF_ALTERNATIVE_2';
+            let totalFreq = 0;
+            for (let i = 0; i < bp.features.length; i++) {
+                if (bp.features[i]!.flags.includes(altFlag)) {
+                    skipFeature[i] = true;
+                    totalFreq++;
+                }
+            }
+            if (totalFreq > 0) {
+                let randIndex = rng.randRange(1, totalFreq);
+                for (let i = 0; i < bp.features.length; i++) {
+                    if (bp.features[i]!.flags.includes(altFlag)) {
+                        if (randIndex === 1) {
+                            skipFeature[i] = false; // 这一 alternative 被建，其余不建
+                            break;
+                        }
+                        randIndex--;
+                    }
+                }
+            }
+        }
+
+        for (const [feat, feature] of bp.features.entries()) {
+            if (skipFeature[feat]) continue; // CE Architect.c:1329：未被选中的替代 feature 整条跳过
             const count = rng.randRange(feature.instanceCount[0], feature.instanceCount[1]);
             const fFlags = new Set(feature.flags);
 
