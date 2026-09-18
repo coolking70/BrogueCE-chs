@@ -96,6 +96,19 @@ describe('A1: displayName 反泄露（武器/护甲的附魔与诅咒）', () =>
 
     it('诅咒绝不进名字（CE 无 cursed 前缀分支；玩家经"摘不下"得知）', () => {
         const armor = ItemLoader.spawnArmor('leather_armor', -1, -1)!;
+        // 验收方 2026-09-18 修（跨文件泄漏，本文件不在 UI-1/C-8/V-1a 任一清单内）：
+        // B-4a 之后 spawnArmor 会按 CE 掷 40% 附魔/符文分支（Items.c:237-263），
+        // 掷中符文时 displayName 会带 `(unknown runic)` 后缀。
+        // 本用例的**被测对象是"诅咒与负附魔不进名字"**，与符文无关——
+        // 此前它能过，靠的是进入本文件时 rng 流位置恰好没掷中符文，
+        // 于是它对**文件执行顺序**产生了隐性依赖：
+        // 单跑绿，但 `generation_baseline` 排在它之前跑就翻红
+        // （实测 'Leather Armor -1 (unknown runic)' ≠ 'Leather Armor -1'）。
+        // 这正是 T-1 登记的「vitest 单 worker 下模块级单例跨文件泄漏」。
+        // 修法是**把无关变量显式清掉**，让断言只表达它真正要表达的意思，
+        // 而不是去挑一个走运的流位置。
+        armor.runicType = undefined;
+        armor.runicKnown = false;
         armor.enchantment = -1;
         armor.isCursed = true;
         expect(armor.displayName).toBe('Leather Armor');
