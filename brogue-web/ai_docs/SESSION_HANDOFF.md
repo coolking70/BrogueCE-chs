@@ -152,6 +152,26 @@ ZRUN_OUT=/tmp/zrun-$R.json bash ai_docs/tasks/zrun.sh   "$WT/brogue-web/ai_docs/
 | `Expecting value: line 1 column 1` | 内核没吐 JSON：**配额耗尽 或 mode 非法** |
 | `Extra data: line N column 1` | 两轮并行写了同一个 `ZRUN_OUT` |
 
+**第四种成因（2026-09-18 首次遇到）：内核找不到 provider 配置 / 模型创建失败。**
+直连内核时 stderr 会明说，例如：
+
+```
+无法定位 CLI ZCode Built-in Provider Config：
+  /Applications/ZCode.app/Contents/Resources/glm/provider/zcode-builtin.json
+Error: Model creation failed (traceId: …)
+```
+
+要点：
+- 配置**实际在** `Resources/config/provider/zcode-builtin.json`
+  （注意是 `config/` 不是 `glm/`）。内核独立调用时按相对路径找错了目录，
+  可用 `ZCODE_BUILTIN_PROVIDER_CONFIG_FILE=<绝对路径>` 显式指定绕开。
+- 但若绕开后变成 **`Model creation failed`**，那是**凭据/会话层的问题**，
+  不是路径问题 —— 典型诱因是用户在 ZCode 界面里动过登录或订阅设置
+  （实测 `~/.zcode/v2/` 的 `credentials.json` / `provider_config.json` /
+  `setting.json` 会同时被改动）。
+- **处置：请用户在 ZCode 里重新登录。验收方不碰 `credentials.json`** ——
+  凭据操作始终是用户的范围。
+
 探针（注意用内核认的 mode，否则探针自己也踩坑）：
 
 ```bash
