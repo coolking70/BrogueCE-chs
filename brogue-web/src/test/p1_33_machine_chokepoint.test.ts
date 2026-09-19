@@ -191,7 +191,20 @@ describe('P1-33 机器阶段不切断关卡', () => {
                                 `seed${seed}/D${d} ${mr.blueprintId} needsKey 但 door 不是 LOCKED_DOOR`);
                         }
                         const cKey = `${mr.center.x},${mr.center.y}`;
-                        if (!cellSet.has(cKey) || (mr.door && cKey === `${mr.door.x},${mr.door.y}`)) {
+                        // V-2a 前厅豁免（本文件在 V-2a 任务书 §5 授权清单内）：
+                        // category==='vestibule' 的机器 center = door = origin
+                        // （BlueprintEngine BP_VESTIBULE 分支，CE
+                        // Architect.c:1120-1140 的落位锚点语义——前厅 feature
+                        // 恒落 origin，机器没有"宝藏落点"概念）。V-1c 时生产
+                        // 数据无递归、前厅机器绝迹，本合同从未见过该形态；
+                        // V-2a 前厅回归后按 CE 语义豁免 center≠door 一项，
+                        // center ∈ cells 仍要求。reward/key_guard 的合同不变。
+                        if (mr.category === 'vestibule') {
+                            if (!cellSet.has(cKey)) {
+                                structureViolations.push(
+                                    `seed${seed}/D${d} ${mr.blueprintId} center 不在 cells 内`);
+                            }
+                        } else if (!cellSet.has(cKey) || (mr.door && cKey === `${mr.door.x},${mr.door.y}`)) {
                             structureViolations.push(
                                 `seed${seed}/D${d} ${mr.blueprintId} center 非法（不在 cells 内或与 door 重合）`);
                         } else if (!canMoveTo(mr.center.x, mr.center.y)) {

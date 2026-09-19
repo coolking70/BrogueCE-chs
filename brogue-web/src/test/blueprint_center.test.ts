@@ -192,8 +192,19 @@ function runScan(): ScanResult {
                     const cellSet = new Set(mr.cells.map(p => `${p.x},${p.y}`));
                     const cKey = `${mr.center.x},${mr.center.y}`;
                     centers.set(cKey, mr.blueprintId);
+                    // V-2a 前厅豁免（本文件在 V-2a 任务书 §5 授权清单内）：
+                    // category==='vestibule' 的机器 center = door = origin
+                    //（BlueprintEngine BP_VESTIBULE 分支，CE
+                    // Architect.c:1120-1140 的落位锚点语义——前厅 feature 恒落
+                    // origin，机器没有"宝藏落点"概念，门格 LOCKED_DOOR 封不住
+                    // 任何宝藏）。V-1c 时生产数据无递归、前厅机器绝迹，本
+                    // 扫描从未见过该形态；V-2a 前厅回归后按 CE 语义把
+                    // vestibule 机器排除出"center 可通行 ∧ ≠door"两条检查
+                    // （center ∈ cells 的检查保留）。reward/key_guard 的
+                    // 合同不变。
+                    const isVestibule = mr.category === 'vestibule';
                     const inside = cellSet.has(cKey);
-                    const passable = walkable(game, mr.center.x, mr.center.y);
+                    const passable = isVestibule ? true : walkable(game, mr.center.x, mr.center.y);
                     if (!inside || !passable) {
                         badLevels.add(`seed=${seed} D${depth}`);
                         const terrain = game.grid.getCell(mr.center.x, mr.center.y)?.terrain;
@@ -215,7 +226,7 @@ function runScan(): ScanResult {
                                 `seed=${seed} D${depth} ${mr.blueprintId} door=(${mr.door.x},${mr.door.y}) 不属于自身 cells`
                             );
                         }
-                        if (dKey === cKey) {
+                        if (dKey === cKey && !isVestibule) {
                             result.centerViolations.push(
                                 `seed=${seed} D${depth} ${mr.blueprintId} door 与 center 重合（LOCKED_DOOR 会封死宝藏格）`
                             );
@@ -317,7 +328,7 @@ describe('蓝图宝藏落点（machine center）可通行性', () => {
         const { centerViolations } = runScan();
         for (const v of centerViolations.slice(0, 60)) console.log('[bp-center] center违例:', v);
         expect(centerViolations).toEqual([]);
-    }, 180_000);
+    }, 900_000);
 
     // ── B-4b 反转（验收方 2026-09-18 补授权：本文件不在 B-4b 清单内，是验收方漏项）──
     // 原留痕：「非空转护栏——扫描必须真的覆盖到 center 宝藏」，expected > 0。
@@ -337,7 +348,7 @@ describe('蓝图宝藏落点（machine center）可通行性', () => {
         expect(treasuresAtCenter, 'center 宝藏投放应已被 B-4b 拆除（若 >0 说明自创投放点被加回）')
             .toBe(0);
         expect(treasureViolations).toEqual([]);
-    }, 180_000);
+    }, 900_000);
 
     it('d) 元断言（P1-36）：isCenterTreasure 点名的 id 必须真实存在于数据表，前缀必须仍命中真实物品', () => {
         // 数据表全量 id 集（consumables.json：potions/scrolls/food；arcana.json：

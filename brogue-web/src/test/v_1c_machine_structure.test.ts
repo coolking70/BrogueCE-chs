@@ -212,17 +212,31 @@ describe('V-1c 资格过滤（CE blueprintQualifies，Architect.c:455-468）', (
         expect(blueprintQualifies(rew, 99, [BP_REWARD])).toBe(false);
     });
 
-    it('Q1b 端到端：3 seeds × D1-D26 顶层抽出的全部机器都是 reward 类', () => {
+    it('Q1b（V-2a 反转）端到端：3 seeds × D1-D26 的机器类别 = reward ∪ 递归两类（vestibule/key_guard），thematic 绝迹', () => {
         const SEEDS = [424242, 777, 20260913];
         const offenders: string[] = [];
         let machines = 0;
+        let rewardMachines = 0;
+        // V-2a 反转（本文件在 V-2a 任务书 §5 授权清单内）：原断言
+        // 「offenders 收集一切 category!=='reward' 的机器且必须为空」写于
+        // V-1c——当时 buildMachines 的返回值里只有顶层 reward 机器。V-2a
+        // 接通前厅/钥匙外包数据后，返回值深含递归子机器（vestibule/
+        // key_guard，CE Architect.c:1555-1567 并入父缓冲的 web 等价物），
+        // 它们不是顶层抽签产物。新钉点：
+        //   a) reward 机器必须存在（配额活着）；
+        //   b) thematic 仍然绝迹（顶层抽不到、也无递归路径——D2 退池）；
+        //   c) 递归两类之外出现任何类别即红。
+        // 「顶层抽签只抽 reward」的资格过滤原意由上方 Q1/Q2（合成蓝图直调
+        // blueprintQualifies）钉住。
+        const LEGAL = new Set(['reward', 'vestibule', 'key_guard']);
         const proto = BlueprintEngine.prototype as unknown as Record<string, unknown>;
         const original = proto.buildMachines as (this: unknown) => MachineResult[];
         proto.buildMachines = function (this: unknown) {
             const results = original.call(this);
             for (const r of results) {
                 machines++;
-                if (r.category !== 'reward') {
+                if (r.category === 'reward') rewardMachines++;
+                if (!LEGAL.has(r.category)) {
                     offenders.push(`D${(this as { depth: number }).depth} ${r.blueprintId}(${r.category})`);
                 }
             }
@@ -242,7 +256,8 @@ describe('V-1c 资格过滤（CE blueprintQualifies，Architect.c:455-468）', (
             proto.buildMachines = original;
         }
         expect(machines, '三整局竟无一台机器——生成或记录失效').toBeGreaterThan(0);
-        expect(offenders, `顶层抽中了非 reward 蓝图：${offenders.join('、')}`).toEqual([]);
+        expect(rewardMachines, '三整局竟无 reward 机器——配额或资格过滤失效').toBeGreaterThan(0);
+        expect(offenders, `产生了非法类别机器：${offenders.join('、')}`).toEqual([]);
     }, 300_000);
 });
 

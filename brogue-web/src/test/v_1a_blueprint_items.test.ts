@@ -122,19 +122,33 @@ describe('V-1a A：结构（数据形态）', () => {
         expect(gameTs.includes('_random_good_'), 'Game.ts 仍含 _random_good_ 字面量').toBe(false);
     });
 
-    it('T2 十台门厅/守卫机器零自产奖励 feature（CE 形态：门厅零奖励、守卫机器零自产物品）', () => {
+    it('T2（V-2a 反转）九台门厅/守卫机器零自产奖励 feature；vestibule_locked 按 CE :300 恰一条 KEY 解题工具 feature', () => {
+        // 原 T2 断言（V-1a 时）：「十台门厅/守卫机器全部零 itemCategory
+        // feature」。V-2a 给 vestibule_locked 按 CE GlobalsBrogue.c:300 落地
+        // {terrain: LOCKED_DOOR, itemCategory: KEY, MF_BUILD_AT_ORIGIN |
+        // MF_OUTSOURCE_ITEM_TO_MACHINE …} 的钥匙外包 feature（本轮 2.2 的
+        // 行为终点）——T2 的错误消息自预告「V-2 按 CE 全表重写时会以解题
+        // 工具 feature 替代——届时改写本清单，不是放宽」，现按此反转：
+        // 其余九台保持零自产奖励（越界守卫），vestibule_locked 改钉新事实。
         const offenders: string[] = [];
         for (const id of TEN_MACHINES) {
+            if (id === 'vestibule_locked') continue; // V-2a 已反转，下方单独钉
             const bp = blueprints.find(b => b.id === id);
             if (!bp) { offenders.push(`${id}: 蓝图不存在`); continue; }
             for (const f of bp.features) {
                 if (f.itemCategory !== undefined) offenders.push(`${id}: 带物品 feature ${f.itemCategory}`);
             }
         }
-        expect(offenders, `V-1a 应为空奖励的机器仍有自产物：${offenders.join('; ')}`
-            + '（V-2 按 CE 全表重写时会以解题工具 feature 替代——届时改写本清单，不是放宽）').toEqual([]);
+        expect(offenders, `V-1a 应为空奖励的机器仍有自产物：${offenders.join('; ')}`).toEqual([]);
         const locked = blueprints.find(b => b.id === 'vestibule_locked');
-        expect(locked?.features, 'vestibule_locked（CE MT_LOCKED_DOOR_VESTIBULE）应零 feature——只余锁门与 V-1b 的外包钥匙').toEqual([]);
+        const feats = locked?.features ?? [];
+        expect(feats, 'vestibule_locked 应恰 1 条 feature（CE :300 的锁门+钥匙外包）').toHaveLength(1);
+        const kf = feats[0]!;
+        expect(kf.itemCategory, '解题工具必须是 KEY（非奖励类别）').toBe('KEY');
+        expect(kf.terrain, 'CE :300 terrain 位 = LOCKED_DOOR').toBe('LOCKED_DOOR');
+        expect(kf.flags, 'CE :300 flags 位缺旗标').toEqual(expect.arrayContaining([
+            'MF_BUILD_AT_ORIGIN', 'MF_GENERATE_ITEM', 'MF_OUTSOURCE_ITEM_TO_MACHINE',
+        ]));
     });
 
     it('T3 area_shrine 掩码逐字 = CE GlobalsBrogue.c:561-565 的五类，数量 {1,1}，走 MF_GENERATE_ITEM', () => {

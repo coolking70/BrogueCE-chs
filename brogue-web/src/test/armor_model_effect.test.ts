@@ -321,7 +321,9 @@ describe(`护甲模型改造前后配对对照（${TIERS.length} 档 × ${SEEDS}
     // （B-1b 验收一次、B-1c 验收一次，后者实测 247s 被 180s 砍掉；
     // 空载单跑 96s）。并行已是常态，180s 的余量不够。
     // 注意：全局 `testTimeout` 对它无效——它自带 timeout，以本行为准。
-    it(`聚合对比：玩家被命中率 / 累计受伤 / 死亡次数`, { timeout: 360_000 }, () => {
+    // 2026-09-19 上调 360s → 1500s：这是 V-2a 内容回归后的既定成本（30 万 → 70–80 万抽取/局），不是性能缺陷。
+    // 同日验收方再上调 1500s → 2400s：1500s 下执行方实测 1175s 过、验收方实测 1644s 被杀，余量不足。
+    it(`聚合对比：玩家被命中率 / 累计受伤 / 死亡次数`, { timeout: 2_400_000 }, () => {
         const results: Record<string, { legacy: Agg; wired: Agg }> = {};
         for (const tier of TIERS) {
             const legacy = newAgg();

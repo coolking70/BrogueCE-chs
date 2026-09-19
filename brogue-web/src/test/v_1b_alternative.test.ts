@@ -116,14 +116,31 @@ function measureDelta(bp: BlueprintDef): number {
 // ---------- 前提自检 ----------
 
 describe('V-1b 前提自检', () => {
-    it('P1 生产 blueprints.json 无任何 feature 带 MF_ALTERNATIVE / MF_ALTERNATIVE_2（零掷骰前提）', () => {
-        // 本前提若被 V-2 破坏（数据落地），generation_baseline 会移动——
-        // 那是 V-2 任务书预告过的事件；此断言届时应随 V-2 一并更新，
-        // 而不是悄悄删掉。
+    // 原 P1 断言（V-1b 时）：「生产 blueprints.json 无任何 feature 带
+    // MF_ALTERNATIVE / MF_ALTERNATIVE_2（零掷骰前提）」，期望 flagged === []。
+    // **V-2a 已反转**（本文件在 V-2a 任务书 §5 授权清单内按留痕反转惯例更新）：
+    // V-2a 给 reward_pedestals 落地 CE GlobalsBrogue.c:218-219 的两条基座大奖
+    // feature（SCROLL_ENCHANTING / POTION_LIFE，各带 MF_ALTERNATIVE），零掷骰
+    // 前提随之失效；generation_baseline 已随 V-2a 重捕获（v_1b_report §8
+    // 预告、P1 注释预留的事件）。反转后钉死的新事实：
+    //   a) 全库带 MF_ALTERNATIVE 的 feature 恰为这两条（多一条/少一条都红）；
+    //   b) MF_ALTERNATIVE_2 在 CE Brogue 目录全表零使用，生产数据零载体——
+    //      有人顺手加载体时红。
+    it('P1（V-2a 反转）生产数据带 MF_ALTERNATIVE 的 feature 恰为 reward_pedestals 两条基座大奖；MF_ALTERNATIVE_2 仍零载体', () => {
         const flagged = (blueprintData as BlueprintDef[]).flatMap(bp =>
-            bp.features.filter(f => f.flags.includes('MF_ALTERNATIVE') || f.flags.includes('MF_ALTERNATIVE_2'))
+            bp.features.map(f => ({ bpId: bp.id, f }))
+                .filter(({ f }) => f.flags.includes('MF_ALTERNATIVE') || f.flags.includes('MF_ALTERNATIVE_2'))
         );
-        expect(flagged, '生产数据出现替代集合 feature：生成流将移动，须重捕获基线').toEqual([]);
+        expect(flagged.map(({ bpId, f }) => ({
+            bpId,
+            alt1: f.flags.includes('MF_ALTERNATIVE'),
+            alt2: f.flags.includes('MF_ALTERNATIVE_2'),
+            item: f.itemId ?? null,
+        })).sort((a, b) => (a.item ?? '').localeCompare(b.item ?? '')),
+        '替代集合载体集变动：核对 CE GlobalsBrogue.c 原表，并重捕获 generation_baseline').toEqual([
+            { bpId: 'reward_pedestals', alt1: true, alt2: false, item: 'potion_of_life' },
+            { bpId: 'reward_pedestals', alt1: true, alt2: false, item: 'scroll_of_enchantment' },
+        ]);
     });
 });
 

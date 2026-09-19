@@ -33,9 +33,10 @@ export interface FeatureDef {
     /**
      * V-1c：CE machineFeature.minimumInstanceCount（Rogue.h:2714 一带）的
      * web 载体——本 feature 实际落位实例数达不到它时整机失败回滚
-     * （CE Architect.c:1676-1687）。web 数据不携带该字段，缺省取
+     * （CE Architect.c:1676-1687）。V-2a 起（前厅递归 / 锁门钥匙 / 基座
+     * 大奖等新增 feature）按 CE 原值显式给出；既有 feature 仍缺省取
      * instanceCount[0]（web 的 [min,max] 掷骰区间下沿即"至少要建几个"的
-     * 自然读法）；V-2 重写数据时可按 CE 原值显式给出。
+     * 自然读法），全表显式化归 V-2b。
      */
     minimumInstanceCount?: number;
     personalSpace?: number;
@@ -209,10 +210,19 @@ const CATEGORY_TO_BP_FLAGS: Record<string, readonly string[]> = {
 
 /** 蓝图的有效 BP 旗标集 = flags 数组 ∪ category 映射。 */
 function effectiveBpFlags(bp: BlueprintDef): Set<string> {
-    const s = new Set(bp.flags);
-    for (const f of CATEGORY_TO_BP_FLAGS[bp.category] ?? []) s.add(f);
+    // V-2a：blueprints.json 是静态数据，派生集合按蓝图对象缓存。D2 型
+    // 空转层（如 seed100/D2）会把 chooseBP 烧 37 万次 × 20 蓝图 × 每次
+    // new Set —— 纯派生数据的 WeakMap 缓存不触及任何 RNG/选址语义。
+    let s = EFFECTIVE_BP_FLAGS_CACHE.get(bp);
+    if (!s) {
+        s = new Set(bp.flags);
+        for (const f of CATEGORY_TO_BP_FLAGS[bp.category] ?? []) s.add(f);
+        EFFECTIVE_BP_FLAGS_CACHE.set(bp, s);
+    }
     return s;
 }
+
+const EFFECTIVE_BP_FLAGS_CACHE = new WeakMap<BlueprintDef, Set<string>>();
 
 /**
  * V-1c：CE blueprintQualifies（Architect.c:455-468）的直译。
@@ -242,6 +252,25 @@ export class BlueprintEngine {
     private grid: Grid;
     private depth: number;
     private blueprints: BlueprintDef[];
+    /**
+     * V-2a：findGateRoom 的 chokeMap 分析缓存。web 的 analyzeChokeMap 每次
+     * 全图重算，而机器建造的失败重试（failsafe 10 × 递归 10 × 顶层 50）在
+     * 失败路径上网格恒被 restoreLevel 恢复到与上次分析一致的状态——CE 的
+     * 对应物（Architect.c:1063-1101 的 chokeMap/gateCandidates）本就是
+     * 每层预计算的缓存，这里补齐同等粒度：失败重试共享一份分析，只在
+     * 机器建成（网格真变异）后失效。语义零变化，纯性能（seed31337/D2
+     * 实测 554s → 消除嵌套重试的 10×10 倍全图重算）。
+     */
+    private gateAnalysisCache: ChokeAnalysis | null = null;
+    /**
+     * V-2a：findGateRoom 的门位候选列表缓存（键 = roomSize 区间）。CE 的
+     * gateCandidates[50]（Architect.c:1063-1101）同样只在网格变异后重收集。
+     * 候选集为空时（如 D2 型层：唯一深度合格的守卫蓝图在本层无割点），
+     * 失败重试的每次全图光栅扫描都是确定性空转——seed100/D2 实测 40 万次
+     * 领养调用全数空转。缓存后 RNG 消耗逐位不变（候选列表内容相同、
+     * randRange 照常掷骰），失效时机与 gateAnalysisCache 一致。
+     */
+    private gateCandidatesCache: Map<string, Pos[]> = new Map();
 
     constructor(grid: Grid, depth: number, blueprints?: BlueprintDef[]) {
         this.grid = grid;
@@ -354,7 +383,7 @@ export class BlueprintEngine {
                 // BP_ROOM（web 全部非前厅蓝图的形态，CE :1080-1118）。
                 // retry 即 CE 的 tryAgain：continue 回到 do 顶（failsafe 先减，
                 // 与 CE while(tryAgain) 的迭代语义逐字一致）换蓝图重试。
-                const analysis = analyzeChokeMap(this.grid);
+                const analysis = this.getGateAnalysis();
                 const sel = this.findGateRoom(bp, analysis);
                 if (sel.kind === 'retry') continue;
                 if (sel.kind === 'noCandidates') return null;
@@ -450,15 +479,22 @@ export class BlueprintEngine {
         bp: BlueprintDef,
         analysis: ChokeAnalysis
     ): GateSelection {
-        const candidates: Pos[] = [];
-        for (let x = 0; x < DCOLS && candidates.length < CE_GATE_CANDIDATE_CAP; x++) {
-            for (let y = 0; y < DROWS && candidates.length < CE_GATE_CANDIDATE_CAP; y++) {
-                if (!analysis.gateSite[x]![y]) continue;
-                if ((this.grid.getCell(x, y)?.machineNumber ?? 0) !== 0) continue; // CE !IS_IN_MACHINE
-                const choke = analysis.chokeMap[x]![y]!;
-                if (choke < bp.roomSize[0] || choke > bp.roomSize[1]) continue;
-                candidates.push({ x, y });
+        // V-2a：候选列表缓存（gateCandidatesCache 头注）——键为 roomSize
+        // 区间；缓存生命周期内无机器建成，machineNumber 过滤结果不变。
+        const candKey = `${bp.roomSize[0]}-${bp.roomSize[1]}`;
+        let candidates = this.gateCandidatesCache.get(candKey);
+        if (!candidates) {
+            candidates = [];
+            for (let x = 0; x < DCOLS && candidates.length < CE_GATE_CANDIDATE_CAP; x++) {
+                for (let y = 0; y < DROWS && candidates.length < CE_GATE_CANDIDATE_CAP; y++) {
+                    if (!analysis.gateSite[x]![y]) continue;
+                    if ((this.grid.getCell(x, y)?.machineNumber ?? 0) !== 0) continue; // CE !IS_IN_MACHINE
+                    const choke = analysis.chokeMap[x]![y]!;
+                    if (choke < bp.roomSize[0] || choke > bp.roomSize[1]) continue;
+                    candidates.push({ x, y });
+                }
             }
+            this.gateCandidatesCache.set(candKey, candidates);
         }
         if (candidates.length === 0) return { kind: 'noCandidates' }; // CE 1108-1122：无合格门位，放弃该蓝图
 
@@ -492,6 +528,16 @@ export class BlueprintEngine {
         }
 
         return { kind: 'room', cells, center, door: gate };
+    }
+
+    /**
+     * V-2a：chokeMap 分析缓存取口（见 gateAnalysisCache 头注）。
+     */
+    private getGateAnalysis(): ChokeAnalysis {
+        if (!this.gateAnalysisCache) {
+            this.gateAnalysisCache = analyzeChokeMap(this.grid);
+        }
+        return this.gateAnalysisCache;
     }
 
     /**
@@ -624,6 +670,14 @@ export class BlueprintEngine {
             const cell = this.grid.getCell(p.x, p.y);
             if (cell) cell.machineNumber = machineNum;
         }
+        // V-2a：machineNumber 是 findGateRoom 候选过滤（!IS_IN_MACHINE）的
+        // 依据——本步起机器标号上网格，门位候选缓存就此失效。**analysis
+        // 缓存不在此失效**（失效点在本方法尾部）：chokeMap/gateSite 是地形
+        // 派生物，CE 的对应物本就是每层预计算、机器阶段不重算
+        // （Architect.c:1063-1101），递归子机器沿用父选址时的分析正是该
+        // 语义；把它也提前失效会让子机器的分析耦合进父机器地形，选址结果
+        // 与重捕获基线分叉（seed31337/D2 实证）。
+        this.gateCandidatesCache.clear();
 
         // 2. Purge interior if requested
         if (flags.has('BP_PURGE_INTERIOR')) {
@@ -710,7 +764,14 @@ export class BlueprintEngine {
 
             for (let inst = 0; inst < count; inst++) {
                 // Find a placement position
-                const pos = this.findFeaturePosition(availableCells, usedCells, room.center, feature, fFlags);
+                // V-2a：origin = 机器落位锚点（CE originX/Y）——BP_ROOM 机器是
+                // 门位格（CE :1100-1101 的 gateCandidates 抽中的 gate），前厅
+                // 机器 center/door 同格即 origin。MF_BUILD_AT_ORIGIN 的 feature
+                // 以它为唯一定点。
+                const pos = this.findFeaturePosition(
+                    availableCells, usedCells, room.center,
+                    room.door ?? room.center, feature, fFlags
+                );
                 if (!pos) break;
                 placed++;
 
@@ -835,6 +896,11 @@ export class BlueprintEngine {
 
         // 内容牌堆回避的另一半在 Game.populateLevel（棋盘同源：按
         // machineNumber≠0 排除），两处必须同进同退。
+
+        // V-2a：机器建成 = 网格真变异（地形/门/feature 都落了），chokeMap
+        // 分析缓存在此失效（与重捕获基线的行为对齐：建成后的下一次选址
+        // 重算 analysis；失败路径 restoreLevel 恢复到缓存收集态，无需失效）。
+        this.gateAnalysisCache = null;
 
         return {
             blueprintId: bp.id,
@@ -967,9 +1033,19 @@ export class BlueprintEngine {
         available: Pos[],
         used: Set<string>,
         center: Pos,
+        origin: Pos,
         _feature: FeatureDef,
         fFlags: Set<string>
     ): Pos | null {
+        // V-2a（CE Architect.c:520-522 / :1404-1407）：MF_BUILD_AT_ORIGIN 的
+        // feature 恒落在机器 origin（=门位）——候选资格函数在 personalSpace/
+        // occupied 检查之前就直接放行 origin，因此这里也无视 usedCells。
+        // reward 蓝图的前厅递归 feature 与 vestibule_locked 的锁门/钥匙
+        // feature 都靠它钉在门位上。
+        if (fFlags.has('MF_BUILD_AT_ORIGIN')) {
+            return origin;
+        }
+
         if (fFlags.has('MF_NEAR_ORIGIN')) {
             // Pick the closest unused cell to center
             let best: Pos | null = null;

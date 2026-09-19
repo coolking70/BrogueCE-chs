@@ -19,6 +19,19 @@
         ],
         "features": [
             {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_PERMIT_BLOCKING",
+                    "MF_BUILD_VESTIBULE"
+                ]
+            },
+            {
                 "itemCategory": "SCROLL",
                 "instanceCount": [
                     2,
@@ -81,6 +94,19 @@
                 "flags": [
                     "MF_GENERATE_ITEM"
                 ]
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_PERMIT_BLOCKING",
+                    "MF_BUILD_VESTIBULE"
+                ]
             }
         ]
     },
@@ -102,7 +128,6 @@
             "BP_REWARD",
             "BP_PURGE_INTERIOR"
         ],
-        "doorTerrain": "LOCKED_DOOR",
         "features": [
             {
                 "itemCategory": "WEAPON",
@@ -127,6 +152,49 @@
                     "MF_GENERATE_ITEM",
                     "MF_ALTAR"
                 ]
+            },
+            {
+                "itemCategory": "SCROLL",
+                "itemId": "scroll_of_enchantment",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_ALTERNATIVE",
+                    "MF_ALTAR"
+                ]
+            },
+            {
+                "itemCategory": "POTION",
+                "itemId": "potion_of_life",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_ALTERNATIVE",
+                    "MF_ALTAR"
+                ]
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_PERMIT_BLOCKING",
+                    "MF_BUILD_VESTIBULE"
+                ]
             }
         ]
     },
@@ -147,7 +215,6 @@
             "BP_ROOM",
             "BP_REWARD"
         ],
-        "doorTerrain": "LOCKED_DOOR",
         "features": [
             {
                 "monsterId": "_random_ally_",
@@ -193,6 +260,19 @@
                 "flags": [
                     "MF_ALTAR_GROUP"
                 ]
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_PERMIT_BLOCKING",
+                    "MF_BUILD_VESTIBULE"
+                ]
             }
         ]
     },
@@ -213,7 +293,26 @@
             "BP_ROOM"
         ],
         "doorTerrain": "LOCKED_DOOR",
-        "features": []
+        "features": [
+            {
+                "terrain": "LOCKED_DOOR",
+                "itemCategory": "KEY",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_PERMIT_BLOCKING",
+                    "MF_GENERATE_ITEM",
+                    "MF_OUTSOURCE_ITEM_TO_MACHINE",
+                    "MF_KEY_DISPOSABLE",
+                    "MF_IMPREGNABLE"
+                ]
+            }
+        ]
     },
     {
         "id": "vestibule_flammable",

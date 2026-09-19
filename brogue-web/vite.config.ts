@@ -15,7 +15,12 @@ export default defineConfig({
     // 每次都要靠"单独重跑该文件"才能区分真失败与超时，代价是消耗判断力。
     // 假红比慢更有害：它训练所有人把红灯当背景音。
     // 代价：真正挂死的用例要 300s 才浮出水面，可接受。
-    testTimeout: 300_000,
+    // 2026-09-19 再次上调 300s → 900s：V-2a 恢复机器内容物后，每局生成期
+    // substantive RNG 抽取从约 30 万涨到 70-80 万，同一份代码两次全量门禁
+    // 的耗时差 40%。实测撞线的四个用例（monster_stats_effect 351s /
+    // invented_content_pool 404s / c_4a_terrain_catalog 350s /
+    // c_4a_0_layer_model 317s）单跑全绿，全是并行争抢下的假红。
+    testTimeout: 900_000,
     hookTimeout: 120_000,
   },
 
