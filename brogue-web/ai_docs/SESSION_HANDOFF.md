@@ -260,7 +260,27 @@ JSON 字段而非文本匹配。**规矩的本意是"别留下永不退出的东
     `CARPET` 9 条…）。**该粗测有系统性误差**（web 的通用 `ALTAR`/`SACRED_GLYPH`/
     `PRESSURE_PLATE` 使部分"缺口"实为命名差异），分清真缺口与别名正是勘察轮的活。
     勘察轮不实现、不跑门禁，产出载体映射表 + 逐蓝图可落地判定 + 拆轮建议。
-13. **V-2b-n**（勘察后按其建议拆分）：蓝图全表扩充。实测 CE
+13. **V-2b-1 地基与奠基轮（任务书已就绪 `ai_docs/tasks/v-2b-1.prompt.md`，231 行）**：
+    九轮里唯一不解锁新机制的一轮——把落位语义与历史垃圾清干净，让后八轮的
+    CE 数据能按 CE 口径落。六件事：personalSpace 边长 2r+1→2r-1、
+    MF_NEAR_ORIGIN 基准 center→origin、死代码清除（trapVaults/cages 两数组 +
+    Game.ts:1228/:1260 两死循环，**删前必须先补「无人往 center 投物」断言**）、
+    三个自创旗标删除（实测 16 处非勘察报告说的 9 处，且引擎零消费）、
+    minimumInstanceCount 全表显式化、CE 逐字落 16/17/27。移动生成流，
+    基线最后一步重捕获。
+14. **V-2b-2 及其后**（按勘察报告 §2.3 的九轮拆法）：解锁 6/7/7/7/4/13/8/15 条。
+
+### 验收方在写 v-2b-1 时实测发现（勘察报告未载）
+
+- **CE 堵门型前厅 roomSize 是 `{1,1}`，web 凭空放大 6–20 倍**：CE 十条前厅
+  五条 `{1,1}`（内部就是门格本身一格），web 四条全是自创大区间
+  （locked [6,20] / flammable [8,18] / guardian [10,25] / pit_traps [8,20]，
+  对应 CE 的 {1,1} / {1,1} / {25,25} / {30,60}）。
+  **这印证了 V-2a 的前厅 center==door 豁免是对的**——`{1,1}` 前厅只有一格，
+  center 必然等于 door，是 CE 半数前厅的常态而非边缘情形。
+- **风险 1 在 V-2b-1 就会撞上**：27 号 Secret room 用 web `ALTAR` 作
+  `ALTAR_INERT` 替身，而 web ALTAR 带自创塌陷语义（`Game.ts:3232-3245`）。
+  已列为该轮必答题。实测 CE
     `blueprintCatalog_Brogue` **71 条**、web **20 条**（reward 5 / key_guard 7 /
     vestibule 4 / thematic 4），差 51 条，分 REWARD ROOMS / AMULET HOLDER /
     VESTIBULES / KEY HOLDERS / FLAVOR MACHINES 五节。三个 web 自创旗标
