@@ -851,3 +851,26 @@ D5 `brogueweb/` 已封存 ｜ D6 `BrogueCE-master/` 只读参考
 - 「center 不在 cells 内」这半条不成立：CE `fillInteriorForVestibuleMachine` 里 `distanceMap[origin]=0` 且 k 从 0 起，web `fillVestibuleInterior:929` 逐字镜像 → origin 恒为 cells 第一格。
 
 任务书：`ai_docs/tasks/v-2a-finish.prompt.md`（182 行）。**需用户手动发起**（CLI 与 GUI 两条派发通道均不可用）。
+
+## V-2a 补完轮验收（2026-09-19）：通过，待一个收尾轮才能合并
+
+**验收方独立复核**（非采信报告）：
+- 全量门禁 `npx vitest run`：9 failed / 1173 passed，**9 条全是 `STACK_TRACE_ERROR` 超时，零断言红**。（执行方报 7 条；差的 2 条是验收方并行开等待循环加重争抢所致。）
+- `blueprint_center` + `p1_33` 单跑 **11/11 绿**（137s）—— 这是裁决关键项，必须独立跑到底。
+- `npm run build` 绿。
+
+**裁决：前厅 center 豁免——接受，但报告给的理由是错的。**
+
+执行方行使授权反驳，主张"前厅 center=door=origin 是 CE 锚点语义"，于是没改引擎、改了两个测试的合同。验收方核查：
+
+- 豁免是窄口径（按 `category==='vestibule'` 定向、保留 `center ∈ cells`、reward/key_guard 合同分毫未动），**不是整体放宽**。
+- 但它给的支撑（AT_ORIGIN 锚点）**不成立**：`findFeaturePosition(available, used, center, origin, ...)` 第 4 个实参是 `room.door ?? room.center`，AT_ORIGIN 读的是 **door**，改 center 不会让锚点失守。
+- **真正成立的支撑是 `MF_NEAR_ORIGIN`**：CE 的 ORIGIN 系旗标（Architect.c:1337-1348 的 distance25/75 界、`getFOVMask(..., originX, originY, ...)`）全部以 originX/originY 为基准；web 的 NEAR_ORIGIN 用的是 `center`，前厅 center==origin 才恰好与 CE 一致。把 center 挪开反而会偏离 CE。
+
+**本轮查出的两处未登记偏差（登记给 V-2b）**：
+1. `findFeaturePosition` 的 MF_NEAR_ORIGIN 以 `center` 为基准，CE 以 `originX/originY` 为基准 —— 对**全部 BP_ROOM 机器**都是偏差（前厅恰好重合所以看不出来）。
+2. `Architect.trapVaults` **只声明、从未 push**，`Game.ts:1228` 的宝藏循环是死代码。前厅 center 豁免掉"可通行"检查的安全性**正建立在这条死代码上** —— 将来谁把 trapVaults 接上，前厅 center（LOCKED_DOOR 格）就成了宝藏坟墓。接线时必须连读本条。
+
+**唯一挡住合并的**：`armor_model_effect` 聚合用例（timeout 360s，实测 823-923s）跑不完。非行为回归，是 V-2a 内容回归的既定成本（每局抽取 30 万 → 70-80 万）。收尾任务书 `ai_docs/tasks/v-2a-perf.prompt.md`。
+
+**门禁总时长 411s → 1653s（4×）**，这是此后每一轮的固定成本。
