@@ -2,7 +2,18 @@
 # zcode headless runner — 供 Claude 编排 P1 循环使用
 # 用法: zrun.sh <prompt文件> <cwd> <mode> [disallowed-tools] [--resume sess_xxx]
 set -uo pipefail
-KERNEL=/Applications/ZCode.app/Contents/Resources/glm/zcode.cjs
+# 2026-09-19：内核直接跑会报「无法定位 CLI ZCode Built-in Provider Config」。
+# 成因不是环境变量，是内核写死的相对推导与 app 实际布局对不上：
+#   r = dirname(resolve(entrypoint))                       → .../Resources/glm
+#   候选1 = r/provider/zcode-builtin.json                  → 不存在
+#   候选2 = resolve(r, "../../../../../config/provider/…") → 往上 5 级跳出根，成了 /config/…
+# 实际文件在 Resources/config/provider/。垫片目录复刻内核预期的布局
+# （两个软链，不改 app 包），使候选1 命中。重装 ZCode 后需重建：
+#   mkdir -p ~/.zcode-cli-shim/provider
+#   ln -s /Applications/ZCode.app/Contents/Resources/glm/zcode.cjs ~/.zcode-cli-shim/
+#   ln -s /Applications/ZCode.app/Contents/Resources/config/provider/zcode-builtin.json ~/.zcode-cli-shim/provider/
+KERNEL="$HOME/.zcode-cli-shim/zcode.cjs"
+[ -e "$KERNEL" ] || KERNEL=/Applications/ZCode.app/Contents/Resources/glm/zcode.cjs
 PINNED_VERSION=0.16.5
 export AI_SDK_LOG_WARNINGS=false
 

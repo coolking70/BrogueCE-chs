@@ -11,9 +11,22 @@
 
 ### ⛔ 派发通道现状（2026-09-19 08:30 更新）
 
-**验收方目前无法派发新轮次。** 两条通道都不可用：
-- **CLI**：2026-09-18 provider 迁移后无法创建模型（见「第四种 PARSE_FAIL」）；
-- **GUI**：本会话的 computer-use 工具已断开，无法驱动 ZCode 桌面端。
+**验收方目前仍无法派发新轮次，但 CLI 已推进一层（2026-09-19 20:00）。**
+
+- **CLI 第一道坎已解决**：「无法定位 CLI ZCode Built-in Provider Config」不是
+  环境变量问题，是内核写死的相对推导与 app 布局对不上——
+  `r = dirname(resolve(entrypoint))` = `.../Resources/glm`，候选2
+  `resolve(r,"../../../../../config/provider/…")` 往上 5 级跳出根，成了
+  `/config/…`；真实文件在 `Resources/config/provider/`。
+  垫片 `~/.zcode-cli-shim/`（两个软链，**不改 app 包**）复刻内核预期布局，
+  已使候选1 命中；`zrun.sh` 的 KERNEL 已指向垫片（缺失时自动回退）。
+- **CLI 第二道坎未解决**：现报 `Error: Model creation failed (traceId: …)`。
+  这属于凭据/模型解析，**验收方不碰**（会话既定约束：凭据操作归用户）。
+  读 CLI 配置的尝试也被权限分类器按「Credential Exploration」拦下，未绕行。
+- **GUI**：本会话仍无 computer-use 工具，无法驱动 ZCode 桌面端。
+
+**所以分工不变**：用户手动发起轮次，验收方负责验收合并。
+若想让 CLI 通道复活，需要你这边确认 CLI 侧的模型/凭据配置（见上）。
 
 **验收侧不受影响** —— 读文件、跑门禁、合并、推送全走命令行，照常工作。
 
