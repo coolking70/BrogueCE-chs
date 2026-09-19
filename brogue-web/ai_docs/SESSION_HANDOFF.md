@@ -223,7 +223,14 @@ JSON 字段而非文本匹配。**规矩的本意是"别留下永不退出的东
     前厅按 CE 锚点语义豁免 center≠door（窄口径）；验收方补做超时线校准
     （全局 300s→900s、blueprint_center 180s→900s、armor_model_effect
     1500s→2400s）——V-2a 后每局生成期抽取 30 万→70-80 万，同码两跑差 40%。
-12. **V-2b**（下一轮，本链最大一块）：蓝图全表扩充。实测 CE
+12. **V-2b-0 勘察轮（下一轮，任务书已就绪 `ai_docs/tasks/v-2b-0.prompt.md`）**：
+    原计划的「V-2b 一轮扩表」**投不下去**——验收方粗测：CE 蓝图引用的地形/怪物
+    web 大面积无载体，71 条里只有约 6 条能用现有载体落地，缺口符号 88 个
+    （`ALTAR_SWITCH` 解锁 14 条、`STATUE_INERT` 13 条、`ALTAR_INERT` 10 条、
+    `CARPET` 9 条…）。**该粗测有系统性误差**（web 的通用 `ALTAR`/`SACRED_GLYPH`/
+    `PRESSURE_PLATE` 使部分"缺口"实为命名差异），分清真缺口与别名正是勘察轮的活。
+    勘察轮不实现、不跑门禁，产出载体映射表 + 逐蓝图可落地判定 + 拆轮建议。
+13. **V-2b-n**（勘察后按其建议拆分）：蓝图全表扩充。实测 CE
     `blueprintCatalog_Brogue` **71 条**、web **20 条**（reward 5 / key_guard 7 /
     vestibule 4 / thematic 4），差 51 条，分 REWARD ROOMS / AMULET HOLDER /
     VESTIBULES / KEY HOLDERS / FLAVOR MACHINES 五节。三个 web 自创旗标
