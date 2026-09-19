@@ -835,3 +835,19 @@ D5 `brogueweb/` 已封存 ｜ D6 `BrogueCE-master/` 只读参考
 写操作（`commit`/`branch`/`merge`/`checkout`）禁止，由验收方负责。
 
 详见 `ai_docs/dev_roadmap_2026Q3.md` 开头与 `ai_docs/phase_c_generator_proposal.md` §九。
+
+## V-2a 验收结论（2026-09-19）
+
+`round/v-2a` 分支，产物完整但**活没干完**（与 B-2/C-7「干完了死在写报告」不同）。门禁 93 文件 / 1167 passed / 15 failed。15 条已定性为三类：
+
+| 类 | 条数 | 结论 |
+|---|---|---|
+| 前厅 `center === door` | 2（`blueprint_center` 102 处 + `p1_33`） | **真缺陷**，同一 bug 两把尺子。成因在 `BlueprintEngine.ts:372` 一行 |
+| 生成期性能回归 | 11（全是 `STACK_TRACE_ERROR` 超时） | **真回归**。改前全套并行 411s，改后 `armor_model_effect` 单文件独跑 838s（自带 360s 超时），独跑也红 → 非并行争抢 |
+| 基线待重捕获 | 1（`generation_baseline` 60 处） | 预期内，但必须**最后一步**捕，否则固化缺陷态 |
+
+已核**不是**问题、不要让执行方去动的：
+- 两个新缓存（`gateAnalysisCache` / `gateCandidatesCache`）设计成立。两者失效点故意不同（671 vs 894），671 行内注释给了 CE 依据（Architect.c:1063-1101）；只有 264 头注那句「失效时机一致」措辞需订正。
+- 「center 不在 cells 内」这半条不成立：CE `fillInteriorForVestibuleMachine` 里 `distanceMap[origin]=0` 且 k 从 0 起，web `fillVestibuleInterior:929` 逐字镜像 → origin 恒为 cells 第一格。
+
+任务书：`ai_docs/tasks/v-2a-finish.prompt.md`（182 行）。**需用户手动发起**（CLI 与 GUI 两条派发通道均不可用）。
