@@ -23,7 +23,24 @@
 - **CLI 第二道坎未解决**：现报 `Error: Model creation failed (traceId: …)`。
   这属于凭据/模型解析，**验收方不碰**（会话既定约束：凭据操作归用户）。
   读 CLI 配置的尝试也被权限分类器按「Credential Exploration」拦下，未绕行。
-- **GUI**：本会话仍无 computer-use 工具，无法驱动 ZCode 桌面端。
+- **GUI（2026-09-19 20:10 复查）**：桌面级 computer-use 工具**在本会话根本不存在**
+  ——不是掉线。连接器清单只有 Claude Docs / visualize / scheduled-tasks；
+  能搜到的 `computer` 工具只有两个浏览器作用域的（Chrome 扩展、应用内浏览器
+  窗格），都驱动不了桌面应用。没有可重连的对象。
+- **AppleScript 路线（本次新试）**：`osascript` 可用、能列出 ZCode 进程，但
+  UI 自动化被拒：`osascript 不允许辅助访问 (-1719)`。授予「辅助功能」属系统
+  安全设置，验收方不改（且该权限范围是**控制这台机器上的任意应用**，不是
+  只给 ZCode，授予前请权衡）。
+- **已试并排除**：`--surface desktop`（只改呈现，不改凭据源，同样报
+  Model creation failed）；`source ~/.zcode-env` 后再跑（CLI 不吃
+  `ANTHROPIC_*`，走自己的 provider 配置 + 凭据库）；`zcode doctor`
+  （输出干净，只有版本/平台，无诊断价值）。
+- **真实异常被吞**：内核把底层错误包成 `Model creation failed (traceId: …)`。
+  开 `ZCODE_DEBUG=1` 取根因的尝试被权限分类器按「Credential Exploration」
+  拦下，未绕行。**需要用户自己跑这条命令并贴回（注意脱敏）**：
+  ```
+  cd /tmp && ZCODE_DEBUG=1 node ~/.zcode-cli-shim/zcode.cjs --prompt OK --cwd /tmp --json 2>&1 | head -40
+  ```
 
 **所以分工不变**：用户手动发起轮次，验收方负责验收合并。
 若想让 CLI 通道复活，需要你这边确认 CLI 侧的模型/凭据配置（见上）。
