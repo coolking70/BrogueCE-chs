@@ -1,4 +1,19 @@
 #!/bin/bash
+# ⛔ 已停用（2026-09-19）——不要再用它投轮次，也不要再花时间修它。
+#
+# 用户的 BigModel 订阅已到期，没有可用密钥；剩下的免费额度**只能从 ZCode
+# 客户端跑**。本脚本走的是 CLI + API key 这条路，前提已经不存在。
+#
+# 唯一的派发方式：用户在 ZCode 桌面端手动发起（模板见
+# ai_docs/SESSION_HANDOFF.md 的「派发通道现状」节）。
+#
+# 保留本文件是因为里面沉淀了三条仍然有效的认知：
+#   1. mode 白名单（传错 mode 的 PARSE_FAIL 与配额耗尽同字符串）；
+#   2. 版本锚定闸门（config schema 是社区逆向的）；
+#   3. provider 配置定位的垫片（见下方 KERNEL 注释）。
+# 若将来订阅恢复、密钥可用，从这三条接着往下走即可。
+#
+# ——以下为原内容——
 # zcode headless runner — 供 Claude 编排 P1 循环使用
 # 用法: zrun.sh <prompt文件> <cwd> <mode> [disallowed-tools] [--resume sess_xxx]
 set -uo pipefail

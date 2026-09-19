@@ -9,45 +9,31 @@
 
 ## ★ 夜间接班（新上下文从这里开始读）
 
-### ⛔ 派发通道现状（2026-09-19 08:30 更新）
+### ⛔ 派发通道：只有一条，且只能由用户发起（2026-09-19 定稿）
 
-**验收方目前仍无法派发新轮次，但 CLI 已推进一层（2026-09-19 20:00）。**
+**不要再花时间尝试自动派发。** 这不是故障，是既定条件：
 
-- **CLI 第一道坎已解决**：「无法定位 CLI ZCode Built-in Provider Config」不是
-  环境变量问题，是内核写死的相对推导与 app 布局对不上——
-  `r = dirname(resolve(entrypoint))` = `.../Resources/glm`，候选2
-  `resolve(r,"../../../../../config/provider/…")` 往上 5 级跳出根，成了
-  `/config/…`；真实文件在 `Resources/config/provider/`。
-  垫片 `~/.zcode-cli-shim/`（两个软链，**不改 app 包**）复刻内核预期布局，
-  已使候选1 命中；`zrun.sh` 的 KERNEL 已指向垫片（缺失时自动回退）。
-- **CLI 第二道坎未解决**：现报 `Error: Model creation failed (traceId: …)`。
-  这属于凭据/模型解析，**验收方不碰**（会话既定约束：凭据操作归用户）。
-  读 CLI 配置的尝试也被权限分类器按「Credential Exploration」拦下，未绕行。
-- **GUI（2026-09-19 20:10 复查）**：桌面级 computer-use 工具**在本会话根本不存在**
-  ——不是掉线。连接器清单只有 Claude Docs / visualize / scheduled-tasks；
-  能搜到的 `computer` 工具只有两个浏览器作用域的（Chrome 扩展、应用内浏览器
-  窗格），都驱动不了桌面应用。没有可重连的对象。
-- **AppleScript 路线（本次新试）**：`osascript` 可用、能列出 ZCode 进程，但
-  UI 自动化被拒：`osascript 不允许辅助访问 (-1719)`。授予「辅助功能」属系统
-  安全设置，验收方不改（且该权限范围是**控制这台机器上的任意应用**，不是
-  只给 ZCode，授予前请权衡）。
-- **已试并排除**：`--surface desktop`（只改呈现，不改凭据源，同样报
-  Model creation failed）；`source ~/.zcode-env` 后再跑（CLI 不吃
-  `ANTHROPIC_*`，走自己的 provider 配置 + 凭据库）；`zcode doctor`
-  （输出干净，只有版本/平台，无诊断价值）。
-- **真实异常被吞**：内核把底层错误包成 `Model creation failed (traceId: …)`。
-  开 `ZCODE_DEBUG=1` 取根因的尝试被权限分类器按「Credential Exploration」
-  拦下，未绕行。**需要用户自己跑这条命令并贴回（注意脱敏）**：
-  ```
-  cd /tmp && ZCODE_DEBUG=1 node ~/.zcode-cli-shim/zcode.cjs --prompt OK --cwd /tmp --json 2>&1 | head -40
-  ```
+> 用户的 BigModel 订阅已到期，没有可用密钥；剩下的免费额度**只能从 ZCode
+> 客户端跑**。凡是走 CLI + API key 的路子，前提都不存在。
 
-**所以分工不变**：用户手动发起轮次，验收方负责验收合并。
-若想让 CLI 通道复活，需要你这边确认 CLI 侧的模型/凭据配置（见上）。
+因此 **CLI 通道永久停用**（`ai_docs/tasks/zrun.sh` 顶部已加停用标记）。
+下列路子都已实测走不通，**不要重试**：
 
-**验收侧不受影响** —— 读文件、跑门禁、合并、推送全走命令行，照常工作。
+| 尝试 | 结果 |
+|---|---|
+| `zrun.sh` / 内核直调 | `Model creation failed` —— 无有效密钥，无解 |
+| `--surface desktop` | 只改呈现，不改凭据源，同样失败 |
+| `source ~/.zcode-env` | CLI 不吃 `ANTHROPIC_*`，走自己的 provider 配置 |
+| 桌面级 computer-use | **本会话根本不存在该工具**（连接器只有 Claude Docs /
+  visualize / scheduled-tasks；能搜到的 `computer` 全是浏览器作用域）。
+  不是掉线，没有可重连的对象 |
+| AppleScript 驱动 GUI | `osascript 不允许辅助访问 (-1719)`。授予「辅助功能」
+  属系统安全设置，验收方不改；且该权限范围是控制本机**任意**应用，不是只给
+  ZCode。用户如要开，须自行权衡 |
 
-**所以现在的分工是**：用户在 ZCode 里手动发起轮次，验收方负责验收合并。
+**唯一有效的分工**：用户在 ZCode 桌面端手动发起轮次，验收方负责验收合并。
+**验收侧完全不受影响** —— 读文件、跑门禁、合并、推送全走命令行，照常工作。
+
 发起时粘这个模板（换轮次名即可）：
 
 ```
@@ -58,6 +44,17 @@ ai_docs/tasks/<轮次>.prompt.md 执行，并按其最后一节的格式输出�
 门禁用 `npx vitest run`（不带文件参数、不要加 --fileParallelism=false），
 外加 `npm run build`。
 ```
+
+**客户端通道是串行的**：内核的凭据租约（`leaseUntil` / `lease-held` 控制文件）
+一次只允许一个会话持有，第二个会话会以
+`Account request credential is unavailable` 失败——而且是在**读了十几分钟源码
+之后**才失败，所以「它跑起来了就没事」这个判断不成立。
+**一次只投一轮**，上一轮验收完再投下一轮。
+
+**保留的仍然有效的认知**（订阅若恢复可从这三条接着走）：
+① mode 白名单（传错 mode 的 PARSE_FAIL 与配额耗尽同字符串）；
+② 版本锚定闸门；③ provider 配置定位垫片 `~/.zcode-cli-shim/`
+（内核写死的相对推导与 app 布局对不上，与密钥无关，这一层是真修好了）。
 
 ### 0. 夜间连续工作的当前配置（2026-09-19 01:30）
 
