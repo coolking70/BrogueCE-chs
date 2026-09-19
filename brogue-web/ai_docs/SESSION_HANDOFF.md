@@ -284,7 +284,26 @@ JSON 字段而非文本匹配。**规矩的本意是"别留下永不退出的东
     过滤循环本体需 Game.ts 改动、未授权未做；② `MF_IMPREGNABLE` 以引擎级
     格键集合承载（web Cell 无该位），`Game.ts:4918` 一带那句「该位恒 0」的
     注释自本轮起已过时，接线归隧道轮。
-15. **V-2b-2b**（任务书就绪 `ai_docs/tasks/v-2b-2b.prompt.md`）：BP_* 内部改造 +
+15. ~~V-2b-2b~~ ✅ 已合（**1235 绿 / 0 失败** + build 绿，墙钟 9 分钟）。
+    六个 BP_* 旗标 + 6 新地形（FUNGUS_FOREST 以 FOLIAGE 别名）+ CE 逐字落
+    3/4/5/19/20/23，reward_pedestals 按 CE 拆回两条。**蓝图 22→27**（CE 71）。
+    基线偏离 76/104 层。19 号取方案 2（只留焚化药水），偏差钉进测试防回流。
+    ⚠️ **清单外改动 7 处**（验收方四段 grep 只预判到 c_4a/invented 两处，
+    穷举表分布远不止那里）——全部申报，两类：结构性穷举表（c_7/r_1/c_4b
+    不加成员连 build 都过不了）、留痕/合同反转（p1_42/p1_33/c_4b F3/g_2/
+    v_2b_2a P1）。**下次写清单必须把 Record<TerrainType> 类穷举表全 grep 出来。**
+    📌 **待后续轮接**：① `Game.discoverSecretAt` 仍是 SECRET_DOOR 特判，
+    TRAP_DOOR_HIDDEN 搜索显形不工作（踩上坠落正常）→ 陷阱/搜索轮；
+    ② feature 的 CE `itemFlags` 列 web FeatureDef 无载体，4/5 号基座大奖
+    出厂不预鉴定 → 物品轮；③ 飞镖点燃三件事（DF_DART_EXPLOSION / 投掷落点
+    点燃 / spawnBlueprintItem 的 WEAPON+id 支持）→ 投掷轮，接线后回补 19 号
+    的两条 ALTERNATIVE 载体。
+    ⚠️ **验收方登记的防御项**：`MF_REPEAT_UNTIL_NO_PROGRESS` 的 do-while
+    （`BlueprintEngine.ts:1193`）**无迭代上界**。已核 CE 全部 10 条 REPEAT
+    feature 的 reqSpace 均为 1、无病态数据载体（CE 结构同构），但后面 44 条
+    蓝图陆续落地时一个 reqSpace 打错就会静默挂死。**下一轮任务书要求加
+    failsafe 计数 + 显式报错**（纯防御，可达路径零行为变化）。
+16. ~~原 V-2b-2b 条目~~：BP_* 内部改造 +
     7 个地形载体 + CE 逐字落 6 条蓝图（3/4/5/19/20/23）+ 基座蓝图拆分。
     必答风险：19 号 barricade 的点火物二选一，web 飞镖投掷不点火 → 一半不可解。
 16. **V-2b-3**（任务书就绪 `ai_docs/tasks/v-2b-3.prompt.md`）：wired 触发网络。
