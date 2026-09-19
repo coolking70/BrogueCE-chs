@@ -105,7 +105,8 @@ function itemId(item: unknown): string {
 export const CENTER_TREASURE_IDS: readonly string[] = ['scroll_of_enchantment', 'potion_of_life'];
 export const CENTER_TREASURE_PREFIXES: readonly string[] = ['ring_', 'charm_', 'wand_'];
 
-/** 题设点名了 5 类由 center 放置的宝藏（rings/charms 走 trapVaults 路径）。 */
+/** 题设点名了 5 类由 center 放置的宝藏（rings/charms 原走 trapVaults 路径——
+ *  该死代码已于 V-2b-1 删除，判据保留用于元断言 d 与历史对照）。 */
 function isCenterTreasure(item: unknown): boolean {
     const id = itemId(item);
     return (
@@ -138,6 +139,8 @@ interface ScanResult {
     centerViolations: string[];
     /** 落在 center 上的不可通行宝藏清单 */
     treasureViolations: string[];
+    /** 落在任何机器 center 上的物品清单（V-2b-1 §1.3 安全前提钉点，见用例 e） */
+    itemsAtCenter: string[];
     /** center 上见到的宝藏类型计数（证明扫描非空转） */
     treasureTally: Map<string, number>;
     treasuresAtCenter: number;
@@ -166,6 +169,7 @@ function runScan(): ScanResult {
     const result: ScanResult = {
         centerViolations: [],
         treasureViolations: [],
+        itemsAtCenter: [],
         treasureTally: new Map(),
         treasuresAtCenter: 0,
         machineCount: 0,
@@ -239,6 +243,12 @@ function runScan(): ScanResult {
                     const key = `${item.loc.x},${item.loc.y}`;
                     if (!centers.has(key)) continue;
                     const id = itemId(item);
+                    // 用例 e 的记录面：任何物品落在任何机器 center 上都是违例
+                    //（不限宝藏类别——前厅机器 center==door==LOCKED_DOOR，
+                    // 物品落上去同样不可达）。
+                    result.itemsAtCenter.push(
+                        `seed=${seed} D${depth} ${centers.get(key)} ${id} @ (${item.loc.x},${item.loc.y})`
+                    );
                     if (isCenterTreasure(item)) {
                         result.treasuresAtCenter++;
                         result.treasureTally.set(id, (result.treasureTally.get(id) ?? 0) + 1);
@@ -348,6 +358,26 @@ describe('蓝图宝藏落点（machine center）可通行性', () => {
         expect(treasuresAtCenter, 'center 宝藏投放应已被 B-4b 拆除（若 >0 说明自创投放点被加回）')
             .toBe(0);
         expect(treasureViolations).toEqual([]);
+    }, 900_000);
+
+    // ── V-2b-1 §1.3：把「前厅 center 豁免」的安全前提从『碰巧没人用』搬成『有测试钉住』──
+    // V-2a 给 vestibule 机器豁免了「center 可通行 ∧ ≠door」检查（本文件用例 b），
+    // 豁免的安全性建立在：没有任何活代码把物品投放到机器 center。V-2a 当时这条
+    // 前提靠两段死代码垫着（Architect.trapVaults / Architect.cages 声明后从未
+    // push，Game.populateLevel 里消费它们的两个循环每台机器投放钥匙+宝藏/
+    // 钥匙+怪物——数组恒空所以从不运行）。V-2b-1 删除了这四处死代码；本条
+    // 把前提显式钉住：**任何物品（不限宝藏类别）落在任何机器 center 上都翻红**。
+    // 前厅机器 center==door==origin==门格（V-2a 豁免所针对的形态），物品落上去
+    // 与落进 LOCKED_DOOR 格同样不可达，故不做前厅豁免——将来若把 CE :300 的
+    // KEY 本地化（去掉 MF_OUTSOURCE / 解除消费端 KEY 跳过），必须先想清楚
+    // center==door 的落格问题，而不是绕过本断言。
+    it('e) V-2b-1：任何生产路径都不得把物品投放到机器 center（含前厅 center==door 形态）', () => {
+        const { itemsAtCenter } = runScan();
+        for (const v of itemsAtCenter.slice(0, 60)) console.log('[bp-center] center 物品违例:', v);
+        expect(itemsAtCenter, `发现 ${itemsAtCenter.length} 件物品落在机器 center 上` +
+            '——V-2a 前厅豁免的安全前提（无任何活代码向机器 center 投放物品）被打破：' +
+            '要么是自创投放点回流（B-4b 拆除的形态），要么是新接线的落点没避开 center。')
+            .toEqual([]);
     }, 900_000);
 
     it('d) 元断言（P1-36）：isCenterTreasure 点名的 id 必须真实存在于数据表，前缀必须仍命中真实物品', () => {

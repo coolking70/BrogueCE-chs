@@ -33,10 +33,9 @@ export interface FeatureDef {
     /**
      * V-1c：CE machineFeature.minimumInstanceCount（Rogue.h:2714 一带）的
      * web 载体——本 feature 实际落位实例数达不到它时整机失败回滚
-     * （CE Architect.c:1676-1687）。V-2a 起（前厅递归 / 锁门钥匙 / 基座
-     * 大奖等新增 feature）按 CE 原值显式给出；既有 feature 仍缺省取
-     * instanceCount[0]（web 的 [min,max] 掷骰区间下沿即"至少要建几个"的
-     * 自然读法），全表显式化归 V-2b。
+     * （CE Architect.c:1676-1687）。V-2b-1 起全表显式化：有忠实 CE 对应物
+     * 的 feature 按 CE minInsts 原值（逐条核对均恰等于 instanceCount[0]），
+     * web 自创 feature 取 instanceCount[0] 并显式写出（隐式变显式，行为零变化）。
      */
     minimumInstanceCount?: number;
     personalSpace?: number;
@@ -769,7 +768,7 @@ export class BlueprintEngine {
                 // 机器 center/door 同格即 origin。MF_BUILD_AT_ORIGIN 的 feature
                 // 以它为唯一定点。
                 const pos = this.findFeaturePosition(
-                    availableCells, usedCells, room.center,
+                    availableCells, usedCells,
                     room.door ?? room.center, feature, fFlags
                 );
                 if (!pos) break;
@@ -1028,11 +1027,15 @@ export class BlueprintEngine {
         }
     }
 
-    /** Find a cell for placing a feature, respecting flags and personal space */
+    /**
+     * Find a cell for placing a feature, respecting flags and personal space.
+     * V-2b-1：center 形参删除——NEAR_ORIGIN 的距离基准改为 origin 后，
+     * 本方法不再需要机器 center（CE cellIsFeatureCandidate 同样只收 originX/Y，
+     * Architect.c:490-497）。
+     */
     private findFeaturePosition(
         available: Pos[],
         used: Set<string>,
-        center: Pos,
         origin: Pos,
         _feature: FeatureDef,
         fFlags: Set<string>
@@ -1047,12 +1050,18 @@ export class BlueprintEngine {
         }
 
         if (fFlags.has('MF_NEAR_ORIGIN')) {
-            // Pick the closest unused cell to center
+            // V-2b-1：距离基准从 center 改为 origin（CE Architect.c:1336-1341 的
+            // distance25 界与 :1343-1349 的 viewMask 都以 originX/originY 为源，
+            // :1257 calculateDistances 也是从 origin 起算——ORIGIN 系旗标全部
+            // 以 origin 为基准，无一例外）。web 用曼哈顿距离近似 CE 的路径
+            // 距离分位界（已知留形偏差，P1-33 同族）；基准点必须同。
+            // 对 BP_ROOM 机器这是行为变化（前厅机器 center==origin，不受影响）。
+            // Pick the closest unused cell to origin
             let best: Pos | null = null;
             let bestDist = Infinity;
             for (const p of available) {
                 if (used.has(`${p.x},${p.y}`)) continue;
-                const d = Math.abs(p.x - center.x) + Math.abs(p.y - center.y);
+                const d = Math.abs(p.x - origin.x) + Math.abs(p.y - origin.y);
                 if (d < bestDist) {
                     bestDist = d;
                     best = p;
@@ -1070,10 +1079,18 @@ export class BlueprintEngine {
         return null;
     }
 
-    /** Mark cells within radius as used so subsequent features stay away */
+    /**
+     * Mark cells within radius as used so subsequent features stay away.
+     * V-2b-1：边长口径对齐 CE（Architect.c:1459-1470，循环范围
+     * `featX-ps+1 .. featX+ps-1`，边长 2ps−1——"0 means nothing gets cleared,
+     * 1 means only the tile itself, and 2 means the 3x3 grid centered on it"）。
+     * 旧 web 口径 `-r..r`（边长 2r+1）把 ps=2 清成 5×5、ps=1 清出 3×3 邻域。
+     * 中心格不在此补：applyBlueprint 已先于本调用把落格加进 usedCells
+     * （CE 是在同一循环里连中心一起 occupied，两边等价）。
+     */
     private markPersonalSpace(center: Pos, radius: number, used: Set<string>) {
-        for (let dx = -radius; dx <= radius; dx++) {
-            for (let dy = -radius; dy <= radius; dy++) {
+        for (let dx = -(radius - 1); dx <= radius - 1; dx++) {
+            for (let dy = -(radius - 1); dy <= radius - 1; dy++) {
                 if (dx === 0 && dy === 0) continue;
                 used.add(`${center.x + dx},${center.y + dy}`);
             }

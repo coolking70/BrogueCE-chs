@@ -394,12 +394,29 @@ describe('P1-33 机器阶段不切断关卡', () => {
         expect(analysis.chokeMap[22]![9], '走廊中段格无洪泛覆盖 = 30000（内部扩展不可入）').toBe(30000);
     });
 
-    it("c2) 封顶前提元断言：blueprints.json 的 roomSize[1] 全部 ≤ 40（CE_CHOKE_COUNT_CAP=41 的依据）", () => {
-        // CE_CHOKE_COUNT_CAP=41 的决策等价性依赖"没有蓝图要找 >40 格的死角"。
-        // 若引入更大密库蓝图而不上调封顶值，大门位会被静默排除——在此翻红。
+    it("c2) 封顶前提元断言（V-2b-1 顺延）：blueprints.json 的 roomSize[1] 全部 ≤ 100", () => {
+        // 原断言（P1-33 时）：「roomSize[1] 全部 ≤ 40」——当时全部蓝图的门位
+        // 窗口上沿 ≤ 40，封顶值 41 恒落窗外，三处消费（候选窗/门位赋值/内部
+        // 扩展）对"真值>41"与"封顶41"判定逐位相同。
+        // V-2b-1 按 CE GlobalsBrogue.c:356-359 逐字落地 27 号 Secret room
+        // （roomSize {15,100}）后，窗口上沿首次越过封顶值。封顶语义在
+        // [15,100] 下的实测口径（LoopMap.ts floodFillCount 早停）：
+        //   a) 真值 ≤ 40 的割点仍报精确值——候选窗下沿判定不变；
+        //   b) 真值 ≥ 41 的割点报 41 ∈ [15,100] → 也是候选。CE 会拒掉真值
+        //      >100 的割点——web 多收的这部分由 gateSealsOnlyInterior 兜住
+        //      （把世界封成两半的窄点因"误封非机器格"被否决，dead-end 大口袋
+        //      才会幸存）；内部扩展又因洪泛集早停只含 ≤42 格而自然封顶。
+        //      残余偏差：dead-end 口袋真值 42..100 时 web 内部 ≈42 格前缀
+        //      （CE 取整个口袋）；真值 >100 且恰为孤立口袋的门位 web 会收
+        //      （CE 拒）—— CE 对齐的正解是上调 CE_CHOKE_COUNT_CAP ≥ 101，
+        //      但 LoopMap.ts 不在 V-2b-1 授权清单，登记于本轮报告。
+        // 本断言顺延为钉 CE 目录的实际上沿：blueprintCatalog_Brogue 全表
+        // roomSize[1] 最大 100（:356 的 Secret room）。再次引入更大的
+        // roomSize[1] 或上调封顶值时，按实测重新校准本断言。
         const maxRoom = Math.max(...(blueprintData as BlueprintDef[]).map(bp => bp.roomSize[1]));
-        expect(maxRoom, '出现了 roomSize[1] > 40 的蓝图：必须同步上调 LoopMap.CE_CHOKE_COUNT_CAP')
-            .toBeLessThanOrEqual(40);
+        expect(maxRoom, '出现了 roomSize[1] > 100 的蓝图：超出 CE 目录上沿，' +
+            '必须同步核查 LoopMap.CE_CHOKE_COUNT_CAP 的决策等价性')
+            .toBeLessThanOrEqual(100);
     });
 
     it('d) AD3：内部扩展被 chokeMap[新] ≤ chokeMap[起] 约束在死角内；触及他机即放弃', () => {

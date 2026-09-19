@@ -189,8 +189,10 @@ export class Architect {
     public grid: Grid;
     public machines: Array<{ door: Pos, center: Pos }> = [];
     public altars: Array<{ door: Pos, positions: Pos[], groupId: number }> = [];
-    public trapVaults: Array<{ door: Pos, center: Pos, trapType: 'fire' | 'poison_gas' }> = [];
-    public cages: Array<{ door: Pos, cells: Pos[] }> = [];
+    // V-2b-1：删除 web 自创的 trapVaults / cages 数组——声明后从未 push，
+    // Game.populateLevel 里消费它们的两个循环是死代码，已连带删除（详见
+    // ai_docs/reports/v-2b-1.report.md §1.3）。machines/altars 虽无消费者，
+    // 但由 generateLevel 真实填充（legacy 观测面），不在本轮授权范围，保留。
     public machineResults: MachineResult[] = [];
     /** C-0：本轮 generateTerrain 里 addLoops 开出的门位落位坐标（raster 序）。
      *  仅供测试/观测（真实环路存在性断言的锚点），不参与任何生成决策。 */

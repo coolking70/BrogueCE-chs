@@ -1076,10 +1076,11 @@ export class Game {
             this.visibleItems.clear();
 
             // 2. Populate level with monsters and items, and STAIRS
-            // （B-4b：architect.machines 不再传入——legacy machines 循环已删）
+            // （B-4b：architect.machines 不再传入——legacy machines 循环已删；
+            //  V-2b-1：architect.trapVaults/cages 不再传入——两数组及其消费
+            //  循环均为死代码，已删除）
             this.populateLevel(
                 this.depth, isGoingUp, isFirstLevel,
-                architect.trapVaults, architect.cages,
                 architect.machineResults
             );
 
@@ -1125,8 +1126,6 @@ export class Game {
         depth: number,
         isGoingUp: boolean = false,
         isFirstLevel: boolean = false,
-        trapVaults: Array<{ door: Pos, center: Pos, trapType: 'fire' | 'poison_gas' }> = [],
-        cages: Array<{ door: Pos, cells: Pos[] }> = [],
         machineResults: MachineResult[] = []
     ) {
         // P1-31：本层机器格（CE pmap IS_IN_MACHINE，落位排除项之一）。
@@ -1224,57 +1223,15 @@ export class Game {
         // P1-43/P1-20 的落格可通行性判据（isPathingBlocker）对 itemSpawns
         // 路径仍生效（见下方消费点），判据不因本删除而松动。
 
-        // Spawn items and keys for Trap Vaults (usually require a key if locked, but traps are just open rooms sometimes; here they are locked)
-        for (const vault of trapVaults) {
-            // Spawn Key
-            if (floorTiles.length > 0) {
-                const keyPos = floorTiles.pop()!;
-                const key = ItemLoader.spawnKey('iron_key', keyPos.x, keyPos.y);
-                if (key) this.items.push(key);
-            }
+        // V-2b-1：删除 web 自创的「Trap Vaults 投放循环」——消费
+        // architect.trapVaults（声明后从未 push 的死数组），每台机器发一把
+        // 铁钥匙 + 40% 戒指/符咒 / 兜底 life 药水到 vault.center。数组恒空
+        // → 循环从不运行、从不消耗 RNG；删除是纯死代码清除，生成流逐位不变。
+        // center 投放的安全前提由 blueprint_center.test.ts 用例 e 钉住。
 
-            let treasure;
-            if (rng.randPercent(40)) {
-                // Charms or rings
-                if (rng.randPercent(50)) {
-                    const validRings = ItemLoader.genRings.filter(r => depth >= r.minDepth && depth <= r.maxDepth);
-                    if (validRings.length > 0) treasure = ItemLoader.spawnRing(validRings[rng.randRange(0, validRings.length - 1)]!.id, vault.center.x, vault.center.y);
-                } else {
-                    const validCharms = ItemLoader.genCharms.filter(c => depth >= c.minDepth && depth <= c.maxDepth);
-                    if (validCharms.length > 0) treasure = ItemLoader.spawnCharm(validCharms[rng.randRange(0, validCharms.length - 1)]!.id, vault.center.x, vault.center.y);
-                }
-            } else {
-                treasure = ItemLoader.spawnPotion('potion_of_life', vault.center.x, vault.center.y);
-            }
-            if (treasure) this.items.push(treasure);
-        }
-
-        // Filter valid monsters by depth (exclude machine-only monsters from normal spawning)
-        const validMonsters = (monsterData as MonsterData[]).filter(m =>
-            !m.machineOnly &&
-            depth >= m.minDepth &&
-            depth <= m.maxDepth
-        );
-
-        // Spawn caged monsters
-        for (const cage of cages) {
-            // Spawn Key
-            if (floorTiles.length > 0) {
-                const keyPos = floorTiles.pop()!;
-                const key = ItemLoader.spawnKey('iron_key', keyPos.x, keyPos.y);
-                if (key) this.items.push(key);
-            }
-            // Spawn a monster inside
-            if (cage.cells.length > 0 && validMonsters.length > 0) {
-                const pos = cage.cells[0]!;
-                const mData = validMonsters[rng.randRange(0, validMonsters.length - 1)];
-                if (mData) {
-                    const mon = new Monster(pos.x, pos.y, mData);
-                    mon.isCaged = true;
-                    this.monsters.push(mon);
-                }
-            }
-        }
+        // V-2b-1：删除 web 自创的「Caged Monsters 投放循环」——消费同样恒空的
+        // architect.cages（发钥匙 + 笼中怪物）。validMonsters 过滤是它的唯一
+        // 消费者，连带删除（noUnusedLocals）。
 
         // --- Blueprint Engine Machine Spawning ---
         // B-4b：钥匙由锁具驱动（CE populateItems 零钥匙——Items.c:673 起的

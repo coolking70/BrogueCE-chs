@@ -37,6 +37,7 @@
                     2,
                     4
                 ],
+                "minimumInstanceCount": 2,
                 "personalSpace": 2,
                 "flags": [
                     "MF_GENERATE_ITEM"
@@ -48,6 +49,7 @@
                     1,
                     1
                 ],
+                "minimumInstanceCount": 1,
                 "flags": [
                     "MF_NEAR_ORIGIN"
                 ],
@@ -79,6 +81,7 @@
                     1,
                     2
                 ],
+                "minimumInstanceCount": 1,
                 "personalSpace": 1,
                 "flags": [
                     "MF_GENERATE_ITEM"
@@ -90,6 +93,7 @@
                     1,
                     1
                 ],
+                "minimumInstanceCount": 1,
                 "personalSpace": 1,
                 "flags": [
                     "MF_GENERATE_ITEM"
@@ -135,6 +139,7 @@
                     1,
                     1
                 ],
+                "minimumInstanceCount": 1,
                 "personalSpace": 2,
                 "flags": [
                     "MF_GENERATE_ITEM",
@@ -147,6 +152,7 @@
                     0,
                     1
                 ],
+                "minimumInstanceCount": 0,
                 "personalSpace": 2,
                 "flags": [
                     "MF_GENERATE_ITEM",
@@ -222,6 +228,7 @@
                     1,
                     2
                 ],
+                "minimumInstanceCount": 1,
                 "personalSpace": 1,
                 "flags": [
                     "MF_GENERATE_MONSTER",
@@ -256,6 +263,7 @@
                     2,
                     3
                 ],
+                "minimumInstanceCount": 2,
                 "personalSpace": 2,
                 "flags": [
                     "MF_ALTAR_GROUP"
@@ -278,19 +286,19 @@
     },
     {
         "id": "vestibule_locked",
-        "name": "Locked Vestibule",
+        "name": "Plain locked door, key guarded by an adoptive room",
         "depthRange": [
-            2,
+            1,
             26
         ],
         "roomSize": [
-            6,
-            20
+            1,
+            1
         ],
-        "frequency": 12,
+        "frequency": 100,
         "category": "vestibule",
         "flags": [
-            "BP_ROOM"
+            "BP_VESTIBULE"
         ],
         "doorTerrain": "LOCKED_DOOR",
         "features": [
@@ -310,6 +318,38 @@
                     "MF_OUTSOURCE_ITEM_TO_MACHINE",
                     "MF_KEY_DISPOSABLE",
                     "MF_IMPREGNABLE"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "vestibule_secret_door",
+        "name": "Plain secret door",
+        "depthRange": [
+            2,
+            26
+        ],
+        "roomSize": [
+            1,
+            1
+        ],
+        "frequency": 1,
+        "category": "vestibule",
+        "flags": [
+            "BP_VESTIBULE"
+        ],
+        "features": [
+            {
+                "terrain": "SECRET_DOOR",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_PERMIT_BLOCKING"
                 ]
             }
         ]
@@ -337,9 +377,8 @@
                     6,
                     12
                 ],
-                "flags": [
-                    "MF_FILL_DOORWAY"
-                ]
+                "minimumInstanceCount": 6,
+                "flags": []
             }
         ]
     },
@@ -367,6 +406,7 @@
                     1,
                     2
                 ],
+                "minimumInstanceCount": 1,
                 "personalSpace": 1,
                 "flags": [
                     "MF_GENERATE_MONSTER"
@@ -398,9 +438,8 @@
                     3,
                     6
                 ],
-                "flags": [
-                    "MF_SCATTER"
-                ]
+                "minimumInstanceCount": 3,
+                "flags": []
             }
         ]
     },
@@ -428,6 +467,7 @@
                     3,
                     6
                 ],
+                "minimumInstanceCount": 3,
                 "personalSpace": 0,
                 "flags": [
                     "MF_GENERATE_MONSTER"
@@ -439,6 +479,7 @@
                     1,
                     1
                 ],
+                "minimumInstanceCount": 1,
                 "flags": [
                     "MF_GENERATE_ITEM",
                     "MF_KEY_DISPOSABLE"
@@ -471,9 +512,8 @@
                     8,
                     16
                 ],
-                "flags": [
-                    "MF_SCATTER"
-                ]
+                "minimumInstanceCount": 8,
+                "flags": []
             },
             {
                 "terrain": "TRAP",
@@ -482,9 +522,8 @@
                     2,
                     4
                 ],
-                "flags": [
-                    "MF_SCATTER"
-                ]
+                "minimumInstanceCount": 2,
+                "flags": []
             }
         ]
     },
@@ -513,9 +552,8 @@
                     6,
                     12
                 ],
-                "flags": [
-                    "MF_SCATTER"
-                ]
+                "minimumInstanceCount": 6,
+                "flags": []
             },
             {
                 "terrain": "WATER_DEEP",
@@ -523,9 +561,8 @@
                     2,
                     4
                 ],
-                "flags": [
-                    "MF_SCATTER"
-                ]
+                "minimumInstanceCount": 2,
+                "flags": []
             }
         ]
     },
@@ -554,9 +591,8 @@
                     3,
                     6
                 ],
-                "flags": [
-                    "MF_SCATTER"
-                ]
+                "minimumInstanceCount": 3,
+                "flags": []
             },
             {
                 "terrain": "PRESSURE_PLATE",
@@ -564,9 +600,8 @@
                     2,
                     3
                 ],
-                "flags": [
-                    "MF_SCATTER"
-                ]
+                "minimumInstanceCount": 2,
+                "flags": []
             }
         ]
     },
@@ -594,9 +629,8 @@
                     6,
                     12
                 ],
-                "flags": [
-                    "MF_SCATTER"
-                ]
+                "minimumInstanceCount": 6,
+                "flags": []
             },
             {
                 "monsterId": "_spider_",
@@ -604,6 +638,7 @@
                     1,
                     3
                 ],
+                "minimumInstanceCount": 1,
                 "personalSpace": 0,
                 "flags": [
                     "MF_GENERATE_MONSTER"
@@ -635,9 +670,8 @@
                     8,
                     20
                 ],
-                "flags": [
-                    "MF_RING"
-                ]
+                "minimumInstanceCount": 8,
+                "flags": []
             }
         ]
     },
@@ -666,6 +700,7 @@
                     1,
                     1
                 ],
+                "minimumInstanceCount": 1,
                 "personalSpace": 3,
                 "flags": [
                     "MF_GENERATE_MONSTER"
@@ -677,9 +712,56 @@
                     2,
                     4
                 ],
+                "minimumInstanceCount": 2,
                 "personalSpace": 0,
                 "flags": [
                     "MF_GENERATE_MONSTER"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_secret_room",
+        "name": "Secret room -- key on an altar in a secret room",
+        "depthRange": [
+            1,
+            26
+        ],
+        "roomSize": [
+            15,
+            100
+        ],
+        "frequency": 1,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM"
+        ],
+        "features": [
+            {
+                "terrain": "ALTAR",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            },
+            {
+                "terrain": "SECRET_DOOR",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_PERMIT_BLOCKING",
+                    "MF_BUILD_AT_ORIGIN"
                 ]
             }
         ]
@@ -707,9 +789,8 @@
                     10,
                     25
                 ],
-                "flags": [
-                    "MF_SCATTER"
-                ]
+                "minimumInstanceCount": 10,
+                "flags": []
             },
             {
                 "terrain": "MUD",
@@ -717,9 +798,8 @@
                     4,
                     8
                 ],
-                "flags": [
-                    "MF_SCATTER"
-                ]
+                "minimumInstanceCount": 4,
+                "flags": []
             },
             {
                 "terrain": "WATER_SHALLOW",
@@ -727,9 +807,8 @@
                     3,
                     6
                 ],
-                "flags": [
-                    "MF_SCATTER"
-                ]
+                "minimumInstanceCount": 3,
+                "flags": []
             }
         ]
     },
@@ -756,9 +835,8 @@
                     8,
                     16
                 ],
-                "flags": [
-                    "MF_SCATTER"
-                ]
+                "minimumInstanceCount": 8,
+                "flags": []
             },
             {
                 "terrain": "BLOOD",
@@ -766,9 +844,8 @@
                     4,
                     8
                 ],
-                "flags": [
-                    "MF_SCATTER"
-                ]
+                "minimumInstanceCount": 4,
+                "flags": []
             },
             {
                 "terrain": "GRASS",
@@ -776,9 +853,8 @@
                     3,
                     6
                 ],
-                "flags": [
-                    "MF_SCATTER"
-                ]
+                "minimumInstanceCount": 3,
+                "flags": []
             }
         ]
     },
@@ -805,6 +881,7 @@
                     2,
                     4
                 ],
+                "minimumInstanceCount": 2,
                 "personalSpace": 1,
                 "flags": [
                     "MF_GENERATE_MONSTER"
@@ -816,6 +893,7 @@
                     0,
                     1
                 ],
+                "minimumInstanceCount": 0,
                 "personalSpace": 0,
                 "flags": [
                     "MF_GENERATE_ITEM"
@@ -847,6 +925,7 @@
                     1,
                     1
                 ],
+                "minimumInstanceCount": 1,
                 "personalSpace": 2,
                 "flags": [
                     "MF_NEAR_ORIGIN"
@@ -858,6 +937,7 @@
                     1,
                     1
                 ],
+                "minimumInstanceCount": 1,
                 "flags": [
                     "MF_NEAR_ORIGIN"
                 ],
@@ -869,6 +949,7 @@
                     1,
                     1
                 ],
+                "minimumInstanceCount": 1,
                 "personalSpace": 0,
                 "flags": [
                     "MF_GENERATE_ITEM",
