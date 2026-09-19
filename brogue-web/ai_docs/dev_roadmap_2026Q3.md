@@ -1424,3 +1424,22 @@ web 的 `populateLevel` 从 `terrain === FLOOR` 的牌堆里抽楼梯，而 `Gam
 4. **回归**：跑 P0-2 的 2000 回合冒烟 + 人工起一局玩到 D3。
 
 P1 全部合入后，再更新 `parity_gap_analysis.md` 的对应条目状态，然后展开 P2（tick 制时间系统）的细化方案。
+
+## V-2b-0 勘察结论（2026-09-19，验收方任务书 v-2b-0.prompt.md；详细论证见 `ai_docs/reports/v-2b-0.report.md`）
+
+原计划 V-2b（blueprints.json 按 CE 全表重写）一轮投不下去，本轮勘察确认了卡点并给出拆法。**只登记结论，论证一律看报告。**
+
+1. **粗测对账**：地形缺口 65 个与粗测 top 表逐条吻合；但 14 个怪物"缺口"全部不成立（MK_* 经 CE monsterCatalog 名称映射后 web monsters.json 全有载体，粗测漏了映射层）；「仅 6 条无需新载体」偏乐观，CE 逐字口径下今天能落地的是 **3 条**（16 Plain locked door / 17 Plain secret door / 27 Secret room——27 用 web ALTAR 作 ALTAR_INERT 别名，是唯一领养链路闭环样本）。
+2. **真正的卡点是机制不是符号**：wired 机器触发网络（CE Time.c:1173-1284，web 为零）、DF 特征系统（web FeatureDef 连 df 列都没有，P1-23 正主）、休眠唤醒（DFF_ACTIVATE_DORMANT_MONSTER）、钥匙系统真实化（web 不读 keyLoc、KEY 物品生成恒 null、无 carriedItem）、horde 旗标接线。V-2a §9.1a 的"16 条 BP_ADOPT_ITEM"实为 **32 条**（KEY HOLDERS 全节）；CE 前厅是 10 条不是 9 条。
+3. **拆轮**（依赖序，解锁数 3/6/7/7/7/4/13/8/15，合计 70 + 1 条 CE 自带 freq=0 禁用条）：
+   - V-2b-1 地基与奠基：personalSpace 统一 CE 口径 + MF_NEAR_ORIGIN 基准 center→origin + trapVaults/cages 死代码清除 + 自创三旗标清除（现存 9 处 8 条一并处置）+ minimumInstanceCount 全表显式化 + 落 16/17/27。
+   - V-2b-2 放置旗标（P/Q 族）+ REPEAT 真循环 + 纯地形 17 个 → 解锁 3/4/5/19/20/23。
+   - V-2b-3 wired 触发网络 + 非祭坛触发载体（glyph/trigger floor/lever/portcullis/vents）→ 解锁 18/22/24/25/41/67/68。**本轮不可再拆**（传播/触发源/断路器一个闭环）。
+   - V-2b-4 祭坛族 10 tile + 换魔/复活效果 + web ALTAR 自创塌陷语义裁决 + 护符来源裁决 → 解锁 1/2/6/7/15/26/28。
+   - V-2b-5 休眠唤醒 + horde 接线 → 解锁 21/29/43/50/56/69/70。
+   - V-2b-6 钥匙真实化 + 怪物携带（keyMatchesLocation/disposable/skeleton/三种钥匙 kind/carriedItem）→ 解锁 8/10/35/40，16 号语义收口。
+   - V-2b-7 DF 特征系统（31 个蓝图 DF + df 列 schema）→ 解锁 9/11/12/30/33/42/45/46/47/49/53/55/57。
+   - V-2b-8 autoGenerator MT_* 接线（flavor 节唯一入口）→ 解锁 58-64/71。
+   - V-2b-9 环境效果链（涨水/塌方/缩岩浆/显桥/虫道）+ 闪电 promote + 黑暗 + dungeonProfile → 解锁 13/14/31/32/34/36/37/38/39/44/51/52/54/65/66。
+4. **48 号 Summoning circle 是 CE 自带 freq=0 禁用条**（GlobalsBrogue.c:495 注释 DISABLED），照落数据零投入，不计解锁数、不顺手修。
+5. **新风险四条**（报告 §4）：web ALTAR 取物塌陷语义与 CE 祭坛族冲突（须与祭坛落地同轮裁决）；"任意钥匙开任意锁"比 V-2a 登记的更松（消费侧根本不读 keyLoc）；armor_model_effect 时长账单会随每轮数据滚雪球（建议 V-2b-1 先处理 timeout 策略）；19 号 barricade 房因 INCENDIARY_DART 投掷点燃未接、ALTERNATIVE 掷骰下约 50% 不可解（落 19 前必须接飞镖点燃）。
