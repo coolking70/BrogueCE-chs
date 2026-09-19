@@ -127,7 +127,19 @@ export enum TerrainType {
     FORCEFIELD,
     FORCEFIELD_MELT,
     CRYSTAL_WALL,
-    SACRED_GLYPH
+    SACRED_GLYPH,
+    // V-2b-2b：机器蓝图 3/4/5/19/20/23 号（CE GlobalsBrogue.c:198-220/309-331）
+    // 的六个地形载体。FUNGUS_FOREST（CE Globals.c:475）不加新枚举——web
+    // FOLIAGE 的 flags/mechFlags 与 CE FUNGUS_FOREST 完全一致
+    // （T_OBSTRUCTS_VISION|T_IS_FLAMMABLE + STAND_IN_TILE|VANISHES|
+    // PROMOTES_ON_STEP），蓝图数据以 TERRAIN_MAP 别名 FOLIAGE 承载。
+    // 只追加在尾部（既有枚举值不变）。
+    CARPET,             // CE Globals.c:325 可燃地毯（宝库铺装，DUNGEON 层）
+    STATUE_INERT,       // CE Globals.c:351 惰性雕像（墙族，BUILD_IN_WALLS 落墙）
+    PEDESTAL,           // CE Globals.c:369 石基座（基座大奖的落点）
+    STATUE_INERT_DOORWAY, // CE Globals.c:550 门内碎裂雕像（20 号的堵门体）
+    WOODEN_BARRICADE,   // CE Globals.c:341 干木栅（19 号的堵门体，可燃）
+    TRAP_DOOR_HIDDEN    // CE Globals.c:379 隐藏陷阱门（23 号，TM_IS_SECRET + T_AUTO_DESCENT）
 }
 
 export enum LightType {
@@ -236,7 +248,17 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.FORCEFIELD]: 0,
     [TerrainType.FORCEFIELD_MELT]: 0,
     [TerrainType.CRYSTAL_WALL]: 0,
-    [TerrainType.SACRED_GLYPH]: 7
+    [TerrainType.SACRED_GLYPH]: 7,
+    // V-2b-2b：CE 第 4 列原值。CARPET 85（Globals.c:325）；STATUE_INERT 0
+    // （:351，墙档）；PEDESTAL 17（:369，与 ALTAR_INERT 同档）；STATUE_INERT_
+    // DOORWAY 0（:550）；WOODEN_BARRICADE 8（:341，与 DOOR 同档）；TRAP_DOOR_
+    // HIDDEN 95（:379，G_FLOOR 伪装——隐藏态就该看着像地板）。
+    [TerrainType.CARPET]: 85,
+    [TerrainType.STATUE_INERT]: 0,
+    [TerrainType.PEDESTAL]: 17,
+    [TerrainType.STATUE_INERT_DOORWAY]: 0,
+    [TerrainType.WOODEN_BARRICADE]: 8,
+    [TerrainType.TRAP_DOOR_HIDDEN]: 95
 };
 
 /**
@@ -340,7 +362,16 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     [TerrainType.FORCEFIELD]: DungeonLayer.SURFACE,
     [TerrainType.FORCEFIELD_MELT]: DungeonLayer.SURFACE,
     [TerrainType.CRYSTAL_WALL]: DungeonLayer.DUNGEON,
-    [TerrainType.SACRED_GLYPH]: DungeonLayer.SURFACE
+    [TerrainType.SACRED_GLYPH]: DungeonLayer.SURFACE,
+    // V-2b-2b：六条机器蓝图的 feature layer 列即 CE 的落层依据
+    //（GlobalsBrogue.c:201/209/216 等的 `terrain, layer` 两列全为 DUNGEON，
+    // CARPET 另有 DF 目录 :709 {CARPET, DUNGEON, …} 同证）。
+    [TerrainType.CARPET]: DungeonLayer.DUNGEON,
+    [TerrainType.STATUE_INERT]: DungeonLayer.DUNGEON,
+    [TerrainType.PEDESTAL]: DungeonLayer.DUNGEON,
+    [TerrainType.STATUE_INERT_DOORWAY]: DungeonLayer.DUNGEON,
+    [TerrainType.WOODEN_BARRICADE]: DungeonLayer.DUNGEON,
+    [TerrainType.TRAP_DOOR_HIDDEN]: DungeonLayer.DUNGEON
 };
 
 /**

@@ -79,6 +79,13 @@ export enum DF {
     DF_OBSIDIAN                    = 109, // :1601
     DF_POISON_GAS_CLOUD            = 125, // :1620
     DF_MACHINE_PRESSURE_PLATE_USED = 154, // :1663
+    // V-2b-2b：TRAP_DOOR_HIDDEN.discoverType 与 WOODEN_BARRICADE.fireType 的
+    // 载体（CE Globals.c:628 / :627 / :825；本文件按 project_conventions
+    // "接地形链 → DungeonFeatureCatalog 默认进清单"的默认规则扩入，
+    // 任务书 §6 未列，报告已申报）。
+    DF_SHOW_TRAPDOOR_HALO          = 16,  // :1487
+    DF_SHOW_TRAPDOOR               = 17,  // :1488
+    DF_WOODEN_BARRICADE_BURN       = 156, // :1669
     DF_HOLE_2                      = 115, // :1608（C-5：DF_HOLE_POTION 的 subsequentDF，
                                           // Globals.c:782 目录行引用它；tile HOLE 已同轮迁移）
     DF_HOLE_DRAIN                  = 116, // :1609（C-5：HOLE.promoteType 的载体，
@@ -151,6 +158,28 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
         layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: '', lightFlare: 'GENERIC_FLASH_LIGHT', flashColor: '', effectRadius: 0,
+    },
+    // V-2b-2b：搜索显形族两条（TRAP_DOOR_HIDDEN 的 discoverType 引用
+    // DF_SHOW_TRAPDOOR；CE Globals.c:627/:628 逐字）+ 木栅点燃条
+    //（WOODEN_BARRICADE.fireType，Globals.c:825 逐字）。
+    [DF.DF_SHOW_TRAPDOOR_HALO]: {
+        id: DF.DF_SHOW_TRAPDOOR_HALO, ceLine: 627, ceTile: 'CHASM_EDGE', tile: TerrainType.CHASM_EDGE,
+        layer: DungeonLayer.LIQUID, startProbability: 100, probabilityDecrement: 100,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: 'GENERIC_FLASH_LIGHT', flashColor: '', effectRadius: 0,
+    },
+    [DF.DF_SHOW_TRAPDOOR]: {
+        id: DF.DF_SHOW_TRAPDOOR, ceLine: 628, ceTile: 'TRAP_DOOR', tile: null,
+        layer: DungeonLayer.LIQUID, startProbability: 0, probabilityDecrement: 0,
+        flags: DFF_CLEAR_OTHER_TERRAIN, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: DF.DF_SHOW_TRAPDOOR_HALO,
+        description: '', lightFlare: 'GENERIC_FLASH_LIGHT', flashColor: '', effectRadius: 0,
+    },
+    [DF.DF_WOODEN_BARRICADE_BURN]: {
+        id: DF.DF_WOODEN_BARRICADE_BURN, ceLine: 825, ceTile: 'PLAIN_FIRE', tile: TerrainType.PLAIN_FIRE,
+        layer: DungeonLayer.SURFACE, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: 'flames quickly consume the wooden barricade.', lightFlare: '', flashColor: '', effectRadius: 0,
     },
 
     // {NOTHING, GAS, 0, 0, DFF_EVACUATE_CREATURES_FIRST} —— 无地形 DF：楼梯
@@ -496,7 +525,9 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
  *  增补 DF_EXPLOSION_FIRE（GAS_EXPLOSION tile 未迁移，登记 F-2c），
  *  6 → 7。F-2c 翻正：DF_EXPLOSION_FIRE（GAS_EXPLOSION 地形本轮新增）
  *  摘除、同轮接线的 DF_BLOAT_EXPLOSION 直接带完整 tile 入目录不入列，
- *  7 → 6。注：ROT_GAS / STENCH_SMOKE_GAS / PARALYSIS_GAS / DARKNESS_CLOUD /
+ *  7 → 6。V-2b-2b 增补：DF_SHOW_TRAPDOOR（TRAP_DOOR tile web 无——
+ *  23 号蓝图 TRAP_DOOR_HIDDEN 显形链的载体），6 → 7。
+ *  注：ROT_GAS / STENCH_SMOKE_GAS / PARALYSIS_GAS / DARKNESS_CLOUD /
  *  HEALING_CLOUD 的 DF（及 dewar×4、喷口、药水云等 24 条 GAS 目录的其余）
  *  本轮**未入目录**——载体盘点后无 web 载体的气体只登记不迁移（报告
  *  载体盘点表），故不在本清单。 */
@@ -508,4 +539,6 @@ export const DF_MISSING_TILES: readonly DF[] = [
     DF.DF_BRIDGE_FALL_PREP,        // BRIDGE_FALLING
     DF.DF_MACHINE_PRESSURE_PLATE_USED, // MACHINE_PRESSURE_PLATE_USED
     DF.DF_SHATTERING_SPELL,        // RUBBLE（B-3：crystalize 的碎石 tile，web 无）
+    DF.DF_SHOW_TRAPDOOR,           // TRAP_DOOR（V-2b-2b：搜索显形族 tile，web 无
+                                   // 该地形——显形链接线轮随新地形落地摘除）
 ];

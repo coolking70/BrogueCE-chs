@@ -129,34 +129,38 @@ const seedAt = (i: number): number => 20260919000 + i;
 // ---------- 前提自检 ----------
 
 describe('V-2b-2a 前提自检', () => {
-    // 任务书 §3 的载体普查钉死（验收方扫描 blueprints.json feature flags 的
-    // 结论，本轮实测一致）。零载体旗标若出现载体，「零载体不得动生成流」的
-    // 前提失效——先核对 CE 原表，再重捕获 generation_baseline 并更新本断言。
-    // MF_KEY_DISPOSABLE（2 载体）本轮不实现，归 V-2b-6 钥匙轮反转。
-    it('P1 本轮 4 载体旗标与 9 零载体旗标的载体普查与任务书 §3 一致', () => {
+    // 任务书 §3 的载体普查钉死（V-2b-2a 时验收方扫描 blueprints.json feature
+    // flags 的结论）。**V-2b-2b 反转**（本文件在 V-2b-2b 任务书 §6 授权清单内）：
+    // CE 3/4/5/19/20/23 号蓝图落地后，原"零载体"旗标中 BUILD_IN_WALLS /
+    // EVERYWHERE / BUILD_ANYWHERE_ON_LEVEL / REPEAT_UNTIL_NO_PROGRESS 出现
+    // 生产载体，其余载体数同步增长（新普查逐条核过 CE GlobalsBrogue.c
+    // :198-220/:309-331 原表）。原"零载体不得动生成流"前提对新增载体旗标
+    // 到期——CE 原表已核对、generation_baseline 随本轮重捕获。
+    // MF_KEY_DISPOSABLE（2 载体）仍未实现，归 V-2b-6 钥匙轮反转。
+    it('P1（V-2b-2b 反转）feature 旗标载体普查与 V-2b-2b 落地后的 CE 原表一致', () => {
         const count = (flag: string): number =>
             (blueprintData as BlueprintDef[]).reduce(
                 (n, bp) => n + bp.features.filter(f => f.flags.includes(flag)).length,
                 0
             );
-        // 有载体、本轮实现 → 会动生成流（基线偏离归因对象）：
-        expect(count('MF_PERMIT_BLOCKING'), 'PERMIT_BLOCKING 载体数').toBe(7);
-        expect(count('MF_IMPREGNABLE'), 'IMPREGNABLE 载体数').toBe(1);
-        expect(count('MF_TREAT_AS_BLOCKING'), 'TREAT_AS_BLOCKING 载体数').toBe(1);
-        expect(count('MF_NOT_IN_HALLWAY'), 'NOT_IN_HALLWAY 载体数').toBe(1);
-        // 本轮不实现：
+        expect(count('MF_PERMIT_BLOCKING'), 'PERMIT_BLOCKING 载体数（旧7含已拆的reward_pedestals→余6，+3/4/5前厅+19栅+20像+23双门=13）').toBe(13);
+        expect(count('MF_IMPREGNABLE'), 'IMPREGNABLE 载体数（旧1+3/4/5雕像+23密门）').toBe(5);
+        expect(count('MF_TREAT_AS_BLOCKING'), 'TREAT_AS_BLOCKING 载体数（旧1+3/4/5九条+23陷阱）').toBe(12);
+        expect(count('MF_NOT_IN_HALLWAY'), 'NOT_IN_HALLWAY 载体数（旧1+19药水+20卷轴）').toBe(3);
+        // 仍未实现：
         expect(count('MF_KEY_DISPOSABLE'), 'KEY_DISPOSABLE 载体数（V-2b-6 反转我）').toBe(2);
-        // 零载体、本轮以合成蓝图验证：
+        // V-2b-2b 新载体（CE 原表核对）：
+        expect(count('MF_BUILD_IN_WALLS'), 'BUILD_IN_WALLS 载体数（3/4/5 号雕像）').toBe(3);
+        expect(count('MF_EVERYWHERE'), 'EVERYWHERE 载体数（3/4/5 号地毯）').toBe(3);
+        expect(count('MF_BUILD_ANYWHERE_ON_LEVEL'), 'BUILD_ANYWHERE 载体数（19 号药水+20 号卷轴）').toBe(2);
+        expect(count('MF_REPEAT_UNTIL_NO_PROGRESS'), 'REPEAT 载体数（23 号陷阱）').toBe(1);
+        expect(count('MF_NO_THROWING_WEAPONS'), 'NO_THROWING_WEAPONS 载体数（4 号武器基座）').toBe(1);
+        expect(count('MF_REQUIRE_GOOD_RUNIC'), 'REQUIRE_GOOD_RUNIC 载体数（4 号武器+护甲基座）').toBe(2);
+        // 仍零载体（出现载体：核对 CE 原表 + 重捕获基线）：
         for (const flag of [
-            'MF_BUILD_IN_WALLS',
-            'MF_EVERYWHERE',
             'MF_FAR_FROM_ORIGIN',
             'MF_NOT_ON_LEVEL_PERIMETER',
-            'MF_BUILD_ANYWHERE_ON_LEVEL',
-            'MF_NO_THROWING_WEAPONS',
-            'MF_REQUIRE_GOOD_RUNIC',
             'MF_REQUIRE_HEAVY_WEAPON',
-            'MF_REPEAT_UNTIL_NO_PROGRESS',
         ]) {
             expect(count(flag), `${flag} 应为零载体（出现载体：核对 CE 原表 + 重捕获基线）`).toBe(0);
         }
@@ -375,6 +379,12 @@ describe('T5 MF_EVERYWHERE（CE :1387-1394）', () => {
 
 describe('T6 MF_REPEAT_UNTIL_NO_PROGRESS 真循环（CE :1360-1670）', () => {
     // 2 格房间，center 预留 (6,10) → 每轮至多 1 个可用候选 (7,10)。
+    // V-2b-2b 注：本组 itemFeature 必须带 personalSpace 1——REPEAT 循环的
+    // 终止机制是"落位格被 occupied，下一轮候选耗尽、落 0 出循环"
+    // （CE :1461-1470 占位 + :1675 min 豁免）；V-2b-2b 把 personalSpace=0
+    // 的占位语义对齐 CE（不占格）后，REPEAT+不占位 的组合每轮都会重新
+    // 选回同一格、永不退出（CE 目录里 REPEAT feature 的 reqSpace 全 ≥1，
+    // 该病态组合无 CE 数据载体），故夹具补占位保持可终止。
     const buildGrid = (): Grid => {
         const grid = blankGrid();
         carve(grid, [{ x: 6, y: 10 }, { x: 7, y: 10 }]);
@@ -388,12 +398,14 @@ describe('T6 MF_REPEAT_UNTIL_NO_PROGRESS 真循环（CE :1360-1670）', () => {
         // 归零重数，跨轮不累加——累加实现会落 2 件 → 翻红）。
         const repeat = makeBp([itemFeature(['MF_REPEAT_UNTIL_NO_PROGRESS'], [2, 2], 'v2b2a_rep')]);
         (repeat.features[0] as FeatureDef).minimumInstanceCount = 2;
+        (repeat.features[0] as FeatureDef).personalSpace = 1;
         const { result } = runOnce(buildGrid, repeat, room, seedAt(1));
         expect(result, 'REPEAT 应豁免 min 检查').not.toBeNull();
         expect(result!.itemSpawns, '跨轮不得累加落位（CE instance 每轮重置）').toHaveLength(1);
 
         const plain = makeBp([itemFeature([], [2, 2], 'v2b2a_rep')]);
         (plain.features[0] as FeatureDef).minimumInstanceCount = 2;
+        (plain.features[0] as FeatureDef).personalSpace = 1;
         const { result: r2 } = runOnce(buildGrid, plain, room, seedAt(1));
         expect(r2, '无 REPEAT：min 不达应整机失败').toBeNull();
     });
@@ -404,8 +416,10 @@ describe('T6 MF_REPEAT_UNTIL_NO_PROGRESS 真循环（CE :1360-1670）', () => {
         // 旧实现（只豁免 min、不循环）只掷 1 次 → RNG 记账翻红。
         const repeat = makeBp([itemFeature(['MF_REPEAT_UNTIL_NO_PROGRESS'], [2, 3], 'v2b2a_rep')]);
         (repeat.features[0] as FeatureDef).minimumInstanceCount = 1;
+        (repeat.features[0] as FeatureDef).personalSpace = 1;
         const plain = makeBp([itemFeature([], [2, 3], 'v2b2a_rep')]);
         (plain.features[0] as FeatureDef).minimumInstanceCount = 1;
+        (plain.features[0] as FeatureDef).personalSpace = 1;
         const dRep = measureDelta(buildGrid, repeat, room);
         const dPlain = measureDelta(buildGrid, plain, room);
         expect(dRep, 'REPEAT 应多掷一轮 instanceCount').toBe(dPlain + 1);

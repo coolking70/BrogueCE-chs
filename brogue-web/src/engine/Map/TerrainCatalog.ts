@@ -577,6 +577,73 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
         0, '', '', '', 0,
         false, LightKind.SACRED_GLYPH_LIGHT
     ),
+
+    // ── V-2b-2b：机器蓝图地形载体（GlobalsBrogue.c 目录序 3/4/5/19/20/23）────
+
+    // CE CARPET，Globals.c:325：宝库铺装（3/4/5 号的 MF_EVERYWHERE 底衬）。
+    // 全字段照抄：T_IS_FLAMMABLE（可燃——火会烧掉地毯，DF_EMBERS 收尾）；
+    // TM_VANISHES_UPON_PROMOTION；ign 0；fireType DF_EMBERS；零晋升。
+    // drawPriority 85 / 归属层 DUNGEON 见 Grid.ts（DF 目录 :709 同证）。
+    [TerrainType.CARPET]: e(
+        T_IS_FLAMMABLE,
+        TM_VANISHES_UPON_PROMOTION,
+        0, 'DF_EMBERS', '', '', 0
+    ),
+
+    // CE STATUE_INERT，Globals.c:351：惰性大理石雕像（3/4/5 号经
+    // MF_BUILD_IN_WALLS 落进机器外圈墙格）。T_OBSTRUCTS_EVERYTHING 去掉
+    // VISION/DIAGONAL 两位的四旗标取值照抄（雕像挡路/挡物品/挡气/挡表面
+    // 效果，但不挡视线与对角绕行）；TM_STAND_IN_TILE；fireType
+    // DF_PLAIN_FIRE（CE 数据如此，零可燃性下不触发）。
+    [TerrainType.STATUE_INERT]: e(
+        T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS |
+        T_OBSTRUCTS_SURFACE_EFFECTS,
+        TM_STAND_IN_TILE,
+        0, 'DF_PLAIN_FIRE', '', '', 0
+    ),
+
+    // CE PEDESTAL，Globals.c:369：石基座（4/5 号基座大奖的落点）。
+    // 只挡表面效果（物品可以放在上面——CE 的 MF_GENERATE_ITEM feature
+    // 正是落 pedestal 后把物品放同格）；glowLight = CANDLE_LIGHT（:369
+    // 原列，与 ALTAR_INERT 同一烛光）。
+    [TerrainType.PEDESTAL]: e(
+        T_OBSTRUCTS_SURFACE_EFFECTS, 0,
+        0, '', '', '', 0,
+        false, LightKind.CANDLE_LIGHT
+    ),
+
+    // CE STATUE_INERT_DOORWAY，Globals.c:550：门内碎裂雕像（20 号的堵门体，
+    // 由 SCROLL_SHATTERING 的 crystalize 打碎——该链归 2b-7 接线）。旗标与
+    // STATUE_INERT 相同，机械旗标多 TM_CONNECTS_LEVEL（堵门体语义：破碎后
+    // 该格回到"连通层"状态）。
+    [TerrainType.STATUE_INERT_DOORWAY]: e(
+        T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS |
+        T_OBSTRUCTS_SURFACE_EFFECTS,
+        TM_STAND_IN_TILE | TM_CONNECTS_LEVEL,
+        0, 'DF_PLAIN_FIRE', '', '', 0
+    ),
+
+    // CE WOODEN_BARRICADE，Globals.c:341：干木栅（19 号的堵门体）。可燃
+    // （ign 100、fireType DF_WOODEN_BARRICADE_BURN——焚化药水/火系把它烧成
+    // 灰烬开路，烧栅链归 2b-7）；挡通行/挡物品；TM_CONNECTS_LEVEL 同上。
+    [TerrainType.WOODEN_BARRICADE]: e(
+        T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_IS_FLAMMABLE,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT |
+        TM_CONNECTS_LEVEL,
+        100, 'DF_WOODEN_BARRICADE_BURN', '', '', 0
+    ),
+
+    // CE TRAP_DOOR_HIDDEN，Globals.c:379：隐藏陷阱门（23 号的 60 连片陷阱）。
+    // T_AUTO_DESCENT（踩上坠层——消费点 Game 的 monsterShouldFall/坠落结算，
+    // 与 CHASM/HOLE 同族判据）；TM_IS_SECRET（隐藏位：外观 = G_FLOOR，
+    // drawPriority 95 与 FLOOR 同档，搜索/魔法测绘显形前不可见）；
+    // fireType DF_POISON_GAS_CLOUD、discoverType DF_SHOW_TRAPDOOR 均照抄
+    // （显形链归 2b-7 接线——web 的 discover 现只处理 SECRET_DOOR，缺口已登记）。
+    [TerrainType.TRAP_DOOR_HIDDEN]: e(
+        T_AUTO_DESCENT,
+        TM_IS_SECRET,
+        0, 'DF_POISON_GAS_CLOUD', 'DF_SHOW_TRAPDOOR', '', 0
+    )
 };
 
 // ── 派生判据（名字照 CE，语义 = 旗标位测试；CE Movement/Dijkstra 等处

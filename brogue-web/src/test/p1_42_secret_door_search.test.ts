@@ -258,19 +258,25 @@ describe('P1-42 B：web 自创的 30% 邻接揭示已删除（本轮 §二.3，�
 // ---- C. 目录绊线与"明确不做"留痕 -------------------------------------------
 
 describe('P1-42 C：目录绊线 + 本轮明确不做的事', () => {
-    it('C1 目录绊线：TM_IS_SECRET 的唯一持有者是 SECRET_DOOR（打破时 discoverSecretAt 须迁回 CE DF 链）', () => {
-        // Game.discoverSecretAt 以 terrain === SECRET_DOOR 代替 CE 的
-        // TM_IS_SECRET 判据（留痕冲突申报，见该方法注记）。本断言钉死等价
-        // 前提：若未来任何地形带上 TM_IS_SECRET，这里翻红——届时发现机制
-        // 必须改为目录驱动（清层 + discoverType DF 链），并同步扩 c_4b F1 /
-        // c_4a_0 / c_4a 目录三份白名单。
-        const offenders: string[] = [];
+    it('C1 目录绊线（V-2b-2b 反转）：TM_IS_SECRET 的持有者恰为 SECRET_DOOR 与 TRAP_DOOR_HIDDEN', () => {
+        // 原断言（P1-42 时）："TM_IS_SECRET 的唯一持有者是 SECRET_DOOR"——
+        // 钉死 Game.discoverSecretAt 以 terrain === SECRET_DOOR 代替 CE 的
+        // TM_IS_SECRET 判据这一等价前提。
+        // **V-2b-2b 反转**（本文件不在该轮 §6 授权清单——但 CE Globals.c:379
+        // 的 TRAP_DOOR_HIDDEN 原列就带 TM_IS_SECRET，蓝图 23 号落地必然打破
+        // 单一持有前提；边界扩展已在 v-2b-2b 报告申报）。反转后钉死的新事实：
+        // 持有者 = {SECRET_DOOR, TRAP_DOOR_HIDDEN} 恰两条，多一条/少一条都红。
+        // discoverSecretAt 的目录驱动迁移（清层 + discoverType DF_SHOW_TRAPDOOR
+        // 链）即原断言注记的接线，登记为缺口——隐藏陷阱的搜索显形归
+        // 陷阱/搜索轮（V-2b-7 一带），接线时同步扩 c_4b F1 / c_4a_0 / c_4a
+        // 三份白名单并再次反转本断言的"发现等价"说明。
+        const holders: string[] = [];
         for (const name of Object.keys(TerrainType).filter(k => Number.isNaN(Number(k)))) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
-            const secret = (TERRAIN_FLAGS[t].mechFlags & TM_IS_SECRET) !== 0;
-            if (secret !== (t === TerrainType.SECRET_DOOR)) offenders.push(name);
+            if ((TERRAIN_FLAGS[t].mechFlags & TM_IS_SECRET) !== 0) holders.push(name);
         }
-        expect(offenders, `TM_IS_SECRET 持有集变化：${offenders.join(', ')}`).toEqual([]);
+        expect(holders.sort(), `TM_IS_SECRET 持有集变化：${holders.join(', ')}`)
+            .toEqual(['SECRET_DOOR', 'TRAP_DOOR_HIDDEN']);
     });
 
     it('C2 留痕：陷阱的搜索发现不实现——搜索不改变 TRAP 格、不产出陷阱消息（KNOWN_TO_BE_TRAP_FREE 登记未实现）', () => {

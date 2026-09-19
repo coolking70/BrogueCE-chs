@@ -165,6 +165,23 @@ describe('P1-33 机器阶段不切断关卡', () => {
                     // 1) 机器内部没有裸 FLOOR（楼梯/钥匙牌堆已排除密库）；
                     // 2) door ∈ cells；needsKey ⇒ door 是 LOCKED_DOOR；
                     // 3) center ∈ cells、与 door 不同格、且可通行。
+                    // V-2b-2b 反转（本文件不在该轮 §6 授权清单——但 CE 23 号
+                    // 蓝图的 BP_NO_INTERIOR_FLAG（Architect.c:1691-1702）本就
+                    // 把"machineNumber 覆盖全部内部格"的合同前提按 CE 字面
+                    // 打破，边界扩展在 v-2b-2b 报告申报）：
+                    //   a) 带 BP_NO_INTERIOR_FLAG 的机器自身豁免本合同（其
+                    //      内部格 machineNumber 被 CE :1698-1700 合法清零）；
+                    //   b) 其余机器的内部格若与 a) 类机器的 cells 重合
+                    //      （前厅子机器的 origin = 父机器门位格，CE :691 起
+                    //      fillInterior 把它并入子机器内部、:1698 再清零），
+                    //      同样视为合法清零。
+                    const noInteriorMachineCells = new Set<string>();
+                    for (const mr2 of entry?.results ?? []) {
+                        const bpDef = (blueprintData as BlueprintDef[]).find(b => b.id === mr2.blueprintId);
+                        if (bpDef?.flags.includes('BP_NO_INTERIOR_FLAG')) {
+                            for (const p of mr2.cells) noInteriorMachineCells.add(`${p.x},${p.y}`);
+                        }
+                    }
                     for (const mr of entry?.results ?? []) {
                         machines++;
                         if (mr.needsKey) locked++;
@@ -175,8 +192,12 @@ describe('P1-33 机器阶段不切断关卡', () => {
                         // machineNumber 排除，它就必然翻红，与本轮任务直接矛盾。
                         // 现在钉更直接也更强的合同：机器内部每一格都真的带
                         // machineNumber（牌堆排除正是以它为键），而不是靠地形冒充。
+                        const bpDef = (blueprintData as BlueprintDef[]).find(b => b.id === mr.blueprintId);
+                        const noInterior = bpDef?.flags.includes('BP_NO_INTERIOR_FLAG') ?? false;
                         for (const p of mr.cells) {
-                            if (grid.getCell(p.x, p.y)?.machineNumber === 0) {
+                            const k = `${p.x},${p.y}`;
+                            if (grid.getCell(p.x, p.y)?.machineNumber === 0
+                                && !noInterior && !noInteriorMachineCells.has(k)) {
                                 structureViolations.push(
                                     `seed${seed}/D${d} ${mr.blueprintId} 内部 (${p.x},${p.y}) 的 machineNumber 为 0` +
                                     `（机器旗标没铺满内部，楼梯/物品牌堆的排除会漏掉这格）`);

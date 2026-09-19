@@ -119,6 +119,16 @@ const EXPECTED_VISIBLE: Record<TerrainType, { char: string; color: string; bgCol
     [TerrainType.FORCEFIELD_MELT]: DEFAULT_LOOK,  // B-3
     [TerrainType.CRYSTAL_WALL]: DEFAULT_LOOK,     // B-3
     [TerrainType.SACRED_GLYPH]: DEFAULT_LOOK,     // B-3
+    // V-2b-2b 六条：机器蓝图地形载体，terrainAppearance 尚无专属分支
+    //（CE 外观接线归 UI 轮，与 C-2/B-3 的 DEFAULT_LOOK 欠账同登记）。
+    // 本文件不在 V-2b-2b 任务书 §6 授权清单——Record<TerrainType> 结构性
+    // 穷尽表不加成员连 npm run build 都无法通过，机械补齐，报告已申报。
+    [TerrainType.CARPET]: DEFAULT_LOOK,             // V-2b-2b
+    [TerrainType.STATUE_INERT]: DEFAULT_LOOK,       // V-2b-2b
+    [TerrainType.PEDESTAL]: DEFAULT_LOOK,           // V-2b-2b
+    [TerrainType.STATUE_INERT_DOORWAY]: DEFAULT_LOOK, // V-2b-2b
+    [TerrainType.WOODEN_BARRICADE]: DEFAULT_LOOK,   // V-2b-2b
+    [TerrainType.TRAP_DOOR_HIDDEN]: DEFAULT_LOOK,   // V-2b-2b
 };
 
 /** 造 Cell（terrain 走 setter 写回归属层）。只用于 DUNGEON/SURFACE 层地形。 */
@@ -201,9 +211,11 @@ function makeMonster(overrides: Partial<Pick<Monster, 'hp' | 'isAlly' | 'state' 
 // ════════════════════════ terrainAppearance 特征化 ════════════════════════
 
 describe('R-1 terrainAppearance 特征化（穷举钉死）', () => {
-    it('穷举表覆盖 TerrainType 全部成员（当前 47 个）、成员值无重复', () => {
+    it('穷举表覆盖 TerrainType 全部成员（当前 53 个）、成员值无重复', () => {
         // 成员数变化（新增地形）时此断言翻红——按文件头说明更新期望表。
-        expect(ALL_TERRAINS.length).toBe(47);
+        // V-2b-2b：+6（CARPET/STATUE_INERT/PEDESTAL/STATUE_INERT_DOORWAY/
+        // WOODEN_BARRICADE/TRAP_DOOR_HIDDEN），47 → 53。
+        expect(ALL_TERRAINS.length).toBe(53);
         expect(new Set(ALL_TERRAINS).size).toBe(ALL_TERRAINS.length);
     });
 

@@ -115,25 +115,160 @@
         ]
     },
     {
-        "id": "reward_pedestals",
-        "name": "Treasure Vault",
+        "id": "reward_treasure_room",
+        "name": "Treasure room -- apothecary or archive (potions or scrolls)",
         "depthRange": [
-            5,
-            20
+            8,
+            26
         ],
         "roomSize": [
-            10,
-            25
+            20,
+            40
         ],
-        "frequency": 5,
+        "frequency": 20,
         "category": "reward",
         "flags": [
             "BP_ROOM",
             "BP_REWARD",
-            "BP_PURGE_INTERIOR"
+            "BP_PURGE_INTERIOR",
+            "BP_SURROUND_WITH_WALLS",
+            "BP_OPEN_INTERIOR",
+            "BP_IMPREGNABLE"
         ],
         "features": [
             {
+                "terrain": "CARPET",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    0,
+                    0
+                ],
+                "minimumInstanceCount": 0,
+                "flags": [
+                    "MF_EVERYWHERE"
+                ]
+            },
+            {
+                "itemCategory": "POTION",
+                "instanceCount": [
+                    5,
+                    7
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_ALTERNATIVE",
+                    "MF_TREAT_AS_BLOCKING"
+                ]
+            },
+            {
+                "itemCategory": "SCROLL",
+                "instanceCount": [
+                    4,
+                    6
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_ALTERNATIVE",
+                    "MF_TREAT_AS_BLOCKING"
+                ]
+            },
+            {
+                "terrain": "FUNGUS_FOREST",
+                "layer": "SURFACE",
+                "instanceCount": [
+                    3,
+                    4
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 2,
+                "flags": []
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_PERMIT_BLOCKING",
+                    "MF_BUILD_VESTIBULE"
+                ]
+            },
+            {
+                "terrain": "STATUE_INERT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    2,
+                    3
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_BUILD_IN_WALLS",
+                    "MF_IMPREGNABLE"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "reward_pedestal_permanent",
+        "name": "Guaranteed good permanent item on a glowing pedestal (runic weapon/armor or 2 staffs)",
+        "depthRange": [
+            5,
+            16
+        ],
+        "roomSize": [
+            10,
+            30
+        ],
+        "frequency": 30,
+        "category": "reward",
+        "flags": [
+            "BP_ROOM",
+            "BP_REWARD",
+            "BP_PURGE_INTERIOR",
+            "BP_SURROUND_WITH_WALLS",
+            "BP_OPEN_INTERIOR",
+            "BP_IMPREGNABLE"
+        ],
+        "features": [
+            {
+                "terrain": "CARPET",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    0,
+                    0
+                ],
+                "minimumInstanceCount": 0,
+                "flags": [
+                    "MF_EVERYWHERE"
+                ]
+            },
+            {
+                "terrain": "STATUE_INERT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    2,
+                    3
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_BUILD_IN_WALLS",
+                    "MF_IMPREGNABLE"
+                ]
+            },
+            {
+                "terrain": "PEDESTAL",
+                "layer": "DUNGEON",
                 "itemCategory": "WEAPON",
                 "instanceCount": [
                     1,
@@ -143,23 +278,112 @@
                 "personalSpace": 2,
                 "flags": [
                     "MF_GENERATE_ITEM",
-                    "MF_ALTAR"
+                    "MF_ALTERNATIVE",
+                    "MF_REQUIRE_GOOD_RUNIC",
+                    "MF_NO_THROWING_WEAPONS",
+                    "MF_TREAT_AS_BLOCKING"
                 ]
             },
             {
+                "terrain": "PEDESTAL",
+                "layer": "DUNGEON",
                 "itemCategory": "ARMOR",
                 "instanceCount": [
-                    0,
+                    1,
                     1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_ALTERNATIVE",
+                    "MF_REQUIRE_GOOD_RUNIC",
+                    "MF_TREAT_AS_BLOCKING"
+                ]
+            },
+            {
+                "terrain": "PEDESTAL",
+                "layer": "DUNGEON",
+                "itemCategory": "STAFF",
+                "instanceCount": [
+                    2,
+                    2
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_ALTERNATIVE",
+                    "MF_TREAT_AS_BLOCKING"
+                ]
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_PERMIT_BLOCKING",
+                    "MF_BUILD_VESTIBULE"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "reward_pedestal_consumable",
+        "name": "Guaranteed good consumable item on glowing pedestals (scrolls of enchanting, potion of life)",
+        "depthRange": [
+            10,
+            26
+        ],
+        "roomSize": [
+            10,
+            30
+        ],
+        "frequency": 30,
+        "category": "reward",
+        "flags": [
+            "BP_ROOM",
+            "BP_REWARD",
+            "BP_PURGE_INTERIOR",
+            "BP_SURROUND_WITH_WALLS",
+            "BP_OPEN_INTERIOR",
+            "BP_IMPREGNABLE"
+        ],
+        "features": [
+            {
+                "terrain": "CARPET",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    0,
+                    0
+                ],
+                "minimumInstanceCount": 0,
+                "flags": [
+                    "MF_EVERYWHERE"
+                ]
+            },
+            {
+                "terrain": "STATUE_INERT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    3
                 ],
                 "minimumInstanceCount": 0,
                 "personalSpace": 2,
                 "flags": [
-                    "MF_GENERATE_ITEM",
-                    "MF_ALTAR"
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_BUILD_IN_WALLS",
+                    "MF_IMPREGNABLE"
                 ]
             },
             {
+                "terrain": "PEDESTAL",
+                "layer": "DUNGEON",
                 "itemCategory": "SCROLL",
                 "itemId": "scroll_of_enchantment",
                 "instanceCount": [
@@ -171,10 +395,12 @@
                 "flags": [
                     "MF_GENERATE_ITEM",
                     "MF_ALTERNATIVE",
-                    "MF_ALTAR"
+                    "MF_TREAT_AS_BLOCKING"
                 ]
             },
             {
+                "terrain": "PEDESTAL",
+                "layer": "DUNGEON",
                 "itemCategory": "POTION",
                 "itemId": "potion_of_life",
                 "instanceCount": [
@@ -186,7 +412,7 @@
                 "flags": [
                     "MF_GENERATE_ITEM",
                     "MF_ALTERNATIVE",
-                    "MF_ALTAR"
+                    "MF_TREAT_AS_BLOCKING"
                 ]
             },
             {
@@ -350,6 +576,168 @@
                 "flags": [
                     "MF_BUILD_AT_ORIGIN",
                     "MF_PERMIT_BLOCKING"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "vestibule_flammable_barricade",
+        "name": "Flammable barricade in the doorway -- burn the wooden barricade to enter",
+        "depthRange": [
+            1,
+            6
+        ],
+        "roomSize": [
+            1,
+            1
+        ],
+        "frequency": 10,
+        "category": "vestibule",
+        "flags": [
+            "BP_VESTIBULE"
+        ],
+        "features": [
+            {
+                "terrain": "WOODEN_BARRICADE",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_PERMIT_BLOCKING",
+                    "MF_BUILD_AT_ORIGIN"
+                ]
+            },
+            {
+                "itemCategory": "POTION",
+                "itemId": "potion_of_incineration",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_BUILD_ANYWHERE_ON_LEVEL",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "vestibule_statue_doorway",
+        "name": "Statue in the doorway -- use a scroll of shattering to enter",
+        "depthRange": [
+            1,
+            26
+        ],
+        "roomSize": [
+            1,
+            1
+        ],
+        "frequency": 6,
+        "category": "vestibule",
+        "flags": [
+            "BP_VESTIBULE"
+        ],
+        "features": [
+            {
+                "terrain": "STATUE_INERT_DOORWAY",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_PERMIT_BLOCKING",
+                    "MF_BUILD_AT_ORIGIN"
+                ]
+            },
+            {
+                "itemCategory": "SCROLL",
+                "itemId": "scroll_of_shattering",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_BUILD_ANYWHERE_ON_LEVEL",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "vestibule_pit_trap_field",
+        "name": "Pit traps -- area outside entrance is full of pit traps",
+        "depthRange": [
+            1,
+            26
+        ],
+        "roomSize": [
+            30,
+            60
+        ],
+        "frequency": 8,
+        "category": "vestibule",
+        "flags": [
+            "BP_VESTIBULE",
+            "BP_OPEN_INTERIOR",
+            "BP_NO_INTERIOR_FLAG"
+        ],
+        "features": [
+            {
+                "terrain": "DOOR",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_PERMIT_BLOCKING",
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_ALTERNATIVE"
+                ]
+            },
+            {
+                "terrain": "SECRET_DOOR",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_IMPREGNABLE",
+                    "MF_PERMIT_BLOCKING",
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_ALTERNATIVE"
+                ]
+            },
+            {
+                "terrain": "TRAP_DOOR_HIDDEN",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    60,
+                    60
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_REPEAT_UNTIL_NO_PROGRESS"
                 ]
             }
         ]

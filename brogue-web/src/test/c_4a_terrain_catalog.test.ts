@@ -37,6 +37,7 @@ import {
     TM_GAS_DISSIPATES, TM_GAS_DISSIPATES_QUICKLY,
     TM_EXPLOSIVE_PROMOTE,
     TM_PROMOTES_ON_CREATURE, TM_REFLECTS_BOLTS,
+    TM_CONNECTS_LEVEL,
     blocksPassability, isPathingBlocker, blocksVision,
     obstructsItems, obstructsDiagonalMovement, isDeepWater, isFlammable,
     isFireTerrain,
@@ -135,7 +136,11 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         // B-3：FORCEFIELD/FORCEFIELD_MELT/CRYSTAL_WALL/SACRED_GLYPH 入列
         //（CE Globals.c:477/478/338/479，三张卷轴 negation/sanctuary/shattering
         // 的载体地形），43 → 47。
-        expect(names.length).toBe(47);
+        // V-2b-2b：CARPET/STATUE_INERT/PEDESTAL/STATUE_INERT_DOORWAY/
+        // WOODEN_BARRICADE/TRAP_DOOR_HIDDEN 入列（CE Globals.c:325/351/369/
+        // 550/341/379，机器蓝图 3/4/5/19/20/23 号的地形载体；
+        // FUNGUS_FOREST 以 FOLIAGE 别名承载，不加成员），47 → 53。
+        expect(names.length).toBe(53);
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             const entry = TERRAIN_FLAGS[t];
@@ -358,6 +363,69 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         expect(TERRAIN_HOME_LAYER[C.SACRED_GLYPH]).toBe(L.SURFACE);
     });
 
+    it('V-2b-2b 新增条目：机器蓝图地形载体六条逐字段钉死（CE Globals.c 原列）', () => {
+        // CARPET（:325）：可燃地毯。捕获的错误实现：漏 T_IS_FLAMMABLE
+        //（火点不着地毯——宝库铺装被火原样穿过）；漏 VANISHES（烧后残骸不消失）。
+        expect(TERRAIN_FLAGS[C.CARPET]!.flags).toBe(T_IS_FLAMMABLE);
+        expect(TERRAIN_FLAGS[C.CARPET]!.mechFlags).toBe(TM_VANISHES_UPON_PROMOTION);
+        expect(TERRAIN_FLAGS[C.CARPET]!.chanceToIgnite).toBe(0);
+        expect(TERRAIN_FLAGS[C.CARPET]!.fireType).toBe('DF_EMBERS');
+        expect(TERRAIN_FLAGS[C.CARPET]!.promoteType).toBe('');
+        expect(TERRAIN_FLAGS[C.CARPET]!.promoteChance).toBe(0);
+        expect(DRAW_PRIORITY[C.CARPET]).toBe(85);
+        expect(TERRAIN_HOME_LAYER[C.CARPET]).toBe(L.DUNGEON);
+
+        // STATUE_INERT（:351）与 STATUE_INERT_DOORWAY（:550）：挡通行/物品/
+        // 气/表面效果，但不挡视线与对角；DOORWAY 变体多 TM_CONNECTS_LEVEL
+        //（堵门体语义）。fireType DF_PLAIN_FIRE 照抄（零可燃性下不触发）。
+        for (const t of [C.STATUE_INERT, C.STATUE_INERT_DOORWAY]) {
+            expect(TERRAIN_FLAGS[t]!.flags, `${TerrainType[t]}.flags`).toBe(
+                T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS |
+                T_OBSTRUCTS_SURFACE_EFFECTS);
+            expect(TERRAIN_FLAGS[t]!.chanceToIgnite).toBe(0);
+            expect(TERRAIN_FLAGS[t]!.fireType).toBe('DF_PLAIN_FIRE');
+            expect(DRAW_PRIORITY[t]).toBe(0);
+            expect(TERRAIN_HOME_LAYER[t]).toBe(L.DUNGEON);
+            expect(blocksVision(t), `${TerrainType[t]} 不挡视线（CE 无 VISION 位）`).toBe(false);
+        }
+        expect(TERRAIN_FLAGS[C.STATUE_INERT]!.mechFlags).toBe(TM_STAND_IN_TILE);
+        expect(TERRAIN_FLAGS[C.STATUE_INERT_DOORWAY]!.mechFlags).toBe(
+            TM_STAND_IN_TILE | TM_CONNECTS_LEVEL);
+
+        // PEDESTAL（:369）：只挡表面效果（物品可放——基座大奖正落同格）；
+        // glowLight = CANDLE_LIGHT（:369 原列）。
+        expect(TERRAIN_FLAGS[C.PEDESTAL]!.flags).toBe(T_OBSTRUCTS_SURFACE_EFFECTS);
+        expect(TERRAIN_FLAGS[C.PEDESTAL]!.mechFlags).toBe(0);
+        expect(TERRAIN_FLAGS[C.PEDESTAL]!.fireType).toBe('');
+        expect(DRAW_PRIORITY[C.PEDESTAL]).toBe(17);
+        expect(TERRAIN_HOME_LAYER[C.PEDESTAL]).toBe(L.DUNGEON);
+        expect(blocksPassability(C.PEDESTAL), '基座可通行（CE 无 PASSABILITY 位）').toBe(false);
+
+        // WOODEN_BARRICADE（:341）：挡通行/挡物品 + 可燃（ign 100、
+        // DF_WOODEN_BARRICADE_BURN——19 号的解法本体）；CONNECTS_LEVEL。
+        expect(TERRAIN_FLAGS[C.WOODEN_BARRICADE]!.flags).toBe(
+            T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_IS_FLAMMABLE);
+        expect(TERRAIN_FLAGS[C.WOODEN_BARRICADE]!.mechFlags).toBe(
+            TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT | TM_CONNECTS_LEVEL);
+        expect(TERRAIN_FLAGS[C.WOODEN_BARRICADE]!.chanceToIgnite).toBe(100);
+        expect(TERRAIN_FLAGS[C.WOODEN_BARRICADE]!.fireType).toBe('DF_WOODEN_BARRICADE_BURN');
+        expect(DRAW_PRIORITY[C.WOODEN_BARRICADE]).toBe(8);
+        expect(TERRAIN_HOME_LAYER[C.WOODEN_BARRICADE]).toBe(L.DUNGEON);
+
+        // TRAP_DOOR_HIDDEN（:379）：T_AUTO_DESCENT（踩上坠层）+ TM_IS_SECRET
+        //（隐藏位）；外观伪装 = G_FLOOR（drawPriority 95 与 FLOOR 同档）；
+        // discoverType DF_SHOW_TRAPDOOR 照抄（显形链归 2b-7）。捕获的错误
+        // 实现：抄上 T_OBSTRUCTS_PASSABILITY（陷阱门可走上去才会坠落）。
+        expect(TERRAIN_FLAGS[C.TRAP_DOOR_HIDDEN]!.flags).toBe(T_AUTO_DESCENT);
+        expect(TERRAIN_FLAGS[C.TRAP_DOOR_HIDDEN]!.mechFlags).toBe(TM_IS_SECRET);
+        expect(TERRAIN_FLAGS[C.TRAP_DOOR_HIDDEN]!.fireType).toBe('DF_POISON_GAS_CLOUD');
+        expect(TERRAIN_FLAGS[C.TRAP_DOOR_HIDDEN]!.discoverType).toBe('DF_SHOW_TRAPDOOR');
+        expect(DRAW_PRIORITY[C.TRAP_DOOR_HIDDEN]).toBe(95);
+        expect(TERRAIN_HOME_LAYER[C.TRAP_DOOR_HIDDEN]).toBe(L.DUNGEON);
+        expect(blocksPassability(C.TRAP_DOOR_HIDDEN), '陷阱门可走（坠落 ≠ 挡路）').toBe(false);
+        expect(isPathingBlocker(C.TRAP_DOOR_HIDDEN), '但它是寻路阻断体（T_AUTO_DESCENT）').toBe(true);
+    });
+
     it('F-2a 守卫：Grid.FIRE_TERRAIN_TYPES（isBurning 派生集）≡ T_IS_FIRE 旗标载体集', () => {
         // Cell.isBurning 的 getter 用本集合判火（Grid.ts 不能反向 import
         // TerrainCatalog，数据登记了两份）。本断言把两份双向锁死：
@@ -453,8 +521,12 @@ describe('C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时
     // 按 B-1 反转范本列入 POST_LEGACY_TILES 跳过，其 CE 正确判定由 B-3
     // 的逐字段块（flags 断言）钉死。SACRED_GLYPH 不挡通行，两边同为 true，
     // 留在等价论域内。
+    // V-2b-2b 注：机器蓝图墙族三件（STATUE_INERT :351 / STATUE_INERT_DOORWAY
+    // :550 / WOODEN_BARRICADE :341）同为迁移后新增的挡通行 tile，按同一
+    // 范本列入跳过，CE 判定由下方 V-2b-2b 逐字段块钉死。
     const POST_LEGACY_TILES = new Set<TerrainType>([
         C.FORCEFIELD, C.FORCEFIELD_MELT, C.CRYSTAL_WALL,
+        C.STATUE_INERT, C.STATUE_INERT_DOORWAY, C.WOODEN_BARRICADE,
     ]);
     it('terrainAllowsMove（查表）≡ 旧排除清单 {GRANITE,WALL,SECRET_DOOR,LOCKED_DOOR,WATER_DEEP}', () => {
         const names = Object.keys(TerrainType).filter((k) => Number.isNaN(Number(k)));

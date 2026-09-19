@@ -252,6 +252,14 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.FORCEFIELD]: L.SURFACE, [C.FORCEFIELD_MELT]: L.SURFACE, // B-3（CE :674/:675 DF layer 同证）
             [C.CRYSTAL_WALL]: L.DUNGEON, // B-3（CE :607 {CRYSTAL_WALL, DUNGEON}）
             [C.SACRED_GLYPH]: L.SURFACE, // B-3（CE :676 {SACRED_GLYPH, SURFACE}）
+            // V-2b-2b 六条（CE GlobalsBrogue.c 蓝图 feature layer 列 + DF 目录
+            // :709 {CARPET, DUNGEON} 同证；FUNGUS_FOREST 以 FOLIAGE 别名承载）：
+            [C.CARPET]: L.DUNGEON,
+            [C.STATUE_INERT]: L.DUNGEON,
+            [C.PEDESTAL]: L.DUNGEON,
+            [C.STATUE_INERT_DOORWAY]: L.DUNGEON,
+            [C.WOODEN_BARRICADE]: L.DUNGEON,
+            [C.TRAP_DOOR_HIDDEN]: L.DUNGEON,
         });
         expect(DRAW_PRIORITY).toEqual({
             [C.NOTHING]: 100, [C.GRANITE]: 0, [C.FLOOR]: 95, [C.WALL]: 0,
@@ -276,6 +284,15 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.FORCEFIELD]: 0, [C.FORCEFIELD_MELT]: 0, // B-3（CE Globals.c:477/478 第 4 列）
             [C.CRYSTAL_WALL]: 0, // B-3（CE Globals.c:338 第 4 列）
             [C.SACRED_GLYPH]: 7, // B-3（CE Globals.c:479 第 4 列）
+            // V-2b-2b 六条（CE 第 4 列原值：CARPET :325、STATUE_INERT :351、
+            // PEDESTAL :369、STATUE_INERT_DOORWAY :550、WOODEN_BARRICADE :341、
+            // TRAP_DOOR_HIDDEN :379——G_FLOOR 伪装档）：
+            [C.CARPET]: 85,
+            [C.STATUE_INERT]: 0,
+            [C.PEDESTAL]: 17,
+            [C.STATUE_INERT_DOORWAY]: 0,
+            [C.WOODEN_BARRICADE]: 8,
+            [C.TRAP_DOOR_HIDDEN]: 95,
         });
     });
 });
@@ -397,6 +414,12 @@ describe('C-4a-0 留痕（本轮明确不做的事，断言现状）', () => {
             'engine/Map/AutoGenerator.ts',  // C-6：runAutogenerators 的 terrain 分支
                                             //（CE Architect.c:1829-1838 `layers[layer] = terrain`；
                                             // 当前为留形分支——真实目录无 wired terrain 条目）
+            'engine/Generator/BlueprintEngine.ts', // V-2b-2b：机器蓝图层写入——
+                                            // BP_PURGE_PATHING_BLOCKERS / BP_PURGE_LIQUIDS /
+                                            // BP_OPEN_INTERIOR 的逐层清理（CE Architect.c:882-907/
+                                            // 643-657）与带 layer 列的 feature 地形纯层写入
+                                            //（CE :1443 `pmap.layers[layer] = terrain`——
+                                            // 地毯上铺菌林，两层共存）。
         ]);
         const srcDir = fileURLToPath(new URL('../', import.meta.url));
         const prodFiles = collectFiles(srcDir).filter((f) => !f.split(sep).includes('test'));

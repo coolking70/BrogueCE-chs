@@ -451,8 +451,11 @@ describe('G-2 对抗⑦：未迁移气体只登记（载体盘点表的显式留
         // 需要 RUBBLE（CE Globals.c:679 `{RUBBLE, SURFACE, 0, 0,
         // DFF_ACTIVATE_DORMANT_MONSTER}`），web 无该地形，故照惯例 tile 留 null
         // 并登记。名单守卫的原意（防"接线顺手删登记"）保持不变。
+        // V-2b-2b 再顺延（本文件不在该轮 §6 授权清单——跨轮公共登记表再次
+        // 被按主题命名的本文件钉住）：23 号蓝图的 DF_SHOW_TRAPDOOR（TRAP_DOOR
+        // tile web 无，CE Globals.c:628）入列，7 → 8。守卫原意不变。
         expect(DF_MISSING_TILES, 'F-2c 后 DF_EXPLOSION_FIRE 已摘出缺 tile 名单').not.toContain(DF.DF_EXPLOSION_FIRE);
-        expect(DF_MISSING_TILES).toHaveLength(7);
+        expect(DF_MISSING_TILES).toHaveLength(8);
         const f = catalogFeature(DF.DF_EXPLOSION_FIRE);
         expect(f.tile).toBe(C.GAS_EXPLOSION);
         expect(f.startProbability).toBe(60);

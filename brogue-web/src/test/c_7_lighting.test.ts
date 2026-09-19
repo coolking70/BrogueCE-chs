@@ -185,6 +185,16 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         [TerrainType.FORCEFIELD_MELT]: LightKind.FORCEFIELD_LIGHT,   // Globals.c:478
         [TerrainType.CRYSTAL_WALL]: LightKind.CRYSTAL_WALL_LIGHT,    // Globals.c:338
         [TerrainType.SACRED_GLYPH]: LightKind.SACRED_GLYPH_LIGHT,    // Globals.c:479
+        // V-2b-2b 六条（CE 原列）。本文件不在 V-2b-2b 任务书 §6 授权清单——
+        // 但本表是 Record<TerrainType> 结构性穷尽表，新增地形不加成员连
+        // npm run build（vue-tsc 编译 src 全部 .ts）都无法通过，按 c_4a B 组
+        // 同类口径机械补齐；边界扩展在 v-2b-2b 报告 prominent 申报。
+        [TerrainType.CARPET]: 0,                        // Globals.c:325 NO_LIGHT
+        [TerrainType.STATUE_INERT]: 0,                  // Globals.c:351 NO_LIGHT
+        [TerrainType.PEDESTAL]: LightKind.CANDLE_LIGHT, // Globals.c:369 原列（与 ALTAR_INERT 同一烛光）
+        [TerrainType.STATUE_INERT_DOORWAY]: 0,          // Globals.c:550 NO_LIGHT
+        [TerrainType.WOODEN_BARRICADE]: 0,              // Globals.c:341 NO_LIGHT
+        [TerrainType.TRAP_DOOR_HIDDEN]: 0,              // Globals.c:379 NO_LIGHT
     };
 
     it('全 tile 的 glowLight 逐值等于 CE 原列（结构性穷尽）', () => {
@@ -195,7 +205,7 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         }
     });
 
-    it('非零恰 10 个，且都指向有载体的目录条目', () => {
+    it('非零恰 11 个，且都指向有载体的目录条目', () => {
         const nonzero = Object.entries(TERRAIN_FLAGS)
             .filter(([, v]) => v.glowLight !== LightKind.NO_LIGHT)
             .map(([k]) => Number(k) as TerrainType)
@@ -208,6 +218,8 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
             // 共用 FORCEFIELD_LIGHT）。
             TerrainType.FORCEFIELD, TerrainType.FORCEFIELD_MELT,
             TerrainType.CRYSTAL_WALL, TerrainType.SACRED_GLYPH,
+            // V-2b-2b：PEDESTAL（CE Globals.c:369 原列 = CANDLE_LIGHT）。
+            TerrainType.PEDESTAL,
         ].sort((a, b) => a - b));
         for (const t of nonzero) {
             expect(LIGHT_CATALOG[TERRAIN_FLAGS[t].glowLight]).toBeDefined();

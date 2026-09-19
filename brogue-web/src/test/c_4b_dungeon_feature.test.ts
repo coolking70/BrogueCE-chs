@@ -557,9 +557,12 @@ describe('C-4b D：levelIsDisconnectedWithBlockingMap（CE Architect.c:3137-3198
 });
 
 describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () => {
-    it('E1 恰 32 条（C-6 增补 DF_GRASS/DF_FOLIAGE；B-3 增补 DF_FORCEFIELD_MELT/DF_SACRED_GLYPHS/DF_SHATTERING_SPELL；T-1 增补 DF_CRYSTAL_WALL），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）', () => {
+    it('E1 恰 35 条（C-6 增补 DF_GRASS/DF_FOLIAGE；B-3 增补 DF_FORCEFIELD_MELT/DF_SACRED_GLYPHS/DF_SHATTERING_SPELL；T-1 增补 DF_CRYSTAL_WALL；V-2b-2b 增补 DF_SHOW_TRAPDOOR_HALO/DF_SHOW_TRAPDOOR/DF_WOODEN_BARRICADE_BURN——TRAP_DOOR_HIDDEN.discoverType 与 WOODEN_BARRICADE.fireType 的载体，CE Globals.c:627/628/825），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）', () => {
         const keys = Object.keys(DUNGEON_FEATURE_CATALOG);
-        expect(keys.length).toBe(32);
+        expect(keys.length).toBe(35);
+        expect(DF.DF_SHOW_TRAPDOOR_HALO, 'V-2b-2b：CE Rogue.h:1487（Globals.c:627）').toBe(16);
+        expect(DF.DF_SHOW_TRAPDOOR, 'V-2b-2b：TRAP_DOOR_HIDDEN.discoverType 的载体（Rogue.h:1488，Globals.c:628）').toBe(17);
+        expect(DF.DF_WOODEN_BARRICADE_BURN, 'V-2b-2b：WOODEN_BARRICADE.fireType 的载体（Rogue.h:1669，Globals.c:825）').toBe(156);
         expect(DF.DF_CRYSTAL_WALL, 'T-1：runAutogenerators 表 index 1 的 DFType（Rogue.h:1471，Globals.c:607）').toBe(2);
         expect(DF.DF_GRASS, 'C-6：runAutogenerators 表 index 3 的 DFType（Rogue.h:1473，Globals.c:609）').toBe(4);
         expect(DF.DF_FOLIAGE, 'C-6：表 index 8 的 DFType（Rogue.h:1477，Globals.c:613）').toBe(8);
@@ -658,7 +661,10 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
             'C-6：DF_GRASS/DF_FOLIAGE（自动生成器表 index 3/8 起点）入闭包 26→28；' +
             'B-3：DF_FORCEFIELD_MELT（经 FORCEFIELD.promoteType）+ DF_SACRED_GLYPHS' +
             '/DF_SHATTERING_SPELL（卷轴起点）入闭包 28→31；' +
-            'T-1：DF_CRYSTAL_WALL（自动生成器表 index 1 起点）入闭包 31→32').toBe(32);
+            'T-1：DF_CRYSTAL_WALL（自动生成器表 index 1 起点）入闭包 31→32；' +
+            'V-2b-2b：DF_SHOW_TRAPDOOR_HALO/DF_SHOW_TRAPDOOR（TRAP_DOOR_HIDDEN.' +
+            'discoverType 起点 + 其 subsequent）与 DF_WOODEN_BARRICADE_BURN' +
+            '（WOODEN_BARRICADE.fireType 起点）入闭包 32→35').toBe(35);
     });
 
     it('E3 字段抽查：BRIDGE_FALL_PREP 的 prop/200/100、BRIDGE_FIRE 的描述与 tile=0、其余代表条目', () => {
@@ -794,7 +800,8 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         'catalogFeature 对其抛错点名；对其余条目正常转换', () => {
         const all = Object.keys(DUNGEON_FEATURE_CATALOG).map(Number) as DF[];
         const missing = new Set(DF_MISSING_TILES);
-        expect(DF_MISSING_TILES.length).toBe(7);
+        // V-2b-2b：DF_SHOW_TRAPDOOR 入列（TRAP_DOOR tile web 无），7 → 8。
+        expect(DF_MISSING_TILES.length).toBe(8);
         // 登记条目确实都是 tile=null，且抛错带 CE tile 名。
         for (const id of DF_MISSING_TILES) {
             expect(DUNGEON_FEATURE_CATALOG[id]!.tile, `DF#${id} 应为 null tile`).toBeNull();
@@ -998,27 +1005,56 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                         }
                         expect(nonEmpty.length, `seed=${seed} D${depth} (${x},${y}) 至多两层（C-6 后上界）`).toBeLessThanOrEqual(2);
                         if (nonEmpty.length === 2) {
-                            expect([C.GRASS, C.FOLIAGE],
-                                `seed=${seed} D${depth} (${x},${y}) 两层格的 SURFACE 必须是 C-6 草/树`).toContain(cell.layers[L.SURFACE]);
-                            // 基座按 CE fillSpawnMap 优先级门（Architect.c:3228
-                            // `旧 prio >= 新 prio`）判定合法形态：
-                            //   DUNGEON=FLOOR（草/树长在地板上，主形态）；
-                            //   LIQUID=WATER_SHALLOW（仅 FOLIAGE 45 盖浅水 55；
-                            //     GRASS 60 > 55 被挡）、CHASM_EDGE（渊缘草）、
-                            //     OBSIDIAN（硫矿镶边上的树，深层才可能出现）。
-                            const baseOk: Array<[number, TerrainType]> = [
-                                [L.DUNGEON, C.FLOOR],
-                                [L.LIQUID, C.WATER_SHALLOW],
-                                [L.LIQUID, C.CHASM_EDGE],
-                                [L.LIQUID, C.OBSIDIAN],
-                            ];
-                            const surf = cell.layers[L.SURFACE] as TerrainType;
-                            const ok = baseOk.some(([l, t]) =>
-                                cell.layers[l] === t
-                                && DRAW_PRIORITY[t] >= DRAW_PRIORITY[surf]);
-                            expect(ok,
-                                `seed=${seed} D${depth} (${x},${y}) 两层组合 ` +
-                                nonEmpty.sort().join(',') + ` 不满足 CE 优先级门`).toBe(true);
+                            // V-2b-2b 扩（机器蓝图 3/4/5/19/20/23 号的 CE :1443
+                            // 纯层写入——feature 地形写 feature.layer 列、不清其他
+                            // 层，与格上既有内容叠加）：机器地形占 DUNGEON 的两层
+                            // 形态加入白名单。出现清单之外的新组合时：先核对 CE
+                            // 原表确属 :1443 字面行为，再在此补行并注明蓝图号。
+                            const MACHINE_DUNGEON_TILES: ReadonlySet<TerrainType> = new Set([
+                                C.CARPET,               // 3/4/5 号地毯
+                                C.DOOR, C.SECRET_DOOR,  // 23 号门型替代组
+                                C.TRAP_DOOR_HIDDEN,     // 23 号陷阱
+                                C.WOODEN_BARRICADE,     // 19 号木栅
+                                C.STATUE_INERT, C.STATUE_INERT_DOORWAY, C.PEDESTAL,
+                            ]);
+                            const NON_BLOCKING_LIQUIDS: ReadonlySet<TerrainType> = new Set([
+                                C.WATER_SHALLOW, C.CHASM_EDGE, C.OBSIDIAN,
+                            ]);
+                            if (cell.layers[L.SURFACE] !== C.NOTHING) {
+                                expect([C.GRASS, C.FOLIAGE],
+                                    `seed=${seed} D${depth} (${x},${y}) 两层格的 SURFACE 必须是 C-6 草/树`).toContain(cell.layers[L.SURFACE]);
+                                // 基座按 CE fillSpawnMap 优先级门（Architect.c:3228
+                                // `旧 prio >= 新 prio`）判定合法形态：
+                                //   DUNGEON=FLOOR（草/树长在地板上，主形态）；
+                                //   DUNGEON=CARPET（V-2b-2b：3 号菌林长在地毯上，
+                                //     CE :1443 纯层写入、地毯在 DUNGEON 保留）；
+                                //   LIQUID=WATER_SHALLOW（仅 FOLIAGE 45 盖浅水 55；
+                                //     GRASS 60 > 55 被挡）、CHASM_EDGE（渊缘草）、
+                                //     OBSIDIAN（硫矿镶边上的树，深层才可能出现）。
+                                const baseOk: Array<[number, TerrainType]> = [
+                                    [L.DUNGEON, C.FLOOR],
+                                    [L.DUNGEON, C.CARPET],
+                                    [L.LIQUID, C.WATER_SHALLOW],
+                                    [L.LIQUID, C.CHASM_EDGE],
+                                    [L.LIQUID, C.OBSIDIAN],
+                                ];
+                                const surf = cell.layers[L.SURFACE] as TerrainType;
+                                const ok = baseOk.some(([l, t]) =>
+                                    cell.layers[l] === t
+                                    && DRAW_PRIORITY[t] >= DRAW_PRIORITY[surf]);
+                                expect(ok,
+                                    `seed=${seed} D${depth} (${x},${y}) 两层组合 ` +
+                                    nonEmpty.sort().join(',') + ` 不满足 CE 优先级门`).toBe(true);
+                            } else if (cell.layers[L.DUNGEON] !== C.NOTHING
+                                && MACHINE_DUNGEON_TILES.has(cell.layers[L.DUNGEON] as TerrainType)
+                                && NON_BLOCKING_LIQUIDS.has(cell.layers[L.LIQUID] as TerrainType)) {
+                                // 机器地形 + 非阻断液体的叠层（如 23 号陷阱写在
+                                // 浅水层格上）——CE :1443 字面行为，合法。
+                            } else {
+                                expect.unreachable(
+                                    `seed=${seed} D${depth} (${x},${y}) 两层组合 ` +
+                                    nonEmpty.sort().join(',') + ` 不属于任何已知合法形态`);
+                            }
                         }
                         expect(cell.layers[L.GAS], `seed=${seed} D${depth} (${x},${y}) GAS 恒空`).toBe(C.NOTHING);
                     }

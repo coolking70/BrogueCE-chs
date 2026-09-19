@@ -118,15 +118,21 @@ function measureDelta(bp: BlueprintDef): number {
 describe('V-1b 前提自检', () => {
     // 原 P1 断言（V-1b 时）：「生产 blueprints.json 无任何 feature 带
     // MF_ALTERNATIVE / MF_ALTERNATIVE_2（零掷骰前提）」，期望 flagged === []。
-    // **V-2a 已反转**（本文件在 V-2a 任务书 §5 授权清单内按留痕反转惯例更新）：
-    // V-2a 给 reward_pedestals 落地 CE GlobalsBrogue.c:218-219 的两条基座大奖
-    // feature（SCROLL_ENCHANTING / POTION_LIFE，各带 MF_ALTERNATIVE），零掷骰
-    // 前提随之失效；generation_baseline 已随 V-2a 重捕获（v_1b_report §8
-    // 预告、P1 注释预留的事件）。反转后钉死的新事实：
-    //   a) 全库带 MF_ALTERNATIVE 的 feature 恰为这两条（多一条/少一条都红）；
+    // V-2a 已反转：reward_pedestals 落地 CE GlobalsBrogue.c:218-219 的两条
+    // 基座大奖 feature。**V-2b-2b 再反转**（本文件在 V-2b-2b 任务书 §6
+    // 授权清单内按留痕反转惯例更新）：reward_pedestals 按 CE
+    // GlobalsBrogue.c:206-220 拆回两条（reward_pedestal_permanent /
+    // reward_pedestal_consumable），CE 3 号 Treasure room（:198-205）的
+    // 药水/卷轴替代组也随蓝图落地。反转后钉死的新事实：
+    //   a) 全库带 MF_ALTERNATIVE 的 feature 恰为 CE 3/4/5/23 号的替代组九条（23 号 = DOOR/SECRET_DOOR 门型替代组）
+    //      （替代 feature 均 itemKind=-1 → itemId 为空记 null；consumable 的
+    //      附魔卷轴/生命药水带具体 id）——多一条/少一条都红；
     //   b) MF_ALTERNATIVE_2 在 CE Brogue 目录全表零使用，生产数据零载体——
-    //      有人顺手加载体时红。
-    it('P1（V-2a 反转）生产数据带 MF_ALTERNATIVE 的 feature 恰为 reward_pedestals 两条基座大奖；MF_ALTERNATIVE_2 仍零载体', () => {
+    //      有人顺手加载体时红；
+    //   c) CE 19 号的两件 ALTERNATIVE 点火物（incendiary_dart /
+    //      potion_of_incineration）本轮按任务书 §4 方案 2 只落药水一条、
+    //      ALTERNATIVE 配对暂缺——飞镖点燃接线轮须把第 10、11 条载体补回本断言。
+    it('P1（V-2b-2b 反转）生产数据带 MF_ALTERNATIVE 的 feature 恰为 CE 3/4/5/23 号替代组九条；MF_ALTERNATIVE_2 仍零载体', () => {
         const flagged = (blueprintData as BlueprintDef[]).flatMap(bp =>
             bp.features.map(f => ({ bpId: bp.id, f }))
                 .filter(({ f }) => f.flags.includes('MF_ALTERNATIVE') || f.flags.includes('MF_ALTERNATIVE_2'))
@@ -138,8 +144,15 @@ describe('V-1b 前提自检', () => {
             item: f.itemId ?? null,
         })).sort((a, b) => (a.item ?? '').localeCompare(b.item ?? '')),
         '替代集合载体集变动：核对 CE GlobalsBrogue.c 原表，并重捕获 generation_baseline').toEqual([
-            { bpId: 'reward_pedestals', alt1: true, alt2: false, item: 'potion_of_life' },
-            { bpId: 'reward_pedestals', alt1: true, alt2: false, item: 'scroll_of_enchantment' },
+            { bpId: 'reward_treasure_room', alt1: true, alt2: false, item: null },
+            { bpId: 'reward_treasure_room', alt1: true, alt2: false, item: null },
+            { bpId: 'reward_pedestal_permanent', alt1: true, alt2: false, item: null },
+            { bpId: 'reward_pedestal_permanent', alt1: true, alt2: false, item: null },
+            { bpId: 'reward_pedestal_permanent', alt1: true, alt2: false, item: null },
+            { bpId: 'vestibule_pit_trap_field', alt1: true, alt2: false, item: null },
+            { bpId: 'vestibule_pit_trap_field', alt1: true, alt2: false, item: null },
+            { bpId: 'reward_pedestal_consumable', alt1: true, alt2: false, item: 'potion_of_life' },
+            { bpId: 'reward_pedestal_consumable', alt1: true, alt2: false, item: 'scroll_of_enchantment' },
         ]);
     });
 });

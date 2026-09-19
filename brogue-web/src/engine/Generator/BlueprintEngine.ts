@@ -11,7 +11,7 @@
  * 修复前基线（15 种子 × D1-D26）：1920 台机器、坏层 5 个。
  */
 
-import { Grid, TerrainType, DCOLS, DROWS, type Cell } from '../Map/Grid';
+import { Grid, TerrainType, DungeonLayer, DCOLS, DROWS, type Cell } from '../Map/Grid';
 import { analyzeChokeMap, analyzeLoopMap, CE_GATE_CANDIDATE_CAP, type ChokeAnalysis } from '../Map/LoopMap';
 import { terrainAllowsMove, DIRS8 } from '../Map/Connectivity';
 import { DijkstraMap, MAX_DISTANCE } from '../Map/Pathfinding';
@@ -24,9 +24,12 @@ import {
     T_OBSTRUCTS_PASSABILITY,
     T_PATHING_BLOCKER,
     isPathingBlocker,
+    TM_IS_WIRED,
+    TM_IS_CIRCUIT_BREAKER,
 } from '../Map/TerrainCatalog';
 import {
     cellTerrainFlags,
+    cellTerrainMechFlags,
     createSpawnMap,
     levelIsDisconnectedOnMovementGraph,
     levelIsDisconnectedWithBlockingMap,
@@ -54,6 +57,14 @@ const ITEM_QUALIFIER_FLAGS: readonly string[] = [
 
 export interface FeatureDef {
     terrain?: string;
+    /**
+     * V-2b-2b：CE machineFeature.layer 列（Rogue.h:2699 一带——feature 地形
+     * 写入的目标层，GlobalsBrogue.c 蓝图表第 3 列）。省略时走旧行为
+     * （setTerrain 按地形归属层整格覆写）；给出时按 CE :1443
+     * `pmap[featX][featY].layers[layer] = terrain` 做**纯层写入**——不清其他层
+     * （3 号的 SURFACE 菌林因此与 DUNGEON 地毯同格共存，CE 字面行为）。
+     */
+    layer?: 'DUNGEON' | 'LIQUID' | 'GAS' | 'SURFACE';
     trapType?: string;
     itemCategory?: string;
     itemId?: string;
@@ -116,6 +127,14 @@ export interface MachineResult {
 
 // ----- Terrain string→enum map -----
 
+/** V-2b-2b：FeatureDef.layer（CE machineFeature.layer 列）→ web 层枚举。 */
+const FEATURE_LAYER_MAP: Record<string, DungeonLayer | undefined> = {
+    DUNGEON: DungeonLayer.DUNGEON,
+    LIQUID: DungeonLayer.LIQUID,
+    GAS: DungeonLayer.GAS,
+    SURFACE: DungeonLayer.SURFACE,
+};
+
 const TERRAIN_MAP: Record<string, TerrainType> = {
     FLOOR: TerrainType.FLOOR,
     WALL: TerrainType.WALL,
@@ -138,6 +157,17 @@ const TERRAIN_MAP: Record<string, TerrainType> = {
     WEB: TerrainType.WEB,
     BLOOD: TerrainType.BLOOD,
     MUD: TerrainType.MUD,
+    // V-2b-2b：机器蓝图 3/4/5/19/20/23 号的地形载体。FUNGUS_FOREST 按任务书
+    // §1 别名到 FOLIAGE（两者 flags/mechFlags 逐位一致，缺的只有 promote
+    // 目标 DF_TRAMPLED_FUNGUS_FOREST 的专属载体与 FUNGUS_FOREST_LIGHT——
+    // 任务书明示"可缺省"）。
+    CARPET: TerrainType.CARPET,
+    STATUE_INERT: TerrainType.STATUE_INERT,
+    PEDESTAL: TerrainType.PEDESTAL,
+    FUNGUS_FOREST: TerrainType.FOLIAGE,
+    STATUE_INERT_DOORWAY: TerrainType.STATUE_INERT_DOORWAY,
+    WOODEN_BARRICADE: TerrainType.WOODEN_BARRICADE,
+    TRAP_DOOR_HIDDEN: TerrainType.TRAP_DOOR_HIDDEN,
 };
 
 const TERRAIN_VISUALS: Record<string, { char: string; color: number }> = {
@@ -156,6 +186,21 @@ const TERRAIN_VISUALS: Record<string, { char: string; color: number }> = {
     ALTAR: { char: 'A', color: 0xccccff },
     LOCKED_DOOR: { char: '+', color: 0xdd9933 },
     OPEN_DOOR: { char: "'", color: 0xaa8844 },
+    // V-2b-2b：字形取 CE platformdependent.c 的 displayGlyph 映射
+    //（G_CARPET '·'、G_BARRICADE '#'、G_STATUE/G_CRACKED_STATUE 'ß'、
+    // G_PEDESTAL '|'、TRAP_DOOR_HIDDEN 用 G_FLOOR '.'——伪装成地板）；
+    // 颜色取 CE 目录 foreColor 列的 0-100 值 ×2.55 折算（web 单色渲染，
+    // CE 的 backColor 无载体）：CARPET fore {23,30,38}→0x3b4d61；STATUE 系
+    // fore = wallBackColor（中灰）→0x6e6e6e；PEDESTAL fore = altarForeColor
+    // →0xccccff；BARRICADE fore = doorForeColor {70,35,15}→0xb35926；
+    // TRAP_DOOR_HIDDEN 沿用 web FLOOR 惯用 '.' + 0x888888（伪装口径）。
+    CARPET: { char: '·', color: 0x3b4d61 },
+    STATUE_INERT: { char: 'ß', color: 0x6e6e6e },
+    PEDESTAL: { char: '|', color: 0xccccff },
+    FUNGUS_FOREST: { char: '♠', color: 0x228822 },
+    STATUE_INERT_DOORWAY: { char: 'ß', color: 0x6e6e6e },
+    WOODEN_BARRICADE: { char: '#', color: 0xb35926 },
+    TRAP_DOOR_HIDDEN: { char: '.', color: 0x888888 },
 };
 
 // ----- Engine -----
@@ -201,6 +246,16 @@ const DEEPEST_LEVEL_FOR_MACHINES = 26;
 export const BP_ADOPT_ITEM = 'BP_ADOPT_ITEM';
 export const BP_VESTIBULE = 'BP_VESTIBULE';
 export const BP_REWARD = 'BP_REWARD';
+// V-2b-2b：蓝图级内部改造旗标（CE Rogue.h:2640-2654 的 Fl(2)/Fl(4)/Fl(5)/
+// Fl(6)/Fl(8)/Fl(13)；消费点 = applyBlueprint 开头的 prepareInterior 段与
+// 尾部的 NO_INTERIOR_FLAG 段， Architect.c:858-945 / :1691-1702）。
+// BP_MAXIMIZE_INTERIOR / BP_REDESIGN_INTERIOR 本轮不做（任务书 §2/§7）。
+export const BP_OPEN_INTERIOR = 'BP_OPEN_INTERIOR';
+export const BP_PURGE_PATHING_BLOCKERS = 'BP_PURGE_PATHING_BLOCKERS';
+export const BP_PURGE_LIQUIDS = 'BP_PURGE_LIQUIDS';
+export const BP_SURROUND_WITH_WALLS = 'BP_SURROUND_WITH_WALLS';
+export const BP_IMPREGNABLE = 'BP_IMPREGNABLE';
+export const BP_NO_INTERIOR_FLAG = 'BP_NO_INTERIOR_FLAG';
 
 /** V-1c：findGateRoom 的三态结果（见该方法头注）。 */
 type GateSelection =
@@ -719,9 +774,109 @@ export class BlueprintEngine {
         const effFlags = effectiveBpFlags(bp);
         const subMachines: MachineResult[] = [];
 
-        // 1. Mark all cells as belonging to this machine
-        for (const p of room.cells) {
-            const cell = this.grid.getCell(p.x, p.y);
+        // V-2b-2b：CE p->interior 的 web 可变形态——初始 = 选址产出的内部格
+        //（集合迭代序 = room.cells 原序，非改造机器的后续 RNG 序逐位不变）。
+        // 机器 origin（CE originX/Y）：BP_ROOM = 门位格；前厅 = 传入落位。
+        const interior = new Set<number>(room.cells.map(p => cellKey(p.x, p.y)));
+        const origin: Pos = room.door ?? room.center;
+        const posOf = (k: number): Pos => ({ x: k % DCOLS, y: Math.floor(k / DCOLS) });
+        // CE IS_GATE_SITE 的 web 判据（BP_SURROUND_WITH_WALLS / BP_IMPREGNABLE
+        // 的豁免位，CE Architect.c:912/:919/:942/:949）：分析快照的 gateSite
+        // 并上机器自己的 origin——前厅机器的 origin（父机器门位格）在重算的
+        // 分析里不保证仍是 gateSite，而"门位不补墙/不加固"正是这两个豁免的
+        // 存在目的（漏了机器会被自己的墙封死，任务书 §8.3 点名）。
+        // 惰性取分析：不带这两个旗标的机器不做全图分析。
+        let gateAnalysis: ChokeAnalysis | null = null;
+        const isGateSite = (x: number, y: number): boolean => {
+            if (x === origin.x && y === origin.y) return true;
+            gateAnalysis ??= this.getGateAnalysis();
+            return gateAnalysis.gateSite[x]![y]!;
+        };
+
+        // 1. prepareInteriorWithMachineFlags（CE Architect.c:858-945）逐段直译，
+        //    段序照 CE：OPEN → PURGE_INTERIOR → PURGE_PATHING_BLOCKERS →
+        //    PURGE_LIQUIDS → SURROUND_WITH_WALLS →（REDESIGN 本轮不做）→
+        //    IMPREGNABLE。全段零 RNG。**先于 machineNumber 标记**（CE :1225
+        //    先于 :1231——OPEN 的扩张判据与 SURROUND 的邻格 machineNumber
+        //    检查都依赖该顺序）。
+        if (flags.has(BP_OPEN_INTERIOR)) {
+            this.expandMachineInterior(interior, 4); // CE :864-865（MAXIMIZE=1 本轮不做）
+        }
+
+        // CE :869-881：清空内部——DUNGEON 层 FLOOR、其余层 NOTHING
+        //（setTerrain 的 writeTerrainHome 语义恰为此）。
+        if (flags.has('BP_PURGE_INTERIOR')) {
+            for (const k of interior) {
+                const p = posOf(k);
+                this.grid.setTerrain(p.x, p.y, TerrainType.FLOOR, '.', 0x888888);
+            }
+        }
+
+        // CE :882-896：逐层清掉带 T_PATHING_BLOCKER 的地形（"不许有陷阱"）。
+        if (flags.has(BP_PURGE_PATHING_BLOCKERS)) {
+            for (const k of interior) {
+                const p = posOf(k);
+                const cell = this.grid.getCell(p.x, p.y)!;
+                for (let l = 0; l < DungeonLayer.COUNT; l++) {
+                    if (isPathingBlocker(cell.layers[l]!)) {
+                        this.grid.setTerrainLayer(p.x, p.y, l as DungeonLayer,
+                            l === DungeonLayer.DUNGEON ? TerrainType.FLOOR : TerrainType.NOTHING);
+                    }
+                }
+            }
+        }
+
+        // CE :897-907：清掉内部的液体层。
+        if (flags.has(BP_PURGE_LIQUIDS)) {
+            for (const k of interior) {
+                const p = posOf(k);
+                this.grid.setTerrainLayer(p.x, p.y, DungeonLayer.LIQUID, TerrainType.NOTHING);
+            }
+        }
+
+        // CE :908-932：给 interior 外圈的"可通行但阻断寻路"的格补墙。
+        // 四重豁免照抄：邻格是 gate 位、邻格属其他机器、邻格挡通行、
+        // 内格自己是 gate 位（整格跳过）。
+        if (flags.has(BP_SURROUND_WITH_WALLS)) {
+            for (const k of interior) {
+                const p = posOf(k);
+                if (isGateSite(p.x, p.y)) continue;
+                for (const [dx, dy] of DIRS8) {
+                    const nx = p.x + dx!, ny = p.y + dy!;
+                    if (!this.grid.isValidPos(nx, ny)) continue; // CE coordinatesAreInMap
+                    if (interior.has(cellKey(nx, ny))) continue;
+                    if ((cellTerrainFlags(this.grid, nx, ny) & T_OBSTRUCTS_PASSABILITY) !== 0) continue;
+                    if (isGateSite(nx, ny)) continue;
+                    if ((this.grid.getCell(nx, ny)?.machineNumber ?? 0) !== 0) continue;
+                    if ((cellTerrainFlags(this.grid, nx, ny) & T_PATHING_BLOCKER) === 0) continue;
+                    this.grid.setTerrain(nx, ny, TerrainType.WALL, '#', 0x555566);
+                }
+            }
+        }
+
+        // CE :938-958：interior（gate 位豁免）与其全部图内、非 interior、
+        // 非 gate 位邻格打上不可挖掘标记。
+        if (flags.has(BP_IMPREGNABLE)) {
+            for (const k of interior) {
+                const p = posOf(k);
+                if (isGateSite(p.x, p.y)) continue;
+                this.impregnableCells.add(k);
+                for (const [dx, dy] of DIRS8) {
+                    const nx = p.x + dx!, ny = p.y + dy!;
+                    if (!this.grid.isValidPos(nx, ny)) continue;
+                    if (interior.has(cellKey(nx, ny))) continue;
+                    if (isGateSite(nx, ny)) continue;
+                    this.impregnableCells.add(cellKey(nx, ny));
+                }
+            }
+        }
+
+        // 2. Mark all cells as belonging to this machine（CE :1231-1249；
+        //    V-2b-2b 起移到 prepareInterior 之后。CE 同块里的 SECRET_DOOR→
+        //    DOOR 改判与 wired 地形清除两步 web 尚无载体，登记为缺口——
+        //    见报告"与预设不符之处"）。
+        for (const k of interior) {
+            const cell = this.grid.getCell(k % DCOLS, Math.floor(k / DCOLS));
             if (cell) cell.machineNumber = machineNum;
         }
         // V-2a：machineNumber 是 findGateRoom 候选过滤（!IS_IN_MACHINE）的
@@ -732,13 +887,6 @@ export class BlueprintEngine {
         // 语义；把它也提前失效会让子机器的分析耦合进父机器地形，选址结果
         // 与重捕获基线分叉（seed31337/D2 实证）。
         this.gateCandidatesCache.clear();
-
-        // 2. Purge interior if requested
-        if (flags.has('BP_PURGE_INTERIOR')) {
-            for (const p of room.cells) {
-                this.grid.setTerrain(p.x, p.y, TerrainType.FLOOR, '.', 0x888888);
-            }
-        }
 
         // 3. Place door terrain
         let doorPos: Pos | null = room.door;
@@ -757,7 +905,10 @@ export class BlueprintEngine {
         let altarGroupId: number | null = null;
 
         // Shuffle room cells for feature placement
-        const availableCells = [...room.cells];
+        // V-2b-2b：候选域 = （可能经 OPEN_INTERIOR 扩张后的）interior。
+        // 集合迭代序 = room.cells 原序（无改造时逐位同旧实现）。
+        const availableCells: Pos[] = [];
+        for (const k of interior) availableCells.push(posOf(k));
         rng.shuffleList(availableCells);
         const usedCells = new Set<number>();
         // center 保留给宝藏：feature 地形（如 key_flood_trap 的 WATER_DEEP、
@@ -811,11 +962,10 @@ export class BlueprintEngine {
             }
         }
 
-        // V-2b-2a：CE p->interior 的 web 形态——room.cells 即机器内部
-        // （BP_ROOM：mapMachineInterior 从门位扩展的内部；前厅：
-        // fillVestibuleInterior），cellIsFeatureCandidate 第 4/7 步的
-        // interior 判据以它为准。
-        const interiorSet = new Set<number>(room.cells.map(p => cellKey(p.x, p.y)));
+        // V-2b-2a：CE p->interior 的 web 形态——机器内部（V-2b-2b 起 =
+        // 可经 BP_OPEN_INTERIOR 扩张后的 interior 集合本体），cellIsFeature-
+        // Candidate 第 4/7 步的 interior 判据以它为准。
+        const interiorSet = interior;
 
         for (const [feat, feature] of bp.features.entries()) {
             if (skipFeature[feat]) continue; // CE Architect.c:1329：未被选中的替代 feature 整条跳过
@@ -904,7 +1054,20 @@ export class BlueprintEngine {
                             if (terrainSucceeded) {
                                 const ch = visual?.char ?? '.';
                                 const col = visual?.color ?? 0x888888;
-                                this.grid.setTerrain(pos.x, pos.y, terrainType, ch, col);
+                                const homeLayer = FEATURE_LAYER_MAP[feature.layer ?? ''];
+                                if (homeLayer !== undefined) {
+                                    // V-2b-2b（CE :1443）：feature 带 layer 列 → 纯层写入，
+                                    // 不清其他层（地毯上的菌林，两层共存）。字形/颜色仅在
+                                    // 写入层成为有效地形时刷新（被更高优先层压住时不动）。
+                                    this.grid.setTerrainLayer(pos.x, pos.y, homeLayer, terrainType);
+                                    const wcell = this.grid.getCell(pos.x, pos.y);
+                                    if (wcell && wcell.terrain === terrainType) {
+                                        wcell.char = ch;
+                                        wcell.color = col;
+                                    }
+                                } else {
+                                    this.grid.setTerrain(pos.x, pos.y, terrainType, ch, col);
+                                }
 
                                 // Handle trap type
                                 if (feature.terrain === 'TRAP' && feature.trapType) {
@@ -933,14 +1096,16 @@ export class BlueprintEngine {
                         }
                     }
 
-                    // CE :1461-1480：只有落位成功才清 personal space、记 occupied、
-                    // 前进 instance。旧 web 的 usedCells/personalSpace 在落位前写，
-                    // 因旧实现无失败路径而等价；引入否决后必须后移到成功分支。
+                    // CE :1461-1470：只有落位成功才清 personal space、记 occupied、
+                    // 前进 instance。CE 的 occupied 区 = 边长 2ps−1 的方形
+                    // （ps=1 仅本格、ps=2 为 3×3）；**ps=0 时占位循环 range 为空、
+                    // 一格都不占**。V-2b-2b 起落格写入 usedCells 随 personalSpace
+                    // 条件化——ps=0 的 feature（3/4/5 号的 CARPET）不占据落格，
+                    // 后续 feature 可复用同格（CE 字面行为；旧 web 无条件占格，
+                    // 曾使地毯铺满后整个内部再无候选）。
                     if (terrainSucceeded) {
-                        usedCells.add(cellKey(pos.x, pos.y));
-
-                        // Mark personal space
                         if (feature.personalSpace && feature.personalSpace > 0) {
+                            usedCells.add(cellKey(pos.x, pos.y));
                             this.markPersonalSpace(pos, feature.personalSpace, usedCells);
                         }
                         roundPlaced++; // CE :1478 instance++
@@ -1057,11 +1222,29 @@ export class BlueprintEngine {
         this.gateAnalysisCache = null;
         this.loopMapCache = null;
 
+        // V-2b-2b（CE Architect.c:1691-1702）：BP_NO_INTERIOR_FLAG——机器
+        // 建成后把非 wired 格的机器标记摘掉（IS_IN_MACHINE + machineNumber
+        // 一并清零）。23 号用它：陷阱区不算机器内，CE 的楼梯/物品/怪群
+        // 落点（回避 IS_IN_MACHINE）可以在其中正常落。wired 判据照抄：
+        // 格上地形带 TM_IS_WIRED | TM_IS_CIRCUIT_BREAKER 机械旗标者保留。
+        if (flags.has(BP_NO_INTERIOR_FLAG)) {
+            for (let x = 0; x < DCOLS; x++) {
+                for (let y = 0; y < DROWS; y++) {
+                    const cell = this.grid.getCell(x, y);
+                    if (!cell || cell.machineNumber !== machineNum) continue;
+                    if ((cellTerrainMechFlags(this.grid, x, y) & (TM_IS_WIRED | TM_IS_CIRCUIT_BREAKER)) !== 0) continue;
+                    cell.machineNumber = 0;
+                }
+            }
+        }
+
         return {
             blueprintId: bp.id,
             category: bp.category,
             machineNumber: machineNum,
-            cells: room.cells,
+            // V-2b-2b：cells = 最终机器内部（可能经 OPEN_INTERIOR 扩张），
+            // 与 availableCells 的集合迭代序一致（无改造时逐位同 room.cells）。
+            cells: availableCells,
             center: room.center,
             door: doorPos,
             itemSpawns,
@@ -1134,6 +1317,93 @@ export class BlueprintEngine {
         // CE :715-723 的 BP_TREAT_AS_BLOCKING / BP_REQUIRE_BLOCKING 复核
         // 本轮未接线（原因见头注）——激活轮补上。
         return cells;
+    }
+
+    /**
+     * V-2b-2b：CE expandMachineInterior（Architect.c:607-674）的直译——
+     * BP_OPEN_INTERIOR（minimumInteriorNeighbors=4）与 BP_MAXIMIZE_INTERIOR
+     * （=1，本轮无载体）共用的内部扩张器。反复扫描直到不动点：
+     *   候选格（CE :615-617）= 1..边界内、自己是 T_PATHING_BLOCKER（墙/水/
+     *   陷阱等阻断寻路的地形）、machineNumber == 0（不得吞并其他机器——
+     *   本机标记尚未写上，applyBlueprint 的段序保证）；
+     *   资格（:619-630）= 8 邻中"interior 且非阻断"的开邻数 ≥ 参量；
+     *   收缩检查（:631-641）= 8 邻中"非 interior 且（可通行或属其他机器）"
+     *   的外敞邻数必须为 0（扩张结果不许撞见外部世界）；
+     *   吞并（:643-657）= 收入 interior、逐层清掉 T_PATHING_BLOCKER 层
+     *   （DUNGEON 层 → FLOOR）、花岗岩邻墙改 WALL。
+     * 收尾（:666-674）：interior 内的 DOOR / SECRET_DOOR 改 FLOOR
+     * （CE 注释：密门会搅乱距离图、且机器内部藏密门不好玩）。
+     * 层级写入口用 Grid.setTerrainLayer（CE `layers[layer] = …` 的逐层语义；
+     * 该入口的调用点白名单在 c_4a_0_layer_model.test.ts，本轮已按其自带
+     * 指示扩入本文件）。
+     */
+    private expandMachineInterior(interior: Set<number>, minimumInteriorNeighbors: number): void {
+        const inMapInner = (x: number, y: number): boolean =>
+            x >= 1 && y >= 1 && x < DCOLS - 1 && y < DROWS - 1; // CE 循环域 1..DCOLS-2 / 1..DROWS-2
+        const cellIsBlocker = (x: number, y: number): boolean =>
+            (cellTerrainFlags(this.grid, x, y) & T_PATHING_BLOCKER) !== 0;
+
+        let madeChange = true;
+        while (madeChange) {
+            madeChange = false;
+            for (let x = 1; x < DCOLS - 1; x++) {
+                for (let y = 1; y < DROWS - 1; y++) {
+                    const k = cellKey(x, y);
+                    if (!cellIsBlocker(x, y) || (this.grid.getCell(x, y)?.machineNumber ?? 0) !== 0) continue;
+
+                    // 开邻计数：interior 且非 T_PATHING_BLOCKER。
+                    let nbcount = 0;
+                    for (const [dx, dy] of DIRS8) {
+                        const nx = x + dx!, ny = y + dy!;
+                        if (!this.grid.isValidPos(nx, ny)) continue;
+                        if (interior.has(cellKey(nx, ny)) && !cellIsBlocker(nx, ny)) nbcount++;
+                    }
+                    if (nbcount < minimumInteriorNeighbors) continue;
+
+                    // 外敞邻检查：非 interior 且（可通行 或 属其他机器）→ 不得扩张。
+                    let exteriorOpen = false;
+                    for (const [dx, dy] of DIRS8) {
+                        const nx = x + dx!, ny = y + dy!;
+                        if (!this.grid.isValidPos(nx, ny)) continue;
+                        if (interior.has(cellKey(nx, ny))) continue;
+                        if ((cellTerrainFlags(this.grid, nx, ny) & T_OBSTRUCTS_PASSABILITY) === 0
+                            || (this.grid.getCell(nx, ny)?.machineNumber ?? 0) !== 0) {
+                            exteriorOpen = true;
+                            break;
+                        }
+                    }
+                    if (exteriorOpen) continue;
+
+                    // 吞并本格。
+                    madeChange = true;
+                    interior.add(k);
+                    const cell = this.grid.getCell(x, y)!;
+                    for (let l = 0; l < DungeonLayer.COUNT; l++) {
+                        if (isPathingBlocker(cell.layers[l]!)) {
+                            this.grid.setTerrainLayer(x, y, l as DungeonLayer,
+                                l === DungeonLayer.DUNGEON ? TerrainType.FLOOR : TerrainType.NOTHING);
+                        }
+                    }
+                    for (const [dx, dy] of DIRS8) {
+                        const nx = x + dx!, ny = y + dy!;
+                        if (!this.grid.isValidPos(nx, ny)) continue;
+                        if (this.grid.getCell(nx, ny)!.layers[DungeonLayer.DUNGEON] === TerrainType.GRANITE) {
+                            this.grid.setTerrainLayer(nx, ny, DungeonLayer.DUNGEON, TerrainType.WALL);
+                        }
+                    }
+                }
+            }
+        }
+
+        // 收尾：interior 内的门与密门清成 FLOOR（CE :666-674）。
+        for (const k of interior) {
+            const x = k % DCOLS, y = Math.floor(k / DCOLS);
+            if (!inMapInner(x, y)) continue;
+            const t = this.grid.getCell(x, y)!.layers[DungeonLayer.DUNGEON]!;
+            if (t === TerrainType.DOOR || t === TerrainType.SECRET_DOOR) {
+                this.grid.setTerrainLayer(x, y, DungeonLayer.DUNGEON, TerrainType.FLOOR);
+            }
+        }
     }
 
     /**

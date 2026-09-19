@@ -85,7 +85,10 @@ describe('V-2a 前厅与守卫机器内容回归', () => {
             if (r.category === 'vestibule') vestibule++;
             if (r.category === 'key_guard') keyGuard++;
             if (r.needsKey) needsKey++;
-            if (r.blueprintId === 'reward_pedestals') pedestals++;
+            // V-2b-2b：reward_pedestals 按 CE 拆成两条（permanent/consumable），
+            // 计数口径随之并两条。
+            if (r.blueprintId === 'reward_pedestal_permanent'
+                || r.blueprintId === 'reward_pedestal_consumable') pedestals++;
         }
         // 4 局实测（V-2a 数据，seeds 见 SEEDS）：vestibule 18 / key_guard 6 /
         // needsKey 15 / pedestals 3。下限取实测的约 1/3，足以挡死一切
@@ -94,7 +97,7 @@ describe('V-2a 前厅与守卫机器内容回归', () => {
         expect(vestibule, '前厅机器未回归——MF_BUILD_VESTIBULE 数据或递归被回退？').toBeGreaterThanOrEqual(6);
         expect(keyGuard, '守卫机器未回归——KEY 外包数据或领养被回退？').toBeGreaterThanOrEqual(2);
         expect(needsKey, '锁门机器未回升（V-1c 后 4 局口径约 8 台）').toBeGreaterThanOrEqual(6);
-        expect(pedestals, '基座大奖房未出现——reward_pedestals 被排除出抽签？').toBeGreaterThanOrEqual(1);
+        expect(pedestals, '基座大奖房未出现——reward_pedestal_permanent/consumable 被排除出抽签？').toBeGreaterThanOrEqual(1);
     });
 
     it('T2 递归路径在生产数据下真实行使：reward→vestibule、vestibule_locked→key_guard，且前厅锚在父门位', () => {
@@ -132,15 +135,31 @@ describe('V-2a 前厅与守卫机器内容回归', () => {
         expect(pairs, '结构对缺失——a) 的证据链断裂').toBeGreaterThanOrEqual(1);
     });
 
-    it('T3 基座二选一：每台 reward_pedestals 恰发（附魔卷轴 XOR 生命药水），绝无双份', () => {
+    it('T3 基座二选一（V-2b-2b 起按 CE 两条蓝图）：每台恰发（附魔卷轴 XOR 生命药水），绝无双份', () => {
         const { all } = collectFullRun();
-        const peds = all.filter(r => r.blueprintId === 'reward_pedestals');
-        expect(peds.length, '4 局竟无一台 reward_pedestals——T1 也会红，此处保证据链独立').toBeGreaterThanOrEqual(1);
-        for (const r of peds) {
+        // V-2b-2b：reward_pedestals 拆为 permanent（武器/护甲/法杖三选一）
+        // 与 consumable（附魔卷轴/生命药水二选一）；基座二选一性质由
+        // consumable 承载，permanent 的 XOR（三选一恰一）并入本断言。
+        const consumables = all.filter(r => r.blueprintId === 'reward_pedestal_consumable');
+        expect(consumables.length, '4 局竟无一台 reward_pedestal_consumable——T1 也会红，此处保证据链独立').toBeGreaterThanOrEqual(1);
+        for (const r of consumables) {
             const ench = r.itemSpawns.filter(s => s.id === 'scroll_of_enchantment').length;
             const life = r.itemSpawns.filter(s => s.id === 'potion_of_life').length;
-            expect(ench + life, `seed 局的一台 pedestal 发出 ${ench + life} 件基座大奖` +
+            expect(ench + life, `seed 局的一台 consumable pedestal 发出 ${ench + life} 件基座大奖` +
                 `（ench=${ench}, life=${life}）——双份发放陷阱（V-0 点名）或替代集合失效`).toBe(1);
+        }
+        const permanents = all.filter(r => r.blueprintId === 'reward_pedestal_permanent');
+        for (const r of permanents) {
+            // CE :206-213 的三选一在 feature 级：恰一个类别被建；武器/护甲
+            // 各 1 件、法杖一次 2 根（instanceCount [2,2]）→ 件数为 1 或 2、
+            // 类别恰 1 种。类别 ≥2 种 = 替代集合失效（CE :1291-1318）。
+            const cats = new Set(r.itemSpawns
+                .filter(s => ['WEAPON', 'ARMOR', 'STAFF'].includes(s.category) && !s.id)
+                .map(s => s.category));
+            expect([...cats].length, `seed 局的一台 permanent pedestal 发出了 ${[...cats].join('/')} ` +
+                '多种大奖——替代三选一失效（CE :209-211 的 MF_ALTERNATIVE 组）').toBe(1);
+            const n = r.itemSpawns.filter(s => cats.has(s.category) && !s.id).length;
+            expect(n === 1 || n === 2, `permanent pedestal 大奖件数 ${n} ∉ {1,2}`).toBe(true);
         }
     });
 });
