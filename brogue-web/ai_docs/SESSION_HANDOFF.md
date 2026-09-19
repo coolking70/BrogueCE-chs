@@ -218,7 +218,26 @@ JSON 字段而非文本匹配。**规矩的本意是"别留下永不退出的东
     （锁门 1022→35）——CE 里它们由奖励房经 `MF_BUILD_VESTIBULE` /
     `MF_OUTSOURCE_ITEM_TO_MACHINE` **递归**建立，递归机制本轮已建成并被测试钉住，
     **内容回归归 V-2 数据轮**。这是还原 CE 结构的必经阶段，不是功能丢失。
-11. **V-2**（数据全量还原，下一轮）：`blueprints.json` 按 CE 全表重写，
+11. ~~V-2a~~ ✅ 已合 `9bb6a76`（**93 文件 / 1182 绿 / 0 失败** + build 绿，墙钟 23 分钟）。
+    前厅与守卫机器经递归在生产数据里建起来，V-1c 的中间态收口。
+    前厅按 CE 锚点语义豁免 center≠door（窄口径）；验收方补做超时线校准
+    （全局 300s→900s、blueprint_center 180s→900s、armor_model_effect
+    1500s→2400s）——V-2a 后每局生成期抽取 30 万→70-80 万，同码两跑差 40%。
+12. **V-2b**（下一轮，本链最大一块）：蓝图全表扩充。实测 CE
+    `blueprintCatalog_Brogue` **71 条**、web **20 条**（reward 5 / key_guard 7 /
+    vestibule 4 / thematic 4），差 51 条，分 REWARD ROOMS / AMULET HOLDER /
+    VESTIBULES / KEY HOLDERS / FLAVOR MACHINES 五节。三个 web 自创旗标
+    （`MF_SCATTER`/`MF_RING`/`MF_FILL_DOORWAY`）整体替换。
+    **投前必读**：V-2a 报告 §9 的六条遗留（尤其 CE 16 条 BP_ADOPT_ITEM
+    蓝图全带 `MF_ADOPT_ITEM` 消费 feature，web 7 条 key_guard 全无）。
+13. **V-2a 登记、待 V-2b 连读的两处偏差**：
+    a) `findFeaturePosition` 的 MF_NEAR_ORIGIN 以 `center` 为基准，CE 以
+    `originX/originY`（Architect.c:1337-1348）——对**全部 BP_ROOM 机器**都是
+    偏差，前厅恰好重合所以一直没暴露；
+    b) `Architect.trapVaults` **只声明、从未 push**，`Game.ts:1228` 的宝藏循环
+    是死代码。**前厅 center 豁免掉"可通行"检查的安全性正建立在这条死代码上**
+    ——谁接上 trapVaults，前厅 center（LOCKED_DOOR 格）就成宝藏坟墓。
+14. **原 V-2 条目**（数据全量还原）：`blueprints.json` 按 CE 全表重写，
     给 reward 蓝图接上 `MF_OUTSOURCE_ITEM_TO_MACHINE` / `MF_BUILD_VESTIBULE`
     feature，前厅与守卫机器随之回归；三个 web 自创旗标
     （`MF_SCATTER`/`MF_RING`/`MF_FILL_DOORWAY`）整体替换（见「蓝图旗标审计表」）。
