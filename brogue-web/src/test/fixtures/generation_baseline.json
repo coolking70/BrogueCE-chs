@@ -1,6 +1,6 @@
 {
-  "note": "滚动生成基线：仅在生成确实应当改变时有意重采 | 于 P1-29（湖泊连通性闸门）后由验收方授权重捕获：闸门改变了湖泊落点，地图必然变化，属有意变更。 | 于 C-0（addLoops 环路 + IN_LOOP）后由验收方授权重捕获：addLoops 的 shuffleList 消耗 RNG 且地图结构改变，地图必然全变，属有意变更。 | 于 C-1（房间剖面与深度曲线对齐 CE）后由验收方授权重捕获：房间数 15→35、走廊曲线首次生效、8 种房型齐全，地图必然全变，属有意变更。 | 于 P1-31/P1-35（玩家落位避开楼梯、读档重算派生态）与 P1-33（机器 chokepoint 选址）后由验收方授权重捕获：落位改变与机器选址改变都会移动生成期 RNG 流，地图必然全变，属有意变更。 | 于 C-2（湖泊四类液体 + 浅水镶边 + 边界打通 + 建桥）后由验收方授权重捕获：新增岩浆/硫矿湖与镶边会改变地形与 RNG 流，属有意变更。 | 于 P1-37（机器旗标取代 CHARRED_FLOOR 冒充、内容牌堆按 machineNumber 排除）后由验收方授权重捕获：宝库地板由 CHARRED_FLOOR 恢复为 FLOOR 使地形指纹必然变化，怪群成员落位排除机器格移动了 RNG 值序，属有意变更。 | 于 C-3（finishWalls / finishDoors / removeDiagonalOpenings）后由验收方授权重捕获：孤儿门移除、密门按 CE 概率如实生成、对角穿缝消除都直接改写地形，地图必然变化，属有意变更。 | 于「修复 spawnScroll 拼写（机器房宝藏 50% 分支恒死）」后由验收方授权重捕获：该分支此前恒返回 null 不消耗掷骰，修好后真的产出物品，后续随机流整体移动，属有意变更。 | 于 C-5（坠落子系统，解禁 CHASM 与桥梁）后由验收方授权重捕获：深渊湖进入液体候选、桥梁开始生成，地形与 RNG 流必然全变，属有意变更。 | 于 S-1（哨兵改造）+ P1-43 判据统一（LAVA → isPathingBlocker）+ C-6（runAutogenerators）后由验收方一次性授权重捕获：判据收严改变物品落点、自动生成器新增生成步骤，两者都移动 RNG 流，属有意变更。 | 于 B-4a（物品生成规则对齐 CE：计量表 + 加权抽取 + CE 附魔/符文模型 + 投掷物先掷后剥 + 三种新武器/毒药水回池）后由验收方授权重捕获：开局装备经新附魔模型掷骰、每件随机物品经 chooseKind/pickItemCategory 加权抽取并读写计量表，生成期 RNG 流必然全变，属有意变更。机器/祭坛 treasure 结构维持原状（登记于 B-4a 报告 §交给 B-4b）。 | 于 B-4b（物品「落在哪/多少个」对齐 CE：几何数量分布 + 热力图落位 + 金币堆 + 钥匙锁驱动 + 删除机器/祭坛两个自创投放点）后由验收方授权重捕获：numItems 公式与落位算法改变、金币/钥匙新增、蓝图物品路径改变，生成期 RNG 流必然全变，属有意变更。（B-4b 内第二次重捕获：改墙失败保护按 web 8 向玩家口径收窄为真孤岛，个别受影响层地形恢复原貌。） | 于 T-1（尾账合并轮：spawnBlueprintItem 无 id 分支改走 chooseKind 基表加权 + DF_CRYSTAL_WALL/AutoGenerator index1/33 接线）后由任务书授权重捕获：蓝图类别抽取的掷骰界改变（randRange(0,n-1) → randRange(1,total)，拒绝采样消耗不同熵量）且水晶墙在地形带内新增落格，两者都移动生成期 RNG 流/地形，属有意变更。 | 于 V-1a（拆掉 _random_good_ 直投：删除 Game.ts 的六选一 case 与 blueprints.json 的 11 处引用；10 台门厅/守卫机器删室内奖励 feature；area_shrine 改 (POTION|SCROLL|WEAPON|ARMOR|RING) 掩码两段抽取）后由任务书授权重捕获：每台受影响机器少掷 randRange(0,5) 与后续类别骰、物品总数改变，生成期 RNG 流必然全变，属有意变更。 | 于 V-1c（机器系统结构还原：blueprintQualifies 资格过滤 + CE addMachines 奖励房配额 + 递归外包/领养/前厅 + 两点失败回滚）后由任务书授权重捕获：顶层抽签从全类别每层 min(2+⌊d/3⌋,6) 台改为 CE 配额（约每 4 层 1 间 + 15% 加成），机器数量、类别与建造顺序都变，生成期 RNG 流必然移动，属有意变更。 | 于 V-2a（把前厅与守卫机器接回来：reward 蓝图接 MF_BUILD_VESTIBULE 前厅递归 + reward_pedestals 基座大奖二选一 MF_ALTERNATIVE + vestibule_locked 按 CE :300 接 KEY 外包 MF_OUTSOURCE_ITEM_TO_MACHINE；kennel/pedestals 的 web 自创 doorTerrain 按 CE 语义移交前厅）后由任务书授权重捕获：机器内容与递归路径全面行使、每台 pedestal 多掷一次替代集合骰、feature 实例骰增多，生成期 RNG 流必然移动，属有意变更。 | 于 V-2b-1（落位语义对齐 CE + 死代码清除 + 逐字落三条蓝图）后由任务书授权重捕获：① personalSpace 边长 2r+1→2r-1（CE Architect.c:1459-1470 口径）改变 feature 可用格集，② MF_NEAR_ORIGIN 距离基准 center→origin 改变 3 个层的落点，③ CE 逐字落蓝图 16（取代 vestibule_locked：depth 2→1、roomSize [6,20]→[1,1]、frequency 12→100）/17（新 vestibule_secret_door）/27（新 key_secret_room，roomSize [15,100]）改变机器池与前厅形态，④ 死代码删除（trapVaults/cages 从不运行）与三旗标清除/minimumInstanceCount 显式化均为零行为变化。受控单变量归因（4 seed × D1-26）：仅①=75 层偏离、仅②=0 层（旧数据）/3 层（新数据）、仅③=98 层偏离、合计 98/104 层偏离（D1×4 与 D2×2 未变）；逐层精确归因因 RNG 流位移动不可分，详见本轮报告 §3。生成期 RNG 流必然移动，属有意变更。",
-  "capturedAt": "V-2b-1（落位语义对齐 CE + 三条蓝图逐字落地后）",
+  "note": "滚动生成基线：仅在生成确实应当改变时有意重采 | 于 P1-29（湖泊连通性闸门）后由验收方授权重捕获：闸门改变了湖泊落点，地图必然变化，属有意变更。 | 于 C-0（addLoops 环路 + IN_LOOP）后由验收方授权重捕获：addLoops 的 shuffleList 消耗 RNG 且地图结构改变，地图必然全变，属有意变更。 | 于 C-1（房间剖面与深度曲线对齐 CE）后由验收方授权重捕获：房间数 15→35、走廊曲线首次生效、8 种房型齐全，地图必然全变，属有意变更。 | 于 P1-31/P1-35（玩家落位避开楼梯、读档重算派生态）与 P1-33（机器 chokepoint 选址）后由验收方授权重捕获：落位改变与机器选址改变都会移动生成期 RNG 流，地图必然全变，属有意变更。 | 于 C-2（湖泊四类液体 + 浅水镶边 + 边界打通 + 建桥）后由验收方授权重捕获：新增岩浆/硫矿湖与镶边会改变地形与 RNG 流，属有意变更。 | 于 P1-37（机器旗标取代 CHARRED_FLOOR 冒充、内容牌堆按 machineNumber 排除）后由验收方授权重捕获：宝库地板由 CHARRED_FLOOR 恢复为 FLOOR 使地形指纹必然变化，怪群成员落位排除机器格移动了 RNG 值序，属有意变更。 | 于 C-3（finishWalls / finishDoors / removeDiagonalOpenings）后由验收方授权重捕获：孤儿门移除、密门按 CE 概率如实生成、对角穿缝消除都直接改写地形，地图必然变化，属有意变更。 | 于「修复 spawnScroll 拼写（机器房宝藏 50% 分支恒死）」后由验收方授权重捕获：该分支此前恒返回 null 不消耗掷骰，修好后真的产出物品，后续随机流整体移动，属有意变更。 | 于 C-5（坠落子系统，解禁 CHASM 与桥梁）后由验收方授权重捕获：深渊湖进入液体候选、桥梁开始生成，地形与 RNG 流必然全变，属有意变更。 | 于 S-1（哨兵改造）+ P1-43 判据统一（LAVA → isPathingBlocker）+ C-6（runAutogenerators）后由验收方一次性授权重捕获：判据收严改变物品落点、自动生成器新增生成步骤，两者都移动 RNG 流，属有意变更。 | 于 B-4a（物品生成规则对齐 CE：计量表 + 加权抽取 + CE 附魔/符文模型 + 投掷物先掷后剥 + 三种新武器/毒药水回池）后由验收方授权重捕获：开局装备经新附魔模型掷骰、每件随机物品经 chooseKind/pickItemCategory 加权抽取并读写计量表，生成期 RNG 流必然全变，属有意变更。机器/祭坛 treasure 结构维持原状（登记于 B-4a 报告 §交给 B-4b）。 | 于 B-4b（物品「落在哪/多少个」对齐 CE：几何数量分布 + 热力图落位 + 金币堆 + 钥匙锁驱动 + 删除机器/祭坛两个自创投放点）后由验收方授权重捕获：numItems 公式与落位算法改变、金币/钥匙新增、蓝图物品路径改变，生成期 RNG 流必然全变，属有意变更。（B-4b 内第二次重捕获：改墙失败保护按 web 8 向玩家口径收窄为真孤岛，个别受影响层地形恢复原貌。） | 于 T-1（尾账合并轮：spawnBlueprintItem 无 id 分支改走 chooseKind 基表加权 + DF_CRYSTAL_WALL/AutoGenerator index1/33 接线）后由任务书授权重捕获：蓝图类别抽取的掷骰界改变（randRange(0,n-1) → randRange(1,total)，拒绝采样消耗不同熵量）且水晶墙在地形带内新增落格，两者都移动生成期 RNG 流/地形，属有意变更。 | 于 V-1a（拆掉 _random_good_ 直投：删除 Game.ts 的六选一 case 与 blueprints.json 的 11 处引用；10 台门厅/守卫机器删室内奖励 feature；area_shrine 改 (POTION|SCROLL|WEAPON|ARMOR|RING) 掩码两段抽取）后由任务书授权重捕获：每台受影响机器少掷 randRange(0,5) 与后续类别骰、物品总数改变，生成期 RNG 流必然全变，属有意变更。 | 于 V-1c（机器系统结构还原：blueprintQualifies 资格过滤 + CE addMachines 奖励房配额 + 递归外包/领养/前厅 + 两点失败回滚）后由任务书授权重捕获：顶层抽签从全类别每层 min(2+⌊d/3⌋,6) 台改为 CE 配额（约每 4 层 1 间 + 15% 加成），机器数量、类别与建造顺序都变，生成期 RNG 流必然移动，属有意变更。 | 于 V-2a（把前厅与守卫机器接回来：reward 蓝图接 MF_BUILD_VESTIBULE 前厅递归 + reward_pedestals 基座大奖二选一 MF_ALTERNATIVE + vestibule_locked 按 CE :300 接 KEY 外包 MF_OUTSOURCE_ITEM_TO_MACHINE；kennel/pedestals 的 web 自创 doorTerrain 按 CE 语义移交前厅）后由任务书授权重捕获：机器内容与递归路径全面行使、每台 pedestal 多掷一次替代集合骰、feature 实例骰增多，生成期 RNG 流必然移动，属有意变更。 | 于 V-2b-1（落位语义对齐 CE + 死代码清除 + 逐字落三条蓝图）后由任务书授权重捕获：① personalSpace 边长 2r+1→2r-1（CE Architect.c:1459-1470 口径）改变 feature 可用格集，② MF_NEAR_ORIGIN 距离基准 center→origin 改变 3 个层的落点，③ CE 逐字落蓝图 16（取代 vestibule_locked：depth 2→1、roomSize [6,20]→[1,1]、frequency 12→100）/17（新 vestibule_secret_door）/27（新 key_secret_room，roomSize [15,100]）改变机器池与前厅形态，④ 死代码删除（trapVaults/cages 从不运行）与三旗标清除/minimumInstanceCount 显式化均为零行为变化。受控单变量归因（4 seed × D1-26）：仅①=75 层偏离、仅②=0 层（旧数据）/3 层（新数据）、仅③=98 层偏离、合计 98/104 层偏离（D1×4 与 D2×2 未变）；逐层精确归因因 RNG 流位移动不可分，详见本轮报告 §3。生成期 RNG 流必然移动，属有意变更。 | 于 V-2b-2a（放置旗标轮：CE cellIsFeatureCandidate 七步落位资格判定接入 BlueprintEngine）后由任务书授权重捕获：① 阻断否决（CE Architect.c:1444-1452）落地使 5 条无 MF_PERMIT_BLOCKING 的阻断地形 feature（vestibule_pit_traps/key_fire_trap/key_poison_gas 的 TRAP 与 PRESSURE_PLATE、key_flood_trap 的 WATER_DEEP、key_lava_moat 的 LAVA）在切断关卡时被否决、否决耗尽致 min 不达而整机失败重试，受控单变量归因（4 seed × D1-26 逐旗标禁用扫描）确认 4/104 层偏离全部由它贡献（seed20260913 D15/D19、seed31337 D11/D15，均仅地形指纹字段）；② MF_TREAT_AS_BLOCKING（key_secret_room ALTAR）贡献 0 层；③ MF_NOT_IN_HALLWAY（同 feature）贡献 0 层；④ MF_IMPREGNABLE 置位零 RNG/零生成流，实测 0 层。其余零载体旗标（BUILD_IN_WALLS/EVERYWHERE/FAR_FROM_ORIGIN/NOT_ON_LEVEL_PERIMETER/BUILD_ANYWHERE_ON_LEVEL/Q 族/REPEAT_UNTIL_NO_PROGRESS）仅经合成蓝图验证，不触生产生成流。属有意变更。",
+  "capturedAt": "V-2b-2a（放置旗标轮：七步落位资格判定 + 阻断否决 + IMPREGNABLE 载体落地后）",
   "seeds": [
     424242,
     777,
@@ -265,7 +265,7 @@
       },
       {
         "d": 11,
-        "fp": "7d4cc1c1:4709",
+        "fp": "67c66081:4709",
         "n": 23,
         "species": "Acid mound,Acidic jelly,Centipede,Dar blademaster,Goblin,Goblin totem,Pink jelly,Vampire bat,Wisp,Wraith,Zombie,toxic Explosive bloat",
         "items": 8
@@ -293,7 +293,7 @@
       },
       {
         "d": 15,
-        "fp": "4cb7e144:4659",
+        "fp": "e42b0e3a:4659",
         "n": 18,
         "species": "Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Spider,Troll,Wisp,agile Goblin,infested Goblin mystic,reflective Goblin mystic",
         "items": 8
@@ -661,7 +661,7 @@
       },
       {
         "d": 15,
-        "fp": "59f5dfd0:4884",
+        "fp": "b328083e:4884",
         "n": 10,
         "species": "Acidic jelly,Centaur,Eel,Spider,Wraith,reflective Kraken",
         "items": 17
@@ -689,7 +689,7 @@
       },
       {
         "d": 19,
-        "fp": "6f0f1e6f:4793",
+        "fp": "2ab0174f:4793",
         "n": 14,
         "species": "Dar battlemage,Dar blademaster,Dar priestess,Golem,Ogre,Ogre shaman,Pixie,Revenant,Underworm,explosive Imp,reflective Ogre,vampiric Troll",
         "items": 16

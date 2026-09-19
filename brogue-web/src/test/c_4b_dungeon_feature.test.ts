@@ -863,6 +863,14 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
             'engine/Map/AutoGenerator.ts', // C-6：runAutogenerators 表驱动
                                            // catalogFeature+spawnDungeonFeature
                                            //（CE Architect.c:1811-1814）
+            'engine/Generator/BlueprintEngine.ts', // V-2b-2a：机器 feature 落位的
+                                           // 阻断否决（CE Architect.c:1445-1452）
+                                           // 引 createSpawnMap +
+                                           // levelIsDisconnectedWithBlockingMap。
+                                           // **本条即本用例头注预告的「C-4d 接线
+                                           // 机器时再扩清单」** —— 留痕前提
+                                           //（DF 子系统是纯库、无机器侧生产读者）
+                                           // 自本轮起为假，故扩清单而非删断言。
         ]);
         const pattern = /spawnDungeonFeature|spawnMapDF|fillSpawnMap|levelIsDisconnectedWithBlockingMap|catalogFeature|createSpawnMap|DUNGEON_FEATURE_CATALOG|DF_MISSING_TILES/;
         // T-1（AI-1 登记）：原实现只剥 `//` 行注释，写在 /* */ 块注释里的

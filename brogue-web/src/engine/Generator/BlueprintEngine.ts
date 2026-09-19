@@ -12,13 +12,43 @@
  */
 
 import { Grid, TerrainType, DCOLS, DROWS, type Cell } from '../Map/Grid';
-import { analyzeChokeMap, CE_GATE_CANDIDATE_CAP, type ChokeAnalysis } from '../Map/LoopMap';
+import { analyzeChokeMap, analyzeLoopMap, CE_GATE_CANDIDATE_CAP, type ChokeAnalysis } from '../Map/LoopMap';
 import { terrainAllowsMove, DIRS8 } from '../Map/Connectivity';
 import { DijkstraMap, MAX_DISTANCE } from '../Map/Pathfinding';
 import { allocShortGrid } from '../Map/SafetyMap';
+// V-2b-2a：feature 落位资格判定（CE cellIsFeatureCandidate）所需的四组判据——
+// 走廊计数、地形旗标位、四层旗标并集、阻断否决两口子（C-8 落地）。
+import { passableArcCount } from '../Items/ItemSpawnHeatMap';
+import {
+    T_OBSTRUCTS_ITEMS,
+    T_OBSTRUCTS_PASSABILITY,
+    T_PATHING_BLOCKER,
+    isPathingBlocker,
+} from '../Map/TerrainCatalog';
+import {
+    cellTerrainFlags,
+    createSpawnMap,
+    levelIsDisconnectedOnMovementGraph,
+    levelIsDisconnectedWithBlockingMap,
+} from '../Map/DungeonFeature';
 import { rng } from '../Random';
 import type { Pos } from '../../types';
 import blueprintData from '../../data/blueprints.json';
+
+/** 格键（CE pmap 的 DCOLS×DROWS 线性下标；与 backupLevel/impregnableCells 同一口径）。 */
+const cellKey = (x: number, y: number): number => y * DCOLS + x;
+
+/**
+ * V-2b-2a：Q 族物品资格旗标（CE Architect.c:1506-1509 的 generateItem 重掷
+ * 条件）。随 MF_GENERATE_ITEM 指令下传；**消费点在 Game.spawnBlueprintItem
+ * （物品实化处，Game.ts 不在本轮授权清单）**——CE 的「不合格即重掷、
+ * failsafe 1000」过滤循环登记为边界外缺口（报告 §2）。
+ */
+const ITEM_QUALIFIER_FLAGS: readonly string[] = [
+    'MF_NO_THROWING_WEAPONS',
+    'MF_REQUIRE_GOOD_RUNIC',
+    'MF_REQUIRE_HEAVY_WEAPON',
+];
 
 // ----- Type definitions -----
 
@@ -63,8 +93,10 @@ export interface MachineResult {
     cells: Pos[];           // All cells belonging to this machine
     center: Pos;
     door: Pos | null;
-    /** Items to spawn: { category, id?, pos } */
-    itemSpawns: Array<{ category: string; id?: string; pos: Pos; isAltar?: boolean }>;
+    /** Items to spawn: { category, id?, pos }
+     *  V-2b-2a：itemQualifiers = Q 族资格旗标（CE Architect.c:1506-1509），
+     *  随 feature 下传；消费点 Game.spawnBlueprintItem（边界外，见头注）。 */
+    itemSpawns: Array<{ category: string; id?: string; pos: Pos; isAltar?: boolean; itemQualifiers?: string[] }>;
     /** Monsters to spawn: { monsterId, pos, isAlly?, isCaged? } */
     monsterSpawns: Array<{ monsterId: string; pos: Pos; isAlly?: boolean; isCaged?: boolean }>;
     /** Whether a key is needed (for LOCKED_DOOR) */
@@ -176,12 +208,17 @@ type GateSelection =
     | { kind: 'noCandidates' }
     | { kind: 'retry' };
 
-/** V-1c：整层可变格状态快照（CE p->levelBackup 的 web 形态，见 backupLevel）。 */
-type LevelBackup = Array<{
-    layers: TerrainType[]; char: string; color: number;
-    isPassable: boolean; isOpaque: boolean;
-    machineNumber: number; trapType: Cell['trapType']; altarGroupId: number | null;
-}>;
+/** V-1c：整层可变格状态快照（CE p->levelBackup 的 web 形态，见 backupLevel）。
+ *  V-2b-2a：随层快照扩展到 IMPREGNABLE 格集（CE 的 copyMap 连 pmap.flags
+ *  一起备份/恢复，Architect.c:1222/:1578/:1681）。 */
+type LevelBackup = {
+    cells: Array<{
+        layers: TerrainType[]; char: string; color: number;
+        isPassable: boolean; isOpaque: boolean;
+        machineNumber: number; trapType: Cell['trapType']; altarGroupId: number | null;
+    }>;
+    impregnable: number[];
+};
 
 /**
  * web `category` 字段 ↔ CE BP_* 旗标的映射（本轮开始消费 category——
@@ -270,6 +307,24 @@ export class BlueprintEngine {
      * randRange 照常掷骰），失效时机与 gateAnalysisCache 一致。
      */
     private gateCandidatesCache: Map<string, Pos[]> = new Map();
+    /**
+     * V-2b-2a：MF_IMPREGNABLE（CE Architect.c:1491-1493 `pmap.flags |=
+     * IMPREGNABLE`）的 web 载体。CE 的位住在 pmap.flags 上、随整图备份/回滚
+     * （copyMap）；web 的 Cell（Grid.ts，不在本轮授权清单）无该位，以引擎级
+     * 格键集合承载，随 backupLevel/restoreLevel 一同快照回滚，语义等价。
+     * **读口：isImpregnable(x,y)。现有唯一潜在消费者是 crystalizeFromPlayer
+     * （Game.ts:4918 的 IMPREGNABLE 守卫，web 无隧道怪/挖墙攻击，此前登记
+     * "该位恒 0"）——接线归隧道轮；本轮交付置位/回滚/读口。**
+     */
+    private impregnableCells: Set<number> = new Set();
+    /**
+     * V-2b-2a：CE 的 IN_LOOP（pmap 旗标，analyzeMap 于建层时预计算、机器
+     * 阶段按陈旧快照消费——CE 不在机器建造中重算）。web 以 analyzeLoopMap
+     * （C-0 的 CE 口径移植）懒算一份快照，失效点与 gateAnalysisCache 相同
+     * （机器建成 / 失败回滚）。唯一消费者：cellIsFeatureCandidate 第 6 步的
+     * MF_BUILD_ANYWHERE_ON_LEVEL+MF_GENERATE_ITEM 排除（零载体旗标）。
+     */
+    private loopMapCache: boolean[][] | null = null;
 
     constructor(grid: Grid, depth: number, blueprints?: BlueprintDef[]) {
         this.grid = grid;
@@ -704,18 +759,19 @@ export class BlueprintEngine {
         // Shuffle room cells for feature placement
         const availableCells = [...room.cells];
         rng.shuffleList(availableCells);
-        const usedCells = new Set<string>();
+        const usedCells = new Set<number>();
         // center 保留给宝藏：feature 地形（如 key_flood_trap 的 WATER_DEEP、
         // key_lava_moat 的 LAVA）与 feature 物品都不得落在 center 上，
         // 否则 Game.ts 之后放在 center 的宝藏会躺进不可通行格。
-        usedCells.add(`${room.center.x},${room.center.y}`);
+        // （V-2b-2a：键统一为 cellKey——findFeaturePosition 现按 cellKey 查询。）
+        usedCells.add(cellKey(room.center.x, room.center.y));
         // door 同理：doorPos 已在上一步（若 bp.doorTerrain 存在）写成门地形
         // （常见 LOCKED_DOOR，不可通行），但此刻仍留在 availableCells 里，
         // 若不排除，findFeaturePosition 可能把 MF_GENERATE_ITEM（_random_good_/
         // KEY 等）feature 的坐标选到它头上，物品就直接躺进了刚铺好的门格
         // （玩家永远拿不到）。P1-20：24 件高价值物品落在 LOCKED_DOOR 上的根因。
         if (doorPos) {
-            usedCells.add(`${doorPos.x},${doorPos.y}`);
+            usedCells.add(cellKey(doorPos.x, doorPos.y));
         }
 
         // V-1b：MF_ALTERNATIVE / MF_ALTERNATIVE_2 —— CE Architect.c:1291-1318
@@ -755,130 +811,228 @@ export class BlueprintEngine {
             }
         }
 
+        // V-2b-2a：CE p->interior 的 web 形态——room.cells 即机器内部
+        // （BP_ROOM：mapMachineInterior 从门位扩展的内部；前厅：
+        // fillVestibuleInterior），cellIsFeatureCandidate 第 4/7 步的
+        // interior 判据以它为准。
+        const interiorSet = new Set<number>(room.cells.map(p => cellKey(p.x, p.y)));
+
         for (const [feat, feature] of bp.features.entries()) {
             if (skipFeature[feat]) continue; // CE Architect.c:1329：未被选中的替代 feature 整条跳过
-            const count = rng.randRange(feature.instanceCount[0], feature.instanceCount[1]);
             const fFlags = new Set(feature.flags);
-            let placed = 0;
+            const minInstances = feature.minimumInstanceCount ?? feature.instanceCount[0];
+            // V-2b-2a（CE :1387-1394）：MF_EVERYWHERE → 铺满所有合格格，且
+            // **不掷 instanceCount**（CE 的 rand_range 只在非 EVERYWHERE 分支，
+            // :1393）。CE :1387 的 `& ~MF_BUILD_AT_ORIGIN` 屏蔽在现行位定义下
+            // 语义空转：MF_EVERYWHERE = Fl(15) 独立位（Rogue.h:2600），不含
+            // BUILD_AT_ORIGIN 位，`flags & MF_EVERYWHERE & ~MF_BUILD_AT_ORIGIN`
+            // 恒等于 `flags & MF_EVERYWHERE`——按位直译即只测 EVERYWHERE。
+            const everywhere = fFlags.has('MF_EVERYWHERE');
+            // V-2b-2a（CE :1360-1670）：MF_REPEAT_UNTIL_NO_PROGRESS 真循环——
+            // 反复「重掷 instanceCount → 落位」直到一轮的落位数达不到 minimum
+            // （此时 min 检查被 REPEAT 豁免，CE :1675）。旧 web 只把它当 min
+            // 豁免。非 REPEAT 恰走一轮、恰掷一次，与旧实现逐位一致。
+            const repeatUntilNoProgress = fFlags.has('MF_REPEAT_UNTIL_NO_PROGRESS');
+            let placed = 0;                  // CE instance：do-while 最后一轮的落位数
+            let struck = new Set<number>();  // CE candidates[][] strike：本轮已尝试/
+                                             // 已否决的格（CE :1431-1432），本轮不再
+                                             // 回头；下轮候选重建后复位（CE :1364 重扫）
+            let roundPlaced = 0;             // 本轮落位数（CE for 循环里的 instance）
+            // CE :1399 的 qualifyingTileCount 预算：候选表每轮重算、每次拾取
+            // 无条件 -1、归零即出循环（:1431-1432）。对非 BATO 候选域，web 的
+            // struck 递缩已给出同构终止；BATO 的候选表只含 origin
+            // （cellIsFeatureCandidate 第 3 步对 BATO 仅 origin 合格 → qTC=1），
+            // 故每轮恰一次拾取——instanceCount ≥ 2 的 BATO feature 也只落一实例
+            // （CE 字面行为；生产 BATO 全为 [1,1]，零流影响）。这个预算同时
+            // 防住 EVERYWHERE+BATO 的死循环。
+            let picksLeft = fFlags.has('MF_BUILD_AT_ORIGIN') ? 1 : Number.POSITIVE_INFINITY;
+            do {
+                roundPlaced = 0;
+                struck = new Set<number>(); // CE :1362-1377：候选表每轮重建——
+                                            // 上轮被 strike 的非 occupied 格重新可试
+                if (fFlags.has('MF_BUILD_AT_ORIGIN')) picksLeft = 1;
+                // CE :1393：每轮重掷 instanceCount。非 REPEAT 首轮掷一次，位置
+                // 与旧 web 的单掷逐位一致；EVERYWHERE 不掷（CE :1387-1389）。
+                const count = everywhere
+                    ? Number.POSITIVE_INFINITY
+                    : rng.randRange(feature.instanceCount[0], feature.instanceCount[1]);
+                // CE :1399 for 循环：instance 只在落位成功时前进（:1478）；
+                // 候选耗尽或 count 个成功即止。阻断否决失败的实例不前进。
+                while (roundPlaced < count && picksLeft > 0) {
+                    picksLeft--; // CE :1431-1432：每次拾取无条件消耗预算
+                    // Find a placement position
+                    // V-2a：origin = 机器落位锚点（CE originX/Y）——BP_ROOM 机器是
+                    // 门位格（CE :1100-1101 的 gateCandidates 抽中的 gate），前厅
+                    // 机器 center/door 同格即 origin。MF_BUILD_AT_ORIGIN 的 feature
+                    // 以它为唯一定点。
+                    const pos = this.findFeaturePosition(
+                        availableCells, usedCells, struck,
+                        room.door ?? room.center, feature, fFlags,
+                        effFlags, machineNum, interiorSet
+                    );
+                    if (!pos) break; // CE qualifyingTileCount == 0：候选耗尽
+                    // CE :1430-1432：候选先 strike 再尝试——成败与否本轮不再选它
+                    struck.add(cellKey(pos.x, pos.y));
 
-            for (let inst = 0; inst < count; inst++) {
-                // Find a placement position
-                // V-2a：origin = 机器落位锚点（CE originX/Y）——BP_ROOM 机器是
-                // 门位格（CE :1100-1101 的 gateCandidates 抽中的 gate），前厅
-                // 机器 center/door 同格即 origin。MF_BUILD_AT_ORIGIN 的 feature
-                // 以它为唯一定点。
-                const pos = this.findFeaturePosition(
-                    availableCells, usedCells,
-                    room.door ?? room.center, feature, fFlags
-                );
-                if (!pos) break;
-                placed++;
+                    // CE :1434：DFSucceeded 恒真——web 的 feature 无 featureDF
+                    // 载体（CE :1437-1440 的 spawnDungeonFeature 分支登记缺口，
+                    // 含其 abortIfBlocking=!MF_PERMIT_BLOCKING 语义）。
+                    let terrainSucceeded = true;
 
-                usedCells.add(`${pos.x},${pos.y}`);
+                    // Place terrain（CE :1443-1456：先否决后落格）
+                    if (feature.terrain) {
+                        const terrainType = TERRAIN_MAP[feature.terrain];
+                        const visual = TERRAIN_VISUALS[feature.terrain];
+                        if (terrainType !== undefined) {
+                            // V-2b-2a（CE :1444-1452）：阻断否决——无
+                            // MF_PERMIT_BLOCKING 且（地形带 T_PATHING_BLOCKER 或
+                            // feature 带 MF_TREAT_AS_BLOCKING）时，假想堵住本格
+                            // 做连通性判定，切断即放弃该实例（不落格、不算数）。
+                            if (!fFlags.has('MF_PERMIT_BLOCKING')
+                                && (isPathingBlocker(terrainType) || fFlags.has('MF_TREAT_AS_BLOCKING'))) {
+                                const blockingMap = createSpawnMap(this.grid);
+                                blockingMap[cellKey(pos.x, pos.y)] = 1;
+                                // 守卫口径：CE :1451 单查 levelIsDisconnectedWithBlockingMap；
+                                // web 按 C-8 既有惯例（spawnDungeonFeature 的 DF 落位
+                                // 守卫，DungeonFeature.ts「两查并列加严」）并列 web
+                                // 移动图判据——web 的 CHASM/LAVA 可走性使 CE 单查有
+                                // 盲区（key_lava_moat 正是载体），两查皆纯泛洪零 RNG。
+                                terrainSucceeded =
+                                    levelIsDisconnectedWithBlockingMap(this.grid, blockingMap, false) === 0
+                                    && !levelIsDisconnectedOnMovementGraph(this.grid, blockingMap);
+                            }
+                            if (terrainSucceeded) {
+                                const ch = visual?.char ?? '.';
+                                const col = visual?.color ?? 0x888888;
+                                this.grid.setTerrain(pos.x, pos.y, terrainType, ch, col);
 
-                // Mark personal space
-                if (feature.personalSpace && feature.personalSpace > 0) {
-                    this.markPersonalSpace(pos, feature.personalSpace, usedCells);
-                }
+                                // Handle trap type
+                                if (feature.terrain === 'TRAP' && feature.trapType) {
+                                    const cell = this.grid.getCell(pos.x, pos.y);
+                                    if (cell) {
+                                        cell.trapType = feature.trapType as any;
+                                        cell.isPassable = true;
+                                    }
+                                }
 
-                // Place terrain
-                if (feature.terrain) {
-                    const terrainType = TERRAIN_MAP[feature.terrain];
-                    const visual = TERRAIN_VISUALS[feature.terrain];
-                    if (terrainType !== undefined) {
-                        const ch = visual?.char ?? '.';
-                        const col = visual?.color ?? 0x888888;
-                        this.grid.setTerrain(pos.x, pos.y, terrainType, ch, col);
+                                // Handle sign text
+                                if (feature.terrain === 'SIGN' && feature.signText) {
+                                    // Sign text is stored as a property in the cell
+                                    // For now, the sign inspection system reads adjacent signs
+                                }
 
-                        // Handle trap type
-                        if (feature.terrain === 'TRAP' && feature.trapType) {
-                            const cell = this.grid.getCell(pos.x, pos.y);
-                            if (cell) {
-                                cell.trapType = feature.trapType as any;
-                                cell.isPassable = true;
+                                // Handle altar group
+                                if (fFlags.has('MF_ALTAR_GROUP')) {
+                                    if (altarGroupId === null) {
+                                        altarGroupId = this.depth * 100 + rng.randRange(1, 99);
+                                    }
+                                    const cell = this.grid.getCell(pos.x, pos.y);
+                                    if (cell) cell.altarGroupId = altarGroupId;
+                                }
+                            }
+                        }
+                    }
+
+                    // CE :1461-1480：只有落位成功才清 personal space、记 occupied、
+                    // 前进 instance。旧 web 的 usedCells/personalSpace 在落位前写，
+                    // 因旧实现无失败路径而等价；引入否决后必须后移到成功分支。
+                    if (terrainSucceeded) {
+                        usedCells.add(cellKey(pos.x, pos.y));
+
+                        // Mark personal space
+                        if (feature.personalSpace && feature.personalSpace > 0) {
+                            this.markPersonalSpace(pos, feature.personalSpace, usedCells);
+                        }
+                        roundPlaced++; // CE :1478 instance++
+
+                        // CE :1486-1488：feature 格并入机器（BUILD_IN_WALLS /
+                        // BUILD_ANYWHERE 的格在 room.cells 之外，machineNumber
+                        // 在此刻补写；IS_IN_ROOM/AREA 之分 web 无载体，machineNumber
+                        // 即 IS_IN_MACHINE 的 web 等价物）。
+                        const fcell = this.grid.getCell(pos.x, pos.y);
+                        if (fcell && fcell.machineNumber === 0) fcell.machineNumber = machineNum;
+
+                        // V-2b-2a（CE :1491-1493）：MF_IMPREGNABLE → 不可挖掘标记
+                        if (fFlags.has('MF_IMPREGNABLE')) {
+                            this.impregnableCells.add(cellKey(pos.x, pos.y));
+                        }
+
+                        // Generate item spawn instructions.
+                        // V-1c（CE :1495-1541）：领养优先——BP_ADOPT_ITEM 机器的
+                        // MF_ADOPT_ITEM feature 消耗父机器交来的物品（只领一次，
+                        // CE :1503 "can be adopted only once"），不再自产；自产物
+                        // 带 MF_OUTSOURCE_ITEM_TO_MACHINE 时不落本机（CE :1533-1539
+                        // 非外包才 placeItemAt），指令交由下面的递归块交给子机器。
+                        // V-2b-2a：CE 的物品生成在 :1482 DFSucceeded&&terrainSucceeded
+                        // 守卫内（:1495 起）——否决失败的实例连物品都不产，web 同构。
+                        let theItem: MachineResult['itemSpawns'][number] | null = null;
+                        if (ctx.adoptiveItem && fFlags.has('MF_ADOPT_ITEM') && effFlags.has(BP_ADOPT_ITEM)) {
+                            theItem = { ...ctx.adoptiveItem, pos: { x: pos.x, y: pos.y } };
+                            itemSpawns.push(theItem);
+                            ctx.adoptiveItem = null;
+                        } else if (fFlags.has('MF_GENERATE_ITEM') && feature.itemCategory) {
+                            // V-2b-2a（CE :1506-1509）：Q 族资格旗标随指令下传；
+                            // 消费点在 Game.spawnBlueprintItem（物品实化处）——
+                            // CE 的「不合格重掷、failsafe 1000」过滤循环因 Game.ts
+                            // 不在本轮授权清单而登记为边界外缺口（报告 §2）。
+                            const itemQualifiers = ITEM_QUALIFIER_FLAGS.filter(f => fFlags.has(f));
+                            theItem = {
+                                category: feature.itemCategory,
+                                id: feature.itemId,
+                                pos: { x: pos.x, y: pos.y },
+                                isAltar: fFlags.has('MF_ALTAR'),
+                                itemQualifiers: itemQualifiers.length > 0 ? itemQualifiers : undefined
+                            };
+                            if (!fFlags.has('MF_OUTSOURCE_ITEM_TO_MACHINE')) {
+                                itemSpawns.push(theItem);
                             }
                         }
 
-                        // Handle sign text
-                        if (feature.terrain === 'SIGN' && feature.signText) {
-                            // Sign text is stored as a property in the cell
-                            // For now, the sign inspection system reads adjacent signs 
-                        }
-
-                        // Handle altar group
-                        if (fFlags.has('MF_ALTAR_GROUP')) {
-                            if (altarGroupId === null) {
-                                altarGroupId = this.depth * 100 + rng.randRange(1, 99);
+                        // V-1c：递归外包 / 前厅（CE :1543-1575，结构逐字）——
+                        // 10 次重试建子机器；任一次成功即把子机器并入本机器
+                        // （CE :1555-1567 并入 spawnedItems/Monsters 缓冲的 web 等价），
+                        // 10 次全败 → 整机失败（CE :1576-1583，备份由 buildAMachine 恢复）。
+                        // CE 每次重试前把领养物品从地面/背包摘链的注释（:1546-1551）在
+                        // web 结构性成立：物品指令不在网格上，失败的子机器结果整体丢弃，
+                        // 无"留在地上"的残骸可摘。
+                        if (fFlags.has('MF_OUTSOURCE_ITEM_TO_MACHINE') || fFlags.has('MF_BUILD_VESTIBULE')) {
+                            let success = false;
+                            for (let i = 10; i > 0; i--) {
+                                if (fFlags.has('MF_OUTSOURCE_ITEM_TO_MACHINE') && theItem) {
+                                    const sub = this.buildAMachine([BP_ADOPT_ITEM], theItem, null);
+                                    if (sub) { subMachines.push(sub); success = true; }
+                                } else if (fFlags.has('MF_BUILD_VESTIBULE')) {
+                                    const sub = this.buildAMachine([BP_VESTIBULE], null, { x: pos.x, y: pos.y });
+                                    if (sub) { subMachines.push(sub); success = true; }
+                                }
+                                if (success) break;
                             }
-                            const cell = this.grid.getCell(pos.x, pos.y);
-                            if (cell) cell.altarGroupId = altarGroupId;
+                            if (!success) return null;
+                        }
+                        theItem = null;
+
+                        // Generate monster spawn instructions
+                        if (fFlags.has('MF_GENERATE_MONSTER') && feature.monsterId) {
+                            monsterSpawns.push({
+                                monsterId: feature.monsterId,
+                                pos: { x: pos.x, y: pos.y },
+                                isAlly: fFlags.has('MF_MONSTER_IS_ALLY'),
+                                isCaged: fFlags.has('MF_MONSTER_IS_CAGED')
+                            });
                         }
                     }
                 }
 
-                // Generate item spawn instructions.
-                // V-1c（CE :1495-1541）：领养优先——BP_ADOPT_ITEM 机器的
-                // MF_ADOPT_ITEM feature 消耗父机器交来的物品（只领一次，
-                // CE :1503 "can be adopted only once"），不再自产；自产物
-                // 带 MF_OUTSOURCE_ITEM_TO_MACHINE 时不落本机（CE :1533-1539
-                // 非外包才 placeItemAt），指令交由下面的递归块交给子机器。
-                let theItem: MachineResult['itemSpawns'][number] | null = null;
-                if (ctx.adoptiveItem && fFlags.has('MF_ADOPT_ITEM') && effFlags.has(BP_ADOPT_ITEM)) {
-                    theItem = { ...ctx.adoptiveItem, pos: { x: pos.x, y: pos.y } };
-                    itemSpawns.push(theItem);
-                    ctx.adoptiveItem = null;
-                } else if (fFlags.has('MF_GENERATE_ITEM') && feature.itemCategory) {
-                    theItem = {
-                        category: feature.itemCategory,
-                        id: feature.itemId,
-                        pos: { x: pos.x, y: pos.y },
-                        isAltar: fFlags.has('MF_ALTAR')
-                    };
-                    if (!fFlags.has('MF_OUTSOURCE_ITEM_TO_MACHINE')) {
-                        itemSpawns.push(theItem);
-                    }
-                }
+                placed = roundPlaced; // CE：instance 每轮由 for 重置归零（:1399），
+                                      // min 检查只看最后一轮（:1675）
+            } while (repeatUntilNoProgress && roundPlaced >= minInstances);
 
-                // V-1c：递归外包 / 前厅（CE :1543-1575，结构逐字）——
-                // 10 次重试建子机器；任一次成功即把子机器并入本机器
-                // （CE :1555-1567 并入 spawnedItems/Monsters 缓冲的 web 等价），
-                // 10 次全败 → 整机失败（CE :1576-1583，备份由 buildAMachine 恢复）。
-                // CE 每次重试前把领养物品从地面/背包摘链的注释（:1546-1551）在
-                // web 结构性成立：物品指令不在网格上，失败的子机器结果整体丢弃，
-                // 无"留在地上"的残骸可摘。
-                if (fFlags.has('MF_OUTSOURCE_ITEM_TO_MACHINE') || fFlags.has('MF_BUILD_VESTIBULE')) {
-                    let success = false;
-                    for (let i = 10; i > 0; i--) {
-                        if (fFlags.has('MF_OUTSOURCE_ITEM_TO_MACHINE') && theItem) {
-                            const sub = this.buildAMachine([BP_ADOPT_ITEM], theItem, null);
-                            if (sub) { subMachines.push(sub); success = true; }
-                        } else if (fFlags.has('MF_BUILD_VESTIBULE')) {
-                            const sub = this.buildAMachine([BP_VESTIBULE], null, { x: pos.x, y: pos.y });
-                            if (sub) { subMachines.push(sub); success = true; }
-                        }
-                        if (success) break;
-                    }
-                    if (!success) return null;
-                }
-                theItem = null;
-
-                // Generate monster spawn instructions
-                if (fFlags.has('MF_GENERATE_MONSTER') && feature.monsterId) {
-                    monsterSpawns.push({
-                        monsterId: feature.monsterId,
-                        pos: { x: pos.x, y: pos.y },
-                        isAlly: fFlags.has('MF_MONSTER_IS_ALLY'),
-                        isCaged: fFlags.has('MF_MONSTER_IS_CAGED')
-                    });
-                }
-            }
-
-            // V-1c：CE :1676-1687——本 feature 实际落位数达不到
+            // V-1c：CE :1675-1687——本 feature（最后一轮）实际落位数达不到
             // minimumInstanceCount（web 缺省 = instanceCount[0]，见 FeatureDef 注）
             // → 整机失败（备份由 buildAMachine 恢复）。web 今天的失败源是
-            // findFeaturePosition 找不到可落格（房间太小/格子被占光）。
-            const minInstances = feature.minimumInstanceCount ?? feature.instanceCount[0];
-            if (placed < minInstances && !fFlags.has('MF_REPEAT_UNTIL_NO_PROGRESS')) {
+            // findFeaturePosition 找不到可落格（房间太小/格子被占光）与
+            // V-2b-2a 的阻断否决（CE :1444-1452）。REPEAT 豁免（CE :1675）。
+            if (placed < minInstances && !repeatUntilNoProgress) {
                 return null;
             }
         }
@@ -899,7 +1053,9 @@ export class BlueprintEngine {
         // V-2a：机器建成 = 网格真变异（地形/门/feature 都落了），chokeMap
         // 分析缓存在此失效（与重捕获基线的行为对齐：建成后的下一次选址
         // 重算 analysis；失败路径 restoreLevel 恢复到缓存收集态，无需失效）。
+        // V-2b-2a：IN_LOOP 陈旧快照同点失效（CE 建层期预计算的对应生命周期）。
         this.gateAnalysisCache = null;
+        this.loopMapCache = null;
 
         return {
             blueprintId: bp.id,
@@ -989,7 +1145,7 @@ export class BlueprintEngine {
      * （探索/视野/气味等）在生成期无人写入，一并快照只为省去取舍错误。
      */
     private backupLevel(): LevelBackup {
-        const snap: LevelBackup = [];
+        const snap: LevelBackup['cells'] = [];
         for (let x = 0; x < DCOLS; x++) {
             for (let y = 0; y < DROWS; y++) {
                 const c = this.grid.getCell(x, y)!;
@@ -1005,7 +1161,8 @@ export class BlueprintEngine {
                 });
             }
         }
-        return snap;
+        // V-2b-2a：IMPREGNABLE 位随整图备份（CE copyMap 连 pmap.flags 一起复制）。
+        return { cells: snap, impregnable: [...this.impregnableCells] };
     }
 
     /** CE copyMap(p->levelBackup, pmap)（:1578/:1681）的 web 形态。 */
@@ -1014,7 +1171,7 @@ export class BlueprintEngine {
         for (let x = 0; x < DCOLS; x++) {
             for (let y = 0; y < DROWS; y++) {
                 const c = this.grid.getCell(x, y)!;
-                const s = snap[i++]!;
+                const s = snap.cells[i++]!;
                 c.layers = [...s.layers];
                 c.char = s.char;
                 c.color = s.color;
@@ -1025,6 +1182,11 @@ export class BlueprintEngine {
                 c.altarGroupId = s.altarGroupId;
             }
         }
+        this.impregnableCells = new Set(snap.impregnable);
+        // V-2b-2a：IN_LOOP 快照若在失败机器的落位期间懒算过，网格已恢复到
+        // 收集态，必须作废（gateAnalysisCache 无此问题——它只在选址期、
+        // point of no return 之前收集）。
+        this.loopMapCache = null;
     }
 
     /**
@@ -1032,37 +1194,80 @@ export class BlueprintEngine {
      * V-2b-1：center 形参删除——NEAR_ORIGIN 的距离基准改为 origin 后，
      * 本方法不再需要机器 center（CE cellIsFeatureCandidate 同样只收 originX/Y，
      * Architect.c:490-497）。
+     *
+     * V-2b-2a：CE cellIsFeatureCandidate（Architect.c:492-588）的资格判定整体
+     * 接入（私有 cellIsFeatureCandidate，七步顺序照抄）。候选域按旗标分三路：
+     *   - MF_BUILD_IN_WALLS / MF_BUILD_ANYWHERE_ON_LEVEL：全图光栅扫描
+     *     （CE :1362-1377 的 DCOLS×DROWS 扫描序），均匀随机取一（CE :1413
+     *     rand_range(1, qualifyingTileCount) 的 web 等价）；
+     *   - 其余：机器 interior 域（web 的 availableCells = 预洗牌的 room.cells），
+     *     逐格过全判；NEAR/FAR_ORIGIN 沿用 V-2b-1 登记的曼哈顿留形近似
+     *     （最近/最远），不改 NEAR_ORIGIN 既有行为。
      */
     private findFeaturePosition(
         available: Pos[],
-        used: Set<string>,
+        used: Set<number>,
+        struck: Set<number>,
         origin: Pos,
         _feature: FeatureDef,
-        fFlags: Set<string>
+        fFlags: Set<string>,
+        bpFlags: ReadonlySet<string>,
+        machineNum: number,
+        interior: Set<number>
     ): Pos | null {
-        // V-2a（CE Architect.c:520-522 / :1404-1407）：MF_BUILD_AT_ORIGIN 的
-        // feature 恒落在机器 origin（=门位）——候选资格函数在 personalSpace/
-        // occupied 检查之前就直接放行 origin，因此这里也无视 usedCells。
-        // reward 蓝图的前厅递归 feature 与 vestibule_locked 的锁门/钥匙
-        // feature 都靠它钉在门位上。
         if (fFlags.has('MF_BUILD_AT_ORIGIN')) {
-            return origin;
+            // V-2a（CE Architect.c:520-522 / :1404-1407）：MF_BUILD_AT_ORIGIN 的
+            // feature 恒落在机器 origin（=门位）——候选资格函数在 personalSpace/
+            // occupied 检查之前就直接放行 origin，因此这里也无视 usedCells。
+            // reward 蓝图的前厅递归 feature 与 vestibule_locked 的锁门/钥匙
+            // feature 都靠它钉在门位上。
+            // V-2b-2a：NOT_IN_HALLWAY / NOT_ON_LEVEL_PERIMETER 两步**先于**
+            // origin 检查（CE :504-516，源码注释明言该顺序有语义）——走廊或
+            // 边界上的 origin 使 BUILD_AT_ORIGIN feature 无落格（min 检查随后
+            // 整机失败；CE 注释「an area machine will fail altogether」）。
+            return this.cellIsFeatureCandidate(origin.x, origin.y, origin, interior, machineNum, fFlags, bpFlags)
+                ? origin
+                : null;
         }
 
-        if (fFlags.has('MF_NEAR_ORIGIN')) {
+        if (fFlags.has('MF_BUILD_IN_WALLS') || fFlags.has('MF_BUILD_ANYWHERE_ON_LEVEL')) {
+            // CE :1362-1377：全图候选扫描（x 外层 y 内层），随机取一。
+            // occupied/struck 在扫描处排除——CE 的 occupied 检查在
+            // cellIsFeatureCandidate :527，两处口径一致（used = occupied）。
+            const candidates: Pos[] = [];
+            for (let x = 0; x < DCOLS; x++) {
+                for (let y = 0; y < DROWS; y++) {
+                    const k = cellKey(x, y);
+                    if (used.has(k) || struck.has(k)) continue;
+                    if (this.cellIsFeatureCandidate(x, y, origin, interior, machineNum, fFlags, bpFlags)) {
+                        candidates.push({ x, y });
+                    }
+                }
+            }
+            if (candidates.length === 0) return null;
+            return candidates[rng.randRange(0, candidates.length - 1)]!;
+        }
+
+        if (fFlags.has('MF_NEAR_ORIGIN') || fFlags.has('MF_FAR_FROM_ORIGIN')) {
             // V-2b-1：距离基准从 center 改为 origin（CE Architect.c:1336-1341 的
             // distance25 界与 :1343-1349 的 viewMask 都以 originX/originY 为源，
             // :1257 calculateDistances 也是从 origin 起算——ORIGIN 系旗标全部
             // 以 origin 为基准，无一例外）。web 用曼哈顿距离近似 CE 的路径
             // 距离分位界（已知留形偏差，P1-33 同族）；基准点必须同。
             // 对 BP_ROOM 机器这是行为变化（前厅机器 center==origin，不受影响）。
-            // Pick the closest unused cell to origin
+            // V-2b-2a：FAR_FROM_ORIGIN（CE :1340-1341，distanceBound[0] =
+            // distance75）取同一近似的镜像——最远未用格。CE 的 25/75 分位界
+            // 需要 interior 路径距离直方图（:1257-1288），web 无该设施，登记
+            // 留形缺口（与 NEAR 同族，不单独建距离图）。
+            const near = fFlags.has('MF_NEAR_ORIGIN');
             let best: Pos | null = null;
-            let bestDist = Infinity;
+            let bestDist = near ? Infinity : -1;
             for (const p of available) {
-                if (used.has(`${p.x},${p.y}`)) continue;
+                const k = cellKey(p.x, p.y);
+                if (used.has(k) || struck.has(k)) continue;
+                if (!this.cellIsFeatureCandidate(p.x, p.y, origin, interior, machineNum, fFlags, bpFlags)) continue;
                 const d = Math.abs(p.x - origin.x) + Math.abs(p.y - origin.y);
-                if (d < bestDist) {
+                if (near ? d < bestDist : d > bestDist) {
                     bestDist = d;
                     best = p;
                 }
@@ -1072,11 +1277,132 @@ export class BlueprintEngine {
 
         // Default: pick first unused cell (already shuffled)
         for (const p of available) {
-            if (!used.has(`${p.x},${p.y}`)) {
+            const k = cellKey(p.x, p.y);
+            if (used.has(k) || struck.has(k)) continue;
+            if (this.cellIsFeatureCandidate(p.x, p.y, origin, interior, machineNum, fFlags, bpFlags)) {
                 return p;
             }
         }
         return null;
+    }
+
+    /**
+     * V-2b-2a：CE cellIsFeatureCandidate（Architect.c:492-588）的逐句移植。
+     * 七步顺序照抄——顺序本身有语义（CE :504-506 注释：NOT_IN_HALLWAY 先于
+     * origin 检查，area machine 的 origin 落在走廊而必须建在 origin 的 feature
+     * 又不许走廊时，整台机器失败）。
+     *
+     * web 缺失判据的处置（报告 §1 详）：
+     *   - passableArcCount：web 有（ItemSpawnHeatMap.ts:113，CE :171 逐句移植，
+     *     含 cellIsPassableOrDoor 的密门/锁门豁免）——直接用；
+     *   - IN_LOOP：web 有 CE 口径移植 analyzeLoopMap（LoopMap.ts:359，C-0）——
+     *     引擎内懒算一份陈旧快照（CE 的 pmap IN_LOOP 同为建层期预计算、机器
+     *     阶段不重算），失效点与 chokeMap 分析缓存一致；
+     *   - IS_CHOKEPOINT：用 analyzeChokeMap 的 chokepoint（web 既有的
+     *     IS_CHOKEPOINT 等价物，gateSite 同源；其 passMap 口径是
+     *     terrainAllowsMove 而非 CE 的 T_PATHING_BLOCKER，已知留形）；
+     *   - viewMap（IN_VIEW_OF_ORIGIN 族，CE :531-535）：web 无载体无实现，
+     *     生产数据零旗标——登记缺口，不假装有；
+     *   - distanceMap 界（CE :537-557）：web 无 interior 路径距离设施，NEAR/
+     *     FAR 以曼哈顿最近/最远选格近似（V-2b-1 留形），界折叠进选格策略，
+     *     不在候选判定里。
+     */
+    private cellIsFeatureCandidate(
+        x: number,
+        y: number,
+        origin: Pos,
+        interior: Set<number>,
+        machineNum: number,
+        fFlags: Set<string>,
+        bpFlags: ReadonlySet<string>
+    ): boolean {
+        const cell = this.grid.getCell(x, y);
+        if (!cell) return false;
+
+        // 1.（CE :504-510）不许走廊——检查先于 origin 检查（顺序有语义）。
+        if (fFlags.has('MF_NOT_IN_HALLWAY') && passableArcCount(this.grid, x, y) > 1) {
+            return false;
+        }
+
+        // 2.（CE :512-516）不许层边界。
+        if (fFlags.has('MF_NOT_ON_LEVEL_PERIMETER')
+            && (x === 0 || x === DCOLS - 1 || y === 0 || y === DROWS - 1)) {
+            return false;
+        }
+
+        // 3.（CE :518-524）BUILD_AT_ORIGIN：origin 恒合格（反之仅 origin）；
+        //    BP_ROOM 的 origin（=门口）对其余 feature 不是候选。
+        if (fFlags.has('MF_BUILD_AT_ORIGIN')) {
+            return x === origin.x && y === origin.y;
+        } else if (bpFlags.has('BP_ROOM') && x === origin.x && y === origin.y) {
+            return false;
+        }
+
+        // （CE :526-529 occupied——web 的 used/struck 由调用方先行排除，口径
+        // 一致：usedCells = center/door 预留 + personalSpace + 已落格。）
+        // （CE :531-535 viewMap 与 :537-557 distance 界——见方法头注的处置。）
+
+        // 4.（CE :558-575）MF_BUILD_IN_WALLS：墙、非 interior、machineNumber
+        //    为 0 或本机，且四正方向之一是 interior（非 origin），或
+        //    BUILD_ANYWHERE 下非 T_PATHING_BLOCKER 且 machineNumber==0。
+        if (fFlags.has('MF_BUILD_IN_WALLS')) {
+            if (!interior.has(cellKey(x, y))
+                && (cell.machineNumber === 0 || cell.machineNumber === machineNum)
+                && (cellTerrainFlags(this.grid, x, y) & T_OBSTRUCTS_PASSABILITY) !== 0) {
+                for (const [dx, dy] of [[0, -1], [0, 1], [-1, 0], [1, 0]]) {
+                    const nx = x + dx!;
+                    const ny = y + dy!;
+                    if (nx < 0 || ny < 0 || nx >= DCOLS || ny >= DROWS) continue;
+                    const nCell = this.grid.getCell(nx, ny);
+                    if (!nCell) continue;
+                    const nInterior = interior.has(cellKey(nx, ny))
+                        && !(nx === origin.x && ny === origin.y);
+                    const nAnywhere = fFlags.has('MF_BUILD_ANYWHERE_ON_LEVEL')
+                        && (cellTerrainFlags(this.grid, nx, ny) & T_PATHING_BLOCKER) === 0
+                        && nCell.machineNumber === 0;
+                    if (nInterior || nAnywhere) return true;
+                }
+            }
+            return false;
+        }
+
+        // 5.（CE :575-576）未明令不得建在墙里。
+        if ((cellTerrainFlags(this.grid, x, y) & T_OBSTRUCTS_PASSABILITY) !== 0) {
+            return false;
+        }
+
+        // 6.（CE :577-583）MF_BUILD_ANYWHERE_ON_LEVEL：带 MF_GENERATE_ITEM 时
+        //    额外排除 T_OBSTRUCTS_ITEMS|T_PATHING_BLOCKER 与
+        //    IS_CHOKEPOINT|IN_LOOP|IS_IN_MACHINE；否则只要求不在机器内。
+        if (fFlags.has('MF_BUILD_ANYWHERE_ON_LEVEL')) {
+            if (fFlags.has('MF_GENERATE_ITEM')
+                && ((cellTerrainFlags(this.grid, x, y) & (T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER)) !== 0
+                    || this.getGateAnalysis().chokepoint[x]![y]!
+                    || this.getLoopMap()[x]![y]!
+                    || cell.machineNumber !== 0)) {
+                return false;
+            }
+            return cell.machineNumber === 0;
+        }
+
+        // 7.（CE :584-585）interior 恒合格。
+        return interior.has(cellKey(x, y));
+    }
+
+    /** V-2b-2a：IN_LOOP 陈旧快照的懒算口（见 loopMapCache 头注）。 */
+    private getLoopMap(): boolean[][] {
+        if (!this.loopMapCache) {
+            this.loopMapCache = analyzeLoopMap(this.grid);
+        }
+        return this.loopMapCache;
+    }
+
+    /**
+     * V-2b-2a：MF_IMPREGNABLE 置位格的读口（impregnableCells 头注）。隧道/
+     * 挖墙轮接线 crystalizeFromPlayer 的守卫与未来的 tunneling 怪时用它。
+     */
+    public isImpregnable(x: number, y: number): boolean {
+        return this.impregnableCells.has(cellKey(x, y));
     }
 
     /**
@@ -1088,11 +1414,16 @@ export class BlueprintEngine {
      * 中心格不在此补：applyBlueprint 已先于本调用把落格加进 usedCells
      * （CE 是在同一循环里连中心一起 occupied，两边等价）。
      */
-    private markPersonalSpace(center: Pos, radius: number, used: Set<string>) {
+    private markPersonalSpace(center: Pos, radius: number, used: Set<number>) {
         for (let dx = -(radius - 1); dx <= radius - 1; dx++) {
             for (let dy = -(radius - 1); dy <= radius - 1; dy++) {
                 if (dx === 0 && dy === 0) continue;
-                used.add(`${center.x + dx},${center.y + dy}`);
+                // V-2b-2a：CE :1468 coordinatesAreInMap 守卫——cellKey 是数字
+                // 线性键，出界格（如 x=-1）会与邻行末列碰撞，必须显式剔除。
+                const nx = center.x + dx;
+                const ny = center.y + dy;
+                if (nx < 0 || ny < 0 || nx >= DCOLS || ny >= DROWS) continue;
+                used.add(cellKey(nx, ny)); // V-2b-2a：键统一 cellKey
             }
         }
     }
