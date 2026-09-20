@@ -208,6 +208,21 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         [TerrainType.MACHINE_PARALYSIS_VENT_HIDDEN]: 0, // Globals.c:383 NO_LIGHT
         [TerrainType.MACHINE_METHANE_VENT_HIDDEN]: 0,   // Globals.c:398 NO_LIGHT
         [TerrainType.PILOT_LIGHT_DORMANT]: 0,           // Globals.c:342 原列 TORCH_LIGHT，登记不迁移
+        // V-2b-4 七条（祭坛族轮，CE 原列）：ALTAR_CAGE_OPEN/RETRACTABLE 与
+        // RESURRECTION_ALTAR 都是 CANDLE_LIGHT（Globals.c:364/368/538 第 10 列）；
+        // TORCH_WALL 是 TORCH_LIGHT（:337）——三枚 LightKind 目录里都有成员
+        // （CANDLE_LIGHT=53、TORCH_LIGHT=33），故本轮**真实点亮**（与
+        // PILOT_LIGHT_DORMANT 的"登记不迁移"不同，载体的光照语义本轮生效）。
+        // AMULET_SWITCH（:529）、STATUE_INSTACRACK（:354）为 NO_LIGHT。
+        // COMMUTATION_ALTAR 的 CE 原列即 NO_LIGHT（:532，注释块首列的
+        // "// commutation device" 段没有烛光——置换祭坛不发光是 CE 原样）。
+        [TerrainType.ALTAR_CAGE_OPEN]: LightKind.CANDLE_LIGHT,
+        [TerrainType.ALTAR_CAGE_RETRACTABLE]: LightKind.CANDLE_LIGHT,
+        [TerrainType.COMMUTATION_ALTAR]: 0,             // Globals.c:532 NO_LIGHT
+        [TerrainType.RESURRECTION_ALTAR]: LightKind.CANDLE_LIGHT,
+        [TerrainType.AMULET_SWITCH]: 0,                 // Globals.c:529 NO_LIGHT
+        [TerrainType.STATUE_INSTACRACK]: 0,             // Globals.c:354 NO_LIGHT
+        [TerrainType.TORCH_WALL]: LightKind.TORCH_LIGHT,
     };
 
     it('全 tile 的 glowLight 逐值等于 CE 原列（结构性穷尽）', () => {
@@ -218,7 +233,7 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         }
     });
 
-    it('非零恰 11 个，且都指向有载体的目录条目', () => {
+    it('非零恰 16 个（V-2b-4 前为 12，与旧标题的"11"本就不符——标题顺延为 16），且都指向有载体的目录条目', () => {
         const nonzero = Object.entries(TERRAIN_FLAGS)
             .filter(([, v]) => v.glowLight !== LightKind.NO_LIGHT)
             .map(([k]) => Number(k) as TerrainType)
@@ -233,6 +248,10 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
             TerrainType.CRYSTAL_WALL, TerrainType.SACRED_GLYPH,
             // V-2b-2b：PEDESTAL（CE Globals.c:369 原列 = CANDLE_LIGHT）。
             TerrainType.PEDESTAL,
+            // V-2b-4：两个铁笼祭坛与复活祭坛的烛光（CANDLE_LIGHT，CE 原列），
+            // 以及墙装火把的 TORCH_LIGHT（Globals.c:337）。
+            TerrainType.ALTAR_CAGE_OPEN, TerrainType.ALTAR_CAGE_RETRACTABLE,
+            TerrainType.RESURRECTION_ALTAR, TerrainType.TORCH_WALL,
         ].sort((a, b) => a - b));
         for (const t of nonzero) {
             expect(LIGHT_CATALOG[TERRAIN_FLAGS[t].glowLight]).toBeDefined();
@@ -596,6 +615,13 @@ describe('C-7 载体边界留痕', () => {
         // tile 本身，updateVision 的发光地形扫描（Game.ts 逐层读
         // TERRAIN_FLAGS.glowLight → paintLight）会真实点亮它们。
         'FORCEFIELD_LIGHT', 'CRYSTAL_WALL_LIGHT', 'SACRED_GLYPH_LIGHT',
+        // V-2b-4（祭坛族轮）反转：TORCH_WALL（Globals.c:337）落地——它在 CE
+        // 的 glowLight 列就是 TORCH_LIGHT，载体就是 tile 本身，与上面 B-3 的
+        // 四种同款（updateVision 会真实点亮，"无载体空转链"的留痕前提失效）。
+        // 注意：PILOT_LIGHT_DORMANT（:342）的 TORCH_LIGHT 仍**不迁移**
+        // （登记在 EXPECTED_GLOW 里为 0）——载体与光名是两件事，本清单只登记
+        // "光名现在有真实载体"。
+        'TORCH_LIGHT',
     ]);
 
     function* prodTsFiles(dir: string): Generator<string> {
@@ -633,13 +659,15 @@ describe('C-7 载体边界留痕', () => {
             }
         }
         expect(violations, violations.join('\n')).toEqual([]);
-        // 留痕说明：TORCH_WALL/SUNLIGHT_POOL/DARKNESS_PATCH/LUMINESCENT_FUNGUS
-        // 等四个 tile 与对应光（TORCH/SUN/DARKNESS_PATCH/FUNGUS×2/ALGAE×2）属
+        // 留痕说明：SUNLIGHT_POOL/DARKNESS_PATCH/LUMINESCENT_FUNGUS
+        // 等 tile 与对应光（SUN/DARKNESS_PATCH/FUNGUS×2/ALGAE×2）属
         // c_6 报告 §十四.1 的"先落 tile 再接光"清单；TELEPATHY_LIGHT 的揭示
         // 走 updateTelepathy 的 2 格 LOS 掩码、不经光照阈值（Time.c:1046-1080），
         // 接光无引擎侧可观测效果——全部登记不接。哪一轮来反转我：落
         // 上述 tile 的地形轮把对应光名加入 CARRIER_KINDS 并在 TerrainCatalog
         // 补列值；渲染轮接入 flare 族时同理发落。
+        // ★ V-2b-4 已按此指示反转 **TORCH_WALL/TORCH_LIGHT** 一项（本留痕的
+        //   自预告动作，载体现已在 CARRIER_KINDS 内）。其余仍待落 tile。
     });
 
     it('留痕（UI-1 第 7 条已反转，2026-09-18）：渲染层消费 lightAt 三通道做 CE 乘法，仍不得直接 import 光照目录/paintLight', () => {

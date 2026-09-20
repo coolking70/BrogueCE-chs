@@ -386,6 +386,53 @@ interface TestRoomState {
     }>;
 }
 
+/**
+ * V-2b-4：首层固定前厅梯位的落点。
+ *
+ * CE 的不变量是"楼梯永不在机器格内"（`placeStairs` 回避 IS_IN_MACHINE，
+ * Architect.c:3712/3738）。CE 的时序天然保证它——`placeStairs` 在
+ * `digDungeon`（含 addMachines）之后调用。web 把首层的上行梯**硬编码**在
+ * 地图正中（`{DCOLS/2, DROWS/2}`），同一时序下若正中已被机器覆盖就会破坏
+ * 该不变量。
+ *
+ * V-2b-4 实测（seed999/D1）：CE 1 号蓝图 `reward_mixed_library` 的
+ * gate choke 区间 [30,50] + BP_OPEN_INTERIOR 让机器内部可达数百格连通体，
+ * 正中 (39,14) 落入其中——p1_33 的"机器结构合同"与 p1_37 的"内容落点不
+ * 闯入机器格"双双翻红。修复按 CE 口径：梯位**避开机器格**。
+ *
+ * **严格最小**：正中只要不是机器格，就原样用它（哪怕它是岩石——旧行为
+ * 就是把楼梯砸进正中，改动它会在 4 个基线种子上产生 94 处无谓偏离）。
+ * 只有正中落在机器内部时，才按 Chebyshev 环序就近取第一个"非机器格、
+ * 可通行、DUNGEON 层是 FLOOR"的格。**零 RNG**、确定性（环序固定）。
+ * 找不到时返回 null，调用方退回硬编码正中（保持旧行为，不静默挪位）。
+ */
+function vestibuleStairPos(grid: Grid): Pos | null {
+    const cx = Math.floor(DCOLS / 2);
+    const cy = Math.floor(DROWS / 2);
+    const centre = grid.getCell(cx, cy);
+    if (centre && centre.machineNumber === 0) return { x: cx, y: cy }; // 旧行为：原样
+    const usable = (x: number, y: number): boolean => {
+        if (x < 1 || y < 1 || x >= DCOLS - 1 || y >= DROWS - 1) return false;
+        const c = grid.getCell(x, y);
+        if (!c) return false;
+        return c.machineNumber === 0 && c.isPassable && c.layers.includes(TerrainType.FLOOR);
+    };
+    const rmax = Math.max(DCOLS, DROWS);
+    for (let r = 1; r < rmax; r++) {
+        for (let dx = -r; dx <= r; dx++) {
+            for (const dy of [-r, r]) {
+                if (usable(cx + dx, cy + dy)) return { x: cx + dx, y: cy + dy };
+            }
+        }
+        for (let dy = -r + 1; dy <= r - 1; dy++) {
+            for (const dx of [-r, r]) {
+                if (usable(cx + dx, cy + dy)) return { x: cx + dx, y: cy + dy };
+            }
+        }
+    }
+    return null;
+}
+
 export class Game {
     public grid!: Grid;
     public environment!: EnvironmentManager;
@@ -1169,7 +1216,10 @@ export class Game {
             stairsUpPos = floorTiles.pop()!;
             this.grid.setTerrain(stairsUpPos.x, stairsUpPos.y, TerrainType.STAIRS_UP, '<', 0xffaa00);
         } else if (this.depth === 1) {
-            stairsUpPos = { x: Math.floor(DCOLS / 2), y: Math.floor(DROWS / 2) }; // Default vestibule
+            // V-2b-4：首层固定前厅梯位——避开机器格（CE placeStairs 的
+            // IS_IN_MACHINE 回避，见 vestibuleStairPos 头注）。
+            stairsUpPos = vestibuleStairPos(this.grid)
+                ?? { x: Math.floor(DCOLS / 2), y: Math.floor(DROWS / 2) }; // Default vestibule
             this.grid.setTerrain(stairsUpPos.x, stairsUpPos.y, TerrainType.STAIRS_UP, '<', 0xffaa00);
         }
 
@@ -3186,32 +3236,13 @@ export class Game {
                             logger.log(i18next.t('item.pickup_altar', { name: altarItem.displayName, defaultValue: `You claim ${altarItem.displayName} from the altar.` }), '#ffffaa');
                             this.items.splice(altarItemIdx, 1);
 
-                            // Collapse other altars in the group
-                            const groupId = this.grid.getCell(newX, newY)!.altarGroupId;
-                            if (groupId !== null) {
-                                let collapsedAtLeastOne = false;
-                                for (let x = 1; x < DCOLS - 1; x++) {
-                                    for (let y = 1; y < DROWS - 1; y++) {
-                                        const c = this.grid.getCell(x, y);
-                                        if (c && c.layers.includes(TerrainType.ALTAR) && c.altarGroupId === groupId) { // F-1 跨层判定
-                                            c.terrain = TerrainType.CHARRED_FLOOR;
-                                            c.char = '.';
-                                            c.color = 0x333333;
-                                            c.altarGroupId = null;
-                                            c.isPassable = true;
-                                            // destroy any item there
-                                            const otherIdx = this.items.findIndex(i => i.loc.x === x && i.loc.y === y);
-                                            if (otherIdx > -1) {
-                                                this.items.splice(otherIdx, 1);
-                                                collapsedAtLeastOne = true;
-                                            }
-                                        }
-                                    }
-                                }
-                                if (collapsedAtLeastOne) {
-                                    logger.log(i18next.t('item.altar_collapse', { defaultValue: `The other altars sink into the floor.` }), '#aaaaaa');
-                                }
-                            }
+                            // V-2b-4：删除 web 自创的「取物塌陷同组祭坛」机制
+                            //（原 3189-3214 行）。CE 完全没有祭坛分组概念
+                            //（Rogue.h 全库零命中 altarGroupId / MF_ALTAR_GROUP），
+                            // 该玩法依赖的 Cell.altarGroupId 与 MF_ALTAR_GROUP
+                            // 旗标已同轮拆除。取物本身的行为（入包、日志、耗时）
+                            // 逐字保留——CE Movement.c 的取物就是普通的
+                            // "inventory 收了就收"，收满 movementSpeed。
 
                             this.needsRender = true;
                             // CE 无祭坛取物优惠耗时：与普通移动一样收满 movementSpeed

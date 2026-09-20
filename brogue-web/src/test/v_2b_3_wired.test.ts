@@ -226,9 +226,19 @@ describe('V-2b-3 A：载体地形逐字段 ≡ CE Globals.c（对抗：抄错任
         expect(mh.startProbability).toBe(225);
         expect(mh.probabilityDecrement).toBe(100);
         expect(mh.subsequentDF).toBe(DF.DF_SHOW_TRAPDOOR_HALO);
-        expect(DF_MISSING_TILES).toHaveLength(19);
+        // V-2b-4 顺延（本文件在 V-2b-4 任务书 §4 授权清单内）：祭坛族轮八条
+        // 新目录条目里 web 无 tile 的七条入列，19 → 26。守卫仍全等钉死长度
+        //（不放宽成包含关系）；DF_CAGE_DISAPPEARS 是八条里唯一带完整 tile
+        //（ALTAR_INERT = web TerrainType.ALTAR）的，不入列。
+        expect(DF_MISSING_TILES).toHaveLength(26);
         for (const d of [DF.DF_WALL_SHATTER, DF.DF_REVEAL_LEVER, DF.DF_INACTIVE_GLYPH,
             DF.DF_OPEN_PORTCULLIS, DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY]) {
+            expect(DF_MISSING_TILES, `DF[${d}] 应在缺 tile 登记`).toContain(d);
+        }
+        // V-2b-4 新登记的七条（越界守卫：一条都不能漏抄）。
+        for (const d of [DF.DF_LUMINESCENT_FUNGUS, DF.DF_ITEM_CAGE_CLOSE,
+            DF.DF_ALTAR_COMMUTE, DF.DF_MAGIC_PIPING, DF.DF_ALTAR_RESURRECT,
+            DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING, DF.DF_STATUE_SHATTER]) {
             expect(DF_MISSING_TILES, `DF[${d}] 应在缺 tile 登记`).toContain(d);
         }
     });

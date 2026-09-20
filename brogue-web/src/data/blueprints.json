@@ -466,33 +466,64 @@
     },
     {
         "id": "reward_commutation",
-        "name": "Commutation Altar",
+        "name": "Commutation altars",
         "depthRange": [
-            6,
-            20
+            13,
+            26
         ],
         "roomSize": [
             10,
-            20
+            30
         ],
-        "frequency": 4,
+        "frequency": 50,
         "category": "reward",
         "flags": [
             "BP_ROOM",
             "BP_REWARD",
-            "BP_PURGE_INTERIOR"
+            "BP_PURGE_INTERIOR",
+            "BP_SURROUND_WITH_WALLS",
+            "BP_OPEN_INTERIOR",
+            "BP_IMPREGNABLE"
         ],
         "features": [
             {
-                "terrain": "ALTAR",
+                "terrain": "CARPET",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    0,
+                    0
+                ],
+                "minimumInstanceCount": 0,
+                "flags": [
+                    "MF_EVERYWHERE"
+                ]
+            },
+            {
+                "terrain": "STATUE_INERT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    3
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_BUILD_IN_WALLS",
+                    "MF_IMPREGNABLE"
+                ]
+            },
+            {
+                "terrain": "COMMUTATION_ALTAR",
+                "layer": "DUNGEON",
                 "instanceCount": [
                     2,
-                    3
+                    2
                 ],
                 "minimumInstanceCount": 2,
                 "personalSpace": 2,
                 "flags": [
-                    "MF_ALTAR_GROUP"
+                    "MF_TREAT_AS_BLOCKING"
                 ]
             },
             {
@@ -506,6 +537,378 @@
                     "MF_BUILD_AT_ORIGIN",
                     "MF_PERMIT_BLOCKING",
                     "MF_BUILD_VESTIBULE"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "reward_mixed_library",
+        "name": "Mixed item library -- can check one item out at a time",
+        "depthRange": [
+            1,
+            12
+        ],
+        "roomSize": [
+            30,
+            50
+        ],
+        "frequency": 30,
+        "category": "reward",
+        "flags": [
+            "BP_ROOM",
+            "BP_REWARD",
+            "BP_PURGE_INTERIOR",
+            "BP_SURROUND_WITH_WALLS",
+            "BP_OPEN_INTERIOR",
+            "BP_IMPREGNABLE"
+        ],
+        "features": [
+            {
+                "terrain": "CARPET",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    0,
+                    0
+                ],
+                "minimumInstanceCount": 0,
+                "flags": [
+                    "MF_EVERYWHERE"
+                ]
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_PERMIT_BLOCKING",
+                    "MF_BUILD_VESTIBULE"
+                ]
+            },
+            {
+                "terrain": "ALTAR_CAGE_OPEN",
+                "layer": "DUNGEON",
+                "itemCategory": "WAND",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_IMPREGNABLE"
+                ]
+            },
+            {
+                "terrain": "ALTAR_CAGE_OPEN",
+                "layer": "DUNGEON",
+                "itemCategory": "WEAPON|ARMOR|WAND",
+                "instanceCount": [
+                    3,
+                    3
+                ],
+                "minimumInstanceCount": 3,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_NO_THROWING_WEAPONS",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_IMPREGNABLE"
+                ]
+            },
+            {
+                "terrain": "ALTAR_CAGE_OPEN",
+                "layer": "DUNGEON",
+                "itemCategory": "STAFF|RING|CHARM",
+                "instanceCount": [
+                    2,
+                    3
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_NO_THROWING_WEAPONS",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_IMPREGNABLE"
+                ]
+            },
+            {
+                "terrain": "STATUE_INERT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    2,
+                    3
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_BUILD_IN_WALLS",
+                    "MF_IMPREGNABLE"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "reward_single_category_library",
+        "name": "Single item category library -- can check one item out at a time",
+        "depthRange": [
+            1,
+            12
+        ],
+        "roomSize": [
+            30,
+            50
+        ],
+        "frequency": 15,
+        "category": "reward",
+        "flags": [
+            "BP_ROOM",
+            "BP_REWARD",
+            "BP_PURGE_INTERIOR",
+            "BP_SURROUND_WITH_WALLS",
+            "BP_OPEN_INTERIOR",
+            "BP_IMPREGNABLE"
+        ],
+        "features": [
+            {
+                "terrain": "CARPET",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    0,
+                    0
+                ],
+                "minimumInstanceCount": 0,
+                "flags": [
+                    "MF_EVERYWHERE"
+                ]
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_PERMIT_BLOCKING",
+                    "MF_BUILD_VESTIBULE"
+                ]
+            },
+            {
+                "terrain": "ALTAR_CAGE_OPEN",
+                "layer": "DUNGEON",
+                "itemCategory": "RING",
+                "instanceCount": [
+                    3,
+                    4
+                ],
+                "minimumInstanceCount": 3,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_ALTERNATIVE",
+                    "MF_IMPREGNABLE"
+                ]
+            },
+            {
+                "terrain": "ALTAR_CAGE_OPEN",
+                "layer": "DUNGEON",
+                "itemCategory": "STAFF",
+                "instanceCount": [
+                    4,
+                    5
+                ],
+                "minimumInstanceCount": 4,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_ALTERNATIVE",
+                    "MF_IMPREGNABLE"
+                ]
+            },
+            {
+                "terrain": "STATUE_INERT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    2,
+                    3
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_BUILD_IN_WALLS",
+                    "MF_IMPREGNABLE"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "reward_resurrection_altar",
+        "name": "Resurrection altar",
+        "depthRange": [
+            13,
+            26
+        ],
+        "roomSize": [
+            10,
+            30
+        ],
+        "frequency": 30,
+        "category": "reward",
+        "flags": [
+            "BP_ROOM",
+            "BP_REWARD",
+            "BP_PURGE_INTERIOR",
+            "BP_SURROUND_WITH_WALLS",
+            "BP_OPEN_INTERIOR",
+            "BP_IMPREGNABLE"
+        ],
+        "features": [
+            {
+                "terrain": "CARPET",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    0,
+                    0
+                ],
+                "minimumInstanceCount": 0,
+                "flags": [
+                    "MF_EVERYWHERE"
+                ]
+            },
+            {
+                "terrain": "STATUE_INERT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    3
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_BUILD_IN_WALLS",
+                    "MF_IMPREGNABLE"
+                ]
+            },
+            {
+                "terrain": "RESURRECTION_ALTAR",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_FAR_FROM_ORIGIN"
+                ]
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_PERMIT_BLOCKING",
+                    "MF_BUILD_VESTIBULE"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "reward_statuary",
+        "name": "Statuary -- key on an altar, area full of statues; take key to cause statues to burst and reveal monsters",
+        "depthRange": [
+            10,
+            26
+        ],
+        "roomSize": [
+            35,
+            40
+        ],
+        "frequency": 0,
+        "category": "reward",
+        "flags": [
+            "BP_PURGE_INTERIOR",
+            "BP_OPEN_INTERIOR"
+        ],
+        "features": [
+            {
+                "terrain": "AMULET_SWITCH",
+                "layer": "DUNGEON",
+                "itemCategory": "AMULET",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_NEAR_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            },
+            {
+                "terrain": "FUNGUS_FOREST",
+                "layer": "SURFACE",
+                "instanceCount": [
+                    2,
+                    3
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            },
+            {
+                "terrain": "STATUE_INSTACRACK",
+                "layer": "DUNGEON",
+                "monsterId": "Warden_of_Yendor",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_MONSTERS_DORMANT",
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_IN_PASSABLE_VIEW_OF_ORIGIN",
+                    "MF_IMPREGNABLE"
+                ]
+            },
+            {
+                "terrain": "TORCH_WALL",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    3,
+                    4
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_BUILD_IN_WALLS"
                 ]
             }
         ]
@@ -1427,6 +1830,179 @@
                 "flags": [
                     "MF_PERMIT_BLOCKING",
                     "MF_BUILD_AT_ORIGIN"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_nested_library",
+        "name": "Nested item library -- can check one item out at a time, and one is a disposable key to another reward room",
+        "depthRange": [
+            1,
+            26
+        ],
+        "roomSize": [
+            30,
+            50
+        ],
+        "frequency": 35,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM",
+            "BP_PURGE_INTERIOR",
+            "BP_SURROUND_WITH_WALLS",
+            "BP_OPEN_INTERIOR",
+            "BP_IMPREGNABLE"
+        ],
+        "features": [
+            {
+                "terrain": "CARPET",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    0,
+                    0
+                ],
+                "minimumInstanceCount": 0,
+                "flags": [
+                    "MF_EVERYWHERE"
+                ]
+            },
+            {
+                "terrain": "WALL",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    0,
+                    0
+                ],
+                "minimumInstanceCount": 0,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_BUILD_IN_WALLS",
+                    "MF_IMPREGNABLE",
+                    "MF_EVERYWHERE"
+                ]
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_PERMIT_BLOCKING",
+                    "MF_BUILD_VESTIBULE"
+                ]
+            },
+            {
+                "terrain": "ALTAR_CAGE_OPEN",
+                "layer": "DUNGEON",
+                "itemCategory": "WEAPON|ARMOR|WAND",
+                "instanceCount": [
+                    1,
+                    2
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_NO_THROWING_WEAPONS",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_IMPREGNABLE"
+                ]
+            },
+            {
+                "terrain": "ALTAR_CAGE_OPEN",
+                "layer": "DUNGEON",
+                "itemCategory": "STAFF|RING|CHARM",
+                "instanceCount": [
+                    1,
+                    2
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_NO_THROWING_WEAPONS",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_IMPREGNABLE"
+                ]
+            },
+            {
+                "terrain": "ALTAR_CAGE_OPEN",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_IMPREGNABLE"
+                ]
+            },
+            {
+                "terrain": "STATUE_INERT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    3
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_BUILD_IN_WALLS",
+                    "MF_IMPREGNABLE"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_throwing_tutorial_cage",
+        "name": "Throwing tutorial -- toss an item onto the pressure plate to retract the cage and reveal the key",
+        "depthRange": [
+            1,
+            4
+        ],
+        "roomSize": [
+            70,
+            80
+        ],
+        "frequency": 8,
+        "category": "key_guard",
+        "flags": [],
+        "features": [
+            {
+                "terrain": "ALTAR_CAGE_RETRACTABLE",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_IMPREGNABLE",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            },
+            {
+                "terrain": "MACHINE_PRESSURE_PLATE",
+                "layer": "LIQUID",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY"
                 ]
             }
         ]

@@ -277,6 +277,19 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.MACHINE_PARALYSIS_VENT_HIDDEN]: L.DUNGEON,
             [C.MACHINE_METHANE_VENT_HIDDEN]: L.DUNGEON,
             [C.PILOT_LIGHT_DORMANT]: L.DUNGEON,
+            // V-2b-4 七条（62 → 69）：祭坛族轮。全落 DUNGEON 层——CE 蓝图
+            // feature 的 layer 列逐条为 DUNGEON（GlobalsBrogue.c:187-190/
+            // 195-197/225/231/291-294/352-354/362），且三链字段指向的 DF 条目
+            // layer 列同证（DF_ITEM_CAGE_CLOSE {ALTAR_CAGE_CLOSED, DUNGEON} :722、
+            // DF_ALTAR_COMMUTE {COMMUTATION_ALTAR_INERT, DUNGEON} :793、
+            // DF_ALTAR_RESURRECT {RESURRECTION_ALTAR_INERT, DUNGEON} :798）。
+            [C.ALTAR_CAGE_OPEN]: L.DUNGEON,
+            [C.ALTAR_CAGE_RETRACTABLE]: L.DUNGEON,
+            [C.COMMUTATION_ALTAR]: L.DUNGEON,
+            [C.RESURRECTION_ALTAR]: L.DUNGEON,
+            [C.AMULET_SWITCH]: L.DUNGEON,
+            [C.STATUE_INSTACRACK]: L.DUNGEON,
+            [C.TORCH_WALL]: L.DUNGEON,
         });
         expect(DRAW_PRIORITY).toEqual({
             [C.NOTHING]: 100, [C.GRANITE]: 0, [C.FLOOR]: 95, [C.WALL]: 0,
@@ -327,6 +340,18 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.MACHINE_PARALYSIS_VENT_HIDDEN]: 95,
             [C.MACHINE_METHANE_VENT_HIDDEN]: 95,
             [C.PILOT_LIGHT_DORMANT]: 0,
+            // V-2b-4 七条（CE 第 4 列原值：ALTAR_CAGE_OPEN 17（Globals.c:364，
+            // 与 ALTAR_INERT 同档）；ALTAR_CAGE_RETRACTABLE 17（:368）；
+            // COMMUTATION_ALTAR 17（:532）；RESURRECTION_ALTAR 17（:538）；
+            // AMULET_SWITCH 95（:529，G_FLOOR 伪装——视觉上就是地面）；
+            // STATUE_INSTACRACK 0（:354，雕像墙档）；TORCH_WALL 0（:337 墙档）。
+            [C.ALTAR_CAGE_OPEN]: 17,
+            [C.ALTAR_CAGE_RETRACTABLE]: 17,
+            [C.COMMUTATION_ALTAR]: 17,
+            [C.RESURRECTION_ALTAR]: 17,
+            [C.AMULET_SWITCH]: 95,
+            [C.STATUE_INSTACRACK]: 0,
+            [C.TORCH_WALL]: 0,
         });
     });
 });

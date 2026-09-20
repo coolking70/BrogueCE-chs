@@ -133,6 +133,31 @@ export enum DF {
                                           // 链尾，Globals.c:866）
     DF_WALL_SHATTER                = 215, // :1772（WORM_TUNNEL_OUTER_WALL.
                                           // promoteType，Globals.c:924）
+    // ── V-2b-4：祭坛族轮。八条新条目 id 与 CE 枚举逐一对位
+    //    （Rogue.h 实测行号 + 枚举脚本数序 + 目录锚点校准三重核对）：
+    //    三条是蓝图 feature 的 **DF 列**（6/7/15 号蓝图的 DF 列在 web 无载体
+    //    ——FeatureDef 没有 df 列，属 V-2b-7 范围；同 DF_MEDIUM_HOLE 先例，
+    //    登记为无消费者的数据起点）；五条是新地形三链字段
+    //   （promoteType/discoverType）自动拉入闭包的载体。
+    DF_LUMINESCENT_FUNGUS          = 3,   // Rogue.h:1472（15 号蓝图
+                                          // AMULET_SWITCH feature 的 DF 列，
+                                          // GlobalsBrogue.c:291 → Globals.c:608）
+    DF_ITEM_CAGE_CLOSE             = 85,  // :1575（ALTAR_CAGE_OPEN.
+                                          // promoteType，Globals.c:722）
+    DF_ALTAR_COMMUTE               = 140, // :1641（COMMUTATION_ALTAR.
+                                          // promoteType，Globals.c:793）
+    DF_MAGIC_PIPING                = 141, // :1642（6 号蓝图 COMMUTATION_ALTAR
+                                          // feature 的 DF 列，GlobalsBrogue.c:225
+                                          // → Globals.c:794）
+    DF_ALTAR_RESURRECT             = 143, // :1646（RESURRECTION_ALTAR.
+                                          // promoteType，Globals.c:798）
+    DF_MACHINE_FLOOR_TRIGGER_REPEATING = 144, // :1647（7 号蓝图 RESURRECTION_
+                                          // ALTAR feature 的 DF 列，
+                                          // GlobalsBrogue.c:231 → Globals.c:799）
+    DF_CAGE_DISAPPEARS             = 151, // :1660（ALTAR_CAGE_RETRACTABLE.
+                                          // promoteType，Globals.c:812）
+    DF_STATUE_SHATTER              = 188, // :1721（STATUE_INSTACRACK.
+                                          // discoverType，Globals.c:873）
 }
 
 /** 目录条目 = CE 结构体的 web 投影（messageDisplayed 除外——它依赖玩家
@@ -706,6 +731,111 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
         description: 'the nearby wall explodes in a shower of stone fragments!',
         lightFlare: '', flashColor: 'darkGray', effectRadius: 3,
     },
+
+    // ══ V-2b-4：祭坛族轮的八条（CE Globals.c 目录行逐字）════════════════════
+    // CE 目录行已用"枚举序 = 目录序、{0} 占 index 0"的解析脚本对位，
+    // 并以 web 既有 15 个 ceLine 锚点（DF_SHOW_DOOR :624、DF_LEVER :632 …）
+    // 校准过解析器。逐字段钉死见 v_2b_4_altars.test.ts B 组。
+
+    // {LUMINESCENT_FUNGUS, SURFACE, 60, 8, DFF_BLOCKED_BY_OTHER_LAYERS}（:608）
+    // —— 15 号蓝图 AMULET_SWITCH feature 的 DF 列（GlobalsBrogue.c:291）。
+    // tile LUMINESCENT_FUNGUS 是 CE 的地面发光菌毯；web 把 FUNGUS_FOREST
+    // 别名到 FOLIAGE 后没有该 tile 的独立载体，故 tile 留 null 登记
+    //（与 DF_TRAMPLED_FOLIAGE 同缺）。
+    [DF.DF_LUMINESCENT_FUNGUS]: {
+        id: DF.DF_LUMINESCENT_FUNGUS, ceLine: 608, ceTile: 'LUMINESCENT_FUNGUS', tile: null,
+        layer: DungeonLayer.SURFACE, startProbability: 60, probabilityDecrement: 8,
+        flags: DFF_BLOCKED_BY_OTHER_LAYERS, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {ALTAR_CAGE_CLOSED, DUNGEON, 0, 0, DFF_EVACUATE_CREATURES_FIRST,
+    //  "the cages lower to cover the altars.", GENERIC_FLASH_LIGHT}（:722）
+    // —— ALTAR_CAGE_OPEN.promoteType（1/2/26 号"取物后笼子落下"）。
+    // tile ALTAR_CAGE_CLOSED web 无（本轮只迁开态），登记。
+    [DF.DF_ITEM_CAGE_CLOSE]: {
+        id: DF.DF_ITEM_CAGE_CLOSE, ceLine: 722, ceTile: 'ALTAR_CAGE_CLOSED', tile: null,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: DFF_EVACUATE_CREATURES_FIRST, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: null, description: 'the cages lower to cover the altars.',
+        lightFlare: 'GENERIC_FLASH_LIGHT', flashColor: '', effectRadius: 0,
+    },
+
+    // {COMMUTATION_ALTAR_INERT, DUNGEON, 0, 0, 0, "the items on the two altars
+    //  flash with a brilliant light!", SCROLL_ENCHANTMENT_LIGHT}（:793）
+    // —— COMMUTATION_ALTAR.promoteType（6 号置换完成后的惰性态）。
+    // tile COMMUTATION_ALTAR_INERT web 无（只迁活化态），登记。
+    [DF.DF_ALTAR_COMMUTE]: {
+        id: DF.DF_ALTAR_COMMUTE, ceLine: 793, ceTile: 'COMMUTATION_ALTAR_INERT', tile: null,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: null,
+        description: 'the items on the two altars flash with a brilliant light!',
+        lightFlare: 'SCROLL_ENCHANTMENT_LIGHT', flashColor: '', effectRadius: 0,
+    },
+
+    // {PIPE_GLOWING, SURFACE, 90, 60, 0}（:794）—— 6 号蓝图 COMMUTATION_ALTAR
+    // feature 的 DF 列（GlobalsBrogue.c:225，置换祭坛之间的发光管道）。
+    // tile PIPE_GLOWING web 无（33 号蓝图链未落地），登记；无后续链。
+    [DF.DF_MAGIC_PIPING]: {
+        id: DF.DF_MAGIC_PIPING, ceLine: 794, ceTile: 'PIPE_GLOWING', tile: null,
+        layer: DungeonLayer.SURFACE, startProbability: 90, probabilityDecrement: 60,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {RESURRECTION_ALTAR_INERT, DUNGEON, 0, 0, DFF_RESURRECT_ALLY,
+    //  "An old friend emerges from a bloom of sacred light!", EMPOWERMENT_LIGHT}
+    // （:798）—— RESURRECTION_ALTAR.promoteType（7 号复活完成后的惰性态）。
+    // DFF_RESURRECT_ALLY（Rogue.h:1820）在 web 属游戏侧登记未实现。
+    [DF.DF_ALTAR_RESURRECT]: {
+        id: DF.DF_ALTAR_RESURRECT, ceLine: 798, ceTile: 'RESURRECTION_ALTAR_INERT', tile: null,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: DFF_RESURRECT_ALLY, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: null,
+        description: 'An old friend emerges from a bloom of sacred light!',
+        lightFlare: 'EMPOWERMENT_LIGHT', flashColor: '', effectRadius: 0,
+    },
+
+    // {MACHINE_TRIGGER_FLOOR_REPEATING, LIQUID, 300, 100, DFF_SUPERPRIORITY,
+    //  "", 0, 0, 0, CARPET}（:799）—— 7 号蓝图 RESURRECTION_ALTAR feature 的
+    // DF 列（GlobalsBrogue.c:231）。**layer = LIQUID** 是本条的特点（可重复
+    // 触发的机器地板陷阱），propTerrain = CARPET。tile MACHINE_TRIGGER_
+    // FLOOR_REPEATING web 无，登记。
+    [DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING]: {
+        id: DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING, ceLine: 799,
+        ceTile: 'MACHINE_TRIGGER_FLOOR_REPEATING', tile: null,
+        layer: DungeonLayer.LIQUID, startProbability: 300, probabilityDecrement: 100,
+        flags: DFF_SUPERPRIORITY, cePropagationTerrain: 'CARPET', propagationTerrain: TerrainType.CARPET,
+        subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {ALTAR_INERT, DUNGEON, 0, 0, 0, "the cage lifts off of the altar.",
+    //  GENERIC_FLASH_LIGHT}（:812）—— ALTAR_CAGE_RETRACTABLE.promoteType
+    //（28 号：踏板被掷中 → 笼子升起，露出祭坛上的钥匙）。tile ALTAR_INERT
+    // 在 web 就是 TerrainType.ALTAR（TerrainCatalog :362 条），tile 完整。
+    [DF.DF_CAGE_DISAPPEARS]: {
+        id: DF.DF_CAGE_DISAPPEARS, ceLine: 812, ceTile: 'ALTAR_INERT', tile: TerrainType.ALTAR,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: null, description: 'the cage lifts off of the altar.',
+        lightFlare: 'GENERIC_FLASH_LIGHT', flashColor: '', effectRadius: 0,
+    },
+
+    // {RUBBLE, SURFACE, 120, 100, DFF_ACTIVATE_DORMANT_MONSTER,
+    //  "the statue shatters!", 0, &darkGray, 3, 0, DF_RUBBLE}（:873）
+    // —— STATUE_INSTACRACK.discoverType（15 号：护符被取走后雕像震裂，
+    // 藏在其下的 Warden of Yendor 苏醒）。tile RUBBLE web 无（与
+    // DF_WALL_SHATTER / DF_SHATTERING_SPELL 同缺，登记）；链尾 DF_RUBBLE
+    // 已在目录（V-2b-3 引入），无悬空引用。
+    [DF.DF_STATUE_SHATTER]: {
+        id: DF.DF_STATUE_SHATTER, ceLine: 873, ceTile: 'RUBBLE', tile: null,
+        layer: DungeonLayer.SURFACE, startProbability: 120, probabilityDecrement: 100,
+        flags: DFF_ACTIVATE_DORMANT_MONSTER, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: DF.DF_RUBBLE,
+        description: 'the statue shatters!',
+        lightFlare: '', flashColor: 'darkGray', effectRadius: 3,
+    },
 };
 
 /** 登记"CE 有 tileType 而 web 没有地形"的目录条目 id 清单
@@ -720,6 +850,8 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
  *  摘除、同轮接线的 DF_BLOAT_EXPLOSION 直接带完整 tile 入目录不入列，
  *  7 → 6。V-2b-2b 增补：DF_SHOW_TRAPDOOR（TRAP_DOOR tile web 无——
  *  23 号蓝图 TRAP_DOOR_HIDDEN 显形链的载体），6 → 7。
+ *  V-2b-3 增补 11 条（8 → 19，见下方分节注）。V-2b-4 增补 7 条
+ * （19 → 26，祭坛族轮八条新条目里无 web tile 的七条）。
  *  注：ROT_GAS / STENCH_SMOKE_GAS / PARALYSIS_GAS / DARKNESS_CLOUD /
  *  HEALING_CLOUD 的 DF（及 dewar×4、喷口、药水云等 24 条 GAS 目录的其余）
  *  本轮**未入目录**——载体盘点后无 web 载体的气体只登记不迁移（报告
@@ -750,4 +882,18 @@ export const DF_MISSING_TILES: readonly DF[] = [
     DF.DF_DISCOVER_PARALYSIS_VENT, // MACHINE_PARALYSIS_VENT（显形体）
     DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY, // MACHINE_PARALYSIS_VENT（同上）
     DF.DF_WALL_SHATTER,            // RUBBLE（同上；爆炸墙的波前落点）
+    // ── V-2b-4 增补（7 条，19 → 26）：祭坛族轮的八条新目录条目里，web 尚无
+    //    对应 tile 的七条；唯一带完整 tile 的是 DF_CAGE_DISAPPEARS
+    //   （tile ALTAR_INERT = web 既有 TerrainType.ALTAR），故不入列。
+    //    三条来自蓝图 feature 的 DF 列（6/7/15 号，web 的 FeatureDef 无 df
+    //    列——V-2b-7 接上后应随蓝图数据自动入闭包并摘除），五条来自新地形
+    //    三链字段。逐字段见 v_2b_4_altars.test.ts B 组。
+    DF.DF_LUMINESCENT_FUNGUS,      // LUMINESCENT_FUNGUS（15 号 AMULET_SWITCH 的 DF 列）
+    DF.DF_ITEM_CAGE_CLOSE,         // ALTAR_CAGE_CLOSED（笼子落下态，web 只迁开态）
+    DF.DF_ALTAR_COMMUTE,           // COMMUTATION_ALTAR_INERT（置换完成后的惰性态）
+    DF.DF_MAGIC_PIPING,            // PIPE_GLOWING（6 号 COMMUTATION_ALTAR 的 DF 列）
+    DF.DF_ALTAR_RESURRECT,         // RESURRECTION_ALTAR_INERT（复活完成后的惰性态）
+    DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING, // MACHINE_TRIGGER_FLOOR_REPEATING
+                                   // （7 号 RESURRECTION_ALTAR 的 DF 列）
+    DF.DF_STATUE_SHATTER,          // RUBBLE（同 DF_WALL_SHATTER 所缺）
 ];

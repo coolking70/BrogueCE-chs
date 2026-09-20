@@ -197,6 +197,7 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
         // 见下方"口径校正"注。
         let gridDerived = new Set<number>();
         let levelResults: MachineResult[] = [];
+        let pickedLevel = 0;
         try {
             const game = createHeadlessGame(424242);
             for (let d = 1; d <= MAX_DEPTH; d++) {
@@ -218,6 +219,7 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
                         }
                     }
                     snapshot = game.toSnapshot();
+                    pickedLevel = d;
                     break;
                 }
             }
@@ -295,10 +297,26 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
                 `网格机器格 (${k % DCOLS},${Math.floor(k / DCOLS)}) 既不在任何机器 interior、也不是任何机器的 feature/怪物布点——CE :1486 之外的来源`)
                 .toBe(true);
         }
+        // ★ V-2b-4 顺延（本文件在 V-2b-4 任务书 §4 授权清单内）★
+        // 原 pin 是「本层 A−B = ['25,23']」（5 号 vestibule_flammable_barricade
+        // 的焚化药水经 MF_BUILD_ANYWHERE_ON_LEVEL 落在 interior 之外）。
+        // V-2b-4 的蓝图池变动把"首个有机器的层"从 424242/D3 挪到了别的层，
+        // 新层的 A−B = ∅——按"顺延不放宽"把 pin 更新为新事实（仍**全等**钉死，
+        // 不改成长度/包含比较）。
+        //
+        // 同时如实登记一处**守卫力量下降**：本层 A−B 为空 ⇒ 上面那条逐格
+        // 循环在本层是空转。它不能简单地改为"挑一个 A−B≠∅ 的层"——实测那样
+        // 会翻红，但**不是实现缺陷**：CE Architect.c:1484-1486「Mark the
+        // feature location as part of the machine」对**一切** feature 生效，
+        // 而 locale 只暴露 item/monster 布点，地形类 feature（本例的
+        // MF_BUILD_IN_WALLS 墙火把在 (1,8)）合法地没有布点指令。
+        // 也就是说"每个 A−B 格都是 item/monster 布点"这个前提**从来就过强**，
+        // 只是上一轮恰好选中了一层没暴露它。要做到非空转需要 MachineResult
+        // 暴露 feature 落点（归 V-2b-7 的 df/feature 列），本轮登记不动手。
         expect(outsideInterior,
-            'A−B（网格派生 − ∪mr.cells）变动：本层为 5 号 vestibule_flammable_barricade 的' +
-            '焚化药水经 MF_BUILD_ANYWHERE_ON_LEVEL 落在 interior 之外（CE Architect.c:1486）')
-            .toEqual(['25,23']);
+            `A−B（网格派生 − ∪mr.cells）变动（选中层 D${pickedLevel}）：按 CE GlobalsBrogue.c ` +
+            '重核该层的机器与落位；注意"每格都是 item/monster 布点"的前提过强（见上方注）')
+            .toEqual([]);
 
         // 旧存档兼容：字段整体缺失 = 无机器（读入不抛、旗标为 0）
         const legacy = JSON.parse(JSON.stringify(snapshot!)) as ReturnType<Game['toSnapshot']>;

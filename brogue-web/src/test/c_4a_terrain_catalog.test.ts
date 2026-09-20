@@ -147,7 +147,12 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         // MACHINE_PARALYSIS_VENT_HIDDEN / MACHINE_METHANE_VENT_HIDDEN /
         // PILOT_LIGHT_DORMANT），53 → 62。逐字段钉死在下方 V-2b-3 块与
         // v_2b_3_wired A 组（对抗：抄错任一位即红）。
-        expect(names.length).toBe(62);
+        // V-2b-4：祭坛族轮七条入列（CE Globals.c:364/368/532/538/529/354/337，
+        // 蓝图 1/2/6/7/15/26/28 号的地形载体：ALTAR_CAGE_OPEN /
+        // ALTAR_CAGE_RETRACTABLE / COMMUTATION_ALTAR / RESURRECTION_ALTAR /
+        // AMULET_SWITCH / STATUE_INSTACRACK / TORCH_WALL），62 → 69。逐字段
+        // 钉死在 v_2b_4_altars 的 A 组（对抗：抄错任一位即红）。
+        expect(names.length).toBe(69);
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             const entry = TERRAIN_FLAGS[t];
@@ -538,11 +543,19 @@ describe('C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时
     // 仅 T_IS_DF_TRAP、MACHINE_PARALYSIS/METHANE_VENT_HIDDEN :383/398 零旗标）
     // 的 terrainAllowsMove 与旧清单同为 true，**留在等价论域内**——不跳过，
     // 由本组逐位继续把关（它们若被误加 PASSABILITY 会在此翻红）。
+    // V-2b-4 注：祭坛族轮七条里只有 ALTAR_CAGE_RETRACTABLE（:368，铁笼体）
+    // 与 STATUE_INSTACRACK（:354，雕像墙族）、TORCH_WALL（:337，墙装火把）
+    // 挡通行，按同一范本列入跳过（CE 判定由下方 V-2b-4 块正向钉死）；
+    // 其余四条（ALTAR_CAGE_OPEN :364 / COMMUTATION_ALTAR :532 /
+    // RESURRECTION_ALTAR :538 / AMULET_SWITCH :529 均不带 PASSABILITY，
+    // AMULET_SWITCH 更是零旗标）**留在等价论域内**——不跳过，由本组逐位
+    // 继续把关（它们若被误加 PASSABILITY 会在此翻红）。
     const POST_LEGACY_TILES = new Set<TerrainType>([
         C.FORCEFIELD, C.FORCEFIELD_MELT, C.CRYSTAL_WALL,
         C.STATUE_INERT, C.STATUE_INERT_DOORWAY, C.WOODEN_BARRICADE,
         C.PORTCULLIS_CLOSED, C.WORM_TUNNEL_OUTER_WALL, C.WALL_LEVER_HIDDEN,
         C.PILOT_LIGHT_DORMANT,
+        C.ALTAR_CAGE_RETRACTABLE, C.STATUE_INSTACRACK, C.TORCH_WALL,
     ]);
     it('terrainAllowsMove（查表）≡ 旧排除清单 {GRANITE,WALL,SECRET_DOOR,LOCKED_DOOR,WATER_DEEP}', () => {
         const names = Object.keys(TerrainType).filter((k) => Number.isNaN(Number(k)));
@@ -612,6 +625,32 @@ describe('C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时
         for (const t of [C.MACHINE_GLYPH, C.GAS_TRAP_PARALYSIS,
             C.GAS_TRAP_PARALYSIS_HIDDEN, C.MACHINE_PARALYSIS_VENT_HIDDEN,
             C.MACHINE_METHANE_VENT_HIDDEN]) {
+            game.grid.setTerrain(20, 20, t);
+            expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(true);
+        }
+    });
+
+    it('V-2b-4：祭坛族七条的通行判定 = CE 查表口径（三条墙族挡通行、四条可走）', () => {
+        // 上方两条等价断言跳过的三条挡通行 tile 在这里正向钉死（CE Globals.c
+        // 第 11 列 flags 出处）：
+        //   ALTAR_CAGE_RETRACTABLE :368 (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_SURFACE_EFFECTS)
+        //   STATUE_INSTACRACK      :354 (四旗标，含 PASSABILITY——雕像挡路)
+        //   TORCH_WALL             :337 (T_OBSTRUCTS_EVERYTHING)
+        // 反方向同样钉死：四条可走 tile 若被误加 PASSABILITY，1/2/26 号的
+        // 铁笼祭坛与 6/7 号的祭坛房会被自己堵死。
+        for (const t of [C.ALTAR_CAGE_RETRACTABLE, C.STATUE_INSTACRACK, C.TORCH_WALL]) {
+            expect(terrainAllowsMove(t), `terrainAllowsMove(${TerrainType[t]}) 应挡通行`).toBe(false);
+        }
+        for (const t of [C.ALTAR_CAGE_OPEN, C.COMMUTATION_ALTAR, C.RESURRECTION_ALTAR, C.AMULET_SWITCH]) {
+            expect(terrainAllowsMove(t), `terrainAllowsMove(${TerrainType[t]}) 应可走`).toBe(true);
+        }
+        const game = createHeadlessGame(424242);
+        const canMoveTo = (game as unknown as { canMoveTo(x: number, y: number): boolean }).canMoveTo.bind(game);
+        for (const t of [C.ALTAR_CAGE_RETRACTABLE, C.STATUE_INSTACRACK, C.TORCH_WALL]) {
+            game.grid.setTerrain(20, 20, t);
+            expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(false);
+        }
+        for (const t of [C.ALTAR_CAGE_OPEN, C.COMMUTATION_ALTAR, C.RESURRECTION_ALTAR, C.AMULET_SWITCH]) {
             game.grid.setTerrain(20, 20, t);
             expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(true);
         }

@@ -460,8 +460,14 @@ describe('G-2 对抗⑦：未迁移气体只登记（载体盘点表的显式留
         // 8 → 19。逐条见 DungeonFeatureCatalog 的 V-2b-3 块注与 c_4b E4；
         // 三链 tile 已齐的三条（DF_SHOW_PARALYSIS_GAS_TRAP / DF_VENT_SPEW_
         // METHANE / DF_PARALYSIS_VENT_SPEW）不入列。守卫原意不变。
+        // **V-2b-4 第四次顺延**（同一机理再证：名单是跨轮公共登记表，钉它的
+        // 断言按主题分散存放，本轮主题词 altar/cage 与本文件名 "gas" 不重合）：
+        // 祭坛族轮八条新目录条目里 web 无 tile 的七条入列，19 → 26。逐条见
+        // DungeonFeatureCatalog 的 V-2b-4 块注与 c_4b E4；唯一 tile 完整的
+        // DF_CAGE_DISAPPEARS（tile ALTAR_INERT = web TerrainType.ALTAR）不入列。
+        // 守卫仍全等钉死长度，不放宽成 contains/大于。
         expect(DF_MISSING_TILES, 'F-2c 后 DF_EXPLOSION_FIRE 已摘出缺 tile 名单').not.toContain(DF.DF_EXPLOSION_FIRE);
-        expect(DF_MISSING_TILES).toHaveLength(19);
+        expect(DF_MISSING_TILES).toHaveLength(26);
         const f = catalogFeature(DF.DF_EXPLOSION_FIRE);
         expect(f.tile).toBe(C.GAS_EXPLOSION);
         expect(f.startProbability).toBe(60);

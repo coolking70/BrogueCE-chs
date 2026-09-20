@@ -144,7 +144,12 @@ describe('V-1b 前提自检', () => {
     // 全部 itemId 为空（地形/怪物载体，非物品）→ item 记 null；CE 原表逐条核过
     // （:304-308 / :322-326 / :338-343）。MF_ALTERNATIVE_2 仍零载体（CE Brogue
     // 目录全表零使用）。
-    it('P1（V-2b-3 二次反转）生产数据带 MF_ALTERNATIVE 的 feature 恰为 CE 3/4/5/23/18/22/25 号替代组十五条；MF_ALTERNATIVE_2 仍零载体', () => {
+    // **V-2b-4 三次顺延**（本文件在 V-2b-4 任务书 §4 授权清单内）：CE 2 号
+    // Single category library（GlobalsBrogue.c:195-196）落地，其 RING / STAFF
+    // 两条 ALTAR_CAGE_OPEN 笼中物构成一条替代组，15 → 17。新蓝图的其余
+    // feature 均不带 ALTERNATIVE（1 号的三条笼中物**不是**替代组——CE :187-189
+    // 无 MF_ALTERNATIVE，这是 1 号与 2 号的关键差别）。
+    it('P1（V-2b-4 三次顺延）生产数据带 MF_ALTERNATIVE 的 feature 恰为 CE 2/3/4/5/23/18/22/25 号替代组十七条；MF_ALTERNATIVE_2 仍零载体', () => {
         const flagged = (blueprintData as BlueprintDef[]).flatMap(bp =>
             bp.features.map(f => ({ bpId: bp.id, f }))
                 .filter(({ f }) => f.flags.includes('MF_ALTERNATIVE') || f.flags.includes('MF_ALTERNATIVE_2'))
@@ -161,6 +166,13 @@ describe('V-1b 前提自检', () => {
             { bpId: 'reward_pedestal_permanent', alt1: true, alt2: false, item: null },
             { bpId: 'reward_pedestal_permanent', alt1: true, alt2: false, item: null },
             { bpId: 'reward_pedestal_permanent', alt1: true, alt2: false, item: null },
+            // V-2b-4 三次顺延（15 → 17）：CE 2 号 Single category library
+            //（GlobalsBrogue.c:195-196）的 RING / STAFF 两条笼中物构成
+            // 一条 ALTERNATIVE 替代组（每座笼子二选一）。itemId 为空
+            //（itemKind=-1）→ item 记 null，故与其它地形/物品类别替代 feature
+            // 同组按稳定序排列。
+            { bpId: 'reward_single_category_library', alt1: true, alt2: false, item: null },
+            { bpId: 'reward_single_category_library', alt1: true, alt2: false, item: null },
             { bpId: 'vestibule_pit_trap_field', alt1: true, alt2: false, item: null },
             { bpId: 'vestibule_pit_trap_field', alt1: true, alt2: false, item: null },
             { bpId: 'vestibule_secret_lever', alt1: true, alt2: false, item: null },

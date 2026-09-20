@@ -143,27 +143,32 @@ describe('V-2b-2a 前提自检', () => {
     // 蓝图落地后，本表的每个计数都按 CE GlobalsBrogue.c 原表重新普查一遍。
     // CE 原表逐条核过（行号见各断言的失败消息）；
     // 六条蓝图的逐字段转录由 v_2b_3_wired 的 E4 组另钉一遍。
-    it('P1（V-2b-3 二次反转）feature 旗标载体普查与 V-2b-3 落地后的 CE 原表一致', () => {
+    // **V-2b-4 三次顺延**（本文件在 V-2b-4 任务书 §4 授权清单内）：CE
+    // 1/2/6/7/15/26/28 号七条蓝图落地、且 6 号原地接管 web 自创的
+    // reward_commutation 之后，本表每个计数按 CE GlobalsBrogue.c 原表
+    // （:183-197/:221-232/:289-294/:347-363）重新普查一遍。逐字段转录由
+    // v_2b_4_altars 的 C 组另钉一遍。
+    it('P1（V-2b-4 三次顺延）feature 旗标载体普查与 V-2b-4 落地后的 CE 原表一致', () => {
         const count = (flag: string): number =>
             (blueprintData as BlueprintDef[]).reduce(
                 (n, bp) => n + bp.features.filter(f => f.flags.includes(flag)).length,
                 0
             );
-        expect(count('MF_PERMIT_BLOCKING'), 'PERMIT_BLOCKING 载体数（V-2b-2b 基线 13；V-2b-3 +9：18 号闸门/蠕虫墙 :306-307、22 号闸门/蠕虫墙 :325-326、24 号门 :334、25 号双门+双符文 :340-343）').toBe(22);
-        expect(count('MF_IMPREGNABLE'), 'IMPREGNABLE 载体数（V-2b-2b 基线 5；V-2b-3 +5：18 号闸门/蠕虫墙/隐藏杆 :306-308、22 号闸门/蠕虫墙 :325-326）').toBe(10);
-        expect(count('MF_TREAT_AS_BLOCKING'), 'TREAT_AS_BLOCKING 载体数（V-2b-2b 基线 12；V-2b-3 +2：22 号压力板 :324（CE 该行带 DF_MEDIUM_HOLE 的 LIQUID 板）、24 号图腾 :336）').toBe(14);
-        expect(count('MF_NOT_IN_HALLWAY'), 'NOT_IN_HALLWAY 载体数（V-2b-2b 基线 3；V-2b-3 +7：22 号板 :324、24 号图腾 :336、25 号符文批 :343、67 号两条 :602-603、68 号两条 :606-607）').toBe(10);
+        expect(count('MF_PERMIT_BLOCKING'), 'PERMIT_BLOCKING 载体数（V-2b-3 基线 22；V-2b-4 +4：1 号前厅 :186、2 号前厅 :194、6 号前厅 :226、7 号前厅 :232）').toBe(26);
+        expect(count('MF_IMPREGNABLE'), 'IMPREGNABLE 载体数（V-2b-3 基线 10；V-2b-4 +16：1 号 3 笼+1 雕像、2 号 2 笼+1 雕像、6/7 号各 1 雕像、15 号开裂雕像、26 号 1 墙+3 笼+1 雕像、28 号铁笼）').toBe(26);
+        expect(count('MF_TREAT_AS_BLOCKING'), 'TREAT_AS_BLOCKING 载体数（V-2b-3 基线 14；V-2b-4 +19：1 号 4、2 号 3、6 号 2、7 号 2、15 号 2、26 号 5、28 号压力板 1）').toBe(33);
+        expect(count('MF_NOT_IN_HALLWAY'), 'NOT_IN_HALLWAY 载体数（V-2b-3 基线 10；V-2b-4 +5：15 号护符位/菌林/雕像 :291-293、28 号铁笼/压力板 :362-363）').toBe(15);
         // 仍未实现：
         expect(count('MF_KEY_DISPOSABLE'), 'KEY_DISPOSABLE 载体数（V-2b-6 反转我）').toBe(2);
         // V-2b-2b 新载体（CE 原表核对）：
-        expect(count('MF_BUILD_IN_WALLS'), 'BUILD_IN_WALLS 载体数（V-2b-2b 基线 3：3/4/5 号雕像；V-2b-3 +1：18 号隐藏墙杆 :308）').toBe(4);
-        expect(count('MF_EVERYWHERE'), 'EVERYWHERE 载体数（V-2b-2b 基线 3：3/4/5 号地毯；V-2b-3 +2：24 号符文 :335、25 号符文批 :343）').toBe(5);
-        expect(count('MF_BUILD_ANYWHERE_ON_LEVEL'), 'BUILD_ANYWHERE 载体数（V-2b-2b 基线 2：19 号药水/20 号卷轴；V-2b-3 +2：18 号隐藏墙杆 :308、24 号图腾 :336）').toBe(4);
-        expect(count('MF_REPEAT_UNTIL_NO_PROGRESS'), 'REPEAT 载体数（23 号陷阱；V-2b-3 未增）').toBe(1);
-        expect(count('MF_NO_THROWING_WEAPONS'), 'NO_THROWING_WEAPONS 载体数（4 号武器基座）').toBe(1);
-        expect(count('MF_REQUIRE_GOOD_RUNIC'), 'REQUIRE_GOOD_RUNIC 载体数（4 号武器+护甲基座）').toBe(2);
+        expect(count('MF_BUILD_IN_WALLS'), 'BUILD_IN_WALLS 载体数（V-2b-3 基线 4；V-2b-4 +7：1/2/6/7 号各 1 雕像、15 号墙火把 :294、26 号 1 墙+1 雕像）').toBe(11);
+        expect(count('MF_EVERYWHERE'), 'EVERYWHERE 载体数（V-2b-3 基线 5；V-2b-4 +6：1/2/6/7/26 号地毯 :185/:193/:223/:229/:349 + 26 号 WALL :350）').toBe(11);
+        expect(count('MF_BUILD_ANYWHERE_ON_LEVEL'), 'BUILD_ANYWHERE 载体数（V-2b-2b 基线 2：19 号药水/20 号卷轴；V-2b-3 +2：18 号隐藏墙杆 :308、24 号图腾 :336；V-2b-4 未增）').toBe(4);
+        expect(count('MF_REPEAT_UNTIL_NO_PROGRESS'), 'REPEAT 载体数（23 号陷阱；V-2b-3/V-2b-4 未增）').toBe(1);
+        expect(count('MF_NO_THROWING_WEAPONS'), 'NO_THROWING_WEAPONS 载体数（V-2b-3 基线 1：4 号武器基座；V-2b-4 +4：1 号 :188/:189、26 号 :353/:354）').toBe(5);
+        expect(count('MF_REQUIRE_GOOD_RUNIC'), 'REQUIRE_GOOD_RUNIC 载体数（4 号武器+护甲基座；V-2b-4 未增）').toBe(2);
         // V-2b-3 新载体（CE 原表核对）：
-        expect(count('MF_FAR_FROM_ORIGIN'), 'FAR_FROM_ORIGIN 载体数（V-2b-3 出列：67 号 :603、68 号 :607 的麻痹喷口 MACHINE_PARALYSIS_VENT_HIDDEN，CE GlobalsBrogue.c 各一条）').toBe(2);
+        expect(count('MF_FAR_FROM_ORIGIN'), 'FAR_FROM_ORIGIN 载体数（V-2b-3 出列 2：67/68 号麻痹喷口；V-2b-4 +2：7 号复活祭坛 :231、15 号开裂雕像 :293）').toBe(4);
         // 仍零载体（出现载体：核对 CE 原表 + 重捕获基线）：
         for (const flag of [
             'MF_NOT_ON_LEVEL_PERIMETER',

@@ -736,6 +736,79 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
         T_OBSTRUCTS_EVERYTHING,
         TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED,
         0, 'DF_PLAIN_FIRE', '', 'DF_PILOT_LIGHT', 0
+    ),
+
+    // ══ V-2b-4：祭坛族轮——CE 七条蓝图（1/2/6/7/15/26/28 号）的七个地形载体 ══
+    // 逐字段照抄 CE Globals.c tileCatalog 对应行（行号写在每条注释里）。
+
+    // CE ALTAR_CAGE_OPEN，Globals.c:364：开底铁笼祭坛（1/2/26 号）。
+    // 取物后晋升 DF_ITEM_CAGE_CLOSE（笼子降下盖住祭坛）——晋升行为归专门轮，
+    // 本轮只落数据。TM_PROMOTES_WITHOUT_KEY（无需钥匙，直接取物触发）。
+    [TerrainType.ALTAR_CAGE_OPEN]: e(
+        T_OBSTRUCTS_SURFACE_EFFECTS,
+        TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_PROMOTES_WITHOUT_KEY |
+        TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT,
+        0, '', '', 'DF_ITEM_CAGE_CLOSE', 0,
+        false, LightKind.CANDLE_LIGHT
+    ),
+
+    // CE ALTAR_CAGE_RETRACTABLE，Globals.c:368：可收铁笼（28 号）。
+    // 挡通行（G_CLOSED_CAGE）——踏板被掷中后晋升 DF_CAGE_DISAPPEARS（笼子升起）。
+    [TerrainType.ALTAR_CAGE_RETRACTABLE]: e(
+        T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_SURFACE_EFFECTS,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED |
+        TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT,
+        0, '', '', 'DF_CAGE_DISAPPEARS', 0,
+        false, LightKind.CANDLE_LIGHT
+    ),
+
+    // CE COMMUTATION_ALTAR，Globals.c:532：置换祭坛（6 号，两个一组）。
+    // TM_SWAP_ENCHANTS_ACTIVATION 是本 tile 独有的"互换附魔"激活位。
+    // fireType/discoverType 在 CE 原行都是 0（本条不是火源、无显形链）。
+    [TerrainType.COMMUTATION_ALTAR]: e(
+        T_OBSTRUCTS_SURFACE_EFFECTS,
+        TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_SWAP_ENCHANTS_ACTIVATION |
+        TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT,
+        0, '', '', 'DF_ALTAR_COMMUTE', 0
+    ),
+
+    // CE RESURRECTION_ALTAR，Globals.c:538：复活祭坛（7 号）。
+    // 晋升 DF_ALTAR_RESURRECT（DFF_RESURRECT_ALLY 的载体——召唤亡故盟友）。
+    [TerrainType.RESURRECTION_ALTAR]: e(
+        T_OBSTRUCTS_SURFACE_EFFECTS,
+        TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT,
+        0, '', '', 'DF_ALTAR_RESURRECT', 0,
+        false, LightKind.CANDLE_LIGHT
+    ),
+
+    // CE AMULET_SWITCH，Globals.c:529：护符触发板（15 号 Statuary 的护符落点）。
+    // G_FLOOR 伪装（prio 95，"the ground"）——玩家看见的就是地面；
+    // 护符被拾取时 TM_PROMOTES_ON_ITEM_PICKUP 触发（web 由 promoteTile 承接）。
+    [TerrainType.AMULET_SWITCH]: e(
+        0,
+        TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_PROMOTES_ON_ITEM_PICKUP,
+        0, 'DF_PLAIN_FIRE', '', '', 0
+    ),
+
+    // CE STATUE_INSTACRACK，Globals.c:354：即刻开裂雕像（15 号，护符房）——
+    // 与 STATUE_CRACKING（:353）同 discoverType DF_STATUE_SHATTER，但没有
+    // 3500 的过渡 promoteChance：它是"一搜即碎"的形态（promoteChance 0）。
+    // 旗标与 STATUE_INERT 同四旗标 + TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED。
+    [TerrainType.STATUE_INSTACRACK]: e(
+        T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS |
+        T_OBSTRUCTS_SURFACE_EFFECTS,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED,
+        0, 'DF_PLAIN_FIRE', 'DF_STATUE_SHATTER', '', 0
+    ),
+
+    // CE TORCH_WALL，Globals.c:337：墙装火把（15 号，MF_BUILD_IN_WALLS 进墙）。
+    // 与 PILOT_LIGHT_DORMANT 的区别：TORCH_WALL 是常亮装饰（无 TM_IS_WIRED、
+    // 无晋升链），glowLight = TORCH_LIGHT 真实发光。
+    [TerrainType.TORCH_WALL]: e(
+        T_OBSTRUCTS_EVERYTHING,
+        TM_STAND_IN_TILE,
+        0, 'DF_PLAIN_FIRE', '', '', 0,
+        false, LightKind.TORCH_LIGHT
     )
 };
 

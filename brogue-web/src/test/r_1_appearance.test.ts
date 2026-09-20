@@ -140,6 +140,18 @@ const EXPECTED_VISIBLE: Record<TerrainType, { char: string; color: string; bgCol
     [TerrainType.MACHINE_PARALYSIS_VENT_HIDDEN]: DEFAULT_LOOK, // V-2b-3
     [TerrainType.MACHINE_METHANE_VENT_HIDDEN]: DEFAULT_LOOK,   // V-2b-3
     [TerrainType.PILOT_LIGHT_DORMANT]: DEFAULT_LOOK,        // V-2b-3
+    // V-2b-4 七条：祭坛族轮的地形载体，terrainAppearance 尚无专属分支
+    //（CE 外观接线归 UI 轮，同上 DEFAULT_LOOK 欠账登记——与 V-2b-2b/2b-3
+    // 的六条/九条同款。注意这七条**不进本文件的 §6 授权清单之外的生产文件
+    // src/engine/UI/Appearance.ts**：本表是结构性穷尽表，不加成员连
+    // npm run build 都过不去，故机械补齐并申报）。
+    [TerrainType.ALTAR_CAGE_OPEN]: DEFAULT_LOOK,            // V-2b-4
+    [TerrainType.ALTAR_CAGE_RETRACTABLE]: DEFAULT_LOOK,     // V-2b-4
+    [TerrainType.COMMUTATION_ALTAR]: DEFAULT_LOOK,          // V-2b-4
+    [TerrainType.RESURRECTION_ALTAR]: DEFAULT_LOOK,         // V-2b-4
+    [TerrainType.AMULET_SWITCH]: DEFAULT_LOOK,              // V-2b-4
+    [TerrainType.STATUE_INSTACRACK]: DEFAULT_LOOK,          // V-2b-4
+    [TerrainType.TORCH_WALL]: DEFAULT_LOOK,                 // V-2b-4
 };
 
 /** 造 Cell（terrain 走 setter 写回归属层）。只用于 DUNGEON/SURFACE 层地形。 */
@@ -222,14 +234,17 @@ function makeMonster(overrides: Partial<Pick<Monster, 'hp' | 'isAlly' | 'state' 
 // ════════════════════════ terrainAppearance 特征化 ════════════════════════
 
 describe('R-1 terrainAppearance 特征化（穷举钉死）', () => {
-    it('穷举表覆盖 TerrainType 全部成员（当前 62 个）、成员值无重复', () => {
+    it('穷举表覆盖 TerrainType 全部成员（当前 69 个）、成员值无重复', () => {
         // 成员数变化（新增地形）时此断言翻红——按文件头说明更新期望表。
         // V-2b-2b：+6（CARPET/STATUE_INERT/PEDESTAL/STATUE_INERT_DOORWAY/
         // WOODEN_BARRICADE/TRAP_DOOR_HIDDEN），47 → 53。
         // V-2b-3：+9（MACHINE_GLYPH/PORTCULLIS_CLOSED/WORM_TUNNEL_OUTER_WALL/
         // WALL_LEVER_HIDDEN/GAS_TRAP_PARALYSIS/_HIDDEN/MACHINE_PARALYSIS_VENT_
         // HIDDEN/MACHINE_METHANE_VENT_HIDDEN/PILOT_LIGHT_DORMANT），53 → 62。
-        expect(ALL_TERRAINS.length).toBe(62);
+        // V-2b-4：+7（ALTAR_CAGE_OPEN/ALTAR_CAGE_RETRACTABLE/COMMUTATION_ALTAR/
+        // RESURRECTION_ALTAR/AMULET_SWITCH/STATUE_INSTACRACK/TORCH_WALL——
+        // 祭坛族轮七条蓝图的地形载体），62 → 69。
+        expect(ALL_TERRAINS.length).toBe(69);
         expect(new Set(ALL_TERRAINS).size).toBe(ALL_TERRAINS.length);
     });
 

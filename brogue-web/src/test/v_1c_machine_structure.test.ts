@@ -144,14 +144,16 @@ const VESTIBULE_CHILD = bp({ id: 'v1c_vest', category: 'vestibule', roomSize: [1
 // ---------- 夹具：工具 ----------
 
 /** 整层可变格状态指纹（回滚等价性的观测面：layers/char/machineNumber/
- *  trapType/altarGroupId/isPassable/isOpaque——backupLevel 的快照面）。 */
+ *  trapType/isPassable/isOpaque——backupLevel 的快照面。
+ *  V-2b-4：Cell.altarGroupId 随自创祭坛组子系统一并拆除（CE 无祭坛分组
+ *  概念），指纹相应去掉该字段。 */
 function levelFingerprint(grid: Grid): string {
     const rows: string[] = [];
     for (let x = 0; x < DCOLS; x++) {
         for (let y = 0; y < DROWS; y++) {
             const c = grid.getCell(x, y)!;
             rows.push(`${c.layers.join('/')}|${c.char}|${c.machineNumber}|${c.trapType ?? ''}|` +
-                `${c.altarGroupId ?? ''}|${c.isPassable ? 1 : 0}|${c.isOpaque ? 1 : 0}`);
+                `${c.isPassable ? 1 : 0}|${c.isOpaque ? 1 : 0}`);
         }
     }
     return rows.join(';');

@@ -113,8 +113,6 @@ export interface MachineResult {
     monsterSpawns: Array<{ monsterId: string; pos: Pos; isAlly?: boolean; isCaged?: boolean }>;
     /** Whether a key is needed (for LOCKED_DOOR) */
     needsKey: boolean;
-    /** Altar group ID if any */
-    altarGroupId: number | null;
     /**
      * V-1c：递归子机器（MF_OUTSOURCE_ITEM_TO_MACHINE / MF_BUILD_VESTIBULE
      * 建立的领养/前厅机器）。CE 把子机器的产物并进父机器的 spawnedItems /
@@ -187,6 +185,14 @@ const TERRAIN_MAP: Record<string, TerrainType> = {
     // drawPriority 15。web PRESSURE_PLATE（TerrainCatalog.ts 该条）七字段
     // 逐一相等——作别名，不新增第二个枚举成员。
     MACHINE_PRESSURE_PLATE: TerrainType.PRESSURE_PLATE,
+    // V-2b-4：祭坛族轮——CE 七条蓝图（1/2/6/7/15/26/28 号）的七个地形载体。
+    ALTAR_CAGE_OPEN: TerrainType.ALTAR_CAGE_OPEN,
+    ALTAR_CAGE_RETRACTABLE: TerrainType.ALTAR_CAGE_RETRACTABLE,
+    COMMUTATION_ALTAR: TerrainType.COMMUTATION_ALTAR,
+    RESURRECTION_ALTAR: TerrainType.RESURRECTION_ALTAR,
+    AMULET_SWITCH: TerrainType.AMULET_SWITCH,
+    STATUE_INSTACRACK: TerrainType.STATUE_INSTACRACK,
+    TORCH_WALL: TerrainType.TORCH_WALL,
 };
 
 const TERRAIN_VISUALS: Record<string, { char: string; color: number }> = {
@@ -236,6 +242,27 @@ const TERRAIN_VISUALS: Record<string, { char: string; color: number }> = {
     MACHINE_PARALYSIS_VENT_HIDDEN: { char: '.', color: 0x888888 },
     MACHINE_METHANE_VENT_HIDDEN: { char: '.', color: 0x888888 },
     PILOT_LIGHT_DORMANT: { char: '#', color: 0xbf6126 },
+    // V-2b-4：字形照 CE platformdependent.c 的 displayGlyph——G_ALTAR '|'
+    // （:118）、G_ORB_ALTAR '|'（:181）、G_CLOSED_CAGE '#'（:164）、
+    // G_STATUE 'ß'（既有 STATUE_INERT 口径）、G_FLOOR '.'（AMULET_SWITCH
+    // 是伪装成地面的触发板）、G_TORCH '#'。颜色取 CE 目录 foreColor 列
+    // ×2.55 折算（沿用 V-2b-2b/2b-3 口径）：
+    //   altarForeColor {5,7,9} 在 web 既有折算下记 0xccccff（ALTAR/PEDESTAL
+    //     同款，见 TerrainCatalog :314/:609 条）；
+    //   altarBackColor {35,18,18} → (89,45,45) 取中灰近似 0x6e6e6e
+    //     （与 STATUE 系/PORTCULLIS_CLOSED 的中灰口径一致）；
+    //   torchColor {150,75,30} ×2.55 = (382,191,76) 首通道饱和 → 0xffbf4c；
+    //   AMULET_SWITCH 沿用 web 的 G_FLOOR 伪装口径 '.' + 0x888888。
+    // 注：terrainAppearance（src/engine/UI/Appearance.ts）尚无这七条的专属
+    // 分支，它们在渲染侧仍走 DEFAULT_LOOK——与 V-2b-2b/2b-3 的新地形同款
+    // 欠账（CE 外观接线归 UI 轮），报告 §8 已申报。
+    ALTAR_CAGE_OPEN: { char: '|', color: 0xccccff },
+    ALTAR_CAGE_RETRACTABLE: { char: '#', color: 0x6e6e6e },
+    COMMUTATION_ALTAR: { char: '|', color: 0xccccff },
+    RESURRECTION_ALTAR: { char: '|', color: 0xccccff },
+    AMULET_SWITCH: { char: '.', color: 0x888888 },
+    STATUE_INSTACRACK: { char: 'ß', color: 0x6e6e6e },
+    TORCH_WALL: { char: '#', color: 0xffbf4c },
 };
 
 // ----- Engine -----
@@ -305,7 +332,7 @@ type LevelBackup = {
     cells: Array<{
         layers: TerrainType[]; char: string; color: number;
         isPassable: boolean; isOpaque: boolean;
-        machineNumber: number; trapType: Cell['trapType']; altarGroupId: number | null;
+        machineNumber: number; trapType: Cell['trapType'];
     }>;
     impregnable: number[];
 };
@@ -955,7 +982,6 @@ export class BlueprintEngine {
         // 4. Process features
         const itemSpawns: MachineResult['itemSpawns'] = [];
         const monsterSpawns: MachineResult['monsterSpawns'] = [];
-        let altarGroupId: number | null = null;
 
         // Shuffle room cells for feature placement
         // V-2b-2b：候选域 = （可能经 OPEN_INTERIOR 扩张后的）interior。
@@ -1146,15 +1172,6 @@ export class BlueprintEngine {
                                     // Sign text is stored as a property in the cell
                                     // For now, the sign inspection system reads adjacent signs
                                 }
-
-                                // Handle altar group
-                                if (fFlags.has('MF_ALTAR_GROUP')) {
-                                    if (altarGroupId === null) {
-                                        altarGroupId = this.depth * 100 + rng.randRange(1, 99);
-                                    }
-                                    const cell = this.grid.getCell(pos.x, pos.y);
-                                    if (cell) cell.altarGroupId = altarGroupId;
-                                }
                             }
                         }
                     }
@@ -1327,7 +1344,6 @@ export class BlueprintEngine {
             itemSpawns,
             monsterSpawns,
             needsKey,
-            altarGroupId,
             subMachines
         };
     }
@@ -1488,7 +1504,7 @@ export class BlueprintEngine {
      * return）的 web 形态——快照整层全部格子的可变状态。恢复时逐格写回，
      * 语义等价 CE 的整图 memcpy。机器阶段的改动面（setTerrain 写
      * layers/char/color/isPassable/isOpaque；applyBlueprint 另写
-     * machineNumber/trapType/altarGroupId）是这里的快照子集；其余字段
+     * machineNumber/trapType）是这里的快照子集；其余字段
      * （探索/视野/气味等）在生成期无人写入，一并快照只为省去取舍错误。
      */
     private backupLevel(): LevelBackup {
@@ -1503,8 +1519,7 @@ export class BlueprintEngine {
                     isPassable: c.isPassable,
                     isOpaque: c.isOpaque,
                     machineNumber: c.machineNumber,
-                    trapType: c.trapType,
-                    altarGroupId: c.altarGroupId
+                    trapType: c.trapType
                 });
             }
         }
@@ -1526,7 +1541,6 @@ export class BlueprintEngine {
                 c.isOpaque = s.isOpaque;
                 c.machineNumber = s.machineNumber;
                 c.trapType = s.trapType;
-                c.altarGroupId = s.altarGroupId;
             }
         }
         this.impregnableCells = new Set(snap.impregnable);

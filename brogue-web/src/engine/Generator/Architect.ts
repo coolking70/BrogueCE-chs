@@ -188,11 +188,13 @@ function directionOfDoorSite(grid: RoomBuilder.RoomGrid, x: number, y: number): 
 export class Architect {
     public grid: Grid;
     public machines: Array<{ door: Pos, center: Pos }> = [];
-    public altars: Array<{ door: Pos, positions: Pos[], groupId: number }> = [];
     // V-2b-1：删除 web 自创的 trapVaults / cages 数组——声明后从未 push，
     // Game.populateLevel 里消费它们的两个循环是死代码，已连带删除（详见
-    // ai_docs/reports/v-2b-1.report.md §1.3）。machines/altars 虽无消费者，
-    // 但由 generateLevel 真实填充（legacy 观测面），不在本轮授权范围，保留。
+    // ai_docs/reports/v-2b-1.report.md §1.3）。
+    // V-2b-4：删除 web 自创的 altars 数组——同样是"只 push、无人读"的死数组
+    // （它的唯一消费者是 Game.ts 的自创祭坛组取物塌陷，本轮已按用户裁决拆除）。
+    // machines 虽无消费者，但由 generateLevel 真实填充（legacy 观测面），
+    // 归钥匙轮处置，本轮不动。
     public machineResults: MachineResult[] = [];
     /** C-0：本轮 generateTerrain 里 addLoops 开出的门位落位坐标（raster 序）。
      *  仅供测试/观测（真实环路存在性断言的锚点），不参与任何生成决策。 */
@@ -377,22 +379,11 @@ export class Architect {
         this.machineResults = bpEngine.buildMachines();
 
         // Backward-compat: populate legacy arrays from machine results
+        // V-2b-4：altars 数组及其填充块（依赖 MachineResult.altarGroupId）已随
+        // 自创祭坛组子系统一并拆除——CE 无祭坛分组概念（Rogue.h 零命中）。
         for (const mr of this.machineResults) {
             if (mr.needsKey && mr.door) {
                 this.machines.push({ door: mr.door, center: mr.center });
-            }
-            if (mr.altarGroupId !== null) {
-                const altarPositions = mr.cells.filter(p => {
-                    const cell = this.grid.getCell(p.x, p.y);
-                    return cell && cell.terrain === TerrainType.ALTAR;
-                });
-                if (altarPositions.length > 0) {
-                    this.altars.push({
-                        door: mr.door ?? mr.center,
-                        positions: altarPositions,
-                        groupId: mr.altarGroupId
-                    });
-                }
             }
         }
 

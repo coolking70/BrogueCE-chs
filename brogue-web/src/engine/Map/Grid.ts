@@ -152,7 +152,19 @@ export enum TerrainType {
     GAS_TRAP_PARALYSIS_HIDDEN,  // Globals.c:381 麻痹触发板（隐藏态）
     MACHINE_PARALYSIS_VENT_HIDDEN, // Globals.c:383 麻痹喷口（隐藏态）
     MACHINE_METHANE_VENT_HIDDEN,   // Globals.c:398 甲烷喷口（隐藏态）
-    PILOT_LIGHT_DORMANT         // Globals.c:342 休眠点火嘴（墙装火把）
+    PILOT_LIGHT_DORMANT,        // Globals.c:342 休眠点火嘴（墙装火把）
+    // V-2b-4：祭坛族轮——CE 七条蓝图（1/2/6/7/15/26/28 号）的七个地形载体。
+    // 只追加在尾部（terrainFingerprint 按数值哈希，既有枚举值不变）。
+    // FUNGUS_FOREST（CE Globals.c:475）不加新成员——V-2b-2b 已按
+    // TERRAIN_MAP 别名到 FOLIAGE（flags/mechFlags 逐位一致），本轮复核结论
+    // 见报告 §2。
+    ALTAR_CAGE_OPEN,            // Globals.c:364 开底铁笼祭坛（1/2/26 号，取物后笼落）
+    ALTAR_CAGE_RETRACTABLE,     // Globals.c:368 可收铁笼（28 号，踏板触发收回）
+    COMMUTATION_ALTAR,          // Globals.c:532 置换祭坛（6 号）
+    RESURRECTION_ALTAR,         // Globals.c:538 复活祭坛（7 号）
+    AMULET_SWITCH,              // Globals.c:529 护符触发板（15 号，护符被拾取即晋升）
+    STATUE_INSTACRACK,          // Globals.c:354 即刻开裂雕像（15 号，discoverType 震裂）
+    TORCH_WALL                  // Globals.c:337 墙装火把（15 号，进墙装饰）
 }
 
 export enum LightType {
@@ -287,7 +299,19 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.GAS_TRAP_PARALYSIS_HIDDEN]: 95,
     [TerrainType.MACHINE_PARALYSIS_VENT_HIDDEN]: 95,
     [TerrainType.MACHINE_METHANE_VENT_HIDDEN]: 95,
-    [TerrainType.PILOT_LIGHT_DORMANT]: 0
+    [TerrainType.PILOT_LIGHT_DORMANT]: 0,
+    // V-2b-4：CE 第 4 列原值。ALTAR_CAGE_OPEN 17（Globals.c:364，与 ALTAR_INERT
+    // 同档）；ALTAR_CAGE_RETRACTABLE 17（:368）；COMMUTATION_ALTAR 17（:532）；
+    // RESURRECTION_ALTAR 17（:538）；AMULET_SWITCH 95（:529，G_FLOOR 伪装——它
+    // 在视觉上就该是地面）；STATUE_INSTACRACK 0（:354，雕像墙档）；
+    // TORCH_WALL 0（:337，G_TORCH 墙档）。
+    [TerrainType.ALTAR_CAGE_OPEN]: 17,
+    [TerrainType.ALTAR_CAGE_RETRACTABLE]: 17,
+    [TerrainType.COMMUTATION_ALTAR]: 17,
+    [TerrainType.RESURRECTION_ALTAR]: 17,
+    [TerrainType.AMULET_SWITCH]: 95,
+    [TerrainType.STATUE_INSTACRACK]: 0,
+    [TerrainType.TORCH_WALL]: 0
 };
 
 /**
@@ -416,7 +440,20 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     [TerrainType.GAS_TRAP_PARALYSIS_HIDDEN]: DungeonLayer.DUNGEON,
     [TerrainType.MACHINE_PARALYSIS_VENT_HIDDEN]: DungeonLayer.DUNGEON,
     [TerrainType.MACHINE_METHANE_VENT_HIDDEN]: DungeonLayer.DUNGEON,
-    [TerrainType.PILOT_LIGHT_DORMANT]: DungeonLayer.DUNGEON
+    [TerrainType.PILOT_LIGHT_DORMANT]: DungeonLayer.DUNGEON,
+    // V-2b-4：七条祭坛族地形全落 DUNGEON 层——CE 蓝图 feature 的 layer 列
+    // 逐条为 DUNGEON（GlobalsBrogue.c:187-190/195-197/225/231/291-294/352-354/
+    // 362），且三链字段指向的 DF 条目 layer 列同证
+    //（DF_ITEM_CAGE_CLOSE {ALTAR_CAGE_CLOSED, DUNGEON} :722、
+    //  DF_ALTAR_COMMUTE {COMMUTATION_ALTAR_INERT, DUNGEON} :793、
+    //  DF_ALTAR_RESURRECT {RESURRECTION_ALTAR_INERT, DUNGEON} :798）。
+    [TerrainType.ALTAR_CAGE_OPEN]: DungeonLayer.DUNGEON,
+    [TerrainType.ALTAR_CAGE_RETRACTABLE]: DungeonLayer.DUNGEON,
+    [TerrainType.COMMUTATION_ALTAR]: DungeonLayer.DUNGEON,
+    [TerrainType.RESURRECTION_ALTAR]: DungeonLayer.DUNGEON,
+    [TerrainType.AMULET_SWITCH]: DungeonLayer.DUNGEON,
+    [TerrainType.STATUE_INSTACRACK]: DungeonLayer.DUNGEON,
+    [TerrainType.TORCH_WALL]: DungeonLayer.DUNGEON
 };
 
 /**
@@ -608,9 +645,6 @@ export class Cell {
     // "only once per tile"）。CE 是 pmap flags 位、随层新建，web 是 Cell
     // 字段、随 Grid 新建，生命周期一致。仅由 Game 的自动搜索读写。
     public autoSearched: boolean = false;
-
-    // Altar linking (if > 0, picking an item from this altar destroys all others with the same ID)
-    public altarGroupId: number | null = null;
 
     // Machine zone tracking (0 = no machine)
     public machineNumber: number = 0;
