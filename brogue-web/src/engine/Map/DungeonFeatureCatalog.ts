@@ -157,7 +157,19 @@ export enum DF {
     DF_CAGE_DISAPPEARS             = 151, // :1660（ALTAR_CAGE_RETRACTABLE.
                                           // promoteType，Globals.c:812）
     DF_STATUE_SHATTER              = 188, // :1721（STATUE_INSTACRACK.
-                                          // discoverType，Globals.c:873）
+                                          // promoteType，Globals.c:873）
+    // ── V-2b-5：休眠唤醒轮的四个新条目。id 与 CE 枚举逐一对位
+    //    （DF 枚举序 = 目录序、{0} 占 index 0；四条都用"id ↔ Globals.c 行"
+    //    双重锚定核对过：id = 目录下标，目录下标 → 行号见各条 ceLine）。
+    DF_ALTAR_INERT                 = 86,  // :1576（ALTAR_SWITCH.promoteType，
+                                          // Globals.c:723）
+    DF_WALL_CRACK                  = 155, // :1666（RAT_TRAP_WALL_DORMANT.
+                                          // promoteType，Globals.c:818）
+    DF_CRACKING_STATUE             = 187, // :1720（STATUE_DORMANT /
+                                          // STATUE_DORMANT_DOORWAY.promoteType，
+                                          // Globals.c:872）
+    DF_TURRET_EMERGE               = 189, // :1724（TURRET_DORMANT.promoteType，
+                                          // Globals.c:876）
 }
 
 /** 目录条目 = CE 结构体的 web 投影（messageDisplayed 除外——它依赖玩家
@@ -200,6 +212,8 @@ export interface DungeonFeatureEntry {
  * 至 23 并给 DF_EXPLOSION_FIRE 填上 tile——GAS_EXPLOSION 地形同轮落地）。
  * 其后 C-5/C-6/B-3 的增补见各条目注释（现 31 条）；T-1 增 DF_CRYSTAL_WALL
  * 至 32——CRYSTAL_WALL 地形 B-3 已迁，本轮接通 autoGenerator 表 index 1。
+ * V-2b-5 增 DF_ALTAR_INERT / DF_WALL_CRACK / DF_CRACKING_STATUE /
+ * DF_TURRET_EMERGE（休眠唤醒链的四个载体，现 36 条）。
  *
  * 字段序照 CE 目录行注释（Globals.c:604）：
  *   tileType / layer / start / decr / fl / txt / flare / fCol / fRad /
@@ -824,9 +838,10 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
 
     // {RUBBLE, SURFACE, 120, 100, DFF_ACTIVATE_DORMANT_MONSTER,
     //  "the statue shatters!", 0, &darkGray, 3, 0, DF_RUBBLE}（:873）
-    // —— STATUE_INSTACRACK.discoverType（15 号：护符被取走后雕像震裂，
-    // 藏在其下的 Warden of Yendor 苏醒）。tile RUBBLE web 无（与
-    // DF_WALL_SHATTER / DF_SHATTERING_SPELL 同缺，登记）；链尾 DF_RUBBLE
+    // —— STATUE_INSTACRACK.promoteType（15 号：护符被取走后雕像震裂，
+    // 藏在其下的 Warden of Yendor 苏醒；V-2b-5 更正——原先记成
+    // discoverType，见 TerrainCatalog 该 tile 的更正注）。tile RUBBLE web 无
+    //（与 DF_WALL_SHATTER / DF_SHATTERING_SPELL 同缺，登记）；链尾 DF_RUBBLE
     // 已在目录（V-2b-3 引入），无悬空引用。
     [DF.DF_STATUE_SHATTER]: {
         id: DF.DF_STATUE_SHATTER, ceLine: 873, ceTile: 'RUBBLE', tile: null,
@@ -835,6 +850,61 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
         subsequentDF: DF.DF_RUBBLE,
         description: 'the statue shatters!',
         lightFlare: '', flashColor: 'darkGray', effectRadius: 3,
+    },
+
+    // ══ V-2b-5：休眠唤醒轮的四条（CE Globals.c 目录行逐字）══════════════════
+
+    // {ALTAR_INERT, DUNGEON, 0, 0, 0}（:723）—— ALTAR_SWITCH.promoteType
+    //（29/43/50/56 号的取物晋升落点：祭坛熄灭成惰性态）。**tile ALTAR_INERT
+    // = web 既有 TerrainType.ALTAR**（V-2b-4 的 DF_CAGE_DISAPPEARS 同款别名），
+    // 故本条带完整 tile，不入 DF_MISSING_TILES。
+    [DF.DF_ALTAR_INERT]: {
+        id: DF.DF_ALTAR_INERT, ceLine: 723, ceTile: 'ALTAR_INERT', tile: TerrainType.ALTAR,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {RAT_TRAP_WALL_CRACKING, DUNGEON, 0, 0, 0, "a scratching sound emanates
+    //  from the nearby walls!", 0, 0, 0, 0, DF_RUBBLE}（:818）——
+    // RAT_TRAP_WALL_DORMANT.promoteType（29 号鼠陷阱：墙上出现裂纹）。tile
+    // RAT_TRAP_WALL_CRACKING web 无（登记）；链尾 DF_RUBBLE 已在目录。
+    [DF.DF_WALL_CRACK]: {
+        id: DF.DF_WALL_CRACK, ceLine: 818, ceTile: 'RAT_TRAP_WALL_CRACKING', tile: null,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: DF.DF_RUBBLE,
+        description: 'a scratching sound emanates from the nearby walls!',
+        lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {STATUE_CRACKING, DUNGEON, 0, 0, 0, "cracks begin snaking across the
+    //  marble surface of the statue!", 0, 0, 0, 0, DF_RUBBLE}（:872）——
+    // STATUE_DORMANT / STATUE_DORMANT_DOORWAY.promoteType（21/43/69 号：
+    // 雕像从"完好"变"开裂"。ceiling 上的后续由 tile STATUE_CRACKING 自己的
+    // promoteChance 3500 推进 → DF_STATUE_SHATTER）。tile STATUE_CRACKING
+    // web 无（登记）；链尾 DF_RUBBLE 已在目录。
+    [DF.DF_CRACKING_STATUE]: {
+        id: DF.DF_CRACKING_STATUE, ceLine: 872, ceTile: 'STATUE_CRACKING', tile: null,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: DF.DF_RUBBLE,
+        description: 'cracks begin snaking across the marble surface of the statue!',
+        lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {WALL, DUNGEON, 0, 0, DFF_ACTIVATE_DORMANT_MONSTER, "you hear a click,
+    //  and the stones in the wall shift to reveal turrets!", 0, 0, 0, 0,
+    //  DF_RUBBLE}（:876）—— TURRET_DORMANT.promoteType（56 号 Gauntlet：
+    // 墙上冒出炮塔）。**tile = WALL，web 有**（第四条 dormant 唤醒链里唯一
+    // tile 齐的一环）；链尾 DF_RUBBLE 缺 tile → 整链预检仍缓办（报告 §3）。
+    [DF.DF_TURRET_EMERGE]: {
+        id: DF.DF_TURRET_EMERGE, ceLine: 876, ceTile: 'WALL', tile: TerrainType.WALL,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: DFF_ACTIVATE_DORMANT_MONSTER, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: DF.DF_RUBBLE,
+        description: 'you hear a click, and the stones in the wall shift to reveal turrets!',
+        lightFlare: '', flashColor: '', effectRadius: 0,
     },
 };
 
@@ -896,4 +966,18 @@ export const DF_MISSING_TILES: readonly DF[] = [
     DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING, // MACHINE_TRIGGER_FLOOR_REPEATING
                                    // （7 号 RESURRECTION_ALTAR 的 DF 列）
     DF.DF_STATUE_SHATTER,          // RUBBLE（同 DF_WALL_SHATTER 所缺）
+    // ── V-2b-5 增补（2 条，26 → 28）：休眠唤醒轮四条新条目里 web 无 tile 的
+    //    两条；另两条带完整 tile 故不入列——DF_ALTAR_INERT
+    //   （tile ALTAR_INERT = web 既有 TerrainType.ALTAR，与 DF_CAGE_DISAPPEARS
+    //    同款别名）与 DF_TURRET_EMERGE（tile = WALL，web 既有）。
+    DF.DF_WALL_CRACK,              // RAT_TRAP_WALL_CRACKING（29 号墙裂态）
+    DF.DF_CRACKING_STATUE,         // STATUE_CRACKING（21/43/69 号雕像开裂态）
+                                   // ★ 这两条与下方 DF_RUBBLE 构成休眠唤醒链的
+                                   // 结构性堵点：21/29/43/50/56/69/70 号的唤醒
+                                   // 全都要经过带 DFF_ACTIVATE_DORMANT_MONSTER
+                                   // 的 DF，而那三条（DF_STATUE_SHATTER /
+                                   // DF_WALL_SHATTER / DF_SHATTERING_SPELL）
+                                   // 的 tile 都是 RUBBLE——所以真正卡住一切的
+                                   // 是 DF_RUBBLE 本身。RUBBLE 地形落地的那一轮
+                                   // 应把上面四条一并摘除。见 v-2b-5 报告 §3。
 ];

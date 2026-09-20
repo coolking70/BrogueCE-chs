@@ -81,10 +81,12 @@ interface LevelScan {
     depth: number;
     up: Pos | null;
     down: Pos | null;
-    /** canMoveTo 口径下的可走格数 */
+    /** canMoveTo 口径下的可走格数（V-2b-5 起剔除机器格） */
     walkable: number;
     /** 全格数（grid.width × grid.height） */
     gridArea: number;
+    /** V-2b-5：机器格数（网格 machineNumber≠0），占比的分母同步剔除 */
+    machineCells: number;
     /** 从上楼梯出发（8 向泛洪）可达的格数；无上楼梯时为 -1 */
     reach: number;
     /** 下楼梯是否从上楼梯可达 */
@@ -117,15 +119,33 @@ function scanLevel(game: Game, seed: number, depth: number): LevelScan {
     let up: Pos | null = null;
     let down: Pos | null = null;
     let walkable = 0;
+    // V-2b-5：机器格（网格 machineNumber≠0，CE IS_IN_MACHINE）不进占比。
+    // 依据：CE Architect.c:862-871 prepareInteriorWithMachineFlags 的
+    // BP_PURGE_INTERIOR 把 interior **全部**格（含墙）改铺 FLOOR——BP1
+    // Mixed item library（BP_OPEN_INTERIOR 扩到 4 轮）落在大湖/多墙层时，
+    // interior 可达 1287 格，可走占比 64.6%（实测 seed777/D8），是 CE 字面
+    // 行为而非生成器失灵。占比守卫的本意是抓"大面积错误开凿"级的**生成器
+    // 本体**失灵；机器地形由 p1_33（chokepoint 选址）/p1_37（机器格布点）
+    // 另行把守，故在此剔除，保持守卫对生成器本体的原有分辨力
+    //（0.55 上界对"去掉 3×3 光环净空"变体 max 61.6% 仍稳翻红）。
+    let machineCells = 0;
+    let walkableMachine = 0;
     for (let y = 0; y < grid.height; y++) {
         for (let x = 0; x < grid.width; x++) {
             const cell = grid.getCell(x, y);
             if (!cell) continue;
+            const isMachine = cell.machineNumber !== 0;
+            if (isMachine) machineCells++;
             if (cell.terrain === TerrainType.STAIRS_UP) up = { x, y };
             else if (cell.terrain === TerrainType.STAIRS_DOWN) down = { x, y };
-            if (passable(x, y)) walkable++;
+            if (passable(x, y)) {
+                walkable++;
+                if (isMachine) walkableMachine++;
+            }
         }
     }
+    // 占比口径：分子只剔可走的机器格，分母剔全部机器格（见上方 V-2b-5 注）。
+    walkable -= walkableMachine;
     let reach = -1;
     let downReachable = false;
     if (up) {
@@ -135,7 +155,7 @@ function scanLevel(game: Game, seed: number, depth: number): LevelScan {
         reach = seen.size;
         downReachable = !!down && seen.has(down.y * grid.width + down.x);
     }
-    return { seed, depth, up, down, walkable, gridArea: grid.width * grid.height, reach, downReachable, fp: terrainFingerprint(grid) };
+    return { seed, depth, up, down, walkable, gridArea: grid.width * grid.height, machineCells, reach, downReachable, fp: terrainFingerprint(grid) };
 }
 
 /** 与 p2_3 / generation_baseline 同款驱动：D1 来自 startNewGame，
@@ -194,12 +214,18 @@ describe('P1-26 生成器不变量（5 种子 × D1-D26，不依赖坐标）', (
     });
 
     it('每层可走格占比在宽区间内（抓生成器彻底失灵，不抓正常波动）', () => {
-        const offenders = getFirstPass().filter(
-            (s) => s.walkable < WALKABLE_MIN_FRACTION * s.gridArea || s.walkable > WALKABLE_MAX_FRACTION * s.gridArea
-        );
+        // V-2b-5：占比 = (可走 − 机器格) / (全格 − 机器格)。机器 interior 的
+        // 铺地是 CE prepareInteriorWithMachineFlags 的字面行为（见 scanLevel
+        // 的 V-2b-5 注），不属"生成器本体失灵"，剔除后原上界 0.55 保持校准。
+        const offenders = getFirstPass().filter((s) => {
+            const denom = s.gridArea - s.machineCells;
+            const frac = s.walkable / denom;
+            return frac < WALKABLE_MIN_FRACTION || frac > WALKABLE_MAX_FRACTION;
+        });
         const detail = offenders
-            .map((s) => `seed${s.seed}/D${s.depth}: 可走 ${s.walkable}/${s.gridArea} 格` +
-                `(${((100 * s.walkable) / s.gridArea).toFixed(1)}%，区间 ` +
+            .map((s) => `seed${s.seed}/D${s.depth}: 可走 ${s.walkable}/${s.gridArea - s.machineCells} 格` +
+                `(机器格 ${s.machineCells} 已剔除，` +
+                `${((100 * s.walkable) / (s.gridArea - s.machineCells)).toFixed(1)}%，区间 ` +
                 `${WALKABLE_MIN_FRACTION * 100}%~${WALKABLE_MAX_FRACTION * 100}%)`)
             .join('；');
         expect(

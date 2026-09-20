@@ -286,6 +286,29 @@ export class Monster extends Creature {
     public preplaced: boolean = false;
 
     /**
+     * V-2b-5：CE `bookkeepingFlags & MB_IS_DORMANT`（Monsters.c:4195/4207 两处
+     * 置/清）——"已休眠，不在 `monsters` 表里"的位。CE 的休眠是**换表**：
+     * 睡下的怪从 `monsters` 摘链、挂到 `dormantMonsters`，于是「不占格
+     * （HAS_MONSTER 清、HAS_DORMANT_MONSTER 置）+ 不获回合 + 不被
+     * monsterAtLoc 找到 + 不可见」四件事一并成立，不需要在任何读取点加判断。
+     * web 照抄同一结构：本字段为真 ⇔ 该实例在 `Game.dormantMonsters` 而不在
+     * `Game.monsters`；位本身只作断言/调试的可查询事实（见
+     * Game.toggleMonsterDormancy 的头注）。
+     */
+    public isDormant: boolean = false;
+
+    /**
+     * V-2b-5：CE `creature.machineHome`（Rogue.h:2211 一带；写入点
+     * Architect.c:1661 `monst->machineHome = machineNumber;`——注释原文
+     * "Monster remembers the machine that spawned it."）。
+     *
+     * 只有机器生成的怪才有非 0 值；自然刷怪（populateMonsters）留 0，与
+     * CE 的 `creature` 零初始化一致。消费点见 Promotion.activateMachine 的
+     * CE 怪物激活段（:1201-1227，本轮登记未接线，见报告 §1）。
+     */
+    public machineHome: number = 0;
+
+    /**
      * P4-10：CE monst->targetWaypointIndex（Monsters.c:127，初值 -1）。
      * WANDERING 怪物朝该 waypoint 的距离图下坡走，到达/失效后由
      * chooseNewWanderDestination 换点。

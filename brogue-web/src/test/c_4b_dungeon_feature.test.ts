@@ -574,7 +574,12 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         //   DF_MACHINE_FLOOR_TRIGGER_REPEATING :799、DF_CAGE_DISAPPEARS :812、
         //   DF_STATUE_SHATTER :873。前三条/后五条的归属见 DungeonFeatureCatalog
         //   的 V-2b-4 块注；逐字段钉死在 v_2b_4_altars 的 B 组。
-        expect(keys.length).toBe(57);
+        // V-2b-5：57 → 61（+4）。CE Globals.c 目录行逐条：
+        //   DF_ALTAR_INERT :723、DF_WALL_CRACK :818、DF_CRACKING_STATUE :872、
+        //   DF_TURRET_EMERGE :876（Rogue.h:1576/1666/1720/1724）。它们是
+        //   21/29/43/50/56/69/70 号休眠载体地形 promoteType 链的落点，
+        //   逐字段钉死在 v_2b_5_dormant 的 A3 组。
+        expect(keys.length).toBe(61);
         expect(DF.DF_SHOW_TRAPDOOR_HALO, 'V-2b-2b：CE Rogue.h:1487（Globals.c:627）').toBe(16);
         expect(DF.DF_SHOW_TRAPDOOR, 'V-2b-2b：TRAP_DOOR_HIDDEN.discoverType 的载体（Rogue.h:1488，Globals.c:628）').toBe(17);
         expect(DF.DF_WOODEN_BARRICADE_BURN, 'V-2b-2b：WOODEN_BARRICADE.fireType 的载体（Rogue.h:1669，Globals.c:825）').toBe(156);
@@ -727,7 +732,9 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
             '（DF_RUBBLE ← DF_STATUE_SHATTER，DF_RUBBLE 已在目录）入闭包，' +
             '其余 3 条（DF_LUMINESCENT_FUNGUS/DF_MAGIC_PIPING/' +
             'DF_MACHINE_FLOOR_TRIGGER_REPEATING）在 web 无消费者' +
-            '（CE 起点是蓝图 feature 的 DF 列）——49→57').toBe(57);
+            '（CE 起点是蓝图 feature 的 DF 列）——49→57；' +
+            'V-2b-5：休眠唤醒轮四条入目录后全部经七条新地形的三链字段' +
+            '（promoteType）自动入闭包——57→61').toBe(61);
     });
 
     it('E3 字段抽查：BRIDGE_FALL_PREP 的 prop/200/100、BRIDGE_FIRE 的描述与 tile=0、其余代表条目', () => {
@@ -883,7 +890,12 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // MACHINE_TRIGGER_FLOOR_REPEATING、DF_STATUE_SHATTER→RUBBLE）；
         // 唯一带完整 tile 的 DF_CAGE_DISAPPEARS（tile ALTAR_INERT = web 既有
         // TerrainType.ALTAR）**不入列**——它真能落地。
-        expect(DF_MISSING_TILES.length).toBe(26);
+        // V-2b-5：26 → 28（+2）。四条新目录条目里两条 tile=null
+        //（DF_WALL_CRACK→RAT_TRAP_WALL_CRACKING :818、DF_CRACKING_STATUE→
+        // STATUE_CRACKING :872）；另两条带完整 tile 故不入列——
+        // DF_ALTAR_INERT（tile ALTAR_INERT = web TerrainType.ALTAR）与
+        // DF_TURRET_EMERGE（tile = WALL，web 既有）。
+        expect(DF_MISSING_TILES.length).toBe(28);
         // 登记条目确实都是 tile=null，且抛错带 CE tile 名。
         for (const id of DF_MISSING_TILES) {
             expect(DUNGEON_FEATURE_CATALOG[id]!.tile, `DF#${id} 应为 null tile`).toBeNull();
@@ -1098,13 +1110,35 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                                 C.TRAP_DOOR_HIDDEN,     // 23 号陷阱
                                 C.WOODEN_BARRICADE,     // 19 号木栅
                                 C.STATUE_INERT, C.STATUE_INERT_DOORWAY, C.PEDESTAL,
+                                C.MACHINE_GLYPH,        // 24/25 号机器符文（V-2b-5
+                                                        // 实测首现于草上：seed424242
+                                                        // /D9 (8,8) 符文压草）
+                                // V-2b-5：休眠唤醒轮的 DUNGEON 层载体
+                                //（21 号 STATUE_DORMANT_DOORWAY / 29 号
+                                // RAT_TRAP_WALL_DORMANT / 43 号 STATUE_DORMANT /
+                                // 50 号 WALL_MONSTER_DORMANT / 56 号
+                                // TURRET_DORMANT / 41 号 DOOR+FLOOR / 69 号
+                                // STATUE_DORMANT / 70 号 WALL_MONSTER_DORMANT）
+                                C.ALTAR_SWITCH, C.MACHINE_TRIGGER_FLOOR,
+                                C.STATUE_DORMANT, C.STATUE_DORMANT_DOORWAY,
+                                C.WALL_MONSTER_DORMANT, C.RAT_TRAP_WALL_DORMANT,
+                                C.TURRET_DORMANT,
                             ]);
                             const NON_BLOCKING_LIQUIDS: ReadonlySet<TerrainType> = new Set([
                                 C.WATER_SHALLOW, C.CHASM_EDGE, C.OBSIDIAN,
                             ]);
+                            // V-2b-5 扩：机器 feature 带 layer=DUNGEON 列的落格
+                            // 走 CE :1443 `pmap.layers[layer] = terrain`
+                            // **纯层写入**——无优先级门、不清 autoGenerator 已落
+                            // 的草/树（autoGenerator 先于机器建层）。DUNGEON 是
+                            // 任何机器载体（上表）时，与 SURFACE 草/树的两层
+                            // 组合合法。其余组合仍按 fillSpawnMap 优先级门把关。
                             if (cell.layers[L.SURFACE] !== C.NOTHING) {
                                 expect([C.GRASS, C.FOLIAGE],
                                     `seed=${seed} D${depth} (${x},${y}) 两层格的 SURFACE 必须是 C-6 草/树`).toContain(cell.layers[L.SURFACE]);
+                                if (MACHINE_DUNGEON_TILES.has(cell.layers[L.DUNGEON] as TerrainType)) {
+                                    // 合法（:1443 纯层写入，无优先级门）。
+                                } else {
                                 // 基座按 CE fillSpawnMap 优先级门（Architect.c:3228
                                 // `旧 prio >= 新 prio`）判定合法形态：
                                 //   DUNGEON=FLOOR（草/树长在地板上，主形态）；
@@ -1127,6 +1161,7 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                                 expect(ok,
                                     `seed=${seed} D${depth} (${x},${y}) 两层组合 ` +
                                     nonEmpty.sort().join(',') + ` 不满足 CE 优先级门`).toBe(true);
+                                }
                             } else if (cell.layers[L.DUNGEON] !== C.NOTHING
                                 && MACHINE_DUNGEON_TILES.has(cell.layers[L.DUNGEON] as TerrainType)
                                 && NON_BLOCKING_LIQUIDS.has(cell.layers[L.LIQUID] as TerrainType)) {

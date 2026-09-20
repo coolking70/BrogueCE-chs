@@ -230,7 +230,10 @@ describe('V-2b-3 A：载体地形逐字段 ≡ CE Globals.c（对抗：抄错任
         // 新目录条目里 web 无 tile 的七条入列，19 → 26。守卫仍全等钉死长度
         //（不放宽成包含关系）；DF_CAGE_DISAPPEARS 是八条里唯一带完整 tile
         //（ALTAR_INERT = web TerrainType.ALTAR）的，不入列。
-        expect(DF_MISSING_TILES).toHaveLength(26);
+        // V-2b-5 第五次顺延：休眠唤醒轮四条新条目里 web 无 tile 的两条
+        //（DF_WALL_CRACK / DF_CRACKING_STATUE）入列，26 → 28；另两条
+        //（DF_ALTAR_INERT / DF_TURRET_EMERGE）tile 完整，不入列。
+        expect(DF_MISSING_TILES).toHaveLength(28);
         for (const d of [DF.DF_WALL_SHATTER, DF.DF_REVEAL_LEVER, DF.DF_INACTIVE_GLYPH,
             DF.DF_OPEN_PORTCULLIS, DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY]) {
             expect(DF_MISSING_TILES, `DF[${d}] 应在缺 tile 登记`).toContain(d);

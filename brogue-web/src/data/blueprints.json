@@ -2292,5 +2292,495 @@
                 ]
             }
         ]
+    },
+    {
+        "id": "vestibule_statue_monster",
+        "name": "Statue in the doorway -- bursts to reveal monster",
+        "depthRange": [
+            5,
+            26
+        ],
+        "roomSize": [
+            2,
+            2
+        ],
+        "frequency": 6,
+        "category": "vestibule",
+        "flags": [
+            "BP_VESTIBULE"
+        ],
+        "features": [
+            {
+                "terrain": "STATUE_DORMANT_DOORWAY",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_PERMIT_BLOCKING",
+                    "MF_GENERATE_HORDE",
+                    "MF_MONSTERS_DORMANT",
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_ALTERNATIVE"
+                ],
+                "hordeFlags": [
+                    "HORDE_MACHINE_STATUE"
+                ]
+            },
+            {
+                "terrain": "MACHINE_TRIGGER_FLOOR",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    0,
+                    0
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 0,
+                "flags": [
+                    "MF_EVERYWHERE"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_rat_trap_dormant",
+        "name": "Rat trap -- getting the key triggers paralysis vents nearby and also causes rats to burst out of the walls",
+        "depthRange": [
+            1,
+            8
+        ],
+        "roomSize": [
+            30,
+            70
+        ],
+        "frequency": 7,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM",
+            "BP_ADOPT_ITEM"
+        ],
+        "features": [
+            {
+                "terrain": "ALTAR_SWITCH",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            },
+            {
+                "terrain": "MACHINE_PARALYSIS_VENT_HIDDEN",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            },
+            {
+                "terrain": "RAT_TRAP_WALL_DORMANT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    10,
+                    20
+                ],
+                "minimumInstanceCount": 5,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_MONSTERS_DORMANT",
+                    "MF_BUILD_IN_WALLS",
+                    "MF_NOT_ON_LEVEL_PERIMETER"
+                ],
+                "monsterId": "rat"
+            }
+        ]
+    },
+    {
+        "id": "key_explosive_trap",
+        "name": "Explosive situation -- key on an altar; take key to cause a methane gas vent to appear and a pilot light to ignite",
+        "depthRange": [
+            7,
+            26
+        ],
+        "roomSize": [
+            80,
+            90
+        ],
+        "frequency": 10,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM",
+            "BP_PURGE_LIQUIDS",
+            "BP_SURROUND_WITH_WALLS",
+            "BP_ADOPT_ITEM"
+        ],
+        "features": [
+            {
+                "terrain": "DOOR",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN"
+                ]
+            },
+            {
+                "terrain": "FLOOR",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    0,
+                    0
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 0,
+                "flags": [
+                    "MF_EVERYWHERE"
+                ]
+            },
+            {
+                "terrain": "ALTAR_SWITCH",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_FAR_FROM_ORIGIN"
+                ]
+            },
+            {
+                "terrain": "MACHINE_METHANE_VENT_HIDDEN",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_NEAR_ORIGIN"
+                ]
+            },
+            {
+                "terrain": "PILOT_LIGHT_DORMANT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_BUILD_IN_WALLS"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_statuary",
+        "name": "Statuary -- key on an altar, area full of statues; take key to cause statues to burst and reveal monsters",
+        "depthRange": [
+            10,
+            26
+        ],
+        "roomSize": [
+            35,
+            90
+        ],
+        "frequency": 10,
+        "category": "key_guard",
+        "flags": [
+            "BP_ADOPT_ITEM",
+            "BP_NO_INTERIOR_FLAG"
+        ],
+        "features": [
+            {
+                "terrain": "ALTAR_SWITCH",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_NEAR_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            },
+            {
+                "terrain": "STATUE_DORMANT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    3,
+                    5
+                ],
+                "minimumInstanceCount": 3,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_GENERATE_HORDE",
+                    "MF_MONSTERS_DORMANT",
+                    "MF_FAR_FROM_ORIGIN"
+                ],
+                "hordeFlags": [
+                    "HORDE_MACHINE_STATUE"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_worm_trap",
+        "name": "Worms in the walls -- key on altar; take key to cause underworms to burst out of the walls",
+        "depthRange": [
+            12,
+            26
+        ],
+        "roomSize": [
+            7,
+            7
+        ],
+        "frequency": 7,
+        "category": "key_guard",
+        "flags": [
+            "BP_ADOPT_ITEM"
+        ],
+        "features": [
+            {
+                "terrain": "ALTAR_SWITCH",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_NEAR_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            },
+            {
+                "terrain": "WALL_MONSTER_DORMANT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    5,
+                    8
+                ],
+                "minimumInstanceCount": 5,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_MONSTERS_DORMANT",
+                    "MF_BUILD_IN_WALLS",
+                    "MF_NOT_ON_LEVEL_PERIMETER"
+                ],
+                "monsterId": "underworm"
+            }
+        ]
+    },
+    {
+        "id": "key_turret_trap",
+        "name": "Gauntlet -- key on an altar; take key to cause turrets to emerge",
+        "depthRange": [
+            5,
+            24
+        ],
+        "roomSize": [
+            35,
+            90
+        ],
+        "frequency": 10,
+        "category": "key_guard",
+        "flags": [
+            "BP_ADOPT_ITEM",
+            "BP_NO_INTERIOR_FLAG"
+        ],
+        "features": [
+            {
+                "terrain": "ALTAR_SWITCH",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_NEAR_ORIGIN",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_TREAT_AS_BLOCKING"
+                ]
+            },
+            {
+                "terrain": "TURRET_DORMANT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    4,
+                    6
+                ],
+                "minimumInstanceCount": 4,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_GENERATE_HORDE",
+                    "MF_MONSTERS_DORMANT",
+                    "MF_BUILD_IN_WALLS",
+                    "MF_IN_VIEW_OF_ORIGIN"
+                ],
+                "hordeFlags": [
+                    "HORDE_MACHINE_TURRET"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "area_trick_statue",
+        "name": "Statue comes alive -- innocent-looking statue that bursts to reveal a monster when the player approaches",
+        "depthRange": [
+            1,
+            40
+        ],
+        "roomSize": [
+            5,
+            5
+        ],
+        "frequency": 0,
+        "category": "thematic",
+        "flags": [
+            "BP_NO_INTERIOR_FLAG"
+        ],
+        "features": [
+            {
+                "terrain": "STATUE_DORMANT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_GENERATE_HORDE",
+                    "MF_MONSTERS_DORMANT",
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_ALTERNATIVE"
+                ],
+                "hordeFlags": [
+                    "HORDE_MACHINE_STATUE"
+                ]
+            },
+            {
+                "terrain": "STATUE_DORMANT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_GENERATE_HORDE",
+                    "MF_MONSTERS_DORMANT",
+                    "MF_BUILD_IN_WALLS",
+                    "MF_ALTERNATIVE",
+                    "MF_NOT_ON_LEVEL_PERIMETER"
+                ],
+                "hordeFlags": [
+                    "HORDE_MACHINE_STATUE"
+                ]
+            },
+            {
+                "terrain": "MACHINE_TRIGGER_FLOOR",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    0,
+                    0
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 0,
+                "flags": [
+                    "MF_EVERYWHERE"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "area_worm",
+        "name": "Worms in the walls -- step on trigger region to cause underworms to burst out of the walls",
+        "depthRange": [
+            1,
+            40
+        ],
+        "roomSize": [
+            7,
+            7
+        ],
+        "frequency": 0,
+        "category": "thematic",
+        "flags": [
+            "BP_NO_INTERIOR_FLAG"
+        ],
+        "features": [
+            {
+                "terrain": "WALL_MONSTER_DORMANT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    3
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_MONSTERS_DORMANT",
+                    "MF_BUILD_IN_WALLS",
+                    "MF_NOT_ON_LEVEL_PERIMETER"
+                ],
+                "monsterId": "underworm"
+            },
+            {
+                "terrain": "MACHINE_TRIGGER_FLOOR",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    0,
+                    0
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 0,
+                "flags": [
+                    "MF_EVERYWHERE"
+                ]
+            }
+        ]
     }
 ]

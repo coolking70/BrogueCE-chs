@@ -290,6 +290,18 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.AMULET_SWITCH]: L.DUNGEON,
             [C.STATUE_INSTACRACK]: L.DUNGEON,
             [C.TORCH_WALL]: L.DUNGEON,
+            // V-2b-5 七条（76 → 83）：休眠唤醒轮。全落 DUNGEON 层——CE 蓝图
+            // feature 的 layer 列逐条为 DUNGEON（GlobalsBrogue.c:320-321/
+            // 364-368/445-449/460-463/505-508/545-548/608-616），且四个新 DF
+            // 条目（DF_ALTAR_INERT :723 / DF_WALL_CRACK :818 /
+            // DF_CRACKING_STATUE :872 / DF_TURRET_EMERGE :876）layer 列同证。
+            [C.ALTAR_SWITCH]: L.DUNGEON,
+            [C.MACHINE_TRIGGER_FLOOR]: L.DUNGEON,
+            [C.STATUE_DORMANT]: L.DUNGEON,
+            [C.WALL_MONSTER_DORMANT]: L.DUNGEON,
+            [C.RAT_TRAP_WALL_DORMANT]: L.DUNGEON,
+            [C.STATUE_DORMANT_DOORWAY]: L.DUNGEON,
+            [C.TURRET_DORMANT]: L.DUNGEON,
         });
         expect(DRAW_PRIORITY).toEqual({
             [C.NOTHING]: 100, [C.GRANITE]: 0, [C.FLOOR]: 95, [C.WALL]: 0,
@@ -352,6 +364,20 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.AMULET_SWITCH]: 95,
             [C.STATUE_INSTACRACK]: 0,
             [C.TORCH_WALL]: 0,
+            // V-2b-5 七条（CE 第 4 列原值）：ALTAR_SWITCH 17（Globals.c:366，
+            // 与 ALTAR_INERT 同档）；MACHINE_TRIGGER_FLOOR 95（:361，G_FLOOR
+            // 伪装——触发地板看着就是地面）；STATUE_DORMANT 0（:352 雕像墙
+            // 档）；WALL_MONSTER_DORMANT 0（:357 G_WALL 伪装）；
+            // RAT_TRAP_WALL_DORMANT 0（:559 G_WALL 伪装）；
+            // STATUE_DORMANT_DOORWAY 0（:551 雕像墙档）；TURRET_DORMANT 0
+            //（:356 G_WALL 伪装）。
+            [C.ALTAR_SWITCH]: 17,
+            [C.MACHINE_TRIGGER_FLOOR]: 95,
+            [C.STATUE_DORMANT]: 0,
+            [C.WALL_MONSTER_DORMANT]: 0,
+            [C.RAT_TRAP_WALL_DORMANT]: 0,
+            [C.STATUE_DORMANT_DOORWAY]: 0,
+            [C.TURRET_DORMANT]: 0,
         });
     });
 });

@@ -100,7 +100,6 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
                     const monsterSpawnCells = new Set<number>();
                     const legitItemCells = new Set<number>();
                     for (const mr of results) {
-                        for (const p of mr.cells) machineCells.add(key(p));
                         monsterSpawnCells.add(key(mr.center));
                         legitItemCells.add(key(mr.center));
                         for (const s of mr.itemSpawns) legitItemCells.add(key(s.pos));
@@ -109,6 +108,23 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
                         for (const p of mr.cells) {
                             if (game.grid.getCell(p.x, p.y)?.terrain === TerrainType.ALTAR) {
                                 legitItemCells.add(key(p));
+                            }
+                        }
+                    }
+
+                    // ★ V-2b-5 口径校正（与 AD3 的 V-2b-3 校正同机理）★
+                    // machineCells 原取 ∪ mr.cells；但 BP_NO_INTERIOR_FLAG
+                    //（CE :1685-1697）事后把非 wired 格的 machineNumber 清回 0
+                    // ——23 号（V-2b-2b）与本轮新入池的 43/56 号都带它。对这类
+                    // 机器，mr.cells 里的格在网格上**不是**机器格，楼梯/钥匙/
+                    // 牌堆怪落进去是 CE 字面允许的（IS_IN_MACHINE 的消费点——
+                    // 楼梯 3712/3738、物品牌堆、怪群回避——全按网格旗标工作）。
+                    // 因此判据改为网格派生（= loadSnapshot 重建 machineCells 的
+                    // 权威口径）；mr.cells 只继续供给 legit* 白名单。
+                    for (let x = 0; x < game.grid.width; x++) {
+                        for (let y = 0; y < game.grid.height; y++) {
+                            if ((game.grid.getCell(x, y)?.machineNumber ?? 0) !== 0) {
+                                machineCells.add(y * DCOLS + x);
                             }
                         }
                     }
@@ -313,10 +329,18 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
         // 也就是说"每个 A−B 格都是 item/monster 布点"这个前提**从来就过强**，
         // 只是上一轮恰好选中了一层没暴露它。要做到非空转需要 MachineResult
         // 暴露 feature 落点（归 V-2b-7 的 df/feature 列），本轮登记不动手。
+        // ★ V-2b-5 顺延（本文件在 V-2b-5 任务书 §5 授权清单内）★
+        // 原 pin（V-2b-4 顺延后）是「本层 A−B = []」。V-2b-5 的八条蓝图入池
+        // 再次移动 RNG 流，选中层回到 424242/D3，新事实 A−B = ['13,10']。
+        // 已按消息自带流程重核：该格 machineNumber=17 =
+        // vestibule_flammable_barricade（18 号）——其木栅/门位 feature 落在
+        // 单格 interior（cells=1，即 origin 本身）之外，CE Architect.c:1484-1486
+        // 「Mark the feature location as part of the machine, in case it is not
+        // already inside of it」的字面行为，实现无缺陷。仍**全等**钉死。
         expect(outsideInterior,
             `A−B（网格派生 − ∪mr.cells）变动（选中层 D${pickedLevel}）：按 CE GlobalsBrogue.c ` +
             '重核该层的机器与落位；注意"每格都是 item/monster 布点"的前提过强（见上方注）')
-            .toEqual([]);
+            .toEqual(['13,10']);
 
         // 旧存档兼容：字段整体缺失 = 无机器（读入不抛、旗标为 0）
         const legacy = JSON.parse(JSON.stringify(snapshot!)) as ReturnType<Game['toSnapshot']>;

@@ -223,6 +223,17 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         [TerrainType.AMULET_SWITCH]: 0,                 // Globals.c:529 NO_LIGHT
         [TerrainType.STATUE_INSTACRACK]: 0,             // Globals.c:354 NO_LIGHT
         [TerrainType.TORCH_WALL]: LightKind.TORCH_LIGHT,
+        // V-2b-5 七条（休眠唤醒轮，CE 原列）：ALTAR_SWITCH = CANDLE_LIGHT
+        //（Globals.c:366 第 10 列，"adorned with candles"——目录有成员，
+        // 故真实点亮，与 V-2b-4 的 ALTAR_CAGE_* 同款）；其余六条的 CE 原列
+        // 全为 NO_LIGHT（:352/:356/:357/:361/:551/:559）。
+        [TerrainType.ALTAR_SWITCH]: LightKind.CANDLE_LIGHT,   // Globals.c:366
+        [TerrainType.MACHINE_TRIGGER_FLOOR]: 0,         // Globals.c:361 NO_LIGHT
+        [TerrainType.STATUE_DORMANT]: 0,                // Globals.c:352 NO_LIGHT
+        [TerrainType.WALL_MONSTER_DORMANT]: 0,          // Globals.c:357 NO_LIGHT
+        [TerrainType.RAT_TRAP_WALL_DORMANT]: 0,         // Globals.c:559 NO_LIGHT
+        [TerrainType.STATUE_DORMANT_DOORWAY]: 0,        // Globals.c:551 NO_LIGHT
+        [TerrainType.TURRET_DORMANT]: 0,                // Globals.c:356 NO_LIGHT
     };
 
     it('全 tile 的 glowLight 逐值等于 CE 原列（结构性穷尽）', () => {
@@ -233,7 +244,7 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         }
     });
 
-    it('非零恰 16 个（V-2b-4 前为 12，与旧标题的"11"本就不符——标题顺延为 16），且都指向有载体的目录条目', () => {
+    it('非零恰 17 个（V-2b-5 前为 16，标题顺延为 17），且都指向有载体的目录条目', () => {
         const nonzero = Object.entries(TERRAIN_FLAGS)
             .filter(([, v]) => v.glowLight !== LightKind.NO_LIGHT)
             .map(([k]) => Number(k) as TerrainType)
@@ -252,6 +263,8 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
             // 以及墙装火把的 TORCH_LIGHT（Globals.c:337）。
             TerrainType.ALTAR_CAGE_OPEN, TerrainType.ALTAR_CAGE_RETRACTABLE,
             TerrainType.RESURRECTION_ALTAR, TerrainType.TORCH_WALL,
+            // V-2b-5：ALTAR_SWITCH 的烛光（Globals.c:366 原列 CANDLE_LIGHT）。
+            TerrainType.ALTAR_SWITCH,
         ].sort((a, b) => a - b));
         for (const t of nonzero) {
             expect(LIGHT_CATALOG[TERRAIN_FLAGS[t].glowLight]).toBeDefined();

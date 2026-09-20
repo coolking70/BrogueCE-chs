@@ -7,7 +7,7 @@ import { blocksPassability, blocksVision, isDeepWater, isAutoDescent, TERRAIN_FL
 import { isPathingBlocker } from '../Map/TerrainCatalog';
 // B-4b：物品落位热力图与食物落位原语（CE Items.c:463-535 / Architect.c:171,3822）
 import { ItemSpawnHeatMap, passableArcCount, randomMatchingLocation } from '../Items/ItemSpawnHeatMap';
-import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, spawnDungeonFeature } from '../Map/DungeonFeature';
+import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, setDormantAwakener, spawnDungeonFeature } from '../Map/DungeonFeature';
 import { DF, DUNGEON_FEATURE_CATALOG } from '../Map/DungeonFeatureCatalog';
 import { Architect } from '../Generator/Architect';
 // V-1c：奖励房配额计数器是 CE rogue.rewardRoomsGenerated 的 web 载体——
@@ -16,6 +16,7 @@ import {
     getRewardRoomsGenerated,
     setRewardRoomsGenerated,
     resetRewardRoomsGenerated,
+    type MachineMonsterSpawn,
     type MachineResult
 } from '../Generator/BlueprintEngine';
 import blueprintData from '../../data/blueprints.json';
@@ -202,6 +203,27 @@ export interface GameSnapshotItem {
     keyLoc?: Array<{ loc: Pos; machine: number }>;
 }
 
+export interface GameSnapshotMonster {
+    id: number;
+    loc: Pos;
+    name: string;
+    char: string;
+    color: number;
+    hp: number;
+    maxHp: number;
+    damageString: string;
+    state: number;
+    statusDurations?: Partial<Record<StatusId, number>>;
+    goldDropChance: number;
+    itemDropChance: number;
+    onHitStatus?: StatusId;
+    onHitChance?: number;
+    onHitDuration?: number;
+    statusImmunities?: StatusId[];
+    statusResistTurns?: Partial<Record<StatusId, number>>;
+    abilities?: string[];
+}
+
 export interface GameSnapshot {
     version: number;
     savedAt: number;
@@ -226,26 +248,12 @@ export interface GameSnapshot {
         ringRightId?: number | null;
         temporaryImmunities?: Partial<Record<StatusId, number>>;
     };
-    monsters: Array<{
-        id: number;
-        loc: Pos;
-        name: string;
-        char: string;
-        color: number;
-        hp: number;
-        maxHp: number;
-        damageString: string;
-        state: number;
-        statusDurations?: Partial<Record<StatusId, number>>;
-        goldDropChance: number;
-        itemDropChance: number;
-        onHitStatus?: StatusId;
-        onHitChance?: number;
-        onHitDuration?: number;
-        statusImmunities?: StatusId[];
-        statusResistTurns?: Partial<Record<StatusId, number>>;
-        abilities?: string[];
-    }>;
+    monsters: GameSnapshotMonster[];
+    /**
+     * V-2b-5：休眠怪随存档往返（CE 的 dormantMonsters 链表）。旧存档无此
+     * 字段 → 空表兜底（与"该存档没有休眠怪"同义）。
+     */
+    dormantMonsters?: GameSnapshotMonster[];
     items: GameSnapshotItem[];
     /**
      * B-1b：全局种类鉴定态随存档往返（P1-48；对应 CE itemTable.identified /
@@ -318,6 +326,9 @@ export interface LevelState {
     fov: FOVSys;
     lightMap: LightMap;
     monsters: Monster[];
+    /** V-2b-5：休眠怪随层缓存（CE 的 dormantMonsters 链表是全局的，但 CE 无
+     *  层缓存；web 的层缓存语义下它们属于生成它们的层，随层进退）。 */
+    dormantMonsters?: Monster[];
     items: Item[];
     visibleMonsters: Set<Monster>;
     visibleItems: Set<Item>;
@@ -449,6 +460,14 @@ export class Game {
     private minersLightBaseFixpt: number = 0;
     public autoPath: Pos[] = [];
     public monsters: Monster[] = [];
+    /**
+     * V-2b-5：CE 全局 `dormantMonsters`（Monsters.c:4156-4210 的第二条链表）。
+     * 休眠怪**不在 `this.monsters` 里**——CE 摘链换表让「不占格、不获回合、
+     * 不可见、monsterAtLoc 找不到」四件事一并成立，web 照抄同一结构：
+     * 本表里的怪被回合推进、视野、寻路占用、落位资格等所有
+     * `this.monsters` 读取者天然忽略，无需逐点加判断。
+     */
+    public dormantMonsters: Monster[] = [];
     public items: Item[] = [];
     public visibleMonsters = new Set<Monster>();
     public visibleItems = new Set<Item>();
@@ -630,6 +649,7 @@ export class Game {
         this.depth = 1;
         this.levels.clear();
         this.monsters = [];
+        this.dormantMonsters = []; // V-2b-5：休眠表随新局清零
         this.items = [];
         // B-4a：计量表与食物累计随新局清零（CE initializeRogue 的
         // RogueMain.c:229-252 / rogue.foodSpawned 初值 0）。
@@ -1070,6 +1090,7 @@ export class Game {
                 fov: this.fov,
                 lightMap: this.lightMap,
                 monsters: this.monsters,
+                dormantMonsters: this.dormantMonsters,
                 items: this.items,
                 visibleMonsters: this.visibleMonsters,
                 visibleItems: this.visibleItems,
@@ -1086,10 +1107,12 @@ export class Game {
             this.fov = cached.fov;
             this.lightMap = cached.lightMap;
             this.monsters = cached.monsters;
+            this.dormantMonsters = cached.dormantMonsters ?? [];
             this.items = cached.items;
             this.visibleMonsters = cached.visibleMonsters;
             this.visibleItems = cached.visibleItems;
             this.machineCells = cached.machineCells ?? new Set();
+            this.bindDormantAwakener();
 
             // Reposition player to stairs（P1-31：落位走 CE RogueMain.c:837-869，
             // 先置楼梯位再向 4 邻域找合格格——不再直接站上楼梯）
@@ -1110,6 +1133,8 @@ export class Game {
             this.stats.maxDepth = Math.max(this.stats.maxDepth, this.depth);
             const architect = new Architect();
             this.grid = architect.generateLevel(this.depth);
+            this.dormantMonsters = [];
+            this.bindDormantAwakener();
             this.environment = new EnvironmentManager(this.grid);
             this.fov = new FOVSys(this.grid);
             this.lightMap = new LightMap(this.grid);
@@ -1334,6 +1359,14 @@ export class Game {
 
             // Spawn monsters
             for (const spawn of mr.monsterSpawns) {
+                // V-2b-5（CE Architect.c:1591-1599）：MF_GENERATE_HORDE 指令——
+                // 按 horde 表成群生成（CE 在 spawnHorde 内部抽 horde 与核地形，
+                // 落点即 feature 落点）。
+                if (spawn.hordeFlags) {
+                    this.spawnHordeAtFeature(spawn, depth, mr.machineNumber);
+                    continue;
+                }
+                if (!spawn.monsterId) continue;
                 const mData = this.resolveBlueprintMonster(spawn.monsterId, depth);
                 if (mData) {
                     const mon = new Monster(spawn.pos.x, spawn.pos.y, mData);
@@ -1341,6 +1374,7 @@ export class Game {
                     if (spawn.isCaged) mon.isCaged = true;
                     this.applyRandomMutation(mon, depth);
                     this.monsters.push(mon);
+                    this.finalizeBlueprintMonster(mon, spawn, mr.machineNumber);
                 }
             }
         }
@@ -1710,7 +1744,58 @@ export class Game {
         SHALLOW_WATER: TerrainType.WATER_SHALLOW,
         MUD: TerrainType.MUD,
         LAVA: TerrainType.LAVA,
+        // V-2b-5：休眠机器族的两个生成期专用落点（CE hordeCatalog 的
+        // STATUE_DORMANT / TURRET_DORMANT 行——蓝图的 MF_GENERATE_HORDE
+        // 把 horde 落在刚铺好的休眠载体格上）。普通地图不会有这两种地形，
+        // 普通铺怪池又用 HORDE_MACHINE_ONLY 排除了这些 horde，所以这条映射
+        // 只会被机器 horde 路径行使。
+        STATUE_DORMANT: TerrainType.STATUE_DORMANT,
+        TURRET_DORMANT: TerrainType.TURRET_DORMANT,
     };
+
+    /**
+     * V-2b-5：CE Architect.c:1591-1599 的 MF_GENERATE_HORDE 分支 + 其内层
+     * spawnHorde(0, {featX,featY}, …) 的完整语义。
+     *
+     *   - forbidden = (HORDE_IS_SUMMONED | HORDE_LEADER_CAPTIVE) & ~hordeFlags
+     *     （CE :1594 字面——feature 自己要求的旗标从禁用集里除名）；
+     *   - required = feature->hordeFlags（CE :1595），即 horde 必须**全部**带上；
+     *   - OOD 掷骰照常（Monsters.c:794-804 在 spawnHorde 内部，机器 horde 同样
+     *     适用，命中时 forbidden 追加 HORDE_NEVER_OOD）；
+     *   - 落点即 feature 落点，CE :812-828 按 spawnsIn 核地形、不合则重抽
+     *     （failsafe 50）；50 次耗尽后 CE **照样落下最后一次抽中的 horde**
+     *     （`while (--failsafe && tryAgain)` 退出时不再复核）——照抄。
+     *   - horde 的领袖与成员（CE spawnMinions Monsters.c:743 同置
+     *     MB_JUST_SUMMONED）一并走机器收尾：记属机 / 睡姿 / 休眠。
+     */
+    private spawnHordeAtFeature(spawn: MachineMonsterSpawn, depth: number, machineNumber: number): void {
+        const required = spawn.hordeFlags ?? [];
+        const forbidden = ['HORDE_IS_SUMMONED', 'HORDE_LEADER_CAPTIVE']
+            .filter(f => !required.includes(f));
+        const roll = this.rollSpawnDepth(depth);
+        const forbiddenFull = roll.outOfDepth
+            ? [...forbidden, 'HORDE_NEVER_OOD']
+            : forbidden;
+        // CE pickHordeType（Monsters.c:511）的 requiredFlags 半边：
+        // `~(hordeCatalog[i].flags) & requiredFlags` 为 0 才合格。
+        const candidates = this.hordeCandidates(roll.depth, forbiddenFull)
+            .filter(h => required.every(r => h.flags.includes(r)));
+
+        let picked: HordeEntry | null = null;
+        for (let failsafe = 50; failsafe > 0; failsafe--) {
+            const cand = this.pickHordeType(candidates);
+            if (!cand) return; // CE :816-819 抽不到合格 horde → 不生成
+            picked = cand;
+            if (this.hordeFitsTerrain(cand, spawn.pos)) break;
+        }
+        if (!picked) return;
+
+        const collected: Monster[] = [];
+        this.spawnHordeAt(picked, spawn.pos, roll.depth, false, undefined, collected);
+        for (const mon of collected) {
+            this.finalizeBlueprintMonster(mon, spawn, machineNumber);
+        }
+    }
 
     /** Monsters.c:809-819：horde 落格地形约束（spawnsIn）。 */
     private hordeFitsTerrain(h: HordeEntry, pos: Pos): boolean {
@@ -1778,7 +1863,20 @@ export class Game {
      * wandering=true 时领袖与成员状态置为 WANDERING（Time.c:2331-2340 周期刷怪语义）。
      * floorTiles 传入时把成员落格从中移除，避免后续物品生成落在怪物脚下。
      */
-    private spawnHordeAt(h: HordeEntry, centerPos: Pos, depth: number, wandering: boolean, floorTiles?: Pos[]): boolean {
+    private spawnHordeAt(
+        h: HordeEntry,
+        centerPos: Pos,
+        depth: number,
+        wandering: boolean,
+        floorTiles?: Pos[],
+        /**
+         * V-2b-5：收集本 horde 实际创建的每一只怪（领袖 + 成员）。CE 的
+         * spawnedMonsters 缓冲按 MB_JUST_SUMMONED 收集同样的集合
+         * （Monsters.c:743 成员也置位），机器的睡姿/休眠/记属机收尾要遍历它。
+         * 缺省（undefined）= 不收集，既有调用方行为逐位不变。
+         */
+        collected?: Monster[]
+    ): boolean {
         const leaderMData = (monsterData as MonsterData[]).find(m => m.id === h.leader.toLowerCase());
         if (!leaderMData) return false;
 
@@ -1792,6 +1890,7 @@ export class Game {
         this.applyRandomMutation(leaderMon, depth);
         if (wandering) leaderMon.state = MonsterState.WANDERING;
         this.monsters.push(leaderMon);
+        collected?.push(leaderMon);
 
         // Spawn members nearby
         for (const member of h.members) {
@@ -1840,6 +1939,7 @@ export class Game {
                                 // 哥布林战队）的召唤者也能算对既有随从数。
                                 mon.leader = leaderMon;
                                 this.monsters.push(mon);
+                                collected?.push(mon);
 
                                 // Remove from floorTiles to avoid item overlaps
                                 if (floorTiles) {
@@ -2236,6 +2336,8 @@ export class Game {
         this.machineCells.clear(); // P1-31：test 层无机器（防上一层残留）
 
         this.grid = new Grid(DCOLS, DROWS);
+        this.dormantMonsters = []; // test 层无休眠怪（防上一层残留）
+        this.bindDormantAwakener();
         this.environment = new EnvironmentManager(this.grid);
         this.fov = new FOVSys(this.grid);
         this.lightMap = new LightMap(this.grid);
@@ -7813,26 +7915,10 @@ export class Game {
                 ringRightId: this.player.ringRight?.id ?? null,
                 temporaryImmunities: { ...this.player.temporaryImmunities }
             },
-            monsters: this.monsters.map((m) => ({
-                id: m.id,
-                loc: { x: m.loc.x, y: m.loc.y },
-                name: m.name,
-                char: m.char,
-                color: m.color,
-                hp: m.hp,
-                maxHp: m.maxHp,
-                damageString: m.damageString,
-                state: m.state,
-                statusDurations: { ...m.statusDurations },
-                goldDropChance: m.goldDropChance,
-                itemDropChance: m.itemDropChance,
-                onHitStatus: m.onHitStatus,
-                onHitChance: m.onHitChance,
-                onHitDuration: m.onHitDuration,
-                statusImmunities: Array.from(m.statusImmunities),
-                statusResistTurns: { ...m.statusResistTurns },
-                abilities: Array.from(m.abilities)
-            })),
+            monsters: this.monsters.map((m) => this.serializeMonster(m)),
+            // V-2b-5：休眠怪随存档往返（它们不在 monsters 里，漏了就是"读档后
+            // 雕像里的怪凭空消失"）。旧存档无此字段 → 空表兜底。
+            dormantMonsters: this.dormantMonsters.map((m) => this.serializeMonster(m)),
             items: this.items.map((it) => this.serializeItem(it)),
             // B-1b：全局种类鉴定态与绰号进存档（P1-48；Map 落盘为普通对象）
             identifiedItems: [...ItemLoader.identifiedItems],
@@ -7845,6 +7931,71 @@ export class Game {
             gasGrid,
             stats: { ...this.stats }
         };
+    }
+
+    /**
+     * V-2b-5：怪物的快照序列化/反序列化抽出成对（原先是 toSnapshot 里的内联
+     * map + loadSnapshot 里的内联 map，两处字段表必须人工保持同步；休眠怪
+     * 也要走同一条路，顺势抽出，两半从此只有一份）。
+     */
+    private serializeMonster(m: Monster): GameSnapshotMonster {
+        return {
+            id: m.id,
+            loc: { x: m.loc.x, y: m.loc.y },
+            name: m.name,
+            char: m.char,
+            color: m.color,
+            hp: m.hp,
+            maxHp: m.maxHp,
+            damageString: m.damageString,
+            state: m.state,
+            statusDurations: { ...m.statusDurations },
+            goldDropChance: m.goldDropChance,
+            itemDropChance: m.itemDropChance,
+            onHitStatus: m.onHitStatus,
+            onHitChance: m.onHitChance,
+            onHitDuration: m.onHitDuration,
+            statusImmunities: Array.from(m.statusImmunities),
+            statusResistTurns: { ...m.statusResistTurns },
+            abilities: Array.from(m.abilities)
+        };
+    }
+
+    private deserializeMonster(m: GameSnapshotMonster): Monster {
+        const data = {
+            id: m.name.toLowerCase().replace(/\s+/g, '_'),
+            name: m.name,
+            char: m.char,
+            color: m.color,
+            hp: m.maxHp,
+            damage: m.damageString,
+            minDepth: 1,
+            maxDepth: 99,
+            goldDropChance: m.goldDropChance,
+            itemDropChance: m.itemDropChance,
+            onHitStatus: m.onHitStatus,
+            onHitChance: m.onHitChance,
+            onHitDuration: m.onHitDuration,
+            statusImmunities: m.statusImmunities,
+            statusResistTurns: m.statusResistTurns,
+            abilities: (m.abilities ?? []) as MonsterAbility[]
+        };
+        const monster = new Monster(m.loc.x, m.loc.y, data);
+        monster.id = m.id;
+        monster.hp = m.hp;
+        monster.maxHp = m.maxHp;
+        monster.state = m.state as any;
+        monster.statusDurations = { ...(m.statusDurations ?? {}) };
+        monster.refreshSpeeds(); // P2-2：状态直写绕过 applyStatus，需显式重算衍生速度
+        monster.damageString = m.damageString;
+        monster.goldDropChance = m.goldDropChance;
+        monster.itemDropChance = m.itemDropChance;
+        monster.onHitStatus = m.onHitStatus;
+        monster.onHitChance = m.onHitChance ?? 0;
+        monster.onHitDuration = m.onHitDuration ?? 0;
+        monster.statusImmunities = new Set<StatusId>(m.statusImmunities ?? []);
+        monster.statusResistTurns = { ...(m.statusResistTurns ?? {}) };
+        return monster;
     }
 
     public loadSnapshot(snapshot: GameSnapshot): boolean {
@@ -7898,6 +8049,8 @@ export class Game {
 
         this.depth = snapshot.depth;
         this.grid = new Grid(DCOLS, DROWS);
+        this.dormantMonsters = []; // 读档重建（V-2b-5）：休眠怪不在 monsters 快照里
+        this.bindDormantAwakener();
         for (const c of snapshot.grid) {
             const cell = this.grid.getCell(c.x, c.y);
             if (!cell) continue;
@@ -7971,42 +8124,9 @@ export class Game {
         this.player.ringRight = this.player.inventory.items.find((it) => it.id === snapshot.player.ringRightId) ?? null;
         this.player.temporaryImmunities = { ...(snapshot.player.temporaryImmunities ?? {}) };
 
-        this.monsters = snapshot.monsters.map((m) => {
-            const data = {
-                id: m.name.toLowerCase().replace(/\s+/g, '_'),
-                name: m.name,
-                char: m.char,
-                color: m.color,
-                hp: m.maxHp,
-                damage: m.damageString,
-                minDepth: 1,
-                maxDepth: 99,
-                goldDropChance: m.goldDropChance,
-                itemDropChance: m.itemDropChance,
-                onHitStatus: m.onHitStatus,
-                onHitChance: m.onHitChance,
-                onHitDuration: m.onHitDuration,
-                statusImmunities: m.statusImmunities,
-                statusResistTurns: m.statusResistTurns,
-                abilities: (m.abilities ?? []) as MonsterAbility[]
-            };
-            const monster = new Monster(m.loc.x, m.loc.y, data);
-            monster.id = m.id;
-            monster.hp = m.hp;
-            monster.maxHp = m.maxHp;
-            monster.state = m.state as any;
-            monster.statusDurations = { ...(m.statusDurations ?? {}) };
-            monster.refreshSpeeds(); // P2-2：状态直写绕过 applyStatus，需显式重算衍生速度
-            monster.damageString = m.damageString;
-            monster.goldDropChance = m.goldDropChance;
-            monster.itemDropChance = m.itemDropChance;
-            monster.onHitStatus = m.onHitStatus;
-            monster.onHitChance = m.onHitChance ?? 0;
-            monster.onHitDuration = m.onHitDuration ?? 0;
-            monster.statusImmunities = new Set<StatusId>(m.statusImmunities ?? []);
-            monster.statusResistTurns = { ...(m.statusResistTurns ?? {}) };
-            return monster;
-        });
+        this.monsters = snapshot.monsters.map((m) => this.deserializeMonster(m));
+        // V-2b-5：休眠怪还原进休眠表（不进 this.monsters——CE 同构）。
+        this.dormantMonsters = (snapshot.dormantMonsters ?? []).map((m) => this.deserializeMonster(m));
 
         this.items = snapshot.items.map((it) => this.deserializeItem(it));
         if (snapshot.stats) {
@@ -8542,6 +8662,144 @@ export class Game {
 
     public getMonsterAt(x: number, y: number): Monster | undefined {
         return this.monsters.find(m => m.loc.x === x && m.loc.y === y && m.hp > 0);
+    }
+
+    // ══ V-2b-5：休眠子系统（CE Monsters.c:4156-4210 + Architect.c:1655-1661/
+    //    3487-3496）════════════════════════════════════════════════════════
+
+    /**
+     * 把"唤醒回调"绑到当前 grid 上。`spawnDungeonFeature` 按 Grid 键控取回调
+     * （见 DungeonFeature.setDormantAwakener 的头注），而 `this.grid` 随层换新
+     * ——四处换 grid 的地方（新层 / 层缓存恢复 / test 层 / 读档）各调一次。
+     * 忘调的表现是：该层上任何 DFF_ACTIVATE_DORMANT_MONSTER 的 DF 静默不唤醒。
+     */
+    private bindDormantAwakener(): void {
+        setDormantAwakener(this.grid, (origin, builtCells) =>
+            this.awakenDormantMonstersAt(origin, builtCells));
+    }
+
+    /**
+     * CE Architect.c:3487-3496 的判定半边：休眠怪在 **DF 原点格** 或在
+     * **DF 实际铺开的落点集** 里者，全部唤醒。两条析取缺一不可——
+     * 只实现前者，`STATUE_DORMANT {3,5}` 一类一次多格的雕像群只会活一只；
+     * 只实现后者，startProbability=0 的 DF（CE :679 DF_SHATTERING_SPELL）
+     * 连原点那一只都漏。
+     */
+    private awakenDormantMonstersAt(origin: Pos, builtCells: readonly Pos[]): void {
+        const built = new Set(builtCells.map(p => p.y * DCOLS + p.x));
+        for (const monst of [...this.dormantMonsters]) {
+            const atOrigin = monst.loc.x === origin.x && monst.loc.y === origin.y;
+            if (!atOrigin && !built.has(monst.loc.y * DCOLS + monst.loc.x)) continue;
+            this.toggleMonsterDormancy(monst);
+        }
+    }
+
+    /**
+     * CE toggleMonsterDormancy（Monsters.c:4156-4210）的直译，双向幂等：
+     * 在 dormantMonsters 里 → 醒来；在 monsters 里 → 睡下；两表皆无 → 无操作
+     * （CE 的两次 removeCreature 都失败时同样什么都不做）。
+     *
+     * 醒来方向的要点（CE :4158-4198，逐条）：
+     *   - 移回正常表（CE prependCreature → web unshift，保持"最新醒的排最前"）；
+     *   - 清格上的 HAS_DORMANT_MONSTER（:4165 → web `cell.hasDormantMonster`）；
+     *   - **格被占（HAS_MONSTER | HAS_PLAYER）则重新选址**（:4168-4181）——
+     *     漏了这支会出现两只怪叠格（CE 的 HasMonster/HAS_PLAYER 在 web 分别是
+     *     `getMonsterAt` 与玩家坐标）。CE 用 getQualifyingPathLocNear 按
+     *     "路径距离最小 + 并列随机"选格，web 直接复用同口径的
+     *     `findQualifyingPathLocNear`（P4-9/P1-31 已按 CE 建好的那条）；
+     *   - 醒来后 200 tick 内不动（:4192），给玩家反应时间；
+     *   - MB_MARKED_FOR_SACRIFICE 的献祭链（:4183-4188）web 无该机制，跳过。
+     *
+     * 睡下方向（:4200-4209）：从 monsters 摘到 dormantMonsters、清 HAS_MONSTER
+     * （web 的 getMonsterAt 派生自 this.monsters，摘表即生效）、置
+     * HAS_DORMANT_MONSTER 与 MB_IS_DORMANT。CE 对可见性/回合调度零额外处理
+     * ——不在这张表里就够了，web 同构。
+     */
+    public toggleMonsterDormancy(monst: Monster): void {
+        const dormantIdx = this.dormantMonsters.indexOf(monst);
+        if (dormantIdx !== -1) {
+            // —— 醒来（CE :4158-4198）——
+            this.dormantMonsters.splice(dormantIdx, 1);
+            monst.isDormant = false; // CE :4195 清 MB_IS_DORMANT
+            const fromCell = this.grid.getCell(monst.loc.x, monst.loc.y);
+            if (fromCell) fromCell.hasDormantMonster = false; // CE :4165
+            // CE :4168-4181：`pmap.flags & (HAS_MONSTER | HAS_PLAYER)` → 占用
+            const occupied = !!this.getMonsterAt(monst.loc.x, monst.loc.y)
+                || (this.player.hp > 0
+                    && this.player.loc.x === monst.loc.x
+                    && this.player.loc.y === monst.loc.y);
+            if (occupied) {
+                // CE :4169-4177 getQualifyingPathLocNear（"路径距离最小 + 并列
+                // 随机"，HAS_PLAYER / HAS_MONSTER / HAS_STAIRS 一并回避）。web
+                // 复用同口径的 findQualifyingPathLocNear（P1-31/P4-9 建好；
+                // 其 machineCells 回避比 CE 多一项——web 侧必要，与
+                // spawnHordeAt 成员铺开的排除同理由，见该方法内注）。
+                let relocated = this.findQualifyingPathLocNear(monst.loc);
+                // CE 的判据里 HAS_PLAYER 是硬回避项；web 的
+                // entryQualifiesForPlacement 不查玩家坐标（它只服务玩家落位，
+                // 玩家不会把自己选进自己），这里补上同一回避。
+                if (relocated
+                    && this.player.loc.x === relocated.x
+                    && this.player.loc.y === relocated.y) {
+                    relocated = null;
+                }
+                // CE Grid.c:347-356 的路径无关兜底（getQualifyingLocNear）——
+                // web 同款切比雪夫环 = findNearbySpawnSpot（P4-2，回避
+                // 怪/玩家/不可走）。
+                if (!relocated) relocated = this.findNearbySpawnSpot(monst.loc);
+                if (relocated) {
+                    monst.loc = relocated;
+                    const toCell = this.grid.getCell(relocated.x, relocated.y);
+                    if (toCell) toCell.hasDormantMonster = false;
+                }
+                // 找不到合格格时留在原格（与 CE 的 getQualifyingPathLocNear
+                // "总返回某处"的兜底同义；叠格是 CE 同款退化，不另造守卫）。
+            }
+            monst.ticksUntilTurn = Math.max(monst.ticksUntilTurn, 200); // CE :4192
+            this.monsters.unshift(monst); // CE :4163 prependCreature
+            // CE :4194 置 HAS_MONSTER——web 的 getMonsterAt 派生自本表，无需位。
+            return;
+        }
+
+        const activeIdx = this.monsters.indexOf(monst);
+        if (activeIdx !== -1) {
+            // —— 睡下（CE :4200-4209）——
+            this.monsters.splice(activeIdx, 1);
+            this.dormantMonsters.unshift(monst); // CE :4203 prependCreature
+            monst.isDormant = true; // CE :4207 置 MB_IS_DORMANT
+            const cell = this.grid.getCell(monst.loc.x, monst.loc.y);
+            if (cell) cell.hasDormantMonster = true; // CE :4206
+            this.visibleMonsters.delete(monst); // 不再可见（CE 不在 monsters 表 ⇒ 画不到）
+        }
+    }
+
+    /**
+     * V-2b-5：CE Architect.c:1628-1661 的 MB_JUST_SUMMONED 段（机器怪落地
+     * 收尾），对机器生成的**每一只**怪（含 horde 成员——CE spawnMinions
+     * Monsters.c:743 同样置 MB_JUST_SUMMONED）执行。**前提：mon 已在
+     * this.monsters 里**（单只路径由调用方 push、horde 路径由 spawnHordeAt
+     * push——CE 的怪在 spawnHorde/generateMonster 时就已入表，本段只是
+     * 后处理，不再入表一次；重复入表会让同一对象在两张表里各留一份）。
+     *   - machineHome = machineNumber（:1661，"Monster remembers the machine
+     *     that spawned it."）；
+     *   - MF_MONSTERS_DORMANT → toggleMonsterDormancy（:1655-1656），且
+     *     **否定条件**（:1656-1659）：不带 MF_MONSTER_SLEEPING 且非盟友者，
+     *     醒来时是 TRACKING_SCENT（web 的 HUNTING，Scent.ts:73 同款映射）而
+     *     不是 sleeping——别漏掉这个"不是"。
+     *   - MF_MONSTER_SLEEPING（:1648-1650）→ MONSTER_SLEEPING。
+     */
+    private finalizeBlueprintMonster(mon: Monster, spawn: MachineMonsterSpawn, machineNumber: number): void {
+        mon.machineHome = machineNumber;
+        if (spawn.dormant) {
+            this.toggleMonsterDormancy(mon);
+            if (!spawn.sleeping && !mon.isAlly) {
+                mon.state = MonsterState.HUNTING; // CE MONSTER_TRACKING_SCENT
+            } else if (spawn.sleeping) {
+                mon.state = MonsterState.ASLEEP; // CE MONSTER_SLEEPING（:1648-1650）
+            }
+        } else if (spawn.sleeping) {
+            mon.state = MonsterState.ASLEEP;
+        }
     }
 
     public hoveredCell: Pos | null = null;

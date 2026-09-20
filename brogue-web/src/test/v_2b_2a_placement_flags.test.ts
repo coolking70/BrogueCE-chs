@@ -148,30 +148,42 @@ describe('V-2b-2a 前提自检', () => {
     // reward_commutation 之后，本表每个计数按 CE GlobalsBrogue.c 原表
     // （:183-197/:221-232/:289-294/:347-363）重新普查一遍。逐字段转录由
     // v_2b_4_altars 的 C 组另钉一遍。
-    it('P1（V-2b-4 三次顺延）feature 旗标载体普查与 V-2b-4 落地后的 CE 原表一致', () => {
+    // **V-2b-5 四次顺延**（本文件在 V-2b-5 任务书 §5 授权清单内）：CE
+    // 21/29/41/43/50/56/69/70 号八条蓝图落地后，本表每个计数按 CE
+    // GlobalsBrogue.c 原表（:318-321/:364-368/:445-449/:460-463/:505-508/
+    // :545-548/:608-616）重新普查一遍。逐字段转录由 v_2b_5_dormant 的
+    // A4 组另钉一遍。本轮新出现载体的旗标：MF_GENERATE_HORDE（5）、
+    // MF_MONSTERS_DORMANT（8）、MF_IN_VIEW_OF_ORIGIN（1，56 号炮塔——
+    // 判据仍未实现，登记缺口见 BlueprintEngine.cellIsFeatureCandidate 头注）。
+    it('P1（V-2b-5 四次顺延）feature 旗标载体普查与 V-2b-5 落地后的 CE 原表一致', () => {
         const count = (flag: string): number =>
             (blueprintData as BlueprintDef[]).reduce(
                 (n, bp) => n + bp.features.filter(f => f.flags.includes(flag)).length,
                 0
             );
-        expect(count('MF_PERMIT_BLOCKING'), 'PERMIT_BLOCKING 载体数（V-2b-3 基线 22；V-2b-4 +4：1 号前厅 :186、2 号前厅 :194、6 号前厅 :226、7 号前厅 :232）').toBe(26);
-        expect(count('MF_IMPREGNABLE'), 'IMPREGNABLE 载体数（V-2b-3 基线 10；V-2b-4 +16：1 号 3 笼+1 雕像、2 号 2 笼+1 雕像、6/7 号各 1 雕像、15 号开裂雕像、26 号 1 墙+3 笼+1 雕像、28 号铁笼）').toBe(26);
-        expect(count('MF_TREAT_AS_BLOCKING'), 'TREAT_AS_BLOCKING 载体数（V-2b-3 基线 14；V-2b-4 +19：1 号 4、2 号 3、6 号 2、7 号 2、15 号 2、26 号 5、28 号压力板 1）').toBe(33);
-        expect(count('MF_NOT_IN_HALLWAY'), 'NOT_IN_HALLWAY 载体数（V-2b-3 基线 10；V-2b-4 +5：15 号护符位/菌林/雕像 :291-293、28 号铁笼/压力板 :362-363）').toBe(15);
+        expect(count('MF_PERMIT_BLOCKING'), 'PERMIT_BLOCKING 载体数（V-2b-4 基线 26；V-2b-5 +1：21 号门位雕像 :320）').toBe(27);
+        expect(count('MF_IMPREGNABLE'), 'IMPREGNABLE 载体数（V-2b-4 基线 26；V-2b-5 未增）').toBe(26);
+        expect(count('MF_TREAT_AS_BLOCKING'), 'TREAT_AS_BLOCKING 载体数（V-2b-4 基线 33；V-2b-5 +7：29 号祭坛 :366、41 号祭坛 :447、43 号祭坛+雕像 :461-462、50 号祭坛 :506、56 号祭坛+炮塔 :546-547）').toBe(40);
+        expect(count('MF_NOT_IN_HALLWAY'), 'NOT_IN_HALLWAY 载体数（V-2b-4 基线 15；V-2b-5 +6：29 号两条 :366-367、43 号两条 :461-462、50 号祭坛 :506、56 号祭坛 :546）').toBe(21);
         // 仍未实现：
         expect(count('MF_KEY_DISPOSABLE'), 'KEY_DISPOSABLE 载体数（V-2b-6 反转我）').toBe(2);
         // V-2b-2b 新载体（CE 原表核对）：
-        expect(count('MF_BUILD_IN_WALLS'), 'BUILD_IN_WALLS 载体数（V-2b-3 基线 4；V-2b-4 +7：1/2/6/7 号各 1 雕像、15 号墙火把 :294、26 号 1 墙+1 雕像）').toBe(11);
-        expect(count('MF_EVERYWHERE'), 'EVERYWHERE 载体数（V-2b-3 基线 5；V-2b-4 +6：1/2/6/7/26 号地毯 :185/:193/:223/:229/:349 + 26 号 WALL :350）').toBe(11);
-        expect(count('MF_BUILD_ANYWHERE_ON_LEVEL'), 'BUILD_ANYWHERE 载体数（V-2b-2b 基线 2：19 号药水/20 号卷轴；V-2b-3 +2：18 号隐藏墙杆 :308、24 号图腾 :336；V-2b-4 未增）').toBe(4);
-        expect(count('MF_REPEAT_UNTIL_NO_PROGRESS'), 'REPEAT 载体数（23 号陷阱；V-2b-3/V-2b-4 未增）').toBe(1);
-        expect(count('MF_NO_THROWING_WEAPONS'), 'NO_THROWING_WEAPONS 载体数（V-2b-3 基线 1：4 号武器基座；V-2b-4 +4：1 号 :188/:189、26 号 :353/:354）').toBe(5);
-        expect(count('MF_REQUIRE_GOOD_RUNIC'), 'REQUIRE_GOOD_RUNIC 载体数（4 号武器+护甲基座；V-2b-4 未增）').toBe(2);
-        // V-2b-3 新载体（CE 原表核对）：
-        expect(count('MF_FAR_FROM_ORIGIN'), 'FAR_FROM_ORIGIN 载体数（V-2b-3 出列 2：67/68 号麻痹喷口；V-2b-4 +2：7 号复活祭坛 :231、15 号开裂雕像 :293）').toBe(4);
+        expect(count('MF_BUILD_IN_WALLS'), 'BUILD_IN_WALLS 载体数（V-2b-4 基线 11；V-2b-5 +6：29 号鼠墙 :368、41 号火嘴 :449、50 号蠕虫墙 :507、56 号炮塔 :547、69 号进墙雕像 :611、70 号蠕虫墙 :614）').toBe(17);
+        expect(count('MF_EVERYWHERE'), 'EVERYWHERE 载体数（V-2b-4 基线 11；V-2b-5 +4：21 号触发地板 :321、41 号地板 :446、69 号触发地板 :612、70 号触发地板 :615）').toBe(15);
+        expect(count('MF_BUILD_ANYWHERE_ON_LEVEL'), 'BUILD_ANYWHERE 载体数（V-2b-3 基线 4；V-2b-5 未增）').toBe(4);
+        expect(count('MF_REPEAT_UNTIL_NO_PROGRESS'), 'REPEAT 载体数（23 号陷阱；V-2b-3/4/5 未增）').toBe(1);
+        expect(count('MF_NO_THROWING_WEAPONS'), 'NO_THROWING_WEAPONS 载体数（V-2b-4 基线 5；V-2b-5 未增）').toBe(5);
+        expect(count('MF_REQUIRE_GOOD_RUNIC'), 'REQUIRE_GOOD_RUNIC 载体数（基线 2；V-2b-5 未增）').toBe(2);
+        expect(count('MF_FAR_FROM_ORIGIN'), 'FAR_FROM_ORIGIN 载体数（V-2b-4 基线 4；V-2b-5 +5：29 号两条 :366-367、41 号祭坛+火嘴 :447/:449、43 号雕像 :462）').toBe(9);
+        expect(count('MF_NEAR_ORIGIN'), 'NEAR_ORIGIN 载体数（V-2b-4 基线 8；V-2b-5 +4：41 号甲烷喷口 :448、43 号祭坛 :461、50 号祭坛 :506、56 号祭坛 :546）').toBe(12);
+        expect(count('MF_BUILD_AT_ORIGIN'), 'BUILD_AT_ORIGIN 载体数（V-2b-4 基线 24；V-2b-5 +3：21 号雕像 :320、41 号门 :445、69 号原地雕像 :608）').toBe(27);
+        expect(count('MF_ADOPT_ITEM'), 'ADOPT_ITEM 载体数（V-2b-4 基线 3；V-2b-5 +5：29/41/43/50/56 号祭坛各一 :366/:447/:461/:506/:546）').toBe(8);
+        // V-2b-5 新载体（CE 原表核对）：
+        expect(count('MF_GENERATE_HORDE'), 'GENERATE_HORDE 载体数（V-2b-5 首批载体：21 号 :320、43 号 :462、56 号 :547、69 号两条 :608/:611）').toBe(5);
+        expect(count('MF_MONSTERS_DORMANT'), 'MONSTERS_DORMANT 载体数（V-2b-5 前唯一载体 15 号 :293；本轮 +8：21/29/43/50/56 号各一、69 号两条、70 号一条）').toBe(9);
+        expect(count('MF_IN_VIEW_OF_ORIGIN'), 'IN_VIEW_OF_ORIGIN 载体数（既有 1：24 号图腾 :341；V-2b-5 +1：56 号炮塔 :547。判据未实现，登记缺口）').toBe(2);
         // 仍零载体（出现载体：核对 CE 原表 + 重捕获基线）：
         for (const flag of [
-            'MF_NOT_ON_LEVEL_PERIMETER',
             'MF_REQUIRE_HEAVY_WEAPON',
         ]) {
             expect(count(flag), `${flag} 应为零载体（出现载体：核对 CE 原表 + 重捕获基线）`).toBe(0);

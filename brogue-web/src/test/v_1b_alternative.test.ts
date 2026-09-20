@@ -149,7 +149,11 @@ describe('V-1b 前提自检', () => {
     // 两条 ALTAR_CAGE_OPEN 笼中物构成一条替代组，15 → 17。新蓝图的其余
     // feature 均不带 ALTERNATIVE（1 号的三条笼中物**不是**替代组——CE :187-189
     // 无 MF_ALTERNATIVE，这是 1 号与 2 号的关键差别）。
-    it('P1（V-2b-4 三次顺延）生产数据带 MF_ALTERNATIVE 的 feature 恰为 CE 2/3/4/5/23/18/22/25 号替代组十七条；MF_ALTERNATIVE_2 仍零载体', () => {
+    // **V-2b-5 四次顺延**（本文件在 V-2b-5 任务书 §5 授权清单内）：CE 21 号
+    //（GlobalsBrogue.c:320 STATUE_DORMANT_DOORWAY）与 69 号（:608/:611 两条
+    // STATUE_DORMANT 的 BUILD_AT_ORIGIN / BUILD_IN_WALLS 替代组）落地，
+    // 17 → 20。三条均 item=null（地形载体）。MF_ALTERNATIVE_2 仍零载体。
+    it('P1（V-2b-5 四次顺延）生产数据带 MF_ALTERNATIVE 的 feature 恰为 CE 2/3/4/5/23/18/22/25/21/69 号替代组二十条；MF_ALTERNATIVE_2 仍零载体', () => {
         const flagged = (blueprintData as BlueprintDef[]).flatMap(bp =>
             bp.features.map(f => ({ bpId: bp.id, f }))
                 .filter(({ f }) => f.flags.includes('MF_ALTERNATIVE') || f.flags.includes('MF_ALTERNATIVE_2'))
@@ -181,6 +185,11 @@ describe('V-1b 前提自检', () => {
             { bpId: 'vestibule_throwing_tutorial', alt1: true, alt2: false, item: null },
             { bpId: 'vestibule_guardian_obstacle', alt1: true, alt2: false, item: null },
             { bpId: 'vestibule_guardian_obstacle', alt1: true, alt2: false, item: null },
+            // V-2b-5 四次顺延（17 → 20）：CE 21 号（:320）与 69 号（:608/:611，
+            // 原地/进墙两条替代）的雕像载体，itemId 为空 → item 记 null。
+            { bpId: 'vestibule_statue_monster', alt1: true, alt2: false, item: null },
+            { bpId: 'area_trick_statue', alt1: true, alt2: false, item: null },
+            { bpId: 'area_trick_statue', alt1: true, alt2: false, item: null },
             { bpId: 'reward_pedestal_consumable', alt1: true, alt2: false, item: 'potion_of_life' },
             { bpId: 'reward_pedestal_consumable', alt1: true, alt2: false, item: 'scroll_of_enchantment' },
         ]);

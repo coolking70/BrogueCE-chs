@@ -160,7 +160,16 @@ describe('V-2b-4 A：七条祭坛族地形的 CE 逐字段钉死', () => {
         expect(TERRAIN_HOME_LAYER[C.AMULET_SWITCH]).toBe(L.DUNGEON);
     });
 
-    it('A6 STATUE_INSTACRACK（Globals.c:354）：即刻开裂雕像——discoverType 震裂、promoteChance 0（不是 STATUE_CRACKING 的 3500）', () => {
+    it('A6 STATUE_INSTACRACK（Globals.c:354）：即刻开裂雕像——promoteType 震裂、promoteChance 0（不是 STATUE_CRACKING 的 3500）【V-2b-5 反转】', () => {
+        // ★ 本条断言已按 V-2b-5 的 CE 复核反转（B-1 反转范本）★
+        // 原断言（V-2b-4）："discoverType=DF_STATUE_SHATTER、promoteType 空"。
+        // 前提有误：按 floorTileType 字段序（Rogue.h:1905-1921）逐位对齐
+        // CE :354 `… 0, 0, DF_PLAIN_FIRE,0,DF_STATUE_SHATTER, 0, NO_LIGHT …`
+        // —— fireType=DF_PLAIN_FIRE、discoverType=0、promoteType=
+        // DF_STATUE_SHATTER。原抄法把 discover/promote 两列对调，而 web 唯一
+        // 的晋升驱动 promoteTile 只读 promoteType → "护符被取走 → 全机通电 →
+        // 雕像震裂 → 唤醒 Warden of Yendor"整条链在该 tile 上断掉。
+        // V-2b-5 已更正 TerrainCatalog 数据；本断言改为钉 CE 原值。
         const e = TERRAIN_FLAGS[C.STATUE_INSTACRACK]!;
         expect(e.flags).toBe(
             T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS |
@@ -169,8 +178,8 @@ describe('V-2b-4 A：七条祭坛族地形的 CE 逐字段钉死', () => {
         expect(e.mechFlags).toBe(TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED);
         expect(e.chanceToIgnite).toBe(0);
         expect(e.fireType).toBe('DF_PLAIN_FIRE');
-        expect(e.discoverType, '搜索/踩上即震裂').toBe('DF_STATUE_SHATTER');
-        expect(e.promoteType, 'CE :354 promoteType 列 = 0（它是"一搜即碎"，没有过渡晋升）').toBe('');
+        expect(e.discoverType, 'CE :354 discoverType 列 = 0（原断言把 promote 列抄进了这里）').toBe('');
+        expect(e.promoteType, 'CE :354 promoteType = DF_STATUE_SHATTER（通电晋升链的落点）').toBe('DF_STATUE_SHATTER');
         expect(e.promoteChance, 'CE :354 是 0；:353 的 STATUE_CRACKING 才是 3500').toBe(0);
         expect(e.glowLight).toBe(LightKind.NO_LIGHT);
         expect(e.webOnly).toBe(false);

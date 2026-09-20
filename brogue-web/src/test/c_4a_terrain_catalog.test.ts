@@ -152,7 +152,10 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         // ALTAR_CAGE_RETRACTABLE / COMMUTATION_ALTAR / RESURRECTION_ALTAR /
         // AMULET_SWITCH / STATUE_INSTACRACK / TORCH_WALL），62 → 69。逐字段
         // 钉死在 v_2b_4_altars 的 A 组（对抗：抄错任一位即红）。
-        expect(names.length).toBe(69);
+        // V-2b-5：休眠唤醒轮七条入列（CE Globals.c:352/356/357/361/366/551/559，
+        // 蓝图 21/29/41/43/50/56/69/70 号的地形载体），69 → 76。逐字段
+        // 钉死在 v_2b_5_dormant 的 A1 组（对抗：抄错任一位即红）。
+        expect(names.length).toBe(76);
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             const entry = TERRAIN_FLAGS[t];
@@ -556,6 +559,14 @@ describe('C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时
         C.PORTCULLIS_CLOSED, C.WORM_TUNNEL_OUTER_WALL, C.WALL_LEVER_HIDDEN,
         C.PILOT_LIGHT_DORMANT,
         C.ALTAR_CAGE_RETRACTABLE, C.STATUE_INSTACRACK, C.TORCH_WALL,
+        // V-2b-5：休眠唤醒轮七条里，五条是墙族（STATUE_DORMANT :352 /
+        // STATUE_DORMANT_DOORWAY :551 / WALL_MONSTER_DORMANT :357 /
+        // RAT_TRAP_WALL_DORMANT :559 / TURRET_DORMANT :356，全带 PASSABILITY）
+        // ——列入跳过，CE 判定由下方 V-2b-5 块正向钉死；其余两条
+        //（ALTAR_SWITCH :366 仅 SURFACE_EFFECTS、MACHINE_TRIGGER_FLOOR :361
+        // 零旗标）**留在等价论域内**——不跳过，由本组逐位继续把关。
+        C.STATUE_DORMANT, C.STATUE_DORMANT_DOORWAY, C.WALL_MONSTER_DORMANT,
+        C.RAT_TRAP_WALL_DORMANT, C.TURRET_DORMANT,
     ]);
     it('terrainAllowsMove（查表）≡ 旧排除清单 {GRANITE,WALL,SECRET_DOOR,LOCKED_DOOR,WATER_DEEP}', () => {
         const names = Object.keys(TerrainType).filter((k) => Number.isNaN(Number(k)));
@@ -651,6 +662,34 @@ describe('C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时
             expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(false);
         }
         for (const t of [C.ALTAR_CAGE_OPEN, C.COMMUTATION_ALTAR, C.RESURRECTION_ALTAR, C.AMULET_SWITCH]) {
+            game.grid.setTerrain(20, 20, t);
+            expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(true);
+        }
+    });
+    it('V-2b-5：休眠载体七条的通行判定 = CE 查表口径（五条墙族挡通行、两条可走）', () => {
+        // 上方两条等价断言跳过的五条挡通行 tile 在这里正向钉死（CE Globals.c
+        // 第 11 列 flags 出处）：STATUE_DORMANT :352 / STATUE_DORMANT_DOORWAY
+        // :551（四旗标，含 PASSABILITY——雕像挡路）、WALL_MONSTER_DORMANT
+        // :357 / RAT_TRAP_WALL_DORMANT :559 / TURRET_DORMANT :356（三者
+        // T_OBSTRUCTS_EVERYTHING）。反方向同样钉死：ALTAR_SWITCH :366（仅
+        // SURFACE_EFFECTS——祭坛触发板不挡路，钥匙放上面玩家要走过去拿）与
+        // MACHINE_TRIGGER_FLOOR :361（零旗标——触发地板就是地板）若被误加
+        // PASSABILITY，29/43/50/56 号的取物与 21/69/70 号的踩踏触发会被堵死。
+        for (const t of [C.STATUE_DORMANT, C.STATUE_DORMANT_DOORWAY, C.WALL_MONSTER_DORMANT,
+            C.RAT_TRAP_WALL_DORMANT, C.TURRET_DORMANT]) {
+            expect(terrainAllowsMove(t), `terrainAllowsMove(${TerrainType[t]}) 应挡通行`).toBe(false);
+        }
+        for (const t of [C.ALTAR_SWITCH, C.MACHINE_TRIGGER_FLOOR]) {
+            expect(terrainAllowsMove(t), `terrainAllowsMove(${TerrainType[t]}) 应可走`).toBe(true);
+        }
+        const game = createHeadlessGame(424242);
+        const canMoveTo = (game as unknown as { canMoveTo(x: number, y: number): boolean }).canMoveTo.bind(game);
+        for (const t of [C.STATUE_DORMANT, C.STATUE_DORMANT_DOORWAY, C.WALL_MONSTER_DORMANT,
+            C.RAT_TRAP_WALL_DORMANT, C.TURRET_DORMANT]) {
+            game.grid.setTerrain(20, 20, t);
+            expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(false);
+        }
+        for (const t of [C.ALTAR_SWITCH, C.MACHINE_TRIGGER_FLOOR]) {
             game.grid.setTerrain(20, 20, t);
             expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(true);
         }

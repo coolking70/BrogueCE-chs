@@ -466,8 +466,11 @@ describe('G-2 对抗⑦：未迁移气体只登记（载体盘点表的显式留
         // DungeonFeatureCatalog 的 V-2b-4 块注与 c_4b E4；唯一 tile 完整的
         // DF_CAGE_DISAPPEARS（tile ALTAR_INERT = web TerrainType.ALTAR）不入列。
         // 守卫仍全等钉死长度，不放宽成 contains/大于。
+        // **V-2b-5 第五次顺延**：休眠唤醒轮四条新条目里 web 无 tile 的两条
+        //（DF_WALL_CRACK / DF_CRACKING_STATUE）入列，26 → 28。逐条见
+        // DungeonFeatureCatalog 的 V-2b-5 块注与 v_2b_5_dormant A3。
         expect(DF_MISSING_TILES, 'F-2c 后 DF_EXPLOSION_FIRE 已摘出缺 tile 名单').not.toContain(DF.DF_EXPLOSION_FIRE);
-        expect(DF_MISSING_TILES).toHaveLength(26);
+        expect(DF_MISSING_TILES).toHaveLength(28);
         const f = catalogFeature(DF.DF_EXPLOSION_FIRE);
         expect(f.tile).toBe(C.GAS_EXPLOSION);
         expect(f.startProbability).toBe(60);

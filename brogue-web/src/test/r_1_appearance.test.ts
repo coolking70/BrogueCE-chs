@@ -152,6 +152,17 @@ const EXPECTED_VISIBLE: Record<TerrainType, { char: string; color: string; bgCol
     [TerrainType.AMULET_SWITCH]: DEFAULT_LOOK,              // V-2b-4
     [TerrainType.STATUE_INSTACRACK]: DEFAULT_LOOK,          // V-2b-4
     [TerrainType.TORCH_WALL]: DEFAULT_LOOK,                 // V-2b-4
+    // V-2b-5 七条：休眠唤醒轮的地形载体，terrainAppearance 尚无专属分支
+    //（CE 外观接线归 UI 轮，同上 DEFAULT_LOOK 欠账登记——与 V-2b-2b/2b-3/
+    // 2b-4 同款。结构性穷尽表，不加成员连 npm run build 都过不去，
+    // 机械补齐并申报）。
+    [TerrainType.ALTAR_SWITCH]: DEFAULT_LOOK,               // V-2b-5
+    [TerrainType.MACHINE_TRIGGER_FLOOR]: DEFAULT_LOOK,      // V-2b-5
+    [TerrainType.STATUE_DORMANT]: DEFAULT_LOOK,             // V-2b-5
+    [TerrainType.WALL_MONSTER_DORMANT]: DEFAULT_LOOK,       // V-2b-5
+    [TerrainType.RAT_TRAP_WALL_DORMANT]: DEFAULT_LOOK,      // V-2b-5
+    [TerrainType.STATUE_DORMANT_DOORWAY]: DEFAULT_LOOK,     // V-2b-5
+    [TerrainType.TURRET_DORMANT]: DEFAULT_LOOK,             // V-2b-5
 };
 
 /** 造 Cell（terrain 走 setter 写回归属层）。只用于 DUNGEON/SURFACE 层地形。 */
@@ -244,7 +255,10 @@ describe('R-1 terrainAppearance 特征化（穷举钉死）', () => {
         // V-2b-4：+7（ALTAR_CAGE_OPEN/ALTAR_CAGE_RETRACTABLE/COMMUTATION_ALTAR/
         // RESURRECTION_ALTAR/AMULET_SWITCH/STATUE_INSTACRACK/TORCH_WALL——
         // 祭坛族轮七条蓝图的地形载体），62 → 69。
-        expect(ALL_TERRAINS.length).toBe(69);
+        // V-2b-5：+7（ALTAR_SWITCH/MACHINE_TRIGGER_FLOOR/STATUE_DORMANT/
+        // WALL_MONSTER_DORMANT/RAT_TRAP_WALL_DORMANT/STATUE_DORMANT_DOORWAY/
+        // TURRET_DORMANT——休眠唤醒轮八条蓝图的地形载体），69 → 76。
+        expect(ALL_TERRAINS.length).toBe(76);
         expect(new Set(ALL_TERRAINS).size).toBe(ALL_TERRAINS.length);
     });
 

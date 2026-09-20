@@ -163,8 +163,25 @@ export enum TerrainType {
     COMMUTATION_ALTAR,          // Globals.c:532 置换祭坛（6 号）
     RESURRECTION_ALTAR,         // Globals.c:538 复活祭坛（7 号）
     AMULET_SWITCH,              // Globals.c:529 护符触发板（15 号，护符被拾取即晋升）
-    STATUE_INSTACRACK,          // Globals.c:354 即刻开裂雕像（15 号，discoverType 震裂）
-    TORCH_WALL                  // Globals.c:337 墙装火把（15 号，进墙装饰）
+    STATUE_INSTACRACK,          // Globals.c:354 即刻开裂雕像（15 号，promoteType 震裂）
+    TORCH_WALL,                 // Globals.c:337 墙装火把（15 号，进墙装饰）
+    // V-2b-5：休眠唤醒 + horde 接线轮——CE 蓝图 21/29/41/43/50/56/69/70 号的
+    // 七个休眠载体地形。只追加在尾部（terrainFingerprint 按数值哈希，既有
+    // 枚举值不变）。七条全部照抄 CE Globals.c 第 4 列 drawPriority 与旗标列。
+    ALTAR_SWITCH,               // Globals.c:366 祭坛触发板（29/43/50/56 号，
+                                // 取物即晋升 DF_ALTAR_INERT + 全机通电）
+    MACHINE_TRIGGER_FLOOR,      // Globals.c:361 机器触发地板（21/69/70 号，
+                                // TM_PROMOTES_ON_PLAYER_ENTRY：玩家踏入即通电）
+    STATUE_DORMANT,             // Globals.c:352 休眠雕像（43/69 号，晋升链
+                                // DF_CRACKING_STATUE → STATUE_CRACKING → 震裂）
+    WALL_MONSTER_DORMANT,       // Globals.c:357 藏怪墙（50/70 号，promoteType
+                                // DF_WALL_SHATTER——与 18/22 号爆炸墙同一条链）
+    RAT_TRAP_WALL_DORMANT,      // Globals.c:559 鼠陷阱墙（29 号，promoteType
+                                // DF_WALL_CRACK → 链尾 DF_RUBBLE）
+    STATUE_DORMANT_DOORWAY,     // Globals.c:551 门内休眠雕像（21 号，
+                                // 比 STATUE_DORMANT 多 TM_CONNECTS_LEVEL）
+    TURRET_DORMANT              // Globals.c:356 休眠炮塔（56 号，promoteType
+                                // DF_TURRET_EMERGE → tile WALL，web 有载体）
 }
 
 export enum LightType {
@@ -311,7 +328,20 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.RESURRECTION_ALTAR]: 17,
     [TerrainType.AMULET_SWITCH]: 95,
     [TerrainType.STATUE_INSTACRACK]: 0,
-    [TerrainType.TORCH_WALL]: 0
+    [TerrainType.TORCH_WALL]: 0,
+    // V-2b-5：CE 第 4 列原值。ALTAR_SWITCH 17（Globals.c:366，与 ALTAR_INERT
+    // 同档）；MACHINE_TRIGGER_FLOOR 95（:361，G_FLOOR 伪装——触发地板看着
+    // 就是地面）；STATUE_DORMANT 0（:352 雕像墙档）；WALL_MONSTER_DORMANT 0
+    // （:357 G_WALL 伪装）；RAT_TRAP_WALL_DORMANT 0（:559 G_WALL 伪装）；
+    // STATUE_DORMANT_DOORWAY 0（:551 雕像墙档）；TURRET_DORMANT 0（:356
+    // G_WALL 伪装）。六个 0 都是"墙档"——伪装体的存在感就在于看不出区别。
+    [TerrainType.ALTAR_SWITCH]: 17,
+    [TerrainType.MACHINE_TRIGGER_FLOOR]: 95,
+    [TerrainType.STATUE_DORMANT]: 0,
+    [TerrainType.WALL_MONSTER_DORMANT]: 0,
+    [TerrainType.RAT_TRAP_WALL_DORMANT]: 0,
+    [TerrainType.STATUE_DORMANT_DOORWAY]: 0,
+    [TerrainType.TURRET_DORMANT]: 0
 };
 
 /**
@@ -453,7 +483,21 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     [TerrainType.RESURRECTION_ALTAR]: DungeonLayer.DUNGEON,
     [TerrainType.AMULET_SWITCH]: DungeonLayer.DUNGEON,
     [TerrainType.STATUE_INSTACRACK]: DungeonLayer.DUNGEON,
-    [TerrainType.TORCH_WALL]: DungeonLayer.DUNGEON
+    [TerrainType.TORCH_WALL]: DungeonLayer.DUNGEON,
+    // V-2b-5：七条休眠载体全落 DUNGEON 层——CE 蓝图 feature 的 layer 列逐条
+    // 为 DUNGEON（GlobalsBrogue.c:320-321/366-368/445-449/460-463/505-508/
+    // 545-548/608-616），且三链字段指向的四个新 DF 条目
+    // （DF_ALTAR_INERT {ALTAR_INERT, DUNGEON} :723、
+    //  DF_WALL_CRACK {RAT_TRAP_WALL_CRACKING, DUNGEON} :818、
+    //  DF_CRACKING_STATUE {STATUE_CRACKING, DUNGEON} :872、
+    //  DF_TURRET_EMERGE {WALL, DUNGEON} :876）layer 列同证。
+    [TerrainType.ALTAR_SWITCH]: DungeonLayer.DUNGEON,
+    [TerrainType.MACHINE_TRIGGER_FLOOR]: DungeonLayer.DUNGEON,
+    [TerrainType.STATUE_DORMANT]: DungeonLayer.DUNGEON,
+    [TerrainType.WALL_MONSTER_DORMANT]: DungeonLayer.DUNGEON,
+    [TerrainType.RAT_TRAP_WALL_DORMANT]: DungeonLayer.DUNGEON,
+    [TerrainType.STATUE_DORMANT_DOORWAY]: DungeonLayer.DUNGEON,
+    [TerrainType.TURRET_DORMANT]: DungeonLayer.DUNGEON
 };
 
 /**
@@ -659,6 +703,22 @@ export class Cell {
      * 仅由 Promotion 的 wired 分支读写。
      */
     public isPowered: boolean = false;
+
+    /**
+     * V-2b-5：CE `pmap.flags & HAS_DORMANT_MONSTER`（Rogue.h:1105 一族的 pmap
+     * 位旗标；读写点 Monsters.c:4165/4206 的 toggleMonsterDormancy 两个方向）。
+     *
+     * 语义：**休眠怪不占格**——CE 把休眠怪从 `monsters` 链表摘到
+     * `dormantMonsters`，并清 HAS_MONSTER 改置本旗标；因此 HAS_MONSTER 的读取
+     * 者（`monsterAtLoc`、寻路占用、落位资格）天然看不见它。
+     *
+     * web 的 HAS_MONSTER 等价物是 `Game.getMonsterAt`（按 this.monsters 现场
+     * 查找），故本旗标在 web **不承担判据职责**，只作为"该格有休眠怪"的
+     * 可查询事实保留（CE 的 pmap 位就是这么用的：连"是否有休眠怪"的查询都
+     * 允许按格问）。真正的排斥由 `Game.dormantMonsters` 与 `this.monsters`
+     * 两张表互斥保证——与 CE 的两条链表一一对应。
+     */
+    public hasDormantMonster: boolean = false;
 
     constructor(x: number, y: number) {
         this.x = x;

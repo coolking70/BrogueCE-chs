@@ -96,6 +96,7 @@ import {
     TM_PROMOTES_WITH_KEY,
 } from './TerrainCatalog';
 import {
+    DFF_ACTIVATE_DORMANT_MONSTER,
     DFF_AGGRAVATES_MONSTERS,
     DFF_BLOCKED_BY_OTHER_LAYERS,
     DFF_CLEAR_LOWER_PRIORITY_TERRAIN,
@@ -641,6 +642,36 @@ export function catalogFeature(df: DF): DungeonFeature {
 
 // ── spawnDungeonFeature（CE Architect.c:3359-3495）────────────────────────
 
+/**
+ * V-2b-5：休眠怪唤醒者（CE Architect.c:3487-3496 的 `dormantMonsters` 遍历）。
+ *
+ * **为什么是回调而不是直接实现**：CE 的那段代码遍历的是全局链表
+ * `dormantMonsters`，并对每只怪调 `toggleMonsterDormancy`——而 web 的休眠表
+ * 与 `toggleMonsterDormancy` 都住在 `Game`（怪物列表 `Game.monsters` /
+ * `Game.dormantMonsters` 是实例状态，不是模块状态）。`spawnDungeonFeature`
+ * 是纯地形函数、不 import Game，因此把"谁被唤醒"这一步以回调出栈。
+ *
+ * **为什么按 Grid 登记**：调用点分散在 `Game`（六处 DF 直落）与
+ * `Promotion.promoteTile`（晋升链落 DF，正是雕像唤醒的实际路径）。加形参
+ * 要改遍所有调用点（Promotion.ts 还不在授权清单内），而模块级单例回调在
+ * 测试里会跨 Game 实例串线（后建的 Game 把先建的顶掉）。`spawnDungeonFeature`
+ * 本来就带着 `grid`，按 Grid 键控既无生命周期歧义（Grid 随层新建、旧层
+ * 随 levels 缓存一起活着），也不会串实例。Game 在每次 `this.grid` 换新时
+ * 重登记。
+ *
+ * @param origin     DF 的原点格（CE 条件的 `monst->loc == (x,y)` 半边）。
+ * @param builtCells fill 之后的实际落点集（CE 条件的 `blockingMap` 半边）。
+ */
+export type DormantAwakener = (origin: Pos, builtCells: readonly Pos[]) => void;
+
+const dormantAwakeners = new WeakMap<Grid, DormantAwakener>();
+
+/** 按网格注册/注销休眠唤醒者（`null` = 注销）。Game 在建层/读档/建测试房后调用。 */
+export function setDormantAwakener(grid: Grid, fn: DormantAwakener | null): void {
+    if (fn) dormantAwakeners.set(grid, fn);
+    else dormantAwakeners.delete(grid);
+}
+
 export interface SpawnFeatureResult {
     /** CE 返回值：false 仅当被连通性否决；"因优先级一格没建"仍算成功
      *  （CE :3410 注释）。 */
@@ -826,6 +857,28 @@ export function spawnDungeonFeature(
         } else {
             spawnDungeonFeature(grid, x, y, sub, abortIfBlocking);
         }
+    }
+
+    // CE :3487-3496「awaken dormant creatures?」——**在 subsequentDF 链之后**
+    //（CE 的第二个 `if (succeeded)` 块内部：subseqDF(:3468-3480) → 岸图
+    // (:3481-3485) → 唤醒(:3487-3496)），顺序不得前移。
+    //
+    // CE 的条件是 `monst->loc.x == x && monst->loc.y == y || blockingMap[...]`
+    // —— **原文的两个析取项都要**：前半句覆盖「DF 原点那一只」，后半句覆盖
+    // 「DF 铺开的整片」。只实现前半句时，`STATUE_DORMANT {3,5}` 那种一次
+    // 多格的雕像群只会活一个。
+    //
+    // 后半句的落点集用 `result.builtCells`（= fill 之后的 blockingMap 非零集，
+    // 与本文件「CE :3409 注释：fill 会把 spawnMap 改写成实际落点」同一口径）。
+    // 前半句必须**另传原点**：startProbability=0 的 DF（如 CE :679 的
+    // DF_SHATTERING_SPELL）在 CE 里 blockingMap[x][y] 也不会被置位，
+    // 只靠 builtCells 会漏掉原点那一只。
+    //
+    // web 侧没有 `dormantMonsters` 链表（它归 Game：怪物状态与 monsters 链表
+    // 都在那儿），故此处以回调出栈；**未注册回调时本步静默跳过**（等价于
+    // V-2b-5 之前的行为）。
+    if (result.succeeded && (feat.flags & DFF_ACTIVATE_DORMANT_MONSTER)) {
+        dormantAwakeners.get(grid)?.({ x, y }, result.builtCells);
     }
 
     return result;

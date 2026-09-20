@@ -70,7 +70,17 @@ export interface FeatureDef {
     itemCategory?: string;
     itemId?: string;
     monsterId?: string;
-    hordeId?: string;
+    /**
+     * V-2b-5：CE `machineFeature.hordeFlags`（Rogue.h:2629 一带，蓝图表第 10 列
+     * `hordeFl`）。**只在 feature 带 MF_GENERATE_HORDE 时有意义**——CE
+     * Architect.c:1592-1595 把它当 `requiredFlags` 传给 spawnHorde
+     * （同时把它从 forbiddenFlags 里排除掉）。
+     *
+     * 数据形如 `["HORDE_MACHINE_STATUE"]`（CE 该列是位掩码，单值；web 的
+     * horde flags 一贯用字符串数组，与 hordes.json 的 `flags` 同形状）。
+     * 21/43/56/69 号四条蓝图给出该列。
+     */
+    hordeFlags?: string[];
     instanceCount: [number, number];
     /**
      * V-1c：CE machineFeature.minimumInstanceCount（Rogue.h:2714 一带）的
@@ -98,6 +108,35 @@ export interface BlueprintDef {
 }
 
 /** Result of building a machine, consumed by Game.ts populateLevel */
+/**
+ * V-2b-5：机器怪生成指令（CE 的 spawnedMonsters 缓冲等价物）。
+ * 单只（CE `feature->monsterID` 分支，Architect.c:1601）与成群
+ * （CE MF_GENERATE_HORDE 分支，:1591-1599）两形并列，数据上互斥。
+ */
+export interface MachineMonsterSpawn {
+    /** CE `feature->monsterID` 分支（Architect.c:1601）的单只生成。 */
+    monsterId?: string;
+    /**
+     * V-2b-5：CE `MF_GENERATE_HORDE` 分支（Architect.c:1591-1599）——
+     * 按 horde 表成群生成。给出时本指令走 spawnHordeAtFeature。
+     */
+    hordeFlags?: string[];
+    pos: Pos;
+    isAlly?: boolean;
+    isCaged?: boolean;
+    /**
+     * V-2b-5：该 feature 带 MF_MONSTERS_DORMANT（CE :1655-1659）——落地即
+     * 休眠（从 monsters 摘到 dormantMonsters）。
+     */
+    dormant?: boolean;
+    /**
+     * 该 feature 带 MF_MONSTER_SLEEPING（CE :1648-1650）。只影响休眠怪
+     * 醒来后的初始状态（§1.1 的否定条件），非休眠怪由 Monster 构造器
+     * 自身的 70% 睡姿掷骰决定。
+     */
+    sleeping?: boolean;
+}
+
 export interface MachineResult {
     blueprintId: string;
     category: string;
@@ -110,7 +149,7 @@ export interface MachineResult {
      *  随 feature 下传；消费点 Game.spawnBlueprintItem（边界外，见头注）。 */
     itemSpawns: Array<{ category: string; id?: string; pos: Pos; isAltar?: boolean; itemQualifiers?: string[] }>;
     /** Monsters to spawn: { monsterId, pos, isAlly?, isCaged? } */
-    monsterSpawns: Array<{ monsterId: string; pos: Pos; isAlly?: boolean; isCaged?: boolean }>;
+    monsterSpawns: MachineMonsterSpawn[];
     /** Whether a key is needed (for LOCKED_DOOR) */
     needsKey: boolean;
     /**
@@ -193,6 +232,15 @@ const TERRAIN_MAP: Record<string, TerrainType> = {
     AMULET_SWITCH: TerrainType.AMULET_SWITCH,
     STATUE_INSTACRACK: TerrainType.STATUE_INSTACRACK,
     TORCH_WALL: TerrainType.TORCH_WALL,
+    // V-2b-5：休眠唤醒轮的七个载体（21/29/41/43/50/56/69/70 号的 feature
+    // 地形列）。逐字段抄自 CE GlobalsBrogue.c 的蓝图表。
+    ALTAR_SWITCH: TerrainType.ALTAR_SWITCH,
+    MACHINE_TRIGGER_FLOOR: TerrainType.MACHINE_TRIGGER_FLOOR,
+    STATUE_DORMANT: TerrainType.STATUE_DORMANT,
+    WALL_MONSTER_DORMANT: TerrainType.WALL_MONSTER_DORMANT,
+    RAT_TRAP_WALL_DORMANT: TerrainType.RAT_TRAP_WALL_DORMANT,
+    STATUE_DORMANT_DOORWAY: TerrainType.STATUE_DORMANT_DOORWAY,
+    TURRET_DORMANT: TerrainType.TURRET_DORMANT,
 };
 
 const TERRAIN_VISUALS: Record<string, { char: string; color: number }> = {
@@ -263,6 +311,25 @@ const TERRAIN_VISUALS: Record<string, { char: string; color: number }> = {
     AMULET_SWITCH: { char: '.', color: 0x888888 },
     STATUE_INSTACRACK: { char: 'ß', color: 0x6e6e6e },
     TORCH_WALL: { char: '#', color: 0xffbf4c },
+    // V-2b-5：字形照 platformdependent.c 的 displayGlyph——G_SAC_ALTAR '|'
+    // （:118，与 V-2b-4 的 ALTAR 族同款）、G_FLOOR '.'（MACHINE_TRIGGER_FLOOR
+    // 与 KENNEL 的伪装口径）、G_STATUE 'ß'（STATUE_DORMANT /
+    // STATUE_DORMANT_DOORWAY，与既有 STATUE_INERT 同款）、G_WALL '#'
+    // （WALL_MONSTER_DORMANT / RAT_TRAP_WALL_DORMANT / TURRET_DORMANT——CE
+    // 目录里这三条的 foreColor 就是 wallForeColor，"看不出区别"正是重点）。
+    // 颜色沿用 V-2b-2b/2b-3/2b-4 的 ×2.55 折算：wallForeColor {7,7,7}
+    // →0x121212；altarForeColor →0xccccff；G_FLOOR 伪装 '.'
+    // + 0x888888。
+    // 注：terrainAppearance（src/engine/UI/Appearance.ts）尚无这七条的专属
+    // 分支，渲染侧仍走 DEFAULT_LOOK——与 V-2b-2b/2b-3/2b-4 的新地形同款
+    // 欠账（CE 外观接线归 UI 轮），报告已申报。
+    ALTAR_SWITCH: { char: '|', color: 0xccccff },
+    MACHINE_TRIGGER_FLOOR: { char: '.', color: 0x888888 },
+    STATUE_DORMANT: { char: 'ß', color: 0x6e6e6e },
+    WALL_MONSTER_DORMANT: { char: '#', color: 0x121212 },
+    RAT_TRAP_WALL_DORMANT: { char: '#', color: 0x121212 },
+    STATUE_DORMANT_DOORWAY: { char: 'ß', color: 0x6e6e6e },
+    TURRET_DORMANT: { char: '#', color: 0x121212 },
 };
 
 // ----- Engine -----
@@ -1257,6 +1324,30 @@ export class BlueprintEngine {
                         theItem = null;
 
                         // Generate monster spawn instructions.
+                        //
+                        // V-2b-5（CE Architect.c:1591-1599）：MF_GENERATE_HORDE
+                        // 分支——按 feature 的 hordeFlags 抽一支 horde 落在
+                        // feature 落点。CE 原句：
+                        //   spawnHorde(0, {featX,featY},
+                        //               (HORDE_IS_SUMMONED | HORDE_LEADER_CAPTIVE)
+                        //                   & ~(feature->hordeFlags),
+                        //               feature->hordeFlags)
+                        // 即 **forbidden = 两个旗标里去掉 feature 自己要求的、
+                        // required = feature->hordeFlags**。CE 该分支在
+                        // `if (feature->monsterID)` 分支之前，两条并列独立。
+                        // 21/43/56/69 号四条蓝图用 HORDE_MACHINE_STATUE /
+                        // HORDE_MACHINE_TURRET 让 horde 只从机器族里抽。
+                        if (fFlags.has('MF_GENERATE_HORDE')) {
+                            monsterSpawns.push({
+                                hordeFlags: feature.hordeFlags ?? [],
+                                pos: { x: pos.x, y: pos.y },
+                                isAlly: fFlags.has('MF_MONSTER_IS_ALLY'),
+                                isCaged: fFlags.has('MF_MONSTER_IS_CAGED'),
+                                dormant: fFlags.has('MF_MONSTERS_DORMANT'),
+                                sleeping: fFlags.has('MF_MONSTER_SLEEPING'),
+                            });
+                        }
+
                         // V-2b-3（CE Architect.c:1601 `if (feature->monsterID)`）：
                         // CE 的 monsterID 分支**只看列值非零**，不要求任何 feature
                         // 旗标（同函数的 horde 分支才看 MF_GENERATE_HORDE）。旧 web
@@ -1268,7 +1359,12 @@ export class BlueprintEngine {
                                 monsterId: feature.monsterId,
                                 pos: { x: pos.x, y: pos.y },
                                 isAlly: fFlags.has('MF_MONSTER_IS_ALLY'),
-                                isCaged: fFlags.has('MF_MONSTER_IS_CAGED')
+                                isCaged: fFlags.has('MF_MONSTER_IS_CAGED'),
+                                // V-2b-5（CE :1655-1659 / :1648-1650）：休眠与
+                                // 睡姿旗标随指令下传，实化在 Game（怪物不在
+                                // 引擎侧存在）。
+                                dormant: fFlags.has('MF_MONSTERS_DORMANT'),
+                                sleeping: fFlags.has('MF_MONSTER_SLEEPING'),
                             });
                         }
                     }
@@ -1662,8 +1758,12 @@ export class BlueprintEngine {
      *   - IS_CHOKEPOINT：用 analyzeChokeMap 的 chokepoint（web 既有的
      *     IS_CHOKEPOINT 等价物，gateSite 同源；其 passMap 口径是
      *     terrainAllowsMove 而非 CE 的 T_PATHING_BLOCKER，已知留形）；
-     *   - viewMap（IN_VIEW_OF_ORIGIN 族，CE :531-535）：web 无载体无实现，
-     *     生产数据零旗标——登记缺口，不假装有；
+     *   - viewMap（IN_VIEW_OF_ORIGIN 族，CE :531-535）：web 无载体无实现。
+     *     ★ V-2b-5 起不再是"零旗标"：56 号（key_turret_trap）的
+     *     TURRET_DORMANT feature 带 MF_IN_VIEW_OF_ORIGIN，是本旗标的第一个
+     *     载体——该判据仍未实现，落位口径比 CE 松（CE 只许在 origin 视野内
+     *     落炮塔，web 不检查）。登记缺口，不假装有；实现轮需把 viewMap
+     *     （从 origin 出发的视野掩码）接进本判定的第 4 步。
      *   - distanceMap 界（CE :537-557）：web 无 interior 路径距离设施，NEAR/
      *     FAR 以曼哈顿最近/最远选格近似（V-2b-1 留形），界折叠进选格策略，
      *     不在候选判定里。

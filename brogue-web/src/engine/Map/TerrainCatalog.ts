@@ -791,14 +791,25 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
     ),
 
     // CE STATUE_INSTACRACK，Globals.c:354：即刻开裂雕像（15 号，护符房）——
-    // 与 STATUE_CRACKING（:353）同 discoverType DF_STATUE_SHATTER，但没有
+    // 与 STATUE_CRACKING（:353）同 promoteType DF_STATUE_SHATTER，但没有
     // 3500 的过渡 promoteChance：它是"一搜即碎"的形态（promoteChance 0）。
     // 旗标与 STATUE_INERT 同四旗标 + TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED。
+    //
+    // ★ V-2b-5 更正 ★：本条目原先把 DF_STATUE_SHATTER 记在 **discoverType**、
+    // 把 promoteType 留空——**位置抄反了**。CE 行 `… 0, 0, DF_PLAIN_FIRE,0,
+    // DF_STATUE_SHATTER, 0, NO_LIGHT …` 按 `floorTileType`（Rogue.h:1905-1921）
+    // 的字段序 `… ign% fireType discoverType promoteType promoteChance glowLight`
+    // 逐位对齐后是 fireType=DF_PLAIN_FIRE、**discoverType=0、
+    // promoteType=DF_STATUE_SHATTER**。影响是实质的：web 唯一的晋升驱动
+    // （Promotion.promoteTile）取 promoteType，抄成 discoverType 后整条
+    // "护符被取走 → 全机通电 → 雕像震裂 → 唤醒 Warden of Yendor"在这条 tile 上
+    // 断掉。discoverType 反过来写成了非零值——而 CE 该列是 0
+    //（web 的搜索只处理 SECRET_DOOR，该列在 web 无生产读者，故此前未暴露）。
     [TerrainType.STATUE_INSTACRACK]: e(
         T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS |
         T_OBSTRUCTS_SURFACE_EFFECTS,
         TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED,
-        0, 'DF_PLAIN_FIRE', 'DF_STATUE_SHATTER', '', 0
+        0, 'DF_PLAIN_FIRE', '', 'DF_STATUE_SHATTER', 0
     ),
 
     // CE TORCH_WALL，Globals.c:337：墙装火把（15 号，MF_BUILD_IN_WALLS 进墙）。
@@ -809,6 +820,94 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
         TM_STAND_IN_TILE,
         0, 'DF_PLAIN_FIRE', '', '', 0,
         false, LightKind.TORCH_LIGHT
+    ),
+
+    // ══ V-2b-5：休眠唤醒轮的七个载体地形 ═══════════════════════════════════
+    // 逐字段照抄 CE Globals.c tileCatalog 对应行（行号写在每条注释里）。
+    // 七条的共性：都是 wired 网络的一环（带 TM_IS_WIRED），晋升时才唤醒
+    // 藏在自己格里的休眠怪（promoteType 链最终落到带
+    // DFF_ACTIVATE_DORMANT_MONSTER 的 DF 上）。
+
+    // CE ALTAR_SWITCH，Globals.c:366：祭坛触发板（29/43/50/56 号）——
+    // 钥匙放在祭坛上，玩家取走即 TM_PROMOTES_ON_ITEM_PICKUP 触发。
+    // promoteType DF_ALTAR_INERT（惰性祭坛）本身不唤醒怪，唤醒靠同一次
+    // 晋升带出的 wired 全机通电（CE Time.c:1271-1286）。
+    // glowLight = CANDLE_LIGHT（"a weathered stone altar is adorned with
+    // candles"）。注意 CE 该行的 fireType/discoverType 两列**都是 0**
+    // （`… 17, 0, 0,0,DF_ALTAR_INERT, 0, CANDLE_LIGHT …`）——它既不点燃
+    // 也不可搜索显形。
+    [TerrainType.ALTAR_SWITCH]: e(
+        T_OBSTRUCTS_SURFACE_EFFECTS,
+        TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_PROMOTES_ON_ITEM_PICKUP |
+        TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT,
+        0, '', '', 'DF_ALTAR_INERT', 0,
+        false, LightKind.CANDLE_LIGHT
+    ),
+
+    // CE MACHINE_TRIGGER_FLOOR，Globals.c:361：机器触发地板（21/69/70 号）。
+    // G_FLOOR 伪装（prio 95，"the ground"）+ TM_PROMOTES_ON_PLAYER_ENTRY：
+    // 玩家踏入即晋升（promoteType 0 → 只提供 wired 通电由头，不落任何 DF）。
+    // fireType = DF_PLAIN_FIRE（CE 原值），但它不是火源（ign 0、无 T_IS_FIRE）。
+    [TerrainType.MACHINE_TRIGGER_FLOOR]: e(
+        0,
+        TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_PROMOTES_ON_PLAYER_ENTRY,
+        0, 'DF_PLAIN_FIRE', '', '', 0
+    ),
+
+    // CE STATUE_DORMANT，Globals.c:352：休眠雕像（43/69 号）——"一尊无害的
+    // 大理石像"，通电后晋升 DF_CRACKING_STATUE（雕像开始出现裂纹）。
+    // 与 STATUE_INERT（:351）的差别：多 VANISHES_UPON_PROMOTION | IS_WIRED
+    // 且带 promoteType。discoverType 为 0（CE 原行 `… DF_PLAIN_FIRE,0,
+    // DF_CRACKING_STATUE, 0 …`——注意它与 STATUE_INSTACRACK 同形，
+    // 那位在 V-2b-5 已按同一字段序更正）。
+    [TerrainType.STATUE_DORMANT]: e(
+        T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS |
+        T_OBSTRUCTS_SURFACE_EFFECTS,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED,
+        0, 'DF_PLAIN_FIRE', '', 'DF_CRACKING_STATUE', 0
+    ),
+
+    // CE STATUE_DORMANT_DOORWAY，Globals.c:551：门内休眠雕像（21 号，
+    // "Statue in the doorway — bursts to reveal monster"）。
+    // 与 STATUE_DORMANT 逐字段一致，**只多 TM_CONNECTS_LEVEL**
+    // （它是前厅机器的门位体，CE 用来标注"本格连通层"）。
+    [TerrainType.STATUE_DORMANT_DOORWAY]: e(
+        T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS |
+        T_OBSTRUCTS_SURFACE_EFFECTS,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED |
+        TM_CONNECTS_LEVEL,
+        0, 'DF_PLAIN_FIRE', '', 'DF_CRACKING_STATUE', 0
+    ),
+
+    // CE WALL_MONSTER_DORMANT，Globals.c:357：藏怪墙（50/70 号）——
+    // G_WALL 伪装，通电后晋升 DF_WALL_SHATTER（"the nearby wall explodes in
+    // a shower of stone fragments!"，碎石波前逐格唤醒蠕虫）。
+    // 该 promoteType 的 DF 条目 V-2b-3 已在目录（18/22 号爆炸墙共用同一条）。
+    [TerrainType.WALL_MONSTER_DORMANT]: e(
+        T_OBSTRUCTS_EVERYTHING,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED,
+        0, 'DF_PLAIN_FIRE', '', 'DF_WALL_SHATTER', 0
+    ),
+
+    // CE RAT_TRAP_WALL_DORMANT，Globals.c:559：鼠陷阱墙（29 号）——G_WALL 伪装，
+    // 通电后晋升 DF_WALL_CRACK（"a scratching sound emanates from the nearby
+    // walls!"，链尾 DF_RUBBLE）。与 WALL_MONSTER_DORMANT 只差 promoteType。
+    [TerrainType.RAT_TRAP_WALL_DORMANT]: e(
+        T_OBSTRUCTS_EVERYTHING,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED,
+        0, 'DF_PLAIN_FIRE', '', 'DF_WALL_CRACK', 0
+    ),
+
+    // CE TURRET_DORMANT，Globals.c:356：休眠炮塔（56 号 Gauntlet）——
+    // G_WALL 伪装，通电后晋升 DF_TURRET_EMERGE（"you hear a click, and the
+    // stones in the wall shift to reveal turrets!"）。与 WALL_MONSTER_DORMANT
+    // 只差 promoteType。**本条是七条里唯一链上全环节 tile 都在 web 有载体的**
+    // （DF_TURRET_EMERGE 的 tile = WALL），但它的链尾 DF_RUBBLE 仍缺 RUBBLE
+    // 地形，故 web 的整链预检仍会缓办——见报告 §3 的缺口登记。
+    [TerrainType.TURRET_DORMANT]: e(
+        T_OBSTRUCTS_EVERYTHING,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED,
+        0, 'DF_PLAIN_FIRE', '', 'DF_TURRET_EMERGE', 0
     )
 };
 
