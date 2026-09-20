@@ -327,6 +327,12 @@ export function generateItemDetail(
                 color: mod >= 0 ? '#44ff44' : '#ff4444'
             });
         }
+        // UI-2：ITEM_PROTECTED 详情行（CE Items.c:2394-2400）。CE 该块在武器/
+        // 护甲 if-else 之外，两类装备都显示，故武器段与护甲段各放一份；中文
+        // 取 CE chineseUi 原文「不会被酸液腐蚀。」，色同 goodColorEscape（绿）。
+        if (item.isProtected) {
+            statsLines.push({ text: `${item.displayName}不会被酸液腐蚀。`, color: '#44ff44' });
+        }
         // B-1a 反泄露：诅咒不预亮（CE 全源码无"详情面板显示诅咒"的分支——
         // 玩家经穿戴后摘不下来得知，Items.c:7110；或鉴定卷轴整件亮）。
         sections.push({ header: '武器属性', lines: statsLines });
@@ -360,6 +366,10 @@ export function generateItemDetail(
                 text: `力量需求: ${item.strengthRequired} (你的力量: ${playerStrength}, ${mod >= 0 ? '盈余' : '不足'})`,
                 color: mod >= 0 ? '#44ff44' : '#ff4444'
             });
+        }
+        // UI-2：ITEM_PROTECTED 详情行（CE Items.c:2394-2400，见武器段注）。
+        if (item.isProtected) {
+            statsLines.push({ text: `${item.displayName}不会被酸液腐蚀。`, color: '#44ff44' });
         }
         // B-1a 反泄露：诅咒不预亮（同武器段注）。
         sections.push({ header: '护甲属性', lines: statsLines });

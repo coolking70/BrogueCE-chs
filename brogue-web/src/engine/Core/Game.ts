@@ -6279,6 +6279,34 @@ export class Game {
             this.spawnFloatingText(i18next.t('combat.miss_float', { defaultValue: 'Miss' }), target.loc.x, target.loc.y, 0xaaaaaa);
         }
 
+        // UI-2：CE Combat.c:1432-1450——玩家近战命中带 MONST_DEFEND_DEGRADE_WEAPON
+        // 的防守方后，武器降级。豁免条件照抄 CE（同一 if）：
+        //   ① !(flags & ITEM_PROTECTED)——isProtected 置位则完全跳过，无消息
+        //     （与 I-1 护甲侧 Combat.c:425-431 同口径）；
+        //   ② 非"针对该防守方类别的 W_SLAYING 符文武器"（monsterIsInClass）——
+        //     web 无成员名册载体（CE 按monsterClassCatalog[].memberList 对
+        //     monsterID 逐一比对，Monsters.c:293-301；monsters.json 无 MK_/名册
+        //     数据），按 Game.ts:5974 A_IMMUNITY 类别门先例不落地，登记 ui-2 报告；
+        //   ③ enchant1 >= -10（CE 字面含等号：-10 仍会再降到 -11，-11 才停）。
+        // CE 降级后调 equipItem 刷新（:1443）——web 装备属性读取时即时推导，无需。
+        // 位置对应 CE attack() 命中支尾部（splitMonster 之后、返回之前），故
+        // 目标被这一击打死时降级照常发生；投掷路径（resolveThrownWeapon）不在
+        // 此列——CE 的该块只在近战 attack() 里。
+        if (res.hit && target.hasBehavior('MONST_DEFEND_DEGRADE_WEAPON')) {
+            const weapon = this.player.equippedWeapon;
+            if (weapon && !weapon.isProtected && weapon.enchantment >= -10) {
+                weapon.enchantment -= 1;
+                if (weapon.quiverNumber) {
+                    // CE :1436-1438——投掷武器重掷 quiverNumber（唯一一笔交互期掷骰）
+                    weapon.quiverNumber = rng.randRange(1, 60000);
+                }
+                logger.log(i18next.t('combat.weapon_weakens', {
+                    weapon: weapon.name,
+                    defaultValue: `your ${weapon.name} weakens!`
+                }), '#646432'); // CE itemMessageColor {100,100,50}（Globals.c:281）
+            }
+        }
+
         // Check if monster died
         if (target.hp <= 0) {
             logger.log(i18next.t('combat.defeat', { monster: target.name, defaultValue: `You defeated the ${target.name}!` }), '#ffaa00');

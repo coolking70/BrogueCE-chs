@@ -280,7 +280,8 @@ const confirmCall = () => {
                   <div class="item-row" @click="selectItemOrIdentify(entry.item)"
                        :class="{ 'selected-row': selectedItem?.id === entry.item.id,
                                  'identify-candidate': pendingIdentify && entry.item.canBeIdentified }">
-                    <span class="item-letter">{{ entry.letter }})</span>
+                    <!-- UI-2：ITEM_PROTECTED 闭括号 }（CE Items.c:3629/3641）——受保护物品闭括号从 ) 变 } -->
+                    <span class="item-letter">{{ entry.letter }}{{ entry.item.isProtected ? '}' : ')' }}</span>
                     <!-- B-1c：detect magic 极性符号（CE Items.c:3611-3625） -->
                     <span class="item-sigil" :style="{ color: magicSigilColor(entry.item) }">{{ magicSigil(entry.item) }}</span>
                     <span class="item-char" :style="{ color: colorToCss(entry.item.color) }">{{ entry.item.char }}</span>
