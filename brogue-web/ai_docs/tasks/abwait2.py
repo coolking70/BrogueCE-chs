@@ -8,7 +8,12 @@ import json,ssl,time,urllib.request,sys
 ctx=ssl.create_default_context(); ctx.check_hostname=False; ctx.verify_mode=ssl.CERT_NONE
 URL="https://localhost:8443/api/state"
 TARGET=int(sys.argv[1]) if len(sys.argv)>1 else 0
-MAX_MIN=600; INTERVAL=30; CONFIRM=4     # 需连续 4 次（约 2 分钟）确认，防状态空档误报
+MAX_MIN=600; INTERVAL=30; CONFIRM=20    # 需连续 20 次（约 10 分钟）确认
+# 2026-09-20 第二次加长（4 次 / 2 分钟 → 20 次 / 10 分钟）：agentboard 的会话
+# 状态会**中途整段掉线**——V-2b-5 跑到 226 分钟时，采样窗口里一度只剩
+# Claude Code，2 分钟去抖不够，触发假完成。验收方据此在**执行方仍在写**的
+# 工作树上跑了门禁、还临时换过 blueprints.json，属于危险操作（所幸未致损）。
+# 误报代价 >> 晚 10 分钟发现，故大幅加长。
 
 def executors_running():
     try:
