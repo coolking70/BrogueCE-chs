@@ -195,6 +195,19 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         [TerrainType.STATUE_INERT_DOORWAY]: 0,          // Globals.c:550 NO_LIGHT
         [TerrainType.WOODEN_BARRICADE]: 0,              // Globals.c:341 NO_LIGHT
         [TerrainType.TRAP_DOOR_HIDDEN]: 0,              // Globals.c:379 NO_LIGHT
+        // V-2b-3 九条（wired 载体）：CE 原列 MACHINE_GLYPH=GLYPH_LIGHT_DIM
+        //（Globals.c:404）、PILOT_LIGHT_DORMANT=TORCH_LIGHT（:342）——两枚
+        // LightKind 光照目录无成员且 LightCatalog 不在 V-2b-3 授权清单，登记
+        // 不迁移（web glowLight 取 NO_LIGHT=0）；其余七条 CE 原列即 NO_LIGHT。
+        [TerrainType.MACHINE_GLYPH]: 0,                 // Globals.c:404 原列 GLYPH_LIGHT_DIM，登记不迁移
+        [TerrainType.PORTCULLIS_CLOSED]: 0,             // Globals.c:339 NO_LIGHT
+        [TerrainType.WORM_TUNNEL_OUTER_WALL]: 0,        // Globals.c:570 NO_LIGHT
+        [TerrainType.WALL_LEVER_HIDDEN]: 0,             // Globals.c:347 NO_LIGHT
+        [TerrainType.GAS_TRAP_PARALYSIS]: 0,            // Globals.c:382 NO_LIGHT
+        [TerrainType.GAS_TRAP_PARALYSIS_HIDDEN]: 0,     // Globals.c:381 NO_LIGHT
+        [TerrainType.MACHINE_PARALYSIS_VENT_HIDDEN]: 0, // Globals.c:383 NO_LIGHT
+        [TerrainType.MACHINE_METHANE_VENT_HIDDEN]: 0,   // Globals.c:398 NO_LIGHT
+        [TerrainType.PILOT_LIGHT_DORMANT]: 0,           // Globals.c:342 原列 TORCH_LIGHT，登记不迁移
     };
 
     it('全 tile 的 glowLight 逐值等于 CE 原列（结构性穷尽）', () => {

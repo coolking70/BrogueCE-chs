@@ -103,6 +103,36 @@ export enum DF {
                                           // Items.c:7942 → Globals.c:676 目录行）
     DF_SHATTERING_SPELL            = 56,  // :1531（B-3：crystalize 每个命中格的
                                           // DF，Items.c:4917 → Globals.c:679 目录行）
+    // ── V-2b-3：wired 触发网络的载体 DF（九个新地形 carrier 的
+    // promoteType/discoverType 引用 + 其 subsequentDF 链尾）。id 与 CE 枚举
+    // 逐一对位（Rogue.h 实测行号 + 脚本数序 + 目录锚点校准三重核对）：
+    DF_RUBBLE                      = 7,   // Rogue.h:1476（DF_WALL_SHATTER 的链尾）
+    DF_SHOW_PARALYSIS_GAS_TRAP     = 15,  // :1486（GAS_TRAP_PARALYSIS_HIDDEN.
+                                          // discoverType，Globals.c:626 目录行）
+    DF_INACTIVE_GLYPH              = 89,  // :1579（MACHINE_GLYPH.promoteType，
+                                          // Globals.c:726 目录行）
+    DF_REVEAL_LEVER                = 95,  // :1585（WALL_LEVER_HIDDEN.
+                                          // discoverType，Globals.c:732 目录行）
+    DF_MEDIUM_HOLE                 = 152, // :1661（22 号蓝图 feature 的 DF 列，
+                                          // GlobalsBrogue.c:324 → Globals.c:813）
+    DF_OPEN_PORTCULLIS             = 177, // :1702（PORTCULLIS_CLOSED.promoteType，
+                                          // Globals.c:854）
+    DF_SHOW_METHANE_VENT           = 179, // :1706（MACHINE_METHANE_VENT_HIDDEN.
+                                          // discoverType，Globals.c:858）
+    DF_METHANE_VENT_OPEN           = 180, // :1707（MACHINE_METHANE_VENT_HIDDEN.
+                                          // promoteType，Globals.c:859）
+    DF_VENT_SPEW_METHANE           = 181, // :1708（DF_METHANE_VENT_OPEN 的链尾，
+                                          // Globals.c:860）
+    DF_PILOT_LIGHT                 = 182, // :1709（PILOT_LIGHT_DORMANT.promoteType，
+                                          // Globals.c:861）
+    DF_DISCOVER_PARALYSIS_VENT     = 183, // :1712（MACHINE_PARALYSIS_VENT_HIDDEN.
+                                          // discoverType，Globals.c:864）
+    DF_PARALYSIS_VENT_SPEW         = 184, // :1713（MACHINE_PARALYSIS_VENT_HIDDEN.
+                                          // promoteType，Globals.c:865）
+    DF_REVEAL_PARALYSIS_VENT_SILENTLY = 185, // :1714（DF_PARALYSIS_VENT_SPEW 的
+                                          // 链尾，Globals.c:866）
+    DF_WALL_SHATTER                = 215, // :1772（WORM_TUNNEL_OUTER_WALL.
+                                          // promoteType，Globals.c:924）
 }
 
 /** 目录条目 = CE 结构体的 web 投影（messageDisplayed 除外——它依赖玩家
@@ -513,6 +543,169 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
         flags: DFF_ACTIVATE_DORMANT_MONSTER, cePropagationTerrain: '', propagationTerrain: null,
         subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0,
     },
+
+    // ── V-2b-3：wired 触发网络的载体 DF（14 条；九个新地形 carrier 的
+    //    promoteType/discoverType 引用 + 链尾。Globals.c 目录行已用
+    //    "枚举序 = 目录序、{0} 占 index 0"的解析脚本逐条对位，并以 web
+    //    既有的 8 个 ceLine 锚点校准过解析器）────────────────────────────
+
+    // {RUBBLE, SURFACE, 45, 23, 0} —— 碎石（DF_WALL_SHATTER 的链尾落点；
+    // :612 目录行）。tile RUBBLE web 无（与 DF_SHATTERING_SPELL 同缺）。
+    [DF.DF_RUBBLE]: {
+        id: DF.DF_RUBBLE, ceLine: 612, ceTile: 'RUBBLE', tile: null,
+        layer: DungeonLayer.SURFACE, startProbability: 45, probabilityDecrement: 23,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {GAS_TRAP_PARALYSIS, DUNGEON, 0, 0, 0, "", GENERIC_FLASH_LIGHT}（:626）
+    // —— 麻痹触发板显形（GAS_TRAP_PARALYSIS_HIDDEN.discoverType）。
+    // tile GAS_TRAP_PARALYSIS 本轮已随载体迁入！
+    [DF.DF_SHOW_PARALYSIS_GAS_TRAP]: {
+        id: DF.DF_SHOW_PARALYSIS_GAS_TRAP, ceLine: 626, ceTile: 'GAS_TRAP_PARALYSIS',
+        tile: TerrainType.GAS_TRAP_PARALYSIS,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: 'GENERIC_FLASH_LIGHT', flashColor: '', effectRadius: 0,
+    },
+
+    // {MACHINE_GLYPH_INACTIVE, DUNGEON, 0, 0, 0}（:726）—— 发亮符文
+    //（MACHINE_GLYPH.promoteType 的落点；tile MACHINE_GLYPH_INACTIVE web 无，
+    // 登记——glyph 通电后自身变色的视觉链留后续轮次，wired 激活不受影响：
+    // promoteTile 的 wired 分支在缓办之外照常执行，CE :1271 无前置守卫）。
+    [DF.DF_INACTIVE_GLYPH]: {
+        id: DF.DF_INACTIVE_GLYPH, ceLine: 726, ceTile: 'MACHINE_GLYPH_INACTIVE', tile: null,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {WALL_LEVER, DUNGEON, 0, 0, 0, "you notice a lever…", GENERIC_FLASH_LIGHT}
+    //（:732）—— 墙杆显形（WALL_LEVER_HIDDEN.discoverType）。tile WALL_LEVER
+    // web 无（带 TM_IS_WIRED 的那半条链，登记"激活轮需重核"）。
+    [DF.DF_REVEAL_LEVER]: {
+        id: DF.DF_REVEAL_LEVER, ceLine: 732, ceTile: 'WALL_LEVER', tile: null,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: 'you notice a lever hidden behind a loose stone in the wall.',
+        lightFlare: 'GENERIC_FLASH_LIGHT', flashColor: '', effectRadius: 0,
+    },
+
+    // {TRAP_DOOR, LIQUID, 225, 100, (DFF_CLEAR_OTHER_TERRAIN | DFF_SUBSEQ_EVERYWHERE),
+    // "", 0, 0, 0, 0, DF_SHOW_TRAPDOOR_HALO}（:813）—— 中洞（22 号蓝图 feature
+    // 的 DF 列：板被掷中物品踩压时把自身格与波前格炸成 TRAP_DOOR 洞；tile
+    // TRAP_DOOR web 无——与 DF_SHOW_TRAPDOOR 同缺，登记）。链尾
+    // DF_SHOW_TRAPDOOR_HALO 已在目录（V-2b-2b）。
+    [DF.DF_MEDIUM_HOLE]: {
+        id: DF.DF_MEDIUM_HOLE, ceLine: 813, ceTile: 'TRAP_DOOR', tile: null,
+        layer: DungeonLayer.LIQUID, startProbability: 225, probabilityDecrement: 100,
+        flags: DFF_CLEAR_OTHER_TERRAIN | DFF_SUBSEQ_EVERYWHERE,
+        cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: DF.DF_SHOW_TRAPDOOR_HALO,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {PORTCULLIS_DORMANT, DUNGEON, 0, 0, 0, "the portcullis slowly rises…",
+    // GENERIC_FLASH_LIGHT}（:854）—— 铁闸升起（PORTCULLIS_CLOSED.promoteType；
+    // tile PORTCULLIS_DORMANT web 无，登记——闸门打开的落点地形）。
+    [DF.DF_OPEN_PORTCULLIS]: {
+        id: DF.DF_OPEN_PORTCULLIS, ceLine: 854, ceTile: 'PORTCULLIS_DORMANT', tile: null,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: 'the portcullis slowly rises from the ground into a slot in the ceiling.',
+        lightFlare: 'GENERIC_FLASH_LIGHT', flashColor: '', effectRadius: 0,
+    },
+
+    // {MACHINE_METHANE_VENT_DORMANT, DUNGEON, 0, 0, 0, "you notice an inactive
+    // gas vent…", GENERIC_FLASH_LIGHT}（:858）—— 甲烷喷口显形。
+    [DF.DF_SHOW_METHANE_VENT]: {
+        id: DF.DF_SHOW_METHANE_VENT, ceLine: 858, ceTile: 'MACHINE_METHANE_VENT_DORMANT', tile: null,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: 'you notice an inactive gas vent hidden in a crevice of the floor.',
+        lightFlare: 'GENERIC_FLASH_LIGHT', flashColor: '', effectRadius: 0,
+    },
+
+    // {MACHINE_METHANE_VENT, DUNGEON, 0, 0, 0, "explosive methane gas starts
+    // wafting…", 0, 0, 0, 0, DF_VENT_SPEW_METHANE}（:859）—— 甲烷喷口开启
+    //（MACHINE_METHANE_VENT_HIDDEN.promoteType）；tile MACHINE_METHANE_VENT
+    // web 无（开启态喷口的驻留地形，登记）。
+    [DF.DF_METHANE_VENT_OPEN]: {
+        id: DF.DF_METHANE_VENT_OPEN, ceLine: 859, ceTile: 'MACHINE_METHANE_VENT', tile: null,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: DF.DF_VENT_SPEW_METHANE,
+        description: 'explosive methane gas starts wafting out of hidden vents in the floor!',
+        lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {METHANE_GAS, GAS, 60, 0, 0}（:860）—— 甲烷波前（60%/格/环 掷骰扩散，
+    // decr=0 由 madeChange 自然终止；tile METHANE_GAS G-2 已迁——链真实
+    // 行走，41 号接线后即产沼气）。
+    [DF.DF_VENT_SPEW_METHANE]: {
+        id: DF.DF_VENT_SPEW_METHANE, ceLine: 860, ceTile: 'METHANE_GAS', tile: TerrainType.METHANE_GAS,
+        layer: DungeonLayer.GAS, startProbability: 60, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {PILOT_LIGHT, DUNGEON, 0, 0, 0, "a torch falls from its mount…",
+    // FALLEN_TORCH_FLASH_LIGHT}（:861）—— 火嘴点燃（PILOT_LIGHT_DORMANT.
+    // promoteType；tile PILOT_LIGHT web 无，登记）。
+    [DF.DF_PILOT_LIGHT]: {
+        id: DF.DF_PILOT_LIGHT, ceLine: 861, ceTile: 'PILOT_LIGHT', tile: null,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: 'a torch falls from its mount and lies sputtering on the floor.',
+        lightFlare: 'FALLEN_TORCH_FLASH_LIGHT', flashColor: '', effectRadius: 0,
+    },
+
+    // {MACHINE_PARALYSIS_VENT, DUNGEON, 0, 0, 0, "you notice an inactive gas
+    // vent…", GENERIC_FLASH_LIGHT}（:864）—— 麻痹喷口显形。
+    [DF.DF_DISCOVER_PARALYSIS_VENT]: {
+        id: DF.DF_DISCOVER_PARALYSIS_VENT, ceLine: 864, ceTile: 'MACHINE_PARALYSIS_VENT', tile: null,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: 'you notice an inactive gas vent hidden in a crevice of the floor.',
+        lightFlare: 'GENERIC_FLASH_LIGHT', flashColor: '', effectRadius: 0,
+    },
+
+    // {PARALYSIS_GAS, GAS, 350, 0, 0, "paralytic gas sprays upward…", 0, 0, 0, 0,
+    // DF_REVEAL_PARALYSIS_VENT_SILENTLY}（:865）—— 麻痹气波前（350 折算
+    // rand_percent 满 100%——全连通区灌满后由 madeChange 终止；tile
+    // PARALYSIS_GAS G-3 已迁：67/68 号的机器 payoff 真实行走）。
+    [DF.DF_PARALYSIS_VENT_SPEW]: {
+        id: DF.DF_PARALYSIS_VENT_SPEW, ceLine: 865, ceTile: 'PARALYSIS_GAS', tile: TerrainType.PARALYSIS_GAS,
+        layer: DungeonLayer.GAS, startProbability: 350, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY,
+        description: 'paralytic gas sprays upward from hidden vents in the floor!',
+        lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {MACHINE_PARALYSIS_VENT, DUNGEON, 0, 0, 0}（:866）—— 喷口无声显形
+    //（DF_PARALYSIS_VENT_SPEW 的链尾：喷气的同时把隐藏喷口变成可见喷口；
+    // tile MACHINE_PARALYSIS_VENT web 无，登记）。
+    [DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY]: {
+        id: DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY, ceLine: 866, ceTile: 'MACHINE_PARALYSIS_VENT', tile: null,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {RUBBLE, SURFACE, 120, 100, DFF_ACTIVATE_DORMANT_MONSTER, "the nearby
+    // wall explodes in a shower of stone fragments!", 0, &darkGray, 3, 0,
+    // DF_RUBBLE}（:924）—— 墙爆（WORM_TUNNEL_OUTER_WALL.promoteType：18/22
+    // 号"爆炸墙"的 payoff，碎石波前 + 每个落点链 DF_RUBBLE 唤醒蠕虫；
+    // tile RUBBLE web 无——碎石落点登记，唤醒旗标同属游戏侧登记）。
+    [DF.DF_WALL_SHATTER]: {
+        id: DF.DF_WALL_SHATTER, ceLine: 924, ceTile: 'RUBBLE', tile: null,
+        layer: DungeonLayer.SURFACE, startProbability: 120, probabilityDecrement: 100,
+        flags: DFF_ACTIVATE_DORMANT_MONSTER, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: DF.DF_RUBBLE,
+        description: 'the nearby wall explodes in a shower of stone fragments!',
+        lightFlare: '', flashColor: 'darkGray', effectRadius: 3,
+    },
 };
 
 /** 登记"CE 有 tileType 而 web 没有地形"的目录条目 id 清单
@@ -541,4 +734,20 @@ export const DF_MISSING_TILES: readonly DF[] = [
     DF.DF_SHATTERING_SPELL,        // RUBBLE（B-3：crystalize 的碎石 tile，web 无）
     DF.DF_SHOW_TRAPDOOR,           // TRAP_DOOR（V-2b-2b：搜索显形族 tile，web 无
                                    // 该地形——显形链接线轮随新地形落地摘除）
+    // ── V-2b-3 增补（11 条，8 → 19）：wired 载体 DF 链里 web 尚无 tile 的
+    //    环节；链上 tile 已齐的三条（DF_SHOW_PARALYSIS_GAS_TRAP →
+    //    GAS_TRAP_PARALYSIS、DF_VENT_SPEW_METHANE → METHANE_GAS、
+    //    DF_PARALYSIS_VENT_SPEW → PARALYSIS_GAS）不入列。
+    DF.DF_RUBBLE,                  // RUBBLE（同 DF_SHATTERING_SPELL 所缺）
+    DF.DF_INACTIVE_GLYPH,          // MACHINE_GLYPH_INACTIVE（通电符文的变色体）
+    DF.DF_REVEAL_LEVER,            // WALL_LEVER（显形后的带线墙杆——18 号激活
+                                   // 链的载体，激活轮随新地形落地重核）
+    DF.DF_MEDIUM_HOLE,             // TRAP_DOOR（同 DF_SHOW_TRAPDOOR 所缺）
+    DF.DF_OPEN_PORTCULLIS,         // PORTCULLIS_DORMANT（闸门升起的落点）
+    DF.DF_SHOW_METHANE_VENT,       // MACHINE_METHANE_VENT_DORMANT（显形体）
+    DF.DF_METHANE_VENT_OPEN,       // MACHINE_METHANE_VENT（开启态喷口驻留体）
+    DF.DF_PILOT_LIGHT,             // PILOT_LIGHT（火嘴落地的火把）
+    DF.DF_DISCOVER_PARALYSIS_VENT, // MACHINE_PARALYSIS_VENT（显形体）
+    DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY, // MACHINE_PARALYSIS_VENT（同上）
+    DF.DF_WALL_SHATTER,            // RUBBLE（同上；爆炸墙的波前落点）
 ];

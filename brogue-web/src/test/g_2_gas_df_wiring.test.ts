@@ -453,9 +453,15 @@ describe('G-2 对抗⑦：未迁移气体只登记（载体盘点表的显式留
         // 并登记。名单守卫的原意（防"接线顺手删登记"）保持不变。
         // V-2b-2b 再顺延（本文件不在该轮 §6 授权清单——跨轮公共登记表再次
         // 被按主题命名的本文件钉住）：23 号蓝图的 DF_SHOW_TRAPDOOR（TRAP_DOOR
-        // tile web 无，CE Globals.c:628）入列，7 → 8。守卫原意不变。
+        // tile web 无，CE Globals.c:628）入列，7 → 8。
+        // **V-2b-3 第三次顺延**（同一机理：DF_MISSING_TILES 是跨轮公共登记表，
+        // 钉它的断言按主题分散存放，本轮主题词 wired/paralysis 与本文件名
+        // 完全不重合）：wired 载体 DF 链的 11 个 web 无 tile 环节入列，
+        // 8 → 19。逐条见 DungeonFeatureCatalog 的 V-2b-3 块注与 c_4b E4；
+        // 三链 tile 已齐的三条（DF_SHOW_PARALYSIS_GAS_TRAP / DF_VENT_SPEW_
+        // METHANE / DF_PARALYSIS_VENT_SPEW）不入列。守卫原意不变。
         expect(DF_MISSING_TILES, 'F-2c 后 DF_EXPLOSION_FIRE 已摘出缺 tile 名单').not.toContain(DF.DF_EXPLOSION_FIRE);
-        expect(DF_MISSING_TILES).toHaveLength(8);
+        expect(DF_MISSING_TILES).toHaveLength(19);
         const f = catalogFeature(DF.DF_EXPLOSION_FIRE);
         expect(f.tile).toBe(C.GAS_EXPLOSION);
         expect(f.startProbability).toBe(60);

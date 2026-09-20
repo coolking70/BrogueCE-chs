@@ -191,6 +191,12 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
         const restore = installRecorder(record);
         let snapshot: ReturnType<Game['toSnapshot']> | null = null;
         let allMachineCells: Pos[] = [];
+        // V-2b-3：machineCells 的**权威参照系是网格**，不是 mr.cells 的并集。
+        // loadSnapshot 就是「扫网格 machineNumber≠0 重建 machineCells」
+        //（Game.ts:7973-7979），所以往返的判据只能是同口径的网格派生集。
+        // 见下方"口径校正"注。
+        let gridDerived = new Set<number>();
+        let levelResults: MachineResult[] = [];
         try {
             const game = createHeadlessGame(424242);
             for (let d = 1; d <= MAX_DEPTH; d++) {
@@ -202,6 +208,15 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
                 if (entry?.results.length) {
                     // 该层全部机器的内部格（一层可能有多台机器）
                     allMachineCells = entry.results.flatMap(mr => mr.cells);
+                    levelResults = entry.results;
+                    gridDerived = new Set<number>();
+                    for (let x = 0; x < game.grid.width; x++) {
+                        for (let y = 0; y < game.grid.height; y++) {
+                            if ((game.grid.getCell(x, y)?.machineNumber ?? 0) !== 0) {
+                                gridDerived.add(y * DCOLS + x);
+                            }
+                        }
+                    }
                     snapshot = game.toSnapshot();
                     break;
                 }
@@ -211,7 +226,7 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
         }
         expect(snapshot, '424242 前 26 层竟无一台机器（无法验证往返）').not.toBeNull();
         expect(allMachineCells.length, '选中机器没有内部格').toBeGreaterThan(0);
-        const expectCount = new Set(allMachineCells.map(key)).size;
+        const unionKeys = new Set(allMachineCells.map(key));
 
         // 序列化点：机器格的 machineNumber 必须出现在快照里
         const cellByKey = new Map(snapshot!.grid.map(c => [c.y * DCOLS + c.x, c]));
@@ -221,6 +236,30 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
             expect(sc!.machineNumber ?? 0, `快照里 (${p.x},${p.y}) 的机器旗标丢失（序列化被删？）`).not.toBe(0);
         }
 
+        // ★★ V-2b-3 口径校正：原断言 `machineCells.size === |∪ mr.cells|` ★★
+        //
+        // 原口径把两个**不同**的集合当成了同一个：
+        //   A = 网格上 machineNumber≠0 的格（= loadSnapshot 重建 machineCells 的源）
+        //   B = ∪ mr.cells（= 各机器的 interior，MachineResult 自己的口径）
+        // A ≠ B 是 CE 的常态、有两个独立机制：
+        //   ① CE Architect.c:1484-1486「Mark the feature location as part of the
+        //      machine, in case it is not already inside of it」——feature 落在
+        //      interior 之外（MF_BUILD_ANYWHERE_ON_LEVEL / MF_BUILD_IN_WALLS）时，
+        //      pmap 上打 IS_IN_AREA_MACHINE + machineNumber，但**不进 p->interior**；
+        //   ② BP_NO_INTERIOR_FLAG（CE :1685-1697）事后把非 wired 格的 machineNumber
+        //      清回 0——于是 B 里的格反而不再在 A 里。
+        // 本轮实测（5 seed × D1-D26 全扫，130 层中 31 层有机器）：**25/31 层 A≠B**，
+        // 差值双向出现（示例：424242/D3 A−B=1；777/D26 A−B=1 而 B−A=114，后者是
+        // 23/67/68 号 BP_NO_INTERIOR_FLAG 清标记所致）。也就是说这条断言原本
+        // 只在"该层首台机器既无 interior 外 feature 落位、也无 NO_INTERIOR_FLAG"
+        // 这种偶然层上成立——**它给出的信心一直是假的**（与 B-4a「挑 seed 的测试」
+        // 同族）。V-2b-3 的六条新蓝图移动了 RNG 流，把这颗走运的骰子挪开了，
+        // 于是它在 seed424242/D3 上露出原形。
+        // **实现无缺陷**（A 与 B 都各自忠实于 CE）；错的是断言的参照系。
+        // 校正后的判据改成与 loadSnapshot 同口径：逐元素等于 A，仍不许放宽成
+        // 不等式/长度比较。
+        expect(gridDerived.size, '选中层竟没有网格机器格（记录器或旗标失效）').toBeGreaterThan(0);
+
         // 反序列化点：读入新实例后旗标与 machineCells 都恢复
         const reloaded = createHeadlessGame(1);
         expect(reloaded.loadSnapshot(snapshot!)).toBe(true);
@@ -229,7 +268,37 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
                 `读档后 (${p.x},${p.y}) 机器旗标丢失`).not.toBe(0);
         }
         const machineCells = (reloaded as unknown as { machineCells: Set<number> }).machineCells;
-        expect(machineCells.size, '读档后 machineCells 未从网格重建（落位检查退化为不查机器）').toBe(expectCount);
+        expect(machineCells.size,
+            '读档后 machineCells 未从网格重建（落位检查退化为不查机器）').toBe(gridDerived.size);
+        for (const k of gridDerived) {
+            expect(machineCells.has(k), `读档后 machineCells 缺网格机器格 (${k % DCOLS},${Math.floor(k / DCOLS)})`).toBe(true);
+        }
+        for (const k of machineCells) {
+            expect(gridDerived.has(k), `读档后 machineCells 多出非网格机器格 (${k % DCOLS},${Math.floor(k / DCOLS)})`).toBe(true);
+        }
+
+        // A−B 的越界守卫：网格多出来的格必须**恰是机器自己的布点**
+        //（CE :1486 的 feature 并入机器）：本层的 feature/怪物布点 ∪ center。
+        // 数量与坐标一并钉死——机器构成变动（新蓝图入池 / feature 落点规则改动）
+        // 时本行会红，届时请按 CE GlobalsBrogue.c 重核该层的机器与落位再更新。
+        const spawnKeys = new Set<number>();
+        for (const mr of levelResults) {
+            spawnKeys.add(key(mr.center));
+            for (const s of mr.itemSpawns) spawnKeys.add(key(s.pos));
+            for (const s of mr.monsterSpawns) spawnKeys.add(key(s.pos));
+        }
+        const outsideInterior = [...gridDerived].filter(k => !unionKeys.has(k))
+            .map(k => `${k % DCOLS},${Math.floor(k / DCOLS)}`).sort();
+        for (const k of gridDerived) {
+            if (unionKeys.has(k)) continue;
+            expect(spawnKeys.has(k),
+                `网格机器格 (${k % DCOLS},${Math.floor(k / DCOLS)}) 既不在任何机器 interior、也不是任何机器的 feature/怪物布点——CE :1486 之外的来源`)
+                .toBe(true);
+        }
+        expect(outsideInterior,
+            'A−B（网格派生 − ∪mr.cells）变动：本层为 5 号 vestibule_flammable_barricade 的' +
+            '焚化药水经 MF_BUILD_ANYWHERE_ON_LEVEL 落在 interior 之外（CE Architect.c:1486）')
+            .toEqual(['25,23']);
 
         // 旧存档兼容：字段整体缺失 = 无机器（读入不抛、旗标为 0）
         const legacy = JSON.parse(JSON.stringify(snapshot!)) as ReturnType<Game['toSnapshot']>;

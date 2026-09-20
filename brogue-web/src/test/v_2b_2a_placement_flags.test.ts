@@ -137,28 +137,35 @@ describe('V-2b-2a 前提自检', () => {
     // :198-220/:309-331 原表）。原"零载体不得动生成流"前提对新增载体旗标
     // 到期——CE 原表已核对、generation_baseline 随本轮重捕获。
     // MF_KEY_DISPOSABLE（2 载体）仍未实现，归 V-2b-6 钥匙轮反转。
-    it('P1（V-2b-2b 反转）feature 旗标载体普查与 V-2b-2b 落地后的 CE 原表一致', () => {
+    // **V-2b-3 二次反转**（本文件在 V-2b-3 的授权范围内——B 类留痕反转，
+    // 且本文件是 V-2b-3 任务书 §5 明列的"所有钉 wiredBranchHit 的测试"之外
+    // 的第三条 B 类）：18/22/24/25 号四条 wired 蓝图 + 67/68 两条麻痹陷阱
+    // 蓝图落地后，本表的每个计数都按 CE GlobalsBrogue.c 原表重新普查一遍。
+    // CE 原表逐条核过（行号见各断言的失败消息）；
+    // 六条蓝图的逐字段转录由 v_2b_3_wired 的 E4 组另钉一遍。
+    it('P1（V-2b-3 二次反转）feature 旗标载体普查与 V-2b-3 落地后的 CE 原表一致', () => {
         const count = (flag: string): number =>
             (blueprintData as BlueprintDef[]).reduce(
                 (n, bp) => n + bp.features.filter(f => f.flags.includes(flag)).length,
                 0
             );
-        expect(count('MF_PERMIT_BLOCKING'), 'PERMIT_BLOCKING 载体数（旧7含已拆的reward_pedestals→余6，+3/4/5前厅+19栅+20像+23双门=13）').toBe(13);
-        expect(count('MF_IMPREGNABLE'), 'IMPREGNABLE 载体数（旧1+3/4/5雕像+23密门）').toBe(5);
-        expect(count('MF_TREAT_AS_BLOCKING'), 'TREAT_AS_BLOCKING 载体数（旧1+3/4/5九条+23陷阱）').toBe(12);
-        expect(count('MF_NOT_IN_HALLWAY'), 'NOT_IN_HALLWAY 载体数（旧1+19药水+20卷轴）').toBe(3);
+        expect(count('MF_PERMIT_BLOCKING'), 'PERMIT_BLOCKING 载体数（V-2b-2b 基线 13；V-2b-3 +9：18 号闸门/蠕虫墙 :306-307、22 号闸门/蠕虫墙 :325-326、24 号门 :334、25 号双门+双符文 :340-343）').toBe(22);
+        expect(count('MF_IMPREGNABLE'), 'IMPREGNABLE 载体数（V-2b-2b 基线 5；V-2b-3 +5：18 号闸门/蠕虫墙/隐藏杆 :306-308、22 号闸门/蠕虫墙 :325-326）').toBe(10);
+        expect(count('MF_TREAT_AS_BLOCKING'), 'TREAT_AS_BLOCKING 载体数（V-2b-2b 基线 12；V-2b-3 +2：22 号压力板 :324（CE 该行带 DF_MEDIUM_HOLE 的 LIQUID 板）、24 号图腾 :336）').toBe(14);
+        expect(count('MF_NOT_IN_HALLWAY'), 'NOT_IN_HALLWAY 载体数（V-2b-2b 基线 3；V-2b-3 +7：22 号板 :324、24 号图腾 :336、25 号符文批 :343、67 号两条 :602-603、68 号两条 :606-607）').toBe(10);
         // 仍未实现：
         expect(count('MF_KEY_DISPOSABLE'), 'KEY_DISPOSABLE 载体数（V-2b-6 反转我）').toBe(2);
         // V-2b-2b 新载体（CE 原表核对）：
-        expect(count('MF_BUILD_IN_WALLS'), 'BUILD_IN_WALLS 载体数（3/4/5 号雕像）').toBe(3);
-        expect(count('MF_EVERYWHERE'), 'EVERYWHERE 载体数（3/4/5 号地毯）').toBe(3);
-        expect(count('MF_BUILD_ANYWHERE_ON_LEVEL'), 'BUILD_ANYWHERE 载体数（19 号药水+20 号卷轴）').toBe(2);
-        expect(count('MF_REPEAT_UNTIL_NO_PROGRESS'), 'REPEAT 载体数（23 号陷阱）').toBe(1);
+        expect(count('MF_BUILD_IN_WALLS'), 'BUILD_IN_WALLS 载体数（V-2b-2b 基线 3：3/4/5 号雕像；V-2b-3 +1：18 号隐藏墙杆 :308）').toBe(4);
+        expect(count('MF_EVERYWHERE'), 'EVERYWHERE 载体数（V-2b-2b 基线 3：3/4/5 号地毯；V-2b-3 +2：24 号符文 :335、25 号符文批 :343）').toBe(5);
+        expect(count('MF_BUILD_ANYWHERE_ON_LEVEL'), 'BUILD_ANYWHERE 载体数（V-2b-2b 基线 2：19 号药水/20 号卷轴；V-2b-3 +2：18 号隐藏墙杆 :308、24 号图腾 :336）').toBe(4);
+        expect(count('MF_REPEAT_UNTIL_NO_PROGRESS'), 'REPEAT 载体数（23 号陷阱；V-2b-3 未增）').toBe(1);
         expect(count('MF_NO_THROWING_WEAPONS'), 'NO_THROWING_WEAPONS 载体数（4 号武器基座）').toBe(1);
         expect(count('MF_REQUIRE_GOOD_RUNIC'), 'REQUIRE_GOOD_RUNIC 载体数（4 号武器+护甲基座）').toBe(2);
+        // V-2b-3 新载体（CE 原表核对）：
+        expect(count('MF_FAR_FROM_ORIGIN'), 'FAR_FROM_ORIGIN 载体数（V-2b-3 出列：67 号 :603、68 号 :607 的麻痹喷口 MACHINE_PARALYSIS_VENT_HIDDEN，CE GlobalsBrogue.c 各一条）').toBe(2);
         // 仍零载体（出现载体：核对 CE 原表 + 重捕获基线）：
         for (const flag of [
-            'MF_FAR_FROM_ORIGIN',
             'MF_NOT_ON_LEVEL_PERIMETER',
             'MF_REQUIRE_HEAVY_WEAPON',
         ]) {

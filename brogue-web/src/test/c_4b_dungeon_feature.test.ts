@@ -557,9 +557,18 @@ describe('C-4b D：levelIsDisconnectedWithBlockingMap（CE Architect.c:3137-3198
 });
 
 describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () => {
-    it('E1 恰 35 条（C-6 增补 DF_GRASS/DF_FOLIAGE；B-3 增补 DF_FORCEFIELD_MELT/DF_SACRED_GLYPHS/DF_SHATTERING_SPELL；T-1 增补 DF_CRYSTAL_WALL；V-2b-2b 增补 DF_SHOW_TRAPDOOR_HALO/DF_SHOW_TRAPDOOR/DF_WOODEN_BARRICADE_BURN——TRAP_DOOR_HIDDEN.discoverType 与 WOODEN_BARRICADE.fireType 的载体，CE Globals.c:627/628/825），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）', () => {
+    it('E1 恰 49 条（C-6 增补 DF_GRASS/DF_FOLIAGE；B-3 增补 DF_FORCEFIELD_MELT/DF_SACRED_GLYPHS/DF_SHATTERING_SPELL；T-1 增补 DF_CRYSTAL_WALL；V-2b-2b 增补 DF_SHOW_TRAPDOOR_HALO/DF_SHOW_TRAPDOOR/DF_WOODEN_BARRICADE_BURN——TRAP_DOOR_HIDDEN.discoverType 与 WOODEN_BARRICADE.fireType 的载体，CE Globals.c:627/628/825；V-2b-3 增补 14 条 wired 载体 DF 链，见下），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）', () => {
         const keys = Object.keys(DUNGEON_FEATURE_CATALOG);
-        expect(keys.length).toBe(35);
+        // V-2b-3：35 → 49（+14）。CE Globals.c 目录行逐条：
+        //   DF_RUBBLE :612、DF_SHOW_PARALYSIS_GAS_TRAP :626、DF_INACTIVE_GLYPH :726、
+        //   DF_REVEAL_LEVER :732、DF_MEDIUM_HOLE :813、DF_OPEN_PORTCULLIS :854、
+        //   DF_SHOW_METHANE_VENT :858、DF_METHANE_VENT_OPEN :859、
+        //   DF_VENT_SPEW_METHANE :860、DF_PILOT_LIGHT :861、
+        //   DF_DISCOVER_PARALYSIS_VENT :864、DF_PARALYSIS_VENT_SPEW :865、
+        //   DF_REVEAL_PARALYSIS_VENT_SILENTLY :866、DF_WALL_SHATTER :924。
+        // 它们是 18/22/24/25/67/68 号蓝图六条机器蓝图的 wired 晋升链落点
+        // （逐字段钉死在 v_2b_3_wired 的 A 组与 E4 组）。
+        expect(keys.length).toBe(49);
         expect(DF.DF_SHOW_TRAPDOOR_HALO, 'V-2b-2b：CE Rogue.h:1487（Globals.c:627）').toBe(16);
         expect(DF.DF_SHOW_TRAPDOOR, 'V-2b-2b：TRAP_DOOR_HIDDEN.discoverType 的载体（Rogue.h:1488，Globals.c:628）').toBe(17);
         expect(DF.DF_WOODEN_BARRICADE_BURN, 'V-2b-2b：WOODEN_BARRICADE.fireType 的载体（Rogue.h:1669，Globals.c:825）').toBe(156);
@@ -639,6 +648,16 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // 字符串自动入闭包。
         start.add(DF.DF_SACRED_GLYPHS);
         start.add(DF.DF_SHATTERING_SPELL);
+        // V-2b-3：DF_MEDIUM_HOLE 第三起点（数据起点，web 当前零消费者）——
+        // 不经 TerrainCatalog 字符串，也不被任何 subsequentDF 引用；CE 的起点
+        // 是 22 号蓝图 feature 的 **DF 列**（GlobalsBrogue.c:324
+        // `{DF_MEDIUM_HOLE, MACHINE_PRESSURE_PLATE, LIQUID, …}`），而 web 的
+        // FeatureDef 没有 df 列（V-2b-7 的授权范围），故本轮它只有数据没有
+        // 调用者。**留痕**：闭包守卫（集合全等）在此仍原样成立——不许因为
+        // "反正没人用"把它从目录里删掉（CE 目录里有），也不许悄悄放宽成
+        // 包含关系；V-2b-7 给 FeatureDef 接上 df 列时，本行应改为经蓝图数据
+        // 自动入闭包并删除（届时 generation 相关捕获需同步）。
+        start.add(DF.DF_MEDIUM_HOLE);
         // 沿 subsequentDF 闭包展开（悬空引用在此翻红）。
         const closure = new Set<DF>();
         const queue = [...start];
@@ -664,7 +683,13 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
             'T-1：DF_CRYSTAL_WALL（自动生成器表 index 1 起点）入闭包 31→32；' +
             'V-2b-2b：DF_SHOW_TRAPDOOR_HALO/DF_SHOW_TRAPDOOR（TRAP_DOOR_HIDDEN.' +
             'discoverType 起点 + 其 subsequent）与 DF_WOODEN_BARRICADE_BURN' +
-            '（WOODEN_BARRICADE.fireType 起点）入闭包 32→35').toBe(35);
+            '（WOODEN_BARRICADE.fireType 起点）入闭包 32→35；' +
+            'V-2b-3：wired 载体 14 条入目录后，10 条经九条新地形的三链字段' +
+            '（fireType/discoverType/promoteType）直接入闭包、3 条经 subsequentDF' +
+            '（DF_RUBBLE ← DF_WALL_SHATTER、DF_VENT_SPEW_METHANE ←' +
+            ' DF_METHANE_VENT_OPEN、DF_REVEAL_PARALYSIS_VENT_SILENTLY ←' +
+            ' DF_PARALYSIS_VENT_SPEW）入闭包，第 14 条 DF_MEDIUM_HOLE 在 web 无' +
+            '消费者（CE 起点是蓝图 feature 的 DF 列，见上方第三起点注）——35→49').toBe(49);
     });
 
     it('E3 字段抽查：BRIDGE_FALL_PREP 的 prop/200/100、BRIDGE_FIRE 的描述与 tile=0、其余代表条目', () => {
@@ -796,19 +821,30 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         expect(shatter.flags).toBe(DFF_ACTIVATE_DORMANT_MONSTER);
     });
 
-    it('E4 缺 tile 登记恰 7 条（G-2 后 6；B-3 增 DF_SHATTERING_SPELL——RUBBLE tile web 无）：' +
+    it('E4 缺 tile 登记恰 19 条（G-2 后 6；B-3 增 DF_SHATTERING_SPELL——RUBBLE tile web 无；V-2b-2b 增 DF_SHOW_TRAPDOOR；V-2b-3 增 11 条 wired 载体链环节）：' +
         'catalogFeature 对其抛错点名；对其余条目正常转换', () => {
         const all = Object.keys(DUNGEON_FEATURE_CATALOG).map(Number) as DF[];
         const missing = new Set(DF_MISSING_TILES);
         // V-2b-2b：DF_SHOW_TRAPDOOR 入列（TRAP_DOOR tile web 无），7 → 8。
-        expect(DF_MISSING_TILES.length).toBe(8);
+        // V-2b-3：8 → 19（+11）。新增条目逐条见 DungeonFeatureCatalog 的
+        // V-2b-3 块注：DF_RUBBLE(→RUBBLE)、DF_INACTIVE_GLYPH(→MACHINE_GLYPH_
+        // INACTIVE)、DF_REVEAL_LEVER(→WALL_LEVER)、DF_MEDIUM_HOLE(→TRAP_DOOR)、
+        // DF_OPEN_PORTCULLIS(→PORTCULLIS_DORMANT)、DF_SHOW_METHANE_VENT
+        // (→MACHINE_METHANE_VENT_DORMANT)、DF_METHANE_VENT_OPEN
+        // (→MACHINE_METHANE_VENT)、DF_PILOT_LIGHT(→PILOT_LIGHT)、
+        // DF_DISCOVER_PARALYSIS_VENT(→MACHINE_PARALYSIS_VENT)、
+        // DF_REVEAL_PARALYSIS_VENT_SILENTLY(同上)、DF_WALL_SHATTER(→RUBBLE)。
+        // 链上 tile 已齐的三条（DF_SHOW_PARALYSIS_GAS_TRAP、DF_VENT_SPEW_METHANE、
+        // DF_PARALYSIS_VENT_SPEW）**不入列**——它们是真能落地的环节，
+        // 列入会让守卫失去意义（v_2b_3_wired 的 E4 组正向钉死这一点）。
+        expect(DF_MISSING_TILES.length).toBe(19);
         // 登记条目确实都是 tile=null，且抛错带 CE tile 名。
         for (const id of DF_MISSING_TILES) {
             expect(DUNGEON_FEATURE_CATALOG[id]!.tile, `DF#${id} 应为 null tile`).toBeNull();
             expect(() => catalogFeature(id), `DF#${id} 应拒绝`).toThrow(/tileType/);
             expect(() => catalogFeature(id)).toThrow(new RegExp(DUNGEON_FEATURE_CATALOG[id]!.ceTile));
         }
-        // 其余 15 条（13 有 tile + 2 tileless）转换成功且字段保真。
+        // 其余 30 条（49 − 19 缺 tile）转换成功且字段保真。
         // F-2a 翻正位：DF_PLAIN_FIRE.tile=PLAIN_FIRE、DF_EMBERS.tile=EMBERS、
         // 新增 DF_ASH.tile=ASH——三者现在必须能正常转换（放回 missing 会红）。
         // G-2 翻正位：DF_POISON_GAS_CLOUD / DF_STEAM_ACCUMULATION /

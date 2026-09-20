@@ -464,22 +464,71 @@ describe('V-2b-2b T6：BP_NO_INTERIOR_FLAG（CE :1691-1702）', () => {
         expect(grid.getCell(6, 8)!.machineNumber).toBe(0);
     });
 
-    it('wired 格保留机器标记（CE :1694 的 TM_IS_WIRED 豁免）', () => {
-        const buildWired = (): Grid => {
+    it('TM_IS_WIRED 豁免（CE :1694）——已按 V-2b-3 反转：预置 wired 格先被剪线，feature 自带载体才受豁免', () => {
+        // ★★ V-2b-3 留痕反转：原断言的前提失效，不是回归 ★★
+        //
+        // 原断言（V-2b-2b 时）：在机器内部**预置**一块 PRESSURE_PLATE，断言它作为
+        // "wired 格"被 CE Architect.c:1691-1702（BP_NO_INTERIOR_FLAG）豁免、
+        // 保留机器标记。当时成立——因为 web 还没有 CE 剪线步（Architect.c:1238-1243）。
+        //
+        // V-2b-3 补齐该剪线步（CE 注释原文 "Clear wired tiles in case we stole
+        // them from another machine"）后该前提不再为真：机器标记块先无条件把内部
+        // 既有的 TM_IS_WIRED | TM_IS_CIRCUIT_BREAKER 层清成 FLOOR/NOTHING，于是
+        // 到 :1694 时该格**已不带** TM_IS_WIRED，自然不获豁免。
+        //
+        // **这是 CE 的真实行为，实现侧无需改动**（已回源码复核；注意 web 代码
+        // 注释里把剪线块记成 ":1244-1250"，实测是 **:1238-1243**，见报告）：
+        //   - CE Architect.c:1228-1246 机器标记块，其中 **:1238-1243**：`for
+        //     layer … if tileCatalog[pmap[i][j].layers[layer]].mechFlags &
+        //     (TM_IS_WIRED | TM_IS_CIRCUIT_BREAKER) → layers[layer] =
+        //     (layer == DUNGEON ? FLOOR : NOTHING)`——它在 **feature 落位之前**
+        //     （feature 的并入机器标记在 :1486-1488，远晚于此）；
+        //   - CE Architect.c:1690-1702 BP_NO_INTERIOR_FLAG：`machineNumber ==
+        //     machineNumber && !cellHasTMFlag((pos){i,j}, TM_IS_WIRED |
+        //     TM_IS_CIRCUIT_BREAKER)` 才清标记——剪线过的旧板在此已不合格。
+        // 所以在 CE 里"机器吞并前就在格上的旧板"同样保不住标记。web 的现状
+        //（标记 0）是 CE 的忠实结果；旧断言期望的 12 才是那个过期前提的产物。
+        //
+        // 按留痕反转纪律：不删断言，把两半事实都钉死——
+        //   (a) 预置旧板：先剪线（地形回 FLOOR）→ 不获豁免 → 标记归零；
+        //   (b) 蓝图**自己的** wired 载体（经 feature 在 :1238-1243 之后落位）：
+        //       获豁免 → 保留标记。这一半正是原断言想守的东西，仍然守着。
+        // 两条互为越界守卫：删掉 TM_IS_WIRED 豁免（BlueprintEngine.ts:1312）→
+        // (b) 红；删掉剪线步（:924-933）→ (a) 红。（两条都做过反向验证，见报告。）
+        const bpPreplaced: BlueprintDef = {
+            id: 'v2b2b_nif2', name: 'v2b2b_nif2', depthRange: [1, 26], roomSize: [20, 30],
+            frequency: 1, category: 'test', flags: ['BP_ROOM', 'BP_NO_INTERIOR_FLAG'], features: [],
+        } as unknown as BlueprintDef;
+        const preplaced = (): Grid => {
             const grid = blankGrid();
             carve(grid, cells);
             grid.setTerrain(8, 8, TerrainType.PRESSURE_PLATE, '_', 0x446644);
             return grid;
         };
-        const bp: BlueprintDef = {
-            id: 'v2b2b_nif2', name: 'v2b2b_nif2', depthRange: [1, 26], roomSize: [20, 30],
-            frequency: 1, category: 'test', flags: ['BP_ROOM', 'BP_NO_INTERIOR_FLAG'], features: [],
+        const r1 = runOnce(preplaced, bpPreplaced, { cells, center: { x: 8, y: 9 }, door: { x: 6, y: 8 } }, 20260919);
+        expect(r1.result).not.toBeNull();
+        expect(r1.grid.getCell(8, 8)!.layers[DungeonLayer.DUNGEON],
+            'CE :1244-1250：机器吞并前就在格上的旧板应先被剪线清成 FLOOR').toBe(TerrainType.FLOOR);
+        expect(r1.grid.getCell(8, 8)!.machineNumber,
+            '剪线后已不带 TM_IS_WIRED → CE :1695 不豁免 → 标记归零').toBe(0);
+        expect(r1.grid.getCell(9, 9)!.machineNumber, '普通格仍被摘除').toBe(0);
+
+        // (b) feature 自带的 wired 载体：MF_BUILD_AT_ORIGIN → 落位确定（origin = door）。
+        const bpOwnCarrier: BlueprintDef = {
+            id: 'v2b2b_nif3', name: 'v2b2b_nif3', depthRange: [1, 26], roomSize: [20, 30],
+            frequency: 1, category: 'test', flags: ['BP_ROOM', 'BP_NO_INTERIOR_FLAG'],
+            features: [{
+                terrain: 'GAS_TRAP_PARALYSIS', instanceCount: [1, 1], minimumInstanceCount: 1,
+                personalSpace: 1, flags: ['MF_BUILD_AT_ORIGIN', 'MF_PERMIT_BLOCKING'],
+            } as unknown as FeatureDef],
         } as unknown as BlueprintDef;
-        const { result, grid } = runOnce(buildWired, bp, { cells, center: { x: 8, y: 9 }, door: { x: 6, y: 8 } }, 20260919);
-        expect(result).not.toBeNull();
-        const wired = grid.getCell(8, 8)!;
-        expect(wired.machineNumber, 'TM_IS_WIRED 格保留机器标记（CE :1695）').toBe(result!.machineNumber);
-        expect(grid.getCell(9, 9)!.machineNumber, '普通格仍被摘除').toBe(0);
+        const r2 = runOnce(buildGrid0, bpOwnCarrier, { cells, center: { x: 8, y: 9 }, door: { x: 6, y: 8 } }, 20260919);
+        expect(r2.result, 'origin 是唯一候选，min=1 不应失败').not.toBeNull();
+        const own = r2.grid.getCell(6, 8)!;
+        expect(own.layers[DungeonLayer.DUNGEON], 'wired 载体应落在 origin（MF_BUILD_AT_ORIGIN）')
+            .toBe(TerrainType.GAS_TRAP_PARALYSIS);
+        expect(own.machineNumber, 'TM_IS_WIRED 格保留机器标记（CE :1695）').toBe(r2.result!.machineNumber);
+        expect(r2.grid.getCell(9, 9)!.machineNumber, '非 wired 的普通格仍被摘除（越界守卫）').toBe(0);
     });
 
     function buildGrid0(): Grid {

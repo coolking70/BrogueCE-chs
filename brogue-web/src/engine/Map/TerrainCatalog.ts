@@ -643,6 +643,99 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
         T_AUTO_DESCENT,
         TM_IS_SECRET,
         0, 'DF_POISON_GAS_CLOUD', 'DF_SHOW_TRAPDOOR', '', 0
+    ),
+
+    // ── V-2b-3：wired 触发网络的九个地形载体（Globals.c 目录序无关，按蓝
+    //    图依赖分组；字段全部逐列照抄 CE，无偏离）────────────────────────
+
+    // CE MACHINE_GLYPH，Globals.c:404：机器符文（24/25 号障碍机器的触发器，
+    // TM_PROMOTES_ON_PLAYER_ENTRY——玩家踏入晋升 DF_INACTIVE_GLYPH，随即走
+    // wired 分支通电）。零 flags；fireType 0；glowLight CE 原列 GLYPH_LIGHT_DIM
+    // ——光照目录不在本轮授权清单，登记不迁移（C-7 行同款处置）。
+    [TerrainType.MACHINE_GLYPH]: e(
+        0,
+        TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_PROMOTES_ON_PLAYER_ENTRY |
+        TM_VISUALLY_DISTINCT,
+        0, '', '', 'DF_INACTIVE_GLYPH', 0
+    ),
+
+    // CE PORTCULLIS_CLOSED，Globals.c:339：落下的铁闸（18/22 号的闸门堵门体，
+    // wired 通电后晋升 DF_OPEN_PORTCULLIS → PORTCULLIS_DORMANT（闸门升起，
+    // tile web 无——DF 条目已登记）。挡通行/挡物品，不挡视线（铁栏杆）。
+    [TerrainType.PORTCULLIS_CLOSED]: e(
+        T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED |
+        TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT | TM_CONNECTS_LEVEL,
+        0, 'DF_PLAIN_FIRE', '', 'DF_OPEN_PORTCULLIS', 0
+    ),
+
+    // CE WORM_TUNNEL_OUTER_WALL，Globals.c:570：蠕虫隧道外墙（18/22 号的
+    // "爆炸墙"堵门体，wired 通电后晋升 DF_WALL_SHATTER → RUBBLE 波前）。
+    // 全 flags = T_OBSTRUCTS_EVERYTHING（六位并集，Rogue.h:1954）。
+    [TerrainType.WORM_TUNNEL_OUTER_WALL]: e(
+        T_OBSTRUCTS_EVERYTHING,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED |
+        TM_CONNECTS_LEVEL,
+        0, 'DF_PLAIN_FIRE', '', 'DF_WALL_SHATTER', 0
+    ),
+
+    // CE WALL_LEVER_HIDDEN，Globals.c:347：隐藏墙杆（18 号）。**本 tile 不带
+    // TM_IS_WIRED——CE 原样**（显形 DF_REVEAL_LEVER → WALL_LEVER 才带线 +
+    // TM_PROMOTES_ON_PLAYER_ENTRY，:348；web 无 WALL_LEVER tile，故 18 号的
+    // 拉杆激活链本轮结构性不可达，登记"激活轮需重核"）。G_WALL 伪装。
+    [TerrainType.WALL_LEVER_HIDDEN]: e(
+        T_OBSTRUCTS_EVERYTHING,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_SECRET,
+        0, 'DF_PLAIN_FIRE', 'DF_REVEAL_LEVER', '', 0
+    ),
+
+    // CE GAS_TRAP_PARALYSIS，Globals.c:382：麻痹触发板（已揭示态，67 号）。
+    // T_IS_DF_TRAP 但 fireType 0——踩上的气体由 wired 网络经喷口 DF 提供，
+    // 板本身只通电（CE Time.c:253-267 的 T_IS_DF_TRAP 分支对 fireType=0 走
+    // 目录 {0} 空条目后照样 promoteTile → wired 分支）。
+    [TerrainType.GAS_TRAP_PARALYSIS]: e(
+        T_IS_DF_TRAP,
+        TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT,
+        0, '', '', '', 0
+    ),
+
+    // CE GAS_TRAP_PARALYSIS_HIDDEN，Globals.c:381：麻痹触发板（隐藏态，68 号）。
+    // TM_IS_SECRET（G_FLOOR 伪装，prio 95）+ TM_IS_WIRED；discoverType
+    // DF_SHOW_PARALYSIS_GAS_TRAP（搜索显形链，web 的 discover 现只处理
+    // SECRET_DOOR——缺口登记同 TRAP_DOOR_HIDDEN 行）。
+    [TerrainType.GAS_TRAP_PARALYSIS_HIDDEN]: e(
+        T_IS_DF_TRAP,
+        TM_IS_SECRET | TM_IS_WIRED,
+        0, '', 'DF_SHOW_PARALYSIS_GAS_TRAP', '', 0
+    ),
+
+    // CE MACHINE_PARALYSIS_VENT_HIDDEN，Globals.c:383：麻痹喷口（隐藏态，
+    // 67/68 号）。wired 通电时 promoteTile 走 promoteType DF_PARALYSIS_VENT_
+    // SPEW（PARALYSIS_GAS 气云波前，tile G-3 已迁——链条真实行走）。
+    [TerrainType.MACHINE_PARALYSIS_VENT_HIDDEN]: e(
+        0,
+        TM_VANISHES_UPON_PROMOTION | TM_IS_SECRET | TM_IS_WIRED,
+        0, 'DF_PLAIN_FIRE', 'DF_DISCOVER_PARALYSIS_VENT', 'DF_PARALYSIS_VENT_SPEW', 0
+    ),
+
+    // CE MACHINE_METHANE_VENT_HIDDEN，Globals.c:398：甲烷喷口（隐藏态，
+    // 41 号载体——蓝图因 ALTAR_SWITCH 推迟 V-2b-4，tile 先行留形）。
+    // promoteType DF_METHANE_VENT_OPEN（链尾 DF_VENT_SPEW_METHANE 的
+    // METHANE_GAS 气云 tile G-2 已迁）。
+    [TerrainType.MACHINE_METHANE_VENT_HIDDEN]: e(
+        0,
+        TM_VANISHES_UPON_PROMOTION | TM_IS_SECRET | TM_IS_WIRED,
+        0, 'DF_PLAIN_FIRE', 'DF_SHOW_METHANE_VENT', 'DF_METHANE_VENT_OPEN', 0
+    ),
+
+    // CE PILOT_LIGHT_DORMANT，Globals.c:342：休眠点火嘴（41 号载体，同上
+    // 留形）。墙装火把（T_OBSTRUCTS_EVERYTHING）；wired 通电时晋升
+    // DF_PILOT_LIGHT → PILOT_LIGHT（火把落地点燃可燃物——tile web 无，登记）。
+    // glowLight CE 原列 TORCH_LIGHT，光照目录不在本轮授权清单，登记不迁移。
+    [TerrainType.PILOT_LIGHT_DORMANT]: e(
+        T_OBSTRUCTS_EVERYTHING,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED,
+        0, 'DF_PLAIN_FIRE', '', 'DF_PILOT_LIGHT', 0
     )
 };
 

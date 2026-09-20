@@ -131,8 +131,20 @@ describe('V-1b 前提自检', () => {
     //      有人顺手加载体时红；
     //   c) CE 19 号的两件 ALTERNATIVE 点火物（incendiary_dart /
     //      potion_of_incineration）本轮按任务书 §4 方案 2 只落药水一条、
-    //      ALTERNATIVE 配对暂缺——飞镖点燃接线轮须把第 10、11 条载体补回本断言。
-    it('P1（V-2b-2b 反转）生产数据带 MF_ALTERNATIVE 的 feature 恰为 CE 3/4/5/23 号替代组九条；MF_ALTERNATIVE_2 仍零载体', () => {
+    //      ALTERNATIVE 配对暂缺——飞镖点燃接线轮须把第 16、17 条载体补回本断言
+    //      （V-2b-3 后基数 9→15，补回后为 17）。
+    // **V-2b-3 二次反转**（本文件在 V-2b-3 的授权范围内——B 类留痕反转）：
+    // 六条 wired 蓝图落地带来 6 条新 ALTERNATIVE 载体，9 → 15：
+    //   vestibule_secret_lever（18 号）     CE GlobalsBrogue.c:306-307 两条
+    //                                     （WORM_TUNNEL_OUTER_WALL / PORTCULLIS_CLOSED，
+    //                                      二选一堵门体）
+    //   vestibule_throwing_tutorial（22 号）:325-326 两条（PORTCULLIS_CLOSED /
+    //                                     WORM_TUNNEL_OUTER_WALL）
+    //   vestibule_guardian_obstacle（25 号）:340-341 两条 DOOR（守卫二选一站符文）
+    // 全部 itemId 为空（地形/怪物载体，非物品）→ item 记 null；CE 原表逐条核过
+    // （:304-308 / :322-326 / :338-343）。MF_ALTERNATIVE_2 仍零载体（CE Brogue
+    // 目录全表零使用）。
+    it('P1（V-2b-3 二次反转）生产数据带 MF_ALTERNATIVE 的 feature 恰为 CE 3/4/5/23/18/22/25 号替代组十五条；MF_ALTERNATIVE_2 仍零载体', () => {
         const flagged = (blueprintData as BlueprintDef[]).flatMap(bp =>
             bp.features.map(f => ({ bpId: bp.id, f }))
                 .filter(({ f }) => f.flags.includes('MF_ALTERNATIVE') || f.flags.includes('MF_ALTERNATIVE_2'))
@@ -151,6 +163,12 @@ describe('V-1b 前提自检', () => {
             { bpId: 'reward_pedestal_permanent', alt1: true, alt2: false, item: null },
             { bpId: 'vestibule_pit_trap_field', alt1: true, alt2: false, item: null },
             { bpId: 'vestibule_pit_trap_field', alt1: true, alt2: false, item: null },
+            { bpId: 'vestibule_secret_lever', alt1: true, alt2: false, item: null },
+            { bpId: 'vestibule_secret_lever', alt1: true, alt2: false, item: null },
+            { bpId: 'vestibule_throwing_tutorial', alt1: true, alt2: false, item: null },
+            { bpId: 'vestibule_throwing_tutorial', alt1: true, alt2: false, item: null },
+            { bpId: 'vestibule_guardian_obstacle', alt1: true, alt2: false, item: null },
+            { bpId: 'vestibule_guardian_obstacle', alt1: true, alt2: false, item: null },
             { bpId: 'reward_pedestal_consumable', alt1: true, alt2: false, item: 'potion_of_life' },
             { bpId: 'reward_pedestal_consumable', alt1: true, alt2: false, item: 'scroll_of_enchantment' },
         ]);

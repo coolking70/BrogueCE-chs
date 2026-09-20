@@ -140,7 +140,14 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         // WOODEN_BARRICADE/TRAP_DOOR_HIDDEN 入列（CE Globals.c:325/351/369/
         // 550/341/379，机器蓝图 3/4/5/19/20/23 号的地形载体；
         // FUNGUS_FOREST 以 FOLIAGE 别名承载，不加成员），47 → 53。
-        expect(names.length).toBe(53);
+        // V-2b-3：wired 触发网络的九个载体入列（CE Globals.c:339/342/347/381/
+        // 382/383/398/404/570，蓝图 18/22/24/25/67/68 号的机器通货：
+        // MACHINE_GLYPH / PORTCULLIS_CLOSED / WORM_TUNNEL_OUTER_WALL /
+        // WALL_LEVER_HIDDEN / GAS_TRAP_PARALYSIS / GAS_TRAP_PARALYSIS_HIDDEN /
+        // MACHINE_PARALYSIS_VENT_HIDDEN / MACHINE_METHANE_VENT_HIDDEN /
+        // PILOT_LIGHT_DORMANT），53 → 62。逐字段钉死在下方 V-2b-3 块与
+        // v_2b_3_wired A 组（对抗：抄错任一位即红）。
+        expect(names.length).toBe(62);
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             const entry = TERRAIN_FLAGS[t];
@@ -524,9 +531,18 @@ describe('C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时
     // V-2b-2b 注：机器蓝图墙族三件（STATUE_INERT :351 / STATUE_INERT_DOORWAY
     // :550 / WOODEN_BARRICADE :341）同为迁移后新增的挡通行 tile，按同一
     // 范本列入跳过，CE 判定由下方 V-2b-2b 逐字段块钉死。
+    // V-2b-3 注：wired 载体里的四条挡通行 tile（PORTCULLIS_CLOSED :339 /
+    // WORM_TUNNEL_OUTER_WALL :570 / WALL_LEVER_HIDDEN :347 /
+    // PILOT_LIGHT_DORMANT :342）同理列入跳过——CE 判定由下方 V-2b-3 块正向钉死。
+    // 其余五条（MACHINE_GLYPH :404 零旗标、GAS_TRAP_PARALYSIS(_HIDDEN) :382/381
+    // 仅 T_IS_DF_TRAP、MACHINE_PARALYSIS/METHANE_VENT_HIDDEN :383/398 零旗标）
+    // 的 terrainAllowsMove 与旧清单同为 true，**留在等价论域内**——不跳过，
+    // 由本组逐位继续把关（它们若被误加 PASSABILITY 会在此翻红）。
     const POST_LEGACY_TILES = new Set<TerrainType>([
         C.FORCEFIELD, C.FORCEFIELD_MELT, C.CRYSTAL_WALL,
         C.STATUE_INERT, C.STATUE_INERT_DOORWAY, C.WOODEN_BARRICADE,
+        C.PORTCULLIS_CLOSED, C.WORM_TUNNEL_OUTER_WALL, C.WALL_LEVER_HIDDEN,
+        C.PILOT_LIGHT_DORMANT,
     ]);
     it('terrainAllowsMove（查表）≡ 旧排除清单 {GRANITE,WALL,SECRET_DOOR,LOCKED_DOOR,WATER_DEEP}', () => {
         const names = Object.keys(TerrainType).filter((k) => Number.isNaN(Number(k)));
@@ -564,6 +580,42 @@ describe('C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时
             expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(false);
         }
     });
+
+    it('V-2b-3：wired 载体九条的通行判定 = CE 查表口径（四条墙族挡通行、五条可走）', () => {
+        // 上方两条等价断言跳过的四条挡通行 tile 在这里正向钉死，五条可走 tile
+        // 反向钉死（它们若被误加 T_OBSTRUCTS_PASSABILITY，机器入口会被自己堵死，
+        // 且 terrainAllowsMove/canMoveTo 的等价断言同点翻红）。
+        //
+        // CE 出处（Globals.c 第 11 列 flags）：
+        //   PORTCULLIS_CLOSED :339       (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS)
+        //   WORM_TUNNEL_OUTER_WALL :570  (T_OBSTRUCTS_EVERYTHING)
+        //   WALL_LEVER_HIDDEN :347       (T_OBSTRUCTS_EVERYTHING)
+        //   PILOT_LIGHT_DORMANT :342     (T_OBSTRUCTS_EVERYTHING)
+        // 这四条是 18/22 号蓝图的堵门体（堵门体必须真的挡住玩家，否则蓝图
+        // 无解）与 41 号的墙装火把，CE 全部带 PASSABILITY 位——它不是"关闭的
+        // 闸门该不该可通行"的判断题：CE 用 PORTCULLIS_DORMANT（flags=(0)，
+        // :340）表示升起的闸门，web 尚未迁移该 tile，故"升起"由 DF_OPEN_
+        // PORTCULLIS 的 tile 缺口登记（DF_MISSING_TILES）承载。
+        for (const t of [C.PORTCULLIS_CLOSED, C.WORM_TUNNEL_OUTER_WALL, C.WALL_LEVER_HIDDEN, C.PILOT_LIGHT_DORMANT]) {
+            expect(terrainAllowsMove(t), `terrainAllowsMove(${TerrainType[t]}) 应挡通行`).toBe(false);
+        }
+        for (const t of [C.MACHINE_GLYPH, C.GAS_TRAP_PARALYSIS, C.GAS_TRAP_PARALYSIS_HIDDEN,
+            C.MACHINE_PARALYSIS_VENT_HIDDEN, C.MACHINE_METHANE_VENT_HIDDEN]) {
+            expect(terrainAllowsMove(t), `terrainAllowsMove(${TerrainType[t]}) 应可走`).toBe(true);
+        }
+        const game = createHeadlessGame(424242);
+        const canMoveTo = (game as unknown as { canMoveTo(x: number, y: number): boolean }).canMoveTo.bind(game);
+        for (const t of [C.PORTCULLIS_CLOSED, C.WORM_TUNNEL_OUTER_WALL, C.WALL_LEVER_HIDDEN, C.PILOT_LIGHT_DORMANT]) {
+            game.grid.setTerrain(20, 20, t);
+            expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(false);
+        }
+        for (const t of [C.MACHINE_GLYPH, C.GAS_TRAP_PARALYSIS,
+            C.GAS_TRAP_PARALYSIS_HIDDEN, C.MACHINE_PARALYSIS_VENT_HIDDEN,
+            C.MACHINE_METHANE_VENT_HIDDEN]) {
+            game.grid.setTerrain(20, 20, t);
+            expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(true);
+        }
+    });
 });
 
 describe('C-4a E：留痕（本轮明确不做的事，断言现状）', () => {
@@ -589,6 +641,14 @@ describe('C-4a E：留痕（本轮明确不做的事，断言现状）', () => {
                                           // cellIsPassableOrDoor（CE Architect.c:48：
                                           // TM_IS_SECRET | TM_PROMOTES_WITH_KEY | TM_CONNECTS_LEVEL，
                                           // passableArcCount 的邻格判据）。属合法首读者。
+        'engine/Generator/BlueprintEngine.ts', // V-2b-3：CE Architect.c:1238-1243
+                                          // 「Clear wired tiles in case we stole them from
+                                          // another machine」的直译——机器标记块对每层查
+                                          // mechFlags & (TM_IS_WIRED | TM_IS_CIRCUIT_BREAKER)
+                                          // 决定是否剪线清层（:926）。该分支在 V-2b-3 之前
+                                          // 结构性不可达（web 无 wired 载体）；本轮九条 wired
+                                          // 地形入列后真实可达，属本扫描器头注预告的
+                                          // **扩清单时刻**（B-3 / ItemSpawnHeatMap 同款先例）。
     ]);
     it('留痕（已按自带指示扩清单，C-4c）：promote/fire 类字段的生产读者只出现在白名单文件', () => {
         const srcDir = fileURLToPath(new URL('../', import.meta.url));

@@ -260,6 +260,23 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.STATUE_INERT_DOORWAY]: L.DUNGEON,
             [C.WOODEN_BARRICADE]: L.DUNGEON,
             [C.TRAP_DOOR_HIDDEN]: L.DUNGEON,
+            // V-2b-3 九条（53 → 62）：wired 触发网络的九个载体。全落 DUNGEON 层
+            // ——CE GlobalsBrogue.c 蓝色图 feature 的 layer 列逐行为 DUNGEON
+            //（:307/311/314/317/320/323/326 等），且九条三链字段指向的 DF 条目
+            //（DF_INACTIVE_GLYPH {MACHINE_GLYPH_INACTIVE, DUNGEON}、
+            // DF_REVEAL_LEVER {WALL_LEVER, DUNGEON}、DF_SHOW_PARALYSIS_GAS_TRAP
+            // {GAS_TRAP_PARALYSIS, DUNGEON}、DF_DISCOVER_PARALYSIS_VENT
+            // {MACHINE_PARALYSIS_VENT, DUNGEON}……Globals.c 逐条）layer 列同证。
+            // 逐字段钉死在 c_4a_terrain_catalog 的 V-2b-3 块与 v_2b_3_wired A 组。
+            [C.MACHINE_GLYPH]: L.DUNGEON,
+            [C.PORTCULLIS_CLOSED]: L.DUNGEON,
+            [C.WORM_TUNNEL_OUTER_WALL]: L.DUNGEON,
+            [C.WALL_LEVER_HIDDEN]: L.DUNGEON,
+            [C.GAS_TRAP_PARALYSIS]: L.DUNGEON,
+            [C.GAS_TRAP_PARALYSIS_HIDDEN]: L.DUNGEON,
+            [C.MACHINE_PARALYSIS_VENT_HIDDEN]: L.DUNGEON,
+            [C.MACHINE_METHANE_VENT_HIDDEN]: L.DUNGEON,
+            [C.PILOT_LIGHT_DORMANT]: L.DUNGEON,
         });
         expect(DRAW_PRIORITY).toEqual({
             [C.NOTHING]: 100, [C.GRANITE]: 0, [C.FLOOR]: 95, [C.WALL]: 0,
@@ -293,6 +310,23 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.STATUE_INERT_DOORWAY]: 0,
             [C.WOODEN_BARRICADE]: 8,
             [C.TRAP_DOOR_HIDDEN]: 95,
+            // V-2b-3 九条（53 → 62）：CE Globals.c 第 4 列原值。MACHINE_GLYPH
+            // 42（:404）；PORTCULLIS_CLOSED 10（:339）；WORM_TUNNEL_OUTER_WALL
+            // 0（:570 墙档）；WALL_LEVER_HIDDEN 0（:347，G_WALL 伪装）；
+            // GAS_TRAP_PARALYSIS 30（:382 可见陷阱档，与 web TRAP 的 30 同源）；
+            // GAS_TRAP_PARALYSIS_HIDDEN 95（:381，G_FLOOR 伪装——隐藏板看着像
+            // 地板）；MACHINE_PARALYSIS_VENT_HIDDEN 95（:383）；
+            // MACHINE_METHANE_VENT_HIDDEN 95（:398）；PILOT_LIGHT_DORMANT 0
+            //（:342，G_TORCH 墙档）。
+            [C.MACHINE_GLYPH]: 42,
+            [C.PORTCULLIS_CLOSED]: 10,
+            [C.WORM_TUNNEL_OUTER_WALL]: 0,
+            [C.WALL_LEVER_HIDDEN]: 0,
+            [C.GAS_TRAP_PARALYSIS]: 30,
+            [C.GAS_TRAP_PARALYSIS_HIDDEN]: 95,
+            [C.MACHINE_PARALYSIS_VENT_HIDDEN]: 95,
+            [C.MACHINE_METHANE_VENT_HIDDEN]: 95,
+            [C.PILOT_LIGHT_DORMANT]: 0,
         });
     });
 });

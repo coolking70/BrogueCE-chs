@@ -743,6 +743,283 @@
         ]
     },
     {
+        "id": "vestibule_secret_lever",
+        "name": "Lever and either an exploding wall or a portcullis",
+        "depthRange": [
+            4,
+            26
+        ],
+        "roomSize": [
+            1,
+            1
+        ],
+        "frequency": 8,
+        "category": "vestibule",
+        "flags": [
+            "BP_VESTIBULE"
+        ],
+        "features": [
+            {
+                "terrain": "WORM_TUNNEL_OUTER_WALL",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_PERMIT_BLOCKING",
+                    "MF_IMPREGNABLE",
+                    "MF_ALTERNATIVE"
+                ]
+            },
+            {
+                "terrain": "PORTCULLIS_CLOSED",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_PERMIT_BLOCKING",
+                    "MF_IMPREGNABLE",
+                    "MF_ALTERNATIVE"
+                ]
+            },
+            {
+                "terrain": "WALL_LEVER_HIDDEN",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_BUILD_IN_WALLS",
+                    "MF_IN_PASSABLE_VIEW_OF_ORIGIN",
+                    "MF_BUILD_ANYWHERE_ON_LEVEL",
+                    "MF_IMPREGNABLE"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "vestibule_throwing_tutorial",
+        "name": "Throwing tutorial -- toss an item onto the pressure plate to retract the portcullis",
+        "depthRange": [
+            1,
+            4
+        ],
+        "roomSize": [
+            70,
+            70
+        ],
+        "frequency": 8,
+        "category": "vestibule",
+        "flags": [
+            "BP_VESTIBULE"
+        ],
+        "features": [
+            {
+                "terrain": "MACHINE_PRESSURE_PLATE",
+                "layer": "LIQUID",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            },
+            {
+                "terrain": "PORTCULLIS_CLOSED",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_IMPREGNABLE",
+                    "MF_PERMIT_BLOCKING",
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_ALTERNATIVE"
+                ]
+            },
+            {
+                "terrain": "WORM_TUNNEL_OUTER_WALL",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_PERMIT_BLOCKING",
+                    "MF_IMPREGNABLE",
+                    "MF_ALTERNATIVE"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "vestibule_beckoning_obstacle",
+        "name": "Beckoning obstacle -- a mirrored totem guards the door, and glyph are around the doorway.",
+        "depthRange": [
+            5,
+            26
+        ],
+        "roomSize": [
+            15,
+            30
+        ],
+        "frequency": 8,
+        "category": "vestibule",
+        "flags": [
+            "BP_VESTIBULE",
+            "BP_PURGE_INTERIOR",
+            "BP_OPEN_INTERIOR"
+        ],
+        "features": [
+            {
+                "terrain": "DOOR",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_PERMIT_BLOCKING",
+                    "MF_BUILD_AT_ORIGIN"
+                ]
+            },
+            {
+                "terrain": "MACHINE_GLYPH",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_NEAR_ORIGIN",
+                    "MF_EVERYWHERE"
+                ]
+            },
+            {
+                "monsterId": "mirrored_totem",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_IN_VIEW_OF_ORIGIN",
+                    "MF_BUILD_ANYWHERE_ON_LEVEL"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "vestibule_guardian_obstacle",
+        "name": "Guardian obstacle -- a guardian is in the door on a glyph, with other glyphs scattered around.",
+        "depthRange": [
+            6,
+            26
+        ],
+        "roomSize": [
+            25,
+            25
+        ],
+        "frequency": 8,
+        "category": "vestibule",
+        "flags": [
+            "BP_VESTIBULE",
+            "BP_OPEN_INTERIOR"
+        ],
+        "features": [
+            {
+                "terrain": "DOOR",
+                "monsterId": "stone_guardian",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_PERMIT_BLOCKING",
+                    "MF_ALTERNATIVE"
+                ]
+            },
+            {
+                "terrain": "DOOR",
+                "monsterId": "winged_guardian",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_PERMIT_BLOCKING",
+                    "MF_ALTERNATIVE"
+                ]
+            },
+            {
+                "terrain": "MACHINE_GLYPH",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    10,
+                    10
+                ],
+                "minimumInstanceCount": 3,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_PERMIT_BLOCKING",
+                    "MF_NEAR_ORIGIN"
+                ]
+            },
+            {
+                "terrain": "MACHINE_GLYPH",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_EVERYWHERE",
+                    "MF_PERMIT_BLOCKING",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            }
+        ]
+    },
+    {
         "id": "vestibule_flammable",
         "name": "Flammable Barricade",
         "depthRange": [
@@ -1342,6 +1619,100 @@
                 "flags": [
                     "MF_GENERATE_ITEM",
                     "MF_ALTAR"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "trap_paralysis_revealed",
+        "name": "Paralysis trap -- already-revealed pressure plate with a few hidden vents nearby.",
+        "depthRange": [
+            1,
+            40
+        ],
+        "roomSize": [
+            35,
+            40
+        ],
+        "frequency": 0,
+        "category": "thematic",
+        "flags": [
+            "BP_NO_INTERIOR_FLAG"
+        ],
+        "features": [
+            {
+                "terrain": "GAS_TRAP_PARALYSIS",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    2
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_NEAR_ORIGIN",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            },
+            {
+                "terrain": "MACHINE_PARALYSIS_VENT_HIDDEN",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    3,
+                    4
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "trap_paralysis_hidden",
+        "name": "Paralysis trap -- hidden pressure plate with a few vents nearby.",
+        "depthRange": [
+            1,
+            40
+        ],
+        "roomSize": [
+            35,
+            40
+        ],
+        "frequency": 0,
+        "category": "thematic",
+        "flags": [
+            "BP_NO_INTERIOR_FLAG"
+        ],
+        "features": [
+            {
+                "terrain": "GAS_TRAP_PARALYSIS_HIDDEN",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    2
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_NEAR_ORIGIN",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            },
+            {
+                "terrain": "MACHINE_PARALYSIS_VENT_HIDDEN",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    3,
+                    4
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_NOT_IN_HALLWAY"
                 ]
             }
         ]

@@ -24,6 +24,7 @@ import {
     T_OBSTRUCTS_PASSABILITY,
     T_PATHING_BLOCKER,
     isPathingBlocker,
+    TERRAIN_FLAGS,
     TM_IS_WIRED,
     TM_IS_CIRCUIT_BREAKER,
 } from '../Map/TerrainCatalog';
@@ -168,6 +169,24 @@ const TERRAIN_MAP: Record<string, TerrainType> = {
     STATUE_INERT_DOORWAY: TerrainType.STATUE_INERT_DOORWAY,
     WOODEN_BARRICADE: TerrainType.WOODEN_BARRICADE,
     TRAP_DOOR_HIDDEN: TerrainType.TRAP_DOOR_HIDDEN,
+    // V-2b-3：wired 触发网络的九个载体（18/22/24/25/67/68 号蓝图的通货）。
+    MACHINE_GLYPH: TerrainType.MACHINE_GLYPH,
+    PORTCULLIS_CLOSED: TerrainType.PORTCULLIS_CLOSED,
+    WORM_TUNNEL_OUTER_WALL: TerrainType.WORM_TUNNEL_OUTER_WALL,
+    WALL_LEVER_HIDDEN: TerrainType.WALL_LEVER_HIDDEN,
+    GAS_TRAP_PARALYSIS: TerrainType.GAS_TRAP_PARALYSIS,
+    GAS_TRAP_PARALYSIS_HIDDEN: TerrainType.GAS_TRAP_PARALYSIS_HIDDEN,
+    MACHINE_PARALYSIS_VENT_HIDDEN: TerrainType.MACHINE_PARALYSIS_VENT_HIDDEN,
+    MACHINE_METHANE_VENT_HIDDEN: TerrainType.MACHINE_METHANE_VENT_HIDDEN,
+    PILOT_LIGHT_DORMANT: TerrainType.PILOT_LIGHT_DORMANT,
+    // CE MACHINE_PRESSURE_PLATE（Globals.c:402）→ web PRESSURE_PLATE 别名。
+    // 逐字段比对（任务书 §7.3 交本轮裁定的那条）：CE 行 flags = T_IS_DF_TRAP；
+    // mechFlags = VANISHES_UPON_PROMOTION | PROMOTES_ON_STEP | IS_WIRED |
+    // LIST_IN_SIDEBAR | VISUALLY_DISTINCT；ign 0；fireType 0；discoverType 0；
+    // promoteType DF_MACHINE_PRESSURE_PLATE_USED；promoteChance 0；
+    // drawPriority 15。web PRESSURE_PLATE（TerrainCatalog.ts 该条）七字段
+    // 逐一相等——作别名，不新增第二个枚举成员。
+    MACHINE_PRESSURE_PLATE: TerrainType.PRESSURE_PLATE,
 };
 
 const TERRAIN_VISUALS: Record<string, { char: string; color: number }> = {
@@ -201,6 +220,22 @@ const TERRAIN_VISUALS: Record<string, { char: string; color: number }> = {
     STATUE_INERT_DOORWAY: { char: 'ß', color: 0x6e6e6e },
     WOODEN_BARRICADE: { char: '#', color: 0xb35926 },
     TRAP_DOOR_HIDDEN: { char: '.', color: 0x888888 },
+    // V-2b-3：字形照 platformdependent.c 的 displayGlyph（G_MAGIC_GLYPH
+    // U_FOUR_DOTS 0x2237='∷'、G_TRAP U_DIAMOND 0x25c7='◊'、G_PORTCULLIS/
+    // G_TORCH/G_WALL '#'）；颜色取 CE foreColor ×2.55：glyphColor {20,5,5}
+    // →0x330d0d；gray→0x6e6e6e（同 STATUE 折算）；wallForeColor {7,7,7}
+    // →0x121212；torchLightColor {75,38,15}→0xbf6126；GAS_TRAP_PARALYSIS 的
+    // pink 取近似折算 0xdd66aa（CE pink 结构在变体色表，无精确源）；三个
+    // G_FLOOR 伪装的隐藏态沿用 web 伪装口径 '.' + 0x888888。
+    MACHINE_GLYPH: { char: '∷', color: 0x330d0d },
+    PORTCULLIS_CLOSED: { char: '#', color: 0x6e6e6e },
+    WORM_TUNNEL_OUTER_WALL: { char: '#', color: 0x121212 },
+    WALL_LEVER_HIDDEN: { char: '#', color: 0x121212 },
+    GAS_TRAP_PARALYSIS: { char: '◊', color: 0xdd66aa },
+    GAS_TRAP_PARALYSIS_HIDDEN: { char: '.', color: 0x888888 },
+    MACHINE_PARALYSIS_VENT_HIDDEN: { char: '.', color: 0x888888 },
+    MACHINE_METHANE_VENT_HIDDEN: { char: '.', color: 0x888888 },
+    PILOT_LIGHT_DORMANT: { char: '#', color: 0xbf6126 },
 };
 
 // ----- Engine -----
@@ -873,11 +908,29 @@ export class BlueprintEngine {
 
         // 2. Mark all cells as belonging to this machine（CE :1231-1249；
         //    V-2b-2b 起移到 prepareInterior 之后。CE 同块里的 SECRET_DOOR→
-        //    DOOR 改判与 wired 地形清除两步 web 尚无载体，登记为缺口——
-        //    见报告"与预设不符之处"）。
+        //    DOOR 改判 web 尚无载体，登记为缺口——见报告"与预设不符之处"；
+        //    wired 地形清除一步 V-2b-3 已补，见下）。
         for (const k of interior) {
             const cell = this.grid.getCell(k % DCOLS, Math.floor(k / DCOLS));
-            if (cell) cell.machineNumber = machineNum;
+            if (!cell) continue;
+            cell.machineNumber = machineNum;
+            // CE :1244-1250（"Clear wired tiles in case we stole them from
+            // another machine"）：机器内部既有的带电格一律剪线清层
+            // （DUNGEON→FLOOR、其余→NOTHING）。本步在 feature 落位**之前**
+            // ——机器自己的 wired 载体（压力板/符文/喷口……）随后才铺，不受
+            // 影响；清的是选址吞并前就在格上的旧 wired 地形（web 的生成期
+            // 压力板 Architect.ts、或未来的生成期载体）。V-2b-3 起 web 有
+            // wired 载体，该分支从结构性不可达变为真实可达，按 CE 字面补上。
+            for (let l = 0; l < DungeonLayer.COUNT; l++) {
+                const layer = l as DungeonLayer;
+                if (TERRAIN_FLAGS[cell.layers[layer]!].mechFlags
+                    & (TM_IS_WIRED | TM_IS_CIRCUIT_BREAKER)) {
+                    this.grid.setTerrainLayer(
+                        cell.x, cell.y, layer,
+                        layer === DungeonLayer.DUNGEON ? TerrainType.FLOOR : TerrainType.NOTHING
+                    );
+                }
+            }
         }
         // V-2a：machineNumber 是 findGateRoom 候选过滤（!IS_IN_MACHINE）的
         // 依据——本步起机器标号上网格，门位候选缓存就此失效。**analysis
@@ -996,6 +1049,16 @@ export class BlueprintEngine {
             // （CE 字面行为；生产 BATO 全为 [1,1]，零流影响）。这个预算同时
             // 防住 EVERYWHERE+BATO 的死循环。
             let picksLeft = fFlags.has('MF_BUILD_AT_ORIGIN') ? 1 : Number.POSITIVE_INFINITY;
+            // V-2b-3（V-2b-2b 验收登记的 failsafe）：REPEAT 循环的迭代上界。
+            // 「REPEAT + reqSpace 0」组合理论不终止（不占格 → 候选不缩减 →
+            // 每轮落满 → 条件恒真）；CE 全部 10 条 REPEAT feature 的 reqSpace
+            // 逐条为 1 且 CE 循环本身无上界（Architect.c:1360-1687 之间无
+            // failsafe 计数），故这是 web 侧纯防御、CE 无对应值可抄——量级取
+            // CE failsafe 惯用的 1000（generateItem 重掷 Architect.c:1506 等）。
+            // 可达路径上零行为变化（真实 REPEAT 数据循环 ≤ 数轮），超限即显式
+            // 抛错并携带蓝图 id / feature 序号 / 轮数，替代"静默挂死到 worker
+            // OOM"的无诊断故障形态。
+            let repeatRounds = 0;
             do {
                 roundPlaced = 0;
                 struck = new Set<number>(); // CE :1362-1377：候选表每轮重建——
@@ -1176,8 +1239,14 @@ export class BlueprintEngine {
                         }
                         theItem = null;
 
-                        // Generate monster spawn instructions
-                        if (fFlags.has('MF_GENERATE_MONSTER') && feature.monsterId) {
+                        // Generate monster spawn instructions.
+                        // V-2b-3（CE Architect.c:1601 `if (feature->monsterID)`）：
+                        // CE 的 monsterID 分支**只看列值非零**，不要求任何 feature
+                        // 旗标（同函数的 horde 分支才看 MF_GENERATE_HORDE）。旧 web
+                        // 要求 MF_GENERATE_MONSTER ∧ monsterId——现有 7 条数据两者
+                        // 皆有（行为零变化），但 24/25 号的图腾/守卫 feature 按 CE
+                        // 数据不带该旗标，旧条件会漏生成。照 CE 改为只看 monsterId。
+                        if (feature.monsterId) {
                             monsterSpawns.push({
                                 monsterId: feature.monsterId,
                                 pos: { x: pos.x, y: pos.y },
@@ -1190,6 +1259,14 @@ export class BlueprintEngine {
 
                 placed = roundPlaced; // CE：instance 每轮由 for 重置归零（:1399），
                                       // min 检查只看最后一轮（:1675）
+                if (repeatUntilNoProgress) {
+                    repeatRounds++;
+                    if (repeatRounds > 1000) {
+                        throw new Error(
+                            `MF_REPEAT_UNTIL_NO_PROGRESS failsafe：蓝图 "${bp.id}" 的 feature #${feat} 已循环 ${repeatRounds} 轮仍持续落位——候选域不缩减（reqSpace=0 或 instanceCount 异常），疑似死循环。V-2b-3 failsafe（CE 无此机制，量级 1000）。`
+                        );
+                    }
+                }
             } while (repeatUntilNoProgress && roundPlaced >= minInstances);
 
             // V-1c：CE :1675-1687——本 feature（最后一轮）实际落位数达不到

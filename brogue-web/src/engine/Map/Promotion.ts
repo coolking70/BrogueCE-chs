@@ -59,8 +59,14 @@
  *   4. CE promoteTile 本体不掷骰：晋升链全部 19 条 DF 的 startProbability=0
  *      （spawnMapDF 的 while 不执行，零消耗）。掷骰只发生在驱动的第一趟。
  *   5. TM_IS_WIRED / activateMachine / circuitBreakersPreventActivation
- *      （:1271-1286、:1230-1242）= C-4d 接线机器，本轮**显式未实现**：
- *      命中 TM_IS_WIRED 时在结果里置 wiredBranchHit 留痕，不做任何事。
+ *      （:1271-1286、:1230-1242）——**V-2b-3 已实现**（C-4d 接线网络，
+ *      留痕反转：原"命中只置 wiredBranchHit 留痕"的占位升格为真实通电）。
+ *      CE 三要点照抄：先置 IS_POWERED 再递归（防无限闸）、机器不必连续
+ *      （按 machineNumber 全图扫，:1276-1277 注释）、激活结束把**全图**
+ *      IS_POWERED 清掉（:1280-1285，不止本机器）。CE activateMachine 的
+ *      两次洗牌（:1177-1180）无条件照掷——RNG 流对齐。怪物激活段
+ *      （:1201-1227，MONST_GETS_TURN_ON_ACTIVATION 的怪获得回合）web 无
+ *      machineHome 载体（怪物不记属机），登记 V-2b-5/6。
  *
  * 与 CE 的有意差异（登记表，均由 web 现状决定）：
  *   ┌────────────────────────────────┬────────────────────────────────────┐
@@ -106,6 +112,7 @@ import {
     T_PATHING_BLOCKER,
     TM_EXPLOSIVE_PROMOTE,
     TM_EXTINGUISHES_FIRE,
+    TM_IS_CIRCUIT_BREAKER,
     TM_IS_WIRED,
     TM_PROMOTES_ON_ITEM,
     TM_PROMOTES_ON_ITEM_PICKUP,
@@ -189,9 +196,119 @@ function firstMissingTileInChain(df: DF): {
     return null;
 }
 
+// ── 接线机器（CE Time.c:1173-1287 的 activateMachine / circuitBreakers 段，
+//    V-2b-3 实现——C-4c 时代为留痕占位）────────────────────────────────────
+
+/** activateMachine 的结果（测量与 Game 侧播报用）。 */
+export interface WiredActivationResult {
+    /** 激活的机器号。 */
+    machineNumber: number;
+    /** 本次置 IS_POWERED 的格（CE :1186-1197 命中序 = 洗牌后的扫描序）。 */
+    poweredCells: Pos[];
+    /** 每个 powered 格逐层 promoteTile 的明细（CE :1192-1196）。 */
+    promotions: PromoteTileResult[];
+}
+
+/**
+ * CE circuitBreakersPreventActivation（Time.c:1230-1242）的直译：全图扫描
+ * （x 外层 y 内层），本机器号任一格带 TM_IS_CIRCUIT_BREAKER 即阻断激活。
+ * CE 字面无 IS_IN_MACHINE 要求——只按 machineNumber 匹配（0 号机器的格
+ * machineNumber 恒 0，扫描同样成立，照抄）。
+ */
+export function circuitBreakersPreventActivation(grid: Grid, machineNumber: number): boolean {
+    for (let x = 0; x < grid.width; x++) {
+        for (let y = 0; y < grid.height; y++) {
+            const cell = grid.getCell(x, y);
+            if (!cell || cell.machineNumber !== machineNumber) continue;
+            if (cellTerrainMechFlags(grid, x, y) & TM_IS_CIRCUIT_BREAKER) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+/**
+ * CE activateMachine（Time.c:1173-1228）的直译：给机器里所有带 TM_IS_WIRED
+ * 的未通电格通电，并对每个 wired 层 promoteTile。
+ *
+ * RNG（与 CE 逐位对齐）：:1177-1180 的 fillSequentialList 零消耗 + 两次
+ * shuffleList（列先、行后）各掷 (宽-1) + (高-1) 次 rand_range——**无条件先
+ * 掷**，哪怕机器没有 wired 格或机器号为 0（CE 字面：洗牌在扫描之前）。
+ *
+ * web 的 IS_IN_MACHINE 等价物 = machineNumber !== 0（BlueprintEngine 既定
+ * 口径）：CE 的扫描条件是 IS_IN_MACHINE ∧ machineNumber 相等 ∧ 未通电 ∧
+ * 格上任一层带 TM_IS_WIRED；machineNumber<=0 时 CE 的 IS_IN_MACHINE 恒假
+ * ——以显式守卫表达同一语义（洗牌照掷，扫描空转）。
+ *
+ * ★ 相互递归与终止 ★：本函数对每个 powered 格调 promoteTile，其 wired 分支
+ * 因 IS_POWERED 已置位（CE :1277 先置位再递归）而不再反向调用本函数——
+ * 这道闸是唯一的终止保证，不得在扫描里提前清位。
+ *
+ * ★ CE :1201-1227 的怪物激活段（machineHome == machineNumber 且
+ * MONST_GETS_TURN_ON_ACTIVATION 的怪获得回合）web 无载体：怪物不记属机
+ * （spawnBlueprintItem/monsterSpawns 均无 machineHome 字段），登记 V-2b-5/6
+ * 接线；本实现不模拟其效果、也不消耗其无 RNG 的份额（该段零掷骰）。
+ */
+export function activateMachine(grid: Grid, machineNumber: number): WiredActivationResult {
+    const result: WiredActivationResult = {
+        machineNumber,
+        poweredCells: [],
+        promotions: [],
+    };
+
+    // CE :1177-1180：fillSequentialList(sCols/sRows) + shuffleList 各一次
+    // ——列先、行后；顺序即 RNG 消耗顺序，不得对调。
+    const sCols: number[] = [];
+    for (let v = 0; v < grid.width; v++) sCols.push(v);
+    rng.shuffleList(sCols);
+    const sRows: number[] = [];
+    for (let v = 0; v < grid.height; v++) sRows.push(v);
+    rng.shuffleList(sRows);
+
+    if (machineNumber <= 0) return result; // web IS_IN_MACHINE 守卫（见头注）
+
+    // CE :1182-1199：洗过的列序 × 行序双层扫描（i 走列、j 走行）。
+    for (let i = 0; i < grid.width; i++) {
+        for (let j = 0; j < grid.height; j++) {
+            const x = sCols[i]!;
+            const y = sRows[j]!;
+            const cell = grid.getCell(x, y);
+            if (!cell) continue;
+            if (cell.machineNumber !== machineNumber || cell.isPowered) continue;
+            // CE :1189 cellHasTMFlag 的跨层问法：任一层带 TM_IS_WIRED。
+            if ((cellTerrainMechFlags(grid, x, y) & TM_IS_WIRED) === 0) continue;
+
+            cell.isPowered = true; // CE :1191：先置位再晋升（相互递归的闸）
+            result.poweredCells.push({ x, y });
+            for (let layer = 0; layer < DungeonLayer.COUNT; layer++) {
+                if (TERRAIN_FLAGS[cell.layers[layer]!]!.mechFlags & TM_IS_WIRED) {
+                    result.promotions.push(
+                        promoteTile(grid, x, y, layer as DungeonLayer, false)
+                    );
+                }
+            }
+        }
+    }
+    return result;
+}
+
+/** 清除全图 IS_POWERED（CE :1281-1285 的字面全图循环）。 */
+function clearAllPowered(grid: Grid): void {
+    for (let x = 0; x < grid.width; x++) {
+        for (let y = 0; y < grid.height; y++) {
+            const cell = grid.getCell(x, y);
+            if (cell) cell.isPowered = false;
+        }
+    }
+}
+
 // ── promoteTile（CE Time.c:1244-1287）──────────────────────────────────────
 
 export interface PromoteTileResult {
+    /** 晋升发生的格（V-2b-3 补：wired 激活的嵌套晋升明细需要坐标寻址）。 */
+    x: number;
+    y: number;
     /** 晋升发生前该层的地形（测量按源地形分类用）。 */
     sourceTerrain: TerrainType;
     layer: DungeonLayer;
@@ -203,8 +320,17 @@ export interface PromoteTileResult {
     spawn: SpawnFeatureResult | null;
     /** 非 null = 整次晋升缓办（链上有缺 tile 环节），地形未动。 */
     deferred: DeferredPromotion | null;
-    /** TM_IS_WIRED 分支被命中（C-4d 未实现留痕——本轮不做任何事）。 */
+    /** TM_IS_WIRED 分支被命中（V-2b-3 留痕反转：语义从"命中留痕"升格为
+     *  "本格发起了 wired 通电"——CE 全四条件成立才会是 true，嵌套晋升里
+     *  已带电的格不进分支故为 false）。明细在 wired 字段。 */
     wiredBranchHit: boolean;
+    /**
+     * 非 null = 本格发起了机器激活（CE :1277-1278 置位 + activateMachine）。
+     * 含激活期内所有被通电格的逐层晋升明细（含其缓办登记，Game 侧可据此
+     * 播报/测量）；CE 怪物激活段（:1201-1227）web 无 machineHome 载体，
+     * 不在结果内（登记 V-2b-5/6）。
+     */
+    wired: WiredActivationResult | null;
     /** 是否发生了任何地形变化（vanish 或 spawn 落格）。 */
     mutated: boolean;
     /** rogue.staleLoopMap 登记（清掉 T_PATHING_BLOCKER 时）。 */
@@ -231,6 +357,8 @@ export function promoteTile(
     const tile = TERRAIN_FLAGS[sourceTerrain]!;
 
     const result: PromoteTileResult = {
+        x,
+        y,
         sourceTerrain,
         layer,
         vanished: false,
@@ -238,6 +366,7 @@ export function promoteTile(
         spawn: null,
         deferred: null,
         wiredBranchHit: false,
+        wired: null,
         mutated: false,
         staleLoopMap: false,
     };
@@ -312,9 +441,23 @@ export function promoteTile(
         }
     }
 
-    // CE :1271-1286：接线机器分支——C-4d 显式未实现（本轮留痕，不做任何事）。
+    // CE :1271-1286：接线机器分支——V-2b-3 实现（C-4c 时代的留痕占位反转）。
+    // 全四条件照抄：!useFireDF ∧ 格带 TM_IS_WIRED ∧ 未通电 ∧ 断路器不阻断。
+    // 三要点（缺一即错，CE 原文锚点）：
+    //   1. 先置 IS_POWERED 再递归（:1277）——与 activateMachine 相互递归的
+    //      唯一终止闸；本格已带电时分支不进（嵌套晋升不会二次触发）。
+    //   2. 机器不必连续（:1276-1277 注释 "Note that machines need not be
+    //      contiguous"）——activateMachine 按 machineNumber 全图扫，不是按
+    //      连通区域扩散。
+    //   3. 激活结束把**全图** IS_POWERED 清掉（:1280-1285 "Power fades from
+    //      the map immediately after we finish"）——不止本机器的格。
     if (!useFireDF && (tile.mechFlags & TM_IS_WIRED)) {
-        result.wiredBranchHit = true;
+        if (!cell.isPowered && !circuitBreakersPreventActivation(grid, cell.machineNumber)) {
+            result.wiredBranchHit = true;
+            cell.isPowered = true; // CE :1277
+            result.wired = activateMachine(grid, cell.machineNumber); // CE :1278 "It lives!!!"
+            clearAllPowered(grid); // CE :1281-1285：电随即从全图散去
+        }
     }
 
     return result;

@@ -258,7 +258,7 @@ describe('P1-42 B：web 自创的 30% 邻接揭示已删除（本轮 §二.3，�
 // ---- C. 目录绊线与"明确不做"留痕 -------------------------------------------
 
 describe('P1-42 C：目录绊线 + 本轮明确不做的事', () => {
-    it('C1 目录绊线（V-2b-2b 反转）：TM_IS_SECRET 的持有者恰为 SECRET_DOOR 与 TRAP_DOOR_HIDDEN', () => {
+    it('C1 目录绊线（V-2b-3 二次反转）：TM_IS_SECRET 的持有者恰为六条', () => {
         // 原断言（P1-42 时）："TM_IS_SECRET 的唯一持有者是 SECRET_DOOR"——
         // 钉死 Game.discoverSecretAt 以 terrain === SECRET_DOOR 代替 CE 的
         // TM_IS_SECRET 判据这一等价前提。
@@ -266,17 +266,33 @@ describe('P1-42 C：目录绊线 + 本轮明确不做的事', () => {
         // 的 TRAP_DOOR_HIDDEN 原列就带 TM_IS_SECRET，蓝图 23 号落地必然打破
         // 单一持有前提；边界扩展已在 v-2b-2b 报告申报）。反转后钉死的新事实：
         // 持有者 = {SECRET_DOOR, TRAP_DOOR_HIDDEN} 恰两条，多一条/少一条都红。
-        // discoverSecretAt 的目录驱动迁移（清层 + discoverType DF_SHOW_TRAPDOOR
-        // 链）即原断言注记的接线，登记为缺口——隐藏陷阱的搜索显形归
-        // 陷阱/搜索轮（V-2b-7 一带），接线时同步扩 c_4b F1 / c_4a_0 / c_4a
-        // 三份白名单并再次反转本断言的"发现等价"说明。
+        // **V-2b-3 二次反转**（本文件同样不在该轮 §6 授权清单——跨轮公共目录
+        // 被按主题命名的本文件钉住，第四种漏授权形态）：wired 触发网络落地
+        // 后，四条隐藏态载体按 CE 原列带 TM_IS_SECRET，持有集 2 → 6：
+        //   WALL_LEVER_HIDDEN            Globals.c:347  TM_IS_SECRET（G_WALL 伪装）
+        //   GAS_TRAP_PARALYSIS_HIDDEN    Globals.c:381  TM_IS_SECRET | TM_IS_WIRED
+        //   MACHINE_PARALYSIS_VENT_HIDDEN Globals.c:383 TM_IS_SECRET | TM_IS_WIRED
+        //   MACHINE_METHANE_VENT_HIDDEN  Globals.c:398  同上（41 号留形载体）
+        // **守卫语义反而变强**：持有集恰六条、逐条与 CE 隐藏态一一对应，
+        // 比原来的"恰两条"覆盖面更大（任何新 tile 误带 / 漏带 TM_IS_SECRET 都红）。
+        // 与 discoverSecretAt 的等价前提照旧**不成立**（web 仍只对
+        // terrain === SECRET_DOOR 显形；其余五条的 discoverType 链
+        // DF_SHOW_* / DF_REVEAL_* 已登记为缺口，接线轮 = 搜索显形轮，
+        // 届时同步扩 c_4b F1 / c_4a_0 / c_4a 三份白名单并第三次反转本断言）。
         const holders: string[] = [];
         for (const name of Object.keys(TerrainType).filter(k => Number.isNaN(Number(k)))) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             if ((TERRAIN_FLAGS[t].mechFlags & TM_IS_SECRET) !== 0) holders.push(name);
         }
         expect(holders.sort(), `TM_IS_SECRET 持有集变化：${holders.join(', ')}`)
-            .toEqual(['SECRET_DOOR', 'TRAP_DOOR_HIDDEN']);
+            .toEqual([
+                'GAS_TRAP_PARALYSIS_HIDDEN',
+                'MACHINE_METHANE_VENT_HIDDEN',
+                'MACHINE_PARALYSIS_VENT_HIDDEN',
+                'SECRET_DOOR',
+                'TRAP_DOOR_HIDDEN',
+                'WALL_LEVER_HIDDEN',
+            ]);
     });
 
     it('C2 留痕：陷阱的搜索发现不实现——搜索不改变 TRAP 格、不产出陷阱消息（KNOWN_TO_BE_TRAP_FREE 登记未实现）', () => {

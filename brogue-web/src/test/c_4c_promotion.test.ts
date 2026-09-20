@@ -145,25 +145,56 @@ describe('C-4c A：promoteTile 本体（CE Time.c:1244-1287）', () => {
         expect(g.getCell(5, 5)!.layers[L.DUNGEON]).toBe(C.LOCKED_DOOR);
     });
 
-    it('A5 对抗：接线机器分支必须显式未实现（误实现 activateMachine 即翻红）', () => {
-        // PRESSURE_PLATE 带 TM_IS_WIRED（C-4a 表）。注 promoteType='' 让晋升
-        // 完成（板无 DF 可缓），wiredBranchHit 必须置位且不产生任何机器效果；
-        // 静态守卫在 A6（CE 接线符号不得出现在生产代码）。
+    it('A5 已反转（V-2b-3）：接线机器分支真实通电——原"什么都不发生"断言改为"machineNumber=0 时耗掉两次洗牌的 RNG 且电散尽"', () => {
+        // 原留痕（C-4c→V-2b-3 反转，按 B-1 范式保留原断言内容）：
+        //   原 A5 钉"命中 wired 分支时什么都不发生、仅置 wiredBranchHit 留痕，
+        //   误实现 activateMachine 即翻红"。V-2b-3 实现了 CE Time.c:1271-1286
+        //   的接线网络，断言反转为新事实：
+        //   (a) 未通电、无断路器的 wired 格命中分支（wiredBranchHit 仍为真）；
+        //   (b) machineNumber=0 的孤板：CE :1177-1180 的两次洗牌**无条件先掷**
+        //       （(W-1)+(H-1) 次 rand_range），扫描因 IS_IN_MACHINE 等价物
+        //       （machineNumber!==0）恒假而空转——RNG 消耗是"洗牌无条件性"的
+        //       可观测锚，省掉洗牌的实现（流不分叉、落位序偏离 CE）在此翻红；
+        //   (c) 板消失（vanish，CE :1254-1266）与 useFireDF=true 不进分支
+        //       （CE :1271 `!useFireDF &&`）两条原断言原样保留。
+        // 静态守卫见 A6（符号住址钉死）。
         withEntry(C.PRESSURE_PLATE, { promoteType: '' }, () => {
             const g = wallGrid();
             g.setTerrain(7, 7, C.PRESSURE_PLATE, '_', 0x446644);
+            rng.seedRandomGenerator(20260916);
+            const before = rng.randomNumbersGenerated;
             const r = promoteTile(g, 7, 7, L.DUNGEON, false);
-            expect(r.wiredBranchHit, 'TM_IS_WIRED 命中必须留痕').toBe(true);
+            expect(r.wiredBranchHit, '未通电的 wired 格必须发起激活').toBe(true);
+            expect(r.wired, 'machineNumber=0 的空激活也要有结果对象').not.toBeNull();
+            expect(r.wired!.poweredCells).toEqual([]);
+            expect(rng.randomNumbersGenerated - before,
+                'CE :1177-1180 两次洗牌无条件先掷：(W-1)+(H-1) 次 rand_range')
+                .toBe((g.width - 1) + (g.height - 1));
             expect(g.getCell(7, 7)!.layers[L.DUNGEON]).toBe(C.FLOOR);
+            // 电随即散尽（CE :1281-1285）：激活后全图无残留通电格。
+            for (let x = 0; x < g.width; x++) {
+                for (let y = 0; y < g.height; y++) {
+                    expect(g.getCell(x, y)!.isPowered, `(${x},${y}) 残留通电`).toBe(false);
+                }
+            }
         });
-        // useFireDF=true 不进接线分支（CE :1271 `!useFireDF &&`）。
+        // useFireDF=true 不进接线分支（CE :1271 `!useFireDF &&`）——原断言保留。
         const g2 = wallGrid();
         g2.setTerrain(7, 7, C.PRESSURE_PLATE, '_', 0x446644);
         expect(promoteTile(g2, 7, 7, L.DUNGEON, true).wiredBranchHit).toBe(false);
     });
 
-    it('A6 留痕：接线机器是 C-4d——activateMachine/circuitBreakers/IS_POWERED 不得出现在生产代码', () => {
-        // 静态扫描：这些 CE 符号若被"顺手实现"，在此翻红（越界守卫）。
+    it('A6 已反转（V-2b-3）：接线机器符号住址钉死——activateMachine/circuitBreakers/IS_POWERED 只允许住在 Promotion.ts 与 Grid.ts', () => {
+        // 原留痕（C-4c→V-2b-3 反转，按 B-1 范式保留原断言内容）：
+        //   原 A6 钉"这三个 CE 符号不得出现在生产代码（C-4d 未实现）"。
+        //   V-2b-3 实现接线网络后符号合法化，守卫**顺延不放宽**：符号住址
+        //   钉死——activateMachine / circuitBreakersPreventActivation 的定义
+        //   与全部生产调用点只允许在 engine/Map/Promotion.ts（CE 三符号同源
+        //   Time.c）；IS_POWERED 的生产读写住址是 engine/Map/Promotion.ts 与
+        //   engine/Map/Grid.ts（Cell.isPowered 位字段，CE pmap.flags 位）。
+        //   第三处生产读者/实现（如 Game/BlueprintEngine 冒出的第二套通电
+        //   逻辑）在此翻红。跳过注释行的口径与原扫描一致（文档里提名字
+        //   不是实现）。
         const srcDir = fileURLToPath(new URL('../', import.meta.url));
         const collect = (dir: string, out: string[] = []): string[] => {
             for (const name of readdirSync(dir)) {
@@ -174,9 +205,11 @@ describe('C-4c A：promoteTile 本体（CE Time.c:1244-1287）', () => {
             return out;
         };
         const pattern = /\bactivateMachine\b|\bcircuitBreakersPreventActivation\b|\bIS_POWERED\b/;
+        const allowed = new Set(['engine/Map/Promotion.ts', 'engine/Map/Grid.ts']);
         const offenders: string[] = [];
         for (const f of collect(srcDir).filter((p) => !p.split(sep).includes('test'))) {
             const rel = relative(srcDir, f).split(sep).join('/');
+            if (allowed.has(rel)) continue;
             readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
                 const codeOnly = line.replace(/\/\/.*$/, '');
                 // 跳过块注释行：文档里提名字不是实现（TM_IS_CIRCUIT_BREAKER
@@ -187,7 +220,7 @@ describe('C-4c A：promoteTile 本体（CE Time.c:1244-1287）', () => {
                 }
             });
         }
-        expect(offenders, `接线机器符号越轮出现（归 C-4d）：\n${offenders.join('\n')}`).toEqual([]);
+        expect(offenders, `接线机器符号越住址出现（只允许 Promotion.ts/Grid.ts）：\n${offenders.join('\n')}`).toEqual([]);
     });
 
     it('A7 DF 名解析：TerrainCatalog 引用未知目录名必须响亮失败（不许静默当 0）', () => {

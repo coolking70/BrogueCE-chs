@@ -129,6 +129,17 @@ const EXPECTED_VISIBLE: Record<TerrainType, { char: string; color: string; bgCol
     [TerrainType.STATUE_INERT_DOORWAY]: DEFAULT_LOOK, // V-2b-2b
     [TerrainType.WOODEN_BARRICADE]: DEFAULT_LOOK,   // V-2b-2b
     [TerrainType.TRAP_DOOR_HIDDEN]: DEFAULT_LOOK,   // V-2b-2b
+    // V-2b-3 九条：wired 触发网络载体，terrainAppearance 尚无专属分支
+    //（CE 外观接线归 UI 轮，同上 DEFAULT_LOOK 欠账登记）。
+    [TerrainType.MACHINE_GLYPH]: DEFAULT_LOOK,              // V-2b-3
+    [TerrainType.PORTCULLIS_CLOSED]: DEFAULT_LOOK,          // V-2b-3
+    [TerrainType.WORM_TUNNEL_OUTER_WALL]: DEFAULT_LOOK,     // V-2b-3
+    [TerrainType.WALL_LEVER_HIDDEN]: DEFAULT_LOOK,          // V-2b-3
+    [TerrainType.GAS_TRAP_PARALYSIS]: DEFAULT_LOOK,         // V-2b-3
+    [TerrainType.GAS_TRAP_PARALYSIS_HIDDEN]: DEFAULT_LOOK,  // V-2b-3
+    [TerrainType.MACHINE_PARALYSIS_VENT_HIDDEN]: DEFAULT_LOOK, // V-2b-3
+    [TerrainType.MACHINE_METHANE_VENT_HIDDEN]: DEFAULT_LOOK,   // V-2b-3
+    [TerrainType.PILOT_LIGHT_DORMANT]: DEFAULT_LOOK,        // V-2b-3
 };
 
 /** 造 Cell（terrain 走 setter 写回归属层）。只用于 DUNGEON/SURFACE 层地形。 */
@@ -211,11 +222,14 @@ function makeMonster(overrides: Partial<Pick<Monster, 'hp' | 'isAlly' | 'state' 
 // ════════════════════════ terrainAppearance 特征化 ════════════════════════
 
 describe('R-1 terrainAppearance 特征化（穷举钉死）', () => {
-    it('穷举表覆盖 TerrainType 全部成员（当前 53 个）、成员值无重复', () => {
+    it('穷举表覆盖 TerrainType 全部成员（当前 62 个）、成员值无重复', () => {
         // 成员数变化（新增地形）时此断言翻红——按文件头说明更新期望表。
         // V-2b-2b：+6（CARPET/STATUE_INERT/PEDESTAL/STATUE_INERT_DOORWAY/
         // WOODEN_BARRICADE/TRAP_DOOR_HIDDEN），47 → 53。
-        expect(ALL_TERRAINS.length).toBe(53);
+        // V-2b-3：+9（MACHINE_GLYPH/PORTCULLIS_CLOSED/WORM_TUNNEL_OUTER_WALL/
+        // WALL_LEVER_HIDDEN/GAS_TRAP_PARALYSIS/_HIDDEN/MACHINE_PARALYSIS_VENT_
+        // HIDDEN/MACHINE_METHANE_VENT_HIDDEN/PILOT_LIGHT_DORMANT），53 → 62。
+        expect(ALL_TERRAINS.length).toBe(62);
         expect(new Set(ALL_TERRAINS).size).toBe(ALL_TERRAINS.length);
     });
 

@@ -139,7 +139,20 @@ export enum TerrainType {
     PEDESTAL,           // CE Globals.c:369 石基座（基座大奖的落点）
     STATUE_INERT_DOORWAY, // CE Globals.c:550 门内碎裂雕像（20 号的堵门体）
     WOODEN_BARRICADE,   // CE Globals.c:341 干木栅（19 号的堵门体，可燃）
-    TRAP_DOOR_HIDDEN    // CE Globals.c:379 隐藏陷阱门（23 号，TM_IS_SECRET + T_AUTO_DESCENT）
+    TRAP_DOOR_HIDDEN,   // CE Globals.c:379 隐藏陷阱门（23 号，TM_IS_SECRET + T_AUTO_DESCENT）
+    // V-2b-3：wired 触发网络的九个地形载体（18/22/24/25/67/68 号蓝图的机器
+    // 通货，全部带 TM_IS_WIRED 或属其显隐两态）。只追加在尾部（既有枚举值
+    // 不变——terrainFingerprint 按数值哈希）。CE 行号即目录行：
+    MACHINE_GLYPH,              // Globals.c:404 机器符文（玩家踏入触发晋升）
+    PORTCULLIS_CLOSED,          // Globals.c:339 落下的铁闸（闸门族堵门体）
+    WORM_TUNNEL_OUTER_WALL,     // Globals.c:570 蠕虫隧道外墙（"爆炸墙"堵门体）
+    WALL_LEVER_HIDDEN,          // Globals.c:347 隐藏墙杆（本 tile 无 WIRED——
+                                // CE 显形后的 WALL_LEVER 才带线，web 无该 tile）
+    GAS_TRAP_PARALYSIS,         // Globals.c:382 麻痹触发板（已揭示态）
+    GAS_TRAP_PARALYSIS_HIDDEN,  // Globals.c:381 麻痹触发板（隐藏态）
+    MACHINE_PARALYSIS_VENT_HIDDEN, // Globals.c:383 麻痹喷口（隐藏态）
+    MACHINE_METHANE_VENT_HIDDEN,   // Globals.c:398 甲烷喷口（隐藏态）
+    PILOT_LIGHT_DORMANT         // Globals.c:342 休眠点火嘴（墙装火把）
 }
 
 export enum LightType {
@@ -258,7 +271,23 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.PEDESTAL]: 17,
     [TerrainType.STATUE_INERT_DOORWAY]: 0,
     [TerrainType.WOODEN_BARRICADE]: 8,
-    [TerrainType.TRAP_DOOR_HIDDEN]: 95
+    [TerrainType.TRAP_DOOR_HIDDEN]: 95,
+    // V-2b-3：CE 第 4 列原值。MACHINE_GLYPH 42（Globals.c:404）；PORTCULLIS_
+    // CLOSED 10（:339）；WORM_TUNNEL_OUTER_WALL 0（:570，墙档）；WALL_LEVER_
+    // HIDDEN 0（:347，G_WALL 伪装）；GAS_TRAP_PARALYSIS 30（:382，可见陷阱档
+    // ——与 web TRAP 的 30 同源）；GAS_TRAP_PARALYSIS_HIDDEN 95（:381，G_FLOOR
+    // 伪装——隐藏态看着像地板）；MACHINE_PARALYSIS_VENT_HIDDEN 95（:383）、
+    // MACHINE_METHANE_VENT_HIDDEN 95（:398）同上；PILOT_LIGHT_DORMANT 0
+    //（:342，墙档火把）。
+    [TerrainType.MACHINE_GLYPH]: 42,
+    [TerrainType.PORTCULLIS_CLOSED]: 10,
+    [TerrainType.WORM_TUNNEL_OUTER_WALL]: 0,
+    [TerrainType.WALL_LEVER_HIDDEN]: 0,
+    [TerrainType.GAS_TRAP_PARALYSIS]: 30,
+    [TerrainType.GAS_TRAP_PARALYSIS_HIDDEN]: 95,
+    [TerrainType.MACHINE_PARALYSIS_VENT_HIDDEN]: 95,
+    [TerrainType.MACHINE_METHANE_VENT_HIDDEN]: 95,
+    [TerrainType.PILOT_LIGHT_DORMANT]: 0
 };
 
 /**
@@ -371,7 +400,23 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     [TerrainType.PEDESTAL]: DungeonLayer.DUNGEON,
     [TerrainType.STATUE_INERT_DOORWAY]: DungeonLayer.DUNGEON,
     [TerrainType.WOODEN_BARRICADE]: DungeonLayer.DUNGEON,
-    [TerrainType.TRAP_DOOR_HIDDEN]: DungeonLayer.DUNGEON
+    [TerrainType.TRAP_DOOR_HIDDEN]: DungeonLayer.DUNGEON,
+    // V-2b-3：九个 wired 载体全落 DUNGEON 层——CE 蓝图 feature 的 layer 列
+    // 全为 DUNGEON（GlobalsBrogue.c:307/311/314 等逐行），且它们 DF 链的
+    // 产物条目（DF_INACTIVE_GLYPH {MACHINE_GLYPH_INACTIVE, DUNGEON}、
+    // DF_OPEN_PORTCULLIS {PORTCULLIS_DORMANT, DUNGEON}、DF_REVEAL_LEVER
+    // {WALL_LEVER, DUNGEON}、DF_SHOW_PARALYSIS_GAS_TRAP {GAS_TRAP_PARALYSIS,
+    // DUNGEON}、DF_DISCOVER_PARALYSIS_VENT {MACHINE_PARALYSIS_VENT, DUNGEON}
+    // 等，Globals.c 逐条）layer 列同证。
+    [TerrainType.MACHINE_GLYPH]: DungeonLayer.DUNGEON,
+    [TerrainType.PORTCULLIS_CLOSED]: DungeonLayer.DUNGEON,
+    [TerrainType.WORM_TUNNEL_OUTER_WALL]: DungeonLayer.DUNGEON,
+    [TerrainType.WALL_LEVER_HIDDEN]: DungeonLayer.DUNGEON,
+    [TerrainType.GAS_TRAP_PARALYSIS]: DungeonLayer.DUNGEON,
+    [TerrainType.GAS_TRAP_PARALYSIS_HIDDEN]: DungeonLayer.DUNGEON,
+    [TerrainType.MACHINE_PARALYSIS_VENT_HIDDEN]: DungeonLayer.DUNGEON,
+    [TerrainType.MACHINE_METHANE_VENT_HIDDEN]: DungeonLayer.DUNGEON,
+    [TerrainType.PILOT_LIGHT_DORMANT]: DungeonLayer.DUNGEON
 };
 
 /**
@@ -569,6 +614,17 @@ export class Cell {
 
     // Machine zone tracking (0 = no machine)
     public machineNumber: number = 0;
+
+    /**
+     * V-2b-3：CE pmap.flags 的 IS_POWERED 位（Rogue.h:1113 一带，消费点
+     * Time.c:1186-1191/:1271-1286）——wired 机器激活期的瞬时"通电"标记。
+     * 生命周期极短：promoteTile 的 wired 分支给本格置位 → activateMachine
+     * 沿机器置位/逐层晋升 → 返回后**全图清零**（CE :1280-1285"Power fades
+     * from the map immediately after we finish"）。它同时是 activateMachine
+     * ⇄ promoteTile 相互递归的防无限闸（先置位再递归，CE :1277）。
+     * 仅由 Promotion 的 wired 分支读写。
+     */
+    public isPowered: boolean = false;
 
     constructor(x: number, y: number) {
         this.x = x;
