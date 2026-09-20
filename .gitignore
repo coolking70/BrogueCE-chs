@@ -53,3 +53,7 @@ yarn-error.log
 
 # git worktree（轮次隔离用，不入库）
 wt-*/
+
+# 执行方工具的本地状态（跨会话记忆），非项目交付物。
+# 也防止验收方在 worktree 里 `git add -A` 时把它卷进 squash 源提交。
+.workbuddy/
