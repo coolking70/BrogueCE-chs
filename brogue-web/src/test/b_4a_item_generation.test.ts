@@ -201,6 +201,7 @@ describe('B-4a 计量表·产物侧（区间来自 10-seed 纯测量，见报告
 // ─────────────────────────────────────────────────────────────────────────────
 describe('B-4a life 阈值强制生成', () => {
     it('每个 seed 在 D6 前必出现第一只 life（n=0 时 4*0+3 < d+offset 最迟 D6 恒真）', () => {
+        const firstLifeDepths: Array<{ seed: number; depth: number }> = [];
         for (const seed of SEEDS) {
             const game = createHeadlessGame(seed);
             const g = game as unknown as GameWithGen;
@@ -209,9 +210,16 @@ describe('B-4a life 阈值强制生成', () => {
                 if (d > 1) { game.depth = d; g.generateDepth(false, false); }
                 if (game.items.some(i => identityOf(i) === 'potion_of_life')) { firstLifeDepth = d; break; }
             }
-            expect(firstLifeDepth, `seed${seed} 第一只 life 出现在 D${firstLifeDepth}`).toBeGreaterThanOrEqual(1);
-            expect(firstLifeDepth, `seed${seed} 第一只 life 出现在 D${firstLifeDepth}，阈值强制应在 D6 前生效`)
-                .toBeLessThanOrEqual(6);
+            firstLifeDepths.push({ seed, depth: firstLifeDepth });
+        }
+        const inRange = firstLifeDepths.filter(({ depth }) => depth >= 1 && depth <= 6);
+        const diagnostic = [
+            `逐 seed 首现深度: ${firstLifeDepths.map(({ seed, depth }) => `seed${seed}=D${depth}`).join(', ')}`,
+            `区间 [1,6] 命中 ${inRange.length}/${firstLifeDepths.length}，越界 ${firstLifeDepths.length - inRange.length}/${firstLifeDepths.length}`,
+        ].join('；');
+        for (const { depth } of firstLifeDepths) {
+            expect(depth, diagnostic).toBeGreaterThanOrEqual(1);
+            expect(depth, diagnostic).toBeLessThanOrEqual(6);
         }
     });
 

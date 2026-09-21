@@ -25,6 +25,7 @@ import { generateItemDetail, generateMonsterDetail, type DetailInfo } from '../e
 import { hitProbability, netEnchant, playerDefense } from '../engine/Combat/CombatFormulas';
 import { createHeadlessGame } from './harness';
 import type { Game } from '../engine/Core/Game';
+import { TerrainType } from '../engine/Map/Grid';
 
 // 与 src/engine/UI/DetailGenerator.test.ts 相同的最小 i18n 初始化（幂等），
 // 供 Monster 构造器 translateName 使用
@@ -192,11 +193,19 @@ const DIRS8: ReadonlyArray<readonly [number, number]> = [
 function inspectAdjacentMonster(game: Game): DetailInfo {
     const px = game.player.loc.x;
     const py = game.player.loc.y;
+    game.monsters.splice(0);
     for (const [dx, dy] of DIRS8) {
         const x = px + dx;
         const y = py + dy;
         const cell = game.grid.getCell(x, y);
-        if (!cell?.isVisible) continue;
+        if (!cell) continue;
+        game.grid.setTerrain(x, y, TerrainType.FLOOR, '.', 0x888888);
+        cell.isVisible = true;
+    }
+    for (const [dx, dy] of DIRS8) {
+        const x = px + dx;
+        const y = py + dy;
+        if (!game.grid.getCell(x, y)) continue;
         const monster = new Monster(x, y, {
             id: 'wired_monster',
             name: 'Wired Monster',
@@ -215,7 +224,7 @@ function inspectAdjacentMonster(game: Game): DetailInfo {
         if (!game.inspectTarget) throw new Error('handleInspectAt 未生成详情面板');
         return game.inspectTarget;
     }
-    throw new Error('玩家相邻无可见格，无法布置测试怪物');
+    throw new Error('玩家相邻无图内格，无法布置测试怪物');
 }
 
 describe('Game.handleInspectAt 接线：面板命中率与 playerDefense 同源', () => {
