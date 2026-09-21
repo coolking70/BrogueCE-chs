@@ -7,6 +7,26 @@
 
 ---
 
+## ⚠️ 仓库结构（2026-09-21 查清，避免踩坑）
+
+**四个分支互不相干，`main` 才是我们的工作分支：**
+
+| 分支 | 是什么 | 与 main 的关系 |
+|---|---|---|
+| `main` | **TS 移植工作区**（顶层只有 `BrogueCE-master/` + `brogue-web/` + `brogueweb/`） | — |
+| `master` | fork 来的**上游 Brogue CE 的 C 项目历史**（Makefile / brogue/ / bin/） | **无共同祖先**，933 领先 / 268 落后 |
+| `gh-pages` | **`brogueweb/`（emscripten 编译的 C 版）** 的部署，2026-03-06 | 与 TS 移植无关，**不要动** |
+| `claude/github-online-compilation-dUodh` | 旧分支，gh-pages 的来源 | 历史遗留 |
+
+🪤 **PR 目标陷阱**：`git status` 报的「Main branch (you will usually use this for PRs): master」
+是 fork 的默认分支，**不是我们的**。若开 PR 必须显式 `--base main`，
+否则会对着上游 C 项目的独立历史开，差异 268 个提交。
+
+🪤 **目录名陷阱**：`brogue-web/`（TS/Vue 移植，我们的工作）与 `brogueweb/`
+（emscripten 编译的 C 版，gh-pages 部署它）只差一个连字符，是**两条独立产品线**。
+
+---
+
 ## ★ 夜间接班（新上下文从这里开始读）
 
 ### ⛔ 派发通道：只有一条，且只能由用户发起（2026-09-19 定稿）
