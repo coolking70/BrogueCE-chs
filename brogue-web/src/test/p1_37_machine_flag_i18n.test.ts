@@ -324,12 +324,29 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
         //（CE :1486 的 feature 并入机器）：本层的 feature/怪物布点 ∪ center。
         // 数量与坐标一并钉死——机器构成变动（新蓝图入池 / feature 落点规则改动）
         // 时本行会红，届时请按 CE GlobalsBrogue.c 重核该层的机器与落位再更新。
+        // ★ V-2b-7：本组断言的力量在这里恢复。★
+        //
+        // V-2b-3 的注已经写明：CE Architect.c:1484-1486「Mark the feature
+        // location as part of the machine」对**一切** feature 生效，而
+        // MachineResult 此前只暴露 itemSpawns / monsterSpawns，地形类与纯 DF
+        // 类 feature 的落点没有载体——于是"每个 A−B 格都是机器的布点"这个
+        // 判据**结构上无法成立**，V-2b-3/4/5/6 四轮里它要么空转（A−B 为空）、
+        // 要么必然假红。V-2b-7 把 featureSpawns（每个成功实例的落点，
+        // 记录点与 BlueprintEngine 里写 machineNumber 的那一行同址）暴露出来，
+        // 这条逐格断言从此**真的在跑**：feature 落点没被记进机器 → 翻红。
         const spawnKeys = new Set<number>();
         for (const mr of levelResults) {
             spawnKeys.add(key(mr.center));
             for (const s of mr.itemSpawns) spawnKeys.add(key(s.pos));
             for (const s of mr.monsterSpawns) spawnKeys.add(key(s.pos));
+            for (const s of mr.featureSpawns) spawnKeys.add(key(s.pos));
         }
+        // 非空性哨兵：所选层的机器必须真的记录了 feature 落点。字段被删/
+        // 记录点被挪到别处（与本判定脱钩）时，这里先红，不会等到 A−B 恰好
+        // 为空的那一层才暴露。
+        expect(levelResults.reduce((n, mr) => n + mr.featureSpawns.length, 0),
+            '机器没有记录任何 feature 落点——A−B 逐格断言会退化为空转（记录点脱钩？）')
+            .toBeGreaterThan(0);
         const outsideInterior = [...gridDerived].filter(k => !unionKeys.has(k))
             .map(k => `${k % DCOLS},${Math.floor(k / DCOLS)}`).sort();
         for (const k of gridDerived) {
@@ -370,10 +387,23 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
         // 17 号 vestibule_throwing_tutorial，18 号不在本层），新事实
         // A−B = ∅。仍**全等**钉死。守卫力量下降的登记与上方注同（本轮
         // AD3 逐格断言的参照系已改为 gridDerived，空转问题随参照系校正消解）。
+        // ★ V-2b-7 顺延（本文件在 V-2b-7 任务书 §4 授权清单内）★
+        // 原 pin（V-2b-6 顺延后）是「424242/D3 A−B = ∅」。V-2b-7 的 13 条新
+        // 蓝图 + LoopMap.CE_CHOKE_COUNT_CAP 41→176 一起移动了 RNG 流，选中层
+        // 仍是 424242/D3，新事实 A−B = 六格（机器构成为
+        // reward_single_category_library#1 / vestibule_locked#2 /
+        // key_burning_grass#3 / reward_single_category_library#4 /
+        // vestibule_locked#5 / key_secret_room#8）。
+        // 已按消息自带流程重核：六格的 machineNumber 分别属 #1/#1/#3/#4/#4/#4，
+        // 且**每一格都出现在对应机器的 featureSpawns 里**（feature 落在
+        // interior 之外，CE :1484-1486 的字面行为，实现无缺陷）。
+        // 仍**全等**钉死（不是长度/包含比较）。
+        // 净效果：这个 pin 从"空转"变成"有牙齿"——V-2b-3/4/5/6 四轮一直
+        // 想钉的就是它，本轮终于能把 feature 落点纳入参照系。
         expect(outsideInterior,
             `A−B（网格派生 − ∪mr.cells）变动（选中层 D${pickedLevel}）：按 CE GlobalsBrogue.c ` +
-            '重核该层的机器与落位；注意"每格都是 item/monster 布点"的前提过强（见上方注）')
-            .toEqual([]);
+            '重核该层的机器与落位；本层的 A−B 非空时，逐格循环会真的执行（见上方注）')
+            .toEqual(['10,13', '11,21', '13,2', '31,21', '32,23', '36,27']);
 
         // 旧存档兼容：字段整体缺失 = 无机器（读入不抛、旗标为 0）
         const legacy = JSON.parse(JSON.stringify(snapshot!)) as ReturnType<Game['toSnapshot']>;

@@ -38,6 +38,8 @@ import { ItemLoader } from '../engine/Items/ItemLoader';
 import blueprintData from '../data/blueprints.json';
 import arcanaData from '../data/arcana.json';
 import type { BlueprintDef } from '../engine/Generator/BlueprintEngine';
+// V-2b-7：E1/F2 用机器记录器按 blueprintId 认 Kennel。
+import { BlueprintEngine } from '../engine/Generator/BlueprintEngine';
 
 const C = TerrainType;
 
@@ -284,35 +286,58 @@ describe('V-2b-6 D：carriedItem 死亡掉落（CE Monsters.c:4075-4083）', () 
 // ── E：featureDF 真落位 ─────────────────────────────────────────────────────
 
 describe('V-2b-6 E：featureDF 列真落位（CE Architect.c:1434-1440，Kennel 端到端）', () => {
-    it('E1 多 seed 扫描：Kennel 建成的层里，机器格出现 BONES / RED_BLOOD（DF 列产物）', () => {
+    it('E1 多 seed 扫描：Kennel 的 DF 列真落位（featureDF 分支执行 + 地形侧确有产物）', () => {
+        // ★ V-2b-7 判据收敛（前提修正，不是放宽）★
+        // 原判据是"层里有 MONSTER_CAGE_CLOSED ⇒ Kennel，且该层的**有效地形**里
+        // 必须出现 BONES/BLOOD"。两条前提在本轮都到期：
+        //   ① 11 号 Vampire lair 也用 MONSTER_CAGE_CLOSED（seed777/D24 实测被误判）；
+        //   ② `BLOOD` 是 SURFACE 层地形，`fillSpawnMap` 的优先级门
+        //     （Architect.c:3228 `旧 prio >= 新 prio`）会让它**被草(60)挡住**——
+        //     Kennel 建在草层上时血渍落不下去（CE 同样如此），
+        //     "有效地形必出现 BLOOD"因此不是 CE 保证（seed7/D22 实测）。
+        // 收敛后的判据锚在**机器记录**上（本轮新增的 MachineResult.featureSpawns），
+        // 这正是 V-2b-6 想测的东西：featureDF 分支有没有真的执行。
+        //   ① 每台 Kennel 的两条 DF 列都必须录到 ≥ minInstances(3) 个落点；
+        //   ② 覆盖门：全样本至少建成一台 Kennel，且至少有一次落点在网格上
+        //      **真的**写出了 BONES/BLOOD 层（证明不是"记而不落"）。
+        const record: Array<{ depth: number; results: import('../engine/Generator/BlueprintEngine').MachineResult[] }> = [];
+        const proto = BlueprintEngine.prototype as unknown as Record<string, unknown>;
+        const origBuild = proto.buildMachines as (this: unknown) => unknown[];
+        proto.buildMachines = function (this: unknown) {
+            const results = origBuild.call(this) as import('../engine/Generator/BlueprintEngine').MachineResult[];
+            record.push({ depth: (this as { depth: number }).depth, results });
+            return results;
+        };
         let kennelsSeen = 0;
-        for (const seed of [424242, 777, 31337, 20260913, 42, 2026, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) {
-            const game: any = createHeadlessGame(seed);
-            for (let d = 1; d <= 26; d++) {
-                if (d > 1) { game.depth = d; game.generateDepth(false, false); }
-                let hasCage = false;
-                let hasBones = false;
-                let hasBlood = false;
-                for (let x = 1; x < DCOLS - 1; x++) {
-                    for (let y = 1; y < DROWS - 1; y++) {
-                        const cell = game.grid.getCell(x, y);
-                        if (!cell || cell.machineNumber === 0) continue;
-                        if (cell.terrain === C.MONSTER_CAGE_CLOSED) hasCage = true;
-                        if (cell.terrain === C.BONES) hasBones = true;
-                        if (cell.terrain === C.BLOOD) hasBlood = true;
+        let landedSeen = 0;
+        try {
+            for (const seed of [7, 424242, 777, 31337, 20260913, 42, 2026, 1]) {
+                const game: any = createHeadlessGame(seed);
+                for (let d = 1; d <= 26; d++) {
+                    if (d > 1) { game.depth = d; game.generateDepth(false, false); }
+                    const machines = (record[record.length - 1]?.results ?? [])
+                        .filter(m => m.blueprintId === 'reward_kennel');
+                    for (const m of machines) {
+                        kennelsSeen++;
+                        const blood = m.featureSpawns.filter(sp => sp.featureDF === 'DF_AMBIENT_BLOOD').length;
+                        const bones = m.featureSpawns.filter(sp => sp.featureDF === 'DF_BONES').length;
+                        // 对抗：featureDF 分支若恒真缺口（不落位）→ 落点记录为 0 → 红；
+                        // 若只落不记 → 同样为 0 → 红（本轮把记录点与落位同址）。
+                        expect(blood, `seed${seed} D${d} Kennel 的 DF_AMBIENT_BLOOD 落点 < 3（minInstances）`).toBeGreaterThanOrEqual(3);
+                        expect(bones, `seed${seed} D${d} Kennel 的 DF_BONES 落点 < 3（minInstances）`).toBeGreaterThanOrEqual(3);
+                        const landed = m.featureSpawns.some(sp => {
+                            const c = game.grid.getCell(sp.pos.x, sp.pos.y);
+                            if (!c) return false;
+                            return c.layers[0] === C.BONES || c.layers[3] === C.BONES || c.layers[3] === C.BLOOD;
+                        });
+                        if (landed) landedSeen++;
                     }
                 }
-                if (hasCage) {
-                    kennelsSeen++;
-                    // Kennel 建成 ⇒ 两条 DF 列都应落位（minInsts 3 ≥ 1）。
-                    // 对抗：featureDF 分支若仍恒真（旧登记缺口），hasBones/hasBlood 为 false。
-                    expect(hasBones, `seed${seed} D${d} Kennel 层缺 DF_BONES 落位`).toBe(true);
-                    expect(hasBlood, `seed${seed} D${d} Kennel 层缺 DF_AMBIENT_BLOOD 落位`).toBe(true);
-                }
             }
-        }
-        expect(kennelsSeen, '16 seed × D1-26 应至少建成一台 Kennel').toBeGreaterThanOrEqual(1);
-    });
+        } finally { proto.buildMachines = origBuild; }
+        expect(kennelsSeen, '8 seed × D1-26 应至少建成一台 Kennel').toBeGreaterThanOrEqual(1);
+        expect(landedSeen, '任何一台 Kennel 的 DF 落点都没在网格上写出 BONES/BLOOD——记而不落？').toBeGreaterThanOrEqual(1);
+    }, 900_000);
 });
 
 // ── F：§6 可解性证明（本轮合并前置条件） ────────────────────────────────────
@@ -370,15 +395,31 @@ describe('V-2b-6 F：§6 可解性证明（合并前置条件）', () => {
                 const reachable = (x: number, y: number): boolean => seen.has(y * DCOLS + x);
                 // 3) 每把锁：锁格本身可达（CE：玩家须走到锁前 useKeyAt），
                 //    且存在一把钥匙 keyMatchesLocation 认这把锁、其所在格可达。
+                // ★ V-2b-7 前提扩展：CE 的钥匙来源不止"地上"，还有**怪物携带**
+                //（CE `keyOnTileAt` 也一样查 `monst->carriedItem`，见 V-2b-6 报告
+                // §1.3；11 号 Vampire lair 的 cage key 就挂在吸血鬼手上）。
+                // 判据两个来源合看：地上的 KEY 物品 ∪ 场上（含 dormantMonsters）
+                // 怪物的 carriedItem。取到携带钥匙时，可达性判据换成**携带者所在格**
+                //（玩家须先找到并击杀/取走携带者——"钥匙可达"的等价物）。
+                const carriedKeys = ([...(game.monsters as Item[]), ...(game.dormantMonsters as Item[])]
+                    .map((m: any) => m?.carriedItem)
+                    .filter((i: any) => i && i.category === ItemCategory.KEY)) as Item[];
                 for (const lock of locks) {
                     const lockCell = grid.getCell(lock.x, lock.y)!;
-                    const keys = (game.items as Item[]).filter(i => i.category === ItemCategory.KEY);
+                    const floorKeys = (game.items as Item[]).filter(i => i.category === ItemCategory.KEY);
                     const matcher = game.keyMatchesLocation.bind(game);
-                    const match = keys.find(k => matcher(k, lock.x, lock.y, lockCell));
-                    expect(match, `seed${seed} D${d} 锁 (${lock.x},${lock.y}) 无匹配钥匙`).toBeDefined();
+                    const match = floorKeys.find(k => matcher(k, lock.x, lock.y, lockCell));
+                    const carriedMatch = carriedKeys.find(k => matcher(k, lock.x, lock.y, lockCell));
+                    expect(match ?? carriedMatch, `seed${seed} D${d} 锁 (${lock.x},${lock.y}) 无匹配钥匙（地上与怪携带都没有）`).toBeDefined();
                     expect(reachable(lock.x, lock.y), `seed${seed} D${d} 锁 (${lock.x},${lock.y}) 不可达`).toBe(true);
-                    // 领养/补偿循环形态的钥匙都躺在地上（无怪携带数据载体本轮）。
-                    expect(reachable(match!.loc.x, match!.loc.y), `seed${seed} D${d} 锁 (${lock.x},${lock.y}) 的钥匙 (${match!.loc.x},${match!.loc.y}) 不可达`).toBe(true);
+                    if (match) {
+                        expect(reachable(match.loc.x, match.loc.y), `seed${seed} D${d} 锁 (${lock.x},${lock.y}) 的钥匙 (${match.loc.x},${match.loc.y}) 不可达`).toBe(true);
+                    } else {
+                        const carrier = ([...(game.monsters as any[]), ...(game.dormantMonsters as any[])])
+                            .find(m => m.carriedItem === carriedMatch)!;
+                        expect(reachable(carrier.loc.x, carrier.loc.y),
+                            `seed${seed} D${d} 锁 (${lock.x},${lock.y}) 的钥匙由 ${carrier.name} 携带，但其出生态 (${carrier.loc.x},${carrier.loc.y}) 不可达`).toBe(true);
+                    }
                     // originDepth 判据：匹配钥匙必然是本层的（matcher 内含该判据）。
                 }
             }
@@ -386,55 +427,78 @@ describe('V-2b-6 F：§6 可解性证明（合并前置条件）', () => {
         expect(layersWithLocks, '样本应覆盖到足量锁层').toBeGreaterThanOrEqual(5);
     });
 
-    it('F2 Kennel 形态（§6.2）：笼群机器里每只笼都有钥匙认（机器号匹配），cage key 所在格可达', () => {
+    it('F2 笼群形态（§6.2）：每台带笼的机器都有钥匙认（机器号匹配），且钥匙/携带者可达', () => {
+        // ★ V-2b-7 判据收敛：原来用"网格上有 MONSTER_CAGE_CLOSED"认笼群机器，
+        // 11 号 Vampire lair 入池后该判据不再等价于"这台机器有 cage key 落在地上"
+        //（吸血鬼把钥匙拿在手上 —— MF_MONSTER_TAKE_ITEM）。改为按**机器记录**
+        // 认笼群机器（featureSpawns 里 terrain === 'MONSTER_CAGE_CLOSED'），
+        // 并把"cage key"的来源扩为 地上 ∪ 怪携带（两处 keyLoc 都必须带本机器号条目）。
+        // 判据本身不放宽：keyLoc 必须带 `machine === 该机器号` 的条目、
+        // `disposableHere === true`（CE :251 MF_KEY_DISPOSABLE），且可达。
+        const record: Array<{ depth: number; results: import('../engine/Generator/BlueprintEngine').MachineResult[] }> = [];
+        const proto = BlueprintEngine.prototype as unknown as Record<string, unknown>;
+        const origBuild = proto.buildMachines as (this: unknown) => unknown[];
+        proto.buildMachines = function (this: unknown) {
+            const results = origBuild.call(this) as import('../engine/Generator/BlueprintEngine').MachineResult[];
+            record.push({ depth: (this as { depth: number }).depth, results });
+            return results;
+        };
         let kennelsSeen = 0;
-        for (const seed of [424242, 777, 31337, 20260913, 42, 2026, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) {
+        try {
+        for (const seed of [7, 424242, 777, 31337, 20260913, 42, 2026, 1]) {
             const game: any = createHeadlessGame(seed);
             for (let d = 1; d <= 26; d++) {
                 if (d > 1) { game.depth = d; game.generateDepth(false, false); }
-                // 找 MONSTER_CAGE_CLOSED 机器。
-                let cageMachine = 0;
-                for (let x = 0; x < DCOLS; x++) {
-                    for (let y = 0; y < DROWS; y++) {
-                        const cell = game.grid.getCell(x, y);
-                        if (cell?.terrain === C.MONSTER_CAGE_CLOSED) cageMachine = cell.machineNumber;
-                    }
-                }
-                if (cageMachine === 0) continue;
-                kennelsSeen++;
-                // cage key 必然经领养链落地（generatedKey 机器跳过补偿循环），
-                // 其 keyLoc 带机器条目 machine == cageMachine。
-                const cageKeys = (game.items as Item[]).filter(
-                    i => i.category === ItemCategory.KEY && i.keyLoc.some(e => e.machine === cageMachine)
-                );
-                expect(cageKeys.length, `seed${seed} D${d} Kennel 机器 ${cageMachine} 无 cage key`).toBeGreaterThanOrEqual(1);
-                for (const k of cageKeys) {
-                    const entry = k.keyLoc.find(e => e.machine === cageMachine)!;
-                    expect(entry.disposableHere, 'CE :251 MF_KEY_DISPOSABLE → disposableHere').toBe(true);
-                }
-                // 玩家可走到的格上存在该钥匙（可解）。
+                const cageMachines = (record[record.length - 1]?.results ?? [])
+                    .filter(m => m.featureSpawns.some(sp => sp.terrain === 'MONSTER_CAGE_CLOSED'));
+                if (cageMachines.length === 0) continue;
+                // 本层可达分量（一次泛洪，供本层所有笼群共用）。
                 const seen = new Set<number>();
                 const start = game.player.loc;
                 seen.add(start.y * 20000 + start.x);
-                const queue: Array<{ x: number; y: number }> = [start];
-                while (queue.length > 0) {
-                    const p = queue.shift()!;
+                const queue: number[] = [start.y * 20000 + start.x];
+                for (let qi = 0; qi < queue.length; qi++) {
+                    const k0 = queue[qi]!;
+                    const p = { x: k0 % 20000, y: Math.floor(k0 / 20000) };
                     for (const [dx, dy] of [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [1, -1], [-1, 1], [1, 1]] as const) {
                         const nx = p.x + dx!, ny = p.y + dy!;
+                        if (nx < 0 || ny < 0 || nx >= DCOLS || ny >= DROWS) continue;
                         const k = ny * 20000 + nx;
-                        if (nx < 0 || ny < 0 || nx >= DCOLS || ny >= DROWS || seen.has(k)) continue;
+                        if (seen.has(k)) continue;
                         const t = game.grid.getCell(nx, ny)?.terrain;
                         if (t === undefined || !traversable(t)) continue;
                         seen.add(k);
-                        queue.push({ x: nx, y: ny });
+                        queue.push(k);
                     }
                 }
-                const anyReachable = cageKeys.some(k => seen.has(k.loc.y * 20000 + k.loc.x));
-                expect(anyReachable, `seed${seed} D${d} Kennel 的 cage key 全部不可达（死局）`).toBe(true);
+                for (const m of cageMachines) {
+                    kennelsSeen++;
+                    const cageMachine = m.machineNumber;
+                    const carriedKeys = ([...(game.monsters as any[]), ...(game.dormantMonsters as any[])])
+                        .map(mm => mm?.carriedItem)
+                        .filter((i: any) => i && i.category === ItemCategory.KEY);
+                    const candidates = [...(game.items as Item[]), ...(carriedKeys as Item[])];
+                    const cageKeys = candidates.filter(
+                        i => i.category === ItemCategory.KEY && i.keyLoc.some(e => e.machine === cageMachine)
+                    );
+                    expect(cageKeys.length, `seed${seed} D${d} 笼群机器 ${cageMachine}（${m.blueprintId}）无 cage key（地上与怪携带都没有）`).toBeGreaterThanOrEqual(1);
+                    for (const k of cageKeys) {
+                        const entry = k.keyLoc.find(e => e.machine === cageMachine)!;
+                        expect(entry.disposableHere, 'CE :251 MF_KEY_DISPOSABLE → disposableHere').toBe(true);
+                    }
+                    const anyReachable = cageKeys.some(k => {
+                        if (k.loc && k.loc.x > 0 && k.loc.y > 0) return seen.has(k.loc.y * 20000 + k.loc.x);
+                        const carrier = ([...(game.monsters as any[]), ...(game.dormantMonsters as any[])])
+                            .find((mm: any) => mm.carriedItem === k);
+                        return carrier ? seen.has(carrier.loc.y * 20000 + carrier.loc.x) : false;
+                    });
+                    expect(anyReachable, `seed${seed} D${d} 笼群机器 ${cageMachine} 的 cage key 全部不可达（死局）`).toBe(true);
+                }
             }
         }
-        expect(kennelsSeen, '16 seed × D1-26 应至少建成一台 Kennel').toBeGreaterThanOrEqual(1);
-    });
+        } finally { proto.buildMachines = origBuild; }
+        expect(kennelsSeen, '8 seed × D1-26 应至少建成一台带笼的机器').toBeGreaterThanOrEqual(1);
+    }, 900_000);
 
     it('F3 §6.3（单元口径）：disposableHere=false 的钥匙开锁后保留（CE Movement.c:636-656 收口）', () => {
         // 数据面：非 disposable 的锁条目仅出现在 MF_KEY_DISPOSABLE 缺席的

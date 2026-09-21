@@ -237,11 +237,26 @@ describe('V-2b-3 A：载体地形逐字段 ≡ CE Globals.c（对抗：抄错任
         // V-2b-6 第六次顺延：钥匙轮七条新条目里 web 无 tile 的两条
         //（DF_SHOW_POISON_GAS_VENT / DF_POISON_GAS_VENT_OPEN）入列、
         // DF_OPEN_PORTCULLIS 摘除（tile PORTCULLIS_DORMANT 该轮落地），
-        // 净 28 → 29。逐条见 DungeonFeatureCatalog 的 V-2b-6 块注。
-        expect(DF_MISSING_TILES).toHaveLength(29);
-        for (const d of [DF.DF_WALL_SHATTER, DF.DF_REVEAL_LEVER, DF.DF_INACTIVE_GLYPH,
+        // 净 28 → 29。
+        // V-2b-7 第七次顺延：DF 特征系统轮摘 5 增 7，29 → 31——
+        // RUBBLE 与 LUMINESCENT_FUNGUS 两个地形随 47/55 号蓝图与 12 号 DF 列
+        // 落地，DF_WALL_SHATTER / DF_SHATTERING_SPELL / DF_RUBBLE /
+        // DF_STATUE_SHATTER / DF_LUMINESCENT_FUNGUS 五条接上真 tile 摘出；
+        // 22 条新条目里 web 无 tile 的七条入列。逐条见 DungeonFeatureCatalog
+        // 的 V-2b-7 块注。
+        expect(DF_MISSING_TILES).toHaveLength(31);
+        for (const d of [DF.DF_REVEAL_LEVER, DF.DF_INACTIVE_GLYPH,
             DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY]) {
             expect(DF_MISSING_TILES, `DF[${d}] 应在缺 tile 登记`).toContain(d);
+        }
+        // ★ V-2b-7 反转（与下方 DF_OPEN_PORTCULLIS 同款）：DF_WALL_SHATTER 的
+        // tile 是 RUBBLE，而 RUBBLE 地形本轮随 55 号 DF_TUNNELIZE 落地——
+        // 该条摘出名单、接上完整 tile。守卫变强：钉它必须离开名单。
+        expect(DF_MISSING_TILES, 'V-2b-7 后 DF_WALL_SHATTER 已摘出缺 tile 名单').not.toContain(DF.DF_WALL_SHATTER);
+        {
+            const ws = DUNGEON_FEATURE_CATALOG[DF.DF_WALL_SHATTER]!;
+            expect(ws.tile).toBe(C.RUBBLE);
+            expect(() => catalogFeature(DF.DF_WALL_SHATTER)).not.toThrow();
         }
         // V-2b-6 反转：DF_OPEN_PORTCULLIS 的 tile PORTCULLIS_DORMANT 已随
         // 钥匙轮落地（TerrainType.PORTCULLIS_DORMANT），该条**摘出**名单、
@@ -257,10 +272,15 @@ describe('V-2b-3 A：载体地形逐字段 ≡ CE Globals.c（对抗：抄错任
             expect(DF_MISSING_TILES, `DF[${d}] 应在缺 tile 登记`).toContain(d);
         }
         // V-2b-4 新登记的七条（越界守卫：一条都不能漏抄）。
-        for (const d of [DF.DF_LUMINESCENT_FUNGUS, DF.DF_ITEM_CAGE_CLOSE,
+        // ★ V-2b-7：其中 DF_LUMINESCENT_FUNGUS 与 DF_STATUE_SHATTER 两条的
+        // tile（LUMINESCENT_FUNGUS / RUBBLE）本轮落地 → 从本清单摘出。
+        for (const d of [DF.DF_ITEM_CAGE_CLOSE,
             DF.DF_ALTAR_COMMUTE, DF.DF_MAGIC_PIPING, DF.DF_ALTAR_RESURRECT,
-            DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING, DF.DF_STATUE_SHATTER]) {
+            DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING]) {
             expect(DF_MISSING_TILES, `DF[${d}] 应在缺 tile 登记`).toContain(d);
+        }
+        for (const d of [DF.DF_LUMINESCENT_FUNGUS, DF.DF_STATUE_SHATTER]) {
+            expect(DF_MISSING_TILES, `DF[${d}] 的 tile 已落地，不得留在名单里`).not.toContain(d);
         }
     });
 });

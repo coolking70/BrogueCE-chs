@@ -2978,5 +2978,1246 @@
                 ]
             }
         ]
+    },
+    {
+        "id": "reward_chained_allies",
+        "name": "Dungeon -- two allies chained up for the taking",
+        "depthRange": [
+            5,
+            26
+        ],
+        "roomSize": [
+            30,
+            80
+        ],
+        "frequency": 12,
+        "category": "reward",
+        "flags": [
+            "BP_ROOM",
+            "BP_REWARD"
+        ],
+        "features": [
+            {
+                "terrain": "VOMIT",
+                "layer": "SURFACE",
+                "instanceCount": [
+                    2,
+                    2
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 2,
+                "hordeFlags": [
+                    "HORDE_MACHINE_CAPTIVE",
+                    "HORDE_LEADER_CAPTIVE"
+                ],
+                "flags": [
+                    "MF_GENERATE_HORDE",
+                    "MF_TREAT_AS_BLOCKING"
+                ]
+            },
+            {
+                "featureDF": "DF_AMBIENT_BLOOD",
+                "terrain": "MANACLE_T",
+                "layer": "SURFACE",
+                "instanceCount": [
+                    1,
+                    2
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": []
+            },
+            {
+                "featureDF": "DF_AMBIENT_BLOOD",
+                "terrain": "MANACLE_L",
+                "layer": "SURFACE",
+                "instanceCount": [
+                    1,
+                    2
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": []
+            },
+            {
+                "featureDF": "DF_BONES",
+                "instanceCount": [
+                    2,
+                    3
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": []
+            },
+            {
+                "featureDF": "DF_VOMIT",
+                "instanceCount": [
+                    2,
+                    3
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": []
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_PERMIT_BLOCKING",
+                    "MF_BUILD_VESTIBULE"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "reward_vampire_lair",
+        "name": "Vampire lair -- allies locked in cages and chained in a hidden room with a vampire in a coffin; vampire has one cage key.",
+        "depthRange": [
+            10,
+            26
+        ],
+        "roomSize": [
+            50,
+            80
+        ],
+        "frequency": 5,
+        "category": "reward",
+        "flags": [
+            "BP_ROOM",
+            "BP_REWARD",
+            "BP_SURROUND_WITH_WALLS",
+            "BP_PURGE_INTERIOR"
+        ],
+        "features": [
+            {
+                "featureDF": "DF_AMBIENT_BLOOD",
+                "instanceCount": [
+                    1,
+                    2
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "hordeFlags": [
+                    "HORDE_MACHINE_CAPTIVE",
+                    "HORDE_LEADER_CAPTIVE"
+                ],
+                "flags": [
+                    "MF_GENERATE_HORDE",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            },
+            {
+                "featureDF": "DF_AMBIENT_BLOOD",
+                "terrain": "MONSTER_CAGE_CLOSED",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    2,
+                    4
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 2,
+                "hordeFlags": [
+                    "HORDE_VAMPIRE_FODDER",
+                    "HORDE_LEADER_CAPTIVE"
+                ],
+                "flags": [
+                    "MF_GENERATE_HORDE",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_IMPREGNABLE",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            },
+            {
+                "featureDF": "DF_TRIGGER_AREA",
+                "terrain": "COFFIN_CLOSED",
+                "layer": "DUNGEON",
+                "itemCategory": "KEY",
+                "itemId": "cage_key",
+                "monsterId": "vampire",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_SKELETON_KEY",
+                    "MF_MONSTER_TAKE_ITEM",
+                    "MF_MONSTERS_DORMANT",
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_KEY_DISPOSABLE"
+                ]
+            },
+            {
+                "featureDF": "DF_AMBIENT_BLOOD",
+                "terrain": "SECRET_DOOR",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_PERMIT_BLOCKING",
+                    "MF_BUILD_AT_ORIGIN"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "reward_legendary_ally",
+        "name": "Legendary ally -- approach the altar with the crystal key to activate a portal and summon a legendary ally.",
+        "depthRange": [
+            8,
+            26
+        ],
+        "roomSize": [
+            30,
+            50
+        ],
+        "frequency": 15,
+        "category": "reward",
+        "flags": [
+            "BP_ROOM",
+            "BP_REWARD"
+        ],
+        "features": [
+            {
+                "featureDF": "DF_LUMINESCENT_FUNGUS",
+                "terrain": "ALTAR_KEYHOLE",
+                "layer": "DUNGEON",
+                "itemCategory": "KEY",
+                "itemId": "crystal_orb",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_NEAR_ORIGIN",
+                    "MF_OUTSOURCE_ITEM_TO_MACHINE",
+                    "MF_KEY_DISPOSABLE"
+                ]
+            },
+            {
+                "featureDF": "DF_LUMINESCENT_FUNGUS",
+                "terrain": "PORTAL",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "hordeFlags": [
+                    "HORDE_MACHINE_LEGENDARY_ALLY"
+                ],
+                "flags": [
+                    "MF_GENERATE_HORDE",
+                    "MF_MONSTERS_DORMANT",
+                    "MF_FAR_FROM_ORIGIN"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_fun_with_fire",
+        "name": "Fun with fire -- trigger the fire trap and coax the fire over to the wooden barricade surrounding the altar and key",
+        "depthRange": [
+            3,
+            10
+        ],
+        "roomSize": [
+            80,
+            100
+        ],
+        "frequency": 10,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM",
+            "BP_ADOPT_ITEM",
+            "BP_PURGE_INTERIOR",
+            "BP_SURROUND_WITH_WALLS",
+            "BP_OPEN_INTERIOR"
+        ],
+        "features": [
+            {
+                "featureDF": "DF_SURROUND_WOODEN_BARRICADE",
+                "terrain": "ALTAR",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING"
+                ]
+            },
+            {
+                "terrain": "GRASS",
+                "layer": "SURFACE",
+                "instanceCount": [
+                    0,
+                    0
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 0,
+                "flags": [
+                    "MF_EVERYWHERE",
+                    "MF_ALTERNATIVE"
+                ]
+            },
+            {
+                "featureDF": "DF_SWAMP",
+                "instanceCount": [
+                    4,
+                    4
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_ALTERNATIVE",
+                    "MF_FAR_FROM_ORIGIN"
+                ]
+            },
+            {
+                "terrain": "FLAMETHROWER_HIDDEN",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NEAR_ORIGIN"
+                ]
+            },
+            {
+                "terrain": "GAS_TRAP_POISON_HIDDEN",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    3,
+                    3
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 5,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_ALTERNATIVE"
+                ]
+            },
+            {
+                "itemCategory": "POTION",
+                "itemId": "potion_of_creeping_death",
+                "instanceCount": [
+                    2,
+                    2
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_BUILD_ANYWHERE_ON_LEVEL",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_ALTERNATIVE"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_thief_area",
+        "name": "Thief area -- empty altar, monster with item, permanently fleeing.",
+        "depthRange": [
+            3,
+            26
+        ],
+        "roomSize": [
+            15,
+            20
+        ],
+        "frequency": 10,
+        "category": "key_guard",
+        "flags": [
+            "BP_ADOPT_ITEM"
+        ],
+        "features": [
+            {
+                "featureDF": "DF_LUMINESCENT_FUNGUS",
+                "terrain": "ALTAR",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "hordeFlags": [
+                    "HORDE_MACHINE_THIEF"
+                ],
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_GENERATE_HORDE",
+                    "MF_MONSTER_TAKE_ITEM",
+                    "MF_MONSTER_FLEEING"
+                ]
+            },
+            {
+                "terrain": "STATUE_INERT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    3,
+                    5
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_burning_grass",
+        "name": "Burning grass -- key on an altar; take key to cause pilot light to ignite grass in room",
+        "depthRange": [
+            1,
+            7
+        ],
+        "roomSize": [
+            40,
+            110
+        ],
+        "frequency": 10,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM",
+            "BP_PURGE_INTERIOR",
+            "BP_SURROUND_WITH_WALLS",
+            "BP_ADOPT_ITEM",
+            "BP_OPEN_INTERIOR"
+        ],
+        "features": [
+            {
+                "featureDF": "DF_SMALL_DEAD_GRASS",
+                "terrain": "ALTAR_SWITCH_RETRACTING",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_FAR_FROM_ORIGIN"
+                ]
+            },
+            {
+                "featureDF": "DF_DEAD_FOLIAGE",
+                "layer": "SURFACE",
+                "instanceCount": [
+                    2,
+                    3
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 1,
+                "flags": []
+            },
+            {
+                "terrain": "FOLIAGE",
+                "layer": "SURFACE",
+                "instanceCount": [
+                    1,
+                    4
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 1,
+                "flags": []
+            },
+            {
+                "terrain": "GRASS",
+                "layer": "SURFACE",
+                "instanceCount": [
+                    10,
+                    25
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 1,
+                "flags": []
+            },
+            {
+                "terrain": "DEAD_GRASS",
+                "layer": "SURFACE",
+                "instanceCount": [
+                    0,
+                    0
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 0,
+                "flags": [
+                    "MF_EVERYWHERE"
+                ]
+            },
+            {
+                "terrain": "PILOT_LIGHT_DORMANT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_NEAR_ORIGIN",
+                    "MF_BUILD_IN_WALLS"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_guardian_gauntlet",
+        "name": "Guardian gauntlet -- key in a room full of guardians, glyphs scattered and unavoidable.",
+        "depthRange": [
+            6,
+            26
+        ],
+        "roomSize": [
+            50,
+            95
+        ],
+        "frequency": 10,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM",
+            "BP_ADOPT_ITEM"
+        ],
+        "features": [
+            {
+                "featureDF": "DF_GLYPH_CIRCLE",
+                "terrain": "ALTAR",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_FAR_FROM_ORIGIN"
+                ]
+            },
+            {
+                "terrain": "DOOR",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_PERMIT_BLOCKING",
+                    "MF_BUILD_AT_ORIGIN"
+                ]
+            },
+            {
+                "monsterId": "stone_guardian",
+                "instanceCount": [
+                    3,
+                    6
+                ],
+                "minimumInstanceCount": 3,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_NEAR_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_ALTERNATIVE"
+                ]
+            },
+            {
+                "monsterId": "winged_guardian",
+                "instanceCount": [
+                    1,
+                    2
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_NEAR_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_ALTERNATIVE"
+                ]
+            },
+            {
+                "terrain": "MACHINE_GLYPH",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    10,
+                    15
+                ],
+                "minimumInstanceCount": 10,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_PERMIT_BLOCKING",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            },
+            {
+                "terrain": "MACHINE_GLYPH",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_EVERYWHERE",
+                    "MF_PERMIT_BLOCKING",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_guardian_corridor",
+        "name": "Guardian corridor -- key in a small room, with a connecting corridor full of glyphs, one guardian blocking the corridor.",
+        "depthRange": [
+            4,
+            26
+        ],
+        "roomSize": [
+            85,
+            100
+        ],
+        "frequency": 5,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM",
+            "BP_ADOPT_ITEM",
+            "BP_PURGE_INTERIOR",
+            "BP_OPEN_INTERIOR",
+            "BP_SURROUND_WITH_WALLS"
+        ],
+        "features": [
+            {
+                "featureDF": "DF_GLYPH_CIRCLE",
+                "terrain": "ALTAR",
+                "layer": "DUNGEON",
+                "monsterId": "stone_guardian",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_ALTERNATIVE"
+                ]
+            },
+            {
+                "featureDF": "DF_GLYPH_CIRCLE",
+                "terrain": "ALTAR",
+                "layer": "DUNGEON",
+                "monsterId": "winged_guardian",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_ALTERNATIVE"
+                ]
+            },
+            {
+                "terrain": "MACHINE_GLYPH",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    3,
+                    5
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_NEAR_ORIGIN",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN"
+                ]
+            },
+            {
+                "terrain": "WALL",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    80,
+                    80
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_REPEAT_UNTIL_NO_PROGRESS"
+                ]
+            },
+            {
+                "terrain": "MACHINE_GLYPH",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_PERMIT_BLOCKING",
+                    "MF_EVERYWHERE"
+                ]
+            },
+            {
+                "terrain": "MACHINE_GLYPH",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_IN_PASSABLE_VIEW_OF_ORIGIN",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_BUILD_ANYWHERE_ON_LEVEL"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_sacrifice_altar",
+        "name": "Sacrifice altar -- lure the chosen monster from elsewhere on the level onto the altar to release the key.",
+        "depthRange": [
+            4,
+            26
+        ],
+        "roomSize": [
+            20,
+            60
+        ],
+        "frequency": 12,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM",
+            "BP_ADOPT_ITEM",
+            "BP_PURGE_INTERIOR",
+            "BP_OPEN_INTERIOR",
+            "BP_SURROUND_WITH_WALLS"
+        ],
+        "features": [
+            {
+                "featureDF": "DF_BONES",
+                "instanceCount": [
+                    3,
+                    4
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 1,
+                "flags": []
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_BUILD_IN_WALLS",
+                    "MF_EVERYWHERE"
+                ]
+            },
+            {
+                "featureDF": "DF_TRIGGER_AREA",
+                "terrain": "SACRIFICE_ALTAR_DORMANT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            },
+            {
+                "terrain": "SACRIFICE_CAGE_DORMANT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_IMPREGNABLE"
+                ]
+            },
+            {
+                "terrain": "DEMONIC_STATUE",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_IMPREGNABLE"
+                ]
+            },
+            {
+                "terrain": "STATUE_INSTACRACK",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "hordeFlags": [
+                    "HORDE_SACRIFICE_TARGET"
+                ],
+                "flags": [
+                    "MF_BUILD_ANYWHERE_ON_LEVEL",
+                    "MF_GENERATE_HORDE",
+                    "MF_MONSTERS_DORMANT",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_IMPREGNABLE",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_beckoning_obstacle",
+        "name": "Beckoning obstacle -- key surrounded by glyphs in a room with a mirrored totem.",
+        "depthRange": [
+            5,
+            26
+        ],
+        "roomSize": [
+            60,
+            100
+        ],
+        "frequency": 10,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM",
+            "BP_PURGE_INTERIOR",
+            "BP_SURROUND_WITH_WALLS",
+            "BP_OPEN_INTERIOR",
+            "BP_ADOPT_ITEM"
+        ],
+        "features": [
+            {
+                "featureDF": "DF_GLYPH_CIRCLE",
+                "terrain": "ALTAR",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_IN_VIEW_OF_ORIGIN"
+                ]
+            },
+            {
+                "monsterId": "mirrored_totem",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_NEAR_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_IN_VIEW_OF_ORIGIN"
+                ]
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN"
+                ]
+            },
+            {
+                "terrain": "MACHINE_GLYPH",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    3,
+                    5
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_zombie_crypt",
+        "name": "Zombie crypt -- key on an altar; coffins scattered around; brazier in the room; take key to cause zombies to burst out of all of the coffins",
+        "depthRange": [
+            12,
+            26
+        ],
+        "roomSize": [
+            60,
+            90
+        ],
+        "frequency": 10,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM",
+            "BP_ADOPT_ITEM",
+            "BP_SURROUND_WITH_WALLS",
+            "BP_PURGE_INTERIOR"
+        ],
+        "features": [
+            {
+                "terrain": "DOOR",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN"
+                ]
+            },
+            {
+                "featureDF": "DF_BONES",
+                "instanceCount": [
+                    3,
+                    4
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 1,
+                "flags": []
+            },
+            {
+                "featureDF": "DF_ASH",
+                "instanceCount": [
+                    3,
+                    4
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 1,
+                "flags": []
+            },
+            {
+                "featureDF": "DF_AMBIENT_BLOOD",
+                "instanceCount": [
+                    1,
+                    2
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": []
+            },
+            {
+                "featureDF": "DF_AMBIENT_BLOOD",
+                "instanceCount": [
+                    1,
+                    2
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": []
+            },
+            {
+                "terrain": "ALTAR_SWITCH",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING"
+                ]
+            },
+            {
+                "terrain": "BRAZIER",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_NEAR_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING"
+                ]
+            },
+            {
+                "terrain": "COFFIN_CLOSED",
+                "layer": "DUNGEON",
+                "monsterId": "zombie",
+                "instanceCount": [
+                    6,
+                    8
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_MONSTERS_DORMANT"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_worm_tunnels",
+        "name": "Worm tunnels -- hidden lever causes tunnels to open up revealing worm areas and a key",
+        "depthRange": [
+            8,
+            26
+        ],
+        "roomSize": [
+            80,
+            175
+        ],
+        "frequency": 10,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM",
+            "BP_ADOPT_ITEM",
+            "BP_PURGE_INTERIOR",
+            "BP_SURROUND_WITH_WALLS"
+        ],
+        "features": [
+            {
+                "terrain": "ALTAR",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING"
+                ]
+            },
+            {
+                "monsterId": "underworm",
+                "instanceCount": [
+                    3,
+                    6
+                ],
+                "minimumInstanceCount": 3,
+                "personalSpace": 1,
+                "flags": []
+            },
+            {
+                "terrain": "GRANITE",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    150,
+                    150
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_REPEAT_UNTIL_NO_PROGRESS"
+                ]
+            },
+            {
+                "featureDF": "DF_WORM_TUNNEL_MARKER_DORMANT",
+                "terrain": "GRANITE",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    0,
+                    0
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 0,
+                "flags": [
+                    "MF_EVERYWHERE",
+                    "MF_PERMIT_BLOCKING"
+                ]
+            },
+            {
+                "featureDF": "DF_TUNNELIZE",
+                "terrain": "WORM_TUNNEL_OUTER_WALL",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_PERMIT_BLOCKING"
+                ]
+            },
+            {
+                "terrain": "WALL_LEVER_HIDDEN",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_BUILD_IN_WALLS",
+                    "MF_IN_PASSABLE_VIEW_OF_ORIGIN",
+                    "MF_BUILD_ANYWHERE_ON_LEVEL",
+                    "MF_IMPREGNABLE"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_boss_secret_room",
+        "name": "Boss -- key is held by a boss atop a pile of bones in a secret room. A few fungus patches light up the area.",
+        "depthRange": [
+            5,
+            26
+        ],
+        "roomSize": [
+            40,
+            100
+        ],
+        "frequency": 18,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM",
+            "BP_ADOPT_ITEM",
+            "BP_SURROUND_WITH_WALLS",
+            "BP_PURGE_LIQUIDS"
+        ],
+        "features": [
+            {
+                "featureDF": "DF_BONES",
+                "terrain": "SECRET_DOOR",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_PERMIT_BLOCKING",
+                    "MF_BUILD_AT_ORIGIN"
+                ]
+            },
+            {
+                "featureDF": "DF_LUMINESCENT_FUNGUS",
+                "terrain": "STATUE_INERT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    7,
+                    7
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING"
+                ]
+            },
+            {
+                "featureDF": "DF_BONES",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "hordeFlags": [
+                    "HORDE_MACHINE_BOSS"
+                ],
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_MONSTER_TAKE_ITEM",
+                    "MF_GENERATE_HORDE",
+                    "MF_MONSTER_SLEEPING"
+                ]
+            }
+        ]
     }
 ]

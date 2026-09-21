@@ -18,7 +18,7 @@
 import { describe, it, expect } from 'vitest';
 import { createHeadlessGame } from './harness';
 import { Grid, DCOLS, DROWS, TerrainType } from '../engine/Map/Grid';
-import { isPathingBlocker, obstructsItems } from '../engine/Map/TerrainCatalog';
+import { isPathingBlocker, obstructsItems, TERRAIN_FLAGS, TM_PROMOTES_WITH_KEY } from '../engine/Map/TerrainCatalog';
 import { ItemSpawnHeatMap, passableArcCount, randomMatchingLocation } from '../engine/Items/ItemSpawnHeatMap';
 import { analyzeLoopMap } from '../engine/Map/LoopMap';
 import { ItemCategory } from '../engine/Items/Item';
@@ -365,29 +365,78 @@ describe('B-4b 每层数量与落位（真实生成链）', () => {
 // ── 3. 钥匙 == 锁 ───────────────────────────────────────────────────────────
 
 describe('B-4b 钥匙由锁具驱动（P1-50 的 140-166 已灭）', () => {
-    it('T11 每层：钥匙数 == LOCKED_DOOR 锁数；每把钥匙 keyLoc 指向本层一把锁', () => {
+    it('T11 每层：每把 LOCKED_DOOR 恰有一钥；其余 KEY 的绑定必须能认到本层的「钥匙消费点」', () => {
+        // ★ V-2b-7 口径扩展（不放宽，是**补全**）★
+        //
+        // 原断言：「钥匙数 == LOCKED_DOOR 锁数；每把钥匙 keyLoc 指向本层一把锁」。
+        // 那是 V-2b-6 之前的口径——当时 web 的 KEY 物品只有"每锁一把补偿钥匙"
+        // 一种来源。V-2b-6 引入 10 号 Kennel 的 cage key（keyLoc 带**机器号**
+        // 条目，多笼共享一把）、V-2b-7 又引入 12 号水晶球（keyLoc 指向
+        // ALTAR_KEYHOLE），CE 的"钥匙消费点"因此不止锁门一种：
+        //   TM_PROMOTES_WITH_KEY 的持有 tile（Rogue.h:1961）= 锁门 /
+        //   锁闭铁笼（Globals.c:371）/ 带孔祭坛（:363）——三者都在 CE 里吃钥匙。
+        // 于是本用例改成两条**更强**的判据：
+        //   ① 锁门侧（补偿循环的本意，原样保留）：本层 LOCKED_DOOR 的数量
+        //      必须恰等于"绑定能认到某把锁"的钥匙数，且这些钥匙的**每一条**
+        //      绑定都指向本层的锁——多一把/少一把都红；
+        //   ② 其余 KEY（笼钥匙/水晶球…）：**不得有悬空绑定**——至少一条
+        //      绑定能认到本层的某个 TM_PROMOTES_WITH_KEY 格（坐标形态），
+        //      或带非零机器号并与某个消费点格的 machineNumber 相同
+        //     （SKELETON_KEY 形态，CE Architect.c:1526 addMachineNumberToKey）。
+        // 对抗：把 cage key / 水晶球的绑定写坏（坐标与机器号都对不上）→
+        // 判据②红；补偿循环多给一把钥匙 → 判据①红。
+        const promotesWithKey = new Set<TerrainType>();
+        for (const name of Object.keys(TerrainType).filter(k => Number.isNaN(Number(k)))) {
+            const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
+            if ((TERRAIN_FLAGS[t].mechFlags & TM_PROMOTES_WITH_KEY) !== 0) promotesWithKey.add(t);
+        }
+        expect(promotesWithKey.has(TerrainType.LOCKED_DOOR), 'LOCKED_DOOR 必须带 TM_PROMOTES_WITH_KEY').toBe(true);
+        expect(promotesWithKey.has(TerrainType.MONSTER_CAGE_CLOSED), '铁笼同（Globals.c:371）').toBe(true);
+        expect(promotesWithKey.has(TerrainType.ALTAR_KEYHOLE), '带孔祭坛同（Globals.c:363）').toBe(true);
+
         for (const seed of [424242, 777, 20260913, 31337, 42, 2026]) {
             const game: any = createHeadlessGame(seed);
             for (let d = 1; d <= 26; d++) {
                 if (d > 1) { game.depth = d; game.generateDepth(false, false); }
                 let locks = 0;
                 const lockCells = new Set<string>();
+                const consumerCells = new Set<string>();
+                const consumerMachines = new Set<number>();
                 for (let x = 0; x < DCOLS; x++) {
                     for (let y = 0; y < DROWS; y++) {
-                        if (game.grid.getCell(x, y)?.terrain === TerrainType.LOCKED_DOOR) {
+                        const cell = game.grid.getCell(x, y);
+                        if (!cell) continue;
+                        if (cell.terrain === TerrainType.LOCKED_DOOR) {
                             locks++;
                             lockCells.add(`${x},${y}`);
+                        }
+                        if (promotesWithKey.has(cell.terrain)) {
+                            consumerCells.add(`${x},${y}`);
+                            if (cell.machineNumber !== 0) consumerMachines.add(cell.machineNumber);
                         }
                     }
                 }
                 const keys = game.items.filter((i: any) => i.category === ItemCategory.KEY);
-                expect(keys.length, `seed${seed} D${d} 钥匙 ${keys.length} != 锁 ${locks}`).toBe(locks);
-                for (const k of keys) {
-                    expect(k.keyLoc.length, `seed${seed} D${d} 钥匙无绑定`).toBeGreaterThanOrEqual(1);
+                // ① 锁门侧
+                const lockKeys = keys.filter((k: any) => k.keyLoc.some((b: any) => lockCells.has(`${b.loc.x},${b.loc.y}`)));
+                expect(lockKeys.length, `seed${seed} D${d} 认锁的钥匙 ${lockKeys.length} != 锁 ${locks}`).toBe(locks);
+                for (const k of lockKeys) {
                     for (const b of k.keyLoc) {
                         expect(lockCells.has(`${b.loc.x},${b.loc.y}`),
-                            `seed${seed} D${d} keyLoc (${b.loc.x},${b.loc.y}) 不是本层的 LOCKED_DOOR`).toBe(true);
+                            `seed${seed} D${d} 认锁钥匙的 keyLoc (${b.loc.x},${b.loc.y}) 不是本层的 LOCKED_DOOR`).toBe(true);
                     }
+                }
+                // ② 其余 KEY：绑定不得悬空
+                for (const k of keys) {
+                    expect(k.keyLoc.length, `seed${seed} D${d} 钥匙无绑定`).toBeGreaterThanOrEqual(1);
+                    const resolvable = k.keyLoc.some((b: any) => {
+                        if (b.loc.x === 0 && b.loc.y === 0) return b.machine !== 0 && consumerMachines.has(b.machine);
+                        if (b.machine !== 0 && consumerMachines.has(b.machine)) return true;
+                        return consumerCells.has(`${b.loc.x},${b.loc.y}`);
+                    });
+                    expect(resolvable,
+                        `seed${seed} D${d} 钥匙 ${k.itemId ?? k.id ?? '?'} 的 keyLoc 全部悬空：` +
+                        JSON.stringify(k.keyLoc) + `（本层消费点 ${[...consumerCells].join(' ')}）`).toBe(true);
                 }
             }
         }

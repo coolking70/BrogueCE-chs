@@ -190,7 +190,10 @@ describe('V-2b-5 A：七个休眠载体地形 ≡ CE Globals.c 原行', () => {
         // V-2b-6：净 28 → 29（+2 钥匙轮无 tile 条目、−1 DF_OPEN_PORTCULLIS
         // 摘除——tile PORTCULLIS_DORMANT 该轮落地）。逐条见
         // DungeonFeatureCatalog 的 V-2b-6 块注。
-        expect(DF_MISSING_TILES).toHaveLength(29);
+        // V-2b-7：29 → 31（摘 5 增 7，DF 特征系统轮——RUBBLE/LUMINESCENT_FUNGUS
+        // 两条地形落地摘除四条 RUBBLE 链 DF 与 DF_LUMINESCENT_FUNGUS，新增
+        // 七条 tile 无 web 载体的新条目）。
+        expect(DF_MISSING_TILES).toHaveLength(31);
         expect(DF_MISSING_TILES).toContain(DF.DF_WALL_CRACK);
         expect(DF_MISSING_TILES).toContain(DF.DF_CRACKING_STATUE);
         expect(DF_MISSING_TILES, '带完整 tile 的条目不得混进缺 tile 名单').not.toContain(DF.DF_ALTAR_INERT);

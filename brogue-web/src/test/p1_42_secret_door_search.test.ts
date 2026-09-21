@@ -258,7 +258,7 @@ describe('P1-42 B：web 自创的 30% 邻接揭示已删除（本轮 §二.3，�
 // ---- C. 目录绊线与"明确不做"留痕 -------------------------------------------
 
 describe('P1-42 C：目录绊线 + 本轮明确不做的事', () => {
-    it('C1 目录绊线（V-2b-6 三次反转）：TM_IS_SECRET 的持有者恰为七条', () => {
+    it('C1 目录绊线（V-2b-7 四次反转）：TM_IS_SECRET 的持有者恰为九条', () => {
         // 原断言（P1-42 时）："TM_IS_SECRET 的唯一持有者是 SECRET_DOOR"——
         // 钉死 Game.discoverSecretAt 以 terrain === SECRET_DOOR 代替 CE 的
         // TM_IS_SECRET 判据这一等价前提。
@@ -284,9 +284,22 @@ describe('P1-42 C：目录绊线 + 本轮明确不做的事', () => {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             if ((TERRAIN_FLAGS[t].mechFlags & TM_IS_SECRET) !== 0) holders.push(name);
         }
+        // **V-2b-7 四次反转**（本文件在 V-2b-7 任务书 §4 授权清单内——
+        // DF 特征系统轮）：30 号 Fun with fire 的两条隐藏态载体按 CE 原列
+        // 带 TM_IS_SECRET，持有集 7 → 9：
+        //   FLAMETHROWER_HIDDEN       Globals.c:387  TM_IS_SECRET（G_FLOOR 伪装）
+        //   GAS_TRAP_POISON_HIDDEN    Globals.c:377  TM_IS_SECRET（同上）
+        // 与 V-2b-3 同款：**守卫语义变强**（持有集恰九条、逐条与 CE 隐藏态
+        // 一一对应，任何新 tile 误带/漏带 TM_IS_SECRET 都红）。
+        // 与 discoverSecretAt 的等价前提照旧不成立（web 仍只对
+        // terrain === SECRET_DOOR 显形；这两条新载体的 discoverType 链
+        // DF_SHOW_FLAMETHROWER_TRAP / DF_SHOW_POISON_GAS_TRAP 本轮已入 DF 目录
+        // （缺 tile 登记），接线轮 = 搜索显形轮）。
         expect(holders.sort(), `TM_IS_SECRET 持有集变化：${holders.join(', ')}`)
             .toEqual([
+                'FLAMETHROWER_HIDDEN',            // V-2b-7：Globals.c:387（30 号隐藏喷火口）
                 'GAS_TRAP_PARALYSIS_HIDDEN',
+                'GAS_TRAP_POISON_HIDDEN',         // V-2b-7：Globals.c:377（30 号隐藏毒气板）
                 'MACHINE_METHANE_VENT_HIDDEN',
                 'MACHINE_PARALYSIS_VENT_HIDDEN',
                 'MACHINE_POISON_GAS_VENT_HIDDEN', // V-2b-6：Globals.c:395（40 号隐藏毒气喷口）

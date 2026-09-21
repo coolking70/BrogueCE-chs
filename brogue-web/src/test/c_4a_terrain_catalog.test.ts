@@ -158,7 +158,11 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         // V-2b-6：钥匙轮六条入列（CE Globals.c:340/350/370/371/395/464，
         // 蓝图 10/35/40 号的地形载体），76 → 82。逐字段钉死在
         // v_2b_6_keys 的 A 组（对抗：抄错任一位即红）。
-        expect(names.length).toBe(82);
+        // V-2b-7：DF 特征系统轮 19 条入列（CE Globals.c:355/363/367/372/377/
+        // 387/448/449/450/457/465/473/484/486/543/546/547/568/573，13 条新
+        // 蓝图 9/11/12/30/33/42/45/46/47/49/53/55/57 号的地形载体 + 其 DF 链
+        // 落点 tile），82 → 101。逐字段钉死在 v_2b_7_features 的 A 组。
+        expect(names.length).toBe(101);
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             const entry = TERRAIN_FLAGS[t];
@@ -577,6 +581,15 @@ describe('C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时
         // 零旗标、BONES :464 零旗标）**留在等价论域内**——不跳过，由本组
         // 逐位继续把关。
         C.MONSTER_CAGE_CLOSED, C.WALL_LEVER_HIDDEN_DORMANT,
+        // V-2b-7：19 条新 tile 里三条挡通行（BRAZIER :573 火盆、
+        // DEMONIC_STATUE :547 雕像墙族、SACRIFICE_CAGE_DORMANT :546 铁笼体，
+        // 全带 T_OBSTRUCTS_PASSABILITY）——列入跳过，CE 判定由下方 V-2b-7 块
+        // 正向钉死；其余 16 条（COFFIN_CLOSED/ALTAR_KEYHOLE/ALTAR_SWITCH_
+        // RETRACTING/FLAMETHROWER_HIDDEN/GAS_TRAP_POISON_HIDDEN/MANACLE_L/
+        // MANACLE_T/PORTAL/SACRIFICE_ALTAR_DORMANT/DEAD_GRASS/VOMIT/
+        // LUMINESCENT_FUNGUS/DEAD_FOLIAGE/RUBBLE/GRAY_FUNGUS/WORM_TUNNEL_
+        // MARKER_DORMANT）**留在等价论域内**——不跳过，由本组逐位继续把关。
+        C.BRAZIER, C.DEMONIC_STATUE, C.SACRIFICE_CAGE_DORMANT,
     ]);
     it('terrainAllowsMove（查表）≡ 旧排除清单 {GRANITE,WALL,SECRET_DOOR,LOCKED_DOOR,WATER_DEEP}', () => {
         const names = Object.keys(TerrainType).filter((k) => Number.isNaN(Number(k)));
@@ -727,6 +740,39 @@ describe('C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时
             expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(false);
         }
         for (const t of [C.MONSTER_CAGE_OPEN, C.BONES]) {
+            game.grid.setTerrain(20, 20, t);
+            expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(true);
+        }
+    });
+
+    it('V-2b-7：DF 特征系统轮载体的通行判定 = CE 查表口径（三条挡通行、十六条可走）', () => {
+        // 上面两条等价断言跳过的三条挡通行 tile 在这里正向钉死（CE Globals.c
+        // 第 11 列 flags 出处）：BRAZIER :573（T_OBSTRUCTS_PASSABILITY |
+        // T_OBSTRUCTS_ITEMS | T_IS_FIRE——烧着的火盆是堵格体）、
+        // DEMONIC_STATUE :547（PASSABILITY|ITEMS|GAS|SURFACE_EFFECTS 墙族）、
+        // SACRIFICE_CAGE_DORMANT :546（PASSABILITY|SURFACE_EFFECTS，休眠铁笼）。
+        // 反方向同样钉死：其余 16 条全可走（它们若被误加 PASSABILITY，
+        // 9 号盟友会被镣铐挡在房外、42 号枯草/55 号碎石会让机器内部不可达）。
+        for (const t of [C.BRAZIER, C.DEMONIC_STATUE, C.SACRIFICE_CAGE_DORMANT]) {
+            expect(terrainAllowsMove(t), `terrainAllowsMove(${TerrainType[t]}) 应挡通行`).toBe(false);
+        }
+        const walkable = [
+            C.COFFIN_CLOSED, C.ALTAR_KEYHOLE, C.ALTAR_SWITCH_RETRACTING,
+            C.FLAMETHROWER_HIDDEN, C.GAS_TRAP_POISON_HIDDEN,
+            C.MANACLE_L, C.MANACLE_T, C.PORTAL, C.SACRIFICE_ALTAR_DORMANT,
+            C.DEAD_GRASS, C.VOMIT, C.LUMINESCENT_FUNGUS, C.DEAD_FOLIAGE,
+            C.RUBBLE, C.GRAY_FUNGUS, C.WORM_TUNNEL_MARKER_DORMANT,
+        ];
+        for (const t of walkable) {
+            expect(terrainAllowsMove(t), `terrainAllowsMove(${TerrainType[t]}) 应可走`).toBe(true);
+        }
+        const game = createHeadlessGame(424242);
+        const canMoveTo = (game as unknown as { canMoveTo(x: number, y: number): boolean }).canMoveTo.bind(game);
+        for (const t of [C.BRAZIER, C.DEMONIC_STATUE, C.SACRIFICE_CAGE_DORMANT]) {
+            game.grid.setTerrain(20, 20, t);
+            expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(false);
+        }
+        for (const t of [C.COFFIN_CLOSED, C.RUBBLE, C.WORM_TUNNEL_MARKER_DORMANT]) {
             game.grid.setTerrain(20, 20, t);
             expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(true);
         }

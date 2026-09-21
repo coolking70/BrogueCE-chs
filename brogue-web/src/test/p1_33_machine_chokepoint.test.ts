@@ -34,7 +34,7 @@ import { describe, it, expect } from 'vitest';
 import { Architect } from '../engine/Generator/Architect';
 import { BlueprintEngine, mapMachineInterior, resetRewardRoomsGenerated } from '../engine/Generator/BlueprintEngine';
 import type { BlueprintDef, MachineResult } from '../engine/Generator/BlueprintEngine';
-import { analyzeChokeMap } from '../engine/Map/LoopMap';
+import { analyzeChokeMap, CE_CHOKE_COUNT_CAP } from '../engine/Map/LoopMap';
 import { Grid, TerrainType, DCOLS, DROWS } from '../engine/Map/Grid';
 import { terrainAllowsMove, DIRS8 } from '../engine/Map/Connectivity';
 import { rng } from '../engine/Random';
@@ -401,14 +401,18 @@ describe('P1-33 机器阶段不切断关卡', () => {
         expect(analysis.chokeMap[23]![9], '门位 G 的 chokeMap 必须是内侧死角大小 9').toBe(9);
         expect(analysis.chokeMap[24]![9], '口袋格的 chokeMap = 9').toBe(9);
         expect(analysis.chokeMap[26]![10], '口袋格的 chokeMap = 9').toBe(9);
-        expect(analysis.chokeMap[16]![9], '大厅侧门位 (16,9) 的 chokeMap = 大厅封顶值 41').toBe(41);
-        expect(analysis.chokeMap[15]![9], '大厅侧洪泛起点 (15,9) 必被洪泛集覆盖 = 41').toBe(41);
+        // ★ V-2b-7：CE_CHOKE_COUNT_CAP 由 41 上调到 176（CE 目录 roomSize[1]
+        // 上沿 175 + 1，见 LoopMap.ts 的常量注），本合成图的封顶值随之消失——
+        // 大厅真值 154 被精确记录。**决策等价性反而更强**：CAP 现在大于任何
+        // 真实门值，三处消费对"真值/封顶值"的判定与 CE 逐位相同。
+        expect(analysis.chokeMap[16]![9], '大厅侧门位 (16,9) 的 chokeMap = 大厅真值 154（不再封顶）').toBe(154);
+        expect(analysis.chokeMap[15]![9], '大厅侧洪泛起点 (15,9) 必被洪泛集覆盖 = 154').toBe(154);
         // 封顶早停会让截断后未访问的格保持 30000：41 与 30000 决策等价
         // （都 > 任何 roomSize 上限 40，都不可作门位、不可被内部扩展进入）。
         const hallValue = analysis.chokeMap[5]![9]!;
         expect(
-            hallValue === 41 || hallValue === 30000,
-            `大厅格 (5,9) 的 chokeMap=${hallValue}，只能是封顶值 41 或未覆盖 30000` +
+            hallValue === 154 || hallValue === 30000,
+            `大厅格 (5,9) 的 chokeMap=${hallValue}，只能是大厅真值 154 或未覆盖 30000` +
             `（出现 ≤40 的值 = 外侧被误当死角）`
         ).toBe(true);
         expect(hallValue !== 9, '大厅格绝不能拿到内侧值').toBe(true);
@@ -431,13 +435,21 @@ describe('P1-33 机器阶段不切断关卡', () => {
         //      （CE 取整个口袋）；真值 >100 且恰为孤立口袋的门位 web 会收
         //      （CE 拒）—— CE 对齐的正解是上调 CE_CHOKE_COUNT_CAP ≥ 101，
         //      但 LoopMap.ts 不在 V-2b-1 授权清单，登记于本轮报告。
-        // 本断言顺延为钉 CE 目录的实际上沿：blueprintCatalog_Brogue 全表
-        // roomSize[1] 最大 100（:356 的 Secret room）。再次引入更大的
-        // roomSize[1] 或上调封顶值时，按实测重新校准本断言。
+        // V-2b-1 曾把本上沿记为 100（":356 的 Secret room"）——**那条记载是错的**。
+        // ★ V-2b-7 经 CE 原表复核更正：blueprintCatalog_Brogue 的 roomSize[1]
+        // 上沿是 **175**（55 号 Worm tunnels `{80, 175}`，GlobalsBrogue.c:365）。
+        // 这个更正不是纸面数字：封顶值 41 < 175，roomSize 下沿 > 41 的蓝图
+        // （55/46/45/49/53/30/11 号共七条）会永远选不到门位、结构性不可生成——
+        // 故本轮把 CE_CHOKE_COUNT_CAP 一并上调到 176（= 175 + 1，见常量注），
+        // 决策等价性由此从"部分等价"变为"完全等价"。
+        // 本断言顺延为：全表 roomSize[1] ≤ CAP − 1（再次引入更大蓝图表或
+        // 调整 CAP 时，两处必须同进同退）。
         const maxRoom = Math.max(...(blueprintData as BlueprintDef[]).map(bp => bp.roomSize[1]));
-        expect(maxRoom, '出现了 roomSize[1] > 100 的蓝图：超出 CE 目录上沿，' +
-            '必须同步核查 LoopMap.CE_CHOKE_COUNT_CAP 的决策等价性')
-            .toBeLessThanOrEqual(100);
+        expect(maxRoom, '出现了 roomSize[1] > CE_CHOKE_COUNT_CAP − 1 的蓝图：' +
+            '必须同步上调 LoopMap.CE_CHOKE_COUNT_CAP（= roomSize[1] 最大值 + 1），' +
+            '否则该蓝图会因封顶值落窗外而结构性不可生成')
+            .toBeLessThanOrEqual(CE_CHOKE_COUNT_CAP - 1);
+        expect(maxRoom, 'CE 目录上沿实测值（GlobalsBrogue.c:365 的 55 号 Worm tunnels）').toBe(175);
     });
 
     it('d) AD3：内部扩展被 chokeMap[新] ≤ chokeMap[起] 约束在死角内；触及他机即放弃', () => {

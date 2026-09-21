@@ -148,6 +148,19 @@ export interface MachineMonsterSpawn {
      */
     sleeping?: boolean;
     /**
+     * V-2b-7：CE `MF_MONSTER_FLEEING`（Rogue.h:2599 `Fl(14)`，消费点
+     * `Architect.c:1651-1654`：`monst->creatureState = MONSTER_FLEEING;
+     * monst->creatureMode = MODE_PERM_FLEEING;`）。33 号 Thief area 的唯一
+     * 载体——"怪物带物品、永久逃跑"。
+     *
+     * ★ 与 CE 的不符之处（登记，见报告 §3）：web 的 Monster 没有
+     *  MODE_PERM_FLEEING 这一维（`Monster.ts:1158-1163` 的 FLEEING 会在
+     *  hp > 75% 或玩家离开察觉范围后自行转 HUNTING/WANDERING），而
+     *  `Monster.ts` 不在本轮授权清单内。因此本轮只落"出生态 = FLEEING"
+     *  这一半，永久性缺位。
+     */
+    fleeing?: boolean;
+    /**
      * V-2b-6：CE MF_MONSTER_TAKE_ITEM（Architect.c:1622-1626：theItem 记入
      * torch/torchBearer，机器建成后在 :1705-1710 交给该 feature 生成的
      * 最后一只怪 `monst->carriedItem = torch`）。web 的等价物：物品指令
@@ -173,6 +186,26 @@ export interface MachineResult {
      *  消费点 Game.populateLevel（物品实化处落到 item 上）。
      */
     itemSpawns: Array<{ category: string; id?: string; pos: Pos; isAltar?: boolean; itemQualifiers?: string[]; viaAdoption?: boolean; keyLoc?: Array<{ loc: Pos; machine: number; disposableHere: boolean }> }>;
+    /**
+     * V-2b-7：本机器**全部 feature 实例的落点**（CE Architect.c:1484-1486
+     * `pmap[featX][featY].flags |= IS_IN_ROOM/AREA_MACHINE; machineNumber =
+     * machineNumber;` 的 web 回声）。
+     *
+     * 为什么必须有：CE 对**一切**成功落位的 feature 打机器标记，而
+     * itemSpawns / monsterSpawns 只覆盖"会产出物品/怪物"的那部分——
+     * 地形类与纯 DF 类 feature（MF_BUILD_IN_WALLS 的墙火把、MF_EVERYWHERE
+     * 的铺装、DF 列……）合法地落在 interior 之外并带上 machineNumber，
+     * 但此前没有任何指令记录它们。后果：p1_37 AD3 那条
+     * 「网格机器格 − ∪mr.cells 必须都是机器自己的布点」的逐格断言从
+     * V-2b-3 起**空转**（它无法判定"格是 feature 落点"还是"旗标乱写"），
+     * V-2b-4/V-2b-5/V-2b-6 三轮连续登记。本轮把落点暴露出来，该断言恢复
+     * 力量（见 p1_37 的 AD3 注）。
+     *
+     * 口径：每个**成功**的实例记一条（CE 的实例判定 = DFSucceeded &&
+     * terrainSucceeded，见 Architect.c:1466/1482），含 feature 序号与
+     * 该条的地形列/DF 列（诊断用，不参与任何逻辑）。
+     */
+    featureSpawns: Array<{ pos: Pos; terrain?: string; featureDF?: string; featureIndex: number }>;
     /** Monsters to spawn: { monsterId, pos, isAlly?, isCaged? } */
     monsterSpawns: MachineMonsterSpawn[];
     /** Whether a key is needed (for LOCKED_DOOR) */
@@ -281,6 +314,27 @@ const TERRAIN_MAP: Record<string, TerrainType> = {
     MACHINE_POISON_GAS_VENT_HIDDEN: TerrainType.MACHINE_POISON_GAS_VENT_HIDDEN,
     PORTCULLIS_DORMANT: TerrainType.PORTCULLIS_DORMANT,
     WALL_LEVER_HIDDEN_DORMANT: TerrainType.WALL_LEVER_HIDDEN_DORMANT,
+    // V-2b-7：DF 特征系统轮——13 条新蓝图（9/11/12/30/33/42/45/46/47/49/53/
+    // 55/57 号）的 12 个地形载体 + 其 DF 链落点强制落地的 7 个 tile。
+    COFFIN_CLOSED: TerrainType.COFFIN_CLOSED,
+    ALTAR_KEYHOLE: TerrainType.ALTAR_KEYHOLE,
+    ALTAR_SWITCH_RETRACTING: TerrainType.ALTAR_SWITCH_RETRACTING,
+    BRAZIER: TerrainType.BRAZIER,
+    DEMONIC_STATUE: TerrainType.DEMONIC_STATUE,
+    FLAMETHROWER_HIDDEN: TerrainType.FLAMETHROWER_HIDDEN,
+    GAS_TRAP_POISON_HIDDEN: TerrainType.GAS_TRAP_POISON_HIDDEN,
+    MANACLE_L: TerrainType.MANACLE_L,
+    MANACLE_T: TerrainType.MANACLE_T,
+    PORTAL: TerrainType.PORTAL,
+    SACRIFICE_ALTAR_DORMANT: TerrainType.SACRIFICE_ALTAR_DORMANT,
+    SACRIFICE_CAGE_DORMANT: TerrainType.SACRIFICE_CAGE_DORMANT,
+    DEAD_GRASS: TerrainType.DEAD_GRASS,
+    VOMIT: TerrainType.VOMIT,
+    LUMINESCENT_FUNGUS: TerrainType.LUMINESCENT_FUNGUS,
+    DEAD_FOLIAGE: TerrainType.DEAD_FOLIAGE,
+    RUBBLE: TerrainType.RUBBLE,
+    GRAY_FUNGUS: TerrainType.GRAY_FUNGUS,
+    WORM_TUNNEL_MARKER_DORMANT: TerrainType.WORM_TUNNEL_MARKER_DORMANT,
 };
 
 const TERRAIN_VISUALS: Record<string, { char: string; color: number }> = {
@@ -385,6 +439,47 @@ const TERRAIN_VISUALS: Record<string, { char: string; color: number }> = {
     PORTCULLIS_DORMANT: { char: '.', color: 0x888888 },
     WALL_LEVER_HIDDEN_DORMANT: { char: '#', color: 0x121212 },
     BONES: { char: ',', color: 0xcccc4d },
+    // V-2b-7：字形照 CE platformdependent.c 的 glyphToUnicode——
+    //   G_CLOSED_COFFIN/'-'（:167）、G_ORB_ALTAR/'|'（:181）、
+    //   G_SAC_ALTAR/'|'（:180）、G_FIRE/U_FLIPPED_V '⋏'（:123）、
+    //   G_STATUE/U_ESZETT 'ß'、G_FLOOR/U_MIDDLE_DOT '·'（伪装口径）、
+    //   G_CHAIN_LEFT/'-'（:69）、G_CHAIN_TOP/'|'（:66）、
+    //   G_DOORWAY/U_OMEGA 'Ω'（:133）、G_WALL/'#'、G_FLOOR_ALT/'·'、
+    //   G_GRASS/'"'（:49）、G_FOLIAGE/U_ARIES '♈'（:124）、
+    //   G_RUBBLE/','（:57）。
+    // 颜色沿用 V-2b-2b/2b-3/2b-4/2b-5/2b-6 的 ×2.55 折算：
+    //   bridgeFrontColor {33,12,12} → 0x541f1f；
+    //   altarForeColor → 0xccccff（ALTAR 族既定折算）；
+    //   altarBackColor / wallBackColor / gray → 0x6e6e6e（既有中灰口径）；
+    //   fireForeColor {70,20,0} → 0xb33300；
+    //   deadGrassColor / deadFoliageColor {20,13,0} → 0x332100；
+    //   vomitColor {60,50,5} → 0x997f0d；
+    //   fungusColor {15,50,50} → 0x267f7f；
+    //   grayFungusColor {30,30,30} → 0x4c4c4c；
+    //   三个 G_FLOOR 伪装沿用 '.' + 0x888888。
+    // 注：terrainAppearance（src/engine/UI/Appearance.ts）尚无这 19 条的专属
+    // 分支，渲染侧仍走 DEFAULT_LOOK——与 V-2b-2b～2b-6 的新地形同款欠账
+    //（CE 外观接线归 UI 轮），报告 §9 已申报。
+    COFFIN_CLOSED: { char: '-', color: 0x541f1f },
+    ALTAR_KEYHOLE: { char: '|', color: 0xccccff },
+    ALTAR_SWITCH_RETRACTING: { char: '|', color: 0xccccff },
+    BRAZIER: { char: '⋏', color: 0xb33300 },
+    DEMONIC_STATUE: { char: 'ß', color: 0x6e6e6e },
+    FLAMETHROWER_HIDDEN: { char: '.', color: 0x888888 },
+    GAS_TRAP_POISON_HIDDEN: { char: '.', color: 0x888888 },
+    MANACLE_L: { char: '-', color: 0x6e6e6e },
+    MANACLE_T: { char: '|', color: 0x6e6e6e },
+    PORTAL: { char: 'Ω', color: 0x6e6e6e },
+    SACRIFICE_ALTAR_DORMANT: { char: '|', color: 0xccccff },
+    SACRIFICE_CAGE_DORMANT: { char: '#', color: 0x6e6e6e },
+    DEAD_GRASS: { char: '"', color: 0x332100 },
+    VOMIT: { char: '·', color: 0x997f0d },
+    LUMINESCENT_FUNGUS: { char: '"', color: 0x267f7f },
+    DEAD_FOLIAGE: { char: '♈', color: 0x332100 },
+    RUBBLE: { char: ',', color: 0x6e6e6e },
+    GRAY_FUNGUS: { char: '"', color: 0x4c4c4c },
+    // CE displayChar = 0（不可见标记）：web 用空格 + 全黑，渲染面上留空。
+    WORM_TUNNEL_MARKER_DORMANT: { char: ' ', color: 0x000000 },
 };
 
 // ----- Engine -----
@@ -657,9 +752,38 @@ export class BlueprintEngine {
             // 消失 → 锁无钥匙死局，seed424242/D3 实测）。按 CE 数据不变量
             // 过滤，key_rat_trap 自此不可作为领养机器生成（D2 口径：自创
             // 内容退池留形）。
+            // V-2b-7：再补一条同类数据不变量——领养 feature 的落点必须
+            // **能真正接住物品**。CE 的领养物品在 feature 落格上用
+            // `placeItemAt(theItem, {featX, featY})` 无条件放下
+            //（Architect.c:1531 → Items.c:422-434 `theItem->loc = dest;
+            // addItemToChain(theItem, floorItems)`，不查通行性）；web 的
+            // populateLevel 有个 P1-43 兜底闸（Game.ts："蓝图特征落点可能选中
+            // 护城河的岩浆格"）——`isPathingBlocker(terrain)` 的落点会被**丢弃**。
+            // 两者相遇时：父机器交出的物品在 web 被闸掉、在 CE 只是躺在那里，
+            // 于是父机器的锁永远拿不到钥匙。
+            //
+            // 实证：47 号 key_sacrifice_altar 的领养 feature 是
+            // SACRIFICE_CAGE_DORMANT（GlobalsBrogue.c:319 `{0, SACRIFICE_
+            // CAGE_DORMANT, DUNGEON, {1,1}, 1, 0, -1, 0, 2, 0, 0, (MF_ADOPT_ITEM
+            // | MF_NOT_IN_HALLWAY | MF_IMPREGNABLE)}`），它带 T_OBSTRUCTS_
+            // PASSABILITY。CE 里铁笼会**升起**（献祭机制 TM_PROMOTES_ON_
+            // SACRIFICE_ENTRY），钥匙随后可取；web 没有该机制（§2.2 明示本轮
+            // 不实现，登记在 TerrainCatalog 的条目注里），铁笼恒锁 → 放进去
+            // 的钥匙永久不可达。实测：seed3/D7 的 Kennel cage_key、
+            // seed777/D23 的 vestibule_locked 门钥匙都被 #47 吃掉
+            //（v_2b_6_keys 的 F1/F2 翻红）。
+            // 按 D2 口径退池留形：**数据照带旗标**，只是它不再被抽为领养机器；
+            // 献祭机制落地的那一轮摘掉这条过滤即可（届时 F 组应复跑）。
+            const canReceiveAdoptedItem = (f: FeatureDef): boolean => {
+                if (!f.flags.includes('MF_ADOPT_ITEM')) return false;
+                if (!f.terrain) return true; // 纯 DF / 无地形 feature：落点即格，无堵格体
+                const t = TERRAIN_MAP[f.terrain];
+                if (t === undefined) return false; // 未知地形名——宁可不让它领养
+                return !isPathingBlocker(t);
+            };
             const eligible = this.blueprints.filter(bp =>
                 blueprintQualifies(bp, this.depth, requiredFlags)
-                && (adoptiveItem === null || bp.features.some(f => f.flags.includes('MF_ADOPT_ITEM')))
+                && (adoptiveItem === null || bp.features.some(canReceiveAdoptedItem))
             );
             let totalFreq = 0;
             for (const bp of eligible) totalFreq += bp.frequency;
@@ -1180,6 +1304,8 @@ export class BlueprintEngine {
 
         // V-2b-6：机器级 KEY 回声（MachineResult.generatedKey 的来源）。
         let machineGeneratedKey = false;
+        // V-2b-7：feature 落点表（CE Architect.c:1484-1486 的机器标记回声）。
+        const featureSpawns: MachineResult['featureSpawns'] = [];
         // V-2b-6：MF_MONSTER_TAKE_ITEM 的携带归属——CE Architect.c:1622-1626
         // 把 theItem 记到 torch/torchBearer（每个 instance 覆盖一次），机器
         // 建成后 :1705-1710 交给最后一只 torchBearer。web 的等价物：记录本
@@ -1353,6 +1479,18 @@ export class BlueprintEngine {
                         const fcell = this.grid.getCell(pos.x, pos.y);
                         if (fcell && fcell.machineNumber === 0) fcell.machineNumber = machineNum;
 
+                        // V-2b-7：同一处记下 feature 落点（MachineResult.
+                        // featureSpawns）。CE 对**一切**成功实例打标记，
+                        // 所以记录点必须与上面那条 machineNumber 写口同址
+                        // （否则"网格机器格 − ∪interior"的格会找不到来源，
+                        // p1_37 AD3 的逐格断言即空转）。
+                        featureSpawns.push({
+                            pos: { x: pos.x, y: pos.y },
+                            terrain: feature.terrain,
+                            featureDF: feature.featureDF,
+                            featureIndex: feat,
+                        });
+
                         // V-2b-2a（CE :1491-1493）：MF_IMPREGNABLE → 不可挖掘标记
                         if (fFlags.has('MF_IMPREGNABLE')) {
                             this.impregnableCells.add(cellKey(pos.x, pos.y));
@@ -1474,6 +1612,8 @@ export class BlueprintEngine {
                                 isCaged: fFlags.has('MF_MONSTER_IS_CAGED'),
                                 dormant: fFlags.has('MF_MONSTERS_DORMANT'),
                                 sleeping: fFlags.has('MF_MONSTER_SLEEPING'),
+                                // V-2b-7（CE :1651-1654）：33 号 Thief area。
+                                fleeing: fFlags.has('MF_MONSTER_FLEEING'),
                             });
                             if (carryItem) {
                                 carryIndicesPerFeature.push(monsterSpawns.length - 1);
@@ -1497,6 +1637,8 @@ export class BlueprintEngine {
                                 // 引擎侧存在）。
                                 dormant: fFlags.has('MF_MONSTERS_DORMANT'),
                                 sleeping: fFlags.has('MF_MONSTER_SLEEPING'),
+                                // V-2b-7（CE :1648-1654 的两条并列分支）。
+                                fleeing: fFlags.has('MF_MONSTER_FLEEING'),
                             });
                             if (carryItem) {
                                 carryIndicesPerFeature.push(monsterSpawns.length - 1);
@@ -1590,6 +1732,7 @@ export class BlueprintEngine {
             door: doorPos,
             itemSpawns,
             monsterSpawns,
+            featureSpawns,
             needsKey,
             generatedKey: machineGeneratedKey,
             subMachines

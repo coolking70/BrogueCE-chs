@@ -966,6 +966,160 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
         0,
         TM_STAND_IN_TILE,
         0, 'DF_PLAIN_FIRE', '', '', 0
+    ),
+
+    // ── V-2b-7：DF 特征系统轮的 19 条地形载体（13 条 CE 蓝图的地形列 +
+    //    其 DF 链落点 tile）。七字段逐字抄 CE Globals.c tileCatalog，
+    //    glowLight 用 LightKind 下标，行号写在每条上方。
+    //    后 7 条（DEAD_GRASS/VOMIT/LUMINESCENT_FUNGUS/DEAD_FOLIAGE/RUBBLE/
+    //    GRAY_FUNGUS/WORM_TUNNEL_MARKER_DORMANT）由 DF 目录新条目的 tile 列
+    //    强制——DF 落点必须有 tile 载体。
+
+    // CE COFFIN_CLOSED，Globals.c:372：11 号 Vampire lair 的棺木。可燃
+    //（T_IS_FLAMMABLE，ign 20），fireType DF_COFFIN_BURNS、promoteType
+    // DF_COFFIN_BURSTS（两者本轮入目录，见 DungeonFeatureCatalog）。
+    [TerrainType.COFFIN_CLOSED]: e(
+        T_IS_FLAMMABLE,
+        TM_IS_WIRED | TM_VANISHES_UPON_PROMOTION | TM_LIST_IN_SIDEBAR,
+        20, 'DF_COFFIN_BURNS', '', 'DF_COFFIN_BURSTS', 0
+    ),
+
+    // CE ALTAR_KEYHOLE，Globals.c:363：12 号 Legendary ally 的带孔祭坛。
+    // TM_PROMOTES_WITH_KEY 是 web 的第三个"钥匙认锁"消费者（除锁门/铁笼外）。
+    [TerrainType.ALTAR_KEYHOLE]: e(
+        T_OBSTRUCTS_SURFACE_EFFECTS,
+        TM_PROMOTES_WITH_KEY | TM_IS_WIRED | TM_LIST_IN_SIDEBAR,
+        0, '', '', '', 0, false, LightKind.CANDLE_LIGHT
+    ),
+
+    // CE ALTAR_SWITCH_RETRACTING，Globals.c:367：42 号的可收祭坛（取物即
+    // 收回 DF_ALTAR_RETRACT）。
+    [TerrainType.ALTAR_SWITCH_RETRACTING]: e(
+        T_OBSTRUCTS_SURFACE_EFFECTS,
+        TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_PROMOTES_ON_ITEM_PICKUP |
+            TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT,
+        0, '', '', 'DF_ALTAR_RETRACT', 0, false, LightKind.CANDLE_LIGHT
+    ),
+
+    // CE BRAZIER，Globals.c:573：53 号 Zombie crypt 的火盆——T_IS_FIRE 的
+    // 堵格体（不可走、不可放物）。
+    [TerrainType.BRAZIER]: e(
+        T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_IS_FIRE,
+        TM_STAND_IN_TILE | TM_LIST_IN_SIDEBAR,
+        0, 'DF_PLAIN_FIRE', '', '', 0, false, LightKind.BURNING_CREATURE_LIGHT
+    ),
+
+    // CE DEMONIC_STATUE，Globals.c:547：47 号献祭房的恶魔雕像（墙族堵格体）。
+    [TerrainType.DEMONIC_STATUE]: e(
+        T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS,
+        TM_STAND_IN_TILE,
+        0, 'DF_PLAIN_FIRE', '', '', 0, false, LightKind.DEMONIC_STATUE_LIGHT
+    ),
+
+    // CE FLAMETHROWER_HIDDEN，Globals.c:387：30 号 Fun with fire 的隐藏喷火口
+    //（G_FLOOR 伪装 + TM_IS_SECRET，discoverType DF_SHOW_FLAMETHROWER_TRAP）。
+    [TerrainType.FLAMETHROWER_HIDDEN]: e(
+        T_IS_DF_TRAP,
+        TM_IS_SECRET,
+        0, 'DF_FLAMETHROWER', 'DF_SHOW_FLAMETHROWER_TRAP', '', 0
+    ),
+
+    // CE GAS_TRAP_POISON_HIDDEN，Globals.c:377：30 号的可疑毒气板
+    //（与 V-2b-3 的 GAS_TRAP_PARALYSIS_HIDDEN 同构，只是气体种类不同）。
+    [TerrainType.GAS_TRAP_POISON_HIDDEN]: e(
+        T_IS_DF_TRAP,
+        TM_IS_SECRET,
+        0, 'DF_POISON_GAS_CLOUD', 'DF_SHOW_POISON_GAS_TRAP', '', 0
+    ),
+
+    // CE MANACLE_L / MANACLE_T，Globals.c:486 / :484：9 号 two allies chained
+    // up 的墙链镣铐。CE 两行 flags/mechFlags 全 0（纯装饰），drawPriority 20。
+    [TerrainType.MANACLE_L]: e(
+        0, 0, 0, '', '', '', 0
+    ),
+    [TerrainType.MANACLE_T]: e(
+        0, 0, 0, '', '', '', 0
+    ),
+
+    // CE PORTAL，Globals.c:355：12 号的石门（TM_IS_WIRED，
+    // promoteType DF_PORTAL_ACTIVATE）。
+    [TerrainType.PORTAL]: e(
+        T_OBSTRUCTS_ITEMS,
+        TM_STAND_IN_TILE | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT,
+        0, 'DF_PLAIN_FIRE', '', 'DF_PORTAL_ACTIVATE', 0
+    ),
+
+    // CE SACRIFICE_ALTAR_DORMANT / SACRIFICE_CAGE_DORMANT，Globals.c:543 / :546：
+    // 47 号献祭链的两条休眠体。**激活机制缺失**：CE 用
+    // TM_PROMOTES_ON_SACRIFICE_ENTRY（Rogue.h:1967）连 MB_MARKED_FOR_SACRIFICE，
+    // web 无该机制（V-2b-5 已登记，本轮仍不实现，见报告 §3）。数据照抄留形。
+    [TerrainType.SACRIFICE_ALTAR_DORMANT]: e(
+        T_OBSTRUCTS_SURFACE_EFFECTS,
+        TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT,
+        0, '', '', 'DF_SACRIFICE_ALTAR', 0, false, LightKind.CANDLE_LIGHT
+    ),
+    [TerrainType.SACRIFICE_CAGE_DORMANT]: e(
+        T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_SURFACE_EFFECTS,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED |
+            TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT,
+        0, '', '', 'DF_SACRIFICE_CAGE_ACTIVE', 0, false, LightKind.CANDLE_LIGHT
+    ),
+
+    // CE DEAD_GRASS，Globals.c:448：枯草（DF_SMALL_DEAD_GRASS 的 tile；
+    // 42 号 feature 5 的 EVERYWHERE 载体）。
+    [TerrainType.DEAD_GRASS]: e(
+        T_IS_FLAMMABLE,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION,
+        40, 'DF_PLAIN_FIRE', '', '', 0
+    ),
+
+    // CE VOMIT，Globals.c:457：呕吐物（9 号 feature 1 的 terrain 列 +
+    // DF_VOMIT 的 tile）。flags 0 纯装饰。
+    [TerrainType.VOMIT]: e(
+        0,
+        TM_STAND_IN_TILE,
+        0, 'DF_PLAIN_FIRE', '', '', 0
+    ),
+
+    // CE LUMINESCENT_FUNGUS，Globals.c:450：发光菌（DF_LUMINESCENT_FUNGUS 的
+    // tile；12/33/57 号 DF 列的落点）。照明 FUNGUS_LIGHT。
+    [TerrainType.LUMINESCENT_FUNGUS]: e(
+        T_IS_FLAMMABLE,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION,
+        10, 'DF_PLAIN_FIRE', '', '', 0, false, LightKind.FUNGUS_LIGHT
+    ),
+
+    // CE DEAD_FOLIAGE，Globals.c:473：枯叶（DF_DEAD_FOLIAGE 的 tile。
+    // promoteType DF_SMALL_DEAD_GRASS——踩上退化为枯草）。
+    [TerrainType.DEAD_FOLIAGE]: e(
+        T_OBSTRUCTS_VISION | T_IS_FLAMMABLE,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_ON_STEP,
+        80, 'DF_PLAIN_FIRE', '', 'DF_SMALL_DEAD_GRASS', 0
+    ),
+
+    // CE RUBBLE，Globals.c:465：碎石堆（DF_TUNNELIZE 的 tile；55 号蠕虫隧道
+    // 挖掘的落点）。flags 0。
+    [TerrainType.RUBBLE]: e(
+        0,
+        TM_STAND_IN_TILE,
+        0, 'DF_PLAIN_FIRE', '', '', 0
+    ),
+
+    // CE GRAY_FUNGUS，Globals.c:449：灰菌（DF_SWAMP 的 tile）。
+    [TerrainType.GRAY_FUNGUS]: e(
+        T_IS_FLAMMABLE,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION,
+        10, 'DF_PLAIN_FIRE', '', '', 0
+    ),
+
+    // CE WORM_TUNNEL_MARKER_DORMANT，Globals.c:568：休眠蠕虫隧道标记
+    //（DF_WORM_TUNNEL_MARKER_DORMANT 的 tile）。CE displayChar = 0（不可见）、
+    // fore/back = 0、flags = (0)、mechFlags = VANISHES|IS_WIRED、
+    // promoteType DF_WORM_TUNNEL_MARKER_ACTIVE。
+    [TerrainType.WORM_TUNNEL_MARKER_DORMANT]: e(
+        0,
+        TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED,
+        0, '', '', 'DF_WORM_TUNNEL_MARKER_ACTIVE', 0
     )
 };
 

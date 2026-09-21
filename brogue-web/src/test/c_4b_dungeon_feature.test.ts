@@ -47,6 +47,8 @@ import {
 } from '../engine/Map/DungeonFeature';
 import { rng } from '../engine/Random';
 import { createHeadlessGame } from './harness';
+// V-2b-7：E2 的起点改为数据驱动——直接扫蓝图的 featureDF 列。
+import blueprintData from '../data/blueprints.json';
 
 const C = TerrainType;
 const L = DungeonLayer;
@@ -587,7 +589,20 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         //   DF_AMBIENT_BLOOD :869、DF_MONSTER_CAGE_OPENS :927。
         // 两条是 10 号 Kennel feature 的 DF 列（featureDF 载体本轮接上），
         // 五条是 40 号新地形三链字段拉入闭包的载体。
-        expect(keys.length).toBe(68);
+        // V-2b-7：68 → 90（+22，DF 特征系统轮）。CE Globals.c 目录行逐条：
+        //   DF_DEAD_FOLIAGE :615、DF_SHOW_POISON_GAS_TRAP :625、
+        //   DF_SHOW_FLAMETHROWER_TRAP :630、DF_VOMIT :652、DF_TUNNELIZE :678、
+        //   DF_SMALL_DEAD_GRASS :689、DF_ALTAR_RETRACT :724、
+        //   DF_PORTAL_ACTIVATE :725、DF_GLYPH_CIRCLE :731、
+        //   DF_FLAMETHROWER :746、DF_EMBERS_PATCH :748、DF_SACRIFICE_ALTAR :802、
+        //   DF_SACRIFICE_CAGE_ACTIVE :804、DF_COFFIN_BURSTS :807、
+        //   DF_COFFIN_BURNS :808、DF_TRIGGER_AREA :809、
+        //   DF_SURROUND_WOODEN_BARRICADE :824、DF_WORM_TUNNEL_MARKER_DORMANT :879、
+        //   DF_WORM_TUNNEL_MARKER_ACTIVE :880、DF_SWAMP_WATER :903、
+        //   DF_SWAMP :904、DF_SWAMP_MUD :905。
+        // 来源三类：13 条目标蓝图 feature 的 DF 列 / 19 条新地形的三链字段 /
+        // 上述两者的 subsequentDF 链展开。逐条字段钉死在 v_2b_7_features 的 B 组。
+        expect(keys.length).toBe(90);
         expect(DF.DF_SHOW_TRAPDOOR_HALO, 'V-2b-2b：CE Rogue.h:1487（Globals.c:627）').toBe(16);
         expect(DF.DF_SHOW_TRAPDOOR, 'V-2b-2b：TRAP_DOOR_HIDDEN.discoverType 的载体（Rogue.h:1488，Globals.c:628）').toBe(17);
         expect(DF.DF_WOODEN_BARRICADE_BURN, 'V-2b-2b：WOODEN_BARRICADE.fireType 的载体（Rogue.h:1669，Globals.c:825）').toBe(156);
@@ -708,8 +723,18 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // CE 的起点是 10 号 Kennel feature 的 DF 列（GlobalsBrogue.c:252/253
         // `{DF_AMBIENT_BLOOD, 0, …}` / `{DF_BONES, 0, …}`），web 消费点
         // BlueprintEngine 的 featureDF 落位分支（CE Architect.c:1434-1440）。
-        start.add(DF.DF_AMBIENT_BLOOD);
-        start.add(DF.DF_BONES);
+        // ★ V-2b-7 起改为**数据驱动**：直接扫 blueprints.json 的
+        // featureDF 列（V-2b-4/V-2b-6 的块注都写着"FeatureDef 接上 df 列后
+        // 应改为经蓝图数据自动入闭包"——本轮兑现）。这样新增蓝图只要写错
+        // DF 名，E2 的悬空引用检查会当场翻红，不必再手工加起点。
+        for (const bp of blueprintData as unknown as Array<{ features: Array<{ featureDF?: string }> }>) {
+            for (const feat of bp.features) {
+                if (!feat.featureDF) continue;
+                const id = (DF as unknown as Record<string, DF>)[feat.featureDF];
+                expect(id, `blueprints.json 引用了非 DF 枚举成员：${feat.featureDF}`).toBeDefined();
+                start.add(id!);
+            }
+        }
         // 沿 subsequentDF 闭包展开（悬空引用在此翻红）。
         const closure = new Set<DF>();
         const queue = [...start];
@@ -752,7 +777,11 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
             '（promoteType）自动入闭包——57→61；' +
             'V-2b-6：钥匙轮七条入目录后，5 条经六条新地形的三链字段' +
             '（promoteType/discoverType）直接入闭包，2 条（DF_AMBIENT_BLOOD/' +
-            'DF_BONES）经 Kennel feature 的 DF 列起点入闭包——61→68').toBe(68);
+            'DF_BONES）经 Kennel feature 的 DF 列起点入闭包——61→68；' +
+            'V-2b-7：DF 特征系统轮 22 条入闭包（13 条目标蓝图 feature 的 DF 列' +
+            '（现由 blueprints.json 数据驱动入起点）+ 19 条新地形的三链字段 + ' +
+            '两条链展开环节 DF_EMBERS_PATCH/DF_SWAMP_MUD→DF_SWAMP_WATER）' +
+            '——68→90').toBe(90);
     });
 
     it('E3 字段抽查：BRIDGE_FALL_PREP 的 prop/200/100、BRIDGE_FIRE 的描述与 tile=0、其余代表条目', () => {
@@ -877,7 +906,14 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         const shatter = DUNGEON_FEATURE_CATALOG[DF.DF_SHATTERING_SPELL]!;
         expect(shatter.ceLine).toBe(679);
         expect(shatter.ceTile).toBe('RUBBLE');
-        expect(shatter.tile, 'RUBBLE web 无地形 → 登记 null（入 DF_MISSING_TILES）').toBeNull();
+        // ★ V-2b-7 反转（留痕到期）：原断言是 "RUBBLE web 无地形 → 登记
+        // null（入 DF_MISSING_TILES）"。本轮 RUBBLE 地形随 DF_TUNNELIZE
+        //（55 号挖掘落点）落地，该条接上真 tile，同时它与 DF_RUBBLE /
+        // DF_WALL_SHATTER / DF_STATUE_SHATTER 一并从 DF_MISSING_TILES 摘除
+        //（v_2b-5 报告 §3 登记的"休眠唤醒链结构性堵点"由此解除）。
+        // 守卫**变强**：不仅钉 tile 指向，还钉它真的脱离了缺 tile 名单。
+        expect(shatter.tile, 'RUBBLE 地形 V-2b-7 已落地 → 不再是登记缺口').toBe(C.RUBBLE);
+        expect(DF_MISSING_TILES, 'RUBBLE 已到位，本 DF 不得再留在缺 tile 名单里').not.toContain(DF.DF_SHATTERING_SPELL);
         expect(shatter.layer).toBe(L.SURFACE);
         expect(shatter.startProbability).toBe(0);
         expect(shatter.probabilityDecrement).toBe(0);
@@ -921,14 +957,23 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         //（RED_BLOOD = TerrainType.BLOOD）、DF_MONSTER_CAGE_OPENS
         //（MONSTER_CAGE_OPEN）、DF_BONES（BONES，均本轮新增/既有）。
         // 同轮摘除 DF_OPEN_PORTCULLIS（tile PORTCULLIS_DORMANT 本轮落地）。
-        expect(DF_MISSING_TILES.length).toBe(29);
+        // V-2b-7：29 → 31（摘 5 增 7）。摘除五条——RUBBLE 地形（DF_RUBBLE :612、
+        // DF_SHATTERING_SPELL :679、DF_WALL_SHATTER :924、DF_STATUE_SHATTER :873）
+        // 与 LUMINESCENT_FUNGUS 地形（DF_LUMINESCENT_FUNGUS :608）本轮落地；
+        // 增补七条——22 条新目录条目里 tile 无 web 载体的
+        //（DF_SHOW_POISON_GAS_TRAP→GAS_TRAP_POISON :625、DF_SHOW_FLAMETHROWER_TRAP
+        // →FLAMETHROWER :630、DF_ALTAR_RETRACT→FLOOR_FLOODABLE :724、
+        // DF_PORTAL_ACTIVATE→PORTAL_LIGHT :725、DF_SACRIFICE_ALTAR→SACRIFICE_ALTAR
+        // :802、DF_COFFIN_BURSTS→COFFIN_OPEN :807、DF_WORM_TUNNEL_MARKER_ACTIVE
+        // →WORM_TUNNEL_MARKER_ACTIVE :880）。另 15 条带完整 tile 不入列。
+        expect(DF_MISSING_TILES.length).toBe(31);
         // 登记条目确实都是 tile=null，且抛错带 CE tile 名。
         for (const id of DF_MISSING_TILES) {
             expect(DUNGEON_FEATURE_CATALOG[id]!.tile, `DF#${id} 应为 null tile`).toBeNull();
             expect(() => catalogFeature(id), `DF#${id} 应拒绝`).toThrow(/tileType/);
             expect(() => catalogFeature(id)).toThrow(new RegExp(DUNGEON_FEATURE_CATALOG[id]!.ceTile));
         }
-        // 其余 31 条（57 − 26 缺 tile）转换成功且字段保真。
+        // 其余 59 条（90 − 31 缺 tile）转换成功且字段保真。
         // F-2a 翻正位：DF_PLAIN_FIRE.tile=PLAIN_FIRE、DF_EMBERS.tile=EMBERS、
         // 新增 DF_ASH.tile=ASH——三者现在必须能正常转换（放回 missing 会红）。
         // G-2 翻正位：DF_POISON_GAS_CLOUD / DF_STEAM_ACCUMULATION /
@@ -1136,6 +1181,12 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                                 C.TRAP_DOOR_HIDDEN,     // 23 号陷阱
                                 C.WOODEN_BARRICADE,     // 19 号木栅
                                 C.STATUE_INERT, C.STATUE_INERT_DOORWAY, C.PEDESTAL,
+                                // V-2b-7：55 号 Worm tunnels 的 GRANITE 填充
+                                //（GlobalsBrogue.c:367 `{0, GRANITE, DUNGEON,
+                                // {150,150}, 1, … MF_REPEAT_UNTIL_NO_PROGRESS}`）
+                                // 与它的伴侣 DF_WORM_TUNNEL_MARKER_DORMANT
+                                //（LIQUID 层）构成 DUNGEON+Liquid 两层形态。
+                                C.GRANITE,
                                 C.MACHINE_GLYPH,        // 24/25 号机器符文（V-2b-5
                                                         // 实测首现于草上：seed424242
                                                         // /D9 (8,8) 符文压草）
@@ -1149,9 +1200,25 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                                 C.STATUE_DORMANT, C.STATUE_DORMANT_DOORWAY,
                                 C.WALL_MONSTER_DORMANT, C.RAT_TRAP_WALL_DORMANT,
                                 C.TURRET_DORMANT,
+                                // V-2b-7：DF 特征系统轮的 10 条 DUNGEON 层机器
+                                // 载体（11/12/30/42/47/53 号蓝图 feature 的
+                                // terrain 列 + layer=DUNGEON）。它们与既有一行
+                                // 同源——CE Architect.c:1443 的纯层写入，无优先级
+                                // 门，可与 autoGenerator/MF_EVERYWHERE 的 SURFACE
+                                // 装饰（血/骨/枯草）叠层。实测首现：424242/D9
+                                // (11,26) = DUNGEON SACRIFICE_CAGE_DORMANT +
+                                // SURFACE BONES（47 号献祭房）。
+                                C.COFFIN_CLOSED, C.ALTAR_KEYHOLE,
+                                C.ALTAR_SWITCH_RETRACTING, C.BRAZIER,
+                                C.DEMONIC_STATUE, C.FLAMETHROWER_HIDDEN,
+                                C.GAS_TRAP_POISON_HIDDEN, C.PORTAL,
+                                C.SACRIFICE_ALTAR_DORMANT, C.SACRIFICE_CAGE_DORMANT,
                             ]);
                             const NON_BLOCKING_LIQUIDS: ReadonlySet<TerrainType> = new Set([
                                 C.WATER_SHALLOW, C.CHASM_EDGE, C.OBSIDIAN,
+                                // V-2b-7：55 号的蠕虫隧道标记（零旗标可走，
+                                // CE Globals.c:568 的 LIQUID 层不可见标记）。
+                                C.WORM_TUNNEL_MARKER_DORMANT,
                             ]);
                             // V-2b-5 扩：机器 feature 带 layer=DUNGEON 列的落格
                             // 走 CE :1443 `pmap.layers[layer] = terrain`
@@ -1160,10 +1227,55 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                             // 任何机器载体（上表）时，与 SURFACE 草/树的两层
                             // 组合合法。其余组合仍按 fillSpawnMap 优先级门把关。
                             if (cell.layers[L.SURFACE] !== C.NOTHING) {
-                                expect([C.GRASS, C.FOLIAGE],
-                                    `seed=${seed} D${depth} (${x},${y}) 两层格的 SURFACE 必须是 C-6 草/树`).toContain(cell.layers[L.SURFACE]);
+                                // ★ V-2b-7 扩：SURFACE 层的合法成员从"C-6 自动
+                                // 生成器的草/树"扩到"机器 feature/DF 写在
+                                // SURFACE 列的装饰"——CE Architect.c:1443
+                                // `pmap.layers[layer] = terrain` 与 DF 的 layer 列
+                                // 都是纯层写入，SURFACE 层因此可承载血/骨/枯草/
+                                // 呕吐物/发光菌/碎石/镣铐。V-2b-6 的 Kennel
+                                //（DF_AMBIENT_BLOOD/DF_BONES）早就有这个形态，
+                                // 只是当时抽到的层恰好没有；非机器来源的
+                                // SURFACE 仍在下方的优先级门里逐格把关。
+                                const MACHINE_SURFACE_TILES: ReadonlySet<TerrainType> = new Set([
+                                    C.GRASS, C.FOLIAGE,          // C-6 自动生成器
+                                    C.WEB,                       // key_web_room（37 号）的 SURFACE feature
+                                    C.BLOOD, C.BONES,            // V-2b-6 Kennel 血/骨
+                                    C.DEAD_GRASS, C.VOMIT,       // V-2b-7：9/42 号
+                                    C.LUMINESCENT_FUNGUS,        // 12/33/57 号
+                                    C.DEAD_FOLIAGE, C.RUBBLE,    // 42/55 号
+                                    C.GRAY_FUNGUS,               // 30 号 DF_SWAMP
+                                    C.MANACLE_L, C.MANACLE_T,    // 9 号镣铐
+                                ]);
+                                // 其中**由 DF 层写入**（spawnDungeonFeature →
+                                // fillSpawnMap，不与 DUNGEON 层比优先级）的成员。
+                                // GRASS/FOLIAGE 不在内——它们同时是 C-6 自动生成器
+                                // 的产物，走旧口径（优先级门）继续把关。
+                                const DF_SURFACE_DECOR: ReadonlySet<TerrainType> = new Set([
+                                    C.BLOOD, C.BONES, C.DEAD_GRASS, C.VOMIT,
+                                    C.LUMINESCENT_FUNGUS, C.DEAD_FOLIAGE,
+                                    C.RUBBLE, C.GRAY_FUNGUS,
+                                    C.MANACLE_L, C.MANACLE_T,
+                                ]);
+                                expect(MACHINE_SURFACE_TILES,
+                                    `seed=${seed} D${depth} (${x},${y}) 两层格的 SURFACE 属未知来源`).toContain(cell.layers[L.SURFACE]);
                                 if (MACHINE_DUNGEON_TILES.has(cell.layers[L.DUNGEON] as TerrainType)) {
                                     // 合法（:1443 纯层写入，无优先级门）。
+                                } else if (DF_SURFACE_DECOR.has(cell.layers[L.SURFACE] as TerrainType)) {
+                                    // ★ V-2b-7 新增合法形态：**DF 写的 SURFACE
+                                    // 装饰压在任意地基上**。CE 的
+                                    // spawnDungeonFeature → fillSpawnMap 写
+                                    // SURFACE 层时，只判"本层旧 drawPriority >=
+                                    // 新"与 `!(旧最高优先级层带
+                                    // T_OBSTRUCTS_SURFACE_EFFECTS)`（Architect.c:
+                                    // 3228/3230），**不与 DUNGEON 层比优先级**；
+                                    // 故血/骨/枯草/碎石落在陷阱、机器门等
+                                    // DUNGEON 载体上是 CE 字面行为。
+                                    // 实测首现：424242/D9 (26,6) =
+                                    // DUNGEON TRAP + SURFACE BLOOD
+                                    //（DF_AMBIENT_BLOOD 落在陷阱格上）。
+                                    // 防线未松：喂不进墙族——WALL/GRANITE 带
+                                    // T_OBSTRUCTS_SURFACE_EFFECTS，:3230 那一关
+                                    // 就挡住了（本文件 G 组的 DF 单测另钉）。
                                 } else {
                                 // 基座按 CE fillSpawnMap 优先级门（Architect.c:3228
                                 // `旧 prio >= 新 prio`）判定合法形态：
@@ -1184,9 +1296,13 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                                 const ok = baseOk.some(([l, t]) =>
                                     cell.layers[l] === t
                                     && DRAW_PRIORITY[t] >= DRAW_PRIORITY[surf]);
+                                // V-2b-7：失败信息带上**地形名**（原先只有层号，
+                                // 排查"哪个 tile 与哪个 tile 叠了"要跑调试脚本）。
+                                const layerNames = nonEmpty.slice().sort()
+                                    .map((l) => `${l}:${(cell.layers as TerrainType[])[l]}`).join(' ');
                                 expect(ok,
                                     `seed=${seed} D${depth} (${x},${y}) 两层组合 ` +
-                                    nonEmpty.sort().join(',') + ` 不满足 CE 优先级门`).toBe(true);
+                                    layerNames + ` 不满足 CE 优先级门`).toBe(true);
                                 }
                             } else if (cell.layers[L.DUNGEON] !== C.NOTHING
                                 && MACHINE_DUNGEON_TILES.has(cell.layers[L.DUNGEON] as TerrainType)
@@ -1196,7 +1312,8 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                             } else {
                                 expect.unreachable(
                                     `seed=${seed} D${depth} (${x},${y}) 两层组合 ` +
-                                    nonEmpty.sort().join(',') + ` 不属于任何已知合法形态`);
+                                    nonEmpty.slice().sort().map((l) => `${l}:${(cell.layers as TerrainType[])[l]}`).join(' ') +
+                                    ` 不属于任何已知合法形态`);
                             }
                         }
                         expect(cell.layers[L.GAS], `seed=${seed} D${depth} (${x},${y}) GAS 恒空`).toBe(C.NOTHING);

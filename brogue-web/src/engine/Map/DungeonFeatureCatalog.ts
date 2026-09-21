@@ -193,9 +193,54 @@ export enum DF {
     DF_AMBIENT_BLOOD               = 186, // :1717（10 号 Kennel feature 的 DF 列，
                                           // GlobalsBrogue.c:252 → Globals.c:869
                                           // {RED_BLOOD, SURFACE, 75, 25, 0}）
-    DF_MONSTER_CAGE_OPENS          = 216  // :1775（MONSTER_CAGE_CLOSED.
+    DF_MONSTER_CAGE_OPENS          = 216, // :1775（MONSTER_CAGE_CLOSED.
                                           // promoteType，Globals.c:927
                                           // {MONSTER_CAGE_OPEN, DUNGEON, 0, 0, 0}）
+    // ── V-2b-7：DF 特征系统轮的 22 条新条目。id 与 CE 枚举逐一对位
+    //    （Rogue.h 枚举行逐条 + Globals.c 目录行 ceLine 双重锚定核对）。
+    //    来源三类：
+    //    ①13 条目标蓝图 feature 的 **DF 列**（直接起点）；
+    //    ②新地形三链字段（fireType/discoverType/promoteType）拉入的载体；
+    //    ③上述条目 subsequentDF 链的展开环节。
+    //    tile 有 web 载体的直接接上；没有的按惯例 tile: null 登记。
+    DF_DEAD_FOLIAGE                = 10,  // :615（42 号 feature 2 的 DF 列，
+                                          // GlobalsBrogue.c:283）
+    DF_SHOW_POISON_GAS_TRAP        = 14,  // :625（GAS_TRAP_POISON_HIDDEN.
+                                          // discoverType）
+    DF_SHOW_FLAMETHROWER_TRAP      = 19,  // :630（FLAMETHROWER_HIDDEN.
+                                          // discoverType）
+    DF_VOMIT                       = 33,  // :652（9 号 feature 5 的 DF 列）
+    DF_TUNNELIZE                   = 55,  // :678（55 号 feature 4 的 DF 列，
+                                          // tile RUBBLE——本轮落地）
+    DF_SMALL_DEAD_GRASS            = 62,  // :689（42 号 feature 1 的 DF 列 +
+                                          // DEAD_FOLIAGE.promoteType）
+    DF_ALTAR_RETRACT               = 87,  // :724（ALTAR_SWITCH_RETRACTING.
+                                          // promoteType）
+    DF_PORTAL_ACTIVATE             = 88,  // :725（PORTAL.promoteType）
+    DF_GLYPH_CIRCLE                = 94,  // :731（45/46/49 号三条 feature 的
+                                          // DF 列；tile MACHINE_GLYPH 已有）
+    DF_FLAMETHROWER                = 106, // :746（FLAMETHROWER_HIDDEN.fireType）
+    DF_EMBERS_PATCH                = 108, // :748（DF_COFFIN_BURNS 的
+                                          // subsequentDF，tile EMBERS 已有）
+    DF_SACRIFICE_ALTAR             = 145, // :802（SACRIFICE_ALTAR_DORMANT.
+                                          // promoteType）
+    DF_SACRIFICE_CAGE_ACTIVE       = 147, // :804（SACRIFICE_CAGE_DORMANT.
+                                          // promoteType；tile ALTAR_CAGE_
+                                          // RETRACTABLE 已有）
+    DF_COFFIN_BURSTS               = 148, // :807（COFFIN_CLOSED.promoteType）
+    DF_COFFIN_BURNS                = 149, // :808（COFFIN_CLOSED.fireType）
+    DF_TRIGGER_AREA                = 150, // :809（11/47 号两条 feature 的 DF
+                                          // 列；tile MACHINE_TRIGGER_FLOOR 已有）
+    DF_SURROUND_WOODEN_BARRICADE   = 157, // :824（30 号 feature 1 的 DF 列）
+    DF_WORM_TUNNEL_MARKER_DORMANT  = 190, // :879（55 号 feature 3 的 DF 列）
+    DF_WORM_TUNNEL_MARKER_ACTIVE   = 191, // :880（DF_WORM_TUNNEL_MARKER_
+                                          // DORMANT.promoteType）
+    DF_SWAMP_WATER                 = 204, // :903（DF_SWAMP_MUD 的 subsequentDF；
+                                          // tile SHALLOW_WATER = web
+                                          // TerrainType.WATER_SHALLOW）
+    DF_SWAMP                       = 205, // :904（30 号 feature 2 的 DF 列）
+    DF_SWAMP_MUD                   = 206  // :905（DF_SWAMP 的 subsequentDF；
+                                          // tile MUD 已有）
 }
 
 /** 目录条目 = CE 结构体的 web 投影（messageDisplayed 除外——它依赖玩家
@@ -603,7 +648,7 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     // DF_MISSING_TILES，留待 RUBBLE 地形落地的轮次翻正）；唤醒休眠怪旗标
     // 同属游戏侧登记未实现。
     [DF.DF_SHATTERING_SPELL]: {
-        id: DF.DF_SHATTERING_SPELL, ceLine: 679, ceTile: 'RUBBLE', tile: null,
+        id: DF.DF_SHATTERING_SPELL, ceLine: 679, ceTile: 'RUBBLE', tile: TerrainType.RUBBLE,
         layer: DungeonLayer.SURFACE, startProbability: 0, probabilityDecrement: 0,
         flags: DFF_ACTIVATE_DORMANT_MONSTER, cePropagationTerrain: '', propagationTerrain: null,
         subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0,
@@ -617,7 +662,7 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     // {RUBBLE, SURFACE, 45, 23, 0} —— 碎石（DF_WALL_SHATTER 的链尾落点；
     // :612 目录行）。tile RUBBLE web 无（与 DF_SHATTERING_SPELL 同缺）。
     [DF.DF_RUBBLE]: {
-        id: DF.DF_RUBBLE, ceLine: 612, ceTile: 'RUBBLE', tile: null,
+        id: DF.DF_RUBBLE, ceLine: 612, ceTile: 'RUBBLE', tile: TerrainType.RUBBLE,
         layer: DungeonLayer.SURFACE, startProbability: 45, probabilityDecrement: 23,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null,
         subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0,
@@ -767,7 +812,7 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     // 号"爆炸墙"的 payoff，碎石波前 + 每个落点链 DF_RUBBLE 唤醒蠕虫；
     // tile RUBBLE web 无——碎石落点登记，唤醒旗标同属游戏侧登记）。
     [DF.DF_WALL_SHATTER]: {
-        id: DF.DF_WALL_SHATTER, ceLine: 924, ceTile: 'RUBBLE', tile: null,
+        id: DF.DF_WALL_SHATTER, ceLine: 924, ceTile: 'RUBBLE', tile: TerrainType.RUBBLE,
         layer: DungeonLayer.SURFACE, startProbability: 120, probabilityDecrement: 100,
         flags: DFF_ACTIVATE_DORMANT_MONSTER, cePropagationTerrain: '', propagationTerrain: null,
         subsequentDF: DF.DF_RUBBLE,
@@ -786,7 +831,7 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     // 别名到 FOLIAGE 后没有该 tile 的独立载体，故 tile 留 null 登记
     //（与 DF_TRAMPLED_FOLIAGE 同缺）。
     [DF.DF_LUMINESCENT_FUNGUS]: {
-        id: DF.DF_LUMINESCENT_FUNGUS, ceLine: 608, ceTile: 'LUMINESCENT_FUNGUS', tile: null,
+        id: DF.DF_LUMINESCENT_FUNGUS, ceLine: 608, ceTile: 'LUMINESCENT_FUNGUS', tile: TerrainType.LUMINESCENT_FUNGUS,
         layer: DungeonLayer.SURFACE, startProbability: 60, probabilityDecrement: 8,
         flags: DFF_BLOCKED_BY_OTHER_LAYERS, cePropagationTerrain: '', propagationTerrain: null,
         subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0,
@@ -873,7 +918,7 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     //（与 DF_WALL_SHATTER / DF_SHATTERING_SPELL 同缺，登记）；链尾 DF_RUBBLE
     // 已在目录（V-2b-3 引入），无悬空引用。
     [DF.DF_STATUE_SHATTER]: {
-        id: DF.DF_STATUE_SHATTER, ceLine: 873, ceTile: 'RUBBLE', tile: null,
+        id: DF.DF_STATUE_SHATTER, ceLine: 873, ceTile: 'RUBBLE', tile: TerrainType.RUBBLE,
         layer: DungeonLayer.SURFACE, startProbability: 120, probabilityDecrement: 100,
         flags: DFF_ACTIVATE_DORMANT_MONSTER, cePropagationTerrain: '', propagationTerrain: null,
         subsequentDF: DF.DF_RUBBLE,
@@ -1011,6 +1056,258 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: '', lightFlare: '', flashColor: '', effectRadius: 0,
     },
+
+    // ── V-2b-7：DF 特征系统轮的 22 条新条目（逐字段抄自 Globals.c 目录行，
+    //    行号即 ceLine）。分三块：①蓝图 DF 列起点；②新地形三链字段的载体；
+    //    ③subsequentDF 链的展开环节。tile 有 web 载体的接上，没有的
+    //    tile: null 登记、进 DF_MISSING_TILES。
+
+    // ① 13 条目标蓝图 feature 的 DF 列（GlobalsBrogue.c:67-92/197-206/
+    //    218-223/280-286/298-303/306-312/315-322/327-334/349-357/365-371）
+    // {DEAD_FOLIAGE, SURFACE, 50, 30, DFF_BLOCKED_BY_OTHER_LAYERS}（:615）
+    // ——42 号 Burning grass 的枯叶铺装（feature 2 的 DF 列）。
+    [DF.DF_DEAD_FOLIAGE]: {
+        id: DF.DF_DEAD_FOLIAGE, ceLine: 615, ceTile: 'DEAD_FOLIAGE', tile: TerrainType.DEAD_FOLIAGE,
+        layer: DungeonLayer.SURFACE, startProbability: 50, probabilityDecrement: 30,
+        flags: DFF_BLOCKED_BY_OTHER_LAYERS, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {VOMIT, SURFACE, 30, 10, 0}（:652）——9 号 two allies chained up 的
+    // 呕吐物（feature 5 的 DF 列；feature 1 同时把它当 terrain 用）。
+    [DF.DF_VOMIT]: {
+        id: DF.DF_VOMIT, ceLine: 652, ceTile: 'VOMIT', tile: TerrainType.VOMIT,
+        layer: DungeonLayer.SURFACE, startProbability: 30, probabilityDecrement: 10,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {RUBBLE, SURFACE, 45, 23, DFF_ACTIVATE_DORMANT_MONSTER}（:678）——
+    // 55 号 Worm tunnels 的挖掘落点（feature 4 的 DF 列）。**RUBBLE 地形
+    // 本轮落地**，故此条带完整 tile。
+    [DF.DF_TUNNELIZE]: {
+        id: DF.DF_TUNNELIZE, ceLine: 678, ceTile: 'RUBBLE', tile: TerrainType.RUBBLE,
+        layer: DungeonLayer.SURFACE, startProbability: 45, probabilityDecrement: 23,
+        flags: DFF_ACTIVATE_DORMANT_MONSTER, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {DEAD_GRASS, SURFACE, 75, 75, 0}（:689）——42 号 feature 1 的 DF 列，
+    // 同时是 DEAD_FOLIAGE.promoteType 的落点（枯叶踩成枯草）。
+    [DF.DF_SMALL_DEAD_GRASS]: {
+        id: DF.DF_SMALL_DEAD_GRASS, ceLine: 689, ceTile: 'DEAD_GRASS', tile: TerrainType.DEAD_GRASS,
+        layer: DungeonLayer.SURFACE, startProbability: 75, probabilityDecrement: 75,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {MACHINE_GLYPH, DUNGEON, 200, 95, DFF_BLOCKED_BY_OTHER_LAYERS}（:731）
+    // ——45/46/49 号三条 Guardian/Beckoning 蓝图的符文圈（DF 列）。
+    // 与 21/69/70 号的 MACHINE_GLYPH terrain 同 tile、不同 DF 形态
+    //（后者是玩家踏入即通电的钉；本条是蓝图铺出的符文圆圈）。
+    [DF.DF_GLYPH_CIRCLE]: {
+        id: DF.DF_GLYPH_CIRCLE, ceLine: 731, ceTile: 'MACHINE_GLYPH', tile: TerrainType.MACHINE_GLYPH,
+        layer: DungeonLayer.DUNGEON, startProbability: 200, probabilityDecrement: 95,
+        flags: DFF_BLOCKED_BY_OTHER_LAYERS, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {MACHINE_TRIGGER_FLOOR, DUNGEON, 200, 100, 0}（:809）——11/47 号两条
+    // feature 的 DF 列（棺木/献祭祭坛脚下的触发地板）。
+    [DF.DF_TRIGGER_AREA]: {
+        id: DF.DF_TRIGGER_AREA, ceLine: 809, ceTile: 'MACHINE_TRIGGER_FLOOR', tile: TerrainType.MACHINE_TRIGGER_FLOOR,
+        layer: DungeonLayer.DUNGEON, startProbability: 200, probabilityDecrement: 100,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {WOODEN_BARRICADE, DUNGEON, 220, 100, (DFF_TREAT_AS_BLOCKING |
+    //  DFF_SUBSEQ_EVERYWHERE), "", 0, 0, 0, 0, DF_SMALL_DEAD_GRASS}（:824）
+    // ——30 号 Fun with fire 的环形木栅（feature 1 的 DF 列）。
+    // DFF_SUBSEQ_EVERYWHERE：subsequentDF 在每个落点格触发（而非仅原点），
+    // 于是整圈栅栏外都铺上枯草。
+    [DF.DF_SURROUND_WOODEN_BARRICADE]: {
+        id: DF.DF_SURROUND_WOODEN_BARRICADE, ceLine: 824, ceTile: 'WOODEN_BARRICADE', tile: TerrainType.WOODEN_BARRICADE,
+        layer: DungeonLayer.DUNGEON, startProbability: 220, probabilityDecrement: 100,
+        flags: DFF_TREAT_AS_BLOCKING | DFF_SUBSEQ_EVERYWHERE,
+        cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: DF.DF_SMALL_DEAD_GRASS,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {WORM_TUNNEL_MARKER_DORMANT, LIQUID, 5, 5, 0, "", 0, 0, GRANITE}（:879）
+    // ——55 号 Worm tunnels 的休眠标记（feature 3 的 DF 列）。
+    // ★ CE 位置初始化异常如实登记：该行只有 9 个初始化项（tile/layer/start/
+    //   decr/flags/desc/lightFlare/flashColor/effectRadius），末项写的是
+    //   `GRANITE` 这个 tileType 名。按 Rogue.h:1886-1902 的结构体字段序，
+    //   它落在 **effectRadius**（数值 = tileType.GRANITE = 1），而真正该填
+    //   的 propagationTerrain 被留成 0。因为本条 flags = 0，effectRadius 与
+    //   propagationTerrain 在 CE 里都无消费者（前者只服务
+    //   DFF_AGGRAVATES_MONSTERS，后者只服务 requirePropTerrain 扩散），
+    //   所以这是**无后果的 CE 笔误**。web 按字面抄录（effectRadius: 1、
+    //   cePropagationTerrain: ''）并在报告 §1 登记，不擅自"修好"。
+    [DF.DF_WORM_TUNNEL_MARKER_DORMANT]: {
+        id: DF.DF_WORM_TUNNEL_MARKER_DORMANT, ceLine: 879, ceTile: 'WORM_TUNNEL_MARKER_DORMANT',
+        tile: TerrainType.WORM_TUNNEL_MARKER_DORMANT,
+        layer: DungeonLayer.LIQUID, startProbability: 5, probabilityDecrement: 5,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 1,
+    },
+
+    // {SHALLOW_WATER, LIQUID, 30, 100, 0}（:903）——DF_SWAMP_MUD 的
+    // subsequentDF（泥沼继续退化为浅水）。tile SHALLOW_WATER = web 既有
+    // TerrainType.WATER_SHALLOW（C-4a 同名对照）。
+    [DF.DF_SWAMP_WATER]: {
+        id: DF.DF_SWAMP_WATER, ceLine: 903, ceTile: 'SHALLOW_WATER', tile: TerrainType.WATER_SHALLOW,
+        layer: DungeonLayer.LIQUID, startProbability: 30, probabilityDecrement: 100,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {GRAY_FUNGUS, SURFACE, 80, 50, 0, "", 0, 0, 0, 0, DF_SWAMP_MUD}（:904）
+    // ——30 号 feature 2 的 DF 列（沼泽灰菌铺装）。
+    [DF.DF_SWAMP]: {
+        id: DF.DF_SWAMP, ceLine: 904, ceTile: 'GRAY_FUNGUS', tile: TerrainType.GRAY_FUNGUS,
+        layer: DungeonLayer.SURFACE, startProbability: 80, probabilityDecrement: 50,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: DF.DF_SWAMP_MUD,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {MUD, LIQUID, 75, 5, 0, "", 0, 0, 0, 0, DF_SWAMP_WATER}（:905）——
+    // DF_SWAMP 的后续退化环节（灰菌 → 泥沼 → 浅水）。tile MUD 已有。
+    [DF.DF_SWAMP_MUD]: {
+        id: DF.DF_SWAMP_MUD, ceLine: 905, ceTile: 'MUD', tile: TerrainType.MUD,
+        layer: DungeonLayer.LIQUID, startProbability: 75, probabilityDecrement: 5,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: DF.DF_SWAMP_WATER,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // ② 本轮新地形三链字段（fireType/discoverType/promoteType）拉入的载体
+    // {GAS_TRAP_POISON, DUNGEON, 0, 0, 0, "", GENERIC_FLASH_LIGHT}（:625）
+    // ——GAS_TRAP_POISON_HIDDEN.discoverType（搜索显形）。tile
+    // GAS_TRAP_POISON web 无（登记）。
+    [DF.DF_SHOW_POISON_GAS_TRAP]: {
+        id: DF.DF_SHOW_POISON_GAS_TRAP, ceLine: 625, ceTile: 'GAS_TRAP_POISON', tile: null,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: 'GENERIC_FLASH_LIGHT', flashColor: '', effectRadius: 0,
+    },
+
+    // {FLAMETHROWER, DUNGEON, 0, 0, 0, "", GENERIC_FLASH_LIGHT}（:630）
+    // ——FLAMETHROWER_HIDDEN.discoverType。tile FLAMETHROWER web 无（登记）。
+    [DF.DF_SHOW_FLAMETHROWER_TRAP]: {
+        id: DF.DF_SHOW_FLAMETHROWER_TRAP, ceLine: 630, ceTile: 'FLAMETHROWER', tile: null,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: 'GENERIC_FLASH_LIGHT', flashColor: '', effectRadius: 0,
+    },
+
+    // {FLOOR_FLOODABLE, DUNGEON, 0, 0, 0, "the altar retracts into the ground
+    // with a grinding sound.", GENERIC_FLASH_LIGHT}（:724）——
+    // ALTAR_SWITCH_RETRACTING.promoteType（取物后祭坛沉入地面）。
+    // tile FLOOR_FLOODABLE web 无（登记）。
+    [DF.DF_ALTAR_RETRACT]: {
+        id: DF.DF_ALTAR_RETRACT, ceLine: 724, ceTile: 'FLOOR_FLOODABLE', tile: null,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: 'the altar retracts into the ground with a grinding sound.',
+        lightFlare: 'GENERIC_FLASH_LIGHT', flashColor: '', effectRadius: 0,
+    },
+
+    // {PORTAL_LIGHT, SURFACE, 0, 0, (DFF_EVACUATE_CREATURES_FIRST |
+    //  DFF_ACTIVATE_DORMANT_MONSTER), "the archway flashes, and you catch a
+    //  glimpse of another world!"}（:725）——PORTAL.promoteType。
+    // tile PORTAL_LIGHT web 无（登记）。
+    [DF.DF_PORTAL_ACTIVATE]: {
+        id: DF.DF_PORTAL_ACTIVATE, ceLine: 725, ceTile: 'PORTAL_LIGHT', tile: null,
+        layer: DungeonLayer.SURFACE, startProbability: 0, probabilityDecrement: 0,
+        flags: DFF_EVACUATE_CREATURES_FIRST | DFF_ACTIVATE_DORMANT_MONSTER,
+        cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: 'the archway flashes, and you catch a glimpse of another world!',
+        lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {PLAIN_FIRE, SURFACE, 100, 37, 0}（:746）——FLAMETHROWER_HIDDEN.fireType
+    // （踏入隐藏喷火口时铺出的火）。tile PLAIN_FIRE 已有；100/37 的波前是
+    // CE 的"喷火"量级（与 DF_PLAIN_FIRE 的 0/0 单点截然不同）。
+    [DF.DF_FLAMETHROWER]: {
+        id: DF.DF_FLAMETHROWER, ceLine: 746, ceTile: 'PLAIN_FIRE', tile: TerrainType.PLAIN_FIRE,
+        layer: DungeonLayer.SURFACE, startProbability: 100, probabilityDecrement: 37,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {SACRIFICE_ALTAR, DUNGEON, 0, 0, 0, "a demonic presence whispers its
+    // demand: \"Bring to me the marked sacrifice!\""}（:802）——
+    // SACRIFICE_ALTAR_DORMANT.promoteType。tile SACRIFICE_ALTAR web 无
+    //（登记——献祭完成态属未实现链，见报告 §3）。
+    [DF.DF_SACRIFICE_ALTAR]: {
+        id: DF.DF_SACRIFICE_ALTAR, ceLine: 802, ceTile: 'SACRIFICE_ALTAR', tile: null,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: 'a demonic presence whispers its demand: "Bring to me the marked sacrifice!"',
+        lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {ALTAR_CAGE_RETRACTABLE, DUNGEON, 0, 0, 0}（:804）——
+    // SACRIFICE_CAGE_DORMANT.promoteType（铁笼降下扣住祭品）。
+    // tile ALTAR_CAGE_RETRACTABLE web 已有（V-2b-4）。
+    [DF.DF_SACRIFICE_CAGE_ACTIVE]: {
+        id: DF.DF_SACRIFICE_CAGE_ACTIVE, ceLine: 804, ceTile: 'ALTAR_CAGE_RETRACTABLE',
+        tile: TerrainType.ALTAR_CAGE_RETRACTABLE,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {COFFIN_OPEN, DUNGEON, 0, 0, DFF_ACTIVATE_DORMANT_MONSTER, "the coffin
+    //  opens and a dark figure rises!", 0, &darkGray, 3}（:807）——
+    // COFFIN_CLOSED.promoteType（棺盖掀开，吸血鬼现身）。tile COFFIN_OPEN
+    // web 无（登记）。flashColor &darkGray 在 web 无载体列（同 V-2b-5 惯例）。
+    [DF.DF_COFFIN_BURSTS]: {
+        id: DF.DF_COFFIN_BURSTS, ceLine: 807, ceTile: 'COFFIN_OPEN', tile: null,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: DFF_ACTIVATE_DORMANT_MONSTER, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: null,
+        description: 'the coffin opens and a dark figure rises!',
+        lightFlare: '', flashColor: 'darkGray', effectRadius: 3,
+    },
+
+    // {PLAIN_FIRE, SURFACE, 0, 0, DFF_ACTIVATE_DORMANT_MONSTER, "as flames
+    //  begin to lick the coffin, its tenant bursts forth!", 0, 0, 0, 0,
+    //  DF_EMBERS_PATCH}（:808）——COFFIN_CLOSED.fireType（烧棺木 → 续燃）。
+    [DF.DF_COFFIN_BURNS]: {
+        id: DF.DF_COFFIN_BURNS, ceLine: 808, ceTile: 'PLAIN_FIRE', tile: TerrainType.PLAIN_FIRE,
+        layer: DungeonLayer.SURFACE, startProbability: 0, probabilityDecrement: 0,
+        flags: DFF_ACTIVATE_DORMANT_MONSTER, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: DF.DF_EMBERS_PATCH,
+        description: 'as flames begin to lick the coffin, its tenant bursts forth!',
+        lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // ③ subsequentDF 链的展开环节
+    // {EMBERS, SURFACE, 0, 0, 0}（:748）——DF_COFFIN_BURNS 的链尾（火 → 余烬）。
+    // tile EMBERS web 已有（F-2a）。
+    [DF.DF_EMBERS_PATCH]: {
+        id: DF.DF_EMBERS_PATCH, ceLine: 748, ceTile: 'EMBERS', tile: TerrainType.EMBERS,
+        layer: DungeonLayer.SURFACE, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {WORM_TUNNEL_MARKER_ACTIVE, LIQUID, 0, 0, 0}（:880）——
+    // DF_WORM_TUNNEL_MARKER_DORMANT.promoteType（拉杆后标记转活跃，开始挖掘）。
+    // tile WORM_TUNNEL_MARKER_ACTIVE web 无（登记：CE displayChar = 0 的
+    // 不可见标记，与 DORMANT 同形；它是 DF_GRANITE_CRUMBLES 的起点，
+    // web 无该挖掘机制）。
+    [DF.DF_WORM_TUNNEL_MARKER_ACTIVE]: {
+        id: DF.DF_WORM_TUNNEL_MARKER_ACTIVE, ceLine: 880, ceTile: 'WORM_TUNNEL_MARKER_ACTIVE', tile: null,
+        layer: DungeonLayer.LIQUID, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
 };
 
 /** 登记"CE 有 tileType 而 web 没有地形"的目录条目 id 清单
@@ -1038,14 +1335,14 @@ export const DF_MISSING_TILES: readonly DF[] = [
     DF.DF_OPEN_IRON_DOOR_INERT,    // OPEN_IRON_DOOR_INERT
     DF.DF_BRIDGE_FALL_PREP,        // BRIDGE_FALLING
     DF.DF_MACHINE_PRESSURE_PLATE_USED, // MACHINE_PRESSURE_PLATE_USED
-    DF.DF_SHATTERING_SPELL,        // RUBBLE（B-3：crystalize 的碎石 tile，web 无）
+    // DF.DF_XXX 已于 V-2b-7 摘除（RUBBLE / LUMINESCENT_FUNGUS 地形落地）——见下方块注
     DF.DF_SHOW_TRAPDOOR,           // TRAP_DOOR（V-2b-2b：搜索显形族 tile，web 无
                                    // 该地形——显形链接线轮随新地形落地摘除）
     // ── V-2b-3 增补（11 条，8 → 19）：wired 载体 DF 链里 web 尚无 tile 的
     //    环节；链上 tile 已齐的三条（DF_SHOW_PARALYSIS_GAS_TRAP →
     //    GAS_TRAP_PARALYSIS、DF_VENT_SPEW_METHANE → METHANE_GAS、
     //    DF_PARALYSIS_VENT_SPEW → PARALYSIS_GAS）不入列。
-    DF.DF_RUBBLE,                  // RUBBLE（同 DF_SHATTERING_SPELL 所缺）
+    // DF.DF_XXX 已于 V-2b-7 摘除（RUBBLE / LUMINESCENT_FUNGUS 地形落地）——见下方块注
     DF.DF_INACTIVE_GLYPH,          // MACHINE_GLYPH_INACTIVE（通电符文的变色体）
     DF.DF_REVEAL_LEVER,            // WALL_LEVER（显形后的带线墙杆——18 号激活
                                    // 链的载体，激活轮随新地形落地重核）
@@ -1057,21 +1354,21 @@ export const DF_MISSING_TILES: readonly DF[] = [
     DF.DF_PILOT_LIGHT,             // PILOT_LIGHT（火嘴落地的火把）
     DF.DF_DISCOVER_PARALYSIS_VENT, // MACHINE_PARALYSIS_VENT（显形体）
     DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY, // MACHINE_PARALYSIS_VENT（同上）
-    DF.DF_WALL_SHATTER,            // RUBBLE（同上；爆炸墙的波前落点）
+    // DF.DF_XXX 已于 V-2b-7 摘除（RUBBLE / LUMINESCENT_FUNGUS 地形落地）——见下方块注
     // ── V-2b-4 增补（7 条，19 → 26）：祭坛族轮的八条新目录条目里，web 尚无
     //    对应 tile 的七条；唯一带完整 tile 的是 DF_CAGE_DISAPPEARS
     //   （tile ALTAR_INERT = web 既有 TerrainType.ALTAR），故不入列。
     //    三条来自蓝图 feature 的 DF 列（6/7/15 号，web 的 FeatureDef 无 df
     //    列——V-2b-7 接上后应随蓝图数据自动入闭包并摘除），五条来自新地形
     //    三链字段。逐字段见 v_2b_4_altars.test.ts B 组。
-    DF.DF_LUMINESCENT_FUNGUS,      // LUMINESCENT_FUNGUS（15 号 AMULET_SWITCH 的 DF 列）
+    // DF.DF_XXX 已于 V-2b-7 摘除（RUBBLE / LUMINESCENT_FUNGUS 地形落地）——见下方块注
     DF.DF_ITEM_CAGE_CLOSE,         // ALTAR_CAGE_CLOSED（笼子落下态，web 只迁开态）
     DF.DF_ALTAR_COMMUTE,           // COMMUTATION_ALTAR_INERT（置换完成后的惰性态）
     DF.DF_MAGIC_PIPING,            // PIPE_GLOWING（6 号 COMMUTATION_ALTAR 的 DF 列）
     DF.DF_ALTAR_RESURRECT,         // RESURRECTION_ALTAR_INERT（复活完成后的惰性态）
     DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING, // MACHINE_TRIGGER_FLOOR_REPEATING
                                    // （7 号 RESURRECTION_ALTAR 的 DF 列）
-    DF.DF_STATUE_SHATTER,          // RUBBLE（同 DF_WALL_SHATTER 所缺）
+    // DF.DF_XXX 已于 V-2b-7 摘除（RUBBLE / LUMINESCENT_FUNGUS 地形落地）——见下方块注
     // ── V-2b-5 增补（2 条，26 → 28）：休眠唤醒轮四条新条目里 web 无 tile 的
     //    两条；另两条带完整 tile 故不入列——DF_ALTAR_INERT
     //   （tile ALTAR_INERT = web 既有 TerrainType.ALTAR，与 DF_CAGE_DISAPPEARS
@@ -1096,4 +1393,34 @@ export const DF_MISSING_TILES: readonly DF[] = [
     //   同轮摘除：DF_OPEN_PORTCULLIS（上方注）。
     DF.DF_SHOW_POISON_GAS_VENT,    // MACHINE_POISON_GAS_VENT_DORMANT（显形体）
     DF.DF_POISON_GAS_VENT_OPEN,    // MACHINE_POISON_GAS_VENT（开启态喷口驻留体）
+    // ── V-2b-7 摘除（5 条，29 − 5 = 24）：RUBBLE 与 LUMINESCENT_FUNGUS 两个
+    //    地形本轮落地（47 号 → 55 号 → 42/57/12/33 号蓝图的地形列与 DF 链
+    //    强制），于是下列五条的 tile 全部接上真载体：
+    //      DF_RUBBLE（:612）、DF_SHATTERING_SPELL（:679）、DF_WALL_SHATTER
+    //      （:924）、DF_STATUE_SHATTER（:873） → RUBBLE；
+    //      DF_LUMINESCENT_FUNGUS（:608） → LUMINESCENT_FUNGUS。
+    //    ★ 这条摘除**解开了 V-2b-5 登记的"休眠唤醒链结构性堵点"**：
+    //      v-2b-5 报告 §3 写"真正卡住一切的是 DF_RUBBLE 本身"——21/29/43/
+    //      50/56/69/70 号的唤醒都要经过带 DFF_ACTIVATE_DORMANT_MONSTER 且
+    //      tile=RUBBLE 的三条 DF。本轮 RUBBLE 落地，该堵点结构性消除
+    //      （守卫由 c_4b E4 与 v_2b_5 A3 双钉）。上方 V-2b-3/V-2b-4/V-2b-5
+    //      的旧注释保留，供后人看演化链。
+    // ── V-2b-7 增补（7 条，24 + 7 = 31）：本轮 22 条新目录条目里 tile 无 web
+    //    载体的七条。另 15 条带完整 tile 故不入列——逐条：DF_DEAD_FOLIAGE
+    //    （DEAD_FOLIAGE）、DF_VOMIT（VOMIT）、DF_TUNNELIZE（RUBBLE）、
+    //    DF_SMALL_DEAD_GRASS（DEAD_GRASS）、DF_GLYPH_CIRCLE（MACHINE_GLYPH）、
+    //    DF_TRIGGER_AREA（MACHINE_TRIGGER_FLOOR）、DF_SURROUND_WOODEN_BARRICADE
+    //    （WOODEN_BARRICADE）、DF_WORM_TUNNEL_MARKER_DORMANT
+    //    （WORM_TUNNEL_MARKER_DORMANT）、DF_SWAMP（GRAY_FUNGUS）、DF_SWAMP_MUD
+    //    （MUD）、DF_SWAMP_WATER（SHALLOW_WATER = TerrainType.WATER_SHALLOW）、
+    //    DF_FLAMETHROWER（PLAIN_FIRE）、DF_EMBERS_PATCH（EMBERS）、
+    //    DF_COFFIN_BURNS（PLAIN_FIRE）、DF_SACRIFICE_CAGE_ACTIVE
+    //    （ALTAR_CAGE_RETRACTABLE）。
+    DF.DF_SHOW_POISON_GAS_TRAP,    // GAS_TRAP_POISON（30 号毒气板的显形体）
+    DF.DF_SHOW_FLAMETHROWER_TRAP,  // FLAMETHROWER（30 号喷火口的显形体）
+    DF.DF_ALTAR_RETRACT,           // FLOOR_FLOODABLE（42 号祭坛沉入地面）
+    DF.DF_PORTAL_ACTIVATE,         // PORTAL_LIGHT（12 号石门激活态）
+    DF.DF_SACRIFICE_ALTAR,         // SACRIFICE_ALTAR（47 号献祭完成态）
+    DF.DF_COFFIN_BURSTS,           // COFFIN_OPEN（11 号棺盖掀开态）
+    DF.DF_WORM_TUNNEL_MARKER_ACTIVE, // WORM_TUNNEL_MARKER_ACTIVE（55 号活跃标记）
 ];

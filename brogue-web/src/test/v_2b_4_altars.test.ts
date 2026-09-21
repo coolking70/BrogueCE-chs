@@ -232,13 +232,15 @@ describe('V-2b-4 B：八条祭坛族 DF 目录条目的 CE 逐字段钉死', () 
         const e = DUNGEON_FEATURE_CATALOG[DF.DF_LUMINESCENT_FUNGUS]!;
         expect(e.ceLine).toBe(608);
         expect(e.ceTile).toBe('LUMINESCENT_FUNGUS');
-        expect(e.tile, 'web 无 LUMINESCENT_FUNGUS 地形').toBeNull();
+        // ★ V-2b-7 反转：LUMINESCENT_FUNGUS 地形随 12/33/57 号蓝图的 DF 列
+        // 落地，该条接上真 tile 并脱离 DF_MISSING_TILES。
+        expect(e.tile, 'LUMINESCENT_FUNGUS 地形 V-2b-7 已落地').toBe(C.LUMINESCENT_FUNGUS);
         expect(e.layer).toBe(L.SURFACE);
         expect(e.startProbability).toBe(60);
         expect(e.probabilityDecrement).toBe(8);
         expect(e.flags).toBe(DFF_BLOCKED_BY_OTHER_LAYERS);
         expect(e.subsequentDF).toBeNull();
-        expect(DF_MISSING_TILES).toContain(DF.DF_LUMINESCENT_FUNGUS);
+        expect(DF_MISSING_TILES, 'tile 已到位，不得再留在缺 tile 名单里').not.toContain(DF.DF_LUMINESCENT_FUNGUS);
     });
 
     it('B2 DF_ITEM_CAGE_CLOSE（:722）：笼子落下——无 tile 时的 EVACUATE 旗标与文案', () => {
@@ -322,7 +324,10 @@ describe('V-2b-4 B：八条祭坛族 DF 目录条目的 CE 逐字段钉死', () 
         const e = DUNGEON_FEATURE_CATALOG[DF.DF_STATUE_SHATTER]!;
         expect(e.ceLine).toBe(873);
         expect(e.ceTile).toBe('RUBBLE');
-        expect(e.tile).toBeNull();
+        // ★ V-2b-7 反转：RUBBLE 地形随 55 号 DF_TUNNELIZE 落地，本条的 tile
+        // 接上真载体并脱离 DF_MISSING_TILES（守卫变强：钉它必须离开名单）。
+        expect(e.tile).toBe(C.RUBBLE);
+        expect(DF_MISSING_TILES, 'RUBBLE 已到位，不得再留在缺 tile 名单里').not.toContain(DF.DF_STATUE_SHATTER);
         expect(e.layer).toBe(L.SURFACE);
         expect(e.startProbability).toBe(120);
         expect(e.probabilityDecrement).toBe(100);
@@ -332,7 +337,9 @@ describe('V-2b-4 B：八条祭坛族 DF 目录条目的 CE 逐字段钉死', () 
         expect(e.description).toBe('the statue shatters!');
         expect(e.flashColor).toBe('darkGray');
         expect(e.effectRadius).toBe(3);
-        expect(DF_MISSING_TILES).toContain(DF.DF_STATUE_SHATTER);
+        // ★ V-2b-7 反转：原断言为 `toContain(DF.DF_STATUE_SHATTER)`
+        //（RUBBLE tile web 无）。RUBBLE 地形随 55 号 DF_TUNNELIZE 落地后，
+        // 该条接上真 tile 并摘出缺 tile 名单——留痕到期翻转（见 B7 上方）。
     });
 
     it('B8 DF 枚举 id ≡ CE Rogue.h 枚举行（脚本对位 + 三条既有锚点校准）', () => {

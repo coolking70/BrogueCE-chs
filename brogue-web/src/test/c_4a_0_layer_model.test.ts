@@ -311,6 +311,31 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.PORTCULLIS_DORMANT]: L.DUNGEON,
             [C.WALL_LEVER_HIDDEN_DORMANT]: L.DUNGEON,
             [C.BONES]: L.SURFACE,
+            // V-2b-7：DF 特征系统轮 19 条——12 条蓝图地形载体 + 7 条 DF 链
+            // 落点 tile。DUNGEON 十条（CE 蓝图 feature layer 列逐条 DUNGEON，
+            // GlobalsBrogue.c 的 11/12/30/42/47/53 号 feature 行）、
+            // SURFACE 八条（9 号镣铐/呕吐物写在 SURFACE 列 :69-74；
+            // 五条 DF 落点 layer 列同证 :608/:615/:678/:689/:904）、
+            // LIQUID 一条（DF_WORM_TUNNEL_MARKER_DORMANT :879）。
+            [C.COFFIN_CLOSED]: L.DUNGEON,
+            [C.ALTAR_KEYHOLE]: L.DUNGEON,
+            [C.ALTAR_SWITCH_RETRACTING]: L.DUNGEON,
+            [C.BRAZIER]: L.DUNGEON,
+            [C.DEMONIC_STATUE]: L.DUNGEON,
+            [C.FLAMETHROWER_HIDDEN]: L.DUNGEON,
+            [C.GAS_TRAP_POISON_HIDDEN]: L.DUNGEON,
+            [C.PORTAL]: L.DUNGEON,
+            [C.SACRIFICE_ALTAR_DORMANT]: L.DUNGEON,
+            [C.SACRIFICE_CAGE_DORMANT]: L.DUNGEON,
+            [C.MANACLE_L]: L.SURFACE,
+            [C.MANACLE_T]: L.SURFACE,
+            [C.VOMIT]: L.SURFACE,
+            [C.LUMINESCENT_FUNGUS]: L.SURFACE,
+            [C.DEAD_FOLIAGE]: L.SURFACE,
+            [C.RUBBLE]: L.SURFACE,
+            [C.GRAY_FUNGUS]: L.SURFACE,
+            [C.DEAD_GRASS]: L.SURFACE,
+            [C.WORM_TUNNEL_MARKER_DORMANT]: L.LIQUID,
         });
         expect(DRAW_PRIORITY).toEqual({
             [C.NOTHING]: 100, [C.GRANITE]: 0, [C.FLOOR]: 95, [C.WALL]: 0,
@@ -398,6 +423,35 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.PORTCULLIS_DORMANT]: 95,
             [C.WALL_LEVER_HIDDEN_DORMANT]: 0,
             [C.BONES]: 70,
+            // V-2b-7：CE 第 4 列原值（Globals.c 行号逐条）——COFFIN_CLOSED 17
+            //（:372）、ALTAR_KEYHOLE 17（:363）、ALTAR_SWITCH_RETRACTING 17
+            //（:367）、BRAZIER 0（:573 火盆墙档）、DEMONIC_STATUE 0（:547）、
+            // FLAMETHROWER_HIDDEN 95（:387 G_FLOOR 伪装）、GAS_TRAP_POISON_
+            // HIDDEN 95（:377 同款伪装）、MANACLE_L/MANACLE_T 20（:486/:484）、
+            // PORTAL 17（:355）、SACRIFICE_ALTAR_DORMANT/SACRIFICE_CAGE_
+            // DORMANT 17（:543/:546）、DEAD_GRASS 60（:448）、VOMIT 80（:457）、
+            // LUMINESCENT_FUNGUS 60（:450）、DEAD_FOLIAGE 45（:473）、
+            // RUBBLE 70（:465）、GRAY_FUNGUS 51（:449）、WORM_TUNNEL_MARKER_
+            // DORMANT 100（:568，与 NOTHING 同档——不可见标记）。
+            [C.COFFIN_CLOSED]: 17,
+            [C.ALTAR_KEYHOLE]: 17,
+            [C.ALTAR_SWITCH_RETRACTING]: 17,
+            [C.BRAZIER]: 0,
+            [C.DEMONIC_STATUE]: 0,
+            [C.FLAMETHROWER_HIDDEN]: 95,
+            [C.GAS_TRAP_POISON_HIDDEN]: 95,
+            [C.MANACLE_L]: 20,
+            [C.MANACLE_T]: 20,
+            [C.PORTAL]: 17,
+            [C.SACRIFICE_ALTAR_DORMANT]: 17,
+            [C.SACRIFICE_CAGE_DORMANT]: 17,
+            [C.DEAD_GRASS]: 60,
+            [C.VOMIT]: 80,
+            [C.LUMINESCENT_FUNGUS]: 60,
+            [C.DEAD_FOLIAGE]: 45,
+            [C.RUBBLE]: 70,
+            [C.GRAY_FUNGUS]: 51,
+            [C.WORM_TUNNEL_MARKER_DORMANT]: 100,
         });
     });
 });

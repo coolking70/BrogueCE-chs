@@ -8917,15 +8917,29 @@ export class Game {
      */
     private finalizeBlueprintMonster(mon: Monster, spawn: MachineMonsterSpawn, machineNumber: number): void {
         mon.machineHome = machineNumber;
+        // V-2b-7 重构为 CE :1648-1659 的**三条并列独立分支**（原实现是
+        // dormant / 非 dormant 二分的嵌套 else-if，语义等价但形状不同）：
+        //   :1648-1650 MF_MONSTER_SLEEPING → MONSTER_SLEEPING
+        //   :1651-1654 MF_MONSTER_FLEEING  → MONSTER_FLEEING (+MODE_PERM_FLEEING)
+        //   :1655-1659 MF_MONSTERS_DORMANT → toggleMonsterDormancy，且
+        //              **否定条件**：不带 SLEEPING 且非盟友者醒来是
+        //              TRACKING_SCENT（web 的 HUNTING）——"不是"这一半别漏。
+        // 顺序即 CE 字面：dormant 分支在后，它的赋值会覆盖前面的 fleeing。
+        // 行为等价性：既有数据无 fleeing，三条改成并列后与旧嵌套逐态同结果
+        //（报告的对抗性要求 ① 对这条改写作了回答）。
+        if (spawn.sleeping) {
+            mon.state = MonsterState.ASLEEP; // CE MONSTER_SLEEPING（:1648-1650）
+        }
+        if (spawn.fleeing) {
+            // ★ 半落：CE 同时置 creatureMode = MODE_PERM_FLEEING，web 无该维
+            //（Monster.ts 不在本轮授权清单），故永久性缺位——登记报告 §3。
+            mon.state = MonsterState.FLEEING;
+        }
         if (spawn.dormant) {
             this.toggleMonsterDormancy(mon);
             if (!spawn.sleeping && !mon.isAlly) {
                 mon.state = MonsterState.HUNTING; // CE MONSTER_TRACKING_SCENT
-            } else if (spawn.sleeping) {
-                mon.state = MonsterState.ASLEEP; // CE MONSTER_SLEEPING（:1648-1650）
             }
-        } else if (spawn.sleeping) {
-            mon.state = MonsterState.ASLEEP;
         }
     }
 

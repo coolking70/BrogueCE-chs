@@ -383,15 +383,29 @@ export const CE_CHOKE_MIN_CELLS = 4;
 /** CE machineData.gateCandidates[50]（Rogue.h）+ Architect.c:1089 `totalFreq < 50`。 */
 export const CE_GATE_CANDIDATE_CAP = 50;
 /**
- * 洪泛早停上限（web 性能优化，决策等价）：count > 40 的区域一律记 41。
- * chokeMap 的全部消费者只有三处——门位候选窗（blueprints.json 的
- * roomSize[1] 最大 40，41 恒落窗外）、门位赋值（41 < 30000 照常成立）、
- * 内部扩展（41 大于任何 ≤40 的门值，照常拒入）——三处对"真值 154"与
- * "封顶 41"的判定逐位相同。前提是 roomSize[1] ≤ 40，由
- * p1_33_machine_chokepoint.test.ts 的元断言看守；引入更大密库蓝图时必须
- * 同步上调此值。CE 本体不限（floodFillCount 返回精确计数）。
+ * 洪泛早停上限（web 性能优化，**决策等价**）：count > CAP 的区域一律记 CAP。
+ *
+ * 取值规则：**CAP = blueprintCatalog 全表 roomSize[1] 的最大值 + 1**。
+ * 这样任何会被接受的候选窗（roomSize[1] ≤ 最大值）都不含 CAP，门位候选窗
+ * （`chokeMap ∈ [roomSize[0], roomSize[1]]`）、门位赋值（CAP < 30000）与
+ * 内部扩展（CAP 大于任何门值）三处消费对"真值"与"封顶值"的判定逐位相同
+ * ⇒ 与 CE 的精确计数完全决策等价。CE 本体不限（floodFillCount 返回精确计数）。
+ *
+ * 演进：40+1 = 41（P1-33 建立时全表 roomSize[1] ≤ 40）。
+ * **V-2b-7：175+1 = 176**——CE 目录的真实上沿是 175（55 号 Worm tunnels
+ * 的 `{80, 175}`，GlobalsBrogue.c:365），不是 41 时代注释里写的 100
+ *（那条"最大 100（:356 Secret room）"的记载**是错的**，本轮经 CE 原表复核
+ * 更正）。不调会怎样：55 号（80..175）、46 号（85..100）、45 号（50..95）、
+ * 49 号（60..100）、53 号（60..90）、30 号（80..100）、11 号（50..80）这七条
+ * 的 roomSize 下沿都 > 41，封顶值恒为 41 且 41 落窗外 ⇒ 它们**永远选不到
+ * 门位、结构性不可生成**；上调后全部恢复精确语义。
+ * 代价：早停窗口变大（最大洪泛 176 格 vs 42 格），analyzeChokeMap 的
+ * 单次开销上升——p1_33 的端到端实测记录了量级。
+ *
+ * 元断言：p1_33_machine_chokepoint.test.ts 的 c2 看守"全表 roomSize[1]
+ * ≤ 本常量 − 1"；再引入更大的蓝图表时必须同步上调。
  */
-export const CE_CHOKE_COUNT_CAP = 41;
+export const CE_CHOKE_COUNT_CAP = 176;
 
 /** analyzeChokeMap 的产物（CE 的 passMap / IS_CHOKEPOINT / IS_GATE_SITE / chokeMap）。 */
 export interface ChokeAnalysis {

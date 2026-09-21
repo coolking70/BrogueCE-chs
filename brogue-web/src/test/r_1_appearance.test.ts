@@ -171,6 +171,28 @@ const EXPECTED_VISIBLE: Record<TerrainType, { char: string; color: string; bgCol
     [TerrainType.PORTCULLIS_DORMANT]: DEFAULT_LOOK,         // V-2b-6
     [TerrainType.WALL_LEVER_HIDDEN_DORMANT]: DEFAULT_LOOK,  // V-2b-6
     [TerrainType.BONES]: DEFAULT_LOOK,                      // V-2b-6
+    // V-2b-7：19 条新 tile 无专属渲染分支，走 DEFAULT_LOOK（与
+    // V-2b-2b/3/4/5/6 的"CE 外观接线归 UI 轮"欠账同款口径。结构性穷尽表，
+    // 不加成员连 npm run build 都过不去，机械补齐并申报）。
+    [TerrainType.COFFIN_CLOSED]: DEFAULT_LOOK,              // V-2b-7
+    [TerrainType.ALTAR_KEYHOLE]: DEFAULT_LOOK,              // V-2b-7
+    [TerrainType.ALTAR_SWITCH_RETRACTING]: DEFAULT_LOOK,    // V-2b-7
+    [TerrainType.BRAZIER]: DEFAULT_LOOK,                    // V-2b-7
+    [TerrainType.DEMONIC_STATUE]: DEFAULT_LOOK,             // V-2b-7
+    [TerrainType.FLAMETHROWER_HIDDEN]: DEFAULT_LOOK,        // V-2b-7
+    [TerrainType.GAS_TRAP_POISON_HIDDEN]: DEFAULT_LOOK,     // V-2b-7
+    [TerrainType.MANACLE_L]: DEFAULT_LOOK,                  // V-2b-7
+    [TerrainType.MANACLE_T]: DEFAULT_LOOK,                  // V-2b-7
+    [TerrainType.PORTAL]: DEFAULT_LOOK,                     // V-2b-7
+    [TerrainType.SACRIFICE_ALTAR_DORMANT]: DEFAULT_LOOK,    // V-2b-7
+    [TerrainType.SACRIFICE_CAGE_DORMANT]: DEFAULT_LOOK,     // V-2b-7
+    [TerrainType.DEAD_GRASS]: DEFAULT_LOOK,                 // V-2b-7
+    [TerrainType.VOMIT]: DEFAULT_LOOK,                      // V-2b-7
+    [TerrainType.LUMINESCENT_FUNGUS]: DEFAULT_LOOK,         // V-2b-7
+    [TerrainType.DEAD_FOLIAGE]: DEFAULT_LOOK,               // V-2b-7
+    [TerrainType.RUBBLE]: DEFAULT_LOOK,                     // V-2b-7
+    [TerrainType.GRAY_FUNGUS]: DEFAULT_LOOK,                // V-2b-7
+    [TerrainType.WORM_TUNNEL_MARKER_DORMANT]: DEFAULT_LOOK, // V-2b-7
 };
 
 /** 造 Cell（terrain 走 setter 写回归属层）。只用于 DUNGEON/SURFACE 层地形。 */
@@ -270,7 +292,9 @@ describe('R-1 terrainAppearance 特征化（穷举钉死）', () => {
         // MACHINE_POISON_GAS_VENT_HIDDEN/PORTCULLIS_DORMANT/
         // WALL_LEVER_HIDDEN_DORMANT/BONES——钥匙轮 10/35/40 号蓝图的载体），
         // 76 → 82。
-        expect(ALL_TERRAINS.length).toBe(82);
+        // V-2b-7：DF 特征系统轮 19 条入列（CE Globals.c:355/363/367/372/377/
+        // 387/448/449/450/457/465/473/484/486/543/546/547/568/573），82 → 101。
+        expect(ALL_TERRAINS.length).toBe(101);
         expect(new Set(ALL_TERRAINS).size).toBe(ALL_TERRAINS.length);
     });
 

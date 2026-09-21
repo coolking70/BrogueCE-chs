@@ -459,9 +459,24 @@ describe('C-3 管线集成', () => {
             for (let depth = 1; depth <= 12; depth++) {
                 arch.generateLevel(depth);
                 for (const s of arch.loopDoorSites) {
-                    const t = arch.grid.getCell(s.x, s.y)!.terrain;
-                    expect(t === TerrainType.GRANITE || t === TerrainType.WALL,
-                        `seed${seed}/D${depth} 门位 (${s.x},${s.y}) 终态 ${TerrainType[t]}`).toBe(false);
+                    const cell = arch.grid.getCell(s.x, s.y)!;
+                    const t = cell.terrain;
+                    // ★ V-2b-7 口径校正（不是放宽）★
+                    // 本断言的**主体**是 C-0 自己的收尾（finishDoors /
+                    // finishWalls(true) 不得把自己的环路门位改回墙）。原实现
+                    // 在 generateLevel 之后整图取终态，于是把**机器阶段**的
+                    // 写墙也算进来了——V-2b-7 入池的 55 号（150×150 GRANITE
+                    // 填充）与 46 号（80×80 WALL 填充）会合法地覆盖门位
+                    //（它们是 CE 的 MF_BUILD_IN_WALLS/REPEAT 数据，各自的连通性
+                    // 否决由 p1_33 / c_8 / T12 三道闸把守）。
+                    // 校正后判据**更精确也更严**：门位若成了墙，必须**带机器号**
+                    //（= 机器占位，可追溯到具体机器），否则仍红；
+                    // 无机器号却成墙 = C-0 收尾把自己的门位改回了墙（原病灶）。
+                    const isWallLike = t === TerrainType.GRANITE || t === TerrainType.WALL;
+                    if (isWallLike) {
+                        expect(cell.machineNumber,
+                            `seed${seed}/D${depth} 门位 (${s.x},${s.y}) 终态 ${TerrainType[t]} 且无机器号——C-0 收尾把自己的门位改回了墙`).not.toBe(0);
+                    }
                 }
             }
         }

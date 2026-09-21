@@ -242,6 +242,31 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         [TerrainType.PORTCULLIS_DORMANT]: 0,            // Globals.c:340 NO_LIGHT
         [TerrainType.WALL_LEVER_HIDDEN_DORMANT]: 0,     // Globals.c:350 NO_LIGHT
         [TerrainType.BONES]: 0,                         // Globals.c:464 NO_LIGHT
+        // ── V-2b-7：DF 特征系统轮的 19 条新 tile，第 10 列逐条核对
+        //（Globals.c 行号写在每条）。七条真实点亮（目录里都有成员）：
+        // ALTAR_KEYHOLE/ALTAR_SWITCH_RETRACTING/SACRIFICE_ALTAR_DORMANT/
+        // SACRIFICE_CAGE_DORMANT = CANDLE_LIGHT（:363/:367/:543/:546）；
+        // BRAZIER = BURNING_CREATURE_LIGHT（:573）；DEMONIC_STATUE =
+        // DEMONIC_STATUE_LIGHT（:547）；LUMINESCENT_FUNGUS = FUNGUS_LIGHT（:450）。
+        [TerrainType.COFFIN_CLOSED]: 0,                 // Globals.c:372 NO_LIGHT
+        [TerrainType.ALTAR_KEYHOLE]: LightKind.CANDLE_LIGHT,
+        [TerrainType.ALTAR_SWITCH_RETRACTING]: LightKind.CANDLE_LIGHT,
+        [TerrainType.BRAZIER]: LightKind.BURNING_CREATURE_LIGHT,
+        [TerrainType.DEMONIC_STATUE]: LightKind.DEMONIC_STATUE_LIGHT,
+        [TerrainType.FLAMETHROWER_HIDDEN]: 0,           // Globals.c:387 NO_LIGHT
+        [TerrainType.GAS_TRAP_POISON_HIDDEN]: 0,        // Globals.c:377 NO_LIGHT
+        [TerrainType.MANACLE_L]: 0,                     // Globals.c:486 NO_LIGHT
+        [TerrainType.MANACLE_T]: 0,                     // Globals.c:484 NO_LIGHT
+        [TerrainType.PORTAL]: 0,                        // Globals.c:355 NO_LIGHT
+        [TerrainType.SACRIFICE_ALTAR_DORMANT]: LightKind.CANDLE_LIGHT,
+        [TerrainType.SACRIFICE_CAGE_DORMANT]: LightKind.CANDLE_LIGHT,
+        [TerrainType.DEAD_GRASS]: 0,                    // Globals.c:448 NO_LIGHT
+        [TerrainType.VOMIT]: 0,                         // Globals.c:457 NO_LIGHT
+        [TerrainType.LUMINESCENT_FUNGUS]: LightKind.FUNGUS_LIGHT,
+        [TerrainType.DEAD_FOLIAGE]: 0,                  // Globals.c:473 NO_LIGHT
+        [TerrainType.RUBBLE]: 0,                        // Globals.c:465 NO_LIGHT
+        [TerrainType.GRAY_FUNGUS]: 0,                   // Globals.c:449 NO_LIGHT
+        [TerrainType.WORM_TUNNEL_MARKER_DORMANT]: 0,    // Globals.c:568 NO_LIGHT
     };
 
     it('全 tile 的 glowLight 逐值等于 CE 原列（结构性穷尽）', () => {
@@ -252,7 +277,7 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         }
     });
 
-    it('非零恰 17 个（V-2b-5 前为 16，标题顺延为 17），且都指向有载体的目录条目', () => {
+    it('非零恰 24 个（V-2b-5 前为 16，V-2b-6 为 17，V-2b-7 为 24），且都指向有载体的目录条目', () => {
         const nonzero = Object.entries(TERRAIN_FLAGS)
             .filter(([, v]) => v.glowLight !== LightKind.NO_LIGHT)
             .map(([k]) => Number(k) as TerrainType)
@@ -273,6 +298,12 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
             TerrainType.RESURRECTION_ALTAR, TerrainType.TORCH_WALL,
             // V-2b-5：ALTAR_SWITCH 的烛光（Globals.c:366 原列 CANDLE_LIGHT）。
             TerrainType.ALTAR_SWITCH,
+            // V-2b-7：七条新点亮的 tile（Globals.c:363/367/543/546/573/547/450
+            // 第 10 列）——四条祭坛族烛光 + 火盆 + 恶魔雕像 + 发光菌。
+            TerrainType.ALTAR_KEYHOLE, TerrainType.ALTAR_SWITCH_RETRACTING,
+            TerrainType.SACRIFICE_ALTAR_DORMANT, TerrainType.SACRIFICE_CAGE_DORMANT,
+            TerrainType.BRAZIER, TerrainType.DEMONIC_STATUE,
+            TerrainType.LUMINESCENT_FUNGUS,
         ].sort((a, b) => a - b));
         for (const t of nonzero) {
             expect(LIGHT_CATALOG[TERRAIN_FLAGS[t].glowLight]).toBeDefined();
@@ -643,6 +674,13 @@ describe('C-7 载体边界留痕', () => {
         // （登记在 EXPECTED_GLOW 里为 0）——载体与光名是两件事，本清单只登记
         // "光名现在有真实载体"。
         'TORCH_LIGHT',
+        // V-2b-7（DF 特征系统轮）反转：两条"先落 tile 再接光"的欠账兑现——
+        // LUMINESCENT_FUNGUS（Globals.c:450 落地 tile，glowLight 列就是
+        // FUNGUS_LIGHT）与 DEMONIC_STATUE（:547 落地 tile + DEMONIC_STATUE_LIGHT）
+        // 都有了真实载体：updateVision 的发光地形扫描读到 TERRAIN_FLAGS.
+        // glowLight 即真点亮（与上一行 TORCH_LIGHT 同款论证）。
+        // 注意仍**未**兑现的：SUNLIGHT_POOL/DARKNESS_PATCH/ALGAE 系（无 tile）。
+        'FUNGUS_LIGHT', 'DEMONIC_STATUE_LIGHT',
     ]);
 
     function* prodTsFiles(dir: string): Generator<string> {

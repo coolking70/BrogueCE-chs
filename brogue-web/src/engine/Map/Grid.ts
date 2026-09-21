@@ -194,8 +194,46 @@ export enum TerrainType {
                                 // promoteType DF_ACTIVATE_PORTCULLIS）
     WALL_LEVER_HIDDEN_DORMANT,  // Globals.c:350 休眠墙杆（40 号，G_WALL 伪装，
                                 // promoteType DF_CREATE_LEVER）
-    BONES                       // Globals.c:464 骨头堆（10 号 Kennel 的
+    BONES,                      // Globals.c:464 骨头堆（10 号 Kennel 的
                                 // DF_BONES 载体，SURFACE 纯装饰）
+    // ── V-2b-7：DF 特征系统轮的地形载体（13 条 CE 蓝图 9/11/12/30/33/42/
+    //    45/46/47/49/53/55/57 的地形列 + 其 DF 链落点 tile）。19 个新成员，
+    //    只追加在尾部（terrainFingerprint 按数值哈希，既有枚举值不变）。
+    //    前 12 个是蓝图 feature 的 terrain 列；后 7 个是本轮 DF 目录新条目
+    //    的 tile 列（CE 三条链字段/DF 落点强制）。
+    COFFIN_CLOSED,              // Globals.c:372 密闭棺木（11 号，可燃、
+                                // promoteType DF_COFFIN_BURSTS）
+    ALTAR_KEYHOLE,              // Globals.c:363 带孔祭坛（12 号，
+                                // TM_PROMOTES_WITH_KEY——钥匙认锁的第三个消费者）
+    ALTAR_SWITCH_RETRACTING,    // Globals.c:367 可收祭坛（42 号，
+                                // TM_PROMOTES_ON_ITEM_PICKUP）
+    BRAZIER,                    // Globals.c:573 仪式火盆（53 号，T_IS_FIRE）
+    DEMONIC_STATUE,             // Globals.c:547 恶魔雕像（47 号，墙族堵格体）
+    FLAMETHROWER_HIDDEN,        // Globals.c:387 隐藏喷火口（30 号，T_IS_DF_TRAP）
+    GAS_TRAP_POISON_HIDDEN,     // Globals.c:377 隐藏毒气板（30 号，T_IS_DF_TRAP）
+    MANACLE_L,                  // Globals.c:486 左向镣铐（9 号，零旗标装饰）
+    MANACLE_T,                  // Globals.c:484 上向镣铐（9 号，零旗标装饰）
+    PORTAL,                     // Globals.c:355 石门（12 号，TM_IS_WIRED）
+    SACRIFICE_ALTAR_DORMANT,    // Globals.c:543 休眠献祭祭坛（47 号，
+                                // promoteType DF_SACRIFICE_ALTAR——欠账见报告 §3）
+    SACRIFICE_CAGE_DORMANT,     // Globals.c:546 休眠献祭铁笼（47 号，堵格）
+    // 以上 12 个是本轮蓝图的地形载体；以下 7 个由 DF 目录新条目的 tile
+    // 列强制（DF 落点必须有 tile 载体，否则 spawnDungeonFeature 落不出地形）：
+    DEAD_GRASS,                 // Globals.c:448 枯草（DF_SMALL_DEAD_GRASS 的
+                                // tile；42 号 feature 5 的 EVERYWHERE 载体）
+    VOMIT,                      // Globals.c:457 呕吐物（9 号 feature 1 的
+                                // terrain 列 + DF_VOMIT 的 tile——同一格两用）
+    LUMINESCENT_FUNGUS,         // Globals.c:450 发光菌（DF_LUMINESCENT_FUNGUS
+                                // 的 tile；12/33/57 号 DF 列的落点）
+    DEAD_FOLIAGE,               // Globals.c:473 枯叶（DF_DEAD_FOLIAGE 的 tile；
+                                // promoteType DF_SMALL_DEAD_GRASS）
+    RUBBLE,                     // Globals.c:465 碎石堆（DF_TUNNELIZE 的 tile；
+                                // 55 号蠕虫隧道的挖掘落点）
+    GRAY_FUNGUS,                // Globals.c:449 灰菌（DF_SWAMP 的 tile；
+                                // subsequentDF DF_SWAMP_MUD）
+    WORM_TUNNEL_MARKER_DORMANT  // Globals.c:568 休眠蠕虫隧道标记（DF_WORM_
+                                // TUNNEL_MARKER_DORMANT 的 tile；CE displayChar
+                                // 为 0 = 不可见标记，web 记空格）
 }
 
 export enum LightType {
@@ -368,7 +406,40 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.WALL_LEVER_HIDDEN_DORMANT]: 0,
     // V-2b-6：BONES 70（Globals.c:464 第 4 列原值——纯装饰表面物，与
     // DEAD_GRASS(75)/BLOOD(80) 同族的"压得住地板"档）。
-    [TerrainType.BONES]: 70
+    [TerrainType.BONES]: 70,
+    // V-2b-7：CE 第 4 列原值，逐条 Globals.c 行号：
+    //   COFFIN_CLOSED 17（:372，与祭坛族同档的"容器"层高）；
+    //   ALTAR_KEYHOLE 17（:363）；ALTAR_SWITCH_RETRACTING 17（:367）；
+    //   BRAZIER 0（:573，G_FIRE——火是"墙档"般的强地形，压得住一切）；
+    //   DEMONIC_STATUE 0（:547 雕像墙档）；
+    //   FLAMETHROWER_HIDDEN 95（:387 G_FLOOR 伪装）；GAS_TRAP_POISON_HIDDEN
+    //     95（:377 同伪装）；MANACLE_L/MANACLE_T 20（:486/:484）；
+    //   PORTAL 17（:355）；SACRIFICE_ALTAR_DORMANT 17（:543）；
+    //   SACRIFICE_CAGE_DORMANT 17（:546）；
+    //   DEAD_GRASS 60（:448，与 GRASS 同档）；VOMIT 80（:457，与 BLOOD 同档）；
+    //   LUMINESCENT_FUNGUS 60（:450，与 GRASS 同档）；
+    //   DEAD_FOLIAGE 45（:473，与 FOLIAGE 同档）；RUBBLE 70（:465，与 BONES
+    //     同档）；GRAY_FUNGUS 51（:449）；WORM_TUNNEL_MARKER_DORMANT 100
+    //     （:568，与 NOTHING 同档——不可见标记）。
+    [TerrainType.COFFIN_CLOSED]: 17,
+    [TerrainType.ALTAR_KEYHOLE]: 17,
+    [TerrainType.ALTAR_SWITCH_RETRACTING]: 17,
+    [TerrainType.BRAZIER]: 0,
+    [TerrainType.DEMONIC_STATUE]: 0,
+    [TerrainType.FLAMETHROWER_HIDDEN]: 95,
+    [TerrainType.GAS_TRAP_POISON_HIDDEN]: 95,
+    [TerrainType.MANACLE_L]: 20,
+    [TerrainType.MANACLE_T]: 20,
+    [TerrainType.PORTAL]: 17,
+    [TerrainType.SACRIFICE_ALTAR_DORMANT]: 17,
+    [TerrainType.SACRIFICE_CAGE_DORMANT]: 17,
+    [TerrainType.DEAD_GRASS]: 60,
+    [TerrainType.VOMIT]: 80,
+    [TerrainType.LUMINESCENT_FUNGUS]: 60,
+    [TerrainType.DEAD_FOLIAGE]: 45,
+    [TerrainType.RUBBLE]: 70,
+    [TerrainType.GRAY_FUNGUS]: 51,
+    [TerrainType.WORM_TUNNEL_MARKER_DORMANT]: 100
 };
 
 /**
@@ -540,7 +611,44 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     [TerrainType.WALL_LEVER_HIDDEN_DORMANT]: DungeonLayer.DUNGEON,
     // V-2b-6：BONES → SURFACE（CE DF 目录 :611 {BONES, SURFACE, 75, 23, 0}
     // 的 layer 列同证——骨头堆是表面覆盖物）。
-    [TerrainType.BONES]: DungeonLayer.SURFACE
+    [TerrainType.BONES]: DungeonLayer.SURFACE,
+    // V-2b-7：19 条新载体的归属层。依据逐条：
+    //   DUNGEON —— CE 蓝图 feature 的 layer 列（GlobalsBrogue.c:82-92/197-206/
+    //     218-223/280-286/298-303/306-312/315-322/327-334/349-357 的 `terrain,
+    //     layer` 两列）：COFFIN_CLOSED（11 号列 0 = DUNGEON）、ALTAR_KEYHOLE /
+    //     PORTAL（12 号 DUNGEON）、ALTAR_SWITCH_RETRACTING（42 号 DUNGEON）、
+    //     BRAZIER（53 号 DUNGEON）、DEMONIC_STATUE / SACRIFICE_ALTAR_DORMANT /
+    //     SACRIFICE_CAGE_DORMANT（47 号 DUNGEON）、FLAMETHROWER_HIDDEN /
+    //     GAS_TRAP_POISON_HIDDEN（30 号 DUNGEON）。
+    [TerrainType.COFFIN_CLOSED]: DungeonLayer.DUNGEON,
+    [TerrainType.ALTAR_KEYHOLE]: DungeonLayer.DUNGEON,
+    [TerrainType.ALTAR_SWITCH_RETRACTING]: DungeonLayer.DUNGEON,
+    [TerrainType.BRAZIER]: DungeonLayer.DUNGEON,
+    [TerrainType.DEMONIC_STATUE]: DungeonLayer.DUNGEON,
+    [TerrainType.FLAMETHROWER_HIDDEN]: DungeonLayer.DUNGEON,
+    [TerrainType.GAS_TRAP_POISON_HIDDEN]: DungeonLayer.DUNGEON,
+    [TerrainType.PORTAL]: DungeonLayer.DUNGEON,
+    [TerrainType.SACRIFICE_ALTAR_DORMANT]: DungeonLayer.DUNGEON,
+    [TerrainType.SACRIFICE_CAGE_DORMANT]: DungeonLayer.DUNGEON,
+    //   SURFACE —— 9 号蓝图把两条镣铐与呕吐物写在 SURFACE 列
+    //     （GlobalsBrogue.c:69-74 `{DF_AMBIENT_BLOOD, MANACLE_T, SURFACE, …}`
+    //     / `{0, VOMIT, SURFACE, …}`），五条 DF 落点同证
+    //     （DF_SMALL_DEAD_GRASS {DEAD_GRASS, SURFACE, 75, 75} :689、
+    //      DF_DEAD_FOLIAGE {DEAD_FOLIAGE, SURFACE, 50, 30} :615、
+    //      DF_TUNNELIZE {RUBBLE, SURFACE, 45, 23} :678、
+    //      DF_SWAMP {GRAY_FUNGUS, SURFACE, 80, 50} :904、
+    //      DF_LUMINESCENT_FUNGUS {LUMINESCENT_FUNGUS, SURFACE, 60, 8} :608）。
+    [TerrainType.MANACLE_L]: DungeonLayer.SURFACE,
+    [TerrainType.MANACLE_T]: DungeonLayer.SURFACE,
+    [TerrainType.VOMIT]: DungeonLayer.SURFACE,
+    [TerrainType.LUMINESCENT_FUNGUS]: DungeonLayer.SURFACE,
+    [TerrainType.DEAD_FOLIAGE]: DungeonLayer.SURFACE,
+    [TerrainType.RUBBLE]: DungeonLayer.SURFACE,
+    [TerrainType.GRAY_FUNGUS]: DungeonLayer.SURFACE,
+    [TerrainType.DEAD_GRASS]: DungeonLayer.SURFACE,
+    //   LIQUID —— CE DF 目录 :879 `{WORM_TUNNEL_MARKER_DORMANT, LIQUID, 5, 5,
+    //     0, "", 0, 0, GRANITE}` 的 layer 列同证（55 号蠕虫隧道标记）。
+    [TerrainType.WORM_TUNNEL_MARKER_DORMANT]: DungeonLayer.LIQUID
 };
 
 /**
@@ -555,15 +663,18 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
  * 现有载体（CE 行号）：PLAIN_FIRE（Globals.c:492，F-1 引入）、
  * GAS_FIRE（Globals.c:495，G-2 引入——DF_GAS_FIRE 的载体，燃气烧完地上留火）、
  * GAS_EXPLOSION（Globals.c:496，F-2c 引入——DF_EXPLOSION_FIRE/DF_BLOAT_EXPLOSION
- * 的载体，瞬时爆炸地形，T_CAUSES_EXPLOSIVE_DAMAGE 在手）。
- * CE 其余六种火地形（BRIMSTONE_FIRE /
- * FLAMEDANCER_FIRE / DART_EXPLOSION / ITEM_FIRE / CREATURE_FIRE / 火源家具）
+ * 的载体，瞬时爆炸地形，T_CAUSES_EXPLOSIVE_DAMAGE 在手）、
+ * BRAZIER（Globals.c:573，V-2b-7 引入——53 号 Zombie crypt 的仪式火盆，
+ * 唯一带 T_OBSTRUCTS_PASSABILITY 的火地形：它是"烧着的堵格体"）。
+ * CE 其余五种火地形（BRIMSTONE_FIRE /
+ * FLAMEDANCER_FIRE / DART_EXPLOSION / ITEM_FIRE / CREATURE_FIRE）
  * web 尚无——后续轮次落地时随目录条目在此补行。
  */
 export const FIRE_TERRAIN_TYPES: readonly TerrainType[] = [
     TerrainType.PLAIN_FIRE,
     TerrainType.GAS_FIRE,
-    TerrainType.GAS_EXPLOSION
+    TerrainType.GAS_EXPLOSION,
+    TerrainType.BRAZIER
 ];
 
 /** CE Movement.c:64-80 的纯数据版：对一层快照取最高优先层。 */

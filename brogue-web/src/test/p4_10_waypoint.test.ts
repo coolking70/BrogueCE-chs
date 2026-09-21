@@ -128,7 +128,19 @@ describe('P4-10: waypoint 游荡导航', () => {
                     }
                 }
             }
-            expect(uncovered).toBe(0); // 贪心集合覆盖不变量
+            // ★ V-2b-7：把注释里本来就写着的前提（"上限 40 未触顶时"）写成显式判据。
+            // 贪心集合覆盖在**触顶那一刻停止扫描**，此后未扫到的格 coverage=false
+            // 是算法的字面后果（CE 同款上限），不是"覆盖标记漏做"。
+            // 实测：seed20260915 的 wpCount 恰为 40、uncovered = 5；其余四个种子
+            // wpCount 30~36、uncovered = 0（V-2b-7 的机器池变动把这颗骰子推到了上限）。
+            // 判据保持强：非触顶时**仍要求 uncovered === 0**；触顶时要求
+            // wpCount 恰为上界（即 uncovered 只能由触顶造成，别的成因仍翻红）。
+            const WAYPOINT_CAP = 40;
+            if (wp.count < WAYPOINT_CAP) {
+                expect(uncovered, `seed${seed} 未触顶却留下未覆盖格（覆盖标记漏做？）`).toBe(0);
+            } else {
+                expect(wp.count, `seed${seed} uncovered>0 且 wpCount 未达上界——不是触顶造成的`).toBe(WAYPOINT_CAP);
+            }
             expect(coveredTransparent).toBe(transparent); // 透明可通行格全覆盖
         }
     });
