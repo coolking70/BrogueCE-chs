@@ -192,7 +192,9 @@ const EXPECTED_VISIBLE: Record<TerrainType, { char: string; color: string; bgCol
     [TerrainType.DEAD_FOLIAGE]: DEFAULT_LOOK,               // V-2b-7
     [TerrainType.RUBBLE]: DEFAULT_LOOK,                     // V-2b-7
     [TerrainType.GRAY_FUNGUS]: DEFAULT_LOOK,                // V-2b-7
-    [TerrainType.WORM_TUNNEL_MARKER_DORMANT]: DEFAULT_LOOK, // V-2b-7
+    [TerrainType.WORM_TUNNEL_MARKER_DORMANT]: DEFAULT_LOOK,
+    [TerrainType.BLOODFLOWER_STALK]: DEFAULT_LOOK,
+    [TerrainType.HAVEN_BEDROLL]: DEFAULT_LOOK, // V-2b-7
 };
 
 /** 造 Cell（terrain 走 setter 写回归属层）。只用于 DUNGEON/SURFACE 层地形。 */
@@ -294,7 +296,8 @@ describe('R-1 terrainAppearance 特征化（穷举钉死）', () => {
         // 76 → 82。
         // V-2b-7：DF 特征系统轮 19 条入列（CE Globals.c:355/363/367/372/377/
         // 387/448/449/450/457/465/473/484/486/543/546/547/568/573），82 → 101。
-        expect(ALL_TERRAINS.length).toBe(101);
+        // V-2b-8：BLOODFLOWER_STALK / HAVEN_BEDROLL 两条新成员。
+        expect(ALL_TERRAINS.length).toBe(103);
         expect(new Set(ALL_TERRAINS).size).toBe(ALL_TERRAINS.length);
     });
 

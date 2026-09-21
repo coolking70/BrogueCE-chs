@@ -117,6 +117,8 @@ export interface BlueprintDef {
     flags: string[];
     doorTerrain?: string;
     features: FeatureDef[];
+    /** CE machineTypes / blueprintCatalog numeric id; present for forced autogenerators. */
+    ceBlueprintId?: number;
 }
 
 /** Result of building a machine, consumed by Game.ts populateLevel */
@@ -335,6 +337,10 @@ const TERRAIN_MAP: Record<string, TerrainType> = {
     RUBBLE: TerrainType.RUBBLE,
     GRAY_FUNGUS: TerrainType.GRAY_FUNGUS,
     WORM_TUNNEL_MARKER_DORMANT: TerrainType.WORM_TUNNEL_MARKER_DORMANT,
+    BLOODFLOWER_STALK: TerrainType.BLOODFLOWER_STALK,
+    HAVEN_BEDROLL: TerrainType.HAVEN_BEDROLL,
+    BONES: TerrainType.BONES,
+    SACRED_GLYPH: TerrainType.SACRED_GLYPH,
 };
 
 const TERRAIN_VISUALS: Record<string, { char: string; color: number }> = {
@@ -707,7 +713,7 @@ export class BlueprintEngine {
         const flatten = (r: MachineResult): MachineResult[] =>
             [r, ...r.subMachines.flatMap(flatten)];
         for (let failsafe = 50; machineCount > 0 && failsafe > 0; failsafe--) {
-            const built = this.buildAMachine([BP_REWARD], null, null);
+            const built = this.buildAMachine(-1, [BP_REWARD], null, null);
             if (built) {
                 machineCount--;
                 rewardRoomsGenerated++;
@@ -734,7 +740,8 @@ export class BlueprintEngine {
      * （递归子机器 10 次全败、feature 实例数不达 minimumInstanceCount）都
      * 恢复备份并返回 null（CE :1576-1583 / :1676-1687）。
      */
-    private buildAMachine(
+    public buildAMachine(
+        requestedBp: number,
         requiredFlags: readonly string[],
         adoptiveItem: MachineResult['itemSpawns'][number] | null,
         origin: Pos | null
@@ -781,19 +788,23 @@ export class BlueprintEngine {
                 if (t === undefined) return false; // 未知地形名——宁可不让它领养
                 return !isPathingBlocker(t);
             };
+            const chooseBP = requestedBp <= 0;
             const eligible = this.blueprints.filter(bp =>
-                blueprintQualifies(bp, this.depth, requiredFlags)
+                (chooseBP ? blueprintQualifies(bp, this.depth, requiredFlags) : bp.ceBlueprintId === requestedBp)
                 && (adoptiveItem === null || bp.features.some(canReceiveAdoptedItem))
             );
             let totalFreq = 0;
             for (const bp of eligible) totalFreq += bp.frequency;
-            if (totalFreq <= 0) return null; // CE :1040-1052：目录里没有合格蓝图
+            if (eligible.length === 0 || (chooseBP && totalFreq <= 0)) return null; // CE :1040-1052：目录里没有合格蓝图
 
-            let roll = rng.randRange(1, totalFreq);
-            let bp = eligible[eligible.length - 1]!;
-            for (const b of eligible) {
-                roll -= b.frequency;
-                if (roll <= 0) { bp = b; break; }
+            let bp = eligible[0]!;
+            if (chooseBP) {
+                let roll = rng.randRange(1, totalFreq);
+                bp = eligible[eligible.length - 1]!;
+                for (const b of eligible) {
+                    roll -= b.frequency;
+                    if (roll <= 0) { bp = b; break; }
+                }
             }
 
             const effFlags = effectiveBpFlags(bp);
@@ -1573,10 +1584,10 @@ export class BlueprintEngine {
                             let success = false;
                             for (let i = 10; i > 0; i--) {
                                 if (fFlags.has('MF_OUTSOURCE_ITEM_TO_MACHINE') && theItem) {
-                                    const sub = this.buildAMachine([BP_ADOPT_ITEM], theItem, null);
+                                    const sub = this.buildAMachine(-1, [BP_ADOPT_ITEM], theItem, null);
                                     if (sub) { subMachines.push(sub); success = true; }
                                 } else if (fFlags.has('MF_BUILD_VESTIBULE')) {
-                                    const sub = this.buildAMachine([BP_VESTIBULE], null, { x: pos.x, y: pos.y });
+                                    const sub = this.buildAMachine(-1, [BP_VESTIBULE], null, { x: pos.x, y: pos.y });
                                     if (sub) { subMachines.push(sub); success = true; }
                                 }
                                 if (success) break;

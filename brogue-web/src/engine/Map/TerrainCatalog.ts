@@ -1120,7 +1120,17 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
         0,
         TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED,
         0, '', '', 'DF_WORM_TUNNEL_MARKER_ACTIVE', 0
-    )
+    ),
+
+    [TerrainType.BLOODFLOWER_STALK]: e(
+        T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_IS_FLAMMABLE,
+        TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT,
+        100, 'DF_PLAIN_FIRE', '', 'DF_BLOODFLOWER_PODS_GROW', 0
+    ),
+    [TerrainType.HAVEN_BEDROLL]: e(
+        T_IS_FLAMMABLE, TM_VANISHES_UPON_PROMOTION,
+        0, 'DF_PLAIN_FIRE', '', '', 0
+    ),
 };
 
 // ── 派生判据（名字照 CE，语义 = 旗标位测试；CE Movement/Dijkstra 等处

@@ -403,7 +403,9 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
         expect(outsideInterior,
             `A−B（网格派生 − ∪mr.cells）变动（选中层 D${pickedLevel}）：按 CE GlobalsBrogue.c ` +
             '重核该层的机器与落位；本层的 A−B 非空时，逐格循环会真的执行（见上方注）')
-            .toEqual(['10,13', '11,21', '13,2', '31,21', '32,23', '36,27']);
+            // V-2b-8 的强制 thematic 机器再次移动生成流；按上方
+            // featureSpawns 反查流程复核，新事实为单格。
+            .toEqual(['5,14']);
 
         // 旧存档兼容：字段整体缺失 = 无机器（读入不抛、旗标为 0）
         const legacy = JSON.parse(JSON.stringify(snapshot!)) as ReturnType<Game['toSnapshot']>;

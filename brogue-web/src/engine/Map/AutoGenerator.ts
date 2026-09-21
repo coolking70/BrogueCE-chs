@@ -120,6 +120,7 @@ const MT = {
     MT_SHRINE_AREA: 59,
     MT_IDYLL_AREA: 60,
     MT_SWAMP_AREA: 61,
+    MT_CAMP_AREA: 62,
     MT_REMNANT_AREA: 63,
     MT_DISMAL_AREA: 64,
     MT_BRIDGE_TURRET_AREA: 65,
@@ -377,7 +378,7 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
         df: null, ceDf: '0', ceDfId: 0, machine: MT.MT_SWAMP_AREA, ceMachine: 'MT_SWAMP_AREA',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 1, maxDepth: 39, frequency: 30, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 2,
-        carrier: 'no-machine',
+        carrier: 'wired',
         note: 'CE 机器（沼泽布景；web 有 BOG tile 但 MT_SWAMP_AREA 是整机蓝图，BlueprintEngine 不同源）。',
     },
     {
@@ -460,7 +461,7 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
         df: null, ceDf: '0', ceDfId: 0, machine: MT.MT_BLOODFLOWER_AREA, ceMachine: 'MT_BLOODFLOWER_AREA',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 1, maxDepth: 30, frequency: 25, minNumberIntercept: 140, minNumberSlope: -10, maxNumber: 3,
-        carrier: 'no-machine',
+        carrier: 'wired',
         note: 'CE 机器（血花圃）。',
     },
     {
@@ -468,7 +469,7 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
         df: null, ceDf: '0', ceDfId: 0, machine: MT.MT_SHRINE_AREA, ceMachine: 'MT_SHRINE_AREA',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 5, maxDepth: 26, frequency: 7, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 1,
-        carrier: 'no-machine',
+        carrier: 'wired',
         note: 'CE 机器（神龛）。',
     },
     {
@@ -476,7 +477,7 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
         df: null, ceDf: '0', ceDfId: 0, machine: MT.MT_IDYLL_AREA, ceMachine: 'MT_IDYLL_AREA',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 1, maxDepth: 5, frequency: 15, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 1,
-        carrier: 'no-machine',
+        carrier: 'wired',
         note: 'CE 机器（田园布景）。',
     },
     {
@@ -484,7 +485,7 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
         df: null, ceDf: '0', ceDfId: 0, machine: MT.MT_REMNANT_AREA, ceMachine: 'MT_REMNANT_AREA',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 10, maxDepth: 40, frequency: 15, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 2,
-        carrier: 'no-machine',
+        carrier: 'wired',
         note: 'CE 机器（遗迹布景）。',
     },
     {
@@ -492,7 +493,7 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
         df: null, ceDf: '0', ceDfId: 0, machine: MT.MT_DISMAL_AREA, ceMachine: 'MT_DISMAL_AREA',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 7, maxDepth: 40, frequency: 12, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 5,
-        carrier: 'no-machine',
+        carrier: 'wired',
         note: 'CE 机器（阴郁布景）。',
     },
     {
@@ -524,7 +525,7 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
         df: null, ceDf: '0', ceDfId: 0, machine: MT.MT_SENTINEL_AREA, ceMachine: 'MT_SENTINEL_AREA',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 12, maxDepth: 39, frequency: 10, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 2,
-        carrier: 'no-machine',
+        carrier: 'wired',
         note: 'CE 机器（守望者圣所外围）。',
     },
     {
@@ -633,7 +634,8 @@ export function runAutogenerators(
     grid: Grid,
     depth: number,
     buildAreaMachines: boolean,
-    catalog: readonly AutoGeneratorEntry[] = AUTO_GENERATOR_CATALOG
+    catalog: readonly AutoGeneratorEntry[] = AUTO_GENERATOR_CATALOG,
+    buildMachine?: (machine: number) => boolean
 ): AutoGeneratorRunStats {
     const stats: AutoGeneratorRunStats = {
         buildAreaMachines,
@@ -727,7 +729,9 @@ export function runAutogenerators(
             // CE：机器尝试在选点 if 之外（机器自找位置）。
             if (gen.machine > 0) {
                 // CE：buildAMachine(gen->machine, -1, -1, 0, NULL, NULL, NULL)。
-                // web 无 CE 机器系统（文件头差异 2）；真实目录下本分支不可达。
+                if (buildMachine?.(gen.machine)) {
+                    stat.built++;
+                }
             }
         }
         if (count !== 0) {

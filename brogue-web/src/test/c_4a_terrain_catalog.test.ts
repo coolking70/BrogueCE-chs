@@ -162,7 +162,9 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         // 387/448/449/450/457/465/473/484/486/543/546/547/568/573，13 条新
         // 蓝图 9/11/12/30/33/42/45/46/47/49/53/55/57 号的地形载体 + 其 DF 链
         // 落点 tile），82 → 101。逐字段钉死在 v_2b_7_features 的 A 组。
-        expect(names.length).toBe(101);
+        // V-2b-8：BLOODFLOWER_STALK / HAVEN_BEDROLL 两条新成员，101 → 103；
+        // BONES 与 SACRED_GLYPH 均复用既有成员。
+        expect(names.length).toBe(103);
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             const entry = TERRAIN_FLAGS[t];
@@ -590,6 +592,9 @@ describe('C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时
         // LUMINESCENT_FUNGUS/DEAD_FOLIAGE/RUBBLE/GRAY_FUNGUS/WORM_TUNNEL_
         // MARKER_DORMANT）**留在等价论域内**——不跳过，由本组逐位继续把关。
         C.BRAZIER, C.DEMONIC_STATUE, C.SACRIFICE_CAGE_DORMANT,
+        // V-2b-8：CE Globals.c:513 的 BLOODFLOWER_STALK 明确带
+        // T_OBSTRUCTS_PASSABILITY；这是迁移后新增成员，不属于旧硬编码清单。
+        C.BLOODFLOWER_STALK,
     ]);
     it('terrainAllowsMove（查表）≡ 旧排除清单 {GRANITE,WALL,SECRET_DOOR,LOCKED_DOOR,WATER_DEEP}', () => {
         const names = Object.keys(TerrainType).filter((k) => Number.isNaN(Number(k)));

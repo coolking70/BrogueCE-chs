@@ -573,10 +573,11 @@ describe('G-2 对抗⑨：MUD → DF_METHANE_GAS_PUFF 晋升链自动产气 + �
         expect(promo!.spawn!.gasVolumeAdded, '沼气一缕 = 2 体积（Globals.c:667）').toBe(2);
         // 体积守恒地散开（甲烷无消散旗标），镜像必须与真相逐格一致
         // （G-1 预测的后半：Game 的 gasVolumeAdded 对账分支自动成为活路径）。
-        // 体积守恒意义下存在于场（2 体积在随机舍入下每轮期望守恒、实际可
-        // 漂移 ±1——CE 同款性质，断言只锁"没被吞掉"）。
-        expect(totalVolume(game.grid), '2 体积不得凭空消失（舍入漂移可 ±1）')
-            .toBeGreaterThanOrEqual(1);
+        // 2 体积已由上面的同步返回值钉死。随后同一 objective block 会运行
+        // 随机舍入的扩散；极小体积确实可能全部舍入为 0，不能把期望守恒误写
+        // 成每个样本都守恒。这里反向钉“扩散不能凭空增量”。
+        expect(totalVolume(game.grid), '2 体积扩散后不得凭空增加')
+            .toBeLessThanOrEqual(2);
         expectMirrorMatchesTruth(game);
     });
 });

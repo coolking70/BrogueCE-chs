@@ -239,7 +239,16 @@ export enum DF {
                                           // tile SHALLOW_WATER = web
                                           // TerrainType.WATER_SHALLOW）
     DF_SWAMP                       = 205, // :904（30 号 feature 2 的 DF 列）
-    DF_SWAMP_MUD                   = 206  // :905（DF_SWAMP 的 subsequentDF；
+    DF_SWAMP_MUD                   = 206, // :905
+    DF_URINE                       = 46,
+    DF_BLOODFLOWER_PODS_GROW_INITIAL = 68,
+    DF_BLOODFLOWER_PODS_GROW       = 69,
+    DF_SHALLOW_WATER_POOL          = 202,
+    DF_DEEP_WATER_POOL             = 203,
+    DF_HAY                         = 207,
+    DF_JUNK                        = 208,
+    DF_REMNANT                     = 209,
+    DF_REMNANT_ASH                 = 210  // :905（DF_SWAMP 的 subsequentDF；
                                           // tile MUD 已有）
 }
 
@@ -1308,6 +1317,16 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: '', lightFlare: '', flashColor: '', effectRadius: 0,
     },
+    // V-2b-8 flavor-machine DF carriers.
+    [DF.DF_URINE]: { id: DF.DF_URINE, ceLine: 669, ceTile: 'URINE', tile: TerrainType.BLOOD, layer: DungeonLayer.SURFACE, startProbability: 65, probabilityDecrement: 25, flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
+    [DF.DF_BLOODFLOWER_PODS_GROW_INITIAL]: { id: DF.DF_BLOODFLOWER_PODS_GROW_INITIAL, ceLine: 699, ceTile: 'BLOODFLOWER_POD', tile: TerrainType.BLOODFLOWER_STALK, layer: DungeonLayer.SURFACE, startProbability: 60, probabilityDecrement: 60, flags: DFF_EVACUATE_CREATURES_FIRST, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
+    [DF.DF_BLOODFLOWER_PODS_GROW]: { id: DF.DF_BLOODFLOWER_PODS_GROW, ceLine: 700, ceTile: 'BLOODFLOWER_POD', tile: TerrainType.BLOODFLOWER_STALK, layer: DungeonLayer.SURFACE, startProbability: 10, probabilityDecrement: 10, flags: DFF_EVACUATE_CREATURES_FIRST, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
+    [DF.DF_SHALLOW_WATER_POOL]: { id: DF.DF_SHALLOW_WATER_POOL, ceLine: 899, ceTile: 'SHALLOW_WATER', tile: TerrainType.WATER_SHALLOW, layer: DungeonLayer.LIQUID, startProbability: 150, probabilityDecrement: 100, flags: DFF_PERMIT_BLOCKING, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
+    [DF.DF_DEEP_WATER_POOL]: { id: DF.DF_DEEP_WATER_POOL, ceLine: 900, ceTile: 'DEEP_WATER', tile: TerrainType.WATER_DEEP, layer: DungeonLayer.LIQUID, startProbability: 90, probabilityDecrement: 100, flags: DFF_TREAT_AS_BLOCKING | DFF_CLEAR_OTHER_TERRAIN | DFF_SUBSEQ_EVERYWHERE, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: DF.DF_SHALLOW_WATER_POOL, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
+    [DF.DF_HAY]: { id: DF.DF_HAY, ceLine: 908, ceTile: 'HAY', tile: TerrainType.GRASS, layer: DungeonLayer.SURFACE, startProbability: 90, probabilityDecrement: 87, flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
+    [DF.DF_JUNK]: { id: DF.DF_JUNK, ceLine: 909, ceTile: 'JUNK', tile: TerrainType.BONES, layer: DungeonLayer.SURFACE, startProbability: 20, probabilityDecrement: 20, flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
+    [DF.DF_REMNANT]: { id: DF.DF_REMNANT, ceLine: 912, ceTile: 'CARPET', tile: TerrainType.CARPET, layer: DungeonLayer.DUNGEON, startProbability: 110, probabilityDecrement: 20, flags: DFF_SUBSEQ_EVERYWHERE, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: DF.DF_REMNANT_ASH, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
+    [DF.DF_REMNANT_ASH]: { id: DF.DF_REMNANT_ASH, ceLine: 913, ceTile: 'BURNED_CARPET', tile: TerrainType.ASH, layer: DungeonLayer.SURFACE, startProbability: 120, probabilityDecrement: 100, flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
 };
 
 /** 登记"CE 有 tileType 而 web 没有地形"的目录条目 id 清单

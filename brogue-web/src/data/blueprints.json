@@ -2204,198 +2204,6 @@
         ]
     },
     {
-        "id": "area_swamp",
-        "name": "Swamp",
-        "depthRange": [
-            3,
-            10
-        ],
-        "roomSize": [
-            15,
-            40
-        ],
-        "frequency": 8,
-        "category": "thematic",
-        "flags": [
-            "BP_NO_INTERIOR_FLAG"
-        ],
-        "features": [
-            {
-                "terrain": "BOG",
-                "instanceCount": [
-                    10,
-                    25
-                ],
-                "minimumInstanceCount": 10,
-                "flags": []
-            },
-            {
-                "terrain": "MUD",
-                "instanceCount": [
-                    4,
-                    8
-                ],
-                "minimumInstanceCount": 4,
-                "flags": []
-            },
-            {
-                "terrain": "WATER_SHALLOW",
-                "instanceCount": [
-                    3,
-                    6
-                ],
-                "minimumInstanceCount": 3,
-                "flags": []
-            }
-        ]
-    },
-    {
-        "id": "area_bloodflower",
-        "name": "Bloodflower Garden",
-        "depthRange": [
-            5,
-            18
-        ],
-        "roomSize": [
-            12,
-            30
-        ],
-        "frequency": 5,
-        "category": "thematic",
-        "flags": [
-            "BP_NO_INTERIOR_FLAG"
-        ],
-        "features": [
-            {
-                "terrain": "FOLIAGE",
-                "instanceCount": [
-                    8,
-                    16
-                ],
-                "minimumInstanceCount": 8,
-                "flags": []
-            },
-            {
-                "terrain": "BLOOD",
-                "instanceCount": [
-                    4,
-                    8
-                ],
-                "minimumInstanceCount": 4,
-                "flags": []
-            },
-            {
-                "terrain": "GRASS",
-                "instanceCount": [
-                    3,
-                    6
-                ],
-                "minimumInstanceCount": 3,
-                "flags": []
-            }
-        ]
-    },
-    {
-        "id": "area_camp",
-        "name": "Monster Camp",
-        "depthRange": [
-            2,
-            8
-        ],
-        "roomSize": [
-            10,
-            25
-        ],
-        "frequency": 7,
-        "category": "thematic",
-        "flags": [
-            "BP_NO_INTERIOR_FLAG"
-        ],
-        "features": [
-            {
-                "monsterId": "_depth_appropriate_",
-                "instanceCount": [
-                    2,
-                    4
-                ],
-                "minimumInstanceCount": 2,
-                "personalSpace": 1,
-                "flags": [
-                    "MF_GENERATE_MONSTER"
-                ]
-            },
-            {
-                "itemCategory": "POTION",
-                "instanceCount": [
-                    0,
-                    1
-                ],
-                "minimumInstanceCount": 0,
-                "personalSpace": 0,
-                "flags": [
-                    "MF_GENERATE_ITEM"
-                ]
-            }
-        ]
-    },
-    {
-        "id": "area_shrine",
-        "name": "Shrine",
-        "depthRange": [
-            4,
-            15
-        ],
-        "roomSize": [
-            8,
-            18
-        ],
-        "frequency": 6,
-        "category": "thematic",
-        "flags": [
-            "BP_ROOM",
-            "BP_PURGE_INTERIOR"
-        ],
-        "features": [
-            {
-                "terrain": "ALTAR",
-                "instanceCount": [
-                    1,
-                    1
-                ],
-                "minimumInstanceCount": 1,
-                "personalSpace": 2,
-                "flags": [
-                    "MF_NEAR_ORIGIN"
-                ]
-            },
-            {
-                "terrain": "SIGN",
-                "instanceCount": [
-                    1,
-                    1
-                ],
-                "minimumInstanceCount": 1,
-                "flags": [
-                    "MF_NEAR_ORIGIN"
-                ],
-                "signText": "一座古老的神祠"
-            },
-            {
-                "itemCategory": "POTION|SCROLL|WEAPON|ARMOR|RING",
-                "instanceCount": [
-                    1,
-                    1
-                ],
-                "minimumInstanceCount": 1,
-                "personalSpace": 0,
-                "flags": [
-                    "MF_GENERATE_ITEM",
-                    "MF_ALTAR"
-                ]
-            }
-        ]
-    },
-    {
         "id": "trap_paralysis_revealed",
         "name": "Paralysis trap -- already-revealed pressure plate with a few hidden vents nearby.",
         "depthRange": [
@@ -4217,6 +4025,424 @@
                     "MF_GENERATE_HORDE",
                     "MF_MONSTER_SLEEPING"
                 ]
+            }
+        ]
+    },
+    {
+        "id": "ce_58_bloodwort",
+        "ceBlueprintId": 58,
+        "name": "Bloodwort",
+        "depthRange": [
+            1,
+            26
+        ],
+        "roomSize": [
+            5,
+            5
+        ],
+        "frequency": 0,
+        "category": "thematic",
+        "flags": [
+            "BP_TREAT_AS_BLOCKING"
+        ],
+        "features": [
+            {
+                "featureDF": "DF_GRASS",
+                "terrain": "BLOODFLOWER_STALK",
+                "layer": "SURFACE",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 0,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            },
+            {
+                "featureDF": "DF_BLOODFLOWER_PODS_GROW_INITIAL",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "ce_59_shrine",
+        "ceBlueprintId": 59,
+        "name": "Shrine",
+        "depthRange": [
+            1,
+            26
+        ],
+        "roomSize": [
+            15,
+            25
+        ],
+        "frequency": 0,
+        "category": "thematic",
+        "flags": [
+            "BP_ROOM",
+            "BP_PURGE_INTERIOR",
+            "BP_SURROUND_WITH_WALLS",
+            "BP_OPEN_INTERIOR"
+        ],
+        "features": [
+            {
+                "terrain": "SACRED_GLYPH",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN"
+                ]
+            },
+            {
+                "terrain": "HAVEN_BEDROLL",
+                "layer": "SURFACE",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            },
+            {
+                "terrain": "BONES",
+                "layer": "SURFACE",
+                "itemCategory": "POTION|SCROLL|WEAPON|ARMOR|RING",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "ce_60_idyll",
+        "ceBlueprintId": 60,
+        "name": "Idyll",
+        "depthRange": [
+            1,
+            26
+        ],
+        "roomSize": [
+            80,
+            120
+        ],
+        "frequency": 0,
+        "category": "thematic",
+        "flags": [
+            "BP_NO_INTERIOR_FLAG"
+        ],
+        "features": [
+            {
+                "featureDF": "DF_GRASS",
+                "terrain": "FOLIAGE",
+                "layer": "SURFACE",
+                "instanceCount": [
+                    3,
+                    4
+                ],
+                "minimumInstanceCount": 3,
+                "personalSpace": 1,
+                "flags": []
+            },
+            {
+                "featureDF": "DF_DEEP_WATER_POOL",
+                "instanceCount": [
+                    2,
+                    3
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 5,
+                "flags": [
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "ce_61_swamp",
+        "ceBlueprintId": 61,
+        "name": "Swamp",
+        "depthRange": [
+            1,
+            26
+        ],
+        "roomSize": [
+            50,
+            65
+        ],
+        "frequency": 0,
+        "category": "thematic",
+        "flags": [
+            "BP_NO_INTERIOR_FLAG"
+        ],
+        "features": [
+            {
+                "featureDF": "DF_SWAMP",
+                "instanceCount": [
+                    6,
+                    8
+                ],
+                "minimumInstanceCount": 3,
+                "personalSpace": 1,
+                "flags": []
+            },
+            {
+                "featureDF": "DF_DEEP_WATER_POOL",
+                "instanceCount": [
+                    0,
+                    1
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_TREAT_AS_BLOCKING"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "ce_62_camp",
+        "ceBlueprintId": 62,
+        "name": "Camp",
+        "depthRange": [
+            1,
+            26
+        ],
+        "roomSize": [
+            40,
+            50
+        ],
+        "frequency": 0,
+        "category": "thematic",
+        "flags": [
+            "BP_NO_INTERIOR_FLAG"
+        ],
+        "features": [
+            {
+                "featureDF": "DF_HAY",
+                "instanceCount": [
+                    1,
+                    3
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_IN_VIEW_OF_ORIGIN"
+                ]
+            },
+            {
+                "featureDF": "DF_JUNK",
+                "instanceCount": [
+                    1,
+                    2
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_IN_VIEW_OF_ORIGIN"
+                ]
+            },
+            {
+                "featureDF": "DF_URINE",
+                "instanceCount": [
+                    3,
+                    5
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_IN_VIEW_OF_ORIGIN"
+                ]
+            },
+            {
+                "featureDF": "DF_VOMIT",
+                "instanceCount": [
+                    0,
+                    2
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_IN_VIEW_OF_ORIGIN"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "ce_63_remnant",
+        "ceBlueprintId": 63,
+        "name": "Remnant",
+        "depthRange": [
+            1,
+            26
+        ],
+        "roomSize": [
+            80,
+            120
+        ],
+        "frequency": 0,
+        "category": "thematic",
+        "flags": [
+            "BP_NO_INTERIOR_FLAG"
+        ],
+        "features": [
+            {
+                "featureDF": "DF_REMNANT",
+                "instanceCount": [
+                    6,
+                    8
+                ],
+                "minimumInstanceCount": 3,
+                "personalSpace": 1,
+                "flags": []
+            },
+            {
+                "terrain": "STATUE_INERT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    3,
+                    5
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_TREAT_AS_BLOCKING"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "ce_64_dismal",
+        "ceBlueprintId": 64,
+        "name": "Dismal",
+        "depthRange": [
+            1,
+            26
+        ],
+        "roomSize": [
+            60,
+            70
+        ],
+        "frequency": 0,
+        "category": "thematic",
+        "flags": [
+            "BP_NO_INTERIOR_FLAG"
+        ],
+        "features": [
+            {
+                "featureDF": "DF_AMBIENT_BLOOD",
+                "instanceCount": [
+                    5,
+                    10
+                ],
+                "minimumInstanceCount": 3,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            },
+            {
+                "featureDF": "DF_ASH",
+                "instanceCount": [
+                    4,
+                    8
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            },
+            {
+                "featureDF": "DF_BONES",
+                "instanceCount": [
+                    3,
+                    5
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "ce_71_sentinels",
+        "ceBlueprintId": 71,
+        "name": "Sentinels",
+        "depthRange": [
+            1,
+            26
+        ],
+        "roomSize": [
+            40,
+            40
+        ],
+        "frequency": 0,
+        "category": "thematic",
+        "flags": [
+            "BP_NO_INTERIOR_FLAG"
+        ],
+        "features": [
+            {
+                "terrain": "STATUE_INERT",
+                "layer": "DUNGEON",
+                "monsterId": "MK_SENTINEL",
+                "instanceCount": [
+                    3,
+                    3
+                ],
+                "minimumInstanceCount": 3,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_IN_VIEW_OF_ORIGIN"
+                ]
+            },
+            {
+                "featureDF": "DF_ASH",
+                "instanceCount": [
+                    2,
+                    3
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 0,
+                "flags": []
             }
         ]
     }

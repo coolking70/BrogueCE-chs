@@ -199,11 +199,15 @@ describe('F-2c 对抗④：GAS_EXPLOSION 是瞬时地形（promoteChance 10000 +
             keyOnTileAt: () => false,
             caughtFireCells: [{ x: 4, y: 4 }],
         });
-        expect(r1.promotions.length, '起火登记豁免：本趟不掷衰老骰').toBe(0);
+        // 生成图上可能另有可晋升格；只检查探针坐标，避免 thematic 机器
+        // 新增的无关晋升把全局计数污染。
+        expect(r1.promotions.some(p => p.x === 4 && p.y === 4),
+            '起火登记豁免：探针格本趟不掷衰老骰').toBe(false);
         expect(grid.getCell(4, 4)!.layers[L.SURFACE]).toBe(C.GAS_EXPLOSION);
 
         const r2 = runPromotionUpdate(grid, { keyOnTileAt: () => false });
-        expect(r2.promotions.length, '下一趟（登记已被记账趟清掉）：必晋升消失').toBe(1);
+        expect(r2.promotions.some(p => p.x === 4 && p.y === 4),
+            '下一趟（登记已被记账趟清掉）：探针格必晋升消失').toBe(true);
         expect(grid.getCell(4, 4)!.layers[L.SURFACE]).toBe(C.NOTHING);
     });
 });

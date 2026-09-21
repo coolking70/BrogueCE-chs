@@ -37,6 +37,7 @@ import { rng } from '../engine/Random';
 import { createHeadlessGame } from './harness';
 import consumablesData from '../data/consumables.json';
 import arcanaData from '../data/arcana.json';
+import blueprintData from '../data/blueprints.json';
 
 // ---------- 公共小件 ----------
 
@@ -207,8 +208,15 @@ function runScan(): ScanResult {
                     // （center ∈ cells 的检查保留）。reward/key_guard 的
                     // 合同不变。
                     const isVestibule = mr.category === 'vestibule';
+                    const bpDef = (blueprintData as BlueprintDef[]).find(b => b.id === mr.blueprintId);
+                    // CE Architect.c:1145-1205：非 BP_ROOM / 非 BP_VESTIBULE 的
+                    // area machine 以随机 FLOOR origin 扩张；后续 feature 可以把
+                    // origin 覆盖成深水。center 是 web 的房间宝藏落点合同，不是
+                    // CE area machine 的合同（且 B-4b 已拆除 center 自创投宝）。
+                    const isArea = !bpDef?.flags.includes('BP_ROOM')
+                        && !bpDef?.flags.includes('BP_VESTIBULE');
                     const inside = cellSet.has(cKey);
-                    const passable = isVestibule ? true : walkable(game, mr.center.x, mr.center.y);
+                    const passable = (isVestibule || isArea) ? true : walkable(game, mr.center.x, mr.center.y);
                     if (!inside || !passable) {
                         badLevels.add(`seed=${seed} D${depth}`);
                         const terrain = game.grid.getCell(mr.center.x, mr.center.y)?.terrain;
@@ -230,7 +238,7 @@ function runScan(): ScanResult {
                                 `seed=${seed} D${depth} ${mr.blueprintId} door=(${mr.door.x},${mr.door.y}) 不属于自身 cells`
                             );
                         }
-                        if (dKey === cKey && !isVestibule) {
+                        if (dKey === cKey && !isVestibule && !isArea) {
                             result.centerViolations.push(
                                 `seed=${seed} D${depth} ${mr.blueprintId} door 与 center 重合（LOCKED_DOOR 会封死宝藏格）`
                             );

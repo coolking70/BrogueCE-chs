@@ -748,7 +748,10 @@ describe('V-2b-7 F：§2.1 携钥匙怪的完整形态（可达性 + 落点安�
         // 对抗：carriedItem 忘带 keyLoc → 钥匙拿在怪手上却开不了笼 → 红。
         let carriersSeen = 0;
         const violations: string[] = [];
-        for (const seed of [424242, 777, 31337, 20260913, 42, 2026]) {
+        // V-2b-8 的强制 thematic 机器合法挤占了一部分普通机器机会；扩大为
+        // 20 个确定种子，保持行为门不放宽，同时恢复稳定的真实携带者样本。
+        const carrierSeeds = Array.from({ length: 20 }, (_, i) => i + 1);
+        for (const seed of carrierSeeds) {
             const game: any = createHeadlessGame(seed);
             for (let d = 1; d <= 26; d++) {
                 if (d > 1) { game.depth = d; game.generateDepth(false, false); }
@@ -806,7 +809,7 @@ describe('V-2b-7 F：§2.1 携钥匙怪的完整形态（可达性 + 落点安�
             }
         }
         expect(violations, `携钥匙怪的落点问题 ${violations.length} 处：\n${violations.slice(0, 10).join('\n')}`).toEqual([]);
-        expect(carriersSeen, '6 seed × D1-26 应至少观察到一只携钥匙的怪（否则本用例空转）').toBeGreaterThanOrEqual(1);
+        expect(carriersSeen, '20 seed × D1-26 应至少观察到一只携钥匙的怪（否则本用例空转）').toBeGreaterThanOrEqual(1);
     });
 
     it('F2 机器指令层面的镜像：带 carriedItem 的机器怪指令，其携带品必是 KEY 且带 keyLoc', () => {

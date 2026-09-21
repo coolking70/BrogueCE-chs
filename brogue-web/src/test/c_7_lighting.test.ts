@@ -266,7 +266,9 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         [TerrainType.DEAD_FOLIAGE]: 0,                  // Globals.c:473 NO_LIGHT
         [TerrainType.RUBBLE]: 0,                        // Globals.c:465 NO_LIGHT
         [TerrainType.GRAY_FUNGUS]: 0,                   // Globals.c:449 NO_LIGHT
-        [TerrainType.WORM_TUNNEL_MARKER_DORMANT]: 0,    // Globals.c:568 NO_LIGHT
+        [TerrainType.WORM_TUNNEL_MARKER_DORMANT]: 0,
+        [TerrainType.BLOODFLOWER_STALK]: 0,
+        [TerrainType.HAVEN_BEDROLL]: 0,    // Globals.c:568 NO_LIGHT
     };
 
     it('全 tile 的 glowLight 逐值等于 CE 原列（结构性穷尽）', () => {

@@ -231,9 +231,11 @@ export enum TerrainType {
                                 // 55 号蠕虫隧道的挖掘落点）
     GRAY_FUNGUS,                // Globals.c:449 灰菌（DF_SWAMP 的 tile；
                                 // subsequentDF DF_SWAMP_MUD）
-    WORM_TUNNEL_MARKER_DORMANT  // Globals.c:568 休眠蠕虫隧道标记（DF_WORM_
+    WORM_TUNNEL_MARKER_DORMANT, // Globals.c:568 休眠蠕虫隧道标记（DF_WORM_
                                 // TUNNEL_MARKER_DORMANT 的 tile；CE displayChar
                                 // 为 0 = 不可见标记，web 记空格）
+    BLOODFLOWER_STALK,
+    HAVEN_BEDROLL,
 }
 
 export enum LightType {
@@ -439,7 +441,9 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.DEAD_FOLIAGE]: 45,
     [TerrainType.RUBBLE]: 70,
     [TerrainType.GRAY_FUNGUS]: 51,
-    [TerrainType.WORM_TUNNEL_MARKER_DORMANT]: 100
+    [TerrainType.WORM_TUNNEL_MARKER_DORMANT]: 100,
+    [TerrainType.BLOODFLOWER_STALK]: 20,
+    [TerrainType.HAVEN_BEDROLL]: 50
 };
 
 /**
@@ -648,7 +652,9 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     [TerrainType.DEAD_GRASS]: DungeonLayer.SURFACE,
     //   LIQUID —— CE DF 目录 :879 `{WORM_TUNNEL_MARKER_DORMANT, LIQUID, 5, 5,
     //     0, "", 0, 0, GRANITE}` 的 layer 列同证（55 号蠕虫隧道标记）。
-    [TerrainType.WORM_TUNNEL_MARKER_DORMANT]: DungeonLayer.LIQUID
+    [TerrainType.WORM_TUNNEL_MARKER_DORMANT]: DungeonLayer.LIQUID,
+    [TerrainType.BLOODFLOWER_STALK]: DungeonLayer.SURFACE,
+    [TerrainType.HAVEN_BEDROLL]: DungeonLayer.SURFACE
 };
 
 /**

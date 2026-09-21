@@ -602,7 +602,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         //   DF_SWAMP :904、DF_SWAMP_MUD :905。
         // 来源三类：13 条目标蓝图 feature 的 DF 列 / 19 条新地形的三链字段 /
         // 上述两者的 subsequentDF 链展开。逐条字段钉死在 v_2b_7_features 的 B 组。
-        expect(keys.length).toBe(90);
+        expect(keys.length).toBe(99);
         expect(DF.DF_SHOW_TRAPDOOR_HALO, 'V-2b-2b：CE Rogue.h:1487（Globals.c:627）').toBe(16);
         expect(DF.DF_SHOW_TRAPDOOR, 'V-2b-2b：TRAP_DOOR_HIDDEN.discoverType 的载体（Rogue.h:1488，Globals.c:628）').toBe(17);
         expect(DF.DF_WOODEN_BARRICADE_BURN, 'V-2b-2b：WOODEN_BARRICADE.fireType 的载体（Rogue.h:1669，Globals.c:825）').toBe(156);
@@ -781,7 +781,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
             'V-2b-7：DF 特征系统轮 22 条入闭包（13 条目标蓝图 feature 的 DF 列' +
             '（现由 blueprints.json 数据驱动入起点）+ 19 条新地形的三链字段 + ' +
             '两条链展开环节 DF_EMBERS_PATCH/DF_SWAMP_MUD→DF_SWAMP_WATER）' +
-            '——68→90').toBe(90);
+            '——68→90→99').toBe(99);
     });
 
     it('E3 字段抽查：BRIDGE_FALL_PREP 的 prop/200/100、BRIDGE_FIRE 的描述与 tile=0、其余代表条目', () => {

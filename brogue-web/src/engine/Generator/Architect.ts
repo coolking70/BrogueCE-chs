@@ -391,9 +391,16 @@ export class Architect {
         //（Architect.c:2952：addMachines 之后、cleanUpLakeBoundaries 之前；
         // web 的湖泊清理/架桥因 Game.ts 禁改已前移，C-2 头注登记在案，
         // 故本趟落在机器阶段之后、finishDoors 之前，相对机器的位置与 CE 一致）。
-        // 机器条目（CE MT_*）本轮全无载体，本趟预期零动作、零 RNG 消耗
-        //（c_6 测试钉死——翻红即无载体条目被接成空转链）。
-        this.autogenMachine = runAutogenerators(this.grid, depth, true);
+        // V-2b-8：本趟通过同一个 BlueprintEngine 强制建造已接线的 MT_* 蓝图；
+        // 正 bp 不走 reward 抽签或配额，成功结果并入生产 machineResults。
+        const flattenAutogen = (r: MachineResult): MachineResult[] =>
+            [r, ...r.subMachines.flatMap(flattenAutogen)];
+        this.autogenMachine = runAutogenerators(this.grid, depth, true, undefined, machine => {
+            const built = bpEngine.buildAMachine(machine, [], null, null);
+            if (!built) return false;
+            this.machineResults.push(...flattenAutogen(built));
+            return true;
+        });
 
         // C-3：finishDoors（CE digDungeon 第 13 步，Architect.c:2971）——
         // 孤儿门移除 + 密门升级。机器内部的门由 Cell.machineNumber 豁免

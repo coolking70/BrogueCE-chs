@@ -336,6 +336,9 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.GRAY_FUNGUS]: L.SURFACE,
             [C.DEAD_GRASS]: L.SURFACE,
             [C.WORM_TUNNEL_MARKER_DORMANT]: L.LIQUID,
+            // V-2b-8：CE Globals.c:513/:514 与对应 DF 的 SURFACE 层。
+            [C.BLOODFLOWER_STALK]: L.SURFACE,
+            [C.HAVEN_BEDROLL]: L.SURFACE,
         });
         expect(DRAW_PRIORITY).toEqual({
             [C.NOTHING]: 100, [C.GRANITE]: 0, [C.FLOOR]: 95, [C.WALL]: 0,
@@ -452,6 +455,9 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.RUBBLE]: 70,
             [C.GRAY_FUNGUS]: 51,
             [C.WORM_TUNNEL_MARKER_DORMANT]: 100,
+            // V-2b-8：CE Globals.c 第 4 列原值。
+            [C.BLOODFLOWER_STALK]: 20,
+            [C.HAVEN_BEDROLL]: 50,
         });
     });
 });

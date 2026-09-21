@@ -134,7 +134,9 @@ describe('C-5 对抗①：坠落是回合末结算（CE Time.c:168-176/2480）',
         // 不得受伤、深度已变、玩家掉血），它们本轮全绿。
         expect(rngAfter - rngBeforeDive, '坠落回合的 RNG 消耗增量偏离（= 换层生成的固定消耗，'
             + 'CE 坠落门整段 return：无推进循环/客观块的额外消耗）')
-            .toBe(10611);
+            // V-2b-8 的强制 thematic 机器改变了换层生成流；本断言仍钉同一
+            // "只有换层、没有怪物推进"合同，重捕获后的固定增量如下。
+            .toBe(10401);
         expect(rat.hp, '随落阶段 rat 不在渊上，不得受伤/死亡').toBeGreaterThan(0);
         expect([rat.loc.x, rat.loc.y], '坠落回合怪物不得获得推进（CE playerFalls 提前 return）')
             .toEqual([4, 4]);
@@ -297,15 +299,19 @@ describe('C-5 对抗③：落地伤害（CE Time.c:1143-1162；GlobalsBrogue.c:1
         game.monsters.length = 0;
         game.items.length = 0;
         (g.machineCells as Set<number>).clear();
-        for (let x = 4; x <= 10; x++) {
+        // 落位算法在最近切比雪夫环内随机选格；不要把测试答案绑到生成流
+        // 改动后会移动的单个随机格。最近环全部铺目标地形，外一环铺干地，
+        // 既保证落点类型，也让深水通过“能游到干地”的 CE 检查。
+        for (let x = 5; x <= 9; x++) {
             for (let y = 4; y <= 8; y++) {
-                if (Math.max(Math.abs(x - 7), Math.abs(y - 6)) >= 1) {
-                    setTile(game, x, y, TerrainType.WALL, '#', 0x444444);
-                }
+                const r = Math.max(Math.abs(x - 7), Math.abs(y - 6));
+                if (r === 1) setTile(game, x, y, landing);
+                else if (r === 2) setTile(game, x, y, TerrainType.FLOOR);
+                const cell = game.grid.getCell(x, y)!;
+                cell.machineNumber = 0;
+                (g.machineCells as Set<number>).delete(y * game.grid.width + x);
             }
         }
-        setTile(game, 9, 6, landing);
-        setTile(game, 10, 6, TerrainType.FLOOR);
         game.depth = 1;
         g.generateDepth(true);
         game.player.hp = game.player.maxHp;

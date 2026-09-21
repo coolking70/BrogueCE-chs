@@ -176,7 +176,8 @@ describe('V-1a A：结构（数据形态）', () => {
     });
 
     it('T3 area_shrine 掩码逐字 = CE GlobalsBrogue.c:561-565 的五类，数量 {1,1}，走 MF_GENERATE_ITEM', () => {
-        const shrine = blueprints.find(b => b.id === 'area_shrine');
+        // V-2b-8 以 CE 编号命名；59 即 GlobalsBrogue.c 的 area shrine。
+        const shrine = blueprints.find(b => b.id === 'ce_59_shrine');
         expect(shrine).toBeDefined();
         const itemFeat = shrine!.features.filter(f => f.itemCategory);
         expect(itemFeat.length, 'area_shrine 应恰 1 条物品 feature').toBe(1);
