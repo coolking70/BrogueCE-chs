@@ -375,7 +375,23 @@ JSON 字段而非文本匹配。**规矩的本意是"别留下永不退出的东
     autoGeneratorCatalog 的 MT_* 列，web 该列是 C-6 起的缺口），freq 0 退池
     留形且有测试钉住；端到端「雕像 burst 出怪」被 **RUBBLE 缺 tile** 堵住——
     唤醒子系统本身已接线并经对抗性测试行使，但要等 RUBBLE 落地那一轮才通。
-20. **V-2b-6 及其后**（按勘察报告 §2.3）：休眠唤醒 + horde 接线轮等，解锁 7/4/13/8/15 条。
+20. ~~V-2b-6~~ ✅ 已合 `70ba985`（**1349 绿 / 0 失败** + build 绿）。钥匙系统真实化
+    （`keyMatchesLocation` 含 originDepth 判据 + 两键匹配、`disposableHere` 第三维、
+    `keyInPackFor`/`keyOnTileAt`、`MF_SKELETON_KEY`）+ 怪物 `carriedItem`。
+    **「任意钥匙开任意锁」的解锁分支已删除。**
+    蓝图账：新增 1 条（35 号）、既有 2 条按 CE 重写（10/40 号）、8 与 16 号语义收口，
+    **47→48**。
+    🐛 **修掉一个此前就存在的真死局**：`key_rat_trap` 是 web 自创形态（旗标只有
+    `BP_ROOM`，既无 `BP_ADOPT_ITEM` 也无 `MF_ADOPT_ITEM` feature），被抽中当领养
+    机器时静默丢弃父机器钥匙 → 锁无钥匙（seed424242/D3 实测 2 锁 0-1 钥匙）。
+    这正是 §6「可解性证明」这条强制项设出来要抓的东西。
+    🔍 **执行方再次驳回验收方预设并且对了**：`ALTAR_INERT` **不**独立成 TerrainType
+    ——CE 没有「独立的普通祭坛 tile」，`Globals.c:362` 的 `ALTAR_INERT` 就是通用祭坛
+    本体，web `ALTAR` 的注释自 V-2b-4 起已指向它；独立反而造出两个逐字段相同的枚举。
+    📌 **待后续轮**：`disposableHere=false` 数据面结构性空集（CE 现有 KEY feature
+    全带 `MF_KEY_DISPOSABLE`），引擎侧已收口；怪物携带形态无数据载体
+    （CE 11 号 Vampire lair 未入池），激活轮需复跑 F 组可解性证明。
+21. **V-2b-7 及其后**（按勘察报告 §2.3）：休眠唤醒 + horde 接线轮等，解锁 7/4/13/8/15 条。
 19. ~~原 V-2b-4 条目~~：
     ✅ **用户已拍板（2026-09-20）：让 CE 祭坛接管**——拆除 web 自创的「取物塌陷」
     语义（`Game.ts:3232-3245`：从祭坛取物 → 同组祭坛塌成 CHARRED_FLOOR 并销毁其上
