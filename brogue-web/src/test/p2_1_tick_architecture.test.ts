@@ -48,8 +48,10 @@ import { fileURLToPath } from 'node:url';
 
 import { createHeadlessGame, runTurns, terrainFingerprint } from './harness';
 import { TICKS_PER_TURN } from '../entities/Creature';
+import { Monster, type MonsterData } from '../entities/Monster';
 import { timeSystem } from '../engine/Systems/Time';
 import type { Game } from '../engine/Core/Game';
+import monsterDataJson from '../data/monsters.json';
 
 const SEEDS = [424242, 777, 20260913, 31337];
 const BASELINE = JSON.parse(
@@ -62,6 +64,14 @@ const BASELINE = JSON.parse(
 };
 
 const srcRoot = join(dirname(fileURLToPath(import.meta.url)), '..');
+const RAT_DATA = (monsterDataJson as MonsterData[]).find(m => m.id === 'rat')!;
+
+function stagedRat(game: Game, x: number, y: number): Monster {
+    const rat = new Monster(x, y, RAT_DATA);
+    rat.movementSpeed = TICKS_PER_TURN;
+    game.monsters.push(rat);
+    return rat;
+}
 
 /** 基线采集口径（levels）：单局顺序下探，D1 取自开局生成，D2-26 逐层 generateDepth。 */
 function captureLevels(seed: number): Array<{ d: number; fp: string; n: number; species: string; items: number }> {
@@ -181,45 +191,34 @@ describe('P2-1 B: ticksUntilTurn 真实驱动调度（对抗性）', () => {
 
     it('B2a 剩余 tick 多于玩家耗时的怪物本动作不行动，且保留差值余量', () => {
         const game = createHeadlessGame(777);
-        const slow = game.monsters.find(m => m.hp > 0 && !m.isCaged);
-        expect(slow).toBeDefined();
-        slow!.ticksUntilTurn = 150; // 注入：比 TICKS_PER_TURN 慢半拍
-        const spySlow = vi.spyOn(slow!, 'takeTurn');
+        game.monsters.length = 0;
+        const slow = stagedRat(game, game.player.loc.x + 1, game.player.loc.y);
+        slow.ticksUntilTurn = 150; // 注入：比 TICKS_PER_TURN 慢半拍
+        const spySlow = vi.spyOn(slow, 'takeTurn');
 
         game.handlePlayerAction('wait', undefined, 'system'); // 玩家耗时 = 100
 
         // 旧架构下 slow 会行动并归满 100 —— 两处断言都会失败
         expect(spySlow).not.toHaveBeenCalled();
-        expect(slow!.ticksUntilTurn).toBe(50); // 150 - 100，余量被保留
+        expect(slow.ticksUntilTurn).toBe(50); // 150 - 100，余量被保留
         expect(game.player.ticksUntilTurn).toBe(0);
     });
 
     it('B2b 剩余 tick 更少的怪物先行动；推进循环多轮迭代后其带走非零余量', () => {
         const game = createHeadlessGame(777);
-        // ★ 验收方 2026-09-17 去随机化（C-6 改怪池后本用例翻红）★
-        //
-        // 原先取 `game.monsters.find(...)` ——**数组里第一只**非笼活怪。
-        // 它的 `movementSpeed` 取决于生成出来的怪池，而下面的 tick 算术
-        // （50-50 归零 → 行动 +movementSpeed → 再扣 50）依赖该速度恰为
-        // `TICKS_PER_TURN`。C-6 的自动生成器换了怪池，第一只不再是那个速度，
-        // 断言就崩了——**被测的是调度循环，却让生成器决定了被测对象**。
-        //
-        // 改为显式挑一只速度等于 TICKS_PER_TURN 的怪：调度循环的被测语义不变
-        // （仍需场上有其它怪来触发第 2 轮迭代），但不再受怪池变化影响。
-        // 这与 S-1 那轮对 8 个哨兵做的去随机化是同一条纪律。
-        const fast = game.monsters.find(
-            m => m.hp > 0 && !m.isCaged && m.movementSpeed === TICKS_PER_TURN,
-        );
-        expect(fast, `场上没有速度 = ${TICKS_PER_TURN} 的怪（怪池变化导致前提落空）`).toBeDefined();
-        fast!.ticksUntilTurn = 50; // 注入：比 TICKS_PER_TURN 快半拍
-        const spyFast = vi.spyOn(fast!, 'takeTurn');
+        game.monsters.length = 0;
+        const fast = stagedRat(game, game.player.loc.x + 1, game.player.loc.y);
+        const follower = stagedRat(game, game.player.loc.x, game.player.loc.y + 1);
+        fast.ticksUntilTurn = 50; // 注入：比 TICKS_PER_TURN 快半拍
+        follower.ticksUntilTurn = TICKS_PER_TURN; // 显式驱动第 2 轮迭代
+        const spyFast = vi.spyOn(fast, 'takeTurn');
 
         game.handlePlayerAction('wait', undefined, 'system'); // 玩家耗时 = 100
 
         // 第 1 轮迭代 soonest=50：fast 行动归满；第 2 轮 soonest=50：其余怪物行动。
         // 旧架构（单轮、每怪一次、归满 100）下末值 100，断言失败。
         expect(spyFast).toHaveBeenCalledTimes(1);
-        expect(fast!.ticksUntilTurn).toBe(50); // 50-50 归零 → 行动 +100 → 再扣 50
+        expect(fast.ticksUntilTurn).toBe(50); // 50-50 归零 → 行动 +100 → 再扣 50
         expect(game.player.ticksUntilTurn).toBe(0);
     });
 });

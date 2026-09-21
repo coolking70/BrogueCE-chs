@@ -334,28 +334,9 @@ describe('B-4b 每层数量与落位（真实生成链）', () => {
 
     it('T10 拾取入账 = quantity（不再是硬编码 +10）', () => {
         const game: any = createHeadlessGame(424242);
-        for (let d = 2; d <= 5; d++) { game.depth = d; game.generateDepth(false, false); }
-        const gold = game.items.find((i: any) => i.category === ItemCategory.GOLD && i.quantity > 1);
-        expect(gold, 'D2-D5 应存在 quantity>1 的金币堆').toBeTruthy();
-        // 找一个无怪邻格站上去，然后走进金币格
-        const dirs = [[0, -1], [0, 1], [-1, 0], [1, 0]];
-        let placed = false;
-        for (const [dx, dy] of dirs) {
-            const nx = gold.loc.x + dx!, ny = gold.loc.y + dy!;
-            const cell = game.grid.getCell(nx, ny);
-            if (cell && cell.isPassable && !game.getMonsterAt(nx, ny)
-                && cell.terrain !== TerrainType.STAIRS_UP && cell.terrain !== TerrainType.STAIRS_DOWN) {
-                game.player.loc = { x: nx, y: ny };
-                placed = true;
-                break;
-            }
-        }
-        expect(placed, '金币旁应有可站立格').toBe(true);
+        const gold = ItemLoader.spawnGold(137, game.player.loc.x, game.player.loc.y)!;
+        game.items = [gold];
         const before = game.stats.gold;
-        game.handlePlayerAction('move', {
-            x: gold.loc.x - game.player.loc.x,
-            y: gold.loc.y - game.player.loc.y,
-        }, 'system');
         game.handlePlayerAction('pickup', undefined, 'system');
         expect(game.player.inventory.items.some((i: any) => i.category === ItemCategory.GOLD), '金币应已入包').toBe(true);
         expect(game.stats.gold, '拾取后账面应恰增加 quantity').toBe(before + gold.quantity);

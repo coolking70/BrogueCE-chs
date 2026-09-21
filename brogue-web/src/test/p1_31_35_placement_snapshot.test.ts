@@ -265,12 +265,11 @@ describe('P1-35: 读档后的生成期派生态（loopMap / waypoint / 气味）
 
         const snap = a.toSnapshot();
         const b = createHeadlessGame(777, 'normal');
-        // 前提锚：读档前 B 的 loopMap 与读入网格的重算结果不等（错误实现
-        // "不重算"留下的正是左边这张陈图）。
+        // 人工污染一个确定格：错误实现“不重算”必然保留该陈值，
+        // 不再借两张随机地图恰好不同来搭舞台。
         const expected = analyzeLoopMap(a.grid);
-        const sameBefore = (b.loopMap as boolean[][]).every((col, x) =>
-            col!.every((v, y) => v === (expected[x]![y] ?? false)));
-        expect(sameBefore, '前提锚失效：两局的环路图巧合相等，测试无牙').toBe(false);
+        b.loopMap[0]![0] = !expected[0]![0];
+        expect(b.loopMap[0]![0], '人工陈值应与目标网格的重算值相反').not.toBe(expected[0]![0]);
 
         expect(b.loadSnapshot(snap)).toBe(true);
         expect(staleLoopCells(b)).toEqual([]);
@@ -293,6 +292,10 @@ describe('P1-35: 读档后的生成期派生态（loopMap / waypoint / 气味）
         const a = createHeadlessGame(42, 'normal');
         const snap = a.toSnapshot();
         const b = createHeadlessGame(777, 'normal');
+        // 注入重建绝不可能产生的越界 sentinel，代替两局随机 waypoint
+        // 坐标必须巧合不同的前提。
+        b.waypoints.coordinates = [{ x: -1, y: -1 }];
+        b.waypoints.count = 1;
         const staleCoords = JSON.stringify(b.waypoints.coordinates);
 
         expect(b.loadSnapshot(snap)).toBe(true);
@@ -300,8 +303,7 @@ describe('P1-35: 读档后的生成期派生态（loopMap / waypoint / 气味）
         const afterLoad = JSON.stringify(b.waypoints.coordinates);
         b.rebuildWaypoints(); // 幂等性锚：已重建的话，显式重建不再改变
         expect(JSON.stringify(b.waypoints.coordinates)).toBe(afterLoad);
-        // 错误实现（读档不重建）：afterLoad 是 777 局的陈坐标，与 42 网格的
-        // 重建结果几乎必然不等——staleCoords 前提锚保证两者确实有差异。
+        // 错误实现（读档不重建）会保留 sentinel。
         expect(afterLoad).not.toBe(staleCoords);
     });
 
