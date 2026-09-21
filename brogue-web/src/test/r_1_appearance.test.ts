@@ -195,6 +195,14 @@ const EXPECTED_VISIBLE: Record<TerrainType, { char: string; color: string; bgCol
     [TerrainType.WORM_TUNNEL_MARKER_DORMANT]: DEFAULT_LOOK,
     [TerrainType.BLOODFLOWER_STALK]: DEFAULT_LOOK,
     [TerrainType.HAVEN_BEDROLL]: DEFAULT_LOOK, // V-2b-7
+    [TerrainType.FLOOR_FLOODABLE]: DEFAULT_LOOK,
+    [TerrainType.CHASM_WITH_HIDDEN_BRIDGE]: DEFAULT_LOOK,
+    [TerrainType.LAVA_RETRACTABLE]: DEFAULT_LOOK,
+    [TerrainType.MUD_FLOOR]: DEFAULT_LOOK, [TerrainType.MUD_WALL]: DEFAULT_LOOK,
+    [TerrainType.MUD_DOORWAY]: DEFAULT_LOOK, [TerrainType.MARBLE_FLOOR]: DEFAULT_LOOK,
+    [TerrainType.FLOOD_TRAP]: DEFAULT_LOOK, [TerrainType.ELECTRIC_CRYSTAL_OFF]: DEFAULT_LOOK,
+    [TerrainType.TURRET_LEVER]: DEFAULT_LOOK, [TerrainType.HAUNTED_TORCH_DORMANT]: DEFAULT_LOOK,
+    [TerrainType.DARK_FLOOR_DORMANT]: DEFAULT_LOOK,
 };
 
 /** 造 Cell（terrain 走 setter 写回归属层）。只用于 DUNGEON/SURFACE 层地形。 */
