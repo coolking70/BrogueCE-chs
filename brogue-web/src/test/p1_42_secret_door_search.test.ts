@@ -258,7 +258,7 @@ describe('P1-42 B：web 自创的 30% 邻接揭示已删除（本轮 §二.3，�
 // ---- C. 目录绊线与"明确不做"留痕 -------------------------------------------
 
 describe('P1-42 C：目录绊线 + 本轮明确不做的事', () => {
-    it('C1 目录绊线（V-2b-3 二次反转）：TM_IS_SECRET 的持有者恰为六条', () => {
+    it('C1 目录绊线（V-2b-6 三次反转）：TM_IS_SECRET 的持有者恰为七条', () => {
         // 原断言（P1-42 时）："TM_IS_SECRET 的唯一持有者是 SECRET_DOOR"——
         // 钉死 Game.discoverSecretAt 以 terrain === SECRET_DOOR 代替 CE 的
         // TM_IS_SECRET 判据这一等价前提。
@@ -289,6 +289,7 @@ describe('P1-42 C：目录绊线 + 本轮明确不做的事', () => {
                 'GAS_TRAP_PARALYSIS_HIDDEN',
                 'MACHINE_METHANE_VENT_HIDDEN',
                 'MACHINE_PARALYSIS_VENT_HIDDEN',
+                'MACHINE_POISON_GAS_VENT_HIDDEN', // V-2b-6：Globals.c:395（40 号隐藏毒气喷口）
                 'SECRET_DOOR',
                 'TRAP_DOOR_HIDDEN',
                 'WALL_LEVER_HIDDEN',

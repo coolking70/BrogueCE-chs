@@ -163,6 +163,14 @@ const EXPECTED_VISIBLE: Record<TerrainType, { char: string; color: string; bgCol
     [TerrainType.RAT_TRAP_WALL_DORMANT]: DEFAULT_LOOK,      // V-2b-5
     [TerrainType.STATUE_DORMANT_DOORWAY]: DEFAULT_LOOK,     // V-2b-5
     [TerrainType.TURRET_DORMANT]: DEFAULT_LOOK,             // V-2b-5
+    // V-2b-6：六个新 tile 无专属渲染分支，走 DEFAULT_LOOK（与 V-2b-2b/3/4/5
+    // 的"CE 外观接线归 UI 轮"欠账同款口径）。
+    [TerrainType.MONSTER_CAGE_OPEN]: DEFAULT_LOOK,          // V-2b-6
+    [TerrainType.MONSTER_CAGE_CLOSED]: DEFAULT_LOOK,        // V-2b-6
+    [TerrainType.MACHINE_POISON_GAS_VENT_HIDDEN]: DEFAULT_LOOK, // V-2b-6
+    [TerrainType.PORTCULLIS_DORMANT]: DEFAULT_LOOK,         // V-2b-6
+    [TerrainType.WALL_LEVER_HIDDEN_DORMANT]: DEFAULT_LOOK,  // V-2b-6
+    [TerrainType.BONES]: DEFAULT_LOOK,                      // V-2b-6
 };
 
 /** 造 Cell（terrain 走 setter 写回归属层）。只用于 DUNGEON/SURFACE 层地形。 */
@@ -258,7 +266,11 @@ describe('R-1 terrainAppearance 特征化（穷举钉死）', () => {
         // V-2b-5：+7（ALTAR_SWITCH/MACHINE_TRIGGER_FLOOR/STATUE_DORMANT/
         // WALL_MONSTER_DORMANT/RAT_TRAP_WALL_DORMANT/STATUE_DORMANT_DOORWAY/
         // TURRET_DORMANT——休眠唤醒轮八条蓝图的地形载体），69 → 76。
-        expect(ALL_TERRAINS.length).toBe(76);
+        // V-2b-6：+6（MONSTER_CAGE_OPEN/MONSTER_CAGE_CLOSED/
+        // MACHINE_POISON_GAS_VENT_HIDDEN/PORTCULLIS_DORMANT/
+        // WALL_LEVER_HIDDEN_DORMANT/BONES——钥匙轮 10/35/40 号蓝图的载体），
+        // 76 → 82。
+        expect(ALL_TERRAINS.length).toBe(82);
         expect(new Set(ALL_TERRAINS).size).toBe(ALL_TERRAINS.length);
     });
 

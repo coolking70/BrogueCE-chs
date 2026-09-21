@@ -302,6 +302,15 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.RAT_TRAP_WALL_DORMANT]: L.DUNGEON,
             [C.STATUE_DORMANT_DOORWAY]: L.DUNGEON,
             [C.TURRET_DORMANT]: L.DUNGEON,
+            // V-2b-6：钥匙轮六条——五条 DUNGEON（CE 蓝图 feature layer 列
+            // 逐条 DUNGEON：GlobalsBrogue.c:250/251/340/350/371/395），BONES
+            // 是 SURFACE（CE DF 目录 :611 {BONES, SURFACE, …} 同证）。
+            [C.MONSTER_CAGE_OPEN]: L.DUNGEON,
+            [C.MONSTER_CAGE_CLOSED]: L.DUNGEON,
+            [C.MACHINE_POISON_GAS_VENT_HIDDEN]: L.DUNGEON,
+            [C.PORTCULLIS_DORMANT]: L.DUNGEON,
+            [C.WALL_LEVER_HIDDEN_DORMANT]: L.DUNGEON,
+            [C.BONES]: L.SURFACE,
         });
         expect(DRAW_PRIORITY).toEqual({
             [C.NOTHING]: 100, [C.GRANITE]: 0, [C.FLOOR]: 95, [C.WALL]: 0,
@@ -378,6 +387,17 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.RAT_TRAP_WALL_DORMANT]: 0,
             [C.STATUE_DORMANT_DOORWAY]: 0,
             [C.TURRET_DORMANT]: 0,
+            // V-2b-6：CE 第 4 列原值。MONSTER_CAGE_OPEN 17（Globals.c:370，
+            // 与 ALTAR_INERT 同档）；MONSTER_CAGE_CLOSED 17（:371）；
+            // MACHINE_POISON_GAS_VENT_HIDDEN 95（:395，G_FLOOR 伪装）；
+            // PORTCULLIS_DORMANT 95（:340，G_FLOOR 伪装）；
+            // WALL_LEVER_HIDDEN_DORMANT 0（:350，G_WALL 墙档）；BONES 70（:464）。
+            [C.MONSTER_CAGE_OPEN]: 17,
+            [C.MONSTER_CAGE_CLOSED]: 17,
+            [C.MACHINE_POISON_GAS_VENT_HIDDEN]: 95,
+            [C.PORTCULLIS_DORMANT]: 95,
+            [C.WALL_LEVER_HIDDEN_DORMANT]: 0,
+            [C.BONES]: 70,
         });
     });
 });

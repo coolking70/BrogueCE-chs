@@ -180,8 +180,22 @@ export enum TerrainType {
                                 // DF_WALL_CRACK → 链尾 DF_RUBBLE）
     STATUE_DORMANT_DOORWAY,     // Globals.c:551 门内休眠雕像（21 号，
                                 // 比 STATUE_DORMANT 多 TM_CONNECTS_LEVEL）
-    TURRET_DORMANT              // Globals.c:356 休眠炮塔（56 号，promoteType
+    TURRET_DORMANT,             // Globals.c:356 休眠炮塔（56 号，promoteType
                                 // DF_TURRET_EMERGE → tile WALL，web 有载体）
+    // V-2b-6：钥匙轮的五个地形载体（10/35/40 号蓝图的通货）。只追加在尾部
+    // （terrainFingerprint 按数值哈希，既有枚举值不变）。
+    MONSTER_CAGE_OPEN,          // Globals.c:370 开盖铁笼（10 号 Kennel，
+                                // DF_MONSTER_CAGE_OPENS 的落点 tile）
+    MONSTER_CAGE_CLOSED,        // Globals.c:371 锁闭铁笼（10 号，TM_PROMOTES_
+                                // WITH_KEY——钥匙认锁的第二个消费者）
+    MACHINE_POISON_GAS_VENT_HIDDEN, // Globals.c:395 隐藏毒气喷口（40 号，
+                                // TM_IS_SECRET|TM_IS_WIRED）
+    PORTCULLIS_DORMANT,         // Globals.c:340 休眠铁闸（40 号，G_FLOOR 伪装，
+                                // promoteType DF_ACTIVATE_PORTCULLIS）
+    WALL_LEVER_HIDDEN_DORMANT,  // Globals.c:350 休眠墙杆（40 号，G_WALL 伪装，
+                                // promoteType DF_CREATE_LEVER）
+    BONES                       // Globals.c:464 骨头堆（10 号 Kennel 的
+                                // DF_BONES 载体，SURFACE 纯装饰）
 }
 
 export enum LightType {
@@ -341,7 +355,20 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.WALL_MONSTER_DORMANT]: 0,
     [TerrainType.RAT_TRAP_WALL_DORMANT]: 0,
     [TerrainType.STATUE_DORMANT_DOORWAY]: 0,
-    [TerrainType.TURRET_DORMANT]: 0
+    [TerrainType.TURRET_DORMANT]: 0,
+    // V-2b-6：CE 第 4 列原值。MONSTER_CAGE_OPEN 17（Globals.c:370，与
+    // ALTAR_INERT 同档）；MONSTER_CAGE_CLOSED 17（:371）；MACHINE_POISON_
+    // GAS_VENT_HIDDEN 95（:395，G_FLOOR 伪装——隐藏态看着像地板）；
+    // PORTCULLIS_DORMANT 95（:340，同 G_FLOOR 伪装口径）；WALL_LEVER_HIDDEN_
+    // DORMANT 0（:350，G_WALL 伪装——墙档）。
+    [TerrainType.MONSTER_CAGE_OPEN]: 17,
+    [TerrainType.MONSTER_CAGE_CLOSED]: 17,
+    [TerrainType.MACHINE_POISON_GAS_VENT_HIDDEN]: 95,
+    [TerrainType.PORTCULLIS_DORMANT]: 95,
+    [TerrainType.WALL_LEVER_HIDDEN_DORMANT]: 0,
+    // V-2b-6：BONES 70（Globals.c:464 第 4 列原值——纯装饰表面物，与
+    // DEAD_GRASS(75)/BLOOD(80) 同族的"压得住地板"档）。
+    [TerrainType.BONES]: 70
 };
 
 /**
@@ -497,7 +524,23 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     [TerrainType.WALL_MONSTER_DORMANT]: DungeonLayer.DUNGEON,
     [TerrainType.RAT_TRAP_WALL_DORMANT]: DungeonLayer.DUNGEON,
     [TerrainType.STATUE_DORMANT_DOORWAY]: DungeonLayer.DUNGEON,
-    [TerrainType.TURRET_DORMANT]: DungeonLayer.DUNGEON
+    [TerrainType.TURRET_DORMANT]: DungeonLayer.DUNGEON,
+    // V-2b-6：五条钥匙轮载体全落 DUNGEON 层——CE 蓝图 feature 的 layer 列
+    // 逐条为 DUNGEON（GlobalsBrogue.c:250/251/300/340/350/371/395/436-441），
+    // 且晋升 DF 条目（DF_MONSTER_CAGE_OPENS {MONSTER_CAGE_OPEN, DUNGEON}
+    // :927、DF_CREATE_LEVER {WALL_LEVER_HIDDEN, DUNGEON} :734、
+    // DF_ACTIVATE_PORTCULLIS {PORTCULLIS_CLOSED, DUNGEON} :853、
+    // DF_SHOW_POISON_GAS_VENT {MACHINE_POISON_GAS_VENT_DORMANT, DUNGEON}
+    // :851、DF_POISON_GAS_VENT_OPEN {MACHINE_POISON_GAS_VENT, DUNGEON} :852）
+    // layer 列同证。
+    [TerrainType.MONSTER_CAGE_OPEN]: DungeonLayer.DUNGEON,
+    [TerrainType.MONSTER_CAGE_CLOSED]: DungeonLayer.DUNGEON,
+    [TerrainType.MACHINE_POISON_GAS_VENT_HIDDEN]: DungeonLayer.DUNGEON,
+    [TerrainType.PORTCULLIS_DORMANT]: DungeonLayer.DUNGEON,
+    [TerrainType.WALL_LEVER_HIDDEN_DORMANT]: DungeonLayer.DUNGEON,
+    // V-2b-6：BONES → SURFACE（CE DF 目录 :611 {BONES, SURFACE, 75, 23, 0}
+    // 的 layer 列同证——骨头堆是表面覆盖物）。
+    [TerrainType.BONES]: DungeonLayer.SURFACE
 };
 
 /**

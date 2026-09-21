@@ -187,7 +187,10 @@ describe('V-2b-5 A：七个休眠载体地形 ≡ CE Globals.c 原行', () => {
             expect(e.description).toBe(want.desc);
         }
         // 顺延守卫（B-3 / V-2b-3 / V-2b-4 同款机理：跨轮公共登记表只顺延不放宽）
-        expect(DF_MISSING_TILES).toHaveLength(28);
+        // V-2b-6：净 28 → 29（+2 钥匙轮无 tile 条目、−1 DF_OPEN_PORTCULLIS
+        // 摘除——tile PORTCULLIS_DORMANT 该轮落地）。逐条见
+        // DungeonFeatureCatalog 的 V-2b-6 块注。
+        expect(DF_MISSING_TILES).toHaveLength(29);
         expect(DF_MISSING_TILES).toContain(DF.DF_WALL_CRACK);
         expect(DF_MISSING_TILES).toContain(DF.DF_CRACKING_STATUE);
         expect(DF_MISSING_TILES, '带完整 tile 的条目不得混进缺 tile 名单').not.toContain(DF.DF_ALTAR_INERT);

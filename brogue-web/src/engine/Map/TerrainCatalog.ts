@@ -908,6 +908,64 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
         T_OBSTRUCTS_EVERYTHING,
         TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED,
         0, 'DF_PLAIN_FIRE', '', 'DF_TURRET_EMERGE', 0
+    ),
+
+    // ── V-2b-6：钥匙轮的五个载体（10/35/40 号蓝图）。逐字段抄自 CE
+    //    Globals.c 的 tileCatalog 行（行号即注释）。
+
+    // CE MONSTER_CAGE_OPEN，Globals.c:370：开盖铁笼——零旗标、可走进
+    //（笼门已开）。DF_MONSTER_CAGE_OPENS（:927）的落点 tile。
+    [TerrainType.MONSTER_CAGE_OPEN]: e(
+        0,
+        TM_STAND_IN_TILE,
+        0, 'DF_PLAIN_FIRE', '', '', 0
+    ),
+
+    // CE MONSTER_CAGE_CLOSED，Globals.c:371：锁闭铁笼——挡通行/表面效果/
+    // 气体；TM_PROMOTES_WITH_KEY 是钥匙认锁的第二个消费者（10 号 Kennel：
+    // cage key 经 MF_SKELETON_KEY 拿到机器号绑定，钥匙经 machineNumber
+    // 匹配开笼）。promoteType DF_MONSTER_CAGE_OPENS。
+    [TerrainType.MONSTER_CAGE_CLOSED]: e(
+        T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_SURFACE_EFFECTS | T_OBSTRUCTS_GAS,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_PROMOTES_WITH_KEY |
+        TM_LIST_IN_SIDEBAR | TM_INTERRUPT_EXPLORATION_WHEN_SEEN,
+        0, 'DF_PLAIN_FIRE', '', 'DF_MONSTER_CAGE_OPENS', 0
+    ),
+
+    // CE MACHINE_POISON_GAS_VENT_HIDDEN，Globals.c:395：隐藏毒气喷口（40 号
+    // Poison gas）——G_FLOOR 伪装、TM_IS_SECRET|TM_IS_WIRED；discoverType
+    // DF_SHOW_POISON_GAS_VENT、promoteType DF_POISON_GAS_VENT_OPEN。
+    [TerrainType.MACHINE_POISON_GAS_VENT_HIDDEN]: e(
+        0,
+        TM_VANISHES_UPON_PROMOTION | TM_IS_SECRET | TM_IS_WIRED,
+        0, 'DF_PLAIN_FIRE', 'DF_SHOW_POISON_GAS_VENT', 'DF_POISON_GAS_VENT_OPEN', 0
+    ),
+
+    // CE PORTCULLIS_DORMANT，Globals.c:340：休眠铁闸（40 号）——G_FLOOR
+    // 伪装（"the ground"），零 flags + TM_VANISHES_UPON_PROMOTION|TM_IS_WIRED；
+    // promoteType DF_ACTIVATE_PORTCULLIS（机器通电时闸门落下）。
+    [TerrainType.PORTCULLIS_DORMANT]: e(
+        0,
+        TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED,
+        0, 'DF_PLAIN_FIRE', '', 'DF_ACTIVATE_PORTCULLIS', 0
+    ),
+
+    // CE WALL_LEVER_HIDDEN_DORMANT，Globals.c:350：休眠墙杆（40 号）——
+    // G_WALL 伪装（T_OBSTRUCTS_EVERYTHING 墙档），TM_STAND_IN_TILE|TM_IS_WIRED；
+    // promoteType DF_CREATE_LEVER（机器通电时显形为可拉墙杆）。
+    [TerrainType.WALL_LEVER_HIDDEN_DORMANT]: e(
+        T_OBSTRUCTS_EVERYTHING,
+        TM_STAND_IN_TILE | TM_IS_WIRED,
+        0, 'DF_PLAIN_FIRE', '', 'DF_CREATE_LEVER', 0
+    ),
+
+    // CE BONES，Globals.c:464：骨头堆（10 号 Kennel 的 DF_BONES 载体）——
+    // 零 flags 纯装饰、TM_STAND_IN_TILE，G_BONES ',' + bonesForeColor
+    // {80,80,30} ×2.55 ≈ 0xcccc4d。
+    [TerrainType.BONES]: e(
+        0,
+        TM_STAND_IN_TILE,
+        0, 'DF_PLAIN_FIRE', '', '', 0
     )
 };
 

@@ -34,7 +34,12 @@ import {
     createSpawnMap,
     levelIsDisconnectedOnMovementGraph,
     levelIsDisconnectedWithBlockingMap,
+    spawnDungeonFeature,
 } from '../Map/DungeonFeature';
+// V-2b-6：feature.featureDF 列（CE machineFeature.featureDF，蓝图表第 1 列）
+// 的名字解析与落位——CE Architect.c:1434-1440 的 web 等价物。
+import { resolveDFName } from '../Map/Promotion';
+import { catalogFeature } from '../Map/DungeonFeature';
 import { rng } from '../Random';
 import type { Pos } from '../../types';
 import blueprintData from '../../data/blueprints.json';
@@ -67,6 +72,13 @@ export interface FeatureDef {
      */
     layer?: 'DUNGEON' | 'LIQUID' | 'GAS' | 'SURFACE';
     trapType?: string;
+    /**
+     * V-2b-6：CE machineFeature.featureDF（Rogue.h:2620，蓝图表第 1 列 DF——
+     * feature 落位时在该格生成此 DF）。CE 消费点 = Architect.c:1434-1440 的
+     * spawnDungeonFeature 分支（abortIfBlocking = !MF_PERMIT_BLOCKING）。
+     * 10 号 Kennel 的 DF_AMBIENT_BLOOD / DF_BONES 两列用。
+     */
+    featureDF?: string;
     itemCategory?: string;
     itemId?: string;
     monsterId?: string;
@@ -135,6 +147,13 @@ export interface MachineMonsterSpawn {
      * 自身的 70% 睡姿掷骰决定。
      */
     sleeping?: boolean;
+    /**
+     * V-2b-6：CE MF_MONSTER_TAKE_ITEM（Architect.c:1622-1626：theItem 记入
+     * torch/torchBearer，机器建成后在 :1705-1710 交给该 feature 生成的
+     * 最后一只怪 `monst->carriedItem = torch`）。web 的等价物：物品指令
+     * 挂在怪物指令上，实化在 Game（与键位绑定同款两段式）。
+     */
+    carriedItem?: { category: string; id?: string; keyLoc?: MachineResult['itemSpawns'][number]['keyLoc'] };
 }
 
 export interface MachineResult {
@@ -144,14 +163,27 @@ export interface MachineResult {
     cells: Pos[];           // All cells belonging to this machine
     center: Pos;
     door: Pos | null;
-    /** Items to spawn: { category, id?, pos }
+    /**
+     * Items to spawn: { category, id?, pos }
      *  V-2b-2a：itemQualifiers = Q 族资格旗标（CE Architect.c:1506-1509），
-     *  随 feature 下传；消费点 Game.spawnBlueprintItem（边界外，见头注）。 */
-    itemSpawns: Array<{ category: string; id?: string; pos: Pos; isAltar?: boolean; itemQualifiers?: string[] }>;
+     *  随 feature 下传；消费点 Game.spawnBlueprintItem（边界外，见头注）。
+     *  V-2b-6：keyLoc = CE item.keyLoc（Rogue.h:1391-1395 keyLocationProfile 的
+     *  web 投影，disposableHere 在手）——KEY 类 feature 经 Architect.c:1523-1527
+     *  addLocationToKey / addMachineNumberToKey 写入的绑定，随指令下传，
+     *  消费点 Game.populateLevel（物品实化处落到 item 上）。
+     */
+    itemSpawns: Array<{ category: string; id?: string; pos: Pos; isAltar?: boolean; itemQualifiers?: string[]; viaAdoption?: boolean; keyLoc?: Array<{ loc: Pos; machine: number; disposableHere: boolean }> }>;
     /** Monsters to spawn: { monsterId, pos, isAlly?, isCaged? } */
     monsterSpawns: MachineMonsterSpawn[];
     /** Whether a key is needed (for LOCKED_DOOR) */
     needsKey: boolean;
+    /**
+     * V-2b-6：本机器的 feature 实际建出了 KEY 物品指令（CE Architect.c:1523
+     * addLocationToKey 的机器级回声）。Game 的"每锁一把铁钥匙"补偿循环据此
+     * 跳过本机器——CE 没有 compensate 循环，钥匙只来自 feature；不跳过会让
+     * 16 号（门与钥匙同 feature）拿到两把钥匙（B-4b 防的"钥匙 ×2"回流）。
+     */
+    generatedKey?: boolean;
     /**
      * V-1c：递归子机器（MF_OUTSOURCE_ITEM_TO_MACHINE / MF_BUILD_VESTIBULE
      * 建立的领养/前厅机器）。CE 把子机器的产物并进父机器的 spawnedItems /
@@ -241,6 +273,14 @@ const TERRAIN_MAP: Record<string, TerrainType> = {
     RAT_TRAP_WALL_DORMANT: TerrainType.RAT_TRAP_WALL_DORMANT,
     STATUE_DORMANT_DOORWAY: TerrainType.STATUE_DORMANT_DOORWAY,
     TURRET_DORMANT: TerrainType.TURRET_DORMANT,
+    // V-2b-6：钥匙轮的五个载体（10/35/40 号蓝图）。ALTAR_INERT（35 号的
+    // 祭坛列）不加新映射——web ALTAR 本就是 CE ALTAR_INERT 的逐字段转录
+    //（TerrainCatalog 该条注释 + V-2b-1 落地时的锚点），沿用别名。
+    MONSTER_CAGE_OPEN: TerrainType.MONSTER_CAGE_OPEN,
+    MONSTER_CAGE_CLOSED: TerrainType.MONSTER_CAGE_CLOSED,
+    MACHINE_POISON_GAS_VENT_HIDDEN: TerrainType.MACHINE_POISON_GAS_VENT_HIDDEN,
+    PORTCULLIS_DORMANT: TerrainType.PORTCULLIS_DORMANT,
+    WALL_LEVER_HIDDEN_DORMANT: TerrainType.WALL_LEVER_HIDDEN_DORMANT,
 };
 
 const TERRAIN_VISUALS: Record<string, { char: string; color: number }> = {
@@ -330,6 +370,21 @@ const TERRAIN_VISUALS: Record<string, { char: string; color: number }> = {
     RAT_TRAP_WALL_DORMANT: { char: '#', color: 0x121212 },
     STATUE_DORMANT_DOORWAY: { char: 'ß', color: 0x6e6e6e },
     TURRET_DORMANT: { char: '#', color: 0x121212 },
+    // V-2b-6：字形照 platformdependent.c 的 displayGlyph——G_OPEN_CAGE '|'
+    //（:165）、G_CLOSED_CAGE '#'（:164）、G_FLOOR '.'（MACHINE_POISON_GAS_
+    // VENT_HIDDEN / PORTCULLIS_DORMANT 的伪装口径）、G_WALL '#'（WALL_LEVER_
+    // HIDDEN_DORMANT）。颜色沿用 V-2b-2b/2b-3/2b-4/2b-5 的 ×2.55 折算：
+    // MONSTER_CAGE_CLOSED 的 foreColor gray {50,50,50} → 0x6e6e6e（与
+    // STATUE 系/PORTCULLIS_CLOSED 的中灰口径一致）；MONSTER_CAGE_OPEN 的
+    // foreColor floorBackColor 无既定折算（web FLOOR 渲染惯用 0x888888），
+    // 取 0x999999 近似（登记报告）；两个 G_FLOOR 伪装 '.' + 0x888888；
+    // G_WALL 伪装 '#' + 0x121212。
+    MONSTER_CAGE_OPEN: { char: '|', color: 0x999999 },
+    MONSTER_CAGE_CLOSED: { char: '#', color: 0x6e6e6e },
+    MACHINE_POISON_GAS_VENT_HIDDEN: { char: '.', color: 0x888888 },
+    PORTCULLIS_DORMANT: { char: '.', color: 0x888888 },
+    WALL_LEVER_HIDDEN_DORMANT: { char: '#', color: 0x121212 },
+    BONES: { char: ',', color: 0xcccc4d },
 };
 
 // ----- Engine -----
@@ -595,7 +650,17 @@ export class BlueprintEngine {
             if (failsafe <= 0) return null; // CE :1004-1026：10 次尝试用尽
 
             // chooseBP（CE :1028-1061）：资格过滤 + 频率加权抽签，每次尝试重掷。
-            const eligible = this.blueprints.filter(bp => blueprintQualifies(bp, this.depth, requiredFlags));
+            // V-2b-6：携带 adoptiveItem 时，候选蓝图必须真的有 MF_ADOPT_ITEM
+            // feature 能消费它——CE 数据里全部 BP_ADOPT_ITEM 蓝图都带领养
+            // feature（不变量），web 数据里 key_rat_trap 是唯一没有的（自创
+            // 形态）；此前它被抽中领养时物品被静默丢弃（父机器的钥匙凭空
+            // 消失 → 锁无钥匙死局，seed424242/D3 实测）。按 CE 数据不变量
+            // 过滤，key_rat_trap 自此不可作为领养机器生成（D2 口径：自创
+            // 内容退池留形）。
+            const eligible = this.blueprints.filter(bp =>
+                blueprintQualifies(bp, this.depth, requiredFlags)
+                && (adoptiveItem === null || bp.features.some(f => f.flags.includes('MF_ADOPT_ITEM')))
+            );
             let totalFreq = 0;
             for (const bp of eligible) totalFreq += bp.frequency;
             if (totalFreq <= 0) return null; // CE :1040-1052：目录里没有合格蓝图
@@ -1113,6 +1178,15 @@ export class BlueprintEngine {
         // Candidate 第 4/7 步的 interior 判据以它为准。
         const interiorSet = interior;
 
+        // V-2b-6：机器级 KEY 回声（MachineResult.generatedKey 的来源）。
+        let machineGeneratedKey = false;
+        // V-2b-6：MF_MONSTER_TAKE_ITEM 的携带归属——CE Architect.c:1622-1626
+        // 把 theItem 记到 torch/torchBearer（每个 instance 覆盖一次），机器
+        // 建成后 :1705-1710 交给最后一只 torchBearer。web 的等价物：记录本
+        // feature 的携带指令下标，feature 建完后只保留最后一个（CE 字面）。
+        let carryIndicesPerFeature: number[] = [];
+        let carryItem: MachineResult['itemSpawns'][number] | null = null;
+
         for (const [feat, feature] of bp.features.entries()) {
             if (skipFeature[feat]) continue; // CE Architect.c:1329：未被选中的替代 feature 整条跳过
             const fFlags = new Set(feature.flags);
@@ -1180,10 +1254,25 @@ export class BlueprintEngine {
                     // CE :1430-1432：候选先 strike 再尝试——成败与否本轮不再选它
                     struck.add(cellKey(pos.x, pos.y));
 
-                    // CE :1434：DFSucceeded 恒真——web 的 feature 无 featureDF
-                    // 载体（CE :1437-1440 的 spawnDungeonFeature 分支登记缺口，
-                    // 含其 abortIfBlocking=!MF_PERMIT_BLOCKING 语义）。
+                    // V-2b-6（CE :1434-1440）：featureDF 分支——feature 落位时
+                    // 在该格生成 DF 列指定的地下特征。原登记缺口（DFSucceeded
+                    // 恒真）自本轮起有真实载体（10 号 Kennel 的
+                    // DF_AMBIENT_BLOOD/DF_BONES 两列）。abortIfBlocking =
+                    // !(feature->flags & MF_PERMIT_BLOCKING)（CE :1437-1440
+                    // 的第三实参）；阻断否决失败的实例不落格、不算数（CE 的
+                    // DFSucceeded 与 terrainSucceeded 同守卫）。
                     let terrainSucceeded = true;
+                    if (feature.featureDF) {
+                        const dfId = resolveDFName(feature.featureDF);
+                        if (dfId === null) {
+                            throw new Error(`蓝图 "${bp.id}" 的 feature #${feat} 的 featureDF 名为空`);
+                        }
+                        const dfFeat = catalogFeature(dfId);
+                        const abortIfBlocking = !fFlags.has('MF_PERMIT_BLOCKING');
+                        terrainSucceeded = spawnDungeonFeature(
+                            this.grid, pos.x, pos.y, dfFeat, abortIfBlocking
+                        ).succeeded;
+                    }
 
                     // Place terrain（CE :1443-1456：先否决后落格）
                     if (feature.terrain) {
@@ -1279,7 +1368,12 @@ export class BlueprintEngine {
                         // 守卫内（:1495 起）——否决失败的实例连物品都不产，web 同构。
                         let theItem: MachineResult['itemSpawns'][number] | null = null;
                         if (ctx.adoptiveItem && fFlags.has('MF_ADOPT_ITEM') && effFlags.has(BP_ADOPT_ITEM)) {
-                            theItem = { ...ctx.adoptiveItem, pos: { x: pos.x, y: pos.y } };
+                            // V-2b-6：viaAdoption 标记——领养链路来的 KEY 指令
+                            // 才允许在 Game 落地（CE 的一切 KEY feature 要么
+                            // MF_OUTSOURCE 要么 MF_MONSTER_TAKE_ITEM，没有
+                            // "自产自销室内钥匙"形态；web 的 key_rat_trap 室内
+                            // 钥匙是该形态孤例，继续被消费端跳过——B-4b 原判）。
+                            theItem = { ...ctx.adoptiveItem, pos: { x: pos.x, y: pos.y }, viaAdoption: true };
                             itemSpawns.push(theItem);
                             ctx.adoptiveItem = null;
                         } else if (fFlags.has('MF_GENERATE_ITEM') && feature.itemCategory) {
@@ -1295,7 +1389,37 @@ export class BlueprintEngine {
                                 isAltar: fFlags.has('MF_ALTAR'),
                                 itemQualifiers: itemQualifiers.length > 0 ? itemQualifiers : undefined
                             };
-                            if (!fFlags.has('MF_OUTSOURCE_ITEM_TO_MACHINE')) {
+                            // V-2b-6（CE Architect.c:1523-1527）：KEY 物品的锁位
+                            // 绑定——addLocationToKey(theItem, featX, featY,
+                            //   MF_KEY_DISPOSABLE) 恒写位置条目；
+                            //   addMachineNumberToKey(theItem, machineNumber,
+                            //   MF_KEY_DISPOSABLE) 仅在 MF_SKELETON_KEY 时补机器
+                            // 条目（10 号 Kennel 的 cage key 由此开整台机器的笼）。
+                            // CE 对一切 feature 物品都调 addLocationToKey，但绑定
+                            // 只对 ITEM_IS_KEY 有语义——web 只在 KEY 类上落（登记
+                            // 报告）。携带/外包的物品 CE 不 placeItemAt（:1527-1529），
+                            // itemSpawns 的排除条件同步加上 MONSTER_TAKE_ITEM。
+                            if (feature.itemCategory === 'KEY') {
+                                const disposableHere = fFlags.has('MF_KEY_DISPOSABLE');
+                                const keyLoc: NonNullable<MachineResult['itemSpawns'][number]['keyLoc']> = [
+                                    { loc: { x: pos.x, y: pos.y }, machine: 0, disposableHere }
+                                ];
+                                if (fFlags.has('MF_SKELETON_KEY')) {
+                                    keyLoc.push({ loc: { x: 0, y: 0 }, machine: machineNum, disposableHere });
+                                }
+                                theItem.keyLoc = keyLoc;
+                                // 机器级回声只认 CE 形态（外包/怪携带）——钥匙会
+                                // 真正送达。web 自创的"室内钥匙"形态（如
+                                // key_rat_trap，无外包）回声不置位：其指令会被
+                                // 消费端跳过，补偿循环必须照常供给，否则 0 钥匙
+                                // 死局。
+                                if (fFlags.has('MF_OUTSOURCE_ITEM_TO_MACHINE')
+                                    || fFlags.has('MF_MONSTER_TAKE_ITEM')) {
+                                    machineGeneratedKey = true;
+                                }
+                            }
+                            if (!fFlags.has('MF_OUTSOURCE_ITEM_TO_MACHINE')
+                                && !fFlags.has('MF_MONSTER_TAKE_ITEM')) {
                                 itemSpawns.push(theItem);
                             }
                         }
@@ -1321,6 +1445,11 @@ export class BlueprintEngine {
                             }
                             if (!success) return null;
                         }
+                        // V-2b-6：CE Architect.c:1622-1626——MF_MONSTER_TAKE_ITEM
+                        // 在 theItem 摘链前把物品记给本 instance 的 torch/torchBearer
+                        // （每 instance 覆盖一次；本 instance 无物品则清空，与 CE 的
+                        // torch/torchBearer 覆盖写一致）。
+                        carryItem = (fFlags.has('MF_MONSTER_TAKE_ITEM') && theItem) ? theItem : null;
                         theItem = null;
 
                         // Generate monster spawn instructions.
@@ -1346,6 +1475,9 @@ export class BlueprintEngine {
                                 dormant: fFlags.has('MF_MONSTERS_DORMANT'),
                                 sleeping: fFlags.has('MF_MONSTER_SLEEPING'),
                             });
+                            if (carryItem) {
+                                carryIndicesPerFeature.push(monsterSpawns.length - 1);
+                            }
                         }
 
                         // V-2b-3（CE Architect.c:1601 `if (feature->monsterID)`）：
@@ -1366,6 +1498,9 @@ export class BlueprintEngine {
                                 dormant: fFlags.has('MF_MONSTERS_DORMANT'),
                                 sleeping: fFlags.has('MF_MONSTER_SLEEPING'),
                             });
+                            if (carryItem) {
+                                carryIndicesPerFeature.push(monsterSpawns.length - 1);
+                            }
                         }
                     }
                 }
@@ -1390,6 +1525,22 @@ export class BlueprintEngine {
             if (placed < minInstances && !repeatUntilNoProgress) {
                 return null;
             }
+
+            // V-2b-6：MF_MONSTER_TAKE_ITEM 的 CE 字面收口（Architect.c:1705-1710
+            // `torchBearer->carriedItem = torch`）——每个 instance 都会覆盖
+            // torch/torchBearer，机器建成后只有**最后**一只携带者拿到物品，
+            // 其余清除。
+            if (carryIndicesPerFeature.length > 0 && carryItem) {
+                for (let ci = 0; ci < carryIndicesPerFeature.length; ci++) {
+                    const inst = monsterSpawns[carryIndicesPerFeature[ci]!];
+                    if (!inst) continue;
+                    inst.carriedItem = ci === carryIndicesPerFeature.length - 1
+                        ? { category: carryItem.category, id: carryItem.id, keyLoc: carryItem.keyLoc }
+                        : undefined;
+                }
+            }
+            carryIndicesPerFeature = [];
+            carryItem = null;
         }
 
         // 5. 机器旗标（P1-37）：本方法第 1 步已把 room.cells 全部写入
@@ -1440,6 +1591,7 @@ export class BlueprintEngine {
             itemSpawns,
             monsterSpawns,
             needsKey,
+            generatedKey: machineGeneratedKey,
             subMachines
         };
     }

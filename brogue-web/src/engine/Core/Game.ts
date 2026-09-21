@@ -2,7 +2,7 @@
  * src/engine/Core/Game.ts
  * Main game state and orchestration
  */
-import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer } from '../Map/Grid';
+import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer, type Cell } from '../Map/Grid';
 import { blocksPassability, blocksVision, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_IS_FIRE, T_CAUSES_CONFUSION, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_PATHING_BLOCKER, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY } from '../Map/TerrainCatalog';
 import { isPathingBlocker } from '../Map/TerrainCatalog';
 // B-4b：物品落位热力图与食物落位原语（CE Items.c:463-535 / Architect.c:171,3822）
@@ -197,10 +197,13 @@ export interface GameSnapshotItem {
     identityId?: string;
     /**
      * B-4b：钥匙→锁的绑定（CE item.keyLoc，Rogue.h:1417）。空数组/缺键
-     * ≙ 无绑定（旧存档与无绑定钥匙）；解锁交互当前不消费它，
-     * 仅作为钥匙-锁对应关系的存档面。
+     * ≙ 无绑定（旧存档与无绑定钥匙）。
+     * V-2b-6：解锁消费端上线（Game.keyInPackFor）——disposableHere
+     * （开锁后是否消耗钥匙，CE Movement.c:636-656 useKeyAt）随存档往返。
      */
-    keyLoc?: Array<{ loc: Pos; machine: number }>;
+    keyLoc?: Array<{ loc: Pos; machine: number; disposableHere?: boolean }>;
+    /** V-2b-6：≙ CE item->originDepth——钥匙生成层（keyMatchesLocation 判据 1）。 */
+    originDepth?: number;
 }
 
 export interface GameSnapshotMonster {
@@ -1319,23 +1322,30 @@ export class Game {
         // CE 的 MF_OUTSOURCE 语义在 web 的最小近似，守卫机器留形待激活）。
         for (const mr of machineResults) {
             // Spawn keys for locked doors
-            if (mr.needsKey && mr.door && floorTiles.length > 0) {
+            // V-2b-6：generatedKey 机器跳过补偿循环——CE Architect.c 里钥匙
+            // 只由 KEY feature 生成（:1523 addLocationToKey），没有"每锁一把
+            // 补偿钥匙"一说；16 号的门与钥匙同 feature（keyLoc 绑定经领养链
+            // 落地），不跳过会让它拿到两把钥匙（B-4b 防的"钥匙 ×2"回流）。
+            if (mr.needsKey && !mr.generatedKey && mr.door && floorTiles.length > 0) {
                 const keyPos = floorTiles.pop()!;
                 const key = ItemLoader.spawnKey('iron_key', keyPos.x, keyPos.y);
                 if (key) {
-                    key.keyLoc = [{ loc: { x: mr.door.x, y: mr.door.y }, machine: mr.machineNumber }];
+                    key.keyLoc = [{ loc: { x: mr.door.x, y: mr.door.y }, machine: mr.machineNumber, disposableHere: true }];
+                    key.originDepth = depth;
                     this.items.push(key);
                 }
             }
 
             // Spawn items
             for (const spawn of mr.itemSpawns) {
-                // B-4b：KEY 类 feature 物品跳过——钥匙总量恒等于锁数，
-                // 蓝图里的 KEY 条目（如 key_rat_trap 的室内钥匙）不再额外
-                // 发钥匙。key_rat_trap 的室内钥匙原本躺在本机器锁门之内
-                // （无钥匙不可达，死货）；若未来蓝图需要「守卫钥匙」语义，
-                // 应给它接 MF_OUTSOURCE（放到别的机器里）后再恢复此处。
-                if (spawn.category === 'KEY') continue;
+                // B-4b：KEY 类 feature 物品跳过——钥匙总量恒等于锁数。
+                // V-2b-6：例外 = **经领养链路**（viaAdoption）落地的绑定钥匙。
+                // CE Architect.c 里一切 KEY feature 要么 MF_OUTSOURCE（领养链
+                // 落地）要么 MF_MONSTER_TAKE_ITEM（怪携带）——不存在"自产自销
+                // 的室内钥匙"形态。web 的 key_rat_trap 室内钥匙（无外包）是该
+                // 形态孤例：落在本机锁门之内、无钥匙不可达（死货），继续跳过、
+                // 由补偿循环供钥匙；16 号门钥匙 / 10 号 cage key 经领养落地。
+                if (spawn.category === 'KEY' && !spawn.viaAdoption) continue;
                 // P1-43：蓝图特征落点可能选中护城河的岩浆格（key_lava_moat 一类），
                 // 物品于是掉进岩浆——实测 seed777/D7 scroll_of_enchantment
                 // @ (26,12) terrain=LAVA。CE 的物品落位一律回避
@@ -1354,7 +1364,13 @@ export class Game {
                 // `isPathingBlocker`——我当时没用它，这正是"统一判据"要防的事。
                 if (!spawnCell || isPathingBlocker(spawnCell.terrain)) continue;
                 const item = this.spawnBlueprintItem(spawn.category, spawn.id, spawn.pos.x, spawn.pos.y, depth);
-                if (item) this.items.push(item);
+                if (item) {
+                    // V-2b-6：锁位绑定与生成层落到实化的物品上（CE Architect.c:1523
+                    // addLocationToKey + :1524 originDepth = rogue.depthLevel）。
+                    if (spawn.keyLoc) item.keyLoc = spawn.keyLoc.map(k => ({ ...k, loc: { ...k.loc } }));
+                    item.originDepth = depth;
+                    this.items.push(item);
+                }
             }
 
             // Spawn monsters
@@ -1372,6 +1388,19 @@ export class Game {
                     const mon = new Monster(spawn.pos.x, spawn.pos.y, mData);
                     if (spawn.isAlly) mon.isAlly = true;
                     if (spawn.isCaged) mon.isCaged = true;
+                    // V-2b-6：MF_MONSTER_TAKE_ITEM 的物品实化（CE Architect.c:
+                    // 1705-1710 `torchBearer->carriedItem = torch`；Monsters.c:150
+                    // `carriedItem->originDepth = rogue.depthLevel`）。
+                    if (spawn.carriedItem) {
+                        const carried = this.spawnBlueprintItem(
+                            spawn.carriedItem.category, spawn.carriedItem.id, spawn.pos.x, spawn.pos.y, depth
+                        );
+                        if (carried) {
+                            if (spawn.carriedItem.keyLoc) carried.keyLoc = spawn.carriedItem.keyLoc.map(k => ({ ...k, loc: { ...k.loc } }));
+                            carried.originDepth = depth;
+                            mon.carriedItem = carried;
+                        }
+                    }
                     this.applyRandomMutation(mon, depth);
                     this.monsters.push(mon);
                     this.finalizeBlueprintMonster(mon, spawn, mr.machineNumber);
@@ -1751,6 +1780,9 @@ export class Game {
         // 只会被机器 horde 路径行使。
         STATUE_DORMANT: TerrainType.STATUE_DORMANT,
         TURRET_DORMANT: TerrainType.TURRET_DORMANT,
+        // V-2b-6：10 号 Kennel 的笼子（CE hordeCatalog_Brogue 的 kennel 怪群
+        // spawnsIn 列 = MONSTER_CAGE_CLOSED，GlobalsBrogue.c:890 起）。
+        MONSTER_CAGE_CLOSED: TerrainType.MONSTER_CAGE_CLOSED,
     };
 
     /**
@@ -3300,12 +3332,35 @@ export class Game {
                     }), '#ff8888');
                     timeSystem.currentTick += this.player.movementSpeed;
                     this.playerTurnEnded();
-                } else if (this.grid.getCell(newX, newY)?.layers.includes(TerrainType.LOCKED_DOOR)) { // F-1 跨层判定
-                    const keyItem = this.player.inventory.items.find((i: import('../Items/Item').Item) => i.category === ItemCategory.KEY);
+                } else if (this.grid.getCell(newX, newY)?.layers.includes(TerrainType.LOCKED_DOOR) // F-1 跨层判定
+                    || this.grid.getCell(newX, newY)?.layers.includes(TerrainType.MONSTER_CAGE_CLOSED)) {
+                    // V-2b-6：钥匙真实化（CE Movement.c:1160-1206 的 bump-to-unlock
+                    // + Items.c:4036 keyMatchesLocation / 4051 keyInPackFor +
+                    // Movement.c:616-656 useKeyAt 的 disposable 收口）。锁与笼共用
+                    // 一条通路：LOCKED_DOOR 与 MONSTER_CAGE_CLOSED 都带
+                    // TM_PROMOTES_WITH_KEY，钥匙按「坐标或机器号」匹配——
+                    // 不再是"任意钥匙开任意锁"。
+                    const keyCell = this.grid.getCell(newX, newY)!;
+                    const isCage = keyCell.layers.includes(TerrainType.MONSTER_CAGE_CLOSED);
+                    const keyItem = this.keyInPackFor(newX, newY, keyCell);
                     if (keyItem) {
-                        this.player.inventory.removeItem(keyItem);
-                        this.grid.setTerrain(newX, newY, TerrainType.OPEN_DOOR, "'", 0xaa8844);
-                        logger.log(i18next.t('door.unlocked', { defaultValue: 'You unlock the door with a key.' }), '#88ff88');
+                        // CE Movement.c:636-656：只有匹配条目（同坐标或同机器）
+                        // 带 disposableHere 才消耗钥匙。缺省 true —— 旧存档里
+                        // V-2b-6 前的绑定无该字段，行为与旧 web（恒消耗）一致。
+                        const entry = this.keyMatchingEntry(keyItem, newX, newY, keyCell);
+                        const disposable = entry?.disposableHere ?? true;
+                        if (disposable) {
+                            this.player.inventory.removeItem(keyItem);
+                        }
+                        if (isCage) {
+                            // CE DF_MONSTER_CAGE_OPENS（Globals.c:927）：
+                            // 笼锁打开 → MONSTER_CAGE_OPEN。
+                            this.grid.setTerrain(newX, newY, TerrainType.MONSTER_CAGE_OPEN, '|', 0x999999);
+                            logger.log(i18next.t('cage.unlocked', { defaultValue: 'You unlock the cage with a key.' }), '#88ff88');
+                        } else {
+                            this.grid.setTerrain(newX, newY, TerrainType.OPEN_DOOR, "'", 0xaa8844);
+                            logger.log(i18next.t('door.unlocked', { defaultValue: 'You unlock the door with a key.' }), '#88ff88');
+                        }
 
                         // Check if we freed a caged monster
                         for (const m of this.monsters) {
@@ -3327,7 +3382,18 @@ export class Game {
                         this.needsRender = true;
                         timeSystem.currentTick += this.player.movementSpeed;
                     } else {
-                        logger.log(i18next.t('door.locked', { defaultValue: 'The door is locked. You need a key.' }), '#ffaa88');
+                        // CE LOCKED_DOOR 的 flavor（Globals.c:331 描述列）：
+                        // "you search your pack but do not have a matching key"
+                        // ——有钥匙但都不认这把锁时按 CE 口径提示（收口后的
+                        // 主路径：拿错钥匙/跨层钥匙不再被静默吞掉）。
+                        const hasAnyKey = this.player.inventory.items.some(
+                            (i: import('../Items/Item').Item) => i.category === ItemCategory.KEY
+                        );
+                        if (hasAnyKey) {
+                            logger.log(i18next.t('door.no_matching_key', { defaultValue: 'You search your pack but do not have a matching key.' }), '#ffaa88');
+                        } else {
+                            logger.log(i18next.t('door.locked', { defaultValue: 'The door is locked. You need a key.' }), '#ffaa88');
+                        }
                         this.needsRender = true;
                     }
                 } else if (this.grid.getCell(newX, newY)?.layers.includes(TerrainType.ALTAR)) { // F-1 跨层判定
@@ -7080,8 +7146,65 @@ export class Game {
         return null;
     }
 
+    // ── V-2b-6：钥匙匹配三件套（CE Items.c:4036-4063 的 web 直译）────────
+
+    /**
+     * CE keyMatchesLocation（Items.c:4036-4049）。三判据缺一不可：
+     * ① ITEM_IS_KEY（web = category KEY）；② originDepth == 当前深度
+     * （跨层带下去的钥匙不认锁，CE :4038）；③ keyLoc 逐条
+     * 「坐标匹配 或 机器号匹配」（两者是"或"，CE :4040/:4042）。
+     * CE 的循环终止条件 `(loc.x || machine)` 是 keyLoc 数组的哨兵形态——
+     * web 的 keyLoc 是紧凑数组、无哨兵条目，逐条直读即等价。
+     * CE 的机器号比对不带 ≠0 守卫（:4042 字面）——web 所有
+     * TM_PROMOTES_WITH_KEY 消费点（锁门/铁笼）都在机器内
+     * （machineNumber ≠ 0），0==0 的退化形态不可达，照抄。
+     */
+    private keyMatchesLocation(theItem: Item, x: number, y: number, cell: Cell | undefined): boolean {
+        if (theItem.category !== ItemCategory.KEY) return false;
+        // undefined = 旧存档/测试裸造的钥匙，按当层处理（登记偏差：CE 恒有值）
+        if (theItem.originDepth !== undefined && theItem.originDepth !== this.depth) return false;
+        for (const e of theItem.keyLoc) {
+            if (e.loc.x === x && e.loc.y === y) return true; // CE :4040 posEq
+            if (e.machine === (cell?.machineNumber ?? 0)) return true; // CE :4042
+        }
+        return false;
+    }
+
+    /** CE useKeyAt（Movement.c:636-656）的条目定位半边：找到匹配条目，
+     *  供 disposableHere 收口。匹配谓词与 keyMatchesLocation 逐字一致。 */
+    private keyMatchingEntry(
+        theItem: Item, x: number, y: number, cell: Cell | undefined
+    ): { loc: { x: number; y: number }; machine: number; disposableHere?: boolean } | null {
+        for (const e of theItem.keyLoc) {
+            if ((e.loc.x === x && e.loc.y === y) || e.machine === (cell?.machineNumber ?? 0)) return e;
+        }
+        return null;
+    }
+
+    /** CE keyInPackFor（Items.c:4051-4059）：按位置找背包里认这把锁的钥匙。 */
+    private keyInPackFor(x: number, y: number, cell: Cell | undefined): Item | null {
+        for (const item of this.player.inventory.items) {
+            if (this.keyMatchesLocation(item, x, y, cell)) return item;
+        }
+        return null;
+    }
+
     private playerTurnEnded() {
         this.triggerDeathFeatures();
+        // V-2b-6：死亡清扫前结算携带品掉落（CE Monsters.c:4075-4083
+        // makeMonsterDropItem——击杀路径把 carriedItem 放回地面；CE 的
+        // getQualifyingPathLocNear 择邻格语义 web 用"落怪原地"近似：怪物
+        // 站的格必然可通行，登记偏差见报告）。CE 的物品落位守卫
+        // （T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER）照抄——掉不进岩浆/深渊。
+        for (const m of this.monsters) {
+            if (m.hp > 0 || !m.carriedItem) continue;
+            const dropCell = this.grid.getCell(m.loc.x, m.loc.y);
+            if (dropCell && !isPathingBlocker(dropCell.terrain)) {
+                m.carriedItem.loc = { x: m.loc.x, y: m.loc.y };
+                this.items.push(m.carriedItem);
+            }
+            m.carriedItem = null;
+        }
         this.monsters = this.monsters.filter(m => m.hp > 0);
 
         // C-5：CE Time.c:2480-2486——玩家坠落在回合一切其余结算之前
@@ -7825,7 +7948,11 @@ export class Game {
         }
         // B-4b：钥匙绑定还原（旧存档无键 → 保持默认空数组）
         if (s.keyLoc) {
-            item.keyLoc = s.keyLoc.map(k => ({ loc: { x: k.loc.x, y: k.loc.y }, machine: k.machine }));
+            item.keyLoc = s.keyLoc.map(k => ({ loc: { x: k.loc.x, y: k.loc.y }, machine: k.machine, disposableHere: k.disposableHere }));
+        }
+        // V-2b-6：生成层还原（旧存档无键 → undefined ≙ 当层，登记偏差见 Item 注）
+        if (s.originDepth !== undefined) {
+            item.originDepth = s.originDepth;
         }
         // B-1b：实例鉴定态直接落账（P1-48 反转 B-1a 的"按 spawn 语义重建"）。
         // 旧存档（B-1b 前，无 identified 键）保持旧行为：可未知类别按 spawn

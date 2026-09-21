@@ -212,6 +212,7 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
         //（Game.ts:7973-7979），所以往返的判据只能是同口径的网格派生集。
         // 见下方"口径校正"注。
         let gridDerived = new Set<number>();
+        let gridMachineNumberAtPick: Map<number, number> = new Map();
         let levelResults: MachineResult[] = [];
         let pickedLevel = 0;
         try {
@@ -227,11 +228,12 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
                     allMachineCells = entry.results.flatMap(mr => mr.cells);
                     levelResults = entry.results;
                     gridDerived = new Set<number>();
+                    gridMachineNumberAtPick = new Map<number, number>();
                     for (let x = 0; x < game.grid.width; x++) {
                         for (let y = 0; y < game.grid.height; y++) {
-                            if ((game.grid.getCell(x, y)?.machineNumber ?? 0) !== 0) {
-                                gridDerived.add(y * DCOLS + x);
-                            }
+                            const mn = game.grid.getCell(x, y)?.machineNumber ?? 0;
+                            if (mn !== 0) gridDerived.add(y * DCOLS + x);
+                            gridMachineNumberAtPick.set(y * DCOLS + x, mn);
                         }
                     }
                     snapshot = game.toSnapshot();
@@ -246,12 +248,34 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
         expect(allMachineCells.length, '选中机器没有内部格').toBeGreaterThan(0);
         const unionKeys = new Set(allMachineCells.map(key));
 
-        // 序列化点：机器格的 machineNumber 必须出现在快照里
+        // 序列化点：机器格的 machineNumber 必须出现在快照里。
+        // V-2b-6 口径校正（与下方 machineCells 断言同律）：参照系用 gridDerived
+        //（网格 machineNumber≠0），不用 ∪ mr.cells——本轮 V-2b-6 的流位移让
+        // seed424242/D3 建成了 15 号 vestibule_pit_trap_field（BP_NO_INTERIOR_
+        // FLAG，CE :1691-1702 建成后把非 wired 格的 machineNumber 清 0），
+        // mr.cells 参照的逐格断言第二次露馅（V-2b-3 已预言："把这颗走运的
+        // 骰子挪开了"）。B = ∪ mr.cells 里的 NO_INTERIOR_FLAG 格按 CE 字面
+        // **必须**为 0——反向钉死（守卫变强：清标记漏做即红）。
         const cellByKey = new Map(snapshot!.grid.map(c => [c.y * DCOLS + c.x, c]));
-        for (const p of allMachineCells) {
-            const sc = cellByKey.get(key(p));
-            expect(sc, `快照缺 (${p.x},${p.y})`).toBeDefined();
-            expect(sc!.machineNumber ?? 0, `快照里 (${p.x},${p.y}) 的机器旗标丢失（序列化被删？）`).not.toBe(0);
+        for (const k of gridDerived) {
+            const sc = cellByKey.get(k);
+            expect(sc, `快照缺 (${k % DCOLS},${Math.floor(k / DCOLS)})`).toBeDefined();
+            expect(sc!.machineNumber ?? 0, `快照里 (${k % DCOLS},${Math.floor(k / DCOLS)}) 的机器旗标丢失（序列化被删？）`).not.toBe(0);
+        }
+        {
+            const noInteriorMachines = levelResults.filter(mr =>
+                (mr.blueprintId === 'vestibule_pit_trap_field'));
+            for (const mr of noInteriorMachines) {
+                for (const p of mr.cells) {
+                    const sc = cellByKey.get(key(p));
+                    expect(sc, `快照缺 (${p.x},${p.y})`).toBeDefined();
+                    // wired 载体格不受 NO_INTERIOR_FLAG 清除（CE :1695 的豁免位），
+                    // 其余格字面为 0。快照里的 machineNumber 与网格同源，直接查。
+                    expect(sc!.machineNumber ?? 0,
+                        `NO_INTERIOR_FLAG 机器 ${mr.blueprintId} 的 (${p.x},${p.y}) 快照态与网格不符（非 wired 格应为 0）`)
+                        .toBe(gridMachineNumberAtPick.get(key(p)) ?? 0);
+                }
+            }
         }
 
         // ★★ V-2b-3 口径校正：原断言 `machineCells.size === |∪ mr.cells|` ★★
@@ -281,9 +305,10 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
         // 反序列化点：读入新实例后旗标与 machineCells 都恢复
         const reloaded = createHeadlessGame(1);
         expect(reloaded.loadSnapshot(snapshot!)).toBe(true);
-        for (const p of allMachineCells) {
-            expect(reloaded.grid.getCell(p.x, p.y)!.machineNumber,
-                `读档后 (${p.x},${p.y}) 机器旗标丢失`).not.toBe(0);
+        for (const k of gridDerived) {
+            const x = k % DCOLS, y = Math.floor(k / DCOLS);
+            expect(reloaded.grid.getCell(x, y)!.machineNumber,
+                `读档后 (${x},${y}) 机器旗标丢失`).not.toBe(0);
         }
         const machineCells = (reloaded as unknown as { machineCells: Set<number> }).machineCells;
         expect(machineCells.size,
@@ -337,10 +362,18 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
         // 单格 interior（cells=1，即 origin 本身）之外，CE Architect.c:1484-1486
         // 「Mark the feature location as part of the machine, in case it is not
         // already inside of it」的字面行为，实现无缺陷。仍**全等**钉死。
+        // ★ V-2b-6 顺延（本文件在 V-2b-6 任务书 §5 授权清单内）★
+        // 原 pin（V-2b-5 顺延后）是「424242/D3 A−B = ['13,10']」（18 号
+        // vestibule_flammable_barricade 的 feature 落在单格 interior 之外）。
+        // V-2b-6 的钥匙轮流位移再次改变 D3 机器构成（现为 6/15 号
+        // reward_consumables ×2 + 11 号 vestibule_pit_trap_field +
+        // 17 号 vestibule_throwing_tutorial，18 号不在本层），新事实
+        // A−B = ∅。仍**全等**钉死。守卫力量下降的登记与上方注同（本轮
+        // AD3 逐格断言的参照系已改为 gridDerived，空转问题随参照系校正消解）。
         expect(outsideInterior,
             `A−B（网格派生 − ∪mr.cells）变动（选中层 D${pickedLevel}）：按 CE GlobalsBrogue.c ` +
             '重核该层的机器与落位；注意"每格都是 item/monster 布点"的前提过强（见上方注）')
-            .toEqual(['13,10']);
+            .toEqual([]);
 
         // 旧存档兼容：字段整体缺失 = 无机器（读入不抛、旗标为 0）
         const legacy = JSON.parse(JSON.stringify(snapshot!)) as ReturnType<Game['toSnapshot']>;

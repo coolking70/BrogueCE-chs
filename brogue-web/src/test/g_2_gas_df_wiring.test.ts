@@ -469,8 +469,12 @@ describe('G-2 对抗⑦：未迁移气体只登记（载体盘点表的显式留
         // **V-2b-5 第五次顺延**：休眠唤醒轮四条新条目里 web 无 tile 的两条
         //（DF_WALL_CRACK / DF_CRACKING_STATUE）入列，26 → 28。逐条见
         // DungeonFeatureCatalog 的 V-2b-5 块注与 v_2b_5_dormant A3。
+        // **V-2b-6 第六次顺延**：钥匙轮七条新条目里 web 无 tile 的两条
+        //（DF_SHOW_POISON_GAS_VENT / DF_POISON_GAS_VENT_OPEN）入列、
+        // DF_OPEN_PORTCULLIS 摘除（tile PORTCULLIS_DORMANT 该轮落地），
+        // 净 28 → 29。逐条见 DungeonFeatureCatalog 的 V-2b-6 块注与 c_4b E4。
         expect(DF_MISSING_TILES, 'F-2c 后 DF_EXPLOSION_FIRE 已摘出缺 tile 名单').not.toContain(DF.DF_EXPLOSION_FIRE);
-        expect(DF_MISSING_TILES).toHaveLength(28);
+        expect(DF_MISSING_TILES).toHaveLength(29);
         const f = catalogFeature(DF.DF_EXPLOSION_FIRE);
         expect(f.tile).toBe(C.GAS_EXPLOSION);
         expect(f.startProbability).toBe(60);

@@ -432,16 +432,16 @@
     },
     {
         "id": "reward_kennel",
-        "name": "Kennel",
+        "name": "Kennel -- allies locked in cages in an open room; choose one or two to unlock and take with you.",
         "depthRange": [
-            4,
-            18
+            5,
+            26
         ],
         "roomSize": [
-            6,
-            15
+            30,
+            80
         ],
-        "frequency": 6,
+        "frequency": 8,
         "category": "reward",
         "flags": [
             "BP_ROOM",
@@ -449,7 +449,27 @@
         ],
         "features": [
             {
-                "monsterId": "_random_ally_",
+                "terrain": "MONSTER_CAGE_CLOSED",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    3,
+                    5
+                ],
+                "minimumInstanceCount": 3,
+                "personalSpace": 2,
+                "hordeFlags": [
+                    "HORDE_MACHINE_KENNEL",
+                    "HORDE_LEADER_CAPTIVE"
+                ],
+                "flags": [
+                    "MF_GENERATE_HORDE",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_IMPREGNABLE"
+                ]
+            },
+            {
+                "itemCategory": "KEY",
+                "itemId": "cage_key",
                 "instanceCount": [
                     1,
                     2
@@ -457,9 +477,44 @@
                 "minimumInstanceCount": 1,
                 "personalSpace": 1,
                 "flags": [
-                    "MF_GENERATE_MONSTER",
-                    "MF_MONSTER_IS_ALLY",
-                    "MF_MONSTER_IS_CAGED"
+                    "MF_PERMIT_BLOCKING",
+                    "MF_GENERATE_ITEM",
+                    "MF_OUTSOURCE_ITEM_TO_MACHINE",
+                    "MF_SKELETON_KEY",
+                    "MF_KEY_DISPOSABLE"
+                ]
+            },
+            {
+                "featureDF": "DF_AMBIENT_BLOOD",
+                "instanceCount": [
+                    3,
+                    5
+                ],
+                "minimumInstanceCount": 3,
+                "personalSpace": 1,
+                "flags": []
+            },
+            {
+                "featureDF": "DF_BONES",
+                "instanceCount": [
+                    3,
+                    5
+                ],
+                "minimumInstanceCount": 3,
+                "personalSpace": 1,
+                "flags": []
+            },
+            {
+                "terrain": "TORCH_WALL",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    2,
+                    3
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_BUILD_IN_WALLS"
                 ]
             }
         ]
@@ -947,7 +1002,8 @@
                     "MF_OUTSOURCE_ITEM_TO_MACHINE",
                     "MF_KEY_DISPOSABLE",
                     "MF_IMPREGNABLE"
-                ]
+                ],
+                "itemId": "iron_key"
             }
         ]
     },
@@ -1636,40 +1692,180 @@
     },
     {
         "id": "key_poison_gas",
-        "name": "Poison Gas Chamber",
+        "name": "Poison gas -- key on an altar; take key to cause a caustic gas vent to appear and the door to be blocked; there is a hidden trapdoor or an escape item somewhere inside",
         "depthRange": [
-            5,
-            18
+            4,
+            26
         ],
         "roomSize": [
-            10,
-            20
+            35,
+            60
         ],
-        "frequency": 6,
+        "frequency": 7,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM",
+            "BP_PURGE_INTERIOR",
+            "BP_SURROUND_WITH_WALLS"
+        ],
+        "features": [
+            {
+                "terrain": "ALTAR_SWITCH",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_TREAT_AS_BLOCKING"
+                ]
+            },
+            {
+                "terrain": "MACHINE_POISON_GAS_VENT_HIDDEN",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    2
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": []
+            },
+            {
+                "terrain": "TRAP_DOOR_HIDDEN",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_ALTERNATIVE"
+                ]
+            },
+            {
+                "itemCategory": "SCROLL",
+                "itemId": "scroll_of_teleportation",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_ALTERNATIVE"
+                ]
+            },
+            {
+                "itemCategory": "POTION",
+                "itemId": "potion_of_descent",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_ALTERNATIVE"
+                ]
+            },
+            {
+                "terrain": "WALL_LEVER_HIDDEN_DORMANT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_BUILD_IN_WALLS",
+                    "MF_IMPREGNABLE"
+                ]
+            },
+            {
+                "terrain": "PORTCULLIS_DORMANT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_PERMIT_BLOCKING"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_pit_trap",
+        "name": "Pit traps -- key on an altar, room full of pit traps",
+        "depthRange": [
+            1,
+            26
+        ],
+        "roomSize": [
+            30,
+            100
+        ],
+        "frequency": 10,
         "category": "key_guard",
         "flags": [
             "BP_ROOM"
         ],
-        "doorTerrain": "LOCKED_DOOR",
         "features": [
             {
-                "terrain": "TRAP",
-                "trapType": "poison_gas",
+                "terrain": "ALTAR",
+                "layer": "DUNGEON",
                 "instanceCount": [
-                    3,
-                    6
+                    1,
+                    1
                 ],
-                "minimumInstanceCount": 3,
-                "flags": []
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING"
+                ]
             },
             {
-                "terrain": "PRESSURE_PLATE",
+                "terrain": "TRAP_DOOR_HIDDEN",
+                "layer": "DUNGEON",
                 "instanceCount": [
-                    2,
-                    3
+                    30,
+                    40
                 ],
-                "minimumInstanceCount": 2,
-                "flags": []
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_REPEAT_UNTIL_NO_PROGRESS"
+                ]
+            },
+            {
+                "terrain": "SECRET_DOOR",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_PERMIT_BLOCKING",
+                    "MF_BUILD_AT_ORIGIN"
+                ]
             }
         ]
     },

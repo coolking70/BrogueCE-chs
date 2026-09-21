@@ -153,7 +153,7 @@ describe('V-1b 前提自检', () => {
     //（GlobalsBrogue.c:320 STATUE_DORMANT_DOORWAY）与 69 号（:608/:611 两条
     // STATUE_DORMANT 的 BUILD_AT_ORIGIN / BUILD_IN_WALLS 替代组）落地，
     // 17 → 20。三条均 item=null（地形载体）。MF_ALTERNATIVE_2 仍零载体。
-    it('P1（V-2b-5 四次顺延）生产数据带 MF_ALTERNATIVE 的 feature 恰为 CE 2/3/4/5/23/18/22/25/21/69 号替代组二十条；MF_ALTERNATIVE_2 仍零载体', () => {
+    it('P1（V-2b-6 五次顺延）生产数据带 MF_ALTERNATIVE 的 feature 恰为 CE 2/3/4/5/23/18/22/25/21/69/40 号替代组二十三条；MF_ALTERNATIVE_2 仍零载体', () => {
         const flagged = (blueprintData as BlueprintDef[]).flatMap(bp =>
             bp.features.map(f => ({ bpId: bp.id, f }))
                 .filter(({ f }) => f.flags.includes('MF_ALTERNATIVE') || f.flags.includes('MF_ALTERNATIVE_2'))
@@ -185,13 +185,24 @@ describe('V-1b 前提自检', () => {
             { bpId: 'vestibule_throwing_tutorial', alt1: true, alt2: false, item: null },
             { bpId: 'vestibule_guardian_obstacle', alt1: true, alt2: false, item: null },
             { bpId: 'vestibule_guardian_obstacle', alt1: true, alt2: false, item: null },
+            // V-2b-6 五次顺延：CE 40 号（:439 TRAP_DOOR_HIDDEN）的 null-item
+            // 载体，蓝图序 26 在 vestibule_statue_monster（39）之前。
+            { bpId: 'key_poison_gas', alt1: true, alt2: false, item: null },
             // V-2b-5 四次顺延（17 → 20）：CE 21 号（:320）与 69 号（:608/:611，
             // 原地/进墙两条替代）的雕像载体，itemId 为空 → item 记 null。
             { bpId: 'vestibule_statue_monster', alt1: true, alt2: false, item: null },
             { bpId: 'area_trick_statue', alt1: true, alt2: false, item: null },
             { bpId: 'area_trick_statue', alt1: true, alt2: false, item: null },
+            { bpId: 'key_poison_gas', alt1: true, alt2: false, item: 'potion_of_descent' },
             { bpId: 'reward_pedestal_consumable', alt1: true, alt2: false, item: 'potion_of_life' },
             { bpId: 'reward_pedestal_consumable', alt1: true, alt2: false, item: 'scroll_of_enchantment' },
+            // V-2b-6 五次顺延（20 → 23）：CE 40 号 Poison gas（GlobalsBrogue.c:439-441）
+            // 的三条逃生线——TRAP_DOOR_HIDDEN / SCROLL_TELEPORT / POTION_DESCENT
+            // 构成一条 MF_ALTERNATIVE 替代组（三选一）。TRAP_DOOR_HIDDEN 的
+            // itemId 为空 → item 记 null，按稳定序排进 null 组（见上方）；
+            // 两条具名物品按字典序排进具名组（descent < life < enchantment
+            // < teleportation，与 received 序一致）。
+            { bpId: 'key_poison_gas', alt1: true, alt2: false, item: 'scroll_of_teleportation' },
         ]);
     });
 });

@@ -234,6 +234,14 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         [TerrainType.RAT_TRAP_WALL_DORMANT]: 0,         // Globals.c:559 NO_LIGHT
         [TerrainType.STATUE_DORMANT_DOORWAY]: 0,        // Globals.c:551 NO_LIGHT
         [TerrainType.TURRET_DORMANT]: 0,                // Globals.c:356 NO_LIGHT
+        // ── V-2b-6：钥匙轮的六个新 tile，全部 NO_LIGHT（Globals.c:370/371/
+        // 395/340/350/464 第 10 列逐条核对）。
+        [TerrainType.MONSTER_CAGE_OPEN]: 0,             // Globals.c:370 NO_LIGHT
+        [TerrainType.MONSTER_CAGE_CLOSED]: 0,           // Globals.c:371 NO_LIGHT
+        [TerrainType.MACHINE_POISON_GAS_VENT_HIDDEN]: 0, // Globals.c:395 NO_LIGHT
+        [TerrainType.PORTCULLIS_DORMANT]: 0,            // Globals.c:340 NO_LIGHT
+        [TerrainType.WALL_LEVER_HIDDEN_DORMANT]: 0,     // Globals.c:350 NO_LIGHT
+        [TerrainType.BONES]: 0,                         // Globals.c:464 NO_LIGHT
     };
 
     it('全 tile 的 glowLight 逐值等于 CE 原列（结构性穷尽）', () => {

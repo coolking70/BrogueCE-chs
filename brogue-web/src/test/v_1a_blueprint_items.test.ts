@@ -122,17 +122,22 @@ describe('V-1a A：结构（数据形态）', () => {
         expect(gameTs.includes('_random_good_'), 'Game.ts 仍含 _random_good_ 字面量').toBe(false);
     });
 
-    it('T2（V-2a 反转）九台门厅/守卫机器零自产奖励 feature；vestibule_locked 按 CE :300 恰一条 KEY 解题工具 feature', () => {
+    it('T2（V-2a 反转）门厅/守卫机器零自产奖励 feature（key_poison_gas 按 V-2b-6 反转）；vestibule_locked 按 CE :300 恰一条 KEY 解题工具 feature', () => {
         // 原 T2 断言（V-1a 时）：「十台门厅/守卫机器全部零 itemCategory
         // feature」。V-2a 给 vestibule_locked 按 CE GlobalsBrogue.c:300 落地
         // {terrain: LOCKED_DOOR, itemCategory: KEY, MF_BUILD_AT_ORIGIN |
         // MF_OUTSOURCE_ITEM_TO_MACHINE …} 的钥匙外包 feature（本轮 2.2 的
         // 行为终点）——T2 的错误消息自预告「V-2 按 CE 全表重写时会以解题
         // 工具 feature 替代——届时改写本清单，不是放宽」，现按此反转：
-        // 其余九台保持零自产奖励（越界守卫），vestibule_locked 改钉新事实。
+        // 其余机器保持零自产奖励（越界守卫），vestibule_locked 改钉新事实。
+        // **V-2b-6 反转**：key_poison_gas 按 CE GlobalsBrogue.c:436-444 重写
+        // 为领养机器，其 SCROLL_TELEPORT / POTION_DESCENT 两条逃生工具
+        // feature（CE :440/:441，MF_ALTERNATIVE 组）是 CE 原表数据、不是
+        // 自产奖励——豁免越界守卫、单独正向钉死（见下方 T2b）。
         const offenders: string[] = [];
         for (const id of TEN_MACHINES) {
             if (id === 'vestibule_locked') continue; // V-2a 已反转，下方单独钉
+            if (id === 'key_poison_gas') continue; // V-2b-6 已反转，下方 T2b 单独钉
             const bp = blueprints.find(b => b.id === id);
             if (!bp) { offenders.push(`${id}: 蓝图不存在`); continue; }
             for (const f of bp.features) {
@@ -149,6 +154,25 @@ describe('V-1a A：结构（数据形态）', () => {
         expect(kf.flags, 'CE :300 flags 位缺旗标').toEqual(expect.arrayContaining([
             'MF_BUILD_AT_ORIGIN', 'MF_GENERATE_ITEM', 'MF_OUTSOURCE_ITEM_TO_MACHINE',
         ]));
+    });
+
+    it('T2b（V-2b-6）key_poison_gas 按 CE :436-444 重写：两条逃生工具 feature（SCROLL_TELEPORT / POTION_DESCENT，MF_ALTERNATIVE 组）', () => {
+        // 越界守卫的反转面：key_poison_gas 的物品 feature 从"零"改为"恰这两
+        // 条"。CE GlobalsBrogue.c:440/:441 原表——SCROLL_TELEPORT 与
+        // POTION_DESCENT 各 {1,1}，MF_GENERATE_ITEM | MF_NOT_IN_HALLWAY |
+        // MF_ALTERNATIVE（与 TRAP_DOOR_HIDDEN 三选一的逃生线）。多一条、
+        // 少一条、旗标走样都红。
+        const gas = blueprints.find(b => b.id === 'key_poison_gas');
+        expect(gas).toBeDefined();
+        const itemFeats = gas!.features.filter(f => f.itemCategory);
+        expect(itemFeats, 'key_poison_gas 应恰 2 条物品 feature（CE :440/:441）').toHaveLength(2);
+        const byId = new Map(itemFeats.map(f => [f.itemId, f]));
+        expect(byId.get('scroll_of_teleportation')?.itemCategory).toBe('SCROLL');
+        expect(byId.get('potion_of_descent')?.itemCategory).toBe('POTION');
+        for (const f of itemFeats) {
+            expect(f.instanceCount).toEqual([1, 1]);
+            expect(f.flags).toEqual(expect.arrayContaining(['MF_GENERATE_ITEM', 'MF_NOT_IN_HALLWAY', 'MF_ALTERNATIVE']));
+        }
     });
 
     it('T3 area_shrine 掩码逐字 = CE GlobalsBrogue.c:561-565 的五类，数量 {1,1}，走 MF_GENERATE_ITEM', () => {

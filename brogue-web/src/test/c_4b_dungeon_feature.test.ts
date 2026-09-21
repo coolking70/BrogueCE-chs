@@ -579,7 +579,15 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         //   DF_TURRET_EMERGE :876（Rogue.h:1576/1666/1720/1724）。它们是
         //   21/29/43/50/56/69/70 号休眠载体地形 promoteType 链的落点，
         //   逐字段钉死在 v_2b_5_dormant 的 A3 组。
-        expect(keys.length).toBe(61);
+        // V-2b-5：57 → 61（+4，休眠唤醒轮：DF_ALTAR_INERT/DF_WALL_CRACK/
+        // DF_CRACKING_STATUE/DF_TURRET_EMERGE）。
+        // V-2b-6：61 → 68（+7，钥匙轮）。CE Globals.c 目录行逐条：
+        //   DF_BONES :611、DF_CREATE_LEVER :734、DF_SHOW_POISON_GAS_VENT :851、
+        //   DF_POISON_GAS_VENT_OPEN :852、DF_ACTIVATE_PORTCULLIS :853、
+        //   DF_AMBIENT_BLOOD :869、DF_MONSTER_CAGE_OPENS :927。
+        // 两条是 10 号 Kennel feature 的 DF 列（featureDF 载体本轮接上），
+        // 五条是 40 号新地形三链字段拉入闭包的载体。
+        expect(keys.length).toBe(68);
         expect(DF.DF_SHOW_TRAPDOOR_HALO, 'V-2b-2b：CE Rogue.h:1487（Globals.c:627）').toBe(16);
         expect(DF.DF_SHOW_TRAPDOOR, 'V-2b-2b：TRAP_DOOR_HIDDEN.discoverType 的载体（Rogue.h:1488，Globals.c:628）').toBe(17);
         expect(DF.DF_WOODEN_BARRICADE_BURN, 'V-2b-2b：WOODEN_BARRICADE.fireType 的载体（Rogue.h:1669，Globals.c:825）').toBe(156);
@@ -695,6 +703,13 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         start.add(DF.DF_LUMINESCENT_FUNGUS);
         start.add(DF.DF_MAGIC_PIPING);
         start.add(DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING);
+        // V-2b-6：DF_AMBIENT_BLOOD / DF_BONES 第二起点——本轮 FeatureDef 已有
+        // df 列（feature.featureDF），但闭包是**静态数据扫描**，不运行蓝图；
+        // CE 的起点是 10 号 Kennel feature 的 DF 列（GlobalsBrogue.c:252/253
+        // `{DF_AMBIENT_BLOOD, 0, …}` / `{DF_BONES, 0, …}`），web 消费点
+        // BlueprintEngine 的 featureDF 落位分支（CE Architect.c:1434-1440）。
+        start.add(DF.DF_AMBIENT_BLOOD);
+        start.add(DF.DF_BONES);
         // 沿 subsequentDF 闭包展开（悬空引用在此翻红）。
         const closure = new Set<DF>();
         const queue = [...start];
@@ -734,7 +749,10 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
             'DF_MACHINE_FLOOR_TRIGGER_REPEATING）在 web 无消费者' +
             '（CE 起点是蓝图 feature 的 DF 列）——49→57；' +
             'V-2b-5：休眠唤醒轮四条入目录后全部经七条新地形的三链字段' +
-            '（promoteType）自动入闭包——57→61').toBe(61);
+            '（promoteType）自动入闭包——57→61；' +
+            'V-2b-6：钥匙轮七条入目录后，5 条经六条新地形的三链字段' +
+            '（promoteType/discoverType）直接入闭包，2 条（DF_AMBIENT_BLOOD/' +
+            'DF_BONES）经 Kennel feature 的 DF 列起点入闭包——61→68').toBe(68);
     });
 
     it('E3 字段抽查：BRIDGE_FALL_PREP 的 prop/200/100、BRIDGE_FIRE 的描述与 tile=0、其余代表条目', () => {
@@ -895,7 +913,15 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // STATUE_CRACKING :872）；另两条带完整 tile 故不入列——
         // DF_ALTAR_INERT（tile ALTAR_INERT = web TerrainType.ALTAR）与
         // DF_TURRET_EMERGE（tile = WALL，web 既有）。
-        expect(DF_MISSING_TILES.length).toBe(28);
+        // V-2b-6：28 → 29（净 +1）。七条新目录条目里两条 tile=null
+        //（DF_SHOW_POISON_GAS_VENT→MACHINE_POISON_GAS_VENT_DORMANT :851、
+        // DF_POISON_GAS_VENT_OPEN→MACHINE_POISON_GAS_VENT :852）；五条带
+        // 完整 tile 不入列——DF_CREATE_LEVER（WALL_LEVER_HIDDEN）、
+        // DF_ACTIVATE_PORTCULLIS（PORTCULLIS_CLOSED）、DF_AMBIENT_BLOOD
+        //（RED_BLOOD = TerrainType.BLOOD）、DF_MONSTER_CAGE_OPENS
+        //（MONSTER_CAGE_OPEN）、DF_BONES（BONES，均本轮新增/既有）。
+        // 同轮摘除 DF_OPEN_PORTCULLIS（tile PORTCULLIS_DORMANT 本轮落地）。
+        expect(DF_MISSING_TILES.length).toBe(29);
         // 登记条目确实都是 tile=null，且抛错带 CE tile 名。
         for (const id of DF_MISSING_TILES) {
             expect(DUNGEON_FEATURE_CATALOG[id]!.tile, `DF#${id} 应为 null tile`).toBeNull();

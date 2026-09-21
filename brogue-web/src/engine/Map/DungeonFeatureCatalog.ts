@@ -170,6 +170,32 @@ export enum DF {
                                           // Globals.c:872）
     DF_TURRET_EMERGE               = 189, // :1724（TURRET_DORMANT.promoteType，
                                           // Globals.c:876）
+    // ── V-2b-6：钥匙轮的七条新条目。id 与 CE 枚举逐一对位（Rogue.h 实测
+    //    行号 + 枚举脚本数序 + 目录锚点校准三重核对）。两条是 10 号 Kennel
+    //    feature 的 **DF 列**（featureDF 载体本轮随 BlueprintEngine 接上——
+    //    CE Architect.c:1434-1440 的 spawnDungeonFeature 分支不再是缺口）；
+    //    五条是 40 号新地形三链字段（discoverType/promoteType）拉入闭包的
+    //    载体。
+    DF_BONES                       = 6,   // :1475（10 号 Kennel feature 的 DF 列，
+                                          // GlobalsBrogue.c:253 → Globals.c:611
+                                          // {BONES, SURFACE, 75, 23, 0}）
+    DF_CREATE_LEVER                = 97,  // :1587（WALL_LEVER_HIDDEN_DORMANT.
+                                          // promoteType，Globals.c:734
+                                          // {WALL_LEVER_HIDDEN, DUNGEON, 0, 0, 0}）
+    DF_SHOW_POISON_GAS_VENT        = 174, // :1699（MACHINE_POISON_GAS_VENT_HIDDEN.
+                                          // discoverType，Globals.c:851）
+    DF_POISON_GAS_VENT_OPEN        = 175, // :1700（MACHINE_POISON_GAS_VENT_HIDDEN.
+                                          // promoteType，Globals.c:852）
+    DF_ACTIVATE_PORTCULLIS         = 176, // :1701（PORTCULLIS_DORMANT.
+                                          // promoteType，Globals.c:853
+                                          // {PORTCULLIS_CLOSED, DUNGEON, 0,0,
+                                          //  DFF_EVACUATE_CREATURES_FIRST}）
+    DF_AMBIENT_BLOOD               = 186, // :1717（10 号 Kennel feature 的 DF 列，
+                                          // GlobalsBrogue.c:252 → Globals.c:869
+                                          // {RED_BLOOD, SURFACE, 75, 25, 0}）
+    DF_MONSTER_CAGE_OPENS          = 216  // :1775（MONSTER_CAGE_CLOSED.
+                                          // promoteType，Globals.c:927
+                                          // {MONSTER_CAGE_OPEN, DUNGEON, 0, 0, 0}）
 }
 
 /** 目录条目 = CE 结构体的 web 投影（messageDisplayed 除外——它依赖玩家
@@ -648,7 +674,10 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     // GENERIC_FLASH_LIGHT}（:854）—— 铁闸升起（PORTCULLIS_CLOSED.promoteType；
     // tile PORTCULLIS_DORMANT web 无，登记——闸门打开的落点地形）。
     [DF.DF_OPEN_PORTCULLIS]: {
-        id: DF.DF_OPEN_PORTCULLIS, ceLine: 854, ceTile: 'PORTCULLIS_DORMANT', tile: null,
+        id: DF.DF_OPEN_PORTCULLIS, ceLine: 854, ceTile: 'PORTCULLIS_DORMANT',
+        // V-2b-6：tile PORTCULLIS_DORMANT 本轮随 40 号蓝图落地（TerrainType.
+        // PORTCULLIS_DORMANT）——从 DF_MISSING_TILES 摘除，接上完整 tile。
+        tile: TerrainType.PORTCULLIS_DORMANT,
         layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: 'the portcullis slowly rises from the ground into a slot in the ceiling.',
@@ -906,6 +935,82 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
         description: 'you hear a click, and the stones in the wall shift to reveal turrets!',
         lightFlare: '', flashColor: '', effectRadius: 0,
     },
+
+    // ── V-2b-6：钥匙轮的七条新条目（逐字段抄自 Globals.c 目录行，行号即
+    //    ceLine）。tile 有 web 载体的直接接上；没有的按惯例 tile: null 登记、
+    //    进 DF_MISSING_TILES。
+
+    // {BONES, SURFACE, 75, 23, 0}（:611）——10 号 Kennel 的骨头装饰。
+    // V-2b-6：tile BONES 随 DF 活消费者（BlueprintEngine 的 featureDF 落位）
+    // 同轮落地——catalogFeature 对 tile:null 抛错，该 DF 走的是真实路径。
+    [DF.DF_BONES]: {
+        id: DF.DF_BONES, ceLine: 611, ceTile: 'BONES', tile: TerrainType.BONES,
+        layer: DungeonLayer.SURFACE, startProbability: 75, probabilityDecrement: 23,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {WALL_LEVER_HIDDEN, DUNGEON, 0, 0, 0}（:734）——40 号通电链：休眠墙杆
+    // 显形为 WALL_LEVER_HIDDEN（web 有该 tile）。
+    [DF.DF_CREATE_LEVER]: {
+        id: DF.DF_CREATE_LEVER, ceLine: 734, ceTile: 'WALL_LEVER_HIDDEN', tile: TerrainType.WALL_LEVER_HIDDEN,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {MACHINE_POISON_GAS_VENT_DORMANT, DUNGEON, 0, 0, 0, "you notice an
+    // inactive gas vent hidden in a crevice of the floor.", GENERIC_FLASH_LIGHT}
+    //（:851）——喷口显形体；tile MACHINE_POISON_GAS_VENT_DORMANT web 无（登记）。
+    [DF.DF_SHOW_POISON_GAS_VENT]: {
+        id: DF.DF_SHOW_POISON_GAS_VENT, ceLine: 851, ceTile: 'MACHINE_POISON_GAS_VENT_DORMANT', tile: null,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: 'you notice an inactive gas vent hidden in a crevice of the floor.',
+        lightFlare: 'GENERIC_FLASH_LIGHT', flashColor: '', effectRadius: 0,
+    },
+
+    // {MACHINE_POISON_GAS_VENT, DUNGEON, 0, 0, 0, "deadly purple gas starts
+    // wafting out of hidden vents in the floor!"}（:852）——毒气喷口开启体；
+    // tile MACHINE_POISON_GAS_VENT web 无（登记）。
+    [DF.DF_POISON_GAS_VENT_OPEN]: {
+        id: DF.DF_POISON_GAS_VENT_OPEN, ceLine: 852, ceTile: 'MACHINE_POISON_GAS_VENT', tile: null,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: 'deadly purple gas starts wafting out of hidden vents in the floor!',
+        lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {PORTCULLIS_CLOSED, DUNGEON, 0, 0, DFF_EVACUATE_CREATURES_FIRST,
+    // "with a heavy mechanical sound, an iron portcullis falls from the
+    // ceiling!"}（:853）——40 号通电链的闸门落下。tile PORTCULLIS_CLOSED
+    // web 已有（V-2b-3）。
+    [DF.DF_ACTIVATE_PORTCULLIS]: {
+        id: DF.DF_ACTIVATE_PORTCULLIS, ceLine: 853, ceTile: 'PORTCULLIS_CLOSED', tile: TerrainType.PORTCULLIS_CLOSED,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: DFF_EVACUATE_CREATURES_FIRST, cePropagationTerrain: '', propagationTerrain: null,
+        subsequentDF: null,
+        description: 'with a heavy mechanical sound, an iron portcullis falls from the ceiling!',
+        lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {RED_BLOOD, SURFACE, 75, 25, 0}（:869）——10 号 Kennel 的血渍装饰。
+    // tile RED_BLOOD = web 既有 TerrainType.BLOOD。
+    [DF.DF_AMBIENT_BLOOD]: {
+        id: DF.DF_AMBIENT_BLOOD, ceLine: 869, ceTile: 'RED_BLOOD', tile: TerrainType.BLOOD,
+        layer: DungeonLayer.SURFACE, startProbability: 75, probabilityDecrement: 25,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // {MONSTER_CAGE_OPEN, DUNGEON, 0, 0, 0}（:927）——笼锁打开（10 号：
+    // cage key 开笼的落点 tile，本轮新增 MONSTER_CAGE_OPEN）。
+    [DF.DF_MONSTER_CAGE_OPENS]: {
+        id: DF.DF_MONSTER_CAGE_OPENS, ceLine: 927, ceTile: 'MONSTER_CAGE_OPEN', tile: TerrainType.MONSTER_CAGE_OPEN,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
 };
 
 /** 登记"CE 有 tileType 而 web 没有地形"的目录条目 id 清单
@@ -945,7 +1050,8 @@ export const DF_MISSING_TILES: readonly DF[] = [
     DF.DF_REVEAL_LEVER,            // WALL_LEVER（显形后的带线墙杆——18 号激活
                                    // 链的载体，激活轮随新地形落地重核）
     DF.DF_MEDIUM_HOLE,             // TRAP_DOOR（同 DF_SHOW_TRAPDOOR 所缺）
-    DF.DF_OPEN_PORTCULLIS,         // PORTCULLIS_DORMANT（闸门升起的落点）
+    // DF.DF_OPEN_PORTCULLIS 摘除（V-2b-6）：tile PORTCULLIS_DORMANT 本轮
+    // 随 40 号蓝图落地，该条已接上完整 tile。
     DF.DF_SHOW_METHANE_VENT,       // MACHINE_METHANE_VENT_DORMANT（显形体）
     DF.DF_METHANE_VENT_OPEN,       // MACHINE_METHANE_VENT（开启态喷口驻留体）
     DF.DF_PILOT_LIGHT,             // PILOT_LIGHT（火嘴落地的火把）
@@ -980,4 +1086,14 @@ export const DF_MISSING_TILES: readonly DF[] = [
                                    // 的 tile 都是 RUBBLE——所以真正卡住一切的
                                    // 是 DF_RUBBLE 本身。RUBBLE 地形落地的那一轮
                                    // 应把上面四条一并摘除。见 v-2b-5 报告 §3。
+    // ── V-2b-6 增补（2 条，净 28 → 29）：钥匙轮七条新目录条目里 web 无
+    //    tile 的两条；另五条带完整 tile 故不入列——DF_CREATE_LEVER
+    //   （tile WALL_LEVER_HIDDEN，V-2b-3 已有）、DF_ACTIVATE_PORTCULLIS
+    //   （tile PORTCULLIS_CLOSED，V-2b-3 已有）、DF_AMBIENT_BLOOD
+    //   （tile RED_BLOOD = web 既有 TerrainType.BLOOD）、
+    //   DF_MONSTER_CAGE_OPENS（tile MONSTER_CAGE_OPEN，本轮新增）、
+    //   DF_BONES（tile BONES，本轮新增——featureDF 活消费者强制）。
+    //   同轮摘除：DF_OPEN_PORTCULLIS（上方注）。
+    DF.DF_SHOW_POISON_GAS_VENT,    // MACHINE_POISON_GAS_VENT_DORMANT（显形体）
+    DF.DF_POISON_GAS_VENT_OPEN,    // MACHINE_POISON_GAS_VENT（开启态喷口驻留体）
 ];

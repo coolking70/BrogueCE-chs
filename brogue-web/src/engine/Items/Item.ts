@@ -125,14 +125,22 @@ export class Item implements Entity {
 
     /**
      * B-4b：≙ CE item->keyLoc[KEY_ID_MAXIMUM]（Rogue.h:1417/1389；
-     * keyLocationProfile = { loc, machine, disposableHere }，web 略去
-     * disposableHere）的最小绑定：本钥匙对应哪些锁。CE keyMatchesLocation
-     * （Items.c:4040-4043）按 loc 或 machine 匹配；web 当前解锁交互
-     * （Game.ts 的 LOCKED_DOOR 分支）不查绑定、任意钥匙开任意锁——本字段
-     * 先作为**可查询的对应关系**（钥匙数 == 锁数的核算锚点），解锁侧消费
-     * 留给后续轮次。仅 KEY 类物品在生成时写入。
+     * keyLocationProfile = { loc, machine, disposableHere }）的最小绑定：
+     * 本钥匙对应哪些锁。CE keyMatchesLocation（Items.c:4040-4043）按 loc 或
+     * machine 匹配。
+     * V-2b-6：解锁消费端接线（Game.keyInPackFor）——disposableHere 补齐
+     * （CE Rogue.h:1391-1395 的第三维；useKeyAt Movement.c:636-656 按它决定
+     * 开锁后消不消耗钥匙），originDepth 补齐（CE Items.c:4038 的
+     * `originDepth == rogue.depthLevel` 判据：跨层带下去的钥匙不认锁）。
      */
-    public keyLoc: Array<{ loc: { x: number; y: number }; machine: number }> = [];
+    public keyLoc: Array<{ loc: { x: number; y: number }; machine: number; disposableHere?: boolean }> = [];
+
+    /**
+     * V-2b-6：≙ CE item->originDepth（Rogue.h:1422）——钥匙生成时的层号。
+     * keyMatchesLocation 的第一判据（Items.c:4038）。undefined = 旧存档/测试
+     * 裸造的钥匙，按"当层"处理（登记偏差：CE 恒有值）。
+     */
+    public originDepth?: number;
 
     constructor(name: string, char: string, color: number, category: ItemCategory) {
         // id 只需唯一：走单调计数器（与 Creature 共用一个序列），

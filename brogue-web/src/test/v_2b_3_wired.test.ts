@@ -40,6 +40,7 @@ import {
     DUNGEON_FEATURE_CATALOG,
     DF_MISSING_TILES,
 } from '../engine/Map/DungeonFeatureCatalog';
+import { catalogFeature } from '../engine/Map/DungeonFeature';
 import {
     promoteTile,
     activateMachine,
@@ -233,9 +234,26 @@ describe('V-2b-3 A：载体地形逐字段 ≡ CE Globals.c（对抗：抄错任
         // V-2b-5 第五次顺延：休眠唤醒轮四条新条目里 web 无 tile 的两条
         //（DF_WALL_CRACK / DF_CRACKING_STATUE）入列，26 → 28；另两条
         //（DF_ALTAR_INERT / DF_TURRET_EMERGE）tile 完整，不入列。
-        expect(DF_MISSING_TILES).toHaveLength(28);
+        // V-2b-6 第六次顺延：钥匙轮七条新条目里 web 无 tile 的两条
+        //（DF_SHOW_POISON_GAS_VENT / DF_POISON_GAS_VENT_OPEN）入列、
+        // DF_OPEN_PORTCULLIS 摘除（tile PORTCULLIS_DORMANT 该轮落地），
+        // 净 28 → 29。逐条见 DungeonFeatureCatalog 的 V-2b-6 块注。
+        expect(DF_MISSING_TILES).toHaveLength(29);
         for (const d of [DF.DF_WALL_SHATTER, DF.DF_REVEAL_LEVER, DF.DF_INACTIVE_GLYPH,
-            DF.DF_OPEN_PORTCULLIS, DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY]) {
+            DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY]) {
+            expect(DF_MISSING_TILES, `DF[${d}] 应在缺 tile 登记`).toContain(d);
+        }
+        // V-2b-6 反转：DF_OPEN_PORTCULLIS 的 tile PORTCULLIS_DORMANT 已随
+        // 钥匙轮落地（TerrainType.PORTCULLIS_DORMANT），该条**摘出**名单、
+        // 接上完整 tile——留痕前提失效，断言翻转为新事实（F-2c 同款）。
+        expect(DF_MISSING_TILES, 'V-2b-6 后 DF_OPEN_PORTCULLIS 已摘出缺 tile 名单').not.toContain(DF.DF_OPEN_PORTCULLIS);
+        {
+            const op = DUNGEON_FEATURE_CATALOG[DF.DF_OPEN_PORTCULLIS]!;
+            expect(op.tile).toBe(C.PORTCULLIS_DORMANT);
+            expect(() => catalogFeature(DF.DF_OPEN_PORTCULLIS)).not.toThrow();
+        }
+        // V-2b-6 新登记的两条（越界守卫：一条都不能漏抄）。
+        for (const d of [DF.DF_SHOW_POISON_GAS_VENT, DF.DF_POISON_GAS_VENT_OPEN]) {
             expect(DF_MISSING_TILES, `DF[${d}] 应在缺 tile 登记`).toContain(d);
         }
         // V-2b-4 新登记的七条（越界守卫：一条都不能漏抄）。

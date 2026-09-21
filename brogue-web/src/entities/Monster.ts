@@ -14,6 +14,7 @@ import { CombatSystem } from '../engine/Combat/Combat';
 import { logger } from '../engine/Systems/Logger';
 import i18next from 'i18next';
 import { ItemLoader } from '../engine/Items/ItemLoader';
+import type { Item } from '../engine/Items/Item';
 import type { StatusId } from './Creature';
 import { PERMANENT_STATUS_DURATION } from './Creature';
 import { TerrainType } from '../engine/Map/Grid';
@@ -234,6 +235,15 @@ export class Monster extends Creature {
     public abilityFlags: Set<string> = new Set();
     public isAlly: boolean = false;
     public isCaged: boolean = false;
+    /**
+     * V-2b-6：≙ CE creature->carriedItem（Rogue.h:2186 一带；机器侧写入点
+     * Architect.c:1705-1710 `torchBearer->carriedItem = torch`，MF_MONSTER_
+     * TAKE_ITEM feature 的物品随怪携带，怪死时掉落——Monsters.c:4075-4083
+     * makeMonsterDropItem）。web 的物品在此以 Item 引用挂载（实化在
+     * Game.populateLevel 的怪物消费点）；掉落结算在 playerTurnEnded 的
+     * 死亡清扫。
+     */
+    public carriedItem?: Item | null;
     public mutation?: MutationData;
     public description: string = '';
     /**

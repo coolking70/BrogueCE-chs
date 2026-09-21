@@ -155,7 +155,10 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         // V-2b-5：休眠唤醒轮七条入列（CE Globals.c:352/356/357/361/366/551/559，
         // 蓝图 21/29/41/43/50/56/69/70 号的地形载体），69 → 76。逐字段
         // 钉死在 v_2b_5_dormant 的 A1 组（对抗：抄错任一位即红）。
-        expect(names.length).toBe(76);
+        // V-2b-6：钥匙轮六条入列（CE Globals.c:340/350/370/371/395/464，
+        // 蓝图 10/35/40 号的地形载体），76 → 82。逐字段钉死在
+        // v_2b_6_keys 的 A 组（对抗：抄错任一位即红）。
+        expect(names.length).toBe(82);
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             const entry = TERRAIN_FLAGS[t];
@@ -567,6 +570,13 @@ describe('C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时
         // 零旗标）**留在等价论域内**——不跳过，由本组逐位继续把关。
         C.STATUE_DORMANT, C.STATUE_DORMANT_DOORWAY, C.WALL_MONSTER_DORMANT,
         C.RAT_TRAP_WALL_DORMANT, C.TURRET_DORMANT,
+        // V-2b-6：钥匙轮六条里，两条挡通行（MONSTER_CAGE_CLOSED :371 铁笼体、
+        // WALL_LEVER_HIDDEN_DORMANT :350 G_WALL 墙族）——列入跳过，CE 判定
+        // 由下方 V-2b-6 块正向钉死；其余四条（MONSTER_CAGE_OPEN :370 零旗标、
+        // MACHINE_POISON_GAS_VENT_HIDDEN :395 零旗标、PORTCULLIS_DORMANT :340
+        // 零旗标、BONES :464 零旗标）**留在等价论域内**——不跳过，由本组
+        // 逐位继续把关。
+        C.MONSTER_CAGE_CLOSED, C.WALL_LEVER_HIDDEN_DORMANT,
     ]);
     it('terrainAllowsMove（查表）≡ 旧排除清单 {GRANITE,WALL,SECRET_DOOR,LOCKED_DOOR,WATER_DEEP}', () => {
         const names = Object.keys(TerrainType).filter((k) => Number.isNaN(Number(k)));
@@ -690,6 +700,33 @@ describe('C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时
             expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(false);
         }
         for (const t of [C.ALTAR_SWITCH, C.MACHINE_TRIGGER_FLOOR]) {
+            game.grid.setTerrain(20, 20, t);
+            expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(true);
+        }
+    });
+
+    it('V-2b-6：钥匙轮载体的通行判定 = CE 查表口径（两条挡通行、四条可走）', () => {
+        // 上面两条等价断言跳过的两条挡通行 tile 在这里正向钉死（CE Globals.c
+        // 第 11 列 flags 出处）：MONSTER_CAGE_CLOSED :371（T_OBSTRUCTS_
+        // PASSABILITY | T_OBSTRUCTS_SURFACE_EFFECTS | T_OBSTRUCTS_GAS——锁闭
+        // 铁笼挡路，玩家须用钥匙开笼）、WALL_LEVER_HIDDEN_DORMANT :350
+        //（T_OBSTRUCTS_EVERYTHING——G_WALL 伪装的墙族）。反方向同样钉死：
+        // MONSTER_CAGE_OPEN :370 / MACHINE_POISON_GAS_VENT_HIDDEN :395 /
+        // PORTCULLIS_DORMANT :340 / BONES :464 均零旗标可走——开笼后的
+        // 落点 tile 若误加 PASSABILITY，10 号的盟友会被关死在"开着的笼子"里。
+        for (const t of [C.MONSTER_CAGE_CLOSED, C.WALL_LEVER_HIDDEN_DORMANT]) {
+            expect(terrainAllowsMove(t), `terrainAllowsMove(${TerrainType[t]}) 应挡通行`).toBe(false);
+        }
+        for (const t of [C.MONSTER_CAGE_OPEN, C.MACHINE_POISON_GAS_VENT_HIDDEN, C.PORTCULLIS_DORMANT, C.BONES]) {
+            expect(terrainAllowsMove(t), `terrainAllowsMove(${TerrainType[t]}) 应可走`).toBe(true);
+        }
+        const game = createHeadlessGame(424242);
+        const canMoveTo = (game as unknown as { canMoveTo(x: number, y: number): boolean }).canMoveTo.bind(game);
+        for (const t of [C.MONSTER_CAGE_CLOSED, C.WALL_LEVER_HIDDEN_DORMANT]) {
+            game.grid.setTerrain(20, 20, t);
+            expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(false);
+        }
+        for (const t of [C.MONSTER_CAGE_OPEN, C.BONES]) {
             game.grid.setTerrain(20, 20, t);
             expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(true);
         }
