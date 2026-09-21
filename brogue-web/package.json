@@ -7,8 +7,9 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "test": "vitest run --exclude '**/generation_baseline.test.ts'",
+    "test:watch": "vitest",
+    "test:drift": "vitest run src/test/generation_baseline.test.ts"
   },
   "dependencies": {
     "i18next": "^25.8.13",
