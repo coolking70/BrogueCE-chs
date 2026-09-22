@@ -7,13 +7,13 @@ type Metadata = { id: string; ceBlueprintId?: unknown; ceOrigin?: unknown };
 
 // Audited against GlobalsBrogue.c:173–622, including every feature column.
 // This is catalog identity coverage, not a claim of complete gameplay parity.
-// Missing CE 8: outsourced permanent-item reward (no room, four alternative
-// features); none of the web-only reward rooms implements that blueprint.
+// CE 8 added in 9e-2: outsourced reward with an empty area interior and four
+// alternative features; identity coverage does not imply full gameplay parity.
 // Missing CE 48: CE itself sets frequency=0 and says DISABLED (Not fun enough.);
 // no web entry. CE 13/14 are present since 9d. Keep zero-frequency/quarantined
 // CE entries (including 15/18/52/55/65/66) in the identity coverage set.
 const EXPECTED_CE_IDS = [
-    1, 2, 3, 4, 5, 6, 7,
+    1, 2, 3, 4, 5, 6, 7, 8,
     9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
     21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
     31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
@@ -26,6 +26,7 @@ const EXPECTED_CE_IDS = [
 // and uniqueness, but their identical names describe different features.
 // Swapping CE 52 silently quarantines the wrong blueprint in blueprintQualifies.
 const EXPECTED_MAPPING: Record<string, number | null> = {
+    reward_outsourced_item: 8,
     reward_library: null,
     reward_consumables: null,
     reward_treasure_room: 3,
@@ -153,7 +154,7 @@ describe('authoritative CE blueprint mapping', () => {
     it('covers exactly the audited CE set', () => assertCoverage(data));
     it('allows only one web owner for each CE index', () => assertUnique(data));
     it('requires a nonempty reason for every web-only entry', () => assertOrigins(data));
-    it('preserves all 80 audited owners, including distinct statuary entries and CE 52', () => assertMapping(data));
+    it('preserves all 81 audited owners, including distinct statuary entries and CE 52', () => assertMapping(data));
 });
 
 // Exercise the same guards with in-memory defects; never edit generation data or

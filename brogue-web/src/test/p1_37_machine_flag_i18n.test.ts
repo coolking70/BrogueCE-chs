@@ -267,7 +267,17 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
                 // 必须保持为 0；wired 豁免格保留网格上的原编号，不按蓝图 id 特判。
                 for (const mr of results) {
                     const machineLabel = `${label}/${mr.blueprintId}#${mr.machineNumber}`;
-                    expect(mr.cells.length, `${machineLabel}: 机器没有内部格`).toBeGreaterThan(0);
+                    if (mr.blueprintId === 'reward_outsourced_item') {
+                        // CE8 alone declares roomSize [0,0]; its feature/child flags
+                        // still undergo the same per-cell snapshot checks below.
+                        expect(mr.cells).toEqual([]);
+                        expect(mr.door).toBeNull();
+                        expect(mr.itemSpawns).toEqual([]);
+                        expect(mr.subMachines.length).toBeGreaterThan(0);
+                        expect(mr.featureSpawns.length).toBeGreaterThan(0);
+                    } else {
+                        expect(mr.cells.length, `${machineLabel}: 机器没有内部格`).toBeGreaterThan(0);
+                    }
                     const keys = new Set([
                         ...mr.cells.map(key),
                         ...mr.featureSpawns.map(s => key(s.pos)),

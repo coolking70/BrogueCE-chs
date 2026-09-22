@@ -170,10 +170,10 @@ describe('V-2b-2a 前提自检', () => {
         // V-2b-2b 新载体（CE 原表核对）：
         expect(count('MF_BUILD_IN_WALLS'), 'BUILD_IN_WALLS 载体数（V-2b-7 后 22；V-2b-9b 36/37/38/65/66 号共 +6）').toBe(33); // V-2b-9d CE 13/14 literal feature census.
         expect(count('MF_EVERYWHERE'), 'EVERYWHERE 载体数（V-2b-7 后 21；V-2b-9b 共 +8）').toBe(35); // V-2b-9d CE 13/14 literal feature census.
-        expect(count('MF_BUILD_ANYWHERE_ON_LEVEL'), 'BUILD_ANYWHERE 载体数（V-2b-7 后 8；V-2b-9b 36/38/39 号共 +7）').toBe(15);
+        expect(count('MF_BUILD_ANYWHERE_ON_LEVEL'), 'BUILD_ANYWHERE 载体数（原 15；V-2b-9e-2 CE8 四条 +4）').toBe(19);
         expect(count('MF_REPEAT_UNTIL_NO_PROGRESS'), 'REPEAT 载体数（V-2b-7 后 4；V-2b-9b 36/37/38/39/65/66 号共 +6）').toBe(10);
-        expect(count('MF_NO_THROWING_WEAPONS'), 'NO_THROWING_WEAPONS 载体数（V-2b-4 基线 5；V-2b-5 未增）').toBe(5);
-        expect(count('MF_REQUIRE_GOOD_RUNIC'), 'REQUIRE_GOOD_RUNIC 载体数（基线 2；V-2b-5 未增）').toBe(2);
+        expect(count('MF_NO_THROWING_WEAPONS'), 'NO_THROWING_WEAPONS 载体数（原 5；V-2b-9e-2 CE8 武器 +1）').toBe(6);
+        expect(count('MF_REQUIRE_GOOD_RUNIC'), 'REQUIRE_GOOD_RUNIC 载体数（原 2；V-2b-9e-2 CE8 武器/护甲 +2）').toBe(4);
         expect(count('MF_FAR_FROM_ORIGIN'), 'FAR_FROM_ORIGIN 载体数（V-2b-8 后 26；V-2b-9b 31/34/36/37/38/44 号 +6）').toBe(40); // V-2b-9d CE 13/14 literal feature census.
         expect(count('MF_NEAR_ORIGIN'), 'NEAR_ORIGIN 载体数（V-2b-8 后 18；V-2b-9b 34/65/66 号 +3）').toBe(21);
         expect(count('MF_BUILD_AT_ORIGIN'), 'BUILD_AT_ORIGIN 载体数（V-2b-8 后 41；V-2b-9b 36/37/38/39/44 号 +5）').toBe(49); // V-2b-9d CE 13/14 literal feature census.

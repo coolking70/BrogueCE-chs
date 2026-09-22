@@ -35,8 +35,8 @@
  *     T-1 增补：下标 1（DF_CRYSTAL_WALL，DF 条目本轮补齐）、
  *     33（直接铺 CRYSTAL_WALL 地形）——tile 均为 B-3 迁入的 CRYSTAL_WALL。
  *   - 不接：'no-tile'（CE tile web 无对应物，含全部陷阱 tile——web 的通用
- *     TRAP 是自创语义、不同源，不得冒充）；'no-machine'（CE MT_* 机器在 web
- *     无对应物——web 的 BlueprintEngine 走自造 blueprints.json）；'c7-light'
+ *     TRAP 是自创语义、不同源，不得冒充）；'no-machine'（历史登记；
+ *     V-2b-9e-2 已接完本表 13 条 MT_*）；'c7-light'
  *    （DF_SUNLIGHT/DF_DARKNESS/TORCH_WALL 依赖光照目录，C-7 明确不做）；
  *     'dead-index0'（上游死条目，见上）。
  *   - 未接条目在循环里**先于任何 RNG 消耗**跳过：自动生成器是无条件掷骰的
@@ -273,8 +273,8 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
         df: null, ceDf: '0', ceDfId: 0, machine: MT.MT_PARALYSIS_TRAP_AREA, ceMachine: 'MT_PARALYSIS_TRAP_AREA',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 2, maxDepth: 6, frequency: 20, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 1,
-        carrier: 'no-machine',
-        note: 'CE 机器（buildAMachine + blueprintCatalog）。web 的 BlueprintEngine 走自造 blueprints.json，CE MT_* 无对应物。',
+        carrier: 'wired',
+        note: 'V-2b-9e-2：CE 67 区域蓝图由 buildAMachine 强制建造；frequency=0 保留，不进入抽签。',
     },
     {
         ceLine: 133, index: 17, terrain: null, ceTerrain: 'ALARM_TRAP', layer: DUNGEON,
@@ -330,8 +330,8 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
         df: null, ceDf: '0', ceDfId: 0, machine: MT.MT_PARALYSIS_TRAP_HIDDEN_AREA, ceMachine: 'MT_PARALYSIS_TRAP_HIDDEN_AREA',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 7, maxDepth: 39, frequency: 20, minNumberIntercept: 100, minNumberSlope: 0, maxNumber: 3,
-        carrier: 'no-machine',
-        note: 'CE 机器，同 index 16。',
+        carrier: 'wired',
+        note: 'V-2b-9e-2：CE 68 区域蓝图由 buildAMachine 强制建造；frequency=0 保留，不进入抽签。',
     },
     {
         ceLine: 142, index: 24, terrain: null, ceTerrain: 'ALARM_TRAP_HIDDEN', layer: DUNGEON,
@@ -501,24 +501,24 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
         df: null, ceDf: '0', ceDfId: 0, machine: MT.MT_BRIDGE_TURRET_AREA, ceMachine: 'MT_BRIDGE_TURRET_AREA',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 5, maxDepth: 39, frequency: 6, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 2,
-        carrier: 'no-machine',
-        note: 'CE 机器（桥头炮台；与 C-5 的桥无涉——整机蓝图，非桥体）。',
+        carrier: 'wired',
+        note: 'V-2b-9e-2：CE 65 区域蓝图由 buildAMachine 强制建造；frequency=0 保留，不进入抽签。',
     },
     {
         ceLine: 167, index: 45, terrain: null, ceTerrain: '0', layer: DUNGEON,
         df: null, ceDf: '0', ceDfId: 0, machine: MT.MT_LAKE_PATH_TURRET_AREA, ceMachine: 'MT_LAKE_PATH_TURRET_AREA',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 5, maxDepth: 39, frequency: 6, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 2,
-        carrier: 'no-machine',
-        note: 'CE 机器（湖径炮台）。',
+        carrier: 'wired',
+        note: 'V-2b-9e-2：CE 66 强制路径已接；因楼梯湖心孤岛由 RETIRED_AUTOGENERATOR_MACHINES 退池，蓝图 frequency=0 保留。',
     },
     {
         ceLine: 168, index: 46, terrain: null, ceTerrain: '0', layer: DUNGEON,
         df: null, ceDf: '0', ceDfId: 0, machine: MT.MT_TRICK_STATUE_AREA, ceMachine: 'MT_TRICK_STATUE_AREA',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 6, maxDepth: 39, frequency: 15, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 3,
-        carrier: 'no-machine',
-        note: 'CE 机器（诡计雕像）。',
+        carrier: 'wired',
+        note: 'V-2b-9e-2：CE 69 区域蓝图由 buildAMachine 强制建造；frequency=0 保留，不进入抽签。',
     },
     {
         ceLine: 169, index: 47, terrain: null, ceTerrain: '0', layer: DUNGEON,
@@ -533,15 +533,25 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
         df: null, ceDf: '0', ceDfId: 0, machine: MT.MT_WORM_AREA, ceMachine: 'MT_WORM_AREA',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 12, maxDepth: 39, frequency: 12, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 3,
-        carrier: 'no-machine',
-        note: 'CE 机器（蠕虫巢区）。',
+        carrier: 'wired',
+        note: 'V-2b-9e-2：CE 70 区域蓝图由 buildAMachine 强制建造；frequency=0 保留，不进入抽签。',
     },
 ];
 
-/** 本轮已接条目的表下标（盘点表机器可读形态；测试钉死恰为 {3, 8}）。 */
+/** 已接条目的表下标；V-2b-9e-2 包含全部 13 条 MT_*，见 c_6 目录守卫。 */
 export const WIRED_AUTOGENERATOR_INDEXES: readonly number[] = AUTO_GENERATOR_CATALOG
     .filter(e => e.carrier === 'wired')
     .map(e => e.index);
+
+/**
+ * V-2b-9e-2 有效退池登记：CE66 在 seed26/D7、seed42/D6 生成保留
+ * FLOOR 基底的深水；Game.populateLevel 的楼梯牌堆只检查 layers.includes(FLOOR)，
+ * 在深水中心补楼梯后产生八邻全为深水的孤岛。机器建完时主通路仍连通，
+ * 切断发生在稍后的楼梯落位；不是 REQUIRE_BLOCKING 阈值错误。
+ * 按任务 §4 退池留形：不改 CE66 蓝图/autoGen 数值，不放宽连通性。
+ * 楼梯候选以最终可通行地形过滤并通过上述样本后，才能摘除此过滤。
+ */
+export const RETIRED_AUTOGENERATOR_MACHINES: ReadonlySet<number> = new Set([66]);
 
 // ---------------------------------------------------------------------------
 // randomMatchingLocation（CE Architect.c:3822-3845，terrainType=-1 形态）
@@ -661,7 +671,7 @@ export function runAutogenerators(
         }
 
         // web 载体登记：未接条目先跳过（不得消耗 RNG 制造空转链）。
-        if (gen.carrier !== 'wired') {
+        if (gen.carrier !== 'wired' || RETIRED_AUTOGENERATOR_MACHINES.has(gen.machine)) {
             continue;
         }
 

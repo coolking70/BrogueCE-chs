@@ -6,7 +6,7 @@ import * as auto from '../engine/Map/AutoGenerator';
 import { rng } from '../engine/Random';
 import type { Pos } from '../types';
 
-const AREA_IDS = [15,28,33,34,39,43,50,56,58,60,61,62,63,64,65,66,67,68,69,70,71];
+const AREA_IDS = [8,15,28,33,34,39,43,50,56,58,60,61,62,63,64,65,66,67,68,69,70,71];
 const key = (p: Pos) => p.y * DCOLS + p.x;
 const at = { x: 10, y: 10 };
 const bp = (over: Partial<BlueprintDef> = {}): BlueprintDef => ({
@@ -35,8 +35,8 @@ function engine(g: Grid, b = bp()) { return new BlueprintEngine(g, 10, [b]); }
 afterEach(() => vi.restoreAllMocks());
 
 describe('V-2b-9e routing and CE retry semantics', () => {
-    // Adversary: a missing/extra area row, including accidentally unlocking 65/66.
-    it('audits exactly the 21 existing area rows, retaining 65/66 frequency zero', () => {
+    // Adversary: a missing/extra area row or accidentally putting forced-only 65/66 in the lottery.
+    it('audits exactly the 22 area rows including CE 8, retaining 65/66 frequency zero', () => {
         expect((data as BlueprintDef[]).filter(b => !b.flags.includes('BP_ROOM')
             && !b.flags.includes('BP_VESTIBULE')).map(b => b.ceBlueprintId).sort((a,b)=>a!-b!)).toEqual(AREA_IDS);
         for (const ce of [65,66]) expect(data.find(b=>b.ceBlueprintId===ce)!.frequency).toBe(0);

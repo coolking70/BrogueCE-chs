@@ -137,7 +137,8 @@ describe('C-5 对抗①：坠落是回合末结算（CE Time.c:168-176/2480）',
             // 10401 = V-2b-8：强制 thematic 机器改变换层生成流。
             // 16214 = V-2b-9e-1：区域机器路由使同样本机器数 469→823，
             // 换层生成成本顺延；仍钉“只有换层、没有怪物推进”的固定增量。
-            .toBe(16214);
+            // 20505 = V-2b-9e-2：D2 的 CE67 自动生成器接线；CE8/66 深度未到。
+            .toBe(20505);
         expect(rat.hp, '随落阶段 rat 不在渊上，不得受伤/死亡').toBeGreaterThan(0);
         expect([rat.loc.x, rat.loc.y], '坠落回合怪物不得获得推进（CE playerFalls 提前 return）')
             .toEqual([4, 4]);

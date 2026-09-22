@@ -83,7 +83,22 @@ describe('B2 production census', () => {
                         for(const spawn of machine.spawns) {
                             expect(spawn.isSentinel,'CE71 request exists but living sentinel grid occupant is missing').toBe(true);
                             expect(spawn.home).toBe(machine.number);
-                            expect(spawn.terrain).toBe(C.STATUE_INERT);
+                            if (spawn.terrain !== C.STATUE_INERT) {
+                                // CE71 clears its non-wired statue's machine flag.
+                                // CE70 runs later and may reuse that wall (:558–575).
+                                // Keep the living sentinel/home/three distinct spawns
+                                // checks above; require the exact committed overwriter.
+                                expect(spawn.terrain).toBe(C.WALL_MONSTER_DORMANT);
+                                const ownerIndex = call[3].findIndex(m => m.machineNumber === machine.number);
+                                const later = call[3].slice(ownerIndex + 1).filter(m => m.blueprintId === 'area_worm');
+                                const overwriter = later.find(m => m.featureSpawns.some(f =>
+                                    f.featureIndex === 0 && f.terrain === 'WALL_MONSTER_DORMANT'
+                                    && f.pos.x === spawn.pos.x && f.pos.y === spawn.pos.y));
+                                expect(overwriter, `seed${seed}/D${depth}: no later CE70 feature explains the changed statue`).toBeDefined();
+                                expect(game.grid.getCell(spawn.pos.x, spawn.pos.y)!.machineNumber).toBe(overwriter!.machineNumber);
+                                expect(game.dormantMonsters.some(m => m.machineHome === overwriter!.machineNumber
+                                    && m.loc.x === spawn.pos.x && m.loc.y === spawn.pos.y)).toBe(true);
+                            }
                         }
                     }
                     built+=machines.length;

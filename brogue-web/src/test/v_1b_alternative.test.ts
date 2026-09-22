@@ -153,7 +153,7 @@ describe('V-1b 前提自检', () => {
     //（GlobalsBrogue.c:320 STATUE_DORMANT_DOORWAY）与 69 号（:608/:611 两条
     // STATUE_DORMANT 的 BUILD_AT_ORIGIN / BUILD_IN_WALLS 替代组）落地，
     // 17 → 20。三条均 item=null（地形载体）。MF_ALTERNATIVE_2 仍零载体。
-    it('P1（V-2b-7 六次顺延）生产数据带 MF_ALTERNATIVE 的 feature 恰为 CE 2/3/4/5/23/18/22/25/21/69/40/30/45/46 号替代组三十一条；MF_ALTERNATIVE_2 仍零载体', () => {
+    it('P1（V-2b-9e-2 顺延）MF_ALTERNATIVE 精确目录含 CE8 四条；MF_ALTERNATIVE_2 仍零载体', () => {
         const flagged = (blueprintData as BlueprintDef[]).flatMap(bp =>
             bp.features.map(f => ({ bpId: bp.id, f }))
                 .filter(({ f }) => f.flags.includes('MF_ALTERNATIVE') || f.flags.includes('MF_ALTERNATIVE_2'))
@@ -202,6 +202,12 @@ describe('V-1b 前提自检', () => {
             { bpId: 'key_guardian_corridor', alt1: true, alt2: false, item: null },
             { bpId: 'ce_36_environment', alt1: true, alt2: false, item: null },
             { bpId: 'ce_38_environment', alt1: true, alt2: false, item: null },
+            // V-2b-9e-2: CE8 WEAPON / ARMOR / STAFF / CHARM, all random kinds.
+            { bpId: 'reward_outsourced_item', alt1: true, alt2: false, item: null },
+            { bpId: 'reward_outsourced_item', alt1: true, alt2: false, item: null },
+            { bpId: 'reward_outsourced_item', alt1: true, alt2: false, item: null },
+            { bpId: 'reward_outsourced_item', alt1: true, alt2: false, item: null },
+
             { bpId: 'key_fun_with_fire', alt1: true, alt2: false, item: 'potion_of_creeping_death' },
             { bpId: 'key_poison_gas', alt1: true, alt2: false, item: 'potion_of_descent' },
             { bpId: 'ce_38_environment', alt1: true, alt2: false, item: 'potion_of_fire_immunity' },

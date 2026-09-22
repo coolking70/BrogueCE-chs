@@ -228,7 +228,14 @@ describe('P1-33 机器阶段不切断关卡', () => {
                         // 数据无递归、前厅机器绝迹，本合同从未见过该形态；
                         // V-2a 前厅回归后按 CE 语义豁免 center≠door 一项，
                         // center ∈ cells 仍要求。reward/key_guard 的合同不变。
-                        if (mr.category === 'vestibule' || isArea) {
+                        if (bpDef?.ceBlueprintId === 8) {
+                            // The only CE row with roomSize {0,0}: origin is not interior.
+                            expect(bpDef.roomSize).toEqual([0, 0]);
+                            expect(mr.cells).toEqual([]);
+                            expect(mr.door).toBeNull();
+                            expect(mr.itemSpawns).toEqual([]);
+                            expect(mr.subMachines.length).toBeGreaterThan(0);
+                        } else if (mr.category === 'vestibule' || isArea) {
                             if (!cellSet.has(cKey)) {
                                 structureViolations.push(
                                     `seed${seed}/D${d} ${mr.blueprintId} center 不在 cells 内`);

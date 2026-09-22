@@ -338,7 +338,7 @@ describe('C-6 表保真：49 条逐行对照 CE（GlobalsBrogue.c:114-170）', (
         expect(AUTO_GENERATOR_CATALOG[10]!.ceDf).toBe('DF_BUILD_ALGAE_WELL');
         // wired 集：T-1 前为草/树两条；T-1 接线 index 1（DF_CRYSTAL_WALL，
         // DF 条目补入目录）与 index 33（直接铺 CRYSTAL_WALL 地形，tile B-3 迁入）。
-        expect(WIRED_AUTOGENERATOR_INDEXES, 'C-6 接入集 + T-1 增补（载体盘点表裁决）').toEqual([1, 3, 8, 29, 33, 39, 40, 41, 42, 43, 47]);
+        expect(WIRED_AUTOGENERATOR_INDEXES, 'C-6 接入集 + T-1 增补（载体盘点表裁决）').toEqual([1, 3, 8, 16, 23, 29, 33, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]);
         expect(AUTO_GENERATOR_CATALOG[3]!.df).toBeDefined();
         expect(AUTO_GENERATOR_CATALOG[8]!.df).toBeDefined();
         expect(AUTO_GENERATOR_CATALOG[1]!.df).toBeDefined();
@@ -462,10 +462,10 @@ describe('C-6 集成：真实目录在真实生成里的行为', () => {
         expect(total, 'D1-10 草实例合计为 0——自动生成器整段没跑').toBeGreaterThan(20);
     });
 
-    it('哨兵 S-1（T-1 顺延）：wired 条目只落草/树/水晶墙（GRASS/FOLIAGE/CRYSTAL_WALL），不新增任何火/气体/坠落族地形', () => {
-        // 自动生成器当前 wired 集 = {1, 3, 8, 33}：C-6 的两个 SURFACE 层装饰
+    it('哨兵 S-1：非机器 wired 条目仍只落草/树/水晶墙；机器接线集合精确覆盖 13 条', () => {
+        // 自动生成器非机器 wired 集 = {1, 3, 8, 33}：C-6 的两个 SURFACE 层装饰
         // DF + T-1 的水晶墙两条（DF 扩散落 DUNGEON 层 + 最深层直接铺）；
-        // 机器趟恒空（上两条已断言）。本条把"wired 条目只可能写这三种
+        // 机器趟已接齐 13 条；本条把"非机器 wired 条目只可能写这三种
         // 地形"钉成表级事实：wired 条目的 df tile 与 terrain 字段只能是
         // 这三个值。有人往 wired 集加火/气体/坠落条目而不改本断言时，须先
         // 过 F/G/C-5 哨兵套件复核。
@@ -476,7 +476,7 @@ describe('C-6 集成：真实目录在真实生成里的行为', () => {
                 expect(['DF_GRASS', 'DF_FOLIAGE', 'DF_CRYSTAL_WALL', 'CRYSTAL_WALL'], `wired 条目 ${i}（${tile}）超出裁决集`).toContain(tile);
             }
         }
-        expect(WIRED_AUTOGENERATOR_INDEXES).toEqual([1, 3, 8, 29, 33, 39, 40, 41, 42, 43, 47]);
+        expect(WIRED_AUTOGENERATOR_INDEXES).toEqual([1, 3, 8, 16, 23, 29, 33, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]);
     });
 });
 
@@ -509,21 +509,12 @@ describe('C-6 留痕：未接条目登记（每条写明激活轮）', () => {
         // 激活轮需逐个落地 CE 陷阱 tile 后把 carrier 翻 'wired'。
     });
 
-    it('留痕 T3：CE 机器族未接——建出 CE 机器系统（buildAMachine 对应物）后反转（13 条）', () => {
-        const machineRows = AUTO_GENERATOR_CATALOG.filter(e => e.machine > 0).map(e => e.index);
-        expect(machineRows.length, 'CE 表机器条目数').toBe(13);
-        const activated = new Set([29, 39, 40, 41, 42, 43, 47]);
-        for (const e of AUTO_GENERATOR_CATALOG) {
-            if (e.machine > 0) expect(e.carrier).toBe(activated.has(e.index) ? 'wired' : 'no-machine');
-        }
-        // 激活指示：web 的 BlueprintEngine（自造 blueprints.json）不是 CE 机器
-        // 系统；激活轮需 buildAMachine 的忠实移植 + blueprintCatalog_Brogue，
-        // 并给 MT_PARALYSIS_TRAP_AREA(67)/MT_PARALYSIS_TRAP_HIDDEN_AREA(68)/
-        // MT_SWAMP_AREA(61)/MT_BLOODFLOWER_AREA(58)/MT_SHRINE_AREA(59)/
-        // MT_IDYLL_AREA(60)/MT_REMNANT_AREA(63)/MT_DISMAL_AREA(64)/
-        // MT_BRIDGE_TURRET_AREA(65)/MT_LAKE_PATH_TURRET_AREA(66)/
-        // MT_TRICK_STATUE_AREA(69)/MT_WORM_AREA(70)/MT_SENTINEL_AREA(71)
-        // 逐条翻 'wired'（MT 数值为 Rogue.h:2668-2753 逐位推算，激活轮重核）。
+    it('留痕 T3 反转：V-2b-9e-2 接齐全部 13 条 CE 机器族', () => {
+        const machineRows = AUTO_GENERATOR_CATALOG.filter(e => e.machine > 0);
+        expect(machineRows.map(e => e.index)).toEqual([16, 23, 29, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]);
+        for (const e of machineRows) expect(e.carrier).toBe('wired');
+        // frequency=0 的蓝图仍走 buildAMachine(ceId)，不加入奖励抽签。
+        // 新六条的深度边界与真实提交由 v_2b_9e_2_autogen 独立验证。
     });
 
     it('留痕 T4（T-1 反转 index 1/33）：装饰/植物/dewar 族未接——随各自 tile 落地轮反转', () => {

@@ -1187,6 +1187,18 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
         // V-2b-9e-1：区域路由移动生成流，逐格追踪并回 CE 核实的新组合。
         // 按 [DUNGEON, LIQUID, GAS, SURFACE] 完整匹配，不扩成地形笛卡尔积。
         const verified9eLayers: ReadonlyArray<readonly TerrainType[]> = [
+            // 9e-2 exact write traces: CE64 DF_ASH (Globals.c:645), and
+            // CE61 DF_SWAMP's MUD (Globals.c:903–905) preserves other layers.
+            // 424242/D9 (55,20); 777/D9 (17,9)/(20,8)/(25,11)/(37,16)/(37,18).
+            [C.FLOOR, C.NOTHING, C.NOTHING, C.ASH],
+            [C.NOTHING, C.MUD, C.NOTHING, C.WEB],
+            [C.DOOR, C.MUD, C.NOTHING, C.GRAY_FUNGUS],
+            [C.NOTHING, C.MUD, C.NOTHING, C.GRASS],
+            [C.TRAP_DOOR_HIDDEN, C.MUD, C.NOTHING, C.GRASS],
+            [C.TRAP_DOOR_HIDDEN, C.MUD, C.NOTHING, C.NOTHING],
+            // CE31 :379–380: liquid floor marker, then altar in DUNGEON;
+            // trace 777/D9 (76,2) retains the pre-existing SURFACE grass.
+            [C.ALTAR_SWITCH, C.FLOOR_FLOODABLE, C.NOTHING, C.GRASS],
             // CE60 Idyll 先草木、后水塘（GlobalsBrogue.c:566-569）；
             // DF_SHALLOW_WATER_POOL 只写 LIQUID，不清其他层（Globals.c:899）。
             // DF_GRASS 的 propagationTerrain=0 但带 BLOCKED_BY_OTHER_LAYERS
@@ -1236,7 +1248,7 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                         if (verified9e) {
                             // CE58/34/Goblin warren 没有 NO_INTERIOR_FLAG，保留机器归属守卫。
                             if (cell.layers[L.SURFACE] === C.BLOODFLOWER_STALK
-                                || [C.MUD_FLOOR, C.FLOOR_FLOODABLE].includes(cell.layers[L.DUNGEON] as TerrainType)) {
+                                || [C.MUD_FLOOR, C.FLOOR_FLOODABLE, C.ALTAR_SWITCH].includes(cell.layers[L.DUNGEON] as TerrainType)) {
                                 expect(cell.machineNumber).toBeGreaterThan(0);
                             }
                         } else if (nonEmpty.length === 3 && cell.layers[L.DUNGEON] === C.FLAMETHROWER_HIDDEN) {
@@ -1267,6 +1279,10 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                                 C.CARPET,               // 3/4/5 号地毯
                                 C.DOOR, C.SECRET_DOOR,  // 23 号门型替代组
                                 C.TRAP_DOOR_HIDDEN,     // 23 号陷阱
+                                // V-2b-9e-2: CE67/68 :603–609 explicitly write
+                                // DUNGEON after vegetation, without clearing SURFACE.
+                                C.GAS_TRAP_PARALYSIS, C.GAS_TRAP_PARALYSIS_HIDDEN,
+                                C.MACHINE_PARALYSIS_VENT_HIDDEN,
                                 C.WOODEN_BARRICADE,     // 19 号木栅
                                 C.STATUE_INERT, C.STATUE_INERT_DOORWAY, C.PEDESTAL,
                                 // V-2b-7：55 号 Worm tunnels 的 GRANITE 填充

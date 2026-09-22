@@ -233,7 +233,19 @@ function runScan(): ScanResult {
                         originItemSpawns.push(...mr.itemSpawns.filter(spawn =>
                             spawn.pos.x === mr.center.x && spawn.pos.y === mr.center.y));
                     }
-                    const inside = cellSet.has(cKey);
+                    // CE8 has no interior; its origin is an anchor, not a treasure cell.
+                    // Keep the room/vestibule contract and reject every other empty machine.
+                    const emptyOutsource = bpDef?.ceBlueprintId === 8;
+                    if (emptyOutsource) {
+                        expect(bpDef!.roomSize).toEqual([0, 0]);
+                        expect(mr.cells).toEqual([]);
+                        expect(mr.door).toBeNull();
+                        expect(mr.itemSpawns).toEqual([]);
+                        expect(mr.subMachines.length).toBeGreaterThan(0);
+                        expect(bpDef!.features.every(f => f.flags.includes('MF_BUILD_ANYWHERE_ON_LEVEL')
+                            && f.flags.includes('MF_OUTSOURCE_ITEM_TO_MACHINE'))).toBe(true);
+                    }
+                    const inside = emptyOutsource || cellSet.has(cKey);
                     const passable = (isVestibule || isArea) ? true : walkable(game, mr.center.x, mr.center.y);
                     if (!inside || !passable) {
                         badLevels.add(`seed=${seed} D${depth}`);
@@ -369,7 +381,7 @@ describe('蓝图宝藏落点（machine center）可通行性', () => {
         }
     });
 
-    it(`b) 全局扫描（${SCAN_SEEDS.length} seeds × D1..D26）：所有 machine 的 center 都是自身 cells 内的可通行格`, () => {
+    it(`b) 全局扫描（${SCAN_SEEDS.length} seeds × D1..D26）：房间 center 可通行、区域 origin 属于 interior（CE8 空域单独验证）`, () => {
         const { centerViolations } = runScan();
         for (const v of centerViolations.slice(0, 60)) console.log('[bp-center] center违例:', v);
         expect(centerViolations).toEqual([]);

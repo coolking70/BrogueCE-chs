@@ -6009,5 +6009,109 @@
                 ]
             }
         ]
+    },
+    {
+        "id": "reward_outsourced_item",
+        "ceBlueprintId": 8,
+        "name": "Outsourced item -- same item possibilities as in the good permanent item reward room (plus charms), but directly adopted by 1-2 key machines.",
+        "depthRange": [
+            5,
+            17
+        ],
+        "roomSize": [
+            0,
+            0
+        ],
+        "frequency": 20,
+        "category": "reward",
+        "flags": [
+            "BP_REWARD",
+            "BP_NO_INTERIOR_FLAG"
+        ],
+        "features": [
+            {
+                "layer": "DUNGEON",
+                "itemCategory": "WEAPON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 0,
+                "itemFlags": [
+                    "ITEM_IDENTIFIED",
+                    "ITEM_PLAYER_AVOIDS"
+                ],
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_ALTERNATIVE",
+                    "MF_REQUIRE_GOOD_RUNIC",
+                    "MF_NO_THROWING_WEAPONS",
+                    "MF_OUTSOURCE_ITEM_TO_MACHINE",
+                    "MF_BUILD_ANYWHERE_ON_LEVEL"
+                ]
+            },
+            {
+                "layer": "DUNGEON",
+                "itemCategory": "ARMOR",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 0,
+                "itemFlags": [
+                    "ITEM_IDENTIFIED",
+                    "ITEM_PLAYER_AVOIDS"
+                ],
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_ALTERNATIVE",
+                    "MF_REQUIRE_GOOD_RUNIC",
+                    "MF_OUTSOURCE_ITEM_TO_MACHINE",
+                    "MF_BUILD_ANYWHERE_ON_LEVEL"
+                ]
+            },
+            {
+                "layer": "DUNGEON",
+                "itemCategory": "STAFF",
+                "instanceCount": [
+                    2,
+                    2
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 0,
+                "itemFlags": [
+                    "ITEM_KIND_AUTO_ID",
+                    "ITEM_PLAYER_AVOIDS"
+                ],
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_ALTERNATIVE",
+                    "MF_OUTSOURCE_ITEM_TO_MACHINE",
+                    "MF_BUILD_ANYWHERE_ON_LEVEL"
+                ]
+            },
+            {
+                "layer": "DUNGEON",
+                "itemCategory": "CHARM",
+                "instanceCount": [
+                    1,
+                    2
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 0,
+                "itemFlags": [
+                    "ITEM_KIND_AUTO_ID",
+                    "ITEM_PLAYER_AVOIDS"
+                ],
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_ALTERNATIVE",
+                    "MF_OUTSOURCE_ITEM_TO_MACHINE",
+                    "MF_BUILD_ANYWHERE_ON_LEVEL"
+                ]
+            }
+        ]
     }
 ]

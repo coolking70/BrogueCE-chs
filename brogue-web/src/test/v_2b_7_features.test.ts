@@ -813,10 +813,11 @@ describe('V-2b-7 F：§2.1 携钥匙怪的完整形态（可达性 + 落点安�
         expect(carriersSeen, '20 seed × D1-26 应至少观察到一只携钥匙的怪（否则本用例空转）').toBeGreaterThanOrEqual(1);
     });
 
-    it('F2 机器指令层面的镜像：带 carriedItem 的机器怪指令，其携带品必是 KEY 且带 keyLoc', () => {
+    it('F2 携带指令：钥匙有绑定；CE8 非钥匙奖励有完整的外包/领养来源', () => {
         // 与 F1 互补：F1 看"落地后"，这里看"指令层"——即使某只怪被
         // dormantMonsters 摘走（F1 看不到），指令层仍必须完整。
         let instsSeen = 0;
+        let outsourcedSeen = 0;
         for (const seed of [424242, 777, 31337, 20260913, 42, 2026]) {
             const record: LevelMachines[] = [];
             const restore = installRecorder(record);
@@ -829,15 +830,37 @@ describe('V-2b-7 F：§2.1 携钥匙怪的完整形态（可达性 + 落点安�
                         for (const s of mr.monsterSpawns) {
                             if (!s.carriedItem) continue;
                             instsSeen++;
-                            expect(s.carriedItem.category, `${mr.blueprintId} 的携钥匙怪：携带品类别`).toBe('KEY');
-                            expect(s.carriedItem.keyLoc, `${mr.blueprintId} 的携钥匙怪：必须有 keyLoc`).toBeDefined();
-                            expect(s.carriedItem.keyLoc!.length).toBeGreaterThanOrEqual(1);
+                            if (s.carriedItem.category === 'KEY') {
+                                expect(s.carriedItem.keyLoc, `${mr.blueprintId} 的携钥匙怪：必须有 keyLoc`).toBeDefined();
+                                expect(s.carriedItem.keyLoc!.length).toBeGreaterThanOrEqual(1);
+                            } else {
+                                // CE8 legitimately outsources permanent items to the
+                                // same adoptive machines that previously only received keys.
+                                const contains = (parent: MachineResult): boolean =>
+                                    parent.subMachines.some(child => child === mr || contains(child));
+                                const parent = entry!.results.find(m => m.blueprintId === 'reward_outsourced_item' && contains(m));
+                                expect(parent, `${mr.blueprintId}: non-key carry has no committed CE8 ancestor`).toBeDefined();
+                                const reward = byId('reward_outsourced_item');
+                                const selected = new Set(parent!.featureSpawns.map(f => f.featureIndex));
+                                expect(selected.size).toBe(1);
+                                const feature = reward.features[[...selected][0]!]!;
+                                expect(feature.flags).toContain('MF_OUTSOURCE_ITEM_TO_MACHINE');
+                                expect(s.carriedItem.category).toBe(feature.itemCategory);
+                                expect(['WEAPON', 'ARMOR', 'STAFF', 'CHARM']).toContain(s.carriedItem.category);
+                                expect(s.carriedItem.keyLoc).toBeUndefined();
+                                const carrier = byId(mr.blueprintId);
+                                expect(mr.featureSpawns.some(f => f.pos.x === s.pos.x && f.pos.y === s.pos.y
+                                    && carrier.features[f.featureIndex]!.flags.includes('MF_ADOPT_ITEM')
+                                    && carrier.features[f.featureIndex]!.flags.includes('MF_MONSTER_TAKE_ITEM'))).toBe(true);
+                                outsourcedSeen++;
+                            }
                         }
                     }
                 }
             } finally { restore(); }
         }
         expect(instsSeen, '6 seed × D1-26 应至少出现一条携带指令').toBeGreaterThanOrEqual(1);
+        expect(outsourcedSeen, 'CE8 非钥匙外包携带路径不能空转').toBeGreaterThan(0);
     });
 });
 
