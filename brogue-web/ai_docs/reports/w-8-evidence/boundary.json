@@ -1,0 +1,76 @@
+{
+  "head": "48aeee98c52e63d71dd04a107023a7ef95e75cd5",
+  "changedMethods": [
+    "applyBoltResult",
+    "applyDirectBoltDamage",
+    "applyBoltEffect"
+  ],
+  "addedMethods": [
+    "isDamageStaff"
+  ],
+  "protectedMethods": {
+    "castMonsterBolt": true,
+    "applyMonsterBoltHit": true,
+    "trySplitMonster": true,
+    "exposeCreatureToFire": true,
+    "applyBoltTerrainAt": true
+  },
+  "unchangedFiles": {
+    "src/data/arcana.json": {
+      "head": "e7a48053679eeccac39fb3518d811b2d757384fa734f12371a6fa2e5b9a88224",
+      "current": "e7a48053679eeccac39fb3518d811b2d757384fa734f12371a6fa2e5b9a88224",
+      "equal": true
+    },
+    "src/engine/Combat/BoltCatalog.ts": {
+      "head": "76f7e6329138415cf4b9037f038e6e175365d61e7addf778aab2a12f9e307360",
+      "current": "76f7e6329138415cf4b9037f038e6e175365d61e7addf778aab2a12f9e307360",
+      "equal": true
+    },
+    "src/engine/Combat/Combat.ts": {
+      "head": "cdb33af527166481b077bc39dbf06971a3cd251dce7faa1ceba0dd0ae2f4444e",
+      "current": "cdb33af527166481b077bc39dbf06971a3cd251dce7faa1ceba0dd0ae2f4444e",
+      "equal": true
+    },
+    "src/engine/Combat/BoltTrajectory.ts": {
+      "head": "852652621e7154cb9cf47e3df40d0daa8a25f37214aeacbce09a5430d5697146",
+      "current": "852652621e7154cb9cf47e3df40d0daa8a25f37214aeacbce09a5430d5697146",
+      "equal": true
+    },
+    "src/engine/Items/Item.ts": {
+      "head": "a76c40ebcf3fb2988cd2ba5d629a8d1725070c984361c839a24bb10f878eed9e",
+      "current": "a76c40ebcf3fb2988cd2ba5d629a8d1725070c984361c839a24bb10f878eed9e",
+      "equal": true
+    },
+    "src/engine/Items/ItemLoader.ts": {
+      "head": "c1f94dbd4be3ff95dbe6f6355cae0c84b685c2b72f2d5f760636f1c225186a65",
+      "current": "c1f94dbd4be3ff95dbe6f6355cae0c84b685c2b72f2d5f760636f1c225186a65",
+      "equal": true
+    },
+    "src/engine/Items/ArcanaInstance.ts": {
+      "head": "7d81a4ae22cb648547a96372ab9cd034dffc54361b4579b9087d24bfb7acc6e8",
+      "current": "7d81a4ae22cb648547a96372ab9cd034dffc54361b4579b9087d24bfb7acc6e8",
+      "equal": true
+    },
+    "src/engine/Items/ArcanaRecharge.ts": {
+      "head": "d3232b776d3e6814225f8c4bf2c76d1aa743bb515a8070a1b55886e23a67d29d",
+      "current": "d3232b776d3e6814225f8c4bf2c76d1aa743bb515a8070a1b55886e23a67d29d",
+      "equal": true
+    },
+    "src/engine/Items/ArcanaEnchantment.ts": {
+      "head": "eca65a994903853aaaf5fab0ac885c923e60fc39adc36395841b46c351359c15",
+      "current": "eca65a994903853aaaf5fab0ac885c923e60fc39adc36395841b46c351359c15",
+      "equal": true
+    },
+    "src/engine/Random.ts": {
+      "head": "9a6931acdd5037497450f1dfa2bf04e8ae43212917bff15560775b73a11036ce",
+      "current": "9a6931acdd5037497450f1dfa2bf04e8ae43212917bff15560775b73a11036ce",
+      "equal": true
+    },
+    "src/test/fixtures/generation_baseline.json": {
+      "head": "1549a4c5aae041ff5c4a7653ea22d07af88aecaf3740861b0cdb90a4656d5820",
+      "current": "1549a4c5aae041ff5c4a7653ea22d07af88aecaf3740861b0cdb90a4656d5820",
+      "equal": true
+    }
+  },
+  "playerDamageHasPhysicalAttack": false
+}

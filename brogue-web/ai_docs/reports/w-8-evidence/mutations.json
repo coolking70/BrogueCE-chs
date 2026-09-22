@@ -1,0 +1,133 @@
+{
+  "mutations": [
+    {
+      "name": "legacy_constant",
+      "file": "src/engine/Core/Game.ts",
+      "replacement": {
+        "before": "const damage = staff ? rollStaffDamage",
+        "after": "const damage = false && staff ? rollStaffDamage"
+      },
+      "exitCode": 1,
+      "failed": 17,
+      "titles": [
+        "staff_of_fire E=2: measured real zap distribution ignores constant 20 and charges=1",
+        "staff_of_fire E=3: measured real zap distribution ignores constant 20 and charges=1",
+        "staff_of_fire E=8: measured real zap distribution ignores constant 20 and charges=1",
+        "staff_of_lightning E=2: measured real zap distribution ignores constant 20 and charges=1",
+        "staff_of_lightning E=3: measured real zap distribution ignores constant 20 and charges=1",
+        "staff_of_lightning E=8: measured real zap distribution ignores constant 20 and charges=1",
+        "same E and RNG state give identical damage despite different current charges, capacity and legacy constant",
+        "piercing rolls independently for every contact, including revisits and the reflected player",
+        "staff_of_fire harms revenants regardless of accuracy/armor; never calls physical attack",
+        "staff_of_lightning harms revenants regardless of accuracy/armor; never calls physical attack",
+        "lightning ignores fire immunity but skips invulnerability, continuing to the next creature",
+        "reflected fire checks actual player immunity=false before rolling",
+        "staff_of_fire surviving direct hit splits after damage (fire ignites first); lethal hit never splits",
+        "staff_of_lightning surviving direct hit splits after damage (fire ignites first); lethal hit never splits",
+        "player fire reflected by creature damages/ignites a jelly but cannot split it (CE Items.c:5210)",
+        "player fire reflected by terrain damages/ignites a jelly but cannot split it (CE Items.c:5210)",
+        "lightning splits on the outward hit only; return hits on both jellies cannot split again"
+      ]
+    },
+    {
+      "name": "charges_as_E",
+      "file": "src/engine/Core/Game.ts",
+      "replacement": {
+        "before": "kind: 'staff', enchantment: item.enchantment",
+        "after": "kind: 'staff', enchantment: item.charges ?? 0"
+      },
+      "exitCode": 1,
+      "failed": 15,
+      "titles": [
+        "staff_of_fire E=2: measured real zap distribution ignores constant 20 and charges=1",
+        "staff_of_fire E=3: measured real zap distribution ignores constant 20 and charges=1",
+        "staff_of_fire E=8: measured real zap distribution ignores constant 20 and charges=1",
+        "staff_of_lightning E=2: measured real zap distribution ignores constant 20 and charges=1",
+        "staff_of_lightning E=3: measured real zap distribution ignores constant 20 and charges=1",
+        "staff_of_lightning E=8: measured real zap distribution ignores constant 20 and charges=1",
+        "same E and RNG state give identical damage despite different current charges, capacity and legacy constant",
+        "piercing rolls independently for every contact, including revisits and the reflected player",
+        "lightning ignores fire immunity but skips invulnerability, continuing to the next creature",
+        "reflected fire checks actual player immunity=false before rolling",
+        "staff_of_fire surviving direct hit splits after damage (fire ignites first); lethal hit never splits",
+        "staff_of_lightning surviving direct hit splits after damage (fire ignites first); lethal hit never splits",
+        "player fire reflected by creature damages/ignites a jelly but cannot split it (CE Items.c:5210)",
+        "player fire reflected by terrain damages/ignites a jelly but cannot split it (CE Items.c:5210)",
+        "lightning splits on the outward hit only; return hits on both jellies cannot split again"
+      ]
+    },
+    {
+      "name": "uniform_instead_of_clumped",
+      "file": "src/engine/Combat/StaffDamage.ts",
+      "replacement": {
+        "before": "clumps: 1 + Math.floor(enchantment / 3)",
+        "after": "clumps: 1"
+      },
+      "exitCode": 1,
+      "failed": 9,
+      "titles": [
+        "E=3 exact dice intervals, order and full discrete distribution",
+        "E=8 exact dice intervals, order and full discrete distribution",
+        "staff_of_fire E=3: measured real zap distribution ignores constant 20 and charges=1",
+        "staff_of_fire E=8: measured real zap distribution ignores constant 20 and charges=1",
+        "staff_of_lightning E=3: measured real zap distribution ignores constant 20 and charges=1",
+        "staff_of_lightning E=8: measured real zap distribution ignores constant 20 and charges=1",
+        "same E and RNG state give identical damage despite different current charges, capacity and legacy constant",
+        "lightning ignores fire immunity but skips invulnerability, continuing to the next creature",
+        "reflected fire checks actual player immunity=false before rolling"
+      ]
+    },
+    {
+      "name": "no_fire_immunity",
+      "file": "src/engine/Core/Game.ts",
+      "replacement": {
+        "before": "staff && result.effect === BoltEffect.FIRE && target.hasStatus('immune_fire')",
+        "after": "false && staff && result.effect === BoltEffect.FIRE && target.hasStatus('immune_fire')"
+      },
+      "exitCode": 1,
+      "failed": 3,
+      "titles": [
+        "status fire immunity is before damage RNG, still identifies and exposes terrain",
+        "flag fire immunity is before damage RNG, still identifies and exposes terrain",
+        "reflected fire checks actual player immunity=true before rolling"
+      ]
+    },
+    {
+      "name": "no_contact_ignition",
+      "file": "src/engine/Core/Game.ts",
+      "replacement": {
+        "before": "if (staff && (target instanceof Player || target instanceof Monster)) this.exposeCreatureToFire(target);",
+        "after": "if (false && staff && (target instanceof Player || target instanceof Monster)) this.exposeCreatureToFire(target as Player);"
+      },
+      "exitCode": 1,
+      "failed": 6,
+      "titles": [
+        "reflected fire checks actual player immunity=false before rolling",
+        "a living fire hit ignites on bare floor, refreshing to max(old,7), before terrain exposure",
+        "water extinguishes contact ignition only for non-levitating creatures: levitating=true",
+        "staff_of_fire surviving direct hit splits after damage (fire ignites first); lethal hit never splits",
+        "player fire reflected by creature damages/ignites a jelly but cannot split it (CE Items.c:5210)",
+        "player fire reflected by terrain damages/ignites a jelly but cannot split it (CE Items.c:5210)"
+      ]
+    },
+    {
+      "name": "split_after_reflection",
+      "file": "src/engine/Core/Game.ts",
+      "replacement": {
+        "before": "!staff || !alreadyReflected",
+        "after": "true"
+      },
+      "exitCode": 1,
+      "failed": 2,
+      "titles": [
+        "player fire reflected by creature damages/ignites a jelly but cannot split it (CE Items.c:5210)",
+        "player fire reflected by terrain damages/ignites a jelly but cannot split it (CE Items.c:5210)"
+      ]
+    }
+  ],
+  "restored": true,
+  "restoredHashes": {
+    "src/engine/Core/Game.ts": "f1b1bce16a20decdcda136cfaf392c73f0e12cd4632a93b362d86f44abb5613e",
+    "src/engine/Combat/StaffDamage.ts": "45fc54ff51cfc28b87fefc6d69ed2f8922b164ab0ce67847c6b4c34bd060b219"
+  }
+}

@@ -832,3 +832,17 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 代码/测试/脚本编辑完成，开始最终build、R+S、test:drift；生成基线不重捕获，完整src/scripts/config SHA-256前后自证，结果回填w-7.report.md。
 - 后续边界：W-8~23效果读取E仍未改；W-12/14特殊周期；W-24~26目录/频率。退池自创WAND无CE range，不为它们杜撰附魔量；装备规则仍为原武器优先/护甲兜底含20%送符文。
 - 最终完成：build、114显式文件回归、独立drift均退出0；合计115文件1694 passed、8 skipped、5 todo、0 failed。216文件前后SHA-256清单均为c0d3a18b3f026802c15f0094b35a31d0dd965c71439f35d3898ff64ffef82af8；生成基线未重捕获。逐文件结果见ai_docs/reports/w-7.report.md。
+
+## 2026-09-23 W-8：伤害杖公式
+
+- 当前请求：严格执行 w-8.prompt / W-0 §2.3；仅 CE FIRE/LIGHTNING STAFF 公式，怪物 BE_DAMAGE/BE_ATTACK、生成流、次数模型不改。
+- 新增 StaffDamage helper：E2=3..9/1骰，E3=3..11/2骰，E8=7..24/3骰，复用 CE randClumpedRange；每个可伤害接触独立掷骰，免疫/空射/预览不掷伤害骰。由 resolveCEBoltMagnitude 读取实例 E。
+- 火免/无敌在伤害骰前；存活火击复用 F-2 点燃原语，随后分裂。CE Items.c:5210 的反射守卫承重：玩家反射后仍伤害/点燃但不分裂，W-4 旧旁射果冻断言留痕翻正。
+- P4-3 保留 magnitude=20 干扰值，显式 E8/charges1，独立三骰期望与真实回程验证；飘字 ID 的既有额外 substantive 骰经栈取证，测试隔离表现耗骰，不改生产 RNG。
+- 初轮7条旧断言撞红；W-3/W-4 的固定6/10伤害改为明确 E2+受控伤害骰，保留几何/承伤者/顺序断言，另修未稳定撞红的烧门固定伤害。新增33例，含两种杖×三档各6000次真实施法分布、穷举离散权重、火免/无敌/物理免疫/反射/分裂/次数和怪物边界。
+- 浏览器技能客户端与五个有头专项场景已执行、截图已打开复核：E2火6伤，E3闪电9/6伤，E8反射19伤、火免零伤、直接果冻19伤后241/241；次数1→0、E不变，零页面/控制台错误。修正本轮两条伤害日志的斜杠转义；验收脚本避开HMR的第二个Game单例。
+- 六个临时错误版本均被新测试拦截：常数伤害17红、读次数15红、均匀代替clump9红、无火免3红、无命中点燃6红、反射后分裂2红；已逐字恢复。
+- R(实际 Game/Bolt/StaffDamage)+S(B,C,效果/源码读取)共107文件：102反向闭包，补入5个静态读取/公式文件。开始最终 build、显式106文件回归、独立drift；前后SHA-256覆盖src/public/scripts/配置，无基线重捕获。
+- 后续：怪物伤害公式另案；其它杖公式 W-9+。既有 trySplitMonster 只复制HP/阵营等字段，未像 CE cloneMonster 复制全部状态；此次接通的是命中原体点燃及分裂调用资格，不声称整个克隆模型已对齐，详见 w-8.report.md 的缺口登记。
+
+- 最终完成：build、显式106文件回归、独立drift均退出0，107文件合计1565 passed、8 skipped、5 todo、0 failed；223个运行输入前后SHA-256清单均为4bd8a229acd7f7b318f3b345a982ca4a9a8fee584a5dcac35d98723414ccfdc5。基线未重捕获；逐文件最终结果和CE依据见ai_docs/reports/w-8.report.md。

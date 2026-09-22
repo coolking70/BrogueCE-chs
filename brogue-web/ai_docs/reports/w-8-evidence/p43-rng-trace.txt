@@ -1,0 +1,56 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/7076/brogue/brogue-web
+
+stdout | src/test/p4_3_special_monster_flags.test.ts > P4-3 验收 3：MA_REFLECT_100 反射 > 玩家侧：玩家对 stone guardian 施放 FIRE，伤害反弹到玩家自己身上，guardian 血量不变
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+W8RNG 0 6 3     at Random.randRange (file:///Users/coolking70/.codex/worktrees/7076/brogue/brogue-web/node_modules/@vitest/spy/dist/index.js:332:34)
+    at Random.randClumpedRange (/Users/coolking70/.codex/worktrees/7076/brogue/brogue-web/src/engine/Random.ts:130:27)
+    at rollStaffDamage (/Users/coolking70/.codex/worktrees/7076/brogue/brogue-web/src/engine/Combat/StaffDamage.ts:17:19)
+    at Game.applyDirectBoltDamage (/Users/coolking70/.codex/worktrees/7076/brogue/brogue-web/src/engine/Core/Game.ts:4382:32)
+    at Game.applyBoltEffect (/Users/coolking70/.codex/worktrees/7076/brogue/brogue-web/src/engine/Core/Game.ts:4439:46)
+W8RNG 0 6 5     at Random.randRange (file:///Users/coolking70/.codex/worktrees/7076/brogue/brogue-web/node_modules/@vitest/spy/dist/index.js:332:34)
+    at Random.randClumpedRange (/Users/coolking70/.codex/worktrees/7076/brogue/brogue-web/src/engine/Random.ts:130:27)
+    at rollStaffDamage (/Users/coolking70/.codex/worktrees/7076/brogue/brogue-web/src/engine/Combat/StaffDamage.ts:17:19)
+    at Game.applyDirectBoltDamage (/Users/coolking70/.codex/worktrees/7076/brogue/brogue-web/src/engine/Core/Game.ts:4382:32)
+    at Game.applyBoltEffect (/Users/coolking70/.codex/worktrees/7076/brogue/brogue-web/src/engine/Core/Game.ts:4439:46)
+W8RNG 0 5 4     at Random.randRange (file:///Users/coolking70/.codex/worktrees/7076/brogue/brogue-web/node_modules/@vitest/spy/dist/index.js:332:34)
+    at Random.randClumpedRange (/Users/coolking70/.codex/worktrees/7076/brogue/brogue-web/src/engine/Random.ts:134:27)
+    at rollStaffDamage (/Users/coolking70/.codex/worktrees/7076/brogue/brogue-web/src/engine/Combat/StaffDamage.ts:17:19)
+    at Game.applyDirectBoltDamage (/Users/coolking70/.codex/worktrees/7076/brogue/brogue-web/src/engine/Core/Game.ts:4382:32)
+    at Game.applyBoltEffect (/Users/coolking70/.codex/worktrees/7076/brogue/brogue-web/src/engine/Core/Game.ts:4439:46)
+W8RNG 1 1000000 201072     at Random.randRange (file:///Users/coolking70/.codex/worktrees/7076/brogue/brogue-web/node_modules/@vitest/spy/dist/index.js:332:34)
+    at new FloatingText (/Users/coolking70/.codex/worktrees/7076/brogue/brogue-web/src/engine/Visuals/FloatingText.ts:18:23)
+    at Game.spawnFloatingText (/Users/coolking70/.codex/worktrees/7076/brogue/brogue-web/src/engine/Core/Game.ts:2747:33)
+    at Game.applyBoltEffect (/Users/coolking70/.codex/worktrees/7076/brogue/brogue-web/src/engine/Core/Game.ts:4445:26)
+    at onCell (/Users/coolking70/.codex/worktrees/7076/brogue/brogue-web/src/engine/Core/Game.ts:4308:35)
+
+ ❯ src/test/p4_3_special_monster_flags.test.ts (12 tests | 1 failed | 11 skipped) 172ms
+     × 玩家侧：玩家对 stone guardian 施放 FIRE，伤害反弹到玩家自己身上，guardian 血量不变 171ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/p4_3_special_monster_flags.test.ts > P4-3 验收 3：MA_REFLECT_100 反射 > 玩家侧：玩家对 stone guardian 施放 FIRE，伤害反弹到玩家自己身上，guardian 血量不变
+AssertionError: expected 4 to be 3 // Object.is equality
+
+- Expected
++ Received
+
+- 3
++ 4
+
+ ❯ src/test/p4_3_special_monster_flags.test.ts:161:44
+    159|         expect(guardian.hp).toBe(guardianHpBefore);
+    160|         expect(game.player.hp).toBe(playerHpBefore - expectedDamage);
+    161|         expect(rng.randomNumbersGenerated).toBe(3);
+       |                                            ^
+    162|         expect(staff.enchantment).toBe(8); expect(staff.charges).toBe(…
+    163|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 skipped (12)
+   Start at  06:59:36
+   Duration  676ms (transform 269ms, setup 0ms, import 426ms, tests 172ms, environment 0ms)
+

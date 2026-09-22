@@ -36,6 +36,8 @@ function monster(g: Game, x: number, y = 5, id = 'rat') {
 // W-5: construct before RNG spies/counters; these suites observe casting, not generation.
 function prepareZap(g: Game, id = 'staff_of_fire', aim: Pos = { x: 8, y: 5 }, override?: Partial<BoltConfig>) {
     const item = id.startsWith('staff') ? ItemLoader.spawnStaff(id, -1, -1)! : ItemLoader.spawnWand(id, -1, -1)!;
+    // W-8: fix instance E for trajectory fixtures; old 6/10 HP constants are retired.
+    if (id.startsWith('staff')) item.enchantment = 2;
     return () => g.zapBoltFromPlayer({ ...getBoltForItem(id)!, ...override }, item, aim);
 }
 function zap(g: Game, id = 'staff_of_fire', aim: Pos = { x: 8, y: 5 }, override?: Partial<BoltConfig>) {
@@ -50,11 +52,14 @@ const recipients = (r: ReturnType<typeof zap>) => r.hits.map(h => h.creature);
 beforeEach(() => { vi.restoreAllMocks(); ItemLoader.identifiedItems.clear(); rng.seedRandomGenerator(4404); });
 
 describe('W-4 reflected travel (CE Items.c:4960-5065,5675-5705,5830-5852)', () => {
-    it('fire retraces to the player: reflector is not a hit, frames include the return, magnitude is unchanged', () => {
+    it('fire retraces to the player: reflector is not a hit, frames include the return, instance E is retained on return', () => {
         const g = scene(), guardian = monster(g, 8, 5, 'stone_guardian');
-        const r = zap(g);
+        const cast = prepareZap(g);
+        const roll = vi.spyOn(rng, 'randClumpedRange').mockReturnValue(3); // W-8 CE E2 minimum
+        const r = cast();
+        expect(roll).toHaveBeenCalledExactlyOnceWith(3, 9, 1);
         expect(r.path.map(p => p.x)).toEqual([5, 6, 7, 8, 7, 6, 5, 4]);
-        expect(recipients(r)).toEqual([g.player]); expect(g.player.hp).toBe(94); expect(guardian.hp).toBe(100);
+        expect(recipients(r)).toEqual([g.player]); expect(g.player.hp).toBe(97); expect(guardian.hp).toBe(100);
         expect(r.hits[0]!.pos).toEqual({ x: 4, y: 5 }); expect(r.landingPos).toEqual(g.player.loc);
         expect(r.frames.map(f => ({ x: f.x, y: f.y }))).toEqual(r.path);
         expect(r.reflections).toEqual([{ pos: { x: 8, y: 5 }, pathIndex: 3, creature: guardian, towardCaster: true }]);
@@ -95,9 +100,12 @@ describe('W-4 reflected travel (CE Items.c:4960-5065,5675-5705,5830-5852)', () =
 
     it('piercing revisits an earlier hit, hits the player and a creature behind the caster; later reflectors remain relevant', () => {
         const g = scene(), first = monster(g, 6), guardian = monster(g, 10, 5, 'stone_guardian'), behind = monster(g, 2);
-        const r = zap(g, 'staff_of_lightning', first.loc);
+        const cast = prepareZap(g, 'staff_of_lightning', first.loc);
+        // W-8: one independent CE damage roll for each actual contact.
+        vi.spyOn(rng, 'randClumpedRange').mockReturnValueOnce(3).mockReturnValueOnce(4).mockReturnValueOnce(5).mockReturnValueOnce(6);
+        const r = cast();
         expect(recipients(r)).toEqual([first, first, g.player, behind]);
-        expect([first.hp, guardian.hp, g.player.hp, behind.hp]).toEqual([80, 100, 90, 90]);
+        expect([first.hp, guardian.hp, g.player.hp, behind.hp]).toEqual([93, 100, 95, 94]);
         expect(r.hits.map(h => h.pos.x)).toEqual([6, 6, 4, 2]);
     });
 
@@ -221,8 +229,10 @@ describe('W-4 recipient dispatch and boundaries', () => {
     it('reflection precedes invulnerability for a creature carrying both flags', () => {
         const g = scene(), guardian = monster(g, 8, 5, 'stone_guardian');
         vi.spyOn(guardian, 'isInvulnerable').mockReturnValue(true);
-        const r = zap(g);
-        expect(recipients(r)).toEqual([g.player]); expect(g.player.hp).toBe(94); expect(guardian.hp).toBe(100);
+        const cast = prepareZap(g);
+        vi.spyOn(rng, 'randClumpedRange').mockReturnValue(3); // W-8 CE E2 minimum
+        const r = cast();
+        expect(recipients(r)).toEqual([g.player]); expect(g.player.hp).toBe(97); expect(guardian.hp).toBe(100);
     });
 
     it.each(['DISTANCE_ATTACK', 'POISON_DART'])('%s never reflects from monster/armor/crystal and remains a physical attack', name => {
@@ -291,14 +301,17 @@ describe('W-4 recipient dispatch and boundaries', () => {
         expect(ignite.mock.calls.map(c => c[0])).toEqual([5, 6, 7, 7, 6, 5, 4]);
     });
 
-    it('P4-4 splitting belongs to the actual bystander hit, preserving old damage and ceil-half HP', () => {
+    it('W-8 reverses the W-4 split assumption: player-reflected fire damages the bystander but does not split', () => {
         const g = scene(), golem = monster(g, 8, 5, 'golem'), jelly = monster(g, 8, 8, 'pink_jelly');
         const cast = prepareZap(g, 'staff_of_fire');
         vi.spyOn(rng, 'randPercent').mockReturnValueOnce(true).mockReturnValueOnce(false);
         vi.spyOn(rng, 'randRange').mockImplementation((lo, hi) => hi === 39 ? 16 : lo);
         const r = cast();
         expect(recipients(r)).toEqual([jelly]); expect(golem.hp).toBe(100);
-        expect(g.monsters.filter(m => m.typeId === 'pink_jelly').map(m => m.hp)).toEqual([47, 47]);
+        // CE Items.c:5210-5213: !alreadyReflected || caster != &player.
+        // The former [47,47] asserted old constant damage AND missed this guard.
+        expect(g.monsters.filter(m => m.typeId === 'pink_jelly').map(m => m.hp)).toEqual([97]);
+        expect((jelly.statusDurations as Record<string, number>).burning).toBe(7);
     });
 
     it('a moved or dead occupant is not a stale hit on the return path', () => {

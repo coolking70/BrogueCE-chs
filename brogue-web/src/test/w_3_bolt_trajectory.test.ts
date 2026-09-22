@@ -38,6 +38,8 @@ const config = (id = 'staff_of_lightning') => getBoltForItem(id)!;
 // W-5: construct before RNG spies/counters; these suites observe casting, not generation.
 function prepareZap(g: Game, id = 'staff_of_lightning', aim: Pos = { x: 6, y: 5 }, override?: Partial<BoltConfig>) {
     const item = id.startsWith('staff') ? ItemLoader.spawnStaff(id, -1, -1)! : ItemLoader.spawnWand(id, -1, -1)!;
+    // W-8: fix instance E for trajectory fixtures; old 6/10 HP constants are retired.
+    if (id.startsWith('staff')) item.enchantment = 2;
     return () => g.zapBoltFromPlayer({ ...config(id), ...override }, item, aim);
 }
 function zap(g: Game, id = 'staff_of_lightning', aim: Pos = { x: 6, y: 5 }, override?: Partial<BoltConfig>) {
@@ -50,9 +52,11 @@ beforeEach(() => { ItemLoader.identifiedItems.clear(); vi.restoreAllMocks(); });
 
 describe('W-3 seven required stages', () => {
     it('two collinear creatures: lightning passes the aimed first creature, fire stops at it', () => {
-        for (const [id, damage, count] of [['staff_of_lightning', 10, 2], ['staff_of_fire', 6, 1]] as const) {
+        for (const [id, damage, count] of [['staff_of_lightning', 3, 2], ['staff_of_fire', 3, 1]] as const) {
             const g = scene(), first = rat(g, 6), second = rat(g, 9);
-            const result = zap(g, id, first.loc);
+            const cast = prepareZap(g, id, first.loc);
+            vi.spyOn(rng, 'randClumpedRange').mockReturnValue(3); // CE E2 minimum, PowerTables.c:49-51
+            const result = cast();
             expect(result.hits.map(h => h.creature)).toEqual(count === 2 ? [first, second] : [first]);
             expect([first.hp, second.hp]).toEqual([100 - damage, count === 2 ? 100 - damage : 100]);
             expect(result.aimPos).toEqual(first.loc);
@@ -188,10 +192,12 @@ describe('W-3 sequencing, recipients and W-2 observation', () => {
         for (const overlay of [false, true]) {
             const g = scene(), target = rat(g, 10); g.grid.setTerrain(7, 5, T.DOOR);
             if (overlay) g.grid.setTerrainLayer(7, 5, L.SURFACE, T.FORCEFIELD);
-            const result = zap(g, 'staff_of_fire', target.loc);
+            const cast = prepareZap(g, 'staff_of_fire', target.loc);
+            vi.spyOn(rng, 'randClumpedRange').mockReturnValue(3);
+            const result = cast();
             expect(result.outcome?.autoID).toBe(true); // real ignition, regardless of reaching target
             expect(result.hits.map(h => h.creature)).toEqual(overlay ? [] : [target]);
-            expect(target.hp).toBe(overlay ? 100 : 94);
+            expect(target.hp).toBe(overlay ? 100 : 97);
             expect(result.landingPos).toEqual(overlay ? { x: 7, y: 5 } : target.loc);
         }
     });
@@ -277,8 +283,10 @@ describe('W-3 sequencing, recipients and W-2 observation', () => {
         const g = scene(), target = rat(g, 7);
         let hpAtExposure = 0;
         vi.spyOn(g.environment, 'ignite').mockImplementation((x, y) => { if (x === 7 && y === 5) hpAtExposure = target.hp; });
-        zap(g, 'staff_of_fire', target.loc);
-        expect(hpAtExposure).toBe(94);
+        const cast = prepareZap(g, 'staff_of_fire', target.loc);
+        vi.spyOn(rng, 'randClumpedRange').mockReturnValue(3);
+        cast();
+        expect(hpAtExposure).toBe(97); // W-8 CE E2 minimum, contact still precedes exposure
         const before = { ...target.loc };
         const moved = zap(g, 'wand_of_beckoning', target.loc);
         expect(moved.hits[0]!.pos).toEqual(before); expect(moved.landingPos).toEqual(before);

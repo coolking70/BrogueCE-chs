@@ -19,7 +19,7 @@ import { Game } from '../engine/Core/Game';
 import { Monster, type MonsterData } from '../entities/Monster';
 import { Item, ItemCategory } from '../engine/Items/Item';
 import { TerrainType } from '../engine/Map/Grid';
-import { rng } from '../engine/Random';
+import { Random, rng } from '../engine/Random';
 import { CombatSystem } from '../engine/Combat/Combat';
 import { getBoltForItem } from '../engine/Combat/Bolt';
 import { reflectionChance } from '../engine/Combat/CombatFormulas';
@@ -144,13 +144,22 @@ describe('P4-3 验收 3：MA_REFLECT_100 反射', () => {
         const playerHpBefore = game.player.hp;
 
         const staff = new Item('staff of firebolt', '/', 0xff6600, ItemCategory.STAFF);
-        // W-3: use the real player exit/contact contract instead of a manually
-        // incomplete result and the private effect switch. Damage expectations
-        // stay unchanged: reflected travel itself remains W-4.
-        game.zapBoltFromPlayer({ ...getBoltForItem('staff_of_fire')!, magnitude: 20 }, staff, guardian.loc);
+        // W-8 留痕反转：旧断言把手工 magnitude=20 当直接 HP 伤害；此例的
+        // 原意是验证反射承伤者。保留 20 作为干扰量，改为验证实例 E=8 的公式。
+        // CE Items.c:7354-7355 / :5168；PowerTables.c:49-51；Math.c:40-59。
+        staff.enchantment = 8; staff.charges = 1; staff.maxCharges = 8;
+        // 飘字 ID 另耗一次 substantive RNG（既有行为）；此处隔离表现，只数伤害骰。
+        game.spawnFloatingText = () => {};
+        rng.seedRandomGenerator(32); // 构造已完成；仅测施法耗骰。
+        const reference = new Random(32);
+        const expectedDamage = 7 + reference.randRange(0, 6) + reference.randRange(0, 6) + reference.randRange(0, 5);
+        const result = game.zapBoltFromPlayer({ ...getBoltForItem('staff_of_fire')!, magnitude: 20 }, staff, guardian.loc);
 
+        expect(result.hits.map(h => h.creature)).toEqual([game.player]);
         expect(guardian.hp).toBe(guardianHpBefore);
-        expect(game.player.hp).toBe(playerHpBefore - 20);
+        expect(game.player.hp).toBe(playerHpBefore - expectedDamage);
+        expect(rng.randomNumbersGenerated).toBe(3);
+        expect(staff.enchantment).toBe(8); expect(staff.charges).toBe(1);
     });
 
     it('golem（MONST_REFLECT_50）的反射概率与 CE PowerTables reflectionChance(4) 一致', () => {

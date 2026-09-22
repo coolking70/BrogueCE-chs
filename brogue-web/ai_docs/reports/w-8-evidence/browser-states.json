@@ -1,0 +1,575 @@
+{
+  "states": [
+    {
+      "label": "fire-e2",
+      "selected": {
+        "mode": "arcana_target",
+        "enchantmentTargets": [],
+        "arcanaTarget": {
+          "name": "火焰法杖 [1/2]",
+          "x": 8,
+          "y": 5
+        },
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 500,
+          "nutrition": 2150,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 8,
+            "y": 5,
+            "hp": 500
+          }
+        ],
+        "items": []
+      },
+      "contact": {
+        "E": 2,
+        "charges": 1,
+        "hp": 500,
+        "statuses": {},
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 494,
+            "statuses": {
+              "burning": 7
+            }
+          }
+        ],
+        "hits": [
+          "rat"
+        ],
+        "reflections": 0,
+        "autoID": true
+      },
+      "final": {
+        "E": 2,
+        "charges": 0,
+        "hp": 500,
+        "statuses": {},
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 491,
+            "statuses": {
+              "burning": 6
+            }
+          }
+        ]
+      },
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 500,
+          "nutrition": 2149,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "logs": [
+        "火焰法杖 [1/2]灼烧了老鼠，造成6点伤害！",
+        "老鼠着火了"
+      ]
+    },
+    {
+      "label": "lightning-e3",
+      "selected": {
+        "mode": "arcana_target",
+        "enchantmentTargets": [],
+        "arcanaTarget": {
+          "name": "闪电法杖 [1/3]",
+          "x": 6,
+          "y": 5
+        },
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 500,
+          "nutrition": 2149,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 6,
+            "y": 5,
+            "hp": 500
+          },
+          {
+            "name": "老鼠",
+            "x": 9,
+            "y": 5,
+            "hp": 500
+          }
+        ],
+        "items": []
+      },
+      "contact": {
+        "E": 3,
+        "charges": 1,
+        "hp": 500,
+        "statuses": {},
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 491,
+            "statuses": {}
+          },
+          {
+            "id": "rat",
+            "hp": 494,
+            "statuses": {}
+          }
+        ],
+        "hits": [
+          "rat",
+          "rat"
+        ],
+        "reflections": 0,
+        "autoID": true
+      },
+      "final": {
+        "E": 3,
+        "charges": 0,
+        "hp": 500,
+        "statuses": {},
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 491,
+            "statuses": {}
+          },
+          {
+            "id": "rat",
+            "hp": 494,
+            "statuses": {}
+          }
+        ]
+      },
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 500,
+          "nutrition": 2148,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 2,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 6,
+            "y": 5,
+            "hp": 491
+          }
+        ],
+        "items": []
+      },
+      "logs": [
+        "闪电法杖 [1/3]释放的闪电击中了老鼠，造成9点伤害！",
+        "闪电法杖 [1/3]释放的闪电击中了老鼠，造成6点伤害！",
+        "你看到了老鼠。"
+      ]
+    },
+    {
+      "label": "reflected-e8",
+      "selected": {
+        "mode": "arcana_target",
+        "enchantmentTargets": [],
+        "arcanaTarget": {
+          "name": "火焰法杖 [1/8]",
+          "x": 8,
+          "y": 5
+        },
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 500,
+          "nutrition": 2148,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 2,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "石像守卫",
+            "x": 8,
+            "y": 5,
+            "hp": 500
+          }
+        ],
+        "items": []
+      },
+      "contact": {
+        "E": 8,
+        "charges": 1,
+        "hp": 481,
+        "statuses": {
+          "burning": 7
+        },
+        "monsters": [
+          {
+            "id": "stone_guardian",
+            "hp": 500,
+            "statuses": {
+              "immune_fire": 1000
+            }
+          }
+        ],
+        "hits": [
+          "player"
+        ],
+        "reflections": 1,
+        "autoID": true
+      },
+      "final": {
+        "E": 8,
+        "charges": 0,
+        "hp": 480,
+        "statuses": {
+          "burning": 6
+        },
+        "monsters": [
+          {
+            "id": "stone_guardian",
+            "hp": 500,
+            "statuses": {
+              "immune_fire": 1000
+            }
+          }
+        ]
+      },
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 480,
+          "nutrition": 2147,
+          "statuses": {
+            "burning": 6
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 3,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "logs": [
+        "火焰法杖 [1/8]灼烧了Player，造成19点伤害！",
+        "你着火了"
+      ]
+    },
+    {
+      "label": "immune-e8",
+      "selected": {
+        "mode": "arcana_target",
+        "enchantmentTargets": [],
+        "arcanaTarget": {
+          "name": "火焰法杖 [1/8]",
+          "x": 8,
+          "y": 5
+        },
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 500,
+          "nutrition": 2147,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 3,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "火蜥蜴",
+            "x": 8,
+            "y": 5,
+            "hp": 500
+          }
+        ],
+        "items": []
+      },
+      "contact": {
+        "E": 8,
+        "charges": 1,
+        "hp": 500,
+        "statuses": {},
+        "monsters": [
+          {
+            "id": "salamander",
+            "hp": 500,
+            "statuses": {
+              "immune_fire": 1000
+            }
+          }
+        ],
+        "hits": [
+          "salamander"
+        ],
+        "reflections": 0,
+        "autoID": true
+      },
+      "final": {
+        "E": 8,
+        "charges": 0,
+        "hp": 500,
+        "statuses": {},
+        "monsters": [
+          {
+            "id": "salamander",
+            "hp": 500,
+            "statuses": {
+              "immune_fire": 1000
+            }
+          }
+        ]
+      },
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 500,
+          "nutrition": 2146,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 4,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "logs": [
+        "火蜥蜴毫发无伤。"
+      ]
+    },
+    {
+      "label": "split-e8",
+      "selected": {
+        "mode": "arcana_target",
+        "enchantmentTargets": [],
+        "arcanaTarget": {
+          "name": "火焰法杖 [1/8]",
+          "x": 8,
+          "y": 5
+        },
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 500,
+          "nutrition": 2146,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 4,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "粉红果冻",
+            "x": 8,
+            "y": 5,
+            "hp": 500
+          }
+        ],
+        "items": []
+      },
+      "contact": {
+        "E": 8,
+        "charges": 1,
+        "hp": 500,
+        "statuses": {},
+        "monsters": [
+          {
+            "id": "pink_jelly",
+            "hp": 241,
+            "statuses": {
+              "burning": 7
+            }
+          },
+          {
+            "id": "pink_jelly",
+            "hp": 241,
+            "statuses": {}
+          }
+        ],
+        "hits": [
+          "pink_jelly"
+        ],
+        "reflections": 0,
+        "autoID": true
+      },
+      "final": {
+        "E": 8,
+        "charges": 0,
+        "hp": 500,
+        "statuses": {},
+        "monsters": [
+          {
+            "id": "pink_jelly",
+            "hp": 239,
+            "statuses": {
+              "burning": 6
+            }
+          },
+          {
+            "id": "pink_jelly",
+            "hp": 241,
+            "statuses": {}
+          }
+        ]
+      },
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 500,
+          "nutrition": 2145,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 5,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "粉红果冻",
+            "x": 8,
+            "y": 6,
+            "hp": 241
+          }
+        ],
+        "items": []
+      },
+      "logs": [
+        "火焰法杖 [1/8]灼烧了粉红果冻，造成19点伤害！",
+        "粉红果冻着火了",
+        "粉红果冻分裂成了两个！",
+        "你看到了粉红果冻。"
+      ]
+    }
+  ],
+  "errors": []
+}

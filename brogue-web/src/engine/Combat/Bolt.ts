@@ -100,8 +100,9 @@ export interface BoltConfig {
     name: string;
     /** What happens on impact. */
     effect: BoltEffect;
-    /** Legacy runtime value, NOT CE enchantment/charges. CE magnitude semantics
-     * live in BoltCatalog.resolveCEBoltMagnitude; migration is a later W round. */
+    /** Legacy runtime value, NOT CE enchantment/charges. W-8 CE fire/lightning
+     * STAFF damage ignores it and resolves instance E at the effect consumer.
+     * Other effects and retired web inventions retain this legacy value. */
     magnitude: number;
     /** Display character while in flight. */
     char: string;
