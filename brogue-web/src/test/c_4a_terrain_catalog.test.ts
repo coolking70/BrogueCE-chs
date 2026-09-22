@@ -164,7 +164,11 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         // 落点 tile），82 → 101。逐字段钉死在 v_2b_7_features 的 A 组。
         // V-2b-8：BLOODFLOWER_STALK / HAVEN_BEDROLL 两条新成员，101 → 103；
         // BONES 与 SACRED_GLYPH 均复用既有成员。
-        expect(names.length).toBe(103);
+        // V-2b-9a：FLOOR_FLOODABLE / CHASM_WITH_HIDDEN_BRIDGE / LAVA_RETRACTABLE /
+        // MUD_FLOOR / MUD_WALL / MUD_DOORWAY / MARBLE_FLOOR / FLOOD_TRAP /
+        // ELECTRIC_CRYSTAL_OFF / TURRET_LEVER / HAUNTED_TORCH_DORMANT /
+        // DARK_FLOOR_DORMANT 十二条新成员，103 → 115；RUBBLE 已存在。
+        expect(names.length).toBe(115);
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             const entry = TERRAIN_FLAGS[t];
@@ -595,6 +599,8 @@ describe('C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时
         // V-2b-8：CE Globals.c:513 的 BLOODFLOWER_STALK 明确带
         // T_OBSTRUCTS_PASSABILITY；这是迁移后新增成员，不属于旧硬编码清单。
         C.BLOODFLOWER_STALK,
+        // V-2b-9a：CE Globals.c:577/565/563/344 明确带 PASSABILITY 的四条。
+        C.MUD_WALL, C.ELECTRIC_CRYSTAL_OFF, C.TURRET_LEVER, C.HAUNTED_TORCH_DORMANT,
     ]);
     it('terrainAllowsMove（查表）≡ 旧排除清单 {GRANITE,WALL,SECRET_DOOR,LOCKED_DOOR,WATER_DEEP}', () => {
         const names = Object.keys(TerrainType).filter((k) => Number.isNaN(Number(k)));

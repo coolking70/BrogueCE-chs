@@ -429,10 +429,12 @@ describe('G-2 对抗⑦：未迁移气体只登记（载体盘点表的显式留
         expect(names['PARALYSIS_GAS']).toBeDefined();
         // 24 条 GAS 目录里无载体的条目不入 DF 目录（登记 ≠ 抄目录）：
         // DF_ROT_GAS_*（32/41）、DF_DEWAR_*（71-74）、DF_STENCH_*（217/218）、
-        // DF_DARKNESS_POTION（134）、DF_BLOODFLOWER_POD_BURST（70）、
-        // DF_PARALYSIS_GAS_CLOUD_POTION（159，G-3 走 addGas 直注、不入目录
-        // ——同 G-1 毒药水先例）都不在。
-        for (const id of [32, 41, 70, 71, 72, 73, 74, 134, 159, 217, 218]) {
+        // DF_DARKNESS_POTION（134）、DF_BLOODFLOWER_POD_BURST（70）等仍不在。
+        // 旧注将 159 误称为 DF_PARALYSIS_GAS_CLOUD_POTION；按 Rogue.h 枚举数序，
+        // 159 实为 DF_SHALLOW_WATER，本轮水扩散闭包合法使用该 id。
+        // V-2b-9a：159=DF_SHALLOW_WATER 是水扩散闭包成员；218=DF_STENCH_SMOLDER
+        // 由 MUD_FLOOR.fireType 引入。二者已获授权，边界守卫只移除这两项。
+        for (const id of [32, 41, 70, 71, 72, 73, 74, 134, 217]) {
             expect(DUNGEON_FEATURE_CATALOG[id as DF], `DF#${id} 不得提前入目录`).toBeUndefined();
         }
     });
@@ -477,7 +479,7 @@ describe('G-2 对抗⑦：未迁移气体只登记（载体盘点表的显式留
         // V-2b-7：29 → 31（摘 5 增 7，DF 特征系统轮——RUBBLE/LUMINESCENT_FUNGUS
         // 两条地形落地摘除四条 RUBBLE 链 DF 与 DF_LUMINESCENT_FUNGUS，新增
         // 七条 tile 无 web 载体的新条目）。
-        expect(DF_MISSING_TILES).toHaveLength(31);
+        expect(DF_MISSING_TILES).toHaveLength(53);
         const f = catalogFeature(DF.DF_EXPLOSION_FIRE);
         expect(f.tile).toBe(C.GAS_EXPLOSION);
         expect(f.startProbability).toBe(60);

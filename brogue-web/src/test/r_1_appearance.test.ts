@@ -305,7 +305,8 @@ describe('R-1 terrainAppearance 特征化（穷举钉死）', () => {
         // V-2b-7：DF 特征系统轮 19 条入列（CE Globals.c:355/363/367/372/377/
         // 387/448/449/450/457/465/473/484/486/543/546/547/568/573），82 → 101。
         // V-2b-8：BLOODFLOWER_STALK / HAVEN_BEDROLL 两条新成员。
-        expect(ALL_TERRAINS.length).toBe(103);
+        // V-2b-9a：十二条新载体成员，103 → 115；RUBBLE 已存在。
+        expect(ALL_TERRAINS.length).toBe(115);
         expect(new Set(ALL_TERRAINS).size).toBe(ALL_TERRAINS.length);
     });
 

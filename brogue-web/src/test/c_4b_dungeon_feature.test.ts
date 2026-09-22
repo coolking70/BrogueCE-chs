@@ -729,7 +729,10 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
             DF.DF_SPREADABLE_COLLAPSE, DF.DF_COLLAPSE, DF.DF_COLLAPSE_SPREADS,
             DF.DF_BRIDGE_ACTIVATE, DF.DF_BRIDGE_ACTIVATE_ANNOUNCE,
             DF.DF_BRIDGE_APPEARS, DF.DF_RETRACTING_LAVA,
-            DF.DF_OBSIDIAN_WITH_STEAM, DF.DF_MUD_ACTIVATE, DF.DF_LAKE_HALO]) start.add(id);
+            DF.DF_OBSIDIAN_WITH_STEAM, DF.DF_MUD_ACTIVATE, DF.DF_LAKE_HALO,
+            // 两个过渡 tile 尚未成为 TerrainType，故其 promoteType 不能自动入起点；
+            // DF_DARK_FLOOR 再经 subsequentDF 合法带入 DF_ECTOPLASM_DROPLET。
+            DF.DF_DARK_FLOOR, DF.DF_HAUNTED_TORCH]) start.add(id);
         // V-2b-6：DF_AMBIENT_BLOOD / DF_BONES 第二起点——本轮 FeatureDef 已有
         // df 列（feature.featureDF），但闭包是**静态数据扫描**，不运行蓝图；
         // CE 的起点是 10 号 Kennel feature 的 DF 列（GlobalsBrogue.c:252/253
@@ -1013,10 +1016,20 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         expect(catalogFeature(DF.DF_BRIDGE_FIRE).tile).toBe(C.NOTHING);
     });
 
-    it('E5 目录条目不影响未登记 id：未抄录 id 的查询得到 undefined（219 枚举只抄 57 条）', () => {
+    // V-2b-9a-finish（验收方）：本轮把 throw 臂从 218 挪到 219，但 219 不是 DF——
+    // CE `Rogue.h` 的枚举自 DF_GRANITE_COLUMN = 1 起数，末项是
+    // DF_STENCH_SMOLDER = 218，219 是终止符 NUMBER_DUNGEON_FEATURES；
+    // web 侧 DF 枚举同样止于 DF_STENCH_SMOLDER = 218。
+    // 钉一个永远不可能成为目录成员的哨兵值 ⇒ 这条守卫退化为恒真（审计报告
+    // 「挑 seed 的测试」分类里的**哑**），再也抓不住"未授权 id 混进目录"。
+    // 改钉 217 = DF_STENCH_BURN：真实存在、刻意未抄录，且 g_2 的禁入名单仍列着它。
+    // 将来谁把 217 抄进目录，这条会响。
+    it('E5 目录条目不影响未登记 id：未抄录 id 的查询得到 undefined（218 项枚举已抄 131 条）', () => {
         expect(DUNGEON_FEATURE_CATALOG[1 as DF]).toBeUndefined();   // DF_GRANITE_COLUMN
-        expect(DUNGEON_FEATURE_CATALOG[219 as DF]).toBeUndefined(); // DF_STENCH_BURN
-        expect(() => catalogFeature(218 as DF)).toThrow(/未抄录/);
+        expect(DUNGEON_FEATURE_CATALOG[217 as DF]).toBeUndefined(); // DF_STENCH_BURN
+        expect(() => catalogFeature(217 as DF)).toThrow(/未抄录/);
+        // 219 = NUMBER_DUNGEON_FEATURES（枚举终止符，非 DF），越界查询同样得 undefined。
+        expect(DUNGEON_FEATURE_CATALOG[219 as DF]).toBeUndefined();
     });
 });
 
