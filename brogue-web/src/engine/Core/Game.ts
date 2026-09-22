@@ -27,6 +27,7 @@ import { weaponParalysisDuration, weaponConfusionDuration, weaponForceDistance, 
 import { ItemCategory, Item } from '../Items/Item';
 import { ItemLoader, type ConsumableConfig } from '../Items/ItemLoader';
 import { restoreArcanaInstance } from '../Items/ArcanaInstance';
+import { canEnchantArcana, enchantArcana } from '../Items/ArcanaEnchantment';
 import { equippedWisdomBonus, tickStaffRecharge, rechargeStaffFully, restoreStaffRecharge } from '../Items/ArcanaRecharge';
 import { rng } from '../Random';
 import monsterData from '../../data/monsters.json';
@@ -244,6 +245,8 @@ export interface GameSnapshot {
     mode: GameMode;
     /** W-6: retain partial P2 objective blocks across saves; legacy default is 100. */
     ticksTillUpdateEnvironment?: number;
+    /** W-7: a read scroll awaits a mandatory target and its turn is not settled yet. */
+    pendingEnchantment?: boolean;
     player: {
         loc: Pos;
         hp: number;
@@ -532,6 +535,7 @@ export class Game {
      * 不进存档：读档/新局重置（挂起中的选择不跨场景）。
      */
     public pendingIdentify: boolean = false;
+    public pendingEnchantment: boolean = false;
     // W-2: transient choice, never persisted; selection cannot spend a turn.
     public pendingArcana: { item: Item; cursor: Pos } | null = null;
 
@@ -682,6 +686,7 @@ export class Game {
         this.isMouseTraveling = false;
         this.isInventoryOpen = false;
         this.pendingIdentify = false;
+        this.pendingEnchantment = false;
         this.pendingArcana = null;
         // B-1c：恶意品确认待决态不得跨场景泄漏（与 pendingIdentify 同处复位）
         this.pendingUseConfirm = null;
@@ -2939,7 +2944,7 @@ export class Game {
     }
 
     public isTimePaused() {
-        return this.isInventoryOpen || !!this.pendingArcana;
+        return this.isInventoryOpen || !!this.pendingArcana || this.pendingEnchantment;
     }
 
     private toRecordedInputData(data: unknown): RecordedInputData {
@@ -3132,6 +3137,10 @@ export class Game {
         if (source === 'player') {
             this.recordInputEvent(action, data);
         }
+
+        // CE Items.c:7824-7835: once read, enchantment requires a valid target;
+        // Escape/close/cancel cannot discard the scroll's unresolved effect.
+        if (this.pendingEnchantment) return;
 
         if (this.pendingArcana) {
             if (action === 'escape' || action === 'cancel_target') this.cancelArcanaSelection();
@@ -3946,7 +3955,12 @@ export class Game {
     }
 
     public readItem(item: Item, confirmed: boolean = false) {
+        if (this.pendingEnchantment) return;
         if (item.category !== ItemCategory.SCROLL) return;
+        if (!this.player.inventory.items.includes(item)) return;
+        if ((item as Item & { consumableId?: string }).consumableId === 'scroll_of_enchantment'
+            && (this.isInputLocked() || this.isGameOver || this.player.hp <= 0
+                || this.player.hasStatus('paralyzed') || this.pendingIdentify || this.pendingArcana)) return;
         // B-1c：CE Items.c:7757-7767——同款恶意品确认（读卷轴分支）。
         if (this.gateMalevolentUse(item, confirmed)) return;
 
@@ -3979,7 +3993,7 @@ export class Game {
                         // B-1a（反驳 B-0 §1.4 表格第 2 行）：CE Items.c:7776-7781——
                         // 读 identify 卷轴先 identify(theItem) 亮自身种类并宣告
                         // "this is a scroll of identify."，然后才让玩家选目标。
-                        // "用完不自亮"的例外只有 enchanting（Items.c:8019-8026）。
+                        // enchanting 同样在专属分支提前自亮（Items.c:7817）。
                         // B-1b：目标改为玩家指定（CE promptForItemOfType，
                         // Items.c:7783-7802）；无可鉴物品时 "everything in your
                         // pack is already identified."——两种情况卷轴都照常消耗
@@ -3993,11 +4007,17 @@ export class Game {
                         }
                         break;
                     case 'enchant_item':
-                        if (!this.enchantEquippedItem()) {
-                            logger.log(i18next.t('scroll.enchant_fail', { defaultValue: 'Nothing happens.' }), '#aaaaaa');
-                        } else {
-                            logger.log(i18next.t('scroll.enchant', { defaultValue: 'Arcane force sharpens your gear.' }), '#99ddff');
+                        // Items.c:7817-7818: reveal the scroll BEFORE selecting.
+                        // The generic auto-ID exclusion below is not "never ID".
+                        ItemLoader.identifyItemKind(item);
+                        logger.log(i18next.t('scroll.reveal_enchantment', { defaultValue: 'This is a scroll of enchanting.' }), '#00ffff');
+                        if (this.player.inventory.items.some(target => this.canEnchantTarget(target))) {
+                            this.pendingEnchantment = true;
+                            this.isInventoryOpen = true;
+                            this.needsRender = true;
+                            return; // Complete the read's time AFTER applying the chosen effect.
                         }
+                        logger.log(i18next.t('scroll.enchant_fail', { defaultValue: 'Nothing happens.' }), '#aaaaaa');
                         break;
                     case 'remove_curse':
                         if (!this.removeCurseFromInventory()) {
@@ -4047,7 +4067,7 @@ export class Game {
                 }
 
                 // B-1a：CE Items.c:8019-8026——卷轴用完即亮种类，例外是
-                // enchanting（永不自亮）与 identify（上 case 已提前自亮，此处
+                // enchanting 与 identify（上 case 已提前自亮，此处
                 // 跳过避免重复消息）。web id 对齐：scroll_of_enchantment ≙
                 // SCROLL_ENCHANTING、scroll_of_identify ≙ SCROLL_IDENTIFY。
                 if (!ItemLoader.identifiedItems.has(trueId)
@@ -4067,7 +4087,7 @@ export class Game {
 
     public useArcanaItem(item: Item) {
         if (this.isInputLocked() || this.isGameOver || this.player.hp <= 0 || this.player.hasStatus('paralyzed')
-            || this.pendingIdentify || this.pendingArcana || !this.player.inventory.items.includes(item)) return;
+            || this.pendingIdentify || this.pendingEnchantment || this.pendingArcana || !this.player.inventory.items.includes(item)) return;
         if (
             item.category !== ItemCategory.WAND
             && item.category !== ItemCategory.STAFF
@@ -4967,6 +4987,33 @@ export class Game {
         cursed.isCursed = false;
         if (cursed.enchantment < 0) cursed.enchantment = 0;
         logger.log(i18next.t('item.uncursed', { name: cursed.name, defaultValue: `${cursed.name} is no longer cursed.` }), '#88ffcc');
+        return true;
+    }
+
+    /** Keep the legacy weapon-first equipped-gear rule, including its RNG, intact.
+     * W-7 adds pack arcana as alternatives; it does not add rings/charms/spare gear.
+     */
+    public canEnchantTarget(item: Item): boolean {
+        return this.player.inventory.items.includes(item) && (canEnchantArcana(item)
+            || item === (this.player.equippedWeapon ?? this.player.equippedArmor));
+    }
+
+    public chooseEnchantTarget(item: Item): boolean {
+        if (!this.pendingEnchantment || this.isInputLocked() || this.isGameOver
+            || this.player.hp <= 0 || !this.canEnchantTarget(item)) return false;
+        if (canEnchantArcana(item)) {
+            enchantArcana(item);
+            logger.log(i18next.t('item.arcana_enchanted', { name: item.displayName,
+                interpolation: { escapeValue: false }, defaultValue: 'Your {{name}} gleams briefly in the darkness.' }), '#99ddff');
+        } else {
+            this.enchantEquippedItem();
+            logger.log(i18next.t('scroll.enchant', { defaultValue: 'Arcane force sharpens your gear.' }), '#99ddff');
+        }
+        this.pendingEnchantment = false;
+        this.isInventoryOpen = false;
+        this.needsRender = true;
+        timeSystem.currentTick += this.player.movementSpeed;
+        this.playerTurnEnded();
         return true;
     }
 
@@ -8133,6 +8180,7 @@ export class Game {
             seed: this.currentSeed,
             mode: this.mode,
             ticksTillUpdateEnvironment: this.ticksTillUpdateEnvironment,
+            pendingEnchantment: this.pendingEnchantment,
             player: {
                 loc: { x: this.player.loc.x, y: this.player.loc.y },
                 hp: this.player.hp,
@@ -8401,6 +8449,8 @@ export class Game {
         this.isMouseTraveling = false;
         this.isInventoryOpen = false;
         this.pendingIdentify = false;
+        this.pendingEnchantment = snapshot.pendingEnchantment ?? false;
+        if (this.pendingEnchantment) this.isInventoryOpen = true;
         this.pendingArcana = null;
         // B-1c：恶意品确认待决态不得跨场景泄漏（与 pendingIdentify 同处复位）
         this.pendingUseConfirm = null;

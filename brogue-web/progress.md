@@ -818,3 +818,17 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 最终冻结7个生产文件（含新 helper），测试3文件，反查/浏览器/门禁脚本3文件。开始最终build、显式R+S回归及独立test:drift，前后SHA-256覆盖src/所有scripts/配置与锁文件；结果回填w-6.report.md。
 - 后续：W-7附魔入口与进度调整；W-12/W-14特殊周期；护符完整模型与戒指附魔次数不在本轮。旧档计时确定性500，不将旧递增counter冒充CE倒计时。
 - 最终完成：build退出0；显式112文件1656 passed、8 skipped、5 todo；独立drift1例通过，合计113文件1657 passed。生成基线未重捕获、SHA-256保持1549a4c5aae041ff5c4a7653ea22d07af88aecaf3740861b0cdb90a4656d5820。211文件前后清单哈希均为a9c6e3bfc612e7bb22a6e15ae2e3895a27c5db6cab03935424e01102b5b76677；逐文件结果与完整证据见ai_docs/reports/w-6.report.md。
+
+## 2026-09-23 W-7：附魔法器入口
+
+- 当前请求：严格执行 w-7.prompt / W-0 §2.3，核实 W-5 E/容量/次数与 W-6 回电交接，不改生成流、装备附魔随机路径或效果公式。
+- CE Items.c:7860-7867：STAFF E+1、当前+1、独立倒计时=floor(500/new E)，容量同步新 E；WAND 只加 range.lowerBound，原 maxCharges 非上限。
+- CE Items.c:7817 驳回旧 B-1a/W-6 注释的“enchanting 永不自亮”：卷轴先自亮，再强制选择；关闭/Esc 不取消已读卷轴。时间延后到选定之后，待选状态随快照往返。
+- 新增纯资源 helper、背包原引用选择与 Vue toRaw 接线，保留原装备 helper 逐字不变；R+S 增补 UI/enchant/存读档检索。
+- 新增30例已通过，包含旧2700倒计时的归一化反事实、新E随机区间、满电暂停、真实P2半块、WAND越过原次数、未知态、拒绝失效引用、待选/完成JSON存档、装备分支完整RNG对象对照。
+- 初测修复测试自用导入路径/私有桥接类型；i18n门禁指出本地t别名不可被扫描，提示改用脚本内i18next.t的实际消费，不放宽扫描断言。CE行号以本轮原文件重新编号校正。
+- 有头浏览器完成读前关闭/读后强制选择、非法点击、背包重排、STAFF/WAND、待选和完成存读档；截图已打开复核，零页面/控制台错误。技能客户端黑canvas截图不冒充视觉通过。
+- 最终实际7生产文件：Game、Item、ArcanaEnchantment、InventoryOverlay、GameCanvas调试文本、consumables卷轴说明、zh_CN。R101 + S(U41/Q15/G63/enchant32/storage54/observation106)，并集115；114显式回归文件+独立drift。
+- 代码/测试/脚本编辑完成，开始最终build、R+S、test:drift；生成基线不重捕获，完整src/scripts/config SHA-256前后自证，结果回填w-7.report.md。
+- 后续边界：W-8~23效果读取E仍未改；W-12/14特殊周期；W-24~26目录/频率。退池自创WAND无CE range，不为它们杜撰附魔量；装备规则仍为原武器优先/护甲兜底含20%送符文。
+- 最终完成：build、114显式文件回归、独立drift均退出0；合计115文件1694 passed、8 skipped、5 todo、0 failed。216文件前后SHA-256清单均为c0d3a18b3f026802c15f0094b35a31d0dd965c71439f35d3898ff64ffef82af8；生成基线未重捕获。逐文件结果见ai_docs/reports/w-7.report.md。

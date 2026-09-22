@@ -1,0 +1,35 @@
+{
+  "base": "2941b18164010c293fc4f02b35fefa657d53ab3c",
+  "equipmentMethod": {
+    "before": "311ea8f15745d6bca5cff8dbc22bb76698f8ac5d73aa4e46307d44352715c1c7",
+    "after": "311ea8f15745d6bca5cff8dbc22bb76698f8ac5d73aa4e46307d44352715c1c7",
+    "byteIdentical": true
+  },
+  "unchangedFiles": {
+    "src/engine/Items/ArcanaInstance.ts": {
+      "sha256": "7d81a4ae22cb648547a96372ab9cd034dffc54361b4579b9087d24bfb7acc6e8",
+      "byteIdentical": true
+    },
+    "src/engine/Items/ArcanaRecharge.ts": {
+      "sha256": "d3232b776d3e6814225f8c4bf2c76d1aa743bb515a8070a1b55886e23a67d29d",
+      "byteIdentical": true
+    },
+    "src/engine/Items/ItemLoader.ts": {
+      "sha256": "c1f94dbd4be3ff95dbe6f6355cae0c84b685c2b72f2d5f760636f1c225186a65",
+      "byteIdentical": true
+    },
+    "src/data/arcana.json": {
+      "sha256": "e7a48053679eeccac39fb3518d811b2d757384fa734f12371a6fa2e5b9a88224",
+      "byteIdentical": true
+    },
+    "src/test/invented_content_pool.test.ts": {
+      "sha256": "6d12a61b43e0aea28c805f6b4d20612e793a69f30103370c06925f17d8b8d904",
+      "byteIdentical": true
+    },
+    "src/test/fixtures/generation_baseline.json": {
+      "sha256": "1549a4c5aae041ff5c4a7653ea22d07af88aecaf3740861b0cdb90a4656d5820",
+      "byteIdentical": true
+    }
+  },
+  "consumablesApartFromEnchantDescriptionEqual": true
+}

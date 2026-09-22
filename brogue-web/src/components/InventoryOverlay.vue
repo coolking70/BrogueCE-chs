@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed, toRaw } from 'vue';
 import { useTranslation } from 'i18next-vue';
+import i18next from 'i18next';
 import { activeGame } from '../engine/Core/Game';
 import { ItemCategory } from '../engine/Items/Item';
 import type { Item } from '../engine/Items/Item';
@@ -15,6 +16,7 @@ const selectedItem = ref<Item | null>(null);
 // B-1b：鉴定目标待选态与 call 输入态（引擎态是普通单例，沿用本组件 100ms
 // 轮询的既有模式镜像进 ref）
 const pendingIdentify = ref(false);
+const pendingEnchantment = ref(false);
 const callTarget = ref<Item | null>(null);
 const callText = ref('');
 // B-1c：恶意品使用确认的待决态（引擎 Game.pendingUseConfirm 的镜像）
@@ -24,6 +26,7 @@ const pendingUseConfirmText = ref('');
 const updateInventoryState = () => {
     isVisible.value = activeGame.isInventoryOpen;
     pendingIdentify.value = activeGame.pendingIdentify;
+    pendingEnchantment.value = activeGame.pendingEnchantment;
     pendingUseConfirm.value = activeGame.pendingUseConfirm;
     pendingUseConfirmText.value = activeGame.pendingUseConfirm
         ? activeGame.malevolentUseConfirmPrompt(activeGame.pendingUseConfirm)
@@ -44,12 +47,14 @@ onMounted(() => {
 });
 
 const closeInventory = () => {
+    if (activeGame.pendingEnchantment) return; // CE mandatory target after reading.
     activeGame.isInventoryOpen = false;
     selectedItem.value = null;
     updateInventoryState();
 };
 
 const { t } = useTranslation();
+const enchantPrompt = computed(() => i18next.t('scroll.enchant_prompt'));
 
 // Group items into categories
 const groupedItems = computed(() => {
@@ -177,6 +182,12 @@ const selectItem = (item: Item) => {
 // B-1b：鉴定卷轴目标选择模式——行点击被拦截为"指定目标"，只有
 // canBeIdentified 的物品可选中（CE promptForItemOfType 只列合法目标）。
 const selectItemOrIdentify = (item: Item) => {
+    if (pendingEnchantment.value) {
+        activeGame.chooseEnchantTarget(toRaw(item));
+        selectedItem.value = null;
+        updateInventoryState();
+        return;
+    }
     if (pendingIdentify.value) {
         if (item.canBeIdentified) performIdentifySelect(item);
         return;
@@ -216,7 +227,13 @@ const performQuaff = (item: Item) => {
 };
 
 const performRead = (item: Item) => {
-    activeGame.readItem(item);
+    activeGame.readItem(toRaw(item));
+    if (activeGame.pendingEnchantment) {
+        selectedItem.value = null;
+        cancelCall();
+        updateInventoryState();
+        return;
+    }
     if (activeGame.pendingUseConfirm) { updateInventoryState(); return; }
     closeInventory();
 };
@@ -268,10 +285,13 @@ const confirmCall = () => {
     <div class="inventory-modal">
       <div class="modal-header">
         <h2>{{ t('Your Inventory') || 'Your Inventory' }}</h2>
-        <button class="close-btn" @click="closeInventory">×</button>
+        <button class="close-btn" :disabled="pendingEnchantment" @click="closeInventory">×</button>
       </div>
       
       <div class="modal-content">
+        <div v-if="pendingEnchantment" class="identify-banner enchant-banner">
+          {{ enchantPrompt }}
+        </div>
         <div v-if="pendingIdentify" class="identify-banner">
           {{ t('Identify what? (choose a highlighted item)') || 'Identify what? (choose a highlighted item)' }}
         </div>
@@ -282,7 +302,8 @@ const confirmCall = () => {
                 <li v-for="entry in items" :key="entry.letter" class="item-wrapper">
                   <div class="item-row" @click="selectItemOrIdentify(entry.item)"
                        :class="{ 'selected-row': selectedItem?.id === entry.item.id,
-                                 'identify-candidate': pendingIdentify && entry.item.canBeIdentified }">
+                                 'identify-candidate': pendingIdentify && entry.item.canBeIdentified,
+                                 'enchant-candidate': pendingEnchantment && activeGame.canEnchantTarget(toRaw(entry.item)) }">
                     <!-- UI-2：ITEM_PROTECTED 闭括号 }（CE Items.c:3629/3641）——受保护物品闭括号从 ) 变 } -->
                     <span class="item-letter">{{ entry.letter }}{{ entry.item.isProtected ? '}' : ')' }}</span>
                     <!-- B-1c：detect magic 极性符号（CE Items.c:3611-3625） -->
@@ -296,7 +317,7 @@ const confirmCall = () => {
                        </span>
                     </span>
                   </div>
-                  <div v-if="selectedItem?.id === entry.item.id && !pendingIdentify" class="item-actions">
+                  <div v-if="selectedItem?.id === entry.item.id && !pendingIdentify && !pendingEnchantment" class="item-actions">
                      <button @click="performInspect(entry.item)" class="action-btn">{{ t('item.inspect', { defaultValue: '查看详情' }) }}</button>
                      <button v-if="isEquippable(entry.item) && !isEquipped(entry.item)" @click="performEquip(entry.item)" class="action-btn">{{ t('Equip') || 'Equip' }}</button>
                      <button v-if="isEquippable(entry.item) && isEquipped(entry.item)" @click="performUnequip(entry.item)" class="action-btn">{{ t('Unequip') || 'Unequip' }}</button>
@@ -318,7 +339,7 @@ const confirmCall = () => {
                     <button @click="cancelMalevolentUse()" class="action-btn">{{ t('No') || 'No' }}</button>
                   </div>
                   <!-- B-1b：call 绰号输入（CE getInputTextString，Items.c:1423） -->
-                  <div v-if="callTarget?.id === entry.item.id" class="item-actions call-input-row">
+                  <div v-if="callTarget?.id === entry.item.id && !pendingEnchantment" class="item-actions call-input-row">
                     <span class="call-label">{{ t('Call them:') || 'Call them:' }}</span>
                     <input v-model="callText" class="call-input" maxlength="29"
                            @keyup.enter="confirmCall" :placeholder="t('max 29 chars') || 'max 29 chars'" />
@@ -444,11 +465,11 @@ const confirmCall = () => {
   letter-spacing: 0.5px;
 }
 
-.item-row.identify-candidate {
+.item-row.identify-candidate, .item-row.enchant-candidate {
   cursor: pointer;
   background: rgba(0, 255, 255, 0.06);
 }
-.item-row.identify-candidate:hover {
+.item-row.identify-candidate:hover, .item-row.enchant-candidate:hover {
   background: rgba(0, 255, 255, 0.14);
 }
 

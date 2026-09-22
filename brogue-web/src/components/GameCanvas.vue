@@ -490,7 +490,9 @@ onMounted(async () => {
             .map((i) => ({ name: i.displayName, x: i.loc.x, y: i.loc.y }));
 
         return JSON.stringify({
-            mode: game.pendingArcana ? 'arcana_target' : game.isInventoryOpen ? 'inventory' : (game.isThrowing ? 'throw_target' : 'explore'),
+            mode: game.pendingEnchantment ? 'enchantment_target' : game.pendingArcana ? 'arcana_target' : game.isInventoryOpen ? 'inventory' : (game.isThrowing ? 'throw_target' : 'explore'),
+            enchantmentTargets: game.pendingEnchantment
+                ? game.player.inventory.items.filter(item => game.canEnchantTarget(item)).map(item => ({ id: item.id, name: item.displayName })) : [],
             arcanaTarget: game.pendingArcana ? { name: game.pendingArcana.item.displayName, ...game.pendingArcana.cursor } : null,
             coordinateSystem: { origin: 'top-left', xAxis: 'right', yAxis: 'down' },
             player: {

@@ -1,0 +1,532 @@
+{
+  "states": [
+    {
+      "label": "initial",
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 3,
+          "hp": 30,
+          "nutrition": 2150,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "logs": [
+        "已开始 测试 游戏（种子 437415917）。"
+      ],
+      "pending": false,
+      "turns": 0,
+      "gate": 100,
+      "inventory": [
+        {
+          "name": "玫瑰木法杖 [?/3]",
+          "category": 7,
+          "E": 3,
+          "capacity": 3,
+          "charges": 1,
+          "timer": 2700,
+          "identified": false,
+          "maxChargesKnown": true
+        },
+        {
+          "name": "黄铜魔杖 [1]",
+          "category": 6,
+          "E": 0,
+          "capacity": 1,
+          "charges": 1,
+          "identified": true,
+          "maxChargesKnown": false
+        },
+        {
+          "name": "题为「金光天书灵符」的卷轴",
+          "category": 3,
+          "E": 0,
+          "identified": false,
+          "maxChargesKnown": false
+        },
+        {
+          "name": "题为「金光天书灵符」的卷轴",
+          "category": 3,
+          "E": 0,
+          "identified": false,
+          "maxChargesKnown": false
+        }
+      ]
+    },
+    {
+      "label": "closed-before-read",
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 3,
+          "hp": 30,
+          "nutrition": 2150,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "logs": [
+        "已开始 测试 游戏（种子 437415917）。"
+      ],
+      "pending": false,
+      "turns": 0,
+      "gate": 100,
+      "inventory": [
+        {
+          "name": "玫瑰木法杖 [?/3]",
+          "category": 7,
+          "E": 3,
+          "capacity": 3,
+          "charges": 1,
+          "timer": 2700,
+          "identified": false,
+          "maxChargesKnown": true
+        },
+        {
+          "name": "黄铜魔杖 [1]",
+          "category": 6,
+          "E": 0,
+          "capacity": 1,
+          "charges": 1,
+          "identified": true,
+          "maxChargesKnown": false
+        },
+        {
+          "name": "题为「金光天书灵符」的卷轴",
+          "category": 3,
+          "E": 0,
+          "identified": false,
+          "maxChargesKnown": false
+        },
+        {
+          "name": "题为「金光天书灵符」的卷轴",
+          "category": 3,
+          "E": 0,
+          "identified": false,
+          "maxChargesKnown": false
+        }
+      ]
+    },
+    {
+      "label": "read-awaiting-target",
+      "text": {
+        "mode": "enchantment_target",
+        "enchantmentTargets": [
+          {
+            "id": 40,
+            "name": "玫瑰木法杖 [?/3]"
+          },
+          {
+            "id": 41,
+            "name": "黄铜魔杖 [1]"
+          }
+        ],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 3,
+          "hp": 30,
+          "nutrition": 2150,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 2,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "logs": [
+        "已开始 测试 游戏（种子 437415917）。",
+        "你朗读了题为「金光天书灵符」的卷轴。",
+        "这是一张附魔卷轴。"
+      ],
+      "pending": true,
+      "turns": 0,
+      "gate": 100,
+      "inventory": [
+        {
+          "name": "玫瑰木法杖 [?/3]",
+          "category": 7,
+          "E": 3,
+          "capacity": 3,
+          "charges": 1,
+          "timer": 2700,
+          "identified": false,
+          "maxChargesKnown": true
+        },
+        {
+          "name": "黄铜魔杖 [1]",
+          "category": 6,
+          "E": 0,
+          "capacity": 1,
+          "charges": 1,
+          "identified": true,
+          "maxChargesKnown": false
+        },
+        {
+          "name": "附魔卷轴",
+          "category": 3,
+          "E": 0,
+          "identified": false,
+          "maxChargesKnown": false
+        }
+      ]
+    },
+    {
+      "label": "cancel-and-invalid-target",
+      "text": {
+        "mode": "enchantment_target",
+        "enchantmentTargets": [
+          {
+            "id": 40,
+            "name": "玫瑰木法杖 [?/3]"
+          },
+          {
+            "id": 41,
+            "name": "黄铜魔杖 [1]"
+          }
+        ],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 3,
+          "hp": 30,
+          "nutrition": 2150,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 4,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "logs": [
+        "已开始 测试 游戏（种子 437415917）。",
+        "你朗读了题为「金光天书灵符」的卷轴。",
+        "这是一张附魔卷轴。"
+      ],
+      "pending": true,
+      "turns": 0,
+      "gate": 100,
+      "inventory": [
+        {
+          "name": "玫瑰木法杖 [?/3]",
+          "category": 7,
+          "E": 3,
+          "capacity": 3,
+          "charges": 1,
+          "timer": 2700,
+          "identified": false,
+          "maxChargesKnown": true
+        },
+        {
+          "name": "黄铜魔杖 [1]",
+          "category": 6,
+          "E": 0,
+          "capacity": 1,
+          "charges": 1,
+          "identified": true,
+          "maxChargesKnown": false
+        },
+        {
+          "name": "附魔卷轴",
+          "category": 3,
+          "E": 0,
+          "identified": false,
+          "maxChargesKnown": false
+        }
+      ]
+    },
+    {
+      "label": "staff-enchanted",
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 3,
+          "hp": 30,
+          "nutrition": 2149,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 4,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "logs": [
+        "已开始 测试 游戏（种子 437415917）。",
+        "你朗读了题为「金光天书灵符」的卷轴。",
+        "这是一张附魔卷轴。",
+        "你的玫瑰木法杖 [?/4]在黑暗中短暂闪耀。"
+      ],
+      "pending": false,
+      "turns": 1,
+      "gate": 100,
+      "inventory": [
+        {
+          "name": "附魔卷轴",
+          "category": 3,
+          "E": 0,
+          "identified": false,
+          "maxChargesKnown": false
+        },
+        {
+          "name": "黄铜魔杖 [1]",
+          "category": 6,
+          "E": 0,
+          "capacity": 1,
+          "charges": 1,
+          "identified": true,
+          "maxChargesKnown": false
+        },
+        {
+          "name": "玫瑰木法杖 [?/4]",
+          "category": 7,
+          "E": 4,
+          "capacity": 4,
+          "charges": 2,
+          "timer": 115,
+          "identified": false,
+          "maxChargesKnown": true
+        }
+      ]
+    },
+    {
+      "label": "pending-JSON-reload",
+      "text": {
+        "mode": "enchantment_target",
+        "enchantmentTargets": [
+          {
+            "id": 41,
+            "name": "黄铜魔杖 [1]"
+          },
+          {
+            "id": 40,
+            "name": "玫瑰木法杖 [?/4]"
+          }
+        ],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 3,
+          "hp": 30,
+          "nutrition": 2149,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "logs": [],
+      "pending": true,
+      "turns": 1,
+      "gate": 100,
+      "inventory": [
+        {
+          "name": "黄铜魔杖 [1]",
+          "category": 6,
+          "E": 0,
+          "capacity": 1,
+          "charges": 1,
+          "identified": true,
+          "maxChargesKnown": false
+        },
+        {
+          "name": "玫瑰木法杖 [?/4]",
+          "category": 7,
+          "E": 4,
+          "capacity": 4,
+          "charges": 2,
+          "timer": 115,
+          "identified": false,
+          "maxChargesKnown": true
+        }
+      ]
+    },
+    {
+      "label": "wand-enchanted",
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 3,
+          "hp": 30,
+          "nutrition": 2148,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "logs": [
+        "你的黄铜魔杖 [4]在黑暗中短暂闪耀。"
+      ],
+      "pending": false,
+      "turns": 2,
+      "gate": 100,
+      "inventory": [
+        {
+          "name": "黄铜魔杖 [4]",
+          "category": 6,
+          "E": 0,
+          "capacity": 1,
+          "charges": 4,
+          "identified": true,
+          "maxChargesKnown": false
+        },
+        {
+          "name": "玫瑰木法杖 [?/4]",
+          "category": 7,
+          "E": 4,
+          "capacity": 4,
+          "charges": 2,
+          "timer": 105,
+          "identified": false,
+          "maxChargesKnown": true
+        }
+      ]
+    },
+    {
+      "label": "completed-JSON-reload",
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 3,
+          "hp": 30,
+          "nutrition": 2148,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "logs": [],
+      "pending": false,
+      "turns": 2,
+      "gate": 100,
+      "inventory": [
+        {
+          "name": "黄铜魔杖 [4]",
+          "category": 6,
+          "E": 0,
+          "capacity": 1,
+          "charges": 4,
+          "identified": true,
+          "maxChargesKnown": false
+        },
+        {
+          "name": "玫瑰木法杖 [?/4]",
+          "category": 7,
+          "E": 4,
+          "capacity": 4,
+          "charges": 2,
+          "timer": 105,
+          "identified": false,
+          "maxChargesKnown": true
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

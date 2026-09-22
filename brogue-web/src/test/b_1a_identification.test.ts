@@ -408,8 +408,8 @@ describe('A9: 开局清零（CE resetItemTableEntry，Items.c:8775-8800）', () 
     });
 });
 
-describe('A10: 卷轴"用完不自亮"例外（CE Items.c:8019-8026；identify 卷轴自亮见 7776-7781）', () => {
-    it('enchanting 用完不亮自己；identify 读的瞬间自亮（反驳 B-0 §1.4 表格）；其它卷轴亮', () => {
+describe('A10: 通用卷轴 auto-ID 的例外在专属分支先自亮（CE Items.c:7776/7817/8019）', () => {
+    it('enchanting / identify 读的瞬间自亮；其它卷轴效果后亮', () => {
         const game = createHeadlessGame(42, 'test');
         isolatePlayer(game);
         const give = (id: string): Item => {
@@ -418,7 +418,11 @@ describe('A10: 卷轴"用完不自亮"例外（CE Items.c:8019-8026；identify �
             return s;
         };
         game.readItem(give('scroll_of_enchantment'));
-        expect(ItemLoader.identifiedItems.has('scroll_of_enchantment')).toBe(false);
+        // W-7 correction: Items.c:7817 identify(theItem), before the mandatory target.
+        expect(ItemLoader.identifiedItems.has('scroll_of_enchantment')).toBe(true);
+        if (game.pendingEnchantment) {
+            expect(game.chooseEnchantTarget(game.player.equippedWeapon!)).toBe(true);
+        }
 
         // CE Items.c:7776：case SCROLL_IDENTIFY 先 identify(theItem)——卷轴自身
         // 种类即亮并宣告 "this is a scroll of identify."（B-0 §1.4 表格称 identify
