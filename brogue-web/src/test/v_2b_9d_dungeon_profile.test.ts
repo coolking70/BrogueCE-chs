@@ -75,7 +75,8 @@ describe('V-2b-9d CE profiles, blueprint rows and closed terrain chains',()=>{
         }
         expect(profiles.DP_GOBLIN_WARREN).toEqual({roomFrequencies:[0,0,1,0,0,0,0,0],corridorChance:0});
         expect(profiles.DP_SENTINEL_SANCTUARY).toEqual({roomFrequencies:[0,5,0,1,0,0,0,0],corridorChance:0});
-        expect((data as BlueprintDef[]).filter(b=>b.flags.includes('BP_MAXIMIZE_INTERIOR')).map(b=>b.ceBlueprintId)).toEqual([13,14]);
+        // B2 fills CE55's literal flag while retaining its engine quarantine.
+        expect((data as BlueprintDef[]).filter(b=>b.flags.includes('BP_MAXIMIZE_INTERIOR')).map(b=>b.ceBlueprintId)).toEqual([55,13,14]);
         for(const id of [65,66]) expect(bp(id).frequency).toBe(0); // Existing 9b quarantine, untouched this round.
     });
 

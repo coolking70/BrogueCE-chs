@@ -449,7 +449,7 @@
             30,
             80
         ],
-        "frequency": 8,
+        "frequency": 12,
         "category": "reward",
         "flags": [
             "BP_ROOM",
@@ -932,7 +932,8 @@
                     "MF_NEAR_ORIGIN",
                     "MF_TREAT_AS_BLOCKING",
                     "MF_NOT_IN_HALLWAY"
-                ]
+                ],
+                "featureDF": "DF_LUMINESCENT_FUNGUS"
             },
             {
                 "terrain": "FUNGUS_FOREST",
@@ -1017,7 +1018,8 @@
                     "MF_KEY_DISPOSABLE",
                     "MF_IMPREGNABLE"
                 ],
-                "itemId": "iron_key"
+                "itemId": "iron_key",
+                "layer": "DUNGEON"
             }
         ]
     },
@@ -1050,7 +1052,8 @@
                 "flags": [
                     "MF_BUILD_AT_ORIGIN",
                     "MF_PERMIT_BLOCKING"
-                ]
+                ],
+                "layer": "DUNGEON"
             }
         ]
     },
@@ -1752,7 +1755,7 @@
                     1
                 ],
                 "minimumInstanceCount": 1,
-                "personalSpace": 1,
+                "personalSpace": 2,
                 "flags": [
                     "MF_ADOPT_ITEM",
                     "MF_TREAT_AS_BLOCKING"
@@ -1766,7 +1769,7 @@
                     2
                 ],
                 "minimumInstanceCount": 1,
-                "personalSpace": 1,
+                "personalSpace": 2,
                 "flags": []
             },
             {
@@ -1777,7 +1780,7 @@
                     1
                 ],
                 "minimumInstanceCount": 1,
-                "personalSpace": 1,
+                "personalSpace": 2,
                 "flags": [
                     "MF_ALTERNATIVE"
                 ]
@@ -1790,7 +1793,7 @@
                     1
                 ],
                 "minimumInstanceCount": 1,
-                "personalSpace": 1,
+                "personalSpace": 2,
                 "flags": [
                     "MF_GENERATE_ITEM",
                     "MF_NOT_IN_HALLWAY",
@@ -1805,7 +1808,7 @@
                     1
                 ],
                 "minimumInstanceCount": 1,
-                "personalSpace": 1,
+                "personalSpace": 2,
                 "flags": [
                     "MF_GENERATE_ITEM",
                     "MF_NOT_IN_HALLWAY",
@@ -2056,7 +2059,8 @@
                     "MF_ADOPT_ITEM",
                     "MF_TREAT_AS_BLOCKING",
                     "MF_NOT_IN_HALLWAY"
-                ]
+                ],
+                "layer": "DUNGEON"
             },
             {
                 "terrain": "SECRET_DOOR",
@@ -2069,7 +2073,8 @@
                 "flags": [
                     "MF_PERMIT_BLOCKING",
                     "MF_BUILD_AT_ORIGIN"
-                ]
+                ],
+                "layer": "DUNGEON"
             }
         ]
     },
@@ -3935,6 +3940,7 @@
             "BP_ROOM",
             "BP_ADOPT_ITEM",
             "BP_PURGE_INTERIOR",
+            "BP_MAXIMIZE_INTERIOR",
             "BP_SURROUND_WITH_WALLS"
         ],
         "features": [
@@ -4489,7 +4495,7 @@
             {
                 "terrain": "STATUE_INERT",
                 "layer": "DUNGEON",
-                "monsterId": "MK_SENTINEL",
+                "monsterId": "sentinel",
                 "instanceCount": [
                     3,
                     3
@@ -4555,11 +4561,12 @@
                     1
                 ],
                 "minimumInstanceCount": 1,
-                "personalSpace": 3,
+                "personalSpace": 5,
                 "flags": [
                     "MF_ADOPT_ITEM",
                     "MF_FAR_FROM_ORIGIN",
-                    "MF_TREAT_AS_BLOCKING"
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY"
                 ],
                 "terrain": "ALTAR_SWITCH",
                 "layer": "DUNGEON"
@@ -5032,7 +5039,7 @@
                     1
                 ],
                 "minimumInstanceCount": 1,
-                "personalSpace": 3,
+                "personalSpace": 2,
                 "flags": [
                     "MF_ADOPT_ITEM",
                     "MF_BUILD_AT_ORIGIN",
@@ -5172,7 +5179,7 @@
                     1
                 ],
                 "minimumInstanceCount": 4,
-                "personalSpace": 1,
+                "personalSpace": 2,
                 "flags": [
                     "MF_EVERYWHERE",
                     "MF_NOT_IN_HALLWAY"

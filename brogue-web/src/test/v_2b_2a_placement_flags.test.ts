@@ -164,7 +164,7 @@ describe('V-2b-2a 前提自检', () => {
         expect(count('MF_PERMIT_BLOCKING'), 'PERMIT_BLOCKING 载体数（V-2b-4 基线 26；V-2b-5 +1；V-2b-6 +3；V-2b-7 +9 → 39；V-2b-9b +6：36/37 号隐桥、38/39 号岩浆回缩、65/66 号触发地板）').toBe(46); // V-2b-9d CE 13/14 literal feature census.
         expect(count('MF_IMPREGNABLE'), 'IMPREGNABLE 载体数（V-2b-7 后 33；V-2b-9b 36/38 号墙内逃生药 +2）').toBe(38); // V-2b-9c CE 32/51/52/54 census.
         expect(count('MF_TREAT_AS_BLOCKING'), 'TREAT_AS_BLOCKING 载体数（V-2b-8 后 73；V-2b-9b 九条蓝图原表共 +16）').toBe(102); // V-2b-9d CE 13/14 literal feature census.
-        expect(count('MF_NOT_IN_HALLWAY'), 'NOT_IN_HALLWAY 载体数（V-2b-8 后 55；V-2b-9b 34/36/38/39/44 号共 +10）').toBe(78); // V-2b-9d CE 13/14 literal feature census.
+        expect(count('MF_NOT_IN_HALLWAY'), 'NOT_IN_HALLWAY 载体数（V-2b-9d 后 78；B2 补 CE31/F1 :380 漏位 +1）').toBe(79);
         // 仍未实现：
         expect(count('MF_KEY_DISPOSABLE'), 'KEY_DISPOSABLE 载体数（V-2b-6 反转我）；V-2b-7 再 +2：11 号棺木钥匙 :86、12 号水晶球 :262；3 → 5').toBe(5);
         // V-2b-2b 新载体（CE 原表核对）：
