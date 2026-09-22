@@ -244,7 +244,7 @@ describe('V-2b-3 A：载体地形逐字段 ≡ CE Globals.c（对抗：抄错任
         // DF_STATUE_SHATTER / DF_LUMINESCENT_FUNGUS 五条接上真 tile 摘出；
         // 22 条新条目里 web 无 tile 的七条入列。逐条见 DungeonFeatureCatalog
         // 的 V-2b-7 块注。
-        expect(DF_MISSING_TILES).toHaveLength(39);
+        expect(DF_MISSING_TILES).toHaveLength(32); // V-2b-9c: seven completed carriers, 39 -> 32.
         for (const d of [DF.DF_REVEAL_LEVER, DF.DF_INACTIVE_GLYPH,
             DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY]) {
             expect(DF_MISSING_TILES, `DF[${d}] 应在缺 tile 登记`).toContain(d);

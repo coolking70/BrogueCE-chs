@@ -1374,7 +1374,7 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     [DF.DF_LAVA_RETRACTABLE]: df(171, 846, 'LAVA_RETRACTABLE', TerrainType.LAVA_RETRACTABLE, DungeonLayer.LIQUID, 100, 100, 0, 'LAVA', TerrainType.LAVA),
     [DF.DF_RETRACTING_LAVA]: df(172, 847, 'LAVA_RETRACTING', TerrainType.LAVA_RETRACTING, DungeonLayer.LIQUID, 0, 0, 0, '', null, null, 'hissing fills the air as the lava begins to cool.'),
     [DF.DF_OBSIDIAN_WITH_STEAM]: df(173, 848, 'OBSIDIAN', TerrainType.OBSIDIAN, DungeonLayer.SURFACE, 0, 0, 0, '', null, DF.DF_STEAM_ACCUMULATION),
-    [DF.DF_MUD_DORMANT]: df(198, 891, 'MACHINE_MUD_DORMANT', null, DungeonLayer.LIQUID, 100, 100),
+    [DF.DF_MUD_DORMANT]: df(198, 891, 'MACHINE_MUD_DORMANT', TerrainType.MACHINE_MUD_DORMANT, DungeonLayer.LIQUID, 100, 100),
     [DF.DF_MUD_ACTIVATE]: df(199, 892, 'MUD', TerrainType.MUD, DungeonLayer.LIQUID, 0, 0, DFF_ACTIVATE_DORMANT_MONSTER, '', null, null, 'across the bog, bubbles rise ominously from the mud.'),
     [DF.DF_CHASM_HOLE]: df(211, 916, 'CHASM', TerrainType.CHASM, DungeonLayer.LIQUID, 0, 0, DFF_CLEAR_OTHER_TERRAIN, '', null, DF.DF_SHOW_TRAPDOOR_HALO),
     [DF.DF_CATWALK_BRIDGE]: df(212, 917, 'STONE_BRIDGE', TerrainType.STONE_BRIDGE, DungeonLayer.LIQUID, 0, 0, DFF_CLEAR_OTHER_TERRAIN),
@@ -1384,12 +1384,12 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     [DF.DF_FLOOD_2]: df(113, 754, 'FLOOD_WATER_DEEP', TerrainType.FLOOD_WATER_DEEP, DungeonLayer.SURFACE, 175, 37, 0, '', null, null, 'the area is flooded as water rises through imperceptible holes in the ground.'),
     [DF.DF_FLOOD_DRAIN]: df(114, 755, 'FLOOD_WATER_SHALLOW', TerrainType.FLOOD_WATER_SHALLOW, DungeonLayer.SURFACE, 10, 25),
     [DF.DF_PUDDLE]: df(48, 671, 'PUDDLE', TerrainType.PUDDLE, DungeonLayer.SURFACE, 13, 25),
-    [DF.DF_ECTOPLASM_DROPLET]: df(50, 670, 'ECTOPLASM', null, DungeonLayer.SURFACE, 100, 50),
-    [DF.DF_DARKENING_FLOOR]: df(194, 885, 'DARK_FLOOR_DARKENING', null, DungeonLayer.DUNGEON, 0, 0, 0, '', null, null, 'the light in the room flickers and you feel a chill in the air.'),
-    [DF.DF_DARK_FLOOR]: df(195, 886, 'DARK_FLOOR', null, DungeonLayer.DUNGEON, 0, 0, DFF_ACTIVATE_DORMANT_MONSTER, '', null, DF.DF_ECTOPLASM_DROPLET),
-    [DF.DF_HAUNTED_TORCH_TRANSITION]: df(196, 887, 'HAUNTED_TORCH_TRANSITIONING', null, DungeonLayer.DUNGEON, 0, 0),
-    [DF.DF_HAUNTED_TORCH]: df(197, 888, 'HAUNTED_TORCH', null, DungeonLayer.DUNGEON, 0, 0),
-    [DF.DF_ELECTRIC_CRYSTAL_ON]: df(200, 895, 'ELECTRIC_CRYSTAL_ON', null, DungeonLayer.DUNGEON, 0, 0),
+    [DF.DF_ECTOPLASM_DROPLET]: df(50, 673, 'ECTOPLASM', TerrainType.ECTOPLASM, DungeonLayer.SURFACE, 0, 0),
+    [DF.DF_DARKENING_FLOOR]: df(194, 885, 'DARK_FLOOR_DARKENING', TerrainType.DARK_FLOOR_DARKENING, DungeonLayer.DUNGEON, 0, 0, 0, '', null, null, 'the light in the room flickers and you feel a chill in the air.'),
+    [DF.DF_DARK_FLOOR]: df(195, 886, 'DARK_FLOOR', TerrainType.DARK_FLOOR, DungeonLayer.DUNGEON, 0, 0, DFF_ACTIVATE_DORMANT_MONSTER, '', null, DF.DF_ECTOPLASM_DROPLET),
+    [DF.DF_HAUNTED_TORCH_TRANSITION]: df(196, 887, 'HAUNTED_TORCH_TRANSITIONING', TerrainType.HAUNTED_TORCH_TRANSITIONING, DungeonLayer.DUNGEON, 0, 0),
+    [DF.DF_HAUNTED_TORCH]: df(197, 888, 'HAUNTED_TORCH', TerrainType.HAUNTED_TORCH, DungeonLayer.DUNGEON, 0, 0),
+    [DF.DF_ELECTRIC_CRYSTAL_ON]: { ...df(200, 895, 'ELECTRIC_CRYSTAL_ON', TerrainType.ELECTRIC_CRYSTAL_ON, DungeonLayer.DUNGEON, 0, 0, 0, '', null, null, 'the crystal absorbs the electricity and begins to glow.'), lightFlare: 'CHARGE_FLASH_LIGHT' },
     [DF.DF_TURRET_LEVER]: df(201, 896, 'WALL', TerrainType.WALL, DungeonLayer.DUNGEON, 0, 0, DFF_ACTIVATE_DORMANT_MONSTER, '', null, null, 'the wall above the lever shifts to reveal a spark turret!'),
     [DF.DF_STENCH_SMOLDER]: df(218, 930, 'STENCH_SMOKE_GAS', null, DungeonLayer.GAS, 50, 0, 0, '', null, DF.DF_PLAIN_FIRE),
 };
@@ -1413,12 +1413,8 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
  *  本轮**未入目录**——载体盘点后无 web 载体的气体只登记不迁移（报告
  *  载体盘点表），故不在本清单。 */
 export const DF_MISSING_TILES: readonly DF[] = [
-    DF.DF_ECTOPLASM_DROPLET,
-    DF.DF_DARKENING_FLOOR, DF.DF_DARK_FLOOR,
-    DF.DF_HAUNTED_TORCH_TRANSITION, DF.DF_HAUNTED_TORCH,
-    DF.DF_ELECTRIC_CRYSTAL_ON, DF.DF_STENCH_SMOLDER,
-    // V-2b-9a：DF 闭包中不属于本轮地形载体清单的 CE 中间态。
-    DF.DF_MUD_DORMANT,
+    // V-2b-9c: seven carriers above are now complete. Mud-floor stench is unrelated.
+    DF.DF_STENCH_SMOLDER,
     DF.DF_TRAMPLED_FOLIAGE,        // TRAMPLED_FOLIAGE
     DF.DF_ACTIVE_BRIMSTONE,        // ACTIVE_BRIMSTONE
     DF.DF_BRIMSTONE_FIRE,          // BRIMSTONE_FIRE

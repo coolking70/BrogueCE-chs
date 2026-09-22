@@ -7,7 +7,23 @@
  */
 
 import type { Pos } from '../../types';
+import type { Grid } from '../Map/Grid';
+import { promoteLayersWithMechFlag } from '../Map/Promotion';
+import { TM_PROMOTES_ON_ELECTRICITY } from '../Map/TerrainCatalog';
 import { ItemLoader } from '../Items/ItemLoader';
+
+/** CE Items.c:5455-5465 -> Time.c:1289-1303. Also applies to SPARK
+ * (GlobalsBrogue.c:82 BF_ELECTRIC), even when no creature is hit. */
+export function exposeBoltPathToElectricity(grid: Grid, path: readonly Pos[], effect: BoltEffect): boolean {
+    if (effect !== BoltEffect.LIGHTNING && effect !== BoltEffect.SPARK) return false;
+    let changed = false;
+    for (const p of path) {
+        for (const result of promoteLayersWithMechFlag(grid, p.x, p.y, TM_PROMOTES_ON_ELECTRICITY)) {
+            changed = result.mutated || changed;
+        }
+    }
+    return changed;
+}
 
 // ----- Bolt effect enum (mirrors CE boltType) -----
 
@@ -32,7 +48,7 @@ export enum BoltEffect {
     OBSTRUCTION,
     EMPOWERMENT,
     INVISIBILITY,
-    SPARK,           // weaker fire used by some monsters
+    SPARK,           // electrical bolt used by spark turrets and other monsters
     DRAGONFIRE,       // strong area fire
     DISTANCE_ATTACK,  // generic ranged damage
     POISON_DART,

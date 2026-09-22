@@ -248,6 +248,8 @@ export enum TerrainType {
     CHASM_WITH_HIDDEN_BRIDGE_ACTIVE, STONE_BRIDGE, LAVA_RETRACTING,
     FLOOD_WATER_SHALLOW, FLOOD_WATER_DEEP,
     MACHINE_CHASM_EDGE, PUDDLE,
+    // V-2b-9c: complete mud / darkness / electricity promotion carriers.
+    MACHINE_MUD_DORMANT, DARK_FLOOR_DARKENING, DARK_FLOOR, ECTOPLASM, HAUNTED_TORCH_TRANSITIONING, HAUNTED_TORCH, ELECTRIC_CRYSTAL_ON,
 }
 
 export enum LightType {
@@ -478,7 +480,14 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.ELECTRIC_CRYSTAL_OFF]: 0,
     [TerrainType.TURRET_LEVER]: 0,
     [TerrainType.HAUNTED_TORCH_DORMANT]: 0,
-    [TerrainType.DARK_FLOOR_DORMANT]: 95
+    [TerrainType.DARK_FLOOR_DORMANT]: 95,
+    [TerrainType.MACHINE_MUD_DORMANT]: 55,
+    [TerrainType.DARK_FLOOR_DARKENING]: 95,
+    [TerrainType.DARK_FLOOR]: 95,
+    [TerrainType.ECTOPLASM]: 70,
+    [TerrainType.HAUNTED_TORCH_TRANSITIONING]: 0,
+    [TerrainType.HAUNTED_TORCH]: 0,
+    [TerrainType.ELECTRIC_CRYSTAL_ON]: 0,
 };
 
 /**
@@ -712,7 +721,14 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     [TerrainType.ELECTRIC_CRYSTAL_OFF]: DungeonLayer.DUNGEON,
     [TerrainType.TURRET_LEVER]: DungeonLayer.DUNGEON,
     [TerrainType.HAUNTED_TORCH_DORMANT]: DungeonLayer.DUNGEON,
-    [TerrainType.DARK_FLOOR_DORMANT]: DungeonLayer.DUNGEON
+    [TerrainType.DARK_FLOOR_DORMANT]: DungeonLayer.DUNGEON,
+    [TerrainType.MACHINE_MUD_DORMANT]: DungeonLayer.LIQUID,
+    [TerrainType.DARK_FLOOR_DARKENING]: DungeonLayer.DUNGEON,
+    [TerrainType.DARK_FLOOR]: DungeonLayer.DUNGEON,
+    [TerrainType.ECTOPLASM]: DungeonLayer.SURFACE,
+    [TerrainType.HAUNTED_TORCH_TRANSITIONING]: DungeonLayer.DUNGEON,
+    [TerrainType.HAUNTED_TORCH]: DungeonLayer.DUNGEON,
+    [TerrainType.ELECTRIC_CRYSTAL_ON]: DungeonLayer.DUNGEON,
 };
 
 /**

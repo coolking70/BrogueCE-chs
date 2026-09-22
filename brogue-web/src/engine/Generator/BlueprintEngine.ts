@@ -645,6 +645,15 @@ export function blueprintQualifies(
     // **数据照 CE 逐字**（frequency 仍是 CE :305 的 8，由 v_2b_3_wired E4 钉死），
     // 只是它不再被抽中；wired lever 落地的那一轮摘掉这一条即可（届时复跑 F 组）。
     if (bp.id === 'vestibule_secret_lever') return false;
+    // V-2b-9c: CE #52 supplies spark turrets, not a guaranteed lightning item.
+    // Web cannot yet bump-activate the impassable TURRET_LEVER; the adopted
+    // key is also rejected on its blocked cage tile. Keep CE frequency/flags.
+    if (bp.ceBlueprintId === 52) return false;
+    // V-2b-9c, seed777/D19: #55 seals its adopted key at (25,4) behind
+    // GRANITE/WORM_TUNNEL_MARKER_DORMANT. The lever/active-tunnel DF chain
+    // still has missing tiles, so those tunnels cannot open in web.
+    // Retain CE GlobalsBrogue.c:537-544 data and exclude only from selection.
+    if (bp.id === 'key_worm_tunnels') return false;
     return true;
 }
 
@@ -1789,6 +1798,21 @@ export class BlueprintEngine {
             if (!cell || isPathingBlocker(cell.terrain)) return null;
         }
 
+        // V-2b-9c: #32 can overlay the pre-feature center with deep water.
+        // Keep the existing web room-center contract in final terrain, without
+        // moving any feature or consuming RNG. CE has no treasure-center field.
+        let finalCenter = room.center;
+        if (flags.has('BP_ROOM') && !this.grid.getCell(finalCenter.x, finalCenter.y)!.layers.every(terrainAllowsMove)) {
+            const candidates = availableCells.filter(p =>
+                !(doorPos && p.x === doorPos.x && p.y === doorPos.y)
+                && this.grid.getCell(p.x, p.y)!.layers.every(terrainAllowsMove));
+            candidates.sort((a, b) =>
+                Math.abs(a.x - room.center.x) + Math.abs(a.y - room.center.y)
+                - Math.abs(b.x - room.center.x) - Math.abs(b.y - room.center.y));
+            if (!candidates.length) return null;
+            finalCenter = candidates[0]!;
+        }
+
         return {
             blueprintId: bp.id,
             category: bp.category,
@@ -1796,7 +1820,7 @@ export class BlueprintEngine {
             // V-2b-2b：cells = 最终机器内部（可能经 OPEN_INTERIOR 扩张），
             // 与 availableCells 的集合迭代序一致（无改造时逐位同 room.cells）。
             cells: availableCells,
-            center: room.center,
+            center: finalCenter,
             door: doorPos,
             itemSpawns,
             monsterSpawns,

@@ -863,7 +863,7 @@ describe('V-2b-7 G：47 号 Sacrifice altar 的退化（MB_MARKED_FOR_SACRIFICE 
         expect(bp.features.find(f => f.hordeFlags?.includes('HORDE_SACRIFICE_TARGET'))).toBeDefined();
     });
 
-    it('G2 引擎面：47 号是**唯一**因领养落点不可达而退池的蓝图，且它确实不再生成', () => {
+    it('G2 引擎面：47/52 号因领养落点不可达而退池，且它确实不再生成', () => {
         // 领养落点不可达的判据 = 该蓝图的所有 MF_ADOPT_ITEM feature 的 terrain
         // 都是 pathing blocker（CE 用 placeItemAt 无条件放，web 的 P1-43 闸会
         // 丢弃 → 父机器的钥匙消失）。这条判据一旦被放宽，本断言立刻红。
@@ -871,9 +871,9 @@ describe('V-2b-7 G：47 号 Sacrifice altar 的退化（MB_MARKED_FOR_SACRIFICE 
             bp.flags.includes(BP_ADOPT_ITEM) &&
             bp.features.some(f => f.flags.includes('MF_ADOPT_ITEM')) &&
             !bp.features.some(f => f.flags.includes('MF_ADOPT_ITEM')
-                && (f.terrain === undefined || !isPathingBlocker(C[f.terrain as keyof typeof C] as TerrainType)))
+                && (f.terrain === undefined || !isPathingBlocker((f.terrain === 'ALTAR_INERT' ? C.ALTAR : C[f.terrain as keyof typeof C]) as TerrainType)))
         ).map(bp => bp.id);
-        expect(ineligible, '领养落点不可达的蓝图集合（本轮应恰为 47 号）').toEqual(['key_sacrifice_altar']);
+        expect(ineligible, '领养落点不可达的蓝图集合（9c 新增 52 号闭笼）').toEqual(['key_sacrifice_altar', 'key_electric_crystals']);
 
         // 端到端：14 seed × D1-26 全扫，47 号一次都不出现（顶层要求
         // BP_REWARD、前厅要求 BP_VESTIBULE，它两样都没有 ⇒ 只能走领养；
@@ -888,7 +888,7 @@ describe('V-2b-7 G：47 号 Sacrifice altar 的退化（MB_MARKED_FOR_SACRIFICE 
                     if (d > 1) { game.depth = d; game.generateDepth(false, false); }
                     const entry = record[record.length - 1];
                     for (const mr of entry?.results ?? []) {
-                        if (mr.blueprintId === 'key_sacrifice_altar') appear++;
+                        if (['key_sacrifice_altar', 'key_electric_crystals'].includes(mr.blueprintId)) appear++;
                     }
                 }
             } finally { restore(); }

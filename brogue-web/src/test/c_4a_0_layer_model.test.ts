@@ -363,6 +363,14 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.FLOOD_WATER_DEEP]: L.SURFACE,
             [C.MACHINE_CHASM_EDGE]: L.LIQUID,
             [C.PUDDLE]: L.SURFACE,
+            // V-2b-9c CE effect carriers.
+            [C.MACHINE_MUD_DORMANT]: L.LIQUID,
+            [C.DARK_FLOOR_DARKENING]: L.DUNGEON,
+            [C.DARK_FLOOR]: L.DUNGEON,
+            [C.ECTOPLASM]: L.SURFACE,
+            [C.HAUNTED_TORCH_TRANSITIONING]: L.DUNGEON,
+            [C.HAUNTED_TORCH]: L.DUNGEON,
+            [C.ELECTRIC_CRYSTAL_ON]: L.DUNGEON,
         });
         expect(DRAW_PRIORITY).toEqual({
             [C.NOTHING]: 100, [C.GRANITE]: 0, [C.FLOOR]: 95, [C.WALL]: 0,
@@ -506,6 +514,13 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.FLOOD_WATER_DEEP]: 41,
             [C.MACHINE_CHASM_EDGE]: 80,
             [C.PUDDLE]: 80,
+            [C.MACHINE_MUD_DORMANT]: 55,
+            [C.DARK_FLOOR_DARKENING]: 95,
+            [C.DARK_FLOOR]: 95,
+            [C.ECTOPLASM]: 70,
+            [C.HAUNTED_TORCH_TRANSITIONING]: 0,
+            [C.HAUNTED_TORCH]: 0,
+            [C.ELECTRIC_CRYSTAL_ON]: 0,
         });
     });
 });

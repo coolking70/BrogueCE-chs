@@ -5263,5 +5263,335 @@
                 ]
             }
         ]
+    },
+    {
+        "id": "key_fire_trap_room",
+        "name": "Fire trap room -- key on an altar, pools of water, fire traps all over the place.",
+        "ceBlueprintId": 32,
+        "depthRange": [
+            4,
+            26
+        ],
+        "roomSize": [
+            80,
+            180
+        ],
+        "frequency": 6,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM",
+            "BP_SURROUND_WITH_WALLS",
+            "BP_PURGE_LIQUIDS",
+            "BP_PURGE_PATHING_BLOCKERS",
+            "BP_ADOPT_ITEM"
+        ],
+        "features": [
+            {
+                "terrain": "ALTAR_INERT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 4,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN"
+                ]
+            },
+            {
+                "terrain": "FLAMETHROWER_HIDDEN",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    40,
+                    60
+                ],
+                "minimumInstanceCount": 20,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING"
+                ]
+            },
+            {
+                "featureDF": "DF_DEEP_WATER_POOL",
+                "hordeFlags": [
+                    "HORDE_MACHINE_WATER_MONSTER"
+                ],
+                "instanceCount": [
+                    4,
+                    4
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 4,
+                "flags": [
+                    "MF_GENERATE_HORDE"
+                ]
+            },
+            {
+                "terrain": "FOLIAGE",
+                "layer": "SURFACE",
+                "featureDF": "DF_GRASS",
+                "instanceCount": [
+                    3,
+                    4
+                ],
+                "minimumInstanceCount": 3,
+                "personalSpace": 1,
+                "flags": []
+            }
+        ]
+    },
+    {
+        "id": "key_mud_pit",
+        "name": "Mud pit -- key on an altar, room full of mud, take key to cause bog monsters to spawn in the mud",
+        "ceBlueprintId": 51,
+        "depthRange": [
+            12,
+            26
+        ],
+        "roomSize": [
+            40,
+            90
+        ],
+        "frequency": 10,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM",
+            "BP_ADOPT_ITEM",
+            "BP_SURROUND_WITH_WALLS",
+            "BP_PURGE_LIQUIDS"
+        ],
+        "features": [
+            {
+                "featureDF": "DF_SWAMP",
+                "instanceCount": [
+                    5,
+                    5
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 1,
+                "flags": []
+            },
+            {
+                "terrain": "ALTAR_SWITCH",
+                "layer": "DUNGEON",
+                "featureDF": "DF_SWAMP",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING"
+                ]
+            },
+            {
+                "featureDF": "DF_MUD_DORMANT",
+                "hordeFlags": [
+                    "HORDE_MACHINE_MUD"
+                ],
+                "instanceCount": [
+                    3,
+                    4
+                ],
+                "minimumInstanceCount": 3,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_GENERATE_HORDE",
+                    "MF_MONSTERS_DORMANT"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_electric_crystals",
+        "name": "Electric crystals -- key caged on an altar, darkened crystal globes around the room, lightning the globes to release the key.",
+        "ceBlueprintId": 52,
+        "depthRange": [
+            6,
+            26
+        ],
+        "roomSize": [
+            40,
+            60
+        ],
+        "frequency": 10,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM",
+            "BP_ADOPT_ITEM",
+            "BP_SURROUND_WITH_WALLS",
+            "BP_OPEN_INTERIOR",
+            "BP_PURGE_INTERIOR"
+        ],
+        "features": [
+            {
+                "terrain": "CARPET",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    0,
+                    0
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 0,
+                "flags": [
+                    "MF_EVERYWHERE"
+                ]
+            },
+            {
+                "terrain": "ELECTRIC_CRYSTAL_OFF",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    3,
+                    4
+                ],
+                "minimumInstanceCount": 3,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_IMPREGNABLE"
+                ]
+            },
+            {
+                "terrain": "SACRED_GLYPH",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN"
+                ]
+            },
+            {
+                "terrain": "ALTAR_CAGE_RETRACTABLE",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_IMPREGNABLE",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_FAR_FROM_ORIGIN"
+                ]
+            },
+            {
+                "terrain": "TURRET_LEVER",
+                "layer": "DUNGEON",
+                "monsterId": "spark_turret",
+                "instanceCount": [
+                    7,
+                    9
+                ],
+                "minimumInstanceCount": 4,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_BUILD_IN_WALLS",
+                    "MF_MONSTERS_DORMANT",
+                    "MF_IMPREGNABLE"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "key_haunted_house",
+        "name": "Haunted house -- key on an altar; take key to cause the room to darken, ectoplasm to cover everything and phantoms to appear",
+        "ceBlueprintId": 54,
+        "depthRange": [
+            16,
+            26
+        ],
+        "roomSize": [
+            45,
+            150
+        ],
+        "frequency": 10,
+        "category": "key_guard",
+        "flags": [
+            "BP_ROOM",
+            "BP_ADOPT_ITEM",
+            "BP_PURGE_INTERIOR",
+            "BP_SURROUND_WITH_WALLS"
+        ],
+        "features": [
+            {
+                "terrain": "ALTAR_SWITCH",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING"
+                ]
+            },
+            {
+                "terrain": "DARK_FLOOR_DORMANT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    0,
+                    0
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 0,
+                "flags": [
+                    "MF_EVERYWHERE"
+                ]
+            },
+            {
+                "terrain": "DARK_FLOOR_DORMANT",
+                "layer": "DUNGEON",
+                "monsterId": "phantom",
+                "instanceCount": [
+                    4,
+                    5
+                ],
+                "minimumInstanceCount": 4,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_MONSTERS_DORMANT"
+                ]
+            },
+            {
+                "terrain": "HAUNTED_TORCH_DORMANT",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    5,
+                    10
+                ],
+                "minimumInstanceCount": 3,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_BUILD_IN_WALLS"
+                ]
+            }
+        ]
     }
 ]

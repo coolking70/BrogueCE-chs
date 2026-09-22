@@ -729,10 +729,9 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
             DF.DF_SPREADABLE_COLLAPSE, DF.DF_COLLAPSE, DF.DF_COLLAPSE_SPREADS,
             DF.DF_BRIDGE_ACTIVATE, DF.DF_BRIDGE_ACTIVATE_ANNOUNCE,
             DF.DF_BRIDGE_APPEARS, DF.DF_RETRACTING_LAVA,
-            DF.DF_OBSIDIAN_WITH_STEAM, DF.DF_MUD_ACTIVATE, DF.DF_LAKE_HALO,
-            // 两个过渡 tile 尚未成为 TerrainType，故其 promoteType 不能自动入起点；
-            // DF_DARK_FLOOR 再经 subsequentDF 合法带入 DF_ECTOPLASM_DROPLET。
-            DF.DF_DARK_FLOOR, DF.DF_HAUNTED_TORCH]) start.add(id);
+            DF.DF_OBSIDIAN_WITH_STEAM, DF.DF_MUD_ACTIVATE, DF.DF_LAKE_HALO]) start.add(id);
+        // V-2b-9c: DARK_FLOOR_DARKENING / HAUNTED_TORCH_TRANSITIONING
+        // now supply their promoteType roots through the terrain scan above.
         // V-2b-6：DF_AMBIENT_BLOOD / DF_BONES 第二起点——本轮 FeatureDef 已有
         // df 列（feature.featureDF），但闭包是**静态数据扫描**，不运行蓝图；
         // CE 的起点是 10 号 Kennel feature 的 DF 列（GlobalsBrogue.c:252/253
@@ -981,7 +980,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // DF_PORTAL_ACTIVATE→PORTAL_LIGHT :725、DF_SACRIFICE_ALTAR→SACRIFICE_ALTAR
         // :802、DF_COFFIN_BURSTS→COFFIN_OPEN :807、DF_WORM_TUNNEL_MARKER_ACTIVE
         // →WORM_TUNNEL_MARKER_ACTIVE :880）。另 15 条带完整 tile 不入列。
-        expect(DF_MISSING_TILES.length).toBe(39);
+        expect(DF_MISSING_TILES.length).toBe(32); // V-2b-9c: seven completed carriers, 39 -> 32.
         // 登记条目确实都是 tile=null，且抛错带 CE tile 名。
         for (const id of DF_MISSING_TILES) {
             expect(DUNGEON_FEATURE_CATALOG[id]!.tile, `DF#${id} 应为 null tile`).toBeNull();
@@ -1197,7 +1196,13 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                             if (cell.layers[l] !== C.NOTHING) nonEmpty.push(l);
                         }
                         expect(nonEmpty.length, `seed=${seed} D${depth} (${x},${y}) 至多三层（31 号 floodable 地板可叠草木）`).toBeLessThanOrEqual(3);
-                        if (nonEmpty.length === 3) {
+                        if (nonEmpty.length === 3 && cell.layers[L.DUNGEON] === C.FLAMETHROWER_HIDDEN) {
+                            // CE32 GlobalsBrogue.c:387-389：陷阱(DUNGEON)、
+                            // 水塘浅水边缘(LIQUID)、DF_GRASS(SURFACE) 可同格。
+                            // seed777/D9 的三格实测；逐字段全等，不放宽三层上限。
+                            expect(cell.machineNumber).toBeGreaterThan(0);
+                            expect(cell.layers).toEqual([C.FLAMETHROWER_HIDDEN, C.WATER_SHALLOW, C.NOTHING, C.GRASS]);
+                        } else if (nonEmpty.length === 3) {
                             // 31 号在 FLOOR 上以 LIQUID 层铺 FLOOR_FLOODABLE，
                             // 其 FOLIAGE feature 又可在 SURFACE 层生长；这是
                             // CE 原表三条 feature 叠加出的唯一合法三层形态。
@@ -1311,6 +1316,14 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                                     `seed=${seed} D${depth} (${x},${y}) 两层格的 SURFACE 属未知来源`).toContain(cell.layers[L.SURFACE]);
                                 if (MACHINE_DUNGEON_TILES.has(cell.layers[L.DUNGEON] as TerrainType)) {
                                     // 合法（:1443 纯层写入，无优先级门）。
+                                } else if (cell.machineNumber > 0
+                                    && cell.layers[L.DUNGEON] === C.NOTHING
+                                    && cell.layers[L.LIQUID] === C.WATER_SHALLOW
+                                    && cell.layers[L.SURFACE] === C.GRASS) {
+                                    // CE32 :389 的 DF_GRASS 不带 BLOCKED_BY_OTHER_LAYERS，
+                                    // Architect.c:3228 只比较被写 SURFACE 层，:3232 才是
+                                    // 可选的跨层优先级门。实测 seed777/D9 (73,17)。
+                                    expect(cell.layers).toEqual([C.NOTHING, C.WATER_SHALLOW, C.NOTHING, C.GRASS]);
                                 } else if (DF_SURFACE_DECOR.has(cell.layers[L.SURFACE] as TerrainType)) {
                                     // ★ V-2b-7 新增合法形态：**DF 写的 SURFACE
                                     // 装饰压在任意地基上**。CE 的
@@ -1374,6 +1387,18 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                                 && cell.layers[L.LIQUID] === C.WATER_DEEP) {
                                 // 深水是 LIQUID 层覆层，底下保留 FLOOR；本轮
                                 // RNG 移动后 seed777/D9 首次进入该既有合法形态。
+                            } else if (cell.layers[L.DUNGEON] === C.FLOOR
+                                && cell.machineNumber > 0 && cell.layers[L.LIQUID] === C.WATER_SHALLOW) {
+                                // CE32 DF_DEEP_WATER_POOL -> DF_SHALLOW_WATER_POOL
+                                // (:900/:899)；seed777/D9 (70,26), machine #7。
+                            } else if (cell.layers[L.DUNGEON] === C.FLOOR
+                                && cell.machineNumber > 0
+                                && [C.CHASM, C.CHASM_WITH_HIDDEN_BRIDGE, C.MACHINE_CHASM_EDGE]
+                                    .includes(cell.layers[L.LIQUID] as TerrainType)) {
+                                // V-2b-9c 流移后 seed424242/D9 machine #7 = CE36。
+                                // GlobalsBrogue.c:410-411 的 CHASM / HIDDEN_BRIDGE
+                                // 纯 LIQUID 写入 + DF_ADD_DORMANT_CHASM_HALO (:843)
+                                // 均保留 DUNGEON=FLOOR。只新增这三种确证组合。
                             } else {
                                 expect.unreachable(
                                     `seed=${seed} D${depth} (${x},${y}) 两层组合 ` +

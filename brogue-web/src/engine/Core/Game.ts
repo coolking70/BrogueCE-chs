@@ -80,7 +80,7 @@ import {
 } from '../Map/LightCatalog';
 import { FloatingText } from '../Visuals/FloatingText';
 import { STATUS_CONFIG } from '../Status/statusConfig';
-import { getBoltForItem, boltPath, buildBoltFrames, BoltEffect, MONSTER_BOLT_TABLE, type BoltConfig, type BoltFrame, type BoltResult } from '../Combat/Bolt';
+import { exposeBoltPathToElectricity, getBoltForItem, boltPath, buildBoltFrames, BoltEffect, MONSTER_BOLT_TABLE, type BoltConfig, type BoltFrame, type BoltResult } from '../Combat/Bolt';
 
 export type GameMode = 'normal' | 'easy' | 'wizard' | 'test';
 
@@ -1772,6 +1772,7 @@ export class Game {
         DEEP_WATER: TerrainType.WATER_DEEP,
         SHALLOW_WATER: TerrainType.WATER_SHALLOW,
         MUD: TerrainType.MUD,
+        MACHINE_MUD_DORMANT: TerrainType.MACHINE_MUD_DORMANT,
         LAVA: TerrainType.LAVA,
         // V-2b-5：休眠机器族的两个生成期专用落点（CE hordeCatalog 的
         // STATUE_DORMANT / TURRET_DORMANT 行——蓝图的 MF_GENERATE_HORDE
@@ -4192,6 +4193,9 @@ export class Game {
             finalPath.push(pos);
             impactPos = pos;
 
+            if ((bolt.effect === BoltEffect.LIGHTNING || bolt.effect === BoltEffect.SPARK)
+                && (cellTerrainFlags(this.grid, pos.x, pos.y) & (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION))) break;
+
             // Check for creature at this position
             const monster = this.monsters.find(m => m.hp > 0 && m.loc.x === pos.x && m.loc.y === pos.y);
             if (monster && !bolt.piercing) {
@@ -4292,6 +4296,7 @@ export class Game {
 
     private applyBoltEffect(result: BoltResult, item: Item) {
         const { effect, magnitude, impactPos, path } = result;
+        if (exposeBoltPathToElectricity(this.grid, path, effect)) this.updateVision();
 
         // Find the monster at impact position
         const target = this.monsters.find(
@@ -4611,7 +4616,18 @@ export class Game {
         const targetName = isPlayer ? i18next.t('bolt.target_you', { defaultValue: 'you' }) : (target as Monster).name;
 
         // 动画：复用 boltPath/buildBoltFrames，用一个仅供施法出口使用的最小 BoltConfig。
-        const path = boltPath(caster.loc, target.loc, 40);
+        const rawPath = boltPath(caster.loc, target.loc, 40);
+        const path: Pos[] = [];
+        for (const p of rawPath) {
+            if (!this.grid.getCell(p.x, p.y)) break;
+            path.push(p);
+            if (meta.effect === BoltEffect.SPARK
+                && (cellTerrainFlags(this.grid, p.x, p.y) & (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION))) break;
+        }
+        if (exposeBoltPathToElectricity(this.grid, path, meta.effect)) this.updateVision();
+        const last = path[path.length - 1];
+        const electricBlocked = meta.effect === BoltEffect.SPARK
+            && (!last || last.x !== target.loc.x || last.y !== target.loc.y);
         const visualBolt: BoltConfig = {
             id: `monster_bolt_${ceBoltName.toLowerCase()}`,
             name: ceBoltName,
@@ -4626,6 +4642,8 @@ export class Game {
         this.pendingBoltFrames = buildBoltFrames(path, visualBolt);
         this.currentBoltFrameIndex = 0;
         this.boltAnimStartTime = Date.now();
+
+        if (electricBlocked) return;
 
         const casterLabel = caster.name;
         const logCast = (key: string, defaultValue: string, color: string) => {

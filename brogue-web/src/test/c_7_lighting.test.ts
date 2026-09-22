@@ -287,6 +287,14 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         [TerrainType.FLOOD_WATER_DEEP]: 0,
         [TerrainType.MACHINE_CHASM_EDGE]: 0,
         [TerrainType.PUDDLE]: 0,
+        // V-2b-9c: CE Globals.c:434/359-360/468/345-346/564.
+        [TerrainType.MACHINE_MUD_DORMANT]: 0,
+        [TerrainType.DARK_FLOOR_DARKENING]: 0,
+        [TerrainType.DARK_FLOOR]: LightKind.DARKNESS_CLOUD_LIGHT,
+        [TerrainType.ECTOPLASM]: LightKind.ECTOPLASM_LIGHT,
+        [TerrainType.HAUNTED_TORCH_TRANSITIONING]: LightKind.TORCH_LIGHT,
+        [TerrainType.HAUNTED_TORCH]: LightKind.HAUNTED_TORCH_LIGHT,
+        [TerrainType.ELECTRIC_CRYSTAL_ON]: LightKind.CRYSTAL_WALL_LIGHT,
     };
 
     it('全 tile 的 glowLight 逐值等于 CE 原列（结构性穷尽）', () => {
@@ -297,7 +305,7 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         }
     });
 
-    it('非零恰 27 个（V-2b-9b 环境链增 LAVA_RETRACTING），且都指向有载体的目录条目', () => {
+    it('非零恰 32 个（V-2b-9c 增五个发光载体），且都指向有载体的目录条目', () => {
         const nonzero = Object.entries(TERRAIN_FLAGS)
             .filter(([, v]) => v.glowLight !== LightKind.NO_LIGHT)
             .map(([k]) => Number(k) as TerrainType)
@@ -327,6 +335,9 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
             TerrainType.LAVA_RETRACTABLE, TerrainType.HAUNTED_TORCH_DORMANT,
             // V-2b-9b：岩浆回缩活动态保留 LAVA_LIGHT。
             TerrainType.LAVA_RETRACTING,
+            TerrainType.DARK_FLOOR, TerrainType.ECTOPLASM,
+            TerrainType.HAUNTED_TORCH_TRANSITIONING, TerrainType.HAUNTED_TORCH,
+            TerrainType.ELECTRIC_CRYSTAL_ON,
         ].sort((a, b) => a - b));
         for (const t of nonzero) {
             expect(LIGHT_CATALOG[TERRAIN_FLAGS[t].glowLight]).toBeDefined();
@@ -704,6 +715,7 @@ describe('C-7 载体边界留痕', () => {
         // glowLight 即真点亮（与上一行 TORCH_LIGHT 同款论证）。
         // 注意仍**未**兑现的：SUNLIGHT_POOL/DARKNESS_PATCH/ALGAE 系（无 tile）。
         'FUNGUS_LIGHT', 'DEMONIC_STATUE_LIGHT',
+        'DARKNESS_CLOUD_LIGHT', 'ECTOPLASM_LIGHT', 'HAUNTED_TORCH_LIGHT',
     ]);
 
     function* prodTsFiles(dir: string): Generator<string> {

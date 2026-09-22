@@ -169,8 +169,8 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         // MUD_FLOOR / MUD_WALL / MUD_DOORWAY / MARBLE_FLOOR / FLOOD_TRAP /
         // ELECTRIC_CRYSTAL_OFF / TURRET_LEVER / HAUNTED_TORCH_DORMANT /
         // 9b 再补九个环境效果活动态/落点，115 → 124；补完轮闭合
-        // MACHINE_CHASM_EDGE 与 DF_PUDDLE 的载体，124 → 126。
-        expect(names.length).toBe(126);
+        // MACHINE_CHASM_EDGE 与 DF_PUDDLE 的载体，124 → 126；9c 七条效果载体 126 → 133。
+        expect(names.length).toBe(133);
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             const entry = TERRAIN_FLAGS[t];
@@ -603,6 +603,8 @@ describe('C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时
         C.BLOODFLOWER_STALK,
         // V-2b-9a：CE Globals.c:577/565/563/344 明确带 PASSABILITY 的四条。
         C.MUD_WALL, C.ELECTRIC_CRYSTAL_OFF, C.TURRET_LEVER, C.HAUNTED_TORCH_DORMANT,
+        // CE :345-346/564; exact positive flag checks in v_2b_9c_effects.
+        C.HAUNTED_TORCH_TRANSITIONING, C.HAUNTED_TORCH, C.ELECTRIC_CRYSTAL_ON,
     ]);
     it('terrainAllowsMove（查表）≡ 旧排除清单 {GRANITE,WALL,SECRET_DOOR,LOCKED_DOOR,WATER_DEEP}', () => {
         const names = Object.keys(TerrainType).filter((k) => Number.isNaN(Number(k)));
