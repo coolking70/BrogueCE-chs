@@ -253,16 +253,7 @@ describe('P1-31 回退 P4-9 偏离后的 safety map（Time.c:1833-1843 顺序）
 describe('P1-35: 读档后的生成期派生态（loopMap / waypoint / 气味）', () => {
     it('T7 跨局读档：loopMap 必须与读入网格的 analyzeLoopMap 逐格相等', () => {
         const a = createHeadlessGame(42, 'normal');
-        // 前提锚（确定性，seed 固定）：该局确有环路格，否则错误实现下的
-        // "残留全 false 巧合"会让本测试失去牙齿（P1-34 T1 同款手法）。
-        let loopTrue = 0;
-        for (let x = 0; x < a.grid.width; x++) {
-            for (let y = 0; y < a.grid.height; y++) {
-                if (a.loopMap[x]![y]) loopTrue++;
-            }
-        }
-        expect(loopTrue).toBeGreaterThan(0);
-
+        // 是否存在环路不是读档合同的前提；下方必异污染格足以让漏重算翻红。
         const snap = a.toSnapshot();
         const b = createHeadlessGame(777, 'normal');
         // 人工污染一个确定格：错误实现“不重算”必然保留该陈值，
@@ -270,6 +261,7 @@ describe('P1-35: 读档后的生成期派生态（loopMap / waypoint / 气味）
         const expected = analyzeLoopMap(a.grid);
         b.loopMap[0]![0] = !expected[0]![0];
         expect(b.loopMap[0]![0], '人工陈值应与目标网格的重算值相反').not.toBe(expected[0]![0]);
+        expect(staleLoopCells(b)).toContain('0,0'); // 边界格不可能是环路，与两局 seed 无关
 
         expect(b.loadSnapshot(snap)).toBe(true);
         expect(staleLoopCells(b)).toEqual([]);
@@ -301,10 +293,10 @@ describe('P1-35: 读档后的生成期派生态（loopMap / waypoint / 气味）
         expect(b.loadSnapshot(snap)).toBe(true);
         expect(b.waypoints.count).toBeGreaterThan(0);
         const afterLoad = JSON.stringify(b.waypoints.coordinates);
+        // 先检查读档覆盖 sentinel，避免显式重建掩盖失败或先在幂等锚报错。
+        expect(afterLoad, '读档后仍保留越界 sentinel waypoint').not.toBe(staleCoords);
         b.rebuildWaypoints(); // 幂等性锚：已重建的话，显式重建不再改变
         expect(JSON.stringify(b.waypoints.coordinates)).toBe(afterLoad);
-        // 错误实现（读档不重建）会保留 sentinel。
-        expect(afterLoad).not.toBe(staleCoords);
     });
 
     it('T10 跨局读档：气味图重置（turnNumber 复位、陈局气味轨迹清零）', () => {
