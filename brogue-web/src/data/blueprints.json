@@ -4445,5 +4445,823 @@
                 "flags": []
             }
         ]
+    },
+    {
+        "id": "ce_31_environment",
+        "ceBlueprintId": 31,
+        "name": "Flood room -- key on an altar in a room with pools of eel-infested waters; take key to flood room with shallow water",
+        "depthRange": [
+            3,
+            26
+        ],
+        "roomSize": [
+            80,
+            180
+        ],
+        "frequency": 10,
+        "category": "thematic",
+        "flags": [
+            "BP_ROOM",
+            "BP_SURROUND_WITH_WALLS",
+            "BP_PURGE_LIQUIDS",
+            "BP_PURGE_PATHING_BLOCKERS",
+            "BP_ADOPT_ITEM"
+        ],
+        "features": [
+            {
+                "instanceCount": [
+                    0,
+                    0
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 0,
+                "flags": [
+                    "MF_EVERYWHERE"
+                ],
+                "terrain": "FLOOR_FLOODABLE",
+                "layer": "LIQUID"
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING"
+                ],
+                "terrain": "ALTAR_SWITCH",
+                "layer": "DUNGEON"
+            },
+            {
+                "instanceCount": [
+                    2,
+                    4
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 5,
+                "flags": [
+                    "MF_GENERATE_HORDE"
+                ],
+                "featureDF": "DF_SPREADABLE_WATER_POOL",
+                "hordeFlags": [
+                    "HORDE_MACHINE_WATER_MONSTER"
+                ]
+            },
+            {
+                "instanceCount": [
+                    3,
+                    4
+                ],
+                "minimumInstanceCount": 3,
+                "personalSpace": 1,
+                "flags": [],
+                "featureDF": "DF_GRASS",
+                "terrain": "FOLIAGE",
+                "layer": "SURFACE"
+            }
+        ]
+    },
+    {
+        "id": "ce_34_environment",
+        "ceBlueprintId": 34,
+        "name": "Collapsing floor area -- key on an altar in an area; take key to cause the floor of the area to collapse",
+        "depthRange": [
+            1,
+            26
+        ],
+        "roomSize": [
+            45,
+            65
+        ],
+        "frequency": 13,
+        "category": "thematic",
+        "flags": [
+            "BP_ADOPT_ITEM",
+            "BP_TREAT_AS_BLOCKING"
+        ],
+        "features": [
+            {
+                "instanceCount": [
+                    0,
+                    0
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 0,
+                "flags": [
+                    "MF_EVERYWHERE"
+                ],
+                "terrain": "FLOOR_FLOODABLE",
+                "layer": "DUNGEON"
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_NEAR_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY"
+                ],
+                "terrain": "ALTAR_SWITCH_RETRACTING",
+                "layer": "DUNGEON"
+            },
+            {
+                "instanceCount": [
+                    3,
+                    3
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_NOT_IN_HALLWAY"
+                ],
+                "featureDF": "DF_ADD_MACHINE_COLLAPSE_EDGE_DORMANT"
+            }
+        ]
+    },
+    {
+        "id": "ce_36_environment",
+        "ceBlueprintId": 36,
+        "name": "Levitation challenge -- key on an altar, room filled with pit, levitation or lever elsewhere on level, bridge appears when you grab the key/lever",
+        "depthRange": [
+            1,
+            13
+        ],
+        "roomSize": [
+            75,
+            120
+        ],
+        "frequency": 10,
+        "category": "thematic",
+        "flags": [
+            "BP_ROOM",
+            "BP_SURROUND_WITH_WALLS",
+            "BP_ADOPT_ITEM",
+            "BP_PURGE_INTERIOR",
+            "BP_OPEN_INTERIOR"
+        ],
+        "features": [
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING"
+                ],
+                "terrain": "ALTAR_SWITCH",
+                "layer": "DUNGEON"
+            },
+            {
+                "instanceCount": [
+                    1,
+                    4
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_BUILD_IN_WALLS"
+                ],
+                "terrain": "TORCH_WALL",
+                "layer": "DUNGEON"
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN"
+                ]
+            },
+            {
+                "instanceCount": [
+                    120,
+                    120
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_REPEAT_UNTIL_NO_PROGRESS"
+                ],
+                "featureDF": "DF_ADD_DORMANT_CHASM_HALO",
+                "terrain": "CHASM",
+                "layer": "LIQUID"
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_PERMIT_BLOCKING",
+                    "MF_EVERYWHERE"
+                ],
+                "featureDF": "DF_ADD_DORMANT_CHASM_HALO",
+                "terrain": "CHASM_WITH_HIDDEN_BRIDGE",
+                "layer": "LIQUID"
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_BUILD_ANYWHERE_ON_LEVEL",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_ALTERNATIVE"
+                ],
+                "itemCategory": "POTION",
+                "itemId": "potion_of_levitation"
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_BUILD_IN_WALLS",
+                    "MF_IN_PASSABLE_VIEW_OF_ORIGIN",
+                    "MF_BUILD_ANYWHERE_ON_LEVEL",
+                    "MF_ALTERNATIVE",
+                    "MF_IMPREGNABLE"
+                ],
+                "terrain": "WALL_LEVER_HIDDEN",
+                "layer": "DUNGEON"
+            }
+        ]
+    },
+    {
+        "id": "ce_37_environment",
+        "ceBlueprintId": 37,
+        "name": "Web climbing -- key on an altar, room filled with pit, spider at altar to shoot webs, bridge appears when you grab the key",
+        "depthRange": [
+            7,
+            26
+        ],
+        "roomSize": [
+            55,
+            90
+        ],
+        "frequency": 10,
+        "category": "thematic",
+        "flags": [
+            "BP_ROOM",
+            "BP_SURROUND_WITH_WALLS",
+            "BP_ADOPT_ITEM",
+            "BP_PURGE_INTERIOR",
+            "BP_OPEN_INTERIOR"
+        ],
+        "features": [
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_IN_VIEW_OF_ORIGIN"
+                ],
+                "terrain": "ALTAR_SWITCH",
+                "layer": "DUNGEON",
+                "monsterId": "spider"
+            },
+            {
+                "instanceCount": [
+                    1,
+                    4
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_BUILD_IN_WALLS"
+                ],
+                "terrain": "TORCH_WALL",
+                "layer": "DUNGEON"
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN"
+                ]
+            },
+            {
+                "instanceCount": [
+                    120,
+                    120
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_REPEAT_UNTIL_NO_PROGRESS"
+                ],
+                "featureDF": "DF_ADD_DORMANT_CHASM_HALO",
+                "terrain": "CHASM",
+                "layer": "LIQUID"
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_PERMIT_BLOCKING",
+                    "MF_EVERYWHERE"
+                ],
+                "featureDF": "DF_ADD_DORMANT_CHASM_HALO",
+                "terrain": "CHASM_WITH_HIDDEN_BRIDGE",
+                "layer": "LIQUID"
+            }
+        ]
+    },
+    {
+        "id": "ce_38_environment",
+        "ceBlueprintId": 38,
+        "name": "Lava moat room -- key on an altar, room filled with lava; lava retracts when you grab the key/lever",
+        "depthRange": [
+            3,
+            13
+        ],
+        "roomSize": [
+            75,
+            120
+        ],
+        "frequency": 7,
+        "category": "thematic",
+        "flags": [
+            "BP_ROOM",
+            "BP_SURROUND_WITH_WALLS",
+            "BP_ADOPT_ITEM",
+            "BP_PURGE_INTERIOR",
+            "BP_OPEN_INTERIOR"
+        ],
+        "features": [
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING"
+                ],
+                "terrain": "ALTAR_SWITCH",
+                "layer": "DUNGEON"
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN"
+                ]
+            },
+            {
+                "instanceCount": [
+                    60,
+                    60
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_REPEAT_UNTIL_NO_PROGRESS"
+                ],
+                "terrain": "LAVA",
+                "layer": "LIQUID"
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_PERMIT_BLOCKING",
+                    "MF_EVERYWHERE"
+                ],
+                "featureDF": "DF_LAVA_RETRACTABLE",
+                "terrain": "LAVA_RETRACTABLE",
+                "layer": "LIQUID"
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_BUILD_ANYWHERE_ON_LEVEL",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_ALTERNATIVE"
+                ],
+                "itemCategory": "POTION",
+                "itemId": "potion_of_levitation"
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_BUILD_ANYWHERE_ON_LEVEL",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_ALTERNATIVE"
+                ],
+                "itemCategory": "POTION",
+                "itemId": "potion_of_fire_immunity"
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_BUILD_IN_WALLS",
+                    "MF_IN_PASSABLE_VIEW_OF_ORIGIN",
+                    "MF_BUILD_ANYWHERE_ON_LEVEL",
+                    "MF_ALTERNATIVE",
+                    "MF_IMPREGNABLE"
+                ],
+                "terrain": "WALL_LEVER_HIDDEN",
+                "layer": "DUNGEON"
+            }
+        ]
+    },
+    {
+        "id": "ce_39_environment",
+        "ceBlueprintId": 39,
+        "name": "Lava moat area -- key on an altar, surrounded with lava; lava retracts when you grab the key",
+        "depthRange": [
+            3,
+            13
+        ],
+        "roomSize": [
+            40,
+            60
+        ],
+        "frequency": 3,
+        "category": "thematic",
+        "flags": [
+            "BP_ADOPT_ITEM",
+            "BP_PURGE_INTERIOR",
+            "BP_OPEN_INTERIOR",
+            "BP_TREAT_AS_BLOCKING"
+        ],
+        "features": [
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 3,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_BUILD_AT_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING"
+                ],
+                "terrain": "ALTAR_SWITCH",
+                "layer": "DUNGEON"
+            },
+            {
+                "instanceCount": [
+                    60,
+                    60
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_REPEAT_UNTIL_NO_PROGRESS"
+                ],
+                "terrain": "LAVA",
+                "layer": "LIQUID"
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_PERMIT_BLOCKING",
+                    "MF_EVERYWHERE"
+                ],
+                "featureDF": "DF_LAVA_RETRACTABLE",
+                "terrain": "LAVA_RETRACTABLE",
+                "layer": "LIQUID"
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_BUILD_ANYWHERE_ON_LEVEL",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_ALTERNATIVE"
+                ],
+                "itemCategory": "POTION",
+                "itemId": "potion_of_levitation"
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_BUILD_ANYWHERE_ON_LEVEL",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_ALTERNATIVE"
+                ],
+                "itemCategory": "POTION",
+                "itemId": "potion_of_fire_immunity"
+            }
+        ]
+    },
+    {
+        "id": "ce_44_environment",
+        "ceBlueprintId": 44,
+        "name": "Guardian water puzzle -- key held by a guardian; lure it into the flood trap",
+        "depthRange": [
+            4,
+            26
+        ],
+        "roomSize": [
+            35,
+            70
+        ],
+        "frequency": 8,
+        "category": "thematic",
+        "flags": [
+            "BP_ROOM",
+            "BP_SURROUND_WITH_WALLS",
+            "BP_PURGE_INTERIOR",
+            "BP_ADOPT_ITEM"
+        ],
+        "features": [
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN"
+                ]
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_ADOPT_ITEM",
+                    "MF_FAR_FROM_ORIGIN",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_MONSTER_TAKE_ITEM"
+                ],
+                "monsterId": "stone_guardian"
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY"
+                ],
+                "terrain": "FLOOD_TRAP",
+                "layer": "DUNGEON"
+            },
+            {
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 4,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_EVERYWHERE",
+                    "MF_NOT_IN_HALLWAY"
+                ],
+                "terrain": "MACHINE_GLYPH",
+                "layer": "DUNGEON"
+            }
+        ]
+    },
+    {
+        "id": "ce_65_environment",
+        "ceBlueprintId": 65,
+        "name": "Chasm catwalk -- narrow bridge over a chasm, possibly under fire from a turret or two",
+        "depthRange": [
+            1,
+            25
+        ],
+        "roomSize": [
+            40,
+            80
+        ],
+        "frequency": 0,
+        "category": "thematic",
+        "flags": [
+            "BP_REQUIRE_BLOCKING",
+            "BP_OPEN_INTERIOR",
+            "BP_NO_INTERIOR_FLAG"
+        ],
+        "features": [
+            {
+                "instanceCount": [
+                    80,
+                    80
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_REPEAT_UNTIL_NO_PROGRESS"
+                ],
+                "featureDF": "DF_CHASM_HOLE"
+            },
+            {
+                "instanceCount": [
+                    0,
+                    0
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 0,
+                "flags": [
+                    "MF_EVERYWHERE"
+                ],
+                "featureDF": "DF_CATWALK_BRIDGE"
+            },
+            {
+                "instanceCount": [
+                    0,
+                    1
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_NEAR_ORIGIN",
+                    "MF_PERMIT_BLOCKING"
+                ],
+                "terrain": "MACHINE_TRIGGER_FLOOR",
+                "layer": "DUNGEON"
+            },
+            {
+                "instanceCount": [
+                    1,
+                    2
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_GENERATE_HORDE",
+                    "MF_MONSTERS_DORMANT",
+                    "MF_BUILD_IN_WALLS",
+                    "MF_IN_VIEW_OF_ORIGIN"
+                ],
+                "terrain": "TURRET_DORMANT",
+                "layer": "DUNGEON",
+                "hordeFlags": [
+                    "HORDE_MACHINE_TURRET"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "ce_66_environment",
+        "ceBlueprintId": 66,
+        "name": "Lake walk -- narrow bridge of shallow water through a lake, possibly under fire from a turret or two",
+        "depthRange": [
+            1,
+            26
+        ],
+        "roomSize": [
+            40,
+            80
+        ],
+        "frequency": 0,
+        "category": "thematic",
+        "flags": [
+            "BP_REQUIRE_BLOCKING",
+            "BP_OPEN_INTERIOR",
+            "BP_NO_INTERIOR_FLAG"
+        ],
+        "features": [
+            {
+                "instanceCount": [
+                    80,
+                    80
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_REPEAT_UNTIL_NO_PROGRESS"
+                ],
+                "featureDF": "DF_LAKE_CELL"
+            },
+            {
+                "instanceCount": [
+                    0,
+                    1
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_NEAR_ORIGIN",
+                    "MF_PERMIT_BLOCKING"
+                ],
+                "terrain": "MACHINE_TRIGGER_FLOOR",
+                "layer": "DUNGEON"
+            },
+            {
+                "instanceCount": [
+                    1,
+                    2
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_GENERATE_HORDE",
+                    "MF_MONSTERS_DORMANT",
+                    "MF_BUILD_IN_WALLS",
+                    "MF_IN_VIEW_OF_ORIGIN"
+                ],
+                "terrain": "TURRET_DORMANT",
+                "layer": "DUNGEON",
+                "hordeFlags": [
+                    "HORDE_MACHINE_TURRET"
+                ]
+            }
+        ]
     }
 ]

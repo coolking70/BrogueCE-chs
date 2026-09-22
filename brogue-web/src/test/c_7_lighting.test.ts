@@ -276,6 +276,15 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         [TerrainType.ELECTRIC_CRYSTAL_OFF]: 0, [TerrainType.TURRET_LEVER]: 0,
         [TerrainType.HAUNTED_TORCH_DORMANT]: LightKind.TORCH_LIGHT,
         [TerrainType.DARK_FLOOR_DORMANT]: 0,
+        [TerrainType.MACHINE_FLOOD_WATER_DORMANT]: 0,
+        [TerrainType.MACHINE_FLOOD_WATER_SPREADING]: 0,
+        [TerrainType.MACHINE_COLLAPSE_EDGE_DORMANT]: 0,
+        [TerrainType.MACHINE_COLLAPSE_EDGE_SPREADING]: 0,
+        [TerrainType.CHASM_WITH_HIDDEN_BRIDGE_ACTIVE]: 0,
+        [TerrainType.STONE_BRIDGE]: 0,
+        [TerrainType.LAVA_RETRACTING]: LightKind.LAVA_LIGHT,
+        [TerrainType.FLOOD_WATER_SHALLOW]: 0,
+        [TerrainType.FLOOD_WATER_DEEP]: 0,
     };
 
     it('全 tile 的 glowLight 逐值等于 CE 原列（结构性穷尽）', () => {

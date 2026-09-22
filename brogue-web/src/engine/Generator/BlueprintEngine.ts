@@ -1776,11 +1776,9 @@ export class BlueprintEngine {
  *   - cost 口径用 web 的 PDS_FORBIDDEN 约定（Game.findQualifyingPathLocNear
  *     同款：!isPassable ∪ LAVA ∪ WATER_DEEP ∪ TRAP），非 CE
  *     populateGenericCostMap 的逐地形代价——P1-33 已登记的同族偏差。
- * CE :715-723 的 BP_TREAT_AS_BLOCKING / BP_REQUIRE_BLOCKING 连通性复核
- * **本轮刻意未接线**：levelIsDisconnectedWithBlockingMap 属 DF 子系统，
- * 生产引用受 c_4b F1 留痕扫描器白名单钉死（本轮授权清单不含该测试），
- * 且当前数据零载体、检查结构性不可达——接线留给激活轮，届时按该测试
- * 标题预告的流程扩白名单。
+ * V-2b-9b 留痕反转：CE :723-728 的 BP_TREAT_AS_BLOCKING /
+ * BP_REQUIRE_BLOCKING 复核已经接线；65/66 是 REQUIRE 的首批活载体，34/39
+ * 是 TREAT 载体。F1 白名单继续把本文件钉为机器侧唯一 DF 连通性读者。
  */
     private fillVestibuleInterior(bp: BlueprintDef, origin: Pos): Pos[] | null {
         const goal = rng.randRange(bp.roomSize[0], bp.roomSize[1]);
@@ -1823,8 +1821,18 @@ export class BlueprintEngine {
                 }
             }
         }
-        // CE :715-723 的 BP_TREAT_AS_BLOCKING / BP_REQUIRE_BLOCKING 复核
-        // 本轮未接线（原因见头注）——激活轮补上。
+        // CE :723-728：TREAT 要求“不切断”；REQUIRE 要求切出的较小区域
+        // 至少 100 格。注意返回值 0 才是不断连，判据反抄会被 9b 对抗用例抓住。
+        const blockingMap = new Uint8Array(DCOLS * DROWS);
+        for (const p of cells) blockingMap[p.y * DCOLS + p.x] = 1;
+        if (bp.flags.includes('BP_TREAT_AS_BLOCKING')
+            && levelIsDisconnectedWithBlockingMap(this.grid, blockingMap, false) !== 0) {
+            return null;
+        }
+        if (bp.flags.includes('BP_REQUIRE_BLOCKING')
+            && levelIsDisconnectedWithBlockingMap(this.grid, blockingMap, true) < 100) {
+            return null;
+        }
         return cells;
     }
 

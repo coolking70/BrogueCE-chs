@@ -65,6 +65,7 @@ function collectFiles(dir: string, out: string[] = []): string[] {
  *  describe D 即红。 */
 const LEGACY_IMPASSABLE = new Set<TerrainType>([
     C.GRANITE, C.WALL, C.SECRET_DOOR, C.LOCKED_DOOR, C.WATER_DEEP,
+    C.FLOOD_WATER_DEEP,
 ]);
 
 const legacyAllowsMove = (t: TerrainType): boolean => !LEGACY_IMPASSABLE.has(t);
@@ -167,8 +168,8 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         // V-2b-9a：FLOOR_FLOODABLE / CHASM_WITH_HIDDEN_BRIDGE / LAVA_RETRACTABLE /
         // MUD_FLOOR / MUD_WALL / MUD_DOORWAY / MARBLE_FLOOR / FLOOD_TRAP /
         // ELECTRIC_CRYSTAL_OFF / TURRET_LEVER / HAUNTED_TORCH_DORMANT /
-        // DARK_FLOOR_DORMANT 十二条新成员，103 → 115；RUBBLE 已存在。
-        expect(names.length).toBe(115);
+        // 9b 再补九个环境效果活动态/落点，115 → 124。
+        expect(names.length).toBe(124);
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             const entry = TERRAIN_FLAGS[t];
@@ -512,7 +513,7 @@ describe('C-4a C：派生判据语义（混用别名化 / 抄错的可观测后�
         const allNames = Object.keys(TerrainType).filter((k) => Number.isNaN(Number(k)));
         for (const name of allNames) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
-            if (t !== C.WATER_DEEP) {
+            if (t !== C.WATER_DEEP && t !== C.FLOOD_WATER_DEEP) {
                 expect(isDeepWater(t), `${TerrainType[t]} 不应带 T_IS_DEEP_WATER`).toBe(false);
             }
         }
