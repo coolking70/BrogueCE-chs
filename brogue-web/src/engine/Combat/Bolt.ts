@@ -2,7 +2,7 @@
  * src/engine/Combat/Bolt.ts
  * Projectile / bolt system — see BrogueCE Items.c
  *
- * A bolt travels in a straight line from origin to a target (or until blocked).
+ * A bolt travels from origin through its aim toward the map edge (or until blocked).
  * On each cell it may leave a trail (pathDF), and on impact it applies an effect.
  */
 
@@ -94,7 +94,7 @@ export interface BoltConfig {
     /** Internal id used for lookup (matches wand/staff id). */
     id: string;
     /** CE catalog identity, separate from legacy dispatch. null = web invention.
-     * Metadata only: CE flags/magnitude must not implicitly change old routing. */
+     * W-3 consumes trajectory flags; magnitude/effect migration stays separate. */
     ceType: CEBoltType | null;
     /** Display name (already translated via tn()). */
     name: string;
@@ -109,7 +109,7 @@ export interface BoltConfig {
     color: number;
     /** Maximum range in tiles (0 = unlimited up to map edge). */
     maxRange: number;
-    /** Does it pierce through the first creature? */
+    /** Piercing fallback for web inventions; CE identities use their catalog flag. */
     piercing: boolean;
     /** Legacy aim-at-origin switch. This is NOT CE blinking (which moves caster). */
     selfTargeting: boolean;
@@ -204,7 +204,7 @@ export const MONSTER_BOLT_TABLE: Record<string, MonsterBoltMeta> = {
 /** 已知但本轮故意不实现的 CE bolt 名（供测试显式断言，防止悄悄新增未登记名字）。 */
 export const KNOWN_GAP_MONSTER_BOLT_NAMES: readonly string[] = ['SPIDERWEB', 'ANCIENT_SPIRIT_VINES'];
 
-// ----- Line-of-sight path (Bresenham) -----
+// ----- Legacy segment for thrown items (ordinary bolts use BoltTrajectory) -----
 
 /**
  * Compute a straight-line path from `from` to `to` using Bresenham's algorithm.
@@ -263,7 +263,7 @@ export function buildBoltFrames(path: Pos[], bolt: BoltConfig): BoltFrame[] {
 
 // ----- Bolt effect result (returned to Game.ts for application) -----
 
-/** A creature encountered by the existing route, not a claim that its effect
+/** A living, active creature contacted on the actual travelled route, not a claim that its effect
  * succeeded. Snapshot the contact position: teleport/beckoning can move it.
  * CE updateBolt (Items.c:5115-5132) separates caster from creature being hit. */
 export interface BoltHit {
@@ -285,10 +285,10 @@ export interface BoltResult {
     origin: Pos;
     /** Aimed position, independent of caster identity and final landing. */
     aimPos: Pos;
-    /** Ordered contacts observed by the legacy route; no new collision rules. */
+    /** Ordered actual contacts, excluding origin and any pre-obstruction stop cell.
+     * Not effect success, intended targets, or recipients of legacy reflected damage. */
     hits: BoltHit[];
-    /** Last travelled cell, or null for an empty path (no landing).
-     * CE halts-before-obstruction rules are deferred to W-3. */
+    /** Last reached cell after ordinary collision/halts-before rules; null for no travel. */
     landingPos: Pos | null;
     /** null = effect outcome NOT evaluated. Never treat it as autoID=false.
      * Tracing leaves null; W-2 execution exits always evaluate this value. */

@@ -6,7 +6,7 @@ import { cellTerrainFlags } from '../Map/DungeonFeature';
 import { T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION } from '../Map/TerrainCatalog';
 import type { Item } from '../Items/Item';
 import { ItemLoader } from '../Items/ItemLoader';
-import { boltPath } from './Bolt';
+import { boltLine } from './BoltTrajectory';
 import { CE_BOLT_CATALOG, CE_ITEM_BOLT_TYPES, CEBoltEffect, CEBoltFlags } from './BoltCatalog';
 
 /** CE IO.c canSeeMonster/monsterRevealed: use perception, not merely a lit tile.
@@ -31,8 +31,9 @@ export function arcanaTargetCandidates(player: Player, grid: Grid, monsters: rea
     return monsters.filter(m => {
         if (m.hp <= 0 || !canObserveBoltCreature(player, grid, m)) return false;
         // CE openPathBetween also rejects creatures and terrain in intervening cells.
-        const line = boltPath(player.loc, m.loc);
-        if (line.slice(0, -1).some(p =>
+        const line = boltLine(grid, player.loc, m.loc);
+        const aimIndex = line.findIndex(p => p.x === m.loc.x && p.y === m.loc.y);
+        if (line.slice(0, aimIndex).some(p =>
             (cellTerrainFlags(grid, p.x, p.y) & (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION))
             || monsters.some(other => other !== m && other.hp > 0 && !other.isDormant
                 && (other.isAlly || (!other.isTrulyInvisible() && !other.hasStatus('invisible'))) && other.loc.x === p.x && other.loc.y === p.y))) return false;

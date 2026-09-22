@@ -21,7 +21,7 @@ import { Item, ItemCategory } from '../engine/Items/Item';
 import { TerrainType } from '../engine/Map/Grid';
 import { rng } from '../engine/Random';
 import { CombatSystem } from '../engine/Combat/Combat';
-import { BoltEffect } from '../engine/Combat/Bolt';
+import { getBoltForItem } from '../engine/Combat/Bolt';
 import { reflectionChance } from '../engine/Combat/CombatFormulas';
 import monsterDataJson from '../data/monsters.json';
 
@@ -144,15 +144,10 @@ describe('P4-3 验收 3：MA_REFLECT_100 反射', () => {
         const playerHpBefore = game.player.hp;
 
         const staff = new Item('staff of firebolt', '/', 0xff6600, ItemCategory.STAFF);
-        const boltResult = {
-            path: [{ x: guardian.loc.x, y: guardian.loc.y }],
-            impactPos: { x: guardian.loc.x, y: guardian.loc.y },
-            effect: BoltEffect.FIRE,
-            magnitude: 20,
-            bolt: { id: 'test', name: 'firebolt', effect: BoltEffect.FIRE, magnitude: 20, char: '*', color: 0xff6600, maxRange: 0, piercing: false, selfTargeting: false },
-        };
-        (game as unknown as { applyBoltEffect: (r: typeof boltResult, i: Item) => void })
-            .applyBoltEffect(boltResult, staff);
+        // W-3: use the real player exit/contact contract instead of a manually
+        // incomplete result and the private effect switch. Damage expectations
+        // stay unchanged: reflected travel itself remains W-4.
+        game.zapBoltFromPlayer({ ...getBoltForItem('staff_of_fire')!, magnitude: 20 }, staff, guardian.loc);
 
         expect(guardian.hp).toBe(guardianHpBefore);
         expect(game.player.hp).toBe(playerHpBefore - 20);

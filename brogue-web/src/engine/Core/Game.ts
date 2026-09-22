@@ -80,7 +80,9 @@ import {
 } from '../Map/LightCatalog';
 import { FloatingText } from '../Visuals/FloatingText';
 import { STATUS_CONFIG } from '../Status/statusConfig';
-import { exposeBoltPathToElectricity, getBoltForItem, boltPath, createBoltResult, BoltEffect, MONSTER_BOLT_TABLE, type BoltConfig, type BoltFrame, type BoltResult, type BoltHit } from '../Combat/Bolt';
+import { exposeBoltPathToElectricity, getBoltForItem, boltPath, createBoltResult, BoltEffect, MONSTER_BOLT_TABLE, type BoltConfig, type BoltFrame, type BoltResult, type MonsterBoltMeta } from '../Combat/Bolt';
+import { traceBolt, type BoltWorld } from '../Combat/BoltTrajectory';
+import { CE_BOLT_CATALOG } from '../Combat/BoltCatalog';
 
 import { arcanaTargetCandidates, canObserveBoltCreature } from '../Combat/BoltTargeting';
 
@@ -4224,57 +4226,65 @@ export class Game {
      * Compute the bolt's travel path, checking for wall/creature collisions.
      */
     private computeBoltResult(bolt: BoltConfig, origin: Pos, target: Pos): BoltResult {
-        const rawPath = boltPath(origin, target, bolt.maxRange > 0 ? bolt.maxRange : 40);
-        const finalPath: Pos[] = [];
-        const hits: BoltHit[] = [];
-
-        for (const pos of rawPath) {
-            // Check bounds
-            if (pos.x < 0 || pos.x >= DCOLS || pos.y < 0 || pos.y >= DROWS) break;
-
-            // Check wall / obstacle
-            const cell = this.grid.getCell(pos.x, pos.y);
-            if (!cell) break;
-            if (cell.terrain === TerrainType.WALL || cell.terrain === TerrainType.GRANITE) break;
-
-            finalPath.push(pos);
-
-            // Record contacts on every included cell, including the last electric
-            // obstruction cell (the legacy effect loop still visits that cell).
-            const monster = this.monsters.find(m => m.hp > 0 && m.loc.x === pos.x && m.loc.y === pos.y);
-            if (monster) hits.push({ creature: monster, pos });
-
-            if ((bolt.effect === BoltEffect.LIGHTNING || bolt.effect === BoltEffect.SPARK)
-                && (cellTerrainFlags(this.grid, pos.x, pos.y) & (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION))) break;
-
-            // Check for creature at this position
-            if (monster && !bolt.piercing) {
-                break;
-            }
-            if (monster && bolt.piercing) {
-                // Continue through for piercing bolts (like lightning)
-            }
-        }
-
-        return createBoltResult(bolt, this.player, origin, target, finalPath, hits);
+        return traceBolt(this.grid, bolt, origin, target, this.boltWorld(this.player));
     }
 
-    /**
-     * Apply the bolt result: schedule animation frames and apply the effect.
-     */
-    private applyBoltResult(result: BoltResult, item: Item) {
-        // Queue animation frames for the renderer
-        // CE Items.c:7399 hideBoltDetails: unknown kinds use a neutral glyph/color.
-        if (!ItemLoader.identifiedItems.has((item as Item & { identityId?: string }).identityId ?? '')) {
-            result.frames = result.frames.map(frame => ({ ...frame, char: '*', color: 0xaaaaaa }));
+    private boltWorld(caster: Creature | null, hideDetails = false): BoltWorld {
+        return {
+            caster, hideDetails,
+            creatureAt: pos => {
+                if (this.player !== caster && this.player.hp > 0
+                    && this.player.loc.x === pos.x && this.player.loc.y === pos.y) return this.player;
+                return this.monsters.find(m => m !== caster && m.hp > 0 && !m.isDormant
+                    && m.loc.x === pos.x && m.loc.y === pos.y);
+            },
+        };
+    }
+
+    /** CE updateBolt :5440-5465: existing DF -> fire -> electricity, once per
+     * reached cell, before checking its post-effect obstruction flags. The only
+     * executable catalog pathDF today is dragonfire's existing DF_OBSIDIAN.
+     * Web/vines remain disabled; no new DF definitions or effect algorithms. */
+    private applyBoltTerrainAt(bolt: BoltConfig, pos: Pos): boolean {
+        const before = this.boltTerrainSignature([], pos);
+        const definition = bolt.ceType === null ? undefined : CE_BOLT_CATALOG[bolt.ceType];
+        if (definition?.pathDF === 'DF_OBSIDIAN') {
+            spawnDungeonFeature(this.grid, pos.x, pos.y, catalogFeature(DF.DF_OBSIDIAN), false);
         }
+        const beforeFire = this.boltTerrainSignature([], pos);
+        if (bolt.effect === BoltEffect.FIRE || bolt.effect === BoltEffect.DRAGONFIRE) {
+            this.environment.ignite(pos.x, pos.y);
+        }
+        const fireChanged = beforeFire !== this.boltTerrainSignature([], pos);
+        const electric = exposeBoltPathToElectricity(this.grid, [pos], bolt.effect);
+        const changed = before !== this.boltTerrainSignature([], pos);
+        if (changed || electric) this.updateVision();
+        return electric || fireChanged;
+    }
+
+    /** Execute travel against live terrain/occupancy. A preview cannot know what
+     * ignition/promotion will open, so replace it with the actually travelled route. */
+    private applyBoltResult(result: BoltResult, item: Item) {
+        let autoID = false, applied = false;
+        const hideDetails = !ItemLoader.identifiedItems.has((item as Item & { identityId?: string }).identityId ?? '');
+        const actual = traceBolt(this.grid, result.bolt, result.origin, result.aimPos,
+            this.boltWorld(result.caster, hideDetails), (pos, hit) => {
+                if (hit) {
+                    const contact = createBoltResult(result.bolt, result.caster, result.origin, result.aimPos, [pos], [hit]);
+                    autoID = this.applyBoltEffect(contact, item) || autoID;
+                    applied = true;
+                }
+                autoID = this.applyBoltTerrainAt(result.bolt, pos) || autoID;
+            });
+        Object.assign(result, actual);
+        // Keep the existing landing/miss/self-effect dispatch, including its W-8+
+        // limitations. Empty paths have no detonation (in particular no origin fire).
+        if (!applied && result.landingPos) autoID = this.applyBoltEffect(result, item) || autoID;
+        result.outcome = { autoID, casterMovement: this.boltCasterMovement(result) };
+        if (hideDetails) result.frames = result.frames.map(frame => ({ ...frame, char: '*', color: 0xaaaaaa }));
         this.pendingBoltFrames = result.frames;
         this.currentBoltFrameIndex = 0;
         this.boltAnimStartTime = Date.now();
-
-        // Apply the effect
-        const autoID = this.applyBoltEffect(result, item);
-        result.outcome = { autoID, casterMovement: this.boltCasterMovement(result) };
     }
 
     // Bolt animation state (consumed by the render loop in GameCanvas.vue)
@@ -4369,16 +4379,10 @@ export class Game {
     private applyBoltEffect(result: BoltResult, item: Item): boolean {
         const { effect, magnitude, impactPos, path } = result;
         let autoID = false;
-        const terrainBefore = this.boltTerrainSignature(path, impactPos);
-        if (exposeBoltPathToElectricity(this.grid, path, effect)) {
-            autoID = true; // CE Items.c:5456-5465: actual electrical terrain promotion.
-            this.updateVision();
-        }
-
-        // Find the monster at impact position
-        const target = this.monsters.find(
-            m => m.hp > 0 && m.loc.x === impactPos.x && m.loc.y === impactPos.y
-        );
+        // Consume the traced contact, not a new location lookup (which could
+        // pick a dormant occupant, or a creature moved/spawned by an earlier hit).
+        const contact = result.hits.find(h => h.pos.x === impactPos.x && h.pos.y === impactPos.y);
+        const target = contact?.creature instanceof Monster ? contact.creature : undefined;
 
         const known = ItemLoader.identifiedItems.has((item as Item & { identityId?: string }).identityId ?? '');
         const logMiss = (key: string, fallback: string, color: string) => {
@@ -4388,8 +4392,7 @@ export class Game {
         switch (effect) {
             case BoltEffect.FIRE: {
                 if (target) autoID = true; // CE :5146-5150, even if immune/reflected.
-                // Ignite on impact and deal damage
-                this.environment.ignite(impactPos.x, impactPos.y);
+                // Terrain exposure is sequenced by the travel loop after contact.
                 if (target && this.applyDirectBoltDamage(target, magnitude, 'bolt.fire_reflect', `The ${target.name} deflects the fire back at you!`)) {
                     logger.log(i18next.t('bolt.fire_hit', {
                         name: item.displayName, target: target.name, damage: magnitude,
@@ -4408,21 +4411,15 @@ export class Game {
                 } else if (!target) {
                     logMiss('bolt.fire_impact', `A burst of fire leaps from ${item.displayName}!`, '#ffaa00');
                 }
-                // Fire along the path trail
-                for (const p of path) {
-                    this.environment.ignite(p.x, p.y);
-                }
                 break;
             }
 
             case BoltEffect.LIGHTNING: {
                 // Lightning pierces through all creatures along the path and deals damage
                 let totalDamage = 0;
-                for (const p of path) {
-                    const m = this.monsters.find(
-                        mon => mon.hp > 0 && mon.loc.x === p.x && mon.loc.y === p.y
-                    );
-                    if (m) {
+                for (const hit of result.hits) {
+                    const m = hit.creature;
+                    if (m instanceof Monster) {
                         autoID = true; // CE BE_DAMAGE contact, not HP delta.
                         if (!this.applyDirectBoltDamage(m, magnitude, 'bolt.lightning_reflect', `The ${m.name} deflects the lightning back at you!`)) {
                             continue;
@@ -4676,8 +4673,6 @@ export class Game {
                 break;
         }
 
-        if ((effect === BoltEffect.FIRE || effect === BoltEffect.LIGHTNING)
-            && terrainBefore !== this.boltTerrainSignature(path, impactPos)) autoID = true;
         // CONJURATION remains a presentation stub, and SHIELDING's telepathy is
         // not a shield observation. Do not identify unimplemented CE effects.
         return autoID;
@@ -4692,11 +4687,11 @@ export class Game {
      * 分支都绑死了"物品名 + 固定打玩家/固定回怪物"的叙事假设（如 HASTE/
      * SHIELDING 分支硬编码 this.player），改起来风险远大于收益。这里另开一个
      * 面向"施法者可以是怪物、目标可以是玩家或任意怪物"的精简出口，复用同一套
-     * 底层原语（boltPath/createBoltResult 做路径与动画、applyStatusToMonster/
+     * 底层原语（traceBolt/createBoltResult 做路径与动画、applyStatusToMonster/
      * applyTimedStatus 做状态、environment.ignite 做点火、CombatSystem.attack
      * 做伤害判定），两条路径共享地基但不共享分支体，玩家原有调用
      * （zapBoltFromPlayer → applyBoltEffect）保留。W-1 仅携带 caster/命中/落点
-     * 契约并返回结果；W-2 在旧分支观察 autoID，不迁移效果行为。
+     * 契约并返回结果；W-2 在旧分支观察 autoID；W-3 按真实接触逐格调用。
      *
      * 伤害类 bolt（SPARK/FIRE/DRAGONFIRE/POISON_DART/DISTANCE_ATTACK）不走
      * CE zap() 的 bolt 专属伤害公式——那个公式在 Combat.ts/CombatFormulas.ts
@@ -4710,24 +4705,6 @@ export class Game {
         const meta = MONSTER_BOLT_TABLE[ceBoltName];
         if (!meta || meta.effect === null) return; // 已知缺口/未映射，不应该走到这里
 
-        const isPlayer = target === this.player;
-        const targetName = isPlayer ? i18next.t('bolt.target_you', { defaultValue: 'you' }) : (target as Monster).name;
-
-        // 动画/结果契约：保留这条出口的旧路径和指定目标，不迁移效果分支。
-        const rawPath = boltPath(caster.loc, target.loc, 40);
-        const path: Pos[] = [];
-        for (const p of rawPath) {
-            if (!this.grid.getCell(p.x, p.y)) break;
-            path.push(p);
-            if (meta.effect === BoltEffect.SPARK
-                && (cellTerrainFlags(this.grid, p.x, p.y) & (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION))) break;
-        }
-        const terrainBefore = this.boltTerrainSignature(path, target.loc);
-        let autoID = exposeBoltPathToElectricity(this.grid, path, meta.effect);
-        if (autoID) this.updateVision();
-        const last = path[path.length - 1];
-        const electricBlocked = meta.effect === BoltEffect.SPARK
-            && (!last || last.x !== target.loc.x || last.y !== target.loc.y);
         const visualBolt: BoltConfig = {
             id: `monster_bolt_${ceBoltName.toLowerCase()}`,
             ceType: meta.ceType,
@@ -4740,17 +4717,26 @@ export class Game {
             piercing: false,
             selfTargeting: false,
         };
-        const boltResult = createBoltResult(visualBolt, caster, caster.loc, target.loc, path,
-            electricBlocked ? [] : [{ creature: target, pos: target.loc }]);
+        let autoID = false;
+        const boltResult = traceBolt(this.grid, visualBolt, caster.loc, target.loc, this.boltWorld(caster), (pos, hit) => {
+            if (hit) autoID = this.applyMonsterBoltHit(caster, hit.creature, ceBoltName, meta) || autoID;
+            autoID = this.applyBoltTerrainAt(visualBolt, pos) || autoID;
+        });
         this.pendingBoltFrames = boltResult.frames;
         this.currentBoltFrameIndex = 0;
         this.boltAnimStartTime = Date.now();
+        boltResult.outcome = { autoID, casterMovement: this.boltCasterMovement(boltResult) };
+        this.needsRender = true;
+        return boltResult;
+    }
 
-        const finish = () => {
-            boltResult.outcome = { autoID, casterMovement: this.boltCasterMovement(boltResult) };
-            return boltResult;
-        };
-        if (electricBlocked) return finish();
+    /** Existing per-recipient effects/formulas; W-3 changes which contacts invoke
+     * them, not their implementations. Reflection damage redirection remains the
+     * old P4 approximation; reflected travel is W-4. */
+    private applyMonsterBoltHit(caster: Monster, target: Creature, ceBoltName: string, meta: MonsterBoltMeta): boolean {
+        let autoID = false;
+        const isPlayer = target === this.player;
+        const targetName = isPlayer ? i18next.t('bolt.target_you', { defaultValue: 'you' }) : (target as Monster).name;
         const seenBefore = this.canObserveBoltTarget(target);
         const targetBefore = { ...target.loc };
 
@@ -4765,9 +4751,6 @@ export class Game {
             case BoltEffect.POISON_DART:
             case BoltEffect.FIRE:
             case BoltEffect.DRAGONFIRE: {
-                if (meta.effect === BoltEffect.FIRE || meta.effect === BoltEffect.DRAGONFIRE) {
-                    this.environment.ignite(target.loc.x, target.loc.y);
-                }
                 // P4-3：CE GlobalsBrogue.c boltCatalog —— "spark"/"flame"/"dragonfire"
                 // 都没有 BF_NEVER_REFLECTS，可被 MA_REFLECT_100/MONST_REFLECT_50 反射；
                 // "arrow"(DISTANCE_ATTACK)/"poisoned dart"(POISON_DART) 标了
@@ -4921,9 +4904,7 @@ export class Game {
         }
 
         this.needsRender = true;
-        if ((meta.effect === BoltEffect.FIRE || meta.effect === BoltEffect.DRAGONFIRE)
-            && terrainBefore !== this.boltTerrainSignature(path, targetBefore)) autoID = true;
-        return finish();
+        return autoID;
     }
 
     /**

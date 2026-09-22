@@ -32,7 +32,7 @@ const trace = (g: Game, bolt: BoltConfig, aim: Pos) => (g as unknown as {
     computeBoltResult(b: BoltConfig, origin: Pos, target: Pos): BoltResult;
 }).computeBoltResult(bolt, g.player.loc, aim);
 
-describe('W-1 caster/contact/landing/outcome contracts preserve legacy routes', () => {
+describe('W-1 caster/contact/landing/outcome contracts with W-3 actual routes', () => {
     it('packages nullable caster, player contacts, independent aim/landing and unresolved versus false autoID without aliasing positions', () => {
         const game = scene(), origin = { x: 2, y: 5 }, aim = { x: 9, y: 5 };
         const path = [{ x: 3, y: 5 }, { x: 4, y: 5 }];
@@ -54,24 +54,24 @@ describe('W-1 caster/contact/landing/outcome contracts preserve legacy routes', 
         expect(moved.casterMovement!.to).toEqual(result.landingPos);
     });
 
-    it('a wall next to caster produces no landing or hits, preserving the old origin fallback and zero RNG/ticks', () => {
+    it('W-3 reverses the old empty wall path: ordinary lightning reaches the adjacent wall with zero RNG/ticks', () => {
         const game = scene();
         game.grid.setTerrain(5, 5, TerrainType.WALL);
         const beforeRng = rng.randomNumbersGenerated, beforeTick = timeSystem.currentTick;
         const result = trace(game, getBoltForItem('staff_of_lightning')!, { x: 9, y: 5 });
         expect(result.caster).toBe(game.player);
-        expect(result.path).toEqual([]);
+        expect(result.path).toEqual([{ x: 5, y: 5 }]);
         expect(result.hits).toEqual([]);
-        expect(result.landingPos).toBeNull();
-        expect(result.impactPos).toEqual(game.player.loc);
-        expect(result.frames).toEqual([]);
+        expect(result.landingPos).toEqual({ x: 5, y: 5 });
+        expect(result.impactPos).toEqual({ x: 5, y: 5 });
+        expect(result.frames).toHaveLength(1);
         expect(result.outcome).toBeNull();
         expect(game.grid.getCell(5, 5)!.terrain).toBe(TerrainType.WALL);
         expect(rng.randomNumbersGenerated).toBe(beforeRng);
         expect(timeSystem.currentTick).toBe(beforeTick);
     });
 
-    it('player tracing records ordered contacts while piercing and target truncation keep their old behavior', () => {
+    it('W-3 reverses target truncation and origin contact while preserving ordered contacts', () => {
         const game = scene(), first = rat(6), second = rat(8);
         game.monsters.push(first, second);
         const fire = trace(game, getBoltForItem('staff_of_fire')!, { x: 10, y: 5 });
@@ -80,24 +80,28 @@ describe('W-1 caster/contact/landing/outcome contracts preserve legacy routes', 
         expect(fire.magnitude).toBe(6);
         const lightning = trace(game, getBoltForItem('staff_of_lightning')!, { x: 10, y: 5 });
         expect(lightning.hits.map(h => h.creature)).toEqual([first, second]);
-        expect(lightning.landingPos).toEqual({ x: 10, y: 5 });
+        expect(lightning.landingPos).toEqual({ x: DCOLS - 1, y: 5 });
         const aimedAtFirst = trace(game, getBoltForItem('staff_of_lightning')!, first.loc);
-        expect(aimedAtFirst.hits.map(h => h.creature)).toEqual([first]);
-        expect(aimedAtFirst.landingPos).toEqual(first.loc);
+        // W-1 stopped at the aim; W-3 must continue through the second creature.
+        expect(aimedAtFirst.hits.map(h => h.creature)).toEqual([first, second]);
+        expect(aimedAtFirst.landingPos).toEqual({ x: DCOLS - 1, y: 5 });
         // An included obstruction cell is also part of the legacy damage path.
         // Keep its contact even though the path terminates before another step.
         game.grid.setTerrain(6, 5, TerrainType.CRYSTAL_WALL);
         const blockedOnCreature = trace(game, getBoltForItem('staff_of_lightning')!, { x: 10, y: 5 });
         expect(blockedOnCreature.landingPos).toEqual(first.loc);
         expect(blockedOnCreature.hits.map(h => h.creature)).toEqual([first]);
-        // W-3 will change CE same-origin and aim-extension behavior, not W-1.
-        expect(trace(game, getBoltForItem('staff_of_fire')!, game.player.loc).path).toEqual([game.player.loc]);
+        // W-1 returned [origin]; CE Items.c:4162/5587 rejects same-origin travel.
+        expect(trace(game, getBoltForItem('staff_of_fire')!, game.player.loc).path).toEqual([]);
     });
 
     it('monster return values carry caster and player/monster contacts while healing retains the old 25 percent formula', () => {
         const game = scene(), caster = rat(8), ally = rat(6);
         game.monsters.push(caster, ally);
         for (const target of [game.player, ally]) {
+            // Keep each formula fixture unobstructed. The old test shot through
+            // ally at x=6 to heal the player at x=4; interception is tested in W-3.
+            game.monsters = target === game.player ? [caster] : [caster, ally];
             target.maxHp = 100; target.hp = 10;
             const result = game.castMonsterBolt(caster, target, 'HEALING')!;
             expect(result.caster).toBe(caster);
