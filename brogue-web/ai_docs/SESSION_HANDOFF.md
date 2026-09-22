@@ -753,6 +753,87 @@ C-5 打翻 2 个哨兵、**C-6 打翻 13 个**——因为它们**锚定的是 R
 （硬编码 `terrain === LAVA`，漏了 `INERT_BRIMSTONE`；CE 的判据是
 `T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER`，而 C-4a 早就做成了 `isPathingBlocker`）。
 
+### ★★ 本地执行方取代云端（2026-09-22，本日最大变更）
+
+**配方**（`codex` 二进制在 `/Applications/ChatGPT.app/Contents/Resources/codex`）：
+
+```bash
+nohup $C exec --worktree --approve-for-me \
+  -c model_reasoning_effort="xhigh" \
+  -o /tmp/codex_<round>_last.txt "<prompt>" > /tmp/codex_<round>.log 2>&1 &
+```
+
+- `--worktree`：自己的 git worktree（`~/.codex/worktrees/<hash>/brogue`），
+  不撞验收方检出，**两条可并行**
+- `-o <file>`：最终回复落文件——**解掉云端读不到文字回复的老问题**
+- `--approve-for-me` 与 `-s/--sandbox` **互斥**，同时给会报错
+- 模型 `gpt-6-astra`（自称"基于 GPT-6 的 Codex"），`xhigh` 被 CLI 头部确认接受
+
+**效果对比（同一模型、同样的任务书纪律）**：
+
+| 轮次 | 通道 | 验收方门禁 |
+|---|---|---|
+| V-2b-9b | 云端 | 90 → 15 → 12 条失败，**三次派发** |
+| 审计欠账 | 本地 | 19/19 **首提通过** |
+| V-2b-9c | 本地 | 105 文件 1392 通过 **首提全绿** |
+| V-2b-9d | 本地 | 106 文件 1403 通过 **首提全绿** |
+
+**差别不在模型，在能不能自验。** 云端 `nproc 3`，全量门禁 135 min CPU ≈ 45 分钟墙钟，
+它跑不完 ⇒ 盲写。本地 10 核，它自己跑 33 个授权文件只要 7 分钟。
+⇒ **只要额度允许，一律走本地。**
+
+### ⛔ `nohup … &` 起的进程 harness **不跟踪**，必须另挂等待器
+
+用 `nohup ... &` 在前台 Bash 调用里起的 codex 进程，跑完**不会通知**。
+必须另起一个 `run_in_background: true` 的等待器：
+
+```bash
+while kill -0 <PID> 2>/dev/null; do sleep 30; done
+echo "=== 已退出 ==="; tail -6 /tmp/codex_<round>.log
+cat /tmp/codex_<round>_last.txt
+```
+
+不挂就会等一个永远不来的通知（本会话早先为此空等过 30 分钟）。
+
+### ★★ 建守卫之前，不要做守卫本该保护的那类改动（2026-09-22）
+
+验收方一度建议并获批"退掉 12 条 web 自创蓝图"。动手前多查一步，发现
+**那 12 条里至少有一条是合法 CE 蓝图**：
+
+> CE **15** 与 CE **43** 的 `name` 字符串**完全相同**。按 name 匹配，两条都被
+> 认领给 `reward_statuary`，于是 `key_statuary` 被误判为自创。逐字段一查：
+> `reward_statuary` = CE 15（freq 0 / {35,40} / `BP_PURGE_INTERIOR|BP_OPEN_INTERIOR`），
+> `key_statuary` = CE 43（freq 10 / {35,90} / `BP_ADOPT_ITEM|BP_NO_INTERIOR_FLAG`）。
+
+若按原计划执行，一条 freq=10 的 CE 蓝图会被退出生成池，**而且没有任何门禁
+能发现**——因为覆盖守卫正是那一轮才要建的。**守卫缺位处的静默回归比测试红更难查。**
+
+⇒ 顺序改为：**A 轮建映射 + 覆盖守卫（零生成流移动）→ B 轮才退池**。
+
+### ⚠️ 蓝图覆盖率：粗匹配不可信，以逐 feature 为准
+
+验收方两种粗算法给出**互相矛盾**的结果：按 `name` 逐字匹配 **67/71**，
+按 `depthRange`+`roomSize`+`flags` 全等匹配 **54/71**，差 13 条。
+`name` 会被同名蓝图坑（见上），字段匹配会被历轮的登记留形偏差坑。
+**权威口径以 `bp-mapping` 轮的逐 feature 核实结果为准。**
+
+### ⚠️ 门禁成本曲线与治理触发线（2026-09-22）
+
+```
+V-2b-9c 后：墙钟  649s · 测试 CPU  5752s
+V-2b-9d 后：墙钟 1379s · 测试 CPU 12213s   ← 翻倍
+```
+
+主因是 9d 按 §0.3「换样本不改期望」新增的 seed1-30 × D1-26 覆盖探针。
+**这是对的做法，代价是真的。** 9c 也加过一个，9e 还会加。
+
+**治理触发线：墙钟超过 35 分钟再动手**，且优先考虑把覆盖探针**单独分组**
+（像 `test:drift` 那样移出默认门禁），而**不是缩小样本**——
+守卫刚变强就削弱它，正是验收方一直在抓执行方的那个毛病。
+
+📌 另观察到 `[vitest-pool]: Timeout terminating forks worker for … c_8_connectivity.test.ts`
+（测试通过但 worker 未正常终止）。此类曾造成伪失败。**下轮再现就单独查。**
+
 ### ⛔ 云端任务的产出**必须落成文件**，CLI 读不到它的文字回复（2026-09-22）
 
 `codex cloud` 只有 `exec / status / list / apply / diff` 五个子命令，
