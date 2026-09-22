@@ -71,10 +71,15 @@ export class Item implements Entity {
     public isCursed: boolean = false;
     /** CE ITEM_PROTECTED：防酸蚀/防负附魔豁免（护甲/武器保护卷轴打上） */
     public isProtected: boolean = false;
+    /** Staff E (CE enchant1); independent of remaining charges. W-5 initializes it. */
     public enchantment: number = 0;
     public runicType?: string;
     public runicKnown: boolean = false;
+    /** W-5 schema marker: absent in legacy saves whose staff E was a placeholder. */
+    public arcanaInstanceVersion?: 1;
+    /** Staff capacity (= E at creation); wand's initial count, retained for legacy consumers. */
     public maxCharges?: number;
+    /** Current uses; spending these must not change staff E. */
     public charges?: number;
     /**
      * B-1a 两层未知态模型·层 2（实例旗标，CE Rogue.h:1361-1386）：

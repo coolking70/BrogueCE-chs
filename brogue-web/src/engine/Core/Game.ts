@@ -26,6 +26,7 @@ import { CombatSystem } from '../Combat/Combat';
 import { weaponParalysisDuration, weaponConfusionDuration, weaponForceDistance, netEnchant, armorAbsorptionMax, armorReprisalPercent } from '../Combat/CombatFormulas';
 import { ItemCategory, Item } from '../Items/Item';
 import { ItemLoader, type ConsumableConfig } from '../Items/ItemLoader';
+import { restoreArcanaInstance } from '../Items/ArcanaInstance';
 import { rng } from '../Random';
 import monsterData from '../../data/monsters.json';
 import hordeData from '../../data/hordes.json';
@@ -192,6 +193,8 @@ export interface GameSnapshotItem {
     magicDetected?: boolean;
     timesUsed?: number;
     consumableId?: string;
+    /** W-5: distinguish saved E from legacy staff enchantment=0 placeholders. */
+    arcanaInstanceVersion?: 1;
     maxCharges?: number;
     charges?: number;
     rechargeTurns?: number;
@@ -7995,6 +7998,7 @@ export class Game {
             magicDetected: item.magicDetected,
             timesUsed: item.timesUsed,
             consumableId: (item as any).consumableId,
+            arcanaInstanceVersion: item.arcanaInstanceVersion,
             maxCharges: item.maxCharges,
             charges: item.charges,
             rechargeTurns: item.rechargeTurns,
@@ -8025,6 +8029,13 @@ export class Game {
         item.runicKnown = !!s.runicKnown;
         item.maxCharges = s.maxCharges;
         item.charges = s.charges;
+        if (item.category === ItemCategory.STAFF || item.category === ItemCategory.WAND) {
+            const isStaff = item.category === ItemCategory.STAFF;
+            const table = isStaff ? ItemLoader.staffs : ItemLoader.wands;
+            const legacyCapacity = table.find(cfg => cfg.id === s.identityId)?.maxCharges ?? 1;
+            // Pure restoration only: never spawn/roll when reading old or current saves.
+            Object.assign(item, restoreArcanaInstance(s, isStaff, legacyCapacity));
+        }
         item.rechargeTurns = s.rechargeTurns;
         item.rechargeCounter = s.rechargeCounter;
         item.cooldownTurns = s.cooldownTurns;

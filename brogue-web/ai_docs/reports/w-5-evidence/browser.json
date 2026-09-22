@@ -1,0 +1,59 @@
+{
+  "initial": {
+    "E": 3,
+    "charges": 3,
+    "capacity": 3,
+    "name": "闪电法杖 [3/3]"
+  },
+  "after": {
+    "shot": {
+      "E": 3,
+      "charges": 2,
+      "capacity": 3,
+      "name": "闪电法杖 [2/3]"
+    },
+    "reloaded": {
+      "E": 3,
+      "charges": 2,
+      "capacity": 3,
+      "name": "闪电法杖 [2/3]"
+    },
+    "text": {
+      "mode": "inventory",
+      "arcanaTarget": null,
+      "coordinateSystem": {
+        "origin": "top-left",
+        "xAxis": "right",
+        "yAxis": "down"
+      },
+      "player": {
+        "x": 39,
+        "y": 13,
+        "hp": 100,
+        "nutrition": 2149,
+        "statuses": {}
+      },
+      "replay": {
+        "status": "idle",
+        "cursor": 0,
+        "total": 0
+      },
+      "recordedInputEvents": 0,
+      "autoPathLength": 0,
+      "monsters": [],
+      "items": [
+        {
+          "name": "口粮",
+          "x": 39,
+          "y": 16
+        },
+        {
+          "name": "题为「秘术玄妙混沌」的卷轴",
+          "x": 38,
+          "y": 23
+        }
+      ]
+    }
+  },
+  "errors": []
+}

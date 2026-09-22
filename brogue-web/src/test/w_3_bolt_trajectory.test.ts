@@ -35,9 +35,13 @@ function rat(g: Game, x: number, y = 5, id = 'rat') {
     m.maxHp = m.hp = 100; g.monsters.push(m); return m;
 }
 const config = (id = 'staff_of_lightning') => getBoltForItem(id)!;
-function zap(g: Game, id = 'staff_of_lightning', aim: Pos = { x: 6, y: 5 }, override?: Partial<BoltConfig>) {
+// W-5: construct before RNG spies/counters; these suites observe casting, not generation.
+function prepareZap(g: Game, id = 'staff_of_lightning', aim: Pos = { x: 6, y: 5 }, override?: Partial<BoltConfig>) {
     const item = id.startsWith('staff') ? ItemLoader.spawnStaff(id, -1, -1)! : ItemLoader.spawnWand(id, -1, -1)!;
-    return g.zapBoltFromPlayer({ ...config(id), ...override }, item, aim);
+    return () => g.zapBoltFromPlayer({ ...config(id), ...override }, item, aim);
+}
+function zap(g: Game, id = 'staff_of_lightning', aim: Pos = { x: 6, y: 5 }, override?: Partial<BoltConfig>) {
+    return prepareZap(g, id, aim, override)();
 }
 function world(g: Game, hideDetails = false) {
     return { caster: g.player, hideDetails, creatureAt: (p: Pos) => g.monsters.find(m => m.hp > 0 && !m.isDormant && m.loc.x === p.x && m.loc.y === p.y) };
@@ -85,8 +89,9 @@ describe('W-3 seven required stages', () => {
             expect(flags & (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION)).not.toBe(0);
             // W-4 CE Items.c:5830-5852: crystal bounces at (6,5); all other
             // original samples still stop at the obstacle. Pin the random branch south.
+            const cast = prepareZap(g, 'wand_of_slowness', beyond.loc);
             if (terrain === T.CRYSTAL_WALL) vi.spyOn(rng, 'randRange').mockReturnValue(16);
-            const result = zap(g, 'wand_of_slowness', beyond.loc);
+            const result = cast();
             expect(result.landingPos).toEqual(terrain === T.CRYSTAL_WALL ? { x: 6, y: 11 } : { x: 7, y: 5 }); expect(result.hits).toEqual([]);
             expect(beyond.hasStatus('slowed')).toBe(false); expect(result.outcome?.autoID).toBe(false);
             expect(cellTerrainFlags(g.grid, 7, 5)).toBe(flags);
@@ -101,9 +106,10 @@ describe('W-3 seven required stages', () => {
 
     it('same origin/aim yields no travel, contacts, animation, effect, autoID, RNG or time', () => {
         const g = scene(); g.grid.setTerrain(4, 5, T.GRASS);
+        const casts = ['staff_of_fire', 'staff_of_lightning', 'staff_of_healing'].map(id => prepareZap(g, id, g.player.loc));
         const before = [rng.randomNumbersGenerated, timeSystem.currentTick, g.player.hp];
-        for (const id of ['staff_of_fire', 'staff_of_lightning', 'staff_of_healing']) {
-            const result = zap(g, id, g.player.loc);
+        for (const cast of casts) {
+            const result = cast();
             expect(result.path).toEqual([]); expect(result.frames).toEqual([]); expect(result.hits).toEqual([]);
             expect(result.landingPos).toBeNull(); expect(result.outcome).toEqual({ autoID: false, casterMovement: null });
         }
@@ -193,8 +199,9 @@ describe('W-3 sequencing, recipients and W-2 observation', () => {
     it('W-2 autoID sees fire beyond aim, but not through crystal; a southward reflection does not reach origin', () => {
         for (const blocked of [false, true]) {
             const g = scene(); g.grid.setTerrain(4, 5, T.GRASS); g.grid.setTerrain(10, 5, T.GRASS);
+            const cast = prepareZap(g, 'staff_of_fire');
             if (blocked) { g.grid.setTerrain(8, 5, T.CRYSTAL_WALL); vi.spyOn(rng, 'randRange').mockReturnValue(16); }
-            const result = zap(g, 'staff_of_fire');
+            const result = cast();
             expect(result.outcome?.autoID).toBe(!blocked);
             expect(g.grid.getCell(10, 5)!.isBurning).toBe(!blocked);
             expect(g.grid.getCell(4, 5)!.isBurning).toBe(false);

@@ -5,6 +5,7 @@ import { CE_ITEM_BOLT_TYPES, CE_BOLT_CATALOG, CEBoltFlags } from '../Combat/Bolt
  */
 
 import { Item, ItemCategory } from './Item';
+import { rollStaffEnchantment, rollWandCharges } from './ArcanaInstance';
 import weaponsData from '../../data/weapons.json';
 import armorsData from '../../data/armors.json';
 import consumablesData from '../../data/consumables.json';
@@ -45,7 +46,7 @@ export interface ArcanaConfig {
     name: string;
     minDepth: number;
     maxDepth: number;
-    /** B-4a：CE itemTable.frequency 列（wandTable 全 3 / staffTable 逐种 / ringTable 全 1 / charmTable 逐种）。 */
+    /** B-4a：CE itemTable.frequency 列；empowerment 的旧 frequency=3 留 W-24 修正。 */
     frequency?: number;
     weight: number;
     color: number;
@@ -1317,7 +1318,9 @@ export class ItemLoader {
         const wand = new Item(tn(data.name), '/', data.color, ItemCategory.WAND);
         wand.loc = { x, y };
         wand.weight = data.weight;
-        wand.maxCharges = data.maxCharges ?? 1;
+        // W-5: CE range lottery (Items.c:347). No lifecycle changes here.
+        wand.arcanaInstanceVersion = 1;
+        wand.maxCharges = rollWandCharges(id, data.maxCharges ?? 1, rng);
         wand.charges = wand.maxCharges;
         wand.rechargeTurns = data.rechargeTurns ?? 200;
         wand.rechargeCounter = 0;
@@ -1336,7 +1339,11 @@ export class ItemLoader {
         const staff = new Item(tn(data.name), '\\', data.color, ItemCategory.STAFF);
         staff.loc = { x, y };
         staff.weight = data.weight;
-        staff.maxCharges = data.maxCharges ?? 1;
+        // W-5: CE enchant1 = initial charges (Items.c:328-339), not a spent-use counter.
+        // The retired web-only light staff keeps its deterministic legacy capacity.
+        staff.arcanaInstanceVersion = 1;
+        staff.enchantment = id === 'staff_of_light' ? data.maxCharges ?? 1 : rollStaffEnchantment(rng);
+        staff.maxCharges = staff.enchantment;
         staff.charges = staff.maxCharges;
         staff.rechargeTurns = data.rechargeTurns ?? 200;
         staff.rechargeCounter = 0;

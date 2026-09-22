@@ -212,6 +212,9 @@ describe('A4: 魔杖/法杖充能反泄露', () => {
         // 种类未识别 → 名字是风味名，[?/上限] 跟在其后（CE itemName 先选名根
         // 再拼充能，Items.c:1645-1653）。
         const staff = ItemLoader.spawnStaff('staff_of_lightning', -1, -1)!;
+        // W-5: this is an unknown-state fixture, not a generation distribution assertion.
+        // Explicitly retain its E=2 capacity; production staff generation now rolls E.
+        staff.enchantment = staff.maxCharges = 2;
         staff.charges = 0;
         const game = createHeadlessGame(42);
         game.player.inventory.addItem(staff);

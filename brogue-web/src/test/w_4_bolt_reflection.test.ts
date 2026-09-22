@@ -33,9 +33,13 @@ function monster(g: Game, x: number, y = 5, id = 'rat') {
     const m = new Monster(x, y, (monsters as MonsterData[]).find(m => m.id === id)!);
     m.maxHp = m.hp = 100; g.monsters.push(m); return m;
 }
-function zap(g: Game, id = 'staff_of_fire', aim: Pos = { x: 8, y: 5 }, override?: Partial<BoltConfig>) {
+// W-5: construct before RNG spies/counters; these suites observe casting, not generation.
+function prepareZap(g: Game, id = 'staff_of_fire', aim: Pos = { x: 8, y: 5 }, override?: Partial<BoltConfig>) {
     const item = id.startsWith('staff') ? ItemLoader.spawnStaff(id, -1, -1)! : ItemLoader.spawnWand(id, -1, -1)!;
-    return g.zapBoltFromPlayer({ ...getBoltForItem(id)!, ...override }, item, aim);
+    return () => g.zapBoltFromPlayer({ ...getBoltForItem(id)!, ...override }, item, aim);
+}
+function zap(g: Game, id = 'staff_of_fire', aim: Pos = { x: 8, y: 5 }, override?: Partial<BoltConfig>) {
+    return prepareZap(g, id, aim, override)();
 }
 function armor(g: Game, enchantment = 50) {
     const a = new Item('reflection armor', ']', 0xcccccc, ItemCategory.ARMOR);
@@ -68,9 +72,10 @@ describe('W-4 reflected travel (CE Items.c:4960-5065,5675-5705,5830-5852)', () =
 
     it('a second successful roll returns to the caster; a failed second roll reaches a bystander instead', () => {
         const g = scene(), golem = monster(g, 8, 5, 'golem'), bystander = monster(g, 8, 8);
+        const cast = prepareZap(g, 'wand_of_slowness');
         const rolls = vi.spyOn(rng, 'randPercent').mockReturnValueOnce(true).mockReturnValueOnce(false);
         vi.spyOn(rng, 'randRange').mockReturnValue(16); // CE perimeter: south
-        const r = zap(g, 'wand_of_slowness');
+        const r = cast();
         expect(recipients(r)).toEqual([bystander]); expect(bystander.statusDurations.slowed).toBe(20);
         expect(golem.hasStatus('slowed')).toBe(false); expect(g.player.hasStatus('slowed')).toBe(false);
         expect(r.reflections[0]!.towardCaster).toBe(false); expect(rolls).toHaveBeenCalledTimes(2);
@@ -79,9 +84,10 @@ describe('W-4 reflected travel (CE Items.c:4960-5065,5675-5705,5830-5852)', () =
 
     it('reflection alone does not identify damage magic; an empty random branch has no hits or HP loss', () => {
         const g = scene(); monster(g, 8, 5, 'golem');
+        const cast = prepareZap(g, 'staff_of_fire');
         vi.spyOn(rng, 'randPercent').mockReturnValueOnce(true).mockReturnValueOnce(false);
         vi.spyOn(rng, 'randRange').mockReturnValue(16);
-        const r = zap(g);
+        const r = cast();
         expect(r.reflections).toHaveLength(1); expect(r.hits).toEqual([]);
         expect(r.outcome?.autoID).toBe(false); expect(g.player.hp).toBe(100);
         expect(r.landingPos).toEqual({ x: 8, y: 11 });
@@ -107,8 +113,9 @@ describe('W-4 reflected travel (CE Items.c:4960-5065,5675-5705,5830-5852)', () =
         const g = scene(), bystander = monster(g, 6, 9);
         g.grid.setTerrainLayer(7, 5, L.SURFACE, T.CRYSTAL_WALL);
         g.grid.setTerrain(6, 7, T.WALL);
+        const cast = prepareZap(g, 'wand_of_slowness');
         vi.spyOn(rng, 'randRange').mockReturnValue(16);
-        const r = zap(g, 'wand_of_slowness');
+        const r = cast();
         expect(r.path).toEqual([{ x: 5, y: 5 }, { x: 6, y: 5 }, { x: 6, y: 6 }, { x: 6, y: 7 }]);
         expect(r.reflections).toEqual([{ pos: { x: 6, y: 5 }, pathIndex: 1, creature: null, towardCaster: false }]);
         expect(r.hits).toEqual([]); expect(bystander.hasStatus('slowed')).toBe(false);
@@ -116,9 +123,10 @@ describe('W-4 reflected travel (CE Items.c:4960-5065,5675-5705,5830-5852)', () =
 
     it('random direction retries blocked first cells and stops after 50 failed attempts', () => {
         const g = scene(); monster(g, 8, 5, 'golem'); g.grid.setTerrain(8, 6, T.WALL);
+        const cast = prepareZap(g, 'wand_of_slowness');
         vi.spyOn(rng, 'randPercent').mockReturnValueOnce(true).mockReturnValueOnce(false);
         const direction = vi.spyOn(rng, 'randRange').mockReturnValue(16);
-        const r = zap(g, 'wand_of_slowness');
+        const r = cast();
         expect(direction).toHaveBeenCalledTimes(50); expect(r.landingPos).toEqual({ x: 8, y: 6 });
         expect(r.hits).toEqual([]); expect(r.outcome?.autoID).toBe(false);
     });
@@ -126,9 +134,10 @@ describe('W-4 reflected travel (CE Items.c:4960-5065,5675-5705,5830-5852)', () =
     it('random retry accepts the next open direction without rescoring for allies/enemies', () => {
         const g = scene(); monster(g, 8, 5, 'golem'); g.grid.setTerrain(8, 6, T.WALL);
         const bystander = monster(g, 11); bystander.isAlly = true;
+        const cast = prepareZap(g, 'wand_of_slowness');
         vi.spyOn(rng, 'randPercent').mockReturnValueOnce(true).mockReturnValueOnce(false);
         const direction = vi.spyOn(rng, 'randRange').mockReturnValueOnce(16).mockReturnValueOnce(35);
-        const r = zap(g, 'wand_of_slowness');
+        const r = cast();
         expect(direction).toHaveBeenCalledTimes(2); expect(recipients(r)).toEqual([bystander]);
         expect(bystander.statusDurations.slowed).toBe(20);
     });
@@ -136,8 +145,9 @@ describe('W-4 reflected travel (CE Items.c:4960-5065,5675-5705,5830-5852)', () =
     it('repeated guaranteed reflection terminates at the CE path budget and keeps every animation/hit index finite', () => {
         const g = scene(), guardian = monster(g, 8, 5, 'stone_guardian'); armor(g);
         // Returning to the original caster reflects randomly (CE same-origin guard).
+        const cast = prepareZap(g, 'wand_of_slowness');
         vi.spyOn(rng, 'randRange').mockImplementation((_lo, hi) => hi === 39 ? 35 : 0);
-        const r = zap(g, 'wand_of_slowness');
+        const r = cast();
         expect(r.reflections.length).toBeGreaterThan(10);
         expect(r.path.length).toBeLessThanOrEqual(g.grid.width * 10);
         expect(r.reflections.every(e => e.pathIndex < g.grid.width * 10 - Math.max(g.grid.width, g.grid.height))).toBe(true);
@@ -178,8 +188,9 @@ describe('W-4 recipient dispatch and boundaries', () => {
 
     it('reflected teleport moves the caster and snapshots the contact before movement, without autoID', () => {
         const g = scene(); monster(g, 8, 5, 'stone_guardian');
+        const cast = prepareZap(g, 'wand_of_teleportation');
         vi.spyOn(rng, 'randRange').mockReturnValueOnce(2).mockReturnValueOnce(3);
-        const r = zap(g, 'wand_of_teleportation');
+        const r = cast();
         expect(recipients(r)).toEqual([g.player]); expect(r.hits[0]!.pos).toEqual({ x: 4, y: 5 });
         expect(r.outcome).toEqual({ autoID: false, casterMovement: { from: { x: 4, y: 5 }, to: { x: 2, y: 3 } } });
     });
@@ -282,9 +293,10 @@ describe('W-4 recipient dispatch and boundaries', () => {
 
     it('P4-4 splitting belongs to the actual bystander hit, preserving old damage and ceil-half HP', () => {
         const g = scene(), golem = monster(g, 8, 5, 'golem'), jelly = monster(g, 8, 8, 'pink_jelly');
+        const cast = prepareZap(g, 'staff_of_fire');
         vi.spyOn(rng, 'randPercent').mockReturnValueOnce(true).mockReturnValueOnce(false);
         vi.spyOn(rng, 'randRange').mockImplementation((lo, hi) => hi === 39 ? 16 : lo);
-        const r = zap(g);
+        const r = cast();
         expect(recipients(r)).toEqual([jelly]); expect(golem.hp).toBe(100);
         expect(g.monsters.filter(m => m.typeId === 'pink_jelly').map(m => m.hp)).toEqual([47, 47]);
     });
