@@ -621,6 +621,27 @@ function effectiveBpFlags(bp: BlueprintDef): Set<string> {
 const EFFECTIVE_BP_FLAGS_CACHE = new WeakMap<BlueprintDef, Set<string>>();
 
 /**
+ * B1 / D2: permanently retire audited web inventions from random selection,
+ * preserving their frequency, flags, features and null CE provenance in data.
+ * Unlike the mechanism-pending exclusions below (CE 18/52/55), implementing
+ * more mechanics does not restore these entries; only an overturned identity
+ * audit does. Keep the explicit set equal to the catalog's null CE identities.
+ */
+export const RETIRED_INVENTED_BLUEPRINT_IDS: ReadonlySet<string> = new Set([
+    'reward_library',
+    'reward_consumables',
+    'vestibule_flammable',
+    'vestibule_guardian',
+    'vestibule_pit_traps',
+    'key_rat_trap',
+    'key_fire_trap',
+    'key_flood_trap',
+    'key_web_room',
+    'key_lava_moat',
+    'key_boss',
+]);
+
+/**
  * V-1c：CE blueprintQualifies（Architect.c:455-468）的直译。
  * requiredFlags 是 CE requiredMachineFlags 位串的 web 形态（字符串数组）：
  *   - 深度区间必须覆盖当前层；
@@ -660,6 +681,7 @@ export function blueprintQualifies(
     // still has missing tiles, so those tunnels cannot open in web.
     // Retain CE GlobalsBrogue.c:537-544 data and exclude only from selection.
     if (bp.id === 'key_worm_tunnels') return false;
+    if (RETIRED_INVENTED_BLUEPRINT_IDS.has(bp.id)) return false;
     return true;
 }
 

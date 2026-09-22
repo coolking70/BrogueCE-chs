@@ -175,26 +175,29 @@ type GameWithPrivates = Omit<Game, 'generateDepth'> & {
 // ---------- 用例 ----------
 
 describe('V-1c 资格过滤（CE blueprintQualifies，Architect.c:455-468）', () => {
-    it('Q1 顶层抽签（required=[BP_REWARD]）抽不到 vestibule/key_guard/thematic；reward 类可以', () => {
+    it('Q1 顶层抽签（required=[BP_REWARD]）只允许 CE reward；自创 reward 与其他类别均不可选', () => {
         const blueprints = blueprintData as BlueprintDef[];
         let rewardQualified = 0;
         let rewardTotal = 0;
         for (const b of blueprints) {
             for (let d = b.depthRange[0]; d <= b.depthRange[1]; d++) {
                 const q = blueprintQualifies(b, d, [BP_REWARD]);
-                if (b.category === 'reward') {
+                // B1: null CE reward identities remain in data but are retired.
+                // Check them on the negative side; do not silently skip them or
+                // derive the positive set from the engine's exclusion predicate.
+                if (b.category === 'reward' && b.ceBlueprintId !== null) {
                     if (q) rewardQualified++;
                     rewardTotal++;
                 } else {
                     expect(q,
                         `${b.id}（category=${b.category}）在 required=BP_REWARD 下不合格才对` +
-                        `——资格过滤退回了"只按深度过滤"的旧实现？`).toBe(false);
+                        `——非 CE reward 或已退池自创项不应参加顶层抽签`).toBe(false);
                 }
             }
         }
-        // 反空转：reward 类必须真的有合格样本，且在自身深度带内全部合格。
-        expect(rewardTotal, 'reward 类蓝图缺失——映射坏死').toBeGreaterThan(0);
-        expect(rewardQualified, 'reward 类在自身深度带内应全部合格').toBe(rewardTotal);
+        // 反空转：CE reward 必须真的有合格样本，且自身深度带内全部合格。
+        expect(rewardTotal, 'CE reward 类蓝图缺失——映射坏死').toBeGreaterThan(0);
+        expect(rewardQualified, 'CE reward 类在自身深度带内应全部合格').toBe(rewardTotal);
     });
 
     it('Q2 两条 NOT-unless-required 守卫：ADOPT/VESTIBULE 位只在被要求时可选；required=∅ 时 reward 也合格（CE 缺口6 的字面行为）', () => {

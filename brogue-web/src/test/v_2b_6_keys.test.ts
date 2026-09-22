@@ -285,6 +285,11 @@ describe('V-2b-6 D：carriedItem 死亡掉落（CE Monsters.c:4075-4083）', () 
 
 // ── E：featureDF 真落位 ─────────────────────────────────────────────────────
 
+// B1: the previous eight seeds no longer build a Kennel after retirement.
+// Replace seed 1 with observed seed 4 (D5); keep every DF/key/reachability
+// assertion and the >= 1 coverage gates. E1 and F2 share the actual carrier.
+const KENNEL_COVERAGE_SEEDS = [7, 424242, 777, 31337, 20260913, 42, 2026, 4];
+
 describe('V-2b-6 E：featureDF 列真落位（CE Architect.c:1434-1440，Kennel 端到端）', () => {
     it('E1 多 seed 扫描：Kennel 的 DF 列真落位（featureDF 分支执行 + 地形侧确有产物）', () => {
         // ★ V-2b-7 判据收敛（前提修正，不是放宽）★
@@ -311,7 +316,7 @@ describe('V-2b-6 E：featureDF 列真落位（CE Architect.c:1434-1440，Kennel 
         let kennelsSeen = 0;
         let landedSeen = 0;
         try {
-            for (const seed of [7, 424242, 777, 31337, 20260913, 42, 2026, 1]) {
+            for (const seed of KENNEL_COVERAGE_SEEDS) {
                 const game: any = createHeadlessGame(seed);
                 for (let d = 1; d <= 26; d++) {
                     if (d > 1) { game.depth = d; game.generateDepth(false, false); }
@@ -460,7 +465,7 @@ describe('V-2b-6 F：§6 可解性证明（合并前置条件）', () => {
         };
         let kennelsSeen = 0;
         try {
-        for (const seed of [7, 424242, 777, 31337, 20260913, 42, 2026, 1]) {
+        for (const seed of KENNEL_COVERAGE_SEEDS) {
             const game: any = createHeadlessGame(seed);
             for (let d = 1; d <= 26; d++) {
                 if (d > 1) { game.depth = d; game.generateDepth(false, false); }
