@@ -317,8 +317,9 @@ describe('R-1 terrainAppearance 特征化（穷举钉死）', () => {
         // 387/448/449/450/457/465/473/484/486/543/546/547/568/573），82 → 101。
         // V-2b-8：BLOODFLOWER_STALK / HAVEN_BEDROLL 两条新成员。
         // V-2b-9a：十二条新载体成员，103 → 115；RUBBLE 已存在。
-        // V-2b-9b：九条活动态/效果落点，115 → 124。
-        expect(ALL_TERRAINS.length).toBe(124);
+        // V-2b-9b：九条活动态/效果落点，115 → 124；补完轮补齐
+        // MACHINE_CHASM_EDGE / PUDDLE，124 → 126。
+        expect(ALL_TERRAINS.length).toBe(126);
         expect(new Set(ALL_TERRAINS).size).toBe(ALL_TERRAINS.length);
     });
 

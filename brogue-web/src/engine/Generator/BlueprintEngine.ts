@@ -635,6 +635,16 @@ export function blueprintQualifies(
     }
     if (eff.has(BP_ADOPT_ITEM) && !requiredFlags.includes(BP_ADOPT_ITEM)) return false;
     if (eff.has(BP_VESTIBULE) && !requiredFlags.includes(BP_VESTIBULE)) return false;
+    // V-2b-9b（验收方）：18 号 lever 前厅退池留形。
+    // 现场（v_2b_6_keys F1，seed42/D15）：钥匙在 key_nested_library(machine #5)
+    // 的 (68,3)，唯一出口 (66,4) 被其前厅的 PORTCULLIS_CLOSED 封住；CE 靠
+    // WALL_LEVER_HIDDEN 的 wired 晋升开闸（Globals.c:347），web 尚不能执行
+    // 该晋升 ⇒ 外包钥匙永久不可达。九条环境蓝图入池只是把 RNG 推到这个
+    // **既存**缺口上，不是它们自己封的钥匙。
+    // 口径同 47 号先例（见 buildAMachine 里 canReceiveAdoptedItem 的说明）：
+    // **数据照 CE 逐字**（frequency 仍是 CE :305 的 8，由 v_2b_3_wired E4 钉死），
+    // 只是它不再被抽中；wired lever 落地的那一轮摘掉这一条即可（届时复跑 F 组）。
+    if (bp.id === 'vestibule_secret_lever') return false;
     return true;
 }
 
@@ -1764,6 +1774,19 @@ export class BlueprintEngine {
                     cell.machineNumber = 0;
                 }
             }
+        }
+
+        // V-2b-9b 补完：领养 feature 的候选格在落位当刻可能可走，但同一
+        // 蓝图的后续环境 feature 会再改写该格。Game 的 P1-43 消费闸会丢弃
+        // 最终落在 pathing blocker 上的物品；若它是外包钥匙，父机器却已把
+        // generatedKey 置真，结果就是“有锁、零钥匙”的永久死局。静态的
+        // canReceiveAdoptedItem 只能检查 feature 声明的初始 terrain，抓不到
+        // 这种后写覆盖。因此在蓝图全部 feature 落完后复核最终网格；失败沿用
+        // buildAMachine 的既有整机回滚/重摇语义，而不是让消费端静默吞钥匙。
+        for (const spawn of itemSpawns) {
+            if (!spawn.viaAdoption) continue;
+            const cell = this.grid.getCell(spawn.pos.x, spawn.pos.y);
+            if (!cell || isPathingBlocker(cell.terrain)) return null;
         }
 
         return {

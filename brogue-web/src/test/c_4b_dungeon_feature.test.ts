@@ -1196,7 +1196,19 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                         for (let l = 0; l < L.COUNT; l++) {
                             if (cell.layers[l] !== C.NOTHING) nonEmpty.push(l);
                         }
-                        expect(nonEmpty.length, `seed=${seed} D${depth} (${x},${y}) 至多两层（C-6 后上界）`).toBeLessThanOrEqual(2);
+                        expect(nonEmpty.length, `seed=${seed} D${depth} (${x},${y}) 至多三层（31 号 floodable 地板可叠草木）`).toBeLessThanOrEqual(3);
+                        if (nonEmpty.length === 3) {
+                            // 31 号在 FLOOR 上以 LIQUID 层铺 FLOOR_FLOODABLE，
+                            // 其 FOLIAGE feature 又可在 SURFACE 层生长；这是
+                            // CE 原表三条 feature 叠加出的唯一合法三层形态。
+                            expect(cell.layers[L.DUNGEON]).toBe(C.FLOOR);
+                            expect([
+                                C.FLOOR_FLOODABLE,
+                                C.MACHINE_FLOOD_WATER_DORMANT,
+                                C.MACHINE_FLOOD_WATER_SPREADING,
+                            ]).toContain(cell.layers[L.LIQUID]);
+                            expect([C.GRASS, C.FOLIAGE]).toContain(cell.layers[L.SURFACE]);
+                        }
                         if (nonEmpty.length === 2) {
                             // V-2b-2b 扩（机器蓝图 3/4/5/19/20/23 号的 CE :1443
                             // 纯层写入——feature 地形写 feature.layer 列、不清其他
@@ -1247,6 +1259,7 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                                 // V-2b-7：55 号的蠕虫隧道标记（零旗标可走，
                                 // CE Globals.c:568 的 LIQUID 层不可见标记）。
                                 C.WORM_TUNNEL_MARKER_DORMANT,
+                                C.FLOOR_FLOODABLE,
                                 C.MACHINE_CHASM_EDGE,
                                 C.MACHINE_FLOOD_WATER_DORMANT,
                                 C.MACHINE_FLOOD_WATER_SPREADING,
@@ -1329,6 +1342,9 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                                     [L.LIQUID, C.WATER_SHALLOW],
                                     [L.LIQUID, C.CHASM_EDGE],
                                     [L.LIQUID, C.OBSIDIAN],
+                                    [L.LIQUID, C.FLOOR_FLOODABLE],
+                                    [L.LIQUID, C.MACHINE_FLOOD_WATER_DORMANT],
+                                    [L.LIQUID, C.MACHINE_FLOOD_WATER_SPREADING],
                                 ];
                                 const surf = cell.layers[L.SURFACE] as TerrainType;
                                 const ok = baseOk.some(([l, t]) =>
@@ -1347,6 +1363,17 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                                 && NON_BLOCKING_LIQUIDS.has(cell.layers[L.LIQUID] as TerrainType)) {
                                 // 机器地形 + 非阻断液体的叠层（如 23 号陷阱写在
                                 // 浅水层格上）——CE :1443 字面行为，合法。
+                            } else if (cell.layers[L.DUNGEON] === C.FLOOR
+                                && [C.FLOOR_FLOODABLE, C.MACHINE_FLOOD_WATER_DORMANT,
+                                    C.MACHINE_FLOOD_WATER_SPREADING]
+                                    .includes(cell.layers[L.LIQUID] as TerrainType)) {
+                                // 31 号 Flood room 的 EVERYWHERE 特征按 CE 原表写在
+                                // LIQUID 层：普通 FLOOR 上叠 FLOOR_FLOODABLE，取钥匙后
+                                // 再由涨水 DF 改写该层。因此 0:2 + 1:103 是合法形态。
+                            } else if (cell.layers[L.DUNGEON] === C.FLOOR
+                                && cell.layers[L.LIQUID] === C.WATER_DEEP) {
+                                // 深水是 LIQUID 层覆层，底下保留 FLOOR；本轮
+                                // RNG 移动后 seed777/D9 首次进入该既有合法形态。
                             } else {
                                 expect.unreachable(
                                     `seed=${seed} D${depth} (${x},${y}) 两层组合 ` +

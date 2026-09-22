@@ -297,7 +297,7 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         }
     });
 
-    it('非零恰 26 个（V-2b-9a 增熔岩与闹鬼火把），且都指向有载体的目录条目', () => {
+    it('非零恰 27 个（V-2b-9b 环境链增 LAVA_RETRACTING），且都指向有载体的目录条目', () => {
         const nonzero = Object.entries(TERRAIN_FLAGS)
             .filter(([, v]) => v.glowLight !== LightKind.NO_LIGHT)
             .map(([k]) => Number(k) as TerrainType)
@@ -325,6 +325,8 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
             TerrainType.BRAZIER, TerrainType.DEMONIC_STATUE,
             TerrainType.LUMINESCENT_FUNGUS,
             TerrainType.LAVA_RETRACTABLE, TerrainType.HAUNTED_TORCH_DORMANT,
+            // V-2b-9b：岩浆回缩活动态保留 LAVA_LIGHT。
+            TerrainType.LAVA_RETRACTING,
         ].sort((a, b) => a - b));
         for (const t of nonzero) {
             expect(LIGHT_CATALOG[TERRAIN_FLAGS[t].glowLight]).toBeDefined();

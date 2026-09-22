@@ -165,6 +165,9 @@ describe('V-1b 前提自检', () => {
             item: f.itemId ?? null,
         })).sort((a, b) => (a.item ?? '').localeCompare(b.item ?? '')),
         '替代集合载体集变动：核对 CE GlobalsBrogue.c 原表，并重捕获 generation_baseline').toEqual([
+            // ★ V-2b-9b 顺延（31 → 38）：CE 36 号的拉杆/悬浮药二选一，
+            // 38/39 号的悬浮/火免药二选一，共 +7 条；均逐字核对
+            // GlobalsBrogue.c 原表，ALTERNATIVE_2 仍零载体。
             // ★ V-2b-7 六次顺延（23 → 31）：13 条新蓝图里带 MF_ALTERNATIVE 的
             // 三条替代组——30 号 key_fun_with_fire（GlobalsBrogue.c:197-203 的
             // GRASS / DF_SWAMP / POTION_LICHEN 三选一 + FLAMETHROWER_HIDDEN /
@@ -197,8 +200,15 @@ describe('V-1b 前提自检', () => {
             { bpId: 'key_guardian_gauntlet', alt1: true, alt2: false, item: null },
             { bpId: 'key_guardian_corridor', alt1: true, alt2: false, item: null },
             { bpId: 'key_guardian_corridor', alt1: true, alt2: false, item: null },
+            { bpId: 'ce_36_environment', alt1: true, alt2: false, item: null },
+            { bpId: 'ce_38_environment', alt1: true, alt2: false, item: null },
             { bpId: 'key_fun_with_fire', alt1: true, alt2: false, item: 'potion_of_creeping_death' },
             { bpId: 'key_poison_gas', alt1: true, alt2: false, item: 'potion_of_descent' },
+            { bpId: 'ce_38_environment', alt1: true, alt2: false, item: 'potion_of_fire_immunity' },
+            { bpId: 'ce_39_environment', alt1: true, alt2: false, item: 'potion_of_fire_immunity' },
+            { bpId: 'ce_36_environment', alt1: true, alt2: false, item: 'potion_of_levitation' },
+            { bpId: 'ce_38_environment', alt1: true, alt2: false, item: 'potion_of_levitation' },
+            { bpId: 'ce_39_environment', alt1: true, alt2: false, item: 'potion_of_levitation' },
             { bpId: 'reward_pedestal_consumable', alt1: true, alt2: false, item: 'potion_of_life' },
             { bpId: 'reward_pedestal_consumable', alt1: true, alt2: false, item: 'scroll_of_enchantment' },
             { bpId: 'key_poison_gas', alt1: true, alt2: false, item: 'scroll_of_teleportation' },

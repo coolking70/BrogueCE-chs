@@ -168,8 +168,9 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         // V-2b-9a：FLOOR_FLOODABLE / CHASM_WITH_HIDDEN_BRIDGE / LAVA_RETRACTABLE /
         // MUD_FLOOR / MUD_WALL / MUD_DOORWAY / MARBLE_FLOOR / FLOOD_TRAP /
         // ELECTRIC_CRYSTAL_OFF / TURRET_LEVER / HAUNTED_TORCH_DORMANT /
-        // 9b 再补九个环境效果活动态/落点，115 → 124。
-        expect(names.length).toBe(124);
+        // 9b 再补九个环境效果活动态/落点，115 → 124；补完轮闭合
+        // MACHINE_CHASM_EDGE 与 DF_PUDDLE 的载体，124 → 126。
+        expect(names.length).toBe(126);
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             const entry = TERRAIN_FLAGS[t];
