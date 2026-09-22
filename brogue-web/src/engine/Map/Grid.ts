@@ -236,6 +236,11 @@ export enum TerrainType {
                                 // 为 0 = 不可见标记，web 记空格）
     BLOODFLOWER_STALK,
     HAVEN_BEDROLL,
+    // V-2b-9a：仅登记 9b 蓝图所需载体；均按 Globals.c 目录顺序追加。
+    FLOOR_FLOODABLE, CHASM_WITH_HIDDEN_BRIDGE, LAVA_RETRACTABLE,
+    MUD_FLOOR, MUD_WALL, MUD_DOORWAY, MARBLE_FLOOR, FLOOD_TRAP,
+    ELECTRIC_CRYSTAL_OFF, TURRET_LEVER, HAUNTED_TORCH_DORMANT,
+    DARK_FLOOR_DORMANT,
 }
 
 export enum LightType {
@@ -443,7 +448,19 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.GRAY_FUNGUS]: 51,
     [TerrainType.WORM_TUNNEL_MARKER_DORMANT]: 100,
     [TerrainType.BLOODFLOWER_STALK]: 20,
-    [TerrainType.HAVEN_BEDROLL]: 50
+    [TerrainType.HAVEN_BEDROLL]: 50,
+    [TerrainType.FLOOR_FLOODABLE]: 95,
+    [TerrainType.CHASM_WITH_HIDDEN_BRIDGE]: 40,
+    [TerrainType.LAVA_RETRACTABLE]: 40,
+    [TerrainType.MUD_FLOOR]: 85,
+    [TerrainType.MUD_WALL]: 0,
+    [TerrainType.MUD_DOORWAY]: 25,
+    [TerrainType.MARBLE_FLOOR]: 85,
+    [TerrainType.FLOOD_TRAP]: 58,
+    [TerrainType.ELECTRIC_CRYSTAL_OFF]: 0,
+    [TerrainType.TURRET_LEVER]: 0,
+    [TerrainType.HAUNTED_TORCH_DORMANT]: 0,
+    [TerrainType.DARK_FLOOR_DORMANT]: 95
 };
 
 /**
@@ -654,7 +671,19 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     //     0, "", 0, 0, GRANITE}` 的 layer 列同证（55 号蠕虫隧道标记）。
     [TerrainType.WORM_TUNNEL_MARKER_DORMANT]: DungeonLayer.LIQUID,
     [TerrainType.BLOODFLOWER_STALK]: DungeonLayer.SURFACE,
-    [TerrainType.HAVEN_BEDROLL]: DungeonLayer.SURFACE
+    [TerrainType.HAVEN_BEDROLL]: DungeonLayer.SURFACE,
+    [TerrainType.FLOOR_FLOODABLE]: DungeonLayer.DUNGEON,
+    [TerrainType.CHASM_WITH_HIDDEN_BRIDGE]: DungeonLayer.LIQUID,
+    [TerrainType.LAVA_RETRACTABLE]: DungeonLayer.LIQUID,
+    [TerrainType.MUD_FLOOR]: DungeonLayer.DUNGEON,
+    [TerrainType.MUD_WALL]: DungeonLayer.DUNGEON,
+    [TerrainType.MUD_DOORWAY]: DungeonLayer.DUNGEON,
+    [TerrainType.MARBLE_FLOOR]: DungeonLayer.DUNGEON,
+    [TerrainType.FLOOD_TRAP]: DungeonLayer.DUNGEON,
+    [TerrainType.ELECTRIC_CRYSTAL_OFF]: DungeonLayer.DUNGEON,
+    [TerrainType.TURRET_LEVER]: DungeonLayer.DUNGEON,
+    [TerrainType.HAUNTED_TORCH_DORMANT]: DungeonLayer.DUNGEON,
+    [TerrainType.DARK_FLOOR_DORMANT]: DungeonLayer.DUNGEON
 };
 
 /**

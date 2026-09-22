@@ -195,6 +195,14 @@ const EXPECTED_VISIBLE: Record<TerrainType, { char: string; color: string; bgCol
     [TerrainType.WORM_TUNNEL_MARKER_DORMANT]: DEFAULT_LOOK,
     [TerrainType.BLOODFLOWER_STALK]: DEFAULT_LOOK,
     [TerrainType.HAVEN_BEDROLL]: DEFAULT_LOOK, // V-2b-7
+    [TerrainType.FLOOR_FLOODABLE]: DEFAULT_LOOK,
+    [TerrainType.CHASM_WITH_HIDDEN_BRIDGE]: DEFAULT_LOOK,
+    [TerrainType.LAVA_RETRACTABLE]: DEFAULT_LOOK,
+    [TerrainType.MUD_FLOOR]: DEFAULT_LOOK, [TerrainType.MUD_WALL]: DEFAULT_LOOK,
+    [TerrainType.MUD_DOORWAY]: DEFAULT_LOOK, [TerrainType.MARBLE_FLOOR]: DEFAULT_LOOK,
+    [TerrainType.FLOOD_TRAP]: DEFAULT_LOOK, [TerrainType.ELECTRIC_CRYSTAL_OFF]: DEFAULT_LOOK,
+    [TerrainType.TURRET_LEVER]: DEFAULT_LOOK, [TerrainType.HAUNTED_TORCH_DORMANT]: DEFAULT_LOOK,
+    [TerrainType.DARK_FLOOR_DORMANT]: DEFAULT_LOOK,
 };
 
 /** 造 Cell（terrain 走 setter 写回归属层）。只用于 DUNGEON/SURFACE 层地形。 */
@@ -297,7 +305,8 @@ describe('R-1 terrainAppearance 特征化（穷举钉死）', () => {
         // V-2b-7：DF 特征系统轮 19 条入列（CE Globals.c:355/363/367/372/377/
         // 387/448/449/450/457/465/473/484/486/543/546/547/568/573），82 → 101。
         // V-2b-8：BLOODFLOWER_STALK / HAVEN_BEDROLL 两条新成员。
-        expect(ALL_TERRAINS.length).toBe(103);
+        // V-2b-9a：十二条新载体成员，103 → 115；RUBBLE 已存在。
+        expect(ALL_TERRAINS.length).toBe(115);
         expect(new Set(ALL_TERRAINS).size).toBe(ALL_TERRAINS.length);
     });
 

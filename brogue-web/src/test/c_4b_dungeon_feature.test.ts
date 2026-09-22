@@ -602,7 +602,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         //   DF_SWAMP :904、DF_SWAMP_MUD :905。
         // 来源三类：13 条目标蓝图 feature 的 DF 列 / 19 条新地形的三链字段 /
         // 上述两者的 subsequentDF 链展开。逐条字段钉死在 v_2b_7_features 的 B 组。
-        expect(keys.length).toBe(99);
+        expect(keys.length).toBe(131);
         expect(DF.DF_SHOW_TRAPDOOR_HALO, 'V-2b-2b：CE Rogue.h:1487（Globals.c:627）').toBe(16);
         expect(DF.DF_SHOW_TRAPDOOR, 'V-2b-2b：TRAP_DOOR_HIDDEN.discoverType 的载体（Rogue.h:1488，Globals.c:628）').toBe(17);
         expect(DF.DF_WOODEN_BARRICADE_BURN, 'V-2b-2b：WOODEN_BARRICADE.fireType 的载体（Rogue.h:1669，Globals.c:825）').toBe(156);
@@ -718,6 +718,21 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         start.add(DF.DF_LUMINESCENT_FUNGUS);
         start.add(DF.DF_MAGIC_PIPING);
         start.add(DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING);
+        for (const id of [DF.DF_ADD_DORMANT_CHASM_HALO, DF.DF_LAVA_RETRACTABLE,
+            DF.DF_SPREADABLE_WATER_POOL, DF.DF_ADD_MACHINE_COLLAPSE_EDGE_DORMANT,
+            DF.DF_MUD_DORMANT, DF.DF_CATWALK_BRIDGE, DF.DF_CHASM_HOLE,
+            DF.DF_LAKE_CELL]) start.add(id);
+        // 同组目录中的状态转换入口由 9b 蓝图/尚未落地的中间 tile 消费；本轮
+        // 仍把整组作为静态数据起点，确保集合全等守卫不被放宽。
+        for (const id of [DF.DF_SPREADABLE_WATER, DF.DF_SHALLOW_WATER,
+            DF.DF_WATER_SPREADS, DF.DF_SPREADABLE_DEEP_WATER_POOL,
+            DF.DF_SPREADABLE_COLLAPSE, DF.DF_COLLAPSE, DF.DF_COLLAPSE_SPREADS,
+            DF.DF_BRIDGE_ACTIVATE, DF.DF_BRIDGE_ACTIVATE_ANNOUNCE,
+            DF.DF_BRIDGE_APPEARS, DF.DF_RETRACTING_LAVA,
+            DF.DF_OBSIDIAN_WITH_STEAM, DF.DF_MUD_ACTIVATE, DF.DF_LAKE_HALO,
+            // 两个过渡 tile 尚未成为 TerrainType，故其 promoteType 不能自动入起点；
+            // DF_DARK_FLOOR 再经 subsequentDF 合法带入 DF_ECTOPLASM_DROPLET。
+            DF.DF_DARK_FLOOR, DF.DF_HAUNTED_TORCH]) start.add(id);
         // V-2b-6：DF_AMBIENT_BLOOD / DF_BONES 第二起点——本轮 FeatureDef 已有
         // df 列（feature.featureDF），但闭包是**静态数据扫描**，不运行蓝图；
         // CE 的起点是 10 号 Kennel feature 的 DF 列（GlobalsBrogue.c:252/253
@@ -781,7 +796,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
             'V-2b-7：DF 特征系统轮 22 条入闭包（13 条目标蓝图 feature 的 DF 列' +
             '（现由 blueprints.json 数据驱动入起点）+ 19 条新地形的三链字段 + ' +
             '两条链展开环节 DF_EMBERS_PATCH/DF_SWAMP_MUD→DF_SWAMP_WATER）' +
-            '——68→90→99').toBe(99);
+            '——68→90→99；V-2b-9a 八起点、闭包与新地形三链 →131').toBe(131);
     });
 
     it('E3 字段抽查：BRIDGE_FALL_PREP 的 prop/200/100、BRIDGE_FIRE 的描述与 tile=0、其余代表条目', () => {
@@ -966,7 +981,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // DF_PORTAL_ACTIVATE→PORTAL_LIGHT :725、DF_SACRIFICE_ALTAR→SACRIFICE_ALTAR
         // :802、DF_COFFIN_BURSTS→COFFIN_OPEN :807、DF_WORM_TUNNEL_MARKER_ACTIVE
         // →WORM_TUNNEL_MARKER_ACTIVE :880）。另 15 条带完整 tile 不入列。
-        expect(DF_MISSING_TILES.length).toBe(31);
+        expect(DF_MISSING_TILES.length).toBe(53);
         // 登记条目确实都是 tile=null，且抛错带 CE tile 名。
         for (const id of DF_MISSING_TILES) {
             expect(DUNGEON_FEATURE_CATALOG[id]!.tile, `DF#${id} 应为 null tile`).toBeNull();
@@ -1001,10 +1016,20 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         expect(catalogFeature(DF.DF_BRIDGE_FIRE).tile).toBe(C.NOTHING);
     });
 
-    it('E5 目录条目不影响未登记 id：未抄录 id 的查询得到 undefined（219 枚举只抄 57 条）', () => {
+    // V-2b-9a-finish（验收方）：本轮把 throw 臂从 218 挪到 219，但 219 不是 DF——
+    // CE `Rogue.h` 的枚举自 DF_GRANITE_COLUMN = 1 起数，末项是
+    // DF_STENCH_SMOLDER = 218，219 是终止符 NUMBER_DUNGEON_FEATURES；
+    // web 侧 DF 枚举同样止于 DF_STENCH_SMOLDER = 218。
+    // 钉一个永远不可能成为目录成员的哨兵值 ⇒ 这条守卫退化为恒真（审计报告
+    // 「挑 seed 的测试」分类里的**哑**），再也抓不住"未授权 id 混进目录"。
+    // 改钉 217 = DF_STENCH_BURN：真实存在、刻意未抄录，且 g_2 的禁入名单仍列着它。
+    // 将来谁把 217 抄进目录，这条会响。
+    it('E5 目录条目不影响未登记 id：未抄录 id 的查询得到 undefined（218 项枚举已抄 131 条）', () => {
         expect(DUNGEON_FEATURE_CATALOG[1 as DF]).toBeUndefined();   // DF_GRANITE_COLUMN
-        expect(DUNGEON_FEATURE_CATALOG[218 as DF]).toBeUndefined(); // DF_STENCH_SMOLDER
-        expect(() => catalogFeature(218 as DF)).toThrow(/未抄录/);
+        expect(DUNGEON_FEATURE_CATALOG[217 as DF]).toBeUndefined(); // DF_STENCH_BURN
+        expect(() => catalogFeature(217 as DF)).toThrow(/未抄录/);
+        // 219 = NUMBER_DUNGEON_FEATURES（枚举终止符，非 DF），越界查询同样得 undefined。
+        expect(DUNGEON_FEATURE_CATALOG[219 as DF]).toBeUndefined();
     });
 });
 

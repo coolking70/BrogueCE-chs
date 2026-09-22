@@ -250,6 +250,22 @@ export enum DF {
     DF_REMNANT                     = 209,
     DF_REMNANT_ASH                 = 210  // :905（DF_SWAMP 的 subsequentDF；
                                           // tile MUD 已有）
+    ,DF_SPREADABLE_WATER = 158, DF_SHALLOW_WATER = 159, DF_WATER_SPREADS = 160,
+    DF_SPREADABLE_WATER_POOL = 161, DF_SPREADABLE_DEEP_WATER_POOL = 162,
+    DF_SPREADABLE_COLLAPSE = 163, DF_COLLAPSE = 164, DF_COLLAPSE_SPREADS = 165,
+    DF_ADD_MACHINE_COLLAPSE_EDGE_DORMANT = 166,
+    DF_BRIDGE_ACTIVATE = 167, DF_BRIDGE_ACTIVATE_ANNOUNCE = 168,
+    DF_BRIDGE_APPEARS = 169, DF_ADD_DORMANT_CHASM_HALO = 170,
+    DF_LAVA_RETRACTABLE = 171, DF_RETRACTING_LAVA = 172,
+    DF_OBSIDIAN_WITH_STEAM = 173, DF_MUD_DORMANT = 198, DF_MUD_ACTIVATE = 199,
+    DF_CHASM_HOLE = 211, DF_CATWALK_BRIDGE = 212, DF_LAKE_CELL = 213,
+    DF_LAKE_HALO = 214
+    ,DF_FLOOD = 112, DF_FLOOD_2 = 113,
+    DF_ECTOPLASM_DROPLET = 50,
+    DF_DARKENING_FLOOR = 194, DF_DARK_FLOOR = 195,
+    DF_HAUNTED_TORCH_TRANSITION = 196, DF_HAUNTED_TORCH = 197,
+    DF_ELECTRIC_CRYSTAL_ON = 200, DF_TURRET_LEVER = 201,
+    DF_STENCH_SMOLDER = 218
 }
 
 /** 目录条目 = CE 结构体的 web 投影（messageDisplayed 除外——它依赖玩家
@@ -284,6 +300,18 @@ export interface DungeonFeatureEntry {
     /** CE effectRadius 列。 */
     readonly effectRadius: number;
 }
+
+/** Compact constructor used by the contiguous V-2b-9a CE directory block. */
+const df = (
+    id: DF, ceLine: number, ceTile: string, tile: TerrainType | null,
+    layer: DungeonLayer, startProbability: number, probabilityDecrement: number,
+    flags = 0, cePropagationTerrain = '', propagationTerrain: TerrainType | null = null,
+    subsequentDF: DF | null = null, description = ''
+): DungeonFeatureEntry => ({
+    id, ceLine, ceTile, tile, layer, startProbability, probabilityDecrement, flags,
+    cePropagationTerrain, propagationTerrain, subsequentDF, description,
+    lightFlare: '', flashColor: '', effectRadius: 0,
+});
 
 /**
  * DF 目录（CE Globals.c:603-932 中本轮闭包涉及的条目；C-4b 19 条、
@@ -1327,6 +1355,39 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     [DF.DF_JUNK]: { id: DF.DF_JUNK, ceLine: 909, ceTile: 'JUNK', tile: TerrainType.BONES, layer: DungeonLayer.SURFACE, startProbability: 20, probabilityDecrement: 20, flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
     [DF.DF_REMNANT]: { id: DF.DF_REMNANT, ceLine: 912, ceTile: 'CARPET', tile: TerrainType.CARPET, layer: DungeonLayer.DUNGEON, startProbability: 110, probabilityDecrement: 20, flags: DFF_SUBSEQ_EVERYWHERE, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: DF.DF_REMNANT_ASH, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
     [DF.DF_REMNANT_ASH]: { id: DF.DF_REMNANT_ASH, ceLine: 913, ceTile: 'BURNED_CARPET', tile: TerrainType.ASH, layer: DungeonLayer.SURFACE, startProbability: 120, probabilityDecrement: 100, flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0 },
+    // V-2b-9a：八个起点及 subsequentDF 闭包（Globals.c:827-848/891-892/916-921）。
+    [DF.DF_SPREADABLE_WATER]: df(158, 827, 'MACHINE_FLOOD_WATER_SPREADING', null, DungeonLayer.LIQUID, 0, 0),
+    [DF.DF_SHALLOW_WATER]: df(159, 828, 'SHALLOW_WATER', TerrainType.WATER_SHALLOW, DungeonLayer.LIQUID, 0, 0),
+    [DF.DF_WATER_SPREADS]: df(160, 829, 'MACHINE_FLOOD_WATER_SPREADING', null, DungeonLayer.LIQUID, 100, 100, 0, 'FLOOR_FLOODABLE', TerrainType.FLOOR_FLOODABLE, DF.DF_SHALLOW_WATER),
+    [DF.DF_SPREADABLE_WATER_POOL]: df(161, 830, 'MACHINE_FLOOD_WATER_DORMANT', null, DungeonLayer.LIQUID, 250, 100, DFF_TREAT_AS_BLOCKING, '', null, DF.DF_SPREADABLE_DEEP_WATER_POOL),
+    [DF.DF_SPREADABLE_DEEP_WATER_POOL]: df(162, 831, 'DEEP_WATER', TerrainType.WATER_DEEP, DungeonLayer.LIQUID, 90, 100, DFF_CLEAR_OTHER_TERRAIN | DFF_PERMIT_BLOCKING),
+    [DF.DF_SPREADABLE_COLLAPSE]: df(163, 834, 'MACHINE_COLLAPSE_EDGE_SPREADING', null, DungeonLayer.LIQUID, 0, 0),
+    [DF.DF_COLLAPSE]: df(164, 835, 'CHASM', TerrainType.CHASM, DungeonLayer.LIQUID, 0, 0, DFF_CLEAR_OTHER_TERRAIN, '', null, DF.DF_SHOW_TRAPDOOR_HALO),
+    [DF.DF_COLLAPSE_SPREADS]: df(165, 836, 'MACHINE_COLLAPSE_EDGE_SPREADING', null, DungeonLayer.LIQUID, 100, 100, 0, 'FLOOR_FLOODABLE', TerrainType.FLOOR_FLOODABLE, DF.DF_COLLAPSE),
+    [DF.DF_ADD_MACHINE_COLLAPSE_EDGE_DORMANT]: df(166, 837, 'MACHINE_COLLAPSE_EDGE_DORMANT', null, DungeonLayer.LIQUID, 0, 0),
+    [DF.DF_BRIDGE_ACTIVATE]: df(167, 840, 'CHASM_WITH_HIDDEN_BRIDGE_ACTIVE', null, DungeonLayer.LIQUID, 100, 100, 0, 'CHASM_WITH_HIDDEN_BRIDGE', TerrainType.CHASM_WITH_HIDDEN_BRIDGE, DF.DF_BRIDGE_APPEARS),
+    [DF.DF_BRIDGE_ACTIVATE_ANNOUNCE]: df(168, 841, 'CHASM_WITH_HIDDEN_BRIDGE_ACTIVE', null, DungeonLayer.LIQUID, 100, 100, 0, 'CHASM_WITH_HIDDEN_BRIDGE', TerrainType.CHASM_WITH_HIDDEN_BRIDGE, DF.DF_BRIDGE_APPEARS, 'a stone bridge extends from the floor with a grinding sound.'),
+    [DF.DF_BRIDGE_APPEARS]: df(169, 842, 'STONE_BRIDGE', null, DungeonLayer.LIQUID, 0, 0),
+    [DF.DF_ADD_DORMANT_CHASM_HALO]: df(170, 843, 'MACHINE_CHASM_EDGE', null, DungeonLayer.LIQUID, 100, 100),
+    [DF.DF_LAVA_RETRACTABLE]: df(171, 846, 'LAVA_RETRACTABLE', TerrainType.LAVA_RETRACTABLE, DungeonLayer.LIQUID, 100, 100, 0, 'LAVA', TerrainType.LAVA),
+    [DF.DF_RETRACTING_LAVA]: df(172, 847, 'LAVA_RETRACTING', null, DungeonLayer.LIQUID, 0, 0, 0, '', null, null, 'hissing fills the air as the lava begins to cool.'),
+    [DF.DF_OBSIDIAN_WITH_STEAM]: df(173, 848, 'OBSIDIAN', TerrainType.OBSIDIAN, DungeonLayer.SURFACE, 0, 0, 0, '', null, DF.DF_STEAM_ACCUMULATION),
+    [DF.DF_MUD_DORMANT]: df(198, 891, 'MACHINE_MUD_DORMANT', null, DungeonLayer.LIQUID, 100, 100),
+    [DF.DF_MUD_ACTIVATE]: df(199, 892, 'MUD', TerrainType.MUD, DungeonLayer.LIQUID, 0, 0, DFF_ACTIVATE_DORMANT_MONSTER, '', null, null, 'across the bog, bubbles rise ominously from the mud.'),
+    [DF.DF_CHASM_HOLE]: df(211, 916, 'CHASM', TerrainType.CHASM, DungeonLayer.LIQUID, 0, 0, DFF_CLEAR_OTHER_TERRAIN, '', null, DF.DF_SHOW_TRAPDOOR_HALO),
+    [DF.DF_CATWALK_BRIDGE]: df(212, 917, 'STONE_BRIDGE', null, DungeonLayer.LIQUID, 0, 0, DFF_CLEAR_OTHER_TERRAIN),
+    [DF.DF_LAKE_CELL]: df(213, 920, 'DEEP_WATER', TerrainType.WATER_DEEP, DungeonLayer.LIQUID, 0, 0, DFF_CLEAR_OTHER_TERRAIN, '', null, DF.DF_LAKE_HALO),
+    [DF.DF_LAKE_HALO]: df(214, 921, 'SHALLOW_WATER', TerrainType.WATER_SHALLOW, DungeonLayer.LIQUID, 160, 100),
+    [DF.DF_FLOOD]: df(112, 753, 'FLOOD_WATER_SHALLOW', null, DungeonLayer.SURFACE, 225, 37, 0, '', null, DF.DF_FLOOD_2),
+    [DF.DF_FLOOD_2]: df(113, 754, 'FLOOD_WATER_DEEP', null, DungeonLayer.SURFACE, 175, 37, 0, '', null, null, 'the area is flooded as water rises through imperceptible holes in the ground.'),
+    [DF.DF_ECTOPLASM_DROPLET]: df(50, 670, 'ECTOPLASM', null, DungeonLayer.SURFACE, 100, 50),
+    [DF.DF_DARKENING_FLOOR]: df(194, 885, 'DARK_FLOOR_DARKENING', null, DungeonLayer.DUNGEON, 0, 0, 0, '', null, null, 'the light in the room flickers and you feel a chill in the air.'),
+    [DF.DF_DARK_FLOOR]: df(195, 886, 'DARK_FLOOR', null, DungeonLayer.DUNGEON, 0, 0, DFF_ACTIVATE_DORMANT_MONSTER, '', null, DF.DF_ECTOPLASM_DROPLET),
+    [DF.DF_HAUNTED_TORCH_TRANSITION]: df(196, 887, 'HAUNTED_TORCH_TRANSITIONING', null, DungeonLayer.DUNGEON, 0, 0),
+    [DF.DF_HAUNTED_TORCH]: df(197, 888, 'HAUNTED_TORCH', null, DungeonLayer.DUNGEON, 0, 0),
+    [DF.DF_ELECTRIC_CRYSTAL_ON]: df(200, 895, 'ELECTRIC_CRYSTAL_ON', null, DungeonLayer.DUNGEON, 0, 0),
+    [DF.DF_TURRET_LEVER]: df(201, 896, 'WALL', TerrainType.WALL, DungeonLayer.DUNGEON, 0, 0, DFF_ACTIVATE_DORMANT_MONSTER, '', null, null, 'the wall above the lever shifts to reveal a spark turret!'),
+    [DF.DF_STENCH_SMOLDER]: df(218, 930, 'STENCH_SMOKE_GAS', null, DungeonLayer.GAS, 50, 0, 0, '', null, DF.DF_PLAIN_FIRE),
 };
 
 /** 登记"CE 有 tileType 而 web 没有地形"的目录条目 id 清单
@@ -1348,6 +1409,24 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
  *  本轮**未入目录**——载体盘点后无 web 载体的气体只登记不迁移（报告
  *  载体盘点表），故不在本清单。 */
 export const DF_MISSING_TILES: readonly DF[] = [
+    DF.DF_FLOOD, DF.DF_FLOOD_2, DF.DF_ECTOPLASM_DROPLET,
+    DF.DF_DARKENING_FLOOR, DF.DF_DARK_FLOOR,
+    DF.DF_HAUNTED_TORCH_TRANSITION, DF.DF_HAUNTED_TORCH,
+    DF.DF_ELECTRIC_CRYSTAL_ON, DF.DF_STENCH_SMOLDER,
+    // V-2b-9a：DF 闭包中不属于本轮地形载体清单的 CE 中间态。
+    DF.DF_SPREADABLE_WATER,
+    DF.DF_WATER_SPREADS,
+    DF.DF_SPREADABLE_WATER_POOL,
+    DF.DF_SPREADABLE_COLLAPSE,
+    DF.DF_COLLAPSE_SPREADS,
+    DF.DF_ADD_MACHINE_COLLAPSE_EDGE_DORMANT,
+    DF.DF_BRIDGE_ACTIVATE,
+    DF.DF_BRIDGE_ACTIVATE_ANNOUNCE,
+    DF.DF_BRIDGE_APPEARS,
+    DF.DF_ADD_DORMANT_CHASM_HALO,
+    DF.DF_RETRACTING_LAVA,
+    DF.DF_MUD_DORMANT,
+    DF.DF_CATWALK_BRIDGE,
     DF.DF_TRAMPLED_FOLIAGE,        // TRAMPLED_FOLIAGE
     DF.DF_ACTIVE_BRIMSTONE,        // ACTIVE_BRIMSTONE
     DF.DF_BRIMSTONE_FIRE,          // BRIMSTONE_FIRE

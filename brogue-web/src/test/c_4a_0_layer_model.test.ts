@@ -339,6 +339,19 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             // V-2b-8：CE Globals.c:513/:514 与对应 DF 的 SURFACE 层。
             [C.BLOODFLOWER_STALK]: L.SURFACE,
             [C.HAVEN_BEDROLL]: L.SURFACE,
+            // V-2b-9a：CE Globals.c/DF 目录的归属层。
+            [C.FLOOR_FLOODABLE]: L.DUNGEON,
+            [C.CHASM_WITH_HIDDEN_BRIDGE]: L.LIQUID,
+            [C.LAVA_RETRACTABLE]: L.LIQUID,
+            [C.MUD_FLOOR]: L.DUNGEON,
+            [C.MUD_WALL]: L.DUNGEON,
+            [C.MUD_DOORWAY]: L.DUNGEON,
+            [C.MARBLE_FLOOR]: L.DUNGEON,
+            [C.FLOOD_TRAP]: L.DUNGEON,
+            [C.ELECTRIC_CRYSTAL_OFF]: L.DUNGEON,
+            [C.TURRET_LEVER]: L.DUNGEON,
+            [C.HAUNTED_TORCH_DORMANT]: L.DUNGEON,
+            [C.DARK_FLOOR_DORMANT]: L.DUNGEON,
         });
         expect(DRAW_PRIORITY).toEqual({
             [C.NOTHING]: 100, [C.GRANITE]: 0, [C.FLOOR]: 95, [C.WALL]: 0,
@@ -458,6 +471,19 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             // V-2b-8：CE Globals.c 第 4 列原值。
             [C.BLOODFLOWER_STALK]: 20,
             [C.HAVEN_BEDROLL]: 50,
+            // V-2b-9a：CE Globals.c 第 4 列原值。
+            [C.FLOOR_FLOODABLE]: 95,
+            [C.CHASM_WITH_HIDDEN_BRIDGE]: 40,
+            [C.LAVA_RETRACTABLE]: 40,
+            [C.MUD_FLOOR]: 85,
+            [C.MUD_WALL]: 0,
+            [C.MUD_DOORWAY]: 25,
+            [C.MARBLE_FLOOR]: 85,
+            [C.FLOOD_TRAP]: 58,
+            [C.ELECTRIC_CRYSTAL_OFF]: 0,
+            [C.TURRET_LEVER]: 0,
+            [C.HAUNTED_TORCH_DORMANT]: 0,
+            [C.DARK_FLOOR_DORMANT]: 95,
         });
     });
 });
