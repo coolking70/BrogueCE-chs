@@ -7,6 +7,49 @@
 
 ---
 
+## 🌙 夜间自动循环：当前状态（2026-09-22 夜）
+
+**main = `823eb0e`**（W-0 勘察已合）。门禁基线：**111 文件 / 1546 通过 / 0 失败** + build 绿。
+
+### V 链已收官
+CE 蓝图身份 **70/71**（仅缺 48，CE 自己 `// DISABLED`），11 条自创已退池，
+`blueprint_ce_coverage.test.ts` 钉死覆盖集合 ⇒ **进度可机械核验，不再靠估计**。
+
+### 当前在跑：W 链（杖与魔杖），共 26 个派发单元
+**权威规格 = `ai_docs/reports/w-0-survey.report.md` §2.3 的 26 行表**，
+每行给了范围/依赖/**是否移动生成流**/改动面与测试反查方法/撞红预期。
+
+- W-1~W-7 机制前置（身份契约→施法选择→轨迹→反射→实例生成→充能→附魔入口）
+- W-8~W-23 效果收口（每种效果独立一轮）
+- W-24~W-26 物品入池（**均移动生成流**）
+
+⚠️ **W-5 只恢复实例充能抽签、一件物品不加，也会移动生成流。**
+⚠️ W-22 的外部依赖已在报告末尾显式登记，未就绪时只能验收可执行子集。
+
+**进度**：W-0 ✅ → **W-1 进行中**。用户批准先做 W-1~W-3 看节奏，再定是否走完 26 轮。
+
+### 派发配方（照抄改名）
+```bash
+C=/Applications/ChatGPT.app/Contents/Resources/codex
+nohup $C exec --worktree --approve-for-me -c model_reasoning_effort="xhigh" \
+  -o /tmp/codex_<R>_last.txt "<prompt>" > /tmp/codex_<R>.log 2>&1 &
+# 必须另挂 run_in_background 等待器，nohup 进程 harness 不跟踪：
+# while kill -0 <PID> 2>/dev/null; do sleep 30; done
+```
+
+### 验收七步
+① 读 `-o` 的最终回复 → ② 读 worktree 里的报告 → ③ 抽查它纠正验收方的 CE 事实
+（逐行核 `BrogueCE-master`）→ ④ 把 worktree 改动拷进 main → ⑤ 跑全量门禁
+→ ⑥ `npm run build` → ⑦ 提交（**文档提交用显式路径，不要 `git add -A`**）
+
+### 夜间停下来问用户的条件
+1. 行为断言撞断 > 5 条（穷举表连带不计）
+2. 需要拆轮或改范围
+3. 执行方的反驳我核不动
+4. 要动「CE 逐字」这条底线
+5. 门禁墙钟**连续三次**超 35 分钟
+6. 额度见底
+
 ## 🚦 门禁分组（2026-09-22 用户裁决：方案 A）
 
 `generation_baseline` 已**移出默认门禁**。理由：它同时承担两种相反含义——
