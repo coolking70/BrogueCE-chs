@@ -27,6 +27,7 @@ import { weaponParalysisDuration, weaponConfusionDuration, weaponForceDistance, 
 import { ItemCategory, Item } from '../Items/Item';
 import { ItemLoader, type ConsumableConfig } from '../Items/ItemLoader';
 import { restoreArcanaInstance } from '../Items/ArcanaInstance';
+import { equippedWisdomBonus, tickStaffRecharge, rechargeStaffFully, restoreStaffRecharge } from '../Items/ArcanaRecharge';
 import { rng } from '../Random';
 import monsterData from '../../data/monsters.json';
 import hordeData from '../../data/hordes.json';
@@ -197,6 +198,7 @@ export interface GameSnapshotItem {
     arcanaInstanceVersion?: 1;
     maxCharges?: number;
     charges?: number;
+    staffRechargeRemaining?: number;
     rechargeTurns?: number;
     rechargeCounter?: number;
     cooldownTurns?: number;
@@ -240,6 +242,8 @@ export interface GameSnapshot {
     depth: number;
     seed: number;
     mode: GameMode;
+    /** W-6: retain partial P2 objective blocks across saves; legacy default is 100. */
+    ticksTillUpdateEnvironment?: number;
     player: {
         loc: Pos;
         hp: number;
@@ -4001,8 +4005,8 @@ export class Game {
                         }
                         break;
                     case 'recharge_item':
-                        if (!this.rechargeRandomArcana()) {
-                            logger.log(i18next.t('scroll.recharge_item_empty', { defaultValue: 'No depleted arcana item to recharge.' }), '#aaaaaa');
+                        if (!this.rechargeStaffsAndCharms()) {
+                            logger.log(i18next.t('scroll.recharge_item_empty', { defaultValue: 'No staffs or charms to recharge.' }), '#aaaaaa');
                         }
                         break;
                     case 'protect_weapon':
@@ -4991,18 +4995,23 @@ export class Game {
         return true;
     }
 
-    private rechargeRandomArcana(): boolean {
-        const candidates = this.player.inventory.items.filter((invItem) =>
-            (invItem.category === ItemCategory.WAND || invItem.category === ItemCategory.STAFF)
-            && typeof invItem.maxCharges === 'number'
-            && (invItem.charges ?? 0) < invItem.maxCharges
-        );
-        if (candidates.length === 0) return false;
-        const target = candidates[rng.randRange(0, candidates.length - 1)]!;
-        target.charges = target.maxCharges;
-        target.rechargeCounter = 0;
-        logger.log(i18next.t('item.power_restored', { name: target.name, defaultValue: `${target.name} crackles with restored power.` }), '#66ddff');
-        return true;
+    /** CE Items.c:7904 -> rechargeItems(STAFF | CHARM), all items in the pack.
+     * CHARM uses the existing web cooldown representation; no charm model rewrite.
+     */
+    private rechargeStaffsAndCharms(): boolean {
+        let found = false;
+        for (const item of this.player.inventory.items) {
+            if (item.category === ItemCategory.STAFF) {
+                rechargeStaffFully(item, (item as any).identityId);
+            } else if (item.category === ItemCategory.CHARM) {
+                item.cooldownRemaining = 0;
+            } else {
+                continue;
+            }
+            found = true;
+            logger.log(i18next.t('item.power_restored', { interpolation: { escapeValue: false }, name: item.displayName, defaultValue: `${item.displayName} crackles with restored power.` }), '#66ddff');
+        }
+        return found;
     }
 
     /**
@@ -7522,7 +7531,7 @@ export class Game {
      * slowed（200 tick/动作）下一次动作触发两次。
      *
      * 与 CE 的逐条对照：
-     * - rechargeItemsIncrementally(1) → tickArcanaResources()（法杖/魔杖充能、护符冷却）
+     * - rechargeItemsIncrementally(1) → tickArcanaResources()（法杖充能、护符冷却；WAND 不回电）
      * - processIncrementalAutoID()    → web 无渐进鉴定系统，跳过（报告已列）
      * - rogue.monsterSpawnFuse--      → monsterSpawnFuse--，归零触发周期刷怪
      *                                   （CE 触发点在 decrementPlayerStatus 尾部，
@@ -7947,20 +7956,11 @@ export class Game {
     }
 
     private tickArcanaResources() {
+        const wisdom = equippedWisdomBonus(this.player.rings());
         for (const item of this.player.inventory.items) {
-            if (item.category === ItemCategory.WAND || item.category === ItemCategory.STAFF) {
-                if (
-                    typeof item.maxCharges === 'number'
-                    && typeof item.charges === 'number'
-                    && item.charges < item.maxCharges
-                ) {
-                    item.rechargeCounter = (item.rechargeCounter ?? 0) + 1;
-                    const turns = item.rechargeTurns ?? 200;
-                    if (item.rechargeCounter >= turns) {
-                        item.charges += 1;
-                        item.rechargeCounter = 0;
-                        logger.log(i18next.t('item.regains_charge', { name: item.name, defaultValue: `${item.name} regains a charge.` }), '#66ddff');
-                    }
+            if (item.category === ItemCategory.STAFF) {
+                if (tickStaffRecharge(item, wisdom, rng, (item as any).identityId) > 0) {
+                    logger.log(i18next.t('item.regains_charge', { interpolation: { escapeValue: false }, name: item.displayName, defaultValue: `${item.displayName} regains a charge.` }), '#66ddff');
                 }
             } else if (item.category === ItemCategory.CHARM) {
                 const remain = item.cooldownRemaining ?? 0;
@@ -8001,6 +8001,8 @@ export class Game {
             arcanaInstanceVersion: item.arcanaInstanceVersion,
             maxCharges: item.maxCharges,
             charges: item.charges,
+            staffRechargeRemaining: item.category === ItemCategory.STAFF
+                ? restoreStaffRecharge(item.staffRechargeRemaining) : undefined,
             rechargeTurns: item.rechargeTurns,
             rechargeCounter: item.rechargeCounter,
             cooldownTurns: item.cooldownTurns,
@@ -8035,6 +8037,9 @@ export class Game {
             const legacyCapacity = table.find(cfg => cfg.id === s.identityId)?.maxCharges ?? 1;
             // Pure restoration only: never spawn/roll when reading old or current saves.
             Object.assign(item, restoreArcanaInstance(s, isStaff, legacyCapacity));
+        }
+        if (item.category === ItemCategory.STAFF) {
+            item.staffRechargeRemaining = restoreStaffRecharge(s.staffRechargeRemaining);
         }
         item.rechargeTurns = s.rechargeTurns;
         item.rechargeCounter = s.rechargeCounter;
@@ -8127,6 +8132,7 @@ export class Game {
             depth: this.depth,
             seed: this.currentSeed,
             mode: this.mode,
+            ticksTillUpdateEnvironment: this.ticksTillUpdateEnvironment,
             player: {
                 loc: { x: this.player.loc.x, y: this.player.loc.y },
                 hp: this.player.hp,
@@ -8239,6 +8245,7 @@ export class Game {
         ));
 
         this.mode = snapshot.mode;
+        this.ticksTillUpdateEnvironment = snapshot.ticksTillUpdateEnvironment ?? 100;
         this.currentSeed = rng.seedRandomGenerator(snapshot.seed);
         ItemLoader.initConsumables();
 

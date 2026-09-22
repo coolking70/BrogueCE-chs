@@ -32,7 +32,7 @@ import { BlueprintEngine } from '../engine/Generator/BlueprintEngine';
 import type { BlueprintDef, MachineResult } from '../engine/Generator/BlueprintEngine';
 import { rng } from '../engine/Random';
 import { logger } from '../engine/Systems/Logger';
-import { ItemCategory, type Item } from '../engine/Items/Item';
+import { ItemCategory } from '../engine/Items/Item';
 import { ItemLoader } from '../engine/Items/ItemLoader';
 import { Monster, MonsterState, type MonsterData } from '../entities/Monster';
 import type { Game } from '../engine/Core/Game';
@@ -436,15 +436,6 @@ describe('P1-37 硬编码文案：真实 zh_CN 资源下渲染为中文', () => 
         return () => { delete (logger as { log?: unknown }).log; };
     }
 
-    /** 新造一杖：满充/半充由调用方设定。 */
-    function makeWand(): Item {
-        const wand = ItemLoader.spawnWand('wand_of_teleportation', 0, 0);
-        expect(wand, '传送魔杖生成失败').not.toBeNull();
-        wand!.maxCharges = 2;
-        wand!.charges = 2;
-        return wand!;
-    }
-
     it('AD5a: 充能/诅咒/解咒文案无英文字母（六条登记项 + 两条漏网项的渲染面）', () => {
         const game = createHeadlessGame(20260916);
 
@@ -456,7 +447,7 @@ describe('P1-37 硬编码文案：真实 zh_CN 资源下渲染为中文', () => 
         // 于是这三条断言**随功能一起到期**——被测的代码路径与文案都不存在了。
         //
         // 本用例的目的（"这些文案不以裸英文渲染"）对**存活下来的**文案完全保留：
-        // 下面四条（背包解咒 / 慢充自然回复 / 充能卷轴 / 焦土）一字未动，
+        // 下面文案守卫保持；W-6 将回电载体从 WAND 翻正为 STAFF，
         // 守卫性质未放宽。
         //
         // 教训（已写进 project_conventions）：**删除类改动的 grep 关键词
@@ -476,10 +467,11 @@ describe('P1-37 硬编码文案：真实 zh_CN 资源下渲染为中文', () => 
         expect(uncursedMsg).not.toMatch(/[A-Za-z]/);
 
         // 慢充自然回复 → "恢复了一点充能"
-        const trickle = makeWand();
+        // W-6 / CE Time.c:2049：WAND 停自然回电，旧 WAND 载体到期。
+        // 中文断言不变；改用 STAFF 的真实倒计时到期触发。
+        const trickle = ItemLoader.spawnStaff('staff_of_lightning', 0, 0)!;
         trickle.charges = 1;
-        trickle.rechargeTurns = 200;
-        trickle.rechargeCounter = 199;
+        trickle.staffRechargeRemaining = 10;
         game.player.inventory.items.push(trickle);
         restore = captureLog();
         (game as unknown as { tickArcanaResources(): void }).tickArcanaResources();
@@ -488,12 +480,12 @@ describe('P1-37 硬编码文案：真实 zh_CN 资源下渲染为中文', () => 
         expect(trickleMsg, `应渲染中文"恢复了一点充能"，实际日志：${messages.join(' | ')}`).toBeDefined();
         expect(trickleMsg).not.toMatch(/[A-Za-z]/);
 
-        // 充能卷轴随机充能 → "力量重新涌入"
-        const target = makeWand();
+        // W-6：充能卷轴对全部 STAFF/CHARM 充能 → "力量重新涌入"
+        const target = ItemLoader.spawnStaff('staff_of_lightning', 0, 0)!;
         target.charges = 1;
         game.player.inventory.items.push(target);
         restore = captureLog();
-        (game as unknown as { rechargeRandomArcana(): boolean }).rechargeRandomArcana();
+        (game as unknown as { rechargeStaffsAndCharms(): boolean }).rechargeStaffsAndCharms();
         restore();
         const restoredMsg = messages.find(m => m.includes('力量重新涌入'));
         expect(restoredMsg, `应渲染中文"力量重新涌入"，实际日志：${messages.join(' | ')}`).toBeDefined();

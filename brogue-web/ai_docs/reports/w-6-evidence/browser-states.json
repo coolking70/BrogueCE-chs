@@ -1,0 +1,432 @@
+{
+  "states": [
+    {
+      "label": "initial",
+      "text": {
+        "mode": "explore",
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 3,
+          "hp": 30,
+          "nutrition": 2150,
+          "statuses": {
+            "haste": 100
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "logs": [
+        "已开始 测试 游戏（种子 437413373）。"
+      ],
+      "gate": 100,
+      "inventory": [
+        {
+          "name": "闪电法杖 [1/3]",
+          "category": 7,
+          "E": 3,
+          "capacity": 3,
+          "charges": 1,
+          "timer": 20
+        },
+        {
+          "name": "迟缓魔杖 [0]",
+          "category": 6,
+          "E": 0,
+          "capacity": 2,
+          "charges": 0
+        },
+        {
+          "name": "生命符咒",
+          "category": 9,
+          "E": 0,
+          "cooldown": 1000
+        },
+        {
+          "name": "充能卷轴",
+          "category": 3,
+          "E": 0
+        }
+      ]
+    },
+    {
+      "label": "haste-action-1",
+      "text": {
+        "mode": "explore",
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 3,
+          "hp": 30,
+          "nutrition": 2150,
+          "statuses": {
+            "haste": 100
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "logs": [
+        "已开始 测试 游戏（种子 437413373）。"
+      ],
+      "gate": 50,
+      "inventory": [
+        {
+          "name": "闪电法杖 [1/3]",
+          "category": 7,
+          "E": 3,
+          "capacity": 3,
+          "charges": 1,
+          "timer": 20
+        },
+        {
+          "name": "迟缓魔杖 [0]",
+          "category": 6,
+          "E": 0,
+          "capacity": 2,
+          "charges": 0
+        },
+        {
+          "name": "生命符咒",
+          "category": 9,
+          "E": 0,
+          "cooldown": 1000
+        },
+        {
+          "name": "充能卷轴",
+          "category": 3,
+          "E": 0
+        }
+      ]
+    },
+    {
+      "label": "haste-action-2",
+      "text": {
+        "mode": "explore",
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 3,
+          "hp": 30,
+          "nutrition": 2149,
+          "statuses": {
+            "haste": 99
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 2,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "logs": [
+        "已开始 测试 游戏（种子 437413373）。"
+      ],
+      "gate": 100,
+      "inventory": [
+        {
+          "name": "闪电法杖 [1/3]",
+          "category": 7,
+          "E": 3,
+          "capacity": 3,
+          "charges": 1,
+          "timer": 10
+        },
+        {
+          "name": "迟缓魔杖 [0]",
+          "category": 6,
+          "E": 0,
+          "capacity": 2,
+          "charges": 0
+        },
+        {
+          "name": "生命符咒",
+          "category": 9,
+          "E": 0,
+          "cooldown": 999
+        },
+        {
+          "name": "充能卷轴",
+          "category": 3,
+          "E": 0
+        }
+      ]
+    },
+    {
+      "label": "haste-action-3",
+      "text": {
+        "mode": "explore",
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 3,
+          "hp": 30,
+          "nutrition": 2149,
+          "statuses": {
+            "haste": 99
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 3,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "logs": [
+        "已开始 测试 游戏（种子 437413373）。"
+      ],
+      "gate": 50,
+      "inventory": [
+        {
+          "name": "闪电法杖 [1/3]",
+          "category": 7,
+          "E": 3,
+          "capacity": 3,
+          "charges": 1,
+          "timer": 10
+        },
+        {
+          "name": "迟缓魔杖 [0]",
+          "category": 6,
+          "E": 0,
+          "capacity": 2,
+          "charges": 0
+        },
+        {
+          "name": "生命符咒",
+          "category": 9,
+          "E": 0,
+          "cooldown": 999
+        },
+        {
+          "name": "充能卷轴",
+          "category": 3,
+          "E": 0
+        }
+      ]
+    },
+    {
+      "label": "haste-action-4",
+      "text": {
+        "mode": "explore",
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 3,
+          "hp": 30,
+          "nutrition": 2148,
+          "statuses": {
+            "haste": 98
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 4,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "logs": [
+        "已开始 测试 游戏（种子 437413373）。",
+        "闪电法杖 [2/3]恢复了一点充能。"
+      ],
+      "gate": 100,
+      "inventory": [
+        {
+          "name": "闪电法杖 [2/3]",
+          "category": 7,
+          "E": 3,
+          "capacity": 3,
+          "charges": 2,
+          "timer": 1897
+        },
+        {
+          "name": "迟缓魔杖 [0]",
+          "category": 6,
+          "E": 0,
+          "capacity": 2,
+          "charges": 0
+        },
+        {
+          "name": "生命符咒",
+          "category": 9,
+          "E": 0,
+          "cooldown": 998
+        },
+        {
+          "name": "充能卷轴",
+          "category": 3,
+          "E": 0
+        }
+      ]
+    },
+    {
+      "label": "read-recharging-scroll",
+      "text": {
+        "mode": "explore",
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 3,
+          "hp": 30,
+          "nutrition": 2148,
+          "statuses": {
+            "haste": 98
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 5,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "logs": [
+        "已开始 测试 游戏（种子 437413373）。",
+        "闪电法杖 [2/3]恢复了一点充能。",
+        "你朗读了充能卷轴。",
+        "力量重新涌入闪电法杖 [3/3]。",
+        "力量重新涌入生命符咒。"
+      ],
+      "gate": 50,
+      "inventory": [
+        {
+          "name": "闪电法杖 [3/3]",
+          "category": 7,
+          "E": 3,
+          "capacity": 3,
+          "charges": 3,
+          "timer": 1666
+        },
+        {
+          "name": "迟缓魔杖 [0]",
+          "category": 6,
+          "E": 0,
+          "capacity": 2,
+          "charges": 0
+        },
+        {
+          "name": "生命符咒",
+          "category": 9,
+          "E": 0,
+          "cooldown": 0
+        }
+      ]
+    },
+    {
+      "label": "JSON-reload",
+      "text": {
+        "mode": "explore",
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 3,
+          "hp": 30,
+          "nutrition": 2148,
+          "statuses": {
+            "haste": 98
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "logs": [],
+      "gate": 50,
+      "inventory": [
+        {
+          "name": "闪电法杖 [3/3]",
+          "category": 7,
+          "E": 3,
+          "capacity": 3,
+          "charges": 3,
+          "timer": 1666
+        },
+        {
+          "name": "迟缓魔杖 [0]",
+          "category": 6,
+          "E": 0,
+          "capacity": 2,
+          "charges": 0
+        },
+        {
+          "name": "生命符咒",
+          "category": 9,
+          "E": 0,
+          "cooldown": 0
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

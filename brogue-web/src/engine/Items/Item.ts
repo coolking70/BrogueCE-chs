@@ -107,6 +107,10 @@ export class Item implements Entity {
     public magicDetected: boolean = false;
     /** 魔杖已放电次数（CE enchant2，Items.c:7435；未识别时显示"已使用 N 次"） */
     public timesUsed?: number;
+    /** W-6: CE enchant2 countdown in recharge points; absent means initial 500.
+     * Independent of E, capacity and legacy ascending rechargeCounter. */
+    public staffRechargeRemaining?: number;
+    /** Legacy save/data fields only; W-6 natural charging no longer reads these. */
     public rechargeTurns?: number;
     public rechargeCounter?: number;
     public cooldownTurns?: number;

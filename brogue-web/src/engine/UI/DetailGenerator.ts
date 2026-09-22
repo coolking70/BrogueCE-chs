@@ -407,9 +407,9 @@ export function generateItemDetail(
         } else if (item.category === ItemCategory.WAND && (item.timesUsed ?? 0) > 0) {
             statsLines.push({ text: `已使用 ${item.timesUsed} 次（充能未知）`, color: '#aaaaff' });
         }
-        if (item.rechargeTurns) {
-            statsLines.push({ text: `充能速度: 每 ${item.rechargeTurns} 回合` });
-        }
+        statsLines.push({ text: item.category === ItemCategory.WAND
+            ? '不会自然恢复充能'
+            : '随时间恢复充能，速度受附魔等级与佩戴的智慧戒指影响' });
         sections.push({ header: '法器属性', lines: statsLines });
     }
 

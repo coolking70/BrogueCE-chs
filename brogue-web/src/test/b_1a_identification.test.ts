@@ -713,7 +713,7 @@ describe('已反转（B-1b）：免费解咒/充能作弊面已移除（原"仍�
     /**
      * 原留痕断言（B-1a 立）：Game.uncurseItem / rechargeArcanaItem 存在且可
      * 免费用。B-1b 按 D2 移除（CE 无此入口：解咒走 remove curse 卷轴的
-     * removeCurseFromInventory，充能走 recharging 卷轴的 rechargeRandomArcana）。
+     * removeCurseFromInventory，充能走 recharging 卷轴的 rechargeStaffsAndCharms）。
      * 越界守卫：真正等价的方法必须仍然在位——移除作弊面不得伤及卷轴路径。
      */
     it('Game.uncurseItem / rechargeArcanaItem 已不存在；卷轴等价物仍在位', () => {
@@ -721,9 +721,10 @@ describe('已反转（B-1b）：免费解咒/充能作弊面已移除（原"仍�
         // 原断言"typeof === 'function'"已到期：方法本体删除
         expect((game as unknown as Record<string, unknown>).uncurseItem).toBeUndefined();
         expect((game as unknown as Record<string, unknown>).rechargeArcanaItem).toBeUndefined();
+        // W-6：卷轴改为全包 STAFF/CHARM，方法随语义改名；免费入口仍禁止。
         // 越界守卫：卷轴路径（CE 有）不受移除影响
         expect(typeof (game as unknown as Record<string, unknown>).removeCurseFromInventory).toBe('function');
-        expect(typeof (game as unknown as Record<string, unknown>).rechargeRandomArcana).toBe('function');
+        expect(typeof (game as unknown as Record<string, unknown>).rechargeStaffsAndCharms).toBe('function');
     });
 
     it('InventoryOverlay 不再引用两个免费方法（静态守卫，防按钮复活）', () => {
