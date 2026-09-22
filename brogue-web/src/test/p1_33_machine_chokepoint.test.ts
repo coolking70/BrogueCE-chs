@@ -421,7 +421,7 @@ describe('P1-33 机器阶段不切断关卡', () => {
         expect(analysis.chokeMap[22]![9], '走廊中段格无洪泛覆盖 = 30000（内部扩展不可入）').toBe(30000);
     });
 
-    it("c2) 封顶前提元断言（V-2b-1 顺延）：blueprints.json 的 roomSize[1] 全部 ≤ 100", () => {
+    it("c2) 封顶前提元断言（V-2b-1 顺延）：blueprints.json 的 roomSize[1] 全部 ≤ 200", () => {
         // 原断言（P1-33 时）：「roomSize[1] 全部 ≤ 40」——当时全部蓝图的门位
         // 窗口上沿 ≤ 40，封顶值 41 恒落窗外，三处消费（候选窗/门位赋值/内部
         // 扩展）对"真值>41"与"封顶41"判定逐位相同。
@@ -453,7 +453,7 @@ describe('P1-33 机器阶段不切断关卡', () => {
             '必须同步上调 LoopMap.CE_CHOKE_COUNT_CAP（= roomSize[1] 最大值 + 1），' +
             '否则该蓝图会因封顶值落窗外而结构性不可生成')
             .toBeLessThanOrEqual(CE_CHOKE_COUNT_CAP - 1);
-        expect(maxRoom, 'CE 目录新上沿：31 号 Flood room 的 180，取代 55 号 Worm tunnels 的 175').toBe(180);
+        expect(maxRoom, 'V-2b-9d CE 13/14 的房间上沿为 200，CAP 必须落在所有窗口之外').toBe(200);
     });
 
     it('d) AD3：内部扩展被 chokeMap[新] ≤ chokeMap[起] 约束在死角内；触及他机即放弃', () => {

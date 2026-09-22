@@ -244,8 +244,8 @@ describe('V-2b-3 A：载体地形逐字段 ≡ CE Globals.c（对抗：抄错任
         // DF_STATUE_SHATTER / DF_LUMINESCENT_FUNGUS 五条接上真 tile 摘出；
         // 22 条新条目里 web 无 tile 的七条入列。逐条见 DungeonFeatureCatalog
         // 的 V-2b-7 块注。
-        expect(DF_MISSING_TILES).toHaveLength(32); // V-2b-9c: seven completed carriers, 39 -> 32.
-        for (const d of [DF.DF_REVEAL_LEVER, DF.DF_INACTIVE_GLYPH,
+        expect(DF_MISSING_TILES).toHaveLength(30); // V-2b-9d: glyph and stench carriers, 32 -> 30.
+        for (const d of [DF.DF_REVEAL_LEVER,
             DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY]) {
             expect(DF_MISSING_TILES, `DF[${d}] 应在缺 tile 登记`).toContain(d);
         }
@@ -330,7 +330,7 @@ describe('V-2b-3 B：activateMachine（CE :1173-1228）', () => {
         rng.seedRandomGenerator(20260920);
         const before = rng.randomNumbersGenerated;
         const r = promoteTile(g, 3, 3, L.DUNGEON, false);
-        // glyph promoteType DF_INACTIVE_GLYPH tile 缺 → 缓办（零 spawn RNG），
+        // V-2b-9d: glyph DF 已接线；单格 startProbability=0 不掷骰，
         // 洗牌对是唯一的 RNG 消耗源。
         expect(r.wired).not.toBeNull();
         // 触发格 (3,3) 的电由 promoteTile :1277 置位，activateMachine :1188
@@ -352,12 +352,13 @@ describe('V-2b-3 B：activateMachine（CE :1173-1228）', () => {
         expect(r.promotions).toHaveLength(2); // 两层各一次 promoteTile
         expect(r.promotions.map(p => p.layer).sort((a, b) => a - b))
             .toEqual([L.DUNGEON, L.SURFACE]);
-        // 符文层（DUNGEON）：promoteType DF_INACTIVE_GLYPH tile 缺 → 缓办；
+        // V-2b-9d: 符文层（DUNGEON）成功晋升到 MACHINE_GLYPH_INACTIVE；
         // 触发板层（SURFACE）：promoteType '' → 无 DF、无缓办、地形不动
         //（板无 VANISHES，CE :382 原样）。
         const glyphLayer = r.promotions.find(p => p.layer === L.DUNGEON)!;
         const plateLayer = r.promotions.find(p => p.layer === L.SURFACE)!;
-        expect(glyphLayer.deferred).not.toBeNull();
+        expect(glyphLayer.deferred).toBeNull();
+        expect(g.getCell(4, 4)!.layers[L.DUNGEON]).toBe(C.MACHINE_GLYPH_INACTIVE);
         expect(plateLayer.deferred).toBeNull();
         expect(plateLayer.df).toBeNull();
         expect(g.getCell(4, 4)!.layers[L.SURFACE]).toBe(C.GAS_TRAP_PARALYSIS);
@@ -453,25 +454,23 @@ describe('V-2b-3 D：promoteTile wired 分支端到端（67/68 与 24 号的机�
         expect(r.wired!.poweredCells).toEqual([]);
     });
 
-    it('D2 端到端 24 号：符文 DF 缺 tile 缓办不挡通电（CE :1271 无 DF 成功前置守卫）', () => {
+    it('D2 端到端 24 号：符文落地与同机通电都成功（V-2b-9d 闭合载体）', () => {
         const g = floorGrid();
         g.setTerrain(5, 5, C.MACHINE_GLYPH, '∷', 0x330d0d);
         g.setTerrain(8, 8, C.MACHINE_GLYPH, '∷', 0x330d0d);
         markMachine(g, [[5, 5], [8, 8]], 2);
         rng.seedRandomGenerator(20260920);
         const r = promoteTile(g, 5, 5, L.DUNGEON, false);
-        // DF_INACTIVE_GLYPH（tile MACHINE_GLYPH_INACTIVE web 无）→ 本格缓办；
-        // wired 分支独立于 DF 结果照常执行（错误实现"缓办就连电也不通"红）。
-        expect(r.deferred).not.toBeNull();
-        expect(r.deferred!.missingDf).toBe(DF.DF_INACTIVE_GLYPH);
+        // V-2b-9d: DF_INACTIVE_GLYPH 成功落地，同时保留独立 wired 分支。
+        expect(r.deferred).toBeNull();
         expect(r.wiredBranchHit).toBe(true);
         // 触发格 (5,5) 不在 poweredCells（:1277 先置电、:1188 跳过）；另一符文
-        // (8,8) 被通电并同样缓办——通电与 DF 结果互不阻塞（CE :1271 无前置守卫）。
+        // (8,8) 被通电并晋升——通电与 DF 结果互不阻塞（CE :1271 无前置守卫）。
         expect(r.wired!.poweredCells).toEqual([{ x: 8, y: 8 }]);
         const nested = r.wired!.promotions.find(p => p.x === 8 && p.y === 8)!;
-        expect(nested.deferred).not.toBeNull();
-        expect(nested.deferred!.missingDf).toBe(DF.DF_INACTIVE_GLYPH);
-        expect(g.getCell(5, 5)!.layers[L.DUNGEON]).toBe(C.MACHINE_GLYPH); // 地形未动
+        expect(nested.deferred).toBeNull();
+        expect(g.getCell(8, 8)!.layers[L.DUNGEON]).toBe(C.MACHINE_GLYPH_INACTIVE);
+        expect(g.getCell(5, 5)!.layers[L.DUNGEON]).toBe(C.MACHINE_GLYPH_INACTIVE);
     });
 
     it('D3 对抗：嵌套晋升不带电——activateMachine 内的 promoteTile 不再反向激活（wiredBranchHit=false）', () => {

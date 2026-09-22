@@ -602,7 +602,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         //   DF_SWAMP :904、DF_SWAMP_MUD :905。
         // 来源三类：13 条目标蓝图 feature 的 DF 列 / 19 条新地形的三链字段 /
         // 上述两者的 subsequentDF 链展开。逐条字段钉死在 v_2b_7_features 的 B 组。
-        expect(keys.length).toBe(133);
+        expect(keys.length).toBe(134);
         expect(DF.DF_SHOW_TRAPDOOR_HALO, 'V-2b-2b：CE Rogue.h:1487（Globals.c:627）').toBe(16);
         expect(DF.DF_SHOW_TRAPDOOR, 'V-2b-2b：TRAP_DOOR_HIDDEN.discoverType 的载体（Rogue.h:1488，Globals.c:628）').toBe(17);
         expect(DF.DF_WOODEN_BARRICADE_BURN, 'V-2b-2b：WOODEN_BARRICADE.fireType 的载体（Rogue.h:1669，Globals.c:825）').toBe(156);
@@ -795,7 +795,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
             'V-2b-7：DF 特征系统轮 22 条入闭包（13 条目标蓝图 feature 的 DF 列' +
             '（现由 blueprints.json 数据驱动入起点）+ 19 条新地形的三链字段 + ' +
             '两条链展开环节 DF_EMBERS_PATCH/DF_SWAMP_MUD→DF_SWAMP_WATER）' +
-            '——68→90→99；V-2b-9b 环境链与 DF_PUDDLE 闭包 →133').toBe(133);
+            '——68→90→99；V-2b-9b 环境链与 DF_PUDDLE 闭包 →133').toBe(134);
     });
 
     it('E3 字段抽查：BRIDGE_FALL_PREP 的 prop/200/100、BRIDGE_FIRE 的描述与 tile=0、其余代表条目', () => {
@@ -980,7 +980,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // DF_PORTAL_ACTIVATE→PORTAL_LIGHT :725、DF_SACRIFICE_ALTAR→SACRIFICE_ALTAR
         // :802、DF_COFFIN_BURSTS→COFFIN_OPEN :807、DF_WORM_TUNNEL_MARKER_ACTIVE
         // →WORM_TUNNEL_MARKER_ACTIVE :880）。另 15 条带完整 tile 不入列。
-        expect(DF_MISSING_TILES.length).toBe(32); // V-2b-9c: seven completed carriers, 39 -> 32.
+        expect(DF_MISSING_TILES.length).toBe(30); // V-2b-9d: glyph and stench carriers, 32 -> 30.
         // 登记条目确实都是 tile=null，且抛错带 CE tile 名。
         for (const id of DF_MISSING_TILES) {
             expect(DUNGEON_FEATURE_CATALOG[id]!.tile, `DF#${id} 应为 null tile`).toBeNull();

@@ -193,7 +193,7 @@ describe('V-2b-5 A：七个休眠载体地形 ≡ CE Globals.c 原行', () => {
         // V-2b-7：29 → 31（摘 5 增 7，DF 特征系统轮——RUBBLE/LUMINESCENT_FUNGUS
         // 两条地形落地摘除四条 RUBBLE 链 DF 与 DF_LUMINESCENT_FUNGUS，新增
         // 七条 tile 无 web 载体的新条目）。
-        expect(DF_MISSING_TILES).toHaveLength(32); // V-2b-9c: seven completed carriers, 39 -> 32.
+        expect(DF_MISSING_TILES).toHaveLength(30); // V-2b-9d: glyph and stench carriers, 32 -> 30.
         expect(DF_MISSING_TILES).toContain(DF.DF_WALL_CRACK);
         expect(DF_MISSING_TILES).toContain(DF.DF_CRACKING_STATUE);
         expect(DF_MISSING_TILES, '带完整 tile 的条目不得混进缺 tile 名单').not.toContain(DF.DF_ALTAR_INERT);

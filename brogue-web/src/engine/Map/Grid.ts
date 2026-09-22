@@ -250,6 +250,7 @@ export enum TerrainType {
     MACHINE_CHASM_EDGE, PUDDLE,
     // V-2b-9c: complete mud / darkness / electricity promotion carriers.
     MACHINE_MUD_DORMANT, DARK_FLOOR_DARKENING, DARK_FLOOR, ECTOPLASM, HAUNTED_TORCH_TRANSITIONING, HAUNTED_TORCH, ELECTRIC_CRYSTAL_ON,
+    MACHINE_GLYPH_INACTIVE, STENCH_SMOKE_GAS,
 }
 
 export enum LightType {
@@ -488,6 +489,8 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.HAUNTED_TORCH_TRANSITIONING]: 0,
     [TerrainType.HAUNTED_TORCH]: 0,
     [TerrainType.ELECTRIC_CRYSTAL_ON]: 0,
+    [TerrainType.MACHINE_GLYPH_INACTIVE]: 42,
+    [TerrainType.STENCH_SMOKE_GAS]: 35,
 };
 
 /**
@@ -729,6 +732,8 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     [TerrainType.HAUNTED_TORCH_TRANSITIONING]: DungeonLayer.DUNGEON,
     [TerrainType.HAUNTED_TORCH]: DungeonLayer.DUNGEON,
     [TerrainType.ELECTRIC_CRYSTAL_ON]: DungeonLayer.DUNGEON,
+    [TerrainType.MACHINE_GLYPH_INACTIVE]: DungeonLayer.DUNGEON,
+    [TerrainType.STENCH_SMOKE_GAS]: DungeonLayer.GAS,
 };
 
 /**

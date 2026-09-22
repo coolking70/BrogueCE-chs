@@ -210,7 +210,11 @@ describe('V-1b 前提自检', () => {
             { bpId: 'ce_38_environment', alt1: true, alt2: false, item: 'potion_of_levitation' },
             { bpId: 'ce_39_environment', alt1: true, alt2: false, item: 'potion_of_levitation' },
             { bpId: 'reward_pedestal_consumable', alt1: true, alt2: false, item: 'potion_of_life' },
+            { bpId: 'reward_goblin_warren', alt1: true, alt2: false, item: 'potion_of_life' },
+            { bpId: 'reward_sentinel_sanctuary', alt1: true, alt2: false, item: 'potion_of_life' },
             { bpId: 'reward_pedestal_consumable', alt1: true, alt2: false, item: 'scroll_of_enchantment' },
+            { bpId: 'reward_goblin_warren', alt1: true, alt2: false, item: 'scroll_of_enchantment' },
+            { bpId: 'reward_sentinel_sanctuary', alt1: true, alt2: false, item: 'scroll_of_enchantment' },
             { bpId: 'key_poison_gas', alt1: true, alt2: false, item: 'scroll_of_teleportation' },
         ]);
     });

@@ -3,14 +3,17 @@
  * Porting Brogue's procedural dungeon generation logic
  */
 
-import { Grid, TerrainType, DCOLS, DROWS } from '../Map/Grid';
+import { Grid, TerrainType, DungeonLayer, DCOLS, DROWS } from '../Map/Grid';
+import { cellTerrainFlags, cellTerrainMechFlags } from '../Map/DungeonFeature';
+import { T_PATHING_BLOCKER, T_OBSTRUCTS_PASSABILITY, TM_IS_SECRET, TM_PROMOTES_WITH_KEY, TM_CONNECTS_LEVEL } from '../Map/TerrainCatalog';
+import { DijkstraMap } from '../Map/Pathfinding';
 import { lakeDisruptsPassability, terrainAllowsMove } from '../Map/Connectivity';
 import { fillLakes, cleanUpLakeBoundaries, buildABridge } from '../Map/LakeSystem';
 import {
     removeDiagonalOpenings, finishDoors, finishWalls,
     type DiagonalFinishStats, type DoorFinishStats, type WallFinishStats,
 } from '../Map/WallDoorFinish';
-import { addLoops, applyLoopDoorSites, MINIMUM_PATHING_DISTANCE, LOOP_DOOR_PERCENT, DEEPEST_LEVEL } from '../Map/LoopMap';
+import { addLoops, addLoopsToWorkGrid, applyLoopDoorSites, MINIMUM_PATHING_DISTANCE, LOOP_DOOR_PERCENT, DEEPEST_LEVEL } from '../Map/LoopMap';
 import { runAutogenerators, type AutoGeneratorRunStats } from '../Map/AutoGenerator';
 import { rng } from '../Random';
 import { RoomType, ROOM_TYPE_COUNT } from '../../types';
@@ -31,15 +34,19 @@ const LAKE_PLACEMENT_ATTEMPTS = 20;
  * roomFrequencies 下标 = RoomType（Globals.c:935-943 的注释）：
  *   0 十字房 / 1 对称小十字 / 2 小房间 / 3 圆房 / 4 碎块房 /
  *   5 洞穴 / 6 大洞窟（满层）/ 7 入口房。
- * DP_GOBLIN_WARREN / DP_SENTINEL_SANCTUARY（机器专用剖面）本轮不移植——
- * web 的机器走数据驱动的 BlueprintEngine，与 CE addMachines 不同源。
+ * 机器专用剖面只供 redesignInterior 使用，不经过深度调整。
  */
 export const DUNGEON_PROFILE_CATALOG = {
     /** Globals.c:946 `{{2, 1, 1, 1, 7, 1, 0, 0}, 10}` */
     DP_BASIC: { roomFrequencies: [2, 1, 1, 1, 7, 1, 0, 0], corridorChance: 10 } as DungeonProfile,
     /** Globals.c:947 `{{10, 0, 0, 3, 7, 10, 10, 0}, 0}` */
     DP_BASIC_FIRST_ROOM: { roomFrequencies: [10, 0, 0, 3, 7, 10, 10, 0], corridorChance: 0 } as DungeonProfile,
+    /** Globals.c:949 */
+    DP_GOBLIN_WARREN: { roomFrequencies: [0, 0, 1, 0, 0, 0, 0, 0], corridorChance: 0 } as DungeonProfile,
+    /** Globals.c:950 */
+    DP_SENTINEL_SANCTUARY: { roomFrequencies: [0, 5, 0, 1, 0, 0, 0, 0], corridorChance: 0 } as DungeonProfile,
 } as const;
+export type DungeonProfileId = keyof typeof DUNGEON_PROFILE_CATALOG;
 
 /** CE gameConst->amuletLevel = 26（web 口径即 LoopMap.DEEPEST_LEVEL：护符层）。 */
 const AMULET_LEVEL = DEEPEST_LEVEL;
@@ -236,8 +243,80 @@ export class Architect {
     public autogenNonMachine: AutoGeneratorRunStats | null = null;
     public autogenMachine: AutoGeneratorRunStats | null = null;
 
-    constructor() {
-        this.grid = new Grid(DCOLS, DROWS);
+    constructor(grid: Grid = new Grid(DCOLS, DROWS)) {
+        this.grid = grid;
+    }
+
+    /** CE Architect.c:734-854. Mutates both terrain and the caller's interior.
+     * Dynamic orphan storage avoids CE's unchecked pos[20] stack overflow. */
+    public redesignInterior(interior: Set<number>, origin: Pos, profile: DungeonProfileId): void {
+        const key = (x: number, y: number): number => y * DCOLS + x;
+        const work = RoomBuilder.createEmptyRoomGrid();
+        const orphans: Pos[] = [];
+        for (let x = 0; x < DCOLS; x++) {
+            for (let y = 0; y < DROWS; y++) {
+                if (interior.has(key(x, y))) {
+                    work[x]![y] = x === origin.x && y === origin.y ? 1 : 0;
+                } else {
+                    // CE cellIsPassableOrDoor (:48-55), using all four layers.
+                    const flags = cellTerrainFlags(this.grid, x, y);
+                    const passable = !(flags & T_PATHING_BLOCKER)
+                        || !!((flags & T_OBSTRUCTS_PASSABILITY)
+                            && (cellTerrainMechFlags(this.grid, x, y)
+                                & (TM_IS_SECRET | TM_PROMOTES_WITH_KEY | TM_CONNECTS_LEVEL)));
+                    work[x]![y] = passable ? 1 : -1;
+                    if (!passable) continue;
+                    for (const [dx, dy] of NB4) {
+                        const nx = x + dx, ny = y + dy;
+                        if (coordinatesAreInMap(nx, ny) && interior.has(key(nx, ny))
+                            && (nx !== origin.x || ny !== origin.y)) {
+                            orphans.push({ x: nx, y: ny });
+                            // CE :759-763: record the interior neighbor, but shield
+                            // THIS exterior cell; only the first neighbor is recorded.
+                            work[x]![y] = -1;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        this.attachRooms(work, DUNGEON_PROFILE_CATALOG[profile], 40, 40);
+
+        const scanner = new DijkstraMap(DCOLS, DROWS);
+        const pathing = RoomBuilder.createEmptyRoomGrid();
+        const costs = RoomBuilder.createEmptyRoomGrid();
+        for (const orphan of orphans) {
+            for (let x = 0; x < DCOLS; x++) for (let y = 0; y < DROWS; y++) {
+                const inside = interior.has(key(x, y));
+                pathing[x]![y] = inside && work[x]![y]! > 0 ? 0 : 30000;
+                costs[x]![y] = inside ? 1 : -2; // CE PDS_OBSTRUCTION
+            }
+            scanner.batchScan(pathing, costs, false);
+            let { x, y } = orphan;
+            while (pathing[x]![y]! > 0) {
+                const next = NB4.map(([dx, dy]) => ({ x: x + dx, y: y + dy }))
+                    .find(p => coordinatesAreInMap(p.x, p.y) && pathing[p.x]![p.y]! < pathing[x]![y]!);
+                // CE brogueAssert(dir < 4); do not loop forever on invalid interiors.
+                if (!next) throw new Error(`redesignInterior: unreachable orphan (${x},${y})`);
+                work[x]![y] = 1;
+                ({ x, y } = next);
+            }
+        }
+        addLoopsToWorkGrid(work, 10);
+        for (let x = 0; x < DCOLS; x++) for (let y = 0; y < DROWS; y++) {
+            if (!interior.has(key(x, y))) continue;
+            const value = work[x]![y]!;
+            if (value >= 0) {
+                this.grid.setTerrainLayer(x, y, DungeonLayer.SURFACE, TerrainType.NOTHING);
+                this.grid.setTerrainLayer(x, y, DungeonLayer.GAS, TerrainType.NOTHING);
+            }
+            if (value === 0) {
+                this.grid.setTerrainLayer(x, y, DungeonLayer.DUNGEON, TerrainType.GRANITE);
+                interior.delete(key(x, y));
+            } else if (value >= 1) {
+                this.grid.setTerrainLayer(x, y, DungeonLayer.DUNGEON, TerrainType.FLOOR);
+            }
+        }
     }
 
     /**

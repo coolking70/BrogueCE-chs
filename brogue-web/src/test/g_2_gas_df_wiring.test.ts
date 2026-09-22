@@ -409,13 +409,13 @@ describe('G-2 对抗⑦：未迁移气体只登记（载体盘点表的显式留
     // 其余四气体仍无载体，只登记的半边原样保留。原断言内容存档：
     // "ROT/STENCH/PARALYSIS/DARKNESS/HEALING 五气体无 tile 成员、
     // 无 GasType 成员、无 DF 条目"。
-    it('ROT/STENCH/DARKNESS/HEALING 四气体无 tile 载体、无 GasType 成员、无 DF 条目（G-3 翻转：PARALYSIS 出列）', () => {
+    it('ROT/DARKNESS/HEALING 三气体无 tile 载体、无 GasType 成员、无 DF 条目（G-3 翻转：PARALYSIS 出列）', () => {
         // "只登记"的形态（本断言即登记）：这四种气体不迁 tile——
         // 它们没有 TerrainType/GasType 成员、不在目录里。接成空转链的
         // 错误实现（tile 迁了但无生产写入点、或 DF 条目 tile=null 挂着
         // 无人触发）在这组结构性断言下无所遁形。
         const names = (TerrainType as unknown as Record<string, unknown>);
-        for (const n of ['ROT_GAS', 'STENCH_SMOKE_GAS', 'DARKNESS_CLOUD', 'HEALING_CLOUD']) {
+        for (const n of ['ROT_GAS', 'DARKNESS_CLOUD', 'HEALING_CLOUD']) {
             expect(names[n], `${n} 不得有 tile 成员（载体盘点：无 web 载体，只登记）`).toBeUndefined();
         }
         const gasNames = (GasType as unknown as Record<string, unknown>);
@@ -427,6 +427,10 @@ describe('G-2 对抗⑦：未迁移气体只登记（载体盘点表的显式留
         expect(names['GAS_FIRE']).toBeDefined();
         expect(isGasTerrain(C.PARALYSIS_GAS), 'G-3：PARALYSIS_GAS 已迁，载体 = 麻痹药水').toBe(true);
         expect(names['PARALYSIS_GAS']).toBeDefined();
+        // V-2b-9d: MUD_FLOOR fire now produces a real stench gas tile.
+        expect(isGasTerrain(C.STENCH_SMOKE_GAS)).toBe(true);
+        expect(DUNGEON_FEATURE_CATALOG[DF.DF_STENCH_SMOLDER]!.tile).toBe(C.STENCH_SMOKE_GAS);
+        expect(() => catalogFeature(DF.DF_STENCH_SMOLDER)).not.toThrow();
         // 24 条 GAS 目录里无载体的条目不入 DF 目录（登记 ≠ 抄目录）：
         // DF_ROT_GAS_*（32/41）、DF_DEWAR_*（71-74）、DF_STENCH_*（217/218）、
         // DF_DARKNESS_POTION（134）、DF_BLOODFLOWER_POD_BURST（70）等仍不在。
@@ -479,7 +483,7 @@ describe('G-2 对抗⑦：未迁移气体只登记（载体盘点表的显式留
         // V-2b-7：29 → 31（摘 5 增 7，DF 特征系统轮——RUBBLE/LUMINESCENT_FUNGUS
         // 两条地形落地摘除四条 RUBBLE 链 DF 与 DF_LUMINESCENT_FUNGUS，新增
         // 七条 tile 无 web 载体的新条目）。
-        expect(DF_MISSING_TILES).toHaveLength(32); // V-2b-9c: seven completed carriers, 39 -> 32.
+        expect(DF_MISSING_TILES).toHaveLength(30); // V-2b-9d: glyph and stench carriers, 32 -> 30.
         const f = catalogFeature(DF.DF_EXPLOSION_FIRE);
         expect(f.tile).toBe(C.GAS_EXPLOSION);
         expect(f.startProbability).toBe(60);

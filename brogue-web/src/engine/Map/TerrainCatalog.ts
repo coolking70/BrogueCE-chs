@@ -651,12 +651,12 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
     // CE MACHINE_GLYPH，Globals.c:404：机器符文（24/25 号障碍机器的触发器，
     // TM_PROMOTES_ON_PLAYER_ENTRY——玩家踏入晋升 DF_INACTIVE_GLYPH，随即走
     // wired 分支通电）。零 flags；fireType 0；glowLight CE 原列 GLYPH_LIGHT_DIM
-    // ——光照目录不在本轮授权清单，登记不迁移（C-7 行同款处置）。
+    // （V-2b-9d 接入既有光照目录）。
     [TerrainType.MACHINE_GLYPH]: e(
         0,
         TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_PROMOTES_ON_PLAYER_ENTRY |
         TM_VISUALLY_DISTINCT,
-        0, '', '', 'DF_INACTIVE_GLYPH', 0
+        0, '', '', 'DF_INACTIVE_GLYPH', 0, false, LightKind.GLYPH_LIGHT_DIM
     ),
 
     // CE PORTCULLIS_CLOSED，Globals.c:339：落下的铁闸（18/22 号的闸门堵门体，
@@ -1135,6 +1135,9 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
     [TerrainType.FLOOR_FLOODABLE]: e(0, 0, 0, 'DF_PLAIN_FIRE', '', '', 0),
     [TerrainType.CHASM_WITH_HIDDEN_BRIDGE]: e(T_AUTO_DESCENT, TM_STAND_IN_TILE, 0, 'DF_PLAIN_FIRE', '', '', 0),
     [TerrainType.LAVA_RETRACTABLE]: e(T_LAVA_INSTA_DEATH, TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_ALLOWS_SUBMERGING, 0, 'DF_OBSIDIAN', '', 'DF_RETRACTING_LAVA', 0, false, LightKind.LAVA_LIGHT),
+    // V-2b-9d: CE Globals.c:405/505; glyph returns to its active state every turn.
+    [TerrainType.MACHINE_GLYPH_INACTIVE]: e(0, TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT, 0, '', '', 'DF_ACTIVE_GLYPH', 10000, false, LightKind.GLYPH_LIGHT_BRIGHT),
+    [TerrainType.STENCH_SMOKE_GAS]: e(T_CAUSES_NAUSEA, TM_STAND_IN_TILE | TM_GAS_DISSIPATES_QUICKLY, 0, 'DF_GAS_FIRE', '', '', 0),
     [TerrainType.MUD_FLOOR]: e(T_IS_FLAMMABLE, TM_VANISHES_UPON_PROMOTION, 0, 'DF_STENCH_SMOLDER', '', '', 0),
     [TerrainType.MUD_WALL]: e(T_OBSTRUCTS_EVERYTHING, TM_STAND_IN_TILE, 0, 'DF_PLAIN_FIRE', '', '', 0),
     [TerrainType.MUD_DOORWAY]: e(T_OBSTRUCTS_VISION | T_OBSTRUCTS_GAS | T_IS_FLAMMABLE, TM_STAND_IN_TILE | TM_VISUALLY_DISTINCT, 50, 'DF_EMBERS', '', '', 0),

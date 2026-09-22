@@ -371,6 +371,8 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.HAUNTED_TORCH_TRANSITIONING]: L.DUNGEON,
             [C.HAUNTED_TORCH]: L.DUNGEON,
             [C.ELECTRIC_CRYSTAL_ON]: L.DUNGEON,
+            [C.MACHINE_GLYPH_INACTIVE]: L.DUNGEON,
+            [C.STENCH_SMOKE_GAS]: L.GAS,
         });
         expect(DRAW_PRIORITY).toEqual({
             [C.NOTHING]: 100, [C.GRANITE]: 0, [C.FLOOR]: 95, [C.WALL]: 0,
@@ -521,6 +523,8 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.HAUNTED_TORCH_TRANSITIONING]: 0,
             [C.HAUNTED_TORCH]: 0,
             [C.ELECTRIC_CRYSTAL_ON]: 0,
+            [C.MACHINE_GLYPH_INACTIVE]: 42,
+            [C.STENCH_SMOKE_GAS]: 35,
         });
     });
 });
@@ -637,6 +641,7 @@ describe('C-4a-0 留痕（本轮明确不做的事，断言现状）', () => {
         // 若 setTerrainLayer 出现新的调用文件，把文件加进下方 ALLOWLIST
         // 并在任务报告里说明，其余任何出现都翻红（越界守卫保留）。
         const ALLOWLIST = new Set([
+            'engine/Generator/Architect.ts', // V-2b-9d: CE redesignInterior layer writeback (:837-853)
             'engine/Map/DungeonFeature.ts', // C-4b：fillSpawnMap / DFF_CLEAR_* 跨层清理
             'engine/Map/Promotion.ts',      // C-4c：promoteTile 的 TM_VANISHES_UPON_PROMOTION 清层（CE Time.c:1258-1261 按层写）
             'engine/Map/AutoGenerator.ts',  // C-6：runAutogenerators 的 terrain 分支

@@ -43,6 +43,7 @@ import { catalogFeature } from '../Map/DungeonFeature';
 import { rng } from '../Random';
 import type { Pos } from '../../types';
 import blueprintData from '../../data/blueprints.json';
+import { Architect, type DungeonProfileId } from './Architect';
 
 /** 格键（CE pmap 的 DCOLS×DROWS 线性下标；与 backupLevel/impregnableCells 同一口径）。 */
 const cellKey = (x: number, y: number): number => y * DCOLS + x;
@@ -81,6 +82,8 @@ export interface FeatureDef {
     featureDF?: string;
     itemCategory?: string;
     itemId?: string;
+    /** Literal CE item flags; kind auto-identification is a Game consumer concern. */
+    itemFlags?: string[];
     monsterId?: string;
     /**
      * V-2b-5：CE `machineFeature.hordeFlags`（Rogue.h:2629 一带，蓝图表第 10 列
@@ -119,6 +122,8 @@ export interface BlueprintDef {
     features: FeatureDef[];
     /** CE machineTypes / blueprintCatalog numeric id; present for forced autogenerators. */
     ceBlueprintId?: number;
+    /** CE blueprint.dungeonProfileType; absent/0 means DP_BASIC. */
+    dungeonProfile?: DungeonProfileId;
 }
 
 /** Result of building a machine, consumed by Game.ts populateLevel */
@@ -548,7 +553,8 @@ export const BP_REWARD = 'BP_REWARD';
 // V-2b-2b：蓝图级内部改造旗标（CE Rogue.h:2640-2654 的 Fl(2)/Fl(4)/Fl(5)/
 // Fl(6)/Fl(8)/Fl(13)；消费点 = applyBlueprint 开头的 prepareInterior 段与
 // 尾部的 NO_INTERIOR_FLAG 段， Architect.c:858-945 / :1691-1702）。
-// BP_MAXIMIZE_INTERIOR / BP_REDESIGN_INTERIOR 本轮不做（任务书 §2/§7）。
+export const BP_MAXIMIZE_INTERIOR = 'BP_MAXIMIZE_INTERIOR';
+export const BP_REDESIGN_INTERIOR = 'BP_REDESIGN_INTERIOR';
 export const BP_OPEN_INTERIOR = 'BP_OPEN_INTERIOR';
 export const BP_PURGE_PATHING_BLOCKERS = 'BP_PURGE_PATHING_BLOCKERS';
 export const BP_PURGE_LIQUIDS = 'BP_PURGE_LIQUIDS';
@@ -1176,13 +1182,13 @@ export class BlueprintEngine {
         };
 
         // 1. prepareInteriorWithMachineFlags（CE Architect.c:858-945）逐段直译，
-        //    段序照 CE：OPEN → PURGE_INTERIOR → PURGE_PATHING_BLOCKERS →
-        //    PURGE_LIQUIDS → SURROUND_WITH_WALLS →（REDESIGN 本轮不做）→
-        //    IMPREGNABLE。全段零 RNG。**先于 machineNumber 标记**（CE :1225
+        //    段序照 CE：MAXIMIZE/OPEN → PURGE_INTERIOR → PURGE_PATHING_BLOCKERS →
+        //    PURGE_LIQUIDS → SURROUND_WITH_WALLS → REDESIGN →
+        //    IMPREGNABLE。REDESIGN 消费 RNG。**先于 machineNumber 标记**（CE :1225
         //    先于 :1231——OPEN 的扩张判据与 SURROUND 的邻格 machineNumber
         //    检查都依赖该顺序）。
-        if (flags.has(BP_OPEN_INTERIOR)) {
-            this.expandMachineInterior(interior, 4); // CE :864-865（MAXIMIZE=1 本轮不做）
+        if (flags.has(BP_MAXIMIZE_INTERIOR) || flags.has(BP_OPEN_INTERIOR)) {
+            this.expandMachineInterior(interior, flags.has(BP_MAXIMIZE_INTERIOR) ? 1 : 4);
         }
 
         // CE :869-881：清空内部——DUNGEON 层 FLOOR、其余层 NOTHING
@@ -1234,6 +1240,11 @@ export class BlueprintEngine {
                     this.grid.setTerrain(nx, ny, TerrainType.WALL, '#', 0x555566);
                 }
             }
+        }
+
+        // CE :934-936. This shrinks interior before marking or placing features.
+        if (flags.has(BP_REDESIGN_INTERIOR)) {
+            new Architect(this.grid).redesignInterior(interior, origin, bp.dungeonProfile ?? 'DP_BASIC');
         }
 
         // CE :938-958：interior（gate 位豁免）与其全部图内、非 interior、
@@ -1913,7 +1924,7 @@ export class BlueprintEngine {
     /**
      * V-2b-2b：CE expandMachineInterior（Architect.c:607-674）的直译——
      * BP_OPEN_INTERIOR（minimumInteriorNeighbors=4）与 BP_MAXIMIZE_INTERIOR
-     * （=1，本轮无载体）共用的内部扩张器。反复扫描直到不动点：
+     * （=1）共用的内部扩张器。反复扫描直到不动点：
      *   候选格（CE :615-617）= 1..边界内、自己是 T_PATHING_BLOCKER（墙/水/
      *   陷阱等阻断寻路的地形）、machineNumber == 0（不得吞并其他机器——
      *   本机标记尚未写上，applyBlueprint 的段序保证）；

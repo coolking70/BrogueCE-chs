@@ -199,7 +199,7 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         //（Globals.c:404）、PILOT_LIGHT_DORMANT=TORCH_LIGHT（:342）——两枚
         // LightKind 光照目录无成员且 LightCatalog 不在 V-2b-3 授权清单，登记
         // 不迁移（web glowLight 取 NO_LIGHT=0）；其余七条 CE 原列即 NO_LIGHT。
-        [TerrainType.MACHINE_GLYPH]: 0,                 // Globals.c:404 原列 GLYPH_LIGHT_DIM，登记不迁移
+        [TerrainType.MACHINE_GLYPH]: LightKind.GLYPH_LIGHT_DIM,                 // Globals.c:404 原列 GLYPH_LIGHT_DIM，V-2b-9d 接线
         [TerrainType.PORTCULLIS_CLOSED]: 0,             // Globals.c:339 NO_LIGHT
         [TerrainType.WORM_TUNNEL_OUTER_WALL]: 0,        // Globals.c:570 NO_LIGHT
         [TerrainType.WALL_LEVER_HIDDEN]: 0,             // Globals.c:347 NO_LIGHT
@@ -294,6 +294,8 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         [TerrainType.ECTOPLASM]: LightKind.ECTOPLASM_LIGHT,
         [TerrainType.HAUNTED_TORCH_TRANSITIONING]: LightKind.TORCH_LIGHT,
         [TerrainType.HAUNTED_TORCH]: LightKind.HAUNTED_TORCH_LIGHT,
+        [TerrainType.MACHINE_GLYPH_INACTIVE]: LightKind.GLYPH_LIGHT_BRIGHT,
+        [TerrainType.STENCH_SMOKE_GAS]: 0,
         [TerrainType.ELECTRIC_CRYSTAL_ON]: LightKind.CRYSTAL_WALL_LIGHT,
     };
 
@@ -305,7 +307,7 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         }
     });
 
-    it('非零恰 32 个（V-2b-9c 增五个发光载体），且都指向有载体的目录条目', () => {
+    it('非零恰 34 个（V-2b-9d 接通两个符文光载体），且都指向有载体的目录条目', () => {
         const nonzero = Object.entries(TERRAIN_FLAGS)
             .filter(([, v]) => v.glowLight !== LightKind.NO_LIGHT)
             .map(([k]) => Number(k) as TerrainType)
@@ -337,6 +339,7 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
             TerrainType.LAVA_RETRACTING,
             TerrainType.DARK_FLOOR, TerrainType.ECTOPLASM,
             TerrainType.HAUNTED_TORCH_TRANSITIONING, TerrainType.HAUNTED_TORCH,
+            TerrainType.MACHINE_GLYPH, TerrainType.MACHINE_GLYPH_INACTIVE,
             TerrainType.ELECTRIC_CRYSTAL_ON,
         ].sort((a, b) => a - b));
         for (const t of nonzero) {
@@ -716,6 +719,7 @@ describe('C-7 载体边界留痕', () => {
         // 注意仍**未**兑现的：SUNLIGHT_POOL/DARKNESS_PATCH/ALGAE 系（无 tile）。
         'FUNGUS_LIGHT', 'DEMONIC_STATUE_LIGHT',
         'DARKNESS_CLOUD_LIGHT', 'ECTOPLASM_LIGHT', 'HAUNTED_TORCH_LIGHT',
+        'GLYPH_LIGHT_DIM', 'GLYPH_LIGHT_BRIGHT', // V-2b-9d: active/inactive glyph carriers.
     ]);
 
     function* prodTsFiles(dir: string): Generator<string> {

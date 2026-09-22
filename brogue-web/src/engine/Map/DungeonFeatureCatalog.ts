@@ -267,7 +267,8 @@ export enum DF {
     DF_DARKENING_FLOOR = 194, DF_DARK_FLOOR = 195,
     DF_HAUNTED_TORCH_TRANSITION = 196, DF_HAUNTED_TORCH = 197,
     DF_ELECTRIC_CRYSTAL_ON = 200, DF_TURRET_LEVER = 201,
-    DF_STENCH_SMOLDER = 218
+    DF_STENCH_SMOLDER = 218,
+    DF_ACTIVE_GLYPH = 90
 }
 
 /** 目录条目 = CE 结构体的 web 投影（messageDisplayed 除外——它依赖玩家
@@ -719,11 +720,9 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     },
 
     // {MACHINE_GLYPH_INACTIVE, DUNGEON, 0, 0, 0}（:726）—— 发亮符文
-    //（MACHINE_GLYPH.promoteType 的落点；tile MACHINE_GLYPH_INACTIVE web 无，
-    // 登记——glyph 通电后自身变色的视觉链留后续轮次，wired 激活不受影响：
-    // promoteTile 的 wired 分支在缓办之外照常执行，CE :1271 无前置守卫）。
+    // V-2b-9d：闭合 MACHINE_GLYPH → INACTIVE → ACTIVE 循环。
     [DF.DF_INACTIVE_GLYPH]: {
-        id: DF.DF_INACTIVE_GLYPH, ceLine: 726, ceTile: 'MACHINE_GLYPH_INACTIVE', tile: null,
+        id: DF.DF_INACTIVE_GLYPH, ceLine: 726, ceTile: 'MACHINE_GLYPH_INACTIVE', tile: TerrainType.MACHINE_GLYPH_INACTIVE,
         layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: '', lightFlare: '', flashColor: '', effectRadius: 0,
@@ -1391,7 +1390,8 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     [DF.DF_HAUNTED_TORCH]: df(197, 888, 'HAUNTED_TORCH', TerrainType.HAUNTED_TORCH, DungeonLayer.DUNGEON, 0, 0),
     [DF.DF_ELECTRIC_CRYSTAL_ON]: { ...df(200, 895, 'ELECTRIC_CRYSTAL_ON', TerrainType.ELECTRIC_CRYSTAL_ON, DungeonLayer.DUNGEON, 0, 0, 0, '', null, null, 'the crystal absorbs the electricity and begins to glow.'), lightFlare: 'CHARGE_FLASH_LIGHT' },
     [DF.DF_TURRET_LEVER]: df(201, 896, 'WALL', TerrainType.WALL, DungeonLayer.DUNGEON, 0, 0, DFF_ACTIVATE_DORMANT_MONSTER, '', null, null, 'the wall above the lever shifts to reveal a spark turret!'),
-    [DF.DF_STENCH_SMOLDER]: df(218, 930, 'STENCH_SMOKE_GAS', null, DungeonLayer.GAS, 50, 0, 0, '', null, DF.DF_PLAIN_FIRE),
+    [DF.DF_STENCH_SMOLDER]: df(218, 931, 'STENCH_SMOKE_GAS', TerrainType.STENCH_SMOKE_GAS, DungeonLayer.GAS, 50, 0, 0, '', null, DF.DF_EMBERS),
+    [DF.DF_ACTIVE_GLYPH]: df(90, 727, 'MACHINE_GLYPH', TerrainType.MACHINE_GLYPH, DungeonLayer.DUNGEON, 0, 0, 0, '', null, null),
 };
 
 /** 登记"CE 有 tileType 而 web 没有地形"的目录条目 id 清单
@@ -1413,8 +1413,7 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
  *  本轮**未入目录**——载体盘点后无 web 载体的气体只登记不迁移（报告
  *  载体盘点表），故不在本清单。 */
 export const DF_MISSING_TILES: readonly DF[] = [
-    // V-2b-9c: seven carriers above are now complete. Mud-floor stench is unrelated.
-    DF.DF_STENCH_SMOLDER,
+    // V-2b-9d: inactive glyph and mud-floor stench carriers are complete.
     DF.DF_TRAMPLED_FOLIAGE,        // TRAMPLED_FOLIAGE
     DF.DF_ACTIVE_BRIMSTONE,        // ACTIVE_BRIMSTONE
     DF.DF_BRIMSTONE_FIRE,          // BRIMSTONE_FIRE
@@ -1429,7 +1428,6 @@ export const DF_MISSING_TILES: readonly DF[] = [
     //    GAS_TRAP_PARALYSIS、DF_VENT_SPEW_METHANE → METHANE_GAS、
     //    DF_PARALYSIS_VENT_SPEW → PARALYSIS_GAS）不入列。
     // DF.DF_XXX 已于 V-2b-7 摘除（RUBBLE / LUMINESCENT_FUNGUS 地形落地）——见下方块注
-    DF.DF_INACTIVE_GLYPH,          // MACHINE_GLYPH_INACTIVE（通电符文的变色体）
     DF.DF_REVEAL_LEVER,            // WALL_LEVER（显形后的带线墙杆——18 号激活
                                    // 链的载体，激活轮随新地形落地重核）
     DF.DF_MEDIUM_HOLE,             // TRAP_DOOR（同 DF_SHOW_TRAPDOOR 所缺）

@@ -5593,5 +5593,346 @@
                 ]
             }
         ]
+    },
+    {
+        "id": "reward_goblin_warren",
+        "ceBlueprintId": 13,
+        "name": "Goblin warren",
+        "depthRange": [
+            5,
+            15
+        ],
+        "roomSize": [
+            100,
+            200
+        ],
+        "frequency": 15,
+        "category": "reward",
+        "dungeonProfile": "DP_GOBLIN_WARREN",
+        "flags": [
+            "BP_ROOM",
+            "BP_REWARD",
+            "BP_MAXIMIZE_INTERIOR",
+            "BP_REDESIGN_INTERIOR"
+        ],
+        "features": [
+            {
+                "terrain": "MUD_FLOOR",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    0,
+                    0
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 0,
+                "flags": [
+                    "MF_EVERYWHERE"
+                ]
+            },
+            {
+                "terrain": "MUD_DOORWAY",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_BUILD_AT_ORIGIN"
+                ]
+            },
+            {
+                "terrain": "MUD_WALL",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 100,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_BUILD_IN_WALLS",
+                    "MF_EVERYWHERE"
+                ]
+            },
+            {
+                "terrain": "PEDESTAL",
+                "layer": "DUNGEON",
+                "itemCategory": "SCROLL",
+                "itemId": "scroll_of_enchantment",
+                "itemFlags": [
+                    "ITEM_KIND_AUTO_ID"
+                ],
+                "monsterId": "goblin_warlord",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_MONSTER_SLEEPING",
+                    "MF_ALTERNATIVE",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_FAR_FROM_ORIGIN"
+                ]
+            },
+            {
+                "terrain": "PEDESTAL",
+                "layer": "DUNGEON",
+                "itemCategory": "POTION",
+                "itemId": "potion_of_life",
+                "itemFlags": [
+                    "ITEM_KIND_AUTO_ID"
+                ],
+                "monsterId": "goblin_warlord",
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_MONSTER_SLEEPING",
+                    "MF_ALTERNATIVE",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_FAR_FROM_ORIGIN"
+                ]
+            },
+            {
+                "hordeFlags": [
+                    "HORDE_MACHINE_GOBLIN_WARREN"
+                ],
+                "instanceCount": [
+                    5,
+                    8
+                ],
+                "minimumInstanceCount": 5,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_GENERATE_HORDE",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_MONSTER_SLEEPING"
+                ]
+            },
+            {
+                "itemCategory": "WEAPON|ARMOR",
+                "instanceCount": [
+                    2,
+                    3
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            },
+            {
+                "featureDF": "DF_HAY",
+                "instanceCount": [
+                    10,
+                    15
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            },
+            {
+                "featureDF": "DF_JUNK",
+                "instanceCount": [
+                    7,
+                    12
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            }
+        ]
+    },
+    {
+        "id": "reward_sentinel_sanctuary",
+        "ceBlueprintId": 14,
+        "name": "Sentinel sanctuary",
+        "depthRange": [
+            10,
+            23
+        ],
+        "roomSize": [
+            100,
+            200
+        ],
+        "frequency": 15,
+        "category": "reward",
+        "dungeonProfile": "DP_SENTINEL_SANCTUARY",
+        "flags": [
+            "BP_ROOM",
+            "BP_REWARD",
+            "BP_MAXIMIZE_INTERIOR",
+            "BP_REDESIGN_INTERIOR"
+        ],
+        "features": [
+            {
+                "terrain": "MARBLE_FLOOR",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    0,
+                    0
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 0,
+                "flags": [
+                    "MF_EVERYWHERE"
+                ]
+            },
+            {
+                "terrain": "CRYSTAL_WALL",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    0,
+                    0
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 0,
+                "flags": [
+                    "MF_BUILD_IN_WALLS",
+                    "MF_EVERYWHERE"
+                ]
+            },
+            {
+                "terrain": "PEDESTAL",
+                "layer": "DUNGEON",
+                "itemCategory": "SCROLL",
+                "itemId": "scroll_of_enchantment",
+                "itemFlags": [
+                    "ITEM_KIND_AUTO_ID"
+                ],
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_ALTERNATIVE",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_FAR_FROM_ORIGIN"
+                ]
+            },
+            {
+                "terrain": "PEDESTAL",
+                "layer": "DUNGEON",
+                "itemCategory": "POTION",
+                "itemId": "potion_of_life",
+                "itemFlags": [
+                    "ITEM_KIND_AUTO_ID"
+                ],
+                "instanceCount": [
+                    1,
+                    1
+                ],
+                "minimumInstanceCount": 1,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_ALTERNATIVE",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY",
+                    "MF_FAR_FROM_ORIGIN"
+                ]
+            },
+            {
+                "terrain": "MACHINE_GLYPH",
+                "layer": "DUNGEON",
+                "instanceCount": [
+                    30,
+                    35
+                ],
+                "minimumInstanceCount": 20,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_PERMIT_BLOCKING"
+                ]
+            },
+            {
+                "terrain": "STATUE_INERT",
+                "layer": "DUNGEON",
+                "monsterId": "sentinel",
+                "instanceCount": [
+                    3,
+                    5
+                ],
+                "minimumInstanceCount": 3,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            },
+            {
+                "terrain": "STATUE_INERT",
+                "layer": "DUNGEON",
+                "monsterId": "sentinel",
+                "instanceCount": [
+                    10,
+                    15
+                ],
+                "minimumInstanceCount": 8,
+                "personalSpace": 2,
+                "flags": [
+                    "MF_BUILD_IN_WALLS"
+                ]
+            },
+            {
+                "monsterId": "stone_guardian",
+                "instanceCount": [
+                    4,
+                    6
+                ],
+                "minimumInstanceCount": 4,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING"
+                ]
+            },
+            {
+                "monsterId": "winged_guardian",
+                "instanceCount": [
+                    0,
+                    2
+                ],
+                "minimumInstanceCount": 0,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_TREAT_AS_BLOCKING"
+                ]
+            },
+            {
+                "itemCategory": "SCROLL|POTION",
+                "instanceCount": [
+                    2,
+                    3
+                ],
+                "minimumInstanceCount": 2,
+                "personalSpace": 1,
+                "flags": [
+                    "MF_GENERATE_ITEM",
+                    "MF_TREAT_AS_BLOCKING",
+                    "MF_NOT_IN_HALLWAY"
+                ]
+            }
+        ]
     }
 ]

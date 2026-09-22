@@ -220,6 +220,8 @@ const EXPECTED_VISIBLE: Record<TerrainType, { char: string; color: string; bgCol
     [TerrainType.ECTOPLASM]: DEFAULT_LOOK, // V-2b-9c; dedicated visuals remain UI debt.
     [TerrainType.HAUNTED_TORCH_TRANSITIONING]: DEFAULT_LOOK, // V-2b-9c; dedicated visuals remain UI debt.
     [TerrainType.HAUNTED_TORCH]: DEFAULT_LOOK, // V-2b-9c; dedicated visuals remain UI debt.
+    [TerrainType.MACHINE_GLYPH_INACTIVE]: DEFAULT_LOOK, // V-2b-9d: UI debt as for existing glyph.
+    [TerrainType.STENCH_SMOKE_GAS]: DEFAULT_LOOK, // Gas overlay is separate.
     [TerrainType.ELECTRIC_CRYSTAL_ON]: DEFAULT_LOOK, // V-2b-9c; dedicated visuals remain UI debt.
 };
 
@@ -326,7 +328,7 @@ describe('R-1 terrainAppearance 特征化（穷举钉死）', () => {
         // V-2b-9a：十二条新载体成员，103 → 115；RUBBLE 已存在。
         // V-2b-9b：九条活动态/效果落点，115 → 124；补完轮补齐
         // MACHINE_CHASM_EDGE / PUDDLE，124 → 126；9c 七条效果载体 126 → 133。
-        expect(ALL_TERRAINS.length).toBe(133);
+        expect(ALL_TERRAINS.length).toBe(135);
         expect(new Set(ALL_TERRAINS).size).toBe(ALL_TERRAINS.length);
     });
 

@@ -103,7 +103,9 @@ export function loopDoorSiteScan(work: number[][], order: number[], minimumPathi
     for (let x = 0; x < DCOLS; x++) {
         costMap[x] = new Array<number>(DROWS);
         for (let y = 0; y < DROWS; y++) {
-            costMap[x]![y] = work[x]![y] === 0 ? CE_PDS_OBSTRUCTION : 1;
+            const value = work[x]![y]!;
+            // CE copy + findReplace: preserve negative scratch barriers (-1).
+            costMap[x]![y] = value === 0 ? CE_PDS_OBSTRUCTION : value > 0 ? 1 : value;
         }
     }
 
@@ -137,6 +139,13 @@ export function loopDoorSiteScan(work: number[][], order: number[], minimumPathi
     }
 }
 
+/** CE addLoops on the original short grid, including redesign's -1 barriers. */
+export function addLoopsToWorkGrid(work: number[][], minimumPathingDistance: number): void {
+    const order = Array.from({ length: DCOLS * DROWS }, (_, i) => i);
+    rng.shuffleList(order);
+    loopDoorSiteScan(work, order, minimumPathingDistance);
+}
+
 /**
  * CE Architect.c:340-347 + 360-389 的 addLoops 整体：洗牌全图顺序（消费
  * DCOLS*DROWS-1 次 rand_range，与 CE shuffleList 相同的 Fisher-Yates），
@@ -158,10 +167,7 @@ export function addLoops(
             if (work[x]![y] === WORK_DOOR_SITE) preexisting.add(y * DCOLS + x);
         }
     }
-    const order: number[] = [];
-    for (let v = 0; v < DCOLS * DROWS; v++) order.push(v); // CE fillSequentialList
-    rng.shuffleList(order);                                // CE shuffleList（Fisher-Yates）
-    loopDoorSiteScan(work, order, minimumPathingDistance);
+    addLoopsToWorkGrid(work, minimumPathingDistance);
     const newSites: Pos[] = [];
     for (let x = 0; x < DCOLS; x++) {
         for (let y = 0; y < DROWS; y++) {
@@ -406,7 +412,8 @@ export const CE_GATE_CANDIDATE_CAP = 50;
  * 元断言：p1_33_machine_chokepoint.test.ts 的 c2 看守"全表 roomSize[1]
  * ≤ 本常量 − 1"；再引入更大的蓝图表时必须同步上调。
  */
-export const CE_CHOKE_COUNT_CAP = 181;
+// V-2b-9d: CE 13/14 allow 100..200; 181 would admit oversized pockets.
+export const CE_CHOKE_COUNT_CAP = 201;
 
 /** analyzeChokeMap 的产物（CE 的 passMap / IS_CHOKEPOINT / IS_GATE_SITE / chokeMap）。 */
 export interface ChokeAnalysis {
