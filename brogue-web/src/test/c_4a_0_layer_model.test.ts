@@ -352,6 +352,17 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.TURRET_LEVER]: L.DUNGEON,
             [C.HAUNTED_TORCH_DORMANT]: L.DUNGEON,
             [C.DARK_FLOOR_DORMANT]: L.DUNGEON,
+            [C.MACHINE_FLOOD_WATER_DORMANT]: L.LIQUID,
+            [C.MACHINE_FLOOD_WATER_SPREADING]: L.LIQUID,
+            [C.MACHINE_COLLAPSE_EDGE_DORMANT]: L.LIQUID,
+            [C.MACHINE_COLLAPSE_EDGE_SPREADING]: L.LIQUID,
+            [C.CHASM_WITH_HIDDEN_BRIDGE_ACTIVE]: L.LIQUID,
+            [C.STONE_BRIDGE]: L.LIQUID,
+            [C.LAVA_RETRACTING]: L.LIQUID,
+            [C.FLOOD_WATER_SHALLOW]: L.SURFACE,
+            [C.FLOOD_WATER_DEEP]: L.SURFACE,
+            [C.MACHINE_CHASM_EDGE]: L.LIQUID,
+            [C.PUDDLE]: L.SURFACE,
         });
         expect(DRAW_PRIORITY).toEqual({
             [C.NOTHING]: 100, [C.GRANITE]: 0, [C.FLOOR]: 95, [C.WALL]: 0,
@@ -484,6 +495,17 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.TURRET_LEVER]: 0,
             [C.HAUNTED_TORCH_DORMANT]: 0,
             [C.DARK_FLOOR_DORMANT]: 95,
+            [C.MACHINE_FLOOD_WATER_DORMANT]: 60,
+            [C.MACHINE_FLOOD_WATER_SPREADING]: 60,
+            [C.MACHINE_COLLAPSE_EDGE_DORMANT]: 95,
+            [C.MACHINE_COLLAPSE_EDGE_SPREADING]: 45,
+            [C.CHASM_WITH_HIDDEN_BRIDGE_ACTIVE]: 40,
+            [C.STONE_BRIDGE]: 20,
+            [C.LAVA_RETRACTING]: 40,
+            [C.FLOOD_WATER_SHALLOW]: 50,
+            [C.FLOOD_WATER_DEEP]: 41,
+            [C.MACHINE_CHASM_EDGE]: 80,
+            [C.PUDDLE]: 80,
         });
     });
 });

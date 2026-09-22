@@ -602,7 +602,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         //   DF_SWAMP :904、DF_SWAMP_MUD :905。
         // 来源三类：13 条目标蓝图 feature 的 DF 列 / 19 条新地形的三链字段 /
         // 上述两者的 subsequentDF 链展开。逐条字段钉死在 v_2b_7_features 的 B 组。
-        expect(keys.length).toBe(131);
+        expect(keys.length).toBe(133);
         expect(DF.DF_SHOW_TRAPDOOR_HALO, 'V-2b-2b：CE Rogue.h:1487（Globals.c:627）').toBe(16);
         expect(DF.DF_SHOW_TRAPDOOR, 'V-2b-2b：TRAP_DOOR_HIDDEN.discoverType 的载体（Rogue.h:1488，Globals.c:628）').toBe(17);
         expect(DF.DF_WOODEN_BARRICADE_BURN, 'V-2b-2b：WOODEN_BARRICADE.fireType 的载体（Rogue.h:1669，Globals.c:825）').toBe(156);
@@ -796,7 +796,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
             'V-2b-7：DF 特征系统轮 22 条入闭包（13 条目标蓝图 feature 的 DF 列' +
             '（现由 blueprints.json 数据驱动入起点）+ 19 条新地形的三链字段 + ' +
             '两条链展开环节 DF_EMBERS_PATCH/DF_SWAMP_MUD→DF_SWAMP_WATER）' +
-            '——68→90→99；V-2b-9a 八起点、闭包与新地形三链 →131').toBe(131);
+            '——68→90→99；V-2b-9b 环境链与 DF_PUDDLE 闭包 →133').toBe(133);
     });
 
     it('E3 字段抽查：BRIDGE_FALL_PREP 的 prop/200/100、BRIDGE_FIRE 的描述与 tile=0、其余代表条目', () => {
@@ -981,7 +981,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // DF_PORTAL_ACTIVATE→PORTAL_LIGHT :725、DF_SACRIFICE_ALTAR→SACRIFICE_ALTAR
         // :802、DF_COFFIN_BURSTS→COFFIN_OPEN :807、DF_WORM_TUNNEL_MARKER_ACTIVE
         // →WORM_TUNNEL_MARKER_ACTIVE :880）。另 15 条带完整 tile 不入列。
-        expect(DF_MISSING_TILES.length).toBe(53);
+        expect(DF_MISSING_TILES.length).toBe(39);
         // 登记条目确实都是 tile=null，且抛错带 CE tile 名。
         for (const id of DF_MISSING_TILES) {
             expect(DUNGEON_FEATURE_CATALOG[id]!.tile, `DF#${id} 应为 null tile`).toBeNull();
@@ -1068,6 +1068,9 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                                            // 机器时再扩清单」** —— 留痕前提
                                            //（DF 子系统是纯库、无机器侧生产读者）
                                            // 自本轮起为假，故扩清单而非删断言。
+                                           // V-2b-9b 又在同一已授权文件激活
+                                           // fillVestibuleInterior 的 BP_TREAT/
+                                           // REQUIRE 复核；无需放宽到第二个文件。
         ]);
         const pattern = /spawnDungeonFeature|spawnMapDF|fillSpawnMap|levelIsDisconnectedWithBlockingMap|catalogFeature|createSpawnMap|DUNGEON_FEATURE_CATALOG|DF_MISSING_TILES/;
         // T-1（AI-1 登记）：原实现只剥 `//` 行注释，写在 /* */ 块注释里的
@@ -1193,7 +1196,19 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                         for (let l = 0; l < L.COUNT; l++) {
                             if (cell.layers[l] !== C.NOTHING) nonEmpty.push(l);
                         }
-                        expect(nonEmpty.length, `seed=${seed} D${depth} (${x},${y}) 至多两层（C-6 后上界）`).toBeLessThanOrEqual(2);
+                        expect(nonEmpty.length, `seed=${seed} D${depth} (${x},${y}) 至多三层（31 号 floodable 地板可叠草木）`).toBeLessThanOrEqual(3);
+                        if (nonEmpty.length === 3) {
+                            // 31 号在 FLOOR 上以 LIQUID 层铺 FLOOR_FLOODABLE，
+                            // 其 FOLIAGE feature 又可在 SURFACE 层生长；这是
+                            // CE 原表三条 feature 叠加出的唯一合法三层形态。
+                            expect(cell.layers[L.DUNGEON]).toBe(C.FLOOR);
+                            expect([
+                                C.FLOOR_FLOODABLE,
+                                C.MACHINE_FLOOD_WATER_DORMANT,
+                                C.MACHINE_FLOOD_WATER_SPREADING,
+                            ]).toContain(cell.layers[L.LIQUID]);
+                            expect([C.GRASS, C.FOLIAGE]).toContain(cell.layers[L.SURFACE]);
+                        }
                         if (nonEmpty.length === 2) {
                             // V-2b-2b 扩（机器蓝图 3/4/5/19/20/23 号的 CE :1443
                             // 纯层写入——feature 地形写 feature.layer 列、不清其他
@@ -1244,6 +1259,17 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                                 // V-2b-7：55 号的蠕虫隧道标记（零旗标可走，
                                 // CE Globals.c:568 的 LIQUID 层不可见标记）。
                                 C.WORM_TUNNEL_MARKER_DORMANT,
+                                C.FLOOR_FLOODABLE,
+                                C.MACHINE_CHASM_EDGE,
+                                C.MACHINE_FLOOD_WATER_DORMANT,
+                                C.MACHINE_FLOOD_WATER_SPREADING,
+                                C.MACHINE_COLLAPSE_EDGE_DORMANT,
+                                C.MACHINE_COLLAPSE_EDGE_SPREADING,
+                                C.CHASM_WITH_HIDDEN_BRIDGE,
+                                C.CHASM_WITH_HIDDEN_BRIDGE_ACTIVE,
+                                C.STONE_BRIDGE,
+                                C.LAVA_RETRACTABLE,
+                                C.LAVA_RETRACTING,
                             ]);
                             // V-2b-5 扩：机器 feature 带 layer=DUNGEON 列的落格
                             // 走 CE :1443 `pmap.layers[layer] = terrain`
@@ -1316,6 +1342,9 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                                     [L.LIQUID, C.WATER_SHALLOW],
                                     [L.LIQUID, C.CHASM_EDGE],
                                     [L.LIQUID, C.OBSIDIAN],
+                                    [L.LIQUID, C.FLOOR_FLOODABLE],
+                                    [L.LIQUID, C.MACHINE_FLOOD_WATER_DORMANT],
+                                    [L.LIQUID, C.MACHINE_FLOOD_WATER_SPREADING],
                                 ];
                                 const surf = cell.layers[L.SURFACE] as TerrainType;
                                 const ok = baseOk.some(([l, t]) =>
@@ -1334,6 +1363,17 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                                 && NON_BLOCKING_LIQUIDS.has(cell.layers[L.LIQUID] as TerrainType)) {
                                 // 机器地形 + 非阻断液体的叠层（如 23 号陷阱写在
                                 // 浅水层格上）——CE :1443 字面行为，合法。
+                            } else if (cell.layers[L.DUNGEON] === C.FLOOR
+                                && [C.FLOOR_FLOODABLE, C.MACHINE_FLOOD_WATER_DORMANT,
+                                    C.MACHINE_FLOOD_WATER_SPREADING]
+                                    .includes(cell.layers[L.LIQUID] as TerrainType)) {
+                                // 31 号 Flood room 的 EVERYWHERE 特征按 CE 原表写在
+                                // LIQUID 层：普通 FLOOR 上叠 FLOOR_FLOODABLE，取钥匙后
+                                // 再由涨水 DF 改写该层。因此 0:2 + 1:103 是合法形态。
+                            } else if (cell.layers[L.DUNGEON] === C.FLOOR
+                                && cell.layers[L.LIQUID] === C.WATER_DEEP) {
+                                // 深水是 LIQUID 层覆层，底下保留 FLOOR；本轮
+                                // RNG 移动后 seed777/D9 首次进入该既有合法形态。
                             } else {
                                 expect.unreachable(
                                     `seed=${seed} D${depth} (${x},${y}) 两层组合 ` +

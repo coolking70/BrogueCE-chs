@@ -372,14 +372,36 @@ describe('C-6 集成：真实目录在真实生成里的行为', () => {
         // 机器趟在 generateLevel 阶段：generateTerrain 后应为 null。
         expect(arch.autogenMachine).toBeNull();
 
-        // 全管线：机器趟统计存在但恒为空（本轮机器条目全无载体）。
-        rng.seedRandomGenerator(20260917);
-        const arch2 = new Architect();
-        arch2.generateLevel(5);
-        expect(arch2.autogenMachine, 'generateLevel 后机器趟统计必须存在（接线被删在此翻红）').not.toBeNull();
-        expect(arch2.autogenMachine!.buildAreaMachines).toBe(true);
-        expect(arch2.autogenMachine!.entries.length).toBeGreaterThan(0);
-        expect(arch2.autogenMachine!.totalBuilt).toBeGreaterThan(0);
+        // 全管线：机器趟确实执行，且**真的建得出机器**。
+        //
+        // ⚠️ V-2b-9b 补完轮一度把这两条改成 `entries===[]` / `totalBuilt===0`，
+        // 理由写的是"真实目录的 MT_* 仍全部登记为 no-machine"。**该理由不成立**：
+        // AutoGenerator 里 13 个 `machine: MT.*` 条目中 7 个带真实载体
+        //（SWAMP/BLOODFLOWER/SHRINE/IDYLL/REMNANT/DISMAL…），那正是 V-2b-8
+        // 的成果。验收方实测 3 seed × D1-26 共建成 **28 台**
+        //（20260917/D7,D10,D11,D18,D19；424242/D8,D11,D12,D17,D19-D22,D26；
+        //  777/D2,D3,D7,D8,D18-D20,D25,D26）——D5 只是恰好没命中。
+        //
+        // 把覆盖门钉死在"某个 seed/层恰好为零"上，就退化成恒真的哑门
+        //（同 V-2b-8 D 类的教训：样本里没观测对象时要**换更大的样本**，
+        // 不是把期望改成零）。故这里扫一段深度，保证门有观测对象。
+        let builtAcrossDepths = 0;
+        let sawMachinePass = false;
+        for (const d of [7, 10, 11, 18, 19]) {
+            rng.seedRandomGenerator(20260917);
+            const a2 = new Architect();
+            a2.generateLevel(d);
+            expect(a2.autogenMachine, `D${d}: generateLevel 后机器趟统计必须存在（接线被删在此翻红）`).not.toBeNull();
+            expect(a2.autogenMachine!.buildAreaMachines).toBe(true);
+            sawMachinePass = true;
+            builtAcrossDepths += a2.autogenMachine!.totalBuilt;
+        }
+        expect(sawMachinePass).toBe(true);
+        // 恢复原断言的强度（`toBeGreaterThan(0)`），只是把样本从单层 D5
+        // 换成"确有观测对象"的五层。不钉精确台数：该值随同文件前序用例的
+        // 模块态而动（验收方实测独立探针 9、文件内 7），钉死只会制造脆断言，
+        // 而覆盖门要守的是"建得出来"这件事本身。
+        expect(builtAcrossDepths, 'seed 20260917 的 D7/D10/D11/D18/D19 一台 autogen 机器都没建成——MT_* 接线回归').toBeGreaterThan(0);
     });
 
     it('AD-7 哨兵：真实目录的机器趟零 RNG 消耗（空转链在此翻红）', () => {

@@ -635,6 +635,16 @@ export function blueprintQualifies(
     }
     if (eff.has(BP_ADOPT_ITEM) && !requiredFlags.includes(BP_ADOPT_ITEM)) return false;
     if (eff.has(BP_VESTIBULE) && !requiredFlags.includes(BP_VESTIBULE)) return false;
+    // V-2b-9b（验收方）：18 号 lever 前厅退池留形。
+    // 现场（v_2b_6_keys F1，seed42/D15）：钥匙在 key_nested_library(machine #5)
+    // 的 (68,3)，唯一出口 (66,4) 被其前厅的 PORTCULLIS_CLOSED 封住；CE 靠
+    // WALL_LEVER_HIDDEN 的 wired 晋升开闸（Globals.c:347），web 尚不能执行
+    // 该晋升 ⇒ 外包钥匙永久不可达。九条环境蓝图入池只是把 RNG 推到这个
+    // **既存**缺口上，不是它们自己封的钥匙。
+    // 口径同 47 号先例（见 buildAMachine 里 canReceiveAdoptedItem 的说明）：
+    // **数据照 CE 逐字**（frequency 仍是 CE :305 的 8，由 v_2b_3_wired E4 钉死），
+    // 只是它不再被抽中；wired lever 落地的那一轮摘掉这一条即可（届时复跑 F 组）。
+    if (bp.id === 'vestibule_secret_lever') return false;
     return true;
 }
 
@@ -841,6 +851,26 @@ export class BlueprintEngine {
                 if (sel.kind === 'noCandidates') return null;
                 room = { cells: sel.cells, center: sel.center, door: sel.door };
             }
+
+            // ⚠️ CE Architect.c:1196-1201 的区域机器 blocking 复核**仍未接线**，
+            // 且这是一笔比"没接"更深的账（V-2b-9b-finish 验收方实测定性）：
+            //
+            // CE 有两条 interior 来源——BP_ROOM 走 findSuitableRoom，区域机器走
+            // :1140-1195 的「从 origin 起 Dijkstra 逐壳生长」。:1196 的复核属于
+            // **后者**。而 web 至今只有前者（见上方 else 分支注释："web 全部
+            // 非前厅蓝图的形态"），**区域机器 interior 生长这个机制本身不存在**。
+            //
+            // 曾在本轮把该复核嫁接到 BP_ROOM 路径上，实测后果：65/66 的
+            // BP_REQUIRE_BLOCKING 要求"若填满墙会切出 ≥100 格"，而它拿到的是
+            // findGateRoom 的门房 cells，几乎不可能满足 ⇒ 每次都 continue 回去
+            // 重摇蓝图，空转吃掉机器预算，把 Kennel 这类机器饿死
+            // （v_2b_6_keys E1/F2：8 seed × D1-26 建成 0 台；停用本钩子后复绿）。
+            //
+            // 所以这不是"接对地方"就能解决的：真前置是区域机器 interior 生长。
+            // 按留痕纪律退回占位，缺口登记为独立机制轮（见 SESSION_HANDOFF
+            // "区域机器 interior 生长"条目），65/66 同步退池留形。
+            // 前厅路径的 :723-728 复核**保留**（CE 确实两处都有），其载体状态
+            // 见 fillVestibuleInterior 头注。
 
             // —— point of no return（CE :1222）：备份整层，动手。 ——
             const backup = this.backupLevel();
@@ -1746,6 +1776,19 @@ export class BlueprintEngine {
             }
         }
 
+        // V-2b-9b 补完：领养 feature 的候选格在落位当刻可能可走，但同一
+        // 蓝图的后续环境 feature 会再改写该格。Game 的 P1-43 消费闸会丢弃
+        // 最终落在 pathing blocker 上的物品；若它是外包钥匙，父机器却已把
+        // generatedKey 置真，结果就是“有锁、零钥匙”的永久死局。静态的
+        // canReceiveAdoptedItem 只能检查 feature 声明的初始 terrain，抓不到
+        // 这种后写覆盖。因此在蓝图全部 feature 落完后复核最终网格；失败沿用
+        // buildAMachine 的既有整机回滚/重摇语义，而不是让消费端静默吞钥匙。
+        for (const spawn of itemSpawns) {
+            if (!spawn.viaAdoption) continue;
+            const cell = this.grid.getCell(spawn.pos.x, spawn.pos.y);
+            if (!cell || isPathingBlocker(cell.terrain)) return null;
+        }
+
         return {
             blueprintId: bp.id,
             category: bp.category,
@@ -1776,11 +1819,13 @@ export class BlueprintEngine {
  *   - cost 口径用 web 的 PDS_FORBIDDEN 约定（Game.findQualifyingPathLocNear
  *     同款：!isPassable ∪ LAVA ∪ WATER_DEEP ∪ TRAP），非 CE
  *     populateGenericCostMap 的逐地形代价——P1-33 已登记的同族偏差。
- * CE :715-723 的 BP_TREAT_AS_BLOCKING / BP_REQUIRE_BLOCKING 连通性复核
- * **本轮刻意未接线**：levelIsDisconnectedWithBlockingMap 属 DF 子系统，
- * 生产引用受 c_4b F1 留痕扫描器白名单钉死（本轮授权清单不含该测试），
- * 且当前数据零载体、检查结构性不可达——接线留给激活轮，届时按该测试
- * 标题预告的流程扩白名单。
+ * V-2b-9b 留痕反转：CE :723-728 的**前厅**复核已经接线。
+ * 但**当前前厅无载体，且区域机器路径上的载体也拿不到它**——
+ * 34/39（TREAT）与 65/66（REQUIRE）在 CE 里走的是区域机器 :1196-1201,
+ * 而 web 没有区域机器 interior 生长（见 buildAMachine 里的占位说明）。
+ * 65/66 已按同类数据不变量退池留形；34/39 入池但其 TREAT 不生效。
+ * ⇒ 本判据当前是**零活载体**的前瞻实现，激活等区域机器机制轮。
+ * F1 白名单继续把本文件钉为机器侧唯一 DF 连通性读者。
  */
     private fillVestibuleInterior(bp: BlueprintDef, origin: Pos): Pos[] | null {
         const goal = rng.randRange(bp.roomSize[0], bp.roomSize[1]);
@@ -1823,9 +1868,22 @@ export class BlueprintEngine {
                 }
             }
         }
-        // CE :715-723 的 BP_TREAT_AS_BLOCKING / BP_REQUIRE_BLOCKING 复核
-        // 本轮未接线（原因见头注）——激活轮补上。
+        // CE :723-728：TREAT 要求“不切断”；REQUIRE 要求切出的较小区域
+        // 至少 100 格。注意返回值 0 才是不断连，判据反抄会被 9b 对抗用例抓住。
+        if (!this.interiorSatisfiesBlockingFlags(bp, cells)) return null;
         return cells;
+    }
+
+    /** CE :723-728 / :1196-1201 共用判据；else-if 留形与 CE 一致。 */
+    private interiorSatisfiesBlockingFlags(bp: BlueprintDef, cells: readonly Pos[]): boolean {
+        const blockingMap = new Uint8Array(DCOLS * DROWS);
+        for (const p of cells) blockingMap[p.y * DCOLS + p.x] = 1;
+        if (bp.flags.includes('BP_TREAT_AS_BLOCKING')) {
+            return levelIsDisconnectedWithBlockingMap(this.grid, blockingMap, false) === 0;
+        } else if (bp.flags.includes('BP_REQUIRE_BLOCKING')) {
+            return levelIsDisconnectedWithBlockingMap(this.grid, blockingMap, true) >= 100;
+        }
+        return true;
     }
 
     /**

@@ -276,6 +276,17 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         [TerrainType.ELECTRIC_CRYSTAL_OFF]: 0, [TerrainType.TURRET_LEVER]: 0,
         [TerrainType.HAUNTED_TORCH_DORMANT]: LightKind.TORCH_LIGHT,
         [TerrainType.DARK_FLOOR_DORMANT]: 0,
+        [TerrainType.MACHINE_FLOOD_WATER_DORMANT]: 0,
+        [TerrainType.MACHINE_FLOOD_WATER_SPREADING]: 0,
+        [TerrainType.MACHINE_COLLAPSE_EDGE_DORMANT]: 0,
+        [TerrainType.MACHINE_COLLAPSE_EDGE_SPREADING]: 0,
+        [TerrainType.CHASM_WITH_HIDDEN_BRIDGE_ACTIVE]: 0,
+        [TerrainType.STONE_BRIDGE]: 0,
+        [TerrainType.LAVA_RETRACTING]: LightKind.LAVA_LIGHT,
+        [TerrainType.FLOOD_WATER_SHALLOW]: 0,
+        [TerrainType.FLOOD_WATER_DEEP]: 0,
+        [TerrainType.MACHINE_CHASM_EDGE]: 0,
+        [TerrainType.PUDDLE]: 0,
     };
 
     it('全 tile 的 glowLight 逐值等于 CE 原列（结构性穷尽）', () => {
@@ -286,7 +297,7 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         }
     });
 
-    it('非零恰 26 个（V-2b-9a 增熔岩与闹鬼火把），且都指向有载体的目录条目', () => {
+    it('非零恰 27 个（V-2b-9b 环境链增 LAVA_RETRACTING），且都指向有载体的目录条目', () => {
         const nonzero = Object.entries(TERRAIN_FLAGS)
             .filter(([, v]) => v.glowLight !== LightKind.NO_LIGHT)
             .map(([k]) => Number(k) as TerrainType)
@@ -314,6 +325,8 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
             TerrainType.BRAZIER, TerrainType.DEMONIC_STATUE,
             TerrainType.LUMINESCENT_FUNGUS,
             TerrainType.LAVA_RETRACTABLE, TerrainType.HAUNTED_TORCH_DORMANT,
+            // V-2b-9b：岩浆回缩活动态保留 LAVA_LIGHT。
+            TerrainType.LAVA_RETRACTING,
         ].sort((a, b) => a - b));
         for (const t of nonzero) {
             expect(LIGHT_CATALOG[TERRAIN_FLAGS[t].glowLight]).toBeDefined();

@@ -444,6 +444,8 @@ describe('P1-33 机器阶段不切断关卡', () => {
         // （55/46/45/49/53/30/11 号共七条）会永远选不到门位、结构性不可生成——
         // 故本轮把 CE_CHOKE_COUNT_CAP 一并上调到 176（= 175 + 1，见常量注），
         // 决策等价性由此从"部分等价"变为"完全等价"。
+        // ★ V-2b-9b：31 号 Flood room `{80,180}`（GlobalsBrogue.c:378）
+        // 把真实上沿从 55 号 Worm tunnels 的 175 抬到 180，CAP 同步到 181。
         // 本断言顺延为：全表 roomSize[1] ≤ CAP − 1（再次引入更大蓝图表或
         // 调整 CAP 时，两处必须同进同退）。
         const maxRoom = Math.max(...(blueprintData as BlueprintDef[]).map(bp => bp.roomSize[1]));
@@ -451,7 +453,7 @@ describe('P1-33 机器阶段不切断关卡', () => {
             '必须同步上调 LoopMap.CE_CHOKE_COUNT_CAP（= roomSize[1] 最大值 + 1），' +
             '否则该蓝图会因封顶值落窗外而结构性不可生成')
             .toBeLessThanOrEqual(CE_CHOKE_COUNT_CAP - 1);
-        expect(maxRoom, 'CE 目录上沿实测值（GlobalsBrogue.c:365 的 55 号 Worm tunnels）').toBe(175);
+        expect(maxRoom, 'CE 目录新上沿：31 号 Flood room 的 180，取代 55 号 Worm tunnels 的 175').toBe(180);
     });
 
     it('d) AD3：内部扩展被 chokeMap[新] ≤ chokeMap[起] 约束在死角内；触及他机即放弃', () => {

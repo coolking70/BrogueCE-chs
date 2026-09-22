@@ -392,8 +392,9 @@ export const CE_GATE_CANDIDATE_CAP = 50;
  * ⇒ 与 CE 的精确计数完全决策等价。CE 本体不限（floodFillCount 返回精确计数）。
  *
  * 演进：40+1 = 41（P1-33 建立时全表 roomSize[1] ≤ 40）。
- * **V-2b-7：175+1 = 176**——CE 目录的真实上沿是 175（55 号 Worm tunnels
- * 的 `{80, 175}`，GlobalsBrogue.c:365），不是 41 时代注释里写的 100
+ * **V-2b-9b：180+1 = 181**——31 号 Flood room 的 `{80, 180}` 抬高了
+ * CE 目录真实上沿（此前 V-2b-7 的上沿是 55 号 Worm tunnels 的 175）。
+ * 后者为 `{80, 175}`（GlobalsBrogue.c:365），不是 41 时代注释里写的 100
  *（那条"最大 100（:356 Secret room）"的记载**是错的**，本轮经 CE 原表复核
  * 更正）。不调会怎样：55 号（80..175）、46 号（85..100）、45 号（50..95）、
  * 49 号（60..100）、53 号（60..90）、30 号（80..100）、11 号（50..80）这七条
@@ -405,7 +406,7 @@ export const CE_GATE_CANDIDATE_CAP = 50;
  * 元断言：p1_33_machine_chokepoint.test.ts 的 c2 看守"全表 roomSize[1]
  * ≤ 本常量 − 1"；再引入更大的蓝图表时必须同步上调。
  */
-export const CE_CHOKE_COUNT_CAP = 176;
+export const CE_CHOKE_COUNT_CAP = 181;
 
 /** analyzeChokeMap 的产物（CE 的 passMap / IS_CHOKEPOINT / IS_GATE_SITE / chokeMap）。 */
 export interface ChokeAnalysis {

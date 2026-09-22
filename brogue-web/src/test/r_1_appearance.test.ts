@@ -203,6 +203,17 @@ const EXPECTED_VISIBLE: Record<TerrainType, { char: string; color: string; bgCol
     [TerrainType.FLOOD_TRAP]: DEFAULT_LOOK, [TerrainType.ELECTRIC_CRYSTAL_OFF]: DEFAULT_LOOK,
     [TerrainType.TURRET_LEVER]: DEFAULT_LOOK, [TerrainType.HAUNTED_TORCH_DORMANT]: DEFAULT_LOOK,
     [TerrainType.DARK_FLOOR_DORMANT]: DEFAULT_LOOK,
+    [TerrainType.MACHINE_FLOOD_WATER_DORMANT]: DEFAULT_LOOK,
+    [TerrainType.MACHINE_FLOOD_WATER_SPREADING]: DEFAULT_LOOK,
+    [TerrainType.MACHINE_COLLAPSE_EDGE_DORMANT]: DEFAULT_LOOK,
+    [TerrainType.MACHINE_COLLAPSE_EDGE_SPREADING]: DEFAULT_LOOK,
+    [TerrainType.CHASM_WITH_HIDDEN_BRIDGE_ACTIVE]: DEFAULT_LOOK,
+    [TerrainType.STONE_BRIDGE]: DEFAULT_LOOK,
+    [TerrainType.LAVA_RETRACTING]: DEFAULT_LOOK,
+    [TerrainType.FLOOD_WATER_SHALLOW]: DEFAULT_LOOK,
+    [TerrainType.FLOOD_WATER_DEEP]: DEFAULT_LOOK,
+    [TerrainType.MACHINE_CHASM_EDGE]: DEFAULT_LOOK,
+    [TerrainType.PUDDLE]: DEFAULT_LOOK,
 };
 
 /** 造 Cell（terrain 走 setter 写回归属层）。只用于 DUNGEON/SURFACE 层地形。 */
@@ -306,7 +317,9 @@ describe('R-1 terrainAppearance 特征化（穷举钉死）', () => {
         // 387/448/449/450/457/465/473/484/486/543/546/547/568/573），82 → 101。
         // V-2b-8：BLOODFLOWER_STALK / HAVEN_BEDROLL 两条新成员。
         // V-2b-9a：十二条新载体成员，103 → 115；RUBBLE 已存在。
-        expect(ALL_TERRAINS.length).toBe(115);
+        // V-2b-9b：九条活动态/效果落点，115 → 124；补完轮补齐
+        // MACHINE_CHASM_EDGE / PUDDLE，124 → 126。
+        expect(ALL_TERRAINS.length).toBe(126);
         expect(new Set(ALL_TERRAINS).size).toBe(ALL_TERRAINS.length);
     });
 
