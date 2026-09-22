@@ -1,6 +1,8 @@
 [
     {
         "id": "reward_library",
+        "ceBlueprintId": null,
+        "ceOrigin": "web 自创：最接近 CE 3 药水/卷轴宝库；本条是 3 个 feature 的卷轴加告示牌小房，depth/size/frequency/flags 均不同，无 CE 3 的地毯、替代奖励、菌林和雕像。",
         "name": "Library",
         "depthRange": [
             3,
@@ -59,6 +61,8 @@
     },
     {
         "id": "reward_consumables",
+        "ceBlueprintId": null,
+        "ceOrigin": "web 自创：最接近 CE 3 药水/卷轴宝库；本条仅 3 个 feature，同时供应药水和卷轴，无 CE 的二选一、地毯、菌林和雕像，depth/size/frequency/flags 均不同。",
         "name": "Supply Cache",
         "depthRange": [
             2,
@@ -116,6 +120,7 @@
     },
     {
         "id": "reward_treasure_room",
+        "ceBlueprintId": 3,
         "name": "Treasure room -- apothecary or archive (potions or scrolls)",
         "depthRange": [
             8,
@@ -219,6 +224,7 @@
     },
     {
         "id": "reward_pedestal_permanent",
+        "ceBlueprintId": 4,
         "name": "Guaranteed good permanent item on a glowing pedestal (runic weapon/armor or 2 staffs)",
         "depthRange": [
             5,
@@ -334,6 +340,7 @@
     },
     {
         "id": "reward_pedestal_consumable",
+        "ceBlueprintId": 5,
         "name": "Guaranteed good consumable item on glowing pedestals (scrolls of enchanting, potion of life)",
         "depthRange": [
             10,
@@ -432,6 +439,7 @@
     },
     {
         "id": "reward_kennel",
+        "ceBlueprintId": 10,
         "name": "Kennel -- allies locked in cages in an open room; choose one or two to unlock and take with you.",
         "depthRange": [
             5,
@@ -521,6 +529,7 @@
     },
     {
         "id": "reward_commutation",
+        "ceBlueprintId": 6,
         "name": "Commutation altars",
         "depthRange": [
             13,
@@ -598,6 +607,7 @@
     },
     {
         "id": "reward_mixed_library",
+        "ceBlueprintId": 1,
         "name": "Mixed item library -- can check one item out at a time",
         "depthRange": [
             1,
@@ -712,6 +722,7 @@
     },
     {
         "id": "reward_single_category_library",
+        "ceBlueprintId": 2,
         "name": "Single item category library -- can check one item out at a time",
         "depthRange": [
             1,
@@ -810,6 +821,7 @@
     },
     {
         "id": "reward_resurrection_altar",
+        "ceBlueprintId": 7,
         "name": "Resurrection altar",
         "depthRange": [
             13,
@@ -888,6 +900,7 @@
     },
     {
         "id": "reward_statuary",
+        "ceBlueprintId": 15,
         "name": "Statuary -- key on an altar, area full of statues; take key to cause statues to burst and reveal monsters",
         "depthRange": [
             10,
@@ -970,6 +983,7 @@
     },
     {
         "id": "vestibule_locked",
+        "ceBlueprintId": 16,
         "name": "Plain locked door, key guarded by an adoptive room",
         "depthRange": [
             1,
@@ -1009,6 +1023,7 @@
     },
     {
         "id": "vestibule_secret_door",
+        "ceBlueprintId": 17,
         "name": "Plain secret door",
         "depthRange": [
             2,
@@ -1041,6 +1056,7 @@
     },
     {
         "id": "vestibule_flammable_barricade",
+        "ceBlueprintId": 19,
         "name": "Flammable barricade in the doorway -- burn the wooden barricade to enter",
         "depthRange": [
             1,
@@ -1089,6 +1105,7 @@
     },
     {
         "id": "vestibule_statue_doorway",
+        "ceBlueprintId": 20,
         "name": "Statue in the doorway -- use a scroll of shattering to enter",
         "depthRange": [
             1,
@@ -1137,6 +1154,7 @@
     },
     {
         "id": "vestibule_pit_trap_field",
+        "ceBlueprintId": 23,
         "name": "Pit traps -- area outside entrance is full of pit traps",
         "depthRange": [
             1,
@@ -1203,6 +1221,7 @@
     },
     {
         "id": "vestibule_secret_lever",
+        "ceBlueprintId": 18,
         "name": "Lever and either an exploding wall or a portcullis",
         "depthRange": [
             4,
@@ -1270,6 +1289,7 @@
     },
     {
         "id": "vestibule_throwing_tutorial",
+        "ceBlueprintId": 22,
         "name": "Throwing tutorial -- toss an item onto the pressure plate to retract the portcullis",
         "depthRange": [
             1,
@@ -1335,6 +1355,7 @@
     },
     {
         "id": "vestibule_beckoning_obstacle",
+        "ceBlueprintId": 24,
         "name": "Beckoning obstacle -- a mirrored totem guards the door, and glyph are around the doorway.",
         "depthRange": [
             5,
@@ -1399,6 +1420,7 @@
     },
     {
         "id": "vestibule_guardian_obstacle",
+        "ceBlueprintId": 25,
         "name": "Guardian obstacle -- a guardian is in the door on a glyph, with other glyphs scattered around.",
         "depthRange": [
             6,
@@ -1480,6 +1502,8 @@
     },
     {
         "id": "vestibule_flammable",
+        "ceBlueprintId": null,
+        "ceOrigin": "web 自创：最接近 CE 19 易燃路障前厅；本条只有 GRASS 6–12 格，无堵门木栅和外置点火物，depth/size/frequency/flags 均不同。",
         "name": "Flammable Barricade",
         "depthRange": [
             3,
@@ -1508,6 +1532,8 @@
     },
     {
         "id": "vestibule_guardian",
+        "ceBlueprintId": null,
+        "ceOrigin": "web 自创：最接近 CE 25 守卫前厅；本条只有 _depth_appropriate_ 随机怪，无守卫二选一和符文，depth/size/frequency/flags 均不同。",
         "name": "Guardian Chamber",
         "depthRange": [
             6,
@@ -1540,6 +1566,8 @@
     },
     {
         "id": "vestibule_pit_traps",
+        "ceBlueprintId": null,
+        "ceOrigin": "web 自创：最接近 CE 23 坑洞陷阱前厅；本条是 TRAP/fire 3–6 格，无门/密门二选一及 TRAP_DOOR_HIDDEN，depth/size/frequency/flags 均不同。",
         "name": "Pit Trap Corridor",
         "depthRange": [
             4,
@@ -1569,6 +1597,8 @@
     },
     {
         "id": "key_rat_trap",
+        "ceBlueprintId": null,
+        "ceOrigin": "web 自创：最接近 CE 29 鼠陷阱；本条直接生成 3–6 只 rat 和本房钥匙，无领养祭坛、麻痹气口和休眠鼠墙，depth/size/frequency/flags 均不同。",
         "name": "Rat Trap",
         "depthRange": [
             2,
@@ -1613,6 +1643,8 @@
     },
     {
         "id": "key_fire_trap",
+        "ceBlueprintId": null,
+        "ceOrigin": "web 自创：最接近 CE 32 火陷阱房；本条仅 GRASS 与 TRAP/fire，无领养祭坛、FLAMETHROWER_HIDDEN、大水池及水怪，depth/size/flags 不同。",
         "name": "Fire Trap Room",
         "depthRange": [
             5,
@@ -1653,6 +1685,8 @@
     },
     {
         "id": "key_flood_trap",
+        "ceBlueprintId": null,
+        "ceOrigin": "web 自创：最接近 CE 31 涨水房；本条只直接铺浅水和深水，无可淹地板、开关祭坛、水池 DF 及水怪，depth/size/frequency/flags 均不同。",
         "name": "Flood Trap",
         "depthRange": [
             4,
@@ -1692,6 +1726,7 @@
     },
     {
         "id": "key_poison_gas",
+        "ceBlueprintId": 40,
         "name": "Poison gas -- key on an altar; take key to cause a caustic gas vent to appear and the door to be blocked; there is a hidden trapdoor or an escape item somewhere inside",
         "depthRange": [
             4,
@@ -1809,6 +1844,7 @@
     },
     {
         "id": "key_pit_trap",
+        "ceBlueprintId": 35,
         "name": "Pit traps -- key on an altar, room full of pit traps",
         "depthRange": [
             1,
@@ -1871,6 +1907,8 @@
     },
     {
         "id": "key_web_room",
+        "ceBlueprintId": null,
+        "ceOrigin": "web 自创：最接近 CE 37 蛛网攀爬房；本条只铺 WEB 并生成 _spider_，无领养祭坛、深渊及隐藏桥 DF，depth/size/frequency/flags 均不同。",
         "name": "Web Room",
         "depthRange": [
             4,
@@ -1912,6 +1950,8 @@
     },
     {
         "id": "key_lava_moat",
+        "ceBlueprintId": null,
+        "ceOrigin": "web 自创：最接近 CE 38 岩浆护城河房；本条只有 LAVA 8–20 格，无领养开关祭坛、回缩岩浆、逃生物品和拉杆，depth/size/frequency/flags 均不同。",
         "name": "Lava Moat",
         "depthRange": [
             8,
@@ -1941,6 +1981,8 @@
     },
     {
         "id": "key_boss",
+        "ceBlueprintId": null,
+        "ceOrigin": "web 自创：最接近 CE 57 首领密室；本条生成 _depth_boss_ 加 _depth_appropriate_ 护卫，无领养携物 horde、骨堆 DF、密门及发光菌，depth/size/frequency/flags 均不同。",
         "name": "Boss Chamber",
         "depthRange": [
             10,
@@ -1986,6 +2028,7 @@
     },
     {
         "id": "key_secret_room",
+        "ceBlueprintId": 27,
         "name": "Secret room -- key on an altar in a secret room",
         "depthRange": [
             1,
@@ -2032,6 +2075,7 @@
     },
     {
         "id": "key_nested_library",
+        "ceBlueprintId": 26,
         "name": "Nested item library -- can check one item out at a time, and one is a disposable key to another reward room",
         "depthRange": [
             1,
@@ -2159,6 +2203,7 @@
     },
     {
         "id": "key_throwing_tutorial_cage",
+        "ceBlueprintId": 28,
         "name": "Throwing tutorial -- toss an item onto the pressure plate to retract the cage and reveal the key",
         "depthRange": [
             1,
@@ -2205,6 +2250,7 @@
     },
     {
         "id": "trap_paralysis_revealed",
+        "ceBlueprintId": 67,
         "name": "Paralysis trap -- already-revealed pressure plate with a few hidden vents nearby.",
         "depthRange": [
             1,
@@ -2252,6 +2298,7 @@
     },
     {
         "id": "trap_paralysis_hidden",
+        "ceBlueprintId": 68,
         "name": "Paralysis trap -- hidden pressure plate with a few vents nearby.",
         "depthRange": [
             1,
@@ -2299,6 +2346,7 @@
     },
     {
         "id": "vestibule_statue_monster",
+        "ceBlueprintId": 21,
         "name": "Statue in the doorway -- bursts to reveal monster",
         "depthRange": [
             5,
@@ -2351,6 +2399,7 @@
     },
     {
         "id": "key_rat_trap_dormant",
+        "ceBlueprintId": 29,
         "name": "Rat trap -- getting the key triggers paralysis vents nearby and also causes rats to burst out of the walls",
         "depthRange": [
             1,
@@ -2417,6 +2466,7 @@
     },
     {
         "id": "key_explosive_trap",
+        "ceBlueprintId": 41,
         "name": "Explosive situation -- key on an altar; take key to cause a methane gas vent to appear and a pilot light to ignite",
         "depthRange": [
             7,
@@ -2507,6 +2557,7 @@
     },
     {
         "id": "key_statuary",
+        "ceBlueprintId": 43,
         "name": "Statuary -- key on an altar, area full of statues; take key to cause statues to burst and reveal monsters",
         "depthRange": [
             10,
@@ -2563,6 +2614,7 @@
     },
     {
         "id": "key_worm_trap",
+        "ceBlueprintId": 50,
         "name": "Worms in the walls -- key on altar; take key to cause underworms to burst out of the walls",
         "depthRange": [
             12,
@@ -2614,6 +2666,7 @@
     },
     {
         "id": "key_turret_trap",
+        "ceBlueprintId": 56,
         "name": "Gauntlet -- key on an altar; take key to cause turrets to emerge",
         "depthRange": [
             5,
@@ -2670,6 +2723,7 @@
     },
     {
         "id": "area_trick_statue",
+        "ceBlueprintId": 69,
         "name": "Statue comes alive -- innocent-looking statue that bursts to reveal a monster when the player approaches",
         "depthRange": [
             1,
@@ -2741,6 +2795,7 @@
     },
     {
         "id": "area_worm",
+        "ceBlueprintId": 70,
         "name": "Worms in the walls -- step on trigger region to cause underworms to burst out of the walls",
         "depthRange": [
             1,
@@ -2789,6 +2844,7 @@
     },
     {
         "id": "reward_chained_allies",
+        "ceBlueprintId": 9,
         "name": "Dungeon -- two allies chained up for the taking",
         "depthRange": [
             5,
@@ -2884,6 +2940,7 @@
     },
     {
         "id": "reward_vampire_lair",
+        "ceBlueprintId": 11,
         "name": "Vampire lair -- allies locked in cages and chained in a hidden room with a vampire in a coffin; vampire has one cage key.",
         "depthRange": [
             10,
@@ -2982,6 +3039,7 @@
     },
     {
         "id": "reward_legendary_ally",
+        "ceBlueprintId": 12,
         "name": "Legendary ally -- approach the altar with the crystal key to activate a portal and summon a legendary ally.",
         "depthRange": [
             8,
@@ -3041,6 +3099,7 @@
     },
     {
         "id": "key_fun_with_fire",
+        "ceBlueprintId": 30,
         "name": "Fun with fire -- trigger the fire trap and coax the fire over to the wooden barricade surrounding the altar and key",
         "depthRange": [
             3,
@@ -3151,6 +3210,7 @@
     },
     {
         "id": "key_thief_area",
+        "ceBlueprintId": 33,
         "name": "Thief area -- empty altar, monster with item, permanently fleeing.",
         "depthRange": [
             3,
@@ -3208,6 +3268,7 @@
     },
     {
         "id": "key_burning_grass",
+        "ceBlueprintId": 42,
         "name": "Burning grass -- key on an altar; take key to cause pilot light to ignite grass in room",
         "depthRange": [
             1,
@@ -3307,6 +3368,7 @@
     },
     {
         "id": "key_guardian_gauntlet",
+        "ceBlueprintId": 45,
         "name": "Guardian gauntlet -- key in a room full of guardians, glyphs scattered and unavoidable.",
         "depthRange": [
             6,
@@ -3417,6 +3479,7 @@
     },
     {
         "id": "key_guardian_corridor",
+        "ceBlueprintId": 46,
         "name": "Guardian corridor -- key in a small room, with a connecting corridor full of glyphs, one guardian blocking the corridor.",
         "depthRange": [
             4,
@@ -3542,6 +3605,7 @@
     },
     {
         "id": "key_sacrifice_altar",
+        "ceBlueprintId": 47,
         "name": "Sacrifice altar -- lure the chosen monster from elsewhere on the level onto the altar to release the key.",
         "depthRange": [
             4,
@@ -3653,6 +3717,7 @@
     },
     {
         "id": "key_beckoning_obstacle",
+        "ceBlueprintId": 49,
         "name": "Beckoning obstacle -- key surrounded by glyphs in a room with a mirrored totem.",
         "depthRange": [
             5,
@@ -3733,6 +3798,7 @@
     },
     {
         "id": "key_zombie_crypt",
+        "ceBlueprintId": 53,
         "name": "Zombie crypt -- key on an altar; coffins scattered around; brazier in the room; take key to cause zombies to burst out of all of the coffins",
         "depthRange": [
             12,
@@ -3853,6 +3919,7 @@
     },
     {
         "id": "key_worm_tunnels",
+        "ceBlueprintId": 55,
         "name": "Worm tunnels -- hidden lever causes tunnels to open up revealing worm areas and a key",
         "depthRange": [
             8,
@@ -3960,6 +4027,7 @@
     },
     {
         "id": "key_boss_secret_room",
+        "ceBlueprintId": 57,
         "name": "Boss -- key is held by a boss atop a pile of bones in a secret room. A few fungus patches light up the area.",
         "depthRange": [
             5,

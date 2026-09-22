@@ -234,11 +234,11 @@ describe('V-2b-9c blueprint build -> population -> real pickup', () => {
         expect(g.items).not.toContain(key);
         expect(g.player.inventory.items).toContain(key);
         expect(g.player.loc).toEqual(standing);
-        expect(sleeping.every(m => !g.dormantMonsters.includes(m) && g.monsters.includes(m) && !m.isDormant)).toBe(true);
+        expect(sleeping.every(m => !g.dormantMonsters.includes(m) && g.monsters.includes(m) && !m.isDormant),
+            `9c mud: built=${built.blueprintId}, dormant=${sleeping.length}, awake=${sleeping.filter(m=>!m.isDormant).length}`).toBe(true);
         expect(sleeping.every(m => g.grid.getCell(m.loc.x,m.loc.y)!.layers.includes(C.MUD))).toBe(true);
         expect(reachable(g,g.player.loc,built.door!)).toBe(true);
         expect(g.player.hp).toBeGreaterThan(0);
-        process.stdout.write(`9c mud: built=${built.blueprintId}, dormant=${sleeping.length}, awake=${sleeping.filter(m=>!m.isDormant).length}\n`);
     });
 
     it('54 pickup drives darkening, torch transition, ectoplasm and all dormant phantoms', () => {
@@ -266,9 +266,9 @@ describe('V-2b-9c blueprint build -> population -> real pickup', () => {
         expect(has(C.DARK_FLOOR)).toBe(true);
         expect(has(C.ECTOPLASM)).toBe(true);
         expect(has(C.HAUNTED_TORCH)).toBe(true);
-        expect(sleeping.every(m => !m.isDormant && g.monsters.includes(m))).toBe(true);
+        expect(sleeping.every(m => !m.isDormant && g.monsters.includes(m)),
+            `9c haunted: dormant=${sleeping.length}, awake=${sleeping.filter(m=>!m.isDormant).length}`).toBe(true);
         expect(reachable(g,g.player.loc,built.door!)).toBe(true);
-        process.stdout.write(`9c haunted: dormant=${sleeping.length}, awake=${sleeping.filter(m=>!m.isDormant).length}\n`);
     });
 
     it('32 builds literal traps/pools and leaves a route to the altar and out', () => {
@@ -290,8 +290,8 @@ describe('V-2b-9c blueprint build -> population -> real pickup', () => {
         const before = g.lightMap.lightSumAt(16,12);
         for (let x=12;x<=18;x++) for (let y=9;y<=15;y++) g.grid.setTerrain(x,y,C.DARK_FLOOR);
         inside(g).updateVision();
-        expect(g.lightMap.lightSumAt(16,12)).toBeLessThan(before);
-        process.stdout.write(`9c darkness: before=${before}, after=${g.lightMap.lightSumAt(16,12)}\n`);
+        expect(g.lightMap.lightSumAt(16,12),
+            `9c darkness: before=${before}, after=${g.lightMap.lightSumAt(16,12)}`).toBeLessThan(before);
         expect(inside(g).canMoveTo(16,12)).toBe(true);
         expect(reachable(g,g.player.loc,{x:25,y:12})).toBe(true);
     });
