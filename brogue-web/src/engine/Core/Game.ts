@@ -80,7 +80,7 @@ import {
 } from '../Map/LightCatalog';
 import { FloatingText } from '../Visuals/FloatingText';
 import { STATUS_CONFIG } from '../Status/statusConfig';
-import { exposeBoltPathToElectricity, getBoltForItem, boltPath, buildBoltFrames, BoltEffect, MONSTER_BOLT_TABLE, type BoltConfig, type BoltFrame, type BoltResult } from '../Combat/Bolt';
+import { exposeBoltPathToElectricity, getBoltForItem, boltPath, createBoltResult, BoltEffect, MONSTER_BOLT_TABLE, type BoltConfig, type BoltFrame, type BoltResult, type BoltHit } from '../Combat/Bolt';
 
 export type GameMode = 'normal' | 'easy' | 'wizard' | 'test';
 
@@ -4128,7 +4128,7 @@ export class Game {
      * Zap a bolt from the player toward a target.
      * Auto-targets the nearest visible monster, or fires in the player's last move direction.
      */
-    public zapBoltFromPlayer(bolt: BoltConfig, item: Item) {
+    public zapBoltFromPlayer(bolt: BoltConfig, item: Item): BoltResult {
         // Find nearest visible monster as target
         const visibleMonsters = this.monsters
             .filter((m) => m.hp > 0 && this.grid.getCell(m.loc.x, m.loc.y)?.isVisible)
@@ -4156,6 +4156,7 @@ export class Game {
 
         const result = this.computeBoltResult(bolt, this.player.loc, targetPos);
         this.applyBoltResult(result, item);
+        return result;
     }
 
     /** Convert a Direction enum to a unit vector. */
@@ -4179,7 +4180,7 @@ export class Game {
     private computeBoltResult(bolt: BoltConfig, origin: Pos, target: Pos): BoltResult {
         const rawPath = boltPath(origin, target, bolt.maxRange > 0 ? bolt.maxRange : 40);
         const finalPath: Pos[] = [];
-        let impactPos: Pos = origin;
+        const hits: BoltHit[] = [];
 
         for (const pos of rawPath) {
             // Check bounds
@@ -4191,13 +4192,16 @@ export class Game {
             if (cell.terrain === TerrainType.WALL || cell.terrain === TerrainType.GRANITE) break;
 
             finalPath.push(pos);
-            impactPos = pos;
+
+            // Record contacts on every included cell, including the last electric
+            // obstruction cell (the legacy effect loop still visits that cell).
+            const monster = this.monsters.find(m => m.hp > 0 && m.loc.x === pos.x && m.loc.y === pos.y);
+            if (monster) hits.push({ creature: monster, pos });
 
             if ((bolt.effect === BoltEffect.LIGHTNING || bolt.effect === BoltEffect.SPARK)
                 && (cellTerrainFlags(this.grid, pos.x, pos.y) & (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION))) break;
 
             // Check for creature at this position
-            const monster = this.monsters.find(m => m.hp > 0 && m.loc.x === pos.x && m.loc.y === pos.y);
             if (monster && !bolt.piercing) {
                 break;
             }
@@ -4206,15 +4210,7 @@ export class Game {
             }
         }
 
-        const frames = buildBoltFrames(finalPath, bolt);
-        return {
-            path: finalPath,
-            impactPos,
-            effect: bolt.effect,
-            magnitude: bolt.magnitude,
-            bolt,
-            frames,
-        };
+        return createBoltResult(bolt, this.player, origin, target, finalPath, hits);
     }
 
     /**
@@ -4595,10 +4591,11 @@ export class Game {
      * 分支都绑死了"物品名 + 固定打玩家/固定回怪物"的叙事假设（如 HASTE/
      * SHIELDING 分支硬编码 this.player），改起来风险远大于收益。这里另开一个
      * 面向"施法者可以是怪物、目标可以是玩家或任意怪物"的精简出口，复用同一套
-     * 底层原语（boltPath/buildBoltFrames 做路径与动画、applyStatusToMonster/
+     * 底层原语（boltPath/createBoltResult 做路径与动画、applyStatusToMonster/
      * applyTimedStatus 做状态、environment.ignite 做点火、CombatSystem.attack
      * 做伤害判定），两条路径共享地基但不共享分支体，玩家原有调用
-     * （zapBoltFromPlayer → applyBoltEffect）逐字节未改动。
+     * （zapBoltFromPlayer → applyBoltEffect）保留。W-1 仅携带 caster/命中/落点
+     * 契约并返回结果；outcome=null 表示尚未迁移效果结算/autoID。
      *
      * 伤害类 bolt（SPARK/FIRE/DRAGONFIRE/POISON_DART/DISTANCE_ATTACK）不走
      * CE zap() 的 bolt 专属伤害公式——那个公式在 Combat.ts/CombatFormulas.ts
@@ -4608,14 +4605,14 @@ export class Game {
      * damageString，命中率/onHit（MA_POISONS 等）全部沿用，是本项目对"怪物
      * 远程攻击伤害"的既定简化，不是本轮新发明的。
      */
-    public castMonsterBolt(caster: Monster, target: Creature, ceBoltName: string): void {
+    public castMonsterBolt(caster: Monster, target: Creature, ceBoltName: string): BoltResult | undefined {
         const meta = MONSTER_BOLT_TABLE[ceBoltName];
         if (!meta || meta.effect === null) return; // 已知缺口/未映射，不应该走到这里
 
         const isPlayer = target === this.player;
         const targetName = isPlayer ? i18next.t('bolt.target_you', { defaultValue: 'you' }) : (target as Monster).name;
 
-        // 动画：复用 boltPath/buildBoltFrames，用一个仅供施法出口使用的最小 BoltConfig。
+        // 动画/结果契约：保留这条出口的旧路径和指定目标，不迁移效果分支。
         const rawPath = boltPath(caster.loc, target.loc, 40);
         const path: Pos[] = [];
         for (const p of rawPath) {
@@ -4630,6 +4627,7 @@ export class Game {
             && (!last || last.x !== target.loc.x || last.y !== target.loc.y);
         const visualBolt: BoltConfig = {
             id: `monster_bolt_${ceBoltName.toLowerCase()}`,
+            ceType: meta.ceType,
             name: ceBoltName,
             effect: meta.effect,
             magnitude: meta.magnitude,
@@ -4639,11 +4637,13 @@ export class Game {
             piercing: false,
             selfTargeting: false,
         };
-        this.pendingBoltFrames = buildBoltFrames(path, visualBolt);
+        const boltResult = createBoltResult(visualBolt, caster, caster.loc, target.loc, path,
+            electricBlocked ? [] : [{ creature: target, pos: target.loc }]);
+        this.pendingBoltFrames = boltResult.frames;
         this.currentBoltFrameIndex = 0;
         this.boltAnimStartTime = Date.now();
 
-        if (electricBlocked) return;
+        if (electricBlocked) return boltResult;
 
         const casterLabel = caster.name;
         const logCast = (key: string, defaultValue: string, color: string) => {
@@ -4800,6 +4800,7 @@ export class Game {
         }
 
         this.needsRender = true;
+        return boltResult;
     }
 
     /**

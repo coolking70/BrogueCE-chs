@@ -1,6 +1,6 @@
 /**
  * src/engine/Combat/Bolt.ts
- * Projectile / bolt system — ported from BrogueCE Combat.c
+ * Projectile / bolt system — see BrogueCE Items.c
  *
  * A bolt travels in a straight line from origin to a target (or until blocked).
  * On each cell it may leave a trail (pathDF), and on impact it applies an effect.
@@ -11,9 +11,11 @@ import type { Grid } from '../Map/Grid';
 import { promoteLayersWithMechFlag } from '../Map/Promotion';
 import { TM_PROMOTES_ON_ELECTRICITY } from '../Map/TerrainCatalog';
 import { ItemLoader } from '../Items/ItemLoader';
+import type { Creature } from '../../entities/Creature';
+import { CEBoltType, CEBoltEffect, CEBoltFlags, CE_BOLT_CATALOG, CE_ITEM_BOLT_TYPES } from './BoltCatalog';
 
 /** CE Items.c:5455-5465 -> Time.c:1289-1303. Also applies to SPARK
- * (GlobalsBrogue.c:82 BF_ELECTRIC), even when no creature is hit. */
+ * (GlobalsBrogue.c:84 BF_ELECTRIC), even when no creature is hit. */
 export function exposeBoltPathToElectricity(grid: Grid, path: readonly Pos[], effect: BoltEffect): boolean {
     if (effect !== BoltEffect.LIGHTNING && effect !== BoltEffect.SPARK) return false;
     let changed = false;
@@ -25,7 +27,7 @@ export function exposeBoltPathToElectricity(grid: Grid, path: readonly Pos[], ef
     return changed;
 }
 
-// ----- Bolt effect enum (mirrors CE boltType) -----
+// ----- Legacy web dispatch effects (NOT the CE boltType or boltEffects enum) -----
 
 export enum BoltEffect {
     NONE = 0,
@@ -49,21 +51,57 @@ export enum BoltEffect {
     EMPOWERMENT,
     INVISIBILITY,
     SPARK,           // electrical bolt used by spark turrets and other monsters
-    DRAGONFIRE,       // strong area fire
-    DISTANCE_ATTACK,  // generic ranged damage
+    DRAGONFIRE,       // CE BE_DAMAGE + BF_FIERY, not intrinsically area damage
+    DISTANCE_ATTACK,  // CE BE_ATTACK, not BE_DAMAGE
     POISON_DART,
+    POLYMORPH,       // W-1: type only; effect implementation belongs to W-19
+    PLENTY,          // W-1: type only; effect implementation belongs to W-20
 }
+
+/** Semantic aliases only. Presence here does not enable a dispatch branch. */
+export const BOLT_EFFECT_CE_EFFECT: Readonly<Record<BoltEffect, CEBoltEffect>> = {
+    [BoltEffect.NONE]: CEBoltEffect.NONE,
+    [BoltEffect.FIRE]: CEBoltEffect.DAMAGE,
+    [BoltEffect.LIGHTNING]: CEBoltEffect.DAMAGE,
+    [BoltEffect.POISON]: CEBoltEffect.POISON,
+    [BoltEffect.TELEPORT]: CEBoltEffect.TELEPORT,
+    [BoltEffect.SLOW]: CEBoltEffect.SLOW,
+    [BoltEffect.HEALING]: CEBoltEffect.HEALING,
+    [BoltEffect.HASTE]: CEBoltEffect.HASTE,
+    [BoltEffect.TUNNELING]: CEBoltEffect.TUNNELING,
+    [BoltEffect.BECKONING]: CEBoltEffect.BECKONING,
+    [BoltEffect.DISCORD]: CEBoltEffect.DISCORD,
+    [BoltEffect.CONJURATION]: CEBoltEffect.CONJURATION,
+    [BoltEffect.SHIELDING]: CEBoltEffect.SHIELDING,
+    [BoltEffect.NEGATION]: CEBoltEffect.NEGATION,
+    [BoltEffect.DOMINATION]: CEBoltEffect.DOMINATION,
+    [BoltEffect.ENTRANCEMENT]: CEBoltEffect.ENTRANCEMENT,
+    [BoltEffect.BLINKING]: CEBoltEffect.BLINKING,
+    [BoltEffect.OBSTRUCTION]: CEBoltEffect.OBSTRUCTION,
+    [BoltEffect.EMPOWERMENT]: CEBoltEffect.EMPOWERMENT,
+    [BoltEffect.INVISIBILITY]: CEBoltEffect.INVISIBILITY,
+    [BoltEffect.SPARK]: CEBoltEffect.DAMAGE,
+    [BoltEffect.DRAGONFIRE]: CEBoltEffect.DAMAGE,
+    [BoltEffect.DISTANCE_ATTACK]: CEBoltEffect.ATTACK,
+    [BoltEffect.POISON_DART]: CEBoltEffect.ATTACK,
+    [BoltEffect.POLYMORPH]: CEBoltEffect.POLYMORPH,
+    [BoltEffect.PLENTY]: CEBoltEffect.PLENTY,
+};
 
 // ----- Bolt configuration -----
 
 export interface BoltConfig {
     /** Internal id used for lookup (matches wand/staff id). */
     id: string;
+    /** CE catalog identity, separate from legacy dispatch. null = web invention.
+     * Metadata only: CE flags/magnitude must not implicitly change old routing. */
+    ceType: CEBoltType | null;
     /** Display name (already translated via tn()). */
     name: string;
     /** What happens on impact. */
     effect: BoltEffect;
-    /** Base damage or magnitude (0 for pure-utility bolts). */
+    /** Legacy runtime value, NOT CE enchantment/charges. CE magnitude semantics
+     * live in BoltCatalog.resolveCEBoltMagnitude; migration is a later W round. */
     magnitude: number;
     /** Display character while in flight. */
     char: string;
@@ -73,7 +111,7 @@ export interface BoltConfig {
     maxRange: number;
     /** Does it pierce through the first creature? */
     piercing: boolean;
-    /** Does it affect the caster (e.g. blinking)? */
+    /** Legacy aim-at-origin switch. This is NOT CE blinking (which moves caster). */
     selfTargeting: boolean;
 }
 
@@ -81,7 +119,7 @@ export interface BoltConfig {
 // `name` is set at runtime via tn() so we store the English key here;
 // call `getBoltConfigs()` to get the translated versions.
 
-const RAW_BOLT_DATA: Omit<BoltConfig, 'name'>[] = [
+const RAW_BOLT_DATA: Omit<BoltConfig, 'name' | 'ceType'>[] = [
     // --- Wands ---
     { id: 'wand_of_fire', effect: BoltEffect.FIRE, magnitude: 5, char: '*', color: 0xff6600, maxRange: 0, piercing: false, selfTargeting: false },
     { id: 'wand_of_lightning', effect: BoltEffect.LIGHTNING, magnitude: 8, char: '~', color: 0x33ccff, maxRange: 0, piercing: true, selfTargeting: false },
@@ -105,6 +143,7 @@ const RAW_BOLT_DATA: Omit<BoltConfig, 'name'>[] = [
 export function getBoltConfigs(): BoltConfig[] {
     return RAW_BOLT_DATA.map((raw) => ({
         ...raw,
+        ceType: CE_ITEM_BOLT_TYPES[raw.id] ?? null,
         name: ItemLoader.translateName(raw.id.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())),
     }));
 }
@@ -117,62 +156,49 @@ export function getBoltForItem(identityId: string): BoltConfig | undefined {
 
 // ----- Monster-cast bolt metadata (P4-1b) -----
 //
-// monsters.json 的 `bolts` 字段（P4-1a 接入）存的是 CE boltType 去 BOLT_ 前缀的
-// 原始名字（如 "SPARK"、"SLOW_2"），不是 web 的 BoltEffect。这张表把 CE bolt 名
-// 映射到 BoltEffect + CE boltCatalog（GlobalsBrogue.c:58-87）里与"怪物该不该对
-// 这个目标放这个 bolt"直接相关的字段：BF_TARGET_ALLIES/BF_TARGET_ENEMIES、
-// BF_FIERY、以及 magnitude（仅供报告/调试参考，实际伤害走 CombatSystem.attack，
-// 详见 Monster.ts 的施法实现与本轮报告）。
-//
-// effect: null 的两项（SPIDERWEB / ANCIENT_SPIRIT_VINES）是 P4-1a 报告登记的
-// 已知缺口——CE 里是 BE_NONE + 铺地形（spawnDungeonFeature），web 的 BoltEffect
-// 模型是"命中生物产生效果"，两者不是一回事。本轮不实现，登记在表里只是为了让
-// monstUseBolt 的遍历逻辑能识别到"这是已知的、故意不做的 bolt"而不是漏看的
-// 未知名字（见 Monster.tryUseBolt 的过滤逻辑与测试里的显式断言）。
+// Execution subset of the CE catalog, preserving the P4-1b routes. Full CE
+// metadata in BoltCatalog is not permission to cast every catalog entry.
+// SPIDERWEB / ANCIENT_SPIRIT_VINES remain effect:null (DF execution missing);
+// BLINKING remains filtered by Monster.tryUseBolt. WHIP keeps its weapon route.
 export interface MonsterBoltMeta {
-    /** null = 已知缺口，不实现（见上）。 */
+    ceType: CEBoltType;
+    /** null = known missing execution, even though CE identity is now mapped. */
     effect: BoltEffect | null;
     targetAllies: boolean;
     targetEnemies: boolean;
-    /** BF_FIERY：不对免疫火焰的目标发射。 */
     fiery: boolean;
-    /** CE boltCatalog 的 magnitude 列，供参考/报告用。 */
+    /** CE catalog value; monster damage still uses the legacy CombatSystem.attack. */
     magnitude: number;
 }
 
+function monsterBoltMeta(ceType: CEBoltType, effect: BoltEffect | null): MonsterBoltMeta {
+    const definition = CE_BOLT_CATALOG[ceType];
+    return {
+        ceType,
+        effect,
+        targetAllies: !!(definition.flags & CEBoltFlags.TARGET_ALLIES),
+        targetEnemies: !!(definition.flags & CEBoltFlags.TARGET_ENEMIES),
+        fiery: !!(definition.flags & CEBoltFlags.FIERY),
+        magnitude: definition.magnitude,
+    };
+}
+
 export const MONSTER_BOLT_TABLE: Record<string, MonsterBoltMeta> = {
-    // GlobalsBrogue.c:80 protection magic — BE_SHIELDING, BF_TARGET_ALLIES
-    SHIELDING: { effect: BoltEffect.SHIELDING, targetAllies: true, targetEnemies: false, fiery: false, magnitude: 5 },
-    // GlobalsBrogue.c:78 haste spell — BE_HASTE, BF_TARGET_ALLIES
-    HASTE: { effect: BoltEffect.HASTE, targetAllies: true, targetEnemies: false, fiery: false, magnitude: 2 },
-    // GlobalsBrogue.c:82 spark — BE_DAMAGE, BF_TARGET_ENEMIES | BF_ELECTRIC
-    SPARK: { effect: BoltEffect.SPARK, targetAllies: false, targetEnemies: true, fiery: false, magnitude: 1 },
-    // GlobalsBrogue.c:85 arrow — BE_ATTACK, BF_TARGET_ENEMIES（炮塔/半人马普通远程攻击）
-    DISTANCE_ATTACK: { effect: BoltEffect.DISTANCE_ATTACK, targetAllies: false, targetEnemies: true, fiery: false, magnitude: 1 },
-    // GlobalsBrogue.c:77 healing magic — BE_HEALING, BF_TARGET_ALLIES
-    HEALING: { effect: BoltEffect.HEALING, targetAllies: true, targetEnemies: false, fiery: false, magnitude: 5 },
-    // GlobalsBrogue.c:70 blink trajectory — CE 在 monstUseBolt 里显式 continue 跳过
-    // （BLINKING 在别处处理，本轮不实现），这里登记仅供过滤表查得到。
-    BLINKING: { effect: BoltEffect.BLINKING, targetAllies: false, targetEnemies: false, fiery: false, magnitude: 5 },
-    // GlobalsBrogue.c:64 negation magic — BE_NEGATION, BF_TARGET_ENEMIES
-    NEGATION: { effect: BoltEffect.NEGATION, targetAllies: false, targetEnemies: true, fiery: false, magnitude: 10 },
-    // GlobalsBrogue.c:74 spell of discord — BE_DISCORD, BF_TARGET_ENEMIES
-    DISCORD: { effect: BoltEffect.DISCORD, targetAllies: false, targetEnemies: true, fiery: false, magnitude: 10 },
-    // GlobalsBrogue.c:86 poisoned dart — BE_ATTACK, BF_TARGET_ENEMIES
-    POISON_DART: { effect: BoltEffect.POISON_DART, targetAllies: false, targetEnemies: true, fiery: false, magnitude: 1 },
-    // GlobalsBrogue.c:69 flame — BE_DAMAGE, BF_TARGET_ENEMIES | BF_FIERY
-    FIRE: { effect: BoltEffect.FIRE, targetAllies: false, targetEnemies: true, fiery: true, magnitude: 4 },
-    // GlobalsBrogue.c:84 dragonfire — BE_DAMAGE, BF_TARGET_ENEMIES | BF_FIERY
-    DRAGONFIRE: { effect: BoltEffect.DRAGONFIRE, targetAllies: false, targetEnemies: true, fiery: true, magnitude: 18 },
-    // GlobalsBrogue.c:65 beckoning spell — BE_BECKONING, BF_TARGET_ENEMIES
-    BECKONING: { effect: BoltEffect.BECKONING, targetAllies: false, targetEnemies: true, fiery: false, magnitude: 10 },
-    // GlobalsBrogue.c:79 slowing spell（弱化变体，magnitude=2）— BE_SLOW 与
-    // BOLT_SLOW 共用同一个 boltEffect（P4-1a 报告已核实），映射到同一个
-    // web BoltEffect.SLOW。
-    SLOW_2: { effect: BoltEffect.SLOW, targetAllies: false, targetEnemies: true, fiery: false, magnitude: 2 },
-    // 已知缺口，见上方说明。
-    SPIDERWEB: { effect: null, targetAllies: false, targetEnemies: true, fiery: false, magnitude: 10 },
-    ANCIENT_SPIRIT_VINES: { effect: null, targetAllies: false, targetEnemies: true, fiery: false, magnitude: 5 },
+    SHIELDING: monsterBoltMeta(CEBoltType.SHIELDING, BoltEffect.SHIELDING),
+    HASTE: monsterBoltMeta(CEBoltType.HASTE, BoltEffect.HASTE),
+    SPARK: monsterBoltMeta(CEBoltType.SPARK, BoltEffect.SPARK),
+    DISTANCE_ATTACK: monsterBoltMeta(CEBoltType.DISTANCE_ATTACK, BoltEffect.DISTANCE_ATTACK),
+    HEALING: monsterBoltMeta(CEBoltType.HEALING, BoltEffect.HEALING),
+    BLINKING: monsterBoltMeta(CEBoltType.BLINKING, BoltEffect.BLINKING),
+    NEGATION: monsterBoltMeta(CEBoltType.NEGATION, BoltEffect.NEGATION),
+    DISCORD: monsterBoltMeta(CEBoltType.DISCORD, BoltEffect.DISCORD),
+    POISON_DART: monsterBoltMeta(CEBoltType.POISON_DART, BoltEffect.POISON_DART),
+    FIRE: monsterBoltMeta(CEBoltType.FIRE, BoltEffect.FIRE),
+    DRAGONFIRE: monsterBoltMeta(CEBoltType.DRAGONFIRE, BoltEffect.DRAGONFIRE),
+    BECKONING: monsterBoltMeta(CEBoltType.BECKONING, BoltEffect.BECKONING),
+    SLOW_2: monsterBoltMeta(CEBoltType.SLOW_2, BoltEffect.SLOW),
+    SPIDERWEB: monsterBoltMeta(CEBoltType.SPIDERWEB, null),
+    ANCIENT_SPIRIT_VINES: monsterBoltMeta(CEBoltType.ANCIENT_SPIRIT_VINES, null),
 };
 
 /** 已知但本轮故意不实现的 CE bolt 名（供测试显式断言，防止悄悄新增未登记名字）。 */
@@ -237,17 +263,69 @@ export function buildBoltFrames(path: Pos[], bolt: BoltConfig): BoltFrame[] {
 
 // ----- Bolt effect result (returned to Game.ts for application) -----
 
+/** A creature encountered by the existing route, not a claim that its effect
+ * succeeded. Snapshot the contact position: teleport/beckoning can move it.
+ * CE updateBolt (Items.c:5115-5132) separates caster from creature being hit. */
+export interface BoltHit {
+    readonly creature: Creature;
+    readonly pos: Pos;
+}
+
+/** Effect-commit contract for later W rounds. CE Items.c:5112-5119,
+ * 5470-5474,5516-5555,5567: autoID is an effect observation, not "a bolt fired".
+ * Movement records a committed caster move, not an intended aim/destination. */
+export interface BoltOutcome {
+    readonly autoID: boolean;
+    readonly casterMovement: { readonly from: Pos; readonly to: Pos } | null;
+}
+
 export interface BoltResult {
+    /** Can be player, monster or null (CE allows an absent caster). */
+    caster: Creature | null;
+    origin: Pos;
+    /** Aimed position, independent of caster identity and final landing. */
+    aimPos: Pos;
+    /** Ordered contacts observed by the legacy route; no new collision rules. */
+    hits: BoltHit[];
+    /** Last travelled cell, or null for an empty path (no landing).
+     * CE halts-before-obstruction rules are deferred to W-3. */
+    landingPos: Pos | null;
+    /** null = effect outcome NOT evaluated. Never treat it as autoID=false.
+     * W-1 preserves useArcanaItem's existing identification; W-2+ will migrate. */
+    outcome: BoltOutcome | null;
     /** Cells the bolt passed through. */
     path: Pos[];
-    /** The cell where the bolt stopped (hit wall/creature or end of range). */
+    /** Legacy effect position: falls back to origin on an empty path.
+     * Kept for existing switches; use landingPos to distinguish no landing. */
     impactPos: Pos;
     /** Which effect to apply. */
     effect: BoltEffect;
-    /** Magnitude/damage. */
+    /** Unchanged legacy runtime magnitude/damage, not CE enchantment. */
     magnitude: number;
     /** The bolt config used. */
     bolt: BoltConfig;
     /** Animation frame data the renderer can consume. */
     frames: BoltFrame[];
+}
+
+/** Package an already computed route. No targeting, collisions, effect execution,
+ * autoID decision, RNG or world mutation. Both legacy exits can carry a caster. */
+export function createBoltResult(bolt: BoltConfig, caster: Creature | null,
+    origin: Pos, aimPos: Pos, path: readonly Pos[], hits: readonly BoltHit[]): BoltResult {
+    const cells = path.map(p => ({ ...p }));
+    const landingPos = cells.length ? { ...cells[cells.length - 1]! } : null;
+    return {
+        caster,
+        origin: { ...origin },
+        aimPos: { ...aimPos },
+        hits: hits.map(hit => ({ creature: hit.creature, pos: { ...hit.pos } })),
+        landingPos,
+        outcome: null,
+        path: cells,
+        impactPos: { ...(landingPos ?? origin) },
+        effect: bolt.effect,
+        magnitude: bolt.magnitude,
+        bolt,
+        frames: buildBoltFrames(cells, bolt),
+    };
 }
