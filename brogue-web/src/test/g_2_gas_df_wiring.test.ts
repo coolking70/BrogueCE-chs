@@ -49,13 +49,18 @@ function roomGrid(): Grid {
     return g;
 }
 
-/** 无怪物骚扰的封闭房间（同 f_1/g_1 口径），供游戏级用例使用。 */
+/** 全图清场后搭封闭房间；全图体积观测不能混入生成关卡的其他气源。 */
 function openRoom(game: Game): void {
     game.monsters.length = 0;
     game.items.length = 0;
-    for (let x = 1; x < 20; x++) {
-        for (let y = 1; y < 16; y++) game.grid.setTerrain(x, y, C.WALL, '#', 0x444444);
+    for (let x = 0; x < game.grid.width; x++) {
+        for (let y = 0; y < game.grid.height; y++) {
+            game.grid.setTerrain(x, y, C.WALL, '#', 0x444444);
+            // setTerrain 清层但不清 volume；残留体积也属于全图观测。
+            game.grid.getCell(x, y)!.volume = 0;
+        }
     }
+    game.environment.syncGasMirror();
     for (let x = 2; x <= 16; x++) {
         for (let y = 2; y <= 12; y++) {
             game.grid.setTerrain(x, y, C.FLOOR, '.', 0x888888);
@@ -558,7 +563,16 @@ describe('G-2 对抗⑨：MUD → DF_METHANE_GAS_PUFF 晋升链自动产气 + �
     it('泥格晋升命中后：沼气经 GAS 分支落地、gasGrid 镜像经 Game 对账分支同步', () => {
         const game = createHeadlessGame(42);
         openRoom(game);
+        // V-2b-9e-1：原场景实测只有目标泥格，增量来自 CE Time.c:1423-1426
+        // 的逐格随机舍入（2→3→3），不是其他泥格产气。封闭两格气室使
+        // 两轮扩散均为 2/2=1，无余数，≤2 才是不受随机舍入干扰的硬合同。
+        // 玩家仍在外面的房间；四周含斜角全部封墙，气体不能漏到第三格。
+        for (let x = 7; x <= 10; x++) {
+            for (let y = 7; y <= 9; y++) game.grid.setTerrain(x, y, C.WALL, '#', 0x444444);
+        }
+        game.grid.setTerrain(9, 8, C.FLOOR, '.', 0x888888);
         game.grid.setTerrain(8, 8, C.MUD, '~', 0x664422);
+        expect(totalVolume(game.grid), '晋升前全图无残留气体').toBe(0);
         // MUD 的 promoteChance=100（1%/回合）对测试太慢：临时抬到 10000
         // （确定性必中），测完还原。数据本体不动。
         const mudEntry = TERRAIN_FLAGS[C.MUD] as { promoteChance: number };
@@ -571,19 +585,22 @@ describe('G-2 对抗⑨：MUD → DF_METHANE_GAS_PUFF 晋升链自动产气 + �
         }
         // 晋升链真的产气（G-1 预测的前半："tile 填上即自动走 GAS 分支"）。
         // PromoteTileResult 不携带坐标，按"LIQUID 层 + 产气 spawn"定位。
-        const promo = game.lastPromotionUpdate!.promotions.find(
+        const gasPromotions = game.lastPromotionUpdate!.promotions.filter(
             (p) => p.layer === L.LIQUID && p.spawn !== null
         );
+        expect(gasPromotions, '全图只能有目标泥格这一次晋升产气').toHaveLength(1);
+        const promo = gasPromotions[0];
         expect(promo, 'MUD 晋升必须发生在 LIQUID 层').toBeDefined();
         expect(promo!.deferred, 'DF_METHANE_GAS_PUFF tile 已迁：不缓办').toBeNull();
         expect(promo!.spawn!.gasVolumeAdded, '沼气一缕 = 2 体积（Globals.c:667）').toBe(2);
         // 体积守恒地散开（甲烷无消散旗标），镜像必须与真相逐格一致
         // （G-1 预测的后半：Game 的 gasVolumeAdded 对账分支自动成为活路径）。
-        // 2 体积已由上面的同步返回值钉死。随后同一 objective block 会运行
-        // 随机舍入的扩散；极小体积确实可能全部舍入为 0，不能把期望守恒误写
-        // 成每个样本都守恒。这里反向钉“扩散不能凭空增量”。
+        // 2 体积已由上面的同步返回值钉死。两格均分不产生舍入误差，
+        // 继续用全图 ≤2 拦截真实增量；逐格 1+1 同时拒绝空跑/气体丢失。
         expect(totalVolume(game.grid), '2 体积扩散后不得凭空增加')
             .toBeLessThanOrEqual(2);
+        expect([game.grid.getCell(8, 8)!.volume, game.grid.getCell(9, 8)!.volume],
+            '两轮真实扩散后两格各为 1 体积').toEqual([1, 1]);
         expectMirrorMatchesTruth(game);
     });
 });

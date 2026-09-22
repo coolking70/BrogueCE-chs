@@ -1173,7 +1173,7 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
         expect(offenders, `promoteTile 出现在白名单之外的生产文件：\n${offenders.join('\n')}`).toEqual([]);
     });
 
-    it('F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限草/树形态 + GAS 恒空', () => {
+    it('F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空', () => {
         // 原断言（C-4b）："生产生成路径每格至多一层非空"（前提：DF 库未接入
         // 生产生成）。C-6 把 runAutogenerators 接进 generateTerrain：DF_GRASS/
         // DF_FOLIAGE 经 fillSpawnMap 的 setTerrainLayer 落 SURFACE 层、
@@ -1184,6 +1184,40 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
         //      出现任何其他多层组合（如生成期写 GAS、桥/火在生成期叠层）
         //      仍在本断言翻红；
         //   ③ GAS 层恒空不变（生成链无 GAS 写入点；气体是回合期现象）。
+        // V-2b-9e-1：区域路由移动生成流，逐格追踪并回 CE 核实的新组合。
+        // 按 [DUNGEON, LIQUID, GAS, SURFACE] 完整匹配，不扩成地形笛卡尔积。
+        const verified9eLayers: ReadonlyArray<readonly TerrainType[]> = [
+            // CE60 Idyll 先草木、后水塘（GlobalsBrogue.c:566-569）；
+            // DF_SHALLOW_WATER_POOL 只写 LIQUID，不清其他层（Globals.c:899）。
+            // DF_GRASS 的 propagationTerrain=0 但带 BLOCKED_BY_OTHER_LAYERS
+            // （:609）；浅水 prio55 < 草60，不能倒说成“在浅水上后铺草”。
+            // BP_NO_INTERIOR_FLAG 使这类格 machineNumber=0 也合法。
+            [C.FLOOR, C.WATER_SHALLOW, C.NOTHING, C.GRASS],
+            [C.FLOOR, C.WATER_SHALLOW, C.NOTHING, C.FOLIAGE],
+            [C.NOTHING, C.WATER_SHALLOW, C.NOTHING, C.GRASS],
+            [C.FLOOR, C.WATER_SHALLOW, C.NOTHING, C.NOTHING],
+            // CE58 血草茎按 SURFACE 纯层写入（GlobalsBrogue.c:559），
+            // 后来的 CE60 浅水边缘保留它；实测 seed424242/D1 (31,10)。
+            [C.FLOOR, C.NOTHING, C.NOTHING, C.BLOODFLOWER_STALK],
+            [C.FLOOR, C.WATER_SHALLOW, C.NOTHING, C.BLOODFLOWER_STALK],
+            // CE61：DF_SWAMP → MUD → WATER（Globals.c:903-905），三者
+            // flags=0，只覆盖目标层；泥可后铺在草木下、门下，灰菌可与水并存。
+            [C.FLOOR, C.MUD, C.NOTHING, C.GRASS],
+            [C.FLOOR, C.MUD, C.NOTHING, C.GRAY_FUNGUS],
+            [C.FLOOR, C.WATER_SHALLOW, C.NOTHING, C.GRAY_FUNGUS],
+            [C.NOTHING, C.MUD, C.NOTHING, C.FOLIAGE],
+            [C.FLOOR, C.MUD, C.NOTHING, C.NOTHING],
+            [C.DOOR, C.MUD, C.NOTHING, C.NOTHING],
+            // Goblin warren：MUD_FLOOR 后接 DF_HAY（GlobalsBrogue.c:266/273）；
+            // HAY 在 web 由 GRASS 承载（DungeonFeatureCatalog），只写 SURFACE。
+            [C.MUD_FLOOR, C.NOTHING, C.NOTHING, C.GRASS],
+            // CE34：FLOOR_FLOODABLE 明确写 DUNGEON（GlobalsBrogue.c:396），
+            // 保留既有草/网；坍塌边缘 DF 写 LIQUID（Globals.c:837）。
+            [C.FLOOR_FLOODABLE, C.NOTHING, C.NOTHING, C.GRASS],
+            [C.FLOOR_FLOODABLE, C.NOTHING, C.NOTHING, C.WEB],
+            [C.FLOOR_FLOODABLE, C.MACHINE_COLLAPSE_EDGE_DORMANT, C.NOTHING, C.NOTHING],
+            [C.FLOOR_FLOODABLE, C.MACHINE_COLLAPSE_EDGE_DORMANT, C.NOTHING, C.GRASS],
+        ];
         for (const seed of [424242, 777]) {
             const g: any = createHeadlessGame(seed);
             for (const depth of [1, 9]) {
@@ -1195,8 +1229,17 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                         for (let l = 0; l < L.COUNT; l++) {
                             if (cell.layers[l] !== C.NOTHING) nonEmpty.push(l);
                         }
-                        expect(nonEmpty.length, `seed=${seed} D${depth} (${x},${y}) 至多三层（31 号 floodable 地板可叠草木）`).toBeLessThanOrEqual(3);
-                        if (nonEmpty.length === 3 && cell.layers[L.DUNGEON] === C.FLAMETHROWER_HIDDEN) {
+                        expect(nonEmpty.length, `seed=${seed} D${depth} (${x},${y}) 至多三层（仅 CE 核实组合）`).toBeLessThanOrEqual(3);
+                        const verified9e = verified9eLayers.some(
+                            (layers) => layers.every((terrain, layer) => cell.layers[layer] === terrain)
+                        );
+                        if (verified9e) {
+                            // CE58/34/Goblin warren 没有 NO_INTERIOR_FLAG，保留机器归属守卫。
+                            if (cell.layers[L.SURFACE] === C.BLOODFLOWER_STALK
+                                || [C.MUD_FLOOR, C.FLOOR_FLOODABLE].includes(cell.layers[L.DUNGEON] as TerrainType)) {
+                                expect(cell.machineNumber).toBeGreaterThan(0);
+                            }
+                        } else if (nonEmpty.length === 3 && cell.layers[L.DUNGEON] === C.FLAMETHROWER_HIDDEN) {
                             // CE32 GlobalsBrogue.c:387-389：陷阱(DUNGEON)、
                             // 水塘浅水边缘(LIQUID)、DF_GRASS(SURFACE) 可同格。
                             // seed777/D9 的三格实测；逐字段全等，不放宽三层上限。
@@ -1204,8 +1247,8 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                             expect(cell.layers).toEqual([C.FLAMETHROWER_HIDDEN, C.WATER_SHALLOW, C.NOTHING, C.GRASS]);
                         } else if (nonEmpty.length === 3) {
                             // 31 号在 FLOOR 上以 LIQUID 层铺 FLOOR_FLOODABLE，
-                            // 其 FOLIAGE feature 又可在 SURFACE 层生长；这是
-                            // CE 原表三条 feature 叠加出的唯一合法三层形态。
+                            // 其 FOLIAGE feature 又可在 SURFACE 层生长；
+                            // 新确认的区域机器形态已由上面的逐字段白名单处理。
                             expect(cell.layers[L.DUNGEON]).toBe(C.FLOOR);
                             expect([
                                 C.FLOOR_FLOODABLE,
@@ -1214,7 +1257,7 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                             ]).toContain(cell.layers[L.LIQUID]);
                             expect([C.GRASS, C.FOLIAGE]).toContain(cell.layers[L.SURFACE]);
                         }
-                        if (nonEmpty.length === 2) {
+                        if (nonEmpty.length === 2 && !verified9e) {
                             // V-2b-2b 扩（机器蓝图 3/4/5/19/20/23 号的 CE :1443
                             // 纯层写入——feature 地形写 feature.layer 列、不清其他
                             // 层，与格上既有内容叠加）：机器地形占 DUNGEON 的两层
@@ -1320,9 +1363,9 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
                                     && cell.layers[L.DUNGEON] === C.NOTHING
                                     && cell.layers[L.LIQUID] === C.WATER_SHALLOW
                                     && cell.layers[L.SURFACE] === C.GRASS) {
-                                    // CE32 :389 的 DF_GRASS 不带 BLOCKED_BY_OTHER_LAYERS，
-                                    // Architect.c:3228 只比较被写 SURFACE 层，:3232 才是
-                                    // 可选的跨层优先级门。实测 seed777/D9 (73,17)。
+                                    // 既有 CE32 样本 seed777/D9 (73,17) 的精确组合。
+                                    // 旧注“DF_GRASS 不带 BLOCKED_BY_OTHER_LAYERS”有误：
+                                    // 浅水后铺可保留既有草，同格不能反推草能后铺于浅水。
                                     expect(cell.layers).toEqual([C.NOTHING, C.WATER_SHALLOW, C.NOTHING, C.GRASS]);
                                 } else if (DF_SURFACE_DECOR.has(cell.layers[L.SURFACE] as TerrainType)) {
                                     // ★ V-2b-7 新增合法形态：**DF 写的 SURFACE

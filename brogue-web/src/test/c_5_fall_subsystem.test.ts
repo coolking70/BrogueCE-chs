@@ -134,9 +134,10 @@ describe('C-5 对抗①：坠落是回合末结算（CE Time.c:168-176/2480）',
         // 不得受伤、深度已变、玩家掉血），它们本轮全绿。
         expect(rngAfter - rngBeforeDive, '坠落回合的 RNG 消耗增量偏离（= 换层生成的固定消耗，'
             + 'CE 坠落门整段 return：无推进循环/客观块的额外消耗）')
-            // V-2b-8 的强制 thematic 机器改变了换层生成流；本断言仍钉同一
-            // "只有换层、没有怪物推进"合同，重捕获后的固定增量如下。
-            .toBe(10401);
+            // 10401 = V-2b-8：强制 thematic 机器改变换层生成流。
+            // 16214 = V-2b-9e-1：区域机器路由使同样本机器数 469→823，
+            // 换层生成成本顺延；仍钉“只有换层、没有怪物推进”的固定增量。
+            .toBe(16214);
         expect(rat.hp, '随落阶段 rat 不在渊上，不得受伤/死亡').toBeGreaterThan(0);
         expect([rat.loc.x, rat.loc.y], '坠落回合怪物不得获得推进（CE playerFalls 提前 return）')
             .toEqual([4, 4]);
