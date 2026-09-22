@@ -247,6 +247,7 @@ export enum TerrainType {
     MACHINE_COLLAPSE_EDGE_DORMANT, MACHINE_COLLAPSE_EDGE_SPREADING,
     CHASM_WITH_HIDDEN_BRIDGE_ACTIVE, STONE_BRIDGE, LAVA_RETRACTING,
     FLOOD_WATER_SHALLOW, FLOOD_WATER_DEEP,
+    MACHINE_CHASM_EDGE, PUDDLE,
 }
 
 export enum LightType {
@@ -472,6 +473,8 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.LAVA_RETRACTING]: 40,
     [TerrainType.FLOOD_WATER_SHALLOW]: 50,
     [TerrainType.FLOOD_WATER_DEEP]: 41,
+    [TerrainType.MACHINE_CHASM_EDGE]: 80,
+    [TerrainType.PUDDLE]: 80,
     [TerrainType.ELECTRIC_CRYSTAL_OFF]: 0,
     [TerrainType.TURRET_LEVER]: 0,
     [TerrainType.HAUNTED_TORCH_DORMANT]: 0,
@@ -704,6 +707,8 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     [TerrainType.LAVA_RETRACTING]: DungeonLayer.LIQUID,
     [TerrainType.FLOOD_WATER_SHALLOW]: DungeonLayer.SURFACE,
     [TerrainType.FLOOD_WATER_DEEP]: DungeonLayer.SURFACE,
+    [TerrainType.MACHINE_CHASM_EDGE]: DungeonLayer.LIQUID,
+    [TerrainType.PUDDLE]: DungeonLayer.SURFACE,
     [TerrainType.ELECTRIC_CRYSTAL_OFF]: DungeonLayer.DUNGEON,
     [TerrainType.TURRET_LEVER]: DungeonLayer.DUNGEON,
     [TerrainType.HAUNTED_TORCH_DORMANT]: DungeonLayer.DUNGEON,

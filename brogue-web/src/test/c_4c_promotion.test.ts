@@ -622,7 +622,10 @@ describe('C-4c E：§五 实测测量（真实关卡、多种子；只测量不�
         // :478 FORCEFIELD_MELT = -10000，两者都走 TM_VANISHES_UPON_PROMOTION
         // 的消融链。守卫**不放宽**：仍要求负值载体是且仅是这四条、取 CE 原值，
         // 目的一如既往是挡住"随手塞个非 CE 负值进来"。
-        expect(negative.sort(), 'B-3 后负值载体必须是且仅是 CE 洞族两条 + 力场族两条，且取 CE 原值')
-            .toEqual(['FORCEFIELD:-200', 'FORCEFIELD_MELT:-10000', 'HOLE:-1000', 'HOLE_EDGE:-500'].sort());
+        // V-2b-9b 留痕反转：Globals.c:445-446 的涨水深/浅水原值也是负值，
+        // 地形落地后必须进入这份“且仅是”清单，不能继续假装它们不存在。
+        expect(negative.sort(), '负值载体必须且仅为已迁移的 CE 原值')
+            .toEqual(['FORCEFIELD:-200', 'FORCEFIELD_MELT:-10000', 'HOLE:-1000', 'HOLE_EDGE:-500',
+                'FLOOD_WATER_DEEP:-200', 'FLOOD_WATER_SHALLOW:-100', 'LAVA_RETRACTING:-1500'].sort());
     });
 });

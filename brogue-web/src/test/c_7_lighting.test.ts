@@ -285,6 +285,8 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         [TerrainType.LAVA_RETRACTING]: LightKind.LAVA_LIGHT,
         [TerrainType.FLOOD_WATER_SHALLOW]: 0,
         [TerrainType.FLOOD_WATER_DEEP]: 0,
+        [TerrainType.MACHINE_CHASM_EDGE]: 0,
+        [TerrainType.PUDDLE]: 0,
     };
 
     it('全 tile 的 glowLight 逐值等于 CE 原列（结构性穷尽）', () => {

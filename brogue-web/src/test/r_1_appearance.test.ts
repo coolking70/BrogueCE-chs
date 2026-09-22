@@ -212,6 +212,8 @@ const EXPECTED_VISIBLE: Record<TerrainType, { char: string; color: string; bgCol
     [TerrainType.LAVA_RETRACTING]: DEFAULT_LOOK,
     [TerrainType.FLOOD_WATER_SHALLOW]: DEFAULT_LOOK,
     [TerrainType.FLOOD_WATER_DEEP]: DEFAULT_LOOK,
+    [TerrainType.MACHINE_CHASM_EDGE]: DEFAULT_LOOK,
+    [TerrainType.PUDDLE]: DEFAULT_LOOK,
 };
 
 /** 造 Cell（terrain 走 setter 写回归属层）。只用于 DUNGEON/SURFACE 层地形。 */

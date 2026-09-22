@@ -361,6 +361,8 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.LAVA_RETRACTING]: L.LIQUID,
             [C.FLOOD_WATER_SHALLOW]: L.SURFACE,
             [C.FLOOD_WATER_DEEP]: L.SURFACE,
+            [C.MACHINE_CHASM_EDGE]: L.LIQUID,
+            [C.PUDDLE]: L.SURFACE,
         });
         expect(DRAW_PRIORITY).toEqual({
             [C.NOTHING]: 100, [C.GRANITE]: 0, [C.FLOOR]: 95, [C.WALL]: 0,
@@ -502,6 +504,8 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.LAVA_RETRACTING]: 40,
             [C.FLOOD_WATER_SHALLOW]: 50,
             [C.FLOOD_WATER_DEEP]: 41,
+            [C.MACHINE_CHASM_EDGE]: 80,
+            [C.PUDDLE]: 80,
         });
     });
 });

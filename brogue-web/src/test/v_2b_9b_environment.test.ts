@@ -50,4 +50,18 @@ describe('V-2b-9b environment machines', () => {
     expect(cells).not.toBeNull();
     expect(cells).toHaveLength(1);
   });
+
+  it('区域机器路径按 CE :1196-1201 复核 TREAT，并以失败结果驱动换位重试', () => {
+    const g = new Grid(15, 15);
+    for (let x=1;x<14;x++) for (let y=1;y<14;y++) g.setTerrain(x,y,TerrainType.FLOOR);
+    const engine = new BlueprintEngine(g, 5, []);
+    const bp: BlueprintDef = { id:'area-probe', name:'area-probe', depthRange:[1,26], roomSize:[1,1], frequency:0,
+      category:'thematic', flags:['BP_TREAT_AS_BLOCKING'], features:[] };
+    const validate = (engine as unknown as {
+      interiorSatisfiesBlockingFlags(b: BlueprintDef, p: {x:number;y:number}[]): boolean
+    }).interiorSatisfiesBlockingFlags.bind(engine);
+    expect(validate(bp,[{x:7,y:7}]), '开阔区域不得被把“不切断”判据抄反').toBe(true);
+    const wall = Array.from({length:13},(_,i)=>({x:7,y:i+1}));
+    expect(validate(bp,wall), '切断区域返回 false，buildAMachine 据此 continue 换位').toBe(false);
+  });
 });

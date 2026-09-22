@@ -842,6 +842,26 @@ export class BlueprintEngine {
                 room = { cells: sel.cells, center: sel.center, door: sel.door };
             }
 
+            // ⚠️ CE Architect.c:1196-1201 的区域机器 blocking 复核**仍未接线**，
+            // 且这是一笔比"没接"更深的账（V-2b-9b-finish 验收方实测定性）：
+            //
+            // CE 有两条 interior 来源——BP_ROOM 走 findSuitableRoom，区域机器走
+            // :1140-1195 的「从 origin 起 Dijkstra 逐壳生长」。:1196 的复核属于
+            // **后者**。而 web 至今只有前者（见上方 else 分支注释："web 全部
+            // 非前厅蓝图的形态"），**区域机器 interior 生长这个机制本身不存在**。
+            //
+            // 曾在本轮把该复核嫁接到 BP_ROOM 路径上，实测后果：65/66 的
+            // BP_REQUIRE_BLOCKING 要求"若填满墙会切出 ≥100 格"，而它拿到的是
+            // findGateRoom 的门房 cells，几乎不可能满足 ⇒ 每次都 continue 回去
+            // 重摇蓝图，空转吃掉机器预算，把 Kennel 这类机器饿死
+            // （v_2b_6_keys E1/F2：8 seed × D1-26 建成 0 台；停用本钩子后复绿）。
+            //
+            // 所以这不是"接对地方"就能解决的：真前置是区域机器 interior 生长。
+            // 按留痕纪律退回占位，缺口登记为独立机制轮（见 SESSION_HANDOFF
+            // "区域机器 interior 生长"条目），65/66 同步退池留形。
+            // 前厅路径的 :723-728 复核**保留**（CE 确实两处都有），其载体状态
+            // 见 fillVestibuleInterior 头注。
+
             // —— point of no return（CE :1222）：备份整层，动手。 ——
             const backup = this.backupLevel();
             const result = this.applyBlueprint(bp, room, { adoptiveItem });
@@ -1776,9 +1796,13 @@ export class BlueprintEngine {
  *   - cost 口径用 web 的 PDS_FORBIDDEN 约定（Game.findQualifyingPathLocNear
  *     同款：!isPassable ∪ LAVA ∪ WATER_DEEP ∪ TRAP），非 CE
  *     populateGenericCostMap 的逐地形代价——P1-33 已登记的同族偏差。
- * V-2b-9b 留痕反转：CE :723-728 的 BP_TREAT_AS_BLOCKING /
- * BP_REQUIRE_BLOCKING 复核已经接线；65/66 是 REQUIRE 的首批活载体，34/39
- * 是 TREAT 载体。F1 白名单继续把本文件钉为机器侧唯一 DF 连通性读者。
+ * V-2b-9b 留痕反转：CE :723-728 的**前厅**复核已经接线。
+ * 但**当前前厅无载体，且区域机器路径上的载体也拿不到它**——
+ * 34/39（TREAT）与 65/66（REQUIRE）在 CE 里走的是区域机器 :1196-1201,
+ * 而 web 没有区域机器 interior 生长（见 buildAMachine 里的占位说明）。
+ * 65/66 已按同类数据不变量退池留形；34/39 入池但其 TREAT 不生效。
+ * ⇒ 本判据当前是**零活载体**的前瞻实现，激活等区域机器机制轮。
+ * F1 白名单继续把本文件钉为机器侧唯一 DF 连通性读者。
  */
     private fillVestibuleInterior(bp: BlueprintDef, origin: Pos): Pos[] | null {
         const goal = rng.randRange(bp.roomSize[0], bp.roomSize[1]);
@@ -1823,17 +1847,20 @@ export class BlueprintEngine {
         }
         // CE :723-728：TREAT 要求“不切断”；REQUIRE 要求切出的较小区域
         // 至少 100 格。注意返回值 0 才是不断连，判据反抄会被 9b 对抗用例抓住。
+        if (!this.interiorSatisfiesBlockingFlags(bp, cells)) return null;
+        return cells;
+    }
+
+    /** CE :723-728 / :1196-1201 共用判据；else-if 留形与 CE 一致。 */
+    private interiorSatisfiesBlockingFlags(bp: BlueprintDef, cells: readonly Pos[]): boolean {
         const blockingMap = new Uint8Array(DCOLS * DROWS);
         for (const p of cells) blockingMap[p.y * DCOLS + p.x] = 1;
-        if (bp.flags.includes('BP_TREAT_AS_BLOCKING')
-            && levelIsDisconnectedWithBlockingMap(this.grid, blockingMap, false) !== 0) {
-            return null;
+        if (bp.flags.includes('BP_TREAT_AS_BLOCKING')) {
+            return levelIsDisconnectedWithBlockingMap(this.grid, blockingMap, false) === 0;
+        } else if (bp.flags.includes('BP_REQUIRE_BLOCKING')) {
+            return levelIsDisconnectedWithBlockingMap(this.grid, blockingMap, true) >= 100;
         }
-        if (bp.flags.includes('BP_REQUIRE_BLOCKING')
-            && levelIsDisconnectedWithBlockingMap(this.grid, blockingMap, true) < 100) {
-            return null;
-        }
-        return cells;
+        return true;
     }
 
     /**
