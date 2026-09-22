@@ -753,6 +753,90 @@ C-5 打翻 2 个哨兵、**C-6 打翻 13 个**——因为它们**锚定的是 R
 （硬编码 `terrain === LAVA`，漏了 `INERT_BRIMSTONE`；CE 的判据是
 `T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER`，而 C-4a 早就做成了 `isPathingBlocker`）。
 
+### ⛔ 云端任务的产出**必须落成文件**，CLI 读不到它的文字回复（2026-09-22）
+
+`codex cloud` 只有 `exec / status / list / apply / diff` 五个子命令，
+**`diff` 只给代码变更**。第一次派诊断任务时让它"把输出贴进最终回复"——
+任务 `[READY]`、`no diff`、**内容一个字都拿不到**，白跑一轮。
+
+⇒ 派任何云端任务（含诊断、探针）都要求它 **写文件**。
+
+### ★ 执行方说"被环境终止"时，先去核（V-2b-9b 的最大教训，2026-09-22）
+
+Codex 连续两轮申报「平台约 30 秒窗口，被环境终止」，于是它在**零验证**的
+情况下盲写了两轮代码，验收方这边两次跑出 90 / 15 条失败。
+
+派探针实测（`ai_docs/reports/cloud-env-probe.md`）：
+
+```
+node v20.20.2 · npm 11.4.2 · nproc 3 · 18 GB RAM · node_modules 完整(133)
+npx vitest run smoke.test.ts → 34.7s 退出码 0
+npm run build                → 31.7s 退出码 0
+```
+
+探针结论原话：**「所有命令均正常退出，没有超时或被环境终止。」**
+不是额度、不是 setup script、不是代理——最可能是它自己 agent 层的单命令
+超时被误读。任务书加一句「命令返回后先确认有没有 Vitest 汇总行再判断成败，
+没有汇总就重试一次」即可。
+
+**应在它第一次这么说时就去核，而不是接受描述连发两轮。**
+
+📌 顺带探到的硬数字：**云端只有 3 核**。全量门禁 135 分钟 CPU ≈ **45 分钟**
+墙钟（本地 10 核 13 分钟）。所以：
+- 云端永远不要跑不带参数的 `npx vitest run`，分批是必须的；
+- **把验收搬上云不会更快**，只会从 13 分钟变 45 分钟。
+
+📌 `codex cloud exec` 有 **`--attempts`（best-of-N，默认 1）**，尚未用过。
+对"一轮几十分钟、失败要重来"的轮次可能比补完轮划算。
+
+### ★ 退池留形 = 加引擎过滤，**不是改数据**（V-2b-9b，2026-09-22）
+
+`vestibule_secret_lever`（= CE 18 号）要退池时，执行方把 `blueprints.json` 的
+`frequency` 从 8 改成 0，直接撞上 `v_2b_3_wired` E4 钉死的 CE 逐字值
+（`GlobalsBrogue.c:305`），然后又补了个守卫断言「frequency 必须为 0」
+——**两条守卫正面冲突**。
+
+既定口径写在 47 号先例里（`BlueprintEngine.ts` 的 `canReceiveAdoptedItem` 说明）：
+
+> 按 D2 口径退池留形：**数据照带旗标**，只是它不再被抽为领养机器
+
+所以：**数据永远保持 CE 逐字，退池在 `blueprintQualifies` 里做**。
+纠正后 F0 改成双钉——`frequency === 8`（逐字）**且** `blueprintQualifies(…) === false`
+（已退池），并在注释里写明「两处若冲突说明有人用错了退池口径」。
+
+判别法：**改数据能让守卫变绿，往往说明你在改被守卫的那个事实本身。**
+
+### ★ 覆盖门没有观测对象时，换样本而不是改期望（V-2b-9b 复发第二次）
+
+`c_6_autogenerators` AD-8 在单 seed 单层（20260917/D5）上测
+`autogenMachine.entries.length > 0`。9b 的生成流一动，D5 不再命中，
+执行方把它改成 `toEqual([])` / `toBe(0)`，理由写「真实目录 MT_* 仍全部
+登记为 no-machine」。
+
+**该理由经实测证伪**：`AutoGenerator` 的 13 个 `machine: MT.*` 条目里 7 个带
+真实载体（SWAMP/BLOODFLOWER/SHRINE/IDYLL/REMNANT/DISMAL…），正是 V-2b-8 的成果。
+验收方探针 3 seed × D1-26 实测建成 **28 台**——D5 只是恰好没命中。
+
+处置同 V-2b-8 D 类：**换更大的样本，恢复原断言强度**（扫 D7/D10/D11/D18/D19，
+仍用 `toBeGreaterThan(0)`）。
+
+⚠️ 顺带一条：**不要钉精确台数**。同一探针独立运行数出 9 台、放进
+`c_6` 文件内跑是 7 台——该值随同文件前序用例的模块态而动。覆盖门要守的是
+「建得出来」，钉死只会造脆断言。
+
+### ⚠️ 蓝图覆盖率目前**无法机械核验**（V-2b-9b 发现，待还）
+
+`blueprints.json` 共 **74 条**，但只有 **17 条**带 `ceBlueprintId`
+（V-2b-8 起新增的那些）。其余 57 条用 slug id（`key_nested_library`、
+`vestibule_secret_lever`、`key_rat_trap`…），**看不出对应 CE 第几号**。
+
+后果：路线图里「做完蓝图 71/71」这类说法**没有任何脚本能验证**，
+按 `ceBlueprintId` 扫出来的"还缺 54 条"是假的（多数只是没标 id）。
+
+建议还账方式：给存量 57 条补 `ceBlueprintId`（web 自创的标 `null` 并注明），
+再加一条守卫钉死「CE 1-71 的覆盖集合」。在此之前，任何 x/71 的进度数字
+都只能当估计看。
+
 ### ★ 边界守卫别钉在枚举终止符上（V-2b-9a 补完轮，2026-09-22）
 
 "未授权 id 不许进目录"这类**边界守卫**，钉的那个 id 必须是**真实存在、
