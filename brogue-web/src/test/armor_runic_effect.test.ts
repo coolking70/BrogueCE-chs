@@ -22,6 +22,7 @@ import { createHeadlessGame } from './harness';
 import { Game } from '../engine/Core/Game';
 import { Item, ItemCategory } from '../engine/Items/Item';
 import { Monster, type MonsterData } from '../entities/Monster';
+import { TerrainType } from '../engine/Map/Grid';
 import monsterDataJson from '../data/monsters.json';
 
 const MONSTER_DATA = monsterDataJson as MonsterData[];
@@ -242,19 +243,26 @@ describe('reflection：仅远程触发、触发率随附魔走表；immunity 无
         }
     });
 
-    it('reflection 远程触发率符合 reflectionChance(e)（e=8 → 73%，统计断言）', () => {
+    it('reflection 真实弹道触发率符合 reflectionChance(e)（e=8 → 73%，统计断言）', () => {
         const game = createHeadlessGame(20260914);
         const armor = equipRunicArmor(game, 'reflection', 8, 10);
         game.player.strength = 10; // 力量恰好达标 → netEnchant = 8 → 触发率 73%
         const attacker = makeMonster(game, 4, 0); // 远程
         game.monsters = [attacker];
 
+        // W-4: Items.c:5675-5705 reflects BEFORE effect contact. Count the
+        // first deflection, not the retired post-hit half-damage shortcut.
+        game.player.loc = { x: 4, y: 5 }; attacker.loc = { x: 8, y: 5 };
+        for (let x = 0; x < game.grid.width; x++) for (let y = 0; y < game.grid.height; y++) {
+            game.grid.setTerrain(x, y, TerrainType.FLOOR);
+        }
         const trials = 3000;
         let triggered = 0;
         for (let i = 0; i < trials; i++) {
             attacker.hp = 1000;
-            game.tryTriggerArmorRunic(attacker, 2); // 反弹 max(1, floor(2*0.5)) = 1
-            if (attacker.hp === 999) triggered++;
+            const result = game.castMonsterBolt(attacker, game.player, 'SLOW_2')!;
+            if (result.reflections[0]?.creature === game.player) triggered++;
+            expect(attacker.hp).toBe(1000); // reflection itself has no damage formula
         }
         // 期望 73%；±8 个百分点的宽松区间（固定种子下结果确定，区间只防实现漂移）
         expect(triggered / trials).toBeGreaterThan(0.65);

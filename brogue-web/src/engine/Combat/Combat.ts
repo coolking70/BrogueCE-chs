@@ -59,17 +59,10 @@ export class CombatSystem {
         /**
          * P4-3：CE attack()（Combat.c:1243-1245）把 MONST_IMMUNE_TO_WEAPONS 的豁免
          * 限定在“武器伤害”——近战与投掷武器都走这条 attack() 复用路径，默认 true。
-         * castMonsterBolt 等法术/环境伤害出口传 false，不受该标志影响
+         * BE_DAMAGE 等法术/环境伤害出口传 false，不受该标志影响；BE_ATTACK 保持 true
          * （CE inflictDamage 本身只认 MONST_INVULNERABLE，不检查 IMMUNE_TO_WEAPONS）。
          */
         isWeaponAttack?: boolean;
-        /**
-         * P4-3：反射（MA_REFLECT_100/MONST_REFLECT_50）——调用方在命中判定前
-         * 已经算好"这一击会被反射"，改把伤害记到这个目标身上（通常是原施法者）
-         * 而不是 defender。hit probability / 偷袭仍按 defender 的状态计算，
-         * 只有伤害的落点被换掉，对应 CE reflectBolt 把弹道折返给原施法者。
-         */
-        damageTarget?: Creature;
         /**
          * B-1：CE attack(attacker, defender, lungeAttack) 第三形参——刺剑突进
          * （Movement.c:1482-1483 对 hitList 结算时按武器 LUNGE 旗标传入）。
@@ -278,8 +271,8 @@ export class CombatSystem {
             }
         }
 
-        // Apply damage (P4-3: reflected hits redirect to opts.damageTarget, e.g. the caster)
-        const applyTo = opts?.damageTarget ?? defender;
+        // Reflection has already selected the actual defender in bolt travel.
+        const applyTo = defender;
         if (damage > 0) {
             // --- P4-5: MA_TRANSFERENCE (Combat.c:1849-1871, inflictDamage()) ---
             // 前置条件：defender（这里是实际承伤对象 applyTo，对应 CE reflectBolt

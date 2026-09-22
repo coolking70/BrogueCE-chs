@@ -79,12 +79,15 @@ describe('W-3 seven required stages', () => {
     });
 
     it.each([T.WALL, T.GRANITE, T.DOOR, T.LOCKED_DOOR, T.CRYSTAL_WALL, T.FORCEFIELD, T.PORTCULLIS_CLOSED])(
-        'door/crystal/machine obstruction %s stops every ordinary non-fire bolt without weakening map flags', terrain => {
+        'door/crystal/machine obstruction %s blocks forward travel without weakening map flags (W-4 crystal now reflects)', terrain => {
             const g = scene(), beyond = rat(g, 10); g.grid.setTerrain(7, 5, terrain);
             const flags = cellTerrainFlags(g.grid, 7, 5);
             expect(flags & (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION)).not.toBe(0);
+            // W-4 CE Items.c:5830-5852: crystal bounces at (6,5); all other
+            // original samples still stop at the obstacle. Pin the random branch south.
+            if (terrain === T.CRYSTAL_WALL) vi.spyOn(rng, 'randRange').mockReturnValue(16);
             const result = zap(g, 'wand_of_slowness', beyond.loc);
-            expect(result.landingPos).toEqual({ x: 7, y: 5 }); expect(result.hits).toEqual([]);
+            expect(result.landingPos).toEqual(terrain === T.CRYSTAL_WALL ? { x: 6, y: 11 } : { x: 7, y: 5 }); expect(result.hits).toEqual([]);
             expect(beyond.hasStatus('slowed')).toBe(false); expect(result.outcome?.autoID).toBe(false);
             expect(cellTerrainFlags(g.grid, 7, 5)).toBe(flags);
         });
@@ -187,10 +190,10 @@ describe('W-3 sequencing, recipients and W-2 observation', () => {
         }
     });
 
-    it('W-2 autoID now sees fire beyond empty aim, but not beyond a crystal; never ignites the origin', () => {
+    it('W-2 autoID sees fire beyond aim, but not through crystal; a southward reflection does not reach origin', () => {
         for (const blocked of [false, true]) {
             const g = scene(); g.grid.setTerrain(4, 5, T.GRASS); g.grid.setTerrain(10, 5, T.GRASS);
-            if (blocked) g.grid.setTerrain(8, 5, T.CRYSTAL_WALL);
+            if (blocked) { g.grid.setTerrain(8, 5, T.CRYSTAL_WALL); vi.spyOn(rng, 'randRange').mockReturnValue(16); }
             const result = zap(g, 'staff_of_fire');
             expect(result.outcome?.autoID).toBe(!blocked);
             expect(g.grid.getCell(10, 5)!.isBurning).toBe(!blocked);
@@ -242,9 +245,10 @@ describe('W-3 sequencing, recipients and W-2 observation', () => {
         }
     });
 
-    it('monster fire cannot hurt a target behind crystal; dragonfire uses existing path DF before fire, then stops', () => {
+    it('monster fire cannot hurt a target behind crystal; dragonfire uses existing path DF before fire on its reflected route', () => {
         const g = scene(), caster = rat(g, 2), target = rat(g, 10); g.player.loc = { x: 15, y: 9 };
         g.grid.setTerrain(7, 5, T.CRYSTAL_WALL);
+        vi.spyOn(rng, 'randRange').mockReturnValue(16); // W-4: reflect south at the previous cell.
         const fire = g.castMonsterBolt(caster, target, 'FIRE')!;
         expect(fire.hits).toEqual([]); expect(target.hp).toBe(100); expect(fire.outcome?.autoID).toBe(false);
         g.grid.setTerrain(4, 5, T.GRASS);
@@ -257,7 +261,8 @@ describe('W-3 sequencing, recipients and W-2 observation', () => {
         const dragon = g.castMonsterBolt(caster, target, 'DRAGONFIRE')!;
         expect(terrainAtIgnition).toEqual([T.OBSIDIAN]);
         expect(g.grid.getCell(8, 5)!.layers[L.SURFACE]).not.toBe(T.OBSIDIAN);
-        expect(dragon.landingPos).toEqual({ x: 7, y: 5 }); expect(target.hp).toBe(100);
+        expect(dragon.landingPos).toEqual({ x: 6, y: 11 });
+        expect(dragon.reflections[0]!.pos).toEqual({ x: 6, y: 5 }); expect(target.hp).toBe(100);
         expect(dragon.outcome?.autoID).toBe(false); // pathDF alone is not a CE identification observation
     });
 
@@ -276,11 +281,11 @@ describe('W-3 sequencing, recipients and W-2 observation', () => {
         expect(target.hasStatus('poisoned')).toBe(false);
     });
 
-    it('W-4/W-12/W-13 remain deferred: no reflected path, blink movement, tunneling excavation or machine flag changes', () => {
+    it('W-4 closes reflected travel; W-12/W-13 still defer blink movement and tunneling, with machine flags unchanged', () => {
         const g = scene(), guardian = rat(g, 7, 5, 'stone_guardian');
         const reflected = zap(g, 'staff_of_fire', guardian.loc);
-        expect(reflected.hits.map(h => h.creature)).toEqual([guardian]);
-        expect(reflected.path.every(p => p.x > 4)).toBe(true); // legacy damage redirection is not a reflected trajectory
+        expect(reflected.hits.map(h => h.creature)).toEqual([g.player]);
+        expect(reflected.path.map(p => p.x)).toEqual([5, 6, 7, 6, 5, 4]); // CE :5682 retraces the incoming route
         g.monsters = []; g.grid.setTerrain(7, 5, T.WALL);
         const before = JSON.stringify(g.grid), origin = { ...g.player.loc };
         for (const [effect, ceType] of [[BoltEffect.TUNNELING, CEBoltType.TUNNELING], [BoltEffect.BLINKING, CEBoltType.BLINKING]] as const) {

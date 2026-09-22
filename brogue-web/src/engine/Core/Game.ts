@@ -23,7 +23,7 @@ import blueprintData from '../../data/blueprints.json';
 import { Player, type HungerState } from '../../entities/Player';
 import { Monster, applyShieldStatus, monstersAreTeammates, monstersAreEnemies } from '../../entities/Monster';
 import { CombatSystem } from '../Combat/Combat';
-import { weaponParalysisDuration, weaponConfusionDuration, weaponForceDistance, netEnchant, reflectionChance, armorAbsorptionMax, armorReprisalPercent } from '../Combat/CombatFormulas';
+import { weaponParalysisDuration, weaponConfusionDuration, weaponForceDistance, netEnchant, armorAbsorptionMax, armorReprisalPercent } from '../Combat/CombatFormulas';
 import { ItemCategory, Item } from '../Items/Item';
 import { ItemLoader, type ConsumableConfig } from '../Items/ItemLoader';
 import { rng } from '../Random';
@@ -80,9 +80,9 @@ import {
 } from '../Map/LightCatalog';
 import { FloatingText } from '../Visuals/FloatingText';
 import { STATUS_CONFIG } from '../Status/statusConfig';
-import { exposeBoltPathToElectricity, getBoltForItem, boltPath, createBoltResult, BoltEffect, MONSTER_BOLT_TABLE, type BoltConfig, type BoltFrame, type BoltResult, type MonsterBoltMeta } from '../Combat/Bolt';
+import { exposeBoltPathToElectricity, getBoltForItem, boltPath, createBoltResult, BoltEffect, BOLT_EFFECT_CE_EFFECT, MONSTER_BOLT_TABLE, type BoltConfig, type BoltFrame, type BoltResult, type BoltReflection, type MonsterBoltMeta } from '../Combat/Bolt';
 import { traceBolt, type BoltWorld } from '../Combat/BoltTrajectory';
-import { CE_BOLT_CATALOG } from '../Combat/BoltCatalog';
+import { CE_BOLT_CATALOG, CEBoltEffect } from '../Combat/BoltCatalog';
 
 import { arcanaTargetCandidates, canObserveBoltCreature } from '../Combat/BoltTargeting';
 
@@ -4233,9 +4233,9 @@ export class Game {
         return {
             caster, hideDetails,
             creatureAt: pos => {
-                if (this.player !== caster && this.player.hp > 0
+                if (this.player.hp > 0
                     && this.player.loc.x === pos.x && this.player.loc.y === pos.y) return this.player;
-                return this.monsters.find(m => m !== caster && m.hp > 0 && !m.isDormant
+                return this.monsters.find(m => m.hp > 0 && !m.isDormant
                     && m.loc.x === pos.x && m.loc.y === pos.y);
             },
         };
@@ -4268,14 +4268,17 @@ export class Game {
         let autoID = false, applied = false;
         const hideDetails = !ItemLoader.identifiedItems.has((item as Item & { identityId?: string }).identityId ?? '');
         const actual = traceBolt(this.grid, result.bolt, result.origin, result.aimPos,
-            this.boltWorld(result.caster, hideDetails), (pos, hit) => {
+            this.boltWorld(result.caster, hideDetails), {
+            onReflection: reflection => this.observeBoltReflection(reflection),
+            onCell: (pos, hit) => {
                 if (hit) {
                     const contact = createBoltResult(result.bolt, result.caster, result.origin, result.aimPos, [pos], [hit]);
                     autoID = this.applyBoltEffect(contact, item) || autoID;
                     applied = true;
                 }
                 autoID = this.applyBoltTerrainAt(result.bolt, pos) || autoID;
-            });
+            },
+        });
         Object.assign(result, actual);
         // Keep the existing landing/miss/self-effect dispatch, including its W-8+
         // limitations. Empty paths have no detonation (in particular no origin fire).
@@ -4317,20 +4320,17 @@ export class Game {
         return this.pendingBoltFrames[this.currentBoltFrameIndex] ?? null;
     }
 
-    /**
-     * Apply the bolt's effect at its impact position and along its path.
-     */
-    /**
-     * P4-3：玩家直接施法的伤害类 bolt（FIRE/LIGHTNING）不走 CombatSystem.attack，
-     * 是 target.takeDamage(magnitude) 硬编码调用——这里补上 CE 的两条豁免：
-     *   - MONST_INVULNERABLE（Combat.c:1806 inflictDamage）：伤害归零，不掉血。
-     *   - MA_REFLECT_100/MONST_REFLECT_50（Items.c:4978-4983 projectileReflects，
-     *     GlobalsBrogue.c boltCatalog "flame"/"lightning" 均无 BF_NEVER_REFLECTS）：
-     *     伤害改记到玩家自己身上（弹道折返给施法者，Items.c:5681 reflectBolt）。
-     * 返回 true 表示伤害按原计划打在 target 身上（调用方继续走命中消息分支）；
-     * 返回 false 表示伤害被吞掉或反射（调用方跳过"命中"消息，改由这里的消息负责）。
-     */
-    private applyDirectBoltDamage(target: Creature, magnitude: number, reflectKey: string, reflectDefault: string): boolean {
+    /** Reflection is travel, never a damage redirect or an autoID observation.
+     * Armor identification is independent of identification of the fired item. */
+    private observeBoltReflection(reflection: BoltReflection): void {
+        if (reflection.creature === this.player && this.player.equippedArmor?.runicType === 'reflection') {
+            this.player.equippedArmor.runicKnown = true;
+        }
+    }
+
+    /** W-4 only changes the recipient. Preserve magnitude and invulnerability;
+     * CE staff damage/fire immunity remain W-8. */
+    private applyDirectBoltDamage(target: Creature, magnitude: number): boolean {
         if (target instanceof Monster && target.isInvulnerable()) {
             logger.log(i18next.t('bolt.invulnerable_no_effect', {
                 target: target.name,
@@ -4338,17 +4338,16 @@ export class Game {
             }), '#aaaaaa');
             return false;
         }
-        if (target instanceof Monster) {
-            const chance = target.reflectChance();
-            if (chance > 0 && rng.randPercent(chance)) {
-                this.player.takeDamage(magnitude);
-                logger.log(i18next.t(reflectKey, { target: target.name, defaultValue: reflectDefault }), '#99ddff');
-                this.spawnFloatingText(`-${magnitude}`, this.player.loc.x, this.player.loc.y, 0x99ddff);
-                return false;
-            }
-        }
         target.takeDamage(magnitude);
         return true;
+    }
+
+    /** Preserve the old monster status entry, using the existing player entry
+     * only when reflection actually reaches the player. Durations stay local. */
+    private applyPlayerBoltStatus(target: Creature, status: StatusId, duration: number): boolean {
+        return target instanceof Monster
+            ? this.applyStatusToMonster(target, status, duration, 'magic')
+            : target instanceof Player && this.applyTimedStatus(target, status, duration);
     }
 
     private boltCasterMovement(result: BoltResult) {
@@ -4382,7 +4381,7 @@ export class Game {
         // Consume the traced contact, not a new location lookup (which could
         // pick a dormant occupant, or a creature moved/spawned by an earlier hit).
         const contact = result.hits.find(h => h.pos.x === impactPos.x && h.pos.y === impactPos.y);
-        const target = contact?.creature instanceof Monster ? contact.creature : undefined;
+        const target = contact?.creature;
 
         const known = ItemLoader.identifiedItems.has((item as Item & { identityId?: string }).identityId ?? '');
         const logMiss = (key: string, fallback: string, color: string) => {
@@ -4391,9 +4390,9 @@ export class Game {
         };
         switch (effect) {
             case BoltEffect.FIRE: {
-                if (target) autoID = true; // CE :5146-5150, even if immune/reflected.
+                if (target) autoID = true; // CE :5146-5150, even if immune; reflectors never enter this branch.
                 // Terrain exposure is sequenced by the travel loop after contact.
-                if (target && this.applyDirectBoltDamage(target, magnitude, 'bolt.fire_reflect', `The ${target.name} deflects the fire back at you!`)) {
+                if (target && this.applyDirectBoltDamage(target, magnitude)) {
                     logger.log(i18next.t('bolt.fire_hit', {
                         name: item.displayName, target: target.name, damage: magnitude,
                         defaultValue: `${item.displayName} scorches the ${target.name} for ${magnitude} damage!`
@@ -4404,7 +4403,7 @@ export class Game {
                             target: target.name,
                             defaultValue: `The ${target.name} burns to death.`
                         }), '#ff8800');
-                    } else {
+                    } else if (target instanceof Monster) {
                         // P4-4：CE Items.c:5213 splitMonster —— bolt 命中怪物时同样触发分裂。
                         this.trySplitMonster(target, this.player);
                     }
@@ -4419,26 +4418,24 @@ export class Game {
                 let totalDamage = 0;
                 for (const hit of result.hits) {
                     const m = hit.creature;
-                    if (m instanceof Monster) {
-                        autoID = true; // CE BE_DAMAGE contact, not HP delta.
-                        if (!this.applyDirectBoltDamage(m, magnitude, 'bolt.lightning_reflect', `The ${m.name} deflects the lightning back at you!`)) {
-                            continue;
-                        }
-                        totalDamage += magnitude;
-                        this.spawnFloatingText(`-${magnitude}`, m.loc.x, m.loc.y, 0x33ccff);
-                        logger.log(i18next.t('bolt.lightning_hit', {
-                            name: item.displayName, target: m.name, damage: magnitude,
-                            defaultValue: `Lightning from ${item.displayName} strikes the ${m.name} for ${magnitude} damage!`
-                        }), '#33ccff');
-                        if (m.hp <= 0) {
-                            logger.log(i18next.t('bolt.lightning_kill', {
-                                target: m.name,
-                                defaultValue: `The ${m.name} is electrocuted!`
-                            }), '#55ddff');
-                        } else {
-                            // P4-4：同 FIRE 分支，Items.c:5213 splitMonster。
-                            this.trySplitMonster(m, this.player);
-                        }
+                    autoID = true; // CE BE_DAMAGE contact, not HP delta.
+                    if (!this.applyDirectBoltDamage(m, magnitude)) {
+                        continue;
+                    }
+                    totalDamage += magnitude;
+                    this.spawnFloatingText(`-${magnitude}`, m.loc.x, m.loc.y, 0x33ccff);
+                    logger.log(i18next.t('bolt.lightning_hit', {
+                        name: item.displayName, target: m.name, damage: magnitude,
+                        defaultValue: `Lightning from ${item.displayName} strikes the ${m.name} for ${magnitude} damage!`
+                    }), '#33ccff');
+                    if (m.hp <= 0) {
+                        logger.log(i18next.t('bolt.lightning_kill', {
+                            target: m.name,
+                            defaultValue: `The ${m.name} is electrocuted!`
+                        }), '#55ddff');
+                    } else if (m instanceof Monster) {
+                        // P4-4：同 FIRE 分支，Items.c:5213 splitMonster。
+                        this.trySplitMonster(m, this.player);
                     }
                 }
                 if (totalDamage === 0) {
@@ -4449,7 +4446,7 @@ export class Game {
 
             case BoltEffect.POISON: {
                 if (target) {
-                    const applied = this.applyStatusToMonster(target, 'poisoned', magnitude * 3, 'magic');
+                    const applied = this.applyPlayerBoltStatus(target, 'poisoned', magnitude * 3);
                     autoID = this.boltStatusAccepted(target, 'poisoned', applied) && this.boltLivingTarget(target) && this.canObserveBoltTarget(target); // CE :5312-5326
                     logger.log(i18next.t('bolt.poison_hit', {
                         name: item.displayName, target: target.name,
@@ -4490,7 +4487,7 @@ export class Game {
 
             case BoltEffect.SLOW: {
                 if (target) {
-                    this.applyStatusToMonster(target, 'slowed', 20, 'magic');
+                    this.applyPlayerBoltStatus(target, 'slowed', 20);
                     autoID = true; // CE :5242-5249, unconditional after slow/flash.
                     logger.log(i18next.t('bolt.slow_hit', {
                         name: item.displayName, target: target.name,
@@ -4541,7 +4538,7 @@ export class Game {
                             target.loc.y = newY;
                         }
                     }
-                    autoID = !target.hasBehavior('MONST_IMMOBILE')
+                    autoID = (!(target instanceof Monster) || !target.hasBehavior('MONST_IMMOBILE'))
                         && Math.max(Math.abs(before.x - this.player.loc.x), Math.abs(before.y - this.player.loc.y)) > 1
                         && (before.x !== target.loc.x || before.y !== target.loc.y)
                         && (seenBefore || this.canObserveBoltTarget(target)); // CE :5229-5239
@@ -4557,7 +4554,7 @@ export class Game {
 
             case BoltEffect.DISCORD: {
                 if (target) {
-                    const applied = this.applyStatusToMonster(target, 'confused', 15, 'magic');
+                    const applied = this.applyPlayerBoltStatus(target, 'confused', 15);
                     autoID = this.boltStatusAccepted(target, 'confused', applied) && this.boltLivingTarget(target) && this.canObserveBoltTarget(target);
                     logger.log(i18next.t('bolt.discord_hit', {
                         name: item.displayName, target: target.name,
@@ -4584,9 +4581,9 @@ export class Game {
 
             case BoltEffect.INVISIBILITY: {
                 if (target) {
-                    const observable = target.isAlly || (this.canObserveBoltTarget(target) && this.player.hasStatus('telepathy'));
-                    const applied = this.applyStatusToMonster(target, 'invisible', 20, 'magic');
-                    autoID = this.boltStatusAccepted(target, 'invisible', applied) && observable && this.boltLivingTarget(target) && !target.isTrulyInvisible(); // CE :4941-4951
+                    const observable = target === this.player || (target instanceof Monster && target.isAlly) || (this.canObserveBoltTarget(target) && this.player.hasStatus('telepathy'));
+                    const applied = this.applyPlayerBoltStatus(target, 'invisible', 20);
+                    autoID = this.boltStatusAccepted(target, 'invisible', applied) && observable && this.boltLivingTarget(target) && (!(target instanceof Monster) || !target.isTrulyInvisible()); // CE :4941-4951
                     logger.log(i18next.t('bolt.invisibility_hit', {
                         name: item.displayName, target: target.name,
                         defaultValue: `${item.displayName} makes the ${target.name} vanish!`
@@ -4601,7 +4598,7 @@ export class Game {
             }
 
             case BoltEffect.EMPOWERMENT: {
-                if (target && target.isAlly) {
+                if (target instanceof Monster && target.isAlly) {
                     target.maxHp = Math.floor(target.maxHp * 1.5);
                     target.hp = target.maxHp;
                     autoID = this.boltLivingTarget(target) && this.canObserveBoltTarget(target);
@@ -4609,7 +4606,7 @@ export class Game {
                         name: item.displayName, target: target.name,
                         defaultValue: `${item.displayName} empowers the ${target.name}!`
                     }), '#ffff44');
-                } else if (target) {
+                } else if (target instanceof Monster) {
                     logger.log(i18next.t('bolt.empowerment_enemy', {
                         name: item.displayName, target: target.name,
                         defaultValue: `${item.displayName} empowers the ${target.name}!`
@@ -4718,9 +4715,12 @@ export class Game {
             selfTargeting: false,
         };
         let autoID = false;
-        const boltResult = traceBolt(this.grid, visualBolt, caster.loc, target.loc, this.boltWorld(caster), (pos, hit) => {
-            if (hit) autoID = this.applyMonsterBoltHit(caster, hit.creature, ceBoltName, meta) || autoID;
-            autoID = this.applyBoltTerrainAt(visualBolt, pos) || autoID;
+        const boltResult = traceBolt(this.grid, visualBolt, caster.loc, target.loc, this.boltWorld(caster), {
+            onReflection: reflection => this.observeBoltReflection(reflection),
+            onCell: (pos, hit) => {
+                if (hit) autoID = this.applyMonsterBoltHit(caster, hit.creature, ceBoltName, meta) || autoID;
+                autoID = this.applyBoltTerrainAt(visualBolt, pos) || autoID;
+            },
         });
         this.pendingBoltFrames = boltResult.frames;
         this.currentBoltFrameIndex = 0;
@@ -4730,9 +4730,8 @@ export class Game {
         return boltResult;
     }
 
-    /** Existing per-recipient effects/formulas; W-3 changes which contacts invoke
-     * them, not their implementations. Reflection damage redirection remains the
-     * old P4 approximation; reflected travel is W-4. */
+    /** Existing per-recipient effects/formulas. Travel has already resolved
+     * reflection: defense, immunity and splitting use the actual recipient. */
     private applyMonsterBoltHit(caster: Monster, target: Creature, ceBoltName: string, meta: MonsterBoltMeta): boolean {
         let autoID = false;
         const isPlayer = target === this.player;
@@ -4751,20 +4750,10 @@ export class Game {
             case BoltEffect.POISON_DART:
             case BoltEffect.FIRE:
             case BoltEffect.DRAGONFIRE: {
-                // P4-3：CE GlobalsBrogue.c boltCatalog —— "spark"/"flame"/"dragonfire"
-                // 都没有 BF_NEVER_REFLECTS，可被 MA_REFLECT_100/MONST_REFLECT_50 反射；
-                // "arrow"(DISTANCE_ATTACK)/"poisoned dart"(POISON_DART) 标了
-                // BF_NEVER_REFLECTS，永不反射。反射目标是原施法者 caster
-                // （Items.c:5681 reflectBolt(originLoc...) 把弹道折返给发射者）。
-                const canReflect = meta.effect === BoltEffect.SPARK
-                    || meta.effect === BoltEffect.FIRE
-                    || meta.effect === BoltEffect.DRAGONFIRE;
-                const targetReflectChance = (canReflect && target instanceof Monster) ? target.reflectChance() : 0;
-                const reflects = targetReflectChance > 0 && rng.randPercent(targetReflectChance);
-
+                // BE_ATTACK keeps weapon immunity; BE_DAMAGE keeps the legacy
+                // monster attack formula pending its separately scoped formula work.
                 const result = CombatSystem.attack(caster, target, {
-                    isWeaponAttack: false,
-                    damageTarget: reflects ? caster : undefined,
+                    isWeaponAttack: BOLT_EFFECT_CE_EFFECT[meta.effect] === CEBoltEffect.ATTACK,
                 });
                 autoID = true; // CE :5136-5150: attack/damage attempt, including miss/immunity.
                 if (result.kamikazeSelfDestruct) {
@@ -4772,14 +4761,6 @@ export class Game {
                     // bolts），这里只是让 CombatSystem.attack 的通用出口在未来出现
                     // 这种组合时行为正确，不静默吞掉自爆语义。
                     logCast('bolt.monster_cast_kamikaze', `${casterLabel} bursts before the spell lands!`, '#ff8800');
-                    break;
-                }
-                if (reflects) {
-                    logCast('bolt.monster_cast_reflect', `${targetName} deflects the ${ceBoltName} back at ${casterLabel}!`, '#99ddff');
-                    if (result.damage > 0) {
-                        this.spawnFloatingText(`-${result.damage}`, caster.loc.x, caster.loc.y, 0x99ddff);
-                        if (isPlayer) this.lastDamageSource = target.name;
-                    }
                     break;
                 }
                 if (result.damage > 0) {
@@ -6104,23 +6085,8 @@ export class Game {
         // 同源；取值口径与 Combat.ts:73-78 一致（strengthRequired 缺省 0）。
         const netEnch = netEnchant(armor.enchantment ?? 0, this.player.strength, armor.strengthRequired ?? 0);
 
-        if (armor.runicType === 'reflection' && !melee && rng.randPercent(reflectionChance(netEnch))) {
-            // CE：reflection 只作用于投掷物/法术（Items.c:4969 projectileReflects），
-            // 对近战永不触发；触发率 reflectionChance(netEnchant)（PowerTables.c:109-123）。
-            const reflected = Math.max(1, Math.floor(incomingDamage * 0.5));
-            attacker.takeDamage(reflected);
-            armor.runicKnown = true;
-            logger.log(
-                i18next.t('runic.armor.reflection', {
-                    target: attacker.name,
-                    damage: reflected,
-                    defaultValue: `Your armor reflects ${reflected} damage to ${attacker.name}!`
-                }),
-                '#99ddff'
-            );
-            this.spawnFloatingText(`-${reflected}`, attacker.loc.x, attacker.loc.y, 0x99ddff);
-            return;
-        }
+        // W-4: reflection is resolved before bolt contact, including adjacent
+        // casts. No post-damage half-hit shortcut and no second reflection roll.
 
         if (armor.runicType === 'mutuality' && melee) {
             // CE Combat.c:976-1024（A_MUTUALITY）：恒触发（无概率判定）；伤害与相邻

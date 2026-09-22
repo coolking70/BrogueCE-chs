@@ -779,3 +779,17 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 修正首格 HALTS 顺序：CE conjuration 首格更新，只有 blink 贴脸提前拒绝；不实现 blink 移动/地形。
 - 已冻结实现与测试，开始最终 build、显式 107 文件定向回归和独立 drift；结果、逐文件数量与前后 SHA-256 回填 w-3.report.md。
 - 后续 W-4 实现真正反射轨迹；W-12/W-13 实现 blink/tunnel；保留 W-8+ 效果/公式/旧自施/网藤缺口，机器禁用过滤不动。
+
+## 2026-09-23 W-4：通用反射与命中分派
+
+- 当前请求：严格执行 w-4.prompt / W-0 §2.3；hits 表达反射后接触者，复跑 W-2 的29例；openPath 仍只看候选前方，实际反射轨迹另行延伸；效果公式与生成基线不动。
+- 读取 CE Items.c:4960-5065/5675-5705/5785-5852，接入两次反射判定、首次原路返回、后续未调优取线、随机40周界目标/50次重试、水晶前格反射和有限路径预算。
+- 玩家与怪物进入相同碰撞/反射分派；反射者单独记 reflections，hits 是反射之后按次序的实际效果接触（可重复、可包含玩家/原施法者；不是扣血保证）。旧自施增益仍留 W-9/W-15。
+- Combat 目录明确改 Bolt.ts、BoltTrajectory.ts、Combat.ts，新增 BoltReflection.ts；移除 damageTarget 旧捷径。Game 移除旧反伤与护甲事后半伤；BE_ATTACK 恢复武器资格，BE_DAMAGE 的旧怪物攻击公式未换。
+- 护甲 reflection 与 immunity 敌种类反射在接触前判定；新增只供反射使用的 CE 类别成员投影，不改 ItemLoader 生成抽取或其它护甲效果。
+- 定向7文件140例通过，含 W-4 新增29例、W-2原29例、P4-3/P4-4和护甲；W-3三处登记与护甲旧反伤断言依据 CE 留痕翻正。7种临时错误实现均翻红，文件已逐字恢复。
+- 浏览器技能客户端与真实页面验证：seed1 火返玩家100→94；seed37 迟缓旁射命中老鼠；seed63 水晶随机返玩家100→94。无页面/控制台错误，整页截图复核；技能canvas导出黑图不充当视觉通过。
+- R(实际5生产文件+2个翻译资源)+S(B,C,M,反射/读取补查)最终覆盖104文件；冻结全部实现、测试、配置后最终build、显式103文件回归、独立drift。最终逐文件结果与SHA-256见 ai_docs/reports/w-4.report.md。
+- 后续：W-8伤害公式/火免，W-9旧heal/haste/空射invisibility自施与discord状态，W-12/13 blink/tunnel，W-15护盾、W-21强化、W-23消魔资格仍待对应轮；怪物BLINKING/网/藤未启用。历史immunity受伤后无类别退款不在此轮重写范围。
+
+- 第一次拟最终门禁仅i18n死键门失败：4条已移除反射日志的中文键原值归档到legacy，未改门禁断言；补R新增itemFlavors。修后5文件116例通过，再次冻结完整复跑；初次结果不冒充最终。最终范围含CombatFormulas原有4todo，连同smoke共5todo，均未新增/修改。

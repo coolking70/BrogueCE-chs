@@ -3,9 +3,10 @@ import type { Creature } from '../../entities/Creature';
 import { Monster, monstersAreEnemies, monstersAreTeammates } from '../../entities/Monster';
 import { Player } from '../../entities/Player';
 import { DungeonLayer, type Grid } from '../Map/Grid';
-import { cellTerrainFlags } from '../Map/DungeonFeature';
-import { T_IS_FLAMMABLE, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION } from '../Map/TerrainCatalog';
-import { BoltEffect, createBoltResult, type BoltConfig, type BoltHit } from './Bolt';
+import { cellTerrainFlags, cellTerrainMechFlags } from '../Map/DungeonFeature';
+import { T_IS_FLAMMABLE, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, TM_REFLECTS_BOLTS } from '../Map/TerrainCatalog';
+import { BoltEffect, createBoltResult, type BoltConfig, type BoltHit, type BoltReflection } from './Bolt';
+import { projectileReflects, randomReflectionOffset } from './BoltReflection';
 import { CE_BOLT_CATALOG, CEBoltFlags as F } from './BoltCatalog';
 
 const BLOCKS = T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION;
@@ -92,27 +93,86 @@ export function boltLine(grid: Grid, from: Pos, to: Pos, bolt?: BoltConfig, worl
     return best;
 }
 
-/** Ordinary CE travel: contact -> path effects -> test the updated terrain.
- * HALTS_BEFORE checks the next cell after an update; only blink rejects a
- * point-blank obstruction before its first update (CE :5635/5790). No reflection or special
- * blink/tunnel operations. onCell is execution-only; omission gives a pure trace. */
+/** CE Items.c:4998-5065. The first return retraces the exact incoming cells;
+ * later returns use an untuned line toward the original origin. Random targets
+ * retry at most 50 times to find an unobstructed first step. No aim/candidate
+ * eligibility checks: a new segment can reach either team or the caster. */
+function reflectedPath(grid: Grid, path: readonly Pos[], origin: Pos, towardCaster: boolean, alreadyReflected: boolean): Pos[] {
+    const kink = path[path.length - 1]!;
+    if (towardCaster && !alreadyReflected) {
+        const back = path.slice(0, -1).reverse();
+        const extensionOrigin = back[back.length - 1] ?? kink;
+        return [...back, ...boltLine(grid, extensionOrigin, {
+            x: 2 * origin.x - kink.x, y: 2 * origin.y - kink.y,
+        })];
+    }
+    const random = !towardCaster || (origin.x === kink.x && origin.y === kink.y);
+    let line: Pos[] = [];
+    for (let attempt = 0; attempt < 50; attempt++) {
+        const offset = random ? randomReflectionOffset() : undefined;
+        const target = offset ? { x: kink.x + offset.x, y: kink.y + offset.y } : origin;
+        line = boltLine(grid, kink, target);
+        if (!random || (line[0] && !(cellTerrainFlags(grid, line[0].x, line[0].y) & BLOCKS))) break;
+    }
+    return line;
+}
+
+/** Execution-only hooks; previews omit these and consume no reflection RNG. */
+export interface BoltExecution {
+    onCell(pos: Pos, hit: BoltHit | undefined): void;
+    onReflection?(reflection: BoltReflection): void;
+}
+
+/** CE travel: creature reflection -> contact/path effects -> updated terrain ->
+ * HALTS_BEFORE -> terrain reflection. No special blink/tunnel operations. A bare
+ * onCell callback retains the W-3 pure-geometry API; execution hooks enable W-4. */
 export function traceBolt(grid: Grid, bolt: BoltConfig, from: Pos, aim: Pos, world: BoltWorld,
-    onCell?: (pos: Pos, hit: BoltHit | undefined) => void) {
+    execution?: BoltExecution | ((pos: Pos, hit: BoltHit | undefined) => void)) {
     const flags = flagsFor(bolt), piercing = !!(flags & F.PASSES_THRU_CREATURES);
-    const path: Pos[] = [], hits: BoltHit[] = [];
-    for (const pos of boltLine(grid, from, aim, bolt, world)) {
+    const hooks = typeof execution === 'object' ? execution : undefined;
+    const onCell = typeof execution === 'function' ? execution : hooks?.onCell;
+    const canReflect = !!hooks && !(flags & F.NEVER_REFLECTS);
+    // CE Rogue.h:182 MAX_BOLT_LENGTH = DCOLS*10, zap :5679/:5841 reserves
+    // one map-sized extension. Scale to the actual grid used by this engine.
+    const maxLength = grid.width * 10;
+    const reflectionLimit = maxLength - Math.max(grid.width, grid.height);
+    const path: Pos[] = [], hits: BoltHit[] = [], reflections: BoltReflection[] = [];
+    let pending = boltLine(grid, from, aim, bolt, world);
+    let next = 0;
+    const reflect = (creature: Creature | null, towardCaster: boolean) => {
+        const reflection = { pos: { ...path[path.length - 1]! }, pathIndex: path.length - 1, creature, towardCaster };
+        pending = reflectedPath(grid, path, from, towardCaster, reflections.length > 0);
+        next = 0;
+        reflections.push(reflection);
+        hooks?.onReflection?.(reflection);
+    };
+    while (next < pending.length && path.length < maxLength) {
         if (bolt.maxRange > 0 && path.length >= bolt.maxRange) break;
+        const pos = pending[next++]!;
         const creature = world.creatureAt(pos);
         const blocked = !!(cellTerrainFlags(grid, pos.x, pos.y) & BLOCKS);
-        // Do not activate the old, previously unreachable excavation switch.
-        const checksAhead = path.length > 0 || bolt.effect === BoltEffect.BLINKING;
+        // Keep W-3's no-excavation boundary and blink's first-cell guard.
         if ((blocked && bolt.effect === BoltEffect.TUNNELING)
-            || (checksAhead && (flags & F.HALTS_BEFORE_OBSTRUCTION) && (blocked || (creature && !piercing)))) break;
+            || (!path.length && bolt.effect === BoltEffect.BLINKING && (blocked || (creature && !piercing)))) break;
         path.push(pos);
+        if (creature && canReflect && projectileReflects(creature, world.caster) && path.length - 1 < reflectionLimit) {
+            reflect(creature, projectileReflects(creature, world.caster));
+            continue; // CE :5704: no effect or path exposure on the reflector.
+        }
         const hit = creature ? { creature, pos: { ...pos } } : undefined;
         if (hit) hits.push(hit);
         onCell?.(pos, hit);
         if ((creature && !piercing) || (cellTerrainFlags(grid, pos.x, pos.y) & BLOCKS)) break;
+        const ahead = pending[next];
+        if (!ahead) break;
+        const aheadBlocked = !!(cellTerrainFlags(grid, ahead.x, ahead.y) & BLOCKS);
+        if ((flags & F.HALTS_BEFORE_OBSTRUCTION) && (aheadBlocked || (!piercing && world.creatureAt(ahead)))) break;
+        if (canReflect && aheadBlocked && (cellTerrainMechFlags(grid, ahead.x, ahead.y) & TM_REFLECTS_BOLTS)
+            && path.length - 1 < reflectionLimit) {
+            reflect(null, false); // CE projectileReflects(caster, NULL) is false.
+        }
     }
-    return createBoltResult(bolt, world.caster, from, aim, path, hits);
+    const result = createBoltResult(bolt, world.caster, from, aim, path, hits);
+    result.reflections = reflections;
+    return result;
 }

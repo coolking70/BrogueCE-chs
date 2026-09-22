@@ -263,12 +263,22 @@ export function buildBoltFrames(path: Pos[], bolt: BoltConfig): BoltFrame[] {
 
 // ----- Bolt effect result (returned to Game.ts for application) -----
 
-/** A living, active creature contacted on the actual travelled route, not a claim that its effect
- * succeeded. Snapshot the contact position: teleport/beckoning can move it.
+/** A living, active recipient reached AFTER reflection, including the caster or
+ * player. An effect attempt, not proof of HP loss (immunity/miss still count).
+ * Reflectors are not hits. Repeat visits are separate hits. Snapshot the position:
+ * teleport/beckoning can move the recipient.
  * CE updateBolt (Items.c:5115-5132) separates caster from creature being hit. */
 export interface BoltHit {
     readonly creature: Creature;
     readonly pos: Pos;
+}
+
+export interface BoltReflection {
+    readonly pos: Pos;
+    readonly pathIndex: number;
+    /** null for reflective terrain; pos is the kink, before the blocking tile. */
+    readonly creature: Creature | null;
+    readonly towardCaster: boolean;
 }
 
 /** Effect-commit contract. CE Items.c:5112-5119,
@@ -285,9 +295,12 @@ export interface BoltResult {
     origin: Pos;
     /** Aimed position, independent of caster identity and final landing. */
     aimPos: Pos;
-    /** Ordered actual contacts, excluding origin and any pre-obstruction stop cell.
-     * Not effect success, intended targets, or recipients of legacy reflected damage. */
+    /** Ordered effect contacts after reflection. Origin can be revisited/hit.
+     * Pure previews (outcome=null) predict contacts without rolling reflection.
+     * Legacy self-buffs remain effect-local until W-9/W-15, not extra collisions. */
     hits: BoltHit[];
+    /** Deflections in travel order, separate from hits and effect observation. */
+    reflections: BoltReflection[];
     /** Last reached cell after ordinary collision/halts-before rules; null for no travel. */
     landingPos: Pos | null;
     /** null = effect outcome NOT evaluated. Never treat it as autoID=false.
@@ -319,6 +332,7 @@ export function createBoltResult(bolt: BoltConfig, caster: Creature | null,
         origin: { ...origin },
         aimPos: { ...aimPos },
         hits: hits.map(hit => ({ creature: hit.creature, pos: { ...hit.pos } })),
+        reflections: [],
         landingPos,
         outcome: null,
         path: cells,
