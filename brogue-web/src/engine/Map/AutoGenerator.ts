@@ -567,7 +567,11 @@ export const WIRED_AUTOGENERATOR_INDEXES: readonly number[] = AUTO_GENERATOR_CAT
 export function randomMatchingLocation(
     grid: Grid,
     requiredDungeonFoundationType: TerrainType,
-    requiredLiquidFoundationType: TerrainType
+    requiredLiquidFoundationType: TerrainType,
+    // V-2b-9e：机器期的物品/怪物尚为指令，调用者提供占用投影。
+    // acceptLastAttempt 对应 CE 区域调用忽略 false、继续用最后坐标；
+    // autoGen 保持默认的 null 失败语义，旧调用的 RNG/结果不变。
+    options: { isOccupied?: (x: number, y: number) => boolean; acceptLastAttempt?: boolean } = {}
 ): Pos | null {
     const foundationObstructsItems =
         (TERRAIN_FLAGS[requiredDungeonFoundationType].flags & T_OBSTRUCTS_ITEMS) !== 0;
@@ -583,11 +587,12 @@ export function randomMatchingLocation(
             cell.layers[DungeonLayer.DUNGEON] !== requiredDungeonFoundationType
             || cell.layers[DungeonLayer.LIQUID] !== requiredLiquidFoundationType
             || cell.machineNumber !== 0
+            || (options.isOccupied?.(x, y) ?? false)
             || (!foundationObstructsItems
                 && (cellTerrainFlags(grid, x, y) & T_OBSTRUCTS_ITEMS) !== 0);
         if (!rejected) break;
     } while (failsafeCount < 500);
-    if (failsafeCount >= 500) {
+    if (failsafeCount >= 500 && !options.acceptLastAttempt) {
         return null;
     }
     return { x, y };

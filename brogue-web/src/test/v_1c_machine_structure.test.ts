@@ -116,7 +116,8 @@ function bp(f: Partial<BlueprintDef>): BlueprintDef {
         roomSize: [8, 10],
         frequency: 1,
         category: 'reward',
-        flags: [],
+        // V-2b-9e：这些夹具明确测 gate/pocket，不能再靠旧的默认房间路由。
+        flags: ['BP_ROOM'],
         features: [],
         ...f,
     } as BlueprintDef;
@@ -139,7 +140,7 @@ const VESTIBULE_PARENT = bp({
     id: 'v1c_vest_parent', category: 'reward',
     features: [feat({ itemCategory: undefined, itemId: undefined, flags: ['MF_BUILD_VESTIBULE'] })],
 });
-const VESTIBULE_CHILD = bp({ id: 'v1c_vest', category: 'vestibule', roomSize: [1, 3], features: [] });
+const VESTIBULE_CHILD = bp({ id: 'v1c_vest', category: 'vestibule', flags: ['BP_VESTIBULE'], roomSize: [1, 3], features: [] });
 
 // ---------- 夹具：工具 ----------
 

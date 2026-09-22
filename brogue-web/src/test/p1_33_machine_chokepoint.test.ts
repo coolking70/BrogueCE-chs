@@ -163,7 +163,7 @@ describe('P1-33 机器阶段不切断关卡', () => {
 
                     // 机器结构合同（对真实生成链路的每台机器逐条断言）：
                     // 1) 机器内部没有裸 FLOOR（楼梯/钥匙牌堆已排除密库）；
-                    // 2) door ∈ cells；needsKey ⇒ door 是 LOCKED_DOOR；
+                    // 2) 房间/前厅 door ∈ cells；区域 door=null；needsKey ⇒ LOCKED_DOOR；
                     // 3) center ∈ cells、与 door 不同格、且可通行。
                     // V-2b-2b 反转（本文件不在该轮 §6 授权清单——但 CE 23 号
                     // 蓝图的 BP_NO_INTERIOR_FLAG（Architect.c:1691-1702）本就
@@ -194,6 +194,8 @@ describe('P1-33 机器阶段不切断关卡', () => {
                         // machineNumber（牌堆排除正是以它为键），而不是靠地形冒充。
                         const bpDef = (blueprintData as BlueprintDef[]).find(b => b.id === mr.blueprintId);
                         const noInterior = bpDef?.flags.includes('BP_NO_INTERIOR_FLAG') ?? false;
+                        const isArea = !bpDef?.flags.includes('BP_ROOM')
+                            && !bpDef?.flags.includes('BP_VESTIBULE');
                         for (const p of mr.cells) {
                             const k = `${p.x},${p.y}`;
                             if (grid.getCell(p.x, p.y)?.machineNumber === 0
@@ -204,7 +206,13 @@ describe('P1-33 机器阶段不切断关卡', () => {
                                 break;
                             }
                         }
-                        if (!mr.door || !cellSet.has(`${mr.door.x},${mr.door.y}`)) {
+                        // V-2b-9e：区域从随机 origin 生长，没有 gate/door。
+                        // 用“必须无门”反向守卫，仍对房间/前厅逐台要求 door∈cells。
+                        if (isArea) {
+                            if (mr.door !== null || mr.needsKey) {
+                                structureViolations.push(`seed${seed}/D${d} ${mr.blueprintId} 区域被误配 gate/door`);
+                            }
+                        } else if (!mr.door || !cellSet.has(`${mr.door.x},${mr.door.y}`)) {
                             structureViolations.push(`seed${seed}/D${d} ${mr.blueprintId} door 不属于自身 cells`);
                         } else if (mr.needsKey
                             && grid.getCell(mr.door.x, mr.door.y)?.terrain !== TerrainType.LOCKED_DOOR) {
@@ -212,8 +220,6 @@ describe('P1-33 机器阶段不切断关卡', () => {
                                 `seed${seed}/D${d} ${mr.blueprintId} needsKey 但 door 不是 LOCKED_DOOR`);
                         }
                         const cKey = `${mr.center.x},${mr.center.y}`;
-                        const isArea = !bpDef?.flags.includes('BP_ROOM')
-                            && !bpDef?.flags.includes('BP_VESTIBULE');
                         // V-2a 前厅豁免（本文件在 V-2a 任务书 §5 授权清单内）：
                         // category==='vestibule' 的机器 center = door = origin
                         // （BlueprintEngine BP_VESTIBULE 分支，CE

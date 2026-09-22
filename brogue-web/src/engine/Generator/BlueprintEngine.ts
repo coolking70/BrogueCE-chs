@@ -16,6 +16,7 @@ import { analyzeChokeMap, analyzeLoopMap, CE_GATE_CANDIDATE_CAP, type ChokeAnaly
 import { terrainAllowsMove, DIRS8 } from '../Map/Connectivity';
 import { DijkstraMap, MAX_DISTANCE } from '../Map/Pathfinding';
 import { allocShortGrid } from '../Map/SafetyMap';
+import { randomMatchingLocation } from '../Map/AutoGenerator';
 // V-2b-2a：feature 落位资格判定（CE cellIsFeatureCandidate）所需的四组判据——
 // 走廊计数、地形旗标位、四层旗标并集、阻断否决两口子（C-8 落地）。
 import { passableArcCount } from '../Items/ItemSpawnHeatMap';
@@ -25,6 +26,7 @@ import {
     T_PATHING_BLOCKER,
     isPathingBlocker,
     TERRAIN_FLAGS,
+    TM_IS_SECRET,
     TM_IS_WIRED,
     TM_IS_CIRCUIT_BREAKER,
 } from '../Map/TerrainCatalog';
@@ -40,6 +42,7 @@ import {
 // 的名字解析与落位——CE Architect.c:1434-1440 的 web 等价物。
 import { resolveDFName } from '../Map/Promotion';
 import { catalogFeature } from '../Map/DungeonFeature';
+import { DUNGEON_FEATURE_CATALOG } from '../Map/DungeonFeatureCatalog';
 import { rng } from '../Random';
 import type { Pos } from '../../types';
 import blueprintData from '../../data/blueprints.json';
@@ -578,6 +581,8 @@ type LevelBackup = {
         machineNumber: number; trapType: Cell['trapType'];
     }>;
     impregnable: number[];
+    items: number[];
+    monsters: number[];
 };
 
 /**
@@ -688,6 +693,11 @@ export function blueprintQualifies(
 export class BlueprintEngine {
     private grid: Grid;
     private depth: number;
+    // V-2b-9e：生成期 HAS_ITEM / HAS_MONSTER。物品/怪物稍后由 Game 实化；
+    // 此处跟随成功 feature 指令记占用，子机器可见，整机失败随 levelBackup 回滚。
+    // 休眠怪不带 HAS_MONSTER；携带/外包物品不占地面。
+    private pendingItems = new Set<number>();
+    private pendingMonsters = new Set<number>();
     private blueprints: BlueprintDef[];
     /**
      * V-2a：findGateRoom 的 chokeMap 分析缓存。web 的 analyzeChokeMap 每次
@@ -744,8 +754,8 @@ export class BlueprintEngine {
      * ——Bullet Brogue 的 L1 兵器库与 D26 的 MT_AMULET_AREA——在 web 数据
      * 无对应蓝图（D2 退池留形，归 V-2 数据轮）。
      *
-     * P1-33 选址合同不变：每次建造尝试仍走 findGateRoom 的 chokepoint 门位
-     * （CE Architect.c:1080-1095）+ gateSealsOnlyInterior 误封否决。
+     * V-2b-9e：BP_ROOM 保持 P1-33 gate 选址；BP_VESTIBULE 从传入门位生长；
+     * 其余蓝图用 CE 区域距离外壳生长，不再借用房间门位。
      */
     public buildMachines(): MachineResult[] {
         // 奖励房配额（CE Architect.c:1757-1766）：
@@ -790,7 +800,7 @@ export class BlueprintEngine {
      * @param requiredFlags CE requiredMachineFlags（web 字符串数组形态）；
      *                      顶层配额传 [BP_REWARD]，递归领养/前厅各传其位。
      * @param adoptiveItem  待领养物品指令（CE adoptiveItem，仅递归领养非 null）。
-     * @param origin        前厅机器的落位锚点（CE originX/Y，门位坐标）。
+     * @param origin        前厅必传门位；区域可传固定起点，null/≤0 则随机选点。
      * @returns 建成的父机器（子机器挂 subMachines）；失败返回 null（已回滚）。
      *
      * 循环结构逐字对齐 CE 的 do-while：failsafe 初值 10、先减后判（至多 9 次
@@ -807,6 +817,7 @@ export class BlueprintEngine {
         adoptiveItem: MachineResult['itemSpawns'][number] | null,
         origin: Pos | null
     ): MachineResult | null {
+        const chooseLocation = !origin || origin.x <= 0 || origin.y <= 0;
         let failsafe = 10;
         do {
             failsafe--;
@@ -870,44 +881,41 @@ export class BlueprintEngine {
 
             const effFlags = effectiveBpFlags(bp);
             let room: { cells: Pos[]; center: Pos; door: Pos | null };
-            if (effFlags.has(BP_VESTIBULE)) {
-                // CE :1120-1140：前厅机器必须有传入落位，填充失败立即放弃整机
-                //（不设 tryAgain——CE 字面行为）。origin 的 ≤0 哨位判定同
-                // CE :988 chooseLocation 的字面口径。
-                if (!origin || origin.x <= 0 || origin.y <= 0) return null;
-                const interior = this.fillVestibuleInterior(bp, origin);
-                if (!interior) return null;
-                room = { cells: interior, center: origin, door: origin };
-            } else {
-                // BP_ROOM（web 全部非前厅蓝图的形态，CE :1080-1118）。
-                // retry 即 CE 的 tryAgain：continue 回到 do 顶（failsafe 先减，
-                // 与 CE while(tryAgain) 的迭代语义逐字一致）换蓝图重试。
-                const analysis = this.getGateAnalysis();
-                const sel = this.findGateRoom(bp, analysis);
+            if (effFlags.has('BP_ROOM')) {
+                // CE :1080-1118：房间保持既有 gate 合同，不套用区域 blocking 复核。
+                const sel = this.findGateRoom(bp, this.getGateAnalysis());
                 if (sel.kind === 'retry') continue;
                 if (sel.kind === 'noCandidates') return null;
                 room = { cells: sel.cells, center: sel.center, door: sel.door };
+            } else if (effFlags.has(BP_VESTIBULE)) {
+                // CE :1120-1140：前厅必须传入 origin，失败直接放弃。
+                if (chooseLocation) return null;
+                const interior = this.fillVestibuleInterior(bp, origin!);
+                if (!interior) return null;
+                room = { cells: interior, center: origin!, door: origin! };
+            } else {
+                // CE :1148-1205：同一蓝图内最多换位 10 次；指定蓝图时只尝试
+                // 一次，失败交还外层 failsafe。两者都不是硬 return null。
+                let locationFailsafe = 10;
+                let interior: Pos[] | null;
+                let areaOrigin: Pos;
+                do {
+                    areaOrigin = chooseLocation
+                        ? randomMatchingLocation(this.grid, TerrainType.FLOOR, TerrainType.NOTHING, {
+                            isOccupied: (x, y) => this.pendingItems.has(cellKey(x, y))
+                                || this.pendingMonsters.has(cellKey(x, y)),
+                            // CE :1156 不检查 boolean 返回值，保留最后一次坐标。
+                            acceptLastAttempt: true,
+                        })!
+                        : origin!;
+                    interior = this.fillAreaInterior(bp, areaOrigin);
+                } while (chooseBP && !interior && --locationFailsafe);
+                if (!interior) {
+                    if (!chooseBP && !chooseLocation) return null; // CE :1210
+                    continue; // tryAgain：外层重选蓝图/位置，仍受 failsafe=10 约束
+                }
+                room = { cells: interior, center: areaOrigin, door: null };
             }
-
-            // ⚠️ CE Architect.c:1196-1201 的区域机器 blocking 复核**仍未接线**，
-            // 且这是一笔比"没接"更深的账（V-2b-9b-finish 验收方实测定性）：
-            //
-            // CE 有两条 interior 来源——BP_ROOM 走 findSuitableRoom，区域机器走
-            // :1140-1195 的「从 origin 起 Dijkstra 逐壳生长」。:1196 的复核属于
-            // **后者**。而 web 至今只有前者（见上方 else 分支注释："web 全部
-            // 非前厅蓝图的形态"），**区域机器 interior 生长这个机制本身不存在**。
-            //
-            // 曾在本轮把该复核嫁接到 BP_ROOM 路径上，实测后果：65/66 的
-            // BP_REQUIRE_BLOCKING 要求"若填满墙会切出 ≥100 格"，而它拿到的是
-            // findGateRoom 的门房 cells，几乎不可能满足 ⇒ 每次都 continue 回去
-            // 重摇蓝图，空转吃掉机器预算，把 Kennel 这类机器饿死
-            // （v_2b_6_keys E1/F2：8 seed × D1-26 建成 0 台；停用本钩子后复绿）。
-            //
-            // 所以这不是"接对地方"就能解决的：真前置是区域机器 interior 生长。
-            // 按留痕纪律退回占位，缺口登记为独立机制轮（见 SESSION_HANDOFF
-            // "区域机器 interior 生长"条目），65/66 同步退池留形。
-            // 前厅路径的 :723-728 复核**保留**（CE 确实两处都有），其载体状态
-            // 见 fillVestibuleInterior 头注。
 
             // —— point of no return（CE :1222）：备份整层，动手。 ——
             const backup = this.backupLevel();
@@ -1610,6 +1618,7 @@ export class BlueprintEngine {
                             // 钥匙是该形态孤例，继续被消费端跳过——B-4b 原判）。
                             theItem = { ...ctx.adoptiveItem, pos: { x: pos.x, y: pos.y }, viaAdoption: true };
                             itemSpawns.push(theItem);
+                            if (!fFlags.has('MF_MONSTER_TAKE_ITEM')) this.pendingItems.add(cellKey(pos.x, pos.y));
                             ctx.adoptiveItem = null;
                         } else if (fFlags.has('MF_GENERATE_ITEM') && feature.itemCategory) {
                             // V-2b-2a（CE :1506-1509）：Q 族资格旗标随指令下传；
@@ -1656,6 +1665,7 @@ export class BlueprintEngine {
                             if (!fFlags.has('MF_OUTSOURCE_ITEM_TO_MACHINE')
                                 && !fFlags.has('MF_MONSTER_TAKE_ITEM')) {
                                 itemSpawns.push(theItem);
+                                this.pendingItems.add(cellKey(pos.x, pos.y));
                             }
                         }
 
@@ -1702,6 +1712,7 @@ export class BlueprintEngine {
                         // 21/43/56/69 号四条蓝图用 HORDE_MACHINE_STATUE /
                         // HORDE_MACHINE_TURRET 让 horde 只从机器族里抽。
                         if (fFlags.has('MF_GENERATE_HORDE')) {
+                            if (!fFlags.has('MF_MONSTERS_DORMANT')) this.pendingMonsters.add(cellKey(pos.x, pos.y));
                             monsterSpawns.push({
                                 hordeFlags: feature.hordeFlags ?? [],
                                 pos: { x: pos.x, y: pos.y },
@@ -1724,6 +1735,7 @@ export class BlueprintEngine {
                         // 皆有（行为零变化），但 24/25 号的图腾/守卫 feature 按 CE
                         // 数据不带该旗标，旧条件会漏生成。照 CE 改为只看 monsterId。
                         if (feature.monsterId) {
+                            if (!fFlags.has('MF_MONSTERS_DORMANT')) this.pendingMonsters.add(cellKey(pos.x, pos.y));
                             monsterSpawns.push({
                                 monsterId: feature.monsterId,
                                 pos: { x: pos.x, y: pos.y },
@@ -1870,20 +1882,16 @@ export class BlueprintEngine {
      * 4 向——CE dijkstraScan(..., false)），目标尺寸 rand_range(roomSize)，
      * 按"距离 = k"的外壳序（sCols/sRows 洗牌）收集内部格。
      *
-     * 与 CE 的两处留形差异（当前数据下皆结构性不可达，激活轮需重核）：
-     *   - CE :706-710 的 HAS_ITEM 中止：机器阶段物品尚为指令、不在网格上，
-     *     web 无从触发；
- *   - cost 口径用 web 的 PDS_FORBIDDEN 约定（Game.findQualifyingPathLocNear
- *     同款：!isPassable ∪ LAVA ∪ WATER_DEEP ∪ TRAP），非 CE
- *     populateGenericCostMap 的逐地形代价——P1-33 已登记的同族偏差。
- * V-2b-9b 留痕反转：CE :723-728 的**前厅**复核已经接线。
- * 但**当前前厅无载体，且区域机器路径上的载体也拿不到它**——
- * 34/39（TREAT）与 65/66（REQUIRE）在 CE 里走的是区域机器 :1196-1201,
- * 而 web 没有区域机器 interior 生长（见 buildAMachine 里的占位说明）。
- * 65/66 已按同类数据不变量退池留形；34/39 入池但其 TREAT 不生效。
- * ⇒ 本判据当前是**零活载体**的前瞻实现，激活等区域机器机制轮。
- * F1 白名单继续把本文件钉为机器侧唯一 DF 连通性读者。
- */
+     * 与 CE 的两处既存差异（本轮只改区域路径）：
+     *   - CE :706-710 的 HAS_ITEM 中止：前厅仍未读生成期物品占用；本轮
+     *     pendingItems 仅接区域，前厅消费登记待补，不再称“无从触发”；
+     *   - cost 口径用 web 的 PDS_FORBIDDEN 约定（Game.findQualifyingPathLocNear
+     *     同款：!isPassable ∪ LAVA ∪ WATER_DEEP ∪ TRAP），非 CE
+     *     populateGenericCostMap 的逐地形代价——P1-33 已登记的同族偏差。
+     * V-2b-9b → V-2b-9e 留痕反转：共用 blocking 判据已接到区域路径，
+     * 34/39 的 TREAT 以及 autoGen 强制 58 现在有实际消费者；“零活载体”
+     * 登记已过期。前厅仍无携带该旗标的目录项，65/66 保持原 freq=0。
+     */
     private fillVestibuleInterior(bp: BlueprintDef, origin: Pos): Pos[] | null {
         const goal = rng.randRange(bp.roomSize[0], bp.roomSize[1]);
 
@@ -1920,7 +1928,7 @@ export class BlueprintEngine {
                     if (cells.length >= goal) break;
                     if (dist[x]![y] === k) {
                         cells.push({ x, y });
-                        // CE :706-710 的 HAS_ITEM 中止在 web 结构性不可达（见头注）。
+                        // CE :706-710 的 HAS_ITEM 尚未接前厅（见头注的有效缺口登记）。
                     }
                 }
             }
@@ -1931,7 +1939,74 @@ export class BlueprintEngine {
         return cells;
     }
 
-    /** CE :723-728 / :1196-1201 共用判据；else-if 留形与 CE 一致。 */
+    /**
+     * CE Architect.c:1162-1201：区域的一次选址尝试。null 表示 tryAgain，
+     * 重试预算由 buildAMachine 管理，不能把 null 直接当作整机硬失败。
+     * calculateDistances(..., T_PATHING_BLOCKER, NULL, true, false)：4 向、
+     * 四层地形旗标；秘密门按显形后的通行性放行。机器格不塞进 cost，
+     * 要等外壳撞上它时中止（预先绕开机器会错误地建成另一种 interior）。
+     */
+    private fillAreaInterior(bp: BlueprintDef, origin: Pos): Pos[] | null {
+        const dist = allocShortGrid(DCOLS, DROWS, MAX_DISTANCE);
+        const cost = allocShortGrid(DCOLS, DROWS, 1);
+        for (let x = 0; x < DCOLS; x++) for (let y = 0; y < DROWS; y++) {
+            const cell = this.grid.getCell(x, y)!;
+            const flags = cellTerrainFlags(this.grid, x, y);
+            let secretDoor = false;
+            if ((cellTerrainMechFlags(this.grid, x, y) & TM_IS_SECRET)
+                && (flags & T_OBSTRUCTS_PASSABILITY)) {
+                // CE Monsters.c:1300：只并入 secret 层的显形后旗标。
+                let discoveredFlags = 0;
+                for (const tile of cell.layers) {
+                    const t = TERRAIN_FLAGS[tile];
+                    if (!(t.mechFlags & TM_IS_SECRET)) continue;
+                    const df = resolveDFName(t.discoverType);
+                    const revealed = df !== null ? DUNGEON_FEATURE_CATALOG[df]?.tile : null;
+                    // 未落地的 WALL_LEVER 等显形 tile 保持原阻挡，不能激活缺失机制。
+                    discoveredFlags |= revealed != null ? TERRAIN_FLAGS[revealed].flags : df !== null ? t.flags : 0;
+                }
+                secretDoor = !(discoveredFlags & T_OBSTRUCTS_PASSABILITY);
+            }
+            if (!secretDoor && (flags & T_PATHING_BLOCKER)) cost[x]![y] = -1;
+        }
+        // CE pdsSetDistance（Dijkstra.c:102）：只播种内区，但即使起点的
+        // cost 为阻挡也入队；batchScan 只将正 cost 种子入队，故起点特判。
+        // 这在 randomMatchingLocation 第 500 次失败而 CE 仍沿用坐标时可达。
+        if (origin.x > 0 && origin.y > 0 && origin.x < DCOLS - 1 && origin.y < DROWS - 1) {
+            dist[origin.x]![origin.y] = 0;
+            cost[origin.x]![origin.y] = 1;
+        }
+        new DijkstraMap(DCOLS, DROWS).batchScan(dist, cost, false);
+        const goal = rng.randRange(bp.roomSize[0], bp.roomSize[1]);
+        const sCols = Array.from({ length: DCOLS }, (_, x) => x);
+        rng.shuffleList(sCols);
+        const sRows = Array.from({ length: DROWS }, (_, y) => y);
+        rng.shuffleList(sRows);
+        const cells: Pos[] = [];
+        let tryAgain = false;
+        shells: for (let k = 0; k < 1000 && cells.length < goal; k++) {
+            for (const x of sCols) for (const y of sRows) {
+                if (cells.length >= goal) break;
+                if (dist[x]![y] !== k) continue;
+                cells.push({ x, y });
+                const key = cellKey(x, y);
+                if (this.pendingItems.has(key) || this.pendingMonsters.has(key)
+                    || this.grid.getCell(x, y)!.machineNumber !== 0) {
+                    tryAgain = true; // HAS_ITEM | HAS_MONSTER | IS_IN_MACHINE
+                    break shells;
+                }
+            }
+        }
+        // CE 不要求最终 cells.length 达到 goal；小连通块也进入资格复核。
+        if (!this.interiorSatisfiesBlockingFlags(bp, cells)) tryAgain = true;
+        return tryAgain ? null : cells;
+    }
+
+    /**
+     * CE :723-728 / :1196-1201 共用判据；else-if 与 CE 一致。
+     * 9e 已接区域（34/39/58 为活载体），9b 的“零活载体”登记过期。
+     * 9b 曾误接 BP_ROOM 饿死 Kennel；此处只供两条生长路径调用。
+     */
     private interiorSatisfiesBlockingFlags(bp: BlueprintDef, cells: readonly Pos[]): boolean {
         const blockingMap = new Uint8Array(DCOLS * DROWS);
         for (const p of cells) blockingMap[p.y * DCOLS + p.x] = 1;
@@ -2055,7 +2130,8 @@ export class BlueprintEngine {
             }
         }
         // V-2b-2a：IMPREGNABLE 位随整图备份（CE copyMap 连 pmap.flags 一起复制）。
-        return { cells: snap, impregnable: [...this.impregnableCells] };
+        return { cells: snap, impregnable: [...this.impregnableCells],
+            items: [...this.pendingItems], monsters: [...this.pendingMonsters] };
     }
 
     /** CE copyMap(p->levelBackup, pmap)（:1578/:1681）的 web 形态。 */
@@ -2075,6 +2151,8 @@ export class BlueprintEngine {
             }
         }
         this.impregnableCells = new Set(snap.impregnable);
+        this.pendingItems = new Set(snap.items);
+        this.pendingMonsters = new Set(snap.monsters);
         // V-2b-2a：IN_LOOP 快照若在失败机器的落位期间懒算过，网格已恢复到
         // 收集态，必须作废（gateAnalysisCache 无此问题——它只在选址期、
         // point of no return 之前收集）。

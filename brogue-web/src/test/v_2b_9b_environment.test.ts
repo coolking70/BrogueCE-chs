@@ -52,7 +52,7 @@ describe('V-2b-9b environment machines', () => {
     expect(cells).toHaveLength(1);
   });
 
-  it('等 9e 激活的占位：判据正确且被前厅消费，区域路径未接线、零活载体', () => {
+  it('9e 留痕反转：判据由前厅和区域消费，34/39/58 有真实区域载体', () => {
     // blockingMap 以 y * DCOLS + x 索引，必须用真实地图尺寸；
     // 15x15 舞台会把“切断列”写到错误偏移，无法验证判据。
     const g = new Grid(DCOLS, DROWS);
@@ -76,10 +76,13 @@ describe('V-2b-9b environment machines', () => {
 
     const source = readFileSync(new URL('../engine/Generator/BlueprintEngine.ts', import.meta.url), 'utf8');
     expect(source.match(/interiorSatisfiesBlockingFlags\(bp, cells\)/g)?.length,
-      '当前只有 fillVestibuleInterior 消费判据；区域 interior 生长机制留待 9e').toBe(1);
+      '前厅和区域各消费一次，共用正确判据').toBe(2);
     const liveVestibuleCarriers = (data as BlueprintDef[]).filter(b => b.frequency > 0
       && b.flags.includes('BP_VESTIBULE')
       && (b.flags.includes('BP_TREAT_AS_BLOCKING') || b.flags.includes('BP_REQUIRE_BLOCKING')));
-    expect(liveVestibuleCarriers, '前厅路径已消费判据，但当前零活载体').toEqual([]);
+    expect(liveVestibuleCarriers, '前厅本身仍无载体').toEqual([]);
+    const liveAreas = (data as BlueprintDef[]).filter(b => !b.flags.includes('BP_ROOM')
+      && !b.flags.includes('BP_VESTIBULE') && b.flags.includes('BP_TREAT_AS_BLOCKING'));
+    expect(liveAreas.map(b => b.ceBlueprintId).sort((a,b) => a! - b!)).toEqual([34,39,58]);
   });
 });

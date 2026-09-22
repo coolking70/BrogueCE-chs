@@ -633,10 +633,13 @@ describe('V-2b-2b T7b：生产蓝图 applyBlueprint 行使（3/4/5 号，含前�
         // DUNGEON 层计（effective terrain 会被菌林 45 < 85 压住）。
         const carpetCells = interior.filter(p => grid.getCell(p.x, p.y)!.layers[DungeonLayer.DUNGEON] === TerrainType.CARPET);
         expect(carpetCells.length, 'MF_EVERYWHERE 地毯铺满（166 - center - door）').toBe(164);
-        const statues = rect(1, 1, DCOLS - 2, DROWS - 2).filter(p => grid.getCell(p.x, p.y)!.terrain === TerrainType.STATUE_INERT);
+        // V-2b-9e：递归区域子机器现在也能建雕像，不能把全层总数算给 #3。
+        // 仍严格验证父机器 {2,3} 个成功 feature 及其真实地形、墙内落位。
+        const statues = result!.featureSpawns.filter(s => s.terrain === 'STATUE_INERT').map(s => s.pos);
         expect(statues.length, '雕像 {2,3} 落在 interior 之外的墙格（BUILD_IN_WALLS）').toBeGreaterThanOrEqual(2);
         expect(statues.length).toBeLessThanOrEqual(3);
         for (const p of statues) {
+            expect(grid.getCell(p.x, p.y)!.terrain).toBe(TerrainType.STATUE_INERT);
             expect(interior.some(q => q.x === p.x && q.y === p.y), '雕像不得落在 interior 内').toBe(false);
         }
         expect(terrainCount(grid, interior, TerrainType.FOLIAGE), 'FUNGUS_FOREST 别名 → FOLIAGE {3,4}').toBeGreaterThanOrEqual(3);

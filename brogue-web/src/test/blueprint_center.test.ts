@@ -34,6 +34,7 @@ import type { BlueprintDef, MachineResult } from '../engine/Generator/BlueprintE
 import type { Pos } from '../types';
 import type { Game } from '../engine/Core/Game';
 import { rng } from '../engine/Random';
+import { ItemCategory } from '../engine/Items/Item';
 import { createHeadlessGame } from './harness';
 import consumablesData from '../data/consumables.json';
 import arcanaData from '../data/arcana.json';
@@ -142,6 +143,8 @@ interface ScanResult {
     treasureViolations: string[];
     /** 落在任何机器 center 上的物品清单（V-2b-1 §1.3 安全前提钉点，见用例 e） */
     itemsAtCenter: string[];
+    /** 9e：蓝图明确声明、成功落位且可通行的区域 origin 地面物品。 */
+    declaredOriginItems: number;
     /** center 上见到的宝藏类型计数（证明扫描非空转） */
     treasureTally: Map<string, number>;
     treasuresAtCenter: number;
@@ -171,6 +174,7 @@ function runScan(): ScanResult {
         centerViolations: [],
         treasureViolations: [],
         itemsAtCenter: [],
+        declaredOriginItems: 0,
         treasureTally: new Map(),
         treasuresAtCenter: 0,
         machineCount: 0,
@@ -192,6 +196,7 @@ function runScan(): ScanResult {
                 expect(entry?.depth).toBe(depth);
 
                 const centers = new Map<string, string>(); // "x,y" -> blueprintId
+                const originItemSpawns: MachineResult['itemSpawns'] = [];
                 for (const mr of entry?.results ?? []) {
                     result.machineCount++;
                     const cellSet = new Set(mr.cells.map(p => `${p.x},${p.y}`));
@@ -215,6 +220,19 @@ function runScan(): ScanResult {
                     // CE area machine 的合同（且 B-4b 已拆除 center 自创投宝）。
                     const isArea = !bpDef?.flags.includes('BP_ROOM')
                         && !bpDef?.flags.includes('BP_VESTIBULE');
+                    // V-2b-9e：CE39 等区域的 origin 就是 center。仅允许有真实
+                    // 成功 feature + 地面物品指令双证据的 BUILD_AT_ORIGIN；
+                    // 房间/前厅不享受此规则。33 号领养携带品的既存双输出
+                    // 缺陷另登记于 9e 报告，不借本次路由改动改写 feature 产物。
+                    if (isArea && mr.featureSpawns.some(spawn => {
+                        const f = bpDef?.features[spawn.featureIndex];
+                        return spawn.pos.x === mr.center.x && spawn.pos.y === mr.center.y
+                            && f?.flags.includes('MF_BUILD_AT_ORIGIN')
+                            && (f.flags.includes('MF_ADOPT_ITEM') || f.flags.includes('MF_GENERATE_ITEM'));
+                    })) {
+                        originItemSpawns.push(...mr.itemSpawns.filter(spawn =>
+                            spawn.pos.x === mr.center.x && spawn.pos.y === mr.center.y));
+                    }
                     const inside = cellSet.has(cKey);
                     const passable = (isVestibule || isArea) ? true : walkable(game, mr.center.x, mr.center.y);
                     if (!inside || !passable) {
@@ -251,12 +269,21 @@ function runScan(): ScanResult {
                     const key = `${item.loc.x},${item.loc.y}`;
                     if (!centers.has(key)) continue;
                     const id = itemId(item);
-                    // 用例 e 的记录面：任何物品落在任何机器 center 上都是违例
-                    //（不限宝藏类别——前厅机器 center==door==LOCKED_DOOR，
-                    // 物品落上去同样不可达）。
-                    result.itemsAtCenter.push(
-                        `seed=${seed} D${depth} ${centers.get(key)} ${id} @ (${item.loc.x},${item.loc.y})`
-                    );
+                    // 每份成功声明只能消费一次；额外直投/重复物品仍然翻红。
+                    const declared = originItemSpawns.findIndex(spawn =>
+                        spawn.pos.x === item.loc.x && spawn.pos.y === item.loc.y
+                        && ItemCategory[spawn.category as keyof typeof ItemCategory] === item.category
+                        && (spawn.category === 'KEY'
+                            ? !!spawn.keyLoc?.length && JSON.stringify(spawn.keyLoc) === JSON.stringify(item.keyLoc)
+                            : !spawn.id || spawn.id === itemId(item)));
+                    if (declared >= 0) {
+                        originItemSpawns.splice(declared, 1);
+                        result.declaredOriginItems++;
+                    } else {
+                        result.itemsAtCenter.push(
+                            `seed=${seed} D${depth} ${centers.get(key)} ${id} @ (${item.loc.x},${item.loc.y})`
+                        );
+                    }
                     if (isCenterTreasure(item)) {
                         result.treasuresAtCenter++;
                         result.treasureTally.set(id, (result.treasureTally.get(id) ?? 0) + 1);
@@ -379,12 +406,14 @@ describe('蓝图宝藏落点（machine center）可通行性', () => {
     // 与落进 LOCKED_DOOR 格同样不可达，故不做前厅豁免——将来若把 CE :300 的
     // KEY 本地化（去掉 MF_OUTSOURCE / 解除消费端 KEY 跳过），必须先想清楚
     // center==door 的落格问题，而不是绕过本断言。
-    it('e) V-2b-1：任何生产路径都不得把物品投放到机器 center（含前厅 center==door 形态）', () => {
-        const { itemsAtCenter } = runScan();
+    // V-2b-9e：上段“任何机器”的历史前提过期。区域按 CE 显式 feature
+    // 声明接物品；前厅/房间零 center 直投仍保持，且所有地面物品仍检查可达。
+    it('e) 区域 origin 仅接声明的地面 feature 物品，房间/前厅及额外直投仍为零', () => {
+        const { itemsAtCenter, declaredOriginItems } = runScan();
+        expect(declaredOriginItems, '必须观测到真实的区域 origin 地面物品，不能空转').toBeGreaterThan(0);
         for (const v of itemsAtCenter.slice(0, 60)) console.log('[bp-center] center 物品违例:', v);
         expect(itemsAtCenter, `发现 ${itemsAtCenter.length} 件物品落在机器 center 上` +
-            '——V-2a 前厅豁免的安全前提（无任何活代码向机器 center 投放物品）被打破：' +
-            '要么是自创投放点回流（B-4b 拆除的形态），要么是新接线的落点没避开 center。')
+            '——没有对应的区域 BUILD_AT_ORIGIN 地面 feature，或物品重复直投。')
             .toEqual([]);
     }, 900_000);
 
