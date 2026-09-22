@@ -1,3 +1,4 @@
+import { CE_ITEM_BOLT_TYPES, CE_BOLT_CATALOG, CEBoltFlags } from '../Combat/BoltCatalog';
 /**
  * src/engine/Items/ItemLoader.ts
  * Parses item JSON files and spawns Item instances
@@ -703,10 +704,8 @@ export class ItemLoader {
      *  - RING：CE 恒 0（:8250-8252），**与 ringTable 全 +1 的 magicPolarity 相反**；
      *  - CHARM：CE 恒 1（:8253-8255）；
      *  - WAND / STAFF：CE 查 boltCatalog[power].flags & BF_TARGET_ALLIES（:8243-8249）。
-     *    web 没有"法器种类 → bolt 旗标"这张表（MONSTER_BOLT_TABLE 是怪物施法用的，
-     *    按 CE bolt 名索引，不含 wand/staff 的 power 列），**结构性无载体**：
-     *    此处恒返回 0 并由留痕测试钉住。CE 的两个消费点都只吃 POTION/SCROLL，
-     *    本轮不受影响；补上 bolt 目录的那一轮必须回来重核这段。
+     *    W-2 接入 W-1 的 CE 物品身份目录：allies 为 -1，其余 +1。
+     *    三条无 CE 身份的自创兼容项仍为 0，不冒充 CE 发现屏语义。
      */
     public static magicCharDiscoverySuffix(item: Item): number {
         switch (item.category) {
@@ -719,7 +718,9 @@ export class ItemLoader {
                 return 1;
             case ItemCategory.WAND:
             case ItemCategory.STAFF:
-                return 0; // 结构性无载体（见上）——激活轮需重核 CE :8243-8249
+                { const type = CE_ITEM_BOLT_TYPES[kindIdOf(item) ?? ''];
+                    return type === undefined ? 0 : (CE_BOLT_CATALOG[type].flags & CEBoltFlags.TARGET_ALLIES) ? -1 : 1;
+                }
             default:
                 return 0;
         }

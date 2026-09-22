@@ -186,11 +186,15 @@ describe('A4: 魔杖/法杖充能反泄露', () => {
         expect(lines.some(t => t.startsWith('充能:'))).toBe(false);
 
         game.player.inventory.addItem(wand);
-        game.useArcanaItem(wand); // 用一次：种类亮、实例仍未知
-        expect(ItemLoader.identifiedItems.has('wand_of_teleportation')).toBe(true);
+        // W-2 留痕反转：旧“用一次种类即亮”并非 CE。
+        // Items.c:5220-5227 BE_TELEPORT 不设置 autoID；:7397-7405 仅依结果鉴定。
+        game.useArcanaItem(wand);
+        game.setArcanaTarget(game.player.loc.x + 1, game.player.loc.y);
+        game.confirmArcanaTarget();
+        expect(ItemLoader.identifiedItems.has('wand_of_teleportation')).toBe(false);
         expect(wand.identified).toBe(false);
         // CE Items.c:1615-1634：未识别魔杖显示使用次数，不显示充能
-        expect(wand.displayName).toContain('Wand of Teleportation');
+        expect(wand.displayName).not.toContain('Wand of Teleportation');
         expect(wand.displayName).toMatch(/已使用 1 次|used once/);
         expect(wand.displayName).not.toContain('[');
         expect(allLines(generateItemDetail(wand, 16)).some(t => t.startsWith('充能:'))).toBe(false);
@@ -199,7 +203,8 @@ describe('A4: 魔杖/法杖充能反泄露', () => {
 
     it('实例鉴定后显示充能 [剩余]；空杖敲一下亮充能上限 [?/上限]（跟着风味名走）', () => {
         const wand = ItemLoader.spawnWand('wand_of_teleportation', -1, -1)!;
-        wand.identified = true;
+        // Use the real identification API; the old fixture depended on the previous test revealing the kind.
+        ItemLoader.identifyInstance(wand);
         expect(wand.displayName).toBe(`Wand of Teleportation [${wand.charges}]`);
         expect(allLines(generateItemDetail(wand, 16)).some(t => t.startsWith('充能:'))).toBe(true);
 
@@ -211,6 +216,9 @@ describe('A4: 魔杖/法杖充能反泄露', () => {
         const game = createHeadlessGame(42);
         game.player.inventory.addItem(staff);
         game.useArcanaItem(staff);
+        expect(staff.maxChargesKnown).toBe(false); // W-2: cancellation is free, discovery follows confirmation.
+        game.setArcanaTarget(game.player.loc.x + 1, game.player.loc.y);
+        game.confirmArcanaTarget();
         expect(staff.maxChargesKnown).toBe(true);
         expect(staff.identified).toBe(false);
         expect(staff.displayName).toMatch(/\[\?\/2\]$/);

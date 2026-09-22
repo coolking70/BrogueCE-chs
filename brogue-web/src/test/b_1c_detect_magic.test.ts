@@ -565,20 +565,19 @@ describe('留痕：怪物携带品这一轮遍历无载体（→ 怪物掉落/�
     });
 });
 
-describe('留痕：magicCharDiscoverySuffix 的 WAND/STAFF 分支无载体（→ 法器 bolt 目录轮次反转）', () => {
-    /**
-     * CE :8243-8249 查 boltCatalog[table[kind].power].flags & BF_TARGET_ALLIES。
-     * web 没有"法器种类 → bolt 旗标"这张表（MONSTER_BOLT_TABLE 是怪物施法用的，
-     * 按 CE bolt 名索引，不含 wand/staff 的 power 列）。本轮恒返回 0 并钉在这里。
-     * 反转轮次：补上法器 bolt 目录的那一轮——必须回 CE 重核这段（"照抄留形
-     * 的死分支不受测试保护"，项目常识 2026-09-17 条）。
-     */
-    it('wand/staff 的发现屏后缀恒 0（与它们的种类极性不同，说明确实没接上）', () => {
+describe('W-2 留痕反转：magicCharDiscoverySuffix 的 WAND/STAFF 已接 CE 身份目录', () => {
+    // 原断言恒 0：B-1c 当时缺载体；W-1 已补目录，此登记过期。
+    // CE Items.c:8243-8249：BF_TARGET_ALLIES -> -1，其余 -> +1，不读剩余电量。
+    it('allies 后缀为 -1，敌向为 +1；三件自创兼容项仍无 CE 后缀', () => {
         const wand = ItemLoader.spawnWand('wand_of_invisibility', -1, -1)!;
-        wand.charges = 3;
-        expect(ItemLoader.itemMagicPolarity(wand), '种类表里 invisibility 是恶意 -1').toBe(-1);
-        expect(ItemLoader.magicCharDiscoverySuffix(wand), '但发现屏后缀这条链没有载体，恒 0').toBe(0);
-        const staff = ItemLoader.spawnStaff('staff_of_healing', -1, -1)!;
-        expect(ItemLoader.magicCharDiscoverySuffix(staff)).toBe(0);
+        wand.charges = 0;
+        expect(ItemLoader.itemMagicPolarity(wand)).toBe(0);
+        expect(ItemLoader.magicCharDiscoverySuffix(wand)).toBe(-1);
+        expect(ItemLoader.magicCharDiscoverySuffix(ItemLoader.spawnStaff('staff_of_healing', -1, -1)!)).toBe(-1);
+        expect(ItemLoader.magicCharDiscoverySuffix(ItemLoader.spawnWand('wand_of_slowness', -1, -1)!)).toBe(1);
+        for (const id of ['wand_of_fire', 'wand_of_lightning']) {
+            expect(ItemLoader.magicCharDiscoverySuffix(ItemLoader.spawnWand(id, -1, -1)!)).toBe(0);
+        }
+        expect(ItemLoader.magicCharDiscoverySuffix(ItemLoader.spawnStaff('staff_of_light', -1, -1)!)).toBe(0);
     });
 });

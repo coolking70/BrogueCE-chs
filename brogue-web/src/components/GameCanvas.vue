@@ -113,10 +113,12 @@ import { cellAppearance, itemAppearance, monsterAppearance, playerAppearance, ty
 import { Direction } from '../types';
 import { activeGame } from '../engine/Core/Game';
 import { inputManager } from '../engine/Input';
+import i18next from 'i18next';
 import { displaySettings } from '../engine/Settings';
 
 const canvasContainer = ref<HTMLDivElement | null>(null);
 let pixiApp: Application | null = null;
+const arcanaPrompt = ref('');
 // P2-4：居中/命中区随容器尺寸变化重算（挂载时建立，卸载时断开）
 let resizeObserver: ResizeObserver | null = null;
 // P2-6：地图缩放模式切换的 watch 停止器（onMounted 内创建，onUnmounted 内停止）
@@ -198,6 +200,8 @@ onMounted(async () => {
     });
     boltSprite.visible = false;
     entityLayer.addChild(boltSprite);
+    const arcanaCursor = new Graphics();
+    entityLayer.addChild(arcanaCursor);
 
     // Floating text layer (max 8 floaters)
     const MAX_FLOAT_SPRITES = 8;
@@ -280,6 +284,16 @@ onMounted(async () => {
     const render = () => {
         // ---- Background rectangles (batch draw) ----
         bgGraphics.clear();
+        arcanaCursor.clear();
+        const selection = game.pendingArcana;
+        arcanaPrompt.value = selection ? i18next.t('arcana.target_prompt', {
+            name: selection.item.displayName,
+            defaultValue: '{{name}} — hjklyubn / arrows: aim · Tab: next · Enter / click: cast · Esc: cancel'
+        }) : '';
+        if (selection) {
+            arcanaCursor.rect(selection.cursor.x * TILE_SIZE, selection.cursor.y * TILE_SIZE, TILE_SIZE, TILE_SIZE)
+                .stroke({ width: 2, color: 0xdddddd });
+        }
         const hallucinating = !!game.player.statusDurations.hallucinating;
         const telepathyRevealed = !!game.player.statusDurations.telepathy;
         // 幻觉等纯视觉随机走 COSMETIC 流（见模块块 cosmeticPercent/cosmeticPick），
@@ -476,7 +490,8 @@ onMounted(async () => {
             .map((i) => ({ name: i.displayName, x: i.loc.x, y: i.loc.y }));
 
         return JSON.stringify({
-            mode: game.isInventoryOpen ? 'inventory' : (game.isThrowing ? 'throw_target' : 'explore'),
+            mode: game.pendingArcana ? 'arcana_target' : game.isInventoryOpen ? 'inventory' : (game.isThrowing ? 'throw_target' : 'explore'),
+            arcanaTarget: game.pendingArcana ? { name: game.pendingArcana.item.displayName, ...game.pendingArcana.cursor } : null,
             coordinateSystem: { origin: 'top-left', xAxis: 'right', yAxis: 'down' },
             player: {
                 x: game.player.loc.x,
@@ -539,6 +554,14 @@ onMounted(async () => {
         const mapY = Math.floor(localPt.y / TILE_SIZE);
 
         if (mapX >= 0 && mapX < DCOLS && mapY >= 0 && mapY < DROWS) {
+           if (game.pendingArcana) {
+               if (e.button === 2) inputManager.triggerAction('escape');
+               else if (e.button === 0) {
+                   game.handleMouseTravel(mapX, mapY);
+                   game.update();
+               }
+               return; // Adjacent/origin clicks also belong to spell selection.
+           }
            if (e.button === 2) {
                game.handleInspectAt(mapX, mapY);
                return;
@@ -640,11 +663,25 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="game-container" ref="canvasContainer"></div>
+  <div class="game-container" ref="canvasContainer">
+    <div v-if="arcanaPrompt" class="arcana-prompt" role="status">{{ arcanaPrompt }}</div>
+  </div>
 </template>
 
 <style scoped>
+.arcana-prompt {
+  position: absolute;
+  top: 52px;
+  left: 12px;
+  right: 12px;
+  z-index: 1;
+  padding: 8px;
+  color: #ddd;
+  background: #181818e8;
+  pointer-events: none;
+}
 .game-container {
+  position: relative;
   width: 100%;
   height: 100vh;
   overflow: hidden;

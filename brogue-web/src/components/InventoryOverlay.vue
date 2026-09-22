@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted, computed, toRaw } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { activeGame } from '../engine/Core/Game';
 import { ItemCategory } from '../engine/Items/Item';
@@ -232,8 +232,11 @@ const performEat = (item: Item) => {
 };
 
 const performUse = (item: Item) => {
-    activeGame.useArcanaItem(item);
-    closeInventory();
+    activeGame.useArcanaItem(toRaw(item));
+    selectedItem.value = null;
+    // Selection closes inventory in the engine; refused uses keep it available.
+    if (item.category === ItemCategory.CHARM) closeInventory();
+    else updateInventoryState();
 };
 
 // ── B-1b：鉴定卷轴目标指定与 call 绰号 ─────────────────────────────

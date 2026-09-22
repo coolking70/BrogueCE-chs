@@ -271,7 +271,7 @@ export interface BoltHit {
     readonly pos: Pos;
 }
 
-/** Effect-commit contract for later W rounds. CE Items.c:5112-5119,
+/** Effect-commit contract. CE Items.c:5112-5119,
  * 5470-5474,5516-5555,5567: autoID is an effect observation, not "a bolt fired".
  * Movement records a committed caster move, not an intended aim/destination. */
 export interface BoltOutcome {
@@ -291,7 +291,7 @@ export interface BoltResult {
      * CE halts-before-obstruction rules are deferred to W-3. */
     landingPos: Pos | null;
     /** null = effect outcome NOT evaluated. Never treat it as autoID=false.
-     * W-1 preserves useArcanaItem's existing identification; W-2+ will migrate. */
+     * Tracing leaves null; W-2 execution exits always evaluate this value. */
     outcome: BoltOutcome | null;
     /** Cells the bolt passed through. */
     path: Pos[];

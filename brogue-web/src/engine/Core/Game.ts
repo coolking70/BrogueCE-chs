@@ -82,6 +82,8 @@ import { FloatingText } from '../Visuals/FloatingText';
 import { STATUS_CONFIG } from '../Status/statusConfig';
 import { exposeBoltPathToElectricity, getBoltForItem, boltPath, createBoltResult, BoltEffect, MONSTER_BOLT_TABLE, type BoltConfig, type BoltFrame, type BoltResult, type BoltHit } from '../Combat/Bolt';
 
+import { arcanaTargetCandidates, canObserveBoltCreature } from '../Combat/BoltTargeting';
+
 export type GameMode = 'normal' | 'easy' | 'wizard' | 'test';
 
 export interface HordeMemberEntry {
@@ -521,6 +523,8 @@ export class Game {
      * 不进存档：读档/新局重置（挂起中的选择不跨场景）。
      */
     public pendingIdentify: boolean = false;
+    // W-2: transient choice, never persisted; selection cannot spend a turn.
+    public pendingArcana: { item: Item; cursor: Pos } | null = null;
 
     public isThrowing: boolean = false;
     public throwItemTarget: Item | null = null;
@@ -669,6 +673,7 @@ export class Game {
         this.isMouseTraveling = false;
         this.isInventoryOpen = false;
         this.pendingIdentify = false;
+        this.pendingArcana = null;
         // B-1c：恶意品确认待决态不得跨场景泄漏（与 pendingIdentify 同处复位）
         this.pendingUseConfirm = null;
         this.isThrowing = false;
@@ -2925,7 +2930,7 @@ export class Game {
     }
 
     public isTimePaused() {
-        return this.isInventoryOpen;
+        return this.isInventoryOpen || !!this.pendingArcana;
     }
 
     private toRecordedInputData(data: unknown): RecordedInputData {
@@ -3119,6 +3124,21 @@ export class Game {
             this.recordInputEvent(action, data);
         }
 
+        if (this.pendingArcana) {
+            if (action === 'escape' || action === 'cancel_target') this.cancelArcanaSelection();
+            else if (action === 'confirm_target') this.confirmArcanaTarget();
+            else if (action === 'cycle_target') this.cycleArcanaTarget(data === -1);
+            else if (action === 'move') {
+                const delta = typeof data === 'number' ? this.directionToVec(data as Direction) : data as Pos | undefined;
+                if (delta && Number.isFinite(delta.x) && Number.isFinite(delta.y)) {
+                    this.setArcanaTarget(this.pendingArcana.cursor.x + delta.x, this.pendingArcana.cursor.y + delta.y);
+                }
+            }
+            return; // No search, stairs, inventory, pathing or waiting through the modal.
+        }
+
+        if (action === 'confirm_target' || action === 'cycle_target' || action === 'cancel_target') return;
+
         if (this.player.hasStatus('paralyzed') && action !== 'toggle_inventory' && action !== 'escape') {
             logger.log(
                 i18next.t('status.player.paralyzed_cannot_act', {
@@ -3144,6 +3164,11 @@ export class Game {
             if (this.isInventoryOpen) {
                 this.isInventoryOpen = false;
             }
+            return;
+        }
+
+        if (action === 'apply_item') {
+            if (!this.pendingIdentify) this.isInventoryOpen = true;
             return;
         }
 
@@ -4032,6 +4057,8 @@ export class Game {
     }
 
     public useArcanaItem(item: Item) {
+        if (this.isInputLocked() || this.isGameOver || this.player.hp <= 0 || this.player.hasStatus('paralyzed')
+            || this.pendingIdentify || this.pendingArcana || !this.player.inventory.items.includes(item)) return;
         if (
             item.category !== ItemCategory.WAND
             && item.category !== ItemCategory.STAFF
@@ -4078,83 +4105,102 @@ export class Game {
             return;
         }
 
-        const charges = item.charges ?? 0;
-        if (charges <= 0) {
-            // B-1a：CE Items.c:7420-7424——对耗尽的法器再施放会打上
-            // ITEM_MAX_CHARGES_KNOWN（"it must be depleted"），此后名称/面板
-            // 可显示 [?/上限]。
-            item.maxChargesKnown = true;
-            logger.log(i18next.t('arcana.no_charges', { name: item.name, defaultValue: `${item.name} has no charges.` }), '#ff8888');
+        // CE Items.c:7342: only ITEM_IDENTIFIED makes an empty attempt free.
+        // Kind-known and MAX_CHARGES_KNOWN alone do not reveal current charges.
+        if ((item.charges ?? 0) <= 0 && item.identified === true) {
+            logger.log(i18next.t('arcana.no_charges', { name: item.displayName, defaultValue: '{{name}} has no charges.' }), '#ff8888');
             return;
         }
-
-        item.charges = charges - 1;
-        item.rechargeCounter = item.rechargeCounter ?? 0;
-        // B-1a：CE Items.c:7435——魔杖每次放电 enchant2++（未识别时显示
-        // "已使用 N 次"）。法杖不计数（CE 只对 WAND 递增）。
-        if (item.category === ItemCategory.WAND) {
-            item.timesUsed = (item.timesUsed ?? 0) + 1;
-        }
-        if (identityId && !ItemLoader.identifiedItems.has(identityId)) {
-            ItemLoader.identifyItemKind(item);
-            logger.log(i18next.t('item.identify', { name: item.name, defaultValue: `You identify ${item.name}.` }), '#00ffff');
-        }
-
-        // --- Try bolt system first ---
-        const boltCfg = getBoltForItem(identityId ?? '');
-        if (boltCfg) {
-            this.zapBoltFromPlayer(boltCfg, item);
-        } else if (identityId === 'wand_of_fire' || item.name.includes('Fire')) {
-            const tx = this.player.loc.x;
-            const ty = this.player.loc.y - 1;
-            this.environment.ignite(tx, ty);
-            logger.log(i18next.t('staff.fire_burst', { name: item.name, defaultValue: `A burst of fire leaps from ${item.name}!` }), '#ffaa00');
-        } else if (identityId === 'staff_of_light' || item.name.includes('Light')) {
-            this.applyTimedStatus(this.player, 'telepathy', 25);
-            this.spawnFloatingText('+Light', this.player.loc.x, this.player.loc.y - 1, 0xffffaa);
-            logger.log(i18next.t('staff.bright_aura', { name: item.name, defaultValue: `A bright aura radiates from ${item.name}.` }), '#ffffaa');
-        } else {
-            logger.log(i18next.t('item.use_generic', { name: item.name, defaultValue: `You use ${item.name}.` }), '#88ccff');
-        }
-
+        if (!getBoltForItem(identityId ?? '')) return;
+        const first = this.getArcanaCandidates(item)[0];
+        this.pendingArcana = { item, cursor: { ...(first?.loc ?? this.player.loc) } };
+        this.isInventoryOpen = false;
+        this.isThrowing = false;
+        this.throwItemTarget = null;
+        this.autoPath = [];
+        this.isMouseTraveling = false;
         this.needsRender = true;
-        timeSystem.currentTick += 100;
+    }
+
+    public getArcanaCandidates(item: Item): Monster[] {
+        return arcanaTargetCandidates(this.player, this.grid, this.monsters, item);
+    }
+
+    public setArcanaTarget(x: number, y: number): boolean {
+        if (!this.pendingArcana || this.isInputLocked() || !Number.isInteger(x) || !Number.isInteger(y)
+            || !this.grid.isValidPos(x, y)) return false;
+        this.pendingArcana.cursor = { x, y };
+        this.needsRender = true;
+        return true;
+    }
+
+    public cycleArcanaTarget(reverse = false) {
+        const pending = this.pendingArcana;
+        if (!pending || this.isInputLocked()) return;
+        const candidates = this.getArcanaCandidates(pending.item);
+        if (!candidates.length) return;
+        const index = candidates.findIndex(m => m.loc.x === pending.cursor.x && m.loc.y === pending.cursor.y);
+        const next = index < 0 ? (reverse ? candidates.length - 1 : 0)
+            : (index + (reverse ? -1 : 1) + candidates.length) % candidates.length;
+        this.setArcanaTarget(candidates[next]!.loc.x, candidates[next]!.loc.y);
+    }
+
+    public cancelArcanaSelection() {
+        this.pendingArcana = null;
+        this.needsRender = true;
+    }
+
+    /** CE Items.c:7368-7440: choose -> resolve/autoID -> spend existing charge
+     * -> one movement-speed turn. Initial charges and recharge remain W-5/W-6. */
+    public confirmArcanaTarget(): BoltResult | null {
+        const pending = this.pendingArcana;
+        if (!pending || this.isInputLocked()) return null;
+        const { item, cursor } = pending;
+        if (this.isGameOver || this.player.hp <= 0 || this.player.hasStatus('paralyzed')
+            || !this.player.inventory.items.includes(item)) {
+            this.cancelArcanaSelection();
+            return null;
+        }
+        if (cursor.x === this.player.loc.x && cursor.y === this.player.loc.y) {
+            this.cancelArcanaSelection(); // CE Items.c:6502-6506 rejects origin.
+            return null;
+        }
+        if (!this.grid.isValidPos(cursor.x, cursor.y)) return null;
+        const id = (item as Item & { identityId?: string }).identityId ?? '';
+        const bolt = getBoltForItem(id);
+        this.cancelArcanaSelection(); // Consume the pending transaction exactly once.
+        if (!bolt) return null;
+        const charges = item.charges ?? 0;
+        if (charges <= 0 && item.identified === true) return null;
+        let result: BoltResult | null = null;
+        if (charges > 0) {
+            result = this.zapBoltFromPlayer(bolt, item, cursor);
+            if (result.outcome?.autoID && !ItemLoader.identifiedItems.has(id)) {
+                ItemLoader.identifyItemKind(item);
+                logger.log(i18next.t('item.identify', { name: item.displayName, defaultValue: 'You identify {{name}}.' }), '#00ffff');
+            }
+            item.charges = charges - 1;
+            if (item.category === ItemCategory.WAND) item.timesUsed = (item.timesUsed ?? 0) + 1;
+        } else {
+            item.maxChargesKnown = true;
+            logger.log(i18next.t('arcana.no_charges', { name: item.displayName, defaultValue: '{{name}} has no charges.' }), '#ff8888');
+        }
+        this.needsRender = true;
+        // CE Time.c:2604-2605 uses movementSpeed at turn end (after effects).
+        timeSystem.currentTick += this.player.movementSpeed;
         this.playerTurnEnded();
+        return result;
     }
 
     // ----- Bolt Zapping System -----
 
-    /**
-     * Zap a bolt from the player toward a target.
-     * Auto-targets the nearest visible monster, or fires in the player's last move direction.
-     */
-    public zapBoltFromPlayer(bolt: BoltConfig, item: Item): BoltResult {
-        // Find nearest visible monster as target
-        const visibleMonsters = this.monsters
-            .filter((m) => m.hp > 0 && this.grid.getCell(m.loc.x, m.loc.y)?.isVisible)
-            .sort((a, b) => {
-                const da = Math.abs(a.loc.x - this.player.loc.x) + Math.abs(a.loc.y - this.player.loc.y);
-                const db = Math.abs(b.loc.x - this.player.loc.x) + Math.abs(b.loc.y - this.player.loc.y);
-                return da - db;
-            });
-
-        let targetPos: Pos;
-        if (bolt.selfTargeting) {
-            targetPos = { x: this.player.loc.x, y: this.player.loc.y };
-        } else if (visibleMonsters.length > 0) {
-            const nearest = visibleMonsters[0] as Monster;
-            targetPos = { x: nearest.loc.x, y: nearest.loc.y };
-        } else {
-            // Fire in the direction the player last moved (default: right)
-            const lastDir = this.player.lastMoveDirection ?? Direction.RIGHT;
-            const dirVec = this.directionToVec(lastDir);
-            targetPos = {
-                x: this.player.loc.x + dirVec.x * 20,
-                y: this.player.loc.y + dirVec.y * 20,
-            };
-        }
-
-        const result = this.computeBoltResult(bolt, this.player.loc, targetPos);
+    /** Execute an explicit aim. Direct engine callers can retain the candidate/
+     * last-direction fallback; inventory use always goes through confirmation. */
+    public zapBoltFromPlayer(bolt: BoltConfig, item: Item, aim?: Pos): BoltResult {
+        const first = aim ? undefined : this.getArcanaCandidates(item)[0];
+        const dir = this.directionToVec(this.player.lastMoveDirection ?? Direction.RIGHT);
+        const target = aim ?? (bolt.selfTargeting ? this.player.loc : first?.loc) ?? { x: this.player.loc.x + dir.x * 20, y: this.player.loc.y + dir.y * 20 };
+        const result = this.computeBoltResult(bolt, this.player.loc, target);
         this.applyBoltResult(result, item);
         return result;
     }
@@ -4218,12 +4264,17 @@ export class Game {
      */
     private applyBoltResult(result: BoltResult, item: Item) {
         // Queue animation frames for the renderer
+        // CE Items.c:7399 hideBoltDetails: unknown kinds use a neutral glyph/color.
+        if (!ItemLoader.identifiedItems.has((item as Item & { identityId?: string }).identityId ?? '')) {
+            result.frames = result.frames.map(frame => ({ ...frame, char: '*', color: 0xaaaaaa }));
+        }
         this.pendingBoltFrames = result.frames;
         this.currentBoltFrameIndex = 0;
         this.boltAnimStartTime = Date.now();
 
         // Apply the effect
-        this.applyBoltEffect(result, item);
+        const autoID = this.applyBoltEffect(result, item);
+        result.outcome = { autoID, casterMovement: this.boltCasterMovement(result) };
     }
 
     // Bolt animation state (consumed by the render loop in GameCanvas.vue)
@@ -4290,23 +4341,59 @@ export class Game {
         return true;
     }
 
-    private applyBoltEffect(result: BoltResult, item: Item) {
+    private boltCasterMovement(result: BoltResult) {
+        const to = result.caster?.loc;
+        return to && (to.x !== result.origin.x || to.y !== result.origin.y)
+            ? { from: { ...result.origin }, to: { ...to } } : null;
+    }
+
+    private canObserveBoltTarget(target: Creature): boolean {
+        return canObserveBoltCreature(this.player, this.grid, target);
+    }
+
+    /** Snapshot only cells the existing effect touches; never execute an effect twice. */
+    private boltTerrainSignature(path: readonly Pos[], impact: Pos): string {
+        return JSON.stringify([...path, impact].map(p => this.grid.getCell(p.x, p.y)?.layers));
+    }
+
+    private boltLivingTarget(target: Creature): boolean {
+        return !(target instanceof Monster) || (!target.hasBehavior('MONST_INANIMATE') && !target.isInvulnerable());
+    }
+
+    // Existing status refresh returns false when the duration does not increase.
+    // CE still flashes/identifies an accepted repeat application; false is not immunity.
+    private boltStatusAccepted(target: Creature, status: StatusId, changed: boolean): boolean {
+        return changed || (!target.statusImmunities.has(status) && target.hasStatus(status));
+    }
+
+    private applyBoltEffect(result: BoltResult, item: Item): boolean {
         const { effect, magnitude, impactPos, path } = result;
-        if (exposeBoltPathToElectricity(this.grid, path, effect)) this.updateVision();
+        let autoID = false;
+        const terrainBefore = this.boltTerrainSignature(path, impactPos);
+        if (exposeBoltPathToElectricity(this.grid, path, effect)) {
+            autoID = true; // CE Items.c:5456-5465: actual electrical terrain promotion.
+            this.updateVision();
+        }
 
         // Find the monster at impact position
         const target = this.monsters.find(
             m => m.hp > 0 && m.loc.x === impactPos.x && m.loc.y === impactPos.y
         );
 
+        const known = ItemLoader.identifiedItems.has((item as Item & { identityId?: string }).identityId ?? '');
+        const logMiss = (key: string, fallback: string, color: string) => {
+            logger.log(known ? i18next.t(key, { name: item.displayName, defaultValue: fallback })
+                : i18next.t('arcana.no_observable_effect', { name: item.displayName, defaultValue: 'You zap {{name}}.' }), known ? color : '#aaaaaa');
+        };
         switch (effect) {
             case BoltEffect.FIRE: {
+                if (target) autoID = true; // CE :5146-5150, even if immune/reflected.
                 // Ignite on impact and deal damage
                 this.environment.ignite(impactPos.x, impactPos.y);
                 if (target && this.applyDirectBoltDamage(target, magnitude, 'bolt.fire_reflect', `The ${target.name} deflects the fire back at you!`)) {
                     logger.log(i18next.t('bolt.fire_hit', {
-                        name: item.name, target: target.name, damage: magnitude,
-                        defaultValue: `${item.name} scorches the ${target.name} for ${magnitude} damage!`
+                        name: item.displayName, target: target.name, damage: magnitude,
+                        defaultValue: `${item.displayName} scorches the ${target.name} for ${magnitude} damage!`
                     }), '#ff6600');
                     this.spawnFloatingText(`-${magnitude}`, target.loc.x, target.loc.y, 0xff4400);
                     if (target.hp <= 0) {
@@ -4319,10 +4406,7 @@ export class Game {
                         this.trySplitMonster(target, this.player);
                     }
                 } else if (!target) {
-                    logger.log(i18next.t('bolt.fire_impact', {
-                        name: item.name,
-                        defaultValue: `A burst of fire leaps from ${item.name}!`
-                    }), '#ffaa00');
+                    logMiss('bolt.fire_impact', `A burst of fire leaps from ${item.displayName}!`, '#ffaa00');
                 }
                 // Fire along the path trail
                 for (const p of path) {
@@ -4339,14 +4423,15 @@ export class Game {
                         mon => mon.hp > 0 && mon.loc.x === p.x && mon.loc.y === p.y
                     );
                     if (m) {
+                        autoID = true; // CE BE_DAMAGE contact, not HP delta.
                         if (!this.applyDirectBoltDamage(m, magnitude, 'bolt.lightning_reflect', `The ${m.name} deflects the lightning back at you!`)) {
                             continue;
                         }
                         totalDamage += magnitude;
                         this.spawnFloatingText(`-${magnitude}`, m.loc.x, m.loc.y, 0x33ccff);
                         logger.log(i18next.t('bolt.lightning_hit', {
-                            name: item.name, target: m.name, damage: magnitude,
-                            defaultValue: `Lightning from ${item.name} strikes the ${m.name} for ${magnitude} damage!`
+                            name: item.displayName, target: m.name, damage: magnitude,
+                            defaultValue: `Lightning from ${item.displayName} strikes the ${m.name} for ${magnitude} damage!`
                         }), '#33ccff');
                         if (m.hp <= 0) {
                             logger.log(i18next.t('bolt.lightning_kill', {
@@ -4360,26 +4445,21 @@ export class Game {
                     }
                 }
                 if (totalDamage === 0) {
-                    logger.log(i18next.t('bolt.lightning_miss', {
-                        name: item.name,
-                        defaultValue: `Lightning arcs from ${item.name} but finds no target.`
-                    }), '#33ccff');
+                    logMiss('bolt.lightning_miss', `Lightning arcs from ${item.displayName} but finds no target.`, '#33ccff');
                 }
                 break;
             }
 
             case BoltEffect.POISON: {
                 if (target) {
-                    this.applyStatusToMonster(target, 'poisoned', magnitude * 3, 'magic');
+                    const applied = this.applyStatusToMonster(target, 'poisoned', magnitude * 3, 'magic');
+                    autoID = this.boltStatusAccepted(target, 'poisoned', applied) && this.boltLivingTarget(target) && this.canObserveBoltTarget(target); // CE :5312-5326
                     logger.log(i18next.t('bolt.poison_hit', {
-                        name: item.name, target: target.name,
-                        defaultValue: `${item.name} envenomates the ${target.name}!`
+                        name: item.displayName, target: target.name,
+                        defaultValue: `${item.displayName} envenomates the ${target.name}!`
                     }), '#55cc55');
                 } else {
-                    logger.log(i18next.t('bolt.poison_miss', {
-                        name: item.name,
-                        defaultValue: `Poison streams from ${item.name} but finds no target.`
-                    }), '#55cc55');
+                    logMiss('bolt.poison_miss', `Poison streams from ${item.displayName} but finds no target.`, '#55cc55');
                 }
                 break;
             }
@@ -4401,15 +4481,12 @@ export class Game {
                         target.loc.x = dest.x;
                         target.loc.y = dest.y;
                         logger.log(i18next.t('bolt.teleport_hit', {
-                            name: item.name, target: target.name,
-                            defaultValue: `${item.name} teleports the ${target.name} away!`
+                            name: item.displayName, target: target.name,
+                            defaultValue: `${item.displayName} teleports the ${target.name} away!`
                         }), '#cc88ff');
                     }
                 } else {
-                    logger.log(i18next.t('bolt.teleport_miss', {
-                        name: item.name,
-                        defaultValue: `${item.name} flashes but finds no target.`
-                    }), '#cc88ff');
+                    logMiss('bolt.teleport_miss', `${item.displayName} flashes but finds no target.`, '#cc88ff');
                 }
                 break;
             }
@@ -4417,12 +4494,13 @@ export class Game {
             case BoltEffect.SLOW: {
                 if (target) {
                     this.applyStatusToMonster(target, 'slowed', 20, 'magic');
+                    autoID = true; // CE :5242-5249, unconditional after slow/flash.
                     logger.log(i18next.t('bolt.slow_hit', {
-                        name: item.name, target: target.name,
-                        defaultValue: `${item.name} slows the ${target.name}!`
+                        name: item.displayName, target: target.name,
+                        defaultValue: `${item.displayName} slows the ${target.name}!`
                     }), '#888888');
                 } else {
-                    logger.log(i18next.t('bolt.slow_miss', { name: item.name, defaultValue: `${item.name} fires but finds no target.` }), '#888888');
+                    logMiss('bolt.slow_miss', `${item.displayName} fires but finds no target.`, '#888888');
                 }
                 break;
             }
@@ -4431,25 +4509,29 @@ export class Game {
                 // Heals the player instead of targeting monsters
                 const healed = Math.min(this.player.maxHp - this.player.hp, magnitude);
                 this.player.hp += healed;
+                autoID = true; // Observe the existing (self) heal; recipient correction is W-9.
                 logger.log(i18next.t('bolt.healing', {
-                    name: item.name, heal: healed,
-                    defaultValue: `${item.name} restores ${healed} HP!`
+                    name: item.displayName, heal: healed,
+                    defaultValue: `${item.displayName} restores ${healed} HP!`
                 }), '#44ff88');
                 this.spawnFloatingText(`+${healed}`, this.player.loc.x, this.player.loc.y, 0x44ff88);
                 break;
             }
 
             case BoltEffect.HASTE: {
-                this.applyTimedStatus(this.player, 'hasted', 15);
+                const applied = this.applyTimedStatus(this.player, 'hasted', 15); // Existing recipient retained (W-9).
+                autoID = this.boltStatusAccepted(this.player, 'hasted', applied);
                 logger.log(i18next.t('bolt.haste', {
-                    name: item.name,
-                    defaultValue: `${item.name} fills you with supernatural speed!`
+                    name: item.displayName,
+                    defaultValue: `${item.displayName} fills you with supernatural speed!`
                 }), '#ffff88');
                 break;
             }
 
             case BoltEffect.BECKONING: {
                 if (target) {
+                    const before = { ...target.loc };
+                    const seenBefore = this.canObserveBoltTarget(target);
                     // Pull the target closer to the player
                     const dx = Math.sign(this.player.loc.x - target.loc.x);
                     const dy = Math.sign(this.player.loc.y - target.loc.y);
@@ -4462,53 +4544,61 @@ export class Game {
                             target.loc.y = newY;
                         }
                     }
+                    autoID = !target.hasBehavior('MONST_IMMOBILE')
+                        && Math.max(Math.abs(before.x - this.player.loc.x), Math.abs(before.y - this.player.loc.y)) > 1
+                        && (before.x !== target.loc.x || before.y !== target.loc.y)
+                        && (seenBefore || this.canObserveBoltTarget(target)); // CE :5229-5239
                     logger.log(i18next.t('bolt.beckoning_hit', {
-                        name: item.name, target: target.name,
-                        defaultValue: `${item.name} pulls the ${target.name} toward you!`
+                        name: item.displayName, target: target.name,
+                        defaultValue: `${item.displayName} pulls the ${target.name} toward you!`
                     }), '#88ccff');
                 } else {
-                    logger.log(i18next.t('bolt.beckoning_miss', { name: item.name, defaultValue: `No target answers ${item.name}.` }), '#aaaaaa');
+                    logMiss('bolt.beckoning_miss', `No target answers ${item.displayName}.`, '#aaaaaa');
                 }
                 break;
             }
 
             case BoltEffect.DISCORD: {
                 if (target) {
-                    this.applyStatusToMonster(target, 'confused', 15, 'magic');
+                    const applied = this.applyStatusToMonster(target, 'confused', 15, 'magic');
+                    autoID = this.boltStatusAccepted(target, 'confused', applied) && this.boltLivingTarget(target) && this.canObserveBoltTarget(target);
                     logger.log(i18next.t('bolt.discord_hit', {
-                        name: item.name, target: target.name,
-                        defaultValue: `${item.name} sows discord in the ${target.name}'s mind!`
+                        name: item.displayName, target: target.name,
+                        defaultValue: `${item.displayName} sows discord in the ${target.name}'s mind!`
                     }), '#ff88ff');
                 } else {
-                    logger.log(i18next.t('bolt.discord_miss', { name: item.name, defaultValue: `${item.name} fires but finds no target.` }), '#ff88ff');
+                    logMiss('bolt.discord_miss', `${item.displayName} fires but finds no target.`, '#ff88ff');
                 }
                 break;
             }
 
             case BoltEffect.CONJURATION: {
-                this.spawnFloatingText('Blade!', this.player.loc.x, this.player.loc.y - 1, 0xaaddff);
-                logger.log(i18next.t('staff.phantom_force', { name: item.name, defaultValue: `Phantom force responds to ${item.name}.` }), '#aaddff');
+                if (known) this.spawnFloatingText('Blade!', this.player.loc.x, this.player.loc.y - 1, 0xaaddff);
+                logMiss('staff.phantom_force', `Phantom force responds to ${item.displayName}.`, '#aaddff');
                 break;
             }
 
             case BoltEffect.SHIELDING: {
                 this.applyTimedStatus(this.player, 'telepathy', 25);
                 this.spawnFloatingText('+Light', this.player.loc.x, this.player.loc.y - 1, 0xffffaa);
-                logger.log(i18next.t('staff.bright_aura', { name: item.name, defaultValue: `A bright aura radiates from ${item.name}.` }), '#ffffaa');
+                logger.log(i18next.t('staff.bright_aura', { name: item.displayName, defaultValue: `A bright aura radiates from ${item.displayName}.` }), '#ffffaa');
                 break;
             }
 
             case BoltEffect.INVISIBILITY: {
                 if (target) {
-                    this.applyStatusToMonster(target, 'invisible', 20, 'magic');
+                    const observable = target.isAlly || (this.canObserveBoltTarget(target) && this.player.hasStatus('telepathy'));
+                    const applied = this.applyStatusToMonster(target, 'invisible', 20, 'magic');
+                    autoID = this.boltStatusAccepted(target, 'invisible', applied) && observable && this.boltLivingTarget(target) && !target.isTrulyInvisible(); // CE :4941-4951
                     logger.log(i18next.t('bolt.invisibility_hit', {
-                        name: item.name, target: target.name,
-                        defaultValue: `${item.name} makes the ${target.name} vanish!`
+                        name: item.displayName, target: target.name,
+                        defaultValue: `${item.displayName} makes the ${target.name} vanish!`
                     }), '#aaaaff');
                 } else {
                     // Target self
-                    this.applyTimedStatus(this.player, 'invisible', 20);
-                    logger.log(i18next.t('bolt.invisibility_self', { name: item.name, defaultValue: `${item.name} wraps you in shadows.` }), '#aaaaff');
+                    const applied = this.applyTimedStatus(this.player, 'invisible', 20); // Existing self fallback retained (W-9).
+                    autoID = this.boltStatusAccepted(this.player, 'invisible', applied);
+                    logger.log(i18next.t('bolt.invisibility_self', { name: item.displayName, defaultValue: `${item.displayName} wraps you in shadows.` }), '#aaaaff');
                 }
                 break;
             }
@@ -4517,31 +4607,35 @@ export class Game {
                 if (target && target.isAlly) {
                     target.maxHp = Math.floor(target.maxHp * 1.5);
                     target.hp = target.maxHp;
+                    autoID = this.boltLivingTarget(target) && this.canObserveBoltTarget(target);
                     logger.log(i18next.t('bolt.empowerment_hit', {
-                        name: item.name, target: target.name,
-                        defaultValue: `${item.name} empowers the ${target.name}!`
+                        name: item.displayName, target: target.name,
+                        defaultValue: `${item.displayName} empowers the ${target.name}!`
                     }), '#ffff44');
                 } else if (target) {
                     logger.log(i18next.t('bolt.empowerment_enemy', {
-                        name: item.name, target: target.name,
-                        defaultValue: `${item.name} empowers the ${target.name}!`
+                        name: item.displayName, target: target.name,
+                        defaultValue: `${item.displayName} empowers the ${target.name}!`
                     }), '#ffff44');
                     target.maxHp = Math.floor(target.maxHp * 1.3);
                     target.hp = target.maxHp;
+                    autoID = this.boltLivingTarget(target) && this.canObserveBoltTarget(target);
                 } else {
-                    logger.log(i18next.t('bolt.empowerment_miss', { name: item.name, defaultValue: `${item.name} fires but finds no target.` }), '#ffff44');
+                    logMiss('bolt.empowerment_miss', `${item.displayName} fires but finds no target.`, '#ffff44');
                 }
                 break;
             }
 
             case BoltEffect.NEGATION: {
                 if (target) {
+                    const before = JSON.stringify([target.hp, target.statusDurations]);
+                    const seenBefore = this.canObserveBoltTarget(target);
                     // P4-3：CE Items.c:4483-4491 negate() —— MONST_DIES_IF_NEGATED 的怪物
                     // 被 negation 命中时直接死亡，而不是清状态（"是纯魔法造物，一旦
                     // 被消除魔法就无法维持存在"）。
                     if (this.negateCreatureMagic(target) === 'died') {
                         logger.log(i18next.t('bolt.negation_dies', {
-                            name: item.name, target: target.name,
+                            name: item.displayName, target: target.name,
                             defaultValue: `${target.name} falls to the ground, lifeless!`
                         }), '#ffffff');
                     } else {
@@ -4550,12 +4644,13 @@ export class Game {
                         // 清空后由 negateCreatureMagic 内的 syncFlagDerivedStatuses
                         // 重推导旗标派生状态）、P2-2（refreshSpeeds）同前。
                         logger.log(i18next.t('bolt.negation_hit', {
-                            name: item.name, target: target.name,
-                            defaultValue: `${item.name} negates all magic on the ${target.name}!`
+                            name: item.displayName, target: target.name,
+                            defaultValue: `${item.displayName} negates all magic on the ${target.name}!`
                         }), '#ffffff');
                     }
+                    autoID = seenBefore && before !== JSON.stringify([target.hp, target.statusDurations]);
                 } else {
-                    logger.log(i18next.t('bolt.negation_miss', { name: item.name, defaultValue: `${item.name} fires but finds no target.` }), '#ffffff');
+                    logMiss('bolt.negation_miss', `${item.displayName} fires but finds no target.`, '#ffffff');
                 }
                 break;
             }
@@ -4566,20 +4661,26 @@ export class Game {
                     const cell = this.grid.getCell(p.x, p.y);
                     if (cell && (cell.terrain === TerrainType.WALL || cell.terrain === TerrainType.GRANITE)) {
                         cell.terrain = TerrainType.FLOOR;
+                        autoID = true; // Only an actual excavation identifies (:5812).
                     }
                 }
                 logger.log(i18next.t('bolt.tunneling', {
-                    name: item.name,
-                    defaultValue: `${item.name} blasts a tunnel through the rock!`
+                    name: item.displayName,
+                    defaultValue: `${item.displayName} blasts a tunnel through the rock!`
                 }), '#cc8855');
                 break;
             }
 
             default:
-                logger.log(i18next.t('item.use_generic', { name: item.name, defaultValue: `You use ${item.name}.` }), '#88ccff');
+                logger.log(i18next.t('item.use_generic', { name: item.displayName, defaultValue: `You use ${item.displayName}.` }), '#88ccff');
                 break;
         }
 
+        if ((effect === BoltEffect.FIRE || effect === BoltEffect.LIGHTNING)
+            && terrainBefore !== this.boltTerrainSignature(path, impactPos)) autoID = true;
+        // CONJURATION remains a presentation stub, and SHIELDING's telepathy is
+        // not a shield observation. Do not identify unimplemented CE effects.
+        return autoID;
     }
 
     /**
@@ -4595,7 +4696,7 @@ export class Game {
      * applyTimedStatus 做状态、environment.ignite 做点火、CombatSystem.attack
      * 做伤害判定），两条路径共享地基但不共享分支体，玩家原有调用
      * （zapBoltFromPlayer → applyBoltEffect）保留。W-1 仅携带 caster/命中/落点
-     * 契约并返回结果；outcome=null 表示尚未迁移效果结算/autoID。
+     * 契约并返回结果；W-2 在旧分支观察 autoID，不迁移效果行为。
      *
      * 伤害类 bolt（SPARK/FIRE/DRAGONFIRE/POISON_DART/DISTANCE_ATTACK）不走
      * CE zap() 的 bolt 专属伤害公式——那个公式在 Combat.ts/CombatFormulas.ts
@@ -4621,7 +4722,9 @@ export class Game {
             if (meta.effect === BoltEffect.SPARK
                 && (cellTerrainFlags(this.grid, p.x, p.y) & (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION))) break;
         }
-        if (exposeBoltPathToElectricity(this.grid, path, meta.effect)) this.updateVision();
+        const terrainBefore = this.boltTerrainSignature(path, target.loc);
+        let autoID = exposeBoltPathToElectricity(this.grid, path, meta.effect);
+        if (autoID) this.updateVision();
         const last = path[path.length - 1];
         const electricBlocked = meta.effect === BoltEffect.SPARK
             && (!last || last.x !== target.loc.x || last.y !== target.loc.y);
@@ -4643,7 +4746,13 @@ export class Game {
         this.currentBoltFrameIndex = 0;
         this.boltAnimStartTime = Date.now();
 
-        if (electricBlocked) return boltResult;
+        const finish = () => {
+            boltResult.outcome = { autoID, casterMovement: this.boltCasterMovement(boltResult) };
+            return boltResult;
+        };
+        if (electricBlocked) return finish();
+        const seenBefore = this.canObserveBoltTarget(target);
+        const targetBefore = { ...target.loc };
 
         const casterLabel = caster.name;
         const logCast = (key: string, defaultValue: string, color: string) => {
@@ -4674,6 +4783,7 @@ export class Game {
                     isWeaponAttack: false,
                     damageTarget: reflects ? caster : undefined,
                 });
+                autoID = true; // CE :5136-5150: attack/damage attempt, including miss/immunity.
                 if (result.kamikazeSelfDestruct) {
                     // P4-4：目前带 bolts 的怪物没有一只同时是 MA_KAMIKAZE（膨胀怪没有
                     // bolts），这里只是让 CombatSystem.attack 的通用出口在未来出现
@@ -4726,12 +4836,14 @@ export class Game {
                 const amount = Math.max(1, Math.round(target.maxHp * 0.25));
                 const healed = Math.min(target.maxHp - target.hp, amount);
                 target.hp += healed;
+                autoID = seenBefore; // CE :5366-5370 (full health also identifies).
                 this.spawnFloatingText(`+${healed}`, target.loc.x, target.loc.y, 0x44ff88);
                 logCast('bolt.monster_cast_heal', `${casterLabel} heals ${targetName} for ${healed} HP!`, '#44ff88');
                 break;
             }
 
             case BoltEffect.HASTE: {
+                autoID = true; // CE :5252-5259
                 if (isPlayer) {
                     this.applyTimedStatus(this.player, 'hasted', 15);
                 } else {
@@ -4742,12 +4854,14 @@ export class Game {
             }
 
             case BoltEffect.SHIELDING: {
+                autoID = true; // Existing shield status is applied; amount is W-15.
                 applyShieldStatus(target, 15);
                 logCast('bolt.monster_cast_shield', `${casterLabel} shields ${targetName}!`, '#ffffcc');
                 break;
             }
 
             case BoltEffect.SLOW: {
+                autoID = true; // CE :5242-5249
                 if (isPlayer) {
                     this.applyTimedStatus(this.player, 'slowed', meta.magnitude >= 10 ? 20 : 10);
                 } else {
@@ -4760,7 +4874,8 @@ export class Game {
             case BoltEffect.DISCORD: {
                 // CE case BE_DISCORD 已在 specificallyValidBoltTarget 里排除了玩家目标。
                 if (!isPlayer) {
-                    this.applyStatusToMonster(target as Monster, 'discordant', DISCORD_DURATION, 'magic');
+                    const applied = this.applyStatusToMonster(target as Monster, 'discordant', DISCORD_DURATION, 'magic');
+                    autoID = this.boltStatusAccepted(target, 'discordant', applied) && seenBefore && this.boltLivingTarget(target);
                 }
                 logCast('bolt.monster_cast_discord', `${casterLabel} sows discord in ${targetName}!`, '#ff88ff');
                 break;
@@ -4771,7 +4886,9 @@ export class Game {
                 // 而非清状态（wisp/golem/spectral blade 等"纯魔法造物"被己方以外的
                 // negation bolt 命中时会发生，例如敌对怪物对玩家的召唤物施放 negation）。
                 // 助手对玩家目标也走清状态支（diesIfNegated 是 Monster 专属判定）。
+                const before = JSON.stringify([target.hp, target.statusDurations]);
                 const outcome = this.negateCreatureMagic(target);
+                autoID = seenBefore && before !== JSON.stringify([target.hp, target.statusDurations]);
                 if (!isPlayer && outcome === 'died') {
                     logCast('bolt.monster_cast_negation_dies', `${targetName} falls to the ground, lifeless!`, '#ffffff');
                 } else {
@@ -4791,6 +4908,10 @@ export class Game {
                     target.loc.x = newX;
                     target.loc.y = newY;
                 }
+                autoID = (!(target instanceof Monster) || !target.hasBehavior('MONST_IMMOBILE'))
+                    && Math.max(Math.abs(targetBefore.x - caster.loc.x), Math.abs(targetBefore.y - caster.loc.y)) > 1
+                    && (targetBefore.x !== target.loc.x || targetBefore.y !== target.loc.y)
+                    && (seenBefore || this.canObserveBoltTarget(target));
                 logCast('bolt.monster_cast_beckon', `${casterLabel} beckons ${targetName} closer!`, '#88ccff');
                 break;
             }
@@ -4800,7 +4921,9 @@ export class Game {
         }
 
         this.needsRender = true;
-        return boltResult;
+        if ((meta.effect === BoltEffect.FIRE || meta.effect === BoltEffect.DRAGONFIRE)
+            && terrainBefore !== this.boltTerrainSignature(path, targetBefore)) autoID = true;
+        return finish();
     }
 
     /**
@@ -8313,6 +8436,7 @@ export class Game {
         this.isMouseTraveling = false;
         this.isInventoryOpen = false;
         this.pendingIdentify = false;
+        this.pendingArcana = null;
         // B-1c：恶意品确认待决态不得跨场景泄漏（与 pendingIdentify 同处复位）
         this.pendingUseConfirm = null;
         this.isThrowing = false;
@@ -9038,6 +9162,10 @@ export class Game {
     }
 
     public handleMouseTravel(x: number, y: number) {
+        if (this.pendingArcana) {
+            if (this.setArcanaTarget(x, y)) this.confirmArcanaTarget();
+            return;
+        }
         if (this.isInventoryOpen) return;
         // P2-2 输入锁：动画期间不接受新的鼠标寻路
         if (this.isInputLocked()) return;

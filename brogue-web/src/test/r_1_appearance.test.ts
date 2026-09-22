@@ -671,7 +671,9 @@ describe('R-1 结构守卫：GameCanvas.vue 不得再出现外观决策', () => 
         //  '#ffffff' ×2  Text sprite 与浮字的初始 fill（中性占位，每帧被 visual.color / ft.color 覆盖）
         //  '#ffff00' ×2  箭矢投射物 sprite 的初始 fill 与 dropShadow 色（每帧被 boltFrame 颜色覆盖）
         //  '#000000' ×1  浮字描边底色（每帧文字颜色来自 ft.color，描边本身是绘制原语）
-        expect(literals).toEqual(['#000000', '#ffff00', '#ffff00', '#ffffff', '#ffffff', '0x111111']);
+        // W-2: 0xdddddd ×1，CE Items.c:6490 的中性瞄准格边框；
+        // 仅绘制选择几何，不决定地形/怪物/物品外观。新增此绘制原语，其余豁免不变。
+        expect(literals).toEqual(['#000000', '#ffff00', '#ffff00', '#ffffff', '#ffffff', '0x111111', '0xdddddd']);
     });
 
     it('没有字形字面量的 switch/case 分支（terrain 决策 switch 已迁出）', () => {

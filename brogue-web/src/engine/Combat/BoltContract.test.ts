@@ -105,7 +105,8 @@ describe('W-1 caster/contact/landing/outcome contracts preserve legacy routes', 
             expect(result.hits[0]!.pos).toEqual(target.loc);
             expect(result.landingPos).toEqual(target.loc);
             expect(result.bolt.ceType).toBe(CEBoltType.HEALING);
-            expect(result.outcome).toBeNull();
+            // W-2: execution now observes CE :5366-5370; tracing above remains unresolved.
+            expect(result.outcome).toEqual({ autoID: true, casterMovement: null });
             expect(target.hp).toBe(35);
         }
     });
@@ -120,7 +121,8 @@ describe('W-1 caster/contact/landing/outcome contracts preserve legacy routes', 
         expect(result.hits).toEqual([]);
         expect(result.aimPos).toEqual(game.player.loc);
         expect(result.landingPos).toEqual({ x: 6, y: 5 });
-        expect(result.outcome).toBeNull();
+        // W-2: blocked execution is evaluated false, not W-1 unresolved null.
+        expect(result.outcome).toEqual({ autoID: false, casterMovement: null });
         expect(game.player.hp).toBe(hp);
         expect(rng.randomNumbersGenerated).toBe(before);
     });
@@ -139,7 +141,8 @@ describe('W-1 caster/contact/landing/outcome contracts preserve legacy routes', 
         const result = game.zapBoltFromPlayer(bolt, item);
         expect(result.caster).toBe(game.player);
         expect(result.hits[0]!.creature).toBe(target);
-        expect(result.outcome).toBeNull();
+        // W-2: type-only branches cannot claim an observed effect.
+        expect(result.outcome).toEqual({ autoID: false, casterMovement: null });
         expect(state()).toBe(before);
         expect(game.monsters).toEqual([target]);
     });

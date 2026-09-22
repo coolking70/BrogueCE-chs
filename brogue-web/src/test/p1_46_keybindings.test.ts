@@ -91,10 +91,27 @@ describe('P1-46 键位：移动回到纯 vi 键，CE 命令键让出', () => {
         }
     });
 
-    it('留痕：CE 的 w / a / d 三个命令键目前空闲（接 SWAP/APPLY/DROP 的轮次翻转本断言）', () => {
-        for (const key of ['w', 'a', 'd']) {
+    it('W-2 留痕反转：a 已接 APPLY（CE Rogue.h:1182）；w/d 继续空闲', () => {
+        expect(press('a')).toEqual([['apply_item', undefined]]);
+        for (const key of ['w', 'd']) {
             expect(press(key), `'${key}' 已被占用——接 CE 命令时请更新本留痕`).toEqual([]);
         }
+    });
+
+    it('W-2: Tab / Shift-Tab 切候选，Enter 确认；文本框不触发游戏命令', () => {
+        expect(press('Tab')).toEqual([['cycle_target', 1]]);
+        expect(press('Enter')).toEqual([['confirm_target', undefined]]);
+        expect(press(' ')).toEqual([['cancel_target', undefined]]); // CE ACKNOWLEDGE_KEY in moveCursor
+        const got: unknown[] = [];
+        const mgr = new InputManager();
+        mgr.setCallback((...args) => got.push(args));
+        (globalThis as any).window.__dispatch('keydown', { key: 'Tab', shiftKey: true });
+        expect(got).toEqual([['cycle_target', -1]]);
+        got.length = 0;
+        for (const key of ['a', 'h', 'Enter', 'Escape']) {
+            (globalThis as any).window.__dispatch('keydown', { key, target: { tagName: 'INPUT' } });
+        }
+        expect(got).toEqual([]);
     });
 
     it('B-2：CE THROW_KEY t 已接投掷入口（Rogue.h:1183）', () => {

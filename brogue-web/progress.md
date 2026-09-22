@@ -754,3 +754,15 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 ### Bug Fixes
 - **Clear App Crash**: Fixed an issue where returning to the main menu and starting a new game threw a `Cannot read properties of null (reading 'clear')` error by ensuring `activeGame.onRenderRequested` is cleared on `GameCanvas.vue` unmount.
 - **Horde Generation**: Fixed an issue where depth 1 was incorrectly spawning Goblins. `Game.ts` now properly filters out any horde definitions containing `HORDE_MACHINE_` flags from standard natural spawning.
+
+## 2026-09-23 W-2：施法选择与提交
+
+- 按 w-2.prompt / W-0 §2.3 实现选择态、确认事务、敌友/未知候选与 autoID 观察；effects/生成/充能模型保持后续轮边界。
+- 已读 CE Items.c 选择、空杖、autoID 与 Time.c:2604-2605；耗时取效果后的 movementSpeed。
+- B-1a、B-1c、W-1 outcome 和 P1-46 a 键留痕反转，具体依据随测试与 w-2.report.md。
+- 已完成定向验证与实际 Playwright 键鼠流程：Vue toRaw 修复物品身份，取消零消耗，相邻格点击与 Tab/Shift-Tab/Enter 提交，未知态消息与截图均检查。
+- R+S 反查选择 101 文件（R 98，S 补 3）；包含无直接 import 的 UI 源码守卫。
+- 开始冻结后的最终 build、显式文件定向测试、drift 与 SHA-256 前后比对；完成结果见 ai_docs/reports/w-2.report.md。
+- 后续保持 W-3/W-4 轨迹/反射、W-5/W-6 初始充能/自然回电、W-8~23 效果的边界；治疗/加速/隐形旧自施、召唤空桩仍待对应轮修复。
+
+- 最终复核补齐 CE 右键/空格取消；第一次拟最终运行主动中断，不当作最终结果，全部源文件重新冻结并完整重跑。
