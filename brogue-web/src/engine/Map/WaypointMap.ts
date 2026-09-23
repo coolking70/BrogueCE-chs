@@ -151,11 +151,13 @@ export class WaypointSystem {
      * RNG 流隔离（CE RogueMain.c:691-707 + 733-735 的语义复刻，见
      * isolateRngDuring 内注）：CE 在进层时把主流重播种到该层专属 levelSeed
      * 上跑全部生成（含本函数的 shuffleList），完成后恢复玩法流——shuffle
-     * 的抽取永远不落在后续生成/玩法继续使用的那条流上。web 复刻该性质，
-     * 因此 waypoint 构建对生成基线与玩法序列都是零扰动。
+     * 的抽取不落在后续玩法流上。W-13：运行期掘地（Items.c:5558）没有
+     * 进层那层隔离；duringPlay=true 时直接消费洗牌随机数，默认调用仍
+     * 保持原有生成/重访隔离，不能把进层规则泛化到所有重建。
      */
-    public setUpWaypoints(ctx: WaypointContext): void {
-        isolateRngDuring(() => {
+    public setUpWaypoints(ctx: WaypointContext, duringPlay = false): void {
+        if (duringPlay) this.setUpWaypointsInner(ctx);
+        else isolateRngDuring(() => {
             this.setUpWaypointsInner(ctx);
         });
     }

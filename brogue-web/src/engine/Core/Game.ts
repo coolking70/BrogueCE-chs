@@ -53,6 +53,7 @@ import {
     promoteLayersWithMechFlag,
     triggerCreatureTrapLayers,
     consumeTrapTile,
+    tunnelize,
     runPromotionUpdate,
     type PromotionUpdateResult,
 } from '../Map/Promotion';
@@ -256,6 +257,8 @@ export interface GameSnapshot {
     ticksTillUpdateEnvironment?: number;
     /** W-7: a read scroll awaits a mandatory target and its turn is not settled yet. */
     pendingEnchantment?: boolean;
+    /** W-13: CE IMPREGNABLE flags for the saved map. Older saves have no flags. */
+    impregnableCells?: number[];
     player: {
         loc: Pos;
         hp: number;
@@ -4251,11 +4254,11 @@ export class Game {
         const first = aim ? undefined : this.getArcanaCandidates(item)[0];
         const dir = this.directionToVec(this.player.lastMoveDirection ?? Direction.RIGHT);
         const target = aim ?? (bolt.selfTargeting ? this.player.loc : first?.loc) ?? { x: this.player.loc.x + dir.x * 20, y: this.player.loc.y + dir.y * 20 };
-        // Blink range is a travel input: resolve instance E before tracing.
-        // This does not add the blinking staff to the item/config generation pool.
-        const travelBolt = bolt.effect === BoltEffect.BLINKING ? {
-            ...bolt, char: this.player.char,
-            magnitude: resolveCEBoltMagnitude(CEBoltType.BLINKING, item.category === ItemCategory.STAFF
+        // Blink distance and tunneling budget are travel inputs, resolved from E.
+        // Both staff identities remain deferred to W-25.
+        const travelBolt = bolt.effect === BoltEffect.BLINKING || bolt.effect === BoltEffect.TUNNELING ? {
+            ...bolt, char: bolt.effect === BoltEffect.BLINKING ? this.player.char : bolt.char,
+            magnitude: resolveCEBoltMagnitude(bolt.effect === BoltEffect.BLINKING ? CEBoltType.BLINKING : CEBoltType.TUNNELING, item.category === ItemCategory.STAFF
                 ? { kind: 'staff', enchantment: item.enchantment } : { kind: 'catalog' }).value,
         } : bolt;
         const result = this.computeBoltResult(travelBolt, this.player.loc, target);
@@ -4321,11 +4324,17 @@ export class Game {
     /** Execute travel against live terrain/occupancy. A preview cannot know what
      * ignition/promotion will open, so replace it with the actually travelled route. */
     private applyBoltResult(result: BoltResult, item: Item) {
-        let autoID = false, applied = false;
+        let autoID = false, applied = false, dug = false;
         let alreadyReflected = false;
         const hideDetails = !ItemLoader.identifiedItems.has((item as Item & { identityId?: string }).identityId ?? '');
         const actual = traceBolt(this.grid, result.bolt, result.origin, result.aimPos,
             this.boltWorld(result.caster, hideDetails), {
+            onTunnel: (pos, atOrigin) => {
+                const changed = this.tunnelAt(pos);
+                dug = changed || dug;
+                if (!atOrigin) autoID = changed || autoID;
+                return changed;
+            },
             onReflection: reflection => {
                 alreadyReflected = true;
                 this.observeBoltReflection(reflection);
@@ -4343,11 +4352,46 @@ export class Game {
         // Landing effects still run on misses. W-9 directed effects require a hit;
         // an empty path has no detonation (in particular no origin fire).
         if (!applied && result.landingPos) autoID = this.applyBoltEffect(result, item) || autoID;
+        if (result.effect === BoltEffect.TUNNELING && result.landingPos) {
+            // CE detonateBolt always rebuilds waypoints. Other derived maps only
+            // need invalidation if an excavation (including origin) succeeded.
+            if (dug) {
+                this.loopMap = analyzeLoopMap(this.grid);
+                this.updatedSafetyMapThisTurn = false;
+                this.autoPath = [];
+                this.isMouseTraveling = false;
+                this.needsRender = true;
+            }
+            this.rebuildWaypoints(true);
+            if (autoID) logger.log(i18next.t('bolt.tunneling', {
+                name: item.displayName,
+                defaultValue: `${item.displayName} blasts a tunnel through the rock!`
+            }), '#cc8855');
+        }
         result.outcome = { autoID, casterMovement: this.boltCasterMovement(result) };
         if (hideDetails) result.frames = result.frames.map(frame => ({ ...frame, char: '*', color: 0xaaaaaa }));
         this.pendingBoltFrames = result.frames;
         this.currentBoltFrameIndex = 0;
         this.boltAnimStartTime = Date.now();
+    }
+
+    /** CE tunnelize's creature callbacks. All layer writes/DF/diagonal repair
+     * stay in Map/Promotion; turret death follows DF dormant activation. */
+    private tunnelAt(pos: Pos): boolean {
+        const changed = tunnelize(this.grid, pos.x, pos.y, {
+            beforeOpen: p => {
+                const monster = this.getMonsterAt(p.x, p.y);
+                if (monster?.isCaged && !(monster.hasBehavior('MONST_ATTACKABLE_THRU_WALLS') || monster.hasBehavior('MONST_TURRET'))
+                    && (cellTerrainFlags(this.grid, p.x, p.y) & T_OBSTRUCTS_PASSABILITY)) this.freeCaptive(monster);
+            },
+            afterOpen: p => {
+                const monster = this.getMonsterAt(p.x, p.y);
+                // MONST_TURRET is an unexpanded CE composite in web data (Rogue.h:2093).
+                if (monster && (monster.hasBehavior('MONST_ATTACKABLE_THRU_WALLS') || monster.hasBehavior('MONST_TURRET'))) monster.takeDamage(monster.hp);
+            },
+        });
+        if (changed) this.updateVision();
+        return changed;
     }
 
     // Bolt animation state (consumed by the render loop in GameCanvas.vue)
@@ -4485,7 +4529,7 @@ export class Game {
     }
 
     private applyBoltEffect(result: BoltResult, item: Item, alreadyReflected = false): boolean {
-        const { effect, impactPos, path } = result;
+        const { effect, impactPos } = result;
         let autoID = false;
         // Consume the traced contact, not a new location lookup (which could
         // pick a dormant occupant, or a creature moved/spawned by an earlier hit).
@@ -4704,21 +4748,9 @@ export class Game {
                 break;
             }
 
-            case BoltEffect.TUNNELING: {
-                // Dig through walls along the path
-                for (const p of path) {
-                    const cell = this.grid.getCell(p.x, p.y);
-                    if (cell && (cell.terrain === TerrainType.WALL || cell.terrain === TerrainType.GRANITE)) {
-                        cell.terrain = TerrainType.FLOOR;
-                        autoID = true; // Only an actual excavation identifies (:5812).
-                    }
-                }
-                logger.log(i18next.t('bolt.tunneling', {
-                    name: item.displayName,
-                    defaultValue: `${item.displayName} blasts a tunnel through the rock!`
-                }), '#cc8855');
+            case BoltEffect.TUNNELING:
+                // W-13: excavation/budget runs during travel, never replays a path.
                 break;
-            }
 
             default:
                 logger.log(i18next.t('item.use_generic', { name: item.displayName, defaultValue: `You use ${item.displayName}.` }), '#88ccff');
@@ -7534,11 +7566,10 @@ export class Game {
      * P4-10：waypoint 全量重建。对应 CE setUpWaypoints 的三个调用时机：
      *   - 关卡生成决策完成之后（generateDepth 两个分支的汇合点，RogueMain.c:707）
      *   - 重访缓存层恢复之后（同一位置，RogueMain.c:771）
-     *   - 地形剧变之后（Items.c:5558 BE_TUNNELING）——web 尚无挖掘/洪水类
-     *     地形剧变（P4-9 报告同款登记），本方法是预留的接入点。
+     *   - 地形剧变之后（Items.c:5558 BE_TUNNELING）——W-13 掘地结束接入。
      */
-    public rebuildWaypoints(): void {
-        this.waypoints.setUpWaypoints(this.wpContext());
+    public rebuildWaypoints(duringPlay = false): void {
+        this.waypoints.setUpWaypoints(this.wpContext(), duringPlay);
     }
 
     /**
@@ -8226,6 +8257,7 @@ export class Game {
             mode: this.mode,
             ticksTillUpdateEnvironment: this.ticksTillUpdateEnvironment,
             pendingEnchantment: this.pendingEnchantment,
+            impregnableCells: [...this.grid.impregnableCells],
             player: {
                 loc: { x: this.player.loc.x, y: this.player.loc.y },
                 hp: this.player.hp,
@@ -8384,6 +8416,7 @@ export class Game {
 
         this.depth = snapshot.depth;
         this.grid = new Grid(DCOLS, DROWS);
+        this.grid.impregnableCells = new Set(snapshot.impregnableCells ?? []);
         this.dormantMonsters = []; // 读档重建（V-2b-5）：休眠怪不在 monsters 快照里
         this.bindDormantAwakener();
         for (const c of snapshot.grid) {

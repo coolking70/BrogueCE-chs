@@ -718,16 +718,11 @@ export class BlueprintEngine {
      * randRange 照常掷骰），失效时机与 gateAnalysisCache 一致。
      */
     private gateCandidatesCache: Map<string, Pos[]> = new Map();
-    /**
-     * V-2b-2a：MF_IMPREGNABLE（CE Architect.c:1491-1493 `pmap.flags |=
-     * IMPREGNABLE`）的 web 载体。CE 的位住在 pmap.flags 上、随整图备份/回滚
-     * （copyMap）；web 的 Cell（Grid.ts，不在本轮授权清单）无该位，以引擎级
-     * 格键集合承载，随 backupLevel/restoreLevel 一同快照回滚，语义等价。
-     * **读口：isImpregnable(x,y)。现有唯一潜在消费者是 crystalizeFromPlayer
-     * （Game.ts:4918 的 IMPREGNABLE 守卫，web 无隧道怪/挖墙攻击，此前登记
-     * "该位恒 0"）——接线归隧道轮；本轮交付置位/回滚/读口。**
-     */
-    private impregnableCells: Set<number> = new Set();
+    /** W-13: retain the existing set/rollback contract, but own the flags on
+     * Grid so runtime tunneling and cached levels retain the generated guards.
+     * No generation decision or RNG call changes. */
+    private get impregnableCells(): Set<number> { return this.grid.impregnableCells; }
+    private set impregnableCells(cells: Set<number>) { this.grid.impregnableCells = cells; }
     /**
      * V-2b-2a：CE 的 IN_LOOP（pmap 旗标，analyzeMap 于建层时预计算、机器
      * 阶段按陈旧快照消费——CE 不在机器建造中重算）。web 以 analyzeLoopMap
@@ -2372,8 +2367,8 @@ export class BlueprintEngine {
     }
 
     /**
-     * V-2b-2a：MF_IMPREGNABLE 置位格的读口（impregnableCells 头注）。隧道/
-     * 挖墙轮接线 crystalizeFromPlayer 的守卫与未来的 tunneling 怪时用它。
+     * V-2b-2a：MF_IMPREGNABLE 置位格的生成器读口。W-13 运行期通过
+     * Grid.isImpregnable 读取同一集合；碎墙卷轴保持其既有边界。
      */
     public isImpregnable(x: number, y: number): boolean {
         return this.impregnableCells.has(cellKey(x, y));

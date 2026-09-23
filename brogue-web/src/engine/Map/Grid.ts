@@ -972,6 +972,13 @@ export class Grid {
     public readonly width: number;
     public readonly height: number;
     private cells: Cell[][];
+    /** CE IMPREGNABLE, using the existing blueprint DCOLS cell keys. Lives with
+     * the level (including cached levels), rather than a temporary generator. */
+    public impregnableCells: Set<number> = new Set();
+
+    public isImpregnable(x: number, y: number): boolean {
+        return this.impregnableCells.has(y * DCOLS + x);
+    }
 
     constructor(width: number, height: number) {
         this.width = width;

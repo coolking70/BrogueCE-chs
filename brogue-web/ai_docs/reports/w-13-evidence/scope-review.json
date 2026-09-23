@@ -1,0 +1,58 @@
+{
+  "bySeed": {
+    "src/engine/Core/Game.ts": {
+      "direct": 85,
+      "reverse": 105
+    },
+    "src/engine/Combat/BoltTrajectory.ts": {
+      "direct": 4,
+      "reverse": 105
+    },
+    "src/engine/Map/Promotion.ts": {
+      "direct": 13,
+      "reverse": 115
+    },
+    "src/engine/Map/Grid.ts": {
+      "direct": 88,
+      "reverse": 117
+    },
+    "src/engine/Generator/BlueprintEngine.ts": {
+      "direct": 22,
+      "reverse": 113
+    },
+    "src/engine/Map/WaypointMap.ts": {
+      "direct": 2,
+      "reverse": 105
+    }
+  },
+  "criticalGuards": {
+    "src/test/c_4a_0_layer_model.test.ts": {
+      "inScope": true,
+      "unchanged": true
+    },
+    "src/test/scroll_effects.test.ts": {
+      "inScope": true,
+      "unchanged": true
+    },
+    "src/test/c_8_connectivity.test.ts": {
+      "inScope": true,
+      "unchanged": true
+    },
+    "src/test/p4_10_waypoint.test.ts": {
+      "inScope": true,
+      "unchanged": true
+    },
+    "src/test/c_3_walls_doors.test.ts": {
+      "inScope": true,
+      "unchanged": true
+    },
+    "src/test/v_2b_2a_placement_flags.test.ts": {
+      "inScope": true,
+      "unchanged": true
+    },
+    "src/test/v_2b_2b_blueprints.test.ts": {
+      "inScope": true,
+      "unchanged": true
+    }
+  }
+}

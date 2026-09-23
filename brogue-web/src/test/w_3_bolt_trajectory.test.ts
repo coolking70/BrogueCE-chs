@@ -296,20 +296,19 @@ describe('W-3 sequencing, recipients and W-2 observation', () => {
         expect(target.hasStatus('poisoned')).toBe(false);
     });
 
-    it('W-4 reflection and W-12 blink move the correct caster; W-13 tunneling stays deferred, machine flags unchanged', () => {
+    it('W-4 reflection and W-12 blink move the correct caster, machine flags unchanged', () => {
         const g = scene(), guardian = rat(g, 7, 5, 'stone_guardian');
         const reflected = zap(g, 'staff_of_fire', guardian.loc);
         expect(reflected.hits.map(h => h.creature)).toEqual([g.player]);
-        expect(reflected.path.map(p => p.x)).toEqual([5, 6, 7, 6, 5, 4]); // CE :5682 retraces the incoming route
+        expect(reflected.path.map(p => p.x)).toEqual([5, 6, 7, 6, 5, 4]);
         g.monsters = []; g.grid.setTerrain(7, 5, T.WALL);
         const before = JSON.stringify(g.grid), origin = { ...g.player.loc };
-        for (const [effect, ceType] of [[BoltEffect.TUNNELING, CEBoltType.TUNNELING], [BoltEffect.BLINKING, CEBoltType.BLINKING]] as const) {
-            const result = zap(g, 'wand_of_slowness', { x: 10, y: 5 }, { effect, ceType });
-            expect(result.landingPos).toEqual({ x: 6, y: 5 });
-            // W-12 closes the previously explicit blink gap (CE Items.c:5516).
-            const destination = effect === BoltEffect.BLINKING ? { x: 6, y: 5 } : origin;
-            expect(result.outcome?.casterMovement).toEqual(effect === BoltEffect.BLINKING ? { from: origin, to: destination } : null);
-            expect(JSON.stringify(g.grid)).toBe(before); expect(g.player.loc).toEqual(destination);
-        }
+        const result = zap(g, 'wand_of_slowness', { x: 10, y: 5 }, { effect: BoltEffect.BLINKING, ceType: CEBoltType.BLINKING });
+        const destination = { x: 6, y: 5 };
+        expect(result.landingPos).toEqual(destination);
+        expect(result.outcome?.casterMovement).toEqual({ from: origin, to: destination });
+        expect(JSON.stringify(g.grid)).toBe(before); expect(g.player.loc).toEqual(destination);
+        // W-13's former no-excavation assertion is replaced by CE budget,
+        // per-layer/protection and unchanged-caster guards in w_13_tunneling.
     });
 });

@@ -1,0 +1,59 @@
+{
+  "blueprintMethodsAndFunctions": {
+    "resetRewardRoomsGenerated": true,
+    "getRewardRoomsGenerated": true,
+    "setRewardRoomsGenerated": true,
+    "effectiveBpFlags": true,
+    "blueprintQualifies": true,
+    "constructor": true,
+    "buildMachines": true,
+    "buildAMachine": true,
+    "gateSealsOnlyInterior": true,
+    "findGateRoom": true,
+    "getGateAnalysis": true,
+    "findSuitableRoom": true,
+    "floodFillRoom": true,
+    "hasAdjacentWall": true,
+    "applyBlueprint": true,
+    "fillVestibuleInterior": true,
+    "fillAreaInterior": true,
+    "interiorSatisfiesBlockingFlags": true,
+    "expandMachineInterior": true,
+    "backupLevel": true,
+    "restoreLevel": true,
+    "findFeaturePosition": true,
+    "cellIsFeatureCandidate": true,
+    "getLoopMap": true,
+    "isImpregnable": true,
+    "markPersonalSpace": true,
+    "mapMachineInterior": true,
+    "resetMachineCounter": true
+  },
+  "protectedDataAndGenerator": {
+    "src/data/arcana.json": {
+      "head": "e7a48053679eeccac39fb3518d811b2d757384fa734f12371a6fa2e5b9a88224",
+      "current": "e7a48053679eeccac39fb3518d811b2d757384fa734f12371a6fa2e5b9a88224",
+      "equal": true
+    },
+    "src/data/blueprints.json": {
+      "head": "ac7971985ec3472428360f6584aa9f9f5af0a492bd73d91abfed643e2a27527c",
+      "current": "ac7971985ec3472428360f6584aa9f9f5af0a492bd73d91abfed643e2a27527c",
+      "equal": true
+    },
+    "src/engine/Generator/Architect.ts": {
+      "head": "271aac123ad73436108387decdfd9ca3f3e832603885b2dd5013f9c1d78baf6e",
+      "current": "271aac123ad73436108387decdfd9ca3f3e832603885b2dd5013f9c1d78baf6e",
+      "equal": true
+    },
+    "src/engine/Map/DungeonFeatureCatalog.ts": {
+      "head": "b98680999460a25d4495cdb33f9978178d16d59bdcdd71c1d1ee8771687dcf8f",
+      "current": "b98680999460a25d4495cdb33f9978178d16d59bdcdd71c1d1ee8771687dcf8f",
+      "equal": true
+    },
+    "src/test/fixtures/generation_baseline.json": {
+      "head": "1549a4c5aae041ff5c4a7653ea22d07af88aecaf3740861b0cdb90a4656d5820",
+      "current": "1549a4c5aae041ff5c4a7653ea22d07af88aecaf3740861b0cdb90a4656d5820",
+      "equal": true
+    }
+  }
+}

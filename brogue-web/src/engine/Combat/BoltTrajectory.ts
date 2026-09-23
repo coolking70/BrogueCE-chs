@@ -45,8 +45,8 @@ function offsetLine(grid: Grid, from: Pos, to: Pos, offset: readonly [number, nu
 
 /** CE Items.c:4146-4291, including the 21 diamond offsets and first-best tie.
  * No bolt = untuned center line. No RNG or mutation. Range limits belong to travel,
- * not scoring. Web has no MAGIC_MAPPED/submerged/IMPREGNABLE cell bookkeeping;
- * discovery uses its visible/remembered cells. Tunneling tuning remains W-13. */
+ * not scoring. Web has no MAGIC_MAPPED/submerged bookkeeping;
+ * discovery uses its visible/remembered cells. W-13 tunes only known tunneling. */
 export function boltLine(grid: Grid, from: Pos, to: Pos, bolt?: BoltConfig, world?: BoltWorld): Pos[] {
     if (from.x === to.x && from.y === to.y) return [];
     if (![from.x, from.y, to.x, to.y].every(Number.isSafeInteger)) return [];
@@ -80,6 +80,13 @@ export function boltLine(grid: Grid, from: Pos, to: Pos, bolt?: BoltConfig, worl
             }
             if (world.caster instanceof Player && !cell.isVisible && !cell.hasMemory) {
                 unknown = true;
+                continue;
+            }
+            // CE Items.c:4253-4261. Keep ordinary W-3 scoring byte-for-byte;
+            // hideDetails uses BOLT_NONE, so unknown tunneling gets no bonus.
+            if (!world.hideDetails && bolt.effect === BoltEffect.TUNNELING) {
+                if ((terrain & T_OBSTRUCTS_PASSABILITY) && grid.isImpregnable(p.x, p.y)) break;
+                score += terrain & T_OBSTRUCTS_PASSABILITY ? 50 : terrain & T_OBSTRUCTS_VISION ? 10 : 0;
                 continue;
             }
             if (creature && (flags & F.TARGET_ENEMIES)) score += enemy ? 50 : -200;
@@ -121,6 +128,8 @@ function reflectedPath(grid: Grid, path: readonly Pos[], origin: Pos, towardCast
 export interface BoltExecution {
     onCell(pos: Pos, hit: BoltHit | undefined): void;
     onReflection?(reflection: BoltReflection): void;
+    /** CE tunnelize at origin is free and does not identify the staff. */
+    onTunnel?(pos: Pos, atOrigin: boolean): boolean;
 }
 
 /** CE PowerTables.c:52. The zap loop's 2E+1 is a zero-based index. */
@@ -130,7 +139,7 @@ export function staffBlinkDistance(enchantment: number): number {
 
 /** CE travel: creature reflection -> contact/path effects -> updated terrain ->
  * HALTS_BEFORE -> terrain reflection. Blink has a first-cell guard and E range;
- * tunneling excavation remains separate. A bare
+ * tunneling excavates before post-contact collision and spends E per cell. A bare
  * onCell callback retains the W-3 pure-geometry API; execution hooks enable W-4. */
 export function traceBolt(grid: Grid, bolt: BoltConfig, from: Pos, aim: Pos, world: BoltWorld,
     execution?: BoltExecution | ((pos: Pos, hit: BoltHit | undefined) => void),
@@ -156,6 +165,9 @@ export function traceBolt(grid: Grid, bolt: BoltConfig, from: Pos, aim: Pos, wor
         pending = end < 0 ? [] : [...forward.slice(0, end).reverse(), { ...aim }];
     }
     const blinkRange = bolt.effect === BoltEffect.BLINKING ? staffBlinkDistance(bolt.magnitude) : Infinity;
+    const tunneling = bolt.effect === BoltEffect.TUNNELING;
+    let tunnelBudget = bolt.magnitude;
+    if (tunneling && pending.length) hooks?.onTunnel?.(from, true);
     let next = 0;
     const reflect = (creature: Creature | null, towardCaster: boolean) => {
         const reflection = { pos: { ...path[path.length - 1]! }, pathIndex: path.length - 1, creature, towardCaster };
@@ -170,9 +182,7 @@ export function traceBolt(grid: Grid, bolt: BoltConfig, from: Pos, aim: Pos, wor
         const pos = pending[next++]!;
         const creature = world.creatureAt(pos);
         const blocked = !!(cellTerrainFlags(grid, pos.x, pos.y) & BLOCKS);
-        // Keep W-3's no-excavation boundary and blink's first-cell guard.
-        if ((blocked && bolt.effect === BoltEffect.TUNNELING)
-            || (!path.length && bolt.effect === BoltEffect.BLINKING && (blocked || (creature && !piercing)))) break;
+        if (!path.length && bolt.effect === BoltEffect.BLINKING && (blocked || (creature && !piercing))) break;
         path.push(pos);
         if (creature && canReflect && projectileReflects(creature, world.caster) && path.length - 1 < reflectionLimit) {
             reflect(creature, projectileReflects(creature, world.caster));
@@ -181,12 +191,23 @@ export function traceBolt(grid: Grid, bolt: BoltConfig, from: Pos, aim: Pos, wor
         const hit = creature ? { creature, pos: { ...pos } } : undefined;
         if (hit) hits.push(hit);
         onCell?.(pos, hit);
-        if ((creature && !piercing) || (cellTerrainFlags(grid, pos.x, pos.y) & BLOCKS)) break;
+        if (creature && !piercing) break;
+        let stillBlocked = !!(cellTerrainFlags(grid, pos.x, pos.y) & BLOCKS);
+        if (tunneling && stillBlocked) {
+            // Previews are read-only: predict excavation/budget, without DF,
+            // diagonal repair or reflection RNG. Execution re-reads live flags.
+            const opened = hooks?.onTunnel ? hooks.onTunnel(pos, false) : !grid.isImpregnable(pos.x, pos.y);
+            if (opened && --tunnelBudget <= 0) break;
+            stillBlocked = hooks?.onTunnel ? !!(cellTerrainFlags(grid, pos.x, pos.y) & BLOCKS)
+                : !opened || pos.x === 0 || pos.y === 0 || pos.x === grid.width - 1 || pos.y === grid.height - 1;
+        }
+        if (stillBlocked) break;
         const ahead = pending[next];
         if (!ahead) break;
         const aheadBlocked = !!(cellTerrainFlags(grid, ahead.x, ahead.y) & BLOCKS);
         if ((flags & F.HALTS_BEFORE_OBSTRUCTION) && (aheadBlocked || (!piercing && world.creatureAt(ahead)))) break;
-        if (canReflect && aheadBlocked && (cellTerrainMechFlags(grid, ahead.x, ahead.y) & TM_REFLECTS_BOLTS)
+        if (canReflect && aheadBlocked && ((cellTerrainMechFlags(grid, ahead.x, ahead.y) & TM_REFLECTS_BOLTS)
+            || (tunneling && grid.isImpregnable(ahead.x, ahead.y)))
             && path.length - 1 < reflectionLimit) {
             reflect(null, false); // CE projectileReflects(caster, NULL) is false.
         }

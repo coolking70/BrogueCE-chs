@@ -1,0 +1,942 @@
+{
+  "states": [
+    {
+      "mode": "e2-consecutive",
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 5,
+          "y": 5,
+          "hp": 100,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "result": {
+        "path": [
+          {
+            "x": 5,
+            "y": 5
+          },
+          {
+            "x": 6,
+            "y": 5
+          }
+        ],
+        "outcome": {
+          "autoID": true,
+          "casterMovement": null
+        },
+        "reflections": []
+      },
+      "row": [
+        {
+          "x": 0,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false,
+          "opaque": true
+        },
+        {
+          "x": 1,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 2,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 3,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            98
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 5,
+          "layers": [
+            2,
+            0,
+            0,
+            98
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 6,
+          "layers": [
+            2,
+            0,
+            0,
+            98
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 7,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false,
+          "opaque": true
+        },
+        {
+          "x": 8,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false,
+          "opaque": true
+        }
+      ]
+    },
+    {
+      "mode": "e3-layers",
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 100,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "result": {
+        "path": [
+          {
+            "x": 5,
+            "y": 5
+          },
+          {
+            "x": 6,
+            "y": 5
+          },
+          {
+            "x": 7,
+            "y": 5
+          }
+        ],
+        "outcome": {
+          "autoID": true,
+          "casterMovement": null
+        },
+        "reflections": []
+      },
+      "row": [
+        {
+          "x": 0,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false,
+          "opaque": true
+        },
+        {
+          "x": 1,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 2,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 3,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            98
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 5,
+          "layers": [
+            2,
+            7,
+            0,
+            98
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 6,
+          "layers": [
+            2,
+            0,
+            0,
+            98
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 7,
+          "layers": [
+            2,
+            0,
+            0,
+            98
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 8,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false,
+          "opaque": true
+        }
+      ]
+    },
+    {
+      "mode": "impregnable",
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 100,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "result": {
+        "path": [
+          {
+            "x": 5,
+            "y": 5
+          }
+        ],
+        "outcome": {
+          "autoID": false,
+          "casterMovement": null
+        },
+        "reflections": []
+      },
+      "row": [
+        {
+          "x": 0,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false,
+          "opaque": true
+        },
+        {
+          "x": 1,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 2,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 3,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 5,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false,
+          "opaque": true
+        },
+        {
+          "x": 6,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false,
+          "opaque": true
+        },
+        {
+          "x": 7,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false,
+          "opaque": true
+        },
+        {
+          "x": 8,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false,
+          "opaque": true
+        }
+      ]
+    },
+    {
+      "mode": "creature-reflection",
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 100,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "石像守卫",
+            "x": 7,
+            "y": 5,
+            "hp": 1000,
+            "poisonAmount": 0,
+            "poisoned": 0
+          }
+        ],
+        "items": []
+      },
+      "result": {
+        "path": [
+          {
+            "x": 5,
+            "y": 5
+          },
+          {
+            "x": 6,
+            "y": 5
+          },
+          {
+            "x": 7,
+            "y": 5
+          },
+          {
+            "x": 6,
+            "y": 5
+          },
+          {
+            "x": 5,
+            "y": 5
+          },
+          {
+            "x": 4,
+            "y": 5
+          },
+          {
+            "x": 3,
+            "y": 5
+          },
+          {
+            "x": 2,
+            "y": 5
+          },
+          {
+            "x": 1,
+            "y": 5
+          }
+        ],
+        "outcome": {
+          "autoID": true,
+          "casterMovement": null
+        },
+        "reflections": [
+          {
+            "pos": {
+              "x": 7,
+              "y": 5
+            },
+            "towardCaster": true
+          }
+        ]
+      },
+      "row": [
+        {
+          "x": 0,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false,
+          "opaque": true
+        },
+        {
+          "x": 1,
+          "layers": [
+            2,
+            0,
+            0,
+            98
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 2,
+          "layers": [
+            2,
+            0,
+            0,
+            98
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 3,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 5,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 6,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 7,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 8,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true,
+          "opaque": false
+        }
+      ]
+    },
+    {
+      "mode": "boundary",
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 100,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "result": {
+        "path": [
+          {
+            "x": 3,
+            "y": 5
+          },
+          {
+            "x": 2,
+            "y": 5
+          },
+          {
+            "x": 1,
+            "y": 5
+          },
+          {
+            "x": 0,
+            "y": 5
+          }
+        ],
+        "outcome": {
+          "autoID": true,
+          "casterMovement": null
+        },
+        "reflections": []
+      },
+      "row": [
+        {
+          "x": 0,
+          "layers": [
+            45,
+            0,
+            0,
+            0
+          ],
+          "passable": false,
+          "opaque": false
+        },
+        {
+          "x": 1,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 2,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 3,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 5,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false,
+          "opaque": true
+        },
+        {
+          "x": 6,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false,
+          "opaque": true
+        },
+        {
+          "x": 7,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false,
+          "opaque": true
+        },
+        {
+          "x": 8,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false,
+          "opaque": true
+        }
+      ]
+    },
+    {
+      "mode": "ordinary",
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 100,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "result": {
+        "path": [
+          {
+            "x": 5,
+            "y": 5
+          }
+        ],
+        "outcome": {
+          "autoID": false,
+          "casterMovement": null
+        },
+        "reflections": []
+      },
+      "row": [
+        {
+          "x": 0,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false,
+          "opaque": true
+        },
+        {
+          "x": 1,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 2,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 3,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true,
+          "opaque": false
+        },
+        {
+          "x": 5,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false,
+          "opaque": true
+        },
+        {
+          "x": 6,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false,
+          "opaque": true
+        },
+        {
+          "x": 7,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false,
+          "opaque": true
+        },
+        {
+          "x": 8,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false,
+          "opaque": true
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

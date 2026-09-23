@@ -110,6 +110,8 @@ import {
     T_IS_DF_TRAP,
     T_OBSTRUCTS_GAS,
     T_OBSTRUCTS_PASSABILITY,
+    T_OBSTRUCTS_VISION,
+    T_OBSTRUCTS_DIAGONAL_MOVEMENT,
     T_PATHING_BLOCKER,
     TM_EXPLOSIVE_PROMOTE,
     TM_EXTINGUISHES_FIRE,
@@ -905,4 +907,59 @@ export function triggerCreatureTrapLayers(grid: Grid, x: number, y: number): Pro
 /** Consume a legacy pressure plate/trap without erasing its emitted gas/fire. */
 export function consumeTrapTile(grid: Grid, x: number, y: number, residue = TerrainType.FLOOR): void {
     grid.setTerrainLayer(x, y, DungeonLayer.DUNGEON, residue);
+}
+
+
+/** CE Items.c:4362-4415 tunnelize. Terrain mutation belongs here, not in Game.
+ * Each obstructing layer is removed independently. The return value counts the
+ * primary cell once; recursive diagonal repairs do not spend extra bolt E.
+ * Hooks keep creature ownership in Game and preserve CE release -> terrain ->
+ * DF (including dormant activation) -> embedded turret death ordering. */
+export function tunnelize(grid: Grid, x: number, y: number, hooks: {
+    beforeOpen?(pos: Pos): void;
+    afterOpen?(pos: Pos): void;
+} = {}): boolean {
+    const cell = grid.getCell(x, y);
+    if (!cell || grid.isImpregnable(x, y)) return false;
+    hooks.beforeOpen?.({ x, y });
+    let changed = false;
+    const blocks = T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION;
+    if (x === 0 || y === 0 || x === grid.width - 1 || y === grid.height - 1) {
+        grid.setTerrainLayer(x, y, DungeonLayer.DUNGEON, TerrainType.CRYSTAL_WALL);
+        changed = true; // CE counts boundary crystalization, even on crystal.
+    } else {
+        for (let layer = 0; layer < DungeonLayer.COUNT; layer++) {
+            if (TERRAIN_FLAGS[cell.layers[layer]!].flags & blocks) {
+                grid.setTerrainLayer(x, y, layer, layer === DungeonLayer.DUNGEON
+                    ? TerrainType.FLOOR : TerrainType.NOTHING);
+                changed = true;
+            }
+        }
+    }
+    if (!changed) return false;
+    spawnDungeonFeature(grid, x, y, catalogFeature(DF.DF_TUNNELIZE), false);
+    // Existing FOV/legacy path consumers use these derived booleans. Evaluate
+    // all retained layers, including transparent impassable crystal at edges.
+    const flags = cellTerrainFlags(grid, x, y);
+    cell.isPassable = !(flags & T_OBSTRUCTS_PASSABILITY);
+    cell.isOpaque = !!(flags & T_OBSTRUCTS_VISION);
+    hooks.afterOpen?.({ x, y });
+    if (!(flags & T_OBSTRUCTS_DIAGONAL_MOVEMENT)) {
+        // CE nbDirs order; only diagonal neighbors can form a kink.
+        for (const [dx, dy] of [[-1, -1], [-1, 1], [1, -1], [1, 1]] as const) {
+            const nx = x + dx, ny = y + dy;
+            if (!grid.isValidPos(nx, ny)
+                || (cellTerrainFlags(grid, x, y) & T_OBSTRUCTS_PASSABILITY)
+                || (cellTerrainFlags(grid, nx, ny) & T_OBSTRUCTS_PASSABILITY)) continue;
+            const horizontal = cellTerrainFlags(grid, nx, y), vertical = cellTerrainFlags(grid, x, ny);
+            if (!(horizontal & T_OBSTRUCTS_PASSABILITY) || !(vertical & T_OBSTRUCTS_PASSABILITY)
+                || !((horizontal | vertical) & T_OBSTRUCTS_DIAGONAL_MOVEMENT)) continue;
+            if (grid.isImpregnable(x, ny) || (!grid.isImpregnable(nx, y) && rng.randPercent(50))) {
+                tunnelize(grid, nx, y, hooks);
+            } else {
+                tunnelize(grid, x, ny, hooks);
+            }
+        }
+    }
+    return true;
 }

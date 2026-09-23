@@ -887,3 +887,16 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 后续：blinking staff 的身份、入池、瞄准/特殊回电仍属W-25；怪物自主blink、潜伏占位与气味等缺失子系统未启用；一般背包合并/amulet守卫与普通主动拾取路径未在此轮重写。W-13 tunneling 仍待后续。
 
 - 首次拟最终完整回归仅 W-2 的旧 beckoning 两格落点断言失败：x8→x6 翻正为 CE 邻近 x5；autoID/隐形/casterMovement 原断言保持。反查清单已包含该文件，人工预审漏掉该旧断言，属于本轮检查疏漏。build/drift 已通过但不当作最终全绿；完整失败证据保留于 w-12-evidence/prefinal-failure，修后重新冻结并完整复跑。
+
+
+## 2026-09-23 W-13 掘地效果
+- 按 tasks/w-13.prompt.md 与 W-0 行执行；CE Items.c 4146/4362/5557/5662/5805/7355 核实，预算=E，每主路径成功开通格减1，起点/对角修补免费。
+- Map/Promotion.tunnelize 承担逐层写入、边界晶墙、DF_TUNNELIZE、对角连通修补；Game 只调用语义入口与生物/缓存回调。
+- 修正旧缺口：BlueprintEngine 私有 IMPREGNABLE 集合改由 Grid 持有，原置位与回滚流程不变；随层缓存及新存档保留。旧档缺数据无法反推，默认空集合。碎墙卷轴正文未动。
+- develop-web-game 技能浏览器验证；最终反查、逐文件复跑和 SHA-256 证据见 w-13.report.md。
+- 定向验收：42 项 W-13 守卫；W-3/W-4/c_4a_0 原普通轨迹与写层白名单已验证。炮塔复合 MONST_TURRET 未展开，掘地入口按 CE 复合位识别，不改 Monster 全局。
+- 浏览器：6 个真实页面状态场景并实际走入新通道。技能客户端无头/有头 canvas 导出均黑图；整页截图可见。WALL/RUBBLE/CRYSTAL_WALL 在 Appearance.ts 仍用空白默认外观（R-1 守卫），并存在 W-12 已登记的动画末帧残留，不能宣称专属地形视觉完整；不在本轮更改渲染守卫。最终夹具改用有字形的 GRANITE 观察开通轮廓。
+- 最终门禁采用显式闭包文件、2 workers；build/drift 独立串行；不改超时上限与生成基线。完成详情以 w-13.report.md 和 evidence 最终运行数据为准。
+- 后续：W-25 加 tunneling 物品身份/入池；既有地形外观/末帧刷新另轮处理；历史存档无 IMPREGNABLE 信息无法恢复，新增存档已保留。
+- 收尾审计发现并关闭 P4-10 原语缺口：setUpWaypoints 无条件隔离 RNG 只适合进层；CE Items.c:5558 运行期掘地没有该隔离。新增 duringPlay 默认false参数，掘地传true，生成/重访/读档默认保持原随机流。增加运行期洗牌消耗与默认隔离对照守卫。此前复跑以130主动中断，原日志/哈希保存至 prefinal-waypoint-gap，不计作最终结果；修改后重新完整冻结复跑。
+- RNG入口修正后43项W-13与7项P4-10定向测试通过。最终重新运行仍是119文件闭包（118显式回归+独立drift），采用4 workers；如有超时保持原上限并整文件串行复跑。所有早于本次冻结的结果均不拼接进最终统计。
