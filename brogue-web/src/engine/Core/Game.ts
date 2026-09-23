@@ -25,6 +25,7 @@ import { Monster, monstersAreTeammates, monstersAreEnemies } from '../../entitie
 import { CombatSystem } from '../Combat/Combat';
 import { staffPoison } from '../Combat/Poison';
 import { staffProtection } from '../Combat/Shielding';
+import { staffBladeCount, bladeSpawnLocation } from '../Combat/Conjuration';
 import { weaponParalysisDuration, weaponConfusionDuration, weaponForceDistance, netEnchant, armorAbsorptionMax, armorReprisalPercent } from '../Combat/CombatFormulas';
 import { ItemCategory, Item } from '../Items/Item';
 import { ItemLoader, type ConsumableConfig } from '../Items/ItemLoader';
@@ -226,6 +227,14 @@ export interface GameSnapshotItem {
 }
 
 export interface GameSnapshotMonster {
+    /** W-16: tagged species/relationship/timing payload. No tag in pre-W16
+     * saves means no conjuration relation; never turn a horde blade into an ally. */
+    spectralBlade?: {
+        isAlly: boolean;
+        boundToPlayer: boolean;
+        doesNotTrackLeader: boolean;
+        ticksUntilTurn: number;
+    };
     id: number;
     loc: Pos;
     name: string;
@@ -402,6 +411,7 @@ interface TestRoomState {
     y2: number;
     baselineItems: GameSnapshotItem[];
     baselineMonsters: Array<{
+        spectralBlade?: GameSnapshotMonster['spectralBlade'];
         id: number;
         loc: Pos;
         name: string;
@@ -2365,6 +2375,7 @@ export class Game {
     }
 
     private createMonsterFromSnapshot(m: TestRoomState['baselineMonsters'][number]): Monster {
+        if (m.spectralBlade) return this.deserializeMonster(m);
         const data = {
             id: m.name.toLowerCase().replace(/\s+/g, '_'),
             name: m.name,
@@ -2723,6 +2734,7 @@ export class Game {
                     y2: row.y2,
                     baselineItems: roomItems.map((it) => this.serializeItem(it)),
                     baselineMonsters: roomMonsters.map((m) => ({
+                        spectralBlade: this.serializeMonster(m).spectralBlade,
                         id: m.id,
                         loc: { x: m.loc.x, y: m.loc.y },
                         name: m.name,
@@ -4347,7 +4359,7 @@ export class Game {
                 this.observeBoltReflection(reflection);
             },
             onCell: (pos, hit) => {
-                if (hit && result.effect !== BoltEffect.OBSTRUCTION) {
+                if (hit && result.effect !== BoltEffect.OBSTRUCTION && result.effect !== BoltEffect.CONJURATION) {
                     const contact = createBoltResult(result.bolt, result.caster, result.origin, result.aimPos, [pos], [hit]);
                     autoID = this.applyBoltEffect(contact, item, alreadyReflected) || autoID;
                     applied = true;
@@ -4691,8 +4703,27 @@ export class Game {
             }
 
             case BoltEffect.CONJURATION: {
-                if (known) this.spawnFloatingText('Blade!', this.player.loc.x, this.player.loc.y - 1, 0xaaddff);
-                logMiss('staff.phantom_force', `Phantom force responds to ${item.displayName}.`, '#aaddff');
+                if (!result.landingPos) break;
+                const e = resolveCEBoltMagnitude(CEBoltType.CONJURATION, item.category === ItemCategory.STAFF
+                    ? { kind: 'staff', enchantment: item.enchantment } : { kind: 'catalog' }).value;
+                const data = (monsterData as MonsterData[]).find(m => m.id === 'spectral_blade')!;
+                for (let i = 0; i < staffBladeCount(e); i++) {
+                    const at = bladeSpawnLocation(this, result.landingPos);
+                    if (!at) break; // No invalid/off-map entities when the level is full.
+                    const blade = new Monster(at.x, at.y, data);
+                    blade.isAlly = true;
+                    blade.boundToPlayer = true;
+                    blade.doesNotTrackLeader = true;
+                    // Player followers use leader=null (also used by freed captives).
+                    // CE sets info.attackSpeed + 1, not movementSpeed or a lifetime.
+                    blade.ticksUntilTurn = blade.attackSpeed + 1;
+                    blade.goldDropChance = blade.itemDropChance = 0; // CE blade has no MONST_CARRY_ITEM_* flags.
+                    this.monsters.push(blade);
+                    autoID = true; // W-2 handoff: only a real entity identifies.
+                }
+                if (autoID) logMiss('staff.phantom_force', `Phantom force responds to ${item.displayName}.`, '#aaddff');
+                this.updateVision();
+                this.needsRender = true;
                 break;
             }
 
@@ -4790,7 +4821,6 @@ export class Game {
                 break;
         }
 
-        // CONJURATION remains a presentation stub; it cannot identify an effect.
         return autoID;
     }
 
@@ -8347,6 +8377,10 @@ export class Game {
      */
     private serializeMonster(m: Monster): GameSnapshotMonster {
         return {
+            ...(m.typeId === 'spectral_blade' ? { spectralBlade: {
+                isAlly: m.isAlly, boundToPlayer: m.boundToPlayer,
+                doesNotTrackLeader: m.doesNotTrackLeader, ticksUntilTurn: m.ticksUntilTurn,
+            } } : {}),
             id: m.id,
             loc: { x: m.loc.x, y: m.loc.y },
             name: m.name,
@@ -8391,7 +8425,8 @@ export class Game {
             statusResistTurns: m.statusResistTurns,
             abilities: (m.abilities ?? []) as MonsterAbility[]
         };
-        const monster = new Monster(m.loc.x, m.loc.y, data);
+        const bladeData = m.spectralBlade ? (monsterData as MonsterData[]).find(d => d.id === 'spectral_blade') : undefined;
+        const monster = new Monster(m.loc.x, m.loc.y, bladeData ?? data);
         monster.id = m.id;
         monster.hp = m.hp;
         monster.maxHp = m.maxHp;
@@ -8399,6 +8434,14 @@ export class Game {
         monster.regenTurns = m.regenTurns ?? 0;
         monster.regenCounter = m.regenCounter ?? 0;
         monster.statusDurations = { ...(m.statusDurations ?? {}) };
+        if (m.spectralBlade) {
+            monster.isAlly = m.spectralBlade.isAlly === true;
+            monster.boundToPlayer = m.spectralBlade.boundToPlayer === true;
+            monster.doesNotTrackLeader = m.spectralBlade.doesNotTrackLeader === true;
+            monster.ticksUntilTurn = Number.isFinite(m.spectralBlade.ticksUntilTurn)
+                ? m.spectralBlade.ticksUntilTurn : monster.attackSpeed + 1;
+            monster.syncFlagDerivedStatuses();
+        }
         monster.restorePoison(m.poisonAmount);
         monster.restoreShield(m.maxShield);
         monster.refreshSpeeds(); // P2-2：状态直写绕过 applyStatus，需显式重算衍生速度

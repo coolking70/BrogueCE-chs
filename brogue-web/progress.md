@@ -926,3 +926,15 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 最终反查R110，S并集120文件（119显式回归+独立drift）。源码/测试/脚本/progress冻结后执行build、定向闭包、test:drift，前后SHA自证，不改超时、不重采基线。后续仅回填报告与证据。
 - 后续边界：protection身份/入池留W-26，完整消魔留W-23；怪物伤害bolt公式、现有自创符文/退池creeping_death、旧light文案与完整克隆其余字段未扩展；护符仍是原随机抗性，其CE护盾接入不在本轮SHIELDING范围。
 - 首次完整拟最终门禁：build/drift通过；117/119回归文件通过，3失败来自P1-30未引用staff.bright_aura键与W-4两个精确attack参数守卫。归档旧亮光键到zh_CN.legacy；怪物bolt只为有实际受击符文的护甲挂preDamage回调（reflection已在轨迹执行，无受击减伤），保留W-4原参数守卫不改。两locale文件补进R；保留旧失败及SHA于prefinal-failure，重新完整冻结复跑。
+
+## 2026-09-23 W-16 召唤刀刃
+- 本轮请求：严格执行 tasks/w-16.prompt.md，以W-0 W-16行为为准，实体级验证召唤与autoID，核实CE线索。使用develop-web-game技能。
+- CE核实：floor(3E/2)，落点最短路径合格格；绑定玩家但不跟随玩家，主动追敌/30%闲逛；首行动attackSpeed+1；无寿命倒计时，寿命线索驳回。楼梯不跟随，原层缓存保留；消魔是真死亡。
+- 专用Conjuration helper不共用P4-2召唤/P4-4分裂，不改生成和目录。玩家召唤后才autoID；新增快照tag仅恢复刀刃，缺tag不猜盟友来源。
+- 工作树依赖从本地主工作树复制，不改package/lock。初次build发现Game私有machineCells不满足宽PlacementWorld签名，收窄到实际所需字段。
+- 定向5文件121项通过；后增玩家相邻优先目标测试。新夹具的地形枚举/API和睡眠偷袭预期修正，未改旧伤害规则。新增刀刃回击/消魔选敌门仅作用于本轮绑定玩家的刀刃；明列普通怪物行为变化。
+- 浏览器七场景通过、错误0，实际打开整页召唤/攻击截图；技能客户端canvas黑图保留证据，不算视觉通过。
+- CE复核：generateMonster(true,false)的true是itemPossible，false是mutationPossible；刀刃没有携物旗标，所以无原生掉落。没有寿命，更没有到期删除入口；200次状态递减仍活，死亡只在真实伤害/消魔发生。
+- 已有全局GameSnapshot只存当前层、不存levels缓存：本轮已完成内存跨层留层和当前层/休眠/测试房刀刃快照；不声称跨层全局存档已CE对齐，报告明确登记。
+- 初步完整闭包在补最后测试/注释后主动终止（exit130，非超时/测试失败）；不计最终门禁。冻结所有生产/测试/脚本/progress后重新完整跑118文件闭包、build、drift；保留初步日志。4个反向变异用于验证实体/首等待/不跟随/autoID断言，finally还原SHA。
+- 后续：W-23完整消魔资格/能力剥离，W-20通用克隆/关系快照；整个levels跨层JSON持久化为既有存档架构缺口，不能由刀刃跟随假象掩盖。最终门禁后仅回填报告及证据。

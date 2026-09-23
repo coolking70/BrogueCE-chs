@@ -485,6 +485,8 @@ onMounted(async () => {
                 return m.hp > 0 && (!!cell?.isVisible || telepathyRevealed);
             })
             .map((m) => ({ name: m.name, x: m.loc.x, y: m.loc.y, hp: m.hp,
+                typeId: m.typeId, isAlly: m.isAlly, boundToPlayer: m.boundToPlayer,
+                doesNotTrackLeader: m.doesNotTrackLeader, ticksUntilTurn: m.ticksUntilTurn,
                 poisonAmount: m.poisonAmount, poisoned: m.getStatusDuration('poisoned'),
                 shield: m.getStatusDuration('shielded'), maxShield: m.maxShield }));
         const visibleItems = game.items

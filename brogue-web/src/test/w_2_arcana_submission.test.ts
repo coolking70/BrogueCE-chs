@@ -254,20 +254,27 @@ describe('W-2 automatic candidates (CE Items.c:5935-6032)', () => {
 });
 
 describe('W-2 actual autoID (CE Items.c:5112-5119,5220-5413,5444-5465,5470-5567)', () => {
-    it('teleport hit and conjuration presentation stub stay unknown; slow hit identifies kind only', () => {
+    it('teleport hit stays unknown; slow hit identifies kind only', () => {
         const g = scene(); monster(g);
         const teleport = item(g, 'wand_of_teleportation');
         expect(fire(g, teleport)!.outcome?.autoID).toBe(false);
         expect(ItemLoader.identifiedItems.has('wand_of_teleportation')).toBe(false);
-        const conjure = item(g, 'staff_of_conjuration');
-        const count = g.monsters.length;
-        expect(fire(g, conjure)!.outcome?.autoID).toBe(false);
-        expect(g.monsters.length).toBe(count);
         const slow = item(g, 'wand_of_slowness');
         monster(g, 7, 5);
         expect(fire(g, slow, 7)!.outcome?.autoID).toBe(true);
         expect(ItemLoader.identifiedItems.has('wand_of_slowness')).toBe(true);
         expect(slow.identified).toBe(false);
+    });
+
+    it('W-16: conjuration identifies only after creating real allied blades', () => {
+        const g = scene(); monster(g);
+        const conjure = item(g, 'staff_of_conjuration'); conjure.enchantment = 3;
+        expect(fire(g, conjure)!.outcome?.autoID).toBe(true);
+        const blades = g.monsters.filter(m => m.typeId === 'spectral_blade');
+        expect(blades).toHaveLength(4);
+        expect(blades.every(m => m.isAlly && g.getMonsterAt(m.loc.x, m.loc.y) === m)).toBe(true);
+        expect(ItemLoader.identifiedItems.has('staff_of_conjuration')).toBe(true);
+        expect(conjure.identified).toBe(false);
     });
 
     it('poison requires an observed eligible applied status; invisible/immune targets cannot identify', () => {

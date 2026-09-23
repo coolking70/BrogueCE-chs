@@ -18,8 +18,14 @@ import type { Item } from '../engine/Items/Item';
 import type { StatusId } from './Creature';
 import { PERMANENT_STATUS_DURATION } from './Creature';
 import { TerrainType } from '../engine/Map/Grid';
-import { MONSTER_BOLT_TABLE, BoltEffect } from '../engine/Combat/Bolt';
+import { MONSTER_BOLT_TABLE, BoltEffect, type BoltConfig } from '../engine/Combat/Bolt';
+import { CEBoltType } from '../engine/Combat/BoltCatalog';
 import { reflectionChance } from '../engine/Combat/CombatFormulas';
+import { bladeAvoids, bladeDiagonalBlocked, bladeStepToward, BLADE_DIRECTIONS } from '../engine/Combat/Conjuration';
+import { boltLine } from '../engine/Combat/BoltTrajectory';
+
+const BLADE_SIGHT: BoltConfig = { id: 'blade_sight', name: '', ceType: CEBoltType.NONE,
+    effect: BoltEffect.NONE, magnitude: 0, char: '', color: 0, maxRange: 0, piercing: false, selfTargeting: false };
 
 // ----- P4-1b：怪物远程法术施放 -----
 //
@@ -116,8 +122,10 @@ export function specificallyValidBoltTarget(caster: Monster, target: Creature, c
             if (target.hasStatus('discordant') || target === game.player) return false;
             break;
         case BoltEffect.NEGATION:
-            // 简化版 BE_NEGATION：只在目标（敌方）身上确有可驱散的增益/护盾时才放。
-            if (!(target.hasStatus('hasted') || target.hasStatus('telepathy') || isShielded(target))) {
+            // Legacy buffs/shield gate, plus W-16 player-bound magical blades.
+            // Complete CE negation target eligibility remains W-23.
+            if (!(target.hasStatus('hasted') || target.hasStatus('telepathy') || isShielded(target)
+                || (target instanceof Monster && target.boundToPlayer && target.diesIfNegated()))) {
                 return false;
             }
             break;
@@ -254,6 +262,11 @@ export class Monster extends Creature {
      *  CE spawnHorde 同样经 spawnMinions 落地，一并设置 leader，见 P4-2 报告）
      *  两处赋值，countMinions 读取。 */
     public leader: Monster | null = null;
+    /** W-16: player follower = isAlly + leader=null, matching the existing captive
+     * convention. Binding is not a lifespan: CE exempts ALLY from orphan death. */
+    public boundToPlayer: boolean = false;
+    /** CE MB_DOES_NOT_TRACK_LEADER: hunt enemies, mill about when idle. */
+    public doesNotTrackLeader: boolean = false;
     /**
      * P4-8：CE bookkeepingFlags & MB_GIVEN_UP_ON_SCENT。MONST_ALWAYS_HUNTING
      * 怪物顺气味走到死路（isLocalScentMaximum）时置位，此后改为直接寻路追玩家
@@ -979,12 +992,30 @@ export class Monster extends Creature {
         }
 
         if (this.isAlly) {
+            const independentBlade = this.typeId === 'spectral_blade' && this.doesNotTrackLeader;
+            const canBladeStep = (p: { x: number; y: number }) => !(p.x === this.loc.x && p.y === this.loc.y)
+                && !bladeAvoids(game.grid, p) && !bladeDiagonalBlocked(game.grid, this.loc, p)
+                && !game.getMonsterAt(p.x, p.y) && !(game.player.loc.x === p.x && game.player.loc.y === p.y);
             // Find closest hostile monster
             let target: Monster | null = null;
             let minDist = Infinity;
             for (const other of game.monsters) {
                 if (other === this || other.hp <= 0 || other.isAlly) continue;
-                if (!game.grid.getCell(other.loc.x, other.loc.y)?.isVisible) continue;
+                if (independentBlade) {
+                    // CE moveAlly/traversiblePathBetween: the blade's terrain path,
+                    // not the player's FOV; never charge an invulnerable target.
+                    if (other.isCaged || other.isInvulnerable() || other.isImmuneToWeapons()) continue;
+                    const line = boltLine(game.grid, this.loc, other.loc, BLADE_SIGHT, {
+                        caster: this, creatureAt: p => creatureAtLoc(game, p.x, p.y),
+                    });
+                    let reachable = false;
+                    for (const p of line) {
+                        if (p.x === other.loc.x && p.y === other.loc.y) { reachable = true; break; }
+                        if (bladeAvoids(game.grid, p)) break;
+                    }
+                    if (!reachable || bladeAvoids(game.grid, other.loc)
+                        || (other.hasStatus('invisible') && !rng.randPercent(33))) continue;
+                } else if (!game.grid.getCell(other.loc.x, other.loc.y)?.isVisible) continue;
 
                 const dist = Math.max(Math.abs(this.loc.x - other.loc.x), Math.abs(this.loc.y - other.loc.y));
                 // P4-4：CE monsterFleesFrom（Monsters.c:2979-2982）—— 不主动冲向
@@ -1008,6 +1039,7 @@ export class Monster extends Creature {
                 // "30% 施法判定 miss 后又白嫖一次等效远程攻击"的双重远程，
                 // 与 CE monstUseBolt 的语义不符，故整段移除（详见报告）。
                 if (minDist <= 1) {
+                    if (independentBlade && bladeDiagonalBlocked(game.grid, this.loc, target.loc)) return;
                     // P4-6：斧/矛/鞭的相邻近战几何分发（CE moveMonster 在普通
                     // attack 之前先试鞭/矛，sweep 替换单体近战）。
                     if (this.tryGeometryMeleeAdjacent(game, target, 'ally')) {
@@ -1056,6 +1088,11 @@ export class Monster extends Creature {
                     this.endTurnWithAttack();
                     return;
                 } else {
+                    if (independentBlade) {
+                        const step = bladeStepToward(this.loc, target.loc, canBladeStep);
+                        if (step) this.tryMoveTo(step.x, step.y, game);
+                        return;
+                    }
                     // P4-6：盟友追击途中先沿"直指目标"的射线试鞭/矛（CE
                     // moveMonster 的几何检查先于移动，见 tryGeometryRayTo 注释）。
                     if (this.tryGeometryRayTo(game, target, this.isAlly ? 'ally' : 'hostile')) {
@@ -1075,6 +1112,17 @@ export class Monster extends Creature {
                     }
                 }
             } else {
+                if (independentBlade) {
+                    // CE monsterMillAbout(monst, 30), never follow the player.
+                    if (rng.randPercent(30)) {
+                        const steps = BLADE_DIRECTIONS.map(([dx, dy]) => ({ x: this.loc.x + dx, y: this.loc.y + dy })).filter(canBladeStep);
+                        if (steps.length) {
+                            const p = steps[rng.randRange(0, steps.length - 1)]!;
+                            this.tryMoveTo(p.x, p.y, game);
+                        }
+                    }
+                    return;
+                }
                 // Follow player
                 const distToPlayer = Math.max(Math.abs(this.loc.x - game.player.loc.x), Math.abs(this.loc.y - game.player.loc.y));
                 if (distToPlayer > 2) {
@@ -1220,6 +1268,26 @@ export class Monster extends Creature {
                             defaultValue: `The ${this.name} misses you.`
                         }), '#aaaaaa');
                     }
+                    this.endTurnWithAttack();
+                }
+                return;
+            }
+        }
+
+        // W-16: close the new blade's combat loop without rewriting general ally
+        // AI. CE MC:3449-3464 / 3575: awake enemies attack an adjacent ally;
+        // hunting enemies prefer an accessible adjacent player. No horde targets
+        // gain this new branch (boundToPlayer is only set by conjuration).
+        if ((this.state === MonsterState.HUNTING || this.state === MonsterState.WANDERING)
+            && (this.state !== MonsterState.HUNTING || distToPlayer > 1
+                || bladeDiagonalBlocked(game.grid, this.loc, game.player.loc))) {
+            const blade = game.monsters.find(m => m.typeId === 'spectral_blade' && m.boundToPlayer
+                && this.willAttackTarget(m) && Math.max(Math.abs(m.x - this.x), Math.abs(m.y - this.y)) === 1
+                && !bladeDiagonalBlocked(game.grid, this.loc, m.loc)
+                && (!m.hasStatus('invisible') || rng.randPercent(33)));
+            if (blade) {
+                if (!this.tryGeometryMeleeAdjacent(game, blade)) {
+                    this.resolveGeometryAttackOn(game, blade, 'hostile');
                     this.endTurnWithAttack();
                 }
                 return;
@@ -1538,7 +1606,8 @@ export class Monster extends Creature {
 
     private tryMoveTo(nx: number, ny: number, game: any) {
         const currentCell = game.grid.getCell(this.loc.x, this.loc.y);
-        if (currentCell && currentCell.terrain === TerrainType.WEB) {
+        if (currentCell && currentCell.terrain === TerrainType.WEB
+            && !(this.typeId === 'spectral_blade' && this.doesNotTrackLeader)) {
             // Monsters have a chance to get stuck in webs.
             // Let's say 50% chance for now.
             if (rng.randPercent(50)) {
