@@ -1,0 +1,13 @@
+PASS scratch: flag early return preserves stale ourBolts; bolt branch rebuilds it; eligibility gates and distance 10/11
+PASS shared-map draw=1 denominator=2 selected=B rng_calls=2
+PASS shared-map draw=2 denominator=2 selected=none rng_calls=1
+PASS shared-map: first-pass-ineligible A can be chosen on last map; denominator remains 1
+PASS shared-map: last ally with no pending slot still overwrites map
+PASS priority: 2 abilities then 4 behaviors; FIRE does not enter this six-way draw
+PASS catalog: 22 learnable, 7 excluded (including blink/vines/tunnel/obstruction accepted)
+PASS bolt draw: existing SPARK and NOT_LEARNABLE web excluded; vines/blink retain denominator 2
+PASS finish: 20 absorption calls, final call consumed, append bolt, new-- once, total unchanged, no RNG; statuses do not gate ongoing absorption
+PASS displaced: pre-counter 17 -> 16 retains target, 16 -> 15 abandons; no slot spent
+PASS approach timeout: 20 calls without starting absorption clear target/power, retain slot
+PASS permanent flags: 4 status/maxStatus pairs=1000; flying clears liquid/submerged flags
+ALL CE AUDIT ASSERTIONS PASSED (stubbed distance/world inputs; not a full-engine differential test)

@@ -1,0 +1,105 @@
+src/components/GameCanvas.vue:489:                newPowerCount: m.newPowerCount, totalPowerCount: m.totalPowerCount,
+src/data/monsterBolts.test.ts:32:const KNOWN_GAP_BOLT_NAMES = new Set(['SPIDERWEB', 'ANCIENT_SPIRIT_VINES']);
+src/data/monsterBolts.test.ts:107:    it('mangrove_dryad：单 bolt，属于已知缺口 ANCIENT_SPIRIT_VINES（Globals.c:1163）', () => {
+src/data/monsterBolts.test.ts:108:        expect(byId('mangrove_dryad').bolts).toEqual(['ANCIENT_SPIRIT_VINES']);
+src/data/monsters.json:1902:            "ANCIENT_SPIRIT_VINES"
+src/data/mutations.json:36:        "description": "It has been infested by deadly lichen spores; poisonous fungus will spread from its corpse when it dies."
+src/engine/Combat/Bolt.ts:163:// SPIDERWEB / ANCIENT_SPIRIT_VINES remain effect:null (DF execution missing);
+src/engine/Combat/Bolt.ts:203:    ANCIENT_SPIRIT_VINES: monsterBoltMeta(CEBoltType.ANCIENT_SPIRIT_VINES, null),
+src/engine/Combat/Bolt.ts:207:export const KNOWN_GAP_MONSTER_BOLT_NAMES: readonly string[] = ['SPIDERWEB', 'ANCIENT_SPIRIT_VINES'];
+src/engine/Combat/BoltCatalog.test.ts:57:        expect(catalog[T.ANCIENT_SPIRIT_VINES].effect).toBe(E.NONE);
+src/engine/Combat/BoltCatalog.test.ts:124:        expect(Object.keys(MONSTER_BOLT_TABLE)).toEqual('SHIELDING HASTE SPARK DISTANCE_ATTACK HEALING BLINKING NEGATION DISCORD POISON_DART FIRE DRAGONFIRE BECKONING SLOW_2 SPIDERWEB ANCIENT_SPIRIT_VINES'.split(' '));
+src/engine/Combat/BoltCatalog.test.ts:131:        expect(KNOWN_GAP_MONSTER_BOLT_NAMES).toEqual(['SPIDERWEB', 'ANCIENT_SPIRIT_VINES']);
+src/engine/Combat/BoltCatalog.ts:35:    ANCIENT_SPIRIT_VINES = 28,
+src/engine/Combat/BoltCatalog.ts:214:    [T.ANCIENT_SPIRIT_VINES]: { type: T.ANCIENT_SPIRIT_VINES, name: "growing vines", description: "releases carnivorous vines into the ground", abilityDescription: "conjures carnivorous vines",
+src/engine/Combat/BoltCatalog.ts:216:        pathDF: "DF_ANCIENT_SPIRIT_GRASS", targetDF: "DF_ANCIENT_SPIRIT_VINES", forbiddenMonsterFlags: ["MONST_INANIMATE", "MONST_IMMUNE_TO_WEBS"], flags: F.TARGET_ENEMIES | F.NEVER_REFLECTS },
+src/engine/Combat/Combat.ts:304:            const hpDamage = applyTo.absorbShieldDamage(damage);
+src/engine/Core/Game.ts:234:    newPowerCount?: number;
+src/engine/Core/Game.ts:235:    totalPowerCount?: number;
+src/engine/Core/Game.ts:242:        ticksUntilTurn: number; wasNegated: boolean; seized: boolean; seizing: boolean;
+src/engine/Core/Game.ts:446:        newPowerCount?: number;
+src/engine/Core/Game.ts:447:        totalPowerCount?: number;
+src/engine/Core/Game.ts:2442:        monster.newPowerCount = m.newPowerCount ?? 0;
+src/engine/Core/Game.ts:2443:        monster.totalPowerCount = m.totalPowerCount ?? 0;
+src/engine/Core/Game.ts:2784:                        newPowerCount: m.newPowerCount,
+src/engine/Core/Game.ts:2785:                        totalPowerCount: m.totalPowerCount,
+src/engine/Core/Game.ts:5389:            if (!target.isInvulnerable()) target.newPowerCount = target.totalPowerCount;
+src/engine/Core/Game.ts:6450:                // CE distributes before the player's shield absorbs the remaining share.
+src/engine/Core/Game.ts:6507:                    defaultValue: `Your armor absorbs impact and restores ${healBack} HP.`
+src/engine/Core/Game.ts:6519:            const absorbRoll = rng.randRange(1, armorAbsorptionMax(netEnch));
+src/engine/Core/Game.ts:6520:            const absorbed = Math.min(absorbRoll, incomingDamage);
+src/engine/Core/Game.ts:6521:            if (absorbed > 0) {
+src/engine/Core/Game.ts:6522:                prevent(absorbed);
+src/engine/Core/Game.ts:6524:            if (absorbRoll >= incomingDamage) {
+src/engine/Core/Game.ts:6528:                        damage: absorbed,
+src/engine/Core/Game.ts:6529:                        defaultValue: `Your armor pulses and absorbs the blow!`
+src/engine/Core/Game.ts:6533:                this.spawnFloatingText(`+${absorbed}`, this.player.loc.x, this.player.loc.y, 0xaaddff);
+src/engine/Core/Game.ts:7436:                this.player.hp -= this.player.absorbShieldDamage(damage);
+src/engine/Core/Game.ts:7484:                    m.hp -= m.absorbShieldDamage(rng.randClumpedRange(6, 12, 2));
+src/engine/Core/Game.ts:7489:                    // targetCorpseLoc 清理 web 无载体，登记）。
+src/engine/Core/Game.ts:8574:                keepsSpeed: m.polymorphKeepsSpeed, ticksUntilTurn: m.ticksUntilTurn, wasNegated: m.wasNegated,
+src/engine/Core/Game.ts:8582:            newPowerCount: m.newPowerCount,
+src/engine/Core/Game.ts:8583:            totalPowerCount: m.totalPowerCount,
+src/engine/Core/Game.ts:8653:        monster.newPowerCount = m.newPowerCount ?? 0;
+src/engine/Core/Game.ts:8654:        monster.totalPowerCount = m.totalPowerCount ?? 0;
+src/engine/Core/Game.ts:8701:            monster.wasNegated = p.wasNegated;
+src/engine/Core/Game.ts:9111:                logger.log(i18next.t('runic.armor.dampening_explosion', { defaultValue: 'Your armor pulses and absorbs the damage.' }), '#66ffff');
+src/engine/Core/Game.ts:9116:            entity.hp -= entity.absorbShieldDamage(damage);
+src/engine/Core/Game.ts:9126:        monst.hp -= monst.isInvulnerable() ? 0 : monst.absorbShieldDamage(damage);
+src/engine/Map/DungeonFeatureCatalog.ts:1401:    [DF.DF_ELECTRIC_CRYSTAL_ON]: { ...df(200, 895, 'ELECTRIC_CRYSTAL_ON', TerrainType.ELECTRIC_CRYSTAL_ON, DungeonLayer.DUNGEON, 0, 0, 0, '', null, null, 'the crystal absorbs the electricity and begins to glow.'), lightFlare: 'CHARGE_FLASH_LIGHT' },
+src/engine/UI/DetailGenerator.ts:256:    if (monster.isAlly && monster.newPowerCount > 0) {
+src/engine/UI/DetailGenerator.ts:257:        stateLines.push({ text: `似乎已准备好学习 ${monster.newPowerCount} 项新能力。`, color: '#88ff99' });
+src/entities/Creature.ts:219:    public absorbShieldDamage(amount: number): number {
+src/entities/Creature.ts:261:        this.hp -= ignoresProtectionShield ? amount : this.absorbShieldDamage(amount);
+src/entities/Monster.ts:265:    public wasNegated = false;
+src/entities/Monster.ts:267:    public newPowerCount = 0;
+src/entities/Monster.ts:268:    public totalPowerCount = 0;
+src/entities/Monster.ts:510:        this.newPowerCount++;
+src/entities/Monster.ts:511:        this.totalPowerCount++;
+src/entities/Monster.ts:568:        this.wasNegated = false;
+src/entities/Monster.ts:569:        // newPowerCount/totalPowerCount belong to creature, not the replaced info.
+src/locales/zh_CN.legacy.json:267:  "$HESHE has been infested by deadly lichen spores; poisonous fungus will spread from $HISHER corpse when $HESHE dies.": "它已被致命地衣孢子感染；它死亡时，有毒真菌将从它的尸体扩散。",
+src/locales/zh_CN.legacy.json:672:  "10%% of the time it absorbs a blow, it will explode in flames. ": "有 10%% 的几率在承受打击时发生火焰爆炸。 ",
+src/locales/zh_CN.legacy.json:673:  "10%% of the time it absorbs a blow, its strength requirement will permanently increase. ": "有 10%% 的几率在承受打击时，其力量需求会永久增加。 ",
+src/locales/zh_CN.legacy.json:1014:  "Poisonous spores burst from the corpse!": "有毒孢子从尸体中爆出！",
+src/locales/zh_CN.legacy.json:1111:  "The corpse detonates with terrifying force!": "尸体以恐怖的力量引爆！",
+src/locales/zh_CN.legacy.json:1211:  "When worn, it will safely absorb the concussive impact of any explosions (though you may still be burned). ": "佩戴时，它将安全吸收任何爆炸的冲击（但你仍可能被烧伤）。 ",
+src/locales/zh_CN.legacy.json:1262:  "Your %s pulses and absorbs the damage.": "你的 %s 脉动并吸收了伤害。",
+src/locales/zh_CN.legacy.json:1725:  "greasy flames rise from the corpse.": "油腻的火焰从尸体上升起。",
+src/locales/zh_CN.legacy.json:1932:  "the crystal absorbs the electricity and begins to glow.": "水晶吸收了电，开始发光。",
+src/locales/zh_CN.legacy.json:2148:  "your %s pulses and absorbs the blow!": "你的 %s pulses 并吸收了 blow！",
+src/test/armor_runic_effect.test.ts:140:            const absorbed = game.player.hp - 5;
+src/test/armor_runic_effect.test.ts:141:            expect(absorbed).toBeGreaterThanOrEqual(1); // 恒触发：绝无空过
+src/test/armor_runic_effect.test.ts:142:            if (absorbed === 8) sawFull = true;
+src/test/f_2c_explosion.test.ts:361:        '"Your %s pulses and absorbs the damage." + autoIdentify）——扣血的' +
+src/test/w_10_poison.test.ts:226:    it('poison death drops loot/carried item, triggers death DF and removes corpse once at same turn end', () => {
+src/test/w_11_teleport_placement.test.ts:74:        const corpse = monster(g, 13, 9); corpse.hp = 0;
+src/test/w_15_shielding.test.ts:76:        expect(c.absorbShieldDamage(20)).toBe(7); expect(c.hp).toBe(30); expect(death).not.toHaveBeenCalled();
+src/test/w_15_shielding.test.ts:141:describe('W-15 absorbable damage and bypass/death owners', () => {
+src/test/w_18_entrancement.test.ts:212: it('fire staff damage breaks entrancement even fully absorbed by shielding',()=>{
+src/test/w_19_polymorph.test.ts:79:  const g=scene(),m=mob(g);m.behaviorFlags.add(flag);m.isAlly=m.isCaged=true;m.seized=true;m.statusDurations={hasted:8,poisoned:9};m.wasNegated=true;
+src/test/w_19_polymorph.test.ts:117:  m.mutate(mutations[0] as any);m.wasNegated=true;m.carriedMonster=new Monster(0,0,data('phoenix'));const carried=m.carriedMonster;
+src/test/w_19_polymorph.test.ts:125:  expect(m).toMatchObject({id:oldId,typeId:'jackal',hp:polymorphHP(oldHP,oldMax,d.hp),maxHp:d.hp,accuracy:d.accuracy,defense:d.defense,damageString:d.damage,regenTurns:d.regen,regenCounter:17,ticksUntilTurn:222,wasNegated:false,mutation:undefined,carriedMonster:null,seized:false,seizing:false,poisonAmount:4,maxShield:0,machineHome:42,givenUpOnScent:true,targetWaypointIndex:3,spawnLoc:{x:12,y:13},falling:true,preplaced:true,boundToLeader:true,boundToPlayer:true,doesNotTrackLeader:true,goldDropChance:.37,itemDropChance:.29});
+src/test/w_20_cloning.test.ts:37: m.waypointAlreadyVisited=[true,false];m.targetWaypointIndex=1;m.safetySnapshot=[[3,4],[5,6]];m.spawnLoc={x:7,y:8};m.regenCounter=13;m.machineHome=17;m.seized=m.seizing=true;m.movementSpeed=37;m.attackSpeed=43;m.polymorphKeepsSpeed=true;m.wasNegated=true;m.givenUpOnScent=true;m.falling=m.preplaced=true;
+src/test/w_20_cloning.test.ts:71:  expect(c).toMatchObject({polymorphed:true,polymorphKeepsSpeed:true,movementSpeed:37,attackSpeed:43,wasNegated:true});expect(c.bolts).toEqual(['HEALING']);expect(c.hasBehavior('MONST_FLIES')).toBe(false);
+src/test/w_20_cloning.test.ts:130:  expect(g.loadSnapshot(saved)).toBe(true);const restored=g.dormantMonsters[0]!;expect(restored).toMatchObject({id:900000,isClone:true,polymorphed:false,movementSpeed:37,attackSpeed:43,ticksUntilTurn:101,machineHome:17,poisonAmount:4,maxShield:300,wasNegated:true});expect(restored.leader?.id).toBe(leader.id);expect(restored.mutation).toEqual(c.mutation);expect(restored.waypointAlreadyVisited).toEqual(c.waypointAlreadyVisited);expect(restored.carriedItem).toBeNull();
+src/test/w_21_empowerment.test.ts:35:const stats=(m:Monster)=>[m.maxHp,m.hp,m.defense,m.accuracy,CombatSystem.parseDamageString(m.damageString).min,CombatSystem.parseDamageString(m.damageString).max,m.newPowerCount,m.totalPowerCount];
+src/test/w_21_empowerment.test.ts:44:   if(n===1){Object.assign(m,{maxHp:37,hp:1,defense:17,accuracy:85,damageString:`${lo}-${hi}`,newPowerCount:0,totalPowerCount:0});}
+src/test/w_21_empowerment.test.ts:55:  expect(m.maxHp).toBe(before[0]!+12);expect(m.hp).toBe(m.maxHp);expect(m.defense).toBe(before[2]!+10);expect(m.accuracy).toBe(before[3]!+10);expect(m.isAlly).toBe(ally);expect(m.mutation).toEqual(mutation);expect([...m.behaviorFlags]).toEqual(flags);expect(m.bolts).toEqual(bolts);expect(m.newPowerCount).toBe(1);
+src/test/w_21_empowerment.test.ts:91:  const r=g.zapBoltFromPlayer(bolt(),item,behind.loc);expect(dump(m)).toBe(before);expect(behind.newPowerCount).toBe(0);expect(r.outcome?.autoID).toBe(false);expect(r.frames.some(f=>f.durationMs===180)).toBe(false);expect(rng.randomNumbersGenerated).toBe(draw);
+src/test/w_21_empowerment.test.ts:100:  const seen=!['invisible','hidden'].includes(mode),r=cast(g,m);expect(m.totalPowerCount).toBe(1);expect(r.outcome?.autoID).toBe(seen);expect(r.frames.some(f=>f.durationMs===180&&f.x===m.x&&f.y===m.y)).toBe(seen);
+src/test/w_21_empowerment.test.ts:104:  const g=live(),m=mob(g),item=wand();g.player.inventory.addItem(item);g.useArcanaItem(item);g.setArcanaTarget(m.x,m.y);g.cancelArcanaSelection();expect(item.charges).toBe(1);expect(m.totalPowerCount).toBe(0);
+src/test/w_21_empowerment.test.ts:105:  g.useArcanaItem(item);g.setArcanaTarget(m.x,m.y);const before=g.stats.turns;g.confirmArcanaTarget();expect(item.charges).toBe(0);expect(item.timesUsed).toBe(1);expect(item.isIdentified).toBe(true);expect(g.stats.turns).toBe(before+1);expect(m.totalPowerCount).toBe(1);expect(m.maxHp).toBe(18);
+src/test/w_21_empowerment.test.ts:111:  const g=scene(),m=mob(g);cast(g,m);cast(g,m);const c=g.cloneMonster(m)!;expect(stats(c)).toEqual(stats(m));expect(c.totalPowerCount).toBe(2);c.empower();expect(c.totalPowerCount).toBe(3);expect(m.totalPowerCount).toBe(2);expect(c.maxHp).toBe(m.maxHp+12);
+src/test/w_21_empowerment.test.ts:116:  expect(stats(c)).toEqual(stats(m));expect(m.hp).toBe(16);expect(m.maxHp).toBe(74);expect(c.totalPowerCount).toBe(2);
+src/test/w_21_empowerment.test.ts:117:  (g as any).trySplitMonster(m,g.player);const split=g.monsters[2]!;expect(split.totalPowerCount).toBe(2);expect(split.newPowerCount).toBe(2);expect(split.damageString).toBe(m.damageString);expect(split.maxHp).toBe(74);
+src/test/w_21_empowerment.test.ts:122:  g.zapBoltFromPlayer(cfg,item,m.loc);draw.mockRestore();const d=data('ogre');expect(m).toMatchObject({typeId:'ogre',maxHp:d.hp,accuracy:d.accuracy,defense:d.defense,damageString:d.damage,newPowerCount:2,totalPowerCount:2,isAlly:false});
+src/test/w_21_empowerment.test.ts:123:  cast(g,m);expect(m.maxHp).toBe(d.hp+12);expect(m.newPowerCount).toBe(3);expect(m.totalPowerCount).toBe(3);
+src/test/w_21_empowerment.test.ts:126:  const g=live(),m=mob(g);cast(g,m);cast(g,m);m.newPowerCount=1;const c=g.cloneMonster(m)!;c.isDormant=true;g.monsters=[m];g.dormantMonsters=[c];
+src/test/w_21_empowerment.test.ts:129:  const legacy=JSON.parse(JSON.stringify(saved));for(const entry of [...legacy.monsters,...legacy.dormantMonsters]){delete entry.newPowerCount;delete entry.totalPowerCount;}
+src/test/w_21_empowerment.test.ts:130:  g.loadSnapshot(legacy);expect(g.monsters[0]!.newPowerCount).toBe(0);expect(g.dormantMonsters[0]!.totalPowerCount).toBe(0);expect(g.monsters[0]!.maxHp).toBe(30);
+src/test/w_21_empowerment.test.ts:133:  const g=live(),m=mob(g);cast(g,m);vi.spyOn(rng,'randRange').mockReturnValue(4);m.polymorph(()=>{});vi.restoreAllMocks();const before=stats(m);g.loadSnapshot(JSON.parse(JSON.stringify(g.toSnapshot())));expect(stats(g.monsters[0]!)).toEqual(before);expect(g.monsters[0]!.totalPowerCount).toBe(1);
+src/test/w_21_empowerment.test.ts:136:  const g=scene(),m=mob(g);cast(g,m);cast(g,m);m.newPowerCount=0;const before=stats(m);(g as any).negateCreatureMagic(m);expect(stats(m)).toEqual([...before.slice(0,6),2,2]);
+src/test/w_21_empowerment.test.ts:137:  m.newPowerCount=0;m.behaviorFlags.add('MONST_INVULNERABLE');(g as any).negateCreatureMagic(m);expect(m.newPowerCount).toBe(0);m.behaviorFlags.delete('MONST_INVULNERABLE');m.behaviorFlags.add('MONST_DIES_IF_NEGATED');(g as any).negateCreatureMagic(m);expect(m.hp).toBe(0);expect(m.newPowerCount).toBe(0);
+src/test/w_21_empowerment.test.ts:142:  const victim=mob(g,'kobold',12,5);victim.hp=0;(g as any).removeDeadMonsters();g.handlePlayerAction('wait');expect(m.newPowerCount).toBe(2);expect(m.bolts).toEqual(data('rat').bolts??[]);
+src/test/w_2_arcana_submission.test.ts:355:        for (const name of ['SPIDERWEB', 'ANCIENT_SPIRIT_VINES']) expect(g.castMonsterBolt(caster, target, name)).toBeUndefined();
