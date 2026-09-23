@@ -315,7 +315,8 @@ describe('W-2 actual autoID (CE Items.c:5112-5119,5220-5413,5444-5465,5470-5567)
         const beckon = item(g, 'wand_of_beckoning');
         const result = fire(g, beckon)!;
         expect(result.outcome).toEqual({ autoID: true, casterMovement: null });
-        expect(target.loc).toEqual({ x: 6, y: 5 });
+        // W-12 / CE Items.c:5076-5089: reverse blink stops adjacent to (4,5), not the legacy two-cell pull.
+        expect(target.loc).toEqual({ x: 5, y: 5 });
     });
 
     it('W-9 retires legacy self heal/haste/miss-invisibility; observation follows actual hits', () => {

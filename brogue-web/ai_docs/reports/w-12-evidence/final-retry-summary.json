@@ -1,0 +1,27 @@
+{
+  "start": "2026-09-23T04:57:16.507Z",
+  "end": "2026-09-23T05:09:58.627Z",
+  "files": [
+    "src/test/b2_transcription.test.ts",
+    "src/test/c_3_walls_doors.test.ts",
+    "src/test/c_8_connectivity.test.ts",
+    "src/test/p1_33_machine_chokepoint.test.ts"
+  ],
+  "args": [
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "src/test/b2_transcription.test.ts",
+    "src/test/c_3_walls_doors.test.ts",
+    "src/test/c_8_connectivity.test.ts",
+    "src/test/p1_33_machine_chokepoint.test.ts",
+    "--maxWorkers=1",
+    "--reporter=default",
+    "--reporter=json",
+    "--outputFile.json=ai_docs/reports/w-12-evidence/final-serial-retry.json"
+  ],
+  "exitCode": 0,
+  "filesHashed": 255,
+  "shaBefore": "30407700b4e9ad76567e4d90ecb9ab93b6944b3e27bbf8cd150ae53439568c65",
+  "shaAfter": "30407700b4e9ad76567e4d90ecb9ab93b6944b3e27bbf8cd150ae53439568c65",
+  "unchanged": true
+}

@@ -1,0 +1,72 @@
+[
+  {
+    "name": "constant-range",
+    "file": "src/engine/Combat/BoltTrajectory.ts",
+    "test": "moves exactly",
+    "exitCode": 1,
+    "failed": 2,
+    "before": "0eec08d5c8d9ca2594874a402066c13734989fd65bc0fe4c4dc07a3f38d459c3",
+    "restored": "0eec08d5c8d9ca2594874a402066c13734989fd65bc0fe4c4dc07a3f38d459c3",
+    "restoredExactly": true
+  },
+  {
+    "name": "charges-for-E",
+    "file": "src/engine/Core/Game.ts",
+    "test": "moves exactly",
+    "exitCode": 1,
+    "failed": 3,
+    "before": "738bd7242e56be44cca0f9e69cc6cecc8d57de303c8e578641a8ac23f22754f0",
+    "restored": "738bd7242e56be44cca0f9e69cc6cecc8d57de303c8e578641a8ac23f22754f0",
+    "restoredExactly": true
+  },
+  {
+    "name": "naive-reverse",
+    "file": "src/engine/Core/Game.ts",
+    "test": "reverses the forward tuned diagonal",
+    "exitCode": 1,
+    "failed": 1,
+    "before": "738bd7242e56be44cca0f9e69cc6cecc8d57de303c8e578641a8ac23f22754f0",
+    "restored": "738bd7242e56be44cca0f9e69cc6cecc8d57de303c8e578641a8ac23f22754f0",
+    "restoredExactly": true
+  },
+  {
+    "name": "no-adjacency-gate",
+    "file": "src/engine/Core/Game.ts",
+    "test": "adjacent \\(.*never releases",
+    "exitCode": 1,
+    "failed": 3,
+    "before": "738bd7242e56be44cca0f9e69cc6cecc8d57de303c8e578641a8ac23f22754f0",
+    "restored": "738bd7242e56be44cca0f9e69cc6cecc8d57de303c8e578641a8ac23f22754f0",
+    "restoredExactly": true
+  },
+  {
+    "name": "wrong-pickup-order",
+    "file": "src/engine/Core/Game.ts",
+    "test": "CE pickup precedes blink vision",
+    "exitCode": 1,
+    "failed": 1,
+    "before": "738bd7242e56be44cca0f9e69cc6cecc8d57de303c8e578641a8ac23f22754f0",
+    "restored": "738bd7242e56be44cca0f9e69cc6cecc8d57de303c8e578641a8ac23f22754f0",
+    "restoredExactly": true
+  },
+  {
+    "name": "no-wait",
+    "file": "src/engine/Core/Game.ts",
+    "test": "distance .*ends adjacent",
+    "exitCode": 1,
+    "failed": 7,
+    "before": "738bd7242e56be44cca0f9e69cc6cecc8d57de303c8e578641a8ac23f22754f0",
+    "restored": "738bd7242e56be44cca0f9e69cc6cecc8d57de303c8e578641a8ac23f22754f0",
+    "restoredExactly": true
+  },
+  {
+    "name": "gold-capacity",
+    "file": "src/engine/Core/Game.ts",
+    "test": "destination gold",
+    "exitCode": 1,
+    "failed": 2,
+    "before": "738bd7242e56be44cca0f9e69cc6cecc8d57de303c8e578641a8ac23f22754f0",
+    "restored": "738bd7242e56be44cca0f9e69cc6cecc8d57de303c8e578641a8ac23f22754f0",
+    "restoredExactly": true
+  }
+]

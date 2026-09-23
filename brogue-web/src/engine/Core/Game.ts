@@ -4251,7 +4251,14 @@ export class Game {
         const first = aim ? undefined : this.getArcanaCandidates(item)[0];
         const dir = this.directionToVec(this.player.lastMoveDirection ?? Direction.RIGHT);
         const target = aim ?? (bolt.selfTargeting ? this.player.loc : first?.loc) ?? { x: this.player.loc.x + dir.x * 20, y: this.player.loc.y + dir.y * 20 };
-        const result = this.computeBoltResult(bolt, this.player.loc, target);
+        // Blink range is a travel input: resolve instance E before tracing.
+        // This does not add the blinking staff to the item/config generation pool.
+        const travelBolt = bolt.effect === BoltEffect.BLINKING ? {
+            ...bolt, char: this.player.char,
+            magnitude: resolveCEBoltMagnitude(CEBoltType.BLINKING, item.category === ItemCategory.STAFF
+                ? { kind: 'staff', enchantment: item.enchantment } : { kind: 'catalog' }).value,
+        } : bolt;
+        const result = this.computeBoltResult(travelBolt, this.player.loc, target);
         this.applyBoltResult(result, item);
         return result;
     }
@@ -4614,26 +4621,14 @@ export class Game {
                 break;
             }
 
+            case BoltEffect.BLINKING: {
+                autoID = this.finishBlink(result);
+                break;
+            }
+
             case BoltEffect.BECKONING: {
                 if (target) {
-                    const before = { ...target.loc };
-                    const seenBefore = this.canObserveBoltTarget(target);
-                    // Pull the target closer to the player
-                    const dx = Math.sign(this.player.loc.x - target.loc.x);
-                    const dy = Math.sign(this.player.loc.y - target.loc.y);
-                    const newX = target.loc.x + dx * 2;
-                    const newY = target.loc.y + dy * 2;
-                    if (newX >= 0 && newX < DCOLS && newY >= 0 && newY < DROWS) {
-                        const destCell = this.grid.getCell(newX, newY);
-                        if (destCell && destCell.terrain !== TerrainType.WALL && destCell.terrain !== TerrainType.GRANITE) {
-                            target.loc.x = newX;
-                            target.loc.y = newY;
-                        }
-                    }
-                    autoID = (!(target instanceof Monster) || !target.hasBehavior('MONST_IMMOBILE'))
-                        && Math.max(Math.abs(before.x - this.player.loc.x), Math.abs(before.y - this.player.loc.y)) > 1
-                        && (before.x !== target.loc.x || before.y !== target.loc.y)
-                        && (seenBefore || this.canObserveBoltTarget(target)); // CE :5229-5239
+                    autoID = this.beckonCreature(target, result.caster);
                     logger.log(i18next.t('bolt.beckoning_hit', {
                         name: item.displayName, target: target.name,
                         defaultValue: `${item.displayName} pulls the ${target.name} toward you!`
@@ -4798,7 +4793,6 @@ export class Game {
         const isPlayer = target === this.player;
         const targetName = isPlayer ? i18next.t('bolt.target_you', { defaultValue: 'you' }) : (target as Monster).name;
         const seenBefore = this.canObserveBoltTarget(target);
-        const targetBefore = { ...target.loc };
 
         const casterLabel = caster.name;
         const logCast = (key: string, defaultValue: string, color: string) => {
@@ -4917,19 +4911,7 @@ export class Game {
             }
 
             case BoltEffect.BECKONING: {
-                const dx = Math.sign(caster.loc.x - target.loc.x);
-                const dy = Math.sign(caster.loc.y - target.loc.y);
-                const newX = target.loc.x + dx * 2;
-                const newY = target.loc.y + dy * 2;
-                const destCell = this.grid.getCell(newX, newY);
-                if (destCell && destCell.terrain !== TerrainType.WALL && destCell.terrain !== TerrainType.GRANITE && !this.getMonsterAt(newX, newY)) {
-                    target.loc.x = newX;
-                    target.loc.y = newY;
-                }
-                autoID = (!(target instanceof Monster) || !target.hasBehavior('MONST_IMMOBILE'))
-                    && Math.max(Math.abs(targetBefore.x - caster.loc.x), Math.abs(targetBefore.y - caster.loc.y)) > 1
-                    && (targetBefore.x !== target.loc.x || targetBefore.y !== target.loc.y)
-                    && (seenBefore || this.canObserveBoltTarget(target));
+                autoID = this.beckonCreature(target, caster);
                 logCast('bolt.monster_cast_beckon', `${casterLabel} beckons ${targetName} closer!`, '#88ccff');
                 break;
             }
@@ -9626,22 +9608,60 @@ export class Game {
         this.needsRender = true;
     }
 
+    /** CE Items.c:5516-5555. Both forward blink and beckoning commit through
+     * W-11's placement primitive, including hazards, vision and player pickup.
+     * Web has no SUBMERGED/STUCK/scent-turn carrier; leaving a web disentangles
+     * without deleting it. SEIZED is not a synonym for CE STATUS_STUCK.
+     */
+    private finishBlink(result: BoltResult): boolean {
+        return !!result.caster && !!result.landingPos
+            && this.placeCreature(result.caster, result.landingPos, { pickupBeforeVision: true });
+    }
+
+    /** CE Items.c:5076-5089,5228-5239: the target becomes a blink caster.
+     * The eligibility gate precedes release, tracing and the minimum wait;
+     * autoID depends on visibility, even if an obstacle prevents movement.
+     * Monster BECKONING deliberately shares this implementation (W-12).
+     */
+    private beckonCreature(target: Creature, caster: Creature | null): boolean {
+        if (!caster || target.hp <= 0 || (target instanceof Monster && target.hasBehavior('MONST_IMMOBILE'))) return false;
+        const distance = Math.max(Math.abs(target.loc.x - caster.loc.x), Math.abs(target.loc.y - caster.loc.y));
+        if (distance <= 1) return false;
+        const seenBefore = this.canObserveBoltTarget(target);
+        if (target instanceof Monster && target.isCaged) this.freeCaptive(target);
+        const blink: BoltConfig = {
+            id: 'beckoning_blink', name: '', ceType: CEBoltType.BLINKING, effect: BoltEffect.BLINKING,
+            magnitude: Math.max(1, Math.trunc((distance - 2) / 2)),
+            char: target.char, color: 0xffffff, maxRange: 0, piercing: false, selfTargeting: false,
+        };
+        const result = traceBolt(this.grid, blink, target.loc, caster.loc, this.boltWorld(target), undefined, { reverseBlink: true });
+        this.finishBlink(result);
+        target.ticksUntilTurn = Math.max(target.ticksUntilTurn, this.player.attackSpeed + 1);
+        return seenBefore || this.canObserveBoltTarget(target);
+    }
+
     /** CE setMonsterLocation (Monsters.c:3684-3715), safe commit for W-12.
      * No random search, immunity policy, captive release, attack or time cost.
      * A failed commit has no side effects. Hazards are legal here; only physical
      * obstruction/occupancy are rejected. Coordinates remain the occupancy source.
      */
-    public placeCreature(target: Creature, destination: Pos): boolean {
+    public placeCreature(target: Creature, destination: Pos, options: { pickupBeforeVision?: boolean } = {}): boolean {
         if (target.hp <= 0 || (target.loc.x === destination.x && target.loc.y === destination.y)
             || !canPlaceCreature(this, target, destination)) return false;
         target.loc.x = destination.x;
         target.loc.y = destination.y;
         this.needsRender = true;
         this.applyEnvironmentalEffects(target);
+        const pickUp = () => {
+            if (target === this.player && target.hp > 0 && !this.isGameOver) this.pickUpItemAfterDisplacement();
+        };
+        // CE teleport (Monsters.c:3709) sees before pickup; blink
+        // (Items.c:5548-5551) sees after pickup and its terrain promotions.
+        if (options.pickupBeforeVision) pickUp();
         // Visibility must reflect the committed location before the caller returns.
         // Also refresh after moving a luminous monster or triggering a terrain DF.
         this.updateVision();
-        if (target === this.player && target.hp > 0 && !this.isGameOver) this.pickUpItemAfterDisplacement();
+        if (!options.pickupBeforeVision) pickUp();
         return true;
     }
 
@@ -9750,8 +9770,10 @@ export class Game {
         const index = this.items.findIndex(item => item.loc.x === this.player.loc.x && item.loc.y === this.player.loc.y);
         if (index < 0) return;
         const item = this.items[index]!;
-        if (!this.player.inventory.addItem(item)) return;
+        // CE Items.c:865-888: gold bypasses pack capacity and is currency,
+        // never an inventory entry. W-11's ordinary-item pickup test missed it.
         if (item.category === ItemCategory.GOLD) this.stats.gold += item.quantity;
+        else if (!this.player.inventory.addItem(item)) return;
         this.items.splice(index, 1);
         promoteOnItemPickup(this.grid, this.player.loc.x, this.player.loc.y);
         logger.log(i18next.t('item.pickup', { name: item.displayName, defaultValue: `You picked up ${item.displayName}.` }), '#ffffff');

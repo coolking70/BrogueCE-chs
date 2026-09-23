@@ -296,7 +296,7 @@ describe('W-3 sequencing, recipients and W-2 observation', () => {
         expect(target.hasStatus('poisoned')).toBe(false);
     });
 
-    it('W-4 closes reflected travel; W-12/W-13 still defer blink movement and tunneling, with machine flags unchanged', () => {
+    it('W-4 reflection and W-12 blink move the correct caster; W-13 tunneling stays deferred, machine flags unchanged', () => {
         const g = scene(), guardian = rat(g, 7, 5, 'stone_guardian');
         const reflected = zap(g, 'staff_of_fire', guardian.loc);
         expect(reflected.hits.map(h => h.creature)).toEqual([g.player]);
@@ -305,8 +305,11 @@ describe('W-3 sequencing, recipients and W-2 observation', () => {
         const before = JSON.stringify(g.grid), origin = { ...g.player.loc };
         for (const [effect, ceType] of [[BoltEffect.TUNNELING, CEBoltType.TUNNELING], [BoltEffect.BLINKING, CEBoltType.BLINKING]] as const) {
             const result = zap(g, 'wand_of_slowness', { x: 10, y: 5 }, { effect, ceType });
-            expect(result.landingPos).toEqual({ x: 6, y: 5 }); expect(result.outcome?.casterMovement).toBeNull();
-            expect(JSON.stringify(g.grid)).toBe(before); expect(g.player.loc).toEqual(origin);
+            expect(result.landingPos).toEqual({ x: 6, y: 5 });
+            // W-12 closes the previously explicit blink gap (CE Items.c:5516).
+            const destination = effect === BoltEffect.BLINKING ? { x: 6, y: 5 } : origin;
+            expect(result.outcome?.casterMovement).toEqual(effect === BoltEffect.BLINKING ? { from: origin, to: destination } : null);
+            expect(JSON.stringify(g.grid)).toBe(before); expect(g.player.loc).toEqual(destination);
         }
     });
 });

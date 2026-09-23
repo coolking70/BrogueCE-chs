@@ -874,3 +874,16 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 浏览器8个状态检查通过，含真实Enter施法、叠毒、E8反射、免疫/空射、死亡移除、两个50tick动作；零页面/控制台错误，7张整页截图已打开。HMR曾造成动态导入的Monster类与游戏类不一致，重启Vite后全过；无生产逻辑迁就。技能客户端无头/有头canvas均黑图，已检视，不作为视觉通过。
 - 最终冻结：9个生产文件的R105，S补8文件，R∪S113。即将执行build、112显式文件回归、独立drift；脚本保存逐文件结果及SHA-256前后清单，不重捕获基线。此后仅回填w-10.report.md与evidence。
 - 后续边界：怪物BE_DAMAGE简化、完整克隆与消魔、缺失毒地衣入口/CE maxStatus展示不在本轮；poisonAmount为护盾后续轮提供独立毒伤路径。最终验证结果见本轮报告。
+
+## 2026-09-23 W-12：blink 与反向 beckoning
+
+- 当前请求：严格执行 w-12.prompt / W-0 W-12 行；核实 CE 线索，第一次复用 W-11 placeCreature，不入池、不改生成流，怪物自主 blink 继续排除。
+- CE 核实：blink=2+2E；beckoning 确实再次 zap BLINKING，E=max(1,trunc((切比雪夫距离-2)/2))；按 beckoner→target 的调优线截断倒序，不是从 target 重新向 beckoner 取线。贴脸 blink 先拒绝，普通 HALTS_BEFORE 的第一格例外仍保留。
+- Game 玩家 blink 读取实例 E；双方 BECKONING 共用反向 traceBolt + finishBlink→placeCreature。近邻/IMMOBILE 门先于释放和等待；等待至少 player.attackSpeed+1；可见的合格目标拉不动也可 autoID。怪物 mirrored_totem 的行为迁移明列于报告，Monster.ts/tryUseBolt 未改。
+- canPlaceCreature 未改；placeCreature 新增可选 pickupBeforeVision，默认保留 teleport 先视野后拾取，blink 先拾取后视野。这是 W-11 通用性判断遗漏的 CE 时序维度，已如实更正。落点环境/嵌套陷阱直接复用。复核发现 W-11 的拾取测试漏金币：在共享 pickUpItemAfterDisplacement 修正满包可收、金币不占槽；不另写安置逻辑。
+- W-12 新增50例，W-11 37例定向通过；W-3 一条明确的 blink 无移动留形按 CE 翻正，其余几何和地形断言保留。新测试夹具错误（地形名、抓取字段、斜线样本、null/undefined、玩家岩浆 gameOver 而非 hp 清零）已纠正，没有放宽生产守卫。
+- 七个独立负变异（常数距离/读charges/反向重瞄/删近邻门/拾取时序/删等待/金币占包）分别被2/3/1/3/1/7/2条新断言拦截，源码逐字恢复。浏览器验收包含显式 blink E2/E8、晶墙前停、落点陷阱、键盘 beckoning 斜线/贴身、怪物拉玩家拾物、满包收金币；状态和整页截图逐项检查。技能客户端黑canvas不充当视觉通过。
+- 最终冻结后执行 build、R(实际 Game/BoltTrajectory)+S(B,M,D,C/位移/读取)的115个显式回归文件及独立 test:drift；不重捕获基线，前后SHA-256和逐文件结果由 scripts/w12-final-check.mjs 保存，最终结果见 ai_docs/reports/w-12.report.md。
+- 后续：blinking staff 的身份、入池、瞄准/特殊回电仍属W-25；怪物自主blink、潜伏占位与气味等缺失子系统未启用；一般背包合并/amulet守卫与普通主动拾取路径未在此轮重写。W-13 tunneling 仍待后续。
+
+- 首次拟最终完整回归仅 W-2 的旧 beckoning 两格落点断言失败：x8→x6 翻正为 CE 邻近 x5；autoID/隐形/casterMovement 原断言保持。反查清单已包含该文件，人工预审漏掉该旧断言，属于本轮检查疏漏。build/drift 已通过但不当作最终全绿；完整失败证据保留于 w-12-evidence/prefinal-failure，修后重新冻结并完整复跑。

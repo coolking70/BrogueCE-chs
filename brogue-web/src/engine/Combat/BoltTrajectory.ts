@@ -123,11 +123,18 @@ export interface BoltExecution {
     onReflection?(reflection: BoltReflection): void;
 }
 
+/** CE PowerTables.c:52. The zap loop's 2E+1 is a zero-based index. */
+export function staffBlinkDistance(enchantment: number): number {
+    return Math.trunc(2 + 2 * enchantment);
+}
+
 /** CE travel: creature reflection -> contact/path effects -> updated terrain ->
- * HALTS_BEFORE -> terrain reflection. No special blink/tunnel operations. A bare
+ * HALTS_BEFORE -> terrain reflection. Blink has a first-cell guard and E range;
+ * tunneling excavation remains separate. A bare
  * onCell callback retains the W-3 pure-geometry API; execution hooks enable W-4. */
 export function traceBolt(grid: Grid, bolt: BoltConfig, from: Pos, aim: Pos, world: BoltWorld,
-    execution?: BoltExecution | ((pos: Pos, hit: BoltHit | undefined) => void)) {
+    execution?: BoltExecution | ((pos: Pos, hit: BoltHit | undefined) => void),
+    options: { reverseBlink?: boolean } = {}) {
     const flags = flagsFor(bolt), piercing = !!(flags & F.PASSES_THRU_CREATURES);
     const hooks = typeof execution === 'object' ? execution : undefined;
     const onCell = typeof execution === 'function' ? execution : hooks?.onCell;
@@ -138,6 +145,17 @@ export function traceBolt(grid: Grid, bolt: BoltConfig, from: Pos, aim: Pos, wor
     const reflectionLimit = maxLength - Math.max(grid.width, grid.height);
     const path: Pos[] = [], hits: BoltHit[] = [], reflections: BoltReflection[] = [];
     let pending = boltLine(grid, from, aim, bolt, world);
+    if (options.reverseBlink && bolt.effect === BoltEffect.BLINKING) {
+        // CE Items.c:5599-5624: tune FROM the beckoner, then reverse the
+        // coordinates before the blinker's cell and append the beckoner's cell.
+        // Re-aiming from the target is not equivalent on asymmetric diagonals.
+        const forward = boltLine(grid, aim, from, bolt, {
+            ...world, caster: world.creatureAt(aim) ?? null,
+        });
+        const end = forward.findIndex(p => p.x === from.x && p.y === from.y);
+        pending = end < 0 ? [] : [...forward.slice(0, end).reverse(), { ...aim }];
+    }
+    const blinkRange = bolt.effect === BoltEffect.BLINKING ? staffBlinkDistance(bolt.magnitude) : Infinity;
     let next = 0;
     const reflect = (creature: Creature | null, towardCaster: boolean) => {
         const reflection = { pos: { ...path[path.length - 1]! }, pathIndex: path.length - 1, creature, towardCaster };
@@ -147,6 +165,7 @@ export function traceBolt(grid: Grid, bolt: BoltConfig, from: Pos, aim: Pos, wor
         hooks?.onReflection?.(reflection);
     };
     while (next < pending.length && path.length < maxLength) {
+        if (path.length >= blinkRange) break;
         if (bolt.maxRange > 0 && path.length >= bolt.maxRange) break;
         const pos = pending[next++]!;
         const creature = world.creatureAt(pos);
