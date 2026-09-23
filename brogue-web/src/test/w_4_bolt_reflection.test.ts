@@ -202,10 +202,13 @@ describe('W-4 recipient dispatch and boundaries', () => {
     it('reflected teleport moves the caster and snapshots the contact before movement, without autoID', () => {
         const g = scene(); monster(g, 8, 5, 'stone_guardian');
         const cast = prepareZap(g, 'wand_of_teleportation');
-        vi.spyOn(rng, 'randRange').mockReturnValueOnce(2).mockReturnValueOnce(3);
+        // W-11: old fixture forced a visible coordinate (2,3), forbidden by CE.
+        // Keep the movement/reflection assertion, supply one legal hidden cell.
+        for (let x = 10; x < 18; x++) for (let y = 0; y < 12; y++) g.grid.setTerrain(x, y, T.WALL);
+        g.grid.setTerrain(13, 3, T.FLOOR);
         const r = cast();
         expect(recipients(r)).toEqual([g.player]); expect(r.hits[0]!.pos).toEqual({ x: 4, y: 5 });
-        expect(r.outcome).toEqual({ autoID: false, casterMovement: { from: { x: 4, y: 5 }, to: { x: 2, y: 3 } } });
+        expect(r.outcome).toEqual({ autoID: false, casterMovement: { from: { x: 4, y: 5 }, to: { x: 13, y: 3 } } });
     });
 
     it('W-9 closes reflected discord: actual player gets discordant at catalog magnitude 10 * 4', () => {

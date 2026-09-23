@@ -107,6 +107,7 @@ import {
     T_CAUSES_EXPLOSIVE_DAMAGE,
     T_IS_FLAMMABLE,
     T_IS_FIRE,
+    T_IS_DF_TRAP,
     T_OBSTRUCTS_GAS,
     T_OBSTRUCTS_PASSABILITY,
     T_PATHING_BLOCKER,
@@ -880,4 +881,28 @@ export function runFireUpdate(
         }
     }
     return result;
+}
+
+/** W-11, CE Time.c:259-272: a grounded creature depresses a DF trap.
+ * The caller owns levitation/submersion and per-cell depression bookkeeping.
+ * Emit each layer's fire DF before its ordinary promotion (including wiring).
+ * Kept in the terrain module alongside all other catalog field interpretation.
+ */
+export function triggerCreatureTrapLayers(grid: Grid, x: number, y: number): PromoteTileResult[] {
+    const cell = grid.getCell(x, y);
+    if (!cell) return [];
+    const results: PromoteTileResult[] = [];
+    for (let layer = 0; layer < DungeonLayer.COUNT; layer++) {
+        const entry = TERRAIN_FLAGS[cell.layers[layer]!]!;
+        if (!(entry.flags & T_IS_DF_TRAP)) continue;
+        const df = resolveDFName(entry.fireType);
+        if (df !== null) spawnDungeonFeature(grid, x, y, catalogFeature(df), false);
+        results.push(promoteTile(grid, x, y, layer, false));
+    }
+    return results;
+}
+
+/** Consume a legacy pressure plate/trap without erasing its emitted gas/fire. */
+export function consumeTrapTile(grid: Grid, x: number, y: number, residue = TerrainType.FLOOR): void {
+    grid.setTerrainLayer(x, y, DungeonLayer.DUNGEON, residue);
 }

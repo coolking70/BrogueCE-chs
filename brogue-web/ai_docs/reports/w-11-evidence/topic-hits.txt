@@ -1,0 +1,117 @@
+src/test/w_11_teleport_placement.test.ts:12:import { teleportCandidates, canPlaceCreature, teleportForbiddenFlags, captiveItemDropCandidates } from '../engine/Movement/CreaturePlacement';
+src/test/w_11_teleport_placement.test.ts:19:// Unlike a random-coordinate stub this fixture permits real CE teleport search.
+src/test/w_11_teleport_placement.test.ts:25:        g.grid.getCell(x, y)!.isVisible = true; // must NOT be used for teleport FOV
+src/test/w_11_teleport_placement.test.ts:41:    const item = ItemLoader.spawnWand('wand_of_teleportation', -1, -1)!;
+src/test/w_11_teleport_placement.test.ts:42:    return g.zapBoltFromPlayer(getBoltForItem('wand_of_teleportation')!, item, { x: 8, y: 5 });
+src/test/w_11_teleport_placement.test.ts:44:const candidates = (g: Game, target: Player | Monster) => teleportCandidates({
+src/test/w_11_teleport_placement.test.ts:53:describe('W-11 CE teleport destination policy', () => {
+src/test/w_11_teleport_placement.test.ts:96:        const original = teleportForbiddenFlags(m);
+src/test/w_11_teleport_placement.test.ts:98:        expect(teleportForbiddenFlags(m)).toBe(original);
+src/test/w_11_teleport_placement.test.ts:100:        expect(teleportForbiddenFlags(m) & removed).toBe(0);
+src/test/w_11_teleport_placement.test.ts:114:        expect((g as any).teleportCreature(m)).toBe(false);
+src/test/w_11_teleport_placement.test.ts:123:        expect((g as any).teleportCreature(m)).toBe(false);
+src/test/w_11_teleport_placement.test.ts:126:        expect((g as any).teleportCreature(m)).toBe(true); expect(m.loc).toEqual(at);
+src/test/w_11_teleport_placement.test.ts:130:describe('W-11 teleport effect and captive semantics', () => {
+src/test/w_11_teleport_placement.test.ts:131:    it('successful wand teleport moves the hit, never identifies, and leaves the old occupancy vacant', () => {
+src/test/w_11_teleport_placement.test.ts:139:    it('IMMOBILE gates both release and teleport; invulnerability alone does not forbid teleport', () => {
+src/test/w_11_teleport_placement.test.ts:140:        const g = scene(), m = monster(g); m.isCaged = true; m.behaviorFlags.add('MONST_IMMOBILE');
+src/test/w_11_teleport_placement.test.ts:141:        const move = vi.spyOn(g as any, 'teleportCreature');
+src/test/w_11_teleport_placement.test.ts:142:        zap(g); expect(move).not.toHaveBeenCalled(); expect(m.isCaged).toBe(true); expect(m.isAlly).toBe(false);
+src/test/w_11_teleport_placement.test.ts:144:        zap(g); expect(move).toHaveBeenCalledOnce(); expect(m.isCaged).toBe(false); expect(m.isAlly).toBe(true);
+src/test/w_11_teleport_placement.test.ts:147:    it('failed teleport still frees the captive before search, drops its item at origin and detaches old leadership', () => {
+src/test/w_11_teleport_placement.test.ts:149:        m.isCaged = true; m.seized = true; m.leader = leader; follower.leader = m;
+src/test/w_11_teleport_placement.test.ts:153:        expect(m.loc).toEqual({ x: 8, y: 5 }); expect(m.isCaged).toBe(false); expect(m.isAlly).toBe(true);
+src/test/w_11_teleport_placement.test.ts:177:        const item = ItemLoader.spawnWand('wand_of_teleportation', -1, -1)!;
+src/test/w_11_teleport_placement.test.ts:180:        expect(result?.outcome?.autoID).toBe(false); expect(ItemLoader.identifiedItems.has('wand_of_teleportation')).toBe(false);
+src/test/w_11_teleport_placement.test.ts:184:    it('reflected teleport moves the actual player, retains hit coordinates and never identifies', () => {
+src/test/w_11_teleport_placement.test.ts:276:    it.each([false, true])('nested teleport trap uses the actual entrant and evaluates its destination only once (plate=%s)', plate => {
+src/test/w_11_teleport_placement.test.ts:282:        g.grid.setTerrain(trapX, 5, T.TRAP); g.grid.getCell(trapX, 5)!.trapType = 'teleport';
+src/test/p4_8_scent_map.test.ts:58:function teleportPlayer(game: Game, x: number, y: number): void {
+src/test/p4_8_scent_map.test.ts:107:        teleportPlayer(game, 46, 15);
+src/test/p4_8_scent_map.test.ts:123:        teleportPlayer(game, 46, 15);
+src/test/p4_8_scent_map.test.ts:142:        teleportPlayer(game, 46, 15);
+src/test/p4_8_scent_map.test.ts:161:        teleportPlayer(game, 46, 15);
+src/test/p4_8_scent_map.test.ts:170:        teleportPlayer(game, 46, 15);
+src/test/p4_8_scent_map.test.ts:229:            teleportPlayer(game, 44, 15);
+src/test/p4_8_scent_map.test.ts:303:        teleportPlayer(game, 52, 15);
+src/test/p4_8_scent_map.test.ts:307:        teleportPlayer(game, 58, 15); // 传到墙另一侧：A 再也收不到新章
+src/test/p4_8_scent_map.test.ts:352:    teleportPlayer(game, 36, 8);
+src/test/p4_8_scent_map.test.ts:416:        teleportPlayer(game, 52, 15);
+src/test/p4_8_scent_map.test.ts:419:        teleportPlayer(game, 58, 15);
+src/test/p4_8_scent_map.test.ts:436:        teleportPlayer(game, 40, 15);
+src/test/p4_8_scent_map.test.ts:452:        teleportPlayer(game, 40, 15);
+src/test/p4_8_scent_map.test.ts:473:            teleportPlayer(game, 40, 15);
+src/test/scroll_effects.test.ts:5: *   1. teleport_random   → 玩家落到合法可站立格（Items.c:7803）
+src/test/scroll_effects.test.ts:54:describe('teleport_random 卷轴（Items.c:7803）', () => {
+src/test/scroll_effects.test.ts:59:        giveScroll(game, 'scroll_of_teleportation');
+src/test/scroll_effects.test.ts:60:        expect(readScroll(game, 'scroll_of_teleportation')).toBe(true);
+src/test/scroll_effects.test.ts:62:        // teleportPlayerRandom 排除玩家当前格，坐标必须改变
+src/test/scroll_effects.test.ts:69:            i => i.category === ItemCategory.SCROLL && (i as any).consumableId === 'scroll_of_teleportation'
+src/test/b_1b_identification_persistence.test.ts:76:        const wand = ItemLoader.spawnWand('wand_of_teleportation', -1, -1)!;
+src/test/b_1b_identification_persistence.test.ts:93:        const wand2 = game.player.inventory.items.find(i => i.name === 'Wand of Teleportation')!;
+src/test/b_1b_identification_persistence.test.ts:199:        const scroll = ItemLoader.spawnScroll('scroll_of_teleportation', -1, -1)!;
+src/test/b_1b_identification_persistence.test.ts:201:        expect(ItemLoader.callTitles.get('scroll_of_teleportation')).toBe('回家的纸');
+src/test/b_1b_identification_persistence.test.ts:204:        expect(ItemLoader.callTitles.has('scroll_of_teleportation')).toBe(false);
+src/test/w_7_arcana_enchantment.test.ts:56:        ['wand_of_teleportation', 3], ['wand_of_slowness', 2],
+src/test/w_7_arcana_enchantment.test.ts:202:        const wand = ItemLoader.spawnWand('wand_of_teleportation', 0, 0)!;
+src/test/w_5_arcana_instance.test.ts:44:        ['wand_of_teleportation', 3, 5], ['wand_of_slowness', 2, 5],
+src/test/w_5_arcana_instance.test.ts:87:            ['wand_of_teleportation', 3], ['wand_of_slowness', 3], ['wand_of_invisibility', 3],
+src/test/w_5_arcana_instance.test.ts:133:        const wand = { ...saved, category: ItemCategory.WAND, identityId: 'wand_of_teleportation', maxCharges: 4, charges: 0 };
+src/test/w_2_arcana_submission.test.ts:66:            'staff_of_healing', 'staff_of_haste', 'wand_of_teleportation', 'wand_of_slowness',
+src/test/w_2_arcana_submission.test.ts:185:        ['wand_of_teleportation', 'enemy'], ['wand_of_slowness', 'enemy'], ['wand_of_beckoning', 'enemy'],
+src/test/w_2_arcana_submission.test.ts:203:        ally.isAlly = true; captive.isCaged = true;
+src/test/w_2_arcana_submission.test.ts:219:        const teleport = item(g, 'wand_of_teleportation', true);
+src/test/w_2_arcana_submission.test.ts:220:        expect(g.getArcanaCandidates(teleport)).toEqual([]);
+src/test/w_2_arcana_submission.test.ts:257:    it('teleport hit and conjuration presentation stub stay unknown; slow hit identifies kind only', () => {
+src/test/w_2_arcana_submission.test.ts:259:        const teleport = item(g, 'wand_of_teleportation');
+src/test/w_2_arcana_submission.test.ts:260:        expect(fire(g, teleport)!.outcome?.autoID).toBe(false);
+src/test/w_2_arcana_submission.test.ts:261:        expect(ItemLoader.identifiedItems.has('wand_of_teleportation')).toBe(false);
+src/test/b_1a_identification.test.ts:182:        const wand = ItemLoader.spawnWand('wand_of_teleportation', -1, -1)!;
+src/test/b_1a_identification.test.ts:190:        // Items.c:5220-5227 BE_TELEPORT 不设置 autoID；:7397-7405 仅依结果鉴定。
+src/test/b_1a_identification.test.ts:194:        expect(ItemLoader.identifiedItems.has('wand_of_teleportation')).toBe(false);
+src/test/b_1a_identification.test.ts:197:        expect(wand.displayName).not.toContain('Wand of Teleportation');
+src/test/b_1a_identification.test.ts:205:        const wand = ItemLoader.spawnWand('wand_of_teleportation', -1, -1)!;
+src/test/b_1a_identification.test.ts:208:        expect(wand.displayName).toBe(`Wand of Teleportation [${wand.charges}]`);
+src/test/b_1a_identification.test.ts:392:        ItemLoader.identifiedItems.add('scroll_of_teleportation');
+src/test/b_1a_identification.test.ts:399:        expect(ItemLoader.identifiedItems.has('scroll_of_teleportation')).toBe(false);
+src/test/b_1a_identification.test.ts:433:        game.readItem(give('scroll_of_teleportation'));
+src/test/b_1a_identification.test.ts:434:        expect(ItemLoader.identifiedItems.has('scroll_of_teleportation')).toBe(true);
+src/test/v_1b_alternative.test.ts:224:            { bpId: 'key_poison_gas', alt1: true, alt2: false, item: 'scroll_of_teleportation' },
+src/test/horde_terrain_spawn.test.ts:231:                    if (m.isCaged) continue; // 笼子随机池：既有路径，绕过 horde 循环
+src/test/c_7_lighting.test.ts:127:        // teleport/portal :1009 DCOLS*100
+src/test/horde_selection.test.ts:251:                if (m.isCaged) {
+src/test/w_4_bolt_reflection.test.ts:202:    it('reflected teleport moves the caster and snapshots the contact before movement, without autoID', () => {
+src/test/w_4_bolt_reflection.test.ts:204:        const cast = prepareZap(g, 'wand_of_teleportation');
+src/test/p4_10_waypoint.test.ts:28: *       isCaged），漏掉任何一条的实现必挂。
+src/test/p4_10_waypoint.test.ts:72:function teleportPlayer(game: Game, x: number, y: number): void {
+src/test/p4_10_waypoint.test.ts:172:        teleportPlayer(game, 32, 5); // 离 rat ≥ 18（> stealthRange），防唤醒
+src/test/p4_10_waypoint.test.ts:202:        teleportPlayer(game, 32, 5);
+src/test/p4_10_waypoint.test.ts:247:        // 保证只有被测谓词（IMMOBILE / isCaged）触发叠加层：
+src/test/p4_10_waypoint.test.ts:250:        //   - caged 鼠：state=HUNTING、isCaged=true → 只囚禁谓词命中
+src/test/p4_10_waypoint.test.ts:274:                    m.isCaged = true;
+src/test/p4_10_waypoint.test.ts:285:            teleportPlayer(game, 34, 5); // 远离，防交互
+src/test/p4_10_waypoint.test.ts:297:            if (sc.name.startsWith('被囚禁')) blocker.isCaged = false;
+src/test/p4_10_waypoint.test.ts:314:            teleportPlayer(game, 32, 5);
+src/test/p4_10_waypoint.test.ts:338:        teleportPlayer(game, 40, 15);
+src/test/v_1a_blueprint_items.test.ts:134:        // 为领养机器，其 SCROLL_TELEPORT / POTION_DESCENT 两条逃生工具
+src/test/v_1a_blueprint_items.test.ts:159:    it('T2b（V-2b-6）key_poison_gas 按 CE :436-444 重写：两条逃生工具 feature（SCROLL_TELEPORT / POTION_DESCENT，MF_ALTERNATIVE 组）', () => {
+src/test/v_1a_blueprint_items.test.ts:161:        // 条"。CE GlobalsBrogue.c:440/:441 原表——SCROLL_TELEPORT 与
+src/test/v_1a_blueprint_items.test.ts:170:        expect(byId.get('scroll_of_teleportation')?.itemCategory).toBe('SCROLL');
+src/test/b_1c_detect_magic.test.ts:174:        const wand = ItemLoader.spawnWand('wand_of_teleportation', -1, -1)!;
+src/test/p4_9_safety_map.test.ts:64:function teleportPlayer(game: Game, x: number, y: number): void {
+src/test/p4_9_safety_map.test.ts:144:        teleportPlayer(game, 52, 15);
+src/test/p4_9_safety_map.test.ts:184:        teleportPlayer(game, 44, 15);
+src/test/p4_9_safety_map.test.ts:215:        teleportPlayer(game, 44, 15);
+src/test/p4_9_safety_map.test.ts:244:        teleportPlayer(game, 52, 15);
+src/test/p4_9_safety_map.test.ts:271:        teleportPlayer(game, 40, 15);
+src/test/p4_9_safety_map.test.ts:282:        teleportPlayer(game, 40, 14);
+src/test/p4_9_safety_map.test.ts:289:        teleportPlayer(game, 40, 14);
+src/test/p4_9_safety_map.test.ts:301:        teleportPlayer(game, 40, 15);
+src/test/p4_9_safety_map.test.ts:324:            teleportPlayer(game, 52, 15);
+src/test/ai_1_scent_tracking.test.ts:68:function teleportPlayer(game: Game, x: number, y: number): void {
+src/test/ai_1_scent_tracking.test.ts:92:        teleportPlayer(game, 44, 15);
+src/test/ai_1_scent_tracking.test.ts:125:        teleportPlayer(game, 44, 15);
+src/test/ai_1_scent_tracking.test.ts:140:        teleportPlayer(game, 51, 15);
+src/test/ai_1_scent_tracking.test.ts:142:        teleportPlayer(game, 58, 15); // 门格挡死 (51,15) 的视线与气味
+src/test/ai_1_scent_tracking.test.ts:200:        teleportPlayer(game, 40, 15);
+src/engine/Combat/BoltCatalog.test.ts:94:        const oldNames = 'NONE FIRE LIGHTNING POISON TELEPORT SLOW HEALING HASTE TUNNELING BECKONING DISCORD CONJURATION SHIELDING NEGATION DOMINATION ENTRANCEMENT BLINKING OBSTRUCTION EMPOWERMENT INVISIBILITY SPARK DRAGONFIRE DISTANCE_ATTACK POISON_DART'.split(' ');

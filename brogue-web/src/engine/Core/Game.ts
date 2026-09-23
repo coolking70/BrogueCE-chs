@@ -3,7 +3,7 @@
  * Main game state and orchestration
  */
 import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer, type Cell } from '../Map/Grid';
-import { blocksPassability, blocksVision, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_IS_FIRE, T_CAUSES_CONFUSION, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_PATHING_BLOCKER, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY } from '../Map/TerrainCatalog';
+import { blocksPassability, blocksVision, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_IS_FIRE, T_CAUSES_CONFUSION, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_PATHING_BLOCKER, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP } from '../Map/TerrainCatalog';
 import { isPathingBlocker } from '../Map/TerrainCatalog';
 // B-4b：物品落位热力图与食物落位原语（CE Items.c:463-535 / Architect.c:171,3822）
 import { ItemSpawnHeatMap, passableArcCount, randomMatchingLocation } from '../Items/ItemSpawnHeatMap';
@@ -50,6 +50,9 @@ import {
     promoteOnItemPickup,
     promoteOnItemPlaced,
     promoteOnStep,
+    promoteLayersWithMechFlag,
+    triggerCreatureTrapLayers,
+    consumeTrapTile,
     runPromotionUpdate,
     type PromotionUpdateResult,
 } from '../Map/Promotion';
@@ -88,6 +91,7 @@ import { exposeBoltPathToElectricity, getBoltForItem, boltPath, createBoltResult
 import { traceBolt, type BoltWorld } from '../Combat/BoltTrajectory';
 import { CE_BOLT_CATALOG, CEBoltEffect, CEBoltType, resolveCEBoltMagnitude } from '../Combat/BoltCatalog';
 import { rollStaffDamage } from '../Combat/StaffDamage';
+import { canPlaceCreature, teleportCandidates, captiveItemDropCandidates } from '../Movement/CreaturePlacement';
 
 import { arcanaTargetCandidates, canObserveBoltCreature } from '../Combat/BoltTargeting';
 
@@ -523,6 +527,8 @@ export class Game {
      * （Time.c:2866-2871），两处都走 playerFalls()。
      */
     private playerFalling: boolean = false;
+    /** CE PRESSURE_PLATE_DEPRESSED: transient entry guard, reset each objective block. */
+    private displacementTrapDepressions?: WeakMap<Grid, Set<number>>;
 
     /**
      * C-5：坠到"下一层"的怪物幸存者的暂存区（CE prependCreature 到
@@ -4565,27 +4571,17 @@ export class Game {
             }
 
             case BoltEffect.TELEPORT: {
-                if (target) {
-                    // Teleport the target to a random open cell
-                    let dest: Pos | null = null;
-                    for (let attempt = 0; attempt < 100; attempt++) {
-                        const rx = rng.randRange(0, DCOLS - 1);
-                        const ry = rng.randRange(0, DROWS - 1);
-                        const rc = this.grid.getCell(rx, ry);
-                        if (rc && rc.layers.includes(TerrainType.FLOOR)) { // F-1 跨层判定
-                            dest = { x: rx, y: ry };
-                            break;
-                        }
-                    }
-                    if (dest) {
-                        target.loc.x = dest.x;
-                        target.loc.y = dest.y;
+                // CE Items.c:5220-5227: immunity precedes freeing; freeing
+                // precedes destination search, even if that search later fails.
+                if (target && !(target instanceof Monster && target.hasBehavior('MONST_IMMOBILE'))) {
+                    if (target instanceof Monster && target.isCaged) this.freeCaptive(target);
+                    if (this.teleportCreature(target)) {
                         logger.log(i18next.t('bolt.teleport_hit', {
                             name: item.displayName, target: target.name,
                             defaultValue: `${item.displayName} teleports the ${target.name} away!`
                         }), '#cc88ff');
                     }
-                } else {
+                } else if (!target) {
                     logMiss('bolt.teleport_miss', `${item.displayName} flashes but finds no target.`, '#cc88ff');
                 }
                 break;
@@ -8786,7 +8782,11 @@ export class Game {
         }
     }
 
-    private applyEnvironmentalEffects() {
+    /** Ordinary objective updates keep their original all-creature/gradual path.
+     * Displacement evaluates just its recipient, without an extra gas damage tick
+     * or global item destruction (CE instant versus gradual tile effects).
+     */
+    private applyEnvironmentalEffects(instantTarget?: Creature) {
         const checkEntity = (entity: any, name: string) => {
             if (entity.hp <= 0) return;
             const x = entity.loc.x;
@@ -8833,7 +8833,9 @@ export class Game {
             } else if (cell.layers.includes(TerrainType.LAVA) && !isFlying
                 && !entity.hasStatus('immune_fire')
                 && !(entity.abilities && entity.abilities.has('immune_fire'))
-                && !(entity.isInvulnerable && entity.isInvulnerable())) {
+                && !(entity.isInvulnerable && entity.isInvulnerable())
+                && (!instantTarget || (!(cellTerrainFlags(this.grid, x, y) & T_ENTANGLES)
+                    && !this.cellExtinguishesFire(x, y)))) {
                 // 熔岩豁免对齐 CE applyInstantTileEffectsToCreature（Time.c:183-190）：
                 // 悬浮（STATUS_LEVITATING）、火焰免疫（STATUS_IMMUNE_TO_FIRE）、
                 // 无敌（MONST_INVULNERABLE，全 CE 仅 Warden of Yendor 使用）。
@@ -8849,6 +8851,12 @@ export class Game {
                     entity.die();
                 }
                 return;
+            }
+
+            if (instantTarget) {
+                this.applyDisplacementTileEntry(instantTarget);
+                // A teleport trap already committed and evaluated its new cell.
+                if (instantTarget.loc.x !== x || instantTarget.loc.y !== y) return;
             }
 
             // Fire
@@ -8967,7 +8975,7 @@ export class Game {
                     // 豁免 MONST_INANIMATE / MONST_INVULNERABLE / 潜水 +
                     // 玩家 respiration 符文（:614-624）。悬浮不豁免
                     // （CE 的悬浮守卫只在毒藤 T_CAUSES_POISON 分支）。
-                    if ((gasFlags & T_CAUSES_DAMAGE) !== 0 && !respirationImmune) {
+                    if (!instantTarget && (gasFlags & T_CAUSES_DAMAGE) !== 0 && !respirationImmune) {
                         const exempt = entity !== this.player
                             && ((entity as Monster).hasBehavior('MONST_INANIMATE')
                                 || (entity as Monster).isInvulnerable());
@@ -8989,7 +8997,7 @@ export class Game {
                         }
                     }
 
-                    if (this.environment.gasGrid[x]?.[y]?.type === GasType.CREEPING_DEATH) {
+                    if (!instantTarget && this.environment.gasGrid[x]?.[y]?.type === GasType.CREEPING_DEATH) {
                         // D2 留痕：本分支随 creeping_death 退池后不可达
                         //（GasType.CREEPING_DEATH 无层载体，addGas 拒绝写入），
                         // 按口径保留代码。
@@ -9004,10 +9012,17 @@ export class Game {
             }
         };
 
+        if (instantTarget) {
+            checkEntity(instantTarget, instantTarget.name);
+            return;
+        }
         checkEntity(this.player, 'Player');
         for (const m of this.monsters) {
             checkEntity(m, m.name);
         }
+
+        // CE updateEnvironment clears PRESSURE_PLATE_DEPRESSED each objective block.
+        this.displacementTrapDepressions?.delete(this.grid);
 
         // Destroy items in lava
         for (let i = this.items.length - 1; i >= 0; i--) {
@@ -9561,7 +9576,7 @@ export class Game {
     }
 
     /** Trigger a trap at (x, y). Converts it to FLOOR after triggering. */
-    private triggerTrap(x: number, y: number, cell: import('../Map/Grid').Cell) {
+    private triggerTrap(x: number, y: number, cell: import('../Map/Grid').Cell, target: Creature = this.player) {
         switch (cell.trapType) {
             case 'poison_gas':
                 logger.log(i18next.t('trap.poison_gas', { defaultValue: 'You step on a poison gas trap! Toxic fumes billow out!' }), '#88ff88');
@@ -9571,7 +9586,7 @@ export class Game {
                 break;
             case 'teleport':
                 logger.log(i18next.t('trap.teleport', { defaultValue: 'You step on a teleport trap! You are whisked away!' }), '#ff88ff');
-                this.teleportPlayerRandom();
+                this.teleportCreature(target);
                 break;
             case 'fire':
                 logger.log(i18next.t('trap.fire', { defaultValue: 'You step on a fire trap!' }), '#ff6600');
@@ -9585,12 +9600,15 @@ export class Game {
                 break;
         }
         // One-time use: convert to floor
-        this.grid.setTerrain(x, y, TerrainType.CHARRED_FLOOR, '.', 0x554433);
+        // W-11: consume only the trap layer; keep the gas/fire just emitted.
+        consumeTrapTile(this.grid, x, y, TerrainType.CHARRED_FLOOR);
+        cell.char = '.';
+        cell.color = 0x554433;
         this.needsRender = true;
     }
 
     /** Pressure plate triggers all TRAP cells within radius 3. */
-    private triggerPressurePlate(px: number, py: number) {
+    private triggerPressurePlate(px: number, py: number, target: Creature = this.player) {
         logger.log(i18next.t('trap.pressure_plate', { defaultValue: 'You step on a pressure plate! Nearby traps spring to life!' }), '#ffcc44');
         for (let dx = -3; dx <= 3; dx++) {
             for (let dy = -3; dy <= 3; dy++) {
@@ -9599,13 +9617,144 @@ export class Game {
                 const ny = py + dy;
                 const cell = this.grid.getCell(nx, ny);
                 if (cell?.layers.includes(TerrainType.TRAP)) { // F-1 跨层判定
-                    this.triggerTrap(nx, ny, cell);
+                    this.triggerTrap(nx, ny, cell, target);
                 }
             }
         }
         // Convert plate to floor after use
-        this.grid.setTerrain(px, py, TerrainType.FLOOR, '.', 0x888888);
+        consumeTrapTile(this.grid, px, py);
         this.needsRender = true;
+    }
+
+    /** CE setMonsterLocation (Monsters.c:3684-3715), safe commit for W-12.
+     * No random search, immunity policy, captive release, attack or time cost.
+     * A failed commit has no side effects. Hazards are legal here; only physical
+     * obstruction/occupancy are rejected. Coordinates remain the occupancy source.
+     */
+    public placeCreature(target: Creature, destination: Pos): boolean {
+        if (target.hp <= 0 || (target.loc.x === destination.x && target.loc.y === destination.y)
+            || !canPlaceCreature(this, target, destination)) return false;
+        target.loc.x = destination.x;
+        target.loc.y = destination.y;
+        this.needsRender = true;
+        this.applyEnvironmentalEffects(target);
+        // Visibility must reflect the committed location before the caller returns.
+        // Also refresh after moving a luminous monster or triggering a terrain DF.
+        this.updateVision();
+        if (target === this.player && target.hp > 0 && !this.isGameOver) this.pickUpItemAfterDisplacement();
+        return true;
+    }
+
+    /** CE teleport(..., INVALID_POS, false); no fallback after the final filter. */
+    private teleportCreature(target: Creature): boolean {
+        const candidates = teleportCandidates({ grid: this.grid, player: this.player, monsters: this.monsters, dormantMonsters: this.dormantMonsters, machineCells: this.machineCells }, target);
+        if (candidates.length === 0) return false;
+        const destination = candidates[rng.randRange(0, candidates.length - 1)]!;
+        if (!this.placeCreature(target, destination)) return false;
+        // STATUS_STUCK has no web state: web webs impede only movement from the
+        // current tile, so magical relocation already disentangles without erasing
+        // the web. SEIZED/SEIZING are deliberately retained, as in CE teleport.
+        if (target instanceof Monster && this.waypoints) {
+            this.waypoints.chooseNewWanderDestination(target, this.wpContext());
+        }
+        return true;
+    }
+
+    /** CE freeCaptive -> becomeAllyWith (Movement.c:726-758).
+     * isAlly + leader=null is this engine's player-follower representation.
+     * Ordinary key/cage rescue is intentionally not migrated in W-11.
+     */
+    public freeCaptive(monster: Monster): void {
+        if (!monster.isCaged) return;
+        let replacement: Monster | null = null;
+        const groups = [this.monsters, this.dormantMonsters ?? [],
+            ...[...(this.levels?.values() ?? [])].flatMap(level => [level.monsters, level.dormantMonsters ?? []])];
+        for (const group of groups) for (const follower of group) {
+            if (follower === monster || follower.leader !== monster) continue;
+            if (follower.isDormant) follower.leader = null;
+            else if (!replacement) { replacement = follower; follower.leader = null; }
+            else {
+                follower.leader = replacement;
+                follower.targetWaypointIndex = monster.targetWaypointIndex;
+                if (follower.targetWaypointIndex >= 0 && follower.waypointAlreadyVisited) {
+                    follower.waypointAlreadyVisited[follower.targetWaypointIndex] = false;
+                }
+            }
+        }
+        if (monster.carriedItem) {
+            const candidates = captiveItemDropCandidates(this, monster.loc, this.items);
+            // CE placeItemAt(INVALID_POS) uses randomMatchingLocation as a final
+            // item-only fallback. This must never be used for CREATURE placement.
+            const drop = candidates.length ? candidates[rng.randRange(0, candidates.length - 1)]!
+                : randomMatchingLocation(this.grid, {
+                    dungeonType: TerrainType.FLOOR, liquidType: TerrainType.NOTHING,
+                    isOccupied: (x, y) => !!this.getMonsterAt(x, y)
+                        || (this.player.loc.x === x && this.player.loc.y === y)
+                        || this.items.some(item => item.loc.x === x && item.loc.y === y)
+                        || !!this.grid.getCell(x, y)?.layers.some(t => t === TerrainType.STAIRS_UP || t === TerrainType.STAIRS_DOWN),
+                    isMachineCell: (x, y) => !!this.machineCells?.has(y * DCOLS + x)
+                        || !!this.grid.getCell(x, y)?.machineNumber,
+                });
+            // Pathological all-blocked item maps retain the item safely; CE's
+            // subsequent placeItemAt(-1,-1) has no defined safe placement there.
+            if (drop) {
+                monster.carriedItem.loc = { ...drop };
+                this.items.push(monster.carriedItem);
+                monster.carriedItem = null;
+                promoteOnItemPlaced(this.grid, drop.x, drop.y);
+            }
+        }
+
+        monster.isCaged = false;
+        monster.isAlly = true;
+        monster.leader = null;
+        monster.seized = false;
+        monster.state = MonsterState.WANDERING;
+        logger.log(i18next.t('monster.freed', {
+            monster: monster.name,
+            defaultValue: `The ${monster.name} is grateful for its freedom and joins you!`
+        }), '#88ff88');
+        this.needsRender = true;
+    }
+
+    /** Entry promotions/traps only; periodic damage remains in objective time. */
+    private applyDisplacementTileEntry(target: Creature): void {
+        const { x, y } = target.loc;
+        const cell = this.grid.getCell(x, y)!;
+        if (!target.hasStatus('levitating')) {
+            if (cell.layers.includes(TerrainType.TRAP)) this.triggerTrap(x, y, cell, target);
+            else if (cell.layers.includes(TerrainType.PRESSURE_PLATE)) this.triggerPressurePlate(x, y, target);
+            else if ((cellTerrainFlags(this.grid, x, y) & T_IS_DF_TRAP)
+                && !(target instanceof Monster && target.hasBehavior('MONST_SUBMERGES')
+                    && (cellTerrainMechFlags(this.grid, x, y) & TM_ALLOWS_SUBMERGING))) {
+                // CE Time.c:240-274: per-cell depression -> fire DF -> normal
+                // promotion/wiring. Existing CE traps are not the legacy TRAP id.
+                const byGrid = this.displacementTrapDepressions ??= new WeakMap();
+                let depressed = byGrid.get(this.grid);
+                if (!depressed) { depressed = new Set(); byGrid.set(this.grid, depressed); }
+                const key = y * this.grid.width + x;
+                if (!depressed.has(key)) {
+                    depressed.add(key);
+                    triggerCreatureTrapLayers(this.grid, x, y);
+                }
+            }
+        }
+        // A nested teleport already handled its own destination entry.
+        if (target.loc.x !== x || target.loc.y !== y) return;
+        const mask = TM_PROMOTES_ON_CREATURE | (target === this.player ? TM_PROMOTES_ON_PLAYER_ENTRY : 0);
+        promoteLayersWithMechFlag(this.grid, target.loc.x, target.loc.y, mask);
+    }
+
+    /** CE setMonsterLocation picks up without a second player action/turn. */
+    private pickUpItemAfterDisplacement(): void {
+        const index = this.items.findIndex(item => item.loc.x === this.player.loc.x && item.loc.y === this.player.loc.y);
+        if (index < 0) return;
+        const item = this.items[index]!;
+        if (!this.player.inventory.addItem(item)) return;
+        if (item.category === ItemCategory.GOLD) this.stats.gold += item.quantity;
+        this.items.splice(index, 1);
+        promoteOnItemPickup(this.grid, this.player.loc.x, this.player.loc.y);
+        logger.log(i18next.t('item.pickup', { name: item.displayName, defaultValue: `You picked up ${item.displayName}.` }), '#ffffff');
     }
 
     /** Teleport player to a random walkable floor tile. */
