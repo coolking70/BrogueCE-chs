@@ -55,7 +55,7 @@ export enum BoltEffect {
     DISTANCE_ATTACK,  // CE BE_ATTACK, not BE_DAMAGE
     POISON_DART,
     POLYMORPH,       // W-19: in-place CE polymorph; wand identity/pool remains W-24
-    PLENTY,          // W-1: type only; effect implementation belongs to W-20
+    PLENTY,          // W-20: CE clone; wand identity/pool remains W-24
 }
 
 /** Semantic aliases only. Presence here does not enable a dispatch branch. */

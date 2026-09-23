@@ -3,9 +3,9 @@
  * Base Monster class mirroring Brogue's monster initialization
  */
 
-import { Creature } from './Creature';
+import { Creature, allocateEntityId } from './Creature';
 import { knownPolymorphSpecies, polymorphHP, polymorphSpecies } from '../engine/Combat/Polymorph';
-import { Player } from './Player';
+import { Player, TURNS_FOR_FULL_REGEN } from './Player';
 import { rng } from '../engine/Random';
 import type { Game } from '../engine/Core/Game';
 import { Pathfind } from '../engine/Map/Pathfind';
@@ -260,6 +260,8 @@ export class Monster extends Creature {
     public mutation?: MutationData;
     /** W-19: effect/save tag, not a species or generation flag. */
     public polymorphed = false;
+    /** W-20: clones have no carried loot or CE MB_WEAPON_AUTO_ID entitlement. */
+    public isClone = false;
     public wasNegated = false;
     /** Carried creatures are detached payloads, never active occupants. W-19
      * discards them without death/loot; full enter-summons lifecycle is separate. */
@@ -432,10 +434,69 @@ export class Monster extends Creature {
         }
     }
 
+    /** CE Monsters.c:568: copy current values, NOT catalog defaults. The explicit
+     * container list is guarded by W-20's own-property audit and mutation tests.
+     * leader is a creature pointer; carried payloads and safetyMap are cleared. */
+    public copyForClone(): Monster {
+        const clone: Monster = Object.assign(Object.create(Monster.prototype), this);
+        clone.id = allocateEntityId();
+        clone.loc = { ...this.loc };
+        clone.spawnLoc = { ...this.spawnLoc };
+        clone.statusDurations = { ...this.statusDurations };
+        clone.statusImmunities = new Set(this.statusImmunities);
+        clone.statusResistTurns = { ...this.statusResistTurns };
+        clone.abilities = new Set(this.abilities);
+        clone.behaviorFlags = new Set(this.behaviorFlags);
+        clone.abilityFlags = new Set(this.abilityFlags);
+        clone.bolts = [...this.bolts];
+        clone.waypointAlreadyVisited = this.waypointAlreadyVisited ? [...this.waypointAlreadyVisited] : null;
+        clone.mutation = this.mutation ? structuredClone(this.mutation) : undefined;
+        clone.safetySnapshot = null;
+        clone.carriedItem = null;
+        // CE recursively creates then detaches a carried clone, but never assigns
+        // it back to newMonst->carriedMonster. Do not invent a retained payload.
+        clone.carriedMonster = null;
+        clone.isCaged = false;
+        clone.isClone = true;
+        // Web rolls loot on death rather than generateMonster(itemPossible).
+        clone.goldDropChance = clone.itemDropChance = 0;
+        clone.ticksUntilTurn = 101;
+        // W-16/W-17 represent &player as isAlly + leader=null.
+        clone.leader = this.leader ?? (this.isAlly ? null : this);
+        if (clone.behaviorFlags.has('MONST_MALE') && clone.behaviorFlags.has('MONST_FEMALE')) {
+            clone.behaviorFlags.delete(rng.randPercent(50) ? 'MONST_MALE' : 'MONST_FEMALE');
+        }
+        return clone;
+    }
+
+    /** CE clones the player creature struct, not rogue's inventory/equipment.
+     * Player and Monster have different JS shapes: project every shared Creature
+     * field onto monster defaults, then apply the same clone exceptions. */
+    public static copyPlayerForClone(player: Player): Monster {
+        const model = new Monster(player.x, player.y, {
+            id: 'player_clone', name: 'clone', char: player.char, color: 0x7f7f7f,
+            hp: player.maxHp, damage: '1d2', accuracy: 100, defense: 0, regen: 20,
+            moveSpeed: 100, attackSpeed: 100, minDepth: 1, maxDepth: 99,
+            goldDropChance: 0, itemDropChance: 0,
+        });
+        // Player stores fractional HP; Monster stores elapsed regeneration turns.
+        // Project current rate/progress without retaining a Player/inventory ref.
+        const regenTurns = TURNS_FOR_FULL_REGEN / player.maxHp * (player.hasStatus('regenerating') ? 0.6 : 1);
+        Object.assign(model, { regenTurns, regenCounter: player.regenCarry * regenTurns,
+            name: ItemLoader.translateName('clone') || 'clone', hp: player.hp, maxHp: player.maxHp, carriedItem: null,
+            statusDurations: { ...player.statusDurations }, statusImmunities: new Set(player.statusImmunities),
+            poisonAmount: player.poisonAmount, maxShield: player.maxShield,
+            movementSpeed: player.movementSpeed, attackSpeed: player.attackSpeed,
+            seized: player.seized, seizing: player.seizing,
+            ticksUntilTurn: 101, isClone: true, isAlly: true, state: MonsterState.WANDERING });
+        // leader=null + isAlly is the existing web representation of &player.
+        return model;
+    }
+
     /** CE Items.c:4572-4631. Replace info IN PLACE; never construct/spawn or
      * copy an entity. Only captives demote their leadership, after status reset. */
     public polymorph(demote: () => void): boolean {
-        if (!knownPolymorphSpecies(this.typeId) || this.hasBehavior('MONST_INANIMATE') || this.hasBehavior('MONST_TURRET') || this.isInvulnerable()) return false;
+        if ((!knownPolymorphSpecies(this.typeId) && !(this.isClone && this.typeId === 'player_clone')) || this.hasBehavior('MONST_INANIMATE') || this.hasBehavior('MONST_TURRET') || this.isInvulnerable()) return false;
         // Preserve C operator precedence: stealing resets state even if not fleeing.
         if ((this.state === MonsterState.FLEEING && (this.hasBehavior('MONST_MAINTAINS_DISTANCE')
             || this.hasBehavior('MONST_FLEES_NEAR_DEATH'))) || this.hasAbility('MA_HIT_STEAL_FLEE')) {

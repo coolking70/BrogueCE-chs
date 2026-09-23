@@ -1,0 +1,830 @@
+{
+  "states": [
+    {
+      "name": "targeting",
+      "state": {
+        "text": {
+          "mode": "arcana_target",
+          "enchantmentTargets": [],
+          "arcanaTarget": {
+            "name": "银魔杖",
+            "x": 8,
+            "y": 5
+          },
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 8,
+              "y": 5,
+              "hp": 6,
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "monsters": [
+          {
+            "id": 48,
+            "name": "老鼠",
+            "type": "rat",
+            "hp": 6,
+            "maxHp": 6,
+            "ally": false,
+            "caged": false,
+            "leader": null,
+            "status": {},
+            "clone": false,
+            "damage": "1d3",
+            "defense": 0,
+            "ticks": 100000,
+            "key": null
+          }
+        ],
+        "charges": 3
+      }
+    },
+    {
+      "name": "odd-hp-copy",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 2,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 8,
+              "y": 5,
+              "hp": 3,
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 99900,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "老鼠",
+              "x": 8,
+              "y": 6,
+              "hp": 3,
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 48,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 1,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "monsters": [
+          {
+            "id": 48,
+            "name": "老鼠",
+            "type": "rat",
+            "hp": 3,
+            "maxHp": 6,
+            "ally": false,
+            "caged": false,
+            "leader": null,
+            "status": {},
+            "clone": false,
+            "damage": "1d3",
+            "defense": 0,
+            "ticks": 99900,
+            "key": null
+          },
+          {
+            "id": 49,
+            "name": "老鼠",
+            "type": "rat",
+            "hp": 3,
+            "maxHp": 6,
+            "ally": false,
+            "caged": false,
+            "leader": 48,
+            "status": {},
+            "clone": true,
+            "damage": "1d3",
+            "defense": 0,
+            "ticks": 1,
+            "key": null
+          }
+        ],
+        "charges": 2
+      }
+    },
+    {
+      "name": "inherited-states",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 2,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "粉红果冻",
+              "x": 8,
+              "y": 5,
+              "hp": 16,
+              "typeId": "pink_jelly",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100000,
+              "poisonAmount": 3,
+              "poisoned": 9,
+              "shield": 200,
+              "maxShield": 200
+            },
+            {
+              "name": "粉红果冻",
+              "x": 8,
+              "y": 4,
+              "hp": 16,
+              "typeId": "pink_jelly",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 101,
+              "poisonAmount": 3,
+              "poisoned": 9,
+              "shield": 200,
+              "maxShield": 200
+            }
+          ],
+          "items": []
+        },
+        "monsters": [
+          {
+            "id": 51,
+            "name": "粉红果冻",
+            "type": "pink_jelly",
+            "hp": 16,
+            "maxHp": 50,
+            "ally": true,
+            "caged": false,
+            "leader": null,
+            "status": {
+              "burning": 7,
+              "poisoned": 9,
+              "shielded": 200
+            },
+            "clone": false,
+            "damage": "1d3",
+            "defense": 0,
+            "ticks": 100000,
+            "key": null
+          },
+          {
+            "id": 52,
+            "name": "粉红果冻",
+            "type": "pink_jelly",
+            "hp": 16,
+            "maxHp": 50,
+            "ally": true,
+            "caged": false,
+            "leader": null,
+            "status": {
+              "burning": 7,
+              "poisoned": 9,
+              "shielded": 200
+            },
+            "clone": true,
+            "damage": "1d3",
+            "defense": 0,
+            "ticks": 101,
+            "key": null
+          }
+        ],
+        "charges": 3
+      }
+    },
+    {
+      "name": "restored-independent",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "粉红果冻",
+              "x": 8,
+              "y": 5,
+              "hp": 16,
+              "typeId": "pink_jelly",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 3,
+              "poisoned": 9,
+              "shield": 200,
+              "maxShield": 200
+            },
+            {
+              "name": "粉红果冻",
+              "x": 8,
+              "y": 4,
+              "hp": 16,
+              "typeId": "pink_jelly",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 101,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 200,
+              "maxShield": 200
+            }
+          ],
+          "items": []
+        },
+        "monsters": [
+          {
+            "id": 51,
+            "name": "粉红果冻",
+            "type": "pink_jelly",
+            "hp": 16,
+            "maxHp": 50,
+            "ally": true,
+            "caged": false,
+            "leader": null,
+            "status": {
+              "burning": 7,
+              "poisoned": 9,
+              "shielded": 200
+            },
+            "clone": false,
+            "damage": "1d3",
+            "defense": 0,
+            "ticks": 100,
+            "key": null
+          },
+          {
+            "id": 52,
+            "name": "粉红果冻",
+            "type": "pink_jelly",
+            "hp": 16,
+            "maxHp": 50,
+            "ally": true,
+            "caged": false,
+            "leader": null,
+            "status": {
+              "burning": 7,
+              "shielded": 200
+            },
+            "clone": true,
+            "damage": "1d3",
+            "defense": 0,
+            "ticks": 101,
+            "key": null
+          }
+        ],
+        "charges": 3
+      }
+    },
+    {
+      "name": "captive-copy",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 8,
+              "y": 5,
+              "hp": 3,
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": true,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "老鼠",
+              "x": 9,
+              "y": 6,
+              "hp": 3,
+              "typeId": "rat",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 101,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "monsters": [
+          {
+            "id": 58,
+            "name": "老鼠",
+            "type": "rat",
+            "hp": 3,
+            "maxHp": 6,
+            "ally": false,
+            "caged": true,
+            "leader": null,
+            "status": {},
+            "clone": false,
+            "damage": "1d3",
+            "defense": 0,
+            "ticks": 100000,
+            "key": 59
+          },
+          {
+            "id": 60,
+            "name": "老鼠",
+            "type": "rat",
+            "hp": 3,
+            "maxHp": 6,
+            "ally": true,
+            "caged": false,
+            "leader": null,
+            "status": {},
+            "clone": true,
+            "damage": "1d3",
+            "defense": 0,
+            "ticks": 101,
+            "key": null
+          }
+        ],
+        "charges": 3
+      }
+    },
+    {
+      "name": "clone-death",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 8,
+              "y": 5,
+              "hp": 3,
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": true,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "monsters": [
+          {
+            "id": 58,
+            "name": "老鼠",
+            "type": "rat",
+            "hp": 3,
+            "maxHp": 6,
+            "ally": false,
+            "caged": true,
+            "leader": null,
+            "status": {},
+            "clone": false,
+            "damage": "1d3",
+            "defense": 0,
+            "ticks": 100000,
+            "key": 59
+          }
+        ],
+        "charges": 3
+      }
+    },
+    {
+      "name": "reflected-player",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 10,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "石像守卫",
+              "x": 8,
+              "y": 5,
+              "hp": 1000,
+              "typeId": "stone_guardian",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "克隆体",
+              "x": 4,
+              "y": 4,
+              "hp": 10,
+              "typeId": "player_clone",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 101,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "monsters": [
+          {
+            "id": 62,
+            "name": "石像守卫",
+            "type": "stone_guardian",
+            "hp": 1000,
+            "maxHp": 1000,
+            "ally": false,
+            "caged": false,
+            "leader": null,
+            "status": {
+              "immune_fire": 1000
+            },
+            "clone": false,
+            "damage": "1d6+11",
+            "defense": 0,
+            "ticks": 100000,
+            "key": null
+          },
+          {
+            "id": 63,
+            "name": "克隆体",
+            "type": "player_clone",
+            "hp": 10,
+            "maxHp": 100,
+            "ally": true,
+            "caged": false,
+            "leader": null,
+            "status": {},
+            "clone": true,
+            "damage": "1d2",
+            "defense": 0,
+            "ticks": 101,
+            "key": null
+          }
+        ],
+        "charges": 3
+      }
+    },
+    {
+      "name": "fire-split",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "粉红果冻",
+              "x": 8,
+              "y": 5,
+              "hp": 48,
+              "typeId": "pink_jelly",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "粉红果冻",
+              "x": 8,
+              "y": 6,
+              "hp": 48,
+              "typeId": "pink_jelly",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 65,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 101,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "monsters": [
+          {
+            "id": 65,
+            "name": "粉红果冻",
+            "type": "pink_jelly",
+            "hp": 48,
+            "maxHp": 100,
+            "ally": false,
+            "caged": false,
+            "leader": null,
+            "status": {
+              "burning": 7
+            },
+            "clone": false,
+            "damage": "1d3",
+            "defense": 0,
+            "ticks": 100000,
+            "key": null
+          },
+          {
+            "id": 67,
+            "name": "粉红果冻",
+            "type": "pink_jelly",
+            "hp": 48,
+            "maxHp": 100,
+            "ally": false,
+            "caged": false,
+            "leader": 65,
+            "status": {
+              "burning": 7
+            },
+            "clone": true,
+            "damage": "1d3",
+            "defense": 0,
+            "ticks": 101,
+            "key": null
+          }
+        ],
+        "charges": 3
+      }
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,56 @@
+[
+  {
+    "name": "shared-status",
+    "file": "src/entities/Monster.ts",
+    "test": "reverse mutation of clone.statusDurations",
+    "exit": 1,
+    "detected": true,
+    "restored": true,
+    "sha": "19731e947e6c68e99f964b3daff6e53032fc1f9c1ec25e9ff438cce0e3cd8b98"
+  },
+  {
+    "name": "shared-set",
+    "file": "src/entities/Monster.ts",
+    "test": "reverse mutation of clone.abilityFlags",
+    "exit": 1,
+    "detected": true,
+    "restored": true,
+    "sha": "19731e947e6c68e99f964b3daff6e53032fc1f9c1ec25e9ff438cce0e3cd8b98"
+  },
+  {
+    "name": "duplicate-id",
+    "file": "src/entities/Monster.ts",
+    "test": "audits EVERY",
+    "exit": 1,
+    "detected": true,
+    "restored": true,
+    "sha": "19731e947e6c68e99f964b3daff6e53032fc1f9c1ec25e9ff438cce0e3cd8b98"
+  },
+  {
+    "name": "copied-item",
+    "file": "src/entities/Monster.ts",
+    "test": "clone death triggers ordinary",
+    "exit": 1,
+    "detected": true,
+    "restored": true,
+    "sha": "19731e947e6c68e99f964b3daff6e53032fc1f9c1ec25e9ff438cce0e3cd8b98"
+  },
+  {
+    "name": "floor-hp",
+    "file": "src/engine/Core/Game.ts",
+    "test": "current HP",
+    "exit": 1,
+    "detected": true,
+    "restored": true,
+    "sha": "bbf0ab0553475fe83d07ff7cc707ecd878404d6781764f7932ac4220fe451ca1"
+  },
+  {
+    "name": "clone-count-cap",
+    "file": "src/engine/Core/Game.ts",
+    "test": "plenty has no 100",
+    "exit": 1,
+    "detected": true,
+    "restored": true,
+    "sha": "bbf0ab0553475fe83d07ff7cc707ecd878404d6781764f7932ac4220fe451ca1"
+  }
+]

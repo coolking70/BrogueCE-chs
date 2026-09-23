@@ -1,3 +1,4 @@
+import { cloneLocation } from '../Combat/Cloning';
 /**
  * src/engine/Core/Game.ts
  * Main game state and orchestration
@@ -241,6 +242,10 @@ export interface GameSnapshotMonster {
         waypointAlreadyVisited: boolean[] | null; spawnLoc: Pos; falling: boolean; preplaced: boolean;
         deathEffectTriggered: boolean; carriedItem?: GameSnapshotItem;
     };
+    /** W-20: optional clone tag, independent from polymorph/ally identity. */
+    cloneState?: { runtime: NonNullable<GameSnapshotMonster['polymorph']>; polymorphed: boolean };
+    /** Preserve mutation provenance for self-split's native-or-mutation mask. */
+    mutation?: MutationData;
     /** W-18: preserve the controlled action budget/grabs; missing tag keeps old defaults. */
     entrancement?: { ticksUntilTurn: number; seized: boolean; seizing: boolean; form?: MonsterData };
     /** W-17: optional for old saves. Player follower = isAlly + leaderId=null.
@@ -437,6 +442,8 @@ interface TestRoomState {
     baselineMonsters: Array<{
         form?: MonsterData;
         polymorph?: GameSnapshotMonster['polymorph'];
+        cloneState?: GameSnapshotMonster['cloneState'];
+        mutation?: MutationData;
         entrancement?: GameSnapshotMonster['entrancement'];
         spectralBlade?: GameSnapshotMonster['spectralBlade'];
         allegiance?: GameSnapshotMonster['allegiance'];
@@ -2407,7 +2414,7 @@ export class Game {
     }
 
     private createMonsterFromSnapshot(m: TestRoomState['baselineMonsters'][number]): Monster {
-        if (m.form || m.spectralBlade || m.allegiance || m.entrancement || m.polymorph) return this.deserializeMonster(m);
+        if (m.cloneState || m.form || m.spectralBlade || m.allegiance || m.entrancement || m.polymorph) return this.deserializeMonster(m);
         const data = {
             id: m.name.toLowerCase().replace(/\s+/g, '_'),
             name: m.name,
@@ -2427,6 +2434,7 @@ export class Game {
         };
         const monster = new Monster(m.loc.x, m.loc.y, data);
         monster.id = m.id;
+        monster.mutation = m.mutation ? structuredClone(m.mutation) : undefined;
         monster.hp = m.hp;
         monster.maxHp = m.maxHp;
         monster.state = m.state as any;
@@ -2771,6 +2779,8 @@ export class Game {
                         allegiance: this.serializeMonster(m).allegiance,
                         dominatedForm: this.serializeMonster(m).dominatedForm,
                         polymorph: this.serializeMonster(m).polymorph,
+                        cloneState: this.serializeMonster(m).cloneState,
+                        mutation: m.mutation ? structuredClone(m.mutation) : undefined,
                         form: m.snapshotForm(),
                         id: m.id,
                         loc: { x: m.loc.x, y: m.loc.y },
@@ -4747,6 +4757,22 @@ export class Game {
                     }
                 } else if (!target) {
                     logMiss('bolt.teleport_miss', `${item.displayName} flashes but finds no target.`, '#cc88ff');
+                }
+                break;
+            }
+
+            case BoltEffect.PLENTY: {
+                if (target && this.boltLivingTarget(target) && !(target instanceof Monster && target.hasBehavior('MONST_TURRET'))) {
+                    const clone = this.cloneMonster(target);
+                    if (clone) {
+                        target.hp = Math.floor((target.hp + 1) / 2);
+                        clone.hp = Math.floor((clone.hp + 1) / 2);
+                        if (this.canObserveBoltTarget(clone)) logger.log(i18next.t('bolt.plenty_clone', {
+                            target: clone.name, defaultValue: 'Another {{target}} appears!',
+                        }), '#88ff88');
+                        // CE Items.c:5384: success identifies even outside sight.
+                        autoID = true;
+                    }
                 }
                 break;
             }
@@ -6922,7 +6948,7 @@ export class Game {
             // B-1a：CE Combat.c:1427-1430——玩家近战击杀非无生命怪
             //（MB_WEAPON_AUTO_ID 在怪物生成时对非 MONST_INANIMATE 恒置，
             // Monsters.c:157-159）时扣减装备武器的熟悉度计数，满 20 杀实例亮。
-            if (!target.hasBehavior('MONST_INANIMATE')
+            if (!target.hasBehavior('MONST_INANIMATE') && !target.isClone
                 && ItemLoader.decrementWeaponAutoIDTimer(this.player.equippedWeapon)) {
                 const weapon = this.player.equippedWeapon!;
                 logger.log(i18next.t('item.familiar_weapon', {
@@ -7078,20 +7104,27 @@ export class Game {
         defender.loc.y = newY;
     }
 
-    /**
-     * CE splitMonster（Combat.c:222-310）。P4-4：MA_CLONE_SELF_ON_DEFEND 的
-     * 果冻类怪物受到伤害后（仍存活），在其所在的同阵营连通怪物群外缘随机选
-     * 一格复制自身，血量对半（向上取整，CE `(currentHP+1)/2`）。
-     *
-     * 已知简化（详见报告）：
-     *   - 用 grid.isPassable 且非深水/熔岩近似 CE 的 monsterAvoids（web 没有
-     *     该函数的完整移植，无法区分"该怪物具体会不会踩火/踩网"等精细规则）。
-     *   - 分裂体不继承父代已学行为——直接用 monsters.json 重新构造即天然满足
-     *     CE 这条限制；变异（mutation）沿用父代，对齐 CE "mutation effects are
-     *     inherited, they're not learned abilities"。
-     *   - 不处理 CE 末尾"非飞行怪清除 1000 tick 悬浮状态"的边角情形（分裂体
-     *     本就不会带着这个状态出生）。
-     */
+    /** CE Monsters.c:568-628. A supplied location belongs to splitMonster;
+     * otherwise use CE's nearest qualifying path location. Preflight avoids
+     * CE's unchecked INVALID_POS and leaves source/HP/world intact on failure. */
+    public cloneMonster(source: Creature, splitLocation?: Pos): Monster | null {
+        if (source.hp <= 0 || (!(source instanceof Monster) && source !== this.player)) return null;
+        const spot = splitLocation ?? cloneLocation(this, source);
+        if (!spot) return null;
+        const clone = source instanceof Monster ? source.copyForClone() : Monster.copyPlayerForClone(this.player);
+        if (source instanceof Monster && source.isCaged) this.becomeAllyWith(clone);
+        clone.loc = { ...spot };
+        // Preserve dormant chain ownership for direct helper callers.
+        if (clone.isDormant) this.dormantMonsters.push(clone);
+        else this.monsters.push(clone);
+        this.needsRender = true;
+        return clone;
+    }
+
+    /** CE Combat.c:222-327: select a contiguous-group edge, halve HP, clone,
+     * then strip learned flags/bolts and the now-unsupported permanent flight.
+     * P4-4's existing placement approximation remains: passable, no deep water
+     * or lava; it is not the complete CE monsterAvoids movement policy. */
     private trySplitMonster(defender: Monster, attacker: Creature): void {
         if (!defender.hasAbility('MA_CLONE_SELF_ON_DEFEND')) return;
         if (defender.hp <= 0) return;
@@ -7158,25 +7191,18 @@ export class Game {
         // 3) 血量对半（先于克隆，CE 顺序：currentHP=(currentHP+1)/2 → cloneMonster）
         defender.hp = Math.ceil(defender.hp / 2);
 
-        const cloneData = (monsterData as MonsterData[]).find(d => d.id === defender.typeId);
-        if (!cloneData) return;
-        const clone = new Monster(spot.x, spot.y, cloneData);
-        if (defender.mutation) {
-            clone.mutate(defender.mutation);
+        const clone = this.cloneMonster(defender, spot)!;
+        // CE Combat.c:291-322: only self-splitting strips learned traits. AND
+        // with native/mutation flags never restores a currently missing trait.
+        const native = (monsterData as MonsterData[]).find(d => d.id === defender.typeId);
+        const behavior = new Set([...(native?.behaviorFlags ?? []), ...(defender.mutation?.behaviorFlags ?? [])]);
+        const ability = new Set([...(native?.abilityFlags ?? []), ...(defender.mutation?.abilityFlags ?? [])]);
+        clone.behaviorFlags = new Set([...clone.behaviorFlags].filter(f => behavior.has(f)));
+        clone.abilityFlags = new Set([...clone.abilityFlags].filter(f => ability.has(f)));
+        clone.bolts = [...(native?.bolts ?? [])];
+        if (!clone.hasBehavior('MONST_FLIES') && clone.getStatusDuration('levitating') === 1000) {
+            clone.setStatusDuration('levitating', 0);
         }
-        clone.setStatusDuration('poisoned', defender.getStatusDuration('poisoned'));
-        clone.restorePoison(defender.poisonAmount);
-        clone.setStatusDuration('shielded', defender.getStatusDuration('shielded'));
-        clone.restoreShield(defender.maxShield);
-        clone.hp = defender.hp;
-        clone.maxHp = defender.maxHp;
-        clone.isAlly = defender.isAlly;
-        clone.leader = defender.leader;
-        clone.boundToLeader = defender.boundToLeader;
-        clone.dominated = defender.dominated;
-        clone.state = defender.state;
-        clone.ticksUntilTurn = Math.max(clone.ticksUntilTurn, 101); // CE: max(ticksUntilTurn, 101)
-        this.monsters.push(clone);
 
         logger.log(i18next.t('combat.monster_splits', {
             name: defender.name,
@@ -8533,9 +8559,7 @@ export class Game {
      * 也要走同一条路，顺势抽出，两半从此只有一份）。
      */
     private serializeMonster(m: Monster): GameSnapshotMonster {
-        return {
-            form: m.snapshotForm(),
-            ...(m.polymorphed ? { polymorph: {
+        const runtime: NonNullable<GameSnapshotMonster['polymorph']> = {
                 form: m.snapshotForm(), movementSpeed: m.movementSpeed, attackSpeed: m.attackSpeed,
                 keepsSpeed: m.polymorphKeepsSpeed, ticksUntilTurn: m.ticksUntilTurn, wasNegated: m.wasNegated,
                 seized: m.seized, seizing: m.seizing, boundToPlayer: m.boundToPlayer, doesNotTrackLeader: m.doesNotTrackLeader,
@@ -8543,7 +8567,12 @@ export class Game {
                 targetWaypointIndex: m.targetWaypointIndex, waypointAlreadyVisited: m.waypointAlreadyVisited ? [...m.waypointAlreadyVisited] : null,
                 spawnLoc: { ...m.spawnLoc }, falling: m.falling, preplaced: m.preplaced, deathEffectTriggered: m.deathEffectTriggered,
                 carriedItem: m.carriedItem ? this.serializeItem(m.carriedItem) : undefined,
-            } } : {}),
+        };
+        return {
+            form: m.snapshotForm(),
+            ...(m.polymorphed ? { polymorph: runtime } : {}),
+            ...(m.isClone ? { cloneState: { runtime, polymorphed: m.polymorphed } } : {}),
+            mutation: m.mutation ? structuredClone(m.mutation) : undefined,
             ...(m.hasStatus('entranced') ? { entrancement: { ticksUntilTurn: m.ticksUntilTurn, seized: m.seized, seizing: m.seizing, form: m.snapshotForm() } } : {}),
             ...(m.typeId !== 'spectral_blade' ? { allegiance: {
                 isAlly: m.isAlly, isCaged: m.isCaged, leaderId: m.leader?.id ?? null,
@@ -8609,6 +8638,7 @@ export class Game {
         const entrancedForm = (m.statusDurations?.entranced ?? 0) > 0 ? m.entrancement?.form : undefined;
         const monster = new Monster(m.loc.x, m.loc.y, m.polymorph?.form ?? m.form ?? (m.allegiance?.dominated && m.dominatedForm ? m.dominatedForm : entrancedForm ?? bladeData ?? data));
         monster.id = m.id;
+        monster.mutation = m.mutation ? structuredClone(m.mutation) : undefined;
         monster.hp = m.hp;
         monster.maxHp = m.maxHp;
         monster.state = m.state as any;
@@ -8646,9 +8676,10 @@ export class Game {
         monster.onHitDuration = m.onHitDuration ?? 0;
         monster.statusImmunities = new Set<StatusId>(m.statusImmunities ?? []);
         monster.statusResistTurns = { ...(m.statusResistTurns ?? {}) };
-        if (m.polymorph) {
-            const p = m.polymorph;
-            monster.polymorphed = true;
+        const p = m.cloneState?.runtime ?? m.polymorph;
+        if (p) {
+            monster.isClone = !!m.cloneState;
+            monster.polymorphed = m.cloneState?.polymorphed ?? true;
             monster.movementSpeed = p.movementSpeed;
             monster.attackSpeed = p.attackSpeed;
             monster.polymorphKeepsSpeed = p.keepsSpeed;
@@ -8694,8 +8725,8 @@ export class Game {
         ensureEntityIdAbove(Math.max(
             0,
             ...snapshot.monsters.map((m) => m.id),
-            ...(snapshot.dormantMonsters ?? []).filter(m => m.polymorph).map(m => m.id),
-            ...[...snapshot.monsters, ...(snapshot.dormantMonsters ?? [])].map(m => m.polymorph?.carriedItem?.id ?? 0),
+            ...(snapshot.dormantMonsters ?? []).map(m => m.id),
+            ...[...snapshot.monsters, ...(snapshot.dormantMonsters ?? [])].map(m => m.cloneState?.runtime.carriedItem?.id ?? m.polymorph?.carriedItem?.id ?? 0),
             ...snapshot.items.map((it) => it.id),
             ...snapshot.player.inventory.map((it) => it.id)
         ));

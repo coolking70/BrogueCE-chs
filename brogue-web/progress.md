@@ -989,3 +989,16 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 目视发现并登记：Appearance.monsterAppearance在可见格直接绘制字形，phantom隐形形态仍显示p；状态/目标资格/autoID正确，不宣称隐形视觉通过。此为已有通用外观/文本输出缺口，详见W19报告§10，未改UI实现。
 - 第二次冻结完整运行：build/drift绿，回归119/120文件通过、1失败，合计2200passed/8skipped/5todo/1failed；前后307输入SHA一致。唯一红灯为W1 BoltContract仍将POLYMORPH列为type-only零变化；实际先因新形态刷新调用撞上简化夹具缺FOV（不能谎称HP断言已经执行）。本轮效果完成使W1这条留形期望过期，拆出POLYMORPH为CE实际身份/HP/旧haste/状态/单次抽签守卫；PLENTY原零变化测试不动，原扫描守卫不动。该既有测试精确纳入允许翻正，日志原JSON/SHA保存prefinal-w1-contract；第三次重新完整冻结复跑，不拼接旧绿文件。
 - W1翻正后BoltContract8项+W19 57项共65项通过；S(C)=29、物种/保存补查57，R113/总121不变。生产代码没有再改，仅这一份过期语义测试和验收脚本白名单更新；其余129份既有测试不动。第三次完整冻结后仅回填报告和证据。
+
+## 2026-09-24 W-20 复制
+- 严格执行 w-20.prompt.md 与 W-0 §2.3，使用 develop-web-game 技能。通用克隆从当前实体复制，逐项断开容器；自分裂共用后执行 CE 学习剥离。plenty 身份/入池仍留 W-24。
+- CE 复核发现：carriedMonster 递归结果没有挂回新体；全图无落点返回 INVALID_POS 后 cloneMonster 未检查。本轮不创造寄宿生命周期；无落点安全返回失败，不扣血/入表。
+- 待完成：实现、容器反向验证、反射玩家/俘虏/保存 id 测试、浏览器、R+S 最终冻结复跑、报告。
+- 实现完成：Monster 按当前实例整体复制后独立复制11类值容器，安全图/携物清除，leader 保留实体关系（盟友 null 代表玩家）；新 id、101 tick 等待、plenty 奇数 HP 向上取半。自分裂改用通用入口后单独执行 CE 原生/突变旗标交集、目录法术恢复、非飞行1000悬浮清除。
+- 补齐：普通快照的 mutation 来源；cloneState 保存克隆的运行状态；高 id 休眠怪全部纳入读档预留；反射玩家的运行时身份允许后续变形，装备不克隆，玩家再生进度换算为独立怪物计数。克隆击杀不计武器自动鉴定。
+- 定向测试包含 Monster 所有对象字段动态清单、逐项改克隆不改原体、死亡/携物、P4计数、实火杖燃烧分裂、反射/俘虏/无落点、JSON后 id/关系与mutation、自分裂上限、实际提交/首等待。编译原CE cloneMonster + BE_PLENTY 取137组HP黄金值。6个负变异均触发断言失败，finally恢复SHA。
+- 浏览器：技能客户端运行且检查了黑色canvas截图；有头整页可见场景，沙箱阻止启动后经工具批准提升执行。第一次八场景通过、0错误；后续热更新夹具出现失效（需清洁重启Vite后复核），不计为最终证据。
+- 本次反查 R=115，R∪S=123（132个测试文件中）；按实际5个生产文件种子，8个S额外文件。最终冻结全部源码/测试/脚本/progress，build + 122个显式回归 + drift独立运行，SHA前后自证；只允许超时串行复跑，不改timeout/断言/基线。最终数值与逐文件结果回填报告。
+- 后续仍留W-24 plenty身份入池；完整CE毫回合再生/生成初始化RNG、carriedMonster寄宿生命周期、全levels JSON存档、P4-4完整monsterAvoids与跨层计数仍是既有模型边界，本轮不以通过冒充全游戏重放一致。
+- 首次拟最终build被新增测试的JSON联合类型推断挡住（behaviorFlags.push被推为never），不是运行时断言失败。显式MutationData注解修正夹具；主动中断后续回归，归档prefinal-typecheck，不计最终结果；修后完整重新冻结复跑。
+- 第二次拟最终build通过，生成回归未结束时收尾复核发现通用cloneLocation也需识别MONST_TURRET的INANIMATE复合位（plenty资格已有门）。主动中断exit130并归档prefinal-composite；补通用helper毒气落点对抗测试（第56项），再次从build完整冻结复跑。

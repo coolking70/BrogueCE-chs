@@ -134,7 +134,7 @@ describe('W-1 caster/contact/landing/outcome contracts with W-3 actual routes', 
 
     // W-19 supersedes only the POLYMORPH member of W-1's type-only guard.
     // CE Items.c:4572-4634/5260-5268 now changes the actual contact in place;
-    // PLENTY below remains deferred to W-20 and retains its no-write contract.
+    // W-20 below now implements PLENTY through the same player exit.
     it('W-19 polymorph preserves contact identity but replaces form/status with one species draw', () => {
         const game = scene(), target = rat(6);
         Object.assign(game, { updateVision: vi.fn() }); // This fixture has no FOV renderer.
@@ -161,23 +161,20 @@ describe('W-1 caster/contact/landing/outcome contracts with W-3 actual routes', 
         } finally { draw.mockRestore(); }
     });
 
-    it.each([
-        [BoltEffect.PLENTY, CEBoltType.PLENTY],
-    ])('new effect %s is type-only through the real player exit: no HP/location/entity/status/RNG changes', (effect, ceType) => {
+    it('W-20 plenty duplicates the contact through the real player exit', () => {
         const game = scene(), target = rat(6);
         game.monsters.push(target);
-        const item = ItemLoader.spawnWand('wand_of_slowness', 4, 5)!;
-        const bolt = { ...getBoltForItem('wand_of_slowness')!, effect, ceType };
-        const state = () => JSON.stringify({ player: game.player, monsters: game.monsters, grid: game.grid, item,
-            random: rng.randomNumbersGenerated, tick: timeSystem.currentTick });
-        const before = state();
+        target.hp = 5;
+        const item = ItemLoader.spawnWand('wand_of_slowness', -1, -1)!;
+        const bolt = { ...getBoltForItem('wand_of_slowness')!, effect: BoltEffect.PLENTY, ceType: CEBoltType.PLENTY };
         const result = game.zapBoltFromPlayer(bolt, item);
-        expect(result.caster).toBe(game.player);
         expect(result.hits[0]!.creature).toBe(target);
-        // W-2: type-only branches cannot claim an observed effect.
-        expect(result.outcome).toEqual({ autoID: false, casterMovement: null });
-        expect(state()).toBe(before);
-        expect(game.monsters).toEqual([target]);
+        expect(result.outcome).toEqual({ autoID: true, casterMovement: null });
+        expect(game.monsters).toHaveLength(2);
+        const clone = game.monsters[1]!;
+        expect([target.hp, clone.hp]).toEqual([3, 3]);
+        expect(clone.id).not.toBe(target.id);
+        expect(clone.leader).toBe(target);
     });
 
     it('knowing the full CE catalog does not enable monster blink, web or vines', () => {
