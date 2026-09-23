@@ -1,0 +1,93 @@
+src/engine/Combat/BoltCatalog.test.ts:94:        const oldNames = 'NONE FIRE LIGHTNING POISON TELEPORT SLOW HEALING HASTE TUNNELING BECKONING DISCORD CONJURATION SHIELDING NEGATION DOMINATION ENTRANCEMENT BLINKING OBSTRUCTION EMPOWERMENT INVISIBILITY SPARK DRAGONFIRE DISTANCE_ATTACK POISON_DART'.split(' ');
+src/test/blueprint_ce_coverage.test.ts:36:    reward_commutation: 6,
+src/test/c_4b_dungeon_feature.test.ts:903:        // 100, 100, 0, "", EMPOWERMENT_LIGHT}）、SHATTERING_SPELL（:679
+src/test/c_4b_dungeon_feature.test.ts:921:        expect(glyph.lightFlare).toBe('EMPOWERMENT_LIGHT');
+src/test/c_7_lighting.test.ts:218:        // "// commutation device" 段没有烛光——置换祭坛不发光是 CE 原样）。
+src/test/horde_selection.test.ts:229:                const baseName = m.mutation ? m.name.slice(m.mutation.name.length + 1) : m.name;
+src/test/horde_terrain_spawn.test.ts:86:function baseSpecies(m: { name: string; mutation?: { name: string } }): string {
+src/test/horde_terrain_spawn.test.ts:87:    return (m.mutation ? m.name.slice(m.mutation.name.length + 1) : m.name)
+src/test/p1_24_death_sink.test.ts:47:import mutationDataJson from '../data/mutations.json';
+src/test/p1_24_death_sink.test.ts:50:const MUTATION_DATA = mutationDataJson as MutationData[];
+src/test/p1_24_death_sink.test.ts:295:        '不飞集合、变异通道旗标）——monsters.json / mutations.json 漂移或翻译层改动' +
+src/test/p1_30_i18n_gate.test.ts:29:import mutationsJson from '../data/mutations.json';
+src/test/p1_30_i18n_gate.test.ts:126:    const mutations = mutationsJson as unknown as MutationData[];
+src/test/p1_30_i18n_gate.test.ts:134:        for (const mut of mutations) {
+src/test/p1_30_i18n_gate.test.ts:140:            const expected = (RESOURCE['mutation.' + mut.id] ?? '').replace('{{name}}', baseName);
+src/test/p1_30_i18n_gate.test.ts:148:        for (const mut of mutations) {
+src/test/p1_30_i18n_gate.test.ts:149:            expect(RESOURCE['mutation.' + mut.id], `缺 mutation.${mut.id}`).toBeTruthy();
+src/test/p4_5_melee_specials.test.ts:25:import mutationDataJson from '../data/mutations.json';
+src/test/p4_5_melee_specials.test.ts:29:const MUTATION_DATA = mutationDataJson as MutationData[];
+src/test/p4_5_melee_specials.test.ts:37:function mutationById(id: string): MutationData {
+src/test/p4_5_melee_specials.test.ts:39:    if (!row) throw new Error(`mutations.json 中找不到 ${id}`);
+src/test/p4_5_melee_specials.test.ts:118:        goblin.mutate(mutationById('grappling'));
+src/test/p4_5_melee_specials.test.ts:359:        goblin.mutate(mutationById('vampiric'));
+src/test/p4_5_melee_specials.test.ts:474:        goblin.mutate(mutationById('juggernaut'));
+src/test/p4_6_attack_geometry.test.ts:332:        '（mutations.json 现无携带这三个旗标的变异，按 P4-5 的变异测试意图改为 ' +
+src/test/v_2b_2a_placement_flags.test.ts:148:    // reward_commutation 之后，本表每个计数按 CE GlobalsBrogue.c 原表
+src/test/v_2b_4_altars.test.ts:278:        expect(rs.lightFlare).toBe('EMPOWERMENT_LIGHT');
+src/test/v_2b_4_altars.test.ts:422:    it('C3 6 号 Commutation altars（:221-226）——原地接管 web 自创的 reward_commutation', () => {
+src/test/v_2b_4_altars.test.ts:423:        const bp = byId('reward_commutation');
+src/test/v_2b_4_altars.test.ts:424:        expect(bp.name, '名称已换成 CE 原文').toBe('Commutation altars');
+src/test/v_2b_4_altars.test.ts:440:        expect(raw.includes('MF_ALTAR_GROUP'), 'reward_commutation 不得再带自创的 MF_ALTAR_GROUP').toBe(false);
+src/test/w_11_teleport_placement.test.ts:111:    it('all-visible empty room fails without retry, mutation, random draws, or a forced coordinate', () => {
+src/test/w_16_conjuration.test.ts:218: it('real UI commit cancels without mutation, then spends one charge, identifies and leaves three waiting blades',()=>{
+src/test/w_19_polymorph.test.ts:16:import mutations from '../data/mutations.json';
+src/test/w_19_polymorph.test.ts:78: it.each(['MONST_INANIMATE','MONST_INVULNERABLE','MONST_TURRET'])('%s rejects before mutation/status/relationship writes or draws',flag=>{
+src/test/w_19_polymorph.test.ts:105: it('unAlly/mutation/carried creature reset occurs BEFORE the first species roll',()=>{
+src/test/w_19_polymorph.test.ts:106:  const g=scene(),m=mob(g,'monkey'),leader=mob(g,'rat',15,7);m.leader=leader;m.isAlly=true;m.carriedMonster=new Monster(0,0,data('phoenix'));m.mutation=mutations[0] as any;
+src/test/w_19_polymorph.test.ts:107:  const wand=ItemLoader.spawnWand('wand_of_slowness',-1,-1)!;vi.spyOn(rng,'randRange').mockImplementation(()=>{expect(m.isAlly).toBe(false);expect(m.leader).toBeNull();expect(m.mutation).toBeUndefined();expect(m.carriedMonster).toBeNull();expect(m.state).toBe(S.HUNTING);return index('rat');});g.zapBoltFromPlayer(cfg(),wand,m.loc);
+src/test/w_19_polymorph.test.ts:117:  m.mutate(mutations[0] as any);m.wasNegated=true;m.carriedMonster=new Monster(0,0,data('phoenix'));const carried=m.carriedMonster;
+src/test/w_19_polymorph.test.ts:125:  expect(m).toMatchObject({id:oldId,typeId:'jackal',hp:polymorphHP(oldHP,oldMax,d.hp),maxHp:d.hp,accuracy:d.accuracy,defense:d.defense,damageString:d.damage,regenTurns:d.regen,regenCounter:17,ticksUntilTurn:222,wasNegated:false,mutation:undefined,carriedMonster:null,seized:false,seizing:false,poisonAmount:4,maxShield:0,machineHome:42,givenUpOnScent:true,targetWaypointIndex:3,spawnLoc:{x:12,y:13},falling:true,preplaced:true,boundToLeader:true,boundToPlayer:true,doesNotTrackLeader:true,goldDropChance:.37,itemDropChance:.29});
+src/test/w_19_polymorph.test.ts:178:  const g=scene(),m=mob(g);m.name='unknown old mutation title';m.isAlly=true;m.isCaged=true;const saved=JSON.parse(JSON.stringify((g as any).serializeMonster(m)));delete saved.form;
+src/test/w_20_cloning.test.ts:16:import mutations from '../data/mutations.json';
+src/test/w_20_cloning.test.ts:33:const fields=['abilities','abilityFlags','behaviorFlags','bolts','carriedItem','carriedMonster','leader','loc','mutation','safetySnapshot','spawnLoc','statusDurations','statusImmunities','statusResistTurns','waypointAlreadyVisited'];
+src/test/w_20_cloning.test.ts:36: m.mutate(structuredClone(mutations[0]!));m.statusImmunities.add('confused');m.statusResistTurns={slowed:2};m.abilities.add('flying');m.behaviorFlags.add('MONST_FLIES');m.abilityFlags.add('MA_CAST_SUMMON');m.bolts=['HEALING'];
+src/test/w_20_cloning.test.ts:43: it('audits EVERY object-valued Monster own field (including nested mutation arrays); no shared value container',()=>{
+src/test/w_20_cloning.test.ts:53:  for(const key of ['abilityFlags','behaviorFlags','forbiddenFlags','forbiddenAbilityFlags'] as const)expect(c.mutation![key]).not.toBe(m.mutation![key]);
+src/test/w_20_cloning.test.ts:58: it.each(['loc','spawnLoc','statusDurations','statusImmunities','statusResistTurns','abilities','behaviorFlags','abilityFlags','bolts','waypointAlreadyVisited','mutation'] as const)('reverse mutation of clone.%s leaves parent byte-for-byte unchanged',key=>{
+src/test/w_20_cloning.test.ts:61:  if(value instanceof Set)value.clear();else if(Array.isArray(value))value[0]=!value[0];else if(key==='mutation'){
+src/test/w_20_cloning.test.ts:120:  (g as any).trySplitMonster(m,g.player);const c=g.monsters[1]!;expect([m.hp,c.hp]).toEqual([10,10]);expect((c.statusDurations as any).burning).toBe(6);expect(c.getStatusDuration('entranced')).toBe(12);expect(c.poisonAmount).toBe(4);expect(c.maxShield).toBe(300);expect(c.regenCounter).toBe(13);expect(c.seized).toBe(true);expect(c.getStatusDuration('levitating')).toBe(levitation===1000?0:23);expect(c.hasBehavior('MONST_FLIES')).toBe(false);expect(c.hasAbility('MA_HIT_STEAL_FLEE')).toBe(false);expect(c.bolts).toEqual(data('pink_jelly').bolts);expect(c.mutation).toEqual(m.mutation);expect(c.ticksUntilTurn).toBe(101);
+src/test/w_20_cloning.test.ts:130:  expect(g.loadSnapshot(saved)).toBe(true);const restored=g.dormantMonsters[0]!;expect(restored).toMatchObject({id:900000,isClone:true,polymorphed:false,movementSpeed:37,attackSpeed:43,ticksUntilTurn:101,machineHome:17,poisonAmount:4,maxShield:300,wasNegated:true});expect(restored.leader?.id).toBe(leader.id);expect(restored.mutation).toEqual(c.mutation);expect(restored.waypointAlreadyVisited).toEqual(c.waypointAlreadyVisited);expect(restored.carriedItem).toBeNull();
+src/test/w_20_cloning.test.ts:131:  restored.isDormant=false;g.dormantMonsters=[];g.monsters.push(restored);const next=g.cloneMonster(restored)!;expect(next.id).toBeGreaterThan(900000);expect(new Set([g.player.id,...g.monsters.map(x=>x.id)]).size).toBe(g.monsters.length+1);const before=dump(restored);next.tickStatuses();next.mutation!.behaviorFlags.push('test');expect(dump(restored)).toBe(before);
+src/test/w_20_cloning.test.ts:175: it('original saved mutation provenance survives, so self split keeps its mutation-only trait',()=>{
+src/test/w_20_cloning.test.ts:176:  const g=live(),m=mob(g,'pink_jelly');const mutation: MutationData=structuredClone(mutations[0]!);mutation.behaviorFlags.push('MONST_FLIES');m.mutate(mutation);const saved=JSON.parse(JSON.stringify(g.toSnapshot()));g.loadSnapshot(saved);const restored=g.monsters[0]!;expect(restored.mutation).toEqual(mutation);(g as any).trySplitMonster(restored,g.player);expect(g.monsters[1]!.hasBehavior('MONST_FLIES')).toBe(true);expect(g.monsters[1]!.getStatusDuration('levitating')).toBe(1000);expect(g.monsters[1]!.mutation).not.toBe(restored.mutation);
+src/test/w_21_empowerment.test.ts:17:import mutations from '../data/mutations.json';
+src/test/w_21_empowerment.test.ts:31:const wand=()=>ItemLoader.spawnWand('wand_of_empowerment',-1,-1)!;
+src/test/w_21_empowerment.test.ts:32:const bolt=()=>getBoltForItem('wand_of_empowerment')!;
+src/test/w_21_empowerment.test.ts:35:const stats=(m:Monster)=>[m.maxHp,m.hp,m.defense,m.accuracy,CombatSystem.parseDamageString(m.damageString).min,CombatSystem.parseDamageString(m.damageString).max,m.newPowerCount,m.totalPowerCount];
+src/test/w_21_empowerment.test.ts:40:  const rows=fs.readFileSync('ai_docs/reports/w-21-evidence/ce-empower.txt','utf8').trim().split('\n').filter(l=>l.startsWith('empower '));
+src/test/w_21_empowerment.test.ts:44:   if(n===1){Object.assign(m,{maxHp:37,hp:1,defense:17,accuracy:85,damageString:`${lo}-${hi}`,newPowerCount:0,totalPowerCount:0});}
+src/test/w_21_empowerment.test.ts:52: it.each([false,true])('same fixed increments for ally=%s; no allegiance, mutation or ability changes',ally=>{
+src/test/w_21_empowerment.test.ts:53:  const g=scene(),m=mob(g,'ogre');m.isAlly=ally;m.mutate(structuredClone(mutations[0]!));m.hp=1;
+src/test/w_21_empowerment.test.ts:54:  const before=stats(m),mutation=structuredClone(m.mutation),flags=[...m.behaviorFlags],bolts=[...m.bolts];cast(g,m);
+src/test/w_21_empowerment.test.ts:55:  expect(m.maxHp).toBe(before[0]!+12);expect(m.hp).toBe(m.maxHp);expect(m.defense).toBe(before[2]!+10);expect(m.accuracy).toBe(before[3]!+10);expect(m.isAlly).toBe(ally);expect(m.mutation).toEqual(mutation);expect([...m.behaviorFlags]).toEqual(flags);expect(m.bolts).toEqual(bolts);expect(m.newPowerCount).toBe(1);
+src/test/w_21_empowerment.test.ts:68:  const line=fs.readFileSync('ai_docs/reports/w-21-evidence/ce-empower.txt','utf8').split('\n').find(l=>l.startsWith(`heal ${duration} `))!;
+src/test/w_21_empowerment.test.ts:91:  const r=g.zapBoltFromPlayer(bolt(),item,behind.loc);expect(dump(m)).toBe(before);expect(behind.newPowerCount).toBe(0);expect(r.outcome?.autoID).toBe(false);expect(r.frames.some(f=>f.durationMs===180)).toBe(false);expect(rng.randomNumbersGenerated).toBe(draw);
+src/test/w_21_empowerment.test.ts:93: it('reflected beam reaches player but neither heals, cures nor empowers it',()=>{
+src/test/w_21_empowerment.test.ts:100:  const seen=!['invisible','hidden'].includes(mode),r=cast(g,m);expect(m.totalPowerCount).toBe(1);expect(r.outcome?.autoID).toBe(seen);expect(r.frames.some(f=>f.durationMs===180&&f.x===m.x&&f.y===m.y)).toBe(seen);
+src/test/w_21_empowerment.test.ts:102: it('empty shot and dead helper recipient have no effect',()=>{const g=scene();expect(g.zapBoltFromPlayer(bolt(),wand(),{x:9,y:5}).outcome?.autoID).toBe(false);const m=mob(g);m.hp=0;const before=dump(m);expect(m.empower()).toBe(false);expect(dump(m)).toBe(before);});
+src/test/w_21_empowerment.test.ts:104:  const g=live(),m=mob(g),item=wand();g.player.inventory.addItem(item);g.useArcanaItem(item);g.setArcanaTarget(m.x,m.y);g.cancelArcanaSelection();expect(item.charges).toBe(1);expect(m.totalPowerCount).toBe(0);
+src/test/w_21_empowerment.test.ts:105:  g.useArcanaItem(item);g.setArcanaTarget(m.x,m.y);const before=g.stats.turns;g.confirmArcanaTarget();expect(item.charges).toBe(0);expect(item.timesUsed).toBe(1);expect(item.isIdentified).toBe(true);expect(g.stats.turns).toBe(before+1);expect(m.totalPowerCount).toBe(1);expect(m.maxHp).toBe(18);
+src/test/w_21_empowerment.test.ts:111:  const g=scene(),m=mob(g);cast(g,m);cast(g,m);const c=g.cloneMonster(m)!;expect(stats(c)).toEqual(stats(m));expect(c.totalPowerCount).toBe(2);c.empower();expect(c.totalPowerCount).toBe(3);expect(m.totalPowerCount).toBe(2);expect(c.maxHp).toBe(m.maxHp+12);
+src/test/w_21_empowerment.test.ts:116:  expect(stats(c)).toEqual(stats(m));expect(m.hp).toBe(16);expect(m.maxHp).toBe(74);expect(c.totalPowerCount).toBe(2);
+src/test/w_21_empowerment.test.ts:117:  (g as any).trySplitMonster(m,g.player);const split=g.monsters[2]!;expect(split.totalPowerCount).toBe(2);expect(split.newPowerCount).toBe(2);expect(split.damageString).toBe(m.damageString);expect(split.maxHp).toBe(74);
+src/test/w_21_empowerment.test.ts:119: it('W-19 actual polymorph replaces enhanced info but retains both counts, then can be empowered again',()=>{
+src/test/w_21_empowerment.test.ts:122:  g.zapBoltFromPlayer(cfg,item,m.loc);draw.mockRestore();const d=data('ogre');expect(m).toMatchObject({typeId:'ogre',maxHp:d.hp,accuracy:d.accuracy,defense:d.defense,damageString:d.damage,newPowerCount:2,totalPowerCount:2,isAlly:false});
+src/test/w_21_empowerment.test.ts:123:  cast(g,m);expect(m.maxHp).toBe(d.hp+12);expect(m.newPowerCount).toBe(3);expect(m.totalPowerCount).toBe(3);
+src/test/w_21_empowerment.test.ts:126:  const g=live(),m=mob(g);cast(g,m);cast(g,m);m.newPowerCount=1;const c=g.cloneMonster(m)!;c.isDormant=true;g.monsters=[m];g.dormantMonsters=[c];
+src/test/w_21_empowerment.test.ts:129:  const legacy=JSON.parse(JSON.stringify(saved));for(const entry of [...legacy.monsters,...legacy.dormantMonsters]){delete entry.newPowerCount;delete entry.totalPowerCount;}
+src/test/w_21_empowerment.test.ts:130:  g.loadSnapshot(legacy);expect(g.monsters[0]!.newPowerCount).toBe(0);expect(g.dormantMonsters[0]!.totalPowerCount).toBe(0);expect(g.monsters[0]!.maxHp).toBe(30);
+src/test/w_21_empowerment.test.ts:133:  const g=live(),m=mob(g);cast(g,m);vi.spyOn(rng,'randRange').mockReturnValue(4);m.polymorph(()=>{});vi.restoreAllMocks();const before=stats(m);g.loadSnapshot(JSON.parse(JSON.stringify(g.toSnapshot())));expect(stats(g.monsters[0]!)).toEqual(before);expect(g.monsters[0]!.totalPowerCount).toBe(1);
+src/test/w_21_empowerment.test.ts:136:  const g=scene(),m=mob(g);cast(g,m);cast(g,m);m.newPowerCount=0;const before=stats(m);(g as any).negateCreatureMagic(m);expect(stats(m)).toEqual([...before.slice(0,6),2,2]);
+src/test/w_21_empowerment.test.ts:137:  m.newPowerCount=0;m.behaviorFlags.add('MONST_INVULNERABLE');(g as any).negateCreatureMagic(m);expect(m.newPowerCount).toBe(0);m.behaviorFlags.delete('MONST_INVULNERABLE');m.behaviorFlags.add('MONST_DIES_IF_NEGATED');(g as any).negateCreatureMagic(m);expect(m.hp).toBe(0);expect(m.newPowerCount).toBe(0);
+src/test/w_21_empowerment.test.ts:142:  const victim=mob(g,'kobold',12,5);victim.hp=0;(g as any).removeDeadMonsters();g.handlePlayerAction('wait');expect(m.newPowerCount).toBe(2);expect(m.bolts).toEqual(data('rat').bolts??[]);
+src/test/w_2_arcana_submission.test.ts:67:            'wand_of_beckoning', 'wand_of_invisibility', 'wand_of_empowerment']) {
+src/test/w_2_arcana_submission.test.ts:135:        const g = scene(), obj = item(g, 'wand_of_empowerment', true);
+src/test/w_2_arcana_submission.test.ts:154:        expect(target.maxHp).toBe(hp + 12); // W-21 CE empowerMonster: fixed repeatable increment
+src/test/w_2_arcana_submission.test.ts:186:        ['wand_of_invisibility', 'ally'], ['wand_of_empowerment', 'ally'],
+src/test/w_5_arcana_instance.test.ts:45:        ['wand_of_beckoning', 2, 4], ['wand_of_invisibility', 3, 5], ['wand_of_empowerment', 1, 1],
+src/test/w_5_arcana_instance.test.ts:81:    it('pool identities and frequencies are unchanged, including empowerment frequency debt', () => {
+src/test/w_5_arcana_instance.test.ts:88:            ['wand_of_empowerment', 3], ['wand_of_beckoning', 3],
+src/test/w_6_arcana_recharge.test.ts:225:        const wand = ItemLoader.spawnWand('wand_of_empowerment', 0, 0)!;
+src/test/w_7_arcana_enchantment.test.ts:57:        ['wand_of_beckoning', 2], ['wand_of_invisibility', 3], ['wand_of_empowerment', 1],
+src/test/w_7_arcana_enchantment.test.ts:230:        // Isolate the unchanged equipment mutation footprint from ordinary turn effects.

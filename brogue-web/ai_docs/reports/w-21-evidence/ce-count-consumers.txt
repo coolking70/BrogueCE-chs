@@ -1,0 +1,15 @@
+../BrogueCE-master/src/brogue/Combat.c:1636:  if (ally->creatureState == MONSTER_ALLY && ally->newPowerCount > 0 &&
+../BrogueCE-master/src/brogue/Items.c:4544:        monst->newPowerCount = monst->totalPowerCount; // Allies can re-learn lost ability slots.
+../BrogueCE-master/src/brogue/IO.c:4889:        if (monst->wasNegated && monst->newPowerCount == monst->totalPowerCount
+../BrogueCE-master/src/brogue/Rogue.h:2305:    short newPowerCount;                // how many more times this monster can absorb a fallen monster
+../BrogueCE-master/src/brogue/Rogue.h:2306:    short totalPowerCount;              // how many times has the monster been empowered? Used to recover abilities when negated.
+../BrogueCE-master/src/brogue/Monsters.c:124:    monst->newPowerCount = monst->totalPowerCount = 0;
+../BrogueCE-master/src/brogue/Monsters.c:554:    monst->newPowerCount++;
+../BrogueCE-master/src/brogue/Monsters.c:555:    monst->totalPowerCount++;
+../BrogueCE-master/src/brogue/Monsters.c:2907:            || monToCheck->totalPowerCount > monToRaise->totalPowerCount
+../BrogueCE-master/src/brogue/Monsters.c:2908:            || (monToCheck->totalPowerCount == monToRaise->totalPowerCount
+../BrogueCE-master/src/brogue/Monsters.c:3276:            monst->newPowerCount--;
+../BrogueCE-master/src/brogue/Monsters.c:4555:        if (monst->newPowerCount > 0) {
+../BrogueCE-master/src/brogue/Monsters.c:4559:            if (monst->newPowerCount == 1) {
+../BrogueCE-master/src/brogue/Monsters.c:4563:                sprintf(newText, tr("$HESHE seems ready to learn %i new talents.\n     "), monst->newPowerCount);
+../BrogueCE-master/src/brogue/Monsters.c:4800:    if (monst->wasNegated && monst->newPowerCount == monst->totalPowerCount) {

@@ -1,0 +1,194 @@
+{
+  "states": [
+    {
+      "name": "targeting",
+      "state": {
+        "text": {
+          "mode": "arcana_target",
+          "enchantmentTargets": [],
+          "arcanaTarget": {
+            "name": "钴魔杖",
+            "x": 8,
+            "y": 5
+          },
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 8,
+              "y": 5,
+              "hp": 6,
+              "maxHp": 6,
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "monsters": [
+          {
+            "id": 43,
+            "type": "rat",
+            "hp": 6,
+            "maxHp": 6,
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "status": {},
+            "poisonAmount": 0,
+            "ally": false
+          }
+        ],
+        "charges": 3,
+        "frames": []
+      }
+    },
+    {
+      "name": "first-hit",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 2,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 8,
+              "y": 5,
+              "hp": 1,
+              "maxHp": 6,
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 99900,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "monsters": [
+          {
+            "id": 43,
+            "type": "rat",
+            "hp": 1,
+            "maxHp": 6,
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "status": {},
+            "poisonAmount": 0,
+            "ally": false
+          }
+        ],
+        "charges": 2,
+        "frames": [
+          {
+            "x": 5,
+            "y": 5,
+            "char": "*",
+            "color": 11184810,
+            "durationMs": 35
+          },
+          {
+            "x": 6,
+            "y": 5,
+            "char": "*",
+            "color": 11184810,
+            "durationMs": 35
+          },
+          {
+            "x": 7,
+            "y": 5,
+            "char": "*",
+            "color": 11184810,
+            "durationMs": 35
+          },
+          {
+            "x": 8,
+            "y": 5,
+            "char": "*",
+            "color": 11184810,
+            "durationMs": 35
+          }
+        ]
+      }
+    }
+  ],
+  "errors": []
+}

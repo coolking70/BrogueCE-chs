@@ -253,6 +253,9 @@ export function generateMonsterDetail(
 
     // --- State ---
     const stateLines: DetailLine[] = [];
+    if (monster.isAlly && monster.newPowerCount > 0) {
+        stateLines.push({ text: `似乎已准备好学习 ${monster.newPowerCount} 项新能力。`, color: '#88ff99' });
+    }
     const state = monster.state;
     if (state === MonsterState.ASLEEP) stateLines.push({ text: '正在睡眠', color: '#8888ff' });
     else if (state === MonsterState.WANDERING) stateLines.push({ text: '正在巡逻', color: '#88ff88' });

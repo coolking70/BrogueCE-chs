@@ -230,6 +230,9 @@ export interface GameSnapshotItem {
 }
 
 export interface GameSnapshotMonster {
+    /** W-21: optional for legacy saves; absent counts restore as zero. */
+    newPowerCount?: number;
+    totalPowerCount?: number;
     /** W-19: source identity/traits must survive saving BEFORE the first cast.
      * A translated name alone cannot enforce immunity or non-original species. */
     form?: MonsterData;
@@ -440,6 +443,8 @@ interface TestRoomState {
     y2: number;
     baselineItems: GameSnapshotItem[];
     baselineMonsters: Array<{
+        newPowerCount?: number;
+        totalPowerCount?: number;
         form?: MonsterData;
         polymorph?: GameSnapshotMonster['polymorph'];
         cloneState?: GameSnapshotMonster['cloneState'];
@@ -2434,6 +2439,8 @@ export class Game {
         };
         const monster = new Monster(m.loc.x, m.loc.y, data);
         monster.id = m.id;
+        monster.newPowerCount = m.newPowerCount ?? 0;
+        monster.totalPowerCount = m.totalPowerCount ?? 0;
         monster.mutation = m.mutation ? structuredClone(m.mutation) : undefined;
         monster.hp = m.hp;
         monster.maxHp = m.maxHp;
@@ -2774,6 +2781,8 @@ export class Game {
                     y2: row.y2,
                     baselineItems: roomItems.map((it) => this.serializeItem(it)),
                     baselineMonsters: roomMonsters.map((m) => ({
+                        newPowerCount: m.newPowerCount,
+                        totalPowerCount: m.totalPowerCount,
                         entrancement: this.serializeMonster(m).entrancement,
                         spectralBlade: this.serializeMonster(m).spectralBlade,
                         allegiance: this.serializeMonster(m).allegiance,
@@ -4427,6 +4436,7 @@ export class Game {
      * ignition/promotion will open, so replace it with the actually travelled route. */
     private applyBoltResult(result: BoltResult, item: Item) {
         let autoID = false, applied = false, dug = false;
+        const impactFrames: BoltFrame[] = [];
         let alreadyReflected = false;
         const hideDetails = !ItemLoader.identifiedItems.has((item as Item & { identityId?: string }).identityId ?? '');
         const actual = traceBolt(this.grid, result.bolt, result.origin, result.aimPos,
@@ -4445,12 +4455,14 @@ export class Game {
                 if (hit && result.effect !== BoltEffect.OBSTRUCTION && result.effect !== BoltEffect.CONJURATION) {
                     const contact = createBoltResult(result.bolt, result.caster, result.origin, result.aimPos, [pos], [hit]);
                     autoID = this.applyBoltEffect(contact, item, alreadyReflected) || autoID;
+                    impactFrames.push(...contact.frames.slice(1));
                     applied = true;
                 }
                 autoID = this.applyBoltTerrainAt(result.bolt, pos) || autoID;
             },
         });
         Object.assign(result, actual);
+        result.frames.push(...impactFrames);
         // Landing effects still run on misses. W-9 directed effects require a hit;
         // an empty path has no detonation (in particular no origin fire).
         if (!applied && result.landingPos) autoID = this.applyBoltEffect(result, item) || autoID;
@@ -4591,9 +4603,7 @@ export class Game {
         let accepted = living, autoID = false, healed = 0;
         switch (effect) {
             case BoltEffect.HEALING:
-                // heal(..., false): floor percent*maxHP/100, no minimum or panacea.
-                healed = Math.min(target.maxHp - target.hp, Math.floor(magnitude * 10 * target.maxHp / 100));
-                target.hp += healed;
+                healed = target.heal(magnitude * 10, false);
                 accepted = true; // CE healing has no INANIMATE/INVULNERABLE gate.
                 autoID = seen; // Also at full health or when rounding yields zero.
                 break;
@@ -4918,23 +4928,21 @@ export class Game {
             }
 
             case BoltEffect.EMPOWERMENT: {
-                if (target instanceof Monster && target.isAlly) {
-                    target.maxHp = Math.floor(target.maxHp * 1.5);
-                    target.hp = target.maxHp;
-                    autoID = this.boltLivingTarget(target) && this.canObserveBoltTarget(target);
-                    logger.log(i18next.t('bolt.empowerment_hit', {
-                        name: item.displayName, target: target.name,
-                        defaultValue: `${item.displayName} empowers the ${target.name}!`
-                    }), '#ffff44');
-                } else if (target instanceof Monster) {
-                    logger.log(i18next.t('bolt.empowerment_enemy', {
-                        name: item.displayName, target: target.name,
-                        defaultValue: `${item.displayName} empowers the ${target.name}!`
-                    }), '#ffff44');
-                    target.maxHp = Math.floor(target.maxHp * 1.3);
-                    target.hp = target.maxHp;
-                    autoID = this.boltLivingTarget(target) && this.canObserveBoltTarget(target);
-                } else {
+                // CE Items.c:5311: player/INANIMATE/INVULNERABLE are untouched.
+                // Enemy and ally recipients use the same repeatable operation.
+                if (target instanceof Monster && target.empower()) {
+                    autoID = this.canObserveBoltTarget(target);
+                    if (autoID) {
+                        logger.log(i18next.t('bolt.empowerment_hit', {
+                            name: item.displayName, target: target.name,
+                            defaultValue: `${item.displayName} empowers the ${target.name}!`
+                        }), '#88ff99');
+                        // Observable impact flash. Full CE radius-6 animated
+                        // EMPOWERMENT_LIGHT radiance remains a lighting gap.
+                        result.frames.push({ x: target.x, y: target.y, char: target.char,
+                            color: 0x88ff99, durationMs: 180 });
+                    }
+                } else if (!target) {
                     logMiss('bolt.empowerment_miss', `${item.displayName} fires but finds no target.`, '#ffff44');
                 }
                 break;
@@ -5377,6 +5385,8 @@ export class Game {
         target.restorePoison(); // existing negation clears countdown; clear concentration too
         target.restoreShield();
         if (target instanceof Monster) {
+            // CE Items.c:4544: recover learned slots; full ability stripping is W-23.
+            if (!target.isInvulnerable()) target.newPowerCount = target.totalPowerCount;
             target.polymorphKeepsSpeed = false; // CE negate resets cached speed even without haste/slow.
             target.syncFlagDerivedStatuses();
         }
@@ -8569,6 +8579,8 @@ export class Game {
                 carriedItem: m.carriedItem ? this.serializeItem(m.carriedItem) : undefined,
         };
         return {
+            newPowerCount: m.newPowerCount,
+            totalPowerCount: m.totalPowerCount,
             form: m.snapshotForm(),
             ...(m.polymorphed ? { polymorph: runtime } : {}),
             ...(m.isClone ? { cloneState: { runtime, polymorphed: m.polymorphed } } : {}),
@@ -8638,6 +8650,8 @@ export class Game {
         const entrancedForm = (m.statusDurations?.entranced ?? 0) > 0 ? m.entrancement?.form : undefined;
         const monster = new Monster(m.loc.x, m.loc.y, m.polymorph?.form ?? m.form ?? (m.allegiance?.dominated && m.dominatedForm ? m.dominatedForm : entrancedForm ?? bladeData ?? data));
         monster.id = m.id;
+        monster.newPowerCount = m.newPowerCount ?? 0;
+        monster.totalPowerCount = m.totalPowerCount ?? 0;
         monster.mutation = m.mutation ? structuredClone(m.mutation) : undefined;
         monster.hp = m.hp;
         monster.maxHp = m.maxHp;

@@ -485,6 +485,8 @@ onMounted(async () => {
                 return m.hp > 0 && (!!cell?.isVisible || telepathyRevealed || m.hasStatus('entranced'));
             })
             .map((m) => ({ name: m.name, x: m.loc.x, y: m.loc.y, hp: m.hp,
+                maxHp: m.maxHp, accuracy: m.accuracy, defense: m.defense, damage: m.damageString,
+                newPowerCount: m.newPowerCount, totalPowerCount: m.totalPowerCount,
                 typeId: m.typeId, isAlly: m.isAlly, boundToPlayer: m.boundToPlayer,
                 dominated: m.dominated, isCaged: m.isCaged, leaderId: m.leader?.id ?? null,
                 discordant: m.getStatusDuration('discordant'), entranced: m.getStatusDuration('entranced'),

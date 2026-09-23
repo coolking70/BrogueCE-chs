@@ -1,0 +1,65 @@
+[
+  {
+    "name": "percentage-hp",
+    "file": "src/entities/Monster.ts",
+    "test": "matches 540",
+    "exit": 1,
+    "detected": true,
+    "restored": true,
+    "sha": "432e17325a9e8c8c547e97cc2ad28cb36dbdf99f67de3d003d0b914923701cd8"
+  },
+  {
+    "name": "rounded-damage",
+    "file": "src/entities/Monster.ts",
+    "test": "matches 540",
+    "exit": 1,
+    "detected": true,
+    "restored": true,
+    "sha": "432e17325a9e8c8c547e97cc2ad28cb36dbdf99f67de3d003d0b914923701cd8"
+  },
+  {
+    "name": "clear-all-statuses",
+    "file": "src/entities/Creature.ts",
+    "test": "matches compiled CE",
+    "exit": 1,
+    "detected": true,
+    "restored": true,
+    "sha": "de8f7c36f9fe955b9f2f712619b67bcf8d15cc206fdf6f17cf971f98a03bce96"
+  },
+  {
+    "name": "weak-one-cleared",
+    "file": "src/entities/Creature.ts",
+    "test": "matches compiled CE",
+    "exit": 1,
+    "detected": true,
+    "restored": true,
+    "sha": "de8f7c36f9fe955b9f2f712619b67bcf8d15cc206fdf6f17cf971f98a03bce96"
+  },
+  {
+    "name": "lost-count-save",
+    "file": "src/engine/Core/Game.ts",
+    "test": "JSON saves",
+    "exit": 1,
+    "detected": true,
+    "restored": true,
+    "sha": "8d22cb652f6711128268037bc5ab585f618e7f473d671e113998132ece02ad82"
+  },
+  {
+    "name": "polymorph-clears-count",
+    "file": "src/entities/Monster.ts",
+    "test": "actual polymorph",
+    "exit": 1,
+    "detected": true,
+    "restored": true,
+    "sha": "432e17325a9e8c8c547e97cc2ad28cb36dbdf99f67de3d003d0b914923701cd8"
+  },
+  {
+    "name": "invisible-autoid",
+    "file": "src/engine/Core/Game.ts",
+    "test": "autoID observes",
+    "exit": 1,
+    "detected": true,
+    "restored": true,
+    "sha": "8d22cb652f6711128268037bc5ab585f618e7f473d671e113998132ece02ad82"
+  }
+]

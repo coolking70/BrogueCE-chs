@@ -151,7 +151,7 @@ describe('W-2 choose / cancel / commit (CE Items.c:6361-6516,7340-7440)', () => 
         const hp = target.maxHp;
         g.handleMouseTravel(8, 5);
         expect(obj.charges).toBe(charge! - 1);
-        expect(target.maxHp).toBe(Math.floor(hp * 1.3)); // old effect retained
+        expect(target.maxHp).toBe(hp + 12); // W-21 CE empowerMonster: fixed repeatable increment
         g.useArcanaItem(obj);
         g.setArcanaTarget(8, 5);
         g.player.inventory.items.splice(g.player.inventory.items.indexOf(obj), 1);

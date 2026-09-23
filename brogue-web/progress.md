@@ -1002,3 +1002,18 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 后续仍留W-24 plenty身份入池；完整CE毫回合再生/生成初始化RNG、carriedMonster寄宿生命周期、全levels JSON存档、P4-4完整monsterAvoids与跨层计数仍是既有模型边界，本轮不以通过冒充全游戏重放一致。
 - 首次拟最终build被新增测试的JSON联合类型推断挡住（behaviorFlags.push被推为never），不是运行时断言失败。显式MutationData注解修正夹具；主动中断后续回归，归档prefinal-typecheck，不计最终结果；修后完整重新冻结复跑。
 - 第二次拟最终build通过，生成回归未结束时收尾复核发现通用cloneLocation也需识别MONST_TURRET的INANIMATE复合位（plenty资格已有门）。主动中断exit130并归档prefinal-composite；补通用helper毒气落点对抗测试（第56项），再次从build完整冻结复跑。
+
+
+## 2026-09-24 W-21 强化数值与计数
+- 按 w-21.prompt.md / W-0 §2.3 执行，使用 develop-web-game 技能；保持生成流、frequency、种类不变。
+- CE 证据：+12 HP、+10 defense/accuracy、当前伤害上下界各加 max(1,trunc(bound/10))，计数各 +1，全疗 + 逐项 panacea；敌友一致，反射玩家无效。
+- 复用 Creature.heal、W20 cloneMonster、W19 实际形态保存。变形重置 info 属性但保留学习计数，W19 原留痕正确。
+- 待完成：编译 CE 黄金值、边界/克隆/变形/存档/真实提交测试、浏览器、反查闭包、最终 SHA 冻结复跑和报告。学习不实现；NAUSEOUS/DARKNESS/weaknessAmount、CE clumpFactor 与完整 flare 辐射无现有模型，逐项登记。
+- 完成：540 组原 CE C 黄金值及 4 组 panacea 状态边界，W21 新测试通过；W19/W20/W21/W2 定向 172 项、W9/W21 106 项通过。唯一既有断言翻正为 W2 的旧 maxHp×1.3，其余既有守卫保持。
+- 7 个负变异全部触发断言失败并按 SHA 还原。build 初次发现新测试 unused import/private 访问，已修正；脚本工作目录错误没有执行测试。
+- 浏览器 8 场景通过、console/page 错误0；技能客户端无头/有头 canvas 导出仍黑，已打开，不计视觉通过。有头整页截图显示游戏和详情；负变异后的 HMR 夹具一次未命中（6≠18），重启 Vite 后通过，旧失败单独保存。
+- 最终冻结前的进度追加命令遇 Python 输入编码错误，随后的门禁被主动中断（build通过、回归未完成、exit130），归档 prefinal-progress；完成进度/截图等待修正后重新全套冻结，不拼接中途结果。
+- 实际 6 个生产文件 R=116；S(M,C,Q)+empower/mutation/克隆/保存及文件读取合并为124文件。冻结 src/public/scripts/progress/CE/配置/黄金值输入后执行 build + 123显式回归 + 独立drift，前后SHA及逐文件结果写报告。之后只回填报告/证据。
+- 后续：W22 学习未完成；W23完整消魔、复活祭坛/尸体吸收、CE weaknessAmount/恶心/黑暗、完整flare辐射/monster clumpFactor、全levels JSON持久化仍未移植。计数不消费，频率3保持留W24。
+- 最终目视复核发现浏览器夹具直接设置 inspectTarget=null 不会关闭 DetailPanel 自有 visible 状态。改为点击真实关闭按钮（没有改产品代码）；第二次拟最终门禁在回归中主动中断130并归档 prefinal-browser-fixture。脚本/进度最后冻结后从 build 完整重跑，前两次均不作为最终结果。
+- 第三次完整运行 build/drift 通过，2290passed/1failed/8skipped/5todo，319输入前后SHA一致。唯一红灯为合并敌友分支后留下 bolt.empowerment_enemy 死翻译键；按 P1-30 规则把键移到 zh_CN.legacy.json，守卫/扫描器不改，生产种子扩为8文件。原完整失败结果归档 prefinal-i18n，修复后重新全套冻结复跑。

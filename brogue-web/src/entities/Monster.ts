@@ -263,6 +263,9 @@ export class Monster extends Creature {
     /** W-20: clones have no carried loot or CE MB_WEAPON_AUTO_ID entitlement. */
     public isClone = false;
     public wasNegated = false;
+    /** CE creature counts survive cloning/polymorph; W-22 will consume slots. */
+    public newPowerCount = 0;
+    public totalPowerCount = 0;
     /** Carried creatures are detached payloads, never active occupants. W-19
      * discards them without death/loot; full enter-summons lifecycle is separate. */
     public carriedMonster: Monster | null = null;
@@ -493,6 +496,23 @@ export class Monster extends Creature {
         return model;
     }
 
+    /** CE Monsters.c:547 empowerMonster. Integer increases use CURRENT bounds
+     * on every hit. Keep the existing web damage distribution (uniform); CE's
+     * separate clumpFactor is not represented by this engine (W-21 report). */
+    public empower(): boolean {
+        if (this.hp <= 0 || this.hasBehavior('MONST_INANIMATE')
+            || this.hasBehavior('MONST_TURRET') || this.isInvulnerable()) return false;
+        const { min, max } = CombatSystem.parseDamageString(this.damageString);
+        this.maxHp += 12;
+        this.defense += 10;
+        this.accuracy += 10;
+        this.damageString = `${min + Math.max(1, Math.trunc(min / 10))}-${max + Math.max(1, Math.trunc(max / 10))}`;
+        this.newPowerCount++;
+        this.totalPowerCount++;
+        this.heal(100, true);
+        return true;
+    }
+
     /** CE Items.c:4572-4631. Replace info IN PLACE; never construct/spawn or
      * copy an entity. Only captives demote their leadership, after status reset. */
     public polymorph(demote: () => void): boolean {
@@ -546,6 +566,7 @@ export class Monster extends Creature {
         // Web loot probabilities represent an existing inventory entitlement;
         // polymorph neither generates nor discards items (CE carriedItem stays).
         this.wasNegated = false;
+        // newPowerCount/totalPowerCount belong to creature, not the replaced info.
         this.statusDurations = {};
         this.maxShield = 0; // maxStatus is reset; poisonAmount is NOT reset in CE.
         this.polymorphed = true;

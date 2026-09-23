@@ -155,6 +155,24 @@ export class Creature implements Entity {
         return true;
     }
 
+    /** CE Items.c:4664 heal. Panacea reduces selected countdowns to ONE,
+     * not zero; slow keeps its cached speed until the normal expiration tick.
+     * Web has no NAUSEOUS/DARKNESS or weaknessAmount model (W-21 report).
+     * Burning, paralysis, discord, entrancement and beneficial states survive. */
+    public heal(percent: number, panacea = false): number {
+        const before = this.hp;
+        this.hp = Math.min(this.maxHp, this.hp + Math.trunc(percent * this.maxHp / 100));
+        if (panacea) {
+            for (const id of ['hallucinating', 'confused', 'slowed'] as const) {
+                if (this.getStatusDuration(id) > 1) this.setStatusDuration(id, 1);
+            }
+            // CE deliberately leaves WEAKENED == 1 intact.
+            if (this.getStatusDuration('weakened') > 1) this.setStatusDuration('weakened', 0);
+            if (this.hasStatus('poisoned')) this.setStatusDuration('poisoned', 0);
+        }
+        return this.hp - before;
+    }
+
     public canBePoisoned(): boolean {
         return this.hp > 0 && !this.statusImmunities.has('poisoned');
     }
