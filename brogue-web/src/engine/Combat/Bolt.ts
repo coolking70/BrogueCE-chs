@@ -54,7 +54,7 @@ export enum BoltEffect {
     DRAGONFIRE,       // CE BE_DAMAGE + BF_FIERY, not intrinsically area damage
     DISTANCE_ATTACK,  // CE BE_ATTACK, not BE_DAMAGE
     POISON_DART,
-    POLYMORPH,       // W-1: type only; effect implementation belongs to W-19
+    POLYMORPH,       // W-19: in-place CE polymorph; wand identity/pool remains W-24
     PLENTY,          // W-1: type only; effect implementation belongs to W-20
 }
 

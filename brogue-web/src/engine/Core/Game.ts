@@ -229,6 +229,18 @@ export interface GameSnapshotItem {
 }
 
 export interface GameSnapshotMonster {
+    /** W-19: source identity/traits must survive saving BEFORE the first cast.
+     * A translated name alone cannot enforce immunity or non-original species. */
+    form?: MonsterData;
+    /** W-19 actual form plus creature fields that survive an in-place change. */
+    polymorph?: {
+        form: MonsterData; movementSpeed: number; attackSpeed: number; keepsSpeed: boolean;
+        ticksUntilTurn: number; wasNegated: boolean; seized: boolean; seizing: boolean;
+        boundToPlayer: boolean; doesNotTrackLeader: boolean; machineHome: number; isDormant: boolean;
+        givenUpOnScent: boolean; safetySnapshot: number[][] | null; targetWaypointIndex: number;
+        waypointAlreadyVisited: boolean[] | null; spawnLoc: Pos; falling: boolean; preplaced: boolean;
+        deathEffectTriggered: boolean; carriedItem?: GameSnapshotItem;
+    };
     /** W-18: preserve the controlled action budget/grabs; missing tag keeps old defaults. */
     entrancement?: { ticksUntilTurn: number; seized: boolean; seizing: boolean; form?: MonsterData };
     /** W-17: optional for old saves. Player follower = isAlly + leaderId=null.
@@ -423,6 +435,8 @@ interface TestRoomState {
     y2: number;
     baselineItems: GameSnapshotItem[];
     baselineMonsters: Array<{
+        form?: MonsterData;
+        polymorph?: GameSnapshotMonster['polymorph'];
         entrancement?: GameSnapshotMonster['entrancement'];
         spectralBlade?: GameSnapshotMonster['spectralBlade'];
         allegiance?: GameSnapshotMonster['allegiance'];
@@ -2393,7 +2407,7 @@ export class Game {
     }
 
     private createMonsterFromSnapshot(m: TestRoomState['baselineMonsters'][number]): Monster {
-        if (m.spectralBlade || m.allegiance || m.entrancement) return this.deserializeMonster(m);
+        if (m.form || m.spectralBlade || m.allegiance || m.entrancement || m.polymorph) return this.deserializeMonster(m);
         const data = {
             id: m.name.toLowerCase().replace(/\s+/g, '_'),
             name: m.name,
@@ -2756,6 +2770,8 @@ export class Game {
                         spectralBlade: this.serializeMonster(m).spectralBlade,
                         allegiance: this.serializeMonster(m).allegiance,
                         dominatedForm: this.serializeMonster(m).dominatedForm,
+                        polymorph: this.serializeMonster(m).polymorph,
+                        form: m.snapshotForm(),
                         id: m.id,
                         loc: { x: m.loc.x, y: m.loc.y },
                         name: m.name,
@@ -4735,6 +4751,16 @@ export class Game {
                 break;
             }
 
+            case BoltEffect.POLYMORPH: {
+                if (target instanceof Monster && target.polymorph(() => this.demoteMonsterFromLeadership(target))) {
+                    // CE Items.c:5261-5266 checks the NEW invisible status, not FOV.
+                    autoID = !target.hasStatus('invisible');
+                    this.updateVision();
+                    this.needsRender = true;
+                }
+                break;
+            }
+
             case BoltEffect.DOMINATION: {
                 // CE Items.c:5274-5300: no writes until the roll succeeds.
                 // Player, inanimate and invulnerable contacts cannot be dominated.
@@ -5324,7 +5350,10 @@ export class Game {
         }
         target.restorePoison(); // existing negation clears countdown; clear concentration too
         target.restoreShield();
-        if (target instanceof Monster) target.syncFlagDerivedStatuses();
+        if (target instanceof Monster) {
+            target.polymorphKeepsSpeed = false; // CE negate resets cached speed even without haste/slow.
+            target.syncFlagDerivedStatuses();
+        }
         target.refreshSpeeds();
         return 'negated';
     }
@@ -8505,6 +8534,16 @@ export class Game {
      */
     private serializeMonster(m: Monster): GameSnapshotMonster {
         return {
+            form: m.snapshotForm(),
+            ...(m.polymorphed ? { polymorph: {
+                form: m.snapshotForm(), movementSpeed: m.movementSpeed, attackSpeed: m.attackSpeed,
+                keepsSpeed: m.polymorphKeepsSpeed, ticksUntilTurn: m.ticksUntilTurn, wasNegated: m.wasNegated,
+                seized: m.seized, seizing: m.seizing, boundToPlayer: m.boundToPlayer, doesNotTrackLeader: m.doesNotTrackLeader,
+                machineHome: m.machineHome, isDormant: m.isDormant, givenUpOnScent: m.givenUpOnScent, safetySnapshot: m.safetySnapshot?.map(row => [...row]) ?? null,
+                targetWaypointIndex: m.targetWaypointIndex, waypointAlreadyVisited: m.waypointAlreadyVisited ? [...m.waypointAlreadyVisited] : null,
+                spawnLoc: { ...m.spawnLoc }, falling: m.falling, preplaced: m.preplaced, deathEffectTriggered: m.deathEffectTriggered,
+                carriedItem: m.carriedItem ? this.serializeItem(m.carriedItem) : undefined,
+            } } : {}),
             ...(m.hasStatus('entranced') ? { entrancement: { ticksUntilTurn: m.ticksUntilTurn, seized: m.seized, seizing: m.seizing, form: m.snapshotForm() } } : {}),
             ...(m.typeId !== 'spectral_blade' ? { allegiance: {
                 isAlly: m.isAlly, isCaged: m.isCaged, leaderId: m.leader?.id ?? null,
@@ -8542,8 +8581,14 @@ export class Game {
     }
 
     private deserializeMonster(m: GameSnapshotMonster): Monster {
+        // Pure migration for pre-form saves: exact canonical/current localized
+        // species name only, never glyph/depth/HP guesses. Unrecognizable legacy
+        // entities retain their old data; polymorph safely rejects unknown IDs.
+        const matches = (monsterData as MonsterData[]).filter(d => d.name === m.name || ItemLoader.translateName(d.name) === m.name);
+        const legacySpecies = matches.length === 1 ? matches[0] : undefined;
         const data = {
-            id: m.name.toLowerCase().replace(/\s+/g, '_'),
+            ...legacySpecies,
+            id: legacySpecies?.id ?? m.name.toLowerCase().replace(/\s+/g, '_'),
             name: m.name,
             char: m.char,
             color: m.color,
@@ -8562,7 +8607,7 @@ export class Game {
         };
         const bladeData = m.spectralBlade ? (monsterData as MonsterData[]).find(d => d.id === 'spectral_blade') : undefined;
         const entrancedForm = (m.statusDurations?.entranced ?? 0) > 0 ? m.entrancement?.form : undefined;
-        const monster = new Monster(m.loc.x, m.loc.y, m.allegiance?.dominated && m.dominatedForm ? m.dominatedForm : entrancedForm ?? bladeData ?? data);
+        const monster = new Monster(m.loc.x, m.loc.y, m.polymorph?.form ?? m.form ?? (m.allegiance?.dominated && m.dominatedForm ? m.dominatedForm : entrancedForm ?? bladeData ?? data));
         monster.id = m.id;
         monster.hp = m.hp;
         monster.maxHp = m.maxHp;
@@ -8601,6 +8646,31 @@ export class Game {
         monster.onHitDuration = m.onHitDuration ?? 0;
         monster.statusImmunities = new Set<StatusId>(m.statusImmunities ?? []);
         monster.statusResistTurns = { ...(m.statusResistTurns ?? {}) };
+        if (m.polymorph) {
+            const p = m.polymorph;
+            monster.polymorphed = true;
+            monster.movementSpeed = p.movementSpeed;
+            monster.attackSpeed = p.attackSpeed;
+            monster.polymorphKeepsSpeed = p.keepsSpeed;
+            monster.ticksUntilTurn = p.ticksUntilTurn;
+            monster.wasNegated = p.wasNegated;
+            monster.seized = p.seized;
+            monster.seizing = p.seizing;
+            monster.boundToPlayer = p.boundToPlayer;
+            monster.doesNotTrackLeader = p.doesNotTrackLeader;
+            monster.machineHome = p.machineHome;
+            monster.isDormant = p.isDormant;
+            monster.givenUpOnScent = p.givenUpOnScent;
+            monster.safetySnapshot = p.safetySnapshot?.map(row => [...row]) ?? null;
+            monster.targetWaypointIndex = p.targetWaypointIndex;
+            monster.waypointAlreadyVisited = p.waypointAlreadyVisited ? [...p.waypointAlreadyVisited] : null;
+            monster.spawnLoc = { ...p.spawnLoc };
+            monster.falling = p.falling;
+            monster.preplaced = p.preplaced;
+            monster.deathEffectTriggered = p.deathEffectTriggered;
+            monster.carriedItem = p.carriedItem ? this.deserializeItem(p.carriedItem) : null;
+            monster.poisonAmount = m.poisonAmount ?? 0; // CE retains the inactive counter.
+        }
         return monster;
     }
 
@@ -8624,6 +8694,8 @@ export class Game {
         ensureEntityIdAbove(Math.max(
             0,
             ...snapshot.monsters.map((m) => m.id),
+            ...(snapshot.dormantMonsters ?? []).filter(m => m.polymorph).map(m => m.id),
+            ...[...snapshot.monsters, ...(snapshot.dormantMonsters ?? [])].map(m => m.polymorph?.carriedItem?.id ?? 0),
             ...snapshot.items.map((it) => it.id),
             ...snapshot.player.inventory.map((it) => it.id)
         ));
@@ -9971,9 +10043,9 @@ export class Game {
         return true;
     }
 
-    /** CE Movement.c:728-742. Shared by domination and W-11 magical rescue;
-     * ordinary key/cage rescue keeps its existing V-2b-5 entry point. */
-    public becomeAllyWith(monster: Monster): void {
+    /** CE Monsters.c:4103-4157. Shared by W-17 conversion and ONLY the
+     * captive branch of W-19; unAlly itself does not call this. */
+    private demoteMonsterFromLeadership(monster: Monster): void {
         let replacement: Monster | null = null;
         // Revisited levels retain a cached array until the next departure; it
         // can contain already removed entities. The live current lists win.
@@ -9996,6 +10068,12 @@ export class Game {
             }
         }
         for (const follower of dormant) if (follower !== monster && follower.leader === monster) follower.leader = null;
+    }
+
+    /** CE Movement.c:728-742. Shared by domination and W-11 magical rescue;
+     * ordinary key/cage rescue keeps its existing V-2b-5 entry point. */
+    public becomeAllyWith(monster: Monster): void {
+        this.demoteMonsterFromLeadership(monster);
         if (monster.carriedItem) {
             const candidates = captiveItemDropCandidates(this, monster.loc, this.items);
             // CE placeItemAt(INVALID_POS) uses randomMatchingLocation as a final

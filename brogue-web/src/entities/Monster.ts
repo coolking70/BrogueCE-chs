@@ -4,6 +4,7 @@
  */
 
 import { Creature } from './Creature';
+import { knownPolymorphSpecies, polymorphHP, polymorphSpecies } from '../engine/Combat/Polymorph';
 import { Player } from './Player';
 import { rng } from '../engine/Random';
 import type { Game } from '../engine/Core/Game';
@@ -257,6 +258,14 @@ export class Monster extends Creature {
      */
     public carriedItem?: Item | null;
     public mutation?: MutationData;
+    /** W-19: effect/save tag, not a species or generation flag. */
+    public polymorphed = false;
+    public wasNegated = false;
+    /** Carried creatures are detached payloads, never active occupants. W-19
+     * discards them without death/loot; full enter-summons lifecycle is separate. */
+    public carriedMonster: Monster | null = null;
+    /** CE computes current speed BEFORE initializeStatus clears haste/slow. */
+    public polymorphKeepsSpeed = false;
     public description: string = '';
     /**
      * P4-4：CE MA_DF_ON_DEATH（Combat.c:1963-1990）的一次性触发闸门。
@@ -423,6 +432,88 @@ export class Monster extends Creature {
         }
     }
 
+    /** CE Items.c:4572-4631. Replace info IN PLACE; never construct/spawn or
+     * copy an entity. Only captives demote their leadership, after status reset. */
+    public polymorph(demote: () => void): boolean {
+        if (!knownPolymorphSpecies(this.typeId) || this.hasBehavior('MONST_INANIMATE') || this.hasBehavior('MONST_TURRET') || this.isInvulnerable()) return false;
+        // Preserve C operator precedence: stealing resets state even if not fleeing.
+        if ((this.state === MonsterState.FLEEING && (this.hasBehavior('MONST_MAINTAINS_DISTANCE')
+            || this.hasBehavior('MONST_FLEES_NEAR_DEATH'))) || this.hasAbility('MA_HIT_STEAL_FLEE')) {
+            this.state = MonsterState.HUNTING;
+        }
+        // unAlly is NOT demoteMonsterFromLeadership. Other monsters' pointers
+        // to this entity survive; hostile followers retain their own leader too.
+        if (this.isAlly) {
+            this.isAlly = false;
+            this.leader = null;
+            this.state = MonsterState.HUNTING;
+        }
+        this.dominated = false;
+        this.mutation = undefined;
+        this.carriedMonster = null; // CE freeCreature, not killCreature.
+        const data = polymorphSpecies(this.typeId, rng);
+        const hp = polymorphHP(this.hp, this.maxHp, data.hp);
+        const hasted = this.hasStatus('hasted') || this.hasStatus('haste');
+        const slowed = this.hasStatus('slowed');
+        this.typeId = data.id;
+        this.name = ItemLoader.translateName(data.name);
+        this.char = data.char;
+        this.color = data.color;
+        this.description = data.description ?? '';
+        this.maxHp = data.hp;
+        this.hp = hp;
+        this.damageString = data.damage;
+        this.accuracy = data.accuracy ?? 100;
+        this.defense = data.defense ?? 0;
+        this.regenTurns = data.regen ?? 0; // web counter uses turns, not CE milliturns.
+        this.baseMoveSpeed = data.moveSpeed ?? 100;
+        this.baseAttackSpeed = data.attackSpeed ?? 100;
+        this.movementSpeed = this.baseMoveSpeed;
+        this.attackSpeed = this.baseAttackSpeed;
+        if (hasted) { this.movementSpeed = Math.trunc(this.movementSpeed / 2); this.attackSpeed = Math.trunc(this.attackSpeed / 2); }
+        if (slowed) { this.movementSpeed *= 2; this.attackSpeed *= 2; }
+        this.polymorphKeepsSpeed = true;
+        this.behaviorFlags = new Set(data.behaviorFlags ?? []);
+        this.abilityFlags = new Set(data.abilityFlags ?? []);
+        this.bolts = [...(data.bolts ?? [])];
+        this.abilities = new Set(data.abilities ?? []);
+        this.onHitStatus = data.onHitStatus;
+        this.onHitChance = data.onHitChance ?? 0;
+        this.onHitDuration = data.onHitDuration ?? 0;
+        this.statusImmunities = new Set(data.statusImmunities ?? []);
+        this.statusResistTurns = { ...data.statusResistTurns };
+        // Web loot probabilities represent an existing inventory entitlement;
+        // polymorph neither generates nor discards items (CE carriedItem stays).
+        this.wasNegated = false;
+        this.statusDurations = {};
+        this.maxShield = 0; // maxStatus is reset; poisonAmount is NOT reset in CE.
+        this.polymorphed = true;
+        this.syncFlagDerivedStatuses();
+        if (this.hasBehavior('MONST_FIERY')) (this.statusDurations as Record<string, number>).burning = PERMANENT_STATUS_DURATION;
+        if (this.hasBehavior('MONST_INVISIBLE')) this.setStatusDuration('invisible', PERMANENT_STATUS_DURATION);
+        if (this.isCaged) {
+            demote();
+            this.state = MonsterState.HUNTING;
+            this.isCaged = false;
+        }
+        this.seized = this.seizing = false;
+        this.ticksUntilTurn = Math.max(this.ticksUntilTurn, 101);
+        return true;
+    }
+
+    /** Preserve CE's post-polymorph cached speed through unrelated statuses.
+     * Explicit haste/slow writes and their expiration return to normal rules. */
+    public override setStatusDuration(id: StatusId, duration: number): void {
+        if (id === 'haste' || id === 'hasted' || id === 'slowed') this.polymorphKeepsSpeed = false;
+        super.setStatusDuration(id, duration);
+    }
+
+    public override refreshSpeeds(): void {
+        if (this.polymorphKeepsSpeed && !this.hasStatus('hasted') && !this.hasStatus('haste') && !this.hasStatus('slowed')) return;
+        this.polymorphKeepsSpeed = false;
+        super.refreshSpeeds();
+    }
+
     public hasBehavior(flag: string): boolean {
         return this.behaviorFlags.has(flag);
     }
@@ -453,6 +544,8 @@ export class Monster extends Creature {
 
     /** 见 Creature.isStatusPermanent：带旗标者的派生状态不随回合衰减。 */
     protected override isStatusPermanent(id: StatusId): boolean {
+        if (this.polymorphed && (id as string) === 'burning') return this.hasBehavior('MONST_FIERY');
+        if (this.polymorphed && id === 'invisible') return this.hasBehavior('MONST_INVISIBLE');
         if (id === 'levitating') return this.hasBehavior('MONST_FLIES');
         if (id === 'immune_fire') return this.hasBehavior('MONST_IMMUNE_TO_FIRE');
         return false;
@@ -1032,7 +1125,9 @@ export class Monster extends Creature {
             moveSpeed: this.baseMoveSpeed, attackSpeed: this.baseAttackSpeed,
             goldDropChance: this.goldDropChance, itemDropChance: this.itemDropChance,
             abilities: [...this.abilities], behaviorFlags: [...this.behaviorFlags],
-            abilityFlags: [...this.abilityFlags], bolts: [...this.bolts] };
+            abilityFlags: [...this.abilityFlags], bolts: [...this.bolts], description: this.description,
+            onHitStatus: this.onHitStatus, onHitChance: this.onHitChance, onHitDuration: this.onHitDuration,
+            statusImmunities: [...this.statusImmunities], statusResistTurns: { ...this.statusResistTurns } };
     }
 
     public takeTurn(game: Game, stealthRange: number) {

@@ -132,8 +132,36 @@ describe('W-1 caster/contact/landing/outcome contracts with W-3 actual routes', 
         expect(rng.randomNumbersGenerated).toBe(before);
     });
 
+    // W-19 supersedes only the POLYMORPH member of W-1's type-only guard.
+    // CE Items.c:4572-4634/5260-5268 now changes the actual contact in place;
+    // PLENTY below remains deferred to W-20 and retains its no-write contract.
+    it('W-19 polymorph preserves contact identity but replaces form/status with one species draw', () => {
+        const game = scene(), target = rat(6);
+        Object.assign(game, { updateVision: vi.fn() }); // This fixture has no FOV renderer.
+        game.monsters.push(target);
+        target.hp = 3; // CE rat max=6 -> jackal max=8: max(4 proportional, 5 same injury)=5.
+        target.isAlly = true;
+        target.setStatusDuration('hasted', 8);
+        const id = target.id, loc = target.loc;
+        const item = ItemLoader.spawnWand('wand_of_slowness', 4, 5)!;
+        const bolt = { ...getBoltForItem('wand_of_slowness')!, effect: BoltEffect.POLYMORPH, ceType: CEBoltType.POLYMORPH };
+        const unchanged = () => JSON.stringify({ player: game.player, grid: game.grid, item, tick: timeSystem.currentTick });
+        const before = unchanged(), draw = vi.spyOn(rng, 'randRange').mockReturnValue(3); // CE MK_JACKAL.
+        try {
+            const result = game.zapBoltFromPlayer(bolt, item);
+            expect(result.caster).toBe(game.player);
+            expect(result.hits[0]!.creature).toBe(target);
+            expect(result.outcome).toEqual({ autoID: true, casterMovement: null });
+            expect(target).toMatchObject({ id, typeId: 'jackal', hp: 5, maxHp: 8, isAlly: false, moveSpeed: 25, attackSpeed: 50, ticksUntilTurn: 101 });
+            expect(target.statusDurations).toEqual({});
+            expect(target.loc).toBe(loc);
+            expect(game.monsters).toEqual([target]);
+            expect(draw).toHaveBeenCalledExactlyOnceWith(1, 67);
+            expect(unchanged()).toBe(before);
+        } finally { draw.mockRestore(); }
+    });
+
     it.each([
-        [BoltEffect.POLYMORPH, CEBoltType.POLYMORPH],
         [BoltEffect.PLENTY, CEBoltType.PLENTY],
     ])('new effect %s is type-only through the real player exit: no HP/location/entity/status/RNG changes', (effect, ceType) => {
         const game = scene(), target = rat(6);

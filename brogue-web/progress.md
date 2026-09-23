@@ -971,3 +971,21 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 首次拟最终build发现新增测试2处直接访问private needsRender（TS2341）；运行时63项已通过但不冒充build通过。回归主动中断exit130，日志/SHA归档prefinal-types，修测试访问方式后完整复跑。另补CE Combat1173水生近战拒绝悬浮目标早于解除的真实门，以及Items5210玩家反射火击中旁观者不走moralAttack的用例。共65项；物理攻击拒绝门明列为共用Combat行为变化。
 - 再次收尾发现W-17实际形态保存仅覆盖dominated/刀刃，普通被催眠鳗鱼读档会丢RESTRICTED_TO_LIQUID、豺狼会丢50 tick速度。build已过但回归主动中断exit130（prefinal-save-form），复用W-17形态字段抽出snapshotForm，催眠tag在受控期间保存真实旗标/速度。补两种生物读档后的动作断言，共67项；此为前轮存档原语范围缺口，未扩改全体旧档或生成。
 - 最终保存修复后vue-tsc通过，W18(67)+W17(43)共110项定向通过。浏览器冷启动后11场景完整通过；热更新服务器上的一次重跑命中0≠23（日志另存），没有据此改生产逻辑。最终只使用冷启动完整场景结果；随后重新负变异还原与冻结全闭包。
+
+
+## 2026-09-23 W-19 变形
+- 按用户要求严格执行 w-19.prompt/W-0 W-19 行，使用 develop-web-game 技能。生成表/种类/频率与分裂保持不动。
+- CE实码纠正：普通unAlly只清自身leader，不另选首领；只有captive变形调用demote。先按旧haste/slow计算速度，再initializeStatus清全部状态；新隐身状态决定autoID，无FOV门。
+- 原地替换物种info，拒绝抽样沿现有67项CE投影；保留实体id/位置/携物/非例外关系，清mutation/carriedMonster/能力状态，HP按千分比及原伤量取优。
+- 待办：编译CE黄金值、逐字段与死亡/保存测试、浏览器实测、R+S最终冻结门禁及报告；W8整体克隆缺口只登记修法，留W20。
+- 67行CE物种投影逐项核实，20个输出排除项；编译未改写的polymorph/unAlly/initializeStatus，16256组HP/旧haste+slow黄金值匹配。新测试52项通过；前批W17/W18/P1-28/P4-3/4/5共231项通过（新增等待测试后由最终闭包再覆盖）。
+- 唯一初稿测试红灯为confirmArcanaSelection夹具拼错，应为confirmArcanaTarget；build也检出测试房baseline漏声明polymorph类型。修正夹具/类型，无既有断言改动。
+- 浏览器8场景通过，console/page错误0，已检查全部整页截图；技能客户端无头/有头canvas导出仍黑，明确不计作视觉通过。Chromium沙箱启动被OS拒绝，经自动审批允许本机验证后通过。
+- 7个负变异（纯比例血量、所有盟友降级首领、忽略旧haste、更换实体id、保留旧状态、autoID误用可见性、丢形态存档）各打红1/1/3/1/9/2/2项；finally还原文件、前后SHA一致。
+- 最终R=113，S并集121文件；120显式回归+独立drift。全部生产/测试/scripts/progress冻结后运行w19-final-check；后续只写报告/证据，最终逐文件及SHA见w-19.report.md。
+- 后续W20：从现有实体完整复制并独立复制可变容器，再按CE克隆例外覆盖；本轮trySplitMonster未改。W24仍负责魔杖身份/入池。完整carriedMonster寄宿复活、通用死亡后群体继任、全levels缓存JSON保存、未建模的creatureMode/学习计数仍属既有边界；本轮不虚构这些系统已完成。
+- 首次拟最终build通过，闭包中主动中断exit130（非超时）：审查发现普通怪物在首次变形前读档会因缺typeId/旗标而把中文名当物种，既可能抽回原形也可能漏免疫门。保存全部怪物现有snapshotForm，旧档只按完整英文/当前本地化物种名确定性匹配原目录（不按字形/深度猜）；无法识别的旧实体保留旧数据并拒绝变形，零抽签/零写入。历史已丢失的突变旗标无法无损推回。新旧读档行为变化在报告显列；全套重新冻结，不复用本次中途结果。
+- 保存源身份修复后W16/17/18/19共213项通过；新增用例确认原盟友变形后等待101tick，再走真实Combat入口攻击玩家。W19最终57项通过，冷启动浏览器8场景再通过。负变异已在修复源码上重跑并恢复；接下来第二次完整冻结build/120回归文件/drift，仍不拼接中途结果。
+- 目视发现并登记：Appearance.monsterAppearance在可见格直接绘制字形，phantom隐形形态仍显示p；状态/目标资格/autoID正确，不宣称隐形视觉通过。此为已有通用外观/文本输出缺口，详见W19报告§10，未改UI实现。
+- 第二次冻结完整运行：build/drift绿，回归119/120文件通过、1失败，合计2200passed/8skipped/5todo/1failed；前后307输入SHA一致。唯一红灯为W1 BoltContract仍将POLYMORPH列为type-only零变化；实际先因新形态刷新调用撞上简化夹具缺FOV（不能谎称HP断言已经执行）。本轮效果完成使W1这条留形期望过期，拆出POLYMORPH为CE实际身份/HP/旧haste/状态/单次抽签守卫；PLENTY原零变化测试不动，原扫描守卫不动。该既有测试精确纳入允许翻正，日志原JSON/SHA保存prefinal-w1-contract；第三次重新完整冻结复跑，不拼接旧绿文件。
+- W1翻正后BoltContract8项+W19 57项共65项通过；S(C)=29、物种/保存补查57，R113/总121不变。生产代码没有再改，仅这一份过期语义测试和验收脚本白名单更新；其余129份既有测试不动。第三次完整冻结后仅回填报告和证据。

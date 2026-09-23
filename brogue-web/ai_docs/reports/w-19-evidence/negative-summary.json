@@ -1,0 +1,65 @@
+[
+  {
+    "name": "hp-proportion-only",
+    "file": "src/engine/Combat/Polymorph.ts",
+    "exit": 1,
+    "failed": 1,
+    "passed": 56,
+    "shaBefore": "6592a10734a22bfee3995576789dfae2fdf08729fe9b4697cbf892d4702a216b",
+    "shaAfter": "6592a10734a22bfee3995576789dfae2fdf08729fe9b4697cbf892d4702a216b"
+  },
+  {
+    "name": "demote-every-ally",
+    "file": "src/entities/Monster.ts",
+    "exit": 1,
+    "failed": 1,
+    "passed": 56,
+    "shaBefore": "fafd94bf6cd50d423bc0f7bea91611a81cc15f40746727021d11c5fd905536a6",
+    "shaAfter": "fafd94bf6cd50d423bc0f7bea91611a81cc15f40746727021d11c5fd905536a6"
+  },
+  {
+    "name": "lose-old-haste",
+    "file": "src/entities/Monster.ts",
+    "exit": 1,
+    "failed": 3,
+    "passed": 54,
+    "shaBefore": "fafd94bf6cd50d423bc0f7bea91611a81cc15f40746727021d11c5fd905536a6",
+    "shaAfter": "fafd94bf6cd50d423bc0f7bea91611a81cc15f40746727021d11c5fd905536a6"
+  },
+  {
+    "name": "change-entity-id",
+    "file": "src/entities/Monster.ts",
+    "exit": 1,
+    "failed": 1,
+    "passed": 56,
+    "shaBefore": "fafd94bf6cd50d423bc0f7bea91611a81cc15f40746727021d11c5fd905536a6",
+    "shaAfter": "fafd94bf6cd50d423bc0f7bea91611a81cc15f40746727021d11c5fd905536a6"
+  },
+  {
+    "name": "keep-old-status",
+    "file": "src/entities/Monster.ts",
+    "exit": 1,
+    "failed": 9,
+    "passed": 48,
+    "shaBefore": "fafd94bf6cd50d423bc0f7bea91611a81cc15f40746727021d11c5fd905536a6",
+    "shaAfter": "fafd94bf6cd50d423bc0f7bea91611a81cc15f40746727021d11c5fd905536a6"
+  },
+  {
+    "name": "autoid-old-visibility",
+    "file": "src/engine/Core/Game.ts",
+    "exit": 1,
+    "failed": 2,
+    "passed": 55,
+    "shaBefore": "8cef90459200992dfc569097bb20b84afa0de59d4d7ce401ef01ae57153aeccb",
+    "shaAfter": "8cef90459200992dfc569097bb20b84afa0de59d4d7ce401ef01ae57153aeccb"
+  },
+  {
+    "name": "lose-save-form",
+    "file": "src/engine/Core/Game.ts",
+    "exit": 1,
+    "failed": 2,
+    "passed": 55,
+    "shaBefore": "8cef90459200992dfc569097bb20b84afa0de59d4d7ce401ef01ae57153aeccb",
+    "shaAfter": "8cef90459200992dfc569097bb20b84afa0de59d4d7ce401ef01ae57153aeccb"
+  }
+]

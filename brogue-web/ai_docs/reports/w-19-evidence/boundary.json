@@ -1,0 +1,132 @@
+{
+  "head": "e6f6e99f7ad51ed142ceb5ad762f503289fac37c",
+  "changedGameMethods": [
+    "createMonsterFromSnapshot",
+    "generateTestDepth",
+    "applyBoltEffect",
+    "negateCreatureMagic",
+    "serializeMonster",
+    "deserializeMonster",
+    "loadSnapshot",
+    "becomeAllyWith"
+  ],
+  "addedGameMethods": [
+    "demoteMonsterFromLeadership"
+  ],
+  "unchangedFiles": {
+    "src/data/arcana.json": {
+      "sha": "e7a48053679eeccac39fb3518d811b2d757384fa734f12371a6fa2e5b9a88224",
+      "equal": true
+    },
+    "src/data/monsters.json": {
+      "sha": "996707468fd131c0ba59e4fe0f08f0877087f2d857d89b40acc552704c0d1f38",
+      "equal": true
+    },
+    "src/data/mutations.json": {
+      "sha": "b017cbaf1a4c13c84c2c32bc4200ae1cd28dbd2648f55ff33af3a67ba8583775",
+      "equal": true
+    },
+    "src/engine/Combat/BoltCatalog.ts": {
+      "sha": "76f7e6329138415cf4b9037f038e6e175365d61e7addf778aab2a12f9e307360",
+      "equal": true
+    },
+    "src/engine/Combat/BoltTrajectory.ts": {
+      "sha": "ca17804d3fcaa97d6087ee665ecb0ca643d6129eef6dac6e74ff9914186e12f6",
+      "equal": true
+    },
+    "src/engine/Items/Item.ts": {
+      "sha": "a76c40ebcf3fb2988cd2ba5d629a8d1725070c984361c839a24bb10f878eed9e",
+      "equal": true
+    },
+    "src/engine/Items/ItemLoader.ts": {
+      "sha": "c1f94dbd4be3ff95dbe6f6355cae0c84b685c2b72f2d5f760636f1c225186a65",
+      "equal": true
+    },
+    "src/engine/Items/ArcanaInstance.ts": {
+      "sha": "7d81a4ae22cb648547a96372ab9cd034dffc54361b4579b9087d24bfb7acc6e8",
+      "equal": true
+    },
+    "src/engine/Items/ArcanaRecharge.ts": {
+      "sha": "d3232b776d3e6814225f8c4bf2c76d1aa743bb515a8070a1b55886e23a67d29d",
+      "equal": true
+    },
+    "src/engine/Items/ArcanaEnchantment.ts": {
+      "sha": "eca65a994903853aaaf5fab0ac885c923e60fc39adc36395841b46c351359c15",
+      "equal": true
+    },
+    "src/engine/Random.ts": {
+      "sha": "9a6931acdd5037497450f1dfa2bf04e8ae43212917bff15560775b73a11036ce",
+      "equal": true
+    },
+    "src/engine/Environment/Gas.ts": {
+      "sha": "2373e4e5c2dac04eb5787c97441d297e0bba986533dfd184a27611aa0338d5f5",
+      "equal": true
+    },
+    "src/engine/Map/DungeonFeature.ts": {
+      "sha": "2541d90a740f3a37f800d1e11e3243ebf8638dc57230db33aa40b2e95fee2ebc",
+      "equal": true
+    },
+    "src/engine/Map/DungeonFeatureCatalog.ts": {
+      "sha": "efea43d5ff36b2b5522ba835359ba4ff4a017e3592b9abdc15f18bc8c99c777f",
+      "equal": true
+    },
+    "src/engine/Map/TerrainCatalog.ts": {
+      "sha": "134404ac54d84759728c420a553305333c1e7fc4335168fef2360590d5816076",
+      "equal": true
+    },
+    "src/engine/Map/Promotion.ts": {
+      "sha": "cc4634ce84ee849b901385ff6d1d587158d72e2adafca0a683deffce7175a65a",
+      "equal": true
+    },
+    "src/engine/Map/Grid.ts": {
+      "sha": "e511ee970b52f482dcfec34b7ac7894400eab381a04da856d5f18bf40874a2d1",
+      "equal": true
+    },
+    "src/engine/Generator/BlueprintEngine.ts": {
+      "sha": "77d7854ec04e13ed822e828a1454b8fe080f98b91662ddf4a8b9e027db96ebec",
+      "equal": true
+    },
+    "src/engine/Map/AutoGenerator.ts": {
+      "sha": "599779a71cea1db9a3857b68f50d72a61054d4815ca026d75c6473f9264947f5",
+      "equal": true
+    },
+    "src/engine/Map/WaypointMap.ts": {
+      "sha": "cba9a5086432a70a996f20fd458ef57ff8344e1c3d89dc46e57981f2b7c5b135",
+      "equal": true
+    },
+    "src/entities/Player.ts": {
+      "sha": "486e2f11f98d128b0655fbe71194ffff3dd7187569a764c524328b1ec9a2973e",
+      "equal": true
+    },
+    "src/entities/Creature.ts": {
+      "sha": "2b2510f42c8fb7b7160cfc9e8ec480c874774dd87806cdb4972bca7482cb15b2",
+      "equal": true
+    },
+    "src/engine/Combat/Combat.ts": {
+      "sha": "7fb8f38800805f6b526cf2fce68fa84a330b3d0b5898126657eb8c9730f257a8",
+      "equal": true
+    },
+    "src/test/fixtures/generation_baseline.json": {
+      "sha": "1549a4c5aae041ff5c4a7653ea22d07af88aecaf3740861b0cdb90a4656d5820",
+      "equal": true
+    }
+  },
+  "protectedMethods": {
+    "generateDepth": true,
+    "objectiveTimeBlock": true,
+    "finishTurnEpilogue": true,
+    "triggerDeathFeatures": true,
+    "dropMonsterLoot": true,
+    "removeDeadMonsters": true,
+    "playerTurnEnded": true,
+    "tickCreatureStatuses": true,
+    "rebuildWaypoints": true,
+    "tickArcanaResources": true,
+    "useArcanaItem": true,
+    "castMonsterBolt": true,
+    "findNearbySpawnSpot": true,
+    "spawnHordeAt": true,
+    "summonMinionsFor": true,
+    "trySplitMonster": true
+  }
+}

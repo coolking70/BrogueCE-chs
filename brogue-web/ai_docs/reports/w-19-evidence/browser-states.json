@@ -1,0 +1,547 @@
+{
+  "states": [
+    {
+      "name": "targeting",
+      "state": {
+        "text": {
+          "mode": "arcana_target",
+          "enchantmentTargets": [],
+          "arcanaTarget": {
+            "name": "象牙魔杖",
+            "x": 8,
+            "y": 5
+          },
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 8,
+              "y": 5,
+              "hp": 6,
+              "typeId": "rat",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": true,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "monsters": [
+          {
+            "id": 45,
+            "type": "rat",
+            "hp": 6,
+            "maxHp": 6,
+            "ally": true,
+            "leader": null,
+            "status": {},
+            "move": 100,
+            "attack": 100,
+            "ticks": 100000,
+            "key": null
+          }
+        ],
+        "charges": 3
+      }
+    },
+    {
+      "name": "ally-to-dragon",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 2,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "龙",
+              "x": 8,
+              "y": 5,
+              "hp": 150,
+              "typeId": "dragon",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 99900,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "monsters": [
+          {
+            "id": 45,
+            "type": "dragon",
+            "hp": 150,
+            "maxHp": 150,
+            "ally": false,
+            "leader": null,
+            "status": {
+              "immune_fire": 1000
+            },
+            "move": 50,
+            "attack": 200,
+            "ticks": 99900,
+            "key": null
+          }
+        ],
+        "charges": 2
+      }
+    },
+    {
+      "name": "injured-hasted",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 2,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "豺狼",
+              "x": 8,
+              "y": 5,
+              "hp": 4,
+              "typeId": "jackal",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100000,
+              "poisonAmount": 4,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "monsters": [
+          {
+            "id": 47,
+            "type": "jackal",
+            "hp": 4,
+            "maxHp": 8,
+            "ally": false,
+            "leader": null,
+            "status": {},
+            "move": 25,
+            "attack": 50,
+            "ticks": 100000,
+            "key": null
+          }
+        ],
+        "charges": 3
+      }
+    },
+    {
+      "name": "restored",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "豺狼",
+              "x": 8,
+              "y": 5,
+              "hp": 4,
+              "typeId": "jackal",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100000,
+              "poisonAmount": 4,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "monsters": [
+          {
+            "id": 47,
+            "type": "jackal",
+            "hp": 4,
+            "maxHp": 8,
+            "ally": false,
+            "leader": null,
+            "status": {},
+            "move": 25,
+            "attack": 50,
+            "ticks": 100000,
+            "key": null
+          }
+        ],
+        "charges": 3
+      }
+    },
+    {
+      "name": "invisible-form",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "幽灵",
+              "x": 8,
+              "y": 5,
+              "hp": 35,
+              "typeId": "phantom",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "monsters": [
+          {
+            "id": 52,
+            "type": "phantom",
+            "hp": 35,
+            "maxHp": 35,
+            "ally": false,
+            "leader": null,
+            "status": {
+              "levitating": 1000,
+              "invisible": 1000
+            },
+            "move": 50,
+            "attack": 200,
+            "ticks": 100000,
+            "key": null
+          }
+        ],
+        "charges": 3
+      }
+    },
+    {
+      "name": "captive-keeps-key",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "豺狼",
+              "x": 8,
+              "y": 5,
+              "hp": 8,
+              "typeId": "jackal",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "monsters": [
+          {
+            "id": 54,
+            "type": "jackal",
+            "hp": 8,
+            "maxHp": 8,
+            "ally": false,
+            "leader": null,
+            "status": {},
+            "move": 50,
+            "attack": 100,
+            "ticks": 100000,
+            "key": 55
+          }
+        ],
+        "charges": 3
+      }
+    },
+    {
+      "name": "death-drops-key",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [],
+          "items": [
+            {
+              "name": "铁钥匙",
+              "x": 8,
+              "y": 5
+            }
+          ]
+        },
+        "monsters": [],
+        "charges": 3
+      }
+    },
+    {
+      "name": "reflection",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "石像守卫",
+              "x": 8,
+              "y": 5,
+              "hp": 1000,
+              "typeId": "stone_guardian",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "monsters": [
+          {
+            "id": 57,
+            "type": "stone_guardian",
+            "hp": 1000,
+            "maxHp": 1000,
+            "ally": false,
+            "leader": null,
+            "status": {
+              "immune_fire": 1000
+            },
+            "move": 100,
+            "attack": 100,
+            "ticks": 100000,
+            "key": null
+          }
+        ],
+        "charges": 3
+      }
+    }
+  ],
+  "errors": []
+}
