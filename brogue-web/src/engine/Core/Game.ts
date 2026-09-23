@@ -54,6 +54,7 @@ import {
     triggerCreatureTrapLayers,
     consumeTrapTile,
     tunnelize,
+    spawnObstruction,
     runPromotionUpdate,
     type PromotionUpdateResult,
 } from '../Map/Promotion';
@@ -4340,7 +4341,7 @@ export class Game {
                 this.observeBoltReflection(reflection);
             },
             onCell: (pos, hit) => {
-                if (hit) {
+                if (hit && result.effect !== BoltEffect.OBSTRUCTION) {
                     const contact = createBoltResult(result.bolt, result.caster, result.origin, result.aimPos, [pos], [hit]);
                     autoID = this.applyBoltEffect(contact, item, alreadyReflected) || autoID;
                     applied = true;
@@ -4686,6 +4687,28 @@ export class Game {
             case BoltEffect.CONJURATION: {
                 if (known) this.spawnFloatingText('Blade!', this.player.loc.x, this.player.loc.y - 1, 0xaaddff);
                 logMiss('staff.phantom_force', `Phantom force responds to ${item.displayName}.`, '#aaddff');
+                break;
+            }
+
+            case BoltEffect.OBSTRUCTION: {
+                if (!result.landingPos) break;
+                const e = resolveCEBoltMagnitude(CEBoltType.OBSTRUCTION, item.category === ItemCategory.STAFF
+                    ? { kind: 'staff', enchantment: item.enchantment } : { kind: 'catalog' }).value;
+                const world = this.boltWorld(result.caster);
+                const placed = spawnObstruction(this.grid, result.landingPos.x, result.landingPos.y, e,
+                    pos => !!world.creatureAt(pos));
+                // A visible effect is not required: CE detonateBolt always autoIDs.
+                autoID = true;
+                if (placed.pathingChanged) {
+                    this.loopMap = analyzeLoopMap(this.grid);
+                    this.updatedSafetyMapThisTurn = false;
+                    this.autoPath = [];
+                    this.isMouseTraveling = false;
+                    // CE only rebuilds waypoints for tunneling, not obstruction.
+                    // Existing rolling refresh reads the new passability.
+                }
+                this.updateVision();
+                this.needsRender = true;
                 break;
             }
 

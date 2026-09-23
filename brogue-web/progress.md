@@ -900,3 +900,14 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 后续：W-25 加 tunneling 物品身份/入池；既有地形外观/末帧刷新另轮处理；历史存档无 IMPREGNABLE 信息无法恢复，新增存档已保留。
 - 收尾审计发现并关闭 P4-10 原语缺口：setUpWaypoints 无条件隔离 RNG 只适合进层；CE Items.c:5558 运行期掘地没有该隔离。新增 duringPlay 默认false参数，掘地传true，生成/重访/读档默认保持原随机流。增加运行期洗牌消耗与默认隔离对照守卫。此前复跑以130主动中断，原日志/哈希保存至 prefinal-waypoint-gap，不计作最终结果；修改后重新完整冻结复跑。
 - RNG入口修正后43项W-13与7项P4-10定向测试通过。最终重新运行仍是119文件闭包（118显式回归+独立drift），采用4 workers；如有超时保持原上限并整文件串行复跑。所有早于本次冻结的结果均不拼接进最终统计。
+
+## 2026-09-23 W-14 阻障效果
+- 按 w-14.prompt/W-0 执行；CE Items.c:5486-5493 的 detonateBolt 动态复制 DF_FORCEFIELD，pathDF/targetDF 仍为 null。DF 原行 id51、SURFACE、100/50、flags0，未加入生成表/蓝图/物品池。
+- Promotion.spawnObstruction 使用 CE 固定点表计算概率衰减（E2/3/8=47/38/12），允许封路。IMPREGNABLE 不参与铺设判断；T_OBSTRUCTS_SURFACE_EFFECTS 决定扩散/铺设。生物所在落格即时 FORCEFIELD→MELT→NOTHING，包括飞行者。
+- 发现 C-4b refreshCell 不入 web DF 签名的既有缺口，本轮仅在新力场语义入口补占位消融；没有把生成/卷轴共用 DF 改成全局即时效果。Grid 的旧启发式把力场当可走，在铺设与 promoteTile 力场消融时局部同步缓存；不改 Grid 的全局规则。
+- 阻障不照搬 W-13 的 waypoint 重建：CE detonateBolt 只有掘地调用 setUpWaypoints。保留滚动刷新，清自动路径并更新 loop/safety/vision，不引入额外洗牌 RNG。
+- c_4b 目录两条旧计数/闭包断言按新增原行翻正 134→135、登记阻障起点，保持精确集合相等与所有扫描守卫。W-14 24 项与 c_4b/c_4c 共76项定向通过；初版新测试中的 null/undefined、FOV夹具/私有字段访问已纠正。
+- 最终反查 R=118、S并集119文件；将执行118个显式回归文件、build、独立test:drift；不改timeout、不重采基线，SHA-256冻结见w-14-evidence。浏览器与反向变异结果、逐文件最终门禁回填w-14.report.md。
+- 后续：staff_of_obstruction 身份、frequency和特殊回电留 W-26；通用 DF refreshCell 的其他即时环境效果仍是既有缺口；碎墙卷轴旧 IMPREGNABLE 注释/检查及力场专属外观另轮处理，不在本轮夹带。
+- 浏览器5场景（封路、消融后键盘走入、E8、受保护地板、占位消融）状态断言通过、页面/控制台错误0。整页截图已检查：力场沿用现有空白默认外观，范围可由地板缺口辨认，不能宣称绿色水晶专属视觉已实现。既有渲染守卫不改。
+- 四个负变异分别触发1/3/1/4项失败；还原前后Promotion SHA-256一致。源码、测试、脚本与progress已冻结，接下来只补本轮报告和运行证据；最终结果不使用中途快照。

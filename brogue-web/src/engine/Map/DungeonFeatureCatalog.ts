@@ -99,6 +99,7 @@ export enum DF {
                                           // tile GRASS 同轮已具备）
     DF_FOLIAGE                     = 8,   // :1477（C-6：表 index 8 的 DFType，
                                           // Globals.c:613；tile FOLIAGE 同轮已具备）
+    DF_FORCEFIELD                  = 51,  // :1526（W-14：detonateBolt 动态复制，非生成起点）
     DF_FORCEFIELD_MELT             = 52,  // :1527（B-3：FORCEFIELD.promoteType
                                           // 的载体，Globals.c:675 目录行）
     DF_SACRED_GLYPHS               = 53,  // :1528（B-3：SCROLL_SANCTUARY 的 DF，
@@ -650,6 +651,15 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
         layer: DungeonLayer.DUNGEON, startProbability: 200, probabilityDecrement: 50,
         flags: DFF_CLEAR_OTHER_TERRAIN, cePropagationTerrain: '', propagationTerrain: null,
         subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
+    // W-14：CE Globals.c:674 原行。Items.c:5487-5489 复制后按 E 改衰减；
+    // 不把它加入 AutoGenerator/blueprint，也不改 bolt 的两个零 DF 字段。
+    [DF.DF_FORCEFIELD]: {
+        id: DF.DF_FORCEFIELD, ceLine: 674, ceTile: 'FORCEFIELD', tile: TerrainType.FORCEFIELD,
+        layer: DungeonLayer.SURFACE, startProbability: 100, probabilityDecrement: 50,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
     },
 
     // ── B-3：三张卷轴（negation/sanctuary/shattering）的 DF ────────────────

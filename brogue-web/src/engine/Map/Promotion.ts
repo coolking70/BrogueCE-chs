@@ -463,6 +463,9 @@ export function promoteTile(
         }
     }
 
+    if (sourceTerrain === TerrainType.FORCEFIELD || sourceTerrain === TerrainType.FORCEFIELD_MELT) {
+        refreshForcefieldPassability(grid, x, y);
+    }
     return result;
 }
 
@@ -907,6 +910,57 @@ export function triggerCreatureTrapLayers(grid: Grid, x: number, y: number): Pro
 /** Consume a legacy pressure plate/trap without erasing its emitted gas/fire. */
 export function consumeTrapTile(grid: Grid, x: number, y: number, residue = TerrainType.FLOOR): void {
     grid.setTerrainLayer(x, y, DungeonLayer.DUNGEON, residue);
+}
+
+/** CE Items.c:5479-5489, FP_FACTOR=65536. Keep the integer lookup/rounding:
+ * the table starts at E=2; E<2/non-finite values are invalid staff data and use
+ * that minimum instead of indexing before the table. CE caps the index at 40.
+ * This is diffusion probability decrement, not radius, area or lifetime. */
+export function obstructionDecrement(enchantment: number): number {
+    const powers = [41943, 33554, 26843, 21474, 17179, 13743, 10995, 8796,
+        7036, 5629, 4503, 3602, 2882, 2305, 1844, 1475, 1180, 944, 755, 604,
+        483, 386, 309, 247, 198, 158, 126, 101, 81, 64, 51, 41, 33, 26, 21,
+        17, 13, 10, 8, 6, 5];
+    const e = Number.isFinite(enchantment) ? Math.max(2, Math.min(40, Math.trunc(enchantment))) : 2;
+    return Math.max(1, Math.floor(75 * powers[e - 2]! / 65536));
+}
+
+/** Grid's legacy effective-tile heuristic does not know that crystals block.
+ * Synchronize the path consumers for both placement and the two melt stages. */
+function refreshForcefieldPassability(grid: Grid, x: number, y: number): void {
+    const cell = grid.getCell(x, y)!;
+    const flags = cellTerrainFlags(grid, x, y);
+    cell.isPassable = !(flags & T_OBSTRUCTS_PASSABILITY);
+    cell.isOpaque = !!(flags & T_OBSTRUCTS_VISION);
+}
+
+/** CE detonateBolt: a dynamic SURFACE DF at the final landing, allowing closure
+ * of corridors. Architect.c:3299-3304/3224-3232 use SURFACE obstruction flags,
+ * NOT IMPREGNABLE. Keep the existing generation/scroll DF callers unchanged.
+ *
+ * The shared web DF primitive lacks CE's refreshCell -> instant creature tile
+ * effects callback. For this new effect, replay its forcefield promotion chain
+ * on occupied built cells: FORCEFIELD -> MELT -> NOTHING (including flyers).
+ * CE does both via recursive refresh in fillSpawnMap/promoteTile, not evacuation.
+ */
+export function spawnObstruction(
+    grid: Grid, x: number, y: number, enchantment: number,
+    occupied: (pos: Pos) => boolean,
+): SpawnFeatureResult {
+    const feat = catalogFeature(DF.DF_FORCEFIELD);
+    feat.probabilityDecrement = obstructionDecrement(enchantment);
+    const result = spawnDungeonFeature(grid, x, y, feat, false);
+    for (const pos of result.builtCells) {
+        const cell = grid.getCell(pos.x, pos.y)!;
+        if (occupied(pos)) {
+            while (cell.layers[DungeonLayer.SURFACE] === TerrainType.FORCEFIELD
+                || cell.layers[DungeonLayer.SURFACE] === TerrainType.FORCEFIELD_MELT) {
+                promoteTile(grid, pos.x, pos.y, DungeonLayer.SURFACE, false);
+            }
+        }
+        refreshForcefieldPassability(grid, pos.x, pos.y);
+    }
+    return result;
 }
 
 

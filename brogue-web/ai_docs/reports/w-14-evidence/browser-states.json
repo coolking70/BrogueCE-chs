@@ -1,0 +1,1551 @@
+{
+  "states": [
+    {
+      "mode": "corridor",
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 6,
+          "y": 5,
+          "hp": 100,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "result": {
+        "path": [
+          {
+            "x": 5,
+            "y": 5
+          },
+          {
+            "x": 6,
+            "y": 5
+          },
+          {
+            "x": 7,
+            "y": 5
+          },
+          {
+            "x": 8,
+            "y": 5
+          }
+        ],
+        "outcome": {
+          "autoID": true,
+          "casterMovement": null
+        },
+        "landing": {
+          "x": 8,
+          "y": 5
+        }
+      },
+      "fields": [
+        {
+          "x": 7,
+          "y": 5,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 8,
+          "y": 5,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        }
+      ],
+      "row": [
+        {
+          "x": 0,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false
+        },
+        {
+          "x": 1,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 2,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 3,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 5,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 6,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 7,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 8,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 9,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false
+        },
+        {
+          "x": 10,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        }
+      ]
+    },
+    {
+      "mode": "melted-walk",
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 7,
+          "y": 5,
+          "hp": 100,
+          "nutrition": 2134,
+          "poisonAmount": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 2,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "result": {
+        "path": [
+          {
+            "x": 5,
+            "y": 5
+          },
+          {
+            "x": 6,
+            "y": 5
+          },
+          {
+            "x": 7,
+            "y": 5
+          },
+          {
+            "x": 8,
+            "y": 5
+          }
+        ],
+        "outcome": {
+          "autoID": true,
+          "casterMovement": null
+        },
+        "landing": {
+          "x": 8,
+          "y": 5
+        }
+      },
+      "fields": [],
+      "row": [
+        {
+          "x": 0,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false
+        },
+        {
+          "x": 1,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 2,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 3,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 5,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 6,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 7,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 8,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 9,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false
+        },
+        {
+          "x": 10,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        }
+      ]
+    },
+    {
+      "mode": "e8",
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 100,
+          "nutrition": 2134,
+          "poisonAmount": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 2,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "result": {
+        "path": [
+          {
+            "x": 5,
+            "y": 5
+          },
+          {
+            "x": 6,
+            "y": 5
+          },
+          {
+            "x": 7,
+            "y": 5
+          },
+          {
+            "x": 8,
+            "y": 5
+          }
+        ],
+        "outcome": {
+          "autoID": true,
+          "casterMovement": null
+        },
+        "landing": {
+          "x": 8,
+          "y": 5
+        }
+      },
+      "fields": [
+        {
+          "x": 3,
+          "y": 3,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 4,
+          "y": 2,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 4,
+          "y": 3,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 5,
+          "y": 2,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 5,
+          "y": 3,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 5,
+          "y": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 6,
+          "y": 2,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 6,
+          "y": 3,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 6,
+          "y": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 6,
+          "y": 5,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 6,
+          "y": 8,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 7,
+          "y": 3,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 7,
+          "y": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 7,
+          "y": 5,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 7,
+          "y": 6,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 7,
+          "y": 7,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 7,
+          "y": 8,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 8,
+          "y": 3,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 8,
+          "y": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 8,
+          "y": 5,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 8,
+          "y": 6,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 8,
+          "y": 7,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 8,
+          "y": 8,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 8,
+          "y": 9,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 9,
+          "y": 3,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 9,
+          "y": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 9,
+          "y": 6,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 9,
+          "y": 7,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 9,
+          "y": 8,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 10,
+          "y": 2,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 10,
+          "y": 3,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 10,
+          "y": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 10,
+          "y": 5,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 10,
+          "y": 6,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 10,
+          "y": 7,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 11,
+          "y": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 11,
+          "y": 5,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 11,
+          "y": 6,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 11,
+          "y": 7,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 12,
+          "y": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 12,
+          "y": 5,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 13,
+          "y": 5,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        }
+      ],
+      "row": [
+        {
+          "x": 0,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false
+        },
+        {
+          "x": 1,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 2,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 3,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 5,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 6,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 7,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 8,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 9,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false
+        },
+        {
+          "x": 10,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        }
+      ]
+    },
+    {
+      "mode": "impregnable",
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 100,
+          "nutrition": 2134,
+          "poisonAmount": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 2,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "result": {
+        "path": [
+          {
+            "x": 5,
+            "y": 5
+          },
+          {
+            "x": 6,
+            "y": 5
+          },
+          {
+            "x": 7,
+            "y": 5
+          },
+          {
+            "x": 8,
+            "y": 5
+          }
+        ],
+        "outcome": {
+          "autoID": true,
+          "casterMovement": null
+        },
+        "landing": {
+          "x": 8,
+          "y": 5
+        }
+      },
+      "fields": [
+        {
+          "x": 6,
+          "y": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 6,
+          "y": 5,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 7,
+          "y": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 7,
+          "y": 5,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 7,
+          "y": 6,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 8,
+          "y": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 8,
+          "y": 5,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 8,
+          "y": 6,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        }
+      ],
+      "row": [
+        {
+          "x": 0,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false
+        },
+        {
+          "x": 1,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 2,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 3,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 5,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 6,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 7,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 8,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 9,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false
+        },
+        {
+          "x": 10,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        }
+      ]
+    },
+    {
+      "mode": "occupied",
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 100,
+          "nutrition": 2134,
+          "poisonAmount": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 2,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 8,
+            "y": 5,
+            "hp": 6,
+            "poisonAmount": 0,
+            "poisoned": 0
+          }
+        ],
+        "items": []
+      },
+      "result": {
+        "path": [
+          {
+            "x": 5,
+            "y": 5
+          },
+          {
+            "x": 6,
+            "y": 5
+          },
+          {
+            "x": 7,
+            "y": 5
+          }
+        ],
+        "outcome": {
+          "autoID": true,
+          "casterMovement": null
+        },
+        "landing": {
+          "x": 7,
+          "y": 5
+        }
+      },
+      "fields": [
+        {
+          "x": 5,
+          "y": 5,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 6,
+          "y": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 6,
+          "y": 5,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 6,
+          "y": 6,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 7,
+          "y": 3,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 7,
+          "y": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 7,
+          "y": 5,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 7,
+          "y": 6,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 8,
+          "y": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 8,
+          "y": 6,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        }
+      ],
+      "row": [
+        {
+          "x": 0,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false
+        },
+        {
+          "x": 1,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 2,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 3,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 4,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 5,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 6,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 7,
+          "layers": [
+            2,
+            0,
+            0,
+            43
+          ],
+          "passable": false
+        },
+        {
+          "x": 8,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        },
+        {
+          "x": 9,
+          "layers": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "passable": false
+        },
+        {
+          "x": 10,
+          "layers": [
+            2,
+            0,
+            0,
+            0
+          ],
+          "passable": true
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

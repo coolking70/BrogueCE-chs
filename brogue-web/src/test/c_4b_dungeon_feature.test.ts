@@ -559,7 +559,7 @@ describe('C-4b D：levelIsDisconnectedWithBlockingMap（CE Architect.c:3137-3198
 });
 
 describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () => {
-    it('E1 恰 57 条（C-6 增补 DF_GRASS/DF_FOLIAGE；B-3 增补 DF_FORCEFIELD_MELT/DF_SACRED_GLYPHS/DF_SHATTERING_SPELL；T-1 增补 DF_CRYSTAL_WALL；V-2b-2b 增补 DF_SHOW_TRAPDOOR_HALO/DF_SHOW_TRAPDOOR/DF_WOODEN_BARRICADE_BURN——TRAP_DOOR_HIDDEN.discoverType 与 WOODEN_BARRICADE.fireType 的载体，CE Globals.c:627/628/825；V-2b-3 增补 14 条 wired 载体 DF 链，见下；V-2b-4 增补 8 条祭坛族载体），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）', () => {
+    it('E1 W-14 恰 135 条（原 134 + DF_FORCEFIELD）；历次闭包（C-6 增补 DF_GRASS/DF_FOLIAGE；B-3 增补 DF_FORCEFIELD_MELT/DF_SACRED_GLYPHS/DF_SHATTERING_SPELL；T-1 增补 DF_CRYSTAL_WALL；V-2b-2b 增补 DF_SHOW_TRAPDOOR_HALO/DF_SHOW_TRAPDOOR/DF_WOODEN_BARRICADE_BURN——TRAP_DOOR_HIDDEN.discoverType 与 WOODEN_BARRICADE.fireType 的载体，CE Globals.c:627/628/825；V-2b-3 增补 14 条 wired 载体 DF 链，见下；V-2b-4 增补 8 条祭坛族载体），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）', () => {
         const keys = Object.keys(DUNGEON_FEATURE_CATALOG);
         // V-2b-3：35 → 49（+14）。CE Globals.c 目录行逐条：
         //   DF_RUBBLE :612、DF_SHOW_PARALYSIS_GAS_TRAP :626、DF_INACTIVE_GLYPH :726、
@@ -602,7 +602,9 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         //   DF_SWAMP :904、DF_SWAMP_MUD :905。
         // 来源三类：13 条目标蓝图 feature 的 DF 列 / 19 条新地形的三链字段 /
         // 上述两者的 subsequentDF 链展开。逐条字段钉死在 v_2b_7_features 的 B 组。
-        expect(keys.length).toBe(134);
+        // W-14：新增 CE 原行 DF_FORCEFIELD（51），阻障落点起点；不改变生成表。
+        expect(keys.length).toBe(135);
+        expect(DF.DF_FORCEFIELD).toBe(51);
         expect(DF.DF_SHOW_TRAPDOOR_HALO, 'V-2b-2b：CE Rogue.h:1487（Globals.c:627）').toBe(16);
         expect(DF.DF_SHOW_TRAPDOOR, 'V-2b-2b：TRAP_DOOR_HIDDEN.discoverType 的载体（Rogue.h:1488，Globals.c:628）').toBe(17);
         expect(DF.DF_WOODEN_BARRICADE_BURN, 'V-2b-2b：WOODEN_BARRICADE.fireType 的载体（Rogue.h:1669，Globals.c:825）').toBe(156);
@@ -689,6 +691,8 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // Game.sanctuaryFromPlayer / crystalizeFromPlayer。
         // DF_FORCEFIELD_MELT 不需要第二起点——经 FORCEFIELD.promoteType
         // 字符串自动入闭包。
+        // W-14：detonateBolt 动态复制 DF_FORCEFIELD；不是 pathDF/targetDF 或生成起点。
+        start.add(DF.DF_FORCEFIELD);
         start.add(DF.DF_SACRED_GLYPHS);
         start.add(DF.DF_SHATTERING_SPELL);
         // V-2b-3：DF_MEDIUM_HOLE 第三起点（数据起点，web 当前零消费者）——
@@ -795,7 +799,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
             'V-2b-7：DF 特征系统轮 22 条入闭包（13 条目标蓝图 feature 的 DF 列' +
             '（现由 blueprints.json 数据驱动入起点）+ 19 条新地形的三链字段 + ' +
             '两条链展开环节 DF_EMBERS_PATCH/DF_SWAMP_MUD→DF_SWAMP_WATER）' +
-            '——68→90→99；V-2b-9b 环境链与 DF_PUDDLE 闭包 →133').toBe(134);
+            '——68→90→99；V-2b-9b 环境链与 DF_PUDDLE 闭包 →134；W-14 阻障起点 →135').toBe(135);
     });
 
     it('E3 字段抽查：BRIDGE_FALL_PREP 的 prop/200/100、BRIDGE_FIRE 的描述与 tile=0、其余代表条目', () => {

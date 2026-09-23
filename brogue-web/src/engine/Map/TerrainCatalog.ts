@@ -532,7 +532,8 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
     // 先变它（Items.c:4916 直写 DUNGEON 层）。promoteChance -200 = 负值扩散型
     // （Promotion.ts 第一趟：每个合格 4 向开敞邻居 +200/回合 → 晋升掷骰 →
     // DF_FORCEFIELD_MELT），"绿水晶肉眼可见地消融"。DF 目录 :674
-    // {FORCEFIELD, SURFACE, 100, 50} 是机器侧写入口（web 未接）。
+    // {FORCEFIELD, SURFACE, 100, 50} 是 DF 原行；W-14 在阻障落点动态复制
+    // 并改扩散衰减，不是机器生成入口。卷轴的 DUNGEON 写入保持独立。
     // glowLight = FORCEFIELD_LIGHT（:477 原列）。
     [TerrainType.FORCEFIELD]: e(
         T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_GAS | T_OBSTRUCTS_DIAGONAL_MOVEMENT,
