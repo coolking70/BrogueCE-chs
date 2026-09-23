@@ -1,0 +1,516 @@
+src/components/GameCanvas.vue:489:                newPowerCount: m.newPowerCount, totalPowerCount: m.totalPowerCount,
+src/components/GameCanvas.vue:490:                wasNegated: m.wasNegated, negated: m.displaysNegation, mutation: m.mutation?.id ?? null,
+src/data/blueprints.json:531:        "id": "reward_commutation",
+src/data/blueprints.json:533:        "name": "Commutation altars",
+src/data/blueprints.json:581:                "terrain": "COMMUTATION_ALTAR",
+src/data/consumables.json:222:            "id": "scroll_of_negation",
+src/data/consumables.json:223:            "trueName": "Scroll of Negation",
+src/data/consumables.json:224:            "effect": "negate_burst",
+src/data/monsterBolts.test.ts:82:        // 源码里是 {BOLT_NEGATION, BOLT_HEALING, BOLT_HASTE, BOLT_SPARK}——
+src/data/monsterBolts.test.ts:83:        // 若实现时误排序成字母序会是 [HASTE, HEALING, NEGATION, SPARK]，与此不同。
+src/data/monsterBolts.test.ts:85:        expect(bolts).toEqual(['NEGATION', 'HEALING', 'HASTE', 'SPARK']);
+src/data/monsterBolts.test.ts:95:        expect(bolts).toEqual(['NEGATION', 'SLOW_2', 'DISCORD', 'SPARK']);
+src/data/monsters.json:626:            "MONST_DIES_IF_NEGATED"
+src/data/monsters.json:880:            "NEGATION",
+src/data/monsters.json:1018:            "MONST_DIES_IF_NEGATED"
+src/data/monsters.json:1137:            "MONST_DIES_IF_NEGATED"
+src/data/monsters.json:1172:            "NEGATION",
+src/data/monsters.json:1340:            "MONST_DIES_IF_NEGATED"
+src/data/monsters.json:1521:            "MONST_DIES_IF_NEGATED",
+src/data/monsters.json:1551:            "MONST_DIES_IF_NEGATED",
+src/data/monsters.json:1582:            "MONST_DIES_IF_NEGATED",
+src/data/monsters.json:1616:            "MONST_DIES_IF_NEGATED",
+src/data/monsters.json:1650:            "MONST_DIES_IF_NEGATED",
+src/data/mutations.json:19:        "description": "A rare mutation will cause it to explode violently when it dies."
+src/data/mutations.json:55:        "description": "A rare mutation greatly enhances its mobility."
+src/data/mutations.json:74:        "description": "A rare mutation has hardened its flesh, increasing its health and power but compromising its speed."
+src/data/mutations.json:95:        "description": "A rare mutation has caused suckered tentacles to sprout from its frame, increasing its health and allowing it to grapple with its prey."
+src/data/mutations.json:116:        "description": "A rare mutation allows it to heal itself with every attack."
+src/data/mutations.json:139:        "description": "A rare mutation causes it to poison its victims and sap their strength with every attack."
+src/data/mutations.json:159:        "description": "A rare mutation has coated its flesh with reflective scales."
+src/engine/Combat/Bolt.ts:46:    NEGATION,
+src/engine/Combat/Bolt.ts:76:    [BoltEffect.NEGATION]: CEBoltEffect.NEGATION,
+src/engine/Combat/Bolt.ts:195:    NEGATION: monsterBoltMeta(CEBoltType.NEGATION, BoltEffect.NEGATION),
+src/engine/Combat/Bolt.ts:327: * autoID decision, RNG or world mutation. Both legacy exits can carry a caster. */
+src/engine/Combat/BoltCatalog.test.ts:94:        const oldNames = 'NONE FIRE LIGHTNING POISON TELEPORT SLOW HEALING HASTE TUNNELING BECKONING DISCORD CONJURATION SHIELDING NEGATION DOMINATION ENTRANCEMENT BLINKING OBSTRUCTION EMPOWERMENT INVISIBILITY SPARK DRAGONFIRE DISTANCE_ATTACK POISON_DART'.split(' ');
+src/engine/Combat/BoltCatalog.test.ts:124:        expect(Object.keys(MONSTER_BOLT_TABLE)).toEqual('SHIELDING HASTE SPARK DISTANCE_ATTACK HEALING BLINKING NEGATION DISCORD POISON_DART FIRE DRAGONFIRE BECKONING SLOW_2 SPIDERWEB ANCIENT_SPIRIT_VINES'.split(' '));
+src/engine/Combat/BoltCatalog.ts:11:    NEGATION = 4,
+src/engine/Combat/BoltCatalog.ts:45:    NEGATION = 5,
+src/engine/Combat/BoltCatalog.ts:73:    NOT_NEGATABLE = 1 << 8,
+src/engine/Combat/BoltCatalog.ts:118:    [T.NEGATION]: { type: T.NEGATION, name: "negation magic", description: "casts a negation spell", abilityDescription: "can cast negation",
+src/engine/Combat/BoltCatalog.ts:119:        theChar: null, foreColor: null, backColor: "pink", effect: E.NEGATION, magnitude: 10,
+src/engine/Combat/BoltCatalog.ts:231:    wand_of_negation: T.NEGATION,
+src/engine/Combat/BoltCatalog.ts:260:    [E.NEGATION]: 'unused-by-effect',
+src/engine/Combat/BoltTargeting.ts:10:import { negationWillAffectMonster } from './Negation';
+src/engine/Combat/BoltTargeting.ts:54:            if (!ally && bolt.effect === CEBoltEffect.NEGATION) return negationWillAffectMonster(m, true);
+src/engine/Combat/BoltTrajectory.ts:47: * No bolt = untuned center line. No RNG or mutation. Range limits belong to travel,
+src/engine/Combat/CombatFormulas.ts:36: * Positive enchantment increases accuracy, negative decreases.
+src/engine/Combat/Conjuration.ts:13:    // CE receives a nonnegative enchantment in 16-bit fixed point.
+src/engine/Combat/Negation.ts:5:/** Rogue.h NEGATABLE_TRAITS / MA_NON_NEGATABLE_ABILITIES. */
+src/engine/Combat/Negation.ts:6:export const NEGATABLE_TRAITS: ReadonlySet<string> = new Set([
+src/engine/Combat/Negation.ts:11:export const NON_NEGATABLE_ABILITIES: ReadonlySet<string> = new Set([
+src/engine/Combat/Negation.ts:14:// Globals.c mutationCatalog: removing the mutation identity never reverses info stats.
+src/engine/Combat/Negation.ts:15:export const NEGATABLE_MUTATIONS: ReadonlySet<string> = new Set([
+src/engine/Combat/Negation.ts:20: * flying are legacy aliases; regenerating has no CE negatable equivalent.
+src/engine/Combat/Negation.ts:22:const NEGATABLE_STATUSES: readonly StatusId[] = [
+src/engine/Combat/Negation.ts:28:export function negateCreatureStatusEffects(target: Creature, isPlayer: boolean): boolean {
+src/engine/Combat/Negation.ts:31:    for (const id of NEGATABLE_STATUSES) {
+src/engine/Combat/Negation.ts:45:export function hasNegatableBolt(bolts: readonly string[]): boolean {
+src/engine/Combat/Negation.ts:47:    return bolts.slice(0, 20).some(name => isBolt(name) && !(boltFlags(name) & CEBoltFlags.NOT_NEGATABLE));
+src/engine/Combat/Negation.ts:52: * that literal behavior. In this CE catalog every nonzero bolt is negatable. */
+src/engine/Combat/Negation.ts:53:export function negateBolts(bolts: readonly string[]): string[] {
+src/engine/Combat/Negation.ts:55:    const result = backup.map(name => isBolt(name) && !(boltFlags(name) & CEBoltFlags.NOT_NEGATABLE) ? 'NONE' : name);
+src/engine/Combat/Negation.ts:57:        if (boltFlags(backup[i]!) & CEBoltFlags.NOT_NEGATABLE) result[j++] = backup[i]!;
+src/engine/Combat/Negation.ts:65:export function negationWillAffectMonster(target: Monster, isBolt = true): boolean {
+src/engine/Combat/Negation.ts:67:    return [...target.abilityFlags].some(f => !NON_NEGATABLE_ABILITIES.has(f))
+src/engine/Combat/Negation.ts:68:        || target.seizing || target.diesIfNegated()
+src/engine/Combat/Negation.ts:69:        || [...target.behaviorFlags].some(f => NEGATABLE_TRAITS.has(f))
+src/engine/Combat/Negation.ts:73:        || !!(target.mutation && NEGATABLE_MUTATIONS.has(target.mutation.id))
+src/engine/Combat/Negation.ts:74:        || hasNegatableBolt(target.bolts);
+src/engine/Core/Game.ts:1:import { NEGATABLE_TRAITS, NON_NEGATABLE_ABILITIES, NEGATABLE_MUTATIONS, hasNegatableBolt, negateBolts, negateCreatureStatusEffects } from '../Combat/Negation';
+src/engine/Core/Game.ts:42:import mutationData from '../../data/mutations.json';
+src/engine/Core/Game.ts:43:import type { MonsterData, MonsterAbility, MutationData } from '../../entities/Monster';
+src/engine/Core/Game.ts:235:    wasNegated?: boolean;
+src/engine/Core/Game.ts:236:    newPowerCount?: number;
+src/engine/Core/Game.ts:237:    totalPowerCount?: number;
+src/engine/Core/Game.ts:244:        ticksUntilTurn: number; wasNegated: boolean; seized: boolean; seizing: boolean;
+src/engine/Core/Game.ts:252:    /** Preserve mutation provenance for self-split's native-or-mutation mask. */
+src/engine/Core/Game.ts:253:    mutation?: MutationData;
+src/engine/Core/Game.ts:448:        wasNegated?: boolean;
+src/engine/Core/Game.ts:449:        newPowerCount?: number;
+src/engine/Core/Game.ts:450:        totalPowerCount?: number;
+src/engine/Core/Game.ts:454:        mutation?: MutationData;
+src/engine/Core/Game.ts:1011:    private applyRandomMutation(mon: Monster, depth: number) {
+src/engine/Core/Game.ts:1015:        const mutationChance = Math.min(75, (depth - 10) * 2); // Linear scale, 2% at D11, 32% at D26
+src/engine/Core/Game.ts:1016:        if (rng.randPercent(mutationChance)) {
+src/engine/Core/Game.ts:1017:            const validMutations = (mutationData as MutationData[]).filter(m => {
+src/engine/Core/Game.ts:1022:            if (validMutations.length > 0) {
+src/engine/Core/Game.ts:1023:                const mut = validMutations[rng.randRange(0, validMutations.length - 1)];
+src/engine/Core/Game.ts:1024:                mon.mutate(mut as MutationData);
+src/engine/Core/Game.ts:1395:        //    且 Commutation Altars（:232-237）本就无物品）。祭坛房的物品同样
+src/engine/Core/Game.ts:1501:                    this.applyRandomMutation(mon, depth);
+src/engine/Core/Game.ts:2020:        this.applyRandomMutation(leaderMon, depth);
+src/engine/Core/Game.ts:2062:                                this.applyRandomMutation(mon, depth);
+src/engine/Core/Game.ts:2445:        monster.wasNegated = m.wasNegated ?? false;
+src/engine/Core/Game.ts:2446:        monster.newPowerCount = m.newPowerCount ?? 0;
+src/engine/Core/Game.ts:2447:        monster.totalPowerCount = m.totalPowerCount ?? 0;
+src/engine/Core/Game.ts:2448:        monster.mutation = m.mutation ? structuredClone(m.mutation) : undefined;
+src/engine/Core/Game.ts:2788:                        wasNegated: m.wasNegated,
+src/engine/Core/Game.ts:2789:                        newPowerCount: m.newPowerCount,
+src/engine/Core/Game.ts:2790:                        totalPowerCount: m.totalPowerCount,
+src/engine/Core/Game.ts:2797:                        mutation: m.mutation ? structuredClone(m.mutation) : undefined,
+src/engine/Core/Game.ts:4181:                    case 'negate_burst':
+src/engine/Core/Game.ts:4182:                        // Items.c:8004-8006 SCROLL_NEGATION: negationBlast("the scroll", DCOLS)
+src/engine/Core/Game.ts:4183:                        this.negationBlastFromPlayer('the scroll');
+src/engine/Core/Game.ts:4260:                // Grant temporary immunity to a random negative status
+src/engine/Core/Game.ts:4261:                const negativeStatuses: StatusId[] = ['paralyzed', 'confused', 'hallucinating'];
+src/engine/Core/Game.ts:4262:                const chosen = negativeStatuses[rng.randRange(0, negativeStatuses.length - 1)] as StatusId;
+src/engine/Core/Game.ts:4956:            case BoltEffect.NEGATION: {
+src/engine/Core/Game.ts:4958:                    const affected = this.negateCreatureMagic(target);
+src/engine/Core/Game.ts:4959:                    // CE Items.c:5302-5307 checks visibility AFTER negate (e.g.
+src/engine/Core/Game.ts:4960:                    // an invisible monster becomes visible). It uses negate's
+src/engine/Core/Game.ts:4964:                    logMiss('bolt.negation_miss', `${item.displayName} fires but finds no target.`, '#ffffff');
+src/engine/Core/Game.ts:5145:            case BoltEffect.NEGATION: {
+src/engine/Core/Game.ts:5146:                const affected = this.negateCreatureMagic(target);
+src/engine/Core/Game.ts:5339:    /** CE Items.c:4465 negate, shared by player bolts, reflected/monster
+src/engine/Core/Game.ts:5342:    private negateCreatureMagic(target: Creature): boolean {
+src/engine/Core/Game.ts:5350:                if (!NON_NEGATABLE_ABILITIES.has(flag)) {
+src/engine/Core/Game.ts:5352:                    monster.wasNegated = affected = true;
+src/engine/Core/Game.ts:5357:        if (monster?.diesIfNegated()) {
+src/engine/Core/Game.ts:5360:                ? i18next.t('negation.dissipates', { target: originalName, defaultValue: `${originalName} dissipates into thin air!` })
+src/engine/Core/Game.ts:5362:                    ? i18next.t('negation.shatters', { target: originalName, defaultValue: `${originalName} shatters into tiny pieces!` })
+src/engine/Core/Game.ts:5363:                    : i18next.t('bolt.negation_dies', { target: originalName, defaultValue: `${originalName} falls to the ground, lifeless!` });
+src/engine/Core/Game.ts:5371:            affected = negateCreatureStatusEffects(target, target === this.player) || affected;
+src/engine/Core/Game.ts:5374:                monster.wasNegated = affected = true;
+src/engine/Core/Game.ts:5379:            if (monster?.mutation && NEGATABLE_MUTATIONS.has(monster.mutation.id)) {
+src/engine/Core/Game.ts:5380:                // CE removes mutationIndex only: info HP/damage/speeds survive.
+src/engine/Core/Game.ts:5381:                monster.mutation = undefined;
+src/engine/Core/Game.ts:5384:                monster.wasNegated = affected = true;
+src/engine/Core/Game.ts:5386:            if (monster && [...monster.behaviorFlags].some(flag => NEGATABLE_TRAITS.has(flag))) {
+src/engine/Core/Game.ts:5388:                for (const flag of NEGATABLE_TRAITS) monster.behaviorFlags.delete(flag);
+src/engine/Core/Game.ts:5389:                monster.wasNegated = affected = true;
+src/engine/Core/Game.ts:5392:                if (hasNegatableBolt(monster.bolts)) monster.wasNegated = affected = true;
+src/engine/Core/Game.ts:5393:                monster.bolts = negateBolts(monster.bolts);
+src/engine/Core/Game.ts:5394:                monster.newPowerCount = monster.totalPowerCount;
+src/engine/Core/Game.ts:5400:            logger.log(i18next.t('scroll.negation_stripped', {
+src/engine/Core/Game.ts:5409:     * Items.c:4827-4881 negationBlast(emitterName, distance)——SCROLL_NEGATION
+src/engine/Core/Game.ts:5413:     *   3. 先 negate(&player)（:4834，玩家自己也吃——按目录逐项处理，无消息）；
+src/engine/Core/Game.ts:5416:     *      玩家→怪物实时视线判定）；diesIfNegated 当场死（CE 注释
+src/engine/Core/Game.ts:5418:     *      traits" 消息在 CE negate() 尾部 :4548-4552）；
+src/engine/Core/Game.ts:5425:    private negationBlastFromPlayer(emitterName: string): void {
+src/engine/Core/Game.ts:5426:        logger.log(i18next.t('scroll.negate_burst', {
+src/engine/Core/Game.ts:5431:        // CE :4834 negate(&player)——先于怪物循环，玩家自己的魔法也被清。
+src/engine/Core/Game.ts:5432:        this.negateCreatureMagic(this.player);
+src/engine/Core/Game.ts:5442:            this.negateCreatureMagic(m);
+src/engine/Core/Game.ts:5657:                this.applyRandomMutation(mon, this.depth);
+src/engine/Core/Game.ts:7206:        // with native/mutation flags never restores a currently missing trait.
+src/engine/Core/Game.ts:7208:        const behavior = new Set([...(native?.behaviorFlags ?? []), ...(defender.mutation?.behaviorFlags ?? [])]);
+src/engine/Core/Game.ts:7209:        const ability = new Set([...(native?.abilityFlags ?? []), ...(defender.mutation?.abilityFlags ?? [])]);
+src/engine/Core/Game.ts:8574:                keepsSpeed: m.polymorphKeepsSpeed, ticksUntilTurn: m.ticksUntilTurn, wasNegated: m.wasNegated,
+src/engine/Core/Game.ts:8582:            wasNegated: m.wasNegated,
+src/engine/Core/Game.ts:8583:            newPowerCount: m.newPowerCount,
+src/engine/Core/Game.ts:8584:            totalPowerCount: m.totalPowerCount,
+src/engine/Core/Game.ts:8588:            mutation: m.mutation ? structuredClone(m.mutation) : undefined,
+src/engine/Core/Game.ts:8654:        monster.wasNegated = m.wasNegated ?? m.cloneState?.runtime.wasNegated ?? m.polymorph?.wasNegated ?? false;
+src/engine/Core/Game.ts:8655:        monster.newPowerCount = m.newPowerCount ?? 0;
+src/engine/Core/Game.ts:8656:        monster.totalPowerCount = m.totalPowerCount ?? 0;
+src/engine/Core/Game.ts:8657:        monster.mutation = m.mutation ? structuredClone(m.mutation) : undefined;
+src/engine/Core/Game.ts:8703:            monster.wasNegated = m.wasNegated ?? p.wasNegated ?? false;
+src/engine/Core/Game.ts:10299:            const label = m.displaysNegation && !this.player.hasStatus('hallucinating')
+src/engine/Core/Game.ts:10300:                ? i18next.t('negation.label', { defaultValue: 'Negated' }) : '';
+src/engine/Generator/BlueprintEngine.ts:305:    COMMUTATION_ALTAR: TerrainType.COMMUTATION_ALTAR,
+src/engine/Generator/BlueprintEngine.ts:431:    COMMUTATION_ALTAR: { char: '|', color: 0xccccff },
+src/engine/Items/ArcanaRecharge.ts:50: * at most +1; negative enchantments apply in full. Kind discovery alone is not ID.
+src/engine/Items/ItemLoader.ts:164:        { category: 'SCROLL', ceKind: 'SCROLL_NEGATION',          webId: 'scroll_of_negation',       initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+src/engine/Items/ItemLoader.ts:523:     * （potion darkness、scroll aggravate、wand polymorphism/negation/domination/
+src/engine/Items/ItemLoader.ts:565:        scroll_of_negation: 1,        // negation
+src/engine/Items/ItemLoader.ts:570:        // 魔杖（web 7 条，含 2 条错位实体；CE polymorphism/negation/domination/plenty web 缺）
+src/engine/Map/DungeonFeatureCatalog.ts:150:    DF_ALTAR_COMMUTE               = 140, // :1641（COMMUTATION_ALTAR.
+src/engine/Map/DungeonFeatureCatalog.ts:152:    DF_MAGIC_PIPING                = 141, // :1642（6 号蓝图 COMMUTATION_ALTAR
+src/engine/Map/DungeonFeatureCatalog.ts:665:    // ── B-3：三张卷轴（negation/sanctuary/shattering）的 DF ────────────────
+src/engine/Map/DungeonFeatureCatalog.ts:900:    // {COMMUTATION_ALTAR_INERT, DUNGEON, 0, 0, 0, "the items on the two altars
+src/engine/Map/DungeonFeatureCatalog.ts:902:    // —— COMMUTATION_ALTAR.promoteType（6 号置换完成后的惰性态）。
+src/engine/Map/DungeonFeatureCatalog.ts:903:    // tile COMMUTATION_ALTAR_INERT web 无（只迁活化态），登记。
+src/engine/Map/DungeonFeatureCatalog.ts:905:        id: DF.DF_ALTAR_COMMUTE, ceLine: 793, ceTile: 'COMMUTATION_ALTAR_INERT', tile: null,
+src/engine/Map/DungeonFeatureCatalog.ts:913:    // {PIPE_GLOWING, SURFACE, 90, 60, 0}（:794）—— 6 号蓝图 COMMUTATION_ALTAR
+src/engine/Map/DungeonFeatureCatalog.ts:1460:    DF.DF_ALTAR_COMMUTE,           // COMMUTATION_ALTAR_INERT（置换完成后的惰性态）
+src/engine/Map/DungeonFeatureCatalog.ts:1461:    DF.DF_MAGIC_PIPING,            // PIPE_GLOWING（6 号 COMMUTATION_ALTAR 的 DF 列）
+src/engine/Map/Grid.ts:116:    // B-3：三张卷轴（negation/sanctuary/shattering）的载体 tile。
+src/engine/Map/Grid.ts:163:    COMMUTATION_ALTAR,          // Globals.c:532 置换祭坛（6 号）
+src/engine/Map/Grid.ts:390:    // 同档）；ALTAR_CAGE_RETRACTABLE 17（:368）；COMMUTATION_ALTAR 17（:532）；
+src/engine/Map/Grid.ts:396:    [TerrainType.COMMUTATION_ALTAR]: 17,
+src/engine/Map/Grid.ts:627:    //  DF_ALTAR_COMMUTE {COMMUTATION_ALTAR_INERT, DUNGEON} :793、
+src/engine/Map/Grid.ts:631:    [TerrainType.COMMUTATION_ALTAR]: DungeonLayer.DUNGEON,
+src/engine/Map/LoopMap.ts:107:            // CE copy + findReplace: preserve negative scratch barriers (-1).
+src/engine/Map/Promotion.ts:96: * 任何 mutation 之前先走一遍 subsequentDF 链：链上任何一环 tile 缺失 →
+src/engine/Map/Promotion.ts:382:    // web 特有：整链缺 tile 预检（见文件头）——在任何 mutation 之前。
+src/engine/Map/Promotion.ts:967:/** CE Items.c:4362-4415 tunnelize. Terrain mutation belongs here, not in Game.
+src/engine/Map/TerrainCatalog.ts:766:    // CE COMMUTATION_ALTAR，Globals.c:532：置换祭坛（6 号，两个一组）。
+src/engine/Map/TerrainCatalog.ts:769:    [TerrainType.COMMUTATION_ALTAR]: e(
+src/engine/Movement/CreaturePlacement.ts:3: * No mutation, generation hooks, or player-visibility writes in these queries.
+src/engine/UI/DetailGenerator.ts:106:    MONST_DIES_IF_NEGATED: '被消除时死亡',
+src/engine/UI/DetailGenerator.ts:256:    if (monster.displaysNegation) stateLines.push({ text: '特殊能力已被消除。', color: '#ff88cc' });
+src/engine/UI/DetailGenerator.ts:257:    if (monster.isAlly && monster.newPowerCount > 0) {
+src/engine/UI/DetailGenerator.ts:258:        stateLines.push({ text: `似乎已准备好学习 ${monster.newPowerCount} 项新能力。`, color: '#88ff99' });
+src/entities/Monster.ts:113: * NEGATION 的实际可达资格已于 W-23 对齐（保留 CE catalog 的敌方门）。
+src/entities/Monster.ts:119:    // CE MC:2604 BF_TARGET_ENEMIES runs BEFORE the NEGATION switch.
+src/entities/Monster.ts:121:    // with the shipped NEGATION catalog; W-18's bypass was incorrect.
+src/entities/Monster.ts:134:        case BoltEffect.NEGATION:
+src/entities/Monster.ts:140:                if (target instanceof Monster && (target.diesIfNegated() || target.isImmuneToWeapons())) return true;
+src/entities/Monster.ts:145:                    && !(target instanceof Monster && target.diesIfNegated())) return true;
+src/entities/Monster.ts:223:export interface MutationData {
+src/entities/Monster.ts:266:    public mutation?: MutationData;
+src/entities/Monster.ts:271:    public wasNegated = false;
+src/entities/Monster.ts:272:    public get displaysNegation(): boolean {
+src/entities/Monster.ts:273:        return this.wasNegated && this.newPowerCount === this.totalPowerCount;
+src/entities/Monster.ts:276:    public newPowerCount = 0;
+src/entities/Monster.ts:277:    public totalPowerCount = 0;
+src/entities/Monster.ts:450:     * container list is guarded by W-20's own-property audit and mutation tests.
+src/entities/Monster.ts:465:        clone.mutation = this.mutation ? structuredClone(this.mutation) : undefined;
+src/entities/Monster.ts:519:        this.newPowerCount++;
+src/entities/Monster.ts:520:        this.totalPowerCount++;
+src/entities/Monster.ts:542:        this.mutation = undefined;
+src/entities/Monster.ts:577:        this.wasNegated = false;
+src/entities/Monster.ts:578:        // newPowerCount/totalPowerCount belong to creature, not the replaced info.
+src/entities/Monster.ts:622:     * W-23: only initialization/form changes rederive these states. CE negation
+src/entities/Monster.ts:664:    public mutate(m: MutationData) {
+src/entities/Monster.ts:665:        this.mutation = m;
+src/entities/Monster.ts:667:        // "mutation.<id>" 为"爆裂的{{name}}"式插值；harness 空资源回退英文
+src/entities/Monster.ts:668:        // "explosive rat"）。CE mutationCatalog.title 见 Globals.c:1396 起。
+src/entities/Monster.ts:669:        this.name = i18next.t('mutation.' + m.id, { name: this.name, defaultValue: m.name + ' ' + this.name });
+src/entities/Monster.ts:702:        // 与构造路径保持同一翻译层）。当前 mutations.json 不含
+src/entities/Monster.ts:745:     * P4-3：CE Items.c:4483-4491 negate() —— 被 negation 命中时，
+src/entities/Monster.ts:746:     * MONST_DIES_IF_NEGATED 的怪物不是清状态，而是直接 killCreature。
+src/entities/Monster.ts:748:    public diesIfNegated(): boolean {
+src/entities/Monster.ts:749:        return this.hasBehavior('MONST_DIES_IF_NEGATED');
+src/entities/Monster.ts:1203:    /** Preserve the actual converted form, including mutations/negated flags,
+src/locales/zh_CN.json:100:    "scroll.negate_burst": "{{emitter}}散发出一阵令魔法麻木的湮灭洪流！",
+src/locales/zh_CN.json:101:    "scroll.negation_stripped": "{{target}}的特殊能力被剥离了！",
+src/locales/zh_CN.json:339:    "name.Scroll of Negation": "否定卷轴",
+src/locales/zh_CN.json:464:    "bolt.negation_miss": "{{name}}发射了，但没有找到目标。",
+src/locales/zh_CN.json:490:    "bolt.negation_dies": "{{target}}倒在地上，失去了生命！",
+src/locales/zh_CN.json:551:    "mutation.explosive": "爆裂的{{name}}",
+src/locales/zh_CN.json:552:    "mutation.infested": "感染的{{name}}",
+src/locales/zh_CN.json:553:    "mutation.agile": "迅捷的{{name}}",
+src/locales/zh_CN.json:554:    "mutation.juggernaut": "蛮力的{{name}}",
+src/locales/zh_CN.json:555:    "mutation.grappling": "缠缚的{{name}}",
+src/locales/zh_CN.json:556:    "mutation.vampiric": "吸血的{{name}}",
+src/locales/zh_CN.json:557:    "mutation.toxic": "剧毒的{{name}}",
+src/locales/zh_CN.json:558:    "mutation.reflective": "反射的{{name}}",
+src/locales/zh_CN.json:559:  "negation.dissipates": "{{target}}消散在空气中！",
+src/locales/zh_CN.json:560:  "negation.shatters": "{{target}}碎裂成无数碎片！",
+src/locales/zh_CN.json:561:  "negation.label": "已消魔"
+src/locales/zh_CN.legacy.json:48:  "        A commutation altar (vault %s)\n": "        一个置换祭坛（密室 %s）\n",
+src/locales/zh_CN.legacy.json:59:  "      Negated       ": "      已失效       ",
+src/locales/zh_CN.legacy.json:450:  "&scroll of negation": "&否定卷轴",
+src/locales/zh_CN.legacy.json:453:  "&wand of negation": "&否定魔杖",
+src/locales/zh_CN.legacy.json:512:  ",  3,  550,    0, BOLT_NEGATION,      {2,4,1}, false, false, 1,  false, ": ",  3,  550,    0, BOLT_NEGATION,      {2,4,1}, false, false, 1,  false, ",
+src/locales/zh_CN.legacy.json:513:  ",  3,  550,    0, BOLT_NEGATION,      {4,6,1}, false, false, 1,  false, ": ",  3,  550,    0, BOLT_NEGATION,      {4,6,1}, false, false, 1,  false, ",
+src/locales/zh_CN.legacy.json:585:  ", mutationName[100] = ": ", mutationName[100] = ",
+src/locales/zh_CN.legacy.json:696:  "A rare mutation allows $HIMHER to heal $HIMSELFHERSELF with every attack.": "一个罕见的突变让它每次攻击都能治愈自己。",
+src/locales/zh_CN.legacy.json:697:  "A rare mutation causes $HIMHER to poison $HISHER victims and sap their strength with every attack.": "一个罕见的突变使其每次攻击都能毒害受害者并削弱其力量。",
+src/locales/zh_CN.legacy.json:698:  "A rare mutation greatly enhances $HISHER mobility.": "一个罕见的突变极大地增强了它的机动性。",
+src/locales/zh_CN.legacy.json:699:  "A rare mutation has caused suckered tentacles to sprout from $HISHER frame, increasing $HISHER health and allowing $HIMHER to grapple with $HISHER prey.": "一个罕见的突变使其身上长出了带吸盘的触手，增加了它的生命值，并使其能够缠住猎物。",
+src/locales/zh_CN.legacy.json:700:  "A rare mutation has coated $HISHER flesh with reflective scales.": "一个罕见的突变使其身体覆盖了反光的鳞片。",
+src/locales/zh_CN.legacy.json:701:  "A rare mutation has hardened $HISHER flesh, increasing $HISHER health and power but compromising $HISHER speed.": "一个罕见的突变使其肉体硬化，增加了生命值和力量，但牺牲了速度。",
+src/locales/zh_CN.legacy.json:702:  "A rare mutation will cause $HIMHER to explode violently when $HESHE dies.": "一个罕见的突变会让它在死亡时猛烈爆炸。",
+src/locales/zh_CN.legacy.json:791:  "Choose a mutation:": "选择一个突变：",
+src/locales/zh_CN.legacy.json:805:  "Commutation altars": "置换祭坛",
+src/locales/zh_CN.legacy.json:972:  "No mutation": "无突变",
+src/locales/zh_CN.legacy.json:1362:  "\n\nWhen used, the charm will emit a wave of anti-magic up to %i spaces away, negating all magical effects on you and on creatures and dropped items in your field of view. It will recharge in %i turns. (If the charm is enchanted, it will reach up to %i spaces and recharge in %i turns.)": "\n\n使用时，护符将发出一股反魔法波，影响最多 %i 格外的区域，否定你以及你视野内生物和掉落物品上的所有魔法效果。它将在 %i 回合后重新充能。（如果护符被附魔，它将达到最多 %i 格外，并在 %i 回合后重新充能。）",
+src/locales/zh_CN.legacy.json:1414:  "a commutation altar": "一个置换祭坛",
+src/locales/zh_CN.legacy.json:1587:  "can cast negation": "可以施放否定",
+src/locales/zh_CN.legacy.json:1617:  "casts a negation spell": "施放否定法术",
+src/locales/zh_CN.legacy.json:1646:  "commutation altar": "置换祭坛",
+src/locales/zh_CN.legacy.json:1685:  "dungeon_version,seed,depth,quantity,category,kind,enchantment,runic,vault_number,opens_vault_number,carried_by_monster_name,ally_status_name,mutation_name": "地牢版本,种子,深度,数量,类别,种类,附魔,符文,密室编号,开启密室编号,携带者怪物名称,盟友状态名称,突变名称",
+src/locales/zh_CN.legacy.json:1730:  "has a rare mutation": "拥有一个罕见的突变",
+src/locales/zh_CN.legacy.json:1786:  "negation charm": "否定护符",
+src/locales/zh_CN.legacy.json:1787:  "negation magic": "否定魔法",
+src/locales/zh_CN.legacy.json:2401:    "scroll.negation_monster_dies": "{{target}}倒在地上，失去了生命！",
+src/locales/zh_CN.legacy.json:2402:    "bolt.negation_hit": "{{name}}解除了{{target}}身上的所有魔法！",
+src/locales/zh_CN.legacy.json:2403:    "bolt.monster_cast_negation_dies": "{{target}}倒在地上，失去了生命！",
+src/locales/zh_CN.legacy.json:2404:    "bolt.monster_cast_negation": "{{caster}}驱散了{{target}}身上的魔法！"
+src/test/b2_transcription.test.ts:29:    // Mutation changes display name (e.g. "grappling Sentinel"). Check stable
+src/test/b_1a_identification.test.ts:786:    it('negation/sanctuary/shattering 读取后无机制效果', () => {
+src/test/b_1a_identification.test.ts:795:        game.readItem(give('scroll_of_negation'));
+src/test/b_1a_identification.test.ts:798:        // B-3 实装后：negation 剥魔法、sanctuary 铺禁行地形、shattering 墙变水晶——届时反转
+src/test/blueprint_ce_coverage.test.ts:36:    reward_commutation: 6,
+src/test/c_4a_0_layer_model.test.ts:284:            // DF_ALTAR_COMMUTE {COMMUTATION_ALTAR_INERT, DUNGEON} :793、
+src/test/c_4a_0_layer_model.test.ts:288:            [C.COMMUTATION_ALTAR]: L.DUNGEON,
+src/test/c_4a_0_layer_model.test.ts:428:            // COMMUTATION_ALTAR 17（:532）；RESURRECTION_ALTAR 17（:538）；
+src/test/c_4a_0_layer_model.test.ts:433:            [C.COMMUTATION_ALTAR]: 17,
+src/test/c_4a_terrain_catalog.test.ts:138:        //（CE Globals.c:477/478/338/479，三张卷轴 negation/sanctuary/shattering
+src/test/c_4a_terrain_catalog.test.ts:153:        // ALTAR_CAGE_RETRACTABLE / COMMUTATION_ALTAR / RESURRECTION_ALTAR /
+src/test/c_4a_terrain_catalog.test.ts:567:    // 其余四条（ALTAR_CAGE_OPEN :364 / COMMUTATION_ALTAR :532 /
+src/test/c_4a_terrain_catalog.test.ts:693:        for (const t of [C.ALTAR_CAGE_OPEN, C.COMMUTATION_ALTAR, C.RESURRECTION_ALTAR, C.AMULET_SWITCH]) {
+src/test/c_4a_terrain_catalog.test.ts:702:        for (const t of [C.ALTAR_CAGE_OPEN, C.COMMUTATION_ALTAR, C.RESURRECTION_ALTAR, C.AMULET_SWITCH]) {
+src/test/c_4b_dungeon_feature.test.ts:646:        expect(DF.DF_ALTAR_COMMUTE, 'V-2b-4：COMMUTATION_ALTAR.promoteType（Rogue.h:1641，Globals.c:793）').toBe(140);
+src/test/c_4b_dungeon_feature.test.ts:647:        expect(DF.DF_MAGIC_PIPING, 'V-2b-4：6 号蓝图 COMMUTATION_ALTAR 的 DF 列（Rogue.h:1642，Globals.c:794）').toBe(141);
+src/test/c_4b_dungeon_feature.test.ts:711:        // （GlobalsBrogue.c:225 `{DF_MAGIC_PIPING, COMMUTATION_ALTAR, …}`、
+src/test/c_4b_dungeon_feature.test.ts:959:        // ALTAR_CAGE_CLOSED、DF_ALTAR_COMMUTE→COMMUTATION_ALTAR_INERT、
+src/test/c_4c_promotion.test.ts:602:        const negative: string[] = [];
+src/test/c_4c_promotion.test.ts:607:            else if (e.promoteChance < 0) negative.push(`${name}:${e.promoteChance}`);
+src/test/c_4c_promotion.test.ts:612:            `  负值（扩散型）载体：${negative.join('；') || '（无——负值分支在 web 当前内容下是死数据）'}`
+src/test/c_4c_promotion.test.ts:627:        expect(negative.sort(), '负值载体必须且仅为已迁移的 CE 原值')
+src/test/c_7_lighting.test.ts:217:        // COMMUTATION_ALTAR 的 CE 原列即 NO_LIGHT（:532，注释块首列的
+src/test/c_7_lighting.test.ts:218:        // "// commutation device" 段没有烛光——置换祭坛不发光是 CE 原样）。
+src/test/c_7_lighting.test.ts:221:        [TerrainType.COMMUTATION_ALTAR]: 0,             // Globals.c:532 NO_LIGHT
+src/test/horde_selection.test.ts:229:                const baseName = m.mutation ? m.name.slice(m.mutation.name.length + 1) : m.name;
+src/test/horde_terrain_spawn.test.ts:86:function baseSpecies(m: { name: string; mutation?: { name: string } }): string {
+src/test/horde_terrain_spawn.test.ts:87:    return (m.mutation ? m.name.slice(m.mutation.name.length + 1) : m.name)
+src/test/p1_24_death_sink.test.ts:42:import { Monster, type MonsterData, type MutationData } from '../entities/Monster';
+src/test/p1_24_death_sink.test.ts:47:import mutationDataJson from '../data/mutations.json';
+src/test/p1_24_death_sink.test.ts:50:const MUTATION_DATA = mutationDataJson as MutationData[];
+src/test/p1_24_death_sink.test.ts:295:        '不飞集合、变异通道旗标）——monsters.json / mutations.json 漂移或翻译层改动' +
+src/test/p1_24_death_sink.test.ts:299:        '错误实现在此挂掉；③现状留痕：二者的 DF 内容（DF_MUTATION_EXPLOSION / ' +
+src/test/p1_24_death_sink.test.ts:322:        const dfMutations = MUTATION_DATA.filter(m => m.abilityFlags.includes('MA_DF_ON_DEATH'));
+src/test/p1_24_death_sink.test.ts:323:        expect(dfMutations.map(m => m.id).sort()).toEqual(['explosive', 'infested']);
+src/test/p1_24_death_sink.test.ts:324:        expect(dfMutations.every(m => !(m.behaviorFlags ?? []).includes('MONST_FLIES'))).toBe(true);
+src/test/p1_24_death_sink.test.ts:333:        carrier.mutate(MUTATION_DATA.find(m => m.id === 'explosive')!);
+src/test/p1_24_death_sink.test.ts:343:        // ---- ③ 现状留痕：DF_MUTATION_EXPLOSION web 无实现——无毒气、无点燃。
+src/test/p1_28_flag_channel.test.ts:344:// 翻译层的两个下游接线：fiery bolt 目标筛选 / negate 后重推导 / 快照往返
+src/test/p1_28_flag_channel.test.ts:365:    // levitation before that. There is no rederive call in negate.
+src/test/p1_28_flag_channel.test.ts:373:        bat.applyStatus('hasted', 5); // 可被 negate 清掉的临时状态（对照组半边）
+src/test/p1_28_flag_channel.test.ts:376:        game.castMonsterBolt(caster, bat, 'NEGATION');
+src/test/p1_30_i18n_gate.test.ts:29:import mutationsJson from '../data/mutations.json';
+src/test/p1_30_i18n_gate.test.ts:32:import { Monster, type MonsterData, type MutationData } from '../entities/Monster';
+src/test/p1_30_i18n_gate.test.ts:126:    const mutations = mutationsJson as unknown as MutationData[];
+src/test/p1_30_i18n_gate.test.ts:134:        for (const mut of mutations) {
+src/test/p1_30_i18n_gate.test.ts:140:            const expected = (RESOURCE['mutation.' + mut.id] ?? '').replace('{{name}}', baseName);
+src/test/p1_30_i18n_gate.test.ts:148:        for (const mut of mutations) {
+src/test/p1_30_i18n_gate.test.ts:149:            expect(RESOURCE['mutation.' + mut.id], `缺 mutation.${mut.id}`).toBeTruthy();
+src/test/p4_3_special_monster_flags.test.ts:11: *   - MONST_DIES_IF_NEGATED   Items.c:4483-4491 negate()：被 negation 命中直接死亡
+src/test/p4_3_special_monster_flags.test.ts:216:// 验收 5：MONST_DIES_IF_NEGATED — 被 negation 命中直接死亡
+src/test/p4_3_special_monster_flags.test.ts:218:describe('P4-3 验收 5：MONST_DIES_IF_NEGATED', () => {
+src/test/p4_3_special_monster_flags.test.ts:219:    it('wisp（DIES_IF_NEGATED）被敌对怪物的 NEGATION bolt 命中后直接死亡，而不是只清状态', () => {
+src/test/p4_3_special_monster_flags.test.ts:224:        wisp.isAlly = true; // 作为玩家的召唤物/盟友，才会被敌对怪物的 NEGATION 当作"敌人"目标
+src/test/p4_3_special_monster_flags.test.ts:229:        game.castMonsterBolt(hostile, wisp, 'NEGATION');
+src/test/p4_3_special_monster_flags.test.ts:234:    it('对照组：没有 DIES_IF_NEGATED 的 goblin 被 NEGATION 命中只清状态，不会死', () => {
+src/test/p4_3_special_monster_flags.test.ts:245:        game.castMonsterBolt(hostile, goblin, 'NEGATION');
+src/test/p4_5_melee_specials.test.ts:25:import mutationDataJson from '../data/mutations.json';
+src/test/p4_5_melee_specials.test.ts:26:import type { MutationData } from '../entities/Monster';
+src/test/p4_5_melee_specials.test.ts:29:const MUTATION_DATA = mutationDataJson as MutationData[];
+src/test/p4_5_melee_specials.test.ts:37:function mutationById(id: string): MutationData {
+src/test/p4_5_melee_specials.test.ts:38:    const row = MUTATION_DATA.find(m => m.id === id);
+src/test/p4_5_melee_specials.test.ts:39:    if (!row) throw new Error(`mutations.json 中找不到 ${id}`);
+src/test/p4_5_melee_specials.test.ts:118:        goblin.mutate(mutationById('grappling'));
+src/test/p4_5_melee_specials.test.ts:359:        goblin.mutate(mutationById('vampiric'));
+src/test/p4_5_melee_specials.test.ts:474:        goblin.mutate(mutationById('juggernaut'));
+src/test/p4_6_attack_geometry.test.ts:332:        '（mutations.json 现无携带这三个旗标的变异，按 P4-5 的变异测试意图改为 ' +
+src/test/r_1_appearance.test.ts:150:    [TerrainType.COMMUTATION_ALTAR]: DEFAULT_LOOK,          // V-2b-4
+src/test/r_1_appearance.test.ts:315:        // V-2b-4：+7（ALTAR_CAGE_OPEN/ALTAR_CAGE_RETRACTABLE/COMMUTATION_ALTAR/
+src/test/scroll_effects.test.ts:296:// B-3：三张占位卷轴补实（negation / sanctuary / shattering）
+src/test/scroll_effects.test.ts:297:// CE 出处：negationBlast（Items.c:4827-4881，卷轴侧 :8004-8006）、
+src/test/scroll_effects.test.ts:320:/** 一件"+3 带符文、被诅咒、已被探魔"的未鉴定地面武器（negation 的靶子）。 */
+src/test/scroll_effects.test.ts:335:describe('B-3 negation_burst 卷轴（Items.c:8004 → negationBlast :4827-4881）', () => {
+src/test/scroll_effects.test.ts:336:    it('视野内+距离内的怪被清魔法；diesIfNegated 的当场死；距离外的完全不受影响', () => {
+src/test/scroll_effects.test.ts:344:        const wisp = placeMonster(game, 'wisp', 6, 5); // MONST_DIES_IF_NEGATED
+src/test/scroll_effects.test.ts:351:        giveScroll(game, 'scroll_of_negation');
+src/test/scroll_effects.test.ts:352:        expect(readScroll(game, 'scroll_of_negation')).toBe(true);
+src/test/scroll_effects.test.ts:358:        // diesIfNegated：当场死（CE :4844 "This can be fatal."）
+src/test/scroll_effects.test.ts:365:        expect(ItemLoader.identifiedItems.has('scroll_of_negation')).toBe(true);
+src/test/scroll_effects.test.ts:368:    it('玩家自己的状态也被清（CE :4834 negate(&player) 先于怪物循环、无消息）', () => {
+src/test/scroll_effects.test.ts:374:        giveScroll(game, 'scroll_of_negation');
+src/test/scroll_effects.test.ts:375:        expect(readScroll(game, 'scroll_of_negation')).toBe(true);
+src/test/scroll_effects.test.ts:393:        giveScroll(game, 'scroll_of_negation');
+src/test/scroll_effects.test.ts:394:        expect(readScroll(game, 'scroll_of_negation')).toBe(true);
+src/test/scroll_effects.test.ts:538:    it('negation：读一次消耗 0 次随机数（CE negationBlast 全程零掷骰）', () => {
+src/test/scroll_effects.test.ts:539:        expect(measureConsumption(cleanTestGame(), 'scroll_of_negation')).toBe(0);
+src/test/v_1c_machine_structure.test.ts:187:                // Check them on the negative side; do not silently skip them or
+src/test/v_2b_2a_placement_flags.test.ts:148:    // reward_commutation 之后，本表每个计数按 CE GlobalsBrogue.c 原表
+src/test/v_2b_4_altars.test.ts:112:    it('A3 COMMUTATION_ALTAR（Globals.c:532）：置换祭坛——独有的 SWAP_ENCHANTS_ACTIVATION、无火无显形', () => {
+src/test/v_2b_4_altars.test.ts:113:        const e = TERRAIN_FLAGS[C.COMMUTATION_ALTAR]!;
+src/test/v_2b_4_altars.test.ts:126:        expect(DRAW_PRIORITY[C.COMMUTATION_ALTAR]).toBe(17);
+src/test/v_2b_4_altars.test.ts:127:        expect(TERRAIN_HOME_LAYER[C.COMMUTATION_ALTAR]).toBe(L.DUNGEON);
+src/test/v_2b_4_altars.test.ts:263:        expect(cm.ceTile).toBe('COMMUTATION_ALTAR_INERT');
+src/test/v_2b_4_altars.test.ts:422:    it('C3 6 号 Commutation altars（:221-226）——原地接管 web 自创的 reward_commutation', () => {
+src/test/v_2b_4_altars.test.ts:423:        const bp = byId('reward_commutation');
+src/test/v_2b_4_altars.test.ts:424:        expect(bp.name, '名称已换成 CE 原文').toBe('Commutation altars');
+src/test/v_2b_4_altars.test.ts:434:        expect(f(2)).toMatchObject({ terrain: 'COMMUTATION_ALTAR', instanceCount: [2, 2], minimumInstanceCount: 2, personalSpace: 2 });
+src/test/v_2b_4_altars.test.ts:440:        expect(raw.includes('MF_ALTAR_GROUP'), 'reward_commutation 不得再带自创的 MF_ALTAR_GROUP').toBe(false);
+src/test/v_2b_4_altars.test.ts:441:        expect(bp.features.some(x => x.terrain === 'ALTAR'), '旧数据的 ALTAR（= ALTAR_INERT）+ 分组玩法已替换为 COMMUTATION_ALTAR').toBe(false);
+src/test/w_10_poison.test.ts:117:    it('CE statusEffectCatalog: negation and ordinary healing both preserve poison', () => {
+src/test/w_10_poison.test.ts:121:        (g as any).negateCreatureMagic(m); expect([m.poisonAmount, m.getStatusDuration('poisoned')]).toEqual([3, 5]);
+src/test/w_11_teleport_placement.test.ts:111:    it('all-visible empty room fails without retry, mutation, random draws, or a forced coordinate', () => {
+src/test/w_15_shielding.test.ts:63:    it('matches compiled CE fp_pow/staffProtection golden values, including negative exponent', () => {
+src/test/w_15_shielding.test.ts:194:    it.each(['quietus','slaying','negation','kamikaze','tunnel','shatter','lava'])('%s instant death bypasses large shield', source => {
+src/test/w_15_shielding.test.ts:197:        if(source==='negation') { m.behaviorFlags.add('MONST_DIES_IF_NEGATED'); (g as any).negateCreatureMagic(m); }
+src/test/w_15_shielding.test.ts:210:    it('ordinary negation clears both fields', () => {
+src/test/w_15_shielding.test.ts:211:        const g=scene(), m=mob(g); for(const c of [g.player,m]) { c.applyShield(130); (g as any).negateCreatureMagic(c); expect(shield(c)).toEqual([0,0]); }
+src/test/w_16_conjuration.test.ts:152: it('negation kills the actual magical entity through existing death path, bypassing shield; swept once',()=>{
+src/test/w_16_conjuration.test.ts:154:  const neg={...bolt(),ceType:CEBoltType.NEGATION,effect:BoltEffect.NEGATION};g.zapBoltFromPlayer(neg,staff(),b.loc);
+src/test/w_16_conjuration.test.ts:170: it('negation casters recognize the newly summoned magical enemy without requiring haste or shield',()=>{
+src/test/w_16_conjuration.test.ts:172:  expect(specificallyValidBoltTarget(caster,b,'NEGATION',g)).toBe(true);
+src/test/w_16_conjuration.test.ts:173:  g.castMonsterBolt(caster,b,'NEGATION');expect(b.hp).toBe(0);
+src/test/w_16_conjuration.test.ts:189: it('JSON restores actual species despite translated name, ally/binding/AI, ticks, flying and negate vulnerability',()=>{
+src/test/w_16_conjuration.test.ts:193:  expect(restored.hasStatus('levitating')).toBe(true);expect(restored.diesIfNegated()).toBe(true);
+src/test/w_16_conjuration.test.ts:218: it('real UI commit cancels without mutation, then spends one charge, identifies and leaves three waiting blades',()=>{
+src/test/w_18_entrancement.test.ts:162: it('CE enemy catalog gate rejects same-team entrancement; actual negation contact still frees it',()=>{
+src/test/w_18_entrancement.test.ts:164:  expect(specificallyValidBoltTarget(caster,m,'NEGATION',g)).toBe(false);g.castMonsterBolt(caster,m,'NEGATION');expect(m.hasStatus('entranced')).toBe(false);
+src/test/w_19_polymorph.test.ts:16:import mutations from '../data/mutations.json';
+src/test/w_19_polymorph.test.ts:78: it.each(['MONST_INANIMATE','MONST_INVULNERABLE','MONST_TURRET'])('%s rejects before mutation/status/relationship writes or draws',flag=>{
+src/test/w_19_polymorph.test.ts:79:  const g=scene(),m=mob(g);m.behaviorFlags.add(flag);m.isAlly=m.isCaged=true;m.seized=true;m.statusDurations={hasted:8,poisoned:9};m.wasNegated=true;
+src/test/w_19_polymorph.test.ts:105: it('unAlly/mutation/carried creature reset occurs BEFORE the first species roll',()=>{
+src/test/w_19_polymorph.test.ts:106:  const g=scene(),m=mob(g,'monkey'),leader=mob(g,'rat',15,7);m.leader=leader;m.isAlly=true;m.carriedMonster=new Monster(0,0,data('phoenix'));m.mutation=mutations[0] as any;
+src/test/w_19_polymorph.test.ts:107:  const wand=ItemLoader.spawnWand('wand_of_slowness',-1,-1)!;vi.spyOn(rng,'randRange').mockImplementation(()=>{expect(m.isAlly).toBe(false);expect(m.leader).toBeNull();expect(m.mutation).toBeUndefined();expect(m.carriedMonster).toBeNull();expect(m.state).toBe(S.HUNTING);return index('rat');});g.zapBoltFromPlayer(cfg(),wand,m.loc);
+src/test/w_19_polymorph.test.ts:117:  m.mutate(mutations[0] as any);m.wasNegated=true;m.carriedMonster=new Monster(0,0,data('phoenix'));const carried=m.carriedMonster;
+src/test/w_19_polymorph.test.ts:125:  expect(m).toMatchObject({id:oldId,typeId:'jackal',hp:polymorphHP(oldHP,oldMax,d.hp),maxHp:d.hp,accuracy:d.accuracy,defense:d.defense,damageString:d.damage,regenTurns:d.regen,regenCounter:17,ticksUntilTurn:222,wasNegated:false,mutation:undefined,carriedMonster:null,seized:false,seizing:false,poisonAmount:4,maxShield:0,machineHome:42,givenUpOnScent:true,targetWaypointIndex:3,spawnLoc:{x:12,y:13},falling:true,preplaced:true,boundToLeader:true,boundToPlayer:true,doesNotTrackLeader:true,goldDropChance:.37,itemDropChance:.29});
+src/test/w_19_polymorph.test.ts:150: it('negation resets polymorph cached speed even without a haste status',()=>{const g=scene(),m=mob(g);m.statusDurations={hasted:8};cast(g,m);(g as any).negateCreatureMagic(m);expect([m.moveSpeed,m.attackSpeed]).toEqual([50,100]);});
+src/test/w_19_polymorph.test.ts:178:  const g=scene(),m=mob(g);m.name='unknown old mutation title';m.isAlly=true;m.isCaged=true;const saved=JSON.parse(JSON.stringify((g as any).serializeMonster(m)));delete saved.form;
+src/test/w_20_cloning.test.ts:14:import { Monster, MonsterState as S, countMinions, type MonsterData, type MutationData } from '../entities/Monster';
+src/test/w_20_cloning.test.ts:16:import mutations from '../data/mutations.json';
+src/test/w_20_cloning.test.ts:33:const fields=['abilities','abilityFlags','behaviorFlags','bolts','carriedItem','carriedMonster','leader','loc','mutation','safetySnapshot','spawnLoc','statusDurations','statusImmunities','statusResistTurns','waypointAlreadyVisited'];
+src/test/w_20_cloning.test.ts:36: m.mutate(structuredClone(mutations[0]!));m.statusImmunities.add('confused');m.statusResistTurns={slowed:2};m.abilities.add('flying');m.behaviorFlags.add('MONST_FLIES');m.abilityFlags.add('MA_CAST_SUMMON');m.bolts=['HEALING'];
+src/test/w_20_cloning.test.ts:37: m.waypointAlreadyVisited=[true,false];m.targetWaypointIndex=1;m.safetySnapshot=[[3,4],[5,6]];m.spawnLoc={x:7,y:8};m.regenCounter=13;m.machineHome=17;m.seized=m.seizing=true;m.movementSpeed=37;m.attackSpeed=43;m.polymorphKeepsSpeed=true;m.wasNegated=true;m.givenUpOnScent=true;m.falling=m.preplaced=true;
+src/test/w_20_cloning.test.ts:43: it('audits EVERY object-valued Monster own field (including nested mutation arrays); no shared value container',()=>{
+src/test/w_20_cloning.test.ts:53:  for(const key of ['abilityFlags','behaviorFlags','forbiddenFlags','forbiddenAbilityFlags'] as const)expect(c.mutation![key]).not.toBe(m.mutation![key]);
+src/test/w_20_cloning.test.ts:58: it.each(['loc','spawnLoc','statusDurations','statusImmunities','statusResistTurns','abilities','behaviorFlags','abilityFlags','bolts','waypointAlreadyVisited','mutation'] as const)('reverse mutation of clone.%s leaves parent byte-for-byte unchanged',key=>{
+src/test/w_20_cloning.test.ts:61:  if(value instanceof Set)value.clear();else if(Array.isArray(value))value[0]=!value[0];else if(key==='mutation'){
+src/test/w_20_cloning.test.ts:69: it('retains polymorph cached speed, current learned/negated capabilities; does not rebuild from catalog',()=>{
+src/test/w_20_cloning.test.ts:71:  expect(c).toMatchObject({polymorphed:true,polymorphKeepsSpeed:true,movementSpeed:37,attackSpeed:43,wasNegated:true});expect(c.bolts).toEqual(['HEALING']);expect(c.hasBehavior('MONST_FLIES')).toBe(false);
+src/test/w_20_cloning.test.ts:120:  (g as any).trySplitMonster(m,g.player);const c=g.monsters[1]!;expect([m.hp,c.hp]).toEqual([10,10]);expect((c.statusDurations as any).burning).toBe(6);expect(c.getStatusDuration('entranced')).toBe(12);expect(c.poisonAmount).toBe(4);expect(c.maxShield).toBe(300);expect(c.regenCounter).toBe(13);expect(c.seized).toBe(true);expect(c.getStatusDuration('levitating')).toBe(levitation===1000?0:23);expect(c.hasBehavior('MONST_FLIES')).toBe(false);expect(c.hasAbility('MA_HIT_STEAL_FLEE')).toBe(false);expect(c.bolts).toEqual(data('pink_jelly').bolts);expect(c.mutation).toEqual(m.mutation);expect(c.ticksUntilTurn).toBe(101);
+src/test/w_20_cloning.test.ts:130:  expect(g.loadSnapshot(saved)).toBe(true);const restored=g.dormantMonsters[0]!;expect(restored).toMatchObject({id:900000,isClone:true,polymorphed:false,movementSpeed:37,attackSpeed:43,ticksUntilTurn:101,machineHome:17,poisonAmount:4,maxShield:300,wasNegated:true});expect(restored.leader?.id).toBe(leader.id);expect(restored.mutation).toEqual(c.mutation);expect(restored.waypointAlreadyVisited).toEqual(c.waypointAlreadyVisited);expect(restored.carriedItem).toBeNull();
+src/test/w_20_cloning.test.ts:131:  restored.isDormant=false;g.dormantMonsters=[];g.monsters.push(restored);const next=g.cloneMonster(restored)!;expect(next.id).toBeGreaterThan(900000);expect(new Set([g.player.id,...g.monsters.map(x=>x.id)]).size).toBe(g.monsters.length+1);const before=dump(restored);next.tickStatuses();next.mutation!.behaviorFlags.push('test');expect(dump(restored)).toBe(before);
+src/test/w_20_cloning.test.ts:175: it('original saved mutation provenance survives, so self split keeps its mutation-only trait',()=>{
+src/test/w_20_cloning.test.ts:176:  const g=live(),m=mob(g,'pink_jelly');const mutation: MutationData=structuredClone(mutations[0]!);mutation.behaviorFlags.push('MONST_FLIES');m.mutate(mutation);const saved=JSON.parse(JSON.stringify(g.toSnapshot()));g.loadSnapshot(saved);const restored=g.monsters[0]!;expect(restored.mutation).toEqual(mutation);(g as any).trySplitMonster(restored,g.player);expect(g.monsters[1]!.hasBehavior('MONST_FLIES')).toBe(true);expect(g.monsters[1]!.getStatusDuration('levitating')).toBe(1000);expect(g.monsters[1]!.mutation).not.toBe(restored.mutation);
+src/test/w_21_empowerment.test.ts:17:import mutations from '../data/mutations.json';
+src/test/w_21_empowerment.test.ts:35:const stats=(m:Monster)=>[m.maxHp,m.hp,m.defense,m.accuracy,CombatSystem.parseDamageString(m.damageString).min,CombatSystem.parseDamageString(m.damageString).max,m.newPowerCount,m.totalPowerCount];
+src/test/w_21_empowerment.test.ts:44:   if(n===1){Object.assign(m,{maxHp:37,hp:1,defense:17,accuracy:85,damageString:`${lo}-${hi}`,newPowerCount:0,totalPowerCount:0});}
+src/test/w_21_empowerment.test.ts:52: it.each([false,true])('same fixed increments for ally=%s; no allegiance, mutation or ability changes',ally=>{
+src/test/w_21_empowerment.test.ts:53:  const g=scene(),m=mob(g,'ogre');m.isAlly=ally;m.mutate(structuredClone(mutations[0]!));m.hp=1;
+src/test/w_21_empowerment.test.ts:54:  const before=stats(m),mutation=structuredClone(m.mutation),flags=[...m.behaviorFlags],bolts=[...m.bolts];cast(g,m);
+src/test/w_21_empowerment.test.ts:55:  expect(m.maxHp).toBe(before[0]!+12);expect(m.hp).toBe(m.maxHp);expect(m.defense).toBe(before[2]!+10);expect(m.accuracy).toBe(before[3]!+10);expect(m.isAlly).toBe(ally);expect(m.mutation).toEqual(mutation);expect([...m.behaviorFlags]).toEqual(flags);expect(m.bolts).toEqual(bolts);expect(m.newPowerCount).toBe(1);
+src/test/w_21_empowerment.test.ts:91:  const r=g.zapBoltFromPlayer(bolt(),item,behind.loc);expect(dump(m)).toBe(before);expect(behind.newPowerCount).toBe(0);expect(r.outcome?.autoID).toBe(false);expect(r.frames.some(f=>f.durationMs===180)).toBe(false);expect(rng.randomNumbersGenerated).toBe(draw);
+src/test/w_21_empowerment.test.ts:100:  const seen=!['invisible','hidden'].includes(mode),r=cast(g,m);expect(m.totalPowerCount).toBe(1);expect(r.outcome?.autoID).toBe(seen);expect(r.frames.some(f=>f.durationMs===180&&f.x===m.x&&f.y===m.y)).toBe(seen);
+src/test/w_21_empowerment.test.ts:104:  const g=live(),m=mob(g),item=wand();g.player.inventory.addItem(item);g.useArcanaItem(item);g.setArcanaTarget(m.x,m.y);g.cancelArcanaSelection();expect(item.charges).toBe(1);expect(m.totalPowerCount).toBe(0);
+src/test/w_21_empowerment.test.ts:105:  g.useArcanaItem(item);g.setArcanaTarget(m.x,m.y);const before=g.stats.turns;g.confirmArcanaTarget();expect(item.charges).toBe(0);expect(item.timesUsed).toBe(1);expect(item.isIdentified).toBe(true);expect(g.stats.turns).toBe(before+1);expect(m.totalPowerCount).toBe(1);expect(m.maxHp).toBe(18);
+src/test/w_21_empowerment.test.ts:111:  const g=scene(),m=mob(g);cast(g,m);cast(g,m);const c=g.cloneMonster(m)!;expect(stats(c)).toEqual(stats(m));expect(c.totalPowerCount).toBe(2);c.empower();expect(c.totalPowerCount).toBe(3);expect(m.totalPowerCount).toBe(2);expect(c.maxHp).toBe(m.maxHp+12);
+src/test/w_21_empowerment.test.ts:116:  expect(stats(c)).toEqual(stats(m));expect(m.hp).toBe(16);expect(m.maxHp).toBe(74);expect(c.totalPowerCount).toBe(2);
+src/test/w_21_empowerment.test.ts:117:  (g as any).trySplitMonster(m,g.player);const split=g.monsters[2]!;expect(split.totalPowerCount).toBe(2);expect(split.newPowerCount).toBe(2);expect(split.damageString).toBe(m.damageString);expect(split.maxHp).toBe(74);
+src/test/w_21_empowerment.test.ts:122:  g.zapBoltFromPlayer(cfg,item,m.loc);draw.mockRestore();const d=data('ogre');expect(m).toMatchObject({typeId:'ogre',maxHp:d.hp,accuracy:d.accuracy,defense:d.defense,damageString:d.damage,newPowerCount:2,totalPowerCount:2,isAlly:false});
+src/test/w_21_empowerment.test.ts:123:  cast(g,m);expect(m.maxHp).toBe(d.hp+12);expect(m.newPowerCount).toBe(3);expect(m.totalPowerCount).toBe(3);
+src/test/w_21_empowerment.test.ts:126:  const g=live(),m=mob(g);cast(g,m);cast(g,m);m.newPowerCount=1;const c=g.cloneMonster(m)!;c.isDormant=true;g.monsters=[m];g.dormantMonsters=[c];
+src/test/w_21_empowerment.test.ts:129:  const legacy=JSON.parse(JSON.stringify(saved));for(const entry of [...legacy.monsters,...legacy.dormantMonsters]){delete entry.newPowerCount;delete entry.totalPowerCount;}
+src/test/w_21_empowerment.test.ts:130:  g.loadSnapshot(legacy);expect(g.monsters[0]!.newPowerCount).toBe(0);expect(g.dormantMonsters[0]!.totalPowerCount).toBe(0);expect(g.monsters[0]!.maxHp).toBe(30);
+src/test/w_21_empowerment.test.ts:133:  const g=live(),m=mob(g);cast(g,m);vi.spyOn(rng,'randRange').mockReturnValue(4);m.polymorph(()=>{});vi.restoreAllMocks();const before=stats(m);g.loadSnapshot(JSON.parse(JSON.stringify(g.toSnapshot())));expect(stats(g.monsters[0]!)).toEqual(before);expect(g.monsters[0]!.totalPowerCount).toBe(1);
+src/test/w_21_empowerment.test.ts:135: it('existing negation recovers slots except invulnerable/death paths, without removing numeric gains',()=>{
+src/test/w_21_empowerment.test.ts:136:  const g=scene(),m=mob(g);cast(g,m);cast(g,m);m.newPowerCount=0;const before=stats(m);(g as any).negateCreatureMagic(m);expect(stats(m)).toEqual([...before.slice(0,6),2,2]);
+src/test/w_21_empowerment.test.ts:137:  m.newPowerCount=0;m.behaviorFlags.add('MONST_INVULNERABLE');(g as any).negateCreatureMagic(m);expect(m.newPowerCount).toBe(0);m.behaviorFlags.delete('MONST_INVULNERABLE');m.behaviorFlags.add('MONST_DIES_IF_NEGATED');(g as any).negateCreatureMagic(m);expect(m.hp).toBe(0);expect(m.newPowerCount).toBe(0);
+src/test/w_21_empowerment.test.ts:142:  const victim=mob(g,'kobold',12,5);victim.hp=0;(g as any).removeDeadMonsters();g.handlePlayerAction('wait');expect(m.newPowerCount).toBe(2);expect(m.bolts).toEqual(data('rat').bolts??[]);
+src/test/w_23_negation.test.ts:12:import { NEGATABLE_TRAITS, NON_NEGATABLE_ABILITIES, negationWillAffectMonster, negateBolts } from '../engine/Combat/Negation';
+src/test/w_23_negation.test.ts:22:import mutations from '../data/mutations.json';
+src/test/w_23_negation.test.ts:41:const negate = (g: Game, c: Creature): boolean => (g as any).negateCreatureMagic(c);
+src/test/w_23_negation.test.ts:42:const bolt: BoltConfig = { id: 'test_negation', name: 'negation', ceType: CEBoltType.NEGATION, effect: BoltEffect.NEGATION,
+src/test/w_23_negation.test.ts:44:const wand = () => Object.assign(new Item('explicit negation', '/', 0xff88cc, ItemCategory.WAND), { identityId: 'wand_of_negation', charges: 2 });
+src/test/w_23_negation.test.ts:52:        const rows = fs.readFileSync('ai_docs/reports/w-23-evidence/ce-negation.txt', 'utf8').split('\n').filter(s => s.startsWith(`status ${+player} `));
+src/test/w_23_negation.test.ts:58:            if (!player) expect(negationWillAffectMonster(m), id).toBe(!!expected[3]);
+src/test/w_23_negation.test.ts:59:            expect(negate(g, c), id).toBe(!!expected[4]);
+src/test/w_23_negation.test.ts:61:            if (!player) expect(m.wasNegated, id).toBe(false);
+src/test/w_23_negation.test.ts:66:        expect(negationWillAffectMonster(m)).toBe(false); ItemLoader.identifiedItems.add('wand_of_negation');
+src/test/w_23_negation.test.ts:72:        const g = scene(), m = mob(g); m.totalPowerCount = 3;
+src/test/w_23_negation.test.ts:73:        expect(cast(g, m).outcome?.autoID).toBe(false); expect(m.newPowerCount).toBe(3); expect(m.wasNegated).toBe(false);
+src/test/w_23_negation.test.ts:84:        negate(g, m); expect(m.statusDurations).toEqual({ poisoned: 9, paralyzed: 8, weakened: 7, regenerating: 6, burning: 5, explosion_immunity: 5 });
+src/test/w_23_negation.test.ts:85:        expect(m.poisonAmount).toBe(4); expect(m.maxShield).toBe(0); expect(m.wasNegated).toBe(false);
+src/test/w_23_negation.test.ts:87:    it('player one-turn safety lasts until the normal expiry tick; negation does not create absent protection', () => {
+src/test/w_23_negation.test.ts:89:        g.grid.setTerrain(4, 5, T.CHASM); negate(g, g.player); expect((g as any).playerFalling).not.toBe(true);
+src/test/w_23_negation.test.ts:95:describe('W-23 flag/mutation/bolt stripping and CE branch ordering', () => {
+src/test/w_23_negation.test.ts:96:    it.each([...NEGATABLE_TRAITS])('permanently removes %s with wasNegated', flag => {
+src/test/w_23_negation.test.ts:98:        expect(negate(g, m)).toBe(true); expect(m.hasBehavior(flag)).toBe(false); expect(m.hasBehavior('MONST_NEVER_SLEEPS')).toBe(true); expect(m.wasNegated).toBe(true);
+src/test/w_23_negation.test.ts:101:        const g = scene(), m = mob(g); m.abilityFlags = new Set([...NON_NEGATABLE_ABILITIES, 'MA_SEIZES', 'MA_DF_ON_DEATH', 'MA_REFLECT_100', 'MA_CAST_SUMMON']);
+src/test/w_23_negation.test.ts:102:        m.seizing = m.seized = true; negate(g, m); expect([...m.abilityFlags]).toEqual([...NON_NEGATABLE_ABILITIES]);
+src/test/w_23_negation.test.ts:103:        expect(m.seizing).toBe(false); expect(m.seized).toBe(true); expect(m.wasNegated).toBe(true);
+src/test/w_23_negation.test.ts:104:        m.abilityFlags.add('MA_DF_ON_DEATH'); m.behaviorFlags.add('MONST_DIES_IF_NEGATED'); negate(g, m); expect(m.hasAbility('MA_DF_ON_DEATH')).toBe(false); expect(m.hp).toBe(0);
+src/test/w_23_negation.test.ts:106:    it('invulnerability rejects automatic targets but direct negate still removes abilities/grip before its gate', () => {
+src/test/w_23_negation.test.ts:107:        const g = scene(), m = mob(g, 'Warden_of_Yendor'); m.abilityFlags.add('MA_SEIZES'); m.setStatusDuration('hasted', 10); m.seizing = true; m.totalPowerCount = 4;
+src/test/w_23_negation.test.ts:108:        expect(negationWillAffectMonster(m, false)).toBe(false); expect(negate(g, m)).toBe(true);
+src/test/w_23_negation.test.ts:109:        expect(m.hasAbility('MA_SEIZES')).toBe(false); expect(m.seizing).toBe(false); expect(m.hasStatus('hasted')).toBe(true); expect(m.newPowerCount).toBe(0);
+src/test/w_23_negation.test.ts:111:    it('reflect-all only excludes bolt eligibility; blast kills it and reflected beam negates the player', () => {
+src/test/w_23_negation.test.ts:112:        const g = scene(), m = mob(g, 'stone_guardian'); expect(negationWillAffectMonster(m, true)).toBe(false); expect(negationWillAffectMonster(m, false)).toBe(true);
+src/test/w_23_negation.test.ts:115:        (g as any).negationBlastFromPlayer('scroll'); expect(m.hp).toBe(0);
+src/test/w_23_negation.test.ts:117:    it.each(mutations.map(m => m.id))('mutation %s: clear only CE-negatable identity, never reverse numeric changes', id => {
+src/test/w_23_negation.test.ts:118:        const g = scene(), m = mob(g); m.mutate(structuredClone(mutations.find(v => v.id === id)!));
+src/test/w_23_negation.test.ts:120:        negate(g, m); expect([m.maxHp, m.hp, m.moveSpeed, m.attackSpeed, m.damageString, m.defense, m.accuracy]).toEqual(before);
+src/test/w_23_negation.test.ts:121:        expect(!!m.mutation).toBe(['agile', 'juggernaut'].includes(id));
+src/test/w_23_negation.test.ts:123:    it('all shipped bolts, including arrows/darts/web/vines/blink, are negatable regardless of learnability', () => {
+src/test/w_23_negation.test.ts:124:        expect(Object.values(CE_BOLT_CATALOG).filter(b => b.flags & CEBoltFlags.NOT_NEGATABLE)).toEqual([]);
+src/test/w_23_negation.test.ts:126:        expect(negationWillAffectMonster(m)).toBe(true); negate(g, m); expect(m.bolts).toEqual([]); expect(m.wasNegated).toBe(true);
+src/test/w_23_negation.test.ts:128:    it('synthetic non-negatable bolts follow backup sentinel and CE surviving-tail behavior, restoring catalog afterwards', () => {
+src/test/w_23_negation.test.ts:132:            (whip as any).flags |= CEBoltFlags.NOT_NEGATABLE; (arrow as any).flags |= CEBoltFlags.NOT_NEGATABLE;
+src/test/w_23_negation.test.ts:133:            expect(negateBolts(['NEGATION', 'WHIP', 'DISTANCE_ATTACK'])).toEqual(['WHIP', 'DISTANCE_ATTACK', 'DISTANCE_ATTACK']);
+src/test/w_23_negation.test.ts:134:            expect(negateBolts(['NEGATION', 'NONE', 'WHIP'])).toEqual([]);
+src/test/w_23_negation.test.ts:135:            expect(negateBolts(Array(21).fill('WHIP'))).toHaveLength(20);
+src/test/w_23_negation.test.ts:138:    it('speed-only and grip-only effects do not set wasNegated; learned count restoration is inside living/non-invulnerable branch', () => {
+src/test/w_23_negation.test.ts:139:        const g = scene(), m = mob(g); m.moveSpeed = 20; m.seizing = true; m.totalPowerCount = 4;
+src/test/w_23_negation.test.ts:140:        expect(negate(g, m)).toBe(true); expect(m.moveSpeed).toBe(100); expect(m.seizing).toBe(false); expect(m.wasNegated).toBe(false); expect(m.newPowerCount).toBe(4);
+src/test/w_23_negation.test.ts:142:    it.each(['air', 'inanimate', 'living'])('die-if-negated %s message, bypass shield and skip states/counts/tile', kind => {
+src/test/w_23_negation.test.ts:143:        const g = scene(), m = mob(g); m.behaviorFlags.add('MONST_DIES_IF_NEGATED'); if (kind === 'air') m.setStatusDuration('levitating', 1000); if (kind === 'inanimate') m.behaviorFlags.add('MONST_INANIMATE');
+src/test/w_23_negation.test.ts:144:        m.applyShield(5000); m.totalPowerCount = 5; const tile = vi.spyOn(g as any, 'applyEnvironmentalEffects');
+src/test/w_23_negation.test.ts:145:        expect(negate(g, m)).toBe(true); expect(m.hp).toBe(0); expect(m.maxShield).toBe(5000); expect(m.newPowerCount).toBe(0); expect(m.wasNegated).toBe(false); expect(tile).not.toHaveBeenCalled();
+src/test/w_23_negation.test.ts:152:        const g = scene(), m = mob(g, 'vampire_bat'); g.grid.setTerrain(m.x, m.y, tile); negate(g, m);
+src/test/w_23_negation.test.ts:156:    it('fiery trait removal extinguishes, but no automatic rederivation; repeated negation stays inert', () => {
+src/test/w_23_negation.test.ts:158:        negate(g, m); expect(m.getStatusDuration('burning' as StatusId)).toBe(0); m.tickStatuses(); expect(negate(g, m)).toBe(false);
+src/test/w_23_negation.test.ts:162:        expect(specificallyValidBoltTarget(caster, m, 'NEGATION', g)).toBe(false); m.behaviorFlags.add('MONST_IMMUNE_TO_WEAPONS');
+src/test/w_23_negation.test.ts:163:        expect(specificallyValidBoltTarget(caster, m, 'NEGATION', g)).toBe(true); g.castMonsterBolt(caster, m, 'NEGATION'); expect(m.isImmuneToWeapons()).toBe(false);
+src/test/w_23_negation.test.ts:164:        m.setStatusDuration('levitating', 5); g.grid.setTerrain(m.x, m.y, T.WATER_DEEP); expect(specificallyValidBoltTarget(caster, m, 'NEGATION', g)).toBe(true);
+src/test/w_23_negation.test.ts:166:        expect(specificallyValidBoltTarget(caster, m, 'NEGATION', g)).toBe(true); g.castMonsterBolt(caster, m, 'NEGATION'); expect(m.hasStatus('discordant')).toBe(false);
+src/test/w_23_negation.test.ts:169:        const g = live(), m = mob(g, 'dar_priestess'); m.isAlly = true; m.dominated = true; m.empower(); m.newPowerCount = 0; m.addPoison(9, 2); m.setStatusDuration('entranced', 8);
+src/test/w_23_negation.test.ts:170:        const hp = m.maxHp; const scroll = ItemLoader.spawnScroll('scroll_of_negation', -1, -1)!;
+src/test/w_23_negation.test.ts:172:        expect(m.bolts).toEqual([]); expect(m.dominated && m.isAlly).toBe(true); expect(m.maxHp).toBe(hp); expect(m.poisonAmount).toBe(2); expect(m.hasStatus('entranced')).toBe(false); expect(m.newPowerCount).toBe(1);
+src/test/w_23_negation.test.ts:174:    it('active/dormant JSON, reset, clone and old saves preserve stripping and mutation removal without rebuilding species', () => {
+src/test/w_23_negation.test.ts:175:        const g = live(), m = mob(g, 'dar_priestess'); m.mutate(structuredClone(mutations[0]!)); m.empower(); negate(g, m);
+src/test/w_23_negation.test.ts:179:            expect(v.wasNegated).toBe(true); expect(v.bolts).toEqual([]); expect(v.mutation).toBeUndefined(); expect(v.newPowerCount).toBe(1); expect(v.hasAbility('MA_DF_ON_DEATH')).toBe(false);
+src/test/w_23_negation.test.ts:181:        delete saved.monsters[0].wasNegated; delete saved.monsters[0].newPowerCount; delete saved.monsters[0].totalPowerCount;
+src/test/w_23_negation.test.ts:182:        g.loadSnapshot(saved); expect(g.monsters[0]!.wasNegated).toBe(false); expect(g.monsters[0]!.newPowerCount).toBe(0); expect(g.monsters[0]!.bolts).toEqual([]);
+src/test/w_23_negation.test.ts:184:    it('description reads wasNegated AND count equality; polymorph clears it and clone copies it', () => {
+src/test/w_23_negation.test.ts:185:        const g = scene(), m = mob(g, 'dar_priestess'); negate(g, m); expect(m.copyForClone().wasNegated).toBe(true);
+src/test/w_23_negation.test.ts:187:        expect(detail()).toContain('特殊能力已被消除'); m.totalPowerCount = 1; expect(detail()).not.toContain('特殊能力已被消除');
+src/test/w_23_negation.test.ts:188:        m.polymorph(() => {}); expect(m.wasNegated).toBe(false);
+src/test/w_23_negation.test.ts:190:    it('plain-floor negation has no RNG; no negation item added to generation', () => {
+src/test/w_23_negation.test.ts:191:        const g = scene(), m = mob(g, 'dar_priestess'), before = rng.randomNumbersGenerated; negate(g, m); expect(rng.randomNumbersGenerated).toBe(before);
+src/test/w_23_negation.test.ts:192:        expect(ItemLoader.spawnWand('wand_of_negation', -1, -1)).toBeNull();
+src/test/w_4_bolt_reflection.test.ts:283:    it('zero/negative reflection level never rolls; guaranteed monster reflection does not consume RNG', () => {
+src/test/w_6_arcana_recharge.test.ts:138:    it('only equipped wisdom applies; two slots add, unknown positives cap at 1, negatives apply in full', () => {
+src/test/w_7_arcana_enchantment.test.ts:230:        // Isolate the unchanged equipment mutation footprint from ordinary turn effects.
+src/test/w_9_directed_status.test.ts:231:    it('scroll discord still applies 30/max-refresh and preserves web immunity/resistance; negation clears states', () => {
+src/test/w_9_directed_status.test.ts:234:        const bridge = g as unknown as { discordBlastFromPlayer(s: string): void; negateCreatureMagic(c: Monster): void };
+src/test/w_9_directed_status.test.ts:239:        bridge.negateCreatureMagic(normal); expect(normal.hasStatus('discordant')).toBe(false);

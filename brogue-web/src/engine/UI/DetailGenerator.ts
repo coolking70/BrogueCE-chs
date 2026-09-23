@@ -253,6 +253,7 @@ export function generateMonsterDetail(
 
     // --- State ---
     const stateLines: DetailLine[] = [];
+    if (monster.displaysNegation) stateLines.push({ text: '特殊能力已被消除。', color: '#ff88cc' });
     if (monster.isAlly && monster.newPowerCount > 0) {
         stateLines.push({ text: `似乎已准备好学习 ${monster.newPowerCount} 项新能力。`, color: '#88ff99' });
     }

@@ -1,0 +1,755 @@
+{
+  "states": [
+    {
+      "name": "before-scroll",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2150,
+            "poisonAmount": 2,
+            "maxShield": 0,
+            "statuses": {
+              "poisoned": 8,
+              "hasted": 8
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "达尔女祭司",
+              "x": 8,
+              "y": 5,
+              "hp": 32,
+              "maxHp": 32,
+              "accuracy": 110,
+              "defense": 70,
+              "damage": "3-6",
+              "newPowerCount": 0,
+              "totalPowerCount": 1,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_MAINTAINS_DISTANCE",
+                "MONST_CARRY_ITEM_25",
+                "MONST_FEMALE"
+              ],
+              "abilityFlags": [
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [
+                "NEGATION",
+                "HEALING",
+                "HASTE",
+                "SPARK"
+              ],
+              "typeId": "dar_priestess",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100000,
+              "poisonAmount": 2,
+              "poisoned": 8,
+              "shield": 130,
+              "maxShield": 130
+            }
+          ],
+          "items": []
+        },
+        "monsters": [
+          {
+            "type": "dar_priestess",
+            "hp": 32,
+            "wasNegated": false,
+            "bolts": [
+              "NEGATION",
+              "HEALING",
+              "HASTE",
+              "SPARK"
+            ],
+            "flags": [
+              "MONST_MAINTAINS_DISTANCE",
+              "MONST_CARRY_ITEM_25",
+              "MONST_FEMALE"
+            ],
+            "abilities": [
+              "MA_AVOID_CORRIDORS"
+            ],
+            "statuses": {
+              "shielded": 130,
+              "poisoned": 8,
+              "hasted": 8
+            },
+            "poison": 2
+          }
+        ],
+        "player": {
+          "statuses": {
+            "poisoned": 8,
+            "hasted": 8
+          },
+          "poison": 2
+        }
+      }
+    },
+    {
+      "name": "after-scroll",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 98,
+            "nutrition": 2149,
+            "poisonAmount": 2,
+            "maxShield": 0,
+            "statuses": {
+              "poisoned": 7
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "达尔女祭司",
+              "x": 8,
+              "y": 5,
+              "hp": 30,
+              "maxHp": 32,
+              "accuracy": 110,
+              "defense": 70,
+              "damage": "3-6",
+              "newPowerCount": 1,
+              "totalPowerCount": 1,
+              "wasNegated": true,
+              "negated": true,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_CARRY_ITEM_25",
+                "MONST_FEMALE"
+              ],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "dar_priestess",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 99900,
+              "poisonAmount": 2,
+              "poisoned": 7,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "monsters": [
+          {
+            "type": "dar_priestess",
+            "hp": 30,
+            "wasNegated": true,
+            "bolts": [],
+            "flags": [
+              "MONST_CARRY_ITEM_25",
+              "MONST_FEMALE"
+            ],
+            "abilities": [],
+            "statuses": {
+              "poisoned": 7
+            },
+            "poison": 2
+          }
+        ],
+        "player": {
+          "statuses": {
+            "poisoned": 7
+          },
+          "poison": 2
+        }
+      }
+    },
+    {
+      "name": "negated-detail",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 98,
+            "nutrition": 2149,
+            "poisonAmount": 2,
+            "maxShield": 0,
+            "statuses": {
+              "poisoned": 7
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "达尔女祭司",
+              "x": 8,
+              "y": 5,
+              "hp": 30,
+              "maxHp": 32,
+              "accuracy": 110,
+              "defense": 70,
+              "damage": "3-6",
+              "newPowerCount": 1,
+              "totalPowerCount": 1,
+              "wasNegated": true,
+              "negated": true,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_CARRY_ITEM_25",
+                "MONST_FEMALE"
+              ],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "dar_priestess",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 99900,
+              "poisonAmount": 2,
+              "poisoned": 7,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "monsters": [
+          {
+            "type": "dar_priestess",
+            "hp": 30,
+            "wasNegated": true,
+            "bolts": [],
+            "flags": [
+              "MONST_CARRY_ITEM_25",
+              "MONST_FEMALE"
+            ],
+            "abilities": [],
+            "statuses": {
+              "poisoned": 7
+            },
+            "poison": 2
+          }
+        ],
+        "player": {
+          "statuses": {
+            "poisoned": 7
+          },
+          "poison": 2
+        }
+      }
+    },
+    {
+      "name": "save-restore",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 98,
+            "nutrition": 2149,
+            "poisonAmount": 2,
+            "maxShield": 0,
+            "statuses": {
+              "poisoned": 7
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "达尔女祭司",
+              "x": 8,
+              "y": 5,
+              "hp": 30,
+              "maxHp": 32,
+              "accuracy": 110,
+              "defense": 70,
+              "damage": "3-6",
+              "newPowerCount": 1,
+              "totalPowerCount": 1,
+              "wasNegated": true,
+              "negated": true,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_CARRY_ITEM_25",
+                "MONST_FEMALE"
+              ],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "dar_priestess",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 2,
+              "poisoned": 7,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "monsters": [
+          {
+            "type": "dar_priestess",
+            "hp": 30,
+            "wasNegated": true,
+            "bolts": [],
+            "flags": [
+              "MONST_CARRY_ITEM_25",
+              "MONST_FEMALE"
+            ],
+            "abilities": [],
+            "statuses": {
+              "poisoned": 7
+            },
+            "poison": 2
+          }
+        ],
+        "player": {
+          "statuses": {
+            "poisoned": 7
+          },
+          "poison": 2
+        }
+      }
+    },
+    {
+      "name": "flying-over-lava",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "吸血蝙蝠",
+              "x": 8,
+              "y": 5,
+              "hp": 18,
+              "maxHp": 18,
+              "accuracy": 100,
+              "defense": 25,
+              "damage": "1d5+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_FLIES",
+                "MONST_FLITS"
+              ],
+              "abilityFlags": [
+                "MA_TRANSFERENCE"
+              ],
+              "bolts": [],
+              "typeId": "vampire_bat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "monsters": [
+          {
+            "type": "vampire_bat",
+            "hp": 18,
+            "wasNegated": false,
+            "bolts": [],
+            "flags": [
+              "MONST_FLIES",
+              "MONST_FLITS"
+            ],
+            "abilities": [
+              "MA_TRANSFERENCE"
+            ],
+            "statuses": {
+              "levitating": 1000
+            },
+            "poison": 0
+          }
+        ],
+        "player": {
+          "statuses": {},
+          "poison": 0
+        }
+      }
+    },
+    {
+      "name": "lost-flight",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2148,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [],
+          "items": []
+        },
+        "monsters": [],
+        "player": {
+          "statuses": {},
+          "poison": 0
+        }
+      }
+    },
+    {
+      "name": "monster-negates-player",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2148,
+            "poisonAmount": 3,
+            "maxShield": 0,
+            "statuses": {
+              "poisoned": 7
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "达尔女祭司",
+              "x": 8,
+              "y": 5,
+              "hp": 20,
+              "maxHp": 20,
+              "accuracy": 100,
+              "defense": 60,
+              "damage": "1d4+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_MAINTAINS_DISTANCE",
+                "MONST_CARRY_ITEM_25",
+                "MONST_FEMALE"
+              ],
+              "abilityFlags": [
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [
+                "NEGATION",
+                "HEALING",
+                "HASTE",
+                "SPARK"
+              ],
+              "typeId": "dar_priestess",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "monsters": [
+          {
+            "type": "dar_priestess",
+            "hp": 20,
+            "wasNegated": false,
+            "bolts": [
+              "NEGATION",
+              "HEALING",
+              "HASTE",
+              "SPARK"
+            ],
+            "flags": [
+              "MONST_MAINTAINS_DISTANCE",
+              "MONST_CARRY_ITEM_25",
+              "MONST_FEMALE"
+            ],
+            "abilities": [
+              "MA_AVOID_CORRIDORS"
+            ],
+            "statuses": {},
+            "poison": 0
+          }
+        ],
+        "player": {
+          "statuses": {
+            "poisoned": 7
+          },
+          "poison": 3
+        }
+      }
+    },
+    {
+      "name": "death-wisp",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2147,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [],
+          "items": []
+        },
+        "monsters": [],
+        "player": {
+          "statuses": {},
+          "poison": 0
+        }
+      }
+    },
+    {
+      "name": "death-stone_guardian",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2146,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [],
+          "items": []
+        },
+        "monsters": [],
+        "player": {
+          "statuses": {},
+          "poison": 0
+        }
+      }
+    },
+    {
+      "name": "death-rat",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2145,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [],
+          "items": []
+        },
+        "monsters": [],
+        "player": {
+          "statuses": {},
+          "poison": 0
+        }
+      }
+    }
+  ],
+  "errors": []
+}

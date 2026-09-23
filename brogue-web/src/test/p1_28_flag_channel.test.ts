@@ -361,11 +361,9 @@ describe('P1-28：旗标→状态翻译层的下游接线', () => {
         expect(specificallyValidBoltTarget(caster, rat, 'FIRE', game)).toBe(true); // 无火免者仍合法
     });
 
-    it('对抗性⑧：negation 命中飞行怪后，临时状态被清、旗标派生状态必须重推导' +
-        '（web 的 negate 不剥离 behaviorFlags，清空后不回填会让 bat 永久失去' +
-        '飞行，CE 语义只是临时剥离）。捕获的错误实现：negate 清状态后漏调 ' +
-        'syncFlagDerivedStatuses——hasted 清零 ✔ 但 levitating 归 0，bat 随后' +
-        '在熔岩里被烧死。', () => {
+    // W-23: CE IC:4500/4524 strips traits permanently; MC:2498 clears
+    // levitation before that. There is no rederive call in negate.
+    it('对抗性⑧：消魔永久剥离飞行，随后接触熔岩致死', () => {
         const game = createHeadlessGame(20260916);
         clearToOpenRoom(game);
 
@@ -378,13 +376,14 @@ describe('P1-28：旗标→状态翻译层的下游接线', () => {
         game.castMonsterBolt(caster, bat, 'NEGATION');
 
         expect(bat.getStatusDuration('hasted')).toBe(0);      // 临时状态：真的被清
-        expect(bat.getStatusDuration('levitating')).toBe(1000); // 派生状态：重推导回填
+        expect(bat.getStatusDuration('levitating')).toBe(0);
+        expect(bat.hasBehavior('MONST_FLIES')).toBe(false);
 
-        // 被消除魔法后的 bat 随后站熔岩：仍然飞行、仍然不死
+        // CE IC:4545: losing flight exposes the creature to terrain.
         setTile(game, 8, 5, TerrainType.LAVA);
         tickEnvironment(game, 3);
-        expect(bat.hp).toBe(bat.maxHp);
-        expect(bat.char).not.toBe('%');
+        expect(bat.hp).toBe(0);
+        expect(bat.char).toBe('%');
     });
 
     it('对抗性⑨：快照往返后 wisp 的派生免疫必须存活、且在熔岩里继续存活——' +

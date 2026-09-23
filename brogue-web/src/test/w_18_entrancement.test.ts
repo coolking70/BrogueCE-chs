@@ -159,9 +159,9 @@ describe('W-18 forced attack relationships, grab and real terrain',()=>{
   ally.takeTurn(g,10);expect(m.hp).toBe(100);expect(m.hasStatus('entranced')).toBe(true);
   const caster=mob(g,'dar_priestess',8,5);caster.isAlly=true;expect(specificallyValidBoltTarget(caster,m,'SPARK',g)).toBe(false);
  });
- it('hostile negation frees its own entranced kind through actual casting',()=>{
+ it('CE enemy catalog gate rejects same-team entrancement; actual negation contact still frees it',()=>{
   const g=scene(),caster=mob(g,'dar_priestess',8,5),m=mob(g,'rat',10,5);m.setStatusDuration('entranced',24);
-  expect(specificallyValidBoltTarget(caster,m,'NEGATION',g)).toBe(true);g.castMonsterBolt(caster,m,'NEGATION');expect(m.hasStatus('entranced')).toBe(false);
+  expect(specificallyValidBoltTarget(caster,m,'NEGATION',g)).toBe(false);g.castMonsterBolt(caster,m,'NEGATION');expect(m.hasStatus('entranced')).toBe(false);
   const before=m.loc.x;m.ticksUntilTurn=1;wait(g);expect(m.loc.x).toBeLessThan(before);
  });
  it('entranced seizer cannot hold player; moving seizer clears its own grip',()=>{

@@ -1017,3 +1017,15 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 后续：W22 学习未完成；W23完整消魔、复活祭坛/尸体吸收、CE weaknessAmount/恶心/黑暗、完整flare辐射/monster clumpFactor、全levels JSON持久化仍未移植。计数不消费，频率3保持留W24。
 - 最终目视复核发现浏览器夹具直接设置 inspectTarget=null 不会关闭 DetailPanel 自有 visible 状态。改为点击真实关闭按钮（没有改产品代码）；第二次拟最终门禁在回归中主动中断130并归档 prefinal-browser-fixture。脚本/进度最后冻结后从 build 完整重跑，前两次均不作为最终结果。
 - 第三次完整运行 build/drift 通过，2290passed/1failed/8skipped/5todo，319输入前后SHA一致。唯一红灯为合并敌友分支后留下 bolt.empowerment_enemy 死翻译键；按 P1-30 规则把键移到 zh_CN.legacy.json，守卫/扫描器不改，生产种子扩为8文件。原完整失败结果归档 prefinal-i18n，修复后重新全套冻结复跑。
+
+
+## 2026-09-24 W-23 消魔能力闭环
+- 用户请求执行 w-23.prompt.md，按 W-0 的 W-23 行；W-22 学习/吸收保持暂缓。使用 develop-web-game 技能。
+- 已逐项读 CE negate、negationWillAffectMonster、statusEffectCatalog、NEGATABLE_TRAITS/MA mask、所有 DIES_IF_NEGATED/wasNegated 来源及读方。
+- 发现 W-18 同阵营催眠资格绕过目录敌人门、p1_28 永久状态回填、W-10 清毒均不符 CE，按执行代码翻正；maxShield 沿用 web 无活动护盾时归零的表示约定。
+- 待办：新增 CE 原函数审计及回归、浏览器操作、R+S 闭包、最终 SHA 门禁及报告。
+- 新增42项测试通过；CE原函数104组逐状态结果及分支断言通过。7个旧文件184项通过，3处旧留形断言按CE翻正（p1_28飞行、W10毒、W18资格）。
+- 浏览器10场景通过、console/page错误0；实际打开详情、失飞熔岩死亡与死亡三文案截图。技能客户端canvas截图仍黑，未算作视觉通过，改用有头整页截图。
+- 中途修复均为夹具/工具问题：未初始化i18n导致消息undefined、误用不存在的spawnConsumable/useItem、Array.at不在目标lib、强化后毒被panacea清除（夹具改为先强化再施毒）；没有放宽守卫。
+- 实际9个生产文件R=117，S(B,C,M,Q)+negate/NEGATABLE/保存/文件读取并集124文件；123个显式定向回归 + 独立drift。全部源码/测试/脚本/进度冻结后执行最终build/CE审计/回归/drift并前后SHA自证，之后仅回填报告及证据。
+- 后续：W22学习/吸收仍暂缓；W24消魔魔杖入池；MAGICAL_FEAR/DARKNESS、完整CE怪物侧栏、A_MULTIPLICITY产生谱影、全levels JSON存档与原有web自创onHitStatus/legacy abilities不在本轮补齐。

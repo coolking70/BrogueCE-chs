@@ -7,6 +7,7 @@ import { T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION } from '../Map/TerrainCatal
 import type { Item } from '../Items/Item';
 import { ItemLoader } from '../Items/ItemLoader';
 import { boltLine } from './BoltTrajectory';
+import { negationWillAffectMonster } from './Negation';
 import { wandDominate } from './Domination';
 import { CE_BOLT_CATALOG, CE_ITEM_BOLT_TYPES, CEBoltEffect, CEBoltFlags } from './BoltCatalog';
 
@@ -50,6 +51,7 @@ export function arcanaTargetCandidates(player: Player, grid: Grid, monsters: rea
             if (!ally && bolt.effect === CEBoltEffect.BECKONING && distance <= 1) return false;
             if (!ally && (bolt.flags & CEBoltFlags.FIERY) && m.hasStatus('immune_fire')) return false;
             if (ally && bolt.effect === CEBoltEffect.HEALING && !m.hasBehavior('MONST_REFLECT_50') && m.hp >= m.maxHp) return false;
+            if (!ally && bolt.effect === CEBoltEffect.NEGATION) return negationWillAffectMonster(m, true);
             return !!(bolt.flags & (ally ? CEBoltFlags.TARGET_ALLIES : CEBoltFlags.TARGET_ENEMIES));
         }
         // Unknown kind: never infer flags/forbidden traits from its hidden identity.

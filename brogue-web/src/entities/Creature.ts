@@ -95,6 +95,10 @@ export class Creature implements Entity {
      * CE 的 haste/slow 互斥（互相清对方状态位）由施加方负责；web 侧当前
      * 不存在同时施加的路径，推导时 haste 优先仅作兜底。
      */
+    public hasAlteredSpeeds(): boolean {
+        return this.movementSpeed !== this.infoMovementSpeed || this.attackSpeed !== this.infoAttackSpeed;
+    }
+
     public refreshSpeeds(): void {
         let move = this.infoMovementSpeed;
         let atk = this.infoAttackSpeed;

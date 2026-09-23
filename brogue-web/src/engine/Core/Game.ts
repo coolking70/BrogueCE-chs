@@ -1,3 +1,4 @@
+import { NEGATABLE_TRAITS, NON_NEGATABLE_ABILITIES, NEGATABLE_MUTATIONS, hasNegatableBolt, negateBolts, negateCreatureStatusEffects } from '../Combat/Negation';
 import { cloneLocation } from '../Combat/Cloning';
 /**
  * src/engine/Core/Game.ts
@@ -231,6 +232,7 @@ export interface GameSnapshotItem {
 
 export interface GameSnapshotMonster {
     /** W-21: optional for legacy saves; absent counts restore as zero. */
+    wasNegated?: boolean;
     newPowerCount?: number;
     totalPowerCount?: number;
     /** W-19: source identity/traits must survive saving BEFORE the first cast.
@@ -443,6 +445,7 @@ interface TestRoomState {
     y2: number;
     baselineItems: GameSnapshotItem[];
     baselineMonsters: Array<{
+        wasNegated?: boolean;
         newPowerCount?: number;
         totalPowerCount?: number;
         form?: MonsterData;
@@ -2439,6 +2442,7 @@ export class Game {
         };
         const monster = new Monster(m.loc.x, m.loc.y, data);
         monster.id = m.id;
+        monster.wasNegated = m.wasNegated ?? false;
         monster.newPowerCount = m.newPowerCount ?? 0;
         monster.totalPowerCount = m.totalPowerCount ?? 0;
         monster.mutation = m.mutation ? structuredClone(m.mutation) : undefined;
@@ -2781,6 +2785,7 @@ export class Game {
                     y2: row.y2,
                     baselineItems: roomItems.map((it) => this.serializeItem(it)),
                     baselineMonsters: roomMonsters.map((m) => ({
+                        wasNegated: m.wasNegated,
                         newPowerCount: m.newPowerCount,
                         totalPowerCount: m.totalPowerCount,
                         entrancement: this.serializeMonster(m).entrancement,
@@ -4950,27 +4955,11 @@ export class Game {
 
             case BoltEffect.NEGATION: {
                 if (target) {
-                    const before = JSON.stringify([target.hp, target.statusDurations]);
-                    const seenBefore = this.canObserveBoltTarget(target);
-                    // P4-3：CE Items.c:4483-4491 negate() —— MONST_DIES_IF_NEGATED 的怪物
-                    // 被 negation 命中时直接死亡，而不是清状态（"是纯魔法造物，一旦
-                    // 被消除魔法就无法维持存在"）。
-                    if (this.negateCreatureMagic(target) === 'died') {
-                        logger.log(i18next.t('bolt.negation_dies', {
-                            name: item.displayName, target: target.name,
-                            defaultValue: `${target.name} falls to the ground, lifeless!`
-                        }), '#ffffff');
-                    } else {
-                        // P1-28 注（negate 不剥离 behaviorFlags——CE 的
-                        // NEGATABLE_TRAITS 临时剥离+到期恢复未实现，旗标恒在，
-                        // 清空后由 negateCreatureMagic 内的 syncFlagDerivedStatuses
-                        // 重推导旗标派生状态）、P2-2（refreshSpeeds）同前。
-                        logger.log(i18next.t('bolt.negation_hit', {
-                            name: item.displayName, target: target.name,
-                            defaultValue: `${item.displayName} negates all magic on the ${target.name}!`
-                        }), '#ffffff');
-                    }
-                    autoID = seenBefore && before !== JSON.stringify([target.hp, target.statusDurations]);
+                    const affected = this.negateCreatureMagic(target);
+                    // CE Items.c:5302-5307 checks visibility AFTER negate (e.g.
+                    // an invisible monster becomes visible). It uses negate's
+                    // return, never the narrower automatic-target predicate.
+                    autoID = affected && this.canObserveBoltTarget(target);
                 } else {
                     logMiss('bolt.negation_miss', `${item.displayName} fires but finds no target.`, '#ffffff');
                 }
@@ -5050,8 +5039,6 @@ export class Game {
         let autoID = false;
         const isPlayer = target === this.player;
         const targetName = isPlayer ? i18next.t('bolt.target_you', { defaultValue: 'you' }) : (target as Monster).name;
-        const seenBefore = this.canObserveBoltTarget(target);
-
         const casterLabel = caster.name;
         const logCast = (key: string, defaultValue: string, color: string) => {
             logger.log(i18next.t(key, { caster: casterLabel, target: targetName, defaultValue }), color);
@@ -5156,19 +5143,8 @@ export class Game {
             }
 
             case BoltEffect.NEGATION: {
-                // P4-3：CE Items.c:4483-4491 negate() —— MONST_DIES_IF_NEGATED 直接死亡
-                // 而非清状态（wisp/golem/spectral blade 等"纯魔法造物"被己方以外的
-                // negation bolt 命中时会发生，例如敌对怪物对玩家的召唤物施放 negation）。
-                // 助手对玩家目标也走清状态支（diesIfNegated 是 Monster 专属判定）。
-                const before = JSON.stringify([target.hp, target.statusDurations]);
-                const outcome = this.negateCreatureMagic(target);
-                autoID = seenBefore && before !== JSON.stringify([target.hp, target.statusDurations]);
-                if (!isPlayer && outcome === 'died') {
-                    logCast('bolt.monster_cast_negation_dies', `${targetName} falls to the ground, lifeless!`, '#ffffff');
-                } else {
-                    // P1-28 / P2-2 的重推导与速度复原已并入 negateCreatureMagic。
-                    logCast('bolt.monster_cast_negation', `${casterLabel} negates the magic on ${targetName}!`, '#ffffff');
-                }
+                const affected = this.negateCreatureMagic(target);
+                autoID = affected && this.canObserveBoltTarget(target);
                 break;
             }
 
@@ -5360,38 +5336,73 @@ export class Game {
         }
     }
 
-    /**
-     * negate() 的"清魔法"本体（B-3 抽取；此前在玩家 bolt 与怪物施法两处
-     * NEGATION 分支各有一份，AoE 的 negationBlast 是第三个调用方——不复制
-     * 第三份）。CE Items.c:4465 negate(creature*) 的 web 投影：
-     *   - MONST_DIES_IF_NEGATED（仅怪物）→ 当场致死（killCreature(monst,false)
-     *     的 web 等价口径 = takeDamage(hp)，P4-3 起沿用），返回 'died'；
-     *   - 否则清空全部状态时长 → MONST 则 syncFlagDerivedStatuses（P1-28：
-     *     web negate 不剥 behaviorFlags，旗标派生状态须重推导）→
-     *     refreshSpeeds（P2-2：haste/slowed 清后衍生速度立即复原），返回
-     *     'negated'。
-     * CE negate() 其余支线（abilityFlags 剥离 / mutation 清除 / bolts 剥离 /
-     * NEGATABLE_TRAITS 临时剥离）web 无载体，登记未实现（P1-28 注）。
-     */
-    private negateCreatureMagic(target: Creature): 'died' | 'negated' {
-        if (target instanceof Monster && target.diesIfNegated()) {
-            target.takeDamage(target.hp, true);
-            return 'died';
+    /** CE Items.c:4465 negate, shared by player bolts, reflected/monster
+     * bolts and scroll blasts. The return is the CE effect/autoID boolean;
+     * recovering learning slots and evaluating the tile alone do not set it. */
+    private negateCreatureMagic(target: Creature): boolean {
+        if (target.hp <= 0) return false;
+        const monster = target instanceof Monster ? target : undefined;
+        const originalName = target.name;
+        let affected = false;
+        // CE does these two operations BEFORE the death/invulnerability gate.
+        if (monster) {
+            for (const flag of monster.abilityFlags) {
+                if (!NON_NEGATABLE_ABILITIES.has(flag)) {
+                    monster.abilityFlags.delete(flag);
+                    monster.wasNegated = affected = true;
+                }
+            }
         }
-        const sd = target.statusDurations as Record<string, number>;
-        for (const k of Object.keys(sd)) {
-            sd[k] = 0;
+        if (target.seizing) { target.seizing = false; affected = true; }
+        if (monster?.diesIfNegated()) {
+            // killCreature bypasses both protection and invulnerability.
+            const message = monster.hasStatus('levitating')
+                ? i18next.t('negation.dissipates', { target: originalName, defaultValue: `${originalName} dissipates into thin air!` })
+                : monster.hasBehavior('MONST_INANIMATE') || monster.hasBehavior('MONST_TURRET')
+                    ? i18next.t('negation.shatters', { target: originalName, defaultValue: `${originalName} shatters into tiny pieces!` })
+                    : i18next.t('bolt.negation_dies', { target: originalName, defaultValue: `${originalName} falls to the ground, lifeless!` });
+            monster.hp = 0;
+            monster.takeDamage(0, true);
+            logger.log(message, '#ffffff');
+            this.needsRender = true;
+            return true;
         }
-        target.restorePoison(); // existing negation clears countdown; clear concentration too
-        target.restoreShield();
-        if (target instanceof Monster) {
-            // CE Items.c:4544: recover learned slots; full ability stripping is W-23.
-            if (!target.isInvulnerable()) target.newPowerCount = target.totalPowerCount;
-            target.polymorphKeepsSpeed = false; // CE negate resets cached speed even without haste/slow.
-            target.syncFlagDerivedStatuses();
+        if (!monster?.isInvulnerable()) {
+            affected = negateCreatureStatusEffects(target, target === this.player) || affected;
+            if (monster?.hasBehavior('MONST_IMMUNE_TO_FIRE')) {
+                monster.behaviorFlags.delete('MONST_IMMUNE_TO_FIRE');
+                monster.wasNegated = affected = true;
+            }
+            if (target.hasAlteredSpeeds()) affected = true;
+            if (monster) monster.polymorphKeepsSpeed = false;
+            target.refreshSpeeds();
+            if (monster?.mutation && NEGATABLE_MUTATIONS.has(monster.mutation.id)) {
+                // CE removes mutationIndex only: info HP/damage/speeds survive.
+                monster.mutation = undefined;
+                const species = (monsterData as MonsterData[]).find(d => d.id === monster.typeId);
+                if (species) { monster.name = ItemLoader.translateName(species.name); monster.color = species.color; }
+                monster.wasNegated = affected = true;
+            }
+            if (monster && [...monster.behaviorFlags].some(flag => NEGATABLE_TRAITS.has(flag))) {
+                if (monster.hasBehavior('MONST_FIERY')) this.extinguishCreatureFire(monster);
+                for (const flag of NEGATABLE_TRAITS) monster.behaviorFlags.delete(flag);
+                monster.wasNegated = affected = true;
+            }
+            if (monster) {
+                if (hasNegatableBolt(monster.bolts)) monster.wasNegated = affected = true;
+                monster.bolts = negateBolts(monster.bolts);
+                monster.newPowerCount = monster.totalPowerCount;
+                // W-22 absorption runtime is deferred; no new absorption fields.
+            }
+            this.applyEnvironmentalEffects(target);
         }
-        target.refreshSpeeds();
-        return 'negated';
+        if (affected && monster) {
+            logger.log(i18next.t('scroll.negation_stripped', {
+                target: originalName, defaultValue: `${originalName} is stripped of special traits!`
+            }), '#ffffff');
+        }
+        this.needsRender = true;
+        return affected;
     }
 
     /**
@@ -5399,7 +5410,7 @@ export class Game {
      * 的 AoE（Items.c:8004-8006，distance = DCOLS）。discordBlast 的同构姊妹：
      *   1. 消息 "emits a numbing torrent of anti-magic!"（:4831）；
      *   2. colorFlash（:4833）web 无视觉系统载体，跳过（登记）；
-     *   3. 先 negate(&player)（:4834，玩家自己也吃——状态全清，无消息）；
+     *   3. 先 negate(&player)（:4834，玩家自己也吃——按目录逐项处理，无消息）；
      *   4. 怪物循环（:4836-4846）：命中条件 = IN_FIELD_OF_VIEW **且**
      *      欧氏距离² ≤ distance²（web 的 FOV 口径沿 discordBlastFromPlayer：
      *      玩家→怪物实时视线判定）；diesIfNegated 当场死（CE 注释
@@ -5428,18 +5439,7 @@ export class Game {
             if (!this.hasLineOfSight(px, py, m.loc.x, m.loc.y)) continue;
             const distSq = (px - m.loc.x) * (px - m.loc.x) + (py - m.loc.y) * (py - m.loc.y);
             if (distSq > distance * distance) continue;
-            if (this.negateCreatureMagic(m) === 'died') {
-                logger.log(i18next.t('scroll.negation_monster_dies', {
-                    target: m.name,
-                    defaultValue: `${m.name} falls to the ground, lifeless!`
-                }), '#ffffff');
-            } else {
-                // CE negate() 尾部 :4548-4552 的 per-monster combatMessage。
-                logger.log(i18next.t('scroll.negation_stripped', {
-                    target: m.name,
-                    defaultValue: `${m.name} is stripped of special traits!`
-                }), '#ffffff');
-            }
+            this.negateCreatureMagic(m);
         }
 
         // CE :4847 floorItems——web 的地面物品容器 = this.items（背包在
@@ -8579,6 +8579,7 @@ export class Game {
                 carriedItem: m.carriedItem ? this.serializeItem(m.carriedItem) : undefined,
         };
         return {
+            wasNegated: m.wasNegated,
             newPowerCount: m.newPowerCount,
             totalPowerCount: m.totalPowerCount,
             form: m.snapshotForm(),
@@ -8650,6 +8651,7 @@ export class Game {
         const entrancedForm = (m.statusDurations?.entranced ?? 0) > 0 ? m.entrancement?.form : undefined;
         const monster = new Monster(m.loc.x, m.loc.y, m.polymorph?.form ?? m.form ?? (m.allegiance?.dominated && m.dominatedForm ? m.dominatedForm : entrancedForm ?? bladeData ?? data));
         monster.id = m.id;
+        monster.wasNegated = m.wasNegated ?? m.cloneState?.runtime.wasNegated ?? m.polymorph?.wasNegated ?? false;
         monster.newPowerCount = m.newPowerCount ?? 0;
         monster.totalPowerCount = m.totalPowerCount ?? 0;
         monster.mutation = m.mutation ? structuredClone(m.mutation) : undefined;
@@ -8698,7 +8700,7 @@ export class Game {
             monster.attackSpeed = p.attackSpeed;
             monster.polymorphKeepsSpeed = p.keepsSpeed;
             monster.ticksUntilTurn = p.ticksUntilTurn;
-            monster.wasNegated = p.wasNegated;
+            monster.wasNegated = m.wasNegated ?? p.wasNegated ?? false;
             monster.seized = p.seized;
             monster.seizing = p.seizing;
             monster.boundToPlayer = p.boundToPlayer;
@@ -10293,7 +10295,11 @@ export class Game {
 
         // Check monster
         const m = this.getMonsterAt(x, y);
-        if (m && cell.isVisible) entities.push(m.name);
+        if (m && cell.isVisible) {
+            const label = m.displaysNegation && !this.player.hasStatus('hallucinating')
+                ? i18next.t('negation.label', { defaultValue: 'Negated' }) : '';
+            entities.push(label ? `${m.name} (${label})` : m.name);
+        }
 
         // Check items
         const itemsAtLoc = this.items.filter(i => i.loc.x === x && i.loc.y === y);

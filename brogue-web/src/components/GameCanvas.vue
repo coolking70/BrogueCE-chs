@@ -487,6 +487,8 @@ onMounted(async () => {
             .map((m) => ({ name: m.name, x: m.loc.x, y: m.loc.y, hp: m.hp,
                 maxHp: m.maxHp, accuracy: m.accuracy, defense: m.defense, damage: m.damageString,
                 newPowerCount: m.newPowerCount, totalPowerCount: m.totalPowerCount,
+                wasNegated: m.wasNegated, negated: m.displaysNegation, mutation: m.mutation?.id ?? null,
+                behaviorFlags: [...m.behaviorFlags], abilityFlags: [...m.abilityFlags], bolts: [...m.bolts],
                 typeId: m.typeId, isAlly: m.isAlly, boundToPlayer: m.boundToPlayer,
                 dominated: m.dominated, isCaged: m.isCaged, leaderId: m.leader?.id ?? null,
                 discordant: m.getStatusDuration('discordant'), entranced: m.getStatusDuration('entranced'),

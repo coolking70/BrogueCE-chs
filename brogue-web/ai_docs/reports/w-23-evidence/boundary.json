@@ -1,0 +1,92 @@
+{
+  "changedMethods": [
+    "createMonsterFromSnapshot",
+    "generateTestDepth",
+    "applyBoltEffect",
+    "applyMonsterBoltHit",
+    "negateCreatureMagic",
+    "negationBlastFromPlayer",
+    "serializeMonster",
+    "deserializeMonster",
+    "updateHover"
+  ],
+  "changedExistingTests": [
+    "src/test/p1_28_flag_channel.test.ts",
+    "src/test/w_10_poison.test.ts",
+    "src/test/w_18_entrancement.test.ts"
+  ],
+  "protectedFiles": {
+    "src/data/arcana.json": {
+      "equal": true,
+      "sha": "6470c6611c30fce52f9f10b35dc0b24061bda8899c98d5be3fd2c2100735a479"
+    },
+    "src/data/armors.json": {
+      "equal": true,
+      "sha": "d11a460c5e6c13ef939f78a1404be9df567313016eaa70b7ee632a9902656471"
+    },
+    "src/data/blueprints.json": {
+      "equal": true,
+      "sha": "ac7971985ec3472428360f6584aa9f9f5af0a492bd73d91abfed643e2a27527c"
+    },
+    "src/data/consumables.json": {
+      "equal": true,
+      "sha": "94a1e2a5d4b8d7da190ebd95cf638249c6c34b650e74b01029962efcfe31899c"
+    },
+    "src/data/hordes.json": {
+      "equal": true,
+      "sha": "9de4bd16e82e2e59a7a93019f1f3f7ad838dc2fadcb77f347867c30ad2a4142c"
+    },
+    "src/data/monsters.json": {
+      "equal": true,
+      "sha": "996707468fd131c0ba59e4fe0f08f0877087f2d857d89b40acc552704c0d1f38"
+    },
+    "src/data/mutations.json": {
+      "equal": true,
+      "sha": "b017cbaf1a4c13c84c2c32bc4200ae1cd28dbd2648f55ff33af3a67ba8583775"
+    },
+    "src/data/weapons.json": {
+      "equal": true,
+      "sha": "f6e5152cde54be25c191e5459cbd69c654e3f946d3177b06f6388968d51543ff"
+    },
+    "src/engine/Generator/Architect.ts": {
+      "equal": true,
+      "sha": "271aac123ad73436108387decdfd9ca3f3e832603885b2dd5013f9c1d78baf6e"
+    },
+    "src/engine/Generator/BlueprintEngine.ts": {
+      "equal": true,
+      "sha": "77d7854ec04e13ed822e828a1454b8fe080f98b91662ddf4a8b9e027db96ebec"
+    },
+    "src/engine/Generator/RoomBuilder.ts": {
+      "equal": true,
+      "sha": "f4be81ec90f3cd60cb8cd9445d7ca539250cad8271c5bfe0991e4a3d2334654e"
+    },
+    "src/engine/Random.ts": {
+      "equal": true,
+      "sha": "9a6931acdd5037497450f1dfa2bf04e8ae43212917bff15560775b73a11036ce"
+    },
+    "src/engine/Items/ItemLoader.ts": {
+      "equal": true,
+      "sha": "c1f94dbd4be3ff95dbe6f6355cae0c84b685c2b72f2d5f760636f1c225186a65"
+    },
+    "src/engine/Combat/BoltCatalog.ts": {
+      "equal": true,
+      "sha": "76f7e6329138415cf4b9037f038e6e175365d61e7addf778aab2a12f9e307360"
+    },
+    "src/test/fixtures/generation_baseline.json": {
+      "equal": true,
+      "sha": "1549a4c5aae041ff5c4a7653ea22d07af88aecaf3740861b0cdb90a4656d5820"
+    },
+    "package.json": {
+      "equal": true,
+      "sha": "a53b4b40692486c8c624f5cf9e9e5ae05ca1bb63718769df4d09cb1ae32caa85"
+    },
+    "package-lock.json": {
+      "equal": true,
+      "sha": "3d9027a9ff655ec834674ebbf4b8ff0c00257b8906a375270163ecba5f53e253"
+    },
+    "vite.config.ts": {
+      "equal": true,
+      "sha": "ec54b42c24b0b2229a630ee56509709433aa3a9b2e8bff6de2063e1fbbea93ad"
+    }
+  }
+}

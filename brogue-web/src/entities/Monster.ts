@@ -26,7 +26,7 @@ import { bladeAvoids, bladeDiagonalBlocked, bladeStepToward, BLADE_DIRECTIONS } 
 import { boltLine } from '../engine/Combat/BoltTrajectory';
 import { entrancementDiagonalBlocked, entrancementPassable } from '../engine/Movement/Entrancement';
 import { cellTerrainFlags, cellTerrainMechFlags } from '../engine/Map/DungeonFeature';
-import { T_ENTANGLES, TM_ALLOWS_SUBMERGING } from '../engine/Map/TerrainCatalog';
+import { T_ENTANGLES, TM_ALLOWS_SUBMERGING, T_LAVA_INSTA_DEATH, T_IS_DEEP_WATER, T_AUTO_DESCENT } from '../engine/Map/TerrainCatalog';
 
 const BLADE_SIGHT: BoltConfig = { id: 'blade_sight', name: '', ceType: CEBoltType.NONE,
     effect: BoltEffect.NONE, magnitude: 0, char: '', color: 0, maxRange: 0, piercing: false, selfTargeting: false };
@@ -110,20 +110,18 @@ export function generallyValidBoltTarget(caster: Monster, target: Creature, game
  * （tryUseBolt）提前过滤，不会走到这里。
  * 省略的分支：BF_NEVER_REFLECTS/反射判定（web 无护甲反射对怪物生效的路径）、
  * forbiddenMonsterFlags（仅对 BECKONING 目标做了 MONST_IMMOBILE 近似）、
- * BE_NEGATION 完整的九路判断（简化为"目标是敌人且处于可驱散状态"）。
+ * NEGATION 的实际可达资格已于 W-23 对齐（保留 CE catalog 的敌方门）。
  */
 export function specificallyValidBoltTarget(caster: Monster, target: Creature, ceBoltName: string, game: Game): boolean {
     const meta = MONSTER_BOLT_TABLE[ceBoltName];
     if (!meta || meta.effect === null || meta.effect === BoltEffect.BLINKING) return false;
 
-    // W-18 CE MC:2649/2714: do not damage entranced enemies; hostile
-    // negators can release their own kind. Other negation eligibility is W-23.
-    if (target.hasStatus('entranced')) {
-        if (meta.effect === BoltEffect.NEGATION && !caster.isAlly && monstersAreTeammates(caster, target)
-            && !(target instanceof Monster && target.diesIfNegated())) return true;
-        if ([BoltEffect.FIRE, BoltEffect.SPARK, BoltEffect.DRAGONFIRE, BoltEffect.DISTANCE_ATTACK, BoltEffect.POISON_DART].includes(meta.effect)
-            && monstersAreEnemies(caster, target)) return false;
-    }
+    // CE MC:2604 BF_TARGET_ENEMIES runs BEFORE the NEGATION switch.
+    // Thus same-team entrancement/fear branches below that gate are unreachable
+    // with the shipped NEGATION catalog; W-18's bypass was incorrect.
+    if (target.hasStatus('entranced')
+        && [BoltEffect.FIRE, BoltEffect.SPARK, BoltEffect.DRAGONFIRE, BoltEffect.DISTANCE_ATTACK, BoltEffect.POISON_DART].includes(meta.effect)
+        && monstersAreEnemies(caster, target)) return false;
     if (meta.targetAllies && !monstersAreTeammates(caster, target)) return false;
     if (meta.targetEnemies && !monstersAreEnemies(caster, target)) return false;
     if (meta.targetEnemies && target instanceof Monster && target.hasBehavior('MONST_INVULNERABLE')) return false;
@@ -134,13 +132,21 @@ export function specificallyValidBoltTarget(caster: Monster, target: Creature, c
             if (target.hasStatus('discordant') || target === game.player) return false;
             break;
         case BoltEffect.NEGATION:
-            // Legacy buffs/shield gate, plus W-16 player-bound magical blades.
-            // Complete CE negation target eligibility remains W-23.
-            if (!(target.hasStatus('hasted') || target.hasStatus('telepathy') || isShielded(target)
-                || (target instanceof Monster && target.boundToPlayer && target.diesIfNegated()))) {
-                return false;
+            // CE MC:2613 reflective hostile gate, then :2681-2726 reasons.
+            if (target instanceof Monster && !target.isAlly
+                && (target.hasBehavior('MONST_REFLECT_50') || target.hasAbility('MA_REFLECT_100'))) return false;
+            if (monstersAreEnemies(caster, target)) {
+                if (target.hasStatus('hasted') || target.hasStatus('haste') || target.hasStatus('telepathy') || isShielded(target)) return true;
+                if (target instanceof Monster && (target.diesIfNegated() || target.isImmuneToWeapons())) return true;
+                const sameTeam = (caster.isAlly && (target === game.player || (target instanceof Monster && target.isAlly)))
+                    || caster.leader === target || (target instanceof Monster && (target.leader === caster
+                        || (caster.leader !== null && target.leader === caster.leader)));
+                if (sameTeam && target.hasStatus('discordant') && !caster.hasStatus('discordant')
+                    && !(target instanceof Monster && target.diesIfNegated())) return true;
+                return (target.hasStatus('immune_fire') || target.hasStatus('levitating') || target.hasStatus('flying'))
+                    && !!(cellTerrainFlags(game.grid, target.x, target.y) & (T_LAVA_INSTA_DEATH | T_IS_DEEP_WATER | T_AUTO_DESCENT));
             }
-            break;
+            return false;
         case BoltEffect.SLOW:
             if (target.hasStatus('slowed')) return false;
             break;
@@ -263,6 +269,9 @@ export class Monster extends Creature {
     /** W-20: clones have no carried loot or CE MB_WEAPON_AUTO_ID entitlement. */
     public isClone = false;
     public wasNegated = false;
+    public get displaysNegation(): boolean {
+        return this.wasNegated && this.newPowerCount === this.totalPowerCount;
+    }
     /** CE creature counts survive cloning/polymorph; W-22 will consume slots. */
     public newPowerCount = 0;
     public totalPowerCount = 0;
@@ -610,10 +619,8 @@ export class Monster extends Creature {
      * isStatusPermanent 保证（CE updateMonsterStatus，Monsters.c:1852-1856 /
      * 1963-1967）。注意 CE 的 MONST_FLITS（飘忽移动）不翻译——它不是飞行，
      * 不豁免熔岩/压力板（web 现无对应机制，无需处理）。
-     * 公有以便 negate 后重推导：web 的 negate 只清 statusDurations、不实现
-     * NEGATABLE_TRAITS 旗标剥离（CE Items.c:4483-4520 为临时剥离、到期恢复），
-     * 若不回填，被消除魔法的飞行/火免怪物会永久失去特性（CE 语义是临时的，
-     * web 取"旗标恒在"口径，与 negate 前行为一致）。
+     * W-23: only initialization/form changes rederive these states. CE negation
+     * permanently strips the flags and clears their statuses; it never calls this.
      */
     public syncFlagDerivedStatuses(): void {
         if (this.hasBehavior('MONST_FLIES')) {
@@ -691,8 +698,8 @@ export class Monster extends Creature {
         if (m.behaviorFlags) {
             for (const f of m.behaviorFlags) this.behaviorFlags.add(f);
         }
-        // P1-28：突变新增旗标同样要翻译成永久状态（CE 无突变系统，无对应
-        // 条款；与构造路径保持同一翻译层）。当前 mutations.json 不含
+        // P1-28：突变新增旗标同样要翻译成永久状态（CE mutateMonster 先于 initializeStatus；
+        // 与构造路径保持同一翻译层）。当前 mutations.json 不含
         // MONST_FLIES / MONST_IMMUNE_TO_FIRE，本调用是防御性的。
         this.syncFlagDerivedStatuses();
     }

@@ -114,11 +114,11 @@ describe('W-10 CE formula and real poison staff contacts', () => {
         tick(g); expect(m.hp).toBe(97); m.addPoison(2); expect(m.poisonAmount).toBe(1);
         m.setStatusDuration('poisoned', 0); expect(m.poisonAmount).toBe(0);
     });
-    it('negation clears both poison fields, healing does not cleanse poison', () => {
+    it('CE statusEffectCatalog: negation and ordinary healing both preserve poison', () => {
         const g = scene(), m = mob(g); m.hp = 50; m.addPoison(5, 3);
         g.zapBoltFromPlayer(getBoltForItem('staff_of_healing')!, Object.assign(staff(2), { identityId: 'staff_of_healing' }), m.loc);
         expect([m.poisonAmount, m.getStatusDuration('poisoned')]).toEqual([3, 5]);
-        (g as any).negateCreatureMagic(m); expect([m.poisonAmount, m.getStatusDuration('poisoned')]).toEqual([0, 0]);
+        (g as any).negateCreatureMagic(m); expect([m.poisonAmount, m.getStatusDuration('poisoned')]).toEqual([3, 5]);
     });
 });
 

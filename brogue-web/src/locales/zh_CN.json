@@ -98,7 +98,6 @@
     "scroll.protect_armor": "金色的光芒包裹了你的防具。",
     "scroll.protect_fail": "你没有装备可以保护。",
     "scroll.negate_burst": "{{emitter}}散发出一阵令魔法麻木的湮灭洪流！",
-    "scroll.negation_monster_dies": "{{target}}倒在地上，失去了生命！",
     "scroll.negation_stripped": "{{target}}的特殊能力被剥离了！",
     "scroll.sanctuary": "彩光喷洒向地面，在落点绘成了圣徽。",
     "scroll.shatter": "卷轴迸发出一道绿松石色的光波，刺入了周围的墙壁！",
@@ -462,7 +461,6 @@
     "bolt.invisibility_hit": "{{name}}使{{target}}消失了！",
     "bolt.empowerment_hit": "{{name}}增强了{{target}}！",
     "bolt.empowerment_miss": "{{name}}发射了，但没有找到目标。",
-    "bolt.negation_hit": "{{name}}解除了{{target}}身上的所有魔法！",
     "bolt.negation_miss": "{{name}}发射了，但没有找到目标。",
     "bolt.tunneling": "{{name}}在岩石中炸出了一条通道！",
     "monster.summon_minions": "{{name}}低声诵起了黑暗咒语！",
@@ -502,8 +500,6 @@
     "bolt.monster_cast_shield": "{{caster}}为{{target}}布下了护盾！",
     "bolt.monster_cast_slow": "{{caster}}减慢了{{target}}的速度！",
     "bolt.monster_cast_discord": "{{caster}}在{{target}}心中播下了不和的种子！",
-    "bolt.monster_cast_negation_dies": "{{target}}倒在地上，失去了生命！",
-    "bolt.monster_cast_negation": "{{caster}}驱散了{{target}}身上的魔法！",
     "bolt.monster_cast_beckon": "{{caster}}将{{target}}拽向自己！",
     "scroll.protect_uncurse": "一股邪恶意念从你的{{name}}上消散了。",
     "scroll.summon_many": "空间泛起涟漪，成群的怪物现身了！",
@@ -559,5 +555,8 @@
     "mutation.grappling": "缠缚的{{name}}",
     "mutation.vampiric": "吸血的{{name}}",
     "mutation.toxic": "剧毒的{{name}}",
-    "mutation.reflective": "反射的{{name}}"
+    "mutation.reflective": "反射的{{name}}",
+  "negation.dissipates": "{{target}}消散在空气中！",
+  "negation.shatters": "{{target}}碎裂成无数碎片！",
+  "negation.label": "已消魔"
 }
