@@ -1,0 +1,855 @@
+src/components/InventoryOverlay.vue:66:        '-- WANDS --': [],
+src/components/InventoryOverlay.vue:89:            case ItemCategory.WAND: groups['-- WANDS --']!.push(entry); break;
+src/components/InventoryOverlay.vue:130:    item.category === ItemCategory.WAND || item.category === ItemCategory.STAFF || item.category === ItemCategory.CHARM;
+src/components/InventoryOverlay.vue:136:    ItemCategory.POTION, ItemCategory.SCROLL, ItemCategory.WAND, ItemCategory.STAFF, ItemCategory.RING,
+src/components/InventoryOverlay.vue:155:    const polarity = ItemLoader.itemMagicPolarity(item);
+src/components/InventoryOverlay.vue:161:    const polarity = ItemLoader.itemMagicPolarity(item);
+src/data/arcana.json:2:  "wands": [
+src/data/arcana.json:4:      "id": "wand_of_teleportation",
+src/data/arcana.json:5:      "name": "Wand of Teleportation",
+src/data/arcana.json:14:      "marketValue": 800
+src/data/arcana.json:17:      "id": "wand_of_slowness",
+src/data/arcana.json:18:      "name": "Wand of Slowness",
+src/data/arcana.json:27:      "marketValue": 800
+src/data/arcana.json:30:      "id": "wand_of_polymorphism",
+src/data/arcana.json:31:      "name": "Wand of Polymorphism",
+src/data/arcana.json:39:      "marketValue": 700
+src/data/arcana.json:42:      "id": "wand_of_negation",
+src/data/arcana.json:43:      "name": "Wand of Negation",
+src/data/arcana.json:51:      "marketValue": 550
+src/data/arcana.json:54:      "id": "wand_of_domination",
+src/data/arcana.json:55:      "name": "Wand of Domination",
+src/data/arcana.json:63:      "marketValue": 1000
+src/data/arcana.json:66:      "id": "wand_of_beckoning",
+src/data/arcana.json:67:      "name": "Wand of Beckoning",
+src/data/arcana.json:76:      "marketValue": 500
+src/data/arcana.json:79:      "id": "wand_of_plenty",
+src/data/arcana.json:80:      "name": "Wand of Plenty",
+src/data/arcana.json:88:      "marketValue": 700
+src/data/arcana.json:91:      "id": "wand_of_invisibility",
+src/data/arcana.json:92:      "name": "Wand of Invisibility",
+src/data/arcana.json:101:      "marketValue": 100
+src/data/arcana.json:104:      "id": "wand_of_empowerment",
+src/data/arcana.json:105:      "name": "Wand of Empowerment",
+src/data/arcana.json:114:      "marketValue": 100
+src/data/arcana.json:117:      "id": "wand_of_fire",
+src/data/arcana.json:118:      "name": "Wand of Fire",
+src/data/arcana.json:129:      "id": "wand_of_lightning",
+src/data/arcana.json:130:      "name": "Wand of Lightning",
+src/data/blueprints.json:659:                "itemCategory": "WAND",
+src/data/blueprints.json:675:                "itemCategory": "WEAPON|ARMOR|WAND",
+src/data/blueprints.json:2146:                "itemCategory": "WEAPON|ARMOR|WAND",
+src/data/weapons.json:126:        "source": "CE 来源：BrogueCE-master/src/brogue/Globals.c:1600（weaponTable DART 条目：frequency=0, marketValue=15, strengthRequired=10, power=0, range={2,4,1}）。damage 1d3+1 经 Combat.parseDamageString 解析为 min=1+1=2 / max=1*3+1=4 / clumping=1，与 CE range {2,4,1} 完全一致（旧值 \"2d2\" 的 min/max 虽同为 2/4，但 clumping=2 与 CE 的 1 不符）；weight 为 web 侧自定（CE 表无 weight 列）。",
+src/data/weapons.json:135:        "marketValue": 990,
+src/data/weapons.json:139:        "source": "CE 来源：BrogueCE-master/src/brogue/Globals.c:1598（weaponTable WAR_AXE 条目：frequency=10, marketValue=990, strengthRequired=19, power=0, range={12,17,1}）。damage 1d6+11 经 Combat.parseDamageString 解析为 min=12/max=17/clumping=1。marketValue/weight 为 web 预留列（web 无商店/重量消耗实现）。"
+src/data/weapons.json:147:        "marketValue": 25,
+src/data/weapons.json:150:        "source": "CE 来源：BrogueCE-master/src/brogue/Globals.c:1601（weaponTable INCENDIARY_DART 条目：frequency=10, marketValue=25, strengthRequired=12, power=0, range={1,2,1}）。damage 1d2 解析为 min=1/max=2/clumping=1。投掷物生成规则（quantity 3-6、无附魔/符文/诅咒）见 ItemLoader.spawnWeapon 的 CE Items.c:265-274 移植。"
+src/data/weapons.json:159:        "marketValue": 40,
+src/data/weapons.json:162:        "source": "CE 来源：BrogueCE-master/src/brogue/Globals.c:1602（weaponTable JAVELIN 条目：frequency=10, marketValue=40, strengthRequired=15, power=0, range={3,11,3}）。damage 写作 1d9+2（min=3/max=11 与 CE 一致）；clumping=3 无法用 XdY+Z 记法表达（该记法 clumping=X 且 min=X+Z），单列 clumping 字段留形，Combat 侧消费需改 Combat.ts（B-4a 未授权，已登记）。"
+src/data/weapons.test.ts:5: * 格式为 {name, frequency, marketValue, strengthRequired, power, range:{min,max,clumpFactor}}。
+src/engine/Combat/Bolt.ts:57:    POLYMORPH,       // W-19: in-place CE polymorph; wand identity/pool remains W-24
+src/engine/Combat/Bolt.ts:58:    PLENTY,          // W-20: CE clone; wand identity/pool remains W-24
+src/engine/Combat/Bolt.ts:94:    /** Internal id used for lookup (matches wand/staff id). */
+src/engine/Combat/Bolt.ts:125:    // --- Wands: CE table order, then retired web definitions ---
+src/engine/Combat/Bolt.ts:126:    { id: 'wand_of_teleportation', effect: BoltEffect.TELEPORT, magnitude: 0, char: '/', color: 0xcc88ff, maxRange: 0, piercing: false, selfTargeting: false },
+src/engine/Combat/Bolt.ts:127:    { id: 'wand_of_slowness', effect: BoltEffect.SLOW, magnitude: 0, char: '-', color: 0x888888, maxRange: 0, piercing: false, selfTargeting: false },
+src/engine/Combat/Bolt.ts:128:    { id: 'wand_of_polymorphism', effect: BoltEffect.POLYMORPH, magnitude: 10, char: '*', color: 0xaa66ff, maxRange: 0, piercing: false, selfTargeting: false },
+src/engine/Combat/Bolt.ts:129:    { id: 'wand_of_negation', effect: BoltEffect.NEGATION, magnitude: 10, char: '*', color: 0xff88cc, maxRange: 0, piercing: false, selfTargeting: false },
+src/engine/Combat/Bolt.ts:130:    { id: 'wand_of_domination', effect: BoltEffect.DOMINATION, magnitude: 10, char: '*', color: 0xff88ff, maxRange: 0, piercing: false, selfTargeting: false },
+src/engine/Combat/Bolt.ts:131:    { id: 'wand_of_beckoning', effect: BoltEffect.BECKONING, magnitude: 0, char: '?', color: 0x88ccff, maxRange: 0, piercing: false, selfTargeting: false },
+src/engine/Combat/Bolt.ts:132:    { id: 'wand_of_plenty', effect: BoltEffect.PLENTY, magnitude: 10, char: '*', color: 0xaaddff, maxRange: 0, piercing: false, selfTargeting: false },
+src/engine/Combat/Bolt.ts:133:    { id: 'wand_of_invisibility', effect: BoltEffect.INVISIBILITY, magnitude: 0, char: '.', color: 0xaaaaff, maxRange: 0, piercing: false, selfTargeting: false },
+src/engine/Combat/Bolt.ts:134:    { id: 'wand_of_empowerment', effect: BoltEffect.EMPOWERMENT, magnitude: 0, char: '+', color: 0xffff44, maxRange: 0, piercing: false, selfTargeting: false },
+src/engine/Combat/Bolt.ts:135:    { id: 'wand_of_fire', effect: BoltEffect.FIRE, magnitude: 5, char: '*', color: 0xff6600, maxRange: 0, piercing: false, selfTargeting: false },
+src/engine/Combat/Bolt.ts:136:    { id: 'wand_of_lightning', effect: BoltEffect.LIGHTNING, magnitude: 8, char: '~', color: 0x33ccff, maxRange: 0, piercing: true, selfTargeting: false },
+src/engine/Combat/BoltCatalog.test.ts:61:    it('21 CE item identities follow the actual staff/wand power columns; inventions get no CE item identity', () => {
+src/engine/Combat/BoltCatalog.test.ts:68:            ['wand', globals, 'wandTable_Brogue[]'],
+src/engine/Combat/BoltCatalog.test.ts:79:        for (const id of ['wand_of_fire', 'wand_of_lightning', 'staff_of_light']) {
+src/engine/Combat/BoltCatalog.test.ts:114:        expect(resolveCEBoltMagnitude(T.SLOW, { kind: 'wand' })).toEqual({ source: 'wand', value: 10, use: 'slow-duration' });
+src/engine/Combat/BoltCatalog.ts:228:    wand_of_teleportation: T.TELEPORT,
+src/engine/Combat/BoltCatalog.ts:229:    wand_of_slowness: T.SLOW,
+src/engine/Combat/BoltCatalog.ts:230:    wand_of_polymorphism: T.POLYMORPH,
+src/engine/Combat/BoltCatalog.ts:231:    wand_of_negation: T.NEGATION,
+src/engine/Combat/BoltCatalog.ts:232:    wand_of_domination: T.DOMINATION,
+src/engine/Combat/BoltCatalog.ts:233:    wand_of_beckoning: T.BECKONING,
+src/engine/Combat/BoltCatalog.ts:234:    wand_of_plenty: T.PLENTY,
+src/engine/Combat/BoltCatalog.ts:235:    wand_of_invisibility: T.INVISIBILITY,
+src/engine/Combat/BoltCatalog.ts:236:    wand_of_empowerment: T.EMPOWERMENT,
+src/engine/Combat/BoltCatalog.ts:281:    | { readonly kind: 'wand' | 'monster' | 'catalog' };
+src/engine/Combat/BoltCatalog.ts:290: * WAND and monster bolts keep the catalog value. No charges, RNG, defaults,
+src/engine/Combat/BoltContract.test.ts:39:        const result = createBoltResult(getBoltForItem('wand_of_slowness')!, null, origin, aim, path,
+src/engine/Combat/BoltContract.test.ts:146:        const item = ItemLoader.spawnWand('wand_of_slowness', 4, 5)!;
+src/engine/Combat/BoltContract.test.ts:147:        const bolt = { ...getBoltForItem('wand_of_slowness')!, effect: BoltEffect.POLYMORPH, ceType: CEBoltType.POLYMORPH };
+src/engine/Combat/BoltContract.test.ts:168:        const item = ItemLoader.spawnWand('wand_of_slowness', -1, -1)!;
+src/engine/Combat/BoltContract.test.ts:169:        const bolt = { ...getBoltForItem('wand_of_slowness')!, effect: BoltEffect.PLENTY, ceType: CEBoltType.PLENTY };
+src/engine/Combat/BoltTargeting.ts:11:import { wandDominate } from './Domination';
+src/engine/Combat/BoltTargeting.ts:32:    const polarity = polarityKnown ? ItemLoader.itemMagicPolarity(item) : 0;
+src/engine/Combat/BoltTargeting.ts:50:                && (m.hasBehavior('MONST_TURRET') || (!ally && wandDominate(m) <= 0))) return false;
+src/engine/Combat/Combat.ts:126:        //   - sneakAttack         = 玩家攻击 WANDERING 目标（Combat.c:1193-1195；
+src/engine/Combat/Combat.ts:127:        //     CE 的 creatureState==WANDERING 天然排除盟友，web 的 isAlly 是独立
+src/engine/Combat/Combat.ts:139:            defender.state === MonsterState.WANDERING;
+src/engine/Combat/Combat.ts:235:        // paralyzed 两支触发 ×3（基线已存在），本轮补上 sneakAttack(WANDERING)
+src/engine/Combat/Domination.ts:4:export function wandDominate(target: { hp: number; maxHp: number }): number {
+src/engine/Core/Game.ts:31:import { wandDominate } from '../Combat/Domination';
+src/engine/Core/Game.ts:343:    /** W-24: preserve wand appearance identities across catalog additions/reordering.
+src/engine/Core/Game.ts:345:    wandFlavors?: Record<string, string>;
+src/engine/Core/Game.ts:349:     * B-1c：detect magic 揭示过极性的种类集（CE itemTable.magicPolarityRevealed
+src/engine/Core/Game.ts:353:    magicPolarityRevealed?: string[];
+src/engine/Core/Game.ts:441:type TestAssetCategory = 'weapons' | 'wands' | 'scrolls' | 'potions' | 'other' | 'terrain' | 'enemies' | 'blueprints' | 'runics';
+src/engine/Core/Game.ts:938:            case ItemCategory.WAND:
+src/engine/Core/Game.ts:939:                id = this.chooseKindFromPool(ItemLoader.genWands.map(w => w.id), ItemLoader.genWands.map(w => w.frequency), meteredFreq);
+src/engine/Core/Game.ts:985:            case ItemCategory.WAND: return ItemLoader.spawnWand(id, pos.x, pos.y);
+src/engine/Core/Game.ts:1053:            // （GOLD,SCROLL,POTION,STAFF,WAND,WEAPON,ARMOR,FOOD,RING,CHARM,AMULET,GEM,KEY；
+src/engine/Core/Game.ts:1996:     * wandering=true 时领袖与成员状态置为 WANDERING（Time.c:2331-2340 周期刷怪语义）。
+src/engine/Core/Game.ts:2003:        wandering: boolean,
+src/engine/Core/Game.ts:2018:            // Monsters.c:872-877：笼中俘虏 —— 上锁不行动、状态 WANDERING、HP 折至 1/4+1
+src/engine/Core/Game.ts:2020:            leaderMon.state = MonsterState.WANDERING;
+src/engine/Core/Game.ts:2024:        if (wandering) leaderMon.state = MonsterState.WANDERING;
+src/engine/Core/Game.ts:2066:                                if (wandering) mon.state = MonsterState.WANDERING;
+src/engine/Core/Game.ts:2289:     * 用周期刷怪禁用集加权抽 horde 生成，领袖与随从均为 WANDERING。
+src/engine/Core/Game.ts:2317:        const ordered: TestAssetCategory[] = ['weapons', 'wands', 'scrolls', 'potions', 'other', 'terrain', 'enemies', 'blueprints', 'runics'];
+src/engine/Core/Game.ts:2324:            case 'wands': return '法杖';
+src/engine/Core/Game.ts:2555:        } else if (category === 'wands') {
+src/engine/Core/Game.ts:2556:            assets = ItemLoader.wands.map((cfg) => ({
+src/engine/Core/Game.ts:2558:                spawn: (x, y) => ({ item: ItemLoader.spawnWand(cfg.id, x, y) ?? undefined })
+src/engine/Core/Game.ts:3801:     *     magicCharDiscoverySuffix(category, kind) == -1
+src/engine/Core/Game.ts:3809:     * magicPolarityRevealed——CE 在这里刻意用实例粒度。
+src/engine/Core/Game.ts:3812:        if (ItemLoader.magicCharDiscoverySuffix(item) !== -1) return false;
+src/engine/Core/Game.ts:3888:            if (ItemLoader.itemMagicPolarity(floorItem) !== 0) {
+src/engine/Core/Game.ts:3896:            if (ItemLoader.itemMagicPolarity(packItem) !== 0 && packItem !== theItem) {
+src/engine/Core/Game.ts:4236:            item.category !== ItemCategory.WAND
+src/engine/Core/Game.ts:4356:            if (item.category === ItemCategory.WAND) item.timesUsed = (item.timesUsed ?? 0) + 1;
+src/engine/Core/Game.ts:4557:    /** W-8 migrates only the two CE damage STAFFs. Retired invented wands
+src/engine/Core/Game.ts:4605:     * magnitude is instance E for STAFF, catalog magnitude for WAND/monsters.
+src/engine/Core/Game.ts:4648:                        if (teammate.state === MonsterState.ASLEEP || teammate.state === MonsterState.WANDERING) {
+src/engine/Core/Game.ts:4813:                const success = rng.randPercent(wandDominate(target));
+src/engine/Core/Game.ts:4840:                    ? { kind: 'staff', enchantment: item.enchantment } : { kind: 'wand' }).value;
+src/engine/Core/Game.ts:4930:                        ? { kind: 'staff', enchantment: item.enchantment } : { kind: 'wand' }).value;
+src/engine/Core/Game.ts:5222:            || item.category === ItemCategory.WAND || item.category === ItemCategory.STAFF
+src/engine/Core/Game.ts:5425:     *      （WEAPON/ARMOR 附魔归零+符文消失+自动鉴定 / STAFF·WAND 充能清零 /
+src/engine/Core/Game.ts:5484:                case ItemCategory.WAND:
+src/engine/Core/Game.ts:5758:     * (b) 善意药水种类全部已知（magicPolarityRevealedItemKindCount == 8，
+src/engine/Core/Game.ts:5767:                .filter(id => ItemLoader.kindPolarity(id) === 1);
+src/engine/Core/Game.ts:7928:     * - rechargeItemsIncrementally(1) → tickArcanaResources()（法杖充能、护符冷却；WAND 不回电）
+src/engine/Core/Game.ts:8429:        if (item.category === ItemCategory.STAFF || item.category === ItemCategory.WAND) {
+src/engine/Core/Game.ts:8431:            const table = isStaff ? ItemLoader.staffs : ItemLoader.wands;
+src/engine/Core/Game.ts:8463:                || cat === ItemCategory.SCROLL || cat === ItemCategory.WAND || cat === ItemCategory.STAFF
+src/engine/Core/Game.ts:8558:            wandFlavors: Object.fromEntries(ItemLoader.wands.map(w => [w.id, ItemLoader.arcanaFlavorMap.get(w.id)!])),
+src/engine/Core/Game.ts:8561:            magicPolarityRevealed: [...ItemLoader.magicPolarityRevealed],
+src/engine/Core/Game.ts:8758:        ItemLoader.restoreWandFlavors(snapshot.wandFlavors);
+src/engine/Core/Game.ts:8776:        if (snapshot.magicPolarityRevealed) {
+src/engine/Core/Game.ts:8777:            ItemLoader.magicPolarityRevealed.clear();
+src/engine/Core/Game.ts:8778:            for (const kindId of snapshot.magicPolarityRevealed) {
+src/engine/Core/Game.ts:8779:                ItemLoader.magicPolarityRevealed.add(kindId);
+src/engine/Core/Game.ts:10093:            this.waypoints.chooseNewWanderDestination(target, this.wpContext());
+src/engine/Core/Game.ts:10157:        monster.state = MonsterState.WANDERING; // isAlly is web's MONSTER_ALLY state.
+src/engine/Generator/BlueprintEngine.ts:168:     *  hp > 75% 或玩家离开察觉范围后自行转 HUNTING/WANDERING），而
+src/engine/Items/ArcanaEnchantment.ts:2:import { WAND_INITIAL_RANGES } from './ArcanaInstance';
+src/engine/Items/ArcanaEnchantment.ts:4:/** Only existing CE wand ranges have an enchanting increment. Retired invented
+src/engine/Items/ArcanaEnchantment.ts:5: * wands have no CE lower bound; don't invent one from their legacy capacity.
+src/engine/Items/ArcanaEnchantment.ts:12:    return item.category === ItemCategory.WAND
+src/engine/Items/ArcanaEnchantment.ts:13:        && !!WAND_INITIAL_RANGES[(item as Item & { identityId?: string }).identityId ?? ''];
+src/engine/Items/ArcanaEnchantment.ts:30:        item.charges! += WAND_INITIAL_RANGES[id]![0];
+src/engine/Items/ArcanaEnchantment.ts:31:        // Wand maxCharges remains its initial count, not a cap on added uses.
+src/engine/Items/ArcanaInstance.ts:11:/** All nine CE wand kinds; GlobalsBrogue.c:702-710, all clump factors = 1.
+src/engine/Items/ArcanaInstance.ts:12: * The two retired web wands retain their fixed legacy capacity. Pool order/frequencies live in arcana.json.
+src/engine/Items/ArcanaInstance.ts:14:export const WAND_INITIAL_RANGES: Readonly<Record<string, readonly [number, number, number]>> = {
+src/engine/Items/ArcanaInstance.ts:15:    wand_of_teleportation: [3, 5, 1],
+src/engine/Items/ArcanaInstance.ts:16:    wand_of_slowness: [2, 5, 1],
+src/engine/Items/ArcanaInstance.ts:17:    wand_of_polymorphism: [3, 5, 1],
+src/engine/Items/ArcanaInstance.ts:18:    wand_of_negation: [4, 6, 1],
+src/engine/Items/ArcanaInstance.ts:19:    wand_of_domination: [1, 2, 1],
+src/engine/Items/ArcanaInstance.ts:20:    wand_of_beckoning: [2, 4, 1],
+src/engine/Items/ArcanaInstance.ts:21:    wand_of_plenty: [1, 2, 1],
+src/engine/Items/ArcanaInstance.ts:22:    wand_of_invisibility: [3, 5, 1],
+src/engine/Items/ArcanaInstance.ts:23:    wand_of_empowerment: [1, 1, 1],
+src/engine/Items/ArcanaInstance.ts:40:export function rollWandCharges(id: string, legacyCapacity: number,
+src/engine/Items/ArcanaInstance.ts:42:    const range = WAND_INITIAL_RANGES[id];
+src/engine/Items/Item.ts:18:    WAND,
+src/engine/Items/Item.ts:38:function calledLabel(categoryWord: 'potion' | 'scroll' | 'wand' | 'staff' | 'ring', title: string): string {
+src/engine/Items/Item.ts:42:        case 'wand': return i18next.t('item.called_wand', { title, defaultValue: 'wand called {{title}}' });
+src/engine/Items/Item.ts:80:    /** Staff capacity (= E after creation/enchanting); wand's initial count, not a use cap. */
+src/engine/Items/Item.ts:103:     * 照过。它是**实例**旗标，与种类级的 magicPolarityRevealed 并列：
+src/engine/Items/Item.ts:220:            case ItemCategory.WAND:
+src/engine/Items/Item.ts:228:                const flavor = identityId ? ItemLoader.arcanaFlavorMap.get(identityId) : undefined;
+src/engine/Items/Item.ts:236:                        ? calledLabel(this.category === ItemCategory.WAND ? 'wand' : 'staff', arcanaCall)
+src/engine/Items/Item.ts:239:                if (this.category === ItemCategory.WAND) {
+src/engine/Items/Item.ts:264:                    const flavor = ItemLoader.arcanaFlavorMap.get(identityId);
+src/engine/Items/Item.ts:272:                    const flavor = ItemLoader.arcanaFlavorMap.get(identityId);
+src/engine/Items/ItemLoader.ts:8:import { rollStaffEnchantment, rollWandCharges } from './ArcanaInstance';
+src/engine/Items/ItemLoader.ts:52:    marketValue?: number;
+src/engine/Items/ItemLoader.ts:71:    public static wands = arcanaData.wands as ArcanaConfig[];
+src/engine/Items/ItemLoader.ts:85:    public static genWands = ItemLoader.filterPool(ItemLoader.wands);
+src/engine/Items/ItemLoader.ts:232:     * {GOLD:50, SCROLL:42, POTION:52, STAFF:3, WAND:3, WEAPON:10, ARMOR:8,
+src/engine/Items/ItemLoader.ts:239:     * GlobalsBrogue.c:109）：{GOLD:50, SCROLL:42, POTION:52, STAFF:3, WAND:3,
+src/engine/Items/ItemLoader.ts:253:                { category: ItemCategory.WAND, weight: 3 },
+src/engine/Items/ItemLoader.ts:440:    public static arcanaFlavorMap = new Map<string, string>();
+src/engine/Items/ItemLoader.ts:489:     * CE 充能区间退化的魔杖（wandTable lowerBound==upperBound，GlobalsBrogue.c:701-711
+src/engine/Items/ItemLoader.ts:493:    private static readonly DEGENERATE_CHARGE_WAND_KINDS: ReadonlySet<string> = new Set(['wand_of_empowerment']);
+src/engine/Items/ItemLoader.ts:510:     * 种类固有极性（CE magicPolarity 列，HAS_INTRINSIC_POLARITY = POTION|SCROLL|
+src/engine/Items/ItemLoader.ts:511:     * RING|WAND|STAFF，Rogue.h:768）。B-1a 只用于"最后一种类自动升格"的极性分组
+src/engine/Items/ItemLoader.ts:519:     *   - 魔杖 wandTable_Brogue，variants/GlobalsBrogue.c:701-711
+src/engine/Items/ItemLoader.ts:523:     * scroll_of_amnesia（自创，退池）、wand_of_fire / wand_of_lightning（CE 法杖
+src/engine/Items/ItemLoader.ts:573:        wand_of_teleportation: 1,     // teleportation
+src/engine/Items/ItemLoader.ts:574:        wand_of_slowness: 1,          // slowness
+src/engine/Items/ItemLoader.ts:575:        wand_of_polymorphism: 1,
+src/engine/Items/ItemLoader.ts:576:        wand_of_negation: 1,
+src/engine/Items/ItemLoader.ts:577:        wand_of_domination: 1,
+src/engine/Items/ItemLoader.ts:578:        wand_of_beckoning: 1,         // beckoning
+src/engine/Items/ItemLoader.ts:579:        wand_of_plenty: -1,
+src/engine/Items/ItemLoader.ts:580:        wand_of_invisibility: -1,     // invisibility
+src/engine/Items/ItemLoader.ts:581:        wand_of_empowerment: -1,      // empowerment
+src/engine/Items/ItemLoader.ts:582:        wand_of_fire: 0,              // CE 法杖错位实体，退池
+src/engine/Items/ItemLoader.ts:583:        wand_of_lightning: 0,         // 同上
+src/engine/Items/ItemLoader.ts:606:            case ItemCategory.WAND: return this.wands.map(w => w.id);
+src/engine/Items/ItemLoader.ts:614:     * B-1c：种类级"极性已被 detect magic 揭示"（CE itemTable.magicPolarityRevealed，
+src/engine/Items/ItemLoader.ts:619:    public static magicPolarityRevealed = new Set<string>();
+src/engine/Items/ItemLoader.ts:629:    /** CE HAS_INTRINSIC_POLARITY（Rogue.h:768）= POTION|SCROLL|RING|WAND|STAFF。 */
+src/engine/Items/ItemLoader.ts:634:                ItemCategory.WAND, ItemCategory.STAFF,
+src/engine/Items/ItemLoader.ts:642:     * WAND|STAFF|AMULET。食物 / 金币 / 钥匙 / 宝石不在内。
+src/engine/Items/ItemLoader.ts:648:                ItemCategory.RING, ItemCategory.CHARM, ItemCategory.WAND, ItemCategory.STAFF,
+src/engine/Items/ItemLoader.ts:655:    /** 种类固有极性的表查（CE itemTable[kind].magicPolarity）；表外种类记 0。 */
+src/engine/Items/ItemLoader.ts:656:    public static kindPolarity(kindId: string | undefined): number {
+src/engine/Items/ItemLoader.ts:661:    /** detect magic 的极性揭示（CE itemTable[kind].magicPolarityRevealed）。 */
+src/engine/Items/ItemLoader.ts:663:        return !!kindId && this.magicPolarityRevealed.has(kindId);
+src/engine/Items/ItemLoader.ts:667:     * CE itemMagicPolarity（Items.c:8267-8299）：这一**件**的极性。
+src/engine/Items/ItemLoader.ts:672:    public static itemMagicPolarity(item: Item): number {
+src/engine/Items/ItemLoader.ts:682:            case ItemCategory.WAND:
+src/engine/Items/ItemLoader.ts:685:                return this.kindPolarity(kindId);
+src/engine/Items/ItemLoader.ts:687:                // CE :8283-8285 同样是表查，但 charmTable_Brogue 的 magicPolarity
+src/engine/Items/ItemLoader.ts:689:                // fear 在内无一例外），与 magicCharDiscoverySuffix(CHARM) 恒 1 一致。
+src/engine/Items/ItemLoader.ts:696:                return this.kindPolarity(kindId);
+src/engine/Items/ItemLoader.ts:705:     * CE magicCharDiscoverySuffix（Items.c:8213-8262）。**不是** magicPolarity 的
+src/engine/Items/ItemLoader.ts:709:     *  - POTION / SCROLL：CE 的 -1 名单与 potionTable/scrollTable 的 magicPolarity
+src/engine/Items/ItemLoader.ts:711:     *  - RING：CE 恒 0（:8250-8252），**与 ringTable 全 +1 的 magicPolarity 相反**；
+src/engine/Items/ItemLoader.ts:713:     *  - WAND / STAFF：CE 查 boltCatalog[power].flags & BF_TARGET_ALLIES（:8243-8249）。
+src/engine/Items/ItemLoader.ts:717:    public static magicCharDiscoverySuffix(item: Item): number {
+src/engine/Items/ItemLoader.ts:721:                return this.kindPolarity(kindIdOf(item));
+src/engine/Items/ItemLoader.ts:726:            case ItemCategory.WAND:
+src/engine/Items/ItemLoader.ts:738:     *  1. 若类别有固有极性 → 该**种类**的 magicPolarityRevealed 置真；
+src/engine/Items/ItemLoader.ts:746:            this.magicPolarityRevealed.add(kindId);
+src/engine/Items/ItemLoader.ts:756:     * CE magicPolarityRevealedItemKindCount（Items.c:6609-6624）：某类别某极性里
+src/engine/Items/ItemLoader.ts:757:     * "极性已知"的种类数——**identified 或 magicPolarityRevealed 都算**。
+src/engine/Items/ItemLoader.ts:761:            && (this.identifiedItems.has(k) || this.magicPolarityRevealed.has(k))).length;
+src/engine/Items/ItemLoader.ts:770:     * 的 `|| magicPolarityRevealed`——那是极性揭示进入升格规则的**第二个**入口。
+src/engine/Items/ItemLoader.ts:816:        if (item.category === ItemCategory.WAND && this.DEGENERATE_CHARGE_WAND_KINDS.has(kindId ?? '')) {
+src/engine/Items/ItemLoader.ts:845:            || item.category === ItemCategory.WAND) && item.isIdentified && kindKnown) {
+src/engine/Items/ItemLoader.ts:953:    public static wandFlavorNames = [
+src/engine/Items/ItemLoader.ts:954:        'Copper Wand',
+src/engine/Items/ItemLoader.ts:955:        'Oak Wand',
+src/engine/Items/ItemLoader.ts:956:        'Crystal Wand',
+src/engine/Items/ItemLoader.ts:957:        'Ivory Wand',
+src/engine/Items/ItemLoader.ts:958:        'Carved Wand',
+src/engine/Items/ItemLoader.ts:959:        'Runed Wand',
+src/engine/Items/ItemLoader.ts:960:        // itemMetalsRef 12 金属，去与 Copper Wand（铜）重复的 copper，补入 11 种
+src/engine/Items/ItemLoader.ts:1044:        this.arcanaFlavorMap.clear();
+src/engine/Items/ItemLoader.ts:1050:        this.magicPolarityRevealed.clear();
+src/engine/Items/ItemLoader.ts:1075:    public static restoreWandFlavors(saved?: Record<string, string>): void {
+src/engine/Items/ItemLoader.ts:1076:        const slots = this.wands.map(w => this.arcanaFlavorMap.get(w.id)!);
+src/engine/Items/ItemLoader.ts:1077:        const legacy = ['wand_of_fire', 'wand_of_lightning', 'wand_of_teleportation',
+src/engine/Items/ItemLoader.ts:1078:            'wand_of_slowness', 'wand_of_invisibility', 'wand_of_empowerment', 'wand_of_beckoning'];
+src/engine/Items/ItemLoader.ts:1082:        for (const w of this.wands) {
+src/engine/Items/ItemLoader.ts:1089:        for (const w of this.wands) {
+src/engine/Items/ItemLoader.ts:1095:            this.arcanaFlavorMap.set(w.id, restored.get(w.id)!);
+src/engine/Items/ItemLoader.ts:1127:        this.assignArcanaFlavors(this.wands, this.wandFlavorNames, '魔杖');
+src/engine/Items/ItemLoader.ts:1128:        this.assignArcanaFlavors(this.staffs, this.staffFlavorNames, '法杖');
+src/engine/Items/ItemLoader.ts:1129:        this.assignArcanaFlavors(this.rings, this.ringFlavorNames, '戒指');
+src/engine/Items/ItemLoader.ts:1130:        this.assignArcanaFlavors(this.charms, this.charmFlavorNames, '护符');
+src/engine/Items/ItemLoader.ts:1149:    private static assignArcanaFlavors(pool: ArcanaConfig[], flavors: string[], label: string) {
+src/engine/Items/ItemLoader.ts:1164:            this.arcanaFlavorMap.set(entry.id, tn(flavor));
+src/engine/Items/ItemLoader.ts:1350:    public static spawnWand(id: string, x: number, y: number): Item | null {
+src/engine/Items/ItemLoader.ts:1351:        const data = this.wands.find((w) => w.id === id);
+src/engine/Items/ItemLoader.ts:1353:        const wand = new Item(tn(data.name), '/', data.color, ItemCategory.WAND);
+src/engine/Items/ItemLoader.ts:1354:        wand.loc = { x, y };
+src/engine/Items/ItemLoader.ts:1355:        wand.weight = data.weight;
+src/engine/Items/ItemLoader.ts:1357:        wand.arcanaInstanceVersion = 1;
+src/engine/Items/ItemLoader.ts:1358:        wand.maxCharges = rollWandCharges(id, data.maxCharges ?? 1, rng);
+src/engine/Items/ItemLoader.ts:1359:        wand.charges = wand.maxCharges;
+src/engine/Items/ItemLoader.ts:1360:        wand.rechargeTurns = data.rechargeTurns ?? 200;
+src/engine/Items/ItemLoader.ts:1361:        wand.rechargeCounter = 0;
+src/engine/Items/ItemLoader.ts:1362:        (wand as any).identityId = id;
+src/engine/Items/ItemLoader.ts:1364:        wand.identified = false;
+src/engine/Items/ItemLoader.ts:1365:        wand.canBeIdentified = true;
+src/engine/Items/ItemLoader.ts:1366:        wand.maxChargesKnown = false;
+src/engine/Items/ItemLoader.ts:1367:        wand.timesUsed = 0;
+src/engine/Items/ItemLoader.ts:1368:        return wand;
+src/engine/Items/itemFlavors.test.ts:52:        ['wands', 'wand'], ['staffs', 'staff'], ['rings', 'ring'], ['charms', 'charm'],
+src/engine/Items/itemFlavors.test.ts:55:            arcana[`${label}:${a.id}`] = ItemLoader.arcanaFlavorMap.get(a.id) ?? '';
+src/engine/Items/itemFlavors.test.ts:65:        expect(ItemLoader.wandFlavorNames.length).toBeGreaterThanOrEqual(ItemLoader.wands.length);
+src/engine/Items/itemFlavors.test.ts:79:        expect(dup(ItemLoader.wandFlavorNames)).toEqual([]);
+src/engine/Items/itemFlavors.test.ts:107:            ['wands', '魔杖'], ['staffs', '法杖'], ['rings', '戒指'], ['charms', '护符'],
+src/engine/Items/itemFlavors.test.ts:109:            const flavors = ItemLoader[pool].map(a => ItemLoader.arcanaFlavorMap.get(a.id));
+src/engine/Items/itemFlavors.test.ts:123:            ...ItemLoader.wands.map(a => ItemLoader.arcanaFlavorMap.get(a.id)!),
+src/engine/Items/itemFlavors.test.ts:124:            ...ItemLoader.staffs.map(a => ItemLoader.arcanaFlavorMap.get(a.id)!),
+src/engine/Items/itemFlavors.test.ts:125:            ...ItemLoader.rings.map(a => ItemLoader.arcanaFlavorMap.get(a.id)!),
+src/engine/Items/itemFlavors.test.ts:126:            ...ItemLoader.charms.map(a => ItemLoader.arcanaFlavorMap.get(a.id)!),
+src/engine/Map/SafetyMap.ts:89:/** web 的 MonsterState 数值枚举（Monster.ts：ASLEEP/WANDERING/HUNTING/FLEEING）。
+src/engine/Map/WaypointMap.ts:4: * CE 里 WANDERING 怪物不是随机乱走：朝最近的可疑 waypoint 走，到了再换下一个，
+src/engine/Map/WaypointMap.ts:20: *   - isValidWanderDestination / closestWaypointIndex / chooseNewWanderDestination
+src/engine/Map/WaypointMap.ts:61:/** web MonsterState 数值（Monster.ts：ASLEEP=0/WANDERING=1/HUNTING=2/FLEEING=3）。
+src/engine/Map/WaypointMap.ts:318:     * CE Monsters.c:1206 isValidWanderDestination：目标合法 = 索引有效 + 未访问
+src/engine/Map/WaypointMap.ts:321:    public isValidWanderDestination(monst: WaypointMonster, wpIndex: number, ctx: WaypointContext): boolean {
+src/engine/Map/WaypointMap.ts:392:            if (this.isValidWanderDestination(monst, i, ctx)) {
+src/engine/Map/WaypointMap.ts:404:     * CE Monsters.c:1230 chooseNewWanderDestination：随机清两个 visited（≈50%
+src/engine/Map/WaypointMap.ts:409:    public chooseNewWanderDestination(monst: WaypointMonster, ctx: WaypointContext): void {
+src/engine/UI/Appearance.ts:374: *         itemMagicPolarity ≠ 0，且**看不见该格**（CE !playerCanSeeOrSense，
+src/engine/UI/Appearance.ts:391:        && ItemLoader.itemMagicPolarity(carried) !== 0);
+src/engine/UI/Appearance.ts:400:        if (ItemLoader.itemMagicPolarity(theItem) === 0) return null;
+src/engine/UI/Appearance.ts:403:    if (!theItem.magicDetected || ItemLoader.itemMagicPolarity(theItem) === 0) return null;
+src/engine/UI/Appearance.ts:408:    const polarity = ItemLoader.itemMagicPolarity(theItem);
+src/engine/UI/DetailGenerator.ts:262:    else if (state === MonsterState.WANDERING) stateLines.push({ text: '正在巡逻', color: '#88ff88' });
+src/engine/UI/DetailGenerator.ts:398:    if (item.category === ItemCategory.WAND || item.category === ItemCategory.STAFF) {
+src/engine/UI/DetailGenerator.ts:411:        } else if (item.category === ItemCategory.WAND && (item.timesUsed ?? 0) > 0) {
+src/engine/UI/DetailGenerator.ts:414:        statsLines.push({ text: item.category === ItemCategory.WAND
+src/entities/Monster.ts:100:    if (caster.hasStatus('discordant') && caster.state === MonsterState.WANDERING && target === game.player) {
+src/entities/Monster.ts:186:    WANDERING,
+src/entities/Monster.ts:363:     * WANDERING 怪物朝该 waypoint 的距离图下坡走，到达/失效后由
+src/entities/Monster.ts:364:     * chooseNewWanderDestination 换点。
+src/entities/Monster.ts:393:    // Track original spawn loc for wandering logic
+src/entities/Monster.ts:440:        // 70% chance to start asleep, otherwise wandering
+src/entities/Monster.ts:443:            this.state = MonsterState.WANDERING; // Or EXPLORING/HUNTING based on other logic
+src/entities/Monster.ts:445:            this.state = rng.randPercent(70) ? MonsterState.ASLEEP : MonsterState.WANDERING;
+src/entities/Monster.ts:503:            ticksUntilTurn: 101, isClone: true, isAlly: true, state: MonsterState.WANDERING });
+src/entities/Monster.ts:1229:        // 根本不进 monstersTurn）；ALLY 与 HUNTING/WANDERING 共用同一个出口，
+src/entities/Monster.ts:1230:        // 与 CE 一致（generallyValidBoltTarget 只在 discordant+WANDERING 时
+src/entities/Monster.ts:1231:        // 排斥玩家目标，不整体禁止 WANDERING 施法）。
+src/entities/Monster.ts:1410:        if (this.state === MonsterState.ASLEEP || this.state === MonsterState.WANDERING) {
+src/entities/Monster.ts:1419:        // awareOfTarget 重算感知，追踪态丢失感知 → 回 WANDERING（Monsters.c:
+src/entities/Monster.ts:1420:        // 1776-1779；wanderToward(lastSeenPlayerAt) 因 web 无 lastSeen 记账
+src/entities/Monster.ts:1421:        // 退化为普通 WANDERING，见报告）。ALWAYS_HUNTING 在 CE 里是
+src/entities/Monster.ts:1427:        // 新状态行动（Web 落入下方 WANDERING 分支，同构）。
+src/entities/Monster.ts:1434:                this.state = MonsterState.WANDERING;
+src/entities/Monster.ts:1463:                this.state = MonsterState.WANDERING;
+src/entities/Monster.ts:1540:        if ((this.state === MonsterState.HUNTING || this.state === MonsterState.WANDERING)
+src/entities/Monster.ts:1563:            // 怪物也当作攻击目标（对玩家仍视为敌人）。置于"丢失视野掉回 WANDERING"
+src/entities/Monster.ts:1566:                // 方向顺序与下方 confused/WANDERING 分支的 dirs 保持一致（8 方向去重）
+src/entities/Monster.ts:1614:            // MONSTER_WANDERING，Monsters.c:3475-3484）；②气味太陈旧/太远
+src/entities/Monster.ts:1616:            // updateMonsterState → MONSTER_WANDERING，Monsters.c:1776-1779）。
+src/entities/Monster.ts:1781:                        //（CE 还有 wanderToward(lastSeenPlayerAt)，web 无 lastSeen
+src/entities/Monster.ts:1782:                        // 记账，退化为普通 WANDERING，见报告。）
+src/entities/Monster.ts:1785:                            this.state = MonsterState.WANDERING;
+src/entities/Monster.ts:1807:        } else if (this.state === MonsterState.WANDERING) {
+src/entities/Monster.ts:1810:            // 失效或无路 → chooseNewWanderDestination 换点再试；仍无路 → 如
+src/entities/Monster.ts:1816:            if (wp.count > 0 && wp.isValidWanderDestination(this, this.targetWaypointIndex, game.wpContext())) {
+src/entities/Monster.ts:1820:            // 0 距离无更陡邻格）→ 换点。isValidWanderDestination 的 nextStep
+src/entities/Monster.ts:1822:            if (dir === null || !wp.isValidWanderDestination(this, this.targetWaypointIndex, game.wpContext())) {
+src/entities/Monster.ts:1823:                wp.chooseNewWanderDestination(this, game.wpContext());
+src/entities/Monster.ts:1824:                if (wp.isValidWanderDestination(this, this.targetWaypointIndex, game.wpContext())) {
+src/locales/zh_CN.json:347:    "name.Wand of Fire": "火焰魔杖",
+src/locales/zh_CN.json:348:    "name.Wand of Lightning": "闪电魔杖",
+src/locales/zh_CN.json:349:    "name.Wand of Teleportation": "传送魔杖",
+src/locales/zh_CN.json:350:    "name.Wand of Polymorphism": "变形魔杖",
+src/locales/zh_CN.json:351:    "name.Wand of Negation": "消魔魔杖",
+src/locales/zh_CN.json:352:    "name.Wand of Domination": "支配魔杖",
+src/locales/zh_CN.json:353:    "name.Wand of Plenty": "复制魔杖",
+src/locales/zh_CN.json:354:    "name.Wand of Slowness": "迟缓魔杖",
+src/locales/zh_CN.json:355:    "name.Wand of Invisibility": "隐身魔杖",
+src/locales/zh_CN.json:356:    "name.Wand of Empowerment": "赋能魔杖",
+src/locales/zh_CN.json:357:    "name.Wand of Beckoning": "召唤魔杖",
+src/locales/zh_CN.json:390:    "name.Copper Wand": "铜魔杖",
+src/locales/zh_CN.json:391:    "name.Oak Wand": "橡木魔杖",
+src/locales/zh_CN.json:392:    "name.Crystal Wand": "水晶魔杖",
+src/locales/zh_CN.json:393:    "name.Ivory Wand": "象牙魔杖",
+src/locales/zh_CN.json:394:    "name.Carved Wand": "雕花魔杖",
+src/locales/zh_CN.json:395:    "name.Runed Wand": "符文魔杖",
+src/locales/zh_CN.json:434:    "item.called_wand": "称为「{{title}}」的魔杖",
+src/locales/zh_CN.legacy.json:93:  "    (Wandering)     ": "    （游荡）     ",
+src/locales/zh_CN.legacy.json:211:  " Wands of this type can be found with %i to %i charges. Enchanting this wand will add %i charge%s.": " 此类型魔杖被发现时通常有 %i 到 %i 点充能。附魔此魔杖将增加 %i 次充能%s。",
+src/locales/zh_CN.legacy.json:255:  " wandering": " 游荡",
+src/locales/zh_CN.legacy.json:288:  "%i charge%s remain%s. Enchanting this wand will add %i charge%s.": "剩余 %i 次充能%s%s。附魔此魔杖将增加 %i 次充能%s。",
+src/locales/zh_CN.legacy.json:419:  "%s%s%s wand%s": "%s%s%s 魔杖%s",
+src/locales/zh_CN.legacy.json:453:  "&wand of negation": "&否定魔杖",
+src/locales/zh_CN.legacy.json:604:  "-- WANDS --": "—— 魔杖 ——",
+src/locales/zh_CN.legacy.json:753:  "Ascend without using a staff, wand or charm.": "在不使用法杖、魔杖或护符的情况下离开。",
+src/locales/zh_CN.legacy.json:971:  "No charges remain.  Enchanting this wand will add %i charge%s.": "无剩余充能。附魔此魔杖将增加 %i 次充能%s。",
+src/locales/zh_CN.legacy.json:1173:  "This thin %s wand is warm to the touch. Who knows what it will do when used?": "这根细长的 %s 魔杖摸起来很温暖。谁知道使用它会有什么效果？",
+src/locales/zh_CN.legacy.json:1241:  "You have not yet used this wand.": "你尚未使用过此魔杖。",
+src/locales/zh_CN.legacy.json:1244:  "You have used this wand %i time%s, but do not know how many charges, if any, remain.": "你已使用此魔杖 %i 次%s，但不知道还剩多少充能。",
+src/locales/zh_CN.legacy.json:1290:  "\n     A wand of domination will always succeed at %s current health level.": "\n     支配魔杖在 %s 当前生命值时必定成功。",
+src/locales/zh_CN.legacy.json:1291:  "\n     A wand of domination will fail at %s current health level.": "\n     支配魔杖在 %s 当前生命值时必定失败。",
+src/locales/zh_CN.legacy.json:1292:  "\n     A wand of domination will have a %i%% chance of success at %s current health level.": "\n     支配魔杖在 %s 当前生命值时，有 %i%% 的成功几率。",
+src/locales/zh_CN.legacy.json:1293:  "\n     A wand of domination will have no effect on objects like %s.": "\n     支配魔杖对像 %s 这样的物体无效。",
+src/locales/zh_CN.legacy.json:1294:  "\n     A wand of domination will not affect %s.": "\n     支配魔杖不会影响 %s。",
+src/locales/zh_CN.legacy.json:1368:  "\n\nWhen used, the charm will recharge your staffs (though not your wands or charms), after which it will recharge in %i turns. (If the charm is enchanted, it will recharge in %i turns.)": "\n\n使用时，护符将为你的法杖重新充能（但不是你的魔杖或护符），之后它将在 %i 回合后重新充能。（如果护符被附魔，它将在 %i 回合后重新充能。）",
+src/locales/zh_CN.legacy.json:2041:  "wand%s called %s%s%s": "%s魔杖，名为 %s%s%s",
+src/locales/zh_CN.legacy.json:2042:  "wand%s of %s": "%s%s 魔杖",
+src/locales/zh_CN.legacy.json:2196:  "This wand will render a creature temporarily invisible to the naked eye. Only with telepathy or in the silhouette of a thick gas will an observer discern the creature's hazy outline.": "这根魔杖会让一个生物暂时隐形。只有通过心灵感应或者在浓烈气溶胶中，观察者才能辨别出隐形者的朦胧轮廓。",
+src/locales/zh_CN.legacy.json:2214:  "(Your %s must be a wand of %s.)": "（你的 %s 必定是 %s 魔杖。）",
+src/locales/zh_CN.legacy.json:2230:  "(Your %s must be a %s wand.)": "（你的 %s 必定是 %s 魔杖。）",
+src/locales/zh_CN.legacy.json:2231:  "This wand will cause a creature to move at half its ordinary speed for 30 turns.": "这根魔杖会使一个生物以正常速度的一半移动，持续30回合。",
+src/locales/zh_CN.legacy.json:2251:  "conjuration wand [?/3]": "召唤法杖 [?/3]",
+src/locales/zh_CN.legacy.json:2252:  "conjuration wand": "召唤法杖",
+src/locales/zh_CN.legacy.json:2254:  "Conjuration wand [?/3] this is a wand. conjuration wand has at most 3 charges, about 166 turns to recharge. It will summon 4 phantom blades. (If enchanted, it will increase to 6.)": "召唤法杖 [?/3] 这是一根法杖。召唤法杖最多有 3 次充能，约 166 回合恢复一次充能。将召唤 4 把幻影刀刃。（若附魔，将增加至 6 把。）",
+src/locales/zh_CN.legacy.json:2255:  "conjuration wand [?/3] lying on a candle-lit altar.": "召唤法杖 [?/3] 躺在点燃蜡烛的祭坛上。",
+src/locales/zh_CN.legacy.json:2256:  "you obtained conjuration wand [?/3] (o).": "你获得了召唤法杖 [?/3] (o)。",
+src/locales/zh_CN.legacy.json:2257:  "Conjuration wand [?/3] (o) * this is a wand. (found in a secret room on level 2.) conjuration wand has at most 3 charges, about 166 turns to recharge. It will summon 4 phantom blades. (If enchanted, it will increase to 6.)": "召唤法杖 [?/3] (o) * 这是一根法杖。（在第 2 层的密室中找到。）召唤法杖最多有 3 次充能，约 166 回合恢复一次充能。将召唤 4 把幻影刀刃。（若附魔，将增加至 6 把。）",
+src/locales/zh_CN.legacy.json:2258:  "Zapping your conjuration wand:": "使用你的召唤法杖：",
+src/locales/zh_CN.legacy.json:2259:  "you zap your conjuration wand at monkey.": "你用召唤法杖对猴子施法。",
+src/locales/zh_CN.legacy.json:2262:  "Conjuration wand [?/3] (o) * this is a wand. (found in a secret room on level 2.) conjuration wand has at most 3 charges, about 166 turns to recharge. you last used it 337 turns ago. It will summon 4 phantom blades. (If enchanted, it will increase to 6.)": "召唤法杖 [?/3] (o) * 这是一根法杖。（在第 2 层的密室中找到。）召唤法杖最多有 3 次充能，约 166 回合恢复一次充能。你上次使用它是 337 回合前。将召唤 4 把幻影刀刃。（若附魔，将增加至 6 把。）",
+src/locales/zh_CN.legacy.json:2263:  "you zap your conjuration wand at jackal.": "你用召唤法杖对豺狼施法。",
+src/locales/zh_CN.legacy.json:2288:  "The force of this wand will draw the targeted creature into direct proximity.": "这根魔杖的力量会将目标生物拉到你的旁边。",
+src/test/ai_1_scent_tracking.test.ts:23: *   B 两条放弃路径判别式：同一几何下，感知新旧决定 HUNTING→WANDERING 走
+src/test/ai_1_scent_tracking.test.ts:148:    it('B1 路径①气味死路：感知仍在（perceived ≤ awareness，零骰）但局部最大且不可见 → WANDERING 且当回合零位移', () => {
+src/test/ai_1_scent_tracking.test.ts:159:        expect(rat.state).toBe(MonsterState.WANDERING);
+src/test/ai_1_scent_tracking.test.ts:167:        // → MONSTER_WANDERING（wanderToward(lastSeenPlayerAt) 因 web 无
+src/test/ai_1_scent_tracking.test.ts:168:        // lastSeen 记账退化为普通 WANDERING，P4-8 报告已登记）。
+src/test/ai_1_scent_tracking.test.ts:171:    it('B2 路径②感知丢失（硬截断）：perceived > awareness*3 → WANDERING（CE Monsters.c:1776-1779）', () => {
+src/test/ai_1_scent_tracking.test.ts:178:        expect(rat.state).toBe(MonsterState.WANDERING);
+src/test/ai_1_scent_tracking.test.ts:180:        // 但转 WANDERING 后鼠当回合就进游荡分支（waypoint 选择会掷骰），
+src/test/ai_1_scent_tracking.test.ts:183:        //   ②（本条）当回合即以 WANDERING 身份游荡 → 位移不再受气味梯度约束。
+src/test/b_1_weapon_specials.test.ts:7: *   - 偷袭倍率      Combat.c:1190-1196（四触发源：sneakAttack=WANDERING 目标 /
+src/test/b_1_weapon_specials.test.ts:209:    it('对抗性【WANDERING 不在偷袭触发集】：剑打游荡（WANDERING）目标必须自动' +
+src/test/b_1_weapon_specials.test.ts:211:        '漏掉 WANDERING 触发的实现里游荡目标照常掷命中 → 几乎必 miss → 在这里翻车。' +
+src/test/b_1_weapon_specials.test.ts:213:        const wanderHits: number[] = [];
+src/test/b_1_weapon_specials.test.ts:216:            // WANDERING：自动命中 + ×3
+src/test/b_1_weapon_specials.test.ts:221:            foe1.state = MonsterState.WANDERING;
+src/test/b_1_weapon_specials.test.ts:224:            expect(foe1.hp, `seed=${seed}：WANDERING 目标必须被自动命中`).toBeLessThan(fBefore1);
+src/test/b_1_weapon_specials.test.ts:228:            wanderHits.push(d);
+src/test/b_1_weapon_specials.test.ts:241:        expect(wanderHits.length).toBe(10);
+src/test/b_1a_identification.test.ts:182:        const wand = ItemLoader.spawnWand('wand_of_teleportation', -1, -1)!;
+src/test/b_1a_identification.test.ts:183:        expect(wand.maxCharges).toBeGreaterThanOrEqual(1);
+src/test/b_1a_identification.test.ts:184:        expect(wand.displayName).not.toContain('[');
+src/test/b_1a_identification.test.ts:185:        const lines = allLines(generateItemDetail(wand, 16));
+src/test/b_1a_identification.test.ts:188:        game.player.inventory.addItem(wand);
+src/test/b_1a_identification.test.ts:191:        game.useArcanaItem(wand);
+src/test/b_1a_identification.test.ts:194:        expect(ItemLoader.identifiedItems.has('wand_of_teleportation')).toBe(false);
+src/test/b_1a_identification.test.ts:195:        expect(wand.identified).toBe(false);
+src/test/b_1a_identification.test.ts:197:        expect(wand.displayName).not.toContain('Wand of Teleportation');
+src/test/b_1a_identification.test.ts:198:        expect(wand.displayName).toMatch(/已使用 1 次|used once/);
+src/test/b_1a_identification.test.ts:199:        expect(wand.displayName).not.toContain('[');
+src/test/b_1a_identification.test.ts:200:        expect(allLines(generateItemDetail(wand, 16)).some(t => t.startsWith('充能:'))).toBe(false);
+src/test/b_1a_identification.test.ts:201:        expect(allLines(generateItemDetail(wand, 16)).some(t => t.match(/已使用 1 次|used once/))).toBe(true);
+src/test/b_1a_identification.test.ts:205:        const wand = ItemLoader.spawnWand('wand_of_teleportation', -1, -1)!;
+src/test/b_1a_identification.test.ts:207:        ItemLoader.identifyInstance(wand);
+src/test/b_1a_identification.test.ts:208:        expect(wand.displayName).toBe(`Wand of Teleportation [${wand.charges}]`);
+src/test/b_1a_identification.test.ts:209:        expect(allLines(generateItemDetail(wand, 16)).some(t => t.startsWith('充能:'))).toBe(true);
+src/test/b_1a_identification.test.ts:393:        ItemLoader.identifiedItems.add('wand_of_slowness');
+src/test/b_1a_identification.test.ts:400:        expect(ItemLoader.identifiedItems.has('wand_of_slowness')).toBe(false);
+src/test/b_1a_identification.test.ts:806:     *     expect((ItemLoader as ...).magicPolarityRevealed).toBeUndefined();
+src/test/b_1a_identification.test.ts:808:     * 该前提失效（CE itemTable.magicPolarityRevealed，Rogue.h:1436 →
+src/test/b_1a_identification.test.ts:809:     * ItemLoader.magicPolarityRevealed:Set<kindId>）。
+src/test/b_1a_identification.test.ts:822:        expect(ItemLoader.magicPolarityRevealed).toBeInstanceOf(Set);
+src/test/b_1b_identification_persistence.test.ts:76:        const wand = ItemLoader.spawnWand('wand_of_teleportation', -1, -1)!;
+src/test/b_1b_identification_persistence.test.ts:77:        wand.timesUsed = 3;
+src/test/b_1b_identification_persistence.test.ts:78:        wand.maxChargesKnown = true;
+src/test/b_1b_identification_persistence.test.ts:79:        game.player.inventory.addItem(wand);
+src/test/b_1b_identification_persistence.test.ts:93:        const wand2 = game.player.inventory.items.find(i => i.name === 'Wand of Teleportation')!;
+src/test/b_1b_identification_persistence.test.ts:94:        expect(wand2.identified).toBe(false);          // 实例未鉴不许被翻成已鉴
+src/test/b_1b_identification_persistence.test.ts:95:        expect(wand2.maxChargesKnown).toBe(true);
+src/test/b_1b_identification_persistence.test.ts:96:        expect(wand2.timesUsed).toBe(3);
+src/test/b_1b_identification_persistence.test.ts:182:        const wand = ItemLoader.spawnWand('wand_of_slowness', -1, -1)!;
+src/test/b_1b_identification_persistence.test.ts:183:        game.callItem(wand, 'slowpoke');
+src/test/b_1b_identification_persistence.test.ts:184:        expect(wand.displayName).toMatch(/called slowpoke|称为「slowpoke」/);
+src/test/b_1c_detect_magic.test.ts:7: *         magicPolarityRevealed
+src/test/b_1c_detect_magic.test.ts:8: *   D2  magicPolarity 正负号写反（善意显示成恶意）
+src/test/b_1c_detect_magic.test.ts:9: *       → MAGIC_POLARITY 表抄反 / itemMagicPolarity 的 return 互换
+src/test/b_1c_detect_magic.test.ts:10: *   D3  itemMagicPolarity 对武器/护甲/戒指改查种类表而非实例附魔
+src/test/b_1c_detect_magic.test.ts:12: *   D4  `magicCharDiscoverySuffix == -1` 前置条件漏掉（善意药水也弹确认 /
+src/test/b_1c_detect_magic.test.ts:15: *       对侧计数只认 identified 不认 magicPolarityRevealed）
+src/test/b_1c_detect_magic.test.ts:16: *   D6  极性状态不进存档（种类级 magicPolarityRevealed / 实例级 magicDetected
+src/test/b_1c_detect_magic.test.ts:24: *   - itemTable.magicPolarity / magicPolarityRevealed 字段：Rogue.h:1435-1436
+src/test/b_1c_detect_magic.test.ts:28: *   - itemMagicPolarity：Items.c:8267-8299
+src/test/b_1c_detect_magic.test.ts:29: *   - magicCharDiscoverySuffix：Items.c:8213-8262
+src/test/b_1c_detect_magic.test.ts:96:            ItemCategory.SCROLL, ItemCategory.RING, ItemCategory.CHARM, ItemCategory.WAND,
+src/test/b_1c_detect_magic.test.ts:104:            .toEqual([ItemCategory.POTION, ItemCategory.SCROLL, ItemCategory.WAND,
+src/test/b_1c_detect_magic.test.ts:124:// D2 / D3：itemMagicPolarity 的语义（CE Items.c:8267-8299）
+src/test/b_1c_detect_magic.test.ts:126:describe('B-1c D2/D3：itemMagicPolarity 的正负号与"实例 vs 种类"分流', () => {
+src/test/b_1c_detect_magic.test.ts:133:            expect(ItemLoader.itemMagicPolarity(p), `${id} 应为善意 +1`).toBe(1);
+src/test/b_1c_detect_magic.test.ts:137:            expect(ItemLoader.itemMagicPolarity(p), `${id} 应为恶意 -1`).toBe(-1);
+src/test/b_1c_detect_magic.test.ts:140:        expect(ItemLoader.itemMagicPolarity(summon)).toBe(-1);
+src/test/b_1c_detect_magic.test.ts:142:        expect(ItemLoader.itemMagicPolarity(ench)).toBe(1);
+src/test/b_1c_detect_magic.test.ts:149:        expect(ItemLoader.itemMagicPolarity(sword), '±0 且不诅咒 = 无魔法').toBe(0);
+src/test/b_1c_detect_magic.test.ts:151:        expect(ItemLoader.itemMagicPolarity(sword)).toBe(1);
+src/test/b_1c_detect_magic.test.ts:153:        expect(ItemLoader.itemMagicPolarity(sword)).toBe(-1);
+src/test/b_1c_detect_magic.test.ts:155:        expect(ItemLoader.itemMagicPolarity(sword), '诅咒压过正附魔（CE 先判 ITEM_CURSED）').toBe(-1);
+src/test/b_1c_detect_magic.test.ts:157:        // 戒指：ringTable 的 magicPolarity 全 +1，但实例分支必须压过它
+src/test/b_1c_detect_magic.test.ts:160:        expect(ItemLoader.itemMagicPolarity(ring), '负附魔戒指 = 恶意（查表实现会返回 +1）').toBe(-1);
+src/test/b_1c_detect_magic.test.ts:162:        expect(ItemLoader.itemMagicPolarity(ring)).toBe(0);
+src/test/b_1c_detect_magic.test.ts:165:    it('护身符恒 +1（CE charmTable 的 magicPolarity 列全 +1）；安卡恒 +1（CE :8295）', () => {
+src/test/b_1c_detect_magic.test.ts:167:        expect(ItemLoader.itemMagicPolarity(charm), 'CE charmTable 全 +1').toBe(1);
+src/test/b_1c_detect_magic.test.ts:168:        expect(ItemLoader.magicCharDiscoverySuffix(charm), 'CE :8253-8255 CHARM 恒 1').toBe(1);
+src/test/b_1c_detect_magic.test.ts:170:        expect(ItemLoader.itemMagicPolarity(amulet)).toBe(1);
+src/test/b_1c_detect_magic.test.ts:174:        const wand = ItemLoader.spawnWand('wand_of_teleportation', -1, -1)!;
+src/test/b_1c_detect_magic.test.ts:175:        wand.charges = 2;
+src/test/b_1c_detect_magic.test.ts:176:        expect(ItemLoader.itemMagicPolarity(wand)).toBe(1);
+src/test/b_1c_detect_magic.test.ts:177:        wand.charges = 0;
+src/test/b_1c_detect_magic.test.ts:178:        expect(ItemLoader.itemMagicPolarity(wand), '空魔杖无魔法可言').toBe(0);
+src/test/b_1c_detect_magic.test.ts:208:// D4：magicCharDiscoverySuffix == -1 的前置条件（CE :8050-8052 / :7757-7759）
+src/test/b_1c_detect_magic.test.ts:290:    it('magicCharDiscoverySuffix：戒指恒 0（与 ringTable 全 +1 的 magicPolarity 相反）', () => {
+src/test/b_1c_detect_magic.test.ts:293:        expect(ItemLoader.itemMagicPolarity(ring), '实例极性 = +1').toBe(1);
+src/test/b_1c_detect_magic.test.ts:294:        expect(ItemLoader.magicCharDiscoverySuffix(ring),
+src/test/b_1c_detect_magic.test.ts:308:            ItemLoader.magicPolarityRevealed.delete(id);
+src/test/b_1c_detect_magic.test.ts:316:        const benign = ids.filter(id => ItemLoader.kindPolarity(id) === 1);
+src/test/b_1c_detect_magic.test.ts:323:        ItemLoader.magicPolarityRevealed.add(last);
+src/test/b_1c_detect_magic.test.ts:327:            'CE :6648 的 theItemTable[lastItemKind].magicPolarityRevealed 半支').toBe(true);
+src/test/b_1c_detect_magic.test.ts:333:        const benign = ids.filter(id => ItemLoader.kindPolarity(id) === 1);
+src/test/b_1c_detect_magic.test.ts:334:        const malevolent = ids.filter(id => ItemLoader.kindPolarity(id) === -1);
+src/test/b_1c_detect_magic.test.ts:340:        for (const id of malevolent) ItemLoader.magicPolarityRevealed.add(id);
+src/test/b_1c_detect_magic.test.ts:346:            'CE magicPolarityRevealedItemKindCount 把 revealed 也算作"极性已知"').toBe(true);
+src/test/b_1c_detect_magic.test.ts:352:        const benign = ids.filter(id => ItemLoader.kindPolarity(id) === 1);
+src/test/b_1c_detect_magic.test.ts:354:        for (const id of ids) ItemLoader.magicPolarityRevealed.add(id); // 全揭示
+src/test/b_1c_detect_magic.test.ts:404:        expect([...ItemLoader.magicPolarityRevealed]).toEqual(['potion_of_detect_magic']);
+src/test/b_1c_detect_magic.test.ts:411:describe('B-1c D6：极性状态进存档（种类级 magicPolarityRevealed + 实例级 magicDetected）', () => {
+src/test/b_1c_detect_magic.test.ts:421:        expect(snap.magicPolarityRevealed, '★ 种类级状态漏出存档时翻红')
+src/test/b_1c_detect_magic.test.ts:444:        delete (snap as { magicPolarityRevealed?: string[] }).magicPolarityRevealed;
+src/test/b_1c_detect_magic.test.ts:508:        ItemLoader.itemMagicPolarity(bad);
+src/test/b_1c_detect_magic.test.ts:509:        ItemLoader.magicCharDiscoverySuffix(bad);
+src/test/b_1c_detect_magic.test.ts:568:describe('W-2 留痕反转：magicCharDiscoverySuffix 的 WAND/STAFF 已接 CE 身份目录', () => {
+src/test/b_1c_detect_magic.test.ts:572:        const wand = ItemLoader.spawnWand('wand_of_invisibility', -1, -1)!;
+src/test/b_1c_detect_magic.test.ts:573:        wand.charges = 0;
+src/test/b_1c_detect_magic.test.ts:574:        expect(ItemLoader.itemMagicPolarity(wand)).toBe(0);
+src/test/b_1c_detect_magic.test.ts:575:        expect(ItemLoader.magicCharDiscoverySuffix(wand)).toBe(-1);
+src/test/b_1c_detect_magic.test.ts:576:        expect(ItemLoader.magicCharDiscoverySuffix(ItemLoader.spawnStaff('staff_of_healing', -1, -1)!)).toBe(-1);
+src/test/b_1c_detect_magic.test.ts:577:        expect(ItemLoader.magicCharDiscoverySuffix(ItemLoader.spawnWand('wand_of_slowness', -1, -1)!)).toBe(1);
+src/test/b_1c_detect_magic.test.ts:578:        for (const id of ['wand_of_fire', 'wand_of_lightning']) {
+src/test/b_1c_detect_magic.test.ts:579:            expect(ItemLoader.magicCharDiscoverySuffix(ItemLoader.spawnWand(id, -1, -1)!)).toBe(0);
+src/test/b_1c_detect_magic.test.ts:581:        expect(ItemLoader.magicCharDiscoverySuffix(ItemLoader.spawnStaff('staff_of_light', -1, -1)!)).toBe(0);
+src/test/blueprint_center.test.ts:20: *    含题设反例 seed=424242（其 D22 曾把 Wand of Fire 封进 LOCKED_DOOR 格）。
+src/test/blueprint_center.test.ts:95: * 'wand_of_fire'（已按 D2 退池）——两条判据长期恒 false、护栏空转，而
+src/test/blueprint_center.test.ts:99: * P1-33 补记：'wand_' 前缀是本守卫**当前唯一有真实样本**的 center 宝藏——
+src/test/blueprint_center.test.ts:108:export const CENTER_TREASURE_PREFIXES: readonly string[] = ['ring_', 'charm_', 'wand_'];
+src/test/blueprint_center.test.ts:434:        // wands/staffs/rings/charms/keys/amulets）。注意这里查的是**数据表存在性**
+src/test/blueprint_center.test.ts:435:        // ——正是 'scroll_of_enchanting'（拼错）与 'wand_of_fire'（退池）当年
+src/test/blueprint_center.test.ts:455:            `'wand_of_fire'）：\n${missing.join('\n')}`
+src/test/horde_selection.test.ts:164:    it('fuse 归零后当回合触发刷怪并重置，新怪为 WANDERING 且在玩家视野外', () => {
+src/test/horde_selection.test.ts:179:            expect(m.state, `新刷的 ${m.name} 应为 WANDERING`).toBe(MonsterState.WANDERING);
+src/test/horde_selection.test.ts:245:    it('开局铺怪实际会刷出 HORDE_LEADER_CAPTIVE 的笼中俘虏（领袖 caged + WANDERING + HP 1/4）', () => {
+src/test/horde_selection.test.ts:252:                    expect(m.state).toBe(MonsterState.WANDERING);
+src/test/horde_terrain_spawn.test.ts:39:    spawnHordeAt(h: HordeEntry, centerPos: { x: number, y: number }, depth: number, wandering: boolean, floorTiles?: { x: number, y: number }[]): boolean;
+src/test/invented_content_pool.test.ts:7: *  - wand_of_fire / wand_of_lightning：wandTable_Brogue 9 种无火/闪电魔杖（火/闪电是 staff）
+src/test/invented_content_pool.test.ts:47:    wands: ['wand_of_fire', 'wand_of_lightning'],
+src/test/invented_content_pool.test.ts:58:    'Wand of Fire',
+src/test/invented_content_pool.test.ts:59:    'Wand of Lightning',
+src/test/invented_content_pool.test.ts:68:const wandsJson = arcanaJson.wands as SimpleEntry[];
+src/test/invented_content_pool.test.ts:74:    ...INVENTED.potions, ...INVENTED.scrolls, ...INVENTED.wands,
+src/test/invented_content_pool.test.ts:97:        for (const id of INVENTED.wands) {
+src/test/invented_content_pool.test.ts:98:            expect(ItemLoader.genWands.map(w => w.id)).not.toContain(id);
+src/test/invented_content_pool.test.ts:108:        for (const id of INVENTED.wands) expect(wandsJson.map(w => w.id)).toContain(id);
+src/test/invented_content_pool.test.ts:119:        expect(ItemLoader.genWands.length).toBe(ItemLoader.wands.length - INVENTED.wands.length);
+src/test/invented_content_pool.test.ts:150:        expect(ItemLoader.spawnWand('wand_of_fire', 0, 0)).not.toBeNull();
+src/test/invented_content_pool.test.ts:151:        expect(ItemLoader.spawnWand('wand_of_lightning', 0, 0)).not.toBeNull();
+src/test/invented_content_pool.test.ts:344:        for (const cat of ['POTION', 'SCROLL', 'WAND', 'STAFF', 'RING', 'CHARM', 'WEAPON', 'ARMOR']) {
+src/test/monster_stats_effect.test.ts:18: * 1. Monster.ts 的混乱游走（L291/293）与 WANDERING 游走（L510/512）分支使用
+src/test/p1_30_i18n_gate.test.ts:102:    for (const pool of ['wands', 'staffs', 'rings', 'charms', 'keys', 'amulets']) {
+src/test/p1_30_i18n_gate.test.ts:107:    names.push(...ItemLoader.wandFlavorNames, ...ItemLoader.staffFlavorNames);
+src/test/p1_37_machine_flag_i18n.test.ts:450:        // 下面文案守卫保持；W-6 将回电载体从 WAND 翻正为 STAFF，
+src/test/p1_37_machine_flag_i18n.test.ts:470:        // W-6 / CE Time.c:2049：WAND 停自然回电，旧 WAND 载体到期。
+src/test/p4_10_waypoint.test.ts:9: *   isValidWanderDestination/closestWaypointIndex/chooseNewWanderDestination
+src/test/p4_10_waypoint.test.ts:32: *       （isValidWanderDestination/chooseNew 间谍计数 = 0）。
+src/test/p4_10_waypoint.test.ts:82:/** WANDERING 鼠：速度 100（每玩家回合行动一次）、无 bolts。
+src/test/p4_10_waypoint.test.ts:84:function spawnWanderingRat(game: Game, x: number, y: number): Monster {
+src/test/p4_10_waypoint.test.ts:86:    mon.state = MonsterState.WANDERING;
+src/test/p4_10_waypoint.test.ts:173:        const rat = spawnWanderingRat(game, 52, 15);
+src/test/p4_10_waypoint.test.ts:176:        // 热身回合：chooseNewWanderDestination 从 -1 选出首个目标
+src/test/p4_10_waypoint.test.ts:206:        // ⇒ isValidWanderDestination 失败 ⇒ chooseNewWanderDestination 把 k
+src/test/p4_10_waypoint.test.ts:216:        const rat = spawnWanderingRat(game, wp.coordinates[k]!.x, wp.coordinates[k]!.y);
+src/test/p4_10_waypoint.test.ts:246:        // 三条谓词各测一只怪，状态分别设为非 ASLEEP / WANDERING / HUNTING，
+src/test/p4_10_waypoint.test.ts:249:        //   - goblin_totem：state=WANDERING（MONST_NEVER_SLEEPS）→ 只 IMMOBILE 命中
+src/test/p4_10_waypoint.test.ts:255:                    const m = spawnWanderingRat(g, x, y);
+src/test/p4_10_waypoint.test.ts:264:                    m.state = MonsterState.WANDERING; // 醒着，排除 ASLEEP 谓词
+src/test/p4_10_waypoint.test.ts:272:                    const m = spawnWanderingRat(g, x, y);
+src/test/p4_10_waypoint.test.ts:296:            if (sc.name.startsWith('沉睡')) blocker.state = MonsterState.WANDERING;
+src/test/p4_10_waypoint.test.ts:315:            const rat = spawnWanderingRat(game, 52, 15);
+src/test/p4_10_waypoint.test.ts:343:        // 间谍：waypoint 消费面（isValidWanderDestination / chooseNew / nextStep）
+src/test/p4_10_waypoint.test.ts:347:        const oValid = wp.isValidWanderDestination.bind(wp);
+src/test/p4_10_waypoint.test.ts:348:        const oChoose = wp.chooseNewWanderDestination.bind(wp);
+src/test/p4_10_waypoint.test.ts:350:        wp.isValidWanderDestination = (m, i, c) => { calls.isValid++; return oValid(m, i, c); };
+src/test/p4_10_waypoint.test.ts:351:        wp.chooseNewWanderDestination = (m, c) => { calls.choose++; oChoose(m, c); };
+src/test/p4_1b_monster_casting.test.ts:58:        turret.state = MonsterState.WANDERING; // 炮塔 MONST_NEVER_SLEEPS，构造器已置 WANDERING
+src/test/p4_1b_monster_casting.test.ts:135:        totem.state = MonsterState.WANDERING;
+src/test/p4_8_scent_map.test.ts:198:    //      里也不可能**；CE 的鼠同样只能靠"丢目标 → WANDERING 沿 waypoint
+src/test/p4_8_scent_map.test.ts:250:                // 更新阶段（先于移动）——刚丢目标那一步是以 WANDERING 身份走的，
+src/test/p4_8_scent_map.test.ts:270:        // 旧实现（!可见 && dist>阈值 即弃追）在起跑线上就直接回 WANDERING，
+src/test/p4_8_scent_map.test.ts:334:// 第 1 回合把它切回 WANDERING——那是 CE 里根本不会发生的追击。CE 的
+src/test/p4_8_scent_map.test.ts:404://   updateMonsterState Monsters.c:1776-1779（追踪态 !aware → WANDERING）
+src/test/p4_8_scent_map.test.ts:410:    it('T11 返工核心：陈旧痕迹必须能甩掉——冻结在陈旧气味格上的追踪怪回到 WANDERING', () => {
+src/test/p4_8_scent_map.test.ts:428:        expect(rat.state).toBe(MonsterState.WANDERING); // CE Monsters.c:1776-1779
+src/test/p4_8_scent_map.test.ts:431:        expect(rat.state).toBe(MonsterState.WANDERING);
+src/test/p4_8_scent_map.test.ts:447:        expect(rat.state).toBe(MonsterState.WANDERING);
+src/test/p4_9_safety_map.test.ts:31: * 皮筋内；皮筋外怪物会被既有状态机切回 WANDERING（本轮不动的退出条件）。
+src/test/scroll_effects.test.ts:227:        //（Monsters.c:1776-1779 → WANDERING，discord 分支在 HUNTING 内不再执行）。
+src/test/scroll_effects.test.ts:277:            // 否则 CE 丢失判定会在第 1 回合把它切回 WANDERING。
+src/test/scroll_effects.test.ts:387:        const wand = new Item('wand', '/', 0xdd88ff, ItemCategory.WAND);
+src/test/scroll_effects.test.ts:388:        wand.charges = 3;
+src/test/scroll_effects.test.ts:389:        wand.maxChargesKnown = false;
+src/test/scroll_effects.test.ts:390:        wand.timesUsed = 2;
+src/test/scroll_effects.test.ts:391:        placeItem(game, wand, 4, 5);
+src/test/scroll_effects.test.ts:407:        // CE :4865-4866 WAND：清剩余充能（不动 enchant2=timesUsed）、上限已知
+src/test/scroll_effects.test.ts:408:        expect(wand.charges).toBe(0);
+src/test/scroll_effects.test.ts:409:        expect(wand.maxChargesKnown).toBe(true);
+src/test/scroll_effects.test.ts:410:        expect(wand.timesUsed).toBe(2);
+src/test/v_1a_blueprint_items.test.ts:41:const CE_CATEGORIES = new Set(['SCROLL', 'POTION', 'WEAPON', 'ARMOR', 'RING', 'KEY', 'FOOD', 'WAND', 'STAFF', 'CHARM', 'AMULET', 'GOLD', 'GEM']);
+src/test/v_2b_4_altars.test.ts:388:        expect(f(2)).toMatchObject({ terrain: 'ALTAR_CAGE_OPEN', itemCategory: 'WAND', instanceCount: [1, 1], minimumInstanceCount: 1 });
+src/test/v_2b_4_altars.test.ts:390:        expect(f(3)).toMatchObject({ terrain: 'ALTAR_CAGE_OPEN', itemCategory: 'WEAPON|ARMOR|WAND', instanceCount: [3, 3], minimumInstanceCount: 3 });
+src/test/v_2b_4_altars.test.ts:396:        // MF_NO_THROWING_WEAPONS（WAND 那条不带）——抄成"三条一样"的实现在此翻红。
+src/test/v_2b_4_altars.test.ts:503:        expect(f(3)).toMatchObject({ terrain: 'ALTAR_CAGE_OPEN', itemCategory: 'WEAPON|ARMOR|WAND', instanceCount: [1, 2], minimumInstanceCount: 1 });
+src/test/w_11_teleport_placement.test.ts:42:    const item = ItemLoader.spawnWand('wand_of_teleportation', -1, -1)!;
+src/test/w_11_teleport_placement.test.ts:43:    return g.zapBoltFromPlayer(getBoltForItem('wand_of_teleportation')!, item, { x: 8, y: 5 });
+src/test/w_11_teleport_placement.test.ts:132:    it('successful wand teleport moves the hit, never identifies, and leaves the old occupancy vacant', () => {
+src/test/w_11_teleport_placement.test.ts:173:    it.each([false, true])('normal wand submission consumes one charge/turn on success or failure (blocked=%s), never autoID', blocked => {
+src/test/w_11_teleport_placement.test.ts:178:        const item = ItemLoader.spawnWand('wand_of_teleportation', -1, -1)!;
+src/test/w_11_teleport_placement.test.ts:181:        expect(result?.outcome?.autoID).toBe(false); expect(ItemLoader.identifiedItems.has('wand_of_teleportation')).toBe(false);
+src/test/w_12_blink_beckoning.test.ts:48:    return g.zapBoltFromPlayer(getBoltForItem('wand_of_beckoning')!,
+src/test/w_12_blink_beckoning.test.ts:49:        ItemLoader.spawnWand('wand_of_beckoning', -1, -1)!, aim);
+src/test/w_12_blink_beckoning.test.ts:102:        for (const id of ['staff_of_conjuration', 'wand_of_beckoning']) {
+src/test/w_12_blink_beckoning.test.ts:271:        const item = ItemLoader.spawnWand('wand_of_beckoning', -1, -1)!; item.charges = 2;
+src/test/w_13_tunneling.test.ts:105:    it.each(['staff_of_fire', 'staff_of_lightning', 'wand_of_slowness', 'staff_of_conjuration'])('ordinary %s still stops at/before the original obstacle without digging', id => {
+src/test/w_13_tunneling.test.ts:106:        const g = scene(); g.grid.setTerrain(6, 5, T.WALL); const source = id.startsWith('staff') ? item() : ItemLoader.spawnWand(id, -1, -1)!;
+src/test/w_16_conjuration.test.ts:160:  const g=live(),b=single(g),rat=mob(g,'rat',11);rat.state=MonsterState.WANDERING;g.player.loc={x:2,y:2};
+src/test/w_17_domination.test.ts:11:import { wandDominate } from '../engine/Combat/Domination';
+src/test/w_17_domination.test.ts:34:function item(){return ItemLoader.spawnWand('wand_of_slowness',-1,-1)!;}
+src/test/w_17_domination.test.ts:35:const bolt=()=>({...getBoltForItem('wand_of_slowness')!,id:'w17-explicit-fixture',ceType:CEBoltType.DOMINATION,effect:BoltEffect.DOMINATION});
+src/test/w_17_domination.test.ts:44:  for(const line of rows){const [hp,maxHp,chance,count]=line.split(' ').map(Number);expect(wandDominate({hp:hp!,maxHp:maxHp!})).toBe(chance);expect(count).toBe(chance);}
+src/test/w_17_domination.test.ts:47:  const g=scene(),m=mob(g),wand=item();const draw=vi.spyOn(rng,'randRange');let count=0;
+src/test/w_17_domination.test.ts:51:   const result=g.zapBoltFromPlayer({...bolt(),magnitude:999},wand,m.loc);
+src/test/w_17_domination.test.ts:54:   if(m.isAlly){count++;expect(m.hasStatus('discordant')).toBe(false);expect(m.state).toBe(MonsterState.WANDERING);}
+src/test/w_17_domination.test.ts:61:  const g=scene(),m=mob(g),wand=item();m.hp=chance===0?100:19;
+src/test/w_17_domination.test.ts:62:  const before=rng.randomNumbersGenerated;g.zapBoltFromPlayer(bolt(),wand,m.loc);expect(rng.randomNumbersGenerated-before).toBe(1);
+src/test/w_17_domination.test.ts:80:  expect(m).toMatchObject({isAlly:true,dominated:true,isCaged:false,seized:false,seizing:true,leader:null,state:MonsterState.WANDERING,hp});
+src/test/w_17_domination.test.ts:93:  const g=scene(),m=mob(g),wand=item();m.behaviorFlags.add(flag);m.isCaged=true;m.setStatusDuration('discordant',4);
+src/test/w_17_domination.test.ts:94:  const before=dump(m),draw=vi.spyOn(rng,'randPercent');const r=g.zapBoltFromPlayer(bolt(),wand,m.loc);
+src/test/w_17_domination.test.ts:125:  const g=scene(),m=mob(g),wand=item();(wand as any).identityId='wand_of_domination';m.hp=100;
+src/test/w_17_domination.test.ts:126:  expect(arcanaTargetCandidates(g.player,g.grid,g.monsters,wand)).toEqual([m]);ItemLoader.identifiedItems.add('wand_of_domination');
+src/test/w_17_domination.test.ts:127:  expect(arcanaTargetCandidates(g.player,g.grid,g.monsters,wand)).toEqual([]);expect(cast(g).outcome?.autoID).toBe(true);expect(m.isAlly).toBe(false);
+src/test/w_17_domination.test.ts:128:  m.hp=99;expect(arcanaTargetCandidates(g.player,g.grid,g.monsters,wand)).toEqual([m]);m.isCaged=true;expect(arcanaTargetCandidates(g.player,g.grid,g.monsters,wand)).toEqual([]);
+src/test/w_17_domination.test.ts:239:  const g=live(),m=mob(g);m.hp=hp;m.ticksUntilTurn=100000;const wand=item();wand.charges=2;g.player.inventory.addItem(wand);
+src/test/w_17_domination.test.ts:241:  g.useArcanaItem(wand);g.setArcanaTarget(m.x,m.y);const before=g.stats.turns;
+src/test/w_17_domination.test.ts:242:  g.cancelArcanaSelection();expect(wand.charges).toBe(2);expect(g.stats.turns).toBe(before);expect(m.isAlly).toBe(false);
+src/test/w_17_domination.test.ts:243:  g.useArcanaItem(wand);g.setArcanaTarget(m.x,m.y);const r=g.confirmArcanaTarget();
+src/test/w_17_domination.test.ts:244:  expect(r?.outcome?.autoID).toBe(true);expect(wand.charges).toBe(1);expect(g.stats.turns).toBe(before+1);expect(m.isAlly).toBe(hp===19);
+src/test/w_17_domination.test.ts:247:  expect(ItemLoader.spawnWand('wand_of_domination',0,0)).not.toBeNull();expect(getBoltForItem('wand_of_domination')?.effect).toBe(BoltEffect.DOMINATION);
+src/test/w_17_domination.test.ts:248:  expect(JSON.parse(fs.readFileSync('src/data/arcana.json','utf8')).wands.some((w:{id:string})=>w.id==='wand_of_domination')).toBe(true);
+src/test/w_18_entrancement.test.ts:60:  m.isAlly=true;m.state=MonsterState.WANDERING;cast(g,m);expect(m.isAlly).toBe(true);expect(m.state).toBe(MonsterState.WANDERING);
+src/test/w_19_polymorph.test.ts:21:const cfg=()=>({...getBoltForItem('wand_of_slowness')!,id:'w19-effect-fixture',ceType:CEBoltType.POLYMORPH,effect:BoltEffect.POLYMORPH});
+src/test/w_19_polymorph.test.ts:33: const item=ItemLoader.spawnWand('wand_of_slowness',-1,-1)!;
+src/test/w_19_polymorph.test.ts:66:  const g=scene(),m=mob(g),wand=ItemLoader.spawnWand('wand_of_slowness',-1,-1)!;
+src/test/w_19_polymorph.test.ts:69:  const r=g.zapBoltFromPlayer(cfg(),wand,m.loc);expect(m.typeId).toBe('unicorn');expect(r.hits[0]?.creature).toBe(m);
+src/test/w_19_polymorph.test.ts:80:  const before=dump(m),wand=ItemLoader.spawnWand('wand_of_slowness',-1,-1)!,draw=vi.spyOn(rng,'randRange');
+src/test/w_19_polymorph.test.ts:81:  const r=g.zapBoltFromPlayer(cfg(),wand,m.loc);expect(r.hits[0]?.creature).toBe(m);expect(r.outcome?.autoID).toBe(false);expect(draw).not.toHaveBeenCalled();expect(dump(m)).toBe(before);
+src/test/w_19_polymorph.test.ts:88:  const g=scene(),m=mob(g),before=dump(m),wand=ItemLoader.spawnWand('wand_of_slowness',-1,-1)!;if(kind==='wall')g.grid.setTerrain(7,5,T.WALL);
+src/test/w_19_polymorph.test.ts:89:  const draw=vi.spyOn(rng,'randRange'),r=g.zapBoltFromPlayer(cfg(),wand,kind==='origin'?g.player.loc:kind==='empty'?{x:9,y:6}:m.loc);
+src/test/w_19_polymorph.test.ts:97:  const g=scene(),m=mob(g,'golem',8,5),other=mob(g,'rat',8,8),before=dump(m),wand=ItemLoader.spawnWand('wand_of_slowness',-1,-1)!;
+src/test/w_19_polymorph.test.ts:99:  const r=g.zapBoltFromPlayer(cfg(),wand,m.loc);expect(r.hits.map(h=>h.creature)).toEqual([other]);expect(other.typeId).toBe('dragon');expect(dump(m)).toBe(before);
+src/test/w_19_polymorph.test.ts:107:  const wand=ItemLoader.spawnWand('wand_of_slowness',-1,-1)!;vi.spyOn(rng,'randRange').mockImplementation(()=>{expect(m.isAlly).toBe(false);expect(m.leader).toBeNull();expect(m.mutation).toBeUndefined();expect(m.carriedMonster).toBeNull();expect(m.state).toBe(S.HUNTING);return index('rat');});g.zapBoltFromPlayer(cfg(),wand,m.loc);
+src/test/w_19_polymorph.test.ts:109: it.each([['rat',S.ASLEEP,S.ASLEEP],['rat',S.FLEEING,S.FLEEING],['wraith',S.FLEEING,S.HUNTING],['goblin_conjurer',S.FLEEING,S.HUNTING],['goblin_conjurer',S.WANDERING,S.WANDERING],['monkey',S.ASLEEP,S.HUNTING]])('old %s state %i becomes %i (including C precedence)',(id,state,expected)=>{
+src/test/w_19_polymorph.test.ts:165:  const wand=ItemLoader.spawnWand('wand_of_slowness',-1,-1)!;const draw=vi.spyOn(rng,'randRange').mockReturnValueOnce(index('rat')).mockReturnValueOnce(index('jackal'));
+src/test/w_19_polymorph.test.ts:166:  g.zapBoltFromPlayer(cfg(),wand,restored.loc);expect(restored.typeId).toBe('jackal');expect(draw.mock.calls).toEqual([[1,67],[1,67]]);
+src/test/w_19_polymorph.test.ts:173:  const wand=ItemLoader.spawnWand('wand_of_slowness',-1,-1)!,draw=vi.spyOn(rng,'randRange').mockReturnValue(index('jackal'));
+src/test/w_19_polymorph.test.ts:175:  const accepted=restored.polymorph(()=>{});expect(accepted).toBe(id==='rat');expect(draw).toHaveBeenCalledTimes(id==='rat'?1:0);expect(wand).toBeTruthy();
+src/test/w_19_polymorph.test.ts:179:  const restored=(g as any).deserializeMonster(saved) as Monster;g.monsters=[restored];const before=dump(restored),wand=ItemLoader.spawnWand('wand_of_slowness',-1,-1)!,draw=vi.spyOn(rng,'randRange');
+src/test/w_19_polymorph.test.ts:180:  const r=g.zapBoltFromPlayer(cfg(),wand,restored.loc);expect(r.outcome?.autoID).toBe(false);expect(draw).not.toHaveBeenCalled();expect(dump(restored)).toBe(before);
+src/test/w_19_polymorph.test.ts:194:  const g=live(),m=mob(g);m.ticksUntilTurn=100000;const wand=ItemLoader.spawnWand('wand_of_slowness',-1,-1)!;wand.charges=3;g.player.inventory.addItem(wand);
+src/test/w_19_polymorph.test.ts:196:  const turns=g.stats.turns;g.useArcanaItem(wand);g.cancelArcanaSelection();expect(wand.charges).toBe(3);expect(g.stats.turns).toBe(turns);expect(m.typeId).toBe('rat');
+src/test/w_19_polymorph.test.ts:197:  g.useArcanaItem(wand);g.setArcanaTarget(m.x,m.y);const original=rng.randRange.bind(rng);vi.spyOn(rng,'randRange').mockImplementation((lo,hi)=>lo===1&&hi===67?index('jackal'):original(lo,hi));g.confirmArcanaTarget();expect(wand.charges).toBe(2);expect(g.stats.turns).toBe(turns+1);expect(m.typeId).toBe('jackal');expect(g.monsters).toContain(m);
+src/test/w_19_polymorph.test.ts:200:  const g=live(),m=mob(g,'rat',5,5);m.state=S.HUNTING;m.isAlly=true;m.ticksUntilTurn=0;const wand=ItemLoader.spawnWand('wand_of_slowness',-1,-1)!;wand.charges=2;g.player.inventory.addItem(wand);
+src/test/w_19_polymorph.test.ts:203:  const attack=vi.spyOn(CombatSystem,'attack'),turn=vi.spyOn(m,'takeTurn');g.useArcanaItem(wand);g.setArcanaTarget(5,5);g.confirmArcanaTarget();expect(m.typeId).toBe('jackal');expect(m.ticksUntilTurn).toBe(1);expect(turn).not.toHaveBeenCalled();
+src/test/w_20_cloning.test.ts:20:const cfg=()=>({...getBoltForItem('wand_of_slowness')!,id:'w20-effect-fixture',ceType:CEBoltType.PLENTY,effect:BoltEffect.PLENTY});
+src/test/w_20_cloning.test.ts:31:function cast(g:Game,m:Monster|Player){return g.zapBoltFromPlayer(cfg(),ItemLoader.spawnWand('wand_of_slowness',-1,-1)!,m.loc);}
+src/test/w_20_cloning.test.ts:80: it('empty shot does not clone player or identify',()=>{const g=scene();const r=g.zapBoltFromPlayer(cfg(),ItemLoader.spawnWand('wand_of_slowness',-1,-1)!,{x:12,y:5});expect(g.monsters).toEqual([]);expect(r.outcome?.autoID).toBe(false);});
+src/test/w_20_cloning.test.ts:82:  const g=scene(),m=mob(g,id);m.abilityFlags.delete('MA_REFLECT_100');const item=ItemLoader.spawnWand('wand_of_slowness',-1,-1)!,before=dump(m),draw=vi.spyOn(rng,'randRange');
+src/test/w_20_cloning.test.ts:112: it('plenty failure leaves odd HP intact and autoID false',()=>{const g=scene(),m=mob(g);walls(g);g.grid.setTerrain(9,5,T.FLOOR);m.hp=5;const result={...cfg(),hits:[{creature:m,pos:m.loc}],hitCreatures:[m],effect:BoltEffect.PLENTY,impactPos:m.loc};expect((g as any).applyBoltEffect(result,ItemLoader.spawnWand('wand_of_slowness',-1,-1)!)).toBe(false);expect(m.hp).toBe(5);expect(g.monsters).toEqual([m]);});
+src/test/w_20_cloning.test.ts:136:  const g=live(),m=mob(g,'rat',5,5);m.state=S.HUNTING;m.ticksUntilTurn=100000;m.onHitChance=0;const wand=ItemLoader.spawnWand('wand_of_slowness',-1,-1)!;wand.charges=3;g.player.inventory.addItem(wand);
+src/test/w_20_cloning.test.ts:137:  const zap=g.zapBoltFromPlayer.bind(g);vi.spyOn(g,'zapBoltFromPlayer').mockImplementation((_b,it,to)=>zap(cfg(),it,to));const turns=g.stats.turns;g.useArcanaItem(wand);g.cancelArcanaSelection();expect(wand.charges).toBe(3);expect(g.stats.turns).toBe(turns);expect(g.monsters).toHaveLength(1);
+src/test/w_20_cloning.test.ts:138:  const attack=vi.spyOn(CombatSystem,'attack');g.useArcanaItem(wand);g.setArcanaTarget(5,5);g.confirmArcanaTarget();const c=g.monsters[1]!;expect(wand.charges).toBe(2);expect(g.stats.turns).toBe(turns+1);expect(c.ticksUntilTurn).toBe(1);expect(attack).not.toHaveBeenCalled();const turn=vi.spyOn(c,'takeTurn');g.handlePlayerAction('wait');expect(turn).toHaveBeenCalled();
+src/test/w_21_empowerment.test.ts:31:const wand=()=>ItemLoader.spawnWand('wand_of_empowerment',-1,-1)!;
+src/test/w_21_empowerment.test.ts:32:const bolt=()=>getBoltForItem('wand_of_empowerment')!;
+src/test/w_21_empowerment.test.ts:33:const cast=(g:Game,m:Monster|Player)=>g.zapBoltFromPlayer(bolt(),wand(),m.loc);
+src/test/w_21_empowerment.test.ts:38:describe('W-21 CE integers and repeated actual wand hits',()=>{
+src/test/w_21_empowerment.test.ts:41:  const g=scene(),m=mob(g),item=wand(),failures:unknown[]=[];const rngBefore=rng.randomNumbersGenerated;
+src/test/w_21_empowerment.test.ts:90:  const g=scene(),m=mob(g,id),behind=mob(g,'rat',12,5),item=wand();m.abilityFlags.delete('MA_REFLECT_100');m.hp=1;m.statusDurations={poisoned:7};m.poisonAmount=3;const before=dump(m),draw=rng.randomNumbersGenerated;
+src/test/w_21_empowerment.test.ts:102: it('empty shot and dead helper recipient have no effect',()=>{const g=scene();expect(g.zapBoltFromPlayer(bolt(),wand(),{x:9,y:5}).outcome?.autoID).toBe(false);const m=mob(g);m.hp=0;const before=dump(m);expect(m.empower()).toBe(false);expect(dump(m)).toBe(before);});
+src/test/w_21_empowerment.test.ts:103: it('actual inventory selection/cancel/submit spends one charge, identifies singleton wand and schedules one turn',()=>{
+src/test/w_21_empowerment.test.ts:104:  const g=live(),m=mob(g),item=wand();g.player.inventory.addItem(item);g.useArcanaItem(item);g.setArcanaTarget(m.x,m.y);g.cancelArcanaSelection();expect(item.charges).toBe(1);expect(m.totalPowerCount).toBe(0);
+src/test/w_21_empowerment.test.ts:115:  const cfg={...bolt(),ceType:CEBoltType.PLENTY,effect:BoltEffect.PLENTY};g.zapBoltFromPlayer(cfg,wand(),m.loc);const c=g.monsters[1]!;
+src/test/w_21_empowerment.test.ts:121:  const cfg={...bolt(),ceType:CEBoltType.POLYMORPH,effect:BoltEffect.POLYMORPH},item=wand();const draw=vi.spyOn(rng,'randRange').mockReturnValue(monsters.findIndex(d=>d.id==='ogre')+1);
+src/test/w_23_negation.test.ts:44:const wand = () => Object.assign(new Item('explicit negation', '/', 0xff88cc, ItemCategory.WAND), { identityId: 'wand_of_negation', charges: 2 });
+src/test/w_23_negation.test.ts:45:const cast = (g: Game, m: Creature) => g.zapBoltFromPlayer(bolt, wand(), m.loc);
+src/test/w_23_negation.test.ts:65:        const g = scene(), m = mob(g), item = wand(); m.setStatusDuration(status, 9);
+src/test/w_23_negation.test.ts:66:        expect(negationWillAffectMonster(m)).toBe(false); ItemLoader.identifiedItems.add('wand_of_negation');
+src/test/w_23_negation.test.ts:192:        expect(ItemLoader.spawnWand('wand_of_negation', -1, -1)).not.toBeNull();
+src/test/w_24_wand_catalog.test.ts:10:import { WAND_INITIAL_RANGES } from '../engine/Items/ArcanaInstance';
+src/test/w_24_wand_catalog.test.ts:20:const ids = 'teleportation slowness polymorphism negation domination beckoning plenty invisibility empowerment'.split(' ').map(s => 'wand_of_' + s);
+src/test/w_24_wand_catalog.test.ts:21:const added = ['wand_of_polymorphism', 'wand_of_negation', 'wand_of_domination', 'wand_of_plenty'];
+src/test/w_24_wand_catalog.test.ts:22:const oldIds = ['wand_of_fire', 'wand_of_lightning', 'wand_of_teleportation', 'wand_of_slowness', 'wand_of_invisibility', 'wand_of_empowerment', 'wand_of_beckoning'];
+src/test/w_24_wand_catalog.test.ts:46:        const body = ce.split('itemTable wandTable_Brogue[] = {')[1]!.split('\n};')[0]!;
+src/test/w_24_wand_catalog.test.ts:49:        expect(ItemLoader.genWands.map(w => w.id)).toEqual(ids);
+src/test/w_24_wand_catalog.test.ts:50:        expect(ItemLoader.wands.map(w => w.id)).toEqual([...ids, 'wand_of_fire', 'wand_of_lightning']);
+src/test/w_24_wand_catalog.test.ts:51:        expect(ItemLoader.genWands.map(w => w.frequency)).toEqual(weights);
+src/test/w_24_wand_catalog.test.ts:54:            const id = 'wand_of_' + r[1], cfg = ItemLoader.genWands[i]!;
+src/test/w_24_wand_catalog.test.ts:56:            expect([cfg.frequency, cfg.marketValue]).toEqual([Number(r[3]), Number(r[4])]);
+src/test/w_24_wand_catalog.test.ts:57:            expect(WAND_INITIAL_RANGES[id]).toEqual(r.slice(6,9).map(Number));
+src/test/w_24_wand_catalog.test.ts:58:            expect(ItemLoader.kindPolarity(id)).toBe(Number(r[9]));
+src/test/w_24_wand_catalog.test.ts:65:        for (const id of ['wand_of_fire','wand_of_lightning']) {
+src/test/w_24_wand_catalog.test.ts:66:            expect(ItemLoader.wands.find(w => w.id === id)!.excludeFromGeneration).toBe(true);
+src/test/w_24_wand_catalog.test.ts:67:            expect(ItemLoader.spawnWand(id,0,0)).not.toBeNull();
+src/test/w_24_wand_catalog.test.ts:75:            expect(g.chooseKindFromPool(ItemLoader.genWands.map(w => w.id), ItemLoader.genWands.map(w => w.frequency), new Map())).toBe(expected[ticket-1]);
+src/test/w_24_wand_catalog.test.ts:86:                const id = g.chooseKindFromPool(ItemLoader.genWands.map(w => w.id), ItemLoader.genWands.map(w => w.frequency), new Map());
+src/test/w_24_wand_catalog.test.ts:87:                const item = g.spawnKindById(ItemCategory.WAND, id, {x:3,y:4}, 1), i = ids.indexOf(id);
+src/test/w_24_wand_catalog.test.ts:91:                expect(rng.randomNumbersGenerated-before).toBe(id === 'wand_of_empowerment' ? 1 : 2);
+src/test/w_24_wand_catalog.test.ts:106:        const wand = ItemLoader.spawnWand(id,-1,-1)!;
+src/test/w_24_wand_catalog.test.ts:107:        expect(wand.displayName).not.toContain(wand.name);
+src/test/w_24_wand_catalog.test.ts:108:        expect(ItemLoader.arcanaFlavorMap.get(id)).toBeTruthy();
+src/test/w_24_wand_catalog.test.ts:110:        expect(ItemLoader.itemMagicPolarity(wand)).toBe(polarity);
+src/test/w_24_wand_catalog.test.ts:111:        expect(ItemLoader.magicCharDiscoverySuffix(wand)).toBe(polarity);
+src/test/w_24_wand_catalog.test.ts:112:        ItemLoader.detectMagicOnItem(wand);
+src/test/w_24_wand_catalog.test.ts:115:        ItemLoader.identifyInstance(wand);
+src/test/w_24_wand_catalog.test.ts:116:        expect(wand.displayName).toContain(wand.name); expect(wand.identified).toBe(true);
+src/test/w_24_wand_catalog.test.ts:117:        wand.charges = 0;
+src/test/w_24_wand_catalog.test.ts:118:        expect(ItemLoader.itemMagicPolarity(wand)).toBe(0);
+src/test/w_24_wand_catalog.test.ts:119:        expect(ItemLoader.magicCharDiscoverySuffix(wand)).toBe(polarity);
+src/test/w_24_wand_catalog.test.ts:122:        const {g,m} = scene(id === 'wand_of_negation' ? 'dar_priestess' : 'rat');
+src/test/w_24_wand_catalog.test.ts:123:        if (id === 'wand_of_domination') m.hp = 1;
+src/test/w_24_wand_catalog.test.ts:124:        if (id === 'wand_of_plenty') { m.isAlly = true; m.hp = 5; }
+src/test/w_24_wand_catalog.test.ts:125:        const wand = ItemLoader.spawnWand(id,-1,-1)!, before = wand.charges!, turns = g.stats.turns, oldType = m.typeId;
+src/test/w_24_wand_catalog.test.ts:126:        g.player.inventory.addItem(wand); const calls = rng.randomNumbersGenerated;
+src/test/w_24_wand_catalog.test.ts:127:        g.useArcanaItem(wand); expect(g.pendingArcana?.item).toBe(wand); g.cancelArcanaSelection();
+src/test/w_24_wand_catalog.test.ts:128:        expect([wand.charges,g.stats.turns,rng.randomNumbersGenerated]).toEqual([before,turns,calls]);
+src/test/w_24_wand_catalog.test.ts:129:        g.useArcanaItem(wand); g.setArcanaTarget(m.x,m.y); const result = g.confirmArcanaTarget();
+src/test/w_24_wand_catalog.test.ts:130:        expect(result).not.toBeNull(); expect(wand.charges).toBe(before-1); expect(wand.timesUsed).toBe(1); expect(g.stats.turns).toBe(turns+1);
+src/test/w_24_wand_catalog.test.ts:132:        expect(ItemLoader.identifiedItems.has(id)).toBe(id !== 'wand_of_polymorphism' || !m.hasStatus('invisible'));
+src/test/w_24_wand_catalog.test.ts:133:        if (id === 'wand_of_polymorphism') { expect(m.typeId).not.toBe(oldType); expect(g.monsters).toContain(m); }
+src/test/w_24_wand_catalog.test.ts:134:        if (id === 'wand_of_negation') { expect(m.bolts).toEqual([]); expect(m.wasNegated).toBe(true); }
+src/test/w_24_wand_catalog.test.ts:135:        if (id === 'wand_of_domination') expect(m.isAlly && m.dominated).toBe(true);
+src/test/w_24_wand_catalog.test.ts:136:        if (id === 'wand_of_plenty') { expect(g.monsters).toHaveLength(2); expect(g.monsters.map(v=>v.hp)).toEqual([3,3]); }
+src/test/w_24_wand_catalog.test.ts:138:    it('machine WAND/STAFF debt stays explicit: direct and category requests yield null with zero RNG', () => {
+src/test/w_24_wand_catalog.test.ts:140:        for (const id of ids) expect(g.spawnBlueprintItem('WAND', id,3,4,1)).toBeNull();
+src/test/w_24_wand_catalog.test.ts:141:        for (const category of ['WAND','STAFF']) expect(g.spawnBlueprintItem(category, undefined,3,4,1)).toBeNull();
+src/test/w_24_wand_catalog.test.ts:146:            ItemLoader.identifiedItems.clear(); ItemLoader.magicPolarityRevealed.clear();
+src/test/w_24_wand_catalog.test.ts:147:            const same = ids.filter(id => id !== last && ItemLoader.kindPolarity(id) === ItemLoader.kindPolarity(last));
+src/test/w_24_wand_catalog.test.ts:151:            ItemLoader.magicPolarityRevealed.add(last);
+src/test/w_24_wand_catalog.test.ts:154:            const wand = ItemLoader.spawnWand(last,-1,-1)!; wand.charges = 0;
+src/test/w_24_wand_catalog.test.ts:156:            expect(enchantArcana(wand)).toBe(true); expect(wand.charges).toBe(WAND_INITIAL_RANGES[last]![0]);
+src/test/w_24_wand_catalog.test.ts:164:        const {g} = scene(), current = ItemLoader.wands;
+src/test/w_24_wand_catalog.test.ts:168:            ItemLoader.wands = oldIds.map(id=>current.find(w=>w.id===id)!);
+src/test/w_24_wand_catalog.test.ts:170:            legacy = Object.fromEntries(ItemLoader.arcanaFlavorMap);
+src/test/w_24_wand_catalog.test.ts:171:            const wand = ItemLoader.spawnWand('wand_of_slowness',-1,-1)!; wand.charges = 0;
+src/test/w_24_wand_catalog.test.ts:172:            ItemLoader.identifiedItems.add('wand_of_teleportation'); ItemLoader.callKind('wand_of_slowness','legacy slow');
+src/test/w_24_wand_catalog.test.ts:173:            ItemLoader.magicPolarityRevealed.add('wand_of_slowness'); g.player.inventory.addItem(wand);
+src/test/w_24_wand_catalog.test.ts:174:            saved = JSON.parse(JSON.stringify(g.toSnapshot())); delete saved.wandFlavors;
+src/test/w_24_wand_catalog.test.ts:175:        } finally { ItemLoader.wands = current; }
+src/test/w_24_wand_catalog.test.ts:176:        const spawn = vi.spyOn(ItemLoader,'spawnWand'); const roll = vi.spyOn(rng,'randClumpedRange');
+src/test/w_24_wand_catalog.test.ts:178:        for (const id of oldIds) expect(ItemLoader.arcanaFlavorMap.get(id)).toBe(legacy[id]);
+src/test/w_24_wand_catalog.test.ts:179:        expect(new Set(current.map(w=>ItemLoader.arcanaFlavorMap.get(w.id))).size).toBe(11);
+src/test/w_24_wand_catalog.test.ts:180:        for (const id of added) { expect(ItemLoader.identifiedItems.has(id)).toBe(false); expect(ItemLoader.arcanaFlavorMap.get(id)).toBeTruthy(); }
+src/test/w_24_wand_catalog.test.ts:181:        expect(ItemLoader.identifiedItems.has('wand_of_teleportation')).toBe(true);
+src/test/w_24_wand_catalog.test.ts:182:        expect(ItemLoader.callTitles.get('wand_of_slowness')).toBe('legacy slow'); expect(ItemLoader.isPolarityRevealed('wand_of_slowness')).toBe(true);
+src/test/w_24_wand_catalog.test.ts:184:        const upgraded = JSON.parse(JSON.stringify(g.toSnapshot())); expect(upgraded.wandFlavors).toBeDefined();
+src/test/w_24_wand_catalog.test.ts:185:        g.loadSnapshot(upgraded); expect(g.toSnapshot().wandFlavors).toEqual(upgraded.wandFlavors);
+src/test/w_24_wand_catalog.test.ts:189:        expect(g.loadSnapshot(saved)).toBe(true); expect(g.toSnapshot().wandFlavors).toEqual(saved.wandFlavors);
+src/test/w_24_wand_catalog.test.ts:191:        const partial = {wand_of_plenty:saved.wandFlavors.wand_of_plenty}; ItemLoader.restoreWandFlavors(partial);
+src/test/w_24_wand_catalog.test.ts:192:        expect(ItemLoader.arcanaFlavorMap.get('wand_of_plenty')).toBe(partial.wand_of_plenty);
+src/test/w_24_wand_catalog.test.ts:193:        expect(new Set(ItemLoader.wands.map(w=>ItemLoader.arcanaFlavorMap.get(w.id))).size).toBe(11);
+src/test/w_2_arcana_submission.test.ts:51:    const obj = id.startsWith('staff_') ? ItemLoader.spawnStaff(id, -1, -1)! : ItemLoader.spawnWand(id, -1, -1)!;
+src/test/w_2_arcana_submission.test.ts:61:beforeEach(() => { ItemLoader.identifiedItems.clear(); ItemLoader.magicPolarityRevealed.clear(); logger.messages = []; });
+src/test/w_2_arcana_submission.test.ts:66:            'staff_of_healing', 'staff_of_haste', 'wand_of_teleportation', 'wand_of_slowness',
+src/test/w_2_arcana_submission.test.ts:67:            'wand_of_beckoning', 'wand_of_invisibility', 'wand_of_empowerment']) {
+src/test/w_2_arcana_submission.test.ts:91:        const g = scene(), obj = item(g, 'wand_of_slowness');
+src/test/w_2_arcana_submission.test.ts:105:        expect(ItemLoader.identifiedItems.has('wand_of_slowness')).toBe(false);
+src/test/w_2_arcana_submission.test.ts:111:        for (const category of [ItemCategory.WAND, ItemCategory.STAFF]) {
+src/test/w_2_arcana_submission.test.ts:112:            const g = scene(), obj = item(g, category === ItemCategory.WAND ? 'wand_of_slowness' : 'staff_of_poison', true);
+src/test/w_2_arcana_submission.test.ts:135:        const g = scene(), obj = item(g, 'wand_of_empowerment', true);
+src/test/w_2_arcana_submission.test.ts:167:        const g = scene(), obj = item(g, 'wand_of_slowness', true);
+src/test/w_2_arcana_submission.test.ts:185:        ['wand_of_teleportation', 'enemy'], ['wand_of_slowness', 'enemy'], ['wand_of_beckoning', 'enemy'],
+src/test/w_2_arcana_submission.test.ts:186:        ['wand_of_invisibility', 'ally'], ['wand_of_empowerment', 'ally'],
+src/test/w_2_arcana_submission.test.ts:197:        expect(obj.timesUsed ?? 0).toBe(obj.category === ItemCategory.WAND ? 1 : 0);
+src/test/w_2_arcana_submission.test.ts:201:        const g = scene(), obj = item(g, 'wand_of_invisibility');
+src/test/w_2_arcana_submission.test.ts:215:        const slow = item(g, 'wand_of_slowness');
+src/test/w_2_arcana_submission.test.ts:219:        const teleport = item(g, 'wand_of_teleportation', true);
+src/test/w_2_arcana_submission.test.ts:225:        expect(g.getArcanaCandidates(item(g, 'wand_of_beckoning', true))).toEqual([]);
+src/test/w_2_arcana_submission.test.ts:234:        const g = scene(), obj = item(g, 'wand_of_slowness');
+src/test/w_2_arcana_submission.test.ts:259:        const teleport = item(g, 'wand_of_teleportation');
+src/test/w_2_arcana_submission.test.ts:261:        expect(ItemLoader.identifiedItems.has('wand_of_teleportation')).toBe(false);
+src/test/w_2_arcana_submission.test.ts:262:        const slow = item(g, 'wand_of_slowness');
+src/test/w_2_arcana_submission.test.ts:265:        expect(ItemLoader.identifiedItems.has('wand_of_slowness')).toBe(true);
+src/test/w_2_arcana_submission.test.ts:318:        const g = scene(), target = monster(g), invis = item(g, 'wand_of_invisibility');
+src/test/w_2_arcana_submission.test.ts:322:        const beckon = item(g, 'wand_of_beckoning');
+src/test/w_2_arcana_submission.test.ts:341:        expect(fire(g, item(g, 'wand_of_invisibility'))!.outcome?.autoID).toBe(false);
+src/test/w_2_arcana_submission.test.ts:343:        expect(ItemLoader.identifiedItems.has('wand_of_invisibility')).toBe(false);
+src/test/w_2_arcana_submission.test.ts:361:        const obj = item(g, 'wand_of_slowness');
+src/test/w_3_bolt_trajectory.test.ts:40:    const item = id.startsWith('staff') ? ItemLoader.spawnStaff(id, -1, -1)! : ItemLoader.spawnWand(id, -1, -1)!;
+src/test/w_3_bolt_trajectory.test.ts:83:        const stopped = zap(g, 'wand_of_slowness', { x: 6, y: 5 }, { effect: BoltEffect.BLINKING, ceType: CEBoltType.BLINKING });
+src/test/w_3_bolt_trajectory.test.ts:96:            const cast = prepareZap(g, 'wand_of_slowness', beyond.loc);
+src/test/w_3_bolt_trajectory.test.ts:126:        const result = zap(g, 'wand_of_slowness');
+src/test/w_3_bolt_trajectory.test.ts:151:        const result = zap(g, 'wand_of_slowness', target.loc);
+src/test/w_3_bolt_trajectory.test.ts:172:        const result = traceBolt(g.grid, config('wand_of_slowness'), g.player.loc, second.loc, world(g));
+src/test/w_3_bolt_trajectory.test.ts:252:        for (const id of ['staff_of_fire', 'staff_of_lightning', 'wand_of_slowness']) {
+src/test/w_3_bolt_trajectory.test.ts:291:        const moved = zap(g, 'wand_of_beckoning', target.loc);
+src/test/w_3_bolt_trajectory.test.ts:306:        const result = zap(g, 'wand_of_slowness', { x: 10, y: 5 }, { effect: BoltEffect.BLINKING, ceType: CEBoltType.BLINKING });
+src/test/w_4_bolt_reflection.test.ts:38:    const item = id.startsWith('staff') ? ItemLoader.spawnStaff(id, -1, -1)! : ItemLoader.spawnWand(id, -1, -1)!;
+src/test/w_4_bolt_reflection.test.ts:80:        const cast = prepareZap(g, 'wand_of_slowness');
+src/test/w_4_bolt_reflection.test.ts:124:        const cast = prepareZap(g, 'wand_of_slowness');
+src/test/w_4_bolt_reflection.test.ts:134:        const cast = prepareZap(g, 'wand_of_slowness');
+src/test/w_4_bolt_reflection.test.ts:145:        const cast = prepareZap(g, 'wand_of_slowness');
+src/test/w_4_bolt_reflection.test.ts:156:        const cast = prepareZap(g, 'wand_of_slowness');
+src/test/w_4_bolt_reflection.test.ts:193:        ['staff_of_poison', 'poisoned', 5], ['wand_of_slowness', 'slowed', 50],
+src/test/w_4_bolt_reflection.test.ts:194:        ['wand_of_invisibility', 'invisible', 150],
+src/test/w_4_bolt_reflection.test.ts:204:        const cast = prepareZap(g, 'wand_of_teleportation');
+src/test/w_4_bolt_reflection.test.ts:216:        const r = zap(g, 'wand_of_slowness', { x: 8, y: 5 }, { effect: BoltEffect.DISCORD, ceType: CEBoltType.DISCORD });
+src/test/w_5_arcana_instance.test.ts:2:import { rollStaffEnchantment, rollWandCharges, WAND_INITIAL_RANGES } from '../engine/Items/ArcanaInstance';
+src/test/w_5_arcana_instance.test.ts:44:        ['wand_of_teleportation', 3, 5], ['wand_of_slowness', 2, 5],
+src/test/w_5_arcana_instance.test.ts:45:        ['wand_of_beckoning', 2, 4], ['wand_of_invisibility', 3, 5], ['wand_of_empowerment', 1, 1],
+src/test/w_5_arcana_instance.test.ts:47:        expect(WAND_INITIAL_RANGES[id]).toEqual([lo, hi, 1]);
+src/test/w_5_arcana_instance.test.ts:50:            const v = rollWandCharges(id, 99, random);
+src/test/w_5_arcana_instance.test.ts:72:        for (const [id, n] of [['wand_of_fire', 2], ['wand_of_lightning', 2], ['staff_of_light', 4]] as const) {
+src/test/w_5_arcana_instance.test.ts:73:            const it = id.startsWith('wand') ? ItemLoader.spawnWand(id, 0, 0)! : ItemLoader.spawnStaff(id, 0, 0)!;
+src/test/w_5_arcana_instance.test.ts:78:        expect(ItemLoader.spawnWand('wand_of_polymorphism', 0, 0)).not.toBeNull(); // W-24 catalog entry
+src/test/w_5_arcana_instance.test.ts:81:    it('staff pool stays unchanged; W-24 closes the nine CE wand identities/frequencies', () => {
+src/test/w_5_arcana_instance.test.ts:86:        expect(ItemLoader.genWands.map(x => [x.id, x.frequency])).toEqual([
+src/test/w_5_arcana_instance.test.ts:87:            ['wand_of_teleportation', 3], ['wand_of_slowness', 3], ['wand_of_polymorphism', 3],
+src/test/w_5_arcana_instance.test.ts:88:            ['wand_of_negation', 3], ['wand_of_domination', 1], ['wand_of_beckoning', 3],
+src/test/w_5_arcana_instance.test.ts:89:            ['wand_of_plenty', 2], ['wand_of_invisibility', 3], ['wand_of_empowerment', 1],
+src/test/w_5_arcana_instance.test.ts:91:        expect([ItemLoader.staffs.length, ItemLoader.wands.length]).toEqual([7, 11]);
+src/test/w_5_arcana_instance.test.ts:96:        for (const id of ['staff_of_poison', 'wand_of_slowness']) {
+src/test/w_5_arcana_instance.test.ts:98:            const direct = id.startsWith('staff') ? ItemLoader.spawnStaff(id, 3, 4)! : ItemLoader.spawnWand(id, 3, 4)!;
+src/test/w_5_arcana_instance.test.ts:101:            const dispatched = g.spawnKindById(id.startsWith('staff') ? ItemCategory.STAFF : ItemCategory.WAND, id, { x: 3, y: 4 }, 12);
+src/test/w_5_arcana_instance.test.ts:120:        vi.spyOn(ItemLoader, 'spawnWand').mockImplementation(() => { throw Error('migration must not spawn'); });
+src/test/w_5_arcana_instance.test.ts:134:        const wand = { ...saved, category: ItemCategory.WAND, identityId: 'wand_of_teleportation', maxCharges: 4, charges: 0 };
+src/test/w_5_arcana_instance.test.ts:135:        expect(state(g.deserializeItem(wand))).toEqual([1, 0, 4, 0]);
+src/test/w_5_arcana_instance.test.ts:136:        expect(state(g.deserializeItem({ ...wand, maxCharges: undefined, charges: undefined }))).toEqual([1, 0, 4, 4]);
+src/test/w_5_arcana_instance.test.ts:145:        const wand = ItemLoader.spawnWand('wand_of_slowness', 5, 5)!;
+src/test/w_5_arcana_instance.test.ts:146:        Object.assign(wand, { charges: 0, timesUsed: 3 });
+src/test/w_5_arcana_instance.test.ts:147:        game.items.push(wand);
+src/test/w_5_arcana_instance.test.ts:151:        const loadedWand = game.items.find(i => i.id === wand.id)!;
+src/test/w_5_arcana_instance.test.ts:154:        expect(state(loadedWand)).toEqual(state(wand));
+src/test/w_5_arcana_instance.test.ts:155:        expect(loadedWand.timesUsed).toBe(3);
+src/test/w_5_arcana_instance.test.ts:163:        expect(state(game.items.find(i => i.id === wand.id)!)).toEqual(state(wand));
+src/test/w_5_arcana_instance.test.ts:175:                if (it.category !== ItemCategory.STAFF && it.category !== ItemCategory.WAND) continue;
+src/test/w_5_arcana_instance.test.ts:184:                    const [lo, hi] = WAND_INITIAL_RANGES[id]!;
+src/test/w_5_arcana_instance.test.ts:192:    expect([...kinds].sort()).toEqual([...ItemLoader.genStaffs, ...ItemLoader.genWands].map(x => x.id).sort());
+src/test/w_6_arcana_recharge.test.ts:156:    it('all WAND kinds stay depleted (including retired ones); ground staffs do not tick; charm legacy cooldown still ticks once', () => {
+src/test/w_6_arcana_recharge.test.ts:157:        const wands = ItemLoader.wands.map(cfg => ItemLoader.spawnWand(cfg.id, 0, 0)!);
+src/test/w_6_arcana_recharge.test.ts:158:        for (const item of wands) Object.assign(item, { charges: 0, rechargeTurns: 1, rechargeCounter: 999, staffRechargeRemaining: 1 });
+src/test/w_6_arcana_recharge.test.ts:161:        const game = gameWith(...wands, charm), ground = staff();
+src/test/w_6_arcana_recharge.test.ts:165:        const before = wands.map(i => JSON.stringify(i));
+src/test/w_6_arcana_recharge.test.ts:168:        expect(wands.map(i => JSON.stringify(i))).toEqual(before);
+src/test/w_6_arcana_recharge.test.ts:191:describe('W-6 recharging scroll: STAFF | CHARM, never WAND', () => {
+src/test/w_6_arcana_recharge.test.ts:196:        const wand = ItemLoader.spawnWand('wand_of_slowness', 0, 0)!;
+src/test/w_6_arcana_recharge.test.ts:197:        wand.charges = 0;
+src/test/w_6_arcana_recharge.test.ts:199:        const game = gameWith(a, b, full, ...charms, wand, r, scroll);
+src/test/w_6_arcana_recharge.test.ts:209:        expect([wand.charges, ground.charges, r.charges]).toEqual([0, 0, ItemLoader.RING_DELAY_TO_AUTO_ID]);
+src/test/w_6_arcana_recharge.test.ts:215:    it('charm-only is eligible; empty or wand-only pack still consumes scroll but never adds wand uses', () => {
+src/test/w_6_arcana_recharge.test.ts:225:        const wand = ItemLoader.spawnWand('wand_of_empowerment', 0, 0)!;
+src/test/w_6_arcana_recharge.test.ts:226:        wand.charges = 0;
+src/test/w_6_arcana_recharge.test.ts:228:        game.player.inventory.items = [wand, scroll];
+src/test/w_6_arcana_recharge.test.ts:230:        expect(game.player.inventory.items).toEqual([wand]);
+src/test/w_6_arcana_recharge.test.ts:231:        expect(wand.charges).toBe(0);
+src/test/w_6_arcana_recharge.test.ts:282:    it('details no longer promise fixed-turn/wand recharge or disclose hidden E through a numeric period', () => {
+src/test/w_6_arcana_recharge.test.ts:283:        for (const item of [staff(8), ItemLoader.spawnWand('wand_of_slowness', 0, 0)!]) {
+src/test/w_6_arcana_recharge.test.ts:287:            expect(text).toContain(item.category === ItemCategory.WAND ? '不会自然恢复充能' : '智慧戒指');
+src/test/w_7_arcana_enchantment.test.ts:56:        ['wand_of_teleportation', 3], ['wand_of_slowness', 2],
+src/test/w_7_arcana_enchantment.test.ts:57:        ['wand_of_beckoning', 2], ['wand_of_invisibility', 3], ['wand_of_empowerment', 1],
+src/test/w_7_arcana_enchantment.test.ts:59:        const item = ItemLoader.spawnWand(id, 0, 0)!;
+src/test/w_7_arcana_enchantment.test.ts:67:    it('unsupported categories, retired wand ranges, and invalid staffs do not acquire invented rules', () => {
+src/test/w_7_arcana_enchantment.test.ts:70:            ItemLoader.spawnWand('wand_of_fire', 0, 0)!, ItemLoader.spawnWand('wand_of_lightning', 0, 0)!]) {
+src/test/w_7_arcana_enchantment.test.ts:201:    it('wand uses beyond initial count survive selection and JSON save/load without exposing identity', () => {
+src/test/w_7_arcana_enchantment.test.ts:202:        const wand = ItemLoader.spawnWand('wand_of_teleportation', 0, 0)!;
+src/test/w_7_arcana_enchantment.test.ts:203:        wand.charges = wand.maxCharges = 1;
+src/test/w_7_arcana_enchantment.test.ts:204:        const { game, scroll } = setup(wand), known = flags(wand);
+src/test/w_7_arcana_enchantment.test.ts:205:        game.readItem(scroll); game.chooseEnchantTarget(wand);
+src/test/w_7_arcana_enchantment.test.ts:206:        expect(wand.charges).toBe(4);
+src/test/w_8_staff_damage.test.ts:262:    it.each([['wand_of_fire', 5], ['wand_of_lightning', 8]] as const)('retired invention %s retains its old direct constant', (id, expected) => {
+src/test/w_8_staff_damage.test.ts:263:        const g = scene(), m = monster(g), item = new Item(id, '/', 0, ItemCategory.WAND);
+src/test/w_9_directed_status.test.ts:33:    { id: 'wand_of_slowness', effect: B.SLOW, status: 'slowed', duration: 50 },
+src/test/w_9_directed_status.test.ts:36:    { id: 'wand_of_invisibility', effect: B.INVISIBILITY, status: 'invisible', duration: 150 },
+src/test/w_9_directed_status.test.ts:41:    const category = c.id.startsWith('staff') ? ItemCategory.STAFF : ItemCategory.WAND;
+src/test/w_9_directed_status.test.ts:137:    it.each([2, 8, 99])('wand enchantment=%s never replaces catalog magnitude 10', E => {

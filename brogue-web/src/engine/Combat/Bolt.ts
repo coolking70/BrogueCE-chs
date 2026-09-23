@@ -122,14 +122,18 @@ export interface BoltConfig {
 // call `getBoltConfigs()` to get the translated versions.
 
 const RAW_BOLT_DATA: Omit<BoltConfig, 'name' | 'ceType'>[] = [
-    // --- Wands ---
-    { id: 'wand_of_fire', effect: BoltEffect.FIRE, magnitude: 5, char: '*', color: 0xff6600, maxRange: 0, piercing: false, selfTargeting: false },
-    { id: 'wand_of_lightning', effect: BoltEffect.LIGHTNING, magnitude: 8, char: '~', color: 0x33ccff, maxRange: 0, piercing: true, selfTargeting: false },
+    // --- Wands: CE table order, then retired web definitions ---
     { id: 'wand_of_teleportation', effect: BoltEffect.TELEPORT, magnitude: 0, char: '/', color: 0xcc88ff, maxRange: 0, piercing: false, selfTargeting: false },
     { id: 'wand_of_slowness', effect: BoltEffect.SLOW, magnitude: 0, char: '-', color: 0x888888, maxRange: 0, piercing: false, selfTargeting: false },
+    { id: 'wand_of_polymorphism', effect: BoltEffect.POLYMORPH, magnitude: 10, char: '*', color: 0xaa66ff, maxRange: 0, piercing: false, selfTargeting: false },
+    { id: 'wand_of_negation', effect: BoltEffect.NEGATION, magnitude: 10, char: '*', color: 0xff88cc, maxRange: 0, piercing: false, selfTargeting: false },
+    { id: 'wand_of_domination', effect: BoltEffect.DOMINATION, magnitude: 10, char: '*', color: 0xff88ff, maxRange: 0, piercing: false, selfTargeting: false },
+    { id: 'wand_of_beckoning', effect: BoltEffect.BECKONING, magnitude: 0, char: '?', color: 0x88ccff, maxRange: 0, piercing: false, selfTargeting: false },
+    { id: 'wand_of_plenty', effect: BoltEffect.PLENTY, magnitude: 10, char: '*', color: 0xaaddff, maxRange: 0, piercing: false, selfTargeting: false },
     { id: 'wand_of_invisibility', effect: BoltEffect.INVISIBILITY, magnitude: 0, char: '.', color: 0xaaaaff, maxRange: 0, piercing: false, selfTargeting: false },
     { id: 'wand_of_empowerment', effect: BoltEffect.EMPOWERMENT, magnitude: 0, char: '+', color: 0xffff44, maxRange: 0, piercing: false, selfTargeting: false },
-    { id: 'wand_of_beckoning', effect: BoltEffect.BECKONING, magnitude: 0, char: '?', color: 0x88ccff, maxRange: 0, piercing: false, selfTargeting: false },
+    { id: 'wand_of_fire', effect: BoltEffect.FIRE, magnitude: 5, char: '*', color: 0xff6600, maxRange: 0, piercing: false, selfTargeting: false },
+    { id: 'wand_of_lightning', effect: BoltEffect.LIGHTNING, magnitude: 8, char: '~', color: 0x33ccff, maxRange: 0, piercing: true, selfTargeting: false },
 
     // --- Staffs ---
     { id: 'staff_of_fire', effect: BoltEffect.FIRE, magnitude: 6, char: '*', color: 0xff4400, maxRange: 0, piercing: false, selfTargeting: false },

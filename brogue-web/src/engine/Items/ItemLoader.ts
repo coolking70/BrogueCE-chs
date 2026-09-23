@@ -46,8 +46,10 @@ export interface ArcanaConfig {
     name: string;
     minDepth: number;
     maxDepth: number;
-    /** B-4a：CE itemTable.frequency 列；empowerment 的旧 frequency=3 留 W-24 修正。 */
+    /** CE itemTable.frequency 列；W-24 魔杖按 CE 表序，合计 22。 */
     frequency?: number;
+    /** CE 目录价值；web 尚无商店价格消费者。 */
+    marketValue?: number;
     weight: number;
     color: number;
     maxCharges?: number;
@@ -520,9 +522,9 @@ export class ItemLoader {
      * web 自创/错位实体（CE 无此种类）记 0 并注明：potion_of_healing（自创，退池）、
      * scroll_of_amnesia（自创，退池）、wand_of_fire / wand_of_lightning（CE 法杖
      * 错位实体，退池）、staff_of_light（自创，退池）。CE 有而 web 缺的种类
-     * （potion darkness、scroll aggravate、wand polymorphism/negation/domination/
-     * plenty、ring light/reaping、staff tunneling/blinking/entrancement/obstruction/
-     * discord/protection）不在 web 表内，不参与分组——回池/补目录轮无需改本表。
+     * （potion darkness、scroll aggravate、ring light/reaping、staff tunneling/
+     * blinking/entrancement/obstruction/discord/protection）不在 web 表内，
+     * 不参与分组——补目录时须同时补本表（W-24 已补四条魔杖）。
      *
      * ★ D2 后果（结构性不可达，激活轮需重核）：potion_of_poison（=CE caustic gas，
      * 恶意 -1）与 potion_of_creeping_death（=CE POTION_LICHEN，恶意 -1）均退池且
@@ -567,15 +569,19 @@ export class ItemLoader {
         scroll_of_discord: 1,         // discord
         scroll_of_summon_monsters: -1,// summon monsters
         scroll_of_amnesia: 0,         // 自创（CE 无），退池
-        // 魔杖（web 7 条，含 2 条错位实体；CE polymorphism/negation/domination/plenty web 缺）
+        // 魔杖（CE 全 9 条 + 2 条退池兼容定义，GlobalsBrogue.c:702-710）
         wand_of_teleportation: 1,     // teleportation
         wand_of_slowness: 1,          // slowness
+        wand_of_polymorphism: 1,
+        wand_of_negation: 1,
+        wand_of_domination: 1,
         wand_of_beckoning: 1,         // beckoning
+        wand_of_plenty: -1,
         wand_of_invisibility: -1,     // invisibility
         wand_of_empowerment: -1,      // empowerment
         wand_of_fire: 0,              // CE 法杖错位实体，退池
         wand_of_lightning: 0,         // 同上
-        // 法杖（web 7 条，含 1 条自创；CE 其余 5 种 web 缺）
+        // 法杖（web 7 条，含 1 条自创；CE 其余 6 种 web 缺）
         staff_of_lightning: 1,        // lightning
         staff_of_fire: 1,             // firebolt
         staff_of_poison: 1,           // poison
@@ -1058,6 +1064,35 @@ export class ItemLoader {
             this.assignAllFlavors();
         } finally {
             rng.setRNG(RNGType.RNG_SUBSTANTIVE);
+        }
+    }
+
+    /** W-24: old snapshots rebuilt flavors from seed using the seven-row web order.
+     * initConsumables has already shuffled the full, unchanged flavor list, so the
+     * current map retains those same slots. Restore old slots, then fill new kinds
+     * without collisions or any RNG. New snapshots preserve their explicit map.
+     */
+    public static restoreWandFlavors(saved?: Record<string, string>): void {
+        const slots = this.wands.map(w => this.arcanaFlavorMap.get(w.id)!);
+        const legacy = ['wand_of_fire', 'wand_of_lightning', 'wand_of_teleportation',
+            'wand_of_slowness', 'wand_of_invisibility', 'wand_of_empowerment', 'wand_of_beckoning'];
+        const source = saved ?? Object.fromEntries(legacy.map((id, i) => [id, slots[i]!]));
+        const restored = new Map<string, string>();
+        const used = new Set<string>();
+        for (const w of this.wands) {
+            const flavor = source[w.id];
+            if (typeof flavor === 'string' && flavor.trim() && !used.has(flavor)) {
+                restored.set(w.id, flavor);
+                used.add(flavor);
+            }
+        }
+        for (const w of this.wands) {
+            if (!restored.has(w.id)) {
+                const flavor = slots.find(f => !used.has(f))!;
+                restored.set(w.id, flavor);
+                used.add(flavor);
+            }
+            this.arcanaFlavorMap.set(w.id, restored.get(w.id)!);
         }
     }
 

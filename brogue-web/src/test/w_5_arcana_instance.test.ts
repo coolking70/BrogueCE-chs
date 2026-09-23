@@ -75,19 +75,20 @@ describe('W-5 CE initial resources, independent E and charges', () => {
         }
         expect(JSON.stringify(rng)).toBe(before);
         expect(ItemLoader.spawnStaff('staff_of_blinking', 0, 0)).toBeNull();
-        expect(ItemLoader.spawnWand('wand_of_polymorphism', 0, 0)).toBeNull();
+        expect(ItemLoader.spawnWand('wand_of_polymorphism', 0, 0)).not.toBeNull(); // W-24 catalog entry
     });
 
-    it('pool identities and frequencies are unchanged, including empowerment frequency debt', () => {
+    it('staff pool stays unchanged; W-24 closes the nine CE wand identities/frequencies', () => {
         expect(ItemLoader.genStaffs.map(x => [x.id, x.frequency])).toEqual([
             ['staff_of_fire', 15], ['staff_of_lightning', 15], ['staff_of_poison', 10],
             ['staff_of_healing', 5], ['staff_of_haste', 5], ['staff_of_conjuration', 8],
         ]);
         expect(ItemLoader.genWands.map(x => [x.id, x.frequency])).toEqual([
-            ['wand_of_teleportation', 3], ['wand_of_slowness', 3], ['wand_of_invisibility', 3],
-            ['wand_of_empowerment', 3], ['wand_of_beckoning', 3],
+            ['wand_of_teleportation', 3], ['wand_of_slowness', 3], ['wand_of_polymorphism', 3],
+            ['wand_of_negation', 3], ['wand_of_domination', 1], ['wand_of_beckoning', 3],
+            ['wand_of_plenty', 2], ['wand_of_invisibility', 3], ['wand_of_empowerment', 1],
         ]);
-        expect([ItemLoader.staffs.length, ItemLoader.wands.length]).toEqual([7, 7]);
+        expect([ItemLoader.staffs.length, ItemLoader.wands.length]).toEqual([7, 11]);
     });
 
     it('ordinary generation dispatch uses the same initial draw (not a second roll)', () => {
@@ -163,9 +164,9 @@ describe('W-5 deterministic persistence / migration', () => {
     });
 });
 
-it('W-5 generated results: 8 fixed seeds × D1–26 retain category coverage and obey initial per-kind values', () => {
+it('W-5 generated results: 10 fixed seeds (W-24 coverage supplements) × D1–26 retain category coverage and obey initial per-kind values', () => {
     const categories = new Set<ItemCategory>(), kinds = new Set<string>();
-    for (const seed of [42, 12345, 20250308, 999, 1, 7, 20260914, 20260923]) {
+    for (const seed of [42, 12345, 20250308, 999, 1, 7, 20260914, 20260923, 424242, 20260913]) {
         const game = createHeadlessGame(seed);
         for (let depth = 1; depth <= 26; depth++) {
             if (depth > 1) { game.depth = depth; bridge(game).generateDepth(false, false); }

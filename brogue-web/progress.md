@@ -1029,3 +1029,13 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 中途修复均为夹具/工具问题：未初始化i18n导致消息undefined、误用不存在的spawnConsumable/useItem、Array.at不在目标lib、强化后毒被panacea清除（夹具改为先强化再施毒）；没有放宽守卫。
 - 实际9个生产文件R=117，S(B,C,M,Q)+negate/NEGATABLE/保存/文件读取并集124文件；123个显式定向回归 + 独立drift。全部源码/测试/脚本/进度冻结后执行最终build/CE审计/回归/drift并前后SHA自证，之后仅回填报告及证据。
 - 后续：W22学习/吸收仍暂缓；W24消魔魔杖入池；MAGICAL_FEAR/DARKNESS、完整CE怪物侧栏、A_MULTIPLICITY产生谱影、全levels JSON存档与原有web自创onHitStatus/legacy abilities不在本轮补齐。
+
+## 2026-09-24 W-24 魔杖目录闭环
+- 按 w-24.prompt.md / W-0 §2.5、§2.6，只接目录/正常入口/充能/极性/文案；9种在池、22频率、11定义（火/电继续退池）。staff目录与全部效果代码不变。使用develop-web-game技能。
+- 六处生产面：arcana.json、Bolt.ts、ArcanaInstance.ts、ItemLoader.ts、Game.ts（仅wandFlavors保存/旧档确定性迁移）、zh_CN.json（4个名字）。W21说明原样保留，W22学习仍暂缓。
+- 改前drift绿；改后25/104层、91字段变化（seed20260913 D2-D26）。D1旧empowerment固定1电零抽签→plenty区间1-2多抽1次，后层连锁。仅恢复旧genWands的反事实对照104层零偏离；归因完成后才重采。证据/哈希见w-24-evidence。
+- 新守卫64seed×1000：9种完整、22张票顺序、64000件充能分布、125123次调用；直接构造、鉴定/极性分组、正常use/cancel/confirm、附魔增量与新旧存档。
+- W5旧8seed覆盖因生成流变化漏healing staff/plenty wand：增加424242、20260913，原完整覆盖期望不动。新入口测试错误期待所有变形autoID，CE按新invisible状态决定，修夹具断言，效果未动。
+- 机器WAND/STAFF入口仍null是既有V链债项，不在本轮扩张；发现屏没有独立UI，magicCharDiscoverySuffix已有接口/消费者与背包善恶符号核验，不宣称新建发现屏或商店。学习未完成。
+- 技能客户端已运行但canvas截图黑；改用有头Chromium整页截图验证真实背包/选择/结算/存档，未把黑图计作视觉通过。最终编辑完成后冻结SHA，完整显式闭包/build/drift复跑，结果只写报告/证据。
+- 后续：W25/26按新基线继续归因，不解禁机器；保持旧wandFlavors迁移兼容和W22学习暂缓口径。

@@ -1,0 +1,6618 @@
+{
+  "seeds": [
+    424242,
+    777,
+    20260913,
+    31337,
+    2,
+    3,
+    4,
+    5
+  ],
+  "depthRange": [
+    1,
+    26
+  ],
+  "rows": [
+    {
+      "seed": 424242,
+      "depth": 1,
+      "counts": {
+        "WEAPON": 2,
+        "ARMOR": 1,
+        "POTION": 2,
+        "SCROLL": 0,
+        "FOOD": 0,
+        "GOLD": 1,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 18328,
+      "baseline": {
+        "fp": "daf471df:5116",
+        "n": 6,
+        "species": "Jackal,Kobold,Rat",
+        "items": 6
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 2,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 1,
+        "WAND": 0,
+        "STAFF": 1,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_healing",
+          "E": 3,
+          "charges": 3,
+          "capacity": 3
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_healing",
+          "E": 3,
+          "charges": 3,
+          "capacity": 3,
+          "draws": 2
+        }
+      ],
+      "rng": 30671,
+      "baseline": {
+        "fp": "c2975ee6:4873",
+        "n": 6,
+        "species": "Jackal,Kobold,Monkey",
+        "items": 6
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 3,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 2,
+        "POTION": 5,
+        "SCROLL": 4,
+        "FOOD": 1,
+        "GOLD": 2,
+        "WAND": 1,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 1,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_teleportation",
+          "E": 0,
+          "charges": 5,
+          "capacity": 5
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_teleportation",
+          "E": 0,
+          "charges": 5,
+          "capacity": 5,
+          "draws": 1
+        }
+      ],
+      "rng": 42985,
+      "baseline": {
+        "fp": "baaf90c4:5013",
+        "n": 9,
+        "species": "Eel,Goblin,Goblin conjurer,Jackal,Kobold,Monkey,Toad",
+        "items": 17
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 4,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 2,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 57019,
+      "baseline": {
+        "fp": "80422288:4961",
+        "n": 6,
+        "species": "Eel,Goblin,Goblin conjurer,Pink jelly",
+        "items": 9
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 5,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 2,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 74560,
+      "baseline": {
+        "fp": "83b6c4e0:4933",
+        "n": 10,
+        "species": "Bloat,Goblin,Goblin conjurer,Jackal,Rat",
+        "items": 5
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 6,
+      "counts": {
+        "WEAPON": 2,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 0,
+        "FOOD": 0,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 91152,
+      "baseline": {
+        "fp": "4f17c9ed:4987",
+        "n": 13,
+        "species": "Acid mound,Bloat,Goblin,Goblin totem,Monkey,Pink jelly,Vampire bat",
+        "items": 6
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 7,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 1,
+        "POTION": 2,
+        "SCROLL": 2,
+        "FOOD": 1,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 108741,
+      "baseline": {
+        "fp": "bba18921:4872",
+        "n": 15,
+        "species": "Bog monster,Goblin,Goblin conjurer,Goblin mystic,Ogre,Vampire bat",
+        "items": 10
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 8,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 0,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 119417,
+      "baseline": {
+        "fp": "3a5b6843:4808",
+        "n": 6,
+        "species": "Acid mound,Bloat,Goblin,Pink jelly,Vampire bat",
+        "items": 7
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 9,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 4,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 153361,
+      "baseline": {
+        "fp": "f7f69810:4868",
+        "n": 32,
+        "species": "Bloat,Centipede,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Kobold,Ogre,Pink jelly,Toad,Vampire bat",
+        "items": 10
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 10,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 0,
+        "SCROLL": 2,
+        "FOOD": 1,
+        "GOLD": 2,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 1,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 166231,
+      "baseline": {
+        "fp": "fd6ff586:4861",
+        "n": 13,
+        "species": "Dar blademaster,Goblin,Goblin conjurer,Goblin mystic,Jackal,Ogre,Vampire bat",
+        "items": 6
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 11,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 1,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 3,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_domination",
+          "E": 0,
+          "charges": 2,
+          "capacity": 2
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_domination",
+          "E": 0,
+          "charges": 2,
+          "capacity": 2,
+          "draws": 1
+        }
+      ],
+      "rng": 199994,
+      "baseline": {
+        "fp": "7414e20c:4894",
+        "n": 17,
+        "species": "Goblin,Goblin totem,Ogre,Pink jelly,Pixie,Spider,Vampire bat,Wisp,Zombie",
+        "items": 11
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 12,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 225002,
+      "baseline": {
+        "fp": "5d89259e:4947",
+        "n": 9,
+        "species": "Goblin,Goblin totem,Ogre,Phantom,Pit bloat,Zombie",
+        "items": 7
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 13,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 2,
+        "FOOD": 1,
+        "GOLD": 7,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 1,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 248875,
+      "baseline": {
+        "fp": "196a38aa:4856",
+        "n": 17,
+        "species": "Acid mound,Centipede,Dar blademaster,Ogre,Ogre totem,Spider,Troll,toxic Pit bloat",
+        "items": 13
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 14,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 3,
+        "FOOD": 0,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 268846,
+      "baseline": {
+        "fp": "3c9b9b38:4933",
+        "n": 21,
+        "species": "Goblin,Goblin mystic,Goblin totem,Naga,Ogre,Ogre shaman,Salamander,Sentinel,Spider,Wisp,Zombie,grappling Goblin,reflective Goblin conjurer",
+        "items": 9
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 15,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 1,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_fire",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_fire",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2,
+          "draws": 1
+        }
+      ],
+      "rng": 295140,
+      "baseline": {
+        "fp": "c914983e:4860",
+        "n": 26,
+        "species": "Bog monster,Centaur,Dar blademaster,Dar priestess,Ogre,Ogre shaman,Pixie,Sentinel,Wisp,Zombie,agile Centaur,explosive Sentinel",
+        "items": 10
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 16,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 0,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 338256,
+      "baseline": {
+        "fp": "078e1fd0:5041",
+        "n": 19,
+        "species": "Naga,Ogre,Ogre shaman,Pixie,Spider,Troll,Wisp,Wraith,Zombie,explosive Ogre,infested Wraith,reflective Salamander,toxic Wraith,vampiric Spider",
+        "items": 7
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 17,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 364373,
+      "baseline": {
+        "fp": "670a6956:4923",
+        "n": 12,
+        "species": "Bog monster,Imp,Kraken,Ogre,Ogre shaman,Phantom,Pixie,infested Bog monster",
+        "items": 9
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 18,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 3,
+        "FOOD": 1,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 400453,
+      "baseline": {
+        "fp": "4480d717:5027",
+        "n": 19,
+        "species": "Acidic jelly,Centaur,Imp,Naga,Ogre,Ogre shaman,Ogre totem,Troll,agile Ogre shaman,juggernaut Acidic jelly",
+        "items": 11
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 19,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 0,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 1,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_haste",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_haste",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2,
+          "draws": 1
+        }
+      ],
+      "rng": 444416,
+      "baseline": {
+        "fp": "b1591d47:4836",
+        "n": 14,
+        "species": "Centaur,Eel,Fury,Imp,Phantom,Revenant,explosive Fury,grappling Eel",
+        "items": 7
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 20,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 503109,
+      "baseline": {
+        "fp": "a8a9cd9f:4820",
+        "n": 16,
+        "species": "Bog monster,Dar blademaster,Dar priestess,Dragon,Fury,explosive Bog monster,explosive Dar battlemage,toxic Revenant,vampiric Acidic jelly",
+        "items": 10
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 21,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 0,
+        "SCROLL": 3,
+        "FOOD": 0,
+        "GOLD": 7,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 564125,
+      "baseline": {
+        "fp": "6de6ed07:5073",
+        "n": 23,
+        "species": "Centaur,Dar battlemage,Dar blademaster,Dar priestess,Eel,Fury,Golem,Imp,Tentacle horror,Wraith,agile Fury,juggernaut Revenant,reflective Centaur,toxic Fury",
+        "items": 10
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 22,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 601913,
+      "baseline": {
+        "fp": "e1a74d6d:4958",
+        "n": 21,
+        "species": "Bog monster,Dar battlemage,Dar blademaster,Dar priestess,Dragon,Golem,Phantom,Pit bloat,Wraith,juggernaut Dar blademaster,vampiric Bog monster",
+        "items": 9
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 23,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 630614,
+      "baseline": {
+        "fp": "ea04c4a8:4949",
+        "n": 14,
+        "species": "Dar priestess,Fury,Kraken,Phantom,Pink jelly,Tentacle horror,explosive Dar priestess,infested Dar priestess,toxic Fury",
+        "items": 9
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 24,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 2,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 683021,
+      "baseline": {
+        "fp": "670a245f:4994",
+        "n": 14,
+        "species": "Dar blademaster,Dar priestess,Dragon,Fury,Imp,Tentacle horror,explosive Kraken,grappling Tentacle horror,infested Dar battlemage,reflective Fury",
+        "items": 11
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 25,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 1,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 758234,
+      "baseline": {
+        "fp": "4603512e:4926",
+        "n": 10,
+        "species": "Bog monster,Golem,Phylactery,Tentacle horror,explosive Bog monster,infested Bog monster,vampiric Bog monster",
+        "items": 8
+      }
+    },
+    {
+      "seed": 424242,
+      "depth": 26,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 6,
+        "WAND": 1,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 1
+      },
+      "arcana": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_negation",
+          "E": 0,
+          "charges": 4,
+          "capacity": 4
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_negation",
+          "E": 0,
+          "charges": 4,
+          "capacity": 4,
+          "draws": 1
+        }
+      ],
+      "rng": 802030,
+      "baseline": {
+        "fp": "78bdbee0:5074",
+        "n": 12,
+        "species": "Bog monster,Dar priestess,Fury,Phylactery,Revenant,explosive Bog monster,reflective Bog monster,reflective Fury",
+        "items": 11
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 1,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 1,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 1,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 17196,
+      "baseline": {
+        "fp": "fa873cbb:5028",
+        "n": 6,
+        "species": "Jackal,Rat",
+        "items": 7
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 2,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 4,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 28752,
+      "baseline": {
+        "fp": "6e5a1033:4940",
+        "n": 9,
+        "species": "Jackal,Kobold,Monkey",
+        "items": 9
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 3,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 1,
+        "POTION": 3,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 0,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 2,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 47093,
+      "baseline": {
+        "fp": "7cfdc2c5:5053",
+        "n": 12,
+        "species": "Goblin,Jackal,Kobold,Monkey,Rat",
+        "items": 9
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 4,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 4,
+        "SCROLL": 3,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 1,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_negation",
+          "E": 0,
+          "charges": 5,
+          "capacity": 5
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_negation",
+          "E": 0,
+          "charges": 5,
+          "capacity": 5,
+          "draws": 1
+        }
+      ],
+      "rng": 69522,
+      "baseline": {
+        "fp": "b8281b03:4943",
+        "n": 9,
+        "species": "Jackal,Kobold,Pink jelly,Rat,Toad",
+        "items": 13
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 5,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 2,
+        "SCROLL": 0,
+        "FOOD": 0,
+        "GOLD": 1,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 90225,
+      "baseline": {
+        "fp": "0e6cbe47:5032",
+        "n": 20,
+        "species": "Bloat,Goblin,Jackal,Kobold,Monkey,Pink jelly,Rat,Toad",
+        "items": 4
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 6,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 4,
+        "SCROLL": 4,
+        "FOOD": 0,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 1,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_fire",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_fire",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2,
+          "draws": 1
+        }
+      ],
+      "rng": 119833,
+      "baseline": {
+        "fp": "387dcd80:4986",
+        "n": 6,
+        "species": "Acid mound,Goblin,Kobold,Toad",
+        "items": 13
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 7,
+      "counts": {
+        "WEAPON": 2,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 2,
+        "FOOD": 1,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 1,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 132047,
+      "baseline": {
+        "fp": "c6579051:4936",
+        "n": 12,
+        "species": "Centipede,Goblin conjurer,Jackal,Monkey,Ogre,Pink jelly,Winged guardian",
+        "items": 13
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 8,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 151621,
+      "baseline": {
+        "fp": "69fcb479:4958",
+        "n": 16,
+        "species": "Bog monster,Goblin,Goblin conjurer,Goblin mystic,Jackal,Monkey,Ogre,Toad,Vampire bat",
+        "items": 7
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 9,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 1,
+        "POTION": 0,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 1,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_poison",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_poison",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2,
+          "draws": 1
+        }
+      ],
+      "rng": 165350,
+      "baseline": {
+        "fp": "b2a2cf7e:4813",
+        "n": 15,
+        "species": "Acid mound,Centipede,Goblin,Goblin mystic,Jackal,Monkey,Pink jelly,Spider,Stone guardian",
+        "items": 10
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 10,
+      "counts": {
+        "WEAPON": 2,
+        "ARMOR": 1,
+        "POTION": 3,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 185296,
+      "baseline": {
+        "fp": "c73fa1fe:4810",
+        "n": 14,
+        "species": "Acid mound,Bog monster,Goblin,Goblin totem,Mirrored totem,Spider,Toad",
+        "items": 11
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 11,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 1,
+        "CHARM": 1,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 198106,
+      "baseline": {
+        "fp": "95735839:4836",
+        "n": 18,
+        "species": "Centipede,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Ogre,Spider",
+        "items": 8
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 12,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 0,
+        "SCROLL": 3,
+        "FOOD": 0,
+        "GOLD": 3,
+        "WAND": 1,
+        "STAFF": 0,
+        "RING": 1,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_slowness",
+          "E": 0,
+          "charges": 2,
+          "capacity": 2
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_slowness",
+          "E": 0,
+          "charges": 2,
+          "capacity": 2,
+          "draws": 1
+        }
+      ],
+      "rng": 220509,
+      "baseline": {
+        "fp": "f69568a6:4787",
+        "n": 11,
+        "species": "Bog monster,Goblin conjurer,Goblin mystic,Ogre,Troll,Zombie,juggernaut Wisp",
+        "items": 8
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 13,
+      "counts": {
+        "WEAPON": 2,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 2,
+        "FOOD": 1,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 236979,
+      "baseline": {
+        "fp": "b5332884:4706",
+        "n": 16,
+        "species": "Bog monster,Goblin conjurer,Goblin mystic,Ogre,Ogre totem,Pink jelly,Spider",
+        "items": 11
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 14,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 310237,
+      "baseline": {
+        "fp": "7ef7d1c4:4902",
+        "n": 10,
+        "species": "Bog monster,Dar blademaster,Ogre,Troll,Wisp,Zombie,explosive Pixie",
+        "items": 7
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 15,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 6,
+        "FOOD": 0,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 339598,
+      "baseline": {
+        "fp": "9666be90:4963",
+        "n": 21,
+        "species": "Bloat,Bog monster,Centaur,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Mirrored totem,Phantom,Zombie,infested Centaur,juggernaut Bog monster",
+        "items": 14
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 16,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 1,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 8,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 374413,
+      "baseline": {
+        "fp": "da7c7bc1:4884",
+        "n": 27,
+        "species": "Bloat,Bog monster,Centaur,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Pit bloat,Troll,Wraith,Zombie,vampiric Phantom",
+        "items": 11
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 17,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 2,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 404405,
+      "baseline": {
+        "fp": "0322fa51:4949",
+        "n": 13,
+        "species": "Acidic jelly,Dar blademaster,Dar priestess,Kraken,Mirrored totem,Troll,Wisp,Wraith,Zombie,juggernaut Troll",
+        "items": 6
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 18,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 435286,
+      "baseline": {
+        "fp": "f46add7e:4760",
+        "n": 13,
+        "species": "Acidic jelly,Explosive bloat,Ogre,Ogre totem,agile Ogre,explosive Ogre",
+        "items": 9
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 19,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 2,
+        "POTION": 4,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 3,
+        "CHARM": 0,
+        "KEY": 2,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 510144,
+      "baseline": {
+        "fp": "ced0296f:4928",
+        "n": 29,
+        "species": "Centaur,Dar priestess,Fury,Imp,Kraken,Naga,Ogre,Ogre shaman,Ogre totem,Phantom,Pixie,Salamander,Troll,agile Ogre,reflective Kraken,vampiric Ogre",
+        "items": 19
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 20,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 7,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 543371,
+      "baseline": {
+        "fp": "31e589c1:4858",
+        "n": 12,
+        "species": "Centaur,Dar battlemage,Dar blademaster,Dar priestess,Imp,Pink jelly,agile Pixie,vampiric Golem",
+        "items": 11
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 21,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 6,
+        "WAND": 1,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_invisibility",
+          "E": 0,
+          "charges": 5,
+          "capacity": 5
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_invisibility",
+          "E": 0,
+          "charges": 5,
+          "capacity": 5,
+          "draws": 1
+        }
+      ],
+      "rng": 589772,
+      "baseline": {
+        "fp": "c2907edb:4967",
+        "n": 11,
+        "species": "Acidic jelly,Centaur,Golem,Phantom,Phylactery,agile Imp,explosive Golem",
+        "items": 11
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 22,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 1,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_poison",
+          "E": 3,
+          "charges": 3,
+          "capacity": 3
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_poison",
+          "E": 3,
+          "charges": 3,
+          "capacity": 3,
+          "draws": 2
+        }
+      ],
+      "rng": 614168,
+      "baseline": {
+        "fp": "149f7166:4882",
+        "n": 25,
+        "species": "Dar battlemage,Dar blademaster,Dar priestess,Eel,Golem,Imp,Phantom,Phylactery,Pink jelly,Tentacle horror,Wraith,agile Eel,explosive Dar priestess,grappling Dar blademaster,toxic Wraith",
+        "items": 10
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 23,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 3,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 9,
+        "WAND": 0,
+        "STAFF": 1,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_lightning",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_lightning",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2,
+          "draws": 1
+        }
+      ],
+      "rng": 659296,
+      "baseline": {
+        "fp": "a8a362f7:4755",
+        "n": 6,
+        "species": "Imp,Phylactery,Revenant,juggernaut Revenant,reflective Imp,reflective Phantom",
+        "items": 16
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 24,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 2,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 3,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 710516,
+      "baseline": {
+        "fp": "4f535406:5026",
+        "n": 20,
+        "species": "Bloat,Dar blademaster,Dragon,Golem,Imp,Phylactery,Revenant,Stone guardian,Tentacle horror,agile Dar priestess,grappling Revenant,juggernaut Dar blademaster,reflective Dar battlemage",
+        "items": 13
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 25,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 8,
+        "FOOD": 0,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 755736,
+      "baseline": {
+        "fp": "6019e1bb:4988",
+        "n": 21,
+        "species": "Bloat,Bog monster,Fury,Phylactery,Revenant,agile Fury,explosive Bloat,infested Bog monster,infested Fury",
+        "items": 12
+      }
+    },
+    {
+      "seed": 777,
+      "depth": 26,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 1
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 819792,
+      "baseline": {
+        "fp": "cee12c00:4930",
+        "n": 7,
+        "species": "Dragon,Golem,Phylactery,Revenant,Tentacle horror",
+        "items": 10
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 1,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 1,
+        "WAND": 1,
+        "STAFF": 0,
+        "RING": 4,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_plenty",
+          "E": 0,
+          "charges": 2,
+          "capacity": 2
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_plenty",
+          "E": 0,
+          "charges": 2,
+          "capacity": 2,
+          "draws": 1
+        }
+      ],
+      "rng": 12729,
+      "baseline": {
+        "fp": "939bc9e6:5097",
+        "n": 8,
+        "species": "Jackal,Rat",
+        "items": 10
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 2,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 3,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 40665,
+      "baseline": {
+        "fp": "a355c026:4957",
+        "n": 7,
+        "species": "Eel,Jackal,Kobold,Rat",
+        "items": 9
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 3,
+      "counts": {
+        "WEAPON": 4,
+        "ARMOR": 2,
+        "POTION": 3,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 1,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 2,
+        "CHARM": 0,
+        "KEY": 2,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 57808,
+      "baseline": {
+        "fp": "517af6ec:5068",
+        "n": 9,
+        "species": "Bloat,Goblin,Jackal,Kobold,Rat",
+        "items": 16
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 4,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 3,
+        "FOOD": 1,
+        "GOLD": 1,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 73775,
+      "baseline": {
+        "fp": "a7bf7ade:4878",
+        "n": 10,
+        "species": "Eel,Kobold,Monkey,Pink jelly,Rat,Toad",
+        "items": 7
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 5,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 0,
+        "FOOD": 0,
+        "GOLD": 1,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 97649,
+      "baseline": {
+        "fp": "78a55842:4859",
+        "n": 8,
+        "species": "Jackal,Kobold,Monkey,Pink jelly,Toad",
+        "items": 5
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 6,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 126931,
+      "baseline": {
+        "fp": "8a4538ae:5091",
+        "n": 21,
+        "species": "Acid mound,Goblin,Goblin totem,Kobold,Pink jelly,Toad,Vampire bat",
+        "items": 9
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 7,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 1,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_poison",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_poison",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2,
+          "draws": 1
+        }
+      ],
+      "rng": 154528,
+      "baseline": {
+        "fp": "2daeb77c:4984",
+        "n": 11,
+        "species": "Eel,Goblin,Goblin totem,Monkey,Pink jelly",
+        "items": 8
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 8,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 3,
+        "POTION": 3,
+        "SCROLL": 0,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 1,
+        "STAFF": 0,
+        "RING": 2,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_teleportation",
+          "E": 0,
+          "charges": 3,
+          "capacity": 3
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_teleportation",
+          "E": 0,
+          "charges": 3,
+          "capacity": 3,
+          "draws": 1
+        }
+      ],
+      "rng": 165477,
+      "baseline": {
+        "fp": "e1910875:4883",
+        "n": 9,
+        "species": "Bog monster,Centipede,Goblin conjurer,Goblin mystic,Pink jelly",
+        "items": 15
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 9,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 1,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_lightning",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_lightning",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2,
+          "draws": 1
+        }
+      ],
+      "rng": 180263,
+      "baseline": {
+        "fp": "0e15be1f:4919",
+        "n": 8,
+        "species": "Centipede,Goblin,Ogre,Spider,Toad",
+        "items": 11
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 10,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 0,
+        "FOOD": 0,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 1,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 215240,
+      "baseline": {
+        "fp": "cb9637c4:4770",
+        "n": 8,
+        "species": "Centipede,Goblin conjurer,Goblin mystic,Spider,Wisp",
+        "items": 11
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 11,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 239222,
+      "baseline": {
+        "fp": "8bc3f16a:4849",
+        "n": 12,
+        "species": "Bog monster,Goblin,Goblin mystic,Jackal,Ogre,Pit bloat,Wraith",
+        "items": 9
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 12,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 0,
+        "SCROLL": 3,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 257123,
+      "baseline": {
+        "fp": "5e4c4620:4846",
+        "n": 27,
+        "species": "Acid mound,Bog monster,Dar blademaster,Eel,Ogre,Ogre shaman,Pink jelly,Vampire bat,Zombie,toxic Bog monster,toxic Vampire bat",
+        "items": 8
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 13,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 274493,
+      "baseline": {
+        "fp": "50fc3061:4775",
+        "n": 6,
+        "species": "Centipede,Naga,Ogre,Pink jelly,Wisp,Zombie",
+        "items": 7
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 14,
+      "counts": {
+        "WEAPON": 2,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 2,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 309262,
+      "baseline": {
+        "fp": "7fa7688d:5040",
+        "n": 30,
+        "species": "Acidic jelly,Centipede,Dar priestess,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Kraken,Ogre,Ogre shaman,Troll,Zombie,infested Ogre shaman,reflective Acidic jelly,vampiric Spider",
+        "items": 12
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 15,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 2,
+        "SCROLL": 3,
+        "FOOD": 1,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 341205,
+      "baseline": {
+        "fp": "83242dd2:4847",
+        "n": 9,
+        "species": "Acidic jelly,Dar blademaster,Dar priestess,Spider,toxic Dar blademaster",
+        "items": 12
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 16,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 1,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_polymorphism",
+          "E": 0,
+          "charges": 3,
+          "capacity": 3
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_polymorphism",
+          "E": 0,
+          "charges": 3,
+          "capacity": 3,
+          "draws": 1
+        }
+      ],
+      "rng": 355831,
+      "baseline": {
+        "fp": "998a8e5a:4891",
+        "n": 16,
+        "species": "Acidic jelly,Bog monster,Dar blademaster,Ogre,Ogre shaman,Ogre totem,Wraith,agile Acidic jelly,juggernaut Acidic jelly",
+        "items": 9
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 17,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 0,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 5,
+        "WAND": 2,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_negation",
+          "E": 0,
+          "charges": 4,
+          "capacity": 4
+        },
+        {
+          "category": "WAND",
+          "kind": "wand_of_polymorphism",
+          "E": 0,
+          "charges": 5,
+          "capacity": 5
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_negation",
+          "E": 0,
+          "charges": 4,
+          "capacity": 4,
+          "draws": 1
+        },
+        {
+          "category": "WAND",
+          "kind": "wand_of_polymorphism",
+          "E": 0,
+          "charges": 5,
+          "capacity": 5,
+          "draws": 1
+        }
+      ],
+      "rng": 373842,
+      "baseline": {
+        "fp": "499f71ad:5016",
+        "n": 13,
+        "species": "Centaur,Dar priestess,Ogre,Ogre shaman,Pink jelly,Pit bloat,Pixie",
+        "items": 8
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 18,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 430119,
+      "baseline": {
+        "fp": "393c5a7d:4922",
+        "n": 16,
+        "species": "Dar priestess,Eel,Fury,Naga,Phantom,Tentacle horror,reflective Eel,vampiric Eel,vampiric Fury",
+        "items": 10
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 19,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 461618,
+      "baseline": {
+        "fp": "30107e24:4928",
+        "n": 16,
+        "species": "Acidic jelly,Centaur,Golem,Phantom,Revenant,Sentinel,Wraith,agile Centaur,explosive Pixie",
+        "items": 8
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 20,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 3,
+        "FOOD": 0,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 1,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 504126,
+      "baseline": {
+        "fp": "7cefcb3a:4878",
+        "n": 16,
+        "species": "Acidic jelly,Dar battlemage,Dar blademaster,Dar priestess,Imp,Ogre,Ogre shaman,Phantom,Pink jelly,Wraith,explosive Dar priestess,grappling Wraith",
+        "items": 11
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 21,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 0,
+        "SCROLL": 3,
+        "FOOD": 2,
+        "GOLD": 7,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 555743,
+      "baseline": {
+        "fp": "f28155fa:4883",
+        "n": 29,
+        "species": "Acidic jelly,Bog monster,Dar battlemage,Dar blademaster,Dar priestess,Fury,Imp,Pink jelly,Revenant,agile Fury,explosive Bog monster,explosive Fury,infested Dar priestess,juggernaut Fury,juggernaut Phantom",
+        "items": 12
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 22,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 592073,
+      "baseline": {
+        "fp": "beacd25d:5056",
+        "n": 10,
+        "species": "Dar priestess,Dragon,Golem,Mirrored totem,Pink jelly,Pit bloat,explosive Tentacle horror,reflective Pink jelly",
+        "items": 10
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 23,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 7,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 644079,
+      "baseline": {
+        "fp": "99329b24:4826",
+        "n": 12,
+        "species": "Dar blademaster,Dar priestess,Golem,Imp,Phantom,Phylactery,Revenant,grappling Imp,reflective Dar battlemage,reflective Tentacle horror,toxic Dar blademaster",
+        "items": 10
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 24,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 0,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 1,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_haste",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_haste",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2,
+          "draws": 1
+        }
+      ],
+      "rng": 691264,
+      "baseline": {
+        "fp": "ff72d1a5:4987",
+        "n": 9,
+        "species": "Bog monster,Golem,Imp,Phylactery,Tentacle horror,juggernaut Tentacle horror",
+        "items": 6
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 25,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 738050,
+      "baseline": {
+        "fp": "28ba4aad:4796",
+        "n": 17,
+        "species": "Bog monster,Fury,Kraken,Phylactery,Revenant,Tentacle horror,explosive Fury,juggernaut Fury,toxic Bog monster,toxic Dragon",
+        "items": 8
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 26,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 0,
+        "FOOD": 0,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 1
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 794872,
+      "baseline": {
+        "fp": "91094495:4855",
+        "n": 13,
+        "species": "Fury,Kraken,Sentinel,Tentacle horror,explosive Fury,reflective Revenant,vampiric Fury",
+        "items": 9
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 1,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 4,
+        "FOOD": 0,
+        "GOLD": 0,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 3,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 24116,
+      "baseline": {
+        "fp": "faae1e84:5149",
+        "n": 7,
+        "species": "Jackal,Kobold,Rat",
+        "items": 10
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 2,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 1,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 1,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 45815,
+      "baseline": {
+        "fp": "8a9ae623:4972",
+        "n": 6,
+        "species": "Bloat,Goblin conjurer,Kobold,Monkey,Rat",
+        "items": 6
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 3,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 1,
+        "POTION": 1,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 3,
+        "WAND": 1,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_slowness",
+          "E": 0,
+          "charges": 5,
+          "capacity": 5
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_slowness",
+          "E": 0,
+          "charges": 5,
+          "capacity": 5,
+          "draws": 1
+        }
+      ],
+      "rng": 70857,
+      "baseline": {
+        "fp": "2b2910c8:4995",
+        "n": 7,
+        "species": "Bloat,Eel,Kobold,Rat",
+        "items": 8
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 4,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 3,
+        "FOOD": 1,
+        "GOLD": 1,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 108025,
+      "baseline": {
+        "fp": "e693e14f:4837",
+        "n": 10,
+        "species": "Goblin,Goblin conjurer,Jackal,Kobold,Monkey,Pink jelly,Toad",
+        "items": 6
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 5,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 0,
+        "SCROLL": 2,
+        "FOOD": 1,
+        "GOLD": 2,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 121380,
+      "baseline": {
+        "fp": "ef333917:4935",
+        "n": 11,
+        "species": "Goblin,Goblin totem,Kobold,Pink jelly,Rat,Toad",
+        "items": 5
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 6,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 3,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 140214,
+      "baseline": {
+        "fp": "8133504e:4873",
+        "n": 19,
+        "species": "Acid mound,Bloat,Goblin,Goblin mystic,Jackal,Pink jelly,Toad",
+        "items": 9
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 7,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 1,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 167929,
+      "baseline": {
+        "fp": "6538fcaa:4938",
+        "n": 7,
+        "species": "Acid mound,Black jelly,Ogre,Pink jelly,Toad",
+        "items": 9
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 8,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 2,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 1,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 183469,
+      "baseline": {
+        "fp": "5f9ab29f:4867",
+        "n": 12,
+        "species": "Bloat,Centipede,Goblin,Goblin conjurer,Goblin mystic,Ogre,Toad",
+        "items": 10
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 9,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 201817,
+      "baseline": {
+        "fp": "2792332f:4944",
+        "n": 11,
+        "species": "Acid mound,Bloat,Bog monster,Goblin conjurer,Monkey,Ogre,Spider,Toad,Vampire bat",
+        "items": 7
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 10,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 230658,
+      "baseline": {
+        "fp": "73cfb110:4802",
+        "n": 18,
+        "species": "Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Ogre,Ogre totem,Spider,Vampire bat,Wisp",
+        "items": 7
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 11,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 1,
+        "POTION": 3,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 250524,
+      "baseline": {
+        "fp": "22bfb59b:5800",
+        "n": 16,
+        "species": "Dar blademaster,Dar priestess,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Goblin warlord,Ogre,Pink jelly,Spider,Wisp,Wraith",
+        "items": 10
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 12,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 4,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 262225,
+      "baseline": {
+        "fp": "87f30e07:4942",
+        "n": 20,
+        "species": "Bloat,Bog monster,Dar blademaster,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Ogre,agile Goblin mystic",
+        "items": 11
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 13,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 0,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 290718,
+      "baseline": {
+        "fp": "28a97c6f:4817",
+        "n": 37,
+        "species": "Dar blademaster,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Monkey,Ogre,Ogre shaman,Troll,Wraith,agile Goblin mystic",
+        "items": 7
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 14,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 318604,
+      "baseline": {
+        "fp": "42656203:4704",
+        "n": 15,
+        "species": "Bog monster,Centipede,Ogre,Troll,grappling Wraith,vampiric Bog monster",
+        "items": 8
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 15,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 338546,
+      "baseline": {
+        "fp": "dd323b4d:4873",
+        "n": 35,
+        "species": "Bog monster,Centaur,Explosive bloat,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Imp,Ogre,Ogre shaman,Ogre totem,Pixie,Salamander,Troll,Zombie,agile Centaur,reflective Goblin,toxic Vampire",
+        "items": 9
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 16,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 1,
+        "POTION": 0,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 362685,
+      "baseline": {
+        "fp": "fca677c9:4882",
+        "n": 13,
+        "species": "Centaur,Dar blademaster,Eel,Ogre,Ogre totem,Troll,Wraith,agile Ogre",
+        "items": 9
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 17,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 1,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_lightning",
+          "E": 4,
+          "charges": 4,
+          "capacity": 4
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_lightning",
+          "E": 4,
+          "charges": 4,
+          "capacity": 4,
+          "draws": 3
+        }
+      ],
+      "rng": 417976,
+      "baseline": {
+        "fp": "4dce70cc:4814",
+        "n": 21,
+        "species": "Dar priestess,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Imp,Ogre,Pink jelly,Zombie,agile Ogre shaman,explosive Dar priestess,explosive Goblin conjurer,juggernaut Goblin",
+        "items": 8
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 18,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 4,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 436310,
+      "baseline": {
+        "fp": "ad15387a:4835",
+        "n": 19,
+        "species": "Acidic jelly,Bloat,Centaur,Eel,Explosive bloat,Pink jelly,Zombie,reflective Dar priestess,reflective Eel,vampiric Eel",
+        "items": 9
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 19,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 3,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 464259,
+      "baseline": {
+        "fp": "da04640c:4834",
+        "n": 22,
+        "species": "Dar battlemage,Dar blademaster,Dar priestess,Fury,Imp,Kraken,Phylactery,Pixie,Tentacle horror,Troll,agile Troll,infested Acidic jelly,toxic Kraken",
+        "items": 11
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 20,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 3,
+        "FOOD": 0,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 1,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 555510,
+      "baseline": {
+        "fp": "8d5dfdd8:4817",
+        "n": 18,
+        "species": "Bloat,Bog monster,Centaur,Dar blademaster,Fury,Phantom,Revenant,Wraith,agile Centaur,explosive Bog monster,infested Fury",
+        "items": 10
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 21,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 8,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 1,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 584009,
+      "baseline": {
+        "fp": "d78a9fe6:5029",
+        "n": 10,
+        "species": "Dar priestess,Imp,Pink jelly,Pixie,Revenant,Wraith,infested Bloat,reflective Acidic jelly,vampiric Wraith",
+        "items": 11
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 22,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 0,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 1,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 620935,
+      "baseline": {
+        "fp": "89332ea8:4866",
+        "n": 14,
+        "species": "Dar battlemage,Dar blademaster,Fury,Golem,Imp,Tentacle horror,agile Revenant,grappling Golem,juggernaut Revenant,reflective Dar priestess",
+        "items": 9
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 23,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 688246,
+      "baseline": {
+        "fp": "1d4c8fe1:4906",
+        "n": 11,
+        "species": "Dar battlemage,Dar blademaster,Dar priestess,Phantom,Phylactery,Revenant,explosive Tentacle horror",
+        "items": 10
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 24,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 806294,
+      "baseline": {
+        "fp": "bf50f0f1:4930",
+        "n": 18,
+        "species": "Bog monster,Dar battlemage,Dar blademaster,Fury,Imp,Tentacle horror,explosive Dar blademaster,infested Dar priestess,infested Fury,reflective Fury,toxic Fury",
+        "items": 9
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 25,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 848121,
+      "baseline": {
+        "fp": "2a815572:4925",
+        "n": 13,
+        "species": "Dar battlemage,Dar blademaster,Dar priestess,Golem,Phylactery,Revenant,Sentinel,grappling Sentinel,infested Sentinel",
+        "items": 12
+      }
+    },
+    {
+      "seed": 31337,
+      "depth": 26,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 0,
+        "SCROLL": 2,
+        "FOOD": 2,
+        "GOLD": 7,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 1
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 888555,
+      "baseline": {
+        "fp": "34753d5a:4966",
+        "n": 6,
+        "species": "Phylactery,Tentacle horror,explosive Golem,juggernaut Dragon,toxic Revenant",
+        "items": 12
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 1,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 1,
+        "POTION": 2,
+        "SCROLL": 3,
+        "FOOD": 0,
+        "GOLD": 0,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 1,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 12345,
+      "baseline": {
+        "fp": "f49677b2:4980",
+        "n": 10,
+        "species": "Jackal,Kobold,Rat",
+        "items": 8
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 2,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 1,
+        "POTION": 4,
+        "SCROLL": 3,
+        "FOOD": 0,
+        "GOLD": 0,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 1,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 27980,
+      "baseline": {
+        "fp": "a7028c6b:5028",
+        "n": 7,
+        "species": "Jackal,Kobold,Monkey,Rat",
+        "items": 11
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 3,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 2,
+        "FOOD": 1,
+        "GOLD": 1,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 43213,
+      "baseline": {
+        "fp": "ff406796:4917",
+        "n": 13,
+        "species": "Goblin,Jackal,Kobold,Rat",
+        "items": 6
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 4,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 0,
+        "FOOD": 0,
+        "GOLD": 2,
+        "WAND": 1,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_invisibility",
+          "E": 0,
+          "charges": 3,
+          "capacity": 3
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_invisibility",
+          "E": 0,
+          "charges": 3,
+          "capacity": 3,
+          "draws": 1
+        }
+      ],
+      "rng": 62109,
+      "baseline": {
+        "fp": "cb11dc24:4894",
+        "n": 8,
+        "species": "Goblin conjurer,Kobold,Monkey,Pink jelly,Pit bloat,Toad",
+        "items": 7
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 5,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 114960,
+      "baseline": {
+        "fp": "4d1f2586:4873",
+        "n": 11,
+        "species": "Acid mound,Eel,Goblin,Goblin totem,Kobold,Ogre",
+        "items": 6
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 6,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 1,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 132743,
+      "baseline": {
+        "fp": "2cd81ef0:4852",
+        "n": 11,
+        "species": "Acid mound,Goblin,Goblin totem,Jackal,Kobold,Pink jelly,Vampire bat",
+        "items": 7
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 7,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 1,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 1,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_lightning",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_lightning",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2,
+          "draws": 1
+        }
+      ],
+      "rng": 144391,
+      "baseline": {
+        "fp": "d7959996:4864",
+        "n": 7,
+        "species": "Black jelly,Bloat,Bog monster,Eel,Goblin,Monkey,Ogre",
+        "items": 7
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 8,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 1,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 168768,
+      "baseline": {
+        "fp": "495e3e82:4861",
+        "n": 8,
+        "species": "Acid mound,Bog monster,Centipede,Goblin,Goblin conjurer,Goblin mystic,Monkey",
+        "items": 8
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 9,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 3,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 196249,
+      "baseline": {
+        "fp": "6bbbc79a:4895",
+        "n": 11,
+        "species": "Acid mound,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Mirrored totem,Ogre,Spider",
+        "items": 13
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 10,
+      "counts": {
+        "WEAPON": 2,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 222162,
+      "baseline": {
+        "fp": "480806be:4924",
+        "n": 19,
+        "species": "Bloat,Dar blademaster,Eel,Goblin,Goblin totem,Monkey,Pink jelly,Toad",
+        "items": 10
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 11,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 2,
+        "WAND": 1,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_beckoning",
+          "E": 0,
+          "charges": 2,
+          "capacity": 2
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_beckoning",
+          "E": 0,
+          "charges": 2,
+          "capacity": 2,
+          "draws": 1
+        }
+      ],
+      "rng": 237548,
+      "baseline": {
+        "fp": "73e1c4c6:4781",
+        "n": 23,
+        "species": "Acid mound,Eel,Goblin,Goblin mystic,Goblin totem,Kobold,Pink jelly,Toad,Vampire bat,Wisp",
+        "items": 6
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 12,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 1,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 261399,
+      "baseline": {
+        "fp": "48c616ae:4807",
+        "n": 8,
+        "species": "Acid mound,Goblin,Goblin totem,Troll,Zombie",
+        "items": 7
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 13,
+      "counts": {
+        "WEAPON": 2,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 278584,
+      "baseline": {
+        "fp": "0a1b2be1:4786",
+        "n": 27,
+        "species": "Acid mound,Bog monster,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Monkey,Sentinel,Spider,grappling Acid mound",
+        "items": 9
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 14,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 0,
+        "FOOD": 0,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 298590,
+      "baseline": {
+        "fp": "9f413571:4856",
+        "n": 17,
+        "species": "Acidic jelly,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Imp,Pixie,Troll,infested Bog monster,toxic Goblin",
+        "items": 6
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 15,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 7,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 336422,
+      "baseline": {
+        "fp": "70af7cea:4973",
+        "n": 19,
+        "species": "Dar blademaster,Eel,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Naga,Revenant,Salamander,Wraith,agile Eel",
+        "items": 11
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 16,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 2,
+        "POTION": 2,
+        "SCROLL": 0,
+        "FOOD": 0,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 377830,
+      "baseline": {
+        "fp": "83bf91ad:5069",
+        "n": 11,
+        "species": "Acidic jelly,Centaur,Eel,Naga,Phantom,Pixie,Zombie",
+        "items": 9
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 17,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 1,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_poison",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_poison",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2,
+          "draws": 1
+        }
+      ],
+      "rng": 403360,
+      "baseline": {
+        "fp": "7bdf96be:4876",
+        "n": 14,
+        "species": "Bog monster,Dar blademaster,Dar priestess,Pink jelly,Salamander,Wraith",
+        "items": 9
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 18,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 1,
+        "POTION": 0,
+        "SCROLL": 0,
+        "FOOD": 2,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 416113,
+      "baseline": {
+        "fp": "b7f88d13:4826",
+        "n": 12,
+        "species": "Dar priestess,Imp,Phantom,Pink jelly,Pixie,Zombie,reflective Dar priestess",
+        "items": 8
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 19,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 0,
+        "SCROLL": 4,
+        "FOOD": 0,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 1,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 475875,
+      "baseline": {
+        "fp": "63c8c877:4923",
+        "n": 38,
+        "species": "Bog monster,Dar battlemage,Dar blademaster,Dar priestess,Fury,Imp,Mirrored totem,Ogre,Ogre totem,Pink jelly,Troll,agile Dar priestess,juggernaut Dar blademaster,reflective Ogre,vampiric Imp",
+        "items": 11
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 20,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 1,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_haste",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_haste",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2,
+          "draws": 1
+        }
+      ],
+      "rng": 519948,
+      "baseline": {
+        "fp": "3386e004:4868",
+        "n": 22,
+        "species": "Acidic jelly,Centaur,Dar battlemage,Dar blademaster,Dar priestess,Imp,Pink jelly,Revenant,Tentacle horror,Wraith,agile Dar priestess,reflective Centaur,reflective Dar priestess",
+        "items": 12
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 21,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 7,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 554419,
+      "baseline": {
+        "fp": "280e41b7:5014",
+        "n": 12,
+        "species": "Acidic jelly,Dar battlemage,Dar blademaster,Dar priestess,Imp,explosive Acidic jelly,grappling Imp,vampiric Dar blademaster",
+        "items": 10
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 22,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 7,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 600204,
+      "baseline": {
+        "fp": "d65a40fe:4866",
+        "n": 13,
+        "species": "Dar battlemage,Dar blademaster,Dar priestess,Phylactery,Pink jelly,Revenant,Tentacle horror,Wraith,reflective Dar blademaster,toxic Wraith,vampiric Wraith",
+        "items": 10
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 23,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 1,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_invisibility",
+          "E": 0,
+          "charges": 4,
+          "capacity": 4
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_invisibility",
+          "E": 0,
+          "charges": 4,
+          "capacity": 4,
+          "draws": 1
+        }
+      ],
+      "rng": 630996,
+      "baseline": {
+        "fp": "a56ee90d:4808",
+        "n": 22,
+        "species": "Dar battlemage,Dar blademaster,Dar priestess,Fury,Golem,Imp,Revenant,Tentacle horror,Wraith,explosive Fury,grappling Pit bloat,infested Fury,infested Pink jelly,infested Pit bloat,infested Wraith,juggernaut Wraith,toxic Fury",
+        "items": 8
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 24,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 2,
+        "FOOD": 1,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 674100,
+      "baseline": {
+        "fp": "1964edd0:4864",
+        "n": 12,
+        "species": "Dragon,Golem,Phylactery,Revenant,Sentinel,explosive Golem,juggernaut Dragon",
+        "items": 10
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 25,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 712940,
+      "baseline": {
+        "fp": "00461a7e:4763",
+        "n": 15,
+        "species": "Bog monster,Dar battlemage,Dar blademaster,Dragon,Explosive bloat,Golem,agile Dar priestess,infested Bog monster,reflective Bog monster,toxic Bog monster,vampiric Bog monster",
+        "items": 8
+      }
+    },
+    {
+      "seed": 2,
+      "depth": 26,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 2,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 1
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_conjuration",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2
+        },
+        {
+          "category": "STAFF",
+          "kind": "staff_of_lightning",
+          "E": 3,
+          "charges": 3,
+          "capacity": 3
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_conjuration",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2,
+          "draws": 1
+        },
+        {
+          "category": "STAFF",
+          "kind": "staff_of_lightning",
+          "E": 3,
+          "charges": 3,
+          "capacity": 3,
+          "draws": 2
+        }
+      ],
+      "rng": 743129,
+      "baseline": {
+        "fp": "7f1fe33c:4899",
+        "n": 16,
+        "species": "Bog monster,Dragon,Golem,Kraken,Revenant,Spider,Tentacle horror,grappling Golem,juggernaut Bog monster,vampiric Bog monster",
+        "items": 11
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 1,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 1,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 1,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 14241,
+      "baseline": {
+        "fp": "5e789ecc:4957",
+        "n": 7,
+        "species": "Jackal,Kobold,Rat",
+        "items": 7
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 2,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 5,
+        "SCROLL": 0,
+        "FOOD": 0,
+        "GOLD": 0,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 35818,
+      "baseline": {
+        "fp": "1858b419:5019",
+        "n": 6,
+        "species": "Eel,Goblin conjurer,Jackal,Kobold,Rat",
+        "items": 5
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 3,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 1,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 1,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 82835,
+      "baseline": {
+        "fp": "69cdcea8:5123",
+        "n": 13,
+        "species": "Eel,Goblin,Goblin conjurer,Jackal,Monkey,Pit bloat,Rat",
+        "items": 6
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 4,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 2,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 108582,
+      "baseline": {
+        "fp": "30525a89:5090",
+        "n": 7,
+        "species": "Kobold,Monkey,Pink jelly,Rat",
+        "items": 7
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 5,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 1,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 127924,
+      "baseline": {
+        "fp": "62b56b50:4959",
+        "n": 15,
+        "species": "Eel,Goblin,Goblin totem,Kobold,Monkey,Rat",
+        "items": 5
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 6,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 145839,
+      "baseline": {
+        "fp": "a4487943:4891",
+        "n": 17,
+        "species": "Goblin,Goblin totem,Pink jelly,Toad,Vampire bat",
+        "items": 6
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 7,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 2,
+        "POTION": 4,
+        "SCROLL": 3,
+        "FOOD": 0,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 163088,
+      "baseline": {
+        "fp": "357c3af3:4925",
+        "n": 15,
+        "species": "Acid mound,Bog monster,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Monkey,Toad,Vampire bat",
+        "items": 13
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 8,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 0,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 1,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_beckoning",
+          "E": 0,
+          "charges": 4,
+          "capacity": 4
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_beckoning",
+          "E": 0,
+          "charges": 4,
+          "capacity": 4,
+          "draws": 1
+        }
+      ],
+      "rng": 184215,
+      "baseline": {
+        "fp": "207f6866:4798",
+        "n": 21,
+        "species": "Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Jackal,Monkey,Pink jelly",
+        "items": 8
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 9,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 0,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 201651,
+      "baseline": {
+        "fp": "6b5b5524:4847",
+        "n": 6,
+        "species": "Centipede,Goblin,Pink jelly,Toad,Wraith",
+        "items": 7
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 10,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 215016,
+      "baseline": {
+        "fp": "138dad70:4862",
+        "n": 18,
+        "species": "Dar blademaster,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Pink jelly,Spider,Wisp",
+        "items": 9
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 11,
+      "counts": {
+        "WEAPON": 2,
+        "ARMOR": 1,
+        "POTION": 3,
+        "SCROLL": 3,
+        "FOOD": 1,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 1,
+        "CHARM": 0,
+        "KEY": 2,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 229756,
+      "baseline": {
+        "fp": "994ea173:4964",
+        "n": 37,
+        "species": "Acid mound,Dar blademaster,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Jackal,Kobold,Vampire bat,Wraith,Zombie",
+        "items": 16
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 12,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 264406,
+      "baseline": {
+        "fp": "96df4352:4699",
+        "n": 6,
+        "species": "Bloat,Centipede,Ogre,Pink jelly,Troll,Zombie",
+        "items": 9
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 13,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 288161,
+      "baseline": {
+        "fp": "33ae8404:4902",
+        "n": 21,
+        "species": "Acid mound,Bog monster,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Pink jelly,Wraith,Zombie,agile Goblin conjurer",
+        "items": 7
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 14,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 0,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 311704,
+      "baseline": {
+        "fp": "a88da2fa:4897",
+        "n": 25,
+        "species": "Bog monster,Centipede,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Troll,Wisp,Zombie,agile Goblin mystic,infested Goblin",
+        "items": 7
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 15,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 341167,
+      "baseline": {
+        "fp": "0580edf9:4933",
+        "n": 30,
+        "species": "Bog monster,Centaur,Dar battlemage,Dar blademaster,Dar priestess,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Imp,Mirrored totem,Pixie,Wisp,agile Dar blademaster,agile Imp,juggernaut Spider",
+        "items": 7
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 16,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 399403,
+      "baseline": {
+        "fp": "37c51fdd:4933",
+        "n": 10,
+        "species": "Bloat,Bog monster,Centaur,Phantom,Pixie,Spider",
+        "items": 7
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 17,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 0,
+        "FOOD": 0,
+        "GOLD": 7,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 415401,
+      "baseline": {
+        "fp": "7b2de3ee:4829",
+        "n": 20,
+        "species": "Centaur,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Imp,Phantom,Pixie,Winged guardian,Wraith,explosive Centaur,juggernaut Zombie,vampiric Imp",
+        "items": 11
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 18,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 3,
+        "SCROLL": 4,
+        "FOOD": 2,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 1,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 442850,
+      "baseline": {
+        "fp": "9bb918fa:4926",
+        "n": 23,
+        "species": "Acidic jelly,Centaur,Explosive bloat,Fury,Ogre,Ogre shaman,Phantom,Troll,Zombie,infested Ogre shaman,reflective Centaur,reflective Fury",
+        "items": 17
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 19,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 0,
+        "SCROLL": 4,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 483793,
+      "baseline": {
+        "fp": "a8c03753:4829",
+        "n": 14,
+        "species": "Acidic jelly,Dar battlemage,Dar blademaster,Dar priestess,Imp,Pixie,Revenant,Salamander,agile Imp,agile Naga,explosive Dar blademaster,infested Dar battlemage,juggernaut Imp,vampiric Imp",
+        "items": 8
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 20,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 1,
+        "POTION": 7,
+        "SCROLL": 2,
+        "FOOD": 1,
+        "GOLD": 8,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 535513,
+      "baseline": {
+        "fp": "ff7d6c66:4827",
+        "n": 17,
+        "species": "Acidic jelly,Bog monster,Centaur,Fury,Imp,Phantom,explosive Bog monster,infested Centaur,vampiric Fury",
+        "items": 20
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 21,
+      "counts": {
+        "WEAPON": 2,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 570433,
+      "baseline": {
+        "fp": "67698159:4706",
+        "n": 11,
+        "species": "Acidic jelly,Bog monster,Fury,Golem,Revenant",
+        "items": 8
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 22,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 7,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 1,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 611179,
+      "baseline": {
+        "fp": "3bb16d6c:4769",
+        "n": 8,
+        "species": "Golem,Phylactery,Revenant,Tentacle horror,explosive Tentacle horror",
+        "items": 11
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 23,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 1,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 665855,
+      "baseline": {
+        "fp": "8fa8fce6:5156",
+        "n": 13,
+        "species": "Dar battlemage,Dar blademaster,Imp,Mirrored totem,Pink jelly,Revenant,Tentacle horror,agile Tentacle horror,explosive Dar priestess,infested Dar blademaster,infested Dar priestess,infested Kraken",
+        "items": 11
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 24,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 0,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 1,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 710053,
+      "baseline": {
+        "fp": "d3a159f6:4963",
+        "n": 15,
+        "species": "Dar battlemage,Dar blademaster,Dar priestess,Imp,Revenant,Tentacle horror,grappling Dragon,grappling Imp,vampiric Dar blademaster,vampiric Tentacle horror",
+        "items": 9
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 25,
+      "counts": {
+        "WEAPON": 3,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 0,
+        "FOOD": 0,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 742195,
+      "baseline": {
+        "fp": "904f92cd:4925",
+        "n": 20,
+        "species": "Dar battlemage,Dar blademaster,Dar priestess,Dragon,Fury,Golem,Revenant,agile Fury,explosive Fury,infested Dar priestess,juggernaut Dar blademaster",
+        "items": 10
+      }
+    },
+    {
+      "seed": 3,
+      "depth": 26,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 1
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 794081,
+      "baseline": {
+        "fp": "7bc3d736:4907",
+        "n": 10,
+        "species": "Bog monster,Dragon,Golem,Phylactery,Revenant,Tentacle horror,infested Dragon,reflective Bog monster,toxic Bog monster",
+        "items": 9
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 1,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 3,
+        "FOOD": 0,
+        "GOLD": 1,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 21521,
+      "baseline": {
+        "fp": "18fd2585:4992",
+        "n": 6,
+        "species": "Kobold,Rat",
+        "items": 8
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 2,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 0,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 32848,
+      "baseline": {
+        "fp": "0df4f8f9:4911",
+        "n": 6,
+        "species": "Bloat,Jackal,Rat",
+        "items": 5
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 3,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 3,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 0,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 1,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 48698,
+      "baseline": {
+        "fp": "f020ae28:5010",
+        "n": 6,
+        "species": "Jackal,Kobold,Monkey,Rat",
+        "items": 10
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 4,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 5,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 2,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 4,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 62479,
+      "baseline": {
+        "fp": "1f5799ce:4981",
+        "n": 10,
+        "species": "Goblin,Jackal,Kobold,Pit bloat,Rat,Toad",
+        "items": 13
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 5,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 1,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 1,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 76207,
+      "baseline": {
+        "fp": "de2587b6:4851",
+        "n": 9,
+        "species": "Goblin,Goblin conjurer,Goblin totem,Kobold,Monkey,Rat",
+        "items": 5
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 6,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 2,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 106350,
+      "baseline": {
+        "fp": "ba77e5bb:5000",
+        "n": 15,
+        "species": "Eel,Goblin,Goblin totem,Kobold,Pink jelly,Toad",
+        "items": 11
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 7,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 5,
+        "SCROLL": 3,
+        "FOOD": 1,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 132094,
+      "baseline": {
+        "fp": "1b07d97c:4799",
+        "n": 13,
+        "species": "Acid mound,Goblin,Goblin mystic,Jackal,Monkey,Ogre,Pink jelly",
+        "items": 15
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 8,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 156157,
+      "baseline": {
+        "fp": "8a8aecdb:5054",
+        "n": 15,
+        "species": "Acid mound,Bloat,Bog monster,Centipede,Goblin,Goblin totem,Monkey,Ogre",
+        "items": 8
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 9,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 1,
+        "POTION": 0,
+        "SCROLL": 2,
+        "FOOD": 1,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 2,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 173615,
+      "baseline": {
+        "fp": "63aba634:4894",
+        "n": 12,
+        "species": "Acid mound,Bog monster,Centipede,Goblin conjurer,Pink jelly,Toad,Vampire bat",
+        "items": 13
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 10,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 6,
+        "SCROLL": 0,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 207213,
+      "baseline": {
+        "fp": "5db5f4cb:4998",
+        "n": 9,
+        "species": "Acid mound,Bloat,Goblin,Goblin totem,Ogre,Pink jelly,Spider",
+        "items": 10
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 11,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 236682,
+      "baseline": {
+        "fp": "428daff5:4932",
+        "n": 12,
+        "species": "Acid mound,Centipede,Goblin mystic,Kobold,Ogre,Pink jelly,Wraith",
+        "items": 9
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 12,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 2,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 261618,
+      "baseline": {
+        "fp": "13cb16a0:4932",
+        "n": 11,
+        "species": "Centaur,Centipede,Dar blademaster,Goblin,Goblin totem,Spider,Troll,Wraith",
+        "items": 9
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 13,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 2,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 285981,
+      "baseline": {
+        "fp": "02f94cfc:4896",
+        "n": 10,
+        "species": "Bloat,Dar blademaster,Explosive bloat,Ogre,Ogre totem",
+        "items": 11
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 14,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 326793,
+      "baseline": {
+        "fp": "95d30e39:4842",
+        "n": 31,
+        "species": "Bog monster,Centaur,Centipede,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Ogre,Zombie,reflective Ogre shaman,toxic Bog monster",
+        "items": 10
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 15,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 4,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 4,
+        "WAND": 1,
+        "STAFF": 0,
+        "RING": 1,
+        "CHARM": 1,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_negation",
+          "E": 0,
+          "charges": 5,
+          "capacity": 5
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_negation",
+          "E": 0,
+          "charges": 5,
+          "capacity": 5,
+          "draws": 1
+        }
+      ],
+      "rng": 361834,
+      "baseline": {
+        "fp": "ebd48620:4958",
+        "n": 16,
+        "species": "Eel,Kraken,Naga,Ogre,Ogre totem,Salamander,Spider,Wisp,Zombie,infested Salamander,vampiric Ogre",
+        "items": 13
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 16,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 1,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 398536,
+      "baseline": {
+        "fp": "4245bac0:4861",
+        "n": 28,
+        "species": "Centaur,Eel,Goblin,Goblin mystic,Goblin totem,Naga,Ogre,Ogre shaman,Pit bloat,Troll,Wraith,Zombie,explosive Goblin conjurer,grappling Pit bloat,juggernaut Goblin,juggernaut Ogre,reflective Pit bloat,vampiric Goblin,vampiric Wraith",
+        "items": 8
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 17,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 4,
+        "SCROLL": 0,
+        "FOOD": 0,
+        "GOLD": 7,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 416498,
+      "baseline": {
+        "fp": "ec5596d1:4763",
+        "n": 7,
+        "species": "Dar blademaster,Ogre,Ogre shaman,Phantom,Troll,Wraith",
+        "items": 11
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 18,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 441260,
+      "baseline": {
+        "fp": "42c01d11:5006",
+        "n": 22,
+        "species": "Bog monster,Dar battlemage,Dar blademaster,Dar priestess,Phantom,Wraith,Zombie,grappling Wraith,infested Bog monster,juggernaut Bog monster,vampiric Bog monster",
+        "items": 9
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 19,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 0,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 504491,
+      "baseline": {
+        "fp": "ac64dee9:4950",
+        "n": 23,
+        "species": "Acidic jelly,Bog monster,Centaur,Dar battlemage,Dar blademaster,Dar priestess,Explosive bloat,Wraith,explosive Dar blademaster,infested Dar priestess,infested Wraith,reflective Bog monster,reflective Dar battlemage",
+        "items": 7
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 20,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 4,
+        "SCROLL": 2,
+        "FOOD": 2,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 1,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 593152,
+      "baseline": {
+        "fp": "2701ceb9:4748",
+        "n": 10,
+        "species": "Centaur,Dar battlemage,Dar blademaster,Dar priestess,Imp,Phantom,reflective Pixie",
+        "items": 15
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 21,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 4,
+        "FOOD": 0,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 623396,
+      "baseline": {
+        "fp": "86e1ded9:4905",
+        "n": 22,
+        "species": "Dar blademaster,Dar priestess,Fury,Kraken,Phantom,Pink jelly,Pixie,Revenant,agile Dar battlemage,agile Fury,agile Pink jelly,agile Revenant,grappling Phantom,infested Dar blademaster,toxic Fury",
+        "items": 11
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 22,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 1,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 642551,
+      "baseline": {
+        "fp": "bc21e615:4871",
+        "n": 14,
+        "species": "Bog monster,Dar battlemage,Dar blademaster,Imp,Phylactery,Wraith,juggernaut Bog monster,reflective Dar priestess,reflective Wraith,vampiric Imp,vampiric Wraith",
+        "items": 9
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 23,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 6,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 6,
+        "WAND": 1,
+        "STAFF": 0,
+        "RING": 3,
+        "CHARM": 1,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_teleportation",
+          "E": 0,
+          "charges": 3,
+          "capacity": 3
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_teleportation",
+          "E": 0,
+          "charges": 3,
+          "capacity": 3,
+          "draws": 1
+        }
+      ],
+      "rng": 658965,
+      "baseline": {
+        "fp": "a8df51dc:4919",
+        "n": 16,
+        "species": "Dar blademaster,Dar priestess,Kraken,Phantom,Phylactery,Wraith,explosive Dar battlemage,explosive Wraith,grappling Wraith,juggernaut Wraith,vampiric Revenant",
+        "items": 20
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 24,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 0,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 1,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 713027,
+      "baseline": {
+        "fp": "5252dd40:4791",
+        "n": 15,
+        "species": "Dar battlemage,Dar blademaster,Dar priestess,Dragon,Fury,Golem,Imp,Revenant,vampiric Dragon,vampiric Imp",
+        "items": 8
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 25,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 1,
+        "POTION": 0,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 754099,
+      "baseline": {
+        "fp": "741a6691:4850",
+        "n": 18,
+        "species": "Bloat,Fury,Imp,Phylactery,Revenant,Sentinel,explosive Fury,grappling Tentacle horror,infested Fury,reflective Fury,toxic Fury,vampiric Golem",
+        "items": 9
+      }
+    },
+    {
+      "seed": 4,
+      "depth": 26,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 1,
+        "SCROLL": 4,
+        "FOOD": 1,
+        "GOLD": 7,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 1,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 1
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 811187,
+      "baseline": {
+        "fp": "f4af9a36:4776",
+        "n": 20,
+        "species": "Dar battlemage,Fury,Golem,Imp,Revenant,Tentacle horror,explosive Fury,grappling Fury,juggernaut Fury",
+        "items": 16
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 1,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 1,
+        "WAND": 0,
+        "STAFF": 1,
+        "RING": 0,
+        "CHARM": 1,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_poison",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_poison",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2,
+          "draws": 1
+        }
+      ],
+      "rng": 15121,
+      "baseline": {
+        "fp": "b50580d1:4904",
+        "n": 9,
+        "species": "Jackal,Kobold,Rat",
+        "items": 6
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 2,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 1,
+        "POTION": 5,
+        "SCROLL": 4,
+        "FOOD": 0,
+        "GOLD": 1,
+        "WAND": 0,
+        "STAFF": 1,
+        "RING": 4,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_poison",
+          "E": 4,
+          "charges": 4,
+          "capacity": 4
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_poison",
+          "E": 4,
+          "charges": 4,
+          "capacity": 4,
+          "draws": 3
+        }
+      ],
+      "rng": 27365,
+      "baseline": {
+        "fp": "b84c20c8:5057",
+        "n": 8,
+        "species": "Eel,Jackal,Kobold,Rat",
+        "items": 18
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 3,
+      "counts": {
+        "WEAPON": 2,
+        "ARMOR": 1,
+        "POTION": 0,
+        "SCROLL": 2,
+        "FOOD": 1,
+        "GOLD": 1,
+        "WAND": 0,
+        "STAFF": 1,
+        "RING": 1,
+        "CHARM": 1,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_haste",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_haste",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2,
+          "draws": 1
+        }
+      ],
+      "rng": 43875,
+      "baseline": {
+        "fp": "22cd0ba2:4959",
+        "n": 6,
+        "species": "Goblin conjurer,Jackal,Kobold,Rat",
+        "items": 11
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 4,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 3,
+        "FOOD": 0,
+        "GOLD": 2,
+        "WAND": 0,
+        "STAFF": 1,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_haste",
+          "E": 3,
+          "charges": 3,
+          "capacity": 3
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_haste",
+          "E": 3,
+          "charges": 3,
+          "capacity": 3,
+          "draws": 2
+        }
+      ],
+      "rng": 59297,
+      "baseline": {
+        "fp": "aed036a1:4909",
+        "n": 10,
+        "species": "Eel,Goblin conjurer,Jackal,Monkey,Rat",
+        "items": 7
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 5,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 102503,
+      "baseline": {
+        "fp": "35ee5e62:4902",
+        "n": 18,
+        "species": "Goblin,Goblin totem,Kobold,Monkey,Rat,Toad",
+        "items": 6
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 6,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 1,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 116367,
+      "baseline": {
+        "fp": "17e963c5:4957",
+        "n": 18,
+        "species": "Acid mound,Goblin,Goblin totem,Kobold,Monkey,Ogre,Pink jelly,Toad",
+        "items": 7
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 7,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 5,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 7,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 144574,
+      "baseline": {
+        "fp": "aeba2fa3:5011",
+        "n": 13,
+        "species": "Eel,Goblin,Goblin mystic,Goblin totem,Kobold,Pink jelly,Spider,Toad",
+        "items": 15
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 8,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 8,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 2,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 161138,
+      "baseline": {
+        "fp": "400f8bff:4947",
+        "n": 14,
+        "species": "Acid mound,Bloat,Goblin,Goblin totem,Monkey,Ogre,Toad",
+        "items": 18
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 9,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 2,
+        "FOOD": 1,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 200733,
+      "baseline": {
+        "fp": "dee66973:4894",
+        "n": 17,
+        "species": "Goblin,Goblin conjurer,Goblin totem,Ogre,Pink jelly,Spider",
+        "items": 9
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 10,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 2,
+        "FOOD": 1,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 221629,
+      "baseline": {
+        "fp": "06017bd2:4937",
+        "n": 16,
+        "species": "Dar blademaster,Eel,Goblin,Goblin conjurer,Monkey,Vampire bat,Wisp",
+        "items": 8
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 11,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 3,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 3,
+        "WAND": 1,
+        "STAFF": 1,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_lightning",
+          "E": 3,
+          "charges": 3,
+          "capacity": 3
+        },
+        {
+          "category": "WAND",
+          "kind": "wand_of_teleportation",
+          "E": 0,
+          "charges": 5,
+          "capacity": 5
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_lightning",
+          "E": 3,
+          "charges": 3,
+          "capacity": 3,
+          "draws": 2
+        },
+        {
+          "category": "WAND",
+          "kind": "wand_of_teleportation",
+          "E": 0,
+          "charges": 5,
+          "capacity": 5,
+          "draws": 1
+        }
+      ],
+      "rng": 241643,
+      "baseline": {
+        "fp": "ce562295:4927",
+        "n": 26,
+        "species": "Centipede,Dar blademaster,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Ogre,Pink jelly",
+        "items": 11
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 12,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 3,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 301330,
+      "baseline": {
+        "fp": "f5cf223b:4830",
+        "n": 28,
+        "species": "Bog monster,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Pink jelly,Spider,Vampire bat,Wisp,Zombie,toxic Goblin",
+        "items": 10
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 13,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 2,
+        "POTION": 5,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 329469,
+      "baseline": {
+        "fp": "05b52df9:4975",
+        "n": 36,
+        "species": "Acid mound,Eel,Salamander,Sentinel,Stone guardian,Troll,Vampire bat,Wisp,Zombie,agile Sentinel",
+        "items": 13
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 14,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 1,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_fire",
+          "E": 3,
+          "charges": 3,
+          "capacity": 3
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_fire",
+          "E": 3,
+          "charges": 3,
+          "capacity": 3,
+          "draws": 2
+        }
+      ],
+      "rng": 357654,
+      "baseline": {
+        "fp": "a35db830:4829",
+        "n": 9,
+        "species": "Centaur,Ogre,Ogre shaman,Pixie,Spider,Troll,infested Centaur,reflective Zombie,toxic Ogre",
+        "items": 7
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 15,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 0,
+        "FOOD": 0,
+        "GOLD": 3,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 1,
+        "CHARM": 1,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 373721,
+      "baseline": {
+        "fp": "1e19e69c:4841",
+        "n": 7,
+        "species": "Dar blademaster,Naga,Pixie,Spider,Wraith,infested Kraken,vampiric Kraken",
+        "items": 9
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 16,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 0,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 406481,
+      "baseline": {
+        "fp": "006a91f7:5011",
+        "n": 6,
+        "species": "Dar blademaster,Kraken,Naga,Wraith,Zombie",
+        "items": 2
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 17,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 0,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 6,
+        "WAND": 1,
+        "STAFF": 0,
+        "RING": 1,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_polymorphism",
+          "E": 0,
+          "charges": 5,
+          "capacity": 5
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "WAND",
+          "kind": "wand_of_polymorphism",
+          "E": 0,
+          "charges": 5,
+          "capacity": 5,
+          "draws": 1
+        }
+      ],
+      "rng": 423013,
+      "baseline": {
+        "fp": "9b42f9ff:4843",
+        "n": 26,
+        "species": "Acidic jelly,Centaur,Dar blademaster,Explosive bloat,Fury,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Ogre,Ogre totem,Pit bloat,Troll,Zombie,agile Goblin conjurer,explosive Dar blademaster,reflective Ogre",
+        "items": 9
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 18,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 2,
+        "SCROLL": 0,
+        "FOOD": 1,
+        "GOLD": 9,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 482759,
+      "baseline": {
+        "fp": "604e4871:4982",
+        "n": 23,
+        "species": "Dar battlemage,Dar blademaster,Dar priestess,Fury,Imp,Ogre,Ogre totem,Phantom,grappling Dar blademaster,reflective Fury,toxic Fury,toxic Ogre,vampiric Pink jelly",
+        "items": 12
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 19,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 2,
+        "POTION": 2,
+        "SCROLL": 0,
+        "FOOD": 0,
+        "GOLD": 4,
+        "WAND": 0,
+        "STAFF": 1,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_poison",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_poison",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2,
+          "draws": 1
+        }
+      ],
+      "rng": 507497,
+      "baseline": {
+        "fp": "3b6e2b55:4942",
+        "n": 13,
+        "species": "Acidic jelly,Bog monster,Centaur,Ogre shaman,Phantom,Revenant,explosive Ogre,juggernaut Bog monster,juggernaut Kraken",
+        "items": 9
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 20,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 1,
+        "POTION": 1,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 1,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_lightning",
+          "E": 3,
+          "charges": 3,
+          "capacity": 3
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_lightning",
+          "E": 3,
+          "charges": 3,
+          "capacity": 3,
+          "draws": 2
+        }
+      ],
+      "rng": 533697,
+      "baseline": {
+        "fp": "adc25896:4739",
+        "n": 24,
+        "species": "Dar battlemage,Dar blademaster,Dar priestess,Fury,Imp,Ogre,Ogre shaman,Pixie,agile Salamander,reflective Dar blademaster,reflective Dar priestess,toxic Imp",
+        "items": 10
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 21,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 2,
+        "FOOD": 0,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 586540,
+      "baseline": {
+        "fp": "7f088d8b:5070",
+        "n": 7,
+        "species": "Golem,Phantom,Pixie,Revenant,grappling Phantom,infested Revenant,reflective Imp",
+        "items": 9
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 22,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 5,
+        "WAND": 0,
+        "STAFF": 1,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_lightning",
+          "E": 3,
+          "charges": 3,
+          "capacity": 3
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_lightning",
+          "E": 3,
+          "charges": 3,
+          "capacity": 3,
+          "draws": 2
+        }
+      ],
+      "rng": 628171,
+      "baseline": {
+        "fp": "83147536:4799",
+        "n": 19,
+        "species": "Bog monster,Dar battlemage,Dar blademaster,Fury,Golem,Phantom,Phylactery,explosive Bog monster,explosive Dar priestess,vampiric Fury",
+        "items": 10
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 23,
+      "counts": {
+        "WEAPON": 1,
+        "ARMOR": 1,
+        "POTION": 2,
+        "SCROLL": 3,
+        "FOOD": 0,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 1,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 686091,
+      "baseline": {
+        "fp": "89d27ec5:5125",
+        "n": 17,
+        "species": "Bog monster,Fury,Golem,Kraken,Phylactery,Pink jelly,agile Dar priestess,explosive Dar priestess,infested Fury,infested Imp,toxic Bog monster",
+        "items": 14
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 24,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 3,
+        "SCROLL": 2,
+        "FOOD": 1,
+        "GOLD": 7,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 717771,
+      "baseline": {
+        "fp": "332dcacd:4934",
+        "n": 30,
+        "species": "Bog monster,Dar battlemage,Dar blademaster,Dar priestess,Dragon,Fury,Imp,explosive Bog monster,reflective Dar battlemage,reflective Dar blademaster,vampiric Bog monster,vampiric Dar blademaster",
+        "items": 13
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 25,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 1,
+        "FOOD": 0,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 1,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 0
+      },
+      "arcana": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_poison",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2
+        }
+      ],
+      "carriedArcana": [],
+      "attempts": [
+        {
+          "category": "STAFF",
+          "kind": "staff_of_poison",
+          "E": 2,
+          "charges": 2,
+          "capacity": 2,
+          "draws": 1
+        }
+      ],
+      "rng": 780254,
+      "baseline": {
+        "fp": "49ff8908:4894",
+        "n": 19,
+        "species": "Fury,Golem,Revenant,Sentinel,agile Sentinel,explosive Dragon,toxic Tentacle horror,vampiric Revenant",
+        "items": 9
+      }
+    },
+    {
+      "seed": 5,
+      "depth": 26,
+      "counts": {
+        "WEAPON": 0,
+        "ARMOR": 0,
+        "POTION": 1,
+        "SCROLL": 1,
+        "FOOD": 1,
+        "GOLD": 6,
+        "WAND": 0,
+        "STAFF": 0,
+        "RING": 0,
+        "CHARM": 0,
+        "KEY": 0,
+        "AMULET": 1
+      },
+      "arcana": [],
+      "carriedArcana": [],
+      "attempts": [],
+      "rng": 833446,
+      "baseline": {
+        "fp": "69d356ca:4859",
+        "n": 13,
+        "species": "Bloat,Fury,Revenant,grappling Fury,grappling Revenant,infested Golem,reflective Bloat",
+        "items": 10
+      }
+    }
+  ]
+}

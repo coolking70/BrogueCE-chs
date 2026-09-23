@@ -1,0 +1,25 @@
+{
+  "production": [
+    "src/data/arcana.json",
+    "src/engine/Combat/Bolt.ts",
+    "src/engine/Core/Game.ts",
+    "src/engine/Items/ArcanaInstance.ts",
+    "src/engine/Items/ItemLoader.ts",
+    "src/locales/zh_CN.json"
+  ],
+  "changedMethods": [
+    "toSnapshot",
+    "loadSnapshot"
+  ],
+  "changedExistingTests": [
+    "src/engine/Combat/BoltCatalog.test.ts",
+    "src/test/w_17_domination.test.ts",
+    "src/test/w_23_negation.test.ts",
+    "src/test/w_5_arcana_instance.test.ts"
+  ],
+  "unexpected": [],
+  "unchangedCategories": true,
+  "retired": true,
+  "empowermentTextUnchanged": true,
+  "baselineHash": "fad7dc81a35afeff00f8bb0a9b38cb4e674d7ee584578127e270304d6c8d0bf3"
+}

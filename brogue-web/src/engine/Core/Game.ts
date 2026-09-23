@@ -340,6 +340,9 @@ export interface GameSnapshot {
      * 与 B-1b 前行为一致）。
      */
     identifiedItems?: string[];
+    /** W-24: preserve wand appearance identities across catalog additions/reordering.
+     * Missing in older saves: rebuild the pre-W-24 seven slots deterministically. */
+    wandFlavors?: Record<string, string>;
     /** B-1b：玩家绰号（ItemLoader.callTitles 的落盘形态；Map 不能直接 JSON 化）。 */
     callTitles?: Record<string, string>;
     /**
@@ -8552,6 +8555,7 @@ export class Game {
             items: this.items.map((it) => this.serializeItem(it)),
             // B-1b：全局种类鉴定态与绰号进存档（P1-48；Map 落盘为普通对象）
             identifiedItems: [...ItemLoader.identifiedItems],
+            wandFlavors: Object.fromEntries(ItemLoader.wands.map(w => [w.id, ItemLoader.arcanaFlavorMap.get(w.id)!])),
             callTitles: Object.fromEntries(ItemLoader.callTitles),
             // B-1c：种类级极性揭示进存档
             magicPolarityRevealed: [...ItemLoader.magicPolarityRevealed],
@@ -8751,6 +8755,7 @@ export class Game {
         this.ticksTillUpdateEnvironment = snapshot.ticksTillUpdateEnvironment ?? 100;
         this.currentSeed = rng.seedRandomGenerator(snapshot.seed);
         ItemLoader.initConsumables();
+        ItemLoader.restoreWandFlavors(snapshot.wandFlavors);
 
         // B-1b：读档恢复全局种类鉴定态与绰号（P1-48）。initConsumables 已把
         // 两者清到开局态；旧存档（无字段）就停留在开局态 = B-1b 前"鉴定全丢"

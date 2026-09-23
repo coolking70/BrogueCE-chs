@@ -8,13 +8,17 @@ export interface ArcanaInstanceState {
     charges?: number;
 }
 
-/** Existing CE wand kinds only; GlobalsBrogue.c:702-710, all clump factors = 1.
- * The two retired web wands retain their fixed legacy capacity. No pool/frequency changes.
+/** All nine CE wand kinds; GlobalsBrogue.c:702-710, all clump factors = 1.
+ * The two retired web wands retain their fixed legacy capacity. Pool order/frequencies live in arcana.json.
  */
 export const WAND_INITIAL_RANGES: Readonly<Record<string, readonly [number, number, number]>> = {
     wand_of_teleportation: [3, 5, 1],
     wand_of_slowness: [2, 5, 1],
+    wand_of_polymorphism: [3, 5, 1],
+    wand_of_negation: [4, 6, 1],
+    wand_of_domination: [1, 2, 1],
     wand_of_beckoning: [2, 4, 1],
+    wand_of_plenty: [1, 2, 1],
     wand_of_invisibility: [3, 5, 1],
     wand_of_empowerment: [1, 1, 1],
 };

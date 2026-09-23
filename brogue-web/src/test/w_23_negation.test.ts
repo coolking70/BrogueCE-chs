@@ -187,8 +187,8 @@ describe('W-23 live consumers and persistence', () => {
         expect(detail()).toContain('特殊能力已被消除'); m.totalPowerCount = 1; expect(detail()).not.toContain('特殊能力已被消除');
         m.polymorph(() => {}); expect(m.wasNegated).toBe(false);
     });
-    it('plain-floor negation has no RNG; no negation item added to generation', () => {
+    it('plain-floor negation has no RNG; W-24 supplies its catalog item', () => {
         const g = scene(), m = mob(g, 'dar_priestess'), before = rng.randomNumbersGenerated; negate(g, m); expect(rng.randomNumbersGenerated).toBe(before);
-        expect(ItemLoader.spawnWand('wand_of_negation', -1, -1)).toBeNull();
+        expect(ItemLoader.spawnWand('wand_of_negation', -1, -1)).not.toBeNull();
     });
 });

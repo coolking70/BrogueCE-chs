@@ -200,7 +200,7 @@ describe('W-17 item ownership, captive, horde, minions, grab and combat consumer
  });
 });
 
-describe('W-17 JSON persistence and submission without adding a wand to the pool',()=>{
+describe('W-17 JSON persistence and submission (W-24 catalog now available)',()=>{
  it('active/dormant JSON round trip retains allegiance, cleared discord, item key binding and re-elected leader references',()=>{
   const g=live(),m=mob(g,'goblin_conjurer'),f=mob(g,'rat',15,7),peer=mob(g,'rat',16,7),dormant=mob(g,'rat',17,7);f.leader=peer.leader=m;
   m.setStatusDuration('discordant',9);m.carriedItem=ItemLoader.spawnKey('iron_key',0,0)!;m.carriedItem!.keyLoc=[{loc:{x:11,y:5},machine:4}];
@@ -243,8 +243,8 @@ describe('W-17 JSON persistence and submission without adding a wand to the pool
   g.useArcanaItem(wand);g.setArcanaTarget(m.x,m.y);const r=g.confirmArcanaTarget();
   expect(r?.outcome?.autoID).toBe(true);expect(wand.charges).toBe(1);expect(g.stats.turns).toBe(before+1);expect(m.isAlly).toBe(hp===19);
  });
- it('no domination identity/config or generation entry was added',()=>{
-  expect(ItemLoader.spawnWand('wand_of_domination',0,0)).toBeNull();expect(getBoltForItem('wand_of_domination')).toBeUndefined();
-  expect(JSON.parse(fs.readFileSync('src/data/arcana.json','utf8')).wands.some((w:{id:string})=>w.id==='wand_of_domination')).toBe(false);
+ it('W-24 supplies the domination identity/config and generation entry',()=>{
+  expect(ItemLoader.spawnWand('wand_of_domination',0,0)).not.toBeNull();expect(getBoltForItem('wand_of_domination')?.effect).toBe(BoltEffect.DOMINATION);
+  expect(JSON.parse(fs.readFileSync('src/data/arcana.json','utf8')).wands.some((w:{id:string})=>w.id==='wand_of_domination')).toBe(true);
  });
 });
