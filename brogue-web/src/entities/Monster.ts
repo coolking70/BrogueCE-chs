@@ -348,7 +348,7 @@ export class Monster extends Creature {
     public defense: number = 0;
 
     // Regeneration counter
-    private regenCounter: number = 0;
+    public regenCounter: number = 0; // persisted with poison to preserve paused regeneration
 
     // Track original spawn loc for wandering logic
     public spawnLoc: { x: number, y: number } = { x: 0, y: 0 };
@@ -835,9 +835,6 @@ export class Monster extends Creature {
                 if (this.onHitStatus && this.onHitDuration > 0 && rng.randPercent(Math.floor(this.onHitChance * 100))) {
                     game.applyMonsterOnHitStatus(this.name, this.onHitStatus, this.onHitDuration);
                 }
-                if (this.hasAbility('MA_POISONS')) {
-                    game.applyMonsterOnHitStatus(this.name, 'poisoned', result.damage * 2);
-                }
                 if (this.hasAbility('MA_CAUSES_WEAKNESS')) {
                     game.applyMonsterOnHitStatus(this.name, 'weakened', 15);
                 }
@@ -945,18 +942,25 @@ export class Monster extends Creature {
         return false;
     }
 
-    public takeTurn(game: Game, stealthRange: number) {
-        if (this.hp <= 0) return;
-        if (this.hasStatus('paralyzed')) return;
-        if (this.isCaged) return;
+    public override canBePoisoned(): boolean {
+        return super.canBePoisoned() && !this.hasBehavior('MONST_INANIMATE') && !this.isInvulnerable();
+    }
 
-        if (this.regenTurns > 0 && this.hp < this.maxHp) {
+    /** CE Monsters.c:1839-1847: objective regeneration precedes poison decrement. */
+    public recoverPerTick(): void {
+        if (this.hp > 0 && this.regenTurns > 0 && this.hp < this.maxHp && !this.hasStatus('poisoned')) {
             this.regenCounter++;
             if (this.regenCounter >= this.regenTurns) {
                 this.hp = Math.min(this.maxHp, this.hp + 1);
                 this.regenCounter = 0;
             }
         }
+    }
+
+    public takeTurn(game: Game, stealthRange: number) {
+        if (this.hp <= 0) return;
+        if (this.hasStatus('paralyzed')) return;
+        if (this.isCaged) return;
 
         // P4-1b：CE monstUseMagic 在移动/近战之前优先尝试（monstersTurn 各出口
         // 调用 monstUseMagic 都在移动决策之前）。沉睡怪物不参与（CE 沉睡怪物
@@ -1339,9 +1343,6 @@ export class Monster extends Creature {
                     game.tryTriggerArmorRunic(this, result.damage);
                     if (this.onHitStatus && this.onHitDuration > 0 && rng.randPercent(Math.floor(this.onHitChance * 100))) {
                         game.applyMonsterOnHitStatus(this.name, this.onHitStatus, this.onHitDuration);
-                    }
-                    if (this.hasAbility('MA_POISONS')) {
-                        game.applyMonsterOnHitStatus(this.name, 'poisoned', result.damage * 2);
                     }
                     if (this.hasAbility('MA_CAUSES_WEAKNESS')) {
                         game.applyMonsterOnHitStatus(this.name, 'weakened', 15);

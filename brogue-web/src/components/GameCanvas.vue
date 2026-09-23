@@ -484,7 +484,8 @@ onMounted(async () => {
                 const cell = game.grid.getCell(m.loc.x, m.loc.y);
                 return m.hp > 0 && (!!cell?.isVisible || telepathyRevealed);
             })
-            .map((m) => ({ name: m.name, x: m.loc.x, y: m.loc.y, hp: m.hp }));
+            .map((m) => ({ name: m.name, x: m.loc.x, y: m.loc.y, hp: m.hp,
+                poisonAmount: m.poisonAmount, poisoned: m.getStatusDuration('poisoned') }));
         const visibleItems = game.items
             .filter((i) => game.grid.getCell(i.loc.x, i.loc.y)?.isVisible)
             .map((i) => ({ name: i.displayName, x: i.loc.x, y: i.loc.y }));
@@ -500,6 +501,7 @@ onMounted(async () => {
                 y: game.player.loc.y,
                 hp: game.player.hp,
                 nutrition: game.player.nutrition,
+                poisonAmount: game.player.poisonAmount,
                 statuses: { ...game.player.statusDurations }
             },
             replay: {

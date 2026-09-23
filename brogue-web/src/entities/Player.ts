@@ -38,7 +38,7 @@ export class Player extends Creature {
     public hungerState: HungerState = 'normal';
     private hungerTransition: HungerState | null = null;
     /** Fractional HP carried between turns so maxHp/300 regen keeps full precision. */
-    private regenCarry: number = 0;
+    public regenCarry: number = 0; // persisted; poison pauses rather than discards the fraction
 
     // Temporary status immunities from charm_of_protection
     public temporaryImmunities: Partial<Record<StatusId, number>> = {};
@@ -147,7 +147,8 @@ export class Player extends Creature {
      * do 循环段）：饥饿伤害与回血都是每玩家动作结算，不随客观块加倍。
      * 返回 'starving' 表示本动作发生了饥饿扣血（供 lastDamageSource 归因）。
      */
-    public recoverPerTurn(): HungerState {
+    public recoverPerTurn(suppressRegen = false): HungerState {
+        if (this.hp <= 0) return 'normal';
         // Starvation: nutrition exhausted, 1 HP lost per turn (Time.c:2525-2530)
         if (this.nutrition <= 0) {
             this.hp -= 1;
@@ -156,7 +157,7 @@ export class Player extends Creature {
 
         // Regeneration: full pool in TURNS_FOR_FULL_REGEN turns; halted while poisoned
         // and while already at full HP (Time.c:2531-2541)
-        if (this.hp < this.maxHp && !this.hasStatus('poisoned')) {
+        if (this.hp < this.maxHp && !this.hasStatus('poisoned') && !suppressRegen) {
             this.regenCarry += this.regenRatePerTurn();
             if (this.regenCarry >= 1) {
                 const wholeHp = Math.floor(this.regenCarry);

@@ -190,9 +190,9 @@ describe('W-4 reflected travel (CE Items.c:4960-5065,5675-5705,5830-5852)', () =
 
 describe('W-4 recipient dispatch and boundaries', () => {
     it.each([
-        ['staff_of_poison', 'poisoned', 12], ['wand_of_slowness', 'slowed', 50],
+        ['staff_of_poison', 'poisoned', 5], ['wand_of_slowness', 'slowed', 50],
         ['wand_of_invisibility', 'invisible', 150],
-    ] as const)('%s reaches the player (W-9 corrects slow/invisibility durations; poison stays W-10)', (id, status, duration) => {
+    ] as const)('%s reaches the player (W-9 slow/invisibility; W-10 retires poison 12 in favor of CE E2=5)', (id, status, duration) => {
         const g = scene(), guardian = monster(g, 8, 5, 'stone_guardian');
         const r = zap(g, id);
         expect(recipients(r)).toEqual([g.player]); expect(g.player.statusDurations[status]).toBe(duration);

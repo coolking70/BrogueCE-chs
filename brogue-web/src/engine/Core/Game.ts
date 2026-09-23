@@ -23,6 +23,7 @@ import blueprintData from '../../data/blueprints.json';
 import { Player, type HungerState } from '../../entities/Player';
 import { Monster, applyShieldStatus, monstersAreTeammates, monstersAreEnemies } from '../../entities/Monster';
 import { CombatSystem } from '../Combat/Combat';
+import { staffPoison } from '../Combat/Poison';
 import { weaponParalysisDuration, weaponConfusionDuration, weaponForceDistance, netEnchant, armorAbsorptionMax, armorReprisalPercent } from '../Combat/CombatFormulas';
 import { ItemCategory, Item } from '../Items/Item';
 import { ItemLoader, type ConsumableConfig } from '../Items/ItemLoader';
@@ -226,8 +227,11 @@ export interface GameSnapshotMonster {
     hp: number;
     maxHp: number;
     damageString: string;
+    regenTurns?: number;
+    regenCounter?: number;
     state: number;
     statusDurations?: Partial<Record<StatusId, number>>;
+    poisonAmount?: number;
     goldDropChance: number;
     itemDropChance: number;
     onHitStatus?: StatusId;
@@ -255,7 +259,9 @@ export interface GameSnapshot {
         strength: number;
         nutrition: number;
         maxNutrition: number;
+        regenCarry?: number;
         statusDurations?: Partial<Record<StatusId, number>>;
+        poisonAmount?: number;
         inventory: GameSnapshotItem[];
         equippedWeaponId: number | null;
         equippedArmorId: number | null;
@@ -393,8 +399,11 @@ interface TestRoomState {
         hp: number;
         maxHp: number;
         damageString: string;
+        regenTurns?: number;
+        regenCounter?: number;
         state: number;
         statusDurations?: Partial<Record<StatusId, number>>;
+        poisonAmount?: number;
         goldDropChance: number;
         itemDropChance: number;
         onHitStatus?: StatusId;
@@ -2364,7 +2373,10 @@ export class Game {
         monster.hp = m.hp;
         monster.maxHp = m.maxHp;
         monster.state = m.state as any;
+        monster.regenTurns = m.regenTurns ?? 0;
+        monster.regenCounter = m.regenCounter ?? 0;
         monster.statusDurations = { ...(m.statusDurations ?? {}) };
+        monster.restorePoison(m.poisonAmount);
         monster.refreshSpeeds(); // P2-2：状态直写绕过 applyStatus，需显式重算衍生速度
         monster.damageString = m.damageString;
         monster.goldDropChance = m.goldDropChance;
@@ -2706,6 +2718,9 @@ export class Game {
                         damageString: m.damageString,
                         state: m.state,
                         statusDurations: { ...m.statusDurations },
+                        poisonAmount: m.poisonAmount,
+                        regenTurns: m.regenTurns,
+                        regenCounter: m.regenCounter,
                         goldDropChance: m.goldDropChance,
                         itemDropChance: m.itemDropChance,
                         onHitStatus: m.onHitStatus,
@@ -4386,14 +4401,6 @@ export class Game {
         return damage;
     }
 
-    /** Preserve the old monster status entry, using the existing player entry
-     * only when reflection actually reaches the player. Durations stay local. */
-    private applyPlayerBoltStatus(target: Creature, status: StatusId, duration: number): boolean {
-        return target instanceof Monster
-            ? this.applyStatusToMonster(target, status, duration, 'magic')
-            : target instanceof Player && this.applyTimedStatus(target, status, duration);
-    }
-
     private boltCasterMovement(result: BoltResult) {
         const to = result.caster?.loc;
         return to && (to.x !== result.origin.x || to.y !== result.origin.y)
@@ -4411,12 +4418,6 @@ export class Game {
 
     private boltLivingTarget(target: Creature): boolean {
         return !(target instanceof Monster) || (!target.hasBehavior('MONST_INANIMATE') && !target.isInvulnerable());
-    }
-
-    // Existing status refresh returns false when the duration does not increase.
-    // CE still flashes/identifies an accepted repeat application; false is not immunity.
-    private boltStatusAccepted(target: Creature, status: StatusId, changed: boolean): boolean {
-        return changed || (!target.statusImmunities.has(status) && target.hasStatus(status));
     }
 
     /** W-9: shared player/monster directed effects. CE Items.c:4636-4706,
@@ -4471,7 +4472,7 @@ export class Game {
     }
 
     private applyBoltEffect(result: BoltResult, item: Item, alreadyReflected = false): boolean {
-        const { effect, magnitude, impactPos, path } = result;
+        const { effect, impactPos, path } = result;
         let autoID = false;
         // Consume the traced contact, not a new location lookup (which could
         // pick a dormant occupant, or a creature moved/spawned by an earlier hit).
@@ -4548,10 +4549,13 @@ export class Game {
 
             case BoltEffect.POISON: {
                 if (target) {
-                    const applied = this.applyPlayerBoltStatus(target, 'poisoned', magnitude * 3);
-                    autoID = this.boltStatusAccepted(target, 'poisoned', applied) && this.boltLivingTarget(target) && this.canObserveBoltTarget(target); // CE :5312-5326
-                    logger.log(i18next.t('bolt.poison_hit', {
-                        name: item.displayName, target: target.name,
+                    const enchantment = resolveCEBoltMagnitude(result.bolt.ceType!, {
+                        kind: 'staff', enchantment: item.enchantment,
+                    }).value;
+                    const applied = target.addPoison(staffPoison(enchantment), 1);
+                    autoID = applied && this.canObserveBoltTarget(target); // CE Items.c:5322-5331
+                    if (autoID) logger.log(i18next.t('bolt.poison_hit', {
+                        interpolation: { escapeValue: false }, name: item.displayName, target: target.name,
                         defaultValue: `${item.displayName} envenomates the ${target.name}!`
                     }), '#55cc55');
                 } else {
@@ -4835,7 +4839,8 @@ export class Game {
                     if (isPlayer && caster.onHitStatus && caster.onHitDuration > 0 && rng.randPercent(Math.floor(caster.onHitChance * 100))) {
                         this.applyMonsterOnHitStatus(caster.name, caster.onHitStatus, caster.onHitDuration);
                     }
-                    if (isPlayer && caster.hasAbility('MA_POISONS')) {
+                    if (isPlayer && caster.hasAbility('MA_POISONS')
+                        && BOLT_EFFECT_CE_EFFECT[meta.effect] !== CEBoltEffect.ATTACK) {
                         this.applyMonsterOnHitStatus(caster.name, 'poisoned', result.damage * 2);
                     }
                     if (isPlayer && caster.hasAbility('MA_CAUSES_WEAKNESS')) {
@@ -5137,6 +5142,7 @@ export class Game {
         for (const k of Object.keys(sd)) {
             sd[k] = 0;
         }
+        target.restorePoison(); // existing negation clears countdown; clear concentration too
         if (target instanceof Monster) target.syncFlagDerivedStatuses();
         target.refreshSpeeds();
         return 'negated';
@@ -6086,9 +6092,7 @@ export class Game {
                 const poisonDmg = Math.max(1, Math.floor(damage * 0.5));
                 const applied = this.applyStatusToMonster(target, 'poisoned', poisonDmg, 'runic');
                 if (applied) {
-                    target.takeDamage(poisonDmg);
-                    logger.log(i18next.t('runic.weapon.venom', { target: target.name, damage: poisonDmg, defaultValue: `Runic venom wounds the ${target.name} for ${poisonDmg}.` }), '#88dd88');
-                    this.spawnFloatingText(`-${poisonDmg}`, target.loc.x, target.loc.y, 0x66dd66);
+                    logger.log(i18next.t('runic.weapon.venom', { target: target.name, damage: poisonDmg, defaultValue: `Runic venom poisons the ${target.name} for ${poisonDmg} turns.` }), '#88dd88');
                 }
                 break;
             }
@@ -6317,12 +6321,34 @@ export class Game {
         }
     }
 
+    /** W-10: one application per P2 objective block, before countdown decrement.
+     * HP transition owns poison death; later damage sees hp<=0 and cannot kill twice.
+     * Poison bypasses physical armor/shields (CE inflictDamage(..., true)). */
+    private resolvePoisonDamage(entity: Player | Monster): void {
+        if (entity.hp <= 0 || !entity.hasStatus('poisoned')) return;
+        if (entity === this.player) this.poisonedDuringTurn = true;
+        if (!entity.canBePoisoned()) return;
+        entity.takeDamage(Math.max(1, entity.poisonAmount));
+        if (entity === this.player) {
+            this.lastDamageSource = 'poison';
+        } else if (entity.hp <= 0) {
+            if (this.canObserveBoltTarget(entity)) logger.log(i18next.t('env.poison_death', {
+                name: entity.name, defaultValue: `The ${entity.name} dies of poison.`
+            }), '#88aa88');
+            this.stats.kills++;
+            this.dropMonsterLoot(entity as Monster);
+        }
+    }
+
     private tickCreatureStatuses() {
         // F-2b：燃烧状态伤害（CE 玩家 Time.c:2581-2591 playerTurnEnded /
         // 怪 Monsters.c:1877-1901）在状态递减之前结算（CE 玩家序）。
         this.resolveBurningDamage(this.player);
+        this.resolvePoisonDamage(this.player);
         for (const m of this.monsters) {
+            m.recoverPerTick();
             this.resolveBurningDamage(m);
+            this.resolvePoisonDamage(m);
         }
         const playerExpired = this.player.tickStatuses();
         // CE Time.c:2261-2273：玩家 haste/slow 到期时恢复 info 基准速度并
@@ -6569,6 +6595,27 @@ export class Game {
         return true;
     }
 
+    /** Existing web loot rolls shared by melee and poison deaths. */
+    private dropMonsterLoot(target: Monster): void {
+        // Handle Drops
+        if (rng.randPercent(Math.floor(target.goldDropChance * 100))) {
+            const goldItem = new Item('Gold', '$', 0xffda75, ItemCategory.GOLD);
+            goldItem.loc = { ...target.loc };
+            this.items.push(goldItem);
+        }
+
+        if (rng.randPercent(Math.floor(target.itemDropChance * 100))) {
+            const isWeapon = rng.randPercent(50);
+            let droppedObj;
+            if (isWeapon) {
+                droppedObj = ItemLoader.spawnWeapon(rng.randPercent(50) ? 'dagger' : 'sword', target.loc.x, target.loc.y, this.depth);
+            } else {
+                droppedObj = ItemLoader.spawnArmor(rng.randPercent(50) ? 'leather_armor' : 'chain_mail', target.loc.x, target.loc.y, this.depth);
+            }
+            if (droppedObj) this.items.push(droppedObj);
+        }
+    }
+
     /**
      * P4-7：玩家近战对单个目标的完整结算——从 handlePlayerAction 的既有
      * 内联块原样抽出（消息/隐身现形/漂浮文字/符文/血迹/分裂/击杀掉落），
@@ -6666,23 +6713,7 @@ export class Game {
                 }), '#00ffff');
             }
 
-            // Handle Drops
-            if (rng.randPercent(Math.floor(target.goldDropChance * 100))) {
-                const goldItem = new Item('Gold', '$', 0xffda75, ItemCategory.GOLD);
-                goldItem.loc = { ...target.loc };
-                this.items.push(goldItem);
-            }
-
-            if (rng.randPercent(Math.floor(target.itemDropChance * 100))) {
-                const isWeapon = rng.randPercent(50);
-                let droppedObj;
-                if (isWeapon) {
-                    droppedObj = ItemLoader.spawnWeapon(rng.randPercent(50) ? 'dagger' : 'sword', target.loc.x, target.loc.y, this.depth);
-                } else {
-                    droppedObj = ItemLoader.spawnArmor(rng.randPercent(50) ? 'leather_armor' : 'chain_mail', target.loc.x, target.loc.y, this.depth);
-                }
-                if (droppedObj) this.items.push(droppedObj);
-            }
+            this.dropMonsterLoot(target);
         }
 
         // P4-7：钝器击退（CE Combat.c:1398-1401；"命中且目标存活"对应 CE 的
@@ -6905,6 +6936,8 @@ export class Game {
         if (defender.mutation) {
             clone.mutate(defender.mutation);
         }
+        clone.setStatusDuration('poisoned', defender.getStatusDuration('poisoned'));
+        clone.restorePoison(defender.poisonAmount);
         clone.hp = defender.hp;
         clone.maxHp = defender.maxHp;
         clone.isAlly = defender.isAlly;
@@ -7363,8 +7396,9 @@ export class Game {
         return null;
     }
 
-    private playerTurnEnded() {
-        this.triggerDeathFeatures();
+    private poisonedDuringTurn = false;
+
+    private removeDeadMonsters(): void {
         // V-2b-6：死亡清扫前结算携带品掉落（CE Monsters.c:4075-4083
         // makeMonsterDropItem——击杀路径把 carriedItem 放回地面；CE 的
         // getQualifyingPathLocNear 择邻格语义 web 用"落怪原地"近似：怪物
@@ -7380,6 +7414,12 @@ export class Game {
             m.carriedItem = null;
         }
         this.monsters = this.monsters.filter(m => m.hp > 0);
+    }
+
+    private playerTurnEnded() {
+        this.poisonedDuringTurn = this.player.hasStatus('poisoned');
+        this.triggerDeathFeatures();
+        this.removeDeadMonsters();
 
         // C-5：CE Time.c:2480-2486——玩家坠落在回合一切其余结算之前
         //（handleXPXP 之后、monstersFall 与推进循环之前）。playerFalls 内部
@@ -7562,7 +7602,7 @@ export class Game {
                     return;
                 }
                 // CE Time.c:2713-2715：岩浆/毒气等致死后立即退出推进
-                if (this.isGameOver) return;
+                if (this.isGameOver || this.player.hp <= 0) return;
                 // CE Time.c:2704-2707：仅当玩家本次动作慢于一个标准回合
                 //（>100 tick；此刻玩家 tick 尚未递减，口径与 CE 一致）才暂停。
                 // 自动寻路/探索对应 rogue.playbackFastForward——锁存但不暂停。
@@ -7787,9 +7827,10 @@ export class Game {
         // 与 playerTurnEnded 顶部那次合起来覆盖"玩家动作本身杀死目标"与"推进循环
         // 内杀死目标"两种时序；deathEffectTriggered 保证不会被处理两次。
         this.triggerDeathFeatures();
+        this.removeDeadMonsters();
 
         // 主观饥饿结算：饥饿伤害 / 回血（CE Time.c:2523-2541，每玩家动作一次）
-        const recovery = this.player.recoverPerTurn();
+        const recovery = this.player.recoverPerTurn(this.poisonedDuringTurn);
         if (recovery === 'starving') {
             this.lastDamageSource = 'starvation';
         }
@@ -8215,6 +8256,8 @@ export class Game {
                 nutrition: this.player.nutrition,
                 maxNutrition: this.player.maxNutrition,
                 statusDurations: { ...this.player.statusDurations },
+                poisonAmount: this.player.poisonAmount,
+                regenCarry: this.player.regenCarry,
                 inventory: this.player.inventory.items.map((it) => this.serializeItem(it)),
                 equippedWeaponId: this.player.equippedWeapon?.id ?? null,
                 equippedArmorId: this.player.equippedArmor?.id ?? null,
@@ -8255,8 +8298,11 @@ export class Game {
             hp: m.hp,
             maxHp: m.maxHp,
             damageString: m.damageString,
+            regenTurns: m.regenTurns,
+            regenCounter: m.regenCounter,
             state: m.state,
             statusDurations: { ...m.statusDurations },
+            poisonAmount: m.poisonAmount,
             goldDropChance: m.goldDropChance,
             itemDropChance: m.itemDropChance,
             onHitStatus: m.onHitStatus,
@@ -8292,7 +8338,10 @@ export class Game {
         monster.hp = m.hp;
         monster.maxHp = m.maxHp;
         monster.state = m.state as any;
+        monster.regenTurns = m.regenTurns ?? 0;
+        monster.regenCounter = m.regenCounter ?? 0;
         monster.statusDurations = { ...(m.statusDurations ?? {}) };
+        monster.restorePoison(m.poisonAmount);
         monster.refreshSpeeds(); // P2-2：状态直写绕过 applyStatus，需显式重算衍生速度
         monster.damageString = m.damageString;
         monster.goldDropChance = m.goldDropChance;
@@ -8422,6 +8471,8 @@ export class Game {
         this.player.nutrition = snapshot.player.nutrition;
         this.player.maxNutrition = snapshot.player.maxNutrition;
         this.player.statusDurations = { ...(snapshot.player.statusDurations ?? {}) };
+        this.player.restorePoison(snapshot.player.poisonAmount);
+        this.player.regenCarry = snapshot.player.regenCarry ?? 0;
         this.player.refreshSpeeds(); // P2-2：状态直写绕过 applyStatus，需显式重算衍生速度
         this.player.inventory.items = snapshot.player.inventory.map((it) => this.deserializeItem(it));
         this.player.equippedWeapon = this.player.inventory.items.find((it) => it.id === snapshot.player.equippedWeaponId) ?? null;

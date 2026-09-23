@@ -52,6 +52,8 @@ export class Creature implements Entity {
     public char: string;
     public statusDurations: Partial<Record<StatusId, number>>;
     public statusImmunities: Set<StatusId>;
+    /** CE creature.poisonAmount: damage per objective poison tick. */
+    public poisonAmount = 0;
     /**
      * CE creature->ticksUntilTurn（Rogue.h:2192）：距下次可行动的剩余 tick。
      * 初始 0 是 CE 玩家的口径（Time.c:2604 首次结算时累加）；怪物在自身
@@ -130,6 +132,7 @@ export class Creature implements Entity {
     }
 
     public setStatusDuration(id: StatusId, duration: number) {
+        if (id === 'poisoned') this.poisonAmount = duration > 0 && this.hasStatus(id) ? Math.max(1, this.poisonAmount) : duration > 0 ? 1 : 0;
         if (duration > 0) {
             this.statusDurations[id] = duration;
         } else {
@@ -138,6 +141,7 @@ export class Creature implements Entity {
     }
 
     public applyStatus(id: StatusId, duration: number, stackMode: StatusStackMode = 'refresh'): boolean {
+        if (id === 'poisoned') return this.addPoison(duration, 1);
         if (duration <= 0 || this.statusImmunities.has(id)) return false;
         const current = this.statusDurations[id] ?? 0;
         const next = stackMode === 'stack' ? current + duration : Math.max(current, duration);
@@ -145,6 +149,26 @@ export class Creature implements Entity {
         this.statusDurations[id] = next;
         this.refreshSpeeds();
         return true;
+    }
+
+    public canBePoisoned(): boolean {
+        return this.hp > 0 && !this.statusImmunities.has('poisoned');
+    }
+
+    /** CE Combat.c:1905-1920: additive duration AND concentration; no instant damage.
+     * Keep the existing web poison immunity extension. A zero concentration increment
+     * (lichen-style exposure) establishes one dose but never raises existing doses. */
+    public addPoison(duration: number, concentration = 1): boolean {
+        if (duration <= 0 || !this.canBePoisoned()) return false;
+        const oldDuration = this.getStatusDuration('poisoned');
+        this.poisonAmount = Math.max(1, (oldDuration > 0 ? Math.max(1, this.poisonAmount) : 0) + concentration);
+        this.statusDurations.poisoned = oldDuration + duration;
+        return true;
+    }
+
+    /** Legacy saves had only a countdown; migrate without RNG. */
+    public restorePoison(amount?: number): void {
+        this.poisonAmount = this.hasStatus('poisoned') ? Math.max(1, Math.trunc(amount ?? 1)) : 0;
     }
 
     /**
@@ -161,7 +185,7 @@ export class Creature implements Entity {
             if (this.isStatusPermanent(id)) continue;
             const next = turns - 1;
             if (next <= 0) {
-                delete this.statusDurations[id];
+                this.setStatusDuration(id, 0);
                 expired.push(id);
             } else {
                 this.statusDurations[id] = next;

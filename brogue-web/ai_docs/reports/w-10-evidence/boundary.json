@@ -1,0 +1,154 @@
+{
+  "effectBoundary": {
+    "applyBoltEffect": {
+      "BoltEffect.FIRE": true,
+      "BoltEffect.LIGHTNING": true,
+      "BoltEffect.TELEPORT": true,
+      "BoltEffect.SLOW": true,
+      "BoltEffect.HEALING": true,
+      "BoltEffect.HASTE": true,
+      "BoltEffect.DISCORD": true,
+      "BoltEffect.INVISIBILITY": true,
+      "BoltEffect.BECKONING": true,
+      "BoltEffect.CONJURATION": true,
+      "BoltEffect.SHIELDING": true,
+      "BoltEffect.EMPOWERMENT": true,
+      "BoltEffect.NEGATION": true,
+      "BoltEffect.TUNNELING": true,
+      "default": true
+    },
+    "applyMonsterBoltHit": {
+      "BoltEffect.HEALING": true,
+      "BoltEffect.HASTE": true,
+      "BoltEffect.SHIELDING": true,
+      "BoltEffect.SLOW": true,
+      "BoltEffect.DISCORD": true,
+      "BoltEffect.NEGATION": true,
+      "BoltEffect.BECKONING": true,
+      "default": true
+    }
+  },
+  "head": "00b4dd2e0681c34574307dbdb6d843062e9f7a26",
+  "changedMethods": [
+    "createMonsterFromSnapshot",
+    "generateTestDepth",
+    "applyPlayerBoltStatus",
+    "boltStatusAccepted",
+    "applyBoltEffect",
+    "applyMonsterBoltHit",
+    "negateCreatureMagic",
+    "applyWeaponRunicEffect",
+    "tickCreatureStatuses",
+    "resolvePlayerMeleeAttackOn",
+    "trySplitMonster",
+    "playerTurnEnded",
+    "advancementLoop",
+    "finishTurnEpilogue",
+    "toSnapshot",
+    "serializeMonster",
+    "deserializeMonster",
+    "loadSnapshot"
+  ],
+  "addedMethods": [
+    "resolvePoisonDamage",
+    "dropMonsterLoot",
+    "removeDeadMonsters"
+  ],
+  "protectedMethods": {
+    "castMonsterBolt": true,
+    "applyDirectBoltDamage": true,
+    "generateDepth": true,
+    "tickArcanaResources": true,
+    "applyBasicBoltEffect": true,
+    "applyStatusToMonster": true,
+    "applyTimedStatus": true,
+    "applyEnvironmentalEffects": true,
+    "resolveBurningDamage": true,
+    "applyInstantExplosionAt": true,
+    "triggerDeathFeatures": true,
+    "objectiveTimeBlock": true
+  },
+  "unchangedFiles": {
+    "src/data/arcana.json": {
+      "head": "e7a48053679eeccac39fb3518d811b2d757384fa734f12371a6fa2e5b9a88224",
+      "current": "e7a48053679eeccac39fb3518d811b2d757384fa734f12371a6fa2e5b9a88224",
+      "equal": true
+    },
+    "src/data/monsters.json": {
+      "head": "996707468fd131c0ba59e4fe0f08f0877087f2d857d89b40acc552704c0d1f38",
+      "current": "996707468fd131c0ba59e4fe0f08f0877087f2d857d89b40acc552704c0d1f38",
+      "equal": true
+    },
+    "src/data/mutations.json": {
+      "head": "b017cbaf1a4c13c84c2c32bc4200ae1cd28dbd2648f55ff33af3a67ba8583775",
+      "current": "b017cbaf1a4c13c84c2c32bc4200ae1cd28dbd2648f55ff33af3a67ba8583775",
+      "equal": true
+    },
+    "src/engine/Combat/BoltCatalog.ts": {
+      "head": "76f7e6329138415cf4b9037f038e6e175365d61e7addf778aab2a12f9e307360",
+      "current": "76f7e6329138415cf4b9037f038e6e175365d61e7addf778aab2a12f9e307360",
+      "equal": true
+    },
+    "src/engine/Combat/BoltTrajectory.ts": {
+      "head": "852652621e7154cb9cf47e3df40d0daa8a25f37214aeacbce09a5430d5697146",
+      "current": "852652621e7154cb9cf47e3df40d0daa8a25f37214aeacbce09a5430d5697146",
+      "equal": true
+    },
+    "src/engine/Items/Item.ts": {
+      "head": "a76c40ebcf3fb2988cd2ba5d629a8d1725070c984361c839a24bb10f878eed9e",
+      "current": "a76c40ebcf3fb2988cd2ba5d629a8d1725070c984361c839a24bb10f878eed9e",
+      "equal": true
+    },
+    "src/engine/Items/ItemLoader.ts": {
+      "head": "c1f94dbd4be3ff95dbe6f6355cae0c84b685c2b72f2d5f760636f1c225186a65",
+      "current": "c1f94dbd4be3ff95dbe6f6355cae0c84b685c2b72f2d5f760636f1c225186a65",
+      "equal": true
+    },
+    "src/engine/Items/ArcanaInstance.ts": {
+      "head": "7d81a4ae22cb648547a96372ab9cd034dffc54361b4579b9087d24bfb7acc6e8",
+      "current": "7d81a4ae22cb648547a96372ab9cd034dffc54361b4579b9087d24bfb7acc6e8",
+      "equal": true
+    },
+    "src/engine/Items/ArcanaRecharge.ts": {
+      "head": "d3232b776d3e6814225f8c4bf2c76d1aa743bb515a8070a1b55886e23a67d29d",
+      "current": "d3232b776d3e6814225f8c4bf2c76d1aa743bb515a8070a1b55886e23a67d29d",
+      "equal": true
+    },
+    "src/engine/Items/ArcanaEnchantment.ts": {
+      "head": "eca65a994903853aaaf5fab0ac885c923e60fc39adc36395841b46c351359c15",
+      "current": "eca65a994903853aaaf5fab0ac885c923e60fc39adc36395841b46c351359c15",
+      "equal": true
+    },
+    "src/engine/Random.ts": {
+      "head": "9a6931acdd5037497450f1dfa2bf04e8ae43212917bff15560775b73a11036ce",
+      "current": "9a6931acdd5037497450f1dfa2bf04e8ae43212917bff15560775b73a11036ce",
+      "equal": true
+    },
+    "src/engine/Environment/Gas.ts": {
+      "head": "2373e4e5c2dac04eb5787c97441d297e0bba986533dfd184a27611aa0338d5f5",
+      "current": "2373e4e5c2dac04eb5787c97441d297e0bba986533dfd184a27611aa0338d5f5",
+      "equal": true
+    },
+    "src/engine/Map/Promotion.ts": {
+      "head": "1493734430ba07a46e317914e160eb96759acf141b42da2e2985861be113a2e0",
+      "current": "1493734430ba07a46e317914e160eb96759acf141b42da2e2985861be113a2e0",
+      "equal": true
+    },
+    "src/engine/Map/DungeonFeature.ts": {
+      "head": "2541d90a740f3a37f800d1e11e3243ebf8638dc57230db33aa40b2e95fee2ebc",
+      "current": "2541d90a740f3a37f800d1e11e3243ebf8638dc57230db33aa40b2e95fee2ebc",
+      "equal": true
+    },
+    "src/engine/Map/TerrainCatalog.ts": {
+      "head": "7e88c7041318415e2ca98ac27f28f40e52ee1fe9dc7dcb6629d591d218666926",
+      "current": "7e88c7041318415e2ca98ac27f28f40e52ee1fe9dc7dcb6629d591d218666926",
+      "equal": true
+    },
+    "src/test/fixtures/generation_baseline.json": {
+      "head": "1549a4c5aae041ff5c4a7653ea22d07af88aecaf3740861b0cdb90a4656d5820",
+      "current": "1549a4c5aae041ff5c4a7653ea22d07af88aecaf3740861b0cdb90a4656d5820",
+      "equal": true
+    }
+  },
+  "playerDamageHasPhysicalAttack": false
+}

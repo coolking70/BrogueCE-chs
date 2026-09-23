@@ -102,7 +102,7 @@ export interface BoltConfig {
     effect: BoltEffect;
     /** Legacy runtime value, NOT CE enchantment/charges. W-8 CE fire/lightning
      * STAFF damage ignores it and resolves instance E at the effect consumer.
-     * W-9 directed statuses also resolve CE magnitude at contact.
+     * W-9 directed statuses and W-10 poison also resolve CE magnitude at contact.
      * Remaining effects and retired web inventions retain this legacy value. */
     magnitude: number;
     /** Display character while in flight. */

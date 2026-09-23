@@ -862,3 +862,15 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 拟最终运行前的复核发现W-4反射预算末尾实际接触无生命石像卫士，原“命中必减速”断言不符CE；保留全部轨迹/预算断言，增加精确命中者与拒绝减速/仍autoID断言。中断未完成的广域/拟最终运行，修后重新冻结完整复跑，未采用中断统计。
 
 - 完整回归发现W-1 BoltContract另有1例明确锁旧怪物治疗25%（35HP），按CE目录E5→50%改为60HP，施法者/命中者/位置/autoID断言全保留。该轮build/drift通过但回归1红，不计作最终绿；保存prefinal-failure.json。定向复核后重新冻结，用8 workers（本机10核/32GiB）执行同一109文件完整门禁。
+
+## 2026-09-23 W-10：毒状态闭环
+
+- 当前请求：严格执行 w-10.prompt；CE addPoison 时长/浓度相加，staffPoison 固定点表；P2 客观块结算，保留 G-3。
+- 独立 addPoison 生命周期，不复用 W-9 applyBasicBoltEffect。物理 MA_POISONS 在 Combat.attack 共用入口结算，BE_DAMAGE 既有简化保留；最终报告逐项申报。
+- 新增38例已通过；W-4旧毒反射12回合按E2=5原位翻正，几何/对象/autoID断言保留。W-2/W-9、P2/P4、hunger_regen/G-3与翻译/符文定向检查已跑，未改旧断言期望。
+- CE caustic gas 在 Time.c:592-597 走 T_CAUSES_DAMAGE 直接伤害，非 addPoison；任务书“吸毒气得毒状态”对本仓库 CE 不成立。G-3气体体积/扩散/消散及生物效果正文保持不变。
+- 实际扩展申报：Combat.attack物理 MA_POISONS 从全额接触+2damage时长改为1接触+原伤害时长、+1浓度；删除重复调用并覆盖怪物互殴/几何/BE_ATTACK；BE_DAMAGE旧公式和其旧on-hit保留。venom不再瞬时重复毒伤；怪物再生移到客观状态块，中毒暂停；死亡清扫抽取并在收尾补扫，毒杀复用既有随机掉落。
+- 存档保存浓度、玩家再生余数、怪物再生进度；旧毒倒计时兜底1剂，无毒清0。分裂仅补独立毒字段复制；完整克隆仍留后续轮。render_game_to_text增加毒浓度以便核对。
+- 浏览器8个状态检查通过，含真实Enter施法、叠毒、E8反射、免疫/空射、死亡移除、两个50tick动作；零页面/控制台错误，7张整页截图已打开。HMR曾造成动态导入的Monster类与游戏类不一致，重启Vite后全过；无生产逻辑迁就。技能客户端无头/有头canvas均黑图，已检视，不作为视觉通过。
+- 最终冻结：9个生产文件的R105，S补8文件，R∪S113。即将执行build、112显式文件回归、独立drift；脚本保存逐文件结果及SHA-256前后清单，不重捕获基线。此后仅回填w-10.report.md与evidence。
+- 后续边界：怪物BE_DAMAGE简化、完整克隆与消魔、缺失毒地衣入口/CE maxStatus展示不在本轮；poisonAmount为护盾后续轮提供独立毒伤路径。最终验证结果见本轮报告。

@@ -249,6 +249,14 @@ export class CombatSystem {
             damage = 1;
         }
 
+        // W-10 / CE Combat.c:1320-1323,1404,524-527: physical MA_POISONS
+        // replaces rolled damage with 1 contact damage; the original roll becomes
+        // poison duration. Centralized here for player, ally and geometry targets.
+        // BE_DAMAGE retains its separately scoped legacy monster formula.
+        const poisonDuration = isWeaponAttack && attacker instanceof Monster
+            && attacker.hasAbility('MA_POISONS') && damage > 0 ? damage : 0;
+        if (poisonDuration > 0) damage = 1;
+
         // --- Check for runic trigger ---
         let triggeredRunic: string | undefined;
         if (weaponRunic && attacker instanceof Player && attacker.equippedWeapon) {
@@ -292,6 +300,7 @@ export class CombatSystem {
                 attacker.hp += transferAmount; // 有意不 clamp 到 maxHp，见上方注释
             }
             applyTo.takeDamage(damage);
+            if (poisonDuration > 0) applyTo.addPoison(poisonDuration, 1);
         }
 
         return { damage, weaponName, hit: true, backstab, lunge: lungeAttack, triggeredRunic };
