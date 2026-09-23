@@ -25,6 +25,7 @@ import { Monster, monstersAreTeammates, monstersAreEnemies } from '../../entitie
 import { CombatSystem } from '../Combat/Combat';
 import { staffPoison } from '../Combat/Poison';
 import { staffProtection } from '../Combat/Shielding';
+import { wandDominate } from '../Combat/Domination';
 import { staffBladeCount, bladeSpawnLocation } from '../Combat/Conjuration';
 import { weaponParalysisDuration, weaponConfusionDuration, weaponForceDistance, netEnchant, armorAbsorptionMax, armorReprisalPercent } from '../Combat/CombatFormulas';
 import { ItemCategory, Item } from '../Items/Item';
@@ -227,6 +228,11 @@ export interface GameSnapshotItem {
 }
 
 export interface GameSnapshotMonster {
+    /** W-17: optional for old saves. Player follower = isAlly + leaderId=null.
+     * Resolve monster IDs only after BOTH active and dormant lists exist. */
+    allegiance?: { isAlly: boolean; isCaged: boolean; leaderId: number | null; boundToLeader: boolean; dominated: boolean };
+    dominatedForm?: MonsterData;
+
     /** W-16: tagged species/relationship/timing payload. No tag in pre-W16
      * saves means no conjuration relation; never turn a horde blade into an ally. */
     spectralBlade?: {
@@ -234,6 +240,9 @@ export interface GameSnapshotMonster {
         boundToPlayer: boolean;
         doesNotTrackLeader: boolean;
         ticksUntilTurn: number;
+        /** W-17: keep blade relationships in their existing authoritative tag. */
+        leaderId?: number | null;
+        boundToLeader?: boolean;
     };
     id: number;
     loc: Pos;
@@ -412,6 +421,8 @@ interface TestRoomState {
     baselineItems: GameSnapshotItem[];
     baselineMonsters: Array<{
         spectralBlade?: GameSnapshotMonster['spectralBlade'];
+        allegiance?: GameSnapshotMonster['allegiance'];
+        dominatedForm?: MonsterData;
         id: number;
         loc: Pos;
         name: string;
@@ -2024,6 +2035,8 @@ export class Game {
                                 // 对本身就是常规 horde 领袖（如 goblin warlord 麾下的
                                 // 哥布林战队）的召唤者也能算对既有随从数。
                                 mon.leader = leaderMon;
+                                // W-17: metadata only; no draw or placement change.
+                                mon.boundToLeader = h.flags.includes('HORDE_DIES_ON_LEADER_DEATH');
                                 this.monsters.push(mon);
                                 collected?.push(mon);
 
@@ -2169,6 +2182,7 @@ export class Game {
                 if (!pos) continue;
                 const mon = new Monster(pos.x, pos.y, memberMData);
                 mon.leader = summoner;
+                mon.boundToLeader = horde.flags.includes('HORDE_DIES_ON_LEADER_DEATH');
                 mon.isAlly = summoner.isAlly;
                 mon.state = summoner.state;
                 mon.ticksUntilTurn = 101; // CE Monsters.c:1034
@@ -2375,7 +2389,7 @@ export class Game {
     }
 
     private createMonsterFromSnapshot(m: TestRoomState['baselineMonsters'][number]): Monster {
-        if (m.spectralBlade) return this.deserializeMonster(m);
+        if (m.spectralBlade || m.allegiance) return this.deserializeMonster(m);
         const data = {
             id: m.name.toLowerCase().replace(/\s+/g, '_'),
             name: m.name,
@@ -2735,6 +2749,8 @@ export class Game {
                     baselineItems: roomItems.map((it) => this.serializeItem(it)),
                     baselineMonsters: roomMonsters.map((m) => ({
                         spectralBlade: this.serializeMonster(m).spectralBlade,
+                        allegiance: this.serializeMonster(m).allegiance,
+                        dominatedForm: this.serializeMonster(m).dominatedForm,
                         id: m.id,
                         loc: { x: m.loc.x, y: m.loc.y },
                         name: m.name,
@@ -4654,6 +4670,27 @@ export class Game {
                 } else if (!target) {
                     logMiss('bolt.teleport_miss', `${item.displayName} flashes but finds no target.`, '#cc88ff');
                 }
+                break;
+            }
+
+            case BoltEffect.DOMINATION: {
+                // CE Items.c:5274-5300: no writes until the roll succeeds.
+                // Player, inanimate and invulnerable contacts cannot be dominated.
+                if (!(target instanceof Monster) || target.hasBehavior('MONST_INANIMATE')
+                    || target.hasBehavior('MONST_TURRET') || target.isInvulnerable()) break;
+                const success = rng.randPercent(wandDominate(target));
+                if (success) {
+                    target.setStatusDuration('discordant', 0);
+                    this.becomeAllyWith(target);
+                    target.dominated = true;
+                }
+                // canSeeMonster is evaluated AFTER conversion; a newly allied
+                // invisible creature on a visible tile can now be observed.
+                autoID = this.canObserveBoltTarget(target);
+                if (autoID) logger.log(success
+                    ? i18next.t('bolt.domination_success', { target: target.name, defaultValue: '{{target}} is bound to your will!' })
+                    : i18next.t('bolt.domination_resisted', { target: target.name, defaultValue: '{{target}} resists the bolt of domination.' }),
+                    success ? '#88ff88' : '#aaaaaa');
                 break;
             }
 
@@ -7028,6 +7065,8 @@ export class Game {
         clone.maxHp = defender.maxHp;
         clone.isAlly = defender.isAlly;
         clone.leader = defender.leader;
+        clone.boundToLeader = defender.boundToLeader;
+        clone.dominated = defender.dominated;
         clone.state = defender.state;
         clone.ticksUntilTurn = Math.max(clone.ticksUntilTurn, 101); // CE: max(ticksUntilTurn, 101)
         this.monsters.push(clone);
@@ -7502,8 +7541,17 @@ export class Game {
         this.monsters = this.monsters.filter(m => m.hp > 0);
     }
 
+    /** CE Time.c:2561-2564: demotion detaches bound followers; they die
+     * at the next player turn, with ordinary death effects. ALLY is exempt. */
+    private killOrphanedBoundFollowers(): void {
+        for (const m of this.monsters) {
+            if (m.hp > 0 && m.boundToLeader && !m.leader && !m.isAlly) m.takeDamage(m.hp, true);
+        }
+    }
+
     private playerTurnEnded() {
         this.poisonedDuringTurn = this.player.hasStatus('poisoned');
+        this.killOrphanedBoundFollowers();
         this.triggerDeathFeatures();
         this.removeDeadMonsters();
 
@@ -8377,9 +8425,15 @@ export class Game {
      */
     private serializeMonster(m: Monster): GameSnapshotMonster {
         return {
+            ...(m.typeId !== 'spectral_blade' ? { allegiance: {
+                isAlly: m.isAlly, isCaged: m.isCaged, leaderId: m.leader?.id ?? null,
+                boundToLeader: m.boundToLeader, dominated: m.dominated,
+            } } : {}),
+            dominatedForm: m.dominationForm(),
             ...(m.typeId === 'spectral_blade' ? { spectralBlade: {
                 isAlly: m.isAlly, boundToPlayer: m.boundToPlayer,
                 doesNotTrackLeader: m.doesNotTrackLeader, ticksUntilTurn: m.ticksUntilTurn,
+                leaderId: m.leader?.id ?? null, boundToLeader: m.boundToLeader,
             } } : {}),
             id: m.id,
             loc: { x: m.loc.x, y: m.loc.y },
@@ -8426,7 +8480,7 @@ export class Game {
             abilities: (m.abilities ?? []) as MonsterAbility[]
         };
         const bladeData = m.spectralBlade ? (monsterData as MonsterData[]).find(d => d.id === 'spectral_blade') : undefined;
-        const monster = new Monster(m.loc.x, m.loc.y, bladeData ?? data);
+        const monster = new Monster(m.loc.x, m.loc.y, m.allegiance?.dominated && m.dominatedForm ? m.dominatedForm : bladeData ?? data);
         monster.id = m.id;
         monster.hp = m.hp;
         monster.maxHp = m.maxHp;
@@ -8437,10 +8491,17 @@ export class Game {
         if (m.spectralBlade) {
             monster.isAlly = m.spectralBlade.isAlly === true;
             monster.boundToPlayer = m.spectralBlade.boundToPlayer === true;
+            monster.boundToLeader = m.spectralBlade.boundToLeader === true;
             monster.doesNotTrackLeader = m.spectralBlade.doesNotTrackLeader === true;
             monster.ticksUntilTurn = Number.isFinite(m.spectralBlade.ticksUntilTurn)
                 ? m.spectralBlade.ticksUntilTurn : monster.attackSpeed + 1;
             monster.syncFlagDerivedStatuses();
+        }
+        if (m.allegiance) {
+            monster.isAlly = m.allegiance.isAlly === true;
+            monster.isCaged = m.allegiance.isCaged === true;
+            monster.boundToLeader = m.allegiance.boundToLeader === true;
+            monster.dominated = m.allegiance.dominated === true;
         }
         monster.restorePoison(m.poisonAmount);
         monster.restoreShield(m.maxShield);
@@ -8454,6 +8515,17 @@ export class Game {
         monster.statusImmunities = new Set<StatusId>(m.statusImmunities ?? []);
         monster.statusResistTurns = { ...(m.statusResistTurns ?? {}) };
         return monster;
+    }
+
+    private restoreMonsterLeaders(snapshots: readonly GameSnapshotMonster[], monsters: readonly Monster[]): void {
+        const byId = new Map(monsters.map(m => [m.id, m]));
+        for (const saved of snapshots) {
+            const monster = byId.get(saved.id);
+            if (monster && (saved.allegiance || saved.spectralBlade)) {
+                const leaderId = saved.spectralBlade ? saved.spectralBlade.leaderId : saved.allegiance?.leaderId;
+                monster.leader = byId.get(leaderId ?? -1) ?? null;
+            }
+        }
     }
 
     public loadSnapshot(snapshot: GameSnapshot): boolean {
@@ -8590,6 +8662,8 @@ export class Game {
         this.monsters = snapshot.monsters.map((m) => this.deserializeMonster(m));
         // V-2b-5：休眠怪还原进休眠表（不进 this.monsters——CE 同构）。
         this.dormantMonsters = (snapshot.dormantMonsters ?? []).map((m) => this.deserializeMonster(m));
+        this.restoreMonsterLeaders([...snapshot.monsters, ...(snapshot.dormantMonsters ?? [])],
+            [...this.monsters, ...this.dormantMonsters]);
 
         this.items = snapshot.items.map((it) => this.deserializeItem(it));
         if (snapshot.stats) {
@@ -9480,6 +9554,7 @@ export class Game {
         for (const monsterSnapshot of room.baselineMonsters) {
             this.monsters.push(this.createMonsterFromSnapshot(monsterSnapshot));
         }
+        this.restoreMonsterLeaders(room.baselineMonsters, this.monsters);
 
         logger.log('重置踏板触发：房间已重置。', '#88ccff');
         this.needsRender = true;
@@ -9806,18 +9881,21 @@ export class Game {
         return true;
     }
 
-    /** CE freeCaptive -> becomeAllyWith (Movement.c:726-758).
-     * isAlly + leader=null is this engine's player-follower representation.
-     * Ordinary key/cage rescue is intentionally not migrated in W-11.
-     */
-    public freeCaptive(monster: Monster): void {
-        if (!monster.isCaged) return;
+    /** CE Movement.c:728-742. Shared by domination and W-11 magical rescue;
+     * ordinary key/cage rescue keeps its existing V-2b-5 entry point. */
+    public becomeAllyWith(monster: Monster): void {
         let replacement: Monster | null = null;
-        const groups = [this.monsters, this.dormantMonsters ?? [],
-            ...[...(this.levels?.values() ?? [])].flatMap(level => [level.monsters, level.dormantMonsters ?? []])];
-        for (const group of groups) for (const follower of group) {
-            if (follower === monster || follower.leader !== monster) continue;
-            if (follower.isDormant) follower.leader = null;
+        // Revisited levels retain a cached array until the next departure; it
+        // can contain already removed entities. The live current lists win.
+        const levels = [...(this.levels?.entries() ?? [])].filter(([depth]) => depth !== this.depth)
+            .sort(([a], [b]) => a - b).map(([, level]) => level);
+        // CE elects across active lists first, current level preferred. Dormant
+        // followers are detached in a separate pass, never elected/reparented.
+        const active = new Set([...(this.monsters ?? []), ...levels.flatMap(level => level.monsters)]);
+        const dormant = new Set([...(this.dormantMonsters ?? []), ...levels.flatMap(level => level.dormantMonsters ?? [])]);
+        for (const follower of active) {
+            if (follower === monster || follower.hp <= 0 || follower.leader !== monster) continue;
+            if (follower.boundToLeader || follower.isDormant || dormant.has(follower)) follower.leader = null;
             else if (!replacement) { replacement = follower; follower.leader = null; }
             else {
                 follower.leader = replacement;
@@ -9827,6 +9905,7 @@ export class Game {
                 }
             }
         }
+        for (const follower of dormant) if (follower !== monster && follower.leader === monster) follower.leader = null;
         if (monster.carriedItem) {
             const candidates = captiveItemDropCandidates(this, monster.loc, this.items);
             // CE placeItemAt(INVALID_POS) uses randomMatchingLocation as a final
@@ -9855,7 +9934,13 @@ export class Game {
         monster.isAlly = true;
         monster.leader = null;
         monster.seized = false;
-        monster.state = MonsterState.WANDERING;
+        monster.state = MonsterState.WANDERING; // isAlly is web's MONSTER_ALLY state.
+        this.needsRender = true;
+    }
+
+    public freeCaptive(monster: Monster): void {
+        if (!monster.isCaged) return;
+        this.becomeAllyWith(monster);
         logger.log(i18next.t('monster.freed', {
             monster: monster.name,
             defaultValue: `The ${monster.name} is grateful for its freedom and joins you!`

@@ -1,0 +1,12 @@
+[
+  {
+    "run": "prefinal-depth-order",
+    "exit": 130,
+    "cause": "Explicit SIGINT while regression was running; correct CE numeric level order before a fresh final run."
+  },
+  {
+    "run": "prefinal-stale-cache",
+    "exit": 130,
+    "cause": "Explicit SIGINT while regression was running; exclude stale current-level cache and dead leadership candidates before a fresh final run."
+  }
+]

@@ -1,0 +1,539 @@
+{
+  "states": [
+    {
+      "name": "full-resists",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林",
+            "x": 9,
+            "y": 5,
+            "hp": 100,
+            "typeId": "goblin",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 12,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100000,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      },
+      "outcome": {
+        "autoID": true,
+        "hits": [
+          45
+        ]
+      }
+    },
+    {
+      "name": "twenty-resists",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林",
+            "x": 9,
+            "y": 5,
+            "hp": 20,
+            "typeId": "goblin",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 12,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100000,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      },
+      "outcome": {
+        "autoID": true,
+        "hits": [
+          46
+        ]
+      }
+    },
+    {
+      "name": "twenty-succeeds",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林",
+            "x": 9,
+            "y": 5,
+            "hp": 20,
+            "typeId": "goblin",
+            "isAlly": true,
+            "boundToPlayer": false,
+            "dominated": true,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100000,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      },
+      "outcome": {
+        "autoID": true,
+        "hits": [
+          47
+        ]
+      }
+    },
+    {
+      "name": "captive-key",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林",
+            "x": 9,
+            "y": 5,
+            "hp": 19,
+            "typeId": "goblin",
+            "isAlly": true,
+            "boundToPlayer": false,
+            "dominated": true,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100000,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": [
+          {
+            "name": "铁钥匙",
+            "x": 9,
+            "y": 5
+          }
+        ]
+      },
+      "outcome": {
+        "autoID": true,
+        "hits": [
+          48
+        ]
+      }
+    },
+    {
+      "name": "key-exposed",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林",
+            "x": 8,
+            "y": 5,
+            "hp": 19,
+            "typeId": "goblin",
+            "isAlly": true,
+            "boundToPlayer": false,
+            "dominated": true,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100000,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": [
+          {
+            "name": "铁钥匙",
+            "x": 9,
+            "y": 5
+          }
+        ]
+      }
+    },
+    {
+      "name": "restored",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林",
+            "x": 8,
+            "y": 5,
+            "hp": 19,
+            "typeId": "goblin",
+            "isAlly": true,
+            "boundToPlayer": false,
+            "dominated": true,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": [
+          {
+            "name": "铁钥匙",
+            "x": 9,
+            "y": 5
+          }
+        ]
+      }
+    },
+    {
+      "name": "targeting",
+      "state": {
+        "mode": "arcana_target",
+        "enchantmentTargets": [],
+        "arcanaTarget": {
+          "name": "铜魔杖",
+          "x": 9,
+          "y": 5
+        },
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林",
+            "x": 9,
+            "y": 5,
+            "hp": 19,
+            "typeId": "goblin",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 12,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100000,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "name": "confirmed",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 100,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 2,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林",
+            "x": 9,
+            "y": 5,
+            "hp": 19,
+            "typeId": "goblin",
+            "isAlly": true,
+            "boundToPlayer": false,
+            "dominated": true,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 99900,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "name": "combat",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 100,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 2,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林",
+            "x": 9,
+            "y": 5,
+            "hp": 17,
+            "typeId": "goblin",
+            "isAlly": true,
+            "boundToPlayer": false,
+            "dominated": true,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "老鼠",
+            "x": 10,
+            "y": 5,
+            "hp": 48,
+            "typeId": "rat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      },
+      "combat": {
+        "before": {
+          "ally": 19,
+          "enemy": 50
+        },
+        "after": {
+          "ally": 17,
+          "enemy": 48
+        }
+      }
+    }
+  ],
+  "errors": []
+}

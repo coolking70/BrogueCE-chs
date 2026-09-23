@@ -938,3 +938,20 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 已有全局GameSnapshot只存当前层、不存levels缓存：本轮已完成内存跨层留层和当前层/休眠/测试房刀刃快照；不声称跨层全局存档已CE对齐，报告明确登记。
 - 初步完整闭包在补最后测试/注释后主动终止（exit130，非超时/测试失败）；不计最终门禁。冻结所有生产/测试/脚本/progress后重新完整跑118文件闭包、build、drift；保留初步日志。4个反向变异用于验证实体/首等待/不跟随/autoID断言，finally还原SHA。
 - 后续：W-23完整消魔资格/能力剥离，W-20通用克隆/关系快照；整个levels跨层JSON持久化为既有存档架构缺口，不能由刀刃跟随假象掩盖。最终门禁后仅回填报告及证据。
+
+
+## 2026-09-23 W-17 支配
+- 本轮按 tasks/w-17.prompt.md/W-0 W-17行为执行，使用develop-web-game技能。CE公式严格低于20%必成，恰20%=80%，满血0%，整数截断；编译CE原函数取黄金值。
+- DOMINATION成功后清W-9 discordant、becomeAllyWith转队/释俘/清seized/掉携物/重组leader；失败不写目标。可见失败也autoID。无物品身份入池。
+- W-11 freeCaptive转队原语抽出共用；补绑定随从载体/两遍leader处理，休眠不选首领；生成仅记录horde已有旗标，无新增抽签。新增当前层关系快照与支配实际形态保存，旧档缺字段不猜盟友。
+- 待办：边界/失败全状态/反射/关系/存档测试，浏览器实测，R+S最终门禁与报告。
+- 定向40项支配测试通过；与W-11/P4-2/P4-5/V-2b-5首批回归129项通过，后补随机反射/自然分裂/实际测试房reset，既有测试未改。初版新夹具拼错spawnKey/cancelArcanaSelection API、缺scent，以及错误地给pendingArcana注入bolt，均纠正为真实方法和只替换测试配置。
+- 浏览器九场景通过、控制台/页面错误0。技能客户端无头/有头canvas仍黑，实际打开确认，整页截图可见盟友g移动并露出k、读档保留。战斗夹具最初的goblin麻痹onHit让目标不能回击，关闭夹具额外onHit后通过；未改生产状态/战斗规则。既有穿刺盟友日志有{{ally}}占位未替换，登记为旧P4-6文案缺口。
+- 生产6文件：Game/Monster/Domination/BoltTargeting/GameCanvas/zh_CN。仅horde绑定元数据和分裂继承关系触及生成/召唤/分裂方法，不增RNG、不改池/权重。P4-2 carriedMonster寄宿/复活仍是前轮未建模缺口，本轮没有创造复活系统；全levels缓存的JSON持久化也仍属原存档边界。
+- R=110、S并集120文件；最终将冻结源码/测试/scripts/progress，依次build、119显式回归、drift；哈希、逐文件结果与5个反向变异证据见w-17.report.md及evidence。后续仅回填报告/运行证据。
+- 后续：domination身份和入池留W-24；完整群体死亡继任、carriedMonster生命周期与整层缓存存档仍需各自后续轮次，不以本轮已覆盖的支配转队链冒充全部怪物系统CE对齐。
+- 首次拟最终门禁build通过，回归运行中主动中断exit130：收尾复核发现CE跨层首领选举按层号，Map插入顺序不等价。修正becomeAllyWith缓存层排序，补无当前层候选/逆序Map测试，重新全量冻结复跑；此前日志归档prefinal-depth-order，不计最终结果。
+- 第二次拟最终build通过，回归中主动中断exit130：Game.generateDepth重访后保留当前层缓存数组，removeDead/enterSummons重赋值后副本可过时。demotion只读当前活动真值、跳过当前层缓存和hp<=0候选，补实际旧数组夹具（第42项），再冻结完整复跑。归档prefinal-stale-cache；仍不拼接中途结果。
+- 第三次完整冻结门禁build/drift通过，回归118/119文件通过，唯一断言失败是W-16 tagless旧档守卫：新allegiance与spectralBlade形成双重盟友来源。修代码让刀刃继续只用W-16单一tag，并在该tag扩展leaderId/boundToLeader；原128测试仍不改。新增horde刀刃关系往返/缺tag兜底测试（第43项）。此前报告保存到prefinal-blade-tag。
+- 同次脚本错误把堆栈runWithTimeout匹配成timeout，额外串行复跑仍是同一断言失败（不是超时）。收窄识别到实际Test/Hook timed out错误消息，不改测试超时上限。修后重新完整冻结运行，不拼接旧绿文件。
+- W-16/W-17修后89项定向通过，5个反向变异重新打红并恢复SHA。最终并行度按本机Node实测10CPU/32GiB调为8 workers（只改复跑脚本命令，不改任何测试timeout/期望），build/drift仍独立串行；重新完整跑同120文件闭包。

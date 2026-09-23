@@ -486,6 +486,8 @@ onMounted(async () => {
             })
             .map((m) => ({ name: m.name, x: m.loc.x, y: m.loc.y, hp: m.hp,
                 typeId: m.typeId, isAlly: m.isAlly, boundToPlayer: m.boundToPlayer,
+                dominated: m.dominated, isCaged: m.isCaged, leaderId: m.leader?.id ?? null,
+                discordant: m.getStatusDuration('discordant'),
                 doesNotTrackLeader: m.doesNotTrackLeader, ticksUntilTurn: m.ticksUntilTurn,
                 poisonAmount: m.poisonAmount, poisoned: m.getStatusDuration('poisoned'),
                 shield: m.getStatusDuration('shielded'), maxShield: m.maxShield }));

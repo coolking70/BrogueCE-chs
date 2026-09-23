@@ -231,6 +231,10 @@ export class Monster extends Creature {
     public behaviorFlags: Set<string> = new Set();
     public abilityFlags: Set<string> = new Set();
     public isAlly: boolean = false;
+    /** W-17: marks converted allies for combat/persistence; never a status timer. */
+    public dominated = false;
+    /** CE MB_BOUND_TO_LEADER, set from the horde flag without drawing RNG. */
+    public boundToLeader = false;
     public isCaged: boolean = false;
     /**
      * V-2b-6：≙ CE creature->carriedItem（Rogue.h:2186 一带；机器侧写入点
@@ -960,6 +964,19 @@ export class Monster extends Creature {
         }
     }
 
+    /** Preserve the actual converted form, including mutations/negated flags,
+     * instead of guessing a species from a translated display name on load. */
+    public dominationForm(): MonsterData | undefined {
+        if (!this.dominated) return undefined;
+        return { id: this.typeId, name: this.name, char: this.char, color: this.color,
+            hp: this.maxHp, damage: this.damageString, minDepth: 1, maxDepth: 99,
+            accuracy: this.accuracy, defense: this.defense, regen: this.regenTurns,
+            moveSpeed: this.baseMoveSpeed, attackSpeed: this.baseAttackSpeed,
+            goldDropChance: this.goldDropChance, itemDropChance: this.itemDropChance,
+            abilities: [...this.abilities], behaviorFlags: [...this.behaviorFlags],
+            abilityFlags: [...this.abilityFlags], bolts: [...this.bolts] };
+    }
+
     public takeTurn(game: Game, stealthRange: number) {
         if (this.hp <= 0) return;
         if (this.hasStatus('paralyzed')) return;
@@ -1277,11 +1294,11 @@ export class Monster extends Creature {
         // W-16: close the new blade's combat loop without rewriting general ally
         // AI. CE MC:3449-3464 / 3575: awake enemies attack an adjacent ally;
         // hunting enemies prefer an accessible adjacent player. No horde targets
-        // gain this new branch (boundToPlayer is only set by conjuration).
+        // gain this branch unless W-17 actually converts them with domination.
         if ((this.state === MonsterState.HUNTING || this.state === MonsterState.WANDERING)
             && (this.state !== MonsterState.HUNTING || distToPlayer > 1
                 || bladeDiagonalBlocked(game.grid, this.loc, game.player.loc))) {
-            const blade = game.monsters.find(m => m.typeId === 'spectral_blade' && m.boundToPlayer
+            const blade = game.monsters.find(m => ((m.typeId === 'spectral_blade' && m.boundToPlayer) || (m.dominated && m.isAlly))
                 && this.willAttackTarget(m) && Math.max(Math.abs(m.x - this.x), Math.abs(m.y - this.y)) === 1
                 && !bladeDiagonalBlocked(game.grid, this.loc, m.loc)
                 && (!m.hasStatus('invisible') || rng.randPercent(33)));
