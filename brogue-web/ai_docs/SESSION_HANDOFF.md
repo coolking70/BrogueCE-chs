@@ -49,10 +49,17 @@ nohup $C exec --worktree --approve-for-me -c model_reasoning_effort="xhigh" \
 # while kill -0 <PID> 2>/dev/null; do sleep 30; done
 ```
 
-### 验收七步
+### 验收八步
 ① 读 `-o` 的最终回复 → ② 读 worktree 里的报告 → ③ 抽查它纠正验收方的 CE 事实
 （逐行核 `BrogueCE-master`）→ ④ 把 worktree 改动拷进 main → ⑤ 跑全量门禁
 → ⑥ `npm run build` → ⑦ 提交（**文档提交用显式路径，不要 `git add -A`**）
+→ ⑧ **删掉该轮 worktree**：`git worktree remove --force <wt>/brogue && git worktree prune`
+
+⚠️ **第 ⑧ 步之前一直漏着**：每轮 codex `--worktree` 都新建一个并复制 197MB 的
+`node_modules`，到 W-11 时已积累 21 个 / 4.7GB。2026-09-23 经用户批准清理，
+逐个核实"该轮新建文件在 main 全都存在"后移除 20 个，降到 255MB。
+⚠️ **`~/.codex/worktrees/` 里不全是本项目的**——`c5cd4c0e-…` 是用户别的项目的，
+里面没有 `brogue/` 子目录。**删之前看一眼有没有 `brogue/`，没有就别动。**
 
 ### 夜间停下来问用户的条件
 1. 行为断言撞断 > 5 条（穷举表连带不计）
