@@ -72,23 +72,12 @@ export function countMinions(caster: Monster, allMonsters: readonly Monster[]): 
     return allMonsters.filter(m => m.leader === caster).length;
 }
 
-/**
- * BE_SHIELDING 的"是否已被护盾"判定。web 的 StatusId（Creature.ts，本轮禁改）
- * 没有 'shielded' 项，护盾状态改用 statusDurations 上一个不在 StatusId 联合
- * 类型里的运行时 key 存放——Creature.tickStatuses() 按 Object.entries 遍历，
- * 对任意 key 都通用，到期会被自动清除，行为与其它状态一致。
- * 已知限制：CE 的护盾会挡伤害，但 CombatSystem.attack 的伤害结算在
- * Combat.ts（本轮禁改）里，这里没有打通"护盾挡伤害"的机械效果，只实现了
- * "目标是否已被护盾覆盖"这个判定 + 状态展示，见报告。
- */
-const SHIELD_STATUS_KEY = 'shielded';
+/** W-15: retain the P4-1b public helpers; the value now means tenths of HP. */
 export function isShielded(c: Creature): boolean {
-    return (((c.statusDurations as unknown) as Record<string, number>)[SHIELD_STATUS_KEY] ?? 0) > 0;
+    return c.hasStatus('shielded');
 }
-export function applyShieldStatus(c: Creature, duration: number): void {
-    const durations = (c.statusDurations as unknown) as Record<string, number>;
-    const current = durations[SHIELD_STATUS_KEY] ?? 0;
-    durations[SHIELD_STATUS_KEY] = Math.max(current, duration);
+export function applyShieldStatus(c: Creature, tenths: number): void {
+    c.applyShield(tenths);
 }
 
 /**
@@ -803,7 +792,9 @@ export class Monster extends Creature {
      * 文件边界内）。
      */
     private resolveGeometryAttackOn(game: Game, target: Creature, voice: 'ally' | 'discordant' | 'hostile'): void {
-        const result = CombatSystem.attack(this, target);
+        const result = CombatSystem.attack(this, target, {
+            beforeDamage: target === game.player ? damage => game.tryTriggerArmorRunic(this, damage, true) : undefined,
+        });
         if (result.kamikazeSelfDestruct) {
             // 仅变异注入场景可达（五种几何怪原生无 MA_KAMIKAZE）
             const kamikazeKey = voice === 'ally' ? 'combat.ally_kamikaze'
@@ -831,7 +822,6 @@ export class Monster extends Creature {
                 }), '#ff6666');
                 game.spawnFloatingText(`-${result.damage}`, game.player.loc.x, game.player.loc.y, 0xff5555);
                 game.spawnBlood(game.player.loc.x, game.player.loc.y);
-                game.tryTriggerArmorRunic(this, result.damage);
                 if (this.onHitStatus && this.onHitDuration > 0 && rng.randPercent(Math.floor(this.onHitChance * 100))) {
                     game.applyMonsterOnHitStatus(this.name, this.onHitStatus, this.onHitDuration);
                 }
@@ -1310,7 +1300,9 @@ export class Monster extends Creature {
                 if (this.tryGeometryMeleeAdjacent(game, game.player)) {
                     return;
                 }
-                const result = CombatSystem.attack(this, game.player);
+                const result = CombatSystem.attack(this, game.player, {
+                    beforeDamage: damage => game.tryTriggerArmorRunic(this, damage, true),
+                });
                 if (result.kamikazeSelfDestruct) {
                     // P4-4：CE MA_KAMIKAZE（Combat.c:1159-1162）——攻击者自毁代替
                     // 造成伤害；三只膨胀怪的 damage 都是 0d1，本来也打不出伤害，
@@ -1340,7 +1332,6 @@ export class Monster extends Creature {
                     }), '#ff6666');
                     game.spawnFloatingText(`-${result.damage}`, game.player.loc.x, game.player.loc.y, 0xff5555);
                     game.spawnBlood(game.player.loc.x, game.player.loc.y);
-                    game.tryTriggerArmorRunic(this, result.damage);
                     if (this.onHitStatus && this.onHitDuration > 0 && rng.randPercent(Math.floor(this.onHitChance * 100))) {
                         game.applyMonsterOnHitStatus(this.name, this.onHitStatus, this.onHitDuration);
                     }

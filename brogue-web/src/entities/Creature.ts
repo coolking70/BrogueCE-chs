@@ -6,7 +6,7 @@
 import type { Entity, Pos } from '../types';
 import { Direction } from '../types';
 
-export type StatusId = 'paralyzed' | 'invisible' | 'telepathy' | 'levitating' | 'hallucinating' | 'confused' | 'regenerating' | 'haste' | 'poisoned' | 'slowed' | 'hasted' | 'weakened' | 'flying' | 'immune_fire' | 'discordant';
+export type StatusId = 'paralyzed' | 'invisible' | 'telepathy' | 'levitating' | 'hallucinating' | 'confused' | 'regenerating' | 'haste' | 'poisoned' | 'slowed' | 'hasted' | 'weakened' | 'flying' | 'immune_fire' | 'discordant' | 'shielded';
 type StatusStackMode = 'refresh' | 'stack';
 
 /**
@@ -54,6 +54,8 @@ export class Creature implements Entity {
     public statusImmunities: Set<StatusId>;
     /** CE creature.poisonAmount: damage per objective poison tick. */
     public poisonAmount = 0;
+    /** CE maxStatus[SHIELDED], in tenths of HP; determines decay, not a cap. */
+    public maxShield = 0;
     /**
      * CE creature->ticksUntilTurn（Rogue.h:2192）：距下次可行动的剩余 tick。
      * 初始 0 是 CE 玩家的口径（Time.c:2604 首次结算时累加）；怪物在自身
@@ -132,6 +134,7 @@ export class Creature implements Entity {
     }
 
     public setStatusDuration(id: StatusId, duration: number) {
+        if (id === 'shielded') this.maxShield = Math.max(0, duration);
         if (id === 'poisoned') this.poisonAmount = duration > 0 && this.hasStatus(id) ? Math.max(1, this.poisonAmount) : duration > 0 ? 1 : 0;
         if (duration > 0) {
             this.statusDurations[id] = duration;
@@ -141,6 +144,7 @@ export class Creature implements Entity {
     }
 
     public applyStatus(id: StatusId, duration: number, stackMode: StatusStackMode = 'refresh'): boolean {
+        if (id === 'shielded') return this.applyShield(duration);
         if (id === 'poisoned') return this.addPoison(duration, 1);
         if (duration <= 0 || this.statusImmunities.has(id)) return false;
         const current = this.statusDurations[id] ?? 0;
@@ -171,6 +175,40 @@ export class Creature implements Entity {
         this.poisonAmount = this.hasStatus('poisoned') ? Math.max(1, Math.trunc(amount ?? 1)) : 0;
     }
 
+    /** CE Items.c:5405-5408: stronger of current/new, then ALWAYS reset max. */
+    public applyShield(tenths: number): boolean {
+        const previous = this.getStatusDuration('shielded');
+        const next = Math.max(previous, Math.trunc(tenths));
+        const changed = previous !== next || this.maxShield !== next;
+        this.setStatusDuration('shielded', next);
+        return changed;
+    }
+
+    /** Old 'shielded' was a countdown with no absorption amount. Discard it
+     * when maxShield is absent; inventing HP from those turns would be unsafe. */
+    public restoreShield(maxShield?: number): void {
+        const current = this.getStatusDuration('shielded');
+        if (maxShield === undefined || !Number.isFinite(maxShield) || maxShield <= 0 || !Number.isFinite(current) || current <= 0) {
+            this.setStatusDuration('shielded', 0);
+        } else {
+            this.statusDurations.shielded = Math.trunc(current);
+            this.maxShield = Math.max(this.statusDurations.shielded, Math.trunc(maxShield));
+        }
+    }
+
+    /** CE Combat.c:1811-1819. Only reduces the shield and returns HP damage:
+     * callers keep their own immunity, attribution and death ordering. */
+    public absorbShieldDamage(amount: number): number {
+        const shield = this.getStatusDuration('shielded');
+        if (amount <= 0 || shield <= 0) return amount;
+        if (shield > amount * 10) {
+            this.statusDurations.shielded = shield - amount * 10;
+            return 0;
+        }
+        this.setStatusDuration('shielded', 0);
+        return amount - Math.ceil(shield / 10);
+    }
+
     /**
      * 旗标派生的永久状态不随回合衰减。CE updateMonsterStatus 只在生物不带
      * 对应旗标时才递减 STATUS_LEVITATING / STATUS_IMMUNE_TO_FIRE
@@ -183,7 +221,9 @@ export class Creature implements Entity {
         const entries = Object.entries(this.statusDurations) as Array<[StatusId, number]>;
         for (const [id, turns] of entries) {
             if (this.isStatusPermanent(id)) continue;
-            const next = turns - 1;
+            // CE Time.c:2310 / Monsters.c:1958: integer division; a max below
+            // 20 really has zero decay. Damage alone does not reduce maxShield.
+            const next = turns - (id === 'shielded' ? Math.floor(this.maxShield / 20) : 1);
             if (next <= 0) {
                 this.setStatusDuration(id, 0);
                 expired.push(id);
@@ -199,8 +239,8 @@ export class Creature implements Entity {
         // Implement movement logic
     }
 
-    public takeDamage(amount: number) {
-        this.hp -= amount;
+    public takeDamage(amount: number, ignoresProtectionShield = false) {
+        this.hp -= ignoresProtectionShield ? amount : this.absorbShieldDamage(amount);
         if (this.hp <= 0) {
             this.die();
         }

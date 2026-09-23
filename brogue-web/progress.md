@@ -911,3 +911,18 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 后续：staff_of_obstruction 身份、frequency和特殊回电留 W-26；通用 DF refreshCell 的其他即时环境效果仍是既有缺口；碎墙卷轴旧 IMPREGNABLE 注释/检查及力场专属外观另轮处理，不在本轮夹带。
 - 浏览器5场景（封路、消融后键盘走入、E8、受保护地板、占位消融）状态断言通过、页面/控制台错误0。整页截图已检查：力场沿用现有空白默认外观，范围可由地板缺口辨认，不能宣称绿色水晶专属视觉已实现。既有渲染守卫不改。
 - 四个负变异分别触发1/3/1/4项失败；还原前后Promotion SHA-256一致。源码、测试、脚本与progress已冻结，接下来只补本轮报告和运行证据；最终结果不使用中途快照。
+
+
+## 2026-09-23 W-15 护盾吸伤闭环
+- 按 tasks/w-15.prompt.md/W-0 W-15 行核实 CE。10 个直接 hp-=（Game7、Player2、Creature1）全部盘点，另含 takeDamage 调用、hp赋值、die/gameOver。
+- 关键分类：爆炸/坠落/普通攻击/伤害杖吸盾；燃烧/毒状态/毒气蒸汽/饥饿/互惠旁伤/报复/直接死亡绕盾。保留环境与W-10死亡所有权。
+- staffProtection 使用 CE 16位定点 fp_pow（E3=181），shielded 存十分之一HP，maxShield 单独保存；弱施法仍重设max，max/20整除衰减。旧档无maxShield清除原倒计时盾，telepathy不猜来源。
+- 怪物E5护盾接吸伤；玩家真实命中者获得护盾，移除telepathy错配；分裂复制盾两字段；所有快照出口补保存。
+- Combat吸血取穿盾后伤害。既有护甲符文调用迁移到扣血前，防止吸盾后的凭空回血，公开事后API兼容旧直接调用。怪物伤害bolt公式/生成池保持。
+- 使用develop-web-game技能；本worktree缺依赖，复制主工作区已有node_modules；不改锁文件。最终验收与完整逐点表见待写w-15.report.md。
+- 定向57项通过（含新增测试房快照往返）。初版4项新测试的全局randRange mock误改伤害骰，已修夹具；旧W-10/armor/P4-1b无断言改动。
+- 浏览器7场景：E5怪物护盾、吸伤、等待衰减、毒伤绕盾、选靶、Esc取消/Enter确认旧light映射护盾、破盾；页面/控制台错误0。整页截图已目视验证盾量HP标签、HP数值与无telepathy状态。技能客户端canvas导出黑图已按要求有头重试，采用整页截图补证。
+- 四个反向变异爆炸绕盾/毒伤吸盾/max不重设/残盾向下取整分别打红1/4/1/2项，还原SHA一致。
+- 最终反查R110，S并集120文件（119显式回归+独立drift）。源码/测试/脚本/progress冻结后执行build、定向闭包、test:drift，前后SHA自证，不改超时、不重采基线。后续仅回填报告与证据。
+- 后续边界：protection身份/入池留W-26，完整消魔留W-23；怪物伤害bolt公式、现有自创符文/退池creeping_death、旧light文案与完整克隆其余字段未扩展；护符仍是原随机抗性，其CE护盾接入不在本轮SHIELDING范围。
+- 首次完整拟最终门禁：build/drift通过；117/119回归文件通过，3失败来自P1-30未引用staff.bright_aura键与W-4两个精确attack参数守卫。归档旧亮光键到zh_CN.legacy；怪物bolt只为有实际受击符文的护甲挂preDamage回调（reflection已在轨迹执行，无受击减伤），保留W-4原参数守卫不改。两locale文件补进R；保留旧失败及SHA于prefinal-failure，重新完整冻结复跑。

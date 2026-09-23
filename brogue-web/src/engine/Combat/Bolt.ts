@@ -299,7 +299,7 @@ export interface BoltResult {
     aimPos: Pos;
     /** Ordered effect contacts after reflection. Origin can be revisited/hit.
      * Pure previews (outcome=null) predict contacts without rolling reflection.
-     * W-9 directed effects require actual hits; legacy shielding awaits W-15. */
+     * W-9/W-15 directed effects require actual hits. */
     hits: BoltHit[];
     /** Deflections in travel order, separate from hits and effect observation. */
     reflections: BoltReflection[];

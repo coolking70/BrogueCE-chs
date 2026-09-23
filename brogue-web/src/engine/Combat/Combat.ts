@@ -21,7 +21,7 @@ import {
 export interface AttackResult {
     damage: number;
     weaponName?: string;
-    /** True if the attack hit (damage is dealt in full; CE armor never reduces damage) */
+    /** True if the attack hit, including a fully shielded hit */
     hit: boolean;
     /** True if the defender was sleeping/unaware (triple damage) */
     backstab: boolean;
@@ -63,6 +63,8 @@ export class CombatSystem {
          * （CE inflictDamage 本身只认 MONST_INVULNERABLE，不检查 IMMUNE_TO_WEAPONS）。
          */
         isWeaponAttack?: boolean;
+        /** CE armor adjustment precedes contact poison and shield absorption. */
+        beforeDamage?: (damage: number) => number;
         /**
          * B-1：CE attack(attacker, defender, lungeAttack) 第三形参——刺剑突进
          * （Movement.c:1482-1483 对 hitList 结算时按武器 LUNGE 旗标传入）。
@@ -150,7 +152,7 @@ export class CombatSystem {
         // defender 完全不受影响。三只膨胀怪的 damage 都是 0d1，真正的杀伤来自
         // 死亡时触发的 DF（Game.triggerDeathFeatures），不是这次攻击本身。
         if (attacker instanceof Monster && attacker.hasAbility('MA_KAMIKAZE')) {
-            attacker.takeDamage(attacker.hp);
+            attacker.takeDamage(attacker.hp, true);
             return { damage: 0, weaponName, hit: true, backstab: false, kamikazeSelfDestruct: true };
         }
 
@@ -249,6 +251,8 @@ export class CombatSystem {
             damage = 1;
         }
 
+        if (damage > 0 && opts?.beforeDamage) damage = opts.beforeDamage(damage) ?? damage;
+
         // W-10 / CE Combat.c:1320-1323,1404,524-527: physical MA_POISONS
         // replaces rolled damage with 1 contact damage; the original roll becomes
         // poison duration. Centralized here for player, ally and geometry targets.
@@ -282,10 +286,11 @@ export class CombatSystem {
         // Reflection has already selected the actual defender in bolt travel.
         const applyTo = defender;
         if (damage > 0) {
+            const hpDamage = applyTo.absorbShieldDamage(damage);
             // --- P4-5: MA_TRANSFERENCE (Combat.c:1849-1871, inflictDamage()) ---
             // 前置条件：defender（这里是实际承伤对象 applyTo，对应 CE reflectBolt
             // 换靶后传进 inflictDamage 的 defender）不是 MONST_INANIMATE/
-            // MONST_INVULNERABLE。transferenceAmount = min(damage, 承伤对象当前HP)
+            // MONST_INVULNERABLE。transferenceAmount = min(穿盾后的 damage, 承伤对象当前HP)
             // ——不能超过对方剩余血量；再按"攻击者是否是盟友"取 40%/90%（整数除法，
             // 向零截断，与 C 的 short 除法同口径）。复核结论（写入报告）：CE
             // `attacker->currentHP += transferenceAmount` 紧跟着只有玩家血量
@@ -293,13 +298,13 @@ export class CombatSystem {
             // 玩家戒指 rogue.transference 不在本轮范围，只接怪物/变异的 MA_TRANSFERENCE。
             if (attacker instanceof Monster && attacker.hasAbility('MA_TRANSFERENCE') &&
                 !(applyTo instanceof Monster && (applyTo.hasBehavior('MONST_INANIMATE') || applyTo.isInvulnerable()))) {
-                const cappedAmount = Math.min(damage, applyTo.hp);
+                const cappedAmount = Math.min(hpDamage, applyTo.hp);
                 const transferAmount = attacker.isAlly
                     ? Math.trunc(cappedAmount * 4 / 10)  // allies: 40% recovery rate
                     : Math.trunc(cappedAmount * 9 / 10); // enemies: 90% recovery rate
                 attacker.hp += transferAmount; // 有意不 clamp 到 maxHp，见上方注释
             }
-            applyTo.takeDamage(damage);
+            applyTo.takeDamage(hpDamage, true); // already passed through the shield exactly once
             if (poisonDuration > 0) applyTo.addPoison(poisonDuration, 1);
         }
 

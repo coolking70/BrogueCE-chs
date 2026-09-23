@@ -21,9 +21,10 @@ import {
 } from '../Generator/BlueprintEngine';
 import blueprintData from '../../data/blueprints.json';
 import { Player, type HungerState } from '../../entities/Player';
-import { Monster, applyShieldStatus, monstersAreTeammates, monstersAreEnemies } from '../../entities/Monster';
+import { Monster, monstersAreTeammates, monstersAreEnemies } from '../../entities/Monster';
 import { CombatSystem } from '../Combat/Combat';
 import { staffPoison } from '../Combat/Poison';
+import { staffProtection } from '../Combat/Shielding';
 import { weaponParalysisDuration, weaponConfusionDuration, weaponForceDistance, netEnchant, armorAbsorptionMax, armorReprisalPercent } from '../Combat/CombatFormulas';
 import { ItemCategory, Item } from '../Items/Item';
 import { ItemLoader, type ConsumableConfig } from '../Items/ItemLoader';
@@ -238,6 +239,7 @@ export interface GameSnapshotMonster {
     state: number;
     statusDurations?: Partial<Record<StatusId, number>>;
     poisonAmount?: number;
+    maxShield?: number;
     goldDropChance: number;
     itemDropChance: number;
     onHitStatus?: StatusId;
@@ -270,6 +272,7 @@ export interface GameSnapshot {
         regenCarry?: number;
         statusDurations?: Partial<Record<StatusId, number>>;
         poisonAmount?: number;
+        maxShield?: number;
         inventory: GameSnapshotItem[];
         equippedWeaponId: number | null;
         equippedArmorId: number | null;
@@ -412,6 +415,7 @@ interface TestRoomState {
         state: number;
         statusDurations?: Partial<Record<StatusId, number>>;
         poisonAmount?: number;
+        maxShield?: number;
         goldDropChance: number;
         itemDropChance: number;
         onHitStatus?: StatusId;
@@ -2387,6 +2391,7 @@ export class Game {
         monster.regenCounter = m.regenCounter ?? 0;
         monster.statusDurations = { ...(m.statusDurations ?? {}) };
         monster.restorePoison(m.poisonAmount);
+        monster.restoreShield(m.maxShield);
         monster.refreshSpeeds(); // P2-2：状态直写绕过 applyStatus，需显式重算衍生速度
         monster.damageString = m.damageString;
         monster.goldDropChance = m.goldDropChance;
@@ -2729,6 +2734,7 @@ export class Game {
                         state: m.state,
                         statusDurations: { ...m.statusDurations },
                         poisonAmount: m.poisonAmount,
+                        maxShield: m.maxShield,
                         regenTurns: m.regenTurns,
                         regenCounter: m.regenCounter,
                         goldDropChance: m.goldDropChance,
@@ -4388,7 +4394,7 @@ export class Game {
             afterOpen: p => {
                 const monster = this.getMonsterAt(p.x, p.y);
                 // MONST_TURRET is an unexpanded CE composite in web data (Rogue.h:2093).
-                if (monster && (monster.hasBehavior('MONST_ATTACKABLE_THRU_WALLS') || monster.hasBehavior('MONST_TURRET'))) monster.takeDamage(monster.hp);
+                if (monster && (monster.hasBehavior('MONST_ATTACKABLE_THRU_WALLS') || monster.hasBehavior('MONST_TURRET'))) monster.takeDamage(monster.hp, true);
             },
         });
         if (changed) this.updateVision();
@@ -4713,9 +4719,13 @@ export class Game {
             }
 
             case BoltEffect.SHIELDING: {
-                this.applyTimedStatus(this.player, 'telepathy', 25);
-                this.spawnFloatingText('+Light', this.player.loc.x, this.player.loc.y - 1, 0xffffaa);
-                logger.log(i18next.t('staff.bright_aura', { name: item.displayName, defaultValue: `A bright aura radiates from ${item.displayName}.` }), '#ffffaa');
+                if (target) {
+                    const magnitude = resolveCEBoltMagnitude(CEBoltType.SHIELDING, item.category === ItemCategory.STAFF
+                        ? { kind: 'staff', enchantment: item.enchantment } : { kind: 'wand' }).value;
+                    target.applyShield(staffProtection(magnitude));
+                    autoID = true; // CE Items.c:5412-5413: contact, even if hidden/unchanged.
+                    this.spawnFloatingText(this.getStatusLabel('shielded'), target.loc.x, target.loc.y, 0xffffaa);
+                }
                 break;
             }
 
@@ -4780,8 +4790,7 @@ export class Game {
                 break;
         }
 
-        // CONJURATION remains a presentation stub, and SHIELDING's telepathy is
-        // not a shield observation. Do not identify unimplemented CE effects.
+        // CONJURATION remains a presentation stub; it cannot identify an effect.
         return autoID;
     }
 
@@ -4791,8 +4800,7 @@ export class Game {
      *
      * 设计取舍（"泛化 applyBoltEffect 但不破坏玩家路径"，详见报告）：没有
      * 直接改造上面那个巨大的、按 item 措辞的 applyBoltEffect switch——它的每个
-     * 分支都绑死了"物品名 + 固定打玩家/固定回怪物"的叙事假设（如 HASTE/
-     * SHIELDING 分支硬编码 this.player），改起来风险远大于收益。这里另开一个
+     * 分支都绑死了"物品名 + 固定打玩家/固定回怪物"的叙事假设（这些旧假设已由 W-9/W-15 的命中分支替换），改起来风险远大于收益。这里另开一个
      * 面向"施法者可以是怪物、目标可以是玩家或任意怪物"的精简出口，复用同一套
      * 底层原语（traceBolt/createBoltResult 做路径与动画、applyStatusToMonster/
      * applyTimedStatus 做状态、environment.ignite 做点火、CombatSystem.attack
@@ -4862,8 +4870,13 @@ export class Game {
             case BoltEffect.DRAGONFIRE: {
                 // BE_ATTACK keeps weapon immunity; BE_DAMAGE keeps the legacy
                 // monster attack formula pending its separately scoped formula work.
+                // Reflection already ran in travel and has no on-hit adjustment.
+                // Only install the armor hook when there is a runic effect to apply.
+                const armorRunic = isPlayer ? this.player.equippedArmor?.runicType : undefined;
                 const result = CombatSystem.attack(caster, target, {
                     isWeaponAttack: BOLT_EFFECT_CE_EFFECT[meta.effect] === CEBoltEffect.ATTACK,
+                    ...(armorRunic && armorRunic !== 'reflection'
+                        ? { beforeDamage: (damage: number) => this.tryTriggerArmorRunic(caster, damage, true) } : {}),
                 });
                 autoID = true; // CE :5136-5150: attack/damage attempt, including miss/immunity.
                 if (result.kamikazeSelfDestruct) {
@@ -4878,7 +4891,6 @@ export class Game {
                     this.spawnFloatingText(`-${result.damage}`, target.loc.x, target.loc.y, 0xff5555);
                     if (isPlayer) {
                         this.spawnBlood(target.loc.x, target.loc.y);
-                        this.tryTriggerArmorRunic(caster, result.damage);
                     }
                     logCast('bolt.monster_cast_hit', `${casterLabel} hits ${targetName} with ${ceBoltName} for ${result.damage} damage!`, '#ff8866');
                     if (isPlayer && caster.onHitStatus && caster.onHitDuration > 0 && rng.randPercent(Math.floor(caster.onHitChance * 100))) {
@@ -4925,8 +4937,8 @@ export class Game {
             }
 
             case BoltEffect.SHIELDING: {
-                autoID = true; // Existing shield status is applied; amount is W-15.
-                applyShieldStatus(target, 15);
+                autoID = true; // CE shielding has no living/visibility gate.
+                target.applyShield(staffProtection(meta.magnitude));
                 logCast('bolt.monster_cast_shield', `${casterLabel} shields ${targetName}!`, '#ffffcc');
                 break;
             }
@@ -5168,7 +5180,7 @@ export class Game {
      */
     private negateCreatureMagic(target: Creature): 'died' | 'negated' {
         if (target instanceof Monster && target.diesIfNegated()) {
-            target.takeDamage(target.hp);
+            target.takeDamage(target.hp, true);
             return 'died';
         }
         const sd = target.statusDurations as Record<string, number>;
@@ -5176,6 +5188,7 @@ export class Game {
             sd[k] = 0;
         }
         target.restorePoison(); // existing negation clears countdown; clear concentration too
+        target.restoreShield();
         if (target instanceof Monster) target.syncFlagDerivedStatuses();
         target.refreshSpeeds();
         return 'negated';
@@ -5362,7 +5375,7 @@ export class Game {
                 const monst = this.getMonsterAt(i, j); // CE :4919 HAS_MONSTER
                 if (monst) {
                     if (monst.hasBehavior('MONST_ATTACKABLE_THRU_WALLS')) {
-                        monst.takeDamage(monst.hp); // CE :4922-4923 的 web 等价口径
+                        monst.takeDamage(monst.hp, true); // CE :4922-4923 的 web 等价口径
                     }
                     // CE :4925 freeCaptivesEmbeddedAt(i, j)：web 无嵌墙俘虏
                     // 载体（机器系统缺口），登记 deferral。
@@ -6042,7 +6055,7 @@ export class Game {
         }
 
         if (weapon.runicType === 'quietus' && rng.randPercent(5)) {
-            target.takeDamage(9999);
+            target.takeDamage(9999, true);
             weapon.runicKnown = true;
             logger.log(
                 i18next.t('runic.weapon.quietus', {
@@ -6130,12 +6143,12 @@ export class Game {
                 break;
             }
             case 'quietus': {
-                target.takeDamage(9999);
+                target.takeDamage(9999, true);
                 logger.log(i18next.t('runic.weapon.quietus', { target: target.name, defaultValue: `Runic magic instantly slays the ${target.name}!` }), '#ccaaff');
                 break;
             }
             case 'slaying': {
-                target.takeDamage(9999);
+                target.takeDamage(9999, true);
                 logger.log(i18next.t('runic.weapon.slaying', { target: target.name, defaultValue: `Your weapon of slaying destroys the ${target.name}!` }), '#ff6666');
                 break;
             }
@@ -6192,9 +6205,16 @@ export class Game {
         }
     }
 
-    public tryTriggerArmorRunic(attacker: Monster, incomingDamage: number) {
+    /** Runtime attacks pass beforeDamage=true so armor acts before shielding
+     * (CE Combat.c:1272,1325). Default preserves the public post-hit API. */
+    public tryTriggerArmorRunic(attacker: Monster, incomingDamage: number, beforeDamage = false): number {
+        let remainingDamage = incomingDamage;
+        const prevent = (amount: number) => {
+            remainingDamage -= amount;
+            if (!beforeDamage) this.player.hp = Math.min(this.player.maxHp, this.player.hp + amount);
+        };
         const armor = this.player.equippedArmor;
-        if (!armor?.runicType) return;
+        if (!armor?.runicType) return remainingDamage;
 
         // CE 以 melee 形参区分近战/远程（Combat.c:896 applyArmorRunicEffect）。
         // web 仅有的两个调用点（Monster.ts 远程分支 dist>1 / 近战分支 dist<=1）
@@ -6227,10 +6247,10 @@ export class Game {
             const count = hitList.length;
             if (count > 0 && incomingDamage > 0) {
                 const share = Math.floor((incomingDamage + count) / (count + 1));
-                // web 的伤害在调用前已落地：把"伤害降为 share"建模为回补差值
-                this.player.hp = Math.min(this.player.maxHp, this.player.hp + (incomingDamage - share));
+                // CE distributes before the player's shield absorbs the remaining share.
+                prevent(incomingDamage - share);
                 for (const m of hitList) {
-                    m.takeDamage(share);
+                    m.takeDamage(share, true);
                     this.spawnFloatingText(`-${share}`, m.loc.x, m.loc.y, 0xddaaff);
                 }
                 armor.runicKnown = true;
@@ -6243,7 +6263,7 @@ export class Game {
                     '#ddaaff'
                 );
             }
-            return;
+            return remainingDamage;
         }
 
         if (armor.runicType === 'vitality' && rng.randPercent(15)) {
@@ -6256,7 +6276,7 @@ export class Game {
                 }),
                 '#44ff44'
             );
-            return;
+            return remainingDamage;
         }
 
         if (armor.runicType === 'respiration' && rng.randPercent(20)) {
@@ -6272,14 +6292,14 @@ export class Game {
                 }),
                 '#44ffff'
             );
-            return;
+            return remainingDamage;
         }
 
         if (armor.runicType === 'dampening' && rng.randPercent(25)) {
             // CE 语义为爆炸伤害的常驻吸收（Time.c:355-367），与受击无关；
             // 本轮保留现有行为（差异见报告）。
             const healBack = Math.min(incomingDamage, 2);
-            this.player.hp = Math.min(this.player.maxHp, this.player.hp + healBack);
+            prevent(healBack);
             armor.runicKnown = true;
             logger.log(
                 i18next.t('runic.armor.dampening', {
@@ -6299,7 +6319,7 @@ export class Game {
             const absorbRoll = rng.randRange(1, armorAbsorptionMax(netEnch));
             const absorbed = Math.min(absorbRoll, incomingDamage);
             if (absorbed > 0) {
-                this.player.hp = Math.min(this.player.maxHp, this.player.hp + absorbed);
+                prevent(absorbed);
             }
             if (absorbRoll >= incomingDamage) {
                 armor.runicKnown = true;
@@ -6312,7 +6332,7 @@ export class Game {
                 );
                 this.spawnFloatingText(`+${absorbed}`, this.player.loc.x, this.player.loc.y, 0xaaddff);
             }
-            return;
+            return remainingDamage;
         }
 
         if (armor.runicType === 'reprisal' && melee &&
@@ -6322,7 +6342,7 @@ export class Game {
             // 反弹 armorReprisalPercent(netEnchant)% 伤害（PowerTables.c:106）：
             // max(1, percent * damage / 100)（C 整数除法）。
             const reprisalDmg = Math.max(1, Math.trunc((armorReprisalPercent(netEnch) * incomingDamage) / 100));
-            attacker.takeDamage(reprisalDmg);
+            attacker.takeDamage(reprisalDmg, true);
             armor.runicKnown = true;
             logger.log(
                 i18next.t('runic.armor.reprisal', {
@@ -6333,7 +6353,7 @@ export class Game {
                 '#ff8844'
             );
             this.spawnFloatingText(`-${reprisalDmg}`, attacker.loc.x, attacker.loc.y, 0xff8844);
-            return;
+            return remainingDamage;
         }
 
         if (armor.runicType === 'immunity') {
@@ -6341,7 +6361,7 @@ export class Game {
             // 属于护甲的 vorpalEnemy 类别时伤害归零（monsterIsInClass）。web 物品模型
             // 尚无 vorpalEnemy 字段（本轮不可改 Item.ts），类别门无法落地——保留全额
             // 抵挡效果，仅移除恒真的 randPercent(100)（类别判定差距见报告）。
-            this.player.hp = Math.min(this.player.maxHp, this.player.hp + incomingDamage);
+            prevent(incomingDamage);
             armor.runicKnown = true;
             logger.log(
                 i18next.t('runic.armor.immunity', {
@@ -6350,8 +6370,9 @@ export class Game {
                 }),
                 '#ffff44'
             );
-            return;
+            return remainingDamage;
         }
+        return remainingDamage;
     }
 
     /** W-10: one application per P2 objective block, before countdown decrement.
@@ -6361,7 +6382,7 @@ export class Game {
         if (entity.hp <= 0 || !entity.hasStatus('poisoned')) return;
         if (entity === this.player) this.poisonedDuringTurn = true;
         if (!entity.canBePoisoned()) return;
-        entity.takeDamage(Math.max(1, entity.poisonAmount));
+        entity.takeDamage(Math.max(1, entity.poisonAmount), true);
         if (entity === this.player) {
             this.lastDamageSource = 'poison';
         } else if (entity.hp <= 0) {
@@ -6971,6 +6992,8 @@ export class Game {
         }
         clone.setStatusDuration('poisoned', defender.getStatusDuration('poisoned'));
         clone.restorePoison(defender.poisonAmount);
+        clone.setStatusDuration('shielded', defender.getStatusDuration('shielded'));
+        clone.restoreShield(defender.maxShield);
         clone.hp = defender.hp;
         clone.maxHp = defender.maxHp;
         clone.isAlly = defender.isAlly;
@@ -7198,7 +7221,7 @@ export class Game {
                     damage = Math.floor(damage / 2); // CE :1157 damage /= 2（浅水/沼减半）
                 }
                 logger.log(i18next.t('fall.injured', { defaultValue: 'You are injured by the fall.' }), '#ff6666');
-                this.player.hp -= damage;
+                this.player.hp -= this.player.absorbShieldDamage(damage);
                 if (this.player.hp <= 0) {
                     // CE :1161-1163 killCreature + gameOver("Killed by a fall")
                     this.triggerGameOver(false, i18next.t('death.fall', { defaultValue: 'Killed by a fall.' }));
@@ -7243,10 +7266,10 @@ export class Game {
             if (m.hasBehavior('MONST_GETS_TURN_ON_ACTIVATION')) {
                 (m as unknown as { die(): void }).die(); // CE :1553-1556
             } else {
-                // CE :1558 inflictDamage(NULL, monst, …)：无敌者免伤，余者全额。
+                // CE :1560 inflictDamage(..., false): existing immunity gate, then shield.
                 let died = false;
                 if (!m.isInvulnerable()) {
-                    m.hp -= rng.randClumpedRange(6, 12, 2);
+                    m.hp -= m.absorbShieldDamage(rng.randClumpedRange(6, 12, 2));
                     if (m.hp <= 0) died = true;
                 }
                 if (!died) {
@@ -8290,6 +8313,7 @@ export class Game {
                 maxNutrition: this.player.maxNutrition,
                 statusDurations: { ...this.player.statusDurations },
                 poisonAmount: this.player.poisonAmount,
+                maxShield: this.player.maxShield,
                 regenCarry: this.player.regenCarry,
                 inventory: this.player.inventory.items.map((it) => this.serializeItem(it)),
                 equippedWeaponId: this.player.equippedWeapon?.id ?? null,
@@ -8336,6 +8360,7 @@ export class Game {
             state: m.state,
             statusDurations: { ...m.statusDurations },
             poisonAmount: m.poisonAmount,
+            maxShield: m.maxShield,
             goldDropChance: m.goldDropChance,
             itemDropChance: m.itemDropChance,
             onHitStatus: m.onHitStatus,
@@ -8375,6 +8400,7 @@ export class Game {
         monster.regenCounter = m.regenCounter ?? 0;
         monster.statusDurations = { ...(m.statusDurations ?? {}) };
         monster.restorePoison(m.poisonAmount);
+        monster.restoreShield(m.maxShield);
         monster.refreshSpeeds(); // P2-2：状态直写绕过 applyStatus，需显式重算衍生速度
         monster.damageString = m.damageString;
         monster.goldDropChance = m.goldDropChance;
@@ -8506,6 +8532,7 @@ export class Game {
         this.player.maxNutrition = snapshot.player.maxNutrition;
         this.player.statusDurations = { ...(snapshot.player.statusDurations ?? {}) };
         this.player.restorePoison(snapshot.player.poisonAmount);
+        this.player.restoreShield(snapshot.player.maxShield);
         this.player.regenCarry = snapshot.player.regenCarry ?? 0;
         this.player.refreshSpeeds(); // P2-2：状态直写绕过 applyStatus，需显式重算衍生速度
         this.player.inventory.items = snapshot.player.inventory.map((it) => this.deserializeItem(it));
@@ -8584,7 +8611,7 @@ export class Game {
     //
     // 载体申报：'burning' 不在 StatusId 联合里（src/entities/Creature.ts:9，
     // 本轮禁改清单，任务书 §三 明示"停下来申报，不擅自动"），状态载体走
-    // statusDurations 的逃生舱键——复用 Monster.ts SHIELD_STATUS_KEY 的既有
+    // statusDurations 的逃生舱键——沿用早期状态扩展的
     // 模式（Record<string, number> 视角读写）。收益：tickStatuses 对全键的
     // 每回合递减恰好复刻 CE 的燃烧寿命递减（Time.c:2588 / Monsters.c:1880），
     // 快照（玩家 Game.ts:5971 / 怪物 :5988 的 statusDurations 整对象往返）
@@ -8680,7 +8707,7 @@ export class Game {
         const damage = rng.randRange(1, 3); // CE rand_range(1,3)，免疫者照掷
         if (!entity.hasStatus('immune_fire')
             && !(entity !== this.player && (entity as Monster).isInvulnerable())) {
-            entity.hp -= damage;
+            entity.hp -= damage; // CE Time.c:2584 / Monsters.c:1885: burning bypasses shields.
             if (entity === this.player) {
                 this.lastDamageSource = 'fire';
                 if (entity.hp <= 0) {
@@ -8706,7 +8733,7 @@ export class Game {
     // 加两条落格瞬间的调用点。
     //
     // 载体申报：'explosion_immunity' 不在 StatusId 联合里（src/entities/
-    // Creature.ts，禁改清单），免疫窗走 statusDurations 逃生舱键——复刻
+    // Creature.ts），免疫窗走 statusDurations 逃生舱键——复刻
     // F-2b 'burning' 的既有模式（Record<string, number> 视角读写），
     // tickStatuses 对全键的每回合递减恰好复刻 CE 的免疫递减
     // （玩家 Time.c:2298-2300 / 怪物 updateMonsterStatus 的 default 分支
@@ -8765,7 +8792,7 @@ export class Game {
                 return true;
             }
             this.lastDamageSource = 'violent explosion';
-            entity.hp -= damage;
+            entity.hp -= entity.absorbShieldDamage(damage);
             return true;
         }
 
@@ -8775,7 +8802,7 @@ export class Game {
             monst.state = MonsterState.HUNTING;
         }
         const visible = cell.isVisible;
-        monst.hp -= damage;
+        monst.hp -= monst.isInvulnerable() ? 0 : monst.absorbShieldDamage(damage);
         if (monst.hp <= 0) {
             if (visible) {
                 logger.log(i18next.t('env.monster_dies_in_explosion', {
@@ -9019,7 +9046,7 @@ export class Game {
                                 || (entity as Monster).isInvulnerable());
                         if (!exempt) {
                             const damage = Math.max(1, Math.floor(entity.maxHp / 15));
-                            entity.hp -= damage;
+                            entity.hp -= damage; // CE Time.c:616-632: gradual terrain damage bypasses shields.
                             if (entity === this.player) {
                                 this.lastDamageSource = gasTile === TerrainType.STEAM ? 'steam' : 'caustic gas';
                                 const msgKey = gasTile === TerrainType.STEAM

@@ -1,0 +1,982 @@
+{
+  "scannedFiles": 67,
+  "versions": {
+    "HEAD": [
+      {
+        "file": "src/engine/Combat/Combat.ts",
+        "line": 153,
+        "owner": "attack",
+        "kind": "takeDamage",
+        "text": "attacker.takeDamage(attacker.hp)"
+      },
+      {
+        "file": "src/engine/Combat/Combat.ts",
+        "line": 300,
+        "owner": "attack",
+        "kind": "hp-write",
+        "text": "attacker.hp += transferAmount"
+      },
+      {
+        "file": "src/engine/Combat/Combat.ts",
+        "line": 302,
+        "owner": "attack",
+        "kind": "takeDamage",
+        "text": "applyTo.takeDamage(damage)"
+      },
+      {
+        "file": "src/engine/Combat/Combat.ts",
+        "line": 383,
+        "owner": "resolveThrownWeapon",
+        "kind": "takeDamage",
+        "text": "defender.takeDamage(damage)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 739,
+        "owner": "startNewGame",
+        "kind": "hp-write",
+        "text": "this.player.hp = 45"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 743,
+        "owner": "startNewGame",
+        "kind": "hp-write",
+        "text": "this.player.hp = 999"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 1960,
+        "owner": "spawnHordeAt",
+        "kind": "hp-write",
+        "text": "leaderMon.hp = Math.floor(leaderMon.maxHp / 4) + 1"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 2383,
+        "owner": "createMonsterFromSnapshot",
+        "kind": "hp-write",
+        "text": "monster.hp = m.hp"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 3254,
+        "owner": "handlePlayerAction",
+        "kind": "triggerGameOver",
+        "text": "this.triggerGameOver(true)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 3823,
+        "owner": "quaffItem",
+        "kind": "hp-write",
+        "text": "this.player.hp = this.player.maxHp"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 3827,
+        "owner": "quaffItem",
+        "kind": "hp-write",
+        "text": "this.player.hp = Math.min(this.player.hp + Math.floor(this.player.maxHp / 2), this.player.maxHp)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 4136,
+        "owner": "useArcanaItem",
+        "kind": "hp-write",
+        "text": "this.player.hp += healed"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 4391,
+        "owner": "tunnelAt",
+        "kind": "takeDamage",
+        "text": "monster.takeDamage(monster.hp)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 4458,
+        "owner": "applyDirectBoltDamage",
+        "kind": "takeDamage",
+        "text": "target.takeDamage(damage)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 4494,
+        "owner": "applyBasicBoltEffect",
+        "kind": "hp-write",
+        "text": "target.hp += healed"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 4725,
+        "owner": "applyBoltEffect",
+        "kind": "hp-write",
+        "text": "target.hp = target.maxHp"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 4737,
+        "owner": "applyBoltEffect",
+        "kind": "hp-write",
+        "text": "target.hp = target.maxHp"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 5171,
+        "owner": "negateCreatureMagic",
+        "kind": "takeDamage",
+        "text": "target.takeDamage(target.hp)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 5365,
+        "owner": "crystalizeFromPlayer",
+        "kind": "takeDamage",
+        "text": "monst.takeDamage(monst.hp)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6030,
+        "owner": "tryTriggerWeaponRunic",
+        "kind": "takeDamage",
+        "text": "target.takeDamage(extra)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6045,
+        "owner": "tryTriggerWeaponRunic",
+        "kind": "takeDamage",
+        "text": "target.takeDamage(9999)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6059,
+        "owner": "tryTriggerWeaponRunic",
+        "kind": "hp-write",
+        "text": "this.player.hp = Math.min(this.player.maxHp, this.player.hp + heal)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6073,
+        "owner": "tryTriggerWeaponRunic",
+        "kind": "takeDamage",
+        "text": "target.takeDamage(damage)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6133,
+        "owner": "applyWeaponRunicEffect",
+        "kind": "takeDamage",
+        "text": "target.takeDamage(9999)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6138,
+        "owner": "applyWeaponRunicEffect",
+        "kind": "takeDamage",
+        "text": "target.takeDamage(9999)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6144,
+        "owner": "applyWeaponRunicEffect",
+        "kind": "hp-write",
+        "text": "this.player.hp = Math.min(this.player.maxHp, this.player.hp + heal)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6149,
+        "owner": "applyWeaponRunicEffect",
+        "kind": "takeDamage",
+        "text": "target.takeDamage(damage)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6185,
+        "owner": "applyWeaponRunicEffect",
+        "kind": "hp-write",
+        "text": "target.hp = 1"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6231,
+        "owner": "tryTriggerArmorRunic",
+        "kind": "hp-write",
+        "text": "this.player.hp = Math.min(this.player.maxHp, this.player.hp + (incomingDamage - share))"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6233,
+        "owner": "tryTriggerArmorRunic",
+        "kind": "takeDamage",
+        "text": "m.takeDamage(share)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6282,
+        "owner": "tryTriggerArmorRunic",
+        "kind": "hp-write",
+        "text": "this.player.hp = Math.min(this.player.maxHp, this.player.hp + healBack)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6302,
+        "owner": "tryTriggerArmorRunic",
+        "kind": "hp-write",
+        "text": "this.player.hp = Math.min(this.player.maxHp, this.player.hp + absorbed)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6325,
+        "owner": "tryTriggerArmorRunic",
+        "kind": "takeDamage",
+        "text": "attacker.takeDamage(reprisalDmg)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6344,
+        "owner": "tryTriggerArmorRunic",
+        "kind": "hp-write",
+        "text": "this.player.hp = Math.min(this.player.maxHp, this.player.hp + incomingDamage)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6364,
+        "owner": "resolvePoisonDamage",
+        "kind": "takeDamage",
+        "text": "entity.takeDamage(Math.max(1, entity.poisonAmount))"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6964,
+        "owner": "trySplitMonster",
+        "kind": "hp-write",
+        "text": "defender.hp = Math.ceil(defender.hp / 2)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6974,
+        "owner": "trySplitMonster",
+        "kind": "hp-write",
+        "text": "clone.hp = defender.hp"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 7201,
+        "owner": "playerFalls",
+        "kind": "hp-write",
+        "text": "this.player.hp -= damage"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 7204,
+        "owner": "playerFalls",
+        "kind": "triggerGameOver",
+        "text": "this.triggerGameOver(false, i18next.t('death.fall', { defaultValue: 'Killed by a fall.' }))"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 7244,
+        "owner": "monstersFall",
+        "kind": "die",
+        "text": "(m as unknown as { die(): void }).die()"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 7249,
+        "owner": "monstersFall",
+        "kind": "hp-write",
+        "text": "m.hp -= rng.randClumpedRange(6, 12, 2)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 7270,
+        "owner": "monstersFall",
+        "kind": "die",
+        "text": "(m as unknown as { die(): void }).die()"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 7872,
+        "owner": "finishTurnEpilogue",
+        "kind": "hp-write",
+        "text": "this.player.hp = this.player.maxHp"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 7904,
+        "owner": "finishTurnEpilogue",
+        "kind": "triggerGameOver",
+        "text": "this.triggerGameOver(false, deathReason)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 8371,
+        "owner": "deserializeMonster",
+        "kind": "hp-write",
+        "text": "monster.hp = m.hp"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 8502,
+        "owner": "loadSnapshot",
+        "kind": "hp-write",
+        "text": "this.player.hp = snapshot.player.hp"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 8683,
+        "owner": "resolveBurningDamage",
+        "kind": "hp-write",
+        "text": "entity.hp -= damage"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 8693,
+        "owner": "resolveBurningDamage",
+        "kind": "die",
+        "text": "(entity as unknown as { die(): void }).die()"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 8768,
+        "owner": "resolveExplosionDamage",
+        "kind": "hp-write",
+        "text": "entity.hp -= damage"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 8778,
+        "owner": "resolveExplosionDamage",
+        "kind": "hp-write",
+        "text": "monst.hp -= damage"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 8786,
+        "owner": "resolveExplosionDamage",
+        "kind": "die",
+        "text": "(monst as unknown as { die(): void }).die()"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 8864,
+        "owner": "applyEnvironmentalEffects",
+        "kind": "triggerGameOver",
+        "text": "this.triggerGameOver(false, i18next.t('death.drowned', { defaultValue: 'Drowned in deep water.' }))"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 8867,
+        "owner": "applyEnvironmentalEffects",
+        "kind": "die",
+        "text": "entity.die()"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 8886,
+        "owner": "applyEnvironmentalEffects",
+        "kind": "triggerGameOver",
+        "text": "this.triggerGameOver(false, i18next.t('death.lava', { defaultValue: 'Incinerated by lava.' }))"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 8889,
+        "owner": "applyEnvironmentalEffects",
+        "kind": "die",
+        "text": "entity.die()"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 9022,
+        "owner": "applyEnvironmentalEffects",
+        "kind": "hp-write",
+        "text": "entity.hp -= damage"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 9034,
+        "owner": "applyEnvironmentalEffects",
+        "kind": "die",
+        "text": "entity.die()"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 9042,
+        "owner": "applyEnvironmentalEffects",
+        "kind": "hp-write",
+        "text": "entity.hp -= 10"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 9047,
+        "owner": "applyEnvironmentalEffects",
+        "kind": "die",
+        "text": "entity.die()"
+      },
+      {
+        "file": "src/entities/Creature.ts",
+        "line": 116,
+        "owner": "constructor",
+        "kind": "hp-write",
+        "text": "this.hp = 10"
+      },
+      {
+        "file": "src/entities/Creature.ts",
+        "line": 203,
+        "owner": "takeDamage",
+        "kind": "hp-write",
+        "text": "this.hp -= amount"
+      },
+      {
+        "file": "src/entities/Creature.ts",
+        "line": 205,
+        "owner": "takeDamage",
+        "kind": "die",
+        "text": "this.die()"
+      },
+      {
+        "file": "src/entities/Creature.ts",
+        "line": 217,
+        "owner": "die",
+        "kind": "hp-write",
+        "text": "this.hp = 0"
+      },
+      {
+        "file": "src/entities/Monster.ts",
+        "line": 359,
+        "owner": "constructor",
+        "kind": "hp-write",
+        "text": "this.hp = data.hp"
+      },
+      {
+        "file": "src/entities/Monster.ts",
+        "line": 475,
+        "owner": "mutate",
+        "kind": "hp-write",
+        "text": "this.hp = this.maxHp"
+      },
+      {
+        "file": "src/entities/Monster.ts",
+        "line": 954,
+        "owner": "recoverPerTick",
+        "kind": "hp-write",
+        "text": "this.hp = Math.min(this.maxHp, this.hp + 1)"
+      },
+      {
+        "file": "src/entities/Player.ts",
+        "line": 49,
+        "owner": "constructor",
+        "kind": "hp-write",
+        "text": "this.hp = 30"
+      },
+      {
+        "file": "src/entities/Player.ts",
+        "line": 154,
+        "owner": "recoverPerTurn",
+        "kind": "hp-write",
+        "text": "this.hp -= 1"
+      },
+      {
+        "file": "src/entities/Player.ts",
+        "line": 164,
+        "owner": "recoverPerTurn",
+        "kind": "hp-write",
+        "text": "this.hp = Math.min(this.maxHp, this.hp + wholeHp)"
+      },
+      {
+        "file": "src/entities/Player.ts",
+        "line": 197,
+        "owner": "updateNutrition",
+        "kind": "hp-write",
+        "text": "this.hp -= 1"
+      },
+      {
+        "file": "src/entities/Player.ts",
+        "line": 207,
+        "owner": "updateNutrition",
+        "kind": "hp-write",
+        "text": "this.hp = Math.min(this.maxHp, this.hp + wholeHp)"
+      }
+    ],
+    "current": [
+      {
+        "file": "src/engine/Combat/Combat.ts",
+        "line": 155,
+        "owner": "attack",
+        "kind": "takeDamage",
+        "text": "attacker.takeDamage(attacker.hp, true)"
+      },
+      {
+        "file": "src/engine/Combat/Combat.ts",
+        "line": 305,
+        "owner": "attack",
+        "kind": "hp-write",
+        "text": "attacker.hp += transferAmount"
+      },
+      {
+        "file": "src/engine/Combat/Combat.ts",
+        "line": 307,
+        "owner": "attack",
+        "kind": "takeDamage",
+        "text": "applyTo.takeDamage(hpDamage, true)"
+      },
+      {
+        "file": "src/engine/Combat/Combat.ts",
+        "line": 388,
+        "owner": "resolveThrownWeapon",
+        "kind": "takeDamage",
+        "text": "defender.takeDamage(damage)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 743,
+        "owner": "startNewGame",
+        "kind": "hp-write",
+        "text": "this.player.hp = 45"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 747,
+        "owner": "startNewGame",
+        "kind": "hp-write",
+        "text": "this.player.hp = 999"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 1964,
+        "owner": "spawnHordeAt",
+        "kind": "hp-write",
+        "text": "leaderMon.hp = Math.floor(leaderMon.maxHp / 4) + 1"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 2387,
+        "owner": "createMonsterFromSnapshot",
+        "kind": "hp-write",
+        "text": "monster.hp = m.hp"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 3260,
+        "owner": "handlePlayerAction",
+        "kind": "triggerGameOver",
+        "text": "this.triggerGameOver(true)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 3829,
+        "owner": "quaffItem",
+        "kind": "hp-write",
+        "text": "this.player.hp = this.player.maxHp"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 3833,
+        "owner": "quaffItem",
+        "kind": "hp-write",
+        "text": "this.player.hp = Math.min(this.player.hp + Math.floor(this.player.maxHp / 2), this.player.maxHp)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 4142,
+        "owner": "useArcanaItem",
+        "kind": "hp-write",
+        "text": "this.player.hp += healed"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 4397,
+        "owner": "tunnelAt",
+        "kind": "takeDamage",
+        "text": "monster.takeDamage(monster.hp, true)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 4464,
+        "owner": "applyDirectBoltDamage",
+        "kind": "takeDamage",
+        "text": "target.takeDamage(damage)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 4500,
+        "owner": "applyBasicBoltEffect",
+        "kind": "hp-write",
+        "text": "target.hp += healed"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 4735,
+        "owner": "applyBoltEffect",
+        "kind": "hp-write",
+        "text": "target.hp = target.maxHp"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 4747,
+        "owner": "applyBoltEffect",
+        "kind": "hp-write",
+        "text": "target.hp = target.maxHp"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 5183,
+        "owner": "negateCreatureMagic",
+        "kind": "takeDamage",
+        "text": "target.takeDamage(target.hp, true)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 5378,
+        "owner": "crystalizeFromPlayer",
+        "kind": "takeDamage",
+        "text": "monst.takeDamage(monst.hp, true)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6043,
+        "owner": "tryTriggerWeaponRunic",
+        "kind": "takeDamage",
+        "text": "target.takeDamage(extra)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6058,
+        "owner": "tryTriggerWeaponRunic",
+        "kind": "takeDamage",
+        "text": "target.takeDamage(9999, true)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6072,
+        "owner": "tryTriggerWeaponRunic",
+        "kind": "hp-write",
+        "text": "this.player.hp = Math.min(this.player.maxHp, this.player.hp + heal)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6086,
+        "owner": "tryTriggerWeaponRunic",
+        "kind": "takeDamage",
+        "text": "target.takeDamage(damage)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6146,
+        "owner": "applyWeaponRunicEffect",
+        "kind": "takeDamage",
+        "text": "target.takeDamage(9999, true)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6151,
+        "owner": "applyWeaponRunicEffect",
+        "kind": "takeDamage",
+        "text": "target.takeDamage(9999, true)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6157,
+        "owner": "applyWeaponRunicEffect",
+        "kind": "hp-write",
+        "text": "this.player.hp = Math.min(this.player.maxHp, this.player.hp + heal)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6162,
+        "owner": "applyWeaponRunicEffect",
+        "kind": "takeDamage",
+        "text": "target.takeDamage(damage)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6198,
+        "owner": "applyWeaponRunicEffect",
+        "kind": "hp-write",
+        "text": "target.hp = 1"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6214,
+        "owner": "tryTriggerArmorRunic",
+        "kind": "hp-write",
+        "text": "this.player.hp = Math.min(this.player.maxHp, this.player.hp + amount)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6253,
+        "owner": "tryTriggerArmorRunic",
+        "kind": "takeDamage",
+        "text": "m.takeDamage(share, true)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6345,
+        "owner": "tryTriggerArmorRunic",
+        "kind": "takeDamage",
+        "text": "attacker.takeDamage(reprisalDmg, true)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6385,
+        "owner": "resolvePoisonDamage",
+        "kind": "takeDamage",
+        "text": "entity.takeDamage(Math.max(1, entity.poisonAmount), true)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6985,
+        "owner": "trySplitMonster",
+        "kind": "hp-write",
+        "text": "defender.hp = Math.ceil(defender.hp / 2)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 6997,
+        "owner": "trySplitMonster",
+        "kind": "hp-write",
+        "text": "clone.hp = defender.hp"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 7224,
+        "owner": "playerFalls",
+        "kind": "hp-write",
+        "text": "this.player.hp -= this.player.absorbShieldDamage(damage)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 7227,
+        "owner": "playerFalls",
+        "kind": "triggerGameOver",
+        "text": "this.triggerGameOver(false, i18next.t('death.fall', { defaultValue: 'Killed by a fall.' }))"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 7267,
+        "owner": "monstersFall",
+        "kind": "die",
+        "text": "(m as unknown as { die(): void }).die()"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 7272,
+        "owner": "monstersFall",
+        "kind": "hp-write",
+        "text": "m.hp -= m.absorbShieldDamage(rng.randClumpedRange(6, 12, 2))"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 7293,
+        "owner": "monstersFall",
+        "kind": "die",
+        "text": "(m as unknown as { die(): void }).die()"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 7895,
+        "owner": "finishTurnEpilogue",
+        "kind": "hp-write",
+        "text": "this.player.hp = this.player.maxHp"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 7927,
+        "owner": "finishTurnEpilogue",
+        "kind": "triggerGameOver",
+        "text": "this.triggerGameOver(false, deathReason)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 8396,
+        "owner": "deserializeMonster",
+        "kind": "hp-write",
+        "text": "monster.hp = m.hp"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 8528,
+        "owner": "loadSnapshot",
+        "kind": "hp-write",
+        "text": "this.player.hp = snapshot.player.hp"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 8710,
+        "owner": "resolveBurningDamage",
+        "kind": "hp-write",
+        "text": "entity.hp -= damage"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 8720,
+        "owner": "resolveBurningDamage",
+        "kind": "die",
+        "text": "(entity as unknown as { die(): void }).die()"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 8795,
+        "owner": "resolveExplosionDamage",
+        "kind": "hp-write",
+        "text": "entity.hp -= entity.absorbShieldDamage(damage)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 8805,
+        "owner": "resolveExplosionDamage",
+        "kind": "hp-write",
+        "text": "monst.hp -= monst.isInvulnerable() ? 0 : monst.absorbShieldDamage(damage)"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 8813,
+        "owner": "resolveExplosionDamage",
+        "kind": "die",
+        "text": "(monst as unknown as { die(): void }).die()"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 8891,
+        "owner": "applyEnvironmentalEffects",
+        "kind": "triggerGameOver",
+        "text": "this.triggerGameOver(false, i18next.t('death.drowned', { defaultValue: 'Drowned in deep water.' }))"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 8894,
+        "owner": "applyEnvironmentalEffects",
+        "kind": "die",
+        "text": "entity.die()"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 8913,
+        "owner": "applyEnvironmentalEffects",
+        "kind": "triggerGameOver",
+        "text": "this.triggerGameOver(false, i18next.t('death.lava', { defaultValue: 'Incinerated by lava.' }))"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 8916,
+        "owner": "applyEnvironmentalEffects",
+        "kind": "die",
+        "text": "entity.die()"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 9049,
+        "owner": "applyEnvironmentalEffects",
+        "kind": "hp-write",
+        "text": "entity.hp -= damage"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 9061,
+        "owner": "applyEnvironmentalEffects",
+        "kind": "die",
+        "text": "entity.die()"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 9069,
+        "owner": "applyEnvironmentalEffects",
+        "kind": "hp-write",
+        "text": "entity.hp -= 10"
+      },
+      {
+        "file": "src/engine/Core/Game.ts",
+        "line": 9074,
+        "owner": "applyEnvironmentalEffects",
+        "kind": "die",
+        "text": "entity.die()"
+      },
+      {
+        "file": "src/entities/Creature.ts",
+        "line": 118,
+        "owner": "constructor",
+        "kind": "hp-write",
+        "text": "this.hp = 10"
+      },
+      {
+        "file": "src/entities/Creature.ts",
+        "line": 243,
+        "owner": "takeDamage",
+        "kind": "hp-write",
+        "text": "this.hp -= ignoresProtectionShield ? amount : this.absorbShieldDamage(amount)"
+      },
+      {
+        "file": "src/entities/Creature.ts",
+        "line": 245,
+        "owner": "takeDamage",
+        "kind": "die",
+        "text": "this.die()"
+      },
+      {
+        "file": "src/entities/Creature.ts",
+        "line": 257,
+        "owner": "die",
+        "kind": "hp-write",
+        "text": "this.hp = 0"
+      },
+      {
+        "file": "src/entities/Monster.ts",
+        "line": 348,
+        "owner": "constructor",
+        "kind": "hp-write",
+        "text": "this.hp = data.hp"
+      },
+      {
+        "file": "src/entities/Monster.ts",
+        "line": 464,
+        "owner": "mutate",
+        "kind": "hp-write",
+        "text": "this.hp = this.maxHp"
+      },
+      {
+        "file": "src/entities/Monster.ts",
+        "line": 944,
+        "owner": "recoverPerTick",
+        "kind": "hp-write",
+        "text": "this.hp = Math.min(this.maxHp, this.hp + 1)"
+      },
+      {
+        "file": "src/entities/Player.ts",
+        "line": 49,
+        "owner": "constructor",
+        "kind": "hp-write",
+        "text": "this.hp = 30"
+      },
+      {
+        "file": "src/entities/Player.ts",
+        "line": 154,
+        "owner": "recoverPerTurn",
+        "kind": "hp-write",
+        "text": "this.hp -= 1"
+      },
+      {
+        "file": "src/entities/Player.ts",
+        "line": 164,
+        "owner": "recoverPerTurn",
+        "kind": "hp-write",
+        "text": "this.hp = Math.min(this.maxHp, this.hp + wholeHp)"
+      },
+      {
+        "file": "src/entities/Player.ts",
+        "line": 197,
+        "owner": "updateNutrition",
+        "kind": "hp-write",
+        "text": "this.hp -= 1"
+      },
+      {
+        "file": "src/entities/Player.ts",
+        "line": 207,
+        "owner": "updateNutrition",
+        "kind": "hp-write",
+        "text": "this.hp = Math.min(this.maxHp, this.hp + wholeHp)"
+      }
+    ]
+  }
+}

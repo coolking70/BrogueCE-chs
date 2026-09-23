@@ -55,7 +55,8 @@ onMounted(() => {
         .filter(([id, turns]) => (turns ?? 0) > 0 && isSidebarVisibleStatus(id))
         .map(([id, turns]) => {
           const meta = (STATUS_CONFIG as Record<string, { label: string; color: string }>)[id] ?? { label: id, color: '#dbeafe' };
-          return `${meta.label}|${turns}|${meta.color}`;
+          const value = id === 'shielded' ? `${(turns ?? 0) / 10} HP` : turns;
+          return `${meta.label}|${value}|${meta.color}`;
         });
     }
     // Clone array for Vue reactivity

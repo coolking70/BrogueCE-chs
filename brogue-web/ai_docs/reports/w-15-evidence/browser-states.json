@@ -1,0 +1,320 @@
+{
+  "states": [
+    {
+      "name": "monster-shield",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 356,
+          "statuses": {
+            "shielded": 356
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林法师",
+            "x": 8,
+            "y": 5,
+            "hp": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "name": "absorbed",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 356,
+          "statuses": {
+            "shielded": 286
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林法师",
+            "x": 8,
+            "y": 5,
+            "hp": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "name": "decayed",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 100,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 356,
+          "statuses": {
+            "shielded": 269
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林法师",
+            "x": 8,
+            "y": 5,
+            "hp": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "name": "poison-bypass",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 97,
+          "nutrition": 2149,
+          "poisonAmount": 3,
+          "maxShield": 356,
+          "statuses": {
+            "shielded": 269,
+            "poisoned": 2
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林法师",
+            "x": 8,
+            "y": 5,
+            "hp": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "name": "targeting",
+      "state": {
+        "mode": "arcana_target",
+        "enchantmentTargets": [],
+        "arcanaTarget": {
+          "name": "红木法杖",
+          "x": 8,
+          "y": 5
+        },
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 97,
+          "nutrition": 2149,
+          "poisonAmount": 3,
+          "maxShield": 356,
+          "statuses": {
+            "shielded": 269,
+            "poisoned": 2
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 2,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林法师",
+            "x": 8,
+            "y": 5,
+            "hp": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "name": "player-shields-ally",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 94,
+          "nutrition": 2148,
+          "poisonAmount": 3,
+          "maxShield": 356,
+          "statuses": {
+            "shielded": 252,
+            "poisoned": 1
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 3,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林法师",
+            "x": 8,
+            "y": 5,
+            "hp": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 172,
+            "maxShield": 181
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "name": "shield-break",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 20,
+          "nutrition": 2148,
+          "poisonAmount": 3,
+          "maxShield": 0,
+          "statuses": {
+            "poisoned": 1
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 3,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林法师",
+            "x": 8,
+            "y": 5,
+            "hp": 98,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      }
+    }
+  ],
+  "errors": []
+}

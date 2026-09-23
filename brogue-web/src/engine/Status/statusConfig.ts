@@ -19,6 +19,7 @@ export interface StatusConfigEntry {
 export const STATUS_CONFIG: Record<BurningStatusId, StatusConfigEntry> = {
     paralyzed: { id: 'paralyzed', label: '麻痹', color: '#fca5a5', isDebuff: true },
     invisible: { id: 'invisible', label: '隐形', color: '#93c5fd', isDebuff: false },
+    shielded: { id: 'shielded', label: '护盾', color: '#fde68a', isDebuff: false },
     telepathy: { id: 'telepathy', label: '心灵感应', color: '#67e8f9', isDebuff: false },
     levitating: { id: 'levitating', label: '漂浮', color: '#bfdbfe', isDebuff: false },
     hallucinating: { id: 'hallucinating', label: '幻觉', color: '#f0abfc', isDebuff: true },
