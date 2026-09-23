@@ -1,0 +1,154 @@
+{
+  "effectBoundary": {
+    "applyBoltEffect": {
+      "BoltEffect.FIRE": true,
+      "BoltEffect.LIGHTNING": true,
+      "BoltEffect.POISON": true,
+      "BoltEffect.TELEPORT": true,
+      "BoltEffect.BECKONING": true,
+      "BoltEffect.CONJURATION": true,
+      "BoltEffect.SHIELDING": true,
+      "BoltEffect.EMPOWERMENT": true,
+      "BoltEffect.NEGATION": true,
+      "BoltEffect.TUNNELING": true,
+      "default": true
+    },
+    "applyMonsterBoltHit": {
+      "BoltEffect.SPARK": true,
+      "BoltEffect.DISTANCE_ATTACK": true,
+      "BoltEffect.POISON_DART": true,
+      "BoltEffect.FIRE": true,
+      "BoltEffect.DRAGONFIRE": true,
+      "BoltEffect.SHIELDING": true,
+      "BoltEffect.NEGATION": true,
+      "BoltEffect.BECKONING": true,
+      "default": true
+    }
+  },
+  "head": "3d4b03eaabcf03612630ed4e39e497206828ff81",
+  "changedMethods": [
+    "applyBoltResult",
+    "applyBoltEffect",
+    "applyMonsterBoltHit"
+  ],
+  "addedMethods": [
+    "applyBasicBoltEffect"
+  ],
+  "protectedMethods": {
+    "castMonsterBolt": true,
+    "applyDirectBoltDamage": true,
+    "generateDepth": true,
+    "tickArcanaResources": true,
+    "tickCreatureStatuses": true,
+    "applyStatusToMonster": true,
+    "applyTimedStatus": true,
+    "discordBlastFromPlayer": true,
+    "negateCreatureMagic": true,
+    "trySplitMonster": true,
+    "exposeCreatureToFire": true,
+    "applyBoltTerrainAt": true
+  },
+  "unchangedFiles": {
+    "src/data/arcana.json": {
+      "head": "e7a48053679eeccac39fb3518d811b2d757384fa734f12371a6fa2e5b9a88224",
+      "current": "e7a48053679eeccac39fb3518d811b2d757384fa734f12371a6fa2e5b9a88224",
+      "equal": true
+    },
+    "src/engine/Combat/BoltCatalog.ts": {
+      "head": "76f7e6329138415cf4b9037f038e6e175365d61e7addf778aab2a12f9e307360",
+      "current": "76f7e6329138415cf4b9037f038e6e175365d61e7addf778aab2a12f9e307360",
+      "equal": true
+    },
+    "src/engine/Combat/Combat.ts": {
+      "head": "cdb33af527166481b077bc39dbf06971a3cd251dce7faa1ceba0dd0ae2f4444e",
+      "current": "cdb33af527166481b077bc39dbf06971a3cd251dce7faa1ceba0dd0ae2f4444e",
+      "equal": true
+    },
+    "src/engine/Combat/BoltTrajectory.ts": {
+      "head": "852652621e7154cb9cf47e3df40d0daa8a25f37214aeacbce09a5430d5697146",
+      "current": "852652621e7154cb9cf47e3df40d0daa8a25f37214aeacbce09a5430d5697146",
+      "equal": true
+    },
+    "src/engine/Items/Item.ts": {
+      "head": "a76c40ebcf3fb2988cd2ba5d629a8d1725070c984361c839a24bb10f878eed9e",
+      "current": "a76c40ebcf3fb2988cd2ba5d629a8d1725070c984361c839a24bb10f878eed9e",
+      "equal": true
+    },
+    "src/engine/Items/ItemLoader.ts": {
+      "head": "c1f94dbd4be3ff95dbe6f6355cae0c84b685c2b72f2d5f760636f1c225186a65",
+      "current": "c1f94dbd4be3ff95dbe6f6355cae0c84b685c2b72f2d5f760636f1c225186a65",
+      "equal": true
+    },
+    "src/engine/Items/ArcanaInstance.ts": {
+      "head": "7d81a4ae22cb648547a96372ab9cd034dffc54361b4579b9087d24bfb7acc6e8",
+      "current": "7d81a4ae22cb648547a96372ab9cd034dffc54361b4579b9087d24bfb7acc6e8",
+      "equal": true
+    },
+    "src/engine/Items/ArcanaRecharge.ts": {
+      "head": "d3232b776d3e6814225f8c4bf2c76d1aa743bb515a8070a1b55886e23a67d29d",
+      "current": "d3232b776d3e6814225f8c4bf2c76d1aa743bb515a8070a1b55886e23a67d29d",
+      "equal": true
+    },
+    "src/engine/Items/ArcanaEnchantment.ts": {
+      "head": "eca65a994903853aaaf5fab0ac885c923e60fc39adc36395841b46c351359c15",
+      "current": "eca65a994903853aaaf5fab0ac885c923e60fc39adc36395841b46c351359c15",
+      "equal": true
+    },
+    "src/engine/Random.ts": {
+      "head": "9a6931acdd5037497450f1dfa2bf04e8ae43212917bff15560775b73a11036ce",
+      "current": "9a6931acdd5037497450f1dfa2bf04e8ae43212917bff15560775b73a11036ce",
+      "equal": true
+    },
+    "src/entities/Creature.ts": {
+      "head": "ded33dd08987734f43d398ea592b37e75612425de70def6d8615a66837936d29",
+      "current": "ded33dd08987734f43d398ea592b37e75612425de70def6d8615a66837936d29",
+      "equal": true
+    },
+    "src/entities/Monster.ts": {
+      "head": "0d6e1501e4cecdb51590efe5de7cdc111d62cbe48034a6fc8dc9e789f7d87b6f",
+      "current": "0d6e1501e4cecdb51590efe5de7cdc111d62cbe48034a6fc8dc9e789f7d87b6f",
+      "equal": true
+    },
+    "src/entities/Player.ts": {
+      "head": "0226b0575e5e63605066a7ee6caafd6bd5d8ab41987140bf3661f48ef99b8fd4",
+      "current": "0226b0575e5e63605066a7ee6caafd6bd5d8ab41987140bf3661f48ef99b8fd4",
+      "equal": true
+    },
+    "src/engine/Combat/StaffDamage.ts": {
+      "head": "45fc54ff51cfc28b87fefc6d69ed2f8922b164ab0ce67847c6b4c34bd060b219",
+      "current": "45fc54ff51cfc28b87fefc6d69ed2f8922b164ab0ce67847c6b4c34bd060b219",
+      "equal": true
+    },
+    "src/engine/Combat/BoltReflection.ts": {
+      "head": "63328fbf609195ec84cf6418f5b1f971d9c2ee1c917a1e541786a54bbf5fb4c9",
+      "current": "63328fbf609195ec84cf6418f5b1f971d9c2ee1c917a1e541786a54bbf5fb4c9",
+      "equal": true
+    },
+    "src/engine/Combat/BoltTargeting.ts": {
+      "head": "3272072e6e00932fdc20f84c0c3bd663d18e9cc5fb1b02442bc77fdca19d74d7",
+      "current": "3272072e6e00932fdc20f84c0c3bd663d18e9cc5fb1b02442bc77fdca19d74d7",
+      "equal": true
+    },
+    "src/test/scroll_effects.test.ts": {
+      "head": "0e92f8bf398d2fafcec7e2e729dfe20bf009c8dc628772826e1db3c0e5fc3825",
+      "current": "0e92f8bf398d2fafcec7e2e729dfe20bf009c8dc628772826e1db3c0e5fc3825",
+      "equal": true
+    },
+    "src/test/p4_1b_monster_casting.test.ts": {
+      "head": "cab3fa17c951931e501c33090301001f08dee46dbb8c8111226dc7114355bad3",
+      "current": "cab3fa17c951931e501c33090301001f08dee46dbb8c8111226dc7114355bad3",
+      "equal": true
+    },
+    "src/test/p2_2_real_speed.test.ts": {
+      "head": "2b1a731ed904f6f2730ea087b262a33276ed5d4a6cffb37e954954ff0727911c",
+      "current": "2b1a731ed904f6f2730ea087b262a33276ed5d4a6cffb37e954954ff0727911c",
+      "equal": true
+    },
+    "src/test/fixtures/generation_baseline.json": {
+      "head": "1549a4c5aae041ff5c4a7653ea22d07af88aecaf3740861b0cdb90a4656d5820",
+      "current": "1549a4c5aae041ff5c4a7653ea22d07af88aecaf3740861b0cdb90a4656d5820",
+      "equal": true
+    }
+  },
+  "playerDamageHasPhysicalAttack": false
+}

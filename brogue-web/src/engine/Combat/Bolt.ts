@@ -102,7 +102,8 @@ export interface BoltConfig {
     effect: BoltEffect;
     /** Legacy runtime value, NOT CE enchantment/charges. W-8 CE fire/lightning
      * STAFF damage ignores it and resolves instance E at the effect consumer.
-     * Other effects and retired web inventions retain this legacy value. */
+     * W-9 directed statuses also resolve CE magnitude at contact.
+     * Remaining effects and retired web inventions retain this legacy value. */
     magnitude: number;
     /** Display character while in flight. */
     char: string;
@@ -298,7 +299,7 @@ export interface BoltResult {
     aimPos: Pos;
     /** Ordered effect contacts after reflection. Origin can be revisited/hit.
      * Pure previews (outcome=null) predict contacts without rolling reflection.
-     * Legacy self-buffs remain effect-local until W-9/W-15, not extra collisions. */
+     * W-9 directed effects require actual hits; legacy shielding awaits W-15. */
     hits: BoltHit[];
     /** Deflections in travel order, separate from hits and effect observation. */
     reflections: BoltReflection[];

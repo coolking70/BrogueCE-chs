@@ -95,7 +95,7 @@ describe('W-1 caster/contact/landing/outcome contracts with W-3 actual routes', 
         expect(trace(game, getBoltForItem('staff_of_fire')!, game.player.loc).path).toEqual([]);
     });
 
-    it('monster return values carry caster and player/monster contacts while healing retains the old 25 percent formula', () => {
+    it('monster return values carry caster and player/monster contacts; W-9 retires old 25 percent healing for catalog E5 = 50 percent', () => {
         const game = scene(), caster = rat(8), ally = rat(6);
         game.monsters.push(caster, ally);
         for (const target of [game.player, ally]) {
@@ -111,7 +111,8 @@ describe('W-1 caster/contact/landing/outcome contracts with W-3 actual routes', 
             expect(result.bolt.ceType).toBe(CEBoltType.HEALING);
             // W-2: execution now observes CE :5366-5370; tracing above remains unresolved.
             expect(result.outcome).toEqual({ autoID: true, casterMovement: null });
-            expect(target.hp).toBe(35);
+            // W-9: CE Items.c:5367 -> heal(5 * 10, false), 50% of maxHP.
+            expect(target.hp).toBe(60);
         }
     });
 

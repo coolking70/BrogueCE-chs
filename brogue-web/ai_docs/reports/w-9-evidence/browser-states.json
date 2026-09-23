@@ -1,0 +1,766 @@
+{
+  "states": [
+    {
+      "label": "heal-target",
+      "contact": {
+        "E": 3,
+        "charges": 1,
+        "hp": 50,
+        "statuses": {},
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 31,
+            "statuses": {}
+          }
+        ],
+        "hits": [
+          "rat"
+        ],
+        "reflections": 0,
+        "autoID": true
+      },
+      "final": {
+        "E": 3,
+        "charges": 0,
+        "hp": 50,
+        "statuses": {},
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 31,
+            "statuses": {}
+          }
+        ]
+      },
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 50,
+          "nutrition": 2149,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 8,
+            "y": 5,
+            "hp": 31
+          }
+        ],
+        "items": []
+      },
+      "logs": [
+        "樱桃木法杖为老鼠恢复了30点生命值！",
+        "你鉴定了治疗法杖。",
+        "你看到了老鼠。"
+      ]
+    },
+    {
+      "label": "haste-target",
+      "contact": {
+        "E": 3,
+        "charges": 1,
+        "hp": 50,
+        "statuses": {},
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 1,
+            "statuses": {
+              "hasted": 14
+            }
+          }
+        ],
+        "hits": [
+          "rat"
+        ],
+        "reflections": 0,
+        "autoID": true
+      },
+      "final": {
+        "E": 3,
+        "charges": 0,
+        "hp": 50,
+        "statuses": {},
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 1,
+            "statuses": {
+              "hasted": 13
+            }
+          }
+        ]
+      },
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 50,
+          "nutrition": 2148,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 2,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 8,
+            "y": 5,
+            "hp": 1
+          }
+        ],
+        "items": []
+      },
+      "logs": [
+        "红木法杖使老鼠充满了超自然的速度！",
+        "你鉴定了加速法杖。",
+        "你看到了老鼠。"
+      ]
+    },
+    {
+      "label": "slow-target",
+      "contact": {
+        "E": 3,
+        "charges": 1,
+        "hp": 50,
+        "statuses": {},
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 1,
+            "statuses": {
+              "slowed": 50
+            }
+          }
+        ],
+        "hits": [
+          "rat"
+        ],
+        "reflections": 0,
+        "autoID": true
+      },
+      "final": {
+        "E": 3,
+        "charges": 0,
+        "hp": 51,
+        "statuses": {},
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 1,
+            "statuses": {
+              "slowed": 49
+            }
+          }
+        ]
+      },
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 51,
+          "nutrition": 2147,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 3,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 8,
+            "y": 5,
+            "hp": 1
+          }
+        ],
+        "items": []
+      },
+      "logs": [
+        "黄铜魔杖减缓了老鼠的行动速度！",
+        "你鉴定了迟缓魔杖。",
+        "你看到了老鼠。"
+      ]
+    },
+    {
+      "label": "invisible-target",
+      "contact": {
+        "E": 3,
+        "charges": 1,
+        "hp": 50,
+        "statuses": {},
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 1,
+            "statuses": {
+              "invisible": 150
+            }
+          }
+        ],
+        "hits": [
+          "rat"
+        ],
+        "reflections": 0,
+        "autoID": true
+      },
+      "final": {
+        "E": 3,
+        "charges": 0,
+        "hp": 50,
+        "statuses": {},
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 1,
+            "statuses": {
+              "invisible": 149
+            }
+          }
+        ]
+      },
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 50,
+          "nutrition": 2146,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 4,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 8,
+            "y": 5,
+            "hp": 1
+          }
+        ],
+        "items": []
+      },
+      "logs": [
+        "白锡魔杖使老鼠消失了！",
+        "你鉴定了隐身魔杖。",
+        "你看到了老鼠。"
+      ]
+    },
+    {
+      "label": "heal-miss",
+      "contact": {
+        "E": 3,
+        "charges": 1,
+        "hp": 50,
+        "statuses": {},
+        "monsters": [],
+        "hits": [],
+        "reflections": 0,
+        "autoID": false
+      },
+      "final": {
+        "E": 3,
+        "charges": 0,
+        "hp": 50,
+        "statuses": {},
+        "monsters": []
+      },
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 50,
+          "nutrition": 2145,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 5,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "logs": [
+        "你施放了樱桃木法杖。"
+      ]
+    },
+    {
+      "label": "haste-miss",
+      "contact": {
+        "E": 3,
+        "charges": 1,
+        "hp": 50,
+        "statuses": {},
+        "monsters": [],
+        "hits": [],
+        "reflections": 0,
+        "autoID": false
+      },
+      "final": {
+        "E": 3,
+        "charges": 0,
+        "hp": 51,
+        "statuses": {},
+        "monsters": []
+      },
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 51,
+          "nutrition": 2144,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 6,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "logs": [
+        "你施放了红木法杖。"
+      ]
+    },
+    {
+      "label": "invisible-miss",
+      "contact": {
+        "E": 3,
+        "charges": 1,
+        "hp": 50,
+        "statuses": {},
+        "monsters": [],
+        "hits": [],
+        "reflections": 0,
+        "autoID": false
+      },
+      "final": {
+        "E": 3,
+        "charges": 0,
+        "hp": 50,
+        "statuses": {},
+        "monsters": []
+      },
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 50,
+          "nutrition": 2143,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 7,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "logs": [
+        "你施放了白锡魔杖。"
+      ]
+    },
+    {
+      "label": "heal-reflect",
+      "contact": {
+        "E": 3,
+        "charges": 1,
+        "hp": 80,
+        "statuses": {},
+        "monsters": [
+          {
+            "id": "stone_guardian",
+            "hp": 1,
+            "statuses": {
+              "immune_fire": 1000
+            }
+          }
+        ],
+        "hits": [
+          "player"
+        ],
+        "reflections": 1,
+        "autoID": true
+      },
+      "final": {
+        "E": 3,
+        "charges": 0,
+        "hp": 80,
+        "statuses": {},
+        "monsters": [
+          {
+            "id": "stone_guardian",
+            "hp": 1,
+            "statuses": {
+              "immune_fire": 1000
+            }
+          }
+        ]
+      },
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 80,
+          "nutrition": 2142,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 8,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "石像守卫",
+            "x": 8,
+            "y": 5,
+            "hp": 1
+          }
+        ],
+        "items": []
+      },
+      "logs": [
+        "樱桃木法杖为你恢复了30点生命值！",
+        "你鉴定了治疗法杖。",
+        "你看到了石像守卫。"
+      ]
+    },
+    {
+      "label": "haste-reflect",
+      "contact": {
+        "E": 3,
+        "charges": 1,
+        "hp": 50,
+        "statuses": {
+          "hasted": 14
+        },
+        "monsters": [
+          {
+            "id": "stone_guardian",
+            "hp": 1,
+            "statuses": {
+              "immune_fire": 1000
+            }
+          }
+        ],
+        "hits": [
+          "player"
+        ],
+        "reflections": 1,
+        "autoID": true
+      },
+      "final": {
+        "E": 3,
+        "charges": 0,
+        "hp": 51,
+        "statuses": {
+          "hasted": 14
+        },
+        "monsters": [
+          {
+            "id": "stone_guardian",
+            "hp": 1,
+            "statuses": {
+              "immune_fire": 1000
+            }
+          }
+        ]
+      },
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 51,
+          "nutrition": 2142,
+          "statuses": {
+            "hasted": 14
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 9,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "石像守卫",
+            "x": 8,
+            "y": 5,
+            "hp": 1
+          }
+        ],
+        "items": []
+      },
+      "logs": [
+        "红木法杖使你充满了超自然的速度！",
+        "你鉴定了加速法杖。",
+        "你看到了石像守卫。"
+      ]
+    },
+    {
+      "label": "invisible-reflect",
+      "contact": {
+        "E": 3,
+        "charges": 1,
+        "hp": 50,
+        "statuses": {
+          "invisible": 150
+        },
+        "monsters": [
+          {
+            "id": "stone_guardian",
+            "hp": 1,
+            "statuses": {
+              "immune_fire": 1000
+            }
+          }
+        ],
+        "hits": [
+          "player"
+        ],
+        "reflections": 1,
+        "autoID": true
+      },
+      "final": {
+        "E": 3,
+        "charges": 0,
+        "hp": 50,
+        "statuses": {
+          "invisible": 149
+        },
+        "monsters": [
+          {
+            "id": "stone_guardian",
+            "hp": 1,
+            "statuses": {
+              "immune_fire": 1000
+            }
+          }
+        ]
+      },
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 50,
+          "nutrition": 2141,
+          "statuses": {
+            "invisible": 149
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 10,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "石像守卫",
+            "x": 8,
+            "y": 5,
+            "hp": 1
+          }
+        ],
+        "items": []
+      },
+      "logs": [
+        "白锡魔杖使你消失了！",
+        "你鉴定了隐身魔杖。",
+        "你看到了石像守卫。"
+      ]
+    },
+    {
+      "label": "discord-target",
+      "contact": {
+        "E": 3,
+        "charges": 1,
+        "hp": 50,
+        "statuses": {},
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 1,
+            "statuses": {
+              "discordant": 12
+            }
+          }
+        ],
+        "hits": [
+          "rat"
+        ],
+        "reflections": 0,
+        "autoID": true
+      },
+      "final": {
+        "E": 3,
+        "charges": 1,
+        "hp": 50,
+        "statuses": {},
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 1,
+            "statuses": {
+              "discordant": 12
+            }
+          }
+        ]
+      },
+      "text": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "x": 4,
+          "y": 5,
+          "hp": 50,
+          "nutrition": 2141,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 10,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 8,
+            "y": 5,
+            "hp": 1
+          }
+        ],
+        "items": []
+      },
+      "logs": [
+        "红木法杖在老鼠的心中播下了混乱的种子！"
+      ]
+    }
+  ],
+  "errors": []
+}

@@ -846,3 +846,19 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 后续：怪物伤害公式另案；其它杖公式 W-9+。既有 trySplitMonster 只复制HP/阵营等字段，未像 CE cloneMonster 复制全部状态；此次接通的是命中原体点燃及分裂调用资格，不声称整个克隆模型已对齐，详见 w-8.report.md 的缺口登记。
 
 - 最终完成：build、显式106文件回归、独立drift均退出0，107文件合计1565 passed、8 skipped、5 todo、0 failed；223个运行输入前后SHA-256清单均为4bd8a229acd7f7b318f3b345a982ca4a9a8fee584a5dcac35d98723414ccfdc5。基线未重捕获；逐文件最终结果和CE依据见ai_docs/reports/w-8.report.md。
+
+## 2026-09-23 W-9：基础定向状态
+
+- 当前请求：严格执行 w-9.prompt / W-0 §2.3，收掉 heal/haste 自施、miss 自隐形、discord confused 三项旧行为；不改生成流、不入池。
+- 核实 CE Items.c:4636-4706/4941-4957/5242-5273/5366-5404、PowerTables.c:53/55：slow=5E、haste=2+4E、heal=floor(maxHP*10E/100)、invis=15E、discord=max(old,4E)。前3种持续状态覆盖；速度互斥并清 web haste 别名，治疗不是 panacea。
+- 新增 Game.applyBasicBoltEffect，消费 W-4 实际 hits；玩家与怪物四个既有基础效果共用。怪物 healing 25%四舍五入→50%向下取整、haste15→10、discord30→40，SLOW_2仍10；资格/覆盖同步CE，实际玩家接触可受discord。Monster AI选择和其它效果分支不改。
+- 通用 applyStatusToMonster/applyTimedStatus、Creature/Monster、卷轴 discord/negation 入口保持逐字不变；CE定向状态不继承web自创statusImmunities/statusResistTurns，现有数据无对应五状态抗性项，卷轴原抗性路径保留。
+- 新增77例：目标/空射/墙/原点/反射/随机旁射、E2/3/8、百分比取整、互斥、资格、autoID、怪物共享与真实P2时间。W-2旧自施用例留痕翻正；W-4六例旧时长/discord/资格登记按CE翻正，原命中几何断言保留。
+- 开发首轮分支文本合并误删无关case，定向测试/翻译门发现，已恢复；最终脚本新增非W-9玩家/怪物case逐字对照守卫。新用例误把无discord构造返回null写成undefined，已更正；无skip/todo新增。
+- 技能Playwright客户端完成实际游戏移动；canvas导出仍黑图，不充当视觉验收。11个有头专项场景全部通过、无页面/控制台错误，整页截图已打开复核；测试场景换图时同步重绑FOV/LightMap。
+- 开始最终冻结并复跑 build、显式R+S回归与独立test:drift；实际4生产文件（Game/Bolt注释/两翻译资源），R104 + S(B,C,Q,M/状态/读取)并集109文件。逐文件结果、SHA-256及撞红处置回填 w-9.report.md。
+- 后续边界：discord物品与频率留W-26；毒/护盾/其它效果仍按原轮安排，怪物BE_DAMAGE仍是既有公式。生成基线不重捕获。
+
+- 拟最终运行前的复核发现W-4反射预算末尾实际接触无生命石像卫士，原“命中必减速”断言不符CE；保留全部轨迹/预算断言，增加精确命中者与拒绝减速/仍autoID断言。中断未完成的广域/拟最终运行，修后重新冻结完整复跑，未采用中断统计。
+
+- 完整回归发现W-1 BoltContract另有1例明确锁旧怪物治疗25%（35HP），按CE目录E5→50%改为60HP，施法者/命中者/位置/autoID断言全保留。该轮build/drift通过但回归1红，不计作最终绿；保存prefinal-failure.json。定向复核后重新冻结，用8 workers（本机10核/32GiB）执行同一109文件完整门禁。

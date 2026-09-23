@@ -4312,8 +4312,8 @@ export class Game {
             },
         });
         Object.assign(result, actual);
-        // Keep the existing landing/miss/self-effect dispatch, including its W-8+
-        // limitations. Empty paths have no detonation (in particular no origin fire).
+        // Landing effects still run on misses. W-9 directed effects require a hit;
+        // an empty path has no detonation (in particular no origin fire).
         if (!applied && result.landingPos) autoID = this.applyBoltEffect(result, item) || autoID;
         result.outcome = { autoID, casterMovement: this.boltCasterMovement(result) };
         if (hideDetails) result.frames = result.frames.map(frame => ({ ...frame, char: '*', color: 0xaaaaaa }));
@@ -4417,6 +4417,57 @@ export class Game {
     // CE still flashes/identifies an accepted repeat application; false is not immunity.
     private boltStatusAccepted(target: Creature, status: StatusId, changed: boolean): boolean {
         return changed || (!target.statusImmunities.has(status) && target.hasStatus(status));
+    }
+
+    /** W-9: shared player/monster directed effects. CE Items.c:4636-4706,
+     * 4941-4957,5242-5273,5366-5372,5390-5404; PowerTables.c:53/55.
+     * magnitude is instance E for STAFF, catalog magnitude for WAND/monsters.
+     * These CE writes deliberately bypass generic web immunity/resist/max-refresh;
+     * scrolls, potions, gas and runics retain their existing status entry points. */
+    private applyBasicBoltEffect(target: Creature, effect: BoltEffect, magnitude: number): { accepted: boolean; autoID: boolean; healed: number } {
+        const seen = this.canObserveBoltTarget(target);
+        const living = this.boltLivingTarget(target);
+        let accepted = living, autoID = false, healed = 0;
+        switch (effect) {
+            case BoltEffect.HEALING:
+                // heal(..., false): floor percent*maxHP/100, no minimum or panacea.
+                healed = Math.min(target.maxHp - target.hp, Math.floor(magnitude * 10 * target.maxHp / 100));
+                target.hp += healed;
+                accepted = true; // CE healing has no INANIMATE/INVULNERABLE gate.
+                autoID = seen; // Also at full health or when rounding yields zero.
+                break;
+            case BoltEffect.SLOW:
+            case BoltEffect.HASTE:
+                if (accepted) {
+                    target.setStatusDuration('haste', 0); // web alias of CE HASTED
+                    target.setStatusDuration('hasted', effect === BoltEffect.HASTE ? 2 + 4 * magnitude : 0);
+                    target.setStatusDuration('slowed', effect === BoltEffect.SLOW ? 5 * magnitude : 0);
+                    target.refreshSpeeds();
+                }
+                autoID = true; // CE flashes on contact even when slow/haste rejects.
+                break;
+            case BoltEffect.INVISIBILITY:
+                accepted = living && (!(target instanceof Monster) || !target.isTrulyInvisible());
+                if (accepted) {
+                    // Decide observation BEFORE invisibility changes perception.
+                    autoID = target === this.player || (target instanceof Monster && target.isAlly)
+                        || (seen && this.player.hasStatus('telepathy'));
+                    target.setStatusDuration('invisible', 15 * magnitude);
+                }
+                break;
+            case BoltEffect.DISCORD:
+                if (accepted) {
+                    target.setStatusDuration('discordant', Math.max(target.getStatusDuration('discordant'), 4 * magnitude));
+                    autoID = seen;
+                }
+                break;
+            default:
+                throw new Error('Not a basic directed bolt effect');
+        }
+        if (!accepted) logger.log(i18next.t('bolt.invulnerable_no_effect', {
+            target: target.name, defaultValue: `The ${target.name} is unaffected.`
+        }), '#aaaaaa');
+        return { accepted, autoID, healed };
     }
 
     private applyBoltEffect(result: BoltResult, item: Item, alreadyReflected = false): boolean {
@@ -4536,40 +4587,30 @@ export class Game {
                 break;
             }
 
-            case BoltEffect.SLOW: {
-                if (target) {
-                    this.applyPlayerBoltStatus(target, 'slowed', 20);
-                    autoID = true; // CE :5242-5249, unconditional after slow/flash.
-                    logger.log(i18next.t('bolt.slow_hit', {
-                        name: item.displayName, target: target.name,
-                        defaultValue: `${item.displayName} slows the ${target.name}!`
-                    }), '#888888');
-                } else {
-                    logMiss('bolt.slow_miss', `${item.displayName} fires but finds no target.`, '#888888');
+            case BoltEffect.SLOW:
+            case BoltEffect.HEALING:
+            case BoltEffect.HASTE:
+            case BoltEffect.DISCORD:
+            case BoltEffect.INVISIBILITY: {
+                if (!target) {
+                    logMiss('arcana.no_observable_effect', 'You zap {{name}}.', '#aaaaaa');
+                    break;
                 }
-                break;
-            }
-
-            case BoltEffect.HEALING: {
-                // Heals the player instead of targeting monsters
-                const healed = Math.min(this.player.maxHp - this.player.hp, magnitude);
-                this.player.hp += healed;
-                autoID = true; // Observe the existing (self) heal; recipient correction is W-9.
-                logger.log(i18next.t('bolt.healing', {
-                    name: item.displayName, heal: healed,
-                    defaultValue: `${item.displayName} restores ${healed} HP!`
-                }), '#44ff88');
-                this.spawnFloatingText(`+${healed}`, this.player.loc.x, this.player.loc.y, 0x44ff88);
-                break;
-            }
-
-            case BoltEffect.HASTE: {
-                const applied = this.applyTimedStatus(this.player, 'hasted', 15); // Existing recipient retained (W-9).
-                autoID = this.boltStatusAccepted(this.player, 'hasted', applied);
-                logger.log(i18next.t('bolt.haste', {
-                    name: item.displayName,
-                    defaultValue: `${item.displayName} fills you with supernatural speed!`
-                }), '#ffff88');
+                const ceMagnitude = resolveCEBoltMagnitude(result.bolt.ceType!, item.category === ItemCategory.STAFF
+                    ? { kind: 'staff', enchantment: item.enchantment } : { kind: 'wand' }).value;
+                const applied = this.applyBasicBoltEffect(target, effect, ceMagnitude);
+                autoID = applied.autoID;
+                if (!applied.accepted) break;
+                const targetName = target === this.player ? i18next.t('bolt.target_you', { defaultValue: 'you' }) : target.name;
+                const args = { interpolation: { escapeValue: false }, name: item.displayName, target: targetName, heal: applied.healed };
+                switch (effect) {
+                    case BoltEffect.SLOW: logger.log(i18next.t('bolt.slow_hit', { ...args, defaultValue: '{{name}} slows {{target}}!' }), '#888888'); break;
+                    case BoltEffect.HEALING: logger.log(i18next.t('bolt.healing', { ...args, defaultValue: '{{name}} restores {{heal}} HP to {{target}}!' }), '#44ff88'); break;
+                    case BoltEffect.HASTE: logger.log(i18next.t('bolt.haste', { ...args, defaultValue: '{{name}} fills {{target}} with supernatural speed!' }), '#ffff88'); break;
+                    case BoltEffect.DISCORD: logger.log(i18next.t('bolt.discord_hit', { ...args, defaultValue: '{{name}} sows discord in the mind of {{target}}!' }), '#ff88ff'); break;
+                    case BoltEffect.INVISIBILITY: logger.log(i18next.t('bolt.invisibility_hit', { ...args, defaultValue: '{{name}} makes {{target}} vanish!' }), '#aaaaff'); break;
+                }
+                if (effect === BoltEffect.HEALING) this.spawnFloatingText(`+${applied.healed}`, target.loc.x, target.loc.y, 0x44ff88);
                 break;
             }
 
@@ -4603,20 +4644,6 @@ export class Game {
                 break;
             }
 
-            case BoltEffect.DISCORD: {
-                if (target) {
-                    const applied = this.applyPlayerBoltStatus(target, 'confused', 15);
-                    autoID = this.boltStatusAccepted(target, 'confused', applied) && this.boltLivingTarget(target) && this.canObserveBoltTarget(target);
-                    logger.log(i18next.t('bolt.discord_hit', {
-                        name: item.displayName, target: target.name,
-                        defaultValue: `${item.displayName} sows discord in the ${target.name}'s mind!`
-                    }), '#ff88ff');
-                } else {
-                    logMiss('bolt.discord_miss', `${item.displayName} fires but finds no target.`, '#ff88ff');
-                }
-                break;
-            }
-
             case BoltEffect.CONJURATION: {
                 if (known) this.spawnFloatingText('Blade!', this.player.loc.x, this.player.loc.y - 1, 0xaaddff);
                 logMiss('staff.phantom_force', `Phantom force responds to ${item.displayName}.`, '#aaddff');
@@ -4627,24 +4654,6 @@ export class Game {
                 this.applyTimedStatus(this.player, 'telepathy', 25);
                 this.spawnFloatingText('+Light', this.player.loc.x, this.player.loc.y - 1, 0xffffaa);
                 logger.log(i18next.t('staff.bright_aura', { name: item.displayName, defaultValue: `A bright aura radiates from ${item.displayName}.` }), '#ffffaa');
-                break;
-            }
-
-            case BoltEffect.INVISIBILITY: {
-                if (target) {
-                    const observable = target === this.player || (target instanceof Monster && target.isAlly) || (this.canObserveBoltTarget(target) && this.player.hasStatus('telepathy'));
-                    const applied = this.applyPlayerBoltStatus(target, 'invisible', 20);
-                    autoID = this.boltStatusAccepted(target, 'invisible', applied) && observable && this.boltLivingTarget(target) && (!(target instanceof Monster) || !target.isTrulyInvisible()); // CE :4941-4951
-                    logger.log(i18next.t('bolt.invisibility_hit', {
-                        name: item.displayName, target: target.name,
-                        defaultValue: `${item.displayName} makes the ${target.name} vanish!`
-                    }), '#aaaaff');
-                } else {
-                    // Target self
-                    const applied = this.applyTimedStatus(this.player, 'invisible', 20); // Existing self fallback retained (W-9).
-                    autoID = this.boltStatusAccepted(this.player, 'invisible', applied);
-                    logger.log(i18next.t('bolt.invisibility_self', { name: item.displayName, defaultValue: `${item.displayName} wraps you in shadows.` }), '#aaaaff');
-                }
                 break;
             }
 
@@ -4740,6 +4749,7 @@ export class Game {
      * 做伤害判定），两条路径共享地基但不共享分支体，玩家原有调用
      * （zapBoltFromPlayer → applyBoltEffect）保留。W-1 仅携带 caster/命中/落点
      * 契约并返回结果；W-2 在旧分支观察 autoID；W-3 按真实接触逐格调用。
+     * W-9 起基础定向状态/治疗共用 applyBasicBoltEffect；其它分支保持旧边界。
      *
      * 伤害类 bolt（SPARK/FIRE/DRAGONFIRE/POISON_DART/DISTANCE_ATTACK）不走
      * CE zap() 的 bolt 专属伤害公式——那个公式在 Combat.ts/CombatFormulas.ts
@@ -4848,22 +4858,18 @@ export class Game {
             }
 
             case BoltEffect.HEALING: {
-                const amount = Math.max(1, Math.round(target.maxHp * 0.25));
-                const healed = Math.min(target.maxHp - target.hp, amount);
-                target.hp += healed;
-                autoID = seenBefore; // CE :5366-5370 (full health also identifies).
+                const applied = this.applyBasicBoltEffect(target, meta.effect, meta.magnitude);
+                const healed = applied.healed;
+                autoID = applied.autoID;
                 this.spawnFloatingText(`+${healed}`, target.loc.x, target.loc.y, 0x44ff88);
                 logCast('bolt.monster_cast_heal', `${casterLabel} heals ${targetName} for ${healed} HP!`, '#44ff88');
                 break;
             }
 
             case BoltEffect.HASTE: {
-                autoID = true; // CE :5252-5259
-                if (isPlayer) {
-                    this.applyTimedStatus(this.player, 'hasted', 15);
-                } else {
-                    this.applyStatusToMonster(target as Monster, 'hasted', 15, 'magic');
-                }
+                const applied = this.applyBasicBoltEffect(target, meta.effect, meta.magnitude);
+                autoID = applied.autoID;
+                if (!applied.accepted) break;
                 logCast('bolt.monster_cast_haste', `${casterLabel} hastes ${targetName}!`, '#ffff88');
                 break;
             }
@@ -4876,22 +4882,18 @@ export class Game {
             }
 
             case BoltEffect.SLOW: {
-                autoID = true; // CE :5242-5249
-                if (isPlayer) {
-                    this.applyTimedStatus(this.player, 'slowed', meta.magnitude >= 10 ? 20 : 10);
-                } else {
-                    this.applyStatusToMonster(target as Monster, 'slowed', meta.magnitude >= 10 ? 20 : 10, 'magic');
-                }
+                const applied = this.applyBasicBoltEffect(target, meta.effect, meta.magnitude);
+                autoID = applied.autoID;
+                if (!applied.accepted) break;
                 logCast('bolt.monster_cast_slow', `${casterLabel} slows ${targetName}!`, '#888888');
                 break;
             }
 
             case BoltEffect.DISCORD: {
-                // CE case BE_DISCORD 已在 specificallyValidBoltTarget 里排除了玩家目标。
-                if (!isPlayer) {
-                    const applied = this.applyStatusToMonster(target as Monster, 'discordant', DISCORD_DURATION, 'magic');
-                    autoID = this.boltStatusAccepted(target, 'discordant', applied) && seenBefore && this.boltLivingTarget(target);
-                }
+                // Candidate rejection is not contact immunity: reflection can hit anyone.
+                const applied = this.applyBasicBoltEffect(target, meta.effect, meta.magnitude);
+                autoID = applied.autoID;
+                if (!applied.accepted) break;
                 logCast('bolt.monster_cast_discord', `${casterLabel} sows discord in ${targetName}!`, '#ff88ff');
                 break;
             }

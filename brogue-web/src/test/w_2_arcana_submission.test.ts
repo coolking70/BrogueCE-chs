@@ -318,19 +318,21 @@ describe('W-2 actual autoID (CE Items.c:5112-5119,5220-5413,5444-5465,5470-5567)
         expect(target.loc).toEqual({ x: 6, y: 5 });
     });
 
-    it('legacy self healing/haste/invisibility recipients remain unchanged; observation follows those actual effects', () => {
+    it('W-9 retires legacy self heal/haste/miss-invisibility; observation follows actual hits', () => {
         const g = scene(), target = monster(g);
         target.maxHp = 100; target.hp = 1;
         g.player.hp = 5;
-        expect(fire(g, item(g, 'staff_of_healing'))!.outcome?.autoID).toBe(true);
-        expect(g.player.hp).toBe(13); expect(target.hp).toBe(1);
+        const heal = item(g, 'staff_of_healing'); heal.enchantment = 2;
+        expect(fire(g, heal)!.outcome?.autoID).toBe(true);
+        expect(g.player.hp).toBe(5); expect(target.hp).toBe(21); // CE 20% of target maxHP
         const tick = timeSystem.currentTick;
         expect(fire(g, item(g, 'staff_of_haste'))!.outcome?.autoID).toBe(true);
-        expect(g.player.hasStatus('hasted')).toBe(true); expect(target.hasStatus('hasted')).toBe(false);
-        expect(timeSystem.currentTick - tick).toBe(50); // Time.c:2605 after haste
+        expect(g.player.hasStatus('hasted')).toBe(false); expect(target.hasStatus('hasted')).toBe(true);
+        expect(timeSystem.currentTick - tick).toBe(100); // Caster was not hit; no self haste.
         g.monsters = [];
-        expect(fire(g, item(g, 'wand_of_invisibility'))!.outcome?.autoID).toBe(true);
-        expect(g.player.hasStatus('invisible')).toBe(true);
+        expect(fire(g, item(g, 'wand_of_invisibility'))!.outcome?.autoID).toBe(false);
+        expect(g.player.hasStatus('invisible')).toBe(false);
+        expect(ItemLoader.identifiedItems.has('wand_of_invisibility')).toBe(false);
     });
 
     it('monster exits evaluate visible healing versus hidden healing and blocked/no-effect paths', () => {

@@ -81,7 +81,7 @@ describe('W-4 reflected travel (CE Items.c:4960-5065,5675-5705,5830-5852)', () =
         const rolls = vi.spyOn(rng, 'randPercent').mockReturnValueOnce(true).mockReturnValueOnce(false);
         vi.spyOn(rng, 'randRange').mockReturnValue(16); // CE perimeter: south
         const r = cast();
-        expect(recipients(r)).toEqual([bystander]); expect(bystander.statusDurations.slowed).toBe(20);
+        expect(recipients(r)).toEqual([bystander]); expect(bystander.statusDurations.slowed).toBe(50);
         expect(golem.hasStatus('slowed')).toBe(false); expect(g.player.hasStatus('slowed')).toBe(false);
         expect(r.reflections[0]!.towardCaster).toBe(false); expect(rolls).toHaveBeenCalledTimes(2);
         expect(r.outcome?.autoID).toBe(true);
@@ -147,7 +147,7 @@ describe('W-4 reflected travel (CE Items.c:4960-5065,5675-5705,5830-5852)', () =
         const direction = vi.spyOn(rng, 'randRange').mockReturnValueOnce(16).mockReturnValueOnce(35);
         const r = cast();
         expect(direction).toHaveBeenCalledTimes(2); expect(recipients(r)).toEqual([bystander]);
-        expect(bystander.statusDurations.slowed).toBe(20);
+        expect(bystander.statusDurations.slowed).toBe(50);
     });
 
     it('repeated guaranteed reflection terminates at the CE path budget and keeps every animation/hit index finite', () => {
@@ -160,7 +160,12 @@ describe('W-4 reflected travel (CE Items.c:4960-5065,5675-5705,5830-5852)', () =
         expect(r.path.length).toBeLessThanOrEqual(g.grid.width * 10);
         expect(r.reflections.every(e => e.pathIndex < g.grid.width * 10 - Math.max(g.grid.width, g.grid.height))).toBe(true);
         expect(r.hits).toHaveLength(1); expect([g.player, guardian]).toContain(r.hits[0]!.creature);
-        expect(r.hits[0]!.creature.statusDurations.slowed).toBe(20);
+        // W-9: path-budget contact reaches the INANIMATE guardian; a hit is
+        // an effect attempt, not a bypass of the CE slow eligibility gate.
+        expect(r.hits[0]!.creature).toBe(guardian);
+        expect(guardian.hasStatus('slowed')).toBe(false);
+        expect(g.player.hasStatus('slowed')).toBe(false);
+        expect(r.outcome?.autoID).toBe(true);
     });
 
     it('maxRange counts outbound and return cells; a reflector at the limit does not become a damage hit', () => {
@@ -185,9 +190,9 @@ describe('W-4 reflected travel (CE Items.c:4960-5065,5675-5705,5830-5852)', () =
 
 describe('W-4 recipient dispatch and boundaries', () => {
     it.each([
-        ['staff_of_poison', 'poisoned', 12], ['wand_of_slowness', 'slowed', 20],
-        ['wand_of_invisibility', 'invisible', 20],
-    ] as const)('%s reaches the player with its unchanged old duration', (id, status, duration) => {
+        ['staff_of_poison', 'poisoned', 12], ['wand_of_slowness', 'slowed', 50],
+        ['wand_of_invisibility', 'invisible', 150],
+    ] as const)('%s reaches the player (W-9 corrects slow/invisibility durations; poison stays W-10)', (id, status, duration) => {
         const g = scene(), guardian = monster(g, 8, 5, 'stone_guardian');
         const r = zap(g, id);
         expect(recipients(r)).toEqual([g.player]); expect(g.player.statusDurations[status]).toBe(duration);
@@ -203,10 +208,11 @@ describe('W-4 recipient dispatch and boundaries', () => {
         expect(r.outcome).toEqual({ autoID: false, casterMovement: { from: { x: 4, y: 5 }, to: { x: 2, y: 3 } } });
     });
 
-    it('reflected discord keeps the old confused status/duration rather than implementing W-9', () => {
+    it('W-9 closes reflected discord: actual player gets discordant at catalog magnitude 10 * 4', () => {
         const g = scene(); monster(g, 8, 5, 'stone_guardian');
         const r = zap(g, 'wand_of_slowness', { x: 8, y: 5 }, { effect: BoltEffect.DISCORD, ceType: CEBoltType.DISCORD });
-        expect(recipients(r)).toEqual([g.player]); expect(g.player.statusDurations.confused).toBe(15);
+        expect(recipients(r)).toEqual([g.player]); expect(g.player.statusDurations.discordant).toBe(40);
+        expect(g.player.hasStatus('confused')).toBe(false);
     });
 
     it('monster return passes the real caster to combat, preserves damage math, then hits a player behind it', () => {
@@ -264,7 +270,7 @@ describe('W-4 recipient dispatch and boundaries', () => {
     it('adjacent casting reflects before damage and identifies armor; the old post-hit hook cannot reflect twice', () => {
         const g = scene(), caster = monster(g, 5), a = armor(g);
         const r = g.castMonsterBolt(caster, g.player, 'SLOW_2')!;
-        expect(recipients(r)).toEqual([caster]); expect(caster.statusDurations.slowed).toBe(10); // SLOW_2 keeps the old magnitude<10 formula
+        expect(recipients(r)).toEqual([caster]); expect(caster.statusDurations.slowed).toBe(10); // W-9 CE catalog magnitude 2 * 5, numerically unchanged
         expect(g.player.hasStatus('slowed')).toBe(false); expect(a.runicKnown).toBe(true);
         const hp = caster.hp, before = rng.randomNumbersGenerated;
         g.tryTriggerArmorRunic(caster, 20);
