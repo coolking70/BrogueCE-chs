@@ -27,9 +27,10 @@ export interface PlacementWorld {
  * stairs or machines. Caller owns effect immunity, range and destination policy.
  * Dormant living creatures count as occupied too (stronger than CE HAS_MONSTER).
  */
-export function canPlaceCreature(world: Pick<PlacementWorld, 'grid' | 'player' | 'monsters' | 'dormantMonsters'>, target: Creature, at: Pos): boolean {
+export function canPlaceCreature(world: Pick<PlacementWorld, 'grid' | 'player' | 'monsters' | 'dormantMonsters'>, target: Creature, at: Pos, walkingSecretDoor = false): boolean {
     if (!Number.isInteger(at.x) || !Number.isInteger(at.y) || !world.grid.isValidPos(at.x, at.y)) return false;
-    if (cellTerrainFlags(world.grid, at.x, at.y) & T_OBSTRUCTS_PASSABILITY) return false;
+    if ((cellTerrainFlags(world.grid, at.x, at.y) & T_OBSTRUCTS_PASSABILITY)
+        && !(walkingSecretDoor && world.grid.getCell(at.x, at.y)?.layers.includes(TerrainType.SECRET_DOOR))) return false;
     return ![world.player, ...world.monsters, ...(world.dormantMonsters ?? [])].some(c => c !== target && c.hp > 0
         && c.loc.x === at.x && c.loc.y === at.y);
 }

@@ -24,6 +24,7 @@ export const STATUS_CONFIG: Record<BurningStatusId, StatusConfigEntry> = {
     levitating: { id: 'levitating', label: '漂浮', color: '#bfdbfe', isDebuff: false },
     hallucinating: { id: 'hallucinating', label: '幻觉', color: '#f0abfc', isDebuff: true },
     confused: { id: 'confused', label: '混乱', color: '#c4b5fd', isDebuff: true },
+    entranced: { id: 'entranced', label: '催眠', color: '#fde047', isDebuff: true },
     regenerating: { id: 'regenerating', label: '再生', color: '#86efac', isDebuff: false },
     haste: { id: 'haste', label: '急行', color: '#fde047', isDebuff: false },
     hasted: { id: 'hasted', label: '急速', color: '#fde047', isDebuff: false },
@@ -62,4 +63,3 @@ export const CE_EMPTY_NAME_STATUSES: ReadonlySet<string> = new Set(['explosion_i
 export function isSidebarVisibleStatus(id: string): boolean {
     return !CE_EMPTY_NAME_STATUSES.has(id);
 }
-

@@ -407,7 +407,7 @@ onMounted(async () => {
             const visual = monsterAppearance(m, {
                 cellVisible: !!cell?.isVisible,
                 cellHasMemory: !!cell?.hasMemory,
-                telepathy: telepathyRevealed,
+                telepathy: telepathyRevealed || m.hasStatus('entranced'),
                 hallucinating,
                 cosmetic,
             });
@@ -482,12 +482,12 @@ onMounted(async () => {
         const visibleMonsters = game.monsters
             .filter((m) => {
                 const cell = game.grid.getCell(m.loc.x, m.loc.y);
-                return m.hp > 0 && (!!cell?.isVisible || telepathyRevealed);
+                return m.hp > 0 && (!!cell?.isVisible || telepathyRevealed || m.hasStatus('entranced'));
             })
             .map((m) => ({ name: m.name, x: m.loc.x, y: m.loc.y, hp: m.hp,
                 typeId: m.typeId, isAlly: m.isAlly, boundToPlayer: m.boundToPlayer,
                 dominated: m.dominated, isCaged: m.isCaged, leaderId: m.leader?.id ?? null,
-                discordant: m.getStatusDuration('discordant'),
+                discordant: m.getStatusDuration('discordant'), entranced: m.getStatusDuration('entranced'),
                 doesNotTrackLeader: m.doesNotTrackLeader, ticksUntilTurn: m.ticksUntilTurn,
                 poisonAmount: m.poisonAmount, poisoned: m.getStatusDuration('poisoned'),
                 shield: m.getStatusDuration('shielded'), maxShield: m.maxShield }));

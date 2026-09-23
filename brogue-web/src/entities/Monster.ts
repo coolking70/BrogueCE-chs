@@ -23,6 +23,9 @@ import { CEBoltType } from '../engine/Combat/BoltCatalog';
 import { reflectionChance } from '../engine/Combat/CombatFormulas';
 import { bladeAvoids, bladeDiagonalBlocked, bladeStepToward, BLADE_DIRECTIONS } from '../engine/Combat/Conjuration';
 import { boltLine } from '../engine/Combat/BoltTrajectory';
+import { entrancementDiagonalBlocked, entrancementPassable } from '../engine/Movement/Entrancement';
+import { cellTerrainFlags, cellTerrainMechFlags } from '../engine/Map/DungeonFeature';
+import { T_ENTANGLES, TM_ALLOWS_SUBMERGING } from '../engine/Map/TerrainCatalog';
 
 const BLADE_SIGHT: BoltConfig = { id: 'blade_sight', name: '', ceType: CEBoltType.NONE,
     effect: BoltEffect.NONE, magnitude: 0, char: '', color: 0, maxRange: 0, piercing: false, selfTargeting: false };
@@ -32,7 +35,7 @@ const BLADE_SIGHT: BoltConfig = { id: 'blade_sight', name: '', ceType: CEBoltTyp
 // 对照 CE Monsters.c 的 monstUseBolt/generallyValidBoltTarget/
 // specificallyValidBoltTarget（见 ai_docs/p4_1b_monster_casting_report.md
 // 的逐段对照）。web 没有 CE 的 MONSTER_ALLY/MONSTER_TRACKING_SCENT 等完整
-// creatureState 谱系，也没有 MB_MARKED_FOR_SACRIFICE、STATUS_ENTRANCED 等，
+// creatureState 谱系，也没有 MB_MARKED_FOR_SACRIFICE 等，
 // 下面按"够用且可测"的口径做了必要简化，均在报告里逐条说明，不静默偷工。
 
 /** 阵营：player 阵营含玩家本身与所有 isAlly 怪物；hostile 阵营是其余怪物。 */
@@ -112,6 +115,14 @@ export function specificallyValidBoltTarget(caster: Monster, target: Creature, c
     const meta = MONSTER_BOLT_TABLE[ceBoltName];
     if (!meta || meta.effect === null || meta.effect === BoltEffect.BLINKING) return false;
 
+    // W-18 CE MC:2649/2714: do not damage entranced enemies; hostile
+    // negators can release their own kind. Other negation eligibility is W-23.
+    if (target.hasStatus('entranced')) {
+        if (meta.effect === BoltEffect.NEGATION && !caster.isAlly && monstersAreTeammates(caster, target)
+            && !(target instanceof Monster && target.diesIfNegated())) return true;
+        if ([BoltEffect.FIRE, BoltEffect.SPARK, BoltEffect.DRAGONFIRE, BoltEffect.DISTANCE_ATTACK, BoltEffect.POISON_DART].includes(meta.effect)
+            && monstersAreEnemies(caster, target)) return false;
+    }
     if (meta.targetAllies && !monstersAreTeammates(caster, target)) return false;
     if (meta.targetEnemies && !monstersAreEnemies(caster, target)) return false;
     if (meta.targetEnemies && target instanceof Monster && target.hasBehavior('MONST_INVULNERABLE')) return false;
@@ -653,15 +664,58 @@ export class Monster extends Creature {
     // ------------------------------------------------------------------
 
     /**
-     * P4-6：CE monsterWillAttackTarget（Monsters.c:336）的 web 简化口径：
-     * 敌对（monstersAreEnemies 已含 discordant 六亲不认）且存活、非被囚禁
-     * （MB_CAPTIVE → isCaged）。省略 entranced/ally 细分（web 无该状态谱系），
-     * 与 P4-5 findLiveSeizer 的判定同口径。
+     * CE monsterWillAttackTarget (Monsters.c:333-364), including W-18.
+     * Entrancement permits attacking hostile teammates/captives; the ordinary enemy
+     * fallback still permits attacking the player and player allies.
      */
     private willAttackTarget(defender: Creature): boolean {
-        if (defender.hp <= 0) return false;
+        if (defender === this || defender.hp <= 0) return false;
+        const ally = defender instanceof Player || (defender instanceof Monster && defender.isAlly);
+        if (this.hasStatus('entranced') && !ally) return true;
+        if (this.isAlly && defender.hasStatus('entranced')) return false;
         if (defender instanceof Monster && defender.isCaged) return false;
-        return monstersAreEnemies(this, defender);
+        return monstersAreEnemies(this, defender) || this.hasStatus('confused');
+    }
+
+    /** Movement.c:719 -> moveMonster, independent of the AI turn budget.
+     * No pathfinding, flitting, confused reroll, swapping or terrain avoidance.
+     * Existing web webs have no STATUS_STUCK counter: on an entangling tile
+     * their physical hold supplies the same no-follow gate until freed.
+     */
+    public moveEntranced(game: Game, dx: number, dy: number): void {
+        if (this.hp <= 0 || this.isDormant || !this.hasStatus('entranced')
+            || this.hasStatus('paralyzed') || this.isCaged || (!dx && !dy)) return;
+        if ((cellTerrainFlags(game.grid, this.loc.x, this.loc.y) & T_ENTANGLES)
+            && !this.hasBehavior('MONST_IMMUNE_TO_WEBS') && !this.isInvulnerable()) return;
+        const to = { x: this.loc.x + dx, y: this.loc.y + dy };
+        if (!game.grid.isValidPos(to.x, to.y)) return;
+        if (this.hasBehavior('MONST_RESTRICTED_TO_LIQUID')
+            && !(cellTerrainMechFlags(game.grid, to.x, to.y) & TM_ALLOWS_SUBMERGING)) return;
+        const defender = creatureAtLoc(game, to.x, to.y);
+        if (!defender) {
+            if (this.seized && game.monsters.some(m => m !== this && m.hp > 0 && m.seizing
+                && monstersAreEnemies(this, m)
+                && Math.max(Math.abs(m.loc.x-this.loc.x), Math.abs(m.loc.y-this.loc.y)) === 1
+                && !entrancementDiagonalBlocked(game.grid, this.loc, m.loc))) {
+                this.ticksUntilTurn = this.movementSpeed;
+                return;
+            }
+            this.seized = false;
+            this.seizing = false;
+        }
+        if (this.hasAbility('MA_ATTACKS_EXTEND') && this.performWhipAttack(game, dx, dy)) return;
+        if (this.hasAbility('MA_ATTACKS_PENETRATE') && this.performSpearAttack(game, dx, dy)) return;
+        const throughWall = defender instanceof Monster && defender.hasBehavior('MONST_ATTACKABLE_THRU_WALLS');
+        if (!throughWall && (!entrancementPassable(game.grid, to) || !entrancementPassable(game.grid, this.loc)
+            || entrancementDiagonalBlocked(game.grid, this.loc, to))) return;
+        if (defender) {
+            if (!this.willAttackTarget(defender)) return;
+            this.ticksUntilTurn = this.attackSpeed;
+            if (this.hasAbility('MA_ATTACKS_ALL_ADJACENT')) this.performSweepAttack(game, defender);
+            else this.resolveGeometryAttackOn(game, defender, 'hostile');
+        } else if (game.placeCreature(this, to, { walkingSecretDoor: true })) {
+            this.ticksUntilTurn = this.movementSpeed;
+        }
     }
 
     /**
@@ -967,7 +1021,11 @@ export class Monster extends Creature {
     /** Preserve the actual converted form, including mutations/negated flags,
      * instead of guessing a species from a translated display name on load. */
     public dominationForm(): MonsterData | undefined {
-        if (!this.dominated) return undefined;
+        return this.dominated ? this.snapshotForm() : undefined;
+    }
+
+    /** Shared W-17/W-18 payload for effects whose save must retain actual traits. */
+    public snapshotForm(): MonsterData {
         return { id: this.typeId, name: this.name, char: this.char, color: this.color,
             hp: this.maxHp, damage: this.damageString, minDepth: 1, maxDepth: 99,
             accuracy: this.accuracy, defense: this.defense, regen: this.regenTurns,
@@ -979,7 +1037,7 @@ export class Monster extends Creature {
 
     public takeTurn(game: Game, stealthRange: number) {
         if (this.hp <= 0) return;
-        if (this.hasStatus('paralyzed')) return;
+        if (this.hasStatus('paralyzed') || this.hasStatus('entranced')) return;
         if (this.isCaged) return;
 
         // P4-1b：CE monstUseMagic 在移动/近战之前优先尝试（monstersTurn 各出口
@@ -1017,7 +1075,7 @@ export class Monster extends Creature {
             let target: Monster | null = null;
             let minDist = Infinity;
             for (const other of game.monsters) {
-                if (other === this || other.hp <= 0 || other.isAlly) continue;
+                if (other === this || other.hp <= 0 || other.isAlly || other.hasStatus('entranced')) continue;
                 if (independentBlade) {
                     // CE moveAlly/traversiblePathBetween: the blade's terrain path,
                     // not the player's FOV; never charge an invulnerable target.

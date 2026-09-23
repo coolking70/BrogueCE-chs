@@ -955,3 +955,19 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 第三次完整冻结门禁build/drift通过，回归118/119文件通过，唯一断言失败是W-16 tagless旧档守卫：新allegiance与spectralBlade形成双重盟友来源。修代码让刀刃继续只用W-16单一tag，并在该tag扩展leaderId/boundToLeader；原128测试仍不改。新增horde刀刃关系往返/缺tag兜底测试（第43项）。此前报告保存到prefinal-blade-tag。
 - 同次脚本错误把堆栈runWithTimeout匹配成timeout，额外串行复跑仍是同一断言失败（不是超时）。收窄识别到实际Test/Hook timed out错误消息，不改测试超时上限。修后重新完整冻结运行，不拼接旧绿文件。
 - W-16/W-17修后89项定向通过，5个反向变异重新打红并恢复SHA。最终并行度按本机Node实测10CPU/32GiB调为8 workers（只改复跑脚本命令，不改任何测试timeout/期望），build/drift仍独立串行；重新完整跑同120文件闭包。
+
+
+## 2026-09-23 W-18 催眠动作链
+- 用户要求严格执行 w-18.prompt/W-0 W-18 行，所有 CE 线索逐条读执行路径；动作级验收，禁止改生成池/频率/重采 drift。使用 develop-web-game 技能。
+- CE 关键事实：Movement714方向取反、移动/方向攻击/挣扎触发，wait/UI/拒绝动作不触发；Time2727跳过自主行动；PowerTables56=3E覆盖；Items5342玩家中弹改confused，怪物中弹wakeUp并透露位置；Combat1183/Items6790近战和投掷miss也解除，伤害射线依moralAttack且玩家反射分支例外。
+- W-9共享效果入口扩入ENTRANCEMENT；W-11安置扩可选走密门策略，C-5幸存者清催眠/抓取；生成路径不改。web旧蛛网无STUCK计数，以当前缠绕地形提供受控移动阻断，恢复自主后的蛛网沿用旧机制。
+- 待办：动作/P2/地形/保存/反射测试、浏览器验收、R+S闭包与SHA最终复跑、报告。
+- 动作验收首批61项通过；补自动寻路旁路与living immobile执行路径后共63项。已有4文件151项同时通过，未修改任何既有测试断言。首批新增夹具的反射RNG、DISCOVERED、毒气陷阱保留本体、C5回合顶部坠落预期已按执行代码纠正；敌对受控怪仍可攻击玩家/盟友，不把催眠当转队。
+- 浏览器11场景通过、console/page错误0；已实际打开整页截图核实反向位置、HP99反击、反射混乱、读档后跟随。技能客户端无头/有头canvas导出仍黑图，整页可见，沿用已登记限制；不以黑图声明视觉通过。浏览器强制命中夹具曾未还原randPercent导致下次staff构造尾部循环不退出，中断后修复并完整重跑。
+- 五个反向变异错误方向/等待跟随/miss不解除/漏落格环境/常数时长分别打红8/1/1/2/2项，finally还原前后SHA一致。
+- 初版构建与Vitest在沙箱内报SecItemCopyMatching -50并崩溃；同命令沙箱外构建通过。后续门禁按已获自动审批的同方式运行，不改测试超时、依赖锁和环境基线。
+- R(10个实际生产文件)=113，S(C,M,U,B/动作保存/文件读取)并集123文件；122个显式回归+独立drift。冻结全部源码/测试/scripts/progress后按w18-final-check执行build/回归/drift，逐文件结果及SHA见报告。后续只回填报告与证据。
+- 后续边界：entrancement杖身份/频率/入池仍W-25；通用怪物伤害bolt公式、完整negation/学习、STUCK计数与nausea/潜水记账、完整AI状态机和跨层levels的JSON持久化为既有独立缺口。本轮受控移动在现有缠绕地形上停住；没有声称重建全部蛛网系统。
+- 首次拟最终build发现新增测试2处直接访问private needsRender（TS2341）；运行时63项已通过但不冒充build通过。回归主动中断exit130，日志/SHA归档prefinal-types，修测试访问方式后完整复跑。另补CE Combat1173水生近战拒绝悬浮目标早于解除的真实门，以及Items5210玩家反射火击中旁观者不走moralAttack的用例。共65项；物理攻击拒绝门明列为共用Combat行为变化。
+- 再次收尾发现W-17实际形态保存仅覆盖dominated/刀刃，普通被催眠鳗鱼读档会丢RESTRICTED_TO_LIQUID、豺狼会丢50 tick速度。build已过但回归主动中断exit130（prefinal-save-form），复用W-17形态字段抽出snapshotForm，催眠tag在受控期间保存真实旗标/速度。补两种生物读档后的动作断言，共67项；此为前轮存档原语范围缺口，未扩改全体旧档或生成。
+- 最终保存修复后vue-tsc通过，W18(67)+W17(43)共110项定向通过。浏览器冷启动后11场景完整通过；热更新服务器上的一次重跑命中0≠23（日志另存），没有据此改生产逻辑。最终只使用冷启动完整场景结果；随后重新负变异还原与冻结全闭包。

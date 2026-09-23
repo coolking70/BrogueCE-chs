@@ -156,6 +156,19 @@ export class CombatSystem {
             return { damage: 0, weaponName, hit: true, backstab: false, kamikazeSelfDestruct: true };
         }
 
+        // CE Combat.c:1173-1177: this is a rejected physical attack, before
+        // entrancement release. The legacy BE_DAMAGE caller is not melee.
+        if (opts?.isWeaponAttack !== false && attacker instanceof Monster
+            && attacker.hasBehavior('MONST_RESTRICTED_TO_LIQUID')
+            && (defender.hasStatus('levitating') || defender.hasStatus('flying'))) {
+            return { damage: 0, weaponName, hit: false, backstab: false };
+        }
+
+        // W-18 CE Combat.c:1183: attempts release entrancement even on a miss.
+        // BE_DAMAGE retains its separately registered legacy hit roll; only a
+        // successful damage hit is aggressive there (Items.c:5212).
+        if (opts?.isWeaponAttack !== false) defender.setStatusDuration('entranced', 0);
+
         // --- P4-5: MA_SEIZES (Combat.c:1212-1237) ---
         // CE 条件：attacker 带 MA_SEIZES，且"不是（attacker 已经在抓 && defender
         // 已经被抓）"——即两个标记还没有同时置位时，这一下贴脸就是"抓住"而不是
@@ -188,6 +201,8 @@ export class CombatSystem {
         if (!rng.randPercent(hitProb)) {
             return { damage: 0, weaponName, hit: false, backstab: false };
         }
+
+        if (opts?.isWeaponAttack === false) defender.setStatusDuration('entranced', 0);
 
         // --- Calculate damage ---
         const parts = CombatSystem.parseDamageString(damageString);
@@ -356,7 +371,7 @@ export class CombatSystem {
      *    不调 magicWeaponHit，与近战 attack() 恒调、内部再挡 MB_IS_DYING 不同）。
      * CE 把投掷物临时换手（equipItem → attackHit → 换回，Items.c:6804-6811）只为
      * 让命中吃投掷物净附魔；web 直接把净附魔传进 hitProbability，等价。
-     * web 无 STATUS_ENTRANCED / 魔法恐惧 / MB_CAPTIVE 载体，对应豁免分支不迁移
+     * W-18 已接 ENTRANCED 解除；web 无魔法恐惧载体，对应豁免分支不迁移
      *（登记见 b_2 报告）。
      */
     public static resolveThrownWeapon(
@@ -364,6 +379,8 @@ export class CombatSystem {
         defender: Monster,
         item: Item
     ): { hit: boolean; damage: number; killed: boolean; triggeredRunic?: string } {
+        // CE Items.c:6790: a thrown weapon attempt releases even on a miss.
+        defender.setStatusDuration('entranced', 0);
         const strReq = item.strengthRequired || 0;
         const enchant = netEnchant(item.enchantment, thrower.strength, strReq);
 

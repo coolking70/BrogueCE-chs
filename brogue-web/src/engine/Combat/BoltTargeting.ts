@@ -15,7 +15,7 @@ import { CE_BOLT_CATALOG, CE_ITEM_BOLT_TYPES, CEBoltEffect, CEBoltFlags } from '
 export function canObserveBoltCreature(player: Player, grid: Grid, creature: Creature): boolean {
     if (creature === player) return true;
     if (!(creature instanceof Monster) || creature.isDormant) return false;
-    if (player.hasStatus('telepathy')) return true;
+    if (player.hasStatus('telepathy') || creature.hasStatus('entranced')) return true;
     return !!grid.getCell(creature.loc.x, creature.loc.y)?.isVisible
         && (creature.isAlly || (!creature.isTrulyInvisible() && !creature.hasStatus('invisible')));
 }

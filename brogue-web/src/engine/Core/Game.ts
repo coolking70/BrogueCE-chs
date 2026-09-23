@@ -25,6 +25,7 @@ import { Monster, monstersAreTeammates, monstersAreEnemies } from '../../entitie
 import { CombatSystem } from '../Combat/Combat';
 import { staffPoison } from '../Combat/Poison';
 import { staffProtection } from '../Combat/Shielding';
+import { staffEntrancementDuration, ENTRANCEMENT_DIRECTIONS, entrancementPassable, entrancementDiagonalBlocked } from '../Movement/Entrancement';
 import { wandDominate } from '../Combat/Domination';
 import { staffBladeCount, bladeSpawnLocation } from '../Combat/Conjuration';
 import { weaponParalysisDuration, weaponConfusionDuration, weaponForceDistance, netEnchant, armorAbsorptionMax, armorReprisalPercent } from '../Combat/CombatFormulas';
@@ -228,6 +229,8 @@ export interface GameSnapshotItem {
 }
 
 export interface GameSnapshotMonster {
+    /** W-18: preserve the controlled action budget/grabs; missing tag keeps old defaults. */
+    entrancement?: { ticksUntilTurn: number; seized: boolean; seizing: boolean; form?: MonsterData };
     /** W-17: optional for old saves. Player follower = isAlly + leaderId=null.
      * Resolve monster IDs only after BOTH active and dormant lists exist. */
     allegiance?: { isAlly: boolean; isCaged: boolean; leaderId: number | null; boundToLeader: boolean; dominated: boolean };
@@ -420,6 +423,7 @@ interface TestRoomState {
     y2: number;
     baselineItems: GameSnapshotItem[];
     baselineMonsters: Array<{
+        entrancement?: GameSnapshotMonster['entrancement'];
         spectralBlade?: GameSnapshotMonster['spectralBlade'];
         allegiance?: GameSnapshotMonster['allegiance'];
         dominatedForm?: MonsterData;
@@ -2389,7 +2393,7 @@ export class Game {
     }
 
     private createMonsterFromSnapshot(m: TestRoomState['baselineMonsters'][number]): Monster {
-        if (m.spectralBlade || m.allegiance) return this.deserializeMonster(m);
+        if (m.spectralBlade || m.allegiance || m.entrancement) return this.deserializeMonster(m);
         const data = {
             id: m.name.toLowerCase().replace(/\s+/g, '_'),
             name: m.name,
@@ -2748,6 +2752,7 @@ export class Game {
                     y2: row.y2,
                     baselineItems: roomItems.map((it) => this.serializeItem(it)),
                     baselineMonsters: roomMonsters.map((m) => ({
+                        entrancement: this.serializeMonster(m).entrancement,
                         spectralBlade: this.serializeMonster(m).spectralBlade,
                         allegiance: this.serializeMonster(m).allegiance,
                         dominatedForm: this.serializeMonster(m).dominatedForm,
@@ -2964,12 +2969,11 @@ export class Game {
 
             for (const m of this.monsters) {
                 const cell = this.grid.getCell(m.loc.x, m.loc.y);
-                const telepathyRevealed = this.player.hasStatus('telepathy') && m.hp > 0;
+                const telepathyRevealed = (this.player.hasStatus('telepathy') || m.hasStatus('entranced')) && m.hp > 0;
                 // P4-3：CE Monsters.c:200-203 monsterIsHidden —— MONST_INVISIBLE 的怪物
-                // （phantom）对非队友观察者恒定隐藏，忽略视野/光照/相邻，唯一的例外是
-                // telepathy（IO.c:1264 canSeeMonster 配合 monsterRevealed 显示幽灵符号，
+                // （phantom）对非队友观察者恒定隐藏，忽略视野/光照/相邻；telepathy 与 W-18 催眠可透露位置（IO.c:1264 canSeeMonster 配合 monsterRevealed 显示幽灵符号，
                 // 这里简化为：仍能"察觉存在"但不能像正常怪物一样直接看见）。
-                const trulyInvisible = m.isTrulyInvisible() && !this.player.hasStatus('telepathy');
+                const trulyInvisible = m.isTrulyInvisible() && !telepathyRevealed;
                 if (cell && (cell.isVisible || telepathyRevealed) && m.hp > 0 && !trulyInvisible) {
                     currentVisMonsters.add(m);
                     if (!this.visibleMonsters.has(m)) {
@@ -3343,8 +3347,9 @@ export class Game {
 
         if (action === 'move' || action === 'wait') {
             let dx = 0, dy = 0;
+            let spentTurn = false;
 
-            if (typeof data === 'number') {
+            if (action === 'move' && typeof data === 'number') {
                 const dir = data as Direction;
                 if (dir === Direction.UP) { dx = 0; dy = -1; }
                 else if (dir === Direction.DOWN) { dx = 0; dy = 1; }
@@ -3354,13 +3359,34 @@ export class Game {
                 else if (dir === Direction.UPRIGHT) { dx = 1; dy = -1; }
                 else if (dir === Direction.DOWNLEFT) { dx = -1; dy = 1; }
                 else if (dir === Direction.DOWNRIGHT) { dx = 1; dy = 1; }
-            } else if (typeof data === 'object' && data !== null) {
+            } else if (action === 'move' && typeof data === 'object' && data !== null) {
                 const delta = data as { x?: number; y?: number };
                 dx = delta.x || 0;
                 dy = delta.y || 0;
             }
 
-            if ((dx !== 0 || dy !== 0) && this.player.hasStatus('hallucinating') && rng.randPercent(35)) {
+            if (action === 'move' && (!Number.isInteger(dx) || !Number.isInteger(dy)
+                || Math.abs(dx) > 1 || Math.abs(dy) > 1 || (!dx && !dy))) return;
+            if (action === 'move' && this.player.hasStatus('confused')) {
+                // CE Movement.c:1097-1138 / randValidDirectionFrom(false):
+                // all physically legal directions, including occupied/hazard cells.
+                const choices = ENTRANCEMENT_DIRECTIONS.filter(([x,y]) => {
+                    const at = { x: this.player.loc.x+x, y: this.player.loc.y+y };
+                    return entrancementPassable(this.grid, at, false)
+                        && !entrancementDiagonalBlocked(this.grid, this.player.loc, at);
+                });
+                if (!choices.length) return;
+                if (!this.player.hasStatus('levitating') && !this.player.hasStatus('flying') && !this.player.hasStatus('immune_fire')
+                    && choices.some(([x,y]) => {
+                        const cell = this.grid.getCell(this.player.loc.x+x, this.player.loc.y+y)!;
+                        return cell.hasMemory && cell.layers.includes(TerrainType.LAVA)
+                            && !(cellTerrainFlags(this.grid, this.player.loc.x+x, this.player.loc.y+y) & T_ENTANGLES)
+                            && !this.getMonsterAt(this.player.loc.x+x, this.player.loc.y+y);
+                    }) && !this.requestConfirm(i18next.t('bolt.confused_lava', { defaultValue: 'Risk stumbling into lava?' }))) return;
+                [dx,dy] = choices[rng.randRange(0, choices.length-1)]!;
+            }
+
+            if ((dx !== 0 || dy !== 0) && !this.player.hasStatus('confused') && this.player.hasStatus('hallucinating') && rng.randPercent(35)) {
                 const dirs: Array<[number, number]> = [
                     [0, -1], [0, 1], [-1, 0], [1, 0],
                     [-1, -1], [1, -1], [-1, 1], [1, 1]
@@ -3402,6 +3428,8 @@ export class Game {
                 if (moveNotBlocked && this.tryPlayerWeaponGeometryAttack(dx, dy)) {
                     this.needsRender = true;
                     this.playerRecoversFromAttacking(true);
+                    this.moveEntrancedMonsters(dx, dy);
+                    spentTurn = true;
                     timeSystem.currentTick += this.player.attackSpeed;
                 } else if (blockingMonster) {
                     // Attack —— P4-7：CE Movement.c:1216-1247，buildHitList
@@ -3418,6 +3446,8 @@ export class Game {
                     // CE Time.c:2438：攻击耗时 = attackSpeed，在结算处累加；
                     // P4-7：钝器命中时 2×attackSpeed（Time.c:2442-2444）
                     this.playerRecoversFromAttacking(anyAttackHit);
+                    this.moveEntrancedMonsters(dx, dy);
+                    spentTurn = true;
                     timeSystem.currentTick += this.player.attackSpeed;
                 } else if (this.player.seized) {
                     // P4-5：CE Movement.c:1267-1297（MB_SEIZED 检查，playerMoves()
@@ -3434,8 +3464,9 @@ export class Game {
                         monster: seizer.name,
                         defaultValue: `You struggle but the ${seizer.name} is holding you!`
                     }), '#ff8888');
+                    spentTurn = true;
                     timeSystem.currentTick += this.player.movementSpeed;
-                    this.playerTurnEnded();
+                    this.moveEntrancedMonsters(dx, dy);
                 } else if (this.grid.getCell(newX, newY)?.layers.includes(TerrainType.LOCKED_DOOR) // F-1 跨层判定
                     || this.grid.getCell(newX, newY)?.layers.includes(TerrainType.MONSTER_CAGE_CLOSED)) {
                     // V-2b-6：钥匙真实化（CE Movement.c:1160-1206 的 bump-to-unlock
@@ -3484,6 +3515,7 @@ export class Game {
                         }
 
                         this.needsRender = true;
+                        spentTurn = true;
                         timeSystem.currentTick += this.player.movementSpeed;
                     } else {
                         // CE LOCKED_DOOR 的 flavor（Globals.c:331 描述列）：
@@ -3518,6 +3550,7 @@ export class Game {
 
                             this.needsRender = true;
                             // CE 无祭坛取物优惠耗时：与普通移动一样收满 movementSpeed
+                            spentTurn = true;
                             timeSystem.currentTick += this.player.movementSpeed;
                         } else {
                             logger.log(i18next.t('game.inventory_full', { defaultValue: 'Your inventory is full.' }), '#ff8888');
@@ -3526,7 +3559,9 @@ export class Game {
                         // Empty altar is walkable
                         this.player.loc.x = newX;
                         this.player.loc.y = newY;
+                        this.moveEntrancedMonsters(dx, dy);
                         this.needsRender = true;
+                        spentTurn = true;
                         timeSystem.currentTick += this.player.movementSpeed;
                         this.handleSpecialTileEntry();
                     }
@@ -3550,8 +3585,10 @@ export class Game {
                                 logger.log(i18next.t('env.break_web', { defaultValue: 'You break the web.' }), '#aaaaaa');
                             }
                             this.needsRender = true;
+                            spentTurn = true;
                             timeSystem.currentTick += this.player.movementSpeed;
-                            if (this.needsRender) this.playerTurnEnded();
+                            this.moveEntrancedMonsters(dx, dy);
+                            this.playerTurnEnded();
                             return;
                         }
                     }
@@ -3565,6 +3602,7 @@ export class Game {
                     // Move
                     this.player.loc.x = newX;
                     this.player.loc.y = newY;
+                    this.moveEntrancedMonsters(dx, dy);
                     this.needsRender = true;
 
                     if (specialTargets.length > 0) {
@@ -3583,11 +3621,13 @@ export class Game {
                         // CE 的突进/连枷回合没有独立的 movementSpeed 开销：
                         // playerTurnEnded 只在 ticksUntilTurn==0 时补 movementSpeed，
                         // 攻击恢复已抢占该分支——currentTick 口径同步按攻击耗时记。
+                        spentTurn = true;
                         timeSystem.currentTick += this.player.attackSpeed;
                         this.playerRecoversFromAttacking(anySpecialHit);
                     } else {
                         // CE 的玩家移动耗时与地形无关（Time.c:2604 只看 movementSpeed）；
                         // web 原有的"泥泞 ×2"为自创口径，按 D1 移除。
+                        spentTurn = true;
                         timeSystem.currentTick += this.player.movementSpeed;
                     }
 
@@ -3601,13 +3641,14 @@ export class Game {
                     }
                 }
 
-                if (this.needsRender) {
+                if (spentTurn) {
                     this.playerTurnEnded();
                 }
 
             } else {
                 // rest
                 this.justRested = true; // P4-8 返工：CE rogue.justRested（IO.c:2521-2524）
+                spentTurn = true;
                 timeSystem.currentTick += this.player.movementSpeed;
                 this.playerTurnEnded();
             }
@@ -4476,7 +4517,7 @@ export class Game {
 
     /** CE Items.c:5159-5168: immunity precedes staffDamage's RNG. No physical
      * attack/accuracy/armor/weapon immunity. null distinguishes immunity. */
-    private applyDirectBoltDamage(target: Creature, result: BoltResult, item: Item): number | null {
+    private applyDirectBoltDamage(target: Creature, result: BoltResult, item: Item, alreadyReflected = false): number | null {
         const staff = this.isDamageStaff(result.bolt, item);
         if ((target instanceof Monster && target.isInvulnerable())
             || (staff && result.effect === BoltEffect.FIRE && target.hasStatus('immune_fire'))) {
@@ -4490,6 +4531,7 @@ export class Game {
             kind: 'staff', enchantment: item.enchantment,
         }).value, rng) : result.magnitude;
         target.takeDamage(damage);
+        if (!alreadyReflected && target.hp > 0) target.setStatusDuration('entranced', 0);
         return damage;
     }
 
@@ -4548,6 +4590,26 @@ export class Game {
                     target.setStatusDuration('invisible', 15 * magnitude);
                 }
                 break;
+            case BoltEffect.ENTRANCEMENT:
+                if (target === this.player) {
+                    target.setStatusDuration('confused', staffEntrancementDuration(magnitude));
+                    autoID = true;
+                } else if (accepted && target instanceof Monster) {
+                    target.setStatusDuration('entranced', staffEntrancementDuration(magnitude));
+                    // CE wakeUp: target budget is reset to 100 even when already awake.
+                    if (!target.isAlly) target.state = MonsterState.HUNTING;
+                    target.ticksUntilTurn = 100;
+                    for (const teammate of this.monsters) {
+                        if (teammate === target || teammate.hp <= 0 || teammate.isDormant || !monstersAreTeammates(target, teammate)) continue;
+                        if (teammate.state === MonsterState.ASLEEP || teammate.state === MonsterState.WANDERING) {
+                            teammate.ticksUntilTurn = Math.max(100, teammate.ticksUntilTurn);
+                        }
+                        if (!target.isAlly) teammate.state = MonsterState.HUNTING;
+                    }
+                    // CE canSeeMonster after status write: entrancement reveals its recipient.
+                    autoID = this.canObserveBoltTarget(target);
+                }
+                break;
             case BoltEffect.DISCORD:
                 if (accepted) {
                     target.setStatusDuration('discordant', Math.max(target.getStatusDuration('discordant'), 4 * magnitude));
@@ -4580,7 +4642,7 @@ export class Game {
             case BoltEffect.FIRE: {
                 if (target) autoID = true; // CE :5146-5150, even if immune; reflectors never enter this branch.
                 // Terrain exposure is sequenced by the travel loop after contact.
-                const damage = target ? this.applyDirectBoltDamage(target, result, item) : null;
+                const damage = target ? this.applyDirectBoltDamage(target, result, item, alreadyReflected) : null;
                 if (target && damage !== null) {
                     logger.log(i18next.t('bolt.fire_hit', {
                         interpolation: { escapeValue: false },
@@ -4612,7 +4674,7 @@ export class Game {
                 for (const hit of result.hits) {
                     const m = hit.creature;
                     autoID = true; // CE BE_DAMAGE contact, not HP delta.
-                    const damage = this.applyDirectBoltDamage(m, result, item);
+                    const damage = this.applyDirectBoltDamage(m, result, item, alreadyReflected);
                     if (damage === null) {
                         continue;
                     }
@@ -4698,7 +4760,8 @@ export class Game {
             case BoltEffect.HEALING:
             case BoltEffect.HASTE:
             case BoltEffect.DISCORD:
-            case BoltEffect.INVISIBILITY: {
+            case BoltEffect.INVISIBILITY:
+            case BoltEffect.ENTRANCEMENT: {
                 if (!target) {
                     logMiss('arcana.no_observable_effect', 'You zap {{name}}.', '#aaaaaa');
                     break;
@@ -4711,6 +4774,11 @@ export class Game {
                 const targetName = target === this.player ? i18next.t('bolt.target_you', { defaultValue: 'you' }) : target.name;
                 const args = { interpolation: { escapeValue: false }, name: item.displayName, target: targetName, heal: applied.healed };
                 switch (effect) {
+                    case BoltEffect.ENTRANCEMENT:
+                        logger.log(target === this.player
+                            ? i18next.t('bolt.entrancement_reflected', { defaultValue: 'The bolt hits you and you suddenly feel disoriented.' })
+                            : i18next.t('bolt.entrancement_hit', { ...args, defaultValue: '{{target}} is entranced!' }), '#ffff88');
+                        break;
                     case BoltEffect.SLOW: logger.log(i18next.t('bolt.slow_hit', { ...args, defaultValue: '{{name}} slows {{target}}!' }), '#888888'); break;
                     case BoltEffect.HEALING: logger.log(i18next.t('bolt.healing', { ...args, defaultValue: '{{name}} restores {{heal}} HP to {{target}}!' }), '#44ff88'); break;
                     case BoltEffect.HASTE: logger.log(i18next.t('bolt.haste', { ...args, defaultValue: '{{name}} fills {{target}} with supernatural speed!' }), '#ffff88'); break;
@@ -5693,7 +5761,7 @@ export class Game {
                     // CE Items.c:6906-6921：命中 → 结算后投掷物消失；
                     // 未命中 → break，投掷物落在怪物所在格的合格邻格。
                     // CE 的 aggro（TRACKING_SCENT，Items.c:6791-6801）在掷骰前
-                    // 置位——miss 也激怒。web 无 ENTRANCED/魔法恐惧/CAPTIVE
+                    // 置位——miss 也激怒。W-18 在 Combat 清 ENTRANCED；web 无魔法恐惧
                     // 豁免分支，仅保留盟友与逃跑怪不激怒的近似（登记）。
                     if (!monst.isAlly && monst.state !== MonsterState.FLEEING) {
                         monst.state = MonsterState.HUNTING;
@@ -6942,9 +7010,19 @@ export class Game {
      * 另开一条"死亡时清 MB_SEIZED"的分支，而是复用 CE 原本的实现方式：
      * 搜索失败就是失败，调用方据此清空 player.seized。
      */
+    /** CE Movement.c:714: direction is inverted once, before P2 scheduling.
+     * Iterate a stable action cohort; attacks/traps can kill or create monsters.
+     */
+    private moveEntrancedMonsters(dx: number, dy: number): void {
+        for (const monster of [...this.monsters]) {
+            if (this.isGameOver) break;
+            monster.moveEntranced(this, -dx, -dy);
+        }
+    }
+
     private findLiveSeizer(): Monster | undefined {
         return this.monsters.find(m =>
-            m.hp > 0 && m.seizing &&
+            m.hp > 0 && m.seizing && !m.hasStatus('entranced') &&
             monstersAreEnemies(m, this.player) &&
             Math.max(Math.abs(m.loc.x - this.player.loc.x), Math.abs(m.loc.y - this.player.loc.y)) === 1
         );
@@ -7193,7 +7271,7 @@ export class Game {
         if (!cell) return false;
         if (!cell.isDiscovered) return false;                       // DISCOVERED | MAGIC_MAPPED
         if (this.player.hasStatus('levitating')) return false;      // STATUS_LEVITATING <= 1
-        if (this.player.hasStatus('hallucinating')) return false;   // !STATUS_CONFUSED
+        if (this.player.hasStatus('confused') || this.player.hasStatus('hallucinating')) return false; // W-18: actual STATUS_CONFUSED; retain legacy hallucination gate
         if (!cell.layers.some(isAutoDescent)) return false;         // T_AUTO_DESCENT
         const entangled = cell.layers.some((t) => (TERRAIN_FLAGS[t].flags & T_ENTANGLES) !== 0);
         const mechFlags = cellTerrainMechFlags(this.grid, newX, newY);
@@ -7344,6 +7422,8 @@ export class Game {
                 if (!died) {
                     // CE :1561-1577：幸存者转层（leadership 降格与
                     // targetCorpseLoc 清理 web 无载体，登记）。
+                    m.setStatusDuration('entranced', 0); // CE Time.c:1564
+                    m.seized = m.seizing = false;
                     m.falling = false;
                     m.preplaced = true;
                     fellOut.add(m);
@@ -7759,7 +7839,7 @@ export class Game {
             for (const m of this.monsters) {
                 if (this.isGameOver) break; // CE Time.c:2721 的 gameHasEnded 守卫
                 if (m.hp > 0 && m.ticksUntilTurn <= 0) {
-                    m.takeTurn(this, stealthRange);
+                    if (!m.hasStatus('entranced')) m.takeTurn(this, stealthRange);
                     if (m.ticksUntilTurn <= 0) {
                         m.ticksUntilTurn = m.movementSpeed;
                     }
@@ -8425,6 +8505,7 @@ export class Game {
      */
     private serializeMonster(m: Monster): GameSnapshotMonster {
         return {
+            ...(m.hasStatus('entranced') ? { entrancement: { ticksUntilTurn: m.ticksUntilTurn, seized: m.seized, seizing: m.seizing, form: m.snapshotForm() } } : {}),
             ...(m.typeId !== 'spectral_blade' ? { allegiance: {
                 isAlly: m.isAlly, isCaged: m.isCaged, leaderId: m.leader?.id ?? null,
                 boundToLeader: m.boundToLeader, dominated: m.dominated,
@@ -8480,7 +8561,8 @@ export class Game {
             abilities: (m.abilities ?? []) as MonsterAbility[]
         };
         const bladeData = m.spectralBlade ? (monsterData as MonsterData[]).find(d => d.id === 'spectral_blade') : undefined;
-        const monster = new Monster(m.loc.x, m.loc.y, m.allegiance?.dominated && m.dominatedForm ? m.dominatedForm : bladeData ?? data);
+        const entrancedForm = (m.statusDurations?.entranced ?? 0) > 0 ? m.entrancement?.form : undefined;
+        const monster = new Monster(m.loc.x, m.loc.y, m.allegiance?.dominated && m.dominatedForm ? m.dominatedForm : entrancedForm ?? bladeData ?? data);
         monster.id = m.id;
         monster.hp = m.hp;
         monster.maxHp = m.maxHp;
@@ -8496,6 +8578,11 @@ export class Game {
             monster.ticksUntilTurn = Number.isFinite(m.spectralBlade.ticksUntilTurn)
                 ? m.spectralBlade.ticksUntilTurn : monster.attackSpeed + 1;
             monster.syncFlagDerivedStatuses();
+        }
+        if (monster.hasStatus('entranced') && m.entrancement) {
+            if (Number.isFinite(m.entrancement.ticksUntilTurn)) monster.ticksUntilTurn = m.entrancement.ticksUntilTurn;
+            monster.seized = m.entrancement.seized === true;
+            monster.seizing = m.entrancement.seizing === true;
         }
         if (m.allegiance) {
             monster.isAlly = m.allegiance.isAlly === true;
@@ -9846,9 +9933,12 @@ export class Game {
      * A failed commit has no side effects. Hazards are legal here; only physical
      * obstruction/occupancy are rejected. Coordinates remain the occupancy source.
      */
-    public placeCreature(target: Creature, destination: Pos, options: { pickupBeforeVision?: boolean } = {}): boolean {
+    public placeCreature(target: Creature, destination: Pos, options: { pickupBeforeVision?: boolean; walkingSecretDoor?: boolean } = {}): boolean {
         if (target.hp <= 0 || (target.loc.x === destination.x && target.loc.y === destination.y)
-            || !canPlaceCreature(this, target, destination)) return false;
+            || !canPlaceCreature(this, target, destination, options.walkingSecretDoor)) return false;
+        if (options.walkingSecretDoor && this.grid.getCell(destination.x, destination.y)?.isVisible) {
+            this.discoverSecretAt(destination.x, destination.y);
+        }
         target.loc.x = destination.x;
         target.loc.y = destination.y;
         this.needsRender = true;
@@ -10244,11 +10334,19 @@ export class Game {
             return;
         }
 
+        // W-18: confused travel must use the same randomized direction as a key
+        // press, and stop the stale planned path after that committed action.
+        if (this.player.hasStatus('confused')) {
+            this.handlePlayerAction('move', { x: next.x-this.player.loc.x, y: next.y-this.player.loc.y }, 'system');
+            return;
+        }
         this.autoPath.shift();
+        const dx = next.x-this.player.loc.x, dy = next.y-this.player.loc.y;
 
         // Move
         this.player.loc.x = next.x;
         this.player.loc.y = next.y;
+        this.moveEntrancedMonsters(dx, dy);
         this.handleSpecialTileEntry();
         this.needsRender = true;
 
