@@ -41,7 +41,7 @@ function fixture(c: Case, E = 3) {
     const category = c.id.startsWith('staff') ? ItemCategory.STAFF : ItemCategory.WAND;
     const item = new Item(c.id, '/', 0xffffff, category);
     Object.assign(item, { identityId: c.id, enchantment: E, maxCharges: 99, charges: 1, arcanaInstanceVersion: 1 });
-    // DISCORD has a CE identity but no web item yet. Exercise the effect without adding it to any pool.
+    // Keep the original W-9 isolated effect fixture; W-26 tests the real discord item entry.
     const bolt: BoltConfig = c.effect === B.DISCORD
         ? { ...getBoltForItem('staff_of_haste')!, id: c.id, effect: B.DISCORD, ceType: CEBoltType.DISCORD }
         : { ...getBoltForItem(c.id)! };
@@ -254,11 +254,11 @@ describe('W-9 observation and shared-entry boundaries', () => {
         expect(timeSystem.currentTick - tick).toBe(reflected ? 50 : 100);
         expect(g.player.hasStatus('hasted')).toBe(reflected); expect(m.hasStatus('hasted')).toBe(!reflected);
     });
-    it('preview is pure and discord remains absent from generated and directly constructible items', () => {
+    it('preview is pure; W-26 discord identity is directly constructible', () => {
         const g = scene(), m = monster(g), { bolt } = fixture(cases[4]); const before = rng.randomNumbersGenerated;
         const r = (g as unknown as { computeBoltResult(b: BoltConfig, f: Player['loc'], t: Player['loc']): BoltResult })
             .computeBoltResult(bolt, g.player.loc, m.loc);
         expect(r.outcome).toBeNull(); expect(m.statusDurations).toEqual({}); expect(rng.randomNumbersGenerated).toBe(before);
-        expect(ItemLoader.spawnStaff('staff_of_discord', -1, -1)).toBeNull();
+        expect(ItemLoader.spawnStaff('staff_of_discord', -1, -1)).not.toBeNull(); // CE Globals.c:1649; W-26 catalog
     });
 });

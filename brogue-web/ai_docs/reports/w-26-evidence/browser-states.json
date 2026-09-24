@@ -1,0 +1,1017 @@
+{
+  "states": [
+    {
+      "name": "twelve-unknown-polarities",
+      "state": {
+        "text": {
+          "mode": "inventory",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 8,
+              "y": 5,
+              "hp": 6,
+              "maxHp": 6,
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_lightning",
+            "display": "樱桃木法杖",
+            "charges": 3,
+            "known": false
+          },
+          {
+            "id": "staff_of_fire",
+            "display": "桉木法杖",
+            "charges": 2,
+            "known": false
+          },
+          {
+            "id": "staff_of_poison",
+            "display": "橡木法杖",
+            "charges": 4,
+            "known": false
+          },
+          {
+            "id": "staff_of_tunneling",
+            "display": "紫杉木法杖",
+            "charges": 2,
+            "known": false
+          },
+          {
+            "id": "staff_of_blinking",
+            "display": "光滑法杖",
+            "charges": 2,
+            "known": false
+          },
+          {
+            "id": "staff_of_entrancement",
+            "display": "竹法杖",
+            "charges": 3,
+            "known": false
+          },
+          {
+            "id": "staff_of_obstruction",
+            "display": "花楸木法杖",
+            "charges": 2,
+            "known": false
+          },
+          {
+            "id": "staff_of_discord",
+            "display": "柳木法杖",
+            "charges": 3,
+            "known": false
+          },
+          {
+            "id": "staff_of_conjuration",
+            "display": "铁杉木法杖",
+            "charges": 2,
+            "known": false
+          },
+          {
+            "id": "staff_of_healing",
+            "display": "铁木法杖",
+            "charges": 3,
+            "known": false
+          },
+          {
+            "id": "staff_of_haste",
+            "display": "玫瑰木法杖",
+            "charges": 2,
+            "known": false
+          },
+          {
+            "id": "staff_of_protection",
+            "display": "雪松木法杖",
+            "charges": 4,
+            "known": false
+          }
+        ],
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 6,
+            "ally": false,
+            "dominated": false,
+            "bolts": [],
+            "statuses": {},
+            "negated": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "twelve-identified",
+      "state": {
+        "text": {
+          "mode": "inventory",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 8,
+              "y": 5,
+              "hp": 6,
+              "maxHp": 6,
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_lightning",
+            "display": "闪电法杖 [3/3]",
+            "charges": 3,
+            "known": true
+          },
+          {
+            "id": "staff_of_fire",
+            "display": "火焰法杖 [2/2]",
+            "charges": 2,
+            "known": true
+          },
+          {
+            "id": "staff_of_poison",
+            "display": "毒液法杖 [4/4]",
+            "charges": 4,
+            "known": true
+          },
+          {
+            "id": "staff_of_tunneling",
+            "display": "掘地法杖 [2/2]",
+            "charges": 2,
+            "known": true
+          },
+          {
+            "id": "staff_of_blinking",
+            "display": "闪现法杖 [2/2]",
+            "charges": 2,
+            "known": true
+          },
+          {
+            "id": "staff_of_entrancement",
+            "display": "催眠法杖 [3/3]",
+            "charges": 3,
+            "known": true
+          },
+          {
+            "id": "staff_of_obstruction",
+            "display": "阻障法杖 [2/2]",
+            "charges": 2,
+            "known": true
+          },
+          {
+            "id": "staff_of_discord",
+            "display": "纷争法杖 [3/3]",
+            "charges": 3,
+            "known": true
+          },
+          {
+            "id": "staff_of_conjuration",
+            "display": "咒术法杖 [2/2]",
+            "charges": 2,
+            "known": true
+          },
+          {
+            "id": "staff_of_healing",
+            "display": "治疗法杖 [3/3]",
+            "charges": 3,
+            "known": true
+          },
+          {
+            "id": "staff_of_haste",
+            "display": "加速法杖 [2/2]",
+            "charges": 2,
+            "known": true
+          },
+          {
+            "id": "staff_of_protection",
+            "display": "防护法杖 [4/4]",
+            "charges": 4,
+            "known": true
+          }
+        ],
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 6,
+            "ally": false,
+            "dominated": false,
+            "bolts": [],
+            "statuses": {},
+            "negated": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "obstruction-aim",
+      "state": {
+        "text": {
+          "mode": "arcana_target",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": {
+            "name": "花楸木法杖",
+            "x": 8,
+            "y": 5
+          },
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 8,
+              "y": 5,
+              "hp": 100,
+              "maxHp": 100,
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_obstruction",
+            "display": "花楸木法杖",
+            "charges": 3,
+            "known": false
+          }
+        ],
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 100,
+            "ally": false,
+            "dominated": false,
+            "bolts": [],
+            "statuses": {},
+            "negated": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "obstruction-after",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 2,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 8,
+              "y": 5,
+              "hp": 100,
+              "maxHp": 100,
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 99900,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_obstruction",
+            "display": "阻障法杖",
+            "charges": 2,
+            "known": true
+          }
+        ],
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 100,
+            "ally": false,
+            "dominated": false,
+            "bolts": [],
+            "statuses": {},
+            "negated": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "discord-aim",
+      "state": {
+        "text": {
+          "mode": "arcana_target",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": {
+            "name": "柳木法杖",
+            "x": 8,
+            "y": 5
+          },
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 3,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 8,
+              "y": 5,
+              "hp": 100,
+              "maxHp": 100,
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_discord",
+            "display": "柳木法杖",
+            "charges": 3,
+            "known": false
+          }
+        ],
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 100,
+            "ally": false,
+            "dominated": false,
+            "bolts": [],
+            "statuses": {},
+            "negated": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "discord-after",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2148,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 4,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 8,
+              "y": 5,
+              "hp": 100,
+              "maxHp": 100,
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 11,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 99900,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_discord",
+            "display": "纷争法杖",
+            "charges": 2,
+            "known": true
+          }
+        ],
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 100,
+            "ally": false,
+            "dominated": false,
+            "bolts": [],
+            "statuses": {
+              "discordant": 11
+            },
+            "negated": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "protection-aim",
+      "state": {
+        "text": {
+          "mode": "arcana_target",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": {
+            "name": "雪松木法杖",
+            "x": 8,
+            "y": 5
+          },
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2148,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 5,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 8,
+              "y": 5,
+              "hp": 100,
+              "maxHp": 100,
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_protection",
+            "display": "雪松木法杖",
+            "charges": 3,
+            "known": false
+          }
+        ],
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 100,
+            "ally": true,
+            "dominated": false,
+            "bolts": [],
+            "statuses": {},
+            "negated": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "protection-after",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2147,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 6,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 8,
+              "y": 5,
+              "hp": 100,
+              "maxHp": 100,
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 99900,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 172,
+              "maxShield": 181
+            }
+          ],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_protection",
+            "display": "防护法杖",
+            "charges": 2,
+            "known": true
+          }
+        ],
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 100,
+            "ally": true,
+            "dominated": false,
+            "bolts": [],
+            "statuses": {
+              "shielded": 172
+            },
+            "negated": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "protection-absorbs",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2147,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 6,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 8,
+              "y": 5,
+              "hp": 100,
+              "maxHp": 100,
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 99900,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 122,
+              "maxShield": 181
+            }
+          ],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_protection",
+            "display": "防护法杖",
+            "charges": 2,
+            "known": true
+          }
+        ],
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 100,
+            "ally": true,
+            "dominated": false,
+            "bolts": [],
+            "statuses": {
+              "shielded": 122
+            },
+            "negated": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "save-restored",
+      "state": {
+        "text": {
+          "mode": "inventory",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2147,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 8,
+              "y": 5,
+              "hp": 100,
+              "maxHp": 100,
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 122,
+              "maxShield": 181
+            }
+          ],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_protection",
+            "display": "防护法杖",
+            "charges": 2,
+            "known": true
+          }
+        ],
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 100,
+            "ally": true,
+            "dominated": false,
+            "bolts": [],
+            "statuses": {
+              "shielded": 122
+            },
+            "negated": false
+          }
+        ]
+      }
+    }
+  ],
+  "errors": []
+}

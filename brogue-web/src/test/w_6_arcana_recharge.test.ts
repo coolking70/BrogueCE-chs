@@ -110,10 +110,10 @@ describe('W-6 CE E / wisdom / stochastic interval', () => {
         expect(random.randomNumbersGenerated).toBe(0);
     });
 
-    it('W-25 activates CE slow cycles; obstruction identity remains reserved for W-26', () => {
+    it('W-25/26 activate both CE slow-cycle identities', () => {
         for (const id of ['staff_of_blinking', 'staff_of_obstruction']) {
             expect(staffChargeDuration(staff(2), id)).toBe(5000);
-            expect(ItemLoader.spawnStaff(id, 0, 0) === null).toBe(id === 'staff_of_obstruction');
+            expect(ItemLoader.spawnStaff(id, 0, 0)).not.toBeNull();
         }
     });
 });

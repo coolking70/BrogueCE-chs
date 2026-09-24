@@ -1051,3 +1051,13 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 边界：W26三种未入池；怪物BLINKING仍由W22外部依赖负责，p4_1b不动；机器STAFF/WAND仍返回null、独立发现屏仍未实现。未扩词表/未声称wood词内容等同CE；未实现历史地形记忆快照，预览沿用web hasMemory。后续W26保持staffFlavors与按CE槽索引分配。
 
 - 首次冻结完整门禁：build/drift通过、2259passed/1failed/8skipped/1todo，370输入前后SHA一致。唯一失败为R-1外观结构守卫：GameCanvas新增预览颜色字面量。按现有架构移入Appearance.ts的ARCANA_TRAJECTORY_FILL，守卫/白名单不变，生产扩为10文件。首次结果完整归档prefinal-appearance；修后定向、浏览器复核，再从build完整冻结复跑，不拼接旧结果。
+
+## 2026-09-24 W-26 地形/辅助杖目录与总收口
+- 按W-26任务和W-0 §2.5/2.6补 obstruction/discord/protection，保持原九行顺序与三退池定义。五生产文件范围，ArcanaRecharge仅注释更新。初始drift通过；正在执行新版drift、单变量目录归因、12种/110票分布与21种正常入口审计。使用develop-web-game技能。
+- 单变量归因完成：旧九种控制组与基线104层零差异；仅增三行后104层四字段与层末RNG仍相同，11次staff事件8次换身份，逐次E/随机边界一致。分布12种/110票/64k件、165353调用通过，不重捕获；基线SHA fad7dc81a35afeff00f8bb0a9b38cb4e674d7ee584578127e270304d6c8d0bf3。
+- 新49项入口/目标/资源/旧档测试通过，21种逐项真实use→cancel→confirm→实际效果；未替代效果配置。初稿三失败为夹具误断言：开放地形没有目标视野外传送候选；仅清hasted不置wasNegated；非blink preview为null。按原CE与前轮结论修夹具，无效果改动。
+- 自然获取原11seed缺haste；探针2,3,4,5,6,8,9,10,11,12找到seed2 D26，仅加入seed2，保持21种完整期望。W25阶段目录/票数/分布分母随最终12种升级，其效果守卫不动。
+- 浏览器10场景通过、console/page errors=0，实看12种背包与三种施法/吸伤截图。技能客户端canvas导出仍黑，未计视觉通过；有头Chromium最初受沙箱通信限制，授权提升后完成。力场外观默认空白沿W14已登记缺口，不宣称绿色水晶视觉完整。
+- 最终生产仅5文件（ArcanaRecharge仅注释）；Game、全部效果/Map/生成器、魔杖目录、原九杖字段与相对顺序、退池定义不变。冻结src/public/scripts/progress/CE/配置/报告依据后执行build、R+S显式文件回归、独立drift与前后SHA。之后仅回填报告/证据。
+- 后续仍需W22学习及怪物blink/藤蔓依赖、机器法器配发/发现屏、未建模状态、怪物伤害公式/完整flare/多层及RNG持久化等，按w-26报告的带来源登记继续全项目勘察。
+- 首次完整冻结门禁：build/drift通过；2348passed/1failed/8skipped/5todo，401输入前后SHA一致。唯一失败为W9末例仍要求discord构造null，是本轮目录入池后过期的留形；同文件76项效果测试通过。原整轮结果保留prefinal-w9-catalog。只改该目录断言与过期夹具注释、补测试白名单；不改效果。编辑结束后重新从build完整冻结复跑，不沿用旧绿文件。最终并行度8，timeout/skip/todo不变。

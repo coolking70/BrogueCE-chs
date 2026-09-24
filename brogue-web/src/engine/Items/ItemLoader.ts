@@ -526,9 +526,8 @@ export class ItemLoader {
      * web 自创/错位实体（CE 无此种类）记 0 并注明：potion_of_healing（自创，退池）、
      * scroll_of_amnesia（自创，退池）、wand_of_fire / wand_of_lightning（CE 法杖
      * 错位实体，退池）、staff_of_light（自创，退池）。CE 有而 web 缺的种类
-     * （potion darkness、scroll aggravate、ring light/reaping、staff tunneling/
-     * blinking/entrancement/obstruction/discord/protection）不在 web 表内，
-     * 不参与分组——补目录时须同时补本表（W-24 已补四条魔杖）。
+     * （potion darkness、scroll aggravate、ring light/reaping）不在 web 表内，
+     * 不参与分组——补目录时须同时补本表（W-24～26 已补齐法器目录）。
      *
      * ★ D2 后果（结构性不可达，激活轮需重核）：potion_of_poison（=CE caustic gas，
      * 恶意 -1）与 potion_of_creeping_death（=CE POTION_LICHEN，恶意 -1）均退池且
@@ -585,16 +584,19 @@ export class ItemLoader {
         wand_of_empowerment: -1,      // empowerment
         wand_of_fire: 0,              // CE 法杖错位实体，退池
         wand_of_lightning: 0,         // 同上
-        // 法杖（W-25: 9 条 CE + 1 条退池；W-26 三种仍缺）
+        // 法杖（CE 全 12 条 + 1 条退池兼容定义，Globals.c:1642-1653）
         staff_of_lightning: 1,        // lightning
         staff_of_fire: 1,             // firebolt
         staff_of_poison: 1,           // poison
         staff_of_tunneling: 1,
         staff_of_blinking: 1,
         staff_of_entrancement: 1,
+        staff_of_obstruction: 1,
+        staff_of_discord: 1,
         staff_of_conjuration: 1,      // conjuration
         staff_of_healing: -1,         // healing
         staff_of_haste: -1,           // haste
+        staff_of_protection: -1,
         staff_of_light: 0,            // 自创，退池
         // 戒指（web 6 条，全 +1；CE light/reaping web 缺）
         ring_of_clairvoyance: 1,

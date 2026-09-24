@@ -125,7 +125,8 @@ describe('W-15 real player/monster bolt contacts', () => {
     it('retired light mapping clears telepathy mismatch, remains outside item pool', () => {
         const g = scene(), m = mob(g); g.zapBoltFromPlayer(getBoltForItem('staff_of_light')!, staff(), m.loc);
         expect(shield(m)).toEqual([130,130]); expect(g.player.hasStatus('telepathy')).toBe(false);
-        expect(ItemLoader.genStaffs.some(i=>i.id==='staff_of_protection'||i.id==='staff_of_light')).toBe(false);
+        expect(ItemLoader.genStaffs.some(i=>i.id==='staff_of_light')).toBe(false);
+        expect(ItemLoader.genStaffs.some(i=>i.id==='staff_of_protection')).toBe(true); // W-26 catalog
     });
     it.each(['player','monster'])('monster magnitude5 =>356 for %s; shielded target is excluded until depleted', who => {
         const g = scene(), caster=mob(g,'goblin_mystic',10,5), target=who==='player'?g.player:mob(g);

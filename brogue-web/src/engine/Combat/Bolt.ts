@@ -142,9 +142,12 @@ const RAW_BOLT_DATA: Omit<BoltConfig, 'name' | 'ceType'>[] = [
     { id: 'staff_of_tunneling', effect: BoltEffect.TUNNELING, magnitude: 2, char: '*', color: 0xcc8855, maxRange: 0, piercing: false, selfTargeting: false },
     { id: 'staff_of_blinking', effect: BoltEffect.BLINKING, magnitude: 2, char: '@', color: 0xffffff, maxRange: 0, piercing: false, selfTargeting: false },
     { id: 'staff_of_entrancement', effect: BoltEffect.ENTRANCEMENT, magnitude: 2, char: '*', color: 0xff99ff, maxRange: 0, piercing: false, selfTargeting: false },
+    { id: 'staff_of_obstruction', effect: BoltEffect.OBSTRUCTION, magnitude: 2, char: '*', color: 0x55ff55, maxRange: 0, piercing: false, selfTargeting: false },
+    { id: 'staff_of_discord', effect: BoltEffect.DISCORD, magnitude: 2, char: '*', color: 0xff66aa, maxRange: 0, piercing: false, selfTargeting: false },
     { id: 'staff_of_conjuration', effect: BoltEffect.CONJURATION, magnitude: 3, char: '!', color: 0xaaddff, maxRange: 0, piercing: false, selfTargeting: false },
     { id: 'staff_of_healing', effect: BoltEffect.HEALING, magnitude: 8, char: '+', color: 0x44ff88, maxRange: 0, piercing: false, selfTargeting: false },
     { id: 'staff_of_haste', effect: BoltEffect.HASTE, magnitude: 0, char: '>', color: 0xffff88, maxRange: 0, piercing: false, selfTargeting: false },
+    { id: 'staff_of_protection', effect: BoltEffect.SHIELDING, magnitude: 2, char: '+', color: 0xffffaa, maxRange: 0, piercing: false, selfTargeting: false },
     { id: 'staff_of_light', effect: BoltEffect.SHIELDING, magnitude: 0, char: '°', color: 0xffffcc, maxRange: 0, piercing: false, selfTargeting: false },
 ];
 

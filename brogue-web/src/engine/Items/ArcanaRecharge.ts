@@ -13,7 +13,7 @@ export function restoreStaffRecharge(remaining?: number, identityId?: string): n
         ? Math.trunc(remaining) : initialStaffRecharge(identityId);
 }
 
-/** CE Items.c:338 / Time.c:2028; obstruction is prepared but remains out of pool. */
+/** CE Items.c:338 / Time.c:2028; both slow-cycle identities are in the W-26 catalog. */
 function isSlowStaff(identityId?: string): boolean {
     return identityId === 'staff_of_blinking' || identityId === 'staff_of_obstruction';
 }

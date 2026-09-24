@@ -82,12 +82,9 @@ describe('W-1 CE catalog contract (source rows, not execution coverage)', () => 
         }
         for (const id of Object.keys(expected)) {
             const bolt = getBoltForItem(id);
-            if (bolt) expect(bolt.ceType).toBe(expected[id]);
+            expect(bolt!.ceType).toBe(expected[id]);
         }
-        for (const id of ['staff_of_obstruction', 'staff_of_discord', 'staff_of_protection']) {
-            expect(getBoltForItem(id)).toBeUndefined();
-        }
-        expect(getBoltConfigs()).toHaveLength(21);
+        expect(getBoltConfigs()).toHaveLength(24);
     });
 
     it('web dispatch aliases preserve ATTACK versus DAMAGE and append type-only POLYMORPH/PLENTY without renumbering', () => {
@@ -116,7 +113,7 @@ describe('W-1 CE catalog contract (source rows, not execution coverage)', () => 
         expect(resolveCEBoltMagnitude(T.FIRE, { kind: 'catalog' })).toEqual({ source: 'catalog', value: 4, use: 'staff-damage' });
         expect(resolveCEBoltMagnitude(T.DISTANCE_ATTACK, { kind: 'monster' }).use).toBe('unused-by-effect');
         expect(resolveCEBoltMagnitude(T.SHIELDING, { kind: 'staff', enchantment: 2 }).use).toBe('shielding-tenths-hp');
-        expect(getBoltConfigs().map(b => b.magnitude)).toEqual([0, 0, 10, 10, 10, 0, 10, 0, 0, 5, 8, 10, 6, 4, 2, 2, 2, 3, 8, 0, 0]);
+        expect(getBoltConfigs().map(b => b.magnitude)).toEqual([0, 0, 10, 10, 10, 0, 10, 0, 0, 5, 8, 10, 6, 4, 2, 2, 2, 2, 2, 3, 8, 0, 2, 0]);
         expect(rng.randomNumbersGenerated).toBe(before);
     });
 

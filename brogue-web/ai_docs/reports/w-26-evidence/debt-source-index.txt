@@ -1,0 +1,235 @@
+brogue-web/ai_docs/reports/w-1.report.md:9:| 契约 | 落点 | CE 依据与边界 |
+brogue-web/ai_docs/reports/w-1.report.md:17:| autoID / 移动提交结果 | `Bolt.ts:274–295` | `Items.c:5112–5119/5470–5474/5567`：autoID 来自实际效果观察；`BoltOutcome` 声明 `autoID:boolean` 和实际 `casterMovement`。**两条旧出口目前都返回 outcome=null，表示尚未评估，不能解释成 autoID=false 或成功。** 没有伪造鉴定结果；原 `useArcanaItem` 提前鉴定行为留 W-2，移动提交留后续效果轮。 |
+brogue-web/ai_docs/reports/w-1.report.md:23:### 保留的怪物旁支和资格边界
+brogue-web/ai_docs/reports/w-1.report.md:37:W-0 §1.2 的“连枚举也没有”只在本轮补齐的**类型部分**过期；“变形/复制效果未实现”的登记仍有效。W-0 报告作为历史基准未改写。
+brogue-web/ai_docs/reports/w-1.report.md:70:- **P4-1b 已知缺口表不翻正、不删除。** 有效登记：`Bolt.ts:205`、`src/test/p4_1b_monster_casting.test.ts:234–239/282–294` 和 `src/data/monsterBolts.test.ts:32/69/107`。目录字段载体补齐不等于网/藤执行链补齐；BLINKING 的调度旁支仍未实现。
+brogue-web/ai_docs/reports/w-1.report.md:202:- **不移动生成流：通过。** 未编辑 Generator、Map、ItemLoader 或任何生成数据；目录初始化只有常量与纯投影，没有随机调用。现有物品配置 14 项、怪物执行映射 15 项，旧 magnitude 和目标旗标投影均不变。不能单凭 drift 绿就声称 RNG 不变，这里同时以生产改动边界、无 RNG helper、旧值守卫和未改生成方法作证。
+brogue-web/ai_docs/reports/w-1.report.md:206:- **R+S 不是断言修改授权。** 既有测试改动为零，新增的两份契约守卫自行提供 CE 来源对照与运行边界场景。
+brogue-web/ai_docs/reports/w-2.report.md:29:| POISON/DISCORD | `:5312–5340/5390–5404`：合格、可观察目标及被接受的状态施加。现有 status helper 的 false 也可能表示“已有时长不增长”，所以重复接受与真正免疫分开判断，不把 false 一概当失败。玩家 discord 原有 confused 错配保留后续轮。 |
+brogue-web/ai_docs/reports/w-2.report.md:31:| EMPOWERMENT / BECKONING | `:5312–5320/5229–5239`：前者在可见合格目标实际执行强化后；后者在可动、非贴身目标实际移动且移动前/后可察觉时。未实现 CE 完整强化或反向 blink。target 的移动不能冒记为 casterMovement。 |
+brogue-web/ai_docs/reports/w-2.report.md:107:8. 首次浏览器选择未建立：`ref<Item[]>` 传出 Vue proxy，被原始实例 membership 检查拒绝；真实页面定位后在 Use 边界 `toRaw`，没有删身份检查迁就 UI。提示条初版与菜单重叠，截图检查后移开。
+brogue-web/ai_docs/reports/w-2.report.md:275:- **不新增 arcana 物品，不实现效果行为，不启用怪物 BLINKING/网/藤。** Monster.ts、BoltCatalog.ts、怪物执行映射与 AI 调度未改。效果 switch 的新增语句只作观察/返回、未知态显示，不增加效果调用；原伤害/状态/移动/召唤行为留后续轮。
+brogue-web/ai_docs/reports/w-2.report.md:276:- W-5/W-6 边界：初始充能构造与自然回电方法逐字不变；确认只消费现有值。普通轨迹与直接伤害也逐字不变。
+brogue-web/ai_docs/reports/w-3.report.md:11:| 延伸越过瞄准格 | `Items.c:4140-4205` | 瞄准格只定义方向；走到实际 Grid 边界或碰撞，去掉旧 40 格兜底。显式 `maxRange>0` 才限格数 |
+brogue-web/ai_docs/reports/w-3.report.md:35:它仍**不表示效果成功、HP 减少或最终伤害接收者**。免疫者、未实现效果的接触者，以及旧 P4 伤害反射近似中的反射者都可在 hits 里；后者的伤害可能转给 caster，但本轮不伪造折返 path/hits。`pos` 在施法前快照，beckoning/teleport 改位置后仍保留原接触坐标。
+brogue-web/ai_docs/reports/w-3.report.md:78:还覆盖了实际玩家中途接触、隐形/休眠/死亡区别、休眠者在落点也不受误伤、接触先于点火、移动前位置快照、纯预演零变异、reflection/blink/tunnel 边界。
+brogue-web/ai_docs/reports/w-3.report.md:82:## 5. 边界、自检与清单外改动
+brogue-web/ai_docs/reports/w-3.report.md:299:6. 初次构建启动 vite 时遇 macOS `SecItemCopyMatching -50`/进程异常；直接 vite 与后续完整 `npm run build` 均通过，未通过修改代码/配置绕过构建。初版新增测试的私有 Grid 访问及 tuple 类型错误已修正。
+brogue-web/ai_docs/reports/w-4.report.md:12:| 后续返回/随机旁射 | `Items.c:5031–5065`、`Monsters.c:2269–2295` | 后续反射朝最初 origin 用未调优取线；目标等于折点时转随机。随机目标沿 CE 40 个 perimeter 索引选择，首格被地形挡住/越界时最多重试50次，全部失败后接受最后路线并由正常碰撞收尾。保留原 perimeter 的非对称角点采样。 |
+brogue-web/ai_docs/reports/w-4.report.md:26:- `maxRange>0` 的既有范围限制按**总旅行格数**计数，折返不刷新。地图边缘、更新后的阻挡、非穿透生物、HALTS_BEFORE 仍能更早终止。
+brogue-web/ai_docs/reports/w-4.report.md:28:- 不提前实现 W-12/W-13：blink 的首格保护/无移动与 tunnel 的不挖墙边界保留；IMPREGNABLE 掘地反射属于 W-13。CE 注释中的旧 cursed deflection ring 不产生额外 web 规则；当前 CE `projectileReflects(caster,NULL)` 本身返回 false。
+brogue-web/ai_docs/reports/w-4.report.md:36:3. hits 表示被射线实际击中并尝试效果，**不保证扣血或效果成功**：物理 miss、无敌、状态免疫、未实现效果仍可能有接触。伤害损失不能由 hits.length×magnitude 推算。
+brogue-web/ai_docs/reports/w-4.report.md:55:## 5. 公式与硬边界证明
+brogue-web/ai_docs/reports/w-4.report.md:137:清单位于 `/private/tmp/w4-before.sha256`、`w4-during.sha256`、`w4-after.sha256`；复算脚本 `/private/tmp/w4-manifest.py <标签>`。边界比较脚本另证明未改文件和原函数一致；`w4-classes.json` 证明15类反射成员与CE原表逐项相同且无缺失web种类。
+brogue-web/ai_docs/reports/w-5.report.md:12:- 测试覆盖边界 49/50、14/15、9/10、条件短路及 E>5；另用固定 RNG 跑 50000 次 staff 分布与每种 wand 10000 次次数/端点/实际抽数。没有用本轮地牢样本中未出现的尾部值推断实现不会生成它。
+brogue-web/ai_docs/reports/w-5.report.md:86:进一步逐 seed 检查，确有一条需要调查：`seed20260923` 的 CHARM 从 2→0（原 D11、D19 各一件）。其首个法器在 D8，为 invisibility wand：旧固定3、新抽得4。仅在诊断探针内保存/恢复每次法器构造前后的 RNG 状态，并还原原固定容量与 E=0，**反事实输出与 before.json 的 208 层完整记录逐项完全相等**（包括所有类别、逐件法器、地形、怪物与 RNG 计数，见 counterfactual.json）。护符原两件随之恢复。结合构造以外的生成代码/频率未变与总样本护符仍为14件，归因为初始抽签移动后续流，非护符池被删/禁用。单个 seed 或某一层没有法器，不代表那一层生成算法没有 RNG 足迹。
+brogue-web/ai_docs/reports/w-5.report.md:88:前后构造数在这批样本恰好与落地数相等：39→42；携带法器均为0。**这只是样本事实**，不外推失败机器/丢弃构造的足迹恒零。构造内 substantive `randomNumbersGenerated` 增量经直接包装测得 0→51（staff38、wand13；它计 randRange 调用，不冒充底层 ranval 拒绝采样次数），也不等于整局 RNG 的净增量；后续地图/机器/物品分支会一起变化。
+brogue-web/ai_docs/reports/w-5.report.md:107:## 4. 硬边界与授权判断
+brogue-web/ai_docs/reports/w-5.report.md:115:**W-0 判断更正登记（仍有效的缺口）：** W-0 的“机器配发应验”作为回归范围仍有效，但不能解读成现有机器已能构造法器。实际 `Game.spawnBlueprintItem` 显式 id 只支持 SCROLL/POTION/KEY；类别分支也无 STAFF/WAND。新测试最初误认为有这两个分支而得到 null，是测试前提错误。改为验证现有 `spawnKindById → spawnStaff/spawnWand` 正常生成出口只抽一次，机器相关既有测试照跑；未擅自开新物品来源。这项不是本轮造成，也不是本次 C-5/护符漂移的成因，后续配发/目录轮应显式接线。
+brogue-web/ai_docs/reports/w-5.report.md:125:首次没有node_modules，从本机同一主工作树复制依赖，未联网安装、未改锁文件。Vite启动与Chromium进程通信受沙箱限制，授权提升后本地浏览器验证完成；没有自动审批拒绝待处理事项。
+brogue-web/ai_docs/reports/w-5.report.md:137:| W-2 | 原29例通过 | 消费/取消/提交边界未变 |
+brogue-web/ai_docs/reports/w-6.report.md:15:| `Items.c:1901–1909, 8714–8716` | 两槽智慧贡献相加；未知正戒指有效附魔有限制 | 每客观块读取 `player.rings()`，只统计智慧；不把种类已知当实例鉴定 |
+brogue-web/ai_docs/reports/w-6.report.md:21:保留 CE 对过长倒计时的归一化循环：`remaining > floor(5D/3)` 时扣一当前次数并减 D（无 RNG、无 E/容量写入）。它可在极高 E 或 E 改变后生效；新增 E20/初始500→当前20→19、timer250 的边界守卫。W-7 的主动附魔入口/进度调整尚未实现。
+brogue-web/ai_docs/reports/w-6.report.md:23:锚点：E2/E3/E8 的 D 为 2500/1666/625；E3 随机间隔 555…2776、clump=3。无智慧增量10，普通初始500意味着首次缺电后50个客观块；后续才是随机周期。智慧+1增量为 **12**（定点舍入），+2为16，-1为7，-10为0，+27及以上为11925，不能用浮点 `1.3 ** E` 替代。
+brogue-web/ai_docs/reports/w-6.report.md:29:- **读** `enchantment` 算周期，读 `maxCharges` 限制当前次数，读当前 `charges` 判断缺电。
+brogue-web/ai_docs/reports/w-6.report.md:59:范围说明：计时迁移 helper 的零 RNG 守卫覆盖 `randRange/randClumpedRange/spawnStaff` 禁调用与完整 RNG 对象不变。**没有声称整局 loadSnapshot 零 RNG**：其既有种子重置/风味初始化未改，也没有扩张为完整 RNG 状态存档。续接测试固定同一后续骰以验证计时和客观门，不冒充完整随机流存读档重放修复。
+brogue-web/ai_docs/reports/w-6.report.md:83:环境记录：本工作树原无 node_modules，从本机主工作树复制依赖，未联网安装/修改锁文件。初次反查命令工作目录误置，纠正后重跑；一次在仓库根目录误跑 npx 退出139，正式测试均在 brogue-web 目录运行。本地 Vite 最初受端口沙箱限制，按授权启动后完成验证。上述工具/环境失败不计作机制测试失败。
+brogue-web/ai_docs/reports/w-6.report.md:231:## 10. 清单外改动申报与边界
+brogue-web/ai_docs/reports/w-6.report.md:233:W-0 预计 G/I/helper，本轮实际另含详情生成器（移除假固定周期）、两个数据文件的描述字段、一个中文空包消息资源；已全部列入最终R seeds，不包含任何数值/权重修改。Game 的客观门快照字段是计时存读档完整性所必需，已说明测试发现与兜底。测试修改只两份旧夹具文件，新增一份W-6测试。新增三份反查/浏览器/最终门禁脚本、报告证据与 `progress.md`。
+brogue-web/ai_docs/reports/w-6.report.md:235:使用 `develop-web-game` 技能，先跑规定客户端，再用有头 Playwright 实际页面四次haste等待→背包观察→按钮读卷轴→JSON重载。状态和零console/page error见 [browser-states.json](w-6-evidence/browser-states.json)；已实际打开检查 [自然回电截图](w-6-evidence/browser-natural.png) 和 [卷轴后截图](w-6-evidence/browser-scroll.png)。技能canvas截图有既有黑图限制；交付的是有头整页截图，法杖2/3→3/3与魔杖0清晰可见。
+brogue-web/ai_docs/reports/w-6.report.md:237:没有反驳W-0本轮边界；实际核实P2客观入口早已存在，直接沿用。下轮 W-7负责附魔法器入口/进度，W-12/W-14再接特殊周期；护符完整模型、戒指附魔次数和既有整局RNG存档缺口仍在本轮之外。
+brogue-web/ai_docs/reports/w-7.report.md:22:本轮只接资源和入口。未修改射线效果实现，也不宣称所有附魔后效果已经按 E 缩放。blink/obstruction 特殊周期仍留后续轮。
+brogue-web/ai_docs/reports/w-7.report.md:59:- UI 在读卷轴、目标资格和目标提交边界均 `toRaw`。引擎用 `inventory.items.includes(item)` 校验原实例，拒绝同 id 克隆、Vue proxy、地面品和已经替换/移除的引用；重排背包不影响目标。
+brogue-web/ai_docs/reports/w-7.report.md:60:- 新快照可选布尔字段 `pendingEnchantment` 表示已读卷轴的未完成效果，旧档缺键=false，新局=false。待选存档不保存悬空物品引用，读档重开选择，必须使用重建后的背包对象；完成后字段为false。由此避免刷新存档丢掉已消费卷轴的效果。
+brogue-web/ai_docs/reports/w-7.report.md:69:## 5. 边界与装备随机流证明
+brogue-web/ai_docs/reports/w-7.report.md:98:1. **B-1a A10 旧期望**：提前依据 CE:7817 翻正，并保留后续识别断言；不声称它在修正前已经实跑红过。
+brogue-web/ai_docs/reports/w-7.report.md:137:§2 自检：未移动生成流；未增种类/改frequency；未改W-8~23效果；装备helper及其20%符文随机路径未变。初始抽签、自然回电helper和生成基线均逐字未改，最终drift绿。边界证明见§5，实际UI验收见§8。
+brogue-web/ai_docs/reports/w-7.report.md:257:## 10. 清单外改动申报与后续边界
+brogue-web/ai_docs/reports/w-8.report.md:75:### 既有分裂模型的边界登记
+brogue-web/ai_docs/reports/w-8.report.md:79:原 `ai_docs/p4_4_split_kamikaze_report.md` §1 写明其复制字段，但随后以“分裂体刚出生不可能带悬浮”解释省略 CE 清状态特判；该理由并不成立，因为 CE 是先复制状态再清特例。本轮驳回这一理由，登记位置即本节；一般克隆状态复制及该特例仍有效待办。该限制不影响本轮的 E 分布、免疫判定、原体点燃及反射分裂门验收。
+brogue-web/ai_docs/reports/w-8.report.md:81:## 4. 怪物 / 物理攻击 / 生成边界
+brogue-web/ai_docs/reports/w-8.report.md:135:P4-4、9c、F-2、W-2 首轮未红，其测试文件未改。新增测试初稿的 6 个失败为：把物品构造耗骰算进施法的 4 个计数断言，以及 2 个不正确获取 Vitest spy 原方法的夹具；已按边界修正，不改生产公式。构建也曾指出测试使用了不存在的 Item.identityId 静态字段和 Player.accuracy，已改为现有扩展字段桥接和真实防御条件。P4-3 的飘字耗骰另见 §5。
+brogue-web/ai_docs/reports/w-8.report.md:154:| 场景（战斗 seed=32，起始 HP=500） | 直接接触结果 | 资源/后续 |
+brogue-web/ai_docs/reports/w-8.report.md:301:最终自检：没有改怪物 BE_DAMAGE 公式；没有复用物理 attack；没有改种类/frequency、W-5/6/7 资源规则或生成输入；P4-3 的 20 原值保留并有 CE 留痕反转；W-4 的反射分裂误判已按源码纠正；R+S、build、drift 和前后哈希均完成。共享克隆状态继承的既有边界见 §3，未以本轮通过替代该项对齐。
+brogue-web/ai_docs/reports/w-9.report.md:21:CE 这些分支直接写状态，不查询 web 的自创 `statusImmunities/statusResistTurns`。本轮定向入口按 CE 资格判断并用 `setStatusDuration` 写入；泛用入口保留不动。现有 `monsters.json` 没有这五种状态的 immunity/resist 数据项，但新增合成用例明确证明此边界，避免将来混用。速度修改后调用原 `refreshSpeeds`；状态到期由未修改的 `tickStatuses` 恢复基础速度。
+brogue-web/ai_docs/reports/w-9.report.md:50:原来的共用原语 **`applyStatusToMonster`、`applyTimedStatus`、`Creature.applyStatus` 没有改动**；`discordBlastFromPlayer`、`negateCreatureMagic` 也与 HEAD 逐字一致。将 CE 定向写入独立出来，是为了正确执行覆盖语义而不改变卷轴、药水、气体、符文的既有刷新/抗性规则。新增卷轴边界例证明：普通 discord=30、抗性减7后=23、免疫=0、已有48不缩短，negation仍清除状态；既有 `scroll_effects` 21例原文件不改并参加最终复跑。
+brogue-web/ai_docs/reports/w-9.report.md:86:新增 `w_9_directed_status.test.ts` **77例**，涵盖目标矩阵、比例/取整/满血/上限、E与资源区分、覆盖/max、速度恢复、资格、重复隐形、可观察性、怪物共用、卷轴边界及P2。不是仅测试 helper 返回值，主要走真实 `zapBoltFromPlayer`/`castMonsterBolt`/确认入口。
+brogue-web/ai_docs/reports/w-9.report.md:138:逐文件最终结果如下；`final-regression.json` / `final-drift.json` 保留原始reporter，`final-files.json` 汇总断言状态，`boundary.json` 保留与HEAD的边界对照。
+brogue-web/ai_docs/reports/w-9.report.md:254:- 生成入口、RNG模块、物品目录/频率、实例/充能/附魔模块、基线文件均与 HEAD 字节一致；最终drift不重捕获。战斗状态修正会改变后续交互，按W-0口径不承诺旧整局游玩重放不变。
+brogue-web/ai_docs/reports/w-9.report.md:259:- 剩余边界：怪物伤害公式仍为旧P4路径；毒、护盾和其它效果、discord物品目录按既定后续轮处理。本轮不扩大AI目标资格或补新状态系统。
+brogue-web/ai_docs/reports/w-10.report.md:66:## 6. G-3 边界与授权反驳
+brogue-web/ai_docs/reports/w-10.report.md:72:W-0“毒杖只写时长、没有浓度/持续伤害”在 HEAD 成立，本轮已完成。W-9 不含 POISON 的边界判断也仍有效；本轮只删除毒最后使用的两个旧适配 wrapper（`applyPlayerBoltStatus`、`boltStatusAccepted`），不反转 W-9 五状态行为。
+brogue-web/ai_docs/reports/w-10.report.md:88:5. 浏览器第二个半块最初立即读到旧状态，补等待真实动画推进。后续观察到目标已中毒但 autoID=false，重启稳定Vite后同脚本全部通过；该现象与 HMR 版本和测试动态import导致类身份不同一致，但未保留失败现场的 `instanceof` 直接探针，因此这里只登记为测试装配归因推断，不将其当成已证实的生产缺陷。progress中的简写以此处限定为准。没有改游戏观察规则。
+brogue-web/ai_docs/reports/w-10.report.md:251:- 不增种类、不改frequency；物品/怪物/突变目录、ItemLoader/Arcana实例与充能/附魔、RNG、生成基线均与HEAD相同。生成函数 `generateDepth` 正文未改，基线不重捕获。战斗变化可能改变后续游玩RNG，按W-0口径不承诺旧整局回放一致。
+brogue-web/ai_docs/reports/w-10.report.md:255:- 后续边界：BE_DAMAGE怪物公式另案，完整克隆W-20、完整消魔W-23；本轮不新增毒地衣/CE maxStatus展示或毒杖种类。毒伤集中在独立路径，W-15护盾需保留其绕盾语义。
+brogue-web/ai_docs/reports/w-11.report.md:17:物种过滤逐项照原码：无敌去除岩浆/自燃/火；原生火免或飞行去除岩浆；原生火免再去除自燃/火；原生水免或飞行去除深水；原生飞行去除深渊/地形陷阱。`MONST_RESTRICTED_TO_LIQUID` 的额外水域限制只存在于 `respectTerrainAvoidancePreferences=true` 分支，**传送魔杖传 false，不添加这项限制**。玩家没有怪物 info 旗标，按基础禁入集处理。
+brogue-web/ai_docs/reports/w-11.report.md:36:CE `disentangle`（`Monsters.c:1146-1152`）只清 STATUS_STUCK，**不清 SEIZED/SEIZING**。web 没有独立 STUCK 状态，蛛网挣扎是“从当前网格走路”的行为；魔法移出原格已经摆脱原网，原网仍保留。普通传送不清抓取双方的簿记；玩家后续移动按既有 `findLiveSeizer` 校验距离，远离后抓取失效。俘虏获释时清自己的 seized 是 becomeAllyWith 的独立规则。
+brogue-web/ai_docs/reports/w-11.report.md:50:**通用性：**安置入口没有随机远距/FOV/机器/楼梯/危险地形禁入策略，没有 IMMOBILE、阵营、法器附魔、释放俘虏或额外耗时的隐式规则。W-12 先算 blink 的终点及效果资格，再调用本入口；因此能落在深渊等危险格并触发真实后果。beckoning 需要的“先释放”和首行动等待由效果调用方显式处理。不能把 TELEPORT 的安全地形候选集拿来限制 blink，也不能用普通玩家移动命令代替本原语（那会多收费、攻击或弹确认）。
+brogue-web/ai_docs/reports/w-11.report.md:66:承接既有环境边界：深水卷物/随机漂移、submerged 和恶心等尚无完整 web 消费链的部分，本轮不补；原有种族自定义气体免疫/抗性也保留。传送后接现有地形系统不等于宣布这些环境欠账已清零。
+brogue-web/ai_docs/reports/w-11.report.md:78:| 新 `freeCaptive` | 当前只接 TELEPORT，供 W-12 后续复用。钥匙开笼旧入口未迁移，未暗改所有俘虏逻辑。 |
+brogue-web/ai_docs/reports/w-11.report.md:80:`Monster.ts`、普通怪物移动、全部怪物 bolt 分支、P4-5 stagger、普通玩家移动、开锁/开笼、卷轴与坠落恢复所用 `teleportPlayerRandom` 都未改。BECKONING 与 BLINKING 的既有留形归 W-12，未借本轮上线。AST/字节边界证明见 `w-11-evidence/boundary.json`。
+brogue-web/ai_docs/reports/w-11.report.md:142:边界检查还验证：19 个受保护 Game 方法、13 个原有 Promotion 函数、19 个受保护文件、全部非 TELEPORT 玩家效果 case 和全部怪物效果 case 均与 HEAD 相同。`git diff --check` 通过。 [boundary.json](w-11-evidence/boundary.json)
+brogue-web/ai_docs/reports/w-12.report.md:11:| `PowerTables.c:52`，`Items.c:7353-7355` | staff 的 magnitude 来自实例 enchant1；距离为 `2+2E`。 | `zapBoltFromPlayer` 仅对 BLINKING 在取线前解析实例 E；不读 charges/maxCharges/旧配置威力。`staffBlinkDistance` 限制实际走过的格数。E2/3/8 分别 6/8/18 格。 |
+brogue-web/ai_docs/reports/w-12.report.md:18:“blink 与 W-3 普通射线的遇障前停相同”只能部分成立：**后续格子的 HALTS_BEFORE 共用，但第一格规则不同**。普通射线可接触墙/生物；conjuration 等 HALTS_BEFORE 射线在第一格仍可更新，blink 会先拒绝。晶墙/反射生物也在 blink 停步位置之外，因此没有反射 RNG、接触或伤害。普通 beckoning 第一条射线仍走 W-4 反射，反射回原施法者的零距离接触不会自拉。
+brogue-web/ai_docs/reports/w-12.report.md:39:## 4. 怪物迁移（按 W-9 明列）与保留边界
+brogue-web/ai_docs/reports/w-12.report.md:57:W-12 新增50例；W-11 37例原断言保留。新测试覆盖 E2/3/8、墙/门/晶墙/力场、首格与同原点、反射生物、占位、反向斜线、释放/携物/等待/免疫、真实命中快照、玩家与怪物各出口、拾取/金币/满包/陷阱/嵌套/视野、真实 P2/C-5 和怪物自主 blink 边界。
+brogue-web/ai_docs/reports/w-12.report.md:64:| 新测试斜线样本误算、地形枚举名与 SEIZED 载体误用、配置缺失 null/undefined、岩浆玩家死亡模型误判 | 修正夹具。实际玩家岩浆走 gameOver，不清 HP；没有为测试改变环境实现。初次 build 另指出 PlacementWorld 的 private 字段类型边界，改为显式结构查询。 |
+brogue-web/ai_docs/reports/w-12.report.md:74:除任务预期的 B/G/移动调用外，额外明确申报：**placeCreature 接口增加 CE 所需的拾取/视野顺序选项**；**原 W-11 拾取 helper 的金币行为修正**及其传送调用方影响；**怪物 BECKONING 行为迁移**见§4。测试修改仅 W-2/W-3 旧留形与新 W-12 文件；新增反查/最终复跑/负变异/浏览器4个脚本、进度、报告及证据。不修改任何现有守卫、白名单或基线。
+brogue-web/ai_docs/reports/w-12.report.md:78:**这是最终状态下的运行结果，不是中途快照。** 所有生产、测试、脚本及运行配置的最后编辑均早于下面的完整复跑；后续只写报告和证据。第一次 W-2 撞红的中途结果不参与最终计数。
+brogue-web/ai_docs/reports/w-12.report.md:87:最终按文件确认 **116个文件、1844 passed、0 failed、8 skipped、5 todo**；skip/todo 均为原有留形，未新增。这里明确区分“相同最终输入下逐文件全部确认通过”与“一次完整并行命令退出0”：后者没有发生。最终统计只替换4个超时文件的整文件结果，其余112个文件（含 drift）均取本次冻结后的完整运行，不使用此前定向测试或首次失败运行的结果。原始失败 JSON/log 不覆盖。
+brogue-web/ai_docs/reports/w-12.report.md:114:逐文件输入哈希见 [完整运行前](w-12-evidence/sha256-before.txt)、[完整运行后](w-12-evidence/sha256-after.txt)、[串行前](w-12-evidence/retry-sha256-before.txt)、[串行后](w-12-evidence/retry-sha256-after.txt)。生成基线与 HEAD 相同，SHA-256 为 `1549a4c5aae041ff5c4a7653ea22d07af88aecaf3740861b0cdb90a4656d5820`。边界 AST/逐字核对见 [boundary.json](w-12-evidence/boundary.json)：生成、数据、原守卫和其余效果均保持。
+brogue-web/ai_docs/reports/w-12.report.md:118:硬边界自检：不动生成流；不重捕获基线；不增种类/frequency；BLINKING 仍不经怪物 `tryUseBolt`；怪物 beckoning 迁移已在§4明列；近邻门与目的地拾取已测。W-11 安置核心复用及其 API/金币缺口如实记录于§2。
+brogue-web/ai_docs/reports/w-13.report.md:18:## 2. 专用轨迹与普通轨迹边界
+brogue-web/ai_docs/reports/w-13.report.md:30:1. **IMPREGNABLE** 是地图格旗标，不是某个墙类型。`Items.c:4369–4371` 在释放俘虏/写层/DF前立即返回 false；`:5831–5854` 在下一格为阻挡且受保护时，在前一格随机反射。贴脸第一格没有可供提前反射的已走格，进入该格后保持原样并停止。保护同样约束起点、边界、递归修补；不清除其标记。
+brogue-web/ai_docs/reports/w-13.report.md:31:2. **地图边界**：`:4373–4375` 将 DUNGEON 改为 CRYSTAL_WALL（不是直接保留原墙），其他层不清除。透明但仍不可通行；成功计一次预算，而后因残留阻挡停止。若本身已有 IMPREGNABLE，则第1条先返回，连晶化也不执行。
+brogue-web/ai_docs/reports/w-13.report.md:35:本轮将同一集合归属到 `Grid.impregnableCells`，沿用原 `y*DCOLS+x` 格键；BlueprintEngine 的 getter/setter 保持原置位与 rollback 语句逐字不变，运行期用 `Grid.isImpregnable`。集合随 Grid 的层缓存生命周期保留。GameSnapshot 新增可选 `impregnableCells` 数组，toSnapshot/loadSnapshot 往返。**旧存档没存过该信息，无法准确反推；缺字段按空集合迁移**，不把另一张地图的标记带入旧档。这是数据无法恢复的历史限制，不靠补随机生成猜测。
+brogue-web/ai_docs/reports/w-13.report.md:47:- 开通格按保留下来的**全层旗标**同步 `isPassable/isOpaque`，避免边界晶墙误变可通行或非阻挡液体/气体被抹掉；成功后即时 updateVision。
+brogue-web/ai_docs/reports/w-13.report.md:57:## 6. 碎墙卷轴、生成与物品边界
+brogue-web/ai_docs/reports/w-13.report.md:59:`Game.crystalizeFromPlayer:5313` **正文逐字不变**，其卷轴 dispatch、DF_SHATTERING_SPELL 目录与调用不变。既有卷轴注释“无IMPREGNABLE载体”的判断现在已过时，但本轮明确不接线/修改卷轴；仅在这里登记边界，不能把新增 Grid 保护能力误写成卷轴也完成了保护。
+brogue-web/ai_docs/reports/w-13.report.md:68:| “不可穿墙保护不能删” | **成立但要区分** IMPREGNABLE 的拒绝/反射与边界的晶化/终止。不能把所有边界理解为IMPREGNABLE，也不能认为web完全没记录机器保护。详见§3。 |
+brogue-web/ai_docs/reports/w-13.report.md:79:新 `w_13_tunneling.test.ts` 43项覆盖E2/3/8、间隔墙/多层/透明阻挡、免费起点与对角修补、同起终点、只读预览、未知取线、普通轨迹、四边界/保护/反射、生物与DF时序、俘虏、地图与缓存、保护归属/回滚/存档、未入池。
+brogue-web/ai_docs/reports/w-13.report.md:83:| W-3明确锁定“掘地未实现” | 有范围地翻正，保留反射/blink普通行为断言；新43项补上真实掘地语义。 |
+brogue-web/ai_docs/reports/w-13.report.md:91:浏览器使用 `develop-web-game` 技能客户端实际进入游戏、按方向键并读取 render_game_to_text；无头/有头 canvas 导出均黑，已打开检查，**不作为视觉通过**。有头真实页面另跑6场景：E2连墙并键盘走入开洞格、E3多层与保留深水、贴脸IMPREGNABLE、生物反射回程、边界晶化、普通电束截断。页面/控制台错误0，状态与层数据见 [browser-states.json](w-13-evidence/browser-states.json)，整页截图均已打开核对。
+brogue-web/ai_docs/reports/w-13.report.md:99:测试改动仅 W-3过期掘地留形与新W-13文件；新增反查/浏览器/最终复跑3脚本，progress、报告与证据。其余原测试、白名单、timeout、skip/todo、数据与基线未改。边界 AST/哈希检查见 [boundary.json](w-13-evidence/boundary.json)：全部其他效果case、怪物施法、碎墙、生成、调度、其他Promotion函数与列出的数据模块不变。
+brogue-web/ai_docs/reports/w-13.report.md:131:| 不可穿墙 | 保留IMPREGNABLE拒绝/反射及边界晶化终止；保护集合跨生成/缓存/存档传递。 |
+brogue-web/ai_docs/reports/w-14.report.md:58:CE `Architect.c:3208–3276/3278–3329` 的扩散/填充 **不检查 IMPREGNABLE**。保护标记地板照样可铺；非原点扩散候选和填充格通过 `T_OBSTRUCTS_SURFACE_EFFECTS` 排除墙，检查是全层 OR，并非仅 DUNGEON。CE 原点的 spawnMap 无条件置1，所以贴脸墙仍可向旁边合格格扩散，只是墙自身不铺；零铺设用例用四面封闭的墙控制这一边界。W-13 的 Grid.impregnableCells 不需新接阻障排除门，测试固定保护地板可铺、保护墙不可铺、GAS层合成阻挡也不可铺、液体/气体/体积/机器编号/保护标记保留。
+brogue-web/ai_docs/reports/w-14.report.md:64:## 5. 卷轴与生成流边界
+brogue-web/ai_docs/reports/w-14.report.md:66:`crystalizeFromPlayer` 的 DUNGEON 层力场写入、碎墙/边界晶化原文逐字不变。新的阻障仅铺 SURFACE，复用原有消融链；力场晋升后的通行位修正也适用于卷轴链，测试固定“DUNGEON力场→DUNGEON地板+SURFACE MELT→清SURFACE”，不把卷轴改成阻障扩散。
+brogue-web/ai_docs/reports/w-14.report.md:92:c_4b 的精确条目数/精确起点闭包必须随“补DF_FORCEFIELD原行”翻正：134→135，增加detonateBolt起点51及其枚举断言，集合相等关系、缺tile检查与生成边界未放宽。**这不是整个闭包任意改断言的授权。** 其他已有测试未改；c_4a_0写层、c_4c、c_8、9c、scroll_effects与其他W轮均保持原断言。
+brogue-web/ai_docs/reports/w-14.report.md:94:新 W-14 共24项，覆盖原行、11组E边界、动态范围/共享目录不污染、落点/贴脸/反射/无落点、占位飞行、封路与生成拒绝对照、保护/多层、缓存、边缘消融、卷轴不同层、真实客观时间及保存。实际跑的每个文件与结果见末节。
+brogue-web/ai_docs/reports/w-14.report.md:104:| 从仓库根直接给Vitest --root时SecItemCopyMatching -50 | 改在brogue-web目录运行，后续正常；不是断言失败。 |
+brogue-web/ai_docs/reports/w-14.report.md:120:**视觉限制**：Appearance 的既有 FORCEFIELD/FORCEFIELD_MELT 外观仍落默认空白，截图可见地板缺口及消融后地板/玩家位置恢复，不能声称绿色水晶专属视觉完整；W-12登记的末帧残留仍在，图上星号非实体。本轮未动渲染模块/守卫或用截图假称视觉完整。
+brogue-web/ai_docs/reports/w-14.report.md:126:测试仅新增w_14_obstruction及c_4b两个过期目录断言；新增4个w14脚本、progress、报告和证据。未改数据、frequency、基线、timeout、skip/todo、生成/机器/怪物施法/其他效果case。边界AST确认Game仅applyBoltResult/applyBoltEffect改动，其他既有效果case和碎墙/调度/生成/保存方法逐字保持，旧Promotion函数仅promoteTile改变。
+brogue-web/ai_docs/reports/w-15.report.md:39:| D7 | G:8795 `resolveExplosionDamage` 玩家爆炸 | **是**；TC:363 `...,false` | dampening先免伤；然后减盾；保留爆炸免疫窗、伤源和后续epilogue判死 |
+brogue-web/ai_docs/reports/w-15.report.md:42:| D10 | G:9069 退役`CREEPING_DEATH`直接10伤 | **无CE等价直接10伤规则**；不是CE合法气体。D2已退池、Gas无层载体且拒绝addGas | 不借护盾轮给已退役分支创造新CE语义，原绕盾留形；正常运行不可达。CE毒地衣是addPoison，其后续毒伤绕盾，不能宣称等于这里的固定10伤 |
+brogue-web/ai_docs/reports/w-15.report.md:58:| T9 | G:6058 同旧入口quietus | **绕盾**。CC:713 `inflictLethalDamage`→CC:1793-1794 `...,true`；现有9999留形，显式true |
+brogue-web/ai_docs/reports/w-15.report.md:59:| T10 | G:6086 同旧入口speed追加直接伤 | **可吸盾的旧物理伤留形**。CE速度符文实际改行动等待，不是这里的额外一击；若兼容调用该入口，其普通直接伤按CC:1811默认吸盾，不把差异宣称为CE速度对齐 |
+brogue-web/ai_docs/reports/w-15.report.md:62:| T13 | G:6162 活跃speed额外一击 | **吸盾的既有物理伤留形**；同T10，速度符文其它旧偏差未扩展 |
+brogue-web/ai_docs/reports/w-15.report.md:75:| G:6198 mercy `hp=1` | 仅在hp<=0分支，是旧复活/宽恕留形，**不是扣血**；未改成伤害入口。CE不是此web逻辑，未借护盾轮重做 |
+brogue-web/ai_docs/reports/w-15.report.md:80:| G环境深水淹死分支 | D2已由`WEB_ONLY_DEEP_WATER_DROWNING=false`禁用。CE深水没有该伤害；原不可达直接死亡留形 |
+brogue-web/ai_docs/reports/w-15.report.md:127:- F-2b/3“状态逃生舱/本轮禁改”的历史注释仅描述当时边界；只把shielded正规化，不借机重做burning/explosion键联合。
+brogue-web/ai_docs/reports/w-15.report.md:148:- 有头Chromium首次受macOS沙箱限制启动失败；通过已有任务授权的工具提权启动本地测试浏览器，随后通过。没有自动审批拒绝遗留。
+brogue-web/ai_docs/reports/w-15.report.md:178:- 生成流不动、无protection入池、无新种类、不改frequency。动作发生后护盾/AI战斗结果可以改变后续运行期RNG；这不等于生成基线漂移。
+brogue-web/ai_docs/reports/w-15.report.md:179:- 后续：W-26真实protection物品、W-23完整消魔、W-20完整克隆其它字段；既有自创/退役符文和护符语义不在本轮扩张。
+brogue-web/ai_docs/reports/w-16.report.md:49:真正受伤/消魔死亡沿原链：`negateCreatureMagic → takeDamage(hp,true) → die → triggerDeathFeatures/removeDeadMonsters`，护盾不能挡消魔。测试断言真实实体HP0、die一次、清扫后查不到实体、重复清扫无重复掉落。刀刃目录无死亡DF/携物旗标；CE `generateMonster(MK_SPECTRAL_BLADE,true,false)` **第二参数其实是itemPossible=true、第三参数是mutationPossible=false**，但`Monsters.c:133-148`无CARRY_ITEM旗标使itemChance=0。web明确使本轮召唤实例的随机金币/物品概率为0，不按JSON旧0.05留形值给新刀刃造战利品。未新增经验系统。
+brogue-web/ai_docs/reports/w-16.report.md:67:**既有全局存档边界仍在：GameSnapshot只存当前层，不保存整个levels缓存；离开一层后在另一层保存再重载，旧层整体缓存会丢失。** 本轮没有把刀刃伪装为跨层跟随以掩盖该问题，也没有重构全游戏多层存档。CE通过完整回放持久化各层，web这项既有差异不等于已对齐；本轮验收是内存跨层留层、当前层/休眠/测试房快照的真实刀刃往返。
+brogue-web/ai_docs/reports/w-16.report.md:69:## 6. P4-2/P4-4与行为边界
+brogue-web/ai_docs/reports/w-16.report.md:75:未实现整套CE monsterAvoids的所有历史特例（如秘密门发现态、盟友让路、沉没簿记）或CE逐随机数回放；本轮刀刃采用现有地图/Combat渠道，并补上所需地形、独立视线、移动、攻击、还击及消魔闭环。CE initializeMonster的40次waypoint随机位仍沿项目P4-10的惰性模式，没有借召唤轮改变生成初始化流。
+brogue-web/ai_docs/reports/w-16.report.md:103:完整命令参数与UTC时间：[final-summary.json](w-16-evidence/final-summary.json)；逐文件计数：[final-files.json](w-16-evidence/final-files.json)及§10；日志：[build](w-16-evidence/final-build.log)、[regression](w-16-evidence/final-regression.log)、[drift](w-16-evidence/final-drift.log)；哈希：[before](w-16-evidence/sha256-before.txt)、[after](w-16-evidence/sha256-after.txt)；边界：[boundary.json](w-16-evidence/boundary.json)、[countMinions](w-16-evidence/count-minions-boundary.json)。
+brogue-web/ai_docs/reports/w-17.report.md:5:## 1. 公式及三个边界：编译 CE，再测试实际转队
+brogue-web/ai_docs/reports/w-17.report.md:16:`scripts/w17-ce-golden.mjs` 从 CE 文件提取两个完整原函数，提供最小 creature 结构和可控 `rand_range`，用 clang 编译；没有在 C 测试里重写公式。最大 HP 为 3/5/7/25/99/100/101/137，遍历各自 HP=1..maxHP+1，共 **485 行黄金值**；每行又枚举全部100个 roll。web 与全部黄金值一致。并单独通过真实 `zapBoltFromPlayer → traceBolt → applyBoltEffect` 枚举三个边界，断言真实 hit 对象、每次抽签范围、转队/状态和 autoID：
+brogue-web/ai_docs/reports/w-17.report.md:18:| 边界 | CE 概率 | web 实际成功数 / 全部100个roll | 临界判据 |
+brogue-web/ai_docs/reports/w-17.report.md:55:- 被支配者有随从：先遍历当前层活动怪，再按层号升序遍历其他缓存层活动怪，排除死亡候选和可能过时的当前层缓存副本。首个非绑定随从成为继任者（leader=null），后续普通随从改指它；后续随从复制原首领 targetWaypointIndex，并清该点 visited 位。只转队目标，**不把整个怪物群变盟友**。
+brogue-web/ai_docs/reports/w-17.report.md:61:**前轮缺口与本轮边界**：W-11 原 helper 没有绑定随从载体，且活动/休眠混在一遍处理；本轮修正，未声称此前已完整 CE。P4-2 注释登记的 `carriedMonster` 寄宿/复活尚无 web 实体载体；CE `Movement.c:735–737` 会递归转队该乘客，本轮不存在可递归的对象，不伪造寄宿/复活系统。普通死亡后的全套群体继任仍是旧系统缺口；本轮完成的是**支配/魔法释俘触发的 demotion**。
+brogue-web/ai_docs/reports/w-17.report.md:79:**保留原存档范围**：GameSnapshot 只存当前层，不序列化整个 levels 缓存；离层后另层保存再重载，旧层缓存仍不能恢复。本轮缓存内跨层首领重组已覆盖，不能据此宣称多层JSON持久化完整。缺失的旧关系/寄宿信息无法由迁移还原；当前层被支配盟友不受此限制。
+brogue-web/ai_docs/reports/w-17.report.md:83:| 消费方 | 本轮变化 | 保留边界 |
+brogue-web/ai_docs/reports/w-17.report.md:86:| P4-5 抓取 | 被支配者 seized 清除，seizing 保留；原本抓玩家的怪转为盟友后，findLiveSeizer 的既有敌友门不再认为它是有效抓取者，后续移动按旧failsafe解脱 | Combat和findLiveSeizer正文不改；失败不松抓取 |
+brogue-web/ai_docs/reports/w-17.report.md:139:生成基线 SHA-256：`1549a4c5aae041ff5c4a7653ea22d07af88aecaf3740861b0cdb90a4656d5820`，与HEAD字节一致，没有重捕获。arcana/monsters/hordes及frequency未改；生成/召唤/分裂方法的元数据边界、128份原测试未改均已自动核验。
+brogue-web/ai_docs/reports/w-17.report.md:143:逐文件结果在§13及 [final-files.json](w-17-evidence/final-files.json)；命令全部参数与UTC时间：[final-summary.json](w-17-evidence/final-summary.json)。日志：[build](w-17-evidence/final-build.log)、[回归](w-17-evidence/final-regression.log)、[drift](w-17-evidence/final-drift.log)；哈希：[before](w-17-evidence/sha256-before.txt)、[after](w-17-evidence/sha256-after.txt)；代码边界：[boundary](w-17-evidence/boundary.json)、[元数据/原测试对照](w-17-evidence/metadata-boundary.json)。
+brogue-web/ai_docs/reports/w-18.report.md:17:| 俘虏/麻痹/蛛网 | `Movement.c:719-721` 跳过 STUCK、PARALYZED、CAPTIVE | 俘虏/麻痹/休眠不跟随；既有 web 无 STUCK 计数，本轮用当前缠绕地形提供受控期间的停步门，详见边界 |
+brogue-web/ai_docs/reports/w-18.report.md:31:| 玩家等待 | 相邻受控怪坐标不变、玩家 HP 不变；lich 不召唤、不施法；解除后再等则实际移动/攻击 | `browser-wait.png`，后续 `browser-released-attacks.png` 玩家 HP 100→98 |
+brogue-web/ai_docs/reports/w-18.report.md:41:- `scripts/w18-ce-golden.mjs` 提取未改的 CE 原函数，用 clang 编译；黄金值包含 E=0..50 和 6 个固定点边界，共 57 行。E2/3/8 分别 6/9/24；正式游戏实例量纲沿 W-5。
+brogue-web/ai_docs/reports/w-18.report.md:54:**ENTRANCEMENT 走 applyBasicBoltEffect。** 与 W-9 同为按真实命中者、living 资格、CE magnitude 直接写状态/处理 autoID 的定向效果，没有毒浓度等额外算术载体。其后续动作消费明确放在移动/战斗/调度入口，而不是施法函数伪造一次动画。现有 MONSTER_BOLT_TABLE 没有原生 entrancement 消费者，不为未来 W-22 学习或 W-25 入池添伪目录项。
+brogue-web/ai_docs/reports/w-18.report.md:83:## 8. 反查、修改边界与门禁方式
+brogue-web/ai_docs/reports/w-19.report.md:72:| wasNegated | false | :4617；增加明确载体供本轮重置及后续 W-23 使用，未借机实现完整消魔 |
+brogue-web/ai_docs/reports/w-19.report.md:94:## 5. 实体身份和后续死亡
+brogue-web/ai_docs/reports/w-19.report.md:100:变形没有 CE `applyInstantTileEffectsToCreature` 调用；失去飞行时仍留原格，后续原有环境门才结算熔岩/坠落。测试明确断言变形接触中不调用环境入口、随后环境调用杀死地面形态。原群其它引用不重写；通用死亡后群体继任在 web 仍是 W-17 登记的旧缺口，本轮没有以变形之名扩写全部死亡关系系统。
+brogue-web/ai_docs/reports/w-19.report.md:116:5. 新、旧已识别物种读档可能因恢复的旗标使既有 `Monster` 构造器走不同的初始睡眠条件；state 随后仍恢复快照。种类识别/迁移自身无抽签，**不声称旧架构的整个 loadSnapshot 无 RNG 或跨版本游玩重放不漂移**。新局/直接下层生成与本次新增变形选择不是同一个边界。
+brogue-web/ai_docs/reports/w-19.report.md:118:没有改 Creature/Combat 通用攻击、生成、召唤、分裂、地形或 UI 实现。详细文件和方法边界由 [boundary.json](w-19-evidence/boundary.json) 对 HEAD 校验。
+brogue-web/ai_docs/reports/w-19.report.md:124:当前层活动怪、休眠怪、测试房基线/重置出口都接同一 form/变形标签。携物走现有 Item 序列化；load 前的实体 ID 上界计入新保存的携物与变形休眠实体，测试用 carriedItem.id=900000 验证新建实体不撞号。变形后 JSON 往返保留同一实体编号、新物种、速度、leader 引用和后续一次性死亡掉物；恢复的是新进程对象，不能把跨 JSON 的引用等同于内存对象复用。
+brogue-web/ai_docs/reports/w-19.report.md:130:内存 levels 缓存保留同一对象，变形不用跨层 spawn；全 levels 缓存仍不在既有全局 JSON 快照中。全层持久化与完整 carriedMonster 寄宿复活仍是既有架构边界，不在本轮偷偷补系统。
+brogue-web/ai_docs/reports/w-19.report.md:161:新增 `w_19_polymorph.test.ts` **57项**，涵盖目录完整枚举、16,256组编译黄金值、连续拒绝 RNG、免疫、原状态/字段写入先后、空射/墙/原点/两类反射、新隐身 autoID、保留与重置字段、普通盟友/captive/绑定孤儿关系、新旧死亡DF、钥匙/载荷、永久状态、速度与101等待、JSON/旧档/休眠/测试房、实际取消/确认和盟友变敌对后攻击玩家。既有测试只翻正 W-1 BoltContract 的 POLYMORPH type-only 留形断言，原因与处置见§11；其余129份不改。
+brogue-web/ai_docs/reports/w-19.report.md:167:**如实登记视觉旧缺口**：phantom场景截图仍画出 `p`。原因是 `UI/Appearance.ts:454–472 monsterAppearance` 的 cellVisible 分支没有隐形资格门，`GameCanvas.vue:482` 的文本导出也只按格可见过滤；`Game.update` 的发现列表与 `BoltTargeting.canObserveBoltCreature` 则有原生隐形门。本轮已正确初始化 invisible=1000、清盟友，并验证不 autoID，不把这些断言说成“隐形视觉已通过”。通用外观/文本过滤不属于 W-19 形态重置，本轮未改这两个模块；应由后续显示一致性修复处理。
+brogue-web/ai_docs/reports/w-19.report.md:176:- 第二次冻结完整结果：build/drift过；回归119/120文件过，唯一失败为 `engine/Combat/BoltContract.test.ts:146` 的 W-1 “POLYMORPH/PLENTY只是类型、真实出口零变化”用例。**实际首先抛出的是简化scene没有FOV而新变形调用updateVision的TypeError，HP/零RNG断言尚未执行**；不能把旧语义断言过期冒充该栈的直接成因。W-1 的留形范围如今对POLYMORPH过期，由任务明确授权完成；将该成员拆为真实CE守卫：原rat3/6→jackal5/8、旧haste产生25/50速度且状态清空、去盟友、id/loc/命中对象不换、一次(1,67)抽签、玩家/地图/物品/时间保持；该新case仅stub缺失的视野表现回调，效果/轨迹不stub。PLENTY原零变化case及其它原测试保留。不是修改扫描器、放宽断言或删除本轮覆盖。失败原JSON、前后SHA与日志见 [prefinal-w1-contract](w-19-evidence/prefinal-w1-contract/final-summary.json)。
+brogue-web/ai_docs/reports/w-19.report.md:210:- 24份受保护生产/数据/基线文件及16个受保护Game方法与HEAD一致：[边界记录](w-19-evidence/boundary.json)。
+brogue-web/ai_docs/reports/w-19.report.md:211:- 129份既有测试逐字未改；唯一旧语义翻正是W-1 BoltContract中的POLYMORPH，PLENTY和其它原断言保持：[测试边界](w-19-evidence/test-boundary.json)。
+brogue-web/ai_docs/reports/w-19.report.md:345:- 既有130份测试中仅 BoltContract 的 POLYMORPH 留形断言按本轮授权完成边界翻正，其余129份不改；不放宽扫描守卫/timeout，PLENTY 的零变化守卫保留；新增1文件57项。skip/todo保持原有项，不充当通过。
+brogue-web/ai_docs/reports/w-19.report.md:347:- W-20克隆、W-24魔杖身份入池、完整寄宿复活/全层存档/通用死亡继任、隐形显示一致性继续保留明确边界。
+brogue-web/ai_docs/reports/w-20.report.md:63:**反射玩家：**既有 W-4 射线路径反射回玩家，PLENTY 接触玩家后克隆，玩家和新体当前 HP 向上取半。新体是 Monster，`@`、灰色基础色、1d2、防御0、盟友；保留当前 HP/maxHP、毒/盾/全部共用状态、速度/抓取状态。Player 的 inventory/equippedWeapon/equippedArmor/rings/temporaryImmunities 管理器不是 CE creature 载荷，不复制其物品引用。已有 statusImmunities Set 独立复制。玩家的 fractional regenCarry 换算到 web Monster 再生计数，保留当前进度；不克隆营养/输入/UI管理状态。运行时 `player_clone` 对应 CE monsterID=0，**不增 monsters.json 种类或生成池**；带克隆身份时允许后续 polymorph，JSON 后仍成立。盟友渲染沿用现有绿色显示，基础色仍是灰色。
+brogue-web/ai_docs/reports/w-20.report.md:88:## 6. 召唤、计数与 RNG 边界
+brogue-web/ai_docs/reports/w-20.report.md:91:- alliedCloneCount 按相同物种、同队、且排除自己；已经有100个其他同队体时 self-split 停止。PLENTY 本身**没有这个上限**，仍可成功，其新体会参与后续自分裂计数。测试在100个其他体时验证此边界。
+brogue-web/ai_docs/reports/w-20.report.md:100:- 原项目只JSON保存当前层，不保存完整levels缓存；CE完整寄宿/复活生命周期、毫回合再生/复制玩家后的C单位差异、跨层召唤/分裂计数仍是既有模型边界。本轮保证现有web状态独立与上述明列行为，不冒充全怪物系统已逐字段模拟CE。
+brogue-web/ai_docs/reports/w-20.report.md:123:- 第一次拟最终build遇新增测试JSON联合类型的 `never` 推断，主动中断后续回归（exit130），归档 `prefinal-typecheck`；显式MutationData注解后重新从build起冻结全量复跑，未拼接中途绿文件。
+brogue-web/ai_docs/reports/w-20.report.md:124:- 浏览器有头启动被沙箱OS权限挡住，经工具批准后可执行；技能canvas截图实际打开是黑图，故另用有头整页截图核对地图和实体。一次后续浏览器重跑在多次负变异热更新后未产生目标效果，清洁重启Vite后重跑，只有清洁运行计最终证据，不据此更改游戏规则。
+brogue-web/ai_docs/reports/w-20.report.md:151:- 字节相同：**true**。原generation baseline也在边界字节比对和manifest中，未重捕获。
+brogue-web/ai_docs/reports/w-20.report.md:153:证据：[前清单](w-20-evidence/sha256-before.txt)、[后清单](w-20-evidence/sha256-after.txt)、[最终命令/时间/哈希](w-20-evidence/final-summary.json)、[回归JSON](w-20-evidence/final-regression.json)、[drift JSON](w-20-evidence/final-drift.json)、[逐文件JSON](w-20-evidence/final-files.json)、[生产边界](w-20-evidence/boundary.json)、[测试改动边界](w-20-evidence/test-boundary.json)。下表与最终JSON逐项一致。
+brogue-web/ai_docs/reports/w-20.report.md:283:- 地图生成、数据种类/frequency/蓝图、BoltCatalog/trajectory、法器实例/资源/充能、RNG与generation baseline均未改，不重捕获基线。边界脚本同时比对关键文件和生成方法与HEAD字节。
+brogue-web/ai_docs/reports/w-21.report.md:5:本轮完成固定强化增量、重复强化、现有状态模型上的 panacea、强化计数与 JSON 保存、克隆/变形交接、说明文字和已移植读方接线。**学习尚未完成，属于 W-22；本轮没有吸收尸体、选择能力或消费待学次数。** 未移植的状态/光照/伤害分布边界在下文明确登记，不以本轮结果宣称整个 empowerment 子系统已完全等同 CE。
+brogue-web/ai_docs/reports/w-21.report.md:43:[w21-ce-golden.mjs](../../scripts/w21-ce-golden.mjs) 从 CE 原文提取 `empowerMonster`、`heal` 和 status 枚举，编译原函数；只替换世界/UI 依赖。生成 [C 输入](w-21-evidence/ce-empower.c) 与 [原程序输出](w-21-evidence/ce-empower.txt)。9 个边界值两两取 lo<=hi，共45组，每组连续12次，合计 **540** 组；新测试通过真实魔杖射线逐行比较 HP、防御、精度、两伤害界和两计数。另有4组时长0/1/2/3的逐状态输出，以及玩家解黑暗的光照回调输出。
+brogue-web/ai_docs/reports/w-21.report.md:56:**现有伤害模型边界**：CE 还有 `damage.clumpFactor`，强化不改它。web 的 `CombatSystem.attack` 既有 `clumping=1`，未保存怪物 CE clumpFactor。本轮复用 `parseDamageString` 获取当前上下界，再写成现有支持的 `lo-hi`，没有改变原本均匀分布的战斗模型，也没有新造数据表。黄金 C 输出的 clump=3 保持不变；web 的全部伤害分布不是本轮对齐声明。真实近战测试确认强化后的 rat 上界4实际造成4点伤害，属性并非只写到说明页。
+brogue-web/ai_docs/reports/w-21.report.md:66:| NAUSEOUS | 仅 >1 时设为1 | web 无该 StatusId/生效通路；未移植，明确登记 |
+brogue-web/ai_docs/reports/w-21.report.md:70:| DARKNESS | >0清0；若是玩家，更新矿灯和视野 | web 状态未建模，`Game.refreshMinersLight` 仍固定 darknessStatus=0，未伪造有效消费者；反射强化玩家本就被门槛拒绝 |
+brogue-web/ai_docs/reports/w-21.report.md:77:| STUCK、DONNING、SEARCHING、NUTRITION、MAGICAL_FEAR、LIFESPAN 等其余状态 | 不处理 | 不增删这些未建模载体；玩家营养不改 |
+brogue-web/ai_docs/reports/w-21.report.md:80:C 黄金值核对覆盖全部已建模的对应状态；时长1的虚弱、无毒时残余浓度、慢速到期、满HP也解状态、普通治疗不解状态均有断言。未建模的 NAUSEOUS/DARKNESS/weaknessAmount 是既有原语缺口，按任务书 W-9 交接条款在此登记，**不能把本实现称为“全清负面状态”**。
+brogue-web/ai_docs/reports/w-21.report.md:86:JSON 实测包含普通原体、W-20 clone休眠体、不同 new/total、变形后物种，缺两字段旧档分别回0，既有强化数值不被“重新强化”或套倍率。内存 levels 缓存保留实体本身；**完整 levels 的 JSON 持久化仍是原存档边界**，本轮没有补整个跨层存档架构。
+brogue-web/ai_docs/reports/w-21.report.md:95:| Combat.c:1636 `canAbsorb` | 盟友且 new>0 等条件，判断是否愿意吸收尸体 | 未实现；W-22 |
+brogue-web/ai_docs/reports/w-21.report.md:96:| Monsters.c:3276 `moveAlly` 吸收完成支线 | 安装能力后 new-- | 未实现；W-22，本轮没有消费点 |
+brogue-web/ai_docs/reports/w-21.report.md:99:| Monsters.c:2907–2908 `resurrectAlly` | 优先 total 最大的亡友；同分比 monsterID | 未移植；当前 DFF_RESURRECT_ALLY 仍明确抛未实现，不新造复活系统 |
+brogue-web/ai_docs/reports/w-21.report.md:101:| IO.c:4889 | 同条件显示侧栏 Negated（另有幻觉条件） | web 无对应侧栏项，未移植 |
+brogue-web/ai_docs/reports/w-21.report.md:117:CE `createFlare(...,EMPOWERMENT_LIGHT)` 是独立于 canSee 的半径6光照动画。web 既有系统没有通用 flare 生命周期，本轮在可观察命中后沿现有 BoltFrame 渲染增加180ms绿色目标字形闪光，免疫/玩家/隐藏目标不泄露闪光；保留效果帧到最终路径结果，没有改变射线碰撞或RNG。**这不是 CE 半径6辐射/扩散动画的完整移植**；`LightCatalog` 仅有光源定义不代表已具备动画消费者。完整 flare 仍登记未完成。
+brogue-web/ai_docs/reports/w-21.report.md:119:## 7. 说明文字和学习边界
+brogue-web/ai_docs/reports/w-21.report.md:129:对应 CE `GlobalsBrogue.c:710` 的永久增强、建议盟友、战斗与学习、反射无效语义；重复可用由实码确认。原中文实际上并未包含明确的“从尸体学习”句，本轮补回，不能只删一次限制就交差。
+brogue-web/ai_docs/reports/w-21.report.md:131:**本轮尚未完成学习。** 详情页“似乎已准备好学习 N 项新能力”只是 CE 已有的待学状态说明。没有学习按钮、尸体选择/寻路/吸收、安装能力、new--。等待和死亡清扫不消费待学次数。不能将 W-21 结案视为 W-22 已完成。
+brogue-web/ai_docs/reports/w-21.report.md:141:| 重复强化 / 克隆 / 变形计数 | CE 没一次限制；克隆复制、变形保留计数。不能将“去掉强化属性”泛化为清计数 |
+brogue-web/ai_docs/reports/w-21.report.md:167:预计可翻正的唯一既有断言是 `w_2_arcana_submission.test.ts:154`：显式注释 old effect retained 的 `floor(hp*1.3)` → `hp+12`；实际先跑出 `18≠7`，原报告保存在 [initial-tests.json](w-21-evidence/initial-tests.json)。这是 CE 语义更新，不是为了放宽提交/取消/扣费门。其余131份既有测试不修改；`monster_stats_effect`、快照、W19/W20容器、生成及频率守卫只回归，不放宽。[test-boundary.json](w-21-evidence/test-boundary.json) 与 HEAD 比较这一边界。
+brogue-web/ai_docs/reports/w-22.report.md:1:# W-22：强化后的学习——依赖核实与暂缓
+brogue-web/ai_docs/reports/w-22.report.md:5:**empowerment 状态：数值已对齐、学习未完成。** 数值部分仍受 [W-21 报告](w-21.report.md) 中 panacea 未建模状态、伤害分布及闪光表现等边界约束。不能标为“数值与学习均对齐”，也不能把本轮审计通过称为“学习部分已实现”。
+brogue-web/ai_docs/reports/w-22.report.md:7:## 1. 为什么暂缓，以及候选处理的取舍
+brogue-web/ai_docs/reports/w-22.report.md:24:| 同轮完成怪物 blink 和整个藤蔓旁支 | 超出 W-0 明列的本轮子集边界，需要独立实现与验收 | 拆分后再做 |
+brogue-web/ai_docs/reports/w-22.report.md:25:| 整体暂缓学习运行时，维持 W-21 计数及现状 | 不产生新增抽签，不伪造子集玩法为 CE 对齐 | **采用** |
+brogue-web/ai_docs/reports/w-22.report.md:27:“可执行子集验收”可以限制验收声明，但不能自动提供上述未就绪候选的忠实运行时策略。本轮交付审计与复现证据；没有把“零新增能力”包装成子集完成。
+brogue-web/ai_docs/reports/w-22.report.md:56:不同飞行/火免等禁止地形使这类距离差异具有实际来源；探针用直接注入距离值隔离选择逻辑，不冒称做了真实地形端到端复现。web 本轮未移植；恢复实施时应保留上述行为并用回归锁住，另案修 CE bug 才能改变。
+brogue-web/ai_docs/reports/w-22.report.md:68:| CE 项 | web 执行出口及限制 | 本轮接通 | 未接通处理 |
+brogue-web/ai_docs/reports/w-22.report.md:70:| MA_TRANSFERENCE，位11 | `CombatSystem.attack:314` 读 abilityFlags，按盟友40%/敌人90%回血；此为已有攻击出口，不能据此宣称所有 CE inflictDamage 通路全齐 | 否 | 整体暂缓学习 |
+brogue-web/ai_docs/reports/w-22.report.md:74:| MONST_IMMUNE_TO_FIRE，位12 | 同上补 immune_fire=1000并永久保持，火焰/熔岩/fiery bolt 消费 | 否 | 整体暂缓学习 |
+brogue-web/ai_docs/reports/w-22.report.md:75:| MONST_REFLECT_50，位15 | `Monster.boltReflectionChance:733 → reflectionChance(4)`，真实 BoltReflection 路径消费；不是硬编码50% | 否 | 整体暂缓学习 |
+brogue-web/ai_docs/reports/w-22.report.md:83:| bolt / CE magnitude | web 执行出口 | 本轮接通 | 未接通处理/限制 |
+brogue-web/ai_docs/reports/w-22.report.md:85:| TELEPORT / 10 | P W-11 已有；M 未映射、无命中分支 | 否 | 暂缓；需怪物身份映射、资格和安置调用 |
+brogue-web/ai_docs/reports/w-22.report.md:86:| SLOW / 10 | P及通用状态 helper 有；M 仅映射 SLOW_2 | 否 | 暂缓；不能将 SLOW_2 的 magnitude=2冒充此项 |
+brogue-web/ai_docs/reports/w-22.report.md:87:| POLYMORPH / 10 | P W-19 已有；M 未映射、无分支 | 否 | 暂缓；需怪物命中接线 |
+brogue-web/ai_docs/reports/w-22.report.md:89:| DOMINATION / 10 | P W-17 已有；M 未映射、无分支 | 否 | 暂缓；CE命中仍调用 becomeAllyWith 归玩家，不能自行改为归怪物 caster |
+brogue-web/ai_docs/reports/w-22.report.md:91:| INVISIBILITY / 10 | 通用状态 helper/P有；M 未映射、无分支 | 否 | 暂缓；不同于学习 MONST_INVISIBLE 旗标 |
+brogue-web/ai_docs/reports/w-22.report.md:92:| LIGHTNING / 10 | P伤害/电路径有；M 未映射、无伤害 case | 否 | 暂缓；不能仅映射为 SPARK |
+brogue-web/ai_docs/reports/w-22.report.md:94:| POISON / 10 | P W-10和 addPoison 原语有；M 未映射、无分支 | 否 | 暂缓；不是 MA_POISONS 或 POISON_DART |
+brogue-web/ai_docs/reports/w-22.report.md:97:| ENTRANCEMENT / 10 | P W-18；M 未映射、无分支 | 否 | 暂缓；需接真实命中/施法者语义 |
+brogue-web/ai_docs/reports/w-22.report.md:100:| CONJURATION / 10 | P W-16；M 未映射、无落点召唤分支 | 否 | 暂缓；需怪物落点接线，CE detonate 同样固定 leader=&player，不能自行改阵营 |
+brogue-web/ai_docs/reports/w-22.report.md:118:`Rogue.h:2280–2286` 的恢复载体应包含 targetCorpseLoc、targetCorpseName、absorptionFlags、absorbBehavior、absorptionBolt、corpseAbsorptionCounter，以及 MB_ABSORBING、当前 learned flags/bolts 和 ticksUntilTurn；new/total 为既有数值字段。web 尚未加入这些吸收字段，**本轮未验收“吸收中保存再读”**。存档不能重新选择能力、重置20、重新广播尸体或额外消费次数。普通旧档可默认无目标/非吸收；活动/休眠怪、测试房 reset、内存层缓存和 JSON 恢复都应逐条覆盖。现有 levels 全量 JSON 持久化边界仍见 W-21，不因本轮报告变为已实现。
+brogue-web/ai_docs/reports/w-22.report.md:120:`Time.c:1567` 坠落幸存并换层时、`:2119 monsterEntersLevel` 到达新层时，CE **只在该处清 targetCorpseLoc**，没有同时清全部吸收字段；后续计数更新再处理残留。未来不能把旧层坐标带到新层当新尸体，也不能说 CE 这两行已清空整个任务。
+brogue-web/ai_docs/reports/w-22.report.md:124:额外反查 `cloneMonster:573` 的整结构赋值会复制吸收字段和 ABSORBING（随后清的位并不包含它）；`polymorph` 主要替换 info。CE 无全局消费 token，因此“每次死亡至多分配一次”不能擅自扩大成“克隆/移动组合下全局恰一次学习”的已证结论。未来需要覆盖克隆吸收中个体、位置值复制/不共享、换位与放弃；若发现 CE 复制状态与用户的一次消费要求冲突，应显式登记取舍。本轮不新增局部 token，也没有假称通过这些未实现验收点。
+brogue-web/ai_docs/reports/w-22.report.md:134:W-21 的 Monster.newPowerCount/totalPowerCount、Snapshot 可选字段/旧档0回退、clone按值复制、polymorph保留计数继续有效。web 已有 `snapshotForm` 保存实际 flags/bolts，但没有待学任务字段。W-22原定只在完成时消费new；暂缓后没有消费点。
+brogue-web/ai_docs/reports/w-22.report.md:144:若忠实实施，anyoneWantABite 在死亡路径至多调用两次 rand_range：有盟友候选时一次，实际第二遍选中盟友且能力池非空时再一次；“计数>0但选不到人”仅第一调用。吸收计数/安装本身无随机调用。将来新能力会在后续施法/行为触发已有 RNG，这是学习造成的交互随机流改变，不应声称“此后只有击杀会变”。生成阶段不能调用学习抽签。
+brogue-web/ai_docs/reports/w-22.report.md:146:**函数调用数不是 RNG 推进数**：`Math.c:160` 和 web `Random.randRange:97` 都在 upper<=lower 时直接返回，不推进计数/状态；所以单盟友+单能力虽有两次 rand_range 调用，实际推进0。两次非退化抽签才各计一次 substantive 抽签；底层拒绝采样还可能多次 ranval。探针的 rngCalls 是记录调用边界的桩，不是实际 substantive 计数。删掉一个候选会改变分布，甚至把非退化抽签变成单候选零推进。
+brogue-web/ai_docs/reports/w-22.report.md:148:## 9. 反查过程、边界与撞红处置
+brogue-web/ai_docs/reports/w-22.report.md:160:## 10. 交付、自检与后续拆分
+brogue-web/ai_docs/reports/w-22.report.md:166:最终门禁记录如下。**本报告的测试通过只证明原有运行时没有回归及CE审计断言成立，不证明未实现的学习玩法通过验收。**
+brogue-web/ai_docs/reports/w-22.report.md:319:**结案口径仍为：W-22实现暂缓；empowerment“数值已对齐、学习未完成”。** 上述通过项不包含新增尸体学习、吸收中读档或学后blink/vines效果验收。
+brogue-web/ai_docs/reports/w-23.report.md:5:**W-22 继续暂缓。** 不新增 targetCorpseLoc、absorptionFlags、吸收计数、尸体或学习调度；当前能力仍可剥离，存活且非无敌分支执行 `newPowerCount = totalPowerCount`。学习依赖及后续范围见 [W-22 报告 §4.2、§6–10](w-22.report.md)。本报告不把通过消魔验收描述成完成学习。
+brogue-web/ai_docs/reports/w-23.report.md:28:| `MB_SEIZING` | true | 清自身 seizing、affected=true；不写 wasNegated，不直接清对方 seized | 相同；受害者后续原有抓取有效性校验解除 |
+brogue-web/ai_docs/reports/w-23.report.md:63:| NAUSEOUS | 保留 | 保留 | 未实现 |
+brogue-web/ai_docs/reports/w-23.report.md:69:| ENRAGED | 保留 | 保留 | 未实现 |
+brogue-web/ai_docs/reports/w-23.report.md:70:| MAGICAL_FEAR | 清0 | 清0 | 无状态载体；不将自然 FLEEING 当作魔法恐惧，见 §12 |
+brogue-web/ai_docs/reports/w-23.report.md:72:| DARKNESS | 清0 | 清0 | CE 玩家另 updateMinersLightRadius + updateVision(true)；web 无 darkness，未伪造该功能 |
+brogue-web/ai_docs/reports/w-23.report.md:73:| LIFESPAN_REMAINING | 保留 | 保留 | 未实现此状态 |
+brogue-web/ai_docs/reports/w-23.report.md:116:web 的 A_MULTIPLICITY 仍未实现且在 ItemLoader 的符文映射中排除，本轮不补该系统。现有生成/召唤/克隆可带此标志者都由同一 helper 检查；测试人工加标也同样有效。
+brogue-web/ai_docs/reports/w-23.report.md:126:并非所有死亡都设 wasNegated：只有死亡前已发生 ability 剥离才会设；仅带死亡旗标的普通目标不会。死亡支跳过清状态、突变/traits/bolt、计数重置和地形，护盾也不能救命。后续掉携物和死亡清扫沿既有死亡路径，不新造伤害/战利品抽签。
+brogue-web/ai_docs/reports/w-23.report.md:149:GameSnapshotMonster 顶层新增可选 wasNegated；原 polymorph/cloneState 的兼容字段仍读写。加载优先顶层，再旧 clone/polymorph，最终 false；缺计数字段默认0。实际 form 已含剥离后的 flags/bolts，不能按物种目录补回。mutation 可选字段缺失就无突变，不重新 mutate（避免数值倍率二次应用）。活动、休眠、测试房重置、JSON往返、clone 后再保存都有验证。内存 levels 保留对象的现有路径不改；全 levels JSON 持久化仍是 W-21/W-22 登记的旧边界。
+brogue-web/ai_docs/reports/w-23.report.md:175:仍保留 web 原有阵营模型边界：非玩家敌人之间的深水捕食例外、潜水等没有全量重写；本轮不借消魔重构整个 AI。
+brogue-web/ai_docs/reports/w-23.report.md:190:| W-22 学习 | 运行时未实现，不加入吸收字段、不制造学会能力；仅处理当前能力和已有计数 |
+brogue-web/ai_docs/reports/w-23.report.md:216:## 12. 本轮边界与后续登记
+brogue-web/ai_docs/reports/w-23.report.md:218:1. **没有补学习/吸收**；计数恢复不等于可学到能力。W-22仍暂缓。
+brogue-web/ai_docs/reports/w-23.report.md:219:2. **MAGICAL_FEAR/DARKNESS 无现有状态模型**；web FLEEING 不能区分魔法恐惧与自然逃跑，不任意解除全部逃跑。玩家黑暗的灯半径/视野附带动作也未冒领。其余未建模状态在§3逐项列出。
+brogue-web/ai_docs/reports/w-23.report.md:222:5. A_MULTIPLICITY动态谱影生成、复活祭坛、完整怪物侧栏/全知回放、全levels JSON存档仍未实现；未扩轮。
+brogue-web/ai_docs/reports/w-23.report.md:235:浏览器 [w23-browser-check.mjs](../../scripts/w23-browser-check.mjs) 的10场景全部通过，console/page错误0；[browser-states.json](w-23-evidence/browser-states.json)记录与截图一致的状态。实际查看了 [消魔说明](w-23-evidence/browser-negated-detail.png)、[失飞死亡](w-23-evidence/browser-lost-flight.png)、[无生命碎裂](w-23-evidence/browser-death-stone_guardian.png)。技能原客户端已运行并查看截图，其canvas导出仍为黑图（前轮同限制），**没有将其算为视觉验收通过**；有头整页截图可见游戏和UI。
+brogue-web/ai_docs/reports/w-24.report.md:3:基准 `22c5151`，2026-09-24。规格采用 W-0 §2.5 的 W-24 行、表前后段及 §2.6。完成目录/普通入口/初始充能/极性接线：**genWands=9、frequency 合计22、定义11（含两条退池兼容定义）**。效果实现、staff 目录、机器支持范围均未扩张。W-22 学习仍暂缓。
+brogue-web/ai_docs/reports/w-24.report.md:5:本轮六处生产文件为 `src/data/arcana.json`、`src/engine/Combat/Bolt.ts`、`src/engine/Items/ArcanaInstance.ts`、`src/engine/Items/ItemLoader.ts`、`src/engine/Core/Game.ts`（仅快照）、`src/locales/zh_CN.json`。报告所称“闭环”限于这些入口；独立发现屏和机器法器配发的实际边界见 §3–4，不把接口存在冒充完整 UI/机器实现。
+brogue-web/ai_docs/reports/w-24.report.md:27:## 2. 抽签顺序和随机边界
+brogue-web/ai_docs/reports/w-24.report.md:33:`initConsumables` 洗牌走 COSMETIC，且洗的是完整外观词表，新增4个目录条目本身不多抽 substantive。Game/Generator/Map/Random 的生成算法原样；最终边界审计核对 Game 只修改 `toSnapshot`、`loadSnapshot`。
+brogue-web/ai_docs/reports/w-24.report.md:53:**没有商店/祭坛按魔杖极性定价或过滤的读方。** BlueprintEngine/Game 的神祠机器走类别/生成旗标链，既有五类配发不包含已实现的 wand/staff 实化分支。`marketValue` 没有运行时价格消费者。
+brogue-web/ai_docs/reports/w-24.report.md:55:## 4. 逐入口核实及边界
+brogue-web/ai_docs/reports/w-24.report.md:67:新增正常入口验证分别观察到变形更换物种且实体仍在原列表、消魔清除施法能力、低血支配成功转盟、复制得到两只3HP原/副体。只验证接线，前轮广义效果边界由原测试回归，不重新实现效果。
+brogue-web/ai_docs/reports/w-24.report.md:85:**因果隔离：**只把运行时 `ItemLoader.genWands` 设回 HEAD 的5条旧顺序/旧频率，其余新代码完全保留，重跑104层，与旧基线**零字段差异**。结合编辑前drift绿、保护边界和这次单变量对照，可将这组基线漂移归于本轮目录/权重选择及其条件充能抽签；未见与本轮无关的漂移。不声称四seed证明所有seed的未来行为。
+brogue-web/ai_docs/reports/w-24.report.md:96:新增 `src/test/w_24_wand_catalog.test.ts`，包含CE原表解析、22张票枚举、64seed ×1000真实 kind+instance 抽签、九种鉴定/极性、四新入口、机器边界、附魔/极性升格和存档迁移。统计走实际 `Game.chooseKindFromPool` 和 `spawnKindById`，不是在测试里另写一套抽签。seed为 `1..64 ×7919`；分布门为理论二项标准差6σ（固定种类/充能不使用随实测移动的窗口）。
+brogue-web/ai_docs/reports/w-24.report.md:110:全部通过分布门和每件调用边界：实际 **125123 = 64000×2−2877**，只有赋能无充能抽签。原始结果见 [distribution.json](w-24-evidence/distribution.json)。22张票枚举防止总权重相同但表序错误，CE原表测试防止范围/极性同时抄错。
+brogue-web/ai_docs/reports/w-24.report.md:122:迁移只解决此次魔杖目录变化；不宣称修复旧档既有 RNG/跨层缓存/计量表持久化边界，也不改staff存档语义。
+brogue-web/ai_docs/reports/w-24.report.md:128:empowerment仅frequency 3→1，并补目录marketValue；**W-21说明文字逐字保留**，原数值/计数不变。说明引用的学习能力仍是CE目标语义，当前W-22暂缓；本轮没有学习按钮、尸体吸收或待学次数消费，不宣称完整强化学习已经可用。
+brogue-web/ai_docs/reports/w-24.report.md:135:- W-17/W-23“不可构造/未入池”守卫的阶段性留形已过期，精确翻正；实际效果断言不改。

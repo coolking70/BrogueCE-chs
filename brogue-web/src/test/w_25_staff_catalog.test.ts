@@ -17,8 +17,8 @@ import { rng } from '../engine/Random';
 import { Monster, MonsterState, type MonsterData } from '../entities/Monster';
 import monsters from '../data/monsters.json';
 import { createHeadlessGame } from './harness';
-const ids = 'lightning fire poison tunneling blinking entrancement conjuration healing haste'.split(' ').map(s=>'staff_of_'+s);
-const added = ids.slice(3,6), weights = [15,15,10,10,11,6,8,5,5];
+const ids = 'lightning fire poison tunneling blinking entrancement obstruction discord conjuration healing haste protection'.split(' ').map(s=>'staff_of_'+s);
+const added = ids.slice(3,6), weights = [15,15,10,10,11,6,10,10,8,5,5,5];
 const oldIds = 'fire lightning poison healing haste conjuration light'.split(' ').map(s=>'staff_of_'+s);
 beforeEach(() => { if (!i18next.isInitialized) i18next.init({ lng: 'en', resources: {}, initImmediate: false }); rng.seedRandomGenerator(2525); ItemLoader.initConsumables(); });
 afterEach(() => vi.restoreAllMocks());
@@ -45,14 +45,14 @@ describe('W-25 staff catalog', () => {
         expect(rows).toHaveLength(12);
         expect(ItemLoader.genStaffs.map(s=>s.id)).toEqual(ids);
         expect(ItemLoader.staffs.map(s=>s.id)).toEqual([...ids,'staff_of_light']);
-        expect(ItemLoader.genStaffs.reduce((s,c)=>s+c.frequency!,0)).toBe(85);
+        expect(ItemLoader.genStaffs.reduce((s,c)=>s+c.frequency!,0)).toBe(110);
         expect(rows.map(r=>Number(r[2]))).toEqual([0,1,3,4,5,6,7,8,9,10,11,12]);
         const ceIds = rows.map(r=>'staff_of_'+(r[1]==='firebolt'?'fire':r[1]));
         expect(ceIds.filter(id=>ids.includes(id))).toEqual(ids);
         rows.forEach((r,i)=>{
             const id = ceIds[i]!, cfg = ItemLoader.staffs.find(s=>s.id===id);
             expect(r.slice(6,9).map(Number)).toEqual([2,4,1]); // metadata, NOT the actual uncapped E lottery
-            if (!cfg) { expect(['staff_of_obstruction','staff_of_discord','staff_of_protection']).toContain(id); expect(getBoltForItem(id)).toBeUndefined(); return; }
+            expect(cfg).toBeDefined(); if (!cfg) throw Error('CE staff missing from final W-26 catalog');
             expect([cfg.flavorIndex,cfg.frequency,cfg.marketValue,ItemLoader.kindPolarity(id)]).toEqual([r[2],r[3],r[4],r[9]].map(Number));
             const bolt=getBoltForItem(id)!; expect(bolt.ceType).toBe(CEBoltType[r[5] as keyof typeof CEBoltType]);
             expect(BOLT_EFFECT_CE_EFFECT[bolt.effect]).toBe(CE_BOLT_CATALOG[bolt.ceType!].effect);
@@ -61,16 +61,16 @@ describe('W-25 staff catalog', () => {
         expect(ItemLoader.staffs.find(s=>s.id==='staff_of_light')!.excludeFromGeneration).toBe(true);
         expect(ItemLoader.spawnStaff('staff_of_light',0,0)).not.toBeNull();
     });
-    it('all 85 tickets follow the CE row intervals through the real kind selector', () => {
+    it('all 110 tickets follow the CE row intervals through the real kind selector', () => {
         const g:any=Object.create(Game.prototype), draw=vi.spyOn(rng,'randRange');
         const expected=ids.flatMap((id,i)=>Array(weights[i]).fill(id));
-        for(let ticket=1;ticket<=85;ticket++) {
+        for(let ticket=1;ticket<=110;ticket++) {
             draw.mockReturnValueOnce(ticket);
             expect(g.chooseKindFromPool(ids,weights,new Map())).toBe(expected[ticket-1]);
         }
-        expect(draw.mock.calls).toEqual(Array.from({length:85},()=>[1,85]));
+        expect(draw.mock.calls).toEqual(Array.from({length:110},()=>[1,110]));
     });
-    it('64 seeds × 1000 real kind/instance draws: 9 kinds, weighted frequency, uncapped E, per-item exact RNG', () => {
+    it('64 seeds × 1000 real kind/instance draws: 12 kinds, weighted frequency, uncapped E, per-item exact RNG', () => {
         const g:any=Object.create(Game.prototype), counts=ids.map(()=>0), charges=ids.map(()=>({} as Record<number,number>));let calls=0,sumE=0;
         for(let seed=1;seed<=64;seed++) {
             rng.seedRandomGenerator(seed*7919);
@@ -80,23 +80,23 @@ describe('W-25 staff catalog', () => {
                 const item=g.spawnKindById(ItemCategory.STAFF,id,{x:3,y:4},1), i=ids.indexOf(id), e=item.enchantment;
                 expect(i).toBeGreaterThanOrEqual(0);counts[i]!++;charges[i]![e]=(charges[i]![e]??0)+1;
                 expect([item.charges,item.maxCharges,item.arcanaInstanceVersion]).toEqual([e,e,1]);
-                expect(item.staffRechargeRemaining).toBe(id==='staff_of_blinking'?1000:500);
+                expect(item.staffRechargeRemaining).toBe(['staff_of_blinking','staff_of_obstruction'].includes(id)?1000:500);
                 expect(rng.randomNumbersGenerated-before).toBe(e);sumE+=e;
             }
             calls+=rng.randomNumbersGenerated;
         }
         ids.forEach((id,i)=>{
-            const p=weights[i]!/85;expect(Math.abs(counts[i]!-64000*p),id).toBeLessThan(6*Math.sqrt(64000*p*(1-p)));
+            const p=weights[i]!/110;expect(Math.abs(counts[i]!-64000*p),id).toBeLessThan(6*Math.sqrt(64000*p*(1-p)));
             for(const [e,q] of [[2,.5],[3,.425],[4,.0675],[5,.00675],[6,.00075]]) {
                 const observed=Object.entries(charges[i]!).filter(([k])=>e===6?Number(k)>=6:Number(k)===e).reduce((a,[,n])=>a+n,0);
                 expect(Math.abs(observed-counts[i]!*q!),id+' E'+e).toBeLessThanOrEqual(6*Math.sqrt(counts[i]!*q!*(1-q!)));
             }
         });
         expect(calls).toBe(sumE);
-        if(process.env.W25_EVIDENCE)fs.writeFileSync('ai_docs/reports/w-25-evidence/distribution.json',JSON.stringify({seeds:64,samples:64000,calls,kinds:ids.map((id,i)=>({id,weight:weights[i],count:counts[i],charges:charges[i]}))},null,2)+'\n');
+        if(process.env.W26_EVIDENCE)fs.writeFileSync('ai_docs/reports/w-26-evidence/distribution.json',JSON.stringify({seeds:64,samples:64000,calls,kinds:ids.map((id,i)=>({id,weight:weights[i],count:counts[i],charges:charges[i]}))},null,2)+'\n');
     });
     it.each(ids)('%s: unknown appearance, polarity, discovery and full identification', id=>{
-        const item=ItemLoader.spawnStaff(id,-1,-1)!;const p=ids.indexOf(id)>=7?-1:1;
+        const item=ItemLoader.spawnStaff(id,-1,-1)!;const p=['staff_of_healing','staff_of_haste','staff_of_protection'].includes(id)?-1:1;
         expect(item.displayName).not.toContain(item.name);expect(ItemLoader.itemMagicPolarity(item)).toBe(p);
         expect(ItemLoader.magicCharDiscoverySuffix(item)).toBe(p);ItemLoader.detectMagicOnItem(item);
         expect(ItemLoader.identifiedItems.has(id)).toBe(false);ItemLoader.identifyInstance(item);
@@ -201,7 +201,7 @@ describe('W-25 staff appearance/save migration',()=>{
         for(const id of added)expect(ItemLoader.identifiedItems.has(id)).toBe(false);
         expect([g.player.inventory.items[0]!.charges,g.player.inventory.items[0]!.staffRechargeRemaining]).toEqual([0,1234]);
         expect(ItemLoader.callTitles.get('staff_of_haste')).toBe('old haste');expect(ItemLoader.isPolarityRevealed('staff_of_poison')).toBe(true);
-        expect(new Set(current.map(s=>ItemLoader.arcanaFlavorMap.get(s.id))).size).toBe(10);
+        expect(new Set(current.map(s=>ItemLoader.arcanaFlavorMap.get(s.id))).size).toBe(13);
         const upgraded=JSON.parse(JSON.stringify(g.toSnapshot()));g.loadSnapshot(upgraded);expect(g.toSnapshot().staffFlavors).toEqual(upgraded.staffFlavors);
     });
     it('new maps, partial maps and blink missing timer fallback are deterministic',()=>{
@@ -209,6 +209,6 @@ describe('W-25 staff appearance/save migration',()=>{
         const saved=JSON.parse(JSON.stringify(g.toSnapshot()));delete saved.player.inventory[0].staffRechargeRemaining;
         expect(g.loadSnapshot(saved)).toBe(true);expect(g.toSnapshot().staffFlavors).toEqual(saved.staffFlavors);expect(g.player.inventory.items[0]!.staffRechargeRemaining).toBe(1000);
         const before=JSON.stringify(rng);ItemLoader.restoreStaffFlavors({staff_of_blinking:saved.staffFlavors.staff_of_blinking});
-        expect(new Set(ItemLoader.staffs.map(s=>ItemLoader.arcanaFlavorMap.get(s.id))).size).toBe(10);expect(JSON.stringify(rng)).toBe(before);
+        expect(new Set(ItemLoader.staffs.map(s=>ItemLoader.arcanaFlavorMap.get(s.id))).size).toBe(13);expect(JSON.stringify(rng)).toBe(before);
     });
 });

@@ -1,0 +1,30 @@
+{
+  "production": [
+    "src/data/arcana.json",
+    "src/engine/Combat/Bolt.ts",
+    "src/engine/Items/ArcanaRecharge.ts",
+    "src/engine/Items/ItemLoader.ts",
+    "src/locales/zh_CN.json"
+  ],
+  "changedMethods": [],
+  "changedExistingTests": [
+    "src/engine/Combat/BoltCatalog.test.ts",
+    "src/test/w_14_obstruction.test.ts",
+    "src/test/w_15_shielding.test.ts",
+    "src/test/w_24_wand_catalog.test.ts",
+    "src/test/w_25_staff_catalog.test.ts",
+    "src/test/w_5_arcana_instance.test.ts",
+    "src/test/w_6_arcana_recharge.test.ts",
+    "src/test/w_9_directed_status.test.ts",
+    "src/test/w_26_arcana_closure.test.ts"
+  ],
+  "unexpected": [],
+  "unchangedCategories": true,
+  "retired": true,
+  "oldStaffsUnchanged": true,
+  "completeCatalog": true,
+  "effectUnchanged": true,
+  "rechargeCodeUnchanged": true,
+  "loaderMethodsUnchanged": true,
+  "baselineHash": "fad7dc81a35afeff00f8bb0a9b38cb4e674d7ee584578127e270304d6c8d0bf3"
+}

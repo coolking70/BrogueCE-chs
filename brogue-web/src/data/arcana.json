@@ -224,6 +224,34 @@
       "rechargeTurns": 200
     },
     {
+      "id": "staff_of_obstruction",
+      "name": "Staff of Obstruction",
+      "minDepth": 1,
+      "maxDepth": 26,
+      "weight": 4,
+      "maxCharges": 2,
+      "rechargeTurns": 200,
+      "color": 5635925,
+      "description": "在射线落点生成阻路的绿色水晶，水晶会逐渐消融；附魔能扩大阻障范围。这根法杖的自然回电速度为普通法杖的一半。",
+      "frequency": 10,
+      "marketValue": 1000,
+      "flavorIndex": 7
+    },
+    {
+      "id": "staff_of_discord",
+      "name": "Staff of Discord",
+      "minDepth": 1,
+      "maxDepth": 26,
+      "weight": 4,
+      "maxCharges": 2,
+      "rechargeTurns": 200,
+      "color": 16737962,
+      "description": "使命中的生物陷入纷争，无差别地攻击其他生物；附魔能延长持续时间。",
+      "frequency": 10,
+      "marketValue": 1000,
+      "flavorIndex": 8
+    },
+    {
       "id": "staff_of_conjuration",
       "name": "Staff of Conjuration",
       "minDepth": 3,
@@ -264,6 +292,20 @@
       "frequency": 5,
       "marketValue": 900,
       "flavorIndex": 11
+    },
+    {
+      "id": "staff_of_protection",
+      "name": "Staff of Protection",
+      "minDepth": 1,
+      "maxDepth": 26,
+      "weight": 4,
+      "maxCharges": 2,
+      "rechargeTurns": 200,
+      "color": 16777130,
+      "description": "为命中的生物施加吸收伤害的护盾，护盾会随时间衰减；附魔能提高吸收量。只能通过射线反射保护自己。",
+      "frequency": 5,
+      "marketValue": 900,
+      "flavorIndex": 12
     },
     {
       "id": "staff_of_light",

@@ -64,8 +64,8 @@ describe('W-14 CE catalog and enchantment diffusion', () => {
         expect(CE_BOLT_CATALOG[CEBoltType.OBSTRUCTION]).toMatchObject({ pathDF: null, targetDF: null });
         expect(AUTO_GENERATOR_CATALOG.some(e => e.df === DF.DF_FORCEFIELD || e.ceDfId === 51)).toBe(false);
         expect(JSON.stringify(blueprints)).not.toContain('DF_FORCEFIELD');
-        expect(getBoltForItem('staff_of_obstruction')).toBeUndefined();
-        expect(ItemLoader.spawnStaff('staff_of_obstruction', 0, 0)).toBeNull();
+        expect(getBoltForItem('staff_of_obstruction')!.ceType).toBe(CEBoltType.OBSTRUCTION); // W-26 catalog
+        expect(ItemLoader.spawnStaff('staff_of_obstruction', 0, 0)).not.toBeNull();
     });
     it.each([[2, 47], [3, 38], [4, 30], [8, 12], [10, 8], [19, 1], [40, 1], [99, 1], [0, 47], [1, 47], [NaN, 47]])('E=%s yields CE integer decrement %s', (E, decrement) => {
         expect(obstructionDecrement(E)).toBe(decrement);

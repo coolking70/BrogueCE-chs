@@ -60,8 +60,8 @@ describe('W-24 CE nine-row catalog and ordinary entry', () => {
             expect(bolt.ceType).toBe(CEBoltType[r[5] as keyof typeof CEBoltType]);
             expect(BOLT_EFFECT_CE_EFFECT[bolt.effect]).toBe(CE_BOLT_CATALOG[bolt.ceType!].effect);
         });
-        expect(arcana.staffs).toHaveLength(10);
-        expect(ItemLoader.genStaffs.reduce((s,w) => s + w.frequency!, 0)).toBe(85);
+        expect(arcana.staffs).toHaveLength(13);
+        expect(ItemLoader.genStaffs.reduce((s,w) => s + w.frequency!, 0)).toBe(110);
         for (const id of ['wand_of_fire','wand_of_lightning']) {
             expect(ItemLoader.wands.find(w => w.id === id)!.excludeFromGeneration).toBe(true);
             expect(ItemLoader.spawnWand(id,0,0)).not.toBeNull();
