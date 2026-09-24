@@ -1,0 +1,3929 @@
+[
+  {
+    "file": "src/engine/Combat/BoltContract.test.ts",
+    "line": 31,
+    "receiver": "(g as unknown as {\n    computeBoltResult(b: BoltConfig, origin: Pos, target: Pos): BoltResult;\n})",
+    "member": "computeBoltResult",
+    "call": true
+  },
+  {
+    "file": "src/test/armor_model_effect.test.ts",
+    "line": 233,
+    "receiver": "privates",
+    "member": "canMoveTo",
+    "call": true
+  },
+  {
+    "file": "src/test/b1_retire_invented.test.ts",
+    "line": 122,
+    "receiver": "(game as unknown as GameInternals)",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/b2_transcription.test.ts",
+    "line": 51,
+    "receiver": "(game as unknown as GameInternals)",
+    "member": "canMoveTo",
+    "call": true
+  },
+  {
+    "file": "src/test/b2_transcription.test.ts",
+    "line": 66,
+    "receiver": "(game as unknown as GameInternals)",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/b2_transcription.test.ts",
+    "line": 254,
+    "receiver": "(game as unknown as GameInternals)",
+    "member": "populateLevel",
+    "call": true
+  },
+  {
+    "file": "src/test/b_1_weapon_specials.test.ts",
+    "line": 133,
+    "receiver": "(game as any)",
+    "member": "playerRecoversFromAttacking",
+    "call": false
+  },
+  {
+    "file": "src/test/b_1_weapon_specials.test.ts",
+    "line": 134,
+    "receiver": "(game as any)",
+    "member": "playerRecoversFromAttacking",
+    "call": false
+  },
+  {
+    "file": "src/test/b_1a_identification.test.ts",
+    "line": 267,
+    "receiver": "(game as unknown as { objectiveTimeBlock(): void })",
+    "member": "objectiveTimeBlock",
+    "call": true
+  },
+  {
+    "file": "src/test/b_1a_identification.test.ts",
+    "line": 310,
+    "receiver": "resolve",
+    "member": "resolvePlayerMeleeAttackOn",
+    "call": true
+  },
+  {
+    "file": "src/test/b_1a_identification.test.ts",
+    "line": 315,
+    "receiver": "resolve",
+    "member": "resolvePlayerMeleeAttackOn",
+    "call": true
+  },
+  {
+    "file": "src/test/b_1a_identification.test.ts",
+    "line": 330,
+    "receiver": "(game as unknown as { objectiveTimeBlock(): void })",
+    "member": "objectiveTimeBlock",
+    "call": true
+  },
+  {
+    "file": "src/test/b_1a_identification.test.ts",
+    "line": 356,
+    "receiver": "(game as unknown as { objectiveTimeBlock(): void })",
+    "member": "objectiveTimeBlock",
+    "call": true
+  },
+  {
+    "file": "src/test/b_1a_identification.test.ts",
+    "line": 565,
+    "receiver": "(game as unknown as { generateDepth(isGoingUp: boolean, isFirstLevel: boolean): void })",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/b_1a_identification.test.ts",
+    "line": 730,
+    "receiver": "(game as unknown as Record<string, unknown>)",
+    "member": "removeCurseFromInventory",
+    "call": false
+  },
+  {
+    "file": "src/test/b_1a_identification.test.ts",
+    "line": 731,
+    "receiver": "(game as unknown as Record<string, unknown>)",
+    "member": "rechargeStaffsAndCharms",
+    "call": false
+  },
+  {
+    "file": "src/test/b_1b_identification_persistence.test.ts",
+    "line": 284,
+    "receiver": "(game as unknown as { processIncrementalAutoID(): void })",
+    "member": "processIncrementalAutoID",
+    "call": true
+  },
+  {
+    "file": "src/test/b_1b_identification_persistence.test.ts",
+    "line": 306,
+    "receiver": "(game as unknown as { processIncrementalAutoID(): void })",
+    "member": "processIncrementalAutoID",
+    "call": true
+  },
+  {
+    "file": "src/test/b_1b_identification_persistence.test.ts",
+    "line": 386,
+    "receiver": "(game as unknown as { beginIdentifySelection(): boolean })",
+    "member": "beginIdentifySelection",
+    "call": true
+  },
+  {
+    "file": "src/test/b_1c_detect_magic.test.ts",
+    "line": 505,
+    "receiver": "(game as unknown as { applyDetectMagic(it: Item): void })",
+    "member": "applyDetectMagic",
+    "call": true
+  },
+  {
+    "file": "src/test/b_4a_item_generation.test.ts",
+    "line": 68,
+    "receiver": "g",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/b_4a_item_generation.test.ts",
+    "line": 110,
+    "receiver": "(game as unknown as { meteredItems: { frequency: number; numberSpawned: number }[] })",
+    "member": "meteredItems",
+    "call": false
+  },
+  {
+    "file": "src/test/b_4a_item_generation.test.ts",
+    "line": 210,
+    "receiver": "g",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/b_4a_item_generation.test.ts",
+    "line": 505,
+    "receiver": "g",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/b_4b_item_placement.test.ts",
+    "line": 227,
+    "receiver": "game",
+    "member": "spawnPopulateItem",
+    "call": false
+  },
+  {
+    "file": "src/test/b_4b_item_placement.test.ts",
+    "line": 229,
+    "receiver": "game",
+    "member": "generateDepth",
+    "call": false
+  },
+  {
+    "file": "src/test/b_4b_item_placement.test.ts",
+    "line": 230,
+    "receiver": "game",
+    "member": "generateDepth",
+    "call": false
+  },
+  {
+    "file": "src/test/b_4b_item_placement.test.ts",
+    "line": 234,
+    "receiver": "game",
+    "member": "spawnPopulateItem",
+    "call": false
+  },
+  {
+    "file": "src/test/b_4b_item_placement.test.ts",
+    "line": 255,
+    "receiver": "game",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/b_4b_item_placement.test.ts",
+    "line": 272,
+    "receiver": "game",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/b_4b_item_placement.test.ts",
+    "line": 288,
+    "receiver": "game",
+    "member": "machineCells",
+    "call": false
+  },
+  {
+    "file": "src/test/b_4b_item_placement.test.ts",
+    "line": 301,
+    "receiver": "game",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/b_4b_item_placement.test.ts",
+    "line": 324,
+    "receiver": "game",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/b_4b_item_placement.test.ts",
+    "line": 325,
+    "receiver": "game",
+    "member": "goldGenerated",
+    "call": false
+  },
+  {
+    "file": "src/test/b_4b_item_placement.test.ts",
+    "line": 381,
+    "receiver": "game",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/b_4b_item_placement.test.ts",
+    "line": 435,
+    "receiver": "game",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/b_4b_item_placement.test.ts",
+    "line": 443,
+    "receiver": "game",
+    "member": "machineCells",
+    "call": false
+  },
+  {
+    "file": "src/test/b_4b_item_placement.test.ts",
+    "line": 481,
+    "receiver": "game",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/b_4b_item_placement.test.ts",
+    "line": 488,
+    "receiver": "game",
+    "member": "foodSpawned",
+    "call": false
+  },
+  {
+    "file": "src/test/b_4b_item_placement.test.ts",
+    "line": 488,
+    "receiver": "game",
+    "member": "foodSpawned",
+    "call": false
+  },
+  {
+    "file": "src/test/b_4b_item_placement.test.ts",
+    "line": 491,
+    "receiver": "game",
+    "member": "foodSpawned",
+    "call": false
+  },
+  {
+    "file": "src/test/b_4b_item_placement.test.ts",
+    "line": 491,
+    "receiver": "game",
+    "member": "foodSpawned",
+    "call": false
+  },
+  {
+    "file": "src/test/blueprint_center.test.ts",
+    "line": 59,
+    "receiver": "(game as unknown as GameWithPrivates)",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/blueprint_center.test.ts",
+    "line": 64,
+    "receiver": "(game as unknown as GameWithPrivates)",
+    "member": "canMoveTo",
+    "call": true
+  },
+  {
+    "file": "src/test/c_0_add_loops.test.ts",
+    "line": 72,
+    "receiver": "(game as unknown as { generateDepth(isGoingUp: boolean, isFirstLevel: boolean): void })",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/c_1_room_profile.test.ts",
+    "line": 69,
+    "receiver": "(game as unknown as { generateDepth(isGoingUp: boolean, isFirstLevel: boolean): void })",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/c_3_walls_doors.test.ts",
+    "line": 499,
+    "receiver": "(game as unknown as GameWithPrivates)",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/c_3_walls_doors.test.ts",
+    "line": 503,
+    "receiver": "(game as unknown as GameWithPrivates)",
+    "member": "canMoveTo",
+    "call": false
+  },
+  {
+    "file": "src/test/c_4a_0_layer_model.test.ts",
+    "line": 619,
+    "receiver": "g",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/c_4a_0_layer_model.test.ts",
+    "line": 682,
+    "receiver": "g",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/c_4a_0_layer_model.test.ts",
+    "line": 699,
+    "receiver": "(g as unknown as { objectiveTimeBlock(): void })",
+    "member": "objectiveTimeBlock",
+    "call": true
+  },
+  {
+    "file": "src/test/c_4a_0_layer_model.test.ts",
+    "line": 735,
+    "receiver": "g",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/c_4a_terrain_catalog.test.ts",
+    "line": 620,
+    "receiver": "(game as unknown as { canMoveTo(x: number, y: number): boolean })",
+    "member": "canMoveTo",
+    "call": false
+  },
+  {
+    "file": "src/test/c_4a_terrain_catalog.test.ts",
+    "line": 639,
+    "receiver": "(game as unknown as { canMoveTo(x: number, y: number): boolean })",
+    "member": "canMoveTo",
+    "call": false
+  },
+  {
+    "file": "src/test/c_4a_terrain_catalog.test.ts",
+    "line": 669,
+    "receiver": "(game as unknown as { canMoveTo(x: number, y: number): boolean })",
+    "member": "canMoveTo",
+    "call": false
+  },
+  {
+    "file": "src/test/c_4a_terrain_catalog.test.ts",
+    "line": 697,
+    "receiver": "(game as unknown as { canMoveTo(x: number, y: number): boolean })",
+    "member": "canMoveTo",
+    "call": false
+  },
+  {
+    "file": "src/test/c_4a_terrain_catalog.test.ts",
+    "line": 724,
+    "receiver": "(game as unknown as { canMoveTo(x: number, y: number): boolean })",
+    "member": "canMoveTo",
+    "call": false
+  },
+  {
+    "file": "src/test/c_4a_terrain_catalog.test.ts",
+    "line": 752,
+    "receiver": "(game as unknown as { canMoveTo(x: number, y: number): boolean })",
+    "member": "canMoveTo",
+    "call": false
+  },
+  {
+    "file": "src/test/c_4a_terrain_catalog.test.ts",
+    "line": 785,
+    "receiver": "(game as unknown as { canMoveTo(x: number, y: number): boolean })",
+    "member": "canMoveTo",
+    "call": false
+  },
+  {
+    "file": "src/test/c_4a_terrain_catalog.test.ts",
+    "line": 920,
+    "receiver": "g",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/c_4b_dungeon_feature.test.ts",
+    "line": 1240,
+    "receiver": "g",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/c_4c_promotion.test.ts",
+    "line": 510,
+    "receiver": "(game as unknown as { generateDepth(f: boolean, s: boolean): void })",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/c_4c_promotion.test.ts",
+    "line": 565,
+    "receiver": "(g2 as unknown as { generateDepth(f: boolean, s: boolean): void })",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/c_5_fall_subsystem.test.ts",
+    "line": 241,
+    "receiver": "g",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/c_5_fall_subsystem.test.ts",
+    "line": 246,
+    "receiver": "g",
+    "member": "machineCells",
+    "call": false
+  },
+  {
+    "file": "src/test/c_5_fall_subsystem.test.ts",
+    "line": 258,
+    "receiver": "g",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/c_5_fall_subsystem.test.ts",
+    "line": 264,
+    "receiver": "g",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/c_5_fall_subsystem.test.ts",
+    "line": 303,
+    "receiver": "g",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/c_5_fall_subsystem.test.ts",
+    "line": 306,
+    "receiver": "g",
+    "member": "machineCells",
+    "call": false
+  },
+  {
+    "file": "src/test/c_5_fall_subsystem.test.ts",
+    "line": 317,
+    "receiver": "g",
+    "member": "machineCells",
+    "call": false
+  },
+  {
+    "file": "src/test/c_5_fall_subsystem.test.ts",
+    "line": 321,
+    "receiver": "g",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/c_5_fall_subsystem.test.ts",
+    "line": 498,
+    "receiver": "priv(game)",
+    "member": "triggerDeathFeatures",
+    "call": false
+  },
+  {
+    "file": "src/test/c_7_lighting.test.ts",
+    "line": 550,
+    "receiver": "(game as unknown as { updateVision(): void })",
+    "member": "updateVision",
+    "call": true
+  },
+  {
+    "file": "src/test/c_7_lighting.test.ts",
+    "line": 564,
+    "receiver": "(game as unknown as { updateVision(): void })",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/c_7_lighting.test.ts",
+    "line": 605,
+    "receiver": "(game as unknown as { updateVision(): void })",
+    "member": "updateVision",
+    "call": true
+  },
+  {
+    "file": "src/test/c_7_lighting.test.ts",
+    "line": 616,
+    "receiver": "(game as unknown as { updateVision(): void })",
+    "member": "updateVision",
+    "call": true
+  },
+  {
+    "file": "src/test/c_7_lighting.test.ts",
+    "line": 633,
+    "receiver": "g",
+    "member": "calculateStealthRange",
+    "call": true
+  },
+  {
+    "file": "src/test/c_7_lighting.test.ts",
+    "line": 633,
+    "receiver": "g",
+    "member": "playerInDarkness",
+    "call": true
+  },
+  {
+    "file": "src/test/c_7_lighting.test.ts",
+    "line": 654,
+    "receiver": "(game as unknown as { updateVision(): void })",
+    "member": "updateVision",
+    "call": true
+  },
+  {
+    "file": "src/test/c_8_connectivity.test.ts",
+    "line": 102,
+    "receiver": "(game as unknown as GameWithPrivates)",
+    "member": "canMoveTo",
+    "call": false
+  },
+  {
+    "file": "src/test/c_8_connectivity.test.ts",
+    "line": 152,
+    "receiver": "(game as unknown as GameWithPrivates)",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/c_8_connectivity.test.ts",
+    "line": 163,
+    "receiver": "(game as unknown as GameWithPrivates)",
+    "member": "canMoveTo",
+    "call": false
+  },
+  {
+    "file": "src/test/c_8_connectivity.test.ts",
+    "line": 197,
+    "receiver": "(game as unknown as GameWithPrivates)",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/f_1_fire_as_terrain.test.ts",
+    "line": 59,
+    "receiver": "priv(game)",
+    "member": "objectiveTimeBlock",
+    "call": true
+  },
+  {
+    "file": "src/test/f_1_fire_as_terrain.test.ts",
+    "line": 204,
+    "receiver": "priv(game)",
+    "member": "entryQualifiesForPlacement",
+    "call": true
+  },
+  {
+    "file": "src/test/f_1_fire_as_terrain.test.ts",
+    "line": 212,
+    "receiver": "priv(game)",
+    "member": "canMoveTo",
+    "call": true
+  },
+  {
+    "file": "src/test/f_1_fire_as_terrain.test.ts",
+    "line": 223,
+    "receiver": "priv(game)",
+    "member": "canMoveTo",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2a_fire_mechanics.test.ts",
+    "line": 75,
+    "receiver": "priv(game)",
+    "member": "objectiveTimeBlock",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2b_creature_burning.test.ts",
+    "line": 104,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2b_creature_burning.test.ts",
+    "line": 105,
+    "receiver": "priv(game)",
+    "member": "tickCreatureStatuses",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2b_creature_burning.test.ts",
+    "line": 134,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2b_creature_burning.test.ts",
+    "line": 143,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2b_creature_burning.test.ts",
+    "line": 149,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2b_creature_burning.test.ts",
+    "line": 154,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2b_creature_burning.test.ts",
+    "line": 172,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2b_creature_burning.test.ts",
+    "line": 190,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2b_creature_burning.test.ts",
+    "line": 199,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2b_creature_burning.test.ts",
+    "line": 224,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2b_creature_burning.test.ts",
+    "line": 243,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2b_creature_burning.test.ts",
+    "line": 258,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2b_creature_burning.test.ts",
+    "line": 262,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2b_creature_burning.test.ts",
+    "line": 292,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2b_creature_burning.test.ts",
+    "line": 302,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2b_creature_burning.test.ts",
+    "line": 306,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2b_creature_burning.test.ts",
+    "line": 331,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2b_creature_burning.test.ts",
+    "line": 363,
+    "receiver": "priv(game)",
+    "member": "objectiveTimeBlock",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2b_creature_burning.test.ts",
+    "line": 470,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2b_creature_burning.test.ts",
+    "line": 488,
+    "receiver": "priv(game)",
+    "member": "finishTurnEpilogue",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2c_explosion.test.ts",
+    "line": 101,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2c_explosion.test.ts",
+    "line": 114,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2c_explosion.test.ts",
+    "line": 117,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2c_explosion.test.ts",
+    "line": 137,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2c_explosion.test.ts",
+    "line": 141,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2c_explosion.test.ts",
+    "line": 156,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2c_explosion.test.ts",
+    "line": 157,
+    "receiver": "priv(game)",
+    "member": "tickCreatureStatuses",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2c_explosion.test.ts",
+    "line": 162,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2c_explosion.test.ts",
+    "line": 163,
+    "receiver": "priv(game)",
+    "member": "tickCreatureStatuses",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2c_explosion.test.ts",
+    "line": 168,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2c_explosion.test.ts",
+    "line": 233,
+    "receiver": "priv(game)",
+    "member": "triggerDeathFeatures",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2c_explosion.test.ts",
+    "line": 235,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2c_explosion.test.ts",
+    "line": 238,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2c_explosion.test.ts",
+    "line": 239,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2c_explosion.test.ts",
+    "line": 243,
+    "receiver": "priv(game)",
+    "member": "tickCreatureStatuses",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2c_explosion.test.ts",
+    "line": 263,
+    "receiver": "priv(game)",
+    "member": "triggerDeathFeatures",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2c_explosion.test.ts",
+    "line": 303,
+    "receiver": "priv(game)",
+    "member": "objectiveTimeBlock",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2c_explosion.test.ts",
+    "line": 307,
+    "receiver": "priv(game)",
+    "member": "explosionImmunityDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2c_explosion.test.ts",
+    "line": 332,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2c_explosion.test.ts",
+    "line": 353,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2c_explosion.test.ts",
+    "line": 374,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/f_2c_explosion.test.ts",
+    "line": 455,
+    "receiver": "priv(game)",
+    "member": "objectiveTimeBlock",
+    "call": true
+  },
+  {
+    "file": "src/test/g_1_gas_volumetric.test.ts",
+    "line": 154,
+    "receiver": "priv(game)",
+    "member": "objectiveTimeBlock",
+    "call": true
+  },
+  {
+    "file": "src/test/g_1_gas_volumetric.test.ts",
+    "line": 156,
+    "receiver": "priv(game)",
+    "member": "objectiveTimeBlock",
+    "call": true
+  },
+  {
+    "file": "src/test/g_1_gas_volumetric.test.ts",
+    "line": 162,
+    "receiver": "priv(game)",
+    "member": "objectiveTimeBlock",
+    "call": true
+  },
+  {
+    "file": "src/test/g_1_gas_volumetric.test.ts",
+    "line": 167,
+    "receiver": "priv(game)",
+    "member": "objectiveTimeBlock",
+    "call": true
+  },
+  {
+    "file": "src/test/g_2_gas_df_wiring.test.ts",
+    "line": 206,
+    "receiver": "priv(game)",
+    "member": "objectiveTimeBlock",
+    "call": true
+  },
+  {
+    "file": "src/test/g_2_gas_df_wiring.test.ts",
+    "line": 582,
+    "receiver": "priv(game)",
+    "member": "objectiveTimeBlock",
+    "call": true
+  },
+  {
+    "file": "src/test/g_3_gas_effects.test.ts",
+    "line": 91,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/g_3_gas_effects.test.ts",
+    "line": 100,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/g_3_gas_effects.test.ts",
+    "line": 115,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/g_3_gas_effects.test.ts",
+    "line": 129,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/g_3_gas_effects.test.ts",
+    "line": 140,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/g_3_gas_effects.test.ts",
+    "line": 151,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/g_3_gas_effects.test.ts",
+    "line": 162,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/g_3_gas_effects.test.ts",
+    "line": 175,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/g_3_gas_effects.test.ts",
+    "line": 177,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/g_3_gas_effects.test.ts",
+    "line": 186,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/g_3_gas_effects.test.ts",
+    "line": 195,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/g_3_gas_effects.test.ts",
+    "line": 201,
+    "receiver": "priv(game2)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/g_3_gas_effects.test.ts",
+    "line": 250,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/g_3_gas_effects.test.ts",
+    "line": 260,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/g_3_gas_effects.test.ts",
+    "line": 285,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/g_3_gas_effects.test.ts",
+    "line": 296,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/g_3_gas_effects.test.ts",
+    "line": 308,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/g_3_gas_effects.test.ts",
+    "line": 318,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/g_3_gas_effects.test.ts",
+    "line": 343,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/g_3_gas_effects.test.ts",
+    "line": 358,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/g_3_gas_effects.test.ts",
+    "line": 490,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/generation_baseline.test.ts",
+    "line": 38,
+    "receiver": "g",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/horde_selection.test.ts",
+    "line": 225,
+    "receiver": "(game as unknown as Privates)",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/horde_terrain_spawn.test.ts",
+    "line": 52,
+    "receiver": "(game as unknown as GameWithGenerateDepth)",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/horde_terrain_spawn.test.ts",
+    "line": 98,
+    "receiver": "privates(game)",
+    "member": "findTerrainSpawnLocation",
+    "call": true
+  },
+  {
+    "file": "src/test/horde_terrain_spawn.test.ts",
+    "line": 101,
+    "receiver": "privates(game)",
+    "member": "hordeFitsTerrain",
+    "call": true
+  },
+  {
+    "file": "src/test/horde_terrain_spawn.test.ts",
+    "line": 104,
+    "receiver": "privates(game)",
+    "member": "spawnHordeAt",
+    "call": true
+  },
+  {
+    "file": "src/test/horde_terrain_spawn.test.ts",
+    "line": 117,
+    "receiver": "privates(game)",
+    "member": "findTerrainSpawnLocation",
+    "call": true
+  },
+  {
+    "file": "src/test/horde_terrain_spawn.test.ts",
+    "line": 138,
+    "receiver": "privates(game)",
+    "member": "findTerrainSpawnLocation",
+    "call": true
+  },
+  {
+    "file": "src/test/horde_terrain_spawn.test.ts",
+    "line": 140,
+    "receiver": "privates(game)",
+    "member": "findTerrainSpawnLocation",
+    "call": true
+  },
+  {
+    "file": "src/test/horde_terrain_spawn.test.ts",
+    "line": 142,
+    "receiver": "privates(game)",
+    "member": "findTerrainSpawnLocation",
+    "call": true
+  },
+  {
+    "file": "src/test/horde_terrain_spawn.test.ts",
+    "line": 167,
+    "receiver": "privates(game)",
+    "member": "passableArcCount",
+    "call": true
+  },
+  {
+    "file": "src/test/horde_terrain_spawn.test.ts",
+    "line": 211,
+    "receiver": "privates(game)",
+    "member": "hordeFitsTerrain",
+    "call": true
+  },
+  {
+    "file": "src/test/horde_terrain_spawn.test.ts",
+    "line": 212,
+    "receiver": "privates(game)",
+    "member": "hordeFitsTerrain",
+    "call": true
+  },
+  {
+    "file": "src/test/horde_terrain_spawn.test.ts",
+    "line": 214,
+    "receiver": "privates(game)",
+    "member": "hordeFitsTerrain",
+    "call": true
+  },
+  {
+    "file": "src/test/horde_terrain_spawn.test.ts",
+    "line": 215,
+    "receiver": "privates(game)",
+    "member": "hordeFitsTerrain",
+    "call": true
+  },
+  {
+    "file": "src/test/horde_terrain_spawn.test.ts",
+    "line": 314,
+    "receiver": "privates(game)",
+    "member": "populateLevel",
+    "call": true
+  },
+  {
+    "file": "src/test/horde_terrain_spawn.test.ts",
+    "line": 345,
+    "receiver": "(game as unknown as GenPrivates)",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/hunger_curve_sim.test.ts",
+    "line": 48,
+    "receiver": "privates",
+    "member": "canMoveTo",
+    "call": true
+  },
+  {
+    "file": "src/test/i_1_interaction.test.ts",
+    "line": 159,
+    "receiver": "priv(game)",
+    "member": "updateVision",
+    "call": true
+  },
+  {
+    "file": "src/test/i_1_interaction.test.ts",
+    "line": 163,
+    "receiver": "priv(game)",
+    "member": "setBurningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/i_1_interaction.test.ts",
+    "line": 164,
+    "receiver": "priv(game)",
+    "member": "updateVision",
+    "call": true
+  },
+  {
+    "file": "src/test/i_1_interaction.test.ts",
+    "line": 185,
+    "receiver": "priv(game)",
+    "member": "updateVision",
+    "call": true
+  },
+  {
+    "file": "src/test/i_1_interaction.test.ts",
+    "line": 188,
+    "receiver": "priv(game)",
+    "member": "setBurningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/i_1_interaction.test.ts",
+    "line": 189,
+    "receiver": "priv(game)",
+    "member": "updateVision",
+    "call": true
+  },
+  {
+    "file": "src/test/i_1_interaction.test.ts",
+    "line": 195,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/i_1_interaction.test.ts",
+    "line": 204,
+    "receiver": "priv(game)",
+    "member": "updateVision",
+    "call": true
+  },
+  {
+    "file": "src/test/i_1_interaction.test.ts",
+    "line": 207,
+    "receiver": "priv(game)",
+    "member": "setBurningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/i_1_interaction.test.ts",
+    "line": 208,
+    "receiver": "priv(game)",
+    "member": "updateVision",
+    "call": true
+  },
+  {
+    "file": "src/test/invented_content_pool.test.ts",
+    "line": 200,
+    "receiver": "g",
+    "member": "enchantEquippedItem",
+    "call": true
+  },
+  {
+    "file": "src/test/invented_content_pool.test.ts",
+    "line": 217,
+    "receiver": "g",
+    "member": "enchantEquippedItem",
+    "call": true
+  },
+  {
+    "file": "src/test/invented_content_pool.test.ts",
+    "line": 323,
+    "receiver": "g",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/monster_damage_balance.test.ts",
+    "line": 93,
+    "receiver": "privates",
+    "member": "canMoveTo",
+    "call": true
+  },
+  {
+    "file": "src/test/monster_damage_balance.test.ts",
+    "line": 103,
+    "receiver": "privates",
+    "member": "canMoveTo",
+    "call": true
+  },
+  {
+    "file": "src/test/monster_stats_effect.test.ts",
+    "line": 164,
+    "receiver": "privates",
+    "member": "canMoveTo",
+    "call": true
+  },
+  {
+    "file": "src/test/monster_stats_effect.test.ts",
+    "line": 280,
+    "receiver": "priv",
+    "member": "canMoveTo",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_20_item_placement.test.ts",
+    "line": 42,
+    "receiver": "(game as unknown as GameWithPrivates)",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_20_item_placement.test.ts",
+    "line": 46,
+    "receiver": "(game as unknown as GameWithPrivates)",
+    "member": "canMoveTo",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_24_death_sink.test.ts",
+    "line": 116,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_24_death_sink.test.ts",
+    "line": 132,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_24_death_sink.test.ts",
+    "line": 133,
+    "receiver": "priv(game)",
+    "member": "playerTurnEnded",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_24_death_sink.test.ts",
+    "line": 151,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_24_death_sink.test.ts",
+    "line": 177,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_24_death_sink.test.ts",
+    "line": 178,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_24_death_sink.test.ts",
+    "line": 199,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_24_death_sink.test.ts",
+    "line": 200,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_24_death_sink.test.ts",
+    "line": 234,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_24_death_sink.test.ts",
+    "line": 235,
+    "receiver": "priv(game)",
+    "member": "tickCreatureStatuses",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_24_death_sink.test.ts",
+    "line": 236,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_24_death_sink.test.ts",
+    "line": 237,
+    "receiver": "priv(game)",
+    "member": "tickCreatureStatuses",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_24_death_sink.test.ts",
+    "line": 257,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_24_death_sink.test.ts",
+    "line": 338,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_24_death_sink.test.ts",
+    "line": 340,
+    "receiver": "priv(game)",
+    "member": "triggerDeathFeatures",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_24_death_sink.test.ts",
+    "line": 361,
+    "receiver": "priv(game2)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_24_death_sink.test.ts",
+    "line": 363,
+    "receiver": "priv(game2)",
+    "member": "triggerDeathFeatures",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_24_death_sink.test.ts",
+    "line": 477,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_24_death_sink.test.ts",
+    "line": 478,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_24_death_sink.test.ts",
+    "line": 493,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_26_invariants.test.ts",
+    "line": 71,
+    "receiver": "(game as unknown as { canMoveTo(x: number, y: number): boolean })",
+    "member": "canMoveTo",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_26_invariants.test.ts",
+    "line": 169,
+    "receiver": "(game as unknown as { generateDepth(isGoingUp: boolean, isFirstLevel: boolean): void })",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_26_invariants.test.ts",
+    "line": 221,
+    "receiver": "s",
+    "member": "machineCells",
+    "call": false
+  },
+  {
+    "file": "src/test/p1_26_invariants.test.ts",
+    "line": 226,
+    "receiver": "s",
+    "member": "machineCells",
+    "call": false
+  },
+  {
+    "file": "src/test/p1_26_invariants.test.ts",
+    "line": 227,
+    "receiver": "s",
+    "member": "machineCells",
+    "call": false
+  },
+  {
+    "file": "src/test/p1_26_invariants.test.ts",
+    "line": 228,
+    "receiver": "s",
+    "member": "machineCells",
+    "call": false
+  },
+  {
+    "file": "src/test/p1_27_remove_drowning.test.ts",
+    "line": 87,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_27_remove_drowning.test.ts",
+    "line": 130,
+    "receiver": "priv(game)",
+    "member": "playerTurnEnded",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_28_flag_channel.test.ts",
+    "line": 91,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_28_flag_channel.test.ts",
+    "line": 92,
+    "receiver": "priv(game)",
+    "member": "tickCreatureStatuses",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_28_flag_channel.test.ts",
+    "line": 272,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_28_flag_channel.test.ts",
+    "line": 278,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_28_flag_channel.test.ts",
+    "line": 318,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_28_flag_channel.test.ts",
+    "line": 337,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_28_flag_channel.test.ts",
+    "line": 408,
+    "receiver": "priv(reloaded)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_29_lake_connectivity.test.ts",
+    "line": 152,
+    "receiver": "(game as unknown as { generateDepth(isGoingUp: boolean, isFirstLevel: boolean): void })",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_29_lake_connectivity.test.ts",
+    "line": 168,
+    "receiver": "(game as unknown as { canMoveTo(x: number, y: number): boolean })",
+    "member": "canMoveTo",
+    "call": false
+  },
+  {
+    "file": "src/test/p1_29_lake_connectivity.test.ts",
+    "line": 322,
+    "receiver": "(game as unknown as { canMoveTo(x: number, y: number): boolean })",
+    "member": "canMoveTo",
+    "call": false
+  },
+  {
+    "file": "src/test/p1_31_35_placement_snapshot.test.ts",
+    "line": 134,
+    "receiver": "privates(game)",
+    "member": "machineCells",
+    "call": false
+  },
+  {
+    "file": "src/test/p1_31_35_placement_snapshot.test.ts",
+    "line": 143,
+    "receiver": "privates(game)",
+    "member": "placePlayerOnLevelEntry",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_31_35_placement_snapshot.test.ts",
+    "line": 151,
+    "receiver": "privates(game)",
+    "member": "machineCells",
+    "call": false
+  },
+  {
+    "file": "src/test/p1_31_35_placement_snapshot.test.ts",
+    "line": 168,
+    "receiver": "privates(game)",
+    "member": "placePlayerOnLevelEntry",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_33_machine_chokepoint.test.ts",
+    "line": 157,
+    "receiver": "(game as unknown as GameWithPrivates)",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_33_machine_chokepoint.test.ts",
+    "line": 162,
+    "receiver": "(game as unknown as GameWithPrivates)",
+    "member": "canMoveTo",
+    "call": false
+  },
+  {
+    "file": "src/test/p1_37_machine_flag_i18n.test.ts",
+    "line": 94,
+    "receiver": "(game as unknown as GameWithPrivates)",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_37_machine_flag_i18n.test.ts",
+    "line": 192,
+    "receiver": "(game as unknown as GameWithPrivates)",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_37_machine_flag_i18n.test.ts",
+    "line": 228,
+    "receiver": "(game as unknown as GameWithPrivates)",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_37_machine_flag_i18n.test.ts",
+    "line": 301,
+    "receiver": "(reloaded as unknown as { machineCells: Set<number> })",
+    "member": "machineCells",
+    "call": false
+  },
+  {
+    "file": "src/test/p1_37_machine_flag_i18n.test.ts",
+    "line": 312,
+    "receiver": "(reloaded as unknown as { machineCells: Set<number> })",
+    "member": "machineCells",
+    "call": false
+  },
+  {
+    "file": "src/test/p1_37_machine_flag_i18n.test.ts",
+    "line": 463,
+    "receiver": "(game as unknown as { removeCurseFromInventory(): boolean })",
+    "member": "removeCurseFromInventory",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_37_machine_flag_i18n.test.ts",
+    "line": 477,
+    "receiver": "(game as unknown as { tickArcanaResources(): void })",
+    "member": "tickArcanaResources",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_37_machine_flag_i18n.test.ts",
+    "line": 488,
+    "receiver": "(game as unknown as { rechargeStaffsAndCharms(): boolean })",
+    "member": "rechargeStaffsAndCharms",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_37_machine_flag_i18n.test.ts",
+    "line": 506,
+    "receiver": "(game as unknown as { resolvePlayerMeleeAttackOn(m: Monster, lunge?: boolean): boolean })",
+    "member": "resolvePlayerMeleeAttackOn",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_37_machine_flag_i18n.test.ts",
+    "line": 516,
+    "receiver": "(game as unknown as { resolvePlayerMeleeAttackOn(m: Monster, lunge?: boolean): boolean })",
+    "member": "resolvePlayerMeleeAttackOn",
+    "call": true
+  },
+  {
+    "file": "src/test/p1_37_machine_flag_i18n.test.ts",
+    "line": 538,
+    "receiver": "(game as unknown as { enchantEquippedItem(): boolean })",
+    "member": "enchantEquippedItem",
+    "call": true
+  },
+  {
+    "file": "src/test/p2_0_seeded_rng.test.ts",
+    "line": 80,
+    "receiver": "privates",
+    "member": "canMoveTo",
+    "call": true
+  },
+  {
+    "file": "src/test/p2_1_tick_architecture.test.ts",
+    "line": 82,
+    "receiver": "(game as unknown as { generateDepth(isGoingUp: boolean, isFirstLevel: boolean): void })",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/p2_2_real_speed.test.ts",
+    "line": 117,
+    "receiver": "privates",
+    "member": "canMoveTo",
+    "call": true
+  },
+  {
+    "file": "src/test/p2_2_real_speed.test.ts",
+    "line": 470,
+    "receiver": "(game as unknown as { generateDepth(isGoingUp: boolean, isFirstLevel: boolean): void })",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/p2_3_objective_time.test.ts",
+    "line": 367,
+    "receiver": "(game as unknown as { generateDepth(isGoingUp: boolean, isFirstLevel: boolean): void })",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/p4_4_split_kamikaze.test.ts",
+    "line": 76,
+    "receiver": "priv(game)",
+    "member": "trySplitMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/p4_4_split_kamikaze.test.ts",
+    "line": 116,
+    "receiver": "priv(game)",
+    "member": "trySplitMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/p4_4_split_kamikaze.test.ts",
+    "line": 162,
+    "receiver": "priv(game)",
+    "member": "trySplitMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/p4_4_split_kamikaze.test.ts",
+    "line": 182,
+    "receiver": "priv(game)",
+    "member": "trySplitMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/p4_4_split_kamikaze.test.ts",
+    "line": 200,
+    "receiver": "priv(game)",
+    "member": "trySplitMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/p4_4_split_kamikaze.test.ts",
+    "line": 222,
+    "receiver": "priv(game)",
+    "member": "trySplitMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/p4_4_split_kamikaze.test.ts",
+    "line": 329,
+    "receiver": "priv(game)",
+    "member": "triggerDeathFeatures",
+    "call": true
+  },
+  {
+    "file": "src/test/p4_4_split_kamikaze.test.ts",
+    "line": 364,
+    "receiver": "priv(game)",
+    "member": "triggerDeathFeatures",
+    "call": true
+  },
+  {
+    "file": "src/test/p4_4_split_kamikaze.test.ts",
+    "line": 397,
+    "receiver": "priv(game)",
+    "member": "triggerDeathFeatures",
+    "call": true
+  },
+  {
+    "file": "src/test/p4_4_split_kamikaze.test.ts",
+    "line": 432,
+    "receiver": "priv(game)",
+    "member": "triggerDeathFeatures",
+    "call": true
+  },
+  {
+    "file": "src/test/p4_4_split_kamikaze.test.ts",
+    "line": 435,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/p4_4_split_kamikaze.test.ts",
+    "line": 441,
+    "receiver": "priv(game)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/p4_4_split_kamikaze.test.ts",
+    "line": 443,
+    "receiver": "priv(game)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/p4_4_split_kamikaze.test.ts",
+    "line": 449,
+    "receiver": "priv(game)",
+    "member": "tickCreatureStatuses",
+    "call": true
+  },
+  {
+    "file": "src/test/p4_4_split_kamikaze.test.ts",
+    "line": 466,
+    "receiver": "priv(game)",
+    "member": "triggerDeathFeatures",
+    "call": true
+  },
+  {
+    "file": "src/test/p4_4_split_kamikaze.test.ts",
+    "line": 469,
+    "receiver": "priv(game)",
+    "member": "triggerDeathFeatures",
+    "call": true
+  },
+  {
+    "file": "src/test/p4_4_split_kamikaze.test.ts",
+    "line": 482,
+    "receiver": "priv(game)",
+    "member": "triggerDeathFeatures",
+    "call": true
+  },
+  {
+    "file": "src/test/p4_4_split_kamikaze.test.ts",
+    "line": 496,
+    "receiver": "priv(game)",
+    "member": "triggerDeathFeatures",
+    "call": true
+  },
+  {
+    "file": "src/test/p4_4_split_kamikaze.test.ts",
+    "line": 509,
+    "receiver": "priv(game)",
+    "member": "triggerDeathFeatures",
+    "call": true
+  },
+  {
+    "file": "src/test/scroll_effects.test.ts",
+    "line": 493,
+    "receiver": "(game as unknown as { updateVision(): void })",
+    "member": "updateVision",
+    "call": true
+  },
+  {
+    "file": "src/test/smoke.test.ts",
+    "line": 45,
+    "receiver": "(game as unknown as GameWithPrivates)",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/t_1_tail.test.ts",
+    "line": 73,
+    "receiver": "(game as unknown as BlueprintSpawn)",
+    "member": "spawnBlueprintItem",
+    "call": false
+  },
+  {
+    "file": "src/test/t_1_tail.test.ts",
+    "line": 113,
+    "receiver": "(game as unknown as BlueprintSpawn)",
+    "member": "spawnBlueprintItem",
+    "call": false
+  },
+  {
+    "file": "src/test/t_1_tail.test.ts",
+    "line": 150,
+    "receiver": "proto",
+    "member": "spawnBlueprintItem",
+    "call": false
+  },
+  {
+    "file": "src/test/t_1_tail.test.ts",
+    "line": 152,
+    "receiver": "proto",
+    "member": "spawnBlueprintItem",
+    "call": false
+  },
+  {
+    "file": "src/test/t_1_tail.test.ts",
+    "line": 158,
+    "receiver": "g",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/t_1_tail.test.ts",
+    "line": 161,
+    "receiver": "proto",
+    "member": "spawnBlueprintItem",
+    "call": false
+  },
+  {
+    "file": "src/test/ui_2_protection.test.ts",
+    "line": 127,
+    "receiver": "priv(game)",
+    "member": "resolvePlayerMeleeAttackOn",
+    "call": true
+  },
+  {
+    "file": "src/test/ui_2_protection.test.ts",
+    "line": 143,
+    "receiver": "priv(game)",
+    "member": "resolvePlayerMeleeAttackOn",
+    "call": true
+  },
+  {
+    "file": "src/test/ui_2_protection.test.ts",
+    "line": 158,
+    "receiver": "priv(gameA)",
+    "member": "resolvePlayerMeleeAttackOn",
+    "call": true
+  },
+  {
+    "file": "src/test/ui_2_protection.test.ts",
+    "line": 167,
+    "receiver": "priv(gameB)",
+    "member": "resolvePlayerMeleeAttackOn",
+    "call": true
+  },
+  {
+    "file": "src/test/ui_2_protection.test.ts",
+    "line": 184,
+    "receiver": "priv(game)",
+    "member": "resolvePlayerMeleeAttackOn",
+    "call": true
+  },
+  {
+    "file": "src/test/ui_2_protection.test.ts",
+    "line": 201,
+    "receiver": "priv(game)",
+    "member": "resolvePlayerMeleeAttackOn",
+    "call": true
+  },
+  {
+    "file": "src/test/ui_2_protection.test.ts",
+    "line": 211,
+    "receiver": "priv(game2)",
+    "member": "resolvePlayerMeleeAttackOn",
+    "call": true
+  },
+  {
+    "file": "src/test/ui_2_protection.test.ts",
+    "line": 225,
+    "receiver": "priv(game)",
+    "member": "resolvePlayerMeleeAttackOn",
+    "call": true
+  },
+  {
+    "file": "src/test/v_1a_blueprint_items.test.ts",
+    "line": 79,
+    "receiver": "proto",
+    "member": "spawnBlueprintItem",
+    "call": false
+  },
+  {
+    "file": "src/test/v_1a_blueprint_items.test.ts",
+    "line": 82,
+    "receiver": "proto",
+    "member": "spawnBlueprintItem",
+    "call": false
+  },
+  {
+    "file": "src/test/v_1a_blueprint_items.test.ts",
+    "line": 93,
+    "receiver": "g",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/v_1a_blueprint_items.test.ts",
+    "line": 96,
+    "receiver": "proto",
+    "member": "spawnBlueprintItem",
+    "call": false
+  },
+  {
+    "file": "src/test/v_1a_blueprint_items.test.ts",
+    "line": 230,
+    "receiver": "(Game.prototype as unknown as {\n            spawnBlueprintItem: (this: Game, c: string, id: undefined, x: number, y: number, d: number) => Item | null;\n        })",
+    "member": "spawnBlueprintItem",
+    "call": false
+  },
+  {
+    "file": "src/test/v_1a_blueprint_items.test.ts",
+    "line": 266,
+    "receiver": "(Game.prototype as unknown as {\n            spawnBlueprintItem: (this: Game, c: string, id: undefined, x: number, y: number, d: number) => Item | null;\n        })",
+    "member": "spawnBlueprintItem",
+    "call": false
+  },
+  {
+    "file": "src/test/v_1a_blueprint_items.test.ts",
+    "line": 274,
+    "receiver": "(Game.prototype as unknown as {\n            spawnBlueprintItem: (this: Game, c: string, id: undefined, x: number, y: number, d: number) => Item | null;\n        })",
+    "member": "spawnBlueprintItem",
+    "call": false
+  },
+  {
+    "file": "src/test/v_1c_machine_structure.test.ts",
+    "line": 257,
+    "receiver": "(game as unknown as GameWithPrivates)",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/v_1c_machine_structure.test.ts",
+    "line": 306,
+    "receiver": "(game as unknown as GameWithPrivates)",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/v_1c_machine_structure.test.ts",
+    "line": 322,
+    "receiver": "(reloaded as unknown as GameWithPrivates)",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2a_vestibule_return.test.ts",
+    "line": 62,
+    "receiver": "(game as unknown as GameWithPrivates)",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_2b_blueprints.test.ts",
+    "line": 698,
+    "receiver": "(game as unknown as { generateDepth(isGoingUp: boolean, isFirstLevel: boolean): void })",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_4_altars.test.ts",
+    "line": 643,
+    "receiver": "(game as unknown as {\n            spawnBlueprintItem: (c: string, id: string | undefined, x: number, y: number, d: number) => unknown;\n        })",
+    "member": "spawnBlueprintItem",
+    "call": false
+  },
+  {
+    "file": "src/test/v_2b_4_altars.test.ts",
+    "line": 704,
+    "receiver": "g",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_4_altars.test.ts",
+    "line": 747,
+    "receiver": "priv",
+    "member": "spawnBlueprintItem",
+    "call": false
+  },
+  {
+    "file": "src/test/v_2b_5_dormant.test.ts",
+    "line": 84,
+    "receiver": "(game as unknown as {\n        awakenDormantMonstersAt(o: { x: number; y: number }, b: readonly { x: number; y: number }[]): void;\n    })",
+    "member": "awakenDormantMonstersAt",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_5_dormant.test.ts",
+    "line": 540,
+    "receiver": "g",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_6_keys.test.ts",
+    "line": 180,
+    "receiver": "game",
+    "member": "keyMatchesLocation",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_6_keys.test.ts",
+    "line": 181,
+    "receiver": "game",
+    "member": "keyMatchesLocation",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_6_keys.test.ts",
+    "line": 183,
+    "receiver": "game",
+    "member": "keyMatchesLocation",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_6_keys.test.ts",
+    "line": 192,
+    "receiver": "game",
+    "member": "keyMatchesLocation",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_6_keys.test.ts",
+    "line": 195,
+    "receiver": "game",
+    "member": "keyMatchesLocation",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_6_keys.test.ts",
+    "line": 203,
+    "receiver": "game",
+    "member": "keyMatchesLocation",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_6_keys.test.ts",
+    "line": 218,
+    "receiver": "game",
+    "member": "keyMatchesLocation",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_6_keys.test.ts",
+    "line": 219,
+    "receiver": "game",
+    "member": "keyMatchesLocation",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_6_keys.test.ts",
+    "line": 221,
+    "receiver": "game",
+    "member": "keyMatchesLocation",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_6_keys.test.ts",
+    "line": 235,
+    "receiver": "game",
+    "member": "keyInPackFor",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_6_keys.test.ts",
+    "line": 236,
+    "receiver": "game",
+    "member": "keyInPackFor",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_6_keys.test.ts",
+    "line": 237,
+    "receiver": "game",
+    "member": "keyInPackFor",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_6_keys.test.ts",
+    "line": 253,
+    "receiver": "game",
+    "member": "playerTurnEnded",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_6_keys.test.ts",
+    "line": 259,
+    "receiver": "game",
+    "member": "playerTurnEnded",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_6_keys.test.ts",
+    "line": 280,
+    "receiver": "game",
+    "member": "playerTurnEnded",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_6_keys.test.ts",
+    "line": 322,
+    "receiver": "game",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_6_keys.test.ts",
+    "line": 385,
+    "receiver": "game",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_6_keys.test.ts",
+    "line": 430,
+    "receiver": "game",
+    "member": "keyMatchesLocation",
+    "call": false
+  },
+  {
+    "file": "src/test/v_2b_6_keys.test.ts",
+    "line": 471,
+    "receiver": "game",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_6_keys.test.ts",
+    "line": 533,
+    "receiver": "game",
+    "member": "keyMatchingEntry",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_7_features.test.ts",
+    "line": 540,
+    "receiver": "game",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_7_features.test.ts",
+    "line": 598,
+    "receiver": "game",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_7_features.test.ts",
+    "line": 689,
+    "receiver": "(game as { finalizeBlueprintMonster(m: unknown, s: unknown, n: number): void })",
+    "member": "finalizeBlueprintMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_7_features.test.ts",
+    "line": 758,
+    "receiver": "game",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_7_features.test.ts",
+    "line": 827,
+    "receiver": "game",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_7_features.test.ts",
+    "line": 912,
+    "receiver": "game",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_9c_effects.test.ts",
+    "line": 47,
+    "receiver": "inside(g)",
+    "member": "computeBoltResult",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_9c_effects.test.ts",
+    "line": 48,
+    "receiver": "inside(g)",
+    "member": "applyBoltResult",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_9c_effects.test.ts",
+    "line": 76,
+    "receiver": "inside(g)",
+    "member": "populateLevel",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_9c_effects.test.ts",
+    "line": 89,
+    "receiver": "inside(g)",
+    "member": "canMoveTo",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_9c_effects.test.ts",
+    "line": 277,
+    "receiver": "inside(g)",
+    "member": "canMoveTo",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_9c_effects.test.ts",
+    "line": 289,
+    "receiver": "inside(g)",
+    "member": "updateVision",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_9c_effects.test.ts",
+    "line": 292,
+    "receiver": "inside(g)",
+    "member": "updateVision",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_9c_effects.test.ts",
+    "line": 295,
+    "receiver": "inside(g)",
+    "member": "canMoveTo",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_9d_dungeon_profile.test.ts",
+    "line": 223,
+    "receiver": "(g as unknown as {populateLevel(d:number,up:boolean,first:boolean,m:MachineResult[]):void})",
+    "member": "populateLevel",
+    "call": true
+  },
+  {
+    "file": "src/test/v_2b_9e_2_autogen.test.ts",
+    "line": 158,
+    "receiver": "gp",
+    "member": "populateLevel",
+    "call": false
+  },
+  {
+    "file": "src/test/v_2b_9e_2_autogen.test.ts",
+    "line": 170,
+    "receiver": "(game as unknown as GameInternals)",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/w_10_poison.test.ts",
+    "line": 28,
+    "receiver": "(g as any)",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/w_10_poison.test.ts",
+    "line": 44,
+    "receiver": "(g as any)",
+    "member": "tickCreatureStatuses",
+    "call": true
+  },
+  {
+    "file": "src/test/w_10_poison.test.ts",
+    "line": 121,
+    "receiver": "(g as any)",
+    "member": "negateCreatureMagic",
+    "call": true
+  },
+  {
+    "file": "src/test/w_10_poison.test.ts",
+    "line": 197,
+    "receiver": "(g as any)",
+    "member": "resolvePoisonDamage",
+    "call": true
+  },
+  {
+    "file": "src/test/w_10_poison.test.ts",
+    "line": 198,
+    "receiver": "(g as any)",
+    "member": "resolveBurningDamage",
+    "call": true
+  },
+  {
+    "file": "src/test/w_10_poison.test.ts",
+    "line": 198,
+    "receiver": "(g as any)",
+    "member": "resolvePoisonDamage",
+    "call": true
+  },
+  {
+    "file": "src/test/w_10_poison.test.ts",
+    "line": 217,
+    "receiver": "(g as any)",
+    "member": "applyWeaponRunicEffect",
+    "call": true
+  },
+  {
+    "file": "src/test/w_10_poison.test.ts",
+    "line": 234,
+    "receiver": "(g as any)",
+    "member": "triggerDeathFeatures",
+    "call": true
+  },
+  {
+    "file": "src/test/w_10_poison.test.ts",
+    "line": 238,
+    "receiver": "(g as any)",
+    "member": "trySplitMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_10_poison.test.ts",
+    "line": 244,
+    "receiver": "(g as any)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 32,
+    "receiver": "(g as any)",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 33,
+    "receiver": "(g as any)",
+    "member": "machineCells",
+    "call": false
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 34,
+    "receiver": "(g as any)",
+    "member": "playerFalling",
+    "call": false
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 47,
+    "receiver": "(g as any)",
+    "member": "machineCells",
+    "call": false
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 69,
+    "receiver": "(g as any)",
+    "member": "machineCells",
+    "call": false
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 115,
+    "receiver": "(g as any)",
+    "member": "teleportCreature",
+    "call": true
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 117,
+    "receiver": "(g as any)",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 124,
+    "receiver": "(g as any)",
+    "member": "teleportCreature",
+    "call": true
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 127,
+    "receiver": "(g as any)",
+    "member": "teleportCreature",
+    "call": true
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 138,
+    "receiver": "(g as any)",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 177,
+    "receiver": "(g as any)",
+    "member": "playerTurnEnded",
+    "call": false
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 177,
+    "receiver": "(g as any)",
+    "member": "recordInputEvent",
+    "call": false
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 182,
+    "receiver": "(g as any)",
+    "member": "playerTurnEnded",
+    "call": false
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 194,
+    "receiver": "(g as any)",
+    "member": "findLiveSeizer",
+    "call": true
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 196,
+    "receiver": "(g as any)",
+    "member": "findLiveSeizer",
+    "call": true
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 204,
+    "receiver": "(g as any)",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 211,
+    "receiver": "(g as any)",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 217,
+    "receiver": "(g as any)",
+    "member": "playerFalling",
+    "call": false
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 228,
+    "receiver": "(g as any)",
+    "member": "setBurningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 229,
+    "receiver": "(g as any)",
+    "member": "burningDuration",
+    "call": true
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 273,
+    "receiver": "(g as any)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 309,
+    "receiver": "(g as any)",
+    "member": "monstersFall",
+    "call": true
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 312,
+    "receiver": "(g as any)",
+    "member": "monstersFall",
+    "call": true
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 334,
+    "receiver": "(g as any)",
+    "member": "playerTurnEnded",
+    "call": true
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "line": 335,
+    "receiver": "(g as any)",
+    "member": "playerFalling",
+    "call": false
+  },
+  {
+    "file": "src/test/w_12_blink_beckoning.test.ts",
+    "line": 32,
+    "receiver": "(g as any)",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/w_12_blink_beckoning.test.ts",
+    "line": 33,
+    "receiver": "(g as any)",
+    "member": "machineCells",
+    "call": false
+  },
+  {
+    "file": "src/test/w_12_blink_beckoning.test.ts",
+    "line": 33,
+    "receiver": "(g as any)",
+    "member": "playerFalling",
+    "call": false
+  },
+  {
+    "file": "src/test/w_12_blink_beckoning.test.ts",
+    "line": 100,
+    "receiver": "(g as any)",
+    "member": "boltWorld",
+    "call": true
+  },
+  {
+    "file": "src/test/w_12_blink_beckoning.test.ts",
+    "line": 140,
+    "receiver": "(g as any)",
+    "member": "boltWorld",
+    "call": true
+  },
+  {
+    "file": "src/test/w_12_blink_beckoning.test.ts",
+    "line": 150,
+    "receiver": "(g as any)",
+    "member": "beckonCreature",
+    "call": true
+  },
+  {
+    "file": "src/test/w_12_blink_beckoning.test.ts",
+    "line": 156,
+    "receiver": "(g as any)",
+    "member": "beckonCreature",
+    "call": true
+  },
+  {
+    "file": "src/test/w_12_blink_beckoning.test.ts",
+    "line": 162,
+    "receiver": "(g as any)",
+    "member": "beckonCreature",
+    "call": true
+  },
+  {
+    "file": "src/test/w_12_blink_beckoning.test.ts",
+    "line": 191,
+    "receiver": "(g as any)",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/w_12_blink_beckoning.test.ts",
+    "line": 231,
+    "receiver": "(g as any)",
+    "member": "playerFalling",
+    "call": false
+  },
+  {
+    "file": "src/test/w_12_blink_beckoning.test.ts",
+    "line": 283,
+    "receiver": "(g as any)",
+    "member": "playerFalling",
+    "call": false
+  },
+  {
+    "file": "src/test/w_12_blink_beckoning.test.ts",
+    "line": 284,
+    "receiver": "(g as any)",
+    "member": "playerTurnEnded",
+    "call": true
+  },
+  {
+    "file": "src/test/w_12_blink_beckoning.test.ts",
+    "line": 284,
+    "receiver": "(g as any)",
+    "member": "playerFalling",
+    "call": false
+  },
+  {
+    "file": "src/test/w_13_tunneling.test.ts",
+    "line": 40,
+    "receiver": "(g as any)",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/w_13_tunneling.test.ts",
+    "line": 101,
+    "receiver": "(g as any)",
+    "member": "boltWorld",
+    "call": true
+  },
+  {
+    "file": "src/test/w_13_tunneling.test.ts",
+    "line": 112,
+    "receiver": "(g as any)",
+    "member": "boltWorld",
+    "call": true
+  },
+  {
+    "file": "src/test/w_13_tunneling.test.ts",
+    "line": 214,
+    "receiver": "(g as any)",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/w_14_obstruction.test.ts",
+    "line": 39,
+    "receiver": "(g as any)",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/w_14_obstruction.test.ts",
+    "line": 128,
+    "receiver": "(g as any)",
+    "member": "computeBoltResult",
+    "call": true
+  },
+  {
+    "file": "src/test/w_14_obstruction.test.ts",
+    "line": 172,
+    "receiver": "(g as any)",
+    "member": "needsRender",
+    "call": false
+  },
+  {
+    "file": "src/test/w_14_obstruction.test.ts",
+    "line": 208,
+    "receiver": "(g as any)",
+    "member": "objectiveTimeBlock",
+    "call": true
+  },
+  {
+    "file": "src/test/w_15_shielding.test.ts",
+    "line": 30,
+    "receiver": "(g as any)",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/w_15_shielding.test.ts",
+    "line": 148,
+    "receiver": "(g as any)",
+    "member": "resolvePoisonDamage",
+    "call": true
+  },
+  {
+    "file": "src/test/w_15_shielding.test.ts",
+    "line": 166,
+    "receiver": "(g as any)",
+    "member": "resolveExplosionDamage",
+    "call": true
+  },
+  {
+    "file": "src/test/w_15_shielding.test.ts",
+    "line": 167,
+    "receiver": "(g as any)",
+    "member": "resolveExplosionDamage",
+    "call": true
+  },
+  {
+    "file": "src/test/w_15_shielding.test.ts",
+    "line": 171,
+    "receiver": "(g as any)",
+    "member": "resolveExplosionDamage",
+    "call": true
+  },
+  {
+    "file": "src/test/w_15_shielding.test.ts",
+    "line": 177,
+    "receiver": "(g as any)",
+    "member": "resolveBurningDamage",
+    "call": true
+  },
+  {
+    "file": "src/test/w_15_shielding.test.ts",
+    "line": 178,
+    "receiver": "(g as any)",
+    "member": "resolvePoisonDamage",
+    "call": true
+  },
+  {
+    "file": "src/test/w_15_shielding.test.ts",
+    "line": 181,
+    "receiver": "(g as any)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/w_15_shielding.test.ts",
+    "line": 191,
+    "receiver": "(g as any)",
+    "member": "resolvePoisonDamage",
+    "call": true
+  },
+  {
+    "file": "src/test/w_15_shielding.test.ts",
+    "line": 192,
+    "receiver": "(g as any)",
+    "member": "resolveBurningDamage",
+    "call": true
+  },
+  {
+    "file": "src/test/w_15_shielding.test.ts",
+    "line": 192,
+    "receiver": "(g as any)",
+    "member": "resolvePoisonDamage",
+    "call": true
+  },
+  {
+    "file": "src/test/w_15_shielding.test.ts",
+    "line": 197,
+    "receiver": "(g as any)",
+    "member": "applyWeaponRunicEffect",
+    "call": true
+  },
+  {
+    "file": "src/test/w_15_shielding.test.ts",
+    "line": 198,
+    "receiver": "(g as any)",
+    "member": "negateCreatureMagic",
+    "call": true
+  },
+  {
+    "file": "src/test/w_15_shielding.test.ts",
+    "line": 200,
+    "receiver": "(g as any)",
+    "member": "tunnelAt",
+    "call": true
+  },
+  {
+    "file": "src/test/w_15_shielding.test.ts",
+    "line": 201,
+    "receiver": "(g as any)",
+    "member": "crystalizeFromPlayer",
+    "call": true
+  },
+  {
+    "file": "src/test/w_15_shielding.test.ts",
+    "line": 202,
+    "receiver": "(g as any)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/w_15_shielding.test.ts",
+    "line": 207,
+    "receiver": "(g as any)",
+    "member": "trySplitMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_15_shielding.test.ts",
+    "line": 212,
+    "receiver": "(g as any)",
+    "member": "negateCreatureMagic",
+    "call": true
+  },
+  {
+    "file": "src/test/w_15_shielding.test.ts",
+    "line": 217,
+    "receiver": "(g as any)",
+    "member": "playerFalls",
+    "call": true
+  },
+  {
+    "file": "src/test/w_15_shielding.test.ts",
+    "line": 223,
+    "receiver": "(g as any)",
+    "member": "monstersFall",
+    "call": true
+  },
+  {
+    "file": "src/test/w_15_shielding.test.ts",
+    "line": 224,
+    "receiver": "(g as any)",
+    "member": "pendingFallenByDepth",
+    "call": false
+  },
+  {
+    "file": "src/test/w_15_shielding.test.ts",
+    "line": 261,
+    "receiver": "(g as any)",
+    "member": "serializeMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_15_shielding.test.ts",
+    "line": 262,
+    "receiver": "(g as any)",
+    "member": "createMonsterFromSnapshot",
+    "call": true
+  },
+  {
+    "file": "src/test/w_15_shielding.test.ts",
+    "line": 264,
+    "receiver": "(g as any)",
+    "member": "createMonsterFromSnapshot",
+    "call": true
+  },
+  {
+    "file": "src/test/w_16_conjuration.test.ts",
+    "line": 33,
+    "receiver": "(g as any)",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/w_16_conjuration.test.ts",
+    "line": 141,
+    "receiver": "(g as any)",
+    "member": "advancementLoop",
+    "call": true
+  },
+  {
+    "file": "src/test/w_16_conjuration.test.ts",
+    "line": 148,
+    "receiver": "(g as any)",
+    "member": "tickCreatureStatuses",
+    "call": true
+  },
+  {
+    "file": "src/test/w_16_conjuration.test.ts",
+    "line": 148,
+    "receiver": "(g as any)",
+    "member": "triggerDeathFeatures",
+    "call": true
+  },
+  {
+    "file": "src/test/w_16_conjuration.test.ts",
+    "line": 148,
+    "receiver": "(g as any)",
+    "member": "removeDeadMonsters",
+    "call": true
+  },
+  {
+    "file": "src/test/w_16_conjuration.test.ts",
+    "line": 156,
+    "receiver": "(g as any)",
+    "member": "triggerDeathFeatures",
+    "call": true
+  },
+  {
+    "file": "src/test/w_16_conjuration.test.ts",
+    "line": 156,
+    "receiver": "(g as any)",
+    "member": "removeDeadMonsters",
+    "call": true
+  },
+  {
+    "file": "src/test/w_16_conjuration.test.ts",
+    "line": 156,
+    "receiver": "(g as any)",
+    "member": "removeDeadMonsters",
+    "call": true
+  },
+  {
+    "file": "src/test/w_16_conjuration.test.ts",
+    "line": 163,
+    "receiver": "(g as any)",
+    "member": "removeDeadMonsters",
+    "call": true
+  },
+  {
+    "file": "src/test/w_16_conjuration.test.ts",
+    "line": 176,
+    "receiver": "(g as any)",
+    "member": "removeDeadMonsters",
+    "call": true
+  },
+  {
+    "file": "src/test/w_16_conjuration.test.ts",
+    "line": 201,
+    "receiver": "(g as any)",
+    "member": "createMonsterFromSnapshot",
+    "call": true
+  },
+  {
+    "file": "src/test/w_16_conjuration.test.ts",
+    "line": 204,
+    "receiver": "(g as any)",
+    "member": "serializeMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_16_conjuration.test.ts",
+    "line": 205,
+    "receiver": "(g as any)",
+    "member": "deserializeMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_16_conjuration.test.ts",
+    "line": 206,
+    "receiver": "(g as any)",
+    "member": "serializeMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_16_conjuration.test.ts",
+    "line": 207,
+    "receiver": "(g as any)",
+    "member": "deserializeMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_16_conjuration.test.ts",
+    "line": 214,
+    "receiver": "(g as any)",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/w_16_conjuration.test.ts",
+    "line": 216,
+    "receiver": "(g as any)",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/w_17_domination.test.ts",
+    "line": 31,
+    "receiver": "(g as any)",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/w_17_domination.test.ts",
+    "line": 173,
+    "receiver": "(g as any)",
+    "member": "playerTurnEnded",
+    "call": true
+  },
+  {
+    "file": "src/test/w_17_domination.test.ts",
+    "line": 174,
+    "receiver": "(g as any)",
+    "member": "playerTurnEnded",
+    "call": true
+  },
+  {
+    "file": "src/test/w_17_domination.test.ts",
+    "line": 188,
+    "receiver": "(g as any)",
+    "member": "trySplitMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_17_domination.test.ts",
+    "line": 192,
+    "receiver": "(g as any)",
+    "member": "findLiveSeizer",
+    "call": true
+  },
+  {
+    "file": "src/test/w_17_domination.test.ts",
+    "line": 193,
+    "receiver": "(g as any)",
+    "member": "findLiveSeizer",
+    "call": true
+  },
+  {
+    "file": "src/test/w_17_domination.test.ts",
+    "line": 216,
+    "receiver": "(g as any)",
+    "member": "serializeMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_17_domination.test.ts",
+    "line": 219,
+    "receiver": "(g as any)",
+    "member": "deserializeMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_17_domination.test.ts",
+    "line": 224,
+    "receiver": "(g as any)",
+    "member": "serializeMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_17_domination.test.ts",
+    "line": 225,
+    "receiver": "(g as any)",
+    "member": "deserializeMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_17_domination.test.ts",
+    "line": 228,
+    "receiver": "(g as any)",
+    "member": "serializeMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_17_domination.test.ts",
+    "line": 228,
+    "receiver": "(g as any)",
+    "member": "createMonsterFromSnapshot",
+    "call": true
+  },
+  {
+    "file": "src/test/w_17_domination.test.ts",
+    "line": 233,
+    "receiver": "(g as any)",
+    "member": "serializeMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_17_domination.test.ts",
+    "line": 234,
+    "receiver": "(g as any)",
+    "member": "resetTestRoom",
+    "call": true
+  },
+  {
+    "file": "src/test/w_18_entrancement.test.ts",
+    "line": 30,
+    "receiver": "(g as any)",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/w_18_entrancement.test.ts",
+    "line": 30,
+    "receiver": "(g as any)",
+    "member": "needsRender",
+    "call": false
+  },
+  {
+    "file": "src/test/w_18_entrancement.test.ts",
+    "line": 113,
+    "receiver": "(g as any)",
+    "member": "needsRender",
+    "call": false
+  },
+  {
+    "file": "src/test/w_18_entrancement.test.ts",
+    "line": 201,
+    "receiver": "(g as any)",
+    "member": "pendingFallenByDepth",
+    "call": false
+  },
+  {
+    "file": "src/test/w_18_entrancement.test.ts",
+    "line": 246,
+    "receiver": "(g as any)",
+    "member": "serializeMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_18_entrancement.test.ts",
+    "line": 246,
+    "receiver": "(g as any)",
+    "member": "createMonsterFromSnapshot",
+    "call": true
+  },
+  {
+    "file": "src/test/w_19_polymorph.test.ts",
+    "line": 29,
+    "receiver": "(g as any)",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/w_19_polymorph.test.ts",
+    "line": 138,
+    "receiver": "(g as any)",
+    "member": "killOrphanedBoundFollowers",
+    "call": true
+  },
+  {
+    "file": "src/test/w_19_polymorph.test.ts",
+    "line": 141,
+    "receiver": "(g as any)",
+    "member": "killOrphanedBoundFollowers",
+    "call": true
+  },
+  {
+    "file": "src/test/w_19_polymorph.test.ts",
+    "line": 148,
+    "receiver": "(g as any)",
+    "member": "applyBasicBoltEffect",
+    "call": true
+  },
+  {
+    "file": "src/test/w_19_polymorph.test.ts",
+    "line": 150,
+    "receiver": "(g as any)",
+    "member": "negateCreatureMagic",
+    "call": true
+  },
+  {
+    "file": "src/test/w_19_polymorph.test.ts",
+    "line": 153,
+    "receiver": "(g as any)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/w_19_polymorph.test.ts",
+    "line": 156,
+    "receiver": "(g as any)",
+    "member": "triggerDeathFeatures",
+    "call": true
+  },
+  {
+    "file": "src/test/w_19_polymorph.test.ts",
+    "line": 156,
+    "receiver": "(g as any)",
+    "member": "triggerDeathFeatures",
+    "call": true
+  },
+  {
+    "file": "src/test/w_19_polymorph.test.ts",
+    "line": 156,
+    "receiver": "(g as any)",
+    "member": "removeDeadMonsters",
+    "call": true
+  },
+  {
+    "file": "src/test/w_19_polymorph.test.ts",
+    "line": 156,
+    "receiver": "(g as any)",
+    "member": "removeDeadMonsters",
+    "call": true
+  },
+  {
+    "file": "src/test/w_19_polymorph.test.ts",
+    "line": 163,
+    "receiver": "(g as any)",
+    "member": "serializeMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_19_polymorph.test.ts",
+    "line": 163,
+    "receiver": "(g as any)",
+    "member": "deserializeMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_19_polymorph.test.ts",
+    "line": 169,
+    "receiver": "(g as any)",
+    "member": "serializeMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_19_polymorph.test.ts",
+    "line": 172,
+    "receiver": "(g as any)",
+    "member": "deserializeMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_19_polymorph.test.ts",
+    "line": 178,
+    "receiver": "(g as any)",
+    "member": "serializeMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_19_polymorph.test.ts",
+    "line": 179,
+    "receiver": "(g as any)",
+    "member": "deserializeMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_19_polymorph.test.ts",
+    "line": 186,
+    "receiver": "(g as any)",
+    "member": "triggerDeathFeatures",
+    "call": true
+  },
+  {
+    "file": "src/test/w_19_polymorph.test.ts",
+    "line": 186,
+    "receiver": "(g as any)",
+    "member": "removeDeadMonsters",
+    "call": true
+  },
+  {
+    "file": "src/test/w_19_polymorph.test.ts",
+    "line": 191,
+    "receiver": "(g as any)",
+    "member": "createMonsterFromSnapshot",
+    "call": true
+  },
+  {
+    "file": "src/test/w_20_cloning.test.ts",
+    "line": 28,
+    "receiver": "(g as any)",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/w_20_cloning.test.ts",
+    "line": 102,
+    "receiver": "(g as any)",
+    "member": "triggerDeathFeatures",
+    "call": true
+  },
+  {
+    "file": "src/test/w_20_cloning.test.ts",
+    "line": 102,
+    "receiver": "(g as any)",
+    "member": "triggerDeathFeatures",
+    "call": true
+  },
+  {
+    "file": "src/test/w_20_cloning.test.ts",
+    "line": 102,
+    "receiver": "(g as any)",
+    "member": "removeDeadMonsters",
+    "call": true
+  },
+  {
+    "file": "src/test/w_20_cloning.test.ts",
+    "line": 103,
+    "receiver": "(g as any)",
+    "member": "triggerDeathFeatures",
+    "call": true
+  },
+  {
+    "file": "src/test/w_20_cloning.test.ts",
+    "line": 103,
+    "receiver": "(g as any)",
+    "member": "removeDeadMonsters",
+    "call": true
+  },
+  {
+    "file": "src/test/w_20_cloning.test.ts",
+    "line": 112,
+    "receiver": "(g as any)",
+    "member": "applyBoltEffect",
+    "call": true
+  },
+  {
+    "file": "src/test/w_20_cloning.test.ts",
+    "line": 120,
+    "receiver": "(g as any)",
+    "member": "trySplitMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_20_cloning.test.ts",
+    "line": 124,
+    "receiver": "(g as any)",
+    "member": "alliedCloneCount",
+    "call": true
+  },
+  {
+    "file": "src/test/w_20_cloning.test.ts",
+    "line": 124,
+    "receiver": "(g as any)",
+    "member": "trySplitMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_20_cloning.test.ts",
+    "line": 164,
+    "receiver": "(g as any)",
+    "member": "resolvePlayerMeleeAttackOn",
+    "call": true
+  },
+  {
+    "file": "src/test/w_20_cloning.test.ts",
+    "line": 164,
+    "receiver": "(g as any)",
+    "member": "resolvePlayerMeleeAttackOn",
+    "call": true
+  },
+  {
+    "file": "src/test/w_20_cloning.test.ts",
+    "line": 176,
+    "receiver": "(g as any)",
+    "member": "trySplitMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_21_empowerment.test.ts",
+    "line": 28,
+    "receiver": "(g as any)",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/w_21_empowerment.test.ts",
+    "line": 83,
+    "receiver": "(g as any)",
+    "member": "applyBasicBoltEffect",
+    "call": true
+  },
+  {
+    "file": "src/test/w_21_empowerment.test.ts",
+    "line": 117,
+    "receiver": "(g as any)",
+    "member": "trySplitMonster",
+    "call": true
+  },
+  {
+    "file": "src/test/w_21_empowerment.test.ts",
+    "line": 128,
+    "receiver": "(g as any)",
+    "member": "createMonsterFromSnapshot",
+    "call": true
+  },
+  {
+    "file": "src/test/w_21_empowerment.test.ts",
+    "line": 136,
+    "receiver": "(g as any)",
+    "member": "negateCreatureMagic",
+    "call": true
+  },
+  {
+    "file": "src/test/w_21_empowerment.test.ts",
+    "line": 137,
+    "receiver": "(g as any)",
+    "member": "negateCreatureMagic",
+    "call": true
+  },
+  {
+    "file": "src/test/w_21_empowerment.test.ts",
+    "line": 137,
+    "receiver": "(g as any)",
+    "member": "negateCreatureMagic",
+    "call": true
+  },
+  {
+    "file": "src/test/w_21_empowerment.test.ts",
+    "line": 142,
+    "receiver": "(g as any)",
+    "member": "removeDeadMonsters",
+    "call": true
+  },
+  {
+    "file": "src/test/w_23_negation.test.ts",
+    "line": 36,
+    "receiver": "(g as any)",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/w_23_negation.test.ts",
+    "line": 41,
+    "receiver": "(g as any)",
+    "member": "negateCreatureMagic",
+    "call": true
+  },
+  {
+    "file": "src/test/w_23_negation.test.ts",
+    "line": 89,
+    "receiver": "(g as any)",
+    "member": "playerFalling",
+    "call": false
+  },
+  {
+    "file": "src/test/w_23_negation.test.ts",
+    "line": 91,
+    "receiver": "(g as any)",
+    "member": "applyEnvironmentalEffects",
+    "call": true
+  },
+  {
+    "file": "src/test/w_23_negation.test.ts",
+    "line": 91,
+    "receiver": "(g as any)",
+    "member": "playerFalling",
+    "call": false
+  },
+  {
+    "file": "src/test/w_23_negation.test.ts",
+    "line": 115,
+    "receiver": "(g as any)",
+    "member": "negationBlastFromPlayer",
+    "call": true
+  },
+  {
+    "file": "src/test/w_23_negation.test.ts",
+    "line": 178,
+    "receiver": "(g as any)",
+    "member": "createMonsterFromSnapshot",
+    "call": true
+  },
+  {
+    "file": "src/test/w_24_wand_catalog.test.ts",
+    "line": 75,
+    "receiver": "g",
+    "member": "chooseKindFromPool",
+    "call": true
+  },
+  {
+    "file": "src/test/w_24_wand_catalog.test.ts",
+    "line": 86,
+    "receiver": "g",
+    "member": "chooseKindFromPool",
+    "call": true
+  },
+  {
+    "file": "src/test/w_24_wand_catalog.test.ts",
+    "line": 87,
+    "receiver": "g",
+    "member": "spawnKindById",
+    "call": true
+  },
+  {
+    "file": "src/test/w_24_wand_catalog.test.ts",
+    "line": 140,
+    "receiver": "g",
+    "member": "spawnBlueprintItem",
+    "call": true
+  },
+  {
+    "file": "src/test/w_24_wand_catalog.test.ts",
+    "line": 141,
+    "receiver": "g",
+    "member": "spawnBlueprintItem",
+    "call": true
+  },
+  {
+    "file": "src/test/w_25_staff_catalog.test.ts",
+    "line": 69,
+    "receiver": "g",
+    "member": "chooseKindFromPool",
+    "call": true
+  },
+  {
+    "file": "src/test/w_25_staff_catalog.test.ts",
+    "line": 79,
+    "receiver": "g",
+    "member": "chooseKindFromPool",
+    "call": true
+  },
+  {
+    "file": "src/test/w_25_staff_catalog.test.ts",
+    "line": 80,
+    "receiver": "g",
+    "member": "spawnKindById",
+    "call": true
+  },
+  {
+    "file": "src/test/w_25_staff_catalog.test.ts",
+    "line": 141,
+    "receiver": "g",
+    "member": "spawnBlueprintItem",
+    "call": true
+  },
+  {
+    "file": "src/test/w_25_staff_catalog.test.ts",
+    "line": 142,
+    "receiver": "g",
+    "member": "spawnBlueprintItem",
+    "call": true
+  },
+  {
+    "file": "src/test/w_25_staff_catalog.test.ts",
+    "line": 176,
+    "receiver": "(g as any)",
+    "member": "rechargeStaffsAndCharms",
+    "call": true
+  },
+  {
+    "file": "src/test/w_25_staff_catalog.test.ts",
+    "line": 177,
+    "receiver": "(g as any)",
+    "member": "tickArcanaResources",
+    "call": true
+  },
+  {
+    "file": "src/test/w_26_arcana_closure.test.ts",
+    "line": 112,
+    "receiver": "(g as any)",
+    "member": "tickArcanaResources",
+    "call": true
+  },
+  {
+    "file": "src/test/w_26_arcana_closure.test.ts",
+    "line": 114,
+    "receiver": "(g as any)",
+    "member": "tickArcanaResources",
+    "call": true
+  },
+  {
+    "file": "src/test/w_26_arcana_closure.test.ts",
+    "line": 115,
+    "receiver": "(g as any)",
+    "member": "rechargeStaffsAndCharms",
+    "call": true
+  },
+  {
+    "file": "src/test/w_26_arcana_closure.test.ts",
+    "line": 116,
+    "receiver": "(g as any)",
+    "member": "tickArcanaResources",
+    "call": true
+  },
+  {
+    "file": "src/test/w_26_arcana_closure.test.ts",
+    "line": 157,
+    "receiver": "(g as any)",
+    "member": "deserializeItem",
+    "call": true
+  },
+  {
+    "file": "src/test/w_2_arcana_submission.test.ts",
+    "line": 39,
+    "receiver": "inside(game)",
+    "member": "playerTurnEnded",
+    "call": false
+  },
+  {
+    "file": "src/test/w_2_arcana_submission.test.ts",
+    "line": 41,
+    "receiver": "inside(game)",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/w_2_arcana_submission.test.ts",
+    "line": 42,
+    "receiver": "inside(game)",
+    "member": "recordInputEvent",
+    "call": false
+  },
+  {
+    "file": "src/test/w_2_arcana_submission.test.ts",
+    "line": 85,
+    "receiver": "inside(g)",
+    "member": "playerTurnEnded",
+    "call": false
+  },
+  {
+    "file": "src/test/w_2_arcana_submission.test.ts",
+    "line": 102,
+    "receiver": "inside(g)",
+    "member": "playerTurnEnded",
+    "call": false
+  },
+  {
+    "file": "src/test/w_2_arcana_submission.test.ts",
+    "line": 104,
+    "receiver": "inside(g)",
+    "member": "playerTurnEnded",
+    "call": false
+  },
+  {
+    "file": "src/test/w_3_bolt_trajectory.test.ts",
+    "line": 30,
+    "receiver": "(g as unknown as { updateVision(): void })",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/w_4_bolt_reflection.test.ts",
+    "line": 29,
+    "receiver": "(g as unknown as { updateVision(): void })",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/w_4_bolt_reflection.test.ts",
+    "line": 182,
+    "receiver": "(g as unknown as { computeBoltResult(b: BoltConfig, from: Pos, to: Pos): ReturnType<typeof zap> })",
+    "member": "computeBoltResult",
+    "call": true
+  },
+  {
+    "file": "src/test/w_5_arcana_instance.test.ts",
+    "line": 103,
+    "receiver": "g",
+    "member": "spawnKindById",
+    "call": true
+  },
+  {
+    "file": "src/test/w_5_arcana_instance.test.ts",
+    "line": 114,
+    "receiver": "g",
+    "member": "serializeItem",
+    "call": true
+  },
+  {
+    "file": "src/test/w_5_arcana_instance.test.ts",
+    "line": 124,
+    "receiver": "g",
+    "member": "deserializeItem",
+    "call": true
+  },
+  {
+    "file": "src/test/w_5_arcana_instance.test.ts",
+    "line": 126,
+    "receiver": "g",
+    "member": "deserializeItem",
+    "call": true
+  },
+  {
+    "file": "src/test/w_5_arcana_instance.test.ts",
+    "line": 126,
+    "receiver": "g",
+    "member": "serializeItem",
+    "call": true
+  },
+  {
+    "file": "src/test/w_5_arcana_instance.test.ts",
+    "line": 128,
+    "receiver": "g",
+    "member": "deserializeItem",
+    "call": true
+  },
+  {
+    "file": "src/test/w_5_arcana_instance.test.ts",
+    "line": 130,
+    "receiver": "g",
+    "member": "deserializeItem",
+    "call": true
+  },
+  {
+    "file": "src/test/w_5_arcana_instance.test.ts",
+    "line": 134,
+    "receiver": "g",
+    "member": "deserializeItem",
+    "call": true
+  },
+  {
+    "file": "src/test/w_5_arcana_instance.test.ts",
+    "line": 137,
+    "receiver": "g",
+    "member": "deserializeItem",
+    "call": true
+  },
+  {
+    "file": "src/test/w_5_arcana_instance.test.ts",
+    "line": 138,
+    "receiver": "g",
+    "member": "deserializeItem",
+    "call": true
+  },
+  {
+    "file": "src/test/w_5_arcana_instance.test.ts",
+    "line": 174,
+    "receiver": "bridge(game)",
+    "member": "generateDepth",
+    "call": true
+  },
+  {
+    "file": "src/test/w_6_arcana_recharge.test.ts",
+    "line": 167,
+    "receiver": "bridge(game)",
+    "member": "tickArcanaResources",
+    "call": true
+  },
+  {
+    "file": "src/test/w_6_arcana_recharge.test.ts",
+    "line": 220,
+    "receiver": "bridge(game)",
+    "member": "rechargeStaffsAndCharms",
+    "call": true
+  },
+  {
+    "file": "src/test/w_6_arcana_recharge.test.ts",
+    "line": 224,
+    "receiver": "bridge(game)",
+    "member": "rechargeStaffsAndCharms",
+    "call": true
+  },
+  {
+    "file": "src/test/w_6_arcana_recharge.test.ts",
+    "line": 262,
+    "receiver": "g",
+    "member": "serializeItem",
+    "call": true
+  },
+  {
+    "file": "src/test/w_6_arcana_recharge.test.ts",
+    "line": 269,
+    "receiver": "g",
+    "member": "deserializeItem",
+    "call": true
+  },
+  {
+    "file": "src/test/w_6_arcana_recharge.test.ts",
+    "line": 273,
+    "receiver": "g",
+    "member": "deserializeItem",
+    "call": true
+  },
+  {
+    "file": "src/test/w_6_arcana_recharge.test.ts",
+    "line": 273,
+    "receiver": "g",
+    "member": "serializeItem",
+    "call": true
+  },
+  {
+    "file": "src/test/w_6_arcana_recharge.test.ts",
+    "line": 276,
+    "receiver": "g",
+    "member": "deserializeItem",
+    "call": true
+  },
+  {
+    "file": "src/test/w_7_arcana_enchantment.test.ts",
+    "line": 226,
+    "receiver": "bridge",
+    "member": "enchantEquippedItem",
+    "call": true
+  },
+  {
+    "file": "src/test/w_8_staff_damage.test.ts",
+    "line": 25,
+    "receiver": "(g as unknown as { updateVision(): void })",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/w_8_staff_damage.test.ts",
+    "line": 130,
+    "receiver": "(g as unknown as { computeBoltResult(b: BoltConfig, from: Player['loc'], to: Player['loc']): BoltResult })",
+    "member": "computeBoltResult",
+    "call": true
+  },
+  {
+    "file": "src/test/w_8_staff_damage.test.ts",
+    "line": 210,
+    "receiver": "bridge",
+    "member": "trySplitMonster",
+    "call": false
+  },
+  {
+    "file": "src/test/w_9_directed_status.test.ts",
+    "line": 25,
+    "receiver": "(g as unknown as { updateVision(): void })",
+    "member": "updateVision",
+    "call": false
+  },
+  {
+    "file": "src/test/w_9_directed_status.test.ts",
+    "line": 235,
+    "receiver": "bridge",
+    "member": "discordBlastFromPlayer",
+    "call": true
+  },
+  {
+    "file": "src/test/w_9_directed_status.test.ts",
+    "line": 238,
+    "receiver": "bridge",
+    "member": "discordBlastFromPlayer",
+    "call": true
+  },
+  {
+    "file": "src/test/w_9_directed_status.test.ts",
+    "line": 239,
+    "receiver": "bridge",
+    "member": "negateCreatureMagic",
+    "call": true
+  },
+  {
+    "file": "src/test/w_9_directed_status.test.ts",
+    "line": 259,
+    "receiver": "(g as unknown as { computeBoltResult(b: BoltConfig, f: Player['loc'], t: Player['loc']): BoltResult })",
+    "member": "computeBoltResult",
+    "call": true
+  }
+]

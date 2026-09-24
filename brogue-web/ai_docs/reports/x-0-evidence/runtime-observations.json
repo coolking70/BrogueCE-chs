@@ -1,0 +1,1033 @@
+{
+  "scope": "Synthetic headless instances, direct existing serialization methods; not natural generation or browser E2E.",
+  "items": {
+    "spear": {
+      "before": {
+        "flags": [
+          "ITEM_ATTACKS_PENETRATE"
+        ],
+        "keyLoc": []
+      },
+      "saved": {
+        "id": 66,
+        "name": "Spear",
+        "char": ")",
+        "color": 13421772,
+        "category": 0,
+        "loc": {
+          "x": -1,
+          "y": -1
+        },
+        "weight": 8,
+        "quantity": 1,
+        "damage": "1d2+3",
+        "strengthRequired": 13,
+        "isCursed": false,
+        "isProtected": false,
+        "enchantment": 0,
+        "runicKnown": false,
+        "identified": false,
+        "canBeIdentified": true,
+        "maxChargesKnown": false,
+        "magicDetected": false,
+        "charges": 20,
+        "keyLoc": []
+      },
+      "after": {
+        "keyLoc": []
+      }
+    },
+    "key": {
+      "before": {
+        "originDepth": 7,
+        "keyLoc": [
+          {
+            "loc": {
+              "x": 5,
+              "y": 5
+            },
+            "machine": 3,
+            "disposableHere": true
+          }
+        ]
+      },
+      "saved": {
+        "id": 67,
+        "name": "Iron Key",
+        "char": "k",
+        "color": 12566463,
+        "category": 10,
+        "loc": {
+          "x": -1,
+          "y": -1
+        },
+        "weight": 1,
+        "quantity": 1,
+        "isCursed": false,
+        "isProtected": false,
+        "enchantment": 0,
+        "runicKnown": false,
+        "identified": true,
+        "canBeIdentified": false,
+        "maxChargesKnown": false,
+        "magicDetected": false,
+        "keyLoc": [
+          {
+            "loc": {
+              "x": 5,
+              "y": 5
+            },
+            "machine": 3
+          }
+        ]
+      },
+      "after": {
+        "keyLoc": [
+          {
+            "loc": {
+              "x": 5,
+              "y": 5
+            },
+            "machine": 3
+          }
+        ]
+      }
+    }
+  },
+  "ordinaryMonster": {
+    "before": {
+      "carriedItem": true,
+      "ticksUntilTurn": 37,
+      "machineHome": 17
+    },
+    "after": {
+      "carriedItem": false,
+      "ticksUntilTurn": 100,
+      "machineHome": 0
+    },
+    "savedKeys": [
+      "wasNegated",
+      "newPowerCount",
+      "totalPowerCount",
+      "form",
+      "mutation",
+      "allegiance",
+      "dominatedForm",
+      "id",
+      "loc",
+      "name",
+      "char",
+      "color",
+      "hp",
+      "maxHp",
+      "damageString",
+      "regenTurns",
+      "regenCounter",
+      "state",
+      "statusDurations",
+      "poisonAmount",
+      "maxShield",
+      "goldDropChance",
+      "itemDropChance",
+      "onHitStatus",
+      "onHitChance",
+      "onHitDuration",
+      "statusImmunities",
+      "statusResistTurns",
+      "abilities"
+    ]
+  },
+  "restart": {
+    "stats": {
+      "kills": 12,
+      "gold": 987,
+      "turns": 0,
+      "maxDepth": 18
+    },
+    "isGameOver": true,
+    "fallenDepths": [
+      8
+    ]
+  },
+  "persistence": {
+    "keys": [
+      "version",
+      "savedAt",
+      "depth",
+      "seed",
+      "mode",
+      "ticksTillUpdateEnvironment",
+      "pendingEnchantment",
+      "impregnableCells",
+      "player",
+      "monsters",
+      "dormantMonsters",
+      "items",
+      "identifiedItems",
+      "staffFlavors",
+      "wandFlavors",
+      "callTitles",
+      "magicPolarityRevealed",
+      "rewardRoomsGenerated",
+      "grid",
+      "gasGrid",
+      "stats"
+    ],
+    "levelsAfter": [],
+    "countBefore": 51,
+    "countAfter": 0,
+    "rngStateEqual": false,
+    "meteredFrequencyAfter": 12345
+  },
+  "autoGeneratorExports": [
+    "AUTO_GENERATOR_CATALOG",
+    "RETIRED_AUTOGENERATOR_MACHINES",
+    "WIRED_AUTOGENERATOR_INDEXES",
+    "randomMatchingLocation",
+    "runAutogenerators"
+  ],
+  "autogens": [
+    {
+      "ceLine": 114,
+      "carrier": "dead-index0",
+      "machine": 0,
+      "note": "CE 循环从 AG=1 起，表首的 granite column 永不执行（三变体同病；DF_GRANITE_COLUMN 全源码无其他触发点）。按 CE 原样保留为死条目——接了它反而违背 CE。"
+    },
+    {
+      "ceLine": 115,
+      "carrier": "wired",
+      "machine": 0,
+      "note": "T-1 接线：DF 落 CRYSTAL_WALL tile（Globals.c:607 {CRYSTAL_WALL, DUNGEON, 200, 50, DFF_CLEAR_OTHER_TERRAIN}）——tile B-3 迁入、DF 条目 T-1 补入目录，跨层清理语义 C-4b 已实现。"
+    },
+    {
+      "ceLine": 116,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "DF 落 LUMINESCENT_FUNGUS tile（Globals.c:608）——web 无该地形（发光菌类还牵光照，C-7 范围）。"
+    },
+    {
+      "ceLine": 117,
+      "carrier": "wired",
+      "machine": 0,
+      "note": "DF_GRASS（Globals.c:609 {GRASS, SURFACE, 75, 5, DFF_BLOCKED_BY_OTHER_LAYERS}）——tile GRASS web 已有，DF 条目 C-6 补入目录。C-6 接入。"
+    },
+    {
+      "ceLine": 118,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "DF 落 DEAD_GRASS tile（Globals.c:610，还有 subsequentDF DF_DEAD_FOLIAGE）——web 无该地形。"
+    },
+    {
+      "ceLine": 119,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "同上（DEAD_GRASS 第二深度段）。"
+    },
+    {
+      "ceLine": 120,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "DF 落 BONES tile（Globals.c:611）——web 无该地形（纯 SURFACE 装饰）。"
+    },
+    {
+      "ceLine": 121,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "DF 落 RUBBLE tile（Globals.c:612）——web 无该地形。"
+    },
+    {
+      "ceLine": 122,
+      "carrier": "wired",
+      "machine": 0,
+      "note": "DF_FOLIAGE（Globals.c:613 {FOLIAGE, SURFACE, 100, 33, DFF_BLOCKED_BY_OTHER_LAYERS}）——tile FOLIAGE web 已有，DF 条目 C-6 补入目录。C-6 接入。"
+    },
+    {
+      "ceLine": 123,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "DF 落 FUNGUS_FOREST tile（Globals.c:614）——web 无该地形。"
+    },
+    {
+      "ceLine": 124,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "藻井链（DEEP_WATER_ALGAE_WELL/ALGAE_1/ALGAE_2，Globals.c:712-714，带发光）——web 无全部三种 tile；光照部分属 C-7。"
+    },
+    {
+      "ceLine": 125,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "直接铺 STATUE_INERT 地形（墙基座）——web 无该地形。"
+    },
+    {
+      "ceLine": 126,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "同上（地板基座段）。"
+    },
+    {
+      "ceLine": 127,
+      "carrier": "c7-light",
+      "machine": 0,
+      "note": "直接铺 TORCH_WALL 地形——火把的光照是它的全部玩法语义，C-7 光照目录不做。"
+    },
+    {
+      "ceLine": 130,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "CE 陷阱是独立 tile（T_IS_DF_TRAP + fireType/ discoverType 链，显隐两态）。web 的通用 TRAP+trapType 是自创语义（teleport 等 CE 无），不同源——不得冒充载体。激活轮需按 CE tile 目录逐个落地。"
+    },
+    {
+      "ceLine": 131,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "同上（NET_TRAP tile 无）。"
+    },
+    {
+      "ceLine": 132,
+      "carrier": "wired",
+      "machine": 67,
+      "note": "V-2b-9e-2：CE 67 区域蓝图由 buildAMachine 强制建造；frequency=0 保留，不进入抽签。"
+    },
+    {
+      "ceLine": 133,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "ALARM_TRAP tile 无。"
+    },
+    {
+      "ceLine": 134,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "GAS_TRAP_CONFUSION tile 无。"
+    },
+    {
+      "ceLine": 135,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "FLAMETHROWER tile 无（火陷阱；火链本身 F/G 已收口，但 tile 不在）。"
+    },
+    {
+      "ceLine": 136,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "FLOOD_TRAP tile 无（灌水链 FLOOD_WATER_* 也无）。"
+    },
+    {
+      "ceLine": 139,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "隐藏态陷阱 tile（TM_IS_SECRET）无。"
+    },
+    {
+      "ceLine": 140,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "同上。"
+    },
+    {
+      "ceLine": 141,
+      "carrier": "wired",
+      "machine": 68,
+      "note": "V-2b-9e-2：CE 68 区域蓝图由 buildAMachine 强制建造；frequency=0 保留，不进入抽签。"
+    },
+    {
+      "ceLine": 142,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "隐藏态 tile 无。"
+    },
+    {
+      "ceLine": 143,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "TRAP_DOOR_HIDDEN tile 无（坠层陷阱；坠落子系统 C-5 已收口，但 tile 不在——激活轮属接 DF/地形链，不属 C-5）。"
+    },
+    {
+      "ceLine": 144,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "隐藏态 tile 无。"
+    },
+    {
+      "ceLine": 145,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "隐藏态 tile 无。"
+    },
+    {
+      "ceLine": 146,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "隐藏态 tile 无。"
+    },
+    {
+      "ceLine": 147,
+      "carrier": "wired",
+      "machine": 61,
+      "note": "CE 机器（沼泽布景；web 有 BOG tile 但 MT_SWAMP_AREA 是整机蓝图，BlueprintEngine 不同源）。"
+    },
+    {
+      "ceLine": 148,
+      "carrier": "c7-light",
+      "machine": 0,
+      "note": "DF 落 SUNLIGHT_POOL（Globals.c:618 {SUNLIGHT_POOL, LIQUID, 65, 6}）——光斑液体，tile 无且光照属 C-7。"
+    },
+    {
+      "ceLine": 149,
+      "carrier": "c7-light",
+      "machine": 0,
+      "note": "DF 落 DARKNESS_PATCH（Globals.c:619）——同上，C-7。"
+    },
+    {
+      "ceLine": 150,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "STEAM_VENT tile 无（蒸汽孔洞周期喷汽；G 链气体机制已收口，但 tile 不在）。"
+    },
+    {
+      "ceLine": 151,
+      "carrier": "wired",
+      "machine": 0,
+      "note": "T-1 接线：最深层直接铺 CRYSTAL_WALL 地形——tile B-3 迁入（TERRAIN_HOME_LAYER DUNGEON，Globals.c:338）。"
+    },
+    {
+      "ceLine": 154,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "DEWAR_CAUSTIC_GAS tile 无（玻璃容器，promoteType DF_DEWAR_CAUSTIC 爆毒气）。气体机制 G 链已有，容器 tile 与 CARPET 地毯 tile 无。"
+    },
+    {
+      "ceLine": 155,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "同上（混乱气 dewar）。"
+    },
+    {
+      "ceLine": 156,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "同上（麻痹气 dewar）。"
+    },
+    {
+      "ceLine": 157,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "同上（甲烷 dewar）。"
+    },
+    {
+      "ceLine": 160,
+      "carrier": "no-tile",
+      "machine": 0,
+      "note": "最深层菌类灯海（maxNumber 200）——tile 无，且光照属 C-7。"
+    },
+    {
+      "ceLine": 161,
+      "carrier": "wired",
+      "machine": 58,
+      "note": "CE 机器（血花圃）。"
+    },
+    {
+      "ceLine": 162,
+      "carrier": "wired",
+      "machine": 59,
+      "note": "CE 机器（神龛）。"
+    },
+    {
+      "ceLine": 163,
+      "carrier": "wired",
+      "machine": 60,
+      "note": "CE 机器（田园布景）。"
+    },
+    {
+      "ceLine": 164,
+      "carrier": "wired",
+      "machine": 63,
+      "note": "CE 机器（遗迹布景）。"
+    },
+    {
+      "ceLine": 165,
+      "carrier": "wired",
+      "machine": 64,
+      "note": "CE 机器（阴郁布景）。"
+    },
+    {
+      "ceLine": 166,
+      "carrier": "wired",
+      "machine": 65,
+      "note": "V-2b-9e-2：CE 65 区域蓝图由 buildAMachine 强制建造；frequency=0 保留，不进入抽签。"
+    },
+    {
+      "ceLine": 167,
+      "carrier": "wired",
+      "machine": 66,
+      "note": "V-2b-9e-2：CE 66 强制路径已接；因楼梯湖心孤岛由 RETIRED_AUTOGENERATOR_MACHINES 退池，蓝图 frequency=0 保留。"
+    },
+    {
+      "ceLine": 168,
+      "carrier": "wired",
+      "machine": 69,
+      "note": "V-2b-9e-2：CE 69 区域蓝图由 buildAMachine 强制建造；frequency=0 保留，不进入抽签。"
+    },
+    {
+      "ceLine": 169,
+      "carrier": "wired",
+      "machine": 71,
+      "note": "CE 机器（守望者圣所外围）。"
+    },
+    {
+      "ceLine": 170,
+      "carrier": "wired",
+      "machine": 70,
+      "note": "V-2b-9e-2：CE 70 区域蓝图由 buildAMachine 强制建造；frequency=0 保留，不进入抽签。"
+    }
+  ],
+  "retiredAutogenerators": [
+    66
+  ],
+  "dfCount": 135,
+  "missingTiles": [
+    61,
+    66,
+    104,
+    83,
+    98,
+    154,
+    17,
+    95,
+    152,
+    179,
+    180,
+    182,
+    183,
+    185,
+    85,
+    140,
+    141,
+    143,
+    144,
+    155,
+    187,
+    174,
+    175,
+    14,
+    19,
+    87,
+    88,
+    145,
+    148,
+    191
+  ],
+  "missingTileDetails": [
+    {
+      "id": 61,
+      "ceLine": 688,
+      "ceTile": "TRAMPLED_FOLIAGE",
+      "tile": null,
+      "layer": 3,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": null,
+      "description": "",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 66,
+      "ceLine": 695,
+      "ceTile": "ACTIVE_BRIMSTONE",
+      "tile": null,
+      "layer": 1,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": null,
+      "description": "",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 104,
+      "ceLine": 744,
+      "ceTile": "BRIMSTONE_FIRE",
+      "tile": null,
+      "layer": 3,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": null,
+      "description": "",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 83,
+      "ceLine": 720,
+      "ceTile": "OPEN_IRON_DOOR_INERT",
+      "tile": null,
+      "layer": 0,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": null,
+      "description": "",
+      "lightFlare": "GENERIC_FLASH_LIGHT",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 98,
+      "ceLine": 736,
+      "ceTile": "BRIDGE_FALLING",
+      "tile": null,
+      "layer": 1,
+      "startProbability": 200,
+      "probabilityDecrement": 100,
+      "flags": 0,
+      "cePropagationTerrain": "BRIDGE",
+      "propagationTerrain": 28,
+      "subsequentDF": null,
+      "description": "",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 154,
+      "ceLine": 815,
+      "ceTile": "MACHINE_PRESSURE_PLATE_USED",
+      "tile": null,
+      "layer": 0,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": null,
+      "description": "",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 17,
+      "ceLine": 628,
+      "ceTile": "TRAP_DOOR",
+      "tile": null,
+      "layer": 1,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 32,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": 16,
+      "description": "",
+      "lightFlare": "GENERIC_FLASH_LIGHT",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 95,
+      "ceLine": 732,
+      "ceTile": "WALL_LEVER",
+      "tile": null,
+      "layer": 0,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": null,
+      "description": "you notice a lever hidden behind a loose stone in the wall.",
+      "lightFlare": "GENERIC_FLASH_LIGHT",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 152,
+      "ceLine": 813,
+      "ceTile": "TRAP_DOOR",
+      "tile": null,
+      "layer": 1,
+      "startProbability": 225,
+      "probabilityDecrement": 100,
+      "flags": 34,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": 16,
+      "description": "",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 179,
+      "ceLine": 858,
+      "ceTile": "MACHINE_METHANE_VENT_DORMANT",
+      "tile": null,
+      "layer": 0,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": null,
+      "description": "you notice an inactive gas vent hidden in a crevice of the floor.",
+      "lightFlare": "GENERIC_FLASH_LIGHT",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 180,
+      "ceLine": 859,
+      "ceTile": "MACHINE_METHANE_VENT",
+      "tile": null,
+      "layer": 0,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": 181,
+      "description": "explosive methane gas starts wafting out of hidden vents in the floor!",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 182,
+      "ceLine": 861,
+      "ceTile": "PILOT_LIGHT",
+      "tile": null,
+      "layer": 0,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": null,
+      "description": "a torch falls from its mount and lies sputtering on the floor.",
+      "lightFlare": "FALLEN_TORCH_FLASH_LIGHT",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 183,
+      "ceLine": 864,
+      "ceTile": "MACHINE_PARALYSIS_VENT",
+      "tile": null,
+      "layer": 0,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": null,
+      "description": "you notice an inactive gas vent hidden in a crevice of the floor.",
+      "lightFlare": "GENERIC_FLASH_LIGHT",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 185,
+      "ceLine": 866,
+      "ceTile": "MACHINE_PARALYSIS_VENT",
+      "tile": null,
+      "layer": 0,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": null,
+      "description": "",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 85,
+      "ceLine": 722,
+      "ceTile": "ALTAR_CAGE_CLOSED",
+      "tile": null,
+      "layer": 0,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 1,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": null,
+      "description": "the cages lower to cover the altars.",
+      "lightFlare": "GENERIC_FLASH_LIGHT",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 140,
+      "ceLine": 793,
+      "ceTile": "COMMUTATION_ALTAR_INERT",
+      "tile": null,
+      "layer": 0,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": null,
+      "description": "the items on the two altars flash with a brilliant light!",
+      "lightFlare": "SCROLL_ENCHANTMENT_LIGHT",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 141,
+      "ceLine": 794,
+      "ceTile": "PIPE_GLOWING",
+      "tile": null,
+      "layer": 3,
+      "startProbability": 90,
+      "probabilityDecrement": 60,
+      "flags": 0,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": null,
+      "description": "",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 143,
+      "ceLine": 798,
+      "ceTile": "RESURRECTION_ALTAR_INERT",
+      "tile": null,
+      "layer": 0,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 512,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": null,
+      "description": "An old friend emerges from a bloom of sacred light!",
+      "lightFlare": "EMPOWERMENT_LIGHT",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 144,
+      "ceLine": 799,
+      "ceTile": "MACHINE_TRIGGER_FLOOR_REPEATING",
+      "tile": null,
+      "layer": 1,
+      "startProbability": 300,
+      "probabilityDecrement": 100,
+      "flags": 128,
+      "cePropagationTerrain": "CARPET",
+      "propagationTerrain": 47,
+      "subsequentDF": null,
+      "description": "",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 155,
+      "ceLine": 818,
+      "ceTile": "RAT_TRAP_WALL_CRACKING",
+      "tile": null,
+      "layer": 0,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": 7,
+      "description": "a scratching sound emanates from the nearby walls!",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 187,
+      "ceLine": 872,
+      "ceTile": "STATUE_CRACKING",
+      "tile": null,
+      "layer": 0,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": 7,
+      "description": "cracks begin snaking across the marble surface of the statue!",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 174,
+      "ceLine": 851,
+      "ceTile": "MACHINE_POISON_GAS_VENT_DORMANT",
+      "tile": null,
+      "layer": 0,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": null,
+      "description": "you notice an inactive gas vent hidden in a crevice of the floor.",
+      "lightFlare": "GENERIC_FLASH_LIGHT",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 175,
+      "ceLine": 852,
+      "ceTile": "MACHINE_POISON_GAS_VENT",
+      "tile": null,
+      "layer": 0,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": null,
+      "description": "deadly purple gas starts wafting out of hidden vents in the floor!",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 14,
+      "ceLine": 625,
+      "ceTile": "GAS_TRAP_POISON",
+      "tile": null,
+      "layer": 0,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": null,
+      "description": "",
+      "lightFlare": "GENERIC_FLASH_LIGHT",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 19,
+      "ceLine": 630,
+      "ceTile": "FLAMETHROWER",
+      "tile": null,
+      "layer": 0,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": null,
+      "description": "",
+      "lightFlare": "GENERIC_FLASH_LIGHT",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 87,
+      "ceLine": 724,
+      "ceTile": "FLOOR_FLOODABLE",
+      "tile": null,
+      "layer": 0,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": null,
+      "description": "the altar retracts into the ground with a grinding sound.",
+      "lightFlare": "GENERIC_FLASH_LIGHT",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 88,
+      "ceLine": 725,
+      "ceTile": "PORTAL_LIGHT",
+      "tile": null,
+      "layer": 3,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 17,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": null,
+      "description": "the archway flashes, and you catch a glimpse of another world!",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 145,
+      "ceLine": 802,
+      "ceTile": "SACRIFICE_ALTAR",
+      "tile": null,
+      "layer": 0,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": null,
+      "description": "a demonic presence whispers its demand: \"Bring to me the marked sacrifice!\"",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0
+    },
+    {
+      "id": 148,
+      "ceLine": 807,
+      "ceTile": "COFFIN_OPEN",
+      "tile": null,
+      "layer": 0,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 16,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": null,
+      "description": "the coffin opens and a dark figure rises!",
+      "lightFlare": "",
+      "flashColor": "darkGray",
+      "effectRadius": 3
+    },
+    {
+      "id": 191,
+      "ceLine": 880,
+      "ceTile": "WORM_TUNNEL_MARKER_ACTIVE",
+      "tile": null,
+      "layer": 1,
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "cePropagationTerrain": "",
+      "propagationTerrain": null,
+      "subsequentDF": null,
+      "description": "",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0
+    }
+  ]
+}

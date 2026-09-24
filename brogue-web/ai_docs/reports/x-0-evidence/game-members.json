@@ -1,0 +1,2293 @@
+{
+  "lines": 10559,
+  "members": [
+    {
+      "name": "grid",
+      "kind": "PropertyDeclaration",
+      "start": 546,
+      "end": 546,
+      "private": false
+    },
+    {
+      "name": "environment",
+      "kind": "PropertyDeclaration",
+      "start": 547,
+      "end": 547,
+      "private": false
+    },
+    {
+      "name": "fov",
+      "kind": "PropertyDeclaration",
+      "start": 548,
+      "end": 548,
+      "private": false
+    },
+    {
+      "name": "lightMap",
+      "kind": "PropertyDeclaration",
+      "start": 549,
+      "end": 549,
+      "private": false
+    },
+    {
+      "name": "player",
+      "kind": "PropertyDeclaration",
+      "start": 550,
+      "end": 550,
+      "private": false
+    },
+    {
+      "name": "minersLight",
+      "kind": "PropertyDeclaration",
+      "start": 557,
+      "end": 557,
+      "private": false
+    },
+    {
+      "name": "minersLightBaseFixpt",
+      "kind": "PropertyDeclaration",
+      "start": 558,
+      "end": 558,
+      "private": true
+    },
+    {
+      "name": "autoPath",
+      "kind": "PropertyDeclaration",
+      "start": 559,
+      "end": 559,
+      "private": false
+    },
+    {
+      "name": "monsters",
+      "kind": "PropertyDeclaration",
+      "start": 560,
+      "end": 560,
+      "private": false
+    },
+    {
+      "name": "dormantMonsters",
+      "kind": "PropertyDeclaration",
+      "start": 568,
+      "end": 568,
+      "private": false
+    },
+    {
+      "name": "items",
+      "kind": "PropertyDeclaration",
+      "start": 569,
+      "end": 569,
+      "private": false
+    },
+    {
+      "name": "visibleMonsters",
+      "kind": "PropertyDeclaration",
+      "start": 570,
+      "end": 570,
+      "private": false
+    },
+    {
+      "name": "visibleItems",
+      "kind": "PropertyDeclaration",
+      "start": 571,
+      "end": 571,
+      "private": false
+    },
+    {
+      "name": "isMouseTraveling",
+      "kind": "PropertyDeclaration",
+      "start": 572,
+      "end": 572,
+      "private": false
+    },
+    {
+      "name": "everSeenItems",
+      "kind": "PropertyDeclaration",
+      "start": 573,
+      "end": 573,
+      "private": false
+    },
+    {
+      "name": "everSeenMonsters",
+      "kind": "PropertyDeclaration",
+      "start": 574,
+      "end": 574,
+      "private": false
+    },
+    {
+      "name": "travelTargetItem",
+      "kind": "PropertyDeclaration",
+      "start": 575,
+      "end": 575,
+      "private": false
+    },
+    {
+      "name": "floatingTexts",
+      "kind": "PropertyDeclaration",
+      "start": 576,
+      "end": 576,
+      "private": false
+    },
+    {
+      "name": "onRenderRequested",
+      "kind": "PropertyDeclaration",
+      "start": 579,
+      "end": 579,
+      "private": false
+    },
+    {
+      "name": "onConfirmRequest",
+      "kind": "PropertyDeclaration",
+      "start": 587,
+      "end": 587,
+      "private": false
+    },
+    {
+      "name": "playerFalling",
+      "kind": "PropertyDeclaration",
+      "start": 596,
+      "end": 596,
+      "private": true
+    },
+    {
+      "name": "displacementTrapDepressions",
+      "kind": "PropertyDeclaration",
+      "start": 598,
+      "end": 598,
+      "private": true
+    },
+    {
+      "name": "pendingFallenByDepth",
+      "kind": "PropertyDeclaration",
+      "start": 607,
+      "end": 607,
+      "private": true
+    },
+    {
+      "name": "needsRender",
+      "kind": "PropertyDeclaration",
+      "start": 609,
+      "end": 609,
+      "private": true
+    },
+    {
+      "name": "isInventoryOpen",
+      "kind": "PropertyDeclaration",
+      "start": 610,
+      "end": 610,
+      "private": false
+    },
+    {
+      "name": "pendingIdentify",
+      "kind": "PropertyDeclaration",
+      "start": 620,
+      "end": 620,
+      "private": false
+    },
+    {
+      "name": "pendingEnchantment",
+      "kind": "PropertyDeclaration",
+      "start": 621,
+      "end": 621,
+      "private": false
+    },
+    {
+      "name": "pendingArcana",
+      "kind": "PropertyDeclaration",
+      "start": 623,
+      "end": 623,
+      "private": false
+    },
+    {
+      "name": "isThrowing",
+      "kind": "PropertyDeclaration",
+      "start": 625,
+      "end": 625,
+      "private": false
+    },
+    {
+      "name": "throwItemTarget",
+      "kind": "PropertyDeclaration",
+      "start": 626,
+      "end": 626,
+      "private": false
+    },
+    {
+      "name": "isExamining",
+      "kind": "PropertyDeclaration",
+      "start": 628,
+      "end": 628,
+      "private": false
+    },
+    {
+      "name": "inspectTarget",
+      "kind": "PropertyDeclaration",
+      "start": 629,
+      "end": 629,
+      "private": false
+    },
+    {
+      "name": "examinedEntityIds",
+      "kind": "PropertyDeclaration",
+      "start": 630,
+      "end": 630,
+      "private": false
+    },
+    {
+      "name": "depth",
+      "kind": "PropertyDeclaration",
+      "start": 632,
+      "end": 632,
+      "private": false
+    },
+    {
+      "name": "mode",
+      "kind": "PropertyDeclaration",
+      "start": 633,
+      "end": 633,
+      "private": false
+    },
+    {
+      "name": "currentSeed",
+      "kind": "PropertyDeclaration",
+      "start": 634,
+      "end": 634,
+      "private": false
+    },
+    {
+      "name": "meteredItems",
+      "kind": "PropertyDeclaration",
+      "start": 642,
+      "end": 642,
+      "private": true
+    },
+    {
+      "name": "foodSpawned",
+      "kind": "PropertyDeclaration",
+      "start": 644,
+      "end": 644,
+      "private": true
+    },
+    {
+      "name": "goldGenerated",
+      "kind": "PropertyDeclaration",
+      "start": 651,
+      "end": 651,
+      "private": true
+    },
+    {
+      "name": "monsterSpawnFuse",
+      "kind": "PropertyDeclaration",
+      "start": 654,
+      "end": 654,
+      "private": false
+    },
+    {
+      "name": "ticksTillUpdateEnvironment",
+      "kind": "PropertyDeclaration",
+      "start": 659,
+      "end": 659,
+      "private": false
+    },
+    {
+      "name": "lastPromotionUpdate",
+      "kind": "PropertyDeclaration",
+      "start": 663,
+      "end": 663,
+      "private": false
+    },
+    {
+      "name": "pendingCaughtFireCells",
+      "kind": "PropertyDeclaration",
+      "start": 667,
+      "end": 667,
+      "private": true
+    },
+    {
+      "name": "scent",
+      "kind": "PropertyDeclaration",
+      "start": 672,
+      "end": 672,
+      "private": false
+    },
+    {
+      "name": "safetyMap",
+      "kind": "PropertyDeclaration",
+      "start": 678,
+      "end": 678,
+      "private": false
+    },
+    {
+      "name": "updatedSafetyMapThisTurn",
+      "kind": "PropertyDeclaration",
+      "start": 679,
+      "end": 679,
+      "private": false
+    },
+    {
+      "name": "loopMap",
+      "kind": "PropertyDeclaration",
+      "start": 687,
+      "end": 687,
+      "private": false
+    },
+    {
+      "name": "waypoints",
+      "kind": "PropertyDeclaration",
+      "start": 695,
+      "end": 695,
+      "private": false
+    },
+    {
+      "name": "machineCells",
+      "kind": "PropertyDeclaration",
+      "start": 701,
+      "end": 701,
+      "private": true
+    },
+    {
+      "name": "isGameOver",
+      "kind": "PropertyDeclaration",
+      "start": 704,
+      "end": 704,
+      "private": false
+    },
+    {
+      "name": "gameOverWon",
+      "kind": "PropertyDeclaration",
+      "start": 705,
+      "end": 705,
+      "private": false
+    },
+    {
+      "name": "gameOverReason",
+      "kind": "PropertyDeclaration",
+      "start": 706,
+      "end": 706,
+      "private": false
+    },
+    {
+      "name": "stats",
+      "kind": "PropertyDeclaration",
+      "start": 707,
+      "end": 712,
+      "private": false
+    },
+    {
+      "name": "lastDamageSource",
+      "kind": "PropertyDeclaration",
+      "start": 713,
+      "end": 713,
+      "private": false
+    },
+    {
+      "name": "gameOverInventory",
+      "kind": "PropertyDeclaration",
+      "start": 714,
+      "end": 714,
+      "private": false
+    },
+    {
+      "name": "gameOverScore",
+      "kind": "PropertyDeclaration",
+      "start": 715,
+      "end": 715,
+      "private": false
+    },
+    {
+      "name": "levels",
+      "kind": "PropertyDeclaration",
+      "start": 717,
+      "end": 717,
+      "private": false
+    },
+    {
+      "name": "combatSystem",
+      "kind": "PropertyDeclaration",
+      "start": 718,
+      "end": 718,
+      "private": false
+    },
+    {
+      "name": "recordingStartAt",
+      "kind": "PropertyDeclaration",
+      "start": 719,
+      "end": 719,
+      "private": false
+    },
+    {
+      "name": "recordedInputEvents",
+      "kind": "PropertyDeclaration",
+      "start": 720,
+      "end": 720,
+      "private": false
+    },
+    {
+      "name": "recordedInputIndex",
+      "kind": "PropertyDeclaration",
+      "start": 721,
+      "end": 721,
+      "private": true
+    },
+    {
+      "name": "replayRecording",
+      "kind": "PropertyDeclaration",
+      "start": 722,
+      "end": 722,
+      "private": false
+    },
+    {
+      "name": "replayEvents",
+      "kind": "PropertyDeclaration",
+      "start": 723,
+      "end": 723,
+      "private": false
+    },
+    {
+      "name": "replayCursor",
+      "kind": "PropertyDeclaration",
+      "start": 724,
+      "end": 724,
+      "private": false
+    },
+    {
+      "name": "replayStatus",
+      "kind": "PropertyDeclaration",
+      "start": 725,
+      "end": 725,
+      "private": false
+    },
+    {
+      "name": "replayFrameAccumulator",
+      "kind": "PropertyDeclaration",
+      "start": 726,
+      "end": 726,
+      "private": true
+    },
+    {
+      "name": "replayFramesPerStep",
+      "kind": "PropertyDeclaration",
+      "start": 727,
+      "end": 727,
+      "private": true
+    },
+    {
+      "name": "signTexts",
+      "kind": "PropertyDeclaration",
+      "start": 728,
+      "end": 728,
+      "private": false
+    },
+    {
+      "name": "resetPlateRoomByPos",
+      "kind": "PropertyDeclaration",
+      "start": 729,
+      "end": 729,
+      "private": false
+    },
+    {
+      "name": "testRooms",
+      "kind": "PropertyDeclaration",
+      "start": 730,
+      "end": 730,
+      "private": false
+    },
+    {
+      "name": "currentTestCategory",
+      "kind": "PropertyDeclaration",
+      "start": 731,
+      "end": 731,
+      "private": false
+    },
+    {
+      "kind": "Constructor",
+      "start": 733,
+      "end": 738,
+      "private": false
+    },
+    {
+      "name": "startNewGame",
+      "kind": "MethodDeclaration",
+      "start": 740,
+      "end": 852,
+      "private": false
+    },
+    {
+      "name": "spawnPopulateItem",
+      "kind": "MethodDeclaration",
+      "start": 865,
+      "end": 964,
+      "private": true
+    },
+    {
+      "name": "chooseKindFromPool",
+      "kind": "MethodDeclaration",
+      "start": 967,
+      "end": 971,
+      "private": true
+    },
+    {
+      "name": "spawnConsumableById",
+      "kind": "MethodDeclaration",
+      "start": 974,
+      "end": 978,
+      "private": true
+    },
+    {
+      "name": "spawnKindById",
+      "kind": "MethodDeclaration",
+      "start": 980,
+      "end": 993,
+      "private": true
+    },
+    {
+      "name": "decrementMeteredForSpawn",
+      "kind": "MethodDeclaration",
+      "start": 1002,
+      "end": 1014,
+      "private": true
+    },
+    {
+      "name": "applyRandomMutation",
+      "kind": "MethodDeclaration",
+      "start": 1016,
+      "end": 1032,
+      "private": true
+    },
+    {
+      "name": "spawnBlueprintItem",
+      "kind": "MethodDeclaration",
+      "start": 1035,
+      "end": 1144,
+      "private": true
+    },
+    {
+      "name": "resolveBlueprintMonster",
+      "kind": "MethodDeclaration",
+      "start": 1147,
+      "end": 1177,
+      "private": true
+    },
+    {
+      "name": "generateDepth",
+      "kind": "MethodDeclaration",
+      "start": 1179,
+      "end": 1300,
+      "private": true
+    },
+    {
+      "name": "populateLevel",
+      "kind": "MethodDeclaration",
+      "start": 1302,
+      "end": 1693,
+      "private": true
+    },
+    {
+      "name": "placePlayerOnLevelEntry",
+      "kind": "MethodDeclaration",
+      "start": 1707,
+      "end": 1729,
+      "private": true
+    },
+    {
+      "name": "entryQualifiesForPlacement",
+      "kind": "MethodDeclaration",
+      "start": 1742,
+      "end": 1755,
+      "private": true
+    },
+    {
+      "name": "findQualifyingPathLocNear",
+      "kind": "MethodDeclaration",
+      "start": 1768,
+      "end": 1827,
+      "private": true
+    },
+    {
+      "name": "hordeCandidates",
+      "kind": "MethodDeclaration",
+      "start": 1834,
+      "end": 1840,
+      "private": false
+    },
+    {
+      "name": "pickHordeType",
+      "kind": "MethodDeclaration",
+      "start": 1846,
+      "end": 1855,
+      "private": false
+    },
+    {
+      "name": "rollSpawnDepth",
+      "kind": "MethodDeclaration",
+      "start": 1862,
+      "end": 1869,
+      "private": false
+    },
+    {
+      "name": "SPAWNS_IN_TERRAIN",
+      "kind": "PropertyDeclaration",
+      "start": 1873,
+      "end": 1889,
+      "private": true
+    },
+    {
+      "name": "spawnHordeAtFeature",
+      "kind": "MethodDeclaration",
+      "start": 1906,
+      "end": 1933,
+      "private": true
+    },
+    {
+      "name": "hordeFitsTerrain",
+      "kind": "MethodDeclaration",
+      "start": 1936,
+      "end": 1942,
+      "private": true
+    },
+    {
+      "name": "findTerrainSpawnLocation",
+      "kind": "MethodDeclaration",
+      "start": 1953,
+      "end": 1973,
+      "private": true
+    },
+    {
+      "name": "passableArcCount",
+      "kind": "MethodDeclaration",
+      "start": 1980,
+      "end": 1994,
+      "private": true
+    },
+    {
+      "name": "spawnHordeAt",
+      "kind": "MethodDeclaration",
+      "start": 2001,
+      "end": 2095,
+      "private": true
+    },
+    {
+      "name": "findNearbySpawnSpot",
+      "kind": "MethodDeclaration",
+      "start": 2103,
+      "end": 2119,
+      "private": true
+    },
+    {
+      "name": "findSummonAtDistanceLocations",
+      "kind": "MethodDeclaration",
+      "start": 2129,
+      "end": 2169,
+      "private": true
+    },
+    {
+      "name": "summonMinionsFor",
+      "kind": "MethodDeclaration",
+      "start": 2198,
+      "end": 2252,
+      "private": false
+    },
+    {
+      "name": "findPeriodicSpawnLocation",
+      "kind": "MethodDeclaration",
+      "start": 2263,
+      "end": 2287,
+      "private": true
+    },
+    {
+      "name": "spawnPeriodicHorde",
+      "kind": "MethodDeclaration",
+      "start": 2293,
+      "end": 2312,
+      "private": false
+    },
+    {
+      "name": "posKey",
+      "kind": "MethodDeclaration",
+      "start": 2314,
+      "end": 2316,
+      "private": true
+    },
+    {
+      "name": "getTestCategoryForDepth",
+      "kind": "MethodDeclaration",
+      "start": 2318,
+      "end": 2321,
+      "private": true
+    },
+    {
+      "name": "getTestCategoryLabel",
+      "kind": "MethodDeclaration",
+      "start": 2323,
+      "end": 2336,
+      "private": true
+    },
+    {
+      "name": "handleExamineNearest",
+      "kind": "MethodDeclaration",
+      "start": 2338,
+      "end": 2398,
+      "private": true
+    },
+    {
+      "name": "handleInspectAt",
+      "kind": "MethodDeclaration",
+      "start": 2400,
+      "end": 2427,
+      "private": false
+    },
+    {
+      "name": "createMonsterFromSnapshot",
+      "kind": "MethodDeclaration",
+      "start": 2429,
+      "end": 2472,
+      "private": true
+    },
+    {
+      "name": "generateTestDepth",
+      "kind": "MethodDeclaration",
+      "start": 2474,
+      "end": 2838,
+      "private": true
+    },
+    {
+      "name": "spawnBlood",
+      "kind": "MethodDeclaration",
+      "start": 2840,
+      "end": 2853,
+      "private": false
+    },
+    {
+      "name": "spawnFloatingText",
+      "kind": "MethodDeclaration",
+      "start": 2855,
+      "end": 2858,
+      "private": false
+    },
+    {
+      "name": "refreshMinersLight",
+      "kind": "MethodDeclaration",
+      "start": 2879,
+      "end": 2887,
+      "private": true
+    },
+    {
+      "name": "minersLightDef",
+      "kind": "MethodDeclaration",
+      "start": 2890,
+      "end": 2898,
+      "private": true
+    },
+    {
+      "name": "hasCreatureAtForLight",
+      "kind": "MethodDeclaration",
+      "start": 2901,
+      "end": 2904,
+      "private": true
+    },
+    {
+      "name": "playerInDarkness",
+      "kind": "MethodDeclaration",
+      "start": 2910,
+      "end": 2915,
+      "private": true
+    },
+    {
+      "name": "updateVision",
+      "kind": "MethodDeclaration",
+      "start": 2923,
+      "end": 3000,
+      "private": true
+    },
+    {
+      "name": "update",
+      "kind": "MethodDeclaration",
+      "start": 3002,
+      "end": 3053,
+      "private": false
+    },
+    {
+      "name": "isTimePaused",
+      "kind": "MethodDeclaration",
+      "start": 3055,
+      "end": 3057,
+      "private": false
+    },
+    {
+      "name": "toRecordedInputData",
+      "kind": "MethodDeclaration",
+      "start": 3059,
+      "end": 3069,
+      "private": true
+    },
+    {
+      "name": "recordInputEvent",
+      "kind": "MethodDeclaration",
+      "start": 3071,
+      "end": 3080,
+      "private": true
+    },
+    {
+      "name": "exportRecording",
+      "kind": "MethodDeclaration",
+      "start": 3082,
+      "end": 3098,
+      "private": false
+    },
+    {
+      "name": "clearRecording",
+      "kind": "MethodDeclaration",
+      "start": 3100,
+      "end": 3104,
+      "private": false
+    },
+    {
+      "name": "clearReplay",
+      "kind": "MethodDeclaration",
+      "start": 3106,
+      "end": 3112,
+      "private": false
+    },
+    {
+      "name": "decodeRecordedInputData",
+      "kind": "MethodDeclaration",
+      "start": 3114,
+      "end": 3118,
+      "private": true
+    },
+    {
+      "name": "isValidRecording",
+      "kind": "MethodDeclaration",
+      "start": 3120,
+      "end": 3127,
+      "private": true
+    },
+    {
+      "name": "loadReplay",
+      "kind": "MethodDeclaration",
+      "start": 3129,
+      "end": 3160,
+      "private": false
+    },
+    {
+      "name": "replayPlay",
+      "kind": "MethodDeclaration",
+      "start": 3162,
+      "end": 3169,
+      "private": false
+    },
+    {
+      "name": "replayPause",
+      "kind": "MethodDeclaration",
+      "start": 3171,
+      "end": 3175,
+      "private": false
+    },
+    {
+      "name": "replayRestart",
+      "kind": "MethodDeclaration",
+      "start": 3177,
+      "end": 3180,
+      "private": false
+    },
+    {
+      "name": "replayStep",
+      "kind": "MethodDeclaration",
+      "start": 3182,
+      "end": 3205,
+      "private": false
+    },
+    {
+      "name": "tickReplay",
+      "kind": "MethodDeclaration",
+      "start": 3207,
+      "end": 3213,
+      "private": false
+    },
+    {
+      "name": "replaySeek",
+      "kind": "MethodDeclaration",
+      "start": 3215,
+      "end": 3230,
+      "private": false
+    },
+    {
+      "name": "handlePlayerAction",
+      "kind": "MethodDeclaration",
+      "start": 3232,
+      "end": 3740,
+      "private": false
+    },
+    {
+      "name": "equipItem",
+      "kind": "MethodDeclaration",
+      "start": 3742,
+      "end": 3761,
+      "private": false
+    },
+    {
+      "name": "unequipItem",
+      "kind": "MethodDeclaration",
+      "start": 3763,
+      "end": 3771,
+      "private": false
+    },
+    {
+      "name": "dropItem",
+      "kind": "MethodDeclaration",
+      "start": 3773,
+      "end": 3790,
+      "private": false
+    },
+    {
+      "name": "pendingUseConfirm",
+      "kind": "PropertyDeclaration",
+      "start": 3799,
+      "end": 3799,
+      "private": false
+    },
+    {
+      "name": "requiresMalevolentUseConfirmation",
+      "kind": "MethodDeclaration",
+      "start": 3813,
+      "end": 3818,
+      "private": false
+    },
+    {
+      "name": "malevolentUseConfirmPrompt",
+      "kind": "MethodDeclaration",
+      "start": 3821,
+      "end": 3833,
+      "private": false
+    },
+    {
+      "name": "confirmPendingUse",
+      "kind": "MethodDeclaration",
+      "start": 3836,
+      "end": 3846,
+      "private": false
+    },
+    {
+      "name": "cancelPendingUse",
+      "kind": "MethodDeclaration",
+      "start": 3849,
+      "end": 3851,
+      "private": false
+    },
+    {
+      "name": "gateMalevolentUse",
+      "kind": "MethodDeclaration",
+      "start": 3857,
+      "end": 3866,
+      "private": true
+    },
+    {
+      "name": "applyDetectMagic",
+      "kind": "MethodDeclaration",
+      "start": 3883,
+      "end": 3922,
+      "private": true
+    },
+    {
+      "name": "quaffItem",
+      "kind": "MethodDeclaration",
+      "start": 3924,
+      "end": 4072,
+      "private": false
+    },
+    {
+      "name": "eatItem",
+      "kind": "MethodDeclaration",
+      "start": 4074,
+      "end": 4101,
+      "private": false
+    },
+    {
+      "name": "readItem",
+      "kind": "MethodDeclaration",
+      "start": 4103,
+      "end": 4232,
+      "private": false
+    },
+    {
+      "name": "useArcanaItem",
+      "kind": "MethodDeclaration",
+      "start": 4234,
+      "end": 4298,
+      "private": false
+    },
+    {
+      "name": "getArcanaCandidates",
+      "kind": "MethodDeclaration",
+      "start": 4300,
+      "end": 4302,
+      "private": false
+    },
+    {
+      "name": "getArcanaPreview",
+      "kind": "MethodDeclaration",
+      "start": 4304,
+      "end": 4307,
+      "private": false
+    },
+    {
+      "name": "setArcanaTarget",
+      "kind": "MethodDeclaration",
+      "start": 4309,
+      "end": 4315,
+      "private": false
+    },
+    {
+      "name": "cycleArcanaTarget",
+      "kind": "MethodDeclaration",
+      "start": 4317,
+      "end": 4326,
+      "private": false
+    },
+    {
+      "name": "cancelArcanaSelection",
+      "kind": "MethodDeclaration",
+      "start": 4328,
+      "end": 4331,
+      "private": false
+    },
+    {
+      "name": "confirmArcanaTarget",
+      "kind": "MethodDeclaration",
+      "start": 4335,
+      "end": 4385,
+      "private": false
+    },
+    {
+      "name": "zapBoltFromPlayer",
+      "kind": "MethodDeclaration",
+      "start": 4391,
+      "end": 4405,
+      "private": false
+    },
+    {
+      "name": "directionToVec",
+      "kind": "MethodDeclaration",
+      "start": 4408,
+      "end": 4420,
+      "private": true
+    },
+    {
+      "name": "computeBoltResult",
+      "kind": "MethodDeclaration",
+      "start": 4425,
+      "end": 4427,
+      "private": true
+    },
+    {
+      "name": "boltWorld",
+      "kind": "MethodDeclaration",
+      "start": 4429,
+      "end": 4439,
+      "private": true
+    },
+    {
+      "name": "applyBoltTerrainAt",
+      "kind": "MethodDeclaration",
+      "start": 4445,
+      "end": 4460,
+      "private": true
+    },
+    {
+      "name": "applyBoltResult",
+      "kind": "MethodDeclaration",
+      "start": 4464,
+      "end": 4517,
+      "private": true
+    },
+    {
+      "name": "tunnelAt",
+      "kind": "MethodDeclaration",
+      "start": 4521,
+      "end": 4536,
+      "private": true
+    },
+    {
+      "name": "pendingBoltFrames",
+      "kind": "PropertyDeclaration",
+      "start": 4539,
+      "end": 4539,
+      "private": false
+    },
+    {
+      "name": "currentBoltFrameIndex",
+      "kind": "PropertyDeclaration",
+      "start": 4540,
+      "end": 4540,
+      "private": false
+    },
+    {
+      "name": "boltAnimStartTime",
+      "kind": "PropertyDeclaration",
+      "start": 4541,
+      "end": 4541,
+      "private": false
+    },
+    {
+      "name": "tickBoltAnimation",
+      "kind": "MethodDeclaration",
+      "start": 4544,
+      "end": 4560,
+      "private": false
+    },
+    {
+      "name": "getCurrentBoltFrame",
+      "kind": "MethodDeclaration",
+      "start": 4563,
+      "end": 4566,
+      "private": false
+    },
+    {
+      "name": "observeBoltReflection",
+      "kind": "MethodDeclaration",
+      "start": 4570,
+      "end": 4574,
+      "private": true
+    },
+    {
+      "name": "isDamageStaff",
+      "kind": "MethodDeclaration",
+      "start": 4578,
+      "end": 4581,
+      "private": true
+    },
+    {
+      "name": "applyDirectBoltDamage",
+      "kind": "MethodDeclaration",
+      "start": 4585,
+      "end": 4601,
+      "private": true
+    },
+    {
+      "name": "boltCasterMovement",
+      "kind": "MethodDeclaration",
+      "start": 4603,
+      "end": 4607,
+      "private": true
+    },
+    {
+      "name": "canObserveBoltTarget",
+      "kind": "MethodDeclaration",
+      "start": 4609,
+      "end": 4611,
+      "private": true
+    },
+    {
+      "name": "boltTerrainSignature",
+      "kind": "MethodDeclaration",
+      "start": 4614,
+      "end": 4616,
+      "private": true
+    },
+    {
+      "name": "boltLivingTarget",
+      "kind": "MethodDeclaration",
+      "start": 4618,
+      "end": 4620,
+      "private": true
+    },
+    {
+      "name": "applyBasicBoltEffect",
+      "kind": "MethodDeclaration",
+      "start": 4627,
+      "end": 4689,
+      "private": true
+    },
+    {
+      "name": "applyBoltEffect",
+      "kind": "MethodDeclaration",
+      "start": 4691,
+      "end": 5001,
+      "private": true
+    },
+    {
+      "name": "castMonsterBolt",
+      "kind": "MethodDeclaration",
+      "start": 5026,
+      "end": 5056,
+      "private": false
+    },
+    {
+      "name": "applyMonsterBoltHit",
+      "kind": "MethodDeclaration",
+      "start": 5060,
+      "end": 5185,
+      "private": true
+    },
+    {
+      "name": "beginIdentifySelection",
+      "kind": "MethodDeclaration",
+      "start": 5196,
+      "end": 5207,
+      "private": true
+    },
+    {
+      "name": "chooseIdentifyTarget",
+      "kind": "MethodDeclaration",
+      "start": 5216,
+      "end": 5228,
+      "private": false
+    },
+    {
+      "name": "callItem",
+      "kind": "MethodDeclaration",
+      "start": 5238,
+      "end": 5251,
+      "private": false
+    },
+    {
+      "name": "removeCurseFromInventory",
+      "kind": "MethodDeclaration",
+      "start": 5253,
+      "end": 5260,
+      "private": true
+    },
+    {
+      "name": "canEnchantTarget",
+      "kind": "MethodDeclaration",
+      "start": 5265,
+      "end": 5268,
+      "private": false
+    },
+    {
+      "name": "chooseEnchantTarget",
+      "kind": "MethodDeclaration",
+      "start": 5270,
+      "end": 5287,
+      "private": false
+    },
+    {
+      "name": "enchantEquippedItem",
+      "kind": "MethodDeclaration",
+      "start": 5289,
+      "end": 5312,
+      "private": true
+    },
+    {
+      "name": "rechargeStaffsAndCharms",
+      "kind": "MethodDeclaration",
+      "start": 5317,
+      "end": 5331,
+      "private": true
+    },
+    {
+      "name": "protectEquippedGear",
+      "kind": "MethodDeclaration",
+      "start": 5340,
+      "end": 5359,
+      "private": true
+    },
+    {
+      "name": "negateCreatureMagic",
+      "kind": "MethodDeclaration",
+      "start": 5364,
+      "end": 5428,
+      "private": true
+    },
+    {
+      "name": "negationBlastFromPlayer",
+      "kind": "MethodDeclaration",
+      "start": 5447,
+      "end": 5527,
+      "private": true
+    },
+    {
+      "name": "sanctuaryFromPlayer",
+      "kind": "MethodDeclaration",
+      "start": 5538,
+      "end": 5544,
+      "private": true
+    },
+    {
+      "name": "crystalizeFromPlayer",
+      "kind": "MethodDeclaration",
+      "start": 5571,
+      "end": 5616,
+      "private": true
+    },
+    {
+      "name": "discordBlastFromPlayer",
+      "kind": "MethodDeclaration",
+      "start": 5624,
+      "end": 5642,
+      "private": true
+    },
+    {
+      "name": "summonMonstersAroundPlayer",
+      "kind": "MethodDeclaration",
+      "start": 5655,
+      "end": 5699,
+      "private": true
+    },
+    {
+      "name": "enterThrowMode",
+      "kind": "MethodDeclaration",
+      "start": 5701,
+      "end": 5705,
+      "private": false
+    },
+    {
+      "name": "throwMaxDistance",
+      "kind": "MethodDeclaration",
+      "start": 5712,
+      "end": 5715,
+      "private": true
+    },
+    {
+      "name": "qualifyingThrowLanding",
+      "kind": "MethodDeclaration",
+      "start": 5726,
+      "end": 5757,
+      "private": true
+    },
+    {
+      "name": "THROWN_FUNCTIONAL_POTION_EFFECTS",
+      "kind": "PropertyDeclaration",
+      "start": 5771,
+      "end": 5772,
+      "private": true
+    },
+    {
+      "name": "thrownPotionAutoIdentifies",
+      "kind": "MethodDeclaration",
+      "start": 5781,
+      "end": 5792,
+      "private": true
+    },
+    {
+      "name": "throwItemAt",
+      "kind": "MethodDeclaration",
+      "start": 5794,
+      "end": 5980,
+      "private": false
+    },
+    {
+      "name": "justRested",
+      "kind": "PropertyDeclaration",
+      "start": 5988,
+      "end": 5988,
+      "private": true
+    },
+    {
+      "name": "justSearched",
+      "kind": "PropertyDeclaration",
+      "start": 5996,
+      "end": 5996,
+      "private": true
+    },
+    {
+      "name": "searchingCharge",
+      "kind": "PropertyDeclaration",
+      "start": 6005,
+      "end": 6005,
+      "private": true
+    },
+    {
+      "name": "secretScanDepth",
+      "kind": "PropertyDeclaration",
+      "start": 6015,
+      "end": 6015,
+      "private": true
+    },
+    {
+      "name": "levelHasSecrets",
+      "kind": "PropertyDeclaration",
+      "start": 6016,
+      "end": 6016,
+      "private": true
+    },
+    {
+      "name": "awarenessBonus",
+      "kind": "MethodDeclaration",
+      "start": 6030,
+      "end": 6032,
+      "private": true
+    },
+    {
+      "name": "calculateStealthRange",
+      "kind": "MethodDeclaration",
+      "start": 6056,
+      "end": 6088,
+      "private": true
+    },
+    {
+      "name": "applyTimedStatus",
+      "kind": "MethodDeclaration",
+      "start": 6090,
+      "end": 6104,
+      "private": true
+    },
+    {
+      "name": "getStatusLabel",
+      "kind": "MethodDeclaration",
+      "start": 6106,
+      "end": 6108,
+      "private": true
+    },
+    {
+      "name": "applyStatusToMonster",
+      "kind": "MethodDeclaration",
+      "start": 6110,
+      "end": 6140,
+      "private": true
+    },
+    {
+      "name": "getPlayerStatusResistance",
+      "kind": "MethodDeclaration",
+      "start": 6142,
+      "end": 6165,
+      "private": true
+    },
+    {
+      "name": "applyMonsterOnHitStatus",
+      "kind": "MethodDeclaration",
+      "start": 6167,
+      "end": 6230,
+      "private": false
+    },
+    {
+      "name": "syncEquipmentStatuses",
+      "kind": "MethodDeclaration",
+      "start": 6232,
+      "end": 6242,
+      "private": true
+    },
+    {
+      "name": "tryTriggerWeaponRunic",
+      "kind": "MethodDeclaration",
+      "start": 6244,
+      "end": 6335,
+      "private": true
+    },
+    {
+      "name": "applyWeaponRunicEffect",
+      "kind": "MethodDeclaration",
+      "start": 6342,
+      "end": 6428,
+      "private": true
+    },
+    {
+      "name": "tryTriggerArmorRunic",
+      "kind": "MethodDeclaration",
+      "start": 6432,
+      "end": 6598,
+      "private": false
+    },
+    {
+      "name": "resolvePoisonDamage",
+      "kind": "MethodDeclaration",
+      "start": 6603,
+      "end": 6617,
+      "private": true
+    },
+    {
+      "name": "tickCreatureStatuses",
+      "kind": "MethodDeclaration",
+      "start": 6619,
+      "end": 6655,
+      "private": true
+    },
+    {
+      "name": "logHungerTransition",
+      "kind": "MethodDeclaration",
+      "start": 6658,
+      "end": 6675,
+      "private": true
+    },
+    {
+      "name": "playerWillAttackTarget",
+      "kind": "MethodDeclaration",
+      "start": 6693,
+      "end": 6697,
+      "private": true
+    },
+    {
+      "name": "buildLungeFlailHitList",
+      "kind": "MethodDeclaration",
+      "start": 6718,
+      "end": 6749,
+      "private": true
+    },
+    {
+      "name": "buildPlayerMeleeHitList",
+      "kind": "MethodDeclaration",
+      "start": 6762,
+      "end": 6785,
+      "private": true
+    },
+    {
+      "name": "tryPlayerWeaponGeometryAttack",
+      "kind": "MethodDeclaration",
+      "start": 6793,
+      "end": 6802,
+      "private": true
+    },
+    {
+      "name": "playerWhipAttack",
+      "kind": "MethodDeclaration",
+      "start": 6813,
+      "end": 6834,
+      "private": true
+    },
+    {
+      "name": "playerSpearAttack",
+      "kind": "MethodDeclaration",
+      "start": 6845,
+      "end": 6872,
+      "private": true
+    },
+    {
+      "name": "dropMonsterLoot",
+      "kind": "MethodDeclaration",
+      "start": 6875,
+      "end": 6893,
+      "private": true
+    },
+    {
+      "name": "resolvePlayerMeleeAttackOn",
+      "kind": "MethodDeclaration",
+      "start": 6910,
+      "end": 7002,
+      "private": true
+    },
+    {
+      "name": "playerRecoversFromAttacking",
+      "kind": "MethodDeclaration",
+      "start": 7015,
+      "end": 7025,
+      "private": true
+    },
+    {
+      "name": "synchronizePlayerTimeState",
+      "kind": "MethodDeclaration",
+      "start": 7031,
+      "end": 7033,
+      "private": false
+    },
+    {
+      "name": "alliedCloneCount",
+      "kind": "MethodDeclaration",
+      "start": 7064,
+      "end": 7072,
+      "private": true
+    },
+    {
+      "name": "moveEntrancedMonsters",
+      "kind": "MethodDeclaration",
+      "start": 7103,
+      "end": 7108,
+      "private": true
+    },
+    {
+      "name": "findLiveSeizer",
+      "kind": "MethodDeclaration",
+      "start": 7110,
+      "end": 7116,
+      "private": true
+    },
+    {
+      "name": "processStaggerHit",
+      "kind": "MethodDeclaration",
+      "start": 7123,
+      "end": 7137,
+      "private": false
+    },
+    {
+      "name": "cloneMonster",
+      "kind": "MethodDeclaration",
+      "start": 7142,
+      "end": 7154,
+      "private": false
+    },
+    {
+      "name": "trySplitMonster",
+      "kind": "MethodDeclaration",
+      "start": 7160,
+      "end": 7244,
+      "private": true
+    },
+    {
+      "name": "triggerDeathFeatures",
+      "kind": "MethodDeclaration",
+      "start": 7276,
+      "end": 7320,
+      "private": true
+    },
+    {
+      "name": "FALL_DAMAGE_MIN",
+      "kind": "PropertyDeclaration",
+      "start": 7341,
+      "end": 7341,
+      "private": true
+    },
+    {
+      "name": "FALL_DAMAGE_MAX",
+      "kind": "PropertyDeclaration",
+      "start": 7342,
+      "end": 7342,
+      "private": true
+    },
+    {
+      "name": "requestConfirm",
+      "kind": "MethodDeclaration",
+      "start": 7345,
+      "end": 7348,
+      "private": true
+    },
+    {
+      "name": "diveConfirmationNeeded",
+      "kind": "MethodDeclaration",
+      "start": 7356,
+      "end": 7368,
+      "private": true
+    },
+    {
+      "name": "creatureShouldFall",
+      "kind": "MethodDeclaration",
+      "start": 7376,
+      "end": 7390,
+      "private": true
+    },
+    {
+      "name": "playerFalls",
+      "kind": "MethodDeclaration",
+      "start": 7411,
+      "end": 7471,
+      "private": true
+    },
+    {
+      "name": "monstersFall",
+      "kind": "MethodDeclaration",
+      "start": 7484,
+      "end": 7536,
+      "private": true
+    },
+    {
+      "name": "placePlayerOnFallLanding",
+      "kind": "MethodDeclaration",
+      "start": 7547,
+      "end": 7604,
+      "private": true
+    },
+    {
+      "name": "fallPathDistance",
+      "kind": "MethodDeclaration",
+      "start": 7611,
+      "end": 7646,
+      "private": true
+    },
+    {
+      "name": "keyMatchesLocation",
+      "kind": "MethodDeclaration",
+      "start": 7661,
+      "end": 7670,
+      "private": true
+    },
+    {
+      "name": "keyMatchingEntry",
+      "kind": "MethodDeclaration",
+      "start": 7674,
+      "end": 7681,
+      "private": true
+    },
+    {
+      "name": "keyInPackFor",
+      "kind": "MethodDeclaration",
+      "start": 7684,
+      "end": 7689,
+      "private": true
+    },
+    {
+      "name": "poisonedDuringTurn",
+      "kind": "PropertyDeclaration",
+      "start": 7691,
+      "end": 7691,
+      "private": true
+    },
+    {
+      "name": "removeDeadMonsters",
+      "kind": "MethodDeclaration",
+      "start": 7693,
+      "end": 7709,
+      "private": true
+    },
+    {
+      "name": "killOrphanedBoundFollowers",
+      "kind": "MethodDeclaration",
+      "start": 7713,
+      "end": 7717,
+      "private": true
+    },
+    {
+      "name": "playerTurnEnded",
+      "kind": "MethodDeclaration",
+      "start": 7719,
+      "end": 7819,
+      "private": true
+    },
+    {
+      "name": "updateSafetyMap",
+      "kind": "MethodDeclaration",
+      "start": 7827,
+      "end": 7838,
+      "private": false
+    },
+    {
+      "name": "wpContext",
+      "kind": "MethodDeclaration",
+      "start": 7846,
+      "end": 7854,
+      "private": false
+    },
+    {
+      "name": "rebuildWaypoints",
+      "kind": "MethodDeclaration",
+      "start": 7862,
+      "end": 7864,
+      "private": false
+    },
+    {
+      "name": "advancementLoop",
+      "kind": "MethodDeclaration",
+      "start": 7872,
+      "end": 7939,
+      "private": true
+    },
+    {
+      "name": "objectiveTimeBlock",
+      "kind": "MethodDeclaration",
+      "start": 7965,
+      "end": 8115,
+      "private": true
+    },
+    {
+      "name": "finishTurnEpilogue",
+      "kind": "MethodDeclaration",
+      "start": 8125,
+      "end": 8176,
+      "private": true
+    },
+    {
+      "name": "animationEnabled",
+      "kind": "PropertyDeclaration",
+      "start": 8189,
+      "end": 8189,
+      "private": false
+    },
+    {
+      "name": "ANIMATION_PAUSE_MS",
+      "kind": "PropertyDeclaration",
+      "start": 8199,
+      "end": 8199,
+      "private": false
+    },
+    {
+      "name": "ANIMATION_LOCK_TIMEOUT_MS",
+      "kind": "PropertyDeclaration",
+      "start": 8201,
+      "end": 8201,
+      "private": true
+    },
+    {
+      "name": "isAdvancing",
+      "kind": "PropertyDeclaration",
+      "start": 8204,
+      "end": 8204,
+      "private": false
+    },
+    {
+      "name": "lastAdvancementError",
+      "kind": "PropertyDeclaration",
+      "start": 8206,
+      "end": 8206,
+      "private": false
+    },
+    {
+      "name": "pendingPauseMs",
+      "kind": "PropertyDeclaration",
+      "start": 8208,
+      "end": 8208,
+      "private": false
+    },
+    {
+      "name": "advancementIter",
+      "kind": "PropertyDeclaration",
+      "start": 8210,
+      "end": 8210,
+      "private": true
+    },
+    {
+      "name": "animationAccumulatorMs",
+      "kind": "PropertyDeclaration",
+      "start": 8211,
+      "end": 8211,
+      "private": true
+    },
+    {
+      "name": "animationLockDeadline",
+      "kind": "PropertyDeclaration",
+      "start": 8212,
+      "end": 8212,
+      "private": true
+    },
+    {
+      "name": "isInputLocked",
+      "kind": "MethodDeclaration",
+      "start": 8222,
+      "end": 8224,
+      "private": false
+    },
+    {
+      "name": "isAutoTraveling",
+      "kind": "MethodDeclaration",
+      "start": 8239,
+      "end": 8241,
+      "private": false
+    },
+    {
+      "name": "inAutoTravelStep",
+      "kind": "PropertyDeclaration",
+      "start": 8244,
+      "end": 8244,
+      "private": true
+    },
+    {
+      "name": "beginAdvancement",
+      "kind": "MethodDeclaration",
+      "start": 8247,
+      "end": 8254,
+      "private": true
+    },
+    {
+      "name": "tickAdvancement",
+      "kind": "MethodDeclaration",
+      "start": 8260,
+      "end": 8267,
+      "private": false
+    },
+    {
+      "name": "stepAdvancement",
+      "kind": "MethodDeclaration",
+      "start": 8277,
+      "end": 8301,
+      "private": false
+    },
+    {
+      "name": "finishAdvancement",
+      "kind": "MethodDeclaration",
+      "start": 8309,
+      "end": 8328,
+      "private": true
+    },
+    {
+      "name": "discardInFlightAdvancement",
+      "kind": "MethodDeclaration",
+      "start": 8331,
+      "end": 8344,
+      "private": false
+    },
+    {
+      "name": "processIncrementalAutoID",
+      "kind": "MethodDeclaration",
+      "start": 8354,
+      "end": 8370,
+      "private": true
+    },
+    {
+      "name": "tickArcanaResources",
+      "kind": "MethodDeclaration",
+      "start": 8372,
+      "end": 8386,
+      "private": true
+    },
+    {
+      "name": "serializeItem",
+      "kind": "MethodDeclaration",
+      "start": 8388,
+      "end": 8428,
+      "private": true
+    },
+    {
+      "name": "deserializeItem",
+      "kind": "MethodDeclaration",
+      "start": 8430,
+      "end": 8498,
+      "private": true
+    },
+    {
+      "name": "toSnapshot",
+      "kind": "MethodDeclaration",
+      "start": 8500,
+      "end": 8588,
+      "private": false
+    },
+    {
+      "name": "serializeMonster",
+      "kind": "MethodDeclaration",
+      "start": 8595,
+      "end": 8647,
+      "private": true
+    },
+    {
+      "name": "deserializeMonster",
+      "kind": "MethodDeclaration",
+      "start": 8649,
+      "end": 8746,
+      "private": true
+    },
+    {
+      "name": "restoreMonsterLeaders",
+      "kind": "MethodDeclaration",
+      "start": 8748,
+      "end": 8757,
+      "private": true
+    },
+    {
+      "name": "loadSnapshot",
+      "kind": "MethodDeclaration",
+      "start": 8759,
+      "end": 8956,
+      "private": false
+    },
+    {
+      "name": "BURNING_DURATION_TURNS",
+      "kind": "PropertyDeclaration",
+      "start": 8970,
+      "end": 8970,
+      "private": true
+    },
+    {
+      "name": "burningDuration",
+      "kind": "MethodDeclaration",
+      "start": 8972,
+      "end": 8974,
+      "private": true
+    },
+    {
+      "name": "setBurningDuration",
+      "kind": "MethodDeclaration",
+      "start": 8976,
+      "end": 8983,
+      "private": true
+    },
+    {
+      "name": "extinguishCreatureFire",
+      "kind": "MethodDeclaration",
+      "start": 8990,
+      "end": 8996,
+      "private": true
+    },
+    {
+      "name": "cellExtinguishesFire",
+      "kind": "MethodDeclaration",
+      "start": 9001,
+      "end": 9003,
+      "private": true
+    },
+    {
+      "name": "exposeCreatureToFire",
+      "kind": "MethodDeclaration",
+      "start": 9022,
+      "end": 9039,
+      "private": true
+    },
+    {
+      "name": "resolveBurningDamage",
+      "kind": "MethodDeclaration",
+      "start": 9053,
+      "end": 9072,
+      "private": true
+    },
+    {
+      "name": "EXPLOSION_IMMUNITY_TURNS",
+      "kind": "PropertyDeclaration",
+      "start": 9092,
+      "end": 9092,
+      "private": true
+    },
+    {
+      "name": "explosionImmunityDuration",
+      "kind": "MethodDeclaration",
+      "start": 9094,
+      "end": 9096,
+      "private": true
+    },
+    {
+      "name": "setExplosionImmunityDuration",
+      "kind": "MethodDeclaration",
+      "start": 9098,
+      "end": 9105,
+      "private": true
+    },
+    {
+      "name": "resolveExplosionDamage",
+      "kind": "MethodDeclaration",
+      "start": 9122,
+      "end": 9170,
+      "private": true
+    },
+    {
+      "name": "applyInstantExplosionAt",
+      "kind": "MethodDeclaration",
+      "start": 9183,
+      "end": 9197,
+      "private": true
+    },
+    {
+      "name": "applyEnvironmentalEffects",
+      "kind": "MethodDeclaration",
+      "start": 9203,
+      "end": 9452,
+      "private": true
+    },
+    {
+      "name": "getMonsterAt",
+      "kind": "MethodDeclaration",
+      "start": 9454,
+      "end": 9456,
+      "private": false
+    },
+    {
+      "name": "bindDormantAwakener",
+      "kind": "MethodDeclaration",
+      "start": 9467,
+      "end": 9470,
+      "private": true
+    },
+    {
+      "name": "awakenDormantMonstersAt",
+      "kind": "MethodDeclaration",
+      "start": 9479,
+      "end": 9486,
+      "private": true
+    },
+    {
+      "name": "toggleMonsterDormancy",
+      "kind": "MethodDeclaration",
+      "start": 9509,
+      "end": 9565,
+      "private": false
+    },
+    {
+      "name": "finalizeBlueprintMonster",
+      "kind": "MethodDeclaration",
+      "start": 9582,
+      "end": 9608,
+      "private": true
+    },
+    {
+      "name": "hoveredCell",
+      "kind": "PropertyDeclaration",
+      "start": 9610,
+      "end": 9610,
+      "private": false
+    },
+    {
+      "name": "hoveredText",
+      "kind": "PropertyDeclaration",
+      "start": 9611,
+      "end": 9611,
+      "private": false
+    },
+    {
+      "name": "handleAutoExplore",
+      "kind": "MethodDeclaration",
+      "start": 9613,
+      "end": 9683,
+      "private": true
+    },
+    {
+      "name": "handleMouseTravel",
+      "kind": "MethodDeclaration",
+      "start": 9685,
+      "end": 9709,
+      "private": false
+    },
+    {
+      "name": "canMoveTo",
+      "kind": "MethodDeclaration",
+      "start": 9711,
+      "end": 9724,
+      "private": true
+    },
+    {
+      "name": "hasLineOfSight",
+      "kind": "MethodDeclaration",
+      "start": 9726,
+      "end": 9752,
+      "private": false
+    },
+    {
+      "name": "isInsideTestRoom",
+      "kind": "MethodDeclaration",
+      "start": 9754,
+      "end": 9756,
+      "private": true
+    },
+    {
+      "name": "resetTestRoom",
+      "kind": "MethodDeclaration",
+      "start": 9758,
+      "end": 9793,
+      "private": true
+    },
+    {
+      "name": "handleSpecialTileEntry",
+      "kind": "MethodDeclaration",
+      "start": 9795,
+      "end": 9833,
+      "private": true
+    },
+    {
+      "name": "searchForSecrets",
+      "kind": "MethodDeclaration",
+      "start": 9865,
+      "end": 9926,
+      "private": true
+    },
+    {
+      "name": "discoverSecretAt",
+      "kind": "MethodDeclaration",
+      "start": 9950,
+      "end": 9959,
+      "private": true
+    },
+    {
+      "name": "manualSearch",
+      "kind": "MethodDeclaration",
+      "start": 9967,
+      "end": 9991,
+      "private": true
+    },
+    {
+      "name": "triggerTrap",
+      "kind": "MethodDeclaration",
+      "start": 9994,
+      "end": 10023,
+      "private": true
+    },
+    {
+      "name": "triggerPressurePlate",
+      "kind": "MethodDeclaration",
+      "start": 10026,
+      "end": 10042,
+      "private": true
+    },
+    {
+      "name": "finishBlink",
+      "kind": "MethodDeclaration",
+      "start": 10049,
+      "end": 10052,
+      "private": true
+    },
+    {
+      "name": "beckonCreature",
+      "kind": "MethodDeclaration",
+      "start": 10059,
+      "end": 10074,
+      "private": true
+    },
+    {
+      "name": "placeCreature",
+      "kind": "MethodDeclaration",
+      "start": 10081,
+      "end": 10102,
+      "private": false
+    },
+    {
+      "name": "teleportCreature",
+      "kind": "MethodDeclaration",
+      "start": 10105,
+      "end": 10117,
+      "private": true
+    },
+    {
+      "name": "demoteMonsterFromLeadership",
+      "kind": "MethodDeclaration",
+      "start": 10121,
+      "end": 10144,
+      "private": true
+    },
+    {
+      "name": "becomeAllyWith",
+      "kind": "MethodDeclaration",
+      "start": 10148,
+      "end": 10180,
+      "private": false
+    },
+    {
+      "name": "freeCaptive",
+      "kind": "MethodDeclaration",
+      "start": 10182,
+      "end": 10190,
+      "private": false
+    },
+    {
+      "name": "applyDisplacementTileEntry",
+      "kind": "MethodDeclaration",
+      "start": 10193,
+      "end": 10218,
+      "private": true
+    },
+    {
+      "name": "pickUpItemAfterDisplacement",
+      "kind": "MethodDeclaration",
+      "start": 10221,
+      "end": 10232,
+      "private": true
+    },
+    {
+      "name": "teleportPlayerRandom",
+      "kind": "MethodDeclaration",
+      "start": 10235,
+      "end": 10252,
+      "private": true
+    },
+    {
+      "name": "getTerrainName",
+      "kind": "MethodDeclaration",
+      "start": 10254,
+      "end": 10309,
+      "private": true
+    },
+    {
+      "name": "updateHover",
+      "kind": "MethodDeclaration",
+      "start": 10311,
+      "end": 10385,
+      "private": false
+    },
+    {
+      "name": "setAutoPath",
+      "kind": "MethodDeclaration",
+      "start": 10387,
+      "end": 10395,
+      "private": false
+    },
+    {
+      "name": "stepAutoPath",
+      "kind": "MethodDeclaration",
+      "start": 10397,
+      "end": 10412,
+      "private": false
+    },
+    {
+      "name": "stepAutoPathInner",
+      "kind": "MethodDeclaration",
+      "start": 10414,
+      "end": 10520,
+      "private": true
+    },
+    {
+      "name": "triggerGameOver",
+      "kind": "MethodDeclaration",
+      "start": 10522,
+      "end": 10554,
+      "private": false
+    }
+  ]
+}
