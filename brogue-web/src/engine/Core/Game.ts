@@ -6,7 +6,7 @@ import { anyoneWantABite } from '../Combat/MonsterAbsorption';
  * Main game state and orchestration
  */
 import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer, type Cell } from '../Map/Grid';
-import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_IS_FIRE, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_PATHING_BLOCKER, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP } from '../Map/TerrainCatalog';
+import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_IS_FIRE, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP } from '../Map/TerrainCatalog';
 import { isPathingBlocker } from '../Map/TerrainCatalog';
 // B-4b：物品落位热力图与食物落位原语（CE Items.c:463-535 / Architect.c:171,3822）
 import { ItemSpawnHeatMap, passableArcCount, randomMatchingLocation } from '../Items/ItemSpawnHeatMap';
@@ -138,19 +138,6 @@ const SPAWN_FUSE_MIN = 125;
 const SPAWN_FUSE_MAX = 175;
 /** Items.c:4899 discordBlast：monst->status[STATUS_DISCORDANT] = 30（CE 无独立常量，硬编码） */
 const DISCORD_DURATION = 30;
-
-/**
- * D2 标志：web 自创的"深水淹死"（怪物/玩家站在深水格即死）。
- * CE 无此机制——全 CE 源码 grep drown 零匹配；深水 tile（Globals.c:413 DEEP_WATER）
- * 不带任何伤害旗标，坠入深水零伤害（Time.c:1146-1150 "You fall into deep water,
- * unharmed."）。CE 的地形旗标定义：
- *   Rogue.h:1932  T_LAVA_INSTA_DEATH = Fl(8)   // kills any non-levitating non-fire-immune creature instantly
- *   Rogue.h:1937  T_IS_DEEP_WATER    = Fl(13)  // steals items 50% of the time and moves them around randomly
- * 即：唯一的即死地形是熔岩，深水只偷物品、不杀任何东西。
- * 按决策 D2（自创内容保留代码、退出生效路径）置 false；二次开发如需恢复
- * 该自创机制，改回 true 即可。
- */
-const WEB_ONLY_DEEP_WATER_DROWNING: boolean = false;
 
 /**
  * HORDE_MACHINE_ONLY 复合标志的成员（Rogue.h:2049-2055）。
@@ -3398,18 +3385,14 @@ export class Game {
                             logger.log(i18next.t('door.unlocked', { defaultValue: 'You unlock the door with a key.' }), '#88ff88');
                         }
 
-                        // Check if we freed a caged monster
-                        for (const m of this.monsters) {
+                        // The cage promotion releases its captive through the same
+                        // relation transition used by magical rescue.
+                        if (isCage) for (const m of this.monsters) {
                             if (m.isCaged) {
                                 // Cage interior is 1 step away from the door
                                 const dist = Math.max(Math.abs(m.loc.x - newX), Math.abs(m.loc.y - newY));
                                 if (dist <= 2) {
-                                    m.isCaged = false;
-                                    m.isAlly = true;
-                                    logger.log(i18next.t('monster.freed', {
-                                        monster: m.name,
-                                        defaultValue: `The ${m.name} is grateful for its freedom and joins you!`
-                                    }), '#88ff88');
+                                    this.freeCaptive(m);
                                     this.spawnFloatingText('Ally!', m.loc.x, m.loc.y, 0x88ff88);
                                 }
                             }
@@ -3468,7 +3451,9 @@ export class Game {
                         timeSystem.currentTick += this.player.movementSpeed;
                         this.handleSpecialTileEntry();
                     }
-                } else if (this.canMoveTo(newX, newY)) {
+                } else if (this.canMoveTo(newX, newY)
+                    || (this.grid.getCell(newX, newY)?.layers.some(isDeepWater)
+                        && !this.grid.getCell(newX, newY)?.layers.some(blocksPassability))) {
                     // C-5：CE Movement.c:1303-1322——踩**已发现**的渊格前的确认。
                     // 前置条件逐条照抄：目标格已发现（DISCOVERED|MAGIC_MAPPED）、
                     // 玩家非悬浮（STATUS_LEVITATING<=1）、非混乱（STATUS_CONFUSED）、
@@ -7737,6 +7722,76 @@ export class Game {
         }
     }
 
+    /** CE Time.c:549-590: gradual water effect uses the action's tick cost. */
+    private sweepDeepWaterItem(creature: Creature, ticks: number): void {
+        const { x, y } = creature.loc;
+        const flags = cellTerrainFlags(this.grid, x, y);
+        if (creature.hasStatus('levitating') || creature.hasStatus('flying')
+            || !(flags & T_IS_DEEP_WATER) || (flags & (T_ENTANGLES | T_OBSTRUCTS_PASSABILITY))) return;
+        if (creature instanceof Monster && creature.hasBehavior('MONST_IMMUNE_TO_WATER')) return;
+        if (this.items.some(item => item.x === x && item.y === y)) return;
+        if (creature instanceof Monster && !creature.carriedItem) return;
+        if (!rng.randPercent(Math.floor(ticks * 50 / 100))) return;
+        if (creature instanceof Monster) {
+            const item = creature.carriedItem!;
+            const candidates = captiveItemDropCandidates(this, creature.loc, this.items);
+            if (!candidates.length) return;
+            const dest = candidates[rng.randRange(0, candidates.length - 1)]!;
+            creature.carriedItem = null;
+            item.loc = { ...dest };
+            this.items.push(item);
+            promoteOnItemPlaced(this.grid, dest.x, dest.y);
+        } else {
+            const pack = this.player.inventory.items.filter(item =>
+                item !== this.player.equippedWeapon && item !== this.player.equippedArmor
+                && item !== this.player.ringLeft && item !== this.player.ringRight);
+            if (!pack.length) return;
+            const chosen = pack[rng.randRange(0, pack.length - 1)]!;
+            let drop = chosen;
+            if (chosen.quantity > 1 && chosen.category !== ItemCategory.WEAPON) {
+                const peeled = new Item(chosen.name, chosen.char, chosen.color, chosen.category);
+                drop = Object.assign(peeled, chosen, { id: peeled.id, quantity: 1, loc: { x, y } });
+            }
+            if (drop === chosen) this.player.inventory.removeItem(chosen);
+            else chosen.quantity--;
+            // CE dropItem first picks up an existing floor item; the occupied
+            // cell guard above means that path cannot be reached here.
+            drop.loc = { x, y };
+            this.items.push(drop);
+            logger.log(i18next.t('env.item_floats_away', {
+                item: drop.displayName, defaultValue: '{{item}} floats away in the current!'
+            }), '#ffffaa');
+        }
+        if (!(creature instanceof Monster)) promoteOnItemPlaced(this.grid, x, y);
+        this.needsRender = true;
+    }
+
+    /** CE Items.c:1209-1277: floor items on moving liquid drift at environment updates. */
+    private driftFloorItems(): void {
+        for (const item of [...this.items]) {
+            const { x, y } = item.loc;
+            if (!(cellTerrainFlags(this.grid, x, y) & T_MOVES_ITEMS)) continue;
+            let candidates: Pos[] = [];
+            for (let radius = 0; radius < Math.max(this.grid.width, this.grid.height) && !candidates.length; radius++) {
+                for (let nx = x - radius; nx <= x + radius; nx++) {
+                    for (let ny = y - radius; ny <= y + radius; ny++) {
+                        if (nx !== x - radius && nx !== x + radius && ny !== y - radius && ny !== y + radius) continue;
+                        if (!this.grid.isValidPos(nx, ny)
+                            || (cellTerrainFlags(this.grid, nx, ny) & (T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_PASSABILITY))
+                            || this.items.some(other => other.x === nx && other.y === ny)) continue;
+                        candidates.push({ x: nx, y: ny });
+                    }
+                }
+            }
+            if (!candidates.length) continue;
+            const dest = candidates[rng.randRange(0, candidates.length - 1)]!;
+            if (Math.max(Math.abs(dest.x - x), Math.abs(dest.y - y)) === 1) {
+                item.loc = dest;
+                this.needsRender = true;
+            }
+        }
+    }
+
     private playerTurnEnded() {
         this.poisonedDuringTurn = this.player.hasStatus('poisoned');
         this.killOrphanedBoundFollowers();
@@ -7828,6 +7883,9 @@ export class Game {
             }
         }
 
+        // CE Time.c:2635: gradual terrain follows search/scent/safety setup,
+        // immediately before the objective-time advancement loop.
+        this.sweepDeepWaterItem(this.player, this.player.ticksUntilTurn);
         if (this.animationEnabled && !this.isAutoTraveling()) {
             this.beginAdvancement(stealthRange);
             return;
@@ -7955,6 +8013,7 @@ export class Game {
                     if (m.ticksUntilTurn <= 0) {
                         m.ticksUntilTurn = m.movementSpeed;
                     }
+                    if (m.hp > 0) this.sweepDeepWaterItem(m, m.ticksUntilTurn);
                 }
             }
 
@@ -8117,6 +8176,7 @@ export class Game {
             this.environment.updateGases();
             this.environment.updateGases();
         }
+        this.driftFloorItems();
 
         // U14a: CE player exposure follows the objective decrement and gas update.
         this.applyNauseaFromTerrain(this.player);
@@ -9043,29 +9103,11 @@ export class Game {
                 (entity as Monster).falling = true;
             }
 
-            // Deep Water / Lava Death
-            // 深水不致死（P1-27，决策 D2）：CE 的深水没有任何伤害（T_IS_DEEP_WATER
-            // 只偷物品，Rogue.h:1937；坠落零伤害 Time.c:1146-1150），web 的淹死是
-            // 自创内容，已通过 WEB_ONLY_DEEP_WATER_DROWNING 退出生效路径。
-            // CE 深水的真实行为（50% 冲走携带物并随机移位，Time.c:556-590）属独立
-            // 轮次，本轮不实现。悬浮/飞行生物照旧不进本分支。
+            // Deep water has no instant damage (CE Time.c:556-590).
             const isFlying = entity.hasStatus('flying') || entity.hasStatus('levitating') || (entity.abilities && entity.abilities.has('flying'));
             // F-1 跨层判定：火盖在深水/岩浆上不改变致死地形判据
             //（CE applyInstantTileEffectsToCreature 的 cellHasTerrainFlag 是全层 OR）
-            if (cell.layers.includes(TerrainType.WATER_DEEP) && !isFlying) {
-                if (WEB_ONLY_DEEP_WATER_DROWNING) {
-                    // ---- web 自创"深水淹死"，按 D2 退出实际生效路径，代码原样保留 ----
-                    if (entity === this.player) {
-                        this.lastDamageSource = '';
-                        logger.log(i18next.t('env.player_drowns', { defaultValue: 'You plunge into the dark water and drown.' }), '#0044ff');
-                        this.triggerGameOver(false, i18next.t('death.drowned', { defaultValue: 'Drowned in deep water.' }));
-                    } else {
-                        logger.log(i18next.t('env.monster_drowns', { name: name, defaultValue: `The ${name} drowns.` }), '#8888aa');
-                        entity.die();
-                    }
-                    return;
-                }
-            } else if (cell.layers.includes(TerrainType.LAVA) && !isFlying
+            if (cell.layers.includes(TerrainType.LAVA) && !isFlying
                 && !entity.hasStatus('immune_fire')
                 && !(entity.abilities && entity.abilities.has('immune_fire'))
                 && !(entity.isInvulnerable && entity.isInvulnerable())

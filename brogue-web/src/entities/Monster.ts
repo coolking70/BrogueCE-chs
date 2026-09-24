@@ -1954,15 +1954,11 @@ export class Monster extends Creature {
 
                 // P4-8：气味移动与直寻共用的移动准入（monsterAvoids 的 web 近似，
                 // 与既有直寻/移动同口径：地形可进 + 无怪物 + 非玩家格）。
-                const isLiquidOnly = this.hasBehavior('MONST_RESTRICTED_TO_LIQUID');
                 const scentCanEnter = (x: number, y: number): boolean => {
                     const c = game.grid.getCell(x, y);
                     if (!c) return false;
+                    if (!this.canEnterWaterTerrain(game, x, y)) return false;
                     if (isFlying) return !c.isOpaque && !game.getMonsterAt(x, y) && !(game.player.loc.x === x && game.player.loc.y === y);
-                    if (isLiquidOnly) {
-                        const isLiquid = c.terrain === TerrainType.WATER_SHALLOW || c.terrain === TerrainType.WATER_DEEP;
-                        return isLiquid && !game.getMonsterAt(x, y) && !(game.player.loc.x === x && game.player.loc.y === y);
-                    }
                     return c.isPassable && !game.getMonsterAt(x, y) && !(game.player.loc.x === x && game.player.loc.y === y);
                 };
 
@@ -2001,11 +1997,8 @@ export class Monster extends Creature {
                 const path = Pathfind.findPath(game.grid, this.loc.x, this.loc.y, game.player.loc.x, game.player.loc.y, (x, y) => {
                     const c = game.grid.getCell(x, y);
                     if (!c) return false;
+                    if (!this.canEnterWaterTerrain(game, x, y)) return false;
                     if (isFlying) return !c.isOpaque && !game.getMonsterAt(x, y);
-                    if (isLiquidOnly) {
-                        const isLiquid = c.terrain === TerrainType.WATER_SHALLOW || c.terrain === TerrainType.WATER_DEEP;
-                        return isLiquid && !game.getMonsterAt(x, y);
-                    }
                     return c.isPassable && !game.getMonsterAt(x, y);
                 });
 
@@ -2066,8 +2059,7 @@ export class Monster extends Creature {
             const ny = this.loc.y + dy!;
             const c = game.grid.getCell(nx, ny);
             if (!c) continue;
-            const isLiquidTile = c.terrain === TerrainType.WATER_SHALLOW || c.terrain === TerrainType.WATER_DEEP;
-            const canEnter = this.hasBehavior('MONST_RESTRICTED_TO_LIQUID') ? isLiquidTile : c.isPassable;
+            const canEnter = this.canEnterWaterTerrain(game, nx, ny) && c.isPassable;
             if (canEnter && !game.getMonsterAt(nx, ny) &&
                 !(game.player.loc.x === nx && game.player.loc.y === ny)) {
                 valid.push([dx!, dy!]);
@@ -2075,6 +2067,18 @@ export class Monster extends Creature {
         }
         if (valid.length === 0) return null;
         return valid[rng.randRange(0, valid.length - 1)]!;
+    }
+
+    /** CE Monsters.c:1488-1493, 3768-3770: water avoidance and aquatic bounds. */
+    private canEnterWaterTerrain(game: Game, x: number, y: number): boolean {
+        if (this.hasBehavior('MONST_RESTRICTED_TO_LIQUID')
+            && !(cellTerrainMechFlags(game.grid, x, y) & TM_ALLOWS_SUBMERGING)) return false;
+        const target = cellTerrainFlags(game.grid, x, y);
+        if (!(target & T_IS_DEEP_WATER) || (cellTerrainFlags(game.grid, this.x, this.y) & T_IS_DEEP_WATER)) return true;
+        if (this.hasBehavior('MONST_IMMUNE_TO_WATER') || this.hasBehavior('MONST_FLIES')
+            || this.hasStatus('levitating') || this.hasStatus('flying')) return true;
+        if ((target & T_ENTANGLES) && this.hasBehavior('MONST_IMMUNE_TO_WEBS')) return true;
+        return false;
     }
 
     private tryCorpseMove(p: Pos, game: Game): boolean {
@@ -2087,6 +2091,7 @@ export class Monster extends Creature {
 
     private tryMoveTo(nx: number, ny: number, game: Game) {
         if (nx === this.x && ny === this.y || !game.grid.getCell(nx, ny)) return;
+        if (!this.canEnterWaterTerrain(game, nx, ny)) return;
         if (this.hasStatus('nauseous') && game.tryVomit(this)) return;
         const occupied = game.getMonsterAt(nx, ny) || (game.player.x === nx && game.player.y === ny);
         if (this.hasStatus('stuck') && !occupied
