@@ -6,6 +6,7 @@ import { getDiscoveries } from '../engine/UI/Discoveries';
 
 const screen = ref<'discoveries' | 'help' | null>(null);
 const groups = computed(() => { screen.value; return getDiscoveries(); });
+const columns = computed(() => [[groups.value[0], groups.value[1]], [groups.value[2]], [groups.value[3], groups.value[4]]]);
 const zh = computed(() => i18next.language?.startsWith('zh'));
 const title = computed(() => screen.value === 'help' ? (zh.value ? '命令帮助' : 'Commands') : (zh.value ? '发现物品' : 'Discovered items'));
 const labels: Record<string, [string, string]> = {
@@ -41,13 +42,13 @@ onUnmounted(() => { window.clearInterval(timer); window.removeEventListener('key
       <section class="reference-panel" role="dialog" :aria-label="title">
         <header><h2>{{ title }}</h2><button @click="close" :aria-label="zh ? '关闭' : 'Close'">×</button></header>
         <div v-if="screen === 'discoveries'" class="discovery-grid">
-          <section v-for="group in groups" :key="group.label" class="discovery-group">
-            <h3>{{ labels[group.label]?.[zh ? 0 : 1] }} <small>{{ zh ? '已知' : 'Known' }} {{ group.known }} · {{ zh ? '未知' : 'Unknown' }} {{ group.rows.length - group.known }}</small></h3>
-            <div v-for="row in group.rows" :key="row.id" class="discovery-row" :class="{ known: row.known }">
-              <span class="sigil" :class="{ good: row.suffix === 1, bad: row.suffix === -1 }">{{ row.suffix === 1 ? '⧳' : row.suffix === -1 ? '⧲' : row.known ? group.label.charAt(0) : ' ' }}</span>
-              <span>{{ row.name }}<small v-if="row.known && row.frequency !== undefined"> · {{ row.frequency }}</small><small v-if="row.known && row.description" class="description">{{ row.description }}</small></span>
+          <div v-for="(column, index) in columns" :key="index" class="discovery-column"><section v-for="group in column" :key="group!.label" class="discovery-group">
+            <h3>{{ labels[group!.label]?.[zh ? 0 : 1] }}</h3>
+            <div v-for="row in group!.rows" :key="row.id" class="discovery-row" :class="{ known: row.known }">
+              <span class="sigil" :class="{ good: row.suffix === 1, bad: row.suffix === -1 }">{{ row.suffix === 1 ? '⧳' : row.suffix === -1 ? '⧲' : row.known ? ({ scrolls: '?', rings: '=', potions: '!', staffs: '/', wands: '-' }[group!.label]) : ' ' }}</span>
+              <span>{{ row.name }}<small v-if="row.percentage !== undefined"> ({{ row.percentage }}%)</small></span>
             </div>
-          </section>
+          </section></div>
         </div>
         <div v-else class="help-list"><div v-for="command in commands" :key="command[0]"><kbd>{{ command[0] }}</kbd><span>{{ command[zh ? 1 : 2] }}</span></div></div>
         <footer>{{ zh ? '按任意键或点击空白处关闭' : 'Press any key or click outside to close' }}</footer>
@@ -59,5 +60,5 @@ onUnmounted(() => { window.clearInterval(timer); window.removeEventListener('key
 <style scoped>
 .reference-backdrop{position:fixed;inset:0;z-index:1900;background:#000c;display:grid;place-items:center;padding:12px}
 .reference-panel{width:min(920px,100%);max-height:calc(100dvh - 24px);overflow:auto;background:#101827;color:#ddd;border:1px solid #64748b;border-radius:8px;padding:16px;box-sizing:border-box}
-header{display:flex;justify-content:space-between;align-items:center}h2{margin:0 0 12px}button{background:none;border:1px solid #64748b;color:#fff;font-size:24px;cursor:pointer}h3{color:#c4b5fd;margin:8px 0}h3 small{color:#94a3b8;font-weight:normal}.discovery-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.discovery-group{min-width:0}.discovery-row{display:flex;gap:8px;color:#8b98aa;padding:3px 0;overflow-wrap:anywhere}.discovery-row.known{color:white}.sigil{width:1.2em;flex:none}.sigil.good{color:#59c987}.sigil.bad{color:#db7878}.description{display:block;color:#a9b9cd;font-size:12px}.help-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}.help-list>div{display:flex;gap:12px}.help-list kbd{color:#facc15;min-width:90px}footer{text-align:center;color:#94a3b8;margin-top:16px}@media(max-width:650px){.discovery-grid,.help-list{grid-template-columns:1fr}.reference-panel{font-size:14px}}
+header{display:flex;justify-content:space-between;align-items:center}h2{margin:0 0 12px}button{background:none;border:1px solid #64748b;color:#fff;font-size:24px;cursor:pointer}h3{color:#c4b5fd;margin:8px 0}.discovery-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start}.discovery-column,.discovery-group{min-width:0}.discovery-group+.discovery-group{margin-top:20px}.discovery-row{display:flex;gap:8px;color:#6b7280;padding:3px 0;overflow-wrap:anywhere}.discovery-row.known{color:white}.sigil{width:1.2em;flex:none;color:#d8c9a1}.sigil.good{color:#59c987}.sigil.bad{color:#db7878}.help-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}.help-list>div{display:flex;gap:12px}.help-list kbd{color:#facc15;min-width:90px}footer{text-align:center;color:#94a3b8;margin-top:16px}@media(max-width:650px){.discovery-grid,.help-list{grid-template-columns:1fr}.reference-panel{font-size:14px}}
 </style>

@@ -7,25 +7,33 @@ const oldKnown = ItemLoader.identifiedItems;
 const oldCalls = ItemLoader.callTitles;
 afterEach(() => { ItemLoader.identifiedItems = oldKnown; ItemLoader.callTitles = oldCalls; });
 
-it('uses the five CE tables and their row counts without revealing unknown identities', () => {
+it('shows true names for the five CE tables and omits missing web kinds', () => {
     ItemLoader.identifiedItems = new Set();
     ItemLoader.callTitles = new Map();
     const groups = getDiscoveries();
     expect(groups.map(g => [g.label, g.rows.length])).toEqual([
-        ['scrolls', 14], ['rings', 8], ['potions', 16], ['staffs', 12], ['wands', 9],
+        ['scrolls', 13], ['rings', 6], ['potions', 15], ['staffs', 12], ['wands', 9],
     ]);
     const life = groups[2]!.rows[0]!;
     expect(life.known).toBe(false);
-    expect(life.name).not.toContain('Life');
-    expect(life.description).toBeUndefined();
-    expect(life.frequency).toBeUndefined();
+    expect(life.name).toBe('POTION OF LIFE');
+    expect(life.percentage).toBeUndefined();
     ItemLoader.callTitles.set('potion_of_life', 'test name');
-    expect(getDiscoveries()[2]!.rows[0]!.name).toContain('test name');
+    expect(getDiscoveries()[2]!.rows[0]!.name).toBe('POTION OF LIFE');
     ItemLoader.identifiedItems.add('potion_of_life');
     const known = getDiscoveries()[2]!.rows[0]!;
     expect(known.known).toBe(true);
-    expect(known.name).toContain('Life');
-    expect(known.description).toBeTruthy();
+    expect(known.name).toBe('POTION OF LIFE');
+});
+
+it('uses integer-truncated percentages among unidentified kinds only', () => {
+    ItemLoader.identifiedItems = new Set();
+    const initial = getDiscoveries();
+    expect(initial[1]!.rows.map(row => row.percentage)).toEqual([16, 16, 16, 16, 16, 16]);
+    expect(initial[0]!.rows[0]!.percentage).toBeUndefined(); // zero-frequency enchanting
+    expect(initial[0]!.rows[1]!.percentage).toBe(20); // 30 / 143, truncated
+    ItemLoader.identifiedItems.add('ring_of_clairvoyance');
+    expect(getDiscoveries()[1]!.rows.map(row => row.percentage)).toEqual([undefined, 20, 20, 20, 20, 20]);
 });
 
 it('capacity knowledge does not expose a hidden staff enchantment through blink distance', () => {
