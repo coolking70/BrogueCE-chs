@@ -2271,7 +2271,9 @@ export class Game {
                     this.player.equippedArmor?.armor ?? 0,
                     this.player.equippedArmor?.enchantment ?? 0,
                     this.player.equippedArmor?.strengthRequired ?? 0, // 缺省口径对齐 Combat.ts 的 || 0
-                    this.player.hasStatus('hallucinating')
+                    this.player.hasStatus('hallucinating'),
+                    this.player.getStatusDuration('donning'),
+                    this.player.hasStatus('stuck')
                 );
                 return;
             }
@@ -2322,7 +2324,9 @@ export class Game {
                 this.player.equippedArmor?.armor ?? 0,
                 this.player.equippedArmor?.enchantment ?? 0,
                 this.player.equippedArmor?.strengthRequired ?? 0, // 缺省口径对齐 Combat.ts 的 || 0
-                this.player.hasStatus('hallucinating')
+                this.player.hasStatus('hallucinating'),
+                this.player.getStatusDuration('donning'),
+                this.player.hasStatus('stuck')
             );
             return;
         }
@@ -3436,6 +3440,7 @@ export class Game {
                         }
                     } else {
                         // Empty altar is walkable
+                        if (this.playerStruggle(dx, dy)) return;
                         if (this.playerVomitAttempt()) return;
                         this.player.loc.x = newX;
                         this.player.loc.y = newY;
@@ -3456,22 +3461,7 @@ export class Game {
                         && !this.requestConfirm(i18next.t('fall.confirm', { defaultValue: 'Dive into the depths?' }))) {
                         return;
                     }
-                    const currentCell = this.grid.getCell(this.player.loc.x, this.player.loc.y);
-                    if (currentCell && (cellTerrainFlags(this.grid, this.player.x, this.player.y) & T_ENTANGLES)) {
-                        if (rng.randPercent(50)) {
-                            logger.log(i18next.t('env.stuck_web', { defaultValue: 'You struggle against the sticky web.' }), '#aaaaaa');
-                            if (rng.randPercent(20)) {
-                                breakEntanglingTerrain(this.grid, this.player.x, this.player.y);
-                                logger.log(i18next.t('env.break_web', { defaultValue: 'You break the web.' }), '#aaaaaa');
-                            }
-                            this.needsRender = true;
-                            spentTurn = true;
-                            timeSystem.currentTick += this.player.movementSpeed;
-                            this.moveEntrancedMonsters(dx, dy);
-                            this.playerTurnEnded();
-                            return;
-                        }
-                    }
+                    if (this.playerStruggle(dx, dy)) return;
 
                     // B-1：CE Movement.c:1368-1400 —— 突进/连枷目标在移动
                     // 【前】收集（连枷判据需要移动前坐标；突进看移动方向两格
@@ -3576,7 +3566,7 @@ export class Game {
     }
 
     public equipItem(item: Item) {
-        if (this.player.equip(item)) {
+        if (this.player.equip(item, false)) {
             logger.log(i18next.t('item.equip', { name: item.name, defaultValue: `You equipped the ${item.name}.` }), '#88ff88');
             // B-1a：CE Items.c:8583-8586——clairvoyance/light/stealth 三戒指戴上
             // 即 identifyItemKind（效果立即可感，无隐藏价值；web 无 light 戒指，
@@ -4465,6 +4455,7 @@ export class Game {
                 target.setStatusDuration('magical_fear', 0);
             }
             target.shortenMagicalFear();
+            if (target instanceof Monster) target.enrageAfterAttack();
             if (!alreadyReflected) target.setStatusDuration('entranced', 0);
         }
         return damage;
@@ -5026,6 +5017,7 @@ export class Game {
                     }
                     target.setStatusDuration('entranced', 0);
                     target.shortenMagicalFear();
+                    if (target instanceof Monster) target.enrageAfterAttack();
                     if (target instanceof Monster) this.trySplitMonster(target, caster);
                 }
                 // Death DF and carried drops retain the normal turn cleanup owner.
@@ -6597,8 +6589,10 @@ export class Game {
         for (const m of this.monsters) {
             m.recoverPerTick();
             this.resolveBurningDamage(m);
-            this.resolvePoisonDamage(m);
+            // CE lifespan precedes poison; expiration is death, not shieldable damage.
+            if (m.getStatusDuration('lifespan_remaining') !== 1) this.resolvePoisonDamage(m);
         }
+        this.clearDisplacedEntanglement(this.player);
         const playerExpired = this.player.tickStatuses();
         // CE Time.c:2261-2273：玩家 haste/slow 到期时恢复 info 基准速度并
         // synchronizePlayerTimeState（客观门对齐玩家剩余 tick）。web 的速度
@@ -6626,7 +6620,11 @@ export class Game {
         }
 
         for (const m of this.monsters) {
-            m.tickStatuses();
+            this.clearDisplacedEntanglement(m);
+            const expired = m.tickStatuses();
+            if (expired.includes('lifespan_remaining') && this.canObserveBoltTarget(m)) {
+                logger.log(i18next.t('status.monster.lifespan_off', { name: m.name, defaultValue: 'The {{name}} dissipates into thin air.' }), '#cccccc');
+            }
         }
     }
 
@@ -8928,6 +8926,36 @@ export class Game {
      * Displacement evaluates just its recipient, without an extra gas damage tick
      * or global item destruction (CE instant versus gradual tile effects).
      */
+    /** CE Time.c:313-333: flying/inanimate creatures can still be caught.
+     * No refresh and no RNG when already stuck or web-immune. */
+    public applyEntanglementFromTerrain(entity: Creature): void {
+        if (entity.hp <= 0 || entity.hasStatus('stuck')
+            || !(cellTerrainFlags(this.grid, entity.x, entity.y) & T_ENTANGLES)
+            || (entity instanceof Monster && (entity.hasCEBehavior('MONST_IMMUNE_TO_WEBS') || entity.isInvulnerable()))) return;
+        entity.applyStatus('stuck', rng.randRange(3, 7));
+    }
+
+    /** CE decrement*Status: lost terrain clears STUCK without decrementing it. */
+    private clearDisplacedEntanglement(entity: Creature): void {
+        if (!(cellTerrainFlags(this.grid, entity.x, entity.y) & T_ENTANGLES)) entity.setStatusDuration('stuck', 0);
+    }
+
+    private playerStruggle(dx: number, dy: number): boolean {
+        if (!this.player.hasStatus('stuck') || !(cellTerrainFlags(this.grid, this.player.x, this.player.y) & T_ENTANGLES)) return false;
+        this.player.setStatusDuration('stuck', this.player.getStatusDuration('stuck') - 1);
+        if (!this.player.hasStatus('stuck')) {
+            breakEntanglingTerrain(this.grid, this.player.x, this.player.y);
+            logger.log(i18next.t('env.break_web', { defaultValue: 'You break the web.' }), '#aaaaaa');
+            return false; // the final attempt also completes the move
+        }
+        logger.log(i18next.t('env.stuck_web', { defaultValue: 'You struggle against the sticky web.' }), '#aaaaaa');
+        this.needsRender = true;
+        timeSystem.currentTick += this.player.movementSpeed;
+        this.moveEntrancedMonsters(dx, dy);
+        this.playerTurnEnded();
+        return true;
+    }
+
     /** CE Time.c:421-439; MB_SUBMERGED has no web carrier yet. */
     private applyNauseaFromTerrain(entity: Creature): void {
         if (entity.hp <= 0 || !(cellTerrainFlags(this.grid, entity.x, entity.y) & T_CAUSES_NAUSEA)) return;
@@ -9051,6 +9079,7 @@ export class Game {
             // 之后、毒气段 :411 之前的同一函数内——web 对应插在火段与气段
             // 之间）。守卫与免疫窗都在 resolveExplosionDamage 内；落格瞬间的
             // 另外两个调用点见 applyInstantExplosionAt。
+            this.applyEntanglementFromTerrain(entity);
             this.resolveExplosionDamage(entity);
 
             if (entity !== this.player || !deferPlayerNausea) this.applyNauseaFromTerrain(entity);
@@ -9576,6 +9605,8 @@ export class Game {
         for (const r of stepResults) {
             if (r.mutated) this.needsRender = true;
         }
+        this.clearDisplacedEntanglement(this.player);
+        this.applyEntanglementFromTerrain(this.player);
     }
 
     /**
@@ -9789,12 +9820,14 @@ export class Game {
 
     /** CE Items.c:5516-5555. Both forward blink and beckoning commit through
      * W-11's placement primitive, including hazards, vision and player pickup.
-     * Web has no SUBMERGED/STUCK/scent-turn carrier; leaving a web disentangles
-     * without deleting it. SEIZED is not a synonym for CE STATUS_STUCK.
+     * Disentangle before landing contact, which may catch the caster in a new web.
+     * SEIZED is not a synonym for CE STATUS_STUCK.
      */
     private finishBlink(result: BoltResult): boolean {
-        return !!result.caster && !!result.landingPos
-            && this.placeCreature(result.caster, result.landingPos, { pickupBeforeVision: true });
+        const caster = result.caster, landing = result.landingPos;
+        if (!caster || !landing || !this.canDisplaceCreature(caster, landing)) return false;
+        caster.setStatusDuration('stuck', 0); // CE disentangle, before landing contact
+        return this.placeCreature(caster, landing, { pickupBeforeVision: true });
     }
 
     /** CE Items.c:5076-5089,5228-5239: the target becomes a blink caster.
@@ -9824,9 +9857,13 @@ export class Game {
      * A failed commit has no side effects. Hazards are legal here; only physical
      * obstruction/occupancy are rejected. Coordinates remain the occupancy source.
      */
+    private canDisplaceCreature(target: Creature, destination: Pos, walkingSecretDoor = false): boolean {
+        return target.hp > 0 && (target.x !== destination.x || target.y !== destination.y)
+            && canPlaceCreature(this, target, destination, walkingSecretDoor);
+    }
+
     public placeCreature(target: Creature, destination: Pos, options: { pickupBeforeVision?: boolean; walkingSecretDoor?: boolean } = {}): boolean {
-        if (target.hp <= 0 || (target.loc.x === destination.x && target.loc.y === destination.y)
-            || !canPlaceCreature(this, target, destination, options.walkingSecretDoor)) return false;
+        if (!this.canDisplaceCreature(target, destination, options.walkingSecretDoor)) return false;
         if (options.walkingSecretDoor && this.grid.getCell(destination.x, destination.y)?.isVisible) {
             this.discoverSecretAt(destination.x, destination.y);
         }
@@ -9852,10 +9889,10 @@ export class Game {
         const candidates = teleportCandidates({ grid: this.grid, player: this.player, monsters: this.monsters, dormantMonsters: this.dormantMonsters, machineCells: this.machineCells }, target);
         if (candidates.length === 0) return false;
         const destination = candidates[rng.randRange(0, candidates.length - 1)]!;
+        if (!this.canDisplaceCreature(target, destination)) return false;
+        target.setStatusDuration('stuck', 0); // CE teleport: release before setMonsterLocation
         if (!this.placeCreature(target, destination)) return false;
-        // STATUS_STUCK has no web state: web webs impede only movement from the
-        // current tile, so magical relocation already disentangles without erasing
-        // the web. SEIZED/SEIZING are deliberately retained, as in CE teleport.
+        // SEIZED/SEIZING are deliberately retained, as in CE teleport.
         if (target instanceof Monster && this.waypoints) {
             this.waypoints.chooseNewWanderDestination(target, this.wpContext());
         }

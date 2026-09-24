@@ -6,7 +6,7 @@
 import type { Entity, Pos } from '../types';
 import { Direction } from '../types';
 
-export type StatusId = 'paralyzed' | 'invisible' | 'telepathy' | 'levitating' | 'hallucinating' | 'confused' | 'regenerating' | 'haste' | 'poisoned' | 'slowed' | 'hasted' | 'weakened' | 'flying' | 'immune_fire' | 'discordant' | 'shielded' | 'entranced' | 'nauseous' | 'darkness' | 'magical_fear';
+export type StatusId = 'paralyzed' | 'invisible' | 'telepathy' | 'levitating' | 'hallucinating' | 'confused' | 'regenerating' | 'haste' | 'poisoned' | 'slowed' | 'hasted' | 'weakened' | 'flying' | 'immune_fire' | 'discordant' | 'shielded' | 'entranced' | 'nauseous' | 'darkness' | 'magical_fear' | 'stuck' | 'donning' | 'enraged' | 'lifespan_remaining';
 type StatusStackMode = 'refresh' | 'stack';
 
 /**
@@ -61,8 +61,8 @@ export class Creature implements Entity {
     public poisonAmount = 0;
     /** CE creature.weaknessAmount, independent of the weakened countdown. */
     public weaknessAmount = 0;
-    /** U14a subset of CE maxStatus; other states retain their existing carriers. */
-    public maxStatus: Partial<Record<'weakened' | 'nauseous' | 'darkness' | 'magical_fear', number>> = {};
+    /** U14a/b subset of CE maxStatus; other states retain their existing carriers. */
+    public maxStatus: Partial<Record<'weakened' | 'nauseous' | 'darkness' | 'magical_fear' | 'stuck' | 'donning' | 'enraged' | 'lifespan_remaining', number>> = {};
     /** CE maxStatus[SHIELDED], in tenths of HP; determines decay, not a cap. */
     public maxShield = 0;
     /**
@@ -162,6 +162,15 @@ export class Creature implements Entity {
         if (id === 'shielded') return this.applyShield(duration);
         if (id === 'poisoned') return this.addPoison(duration, 1);
         if (duration <= 0 || this.statusImmunities.has(id)) return false;
+        // CE sources assign current/max together, not max(old, new).
+        // STUCK is applied only when absent; contact never refreshes it.
+        if (id === 'stuck' || id === 'donning' || id === 'enraged' || id === 'lifespan_remaining') {
+            if (id === 'stuck' && this.hasStatus(id)) return false;
+            const changed = this.getStatusDuration(id) !== duration || this.maxStatus[id] !== duration;
+            this.setStatusDuration(id, duration);
+            this.maxStatus[id] = duration;
+            return changed;
+        }
         const current = this.statusDurations[id] ?? 0;
         const next = stackMode === 'stack' ? current + duration : Math.max(current, duration);
         if (id === 'darkness') this.maxStatus.darkness = Math.max(this.maxStatus.darkness ?? 0, duration);
@@ -271,7 +280,7 @@ export class Creature implements Entity {
         const expired: StatusId[] = [];
         const entries = Object.entries(this.statusDurations) as Array<[StatusId, number]>;
         for (const [id, turns] of entries) {
-            if (this.isStatusPermanent(id)) continue;
+            if (id === 'stuck' || this.isStatusPermanent(id)) continue; // attempts, never elapsed time
             // CE Time.c:2310 / Monsters.c:1958: integer division; a max below
             // 20 really has zero decay. Damage alone does not reduce maxShield.
             const next = turns - (id === 'shielded' ? Math.floor(this.maxShield / 20) : 1);

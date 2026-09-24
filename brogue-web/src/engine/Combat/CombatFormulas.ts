@@ -106,10 +106,11 @@ export function playerDefense(
     baseArmor: number,
     enchantment: number,
     playerStrength: number,
-    requiredStrength: number
+    requiredStrength: number,
+    donning = 0
 ): number {
     const netEnch = netEnchant(enchantment, playerStrength, requiredStrength);
-    return Math.max(0, Math.trunc((baseArmor + netEnch) * 10));
+    return Math.max(0, Math.trunc((baseArmor + netEnch - donning) * 10));
 }
 
 /**

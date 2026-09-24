@@ -128,7 +128,7 @@ describe('W-18 required action-level chain and P2',()=>{
  });
  it.each(['paralyzed','captive','web','dormant'])('%s blocks follow and leaves the actual monster in place',condition=>{
   const g=scene(),m=mob(g);cast(g,m);if(condition==='paralyzed')m.setStatusDuration('paralyzed',10);if(condition==='captive')m.isCaged=true;
-  if(condition==='web')g.grid.setTerrainLayer(10,5,DungeonLayer.SURFACE,T.WEB);if(condition==='dormant'){m.isDormant=true;g.monsters=[];g.dormantMonsters=[m];}
+  if(condition==='web'){g.grid.setTerrainLayer(10,5,DungeonLayer.SURFACE,T.WEB);g.applyEntanglementFromTerrain(m);}if(condition==='dormant'){m.isDormant=true;g.monsters=[];g.dormantMonsters=[m];}
   step(g);expect(m.loc).toEqual({x:10,y:5});expect(g.player.hp).toBe(100);
  });
  it('confusion/flitting cannot override controlled direction',()=>{

@@ -1,0 +1,44 @@
+BrogueCE-master/src/brogue/RogueMain.c:443:    player.status[STATUS_DONNING] = 0;
+BrogueCE-master/src/brogue/Combat.c:121:  if (defender->status[STATUS_STUCK] ||
+BrogueCE-master/src/brogue/Combat.c:151:  if (defender->status[STATUS_STUCK] || defender->status[STATUS_PARALYZED] ||
+BrogueCE-master/src/brogue/Combat.c:362:      defender->status[STATUS_ENRAGED] = defender->maxStatus[STATUS_ENRAGED] =
+BrogueCE-master/src/brogue/Combat.c:775:        newMonst->status[STATUS_LIFESPAN_REMAINING] =
+BrogueCE-master/src/brogue/Combat.c:776:            newMonst->maxStatus[STATUS_LIFESPAN_REMAINING] =
+BrogueCE-master/src/brogue/Combat.c:955:        monst->status[STATUS_LIFESPAN_REMAINING] =
+BrogueCE-master/src/brogue/Combat.c:956:            monst->maxStatus[STATUS_LIFESPAN_REMAINING] = 3;
+BrogueCE-master/src/brogue/Combat.c:1311:    } else if (defender->status[STATUS_STUCK] ||
+BrogueCE-master/src/brogue/Items.c:7455:    monst->status[STATUS_LIFESPAN_REMAINING] = monst->maxStatus[STATUS_LIFESPAN_REMAINING] = charmGuardianLifespan(netEnchant(theItem));
+BrogueCE-master/src/brogue/Items.c:8518:        enchant -= player.status[STATUS_DONNING] * FP_FACTOR;
+BrogueCE-master/src/brogue/Items.c:8556:            player.status[STATUS_DONNING] = player.maxStatus[STATUS_DONNING] = theItem->armor / 10;
+BrogueCE-master/src/brogue/Items.c:8665:        player.status[STATUS_DONNING] = 0;
+BrogueCE-master/src/brogue/IO.c:4637:    short retVal = armorValueIfUnenchanted(rogue.armor) - player.status[STATUS_DONNING];
+BrogueCE-master/src/brogue/Rogue.h:1992:    STATUS_DONNING,
+BrogueCE-master/src/brogue/Rogue.h:2003:    STATUS_STUCK,
+BrogueCE-master/src/brogue/Rogue.h:2010:    STATUS_ENRAGED, // temporarily ignores normal MA_AVOID_CORRIDORS behavior
+BrogueCE-master/src/brogue/Rogue.h:2014:    STATUS_LIFESPAN_REMAINING,
+BrogueCE-master/src/brogue/Monsters.c:1148:    if (monst == &player && monst->status[STATUS_STUCK]) {
+BrogueCE-master/src/brogue/Monsters.c:1151:    monst->status[STATUS_STUCK] = 0;
+BrogueCE-master/src/brogue/Monsters.c:1504:        && !(monst->status[STATUS_ENRAGED] && monst->currentHP <= monst->info.maxHP / 2)
+BrogueCE-master/src/brogue/Monsters.c:1902:            case STATUS_LIFESPAN_REMAINING:
+BrogueCE-master/src/brogue/Monsters.c:1933:            case STATUS_STUCK:
+BrogueCE-master/src/brogue/Monsters.c:2147:        || monst->status[STATUS_STUCK]
+BrogueCE-master/src/brogue/Monsters.c:2150:        || monst->status[STATUS_LIFESPAN_REMAINING] == 1
+BrogueCE-master/src/brogue/Monsters.c:2661:                    && target->status[STATUS_STUCK]) {
+BrogueCE-master/src/brogue/Monsters.c:3005:    if (ally->info.maxHP <= 1 || (ally->status[STATUS_LIFESPAN_REMAINING]) > 0) { // Spectral blades and timed allies should never flee.
+BrogueCE-master/src/brogue/Monsters.c:3643:        || blocker->status[STATUS_STUCK]
+BrogueCE-master/src/brogue/Monsters.c:3774:    if (monst->status[STATUS_STUCK] && !(pmap[newX][newY].flags & (HAS_PLAYER | HAS_MONSTER))
+BrogueCE-master/src/brogue/Monsters.c:3777:            && --monst->status[STATUS_STUCK]) {
+BrogueCE-master/src/brogue/Movement.c:357:    } else if (monst->status[STATUS_STUCK]) {
+BrogueCE-master/src/brogue/Movement.c:719:    if (monst->status[STATUS_ENTRANCED] && !monst->status[STATUS_STUCK] &&
+BrogueCE-master/src/brogue/Movement.c:1402:    if (player.status[STATUS_STUCK] &&
+BrogueCE-master/src/brogue/Movement.c:1405:      if (--player.status[STATUS_STUCK]) {
+BrogueCE-master/src/brogue/Time.c:315:      !monst->status[STATUS_STUCK] &&
+BrogueCE-master/src/brogue/Time.c:319:    monst->status[STATUS_STUCK] = monst->maxStatus[STATUS_STUCK] =
+BrogueCE-master/src/brogue/Time.c:2283:  if (player.status[STATUS_DONNING]) {
+BrogueCE-master/src/brogue/Time.c:2284:    player.status[STATUS_DONNING]--;
+BrogueCE-master/src/brogue/Time.c:2293:  if (player.status[STATUS_STUCK] &&
+BrogueCE-master/src/brogue/Time.c:2295:    player.status[STATUS_STUCK] = 0;
+BrogueCE-master/src/brogue/Globals.c:1796:    {"Donning Armor",   false, 0}, // STATUS_DONNING
+BrogueCE-master/src/brogue/Globals.c:1807:    {"Stuck",           false, 0}, // STATUS_STUCK
+BrogueCE-master/src/brogue/Globals.c:1814:    {"",                false, 0}, // STATUS_ENRAGED,
+BrogueCE-master/src/brogue/Globals.c:1818:    {"Lifespan",        false, 0}, // STATUS_LIFESPAN_REMAINING

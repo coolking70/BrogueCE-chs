@@ -27,7 +27,7 @@ import { reflectionChance } from '../engine/Combat/CombatFormulas';
 import { bladeAvoids, bladeDiagonalBlocked, bladeStepToward, BLADE_DIRECTIONS } from '../engine/Combat/Conjuration';
 import { boltLine } from '../engine/Combat/BoltTrajectory';
 import { hasBlink, blinkChance, monsterBlinkToPreferenceMap, monsterBlinkToSafety, blinkFromHarmfulTerrain,
-    closestBlinkEnemy, blinkAllyFlees, blinkAllyAfterMagic, blinkTowardCreature, blinkTowardCaptiveLeader, allyShouldPursue } from '../engine/Combat/MonsterBlink';
+    closestBlinkEnemy, blinkAllyFlees, blinkAllyAfterMagic, blinkTowardCreature, blinkTowardCaptiveLeader, allyShouldPursue, monsterAvoidsCorridor } from '../engine/Combat/MonsterBlink';
 import { updateMonsterCorpseAbsorption, moveAllyToCorpse, corpseAllyBeforeMagic } from '../engine/Combat/MonsterAbsorption';
 import { entrancementDiagonalBlocked, entrancementPassable } from '../engine/Movement/Entrancement';
 import { cellTerrainFlags, cellTerrainMechFlags } from '../engine/Map/DungeonFeature';
@@ -141,8 +141,8 @@ export function specificallyValidBoltTarget(caster: Monster, target: Creature, c
         case BoltEffect.NONE: {
             // CE Monsters.c:2619 + 2655-2675. Both current NONE bolts entangle;
             // their forbidden flags make the second avoided-terrain test moot.
-            // U14b owns STATUS_STUCK. The existing hold is the occupied terrain.
-            if (cellTerrainFlags(game.grid, target.x, target.y) & T_ENTANGLES) return false;
+            // CE tests the counter, not terrain occupation.
+            if (target.hasStatus('stuck')) return false;
             break;
         }
         case BoltEffect.DISCORD:
@@ -670,8 +670,16 @@ export class Monster extends Creature {
         return changed;
     }
 
+    /** CE moralAttack: only a surviving corridor-avoiding defender, even at 0 damage. */
+    public enrageAfterAttack(): void {
+        if (this.hp > 0 && this.hasAbility('MA_AVOID_CORRIDORS')) this.applyStatus('enraged', 4);
+    }
+
     public override tickStatuses(): StatusId[] {
+        // CE burning death returns before the lifespan case; do not expire it twice.
+        if (this.hp <= 0 && this.hasStatus('lifespan_remaining')) return [];
         const expired = super.tickStatuses();
+        if (expired.includes('lifespan_remaining') && this.hp > 0) this.die();
         if (expired.includes('magical_fear')) {
             // CE restores ALLY if the leader is the player; web stores allegiance separately.
             this.isAlly = this.isAlly || this.leader instanceof Player;
@@ -965,14 +973,12 @@ export class Monster extends Creature {
 
     /** Movement.c:719 -> moveMonster, independent of the AI turn budget.
      * No pathfinding, flitting, confused reroll, swapping or terrain avoidance.
-     * Existing web webs have no STATUS_STUCK counter: on an entangling tile
-     * their physical hold supplies the same no-follow gate until freed.
+     * CE gates forced following on STATUS_STUCK, independent of terrain.
      */
     public moveEntranced(game: Game, dx: number, dy: number): void {
         if (this.hp <= 0 || this.isDormant || !this.hasStatus('entranced')
             || this.hasStatus('paralyzed') || this.isCaged || (!dx && !dy)) return;
-        if ((cellTerrainFlags(game.grid, this.loc.x, this.loc.y) & T_ENTANGLES)
-            && !this.hasBehavior('MONST_IMMUNE_TO_WEBS') && !this.isInvulnerable()) return;
+        if (this.hasStatus('stuck')) return;
         const to = { x: this.loc.x + dx, y: this.loc.y + dy };
         if (!game.grid.isValidPos(to.x, to.y)) return;
         if (this.hasStatus('nauseous') && game.tryVomit(this)) return;
@@ -1335,6 +1341,7 @@ export class Monster extends Creature {
         // CE monstersTurn runs this before its own status/AI gates. Time.c's
         // outer scheduler separately withholds actions from disabled monsters.
         if (this.corpseAbsorptionCounter >= 0 && updateMonsterCorpseAbsorption(game, this)) return;
+        game.applyEntanglementFromTerrain(this);
         if (this.hasStatus('paralyzed') || this.hasStatus('entranced')) return;
         if (this.isCaged) return;
 
@@ -2037,25 +2044,21 @@ export class Monster extends Creature {
     private tryMoveTo(nx: number, ny: number, game: Game) {
         if (nx === this.x && ny === this.y || !game.grid.getCell(nx, ny)) return;
         if (this.hasStatus('nauseous') && game.tryVomit(this)) return;
-        const currentCell = game.grid.getCell(this.loc.x, this.loc.y);
-        if (currentCell && (cellTerrainFlags(game.grid, this.x, this.y) & T_ENTANGLES)
-            && !this.hasBehavior('MONST_IMMUNE_TO_WEBS') && !this.isInvulnerable()) {
-            // Monsters have a chance to get stuck in webs.
-            // Let's say 50% chance for now.
-            if (rng.randPercent(50)) {
-                if (game.hasLineOfSight(this.loc.x, this.loc.y, game.player.loc.x, game.player.loc.y)) {
-                    logger.log(i18next.t('env.monster_stuck_web', { monster: this.name, defaultValue: `The ${this.name} struggles against the web.` }), '#aaaaaa');
-                }
-                // Chance to break the web
-                if (rng.randPercent(20)) {
-                    breakEntanglingTerrain(game.grid, this.x, this.y);
-                    if (game.hasLineOfSight(this.loc.x, this.loc.y, game.player.loc.x, game.player.loc.y)) {
-                        logger.log(i18next.t('env.monster_break_web', { monster: this.name, defaultValue: `The ${this.name} breaks the web.` }), '#aaaaaa');
-                    }
-                }
-                return; // Stuck, do not move
+        const occupied = game.getMonsterAt(nx, ny) || (game.player.x === nx && game.player.y === ny);
+        if (this.hasStatus('stuck') && !occupied
+            && (cellTerrainFlags(game.grid, this.x, this.y) & T_ENTANGLES)
+            && !this.hasCEBehavior('MONST_IMMUNE_TO_WEBS')) {
+            if (!this.isInvulnerable()) this.setStatusDuration('stuck', this.getStatusDuration('stuck') - 1);
+            if (!this.isInvulnerable() && this.hasStatus('stuck')) {
+                if (game.grid.getCell(this.x, this.y)?.isVisible) logger.log(i18next.t('env.monster_stuck_web', { monster: this.name, defaultValue: 'The {{monster}} struggles against the web.' }), '#aaaaaa');
+                this.ticksUntilTurn = this.movementSpeed;
+                return;
             }
+            if (game.grid.getCell(this.x, this.y)?.isVisible) logger.log(i18next.t('env.monster_break_web', { monster: this.name, defaultValue: 'The {{monster}} breaks the web.' }), '#aaaaaa');
+            breakEntanglingTerrain(game.grid, this.x, this.y);
         }
+
+        if (!occupied && monsterAvoidsCorridor(game, this, { x: nx, y: ny })) return;
 
         // P4-6：CE moveMonster（Monsters.c:3809-3822）——怪物每次"尝试朝某方向
         // 移动/攻击"时，先于移动本身尝试鞭（MA_ATTACKS_EXTEND）与矛
@@ -2074,6 +2077,8 @@ export class Monster extends Creature {
 
         this.loc.x = nx;
         this.loc.y = ny;
+        if (!(cellTerrainFlags(game.grid, nx, ny) & T_ENTANGLES)) this.setStatusDuration('stuck', 0);
+        game.applyEntanglementFromTerrain(this);
 
         // Apply mud delay via lowering speed/giving a 'stuck' penalty, or since we don't have fine-grained monster action points yet:
         // We can skip their next turn or reduce regenTurns, etc. For now we will just let it be, or maybe set a flag.

@@ -361,8 +361,8 @@ describe('UI-1 第 5 条：CE 空名状态不在侧栏显示（负向断言）',
         expect(isSidebarVisibleStatus('explosion_immunity')).toBe(false);
     });
 
-    it('CE 空名集恰为 web 现有载体（explosion_immunity）；web 若新增 enraged/enters_level_in 载体须同步扩入', () => {
-        expect([...CE_EMPTY_NAME_STATUSES].sort()).toEqual(['explosion_immunity']);
+    it('CE 空名集恰为 web 现有载体（explosion_immunity/enraged）；新增载体须同步扩入', () => {
+        expect([...CE_EMPTY_NAME_STATUSES].sort()).toEqual(['enraged', 'explosion_immunity']);
     });
 
     it('有名状态与未知键照常显示（CE name[0] 门只挡空名；未知键裸显是 web 既有调试可见性）', () => {

@@ -118,7 +118,8 @@ export class CombatSystem {
                     defender.equippedArmor.armor,
                     defender.equippedArmor.enchantment,
                     defender.effectiveStrength,
-                    strReq
+                    strReq,
+                    defender.getStatusDuration('donning')
                 );
             }
         }
@@ -151,7 +152,7 @@ export class CombatSystem {
         // 偷袭触发集整体自动命中（CE Combat.c:1239 的 || 短路，attackHit 不掷）。
         // attackHit() has its own short circuit, even for an inanimate paralyzed
         // defender: it auto-hits without granting the sneak damage multiplier.
-        const autoHit = backstab || lungeAttack || defender.hasStatus('paralyzed')
+        const autoHit = backstab || lungeAttack || defender.hasStatus('paralyzed') || defender.hasStatus('stuck')
             || (defender instanceof Monster && defender.isCaged);
         // --- P4-4: MA_KAMIKAZE (Combat.c:1159-1162) ---
         // CE 的检查在 attackHit() 掷骰之前（line 1159 早于 line 1240 的命中判定）：
@@ -291,6 +292,7 @@ export class CombatSystem {
             defender.weaken(300); // GlobalsBrogue.c:onHitWeakenDuration, survivor gate; damage is the pre-shield roll.
         }
 
+        if (defender instanceof Monster) defender.enrageAfterAttack();
         return { damage, weaponName, hit: true, backstab, lunge: lungeAttack, triggeredRunic };
     }
 
@@ -366,9 +368,8 @@ export class CombatSystem {
         const strReq = item.strengthRequired || 0;
         const enchant = netEnchant(item.enchantment, thrower.effectiveStrength, strReq);
 
-        // CE attackHit（Combat.c:149-158）。web StatusId 无 stuck/captive
-        //（蛛网定身/囚笼机制未实装），自动命中集只有 paralyzed 有载体。
-        const autoHit = defender.hasStatus('paralyzed');
+        // CE attackHit (Combat.c:149-158): short circuit, no accuracy roll.
+        const autoHit = defender.hasStatus('paralyzed') || defender.hasStatus('stuck') || defender.isCaged;
         const hit = autoHit || rng.randPercent(hitProbability(100, monsterDefenseAdjusted(defender.defense, defender.weaknessAmount), enchant));
         if (!hit) {
             return { hit: false, damage: 0, killed: false };
@@ -386,6 +387,7 @@ export class CombatSystem {
 
         defender.takeDamage(damage);
         const killed = defender.hp <= 0;
+        defender.enrageAfterAttack();
 
         // CE Items.c:6845-6849：magicWeaponHit 只在非击杀分支调用。
         let triggeredRunic: string | undefined;

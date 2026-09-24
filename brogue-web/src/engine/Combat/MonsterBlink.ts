@@ -68,7 +68,7 @@ function arcs(g: Game, p: Pos): number {
 /** Ordered monsterAvoids contract for blink preferences/maps. Occupancy is NOT
  * blanket rejection here: cardinal attack squares participate in the baseline.
  * Actual ray/commit owns physical obstruction and occupancy independently.
- * Unrepresented CE bookkeeping (submerged, plate depressed, enraged) stays out.
+ * Unrepresented CE bookkeeping (submerged, plate depressed) stays out.
  */
 export function monsterBlinkAvoids(g: Game, m: Monster, p: Pos): boolean {
     const cell = g.grid.getCell(p.x, p.y);
@@ -105,7 +105,21 @@ export function monsterBlinkAvoids(g: Game, m: Monster, p: Pos): boolean {
     if ((f & T.T_LAVA_INSTA_DEATH & ~immune) && !webBridge) return true;
     if ((f & T.T_IS_DEEP_WATER & ~immune) && !webBridge && !(here & T.T_IS_DEEP_WATER)) return true;
     if ((f & T.T_CAUSES_POISON & ~immune) && !(here & T.T_CAUSES_POISON) && (alliedState(m) || m.state !== MonsterState.HUNTING || m.hp < 10)) return true;
-    if (m.hasAbility('MA_AVOID_CORRIDORS') && !alliedState(m) && m.state === MonsterState.HUNTING
+    if (monsterAvoidsCorridor(g, m, p, immune)) return true;
+    return false;
+}
+/** CE monsterAvoids: shared by walking and blink preference selection. */
+export function monsterAvoidsCorridor(g: Game, m: Monster, p: Pos, immune?: number): boolean {
+    if (immune === undefined) {
+        immune = 0;
+        if (m.isInvulnerable()) immune |= T.T_HARMFUL_TERRAIN;
+        if (m.hasStatus('immune_fire')) immune |= T.T_IS_FIRE;
+        if (m.hasBehavior('MONST_INANIMATE')) immune |= T.T_CAUSES_DAMAGE | T.T_CAUSES_PARALYSIS | T.T_CAUSES_CONFUSION | T.T_CAUSES_NAUSEA | T.T_CAUSES_POISON;
+        if (flying(m)) immune |= T.T_AUTO_DESCENT | T.T_CAUSES_POISON | T.T_IS_DEEP_WATER | T.T_IS_DF_TRAP | T.T_LAVA_INSTA_DEATH;
+        if (m.hasBehavior('MONST_IMMUNE_TO_WATER')) immune |= T.T_IS_DEEP_WATER;
+    }
+    const here = flags(g, m.loc);
+    if (m.hasAbility('MA_AVOID_CORRIDORS') && !(m.hasStatus('enraged') && m.hp <= Math.floor(m.maxHp / 2)) && !alliedState(m) && m.state === MonsterState.HUNTING
         && (m.leader || g.monsters.some(other => other.leader === m)) && arcs(g, p) >= 2 && arcs(g, m.loc) < 2
         && !(here & T.T_HARMFUL_TERRAIN & ~immune)) return true;
     return false;
@@ -239,7 +253,7 @@ export function closestBlinkEnemy(g: Game, m: Monster): Monster | null {
     return closest;
 }
 export function blinkAllyFlees(g: Game, m: Monster, target: Monster | null): boolean {
-    if (!target || m.maxHp <= 1) return false;
+    if (!target || m.maxHp <= 1 || m.hasStatus('lifespan_remaining')) return false;
     const d = distance(m.loc,target.loc), pct = Math.trunc(100*m.hp/m.maxHp);
     if (d < 10 && pct <= 33 && m.regenTurns > 0 && !m.carriedMonster
         && (m.hasBehavior('MONST_FLEES_NEAR_DEATH') || pct*2 < Math.trunc(100*g.player.hp/g.player.maxHp))) return true;

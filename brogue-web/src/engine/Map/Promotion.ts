@@ -1019,8 +1019,7 @@ export function tunnelize(grid: Grid, x: number, y: number, hooks: {
     return true;
 }
 
-/** U08: CE Movement.c:1417 / Monsters.c:3781 release only SURFACE.
- * STATUS_STUCK countdown and release timing remain U14b's responsibility. */
+/** CE Movement.c:1417 / Monsters.c:3781: the final STUCK attempt releases only SURFACE. */
 export function breakEntanglingTerrain(grid: Grid, x: number, y: number): void {
     const cell = grid.getCell(x, y);
     if (cell && (TERRAIN_FLAGS[cell.layers[DungeonLayer.SURFACE]!].flags & T_ENTANGLES)) {

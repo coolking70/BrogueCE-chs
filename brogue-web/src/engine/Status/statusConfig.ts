@@ -34,6 +34,10 @@ export const STATUS_CONFIG: Record<BurningStatusId, StatusConfigEntry> = {
     nauseous: { id: 'nauseous', label: '恶心', color: '#b7a26b', isDebuff: true },
     darkness: { id: 'darkness', label: '黑暗', color: '#94a3b8', isDebuff: true },
     magical_fear: { id: 'magical_fear', label: '魔法恐惧', color: '#fca5a5', isDebuff: true },
+    stuck: { id: 'stuck', label: '缠绕', color: '#d6d3d1', isDebuff: true },
+    donning: { id: 'donning', label: '穿甲', color: '#94a3b8', isDebuff: true },
+    enraged: { id: 'enraged', label: '', color: '#f87171', isDebuff: false },
+    lifespan_remaining: { id: 'lifespan_remaining', label: '寿命', color: '#c4b5fd', isDebuff: false },
     flying: { id: 'flying', label: '飞行', color: '#bae6fd', isDebuff: false },
     immune_fire: { id: 'immune_fire', label: '火焰免疫', color: '#fca5a5', isDebuff: false },
     // CE discordColor（GlobalsBrogue.c）：discordBlast 的 "unsettling purple radiation"
@@ -54,9 +58,9 @@ export const STATUS_CONFIG: Record<BurningStatusId, StatusConfigEntry> = {
  * web 侧核对（2026-09-18）：statusDurations 的逃生舱键里只有
  * 'explosion_immunity' 命中本表——'burning' 在 CE 有名（"Burning"），
  * nutrition 不进 statusDurations（走专门的饥饿部件，CE 同款，IO.c:4786），
- * enters_level_in / enraged 两个键 web 尚无写入点。
+ * enters_level_in 尚无写入点；enraged 由 moralAttack 施加但仍无显示名。
  */
-export const CE_EMPTY_NAME_STATUSES: ReadonlySet<string> = new Set(['explosion_immunity']);
+export const CE_EMPTY_NAME_STATUSES: ReadonlySet<string> = new Set(['explosion_immunity', 'enraged']);
 
 /**
  * CE IO.c:4823 `name[0]` 门的 web 等价：false = 侧栏不得显示该状态。

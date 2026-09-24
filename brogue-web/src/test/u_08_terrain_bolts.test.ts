@@ -65,7 +65,7 @@ describe('U08 CE catalog and runtime qualification',()=>{
         for(const flag of ['MONST_INVULNERABLE','MONST_IMMUNE_TO_WEBS']) {
             t.behaviorFlags.add(flag);expect(specificallyValidBoltTarget(m,t,name,g)).toBe(false);t.behaviorFlags.delete(flag);
         }
-        set(g,t.x,T.WEB);expect(specificallyValidBoltTarget(m,t,name,g)).toBe(false);
+        set(g,t.x,T.WEB);t.applyStatus('stuck',3);expect(specificallyValidBoltTarget(m,t,name,g)).toBe(false);
         expect(rng.randomNumbersGenerated).toBe(before);
     });
     it('distinct forbidden flags: web rejects immobile/turret, vines rejects inanimate',()=>{
@@ -90,6 +90,7 @@ describe('U08 CE catalog and runtime qualification',()=>{
     });
     it('no target => no ticks/RNG; repeated web does not recast while occupied terrain holds',()=>{
         const g=scene(),m=mob(g);expect(m.tryUseBolt(g)).toBe(true);
+        g.applyEntanglementFromTerrain(g.player); // CE contact occurs before the next scheduled cast.
         const before=rng.randomNumbersGenerated;m.ticksUntilTurn=17;
         expect(m.tryUseBolt(g)).toBe(false);expect(m.ticksUntilTurn).toBe(17);expect(rng.randomNumbersGenerated).toBe(before);
     });
@@ -159,8 +160,11 @@ describe('U08 terrain lifecycle, hold and consumers',()=>{
     });
     it.each([T.WEB,T.ANCIENT_SPIRIT_VINES])('terrain %s holds ordinary monster, immune spider walks, breaking preserves floor and water',tile=>{
         const g=scene(),m=mob(g,'rat');set(g,8,tile);g.grid.setTerrainLayer(8,10,L.LIQUID,T.WATER_SHALLOW);
-        vi.spyOn(rng,'randPercent').mockReturnValue(true);
-        (m as any).tryMoveTo(9,10,g);expect(m.x).toBe(8);expect(surface(g,8)).toBe(T.NOTHING);
+        m.applyStatus('stuck',2);
+        const draws=vi.spyOn(rng,'randPercent');
+        (m as any).tryMoveTo(9,10,g);expect(m.x).toBe(8);expect(surface(g,8)).toBe(tile);
+        (m as any).tryMoveTo(9,10,g);expect(m.x).toBe(9);expect(surface(g,8)).toBe(T.NOTHING);
+        expect(draws).not.toHaveBeenCalled();m.loc={x:8,y:10};
         expect(g.grid.getCell(8,10)!.layers[L.DUNGEON]).toBe(T.FLOOR);expect(g.grid.getCell(8,10)!.layers[L.LIQUID]).toBe(T.WATER_SHALLOW);
         m.behaviorFlags.add('MONST_IMMUNE_TO_WEBS');set(g,8,tile);(m as any).tryMoveTo(9,10,g);expect(m.x).toBe(9);expect(surface(g,8)).toBe(tile);
     });

@@ -77,11 +77,15 @@ export class Player extends Creature {
     }
 
 
-    public equip(item: Item): boolean {
+    /** Direct installation is also used by starting-kit/test setup (CE force).
+     * Game.equipItem passes false for a player's ordinary equip action. */
+    public equip(item: Item, force = true): boolean {
         if (item.category === ItemCategory.WEAPON) {
             this.equippedWeapon = item;
             return true;
         } else if (item.category === ItemCategory.ARMOR) {
+            this.setStatusDuration('donning', 0); // previous armor was removed
+            if (!force) this.applyStatus('donning', Math.trunc(item.armor ?? 0));
             this.equippedArmor = item;
             return true;
         } else if (item.category === ItemCategory.RING) {
@@ -99,7 +103,10 @@ export class Player extends Creature {
 
     public unequip(item: Item) {
         if (this.equippedWeapon?.id === item.id) this.equippedWeapon = null;
-        if (this.equippedArmor?.id === item.id) this.equippedArmor = null;
+        if (this.equippedArmor?.id === item.id) {
+            this.equippedArmor = null;
+            this.setStatusDuration('donning', 0);
+        }
         if (this.ringLeft?.id === item.id) this.ringLeft = null;
         if (this.ringRight?.id === item.id) this.ringRight = null;
     }

@@ -1,0 +1,710 @@
+{
+  "states": [
+    {
+      "name": "equipped-stuck",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {
+            "donning": 6,
+            "stuck": 3
+          },
+          "x": 8,
+          "y": 8,
+          "hp": 100,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "donning": 5,
+            "stuck": 3
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林",
+            "x": 13,
+            "y": 8,
+            "hp": 100,
+            "maxHp": 100,
+            "weaknessAmount": 0,
+            "maxStatus": {
+              "enraged": 4,
+              "lifespan_remaining": 8
+            },
+            "accuracy": 70,
+            "defense": 10,
+            "damage": "1d4+1",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [
+              "MA_ATTACKS_PENETRATE",
+              "MA_AVOID_CORRIDORS"
+            ],
+            "bolts": [],
+            "typeId": "goblin",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100000,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      },
+      "sidebar": "状态穿甲(5/6) 缠绕(3/3) ",
+      "monster": {
+        "hp": 100,
+        "status": {
+          "enraged": 4,
+          "lifespan_remaining": 8
+        },
+        "max": {
+          "enraged": 4,
+          "lifespan_remaining": 8
+        }
+      },
+      "web": 23
+    },
+    {
+      "name": "struggle",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {
+            "donning": 6,
+            "stuck": 3
+          },
+          "x": 8,
+          "y": 8,
+          "hp": 100,
+          "nutrition": 2148,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "donning": 4,
+            "stuck": 2
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林",
+            "x": 13,
+            "y": 8,
+            "hp": 100,
+            "maxHp": 100,
+            "weaknessAmount": 0,
+            "maxStatus": {
+              "enraged": 4,
+              "lifespan_remaining": 8
+            },
+            "accuracy": 70,
+            "defense": 10,
+            "damage": "1d4+1",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [
+              "MA_ATTACKS_PENETRATE",
+              "MA_AVOID_CORRIDORS"
+            ],
+            "bolts": [],
+            "typeId": "goblin",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 99900,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      },
+      "sidebar": "状态穿甲(4/6) 缠绕(2/3) ",
+      "monster": {
+        "hp": 100,
+        "status": {
+          "enraged": 3,
+          "lifespan_remaining": 7
+        },
+        "max": {
+          "enraged": 4,
+          "lifespan_remaining": 8
+        }
+      },
+      "web": 23
+    },
+    {
+      "name": "lifespan-detail",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {
+            "donning": 6,
+            "stuck": 3
+          },
+          "x": 8,
+          "y": 8,
+          "hp": 100,
+          "nutrition": 2148,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "donning": 4,
+            "stuck": 2
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林",
+            "x": 13,
+            "y": 8,
+            "hp": 100,
+            "maxHp": 100,
+            "weaknessAmount": 0,
+            "maxStatus": {
+              "enraged": 4,
+              "lifespan_remaining": 8
+            },
+            "accuracy": 70,
+            "defense": 10,
+            "damage": "1d4+1",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [
+              "MA_ATTACKS_PENETRATE",
+              "MA_AVOID_CORRIDORS"
+            ],
+            "bolts": [],
+            "typeId": "goblin",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 99900,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      },
+      "sidebar": "状态穿甲(4/6) 缠绕(2/3) ",
+      "monster": {
+        "hp": 100,
+        "status": {
+          "enraged": 3,
+          "lifespan_remaining": 7
+        },
+        "max": {
+          "enraged": 4,
+          "lifespan_remaining": 8
+        }
+      },
+      "web": 23
+    },
+    {
+      "name": "save-roundtrip",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {
+            "donning": 6,
+            "stuck": 3
+          },
+          "x": 8,
+          "y": 8,
+          "hp": 100,
+          "nutrition": 2148,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "donning": 4,
+            "stuck": 2
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林",
+            "x": 13,
+            "y": 8,
+            "hp": 100,
+            "maxHp": 100,
+            "weaknessAmount": 0,
+            "maxStatus": {
+              "enraged": 4,
+              "lifespan_remaining": 8
+            },
+            "accuracy": 70,
+            "defense": 10,
+            "damage": "1d4+1",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [
+              "MA_ATTACKS_PENETRATE",
+              "MA_AVOID_CORRIDORS"
+            ],
+            "bolts": [],
+            "typeId": "goblin",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 99900,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      },
+      "sidebar": "状态穿甲(4/6) 缠绕(2/3) ",
+      "monster": {
+        "hp": 100,
+        "status": {
+          "enraged": 3,
+          "lifespan_remaining": 7
+        },
+        "max": {
+          "enraged": 4,
+          "lifespan_remaining": 8
+        }
+      },
+      "web": 23
+    },
+    {
+      "name": "last-count",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {
+            "donning": 6,
+            "stuck": 3
+          },
+          "x": 8,
+          "y": 8,
+          "hp": 100,
+          "nutrition": 2147,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "donning": 3,
+            "stuck": 1
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林",
+            "x": 13,
+            "y": 8,
+            "hp": 100,
+            "maxHp": 100,
+            "weaknessAmount": 0,
+            "maxStatus": {
+              "enraged": 4,
+              "lifespan_remaining": 8
+            },
+            "accuracy": 70,
+            "defense": 10,
+            "damage": "1d4+1",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [
+              "MA_ATTACKS_PENETRATE",
+              "MA_AVOID_CORRIDORS"
+            ],
+            "bolts": [],
+            "typeId": "goblin",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 99800,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      },
+      "sidebar": "状态穿甲(3/6) 缠绕(1/3) ",
+      "monster": {
+        "hp": 100,
+        "status": {
+          "enraged": 2,
+          "lifespan_remaining": 6
+        },
+        "max": {
+          "enraged": 4,
+          "lifespan_remaining": 8
+        }
+      },
+      "web": 23
+    },
+    {
+      "name": "released",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {
+            "donning": 6,
+            "stuck": 3
+          },
+          "x": 9,
+          "y": 8,
+          "hp": 100,
+          "nutrition": 2146,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "donning": 2
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 2,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林",
+            "x": 13,
+            "y": 8,
+            "hp": 100,
+            "maxHp": 100,
+            "weaknessAmount": 0,
+            "maxStatus": {
+              "enraged": 4,
+              "lifespan_remaining": 8
+            },
+            "accuracy": 70,
+            "defense": 10,
+            "damage": "1d4+1",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [
+              "MA_ATTACKS_PENETRATE",
+              "MA_AVOID_CORRIDORS"
+            ],
+            "bolts": [],
+            "typeId": "goblin",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 99700,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      },
+      "sidebar": "状态穿甲(2/6) ",
+      "monster": {
+        "hp": 100,
+        "status": {
+          "enraged": 1,
+          "lifespan_remaining": 5
+        },
+        "max": {
+          "enraged": 4,
+          "lifespan_remaining": 8
+        }
+      },
+      "web": 0
+    },
+    {
+      "name": "expired",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {
+            "donning": 6,
+            "stuck": 3
+          },
+          "x": 9,
+          "y": 8,
+          "hp": 100,
+          "nutrition": 2145,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 3,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "monster": {
+        "hp": 0,
+        "status": {},
+        "max": {
+          "enraged": 4,
+          "lifespan_remaining": 8
+        }
+      },
+      "web": 0
+    },
+    {
+      "name": "narrow",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {
+            "donning": 6,
+            "stuck": 3
+          },
+          "x": 9,
+          "y": 8,
+          "hp": 100,
+          "nutrition": 2145,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 3,
+        "autoPathLength": 0,
+        "monsters": [],
+        "items": []
+      },
+      "monster": {
+        "hp": 0,
+        "status": {},
+        "max": {
+          "enraged": 4,
+          "lifespan_remaining": 8
+        }
+      },
+      "web": 0
+    }
+  ],
+  "errors": []
+}
