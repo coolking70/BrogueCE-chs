@@ -1,0 +1,199 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a7f9/brogue/brogue-web
+
+ ❯ src/test/u_05a_item_ownership.test.ts (50 tests | 49 failed) 11ms
+     × CE8/F0: generation/adoption/outsourcing/carry conserves identity 2ms
+     × CE8/F1: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE8/F2: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE8/F3: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE10/F1: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE11/F2: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE12/F0: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE16/F0: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE26/F5: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE27/F0: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE28/F0: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE29/F0: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE30/F0: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE31/F1: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE32/F0: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE33/F0: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE34/F1: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE35/F0: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE36/F0: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE37/F0: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE38/F0: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE39/F0: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE40/F0: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE41/F2: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE42/F0: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE43/F0: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE44/F1: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE45/F0: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE46/F0: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE46/F1: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE47/F3: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE48/F0: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE49/F0: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE50/F0: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE51/F1: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE52/F3: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE53/F5: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE54/F0: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE55/F0: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE56/F0: generation/adoption/outsourcing/carry conserves identity 0ms
+     × CE57/F2: generation/adoption/outsourcing/carry conserves identity 0ms
+     × adopt only once; later itemless instances/features do not erase the last valid torch pair 0ms
+     × machine-wide last valid pair wins across features 0ms
+     × adopt + outsource + carry transfers only to child, never parent ground/carrier 0ms
+     × recursive child adopts then fails rolls back terrain, pending items/monsters and external item 0ms
+     × recursive child succeeds, parent later fails rolls back terrain, pending items/monsters and external item 0ms
+     × ordinary monster owns one item before death, after reload/death, after pickup/reload 0ms
+     × horde leader owns one item before death, after reload/death, after pickup/reload 0ms
+     × duplicate deferred identity is rejected before either copy is instantiated 2ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 49 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE8/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE8/F1: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE8/F2: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE8/F3: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE10/F1: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE11/F2: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE12/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE16/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE26/F5: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE27/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE28/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE29/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE30/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE31/F1: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE32/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE33/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE34/F1: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE35/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE36/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE37/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE38/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE39/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE40/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE41/F2: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE42/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE43/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE44/F1: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE45/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE46/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE46/F1: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE47/F3: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE48/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE49/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE50/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE51/F1: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE52/F3: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE53/F5: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE54/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE55/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE56/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE57/F2: generation/adoption/outsourcing/carry conserves identity
+TypeError: rng.seed is not a function
+ ❯ fixture src/test/u_05a_item_ownership.test.ts:16:9
+     14| function key():MachineItemSpawn { return {instanceId:'parent:key',cate…
+     15| function fixture(features:FeatureDef[], adopt=true) {
+     16|     rng.seed(7); resetMachineCounter();
+       |         ^
+     17|     const grid=new Grid(DCOLS,DROWS), cells=[];
+     18|     for(let x=4;x<44;x++) for(let y=4;y<24;y++){ grid.setTerrain(x,y,T…
+ ❯ src/test/u_05a_item_ownership.test.ts:61:30
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/49]⎯
+
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a adversarial ownership > adopt only once; later itemless instances/features do not erase the last valid torch pair
+TypeError: rng.seed is not a function
+ ❯ fixture src/test/u_05a_item_ownership.test.ts:16:9
+     14| function key():MachineItemSpawn { return {instanceId:'parent:key',cate…
+     15| function fixture(features:FeatureDef[], adopt=true) {
+     16|     rng.seed(7); resetMachineCounter();
+       |         ^
+     17|     const grid=new Grid(DCOLS,DROWS), cells=[];
+     18|     for(let x=4;x<44;x++) for(let y=4;y<24;y++){ grid.setTerrain(x,y,T…
+ ❯ src/test/u_05a_item_ownership.test.ts:79:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/49]⎯
+
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a adversarial ownership > machine-wide last valid pair wins across features
+TypeError: rng.seed is not a function
+ ❯ fixture src/test/u_05a_item_ownership.test.ts:16:9
+     14| function key():MachineItemSpawn { return {instanceId:'parent:key',cate…
+     15| function fixture(features:FeatureDef[], adopt=true) {
+     16|     rng.seed(7); resetMachineCounter();
+       |         ^
+     17|     const grid=new Grid(DCOLS,DROWS), cells=[];
+     18|     for(let x=4;x<44;x++) for(let y=4;y<24;y++){ grid.setTerrain(x,y,T…
+ ❯ src/test/u_05a_item_ownership.test.ts:85:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/49]⎯
+
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a adversarial ownership > adopt + outsource + carry transfers only to child, never parent ground/carrier
+TypeError: rng.seed is not a function
+ ❯ fixture src/test/u_05a_item_ownership.test.ts:16:9
+     14| function key():MachineItemSpawn { return {instanceId:'parent:key',cate…
+     15| function fixture(features:FeatureDef[], adopt=true) {
+     16|     rng.seed(7); resetMachineCounter();
+       |         ^
+     17|     const grid=new Grid(DCOLS,DROWS), cells=[];
+     18|     for(let x=4;x<44;x++) for(let y=4;y<24;y++){ grid.setTerrain(x,y,T…
+ ❯ src/test/u_05a_item_ownership.test.ts:91:30
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/49]⎯
+
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a adversarial ownership > recursive child adopts then fails rolls back terrain, pending items/monsters and external item
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a adversarial ownership > recursive child succeeds, parent later fails rolls back terrain, pending items/monsters and external item
+TypeError: rng.seed is not a function
+ ❯ fixture src/test/u_05a_item_ownership.test.ts:16:9
+     14| function key():MachineItemSpawn { return {instanceId:'parent:key',cate…
+     15| function fixture(features:FeatureDef[], adopt=true) {
+     16|     rng.seed(7); resetMachineCounter();
+       |         ^
+     17|     const grid=new Grid(DCOLS,DROWS), cells=[];
+     18|     for(let x=4;x<44;x++) for(let y=4;y<24;y++){ grid.setTerrain(x,y,T…
+ ❯ src/test/u_05a_item_ownership.test.ts:98:32
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/49]⎯
+
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a real consumer and U01 snapshot contract > ordinary monster owns one item before death, after reload/death, after pickup/reload
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a real consumer and U01 snapshot contract > horde leader owns one item before death, after reload/death, after pickup/reload
+TypeError: rng.seed is not a function
+ ❯ fixture src/test/u_05a_item_ownership.test.ts:16:9
+     14| function key():MachineItemSpawn { return {instanceId:'parent:key',cate…
+     15| function fixture(features:FeatureDef[], adopt=true) {
+     16|     rng.seed(7); resetMachineCounter();
+       |         ^
+     17|     const grid=new Grid(DCOLS,DROWS), cells=[];
+     18|     for(let x=4;x<44;x++) for(let y=4;y<24;y++){ grid.setTerrain(x,y,T…
+ ❯ materializedGame src/test/u_05a_item_ownership.test.ts:125:13
+ ❯ src/test/u_05a_item_ownership.test.ts:139:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/49]⎯
+
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a real consumer and U01 snapshot contract > duplicate deferred identity is rejected before either copy is instantiated
+AssertionError: expected [Function] to throw error including 'Duplicate machine item owner' but got '__vite_ssr_import_5__.rng.seed is not…'
+
+Expected: "Duplicate machine item owner"
+Received: "__vite_ssr_import_5__.rng.seed is not a function"
+
+ ❯ src/test/u_05a_item_ownership.test.ts:156:50
+    154|     it('duplicate deferred identity is rejected before either copy is …
+    155|         const spawn=vi.spyOn(ItemLoader,'spawnKey');
+    156|         expect(()=>materializedGame(false,true)).toThrow('Duplicate ma…
+       |                                                  ^
+    157|         // The duplicate is rejected at the transaction boundary (no t…
+    158|         expect(spawn.mock.results.filter(r=>r.value?.keyLoc?.some((k:a…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/49]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  49 failed | 1 passed (50)
+   Start at  15:55:39
+   Duration  604ms (transform 309ms, setup 0ms, import 507ms, tests 11ms, environment 0ms)
+

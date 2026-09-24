@@ -1,0 +1,119 @@
+
+> brogue-web@0.0.0 test:drift
+> vitest run src/test/generation_baseline.test.ts --maxWorkers=1
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a7f9/brogue/brogue-web
+
+stdout | src/test/generation_baseline.test.ts > 滚动生成基线：地图生成无非预期漂移 > 4 seed × D1-D26：地形指纹 / 怪物数 / 物种集合 / 物品数与基线一致
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/generation_baseline.test.ts (1 test | 1 failed) 13081ms
+     × 4 seed × D1-D26：地形指纹 / 怪物数 / 物种集合 / 物品数与基线一致 13080ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/generation_baseline.test.ts > 滚动生成基线：地图生成无非预期漂移 > 4 seed × D1-D26：地形指纹 / 怪物数 / 物种集合 / 物品数与基线一致
+AssertionError: 生成结果偏离基线 78 处（若非有意改动，请查清成因）: expected [ Array(78) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "seed777 D3 items: 基线=9 现在=8",
++   "seed777 D9 items: 基线=10 现在=9",
++   "seed777 D24 items: 基线=13 现在=11",
++   "seed31337 D7 n: 基线=7 现在=13",
++   "seed31337 D7 species: 基线=Acid mound,Black jelly,Ogre,Pink jelly,Toad 现在=Acid mound,Black jelly,Jackal,Ogre,Pink jelly,Pit bloat,Toad",
++   "seed31337 D7 items: 基线=9 现在=13",
++   "seed31337 D8 fp: 基线=5f9ab29f:4867 现在=0798a7e0:4793",
++   "seed31337 D8 n: 基线=12 现在=11",
++   "seed31337 D8 species: 基线=Bloat,Centipede,Goblin,Goblin conjurer,Goblin mystic,Ogre,Toad 现在=Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Ogre,Pink jelly,Toad,Vampire bat",
++   "seed31337 D8 items: 基线=10 现在=8",
++   "seed31337 D9 fp: 基线=2792332f:4944 现在=602d35f7:4913",
++   "seed31337 D9 n: 基线=11 现在=13",
++   "seed31337 D9 species: 基线=Acid mound,Bloat,Bog monster,Goblin conjurer,Monkey,Ogre,Spider,Toad,Vampire bat 现在=Centipede,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Ogre",
++   "seed31337 D9 items: 基线=7 现在=10",
++   "seed31337 D10 fp: 基线=73cfb110:4802 现在=ea3618b5:4787",
++   "seed31337 D10 n: 基线=18 现在=17",
++   "seed31337 D10 species: 基线=Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Ogre,Ogre totem,Spider,Vampire bat,Wisp 现在=Acid mound,Dar blademaster,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Spider,Wraith",
++   "seed31337 D10 items: 基线=7 现在=8",
++   "seed31337 D11 fp: 基线=22bfb59b:5800 现在=27709309:4744",
++   "seed31337 D11 n: 基线=16 现在=13",
++   "seed31337 D11 species: 基线=Dar blademaster,Dar priestess,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Goblin warlord,Ogre,Pink jelly,Spider,Wisp,Wraith 现在=Centipede,Dar blademaster,Dar priestess,Goblin,Goblin totem,Monkey,Pink jelly,Wisp,Wraith,Zombie",
++   "seed31337 D12 fp: 基线=87f30e07:4942 现在=bbf29712:4779",
++   "seed31337 D12 n: 基线=20 现在=12",
++   "seed31337 D12 species: 基线=Bloat,Bog monster,Dar blademaster,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Ogre,agile Goblin mystic 现在=Acid mound,Goblin,Goblin totem,Wisp,Wraith,Zombie",
++   "seed31337 D12 items: 基线=11 现在=13",
++   "seed31337 D13 fp: 基线=28a97c6f:4817 现在=daa4e6e9:4682",
++   "seed31337 D13 n: 基线=37 现在=6",
++   "seed31337 D13 species: 基线=Dar blademaster,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Monkey,Ogre,Ogre shaman,Troll,Wraith,agile Goblin mystic 现在=Acid mound,Naga,Troll,Wisp,Wraith",
++   "seed31337 D14 fp: 基线=42656203:4704 现在=6106d38a:4749",
++   "seed31337 D14 n: 基线=15 现在=19",
++   "seed31337 D14 species: 基线=Bog monster,Centipede,Ogre,Troll,grappling Wraith,vampiric Bog monster 现在=Centipede,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Ogre,Ogre totem,Pixie,Troll,Wraith,Zombie,grappling Goblin,toxic Goblin",
++   "seed31337 D15 fp: 基线=dd323b4d:4873 现在=bf301820:5460",
++   "seed31337 D15 n: 基线=35 现在=46",
++   "seed31337 D15 species: 基线=Bog monster,Centaur,Explosive bloat,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Imp,Ogre,Ogre shaman,Ogre totem,Pixie,Salamander,Troll,Zombie,agile Centaur,reflective Goblin,toxic Vampire 现在=Centaur,Dar blademaster,Eel,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Goblin warlord,Spider,Winged guardian,Zombie,explosive Dar priestess,explosive Goblin,explosive Goblin mystic",
++   "seed31337 D15 items: 基线=9 现在=16",
++   "seed31337 D16 fp: 基线=fca677c9:4882 现在=6b6e2c1c:4772",
++   "seed31337 D16 n: 基线=13 现在=8",
++   "seed31337 D16 species: 基线=Centaur,Dar blademaster,Eel,Ogre,Ogre totem,Troll,Wraith,agile Ogre 现在=Centaur,Imp,Pixie,Troll,Zombie,agile Centaur",
++   "seed31337 D16 items: 基线=9 现在=11",
++   "seed31337 D17 fp: 基线=4dce70cc:4814 现在=2723276d:4811",
++   "seed31337 D17 n: 基线=21 现在=13",
++   "seed31337 D17 species: 基线=Dar priestess,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Imp,Ogre,Pink jelly,Zombie,agile Ogre shaman,explosive Dar priestess,explosive Goblin conjurer,juggernaut Goblin 现在=Bloat,Bog monster,Dar blademaster,Salamander,Troll,infested Bog monster",
++   "seed31337 D17 items: 基线=8 现在=5",
++   "seed31337 D18 fp: 基线=ad15387a:4835 现在=a2a0985c:4802",
++   "seed31337 D18 n: 基线=19 现在=16",
++   "seed31337 D18 species: 基线=Acidic jelly,Bloat,Centaur,Eel,Explosive bloat,Pink jelly,Zombie,reflective Dar priestess,reflective Eel,vampiric Eel 现在=Acidic jelly,Centaur,Imp,Ogre,Ogre shaman,Sentinel,Troll,agile Centaur,explosive Sentinel,reflective Imp",
++   "seed31337 D18 items: 基线=9 现在=10",
++   "seed31337 D19 fp: 基线=da04640c:4834 现在=1e45b5a4:4905",
++   "seed31337 D19 n: 基线=22 现在=10",
++   "seed31337 D19 species: 基线=Dar battlemage,Dar blademaster,Dar priestess,Fury,Imp,Kraken,Phylactery,Pixie,Tentacle horror,Troll,agile Troll,infested Acidic jelly,toxic Kraken 现在=Acidic jelly,Centaur,Dar priestess,Phantom,Pink jelly,Troll,agile Dar priestess,explosive Imp",
++   "seed31337 D19 items: 基线=11 现在=8",
++   "seed31337 D20 fp: 基线=8d5dfdd8:4817 现在=304a2d19:4971",
++   "seed31337 D20 n: 基线=18 现在=19",
++   "seed31337 D20 species: 基线=Bloat,Bog monster,Centaur,Dar blademaster,Fury,Phantom,Revenant,Wraith,agile Centaur,explosive Bog monster,infested Fury 现在=Bog monster,Centaur,Eel,Fury,Ogre,Ogre shaman,explosive Eel,infested Fury,vampiric Bog monster",
++   "seed31337 D20 items: 基线=10 现在=9",
++   "seed31337 D21 fp: 基线=d78a9fe6:5029 现在=0112f397:4848",
++   "seed31337 D21 n: 基线=10 现在=23",
++   "seed31337 D21 species: 基线=Dar priestess,Imp,Pink jelly,Pixie,Revenant,Wraith,infested Bloat,reflective Acidic jelly,vampiric Wraith 现在=Bog monster,Centaur,Dar battlemage,Dar blademaster,Imp,agile Imp,agile Revenant,explosive Bog monster,infested Dar priestess,juggernaut Bog monster,vampiric Bog monster",
++   "seed31337 D21 items: 基线=11 现在=10",
++   "seed31337 D22 fp: 基线=89332ea8:4866 现在=7bb3d7e1:4971",
++   "seed31337 D22 n: 基线=14 现在=24",
++   "seed31337 D22 species: 基线=Dar battlemage,Dar blademaster,Fury,Golem,Imp,Tentacle horror,agile Revenant,grappling Golem,juggernaut Revenant,reflective Dar priestess 现在=Bloat,Dar battlemage,Dar blademaster,Dragon,Fury,Golem,Imp,Phylactery,Sentinel,Tentacle horror,Wraith,infested Dar priestess,toxic Wraith",
++   "seed31337 D23 fp: 基线=1d4c8fe1:4906 现在=04cba079:4972",
++   "seed31337 D23 n: 基线=11 现在=23",
++   "seed31337 D23 species: 基线=Dar battlemage,Dar blademaster,Dar priestess,Phantom,Phylactery,Revenant,explosive Tentacle horror 现在=Bloat,Dar battlemage,Dar blademaster,Dar priestess,Fury,Golem,Kraken,Phantom,Phylactery,Pink jelly,Sentinel,explosive Golem,grappling Bloat,grappling Dar blademaster,juggernaut Fury,vampiric Sentinel",
++   "seed31337 D23 items: 基线=10 现在=9",
++   "seed31337 D24 fp: 基线=bf50f0f1:4930 现在=f8ebc8fe:5011",
++   "seed31337 D24 n: 基线=18 现在=15",
++   "seed31337 D24 species: 基线=Bog monster,Dar battlemage,Dar blademaster,Fury,Imp,Tentacle horror,explosive Dar blademaster,infested Dar priestess,infested Fury,reflective Fury,toxic Fury 现在=Dar battlemage,Dar blademaster,Dar priestess,Fury,Golem,Phylactery,Tentacle horror,agile Fury,agile Revenant,toxic Dar blademaster,toxic Fury",
++   "seed31337 D24 items: 基线=9 现在=13",
++   "seed31337 D25 fp: 基线=2a815572:4925 现在=303ab093:4896",
++   "seed31337 D25 n: 基线=13 现在=12",
++   "seed31337 D25 species: 基线=Dar battlemage,Dar blademaster,Dar priestess,Golem,Phylactery,Revenant,Sentinel,grappling Sentinel,infested Sentinel 现在=Dragon,Fury,Phylactery,Tentacle horror,grappling Dragon,vampiric Fury",
++   "seed31337 D25 items: 基线=12 现在=22",
++   "seed31337 D26 fp: 基线=34753d5a:4966 现在=e6a255ad:4794",
++   "seed31337 D26 n: 基线=6 现在=19",
++   "seed31337 D26 species: 基线=Phylactery,Tentacle horror,explosive Golem,juggernaut Dragon,toxic Revenant 现在=Bloat,Dar priestess,Fury,Kraken,Sentinel,agile Fury,explosive Fury,grappling Bloat,toxic Bloat,toxic Fury",
++   "seed31337 D26 items: 基线=12 现在=15",
++ ]
+
+ ❯ src/test/generation_baseline.test.ts:51:67
+     49|             }
+     50|         }
+     51|         expect(diffs, `生成结果偏离基线 ${diffs.length} 处（若非有意改动，请查清成因）`).toEq…
+       |                                                                   ^
+     52|     });
+     53| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  15:50:59
+   Duration  13.64s (transform 304ms, setup 0ms, import 477ms, tests 13.08s, environment 0ms)
+

@@ -1,0 +1,248 @@
+[
+  {
+    "ce": 8,
+    "feature": 0,
+    "line": 235,
+    "source": "{0,         0,          0,              {1,1},      1,          (WEAPON),   -1,         0,              0,              0,          (ITEM_IDENTIFIED | ITEM_PLAYER_AVOIDS),(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_REQUIRE_GOOD_RUNIC | MF_NO_THROWING_WEAPONS | MF_OUTSOURCE_ITEM_TO_MACHINE | MF_BUILD_ANYWHERE_ON_LEVEL)},"
+  },
+  {
+    "ce": 8,
+    "feature": 1,
+    "line": 236,
+    "source": "{0,         0,          0,              {1,1},      1,          (ARMOR),    -1,         0,              0,              0,          (ITEM_IDENTIFIED | ITEM_PLAYER_AVOIDS),(MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_REQUIRE_GOOD_RUNIC | MF_OUTSOURCE_ITEM_TO_MACHINE | MF_BUILD_ANYWHERE_ON_LEVEL)},"
+  },
+  {
+    "ce": 8,
+    "feature": 2,
+    "line": 237,
+    "source": "{0,         0,          0,              {2,2},      2,          (STAFF),    -1,         0,              0,              0,          (ITEM_KIND_AUTO_ID | ITEM_PLAYER_AVOIDS), (MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_OUTSOURCE_ITEM_TO_MACHINE | MF_BUILD_ANYWHERE_ON_LEVEL)},"
+  },
+  {
+    "ce": 8,
+    "feature": 3,
+    "line": 238,
+    "source": "{0,         0,          0,              {1,2},      1,          (CHARM),    -1,         0,              0,              0,          (ITEM_KIND_AUTO_ID | ITEM_PLAYER_AVOIDS), (MF_GENERATE_ITEM | MF_ALTERNATIVE | MF_OUTSOURCE_ITEM_TO_MACHINE | MF_BUILD_ANYWHERE_ON_LEVEL)}}},"
+  },
+  {
+    "ce": 10,
+    "feature": 1,
+    "line": 250,
+    "source": "{0,         0,          0,              {1,2},      1,          KEY,        KEY_CAGE,   0,              1,              0,          (ITEM_IS_KEY | ITEM_PLAYER_AVOIDS),(MF_PERMIT_BLOCKING | MF_GENERATE_ITEM | MF_OUTSOURCE_ITEM_TO_MACHINE | MF_SKELETON_KEY | MF_KEY_DISPOSABLE)},"
+  },
+  {
+    "ce": 11,
+    "feature": 2,
+    "line": 258,
+    "source": "{DF_TRIGGER_AREA,COFFIN_CLOSED,0,       {1,1},      1,          KEY,        KEY_CAGE,   MK_VAMPIRE,     1,              0,          (ITEM_IS_KEY | ITEM_PLAYER_AVOIDS),(MF_GENERATE_ITEM | MF_SKELETON_KEY | MF_MONSTER_TAKE_ITEM | MF_MONSTERS_DORMANT | MF_FAR_FROM_ORIGIN | MF_KEY_DISPOSABLE)},"
+  },
+  {
+    "ce": 12,
+    "feature": 0,
+    "line": 262,
+    "source": "{DF_LUMINESCENT_FUNGUS, ALTAR_KEYHOLE, DUNGEON, {1,1}, 1,       KEY,        KEY_PORTAL, 0,              2,              0,          (ITEM_IS_KEY | ITEM_PLAYER_AVOIDS),(MF_GENERATE_ITEM | MF_NOT_IN_HALLWAY | MF_NEAR_ORIGIN | MF_OUTSOURCE_ITEM_TO_MACHINE | MF_KEY_DISPOSABLE)},"
+  },
+  {
+    "ce": 16,
+    "feature": 0,
+    "line": 300,
+    "source": "{0,         LOCKED_DOOR, DUNGEON,       {1,1},      1,          KEY,        KEY_DOOR,   0,              1,              0,          (ITEM_IS_KEY | ITEM_PLAYER_AVOIDS), (MF_BUILD_AT_ORIGIN | MF_PERMIT_BLOCKING | MF_GENERATE_ITEM | MF_OUTSOURCE_ITEM_TO_MACHINE | MF_KEY_DISPOSABLE | MF_IMPREGNABLE)}}},"
+  },
+  {
+    "ce": 26,
+    "feature": 5,
+    "line": 354,
+    "source": "{0,         ALTAR_CAGE_OPEN,DUNGEON,    {1,1},      1,          0,          -1,         0,              2,              0,          (ITEM_IS_KEY | ITEM_PLAYER_AVOIDS | ITEM_MAX_CHARGES_KNOWN),    (MF_ADOPT_ITEM | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE)},"
+  },
+  {
+    "ce": 27,
+    "feature": 0,
+    "line": 358,
+    "source": "{0,         ALTAR_INERT,DUNGEON,        {1,1},      1,          0,          -1,         0,              1,              0,          ITEM_PLAYER_AVOIDS, (MF_ADOPT_ITEM | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},"
+  },
+  {
+    "ce": 28,
+    "feature": 0,
+    "line": 362,
+    "source": "{0,         ALTAR_CAGE_RETRACTABLE,DUNGEON,{1,1},   1,          0,          -1,         0,              3,              0,          0,          (MF_ADOPT_ITEM | MF_IMPREGNABLE | MF_NOT_IN_HALLWAY)},"
+  },
+  {
+    "ce": 29,
+    "feature": 0,
+    "line": 366,
+    "source": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              1,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},"
+  },
+  {
+    "ce": 30,
+    "feature": 0,
+    "line": 371,
+    "source": "{DF_SURROUND_WOODEN_BARRICADE,ALTAR_INERT,DUNGEON,{1,1},1,      0,          -1,         0,              3,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},"
+  },
+  {
+    "ce": 31,
+    "feature": 1,
+    "line": 380,
+    "source": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              5,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},"
+  },
+  {
+    "ce": 32,
+    "feature": 0,
+    "line": 385,
+    "source": "{0,         ALTAR_INERT,DUNGEON,        {1,1},      1,          0,          -1,         0,              1,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},"
+  },
+  {
+    "ce": 33,
+    "feature": 0,
+    "line": 392,
+    "source": "{DF_LUMINESCENT_FUNGUS, ALTAR_INERT,DUNGEON,{1,1},  1,          0,          -1,         0,              2,              HORDE_MACHINE_THIEF,0,          (MF_ADOPT_ITEM | MF_BUILD_AT_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_GENERATE_HORDE | MF_MONSTER_TAKE_ITEM | MF_MONSTER_FLEEING)},"
+  },
+  {
+    "ce": 34,
+    "feature": 1,
+    "line": 397,
+    "source": "{0,         ALTAR_SWITCH_RETRACTING,DUNGEON,{1,1},  1,          0,          -1,         0,              3,              0,          0,          (MF_ADOPT_ITEM | MF_NEAR_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},"
+  },
+  {
+    "ce": 35,
+    "feature": 0,
+    "line": 401,
+    "source": "{0,         ALTAR_INERT,DUNGEON,        {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},"
+  },
+  {
+    "ce": 36,
+    "feature": 0,
+    "line": 406,
+    "source": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              3,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},"
+  },
+  {
+    "ce": 37,
+    "feature": 0,
+    "line": 415,
+    "source": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         MK_SPIDER,      3,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING | MF_IN_VIEW_OF_ORIGIN)},"
+  },
+  {
+    "ce": 38,
+    "feature": 0,
+    "line": 422,
+    "source": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},"
+  },
+  {
+    "ce": 39,
+    "feature": 0,
+    "line": 431,
+    "source": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_BUILD_AT_ORIGIN | MF_TREAT_AS_BLOCKING)},"
+  },
+  {
+    "ce": 40,
+    "feature": 0,
+    "line": 438,
+    "source": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_TREAT_AS_BLOCKING)},"
+  },
+  {
+    "ce": 41,
+    "feature": 2,
+    "line": 449,
+    "source": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              1,              0,          0,          (MF_ADOPT_ITEM | MF_TREAT_AS_BLOCKING | MF_FAR_FROM_ORIGIN)},"
+  },
+  {
+    "ce": 42,
+    "feature": 0,
+    "line": 454,
+    "source": "{DF_SMALL_DEAD_GRASS,ALTAR_SWITCH_RETRACTING,DUNGEON,{1,1},1,   0,          -1,         0,              1,              0,          0,          (MF_ADOPT_ITEM | MF_TREAT_AS_BLOCKING | MF_FAR_FROM_ORIGIN)},"
+  },
+  {
+    "ce": 43,
+    "feature": 0,
+    "line": 462,
+    "source": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_NEAR_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},"
+  },
+  {
+    "ce": 44,
+    "feature": 1,
+    "line": 467,
+    "source": "{0,         0,          0,              {1,1},      1,          0,          -1,         MK_GUARDIAN,    2,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_MONSTER_TAKE_ITEM)},"
+  },
+  {
+    "ce": 45,
+    "feature": 0,
+    "line": 472,
+    "source": "{DF_GLYPH_CIRCLE,ALTAR_INERT,DUNGEON,   {1,1},      1,          0,          -1,         0,              1,              0,          0,          (MF_ADOPT_ITEM | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},"
+  },
+  {
+    "ce": 46,
+    "feature": 0,
+    "line": 480,
+    "source": "{DF_GLYPH_CIRCLE,ALTAR_INERT,DUNGEON,   {1,1},      1,          0,          -1,         MK_GUARDIAN,    3,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN  | MF_ALTERNATIVE)},"
+  },
+  {
+    "ce": 46,
+    "feature": 1,
+    "line": 481,
+    "source": "{DF_GLYPH_CIRCLE,ALTAR_INERT,DUNGEON,   {1,1},      1,          0,          -1,         MK_WINGED_GUARDIAN,3,           0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN  | MF_ALTERNATIVE)},"
+  },
+  {
+    "ce": 47,
+    "feature": 3,
+    "line": 492,
+    "source": "{0,         SACRIFICE_CAGE_DORMANT,DUNGEON,{1,1},   1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_NOT_IN_HALLWAY | MF_IMPREGNABLE)},"
+  },
+  {
+    "ce": 48,
+    "feature": 0,
+    "line": 497,
+    "source": "{DF_GLYPH_CIRCLE,ALTAR_INERT,DUNGEON,   {1,1},      1,          0,          -1,         0,              3,              0,          0,          (MF_ADOPT_ITEM | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},"
+  },
+  {
+    "ce": 49,
+    "feature": 0,
+    "line": 501,
+    "source": "{DF_GLYPH_CIRCLE,ALTAR_INERT,DUNGEON,   {1,1},      1,          0,          -1,         0,              3,              0,          0,          (MF_ADOPT_ITEM | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN | MF_IN_VIEW_OF_ORIGIN)},"
+  },
+  {
+    "ce": 50,
+    "feature": 0,
+    "line": 507,
+    "source": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_NEAR_ORIGIN | MF_TREAT_AS_BLOCKING | MF_NOT_IN_HALLWAY)},"
+  },
+  {
+    "ce": 51,
+    "feature": 1,
+    "line": 512,
+    "source": "{DF_SWAMP,  ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},"
+  },
+  {
+    "ce": 52,
+    "feature": 3,
+    "line": 519,
+    "source": "{0,         ALTAR_CAGE_RETRACTABLE,DUNGEON,{1,1},   1,          0,          -1,         0,              3,              0,          0,          (MF_ADOPT_ITEM | MF_IMPREGNABLE | MF_NOT_IN_HALLWAY | MF_FAR_FROM_ORIGIN)},"
+  },
+  {
+    "ce": 53,
+    "feature": 5,
+    "line": 528,
+    "source": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},"
+  },
+  {
+    "ce": 54,
+    "feature": 0,
+    "line": 533,
+    "source": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},"
+  },
+  {
+    "ce": 55,
+    "feature": 0,
+    "line": 539,
+    "source": "{0,         ALTAR_INERT,DUNGEON,        {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_TREAT_AS_BLOCKING)},"
+  },
+  {
+    "ce": 56,
+    "feature": 0,
+    "line": 547,
+    "source": "{0,         ALTAR_SWITCH,DUNGEON,       {1,1},      1,          0,          -1,         0,              2,              0,          0,          (MF_ADOPT_ITEM | MF_NEAR_ORIGIN | MF_NOT_IN_HALLWAY | MF_TREAT_AS_BLOCKING)},"
+  },
+  {
+    "ce": 57,
+    "feature": 2,
+    "line": 553,
+    "source": "{DF_BONES,  0,          0,              {1,1},      1,          0,          -1,         0,              1,              HORDE_MACHINE_BOSS, 0,  (MF_ADOPT_ITEM | MF_FAR_FROM_ORIGIN | MF_MONSTER_TAKE_ITEM | MF_GENERATE_HORDE | MF_MONSTER_SLEEPING)}}},"
+  }
+]

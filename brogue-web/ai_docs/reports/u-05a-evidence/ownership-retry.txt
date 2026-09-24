@@ -1,0 +1,28 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a7f9/brogue/brogue-web
+
+ ❯ src/test/u_05a_item_ownership.test.ts (50 tests | 2 failed) 1010ms
+     × recursive child adopts then fails rolls back terrain, pending items/monsters and external item 2ms
+     × recursive child succeeds, parent later fails rolls back terrain, pending items/monsters and external item 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a adversarial ownership > recursive child adopts then fails rolls back terrain, pending items/monsters and external item
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a adversarial ownership > recursive child succeeds, parent later fails rolls back terrain, pending items/monsters and external item
+AssertionError: expected 0 to be greater than 0
+ ❯ src/test/u_05a_item_ownership.test.ts:113:47
+    111|         };
+    112|         const r=engine.buildAMachine(900,[],incoming,{x:8,y:8});
+    113|         expect(r).toBeNull();expect(attempts).toBeGreaterThan(0);expec…
+       |                                               ^
+    114|         expect(engine.backupLevel()).toEqual(before);expect(JSON.strin…
+    115|         // A succeeding retry receives a clean item/owner graph; no fa…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 48 passed (50)
+   Start at  15:56:32
+   Duration  1.55s (transform 303ms, setup 0ms, import 464ms, tests 1.01s, environment 0ms)
+

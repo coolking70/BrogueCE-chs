@@ -19,7 +19,7 @@ import {
     setRewardRoomsGenerated,
     resetRewardRoomsGenerated,
     resetMachineCounter,
-    type MachineMonsterSpawn,
+    type MachineItemSpawn, type MachineMonsterSpawn,
     type MachineResult
 } from '../Generator/BlueprintEngine';
 import blueprintData from '../../data/blueprints.json';
@@ -1306,6 +1306,33 @@ export class Game {
         // key.keyLoc 记录锁位与机器号（CE keyMatchesLocation 的两个匹配键）。
         // 放置沿用 floorTiles 牌堆（机器格已排除，钥匙永不落机器内——
         // CE 的 MF_OUTSOURCE 语义在 web 的最小近似，守卫机器留形待激活）。
+        // U05a: a deferred instance has exactly one owner. Check the complete
+        // flattened transaction before materialization, including child machines.
+        const owners = new Set<string | MachineItemSpawn>();
+        for (const mr of machineResults) {
+            for (const spawn of [...mr.itemSpawns, ...mr.monsterSpawns.flatMap(m => m.carriedItem ? [m.carriedItem] : [])]) {
+                const identity = spawn.instanceId ?? spawn;
+                if (owners.has(identity)) throw new Error(`Duplicate machine item owner: ${spawn.instanceId}`);
+                owners.add(identity);
+            }
+        }
+        const instances = new Map<string | MachineItemSpawn, Item | null>();
+        const materialize = (spawn: MachineItemSpawn, pos: Pos): Item | null => {
+            const identity = spawn.instanceId ?? spawn;
+            if (instances.has(identity)) return instances.get(identity)!;
+            const item = this.spawnBlueprintItem(spawn.category, spawn.id, pos.x, pos.y, depth);
+            if (item) {
+                if (spawn.keyLoc) item.keyLoc = spawn.keyLoc.map(k => ({ ...k, loc: { ...k.loc } }));
+                item.originDepth = depth;
+            }
+            instances.set(identity, item);
+            return item;
+        };
+        const handOff = (mon: Monster, spawn: MachineMonsterSpawn): void => {
+            if (!spawn.carriedItem) return;
+            // CE :1705-1710 discards the bearer's previous carried item.
+            mon.carriedItem = materialize(spawn.carriedItem, mon.loc);
+        };
         for (const mr of machineResults) {
             // Spawn keys for locked doors
             // V-2b-6：generatedKey 机器跳过补偿循环——CE Architect.c 里钥匙
@@ -1349,14 +1376,8 @@ export class Game {
                 // T_AUTO_DESCENT / T_IS_DEEP_WATER…），而 C-4a 早就把它做成了
                 // `isPathingBlocker`——我当时没用它，这正是"统一判据"要防的事。
                 if (!spawnCell || isPathingBlocker(spawnCell.terrain)) continue;
-                const item = this.spawnBlueprintItem(spawn.category, spawn.id, spawn.pos.x, spawn.pos.y, depth);
-                if (item) {
-                    // V-2b-6：锁位绑定与生成层落到实化的物品上（CE Architect.c:1523
-                    // addLocationToKey + :1524 originDepth = rogue.depthLevel）。
-                    if (spawn.keyLoc) item.keyLoc = spawn.keyLoc.map(k => ({ ...k, loc: { ...k.loc } }));
-                    item.originDepth = depth;
-                    this.items.push(item);
-                }
+                const item = materialize(spawn, spawn.pos);
+                if (item) this.items.push(item);
             }
 
             // Spawn monsters
@@ -1365,7 +1386,8 @@ export class Game {
                 // 按 horde 表成群生成（CE 在 spawnHorde 内部抽 horde 与核地形，
                 // 落点即 feature 落点）。
                 if (spawn.hordeFlags) {
-                    this.spawnHordeAtFeature(spawn, depth, mr.machineNumber);
+                    const leader = this.spawnHordeAtFeature(spawn, depth, mr.machineNumber);
+                    if (leader) handOff(leader, spawn);
                     continue;
                 }
                 if (!spawn.monsterId) continue;
@@ -1374,19 +1396,7 @@ export class Game {
                     const mon = new Monster(spawn.pos.x, spawn.pos.y, mData);
                     if (spawn.isAlly) mon.isAlly = true;
                     if (spawn.isCaged) mon.isCaged = true;
-                    // V-2b-6：MF_MONSTER_TAKE_ITEM 的物品实化（CE Architect.c:
-                    // 1705-1710 `torchBearer->carriedItem = torch`；Monsters.c:150
-                    // `carriedItem->originDepth = rogue.depthLevel`）。
-                    if (spawn.carriedItem) {
-                        const carried = this.spawnBlueprintItem(
-                            spawn.carriedItem.category, spawn.carriedItem.id, spawn.pos.x, spawn.pos.y, depth
-                        );
-                        if (carried) {
-                            if (spawn.carriedItem.keyLoc) carried.keyLoc = spawn.carriedItem.keyLoc.map(k => ({ ...k, loc: { ...k.loc } }));
-                            carried.originDepth = depth;
-                            mon.carriedItem = carried;
-                        }
-                    }
+                    handOff(mon, spawn);
                     this.applyRandomMutation(mon, depth);
                     this.monsters.push(mon);
                     this.finalizeBlueprintMonster(mon, spawn, mr.machineNumber);
@@ -1787,7 +1797,7 @@ export class Game {
      *   - horde 的领袖与成员（CE spawnMinions Monsters.c:743 同置
      *     MB_JUST_SUMMONED）一并走机器收尾：记属机 / 睡姿 / 休眠。
      */
-    private spawnHordeAtFeature(spawn: MachineMonsterSpawn, depth: number, machineNumber: number): void {
+    private spawnHordeAtFeature(spawn: MachineMonsterSpawn, depth: number, machineNumber: number): Monster | null {
         const required = spawn.hordeFlags ?? [];
         const forbidden = ['HORDE_IS_SUMMONED', 'HORDE_LEADER_CAPTIVE']
             .filter(f => !required.includes(f));
@@ -1803,17 +1813,18 @@ export class Game {
         let picked: HordeEntry | null = null;
         for (let failsafe = 50; failsafe > 0; failsafe--) {
             const cand = this.pickHordeType(candidates);
-            if (!cand) return; // CE :816-819 抽不到合格 horde → 不生成
+            if (!cand) return null; // CE :816-819 抽不到合格 horde → 不生成
             picked = cand;
             if (this.hordeFitsTerrain(cand, spawn.pos)) break;
         }
-        if (!picked) return;
+        if (!picked) return null;
 
         const collected: Monster[] = [];
         this.spawnHordeAt(picked, spawn.pos, roll.depth, false, undefined, collected);
         for (const mon of collected) {
             this.finalizeBlueprintMonster(mon, spawn, machineNumber);
         }
+        return collected[0] ?? null; // spawnHordeAt records the leader first.
     }
 
     /** Monsters.c:809-819：horde 落格地形约束（spawnsIn）。 */

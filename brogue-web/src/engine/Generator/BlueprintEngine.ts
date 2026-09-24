@@ -129,7 +129,19 @@ export interface BlueprintDef {
     dungeonProfile?: DungeonProfileId;
 }
 
-/** Result of building a machine, consumed by Game.ts populateLevel */
+/** A deferred item instance. Adoption copies placement, never instanceId.
+ * IDs are local to the generated level and consume no RNG/entity IDs. */
+export interface MachineItemSpawn {
+    instanceId?: string;
+    category: string;
+    id?: string;
+    pos: Pos;
+    isAltar?: boolean;
+    itemQualifiers?: string[];
+    viaAdoption?: boolean;
+    keyLoc?: Array<{ loc: Pos; machine: number; disposableHere: boolean }>;
+}
+
 /**
  * V-2b-5：机器怪生成指令（CE 的 spawnedMonsters 缓冲等价物）。
  * 单只（CE `feature->monsterID` 分支，Architect.c:1601）与成群
@@ -173,12 +185,13 @@ export interface MachineMonsterSpawn {
     /**
      * V-2b-6：CE MF_MONSTER_TAKE_ITEM（Architect.c:1622-1626：theItem 记入
      * torch/torchBearer，机器建成后在 :1705-1710 交给该 feature 生成的
-     * 最后一只怪 `monst->carriedItem = torch`）。web 的等价物：物品指令
+     * 最后一个有效物品/怪物配对 `monst->carriedItem = torch`）。web 的等价物：物品指令
      * 挂在怪物指令上，实化在 Game（与键位绑定同款两段式）。
      */
-    carriedItem?: { category: string; id?: string; keyLoc?: MachineResult['itemSpawns'][number]['keyLoc'] };
+    carriedItem?: MachineItemSpawn;
 }
 
+/** Committed machine transaction, consumed by Game.populateLevel. */
 export interface MachineResult {
     blueprintId: string;
     category: string;
@@ -195,7 +208,9 @@ export interface MachineResult {
      *  addLocationToKey / addMachineNumberToKey 写入的绑定，随指令下传，
      *  消费点 Game.populateLevel（物品实化处落到 item 上）。
      */
-    itemSpawns: Array<{ category: string; id?: string; pos: Pos; isAltar?: boolean; itemQualifiers?: string[]; viaAdoption?: boolean; keyLoc?: Array<{ loc: Pos; machine: number; disposableHere: boolean }> }>;
+    itemSpawns: MachineItemSpawn[];
+    /** Creation ledger, including outsourced items. These are NOT spawn commands. */
+    generatedItems?: MachineItemSpawn[];
     /**
      * V-2b-7：本机器**全部 feature 实例的落点**（CE Architect.c:1484-1486
      * `pmap[featX][featY].flags |= IS_IN_ROOM/AREA_MACHINE; machineNumber =
@@ -1186,6 +1201,7 @@ export class BlueprintEngine {
         const flags = new Set(bp.flags);
         const effFlags = effectiveBpFlags(bp);
         const subMachines: MachineResult[] = [];
+        const adoptedInstanceId = ctx.adoptiveItem?.instanceId;
 
         // V-2b-2b：CE p->interior 的 web 可变形态——初始 = 选址产出的内部格
         //（集合迭代序 = room.cells 原序，非改造机器的后续 RNG 序逐位不变）。
@@ -1336,7 +1352,8 @@ export class BlueprintEngine {
         }
 
         // 4. Process features
-        const itemSpawns: MachineResult['itemSpawns'] = [];
+        const itemSpawns: MachineItemSpawn[] = [];
+        const generatedItems: MachineItemSpawn[] = [];
         const monsterSpawns: MachineResult['monsterSpawns'] = [];
 
         // Shuffle room cells for feature placement
@@ -1406,12 +1423,10 @@ export class BlueprintEngine {
         let machineGeneratedKey = false;
         // V-2b-7：feature 落点表（CE Architect.c:1484-1486 的机器标记回声）。
         const featureSpawns: MachineResult['featureSpawns'] = [];
-        // V-2b-6：MF_MONSTER_TAKE_ITEM 的携带归属——CE Architect.c:1622-1626
-        // 把 theItem 记到 torch/torchBearer（每个 instance 覆盖一次），机器
-        // 建成后 :1705-1710 交给最后一只 torchBearer。web 的等价物：记录本
-        // feature 的携带指令下标，feature 建完后只保留最后一个（CE 字面）。
-        let carryIndicesPerFeature: number[] = [];
-        let carryItem: MachineResult['itemSpawns'][number] | null = null;
+        // CE :1622-1626 only overwrites this pair when BOTH item and monster exist.
+        // It spans the whole machine, and is committed only after all features succeed.
+        let torch: MachineItemSpawn | null = null;
+        let torchBearer: MachineMonsterSpawn | null = null;
 
         for (const [feat, feature] of bp.features.entries()) {
             if (skipFeature[feat]) continue; // CE Architect.c:1329：未被选中的替代 feature 整条跳过
@@ -1612,8 +1627,6 @@ export class BlueprintEngine {
                             // "自产自销室内钥匙"形态；web 的 key_rat_trap 室内
                             // 钥匙是该形态孤例，继续被消费端跳过——B-4b 原判）。
                             theItem = { ...ctx.adoptiveItem, pos: { x: pos.x, y: pos.y }, viaAdoption: true };
-                            itemSpawns.push(theItem);
-                            if (!fFlags.has('MF_MONSTER_TAKE_ITEM')) this.pendingItems.add(cellKey(pos.x, pos.y));
                             ctx.adoptiveItem = null;
                         } else if (fFlags.has('MF_GENERATE_ITEM') && feature.itemCategory) {
                             // V-2b-2a（CE :1506-1509）：Q 族资格旗标随指令下传；
@@ -1622,12 +1635,14 @@ export class BlueprintEngine {
                             // 不在本轮授权清单而登记为边界外缺口（报告 §2）。
                             const itemQualifiers = ITEM_QUALIFIER_FLAGS.filter(f => fFlags.has(f));
                             theItem = {
+                                instanceId: `${machineNum}:${generatedItems.length}`,
                                 category: feature.itemCategory,
                                 id: feature.itemId,
                                 pos: { x: pos.x, y: pos.y },
                                 isAltar: fFlags.has('MF_ALTAR'),
                                 itemQualifiers: itemQualifiers.length > 0 ? itemQualifiers : undefined
                             };
+                            generatedItems.push(theItem);
                             // V-2b-6（CE Architect.c:1523-1527）：KEY 物品的锁位
                             // 绑定——addLocationToKey(theItem, featX, featY,
                             //   MF_KEY_DISPOSABLE) 恒写位置条目；
@@ -1657,11 +1672,12 @@ export class BlueprintEngine {
                                     machineGeneratedKey = true;
                                 }
                             }
-                            if (!fFlags.has('MF_OUTSOURCE_ITEM_TO_MACHINE')
-                                && !fFlags.has('MF_MONSTER_TAKE_ITEM')) {
-                                itemSpawns.push(theItem);
-                                this.pendingItems.add(cellKey(pos.x, pos.y));
-                            }
+                        }
+                        // The three destinations are exclusive for generated AND adopted items.
+                        if (theItem && !fFlags.has('MF_OUTSOURCE_ITEM_TO_MACHINE')
+                            && !fFlags.has('MF_MONSTER_TAKE_ITEM')) {
+                            itemSpawns.push(theItem);
+                            this.pendingItems.add(cellKey(pos.x, pos.y));
                         }
 
                         // V-1c：递归外包 / 前厅（CE :1543-1575，结构逐字）——
@@ -1684,14 +1700,9 @@ export class BlueprintEngine {
                                 if (success) break;
                             }
                             if (!success) return null;
+                            theItem = null; // CE :1585: outsourced item cannot also be carried here.
                         }
-                        // V-2b-6：CE Architect.c:1622-1626——MF_MONSTER_TAKE_ITEM
-                        // 在 theItem 摘链前把物品记给本 instance 的 torch/torchBearer
-                        // （每 instance 覆盖一次；本 instance 无物品则清空，与 CE 的
-                        // torch/torchBearer 覆盖写一致）。
-                        carryItem = (fFlags.has('MF_MONSTER_TAKE_ITEM') && theItem) ? theItem : null;
-                        theItem = null;
-
+                        const carryItem = fFlags.has('MF_MONSTER_TAKE_ITEM') ? theItem : null;
                         // Generate monster spawn instructions.
                         //
                         // V-2b-5（CE Architect.c:1591-1599）：MF_GENERATE_HORDE
@@ -1719,7 +1730,8 @@ export class BlueprintEngine {
                                 fleeing: fFlags.has('MF_MONSTER_FLEEING'),
                             });
                             if (carryItem) {
-                                carryIndicesPerFeature.push(monsterSpawns.length - 1);
+                                torch = carryItem;
+                                torchBearer = monsterSpawns[monsterSpawns.length - 1]!;
                             }
                         }
 
@@ -1745,7 +1757,8 @@ export class BlueprintEngine {
                                 fleeing: fFlags.has('MF_MONSTER_FLEEING'),
                             });
                             if (carryItem) {
-                                carryIndicesPerFeature.push(monsterSpawns.length - 1);
+                                torch = carryItem;
+                                torchBearer = monsterSpawns[monsterSpawns.length - 1]!;
                             }
                         }
                     }
@@ -1772,22 +1785,8 @@ export class BlueprintEngine {
                 return null;
             }
 
-            // V-2b-6：MF_MONSTER_TAKE_ITEM 的 CE 字面收口（Architect.c:1705-1710
-            // `torchBearer->carriedItem = torch`）——每个 instance 都会覆盖
-            // torch/torchBearer，机器建成后只有**最后**一只携带者拿到物品，
-            // 其余清除。
-            if (carryIndicesPerFeature.length > 0 && carryItem) {
-                for (let ci = 0; ci < carryIndicesPerFeature.length; ci++) {
-                    const inst = monsterSpawns[carryIndicesPerFeature[ci]!];
-                    if (!inst) continue;
-                    inst.carriedItem = ci === carryIndicesPerFeature.length - 1
-                        ? { category: carryItem.category, id: carryItem.id, keyLoc: carryItem.keyLoc }
-                        : undefined;
-                }
-            }
-            carryIndicesPerFeature = [];
-            carryItem = null;
         }
+        if (torchBearer && torch) torchBearer.carriedItem = torch;
 
         // 5. 机器旗标（P1-37）：本方法第 1 步已把 room.cells 全部写入
         // cell.machineNumber（web 的 IS_IN_MACHINE 等价物，CE Rogue.h:1113，
@@ -1838,6 +1837,22 @@ export class BlueprintEngine {
             if (!cell || isPathingBlocker(cell.terrain)) return null;
         }
 
+        // Do not publish a transaction with an unowned creation or duplicate
+        // destination. This also rejects malformed synthetic TAKE_ITEM features
+        // that supersede an earlier generated torch without giving it an owner.
+        const descendants = (m: MachineResult): MachineResult[] => [m, ...m.subMachines.flatMap(descendants)];
+        const children = subMachines.flatMap(descendants);
+        const destinations = [...itemSpawns, ...monsterSpawns.flatMap(m => m.carriedItem ? [m.carriedItem] : []),
+            ...children.flatMap(m => [...m.itemSpawns, ...m.monsterSpawns.flatMap(n => n.carriedItem ? [n.carriedItem] : [])])];
+        const ownerCounts = new Map<string, number>();
+        for (const item of destinations) {
+            if (item.instanceId) ownerCounts.set(item.instanceId, (ownerCounts.get(item.instanceId) ?? 0) + 1);
+        }
+        if ([...ownerCounts.values()].some(count => count !== 1)
+            || [...generatedItems, ...children.flatMap(m => m.generatedItems ?? [])]
+                .some(item => ownerCounts.get(item.instanceId!) !== 1)
+            || (adoptedInstanceId !== undefined && ownerCounts.get(adoptedInstanceId) !== 1)) return null;
+
         // V-2b-9c: #32 can overlay the pre-feature center with deep water.
         // Keep the existing web room-center contract in final terrain, without
         // moving any feature or consuming RNG. CE has no treasure-center field.
@@ -1863,6 +1878,7 @@ export class BlueprintEngine {
             center: finalCenter,
             door: doorPos,
             itemSpawns,
+            generatedItems,
             monsterSpawns,
             featureSpawns,
             needsKey,

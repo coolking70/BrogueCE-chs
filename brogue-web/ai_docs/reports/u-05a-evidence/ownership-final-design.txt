@@ -1,0 +1,35 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a7f9/brogue/brogue-web
+
+ ❯ src/test/u_05a_item_ownership.test.ts (50 tests | 8 failed) 1295ms
+     × CE8/F0: generation/adoption/outsourcing/carry conserves identity 3ms
+     × CE8/F1: generation/adoption/outsourcing/carry conserves identity 1ms
+     × CE8/F2: generation/adoption/outsourcing/carry conserves identity 1ms
+     × CE8/F3: generation/adoption/outsourcing/carry conserves identity 1ms
+     × CE10/F1: generation/adoption/outsourcing/carry conserves identity 1ms
+     × CE11/F2: generation/adoption/outsourcing/carry conserves identity 1ms
+     × CE12/F0: generation/adoption/outsourcing/carry conserves identity 1ms
+     × CE16/F0: generation/adoption/outsourcing/carry conserves identity 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE8/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE8/F1: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE8/F2: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE8/F3: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE10/F1: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE11/F2: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE12/F0: generation/adoption/outsourcing/carry conserves identity
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE16/F0: generation/adoption/outsourcing/carry conserves identity
+AssertionError: expected null not to be null
+ ❯ src/test/u_05a_item_ownership.test.ts:64:23
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed | 42 passed (50)
+   Start at  15:58:11
+   Duration  1.90s (transform 339ms, setup 0ms, import 526ms, tests 1.29s, environment 0ms)
+

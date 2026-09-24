@@ -1,0 +1,1307 @@
+{
+  "input": {
+    "src/engine/Generator/BlueprintEngine.ts": {
+      "current": "cc5bd057a8b3ac7398e28355884894dbd6667c616d31ef2a4d55e77f5e69fa3a",
+      "control": "77d7854ec04e13ed822e828a1454b8fe080f98b91662ddf4a8b9e027db96ebec"
+    },
+    "src/engine/Core/Game.ts": {
+      "current": "f594d4e86954ce50fc0c00a4ba52af4142146e986cbc30a12ec0f3c5dce49727",
+      "control": "27872fd596f7606ff7459bf49f69e78be4c707d4c8e06c0d3a88680685359038"
+    }
+  },
+  "controlDiff": [],
+  "fields": {
+    "fp": 19,
+    "n": 20,
+    "species": 20,
+    "items": 19
+  },
+  "changedLayers": 23,
+  "changes": [
+    {
+      "seed": 777,
+      "depth": 3,
+      "field": "items",
+      "before": 9,
+      "after": 8
+    },
+    {
+      "seed": 777,
+      "depth": 9,
+      "field": "items",
+      "before": 10,
+      "after": 9
+    },
+    {
+      "seed": 777,
+      "depth": 24,
+      "field": "items",
+      "before": 13,
+      "after": 11
+    },
+    {
+      "seed": 31337,
+      "depth": 7,
+      "field": "n",
+      "before": 7,
+      "after": 13
+    },
+    {
+      "seed": 31337,
+      "depth": 7,
+      "field": "species",
+      "before": "Acid mound,Black jelly,Ogre,Pink jelly,Toad",
+      "after": "Acid mound,Black jelly,Jackal,Ogre,Pink jelly,Pit bloat,Toad"
+    },
+    {
+      "seed": 31337,
+      "depth": 7,
+      "field": "items",
+      "before": 9,
+      "after": 13
+    },
+    {
+      "seed": 31337,
+      "depth": 8,
+      "field": "fp",
+      "before": "5f9ab29f:4867",
+      "after": "0798a7e0:4793"
+    },
+    {
+      "seed": 31337,
+      "depth": 8,
+      "field": "n",
+      "before": 12,
+      "after": 11
+    },
+    {
+      "seed": 31337,
+      "depth": 8,
+      "field": "species",
+      "before": "Bloat,Centipede,Goblin,Goblin conjurer,Goblin mystic,Ogre,Toad",
+      "after": "Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Ogre,Pink jelly,Toad,Vampire bat"
+    },
+    {
+      "seed": 31337,
+      "depth": 8,
+      "field": "items",
+      "before": 10,
+      "after": 8
+    },
+    {
+      "seed": 31337,
+      "depth": 9,
+      "field": "fp",
+      "before": "2792332f:4944",
+      "after": "602d35f7:4913"
+    },
+    {
+      "seed": 31337,
+      "depth": 9,
+      "field": "n",
+      "before": 11,
+      "after": 13
+    },
+    {
+      "seed": 31337,
+      "depth": 9,
+      "field": "species",
+      "before": "Acid mound,Bloat,Bog monster,Goblin conjurer,Monkey,Ogre,Spider,Toad,Vampire bat",
+      "after": "Centipede,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Ogre"
+    },
+    {
+      "seed": 31337,
+      "depth": 9,
+      "field": "items",
+      "before": 7,
+      "after": 10
+    },
+    {
+      "seed": 31337,
+      "depth": 10,
+      "field": "fp",
+      "before": "73cfb110:4802",
+      "after": "ea3618b5:4787"
+    },
+    {
+      "seed": 31337,
+      "depth": 10,
+      "field": "n",
+      "before": 18,
+      "after": 17
+    },
+    {
+      "seed": 31337,
+      "depth": 10,
+      "field": "species",
+      "before": "Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Ogre,Ogre totem,Spider,Vampire bat,Wisp",
+      "after": "Acid mound,Dar blademaster,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Spider,Wraith"
+    },
+    {
+      "seed": 31337,
+      "depth": 10,
+      "field": "items",
+      "before": 7,
+      "after": 8
+    },
+    {
+      "seed": 31337,
+      "depth": 11,
+      "field": "fp",
+      "before": "22bfb59b:5800",
+      "after": "27709309:4744"
+    },
+    {
+      "seed": 31337,
+      "depth": 11,
+      "field": "n",
+      "before": 16,
+      "after": 13
+    },
+    {
+      "seed": 31337,
+      "depth": 11,
+      "field": "species",
+      "before": "Dar blademaster,Dar priestess,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Goblin warlord,Ogre,Pink jelly,Spider,Wisp,Wraith",
+      "after": "Centipede,Dar blademaster,Dar priestess,Goblin,Goblin totem,Monkey,Pink jelly,Wisp,Wraith,Zombie"
+    },
+    {
+      "seed": 31337,
+      "depth": 12,
+      "field": "fp",
+      "before": "87f30e07:4942",
+      "after": "bbf29712:4779"
+    },
+    {
+      "seed": 31337,
+      "depth": 12,
+      "field": "n",
+      "before": 20,
+      "after": 12
+    },
+    {
+      "seed": 31337,
+      "depth": 12,
+      "field": "species",
+      "before": "Bloat,Bog monster,Dar blademaster,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Ogre,agile Goblin mystic",
+      "after": "Acid mound,Goblin,Goblin totem,Wisp,Wraith,Zombie"
+    },
+    {
+      "seed": 31337,
+      "depth": 12,
+      "field": "items",
+      "before": 11,
+      "after": 13
+    },
+    {
+      "seed": 31337,
+      "depth": 13,
+      "field": "fp",
+      "before": "28a97c6f:4817",
+      "after": "daa4e6e9:4682"
+    },
+    {
+      "seed": 31337,
+      "depth": 13,
+      "field": "n",
+      "before": 37,
+      "after": 6
+    },
+    {
+      "seed": 31337,
+      "depth": 13,
+      "field": "species",
+      "before": "Dar blademaster,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Monkey,Ogre,Ogre shaman,Troll,Wraith,agile Goblin mystic",
+      "after": "Acid mound,Naga,Troll,Wisp,Wraith"
+    },
+    {
+      "seed": 31337,
+      "depth": 14,
+      "field": "fp",
+      "before": "42656203:4704",
+      "after": "6106d38a:4749"
+    },
+    {
+      "seed": 31337,
+      "depth": 14,
+      "field": "n",
+      "before": 15,
+      "after": 19
+    },
+    {
+      "seed": 31337,
+      "depth": 14,
+      "field": "species",
+      "before": "Bog monster,Centipede,Ogre,Troll,grappling Wraith,vampiric Bog monster",
+      "after": "Centipede,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Ogre,Ogre totem,Pixie,Troll,Wraith,Zombie,grappling Goblin,toxic Goblin"
+    },
+    {
+      "seed": 31337,
+      "depth": 15,
+      "field": "fp",
+      "before": "dd323b4d:4873",
+      "after": "bf301820:5460"
+    },
+    {
+      "seed": 31337,
+      "depth": 15,
+      "field": "n",
+      "before": 35,
+      "after": 46
+    },
+    {
+      "seed": 31337,
+      "depth": 15,
+      "field": "species",
+      "before": "Bog monster,Centaur,Explosive bloat,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Imp,Ogre,Ogre shaman,Ogre totem,Pixie,Salamander,Troll,Zombie,agile Centaur,reflective Goblin,toxic Vampire",
+      "after": "Centaur,Dar blademaster,Eel,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Goblin warlord,Spider,Winged guardian,Zombie,explosive Dar priestess,explosive Goblin,explosive Goblin mystic"
+    },
+    {
+      "seed": 31337,
+      "depth": 15,
+      "field": "items",
+      "before": 9,
+      "after": 16
+    },
+    {
+      "seed": 31337,
+      "depth": 16,
+      "field": "fp",
+      "before": "fca677c9:4882",
+      "after": "6b6e2c1c:4772"
+    },
+    {
+      "seed": 31337,
+      "depth": 16,
+      "field": "n",
+      "before": 13,
+      "after": 8
+    },
+    {
+      "seed": 31337,
+      "depth": 16,
+      "field": "species",
+      "before": "Centaur,Dar blademaster,Eel,Ogre,Ogre totem,Troll,Wraith,agile Ogre",
+      "after": "Centaur,Imp,Pixie,Troll,Zombie,agile Centaur"
+    },
+    {
+      "seed": 31337,
+      "depth": 16,
+      "field": "items",
+      "before": 9,
+      "after": 11
+    },
+    {
+      "seed": 31337,
+      "depth": 17,
+      "field": "fp",
+      "before": "4dce70cc:4814",
+      "after": "2723276d:4811"
+    },
+    {
+      "seed": 31337,
+      "depth": 17,
+      "field": "n",
+      "before": 21,
+      "after": 13
+    },
+    {
+      "seed": 31337,
+      "depth": 17,
+      "field": "species",
+      "before": "Dar priestess,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Imp,Ogre,Pink jelly,Zombie,agile Ogre shaman,explosive Dar priestess,explosive Goblin conjurer,juggernaut Goblin",
+      "after": "Bloat,Bog monster,Dar blademaster,Salamander,Troll,infested Bog monster"
+    },
+    {
+      "seed": 31337,
+      "depth": 17,
+      "field": "items",
+      "before": 8,
+      "after": 5
+    },
+    {
+      "seed": 31337,
+      "depth": 18,
+      "field": "fp",
+      "before": "ad15387a:4835",
+      "after": "a2a0985c:4802"
+    },
+    {
+      "seed": 31337,
+      "depth": 18,
+      "field": "n",
+      "before": 19,
+      "after": 16
+    },
+    {
+      "seed": 31337,
+      "depth": 18,
+      "field": "species",
+      "before": "Acidic jelly,Bloat,Centaur,Eel,Explosive bloat,Pink jelly,Zombie,reflective Dar priestess,reflective Eel,vampiric Eel",
+      "after": "Acidic jelly,Centaur,Imp,Ogre,Ogre shaman,Sentinel,Troll,agile Centaur,explosive Sentinel,reflective Imp"
+    },
+    {
+      "seed": 31337,
+      "depth": 18,
+      "field": "items",
+      "before": 9,
+      "after": 10
+    },
+    {
+      "seed": 31337,
+      "depth": 19,
+      "field": "fp",
+      "before": "da04640c:4834",
+      "after": "1e45b5a4:4905"
+    },
+    {
+      "seed": 31337,
+      "depth": 19,
+      "field": "n",
+      "before": 22,
+      "after": 10
+    },
+    {
+      "seed": 31337,
+      "depth": 19,
+      "field": "species",
+      "before": "Dar battlemage,Dar blademaster,Dar priestess,Fury,Imp,Kraken,Phylactery,Pixie,Tentacle horror,Troll,agile Troll,infested Acidic jelly,toxic Kraken",
+      "after": "Acidic jelly,Centaur,Dar priestess,Phantom,Pink jelly,Troll,agile Dar priestess,explosive Imp"
+    },
+    {
+      "seed": 31337,
+      "depth": 19,
+      "field": "items",
+      "before": 11,
+      "after": 8
+    },
+    {
+      "seed": 31337,
+      "depth": 20,
+      "field": "fp",
+      "before": "8d5dfdd8:4817",
+      "after": "304a2d19:4971"
+    },
+    {
+      "seed": 31337,
+      "depth": 20,
+      "field": "n",
+      "before": 18,
+      "after": 19
+    },
+    {
+      "seed": 31337,
+      "depth": 20,
+      "field": "species",
+      "before": "Bloat,Bog monster,Centaur,Dar blademaster,Fury,Phantom,Revenant,Wraith,agile Centaur,explosive Bog monster,infested Fury",
+      "after": "Bog monster,Centaur,Eel,Fury,Ogre,Ogre shaman,explosive Eel,infested Fury,vampiric Bog monster"
+    },
+    {
+      "seed": 31337,
+      "depth": 20,
+      "field": "items",
+      "before": 10,
+      "after": 9
+    },
+    {
+      "seed": 31337,
+      "depth": 21,
+      "field": "fp",
+      "before": "d78a9fe6:5029",
+      "after": "0112f397:4848"
+    },
+    {
+      "seed": 31337,
+      "depth": 21,
+      "field": "n",
+      "before": 10,
+      "after": 23
+    },
+    {
+      "seed": 31337,
+      "depth": 21,
+      "field": "species",
+      "before": "Dar priestess,Imp,Pink jelly,Pixie,Revenant,Wraith,infested Bloat,reflective Acidic jelly,vampiric Wraith",
+      "after": "Bog monster,Centaur,Dar battlemage,Dar blademaster,Imp,agile Imp,agile Revenant,explosive Bog monster,infested Dar priestess,juggernaut Bog monster,vampiric Bog monster"
+    },
+    {
+      "seed": 31337,
+      "depth": 21,
+      "field": "items",
+      "before": 11,
+      "after": 10
+    },
+    {
+      "seed": 31337,
+      "depth": 22,
+      "field": "fp",
+      "before": "89332ea8:4866",
+      "after": "7bb3d7e1:4971"
+    },
+    {
+      "seed": 31337,
+      "depth": 22,
+      "field": "n",
+      "before": 14,
+      "after": 24
+    },
+    {
+      "seed": 31337,
+      "depth": 22,
+      "field": "species",
+      "before": "Dar battlemage,Dar blademaster,Fury,Golem,Imp,Tentacle horror,agile Revenant,grappling Golem,juggernaut Revenant,reflective Dar priestess",
+      "after": "Bloat,Dar battlemage,Dar blademaster,Dragon,Fury,Golem,Imp,Phylactery,Sentinel,Tentacle horror,Wraith,infested Dar priestess,toxic Wraith"
+    },
+    {
+      "seed": 31337,
+      "depth": 23,
+      "field": "fp",
+      "before": "1d4c8fe1:4906",
+      "after": "04cba079:4972"
+    },
+    {
+      "seed": 31337,
+      "depth": 23,
+      "field": "n",
+      "before": 11,
+      "after": 23
+    },
+    {
+      "seed": 31337,
+      "depth": 23,
+      "field": "species",
+      "before": "Dar battlemage,Dar blademaster,Dar priestess,Phantom,Phylactery,Revenant,explosive Tentacle horror",
+      "after": "Bloat,Dar battlemage,Dar blademaster,Dar priestess,Fury,Golem,Kraken,Phantom,Phylactery,Pink jelly,Sentinel,explosive Golem,grappling Bloat,grappling Dar blademaster,juggernaut Fury,vampiric Sentinel"
+    },
+    {
+      "seed": 31337,
+      "depth": 23,
+      "field": "items",
+      "before": 10,
+      "after": 9
+    },
+    {
+      "seed": 31337,
+      "depth": 24,
+      "field": "fp",
+      "before": "bf50f0f1:4930",
+      "after": "f8ebc8fe:5011"
+    },
+    {
+      "seed": 31337,
+      "depth": 24,
+      "field": "n",
+      "before": 18,
+      "after": 15
+    },
+    {
+      "seed": 31337,
+      "depth": 24,
+      "field": "species",
+      "before": "Bog monster,Dar battlemage,Dar blademaster,Fury,Imp,Tentacle horror,explosive Dar blademaster,infested Dar priestess,infested Fury,reflective Fury,toxic Fury",
+      "after": "Dar battlemage,Dar blademaster,Dar priestess,Fury,Golem,Phylactery,Tentacle horror,agile Fury,agile Revenant,toxic Dar blademaster,toxic Fury"
+    },
+    {
+      "seed": 31337,
+      "depth": 24,
+      "field": "items",
+      "before": 9,
+      "after": 13
+    },
+    {
+      "seed": 31337,
+      "depth": 25,
+      "field": "fp",
+      "before": "2a815572:4925",
+      "after": "303ab093:4896"
+    },
+    {
+      "seed": 31337,
+      "depth": 25,
+      "field": "n",
+      "before": 13,
+      "after": 12
+    },
+    {
+      "seed": 31337,
+      "depth": 25,
+      "field": "species",
+      "before": "Dar battlemage,Dar blademaster,Dar priestess,Golem,Phylactery,Revenant,Sentinel,grappling Sentinel,infested Sentinel",
+      "after": "Dragon,Fury,Phylactery,Tentacle horror,grappling Dragon,vampiric Fury"
+    },
+    {
+      "seed": 31337,
+      "depth": 25,
+      "field": "items",
+      "before": 12,
+      "after": 22
+    },
+    {
+      "seed": 31337,
+      "depth": 26,
+      "field": "fp",
+      "before": "34753d5a:4966",
+      "after": "e6a255ad:4794"
+    },
+    {
+      "seed": 31337,
+      "depth": 26,
+      "field": "n",
+      "before": 6,
+      "after": 19
+    },
+    {
+      "seed": 31337,
+      "depth": 26,
+      "field": "species",
+      "before": "Phylactery,Tentacle horror,explosive Golem,juggernaut Dragon,toxic Revenant",
+      "after": "Bloat,Dar priestess,Fury,Kraken,Sentinel,agile Fury,explosive Fury,grappling Bloat,toxic Bloat,toxic Fury"
+    },
+    {
+      "seed": 31337,
+      "depth": 26,
+      "field": "items",
+      "before": 12,
+      "after": 15
+    }
+  ],
+  "first": [
+    {
+      "seed": 424242,
+      "depth": 0
+    },
+    {
+      "seed": 777,
+      "depth": 3,
+      "current": {
+        "depth": 3,
+        "before": 46395,
+        "after": 47093,
+        "events": [
+          {
+            "args": [
+              "STAFF",
+              null,
+              72,
+              4,
+              3
+            ],
+            "before": 47010,
+            "after": 47010,
+            "item": null
+          },
+          {
+            "args": [
+              "STAFF",
+              null,
+              72,
+              6,
+              3
+            ],
+            "before": 47010,
+            "after": 47010,
+            "item": null
+          },
+          {
+            "args": [
+              "STAFF",
+              null,
+              74,
+              9,
+              3
+            ],
+            "before": 47010,
+            "after": 47010,
+            "item": null
+          },
+          {
+            "args": [
+              "STAFF",
+              null,
+              74,
+              11,
+              3
+            ],
+            "before": 47010,
+            "after": 47010,
+            "item": null
+          },
+          {
+            "args": [
+              "WEAPON|ARMOR|WAND",
+              null,
+              14,
+              24,
+              3
+            ],
+            "before": 47010,
+            "after": 47015,
+            "item": {
+              "category": 0,
+              "name": "Incendiary Dart",
+              "quantity": 5,
+              "charges": 20
+            }
+          },
+          {
+            "args": [
+              "STAFF|RING|CHARM",
+              null,
+              20,
+              22,
+              3
+            ],
+            "before": 47015,
+            "after": 47016,
+            "item": null
+          },
+          {
+            "args": [
+              "STAFF|RING|CHARM",
+              null,
+              15,
+              20,
+              3
+            ],
+            "before": 47016,
+            "after": 47017,
+            "item": null
+          },
+          {
+            "args": [
+              "KEY",
+              "iron_key",
+              12,
+              23,
+              3
+            ],
+            "before": 47017,
+            "after": 47017,
+            "item": {
+              "category": 10,
+              "name": "Iron Key",
+              "quantity": 1
+            }
+          },
+          {
+            "args": [
+              "KEY",
+              "iron_key",
+              52,
+              2,
+              3
+            ],
+            "before": 47020,
+            "after": 47020,
+            "item": {
+              "category": 10,
+              "name": "Iron Key",
+              "quantity": 1
+            }
+          }
+        ],
+        "machines": [
+          {
+            "blueprint": "reward_single_category_library",
+            "number": 1,
+            "created": 4,
+            "floor": [
+              {
+                "instance": "1:0",
+                "category": "STAFF",
+                "pos": {
+                  "x": 72,
+                  "y": 4
+                }
+              },
+              {
+                "instance": "1:1",
+                "category": "STAFF",
+                "pos": {
+                  "x": 72,
+                  "y": 6
+                }
+              },
+              {
+                "instance": "1:2",
+                "category": "STAFF",
+                "pos": {
+                  "x": 74,
+                  "y": 9
+                }
+              },
+              {
+                "instance": "1:3",
+                "category": "STAFF",
+                "pos": {
+                  "x": 74,
+                  "y": 11
+                }
+              }
+            ],
+            "carried": []
+          },
+          {
+            "blueprint": "vestibule_locked",
+            "number": 2,
+            "created": 1,
+            "floor": [],
+            "carried": []
+          },
+          {
+            "blueprint": "key_nested_library",
+            "number": 3,
+            "created": 3,
+            "floor": [
+              {
+                "instance": "3:0",
+                "category": "WEAPON|ARMOR|WAND",
+                "pos": {
+                  "x": 14,
+                  "y": 24
+                }
+              },
+              {
+                "instance": "3:1",
+                "category": "STAFF|RING|CHARM",
+                "pos": {
+                  "x": 20,
+                  "y": 22
+                }
+              },
+              {
+                "instance": "3:2",
+                "category": "STAFF|RING|CHARM",
+                "pos": {
+                  "x": 15,
+                  "y": 20
+                }
+              },
+              {
+                "instance": "2:0",
+                "category": "KEY",
+                "pos": {
+                  "x": 12,
+                  "y": 23
+                },
+                "adopted": true
+              }
+            ],
+            "carried": []
+          },
+          {
+            "blueprint": "vestibule_locked",
+            "number": 4,
+            "created": 1,
+            "floor": [],
+            "carried": []
+          },
+          {
+            "blueprint": "key_thief_area",
+            "number": 5,
+            "created": 0,
+            "floor": [],
+            "carried": [
+              {
+                "instance": "4:0",
+                "category": "KEY",
+                "pos": {
+                  "x": 52,
+                  "y": 2
+                },
+                "horde": [
+                  "HORDE_MACHINE_THIEF"
+                ]
+              }
+            ]
+          },
+          {
+            "blueprint": "ce_58_bloodwort",
+            "number": 6,
+            "created": 0,
+            "floor": [],
+            "carried": []
+          }
+        ],
+        "counts": {
+          "created": 9,
+          "commands": 9,
+          "materialized": 3,
+          "floor": 8,
+          "carried": 1
+        },
+        "problems": []
+      },
+      "control": {
+        "depth": 3,
+        "before": 46395,
+        "after": 47093,
+        "events": [
+          {
+            "args": [
+              "STAFF",
+              null,
+              72,
+              4,
+              3
+            ],
+            "before": 47010,
+            "after": 47010,
+            "item": null
+          },
+          {
+            "args": [
+              "STAFF",
+              null,
+              72,
+              6,
+              3
+            ],
+            "before": 47010,
+            "after": 47010,
+            "item": null
+          },
+          {
+            "args": [
+              "STAFF",
+              null,
+              74,
+              9,
+              3
+            ],
+            "before": 47010,
+            "after": 47010,
+            "item": null
+          },
+          {
+            "args": [
+              "STAFF",
+              null,
+              74,
+              11,
+              3
+            ],
+            "before": 47010,
+            "after": 47010,
+            "item": null
+          },
+          {
+            "args": [
+              "WEAPON|ARMOR|WAND",
+              null,
+              14,
+              24,
+              3
+            ],
+            "before": 47010,
+            "after": 47015,
+            "item": {
+              "category": 0,
+              "name": "Incendiary Dart",
+              "quantity": 5,
+              "charges": 20
+            }
+          },
+          {
+            "args": [
+              "STAFF|RING|CHARM",
+              null,
+              20,
+              22,
+              3
+            ],
+            "before": 47015,
+            "after": 47016,
+            "item": null
+          },
+          {
+            "args": [
+              "STAFF|RING|CHARM",
+              null,
+              15,
+              20,
+              3
+            ],
+            "before": 47016,
+            "after": 47017,
+            "item": null
+          },
+          {
+            "args": [
+              "KEY",
+              "iron_key",
+              12,
+              23,
+              3
+            ],
+            "before": 47017,
+            "after": 47017,
+            "item": {
+              "category": 10,
+              "name": "Iron Key",
+              "quantity": 1
+            }
+          },
+          {
+            "args": [
+              "KEY",
+              "iron_key",
+              52,
+              2,
+              3
+            ],
+            "before": 47017,
+            "after": 47017,
+            "item": {
+              "category": 10,
+              "name": "Iron Key",
+              "quantity": 1
+            }
+          }
+        ],
+        "machines": [
+          {
+            "blueprint": "reward_single_category_library",
+            "number": 1,
+            "created": 0,
+            "floor": [
+              {
+                "category": "STAFF",
+                "pos": {
+                  "x": 72,
+                  "y": 4
+                }
+              },
+              {
+                "category": "STAFF",
+                "pos": {
+                  "x": 72,
+                  "y": 6
+                }
+              },
+              {
+                "category": "STAFF",
+                "pos": {
+                  "x": 74,
+                  "y": 9
+                }
+              },
+              {
+                "category": "STAFF",
+                "pos": {
+                  "x": 74,
+                  "y": 11
+                }
+              }
+            ],
+            "carried": []
+          },
+          {
+            "blueprint": "vestibule_locked",
+            "number": 2,
+            "created": 0,
+            "floor": [],
+            "carried": []
+          },
+          {
+            "blueprint": "key_nested_library",
+            "number": 3,
+            "created": 0,
+            "floor": [
+              {
+                "category": "WEAPON|ARMOR|WAND",
+                "pos": {
+                  "x": 14,
+                  "y": 24
+                }
+              },
+              {
+                "category": "STAFF|RING|CHARM",
+                "pos": {
+                  "x": 20,
+                  "y": 22
+                }
+              },
+              {
+                "category": "STAFF|RING|CHARM",
+                "pos": {
+                  "x": 15,
+                  "y": 20
+                }
+              },
+              {
+                "category": "KEY",
+                "pos": {
+                  "x": 12,
+                  "y": 23
+                },
+                "adopted": true
+              }
+            ],
+            "carried": []
+          },
+          {
+            "blueprint": "vestibule_locked",
+            "number": 4,
+            "created": 0,
+            "floor": [],
+            "carried": []
+          },
+          {
+            "blueprint": "key_thief_area",
+            "number": 5,
+            "created": 0,
+            "floor": [
+              {
+                "category": "KEY",
+                "pos": {
+                  "x": 52,
+                  "y": 2
+                },
+                "adopted": true
+              }
+            ],
+            "carried": [
+              {
+                "category": "KEY",
+                "pos": {
+                  "x": 52,
+                  "y": 2
+                },
+                "horde": [
+                  "HORDE_MACHINE_THIEF"
+                ]
+              }
+            ]
+          },
+          {
+            "blueprint": "ce_58_bloodwort",
+            "number": 6,
+            "created": 0,
+            "floor": [],
+            "carried": []
+          }
+        ],
+        "counts": {
+          "created": 0,
+          "commands": 10,
+          "materialized": 3,
+          "floor": 9,
+          "carried": 0
+        },
+        "problems": [
+          {
+            "kind": "unconsumed-command",
+            "commands": 10,
+            "calls": 9
+          },
+          {
+            "kind": "missing-materialization"
+          }
+        ]
+      }
+    },
+    {
+      "seed": 20260913,
+      "depth": 0
+    },
+    {
+      "seed": 31337,
+      "depth": 7,
+      "current": {
+        "depth": 7,
+        "before": 167302,
+        "after": 167977,
+        "events": [
+          {
+            "args": [
+              "ARMOR",
+              null,
+              75,
+              5,
+              7
+            ],
+            "before": 167861,
+            "after": 167866,
+            "item": {
+              "category": 1,
+              "name": "Banded Mail",
+              "quantity": 1,
+              "charges": 1000
+            }
+          }
+        ],
+        "machines": [
+          {
+            "blueprint": "reward_outsourced_item",
+            "number": 1,
+            "created": 1,
+            "floor": [],
+            "carried": []
+          },
+          {
+            "blueprint": "key_boss_secret_room",
+            "number": 2,
+            "created": 0,
+            "floor": [],
+            "carried": [
+              {
+                "instance": "1:0",
+                "category": "ARMOR",
+                "pos": {
+                  "x": 75,
+                  "y": 5
+                },
+                "horde": [
+                  "HORDE_MACHINE_BOSS"
+                ]
+              }
+            ]
+          },
+          {
+            "blueprint": "trap_paralysis_hidden",
+            "number": 3,
+            "created": 0,
+            "floor": [],
+            "carried": []
+          },
+          {
+            "blueprint": "trap_paralysis_hidden",
+            "number": 4,
+            "created": 0,
+            "floor": [],
+            "carried": []
+          },
+          {
+            "blueprint": "ce_58_bloodwort",
+            "number": 5,
+            "created": 0,
+            "floor": [],
+            "carried": []
+          },
+          {
+            "blueprint": "area_trick_statue",
+            "number": 6,
+            "created": 0,
+            "floor": [],
+            "carried": []
+          }
+        ],
+        "counts": {
+          "created": 1,
+          "commands": 1,
+          "materialized": 1,
+          "floor": 13,
+          "carried": 1
+        },
+        "problems": []
+      },
+      "control": {
+        "depth": 7,
+        "before": 167302,
+        "after": 167929,
+        "events": [
+          {
+            "args": [
+              "ARMOR",
+              null,
+              75,
+              5,
+              7
+            ],
+            "before": 167858,
+            "after": 167860,
+            "item": {
+              "category": 1,
+              "name": "Banded Mail",
+              "quantity": 1,
+              "charges": 1000
+            }
+          }
+        ],
+        "machines": [
+          {
+            "blueprint": "reward_outsourced_item",
+            "number": 1,
+            "created": 0,
+            "floor": [],
+            "carried": []
+          },
+          {
+            "blueprint": "key_boss_secret_room",
+            "number": 2,
+            "created": 0,
+            "floor": [
+              {
+                "category": "ARMOR",
+                "pos": {
+                  "x": 75,
+                  "y": 5
+                },
+                "adopted": true
+              }
+            ],
+            "carried": [
+              {
+                "category": "ARMOR",
+                "pos": {
+                  "x": 75,
+                  "y": 5
+                },
+                "horde": [
+                  "HORDE_MACHINE_BOSS"
+                ]
+              }
+            ]
+          },
+          {
+            "blueprint": "trap_paralysis_hidden",
+            "number": 3,
+            "created": 0,
+            "floor": [],
+            "carried": []
+          },
+          {
+            "blueprint": "trap_paralysis_hidden",
+            "number": 4,
+            "created": 0,
+            "floor": [],
+            "carried": []
+          },
+          {
+            "blueprint": "ce_58_bloodwort",
+            "number": 5,
+            "created": 0,
+            "floor": [],
+            "carried": []
+          },
+          {
+            "blueprint": "area_trick_statue",
+            "number": 6,
+            "created": 0,
+            "floor": [],
+            "carried": []
+          }
+        ],
+        "counts": {
+          "created": 0,
+          "commands": 2,
+          "materialized": 1,
+          "floor": 9,
+          "carried": 0
+        },
+        "problems": [
+          {
+            "kind": "unconsumed-command",
+            "commands": 2,
+            "calls": 1
+          },
+          {
+            "kind": "missing-materialization"
+          }
+        ]
+      }
+    }
+  ],
+  "problems": []
+}

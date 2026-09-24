@@ -397,7 +397,17 @@ describe('B-4b 钥匙由锁具驱动（P1-50 的 140-166 已灭）', () => {
                         }
                     }
                 }
-                const keys = game.items.filter((i: any) => i.category === ItemCategory.KEY);
+                // U05a: count each physical item across all legal owners. The old
+                // floor-only collector missed a correctly carried key and could
+                // not detect the duplicate ground + carrier bug.
+                const allItems = [
+                    ...game.items,
+                    ...[...game.monsters, ...game.dormantMonsters].flatMap((m: any) => m.carriedItem ? [m.carriedItem] : []),
+                    ...game.player.inventory.items,
+                ];
+                expect(new Set(allItems.map((i: any) => i.id)).size,
+                    `seed${seed} D${d} 一个物品有多个所有者`).toBe(allItems.length);
+                const keys = allItems.filter((i: any) => i.category === ItemCategory.KEY);
                 // ① 锁门侧
                 const lockKeys = keys.filter((k: any) => k.keyLoc.some((b: any) => lockCells.has(`${b.loc.x},${b.loc.y}`)));
                 expect(lockKeys.length, `seed${seed} D${d} 认锁的钥匙 ${lockKeys.length} != 锁 ${locks}`).toBe(locks);
