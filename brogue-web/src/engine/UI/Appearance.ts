@@ -25,6 +25,10 @@ import type { Player } from '../../entities/Player';
 import { Item, ItemCategory } from '../Items/Item';
 import { ItemLoader } from '../Items/ItemLoader';
 
+/** W-25: selection trajectory styling belongs to the appearance layer; the
+ * canvas only draws the geometry supplied by the read-only targeting preview. */
+export const ARCANA_TRAJECTORY_FILL = { color: 0xaaaaff, alpha: 0.18 } as const;
+
 // ── UI-1 新增的 CE 字形/颜色常量（逐值核对 BrogueCE-master/src/platform/）──
 
 /** CE G_FIRE 的图形平台字形（platformdependent.c:123 → U_FLIPPED_V，platform.h:6 = 0x22CF）。 */

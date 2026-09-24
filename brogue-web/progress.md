@@ -1039,3 +1039,15 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 机器WAND/STAFF入口仍null是既有V链债项，不在本轮扩张；发现屏没有独立UI，magicCharDiscoverySuffix已有接口/消费者与背包善恶符号核验，不宣称新建发现屏或商店。学习未完成。
 - 技能客户端已运行但canvas截图黑；改用有头Chromium整页截图验证真实背包/选择/结算/存档，未把黑图计作视觉通过。最终编辑完成后冻结SHA，完整显式闭包/build/drift复跑，结果只写报告/证据。
 - 后续：W25/26按新基线继续归因，不解禁机器；保持旧wandFlavors迁移兼容和W22学习暂缓口径。
+
+## 2026-09-24 W-25 移动/控制杖目录
+- 按 w-25.prompt.md 与 W-0 §2.5/§2.6：仅新增 tunneling/blinking/entrancement，CE表序 lightning→fire→poison→tunneling→blinking→entrancement→conjuration→healing→haste，9在池/85频率/10定义。light退池定义逐字段保留；wand目录不动。使用develop-web-game技能。
+- 原CE staffTable在Globals.c，wood槽为0/1/3/4/5/6/9/10/11，非连续；显式flavorIndex和未占CE槽2给light，为W26预留行/槽7/8/12。新增staffFlavors真实旧档迁移，零RNG、原身份/绰号/耗尽与计时保留。
+- W6仅预留慢回电，本轮启用初始1000、自然/卷轴10000/E，obstruction helper准备但仍无物品；W7附魔无特例仍500/新E。只接现有效果入口，不修改射线/效果/地图原语。blink容量已知显示2+2E预览与详情；未知不泄露E。使用前熔岩阻止/确认复用App原生确认钩子，取消零电/时间/RNG。
+- 三场景归因（旧目录控制、仅修表序、完整新目录）各104层，四基线字段和层末RNG均零差异；表序改变8/11个staff事件，新增再改变8/11，实例E/RNG边界相同。保持原基线SHA fad7dc81a35afeff00f8bb0a9b38cb4e674d7ee584578127e270304d6c8d0bf3，不重捕获。64seed×1000分布守卫9种/85票/165353次调用通过。
+- 旧10seed自然覆盖漏haste；探针发现seed24 D18有落地加速杖，仅补seed24，覆盖期望不改。W5旧rechargeTurns兼容字段守卫撞红：新三行补现有默认200，实际慢周期仍由ArcanaRecharge控制，未改守卫。
+- 新28项测试通过；浏览器清洁重启后16场景通过、console/page errors 0。早期夹具曾误用地形枚举数值、存档字段、已改名充值方法；Vite HMR状态下催眠场景失效，清洁重启同脚本通过；不将这些失败归咎于效果。技能客户端canvas黑图已打开，不计视觉通过，实际打开有头整页截图。目视发现瞄准名中的斜线二次HTML转义，修该提示插值并重新浏览器核验。
+- 最终R+S共124文件（R119，S G/Q/B/U/D +持久化/源码读方），冻结全部源码/测试/scripts/progress后运行build、123显式回归、独立drift及前后SHA，结果回填w-25报告/证据。不运行无参数vitest。
+- 边界：W26三种未入池；怪物BLINKING仍由W22外部依赖负责，p4_1b不动；机器STAFF/WAND仍返回null、独立发现屏仍未实现。未扩词表/未声称wood词内容等同CE；未实现历史地形记忆快照，预览沿用web hasMemory。后续W26保持staffFlavors与按CE槽索引分配。
+
+- 首次冻结完整门禁：build/drift通过、2259passed/1failed/8skipped/1todo，370输入前后SHA一致。唯一失败为R-1外观结构守卫：GameCanvas新增预览颜色字面量。按现有架构移入Appearance.ts的ARCANA_TRAJECTORY_FILL，守卫/白名单不变，生产扩为10文件。首次结果完整归档prefinal-appearance；修后定向、浏览器复核，再从build完整冻结复跑，不拼接旧结果。

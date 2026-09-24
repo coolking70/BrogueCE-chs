@@ -140,18 +140,6 @@
   ],
   "staffs": [
     {
-      "id": "staff_of_fire",
-      "name": "Staff of Fire",
-      "minDepth": 4,
-      "maxDepth": 26,
-      "weight": 4,
-      "maxCharges": 2,
-      "rechargeTurns": 300,
-      "color": 16744192,
-      "description": "发射强力火焰弹，造成大量火焰伤害并大范围点燃地面，可随附魔升级威力。",
-      "frequency": 15
-    },
-    {
       "id": "staff_of_lightning",
       "name": "Staff of Lightning",
       "minDepth": 4,
@@ -161,7 +149,23 @@
       "rechargeTurns": 320,
       "color": 3394815,
       "description": "释放连锁闪电，在直线上对所有目标造成高额伤害，穿透能力随附魔等级提升。",
-      "frequency": 15
+      "frequency": 15,
+      "marketValue": 1300,
+      "flavorIndex": 0
+    },
+    {
+      "id": "staff_of_fire",
+      "name": "Staff of Fire",
+      "minDepth": 4,
+      "maxDepth": 26,
+      "weight": 4,
+      "maxCharges": 2,
+      "rechargeTurns": 300,
+      "color": 16744192,
+      "description": "发射强力火焰弹，造成大量火焰伤害并大范围点燃地面，可随附魔升级威力。",
+      "frequency": 15,
+      "marketValue": 1300,
+      "flavorIndex": 1
     },
     {
       "id": "staff_of_poison",
@@ -173,31 +177,51 @@
       "rechargeTurns": 250,
       "color": 5635925,
       "description": "向目标注入剧毒，使其持续受到毒素伤害，附魔等级越高毒素越强、持续越久。",
-      "frequency": 10
+      "frequency": 10,
+      "marketValue": 1200,
+      "flavorIndex": 3
     },
     {
-      "id": "staff_of_healing",
-      "name": "Staff of Healing",
-      "minDepth": 3,
+      "id": "staff_of_tunneling",
+      "name": "Staff of Tunneling",
+      "minDepth": 1,
       "maxDepth": 26,
       "weight": 4,
-      "maxCharges": 3,
-      "rechargeTurns": 280,
-      "color": 5636095,
-      "description": "大量恢复目标的生命值，对盟友使用效果尤佳，是保持盟友战斗力的重要手段。",
-      "frequency": 5
+      "maxCharges": 2,
+      "color": 13404245,
+      "description": "射线可穿过生物，将沿途可挖掘的障碍化为碎石；附魔能增加可挖掘的层数。",
+      "frequency": 10,
+      "marketValue": 1000,
+      "flavorIndex": 4,
+      "rechargeTurns": 200
     },
     {
-      "id": "staff_of_haste",
-      "name": "Staff of Haste",
-      "minDepth": 3,
+      "id": "staff_of_blinking",
+      "name": "Staff of Blinking",
+      "minDepth": 1,
       "maxDepth": 26,
       "weight": 4,
-      "maxCharges": 3,
-      "rechargeTurns": 280,
-      "color": 16777113,
-      "description": "大幅提升目标的移动和攻击速度，对自身使用可快速撤离或连续攻击。",
-      "frequency": 5
+      "maxCharges": 2,
+      "color": 16777215,
+      "description": "沿选定方向瞬移，生物和障碍会截断行程；附魔能增加距离。这根法杖的自然回电速度为普通法杖的一半。",
+      "frequency": 11,
+      "marketValue": 1200,
+      "flavorIndex": 5,
+      "rechargeTurns": 200
+    },
+    {
+      "id": "staff_of_entrancement",
+      "name": "Staff of Entrancement",
+      "minDepth": 1,
+      "maxDepth": 26,
+      "weight": 4,
+      "maxCharges": 2,
+      "color": 16751103,
+      "description": "使命中的敌人陷入催眠，反向跟随你的移动；可驱使其攻击其他生物或走入险地，攻击它会解除催眠。",
+      "frequency": 6,
+      "marketValue": 1000,
+      "flavorIndex": 6,
+      "rechargeTurns": 200
     },
     {
       "id": "staff_of_conjuration",
@@ -209,7 +233,37 @@
       "rechargeTurns": 200,
       "color": 13421823,
       "description": "在附近召唤出多个幽灵刀刃协助战斗，附魔等级越高召唤数量越多，伤害越强。",
-      "frequency": 8
+      "frequency": 8,
+      "marketValue": 1000,
+      "flavorIndex": 9
+    },
+    {
+      "id": "staff_of_healing",
+      "name": "Staff of Healing",
+      "minDepth": 3,
+      "maxDepth": 26,
+      "weight": 4,
+      "maxCharges": 3,
+      "rechargeTurns": 280,
+      "color": 5636095,
+      "description": "大量恢复目标的生命值，对盟友使用效果尤佳，是保持盟友战斗力的重要手段。",
+      "frequency": 5,
+      "marketValue": 1100,
+      "flavorIndex": 10
+    },
+    {
+      "id": "staff_of_haste",
+      "name": "Staff of Haste",
+      "minDepth": 3,
+      "maxDepth": 26,
+      "weight": 4,
+      "maxCharges": 3,
+      "rechargeTurns": 280,
+      "color": 16777113,
+      "description": "大幅提升目标的移动和攻击速度，对自身使用可快速撤离或连续攻击。",
+      "frequency": 5,
+      "marketValue": 900,
+      "flavorIndex": 11
     },
     {
       "id": "staff_of_light",

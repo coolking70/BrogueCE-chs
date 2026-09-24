@@ -283,10 +283,10 @@ describe('W-12 uses W-11 placement: destination effects, pickup and P2/C-5', () 
         expect((g as any).playerFalling).toBe(true); expect(g.depth).toBe(depth);
         (g as any).playerTurnEnded(); expect(g.depth).toBe(depth + 1); expect((g as any).playerFalling).toBe(false);
     });
-    it('blinking remains absent from item configs and monster autonomous tryUseBolt', () => {
+    it('W-25 blinking item exists; monster autonomous tryUseBolt still skips blink', () => {
         const g = scene(), imp = monster(g, 12, 5, 'imp'); imp.behaviorFlags.add('MONST_ALWAYS_USE_ABILITY');
         const cast = vi.spyOn(g, 'castMonsterBolt');
-        expect(getBoltForItem('staff_of_blinking')).toBeUndefined();
+        expect(getBoltForItem('staff_of_blinking')?.effect).toBe(BoltEffect.BLINKING);
         expect(imp.tryUseBolt(g)).toBe(false); expect(cast).not.toHaveBeenCalled(); expect(imp.loc.x).toBe(12);
     });
 });

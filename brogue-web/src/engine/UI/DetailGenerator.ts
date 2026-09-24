@@ -4,6 +4,8 @@
  * modeled after CE's monsterDetails() and itemDetails().
  */
 
+import { ItemLoader } from '../Items/ItemLoader';
+import { staffBlinkDistance } from '../Combat/BoltTrajectory';
 import type { Item } from '../Items/Item';
 import { ItemCategory } from '../Items/Item';
 import type { Monster } from '../../entities/Monster';
@@ -414,6 +416,14 @@ export function generateItemDetail(
         statsLines.push({ text: item.category === ItemCategory.WAND
             ? '不会自然恢复充能'
             : '随时间恢复充能，速度受附魔等级与佩戴的智慧戒指影响' });
+        const staffId = (item as Item & { identityId?: string }).identityId;
+        if (item.category === ItemCategory.STAFF && staffId === 'staff_of_blinking'
+            && ItemLoader.identifiedItems.has(staffId)) {
+            statsLines.push({ text: '自然回电速度为普通法杖的一半' });
+            if (item.isIdentified || item.maxChargesKnown) {
+                statsLines.push({ text: `最多瞬移 ${staffBlinkDistance(item.enchantment)} 格（附魔后 ${staffBlinkDistance(item.enchantment + 1)} 格）` });
+            }
+        }
         sections.push({ header: '法器属性', lines: statsLines });
     }
 

@@ -1,0 +1,1138 @@
+{
+  "states": [
+    {
+      "name": "nine-unknown-polarities",
+      "state": {
+        "text": {
+          "mode": "inventory",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 8,
+              "y": 5,
+              "hp": 6,
+              "maxHp": 6,
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_lightning",
+            "display": "扭曲法杖",
+            "charges": 3,
+            "known": false
+          },
+          {
+            "id": "staff_of_fire",
+            "display": "花楸木法杖",
+            "charges": 3,
+            "known": false
+          },
+          {
+            "id": "staff_of_poison",
+            "display": "桉木法杖",
+            "charges": 3,
+            "known": false
+          },
+          {
+            "id": "staff_of_tunneling",
+            "display": "樱桃木法杖",
+            "charges": 2,
+            "known": false
+          },
+          {
+            "id": "staff_of_blinking",
+            "display": "山核桃木法杖",
+            "charges": 3,
+            "known": false
+          },
+          {
+            "id": "staff_of_entrancement",
+            "display": "梨木法杖",
+            "charges": 2,
+            "known": false
+          },
+          {
+            "id": "staff_of_conjuration",
+            "display": "橡木法杖",
+            "charges": 2,
+            "known": false
+          },
+          {
+            "id": "staff_of_healing",
+            "display": "竹法杖",
+            "charges": 2,
+            "known": false
+          },
+          {
+            "id": "staff_of_haste",
+            "display": "松木法杖",
+            "charges": 3,
+            "known": false
+          }
+        ],
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 6,
+            "ally": false,
+            "dominated": false,
+            "bolts": [],
+            "statuses": {},
+            "negated": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "nine-identified",
+      "state": {
+        "text": {
+          "mode": "inventory",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 8,
+              "y": 5,
+              "hp": 6,
+              "maxHp": 6,
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_lightning",
+            "display": "闪电法杖 [3/3]",
+            "charges": 3,
+            "known": true
+          },
+          {
+            "id": "staff_of_fire",
+            "display": "火焰法杖 [3/3]",
+            "charges": 3,
+            "known": true
+          },
+          {
+            "id": "staff_of_poison",
+            "display": "毒液法杖 [3/3]",
+            "charges": 3,
+            "known": true
+          },
+          {
+            "id": "staff_of_tunneling",
+            "display": "掘地法杖 [2/2]",
+            "charges": 2,
+            "known": true
+          },
+          {
+            "id": "staff_of_blinking",
+            "display": "闪现法杖 [3/3]",
+            "charges": 3,
+            "known": true
+          },
+          {
+            "id": "staff_of_entrancement",
+            "display": "催眠法杖 [2/2]",
+            "charges": 2,
+            "known": true
+          },
+          {
+            "id": "staff_of_conjuration",
+            "display": "咒术法杖 [2/2]",
+            "charges": 2,
+            "known": true
+          },
+          {
+            "id": "staff_of_healing",
+            "display": "治疗法杖 [2/2]",
+            "charges": 2,
+            "known": true
+          },
+          {
+            "id": "staff_of_haste",
+            "display": "加速法杖 [3/3]",
+            "charges": 3,
+            "known": true
+          }
+        ],
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 6,
+            "ally": false,
+            "dominated": false,
+            "bolts": [],
+            "statuses": {},
+            "negated": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "tunneling-aim",
+      "state": {
+        "text": {
+          "mode": "arcana_target",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": {
+            "name": "樱桃木法杖",
+            "x": 25,
+            "y": 5
+          },
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_tunneling",
+            "display": "樱桃木法杖",
+            "charges": 3,
+            "known": false
+          }
+        ],
+        "monsters": []
+      }
+    },
+    {
+      "name": "tunneling-after",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 2,
+          "autoPathLength": 0,
+          "monsters": [],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_tunneling",
+            "display": "掘地法杖",
+            "charges": 2,
+            "known": true
+          }
+        ],
+        "monsters": []
+      }
+    },
+    {
+      "name": "blinking-aim",
+      "state": {
+        "text": {
+          "mode": "arcana_target",
+          "enchantmentTargets": [],
+          "arcanaPreview": {
+            "maxDistance": null,
+            "risk": "none",
+            "path": []
+          },
+          "arcanaTarget": {
+            "name": "山核桃木法杖",
+            "x": 25,
+            "y": 5
+          },
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 3,
+          "autoPathLength": 0,
+          "monsters": [],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_blinking",
+            "display": "山核桃木法杖",
+            "charges": 3,
+            "known": false
+          }
+        ],
+        "monsters": []
+      }
+    },
+    {
+      "name": "blinking-after",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 12,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2148,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 4,
+          "autoPathLength": 0,
+          "monsters": [],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_blinking",
+            "display": "闪现法杖",
+            "charges": 2,
+            "known": true
+          }
+        ],
+        "monsters": []
+      }
+    },
+    {
+      "name": "entrancement-aim",
+      "state": {
+        "text": {
+          "mode": "arcana_target",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": {
+            "name": "梨木法杖",
+            "x": 8,
+            "y": 5
+          },
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2148,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 5,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 8,
+              "y": 5,
+              "hp": 6,
+              "maxHp": 6,
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_entrancement",
+            "display": "梨木法杖",
+            "charges": 3,
+            "known": false
+          }
+        ],
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 6,
+            "ally": false,
+            "dominated": false,
+            "bolts": [],
+            "statuses": {},
+            "negated": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "entrancement-after",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2147,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 6,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 8,
+              "y": 5,
+              "hp": 6,
+              "maxHp": 6,
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 8,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_entrancement",
+            "display": "催眠法杖",
+            "charges": 2,
+            "known": true
+          }
+        ],
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 6,
+            "ally": false,
+            "dominated": false,
+            "bolts": [],
+            "statuses": {
+              "entranced": 8
+            },
+            "negated": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "entrancement-follow",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 5,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2146,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 7,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 7,
+              "y": 5,
+              "hp": 6,
+              "maxHp": 6,
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 7,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_entrancement",
+            "display": "催眠法杖",
+            "charges": 2,
+            "known": true
+          }
+        ],
+        "monsters": [
+          {
+            "id": "rat",
+            "hp": 6,
+            "ally": false,
+            "dominated": false,
+            "bolts": [],
+            "statuses": {
+              "entranced": 7
+            },
+            "negated": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "blink-E2-preview",
+      "state": {
+        "text": {
+          "mode": "arcana_target",
+          "enchantmentTargets": [],
+          "arcanaPreview": {
+            "maxDistance": 6,
+            "risk": "none",
+            "path": [
+              {
+                "x": 5,
+                "y": 5
+              },
+              {
+                "x": 6,
+                "y": 5
+              },
+              {
+                "x": 7,
+                "y": 5
+              },
+              {
+                "x": 8,
+                "y": 5
+              },
+              {
+                "x": 9,
+                "y": 5
+              },
+              {
+                "x": 10,
+                "y": 5
+              }
+            ]
+          },
+          "arcanaTarget": {
+            "name": "闪现法杖 [2/2]",
+            "x": 30,
+            "y": 5
+          },
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2146,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 7,
+          "autoPathLength": 0,
+          "monsters": [],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_blinking",
+            "display": "闪现法杖 [2/2]",
+            "charges": 2,
+            "known": true
+          }
+        ],
+        "monsters": []
+      }
+    },
+    {
+      "name": "blink-E2-after",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 10,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2145,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 8,
+          "autoPathLength": 0,
+          "monsters": [],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_blinking",
+            "display": "闪现法杖 [1/2]",
+            "charges": 1,
+            "known": true
+          }
+        ],
+        "monsters": []
+      }
+    },
+    {
+      "name": "blink-E8-preview",
+      "state": {
+        "text": {
+          "mode": "arcana_target",
+          "enchantmentTargets": [],
+          "arcanaPreview": {
+            "maxDistance": 18,
+            "risk": "none",
+            "path": [
+              {
+                "x": 5,
+                "y": 5
+              },
+              {
+                "x": 6,
+                "y": 5
+              },
+              {
+                "x": 7,
+                "y": 5
+              },
+              {
+                "x": 8,
+                "y": 5
+              },
+              {
+                "x": 9,
+                "y": 5
+              },
+              {
+                "x": 10,
+                "y": 5
+              },
+              {
+                "x": 11,
+                "y": 5
+              },
+              {
+                "x": 12,
+                "y": 5
+              },
+              {
+                "x": 13,
+                "y": 5
+              },
+              {
+                "x": 14,
+                "y": 5
+              },
+              {
+                "x": 15,
+                "y": 5
+              },
+              {
+                "x": 16,
+                "y": 5
+              },
+              {
+                "x": 17,
+                "y": 5
+              },
+              {
+                "x": 18,
+                "y": 5
+              },
+              {
+                "x": 19,
+                "y": 5
+              },
+              {
+                "x": 20,
+                "y": 5
+              },
+              {
+                "x": 21,
+                "y": 5
+              },
+              {
+                "x": 22,
+                "y": 5
+              }
+            ]
+          },
+          "arcanaTarget": {
+            "name": "闪现法杖 [8/8]",
+            "x": 30,
+            "y": 5
+          },
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2145,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 8,
+          "autoPathLength": 0,
+          "monsters": [],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_blinking",
+            "display": "闪现法杖 [8/8]",
+            "charges": 8,
+            "known": true
+          }
+        ],
+        "monsters": []
+      }
+    },
+    {
+      "name": "blink-E8-after",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 22,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2144,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 9,
+          "autoPathLength": 0,
+          "monsters": [],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_blinking",
+            "display": "闪现法杖 [7/8]",
+            "charges": 7,
+            "known": true
+          }
+        ],
+        "monsters": []
+      }
+    },
+    {
+      "name": "blink-lethal-rejected",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2144,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 10,
+          "autoPathLength": 0,
+          "monsters": [],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_blinking",
+            "display": "闪现法杖 [2/2]",
+            "charges": 2,
+            "known": true
+          }
+        ],
+        "monsters": []
+      }
+    },
+    {
+      "name": "blink-lava-cancel",
+      "state": {
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2144,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 11,
+          "autoPathLength": 0,
+          "monsters": [],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_blinking",
+            "display": "闪现法杖",
+            "charges": 2,
+            "known": true
+          }
+        ],
+        "monsters": []
+      }
+    },
+    {
+      "name": "save-restored",
+      "state": {
+        "text": {
+          "mode": "inventory",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 5,
+            "hp": 100,
+            "nutrition": 2144,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [],
+          "items": []
+        },
+        "inventory": [
+          {
+            "id": "staff_of_blinking",
+            "display": "闪现法杖",
+            "charges": 2,
+            "known": true
+          }
+        ],
+        "monsters": []
+      }
+    }
+  ],
+  "errors": []
+}

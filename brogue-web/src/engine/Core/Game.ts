@@ -101,6 +101,7 @@ import { CE_BOLT_CATALOG, CEBoltEffect, CEBoltType, resolveCEBoltMagnitude } fro
 import { rollStaffDamage } from '../Combat/StaffDamage';
 import { canPlaceCreature, teleportCandidates, captiveItemDropCandidates } from '../Movement/CreaturePlacement';
 
+import { blinkTargetPreview } from '../Combat/BlinkTargeting';
 import { arcanaTargetCandidates, canObserveBoltCreature } from '../Combat/BoltTargeting';
 
 export type GameMode = 'normal' | 'easy' | 'wizard' | 'test';
@@ -343,6 +344,7 @@ export interface GameSnapshot {
     /** W-24: preserve wand appearance identities across catalog additions/reordering.
      * Missing in older saves: rebuild the pre-W-24 seven slots deterministically. */
     wandFlavors?: Record<string, string>;
+    staffFlavors?: Record<string, string>;
     /** B-1b：玩家绰号（ItemLoader.callTitles 的落盘形态；Map 不能直接 JSON 化）。 */
     callTitles?: Record<string, string>;
     /**
@@ -4299,6 +4301,11 @@ export class Game {
         return arcanaTargetCandidates(this.player, this.grid, this.monsters, item);
     }
 
+    public getArcanaPreview() {
+        const pending = this.pendingArcana;
+        return pending ? blinkTargetPreview(this.grid, this.player, this.monsters, pending.item, pending.cursor) : null;
+    }
+
     public setArcanaTarget(x: number, y: number): boolean {
         if (!this.pendingArcana || this.isInputLocked() || !Number.isInteger(x) || !Number.isInteger(y)
             || !this.grid.isValidPos(x, y)) return false;
@@ -4341,6 +4348,18 @@ export class Game {
         if (!this.grid.isValidPos(cursor.x, cursor.y)) return null;
         const id = (item as Item & { identityId?: string }).identityId ?? '';
         const bolt = getBoltForItem(id);
+        const preview = this.getArcanaPreview();
+        if (this.replayStatus !== 'playing' && preview?.risk === 'certain') {
+            logger.log(i18next.t('arcana.blink_certain_death', { defaultValue: 'That would be certain death!' }), '#ff8888');
+            this.cancelArcanaSelection();
+            return null;
+        }
+        if (this.replayStatus !== 'playing' && preview?.risk === 'possible' && !(this.onConfirmRequest?.(i18next.t('arcana.blink_unknown_lava', {
+            defaultValue: 'Blink across lava with unknown range?'
+        })) ?? false)) {
+            this.cancelArcanaSelection();
+            return null;
+        }
         this.cancelArcanaSelection(); // Consume the pending transaction exactly once.
         if (!bolt) return null;
         const charges = item.charges ?? 0;
@@ -4374,7 +4393,7 @@ export class Game {
         const dir = this.directionToVec(this.player.lastMoveDirection ?? Direction.RIGHT);
         const target = aim ?? (bolt.selfTargeting ? this.player.loc : first?.loc) ?? { x: this.player.loc.x + dir.x * 20, y: this.player.loc.y + dir.y * 20 };
         // Blink distance and tunneling budget are travel inputs, resolved from E.
-        // Both staff identities remain deferred to W-25.
+        // W-25 connects both identities to the normal inventory entry.
         const travelBolt = bolt.effect === BoltEffect.BLINKING || bolt.effect === BoltEffect.TUNNELING ? {
             ...bolt, char: bolt.effect === BoltEffect.BLINKING ? this.player.char : bolt.char,
             magnitude: resolveCEBoltMagnitude(bolt.effect === BoltEffect.BLINKING ? CEBoltType.BLINKING : CEBoltType.TUNNELING, item.category === ItemCategory.STAFF
@@ -8397,7 +8416,7 @@ export class Game {
             maxCharges: item.maxCharges,
             charges: item.charges,
             staffRechargeRemaining: item.category === ItemCategory.STAFF
-                ? restoreStaffRecharge(item.staffRechargeRemaining) : undefined,
+                ? restoreStaffRecharge(item.staffRechargeRemaining, (item as Item & { identityId?: string }).identityId) : undefined,
             rechargeTurns: item.rechargeTurns,
             rechargeCounter: item.rechargeCounter,
             cooldownTurns: item.cooldownTurns,
@@ -8434,7 +8453,7 @@ export class Game {
             Object.assign(item, restoreArcanaInstance(s, isStaff, legacyCapacity));
         }
         if (item.category === ItemCategory.STAFF) {
-            item.staffRechargeRemaining = restoreStaffRecharge(s.staffRechargeRemaining);
+            item.staffRechargeRemaining = restoreStaffRecharge(s.staffRechargeRemaining, s.identityId);
         }
         item.rechargeTurns = s.rechargeTurns;
         item.rechargeCounter = s.rechargeCounter;
@@ -8555,6 +8574,7 @@ export class Game {
             items: this.items.map((it) => this.serializeItem(it)),
             // B-1b：全局种类鉴定态与绰号进存档（P1-48；Map 落盘为普通对象）
             identifiedItems: [...ItemLoader.identifiedItems],
+            staffFlavors: Object.fromEntries(ItemLoader.staffs.map(s => [s.id, ItemLoader.arcanaFlavorMap.get(s.id)!])),
             wandFlavors: Object.fromEntries(ItemLoader.wands.map(w => [w.id, ItemLoader.arcanaFlavorMap.get(w.id)!])),
             callTitles: Object.fromEntries(ItemLoader.callTitles),
             // B-1c：种类级极性揭示进存档
@@ -8756,6 +8776,7 @@ export class Game {
         this.currentSeed = rng.seedRandomGenerator(snapshot.seed);
         ItemLoader.initConsumables();
         ItemLoader.restoreWandFlavors(snapshot.wandFlavors);
+        ItemLoader.restoreStaffFlavors(snapshot.staffFlavors);
 
         // B-1b：读档恢复全局种类鉴定态与绰号（P1-48）。initConsumables 已把
         // 两者清到开局态；旧存档（无字段）就停留在开局态 = B-1b 前"鉴定全丢"

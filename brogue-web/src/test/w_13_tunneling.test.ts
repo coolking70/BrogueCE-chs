@@ -237,7 +237,7 @@ describe('W-13 reflection, creatures, maps and persistence', () => {
         expect(snapshot.impregnableCells).toContain(5 * DCOLS + 5); g.loadSnapshot(snapshot); expect(g.grid.isImpregnable(5, 5)).toBe(true);
         delete snapshot.impregnableCells; g.loadSnapshot(snapshot); expect(g.grid.impregnableCells.size).toBe(0);
     });
-    it('tunneling remains unavailable as an item; no W-25 pool/config entry', () => {
-        expect(getBoltForItem('staff_of_tunneling')).toBeUndefined(); expect(ItemLoader.staffs.some(i => i.id === 'staff_of_tunneling')).toBe(false);
+    it('W-25 exposes tunneling as an item with its existing effect', () => {
+        expect(getBoltForItem('staff_of_tunneling')?.effect).toBe(BoltEffect.TUNNELING); expect(ItemLoader.staffs.some(i => i.id === 'staff_of_tunneling')).toBe(true);
     });
 });

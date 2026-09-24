@@ -5,6 +5,7 @@ import { CE_ITEM_BOLT_TYPES, CE_BOLT_CATALOG, CEBoltFlags } from '../Combat/Bolt
  */
 
 import { Item, ItemCategory } from './Item';
+import { initialStaffRecharge } from './ArcanaRecharge';
 import { rollStaffEnchantment, rollWandCharges } from './ArcanaInstance';
 import weaponsData from '../../data/weapons.json';
 import armorsData from '../../data/armors.json';
@@ -50,6 +51,8 @@ export interface ArcanaConfig {
     frequency?: number;
     /** CE 目录价值；web 尚无商店价格消费者。 */
     marketValue?: number;
+    /** CE itemWoods index, independent of the current generation subset. */
+    flavorIndex?: number;
     weight: number;
     color: number;
     maxCharges?: number;
@@ -437,6 +440,7 @@ export class ItemLoader {
     // Mappings from true ID to fake name/color
     public static potionFlavorMap = new Map<string, { name: string, color: number }>();
     public static scrollFlavorMap = new Map<string, string>();
+    private static staffFlavorSlots: string[] = [];
     public static arcanaFlavorMap = new Map<string, string>();
 
     // Which IDs have been identified by the player
@@ -581,10 +585,13 @@ export class ItemLoader {
         wand_of_empowerment: -1,      // empowerment
         wand_of_fire: 0,              // CE 法杖错位实体，退池
         wand_of_lightning: 0,         // 同上
-        // 法杖（web 7 条，含 1 条自创；CE 其余 6 种 web 缺）
+        // 法杖（W-25: 9 条 CE + 1 条退池；W-26 三种仍缺）
         staff_of_lightning: 1,        // lightning
         staff_of_fire: 1,             // firebolt
         staff_of_poison: 1,           // poison
+        staff_of_tunneling: 1,
+        staff_of_blinking: 1,
+        staff_of_entrancement: 1,
         staff_of_conjuration: 1,      // conjuration
         staff_of_healing: -1,         // healing
         staff_of_haste: -1,           // haste
@@ -1096,6 +1103,28 @@ export class ItemLoader {
         }
     }
 
+    /** W-25: pre-W25 saves used contiguous slots in the original seven-row order.
+     * Keep the full shuffled slots: CE deliberately skips wood 2 and W26 rows.
+     * Restoration is deterministic, with no generation/recharge/RNG calls. */
+    public static restoreStaffFlavors(saved?: Record<string, string>): void {
+        const legacy = ['fire', 'lightning', 'poison', 'healing', 'haste', 'conjuration', 'light'];
+        const source = saved ?? Object.fromEntries(legacy.map((s, i) => ['staff_of_' + s, this.staffFlavorSlots[i]!]));
+        const restored = new Map<string, string>(), used = new Set<string>();
+        for (const staff of this.staffs) {
+            const flavor = source[staff.id];
+            if (typeof flavor === 'string' && flavor.trim() && !used.has(flavor)) {
+                restored.set(staff.id, flavor); used.add(flavor);
+            }
+        }
+        for (const staff of this.staffs) {
+            if (!restored.has(staff.id)) {
+                const flavor = this.staffFlavorSlots.find(f => !used.has(f))!;
+                restored.set(staff.id, flavor); used.add(flavor);
+            }
+            this.arcanaFlavorMap.set(staff.id, restored.get(staff.id)!);
+        }
+    }
+
     private static assignAllFlavors() {
         // Shuffle flavors
         const shuffledPotions = [...this.potionColors];
@@ -1155,8 +1184,12 @@ export class ItemLoader {
         }
         const shuffled = [...flavors];
         rng.shuffleList(shuffled);
+        const isStaff = pool === this.staffs;
+        if (isStaff) this.staffFlavorSlots = shuffled.map(tn);
         pool.forEach((entry, index) => {
-            const flavor = shuffled[index];
+            // Light keeps its definition untouched and uses CE's unused wood slot 2.
+            const slot = isStaff ? entry.flavorIndex ?? (entry.id === 'staff_of_light' ? 2 : index) : index;
+            const flavor = shuffled[slot];
             if (!flavor) {
                 console.error(`[ItemLoader] ${label} ${entry.id} 未分配到外观，将显示为 Unknown`);
                 return;
@@ -1380,6 +1413,7 @@ export class ItemLoader {
         staff.enchantment = id === 'staff_of_light' ? data.maxCharges ?? 1 : rollStaffEnchantment(rng);
         staff.maxCharges = staff.enchantment;
         staff.charges = staff.maxCharges;
+        staff.staffRechargeRemaining = initialStaffRecharge(id);
         staff.rechargeTurns = data.rechargeTurns ?? 200;
         staff.rechargeCounter = 0;
         (staff as any).identityId = id;

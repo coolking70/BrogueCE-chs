@@ -1,24 +1,27 @@
 import type { Item } from './Item';
 import type { Random } from '../Random';
 
-/** CE Items.c:338: ordinary staffs start with 500 recharge points, not a roll.
- * Lazy initialization leaves W-5 generation (including its RNG footprint) untouched.
+/** CE Items.c:338: staffs start at 500 points (blink/obstruction: 1000), not a roll.
+ * New instances and missing save fields share the same deterministic initializer.
  * Missing pre-W-6 save fields use this same deterministic value. The old ascending
  * rechargeCounter/rechargeTurns pair has different units and is deliberately ignored.
  */
 export const INITIAL_STAFF_RECHARGE = 500;
 
-export function restoreStaffRecharge(remaining?: number): number {
+export function restoreStaffRecharge(remaining?: number, identityId?: string): number {
     return typeof remaining === 'number' && Number.isFinite(remaining)
-        ? Math.trunc(remaining) : INITIAL_STAFF_RECHARGE;
+        ? Math.trunc(remaining) : initialStaffRecharge(identityId);
 }
 
-/** Kind-specific extension point for W-12/W-14. CE uses 10000 for blinking and
- * obstruction (Time.c:2025-2032); their special cycles are NOT enabled in W-6.
- * Future activation also needs the corresponding initial timer and scroll reset.
- */
-function staffRechargeBaseDuration(_identityId?: string): number {
-    return 5000;
+/** CE Items.c:338 / Time.c:2028; obstruction is prepared but remains out of pool. */
+function isSlowStaff(identityId?: string): boolean {
+    return identityId === 'staff_of_blinking' || identityId === 'staff_of_obstruction';
+}
+export function initialStaffRecharge(identityId?: string): number {
+    return isSlowStaff(identityId) ? 1000 : INITIAL_STAFF_RECHARGE;
+}
+function staffRechargeBaseDuration(identityId?: string): number {
+    return isSlowStaff(identityId) ? 10000 : 5000;
 }
 
 type StaffResource = Pick<Item, 'enchantment' | 'maxCharges' | 'charges' | 'staffRechargeRemaining'>;
@@ -65,7 +68,7 @@ export function tickStaffRecharge(item: StaffResource, wisdom: number,
     const duration = staffChargeDuration(item, identityId);
     if (duration === undefined || item.maxCharges === undefined || item.charges === undefined) return 0;
     const before = item.charges;
-    let remaining = restoreStaffRecharge(item.staffRechargeRemaining);
+    let remaining = restoreStaffRecharge(item.staffRechargeRemaining, identityId);
     if (item.charges < item.maxCharges) remaining -= ringWisdomRechargeIncrement(wisdom);
     while (remaining <= 0) {
         if (item.charges < item.maxCharges) item.charges++;
@@ -81,8 +84,8 @@ export function tickStaffRecharge(item: StaffResource, wisdom: number,
     return item.charges - before;
 }
 
-/** CE Items.c:4726-4729: full uses + deterministic ordinary cycle reset. */
+/** CE Items.c:4726-4729: full uses + deterministic kind-specific cycle reset. */
 export function rechargeStaffFully(item: StaffResource, identityId?: string): void {
     if (item.maxCharges !== undefined) item.charges = item.maxCharges;
-    item.staffRechargeRemaining = staffChargeDuration(item, identityId) ?? INITIAL_STAFF_RECHARGE;
+    item.staffRechargeRemaining = staffChargeDuration(item, identityId) ?? initialStaffRecharge(identityId);
 }

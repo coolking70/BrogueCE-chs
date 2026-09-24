@@ -1,0 +1,37 @@
+{
+  "production": [
+    "src/data/arcana.json",
+    "src/engine/Combat/Bolt.ts",
+    "src/engine/Combat/BlinkTargeting.ts",
+    "src/engine/Core/Game.ts",
+    "src/engine/Items/ArcanaRecharge.ts",
+    "src/engine/Items/ItemLoader.ts",
+    "src/engine/UI/DetailGenerator.ts",
+    "src/components/GameCanvas.vue",
+    "src/locales/zh_CN.json"
+  ],
+  "changedMethods": [
+    "getArcanaPreview",
+    "confirmArcanaTarget",
+    "zapBoltFromPlayer",
+    "serializeItem",
+    "deserializeItem",
+    "toSnapshot",
+    "loadSnapshot"
+  ],
+  "changedExistingTests": [
+    "src/engine/Combat/BoltCatalog.test.ts",
+    "src/test/w_12_blink_beckoning.test.ts",
+    "src/test/w_13_tunneling.test.ts",
+    "src/test/w_24_wand_catalog.test.ts",
+    "src/test/w_5_arcana_instance.test.ts",
+    "src/test/w_6_arcana_recharge.test.ts",
+    "src/test/w_25_staff_catalog.test.ts"
+  ],
+  "unexpected": [],
+  "unchangedCategories": true,
+  "retired": true,
+  "w26Absent": true,
+  "effectUnchanged": true,
+  "baselineHash": "fad7dc81a35afeff00f8bb0a9b38cb4e674d7ee584578127e270304d6c8d0bf3"
+}

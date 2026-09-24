@@ -107,7 +107,7 @@ import { Application, Text, TextStyle, Graphics, Container } from 'pixi.js';
 // R-1 渲染纯重构：格子/实体「画什么字符、什么颜色」的决策已抽到
 // Appearance.ts 纯函数（ctx 显式注入），本组件只保留 Pixi 绘制。
 // 结构守卫（r_1_appearance.test.ts）钉死本文件不得再出现外观决策。
-import { cellAppearance, itemAppearance, monsterAppearance, playerAppearance, type CosmeticRng } from '../engine/UI/Appearance';
+import { ARCANA_TRAJECTORY_FILL, cellAppearance, itemAppearance, monsterAppearance, playerAppearance, type CosmeticRng } from '../engine/UI/Appearance';
 // DCOLS/DROWS 已在上方 <script lang="ts"> 模块块导入（computeMapOffset 用），
 // 同一模块内重复声明绑定会报错，这里只取 setup 独有的 Direction。
 import { Direction } from '../types';
@@ -287,10 +287,19 @@ onMounted(async () => {
         arcanaCursor.clear();
         const selection = game.pendingArcana;
         arcanaPrompt.value = selection ? i18next.t('arcana.target_prompt', {
+            interpolation: { escapeValue: false }, // Vue renders text; keep charge slash readable.
             name: selection.item.displayName,
             defaultValue: '{{name}} — hjklyubn / arrows: aim · Tab: next · Enter / click: cast · Esc: cancel'
         }) : '';
         if (selection) {
+            const preview = game.getArcanaPreview();
+            if (preview?.maxDistance !== null && preview?.maxDistance !== undefined) {
+                arcanaPrompt.value += i18next.t('arcana.blink_range', { distance: preview.maxDistance });
+            }
+            for (const p of preview?.path ?? []) {
+                arcanaCursor.rect(p.x * TILE_SIZE, p.y * TILE_SIZE, TILE_SIZE, TILE_SIZE)
+                    .fill(ARCANA_TRAJECTORY_FILL);
+            }
             arcanaCursor.rect(selection.cursor.x * TILE_SIZE, selection.cursor.y * TILE_SIZE, TILE_SIZE, TILE_SIZE)
                 .stroke({ width: 2, color: 0xdddddd });
         }
@@ -503,6 +512,7 @@ onMounted(async () => {
             mode: game.pendingEnchantment ? 'enchantment_target' : game.pendingArcana ? 'arcana_target' : game.isInventoryOpen ? 'inventory' : (game.isThrowing ? 'throw_target' : 'explore'),
             enchantmentTargets: game.pendingEnchantment
                 ? game.player.inventory.items.filter(item => game.canEnchantTarget(item)).map(item => ({ id: item.id, name: item.displayName })) : [],
+            arcanaPreview: game.getArcanaPreview(),
             arcanaTarget: game.pendingArcana ? { name: game.pendingArcana.item.displayName, ...game.pendingArcana.cursor } : null,
             coordinateSystem: { origin: 'top-left', xAxis: 'right', yAxis: 'down' },
             player: {

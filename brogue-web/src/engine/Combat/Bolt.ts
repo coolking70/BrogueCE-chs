@@ -136,12 +136,15 @@ const RAW_BOLT_DATA: Omit<BoltConfig, 'name' | 'ceType'>[] = [
     { id: 'wand_of_lightning', effect: BoltEffect.LIGHTNING, magnitude: 8, char: '~', color: 0x33ccff, maxRange: 0, piercing: true, selfTargeting: false },
 
     // --- Staffs ---
-    { id: 'staff_of_fire', effect: BoltEffect.FIRE, magnitude: 6, char: '*', color: 0xff4400, maxRange: 0, piercing: false, selfTargeting: false },
     { id: 'staff_of_lightning', effect: BoltEffect.LIGHTNING, magnitude: 10, char: '~', color: 0x00ccff, maxRange: 0, piercing: true, selfTargeting: false },
+    { id: 'staff_of_fire', effect: BoltEffect.FIRE, magnitude: 6, char: '*', color: 0xff4400, maxRange: 0, piercing: false, selfTargeting: false },
     { id: 'staff_of_poison', effect: BoltEffect.POISON, magnitude: 4, char: '·', color: 0x55cc55, maxRange: 0, piercing: false, selfTargeting: false },
+    { id: 'staff_of_tunneling', effect: BoltEffect.TUNNELING, magnitude: 2, char: '*', color: 0xcc8855, maxRange: 0, piercing: false, selfTargeting: false },
+    { id: 'staff_of_blinking', effect: BoltEffect.BLINKING, magnitude: 2, char: '@', color: 0xffffff, maxRange: 0, piercing: false, selfTargeting: false },
+    { id: 'staff_of_entrancement', effect: BoltEffect.ENTRANCEMENT, magnitude: 2, char: '*', color: 0xff99ff, maxRange: 0, piercing: false, selfTargeting: false },
+    { id: 'staff_of_conjuration', effect: BoltEffect.CONJURATION, magnitude: 3, char: '!', color: 0xaaddff, maxRange: 0, piercing: false, selfTargeting: false },
     { id: 'staff_of_healing', effect: BoltEffect.HEALING, magnitude: 8, char: '+', color: 0x44ff88, maxRange: 0, piercing: false, selfTargeting: false },
     { id: 'staff_of_haste', effect: BoltEffect.HASTE, magnitude: 0, char: '>', color: 0xffff88, maxRange: 0, piercing: false, selfTargeting: false },
-    { id: 'staff_of_conjuration', effect: BoltEffect.CONJURATION, magnitude: 3, char: '!', color: 0xaaddff, maxRange: 0, piercing: false, selfTargeting: false },
     { id: 'staff_of_light', effect: BoltEffect.SHIELDING, magnitude: 0, char: '°', color: 0xffffcc, maxRange: 0, piercing: false, selfTargeting: false },
 ];
 
