@@ -1,0 +1,399 @@
+{
+  "files": {
+    "../BrogueCE-master/src/brogue/Architect.c": "102add30e7bdf3964e173efa1c84befd8b46fa04c8a2d0d73e651c2e78da6912",
+    "../BrogueCE-master/src/brogue/Combat.c": "44aef978d782926ca41edd9c933086ad13b5687f25f97f6b1b662b023d89bda3",
+    "../BrogueCE-master/src/brogue/IO.c": "a238ff19c9a18a8be1494a51a2414ce11ea86eda87bce4b5179644c129e0ce2c",
+    "../BrogueCE-master/src/brogue/Items.c": "9767aedb42535cc2a78ec3b41d2cd7ebfb7efee25e338a4609fa6e8e15faab90",
+    "../BrogueCE-master/src/brogue/Monsters.c": "1a311c884d2d22ea09009b2052c2036abe94e9a235279724cd0e86740b55c68f",
+    "../BrogueCE-master/src/brogue/Rogue.h": "daa86933bf745f848fc56b4e697c941c78d3a3c6f2ff2744ff4c9daf589c7256",
+    "../BrogueCE-master/src/brogue/Time.c": "612382b0545d7c845ed19ad1a27a8a30b48a10452d77759b87ad130cd9ff0451",
+    "../BrogueCE-master/src/brogue/RogueMain.c": "21a7fff67cf715e6fc3b799b7e93b5204ebd0fbcf46f94d8a2d6d4b5789a6d0c"
+  },
+  "hits": [
+    {
+      "file": "../BrogueCE-master/src/brogue/Architect.c",
+      "line": 3548,
+      "text": "    monst->bookkeepingFlags &= ~(MB_PREPLACED | MB_APPROACHING_DOWNSTAIRS | MB_APPROACHING_UPSTAIRS | MB_APPROACHING_PIT | MB_ABSORBING);"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Architect.c",
+      "line": 3550,
+      "text": "    monst->corpseAbsorptionCounter = 0;"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Combat.c",
+      "line": 1636,
+      "text": "  if (ally->creatureState == MONSTER_ALLY && ally->newPowerCount > 0 &&"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Combat.c",
+      "line": 1637,
+      "text": "      (!isPosInMap(ally->targetCorpseLoc)) &&"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Combat.c",
+      "line": 1713,
+      "text": "      firstAlly->targetCorpseLoc = decedent->loc;"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Combat.c",
+      "line": 1714,
+      "text": "      strcpy(firstAlly->targetCorpseName, decedent->info.monsterName);"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Combat.c",
+      "line": 1715,
+      "text": "      firstAlly->corpseAbsorptionCounter ="
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Combat.c",
+      "line": 1741,
+      "text": "            firstAlly->absorptionFlags = Fl(i);"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Combat.c",
+      "line": 1742,
+      "text": "            firstAlly->absorbBehavior = false;"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Combat.c",
+      "line": 1752,
+      "text": "            firstAlly->absorptionFlags = Fl(i);"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Combat.c",
+      "line": 1753,
+      "text": "            firstAlly->absorbBehavior = true;"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Combat.c",
+      "line": 1777,
+      "text": "              firstAlly->absorptionBolt = decedent->info.bolts[i];"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Combat.c",
+      "line": 1824,
+      "text": "      ~MB_ABSORBING; // Stop eating a corpse if you are getting hurt."
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/IO.c",
+      "line": 4827,
+      "text": "        if (posEq(monst->targetCorpseLoc, monst->loc)) {"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/IO.c",
+      "line": 4828,
+      "text": "            printProgressBar(0, y++,  monsterText[monst->info.monsterID].absorbStatus, monst->corpseAbsorptionCounter, 20, &redBar, dim);"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/IO.c",
+      "line": 4889,
+      "text": "        if (monst->wasNegated && monst->newPowerCount == monst->totalPowerCount"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Items.c",
+      "line": 4544,
+      "text": "        monst->newPowerCount = monst->totalPowerCount; // Allies can re-learn lost ability slots."
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 124,
+      "text": "    monst->newPowerCount = monst->totalPowerCount = 0;"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 125,
+      "text": "    monst->targetCorpseLoc = INVALID_POS;"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 554,
+      "text": "    monst->newPowerCount++;"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 555,
+      "text": "    monst->totalPowerCount++;"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 2907,
+      "text": "            || monToCheck->totalPowerCount > monToRaise->totalPowerCount"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 2908,
+      "text": "            || (monToCheck->totalPowerCount == monToRaise->totalPowerCount"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3217,
+      "text": "    } else if (isPosInMap(monst->targetCorpseLoc)"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3220,
+      "text": "        moveMonsterPassivelyTowards(monst, monst->targetCorpseLoc, false);"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3221,
+      "text": "        if (posEq(monst->loc, monst->targetCorpseLoc)"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3222,
+      "text": "            && !(monst->bookkeepingFlags & MB_ABSORBING)) {"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3225,
+      "text": "                sprintf(buf, \"%s begins %s the fallen %s.\", monstName, monsterText[monst->info.monsterID].absorbing, monst->targetCorpseName);"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3228,
+      "text": "            monst->corpseAbsorptionCounter = 20;"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3229,
+      "text": "            monst->bookkeepingFlags |= MB_ABSORBING;"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3263,
+      "text": "    if (posEq(monst->loc, monst->targetCorpseLoc)"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3264,
+      "text": "        && (monst->bookkeepingFlags & MB_ABSORBING)) {"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3266,
+      "text": "        if (--monst->corpseAbsorptionCounter <= 0) {"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3267,
+      "text": "            monst->targetCorpseLoc = INVALID_POS;"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3268,
+      "text": "            if (monst->absorptionBolt != BOLT_NONE) {"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3270,
+      "text": "                monst->info.bolts[i] = monst->absorptionBolt;"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3271,
+      "text": "            } else if (monst->absorbBehavior) {"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3272,
+      "text": "                monst->info.flags |= monst->absorptionFlags;"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3274,
+      "text": "                monst->info.abilityFlags |= monst->absorptionFlags;"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3276,
+      "text": "            monst->newPowerCount--;"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3277,
+      "text": "            monst->bookkeepingFlags &= ~MB_ABSORBING;"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3295,
+      "text": "                sprintf(buf, \"%s finished %s the %s.\", buf2, monsterText[monst->info.monsterID].absorbing, monst->targetCorpseName);"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3297,
+      "text": "                if (monst->absorptionBolt != BOLT_NONE) {"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3298,
+      "text": "                    sprintf(buf, \"%s %s!\", buf2, boltCatalog[monst->absorptionBolt].abilityDescription);"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3299,
+      "text": "                } else if (monst->absorbBehavior) {"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3300,
+      "text": "                    sprintf(buf, \"%s now %s!\", buf2, monsterBehaviorCatalog[unflag(monst->absorptionFlags)].description);"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3302,
+      "text": "                    sprintf(buf, \"%s now %s!\", buf2, monsterAbilityCatalog[unflag(monst->absorptionFlags)].description);"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3307,
+      "text": "            monst->absorptionFlags = 0;"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3308,
+      "text": "            monst->absorptionBolt = BOLT_NONE;"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3312,
+      "text": "    } else if (--monst->corpseAbsorptionCounter <= 0) {"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3313,
+      "text": "        monst->targetCorpseLoc = INVALID_POS; // lost its chance"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3314,
+      "text": "        monst->bookkeepingFlags &= ~MB_ABSORBING;"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3315,
+      "text": "        monst->absorptionFlags = 0;"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3316,
+      "text": "        monst->absorptionBolt = BOLT_NONE;"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3317,
+      "text": "    } else if (monst->bookkeepingFlags & MB_ABSORBING) {"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3318,
+      "text": "        monst->bookkeepingFlags &= ~MB_ABSORBING; // absorbing but not on the corpse"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3319,
+      "text": "        if (monst->corpseAbsorptionCounter <= 15) {"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3320,
+      "text": "            monst->targetCorpseLoc = INVALID_POS; // lost its chance"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3321,
+      "text": "            monst->absorptionFlags = 0;"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3322,
+      "text": "            monst->absorptionBolt = BOLT_NONE;"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3337,
+      "text": "    if (monst->corpseAbsorptionCounter >= 0 && updateMonsterCorpseAbsorption(monst)) {"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 3651,
+      "text": "    if ((blocker->bookkeepingFlags & (MB_CAPTIVE | MB_ABSORBING))"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 4555,
+      "text": "        if (monst->newPowerCount > 0) {"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 4559,
+      "text": "            if (monst->newPowerCount == 1) {"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 4563,
+      "text": "                sprintf(newText, tr(\"$HESHE seems ready to learn %i new talents.\\n     \"), monst->newPowerCount);"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Monsters.c",
+      "line": 4800,
+      "text": "    if (monst->wasNegated && monst->newPowerCount == monst->totalPowerCount) {"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Rogue.h",
+      "line": 2158,
+      "text": "    MB_ABSORBING                = Fl(16),   // currently learning a skill by absorbing an enemy corpse"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Rogue.h",
+      "line": 2280,
+      "text": "    pos targetCorpseLoc;           // location of the corpse that the monster is approaching to gain its abilities"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Rogue.h",
+      "line": 2281,
+      "text": "    char targetCorpseName[30];          // name of the deceased monster that we're approaching to gain its abilities"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Rogue.h",
+      "line": 2282,
+      "text": "    unsigned long absorptionFlags;      // ability/behavior flags that the monster will gain when absorption is complete"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Rogue.h",
+      "line": 2283,
+      "text": "    boolean absorbBehavior;             // above flag is behavior instead of ability (ignored if absorptionBolt is set)"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Rogue.h",
+      "line": 2284,
+      "text": "    short absorptionBolt;               // bolt index that the monster will learn to cast when absorption is complete"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Rogue.h",
+      "line": 2285,
+      "text": "    short corpseAbsorptionCounter;      // used to measure both the time until the monster stops being interested in the corpse,"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Rogue.h",
+      "line": 2305,
+      "text": "    short newPowerCount;                // how many more times this monster can absorb a fallen monster"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Rogue.h",
+      "line": 2306,
+      "text": "    short totalPowerCount;              // how many times has the monster been empowered? Used to recover abilities when negated."
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Time.c",
+      "line": 1567,
+      "text": "        monst->targetCorpseLoc = INVALID_POS;"
+    },
+    {
+      "file": "../BrogueCE-master/src/brogue/Time.c",
+      "line": 2119,
+      "text": "  monst->targetCorpseLoc = INVALID_POS;"
+    }
+  ]
+}

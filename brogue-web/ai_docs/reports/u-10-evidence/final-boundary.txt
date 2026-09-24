@@ -1,0 +1,55 @@
+{
+  "methodChecks": {
+    "src/engine/Core/Game.ts": {
+      "unchanged": 332,
+      "differences": [
+        "applyEnvironmentalEffects",
+        "generateDepth",
+        "handleExamineNearest",
+        "handleInspectAt",
+        "monstersFall",
+        "resolveBurningDamage"
+      ],
+      "added": []
+    },
+    "src/entities/Monster.ts": {
+      "unchanged": 98,
+      "differences": [
+        "copyForClone",
+        "copyPlayerForClone"
+      ],
+      "added": [
+        "targetCorpseLoc",
+        "targetCorpseName",
+        "corpseAbsorptionCounter",
+        "absorptionFlags",
+        "absorbBehavior",
+        "absorptionBolt",
+        "isAbsorbing",
+        "interruptCorpseAbsorption",
+        "absorbShieldDamage",
+        "takeDamage",
+        "clearCorpseTargetOnLevelChange"
+      ]
+    },
+    "src/engine/UI/DetailGenerator.ts": {
+      "unchanged": 3,
+      "differences": [
+        "generateMonsterDetail"
+      ],
+      "added": []
+    }
+  },
+  "changed": [
+    "src/components/DetailPanel.vue",
+    "src/engine/Core/EntitySnapshot.ts",
+    "src/engine/Core/Game.ts",
+    "src/engine/UI/DetailGenerator.ts",
+    "src/entities/Monster.ts"
+  ],
+  "protectedUnchanged": 241,
+  "existingTestEdits": [],
+  "ceFieldReferences": 77,
+  "generationBaselineSha256": "5f51e8848a5874ff41cecaa04a7b39de21fc3871f8a0142b32f0499f3ed9fba1",
+  "lockSha256": "3d9027a9ff655ec834674ebbf4b8ff0c00257b8906a375270163ecba5f53e253"
+}

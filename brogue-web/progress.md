@@ -1147,3 +1147,14 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 编辑完成后冻结SHA，执行CE/boundary/build、R∪S显式回归和test:drift；结果只回填u-09.report.md及证据。学习恢复本身后续为U10字段与U11状态机，未开启自然抽签或旧档迁移。
 - 最终CE复核补充：FIERY不可学，但已有FIERY的学员安装别项后仍按MC:3280同步burning1000。本轮补显式afterLearning分支和永久性消费者，保留初始化不赋烧以免扩入生成；新增组合测试，总72项。首个冻结批次主动中断并归档prefinal-first-freeze，全部编辑后从CE/build重启最终门禁，不拼接旧结果。
 - 最后定向验证：U09 72项 + W23 42项全部通过；浏览器重跑13场景，含已有FIERY学员同步/消魔，console/page errors=0，最新截图已实看。此前11场景/71项是中途记录；最终结果只采用本次冻结批次，见报告及final-check/final-files。
+
+## 2026-09-25 U10：吸收过程字段与存档
+- 执行 u-10.prompt.md；采用 develop-web-game 技能，CE 原码为准。不启学习状态机、不做旧档兼容；U03 整局跨层 JSON 继续独立。
+- 冻结合同：七项吸收字段与已有 new/total、U01 字段登记；克隆值拷贝、变形/消魔保留；原始非零伤害（护盾全挡也含）中断，0/无敌不清；坠层只清位置，重访层的活跃怪清进行态/计数（不误用于 JSON 读档）。
+- 预计改义仅为新增字段形状、手工夹具详情进度/伤害中断；已有断言全部只回归不可放宽，AST 覆盖守卫不改；R+S 清单由 u10-test-scope.mjs 冻结。
+- 已完成七项字段/U01登记、坐标值拷贝、伤害中断、坠落清位置、缓存楼层活跃实体恢复、详情进度条。CE monsterEntersLevel 的普通跨层跟随当前无执行链，位置清理原语留给 U03；首次生成层的 pending 幸存者保留计数，不能套用 visited-only restoreMonster。休眠和 detached 图不执行该清理。
+- 新增40项定向测试通过。首批相关回归180项通过（当时U10为39项）；夹具初次 API名、TS类型、整局读档保RNG的错误前提已修正。独立codec零RNG保留，整局load仍沿用U02前的重设种子行为；既有测试/扫描器/基线零修改。
+- 浏览器六场景、1280×900与700×800，DOM数值/进行态/字段往返与截图核验，console/page errors=0。技能客户端Canvas输出黑图不计视觉通过；真实整页截图正常。首次load截图未完整呈现，等待稳定/禁截图动画后重跑正常，保留prefinal图，不改产品规则。
+- 最终冻结后运行u10-final-check.mjs：边界、build、R∪S显式文件回归、test:drift。运行结果仅回填u-10.report.md及证据；不再编辑源码/测试/脚本/progress。U11继续负责资格/选择/走尸/推进/安装/扣次数/过期清理；U03负责整局跨层JSON及普通跟随，U02 RNG恢复保留。
+
+- 冻结期间继续回源发现玩家clone例外：CE RogueMain.c:363 memset玩家，目标坐标为(0,0)，普通怪才initializeMonster置INVALID_POS。修正copyPlayerForClone的投影并补默认断言；不增加Player字段或学习逻辑。首批最终门禁主动中断，存入prefinal-first-freeze，不用于最终结果；全部编辑后重新冻结并重跑全部门禁。

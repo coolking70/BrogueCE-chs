@@ -4,6 +4,7 @@
  */
 
 import { Creature, allocateEntityId } from './Creature';
+import type { Pos } from '../types';
 import { knownPolymorphSpecies, polymorphHP, polymorphSpecies } from '../engine/Combat/Polymorph';
 import { Player, TURNS_FOR_FULL_REGEN } from './Player';
 import { rng } from '../engine/Random';
@@ -292,6 +293,40 @@ export class Monster extends Creature {
     /** CE creature counts survive cloning/polymorph; W-22 will consume slots. */
     public newPowerCount = 0;
     public totalPowerCount = 0;
+    /** U10: CE creature absorption state, independent of species info. null
+     * maps INVALID_POS / no selected flag; selection/countdown belongs to U11. */
+    public targetCorpseLoc: Pos | null = null;
+    public targetCorpseName = '';
+    public corpseAbsorptionCounter = 0;
+    /** CE selects one bit; web stores its MA_* / MONST_* name, as in the sets. */
+    public absorptionFlags: string | null = null;
+    public absorbBehavior = false;
+    public absorptionBolt: CEBoltType = CEBoltType.NONE;
+    /** CE MB_ABSORBING, not a status duration or an AI state. */
+    public isAbsorbing = false;
+
+    /** CE inflictDamage: zero input / invulnerability return before clearing
+     * MB_ABSORBING; a nonzero hit fully blocked by shielding still clears it.
+     * Direct HP writers call this without changing their existing death order. */
+    public interruptCorpseAbsorption(amount: number): void {
+        if (amount !== 0 && !this.isInvulnerable()) this.isAbsorbing = false;
+    }
+
+    public override absorbShieldDamage(amount: number): number {
+        const damage = super.absorbShieldDamage(amount);
+        this.interruptCorpseAbsorption(amount);
+        return damage;
+    }
+
+    public override takeDamage(amount: number, ignoresProtectionShield = false): void {
+        this.interruptCorpseAbsorption(amount);
+        super.takeDamage(amount, ignoresProtectionShield);
+    }
+
+    /** Time.c monstersFall / monsterEntersLevel clear ONLY the old-level position. */
+    public clearCorpseTargetOnLevelChange(): void {
+        this.targetCorpseLoc = null;
+    }
     /** Carried creatures are detached payloads, never active occupants. W-19
      * discards them without death/loot; full enter-summons lifecycle is separate. */
     public carriedMonster: Monster | null = null;
@@ -472,6 +507,7 @@ export class Monster extends Creature {
         clone.id = allocateEntityId();
         clone.loc = { ...this.loc };
         clone.spawnLoc = { ...this.spawnLoc };
+        clone.targetCorpseLoc = this.targetCorpseLoc ? { ...this.targetCorpseLoc } : null;
         clone.statusDurations = { ...this.statusDurations };
         clone.maxStatus = { ...this.maxStatus };
         clone.statusImmunities = new Set(this.statusImmunities);
@@ -520,6 +556,9 @@ export class Monster extends Creature {
             weaknessAmount: player.weaknessAmount, maxStatus: { ...player.maxStatus },
             movementSpeed: player.movementSpeed, attackSpeed: player.attackSpeed,
             seized: player.seized, seizing: player.seizing,
+            // CE RogueMain.c:363 memset(&player), unlike initializeMonster's
+            // INVALID_POS. The copied zero counter expires this target in U11.
+            targetCorpseLoc: { x: 0, y: 0 },
             ticksUntilTurn: 101, isClone: true, isAlly: true, state: MonsterState.WANDERING });
         // leader=null + isAlly is the existing web representation of &player.
         return model;
@@ -596,7 +635,7 @@ export class Monster extends Creature {
         // Web loot probabilities represent an existing inventory entitlement;
         // polymorph neither generates nor discards items (CE carriedItem stays).
         this.wasNegated = false;
-        // newPowerCount/totalPowerCount belong to creature, not the replaced info.
+        // Counts and pending corpse absorption belong to creature, not the replaced info.
         this.statusDurations = {};
         this.maxStatus = {};
         this.maxShield = 0; // maxStatus is reset; poisonAmount is NOT reset in CE.

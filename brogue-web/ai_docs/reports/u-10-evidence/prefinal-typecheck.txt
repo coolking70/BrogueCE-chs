@@ -1,0 +1,8 @@
+src/test/u_10_absorption_snapshot.test.ts(4,1): error TS6133: 'Game' is declared but its value is never read.
+src/test/u_10_absorption_snapshot.test.ts(44,37): error TS2339: Property 'fromPlayerClone' does not exist on type 'typeof Monster'.
+src/test/u_10_absorption_snapshot.test.ts(59,79): error TS2345: Argument of type '{ state: MonsterState; damageString: string; damageClumping: number; goldDropChance: number; itemDropChance: number; onHitStatus?: StatusId | undefined; onHitChance: number; ... 106 more ...; move: (_dir: Direction) => void; }' is not assignable to parameter of type 'Monster'.
+  Type '{ state: MonsterState; damageString: string; damageClumping: number; goldDropChance: number; itemDropChance: number; onHitStatus?: StatusId | undefined; onHitChance: number; ... 106 more ...; move: (_dir: Direction) => void; }' is missing the following properties from type 'Monster': baseMoveSpeed, baseAttackSpeed, isStatusPermanent, infoMovementSpeed, and 13 more.
+src/test/u_10_absorption_snapshot.test.ts(128,55): error TS2559: Type 'true' has no properties in common with type '{ isWeaponAttack?: boolean | undefined; beforeDamage?: ((damage: number) => number) | undefined; lungeAttack?: boolean | undefined; }'.
+src/test/u_10_absorption_snapshot.test.ts(130,47): error TS2345: Argument of type '"burning"' is not assignable to parameter of type 'StatusId'.
+src/test/u_10_absorption_snapshot.test.ts(138,115): error TS2345: Argument of type '"burning"' is not assignable to parameter of type 'StatusId'.
+src/test/u_10_absorption_snapshot.test.ts(189,49): error TS2554: Expected 2 arguments, but got 1.

@@ -1,0 +1,46 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a7a9/brogue/brogue-web
+
+stdout | src/test/u_10_absorption_snapshot.test.ts > fresh creature and player clone have CE calloc/initializeMonster defaults, and no absorption UI
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_10_absorption_snapshot.test.ts (39 tests | 2 failed) 2257ms
+   × fresh creature and player clone have CE calloc/initializeMonster defaults, and no absorption UI 120ms
+   × current-layer active, dormant, cyclic carried/leader entities preserve their own pending task across real JSON load 132ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_10_absorption_snapshot.test.ts > fresh creature and player clone have CE calloc/initializeMonster defaults, and no absorption UI
+TypeError: Monster.fromPlayerClone is not a function
+ ❯ src/test/u_10_absorption_snapshot.test.ts:44:37
+     42|
+     43| it('fresh creature and player clone have CE calloc/initializeMonster d…
+     44|     for (const m of [mob(), Monster.fromPlayerClone(scene().player)]) {
+       |                                     ^
+     45|         expect(state(m)).toEqual({targetCorpseLoc:null,targetCorpseNam…
+     46|             absorbBehavior:false,absorptionBolt:CEBoltType.NONE,isAbso…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/test/u_10_absorption_snapshot.test.ts > current-layer active, dormant, cyclic carried/leader entities preserve their own pending task across real JSON load
+AssertionError: expected '{"rngStates":[{"a":3724750185,"b":361…' to be '{"rngStates":[{"a":3878758391,"b":203…' // Object.is equality
+
+Expected: "{"rngStates":[{"a":3878758391,"b":2034956394,"c":4215252279,"d":3074169483},{"a":739049724,"b":1422663554,"c":2521504620,"d":2240123576}],"currentRNG":0,"RAND_MAX_COMBO":4294967295,"randomNumbersGenerated":58}"
+Received: "{"rngStates":[{"a":3724750185,"b":3611563622,"c":2912232585,"d":476999452},{"a":739049724,"b":1422663554,"c":2521504620,"d":2240123576}],"currentRNG":0,"RAND_MAX_COMBO":4294967295,"randomNumbersGenerated":0}"
+
+ ❯ src/test/u_10_absorption_snapshot.test.ts:74:74
+     72|     g.monsters=[a];g.dormantMonsters=[d];const saved=json(g.toSnapshot…
+     73|     const before=[a,d,p].map(state), random=JSON.stringify(rng);
+     74|     expect(g.loadSnapshot(saved)).toBe(true);expect(JSON.stringify(rng…
+       |                                                                          ^
+     75|     const la=g.monsters[0]!,ld=g.dormantMonsters[0]!,lp=la.carriedMons…
+     76|     expect([la,ld,lp].map(state)).toEqual(before);expect(lp.leader).to…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  2 failed | 54 passed (56)
+   Start at  01:06:33
+   Duration  2.87s (transform 458ms, setup 0ms, import 1.07s, tests 4.39s, environment 0ms)
+

@@ -25,6 +25,8 @@ export const MONSTER_FIELDS = [
     'onHitStatus', 'onHitChance', 'onHitDuration', 'statusResistTurns', 'isAlly',
     'dominated', 'boundToLeader', 'isCaged', 'mutation', 'polymorphed', 'isClone',
     'wasNegated', 'newPowerCount', 'totalPowerCount', 'polymorphKeepsSpeed',
+    'targetCorpseLoc', 'targetCorpseName', 'corpseAbsorptionCounter',
+    'absorptionFlags', 'absorbBehavior', 'absorptionBolt', 'isAbsorbing',
     'description', 'deathEffectTriggered', 'bolts', 'typeId', 'boundToPlayer',
     'doesNotTrackLeader', 'givenUpOnScent', 'safetySnapshot', 'falling', 'preplaced',
     'isDormant', 'machineHome', 'targetWaypointIndex', 'waypointAlreadyVisited',

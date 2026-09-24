@@ -38,6 +38,7 @@ export interface DetailSection {
 export interface DetailLine {
     text: string;
     color?: string; // CSS color string, e.g. '#ff4444'
+    progress?: { value: number; max: number };
 }
 
 // ---------- Runic description tables ----------
@@ -131,7 +132,8 @@ export function generateMonsterDetail(
     playerWeaponStrReq: number,
     playerArmorBase?: number,
     playerArmorEnchant?: number,
-    playerArmorStrReq?: number
+    playerArmorStrReq?: number,
+    playerHallucinating = false
 ): DetailInfo {
     const sections: DetailSection[] = [];
 
@@ -184,6 +186,12 @@ export function generateMonsterDetail(
     if (statusRows.length) sections.push({ header: '状态效果', lines: statusRows.map(s => ({
         text: `${s.label}（${s.value}）`, color: s.color,
     })) });
+    // CE IO.c:4827 checks position equality, not MB_ABSORBING, allegiance or
+    // counter > 0. Default null keeps this hidden until a corpse is assigned.
+    if (!playerHallucinating && monster.targetCorpseLoc?.x === monster.loc.x && monster.targetCorpseLoc.y === monster.loc.y) {
+        sections.push({ lines: [{ text: '吸收', color: '#ff6666',
+            progress: { value: monster.corpseAbsorptionCounter, max: 20 } }] });
+    }
 
     // --- Combat analysis ---
     const combatLines: DetailLine[] = [];

@@ -73,6 +73,8 @@ function colorToCSS(color: number): string {
                              class="section-line"
                              :style="{ color: line.color || '#cccccc' }">
                             {{ line.text }}
+                            <progress v-if="line.progress" class="detail-progress"
+                                      :aria-label="line.text" :value="line.progress.value" :max="line.progress.max" />
                         </div>
                     </div>
                 </div>
@@ -198,6 +200,14 @@ function colorToCSS(color: number): string {
     font-size: 14px;
     line-height: 1.6;
     padding: 1px 0;
+}
+
+.detail-progress {
+    display: block;
+    width: 100%;
+    height: 12px;
+    margin: 4px 0;
+    accent-color: #cc4444;
 }
 
 .detail-footer {

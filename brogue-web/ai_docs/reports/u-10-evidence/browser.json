@@ -1,0 +1,999 @@
+{
+  "states": [
+    {
+      "name": "default-hidden",
+      "state": {
+        "targetCorpseLoc": null,
+        "targetCorpseName": "",
+        "corpseAbsorptionCounter": 0,
+        "absorptionFlags": null,
+        "absorbBehavior": false,
+        "absorptionBolt": 0,
+        "isAbsorbing": false,
+        "newPowerCount": 0,
+        "totalPowerCount": 0,
+        "detail": {
+          "char": "r",
+          "color": 11163187,
+          "name": "老鼠",
+          "sections": [
+            {
+              "lines": [
+                {
+                  "text": "老鼠是浅层地牢的拾荒者，永远在寻找腐烂的动物残骸。",
+                  "color": "#aaaacc"
+                }
+              ]
+            },
+            {
+              "header": "基本属性",
+              "lines": [
+                {
+                  "text": "生命值: 6/6",
+                  "color": "#66ccff"
+                },
+                {
+                  "text": "伤害: 1d3"
+                },
+                {
+                  "text": "精度: 80"
+                }
+              ]
+            },
+            {
+              "header": "战斗分析",
+              "lines": [
+                {
+                  "text": "该怪物有 50% 的概率命中你。",
+                  "color": "#ffcc44"
+                },
+                {
+                  "text": "平均每击造成你当前生命值的 7% 伤害。",
+                  "color": "#ffaa44"
+                },
+                {
+                  "text": "最坏情况下，10 击可击败你。",
+                  "color": "#cccccc"
+                },
+                {
+                  "text": "你有 100% 的概率命中该怪物。",
+                  "color": "#44ff44"
+                },
+                {
+                  "text": "平均每击造成该怪物当前生命值的 25% 伤害。",
+                  "color": "#88ff88"
+                },
+                {
+                  "text": "最少 3 击可击败该怪物。",
+                  "color": "#cccccc"
+                }
+              ]
+            },
+            {
+              "header": "状态",
+              "lines": [
+                {
+                  "text": "正在巡逻",
+                  "color": "#88ff88"
+                }
+              ]
+            }
+          ]
+        },
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 13,
+              "y": 10,
+              "hp": 6,
+              "maxHp": 6,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 10000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        }
+      }
+    },
+    {
+      "name": "absorbing",
+      "state": {
+        "targetCorpseLoc": {
+          "x": 13,
+          "y": 10
+        },
+        "targetCorpseName": "巨龙",
+        "corpseAbsorptionCounter": 13,
+        "absorptionFlags": "MONST_FLIES",
+        "absorbBehavior": true,
+        "absorptionBolt": 0,
+        "isAbsorbing": true,
+        "newPowerCount": 2,
+        "totalPowerCount": 4,
+        "detail": {
+          "char": "r",
+          "color": 11163187,
+          "name": "老鼠",
+          "sections": [
+            {
+              "lines": [
+                {
+                  "text": "老鼠是浅层地牢的拾荒者，永远在寻找腐烂的动物残骸。",
+                  "color": "#aaaacc"
+                }
+              ]
+            },
+            {
+              "header": "基本属性",
+              "lines": [
+                {
+                  "text": "生命值: 6/6",
+                  "color": "#66ccff"
+                },
+                {
+                  "text": "伤害: 1d3"
+                },
+                {
+                  "text": "精度: 80"
+                }
+              ]
+            },
+            {
+              "lines": [
+                {
+                  "text": "吸收",
+                  "color": "#ff6666",
+                  "progress": {
+                    "value": 13,
+                    "max": 20
+                  }
+                }
+              ]
+            },
+            {
+              "header": "战斗分析",
+              "lines": [
+                {
+                  "text": "该怪物有 50% 的概率命中你。",
+                  "color": "#ffcc44"
+                },
+                {
+                  "text": "平均每击造成你当前生命值的 7% 伤害。",
+                  "color": "#ffaa44"
+                },
+                {
+                  "text": "最坏情况下，10 击可击败你。",
+                  "color": "#cccccc"
+                },
+                {
+                  "text": "你有 100% 的概率命中该怪物。",
+                  "color": "#44ff44"
+                },
+                {
+                  "text": "平均每击造成该怪物当前生命值的 25% 伤害。",
+                  "color": "#88ff88"
+                },
+                {
+                  "text": "最少 3 击可击败该怪物。",
+                  "color": "#cccccc"
+                }
+              ]
+            },
+            {
+              "header": "状态",
+              "lines": [
+                {
+                  "text": "似乎已准备好学习 2 项新能力。",
+                  "color": "#88ff99"
+                },
+                {
+                  "text": "正在巡逻",
+                  "color": "#88ff88"
+                }
+              ]
+            }
+          ]
+        },
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 13,
+              "y": 10,
+              "hp": 6,
+              "maxHp": 6,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 2,
+              "totalPowerCount": 4,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 10000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        }
+      }
+    },
+    {
+      "name": "loaded",
+      "state": {
+        "targetCorpseLoc": {
+          "x": 13,
+          "y": 10
+        },
+        "targetCorpseName": "巨龙",
+        "corpseAbsorptionCounter": 13,
+        "absorptionFlags": "MONST_FLIES",
+        "absorbBehavior": true,
+        "absorptionBolt": 0,
+        "isAbsorbing": true,
+        "newPowerCount": 2,
+        "totalPowerCount": 4,
+        "detail": {
+          "char": "r",
+          "color": 11163187,
+          "name": "老鼠",
+          "sections": [
+            {
+              "lines": [
+                {
+                  "text": "老鼠是浅层地牢的拾荒者，永远在寻找腐烂的动物残骸。",
+                  "color": "#aaaacc"
+                }
+              ]
+            },
+            {
+              "header": "基本属性",
+              "lines": [
+                {
+                  "text": "生命值: 6/6",
+                  "color": "#66ccff"
+                },
+                {
+                  "text": "伤害: 1d3"
+                },
+                {
+                  "text": "精度: 80"
+                }
+              ]
+            },
+            {
+              "lines": [
+                {
+                  "text": "吸收",
+                  "color": "#ff6666",
+                  "progress": {
+                    "value": 13,
+                    "max": 20
+                  }
+                }
+              ]
+            },
+            {
+              "header": "战斗分析",
+              "lines": [
+                {
+                  "text": "该怪物有 50% 的概率命中你。",
+                  "color": "#ffcc44"
+                },
+                {
+                  "text": "平均每击造成你当前生命值的 7% 伤害。",
+                  "color": "#ffaa44"
+                },
+                {
+                  "text": "最坏情况下，10 击可击败你。",
+                  "color": "#cccccc"
+                },
+                {
+                  "text": "你有 100% 的概率命中该怪物。",
+                  "color": "#44ff44"
+                },
+                {
+                  "text": "平均每击造成该怪物当前生命值的 25% 伤害。",
+                  "color": "#88ff88"
+                },
+                {
+                  "text": "最少 3 击可击败该怪物。",
+                  "color": "#cccccc"
+                }
+              ]
+            },
+            {
+              "header": "状态",
+              "lines": [
+                {
+                  "text": "似乎已准备好学习 2 项新能力。",
+                  "color": "#88ff99"
+                },
+                {
+                  "text": "正在巡逻",
+                  "color": "#88ff88"
+                }
+              ]
+            }
+          ]
+        },
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 13,
+              "y": 10,
+              "hp": 6,
+              "maxHp": 6,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 2,
+              "totalPowerCount": 4,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 10000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        }
+      }
+    },
+    {
+      "name": "interrupted-narrow",
+      "state": {
+        "targetCorpseLoc": {
+          "x": 13,
+          "y": 10
+        },
+        "targetCorpseName": "巨龙",
+        "corpseAbsorptionCounter": 13,
+        "absorptionFlags": "MONST_FLIES",
+        "absorbBehavior": true,
+        "absorptionBolt": 0,
+        "isAbsorbing": false,
+        "newPowerCount": 2,
+        "totalPowerCount": 4,
+        "detail": {
+          "char": "r",
+          "color": 11163187,
+          "name": "老鼠",
+          "sections": [
+            {
+              "lines": [
+                {
+                  "text": "老鼠是浅层地牢的拾荒者，永远在寻找腐烂的动物残骸。",
+                  "color": "#aaaacc"
+                }
+              ]
+            },
+            {
+              "header": "基本属性",
+              "lines": [
+                {
+                  "text": "生命值: 6/6",
+                  "color": "#66ccff"
+                },
+                {
+                  "text": "伤害: 1d3"
+                },
+                {
+                  "text": "精度: 80"
+                }
+              ]
+            },
+            {
+              "header": "状态效果",
+              "lines": [
+                {
+                  "text": "护盾（999 HP）",
+                  "color": "#fde68a"
+                }
+              ]
+            },
+            {
+              "lines": [
+                {
+                  "text": "吸收",
+                  "color": "#ff6666",
+                  "progress": {
+                    "value": 13,
+                    "max": 20
+                  }
+                }
+              ]
+            },
+            {
+              "header": "战斗分析",
+              "lines": [
+                {
+                  "text": "该怪物有 50% 的概率命中你。",
+                  "color": "#ffcc44"
+                },
+                {
+                  "text": "平均每击造成你当前生命值的 7% 伤害。",
+                  "color": "#ffaa44"
+                },
+                {
+                  "text": "最坏情况下，10 击可击败你。",
+                  "color": "#cccccc"
+                },
+                {
+                  "text": "你有 100% 的概率命中该怪物。",
+                  "color": "#44ff44"
+                },
+                {
+                  "text": "平均每击造成该怪物当前生命值的 25% 伤害。",
+                  "color": "#88ff88"
+                },
+                {
+                  "text": "最少 3 击可击败该怪物。",
+                  "color": "#cccccc"
+                }
+              ]
+            },
+            {
+              "header": "状态",
+              "lines": [
+                {
+                  "text": "似乎已准备好学习 2 项新能力。",
+                  "color": "#88ff99"
+                },
+                {
+                  "text": "正在巡逻",
+                  "color": "#88ff88"
+                }
+              ]
+            }
+          ]
+        },
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 13,
+              "y": 10,
+              "hp": 6,
+              "maxHp": 6,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 2,
+              "totalPowerCount": 4,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 10000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 9990,
+              "maxShield": 10000
+            }
+          ],
+          "items": []
+        }
+      }
+    },
+    {
+      "name": "walking-hidden",
+      "state": {
+        "targetCorpseLoc": {
+          "x": 14,
+          "y": 10
+        },
+        "targetCorpseName": "巨龙",
+        "corpseAbsorptionCounter": 13,
+        "absorptionFlags": "MONST_FLIES",
+        "absorbBehavior": true,
+        "absorptionBolt": 0,
+        "isAbsorbing": false,
+        "newPowerCount": 2,
+        "totalPowerCount": 4,
+        "detail": {
+          "char": "r",
+          "color": 11163187,
+          "name": "老鼠",
+          "sections": [
+            {
+              "lines": [
+                {
+                  "text": "老鼠是浅层地牢的拾荒者，永远在寻找腐烂的动物残骸。",
+                  "color": "#aaaacc"
+                }
+              ]
+            },
+            {
+              "header": "基本属性",
+              "lines": [
+                {
+                  "text": "生命值: 6/6",
+                  "color": "#66ccff"
+                },
+                {
+                  "text": "伤害: 1d3"
+                },
+                {
+                  "text": "精度: 80"
+                }
+              ]
+            },
+            {
+              "header": "状态效果",
+              "lines": [
+                {
+                  "text": "护盾（999 HP）",
+                  "color": "#fde68a"
+                }
+              ]
+            },
+            {
+              "header": "战斗分析",
+              "lines": [
+                {
+                  "text": "该怪物有 50% 的概率命中你。",
+                  "color": "#ffcc44"
+                },
+                {
+                  "text": "平均每击造成你当前生命值的 7% 伤害。",
+                  "color": "#ffaa44"
+                },
+                {
+                  "text": "最坏情况下，10 击可击败你。",
+                  "color": "#cccccc"
+                },
+                {
+                  "text": "你有 100% 的概率命中该怪物。",
+                  "color": "#44ff44"
+                },
+                {
+                  "text": "平均每击造成该怪物当前生命值的 25% 伤害。",
+                  "color": "#88ff88"
+                },
+                {
+                  "text": "最少 3 击可击败该怪物。",
+                  "color": "#cccccc"
+                }
+              ]
+            },
+            {
+              "header": "状态",
+              "lines": [
+                {
+                  "text": "似乎已准备好学习 2 项新能力。",
+                  "color": "#88ff99"
+                },
+                {
+                  "text": "正在巡逻",
+                  "color": "#88ff88"
+                }
+              ]
+            }
+          ]
+        },
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 13,
+              "y": 10,
+              "hp": 6,
+              "maxHp": 6,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 2,
+              "totalPowerCount": 4,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 10000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 9990,
+              "maxShield": 10000
+            }
+          ],
+          "items": []
+        }
+      }
+    },
+    {
+      "name": "hallucination-hidden",
+      "state": {
+        "targetCorpseLoc": {
+          "x": 13,
+          "y": 10
+        },
+        "targetCorpseName": "巨龙",
+        "corpseAbsorptionCounter": 13,
+        "absorptionFlags": "MONST_FLIES",
+        "absorbBehavior": true,
+        "absorptionBolt": 0,
+        "isAbsorbing": true,
+        "newPowerCount": 2,
+        "totalPowerCount": 4,
+        "detail": {
+          "char": "r",
+          "color": 11163187,
+          "name": "老鼠",
+          "sections": [
+            {
+              "lines": [
+                {
+                  "text": "老鼠是浅层地牢的拾荒者，永远在寻找腐烂的动物残骸。",
+                  "color": "#aaaacc"
+                }
+              ]
+            },
+            {
+              "header": "基本属性",
+              "lines": [
+                {
+                  "text": "生命值: 6/6",
+                  "color": "#66ccff"
+                },
+                {
+                  "text": "伤害: 1d3"
+                },
+                {
+                  "text": "精度: 80"
+                }
+              ]
+            },
+            {
+              "header": "状态效果",
+              "lines": [
+                {
+                  "text": "护盾（999 HP）",
+                  "color": "#fde68a"
+                }
+              ]
+            },
+            {
+              "header": "战斗分析",
+              "lines": [
+                {
+                  "text": "该怪物有 50% 的概率命中你。",
+                  "color": "#ffcc44"
+                },
+                {
+                  "text": "平均每击造成你当前生命值的 7% 伤害。",
+                  "color": "#ffaa44"
+                },
+                {
+                  "text": "最坏情况下，10 击可击败你。",
+                  "color": "#cccccc"
+                },
+                {
+                  "text": "你有 100% 的概率命中该怪物。",
+                  "color": "#44ff44"
+                },
+                {
+                  "text": "平均每击造成该怪物当前生命值的 25% 伤害。",
+                  "color": "#88ff88"
+                },
+                {
+                  "text": "最少 3 击可击败该怪物。",
+                  "color": "#cccccc"
+                }
+              ]
+            },
+            {
+              "header": "状态",
+              "lines": [
+                {
+                  "text": "似乎已准备好学习 2 项新能力。",
+                  "color": "#88ff99"
+                },
+                {
+                  "text": "正在巡逻",
+                  "color": "#88ff88"
+                }
+              ]
+            }
+          ]
+        },
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {
+              "hallucinating": 10
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 13,
+              "y": 10,
+              "hp": 6,
+              "maxHp": 6,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 2,
+              "totalPowerCount": 4,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 10000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 9990,
+              "maxShield": 10000
+            }
+          ],
+          "items": []
+        }
+      }
+    }
+  ],
+  "errors": []
+}

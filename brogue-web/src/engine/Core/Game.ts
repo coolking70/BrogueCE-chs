@@ -1098,6 +1098,13 @@ export class Game {
             this.fov = cached.fov;
             this.lightMap = cached.lightMap;
             this.monsters = cached.monsters;
+            // CE RogueMain.c:901 -> restoreMonster (Architect.c:3548-3550).
+            // Only active residents of a revisited level; NOT JSON restoration,
+            // dormant entities, or the monsterEntersLevel position-only reset.
+            for (const m of this.monsters) {
+                m.isAbsorbing = false;
+                m.corpseAbsorptionCounter = 0;
+            }
             this.dormantMonsters = cached.dormantMonsters ?? [];
             this.items = cached.items;
             this.visibleMonsters = cached.visibleMonsters;
@@ -2262,7 +2269,8 @@ export class Game {
                     this.player.equippedWeapon?.strengthRequired ?? 12,
                     this.player.equippedArmor?.armor ?? 0,
                     this.player.equippedArmor?.enchantment ?? 0,
-                    this.player.equippedArmor?.strengthRequired ?? 0 // 缺省口径对齐 Combat.ts 的 || 0
+                    this.player.equippedArmor?.strengthRequired ?? 0, // 缺省口径对齐 Combat.ts 的 || 0
+                    this.player.hasStatus('hallucinating')
                 );
                 return;
             }
@@ -2312,7 +2320,8 @@ export class Game {
                 this.player.equippedWeapon?.strengthRequired ?? 12,
                 this.player.equippedArmor?.armor ?? 0,
                 this.player.equippedArmor?.enchantment ?? 0,
-                this.player.equippedArmor?.strengthRequired ?? 0 // 缺省口径对齐 Combat.ts 的 || 0
+                this.player.equippedArmor?.strengthRequired ?? 0, // 缺省口径对齐 Combat.ts 的 || 0
+                this.player.hasStatus('hallucinating')
             );
             return;
         }
@@ -7473,8 +7482,8 @@ export class Game {
                     if (m.hp <= 0) died = true;
                 }
                 if (!died) {
-                    // CE :1561-1577：幸存者转层（leadership 降格与
-                    // targetCorpseLoc 清理 web 无载体，登记）。
+                    // CE :1561-1577：幸存者转层（leadership 降格仍另轮）。
+                    m.clearCorpseTargetOnLevelChange(); // CE :1567: only position
                     m.setStatusDuration('entranced', 0); // CE Time.c:1564
                     m.seized = m.seizing = false;
                     m.falling = false;
@@ -8743,6 +8752,7 @@ export class Game {
         const damage = rng.randRange(1, 3); // CE rand_range(1,3)，免疫者照掷
         if (!entity.hasStatus('immune_fire')
             && !(entity !== this.player && (entity as Monster).isInvulnerable())) {
+            if (entity instanceof Monster) entity.interruptCorpseAbsorption(damage);
             entity.hp -= damage; // CE Time.c:2584 / Monsters.c:1885: burning bypasses shields.
             if (entity === this.player) {
                 this.lastDamageSource = 'fire';
@@ -9026,6 +9036,7 @@ export class Game {
                         logger.log(i18next.t('runic.armor.respiration_gas', { defaultValue: 'Your armor trembles and a pocket of clean air swirls around you.' }), '#66ffff');
                     }
                 } else if (!exempt) {
+                    if (entity instanceof Monster) entity.interruptCorpseAbsorption(Math.max(1, Math.floor(entity.maxHp / 15)));
                     entity.hp -= Math.max(1, Math.floor(entity.maxHp / 15)); // bypasses shields
                     if (entity === this.player) {
                         const vines = damagingTile === TerrainType.ANCIENT_SPIRIT_VINES;
