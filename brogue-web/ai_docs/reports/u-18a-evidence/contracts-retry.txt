@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/3598/brogue/brogue-web
+
+ ❯ src/test/u_18a_terrain_contracts.test.ts (23 tests | 1 failed) 7ms
+     × all current secret discovery successors have explicit flag facts, without running DFs 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_18a_terrain_contracts.test.ts > U18a independent caller truth tables > all current secret discovery successors have explicit flag facts, without running DFs
+AssertionError: expected [Function] to not throw an error but 'Error: Unknown discovery terrain: MAC…' was thrown
+
+- Expected:
+undefined
+
++ Received:
+"Error: Unknown discovery terrain: MACHINE_PARALYSIS_VENT"
+
+ ❯ src/test/u_18a_terrain_contracts.test.ts:83:126
+     81|     it('all current secret discovery successors have explicit flag fac…
+     82|         for (const [terrain, entry] of Object.entries(TERRAIN_FLAGS)) {
+     83|             if (entry.mechFlags & TM_IS_SECRET) expect(() => discovere…
+       |                                                                                                                              ^
+     84|         }
+     85|         expect(discoveredTerrainFlagsOfCell(cellOf(T.TRAP_DOOR_HIDDEN)…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 22 passed (23)
+   Start at  20:53:50
+   Duration  194ms (transform 84ms, setup 0ms, import 101ms, tests 7ms, environment 0ms)
+

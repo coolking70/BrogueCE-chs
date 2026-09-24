@@ -45,6 +45,7 @@
 import { DCOLS, Grid, TerrainType } from './Grid';
 import { DijkstraMap, MAX_DISTANCE } from './Pathfinding';
 import { obstructsScent } from './Scent';
+import { genericPathCost, terrainPassableOrSecretDoor } from './TerrainRules';
 import { allocShortGrid } from './SafetyMap';
 import { rng } from '../Random';
 
@@ -168,7 +169,7 @@ export class WaypointSystem {
         this.count = 0;
         this.refreshTicker = 0;
 
-        // Architect.c:3035-3042：T_OBSTRUCTS_SCENT 格（web 近似 obstructsScent）
+        // Architect.c:3035-3042：T_OBSTRUCTS_SCENT 格（四层 flags 的 obstructsScent）
         // 预标为已覆盖——它们永不成为 waypoint。
         const covered: boolean[][] = [];
         for (let x = 0; x < grid.width; x++) {
@@ -234,29 +235,7 @@ export class WaypointSystem {
                     cost[x]![y] = WP_PDS_OBSTRUCTION;
                     continue;
                 }
-                if (!cell.isPassable && cell.terrain !== TerrainType.SECRET_DOOR) {
-                    // CE：T_OBSTRUCTS_PASSABILITY（非未发现密门）——按对角阻挡
-                    // 分 OBSTRUCTION/FORBIDDEN；web 以 WALL/GRANITE 近似对角阻挡
-                    //（Pathfinding.ts/SafetyMap 同口径，CHASM 不在此列：
-                    // CE 里它可通行、走 T_PATHING_BLOCKER 的另一分支）。
-                    const diagonalBlocking =
-                        cell.terrain === TerrainType.WALL || cell.terrain === TerrainType.GRANITE;
-                    cost[x]![y] = diagonalBlocking ? WP_PDS_OBSTRUCTION : WP_PDS_FORBIDDEN;
-                } else if (
-                    cell.terrain === TerrainType.LAVA ||
-                    cell.terrain === TerrainType.CHASM ||
-                    cell.terrain === TerrainType.TRAP ||
-                    cell.terrain === TerrainType.WATER_DEEP ||
-                    cell.isBurning
-                ) {
-                    // CE：T_PATHING_BLOCKER 的非通行部分（AUTO_DESCENT/DF_TRAP/
-                    // LAVA/DEEP_WATER/FIRE/SPONTANEOUS_IGNITES）→ FORBIDDEN。
-                    // 注意 populateGenericCostMap 与 updateSafetyMap 不同：
-                    // 深水/岩浆/火一律禁入，没有"5 格代价"的档位。
-                    cost[x]![y] = WP_PDS_FORBIDDEN;
-                } else {
-                    cost[x]![y] = 1;
-                }
+                cost[x]![y] = genericPathCost(cell);
             }
         }
 
@@ -351,7 +330,7 @@ export class WaypointSystem {
             const cell = ctx.grid.getCell(nx, ny);
             if (!cell) continue;
             // CE knownToPlayerAsPassableOrSecretDoor（web 口径同 P4-9：可通行或密门）
-            if (!cell.isPassable && cell.terrain !== TerrainType.SECRET_DOOR) continue;
+            if (!terrainPassableOrSecretDoor(cell)) continue;
             if (this.isBlockedFor(monst, nx, ny, cell, ctx)) continue;
             const score = current - map[nx]![ny]!;
             if (score > bestScore) {

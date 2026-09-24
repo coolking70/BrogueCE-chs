@@ -21,13 +21,13 @@
  *     在前）。P4-9 曾因 web 玩家出生在楼梯上把两段对调（登记的有意偏离），
  *     P1-31 修复进层落位后按回退条件恢复 CE 顺序——见 buildSafetyMap 内注。
  *   - IN_LOOP 无 web 数据源：ctx.isInLoop 由 Game 恒接 false（机制保留、可注入测试）。
- *   - T_SACRED（sacred glyph）：B-3 起 SACRED_GLYPH 地形落地，isSacred 为
- *     真读位（此前恒 false 的留形谓词已激活）。
- *   - T_SPONTANEOUSLY_IGNITES（brimstone）无 web 地形，见报告。
+ *   - T_SACRED（sacred glyph）：U18a 通过全层旗标判断，含被覆盖的圣徽。
+ *   - U18a: 地形部分已迁移至 TerrainRules 的全层判据（含硫矿）；
+ *     玩家记忆、驻足计数与 nextStep 对角规则仍有差异，见 U18a 报告。
  */
 
 import { Grid, TerrainType } from './Grid';
-import { TERRAIN_FLAGS, T_SACRED } from './TerrainCatalog';
+import { safetyTerrainCosts, isUnseenPassableSecretDoor, terrainPassableOrSecretDoor } from './TerrainRules';
 import { DijkstraMap } from './Pathfinding';
 
 /** CE Rogue.h:2782（CE 原文就是 -1，不是 Pathfinding.ts 内部的 29999）。 */
@@ -74,18 +74,6 @@ export interface SafetyMapContext {
     isInLoop(x: number, y: number): boolean;
 }
 
-/**
- * CE T_SACRED（Rogue.h:1945）：圣徽格——玩家可通行、怪物禁入
- * （Time.c:1813-1817 的 else-if 分支体）。
- * B-3 起 web 有真载体（SACRED_GLYPH，Globals.c:479，SCROLL_SANCTUARY 落地），
- * 谓词从恒 false 激活为真读位。激活时分支体已按 CE 逐字重核：
- * playerCost=1 / monsterCost=PDS_FORBIDDEN，无遗漏条件（CE 该分支不叠加
- * 其他判定）。
- */
-function isSacred(cell: { terrain: TerrainType }): boolean {
-    return (TERRAIN_FLAGS[cell.terrain].flags & T_SACRED) !== 0;
-}
-
 /** web 的 MonsterState 数值枚举（Monster.ts：ASLEEP/WANDERING/HUNTING/FLEEING）。
  *  用字面量而非 import，避免 SafetyMap → Monster → Game 的循环依赖。 */
 const STATE_ASLEEP = 0;
@@ -115,88 +103,19 @@ export function buildSafetyMap(ctx: SafetyMapContext): number[][] {
                 continue;
             }
 
-            // CE：T_OBSTRUCTS_PASSABILITY 且（非密门 或 已按密门发现）。
-            // web 近似：!isPassable 且不是 SECRET_DOOR（密门无论发现与否都
-            // 落到下方密门分支/普通格，见报告——web 发现后的密门地形不变形）。
-            // T_OBSTRUCTS_DIAGONAL_MOVEMENT 的 web 近似：WALL/GRANITE →
-            // PDS_OBSTRUCTION，其余 → PDS_FORBIDDEN（与 Pathfinding.ts 自身
-            // 代价启发一致）。CHASM 虽 !isPassable，但 CE 里它不挡通行、
-            // 走 T_AUTO_DESCENT 分支，故排除在本分支外。
-            const blocksPassability =
-                !cell.isPassable && cell.terrain !== TerrainType.SECRET_DOOR && cell.terrain !== TerrainType.CHASM;
-            if (blocksPassability) {
-                const diagonalBlocking = cell.terrain === TerrainType.WALL || cell.terrain === TerrainType.GRANITE;
-                playerCostMap[i]![j] = monsterCostMap[i]![j] = diagonalBlocking ? CE_PDS_OBSTRUCTION : CE_PDS_FORBIDDEN;
-            } else if (isSacred(cell)) {
-                // CE：T_SACRED——玩家可通行，怪物禁入
-                playerCostMap[i]![j] = 1;
-                monsterCostMap[i]![j] = CE_PDS_FORBIDDEN;
-            } else if (cell.terrain === TerrainType.LAVA) {
-                // CE T_LAVA_INSTA_DEATH（Time.c:1847-1854）逐字照抄：
-                //   monsterCost 禁入；
-                //   playerCost = (漂浮 || !免疫火焰) ? 1 : 禁入。
-                // 这个条件读起来是反的（直觉应是"免疫 → 可走"），对照下方
-                // T_IS_FIRE 分支（Time.c:1869-1875，方向正常）更显突兀。
-                // 按项目决策 D1 照抄不修正；笔误分析见报告。
-                monsterCostMap[i]![j] = CE_PDS_FORBIDDEN;
-                if (ctx.playerLevitating || !ctx.playerImmuneToFire) {
-                    playerCostMap[i]![j] = 1;
-                } else {
-                    playerCostMap[i]![j] = CE_PDS_FORBIDDEN;
-                }
-            } else {
-                // CE：无害怪物占格——沉睡/驻足不动/定点触发/盟友且非逃跑。
-                // web 近似：ASLEEP / MONST_TURRET（≈GETS_TURN_ON_ACTIVATION）/
-                // isAlly；turnsSpentStationary 无对应计数器（报告登记）。
-                const occupant = ctx.monsterAt(i, j);
-                if (occupant && occupant.state !== STATE_FLEEING &&
-                    (occupant.state === STATE_ASLEEP ||
-                        occupant.isAlly ||
-                        occupant.hasBehavior('MONST_TURRET'))) {
-                    playerCostMap[i]![j] = 1;
-                    monsterCostMap[i]![j] = CE_PDS_FORBIDDEN;
-                    continue;
-                }
-
-                if (cell.terrain === TerrainType.CHASM || cell.terrain === TerrainType.TRAP) {
-                    // CE T_AUTO_DESCENT | T_IS_DF_TRAP（Time.c:1864-1868）
-                    monsterCostMap[i]![j] = CE_PDS_FORBIDDEN;
-                    if (ctx.playerLevitating) {
-                        playerCostMap[i]![j] = 1;
-                    } else {
-                        playerCostMap[i]![j] = CE_PDS_FORBIDDEN;
-                    }
-                } else if (cell.isBurning) {
-                    // CE T_IS_FIRE（Time.c:1869-1875）——方向正常的那条：
-                    // 免疫火焰 → 可走，否则禁入
-                    monsterCostMap[i]![j] = CE_PDS_FORBIDDEN;
-                    if (ctx.playerImmuneToFire) {
-                        playerCostMap[i]![j] = 1;
-                    } else {
-                        playerCostMap[i]![j] = CE_PDS_FORBIDDEN;
-                    }
-                } else if (cell.terrain === TerrainType.WATER_DEEP) {
-                    // CE T_IS_DEEP_WATER | T_SPONTANEOUSLY_IGNITES（brimstone
-                    // web 无对应地形）：漂浮 → 1，否则 5；怪物 5
-                    if (ctx.playerLevitating) {
-                        playerCostMap[i]![j] = 1;
-                    } else {
-                        playerCostMap[i]![j] = 5;
-                    }
-                    monsterCostMap[i]![j] = 5;
-                } else if (
-                    cell.terrain === TerrainType.SECRET_DOOR &&
-                    !(cell.isVisible)
-                ) {
-                    // CE：玩家看不见的密门（Time.c:1884-1893）——对玩家昂贵
-                    //（要搜），怪物视作普通地面（怪物知道那是门）
-                    playerCostMap[i]![j] = 100;
-                    monsterCostMap[i]![j] = 1;
-                } else {
-                    playerCostMap[i]![j] = 1;
-                    monsterCostMap[i]![j] = 1;
-                }
-            }
+            const occupant = ctx.monsterAt(i, j);
+            const costs = safetyTerrainCosts(cell, {
+                playerLevitating: ctx.playerLevitating,
+                playerImmuneToFire: ctx.playerImmuneToFire,
+                // The existing web occupant model lacks turnsSpentStationary.
+                harmlessOccupant: !!occupant && occupant.state !== STATE_FLEEING && (
+                    occupant.state === STATE_ASLEEP || occupant.isAlly
+                    || occupant.hasBehavior('MONST_TURRET')
+                    || occupant.hasBehavior('MONST_GETS_TURN_ON_ACTIVATION')
+                ),
+            });
+            playerCostMap[i]![j] = costs[0];
+            monsterCostMap[i]![j] = costs[1];
         }
     }
 
@@ -215,8 +134,8 @@ export function buildSafetyMap(ctx: SafetyMapContext): number[][] {
 
     for (let i = 0; i < grid.width; i++) {
         for (let j = 0; j < grid.height; j++) {
-            const t = grid.getCell(i, j)?.terrain;
-            if (t === TerrainType.STAIRS_UP || t === TerrainType.STAIRS_DOWN) {
+            const layers = grid.getCell(i, j)?.layers;
+            if (layers?.includes(TerrainType.STAIRS_UP) || layers?.includes(TerrainType.STAIRS_DOWN)) {
                 playerCostMap[i]![j] = CE_PDS_FORBIDDEN;
                 monsterCostMap[i]![j] = CE_PDS_FORBIDDEN;
             }
@@ -232,7 +151,7 @@ export function buildSafetyMap(ctx: SafetyMapContext): number[][] {
     for (let i = 0; i < grid.width; i++) {
         for (let j = 0; j < grid.height; j++) {
             const cell = grid.getCell(i, j);
-            if (cell && cell.terrain === TerrainType.SECRET_DOOR && !cell.isVisible) {
+            if (cell && isUnseenPassableSecretDoor(cell)) {
                 for (const [dx, dy] of [[0, -1], [0, 1], [-1, 0], [1, 0]]) {
                     const nx = i + dx!, ny = j + dy!;
                     if (!grid.isValidPos(nx, ny)) continue;
@@ -352,7 +271,7 @@ export function safetyNextStep(map: number[][], grid: Grid, x: number, y: number
         const cell = grid.getCell(nx, ny);
         if (!cell) continue;
         // CE knownToPlayerAsPassableOrSecretDoor（web 近似口径）
-        if (!cell.isPassable && cell.terrain !== TerrainType.SECRET_DOOR) continue;
+        if (!terrainPassableOrSecretDoor(cell)) continue;
         const score = current - map[nx]![ny]!;
         if (score > bestScore) {
             bestScore = score;

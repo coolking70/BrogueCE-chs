@@ -1,0 +1,4568 @@
+{
+  "seeds": [
+    "src/engine/Map/Grid.ts",
+    "src/engine/Map/TerrainCatalog.ts",
+    "src/engine/Map/Scent.ts",
+    "src/engine/Map/SafetyMap.ts",
+    "src/engine/Map/WaypointMap.ts",
+    "src/entities/Monster.ts",
+    "src/engine/Core/Game.ts"
+  ],
+  "reverseImportClosure": [
+    "scripts/u05a-generation.ts",
+    "scripts/w24-coverage.ts",
+    "scripts/w24-generation.ts",
+    "scripts/w25-coverage.ts",
+    "scripts/w25-generation.ts",
+    "scripts/w26-coverage.ts",
+    "scripts/w26-generation.ts",
+    "scripts/w5-sample.ts",
+    "src/App.vue",
+    "src/components/AgentControls.vue",
+    "src/components/DetailPanel.vue",
+    "src/components/GameCanvas.vue",
+    "src/components/GameEndOverlay.vue",
+    "src/components/InventoryOverlay.vue",
+    "src/components/MainMenu.vue",
+    "src/components/ReplayControls.vue",
+    "src/components/Sidebar.vue",
+    "src/data/monsterBolts.test.ts",
+    "src/data/monsterDamage.test.ts",
+    "src/data/weapons.test.ts",
+    "src/engine/Combat/BlinkTargeting.ts",
+    "src/engine/Combat/Bolt.ts",
+    "src/engine/Combat/BoltCatalog.test.ts",
+    "src/engine/Combat/BoltContract.test.ts",
+    "src/engine/Combat/BoltReflection.ts",
+    "src/engine/Combat/BoltTargeting.ts",
+    "src/engine/Combat/BoltTrajectory.ts",
+    "src/engine/Combat/Cloning.ts",
+    "src/engine/Combat/Combat.ts",
+    "src/engine/Combat/Conjuration.ts",
+    "src/engine/Combat/Negation.ts",
+    "src/engine/Combat/Polymorph.ts",
+    "src/engine/Core/EntitySnapshot.ts",
+    "src/engine/Core/Game.ts",
+    "src/engine/Core/snapshotQuantity.test.ts",
+    "src/engine/Core/startingKit.test.ts",
+    "src/engine/Environment/Gas.ts",
+    "src/engine/Generator/Architect.ts",
+    "src/engine/Generator/BlueprintEngine.ts",
+    "src/engine/Items/ItemSpawnHeatMap.ts",
+    "src/engine/Lighting/FOV.ts",
+    "src/engine/Lighting/LightMap.ts",
+    "src/engine/Map/AutoGenerator.ts",
+    "src/engine/Map/Connectivity.ts",
+    "src/engine/Map/DungeonFeature.ts",
+    "src/engine/Map/DungeonFeatureCatalog.ts",
+    "src/engine/Map/Grid.ts",
+    "src/engine/Map/LakeSystem.ts",
+    "src/engine/Map/LoopMap.ts",
+    "src/engine/Map/Pathfind.ts",
+    "src/engine/Map/Pathfinding.ts",
+    "src/engine/Map/Promotion.ts",
+    "src/engine/Map/SafetyMap.ts",
+    "src/engine/Map/Scent.ts",
+    "src/engine/Map/TerrainCatalog.ts",
+    "src/engine/Map/TerrainRules.ts",
+    "src/engine/Map/WallDoorFinish.ts",
+    "src/engine/Map/WaypointMap.ts",
+    "src/engine/Movement/CreaturePlacement.ts",
+    "src/engine/Movement/Entrancement.ts",
+    "src/engine/UI/Appearance.ts",
+    "src/engine/UI/DetailGenerator.test.ts",
+    "src/engine/UI/DetailGenerator.ts",
+    "src/entities/Monster.ts",
+    "src/main.ts",
+    "src/test/ai_1_scent_tracking.test.ts",
+    "src/test/armor_display_effect.test.ts",
+    "src/test/armor_model_effect.test.ts",
+    "src/test/armor_runic_effect.test.ts",
+    "src/test/b1_retire_invented.test.ts",
+    "src/test/b2_transcription.test.ts",
+    "src/test/b_1_weapon_specials.test.ts",
+    "src/test/b_1a_identification.test.ts",
+    "src/test/b_1b_identification_persistence.test.ts",
+    "src/test/b_1c_detect_magic.test.ts",
+    "src/test/b_2_throwing.test.ts",
+    "src/test/b_4a_item_generation.test.ts",
+    "src/test/b_4b_item_placement.test.ts",
+    "src/test/blueprint_center.test.ts",
+    "src/test/c_0_add_loops.test.ts",
+    "src/test/c_1_room_profile.test.ts",
+    "src/test/c_2_lakes.test.ts",
+    "src/test/c_2_lakes_determinism.test.ts",
+    "src/test/c_2_lakes_e2e.test.ts",
+    "src/test/c_3_walls_doors.test.ts",
+    "src/test/c_4a_0_layer_model.test.ts",
+    "src/test/c_4a_terrain_catalog.test.ts",
+    "src/test/c_4b_dungeon_feature.test.ts",
+    "src/test/c_4c_promotion.test.ts",
+    "src/test/c_5_fall_subsystem.test.ts",
+    "src/test/c_6_autogenerators.test.ts",
+    "src/test/c_7_lighting.test.ts",
+    "src/test/c_8_connectivity.test.ts",
+    "src/test/f_1_fire_as_terrain.test.ts",
+    "src/test/f_2a_fire_mechanics.test.ts",
+    "src/test/f_2b_creature_burning.test.ts",
+    "src/test/f_2c_explosion.test.ts",
+    "src/test/g_1_gas_volumetric.test.ts",
+    "src/test/g_2_gas_df_wiring.test.ts",
+    "src/test/g_3_gas_effects.test.ts",
+    "src/test/generation_baseline.test.ts",
+    "src/test/harness.ts",
+    "src/test/horde_selection.test.ts",
+    "src/test/horde_terrain_spawn.test.ts",
+    "src/test/hunger_curve_sim.test.ts",
+    "src/test/hunger_regen.test.ts",
+    "src/test/i_1_interaction.test.ts",
+    "src/test/invented_content_pool.test.ts",
+    "src/test/monster_damage_balance.test.ts",
+    "src/test/monster_stats_effect.test.ts",
+    "src/test/p1_20_item_placement.test.ts",
+    "src/test/p1_24_death_sink.test.ts",
+    "src/test/p1_26_invariants.test.ts",
+    "src/test/p1_27_remove_drowning.test.ts",
+    "src/test/p1_28_flag_channel.test.ts",
+    "src/test/p1_29_adversarial_gate.test.ts",
+    "src/test/p1_29_lake_connectivity.test.ts",
+    "src/test/p1_30_i18n_gate.test.ts",
+    "src/test/p1_31_35_placement_snapshot.test.ts",
+    "src/test/p1_33_machine_chokepoint.test.ts",
+    "src/test/p1_34_loopmap_reset.test.ts",
+    "src/test/p1_37_machine_flag_i18n.test.ts",
+    "src/test/p1_42_secret_door_search.test.ts",
+    "src/test/p2_0_seeded_rng.test.ts",
+    "src/test/p2_1_tick_architecture.test.ts",
+    "src/test/p2_2_real_speed.test.ts",
+    "src/test/p2_3_objective_time.test.ts",
+    "src/test/p2_4_animation_cadence.test.ts",
+    "src/test/p2_6_display_settings.test.ts",
+    "src/test/p4_10_waypoint.test.ts",
+    "src/test/p4_1b_monster_casting.test.ts",
+    "src/test/p4_2_monster_summoning.test.ts",
+    "src/test/p4_3_special_monster_flags.test.ts",
+    "src/test/p4_4_split_kamikaze.test.ts",
+    "src/test/p4_5_melee_specials.test.ts",
+    "src/test/p4_6_attack_geometry.test.ts",
+    "src/test/p4_7_player_weapon_geometry.test.ts",
+    "src/test/p4_8_scent_map.test.ts",
+    "src/test/p4_9_safety_map.test.ts",
+    "src/test/r_1_appearance.test.ts",
+    "src/test/scroll_effects.test.ts",
+    "src/test/smoke.test.ts",
+    "src/test/t_1_tail.test.ts",
+    "src/test/u_00_new_run.test.ts",
+    "src/test/u_01_instance_snapshot.test.ts",
+    "src/test/u_05a_item_ownership.test.ts",
+    "src/test/u_06_monster_damage.test.ts",
+    "src/test/u_13_combat_math.test.ts",
+    "src/test/u_14a_status_gaps.test.ts",
+    "src/test/u_15a_shattering.test.ts",
+    "src/test/u_18a_terrain_contracts.test.ts",
+    "src/test/ui_1_rendering.test.ts",
+    "src/test/ui_2_protection.test.ts",
+    "src/test/v_1a_blueprint_items.test.ts",
+    "src/test/v_1b_alternative.test.ts",
+    "src/test/v_1c_machine_structure.test.ts",
+    "src/test/v_2a_vestibule_return.test.ts",
+    "src/test/v_2b_2a_placement_flags.test.ts",
+    "src/test/v_2b_2b_blueprints.test.ts",
+    "src/test/v_2b_3_wired.test.ts",
+    "src/test/v_2b_4_altars.test.ts",
+    "src/test/v_2b_5_dormant.test.ts",
+    "src/test/v_2b_6_keys.test.ts",
+    "src/test/v_2b_7_features.test.ts",
+    "src/test/v_2b_8_autogen.test.ts",
+    "src/test/v_2b_9a_carriers.test.ts",
+    "src/test/v_2b_9b_environment.test.ts",
+    "src/test/v_2b_9c_effects.test.ts",
+    "src/test/v_2b_9d_dungeon_profile.test.ts",
+    "src/test/v_2b_9e_2_autogen.test.ts",
+    "src/test/v_2b_9e_area_machine.test.ts",
+    "src/test/w_10_poison.test.ts",
+    "src/test/w_11_teleport_placement.test.ts",
+    "src/test/w_12_blink_beckoning.test.ts",
+    "src/test/w_13_tunneling.test.ts",
+    "src/test/w_14_obstruction.test.ts",
+    "src/test/w_15_shielding.test.ts",
+    "src/test/w_16_conjuration.test.ts",
+    "src/test/w_17_domination.test.ts",
+    "src/test/w_18_entrancement.test.ts",
+    "src/test/w_19_polymorph.test.ts",
+    "src/test/w_20_cloning.test.ts",
+    "src/test/w_21_empowerment.test.ts",
+    "src/test/w_23_negation.test.ts",
+    "src/test/w_24_wand_catalog.test.ts",
+    "src/test/w_25_staff_catalog.test.ts",
+    "src/test/w_26_arcana_closure.test.ts",
+    "src/test/w_2_arcana_submission.test.ts",
+    "src/test/w_3_bolt_trajectory.test.ts",
+    "src/test/w_4_bolt_reflection.test.ts",
+    "src/test/w_5_arcana_instance.test.ts",
+    "src/test/w_6_arcana_recharge.test.ts",
+    "src/test/w_7_arcana_enchantment.test.ts",
+    "src/test/w_8_staff_damage.test.ts",
+    "src/test/w_9_directed_status.test.ts"
+  ],
+  "imports": {
+    "src/App.vue": [
+      "src/engine/Core/Game.ts",
+      "src/components/GameCanvas.vue",
+      "src/components/Sidebar.vue",
+      "src/components/InventoryOverlay.vue",
+      "src/components/GameEndOverlay.vue",
+      "src/components/MainMenu.vue",
+      "src/components/ReplayControls.vue",
+      "src/components/AgentControls.vue",
+      "src/components/DetailPanel.vue",
+      "src/engine/Systems/Logger.ts"
+    ],
+    "src/components/AgentControls.vue": [
+      "src/engine/Input.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Systems/Logger.ts",
+      "src/types/index.ts"
+    ],
+    "src/components/DetailPanel.vue": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Input.ts",
+      "src/engine/UI/DetailGenerator.ts"
+    ],
+    "src/components/GameCanvas.vue": [
+      "src/engine/Random.ts",
+      "src/engine/Settings.ts",
+      "src/types/index.ts",
+      "src/engine/UI/Appearance.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Input.ts"
+    ],
+    "src/components/GameEndOverlay.vue": [
+      "src/engine/Core/Game.ts"
+    ],
+    "src/components/InventoryOverlay.vue": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Systems/Logger.ts",
+      "src/engine/UI/DetailGenerator.ts"
+    ],
+    "src/components/MainMenu.vue": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Settings.ts"
+    ],
+    "src/components/ReplayControls.vue": [
+      "src/engine/Core/Game.ts"
+    ],
+    "src/components/Sidebar.vue": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Systems/Logger.ts",
+      "src/engine/Status/statusConfig.ts",
+      "src/entities/Player.ts",
+      "src/engine/Settings.ts"
+    ],
+    "src/data/armors.test.ts": [],
+    "src/data/hordes.test.ts": [],
+    "src/data/monsterBolts.test.ts": [
+      "src/engine/Combat/Bolt.ts"
+    ],
+    "src/data/monsterDamage.test.ts": [
+      "src/engine/Combat/Combat.ts"
+    ],
+    "src/data/monsters.test.ts": [],
+    "src/data/weapons.test.ts": [
+      "src/engine/Combat/Combat.ts"
+    ],
+    "src/engine/Combat/BlinkTargeting.ts": [
+      "src/types/index.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/entities/Player.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Combat/BoltTrajectory.ts"
+    ],
+    "src/engine/Combat/Bolt.ts": [
+      "src/types/index.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/Promotion.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/entities/Creature.ts",
+      "src/engine/Combat/BoltCatalog.ts"
+    ],
+    "src/engine/Combat/BoltCatalog.test.ts": [
+      "src/engine/Combat/BoltCatalog.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/engine/Combat/BoltCatalog.ts": [],
+    "src/engine/Combat/BoltContract.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/entities/Player.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Random.ts",
+      "src/engine/Systems/Time.ts",
+      "src/engine/Combat/BoltCatalog.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/types/index.ts"
+    ],
+    "src/engine/Combat/BoltReflection.ts": [
+      "src/entities/Creature.ts",
+      "src/entities/Monster.ts",
+      "src/entities/Player.ts",
+      "src/engine/Combat/CombatFormulas.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/engine/Combat/BoltTargeting.ts": [
+      "src/entities/Monster.ts",
+      "src/entities/Player.ts",
+      "src/entities/Creature.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Combat/BoltTrajectory.ts",
+      "src/engine/Combat/Negation.ts",
+      "src/engine/Combat/Domination.ts",
+      "src/engine/Combat/BoltCatalog.ts"
+    ],
+    "src/engine/Combat/BoltTrajectory.ts": [
+      "src/types/index.ts",
+      "src/entities/Creature.ts",
+      "src/entities/Monster.ts",
+      "src/entities/Player.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Combat/BoltReflection.ts",
+      "src/engine/Combat/BoltCatalog.ts"
+    ],
+    "src/engine/Combat/Cloning.ts": [
+      "src/entities/Monster.ts",
+      "src/entities/Creature.ts",
+      "src/types/index.ts",
+      "src/engine/Movement/CreaturePlacement.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/engine/Combat/Combat.ts": [
+      "src/engine/Combat/CombatFormulas.ts",
+      "src/entities/Creature.ts",
+      "src/entities/Player.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/engine/Combat/CombatFormulas.test.ts": [
+      "src/engine/Combat/CombatFormulas.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/engine/Combat/CombatFormulas.ts": [
+      "src/engine/Combat/CombatTables.ts"
+    ],
+    "src/engine/Combat/CombatTables.ts": [],
+    "src/engine/Combat/Conjuration.ts": [
+      "src/types/index.ts",
+      "src/engine/Movement/CreaturePlacement.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/engine/Combat/Domination.ts": [],
+    "src/engine/Combat/Negation.ts": [
+      "src/entities/Creature.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Combat/BoltCatalog.ts"
+    ],
+    "src/engine/Combat/Poison.ts": [],
+    "src/engine/Combat/Polymorph.ts": [
+      "src/entities/Monster.ts"
+    ],
+    "src/engine/Combat/Shielding.ts": [],
+    "src/engine/Combat/StaffDamage.ts": [
+      "src/engine/Random.ts"
+    ],
+    "src/engine/Core/EntitySnapshot.ts": [
+      "src/engine/Items/Item.ts",
+      "src/entities/Creature.ts",
+      "src/entities/Monster.ts",
+      "src/entities/Player.ts"
+    ],
+    "src/engine/Core/Game.ts": [
+      "src/engine/Combat/Negation.ts",
+      "src/engine/Combat/Cloning.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Items/ItemSpawnHeatMap.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/DungeonFeatureCatalog.ts",
+      "src/engine/Generator/Architect.ts",
+      "src/engine/Generator/BlueprintEngine.ts",
+      "src/entities/Player.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Combat/Combat.ts",
+      "src/engine/Combat/Poison.ts",
+      "src/engine/Combat/Shielding.ts",
+      "src/engine/Movement/Entrancement.ts",
+      "src/engine/Combat/Domination.ts",
+      "src/engine/Combat/Conjuration.ts",
+      "src/engine/Combat/CombatFormulas.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Items/ArcanaEnchantment.ts",
+      "src/engine/Items/ArcanaRecharge.ts",
+      "src/engine/Random.ts",
+      "src/types/index.ts",
+      "src/entities/Creature.ts",
+      "src/engine/Systems/Time.ts",
+      "src/engine/UI/DetailGenerator.ts",
+      "src/engine/Systems/Logger.ts",
+      "src/engine/Map/Pathfind.ts",
+      "src/engine/Map/Pathfinding.ts",
+      "src/engine/Map/Scent.ts",
+      "src/engine/Map/SafetyMap.ts",
+      "src/engine/Map/LoopMap.ts",
+      "src/engine/Map/Promotion.ts",
+      "src/engine/Map/LakeSystem.ts",
+      "src/engine/Map/WaypointMap.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/engine/Lighting/FOV.ts",
+      "src/engine/Lighting/LightMap.ts",
+      "src/engine/Map/LightCatalog.ts",
+      "src/engine/Visuals/FloatingText.ts",
+      "src/engine/Status/statusConfig.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Combat/BoltTrajectory.ts",
+      "src/engine/Combat/BoltCatalog.ts",
+      "src/engine/Combat/StaffDamage.ts",
+      "src/engine/Movement/CreaturePlacement.ts",
+      "src/engine/Combat/BlinkTargeting.ts",
+      "src/engine/Combat/BoltTargeting.ts",
+      "src/engine/Core/EntitySnapshot.ts"
+    ],
+    "src/engine/Core/snapshotQuantity.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Items/Item.ts"
+    ],
+    "src/engine/Core/startingKit.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Core/Game.ts"
+    ],
+    "src/engine/Environment/Gas.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Random.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/DungeonFeatureCatalog.ts",
+      "src/engine/Map/Promotion.ts",
+      "src/types/index.ts"
+    ],
+    "src/engine/Generator/Architect.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/Pathfinding.ts",
+      "src/engine/Map/Connectivity.ts",
+      "src/engine/Map/LakeSystem.ts",
+      "src/engine/Map/WallDoorFinish.ts",
+      "src/engine/Map/LoopMap.ts",
+      "src/engine/Map/AutoGenerator.ts",
+      "src/engine/Random.ts",
+      "src/types/index.ts",
+      "src/engine/Generator/RoomBuilder.ts",
+      "src/engine/Generator/BlueprintEngine.ts"
+    ],
+    "src/engine/Generator/BlueprintEngine.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/LoopMap.ts",
+      "src/engine/Map/Connectivity.ts",
+      "src/engine/Map/Pathfinding.ts",
+      "src/engine/Map/SafetyMap.ts",
+      "src/engine/Map/AutoGenerator.ts",
+      "src/engine/Items/ItemSpawnHeatMap.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/Promotion.ts",
+      "src/engine/Map/DungeonFeatureCatalog.ts",
+      "src/engine/Random.ts",
+      "src/types/index.ts",
+      "src/engine/Generator/Architect.ts"
+    ],
+    "src/engine/Generator/RoomBuilder.ts": [
+      "src/types/index.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/engine/Input.ts": [
+      "src/types/index.ts"
+    ],
+    "src/engine/Items/ArcanaEnchantment.ts": [
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ArcanaInstance.ts"
+    ],
+    "src/engine/Items/ArcanaInstance.ts": [
+      "src/engine/Random.ts"
+    ],
+    "src/engine/Items/ArcanaRecharge.ts": [
+      "src/engine/Items/Item.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/engine/Items/Inventory.ts": [
+      "src/engine/Items/Item.ts"
+    ],
+    "src/engine/Items/Item.ts": [
+      "src/types/index.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/entities/Creature.ts"
+    ],
+    "src/engine/Items/ItemLoader.ts": [
+      "src/engine/Combat/BoltCatalog.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ArcanaRecharge.ts",
+      "src/engine/Items/ArcanaInstance.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/engine/Items/ItemSpawnHeatMap.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/LoopMap.ts",
+      "src/engine/Map/Connectivity.ts",
+      "src/engine/Random.ts",
+      "src/types/index.ts"
+    ],
+    "src/engine/Items/itemFlavors.test.ts": [
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/engine/Lighting/FOV.ts": [
+      "src/engine/Map/Grid.ts"
+    ],
+    "src/engine/Lighting/LightMap.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/Color.ts",
+      "src/engine/Map/LightCatalog.ts"
+    ],
+    "src/engine/Map/AutoGenerator.ts": [
+      "src/types/index.ts",
+      "src/engine/Random.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/DungeonFeatureCatalog.ts",
+      "src/engine/Map/DungeonFeature.ts"
+    ],
+    "src/engine/Map/Color.ts": [],
+    "src/engine/Map/Connectivity.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainCatalog.ts"
+    ],
+    "src/engine/Map/DungeonFeature.ts": [
+      "src/types/index.ts",
+      "src/engine/Random.ts",
+      "src/engine/Map/Connectivity.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/DungeonFeatureCatalog.ts"
+    ],
+    "src/engine/Map/DungeonFeatureCatalog.ts": [
+      "src/engine/Map/Grid.ts"
+    ],
+    "src/engine/Map/Grid.ts": [
+      "src/types/index.ts"
+    ],
+    "src/engine/Map/LakeSystem.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/Connectivity.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/engine/Map/LightCatalog.ts": [],
+    "src/engine/Map/LoopMap.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/Pathfinding.ts",
+      "src/engine/Map/Connectivity.ts",
+      "src/engine/Random.ts",
+      "src/types/index.ts"
+    ],
+    "src/engine/Map/Pathfind.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/types/index.ts"
+    ],
+    "src/engine/Map/Pathfinding.ts": [
+      "src/engine/Map/Grid.ts"
+    ],
+    "src/engine/Map/Promotion.ts": [
+      "src/types/index.ts",
+      "src/engine/Random.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/DungeonFeatureCatalog.ts"
+    ],
+    "src/engine/Map/SafetyMap.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainRules.ts",
+      "src/engine/Map/Pathfinding.ts"
+    ],
+    "src/engine/Map/Scent.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainRules.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/engine/Map/TerrainCatalog.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/LightCatalog.ts"
+    ],
+    "src/engine/Map/TerrainRules.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/TerrainCatalog.ts"
+    ],
+    "src/engine/Map/WallDoorFinish.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/engine/Map/WaypointMap.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/Pathfinding.ts",
+      "src/engine/Map/Scent.ts",
+      "src/engine/Map/TerrainRules.ts",
+      "src/engine/Map/SafetyMap.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/engine/Movement/CreaturePlacement.ts": [
+      "src/entities/Creature.ts",
+      "src/entities/Monster.ts",
+      "src/types/index.ts",
+      "src/engine/Lighting/FOV.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/TerrainCatalog.ts"
+    ],
+    "src/engine/Movement/Entrancement.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/types/index.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/TerrainCatalog.ts"
+    ],
+    "src/engine/Random.test.ts": [
+      "src/engine/Random.ts"
+    ],
+    "src/engine/Random.ts": [],
+    "src/engine/Settings.ts": [],
+    "src/engine/Status/statusConfig.ts": [
+      "src/entities/Creature.ts"
+    ],
+    "src/engine/Systems/EventBus.ts": [],
+    "src/engine/Systems/Logger.ts": [],
+    "src/engine/Systems/Time.ts": [],
+    "src/engine/UI/Appearance.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/Color.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/engine/Lighting/LightMap.ts",
+      "src/entities/Monster.ts",
+      "src/entities/Player.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts"
+    ],
+    "src/engine/UI/DetailGenerator.test.ts": [
+      "src/engine/Items/Item.ts",
+      "src/entities/Monster.ts",
+      "src/engine/UI/DetailGenerator.ts"
+    ],
+    "src/engine/UI/DetailGenerator.ts": [
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Combat/BoltTrajectory.ts",
+      "src/engine/Items/Item.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Status/statusConfig.ts",
+      "src/engine/Combat/CombatFormulas.ts",
+      "src/engine/Combat/Combat.ts"
+    ],
+    "src/engine/Visuals/FloatingText.ts": [
+      "src/engine/Random.ts"
+    ],
+    "src/entities/Creature.ts": [
+      "src/types/index.ts"
+    ],
+    "src/entities/Monster.ts": [
+      "src/entities/Creature.ts",
+      "src/engine/Combat/Polymorph.ts",
+      "src/entities/Player.ts",
+      "src/engine/Random.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Pathfind.ts",
+      "src/engine/Map/SafetyMap.ts",
+      "src/engine/Map/WaypointMap.ts",
+      "src/engine/Combat/Combat.ts",
+      "src/engine/Systems/Logger.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Combat/BoltCatalog.ts",
+      "src/engine/Combat/CombatFormulas.ts",
+      "src/engine/Combat/Conjuration.ts",
+      "src/engine/Combat/BoltTrajectory.ts",
+      "src/engine/Movement/Entrancement.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/TerrainCatalog.ts"
+    ],
+    "src/entities/Player.ts": [
+      "src/entities/Creature.ts",
+      "src/types/index.ts",
+      "src/engine/Items/Inventory.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/i18n.ts": [],
+    "src/main.ts": [
+      "src/App.vue",
+      "src/i18n.ts"
+    ],
+    "src/test/ai_1_scent_tracking.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/test/armor_display_effect.test.ts": [
+      "src/engine/Items/Item.ts",
+      "src/entities/Monster.ts",
+      "src/engine/UI/DetailGenerator.ts",
+      "src/engine/Combat/CombatFormulas.ts",
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts"
+    ],
+    "src/test/armor_model_effect.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Combat/Combat.ts",
+      "src/engine/Combat/CombatFormulas.ts",
+      "src/engine/Random.ts",
+      "src/entities/Creature.ts",
+      "src/entities/Player.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Map/Grid.ts"
+    ],
+    "src/test/armor_runic_effect.test.ts": [
+      "src/engine/Combat/CombatFormulas.ts",
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Items/Item.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Map/Grid.ts"
+    ],
+    "src/test/b1_retire_invented.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Generator/BlueprintEngine.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Random.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/b2_transcription.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Generator/BlueprintEngine.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/DungeonFeatureCatalog.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/Promotion.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Random.ts",
+      "src/test/harness.ts",
+      "src/types/index.ts"
+    ],
+    "src/test/b_1_weapon_specials.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Systems/Logger.ts",
+      "src/engine/Systems/Time.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Items/Item.ts"
+    ],
+    "src/test/b_1a_identification.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/entities/Monster.ts",
+      "src/engine/UI/DetailGenerator.ts"
+    ],
+    "src/test/b_1b_identification_persistence.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/test/b_1c_detect_magic.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/test/b_2_throwing.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/test/b_4a_item_generation.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Random.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Items/Item.ts"
+    ],
+    "src/test/b_4b_item_placement.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Items/ItemSpawnHeatMap.ts",
+      "src/engine/Map/LoopMap.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Random.ts",
+      "src/types/index.ts"
+    ],
+    "src/test/blueprint_ce_coverage.test.ts": [],
+    "src/test/blueprint_center.test.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Generator/BlueprintEngine.ts",
+      "src/types/index.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Random.ts",
+      "src/engine/Items/Item.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/c_0_add_loops.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Random.ts",
+      "src/engine/Generator/Architect.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/LoopMap.ts",
+      "src/engine/Map/Connectivity.ts",
+      "src/engine/Map/Pathfinding.ts",
+      "src/engine/Map/SafetyMap.ts",
+      "src/engine/Core/Game.ts"
+    ],
+    "src/test/c_1_room_profile.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Random.ts",
+      "src/engine/Generator/Architect.ts",
+      "src/engine/Map/Grid.ts",
+      "src/types/index.ts",
+      "src/engine/Core/Game.ts"
+    ],
+    "src/test/c_2_lakes.test.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/LakeSystem.ts",
+      "src/engine/Map/Connectivity.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/test/c_2_lakes_determinism.test.ts": [
+      "src/engine/Generator/Architect.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Random.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/c_2_lakes_e2e.test.ts": [
+      "src/engine/Generator/Architect.ts",
+      "src/engine/Map/Connectivity.ts",
+      "src/engine/Map/LakeSystem.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Random.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/c_3_walls_doors.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Random.ts",
+      "src/engine/Generator/Architect.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/WallDoorFinish.ts",
+      "src/engine/Core/Game.ts"
+    ],
+    "src/test/c_4a_0_layer_model.test.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/c_4a_terrain_catalog.test.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/Pathfinding.ts",
+      "src/engine/Map/Connectivity.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/c_4b_dungeon_feature.test.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/DungeonFeatureCatalog.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Random.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/c_4c_promotion.test.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/Promotion.ts",
+      "src/engine/Map/DungeonFeatureCatalog.ts",
+      "src/engine/Random.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/c_5_fall_subsystem.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/LakeSystem.ts",
+      "src/engine/Generator/Architect.ts",
+      "src/engine/Random.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Systems/Time.ts"
+    ],
+    "src/test/c_6_autogenerators.test.ts": [
+      "src/engine/Generator/Architect.ts",
+      "src/engine/Map/AutoGenerator.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/test/c_7_lighting.test.ts": [
+      "src/engine/Map/LightCatalog.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Lighting/LightMap.ts",
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts"
+    ],
+    "src/test/c_8_connectivity.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Random.ts",
+      "src/engine/Map/Grid.ts",
+      "src/types/index.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Core/Game.ts"
+    ],
+    "src/test/f_1_fire_as_terrain.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/LoopMap.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/Promotion.ts",
+      "src/engine/Map/DungeonFeatureCatalog.ts"
+    ],
+    "src/test/f_2a_fire_mechanics.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Random.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/Promotion.ts",
+      "src/engine/Map/DungeonFeatureCatalog.ts",
+      "src/engine/Environment/Gas.ts"
+    ],
+    "src/test/f_2b_creature_burning.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Random.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Systems/Logger.ts",
+      "src/engine/Environment/Gas.ts"
+    ],
+    "src/test/f_2c_explosion.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/Promotion.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/engine/Random.ts",
+      "src/entities/Creature.ts"
+    ],
+    "src/test/g_1_gas_volumetric.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/engine/Random.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/TerrainCatalog.ts"
+    ],
+    "src/test/g_2_gas_df_wiring.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/DungeonFeatureCatalog.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/Promotion.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/test/g_3_gas_effects.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Random.ts",
+      "src/entities/Monster.ts"
+    ],
+    "src/test/generation_baseline.test.ts": [
+      "src/test/harness.ts"
+    ],
+    "src/test/harness.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Systems/Logger.ts",
+      "src/engine/Random.ts",
+      "src/engine/Map/Grid.ts"
+    ],
+    "src/test/horde_selection.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/test/horde_terrain_spawn.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Items/Item.ts"
+    ],
+    "src/test/hunger_curve_sim.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/test/hunger_regen.test.ts": [
+      "src/entities/Player.ts",
+      "src/test/harness.ts",
+      "src/engine/Items/ItemLoader.ts"
+    ],
+    "src/test/i18n_scan.ts": [],
+    "src/test/i_1_interaction.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Systems/Logger.ts"
+    ],
+    "src/test/invented_content_pool.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Random.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Items/Item.ts"
+    ],
+    "src/test/monster_damage_balance.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/test/monster_stats_effect.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Random.ts",
+      "src/engine/Map/Grid.ts"
+    ],
+    "src/test/p1_20_item_placement.test.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Random.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/p1_24_death_sink.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/engine/Systems/Logger.ts"
+    ],
+    "src/test/p1_26_invariants.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Core/Game.ts"
+    ],
+    "src/test/p1_27_remove_drowning.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Systems/Logger.ts"
+    ],
+    "src/test/p1_28_flag_channel.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Systems/Logger.ts"
+    ],
+    "src/test/p1_29_adversarial_gate.test.ts": [
+      "src/engine/Map/Connectivity.ts",
+      "src/engine/Generator/Architect.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/test/p1_29_lake_connectivity.test.ts": [
+      "src/engine/Generator/Architect.ts",
+      "src/engine/Map/Connectivity.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Generator/RoomBuilder.ts",
+      "src/engine/Random.ts",
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts"
+    ],
+    "src/test/p1_30_i18n_gate.test.ts": [
+      "src/test/i18n_scan.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Systems/Logger.ts",
+      "src/entities/Monster.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/p1_31_35_placement_snapshot.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/SafetyMap.ts",
+      "src/engine/Map/LoopMap.ts",
+      "src/types/index.ts"
+    ],
+    "src/test/p1_33_machine_chokepoint.test.ts": [
+      "src/engine/Generator/Architect.ts",
+      "src/engine/Generator/BlueprintEngine.ts",
+      "src/engine/Map/LoopMap.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/Connectivity.ts",
+      "src/engine/Random.ts",
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts"
+    ],
+    "src/test/p1_34_loopmap_reset.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/LoopMap.ts"
+    ],
+    "src/test/p1_37_machine_flag_i18n.test.ts": [
+      "src/test/harness.ts",
+      "src/test/i18n_scan.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/engine/Generator/BlueprintEngine.ts",
+      "src/engine/Random.ts",
+      "src/engine/Systems/Logger.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Core/Game.ts"
+    ],
+    "src/test/p1_42_secret_door_search.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Random.ts",
+      "src/engine/Systems/Logger.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainCatalog.ts"
+    ],
+    "src/test/p1_46_keybindings.test.ts": [
+      "src/types/index.ts",
+      "src/engine/Input.ts"
+    ],
+    "src/test/p2_0_seeded_rng.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Random.ts",
+      "src/entities/Creature.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Core/Game.ts",
+      "src/components/GameCanvas.vue"
+    ],
+    "src/test/p2_1_tick_architecture.test.ts": [
+      "src/test/harness.ts",
+      "src/entities/Creature.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Systems/Time.ts",
+      "src/engine/Core/Game.ts"
+    ],
+    "src/test/p2_2_real_speed.test.ts": [
+      "src/test/harness.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Systems/Time.ts",
+      "src/engine/Random.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Core/Game.ts"
+    ],
+    "src/test/p2_3_objective_time.test.ts": [
+      "src/test/harness.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Systems/Time.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Core/Game.ts"
+    ],
+    "src/test/p2_4_animation_cadence.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Map/Grid.ts",
+      "src/types/index.ts",
+      "src/components/GameCanvas.vue"
+    ],
+    "src/test/p2_6_display_settings.test.ts": [
+      "src/types/index.ts",
+      "src/components/GameCanvas.vue",
+      "src/engine/Settings.ts",
+      "src/components/Sidebar.vue"
+    ],
+    "src/test/p4_10_waypoint.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/WaypointMap.ts"
+    ],
+    "src/test/p4_1b_monster_casting.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Random.ts",
+      "src/engine/Combat/Bolt.ts"
+    ],
+    "src/test/p4_2_monster_summoning.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/test/p4_3_special_monster_flags.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Random.ts",
+      "src/engine/Combat/Combat.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Combat/CombatFormulas.ts"
+    ],
+    "src/test/p4_4_split_kamikaze.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/engine/Random.ts",
+      "src/engine/Combat/Combat.ts"
+    ],
+    "src/test/p4_5_melee_specials.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Combat/Combat.ts",
+      "src/engine/Systems/Time.ts"
+    ],
+    "src/test/p4_6_attack_geometry.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Systems/Logger.ts"
+    ],
+    "src/test/p4_7_player_weapon_geometry.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Systems/Logger.ts",
+      "src/engine/Systems/Time.ts",
+      "src/engine/Items/ItemLoader.ts"
+    ],
+    "src/test/p4_8_scent_map.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Map/Scent.ts",
+      "src/engine/Core/Game.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/test/p4_9_safety_map.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/SafetyMap.ts"
+    ],
+    "src/test/r_1_appearance.test.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/engine/Lighting/LightMap.ts",
+      "src/engine/UI/Appearance.ts",
+      "src/engine/Items/Item.ts",
+      "src/entities/Monster.ts",
+      "src/entities/Player.ts",
+      "src/components/GameCanvas.vue"
+    ],
+    "src/test/scroll_effects.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/SafetyMap.ts",
+      "src/engine/Random.ts",
+      "src/engine/Systems/Logger.ts"
+    ],
+    "src/test/smoke.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts"
+    ],
+    "src/test/t_1_tail.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Generator/Architect.ts",
+      "src/engine/Map/AutoGenerator.ts",
+      "src/engine/Map/DungeonFeatureCatalog.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Random.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Items/Item.ts"
+    ],
+    "src/test/u_00_new_run.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/test/harness.ts",
+      "src/engine/Random.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/entities/Creature.ts",
+      "src/engine/Systems/Logger.ts",
+      "src/engine/Systems/Time.ts",
+      "src/engine/Generator/BlueprintEngine.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/DungeonFeatureCatalog.ts"
+    ],
+    "src/test/u_01_instance_snapshot.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Core/EntitySnapshot.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/entities/Creature.ts",
+      "src/entities/Monster.ts",
+      "src/entities/Player.ts",
+      "src/engine/Random.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/engine/Lighting/FOV.ts",
+      "src/engine/Lighting/LightMap.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/u_05a_item_ownership.test.ts": [
+      "src/engine/Generator/BlueprintEngine.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Random.ts",
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Generator/Architect.ts",
+      "src/engine/Items/ItemLoader.ts"
+    ],
+    "src/test/u_06_monster_damage.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/entities/Creature.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Combat/Combat.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Combat/BoltCatalog.ts",
+      "src/engine/Combat/StaffDamage.ts",
+      "src/engine/Random.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Systems/Logger.ts"
+    ],
+    "src/test/u_13_combat_math.test.ts": [
+      "src/engine/Combat/Combat.ts",
+      "src/engine/Combat/CombatFormulas.ts",
+      "src/engine/Random.ts",
+      "src/entities/Player.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Core/EntitySnapshot.ts",
+      "src/test/harness.ts",
+      "src/engine/Map/Grid.ts"
+    ],
+    "src/test/u_14a_status_gaps.test.ts": [
+      "src/entities/Player.ts",
+      "src/entities/Monster.ts",
+      "src/entities/Creature.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Combat/Combat.ts",
+      "src/engine/Combat/CombatFormulas.ts",
+      "src/engine/Combat/BoltReflection.ts",
+      "src/engine/Combat/Negation.ts",
+      "src/engine/Status/statusConfig.ts",
+      "src/engine/UI/DetailGenerator.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Random.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/u_15a_shattering.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/UI/Appearance.ts",
+      "src/types/index.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/test/u_18a_terrain_contracts.test.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainRules.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/Scent.ts",
+      "src/engine/Map/SafetyMap.ts",
+      "src/engine/Map/WaypointMap.ts",
+      "src/engine/Lighting/FOV.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/test/ui_1_rendering.test.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/engine/Lighting/LightMap.ts",
+      "src/engine/UI/Appearance.ts",
+      "src/engine/Status/statusConfig.ts",
+      "src/engine/Items/Item.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Core/Game.ts",
+      "src/App.vue",
+      "src/components/Sidebar.vue"
+    ],
+    "src/test/ui_2_protection.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Combat/Combat.ts",
+      "src/engine/UI/DetailGenerator.ts",
+      "src/engine/Systems/Logger.ts"
+    ],
+    "src/test/v_1a_blueprint_items.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Generator/BlueprintEngine.ts",
+      "src/engine/Random.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Core/Game.ts"
+    ],
+    "src/test/v_1b_alternative.test.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Generator/BlueprintEngine.ts",
+      "src/types/index.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/test/v_1c_machine_structure.test.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Generator/BlueprintEngine.ts",
+      "src/engine/Random.ts",
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts"
+    ],
+    "src/test/v_2a_vestibule_return.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Generator/BlueprintEngine.ts",
+      "src/engine/Core/Game.ts"
+    ],
+    "src/test/v_2b_2a_placement_flags.test.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Generator/BlueprintEngine.ts",
+      "src/types/index.ts",
+      "src/engine/Random.ts",
+      "src/engine/Items/ItemSpawnHeatMap.ts"
+    ],
+    "src/test/v_2b_2b_blueprints.test.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Generator/BlueprintEngine.ts",
+      "src/types/index.ts",
+      "src/engine/Random.ts",
+      "src/engine/Map/LoopMap.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/v_2b_3_wired.test.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/DungeonFeatureCatalog.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/Promotion.ts",
+      "src/engine/Random.ts",
+      "src/engine/Generator/BlueprintEngine.ts"
+    ],
+    "src/test/v_2b_4_altars.test.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/LightCatalog.ts",
+      "src/engine/Map/DungeonFeatureCatalog.ts",
+      "src/engine/Generator/BlueprintEngine.ts",
+      "src/engine/Random.ts",
+      "src/engine/Items/Item.ts",
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Generator/Architect.ts"
+    ],
+    "src/test/v_2b_5_dormant.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Random.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/LightCatalog.ts",
+      "src/engine/Map/DungeonFeatureCatalog.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Generator/BlueprintEngine.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Core/Game.ts"
+    ],
+    "src/test/v_2b_6_keys.test.ts": [
+      "src/test/harness.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Generator/BlueprintEngine.ts"
+    ],
+    "src/test/v_2b_7_features.test.ts": [
+      "src/test/harness.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/DungeonFeatureCatalog.ts",
+      "src/engine/Map/LightCatalog.ts",
+      "src/engine/Generator/BlueprintEngine.ts",
+      "src/engine/Items/Item.ts"
+    ],
+    "src/test/v_2b_8_autogen.test.ts": [
+      "src/engine/Generator/Architect.ts",
+      "src/engine/Map/AutoGenerator.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/test/v_2b_9a_carriers.test.ts": [
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/DungeonFeatureCatalog.ts"
+    ],
+    "src/test/v_2b_9b_environment.test.ts": [
+      "src/engine/Generator/BlueprintEngine.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/Promotion.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/test/v_2b_9c_effects.test.ts": [
+      "src/engine/Generator/BlueprintEngine.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/DungeonFeatureCatalog.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/Promotion.ts",
+      "src/engine/Map/LightCatalog.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/test/harness.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Core/Game.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Random.ts",
+      "src/types/index.ts"
+    ],
+    "src/test/v_2b_9d_dungeon_profile.test.ts": [
+      "src/engine/Generator/Architect.ts",
+      "src/engine/Generator/BlueprintEngine.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/LoopMap.ts",
+      "src/engine/Map/Connectivity.ts",
+      "src/engine/Generator/RoomBuilder.ts",
+      "src/engine/Map/DungeonFeatureCatalog.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/Promotion.ts",
+      "src/engine/Map/LightCatalog.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Random.ts",
+      "src/test/harness.ts",
+      "src/types/index.ts"
+    ],
+    "src/test/v_2b_9e_2_autogen.test.ts": [
+      "src/engine/Generator/BlueprintEngine.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/AutoGenerator.ts",
+      "src/engine/Core/Game.ts",
+      "src/test/harness.ts",
+      "src/engine/Random.ts",
+      "src/engine/Map/Promotion.ts",
+      "src/engine/Map/Connectivity.ts",
+      "src/types/index.ts"
+    ],
+    "src/test/v_2b_9e_area_machine.test.ts": [
+      "src/engine/Generator/BlueprintEngine.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/AutoGenerator.ts",
+      "src/engine/Random.ts",
+      "src/types/index.ts"
+    ],
+    "src/test/w_10_poison.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/entities/Player.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Combat/Combat.ts",
+      "src/engine/Combat/Poison.ts",
+      "src/engine/Random.ts",
+      "src/engine/Systems/Logger.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/w_11_teleport_placement.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/Promotion.ts",
+      "src/engine/Map/DungeonFeatureCatalog.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/entities/Player.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Movement/CreaturePlacement.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Random.ts",
+      "src/engine/Systems/Time.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/w_12_blink_beckoning.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/entities/Player.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Combat/BoltCatalog.ts",
+      "src/engine/Combat/BoltTrajectory.ts",
+      "src/engine/Movement/CreaturePlacement.ts",
+      "src/engine/Random.ts",
+      "src/engine/Systems/Time.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/w_13_tunneling.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/Promotion.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/LoopMap.ts",
+      "src/engine/Map/WaypointMap.ts",
+      "src/engine/Lighting/FOV.ts",
+      "src/engine/Lighting/LightMap.ts",
+      "src/engine/Map/Pathfind.ts",
+      "src/engine/Generator/BlueprintEngine.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/entities/Player.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Combat/BoltCatalog.ts",
+      "src/engine/Combat/BoltTrajectory.ts",
+      "src/engine/Combat/BoltReflection.ts",
+      "src/engine/Random.ts",
+      "src/types/index.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/w_14_obstruction.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Map/Promotion.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/DungeonFeatureCatalog.ts",
+      "src/engine/Map/AutoGenerator.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Map/WaypointMap.ts",
+      "src/engine/Lighting/FOV.ts",
+      "src/engine/Combat/BoltReflection.ts",
+      "src/engine/Map/Pathfind.ts",
+      "src/entities/Player.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Combat/BoltCatalog.ts",
+      "src/engine/Random.ts",
+      "src/types/index.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/w_15_shielding.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/entities/Player.ts",
+      "src/entities/Creature.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Combat/BoltCatalog.ts",
+      "src/engine/Combat/Combat.ts",
+      "src/engine/Combat/Shielding.ts",
+      "src/engine/Random.ts",
+      "src/engine/Systems/Logger.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/w_16_conjuration.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/engine/Lighting/FOV.ts",
+      "src/engine/Lighting/LightMap.ts",
+      "src/engine/Combat/Conjuration.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Combat/BoltCatalog.ts",
+      "src/engine/Combat/Combat.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/entities/Player.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Random.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/w_17_domination.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/engine/Lighting/FOV.ts",
+      "src/engine/Lighting/LightMap.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Combat/BoltCatalog.ts",
+      "src/engine/Combat/BoltTargeting.ts",
+      "src/engine/Combat/Domination.ts",
+      "src/engine/Combat/Combat.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/entities/Player.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Random.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/w_18_entrancement.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/engine/Lighting/FOV.ts",
+      "src/engine/Lighting/LightMap.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Combat/BoltCatalog.ts",
+      "src/engine/Combat/BoltTargeting.ts",
+      "src/engine/Movement/Entrancement.ts",
+      "src/engine/Combat/Combat.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/entities/Player.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Random.ts",
+      "src/engine/Systems/Time.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/w_19_polymorph.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/engine/Lighting/FOV.ts",
+      "src/engine/Lighting/LightMap.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Combat/BoltCatalog.ts",
+      "src/engine/Combat/Polymorph.ts",
+      "src/engine/Combat/Combat.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/entities/Player.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Random.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/w_20_cloning.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/engine/Lighting/FOV.ts",
+      "src/engine/Lighting/LightMap.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Combat/BoltCatalog.ts",
+      "src/engine/Combat/Cloning.ts",
+      "src/engine/Combat/Combat.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/entities/Player.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Random.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/w_21_empowerment.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/engine/Lighting/FOV.ts",
+      "src/engine/Lighting/LightMap.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Combat/BoltCatalog.ts",
+      "src/engine/Combat/Combat.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/UI/DetailGenerator.ts",
+      "src/entities/Player.ts",
+      "src/entities/Creature.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Random.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/w_23_negation.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/engine/Lighting/FOV.ts",
+      "src/engine/Lighting/LightMap.ts",
+      "src/entities/Monster.ts",
+      "src/entities/Player.ts",
+      "src/entities/Creature.ts",
+      "src/engine/Combat/Negation.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Combat/BoltCatalog.ts",
+      "src/engine/Combat/BoltTargeting.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/UI/DetailGenerator.ts",
+      "src/engine/Random.ts",
+      "src/engine/Systems/Logger.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/w_24_wand_catalog.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/engine/Lighting/FOV.ts",
+      "src/engine/Lighting/LightMap.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Items/ArcanaInstance.ts",
+      "src/engine/Items/ArcanaEnchantment.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Combat/BoltCatalog.ts",
+      "src/engine/Random.ts",
+      "src/entities/Monster.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/w_25_staff_catalog.test.ts": [
+      "src/engine/UI/DetailGenerator.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/engine/Lighting/FOV.ts",
+      "src/engine/Lighting/LightMap.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Items/ArcanaEnchantment.ts",
+      "src/engine/Items/ArcanaRecharge.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Combat/BoltCatalog.ts",
+      "src/engine/Random.ts",
+      "src/entities/Monster.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/w_26_arcana_closure.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/engine/Lighting/FOV.ts",
+      "src/engine/Lighting/LightMap.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Items/ArcanaEnchantment.ts",
+      "src/engine/Items/ArcanaRecharge.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Random.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/w_2_arcana_submission.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/entities/Player.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Systems/Time.ts",
+      "src/engine/Random.ts",
+      "src/types/index.ts",
+      "src/engine/Systems/Logger.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/w_3_bolt_trajectory.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/entities/Player.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Combat/BoltCatalog.ts",
+      "src/engine/Combat/BoltTrajectory.ts",
+      "src/engine/Map/DungeonFeature.ts",
+      "src/engine/Map/TerrainCatalog.ts",
+      "src/engine/Combat/Combat.ts",
+      "src/engine/Random.ts",
+      "src/engine/Systems/Time.ts",
+      "src/types/index.ts"
+    ],
+    "src/test/w_4_bolt_reflection.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/entities/Player.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Combat/BoltCatalog.ts",
+      "src/engine/Combat/BoltTrajectory.ts",
+      "src/engine/Combat/BoltReflection.ts",
+      "src/engine/Combat/Combat.ts",
+      "src/engine/Random.ts",
+      "src/types/index.ts"
+    ],
+    "src/test/w_5_arcana_instance.test.ts": [
+      "src/engine/Items/ArcanaInstance.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Random.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/w_6_arcana_recharge.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Items/ArcanaRecharge.ts",
+      "src/engine/Random.ts",
+      "src/engine/UI/DetailGenerator.ts",
+      "src/engine/Systems/Logger.ts",
+      "src/test/harness.ts"
+    ],
+    "src/test/w_7_arcana_enchantment.test.ts": [
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Items/ArcanaEnchantment.ts",
+      "src/engine/Items/ArcanaRecharge.ts",
+      "src/engine/Random.ts",
+      "src/engine/Systems/Time.ts",
+      "src/engine/Systems/Logger.ts",
+      "src/test/harness.ts",
+      "src/components/InventoryOverlay.vue"
+    ],
+    "src/test/w_8_staff_damage.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/entities/Player.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Combat/StaffDamage.ts",
+      "src/engine/Combat/Combat.ts",
+      "src/engine/Random.ts"
+    ],
+    "src/test/w_9_directed_status.test.ts": [
+      "src/engine/Core/Game.ts",
+      "src/engine/Map/Grid.ts",
+      "src/engine/Environment/Gas.ts",
+      "src/entities/Player.ts",
+      "src/entities/Monster.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Combat/Bolt.ts",
+      "src/engine/Combat/BoltCatalog.ts",
+      "src/engine/Random.ts",
+      "src/engine/Systems/Time.ts",
+      "src/test/harness.ts"
+    ],
+    "src/types/index.ts": [],
+    "scripts/extract_hordes.cjs": [],
+    "scripts/extract_monster_bolts.cjs": [],
+    "scripts/merge_monster_stats.cjs": [],
+    "scripts/u00-browser-check.mjs": [],
+    "scripts/u00-final-check.mjs": [],
+    "scripts/u00-generation-check.mjs": [],
+    "scripts/u00-test-scope.mjs": [],
+    "scripts/u01-browser-check.mjs": [],
+    "scripts/u01-final-check.mjs": [],
+    "scripts/u01-test-scope.mjs": [],
+    "scripts/u05a-final-check.mjs": [],
+    "scripts/u05a-generation.ts": [
+      "src/test/harness.ts",
+      "src/engine/Core/Game.ts",
+      "src/engine/Random.ts"
+    ],
+    "scripts/u05a-run-generation.mjs": [],
+    "scripts/u05a-test-scope.mjs": [],
+    "scripts/u06-audit.mjs": [],
+    "scripts/u06-browser-check.mjs": [],
+    "scripts/u06-ce-golden.mjs": [],
+    "scripts/u06-final-check.mjs": [],
+    "scripts/u06-test-scope.mjs": [],
+    "scripts/u13-audit.mjs": [],
+    "scripts/u13-ce-golden.mjs": [],
+    "scripts/u13-final-check.mjs": [],
+    "scripts/u13-negative-check.mjs": [],
+    "scripts/u13-test-scope.mjs": [],
+    "scripts/u14a-audit.mjs": [],
+    "scripts/u14a-browser-check.mjs": [],
+    "scripts/u14a-ce-golden.mjs": [],
+    "scripts/u14a-final-check.mjs": [],
+    "scripts/u14a-negative-check.mjs": [],
+    "scripts/u14a-test-scope.mjs": [],
+    "scripts/u15a-audit.mjs": [],
+    "scripts/u15a-browser-check.mjs": [],
+    "scripts/u15a-final-check.mjs": [],
+    "scripts/u15a-negative-check.mjs": [],
+    "scripts/u15a-test-scope.mjs": [],
+    "scripts/w10-browser-check.mjs": [],
+    "scripts/w10-final-check.mjs": [],
+    "scripts/w10-test-scope.mjs": [],
+    "scripts/w11-final-check.mjs": [],
+    "scripts/w11-negative-check.mjs": [],
+    "scripts/w11-test-scope.mjs": [],
+    "scripts/w12-browser-check.mjs": [],
+    "scripts/w12-final-check.mjs": [],
+    "scripts/w12-negative-check.mjs": [],
+    "scripts/w12-test-scope.mjs": [],
+    "scripts/w13-browser-check.mjs": [],
+    "scripts/w13-final-check.mjs": [],
+    "scripts/w13-test-scope.mjs": [],
+    "scripts/w14-browser-check.mjs": [],
+    "scripts/w14-final-check.mjs": [],
+    "scripts/w14-negative-check.mjs": [],
+    "scripts/w14-test-scope.mjs": [],
+    "scripts/w15-browser-check.mjs": [],
+    "scripts/w15-damage-audit.mjs": [],
+    "scripts/w15-final-check.mjs": [],
+    "scripts/w15-negative-check.mjs": [],
+    "scripts/w15-test-scope.mjs": [],
+    "scripts/w16-browser-check.mjs": [],
+    "scripts/w16-ce-golden.mjs": [],
+    "scripts/w16-final-check.mjs": [],
+    "scripts/w16-negative-check.mjs": [],
+    "scripts/w16-test-scope.mjs": [],
+    "scripts/w17-browser-check.mjs": [],
+    "scripts/w17-ce-golden.mjs": [],
+    "scripts/w17-final-check.mjs": [],
+    "scripts/w17-negative-check.mjs": [],
+    "scripts/w17-test-scope.mjs": [],
+    "scripts/w18-browser-check.mjs": [],
+    "scripts/w18-ce-golden.mjs": [],
+    "scripts/w18-final-check.mjs": [],
+    "scripts/w18-negative-check.mjs": [],
+    "scripts/w18-test-scope.mjs": [],
+    "scripts/w19-browser-check.mjs": [],
+    "scripts/w19-ce-golden.mjs": [],
+    "scripts/w19-final-check.mjs": [],
+    "scripts/w19-negative-check.mjs": [],
+    "scripts/w19-test-scope.mjs": [],
+    "scripts/w20-browser-check.mjs": [],
+    "scripts/w20-ce-golden.mjs": [],
+    "scripts/w20-final-check.mjs": [],
+    "scripts/w20-negative-check.mjs": [],
+    "scripts/w20-test-scope.mjs": [],
+    "scripts/w21-browser-check.mjs": [],
+    "scripts/w21-ce-golden.mjs": [],
+    "scripts/w21-final-check.mjs": [],
+    "scripts/w21-negative-check.mjs": [],
+    "scripts/w21-test-scope.mjs": [],
+    "scripts/w22-ce-audit.mjs": [],
+    "scripts/w22-final-check.mjs": [],
+    "scripts/w22-test-scope.mjs": [],
+    "scripts/w23-browser-check.mjs": [],
+    "scripts/w23-ce-audit.mjs": [],
+    "scripts/w23-final-check.mjs": [],
+    "scripts/w23-test-scope.mjs": [],
+    "scripts/w24-browser-check.mjs": [],
+    "scripts/w24-coverage.ts": [
+      "src/test/harness.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Random.ts"
+    ],
+    "scripts/w24-final-check.mjs": [],
+    "scripts/w24-generation.ts": [
+      "src/test/harness.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Random.ts"
+    ],
+    "scripts/w24-test-scope.mjs": [],
+    "scripts/w25-browser-check.mjs": [],
+    "scripts/w25-coverage.ts": [
+      "src/test/harness.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Random.ts"
+    ],
+    "scripts/w25-final-check.mjs": [],
+    "scripts/w25-generation.ts": [
+      "src/test/harness.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Random.ts"
+    ],
+    "scripts/w25-test-scope.mjs": [],
+    "scripts/w26-browser-check.mjs": [],
+    "scripts/w26-coverage.ts": [
+      "src/test/harness.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Random.ts"
+    ],
+    "scripts/w26-final-check.mjs": [],
+    "scripts/w26-generation.ts": [
+      "src/test/harness.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Random.ts"
+    ],
+    "scripts/w26-test-scope.mjs": [],
+    "scripts/w5-sample.ts": [
+      "src/test/harness.ts",
+      "src/engine/Items/Item.ts",
+      "src/engine/Items/ItemLoader.ts",
+      "src/engine/Random.ts"
+    ],
+    "scripts/w5-test-scope.mjs": [],
+    "scripts/w6-browser-check.mjs": [],
+    "scripts/w6-final-check.mjs": [],
+    "scripts/w6-test-scope.mjs": [],
+    "scripts/w7-browser-check.mjs": [],
+    "scripts/w7-final-check.mjs": [],
+    "scripts/w7-test-scope.mjs": [],
+    "scripts/w8-browser-check.mjs": [],
+    "scripts/w8-final-check.mjs": [],
+    "scripts/w8-test-scope.mjs": [],
+    "scripts/w9-browser-check.mjs": [],
+    "scripts/w9-final-check.mjs": [],
+    "scripts/w9-test-scope.mjs": [],
+    "scripts/x0-inventory.mjs": [],
+    "scripts/x0-observe.mjs": []
+  },
+  "sourceHits": [
+    {
+      "file": "src/engine/Combat/Cloning.ts",
+      "line": 9,
+      "text": "import { T_DIVIDES_LEVEL, T_HARMFUL_TERRAIN, T_SACRED, T_IS_DF_TRAP,"
+    },
+    {
+      "file": "src/engine/Combat/Cloning.ts",
+      "line": 32,
+      "text": "const forbidden = cloneAvoidedFlags(source), blocking = forbidden & T_DIVIDES_LEVEL;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 8,
+      "text": "import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_IS_FIRE, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_PATHING_BLOCKER, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP } from '../Map/TerrainCatalog';"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 262,
+      "text": "isPassable: boolean;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 263,
+      "text": "isOpaque: boolean;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 337,
+      "text": "isPassable: boolean;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 338,
+      "text": "isOpaque: boolean;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 371,
+      "text": "return c.machineNumber === 0 && c.isPassable && c.layers.includes(TerrainType.FLOOR);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1259,
+      "text": "if (!c || !c.isPassable) floorTiles.splice(i, 1);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1365,
+      "text": "// `T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER`，岩浆的"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1374,
+      "text": "// CE 的物品落位判据是 `T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER`"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1594,
+      "text": "*      （CE：!cellHasTerrainFlag(loc, T_PATHING_BLOCKER) &&"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1627,
+      "text": "*   - T_PATHING_BLOCKER = T_OBSTRUCTS_PASSABILITY | T_AUTO_DESCENT |"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1629,
+      "text": "*     T_SPONTANEOUSLY_IGNITES —— web：!isPassable（墙/花岗岩/深渊/密门）"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1633,
+      "text": "* 楼梯本身不含 T_PATHING_BLOCKER（Globals.c:333-334），故 HAS_STAIRS"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1639,
+      "text": "if (!cell.isPassable) return false;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1653,
+      "text": "*（调用面 RogueMain.c:854-858：blockingTerrainFlags=T_DIVIDES_LEVEL、"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1654,
+      "text": "* forbiddenTerrainFlags=T_PATHING_BLOCKER、forbiddenMapFlags="
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1656,
+      "text": "* deterministic=false）。路径代价按 T_DIVIDES_LEVEL 阻断（该类地形"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1657,
+      "text": "* 不可穿过），结果格按 T_PATHING_BLOCKER + 三项占用旗标过滤，取"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1670,
+      "text": "// CE T_DIVIDES_LEVEL（Rogue.h:1949）：不可作为路径的地形"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1672,
+      "text": "const dividesLevel = !cell || !cell.isPassable ||"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1872,
+      "text": "* 的弧段切换数（0=开阔地，1=贴墙，2=走廊，3+=路口）。web 的 cell.isPassable"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1880,
+      "text": "const passable = (cx: number, cy: number): boolean =>"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1881,
+      "text": "this.grid.getCell(cx, cy)?.isPassable === true;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1886,
+      "text": "if (passable(x + nx, y + ny) !== passable(x + ox, y + oy)) arcs++;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 1960,
+      "text": "if (cell && cell.isPassable && cell.machineNumber === 0 && !this.monsters.some(m => m.loc.x === nx && m.loc.y === ny) && !(this.player.loc.x === nx && this.player.loc.y === ny)) {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 2006,
+      "text": "if (!cell || !cell.isPassable) continue;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 2043,
+      "text": "if (!cell || !cell.isPassable) continue;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 2165,
+      "text": "if (!cell || !cell.isPassable) continue;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 2633,
+      "text": "isPassable: cell.isPassable,"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 2634,
+      "text": "isOpaque: cell.isOpaque"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 2669,
+      "text": "cell.isPassable = true;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 2670,
+      "text": "cell.isOpaque = false;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 2748,
+      "text": "// 遮挡 T_OBSTRUCTS_VISION = cell.isOpaque。"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 2751,
+      "text": "(cell) => cell.isOpaque"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 3292,
+      "text": "const moveNotBlocked = !!destCell?.isPassable ||"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 3436,
+      "text": "} else if (this.canMoveTo(newX, newY)) {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 5443,
+      "text": "cell.isPassable = !(flags & T_OBSTRUCTS_PASSABILITY);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 5444,
+      "text": "cell.isOpaque = !!(flags & T_OBSTRUCTS_VISION);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 5498,
+      "text": "if (!cell || !cell.isPassable || this.getMonsterAt(x, y)) continue;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 6264,
+      "text": "if (!cell || !cell.isPassable || this.getMonsterAt(nx, ny)) break;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 6581,
+      "text": "const canStrike = (m: Monster, cell: { isPassable: boolean } | null | undefined): boolean =>"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 6586,
+      "text": "(cell.isPassable || m.hasBehavior('MONST_ATTACKABLE_THRU_WALLS'));"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 6637,
+      "text": "if (!cell.isPassable && !defender.hasBehavior('MONST_ATTACKABLE_THRU_WALLS')) continue;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 6682,
+      "text": "if (!cell.isPassable || cell.isOpaque) {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 6711,
+      "text": "(cell.isPassable || defender.hasBehavior('MONST_ATTACKABLE_THRU_WALLS')) &&"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 6718,
+      "text": "if (!cell.isPassable || cell.isOpaque) {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 6945,
+      "text": "* （web 的 canMoveTo 本身不含对角穿墙判定，与既有移动/寻路代码同口径）。"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 6988,
+      "text": "if (!this.canMoveTo(newX, newY)) return;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 7014,
+      "text": "* P4-4's existing placement approximation remains: passable, no deep water"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 7060,
+      "text": "if (!cell || !cell.isPassable) continue;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 7397,
+      "text": "* 环内随机取一）找落点——阻挡集 = T_PATHING_BLOCKER **去掉深水**（可以"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 7410,
+      "text": "// (T_PATHING_BLOCKER & ~T_IS_DEEP_WATER)：深水可落。"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 7411,
+      "text": "if ((flags & T_PATHING_BLOCKER) && !(flags & T_IS_DEEP_WATER)) return false;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 7424,
+      "text": "&& (TERRAIN_FLAGS[t].flags & T_PATHING_BLOCKER) !== 0);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 7464,
+      "text": "* allowSwim=true 时深水不算阻断（T_PATHING_BLOCKER & ~T_IS_DEEP_WATER，"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 7474,
+      "text": "if (!(flags & T_PATHING_BLOCKER)) continue;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 7554,
+      "text": "// （T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER）照抄——掉不进岩浆/深渊。"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 8272,
+      "text": "isPassable: cell.isPassable,"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 8273,
+      "text": "isOpaque: cell.isOpaque,"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 8432,
+      "text": "cell.isPassable = c.isPassable;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 8433,
+      "text": "cell.isOpaque = c.isOpaque;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 9248,
+      "text": "if (cell && (!cell.isExplored || (hasLoot && !isPlayerOnLoot)) && cell.isPassable) {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 9260,
+      "text": "(nextCell.isPassable || !nextCell.isExplored)) {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 9304,
+      "text": "private canMoveTo(x: number, y: number): boolean {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 9342,
+      "text": "if (cell.isOpaque) return false;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 9366,
+      "text": "cell.isPassable = terrain.isPassable;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 9367,
+      "text": "cell.isOpaque = terrain.isOpaque;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 9435,
+      "text": "*     同为 isOpaque、半径 10 与 update() 的 computeFOV(…,10) 同一视野"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 9500,
+      "text": "// 遮挡谓词与 FOV.castLight 同为 isOpaque。掩码只在窗内确有密格时"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 9502,
+      "text": "const canDirectlySee = this.fov.computeFOVMask(px, py, 10, (c) => c.isOpaque);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 9536,
+      "text": "* （与被替换的旧 30% 代码同一写入口，且同时更新 char/color/isPassable/"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 9537,
+      "text": "* isOpaque——CE 落地链走的层感知写入口不更新这些，直写反而免去补写）。"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 9833,
+      "text": "if (cell?.isPassable && !this.getMonsterAt(x, y) &&"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 9981,
+      "text": "const path = Pathfind.findPath(this.grid, this.player.loc.x, this.player.loc.y, x, y, this.canMoveTo.bind(this));"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 10078,
+      "text": "if (!this.canMoveTo(next.x, next.y)) {"
+    },
+    {
+      "file": "src/engine/Generator/Architect.ts",
+      "line": 8,
+      "text": "import { T_PATHING_BLOCKER, T_OBSTRUCTS_PASSABILITY, TM_IS_SECRET, TM_PROMOTES_WITH_KEY, TM_CONNECTS_LEVEL } from '../Map/TerrainCatalog';"
+    },
+    {
+      "file": "src/engine/Generator/Architect.ts",
+      "line": 263,
+      "text": "const passable = !(flags & T_PATHING_BLOCKER)"
+    },
+    {
+      "file": "src/engine/Generator/Architect.ts",
+      "line": 267,
+      "text": "work[x]![y] = passable ? 1 : -1;"
+    },
+    {
+      "file": "src/engine/Generator/Architect.ts",
+      "line": 268,
+      "text": "if (!passable) continue;"
+    },
+    {
+      "file": "src/engine/Generator/Architect.ts",
+      "line": 330,
+      "text": "* （岩浆/硫矿按 canMoveTo 口径可走，只会扩大干地集合；清理阶段带"
+    },
+    {
+      "file": "src/engine/Generator/Architect.ts",
+      "line": 529,
+      "text": "cell.isPassable = true; // Traps are walkable"
+    },
+    {
+      "file": "src/engine/Generator/Architect.ts",
+      "line": 562,
+      "text": "if (cell) cell.isPassable = true;"
+    },
+    {
+      "file": "src/engine/Generator/Architect.ts",
+      "line": 852,
+      "text": "// P1-29：不可踏入的叠加层（canMoveTo 口径，现役仅深水）会隔断移动，"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 26,
+      "text": "T_PATHING_BLOCKER,"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 595,
+      "text": "isPassable: boolean; isOpaque: boolean;"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 1244,
+      "text": "// CE :882-896：逐层清掉带 T_PATHING_BLOCKER 的地形（\"不许有陷阱\"）。"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 1280,
+      "text": "if ((cellTerrainFlags(this.grid, nx, ny) & T_PATHING_BLOCKER) === 0) continue;"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 1524,
+      "text": "// MF_PERMIT_BLOCKING 且（地形带 T_PATHING_BLOCKER 或"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 1563,
+      "text": "cell.isPassable = true;"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 1900,
+      "text": "*     同款：!isPassable ∪ LAVA ∪ WATER_DEEP ∪ TRAP），非 CE"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 1914,
+      "text": "const forbidden = !cell || !cell.isPassable"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 1956,
+      "text": "* calculateDistances(..., T_PATHING_BLOCKER, NULL, true, false)：4 向、"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 1981,
+      "text": "if (!secretDoor && (flags & T_PATHING_BLOCKER)) cost[x]![y] = -1;"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 2036,
+      "text": "*   候选格（CE :615-617）= 1..边界内、自己是 T_PATHING_BLOCKER（墙/水/"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 2042,
+      "text": "*   吞并（:643-657）= 收入 interior、逐层清掉 T_PATHING_BLOCKER 层"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 2054,
+      "text": "(cellTerrainFlags(this.grid, x, y) & T_PATHING_BLOCKER) !== 0;"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 2064,
+      "text": "// 开邻计数：interior 且非 T_PATHING_BLOCKER。"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 2123,
+      "text": "* layers/char/color/isPassable/isOpaque；applyBlueprint 另写"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 2136,
+      "text": "isPassable: c.isPassable,"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 2137,
+      "text": "isOpaque: c.isOpaque,"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 2158,
+      "text": "c.isPassable = s.isPassable;"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 2159,
+      "text": "c.isOpaque = s.isOpaque;"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 2284,
+      "text": "*     terrainAllowsMove 而非 CE 的 T_PATHING_BLOCKER，已知留形）；"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 2332,
+      "text": "//    BUILD_ANYWHERE 下非 T_PATHING_BLOCKER 且 machineNumber==0。"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 2346,
+      "text": "&& (cellTerrainFlags(this.grid, nx, ny) & T_PATHING_BLOCKER) === 0"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 2360,
+      "text": "//    额外排除 T_OBSTRUCTS_ITEMS|T_PATHING_BLOCKER 与"
+    },
+    {
+      "file": "src/engine/Generator/BlueprintEngine.ts",
+      "line": 2364,
+      "text": "&& ((cellTerrainFlags(this.grid, x, y) & (T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER)) !== 0"
+    },
+    {
+      "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+      "line": 20,
+      "text": "*     terrainAllowsMove/canMoveTo 系，服务于机器选址，不在此复用）；"
+    },
+    {
+      "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+      "line": 23,
+      "text": "*   - T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER 与泛洪的旗标检查按 CE"
+    },
+    {
+      "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+      "line": 25,
+      "text": "*   - 泛洪的 isPassableOrSecretDoor（Monsters.c:3672）里 CE 还要求"
+    },
+    {
+      "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+      "line": 37,
+      "text": "T_PATHING_BLOCKER,"
+    },
+    {
+      "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+      "line": 90,
+      "text": "* CE Monsters.c:3672 isPassableOrSecretDoor（生成期口径，见文件头）："
+    },
+    {
+      "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+      "line": 93,
+      "text": "function isPassableOrSecretDoor(cell: Cell): boolean {"
+    },
+    {
+      "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+      "line": 102,
+      "text": "if ((cellTerrainFlagUnion(cell) & T_PATHING_BLOCKER) === 0) return true;"
+    },
+    {
+      "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+      "line": 137,
+      "text": "* (深水|岩浆|深渊) 且 isPassableOrSecretDoor 且当前 heat 更小。"
+    },
+    {
+      "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+      "line": 164,
+      "text": "if (!isPassableOrSecretDoor(neighbor)) continue;"
+    },
+    {
+      "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+      "line": 214,
+      "text": "* 「玩家可达」8 向洪泛（canMoveTo 镜像 ∪ SECRET_DOOR，与 c_3 连通性闸门同口径）。"
+    },
+    {
+      "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+      "line": 221,
+      "text": "const passable = (x: number, y: number): boolean => {"
+    },
+    {
+      "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+      "line": 226,
+      "text": "if (!passable(start.x, start.y)) return result;"
+    },
+    {
+      "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+      "line": 240,
+      "text": "if (seen[nIdx] || !passable(nx, ny)) continue;"
+    },
+    {
+      "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+      "line": 287,
+      "text": "* 「8 向玩家口径（canMoveTo ∪ SECRET_DOOR）也不可达」的真孤岛——"
+    },
+    {
+      "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+      "line": 313,
+      "text": "|| (cellTerrainFlagUnion(cell) & (T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER)) !== 0"
+    },
+    {
+      "file": "src/engine/Lighting/FOV.ts",
+      "line": 152,
+      "text": "if (this.grid.getCell(mapX, mapY)?.isOpaque) {"
+    },
+    {
+      "file": "src/engine/Lighting/FOV.ts",
+      "line": 158,
+      "text": "} else if (this.grid.getCell(mapX, mapY)?.isOpaque && i < radius) {"
+    },
+    {
+      "file": "src/engine/Lighting/LightMap.ts",
+      "line": 7,
+      "text": "*   遮挡 = T_OBSTRUCTS_VISION（cell.isOpaque）+ 可选的生物遮挡。"
+    },
+    {
+      "file": "src/engine/Lighting/LightMap.ts",
+      "line": 235,
+      "text": "* 半径（整格）、8 象限递归阴影投射；遮挡 = cell.isOpaque"
+    },
+    {
+      "file": "src/engine/Lighting/LightMap.ts",
+      "line": 261,
+      "text": "if (cell && cell.isOpaque) return true;"
+    },
+    {
+      "file": "src/engine/Lighting/LightMap.ts",
+      "line": 440,
+      "text": "if (this.grid.getCell(mapX, mapY)?.isOpaque) {"
+    },
+    {
+      "file": "src/engine/Lighting/LightMap.ts",
+      "line": 446,
+      "text": "} else if (this.grid.getCell(mapX, mapY)?.isOpaque && i < radius) {"
+    },
+    {
+      "file": "src/engine/Map/AutoGenerator.ts",
+      "line": 54,
+      "text": "import { TERRAIN_FLAGS, T_OBSTRUCTS_ITEMS, T_PATHING_BLOCKER } from './TerrainCatalog';"
+    },
+    {
+      "file": "src/engine/Map/AutoGenerator.ts",
+      "line": 723,
+      "text": "// 门槛（:1824-1825）、T_PATHING_BLOCKER 连通性否决（:1830-1831）、"
+    },
+    {
+      "file": "src/engine/Map/AutoGenerator.ts",
+      "line": 729,
+      "text": "if (!((TERRAIN_FLAGS[gen.terrain].flags & T_PATHING_BLOCKER) !== 0)"
+    },
+    {
+      "file": "src/engine/Map/Connectivity.ts",
+      "line": 11,
+      "text": "* 1. 干地判据 = Game.canMoveTo 的地形口径（排除 GRANITE / WALL /"
+    },
+    {
+      "file": "src/engine/Map/Connectivity.ts",
+      "line": 12,
+      "text": "*    SECRET_DOOR / LOCKED_DOOR / WATER_DEEP），**不是 cell.isPassable**——"
+    },
+    {
+      "file": "src/engine/Map/Connectivity.ts",
+      "line": 13,
+      "text": "*    深水的 isPassable 是 true，用它量连通性会让深水阻隔完全隐形"
+    },
+    {
+      "file": "src/engine/Map/Connectivity.ts",
+      "line": 15,
+      "text": "* 2. 泛洪用 8 向：web 的移动是 8 向且 canMoveTo 无对角穿墙限制，"
+    },
+    {
+      "file": "src/engine/Map/Connectivity.ts",
+      "line": 27,
+      "text": "/** Game.canMoveTo（Game.ts）地形判据的镜像。"
+    },
+    {
+      "file": "src/engine/Map/Connectivity.ts",
+      "line": 29,
+      "text": "*  改动 Game.canMoveTo 的排除清单时必须同步这里，反之亦然。"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeature.ts",
+      "line": 39,
+      "text": "*      T_PATHING_BLOCKER || DFF_TREAT_AS_BLOCKING)（:3378-3381）；两个"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeature.ts",
+      "line": 95,
+      "text": "T_PATHING_BLOCKER,"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeature.ts",
+      "line": 238,
+      "text": "/** CE cellIsPassableOrDoor（Architect.c:48-55）：无 T_PATHING_BLOCKER 直接过；"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeature.ts",
+      "line": 242,
+      "text": "if (!cellHasTerrainFlag(grid, x, y, T_PATHING_BLOCKER)) {"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeature.ts",
+      "line": 333,
+      "text": "/** rogue.staleLoopMap 登记（CE :3240-3244）：T_PATHING_BLOCKER 归属变化。 */"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeature.ts",
+      "line": 387,
+      "text": "if ((oldFlags & T_PATHING_BLOCKER) !== (newFlags & T_PATHING_BLOCKER)) {"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeature.ts",
+      "line": 540,
+      "text": "* LAVA/TRAP 算阻挡）上评估；web 的移动图（canMoveTo 镜像 ∪ SECRET_DOOR，"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeature.ts",
+      "line": 548,
+      "text": "*   1. 通行判据 = terrainAllowsMove ∪ SECRET_DOOR（canMoveTo 镜像口径）；"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeature.ts",
+      "line": 778,
+      "text": "&& ((TERRAIN_FLAGS[feat.tile].flags & T_PATHING_BLOCKER)"
+    },
+    {
+      "file": "src/engine/Map/Grid.ts",
+      "line": 892,
+      "text": "public isPassable: boolean = false;"
+    },
+    {
+      "file": "src/engine/Map/Grid.ts",
+      "line": 893,
+      "text": "public isOpaque: boolean = false;"
+    },
+    {
+      "file": "src/engine/Map/Grid.ts",
+      "line": 1032,
+      "text": "* OPEN_DOOR 时 isOpaque 残留 true，obstructsScent（Scent.ts 的"
+    },
+    {
+      "file": "src/engine/Map/Grid.ts",
+      "line": 1043,
+      "text": "cell.isPassable = ("
+    },
+    {
+      "file": "src/engine/Map/Grid.ts",
+      "line": 1049,
+      "text": "cell.isOpaque = ("
+    },
+    {
+      "file": "src/engine/Map/Grid.ts",
+      "line": 1076,
+      "text": "cell.isPassable = ("
+    },
+    {
+      "file": "src/engine/Map/Grid.ts",
+      "line": 1082,
+      "text": "cell.isOpaque = ("
+    },
+    {
+      "file": "src/engine/Map/LakeSystem.ts",
+      "line": 24,
+      "text": "*    canMoveTo 不排除岩浆（P1-25）→ 岩浆湖不可能制造\"不可达\"，只会造成"
+    },
+    {
+      "file": "src/engine/Map/LakeSystem.ts",
+      "line": 80,
+      "text": "/** Rogue.h:1948 T_PATHING_BLOCKER（bridgeRatio 的 pathingDistance 阻挡集）。 */"
+    },
+    {
+      "file": "src/engine/Map/LakeSystem.ts",
+      "line": 81,
+      "text": "const T_PATHING_BLOCKER ="
+    },
+    {
+      "file": "src/engine/Map/LakeSystem.ts",
+      "line": 336,
+      "text": "subject.isPassable = targetCell.isPassable;"
+    },
+    {
+      "file": "src/engine/Map/LakeSystem.ts",
+      "line": 349,
+      "text": "* 对应物：8 向、代价 1 的均匀代价搜索（= BFS），阻挡集 = T_PATHING_BLOCKER。"
+    },
+    {
+      "file": "src/engine/Map/LakeSystem.ts",
+      "line": 365,
+      "text": "return (ceTerrainFlags(cell.terrain) & T_PATHING_BLOCKER) !== 0;"
+    },
+    {
+      "file": "src/engine/Map/LakeSystem.ts",
+      "line": 425,
+      "text": "return !!cell && (ceTerrainFlags(cell.terrain) & (T_PATHING_BLOCKER | T_CAN_BE_BRIDGED)) === 0;"
+    },
+    {
+      "file": "src/engine/Map/LoopMap.ts",
+      "line": 32,
+      "text": "*     中央挂钩（门的开关不翻转 Grid.isPassable），故只在生成完成后与进层"
+    },
+    {
+      "file": "src/engine/Map/LoopMap.ts",
+      "line": 203,
+      "text": "* CE T_PATHING_BLOCKER（Rogue.h:1948）&& !TM_IS_SECRET 的 web 地形近似，"
+    },
+    {
+      "file": "src/engine/Map/LoopMap.ts",
+      "line": 479,
+      "text": "* web 口径与 CE 的 T_PATHING_BLOCKER 不同源——本函数的 passMap 用"
+    },
+    {
+      "file": "src/engine/Map/LoopMap.ts",
+      "line": 480,
+      "text": "* **terrainAllowsMove**（Game.canMoveTo 的镜像，p1_29 的闸门判据，测试钉死）："
+    },
+    {
+      "file": "src/engine/Map/LoopMap.ts",
+      "line": 482,
+      "text": "* 是\"锁门封死角\"，而验收口径是 canMoveTo 泛洪（p1_26/p1_29 端到端）——"
+    },
+    {
+      "file": "src/engine/Map/LoopMap.ts",
+      "line": 484,
+      "text": "* 小死角\"而 canMoveTo 实际封住更大区域，就会漏切。CE 的 IN_LOOP 消费者"
+    },
+    {
+      "file": "src/engine/Map/LoopMap.ts",
+      "line": 502,
+      "text": "const passable = !!cell && terrainAllowsMove(cell.terrain);"
+    },
+    {
+      "file": "src/engine/Map/LoopMap.ts",
+      "line": 503,
+      "text": "passMap[x]![y] = passable;"
+    },
+    {
+      "file": "src/engine/Map/LoopMap.ts",
+      "line": 504,
+      "text": "loop[x]![y] = passable;"
+    },
+    {
+      "file": "src/engine/Map/Pathfinding.ts",
+      "line": 79,
+      "text": "} else if (!cell || !cell.isPassable) {"
+    },
+    {
+      "file": "src/engine/Map/Pathfinding.ts",
+      "line": 80,
+      "text": "// Simplistic heuristic: if not passable, it's either an obstruction (wall) or forbidden (chasm)."
+    },
+    {
+      "file": "src/engine/Map/Promotion.ts",
+      "line": 23,
+      "text": "*      underneath it\"，:1258-1261；清 T_PATHING_BLOCKER 时置"
+    },
+    {
+      "file": "src/engine/Map/Promotion.ts",
+      "line": 37,
+      "text": "*      今天两种传法确实无可观测差别（当前晋升链的产物都不是 T_PATHING_BLOCKER），"
+    },
+    {
+      "file": "src/engine/Map/Promotion.ts",
+      "line": 115,
+      "text": "T_PATHING_BLOCKER,"
+    },
+    {
+      "file": "src/engine/Map/Promotion.ts",
+      "line": 339,
+      "text": "/** rogue.staleLoopMap 登记（清掉 T_PATHING_BLOCKER 时）。 */"
+    },
+    {
+      "file": "src/engine/Map/Promotion.ts",
+      "line": 400,
+      "text": "if (tile.flags & T_PATHING_BLOCKER) {"
+    },
+    {
+      "file": "src/engine/Map/Promotion.ts",
+      "line": 431,
+      "text": "// 今天无可观测差别（当前晋升链里没有 T_PATHING_BLOCKER 的产物），"
+    },
+    {
+      "file": "src/engine/Map/Promotion.ts",
+      "line": 539,
+      "text": "/** 任一晋升清掉了 T_PATHING_BLOCKER（rogue.staleLoopMap 登记）。 */"
+    },
+    {
+      "file": "src/engine/Map/Promotion.ts",
+      "line": 933,
+      "text": "cell.isPassable = !(flags & T_OBSTRUCTS_PASSABILITY);"
+    },
+    {
+      "file": "src/engine/Map/Promotion.ts",
+      "line": 934,
+      "text": "cell.isOpaque = !!(flags & T_OBSTRUCTS_VISION);"
+    },
+    {
+      "file": "src/engine/Map/Promotion.ts",
+      "line": 998,
+      "text": "cell.isPassable = !(flags & T_OBSTRUCTS_PASSABILITY);"
+    },
+    {
+      "file": "src/engine/Map/Promotion.ts",
+      "line": 999,
+      "text": "cell.isOpaque = !!(flags & T_OBSTRUCTS_VISION);"
+    },
+    {
+      "file": "src/engine/Map/TerrainCatalog.ts",
+      "line": 58,
+      "text": "export const T_PATHING_BLOCKER ="
+    },
+    {
+      "file": "src/engine/Map/TerrainCatalog.ts",
+      "line": 62,
+      "text": "export const T_DIVIDES_LEVEL ="
+    },
+    {
+      "file": "src/engine/Map/TerrainCatalog.ts",
+      "line": 1181,
+      "text": "/** CE `cellHasTerrainFlag(…, T_PATHING_BLOCKER)`（Rogue.h:1948 七旗标并集）。 */"
+    },
+    {
+      "file": "src/engine/Map/TerrainCatalog.ts",
+      "line": 1183,
+      "text": "return (TERRAIN_FLAGS[t].flags & T_PATHING_BLOCKER) !== 0;"
+    },
+    {
+      "file": "src/engine/Map/TerrainRules.ts",
+      "line": 3,
+      "text": "* Cell.isPassable/isOpaque remain legacy projections for unmigrated callers."
+    },
+    {
+      "file": "src/engine/Map/TerrainRules.ts",
+      "line": 9,
+      "text": "T_OBSTRUCTS_DIAGONAL_MOVEMENT, T_PATHING_BLOCKER, TM_IS_SECRET,"
+    },
+    {
+      "file": "src/engine/Map/TerrainRules.ts",
+      "line": 41,
+      "text": "return flags & (T_PATHING_BLOCKER & ~T_OBSTRUCTS_PASSABILITY) ? -1 : 1;"
+    },
+    {
+      "file": "src/engine/Map/WallDoorFinish.ts",
+      "line": 18,
+      "text": "*      **不在内**：CE 深水可踏入（T_IS_DEEP_WATER 只进 T_PATHING_BLOCKER），"
+    },
+    {
+      "file": "src/engine/Map/WallDoorFinish.ts",
+      "line": 22,
+      "text": "*     （= Grid.setTerrain 的 isOpaque 集；CE DOOR 挡视线不挡通行"
+    },
+    {
+      "file": "src/engine/Map/WallDoorFinish.ts",
+      "line": 29,
+      "text": "*   T_PATHING_BLOCKER → 上者 ∪ WATER_DEEP / LAVA / CHASM / INERT_BRIMSTONE /"
+    },
+    {
+      "file": "src/engine/Map/WallDoorFinish.ts",
+      "line": 34,
+      "text": "* 连通/环分析判据是 `T_PATHING_BLOCKER && !TM_IS_SECRET`（Architect.c:199-210"
+    },
+    {
+      "file": "src/engine/Map/WallDoorFinish.ts",
+      "line": 36,
+      "text": "* 通路。因此按 CE 概率如实生成密门，不因 canMoveTo 的字面排除而少生成。"
+    },
+    {
+      "file": "src/engine/Map/WallDoorFinish.ts",
+      "line": 53,
+      "text": "/** CE T_OBSTRUCTS_VISION（Rogue.h:1927）的 web 地形集（= Grid isOpaque 集）。 */"
+    },
+    {
+      "file": "src/engine/Map/WallDoorFinish.ts",
+      "line": 68,
+      "text": "/** CE T_PATHING_BLOCKER（Rogue.h:1948）的 web 地形集。 */"
+    },
+    {
+      "file": "src/engine/Map/WallDoorFinish.ts",
+      "line": 184,
+      "text": "* 2) 四正方向 T_PATHING_BLOCKER 邻格 ≥3 → 封死孤儿，FLOOR（2745-2751）；"
+    },
+    {
+      "file": "src/engine/Movement/CreaturePlacement.ts",
+      "line": 12,
+      "text": "T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION,"
+    },
+    {
+      "file": "src/engine/Movement/CreaturePlacement.ts",
+      "line": 41,
+      "text": "let flags = T_PATHING_BLOCKER;"
+    },
+    {
+      "file": "src/engine/Movement/CreaturePlacement.ts",
+      "line": 57,
+      "text": "const blocking = forbidden & T_DIVIDES_LEVEL;"
+    },
+    {
+      "file": "src/engine/Movement/CreaturePlacement.ts",
+      "line": 65,
+      "text": "// The current catalog's only passable-on-discovery secret is SECRET_DOOR."
+    },
+    {
+      "file": "src/engine/Movement/CreaturePlacement.ts",
+      "line": 113,
+      "text": "if (!(flags(origin.x, origin.y) & T_DIVIDES_LEVEL) && qualifies(origin.x, origin.y)) return [{ ...origin }];"
+    },
+    {
+      "file": "src/engine/Movement/CreaturePlacement.ts",
+      "line": 122,
+      "text": "|| distances[x]![y] !== 30000 || (flags(x, y) & T_DIVIDES_LEVEL)) continue;"
+    },
+    {
+      "file": "src/engine/Movement/CreaturePlacement.ts",
+      "line": 141,
+      "text": "|| !grid.isValidPos(x, y) || (flags(x, y) & T_DIVIDES_LEVEL) || !qualifies(x, y)) continue;"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 951,
+      "text": "if (!cell.isPassable || cell.isOpaque) {"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 986,
+      "text": "(cell.isPassable ||"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 994,
+      "text": "if (!cell.isPassable || cell.isOpaque) {"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 1035,
+      "text": "if (!cell.isPassable &&"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 1395,
+      "text": "if (isFlying) return !c.isOpaque && !game.getMonsterAt(x, y) && !(game.player.loc.x === x && game.player.loc.y === y);"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 1396,
+      "text": "return c.isPassable && !game.getMonsterAt(x, y) && !(game.player.loc.x === x && game.player.loc.y === y);"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 1423,
+      "text": "if (isFlying) return !c.isOpaque && !game.getMonsterAt(x, y);"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 1424,
+      "text": "return c.isPassable && !game.getMonsterAt(x, y);"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 1476,
+      "text": "if (c && c.isPassable && !game.getMonsterAt(nx, ny) && !(game.player.loc.x === nx && game.player.loc.y === ny)) {"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 1506,
+      "text": "if (isFlying ? c.isOpaque : !c.isPassable) return false;"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 1752,
+      "text": "if (c && (isFlying ? !c.isOpaque : c.isPassable) && !game.getMonsterAt(nx, ny) && !(game.player.loc.x === nx && game.player.loc.y === ny)) {"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 1785,
+      "text": "if (isFlying) return !c.isOpaque && !game.getMonsterAt(x, y) && !(game.player.loc.x === x && game.player.loc.y === y);"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 1790,
+      "text": "return c.isPassable && !game.getMonsterAt(x, y) && !(game.player.loc.x === x && game.player.loc.y === y);"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 1826,
+      "text": "if (isFlying) return !c.isOpaque && !game.getMonsterAt(x, y);"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 1831,
+      "text": "return c.isPassable && !game.getMonsterAt(x, y);"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 1888,
+      "text": "const canEnter = this.hasBehavior('MONST_RESTRICTED_TO_LIQUID') ? isLiquidTile : c.isPassable;"
+    },
+    {
+      "file": "src/test/ai_1_scent_tracking.test.ts",
+      "line": 17,
+      "text": "*      isOpaque 残留 DOOR 的 true → obstructsScent 把开着的门继续当遮挡物、"
+    },
+    {
+      "file": "src/test/ai_1_scent_tracking.test.ts",
+      "line": 116,
+      "text": "// F2（isOpaque 残留）未修时步 9 穿不过门洞 → 西侧 = 1012..1022，翻红。"
+    },
+    {
+      "file": "src/test/armor_model_effect.test.ts",
+      "line": 196,
+      "text": "type GamePrivates = Omit<Game, 'canMoveTo'> & { canMoveTo(x: number, y: number): boolean };"
+    },
+    {
+      "file": "src/test/armor_model_effect.test.ts",
+      "line": 233,
+      "text": "privates.canMoveTo(px + dx, py + dy) && !game.getMonsterAt(px + dx, py + dy)"
+    },
+    {
+      "file": "src/test/b2_transcription.test.ts",
+      "line": 20,
+      "text": "canMoveTo(x: number, y: number): boolean;"
+    },
+    {
+      "file": "src/test/b2_transcription.test.ts",
+      "line": 51,
+      "text": "if(!c || seen.has(k) || !((game as unknown as GameInternals).canMoveTo(x,y) || c.terrain===C.SECRET_DOOR)) continue;"
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "line": 39,
+      "text": "import { T_OBSTRUCTS_ITEMS, T_PATHING_BLOCKER, T_IS_DF_TRAP } from '../engine/Map/TerrainCatalog';"
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "line": 64,
+      "text": "if (cell) cell.isPassable = true;"
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "line": 537,
+      "text": "*     ——CE 物品落位一律回避 T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER"
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "line": 555,
+      "text": "* T_PATHING_BLOCKER（Rogue.h:1948），CE 不会把物品放上陷阱。L1 因此把"
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "line": 572,
+      "text": "it('L1 全链 D1..D26 每件生成物品都落在物品合法格（CE T_OBSTRUCTS_ITEMS|T_PATHING_BLOCKER 回避）', () => {"
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "line": 577,
+      "text": "const hardBad = flags & (T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER) & ~T_IS_DF_TRAP;"
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "line": 582,
+      "text": "`T_OBSTRUCTS_ITEMS|T_PATHING_BLOCKER（Rogue.h:1926/:1948）；` +"
+    },
+    {
+      "file": "src/test/b_1b_identification_persistence.test.ts",
+      "line": 47,
+      "text": "if (cell) cell.isPassable = true;"
+    },
+    {
+      "file": "src/test/b_1c_detect_magic.test.ts",
+      "line": 54,
+      "text": "if (cell) cell.isPassable = true;"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "line": 19,
+      "text": "*    （Game.canMoveTo 语义）；b) 所有落在 center 上的宝藏物品落格可通行。"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "line": 24,
+      "text": "* 可通行判据与 Game.canMoveTo(Game.ts:4377) 完全同源：WALL / GRANITE / SECRET_DOOR /"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "line": 51,
+      "text": "type GameWithPrivates = Omit<Game, 'generateDepth' | 'canMoveTo'> & {"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "line": 53,
+      "text": "canMoveTo(x: number, y: number): boolean;"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "line": 62,
+      "text": "/** 与 Game.canMoveTo 同源的可通行判据（经实例上的私有方法，零漂移）。 */"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "line": 64,
+      "text": "return (game as unknown as GameWithPrivates).canMoveTo(x, y);"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "line": 249,
+      "text": "const passable = (isVestibule || isArea) ? true : walkable(game, mr.center.x, mr.center.y);"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "line": 250,
+      "text": "if (!inside || !passable) {"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "line": 253,
+      "text": "if (!passable) {"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "line": 261,
+      "text": "`cells内=${inside} 可通行=${passable} terrain=${terrain}`"
+    },
+    {
+      "file": "src/test/c_0_add_loops.test.ts",
+      "line": 181,
+      "text": "const passable = (x: number, y: number): boolean => (work[x]?.[y] ?? 0) > 0;"
+    },
+    {
+      "file": "src/test/c_0_add_loops.test.ts",
+      "line": 185,
+      "text": "const blocked = (x: number, y: number): boolean => (x === site.x && y === site.y) || !passable(x, y);"
+    },
+    {
+      "file": "src/test/c_0_add_loops.test.ts",
+      "line": 204,
+      "text": "* 割点判定（canMoveTo 口径的 8 向图）：把格 c 移除后，若存在某正交轴的"
+    },
+    {
+      "file": "src/test/c_0_add_loops.test.ts",
+      "line": 209,
+      "text": "const passable = (x: number, y: number): boolean => {"
+    },
+    {
+      "file": "src/test/c_0_add_loops.test.ts",
+      "line": 220,
+      "text": "if (!passable(a.x, a.y) || !passable(b.x, b.y)) continue;"
+    },
+    {
+      "file": "src/test/c_0_add_loops.test.ts",
+      "line": 231,
+      "text": "if (!passable(nx, ny)) continue;"
+    },
+    {
+      "file": "src/test/c_0_add_loops.test.ts",
+      "line": 245,
+      "text": "const passable = (x: number, y: number): boolean => (work[x]?.[y] ?? 0) > 0;"
+    },
+    {
+      "file": "src/test/c_0_add_loops.test.ts",
+      "line": 250,
+      "text": "if (!passable(x, y)) continue;"
+    },
+    {
+      "file": "src/test/c_0_add_loops.test.ts",
+      "line": 255,
+      "text": "if (!passable(ax, ay) || !passable(bx, by)) continue;"
+    },
+    {
+      "file": "src/test/c_0_add_loops.test.ts",
+      "line": 266,
+      "text": "if (!passable(nx, ny)) continue;"
+    },
+    {
+      "file": "src/test/c_0_add_loops.test.ts",
+      "line": 471,
+      "text": "let passable = 0;"
+    },
+    {
+      "file": "src/test/c_0_add_loops.test.ts",
+      "line": 485,
+      "text": "passable += free;"
+    },
+    {
+      "file": "src/test/c_0_add_loops.test.ts",
+      "line": 491,
+      "text": ").toBeLessThan(passable);"
+    },
+    {
+      "file": "src/test/c_0_add_loops.test.ts",
+      "line": 496,
+      "text": "console.log(`[c_0] B2 IN_LOOP 合计=${productionLoop}/${passable}` +"
+    },
+    {
+      "file": "src/test/c_0_add_loops.test.ts",
+      "line": 497,
+      "text": "`（${((100 * productionLoop) / passable).toFixed(1)}%），单层峰值=${(maxFraction * 100).toFixed(1)}%`);"
+    },
+    {
+      "file": "src/test/c_1_room_profile.test.ts",
+      "line": 399,
+      "text": "// 口径说明：占比（loop/passable）会被大开间房间**稀释**——房间增密让"
+    },
+    {
+      "file": "src/test/c_2_lakes.test.ts",
+      "line": 90,
+      "text": "/** 8 向 BFS 路程（CE T_PATHING_BLOCKER 口径：深渊/岩浆/深水/硫矿/墙都挡路）；不可达 = -1。 */"
+    },
+    {
+      "file": "src/test/c_2_lakes.test.ts",
+      "line": 326,
+      "text": "// pathingDistance 口径（T_PATHING_BLOCKER 挡路）——这正是 CE 比值"
+    },
+    {
+      "file": "src/test/c_2_lakes_e2e.test.ts",
+      "line": 228,
+      "text": "// 生成闸门的\"阻断集\"（CE lakeDisruptsPassability 的 T_PATHING_BLOCKER），"
+    },
+    {
+      "file": "src/test/c_3_walls_doors.test.ts",
+      "line": 26,
+      "text": "* `T_PATHING_BLOCKER && !TM_IS_SECRET`（Architect.c:199-210，web 对应物"
+    },
+    {
+      "file": "src/test/c_3_walls_doors.test.ts",
+      "line": 28,
+      "text": "* （T12）按该口径执行：canMoveTo ∪ {SECRET_DOOR}。canMoveTo 字面口径的"
+    },
+    {
+      "file": "src/test/c_3_walls_doors.test.ts",
+      "line": 428,
+      "text": "type GameWithPrivates = Omit<Game, 'generateDepth' | 'canMoveTo'> & {"
+    },
+    {
+      "file": "src/test/c_3_walls_doors.test.ts",
+      "line": 430,
+      "text": "canMoveTo(x: number, y: number): boolean;"
+    },
+    {
+      "file": "src/test/c_3_walls_doors.test.ts",
+      "line": 487,
+      "text": "const strictBad: string[] = []; // canMoveTo 字面口径（密门当墙）——只观测，属验收方重校准范围"
+    },
+    {
+      "file": "src/test/c_3_walls_doors.test.ts",
+      "line": 503,
+      "text": "const canMoveTo = (game as unknown as GameWithPrivates).canMoveTo.bind(game);"
+    },
+    {
+      "file": "src/test/c_3_walls_doors.test.ts",
+      "line": 505,
+      "text": "canMoveTo(x, y) || grid.getCell(x, y)!.terrain === TerrainType.SECRET_DOOR;"
+    },
+    {
+      "file": "src/test/c_3_walls_doors.test.ts",
+      "line": 507,
+      "text": "const flood = (passable: (x: number, y: number) => boolean, start: Pos): Set<number> => {"
+    },
+    {
+      "file": "src/test/c_3_walls_doors.test.ts",
+      "line": 516,
+      "text": "if (seen.has(key) || !passable(nx, ny)) continue;"
+    },
+    {
+      "file": "src/test/c_3_walls_doors.test.ts",
+      "line": 537,
+      "text": "if (!flood(canMoveTo, up).has(down.y * grid.width + down.x)) {"
+    },
+    {
+      "file": "src/test/c_3_walls_doors.test.ts",
+      "line": 542,
+      "text": "// p1_33 f 的密门口径修正版：必须可达集仍取**可走格**（canMoveTo ∩"
+    },
+    {
+      "file": "src/test/c_3_walls_doors.test.ts",
+      "line": 544,
+      "text": "// T_PATHING_BLOCKER && !TM_IS_SECRET 口径）——房间藏在密门后"
+    },
+    {
+      "file": "src/test/c_3_walls_doors.test.ts",
+      "line": 555,
+      "text": "if (!canMoveTo(x, y)) continue;"
+    },
+    {
+      "file": "src/test/c_3_walls_doors.test.ts",
+      "line": 591,
+      "text": "`canMoveTo 字面口径坏层=${strictBad.length}（${strictBad.slice(0, 12).join('、')}${strictBad.length > 12 ? '…' : ''}）` +"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 6,
+      "text": "* **只动答案不变的调用点**（terrainAllowsMove / Game.canMoveTo → 查表），"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 10,
+      "text": "*   A. 旗标常量位级正确性（T_PATHING_BLOCKER 并集成员漏一员即红）；"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 30,
+      "text": "T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_LAKE_PATHING_BLOCKER,"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 63,
+      "text": "/** 旧硬编码清单（迁移前 Game.canMoveTo / Connectivity.terrainAllowsMove 的"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 74,
+      "text": "it('T_PATHING_BLOCKER 恰为七旗标并集：漏一员（popcount=6）或混入外员（≥8）都翻红', () => {"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 75,
+      "text": "// CE Rogue.h:1948 成员（逐个独立抄录，不引用 T_PATHING_BLOCKER 自身）："
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 88,
+      "text": "expect(T_PATHING_BLOCKER).toBe(union);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 95,
+      "text": "expect(popcount(T_PATHING_BLOCKER), 'T_PATHING_BLOCKER 应恰置 7 位').toBe(7);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 102,
+      "text": "expect(T_DIVIDES_LEVEL).toBe("
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 116,
+      "text": "// T_PATHING_BLOCKER ⊃ T_DIVIDES_LEVEL，且恰多 IS_FIRE 与"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 118,
+      "text": "expect(T_PATHING_BLOCKER & ~T_DIVIDES_LEVEL).toBe(T_IS_FIRE | T_SPONTANEOUSLY_IGNITES);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 510,
+      "text": "// → isDeepWater(WATER_DEEP)=false → canMoveTo 放行深水 → D1 翻红。"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 618,
+      "text": "it('Game.canMoveTo（查表）≡ 旧清单：合成格逐地形实测（含生成中出现不了的地形）', () => {"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 620,
+      "text": "const canMoveTo = (game as unknown as { canMoveTo(x: number, y: number): boolean }).canMoveTo.bind(game);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 626,
+      "text": "expect(canMoveTo(20, 20), `${TerrainType[t]}`).toBe(legacyAllowsMove(t));"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 632,
+      "text": "// T_OBSTRUCTS_PASSABILITY ⇒ terrainAllowsMove/canMoveTo 均为 false"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 639,
+      "text": "const canMoveTo = (game as unknown as { canMoveTo(x: number, y: number): boolean }).canMoveTo.bind(game);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 642,
+      "text": "expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(false);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 649,
+      "text": "// 且 terrainAllowsMove/canMoveTo 的等价断言同点翻红）。"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 669,
+      "text": "const canMoveTo = (game as unknown as { canMoveTo(x: number, y: number): boolean }).canMoveTo.bind(game);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 672,
+      "text": "expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(false);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 678,
+      "text": "expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(true);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 697,
+      "text": "const canMoveTo = (game as unknown as { canMoveTo(x: number, y: number): boolean }).canMoveTo.bind(game);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 700,
+      "text": "expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(false);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 704,
+      "text": "expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(true);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 724,
+      "text": "const canMoveTo = (game as unknown as { canMoveTo(x: number, y: number): boolean }).canMoveTo.bind(game);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 728,
+      "text": "expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(false);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 732,
+      "text": "expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(true);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 752,
+      "text": "const canMoveTo = (game as unknown as { canMoveTo(x: number, y: number): boolean }).canMoveTo.bind(game);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 755,
+      "text": "expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(false);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 759,
+      "text": "expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(true);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 785,
+      "text": "const canMoveTo = (game as unknown as { canMoveTo(x: number, y: number): boolean }).canMoveTo.bind(game);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 788,
+      "text": "expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(false);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 792,
+      "text": "expect(canMoveTo(20, 20), `canMoveTo(${TerrainType[t]})`).toBe(true);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 815,
+      "text": "// isPassableOrSecretDoor（TM_IS_SECRET，密门算可通行，"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 852,
+      "text": "//   isPassable = !(WALL|GRANITE|CHASM|SECRET_DOOR)"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 853,
+      "text": "//   isOpaque   =  WALL|GRANITE|DOOR|SECRET_DOOR"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 854,
+      "text": "// 与 CE 查表判据的两处分歧（P1-38 病灶）：LOCKED_DOOR 的 isPassable"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 856,
+      "text": "// ——但 isPathingBlocker=true）；isOpaque 对 LOCKED_DOOR 现状 false"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 866,
+      "text": "expect(cell.isPassable, `${TerrainType[t]}.isPassable（现状启发式）`).toBe(wantPassable);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 867,
+      "text": "expect(cell.isOpaque, `${TerrainType[t]}.isOpaque（现状启发式）`).toBe(wantOpaque);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 871,
+      "text": "expect(g.getCell(10, 10)!.isPassable, 'LOCKED_DOOR 现状可通行（CE 为不可）').toBe(true);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 873,
+      "text": "expect(g.getCell(11, 10)!.isPassable, 'CHASM 现状不可通行（CE 可走、坠层）').toBe(false);"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 877,
+      "text": "// 现状口径：isPassable=false 的格按地形分流（WALL/GRANITE →"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 878,
+      "text": "// PDS_OBSTRUCTION，其余 → PDS_FORBIDDEN）；isPassable=true → cost=1。"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 926,
+      "text": "const oldCost = cell.isPassable"
+    },
+    {
+      "file": "src/test/c_4b_dungeon_feature.test.ts",
+      "line": 355,
+      "text": "// 1 宽走廊正中放 CHASM（T_PATHING_BLOCKER 系）→ 否决，一格都不落。"
+    },
+    {
+      "file": "src/test/c_7_lighting.test.ts",
+      "line": 531,
+      "text": "cell.isOpaque = false;"
+    },
+    {
+      "file": "src/test/c_7_lighting.test.ts",
+      "line": 532,
+      "text": "cell.isPassable = true;"
+    },
+    {
+      "file": "src/test/c_7_lighting.test.ts",
+      "line": 600,
+      "text": "wall.isOpaque = true;"
+    },
+    {
+      "file": "src/test/c_8_connectivity.test.ts",
+      "line": 17,
+      "text": "*     （Architect.c:48-55）把 CHASM/LAVA/TRAP 算 T_PATHING_BLOCKER 阻挡；"
+    },
+    {
+      "file": "src/test/c_8_connectivity.test.ts",
+      "line": 19,
+      "text": "*     相位 3 无相触 → 放行。web 移动图（canMoveTo ∪ SECRET_DOOR，8 向）"
+    },
+    {
+      "file": "src/test/c_8_connectivity.test.ts",
+      "line": 51,
+      "text": "type GameWithPrivates = Omit<Game, 'generateDepth' | 'canMoveTo'> & {"
+    },
+    {
+      "file": "src/test/c_8_connectivity.test.ts",
+      "line": 53,
+      "text": "canMoveTo(x: number, y: number): boolean;"
+    },
+    {
+      "file": "src/test/c_8_connectivity.test.ts",
+      "line": 99,
+      "text": "/** T12 口径的 8 向泛洪（canMoveTo ∪ SECRET_DOOR）。 */"
+    },
+    {
+      "file": "src/test/c_8_connectivity.test.ts",
+      "line": 102,
+      "text": "const canMoveTo = (game as unknown as GameWithPrivates).canMoveTo.bind(game);"
+    },
+    {
+      "file": "src/test/c_8_connectivity.test.ts",
+      "line": 104,
+      "text": "canMoveTo(x, y) || grid.getCell(x, y)!.terrain === TerrainType.SECRET_DOOR;"
+    },
+    {
+      "file": "src/test/c_8_connectivity.test.ts",
+      "line": 137,
+      "text": "* web 移动图里 CHASM 可走（corridor 连通）；CE 口径里它是 T_PATHING_BLOCKER。"
+    },
+    {
+      "file": "src/test/c_8_connectivity.test.ts",
+      "line": 163,
+      "text": "const canMoveTo = (game as unknown as GameWithPrivates).canMoveTo.bind(game);"
+    },
+    {
+      "file": "src/test/c_8_connectivity.test.ts",
+      "line": 169,
+      "text": "if (!canMoveTo(x, y) && cell.terrain !== TerrainType.SECRET_DOOR) continue;"
+    },
+    {
+      "file": "src/test/c_8_connectivity.test.ts",
+      "line": 254,
+      "text": "// T12 的验收口径是 canMoveTo ∪ SECRET_DOOR，密门封死即真切断。"
+    },
+    {
+      "file": "src/test/f_1_fire_as_terrain.test.ts",
+      "line": 54,
+      "text": "type Priv = { objectiveTimeBlock(): void; canMoveTo(x: number, y: number): boolean; entryQualifiesForPlacement(x: number, y: number): boolean };"
+    },
+    {
+      "file": "src/test/f_1_fire_as_terrain.test.ts",
+      "line": 203,
+      "text": "// 落位拒绝（Game.entryQualifiesForPlacement，CE T_PATHING_BLOCKER ⊃ T_IS_FIRE）"
+    },
+    {
+      "file": "src/test/f_1_fire_as_terrain.test.ts",
+      "line": 207,
+      "text": "// canMoveTo：火盖在深水上（CE 全层 OR 的运动判据）——"
+    },
+    {
+      "file": "src/test/f_1_fire_as_terrain.test.ts",
+      "line": 212,
+      "text": "expect(priv(game).canMoveTo(10, 6), '燃烧的深水格仍不可走（火不能遮住深水）').toBe(false);"
+    },
+    {
+      "file": "src/test/f_1_fire_as_terrain.test.ts",
+      "line": 223,
+      "text": "expect(priv(game).canMoveTo(12, 6), '熄灭后深水照旧不可走').toBe(false);"
+    },
+    {
+      "file": "src/test/harness.ts",
+      "line": 29,
+      "text": "type GamePrivates = Omit<Game, 'canMoveTo'> & {"
+    },
+    {
+      "file": "src/test/harness.ts",
+      "line": 30,
+      "text": "canMoveTo(x: number, y: number): boolean;"
+    },
+    {
+      "file": "src/test/harness.ts",
+      "line": 88,
+      "text": "* - 合法方向：目标格 canMoveTo（私有成员，测试侧只读访问）且无怪物占据。"
+    },
+    {
+      "file": "src/test/harness.ts",
+      "line": 104,
+      "text": "privates.canMoveTo(px + dx, py + dy) && !game.getMonsterAt(px + dx, py + dy)"
+    },
+    {
+      "file": "src/test/harness.ts",
+      "line": 180,
+      "text": "*     `T_PATHING_BLOCKER && !TM_IS_SECRET`；"
+    },
+    {
+      "file": "src/test/horde_terrain_spawn.test.ts",
+      "line": 34,
+      "text": "'canMoveTo' | 'findTerrainSpawnLocation' | 'passableArcCount' |"
+    },
+    {
+      "file": "src/test/horde_terrain_spawn.test.ts",
+      "line": 36,
+      "text": "canMoveTo(x: number, y: number): boolean;"
+    },
+    {
+      "file": "src/test/horde_terrain_spawn.test.ts",
+      "line": 175,
+      "text": "if (!n || !n.isPassable) impassableNeighbor = true;"
+    },
+    {
+      "file": "src/test/horde_terrain_spawn.test.ts",
+      "line": 270,
+      "text": "if (cell?.terrain === TerrainType.STAIRS_UP) upPassable = cell.isPassable;"
+    },
+    {
+      "file": "src/test/horde_terrain_spawn.test.ts",
+      "line": 271,
+      "text": "if (cell?.terrain === TerrainType.STAIRS_DOWN) downPassable = cell.isPassable;"
+    },
+    {
+      "file": "src/test/horde_terrain_spawn.test.ts",
+      "line": 285,
+      "text": "expect(cell!.isPassable, `seed=${seed} D${d} 护符不应落在墙里`).toBe(true);"
+    },
+    {
+      "file": "src/test/horde_terrain_spawn.test.ts",
+      "line": 288,
+      "text": "expect(cell!.isPassable, `seed=${seed} D${d} 钥匙不应落在墙里`).toBe(true);"
+    },
+    {
+      "file": "src/test/horde_terrain_spawn.test.ts",
+      "line": 289,
+      "text": "} else if (cell && !cell.isPassable) {"
+    },
+    {
+      "file": "src/test/horde_terrain_spawn.test.ts",
+      "line": 377,
+      "text": "expect(cell.isPassable, '目标地形（深水/泥沼/熔岩）应是可通行格').toBe(true);"
+    },
+    {
+      "file": "src/test/hunger_curve_sim.test.ts",
+      "line": 32,
+      "text": "type GamePrivates = { canMoveTo(x: number, y: number): boolean };"
+    },
+    {
+      "file": "src/test/hunger_curve_sim.test.ts",
+      "line": 48,
+      "text": "privates.canMoveTo(px + dx, py + dy) && !game.getMonsterAt(px + dx, py + dy)"
+    },
+    {
+      "file": "src/test/monster_damage_balance.test.ts",
+      "line": 47,
+      "text": "type GamePrivates = Omit<Game, 'canMoveTo'> & {"
+    },
+    {
+      "file": "src/test/monster_damage_balance.test.ts",
+      "line": 48,
+      "text": "canMoveTo(x: number, y: number): boolean;"
+    },
+    {
+      "file": "src/test/monster_damage_balance.test.ts",
+      "line": 93,
+      "text": "if (d < bestDist && privates.canMoveTo(nx, ny) && !game.getMonsterAt(nx, ny)) {"
+    },
+    {
+      "file": "src/test/monster_damage_balance.test.ts",
+      "line": 103,
+      "text": "privates.canMoveTo(px + dx, py + dy) && !game.getMonsterAt(px + dx, py + dy)"
+    },
+    {
+      "file": "src/test/monster_damage_balance.test.ts",
+      "line": 144,
+      "text": "if (!nextCell || !nextCell.isPassable) continue;"
+    },
+    {
+      "file": "src/test/monster_stats_effect.test.ts",
+      "line": 59,
+      "text": "type GamePrivates = Omit<Game, 'canMoveTo'> & {"
+    },
+    {
+      "file": "src/test/monster_stats_effect.test.ts",
+      "line": 60,
+      "text": "canMoveTo(x: number, y: number): boolean;"
+    },
+    {
+      "file": "src/test/monster_stats_effect.test.ts",
+      "line": 164,
+      "text": "privates.canMoveTo(px + dx, py + dy) && !game.getMonsterAt(px + dx, py + dy)"
+    },
+    {
+      "file": "src/test/monster_stats_effect.test.ts",
+      "line": 280,
+      "text": "if (priv.canMoveTo(tx, ty) && !game.getMonsterAt(tx, ty)) {"
+    },
+    {
+      "file": "src/test/p1_20_item_placement.test.ts",
+      "line": 19,
+      "text": "* 可通行判据与 Game.canMoveTo(Game.ts:4776) 同源（WALL/GRANITE/SECRET_DOOR/"
+    },
+    {
+      "file": "src/test/p1_20_item_placement.test.ts",
+      "line": 20,
+      "text": "* LOCKED_DOOR/WATER_DEEP 不可通行）；LAVA 单独判：canMoveTo 认为可走入，但"
+    },
+    {
+      "file": "src/test/p1_20_item_placement.test.ts",
+      "line": 35,
+      "text": "type GameWithPrivates = Omit<Game, 'generateDepth' | 'canMoveTo'> & {"
+    },
+    {
+      "file": "src/test/p1_20_item_placement.test.ts",
+      "line": 37,
+      "text": "canMoveTo(x: number, y: number): boolean;"
+    },
+    {
+      "file": "src/test/p1_20_item_placement.test.ts",
+      "line": 46,
+      "text": "return (game as unknown as GameWithPrivates).canMoveTo(x, y);"
+    },
+    {
+      "file": "src/test/p1_20_item_placement.test.ts",
+      "line": 92,
+      "text": "const passable = walkable(game, x, y);"
+    },
+    {
+      "file": "src/test/p1_20_item_placement.test.ts",
+      "line": 94,
+      "text": "if (!passable || inLava) {"
+    },
+    {
+      "file": "src/test/p1_20_item_placement.test.ts",
+      "line": 98,
+      "text": "`terrain=${terrainNames[terrain] ?? `#${terrain}`} 可通行=${passable}`"
+    },
+    {
+      "file": "src/test/p1_24_death_sink.test.ts",
+      "line": 389,
+      "text": "// getMonsterAt 先于 canMoveTo），站深水格的怪照常被砍。"
+    },
+    {
+      "file": "src/test/p1_26_invariants.test.ts",
+      "line": 12,
+      "text": "* 判据口径：可走性一律用 Game.canMoveTo 的**实际移动规则**（经只读转型"
+    },
+    {
+      "file": "src/test/p1_26_invariants.test.ts",
+      "line": 15,
+      "text": "* 绝不用 cell.isPassable 量连通性——深水的 isPassable 是 true，用它量"
+    },
+    {
+      "file": "src/test/p1_26_invariants.test.ts",
+      "line": 17,
+      "text": "* 本轮反向验证 RV1 实证：isPassable 判据下 11 层坏层全部\"消失\"）。"
+    },
+    {
+      "file": "src/test/p1_26_invariants.test.ts",
+      "line": 69,
+      "text": "/** 游戏的实际移动规则：只读转型后直接调用 Game 的私有 canMoveTo。 */"
+    },
+    {
+      "file": "src/test/p1_26_invariants.test.ts",
+      "line": 71,
+      "text": "return (x, y) => (game as unknown as { canMoveTo(x: number, y: number): boolean }).canMoveTo(x, y);"
+    },
+    {
+      "file": "src/test/p1_26_invariants.test.ts",
+      "line": 84,
+      "text": "/** canMoveTo 口径下的可走格数（V-2b-5 起剔除机器格） */"
+    },
+    {
+      "file": "src/test/p1_26_invariants.test.ts",
+      "line": 97,
+      "text": "function flood(grid: Grid, start: Pos, passable: MovePredicate): Set<number> {"
+    },
+    {
+      "file": "src/test/p1_26_invariants.test.ts",
+      "line": 108,
+      "text": "if (!passable(nx, ny)) continue;"
+    },
+    {
+      "file": "src/test/p1_26_invariants.test.ts",
+      "line": 118,
+      "text": "const passable = realMoveRule(game);"
+    },
+    {
+      "file": "src/test/p1_26_invariants.test.ts",
+      "line": 141,
+      "text": "if (passable(x, y)) {"
+    },
+    {
+      "file": "src/test/p1_26_invariants.test.ts",
+      "line": 152,
+      "text": "// 可走格计数 walkable 仍按 canMoveTo 的字面口径；"
+    },
+    {
+      "file": "src/test/p1_29_lake_connectivity.test.ts",
+      "line": 11,
+      "text": "* （canMoveTo 口径下仅深水）加 CE 语义的放置闸门："
+    },
+    {
+      "file": "src/test/p1_29_lake_connectivity.test.ts",
+      "line": 167,
+      "text": "// 与 p1_26 同款判据：Game.canMoveTo 本体（只读转型），8 向。"
+    },
+    {
+      "file": "src/test/p1_29_lake_connectivity.test.ts",
+      "line": 168,
+      "text": "const canMoveTo = (game as unknown as { canMoveTo(x: number, y: number): boolean }).canMoveTo.bind(game);"
+    },
+    {
+      "file": "src/test/p1_29_lake_connectivity.test.ts",
+      "line": 170,
+      "text": "const e2eRule = analysisAllowsMove(grid, canMoveTo);"
+    },
+    {
+      "file": "src/test/p1_29_lake_connectivity.test.ts",
+      "line": 279,
+      "text": "it('对抗 AD3：判据是 canMoveTo 口径——预存深水桥不算干地', () => {"
+    },
+    {
+      "file": "src/test/p1_29_lake_connectivity.test.ts",
+      "line": 282,
+      "text": "//   canMoveTo 口径 → W 不可通行 → B、C 与 A 失去联系 → 必须拒绝（true）；"
+    },
+    {
+      "file": "src/test/p1_29_lake_connectivity.test.ts",
+      "line": 283,
+      "text": "//   若误用 isPassable（深水 isPassable=true）→ W 被当干地 → 全图连通 → 接受（false）。"
+    },
+    {
+      "file": "src/test/p1_29_lake_connectivity.test.ts",
+      "line": 320,
+      "text": "it('判据口径钉死：terrainAllowsMove 与 Game.canMoveTo 对全部 TerrainType 逐一一致', () => {"
+    },
+    {
+      "file": "src/test/p1_29_lake_connectivity.test.ts",
+      "line": 322,
+      "text": "const canMoveTo = (game as unknown as { canMoveTo(x: number, y: number): boolean }).canMoveTo.bind(game);"
+    },
+    {
+      "file": "src/test/p1_29_lake_connectivity.test.ts",
+      "line": 326,
+      "text": "const viaGame = canMoveTo(5, 5);"
+    },
+    {
+      "file": "src/test/p1_29_lake_connectivity.test.ts",
+      "line": 328,
+      "text": "if (viaGame !== viaMirror) mismatches.push(`${TerrainType[t]}: canMoveTo=${viaGame} terrainAllowsMove=${viaMirror}`);"
+    },
+    {
+      "file": "src/test/p1_29_lake_connectivity.test.ts",
+      "line": 332,
+      "text": "`terrainAllowsMove 与 Game.canMoveTo 口径漂移（Game.canMoveTo 的排除清单` +"
+    },
+    {
+      "file": "src/test/p1_31_35_placement_snapshot.test.ts",
+      "line": 9,
+      "text": "*           LEFT/RIGHT = 北/南/西/东；T_PATHING_BLOCKER Rogue.h:1948）"
+    },
+    {
+      "file": "src/test/p1_31_35_placement_snapshot.test.ts",
+      "line": 86,
+      "text": "if (m[x]![y] !== 30000 && game.grid.getCell(x, y)?.isPassable) {"
+    },
+    {
+      "file": "src/test/p1_31_35_placement_snapshot.test.ts",
+      "line": 119,
+      "text": "// CE 合格条件是 !T_PATHING_BLOCKER：草地/浅水/门都合格，不必是 FLOOR。"
+    },
+    {
+      "file": "src/test/p1_31_35_placement_snapshot.test.ts",
+      "line": 120,
+      "text": "expect(game.grid.getCell(x, y)?.isPassable, `seed ${seed}: 出生格不可通行`).toBe(true);"
+    },
+    {
+      "file": "src/test/p1_31_35_placement_snapshot.test.ts",
+      "line": 186,
+      "text": "expect(game.grid.getCell(d1.x, d1.y)?.isPassable).toBe(true);"
+    },
+    {
+      "file": "src/test/p1_33_machine_chokepoint.test.ts",
+      "line": 22,
+      "text": "*   - passMap 用 terrainAllowsMove（canMoveTo 镜像），非 CE 的 T_PATHING_BLOCKER；"
+    },
+    {
+      "file": "src/test/p1_33_machine_chokepoint.test.ts",
+      "line": 49,
+      "text": "type GameWithPrivates = Omit<Game, 'generateDepth' | 'canMoveTo'> & {"
+    },
+    {
+      "file": "src/test/p1_33_machine_chokepoint.test.ts",
+      "line": 51,
+      "text": "canMoveTo(x: number, y: number): boolean;"
+    },
+    {
+      "file": "src/test/p1_33_machine_chokepoint.test.ts",
+      "line": 162,
+      "text": "const canMoveTo = (game as unknown as GameWithPrivates).canMoveTo.bind(game);"
+    },
+    {
+      "file": "src/test/p1_33_machine_chokepoint.test.ts",
+      "line": 246,
+      "text": "} else if (!canMoveTo(mr.center.x, mr.center.y)) {"
+    },
+    {
+      "file": "src/test/p1_33_machine_chokepoint.test.ts",
+      "line": 270,
+      "text": "// C-3 后由验收方把判据从 canMoveTo 的字面口径改为 CE 的"
+    },
+    {
+      "file": "src/test/p1_33_machine_chokepoint.test.ts",
+      "line": 272,
+      "text": "// （analyzeMap 的 passMap 条件是 T_PATHING_BLOCKER &&"
+    },
+    {
+      "file": "src/test/p1_33_machine_chokepoint.test.ts",
+      "line": 279,
+      "text": "const stairsRule = analysisAllowsMove(grid, canMoveTo);"
+    },
+    {
+      "file": "src/test/p2_0_seeded_rng.test.ts",
+      "line": 62,
+      "text": "type Privates = { canMoveTo(x: number, y: number): boolean };"
+    },
+    {
+      "file": "src/test/p2_0_seeded_rng.test.ts",
+      "line": 80,
+      "text": "privates.canMoveTo(px + dx, py + dy) && !game.getMonsterAt(px + dx, py + dy)"
+    },
+    {
+      "file": "src/test/p2_2_real_speed.test.ts",
+      "line": 87,
+      "text": "type GamePrivates = Omit<Game, 'canMoveTo'> & {"
+    },
+    {
+      "file": "src/test/p2_2_real_speed.test.ts",
+      "line": 88,
+      "text": "canMoveTo(x: number, y: number): boolean;"
+    },
+    {
+      "file": "src/test/p2_2_real_speed.test.ts",
+      "line": 117,
+      "text": "privates.canMoveTo(px + dx, py + dy) && !game.getMonsterAt(px + dx, py + dy)"
+    },
+    {
+      "file": "src/test/p4_10_waypoint.test.ts",
+      "line": 124,
+      "text": "if (cell.isPassable && !wp.coverage![x]![y]) continue;"
+    },
+    {
+      "file": "src/test/p4_10_waypoint.test.ts",
+      "line": 125,
+      "text": "if (cell.isPassable) {"
+    },
+    {
+      "file": "src/test/p4_8_scent_map.test.ts",
+      "line": 208,
+      "text": "//         isOpaque 残留 DOOR 的 true → obstructsScent 把开着的门继续当"
+    },
+    {
+      "file": "src/test/p4_9_safety_map.test.ts",
+      "line": 107,
+      "text": "if (c && c.isPassable && !game.getMonsterAt(nx, ny) &&"
+    },
+    {
+      "file": "src/test/p4_9_safety_map.test.ts",
+      "line": 391,
+      "text": "if (m[x]![y] !== 30000 && game.grid.getCell(x, y)?.isPassable) {"
+    },
+    {
+      "file": "src/test/scroll_effects.test.ts",
+      "line": 50,
+      "text": "expect(cell!.isPassable).toBe(true);"
+    },
+    {
+      "file": "src/test/scroll_effects.test.ts",
+      "line": 465,
+      "text": "// 启发式同步：FORCEFIELD 不挡视线 → isOpaque 立即翻假"
+    },
+    {
+      "file": "src/test/scroll_effects.test.ts",
+      "line": 466,
+      "text": "expect(inner.isOpaque).toBe(false);"
+    },
+    {
+      "file": "src/test/t_1_tail.test.ts",
+      "line": 32,
+      "text": "import { TERRAIN_FLAGS, T_PATHING_BLOCKER } from '../engine/Map/TerrainCatalog';"
+    },
+    {
+      "file": "src/test/t_1_tail.test.ts",
+      "line": 247,
+      "text": "expect(TERRAIN_FLAGS[TerrainType.CRYSTAL_WALL].flags & T_PATHING_BLOCKER).toBeTruthy();"
+    },
+    {
+      "file": "src/test/u_15a_shattering.test.ts",
+      "line": 149,
+      "text": "expect(cell(g, 10, 5).isPassable).toBe(false); // glyph must not mask forcefield."
+    },
+    {
+      "file": "src/test/u_15a_shattering.test.ts",
+      "line": 161,
+      "text": "expect(cell(g).isPassable).toBe(false); expect(cell(g).isOpaque).toBe(true);"
+    },
+    {
+      "file": "src/test/u_18a_terrain_contracts.test.ts",
+      "line": 58,
+      "text": "cell.isPassable = !cell.isPassable; cell.isOpaque = !cell.isOpaque;"
+    },
+    {
+      "file": "src/test/v_1c_machine_structure.test.ts",
+      "line": 148,
+      "text": "*  trapType/isPassable/isOpaque——backupLevel 的快照面。"
+    },
+    {
+      "file": "src/test/v_1c_machine_structure.test.ts",
+      "line": 157,
+      "text": "`${c.isPassable ? 1 : 0}|${c.isOpaque ? 1 : 0}`);"
+    },
+    {
+      "file": "src/test/v_2b_2a_placement_flags.test.ts",
+      "line": 21,
+      "text": "*       漏掉 T_OBSTRUCTS_ITEMS|T_PATHING_BLOCKER 排除 → 翻红"
+    },
+    {
+      "file": "src/test/v_2b_2a_placement_flags.test.ts",
+      "line": 323,
+      "text": "// T_PATHING_BLOCKER 里（Rogue.h:1948）。"
+    },
+    {
+      "file": "src/test/v_2b_2a_placement_flags.test.ts",
+      "line": 347,
+      "text": "// 对抗面：漏掉 T_OBSTRUCTS_ITEMS|T_PATHING_BLOCKER 排除的实现会把"
+    },
+    {
+      "file": "src/test/v_2b_2b_blueprints.test.ts",
+      "line": 297,
+      "text": "expect(grid.getCell(8, 7)!.terrain, 'T_PATHING_BLOCKER 陷阱应被清').toBe(TerrainType.FLOOR);"
+    },
+    {
+      "file": "src/test/v_2b_6_keys.test.ts",
+      "line": 353,
+      "text": "* 熔岩/深渊/墙/花岗岩等 T_PATHING_BLOCKER 不可通行。"
+    },
+    {
+      "file": "src/test/v_2b_9c_effects.test.ts",
+      "line": 6,
+      "text": "import { TERRAIN_FLAGS as T, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_ITEMS, T_OBSTRUCTS_GAS, T_OBSTRUCTS_SURFACE_EFFECTS, T_OBSTRUCTS_EVERYTHING, T_PATHING_BLOCKER, TM_STAND_IN_TILE, TM_VANISHES_UPON_PROMOTION, TM_IS_WIRED, TM_ALLOWS_SUBMERGING, TM_LIST_IN_SIDEBAR } from '../engine/Map/TerrainCatalog';"
+    },
+    {
+      "file": "src/test/v_2b_9c_effects.test.ts",
+      "line": 30,
+      "text": "canMoveTo(x: number, y: number): boolean;"
+    },
+    {
+      "file": "src/test/v_2b_9c_effects.test.ts",
+      "line": 89,
+      "text": "if (seen.has(k) || !g.grid.getCell(n.x, n.y) || !inside(g).canMoveTo(n.x, n.y)) continue;"
+    },
+    {
+      "file": "src/test/v_2b_9c_effects.test.ts",
+      "line": 90,
+      "text": "if (avoidHazards && g.grid.getCell(n.x,n.y)!.layers.some(t => T[t].flags & T_PATHING_BLOCKER)) continue;"
+    },
+    {
+      "file": "src/test/v_2b_9c_effects.test.ts",
+      "line": 277,
+      "text": "expect(inside(g).canMoveTo(built.center.x,built.center.y)).toBe(true);"
+    },
+    {
+      "file": "src/test/v_2b_9c_effects.test.ts",
+      "line": 295,
+      "text": "expect(inside(g).canMoveTo(16,12)).toBe(true);"
+    },
+    {
+      "file": "src/test/v_2b_9e_area_machine.test.ts",
+      "line": 110,
+      "text": "it('uses four-way T_PATHING_BLOCKER costs across layers, admits secret doors, and accepts undersized components', () => {"
+    },
+    {
+      "file": "src/test/w_11_teleport_placement.test.ts",
+      "line": 67,
+      "text": "g.grid.getCell(13, 1)!.isPassable = true; // stale presentation cache must not bypass layer flags"
+    },
+    {
+      "file": "src/test/w_12_blink_beckoning.test.ts",
+      "line": 74,
+      "text": "g.grid.getCell(8, 5)!.isPassable = true;"
+    },
+    {
+      "file": "src/test/w_13_tunneling.test.ts",
+      "line": 129,
+      "text": "expect(g.grid.getCell(5, 5)!.isPassable).toBe(true); expect(g.grid.getCell(5, 5)!.isOpaque).toBe(false);"
+    },
+    {
+      "file": "src/test/w_13_tunneling.test.ts",
+      "line": 144,
+      "text": "expect(c.isPassable).toBe(false); expect(c.isOpaque).toBe(false);"
+    },
+    {
+      "file": "src/test/w_13_tunneling.test.ts",
+      "line": 205,
+      "text": "const pass = (x: number, y: number) => g.grid.getCell(x, y)?.isPassable ?? false;"
+    },
+    {
+      "file": "src/test/w_14_obstruction.test.ts",
+      "line": 107,
+      "text": "expect(m.loc).toEqual({ x: 10, y: 5 }); expect(m.hp).toBe(hp); expect(g.grid.getCell(10, 5)!.isPassable).toBe(true);"
+    },
+    {
+      "file": "src/test/w_14_obstruction.test.ts",
+      "line": 144,
+      "text": "const path = () => Pathfind.findPath(grid, 2, 4, destination.x, destination.y, (x, y) => !!grid.getCell(x, y)?.isPassable);"
+    },
+    {
+      "file": "src/test/w_14_obstruction.test.ts",
+      "line": 165,
+      "text": "expect(cell.isPassable).toBe(false); expect(cell.isOpaque).toBe(false);"
+    },
+    {
+      "file": "src/test/w_14_obstruction.test.ts",
+      "line": 186,
+      "text": "expect(grid.getCell(11, 6)!.isPassable).toBe(false);"
+    },
+    {
+      "file": "src/test/w_14_obstruction.test.ts",
+      "line": 188,
+      "text": "expect(surface(grid, 11, 6)).toBe(T.NOTHING); expect(grid.getCell(11, 6)!.isPassable).toBe(true);"
+    },
+    {
+      "file": "src/test/w_14_obstruction.test.ts",
+      "line": 196,
+      "text": "expect(surface(grid, 12, 7)).toBe(T.FORCEFIELD_MELT); expect(grid.getCell(12, 7)!.isPassable).toBe(false);"
+    },
+    {
+      "file": "src/test/w_14_obstruction.test.ts",
+      "line": 198,
+      "text": "expect(surface(grid, 12, 7)).toBe(T.NOTHING); expect(grid.getCell(12, 7)!.isPassable).toBe(true);"
+    },
+    {
+      "file": "src/test/w_16_conjuration.test.ts",
+      "line": 55,
+      "text": "for(const b of all){expect(g.getMonsterAt(b.x,b.y)).toBe(b);expect(g.grid.getCell(b.x,b.y)!.isPassable).toBe(true);"
+    },
+    {
+      "file": "src/test/w_26_arcana_closure.test.ts",
+      "line": 69,
+      "text": "case 'wand_of_teleportation':expect(m.loc).not.toEqual(before.loc);expect(g.grid.getCell(m.x,m.y)!.isPassable).toBe(true);break;"
+    },
+    {
+      "file": "src/test/w_26_arcana_closure.test.ts",
+      "line": 83,
+      "text": "case 'staff_of_obstruction':expect(result!.landingPos).toEqual({x:8,y:5});expect(g.grid.getCell(8,5)!.layers[L.SURFACE]).toBe(T.FORCEFIELD);expect(g.grid.getCell(8,5)!.isPassable).toBe(false);expect(m.hp).toBe(before.hp);break;"
+    },
+    {
+      "file": "scripts/w13-browser-check.mjs",
+      "line": 76,
+      "text": "return { x, layers: c.layers, passable: c.isPassable, opaque: c.isOpaque };"
+    },
+    {
+      "file": "scripts/w13-browser-check.mjs",
+      "line": 81,
+      "text": "if (mode === 'impregnable' || mode === 'ordinary') assert.equal(state.row[5].passable, false);"
+    },
+    {
+      "file": "scripts/w13-browser-check.mjs",
+      "line": 83,
+      "text": "if (mode === 'boundary') { assert.equal(state.row[0].passable, false); assert.equal(state.row[0].opaque, false); }"
+    },
+    {
+      "file": "scripts/w14-browser-check.mjs",
+      "line": 59,
+      "text": ".flat().filter(p => p.c.layers.includes(T.FORCEFIELD) || p.c.layers.includes(T.FORCEFIELD_MELT)).map(p => ({ x: p.x, y: p.y, layers: p.c.layers, passable: p.c.isPassable })),"
+    },
+    {
+      "file": "scripts/w14-browser-check.mjs",
+      "line": 60,
+      "text": "row: Array.from({ length: 11 }, (_, x) => ({ x, layers: g.grid.getCell(x, 5).layers, passable: g.grid.getCell(x, 5).isPassable })),"
+    },
+    {
+      "file": "scripts/w14-browser-check.mjs",
+      "line": 71,
+      "text": "assert(state.fields.every(p => p.passable === false));"
+    },
+    {
+      "file": "scripts/w14-browser-check.mjs",
+      "line": 74,
+      "text": "if (mode === 'impregnable') assert.equal(state.row[8].passable, false);"
+    },
+    {
+      "file": "scripts/w14-browser-check.mjs",
+      "line": 75,
+      "text": "if (mode === 'occupied') assert.equal(state.row[8].passable, true);"
+    },
+    {
+      "file": "scripts/w14-negative-check.mjs",
+      "line": 12,
+      "text": "['passability-cache', 'cell.isPassable = !(flags & T_OBSTRUCTS_PASSABILITY);', 'cell.isPassable = true;'],"
+    },
+    {
+      "file": "scripts/w20-ce-golden.mjs",
+      "line": 25,
+      "text": "#define T_DIVIDES_LEVEL 7"
+    },
+    {
+      "file": "scripts/w26-browser-check.mjs",
+      "line": 56,
+      "text": "if(suffix==='obstruction'){assert.deepEqual(await page.evaluate(async()=>{const {DungeonLayer:L,TerrainType:T}=await import('/src/engine/Map/Grid.ts');const c=window.activeGame.grid.getCell(7,5);return [T[c.layers[L.SURFACE]],c.isPassable];}),['FORCEFIELD',false]);}"
+    }
+  ],
+  "note": "String-literal edges deliberately include source scanners. Text hits include comments and are not asserted to be runtime reads."
+}

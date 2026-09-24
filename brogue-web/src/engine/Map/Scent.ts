@@ -12,14 +12,14 @@
  *   - awareOfTarget        Monsters.c:1658-1690（P4-8 返工：3% 丢目标 + awareness*3 硬截断）
  *
  * 已知 web 侧取舍（详见 ai_docs/p4_8_scent_map_report.md）：
- *   - T_OBSTRUCTS_SCENT 用 obstructsScent 近似（Rogue.h:1947 的六组标志 ->
- *     isPassable/isOpaque + CHASM/LAVA/WATER_DEEP）。
+ *   - U18a: 遮挡与留味已使用四层 flags，旧显示层近似已移除。
  *   - CE 的 diagonalBlocked（对角墙角）web 全局无对应判定，两处邻接检查均省略，
  *     与 P4-5/P4-6 以来移动代码的同口径一致。
  *   - 跨层气味留存不实现（CE levels[d].scentMap），web 换层即换新图。
  */
 
-import { TerrainType, type Cell, type Grid } from './Grid';
+import type { Grid } from './Grid';
+import { terrainBlocksMovement, terrainBlocksScent } from './TerrainRules';
 import { rng } from '../Random';
 
 /**
@@ -32,24 +32,11 @@ export function scentDistance(x1: number, y1: number, x2: number, y2: number): n
     return dx > dy ? 2 * dx + dy : dx + 2 * dy;
 }
 
-/** CE T_OBSTRUCTS_PASSABILITY（Rogue.h:1930 一族）的 web 近似。 */
-export function obstructsPassability(cell: Cell): boolean {
-    return !cell.isPassable;
-}
+/** CE T_OBSTRUCTS_PASSABILITY: four-layer flag union (U18a). */
+export const obstructsPassability = terrainBlocksMovement;
 
-/**
- * CE T_OBSTRUCTS_SCENT（Rogue.h:1947）的 web 近似：
- *   CE = T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION | T_AUTO_DESCENT
- *        | T_LAVA_INSTA_DEATH | T_IS_DEEP_WATER | T_SPONTANEOUSLY_IGNITES
- *   web = !isPassable | isOpaque | CHASM | LAVA | WATER_DEEP（brimstone 类
- *   T_SPONTANEOUSLY_IGNITES 地形 web 无对应，见报告）。
- */
-export function obstructsScent(cell: Cell): boolean {
-    if (!cell.isPassable || cell.isOpaque) return true;
-    return cell.terrain === TerrainType.CHASM ||
-        cell.terrain === TerrainType.LAVA ||
-        cell.terrain === TerrainType.WATER_DEEP;
-}
+/** CE T_OBSTRUCTS_SCENT: four-layer flag union, independent of display priority. */
+export const obstructsScent = terrainBlocksScent;
 
 /** CE nbDirs（GlobalsBase.c:38）：N S W E NW SW NE SE——前 4 个是基本方向。 */
 const NB_DIRS: ReadonlyArray<readonly [number, number]> =

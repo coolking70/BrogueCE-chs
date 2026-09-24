@@ -81,11 +81,14 @@ import {
     DRAW_PRIORITY,
     Grid,
     TerrainType,
+    type Cell,
 } from './Grid';
 import {
     T_AUTO_DESCENT,
     T_IS_DEEP_WATER,
     T_IS_FIRE,
+    T_IS_DF_TRAP,
+    T_OBSTRUCTS_EVERYTHING,
     T_LAVA_INSTA_DEATH,
     T_OBSTRUCTS_PASSABILITY,
     T_OBSTRUCTS_SURFACE_EFFECTS,
@@ -109,7 +112,7 @@ import {
     DFF_TREAT_AS_BLOCKING,
     DUNGEON_FEATURE_CATALOG,
 } from './DungeonFeatureCatalog';
-import type { DF, DungeonFeatureEntry } from './DungeonFeatureCatalog';
+import { DF, type DungeonFeatureEntry } from './DungeonFeatureCatalog';
 
 /** CE `nbDirs[0..3]`（GlobalsBase.c:38）——4 向正交，顺序逐项一致。 */
 const DIRS4: ReadonlyArray<readonly [number, number]> = [
@@ -152,6 +155,11 @@ export function createSpawnMap(grid: Grid): SpawnMap {
 export function cellTerrainFlags(grid: Grid, x: number, y: number): number {
     const cell = grid.getCell(x, y);
     if (!cell) return 0;
+    return terrainFlagsOfCell(cell);
+}
+
+/** Cell-valued form of the same four-layer query; never reads display priority. */
+export function terrainFlagsOfCell(cell: Cell): number {
     let f = 0;
     for (let l = 0; l < DungeonLayer.COUNT; l++) {
         f |= TERRAIN_FLAGS[cell.layers[l]!].flags;
@@ -171,11 +179,45 @@ export function cellTerrainFlags(grid: Grid, x: number, y: number): number {
 export function cellTerrainMechFlags(grid: Grid, x: number, y: number): number {
     const cell = grid.getCell(x, y);
     if (!cell) return 0;
+    return terrainMechFlagsOfCell(cell);
+}
+
+export function terrainMechFlagsOfCell(cell: Cell): number {
     let f = 0;
     for (let l = 0; l < DungeonLayer.COUNT; l++) {
         f |= TERRAIN_FLAGS[cell.layers[l]!].mechFlags;
     }
     return f;
+}
+
+/** CE Monsters.c:1259-1311: only secret layers' immediate discovery successors.
+ * This is NOT the union of the resulting cell and does not execute discovery.
+ * The missing DF tiles below have known CE flags (Globals.c:348/378/380/383/388/396/399);
+ * querying their flags does not implement their deferred gameplay (U17).
+ */
+export function discoveredTerrainFlagsOfCell(cell: Cell): number {
+    const missingTileFlags: Readonly<Record<string, number>> = {
+        GAS_TRAP_POISON: T_IS_DF_TRAP,
+        TRAP_DOOR: T_AUTO_DESCENT,
+        FLAMETHROWER: T_IS_DF_TRAP,
+        MACHINE_POISON_GAS_VENT_DORMANT: 0,
+        MACHINE_METHANE_VENT_DORMANT: 0,
+        MACHINE_PARALYSIS_VENT: 0,
+        WALL_LEVER: T_OBSTRUCTS_EVERYTHING,
+    };
+    let flags = 0;
+    for (const terrain of cell.layers) {
+        const tile = TERRAIN_FLAGS[terrain];
+        if (!(tile.mechFlags & TM_IS_SECRET) || !tile.discoverType) continue;
+        const id = DF[tile.discoverType as keyof typeof DF];
+        const successor = DUNGEON_FEATURE_CATALOG[id];
+        if (!successor) throw new Error(`Unknown discovery DF: ${tile.discoverType}`);
+        const successorFlags = successor.tile === null
+            ? missingTileFlags[successor.ceTile] : TERRAIN_FLAGS[successor.tile].flags;
+        if (successorFlags === undefined) throw new Error(`Unknown discovery terrain: ${successor.ceTile}`);
+        flags |= successorFlags;
+    }
+    return flags;
 }
 
 /** CE cellHasTerrainType（Architect.c:40-46）：四层任一等于该地形。 */
