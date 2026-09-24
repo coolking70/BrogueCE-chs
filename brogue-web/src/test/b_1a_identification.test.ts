@@ -54,6 +54,8 @@ beforeAll(() => {
             initImmediate: false,
         });
     }
+    // U24：已识别符文显示本地化名称，而非内部枚举；其余旧断言继续用空资源。
+    i18next.addResource('en', 'translation', 'runic.name.quietus', '绝命');
 });
 
 /** 把玩家挪到安全位置并清空场地，避免回合推进被怪物干扰。 */
@@ -128,7 +130,7 @@ describe('A1: displayName 反泄露（武器/护甲的附魔与诅咒）', () =>
         // （空资源下走 defaultValue 英文；zh 资源下为"未知符文"）
         expect(wpn.displayName).toMatch(/unknown runic|未知符文/);
         wpn.runicKnown = true;
-        expect(wpn.displayName).toContain('quietus');
+        expect(wpn.displayName).toContain('绝命');
         expect(wpn.displayName).not.toMatch(/unknown runic|未知符文/);
     });
 });
@@ -498,7 +500,7 @@ describe('A12: 鉴定卷轴 = 实例全亮 + 种类亮（CE identify()，Items.c
         expect(wpn.identified).toBe(true);
         expect(wpn.runicKnown).toBe(true); // CE：RUNIC_IDENTIFIED | RUNIC_HINTED
         expect(wpn.displayName).toContain('+2');
-        expect(wpn.displayName).toContain('quietus');
+        expect(wpn.displayName).toContain('绝命');
     });
 
     it('CAN_BE_IDENTIFIED 维护（CE updateIdentifiableItem，Items.c:7699-7713）', () => {

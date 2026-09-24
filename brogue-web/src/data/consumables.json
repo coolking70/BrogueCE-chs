@@ -16,7 +16,7 @@
             "minDepth": 1,
             "maxDepth": 26,
             "excludeFromGeneration": true,
-            "description": "恢复约40%的最大生命值。是最基础的治疗药剂。"
+            "description": "旧版药水种类，当前不会在地牢中生成；饮用时恢复约一半最大生命值。"
         },
         {
             "id": "potion_of_strength",
@@ -51,7 +51,7 @@
             "effect": "levitate",
             "minDepth": 1,
             "maxDepth": 26,
-            "description": "短暂悬浮，可越过陷阱、水域和其他地面障碍，但移动时视野略有模糊。",
+            "description": "饮用后短暂获得悬浮状态。",
             "frequency": 15
         },
         {
@@ -78,7 +78,7 @@
             "effect": "detect_magic",
             "minDepth": 1,
             "maxDepth": 26,
-            "description": "探测并标记附近区域的所有魔法物品，包括隐藏的诅咒道具。",
+            "description": "饮用后探测当前层和背包中的魔法物品。",
             "frequency": 20
         },
         {
@@ -87,7 +87,7 @@
             "effect": "fall_down",
             "minDepth": 2,
             "maxDepth": 26,
-            "description": "地板突然碎裂，使你跌落至下一层并受到少量伤害。危险但可用于逃脱。",
+            "description": "饮用后脚下出现洞口；未悬浮时会坠向下一层。",
             "frequency": 15
         },
         {
@@ -114,7 +114,7 @@
             "effect": "confusion_burst",
             "minDepth": 1,
             "maxDepth": 26,
-            "description": "释放混乱气体，使你和附近怪物短暂迷失方向，移动方向变得随机。",
+            "description": "饮用或投掷都会释放混乱气体，使范围内的生物陷入混乱。",
             "frequency": 15
         },
         {
@@ -151,7 +151,7 @@
             "effect": "creeping_death",
             "minDepth": 4,
             "maxDepth": 26,
-            "description": "散布致命的蔓延性腐朽，在周围生成地衣并逐渐扩散，极为危险。",
+            "description": "CE 原生药水；地衣蔓延链尚待接入，当前不会在地牢中生成。",
             "frequency": 7
         }
     ],
@@ -301,7 +301,7 @@
             "nutrition": 1550,
             "minDepth": 10,
             "maxDepth": 26,
-            "description": "一颗来自地下的神奇芒果，补充饱食度的同时略微恢复生命值。",
+            "description": "一颗来自地下的芒果，食用后补充饱食度。",
             "frequency": 1
         }
     ]

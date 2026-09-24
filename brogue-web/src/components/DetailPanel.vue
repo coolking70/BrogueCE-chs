@@ -80,7 +80,7 @@ function colorToCSS(color: number): string {
                 </div>
 
                 <div class="detail-footer">
-                    <span class="footer-hint">按 Esc 或 x 关闭</span>
+                    <span class="footer-hint">{{ $t('detail.close_hint') }}</span>
                 </div>
             </div>
         </div>

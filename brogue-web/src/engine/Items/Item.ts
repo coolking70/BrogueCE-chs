@@ -213,7 +213,8 @@ export class Item implements Entity {
                 }
                 if (this.runicType) {
                     if (this.runicKnown) {
-                        outName += ` {${this.runicType}}`;
+                          const runicName = i18next.t('runic.name.' + this.runicType, { defaultValue: '未知符文' });
+                          outName += ` {${runicName}}`;
                     } else if (this.isIdentified) {
                         // 注意：t() 不能写进模板字符串的 ${} 里——i18n 门禁的扫描器
                         // 会整体跳过模板字面量（p1_30_i18n_gate），调用须在语句层。

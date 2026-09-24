@@ -2634,7 +2634,7 @@ export class Game {
                 const plateX = doorX + 1;
 
                 this.grid.setTerrain(signX, row.branchY, TerrainType.SIGN, '§', 0xffee88);
-                this.signTexts.set(this.posKey(signX, row.branchY), `测试内容：${payload.roomName}`);
+                this.signTexts.set(this.posKey(signX, row.branchY), `测试内容：${ItemLoader.translateName(payload.roomName)}`);
 
                 this.grid.setTerrain(plateX, row.branchY, TerrainType.RESET_PLATE, '⊙', 0x66ccff);
                 this.resetPlateRoomByPos.set(this.posKey(plateX, row.branchY), roomId);
@@ -2693,7 +2693,7 @@ export class Game {
 
         this.needsRender = true;
         if (!isFirstLevel) {
-            logger.log(`测试模式：第 ${this.depth} 层（${categoryLabel}）`, '#88ccff');
+        logger.log(i18next.t('game.test_mode_depth', { depth: this.depth, category: categoryLabel }), '#88ccff');
         }
     }
 
@@ -3420,7 +3420,7 @@ export class Game {
                                 const dist = Math.max(Math.abs(m.loc.x - newX), Math.abs(m.loc.y - newY));
                                 if (dist <= 2) {
                                     this.freeCaptive(m);
-                                    this.spawnFloatingText('Ally!', m.loc.x, m.loc.y, 0x88ff88);
+                                    this.spawnFloatingText(i18next.t('combat.ally_float', { defaultValue: 'Ally!' }), m.loc.x, m.loc.y, 0x88ff88);
                                 }
                             }
                         }
@@ -5328,9 +5328,8 @@ export class Game {
                 target.runicType = runics[rng.randRange(0, runics.length - 1)];
             }
             target.runicKnown = true;
-            // {{runic}} 暂为内部 id（如 paralyzing）——符文名的中文映射是既有
-            // 缺口（物品名显示 {paralyzing} 同病），本轮只接 i18n 框架，登记报告。
-            logger.log(i18next.t('item.runic_awakened', { name: target.name, runic: target.runicType, defaultValue: `${target.name} awakens a ${target.runicType} rune!` }), '#88ccff');
+            const runicName = i18next.t('runic.name.' + target.runicType, { defaultValue: '未知符文' });
+            logger.log(i18next.t('item.runic_awakened', { name: target.name, runic: runicName, defaultValue: `${target.name} awakens a ${runicName} rune!` }), '#88ccff');
         }
         return true;
     }
@@ -6274,7 +6273,7 @@ export class Game {
                 }),
                 '#99ccff'
             );
-            this.spawnFloatingText('Paralyzed', target.loc.x, target.loc.y, 0x99ccff);
+            this.spawnFloatingText(i18next.t('status.float.paralyzed', { defaultValue: 'Paralyzed' }), target.loc.x, target.loc.y, 0x99ccff);
             return;
         }
 
@@ -6283,7 +6282,7 @@ export class Game {
             target.takeDamage(extra);
             weapon.runicKnown = true;
             logger.log(
-                i18next.t('runic.weapon.venom', {
+                i18next.t('runic.weapon.venom_damage', {
                     target: target.name,
                     damage: extra,
                     defaultValue: `Runic venom wounds the ${target.name} for ${extra}.`
@@ -6347,7 +6346,7 @@ export class Game {
                 }),
                 '#cc99ff'
             );
-            this.spawnFloatingText('Confused', target.loc.x, target.loc.y, 0x99ccff);
+            this.spawnFloatingText(i18next.t('status.float.confused', { defaultValue: 'Confused' }), target.loc.x, target.loc.y, 0x99ccff);
             return;
         }
     }
@@ -6370,7 +6369,7 @@ export class Game {
                 const applied = this.applyStatusToMonster(target, 'paralyzed', duration, 'runic');
                 if (applied) {
                     logger.log(i18next.t('runic.weapon.paralyzing', { target: target.name, defaultValue: `Runic power paralyzes the ${target.name}!` }), '#99ccff');
-                    this.spawnFloatingText('Paralyzed', target.loc.x, target.loc.y, 0x99ccff);
+                    this.spawnFloatingText(i18next.t('status.float.paralyzed', { defaultValue: 'Paralyzed' }), target.loc.x, target.loc.y, 0x99ccff);
                 }
                 break;
             }
@@ -6409,14 +6408,14 @@ export class Game {
                 const applied = this.applyStatusToMonster(target, 'confused', confDuration, 'runic');
                 if (applied) {
                     logger.log(i18next.t('runic.weapon.confusion', { target: target.name, defaultValue: `The ${target.name} is confused by your strike!` }), '#cc99ff');
-                    this.spawnFloatingText('Confused', target.loc.x, target.loc.y, 0x99ccff);
+                    this.spawnFloatingText(i18next.t('status.float.confused', { defaultValue: 'Confused' }), target.loc.x, target.loc.y, 0x99ccff);
                 }
                 break;
             }
             case 'force': {
                 const dist = weaponForceDistance(enchant);
                 logger.log(i18next.t('runic.weapon.force', { target: target.name, dist, defaultValue: `Your blow launches the ${target.name} backward ${dist} tiles!` }), '#ffffff');
-                this.spawnFloatingText('Force!', target.loc.x, target.loc.y, 0xffffff);
+                this.spawnFloatingText(i18next.t('runic.force_float', { defaultValue: 'Force!' }), target.loc.x, target.loc.y, 0xffffff);
                 // Apply knockback
                 const dx = target.loc.x - this.player.loc.x;
                 const dy = target.loc.y - this.player.loc.y;
@@ -9701,7 +9700,7 @@ export class Game {
         }
         this.restoreMonsterLeaders(room.baselineMonsters, this.monsters);
 
-        logger.log('重置踏板触发：房间已重置。', '#88ccff');
+        logger.log(i18next.t('machine.reset_room'), '#88ccff');
         this.needsRender = true;
     }
 
@@ -9714,7 +9713,7 @@ export class Game {
         if (cell.layers.includes(TerrainType.SIGN)) {
             const text = this.signTexts.get(this.posKey(this.player.loc.x, this.player.loc.y));
             if (text) {
-                logger.log(`告示牌：${text}`, '#ffee88');
+                logger.log(i18next.t('machine.sign', { text }), '#ffee88');
             }
         } else if (cell.layers.includes(TerrainType.RESET_PLATE)) {
             const roomId = this.resetPlateRoomByPos.get(this.posKey(this.player.loc.x, this.player.loc.y));

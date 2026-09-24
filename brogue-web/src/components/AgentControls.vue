@@ -70,26 +70,26 @@ const recentLogs = computed(() => {
         </div>
     </div>
 
-    <div class="agent-controls" aria-label="AI Agent Controls">
+    <div class="agent-controls" :aria-label="$t('controls.title')">
       <div class="d-pad">
-        <button @click="act('move', Direction.UPLEFT)" aria-label="Move Up-Left">↖</button>
-        <button @click="act('move', Direction.UP)" aria-label="Move Up">↑</button>
-        <button @click="act('move', Direction.UPRIGHT)" aria-label="Move Up-Right">↗</button>
+        <button @click="act('move', Direction.UPLEFT)" :aria-label="$t('controls.up_left')">↖</button>
+        <button @click="act('move', Direction.UP)" :aria-label="$t('controls.up')">↑</button>
+        <button @click="act('move', Direction.UPRIGHT)" :aria-label="$t('controls.up_right')">↗</button>
         
-        <button @click="act('move', Direction.LEFT)" aria-label="Move Left">←</button>
-        <button @click="act('wait_or_stairs_down')" aria-label="Wait/Rest">⏱</button>
-        <button @click="act('move', Direction.RIGHT)" aria-label="Move Right">→</button>
+        <button @click="act('move', Direction.LEFT)" :aria-label="$t('controls.left')">←</button>
+        <button @click="act('wait_or_stairs_down')" :aria-label="$t('controls.wait')">⏱</button>
+        <button @click="act('move', Direction.RIGHT)" :aria-label="$t('controls.right')">→</button>
         
-        <button @click="act('move', Direction.DOWNLEFT)" aria-label="Move Down-Left">↙</button>
-        <button @click="act('move', Direction.DOWN)" aria-label="Move Down">↓</button>
-        <button @click="act('move', Direction.DOWNRIGHT)" aria-label="Move Down-Right">↘</button>
+        <button @click="act('move', Direction.DOWNLEFT)" :aria-label="$t('controls.down_left')">↙</button>
+        <button @click="act('move', Direction.DOWN)" :aria-label="$t('controls.down')">↓</button>
+        <button @click="act('move', Direction.DOWNRIGHT)" :aria-label="$t('controls.down_right')">↘</button>
       </div>
       
       <div class="action-buttons">
-        <button @click="act('toggle_inventory')" aria-label="Open Inventory">🎒 Inventory</button>
-        <button @click="act('pickup')" aria-label="Pick Up Item">🖐 Pick Up</button>
-        <button @click="act('auto_explore')" aria-label="Auto Explore">🗺 Explore</button>
-        <button @click="act('escape')" aria-label="Escape/Cancel">❌ Esc</button>
+        <button @click="act('toggle_inventory')" :aria-label="$t('controls.inventory')">🎒 {{ $t('controls.inventory') }}</button>
+        <button @click="act('pickup')" :aria-label="$t('controls.pickup')">🖐 {{ $t('controls.pickup') }}</button>
+        <button @click="act('auto_explore')" :aria-label="$t('controls.explore')">🗺 {{ $t('controls.explore') }}</button>
+        <button @click="act('escape')" :aria-label="$t('controls.cancel')">❌ {{ $t('controls.cancel') }}</button>
       </div>
     </div>
   </div>

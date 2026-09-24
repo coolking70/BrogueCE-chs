@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
+import i18next from 'i18next';
 import { activeGame } from '../engine/Core/Game';
 import { logger } from '../engine/Systems/Logger';
 import type { LogMessage } from '../engine/Systems/Logger';
@@ -30,11 +31,11 @@ const playerStatuses = ref<ReturnType<typeof creatureStatusRows>>([]);
 
 // Tiers mirror Player.computeHungerState: thresholds are CE Rogue.h:1125-1127
 const getNutritionStatus = (nutrition: number) => {
-    if (nutrition <= 0) return { text: '饿死', color: '#b91c1c' };
-    if (nutrition <= FAINT_THRESHOLD) return { text: '昏厥', color: '#ef4444' };
-    if (nutrition <= WEAK_THRESHOLD) return { text: '虚弱', color: '#f87171' };
-    if (nutrition <= HUNGER_THRESHOLD) return { text: '饥饿', color: '#facc15' };
-    return { text: '饱食', color: '#4ade80' };
+    if (nutrition <= 0) return { text: i18next.t('sidebar.hunger.starved'), color: '#b91c1c' };
+    if (nutrition <= FAINT_THRESHOLD) return { text: i18next.t('sidebar.hunger.faint'), color: '#ef4444' };
+    if (nutrition <= WEAK_THRESHOLD) return { text: i18next.t('sidebar.hunger.weak'), color: '#f87171' };
+    if (nutrition <= HUNGER_THRESHOLD) return { text: i18next.t('sidebar.hunger.hungry'), color: '#facc15' };
+    return { text: i18next.t('sidebar.hunger.full'), color: '#4ade80' };
 };
 
 let pollInterval: number;
@@ -70,13 +71,13 @@ onUnmounted(() => {
     <!-- Title Area -->
     <div class="brand-header">
       <h1 class="game-title">BROGUE <span class="edition">JS</span></h1>
-      <div class="depth-indicator">深度: {{ playerDepth }}</div>
+      <div class="depth-indicator">{{ $t('sidebar.depth', { depth: playerDepth }) }}</div>
     </div>
 
     <!-- Essential Stats Card -->
     <div class="stats-card">
       <div class="stat-row">
-        <span class="stat-label">生命</span>
+        <span class="stat-label">{{ $t('sidebar.health') }}</span>
         <div class="hp-bar-container">
           <div 
             class="hp-bar" 
@@ -88,14 +89,14 @@ onUnmounted(() => {
       </div>
       
       <div class="stat-row" style="margin-top: 12px;">
-        <span class="stat-label">食物</span>
+        <span class="stat-label">{{ $t('sidebar.food') }}</span>
         <div class="nutrition-status" :style="{ color: getNutritionStatus(playerNutrition).color }">
             {{ getNutritionStatus(playerNutrition).text }}
         </div>
       </div>
 
       <div class="status-panel" v-if="playerStatuses.length > 0">
-        <span class="status-title">状态</span>
+        <span class="status-title">{{ $t('sidebar.status') }}</span>
         <div class="status-tags">
           <span
             v-for="status in playerStatuses"
@@ -117,7 +118,7 @@ onUnmounted(() => {
 
     <!-- Message Log / Audit Trail -->
     <div class="log-panel-container">
-      <div class="log-header">行动日志</div>
+      <div class="log-header">{{ $t('sidebar.log') }}</div>
       <div class="log-panel">
         <div 
           v-for="(msg, index) in logs" 
@@ -203,7 +204,8 @@ onUnmounted(() => {
   font-size: 0.85rem;
   color: var(--text-secondary);
   font-weight: 600;
-  width: 20px;
+  width: 2.5em;
+  flex-shrink: 0;
 }
 
 .hp-bar-container {

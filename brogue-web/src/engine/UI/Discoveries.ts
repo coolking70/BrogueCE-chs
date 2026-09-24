@@ -33,7 +33,7 @@ export function getDiscoveries(): DiscoveryGroup[] {
             const trueName = 'trueName' in entry ? entry.trueName : entry.name;
             return {
                 id: entry.id,
-                name: trueName.toUpperCase(),
+                name: (ItemLoader.translateName(trueName) || trueName).toUpperCase(),
                 known,
                 suffix: known ? 0 : discoverySuffix(category, entry.id),
                 percentage: !known && frequency > 0 && totalFrequency > 0

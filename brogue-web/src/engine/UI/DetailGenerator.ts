@@ -15,6 +15,7 @@ import { creatureStatusRows } from '../Status/statusConfig';
 import { monsterAccuracyAdjusted, monsterDefenseAdjusted, monsterDamageAdjustmentAmount } from '../Combat/CombatFormulas';
 import { hitProbability, netEnchant, damageFraction, strengthModifier, playerDefense } from '../Combat/CombatFormulas';
 import { CombatSystem } from '../Combat/Combat';
+import i18next from 'i18next';
 
 // ---------- Helper types ----------
 
@@ -46,25 +47,25 @@ export interface DetailLine {
 
 const weaponRunicDescriptions: Record<string, string> = {
     paralyzing: '每次攻击有概率麻痹目标数回合。',
-    venom: '每次攻击有概率对目标施加致命毒素。',
+    venom: '触发时对目标追加毒性伤害或施加中毒效果。',
     quietus: '每次攻击有概率瞬间击杀目标。',
     vampirism: '攻击会吸取目标生命值来治愈自身。',
     speed: '攻击后有概率获得额外攻击机会。',
     confusion: '每次攻击有概率使目标陷入混乱。',
     force: '每次攻击有概率将目标击退数格。',
-    slaying: '对特定种类的怪物造成即死效果。',
-    mercy: '攻击不会将目标生命值降至 1 以下。',
+    slaying: '触发时立即击杀目标。',
+    mercy: '触发时若本次攻击使目标生命值归零，则令其保留 1 点生命值。',
 };
 
 const armorRunicDescriptions: Record<string, string> = {
-    reflection: '受击时有概率将 50% 的伤害反弹给攻击者。',
+    reflection: '受到法术射线攻击时有概率将射线反射回去。',
     dampening: '受击时有概率回复少量生命值。',
-    mutuality: '受击时有概率将全额伤害共享给攻击者。',
+    mutuality: '受到近战攻击时，将部分伤害分摊给你身旁的其他敌人。',
     respiration: '免疫有害气体的影响。',
     vitality: '持续缓慢再生生命值。',
-    absorption: '受击时有概率完全吸收伤害。',
-    reprisal: '受击时有概率将 75% 的伤害返还给攻击者。',
-    immunity: '完全免疫特定种类怪物的攻击。',
+    absorption: '受到近战攻击时吸收部分伤害；吸收量足够时可完全抵挡。',
+    reprisal: '受到近战攻击时，对攻击者造成一定比例的反击伤害。',
+    immunity: '受到攻击时抵挡该次伤害。',
 };
 
 // ---------- Monster ability / behavior description ----------
@@ -418,7 +419,8 @@ export function generateItemDetail(
             if (runicDesc) runicLines.push({ text: runicDesc, color: '#ffcc44' });
         }
         if (runicLines.length > 0) {
-            sections.push({ header: `附魔: ${item.runicType}`, lines: runicLines });
+            const runicName = i18next.t('runic.name.' + item.runicType, { defaultValue: '未知符文' });
+            sections.push({ header: `附魔: ${runicName}`, lines: runicLines });
         }
     }
 

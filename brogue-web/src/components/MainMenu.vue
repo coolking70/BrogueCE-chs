@@ -45,6 +45,8 @@ const seedInput = ref('');
 const replaySeekInput = ref('');
 const replayFileInput = ref<HTMLInputElement | null>(null);
 const { t } = useTranslation();
+const seedPlaceholder = computed(() => t('menu.seed.placeholder'));
+const seekPlaceholder = computed(() => t('menu.replay.seek_placeholder'));
 
 const parsedSeed = computed(() => {
   const trimmed = seedInput.value.trim();
@@ -130,7 +132,7 @@ const sidebarWidthModel = computed({
           :disabled="mode === 'test'"
           :placeholder="mode === 'test'
             ? t('menu.seed.disabled_for_test', { defaultValue: 'Disabled in test mode' })
-            : t('menu.seed.placeholder', { defaultValue: 'e.g. 18451615' })"
+            : seedPlaceholder"
         />
       </label>
 
@@ -182,7 +184,7 @@ const sidebarWidthModel = computed({
 
       <div v-if="replayInfo" class="save-meta">
         <div><strong>{{ t('menu.replay.title', { defaultValue: 'Replay' }) }}</strong></div>
-        <div>{{ t('menu.replay.status', { defaultValue: 'Status' }) }}: {{ t(`menu.replay.status_${replayInfo.status}`, { defaultValue: replayInfo.status }) }}</div>
+        <div>{{ t('menu.replay.status', { defaultValue: 'Status' }) }}: {{ t(`menu.replay.status.${replayInfo.status}`, { defaultValue: replayInfo.status }) }}</div>
         <div>{{ t('menu.replay.progress', { defaultValue: 'Progress' }) }}: {{ replayInfo.cursor }} / {{ replayInfo.total }}</div>
         <div class="actions">
           <button @click="emit('replay-play')">{{ t('menu.replay.play', { defaultValue: 'Play' }) }}</button>
@@ -196,7 +198,7 @@ const sidebarWidthModel = computed({
             type="number"
             min="0"
             :max="Math.max(0, replayInfo.total)"
-            :placeholder="t('menu.replay.seek_placeholder', { defaultValue: 'Event index' })"
+        :placeholder="seekPlaceholder"
           />
           <button @click="seekReplay">{{ t('menu.replay.seek', { defaultValue: 'Seek' }) }}</button>
         </div>

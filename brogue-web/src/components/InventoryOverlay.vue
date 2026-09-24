@@ -54,6 +54,24 @@ const closeInventory = () => {
 };
 
 const { t } = useTranslation();
+const categoryLabel = (category: string) => {
+    switch (category) {
+        case '-- WEAPONS --': return t('inventory.category.weapons');
+        case '-- ARMOR --': return t('inventory.category.armor');
+        case '-- POTIONS --': return t('inventory.category.potions');
+        case '-- SCROLLS --': return t('inventory.category.scrolls');
+        case '-- WANDS --': return t('inventory.category.wands');
+        case '-- STAFFS --': return t('inventory.category.staffs');
+        case '-- RINGS --': return t('inventory.category.rings');
+        case '-- CHARMS --': return t('inventory.category.charms');
+        case '-- KEYS --': return t('inventory.category.keys');
+        case '-- AMULETS --': return t('inventory.category.amulets');
+        case '-- FOOD --': return t('inventory.category.food');
+        case '-- GOLD --': return t('inventory.category.gold');
+        default: return t('inventory.category.other');
+    }
+};
+const callPlaceholder = computed(() => t('max 29 chars'));
 const enchantPrompt = computed(() => i18next.t('scroll.enchant_prompt'));
 
 // Group items into categories
@@ -297,7 +315,7 @@ const confirmCall = () => {
         </div>
         <div v-if="inventoryItems.length > 0">
            <div v-for="(items, category) in groupedItems" :key="category" class="category-block">
-              <h3 class="category-title">{{ t(category) || category }}</h3>
+              <h3 class="category-title">{{ categoryLabel(category) }}</h3>
               <ul class="item-list">
                 <li v-for="entry in items" :key="entry.letter" class="item-wrapper">
                   <div class="item-row" @click="selectItemOrIdentify(entry.item)"
@@ -342,7 +360,7 @@ const confirmCall = () => {
                   <div v-if="callTarget?.id === entry.item.id && !pendingEnchantment" class="item-actions call-input-row">
                     <span class="call-label">{{ t('Call them:') || 'Call them:' }}</span>
                     <input v-model="callText" class="call-input" maxlength="29"
-                           @keyup.enter="confirmCall" :placeholder="t('max 29 chars') || 'max 29 chars'" />
+                           @keyup.enter="confirmCall" :placeholder="callPlaceholder" />
                     <button @click="confirmCall" class="action-btn">{{ t('Name it') || 'Name it' }}</button>
                     <button @click="cancelCall" class="action-btn danger">{{ t('Cancel') || 'Cancel' }}</button>
                   </div>

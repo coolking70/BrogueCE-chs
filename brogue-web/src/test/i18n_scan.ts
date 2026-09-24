@@ -2,7 +2,7 @@
  * src/test/i18n_scan.ts — i18n 键引用扫描器（纯静态分析，无 vitest / i18next 依赖）。
  *
  * P1-30 引入，见 ai_docs/p1_30_i18n_gate_report.md。职责：
- *  1. 找出 src/ 下所有 i18next.t(...) / $t(...) 调用点，解析第一个实参；
+ *  1. 找出 src/ 下 i18next.t(...) / $t(...) 及 useTranslation() 的 t(...) 调用点，解析第一个实参；
  *  2. 与 zh_CN.json 比对，产出「缺失键」（红灯依据）与「从未被引用的键」（归档依据）。
  *
  * 动态键的处理（防漏报与误报的核心设计）：
@@ -185,7 +185,11 @@ function findCallStarts(code: string, callee: RegExp, firstChars: string): numbe
 }
 
 function findCallSites(code: string): number[] {
-    return findCallStarts(code, CALL_START, 'i$');
+    const sites = findCallStarts(code, CALL_START, 'i$');
+    // useTranslation() supplies a local t() in Vue components. Without this,
+    // MainMenu's English defaultValue bypassed the key gate entirely.
+    if (code.includes('useTranslation')) sites.push(...findCallStarts(code, /(?<![.$\w])t\s*\(/y, 't'));
+    return sites.sort((a, b) => a - b);
 }
 
 // ---------------------------------------------------------------------------
@@ -585,6 +589,24 @@ export function scanI18nUsage(srcDir: string, resource: Record<string, string>):
                     arr.push(loc);
                     prefixes.set(cand.prefix, arr);
                 }
+            }
+        }
+        // Vue bind expressions live inside quoted HTML attributes, which the
+        // lexical code scanner intentionally skips. Account for literal keys
+        // there so aria labels and placeholders cannot become silent fallbacks.
+        if (file.endsWith('.vue')) {
+            const attrCall = /:[\w-]+="(?:\$t|t|i18next\.t)\('([^']+)'/g;
+            for (const match of code.matchAll(attrCall)) {
+                const key = match[1]!;
+                const pos = match.index ?? 0;
+                const loc: KeyLocation = {
+                    file: rel,
+                    line: code.slice(0, pos).split('\n').length,
+                    snippet: match[0],
+                };
+                const arr = literals.get(key) ?? [];
+                arr.push(loc);
+                literals.set(key, arr);
             }
         }
     }
