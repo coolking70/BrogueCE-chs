@@ -209,7 +209,8 @@ describe('P2-0 C: 实体 id 用单调计数器', () => {
         // 实体必然拿到 c1 + burn + 1，与存档第一个实体撞号。
         const snap: GameSnapshot = probe.toSnapshot();
         const savedEntities: Array<{ id: number }> = [
-            ...snap.monsters, ...snap.items, ...snap.player.inventory,
+            snap.player, ...snap.monsters, ...snap.dormantMonsters, ...snap.entityGraph.monsters,
+            ...snap.items, ...snap.player.inventory, ...snap.entityGraph.items,
         ];
         expect(savedEntities.length).toBeGreaterThan(0);
         const idMap = new Map<number, number>();
@@ -219,12 +220,15 @@ describe('P2-0 C: 实体 id 用单调计数器', () => {
             expect(mapped).toBeDefined();
             return mapped!;
         };
-        for (const m of snap.monsters) m.id = reid(m.id);
-        for (const it of snap.items) it.id = reid(it.id);
-        for (const it of snap.player.inventory) it.id = reid(it.id);
-        if (snap.player.equippedWeaponId != null) snap.player.equippedWeaponId = reid(snap.player.equippedWeaponId);
-        if (snap.player.equippedArmorId != null) snap.player.equippedArmorId = reid(snap.player.equippedArmorId);
-        if (snap.player.equippedRingId != null) snap.player.equippedRingId = reid(snap.player.equippedRingId);
+        for (const entity of savedEntities) entity.id = reid(entity.id);
+        for (const m of [...snap.monsters, ...snap.dormantMonsters, ...snap.entityGraph.monsters]) {
+            if (m.leaderId != null) m.leaderId = reid(m.leaderId);
+            if (m.carriedMonsterId != null) m.carriedMonsterId = reid(m.carriedMonsterId);
+            if (m.carriedItemId != null) m.carriedItemId = reid(m.carriedItemId);
+        }
+        for (const slot of ['equippedWeaponId', 'equippedArmorId', 'ringLeftId', 'ringRightId'] as const) {
+            if (snap.player[slot] != null) snap.player[slot] = reid(snap.player[slot]);
+        }
 
         const used = new Set<number>(savedEntities.map((e) => e.id));
         expect(used.size).toBe(savedEntities.length);

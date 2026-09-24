@@ -54,6 +54,10 @@ export class Item implements Entity {
     // Position is optional if the item is in an inventory
     public loc: Pos;
 
+    // Identity and optional presentation payloads used by ItemLoader/inspectors.
+    public identityId?: string;
+    public consumableId?: string;
+    public description?: string;
     public category: ItemCategory;
     public weight: number;
 

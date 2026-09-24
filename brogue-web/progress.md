@@ -1,5 +1,14 @@
 Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我继续完善这个js重构项目
 
+## 2026-09-24 U01：实例快照丢字段
+
+- 执行 u-01.prompt.md；按用户裁决采用 v2 实例 schema，不实现旧档迁移；W24/W25 flavor 兼容不动。
+- 全枚举 Item、Creature、Monster、Player；新增 EntitySnapshot 字段合同，普通/变形/克隆共用，ID 图两阶段恢复。玩家饥饿事件与当前速度、物品 flags/钥匙/投掷组/符文目标、怪物历史 safety map/等待/携带图原样保存。
+- 字段覆盖守卫检查 AST 声明和实际 own properties。实体深比较独立于编解码字段表；验证穿刺/突进、钥匙消耗、行动时机、死亡掉落和下一步状态消费者。
+- 定向首轮因版本号误改到录像出口撞红，已修回且录像合同未改；定向 350 项通过。全品类新夹具 food 误写 foods 已修正。浏览器实际菜单保存→刷新→继续、穿刺与携带掉落通过；技能 canvas 导出黑图不作为视觉通过，使用有头整页截图核验。
+- 最终 R∪S、build、drift、逐文件结果及冻结 SHA-256 见 ai_docs/reports/u-01.report.md / u-01-evidence。后续 U02 RNG、U03 多层与 Game 状态、U05a 产物所有权问题未扩入。
+- 首次完整冻结：build/drift 通过，123 文件中 3 例失败（W25/W26 剩余的旧档缺计时器/容量推断，及 W5 改写夹具漏显式 E=0）。全部归档 prefinal-legacy-fixtures；仅调整这三个测试的相关片段，flavor 兼容和正常往返/零 RNG 守卫保持。最终从 build 完整重跑（8 workers），不拼接首次结果。自然生成补充覆盖休眠 wraith、携物 stone_guardian、绑定钥匙及地面 flags 武器，图比较通过。
+
 ## 2026-03-07 (胜负闭环完善 Win/Loss Game Loop)
 
 ### Bug 修复

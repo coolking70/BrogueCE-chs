@@ -1,0 +1,78 @@
+{
+  "coverage": [
+    "ordinary",
+    "flagged-ground-weapon",
+    "bound-key",
+    "dormant",
+    "carrier"
+  ],
+  "observations": [
+    {
+      "seed": 424242,
+      "depth": 1,
+      "classes": [
+        "ordinary",
+        "flagged-ground-weapon"
+      ],
+      "same": true,
+      "monsters": 6,
+      "items": 10,
+      "carriers": [],
+      "dormant": []
+    },
+    {
+      "seed": 424242,
+      "depth": 5,
+      "classes": [
+        "ordinary",
+        "bound-key",
+        "flagged-ground-weapon"
+      ],
+      "same": true,
+      "monsters": 8,
+      "items": 11,
+      "carriers": [],
+      "dormant": []
+    },
+    {
+      "seed": 424242,
+      "depth": 12,
+      "classes": [
+        "ordinary",
+        "dormant"
+      ],
+      "same": true,
+      "monsters": 11,
+      "items": 10,
+      "carriers": [],
+      "dormant": [
+        {
+          "typeId": "wraith",
+          "id": 211,
+          "machineHome": 2
+        }
+      ]
+    },
+    {
+      "seed": 777,
+      "depth": 9,
+      "classes": [
+        "ordinary",
+        "carrier",
+        "bound-key"
+      ],
+      "same": true,
+      "monsters": 15,
+      "items": 15,
+      "carriers": [
+        {
+          "typeId": "stone_guardian",
+          "id": 182,
+          "carriedItemId": 183,
+          "machineHome": 3
+        }
+      ],
+      "dormant": []
+    }
+  ]
+}

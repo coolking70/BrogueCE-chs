@@ -200,13 +200,6 @@ describe('W-16 snapshots, old saves, stairs and submission',()=>{
   expect(g2.getMonsterAt(b.x,b.y)).toBeUndefined();
   const restored=(g as any).createMonsterFromSnapshot(snapshot.dormantMonsters[0]);expect(restored).toMatchObject({typeId:'spectral_blade',isAlly:true,ticksUntilTurn:101});
  });
- it('tagless old saves never invent a player binding; invalid tick fallback is deterministic',()=>{
-  const g=scene(),b=single(g);const saved=(g as any).serializeMonster(b);delete saved.spectralBlade;
-  const old=(g as any).deserializeMonster(saved);expect(old.isAlly).toBe(false);expect(old.boundToPlayer).toBe(false);expect(old.doesNotTrackLeader).toBe(false);
-  const tagged=(g as any).serializeMonster(b);tagged.spectralBlade.ticksUntilTurn=null;
-  const before=rng.randomNumbersGenerated;const restored=(g as any).deserializeMonster(tagged);
-  expect(restored.ticksUntilTurn).toBe(101);expect(rng.randomNumbersGenerated).toBe(before);
- });
  it('down/up stairs leave blades alive on their original cached level, no follower/death/loot path',()=>{
   const g=live(),b=single(g);g.mode='normal';g.depth=1;g.grid.setTerrain(6,5,T.STAIRS_DOWN);
   const other=floor();other.setTerrain(4,5,T.STAIRS_UP);

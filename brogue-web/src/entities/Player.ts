@@ -25,7 +25,7 @@ export class Player extends Creature {
     /**
      * B-1b：戒指双槽（CE rogue.ringLeft/ringRight，Rogue.h:2461-2462；装备分配
      * Items.c:8560-8566——左槽优先、双占时 equipItem 返回 false）。原单槽
-     * equippedRing 删除；存档兼容见 Game.loadSnapshot（旧档 equippedRingId → 左槽）。
+     * equippedRing 删除；U01 存档直接保存双槽 ID，不迁移单槽旧档。
      */
     public ringLeft: Item | null = null;
     public ringRight: Item | null = null;
@@ -49,6 +49,9 @@ export class Player extends Creature {
         this.hp = 30;
         this.inventory = new Inventory();
     }
+
+    public snapshotHungerTransition(): HungerState | null { return this.hungerTransition; }
+    public restoreHungerTransition(value: HungerState | null): void { this.hungerTransition = value; }
 
     /** Tick down temporary immunities, returns list of expired ones. */
     public tickTemporaryImmunities(): StatusId[] {

@@ -251,17 +251,14 @@ describe('W-15 armor ordering, snapshots and legacy fallback', () => {
         for(const c of [g.player,g.monsters[0]!,g.dormantMonsters[0]!]) expect(shield(c)).toEqual([100,130]);
         g.monsters[0]!.ticksUntilTurn=100000; g.handlePlayerAction('wait'); expect(shield(g.player)).toEqual([94,130]);
         expect(shield(g.monsters[0]!)).toEqual([94,130]); expect(shield(g.dormantMonsters[0]!)).toEqual([100,130]);
-        delete saved.player.maxShield; delete saved.monsters[0].maxShield; delete saved.dormantMonsters[0].maxShield;
-        saved.player.statusDurations.telepathy=17; g.loadSnapshot(saved);
-        for(const c of [g.player,g.monsters[0]!,g.dormantMonsters[0]!]) expect(shield(c)).toEqual([0,0]);
-        expect(g.player.getStatusDuration('telepathy')).toBe(17);
+
     });
-    it('test-room snapshot restoration retains current/max and drops a legacy countdown', () => {
+    it('test-room snapshot restoration retains current/max', () => {
         const g=scene(), m=mob(g); m.applyShield(181); m.takeDamage(4);
         const saved=(g as any).serializeMonster(m);
         const restored=(g as any).createMonsterFromSnapshot(JSON.parse(JSON.stringify(saved)));
         expect(shield(restored)).toEqual([141,181]); restored.tickStatuses(); expect(shield(restored)).toEqual([132,181]);
-        delete saved.maxShield; expect(shield((g as any).createMonsterFromSnapshot(saved))).toEqual([0,0]);
+
     });
     it('old/invalid snapshot fallback is deterministic and cannot leave an immortal countdown shield', () => {
         const c=new Player(0,0), before=rng.randomNumbersGenerated;

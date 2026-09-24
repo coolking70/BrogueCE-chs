@@ -149,12 +149,12 @@ describe('W-26 new staff integration',()=>{
         expect(new Set(current.map(s=>ItemLoader.arcanaFlavorMap.get(s.id))).size).toBe(13);
         const upgraded=JSON.parse(JSON.stringify(g.toSnapshot()));expect(g.loadSnapshot(upgraded)).toBe(true);expect(g.toSnapshot().staffFlavors).toEqual(upgraded.staffFlavors);
     });
-    it('new identities round-trip independently; old missing E/capacity/timer deterministic fallback',()=>{
+    it('new identities and current E/capacity/timer round-trip independently without RNG',()=>{
         const {g}=scene();for(const id of added){const item=make(id);Object.assign(item,{enchantment:8,maxCharges:8,charges:0,staffRechargeRemaining:1234,maxChargesKnown:true});g.player.inventory.addItem(item);}
         const saved=JSON.parse(JSON.stringify(g.toSnapshot()));expect(g.loadSnapshot(saved)).toBe(true);expect(g.toSnapshot().staffFlavors).toEqual(saved.staffFlavors);
         expect(g.player.inventory.items.map(i=>[i.enchantment,i.maxCharges,i.charges,i.staffRechargeRemaining,i.maxChargesKnown])).toEqual(added.map(()=>[8,8,0,1234,true]));
         const before=JSON.stringify(rng);
-        for(const s of saved.player.inventory){delete s.arcanaInstanceVersion;delete s.maxCharges;delete s.staffRechargeRemaining;s.enchantment=0;const item=(g as any).deserializeItem(s);expect([item.enchantment,item.maxCharges,item.charges,item.staffRechargeRemaining]).toEqual([2,2,0,s.identityId==='staff_of_obstruction'?1000:500]);}
+        for(const s of saved.player.inventory){const item=(g as any).deserializeItem(s);expect([item.enchantment,item.maxCharges,item.charges,item.staffRechargeRemaining]).toEqual([8,8,0,1234]);}
         expect(JSON.stringify(rng)).toBe(before);
     });
 });

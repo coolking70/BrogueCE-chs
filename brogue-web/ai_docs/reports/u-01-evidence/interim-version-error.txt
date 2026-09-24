@@ -1,0 +1,424 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/46b6/brogue/brogue-web
+
+ ❯ src/test/w_23_negation.test.ts (42 tests | 1 failed) 420ms
+     × active/dormant JSON, reset and clone preserve stripping and mutation removal without rebuilding species 165ms
+stdout | src/test/w_19_polymorph.test.ts > W-19 save and actual submission > JSON round-trip retains current species, speed, item identity, hostile relation, and later death
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/w_20_cloning.test.ts > W-20 save, identity and actual submission > JSON round trip keeps all clone runtime/containers/references and next ids beyond dormant high id
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/w_19_polymorph.test.ts (53 tests | 1 failed) 743ms
+     × JSON round-trip retains current species, speed, item identity, hostile relation, and later death 223ms
+ ❯ src/test/w_17_domination.test.ts (42 tests | 1 failed) 1146ms
+     × active/dormant JSON round trip retains allegiance, cleared discord, item key binding and re-elected leader references 139ms
+ ❯ src/test/w_20_cloning.test.ts (56 tests | 2 failed) 1390ms
+     × JSON round trip keeps all clone runtime/containers/references and next ids beyond dormant high id 203ms
+     × ordinary named clone stays ordinary, and high dormant id is reserved 157ms
+ ❯ src/test/w_21_empowerment.test.ts (29 tests | 1 failed) 690ms
+     × JSON saves active/dormant/counts/form, old saves default counts to zero and test reset uses same fields 141ms
+stdout | src/test/u_01_instance_snapshot.test.ts > ordinary uses the complete graph contract, including private base speeds
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/w_16_conjuration.test.ts (45 tests | 2 failed) 1852ms
+     × JSON restores actual species despite translated name, ally/binding/AI, ticks, flying and negate vulnerability 247ms
+     × dormant and test-room restoration use the same tagged blade payload 304ms
+ ❯ src/test/u_01_instance_snapshot.test.ts (16 tests | 12 failed) 2084ms
+   × ordinary uses the complete graph contract, including private base speeds 194ms
+   × polymorph uses the complete graph contract, including private base speeds 145ms
+   × clone uses the complete graph contract, including private base speeds 139ms
+   × dormant uses the complete graph contract, including private base speeds 131ms
+   × player clone uses the complete graph contract, including private base speeds 139ms
+   × naturally generated D1-D3 ordinary/ground/pack entities deeply round-trip, without deriving from catalog 213ms
+   × spear next attack keeps penetration/lunge, damage and action cost 194ms
+   × rapier next attack keeps penetration/lunge, damage and action cost 180ms
+   × next unlock preserves disposableHere=false and origin-depth rejection 181ms
+   × next unlock preserves disposableHere=true and origin-depth rejection 177ms
+   × next scheduler action retains 37 tick wait; dormant carrier never acts; next death drops the same payload once 181ms
+   × version boundary rejects v1 before changing the live world; detached/player high IDs are reserved 84ms
+ ❯ src/test/w_18_entrancement.test.ts (67 tests | 1 failed) 7512ms
+     × save/load preserves duration/timing and actual follow/wait; absent status remains absent 101ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 21 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_01_instance_snapshot.test.ts > ordinary uses the complete graph contract, including private base speeds
+ FAIL  src/test/u_01_instance_snapshot.test.ts > polymorph uses the complete graph contract, including private base speeds
+ FAIL  src/test/u_01_instance_snapshot.test.ts > clone uses the complete graph contract, including private base speeds
+ FAIL  src/test/u_01_instance_snapshot.test.ts > dormant uses the complete graph contract, including private base speeds
+ FAIL  src/test/u_01_instance_snapshot.test.ts > player clone uses the complete graph contract, including private base speeds
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/u_01_instance_snapshot.test.ts:115:35
+    113|     g.player.nutrition=151;g.player.tickNutrition();g.player.regenCarr…
+    114|     const before=graphState(g), saved=json(g.toSnapshot());
+    115|     expect(g.loadSnapshot(saved)).toBe(true);expect(graphState(g)).toE…
+       |                                   ^
+    116|     const restored=[...g.monsters,...g.dormantMonsters].find(v=>v.id==…
+    117|     expect(restored.carriedMonster!.carriedMonster).toBe(restored);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/21]⎯
+
+ FAIL  src/test/u_01_instance_snapshot.test.ts > naturally generated D1-D3 ordinary/ground/pack entities deeply round-trip, without deriving from catalog
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/u_01_instance_snapshot.test.ts:129:81
+    127|         if(depth>1){g.depth=depth;(g as any).generateDepth(false,false…
+    128|         count+=g.monsters.length+g.items.length;
+    129|         const before=graphState(g);expect(g.loadSnapshot(json(g.toSnap…
+       |                                                                                 ^
+    130|     }
+    131|     expect(count).toBeGreaterThan(10);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/21]⎯
+
+ FAIL  src/test/u_01_instance_snapshot.test.ts > spear next attack keeps penetration/lunge, damage and action cost
+ FAIL  src/test/u_01_instance_snapshot.test.ts > rapier next attack keeps penetration/lunge, damage and action cost
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/u_01_instance_snapshot.test.ts:153:35
+    151|     const act=()=>{rng.seedRandomGenerator(73);g.handlePlayerAction('m…
+    152|     const next=act();expect(a.hp).toBeLessThan(200);if(weapon==='spear…
+    153|     expect(g.loadSnapshot(saved)).toBe(true);expect(act()).toEqual(nex…
+       |                                   ^
+    154| });
+    155|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/21]⎯
+
+ FAIL  src/test/u_01_instance_snapshot.test.ts > next unlock preserves disposableHere=false and origin-depth rejection
+AssertionError: expected { …(2) } to deeply equal { …(2) }
+
+- Expected
++ Received
+
+@@ -85,19 +85,19 @@
+            },
+          ],
+        },
+        "lastMoveDirection": null,
+        "loc": {
+-         "x": 4,
++         "x": 5,
+          "y": 5,
+        },
+        "maxHp": 30,
+        "maxNutrition": 2150,
+        "maxShield": 0,
+        "movementSpeed": 100,
+        "name": "Player",
+-       "nutrition": 2149,
++       "nutrition": 2148,
+        "poisonAmount": 0,
+        "regenCarry": 0,
+        "ringLeft": null,
+        "ringRight": null,
+        "seized": false,
+@@ -108,11 +108,11 @@
+        "temporaryImmunities": {},
+        "ticksUntilTurn": 0,
+      },
+    },
+    "layers": [
+-     4,
++     5,
+      0,
+      0,
+      0,
+    ],
+  }
+
+ ❯ src/test/u_01_instance_snapshot.test.ts:163:41
+    161|     const act=()=>{rng.seedRandomGenerator(73);g.handlePlayerAction('m…
+    162|     const next=act();expect(g.player.inventory.items.includes(key)).to…
+    163|     g.loadSnapshot(saved);expect(act()).toEqual(next);
+       |                                         ^
+    164|     saved.player.inventory[0]!.originDepth=g.depth+1;g.loadSnapshot(sa…
+    165| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/21]⎯
+
+ FAIL  src/test/u_01_instance_snapshot.test.ts > next unlock preserves disposableHere=true and origin-depth rejection
+AssertionError: expected { …(2) } to deeply equal { …(2) }
+
+- Expected
++ Received
+
+@@ -19,19 +19,19 @@
+          "capacity": 26,
+          "items": [],
+        },
+        "lastMoveDirection": null,
+        "loc": {
+-         "x": 4,
++         "x": 5,
+          "y": 5,
+        },
+        "maxHp": 30,
+        "maxNutrition": 2150,
+        "maxShield": 0,
+        "movementSpeed": 100,
+        "name": "Player",
+-       "nutrition": 2149,
++       "nutrition": 2148,
+        "poisonAmount": 0,
+        "regenCarry": 0,
+        "ringLeft": null,
+        "ringRight": null,
+        "seized": false,
+@@ -42,11 +42,11 @@
+        "temporaryImmunities": {},
+        "ticksUntilTurn": 0,
+      },
+    },
+    "layers": [
+-     4,
++     5,
+      0,
+      0,
+      0,
+    ],
+  }
+
+ ❯ src/test/u_01_instance_snapshot.test.ts:163:41
+    161|     const act=()=>{rng.seedRandomGenerator(73);g.handlePlayerAction('m…
+    162|     const next=act();expect(g.player.inventory.items.includes(key)).to…
+    163|     g.loadSnapshot(saved);expect(act()).toEqual(next);
+       |                                         ^
+    164|     saved.player.inventory[0]!.originDepth=g.depth+1;g.loadSnapshot(sa…
+    165| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/21]⎯
+
+ FAIL  src/test/u_01_instance_snapshot.test.ts > next scheduler action retains 37 tick wait; dormant carrier never acts; next death drops the same payload once
+AssertionError: expected { …(6) } to deeply equal { …(6) }
+
+- Expected
++ Received
+
+@@ -101,11 +101,11 @@
+        ],
+        "statusResistTurns": {
+          "paralyzed": 1,
+        },
+        "targetWaypointIndex": -1,
+-       "ticksUntilTurn": 87,
++       "ticksUntilTurn": 37,
+        "totalPowerCount": 0,
+        "typeId": "rat",
+        "wasNegated": false,
+        "waypointAlreadyVisited": null,
+      },
+@@ -203,19 +203,19 @@
+      "maxHp": 30,
+      "maxNutrition": 2150,
+      "maxShield": 0,
+      "movementSpeed": 50,
+      "name": "Player",
+-     "nutrition": 2150,
++     "nutrition": 2149,
+      "poisonAmount": 0,
+      "regenCarry": 0,
+      "ringLeft": null,
+      "ringRight": null,
+      "seized": false,
+      "seizing": false,
+      "statusDurations": {
+-       "hasted": 50,
++       "hasted": 49,
+      },
+      "statusImmunities": [],
+      "strength": 12,
+      "temporaryImmunities": {},
+      "ticksUntilTurn": 0,
+
+ ❯ src/test/u_01_instance_snapshot.test.ts:175:41
+    173|     const act=()=>{rng.seedRandomGenerator(73);g.handlePlayerAction('w…
+    174|     const next=act();expect(m.ticksUntilTurn).toBe(87);expect(d.loc).t…
+    175|     g.loadSnapshot(saved);expect(act()).toEqual(next);
+       |                                         ^
+    176|     const current=json(g.toSnapshot());
+    177|     const die=()=>{g.monsters[0]!.hp=0;(g as any).removeDeadMonsters()…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/21]⎯
+
+ FAIL  src/test/u_01_instance_snapshot.test.ts > version boundary rejects v1 before changing the live world; detached/player high IDs are reserved
+AssertionError: expected 1 to be greater than 2100000
+ ❯ src/test/u_01_instance_snapshot.test.ts:193:71
+    191|     const g=scene();g.player.id=1900000;const m=mob(g);m.carriedMonste…
+    192|     const saved=json(g.toSnapshot()),before=graphState(g);expect(g.loa…
+    193|     resetEntityIds();g.loadSnapshot(saved);expect(allocateEntityId()).…
+       |                                                                       ^
+    194| });
+    195|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/21]⎯
+
+ FAIL  src/test/w_16_conjuration.test.ts > W-16 snapshots, old saves, stairs and submission > JSON restores actual species despite translated name, ally/binding/AI, ticks, flying and negate vulnerability
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/w_16_conjuration.test.ts:191:111
+    189|  it('JSON restores actual species despite translated name, ally/bindin…
+    190|   const g=live(),b=single(g);b.name='幽灵刀刃';b.ticksUntilTurn=1;
+    191|   const snapshot=JSON.parse(JSON.stringify(g.toSnapshot()));const g2=l…
+       |                                                                                                               ^
+    192|   const restored=blades(g2)[0]!;expect(restored).toMatchObject({id:b.i…
+    193|   expect(restored.hasStatus('levitating')).toBe(true);expect(restored.…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/21]⎯
+
+ FAIL  src/test/w_16_conjuration.test.ts > W-16 snapshots, old saves, stairs and submission > dormant and test-room restoration use the same tagged blade payload
+AssertionError: expected undefined to match object { typeId: 'spectral_blade', …(3) }
+
+- Expected:
+{
+  "boundToPlayer": true,
+  "doesNotTrackLeader": true,
+  "isAlly": true,
+  "typeId": "spectral_blade",
+}
+
++ Received:
+undefined
+
+ ❯ src/test/w_16_conjuration.test.ts:199:33
+    197|   const g=live(),b=single(g);b.isDormant=true;g.monsters=[];g.dormantM…
+    198|   const snapshot=JSON.parse(JSON.stringify(g.toSnapshot()));const g2=l…
+    199|   expect(g2.dormantMonsters[0]).toMatchObject({typeId:'spectral_blade'…
+       |                                 ^
+    200|   expect(g2.getMonsterAt(b.x,b.y)).toBeUndefined();
+    201|   const restored=(g as any).createMonsterFromSnapshot(snapshot.dormant…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/21]⎯
+
+ FAIL  src/test/w_17_domination.test.ts > W-17 JSON persistence and submission (W-24 catalog now available) > active/dormant JSON round trip retains allegiance, cleared discord, item key binding and re-elected leader references
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/w_17_domination.test.ts:208:86
+    206|   m.setStatusDuration('discordant',9);m.carriedItem=ItemLoader.spawnKe…
+    207|   cast(g);dormant.isAlly=true;dormant.isDormant=true;g.monsters=g.mons…
+    208|   const save=JSON.parse(JSON.stringify(g.toSnapshot()));expect(g.loadS…
+       |                                                                                      ^
+    209|   expect(restored).toMatchObject({isAlly:true,dominated:true,typeId:'g…
+    210|   expect(restored.bolts).toEqual(m.bolts);expect(restored.abilityFlags…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/21]⎯
+
+ FAIL  src/test/w_18_entrancement.test.ts > W-18 break semantics, save, and real use transaction > save/load preserves duration/timing and actual follow/wait; absent status remains absent
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/w_18_entrancement.test.ts:233:143
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/21]⎯
+
+ FAIL  src/test/w_19_polymorph.test.ts > W-19 save and actual submission > JSON round-trip retains current species, speed, item identity, hostile relation, and later death
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/w_19_polymorph.test.ts:170:106
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/21]⎯
+
+ FAIL  src/test/w_20_cloning.test.ts > W-20 save, identity and actual submission > JSON round trip keeps all clone runtime/containers/references and next ids beyond dormant high id
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/w_20_cloning.test.ts:130:33
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/21]⎯
+
+ FAIL  src/test/w_20_cloning.test.ts > W-20 save, identity and actual submission > ordinary named clone stays ordinary, and high dormant id is reserved
+AssertionError: expected 24 to be greater than 1200000
+ ❯ src/test/w_20_cloning.test.ts:133:327
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/21]⎯
+
+ FAIL  src/test/w_21_empowerment.test.ts > W-21 clone, polymorph, consumers and JSON handoff > JSON saves active/dormant/counts/form, old saves default counts to zero and test reset uses same fields
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/w_21_empowerment.test.ts:127:106
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/21]⎯
+
+ FAIL  src/test/w_23_negation.test.ts > W-23 live consumers and persistence > active/dormant JSON, reset and clone preserve stripping and mutation removal without rebuilding species
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/w_23_negation.test.ts:177:97
+    175|         const g = live(), m = mob(g, 'dar_priestess'); m.mutate(struct…
+    176|         const c = g.cloneMonster(m)!; c.isDormant = true; g.monsters =…
+    177|         const saved = JSON.parse(JSON.stringify(g.toSnapshot())); expe…
+       |                                                                                                 ^
+    178|         for (const v of [g.monsters[0]!, g.dormantMonsters[0]!, (g as …
+    179|             expect(v.wasNegated).toBe(true); expect(v.bolts).toEqual([…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/21]⎯
+
+
+ Test Files  8 failed (8)
+      Tests  21 failed | 329 passed (350)
+   Start at  14:59:39
+   Duration  8.32s (transform 2.20s, setup 0ms, import 4.93s, tests 15.84s, environment 1ms)
+

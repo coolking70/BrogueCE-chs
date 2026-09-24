@@ -23,7 +23,7 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import i18next from 'i18next';
 import { createHeadlessGame } from './harness';
-import { Game, type GameSnapshot } from '../engine/Core/Game';
+import { Game } from '../engine/Core/Game';
 import { Item } from '../engine/Items/Item';
 import { ItemLoader } from '../engine/Items/ItemLoader';
 import { rng } from '../engine/Random';
@@ -119,47 +119,6 @@ describe('P2: 读档不得被"按 spawn 语义重建"覆盖（B-1a 旧行为残�
         expect(plus2.displayName).toBe('Sword +2');
         expect(plus1.identified).toBe(false);  // 未鉴不许被反向翻成已鉴
         expect(plus1.displayName).toBe('Sword');
-    });
-});
-
-describe('P3: 旧存档（B-1b 前，无鉴定字段）兼容', () => {
-    it('剥离鉴定字段后读档不崩溃，回退旧行为：鉴定丢失、单槽戒指迁入左槽', () => {
-        const game = createHeadlessGame(42, 'test');
-        isolatePlayer(game);
-        const ring = ItemLoader.spawnRing('ring_of_regeneration', -1, -1)!;
-        game.player.inventory.addItem(ring);
-        game.player.equip(ring);
-        const sword = makeSword(game, 2);
-        ItemLoader.identifyInstance(sword);
-        ItemLoader.callKind('potion_of_life', '随便叫的');
-
-        // 构造 B-1b 前形态的存档：无根级鉴定字段、物品条目无鉴定字段、
-        // 戒指槽是旧 equippedRingId
-        const snap = JSON.parse(JSON.stringify(game.toSnapshot())) as GameSnapshot;
-        delete snap.identifiedItems;
-        delete snap.callTitles;
-        const legacyRingId = snap.player.ringLeftId;
-        delete snap.player.ringLeftId;
-        delete snap.player.ringRightId;
-        snap.player.equippedRingId = legacyRingId ?? null;
-        for (const it of snap.items) {
-            delete it.identified; delete it.canBeIdentified;
-            delete it.maxChargesKnown; delete it.timesUsed;
-        }
-        for (const it of snap.player.inventory) {
-            delete it.identified; delete it.canBeIdentified;
-            delete it.maxChargesKnown; delete it.timesUsed;
-        }
-
-        expect(game.loadSnapshot(snap)).toBe(true);
-        // 旧行为：实例按 spawn 语义重建为未鉴定、种类集回到开局态（护符预亮）、
-        // 绰号清空——读档即"鉴定全丢"是 B-1b 前的既定迁移语义，不是崩溃
-        expect(game.player.inventory.items.find(i => i.name === 'Sword')!.identified).toBe(false);
-        expect(ItemLoader.identifiedItems.has('potion_of_life')).toBe(false);
-        expect(ItemLoader.callTitles.size).toBe(0);
-        // 单槽 → 左槽迁移
-        expect(game.player.ringLeft?.id).toBe(legacyRingId ?? -1);
-        expect(game.player.ringRight).toBeNull();
     });
 });
 

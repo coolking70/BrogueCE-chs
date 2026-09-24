@@ -229,10 +229,10 @@ describe('W-18 break semantics, save, and real use transaction',()=>{
   const g=scene(),m=mob(g);m.setStatusDuration('entranced',24);m.setStatusDuration('immune_fire',20);g.zapBoltFromPlayer(getBoltForItem('staff_of_fire')!,ItemLoader.spawnStaff('staff_of_fire',0,0)!,m.loc);
   expect(m.hasStatus('entranced')).toBe(true);step(g);expect(m.loc.x).toBe(9);
  });
- it('save/load preserves duration/timing and actual follow/wait; old missing fields invent no entrancement',()=>{
+ it('save/load preserves duration/timing and actual follow/wait; absent status remains absent',()=>{
   const g=scene(),m=mob(g);cast(g,m);m.ticksUntilTurn=75;const saved=JSON.parse(JSON.stringify(g.toSnapshot()));expect(g.loadSnapshot(saved)).toBe(true);
   const restored=g.monsters.find(x=>x.id===m.id)!;expect(restored.ticksUntilTurn).toBe(75);step(g);expect(restored.loc.x).toBe(9);wait(g);expect(restored.loc.x).toBe(9);
-  delete saved.monsters[0].statusDurations.entranced;delete saved.monsters[0].entrancement;g.loadSnapshot(saved);const old=g.monsters.find(x=>x.id===m.id)!;old.ticksUntilTurn=1;wait(g);expect(old.hasStatus('entranced')).toBe(false);expect(old.loc.x).toBeLessThan(10);
+  delete saved.monsters[0].statusDurations.entranced;g.loadSnapshot(saved);const old=g.monsters.find(x=>x.id===m.id)!;old.ticksUntilTurn=1;wait(g);expect(old.hasStatus('entranced')).toBe(false);expect(old.loc.x).toBeLessThan(10);
  });
  it.each(['jackal','eel'])('entranced %s retains actual speed/traits after JSON load, then obeys physical movement rules',id=>{
   const g=scene(),m=mob(g,id);cast(g,m);if(id==='eel')g.grid.setTerrain(10,5,T.WATER_DEEP);

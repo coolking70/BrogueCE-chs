@@ -171,15 +171,14 @@ describe('W-23 live consumers and persistence', () => {
         g.player.inventory.addItem(scroll); g.readItem(scroll); expect(g.player.inventory.items).not.toContain(scroll);
         expect(m.bolts).toEqual([]); expect(m.dominated && m.isAlly).toBe(true); expect(m.maxHp).toBe(hp); expect(m.poisonAmount).toBe(2); expect(m.hasStatus('entranced')).toBe(false); expect(m.newPowerCount).toBe(1);
     });
-    it('active/dormant JSON, reset, clone and old saves preserve stripping and mutation removal without rebuilding species', () => {
+    it('active/dormant JSON, reset and clone preserve stripping and mutation removal without rebuilding species', () => {
         const g = live(), m = mob(g, 'dar_priestess'); m.mutate(structuredClone(mutations[0]!)); m.empower(); negate(g, m);
         const c = g.cloneMonster(m)!; c.isDormant = true; g.monsters = [m]; g.dormantMonsters = [c];
         const saved = JSON.parse(JSON.stringify(g.toSnapshot())); expect(g.loadSnapshot(saved)).toBe(true);
         for (const v of [g.monsters[0]!, g.dormantMonsters[0]!, (g as any).createMonsterFromSnapshot(saved.monsters[0])]) {
             expect(v.wasNegated).toBe(true); expect(v.bolts).toEqual([]); expect(v.mutation).toBeUndefined(); expect(v.newPowerCount).toBe(1); expect(v.hasAbility('MA_DF_ON_DEATH')).toBe(false);
         }
-        delete saved.monsters[0].wasNegated; delete saved.monsters[0].newPowerCount; delete saved.monsters[0].totalPowerCount;
-        g.loadSnapshot(saved); expect(g.monsters[0]!.wasNegated).toBe(false); expect(g.monsters[0]!.newPowerCount).toBe(0); expect(g.monsters[0]!.bolts).toEqual([]);
+
     });
     it('description reads wasNegated AND count equality; polymorph clears it and clone copies it', () => {
         const g = scene(), m = mob(g, 'dar_priestess'); negate(g, m); expect(m.copyForClone().wasNegated).toBe(true);

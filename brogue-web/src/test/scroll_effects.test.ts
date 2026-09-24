@@ -137,23 +137,7 @@ describe('isProtected 存读档往返', () => {
         expect(reloaded.player.equippedWeapon!.isProtected).toBe(true);
     });
 
-    it('旧存档兼容：快照缺 isProtected 字段时读入回落为 false', () => {
-        const game = createHeadlessGame(20260914);
-        game.player.equippedWeapon!.isProtected = true;
-        const snapshot = game.toSnapshot();
 
-        // 模拟旧版本存档：删掉所有物品快照的 isProtected 字段
-        for (const s of snapshot.player.inventory) {
-            delete s.isProtected;
-        }
-        expect(snapshot.player.inventory.some(s => 'isProtected' in s)).toBe(false);
-
-        const reloaded = createHeadlessGame(1);
-        expect(reloaded.loadSnapshot(snapshot)).toBe(true);
-        for (const item of reloaded.player.inventory.items) {
-            expect(item.isProtected).toBe(false);
-        }
-    });
 });
 
 describe('summon_monsters 卷轴（Items.c:7977-7990）', () => {

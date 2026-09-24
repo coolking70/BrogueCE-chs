@@ -165,26 +165,12 @@ describe('W-19 save and actual submission',()=>{
   const wand=ItemLoader.spawnWand('wand_of_slowness',-1,-1)!;const draw=vi.spyOn(rng,'randRange').mockReturnValueOnce(index('rat')).mockReturnValueOnce(index('jackal'));
   g.zapBoltFromPlayer(cfg(),wand,restored.loc);expect(restored.typeId).toBe('jackal');expect(draw.mock.calls).toEqual([[1,67],[1,67]]);
  });
- it.each(['rat','stone_guardian','Warden_of_Yendor'])('legacy exact localized %s name restores identity and native eligibility without guessing from glyph',id=>{
-  const g=scene(),m=mob(g,id);m.name='旧档'+id;const saved=JSON.parse(JSON.stringify((g as any).serializeMonster(m)));delete saved.form;
-  // Translation lookup is a deterministic fixture for the current locale.
-  vi.spyOn(ItemLoader,'translateName').mockImplementation(name=>name===data(id).name?'旧档'+id:name);
-  const restored=(g as any).deserializeMonster(saved) as Monster;g.monsters=[restored];expect(restored.typeId).toBe(id);expect([...restored.behaviorFlags]).toEqual(data(id).behaviorFlags);
-  const wand=ItemLoader.spawnWand('wand_of_slowness',-1,-1)!,draw=vi.spyOn(rng,'randRange').mockReturnValue(index('jackal'));
-  // Direct effect contact isolates the legacy immunity gate from reflector travel.
-  const accepted=restored.polymorph(()=>{});expect(accepted).toBe(id==='rat');expect(draw).toHaveBeenCalledTimes(id==='rat'?1:0);expect(wand).toBeTruthy();
- });
- it('unrecognizable legacy names are not guessed from glyph or HP and refuse polymorph without writes/RNG',()=>{
-  const g=scene(),m=mob(g);m.name='unknown old mutation title';m.isAlly=true;m.isCaged=true;const saved=JSON.parse(JSON.stringify((g as any).serializeMonster(m)));delete saved.form;
-  const restored=(g as any).deserializeMonster(saved) as Monster;g.monsters=[restored];const before=dump(restored),wand=ItemLoader.spawnWand('wand_of_slowness',-1,-1)!,draw=vi.spyOn(rng,'randRange');
-  const r=g.zapBoltFromPlayer(cfg(),wand,restored.loc);expect(r.outcome?.autoID).toBe(false);expect(draw).not.toHaveBeenCalled();expect(dump(restored)).toBe(before);
- });
- it('JSON round-trip retains current species, speed, item identity, hostile relation, and later death; tagless legacy stays legacy',()=>{
+ it('JSON round-trip retains current species, speed, item identity, hostile relation, and later death',()=>{
   const g=live(),m=mob(g),leader=mob(g,'rat',15,7),child=mob(g,'rat',16,7);m.leader=leader;child.leader=m;m.statusDurations={hasted:8};m.poisonAmount=4;m.carriedItem=ItemLoader.spawnKey('iron_key',9,5)!;m.carriedItem.id=900000;m.machineHome=72;m.targetWaypointIndex=2;m.deathEffectTriggered=false;
   cast(g,m,'bloat');const saved=JSON.parse(JSON.stringify(g.toSnapshot()));expect(g.loadSnapshot(saved)).toBe(true);const restored=g.monsters.find(x=>x.id===m.id)!;
   expect(restored).toMatchObject({typeId:'bloat',polymorphed:true,moveSpeed:50,attackSpeed:50,ticksUntilTurn:101,poisonAmount:4,machineHome:72});expect(restored.leader?.id).toBe(leader.id);expect(g.monsters.find(x=>x.id===child.id)!.leader).toBe(restored);expect(restored.carriedItem!.id).toBe(900000);expect(new Monster(0,0,data('rat')).id).toBeGreaterThan(900000);
   restored.tickStatuses();expect(restored.moveSpeed).toBe(50);restored.takeDamage(restored.hp,true);const gas=vi.spyOn(g.environment,'addGas');(g as any).triggerDeathFeatures();(g as any).removeDeadMonsters();expect(gas).toHaveBeenCalledOnce();expect(g.items[0]!.id).toBe(900000);
-  const old=structuredClone(saved);for(const s of old.monsters)delete s.polymorph;g.loadSnapshot(old);expect(g.monsters.find(x=>x.id===m.id)!.polymorphed).toBe(false);
+
  });
  it('tagged dormant list and test-room reconstruction preserve form and references',()=>{
   const g=live(),m=mob(g),child=mob(g,'rat',15,7);cast(g,m,'phantom');child.leader=m;g.toggleMonsterDormancy(m);

@@ -1206,6 +1206,15 @@ export class Monster extends Creature {
         return this.dominated ? this.snapshotForm() : undefined;
     }
 
+    /** Snapshot allocation is not spawning: no sleep lottery, translation, or
+     * flag-derived status writes. The codec restores every remaining field. */
+    public static allocateForSnapshot(form: MonsterData): Monster {
+        const monster = Object.create(Monster.prototype) as Monster;
+        monster.baseMoveSpeed = form.moveSpeed!;
+        monster.baseAttackSpeed = form.attackSpeed!;
+        return monster;
+    }
+
     /** Shared W-17/W-18 payload for effects whose save must retain actual traits. */
     public snapshotForm(): MonsterData {
         return { id: this.typeId, name: this.name, char: this.char, color: this.color,

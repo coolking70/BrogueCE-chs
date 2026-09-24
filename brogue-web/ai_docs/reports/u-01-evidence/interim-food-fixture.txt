@@ -1,0 +1,26 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/46b6/brogue/brogue-web
+
+ ❯ src/test/u_01_instance_snapshot.test.ts (17 tests | 1 failed) 2172ms
+   × all natural ItemLoader categories preserve their entire instance shape 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_01_instance_snapshot.test.ts > all natural ItemLoader categories preserve their entire instance shape
+TypeError: Cannot read properties of undefined (reading 'length')
+ ❯ src/test/u_01_instance_snapshot.test.ts:204:60
+    202|         ['potions','spawnPotion'],['scrolls','spawnScroll'],['foods','…
+    203|     ]) {
+    204|         const rows=(ItemLoader as any)[table!];expect(rows.length,tabl…
+       |                                                            ^
+    205|         for(const row of rows) {
+    206|             const item=(ItemLoader as any)[spawn!](row.id,2,3);expect(…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 54 passed (55)
+   Start at  15:05:43
+   Duration  2.77s (transform 515ms, setup 0ms, import 1.04s, tests 3.29s, environment 0ms)
+

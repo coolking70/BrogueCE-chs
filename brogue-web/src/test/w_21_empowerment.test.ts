@@ -122,12 +122,11 @@ describe('W-21 clone, polymorph, consumers and JSON handoff',()=>{
   g.zapBoltFromPlayer(cfg,item,m.loc);draw.mockRestore();const d=data('ogre');expect(m).toMatchObject({typeId:'ogre',maxHp:d.hp,accuracy:d.accuracy,defense:d.defense,damageString:d.damage,newPowerCount:2,totalPowerCount:2,isAlly:false});
   cast(g,m);expect(m.maxHp).toBe(d.hp+12);expect(m.newPowerCount).toBe(3);expect(m.totalPowerCount).toBe(3);
  });
- it('JSON saves active/dormant/counts/form, old saves default counts to zero and test reset uses same fields',()=>{
+ it('JSON saves active/dormant/counts/form and test reset uses same fields',()=>{
   const g=live(),m=mob(g);cast(g,m);cast(g,m);m.newPowerCount=1;const c=g.cloneMonster(m)!;c.isDormant=true;g.monsters=[m];g.dormantMonsters=[c];
   const original=stats(m),saved=JSON.parse(JSON.stringify(g.toSnapshot()));expect(g.loadSnapshot(saved)).toBe(true);expect(stats(g.monsters[0]!)).toEqual(original);expect(stats(g.dormantMonsters[0]!)).toEqual(original);
   expect(stats((g as any).createMonsterFromSnapshot(saved.monsters[0]))).toEqual(original);
-  const legacy=JSON.parse(JSON.stringify(saved));for(const entry of [...legacy.monsters,...legacy.dormantMonsters]){delete entry.newPowerCount;delete entry.totalPowerCount;}
-  g.loadSnapshot(legacy);expect(g.monsters[0]!.newPowerCount).toBe(0);expect(g.dormantMonsters[0]!.totalPowerCount).toBe(0);expect(g.monsters[0]!.maxHp).toBe(30);
+
  });
  it('save after polymorph keeps retained counts alongside the new catalog stats',()=>{
   const g=live(),m=mob(g);cast(g,m);vi.spyOn(rng,'randRange').mockReturnValue(4);m.polymorph(()=>{});vi.restoreAllMocks();const before=stats(m);g.loadSnapshot(JSON.parse(JSON.stringify(g.toSnapshot())));expect(stats(g.monsters[0]!)).toEqual(before);expect(g.monsters[0]!.totalPowerCount).toBe(1);

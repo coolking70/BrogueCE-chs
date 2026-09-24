@@ -4,12 +4,11 @@
  * Item.quantity（开局飞镖 ×15）此前未纳入 GameSnapshotItem 序列化，
  * 读档后 15 支飞镖会回落为 1。本文件锁定两件事：
  *   1. toSnapshot → loadSnapshot 往返后 quantity 不丢；
- *   2. 旧存档兼容：快照缺 quantity 字段时读入回落为 1，而非 undefined/NaN。
+ *   U01：旧存档兼容不再是需求，保留数量往返守卫。
  */
 import { describe, it, expect } from 'vitest';
 import { createHeadlessGame } from '../../test/harness';
 import { ItemCategory, type Item } from '../Items/Item';
-import type { GameSnapshot } from './Game';
 
 function findDart(items: Item[]): Item {
     const dart = items.find(i => i.category === ItemCategory.WEAPON && i.name === 'Dart');
@@ -36,22 +35,5 @@ describe('存读档 quantity 往返（开局飞镖 ×15）', () => {
         expect(findDart(reloaded.player.inventory.items).quantity).toBe(15);
     });
 
-    it('旧存档兼容：快照缺 quantity 字段时读入回落为 1（非 undefined/NaN）', () => {
-        const game = createHeadlessGame(20260914);
-        const snapshot: GameSnapshot = game.toSnapshot();
 
-        // 模拟旧版本存档：删掉所有物品快照的 quantity 字段
-        for (const s of snapshot.player.inventory) {
-            delete s.quantity;
-        }
-        // 守卫：确认字段确实被删干净，防止测试本身失效
-        expect(snapshot.player.inventory.some((s) => 'quantity' in s)).toBe(false);
-
-        const reloaded = createHeadlessGame(1);
-        expect(reloaded.loadSnapshot(snapshot)).toBe(true);
-        for (const item of reloaded.player.inventory.items) {
-            expect(item.quantity).toBe(1);
-            expect(Number.isFinite(item.quantity)).toBe(true);
-        }
-    });
 });

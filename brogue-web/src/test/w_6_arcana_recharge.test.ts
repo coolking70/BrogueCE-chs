@@ -258,20 +258,12 @@ describe('W-6 countdown persistence / zero-RNG legacy fallback', () => {
         expect(game.ticksTillUpdateEnvironment).toBe(100);
     });
 
-    it('both pre-W-5 and W-5 saves ignore legacy counter; full/depleted instances migrate without RNG or spawn', () => {
+    it('signed countdown values round-trip without RNG or spawn', () => {
         const g = bridge(Object.create(Game.prototype)), source = g.serializeItem(staff(3));
-        delete source.staffRechargeRemaining;
         const before = JSON.stringify(rng);
         vi.spyOn(rng, 'randRange').mockImplementation(() => { throw Error('RNG in migration'); });
         vi.spyOn(rng, 'randClumpedRange').mockImplementation(() => { throw Error('RNG in migration'); });
         vi.spyOn(ItemLoader, 'spawnStaff').mockImplementation(() => { throw Error('spawn in migration'); });
-        for (const version of [undefined, 1] as const) for (const charges of [0, 1, 3]) {
-            const loaded = g.deserializeItem({ ...source, arcanaInstanceVersion: version,
-                enchantment: version ? 3 : 0, charges, rechargeCounter: 299, rechargeTurns: 300 });
-            expect(resources(loaded)).toEqual([3, 3, charges]);
-            expect(loaded.staffRechargeRemaining).toBe(500);
-            expect(g.deserializeItem(g.serializeItem(loaded)).staffRechargeRemaining).toBe(500);
-        }
         for (const remaining of [-20, 0, 7, 1000]) {
             const loaded = g.deserializeItem({ ...source, staffRechargeRemaining: remaining });
             expect(loaded.staffRechargeRemaining).toBe(remaining);

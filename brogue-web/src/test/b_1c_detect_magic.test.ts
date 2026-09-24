@@ -434,21 +434,7 @@ describe('B-1c D6：极性状态进存档（种类级 magicPolarityRevealed + �
         expect(restored?.magicDetected).toBe(true);
     });
 
-    it('旧存档（无这两个字段）读档不崩、状态停在"未揭示"', () => {
-        const game = createHeadlessGame(42, 'test');
-        isolatePlayer(game);
-        clearFloor(game);
-        const potion = give(game, 'potion_of_paralysis');
-        ItemLoader.detectMagicOnItem(potion);
-        const snap = JSON.parse(JSON.stringify(game.toSnapshot())) as GameSnapshot;
-        delete (snap as { magicPolarityRevealed?: string[] }).magicPolarityRevealed;
-        for (const it of snap.player.inventory) delete (it as { magicDetected?: boolean }).magicDetected;
-        for (const it of snap.items) delete (it as { magicDetected?: boolean }).magicDetected;
 
-        expect(game.loadSnapshot(snap)).toBe(true);
-        expect(ItemLoader.isPolarityRevealed('potion_of_paralysis')).toBe(false);
-        expect(game.player.inventory.items.every(it => it.magicDetected === false)).toBe(true);
-    });
 });
 
 // ---------------------------------------------------------------------------

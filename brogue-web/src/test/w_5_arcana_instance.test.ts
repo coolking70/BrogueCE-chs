@@ -108,34 +108,21 @@ describe('W-5 CE initial resources, independent E and charges', () => {
 });
 
 describe('W-5 deterministic persistence / migration', () => {
-    it('actual deserializer migrates depleted legacy capacities without touching either RNG stream or spawns', () => {
+    it('actual deserializer preserves independent values without touching either RNG stream or spawns', () => {
         const g = bridge(Object.create(Game.prototype));
         const source = ItemLoader.spawnStaff('staff_of_lightning', 1, 2)!;
         const saved = g.serializeItem(source);
-        delete saved.arcanaInstanceVersion;
-        saved.enchantment = 0;
         const before = JSON.stringify(rng);
         vi.spyOn(rng, 'randRange').mockImplementation(() => { throw Error('migration must not draw'); });
         vi.spyOn(rng, 'randPercent').mockImplementation(() => { throw Error('migration must not draw'); });
         vi.spyOn(rng, 'randClumpedRange').mockImplementation(() => { throw Error('migration must not draw'); });
         vi.spyOn(ItemLoader, 'spawnStaff').mockImplementation(() => { throw Error('migration must not spawn'); });
         vi.spyOn(ItemLoader, 'spawnWand').mockImplementation(() => { throw Error('migration must not spawn'); });
-        for (const capacity of [2, 3, 4, 8]) for (const charges of [0, 1, capacity]) {
-            const it = g.deserializeItem({ ...saved, maxCharges: capacity, charges });
-            expect(state(it)).toEqual([1, capacity, capacity, charges]);
-            expect(state(g.deserializeItem(g.serializeItem(it)))).toEqual(state(it));
-        }
-        expect(state(g.deserializeItem({ ...saved, maxCharges: undefined, charges: 0 }))).toEqual([1, 2, 2, 0]);
-        for (const cfg of ItemLoader.staffs) {
-            expect(state(g.deserializeItem({ ...saved, identityId: cfg.id, maxCharges: undefined, charges: 0 })))
-                .toEqual([1, cfg.maxCharges, cfg.maxCharges, 0]);
-        }
         // A versioned E is authoritative, including zero; do not infer E from capacity.
         expect(state(g.deserializeItem({ ...saved, arcanaInstanceVersion: 1, enchantment: 0, maxCharges: 8, charges: 1 })))
             .toEqual([1, 0, 8, 1]);
-        const wand = { ...saved, category: ItemCategory.WAND, identityId: 'wand_of_teleportation', maxCharges: 4, charges: 0 };
+        const wand = { ...saved, category: ItemCategory.WAND, identityId: 'wand_of_teleportation', enchantment: 0, maxCharges: 4, charges: 0 };
         expect(state(g.deserializeItem(wand))).toEqual([1, 0, 4, 0]);
-        expect(state(g.deserializeItem({ ...wand, maxCharges: undefined, charges: undefined }))).toEqual([1, 0, 4, 4]);
         expect(JSON.stringify(rng)).toBe(before);
     });
 
@@ -155,14 +142,7 @@ describe('W-5 deterministic persistence / migration', () => {
         expect([loadedStaff.identified, loadedStaff.maxChargesKnown, loadedStaff.rechargeCounter]).toEqual([false, true, 17]);
         expect(state(loadedWand)).toEqual(state(wand));
         expect(loadedWand.timesUsed).toBe(3);
-        // Same full loader with unversioned pack/ground entries: original capacity supplies E.
-        for (const s of [...saved.player.inventory, ...saved.items]) {
-            delete s.arcanaInstanceVersion;
-            if (s.category === ItemCategory.STAFF) s.enchantment = 0;
-        }
-        expect(game.loadSnapshot(saved)).toBe(true);
-        expect(state(game.player.inventory.items.find(i => i.id === staff.id)!)).toEqual([1, 8, 8, 1]);
-        expect(state(game.items.find(i => i.id === wand.id)!)).toEqual(state(wand));
+
     });
 });
 

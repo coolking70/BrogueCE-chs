@@ -204,9 +204,9 @@ describe('W-25 staff appearance/save migration',()=>{
         expect(new Set(current.map(s=>ItemLoader.arcanaFlavorMap.get(s.id))).size).toBe(13);
         const upgraded=JSON.parse(JSON.stringify(g.toSnapshot()));g.loadSnapshot(upgraded);expect(g.toSnapshot().staffFlavors).toEqual(upgraded.staffFlavors);
     });
-    it('new maps, partial maps and blink missing timer fallback are deterministic',()=>{
+    it('new maps, partial maps and current blink timer are deterministic',()=>{
         const {g}=scene();g.player.inventory.addItem(ItemLoader.spawnStaff('staff_of_blinking',-1,-1)!);
-        const saved=JSON.parse(JSON.stringify(g.toSnapshot()));delete saved.player.inventory[0].staffRechargeRemaining;
+        const saved=JSON.parse(JSON.stringify(g.toSnapshot()));
         expect(g.loadSnapshot(saved)).toBe(true);expect(g.toSnapshot().staffFlavors).toEqual(saved.staffFlavors);expect(g.player.inventory.items[0]!.staffRechargeRemaining).toBe(1000);
         const before=JSON.stringify(rng);ItemLoader.restoreStaffFlavors({staff_of_blinking:saved.staffFlavors.staff_of_blinking});
         expect(new Set(ItemLoader.staffs.map(s=>ItemLoader.arcanaFlavorMap.get(s.id))).size).toBe(13);expect(JSON.stringify(rng)).toBe(before);

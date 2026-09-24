@@ -211,18 +211,12 @@ describe('W-17 JSON persistence and submission (W-24 catalog now available)',()=
   expect(g.monsters.find(x=>x.id===peer.id)!.leader).toBe(g.monsters.find(x=>x.id===f.id));expect(g.dormantMonsters[0]!.isAlly).toBe(true);expect(g.items[0]!.keyLoc).toEqual([{loc:{x:11,y:5},machine:4}]);
   g.summonMinionsFor(restored);expect(g.monsters.some(x=>x.leader===restored&&x.isAlly)).toBe(true);
  });
- it('horde blade leader/binding round trip stays in its single W-16 tag; deleting it preserves the old tagless fallback',()=>{
+ it('horde blade leader/binding round trip uses the shared entity contract',()=>{
   const g=live(),leader=mob(g,'goblin_conjurer',15,7),blade=mob(g,'spectral_blade');blade.leader=leader;blade.boundToLeader=true;
-  const saved=(g as any).serializeMonster(blade);expect(saved.allegiance).toBeUndefined();expect(saved.spectralBlade).toMatchObject({leaderId:leader.id,boundToLeader:true});
+  const saved=(g as any).serializeMonster(blade);expect(saved).toMatchObject({leaderId:leader.id,boundToLeader:true});
   g.loadSnapshot(JSON.parse(JSON.stringify(g.toSnapshot())));const restored=g.monsters.find(m=>m.id===blade.id)!;
   expect(restored.boundToLeader).toBe(true);expect(restored.leader).toBe(g.monsters.find(m=>m.id===leader.id));
-  delete saved.spectralBlade;expect((g as any).deserializeMonster(saved)).toMatchObject({isAlly:false,boundToLeader:false,leader:null});
- });
- it('old saves without allegiance never infer an ally from name/state; W-16 blade tag remains compatible',()=>{
-  const g=live(),m=mob(g);cast(g);const save=JSON.parse(JSON.stringify(g.toSnapshot()));for(const row of save.monsters){delete row.allegiance;delete row.dominatedForm;}
-  g.loadSnapshot(save);expect(g.monsters[0]!).toMatchObject({isAlly:false,dominated:false,boundToLeader:false,leader:null});
-  const row=(g as any).serializeMonster(m);delete row.allegiance;row.spectralBlade={isAlly:true,boundToPlayer:true,doesNotTrackLeader:true,ticksUntilTurn:1};
-  expect((g as any).deserializeMonster(row)).toMatchObject({isAlly:true,boundToPlayer:true,ticksUntilTurn:1});
+
  });
  it('test-room baseline restore uses the same relation and actual form payload',()=>{
   const g=scene(),m=mob(g,'ogre');cast(g);const row=(g as any).serializeMonster(m);const restored=(g as any).createMonsterFromSnapshot(JSON.parse(JSON.stringify(row)));

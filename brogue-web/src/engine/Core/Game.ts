@@ -34,14 +34,13 @@ import { staffBladeCount, bladeSpawnLocation } from '../Combat/Conjuration';
 import { weaponParalysisDuration, weaponConfusionDuration, weaponForceDistance, netEnchant, armorAbsorptionMax, armorReprisalPercent } from '../Combat/CombatFormulas';
 import { ItemCategory, Item } from '../Items/Item';
 import { ItemLoader, type ConsumableConfig } from '../Items/ItemLoader';
-import { restoreArcanaInstance } from '../Items/ArcanaInstance';
 import { canEnchantArcana, enchantArcana } from '../Items/ArcanaEnchantment';
-import { equippedWisdomBonus, tickStaffRecharge, rechargeStaffFully, restoreStaffRecharge } from '../Items/ArcanaRecharge';
+import { equippedWisdomBonus, tickStaffRecharge, rechargeStaffFully } from '../Items/ArcanaRecharge';
 import { rng } from '../Random';
 import monsterData from '../../data/monsters.json';
 import hordeData from '../../data/hordes.json';
 import mutationData from '../../data/mutations.json';
-import type { MonsterData, MonsterAbility, MutationData } from '../../entities/Monster';
+import type { MonsterData, MutationData } from '../../entities/Monster';
 import { MonsterState } from '../../entities/Monster';
 import { Direction, type Pos } from '../../types';
 import { ensureEntityIdAbove, allocateEntityId, resetEntityIds, type StatusId, type Creature } from '../../entities/Creature';
@@ -182,118 +181,13 @@ export const HORDE_PERIODIC_FORBIDDEN_FLAGS: readonly string[] = [
     ...HORDE_MACHINE_ONLY_FLAGS,
 ];
 
-export interface GameSnapshotItem {
-    id: number;
-    name: string;
-    char: string;
-    color: number;
-    category: number;
-    loc: Pos;
-    weight: number;
-    quantity?: number;
-    damage?: string;
-    armor?: number;
-    strengthRequired?: number;
-    isCursed: boolean;
-    isProtected?: boolean;
-    enchantment: number;
-    runicType?: string;
-    runicKnown?: boolean;
-    /**
-     * B-1b：实例鉴定态随存档往返（P1-48）。identified 三态语义与内存一致：
-     * undefined（JSON 落盘时丢键）≙ 无未知态；旧存档无这些字段 → deserializeItem
-     * 按 B-1b 前的 spawn 语义重建（读档即"鉴定态全丢"旧行为）。
-     */
-    identified?: boolean;
-    canBeIdentified?: boolean;
-    maxChargesKnown?: boolean;
-    /** B-1c：≙ ITEM_MAGIC_DETECTED；旧存档无此键 → false（未被 detect magic 照过）。 */
-    magicDetected?: boolean;
-    timesUsed?: number;
-    consumableId?: string;
-    /** W-5: distinguish saved E from legacy staff enchantment=0 placeholders. */
-    arcanaInstanceVersion?: 1;
-    maxCharges?: number;
-    charges?: number;
-    staffRechargeRemaining?: number;
-    rechargeTurns?: number;
-    rechargeCounter?: number;
-    cooldownTurns?: number;
-    cooldownRemaining?: number;
-    identityId?: string;
-    /**
-     * B-4b：钥匙→锁的绑定（CE item.keyLoc，Rogue.h:1417）。空数组/缺键
-     * ≙ 无绑定（旧存档与无绑定钥匙）。
-     * V-2b-6：解锁消费端上线（Game.keyInPackFor）——disposableHere
-     * （开锁后是否消耗钥匙，CE Movement.c:636-656 useKeyAt）随存档往返。
-     */
-    keyLoc?: Array<{ loc: Pos; machine: number; disposableHere?: boolean }>;
-    /** V-2b-6：≙ CE item->originDepth——钥匙生成层（keyMatchesLocation 判据 1）。 */
-    originDepth?: number;
-}
-
-export interface GameSnapshotMonster {
-    /** W-21: optional for legacy saves; absent counts restore as zero. */
-    wasNegated?: boolean;
-    newPowerCount?: number;
-    totalPowerCount?: number;
-    /** W-19: source identity/traits must survive saving BEFORE the first cast.
-     * A translated name alone cannot enforce immunity or non-original species. */
-    form?: MonsterData;
-    /** W-19 actual form plus creature fields that survive an in-place change. */
-    polymorph?: {
-        form: MonsterData; movementSpeed: number; attackSpeed: number; keepsSpeed: boolean;
-        ticksUntilTurn: number; wasNegated: boolean; seized: boolean; seizing: boolean;
-        boundToPlayer: boolean; doesNotTrackLeader: boolean; machineHome: number; isDormant: boolean;
-        givenUpOnScent: boolean; safetySnapshot: number[][] | null; targetWaypointIndex: number;
-        waypointAlreadyVisited: boolean[] | null; spawnLoc: Pos; falling: boolean; preplaced: boolean;
-        deathEffectTriggered: boolean; carriedItem?: GameSnapshotItem;
-    };
-    /** W-20: optional clone tag, independent from polymorph/ally identity. */
-    cloneState?: { runtime: NonNullable<GameSnapshotMonster['polymorph']>; polymorphed: boolean };
-    /** Preserve mutation provenance for self-split's native-or-mutation mask. */
-    mutation?: MutationData;
-    /** W-18: preserve the controlled action budget/grabs; missing tag keeps old defaults. */
-    entrancement?: { ticksUntilTurn: number; seized: boolean; seizing: boolean; form?: MonsterData };
-    /** W-17: optional for old saves. Player follower = isAlly + leaderId=null.
-     * Resolve monster IDs only after BOTH active and dormant lists exist. */
-    allegiance?: { isAlly: boolean; isCaged: boolean; leaderId: number | null; boundToLeader: boolean; dominated: boolean };
-    dominatedForm?: MonsterData;
-
-    /** W-16: tagged species/relationship/timing payload. No tag in pre-W16
-     * saves means no conjuration relation; never turn a horde blade into an ally. */
-    spectralBlade?: {
-        isAlly: boolean;
-        boundToPlayer: boolean;
-        doesNotTrackLeader: boolean;
-        ticksUntilTurn: number;
-        /** W-17: keep blade relationships in their existing authoritative tag. */
-        leaderId?: number | null;
-        boundToLeader?: boolean;
-    };
-    id: number;
-    loc: Pos;
-    name: string;
-    char: string;
-    color: number;
-    hp: number;
-    maxHp: number;
-    damageString: string;
-    regenTurns?: number;
-    regenCounter?: number;
-    state: number;
-    statusDurations?: Partial<Record<StatusId, number>>;
-    poisonAmount?: number;
-    maxShield?: number;
-    goldDropChance: number;
-    itemDropChance: number;
-    onHitStatus?: StatusId;
-    onHitChance?: number;
-    onHitDuration?: number;
-    statusImmunities?: StatusId[];
-    statusResistTurns?: Partial<Record<StatusId, number>>;
-    abilities?: string[];
-}
+// One instance contract for ordinary, mutated, polymorphed and cloned entities.
+import { copyFields, PLAYER_FIELDS, collectEntityGraph, restoreEntityGraph,
+    serializeItem as encodeItem, deserializeItem as decodeItem,
+    serializeMonster as encodeMonster, serializeMonsterRow,
+    type GameSnapshotItem, type GameSnapshotMonster, type GameSnapshotPlayer,
+    type EntitySnapshotGraph } from './EntitySnapshot';
+export type { GameSnapshotItem, GameSnapshotMonster } from './EntitySnapshot';
 
 export interface GameSnapshot {
     version: number;
@@ -307,33 +201,15 @@ export interface GameSnapshot {
     pendingEnchantment?: boolean;
     /** W-13: CE IMPREGNABLE flags for the saved map. Older saves have no flags. */
     impregnableCells?: number[];
-    player: {
-        loc: Pos;
-        hp: number;
-        maxHp: number;
-        strength: number;
-        nutrition: number;
-        maxNutrition: number;
-        regenCarry?: number;
-        statusDurations?: Partial<Record<StatusId, number>>;
-        poisonAmount?: number;
-        maxShield?: number;
-        inventory: GameSnapshotItem[];
-        equippedWeaponId: number | null;
-        equippedArmorId: number | null;
-        /** B-1b：戒指双槽。equippedRingId 是 B-1b 前单槽存档的遗留字段，
-         *  仅在 loadSnapshot 兼容读取（→ 左槽），新存档不写入。 */
-        equippedRingId?: number | null;
-        ringLeftId?: number | null;
-        ringRightId?: number | null;
-        temporaryImmunities?: Partial<Record<StatusId, number>>;
-    };
+    player: GameSnapshotPlayer;
+    /** Reachable payloads outside active/dormant/ground/pack ownership lists. */
+    entityGraph: EntitySnapshotGraph;
     monsters: GameSnapshotMonster[];
     /**
      * V-2b-5：休眠怪随存档往返（CE 的 dormantMonsters 链表）。旧存档无此
      * 字段 → 空表兜底（与"该存档没有休眠怪"同义）。
      */
-    dormantMonsters?: GameSnapshotMonster[];
+    dormantMonsters: GameSnapshotMonster[];
     items: GameSnapshotItem[];
     /**
      * B-1b：全局种类鉴定态随存档往返（P1-48；对应 CE itemTable.identified /
@@ -450,40 +326,7 @@ interface TestRoomState {
     x2: number;
     y2: number;
     baselineItems: GameSnapshotItem[];
-    baselineMonsters: Array<{
-        wasNegated?: boolean;
-        newPowerCount?: number;
-        totalPowerCount?: number;
-        form?: MonsterData;
-        polymorph?: GameSnapshotMonster['polymorph'];
-        cloneState?: GameSnapshotMonster['cloneState'];
-        mutation?: MutationData;
-        entrancement?: GameSnapshotMonster['entrancement'];
-        spectralBlade?: GameSnapshotMonster['spectralBlade'];
-        allegiance?: GameSnapshotMonster['allegiance'];
-        dominatedForm?: MonsterData;
-        id: number;
-        loc: Pos;
-        name: string;
-        char: string;
-        color: number;
-        hp: number;
-        maxHp: number;
-        damageString: string;
-        regenTurns?: number;
-        regenCounter?: number;
-        state: number;
-        statusDurations?: Partial<Record<StatusId, number>>;
-        poisonAmount?: number;
-        maxShield?: number;
-        goldDropChance: number;
-        itemDropChance: number;
-        onHitStatus?: StatusId;
-        onHitChance?: number;
-        onHitDuration?: number;
-        statusImmunities?: StatusId[];
-        statusResistTurns?: Partial<Record<StatusId, number>>;
-    }>;
+    baselineMonsters: GameSnapshotMonster[];
     baselineTerrains: Array<{
         x: number;
         y: number;
@@ -2468,48 +2311,7 @@ export class Game {
     }
 
     private createMonsterFromSnapshot(m: TestRoomState['baselineMonsters'][number]): Monster {
-        if (m.cloneState || m.form || m.spectralBlade || m.allegiance || m.entrancement || m.polymorph) return this.deserializeMonster(m);
-        const data = {
-            id: m.name.toLowerCase().replace(/\s+/g, '_'),
-            name: m.name,
-            char: m.char,
-            color: m.color,
-            hp: m.maxHp,
-            damage: m.damageString,
-            minDepth: 1,
-            maxDepth: 99,
-            goldDropChance: m.goldDropChance,
-            itemDropChance: m.itemDropChance,
-            onHitStatus: m.onHitStatus,
-            onHitChance: m.onHitChance,
-            onHitDuration: m.onHitDuration,
-            statusImmunities: m.statusImmunities,
-            statusResistTurns: m.statusResistTurns
-        };
-        const monster = new Monster(m.loc.x, m.loc.y, data);
-        monster.id = m.id;
-        monster.wasNegated = m.wasNegated ?? false;
-        monster.newPowerCount = m.newPowerCount ?? 0;
-        monster.totalPowerCount = m.totalPowerCount ?? 0;
-        monster.mutation = m.mutation ? structuredClone(m.mutation) : undefined;
-        monster.hp = m.hp;
-        monster.maxHp = m.maxHp;
-        monster.state = m.state as any;
-        monster.regenTurns = m.regenTurns ?? 0;
-        monster.regenCounter = m.regenCounter ?? 0;
-        monster.statusDurations = { ...(m.statusDurations ?? {}) };
-        monster.restorePoison(m.poisonAmount);
-        monster.restoreShield(m.maxShield);
-        monster.refreshSpeeds(); // P2-2：状态直写绕过 applyStatus，需显式重算衍生速度
-        monster.damageString = m.damageString;
-        monster.goldDropChance = m.goldDropChance;
-        monster.itemDropChance = m.itemDropChance;
-        monster.onHitStatus = m.onHitStatus;
-        monster.onHitChance = m.onHitChance ?? 0;
-        monster.onHitDuration = m.onHitDuration ?? 0;
-        monster.statusImmunities = new Set<StatusId>(m.statusImmunities ?? []);
-        monster.statusResistTurns = { ...(m.statusResistTurns ?? {}) };
-        return monster;
+        return this.deserializeMonster(m);
     }
 
     private generateTestDepth(isFirstLevel: boolean) {
@@ -2830,40 +2632,7 @@ export class Game {
                     x2: roomX2,
                     y2: row.y2,
                     baselineItems: roomItems.map((it) => this.serializeItem(it)),
-                    baselineMonsters: roomMonsters.map((m) => ({
-                        wasNegated: m.wasNegated,
-                        newPowerCount: m.newPowerCount,
-                        totalPowerCount: m.totalPowerCount,
-                        entrancement: this.serializeMonster(m).entrancement,
-                        spectralBlade: this.serializeMonster(m).spectralBlade,
-                        allegiance: this.serializeMonster(m).allegiance,
-                        dominatedForm: this.serializeMonster(m).dominatedForm,
-                        polymorph: this.serializeMonster(m).polymorph,
-                        cloneState: this.serializeMonster(m).cloneState,
-                        mutation: m.mutation ? structuredClone(m.mutation) : undefined,
-                        form: m.snapshotForm(),
-                        id: m.id,
-                        loc: { x: m.loc.x, y: m.loc.y },
-                        name: m.name,
-                        char: m.char,
-                        color: m.color,
-                        hp: m.hp,
-                        maxHp: m.maxHp,
-                        damageString: m.damageString,
-                        state: m.state,
-                        statusDurations: { ...m.statusDurations },
-                        poisonAmount: m.poisonAmount,
-                        maxShield: m.maxShield,
-                        regenTurns: m.regenTurns,
-                        regenCounter: m.regenCounter,
-                        goldDropChance: m.goldDropChance,
-                        itemDropChance: m.itemDropChance,
-                        onHitStatus: m.onHitStatus,
-                        onHitChance: m.onHitChance,
-                        onHitDuration: m.onHitDuration,
-                        statusImmunities: Array.from(m.statusImmunities),
-                        statusResistTurns: { ...m.statusResistTurns }
-                    })),
+                    baselineMonsters: roomMonsters.map(m => this.serializeMonster(m)),
                     baselineTerrains
                 });
 
@@ -8426,119 +8195,16 @@ export class Game {
         }
     }
 
-    private serializeItem(item: Item): GameSnapshotItem {
-        return {
-            id: item.id,
-            name: item.name,
-            char: item.char,
-            color: item.color,
-            category: item.category,
-            loc: { x: item.loc.x, y: item.loc.y },
-            weight: item.weight,
-            quantity: item.quantity,
-            damage: item.damage,
-            armor: item.armor,
-            strengthRequired: item.strengthRequired,
-            isCursed: item.isCursed,
-            isProtected: item.isProtected,
-            enchantment: item.enchantment,
-            runicType: item.runicType,
-            runicKnown: item.runicKnown,
-            // B-1b：实例鉴定态进存档（P1-48）。identified=undefined 的物品
-            // （金币/食物/钥匙/护符等无未知态类别）JSON 落盘时自然丢键。
-            identified: item.identified,
-            canBeIdentified: item.canBeIdentified,
-            maxChargesKnown: item.maxChargesKnown,
-            // B-1c：实例 ITEM_MAGIC_DETECTED 进存档
-            magicDetected: item.magicDetected,
-            timesUsed: item.timesUsed,
-            consumableId: (item as any).consumableId,
-            arcanaInstanceVersion: item.arcanaInstanceVersion,
-            maxCharges: item.maxCharges,
-            charges: item.charges,
-            staffRechargeRemaining: item.category === ItemCategory.STAFF
-                ? restoreStaffRecharge(item.staffRechargeRemaining, (item as Item & { identityId?: string }).identityId) : undefined,
-            rechargeTurns: item.rechargeTurns,
-            rechargeCounter: item.rechargeCounter,
-            cooldownTurns: item.cooldownTurns,
-            cooldownRemaining: item.cooldownRemaining,
-            identityId: (item as any).identityId,
-            // B-4b：钥匙绑定随存档往返（无绑定为空数组，JSON 落盘保留 []）
-            keyLoc: item.keyLoc.map(k => ({ loc: { x: k.loc.x, y: k.loc.y }, machine: k.machine }))
-        };
-    }
-
-    private deserializeItem(s: GameSnapshotItem): Item {
-        const item = new Item(s.name, s.char, s.color, s.category as ItemCategory);
-        item.id = s.id;
-        item.loc = { x: s.loc.x, y: s.loc.y };
-        item.weight = s.weight;
-        // 旧存档无 quantity 字段，回落为 Item 默认堆叠数 1
-        item.quantity = s.quantity ?? 1;
-        item.damage = s.damage;
-        item.armor = s.armor;
-        item.strengthRequired = s.strengthRequired;
-        item.isCursed = s.isCursed;
-        // 旧存档无 isProtected 字段，回落为 false
-        item.isProtected = s.isProtected ?? false;
-        item.enchantment = s.enchantment;
-        item.runicType = s.runicType;
-        item.runicKnown = !!s.runicKnown;
-        item.maxCharges = s.maxCharges;
-        item.charges = s.charges;
-        if (item.category === ItemCategory.STAFF || item.category === ItemCategory.WAND) {
-            const isStaff = item.category === ItemCategory.STAFF;
-            const table = isStaff ? ItemLoader.staffs : ItemLoader.wands;
-            const legacyCapacity = table.find(cfg => cfg.id === s.identityId)?.maxCharges ?? 1;
-            // Pure restoration only: never spawn/roll when reading old or current saves.
-            Object.assign(item, restoreArcanaInstance(s, isStaff, legacyCapacity));
-        }
-        if (item.category === ItemCategory.STAFF) {
-            item.staffRechargeRemaining = restoreStaffRecharge(s.staffRechargeRemaining, s.identityId);
-        }
-        item.rechargeTurns = s.rechargeTurns;
-        item.rechargeCounter = s.rechargeCounter;
-        item.cooldownTurns = s.cooldownTurns;
-        item.cooldownRemaining = s.cooldownRemaining;
-        if (s.identityId) {
-            (item as any).identityId = s.identityId;
-        }
-        if (s.consumableId) {
-            (item as any).consumableId = s.consumableId;
-        }
-        // B-4b：钥匙绑定还原（旧存档无键 → 保持默认空数组）
-        if (s.keyLoc) {
-            item.keyLoc = s.keyLoc.map(k => ({ loc: { x: k.loc.x, y: k.loc.y }, machine: k.machine, disposableHere: k.disposableHere }));
-        }
-        // V-2b-6：生成层还原（旧存档无键 → undefined ≙ 当层，登记偏差见 Item 注）
-        if (s.originDepth !== undefined) {
-            item.originDepth = s.originDepth;
-        }
-        // B-1b：实例鉴定态直接落账（P1-48 反转 B-1a 的"按 spawn 语义重建"）。
-        // 旧存档（B-1b 前，无 identified 键）保持旧行为：可未知类别按 spawn
-        // 语义重建为未识别——读档即"鉴定全丢"的 B-1b 前既定迁移语义。
-        if (s.identified === undefined) {
-            const cat = item.category;
-            if (cat === ItemCategory.WEAPON || cat === ItemCategory.ARMOR || cat === ItemCategory.POTION
-                || cat === ItemCategory.SCROLL || cat === ItemCategory.WAND || cat === ItemCategory.STAFF
-                || cat === ItemCategory.RING) {
-                item.identified = false;
-                item.canBeIdentified = true;
-            } else {
-                item.identified = true;
-            }
-        } else {
-            item.identified = s.identified;
-            item.canBeIdentified = s.canBeIdentified ?? false;
-            item.maxChargesKnown = s.maxChargesKnown ?? false;
-            item.timesUsed = s.timesUsed ?? 0;
-        }
-        // B-1c：实例 ITEM_MAGIC_DETECTED 落账；旧存档无此键 → false
-        item.magicDetected = s.magicDetected ?? false;
-        return item;
-    }
+    private serializeItem(item: Item): GameSnapshotItem { return encodeItem(item); }
+    private deserializeItem(s: GameSnapshotItem): Item { return decodeItem(s); }
 
     public toSnapshot(): GameSnapshot {
+        const roots = [...this.monsters, ...this.dormantMonsters];
+        const ownedItems = [...this.items, ...this.player.inventory.items];
+        const graph = collectEntityGraph(roots, [...ownedItems,
+            ...[this.player.equippedWeapon, this.player.equippedArmor, this.player.ringLeft, this.player.ringRight]
+                .filter((item): item is Item => item !== null)]);
+
         const gridCells: GameSnapshot['grid'] = [];
         for (let x = 0; x < this.grid.width; x++) {
             for (let y = 0; y < this.grid.height; y++) {
@@ -8582,7 +8248,7 @@ export class Game {
         }
 
         return {
-            version: 1,
+            version: 2,
             savedAt: Date.now(),
             depth: this.depth,
             seed: this.currentSeed,
@@ -8591,28 +8257,23 @@ export class Game {
             pendingEnchantment: this.pendingEnchantment,
             impregnableCells: [...this.grid.impregnableCells],
             player: {
-                loc: { x: this.player.loc.x, y: this.player.loc.y },
-                hp: this.player.hp,
-                maxHp: this.player.maxHp,
-                strength: this.player.strength,
-                nutrition: this.player.nutrition,
-                maxNutrition: this.player.maxNutrition,
-                statusDurations: { ...this.player.statusDurations },
-                poisonAmount: this.player.poisonAmount,
-                maxShield: this.player.maxShield,
-                regenCarry: this.player.regenCarry,
-                inventory: this.player.inventory.items.map((it) => this.serializeItem(it)),
+                ...copyFields(this.player, PLAYER_FIELDS),
+                statusImmunities: [...this.player.statusImmunities],
+                hungerTransition: this.player.snapshotHungerTransition(),
+                inventoryCapacity: this.player.inventory.capacity,
+                inventory: this.player.inventory.items.map(encodeItem),
                 equippedWeaponId: this.player.equippedWeapon?.id ?? null,
                 equippedArmorId: this.player.equippedArmor?.id ?? null,
                 ringLeftId: this.player.ringLeft?.id ?? null,
                 ringRightId: this.player.ringRight?.id ?? null,
-                temporaryImmunities: { ...this.player.temporaryImmunities }
             },
-            monsters: this.monsters.map((m) => this.serializeMonster(m)),
-            // V-2b-5：休眠怪随存档往返（它们不在 monsters 里，漏了就是"读档后
-            // 雕像里的怪凭空消失"）。旧存档无此字段 → 空表兜底。
-            dormantMonsters: this.dormantMonsters.map((m) => this.serializeMonster(m)),
-            items: this.items.map((it) => this.serializeItem(it)),
+            monsters: this.monsters.map(serializeMonsterRow),
+            dormantMonsters: this.dormantMonsters.map(serializeMonsterRow),
+            items: this.items.map(encodeItem),
+            entityGraph: {
+                monsters: graph.monsters.filter(m => !roots.includes(m)).map(serializeMonsterRow),
+                items: graph.items.filter(item => !ownedItems.includes(item)).map(encodeItem),
+            },
             // B-1b：全局种类鉴定态与绰号进存档（P1-48；Map 落盘为普通对象）
             identifiedItems: [...ItemLoader.identifiedItems],
             staffFlavors: Object.fromEntries(ItemLoader.staffs.map(s => [s.id, ItemLoader.arcanaFlavorMap.get(s.id)!])),
@@ -8628,189 +8289,26 @@ export class Game {
         };
     }
 
-    /**
-     * V-2b-5：怪物的快照序列化/反序列化抽出成对（原先是 toSnapshot 里的内联
-     * map + loadSnapshot 里的内联 map，两处字段表必须人工保持同步；休眠怪
-     * 也要走同一条路，顺势抽出，两半从此只有一份）。
-     */
-    private serializeMonster(m: Monster): GameSnapshotMonster {
-        const runtime: NonNullable<GameSnapshotMonster['polymorph']> = {
-                form: m.snapshotForm(), movementSpeed: m.movementSpeed, attackSpeed: m.attackSpeed,
-                keepsSpeed: m.polymorphKeepsSpeed, ticksUntilTurn: m.ticksUntilTurn, wasNegated: m.wasNegated,
-                seized: m.seized, seizing: m.seizing, boundToPlayer: m.boundToPlayer, doesNotTrackLeader: m.doesNotTrackLeader,
-                machineHome: m.machineHome, isDormant: m.isDormant, givenUpOnScent: m.givenUpOnScent, safetySnapshot: m.safetySnapshot?.map(row => [...row]) ?? null,
-                targetWaypointIndex: m.targetWaypointIndex, waypointAlreadyVisited: m.waypointAlreadyVisited ? [...m.waypointAlreadyVisited] : null,
-                spawnLoc: { ...m.spawnLoc }, falling: m.falling, preplaced: m.preplaced, deathEffectTriggered: m.deathEffectTriggered,
-                carriedItem: m.carriedItem ? this.serializeItem(m.carriedItem) : undefined,
-        };
-        return {
-            wasNegated: m.wasNegated,
-            newPowerCount: m.newPowerCount,
-            totalPowerCount: m.totalPowerCount,
-            form: m.snapshotForm(),
-            ...(m.polymorphed ? { polymorph: runtime } : {}),
-            ...(m.isClone ? { cloneState: { runtime, polymorphed: m.polymorphed } } : {}),
-            mutation: m.mutation ? structuredClone(m.mutation) : undefined,
-            ...(m.hasStatus('entranced') ? { entrancement: { ticksUntilTurn: m.ticksUntilTurn, seized: m.seized, seizing: m.seizing, form: m.snapshotForm() } } : {}),
-            ...(m.typeId !== 'spectral_blade' ? { allegiance: {
-                isAlly: m.isAlly, isCaged: m.isCaged, leaderId: m.leader?.id ?? null,
-                boundToLeader: m.boundToLeader, dominated: m.dominated,
-            } } : {}),
-            dominatedForm: m.dominationForm(),
-            ...(m.typeId === 'spectral_blade' ? { spectralBlade: {
-                isAlly: m.isAlly, boundToPlayer: m.boundToPlayer,
-                doesNotTrackLeader: m.doesNotTrackLeader, ticksUntilTurn: m.ticksUntilTurn,
-                leaderId: m.leader?.id ?? null, boundToLeader: m.boundToLeader,
-            } } : {}),
-            id: m.id,
-            loc: { x: m.loc.x, y: m.loc.y },
-            name: m.name,
-            char: m.char,
-            color: m.color,
-            hp: m.hp,
-            maxHp: m.maxHp,
-            damageString: m.damageString,
-            regenTurns: m.regenTurns,
-            regenCounter: m.regenCounter,
-            state: m.state,
-            statusDurations: { ...m.statusDurations },
-            poisonAmount: m.poisonAmount,
-            maxShield: m.maxShield,
-            goldDropChance: m.goldDropChance,
-            itemDropChance: m.itemDropChance,
-            onHitStatus: m.onHitStatus,
-            onHitChance: m.onHitChance,
-            onHitDuration: m.onHitDuration,
-            statusImmunities: Array.from(m.statusImmunities),
-            statusResistTurns: { ...m.statusResistTurns },
-            abilities: Array.from(m.abilities)
-        };
-    }
+    private serializeMonster(m: Monster): GameSnapshotMonster { return encodeMonster(m); }
 
     private deserializeMonster(m: GameSnapshotMonster): Monster {
-        // Pure migration for pre-form saves: exact canonical/current localized
-        // species name only, never glyph/depth/HP guesses. Unrecognizable legacy
-        // entities retain their old data; polymorph safely rejects unknown IDs.
-        const matches = (monsterData as MonsterData[]).filter(d => d.name === m.name || ItemLoader.translateName(d.name) === m.name);
-        const legacySpecies = matches.length === 1 ? matches[0] : undefined;
-        const data = {
-            ...legacySpecies,
-            id: legacySpecies?.id ?? m.name.toLowerCase().replace(/\s+/g, '_'),
-            name: m.name,
-            char: m.char,
-            color: m.color,
-            hp: m.maxHp,
-            damage: m.damageString,
-            minDepth: 1,
-            maxDepth: 99,
-            goldDropChance: m.goldDropChance,
-            itemDropChance: m.itemDropChance,
-            onHitStatus: m.onHitStatus,
-            onHitChance: m.onHitChance,
-            onHitDuration: m.onHitDuration,
-            statusImmunities: m.statusImmunities,
-            statusResistTurns: m.statusResistTurns,
-            abilities: (m.abilities ?? []) as MonsterAbility[]
-        };
-        const bladeData = m.spectralBlade ? (monsterData as MonsterData[]).find(d => d.id === 'spectral_blade') : undefined;
-        const entrancedForm = (m.statusDurations?.entranced ?? 0) > 0 ? m.entrancement?.form : undefined;
-        const monster = new Monster(m.loc.x, m.loc.y, m.polymorph?.form ?? m.form ?? (m.allegiance?.dominated && m.dominatedForm ? m.dominatedForm : entrancedForm ?? bladeData ?? data));
-        monster.id = m.id;
-        monster.wasNegated = m.wasNegated ?? m.cloneState?.runtime.wasNegated ?? m.polymorph?.wasNegated ?? false;
-        monster.newPowerCount = m.newPowerCount ?? 0;
-        monster.totalPowerCount = m.totalPowerCount ?? 0;
-        monster.mutation = m.mutation ? structuredClone(m.mutation) : undefined;
-        monster.hp = m.hp;
-        monster.maxHp = m.maxHp;
-        monster.state = m.state as any;
-        monster.regenTurns = m.regenTurns ?? 0;
-        monster.regenCounter = m.regenCounter ?? 0;
-        monster.statusDurations = { ...(m.statusDurations ?? {}) };
-        if (m.spectralBlade) {
-            monster.isAlly = m.spectralBlade.isAlly === true;
-            monster.boundToPlayer = m.spectralBlade.boundToPlayer === true;
-            monster.boundToLeader = m.spectralBlade.boundToLeader === true;
-            monster.doesNotTrackLeader = m.spectralBlade.doesNotTrackLeader === true;
-            monster.ticksUntilTurn = Number.isFinite(m.spectralBlade.ticksUntilTurn)
-                ? m.spectralBlade.ticksUntilTurn : monster.attackSpeed + 1;
-            monster.syncFlagDerivedStatuses();
-        }
-        if (monster.hasStatus('entranced') && m.entrancement) {
-            if (Number.isFinite(m.entrancement.ticksUntilTurn)) monster.ticksUntilTurn = m.entrancement.ticksUntilTurn;
-            monster.seized = m.entrancement.seized === true;
-            monster.seizing = m.entrancement.seizing === true;
-        }
-        if (m.allegiance) {
-            monster.isAlly = m.allegiance.isAlly === true;
-            monster.isCaged = m.allegiance.isCaged === true;
-            monster.boundToLeader = m.allegiance.boundToLeader === true;
-            monster.dominated = m.allegiance.dominated === true;
-        }
-        monster.restorePoison(m.poisonAmount);
-        monster.restoreShield(m.maxShield);
-        monster.refreshSpeeds(); // P2-2：状态直写绕过 applyStatus，需显式重算衍生速度
-        monster.damageString = m.damageString;
-        monster.goldDropChance = m.goldDropChance;
-        monster.itemDropChance = m.itemDropChance;
-        monster.onHitStatus = m.onHitStatus;
-        monster.onHitChance = m.onHitChance ?? 0;
-        monster.onHitDuration = m.onHitDuration ?? 0;
-        monster.statusImmunities = new Set<StatusId>(m.statusImmunities ?? []);
-        monster.statusResistTurns = { ...(m.statusResistTurns ?? {}) };
-        const p = m.cloneState?.runtime ?? m.polymorph;
-        if (p) {
-            monster.isClone = !!m.cloneState;
-            monster.polymorphed = m.cloneState?.polymorphed ?? true;
-            monster.movementSpeed = p.movementSpeed;
-            monster.attackSpeed = p.attackSpeed;
-            monster.polymorphKeepsSpeed = p.keepsSpeed;
-            monster.ticksUntilTurn = p.ticksUntilTurn;
-            monster.wasNegated = m.wasNegated ?? p.wasNegated ?? false;
-            monster.seized = p.seized;
-            monster.seizing = p.seizing;
-            monster.boundToPlayer = p.boundToPlayer;
-            monster.doesNotTrackLeader = p.doesNotTrackLeader;
-            monster.machineHome = p.machineHome;
-            monster.isDormant = p.isDormant;
-            monster.givenUpOnScent = p.givenUpOnScent;
-            monster.safetySnapshot = p.safetySnapshot?.map(row => [...row]) ?? null;
-            monster.targetWaypointIndex = p.targetWaypointIndex;
-            monster.waypointAlreadyVisited = p.waypointAlreadyVisited ? [...p.waypointAlreadyVisited] : null;
-            monster.spawnLoc = { ...p.spawnLoc };
-            monster.falling = p.falling;
-            monster.preplaced = p.preplaced;
-            monster.deathEffectTriggered = p.deathEffectTriggered;
-            monster.carriedItem = p.carriedItem ? this.deserializeItem(p.carriedItem) : null;
-            monster.poisonAmount = m.poisonAmount ?? 0; // CE retains the inactive counter.
-        }
-        return monster;
+        const graph = restoreEntityGraph([m]);
+        ensureEntityIdAbove(Math.max(0, ...graph.monsters.keys(), ...graph.items.keys()));
+        return graph.monsters.get(m.id)!;
     }
 
     private restoreMonsterLeaders(snapshots: readonly GameSnapshotMonster[], monsters: readonly Monster[]): void {
-        const byId = new Map(monsters.map(m => [m.id, m]));
-        for (const saved of snapshots) {
-            const monster = byId.get(saved.id);
-            if (monster && (saved.allegiance || saved.spectralBlade)) {
-                const leaderId = saved.spectralBlade ? saved.spectralBlade.leaderId : saved.allegiance?.leaderId;
-                monster.leader = byId.get(leaderId ?? -1) ?? null;
-            }
-        }
+        // Test-room reset also resolves payload/leader cycles after all roots exist.
+        restoreEntityGraph(snapshots, [], monsters, [...this.items, ...this.player.inventory.items]);
     }
 
     public loadSnapshot(snapshot: GameSnapshot): boolean {
-        if (!snapshot || snapshot.version !== 1) return false;
+        if (!snapshot || snapshot.version !== 2) return false;
 
-        // 实体 id 是模块级单调计数器（见 Creature.ts）。存档里的 id 可能来自
-        // 更早的进程、已远超当前计数器值，必须先把计数器推到存档最大 id 之上，
-        // 否则读档后新建的怪物/物品会与存档实体撞号。
-        ensureEntityIdAbove(Math.max(
-            0,
-            ...snapshot.monsters.map((m) => m.id),
-            ...(snapshot.dormantMonsters ?? []).map(m => m.id),
-            ...[...snapshot.monsters, ...(snapshot.dormantMonsters ?? [])].map(m => m.cloneState?.runtime.carriedItem?.id ?? m.polymorph?.carriedItem?.id ?? 0),
-            ...snapshot.items.map((it) => it.id),
-            ...snapshot.player.inventory.map((it) => it.id)
-        ));
+        const entityGraph = restoreEntityGraph(
+            [...snapshot.monsters, ...snapshot.dormantMonsters, ...snapshot.entityGraph.monsters],
+            [...snapshot.items, ...snapshot.player.inventory, ...snapshot.entityGraph.items]);
+        ensureEntityIdAbove(Math.max(snapshot.player.id, 0, ...entityGraph.monsters.keys(), ...entityGraph.items.keys()));
 
         this.mode = snapshot.mode;
         this.ticksTillUpdateEnvironment = snapshot.ticksTillUpdateEnvironment ?? 100;
@@ -8913,32 +8411,19 @@ export class Game {
         this.lightMap = new LightMap(this.grid);
 
         this.player = new Player(snapshot.player.loc.x, snapshot.player.loc.y);
-        this.player.hp = snapshot.player.hp;
-        this.player.maxHp = snapshot.player.maxHp;
-        this.player.strength = snapshot.player.strength;
-        this.player.nutrition = snapshot.player.nutrition;
-        this.player.maxNutrition = snapshot.player.maxNutrition;
-        this.player.statusDurations = { ...(snapshot.player.statusDurations ?? {}) };
-        this.player.restorePoison(snapshot.player.poisonAmount);
-        this.player.restoreShield(snapshot.player.maxShield);
-        this.player.regenCarry = snapshot.player.regenCarry ?? 0;
-        this.player.refreshSpeeds(); // P2-2：状态直写绕过 applyStatus，需显式重算衍生速度
-        this.player.inventory.items = snapshot.player.inventory.map((it) => this.deserializeItem(it));
-        this.player.equippedWeapon = this.player.inventory.items.find((it) => it.id === snapshot.player.equippedWeaponId) ?? null;
-        this.player.equippedArmor = this.player.inventory.items.find((it) => it.id === snapshot.player.equippedArmorId) ?? null;
-        // B-1b：双戒指槽；旧存档的单槽 equippedRingId 迁移为左槽
-        const legacyRingId = snapshot.player.ringLeftId ?? snapshot.player.equippedRingId ?? null;
-        this.player.ringLeft = this.player.inventory.items.find((it) => it.id === legacyRingId) ?? null;
-        this.player.ringRight = this.player.inventory.items.find((it) => it.id === snapshot.player.ringRightId) ?? null;
-        this.player.temporaryImmunities = { ...(snapshot.player.temporaryImmunities ?? {}) };
-
-        this.monsters = snapshot.monsters.map((m) => this.deserializeMonster(m));
-        // V-2b-5：休眠怪还原进休眠表（不进 this.monsters——CE 同构）。
-        this.dormantMonsters = (snapshot.dormantMonsters ?? []).map((m) => this.deserializeMonster(m));
-        this.restoreMonsterLeaders([...snapshot.monsters, ...(snapshot.dormantMonsters ?? [])],
-            [...this.monsters, ...this.dormantMonsters]);
-
-        this.items = snapshot.items.map((it) => this.deserializeItem(it));
+        Object.assign(this.player, copyFields(snapshot.player, PLAYER_FIELDS));
+        this.player.statusImmunities = new Set(snapshot.player.statusImmunities);
+        this.player.restoreHungerTransition(snapshot.player.hungerTransition);
+        this.player.inventory.capacity = snapshot.player.inventoryCapacity;
+        this.player.inventory.items = snapshot.player.inventory.map(it => entityGraph.items.get(it.id)!);
+        const equipment = (id: number | null): Item | null => id === null ? null : entityGraph.items.get(id)!;
+        this.player.equippedWeapon = equipment(snapshot.player.equippedWeaponId);
+        this.player.equippedArmor = equipment(snapshot.player.equippedArmorId);
+        this.player.ringLeft = equipment(snapshot.player.ringLeftId);
+        this.player.ringRight = equipment(snapshot.player.ringRightId);
+        this.monsters = snapshot.monsters.map(m => entityGraph.monsters.get(m.id)!);
+        this.dormantMonsters = snapshot.dormantMonsters.map(m => entityGraph.monsters.get(m.id)!);
+        this.items = snapshot.items.map(it => entityGraph.items.get(it.id)!);
         if (snapshot.stats) {
             this.stats = { ...snapshot.stats };
         }

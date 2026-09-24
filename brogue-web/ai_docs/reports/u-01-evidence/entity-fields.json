@@ -1,0 +1,674 @@
+[
+  {
+    "class": "Item",
+    "field": "id",
+    "line": 49,
+    "declaration": "public id: number;"
+  },
+  {
+    "class": "Item",
+    "field": "char",
+    "line": 50,
+    "declaration": "public char: string;"
+  },
+  {
+    "class": "Item",
+    "field": "color",
+    "line": 51,
+    "declaration": "public color: number;"
+  },
+  {
+    "class": "Item",
+    "field": "name",
+    "line": 52,
+    "declaration": "public name: string;"
+  },
+  {
+    "class": "Item",
+    "field": "loc",
+    "line": 55,
+    "declaration": "public loc: Pos;"
+  },
+  {
+    "class": "Item",
+    "field": "identityId",
+    "line": 58,
+    "declaration": "public identityId?: string;"
+  },
+  {
+    "class": "Item",
+    "field": "consumableId",
+    "line": 59,
+    "declaration": "public consumableId?: string;"
+  },
+  {
+    "class": "Item",
+    "field": "description",
+    "line": 60,
+    "declaration": "public description?: string;"
+  },
+  {
+    "class": "Item",
+    "field": "category",
+    "line": 61,
+    "declaration": "public category: ItemCategory;"
+  },
+  {
+    "class": "Item",
+    "field": "weight",
+    "line": 62,
+    "declaration": "public weight: number;"
+  },
+  {
+    "class": "Item",
+    "field": "damage",
+    "line": 65,
+    "declaration": "public damage?: string;"
+  },
+  {
+    "class": "Item",
+    "field": "armor",
+    "line": 66,
+    "declaration": "public armor?: number;"
+  },
+  {
+    "class": "Item",
+    "field": "strengthRequired",
+    "line": 67,
+    "declaration": "public strengthRequired?: number;"
+  },
+  {
+    "class": "Item",
+    "field": "flags",
+    "line": 74,
+    "declaration": "public flags?: string[];"
+  },
+  {
+    "class": "Item",
+    "field": "isCursed",
+    "line": 75,
+    "declaration": "public isCursed: boolean = false;"
+  },
+  {
+    "class": "Item",
+    "field": "isProtected",
+    "line": 77,
+    "declaration": "public isProtected: boolean = false;"
+  },
+  {
+    "class": "Item",
+    "field": "enchantment",
+    "line": 79,
+    "declaration": "public enchantment: number = 0;"
+  },
+  {
+    "class": "Item",
+    "field": "runicType",
+    "line": 80,
+    "declaration": "public runicType?: string;"
+  },
+  {
+    "class": "Item",
+    "field": "runicKnown",
+    "line": 81,
+    "declaration": "public runicKnown: boolean = false;"
+  },
+  {
+    "class": "Item",
+    "field": "arcanaInstanceVersion",
+    "line": 83,
+    "declaration": "public arcanaInstanceVersion?: 1;"
+  },
+  {
+    "class": "Item",
+    "field": "maxCharges",
+    "line": 85,
+    "declaration": "public maxCharges?: number;"
+  },
+  {
+    "class": "Item",
+    "field": "charges",
+    "line": 87,
+    "declaration": "public charges?: number;"
+  },
+  {
+    "class": "Item",
+    "field": "identified",
+    "line": 102,
+    "declaration": "public identified?: boolean;"
+  },
+  {
+    "class": "Item",
+    "field": "canBeIdentified",
+    "line": 103,
+    "declaration": "public canBeIdentified: boolean = false;"
+  },
+  {
+    "class": "Item",
+    "field": "maxChargesKnown",
+    "line": 104,
+    "declaration": "public maxChargesKnown: boolean = false;"
+  },
+  {
+    "class": "Item",
+    "field": "magicDetected",
+    "line": 111,
+    "declaration": "public magicDetected: boolean = false;"
+  },
+  {
+    "class": "Item",
+    "field": "timesUsed",
+    "line": 113,
+    "declaration": "public timesUsed?: number;"
+  },
+  {
+    "class": "Item",
+    "field": "staffRechargeRemaining",
+    "line": 116,
+    "declaration": "public staffRechargeRemaining?: number;"
+  },
+  {
+    "class": "Item",
+    "field": "rechargeTurns",
+    "line": 118,
+    "declaration": "public rechargeTurns?: number;"
+  },
+  {
+    "class": "Item",
+    "field": "rechargeCounter",
+    "line": 119,
+    "declaration": "public rechargeCounter?: number;"
+  },
+  {
+    "class": "Item",
+    "field": "cooldownTurns",
+    "line": 120,
+    "declaration": "public cooldownTurns?: number;"
+  },
+  {
+    "class": "Item",
+    "field": "cooldownRemaining",
+    "line": 121,
+    "declaration": "public cooldownRemaining?: number;"
+  },
+  {
+    "class": "Item",
+    "field": "quantity",
+    "line": 124,
+    "declaration": "public quantity: number = 1;"
+  },
+  {
+    "class": "Item",
+    "field": "quiverNumber",
+    "line": 130,
+    "declaration": "public quiverNumber?: number;"
+  },
+  {
+    "class": "Item",
+    "field": "vorpalEnemy",
+    "line": 137,
+    "declaration": "public vorpalEnemy?: string;"
+  },
+  {
+    "class": "Item",
+    "field": "keyLoc",
+    "line": 149,
+    "declaration": "public keyLoc: Array<{ loc: { x: number; y: number }; machine: number; disposableHere?: boolean }> = [];"
+  },
+  {
+    "class": "Item",
+    "field": "originDepth",
+    "line": 156,
+    "declaration": "public originDepth?: number;"
+  },
+  {
+    "class": "Creature",
+    "field": "id",
+    "line": 51,
+    "declaration": "public id: number;"
+  },
+  {
+    "class": "Creature",
+    "field": "loc",
+    "line": 52,
+    "declaration": "public loc: Pos;"
+  },
+  {
+    "class": "Creature",
+    "field": "hp",
+    "line": 53,
+    "declaration": "public hp: number;"
+  },
+  {
+    "class": "Creature",
+    "field": "maxHp",
+    "line": 54,
+    "declaration": "public maxHp: number;"
+  },
+  {
+    "class": "Creature",
+    "field": "name",
+    "line": 55,
+    "declaration": "public name: string;"
+  },
+  {
+    "class": "Creature",
+    "field": "color",
+    "line": 56,
+    "declaration": "public color: number;"
+  },
+  {
+    "class": "Creature",
+    "field": "char",
+    "line": 57,
+    "declaration": "public char: string;"
+  },
+  {
+    "class": "Creature",
+    "field": "statusDurations",
+    "line": 58,
+    "declaration": "public statusDurations: Partial<Record<StatusId, number>>;"
+  },
+  {
+    "class": "Creature",
+    "field": "statusImmunities",
+    "line": 59,
+    "declaration": "public statusImmunities: Set<StatusId>;"
+  },
+  {
+    "class": "Creature",
+    "field": "poisonAmount",
+    "line": 61,
+    "declaration": "public poisonAmount = 0;"
+  },
+  {
+    "class": "Creature",
+    "field": "maxShield",
+    "line": 63,
+    "declaration": "public maxShield = 0;"
+  },
+  {
+    "class": "Creature",
+    "field": "ticksUntilTurn",
+    "line": 69,
+    "declaration": "public ticksUntilTurn: number;"
+  },
+  {
+    "class": "Creature",
+    "field": "seized",
+    "line": 77,
+    "declaration": "public seized: boolean = false;"
+  },
+  {
+    "class": "Creature",
+    "field": "seizing",
+    "line": 79,
+    "declaration": "public seizing: boolean = false;"
+  },
+  {
+    "class": "Creature",
+    "field": "movementSpeed",
+    "line": 86,
+    "declaration": "public movementSpeed: number = 100;"
+  },
+  {
+    "class": "Creature",
+    "field": "attackSpeed",
+    "line": 88,
+    "declaration": "public attackSpeed: number = 100;"
+  },
+  {
+    "class": "Monster",
+    "field": "state",
+    "line": 240,
+    "declaration": "public state: MonsterState = MonsterState.ASLEEP;"
+  },
+  {
+    "class": "Monster",
+    "field": "damageString",
+    "line": 241,
+    "declaration": "public damageString: string;"
+  },
+  {
+    "class": "Monster",
+    "field": "goldDropChance",
+    "line": 242,
+    "declaration": "public goldDropChance: number = 0;"
+  },
+  {
+    "class": "Monster",
+    "field": "itemDropChance",
+    "line": 243,
+    "declaration": "public itemDropChance: number = 0;"
+  },
+  {
+    "class": "Monster",
+    "field": "onHitStatus",
+    "line": 244,
+    "declaration": "public onHitStatus?: StatusId;"
+  },
+  {
+    "class": "Monster",
+    "field": "onHitChance",
+    "line": 245,
+    "declaration": "public onHitChance: number = 0;"
+  },
+  {
+    "class": "Monster",
+    "field": "onHitDuration",
+    "line": 246,
+    "declaration": "public onHitDuration: number = 0;"
+  },
+  {
+    "class": "Monster",
+    "field": "statusResistTurns",
+    "line": 247,
+    "declaration": "public statusResistTurns: Partial<Record<StatusId, number>> = {};"
+  },
+  {
+    "class": "Monster",
+    "field": "abilities",
+    "line": 248,
+    "declaration": "public abilities: Set<MonsterAbility> = new Set();"
+  },
+  {
+    "class": "Monster",
+    "field": "behaviorFlags",
+    "line": 249,
+    "declaration": "public behaviorFlags: Set<string> = new Set();"
+  },
+  {
+    "class": "Monster",
+    "field": "abilityFlags",
+    "line": 250,
+    "declaration": "public abilityFlags: Set<string> = new Set();"
+  },
+  {
+    "class": "Monster",
+    "field": "isAlly",
+    "line": 251,
+    "declaration": "public isAlly: boolean = false;"
+  },
+  {
+    "class": "Monster",
+    "field": "dominated",
+    "line": 253,
+    "declaration": "public dominated = false;"
+  },
+  {
+    "class": "Monster",
+    "field": "boundToLeader",
+    "line": 255,
+    "declaration": "public boundToLeader = false;"
+  },
+  {
+    "class": "Monster",
+    "field": "isCaged",
+    "line": 256,
+    "declaration": "public isCaged: boolean = false;"
+  },
+  {
+    "class": "Monster",
+    "field": "carriedItem",
+    "line": 265,
+    "declaration": "public carriedItem?: Item | null;"
+  },
+  {
+    "class": "Monster",
+    "field": "mutation",
+    "line": 266,
+    "declaration": "public mutation?: MutationData;"
+  },
+  {
+    "class": "Monster",
+    "field": "polymorphed",
+    "line": 268,
+    "declaration": "public polymorphed = false;"
+  },
+  {
+    "class": "Monster",
+    "field": "isClone",
+    "line": 270,
+    "declaration": "public isClone = false;"
+  },
+  {
+    "class": "Monster",
+    "field": "wasNegated",
+    "line": 271,
+    "declaration": "public wasNegated = false;"
+  },
+  {
+    "class": "Monster",
+    "field": "newPowerCount",
+    "line": 276,
+    "declaration": "public newPowerCount = 0;"
+  },
+  {
+    "class": "Monster",
+    "field": "totalPowerCount",
+    "line": 277,
+    "declaration": "public totalPowerCount = 0;"
+  },
+  {
+    "class": "Monster",
+    "field": "carriedMonster",
+    "line": 280,
+    "declaration": "public carriedMonster: Monster | null = null;"
+  },
+  {
+    "class": "Monster",
+    "field": "polymorphKeepsSpeed",
+    "line": 282,
+    "declaration": "public polymorphKeepsSpeed = false;"
+  },
+  {
+    "class": "Monster",
+    "field": "description",
+    "line": 283,
+    "declaration": "public description: string = '';"
+  },
+  {
+    "class": "Monster",
+    "field": "deathEffectTriggered",
+    "line": 290,
+    "declaration": "public deathEffectTriggered: boolean = false;"
+  },
+  {
+    "class": "Monster",
+    "field": "bolts",
+    "line": 292,
+    "declaration": "public bolts: string[] = [];"
+  },
+  {
+    "class": "Monster",
+    "field": "typeId",
+    "line": 296,
+    "declaration": "public typeId: string = '';"
+  },
+  {
+    "class": "Monster",
+    "field": "leader",
+    "line": 302,
+    "declaration": "public leader: Monster | null = null;"
+  },
+  {
+    "class": "Monster",
+    "field": "boundToPlayer",
+    "line": 305,
+    "declaration": "public boundToPlayer: boolean = false;"
+  },
+  {
+    "class": "Monster",
+    "field": "doesNotTrackLeader",
+    "line": 307,
+    "declaration": "public doesNotTrackLeader: boolean = false;"
+  },
+  {
+    "class": "Monster",
+    "field": "givenUpOnScent",
+    "line": 314,
+    "declaration": "public givenUpOnScent: boolean = false;"
+  },
+  {
+    "class": "Monster",
+    "field": "safetySnapshot",
+    "line": 321,
+    "declaration": "public safetySnapshot: number[][] | null = null;"
+  },
+  {
+    "class": "Monster",
+    "field": "falling",
+    "line": 328,
+    "declaration": "public falling: boolean = false;"
+  },
+  {
+    "class": "Monster",
+    "field": "preplaced",
+    "line": 336,
+    "declaration": "public preplaced: boolean = false;"
+  },
+  {
+    "class": "Monster",
+    "field": "isDormant",
+    "line": 348,
+    "declaration": "public isDormant: boolean = false;"
+  },
+  {
+    "class": "Monster",
+    "field": "machineHome",
+    "line": 359,
+    "declaration": "public machineHome: number = 0;"
+  },
+  {
+    "class": "Monster",
+    "field": "targetWaypointIndex",
+    "line": 366,
+    "declaration": "public targetWaypointIndex: number = -1;"
+  },
+  {
+    "class": "Monster",
+    "field": "waypointAlreadyVisited",
+    "line": 376,
+    "declaration": "public waypointAlreadyVisited: boolean[] | null = null;"
+  },
+  {
+    "class": "Monster",
+    "field": "regenTurns",
+    "line": 379,
+    "declaration": "public regenTurns: number = 0;"
+  },
+  {
+    "class": "Monster",
+    "field": "baseMoveSpeed",
+    "line": 385,
+    "declaration": "private baseMoveSpeed: number = 100;"
+  },
+  {
+    "class": "Monster",
+    "field": "baseAttackSpeed",
+    "line": 386,
+    "declaration": "private baseAttackSpeed: number = 100;"
+  },
+  {
+    "class": "Monster",
+    "field": "accuracy",
+    "line": 387,
+    "declaration": "public accuracy: number = 100;"
+  },
+  {
+    "class": "Monster",
+    "field": "defense",
+    "line": 388,
+    "declaration": "public defense: number = 0;"
+  },
+  {
+    "class": "Monster",
+    "field": "regenCounter",
+    "line": 391,
+    "declaration": "public regenCounter: number = 0;"
+  },
+  {
+    "class": "Monster",
+    "field": "spawnLoc",
+    "line": 394,
+    "declaration": "public spawnLoc: { x: number, y: number } = { x: 0, y: 0 };"
+  },
+  {
+    "class": "Player",
+    "field": "inventory",
+    "line": 22,
+    "declaration": "public inventory: Inventory;"
+  },
+  {
+    "class": "Player",
+    "field": "equippedWeapon",
+    "line": 23,
+    "declaration": "public equippedWeapon: Item | null = null;"
+  },
+  {
+    "class": "Player",
+    "field": "equippedArmor",
+    "line": 24,
+    "declaration": "public equippedArmor: Item | null = null;"
+  },
+  {
+    "class": "Player",
+    "field": "ringLeft",
+    "line": 30,
+    "declaration": "public ringLeft: Item | null = null;"
+  },
+  {
+    "class": "Player",
+    "field": "ringRight",
+    "line": 31,
+    "declaration": "public ringRight: Item | null = null;"
+  },
+  {
+    "class": "Player",
+    "field": "strength",
+    "line": 32,
+    "declaration": "public strength: number = 12;"
+  },
+  {
+    "class": "Player",
+    "field": "lastMoveDirection",
+    "line": 33,
+    "declaration": "public lastMoveDirection: Direction | null = null;"
+  },
+  {
+    "class": "Player",
+    "field": "nutrition",
+    "line": 36,
+    "declaration": "public nutrition: number = STOMACH_SIZE;"
+  },
+  {
+    "class": "Player",
+    "field": "maxNutrition",
+    "line": 37,
+    "declaration": "public maxNutrition: number = STOMACH_SIZE;"
+  },
+  {
+    "class": "Player",
+    "field": "hungerState",
+    "line": 38,
+    "declaration": "public hungerState: HungerState = 'normal';"
+  },
+  {
+    "class": "Player",
+    "field": "hungerTransition",
+    "line": 39,
+    "declaration": "private hungerTransition: HungerState | null = null;"
+  },
+  {
+    "class": "Player",
+    "field": "regenCarry",
+    "line": 41,
+    "declaration": "public regenCarry: number = 0;"
+  },
+  {
+    "class": "Player",
+    "field": "temporaryImmunities",
+    "line": 44,
+    "declaration": "public temporaryImmunities: Partial<Record<StatusId, number>> = {};"
+  }
+]

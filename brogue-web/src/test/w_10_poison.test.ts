@@ -150,7 +150,7 @@ describe('W-10 objective time, recovery and persistence', () => {
         tick(g); tick(g); expect([m.hp, m.regenCounter, m.poisonAmount]).toEqual([48, 2, 0]);
         tick(g); expect([m.hp, m.regenCounter]).toEqual([49, 0]);
     });
-    it('JSON save/load retains both species doses, paused regen and half-block; legacy countdown becomes one dose', () => {
+    it('JSON save/load retains both species doses, paused regen and half-block', () => {
         const g = live(), m = mob(g); g.player.addPoison(5, 2); m.addPoison(9, 3);
         g.player.regenCarry = 0.75; m.regenTurns = 3; m.regenCounter = 2;
         g.player.applyStatus('hasted', 100); g.handlePlayerAction('wait');
@@ -162,10 +162,10 @@ describe('W-10 objective time, recovery and persistence', () => {
         g.monsters[0]!.ticksUntilTurn = 100000;
         g.handlePlayerAction('wait'); expect([g.player.hp, g.monsters[0]!.hp]).toEqual([98, 97]);
         expect(g.player.getStatusDuration('poisoned')).toBe(4);
-        delete snapshot.player.poisonAmount; delete snapshot.monsters[0].poisonAmount;
-        g.loadSnapshot(snapshot); expect(g.player.poisonAmount).toBe(1); expect(g.monsters[0]!.poisonAmount).toBe(1);
+        // U01: an inactive instance counter is still state, not a migration input.
         snapshot.player.statusDurations.poisoned = 0; snapshot.player.poisonAmount = 99;
-        g.loadSnapshot(snapshot); expect(g.player.poisonAmount).toBe(0);
+        g.loadSnapshot(snapshot); expect(g.player.poisonAmount).toBe(99);
+
     });
 });
 
