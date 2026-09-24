@@ -27,7 +27,8 @@ import { reflectionChance } from '../engine/Combat/CombatFormulas';
 import { bladeAvoids, bladeDiagonalBlocked, bladeStepToward, BLADE_DIRECTIONS } from '../engine/Combat/Conjuration';
 import { boltLine } from '../engine/Combat/BoltTrajectory';
 import { hasBlink, blinkChance, monsterBlinkToPreferenceMap, monsterBlinkToSafety, blinkFromHarmfulTerrain,
-    closestBlinkEnemy, blinkAllyFlees, blinkAllyAfterMagic, blinkTowardCreature, blinkTowardCaptiveLeader } from '../engine/Combat/MonsterBlink';
+    closestBlinkEnemy, blinkAllyFlees, blinkAllyAfterMagic, blinkTowardCreature, blinkTowardCaptiveLeader, allyShouldPursue } from '../engine/Combat/MonsterBlink';
+import { updateMonsterCorpseAbsorption, moveAllyToCorpse, corpseAllyBeforeMagic } from '../engine/Combat/MonsterAbsorption';
 import { entrancementDiagonalBlocked, entrancementPassable } from '../engine/Movement/Entrancement';
 import { cellTerrainFlags, cellTerrainMechFlags } from '../engine/Map/DungeonFeature';
 import { T_ENTANGLES, TM_ALLOWS_SUBMERGING, T_LAVA_INSTA_DEATH, T_IS_DEEP_WATER, T_AUTO_DESCENT } from '../engine/Map/TerrainCatalog';
@@ -340,6 +341,9 @@ export class Monster extends Creature {
      * 时序），靠这个字段保证同一只怪物只触发一次死亡地形效果。
      */
     public deathEffectTriggered: boolean = false;
+    /** U11: ordinary death processing/learning broadcast, independent of DF.
+     * Persisted so a captured dead instance cannot distribute the corpse twice. */
+    public deathProcessed = false;
     /** P4-1b：CE monsterCatalog.bolts（P4-1a 数据），驱动 tryUseBolt。 */
     public bolts: string[] = [];
     /** P4-2：monsters.json 的怪物种类 id（如 'goblin_conjurer'），对应 CE
@@ -1328,6 +1332,9 @@ export class Monster extends Creature {
 
     public takeTurn(game: Game, stealthRange: number) {
         if (this.hp <= 0) return;
+        // CE monstersTurn runs this before its own status/AI gates. Time.c's
+        // outer scheduler separately withholds actions from disabled monsters.
+        if (this.corpseAbsorptionCounter >= 0 && updateMonsterCorpseAbsorption(game, this)) return;
         if (this.hasStatus('paralyzed') || this.hasStatus('entranced')) return;
         if (this.isCaged) return;
 
@@ -1346,6 +1353,10 @@ export class Monster extends Creature {
             fleeingBlinkTried = true;
             if (blinkChance(this) && monsterBlinkToSafety(game, this)) return;
         }
+
+        const corpseAlly = this.targetCorpseLoc && this.isAlly && !this.hasStatus('magical_fear') && !this.hasStatus('discordant');
+        const corpseEnemy = corpseAlly ? (blinkAlly ? blinkEnemy : closestBlinkEnemy(game, this)) : null;
+        if (corpseAlly && corpseAllyBeforeMagic(game, this, corpseEnemy, p => this.tryCorpseMove(p, game))) return;
 
         // P4-1b：CE monstUseMagic 在移动/近战之前优先尝试（monstersTurn 各出口
         // 调用 monstUseMagic 都在移动决策之前）。沉睡怪物不参与（CE 沉睡怪物
@@ -1375,6 +1386,12 @@ export class Monster extends Creature {
 
         if (this.isAlly && !this.hasStatus('magical_fear') && (!blinkReady || !this.hasStatus('discordant'))) {
             if (blinkAlly && blinkAllyAfterMagic(game, this, blinkEnemy)) return;
+            // Restrict this CE priority decision to pending corpse tasks; U12
+            // still owns the existing general ally target/following policy.
+            if (corpseAlly) {
+                if (!allyShouldPursue(game, this, corpseEnemy)
+                    && moveAllyToCorpse(game, this, p => this.tryCorpseMove(p, game))) return;
+            }
             const independentBlade = this.typeId === 'spectral_blade' && this.doesNotTrackLeader;
             const canBladeStep = (p: { x: number; y: number }) => !(p.x === this.loc.x && p.y === this.loc.y)
                 && !bladeAvoids(game.grid, p) && !bladeDiagonalBlocked(game.grid, this.loc, p)
@@ -2007,6 +2024,14 @@ export class Monster extends Creature {
         }
         if (valid.length === 0) return null;
         return valid[rng.randRange(0, valid.length - 1)]!;
+    }
+
+    private tryCorpseMove(p: Pos, game: Game): boolean {
+        // The existing movement implementation never swaps friendly blockers;
+        // in particular an absorbing blocker must not be displaced (CE canPass).
+        if (game.getMonsterAt(p.x, p.y) || entrancementDiagonalBlocked(game.grid, this.loc, p)) return false;
+        this.tryMoveTo(p.x, p.y, game);
+        return true; // a struggle/attack also spends the attempted movement.
     }
 
     private tryMoveTo(nx: number, ny: number, game: Game) {

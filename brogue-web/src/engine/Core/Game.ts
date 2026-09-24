@@ -1,5 +1,6 @@
 import { NEGATABLE_TRAITS, NON_NEGATABLE_ABILITIES, NEGATABLE_MUTATIONS, hasNegatableBolt, negateBolts, negateCreatureStatusEffects } from '../Combat/Negation';
 import { cloneLocation } from '../Combat/Cloning';
+import { anyoneWantABite } from '../Combat/MonsterAbsorption';
 /**
  * src/engine/Core/Game.ts
  * Main game state and orchestration
@@ -7666,20 +7667,46 @@ export class Game {
     private poisonedDuringTurn = false;
 
     private removeDeadMonsters(): void {
+        // All callers, including direct damage cleanup, observe death terrain
+        // before asking for a bite. deathEffectTriggered only guards those DFs.
+        this.triggerDeathFeatures();
         // V-2b-6：死亡清扫前结算携带品掉落（CE Monsters.c:4075-4083
         // makeMonsterDropItem——击杀路径把 carriedItem 放回地面；CE 的
         // getQualifyingPathLocNear 择邻格语义 web 用"落怪原地"近似：怪物
         // 站的格必然可通行，登记偏差见报告）。CE 的物品落位守卫
         // （T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER）照抄——掉不进岩浆/深渊。
-        for (const m of this.monsters) {
-            if (m.hp > 0 || !m.carriedItem) continue;
-            const dropCell = this.grid.getCell(m.loc.x, m.loc.y);
-            if (dropCell && !isPathingBlocker(dropCell.terrain)) {
-                m.carriedItem.loc = { x: m.loc.x, y: m.loc.y };
-                this.items.push(m.carriedItem);
+        const processDeath = (m: Monster): void => {
+            if (m.hp > 0 || m.deathProcessed) return;
+            m.deathProcessed = true; // before callbacks/released creatures
+            if (m.carriedItem) {
+                const dropCell = this.grid.getCell(m.loc.x, m.loc.y);
+                if (dropCell && !isPathingBlocker(dropCell.terrain)) {
+                    m.carriedItem.loc = { x: m.loc.x, y: m.loc.y };
+                    this.items.push(m.carriedItem);
+                }
+                m.carriedItem = null;
             }
-            m.carriedItem = null;
-        }
+            if (!m.isDormant) {
+                // Combat.c killCreature releases the passenger BEFORE learning.
+                // Summon withdrawal, polymorph disposal, dormancy and room reset
+                // remove live/detached entities directly and never enter here.
+                if (m.carriedMonster) {
+                    const passenger = m.carriedMonster;
+                    m.carriedMonster = null;
+                    passenger.loc = { ...m.loc };
+                    passenger.ticksUntilTurn = 200;
+                    this.monsters.unshift(passenger);
+                    this.applyDisplacementTileEntry(passenger);
+                    this.applyEnvironmentalEffects(passenger);
+                    if (passenger.hp <= 0) {
+                        this.triggerDeathFeatures();
+                        processDeath(passenger); // nested kill finishes before the host's bite
+                    }
+                }
+                anyoneWantABite(this, m);
+            }
+        };
+        for (const m of [...this.monsters]) processDeath(m);
         this.monsters = this.monsters.filter(m => m.hp > 0);
     }
 
@@ -7901,7 +7928,11 @@ export class Game {
             for (const m of this.monsters) {
                 if (this.isGameOver) break; // CE Time.c:2721 的 gameHasEnded 守卫
                 if (m.hp > 0 && m.ticksUntilTurn <= 0) {
-                    if (!m.hasStatus('entranced')) m.takeTurn(this, stealthRange);
+                    // CE Time.c:2725-2733 withholds the action BEFORE
+                    // monstersTurn/absorption, even though that inner function
+                    // updates absorption before its own status checks.
+                    if (!m.hasStatus('entranced') && !m.hasStatus('paralyzed') && !m.isCaged
+                        && !m.hasBehavior('MONST_GETS_TURN_ON_ACTIVATION')) m.takeTurn(this, stealthRange);
                     if (m.ticksUntilTurn <= 0) {
                         m.ticksUntilTurn = m.movementSpeed;
                     }

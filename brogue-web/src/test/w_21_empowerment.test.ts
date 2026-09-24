@@ -135,7 +135,7 @@ describe('W-21 clone, polymorph, consumers and JSON handoff',()=>{
   const g=scene(),m=mob(g);cast(g,m);cast(g,m);m.newPowerCount=0;const before=stats(m);(g as any).negateCreatureMagic(m);expect(stats(m)).toEqual([...before.slice(0,6),2,2]);
   m.newPowerCount=0;m.behaviorFlags.add('MONST_INVULNERABLE');(g as any).negateCreatureMagic(m);expect(m.newPowerCount).toBe(0);m.behaviorFlags.delete('MONST_INVULNERABLE');m.behaviorFlags.add('MONST_DIES_IF_NEGATED');(g as any).negateCreatureMagic(m);expect(m.hp).toBe(0);expect(m.newPowerCount).toBe(0);
  });
- it('ally details show pending talents, but waiting and death cleanup never consume them',()=>{
+ it('ally details show pending talents; waiting after an unlearnable kobold death preserves them',()=>{
   const g=live(),m=mob(g);m.isAlly=true;cast(g,m);cast(g,m);const detail=()=>generateMonsterDetail(m,30,12,0,null,0,12).sections.flatMap(s=>s.lines.map(l=>l.text)).join('\n');
   expect(detail()).toContain('准备好学习 2 项新能力');m.isAlly=false;expect(detail()).not.toContain('准备好学习');m.isAlly=true;
   const victim=mob(g,'kobold',12,5);victim.hp=0;(g as any).removeDeadMonsters();g.handlePlayerAction('wait');expect(m.newPowerCount).toBe(2);expect(m.bolts).toEqual(data('rat').bolts??[]);

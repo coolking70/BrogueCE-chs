@@ -1,0 +1,18 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/b815/brogue/brogue-web
+
+stdout | src/test/u_10_absorption_snapshot.test.ts > fresh creature uses initializeMonster defaults; player clone copies the player memset position, with no absorption UI
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/u_11_corpse_learning.test.ts > U11 CE two-pass selection, scratch array and actual distance maps > last-map fixture 2
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_10_absorption_snapshot.test.ts (40 tests) 2619ms
+ ✓ src/test/u_11_corpse_learning.test.ts (66 tests) 7971ms
+     ✓ real player strike and monster attack, poison and burning deaths all reach allocation exactly once  431ms
+
+ Test Files  2 passed (2)
+      Tests  106 passed (106)
+   Start at  02:11:13
+   Duration  8.56s (transform 569ms, setup 0ms, import 1.02s, tests 10.59s, environment 0ms)
+

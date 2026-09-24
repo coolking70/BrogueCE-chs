@@ -184,10 +184,10 @@ it('both actual inspect entry points suppress the bar under hallucination', () =
     expect(g.inspectTarget!.sections.flatMap(s=>s.lines).find(l=>l.progress)!.progress).toEqual({value:13,max:20});
 });
 
-it('manual task does not countdown/install/spend slots during turns; natural death does not assign a task', () => {
+it('U11: the outer scheduler withholds paralyzed actions; an unlearnable death does not assign a task', () => {
     const g=scene(),m=pending(mob());m.isAlly=true;m.state=MonsterState.HUNTING;m.setStatusDuration('paralyzed',10);g.monsters=[m];
-    const before=state(m);for(let i=0;i<3;i++)m.takeTurn(g,0);expect(state(m)).toEqual(before);expect(m.hasBehavior('MONST_FLIES')).toBe(false);
-    const dead=mob('dragon');dead.loc={x:11,y:8};dead.hp=0;g.monsters.push(dead);m.targetCorpseLoc=null;m.isAbsorbing=false;const idle=state(m);
+    const before=state(m);for(let i=0;i<3;i++)g.handlePlayerAction('wait');expect(state(m)).toEqual(before);expect(m.hasBehavior('MONST_FLIES')).toBe(false);
+    const dead=mob('kobold');dead.loc={x:11,y:8};dead.hp=0;g.monsters.push(dead);m.targetCorpseLoc=null;m.isAbsorbing=false;const idle=state(m);
     (g as any).removeDeadMonsters();expect(state(m)).toEqual(idle);
 });
 

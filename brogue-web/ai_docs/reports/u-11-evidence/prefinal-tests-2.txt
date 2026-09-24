@@ -1,0 +1,89 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/b815/brogue/brogue-web
+
+stdout | src/test/u_11_corpse_learning.test.ts > U11 CE two-pass selection, scratch array and actual distance maps > last-map fixture 2
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_11_corpse_learning.test.ts (66 tests | 1 failed) 9066ms
+     ✓ last-map fixture 2 152ms
+     ✓ last-map fixture 2 138ms
+     ✓ last-map fixture 20 127ms
+     ✓ last-map fixture 2 127ms
+     ✓ scratch only rebuilds for a qualified bolt branch; a busy last ally still overwrites the map 127ms
+     ✓ eligibility rejects no-slot without a lottery 128ms
+     ✓ eligibility rejects busy without a lottery 128ms
+     ✓ eligibility rejects not-ally without a lottery 127ms
+     ✓ eligibility rejects inanimate without a lottery 128ms
+     ✓ eligibility rejects immobile without a lottery 127ms
+     ✓ eligibility rejects turret without a lottery 126ms
+     ✓ eligibility rejects far without a lottery 128ms
+     ✓ eligibility rejects avoided without a lottery 125ms
+     ✓ corpse early/empty-pool rejection: rat 125ms
+     ✓ corpse early/empty-pool rejection: arrow_turret 122ms
+     ✓ corpse early/empty-pool rejection: spectral_sword 123ms
+     ✓ corpse early/empty-pool rejection: player_clone 169ms
+     ✓ corpse early/empty-pool rejection: wall 169ms
+     ✓ corpse early/empty-pool rejection: unlearnable-bolts 167ms
+     ✓ real eight-way distance cutoff 10, no visibility condition 167ms
+     ✓ real eight-way distance cutoff 11, no visibility condition 169ms
+     ✓ distance uses permanent flags, secret doors, diagonal obstructions and stationary immune occupants 176ms
+     ✓ flag lottery bit order selects MA_TRANSFERENCE ahead of every bolt 133ms
+     ✓ flag lottery bit order selects MA_CAUSES_WEAKNESS ahead of every bolt 131ms
+     ✓ flag lottery bit order selects MONST_INVISIBLE ahead of every bolt 132ms
+     ✓ flag lottery bit order selects MONST_FLIES ahead of every bolt 133ms
+     ✓ flag lottery bit order selects MONST_IMMUNE_TO_FIRE ahead of every bolt 132ms
+     ✓ flag lottery bit order selects MONST_REFLECT_50 ahead of every bolt 132ms
+     ✓ bolt lottery preserves corpse order, removes owned/nonlearnable entries and rebuilds ourBolts for the winner 134ms
+     ✓ empower → real lethal hit → walk → learn BLINKING → consumer 129ms
+     ✓ empower → real lethal hit → walk → learn ANCIENT_SPIRIT_VINES → consumer 127ms
+     ✓ empower → real lethal hit → walk → learn FIRE → consumer 124ms
+     ✓ empower → real lethal hit → walk → learn TUNNELING → consumer 126ms
+     ✓ empower → real lethal hit → walk → learn OBSTRUCTION → consumer 123ms
+     ✓ learned MA_TRANSFERENCE reaches its actual consumer 124ms
+     ✓ learned MA_CAUSES_WEAKNESS reaches its actual consumer 125ms
+     ✓ learned MONST_INVISIBLE reaches its actual consumer 123ms
+     ✓ learned MONST_FLIES reaches its actual consumer 122ms
+     ✓ learned MONST_IMMUNE_TO_FIRE reaches its actual consumer 121ms
+     ✓ learned MONST_REFLECT_50 reaches its actual consumer 120ms
+     ✓ real player strike and monster attack, poison and burning deaths all reach allocation exactly once  489ms
+     × DF executes before learning; two deaths at the same square are distinct; a saved processed corpse never reassigns 123ms
+     ✓ dormant / administrative detached removals give no task; release occurs before host allocation 142ms
+     ✓ start gate poisoned does not discard the selected corpse 140ms
+     ✓ start gate burning does not discard the selected corpse 140ms
+     ✓ start gate fire-immune does not discard the selected corpse 138ms
+     ✓ leaving while counter=17 decrements then checks <=15 139ms
+     ✓ leaving while counter=16 decrements then checks <=15 138ms
+     ✓ damage fully blocked by shield interrupts; restarting resets20 without reroll/refund; zero/invulnerability do not interrupt 139ms
+     ✓ expiry clears only the CE task fields, leaves name/behavior/new and never rebroadcasts; null target with lingering absorption expires 109ms
+     ✓ bolt takes precedence over residual flag; completion synchronizes all current permanent traits and retains name/behavior 110ms
+     ✓ save at13 reloads without reselect/reset; the next13 actions finish once 126ms
+     ✓ negation preserves a pending task and refunds total; completion can reinstall it; polymorph preserves task 111ms
+     ✓ clone copies task by value; return before16 can duplicate learning as CE permits, without a global token 110ms
+     ✓ level change clears only location; next action clears ongoing bit then expires the residual task 111ms
+     ✓ real scheduler withholds paralyzed absorption actions 118ms
+     ✓ real scheduler withholds entranced absorption actions 116ms
+     ✓ real scheduler withholds caged absorption actions 116ms
+     ✓ real scheduler withholds activation absorption actions 134ms
+     ✓ normal scheduler consumes exactly20 actions at100 ticks even for a fast learner; completion does not move 163ms
+     ✓ poison acquired during absorption is not a second start gate; direct monstersTurn updates before inner paralysis 127ms
+     ✓ corpse outranks following/blink-follow, but magic, nearby combat and escaping hazards outrank corpse 131ms
+     ✓ absorbing friend blocks walking; no implicit corpse-item disappearance or rediscovery check 131ms
+     ✓ detail progress and completion messages follow actual learning in en 132ms
+     ✓ detail progress and completion messages follow actual learning in zh_CN 132ms
+     ✓ lottery boundary calls versus actual RNG advancement: singleton0, multiple2; absorption0 139ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_11_corpse_learning.test.ts > U11 actual death chain, walking, twenty actions and usable powers > DF executes before learning; two deaths at the same square are distinct; a saved processed corpse never reassigns
+TypeError: g.grid.setLayer is not a function
+ ❯ src/test/u_11_corpse_learning.test.ts:183:16
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 65 passed (66)
+   Start at  02:09:53
+   Duration  9.66s (transform 326ms, setup 0ms, import 512ms, tests 9.07s, environment 0ms)
+

@@ -1,0 +1,53 @@
+{
+  "changes": [
+    "src/components/GameCanvas.vue",
+    "src/engine/Combat/MonsterBlink.ts",
+    "src/engine/Core/EntitySnapshot.ts",
+    "src/engine/Core/Game.ts",
+    "src/entities/Monster.ts",
+    "src/locales/zh_CN.json",
+    "src/test/u_10_absorption_snapshot.test.ts",
+    "src/test/w_21_empowerment.test.ts"
+  ],
+  "methods": {
+    "src/entities/Monster.ts": {
+      "differences": [
+        "takeTurn"
+      ],
+      "added": [
+        "deathProcessed",
+        "tryCorpseMove"
+      ],
+      "unchanged": 110
+    },
+    "src/engine/Core/Game.ts": {
+      "differences": [
+        "advancementLoop",
+        "removeDeadMonsters"
+      ],
+      "added": [],
+      "unchanged": 336
+    },
+    "src/engine/Combat/MonsterBlink.ts": {
+      "differences": [
+        "blinkAllyAfterMagic"
+      ],
+      "added": [
+        "allyShouldPursue"
+      ],
+      "unchanged": 20
+    }
+  },
+  "testProof": {
+    "src/test/u_10_absorption_snapshot.test.ts": {
+      "assertionsUnchanged": 62
+    },
+    "src/test/w_21_empowerment.test.ts": {
+      "assertionsUnchanged": 91
+    }
+  },
+  "ceAbsorptionVerbs": 68,
+  "protectedUnchanged": 240,
+  "generationBaselineSha256": "5f51e8848a5874ff41cecaa04a7b39de21fc3871f8a0142b32f0499f3ed9fba1",
+  "lockSha256": "3d9027a9ff655ec834674ebbf4b8ff0c00257b8906a375270163ecba5f53e253"
+}

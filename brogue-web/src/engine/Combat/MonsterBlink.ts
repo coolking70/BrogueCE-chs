@@ -289,16 +289,22 @@ export function blinkTowardCreature(g: Game, m: Monster, target: Creature): bool
         && (distance(m.loc,target.loc) > 10 || monstersAreEnemies(m,target))
         && monsterBlinkToPreferenceMap(g,m,buildBlinkTargetMap(g,m,target),false);
 }
-export function blinkAllyAfterMagic(g: Game, m: Monster, closest: Monster | null): boolean {
+export function allyShouldPursue(g: Game, m: Monster, closest: Monster | null): boolean {
     let leash = m.seized ? Math.max(g.grid.width,g.grid.height) : g.allyBlinkLeashLength();
     if (closest && distance(m.loc,closest.loc) === 1) {
         if (closest.movementSpeed < m.movementSpeed && !closest.hasBehavior('MONST_FLITS') && !closest.hasBehavior('MONST_IMMOBILE') && closest.state === MonsterState.HUNTING) leash = Math.max(g.grid.width,g.grid.height);
         else leash++;
     }
-    if (closest && (distance(m.loc,g.player.loc) < leash || m.doesNotTrackLeader)
-        && !m.hasBehavior('MONST_MAINTAINS_DISTANCE') && !futile(g,m,closest)) {
+    return !!closest && (distance(m.loc,g.player.loc) < leash || m.doesNotTrackLeader)
+        && !m.hasBehavior('MONST_MAINTAINS_DISTANCE') && !futile(g,m,closest);
+}
+export function blinkAllyAfterMagic(g: Game, m: Monster, closest: Monster | null): boolean {
+    if (closest && allyShouldPursue(g, m, closest)) {
         return blinkChance(m) && monsterBlinkToPreferenceMap(g,m,buildBlinkEnemyMap(g,m,distance(m.loc,closest.loc)),false);
     }
+    // CE moveAlly: corpse approach precedes every leader-follow blink route.
+    if (m.targetCorpseLoc && g.grid.isValidPos(m.targetCorpseLoc.x, m.targetCorpseLoc.y)
+        && !m.hasStatus('poisoned') && (!((m.statusDurations as Record<string, number>).burning ?? 0) || m.hasStatus('immune_fire'))) return false;
     if (m.doesNotTrackLeader || (distance(m.loc,g.player.loc) < 3 && g.grid.getCell(m.x,m.y)?.isVisible)) return false;
     if (!m.givenUpOnScent && distance(m.loc,g.player.loc) > 10
         && monsterBlinkToPreferenceMap(g,m,p => g.scent.get(p.x,p.y),true)) return true;
