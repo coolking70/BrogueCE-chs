@@ -114,7 +114,13 @@ describe('D2 生成池排他：自创条目不在任何生成池中', () => {
             expect(potionsJson.find(p => p.id === id)?.excludeFromGeneration).toBe(true);
         }
         expect(scrollsJson.find(s => s.id === 'scroll_of_amnesia')?.excludeFromGeneration).toBe(true);
-        expect(ItemLoader.genPotions.length).toBe(ItemLoader.potions.length - INVENTED.potions.length);
+        // U15e：CE 原生但执行链未齐、暂不入池的种类（非自创），显式列出并断言确已排除。
+        const CE_PENDING_POTIONS = ['potion_of_darkness']; // 投掷 DF 链待接（U15e 报告）
+        for (const id of CE_PENDING_POTIONS) {
+            expect(potionsJson.find(p => p.id === id)?.excludeFromGeneration).toBe(true);
+            expect(ItemLoader.genPotions.map(p => p.id)).not.toContain(id);
+        }
+        expect(ItemLoader.genPotions.length).toBe(ItemLoader.potions.length - INVENTED.potions.length - CE_PENDING_POTIONS.length);
         expect(ItemLoader.genScrolls.length).toBe(ItemLoader.scrolls.length - INVENTED.scrolls.length);
         expect(ItemLoader.genWands.length).toBe(ItemLoader.wands.length - INVENTED.wands.length);
         expect(ItemLoader.genStaffs.length).toBe(ItemLoader.staffs.length - INVENTED.staffs.length);

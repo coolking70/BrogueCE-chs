@@ -231,8 +231,8 @@ describe('B-2 药水：功能性细分与幻觉特例', () => {
             'detect magic 照过的幻觉药水碎裂应 autoIdentify').toBe(true);
     });
 
-    it('登记钉子：POTION_DARKNESS 在 web 无载体（b_2 报告载体盘点表）', () => {
-        expect(ItemLoader.potions.find(p => p.id === 'potion_of_darkness')).toBeUndefined();
+    it('登记钉子：POTION_DARKNESS 投掷 DF 未齐前不进入生成池', () => {
+        expect(ItemLoader.genPotions.find(p => p.id === 'potion_of_darkness')).toBeUndefined();
     });
 });
 

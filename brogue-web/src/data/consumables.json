@@ -6,7 +6,7 @@
             "effect": "heal_full",
             "minDepth": 1,
             "maxDepth": 26,
-            "description": "完全恢复你的生命值，并解除中毒、饥饿等减益状态，极为珍贵。",
+            "description": "永久增加10点生命上限，恢复生命并解除中毒、虚弱、黑暗等病症。",
             "frequency": 0
         },
         {
@@ -134,6 +134,16 @@
             "maxDepth": 26,
             "description": "导致严重幻觉，看到的怪物和地形将以随机外观显示，难以判断真实情况。",
             "frequency": 10
+        },
+        {
+            "id": "potion_of_darkness",
+            "trueName": "Potion of Darkness",
+            "effect": "darkness",
+            "minDepth": 1,
+            "maxDepth": 26,
+            "excludeFromGeneration": true,
+            "description": "饮用后进入黑暗状态；投掷产生黑暗区域的 DF 链尚待接入。",
+            "frequency": 7
         },
         {
             "id": "potion_of_creeping_death",

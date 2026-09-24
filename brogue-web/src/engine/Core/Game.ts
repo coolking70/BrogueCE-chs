@@ -3768,10 +3768,24 @@ export class Game {
 
                 // Execute effect
                 switch (data.effect) {
-                    case 'heal_full':
+                    case 'heal_full': {
+                        const oldMaxHp = this.player.maxHp;
+                        const wasInjured = this.player.hp < oldMaxHp;
+                        this.player.maxHp += 10; // CE POTION_LIFE range {10,10,0}
                         this.player.hp = this.player.maxHp;
-                        logger.log(i18next.t('potion.heal_full', { defaultValue: 'You feel much better!' }), '#44ff44');
+                        for (const status of ['hallucinating', 'confused', 'nauseous', 'slowed'] as const) {
+                            if (this.player.getStatusDuration(status) > 1) this.player.setStatusDuration(status, 1);
+                        }
+                        if (this.player.getStatusDuration('weakened') > 1) this.player.setStatusDuration('weakened', 0);
+                        this.player.setStatusDuration('poisoned', 0);
+                        this.player.setStatusDuration('darkness', 0);
+                        this.updateVision();
+                        const percent = Math.floor(this.player.maxHp * 100 / oldMaxHp) - 100;
+                        logger.log(wasInjured
+                            ? i18next.t('potion.life_healed', { percent, defaultValue: `You heal completely and your maximum health increases by ${percent}%.` })
+                            : i18next.t('potion.life_max', { percent, defaultValue: `Your maximum health increases by ${percent}%.` }), '#44ff44');
                         break;
+                    }
                     case 'heal_partial':
                         this.player.hp = Math.min(this.player.hp + Math.floor(this.player.maxHp / 2), this.player.maxHp);
                         logger.log(i18next.t('potion.heal_partial', { defaultValue: 'You feel slightly better.' }), '#44ff44');
@@ -3814,8 +3828,8 @@ export class Game {
                         this.environment.addGas(this.player.loc.x, this.player.loc.y, GasType.POISON, 1000);
                         break;
                     case 'confusion_burst':
-                        this.applyTimedStatus(this.player, 'hallucinating', 12);
-                        logger.log(i18next.t('potion.confusion_burst', { defaultValue: 'Reality bends and shimmers around you!' }), '#cc99ff');
+                        this.environment.addGas(this.player.loc.x, this.player.loc.y, GasType.CONFUSION, 1000);
+                        logger.log(i18next.t('potion.confusion_burst', { defaultValue: 'A shimmering cloud of rainbow-colored gas billows out of the open flask!' }), '#cc99ff');
                         break;
                     case 'paralyze_burst':
                         // G-3：CE 喝麻痹药水不是直上状态，而是原地爆出麻痹
@@ -3832,19 +3846,14 @@ export class Game {
                         this.environment.addGas(this.player.loc.x, this.player.loc.y, GasType.PARALYSIS, 1000);
                         break;
                     case 'hallucinate_burst':
-                        this.applyTimedStatus(this.player, 'hallucinating', 20);
+                        this.player.setStatusDuration('hallucinating', 300);
+                        this.player.maxStatus.hallucinating = 300;
                         logger.log(i18next.t('potion.hallucinate_burst', { defaultValue: 'The world transforms into a swirling kaleidoscope of colors!' }), '#cc99ff');
                         break;
                     case 'creeping_death':
-                        // P1-45（G-1）：占位的 `addGas(x, y, 1, 100)` 删除——
-                        // 字面量 1 即旧 GasType.FIRE，喷出的是一团不渲染、无
-                        // 效果、却占格扩散并挡住真气体的"幽灵气"（F-0 §2.2）。
-                        // GasType.FIRE 死枚举随之退役；GasType 本身也已改基到
-                        // GAS 层地形值，1 现在是 GRANITE，任何残留写法都会被
-                        // addGas 的载体校验拒绝。creeping_death 是 web 自创
-                        // 内容（CE 无此药水/气体，F-0 §5.2-5），按 D2 保留
-                        // 本效果分支但退出生成池（见 D2_EXCLUDED_POTIONS）。
-                        logger.log(i18next.t('potion.creeping_death', { defaultValue: 'A terrifying green gas fills the area!' }), '#88ff88');
+                        // CE POTION_LICHEN 是地衣 DF，不是气体。U17 补齐
+                        // DF_LICHEN_PLANTED 的扩散/接触副作用前维持退池。
+                        logger.log(i18next.t('potion.creeping_death', { defaultValue: 'A handful of tiny spores burst out of the open flask!' }), '#88ff88');
                         break;
                     case 'resist_fire':
                         // P1-44 修复（F-2b）：CE POTION_FIRE_IMMUNITY（Items.c:8188-8193）——
@@ -3857,26 +3866,37 @@ export class Game {
                         // 状态——药水实际什么都没做（时长 50 同为自创，一并按 CE
                         // 翻正；相邻药水的同族时长漂移登记给物品表轮）。
                         this.applyTimedStatus(this.player, 'immune_fire', 150);
+                        this.player.maxStatus.immune_fire = 150;
                         if (this.burningDuration(this.player) > 0) {
                             this.extinguishCreatureFire(this.player);
                         }
                         logger.log(i18next.t('potion.resist_fire', { defaultValue: 'You feel comfortably cool.' }), '#88ccff');
                         break;
                     case 'become_invisible':
-                        this.applyTimedStatus(this.player, 'invisible', 30);
+                        this.player.setStatusDuration('invisible', 75);
+                        this.player.maxStatus.invisible = 75;
                         logger.log(i18next.t('potion.become_invisible', { defaultValue: 'You fade perfectly into the shadows.' }), '#aaaaaa');
                         break;
                     case 'levitate':
-                        this.applyTimedStatus(this.player, 'levitating', 30);
+                        this.player.setStatusDuration('levitating', 100);
+                        this.player.maxStatus.levitating = 100;
                         logger.log(i18next.t('potion.levitate', { defaultValue: 'You float gently into the air.' }), '#aaaaff');
                         break;
                     case 'telepathy':
-                        this.applyTimedStatus(this.player, 'telepathy', 40);
+                        this.player.setStatusDuration('telepathy', 300);
+                        this.player.maxStatus.telepathy = 300;
                         logger.log(i18next.t('potion.telepathy', { defaultValue: 'Your mind expands outwardly.' }), '#aaaaff');
                         break;
                     case 'speed':
-                        this.applyTimedStatus(this.player, 'haste', 30);
+                        this.player.setStatusDuration('slowed', 0);
+                        this.player.setStatusDuration('haste', 25);
+                        this.player.maxStatus.haste = 25;
                         logger.log(i18next.t('potion.speed', { defaultValue: 'Everything around you seems to slow down.' }), '#ffffaa');
+                        break;
+                    case 'darkness':
+                        this.player.applyStatus('darkness', 400);
+                        this.updateVision();
+                        logger.log(i18next.t('potion.darkness', { defaultValue: 'Your vision flickers as a cloak of darkness settles around you!' }), '#aaaaaa');
                         break;
                     case 'detect_magic':
                         // B-1c：CE Items.c:8137-8185 POTION_DETECT_MAGIC

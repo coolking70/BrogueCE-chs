@@ -185,7 +185,7 @@ export class ItemLoader {
         { category: 'POTION', ceKind: 'POTION_HALLUCINATION', webId: 'potion_of_hallucination',  initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
         { category: 'POTION', ceKind: 'POTION_CONFUSION',     webId: 'potion_of_confusion',      initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
         { category: 'POTION', ceKind: 'POTION_INCINERATION',  webId: 'potion_of_incineration',   initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
-        { category: 'POTION', ceKind: 'POTION_DARKNESS',      webId: null,                       initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
+        { category: 'POTION', ceKind: 'POTION_DARKNESS',      webId: 'potion_of_darkness',       initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
         { category: 'POTION', ceKind: 'POTION_DESCENT',       webId: 'potion_of_descent',        initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
         { category: 'POTION', ceKind: 'POTION_LICHEN',        webId: 'potion_of_creeping_death', initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },
     ];
@@ -526,7 +526,7 @@ export class ItemLoader {
      * web 自创/错位实体（CE 无此种类）记 0 并注明：potion_of_healing（自创，退池）、
      * scroll_of_amnesia（自创，退池）、wand_of_fire / wand_of_lightning（CE 法杖
      * 错位实体，退池）、staff_of_light（自创，退池）。CE 有而 web 缺的种类
-     * （potion darkness、scroll aggravate、ring light/reaping）不在 web 表内，
+     * （scroll aggravate、ring light/reaping）不在 web 表内，
      * 不参与分组——补目录时须同时补本表（W-24～26 已补齐法器目录）。
      *
      * ★ D2 后果（结构性不可达，激活轮需重核）：potion_of_poison（=CE caustic gas，
@@ -535,7 +535,7 @@ export class ItemLoader {
      * 不可达；善意药水、卷轴、戒指、魔杖、法杖各类均可达。
      */
     private static readonly MAGIC_POLARITY: Readonly<Record<string, number>> = {
-        // 药水（CE 16 类中 web 有 16 条，含 2 条自创）
+        // 药水：darkness 已有饮用入口，投掷 DF 未齐而暂不入生成池。
         potion_of_life: 1,            // life
         potion_of_strength: 1,        // strength
         potion_of_telepathy: 1,       // telepathy
@@ -554,6 +554,7 @@ export class ItemLoader {
         potion_of_hallucination: -1,  // hallucination
         potion_of_confusion: -1,      // confusion
         potion_of_incineration: -1,   // incineration
+        potion_of_darkness: -1,       // darkness (thrown DF pending)
         potion_of_descent: -1,        // descent
         potion_of_creeping_death: -1, // creeping death（=POTION_LICHEN，退池）
         potion_of_healing: 0,         // 自创（CE 无），退池

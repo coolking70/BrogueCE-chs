@@ -61,8 +61,8 @@ export class Creature implements Entity {
     public poisonAmount = 0;
     /** CE creature.weaknessAmount, independent of the weakened countdown. */
     public weaknessAmount = 0;
-    /** U14a/b subset of CE maxStatus; other states retain their existing carriers. */
-    public maxStatus: Partial<Record<'weakened' | 'nauseous' | 'darkness' | 'magical_fear' | 'stuck' | 'donning' | 'enraged' | 'lifespan_remaining', number>> = {};
+    /** CE maximum durations used by status display and refresh semantics. */
+    public maxStatus: Partial<Record<StatusId, number>> = {};
     /** CE maxStatus[SHIELDED], in tenths of HP; determines decay, not a cap. */
     public maxShield = 0;
     /**

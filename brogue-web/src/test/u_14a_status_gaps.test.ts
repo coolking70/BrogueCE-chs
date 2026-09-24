@@ -177,9 +177,9 @@ describe('U14a fear lifecycle and persistence/display',()=>{
         const detail=JSON.stringify(generateMonsterDetail(m,100,12,0,null,0,12));expect(detail).toContain('虚弱 -2');expect(detail).toContain('魔法恐惧');
         restored.player.setStatusDuration('weakened',1);restored.player.tickStatuses();expect(restored.player.effectiveStrength).toBe(12);
     });
-    it('CE fear source is commented; do not invent fear scroll or darkness potion catalog entry',()=>{
+    it('CE fear source is commented; fear scroll and incomplete darkness throw remain outside the pool',()=>{
         const ce=readFileSync('../BrogueCE-master/src/brogue/Items.c','utf8');expect(ce).toContain('//void causeFear(');
-        expect(ItemLoader.potions.find(p=>p.id==='potion_of_darkness')).toBeUndefined();
+        expect(ItemLoader.genPotions.find(p=>p.id==='potion_of_darkness')).toBeUndefined();
         expect(ItemLoader.scrolls.find(p=>p.id==='scroll_of_fear')).toBeUndefined();
     });
 });
