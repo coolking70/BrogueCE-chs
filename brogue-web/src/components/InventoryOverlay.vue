@@ -196,7 +196,7 @@ const selectItemOrIdentify = (item: Item) => {
 };
 
 const performInspect = (item: Item) => {
-    activeGame.inspectTarget = generateItemDetail(item, activeGame.player.strength);
+    activeGame.inspectTarget = generateItemDetail(item, activeGame.player.effectiveStrength);
 };
 
 const performEquip = (item: Item) => {
@@ -312,7 +312,7 @@ const confirmCall = () => {
                     <span class="item-name">
                        {{ getLocalizedName(entry.item.displayName) }}
                        <span v-if="isEquipped(entry.item)" class="equipped-tag">{{ t('(equipped)') || '(equipped)' }}</span>
-                       <span v-if="entry.item.strengthRequired && activeGame.player.strength < entry.item.strengthRequired" class="strength-warning">
+                       <span v-if="entry.item.strengthRequired && activeGame.player.effectiveStrength < entry.item.strengthRequired" class="strength-warning">
                            {{ t('[Req Str:') || '[Req Str:' }} {{ entry.item.strengthRequired }}]
                        </span>
                     </span>

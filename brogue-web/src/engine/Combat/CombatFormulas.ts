@@ -48,6 +48,17 @@ export function damageFraction(netEnch: number): number {
     return COMBAT_ENCHANT_FRACTION[Math.max(0, Math.min(280, Math.trunc(netEnch * 4) + 80))]! / FP_FACTOR;
 }
 
+/** CE Combat.c:87-110; truncate accuracy before hitProbability. */
+export function monsterDamageAdjustmentAmount(weaknessAmount: number): number {
+    return damageFraction(-1.5 * weaknessAmount);
+}
+export function monsterAccuracyAdjusted(accuracy: number, weaknessAmount: number): number {
+    return Math.max(0, Math.trunc(accuracy * accuracyFraction(-1.5 * weaknessAmount)));
+}
+export function monsterDefenseAdjusted(defense: number, weaknessAmount: number): number {
+    return Math.max(0, defense - 25 * weaknessAmount);
+}
+
 /**
  * Defense fraction: how hit probability is reduced by defense.
  * CE formula: 0.987 ^ defense

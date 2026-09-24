@@ -17,7 +17,7 @@ export const ITEM_FIELDS = [
 ] as const satisfies readonly (keyof Item)[];
 export const CREATURE_FIELDS = [
     'id', 'loc', 'hp', 'maxHp', 'name', 'color', 'char', 'statusDurations',
-    'poisonAmount', 'maxShield', 'ticksUntilTurn', 'seized', 'seizing',
+    'poisonAmount', 'weaknessAmount', 'maxStatus', 'maxShield', 'ticksUntilTurn', 'seized', 'seizing',
     'movementSpeed', 'attackSpeed',
 ] as const satisfies readonly (keyof Creature)[];
 export const MONSTER_FIELDS = [

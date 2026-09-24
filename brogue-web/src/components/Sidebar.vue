@@ -3,7 +3,7 @@ import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { activeGame } from '../engine/Core/Game';
 import { logger } from '../engine/Systems/Logger';
 import type { LogMessage } from '../engine/Systems/Logger';
-import { STATUS_CONFIG, isSidebarVisibleStatus } from '../engine/Status/statusConfig';
+import { creatureStatusRows, isSidebarVisibleStatus } from '../engine/Status/statusConfig';
 import { STOMACH_SIZE, HUNGER_THRESHOLD, WEAK_THRESHOLD, FAINT_THRESHOLD } from '../entities/Player';
 import { computeSidebarWidth, displaySettings } from '../engine/Settings';
 
@@ -26,7 +26,7 @@ const playerDepth = ref(1);
 const playerNutrition = ref(STOMACH_SIZE);
 const logs = ref<LogMessage[]>([]);
 const hoverText = ref('');
-const playerStatuses = ref<string[]>([]);
+const playerStatuses = ref<ReturnType<typeof creatureStatusRows>>([]);
 
 // Tiers mirror Player.computeHungerState: thresholds are CE Rogue.h:1125-1127
 const getNutritionStatus = (nutrition: number) => {
@@ -51,13 +51,7 @@ onMounted(() => {
       hoverText.value = activeGame.hoveredText;
       // UI-1 第 5 条：CE 有意不显示的状态（explosion_immunity 等，见
       // statusConfig.CE_EMPTY_NAME_STATUSES）不进侧栏（CE IO.c:4823 name[0] 门）。
-      playerStatuses.value = Object.entries(activeGame.player.statusDurations)
-        .filter(([id, turns]) => (turns ?? 0) > 0 && isSidebarVisibleStatus(id))
-        .map(([id, turns]) => {
-          const meta = (STATUS_CONFIG as Record<string, { label: string; color: string }>)[id] ?? { label: id, color: '#dbeafe' };
-          const value = id === 'shielded' ? `${(turns ?? 0) / 10} HP` : turns;
-          return `${meta.label}|${value}|${meta.color}`;
-        });
+      playerStatuses.value = creatureStatusRows(activeGame.player, isSidebarVisibleStatus);
     }
     // Clone array for Vue reactivity
     logs.value = [...logger.messages].reverse(); 
@@ -105,11 +99,12 @@ onUnmounted(() => {
         <div class="status-tags">
           <span
             v-for="status in playerStatuses"
-            :key="status"
+            :key="status.id"
             class="status-tag"
-            :style="{ borderColor: `${status.split('|')[2]}66`, color: status.split('|')[2], background: `${status.split('|')[2]}22` }"
+            :style="{ borderColor: `${status.color}66`, color: status.color, background: `${status.color}22` }"
           >
-            {{ status.split('|')[0] }}({{ status.split('|')[1] }})
+            {{ status.label }}({{ status.value }})
+            <span class="status-duration" :style="{ width: `${status.fraction * 100}%`, background: status.color }"></span>
           </span>
         </div>
       </div>
@@ -268,7 +263,11 @@ onUnmounted(() => {
   gap: 6px;
 }
 
+.status-duration { position: absolute; left: 0; bottom: 0; height: 2px; opacity: 0.6; }
+
 .status-tag {
+  position: relative;
+  overflow: hidden;
   font-family: var(--font-mono);
   font-size: 0.75rem;
   color: #dbeafe;

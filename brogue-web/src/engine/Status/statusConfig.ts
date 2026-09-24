@@ -1,4 +1,4 @@
-import type { StatusId } from '../../entities/Creature';
+import type { Creature, StatusId } from '../../entities/Creature';
 
 /**
  * F-2b：键联合扩入 'burning'。CE STATUS_BURNING（Rogue.h:2000）的载体走
@@ -31,6 +31,9 @@ export const STATUS_CONFIG: Record<BurningStatusId, StatusConfigEntry> = {
     poisoned: { id: 'poisoned', label: '中毒', color: '#65a30d', isDebuff: true },
     slowed: { id: 'slowed', label: '缓慢', color: '#d6d3d1', isDebuff: true },
     weakened: { id: 'weakened', label: '虚弱', color: '#a8a29e', isDebuff: true },
+    nauseous: { id: 'nauseous', label: '恶心', color: '#b7a26b', isDebuff: true },
+    darkness: { id: 'darkness', label: '黑暗', color: '#94a3b8', isDebuff: true },
+    magical_fear: { id: 'magical_fear', label: '魔法恐惧', color: '#fca5a5', isDebuff: true },
     flying: { id: 'flying', label: '飞行', color: '#bae6fd', isDebuff: false },
     immune_fire: { id: 'immune_fire', label: '火焰免疫', color: '#fca5a5', isDebuff: false },
     // CE discordColor（GlobalsBrogue.c）：discordBlast 的 "unsettling purple radiation"
@@ -62,4 +65,18 @@ export const CE_EMPTY_NAME_STATUSES: ReadonlySet<string> = new Set(['explosion_i
  */
 export function isSidebarVisibleStatus(id: string): boolean {
     return !CE_EMPTY_NAME_STATUSES.has(id);
+}
+
+/** Shared visible status presentation for sidebar and creature details. */
+export function creatureStatusRows(creature: Creature, visible = isSidebarVisibleStatus) {
+    return Object.entries(creature.statusDurations)
+        .filter(([id, turns]) => (turns ?? 0) > 0 && visible(id))
+        .map(([id, turns]) => {
+            const meta = STATUS_CONFIG[id as BurningStatusId] ?? { label: id, color: '#dbeafe' };
+            const maximum = (creature.maxStatus as Record<string, number>)[id];
+            return { id, color: meta.color,
+                label: id === 'weakened' ? `${meta.label} -${creature.weaknessAmount}` : meta.label,
+                value: id === 'shielded' ? `${turns / 10} HP` : maximum ? `${turns}/${maximum}` : `${turns}`,
+                fraction: maximum ? Math.max(0, Math.min(1, turns / maximum)) : 1 };
+        });
 }

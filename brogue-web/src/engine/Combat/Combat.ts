@@ -4,6 +4,7 @@
  * and damage resolution into TypeScript.
  */
 
+import { monsterDamageAdjustmentAmount, monsterAccuracyAdjusted, monsterDefenseAdjusted } from './CombatFormulas';
 import { Creature } from '../../entities/Creature';
 import { Player } from '../../entities/Player';
 import { Monster, MonsterState } from '../../entities/Monster';
@@ -84,6 +85,7 @@ export class CombatSystem {
 
         // --- Determine attacker stats ---
         if (attacker instanceof Player) {
+            if (!attacker.equippedWeapon) attackerAccuracy = monsterAccuracyAdjusted(100, attacker.weaknessAmount);
             if (attacker.equippedWeapon && attacker.equippedWeapon.damage) {
                 damageString = attacker.equippedWeapon.damage;
                 clumping = attacker.equippedWeapon.clumping;
@@ -91,13 +93,13 @@ export class CombatSystem {
                 const strReq = attacker.equippedWeapon.strengthRequired || 0;
                 weaponEnchant = netEnchant(
                     attacker.equippedWeapon.enchantment,
-                    attacker.strength,
+                    attacker.effectiveStrength,
                     strReq
                 );
                 weaponRunic = attacker.equippedWeapon.runicType;
             }
         } else if (attacker instanceof Monster) {
-            attackerAccuracy = attacker.accuracy;
+            attackerAccuracy = monsterAccuracyAdjusted(attacker.accuracy, attacker.weaknessAmount);
             damageString = attacker.damageString || '1d3';
             clumping = attacker.damageClumping;
             weaponName = 'claws/teeth';
@@ -105,7 +107,7 @@ export class CombatSystem {
 
         // --- Determine defender stats ---
         if (defender instanceof Monster) {
-            defenderDefense = defender.defense;
+            defenderDefense = monsterDefenseAdjusted(defender.defense, defender.weaknessAmount);
         } else if (defender instanceof Player) {
             // Player defense comes from equipped armor.
             // CE 内部 ×10 标度（Items.c:8515-8523），只降低被命中概率（Combat.c:140），
@@ -115,7 +117,7 @@ export class CombatSystem {
                 defenderDefense = playerDefense(
                     defender.equippedArmor.armor,
                     defender.equippedArmor.enchantment,
-                    defender.strength,
+                    defender.effectiveStrength,
                     strReq
                 );
             }
@@ -171,7 +173,10 @@ export class CombatSystem {
 
         // W-18 CE Combat.c:1183: attempts release entrancement even on a miss.
         // U06 handles BE_DAMAGE aggression in its separate damage path.
-        if (opts?.isWeaponAttack !== false) defender.setStatusDuration('entranced', 0);
+        if (opts?.isWeaponAttack !== false) {
+            defender.setStatusDuration('entranced', 0);
+            defender.shortenMagicalFear();
+        }
 
         // --- P4-5: MA_SEIZES (Combat.c:1212-1237) ---
         // CE 条件：attacker 带 MA_SEIZES，且"不是（attacker 已经在抓 && defender
@@ -209,9 +214,11 @@ export class CombatSystem {
         const immune = defender instanceof Monster && (defender.isInvulnerable()
             || (isWeaponAttack && defender.isImmuneToWeapons()));
         // CE Combat.c:1242-1246: immunity skips damage RNG entirely. Zero damage
-        // ranges stay zero. weaknessAmount is a U14 dependency, not half damage.
+        // ranges stay zero. Weakness scales the rolled damage, before sneak multipliers.
         let damage = immune ? 0 : clumpedRoll(min, max, clumping ?? parts.clumping,
             (lo, hi) => rng.randRange(lo, hi));
+
+        if (attacker instanceof Monster) damage = Math.trunc(damage * monsterDamageAdjustmentAmount(attacker.weaknessAmount));
 
         // CE :1248-1258: only the sneak set delays/wakes a monster, even on an
         // immune hit; lunge/captive/attackHit-only paralysis do not.
@@ -235,7 +242,7 @@ export class CombatSystem {
         }
 
         // CE has no independent invisible damage multiplier. Visibility can
-        // affect awareness through AI; U14 owns weaknessAmount and status state.
+        // affect awareness through AI.
 
         if (damage > 0 && opts?.beforeDamage) damage = opts.beforeDamage(damage) ?? damage;
 
@@ -246,6 +253,7 @@ export class CombatSystem {
         const poisonDuration = isWeaponAttack && attacker instanceof Monster
             && attacker.hasAbility('MA_POISONS') && damage > 0 ? damage : 0;
         if (poisonDuration > 0) damage = 1;
+
 
         // --- Check for runic trigger ---
         let triggeredRunic: string | undefined;
@@ -292,6 +300,11 @@ export class CombatSystem {
             }
             applyTo.takeDamage(hpDamage, true); // already passed through the shield exactly once
             if (poisonDuration > 0) applyTo.addPoison(poisonDuration, 1);
+        }
+
+        if (isWeaponAttack && defender.hp > 0 && damage > 0 && attacker instanceof Monster && attacker.hasAbility('MA_CAUSES_WEAKNESS')
+            && !(defender instanceof Monster && (defender.hasBehavior('MONST_INANIMATE') || defender.isInvulnerable()))) {
+            defender.weaken(300); // GlobalsBrogue.c:onHitWeakenDuration, survivor gate; damage is the pre-shield roll.
         }
 
         return { damage, weaponName, hit: true, backstab, lunge: lungeAttack, triggeredRunic };
@@ -343,8 +356,7 @@ export class CombatSystem {
      *    不调 magicWeaponHit，与近战 attack() 恒调、内部再挡 MB_IS_DYING 不同）。
      * CE 把投掷物临时换手（equipItem → attackHit → 换回，Items.c:6804-6811）只为
      * 让命中吃投掷物净附魔；web 直接把净附魔传进 hitProbability，等价。
-     * W-18 已接 ENTRANCED 解除；web 无魔法恐惧载体，对应豁免分支不迁移
-     *（登记见 b_2 报告）。
+     * U14a 接魔法恐惧的投掷尝试解除；普通逃跑保留。
      */
     public static resolveThrownWeapon(
         thrower: Player,
@@ -353,13 +365,18 @@ export class CombatSystem {
     ): { hit: boolean; damage: number; killed: boolean; triggeredRunic?: string } {
         // CE Items.c:6790: a thrown weapon attempt releases even on a miss.
         defender.setStatusDuration('entranced', 0);
+        if (!defender.isCaged && (!defender.isAlly || defender.hasStatus('magical_fear'))
+            && (defender.state !== MonsterState.FLEEING || defender.hasStatus('magical_fear'))) {
+            defender.state = MonsterState.HUNTING;
+            defender.shortenMagicalFear();
+        }
         const strReq = item.strengthRequired || 0;
-        const enchant = netEnchant(item.enchantment, thrower.strength, strReq);
+        const enchant = netEnchant(item.enchantment, thrower.effectiveStrength, strReq);
 
         // CE attackHit（Combat.c:149-158）。web StatusId 无 stuck/captive
         //（蛛网定身/囚笼机制未实装），自动命中集只有 paralyzed 有载体。
         const autoHit = defender.hasStatus('paralyzed');
-        const hit = autoHit || rng.randPercent(hitProbability(100, defender.defense, enchant));
+        const hit = autoHit || rng.randPercent(hitProbability(100, monsterDefenseAdjusted(defender.defense, defender.weaknessAmount), enchant));
         if (!hit) {
             return { hit: false, damage: 0, killed: false };
         }

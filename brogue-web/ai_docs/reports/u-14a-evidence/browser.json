@@ -1,0 +1,680 @@
+{
+  "states": [
+    {
+      "name": "statuses",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 3,
+          "effectiveStrength": 9,
+          "maxStatus": {
+            "weakened": 300,
+            "darkness": 15,
+            "nauseous": 20
+          },
+          "x": 8,
+          "y": 8,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "weakened": 300,
+            "darkness": 15,
+            "nauseous": 20
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 12,
+            "y": 8,
+            "hp": 100,
+            "maxHp": 100,
+            "weaknessAmount": 1,
+            "maxStatus": {
+              "magical_fear": 12,
+              "nauseous": 20,
+              "weakened": 300
+            },
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100000,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      },
+      "sidebar": "状态虚弱 -3(300/300) 黑暗(15/15) 恶心(20/20) ",
+      "monster": {
+        "status": {
+          "magical_fear": 12,
+          "nauseous": 20,
+          "weakened": 300
+        },
+        "weakness": 1,
+        "ai": 3
+      },
+      "terrain": [
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "vomit",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 3,
+          "effectiveStrength": 9,
+          "maxStatus": {
+            "weakened": 300,
+            "darkness": 15,
+            "nauseous": 20
+          },
+          "x": 8,
+          "y": 8,
+          "hp": 100,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "weakened": 299,
+            "darkness": 14,
+            "nauseous": 19
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 12,
+            "y": 8,
+            "hp": 100,
+            "maxHp": 100,
+            "weaknessAmount": 1,
+            "maxStatus": {
+              "magical_fear": 12,
+              "nauseous": 20,
+              "weakened": 300
+            },
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 99900,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      },
+      "sidebar": "状态虚弱 -3(299/300) 黑暗(14/15) 恶心(19/20) ",
+      "monster": {
+        "status": {
+          "magical_fear": 11,
+          "nauseous": 19,
+          "weakened": 299
+        },
+        "weakness": 1,
+        "ai": 3
+      },
+      "terrain": [
+        2,
+        0,
+        0,
+        95
+      ]
+    },
+    {
+      "name": "monster-detail",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 3,
+          "effectiveStrength": 9,
+          "maxStatus": {
+            "weakened": 300,
+            "darkness": 15,
+            "nauseous": 20
+          },
+          "x": 8,
+          "y": 8,
+          "hp": 100,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "weakened": 299,
+            "darkness": 14,
+            "nauseous": 19
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 12,
+            "y": 8,
+            "hp": 100,
+            "maxHp": 100,
+            "weaknessAmount": 1,
+            "maxStatus": {
+              "magical_fear": 12,
+              "nauseous": 20,
+              "weakened": 300
+            },
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 99900,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      },
+      "sidebar": "状态虚弱 -3(299/300) 黑暗(14/15) 恶心(19/20) ",
+      "monster": {
+        "status": {
+          "magical_fear": 11,
+          "nauseous": 19,
+          "weakened": 299
+        },
+        "weakness": 1,
+        "ai": 3
+      },
+      "terrain": [
+        2,
+        0,
+        0,
+        95
+      ]
+    },
+    {
+      "name": "save-roundtrip",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 3,
+          "effectiveStrength": 9,
+          "maxStatus": {
+            "weakened": 300,
+            "darkness": 15,
+            "nauseous": 20
+          },
+          "x": 8,
+          "y": 8,
+          "hp": 100,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "weakened": 299,
+            "darkness": 14,
+            "nauseous": 19
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 12,
+            "y": 8,
+            "hp": 100,
+            "maxHp": 100,
+            "weaknessAmount": 1,
+            "maxStatus": {
+              "magical_fear": 12,
+              "nauseous": 20,
+              "weakened": 300
+            },
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 99900,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      },
+      "sidebar": "状态虚弱 -3(299/300) 黑暗(14/15) 恶心(19/20) ",
+      "monster": {
+        "status": {
+          "magical_fear": 11,
+          "nauseous": 19,
+          "weakened": 299
+        },
+        "weakness": 1,
+        "ai": 3
+      },
+      "terrain": [
+        2,
+        0,
+        0,
+        95
+      ]
+    },
+    {
+      "name": "negation",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 3,
+          "effectiveStrength": 9,
+          "maxStatus": {
+            "weakened": 300,
+            "darkness": 15,
+            "nauseous": 20
+          },
+          "x": 8,
+          "y": 8,
+          "hp": 100,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "weakened": 299,
+            "nauseous": 19
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 12,
+            "y": 8,
+            "hp": 100,
+            "maxHp": 100,
+            "weaknessAmount": 1,
+            "maxStatus": {
+              "magical_fear": 12,
+              "nauseous": 20,
+              "weakened": 300
+            },
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 99900,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      },
+      "sidebar": "状态虚弱 -3(299/300) 恶心(19/20) ",
+      "monster": {
+        "status": {
+          "nauseous": 19,
+          "weakened": 299
+        },
+        "weakness": 1,
+        "ai": 3
+      },
+      "terrain": [
+        2,
+        0,
+        0,
+        95
+      ]
+    },
+    {
+      "name": "panacea",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {
+            "weakened": 300,
+            "darkness": 15,
+            "nauseous": 20
+          },
+          "x": 8,
+          "y": 8,
+          "hp": 100,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "nauseous": 1
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 12,
+            "y": 8,
+            "hp": 100,
+            "maxHp": 100,
+            "weaknessAmount": 1,
+            "maxStatus": {
+              "magical_fear": 12,
+              "nauseous": 20,
+              "weakened": 300
+            },
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 99900,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      },
+      "sidebar": "状态恶心(1/20) ",
+      "monster": {
+        "status": {
+          "nauseous": 19,
+          "weakened": 299
+        },
+        "weakness": 1,
+        "ai": 3
+      },
+      "terrain": [
+        2,
+        0,
+        0,
+        95
+      ]
+    },
+    {
+      "name": "expiration",
+      "state": {
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {
+            "weakened": 300,
+            "darkness": 15,
+            "nauseous": 20
+          },
+          "x": 8,
+          "y": 8,
+          "hp": 100,
+          "nutrition": 2148,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 12,
+            "y": 8,
+            "hp": 100,
+            "maxHp": 100,
+            "weaknessAmount": 1,
+            "maxStatus": {
+              "magical_fear": 12,
+              "nauseous": 20,
+              "weakened": 300
+            },
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 99800,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "items": []
+      },
+      "monster": {
+        "status": {
+          "nauseous": 18,
+          "weakened": 298
+        },
+        "weakness": 1,
+        "ai": 3
+      },
+      "terrain": [
+        2,
+        0,
+        0,
+        95
+      ]
+    }
+  ],
+  "errors": []
+}

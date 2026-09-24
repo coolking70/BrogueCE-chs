@@ -494,7 +494,7 @@ onMounted(async () => {
                 return m.hp > 0 && (!!cell?.isVisible || telepathyRevealed || m.hasStatus('entranced'));
             })
             .map((m) => ({ name: m.name, x: m.loc.x, y: m.loc.y, hp: m.hp,
-                maxHp: m.maxHp, accuracy: m.accuracy, defense: m.defense, damage: m.damageString,
+                maxHp: m.maxHp, weaknessAmount: m.weaknessAmount, maxStatus: { ...m.maxStatus }, accuracy: m.accuracy, defense: m.defense, damage: m.damageString,
                 newPowerCount: m.newPowerCount, totalPowerCount: m.totalPowerCount,
                 wasNegated: m.wasNegated, negated: m.displaysNegation, mutation: m.mutation?.id ?? null,
                 behaviorFlags: [...m.behaviorFlags], abilityFlags: [...m.abilityFlags], bolts: [...m.bolts],
@@ -516,6 +516,7 @@ onMounted(async () => {
             arcanaTarget: game.pendingArcana ? { name: game.pendingArcana.item.displayName, ...game.pendingArcana.cursor } : null,
             coordinateSystem: { origin: 'top-left', xAxis: 'right', yAxis: 'down' },
             player: {
+                weaknessAmount: game.player.weaknessAmount, effectiveStrength: game.player.effectiveStrength, maxStatus: { ...game.player.maxStatus },
                 x: game.player.loc.x,
                 y: game.player.loc.y,
                 hp: game.player.hp,

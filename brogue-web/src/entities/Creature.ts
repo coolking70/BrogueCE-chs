@@ -6,7 +6,7 @@
 import type { Entity, Pos } from '../types';
 import { Direction } from '../types';
 
-export type StatusId = 'paralyzed' | 'invisible' | 'telepathy' | 'levitating' | 'hallucinating' | 'confused' | 'regenerating' | 'haste' | 'poisoned' | 'slowed' | 'hasted' | 'weakened' | 'flying' | 'immune_fire' | 'discordant' | 'shielded' | 'entranced';
+export type StatusId = 'paralyzed' | 'invisible' | 'telepathy' | 'levitating' | 'hallucinating' | 'confused' | 'regenerating' | 'haste' | 'poisoned' | 'slowed' | 'hasted' | 'weakened' | 'flying' | 'immune_fire' | 'discordant' | 'shielded' | 'entranced' | 'nauseous' | 'darkness' | 'magical_fear';
 type StatusStackMode = 'refresh' | 'stack';
 
 /**
@@ -59,6 +59,10 @@ export class Creature implements Entity {
     public statusImmunities: Set<StatusId>;
     /** CE creature.poisonAmount: damage per objective poison tick. */
     public poisonAmount = 0;
+    /** CE creature.weaknessAmount, independent of the weakened countdown. */
+    public weaknessAmount = 0;
+    /** U14a subset of CE maxStatus; other states retain their existing carriers. */
+    public maxStatus: Partial<Record<'weakened' | 'nauseous' | 'darkness' | 'magical_fear', number>> = {};
     /** CE maxStatus[SHIELDED], in tenths of HP; determines decay, not a cap. */
     public maxShield = 0;
     /**
@@ -143,6 +147,7 @@ export class Creature implements Entity {
     }
 
     public setStatusDuration(id: StatusId, duration: number) {
+        if (id === 'weakened' && duration <= 0) this.weaknessAmount = 0;
         if (id === 'shielded') this.maxShield = Math.max(0, duration);
         if (id === 'poisoned') this.poisonAmount = duration > 0 && this.hasStatus(id) ? Math.max(1, this.poisonAmount) : duration > 0 ? 1 : 0;
         if (duration > 0) {
@@ -153,30 +158,49 @@ export class Creature implements Entity {
     }
 
     public applyStatus(id: StatusId, duration: number, stackMode: StatusStackMode = 'refresh'): boolean {
+        if (id === 'weakened') return this.weaken(duration);
         if (id === 'shielded') return this.applyShield(duration);
         if (id === 'poisoned') return this.addPoison(duration, 1);
         if (duration <= 0 || this.statusImmunities.has(id)) return false;
         const current = this.statusDurations[id] ?? 0;
         const next = stackMode === 'stack' ? current + duration : Math.max(current, duration);
+        if (id === 'darkness') this.maxStatus.darkness = Math.max(this.maxStatus.darkness ?? 0, duration);
+        if (id === 'nauseous' || id === 'magical_fear') this.maxStatus[id] = next;
         if (next === current) return false;
         this.statusDurations[id] = next;
         this.refreshSpeeds();
         return true;
     }
 
+    /** CE Items.c:4558: each dose adds a layer even when the timer is unchanged. */
+    public weaken(duration: number): boolean {
+        if (duration <= 0 || this.statusImmunities.has('weakened')) return false;
+        const before = this.weaknessAmount;
+        this.weaknessAmount = Math.min(10, before + 1);
+        const current = this.getStatusDuration('weakened');
+        this.statusDurations.weakened = Math.max(current, duration);
+        this.maxStatus.weakened = Math.max(this.maxStatus.weakened ?? 0, duration);
+        return before !== this.weaknessAmount || current !== this.statusDurations.weakened;
+    }
+
+    /** CE attack/moralAttack: fear ends on the next objective tick. */
+    public shortenMagicalFear(): void {
+        if (this.hasStatus('magical_fear')) this.setStatusDuration('magical_fear', 1);
+    }
+
     /** CE Items.c:4664 heal. Panacea reduces selected countdowns to ONE,
      * not zero; slow keeps its cached speed until the normal expiration tick.
-     * Web has no NAUSEOUS/DARKNESS or weaknessAmount model (W-21 report).
      * Burning, paralysis, discord, entrancement and beneficial states survive. */
     public heal(percent: number, panacea = false): number {
         const before = this.hp;
         this.hp = Math.min(this.maxHp, this.hp + Math.trunc(percent * this.maxHp / 100));
         if (panacea) {
-            for (const id of ['hallucinating', 'confused', 'slowed'] as const) {
+            for (const id of ['hallucinating', 'confused', 'slowed', 'nauseous'] as const) {
                 if (this.getStatusDuration(id) > 1) this.setStatusDuration(id, 1);
             }
             // CE deliberately leaves WEAKENED == 1 intact.
             if (this.getStatusDuration('weakened') > 1) this.setStatusDuration('weakened', 0);
+            if (this.hasStatus('darkness')) this.setStatusDuration('darkness', 0);
             if (this.hasStatus('poisoned')) this.setStatusDuration('poisoned', 0);
         }
         return this.hp - before;

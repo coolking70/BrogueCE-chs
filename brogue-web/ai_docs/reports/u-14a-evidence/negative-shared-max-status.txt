@@ -1,0 +1,85 @@
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u14a-negative-ad7Xgz
+
+ × src/test/w_20_cloning.test.ts > W-20 current values and container ownership > audits EVERY object-valued Monster own field (including nested mutation arrays); no shared value container 7ms
+   → maxStatus: expected { weakened: 300, nauseous: 20, …(1) } not to be { weakened: 300, nauseous: 20, …(1) } // Object.is equality
+ ↓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > reverse mutation of clone.loc leaves parent byte-for-byte unchanged
+ ↓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > reverse mutation of clone.spawnLoc leaves parent byte-for-byte unchanged
+ ↓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > reverse mutation of clone.maxStatus leaves parent byte-for-byte unchanged
+ ↓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > reverse mutation of clone.statusDurations leaves parent byte-for-byte unchanged
+ ↓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > reverse mutation of clone.statusImmunities leaves parent byte-for-byte unchanged
+ ↓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > reverse mutation of clone.statusResistTurns leaves parent byte-for-byte unchanged
+ ↓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > reverse mutation of clone.abilities leaves parent byte-for-byte unchanged
+ ↓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > reverse mutation of clone.behaviorFlags leaves parent byte-for-byte unchanged
+ ↓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > reverse mutation of clone.abilityFlags leaves parent byte-for-byte unchanged
+ ↓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > reverse mutation of clone.bolts leaves parent byte-for-byte unchanged
+ ↓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > reverse mutation of clone.waypointAlreadyVisited leaves parent byte-for-byte unchanged
+ ↓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > reverse mutation of clone.mutation leaves parent byte-for-byte unchanged
+ ↓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > actual tick, shield absorption, poison and death mutate only clone state
+ ↓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > retains polymorph cached speed, current learned/negated capabilities; does not rebuild from catalog
+ ↓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > current HP 1 rounds UP independently; maxHP does not split
+ ↓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > current HP 2 rounds UP independently; maxHP does not split
+ ↓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > current HP 3 rounds UP independently; maxHP does not split
+ ↓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > current HP 5 rounds UP independently; maxHP does not split
+ ↓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > current HP 99 rounds UP independently; maxHP does not split
+ ↓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > current HP 100 rounds UP independently; maxHP does not split
+ ↓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > current HP 101 rounds UP independently; maxHP does not split
+ ↓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > empty shot does not clone player or identify
+ ↓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > rejects inanimate/invulnerable goblin_totem without writes or RNG
+ ↓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > rejects inanimate/invulnerable arrow_turret without writes or RNG
+ ↓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > rejects inanimate/invulnerable Warden_of_Yendor without writes or RNG
+ ↓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > dead targets cannot be copied by generic helper
+ ↓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > unobserved invisible success still identifies (CE no sight gate)
+ ↓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > captive copy is allied and released; original captive/key/discord/seized unchanged
+ ↓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > leader references use existing leader, otherwise original; no rebinding original followers
+ ↓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > reflected player produces gray allied @, 1d2/0 defense, copied HP/status/speed, no inventory
+ ↓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > clone death triggers ordinary DF/cleanup once and never duplicates original carried loot
+ ↓ src/test/w_20_cloning.test.ts > W-20 placement is not just adjacent empty tiles > searches through occupied creatures to next free distance ring
+ ↓ src/test/w_20_cloning.test.ts > W-20 placement is not just adjacent empty tiles > path fallback can find a disconnected room beyond walls
+ ↓ src/test/w_20_cloning.test.ts > W-20 placement is not just adjacent empty tiles > no valid cell anywhere is failure with no HP/id allocation/entities/RNG writes
+ ↓ src/test/w_20_cloning.test.ts > W-20 placement is not just adjacent empty tiles > plenty failure leaves odd HP intact and autoID false
+ ↓ src/test/w_20_cloning.test.ts > W-20 placement is not just adjacent empty tiles > stairs/player are forbidden, dormant monster does not occupy active cell
+ ↓ src/test/w_20_cloning.test.ts > W-20 placement is not just adjacent empty tiles > temporary levitation does not change info-based avoidance; native flight does
+ ↓ src/test/w_20_cloning.test.ts > W-20 self split uses clone THEN filters learned traits > burning, grabbed/entranced/poison/shield/regen inherited; levitation 23 follows CE exception
+ ↓ src/test/w_20_cloning.test.ts > W-20 self split uses clone THEN filters learned traits > burning, grabbed/entranced/poison/shield/regen inherited; levitation 1000 follows CE exception
+ ↓ src/test/w_20_cloning.test.ts > W-20 self split uses clone THEN filters learned traits > plenty preserves learned bolts and flags, unlike self split
+ ↓ src/test/w_20_cloning.test.ts > W-20 self split uses clone THEN filters learned traits > cloning does not invoke summoning, but a real cloned follower legitimately counts for P4-2
+ ↓ src/test/w_20_cloning.test.ts > W-20 self split uses clone THEN filters learned traits > plenty has no 100 self-split cap; its clones count toward the subsequent self-split cap
+ ↓ src/test/w_20_cloning.test.ts > W-20 save, identity and actual submission > JSON round trip keeps all clone runtime/containers/references and next ids beyond dormant high id
+ ↓ src/test/w_20_cloning.test.ts > W-20 save, identity and actual submission > ordinary named clone stays ordinary, and high dormant id is reserved
+ ↓ src/test/w_20_cloning.test.ts > W-20 save, identity and actual submission > player clone and polymorphed clone remain Monsters with actual form after restore
+ ↓ src/test/w_20_cloning.test.ts > W-20 save, identity and actual submission > cancel costs nothing; real confirmation spends charge/turn, newborn waits 101 then acts
+ ↓ src/test/w_20_cloning.test.ts > W-20 compiled CE and cross-effect regression > matches compiled original BE_PLENTY and cloneMonster for every HP 1..137
+ ↓ src/test/w_20_cloning.test.ts > W-20 compiled CE and cross-effect regression > W-8 actual fire staff now leaves both surviving jelly bodies burning
+ ↓ src/test/w_20_cloning.test.ts > W-20 compiled CE and cross-effect regression > player clone is a legitimate polymorph source, before and after saving
+ ↓ src/test/w_20_cloning.test.ts > W-20 compiled CE and cross-effect regression > real melee clone kill does not advance weapon familiarity, original kill does
+ ↓ src/test/w_20_cloning.test.ts > W-20 compiled CE and cross-effect regression > new private safety map never aliases the parent; source changes never reach clone containers
+ ↓ src/test/w_20_cloning.test.ts > W-20 relation representation and restored provenance > ally leader=null means &player; subsequent clones retain that pointer representation
+ ↓ src/test/w_20_cloning.test.ts > W-20 relation representation and restored provenance > explicit allied monster leader is retained without cloning the leader graph
+ ↓ src/test/w_20_cloning.test.ts > W-20 relation representation and restored provenance > original saved mutation provenance survives, so self split keeps its mutation-only trait
+ ↓ src/test/w_20_cloning.test.ts > W-20 player regeneration progress projects into independent monster counters
+ ↓ src/test/w_20_cloning.test.ts > W-20 generic clone placement honors TURRET composite INANIMATE even though plenty itself rejects it
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 56 skipped (57)
+   Start at  20:18:18
+   Duration  568ms (transform 313ms, setup 0ms, import 480ms, tests 8ms, environment 0ms)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/w_20_cloning.test.ts > W-20 current values and container ownership > audits EVERY object-valued Monster own field (including nested mutation arrays); no shared value container
+AssertionError: maxStatus: expected { weakened: 300, nauseous: 20, …(1) } not to be { weakened: 300, nauseous: 20, …(1) } // Object.is equality
+
+Compared values have no visual difference.
+
+ ❯ src/test/w_20_cloning.test.ts:51:36
+     49|    if(key==='leader'){expect(c.leader).toBe(leader);continue;}
+     50|    if(['carriedItem','carriedMonster','safetySnapshot'].includes(key))…
+     51|    expect((c as any)[key],key).not.toBe((m as any)[key]);
+       |                                    ^
+     52|    if(key!=='loc')expect((c as any)[key],key).toEqual((m as any)[key]);
+     53|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

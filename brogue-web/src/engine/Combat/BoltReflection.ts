@@ -40,7 +40,7 @@ export function projectileReflects(defender: Creature, attacker: Creature | null
             && IMMUNITY_CLASSES[armor.vorpalEnemy]?.includes(attacker.typeId)
             && monstersAreEnemies(attacker, defender)) return true;
         if (armor?.runicType !== 'reflection') return false;
-        const level = netEnchant(armor.enchantment ?? 0, defender.strength, armor.strengthRequired ?? 0);
+        const level = netEnchant(armor.enchantment ?? 0, defender.effectiveStrength, armor.strengthRequired ?? 0);
         return level > 0 && rng.randPercent(reflectionChance(level));
     }
     return false;

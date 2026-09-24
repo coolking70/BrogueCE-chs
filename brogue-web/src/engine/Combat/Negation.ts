@@ -18,10 +18,10 @@ export const NEGATABLE_MUTATIONS: ReadonlySet<string> = new Set([
 
 /** Globals.c statusEffectCatalog, restricted to existing web states. Haste and
  * flying are legacy aliases; regenerating has no CE negatable equivalent.
- * Magical fear/darkness have no web runtime yet (W-23 report). */
+ * Weakness/nausea are non-negatable; fear/darkness clear to zero. */
 const NEGATABLE_STATUSES: readonly StatusId[] = [
     'telepathy', 'hallucinating', 'levitating', 'slowed', 'hasted', 'haste',
-    'confused', 'discordant', 'immune_fire', 'entranced', 'shielded', 'invisible', 'flying',
+    'confused', 'discordant', 'immune_fire', 'entranced', 'shielded', 'invisible', 'flying', 'magical_fear', 'darkness',
 ];
 const PLAYER_ONE_TURN: ReadonlySet<StatusId> = new Set(['telepathy', 'levitating', 'immune_fire', 'flying']);
 
@@ -68,7 +68,7 @@ export function negationWillAffectMonster(target: Monster, isBolt = true): boole
         || target.seizing || target.diesIfNegated()
         || [...target.behaviorFlags].some(f => NEGATABLE_TRAITS.has(f))
         || (['immune_fire', 'slowed', 'hasted', 'haste', 'confused', 'entranced',
-            'discordant', 'shielded', 'invisible', 'levitating', 'flying'] as const).some(id => target.hasStatus(id))
+            'discordant', 'shielded', 'invisible', 'levitating', 'flying', 'magical_fear'] as const).some(id => target.hasStatus(id))
         || target.hasAlteredSpeeds()
         || !!(target.mutation && NEGATABLE_MUTATIONS.has(target.mutation.id))
         || hasNegatableBolt(target.bolts);

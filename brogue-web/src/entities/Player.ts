@@ -30,6 +30,8 @@ export class Player extends Creature {
     public ringLeft: Item | null = null;
     public ringRight: Item | null = null;
     public strength: number = 12;
+    /** Equipment is computed on demand, so every dose/cure refreshes all consumers. */
+    public get effectiveStrength(): number { return this.strength - this.weaknessAmount; }
     public lastMoveDirection: Direction | null = null;
 
     // Hunger Mechanics

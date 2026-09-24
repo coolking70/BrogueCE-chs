@@ -1,0 +1,172 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/1296/brogue/brogue-web
+
+stdout | src/test/p1_30_i18n_gate.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > audits EVERY object-valued Monster own field (including nested mutation arrays); no shared value container 9ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > reverse mutation of clone.loc leaves parent byte-for-byte unchanged 3ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > reverse mutation of clone.spawnLoc leaves parent byte-for-byte unchanged 5ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > reverse mutation of clone.maxStatus leaves parent byte-for-byte unchanged 3ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > reverse mutation of clone.statusDurations leaves parent byte-for-byte unchanged 3ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > reverse mutation of clone.statusImmunities leaves parent byte-for-byte unchanged 2ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > reverse mutation of clone.statusResistTurns leaves parent byte-for-byte unchanged 1ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > reverse mutation of clone.abilities leaves parent byte-for-byte unchanged 1ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > reverse mutation of clone.behaviorFlags leaves parent byte-for-byte unchanged 2ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > reverse mutation of clone.abilityFlags leaves parent byte-for-byte unchanged 2ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > reverse mutation of clone.bolts leaves parent byte-for-byte unchanged 2ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > reverse mutation of clone.waypointAlreadyVisited leaves parent byte-for-byte unchanged 3ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > reverse mutation of clone.mutation leaves parent byte-for-byte unchanged 3ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > actual tick, shield absorption, poison and death mutate only clone state 3ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 current values and container ownership > retains polymorph cached speed, current learned/negated capabilities; does not rebuild from catalog 4ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > current HP 1 rounds UP independently; maxHP does not split 3ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > current HP 2 rounds UP independently; maxHP does not split 1ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > current HP 3 rounds UP independently; maxHP does not split 3ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > current HP 5 rounds UP independently; maxHP does not split 3ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > current HP 99 rounds UP independently; maxHP does not split 2ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > current HP 100 rounds UP independently; maxHP does not split 2ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > current HP 101 rounds UP independently; maxHP does not split 3ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > empty shot does not clone player or identify 1ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > rejects inanimate/invulnerable goblin_totem without writes or RNG 1ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > rejects inanimate/invulnerable arrow_turret without writes or RNG 1ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > rejects inanimate/invulnerable Warden_of_Yendor without writes or RNG 0ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > dead targets cannot be copied by generic helper 0ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > unobserved invisible success still identifies (CE no sight gate) 1ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > captive copy is allied and released; original captive/key/discord/seized unchanged 2ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > leader references use existing leader, otherwise original; no rebinding original followers 7ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > reflected player produces gray allied @, 1d2/0 defense, copied HP/status/speed, no inventory 3ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 plenty and CE exceptions > clone death triggers ordinary DF/cleanup once and never duplicates original carried loot 3ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 placement is not just adjacent empty tiles > searches through occupied creatures to next free distance ring 3ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 placement is not just adjacent empty tiles > path fallback can find a disconnected room beyond walls 1ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 placement is not just adjacent empty tiles > no valid cell anywhere is failure with no HP/id allocation/entities/RNG writes 18ms
+stdout | src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > strength potion clears layers immediately, keeps countdown one until tick
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=+0 2ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=1 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=2 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=3 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=4 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=5 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=6 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=7 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=8 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=9 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=10 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > repeat doses cap at ten, refresh both maxima, expiration clears layers 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > CE contact weakness: player 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > CE contact weakness: monster 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > CE contact weakness: shielded 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > CE contact weakness: inanimate 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > CE contact weakness: killed 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 1 条：EMBERS / ASH / PLAIN_FIRE 的 CE 渲染 > 三态字形：PLAIN_FIRE（与 GAS_FIRE/GAS_EXPLOSION）= G_FIRE，ASH/EMBERS 同为 G_ASHES 1ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 1 条：EMBERS / ASH / PLAIN_FIRE 的 CE 渲染 > 对抗：ASH 与 EMBERS 同字形但**颜色不同**——ashForeColor ≠ fireForeColor（抄错/抄同即红） 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 1 条：EMBERS / ASH / PLAIN_FIRE 的 CE 渲染 > 对抗：字形/颜色值逐字符等于 CE 原值（⧲ U+29F2 一族抄成 ASCII 替代品即红） 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 2 条：燃烧怪物——CE 是发光不是改字形（光已在 C-7 接线；I-1 补行为钉死） > 燃烧状态不改变怪物外观（谁在这里加"燃烧染色"谁红——CE 没有这种机制） 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 2 条：燃烧怪物——CE 是发光不是改字形（光已在 C-7 接线；I-1 补行为钉死） > 对抗（结构面）：monsterAppearance 的代码里没有燃烧分支（cellAppearance 的 !isBurning 气体守卫不算） 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 3 条：探魔符号——两支守卫析取、符号按极性、分支顺序 > 左支：看不见的格上有已探测的善意物品 → G_GOOD_MAGIC + goodMessageColor 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 3 条：探魔符号——两支守卫析取、符号按极性、分支顺序 > 左支：恶意物品 → G_BAD_MAGIC + badMessageColor；不做记忆变暗（CE IO.c:1349-1359 "do nothing"） 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 3 条：探魔符号——两支守卫析取、符号按极性、分支顺序 > 护符特例：已探测护符 → G_AMULET + white（优先于极性分支，CE IO.c:1229-1231） 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 3 条：探魔符号——两支守卫析取、符号按极性、分支顺序 > 对抗：左支守卫在【格子】——可见格上已探测物品不显示符号（守卫合并/漏写即红） 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 3 条：探魔符号——两支守卫析取、符号按极性、分支顺序 > 无极性的已探测物品（enchantment 0）不显示符号（polarity 0 过不了 CE 的守卫） 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 3 条：探魔符号——两支守卫析取、符号按极性、分支顺序 > 未探测的物品不显示符号（magicDetected 假时即使极性非零也不画） 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 3 条：探魔符号——两支守卫析取、符号按极性、分支顺序 > 未探索格上的已探测物品照样亮符号——「未探索且不可见即不画」的门为探测让位 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 3 条：探魔符号——两支守卫析取、符号按极性、分支顺序 > 右支：携带已探测物品的（不可见）怪物——生产者把 !canSeeMonster 折入 ctx；符号照画 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 3 条：探魔符号——两支守卫析取、符号按极性、分支顺序 > 对抗：分支顺序——右支（携带物）压过左支（地面物），CE IO.c:1123-1125 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 3 条：探魔符号——两支守卫析取、符号按极性、分支顺序 > 携带物未探测出魔法 → 右支不成立，退回左支判定（地面无物 → 无符号） 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 4 条：PARALYSIS / METHANE 气体渲染 > PARALYSIS：bg = CE pink 减半、字形 ~ + 淡粉前景；METHANE：bg = CE methaneColor 减半、~ + 草绿前景 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 4 条：PARALYSIS / METHANE 气体渲染 > 对抗：bg 值锚定 CE 原色（pink {100,60,66} / methaneColor {45,60,15} 各减半，Globals.c:506-507） 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 4 条：PARALYSIS / METHANE 气体渲染 > 新气体的 bg 同样参与光照乘法（恒等光下为原值；弱光下线性变暗） 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 4 条：PARALYSIS / METHANE 气体渲染 > density=0 的气体不渲染（既有门对两种新气体同样生效） 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 5 条：CE 空名状态不在侧栏显示（负向断言） > 负向：explosion_immunity 不得出现在侧栏可见集合 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 5 条：CE 空名状态不在侧栏显示（负向断言） > CE 空名集恰为 web 现有载体（explosion_immunity）；web 若新增 enraged/enters_level_in 载体须同步扩入 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 5 条：CE 空名状态不在侧栏显示（负向断言） > 有名状态与未知键照常显示（CE name[0] 门只挡空名；未知键裸显是 web 既有调试可见性） 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 5 条：CE 空名状态不在侧栏显示（负向断言） > 结构守卫：Sidebar 的过滤必须走 isSidebarVisibleStatus（不许在组件里手写键名黑名单） 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 6 条：Game.onConfirmRequest 生产侧接线 > 常规对局：问题原样转给模态框，答案映射为返回值（Enter=Yes/Esc=No 由原生 confirm 承载，≙ CE RETURN/ESCAPE_KEY） 1ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 6 条：Game.onConfirmRequest 生产侧接线 > 回放期间直接放行且**不弹框**（CE IO.c:2941-2943 "oh yes he did"；弹框会卡死回放） 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 6 条：Game.onConfirmRequest 生产侧接线 > 自动寻路期间直接放行（CE rogue.autoPlayingLevel 的 web 等价 = isAutoTraveling） 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 6 条：Game.onConfirmRequest 生产侧接线 > 结构守卫：App.vue 挂载时真的接线（谁把 wireConfirmRequest(activeGame) 删了谁红） 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 7 条：光照按 CE 逐通道乘法（adjustedLightValue + applyColorMultiplier） > 对抗：过亮通道平方根压回（adjustedLightValue，IO.c:1732-1737）——漏写压回/用旧混合即红 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 7 条：光照按 CE 逐通道乘法（adjustedLightValue + applyColorMultiplier） > 对抗：有色光是**逐通道**的——单色混合实现（旧 light: {color,intensity} 形态）给不出这个值 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 7 条：光照按 CE 逐通道乘法（adjustedLightValue + applyColorMultiplier） > 负通道按 max(0,·) 钳位（黑暗类光是负分量，CE colorMultiplierFromDungeonLight） 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 7 条：光照按 CE 逐通道乘法（adjustedLightValue + applyColorMultiplier） > 背景与前景用同一乘数（CE 对两者各做一次 applyColorMultiplier） 0ms
+ ✓ src/test/ui_1_rendering.test.ts > UI-1 第 7 条：光照按 CE 逐通道乘法（adjustedLightValue + applyColorMultiplier） > 全零通道与 null 光同走"可见但无光"近黑分支（不受乘法影响） 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > strength potion clears layers immediately, keeps countdown one until tick 130ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > panacea preserves weakness at one, clears it above one (1) 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > panacea preserves weakness at one, clears it above one (2) 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > catalog negation player=false 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > catalog negation player=true 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > refresh rules preserve darkness historical max and refresh nausea max to current 0ms
+stdout | src/test/w_20_cloning.test.ts > W-20 save, identity and actual submission > JSON round trip keeps all clone runtime/containers/references and next ids beyond dormant high id
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_20_cloning.test.ts > W-20 placement is not just adjacent empty tiles > plenty failure leaves odd HP intact and autoID false 5ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 placement is not just adjacent empty tiles > stairs/player are forbidden, dormant monster does not occupy active cell 0ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 placement is not just adjacent empty tiles > temporary levitation does not change info-based avoidance; native flight does 4ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 self split uses clone THEN filters learned traits > burning, grabbed/entranced/poison/shield/regen inherited; levitation 23 follows CE exception 1ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 self split uses clone THEN filters learned traits > burning, grabbed/entranced/poison/shield/regen inherited; levitation 1000 follows CE exception 1ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 self split uses clone THEN filters learned traits > plenty preserves learned bolts and flags, unlike self split 1ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 self split uses clone THEN filters learned traits > cloning does not invoke summoning, but a real cloned follower legitimately counts for P4-2 3ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 self split uses clone THEN filters learned traits > plenty has no 100 self-split cap; its clones count toward the subsequent self-split cap 7ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 save, identity and actual submission > JSON round trip keeps all clone runtime/containers/references and next ids beyond dormant high id 161ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > weakened runs on objective time for both actors 117ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 save, identity and actual submission > ordinary named clone stays ordinary, and high dormant id is reserved 119ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > nauseous runs on objective time for both actors 106ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 save, identity and actual submission > player clone and polymorphed clone remain Monsters with actual form after restore 121ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > darkness runs on objective time for both actors 116ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 save, identity and actual submission > cancel costs nothing; real confirmation spends charge/turn, newborn waits 101 then acts 109ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > magical_fear runs on objective time for both actors 108ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 compiled CE and cross-effect regression > matches compiled original BE_PLENTY and cloneMonster for every HP 1..137 164ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > darkness never changes the miner light/FOV input in U14a 110ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > terrain exposure: player 103ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 compiled CE and cross-effect regression > W-8 actual fire staff now leaves both surviving jelly bodies burning 1ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 compiled CE and cross-effect regression > player clone is a legitimate polymorph source, before and after saving 119ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > terrain exposure: visible sleeper 107ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 compiled CE and cross-effect regression > real melee clone kill does not advance weapon familiarity, original kill does 100ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 compiled CE and cross-effect regression > new private safety map never aliases the parent; source changes never reach clone containers 3ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 relation representation and restored provenance > ally leader=null means &player; subsequent clones retain that pointer representation 2ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 relation representation and restored provenance > explicit allied monster leader is retained without cloning the leader graph 1ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 relation representation and restored provenance > original saved mutation provenance survives, so self split keeps its mutation-only trait 111ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 player regeneration progress projects into independent monster counters 1ms
+ ✓ src/test/w_20_cloning.test.ts > W-20 generic clone placement honors TURRET composite INANIMATE even though plenty itself rejects it 2ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > terrain exposure: hidden sleeper 104ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > terrain exposure: inanimate 100ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > terrain exposure: invulnerable 104ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > terrain exposure: respiration 101ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > vomit replaces move with movement time and DF, not damage 100ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > vomit replaces melee with movement time and DF, not damage 98ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > vomit replaces entranced with movement time and DF, not damage 90ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > no vomit check for rest or failed wall move; failed nausea roll permits movement 105ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > monster physical intent vomits before melee and moving, not spell dispatch 95ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a fear lifecycle and persistence/display > fear cannot recover from full HP or attack when cornered; ordinary fleeing can 92ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a fear lifecycle and persistence/display > fear refresh, expiry and ally restoration; ordinary fleeing is untouched by status ticks 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a fear lifecycle and persistence/display > melee misses shorten fear to one, environmental damage does not 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a fear lifecycle and persistence/display > thrown misses shorten fear and alert target; normal fleeing remains 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a fear lifecycle and persistence/display > direct monster bolt clears magical fear but preserves ordinary fleeing; auto-negation sees fear 87ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a fear lifecycle and persistence/display > player, active/dormant monsters and clones round-trip amounts and independent maxStatus 195ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a fear lifecycle and persistence/display > CE fear source is commented; do not invent fear scroll or darkness potion catalog entry 1ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a integration boundaries > weakness immediately feeds the reflection armor enchantment 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a integration boundaries > objective stench contact is before monster decay and after player decay 106ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a integration boundaries > magical fleeing permits summoning but cannot cast attack bolts 94ms
+ ✓ src/test/p1_30_i18n_gate.test.ts > P1-30 键存在性红灯：源码引用的每个 i18n 键必须存在于 zh_CN.json > 扫描覆盖了引擎、实体与界面（不含测试文件自身） 1ms
+ ✓ src/test/p1_30_i18n_gate.test.ts > P1-30 键存在性红灯：源码引用的每个 i18n 键必须存在于 zh_CN.json > 每个静态字面量键都存在（缺失即红） 0ms
+ ✓ src/test/p1_30_i18n_gate.test.ts > P1-30 键存在性红灯：源码引用的每个 i18n 键必须存在于 zh_CN.json > 每个动态键前缀下至少有一个真实键（防前缀打错字整组落空） 0ms
+ ✓ src/test/p1_30_i18n_gate.test.ts > P1-30 键存在性红灯：源码引用的每个 i18n 键必须存在于 zh_CN.json > 所有 t() 调用的首参都可静态解析（新调用点必须写成可扫描形式） 0ms
+ ✓ src/test/p1_30_i18n_gate.test.ts > P1-30 键存在性红灯：源码引用的每个 i18n 键必须存在于 zh_CN.json > zh_CN.json 没有从未被引用的死键（发现死键应移入 zh_CN.legacy.json 归档） 0ms
+ ✓ src/test/p1_30_i18n_gate.test.ts > P1-30 数据驱动的 name.* 键覆盖（防归档误删：误删 = 怪物/物品名集体变英文） > 英文形式的名字必须有 name.* 键且译文含中文（中文名原样返回，无需键） 0ms
+ ✓ src/test/p1_30_i18n_gate.test.ts > P1-30 变异名拼接：中文语序，无英文残留、无多余空格 > 8 个变异 × rat：拼接结果 = 资源键插值，无英文/无空格 2ms
+ ✓ src/test/p1_30_i18n_gate.test.ts > P1-30 变异名拼接：中文语序，无英文残留、无多余空格 > 8 个变异 × kobold：拼接结果 = 资源键插值，无英文/无空格 0ms
+ ✓ src/test/p1_30_i18n_gate.test.ts > P1-30 变异名拼接：中文语序，无英文残留、无多余空格 > 8 个变异 × jackal：拼接结果 = 资源键插值，无英文/无空格 0ms
+ ✓ src/test/p1_30_i18n_gate.test.ts > P1-30 变异名拼接：中文语序，无英文残留、无多余空格 > 8 个变异 × goblin：拼接结果 = 资源键插值，无英文/无空格 0ms
+ ✓ src/test/p1_30_i18n_gate.test.ts > P1-30 变异名拼接：中文语序，无英文残留、无多余空格 > 8 个变异 × pink_jelly：拼接结果 = 资源键插值，无英文/无空格 0ms
+ ✓ src/test/p1_30_i18n_gate.test.ts > P1-30 变异名拼接：中文语序，无英文残留、无多余空格 > 8 个变异 × troll：拼接结果 = 资源键插值，无英文/无空格 0ms
+ ✓ src/test/p1_30_i18n_gate.test.ts > P1-30 变异名拼接：中文语序，无英文残留、无多余空格 > 8 个变异 × wraith：拼接结果 = 资源键插值，无英文/无空格 0ms
+ ✓ src/test/p1_30_i18n_gate.test.ts > P1-30 变异名拼接：中文语序，无英文残留、无多余空格 > 8 个变异 × dragon：拼接结果 = 资源键插值，无英文/无空格 0ms
+ ✓ src/test/p1_30_i18n_gate.test.ts > P1-30 变异名拼接：中文语序，无英文残留、无多余空格 > 8 个变异名资源键全部存在（缺失时拼接会回退英文） 0ms
+ ✓ src/test/p1_30_i18n_gate.test.ts > P1-30 实跑冒烟：真实资源下推进回合，任何 t() 命中缺失键即红 > 3 个 seed × 400 回合：无漏键、日志无裸键串 2469ms
+
+ Test Files  4 passed (4)
+      Tests  154 passed (154)
+   Start at  20:16:27
+   Duration  3.24s (transform 1.15s, setup 0ms, import 1.95s, tests 6.45s, environment 1ms)
+

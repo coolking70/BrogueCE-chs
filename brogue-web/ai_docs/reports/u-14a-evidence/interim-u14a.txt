@@ -1,0 +1,238 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/1296/brogue/brogue-web
+
+stdout | src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > strength potion clears layers immediately, keeps countdown one until tick
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ × src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=+0 8ms
+   → expected 422 to be 62 // Object.is equality
+ × src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=1 1ms
+   → expected 420 to be 60 // Object.is equality
+ × src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=2 0ms
+   → expected 395 to be 35 // Object.is equality
+ × src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=3 0ms
+   → expected 370 to be 10 // Object.is equality
+ × src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=4 0ms
+   → expected 345 to be +0 // Object.is equality
+ × src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=5 0ms
+   → expected 320 to be +0 // Object.is equality
+ × src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=6 0ms
+   → expected 295 to be +0 // Object.is equality
+ × src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=7 0ms
+   → expected 270 to be +0 // Object.is equality
+ × src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=8 0ms
+   → expected 245 to be +0 // Object.is equality
+ × src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=9 0ms
+   → expected 220 to be +0 // Object.is equality
+ × src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=10 0ms
+   → expected 200 to be +0 // Object.is equality
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > repeat doses cap at ten, refresh both maxima, expiration clears layers 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > CE contact weakness: player 1ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > CE contact weakness: monster 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > CE contact weakness: shielded 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > CE contact weakness: inanimate 0ms
+ × src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > strength potion clears layers immediately, keeps countdown one until tick 308ms
+   → g.useItem is not a function
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > panacea preserves weakness at one, clears it above one (1) 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > panacea preserves weakness at one, clears it above one (2) 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > catalog negation player=false 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > catalog negation player=true 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > refresh rules preserve darkness historical max and refresh nausea max to current 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > weakened runs on objective time for both actors 261ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > nauseous runs on objective time for both actors 222ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > darkness runs on objective time for both actors 257ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > magical_fear runs on objective time for both actors 277ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > darkness never changes the miner light/FOV input in U14a 244ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > terrain exposure: player 233ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > terrain exposure: visible sleeper 237ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > terrain exposure: hidden sleeper 236ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > terrain exposure: inanimate 231ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > terrain exposure: invulnerable 321ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > terrain exposure: respiration 304ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > vomit replaces move with movement time and DF, not damage 298ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > vomit replaces melee with movement time and DF, not damage 260ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > vomit replaces entranced with movement time and DF, not damage 246ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > no vomit check for rest or failed wall move; failed nausea roll permits movement 250ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > monster physical intent vomits before melee and moving, not spell dispatch 247ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a fear lifecycle and persistence/display > fear cannot recover from full HP or attack when cornered; ordinary fleeing can 588ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a fear lifecycle and persistence/display > fear refresh, expiry and ally restoration; ordinary fleeing is untouched by status ticks 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a fear lifecycle and persistence/display > melee misses shorten fear to one, environmental damage does not 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a fear lifecycle and persistence/display > thrown misses shorten fear and alert target; normal fleeing remains 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a fear lifecycle and persistence/display > direct monster bolt clears magical fear but preserves ordinary fleeing; auto-negation sees fear 531ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a fear lifecycle and persistence/display > player, active/dormant monsters and clones round-trip amounts and independent maxStatus 509ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a fear lifecycle and persistence/display > CE fear source is commented; do not invent fear scroll or darkness potion catalog entry 6ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 12 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=+0
+AssertionError: expected 422 to be 62 // Object.is equality
+
+- Expected
++ Received
+
+- 62
++ 422
+
+ ❯ src/test/u_14a_status_gaps.test.ts:38:45
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/12]⎯
+
+ FAIL  src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=1
+AssertionError: expected 420 to be 60 // Object.is equality
+
+- Expected
++ Received
+
+- 60
++ 420
+
+ ❯ src/test/u_14a_status_gaps.test.ts:38:45
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/12]⎯
+
+ FAIL  src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=2
+AssertionError: expected 395 to be 35 // Object.is equality
+
+- Expected
++ Received
+
+- 35
++ 395
+
+ ❯ src/test/u_14a_status_gaps.test.ts:38:45
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/12]⎯
+
+ FAIL  src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=3
+AssertionError: expected 370 to be 10 // Object.is equality
+
+- Expected
++ Received
+
+- 10
++ 370
+
+ ❯ src/test/u_14a_status_gaps.test.ts:38:45
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/12]⎯
+
+ FAIL  src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=4
+AssertionError: expected 345 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 345
+
+ ❯ src/test/u_14a_status_gaps.test.ts:38:45
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/12]⎯
+
+ FAIL  src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=5
+AssertionError: expected 320 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 320
+
+ ❯ src/test/u_14a_status_gaps.test.ts:38:45
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/12]⎯
+
+ FAIL  src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=6
+AssertionError: expected 295 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 295
+
+ ❯ src/test/u_14a_status_gaps.test.ts:38:45
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/12]⎯
+
+ FAIL  src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=7
+AssertionError: expected 270 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 270
+
+ ❯ src/test/u_14a_status_gaps.test.ts:38:45
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/12]⎯
+
+ FAIL  src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=8
+AssertionError: expected 245 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 245
+
+ ❯ src/test/u_14a_status_gaps.test.ts:38:45
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/12]⎯
+
+ FAIL  src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=9
+AssertionError: expected 220 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 220
+
+ ❯ src/test/u_14a_status_gaps.test.ts:38:45
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/12]⎯
+
+ FAIL  src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=10
+AssertionError: expected 200 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 200
+
+ ❯ src/test/u_14a_status_gaps.test.ts:38:45
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/12]⎯
+
+ FAIL  src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > strength potion clears layers immediately, keeps countdown one until tick
+TypeError: g.useItem is not a function
+ ❯ src/test/u_14a_status_gaps.test.ts:68:75
+     66|     it('strength potion clears layers immediately, keeps countdown one…
+     67|         const g=scene();g.player.weaken(300);g.player.weaken(300);cons…
+     68|         vi.spyOn(g as any,'playerTurnEnded').mockImplementation(()=>{}…
+       |                                                                           ^
+     69|         expect(g.player.strength).toBe(13);expect(g.player.weaknessAmo…
+     70|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/12]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  12 failed | 33 passed (45)
+   Start at  20:08:05
+   Duration  7.74s (transform 948ms, setup 0ms, import 1.47s, tests 6.08s, environment 0ms)
+

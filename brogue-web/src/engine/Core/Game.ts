@@ -5,7 +5,7 @@ import { cloneLocation } from '../Combat/Cloning';
  * Main game state and orchestration
  */
 import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer, type Cell } from '../Map/Grid';
-import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_IS_FIRE, T_CAUSES_CONFUSION, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_PATHING_BLOCKER, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP } from '../Map/TerrainCatalog';
+import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_IS_FIRE, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_PATHING_BLOCKER, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP } from '../Map/TerrainCatalog';
 import { isPathingBlocker } from '../Map/TerrainCatalog';
 // B-4b：物品落位热力图与食物落位原语（CE Items.c:463-535 / Architect.c:171,3822）
 import { ItemSpawnHeatMap, passableArcCount, randomMatchingLocation } from '../Items/ItemSpawnHeatMap';
@@ -2253,7 +2253,7 @@ export class Game {
                 this.inspectTarget = generateMonsterDetail(
                     m,
                     this.player.hp,
-                    this.player.strength,
+                    this.player.effectiveStrength,
                     0, // 已废弃占位：防御由 DetailGenerator 内部用下方 armor 三元组经 playerDefense() 计算
                     [n || 1, (n || 1) * (d || 2)],
                     this.player.equippedWeapon?.enchantment ?? 0,
@@ -2281,7 +2281,7 @@ export class Game {
             const i = visibleItems.find(item => !this.examinedEntityIds.has(item.id));
             if (i) {
                 this.examinedEntityIds.add(i.id);
-                this.inspectTarget = generateItemDetail(i, this.player.strength);
+                this.inspectTarget = generateItemDetail(i, this.player.effectiveStrength);
                 return;
             }
         }
@@ -2303,7 +2303,7 @@ export class Game {
             this.inspectTarget = generateMonsterDetail(
                 monster,
                 this.player.hp,
-                this.player.strength,
+                this.player.effectiveStrength,
                 0, // 已废弃占位：防御由 DetailGenerator 内部用下方 armor 三元组经 playerDefense() 计算
                 [n || 1, (n || 1) * (d || 2)],
                 this.player.equippedWeapon?.enchantment ?? 0,
@@ -2317,7 +2317,7 @@ export class Game {
 
         const item = this.items.find((i) => i.loc.x === x && i.loc.y === y);
         if (item) {
-            this.inspectTarget = generateItemDetail(item, this.player.strength);
+            this.inspectTarget = generateItemDetail(item, this.player.effectiveStrength);
         }
     }
 
@@ -2694,7 +2694,7 @@ export class Game {
      * - 光明戒指增减（Items.c:8728，updateRingBonuses 末尾）——web 无
      *   ring_of_light 载体（D2 池/数据文件禁改），lightMultiplier 恒 1，登记。
      * - 黑暗状态增减（Items.c:8090 喝药 / :4692 解除）——web 无
-     *   potion_of_darkness 载体，STATUS_DARKNESS 恒 0，登记。
+     *   potion_of_darkness 入口；U14a 已建 darkness 状态载体，光照消费留 U21b。
      * - 水中减半（Light.c:150-152，rogue.inWater）——web 无该状态载体，恒 0，登记。
      */
     private refreshMinersLight(): void {
@@ -3301,6 +3301,7 @@ export class Game {
                     // Attack —— P4-7：CE Movement.c:1216-1247，buildHitList
                     // （sweep = 武器带 ITEM_ATTACKS_ALL_ADJACENT，Combat.c:2049-2090）
                     // + 攻击循环（循环内复查目标存活，对应 CE MB_IS_DYING 复查）。
+                    if (this.playerVomitAttempt()) return;
                     const hitList = this.buildPlayerMeleeHitList(blockingMonster);
                     let anyAttackHit = false;
                     for (const target of hitList) {
@@ -3423,6 +3424,7 @@ export class Game {
                         }
                     } else {
                         // Empty altar is walkable
+                        if (this.playerVomitAttempt()) return;
                         this.player.loc.x = newX;
                         this.player.loc.y = newY;
                         this.moveEntrancedMonsters(dx, dy);
@@ -3463,6 +3465,7 @@ export class Game {
                     // 【前】收集（连枷判据需要移动前坐标；突进看移动方向两格
                     // 之外），移动【后】结算（Movement.c:1480-1492）。
                     // 挣扎出网的 return 分支在上面：没动成就没有移动攻击。
+                    if (this.playerVomitAttempt()) return;
                     const specialTargets = this.buildLungeFlailHitList(dx, dy, newX, newY);
 
                     // Move
@@ -3770,6 +3773,8 @@ export class Game {
                         break;
                     case 'gain_strength':
                         this.player.strength += 1;
+                        if (this.player.hasStatus('weakened')) this.player.setStatusDuration('weakened', 1);
+                        this.player.weaknessAmount = 0;
                         logger.log(i18next.t('potion.strength', { defaultValue: 'You feel stronger!' }), '#ff4444');
                         break;
                     case 'fall_down':
@@ -4417,7 +4422,15 @@ export class Game {
             kind: 'staff', enchantment: item.enchantment,
         }).value, rng) : result.magnitude;
         target.takeDamage(damage);
-        if (!alreadyReflected && target.hp > 0) target.setStatusDuration('entranced', 0);
+        if (target.hp > 0) {
+            if (target instanceof Monster && (!target.isAlly || target.hasStatus('magical_fear'))
+                && (target.state !== MonsterState.FLEEING || target.hasStatus('magical_fear'))) {
+                target.state = MonsterState.HUNTING;
+                target.setStatusDuration('magical_fear', 0);
+            }
+            target.shortenMagicalFear();
+            if (!alreadyReflected) target.setStatusDuration('entranced', 0);
+        }
         return damage;
     }
 
@@ -4902,8 +4915,10 @@ export class Game {
                 if (target.hp > 0) {
                     // CE survivor/moralAttack effects, also on a fully shielded
                     // hit and on monster-origin reflected hits (Items.c:5195-5213).
-                    if (target instanceof Monster && !target.isAlly && target.state !== MonsterState.FLEEING) {
+                    if (target instanceof Monster && (!target.isAlly || target.hasStatus('magical_fear'))
+                        && (target.state !== MonsterState.FLEEING || target.hasStatus('magical_fear'))) {
                         target.state = MonsterState.HUNTING;
+                        target.setStatusDuration('magical_fear', 0);
                     }
                     if (meta.fiery && (target instanceof Player || target instanceof Monster)) this.exposeCreatureToFire(target);
                     if (target.hasStatus('paralyzed')) {
@@ -4911,6 +4926,7 @@ export class Game {
                         target.ticksUntilTurn = Math.min(caster.attackSpeed, 100) - 1;
                     }
                     target.setStatusDuration('entranced', 0);
+                    target.shortenMagicalFear();
                     if (target instanceof Monster) this.trySplitMonster(target, caster);
                 }
                 // Death DF and carried drops retain the normal turn cleanup owner.
@@ -4949,9 +4965,6 @@ export class Game {
                     if (isPlayer && caster.hasAbility('MA_POISONS')
                         && BOLT_EFFECT_CE_EFFECT[meta.effect] !== CEBoltEffect.ATTACK) {
                         this.applyMonsterOnHitStatus(caster.name, 'poisoned', result.damage * 2);
-                    }
-                    if (isPlayer && caster.hasAbility('MA_CAUSES_WEAKNESS')) {
-                        this.applyMonsterOnHitStatus(caster.name, 'weakened', 15);
                     }
                     if (isPlayer && caster.hasAbility('MA_HIT_HALLUCINATE')) {
                         this.applyMonsterOnHitStatus(caster.name, 'hallucinating', 15);
@@ -5526,12 +5539,11 @@ export class Game {
 
     /**
      * CE 投掷射程（Items.c:7130）：12 + 2 × max(力量 − 虚弱量 − 12, 2)。
-     * 注意下限是 2 不是 0——力 12 也能扔 16 格。web 的 weakened 状态时长
-     * ≙ CE status[STATUS_WEAKENED]（虚弱量）。
+     * 注意下限是 2 不是 0——力 12 也能扔 16 格。虚弱量取 weaknessAmount，
+     * 不使用 STATUS_WEAKENED 的持续时间。
      */
     private throwMaxDistance(): number {
-        const weakness = this.player.statusDurations['weakened'] ?? 0;
-        return 12 + 2 * Math.max(this.player.strength - weakness - 12, 2);
+        return 12 + 2 * Math.max(this.player.effectiveStrength - 12, 2);
     }
 
     /**
@@ -5907,6 +5919,27 @@ export class Game {
         return range;
     }
 
+    /** CE Movement.c:700 / Monsters.c:3742. No HP/nutrition penalty.
+     * Call only for physical movement/melee attempts, never rest or casting. */
+    public tryVomit(entity: Creature): boolean {
+        if (!entity.hasStatus('nauseous') || !rng.randPercent(25)) return false;
+        spawnDungeonFeature(this.grid, entity.x, entity.y, catalogFeature(DF.DF_VOMIT), false);
+        if (entity === this.player || this.visibleMonsters.has(entity as Monster)) {
+            logger.log(i18next.t('status.vomit', { name: entity === this.player ? '你' : entity.name,
+                defaultValue: `${entity === this.player ? '你' : entity.name}剧烈地呕吐。` }), '#b7a26b');
+        }
+        if (entity instanceof Monster) entity.ticksUntilTurn = entity.movementSpeed;
+        this.needsRender = true;
+        return true;
+    }
+
+    private playerVomitAttempt(): boolean {
+        if (!this.tryVomit(this.player)) return false;
+        timeSystem.currentTick += this.player.movementSpeed;
+        this.playerTurnEnded();
+        return true;
+    }
+
     private applyTimedStatus(entity: Player | Monster, status: StatusId, duration: number): boolean {
         const applied = entity.applyStatus(status, duration, 'refresh');
         if (!applied) return false;
@@ -6267,7 +6300,7 @@ export class Game {
 
         // 符文强度吃 netEnchant（含力量修正、钳 [-20,50]），与 P1-11 的 playerDefense
         // 同源；取值口径与 Combat.ts:73-78 一致（strengthRequired 缺省 0）。
-        const netEnch = netEnchant(armor.enchantment ?? 0, this.player.strength, armor.strengthRequired ?? 0);
+        const netEnch = netEnchant(armor.enchantment ?? 0, this.player.effectiveStrength, armor.strengthRequired ?? 0);
 
         // W-4: reflection is resolved before bolt contact, including adjacent
         // casts. No post-damage half-hit shortcut and no second reflection roll.
@@ -6454,6 +6487,9 @@ export class Game {
             this.synchronizePlayerTimeState();
         }
         for (const status of playerExpired) {
+            if (status === 'weakened') logger.log(i18next.t('status.player.weakened_off', { defaultValue: 'Your strength returns.' }), '#cccccc');
+            if (status === 'nauseous') logger.log(i18next.t('status.player.nauseous_off', { defaultValue: 'You feel less nauseous.' }), '#cccccc');
+            if (status === 'darkness') logger.log(i18next.t('status.player.darkness_off', { defaultValue: 'The cloak of darkness lifts.' }), '#cccccc');
             if (status === 'invisible') logger.log(i18next.t('status.player.invisible_off', { defaultValue: 'You are no longer invisible.' }), '#cccccc');
             if (status === 'telepathy') logger.log(i18next.t('status.player.telepathy_off', { defaultValue: 'Your telepathic sense fades.' }), '#cccccc');
             if (status === 'levitating') logger.log(i18next.t('status.player.levitating_off', { defaultValue: 'You touch ground again.' }), '#cccccc');
@@ -7810,7 +7846,7 @@ export class Game {
         // playerTurnEnded 伤害 :2581 + 块尾 tile :2698；web 按 P2-3 既有的
         // 合并口径与怪物轨并轨，块内"环境→递减"对两轨取 CE 怪物序。
         // 差异登记：合并后玩家着火的首块伤害比 CE 提前一个动作出现。）
-        this.applyEnvironmentalEffects();
+        this.applyEnvironmentalEffects(undefined, true);
 
         // F-2b：燃烧伤害结算在 tickCreatureStatuses 内（CE Time.c:2581-2591 /
         // Monsters.c:1877-1901），随本调用在环境段之后执行。
@@ -7912,6 +7948,9 @@ export class Game {
             this.environment.updateGases();
             this.environment.updateGases();
         }
+
+        // U14a: CE player exposure follows the objective decrement and gas update.
+        this.applyNauseaFromTerrain(this.player);
 
         // （F-2b：applyEnvironmentalEffects 已上移到晋升驱动之前——见块首注释。
         // 燃烧/毒气等对生物的结算因此使用本块火/气演化**之前**的状态，与 CE
@@ -8736,7 +8775,23 @@ export class Game {
      * Displacement evaluates just its recipient, without an extra gas damage tick
      * or global item destruction (CE instant versus gradual tile effects).
      */
-    private applyEnvironmentalEffects(instantTarget?: Creature) {
+    /** CE Time.c:421-439; MB_SUBMERGED has no web carrier yet. */
+    private applyNauseaFromTerrain(entity: Creature): void {
+        if (entity.hp <= 0 || !(cellTerrainFlags(this.grid, entity.x, entity.y) & T_CAUSES_NAUSEA)) return;
+        if (entity instanceof Monster && (entity.hasBehavior('MONST_INANIMATE') || entity.isInvulnerable())) return;
+        if (entity === this.player && this.player.equippedArmor?.runicType === 'respiration') {
+            if (!this.player.equippedArmor.runicKnown) logger.log(i18next.t('runic.armor.respiration_gas', { defaultValue: 'Your armor trembles and a pocket of clean air swirls around you.' }), '#66ffff');
+            this.player.equippedArmor.runicKnown = true;
+            return;
+        }
+        const first = !entity.hasStatus('nauseous');
+        entity.applyStatus('nauseous', 20);
+        if (first && entity instanceof Monster && this.visibleMonsters.has(entity)
+            && entity.state === MonsterState.ASLEEP) entity.state = MonsterState.HUNTING;
+        if (first && entity === this.player) logger.log(i18next.t('status.player.nauseous_on'), '#b7a26b');
+    }
+
+    private applyEnvironmentalEffects(instantTarget?: Creature, deferPlayerNausea = false) {
         const checkEntity = (entity: any, name: string) => {
             if (entity.hp <= 0) return;
             const x = entity.loc.x;
@@ -8844,6 +8899,8 @@ export class Game {
             // 之间）。守卫与免疫窗都在 resolveExplosionDamage 内；落格瞬间的
             // 另外两个调用点见 applyInstantExplosionAt。
             this.resolveExplosionDamage(entity);
+
+            if (entity !== this.player || !deferPlayerNausea) this.applyNauseaFromTerrain(entity);
 
             // Gas —— G-3 重裁（F-0 §5.3-10/11）：
             // CE 的气体效果判定**无阈值**（站进即判，Time.c:421-497 的

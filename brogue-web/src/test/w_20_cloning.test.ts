@@ -30,8 +30,9 @@ function live(){return install(createHeadlessGame(2020,'test'));}
 function mob(g:Game,id='rat',x=9,y=5){const m=new Monster(x,y,data(id));g.monsters.push(m);return m;}
 function cast(g:Game,m:Monster|Player){return g.zapBoltFromPlayer(cfg(),ItemLoader.spawnWand('wand_of_slowness',-1,-1)!,m.loc);}
 const dump=(m:Monster)=>JSON.stringify(m,(k,v)=>k==='leader'?(v?.id??null):v instanceof Set?[...v].sort():v);
-const fields=['abilities','abilityFlags','behaviorFlags','bolts','carriedItem','carriedMonster','leader','loc','mutation','safetySnapshot','spawnLoc','statusDurations','statusImmunities','statusResistTurns','waypointAlreadyVisited'];
+const fields=['abilities','abilityFlags','behaviorFlags','bolts','carriedItem','carriedMonster','leader','loc','maxStatus','mutation','safetySnapshot','spawnLoc','statusDurations','statusImmunities','statusResistTurns','waypointAlreadyVisited'];
 function rich(m:Monster){
+ m.maxStatus={weakened:300,nauseous:20,darkness:15};m.weaknessAmount=3;
  m.statusDurations={hasted:7,poisoned:8,shielded:231,entranced:12};(m.statusDurations as any).burning=6;m.poisonAmount=4;m.maxShield=300;
  m.mutate(structuredClone(mutations[0]!));m.statusImmunities.add('confused');m.statusResistTurns={slowed:2};m.abilities.add('flying');m.behaviorFlags.add('MONST_FLIES');m.abilityFlags.add('MA_CAST_SUMMON');m.bolts=['HEALING'];
  m.waypointAlreadyVisited=[true,false];m.targetWaypointIndex=1;m.safetySnapshot=[[3,4],[5,6]];m.spawnLoc={x:7,y:8};m.regenCounter=13;m.machineHome=17;m.seized=m.seizing=true;m.movementSpeed=37;m.attackSpeed=43;m.polymorphKeepsSpeed=true;m.wasNegated=true;m.givenUpOnScent=true;m.falling=m.preplaced=true;
@@ -55,7 +56,7 @@ describe('W-20 current values and container ownership',()=>{
   for(const [k,v]of Object.entries(m))if(!exceptions.has(k))expect((c as any)[k],k).toEqual(v);
   expect(c.id).not.toBe(m.id);expect(c.ticksUntilTurn).toBe(101);expect(dump(m)).toBe(before);
  });
- it.each(['loc','spawnLoc','statusDurations','statusImmunities','statusResistTurns','abilities','behaviorFlags','abilityFlags','bolts','waypointAlreadyVisited','mutation'] as const)('reverse mutation of clone.%s leaves parent byte-for-byte unchanged',key=>{
+ it.each(['loc','spawnLoc','maxStatus','statusDurations','statusImmunities','statusResistTurns','abilities','behaviorFlags','abilityFlags','bolts','waypointAlreadyVisited','mutation'] as const)('reverse mutation of clone.%s leaves parent byte-for-byte unchanged',key=>{
   const g=scene(),m=rich(mob(g)),c=g.cloneMonster(m)!;const before=dump(m);
   const value=(c as any)[key];
   if(value instanceof Set)value.clear();else if(Array.isArray(value))value[0]=!value[0];else if(key==='mutation'){

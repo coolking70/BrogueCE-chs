@@ -458,6 +458,7 @@ export class Monster extends Creature {
         clone.loc = { ...this.loc };
         clone.spawnLoc = { ...this.spawnLoc };
         clone.statusDurations = { ...this.statusDurations };
+        clone.maxStatus = { ...this.maxStatus };
         clone.statusImmunities = new Set(this.statusImmunities);
         clone.statusResistTurns = { ...this.statusResistTurns };
         clone.abilities = new Set(this.abilities);
@@ -501,6 +502,7 @@ export class Monster extends Creature {
             name: ItemLoader.translateName('clone') || 'clone', hp: player.hp, maxHp: player.maxHp, carriedItem: null,
             statusDurations: { ...player.statusDurations }, statusImmunities: new Set(player.statusImmunities),
             poisonAmount: player.poisonAmount, maxShield: player.maxShield,
+            weaknessAmount: player.weaknessAmount, maxStatus: { ...player.maxStatus },
             movementSpeed: player.movementSpeed, attackSpeed: player.attackSpeed,
             seized: player.seized, seizing: player.seizing,
             ticksUntilTurn: 101, isClone: true, isAlly: true, state: MonsterState.WANDERING });
@@ -581,6 +583,7 @@ export class Monster extends Creature {
         this.wasNegated = false;
         // newPowerCount/totalPowerCount belong to creature, not the replaced info.
         this.statusDurations = {};
+        this.maxStatus = {};
         this.maxShield = 0; // maxStatus is reset; poisonAmount is NOT reset in CE.
         this.polymorphed = true;
         this.syncFlagDerivedStatuses();
@@ -601,6 +604,22 @@ export class Monster extends Creature {
     public override setStatusDuration(id: StatusId, duration: number): void {
         if (id === 'haste' || id === 'hasted' || id === 'slowed') this.polymorphKeepsSpeed = false;
         super.setStatusDuration(id, duration);
+    }
+
+    public override applyStatus(id: StatusId, duration: number, mode: 'refresh' | 'stack' = 'refresh'): boolean {
+        const changed = super.applyStatus(id, duration, mode);
+        if (id === 'magical_fear' && this.hasStatus(id)) this.state = MonsterState.FLEEING;
+        return changed;
+    }
+
+    public override tickStatuses(): StatusId[] {
+        const expired = super.tickStatuses();
+        if (expired.includes('magical_fear')) {
+            // CE restores ALLY if the leader is the player; web stores allegiance separately.
+            this.isAlly = this.isAlly || this.leader instanceof Player;
+            this.state = MonsterState.HUNTING;
+        }
+        return expired;
     }
 
     public override refreshSpeeds(): void {
@@ -875,6 +894,7 @@ export class Monster extends Creature {
             && !this.hasBehavior('MONST_IMMUNE_TO_WEBS') && !this.isInvulnerable()) return;
         const to = { x: this.loc.x + dx, y: this.loc.y + dy };
         if (!game.grid.isValidPos(to.x, to.y)) return;
+        if (this.hasStatus('nauseous') && game.tryVomit(this)) return;
         if (this.hasBehavior('MONST_RESTRICTED_TO_LIQUID')
             && !(cellTerrainMechFlags(game.grid, to.x, to.y) & TM_ALLOWS_SUBMERGING)) return;
         const defender = creatureAtLoc(game, to.x, to.y);
@@ -1082,9 +1102,6 @@ export class Monster extends Creature {
                 if (this.onHitStatus && this.onHitDuration > 0 && rng.randPercent(Math.floor(this.onHitChance * 100))) {
                     game.applyMonsterOnHitStatus(this.name, this.onHitStatus, this.onHitDuration);
                 }
-                if (this.hasAbility('MA_CAUSES_WEAKNESS')) {
-                    game.applyMonsterOnHitStatus(this.name, 'weakened', 15);
-                }
                 if (this.hasAbility('MA_HIT_HALLUCINATE')) {
                     game.applyMonsterOnHitStatus(this.name, 'hallucinating', 15);
                 }
@@ -1248,7 +1265,7 @@ export class Monster extends Creature {
             if (this.trySummon(game)) {
                 return;
             }
-            if (this.tryUseBolt(game)) {
+            if (!(this.state === MonsterState.FLEEING && this.hasStatus('magical_fear')) && this.tryUseBolt(game)) {
                 return;
             }
         }
@@ -1263,7 +1280,7 @@ export class Monster extends Creature {
             return;
         }
 
-        if (this.isAlly) {
+        if (this.isAlly && !this.hasStatus('magical_fear')) {
             const independentBlade = this.typeId === 'spectral_blade' && this.doesNotTrackLeader;
             const canBladeStep = (p: { x: number; y: number }) => !(p.x === this.loc.x && p.y === this.loc.y)
                 && !bladeAvoids(game.grid, p) && !bladeDiagonalBlocked(game.grid, this.loc, p)
@@ -1314,6 +1331,7 @@ export class Monster extends Creature {
                     if (independentBlade && bladeDiagonalBlocked(game.grid, this.loc, target.loc)) return;
                     // P4-6：斧/矛/鞭的相邻近战几何分发（CE moveMonster 在普通
                     // attack 之前先试鞭/矛，sweep 替换单体近战）。
+                    if (this.hasStatus('nauseous') && game.tryVomit(this)) return;
                     if (this.tryGeometryMeleeAdjacent(game, target, 'ally')) {
                         return;
                     }
@@ -1470,9 +1488,9 @@ export class Monster extends Creature {
         const isFlying = this.abilities.has('flying') || this.hasBehavior('MONST_FLIES');
 
         if (this.state === MonsterState.FLEEING) {
-            if (this.hp > this.maxHp * 0.75) {
+            if (!this.hasStatus('magical_fear') && this.hp > this.maxHp * 0.75) {
                 this.state = MonsterState.HUNTING;
-            } else if (distToPlayer > playerDetectRange + 2) {
+            } else if (!this.hasStatus('magical_fear') && distToPlayer > playerDetectRange + 2) {
                 this.state = MonsterState.WANDERING;
                 return;
             } else {
@@ -1508,10 +1526,11 @@ export class Monster extends Creature {
                     }
                 }
                 // 走投无路（Monsters.c:3513-3523）：CE 会反击贴脸的敌人（玩家
-                // 优先，且 STATUS_MAGICAL_FEAR 豁免——web 无该状态；CE 还会扫
+                // 优先，且 STATUS_MAGICAL_FEAR 豁免；CE 还会扫
                 // 贴脸的其他怪物，web 无该目标谱系，见报告）。web 只处理贴脸
                 // 玩家：过几何分发后走标准近战。
-                if (distToPlayer <= 1) {
+                if (distToPlayer <= 1 && !this.hasStatus('magical_fear')) {
+                    if (this.hasStatus('nauseous') && game.tryVomit(this)) return;
                     if (this.tryGeometryMeleeAdjacent(game, game.player)) {
                         return;
                     }
@@ -1558,6 +1577,7 @@ export class Monster extends Creature {
                 && !bladeDiagonalBlocked(game.grid, this.loc, m.loc)
                 && (!m.hasStatus('invisible') || rng.randPercent(33)));
             if (blade) {
+                if (this.hasStatus('nauseous') && game.tryVomit(this)) return;
                 if (!this.tryGeometryMeleeAdjacent(game, blade)) {
                     this.resolveGeometryAttackOn(game, blade, 'hostile');
                     this.endTurnWithAttack();
@@ -1583,6 +1603,7 @@ export class Monster extends Creature {
                     if (other && other !== this && other.hp > 0) {
                         // P4-6：同 ally 分支——discordant 怪的近战同样先过几何分发
                         // （CE 同一条 moveMonster 路径，不区分阵营来源）。
+                        if (this.hasStatus('nauseous') && game.tryVomit(this)) return;
                         if (this.tryGeometryMeleeAdjacent(game, other, 'discordant')) {
                             return;
                         }
@@ -1637,6 +1658,7 @@ export class Monster extends Creature {
             if (distToPlayer <= 1) {
                 // P4-6：同 ally 分支——怪物贴脸玩家的近战先过几何分发
                 // （矛会顺带打中玩家身后的目标，斧会扫掉全部相邻敌人）。
+                if (this.hasStatus('nauseous') && game.tryVomit(this)) return;
                 if (this.tryGeometryMeleeAdjacent(game, game.player)) {
                     return;
                 }
@@ -1674,9 +1696,6 @@ export class Monster extends Creature {
                     game.spawnBlood(game.player.loc.x, game.player.loc.y);
                     if (this.onHitStatus && this.onHitDuration > 0 && rng.randPercent(Math.floor(this.onHitChance * 100))) {
                         game.applyMonsterOnHitStatus(this.name, this.onHitStatus, this.onHitDuration);
-                    }
-                    if (this.hasAbility('MA_CAUSES_WEAKNESS')) {
-                        game.applyMonsterOnHitStatus(this.name, 'weakened', 15);
                     }
                     if (this.hasAbility('MA_HIT_HALLUCINATE')) {
                         game.applyMonsterOnHitStatus(this.name, 'hallucinating', 15);
@@ -1876,7 +1895,9 @@ export class Monster extends Creature {
         return valid[rng.randRange(0, valid.length - 1)]!;
     }
 
-    private tryMoveTo(nx: number, ny: number, game: any) {
+    private tryMoveTo(nx: number, ny: number, game: Game) {
+        if (nx === this.x && ny === this.y || !game.grid.getCell(nx, ny)) return;
+        if (this.hasStatus('nauseous') && game.tryVomit(this)) return;
         const currentCell = game.grid.getCell(this.loc.x, this.loc.y);
         if (currentCell && currentCell.terrain === TerrainType.WEB
             && !(this.typeId === 'spectral_blade' && this.doesNotTrackLeader)) {
@@ -1907,7 +1928,7 @@ export class Monster extends Creature {
         // 有怪"的近战分支（buildHitList），移动分支不横扫。
         const stepDx = Math.sign(nx - this.loc.x);
         const stepDy = Math.sign(ny - this.loc.y);
-        if (stepDx !== 0 || stepDy !== 0) {
+        if (!this.hasStatus('magical_fear') && (stepDx !== 0 || stepDy !== 0)) {
             if (this.hasAbility('MA_ATTACKS_EXTEND') && this.performWhipAttack(game, stepDx, stepDy)) return;
             if (this.hasAbility('MA_ATTACKS_PENETRATE') && this.performSpearAttack(game, stepDx, stepDy)) return;
         }

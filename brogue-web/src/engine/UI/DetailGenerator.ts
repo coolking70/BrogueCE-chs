@@ -10,6 +10,8 @@ import type { Item } from '../Items/Item';
 import { ItemCategory } from '../Items/Item';
 import type { Monster } from '../../entities/Monster';
 import { MonsterState } from '../../entities/Monster';
+import { creatureStatusRows } from '../Status/statusConfig';
+import { monsterAccuracyAdjusted, monsterDefenseAdjusted, monsterDamageAdjustmentAmount } from '../Combat/CombatFormulas';
 import { hitProbability, netEnchant, damageFraction, strengthModifier, playerDefense } from '../Combat/CombatFormulas';
 import { CombatSystem } from '../Combat/Combat';
 
@@ -146,13 +148,19 @@ export function generateMonsterDetail(
     statsLines.push({ text: `生命值: ${monster.hp}/${monster.maxHp}`, color: '#66ccff' });
 
     const dmgStr = monster.damageString;
+    const mDmg = dmgStr ? CombatSystem.parseDamageString(dmgStr) : null;
+    if (mDmg) {
+        const fraction = monsterDamageAdjustmentAmount(monster.weaknessAmount);
+        mDmg.min = Math.trunc(mDmg.min * fraction);
+        mDmg.max = Math.trunc(mDmg.max * fraction);
+    }
     if (dmgStr) {
-        statsLines.push({ text: `伤害: ${dmgStr}` });
+        statsLines.push({ text: `伤害: ${monster.weaknessAmount && mDmg ? `${mDmg.min}–${mDmg.max}` : dmgStr}` });
     }
 
     // Accuracy and defense
-    const monAcc = monster.accuracy ?? 100;
-    const monDef = monster.defense ?? 0;
+    const monAcc = monsterAccuracyAdjusted(monster.accuracy ?? 100, monster.weaknessAmount);
+    const monDef = monsterDefenseAdjusted(monster.defense ?? 0, monster.weaknessAmount);
     if (monAcc !== 100) statsLines.push({ text: `精度: ${monAcc}` });
     if (monDef > 0) statsLines.push({ text: `防御: ${monDef}` });
 
@@ -172,6 +180,10 @@ export function generateMonsterDetail(
     }
 
     sections.push({ header: '基本属性', lines: statsLines });
+    const statusRows = creatureStatusRows(monster);
+    if (statusRows.length) sections.push({ header: '状态效果', lines: statusRows.map(s => ({
+        text: `${s.label}（${s.value}）`, color: s.color,
+    })) });
 
     // --- Combat analysis ---
     const combatLines: DetailLine[] = [];
@@ -189,8 +201,7 @@ export function generateMonsterDetail(
         color: monHitProb > 50 ? '#ff6644' : '#ffcc44'
     });
 
-    // Parse monster damage（复用 CombatSystem.parseDamageString，与战斗结算同一套解析）
-    const mDmg = dmgStr ? CombatSystem.parseDamageString(dmgStr) : null;
+    // Same truncated damage endpoints as combat.
     if (mDmg && playerHP > 0) {
         const avgDmg = (mDmg.min + mDmg.max) / 2;
         const pctOfHP = Math.round(100 * avgDmg / playerHP);

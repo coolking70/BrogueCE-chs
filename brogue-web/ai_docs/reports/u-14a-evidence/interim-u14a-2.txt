@@ -1,0 +1,57 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/1296/brogue/brogue-web
+
+stdout | src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > strength potion clears layers immediately, keeps countdown one until tick
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=+0 3ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=1 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=2 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=3 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=4 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=5 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=6 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=7 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=8 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=9 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > all consumers, weakness=10 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > repeat doses cap at ten, refresh both maxima, expiration clears layers 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > CE contact weakness: player 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > CE contact weakness: monster 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > CE contact weakness: shielded 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > CE contact weakness: inanimate 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > strength potion clears layers immediately, keeps countdown one until tick 260ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > panacea preserves weakness at one, clears it above one (1) 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > panacea preserves weakness at one, clears it above one (2) 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > catalog negation player=false 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > catalog negation player=true 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > refresh rules preserve darkness historical max and refresh nausea max to current 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > weakened runs on objective time for both actors 266ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > nauseous runs on objective time for both actors 248ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > darkness runs on objective time for both actors 228ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > magical_fear runs on objective time for both actors 409ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a carriers, healing, negation and clocks > darkness never changes the miner light/FOV input in U14a 354ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > terrain exposure: player 363ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > terrain exposure: visible sleeper 404ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > terrain exposure: hidden sleeper 385ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > terrain exposure: inanimate 334ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > terrain exposure: invulnerable 333ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > terrain exposure: respiration 336ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > vomit replaces move with movement time and DF, not damage 238ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > vomit replaces melee with movement time and DF, not damage 244ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > vomit replaces entranced with movement time and DF, not damage 233ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > no vomit check for rest or failed wall move; failed nausea roll permits movement 243ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a nausea physical intent and real stench source > monster physical intent vomits before melee and moving, not spell dispatch 246ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a fear lifecycle and persistence/display > fear cannot recover from full HP or attack when cornered; ordinary fleeing can 363ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a fear lifecycle and persistence/display > fear refresh, expiry and ally restoration; ordinary fleeing is untouched by status ticks 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a fear lifecycle and persistence/display > melee misses shorten fear to one, environmental damage does not 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a fear lifecycle and persistence/display > thrown misses shorten fear and alert target; normal fleeing remains 0ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a fear lifecycle and persistence/display > direct monster bolt clears magical fear but preserves ordinary fleeing; auto-negation sees fear 379ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a fear lifecycle and persistence/display > player, active/dormant monsters and clones round-trip amounts and independent maxStatus 694ms
+ ✓ src/test/u_14a_status_gaps.test.ts > U14a fear lifecycle and persistence/display > CE fear source is commented; do not invent fear scroll or darkness potion catalog entry 1ms
+
+ Test Files  1 passed (1)
+      Tests  45 passed (45)
+   Start at  20:08:58
+   Duration  7.99s (transform 811ms, setup 0ms, import 1.24s, tests 6.57s, environment 1ms)
+
