@@ -1,0 +1,50 @@
+{
+  "final": true,
+  "frozenInputs": 468,
+  "changed": [],
+  "inputPathSetUnchanged": true,
+  "inputManifestSha256": "7c6d3c54bf623ca995a211f1b2ba4e54fb3df6078a6312f44f6ac28f1abc774d",
+  "baselines": {
+    "src/test/fixtures/generation_baseline.json": {
+      "sha256": "5f51e8848a5874ff41cecaa04a7b39de21fc3871f8a0142b32f0499f3ed9fba1",
+      "unchangedFromHead": true
+    },
+    "src/test/generation_baseline.test.ts": {
+      "sha256": "be114e3dcb54f0a375ce095dac96801d061b329f4880322ee6ac808796bf36ac",
+      "unchangedFromHead": true
+    }
+  },
+  "gitDiffCheck": {
+    "exitCode": 0,
+    "output": ""
+  },
+  "reportLinkCount": 31,
+  "missingReportLinks": [],
+  "reportSha256": "9b905fe072178f84d660d34dcd111385cd873f3618a9e8f70075439c45bdf47b",
+  "deliveryManifestSha256": "7e3d56a6f4363b76274884ae1f193ff7f33e160ecf22d0ed72e9d5117248f49f",
+  "hashedArtifacts": 67,
+  "gitStatus": [
+    " M progress.md",
+    " M src/App.vue",
+    " M src/components/GameCanvas.vue",
+    " M src/components/MainMenu.vue",
+    " M src/engine/Core/Game.ts",
+    " M src/engine/Items/ItemLoader.ts",
+    " M src/engine/Map/WaypointMap.ts",
+    " M src/engine/Random.ts",
+    " M src/locales/zh_CN.json",
+    " M src/test/b_1b_identification_persistence.test.ts",
+    " M src/test/u_10_absorption_snapshot.test.ts",
+    "?? ai_docs/reports/u-02a-evidence/",
+    "?? ai_docs/reports/u-02a.report.md",
+    "?? scripts/u02a-audit.mjs",
+    "?? scripts/u02a-browser-check.mjs",
+    "?? scripts/u02a-continuation.ts",
+    "?? scripts/u02a-final-check.mjs",
+    "?? scripts/u02a-guard-counterfactual.mjs",
+    "?? scripts/u02a-run-continuation.mjs",
+    "?? scripts/u02a-test-scope.mjs",
+    "?? src/engine/Seed.ts",
+    "?? src/test/u_02a_rng_snapshot.test.ts"
+  ]
+}

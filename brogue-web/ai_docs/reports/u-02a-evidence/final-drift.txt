@@ -1,0 +1,19 @@
+
+> brogue-web@0.0.0 test:drift
+> vitest run src/test/generation_baseline.test.ts --maxWorkers=1 --reporter=default --reporter=json --outputFile.json=ai_docs/reports/u-02a-evidence/final-drift.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/3a11/brogue/brogue-web
+
+stdout | src/test/generation_baseline.test.ts > 滚动生成基线：地图生成无非预期漂移 > 4 seed × D1-D26：地形指纹 / 怪物数 / 物种集合 / 物品数与基线一致
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/generation_baseline.test.ts (1 test) 39254ms
+     ✓ 4 seed × D1-D26：地形指纹 / 怪物数 / 物种集合 / 物品数与基线一致  39253ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  04:48:36
+   Duration  40.95s (transform 890ms, setup 0ms, import 1.47s, tests 39.25s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/3a11/brogue/brogue-web/ai_docs/reports/u-02a-evidence/final-drift.json

@@ -318,7 +318,7 @@ describe('S1: RNG 流哨兵（任务书 §三：建在固定物品集上，对�
     /**
      * 口径：以 `rng.randomNumbersGenerated`（只计 SUBSTANTIVE 流）的**增量**
      * 度量本轮拥有的全部路径——call、identify 待选/点选、实例揭示、
-     * 序列化写侧、读档（重播种后自身不得消耗）。计数起点在物品手工构造
+     * 序列化写侧、读档（恢复保存计数后自身不得消耗）。计数起点在物品手工构造
      * **之后**，因此增量与地图生成无关：C-6 改生成器、C-5 改地图都不动它，
      * 它只对"本轮的代码有没有多消耗掷骰"敏感。权威判据仍是
      * generation_baseline（生成期），本哨兵是交互期的补强。
@@ -336,6 +336,9 @@ describe('S1: RNG 流哨兵（任务书 §三：建在固定物品集上，对�
         game.player.inventory.addItem(ring);
         ring.charges = 1;
 
+        // U02a: this sentinel measures zero consumption from a known zero origin.
+        // Nonzero-position restoration is covered by u_02a_rng_snapshot.test.ts.
+        rng.seedRandomGenerator(42);
         const c0 = rng.randomNumbersGenerated;
 
         // call 全路径（起名 + 清除 + 拒绝）
@@ -352,7 +355,7 @@ describe('S1: RNG 流哨兵（任务书 §三：建在固定物品集上，对�
 
         expect(rng.randomNumbersGenerated).toBe(c0); // ← 任何新增抽取在此翻红
 
-        // 持久化读侧：loadSnapshot 重播种后自身不得消耗 SUBSTANTIVE 掷骰
+        // 持久化读侧：恢复这里保存的零计数，且自身不得消耗 SUBSTANTIVE 掷骰
         game.loadSnapshot(snap);
         expect(rng.randomNumbersGenerated).toBe(0);
     });

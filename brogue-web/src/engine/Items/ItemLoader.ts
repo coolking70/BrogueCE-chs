@@ -11,7 +11,7 @@ import weaponsData from '../../data/weapons.json';
 import armorsData from '../../data/armors.json';
 import consumablesData from '../../data/consumables.json';
 import arcanaData from '../../data/arcana.json';
-import { rng, RNGType } from '../Random';
+import { rng, RNGType, type Random } from '../Random';
 import i18next from 'i18next';
 
 /** Translate an entity name using the 'name.X' key, falling back to the English name. */
@@ -1047,7 +1047,7 @@ export class ItemLoader {
         'Ivory Charm'
     ];
 
-    public static initConsumables() {
+    public static initConsumables(random: Random = rng) {
         this.potionFlavorMap = new Map();
         this.scrollFlavorMap = new Map();
         this.arcanaFlavorMap = new Map();
@@ -1068,11 +1068,11 @@ export class ItemLoader {
         // 外观是纯展示层随机，走 RNG_COSMETIC，不消耗主随机流（RNG_SUBSTANTIVE）：
         // 外观池大小的任何变化都不得移位同一 seed 下的地牢/怪物生成序列。
         // （CE 的 shuffleFlavors 在主流上洗牌，但依赖池大小恒定；web 池可调，须解耦。）
-        rng.setRNG(RNGType.RNG_COSMETIC);
+        random.setRNG(RNGType.RNG_COSMETIC);
         try {
-            this.assignAllFlavors();
+            this.assignAllFlavors(random);
         } finally {
-            rng.setRNG(RNGType.RNG_SUBSTANTIVE);
+            random.setRNG(RNGType.RNG_SUBSTANTIVE);
         }
     }
 
@@ -1127,10 +1127,10 @@ export class ItemLoader {
         }
     }
 
-    private static assignAllFlavors() {
+    private static assignAllFlavors(random: Random) {
         // Shuffle flavors
         const shuffledPotions = [...this.potionColors];
-        rng.shuffleList(shuffledPotions);
+        random.shuffleList(shuffledPotions);
 
         if (shuffledPotions.length < this.potions.length) {
             console.error(
@@ -1152,22 +1152,22 @@ export class ItemLoader {
         // Assign to scrolls（程序化标题，一局内两两不同）
         const usedTitles = new Set<string>();
         this.scrolls.forEach((s) => {
-            this.scrollFlavorMap.set(s.id, this.generateScrollTitle(usedTitles));
+            this.scrollFlavorMap.set(s.id, this.generateScrollTitle(usedTitles, random));
         });
 
-        this.assignArcanaFlavors(this.wands, this.wandFlavorNames, '魔杖');
-        this.assignArcanaFlavors(this.staffs, this.staffFlavorNames, '法杖');
-        this.assignArcanaFlavors(this.rings, this.ringFlavorNames, '戒指');
-        this.assignArcanaFlavors(this.charms, this.charmFlavorNames, '护符');
+        this.assignArcanaFlavors(this.wands, this.wandFlavorNames, '魔杖', random);
+        this.assignArcanaFlavors(this.staffs, this.staffFlavorNames, '法杖', random);
+        this.assignArcanaFlavors(this.rings, this.ringFlavorNames, '戒指', random);
+        this.assignArcanaFlavors(this.charms, this.charmFlavorNames, '护符', random);
     }
 
     /** CE 式卷轴标题：3~4 个词素拼接，重试保证一局内不重复（Items.c:8851-8856）。 */
-    private static generateScrollTitle(used: Set<string>): string {
+    private static generateScrollTitle(used: Set<string>, random: Random): string {
         for (let attempt = 0; attempt < 1000; attempt++) {
             let title = '';
-            const phonemeCount = rng.randRange(3, 4);
+            const phonemeCount = random.randRange(3, 4);
             for (let i = 0; i < phonemeCount; i++) {
-                title += ItemLoader.titlePhonemes[rng.randRange(0, ItemLoader.titlePhonemes.length - 1)];
+                title += ItemLoader.titlePhonemes[random.randRange(0, ItemLoader.titlePhonemes.length - 1)];
             }
             if (!used.has(title)) {
                 used.add(title);
@@ -1177,7 +1177,7 @@ export class ItemLoader {
         throw new Error('[ItemLoader] 无法生成不重复的卷轴标题（词素空间耗尽？）');
     }
 
-    private static assignArcanaFlavors(pool: ArcanaConfig[], flavors: string[], label: string) {
+    private static assignArcanaFlavors(pool: ArcanaConfig[], flavors: string[], label: string, random: Random) {
         if (flavors.length < pool.length) {
             console.error(
                 `[ItemLoader] ${label}外观池不足：池 ${flavors.length} < ${label} ${pool.length} 种，` +
@@ -1185,7 +1185,7 @@ export class ItemLoader {
             );
         }
         const shuffled = [...flavors];
-        rng.shuffleList(shuffled);
+        random.shuffleList(shuffled);
         const isStaff = pool === this.staffs;
         if (isStaff) this.staffFlavorSlots = shuffled.map(tn);
         pool.forEach((entry, index) => {

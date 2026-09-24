@@ -96,39 +96,19 @@ export interface WaypointContext {
 const NB_DIRS: ReadonlyArray<readonly [number, number]> =
     [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [-1, 1], [1, -1], [1, 1]];
 
-/** Random.ts 的内部状态面（字段私有、本轮禁改该文件；只读快照经结构化访问）。 */
-interface RngInternals {
-    rngStates: Array<{ a: number; b: number; c: number; d: number }>;
-    currentRNG: number;
-    randomNumbersGenerated: number;
+/** Preserve the existing waypoint-only isolation; CE levelSeed isolation belongs to U02b. */
+function isolateRngDuring(fn: () => void): void {
+    const saved = rng.getState();
+    try { fn(); } finally { rng.setState(saved); }
 }
 
-/**
- * CE RogueMain.c:691-707 + 733-735 的流隔离复刻。CE 逐层生成时：
- *   oldSeed = rand_64bits()（从主流抽 2 个 ranval）；
- *   seedRandomGenerator(levels[d].levelSeed)（每层的专属种子，初始化期抽取）；
- *   ……digDungeon → initializeLevel → setUpWaypoints → shuffleTerrainColors……
- *   seedRandomGenerator(oldSeed)（生成完毕，主流从 levelSeed 流切回）。
- * 因此生成段（含 setUpWaypoints 的 shuffleList，DCOLS*DROWS-1 次抽取）消耗的
- * 是被丢弃的 levelSeed 流，不移动后续生成决策与玩法期共用的主流。
- * web 的 rng 是单流结构且 Random.ts 本轮禁改，故用状态快照/恢复达到同一
- * 可观察性质：waypoint 构建对主流是零抽取（web 也没有 levelSeed 基础设施，
- * CE 的 oldSeed 抽取/重播种本身不复刻——那会移动基线流，超出本轮范围）。
- */
-function isolateRngDuring(fn: () => void): void {
-    const internals = rng as unknown as RngInternals;
-    const savedStates = internals.rngStates.map((s) => ({ ...s }));
-    const savedCurrent = internals.currentRNG;
-    const savedCounter = internals.randomNumbersGenerated;
-    try {
-        fn();
-    } finally {
-        for (let i = 0; i < savedStates.length; i++) {
-            internals.rngStates[i] = savedStates[i]!;
-        }
-        internals.currentRNG = savedCurrent;
-        internals.randomNumbersGenerated = savedCounter;
-    }
+/** Current-layer random products and rolling refresh state; scanner is scratch space. */
+export interface WaypointState {
+    coordinates: Array<{ x: number; y: number }>;
+    count: number;
+    refreshTicker: number;
+    distanceMaps: number[][][];
+    coverage: boolean[][] | null;
 }
 
 export class WaypointSystem {
@@ -144,6 +124,26 @@ export class WaypointSystem {
     public coverage: boolean[][] | null = null;
 
     private scanner: DijkstraMap | null = null;
+
+    public getState(): WaypointState {
+        return {
+            coordinates: this.coordinates.map(p => ({ ...p })),
+            count: this.count,
+            refreshTicker: this.refreshTicker,
+            distanceMaps: this.distanceMaps.map(map => map.map(column => [...column])),
+            coverage: this.coverage?.map(column => [...column]) ?? null,
+        };
+    }
+
+    public setState(state: WaypointState): void {
+        this.coordinates = state.coordinates.map(p => ({ ...p }));
+        this.count = state.count;
+        this.refreshTicker = state.refreshTicker;
+        this.distanceMaps = state.distanceMaps.map(map => map.map(column => [...column]));
+        this.coverage = state.coverage?.map(column => [...column]) ?? null;
+        this.scanner = null;
+    }
+
 
     /**
      * CE Architect.c:3033 setUpWaypoints。调用时机（CE RogueMain.c:707/771、

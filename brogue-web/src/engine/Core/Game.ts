@@ -37,7 +37,8 @@ import { ItemCategory, Item } from '../Items/Item';
 import { ItemLoader } from '../Items/ItemLoader';
 import { canEnchantArcana, enchantArcana } from '../Items/ArcanaEnchantment';
 import { equippedWisdomBonus, tickStaffRecharge, rechargeStaffFully } from '../Items/ArcanaRecharge';
-import { rng } from '../Random';
+import { rng, Random, type RandomState } from '../Random';
+import { normalizeSeed, isSeed, type SeedInput } from '../Seed';
 import monsterData from '../../data/monsters.json';
 import hordeData from '../../data/hordes.json';
 import mutationData from '../../data/mutations.json';
@@ -196,7 +197,11 @@ export interface GameSnapshot {
     version: number;
     savedAt: number;
     depth: number;
-    seed: number;
+    seed: string;
+    /** U02a mandatory payload: pre-U02a saves are rejected, never reseeded. */
+    rngState: RandomState;
+    /** Preserve the current layer's random waypoint products instead of drawing them again. */
+    waypoints: ReturnType<WaypointSystem['getState']>;
     mode: GameMode;
     /** W-6: retain partial P2 objective blocks across saves; legacy default is 100. */
     ticksTillUpdateEnvironment?: number;
@@ -313,7 +318,8 @@ export interface RecordedInputEvent {
 export interface GameRecording {
     version: number;
     recordedAt: number;
-    seed: number;
+    /** Exports are canonical decimal strings; safe numeric recordings remain readable. */
+    seed: string | number;
     mode: GameMode;
     startDepth: number;
     events: RecordedInputEvent[];
@@ -479,7 +485,7 @@ export class Game {
 
     public depth: number = 1;
     public mode: GameMode = 'normal';
-    public currentSeed: number = 0;
+    public currentSeed: string = '0';
 
     /**
      * B-4a：≙ CE rogue.meteredItems（RogueMain.c:229-252 开局初始化；
@@ -585,7 +591,9 @@ export class Game {
         this.startNewGame();
     }
 
-    public startNewGame(options?: { seed?: number; mode?: GameMode }) {
+    public startNewGame(options?: { seed?: SeedInput; mode?: GameMode }) {
+        // Validate before retiring the current run (unsafe numeric inputs cannot be recovered).
+        const seed = normalizeSeed(options?.seed ?? 0);
         // U00: retire the old run before seeding/allocating the next one. Returning
         // the iterator must not run an old turn's epilogue against the new world.
         this.discardInFlightAdvancement();
@@ -596,7 +604,7 @@ export class Game {
         this.inAutoTravelStep = false;
 
         this.mode = options?.mode ?? 'normal';
-        this.currentSeed = rng.seedRandomGenerator(options?.seed ?? 0);
+        this.currentSeed = rng.seedRandomGenerator(seed);
 
         ItemLoader.initConsumables();
         logger.reset();
@@ -2958,8 +2966,9 @@ export class Game {
     private isValidRecording(recording: unknown): recording is GameRecording {
         if (!recording || typeof recording !== 'object') return false;
         const r = recording as Partial<GameRecording>;
+        const validSeed = isSeed(r.seed) || (typeof r.seed === 'number' && Number.isSafeInteger(r.seed) && r.seed >= 0);
         return r.version === 1
-            && typeof r.seed === 'number'
+            && validSeed
             && typeof r.mode === 'string'
             && Array.isArray(r.events);
     }
@@ -2969,7 +2978,7 @@ export class Game {
         const safeRecording: GameRecording = {
             version: 1,
             recordedAt: recording.recordedAt ?? Date.now(),
-            seed: recording.seed,
+            seed: normalizeSeed(recording.seed),
             mode: recording.mode,
             startDepth: recording.startDepth ?? 1,
             events: recording.events.map((event, idx) => ({
@@ -8484,6 +8493,8 @@ export class Game {
             savedAt: Date.now(),
             depth: this.depth,
             seed: this.currentSeed,
+            rngState: rng.getState(),
+            waypoints: this.waypoints.getState(),
             mode: this.mode,
             ticksTillUpdateEnvironment: this.ticksTillUpdateEnvironment,
             pendingEnchantment: this.pendingEnchantment,
@@ -8535,7 +8546,7 @@ export class Game {
     }
 
     public loadSnapshot(snapshot: GameSnapshot): boolean {
-        if (!snapshot || snapshot.version !== 2) return false;
+        if (!snapshot || snapshot.version !== 2 || !isSeed(snapshot.seed) || !Random.isState(snapshot.rngState) || !snapshot.waypoints) return false;
 
         const entityGraph = restoreEntityGraph(
             [...snapshot.monsters, ...snapshot.dormantMonsters, ...snapshot.entityGraph.monsters],
@@ -8544,8 +8555,10 @@ export class Game {
 
         this.mode = snapshot.mode;
         this.ticksTillUpdateEnvironment = snapshot.ticksTillUpdateEnvironment ?? 100;
-        this.currentSeed = rng.seedRandomGenerator(snapshot.seed);
-        ItemLoader.initConsumables();
+        this.currentSeed = snapshot.seed;
+        rng.setState(snapshot.rngState);
+        // Rebuild deterministic flavor tables on a private stream, not the live run's RNG.
+        ItemLoader.initConsumables(new Random(snapshot.seed));
         ItemLoader.restoreWandFlavors(snapshot.wandFlavors);
         ItemLoader.restoreStaffFlavors(snapshot.staffFlavors);
 
@@ -8665,10 +8678,10 @@ export class Game {
         // 环路图——safety map 的 IN_LOOP -=10 偏好按错误环路生效，静默失效。
         // analyzeLoopMap 纯函数、零 RNG 消耗，不影响读档的随机流。
         this.loopMap = analyzeLoopMap(this.grid);
-        // P1-35 复核顺带补：waypoint 同为生成期派生态（CE 在重访层恢复后
-        // 重建，RogueMain.c:771），不重建则漫游怪按上一局的 waypoint 走。
-        // 构建内部流隔离，不动 RNG。
-        this.rebuildWaypoints();
+        // U02a: rebuilding would reshuffle from the *current* RNG position and
+        // invalidate monsters' saved waypoint indices. Restore its random products.
+        this.waypoints = new WaypointSystem();
+        this.waypoints.setState(snapshot.waypoints);
         // P1-35 复核顺带补：气味图快照 schema 无对应字段，陈局气味残留会
         // 误导嗅觉追踪——重置为空图（CE 语义是恢复 levels[d].scentMap，
         // web 缺数据源，报告登记）。
@@ -8710,6 +8723,9 @@ export class Game {
         this.currentTestCategory = null;
         this.needsRender = true;
         this.update();
+        // Restore last: construction, derived-map rebuilds and a render callback must
+        // not consume the saved next draw (including cosmetic draws).
+        rng.setState(snapshot.rngState);
         return true;
     }
 

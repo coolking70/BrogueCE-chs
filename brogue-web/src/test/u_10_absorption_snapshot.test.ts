@@ -68,9 +68,11 @@ it('current-layer active, dormant, cyclic carried/leader entities preserve their
     d.isDormant=true;d.isAbsorbing=false;d.corpseAbsorptionCounter=18;d.absorptionBolt=CEBoltType.FIRE;
     p.targetCorpseLoc={x:8,y:9};p.absorptionFlags='MA_TRANSFERENCE';p.absorbBehavior=false;
     a.carriedMonster=p;p.leader=a;p.carriedMonster=d;d.leader=p;
+    // U02a: retain this codec zero-draw sentinel at an explicit zero origin.
+    rng.seedRandomGenerator(1010);
     g.monsters=[a];g.dormantMonsters=[d];const saved=json(g.toSnapshot());
     const before=[a,d,p].map(state);
-    expect(g.loadSnapshot(saved)).toBe(true);expect(rng.randomNumbersGenerated).toBe(0); // Existing load reseeds (U02), but decoding draws nothing.
+    expect(g.loadSnapshot(saved)).toBe(true);expect(rng.randomNumbersGenerated).toBe(0); // The saved zero origin is restored; decoding draws nothing.
     const la=g.monsters[0]!,ld=g.dormantMonsters[0]!,lp=la.carriedMonster!;
     expect([la,ld,lp].map(state)).toEqual(before);expect(lp.leader).toBe(la);expect(lp.carriedMonster).toBe(ld);expect(ld.leader).toBe(lp);
     la.targetCorpseLoc!.x=50;expect(saved.monsters[0]!.targetCorpseLoc!.x).toBe(10);expect(a.targetCorpseLoc!.x).toBe(10);

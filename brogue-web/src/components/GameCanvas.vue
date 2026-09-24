@@ -512,6 +512,7 @@ onMounted(async () => {
             .map((i) => ({ name: i.displayName, x: i.loc.x, y: i.loc.y }));
 
         return JSON.stringify({
+            seed: game.currentSeed,
             mode: game.pendingEnchantment ? 'enchantment_target' : game.pendingArcana ? 'arcana_target' : game.isInventoryOpen ? 'inventory' : (game.isThrowing ? 'throw_target' : 'explore'),
             enchantmentTargets: game.pendingEnchantment
                 ? game.player.inventory.items.filter(item => game.canEnchantTarget(item)).map(item => ({ id: item.id, name: item.displayName })) : [],

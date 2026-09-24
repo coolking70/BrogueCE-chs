@@ -50,7 +50,7 @@ const saveInfo = computed(() => {
     const raw = window.localStorage.getItem(SAVE_KEY);
     if (!raw) return null;
     const snapshot = JSON.parse(raw);
-    if (!snapshot || snapshot.version !== 1) return null;
+    if (!snapshot || snapshot.version !== 2 || !snapshot.rngState) return null;
     return {
       depth: snapshot.depth,
       seed: snapshot.seed,
@@ -89,7 +89,7 @@ const hasReplay = computed(() => {
   }
 });
 
-const startNewGame = (payload: { seed?: number; mode: GameMode }) => {
+const startNewGame = (payload: { seed?: string; mode: GameMode }) => {
   activeGame.startNewGame({ seed: payload.seed, mode: payload.mode });
   logger.log(
     i18next.t('menu.log.started_game', {

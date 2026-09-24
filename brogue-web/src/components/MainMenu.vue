@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { useTranslation } from 'i18next-vue';
+import { normalizeSeed } from '../engine/Seed';
 import type { GameMode } from '../engine/Core/Game';
 import { displaySettings, isMapScaleMode, isSidebarWidthMode } from '../engine/Settings';
 
@@ -10,7 +11,7 @@ defineProps<{
   inGame: boolean;
   saveInfo: {
     depth: number;
-    seed: number;
+    seed: string;
     mode: string;
     savedAt: number;
   } | null;
@@ -22,7 +23,7 @@ defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: 'new-game', payload: { seed?: number; mode: GameMode }): void;
+  (e: 'new-game', payload: { seed?: string; mode: GameMode }): void;
   (e: 'continue-game'): void;
   (e: 'save-game'): void;
   (e: 'delete-save'): void;
@@ -45,15 +46,15 @@ const replaySeekInput = ref('');
 const replayFileInput = ref<HTMLInputElement | null>(null);
 const { t } = useTranslation();
 
-const parseSeed = () => {
+const parsedSeed = computed(() => {
   const trimmed = seedInput.value.trim();
-  if (!trimmed) return undefined;
-  const n = Number.parseInt(trimmed, 10);
-  return Number.isFinite(n) ? n : undefined;
-};
+  if (!trimmed || mode.value === 'test') return undefined;
+  try { return normalizeSeed(trimmed); } catch { return null; }
+});
 
 const startGame = () => {
-  emit('new-game', { seed: mode.value === 'test' ? undefined : parseSeed(), mode: mode.value });
+  if (parsedSeed.value === null) return;
+  emit('new-game', { seed: parsedSeed.value, mode: mode.value });
 };
 
 const modeLabel = (value: string) =>
@@ -123,6 +124,9 @@ const sidebarWidthModel = computed({
         <input
           v-model="seedInput"
           type="text"
+          inputmode="numeric"
+          :aria-invalid="parsedSeed === null"
+          aria-describedby="seed-hint"
           :disabled="mode === 'test'"
           :placeholder="mode === 'test'
             ? t('menu.seed.disabled_for_test', { defaultValue: 'Disabled in test mode' })
@@ -130,8 +134,12 @@ const sidebarWidthModel = computed({
         />
       </label>
 
+      <p id="seed-hint" :role="parsedSeed === null ? 'alert' : undefined">
+        {{ $t('menu.seed.range', { defaultValue: '0–18446744073709551615; blank or 0 uses a random seed.' }) }}
+      </p>
+
       <div class="actions">
-        <button @click="startGame">{{ t('menu.actions.new_game', { defaultValue: 'New Game' }) }}</button>
+        <button :disabled="parsedSeed === null" @click="startGame">{{ t('menu.actions.new_game', { defaultValue: 'New Game' }) }}</button>
         <button :disabled="!hasSave" @click="emit('continue-game')">{{ t('menu.actions.continue', { defaultValue: 'Continue' }) }}</button>
         <button v-if="inGame" @click="emit('save-game')">{{ t('menu.actions.save', { defaultValue: 'Save' }) }}</button>
         <button v-if="hasSave" class="danger-btn" @click="emit('delete-save')">{{ t('menu.actions.delete_save', { defaultValue: 'Delete Save' }) }}</button>

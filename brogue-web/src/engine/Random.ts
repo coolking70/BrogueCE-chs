@@ -2,6 +2,7 @@
  * src/engine/Random.ts
  * Deterministic RNG ported from Brogue's Math.c
  */
+import { normalizeSeed, type SeedInput } from './Seed';
 
 export enum RNGType {
     RNG_SUBSTANTIVE = 0,
@@ -16,6 +17,16 @@ class Ranctx {
     public d: number = 0;
 }
 
+/** v1 deliberately identifies the pre-U02b low-32-bit seeding algorithm. */
+export interface RandomState {
+    version: 1;
+    algorithm: 'brogue-web-ranval32-low32-v1';
+    streams: [{ a: number; b: number; c: number; d: number }, { a: number; b: number; c: number; d: number }];
+    currentRNG: RNGType.RNG_SUBSTANTIVE | RNGType.RNG_COSMETIC;
+    randomNumbersGenerated: number;
+    cosmeticNumbersGenerated: number;
+}
+
 export class Random {
     private rngStates: Ranctx[] = [new Ranctx(), new Ranctx()];
     private currentRNG: RNGType = RNGType.RNG_SUBSTANTIVE;
@@ -25,13 +36,49 @@ export class Random {
 
     // Used to track how many substantive numbers generated
     public randomNumbersGenerated: number = 0;
+    // Logical nondegenerate randRange calls, just like the substantive counter.
+    public cosmeticNumbersGenerated: number = 0;
 
-    constructor(seed: number = 0) {
+    constructor(seed: SeedInput = 0) {
         this.seedRandomGenerator(seed);
     }
 
     public setRNG(type: RNGType) {
+        if (type !== RNGType.RNG_SUBSTANTIVE && type !== RNGType.RNG_COSMETIC) throw new RangeError('Invalid RNG stream');
         this.currentRNG = type;
+    }
+
+    public getState(): RandomState {
+        return {
+            version: 1, algorithm: 'brogue-web-ranval32-low32-v1',
+            streams: [{ ...this.rngStates[0]! }, { ...this.rngStates[1]! }],
+            currentRNG: this.currentRNG as RandomState['currentRNG'],
+            randomNumbersGenerated: this.randomNumbersGenerated,
+            cosmeticNumbersGenerated: this.cosmeticNumbersGenerated,
+        };
+    }
+
+    public static isState(value: unknown): value is RandomState {
+        if (!value || typeof value !== 'object') return false;
+        const s = value as RandomState;
+        const counter = (n: number) => Number.isSafeInteger(n) && n >= 0;
+        return s.version === 1 && s.algorithm === 'brogue-web-ranval32-low32-v1'
+            && (s.currentRNG === RNGType.RNG_SUBSTANTIVE || s.currentRNG === RNGType.RNG_COSMETIC)
+            && counter(s.randomNumbersGenerated) && counter(s.cosmeticNumbersGenerated)
+            && Array.isArray(s.streams) && s.streams.length === 2
+            && [s.streams[0], s.streams[1]].every(r => r && ['a', 'b', 'c', 'd'].every(k => {
+                const n = r[k as keyof typeof r];
+                return Number.isInteger(n) && n >= 0 && n <= 0xffffffff;
+            }));
+    }
+
+    /** Validate first, then copy: neither export nor import shares live state. No draws/reseeding. */
+    public setState(state: RandomState): void {
+        if (!Random.isState(state)) throw new RangeError('Unsupported or malformed RNG state');
+        this.rngStates = state.streams.map(s => Object.assign(new Ranctx(), s));
+        this.currentRNG = state.currentRNG;
+        this.randomNumbersGenerated = state.randomNumbersGenerated;
+        this.cosmeticNumbersGenerated = state.cosmeticNumbersGenerated;
     }
 
     private rot(x: number, k: number): number {
@@ -56,30 +103,30 @@ export class Random {
         x.c = seed >>> 0;
         x.d = seed >>> 0;
 
-        // In JS native numbers are f64, but we treat seed as a 32-bit for simplicity here 
-        // (as it mimics uint32_t c-cast in Math.c `x.c ^= (u4)(seed >> 32);` which we will skip if seed is <= 32bit)
-        // If we want 64 bit we need BigInt, but for simplicity of porting, we keep seed 32-bit max usually.
+        // U02a preserves the current sequence. CE's high-word XOR belongs to U02b.
 
         for (let i = 0; i < 20; ++i) {
             this.ranval(x);
         }
     }
 
-    public seedRandomGenerator(seed: number = 0): number {
-        if (seed === 0) {
+    public seedRandomGenerator(seed: SeedInput = 0): string {
+        let fullSeed = normalizeSeed(seed);
+        if (fullSeed === '0') {
             // JS time is in MS. Divide by 1000 to get roughly UNIX epoch. 
             // In Math.c, it's: seed = time(NULL) - 1352700000;
-            seed = Math.floor(Date.now() / 1000) - 1352700000;
+            fullSeed = normalizeSeed(Math.floor(Date.now() / 1000) - 1352700000);
         }
 
-        // Ensure it's a positive 32-bit unsigned integer for the seed logic.
-        seed = seed >>> 0;
+        // Preserve all 64 bits in storage; only this algorithm boundary takes the low word.
+        const lowSeed = Number(BigInt(fullSeed) & 0xffffffffn);
 
-        this.raninit(this.rngStates[RNGType.RNG_SUBSTANTIVE]!, seed);
-        this.raninit(this.rngStates[RNGType.RNG_COSMETIC]!, seed);
+        this.raninit(this.rngStates[RNGType.RNG_SUBSTANTIVE]!, lowSeed);
+        this.raninit(this.rngStates[RNGType.RNG_COSMETIC]!, lowSeed);
 
         this.randomNumbersGenerated = 0;
-        return seed;
+        this.cosmeticNumbersGenerated = 0;
+        return fullSeed;
     }
 
     private range(n: number, rng: RNGType): number {
@@ -101,6 +148,8 @@ export class Random {
 
         if (this.currentRNG === RNGType.RNG_SUBSTANTIVE) {
             this.randomNumbersGenerated++;
+        } else {
+            this.cosmeticNumbersGenerated++;
         }
 
         const interval = upperBound - lowerBound + 1;
