@@ -1,0 +1,118 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/36f6/brogue/brogue-web
+
+ ✓ src/engine/Combat/CombatFormulas.test.ts (31 tests | 4 todo) 12ms
+stdout | src/test/w_15_shielding.test.ts > W-15 CE shield units, fixed-point formula, max and decay > objective scheduler: haste two half-actions/slow double-block, zero shield RNG
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/p4_5_melee_specials.test.ts > P4-5 验收 1：MA_SEIZES 抓取 > 对抗性①：抓取那一下必须是 0 伤害、hit=false —— 错误实现（漏掉 return false，继续走正常攻击流程）会让这一下打出真实伤害，玩家 HP 会下降。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/p4_7_player_weapon_geometry.test.ts > P4-7 玩家鞭（ITEM_ATTACKS_EXTEND） > 对抗性【射程写成 2 或无限】：距离 4 必须甩得到且原地不出手；距离 6 必须甩不到、走近一格 —— 把射程写成 2 的实现在距离 4 翻车，写成无限/6 的实现在距离 6 翻车（CE getImpactLoc maxDistance=5，Movement.c:888）。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_15_shielding.test.ts (57 tests) 945ms
+stdout | src/test/b_1_weapon_specials.test.ts > B-1 匕首背刺（ITEM_SNEAK_ATTACK_BONUS） > 对抗性【匕首偷袭写成 ×3】：熟睡目标挨匕首必须 ×5 —— 5 个种子的伤害全部∈ {15,20}（raw 3/4）。写成 ×3 的实现在 raw=3 的种子上给 9 → 在这里翻车。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/p4_6_attack_geometry.test.ts > P4-6 矛（MA_ATTACKS_PENETRATE） > 对抗性【头号风险·矛≠斧】：照 Rogue.h:2120 反了的注释实现成横扫会翻车 —— goblin 贴脸玩家、玩家身后直线上有盟友、斜角上另有盟友：正确的矛打玩家+身后线上目标、绝不碰斜角；做反成斧的实现必然扫到斜角探针。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/p4_7_player_weapon_geometry.test.ts (17 tests) 3726ms
+     ✓ 对抗性【射程写成 2 或无限】：距离 4 必须甩得到且原地不出手；距离 6 必须甩不到、走近一格 —— 把射程写成 2 的实现在距离 4 翻车，写成无限/6 的实现在距离 6 翻车（CE getImpactLoc maxDistance=5，Movement.c:888）。  614ms
+     ✓ 对抗性【不打第一个受阻点/多目标齐打】：CE 的鞭只打 getImpactLoc 停下的那一个目标（Movement.c:888-894），而挡弹者若不可攻击（盟友）则整鞭落空—— 前方 2 格站着盟友、敌人 4 格时：移动过去、两人都毫发无损；跳过盟友直取敌人或双目标齐打的实现都会翻车。  380ms
+stdout | src/test/u_06_monster_damage.test.ts > U06 CE compiled staffDamage goldens and real contacts > 'SPARK' ignores caster accuracy/damage/status/riders and monster armor, consumes only CE dice
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/p4_6_attack_geometry.test.ts (14 tests) 3527ms
+     ✓ 射程边界：距玩家 5 格甩得到（getImpactLoc maxDistance=5，Items.c:4307），距 6 格甩不到只走近 —— 把射程写成无限的实现在 6 格翻车。  537ms
+     ✓ 对抗性【射程写成 2】：距离 4 也必须甩得到（4 ≤ 射程 5）—— 只会 2 格内出手的实现（把鞭当相邻近战延伸一格）会让 salamander 走近而玩家满血。  301ms
+     ✓ 旗标分发走 abilityFlags 而非种类白名单：注入 MA_ATTACKS_EXTEND 的 rat 在 4 格外甩鞭；注入 MA_ATTACKS_ALL_ADJACENT 的 rat 贴脸时扫掉斜角。（mutations.json 现无携带这三个旗标的变异，按 P4-5 的变异测试意图改为 直接注入 abilityFlags，验证的是同一条 hasAbility 分发路径。）  577ms
+stdout | src/test/w_21_empowerment.test.ts > W-21 contact gates, autoID and impact flash > actual inventory selection/cancel/submit spends one charge, identifies singleton wand and schedules one turn
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_21_empowerment.test.ts (29 tests) 723ms
+ ✓ src/test/p4_5_melee_specials.test.ts (24 tests) 6001ms
+     ✓ 对抗性⑦：被抓者面对抓着自己的攻击者必中（CE Combat.c:125-130：defender SEIZED && attacker SEIZING → hitProbability 直接返回 100）—— accuracy=0 的抓取者抓住后第二击必须命中并造成伤害；漏掉这条规则的错误实现会继续按 0% 公式恒 miss。  533ms
+     ✓ 敌方 90%：vampire bat 攻击玩家命中后，攻击者回血 = floor(min(damage,防御方HP)*9/10)  500ms
+     ✓ 盟友 40%：isAlly=true 的 vampire bat 攻击敌方怪物，回血比例必须是 4/10 而不是 9/10  300ms
+ ✓ src/data/monsterDamage.test.ts (3 tests) 4ms
+stdout | src/test/u_13_combat_math.test.ts > U13 short circuits, multipliers, order, and real substantive counts > real BE_ATTACK entry consumes full clump with its normal hit roll
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_13_combat_math.test.ts (34 tests) 166ms
+ ❯ src/test/u_06_monster_damage.test.ts (36 tests | 2 failed) 3418ms
+     ✓ 'SPARK' catalog magnitude and exhaustive CE distribution 1ms
+     ✓ 'FIRE' catalog magnitude and exhaustive CE distribution 0ms
+     ✓ 'DRAGONFIRE' catalog magnitude and exhaustive CE distribution 17ms
+     ✓ 'SPARK' ignores caster accuracy/damage/status/riders and monster armor, consumes only CE dice 124ms
+     ✓ 'FIRE' ignores caster accuracy/damage/status/riders and monster armor, consumes only CE dice 115ms
+     ✓ 'DRAGONFIRE' ignores caster accuracy/damage/status/riders and monster armor, consumes only CE dice 116ms
+     ✓ 'SPARK' ignores player armor and armor runics; no melee on-hit statuses 106ms
+     ✓ 'FIRE' ignores player armor and armor runics; no melee on-hit statuses 103ms
+     ✓ 'DRAGONFIRE' ignores player armor and armor runics; no melee on-hit statuses 107ms
+     ✓ 'SPARK' reaches both CE endpoints with exactly the declared dice order 105ms
+     ✓ 'FIRE' reaches both CE endpoints with exactly the declared dice order 107ms
+     ✓ 'DRAGONFIRE' reaches both CE endpoints with exactly the declared dice order 169ms
+     ✓ FIRE: player immunity precedes RNG, preserves shield, emits immunity and ignites terrain 151ms
+     ✓ FIRE: status immunity precedes RNG, preserves shield, emits immunity and ignites terrain 140ms
+     ✓ FIRE: flag immunity precedes RNG, preserves shield, emits immunity and ignites terrain 140ms
+     ✓ FIRE: invulnerable immunity precedes RNG, preserves shield, emits immunity and ignites terrain 138ms
+     ✓ DRAGONFIRE: player immunity precedes RNG, preserves shield, emits immunity and ignites terrain 135ms
+     ✓ DRAGONFIRE: status immunity precedes RNG, preserves shield, emits immunity and ignites terrain 141ms
+     ✓ DRAGONFIRE: flag immunity precedes RNG, preserves shield, emits immunity and ignites terrain 98ms
+     ✓ DRAGONFIRE: invulnerable immunity precedes RNG, preserves shield, emits immunity and ignites terrain 89ms
+     ✓ spark harms fire/weapon immune targets, but invulnerability consumes no roll and does not stop piercing 88ms
+     ✓ shield=100 absorbs once; shield-only hits still burn and release control 90ms
+     ✓ shield=25 absorbs once; shield-only hits still burn and release control 88ms
+     ✓ shield=20 absorbs once; shield-only hits still burn and release control 85ms
+     ✓ transference remains after shields and before damage (ally=false), including reflected self-hit 87ms
+     ✓ transference remains after shields and before damage (ally=true), including reflected self-hit 87ms
+     ✓ negating innate fire immunity exposes the same target to the new direct damage exit 86ms
+     ✓ monster-origin reflected damage splits the surviving recipient after ignition 88ms
+     ✓ negation removes actual damage casting abilities; next turn cannot cast them 91ms
+     ✓ reflected spark kills caster and player in order; player death stops piercing and credits original caster 79ms
+     ✓ armor reflection identifies armor and deals fixed fire damage to the original caster 77ms
+     ✓ lethal flame does not ignite player or terrain after the death return 72ms
+     ✓ killed bloat reaches ordinary death DF/carried-drop cleanup exactly once 75ms
+     × DISTANCE_ATTACK retains accuracy miss, weapon immunity, attack damage/riders and RNG 76ms
+     × POISON_DART retains accuracy miss, weapon immunity, attack damage/riders and RNG 72ms
+     ✓ WHIP remains CE BE_ATTACK on the existing geometry route, with no monster bolt-table addition 76ms
+ ✓ src/test/b_1_weapon_specials.test.ts (16 tests) 13080ms
+     ✓ 对抗性【匕首偷袭写成 ×3】：熟睡目标挨匕首必须 ×5 —— 5 个种子的伤害全部∈ {15,20}（raw 3/4）。写成 ×3 的实现在 raw=3 的种子上给 9 → 在这里翻车。  1387ms
+     ✓ 对抗性【普通武器也 ×5 / 匕首无差别 ×5】：匕首打清醒 HUNTING 目标必须零倍率 —— 伤害恰为 raw {3,4}；"×5 全局生效"的实现给 15/20 → 在这里翻车。  1204ms
+     ✓ 对照组【普通武器熟睡目标仍 ×3】：剑打熟睡目标伤害 ∈ {21,24,27} 且都不被 5 整除 —— 匕首旗标泄漏到普通武器（×5）的实现给 35/40/45 → 在这里翻车。  3116ms
+     ✓ 对抗性【WANDERING 不在偷袭触发集】：剑打游荡（WANDERING）目标必须自动命中且 ×3 —— 防御 300 下命中率仅 ≈2.2%，10 个种子全中的实现才可能做到；漏掉 WANDERING 触发的实现里游荡目标照常掷命中 → 几乎必 miss → 在这里翻车。对照组：同一只怪 HUNTING 态 10 种子必出 miss。  3591ms
+     ✓ 对抗性【突进无自动命中 / 倍率写错】：防御 300（命中率 ≈2.2%）的两格外敌人，突进必须 5 种子全中且伤害 ∈ {9,12,15}（raw 3..5 的 ×3）—— 漏自动命中的实现几乎必 miss；写成 ×5 的实现给 15/20/25 → 都在这里翻车。  1049ms
+     ✓ 对抗性【QUICKLY 分支漏实现】：同样打 6 击，刺剑放出来的敌人行动窗口是剑的一半——刺剑吃 2 次反击、剑吃 5 次；漏 QUICKLY 分支的刺剑按 100 tick恢复 → 反击 5 次 → 在这里翻车。  478ms
+     ✓ 对抗性【恢复量写错（attackSpeed 而非 attackSpeed/2）】：窃取攻击恢复量 ——刺剑一次攻击的恢复恰为 50 tick（Time.c:2445-2446 的 attackSpeed/2）；写成整段 attackSpeed 的实现记录到 100 → 在这里翻车。  370ms
+     ✓ 对抗性【分支优先级写反（钝器命中反而走 QUICKLY）】：双旗标武器（STAGGER+QUICKLY，数据中不存在，专测分支序）命中时必须走 STAGGER 支恢复 200 tick（Time.c:2442-2444 先判）——优先级倒置的实现走 QUICKLY 支记 50 → 在这里翻车。行为镜像：敌 moveSpeed=150、身后墙，200-tick 窗口吃 1 次反击（QUICKLY 误判时 50-tick 窗口为 0 次）。  465ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_06_monster_damage.test.ts > U06 reflected attribution/death and preserved BE_ATTACK > DISTANCE_ATTACK retains accuracy miss, weapon immunity, attack damage/riders and RNG
+ FAIL  src/test/u_06_monster_damage.test.ts > U06 reflected attribution/death and preserved BE_ATTACK > POISON_DART retains accuracy miss, weapon immunity, attack damage/riders and RNG
+AssertionError: expected 91 to be 100 // Object.is equality
+
+- Expected
++ Received
+
+- 100
++ 91
+
+ ❯ src/test/u_06_monster_damage.test.ts:229:68
+    227|         const attack = vi.spyOn(CombatSystem, 'attack'), staff = vi.sp…
+    228|         caster.accuracy = 0; const percent = vi.spyOn(rng, 'randPercen…
+    229|         g.castMonsterBolt(caster, target, name); expect(target.hp).toB…
+       |                                                                    ^
+    230|         expect(attack).toHaveBeenCalledWith(caster, target, { isWeapon…
+    231|         percent.mockReturnValue(true); caster.damageString = '6'; cast…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed | 9 passed (10)
+      Tests  2 failed | 255 passed | 4 todo (261)
+   Start at  18:21:00
+   Duration  13.77s (transform 1.23s, setup 0ms, import 3.26s, tests 31.60s, environment 2ms)
+

@@ -300,6 +300,8 @@ describe('A6: 武器熟悉度门槛（CE GlobalsBrogue.c:1040 = 20 杀）', () =
         const game = createHeadlessGame(42, 'test');
         isolatePlayer(game);
         const wpn = ItemLoader.spawnWeapon('sword', -1, -1)!; // 伤害 7~9 > 大鼠 6 血，必杀
+        game.player.strength = wpn.strengthRequired!;
+        wpn.enchantment = 0; // CE：力量恰好满足需求，净附魔 0，对防御 0 目标必中。
         wpn.runicType = undefined;
         game.player.inventory.addItem(wpn);
         game.player.equip(wpn);

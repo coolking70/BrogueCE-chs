@@ -1,0 +1,28 @@
+{
+  "priorInputCount": 412,
+  "currentInputCount": 413,
+  "changedFromPriorFinal": {
+    "ai_docs/reports/u-13-evidence/closure.json": {
+      "prior": "bee2750e32de0c28f3fe2275e87cc7e77e62d7caf91bc727aebde6695fe5e911",
+      "current": "545b12db74e6dd547d1f6d9f6e7f2d5fc55784a39f1777bc24375b3bf73ff16c"
+    },
+    "src/test/b_1a_identification.test.ts": {
+      "prior": "ccb31c6e92c02a2c66d4c58665173914247a294da2191cf05440eaa40d49d985",
+      "current": "98b2c93ca9e50a3439d16ddc8ec4031c7190ab7fdfb7c0d9d2dca205e6df6136"
+    },
+    "src/test/u_06_monster_damage.test.ts": {
+      "prior": "9ccea8aa14152445cd1e3acecb57fb8b76c90e3b917603940531e825ba9db88e",
+      "current": "6e453351ab3b14bfd98d16ba239607640659e04df7675043eae5fc34fd98e282"
+    },
+    "src/test/ui_2_protection.test.ts": {
+      "prior": "d7dd195ec192ef968c2ece9ed23318814f7d8879e2a360cab368775ee9e19ef4",
+      "current": "932cb2abac9e323756a62a97a16c55068bba269de083d736881b8c1d563d86a6"
+    }
+  },
+  "addedInputs": [
+    "ai_docs/reports/u-13-evidence/adjudication/run-final-gates.mjs"
+  ],
+  "sameRUnionSFiles": 129,
+  "productionInputsUnchanged": true,
+  "note": "closure.json refreshed after removing the diagnostic-only CombatFormulas import; the complete R union S file set is unchanged."
+}

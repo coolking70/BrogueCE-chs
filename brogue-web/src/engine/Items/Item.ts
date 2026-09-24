@@ -63,6 +63,8 @@ export class Item implements Entity {
 
     // Stats for weapons/armors
     public damage?: string;
+    /** CE damage.clumpFactor; independent of the min/max notation. */
+    public clumping?: number;
     public armor?: number;
     public strengthRequired?: number;
     /**

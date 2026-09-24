@@ -1,0 +1,136 @@
+--- before/src/test/b_1a_identification.test.ts
++++ after/src/test/b_1a_identification.test.ts
+@@ -300,6 +300,8 @@
+         const game = createHeadlessGame(42, 'test');
+         isolatePlayer(game);
+         const wpn = ItemLoader.spawnWeapon('sword', -1, -1)!; // 伤害 7~9 > 大鼠 6 血，必杀
++        game.player.strength = wpn.strengthRequired!;
++        wpn.enchantment = 0; // CE：力量恰好满足需求，净附魔 0，对防御 0 目标必中。
+         wpn.runicType = undefined;
+         game.player.inventory.addItem(wpn);
+         game.player.equip(wpn);
+@@ -312,10 +314,8 @@
+ 
+         const totem = makeMonster(game, 'goblin_totem', 5, 4);
+         totem.hp = 1; // 防御 0 必中，一击致死
+-        const observation = { strength: game.player.strength, required: wpn.strengthRequired,
+-            enchantment: wpn.enchantment, defense: totem.defense, state: MonsterState[totem.state] };
+-        const hit = resolve.resolvePlayerMeleeAttackOn(totem);
+-        expect(totem.hp, `U13 observation (guard unchanged): ${JSON.stringify({ ...observation, hit })}`).toBeLessThanOrEqual(0);
++        resolve.resolvePlayerMeleeAttackOn(totem);
++        expect(totem.hp).toBeLessThanOrEqual(0);
+         expect(wpn.charges).toBe(19); // 无生命怪：不减（MB_WEAPON_AUTO_ID 不置）
+     });
+ });
+--- before/src/test/u_06_monster_damage.test.ts
++++ after/src/test/u_06_monster_damage.test.ts
+@@ -224,16 +224,30 @@
+     });
+     it.each(['DISTANCE_ATTACK', 'POISON_DART'])('%s retains accuracy miss, weapon immunity, attack damage/riders and RNG', name => {
+         const g = scene(), caster = mob(g, 12), target = mob(g);
++        target.state = MonsterState.HUNTING; // CE: an asleep target bypasses the accuracy roll.
+         const attack = vi.spyOn(CombatSystem, 'attack'), staff = vi.spyOn(rng, 'randClumpedRange');
+         caster.accuracy = 0; const percent = vi.spyOn(rng, 'randPercent').mockReturnValue(false);
+-        const before = { state: MonsterState[target.state], hp: target.hp, accuracy: caster.accuracy, rng: rng.randomNumbersGenerated };
+-        g.castMonsterBolt(caster, target, name);
+-        expect(target.hp, `U13 observation (guard unchanged): ${JSON.stringify(before)}; result=${JSON.stringify(attack.mock.results[attack.mock.results.length - 1]?.value)}`).toBe(100);
++        g.castMonsterBolt(caster, target, name); expect(target.hp).toBe(100);
+         expect(attack).toHaveBeenCalledWith(caster, target, { isWeaponAttack: true }); expect(percent).toHaveBeenCalled(); expect(staff).not.toHaveBeenCalled();
+         percent.mockReturnValue(true); caster.damageString = '6'; caster.abilityFlags.add('MA_POISONS');
+         g.castMonsterBolt(caster, target, name); expect(target.hp).toBe(99); expect(target.poisonAmount).toBe(1);
+         target.behaviorFlags.add('MONST_IMMUNE_TO_WEAPONS'); const hp = target.hp;
+         g.castMonsterBolt(caster, target, name); expect(target.hp).toBe(hp);
++    });
++    it('BE_ATTACK on an ASLEEP target short-circuits a false accuracy mock and wakes it', () => {
++        for (const name of ['DISTANCE_ATTACK', 'POISON_DART']) {
++            const g = scene(), caster = mob(g, 12), target = mob(g);
++            const attack = vi.spyOn(CombatSystem, 'attack'), staff = vi.spyOn(rng, 'randClumpedRange');
++            const percent = vi.spyOn(rng, 'randPercent').mockReturnValue(false);
++            target.state = MonsterState.ASLEEP;
++            caster.accuracy = 0; caster.damageString = '3';
++            g.castMonsterBolt(caster, target, name);
++            expect(attack).toHaveBeenCalledWith(caster, target, { isWeaponAttack: true });
++            expect(attack).toHaveLastReturnedWith(expect.objectContaining({ hit: true, damage: 9, backstab: true }));
++            expect(target.hp).toBe(91); expect(target.state).toBe(MonsterState.HUNTING);
++            expect(percent).not.toHaveBeenCalled(); expect(staff).not.toHaveBeenCalled();
++            vi.restoreAllMocks();
++        }
+     });
+     it('WHIP remains CE BE_ATTACK on the existing geometry route, with no monster bolt-table addition', () => {
+         const g = scene(), caster = mob(g, 8), target = g.player; target.loc = { x: 5, y: 5 };
+--- before/src/test/ui_2_protection.test.ts
++++ after/src/test/ui_2_protection.test.ts
+@@ -34,7 +34,6 @@
+ import { Item, ItemCategory } from '../engine/Items/Item';
+ import { ItemLoader } from '../engine/Items/ItemLoader';
+ import { CombatSystem } from '../engine/Combat/Combat';
+-import { hitProbability, netEnchant } from '../engine/Combat/CombatFormulas';
+ import { generateItemDetail, generateMonsterDetail, type DetailInfo } from '../engine/UI/DetailGenerator';
+ import monsterDataJson from '../data/monsters.json';
+ import { logger } from '../engine/Systems/Logger';
+@@ -84,22 +83,16 @@
+ }
+ 
+ /**
+- * 玩家必中的武器降级靶子：acid_mound（monsters.json 中两个
++ * 武器降级靶子：acid_mound（monsters.json 中两个
+  * MONST_DEFEND_DEGRADE_WEAPON 载体之一，无 MA_CLONE_SELF_ON_DEFEND，
+- * 不会被分裂噪音污染断言）。defense 压到 -10000 保证必中。
++ * 不会被分裂噪音污染断言）。保留既有默认夹具；CE 钳负防御为零，
++ * 本次获裁决的四条用例在各自场景中显式设置 captive 必中。
+  */
+ function spawnDegrader(game: Game, x: number, y: number): Monster {
+     const mound = new Monster(x, y, monsterDataById('acid_mound'));
+     mound.defense = -10000;
+     mound.state = MonsterState.HUNTING;
+     game.monsters.push(mound);
+-    // U13 observation only: preserve the old fixture/seed and every assertion.
+-    // CE monsterDefenseAdjusted clamps negative defense before probability.
+-    const w = game.player.equippedWeapon;
+-    const enchant = w ? netEnchant(w.enchantment, game.player.strength, w.strengthRequired ?? 0) : undefined;
+-    console.log('[U13 negative-defense guard]', JSON.stringify({ defense: mound.defense,
+-        strength: game.player.strength, required: w?.strengthRequired, enchant,
+-        actualHitProbability: hitProbability(100, mound.defense, enchant) }));
+     return mound;
+ }
+ 
+@@ -148,6 +141,7 @@
+         sword.isProtected = true;
+ 
+         const mound = spawnDegrader(game, 5, 5);
++        Object.assign(mound, { defense: 0, isCaged: true }); // CE MB_CAPTIVE：自动命中，不增加偷袭倍率。
+         priv(game).resolvePlayerMeleeAttackOn(mound);
+ 
+         expect(mound.hp).toBeLessThan(mound.maxHp); // 命中发生——豁免不是 miss
+@@ -163,6 +157,7 @@
+         carveBigRoom(gameA);
+         const swordA = equipPlainSword(gameA, -10);
+         const moundA = spawnDegrader(gameA, 5, 5);
++        Object.assign(moundA, { defense: 0, isCaged: true }); // CE captive 短路，不依赖负防御。
+         priv(gameA).resolvePlayerMeleeAttackOn(moundA);
+         expect(moundA.hp).toBeLessThan(moundA.maxHp);
+         expect(swordA.enchantment).toBe(-11);
+@@ -172,6 +167,7 @@
+         carveBigRoom(gameB);
+         const swordB = equipPlainSword(gameB, -11);
+         const moundB = spawnDegrader(gameB, 5, 5);
++        Object.assign(moundB, { defense: 0, isCaged: true });
+         priv(gameB).resolvePlayerMeleeAttackOn(moundB);
+         expect(moundB.hp).toBeLessThan(moundB.maxHp);
+         expect(swordB.enchantment).toBe(-11);
+@@ -189,6 +185,7 @@
+         sword.quiverNumber = 999;
+ 
+         const mound = spawnDegrader(game, 5, 5);
++        Object.assign(mound, { defense: 0, isCaged: true }); // CE captive 短路，保留 quiver 重掷断言。
+         priv(game).resolvePlayerMeleeAttackOn(mound);
+ 
+         expect(mound.hp).toBeLessThan(mound.maxHp);
+@@ -229,6 +226,7 @@
+         const sword = equipPlainSword(game, 0);
+ 
+         const mound = spawnDegrader(game, 5, 5);
++        Object.assign(mound, { defense: 0, isCaged: true }); // CE captive 短路，保证进入击杀腐蚀分支。
+         mound.hp = 1; // 保底一击毙命
+         priv(game).resolvePlayerMeleeAttackOn(mound);
+ 

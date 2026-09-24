@@ -1,0 +1,38 @@
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u13-counterfactual-ajIZYf
+
+stdout | src/test/ui_2_protection.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/ui_2_protection.test.ts > UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 resolvePlayerMeleeAttackOn） > 不带保护的武器被酸怪命中后附魔 -1、有 "weakens" 消息（行为终点）
+[U13 negative-defense guard] {"defense":-10000,"strength":12,"required":14,"enchant":-5,"actualHitProbability":100}
+
+stdout | src/test/ui_2_protection.test.ts > UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 resolvePlayerMeleeAttackOn） > 带保护的武器完全跳过：附魔不动、无消息，但命中照样发生
+[U13 negative-defense guard] {"defense":-10000,"strength":12,"required":14,"enchant":-5,"actualHitProbability":100}
+
+stdout | src/test/ui_2_protection.test.ts > UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 resolvePlayerMeleeAttackOn） > 下界照 CE 字面 enchant1 >= -10：-10 仍降到 -11，-11 才停
+[U13 negative-defense guard] {"defense":-10000,"strength":12,"required":14,"enchant":-15,"actualHitProbability":100}
+[U13 negative-defense guard] {"defense":-10000,"strength":12,"required":14,"enchant":-16,"actualHitProbability":100}
+
+stdout | src/test/ui_2_protection.test.ts > UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 resolvePlayerMeleeAttackOn） > quiverNumber 非零时重掷为 [1,60000]（CE :1436-1438，投掷武器的口径）
+[U13 negative-defense guard] {"defense":-10000,"strength":12,"required":14,"enchant":-5,"actualHitProbability":100}
+
+stdout | src/test/ui_2_protection.test.ts > UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 resolvePlayerMeleeAttackOn） > quiverNumber 为零值时不掷骰、保持未定义；徒手（无武器）不降级不炸
+[U13 negative-defense guard] {"defense":-10000,"strength":12,"required":14,"enchant":-5,"actualHitProbability":100}
+[U13 negative-defense guard] {"defense":-10000,"strength":12,"actualHitProbability":100}
+
+stdout | src/test/ui_2_protection.test.ts > UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 resolvePlayerMeleeAttackOn） > 目标被这一击打死时降级照常发生（CE 该块在命中支尾部，不吃目标存活条件）
+[U13 negative-defense guard] {"defense":-10000,"strength":12,"required":14,"enchant":-5,"actualHitProbability":100}
+
+stdout | src/test/ui_2_protection.test.ts > UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 resolvePlayerMeleeAttackOn） > 投掷路径不降级（CE 该块只在近战 attack()，hitMonsterWithProjectileWeapon 无此逻辑）
+[U13 negative-defense guard] {"defense":-10000,"strength":12,"required":14,"enchant":-5,"actualHitProbability":100}
+
+ ✓ src/test/ui_2_protection.test.ts (11 tests) 1880ms
+     ✓ 下界照 CE 字面 enchant1 >= -10：-10 仍降到 -11，-11 才停  377ms
+     ✓ quiverNumber 为零值时不掷骰、保持未定义；徒手（无武器）不降级不炸  389ms
+
+ Test Files  1 passed (1)
+      Tests  11 passed (11)
+   Start at  18:35:09
+   Duration  2.49s (transform 311ms, setup 0ms, import 528ms, tests 1.88s, environment 0ms)
+

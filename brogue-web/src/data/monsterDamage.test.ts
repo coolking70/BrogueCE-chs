@@ -9,11 +9,7 @@
  * 而 CombatSystem.parseDamageString 是掷骰记法，"XdY" → min=X, max=X*Y。
  * 因此非 {0,0,0} 怪物统一写 "1dN+M"（N = max−min+1, M = min−1），解析结果
  * min=1+M、max=N+M 与 CE 完全一致、clumping=1；CE {0,0,0}（无近战攻击）写 "0d1"
- * （解析 min=0/max=0）。Combat.attack 的 `damage < 1 → 1` 下限意味着 {0,0,0} 怪物
- * 实际仍会造成 1 点伤害——那是行为层问题，不在数据修复边界内。
- *
- * clumpFactor ≠ 1 的条目（27 条）本任务只对齐 min/max，不表达 clumping
- * （Combat.attack 硬编码 clumping=1），差异清单见 ai_docs/monster_damage_notation_report.md。
+ * （解析 min=0/max=0）。U13 另存 CE clumping 字段，完整 range 进入近战。
  */
 import { describe, it, expect } from 'vitest';
 import monstersJson from './monsters.json';
@@ -105,9 +101,10 @@ describe('monsters.json damage 记法 ↔ CE monsterCatalog（Globals.c）逐条
     });
 
     it('每条 damage 经 CombatSystem.parseDamageString 的 min/max 与 CE 一致（行号为 Globals.c monsterCatalog 表体）', () => {
-        for (const [id, ceLine, ceMin, ceMax] of CE_DAMAGE) {
+        for (const [id, ceLine, ceMin, ceMax, ceClump] of CE_DAMAGE) {
             const m = byId(id);
             const parts = CombatSystem.parseDamageString(m.damage);
+            expect(m.clumping, `L${ceLine}: ${id} clump`).toBe(ceClump);
             expect(
                 { id, damage: m.damage, min: parts.min, max: parts.max },
                 `L${ceLine}: ${id} damage=${m.damage} 应解析为 ${ceMin}~${ceMax}`

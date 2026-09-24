@@ -1,0 +1,66 @@
+{
+  "regressionFiles": 128,
+  "driftFiles": 1,
+  "passed": 2475,
+  "failed": 0,
+  "skipped": 8,
+  "todo": 5,
+  "previousSevenFailuresNowPassed": [
+    [
+      "src/test/b_1a_identification.test.ts",
+      "A6: 武器熟悉度门槛（CE GlobalsBrogue.c:1040 = 20 杀） 接线：真实近战击杀扣减 1；击杀无生命怪不扣减（CE Monsters.c:157-159）"
+    ],
+    [
+      "src/test/u_06_monster_damage.test.ts",
+      "U06 reflected attribution/death and preserved BE_ATTACK DISTANCE_ATTACK retains accuracy miss, weapon immunity, attack damage/riders and RNG"
+    ],
+    [
+      "src/test/u_06_monster_damage.test.ts",
+      "U06 reflected attribution/death and preserved BE_ATTACK POISON_DART retains accuracy miss, weapon immunity, attack damage/riders and RNG"
+    ],
+    [
+      "src/test/ui_2_protection.test.ts",
+      "UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 resolvePlayerMeleeAttackOn） 带保护的武器完全跳过：附魔不动、无消息，但命中照样发生"
+    ],
+    [
+      "src/test/ui_2_protection.test.ts",
+      "UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 resolvePlayerMeleeAttackOn） 下界照 CE 字面 enchant1 >= -10：-10 仍降到 -11，-11 才停"
+    ],
+    [
+      "src/test/ui_2_protection.test.ts",
+      "UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 resolvePlayerMeleeAttackOn） quiverNumber 非零时重掷为 [1,60000]（CE :1436-1438，投掷武器的口径）"
+    ],
+    [
+      "src/test/ui_2_protection.test.ts",
+      "UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 resolvePlayerMeleeAttackOn） 目标被这一击打死时降级照常发生（CE 该块在命中支尾部，不吃目标存活条件）"
+    ]
+  ],
+  "sameDeferredTests": true,
+  "inputFiles": 413,
+  "inputManifestSha256": "e75a42da4c939afd1818c3e88e80f79d820f1ef2036c261defa12359fe2d2b5f",
+  "startedAt": "2026-09-24T10:55:26.900Z",
+  "finishedAt": "2026-09-24T11:05:46.449Z",
+  "outcomes": [
+    {
+      "name": "build",
+      "cmd": "npm",
+      "status": 0,
+      "signal": null,
+      "durationMs": 4387
+    },
+    {
+      "name": "regression",
+      "cmd": "npx",
+      "status": 0,
+      "signal": null,
+      "durationMs": 601331
+    },
+    {
+      "name": "drift",
+      "cmd": "npm",
+      "status": 0,
+      "signal": null,
+      "durationMs": 13802
+    }
+  ]
+}

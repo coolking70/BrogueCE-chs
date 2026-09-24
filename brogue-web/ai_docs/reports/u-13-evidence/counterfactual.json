@@ -1,0 +1,24 @@
+{
+  "changes": [
+    "restore extra auto-hit randPercent(100) only",
+    "remove CE negative-defense clamp only"
+  ],
+  "outcomes": [
+    {
+      "name": "old-guards",
+      "status": 0
+    },
+    {
+      "name": "new-contract",
+      "status": 1
+    },
+    {
+      "name": "negative-defense-old-guards",
+      "status": 0
+    },
+    {
+      "name": "negative-defense-new-contract",
+      "status": 1
+    }
+  ]
+}

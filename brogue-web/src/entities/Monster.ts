@@ -197,6 +197,7 @@ export interface MonsterData {
     color: number;
     hp: number;
     damage: string;
+    clumping?: number;
     accuracy?: number;
     defense?: number;
     regen?: number;
@@ -239,6 +240,7 @@ export interface MutationData {
 export class Monster extends Creature {
     public state: MonsterState = MonsterState.ASLEEP;
     public damageString: string;
+    public damageClumping: number;
     public goldDropChance: number = 0;
     public itemDropChance: number = 0;
     public onHitStatus?: StatusId;
@@ -398,6 +400,7 @@ export class Monster extends Creature {
         this.maxHp = data.hp;
         this.hp = data.hp;
         this.damageString = data.damage;
+        this.damageClumping = data.clumping ?? CombatSystem.parseDamageString(data.damage ?? '1d3').clumping;
         // Monsters.c:119-120：movementSpeed/attackSpeed 当前值由 info 基准推导
         // （无状态时即基准值）。
         this.regenTurns = data.regen ?? 0;
@@ -553,6 +556,7 @@ export class Monster extends Creature {
         this.maxHp = data.hp;
         this.hp = hp;
         this.damageString = data.damage;
+        this.damageClumping = data.clumping ?? CombatSystem.parseDamageString(data.damage ?? '1d3').clumping;
         this.accuracy = data.accuracy ?? 100;
         this.defense = data.defense ?? 0;
         this.regenTurns = data.regen ?? 0; // web counter uses turns, not CE milliturns.
@@ -1218,7 +1222,7 @@ export class Monster extends Creature {
     /** Shared W-17/W-18 payload for effects whose save must retain actual traits. */
     public snapshotForm(): MonsterData {
         return { id: this.typeId, name: this.name, char: this.char, color: this.color,
-            hp: this.maxHp, damage: this.damageString, minDepth: 1, maxDepth: 99,
+            hp: this.maxHp, damage: this.damageString, clumping: this.damageClumping, minDepth: 1, maxDepth: 99,
             accuracy: this.accuracy, defense: this.defense, regen: this.regenTurns,
             moveSpeed: this.baseMoveSpeed, attackSpeed: this.baseAttackSpeed,
             goldDropChance: this.goldDropChance, itemDropChance: this.itemDropChance,

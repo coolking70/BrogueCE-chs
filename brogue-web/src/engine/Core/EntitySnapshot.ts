@@ -8,7 +8,7 @@ import { Player, type HungerState } from '../../entities/Player';
 
 export const ITEM_FIELDS = [
     'id', 'name', 'char', 'color', 'loc', 'category', 'weight', 'quantity',
-    'damage', 'armor', 'strengthRequired', 'flags', 'isCursed', 'isProtected',
+    'damage', 'clumping', 'armor', 'strengthRequired', 'flags', 'isCursed', 'isProtected',
     'enchantment', 'runicType', 'runicKnown', 'arcanaInstanceVersion', 'maxCharges',
     'charges', 'identified', 'canBeIdentified', 'maxChargesKnown', 'magicDetected',
     'timesUsed', 'staffRechargeRemaining', 'rechargeTurns', 'rechargeCounter',
@@ -21,7 +21,7 @@ export const CREATURE_FIELDS = [
     'movementSpeed', 'attackSpeed',
 ] as const satisfies readonly (keyof Creature)[];
 export const MONSTER_FIELDS = [
-    ...CREATURE_FIELDS, 'state', 'damageString', 'goldDropChance', 'itemDropChance',
+    ...CREATURE_FIELDS, 'state', 'damageString', 'damageClumping', 'goldDropChance', 'itemDropChance',
     'onHitStatus', 'onHitChance', 'onHitDuration', 'statusResistTurns', 'isAlly',
     'dominated', 'boundToLeader', 'isCaged', 'mutation', 'polymorphed', 'isClone',
     'wasNegated', 'newPowerCount', 'totalPowerCount', 'polymorphKeepsSpeed',

@@ -1,0 +1,72 @@
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u13-counterfactual-ajIZYf
+
+ ❯ src/test/u_13_combat_math.test.ts (40 tests | 1 failed | 39 skipped) 4ms
+     × 1215 hit probabilities include zero/negative defense/short maxima and every integer enchant 3ms
+     ↓ all 281 enchant table entries and 711 defense boundary inputs match exactly
+     ↓ every tuple and RNG range of {1,2,1} matches CE
+     ↓ every tuple and RNG range of {3,7,2} matches CE
+     ↓ every tuple and RNG range of {9,13,2} matches CE
+     ↓ every tuple and RNG range of {3,4,2} matches CE
+     ↓ every tuple and RNG range of {10,15,3} matches CE
+     ↓ every tuple and RNG range of {25,50,4} matches CE
+     ↓ every tuple and RNG range of {+0,10,3} matches CE
+     ↓ every tuple and RNG range of {3,11,3} matches CE
+     ↓ every tuple and RNG range of {+0,+0,+0} matches CE
+     ↓ every tuple and RNG range of {7,7,4} matches CE
+     ↓ every tuple and RNG range of {9,3,2} matches CE
+     ↓ 168 original recalculateEquipmentBonuses cases reach actual player melee, including negative enchant and strength boundaries
+     ↓ eel melee consumes the CE distribution, not just its mean
+     ↓ ogre melee consumes the CE distribution, not just its mean
+     ↓ spider melee consumes the CE distribution, not just its mean
+     ↓ troll melee consumes the CE distribution, not just its mean
+     ↓ dragon melee consumes the CE distribution, not just its mean
+     ↓ javelin clump survives loading and melee; enchanted endpoints scale before rolling
+     ↓ unarmed is CE {1,2,1}; zero ranges have no minimum-one damage or random draw
+     ↓ all catalog clumps survive constructor/form/empower/clone/JSON restore without new draws
+     ↓ polymorph installs the new species clump
+     ↓ rat substantive count=2 (a 0..0 clump call consumes no random number)
+     ↓ eel substantive count=3 (a 0..0 clump call consumes no random number)
+     ↓ spider substantive count=2 (a 0..0 clump call consumes no random number)
+     ↓ troll substantive count=4 (a 0..0 clump call consumes no random number)
+     ↓ dragon substantive count=5 (a 0..0 clump call consumes no random number)
+     ↓ sleep has no hit die and only the CE multiplier
+     ↓ wander has no hit die and only the CE multiplier
+     ↓ paralyzed has no hit die and only the CE multiplier
+     ↓ lunge has no hit die and only the CE multiplier
+     ↓ captive has no hit die and only the CE multiplier
+     ↓ inanimate-paralyzed has no hit die and only the CE multiplier
+     ↓ sleep/paralysis/lunge overlap multiplies only once; ally wandering and inanimate sleep have no bonus
+     ↓ monster→sleeping monster / paralyzed player uses generic ×3 and no hit roll
+     ↓ ordinary 100% and seized 100% still consume a hit die; first seizure/kamikaze/aquatic rejection consume none
+     ↓ miss/immune skip damage dice; immune sneak still wakes and delays; zero damage never calls armor callback
+     ↓ invisibility has no extra multiplier and weakened duration cannot substitute for U14 weaknessAmount
+     ↓ real BE_ATTACK entry consumes full clump with its normal hit roll
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 39 skipped (40)
+   Start at  18:35:12
+   Duration  603ms (transform 316ms, setup 0ms, import 518ms, tests 4ms, environment 0ms)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_13_combat_math.test.ts > U13 compiled original CE mathematics > 1215 hit probabilities include zero/negative defense/short maxima and every integer enchant
+AssertionError: {"accuracy":1,"defense":-32768,"enchant":null,"hit":1}: expected 13 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 13
+
+ ❯ src/test/u_13_combat_math.test.ts:41:127
+     39| describe('U13 compiled original CE mathematics', () => {
+     40|     it('1215 hit probabilities include zero/negative defense/short max…
+     41|         for (const r of golden.hits) expect(hitProbability(r.accuracy,…
+       |                                                                                                                               ^
+     42|     });
+     43|     it('all 281 enchant table entries and 711 defense boundary inputs …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

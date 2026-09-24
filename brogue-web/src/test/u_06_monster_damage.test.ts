@@ -224,6 +224,7 @@ describe('U06 reflected attribution/death and preserved BE_ATTACK', () => {
     });
     it.each(['DISTANCE_ATTACK', 'POISON_DART'])('%s retains accuracy miss, weapon immunity, attack damage/riders and RNG', name => {
         const g = scene(), caster = mob(g, 12), target = mob(g);
+        target.state = MonsterState.HUNTING; // CE: an asleep target bypasses the accuracy roll.
         const attack = vi.spyOn(CombatSystem, 'attack'), staff = vi.spyOn(rng, 'randClumpedRange');
         caster.accuracy = 0; const percent = vi.spyOn(rng, 'randPercent').mockReturnValue(false);
         g.castMonsterBolt(caster, target, name); expect(target.hp).toBe(100);
@@ -232,6 +233,21 @@ describe('U06 reflected attribution/death and preserved BE_ATTACK', () => {
         g.castMonsterBolt(caster, target, name); expect(target.hp).toBe(99); expect(target.poisonAmount).toBe(1);
         target.behaviorFlags.add('MONST_IMMUNE_TO_WEAPONS'); const hp = target.hp;
         g.castMonsterBolt(caster, target, name); expect(target.hp).toBe(hp);
+    });
+    it('BE_ATTACK on an ASLEEP target short-circuits a false accuracy mock and wakes it', () => {
+        for (const name of ['DISTANCE_ATTACK', 'POISON_DART']) {
+            const g = scene(), caster = mob(g, 12), target = mob(g);
+            const attack = vi.spyOn(CombatSystem, 'attack'), staff = vi.spyOn(rng, 'randClumpedRange');
+            const percent = vi.spyOn(rng, 'randPercent').mockReturnValue(false);
+            target.state = MonsterState.ASLEEP;
+            caster.accuracy = 0; caster.damageString = '3';
+            g.castMonsterBolt(caster, target, name);
+            expect(attack).toHaveBeenCalledWith(caster, target, { isWeaponAttack: true });
+            expect(attack).toHaveLastReturnedWith(expect.objectContaining({ hit: true, damage: 9, backstab: true }));
+            expect(target.hp).toBe(91); expect(target.state).toBe(MonsterState.HUNTING);
+            expect(percent).not.toHaveBeenCalled(); expect(staff).not.toHaveBeenCalled();
+            vi.restoreAllMocks();
+        }
     });
     it('WHIP remains CE BE_ATTACK on the existing geometry route, with no monster bolt-table addition', () => {
         const g = scene(), caster = mob(g, 8), target = g.player; target.loc = { x: 5, y: 5 };

@@ -83,9 +83,10 @@ function carveBigRoom(game: Game): void {
 }
 
 /**
- * 玩家必中的武器降级靶子：acid_mound（monsters.json 中两个
+ * 武器降级靶子：acid_mound（monsters.json 中两个
  * MONST_DEFEND_DEGRADE_WEAPON 载体之一，无 MA_CLONE_SELF_ON_DEFEND，
- * 不会被分裂噪音污染断言）。defense 压到 -10000 保证必中。
+ * 不会被分裂噪音污染断言）。保留既有默认夹具；CE 钳负防御为零，
+ * 本次获裁决的四条用例在各自场景中显式设置 captive 必中。
  */
 function spawnDegrader(game: Game, x: number, y: number): Monster {
     const mound = new Monster(x, y, monsterDataById('acid_mound'));
@@ -140,6 +141,7 @@ describe('UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 res
         sword.isProtected = true;
 
         const mound = spawnDegrader(game, 5, 5);
+        Object.assign(mound, { defense: 0, isCaged: true }); // CE MB_CAPTIVE：自动命中，不增加偷袭倍率。
         priv(game).resolvePlayerMeleeAttackOn(mound);
 
         expect(mound.hp).toBeLessThan(mound.maxHp); // 命中发生——豁免不是 miss
@@ -155,6 +157,7 @@ describe('UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 res
         carveBigRoom(gameA);
         const swordA = equipPlainSword(gameA, -10);
         const moundA = spawnDegrader(gameA, 5, 5);
+        Object.assign(moundA, { defense: 0, isCaged: true }); // CE captive 短路，不依赖负防御。
         priv(gameA).resolvePlayerMeleeAttackOn(moundA);
         expect(moundA.hp).toBeLessThan(moundA.maxHp);
         expect(swordA.enchantment).toBe(-11);
@@ -164,6 +167,7 @@ describe('UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 res
         carveBigRoom(gameB);
         const swordB = equipPlainSword(gameB, -11);
         const moundB = spawnDegrader(gameB, 5, 5);
+        Object.assign(moundB, { defense: 0, isCaged: true });
         priv(gameB).resolvePlayerMeleeAttackOn(moundB);
         expect(moundB.hp).toBeLessThan(moundB.maxHp);
         expect(swordB.enchantment).toBe(-11);
@@ -181,6 +185,7 @@ describe('UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 res
         sword.quiverNumber = 999;
 
         const mound = spawnDegrader(game, 5, 5);
+        Object.assign(mound, { defense: 0, isCaged: true }); // CE captive 短路，保留 quiver 重掷断言。
         priv(game).resolvePlayerMeleeAttackOn(mound);
 
         expect(mound.hp).toBeLessThan(mound.maxHp);
@@ -221,6 +226,7 @@ describe('UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 res
         const sword = equipPlainSword(game, 0);
 
         const mound = spawnDegrader(game, 5, 5);
+        Object.assign(mound, { defense: 0, isCaged: true }); // CE captive 短路，保证进入击杀腐蚀分支。
         mound.hp = 1; // 保底一击毙命
         priv(game).resolvePlayerMeleeAttackOn(mound);
 

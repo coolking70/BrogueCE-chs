@@ -5,7 +5,8 @@
  */
 
 // CE 的 FP_FACTOR 是 16.16 定点（Rogue.h:99-101，1<<16 = 65536）。
-// 多数函数以 float 近似；runicWeaponChance 则逐级复刻定点截断并内嵌原表。
+// 基础战斗与符文概率使用 CE 原表及逐级整数截断。
+import { COMBAT_ENCHANT_FRACTION, COMBAT_DEFENSE_FRACTION } from './CombatTables';
 
 /**
  * Strength modifier for an item.
@@ -36,7 +37,7 @@ export function netEnchant(enchantment: number, playerStrength: number, required
  * Positive enchantment increases accuracy, negative decreases.
  */
 export function accuracyFraction(netEnch: number): number {
-    return Math.pow(1.065, netEnch);
+    return COMBAT_ENCHANT_FRACTION[Math.max(0, Math.min(280, Math.trunc(netEnch * 4) + 80))]! / FP_FACTOR;
 }
 
 /**
@@ -44,7 +45,7 @@ export function accuracyFraction(netEnch: number): number {
  * CE formula: 1.065 ^ netEnchant
  */
 export function damageFraction(netEnch: number): number {
-    return Math.pow(1.065, netEnch);
+    return COMBAT_ENCHANT_FRACTION[Math.max(0, Math.min(280, Math.trunc(netEnch * 4) + 80))]! / FP_FACTOR;
 }
 
 /**
@@ -53,7 +54,7 @@ export function damageFraction(netEnch: number): number {
  * Higher defense = lower fraction = harder to hit.
  */
 export function defenseFraction(defense: number): number {
-    return Math.pow(0.987, defense);
+    return COMBAT_DEFENSE_FRACTION[Math.max(0, Math.min(280, Math.trunc(defense * 4 / 10) + 80))]! / FP_FACTOR;
 }
 
 /**
@@ -65,12 +66,12 @@ export function hitProbability(
     defenderDefense: number,
     weaponNetEnchant?: number
 ): number {
-    let accuracy = attackerAccuracy;
+    let accuracy = Math.max(0, Math.trunc(attackerAccuracy));
     if (weaponNetEnchant !== undefined) {
-        accuracy = accuracy * accuracyFraction(weaponNetEnchant);
+        accuracy = Math.trunc(attackerAccuracy * accuracyFraction(weaponNetEnchant));
     }
-    const prob = accuracy * defenseFraction(defenderDefense);
-    return Math.max(0, Math.min(100, Math.round(prob)));
+    const prob = Math.trunc(accuracy * defenseFraction(Math.max(0, Math.trunc(defenderDefense))));
+    return Math.max(0, Math.min(100, prob));
 }
 
 /**
@@ -88,8 +89,7 @@ export function hitProbability(
  *   hitProbability = accuracy * defenseFraction(defense * FP_FACTOR) / FP_FACTOR，
  *   defenseFraction 见 PowerTables.c:184-204）。CE 护甲不从伤害里扣任何点数。
  *
- * 与 CE 的量化差异：CE 定点存储会把 ×10 值截断为整数（如 32.5 → 32），web 保留
- * float 理想值，与 defenseFraction 等既有约定的误差口径一致（≤0.05 显示点）。
+ * CE 存储到 short 时向零截断（如 32.5 → 32），再钳制负值。
  */
 export function playerDefense(
     baseArmor: number,
@@ -98,7 +98,7 @@ export function playerDefense(
     requiredStrength: number
 ): number {
     const netEnch = netEnchant(enchantment, playerStrength, requiredStrength);
-    return Math.max(0, (baseArmor + netEnch) * 10);
+    return Math.max(0, Math.trunc((baseArmor + netEnch) * 10));
 }
 
 /**
@@ -118,7 +118,8 @@ export function clumpedRoll(
     clumping: number,
     rollFn: (lo: number, hi: number) => number
 ): number {
-    if (clumping <= 1 || min >= max) {
+    if (max <= min) return min;
+    if (clumping <= 1) {
         return rollFn(min, max);
     }
 

@@ -1,0 +1,684 @@
+{
+  "monsters": [
+    {
+      "id": "rat",
+      "ceName": "rat",
+      "range": [
+        1,
+        3,
+        1
+      ]
+    },
+    {
+      "id": "kobold",
+      "ceName": "kobold",
+      "range": [
+        1,
+        4,
+        1
+      ]
+    },
+    {
+      "id": "jackal",
+      "ceName": "jackal",
+      "range": [
+        2,
+        4,
+        1
+      ]
+    },
+    {
+      "id": "eel",
+      "ceName": "eel",
+      "range": [
+        3,
+        7,
+        2
+      ]
+    },
+    {
+      "id": "monkey",
+      "ceName": "monkey",
+      "range": [
+        1,
+        3,
+        1
+      ]
+    },
+    {
+      "id": "bloat",
+      "ceName": "bloat",
+      "range": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "pit_bloat",
+      "ceName": "pit bloat",
+      "range": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "goblin",
+      "ceName": "goblin",
+      "range": [
+        2,
+        5,
+        1
+      ]
+    },
+    {
+      "id": "goblin_conjurer",
+      "ceName": "goblin conjurer",
+      "range": [
+        2,
+        4,
+        1
+      ]
+    },
+    {
+      "id": "goblin_mystic",
+      "ceName": "goblin mystic",
+      "range": [
+        2,
+        4,
+        1
+      ]
+    },
+    {
+      "id": "goblin_totem",
+      "ceName": "goblin totem",
+      "range": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "pink_jelly",
+      "ceName": "pink jelly",
+      "range": [
+        1,
+        3,
+        1
+      ]
+    },
+    {
+      "id": "toad",
+      "ceName": "toad",
+      "range": [
+        1,
+        4,
+        1
+      ]
+    },
+    {
+      "id": "vampire_bat",
+      "ceName": "vampire bat",
+      "range": [
+        2,
+        6,
+        1
+      ]
+    },
+    {
+      "id": "arrow_turret",
+      "ceName": "arrow turret",
+      "range": [
+        2,
+        6,
+        1
+      ]
+    },
+    {
+      "id": "acid_mound",
+      "ceName": "acid mound",
+      "range": [
+        1,
+        3,
+        1
+      ]
+    },
+    {
+      "id": "centipede",
+      "ceName": "centipede",
+      "range": [
+        4,
+        12,
+        1
+      ]
+    },
+    {
+      "id": "ogre",
+      "ceName": "ogre",
+      "range": [
+        9,
+        13,
+        2
+      ]
+    },
+    {
+      "id": "bog_monster",
+      "ceName": "bog monster",
+      "range": [
+        3,
+        4,
+        1
+      ]
+    },
+    {
+      "id": "ogre_totem",
+      "ceName": "ogre totem",
+      "range": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "spider",
+      "ceName": "spider",
+      "range": [
+        3,
+        4,
+        2
+      ]
+    },
+    {
+      "id": "spark_turret",
+      "ceName": "spark turret",
+      "range": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "wisp",
+      "ceName": "wisp",
+      "range": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "wraith",
+      "ceName": "wraith",
+      "range": [
+        6,
+        13,
+        2
+      ]
+    },
+    {
+      "id": "zombie",
+      "ceName": "zombie",
+      "range": [
+        7,
+        12,
+        1
+      ]
+    },
+    {
+      "id": "troll",
+      "ceName": "troll",
+      "range": [
+        10,
+        15,
+        3
+      ]
+    },
+    {
+      "id": "ogre_shaman",
+      "ceName": "ogre shaman",
+      "range": [
+        5,
+        9,
+        1
+      ]
+    },
+    {
+      "id": "naga",
+      "ceName": "naga",
+      "range": [
+        7,
+        11,
+        4
+      ]
+    },
+    {
+      "id": "salamander",
+      "ceName": "salamander",
+      "range": [
+        5,
+        11,
+        3
+      ]
+    },
+    {
+      "id": "explosive_bloat",
+      "ceName": "explosive bloat",
+      "range": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "dar_blademaster",
+      "ceName": "dar blademaster",
+      "range": [
+        5,
+        9,
+        2
+      ]
+    },
+    {
+      "id": "dar_priestess",
+      "ceName": "dar priestess",
+      "range": [
+        2,
+        5,
+        1
+      ]
+    },
+    {
+      "id": "dar_battlemage",
+      "ceName": "dar battlemage",
+      "range": [
+        1,
+        3,
+        1
+      ]
+    },
+    {
+      "id": "acidic_jelly",
+      "ceName": "acidic jelly",
+      "range": [
+        2,
+        6,
+        1
+      ]
+    },
+    {
+      "id": "centaur",
+      "ceName": "centaur",
+      "range": [
+        4,
+        8,
+        2
+      ]
+    },
+    {
+      "id": "underworm",
+      "ceName": "underworm",
+      "range": [
+        18,
+        22,
+        2
+      ]
+    },
+    {
+      "id": "sentinel",
+      "ceName": "sentinel",
+      "range": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "dart_turret",
+      "ceName": "dart turret",
+      "range": [
+        1,
+        2,
+        1
+      ]
+    },
+    {
+      "id": "kraken",
+      "ceName": "kraken",
+      "range": [
+        15,
+        20,
+        3
+      ]
+    },
+    {
+      "id": "lich",
+      "ceName": "lich",
+      "range": [
+        2,
+        6,
+        1
+      ]
+    },
+    {
+      "id": "phylactery",
+      "ceName": "phylactery",
+      "range": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "pixie",
+      "ceName": "pixie",
+      "range": [
+        1,
+        3,
+        1
+      ]
+    },
+    {
+      "id": "phantom",
+      "ceName": "phantom",
+      "range": [
+        12,
+        18,
+        4
+      ]
+    },
+    {
+      "id": "flame_turret",
+      "ceName": "flame turret",
+      "range": [
+        1,
+        2,
+        1
+      ]
+    },
+    {
+      "id": "imp",
+      "ceName": "imp",
+      "range": [
+        4,
+        9,
+        2
+      ]
+    },
+    {
+      "id": "fury",
+      "ceName": "fury",
+      "range": [
+        6,
+        11,
+        4
+      ]
+    },
+    {
+      "id": "revenant",
+      "ceName": "revenant",
+      "range": [
+        15,
+        20,
+        5
+      ]
+    },
+    {
+      "id": "tentacle_horror",
+      "ceName": "tentacle horror",
+      "range": [
+        25,
+        35,
+        3
+      ]
+    },
+    {
+      "id": "golem",
+      "ceName": "golem",
+      "range": [
+        4,
+        8,
+        1
+      ]
+    },
+    {
+      "id": "dragon",
+      "ceName": "dragon",
+      "range": [
+        25,
+        50,
+        4
+      ]
+    },
+    {
+      "id": "goblin_warlord",
+      "ceName": "goblin warlord",
+      "range": [
+        3,
+        6,
+        1
+      ]
+    },
+    {
+      "id": "black_jelly",
+      "ceName": "black jelly",
+      "range": [
+        3,
+        8,
+        1
+      ]
+    },
+    {
+      "id": "vampire",
+      "ceName": "vampire",
+      "range": [
+        4,
+        15,
+        2
+      ]
+    },
+    {
+      "id": "flamedancer",
+      "ceName": "flamedancer",
+      "range": [
+        3,
+        8,
+        2
+      ]
+    },
+    {
+      "id": "spectral_blade",
+      "ceName": "spectral blade",
+      "range": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "spectral_sword",
+      "ceName": "spectral sword",
+      "range": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "stone_guardian",
+      "ceName": "stone guardian",
+      "range": [
+        12,
+        17,
+        2
+      ]
+    },
+    {
+      "id": "winged_guardian",
+      "ceName": "winged guardian",
+      "range": [
+        12,
+        17,
+        2
+      ]
+    },
+    {
+      "id": "guardian_spirit",
+      "ceName": "guardian spirit",
+      "range": [
+        5,
+        12,
+        2
+      ]
+    },
+    {
+      "id": "Warden_of_Yendor",
+      "ceName": "Warden of Yendor",
+      "range": [
+        12,
+        17,
+        2
+      ]
+    },
+    {
+      "id": "eldritch_totem",
+      "ceName": "eldritch totem",
+      "range": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "mirrored_totem",
+      "ceName": "mirrored totem",
+      "range": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "unicorn",
+      "ceName": "unicorn",
+      "range": [
+        2,
+        10,
+        2
+      ]
+    },
+    {
+      "id": "ifrit",
+      "ceName": "ifrit",
+      "range": [
+        5,
+        13,
+        2
+      ]
+    },
+    {
+      "id": "phoenix",
+      "ceName": "phoenix",
+      "range": [
+        4,
+        10,
+        2
+      ]
+    },
+    {
+      "id": "phoenix_egg",
+      "ceName": "phoenix egg",
+      "range": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "mangrove_dryad",
+      "ceName": "mangrove dryad",
+      "range": [
+        2,
+        8,
+        2
+      ]
+    }
+  ],
+  "weapons": {
+    "dagger": [
+      3,
+      4,
+      1
+    ],
+    "sword": [
+      7,
+      9,
+      1
+    ],
+    "broadsword": [
+      14,
+      22,
+      1
+    ],
+    "whip": [
+      3,
+      5,
+      1
+    ],
+    "rapier": [
+      3,
+      5,
+      1
+    ],
+    "flail": [
+      9,
+      15,
+      1
+    ],
+    "mace": [
+      16,
+      20,
+      1
+    ],
+    "war_hammer": [
+      25,
+      35,
+      1
+    ],
+    "spear": [
+      4,
+      5,
+      1
+    ],
+    "war_pike": [
+      11,
+      15,
+      1
+    ],
+    "axe": [
+      7,
+      9,
+      1
+    ],
+    "war_axe": [
+      12,
+      17,
+      1
+    ],
+    "dart": [
+      2,
+      4,
+      1
+    ],
+    "incendiary_dart": [
+      1,
+      2,
+      1
+    ],
+    "javelin": [
+      3,
+      11,
+      3
+    ]
+  }
+}

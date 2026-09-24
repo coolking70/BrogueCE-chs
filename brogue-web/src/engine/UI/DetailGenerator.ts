@@ -216,8 +216,10 @@ export function generateMonsterDetail(
             color: playerHitProb > 70 ? '#44ff44' : '#ffcc44'
         });
 
-        const pAvg = (playerWeaponDamage[0] + playerWeaponDamage[1]) / 2;
-        const scaledAvg = pAvg * damageFraction(wNE);
+        const fraction = damageFraction(wNE);
+        const scaledLo = Math.max(1, Math.trunc(playerWeaponDamage[0] * fraction));
+        const scaledHi = Math.max(1, Math.trunc(playerWeaponDamage[1] * fraction));
+        const scaledAvg = (scaledLo + scaledHi) / 2;
         if (monster.hp > 0) {
             const pctOfMonHP = Math.round(100 * scaledAvg / monster.hp);
             combatLines.push({
@@ -225,7 +227,7 @@ export function generateMonsterDetail(
                 color: '#88ff88'
             });
 
-            const hitsFromPlayer = Math.max(1, Math.ceil(monster.hp / Math.max(1, playerWeaponDamage[1] * damageFraction(wNE))));
+            const hitsFromPlayer = Math.max(1, Math.ceil(monster.hp / scaledHi));
             combatLines.push({
                 text: `最少 ${hitsFromPlayer} 击可击败该怪物。`,
                 color: '#cccccc'
@@ -318,8 +320,8 @@ export function generateItemDetail(
                 const strReq = item.strengthRequired || 12;
                 const ne = netEnchant(item.enchantment, playerStrength, strReq);
                 const frac = damageFraction(ne);
-                const eLo = Math.max(1, Math.round(lo * frac));
-                const eHi = Math.max(1, Math.round(hi * frac));
+                const eLo = Math.max(1, Math.trunc(lo * frac));
+                const eHi = Math.max(1, Math.trunc(hi * frac));
                 statsLines.push({
                     text: `实际伤害: ${eLo}~${eHi} (附魔 ${item.enchantment > 0 ? '+' : ''}${item.enchantment})`,
                     color: item.enchantment > 0 ? '#44ff44' : '#ff4444'

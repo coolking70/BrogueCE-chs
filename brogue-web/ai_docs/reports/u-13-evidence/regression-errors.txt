@@ -1,0 +1,77 @@
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/b_1a_identification.test.ts > A6: 武器熟悉度门槛（CE GlobalsBrogue.c:1040 = 20 杀） > 接线：真实近战击杀扣减 1；击杀无生命怪不扣减（CE Monsters.c:157-159）
+AssertionError: expected 1 to be less than or equal to 0
+ ❯ src/test/b_1a_identification.test.ts:316:26
+    314|         totem.hp = 1; // 防御 0 必中，一击致死
+    315|         const observation = { strength: game.player.strength, required…
+    316|             enchantment: wpn.enchantment, defense: totem.defense, stat…
+       |                          ^
+    317|         const hit = resolve.resolvePlayerMeleeAttackOn(totem);
+    318|         expect(totem.hp, `U13 observation (guard unchanged): ${JSON.st…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  src/test/ui_2_protection.test.ts > UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 resolvePlayerMeleeAttackOn） > 带保护的武器完全跳过：附魔不动、无消息，但命中照样发生
+AssertionError: expected 15 to be less than 15
+ ❯ src/test/ui_2_protection.test.ts:145:26
+    143|         // 打红的错误实现：①豁免条件缺失（带保护照样降）；②把豁免写反成
+    144|         // "只有带保护才降"；③用"没打中"冒充豁免生效（本条先断言掉血）。
+    145|         const game = createHeadlessGame(4202);
+       |                          ^
+    146|         carveBigRoom(game);
+    147|         const sword = equipPlainSword(game, 0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  src/test/ui_2_protection.test.ts > UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 resolvePlayerMeleeAttackOn） > 下界照 CE 字面 enchant1 >= -10：-10 仍降到 -11，-11 才停
+AssertionError: expected 15 to be less than 15
+ ❯ src/test/ui_2_protection.test.ts:159:27
+    157|
+    158|     it('下界照 CE 字面 enchant1 >= -10：-10 仍降到 -11，-11 才停', () => {
+    159|         // 打红的错误实现：把下界写成 `> -10`（任务书条款②的误读——那样 -10
+       |                           ^
+    160|         // 就停，永远到不了 CE 允许的 -11）。
+    161|         // 场景 A：-10 → 再降一次到 -11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  src/test/ui_2_protection.test.ts > UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 resolvePlayerMeleeAttackOn） > quiverNumber 非零时重掷为 [1,60000]（CE :1436-1438，投掷武器的口径）
+AssertionError: expected 15 to be less than 15
+ ❯ src/test/ui_2_protection.test.ts:186:26
+    184|         const game = createHeadlessGame(4205);
+    185|         carveBigRoom(game);
+    186|         const sword = equipPlainSword(game, 0);
+       |                          ^
+    187|         // 近战剑本无 quiverNumber，此处显式置值以驱动 CE 的重掷支
+    188|         //（机制本身按 CE 条件收在非零检查内，见下一方向的负例——徒手/零值不掷）。
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  src/test/ui_2_protection.test.ts > UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 resolvePlayerMeleeAttackOn） > 目标被这一击打死时降级照常发生（CE 该块在命中支尾部，不吃目标存活条件）
+AssertionError: expected 1 to be less than or equal to 0
+ ❯ src/test/ui_2_protection.test.ts:227:26
+    225|         // 打红的错误实现：把降级挂进"目标存活"分支（CE 的降级只看命中，
+    226|         // 击杀不豁免—— inflictedDamage 在 attack() 内更早发生）。
+    227|         const game = createHeadlessGame(4208);
+       |                          ^
+    228|         carveBigRoom(game);
+    229|         const sword = equipPlainSword(game, 0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  src/engine/UI/DetailGenerator.test.ts > damage 缺失时详情面板不抛异常 > monster.damageString 为 undefined：跳过战斗分析中的伤害行
+TypeError: Cannot read properties of undefined (reading 'match')
+ ❯ CombatSystem.parseDamageString src/engine/Combat/Combat.ts:305:30
+    303|     public static parseDamageString(ds: string): { min: number; max: n…
+    304|         // Support formats: "XdY", "XdY+Z", "X-Y"
+    305|         const diceMatch = ds.match(/^(\d+)d(\d+)(?:\+(\d+))?$/);
+       |                              ^
+    306|         if (diceMatch) {
+    307|             const count = parseInt(diceMatch[1]!, 10);
+ ❯ new Monster src/entities/Monster.ts:403:61
+ ❯ src/engine/UI/DetailGenerator.test.ts:60:25
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+

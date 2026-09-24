@@ -1,0 +1,30 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/36f6/brogue/brogue-web
+
+stdout | src/test/ui_2_protection.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/b_1a_identification.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/u_06_monster_damage.test.ts > U06 CE compiled staffDamage goldens and real contacts > 'SPARK' ignores caster accuracy/damage/status/riders and monster armor, consumes only CE dice
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/ui_2_protection.test.ts (11 tests) 1960ms
+     ✓ 不带保护的武器被酸怪命中后附魔 -1、有 "weakens" 消息（行为终点）  328ms
+     ✓ 下界照 CE 字面 enchant1 >= -10：-10 仍降到 -11，-11 才停  357ms
+     ✓ quiverNumber 为零值时不掷骰、保持未定义；徒手（无武器）不降级不炸  360ms
+ ✓ src/test/u_06_monster_damage.test.ts (37 tests) 3649ms
+ ✓ src/test/b_1a_identification.test.ts (34 tests) 22222ms
+     ✓ 熟悉度只亮实例：护甲穿满 1000 回合，同种新护甲仍未知  764ms
+     ✓ 边界：999 块不亮、第 1000 块亮（只亮实例）；脱下不计数  756ms
+     ✓ 边界：1499 块不亮、第 1500 块实例+种类一起亮（CE identify()）  1001ms
+     ✓ L1 全链 D1..D26 每件生成物品都落在物品合法格（CE T_OBSTRUCTS_ITEMS|T_PATHING_BLOCKER 回避）  11759ms
+     ✓ L2 同种子双跑全链物品签名逐位一致（非确定性掷骰——Math.random 类泄漏——在此翻红）  5360ms
+     ✓ 快照携带鉴定字段；读档后种类集、实例旗标、绰号全部还原  359ms
+
+ Test Files  3 passed (3)
+      Tests  82 passed (82)
+   Start at  18:53:44
+   Duration  22.89s (transform 929ms, setup 0ms, import 1.76s, tests 27.83s, environment 0ms)
+

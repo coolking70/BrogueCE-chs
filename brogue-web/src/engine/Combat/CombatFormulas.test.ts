@@ -2,11 +2,8 @@
  * CombatFormulas.test.ts — 战斗公式黄金值回归测试（验收网）
  *
  * 黄金值来源：BrogueCE-master/src/brogue/Combat.c 与 PowerTables.c（只读基线）。
- * web 端 CombatFormulas.ts 采用 float 近似 CE 的 16.16 定点表格（FP_FACTOR=65536，
- * 见 Rogue.h:99-101），因此断言使用 toBeCloseTo(…, 12)；CE 表格值与 float 理想值
- * 之间最多相差定点截断噪声（<0.02%），注释中给出对应表格下标以便核对。
- *
- * 本文件不修改任何被测实现；发现与 CE 不符之处以 it.fails / it.todo 占位并单独列出。
+ * U13 将浮点理想值断言替换为 CE 原表整数及逐级截断；完整编译黄金值矩阵
+ * 在 u_13_combat_math.test.ts。符文既有断言及未实现的 todo 保持原合同。
  */
 import { describe, it, expect } from 'vitest';
 import {
@@ -71,95 +68,19 @@ describe('netEnchant — CE Combat.c:76-83', () => {
     });
 });
 
-describe('accuracyFraction — CE PowerTables.c:161-182', () => {
-    // CE PowerTables.c:163  表格即 1.065^x，x 以 0.25 附魔点步进，范围 [-20, 50]
-    // CE PowerTables.c:180  idx = netEnchant*4/FP_FACTOR + 80 → 指数恰为 netEnchant
-    it('0 附魔 → 恰好 1（表格下标 80 = 65536）', () => {
-        expect(accuracyFraction(0)).toBe(1);
-    });
-
-    it('正附魔按 1.065^x 放大', () => {
-        // CE 表格下标 84 = 69795（= trunc(1.065 * 65536)）
-        expect(accuracyFraction(1)).toBeCloseTo(1.065, 12);
-        // 下标 81 = 66575（= trunc(1.065^0.25 * 65536)）
-        expect(accuracyFraction(0.25)).toBeCloseTo(1.0158682847827845, 12);
-        // 下标 120 = 123020
-        expect(accuracyFraction(10)).toBeCloseTo(1.877137465269359, 12);
-        // 下标 280 = 1527426（表格最大值，x=50）
-        expect(accuracyFraction(50)).toBeCloseTo(23.306678678698496, 12);
-    });
-
-    it('负附魔按 1.065^x 衰减', () => {
-        expect(accuracyFraction(-1)).toBeCloseTo(0.9389671361502347, 12); // 1/1.065
-        expect(accuracyFraction(-10)).toBeCloseTo(0.5327260355205291, 12);
-        // CE 表格下标 0 = 18598（x=-20；与 float 差 0.004%，系定点逐级截断噪声）
-        expect(accuracyFraction(-20)).toBeCloseTo(0.2837970289214204, 12);
-    });
-});
-
-describe('damageFraction — CE PowerTables.c:138-159', () => {
-    // CE PowerTables.c:140  与 accuracyFraction 同一张 1.065^x 表
-    // CE PowerTables.c:157  idx = netEnchant*4/FP_FACTOR + 80
-    it('0 附魔 → 恰好 1', () => {
-        expect(damageFraction(0)).toBe(1);
-    });
-
-    it('伤害缩放与命中缩放同表同值', () => {
-        expect(damageFraction(1)).toBeCloseTo(1.065, 12);
-        expect(damageFraction(10)).toBeCloseTo(1.877137465269359, 12);
-        expect(damageFraction(-10)).toBeCloseTo(0.5327260355205291, 12);
-        expect(damageFraction(50)).toBeCloseTo(23.306678678698496, 12);
-        expect(damageFraction(-20)).toBeCloseTo(0.2837970289214204, 12);
-    });
-});
-
-describe('defenseFraction — CE PowerTables.c:184-204', () => {
-    // CE PowerTables.c:186  表格基数 0.877347265 = 0.987^10，x 以 0.25 防御点步进
-    // CE PowerTables.c:202  idx = netDefense*4/10/FP_FACTOR + 80；CE 内部 defense
-    //                       为 ×10 定点（ogre 60 = 显示 6），/10 还原后指数 = 0.1*defense，
-    //                       即 0.877347265^(0.1*d) = 0.987^d —— 与 web 端 float 公式一致。
-    it('defense=0 时必须恰好等于 1（边界必测；表格下标 80 = 65536）', () => {
-        expect(defenseFraction(0)).toBe(1);
-    });
-
-    it('防御减伤系数 0.987^defense（CE 表格：下标 84=57497, 88=50445, 92=44258, 120=17709）', () => {
-        expect(defenseFraction(1)).toBeCloseTo(0.987, 12);
-        expect(defenseFraction(10)).toBeCloseTo(0.877347265250301, 12);
-        expect(defenseFraction(20)).toBeCloseTo(0.7697382238421805, 12);
-        expect(defenseFraction(30)).toBeCloseTo(0.6753277256465606, 12);
-        expect(defenseFraction(100)).toBeCloseTo(0.270218617040487, 12);
-    });
-});
-
-describe('hitProbability — CE Combat.c:116-147', () => {
-    // CE Combat.c:137-138  accuracy = player.info.accuracy * accuracyFraction(netEnchant) / FP_FACTOR
-    // CE Combat.c:140      hitProbability = accuracy * defenseFraction(defense) / FP_FACTOR
-    // CE Combat.c:141-145  钳制到 [0, 100]。web 端以 float 计算后四舍五入（CE 为两级
-    //                      定点截断，个别边界值可能相差 1，属量化差异，非公式漂移）。
-    it('零防御 → 命中率等于 accuracy', () => {
-        expect(hitProbability(100, 0)).toBe(100);
+describe('CE compiled fixed-point fractions and hit probability (U13)', () => {
+    it('uses original table integers and truncates each multiplication', () => {
+        expect(accuracyFraction(1)).toBe(69795 / 65536);
+        expect(damageFraction(-20)).toBe(18598 / 65536);
+        expect(defenseFraction(1)).toBe(1); // quarter displayed armor-point lookup
+        expect(defenseFraction(10)).toBe(57497 / 65536);
+        expect(hitProbability(100, 10)).toBe(87);
+        expect(hitProbability(75, 20)).toBe(57);
+        expect(hitProbability(100, 100)).toBe(27);
         expect(hitProbability(0, 0)).toBe(0);
-        expect(hitProbability(75, 0)).toBe(75);
-    });
-
-    it('防御减伤（未提供武器附魔）', () => {
-        expect(hitProbability(100, 10)).toBe(88); // 87.7347 → 88
-        expect(hitProbability(75, 20)).toBe(58); // 57.7304 → 58
-        expect(hitProbability(100, 100)).toBe(27); // 27.0219 → 27
-        expect(hitProbability(1, 100)).toBe(0); // 0.2702 → 0（钳到 0）
-    });
-
-    it('武器附魔放大 accuracy 后再乘防御系数', () => {
-        expect(hitProbability(50, 5, 3)).toBe(57); // 56.5724 → 57
-        expect(hitProbability(88, 12, 2)).toBe(85); // 85.3076 → 85
-        expect(hitProbability(100, 10, -10)).toBe(47); // 46.7386 → 47
-        expect(hitProbability(100, 0, -20)).toBe(28); // 28.3797 → 28
-    });
-
-    // CE Combat.c:141-142  > 100 钳到 100
-    it('上限钳制到 100', () => {
         expect(hitProbability(200, 0)).toBe(100);
-        expect(hitProbability(100, 0, 10)).toBe(100); // 187.7137 → 100
+        expect(hitProbability(50, -100)).toBe(50); // monsterDefenseAdjusted clamp
+        expect(hitProbability(100, 10, -10)).toBe(46);
     });
 });
 
@@ -188,8 +109,8 @@ describe('playerDefense — CE Items.c:8515-8523（加法模型）', () => {
         expect(playerDefense(11, 0, 19, 19)).toBe(110);
         // plate(11) +3、力量恰好 → 内部 140
         expect(playerDefense(11, 3, 19, 19)).toBe(140);
-        // 0.25 步进（力量盈余 +0.25）：3 + 0.25 = 3.25 显示 → 32.5 内部
-        expect(playerDefense(3, 0, 11, 10)).toBe(32.5);
+        // 0.25 步进（力量盈余 +0.25）：3 + 0.25 = 3.25 显示 → 32 内部（CE short 截断）
+        expect(playerDefense(3, 0, 11, 10)).toBe(32);
         // banded(7) -4、力量恰好 → (7-4)*10 = 30
         expect(playerDefense(7, -4, 15, 15)).toBe(30);
         // 基础 0：净附魔仍按加法生效（0 + 2)*10 = 20；CE 对 defense 的唯一
@@ -198,7 +119,7 @@ describe('playerDefense — CE Items.c:8515-8523（加法模型）', () => {
     });
 
     // 验收断言：每点净附魔使内部防御值恰好 +10（加法，非乘法）
-    it('每点净附魔使内部防御值 +10（含 0.25 步进的 +2.5）', () => {
+    it('每点净附魔使内部防御值 +10；小数存入 short 时截断', () => {
         // 力量恰好时：附魔 +1 → +10
         expect(playerDefense(4, 3, 14, 14) - playerDefense(4, 2, 14, 14)).toBe(10);
         expect(playerDefense(11, 4, 19, 19) - playerDefense(11, 3, 19, 19)).toBe(10);
@@ -206,8 +127,8 @@ describe('playerDefense — CE Items.c:8515-8523（加法模型）', () => {
         expect(playerDefense(4, 0, 18, 14) - playerDefense(4, 0, 14, 14)).toBe(10);
         // 力量欠缺路径：-1 力量 → -2.5 净附魔 → -25 内部
         expect(playerDefense(4, 0, 13, 14) - playerDefense(4, 0, 14, 14)).toBe(-25);
-        // 0.25 步进：+0.25 净附魔 → +2.5 内部
-        expect(playerDefense(4, 0.25, 14, 14) - playerDefense(4, 0, 14, 14)).toBe(2.5);
+        // 0.25 步进：42.5 存为 42；不可保留浮点理想值
+        expect(playerDefense(4, 0.25, 14, 14) - playerDefense(4, 0, 14, 14)).toBe(2);
     });
 
     // 验收断言：负值钳到 0（CE Items.c:8520-8522）

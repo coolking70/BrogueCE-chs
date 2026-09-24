@@ -1,0 +1,46 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/36f6/brogue/brogue-web
+
+stdout | src/test/armor_display_effect.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/u_13_combat_math.test.ts > U13 short circuits, multipliers, order, and real substantive counts > real BE_ATTACK entry consumes full clump with its normal hit roll
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_13_combat_math.test.ts (35 tests) 504ms
+     ✓ real BE_ATTACK entry consumes full clump with its normal hit roll  372ms
+stdout | src/engine/UI/DetailGenerator.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/engine/UI/DetailGenerator.test.ts (5 tests | 1 failed) 10ms
+     ✓ 1d5+15 → 面板显示 16~20 2ms
+     ✓ 1d11+24 → 面板显示 25~35 0ms
+     ✓ 1d2+2 → 面板显示 3~4 0ms
+     ✓ item.damage 为 undefined：不抛异常且无伤害行 1ms
+     × monster.damageString 为 undefined：跳过战斗分析中的伤害行 6ms
+ ✓ src/test/armor_display_effect.test.ts (16 tests) 854ms
+     ✓ 无甲：面板命中率 = hitProbability(100, 0) = 100%  403ms
+     ✓ 皮甲+0（力10）：面板命中率 = hitProbability(100, playerDefense(3,0,10,10))  440ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/engine/UI/DetailGenerator.test.ts > damage 缺失时详情面板不抛异常 > monster.damageString 为 undefined：跳过战斗分析中的伤害行
+TypeError: Cannot read properties of undefined (reading 'match')
+ ❯ CombatSystem.parseDamageString src/engine/Combat/Combat.ts:305:30
+    303|     public static parseDamageString(ds: string): { min: number; max: n…
+    304|         // Support formats: "XdY", "XdY+Z", "X-Y"
+    305|         const diceMatch = ds.match(/^(\d+)d(\d+)(?:\+(\d+))?$/);
+       |                              ^
+    306|         if (diceMatch) {
+    307|             const count = parseInt(diceMatch[1]!, 10);
+ ❯ new Monster src/entities/Monster.ts:403:61
+ ❯ src/engine/UI/DetailGenerator.test.ts:60:25
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 55 passed (56)
+   Start at  18:23:24
+   Duration  2.17s (transform 1.26s, setup 0ms, import 2.35s, tests 1.37s, environment 1ms)
+

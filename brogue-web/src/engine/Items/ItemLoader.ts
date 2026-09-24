@@ -1274,6 +1274,7 @@ export class ItemLoader {
         weapon.loc = { x, y };
         weapon.weight = data.weight || 0;
         weapon.damage = data.damage;
+        weapon.clumping = data.clumping;
         weapon.strengthRequired = data.strengthRequired;
         // P4-7：CE 按武器种类赋予的物品旗标（Items.c:209-236）随数据下发。
         // 旗标先于附魔分支就位：它们参与好符文的阈值计算（CE :249-253）。

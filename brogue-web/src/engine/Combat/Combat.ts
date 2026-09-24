@@ -59,7 +59,7 @@ export class CombatSystem {
         /**
          * P4-3：CE attack()（Combat.c:1243-1245）把 MONST_IMMUNE_TO_WEAPONS 的豁免
          * 限定在“武器伤害”——近战与投掷武器都走这条 attack() 复用路径，默认 true。
-         * BE_DAMAGE 等法术/环境伤害出口传 false，不受该标志影响；BE_ATTACK 保持 true
+         * BE_DAMAGE 已由 U06 独立结算；BE_ATTACK 保持 true
          * （CE inflictDamage 本身只认 MONST_INVULNERABLE，不检查 IMMUNE_TO_WEAPONS）。
          */
         isWeaponAttack?: boolean;
@@ -75,17 +75,18 @@ export class CombatSystem {
     }): AttackResult {
         let attackerAccuracy = 100; // Player base accuracy
         let defenderDefense = 0;
-        let damageString = '1d4'; // default unarmed
+        let damageString = '1d2'; // CE monsterCatalog[MK_YOU]
         let weaponName = 'bare hands';
         let weaponEnchant: number | undefined;
         let weaponRunic: string | undefined;
         let backstab = false;
-        let clumping = 1;
+        let clumping: number | undefined;
 
         // --- Determine attacker stats ---
         if (attacker instanceof Player) {
             if (attacker.equippedWeapon && attacker.equippedWeapon.damage) {
                 damageString = attacker.equippedWeapon.damage;
+                clumping = attacker.equippedWeapon.clumping;
                 weaponName = attacker.equippedWeapon.name;
                 const strReq = attacker.equippedWeapon.strengthRequired || 0;
                 weaponEnchant = netEnchant(
@@ -98,6 +99,7 @@ export class CombatSystem {
         } else if (attacker instanceof Monster) {
             attackerAccuracy = attacker.accuracy;
             damageString = attacker.damageString || '1d3';
+            clumping = attacker.damageClumping;
             weaponName = 'claws/teeth';
         }
 
@@ -145,7 +147,10 @@ export class CombatSystem {
         }
 
         // 偷袭触发集整体自动命中（CE Combat.c:1239 的 || 短路，attackHit 不掷）。
-        const autoHit = backstab || lungeAttack;
+        // attackHit() has its own short circuit, even for an inanimate paralyzed
+        // defender: it auto-hits without granting the sneak damage multiplier.
+        const autoHit = backstab || lungeAttack || defender.hasStatus('paralyzed')
+            || (defender instanceof Monster && defender.isCaged);
         // --- P4-4: MA_KAMIKAZE (Combat.c:1159-1162) ---
         // CE 的检查在 attackHit() 掷骰之前（line 1159 早于 line 1240 的命中判定）：
         // 自爆怪物的攻击永远"成功"，不参与命中率——攻击者直接自毁代替造成伤害，
@@ -157,7 +162,7 @@ export class CombatSystem {
         }
 
         // CE Combat.c:1173-1177: this is a rejected physical attack, before
-        // entrancement release. The legacy BE_DAMAGE caller is not melee.
+        // entrancement release. BE_DAMAGE has a separate U06 path.
         if (opts?.isWeaponAttack !== false && attacker instanceof Monster
             && attacker.hasBehavior('MONST_RESTRICTED_TO_LIQUID')
             && (defender.hasStatus('levitating') || defender.hasStatus('flying'))) {
@@ -165,8 +170,7 @@ export class CombatSystem {
         }
 
         // W-18 CE Combat.c:1183: attempts release entrancement even on a miss.
-        // BE_DAMAGE retains its separately registered legacy hit roll; only a
-        // successful damage hit is aggressive there (Items.c:5212).
+        // U06 handles BE_DAMAGE aggression in its separate damage path.
         if (opts?.isWeaponAttack !== false) defender.setStatusDuration('entranced', 0);
 
         // --- P4-5: MA_SEIZES (Combat.c:1212-1237) ---
@@ -183,50 +187,37 @@ export class CombatSystem {
             return { damage: 0, weaponName, hit: false, backstab: false, seized: true };
         }
 
-        // --- Calculate hit probability ---
-        let hitProb: number;
-        if (autoHit) {
-            hitProb = 100;
-        } else if (defender.seized && attacker.seizing) {
-            // P4-5：CE hitProbability()（Combat.c:125-130）——猎物被抓住后无法闪避
-            // 抓着自己的攻击者（defender SEIZED && attacker SEIZING → 直接返回 100）。
-            // 这让"抓住→下一口必中"成为 MA_SEIZES 的核心威胁；若把这一击仍然交给
-            // 命中率公式，accuracy 低的抓取者抓住后反而很难咬到，与 CE 不符。
-            hitProb = 100;
-        } else {
-            hitProb = hitProbability(attackerAccuracy, defenderDefense, weaponEnchant);
-        }
-
-        // --- Roll to hit ---
-        if (!rng.randPercent(hitProb)) {
+        // Seizing is probability=100, NOT an attackHit short circuit: it still
+        // rolls 0..99. Sleeping/sneak/paralysis/lunge/captive bypass that roll.
+        if (!autoHit && !rng.randPercent(defender.seized && attacker.seizing
+            ? 100 : hitProbability(attackerAccuracy, defenderDefense, weaponEnchant))) {
             return { damage: 0, weaponName, hit: false, backstab: false };
         }
 
         if (opts?.isWeaponAttack === false) defender.setStatusDuration('entranced', 0);
 
-        // --- Calculate damage ---
         const parts = CombatSystem.parseDamageString(damageString);
-        let damage = clumpedRoll(
-            parts.min,
-            parts.max,
-            clumping,
-            (lo, hi) => rng.randRange(lo, hi)
-        );
-
-        // Apply weapon enchantment damage scaling
-        if (weaponEnchant !== undefined && weaponEnchant !== 0) {
-            const dmgMult = damageFraction(weaponEnchant);
-            damage = Math.max(1, Math.round(damage * dmgMult));
+        let { min, max } = parts;
+        if (weaponEnchant !== undefined) {
+            // CE Items.c recalculateEquipmentBonuses: scale/truncate endpoints
+            // BEFORE randClump, preserving clumpFactor and every interior value.
+            const fraction = damageFraction(weaponEnchant);
+            min = Math.max(1, Math.trunc(min * fraction));
+            max = Math.max(1, Math.trunc(max * fraction));
         }
+        const isWeaponAttack = opts?.isWeaponAttack !== false;
+        const immune = defender instanceof Monster && (defender.isInvulnerable()
+            || (isWeaponAttack && defender.isImmuneToWeapons()));
+        // CE Combat.c:1242-1246: immunity skips damage RNG entirely. Zero damage
+        // ranges stay zero. weaknessAmount is a U14 dependency, not half damage.
+        let damage = immune ? 0 : clumpedRoll(min, max, clumping ?? parts.clumping,
+            (lo, hi) => rng.randRange(lo, hi));
 
-        // Monster damage adjustment (weakness debuff)
-        if (attacker instanceof Monster && attacker.hasStatus('weakened')) {
-            damage = Math.max(1, Math.floor(damage * 0.5));
-        }
-
-        // Player weakness adjustment
-        if (attacker instanceof Player && attacker.hasStatus('weakened')) {
-            damage = Math.max(1, Math.floor(damage * 0.5));
+        // CE :1248-1258: only the sneak set delays/wakes a monster, even on an
+        // immune hit; lunge/captive/attackHit-only paralysis do not.
+        if (backstab && defender instanceof Monster) {
+            defender.ticksUntilTurn += Math.max(defender.movementSpeed, defender.attackSpeed);
+            if (!defender.isAlly) defender.state = MonsterState.HUNTING;
         }
 
         // B-1：CE Combat.c:1259-1268 —— 偷袭触发集（sneakAttack || asleep ||
@@ -243,35 +234,15 @@ export class CombatSystem {
             damage *= daggerSneak ? 5 : 3;
         }
 
-        // Invisibility bonus (+50% damage)
-        if (attacker instanceof Player && attacker.hasStatus('invisible') && !backstab) {
-            damage = Math.floor(damage * 1.5);
-        }
-
-        // CE 护甲不参与伤害结算：防御值已在上面进入命中率掷骰（Combat.c:140），
-        // 命中后按伤害骰全额扣血，没有任何"护甲减伤"步骤（全 CE 源码无此实现）。
-
-        // P4-3：MONST_INVULNERABLE（Combat.c:1806 inflictDamage）对一切伤害源生效；
-        // MONST_IMMUNE_TO_WEAPONS（Combat.c:1243）只在武器攻击（isWeaponAttack !== false）
-        // 时把伤害归零——早于下面的"命中至少 1 点"下限，且优先级更高（CE 同理：
-        // 伤害先被算成 0，最低 1 点的逻辑根本不会触发,因为 CE 没有"最低 1 点"这回事，
-        // 这里只是不让 web 自己的下限规则覆盖掉豁免）。
-        const isWeaponAttack = opts?.isWeaponAttack !== false;
-        const defenderIsInvulnerable = defender instanceof Monster && defender.isInvulnerable();
-        const defenderIsImmuneToWeapons = defender instanceof Monster && defender.isImmuneToWeapons();
-        if (defenderIsInvulnerable || (isWeaponAttack && defenderIsImmuneToWeapons)) {
-            damage = 0;
-        } else if (damage < 1) {
-            // Minimum 1 damage on a hit
-            damage = 1;
-        }
+        // CE has no independent invisible damage multiplier. Visibility can
+        // affect awareness through AI; U14 owns weaknessAmount and status state.
 
         if (damage > 0 && opts?.beforeDamage) damage = opts.beforeDamage(damage) ?? damage;
 
         // W-10 / CE Combat.c:1320-1323,1404,524-527: physical MA_POISONS
         // replaces rolled damage with 1 contact damage; the original roll becomes
         // poison duration. Centralized here for player, ally and geometry targets.
-        // BE_DAMAGE retains its separately scoped legacy monster formula.
+        // BE_DAMAGE is resolved separately by U06.
         const poisonDuration = isWeaponAttack && attacker instanceof Monster
             && attacker.hasAbility('MA_POISONS') && damage > 0 ? damage : 0;
         if (poisonDuration > 0) damage = 1;
@@ -353,7 +324,8 @@ export class CombatSystem {
         }
 
         // Fallback: treat as a constant
-        const val = parseInt(ds, 10) || 1;
+        const parsed = parseInt(ds, 10);
+        const val = Number.isNaN(parsed) ? 1 : parsed;
         return { min: val, max: val, clumping: 1 };
     }
 

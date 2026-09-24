@@ -1,0 +1,41 @@
+{
+  "sessionInputs": 406,
+  "changed": [
+    "src/test/b_1a_identification.test.ts",
+    "src/test/u_06_monster_damage.test.ts",
+    "src/test/ui_2_protection.test.ts"
+  ],
+  "productionUnchanged": true,
+  "comparison": "Existing case assertions (excluding removed diagnostic expect message only) and seed calls compared by TypeScript AST; all match.",
+  "comparisons": [
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "existingCaseDefinitions": 34,
+      "unchangedAssertions": 135,
+      "unchangedSeedCalls": 23,
+      "added": [],
+      "beforeSha256": "ccb31c6e92c02a2c66d4c58665173914247a294da2191cf05440eaa40d49d985",
+      "afterSha256": "98b2c93ca9e50a3439d16ddc8ec4031c7190ab7fdfb7c0d9d2dca205e6df6136"
+    },
+    {
+      "file": "src/test/u_06_monster_damage.test.ts",
+      "existingCaseDefinitions": 17,
+      "unchangedAssertions": 87,
+      "unchangedSeedCalls": 2,
+      "added": [
+        "'BE_ATTACK on an ASLEEP target short-circuits a false accuracy mock and wakes it'"
+      ],
+      "beforeSha256": "9ccea8aa14152445cd1e3acecb57fb8b76c90e3b917603940531e825ba9db88e",
+      "afterSha256": "6e453351ab3b14bfd98d16ba239607640659e04df7675043eae5fc34fd98e282"
+    },
+    {
+      "file": "src/test/ui_2_protection.test.ts",
+      "existingCaseDefinitions": 11,
+      "unchangedAssertions": 34,
+      "unchangedSeedCalls": 9,
+      "added": [],
+      "beforeSha256": "d7dd195ec192ef968c2ece9ed23318814f7d8879e2a360cab368775ee9e19ef4",
+      "afterSha256": "932cb2abac9e323756a62a97a16c55068bba269de083d736881b8c1d563d86a6"
+    }
+  ]
+}
