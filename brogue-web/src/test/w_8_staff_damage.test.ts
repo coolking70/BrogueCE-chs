@@ -252,12 +252,12 @@ describe('W-8 damage eligibility, burning and splitting', () => {
 });
 
 describe('W-8 explicit boundaries', () => {
-    it.each(['FIRE', 'SPARK', 'DRAGONFIRE'])('monster %s retains CombatSystem.attack with isWeaponAttack=false and no staff formula', name => {
+    it.each([['FIRE', 4, 14, 2], ['SPARK', 2, 6, 1], ['DRAGONFIRE', 15, 49, 7]] as const)('U06 monster %s uses CE catalog staffDamage without physical attack', (name, low, high, clumps) => {
         const g = scene(), caster = monster(g, 12, 5, 'dragon'), target = monster(g, 8);
         const attack = vi.spyOn(CombatSystem, 'attack'), roll = vi.spyOn(rng, 'randClumpedRange');
         g.castMonsterBolt(caster, target, name);
-        expect(attack).toHaveBeenCalledWith(caster, target, { isWeaponAttack: false });
-        expect(roll).not.toHaveBeenCalled();
+        expect(attack).not.toHaveBeenCalled();
+        expect(roll).toHaveBeenCalledWith(low, high, clumps);
     });
     it.each([['wand_of_fire', 5], ['wand_of_lightning', 8]] as const)('retired invention %s retains its old direct constant', (id, expected) => {
         const g = scene(), m = monster(g), item = new Item(id, '/', 0, ItemCategory.WAND);

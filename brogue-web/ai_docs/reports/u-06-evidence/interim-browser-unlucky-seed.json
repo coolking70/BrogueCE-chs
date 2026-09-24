@@ -1,0 +1,96 @@
+{
+  "states": [
+    {
+      "name": "spark-turn",
+      "state": {
+        "debug": {
+          "state": 1,
+          "general": true,
+          "specific": true,
+          "rolls": 12
+        },
+        "hp": 100,
+        "shield": 0,
+        "burning": 0,
+        "turns": 12,
+        "source": "",
+        "over": false,
+        "reason": "",
+        "caster": {
+          "name": "火花炮塔",
+          "hp": 100
+        },
+        "messages": [
+          "你看到了火花炮塔。"
+        ],
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 8,
+            "y": 8,
+            "hp": 100,
+            "nutrition": 2138,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 12,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "火花炮塔",
+              "x": 12,
+              "y": 8,
+              "hp": 100,
+              "maxHp": 100,
+              "accuracy": 0,
+              "defense": 0,
+              "damage": "0",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_TURRET"
+              ],
+              "abilityFlags": [],
+              "bolts": [
+                "SPARK"
+              ],
+              "typeId": "spark_turret",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        }
+      }
+    }
+  ],
+  "errors": []
+}

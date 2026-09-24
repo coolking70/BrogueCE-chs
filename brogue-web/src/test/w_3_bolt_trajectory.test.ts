@@ -230,11 +230,17 @@ describe('W-3 sequencing, recipients and W-2 observation', () => {
             const g = scene(), caster = rat(g, 2), first = rat(g, 6), second = rat(g, 10);
             g.player.loc = { x: 15, y: 8 }; first.isAlly = second.isAlly = true;
             const attacks = vi.spyOn(CombatSystem, 'attack');
+            const damage = vi.spyOn(rng, 'randClumpedRange').mockReturnValueOnce(2).mockReturnValueOnce(6);
             const result = g.castMonsterBolt(caster, name === 'SPARK' ? first : second, name)!;
             expect(result.hits.map(h => h.creature)).toEqual(name === 'SPARK' ? [first, second] : [first]);
-            if (name === 'SPARK') expect(attacks.mock.calls.map(c => c[1])).toEqual([first, second]);
+            if (name === 'SPARK') {
+                // U06/CE Items.c:5168: ordered contacts each roll catalog damage.
+                expect(attacks).not.toHaveBeenCalled();
+                expect(damage.mock.calls).toEqual([[2, 6, 1], [2, 6, 1]]);
+                expect([first.hp, second.hp]).toEqual([98, 94]);
+            }
             else { expect(first.hasStatus('slowed')).toBe(true); expect(second.hasStatus('slowed')).toBe(false); }
-            attacks.mockRestore();
+            attacks.mockRestore(); damage.mockRestore();
         }
     });
 

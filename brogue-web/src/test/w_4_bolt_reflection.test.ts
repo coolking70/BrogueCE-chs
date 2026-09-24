@@ -218,13 +218,16 @@ describe('W-4 recipient dispatch and boundaries', () => {
         expect(g.player.hasStatus('confused')).toBe(false);
     });
 
-    it('monster return passes the real caster to combat, preserves damage math, then hits a player behind it', () => {
+    it('U06 monster return rolls catalog damage on the caster then the player behind it', () => {
         const g = scene(), caster = monster(g, 6), guardian = monster(g, 8, 5, 'stone_guardian');
         const attack = vi.spyOn(CombatSystem, 'attack');
+        const roll = vi.spyOn(rng, 'randClumpedRange').mockReturnValueOnce(2).mockReturnValueOnce(6);
         const r = g.castMonsterBolt(caster, guardian, 'SPARK')!;
         expect(recipients(r)).toEqual([caster, g.player]);
-        expect(attack.mock.calls.map(c => c[1])).toEqual([caster, g.player]);
-        expect(attack.mock.calls.every(c => c[2]?.isWeaponAttack === false)).toBe(true);
+        expect(attack).not.toHaveBeenCalled();
+        expect(roll.mock.calls).toEqual([[2, 6, 1], [2, 6, 1]]);
+        expect([caster.hp, g.player.hp]).toEqual([98, 94]);
+        expect(g.lastDamageSource).toBe(caster.name);
         expect(r.outcome?.autoID).toBe(true); expect(guardian.hp).toBe(100);
     });
 

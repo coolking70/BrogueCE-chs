@@ -1090,3 +1090,17 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 浏览器两场景：真实背包点击朗读；另一路菜单保存→刷新→继续→背包朗读；保护墙和边界不变，普通墙/边界分别变力场/晶墙，卷轴消耗、俘虏保留、回合+1，console/page errors=0。技能客户端沙箱启动受 MachPort 限制，提升后运行；canvas黑图已实看，不计视觉通过，有头整页截图已核验。
 - 反查R∪S共133文件，无未解析导入；AST确认Game只有crystalizeFromPlayer改变，155个来源/原测试/fixture文件SHA不变。最终运行脚本冻结输入前后SHA，之后仅回填报告和证据。
 - 后续：CE楼梯邻格IMPREGNABLE写口尚无web对应（不改赋值来源）；DF全局副作用/力场默认外观/怪物死亡收口、多层与RNG存档仍按X-0原任务边界处理。
+
+
+## 2026-09-24 U06：怪物直接法伤
+
+- 用户任务：执行 u-06.prompt.md，以 X-0 §4.1 / §4.3 U06 / §3.1 K09 为准。使用 develop-web-game 技能。
+- CE 完整 BE_DAMAGE/BE_ATTACK、monsterCastSpell、inflictDamage/moralAttack 与目录已核读；SPARK/FIRE/DRAGONFIRE magnitude=1/4/18。复用 W8 rollStaffDamage，不改目录/施法选择/生成。
+- 预计改义仅 W8 三条旧 monster 公式范围锁及 W4 一条反射 combat 调用锁；其余 R∪S 和 BE_ATTACK 不放宽。详细合同先登记 u-06.report.md。
+- 实现仅 Game.castMonsterBolt/applyMonsterBoltHit 与 BoltTrajectory 的可选终止回调；BE_ATTACK 分支去注释后的 AST 输出逐字相同，342 个既有源/测试/fixture/脚本/配置哈希保持。W8 原伤害原语直接复用；盾后 transference、存活点燃/解除控制/分裂、正常死亡清扫均有专项覆盖。
+- 编译本地 CE staffDamageLow/High/staffDamage/randClumpedRange，穷举 5/36/233280 个骰面组合；三族范围 2–6 / 4–14 / 15–49，伤害抽签分别 1/2/7 次。新增36项专项（35项中途通过后补消魔火免交互），W4/W8/P4-1b/W15 135项中途通过；最终结果只认冻结复跑。
+- 首次构建发现 callback 联合类型返回值与 burning 测试载体/缺 stealthRange 参数错误，已修复，随后 build 通过。现有断言只改最初声明的 W8 三条与 W4 一条，不放宽旧守卫。
+- 浏览器4场景与截图核验通过，console/page errors=0。实际等待输入→炮塔施法 HP100→97；火焰盾500→450、HP100、燃烧7；火免挡龙息；反射死亡归因原施法者。首次夹具遗漏清醒态；修后 seed601 前12个施法骰全>=30（已独立打印核验），使用首骰12的seed6，不改生产概率。技能客户端成功运行但canvas黑图，未计视觉通过；改用有头整页截图。
+- R∪S共129文件（R124），无未解析导入。最终运行 u06-final-check.mjs，冻结全部源码/测试/scripts/progress/CE/配置及范围/黄金输入；结果与SHA见 u-06.report.md / u-06-evidence。后续仅回填报告和证据。
+- 后续边界：怪物施法资格/时机保持U12；完整inflictDamage/状态谱系/死亡副作用保持U09/U14/U16；玩家W8反射死亡归因与终止缺口另登记，本轮不扩大玩家效果；不重捕获生成基线、不做旧档兼容。
+- 首次完整冻结门禁：CE/build/drift通过，2487passed/1failed/8skipped/1todo，404输入前后SHA一致。唯一失败为W3接触顺序测试内的旧SPARK近战调用断言；实际命中顺序断言已经通过。按CE Items:5168改为每接触独立(2,6,1)掷骰及98/94HP，顺序/慢速拦截断言保留；无阈值变更。完整失败轮存prefinal-w3-legacy；新增既有测试改义1项（共3文件5项），保护哈希数随之341。重新从CE/build运行完整最终门禁，不拼接旧结果。

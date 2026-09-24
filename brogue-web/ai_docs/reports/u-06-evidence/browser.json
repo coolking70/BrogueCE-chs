@@ -1,0 +1,451 @@
+{
+  "states": [
+    {
+      "name": "spark-turn",
+      "state": {
+        "debug": {
+          "state": 1,
+          "general": true,
+          "specific": true,
+          "rolls": 4
+        },
+        "hp": 97,
+        "shield": 0,
+        "burning": 0,
+        "turns": 1,
+        "source": "火花炮塔",
+        "over": false,
+        "reason": "",
+        "caster": {
+          "name": "火花炮塔",
+          "hp": 100
+        },
+        "messages": [
+          "你看到了火花炮塔。",
+          "火花炮塔击中了你！"
+        ],
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 8,
+            "y": 8,
+            "hp": 97,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "火花炮塔",
+              "x": 12,
+              "y": 8,
+              "hp": 100,
+              "maxHp": 100,
+              "accuracy": 0,
+              "defense": 0,
+              "damage": "0",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_TURRET"
+              ],
+              "abilityFlags": [],
+              "bolts": [
+                "SPARK"
+              ],
+              "typeId": "spark_turret",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 150,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        }
+      }
+    },
+    {
+      "name": "fire-shield",
+      "state": {
+        "debug": {
+          "state": 1,
+          "general": true,
+          "specific": true,
+          "rolls": 2
+        },
+        "hp": 100,
+        "shield": 450,
+        "burning": 7,
+        "turns": 0,
+        "source": "",
+        "over": false,
+        "reason": "",
+        "caster": {
+          "name": "火焰炮塔",
+          "hp": 100
+        },
+        "messages": [
+          "你看到了火焰炮塔。",
+          "火焰炮塔击中了你！",
+          "你着火了"
+        ],
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 8,
+            "y": 8,
+            "hp": 100,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 500,
+            "statuses": {
+              "shielded": 450,
+              "burning": 7
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "火焰炮塔",
+              "x": 12,
+              "y": 8,
+              "hp": 100,
+              "maxHp": 100,
+              "accuracy": 0,
+              "defense": 0,
+              "damage": "0",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_TURRET"
+              ],
+              "abilityFlags": [],
+              "bolts": [
+                "FIRE"
+              ],
+              "typeId": "flame_turret",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        }
+      }
+    },
+    {
+      "name": "dragon-immunity",
+      "state": {
+        "debug": {
+          "state": 1,
+          "general": true,
+          "specific": true,
+          "rolls": 0
+        },
+        "hp": 100,
+        "shield": 0,
+        "burning": 0,
+        "turns": 0,
+        "source": "",
+        "over": false,
+        "reason": "",
+        "caster": {
+          "name": "龙",
+          "hp": 100
+        },
+        "messages": [
+          "你看到了龙。",
+          "你毫发无伤。"
+        ],
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 8,
+            "y": 8,
+            "hp": 100,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {
+              "immune_fire": 20
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "龙",
+              "x": 12,
+              "y": 8,
+              "hp": 100,
+              "maxHp": 100,
+              "accuracy": 0,
+              "defense": 90,
+              "damage": "0",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_IMMUNE_TO_FIRE",
+                "MONST_CARRY_ITEM_100"
+              ],
+              "abilityFlags": [
+                "MA_ATTACKS_ALL_ADJACENT"
+              ],
+              "bolts": [
+                "DRAGONFIRE"
+              ],
+              "typeId": "dragon",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 50,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        }
+      }
+    },
+    {
+      "name": "reflected-death",
+      "state": {
+        "debug": {
+          "state": 1,
+          "general": true,
+          "specific": true,
+          "rolls": 5
+        },
+        "hp": 0,
+        "shield": 0,
+        "burning": 0,
+        "turns": 1,
+        "source": "老鼠",
+        "over": true,
+        "reason": "被老鼠杀死。",
+        "caster": {
+          "name": "老鼠",
+          "hp": 0
+        },
+        "messages": [
+          "你看到了老鼠。",
+          "老鼠击中了老鼠！",
+          "老鼠击中了你！",
+          "你看到了石像守卫。"
+        ],
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 4,
+            "y": 8,
+            "hp": 0,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "石像守卫",
+              "x": 12,
+              "y": 8,
+              "hp": 1000,
+              "maxHp": 1000,
+              "accuracy": 200,
+              "defense": 0,
+              "damage": "1d6+11",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_INANIMATE",
+                "MONST_NEVER_SLEEPS",
+                "MONST_ALWAYS_HUNTING",
+                "MONST_IMMUNE_TO_FIRE",
+                "MONST_IMMUNE_TO_WEAPONS",
+                "MONST_WILL_NOT_USE_STAIRS",
+                "MONST_DIES_IF_NEGATED",
+                "MONST_ALWAYS_USE_ABILITY",
+                "MONST_GETS_TURN_ON_ACTIVATION"
+              ],
+              "abilityFlags": [
+                "MA_REFLECT_100"
+              ],
+              "bolts": [],
+              "typeId": "stone_guardian",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        }
+      }
+    },
+    {
+      "reflection": {
+        "hits": [
+          "老鼠",
+          "Player"
+        ],
+        "path": [
+          {
+            "x": 9,
+            "y": 8
+          },
+          {
+            "x": 10,
+            "y": 8
+          },
+          {
+            "x": 11,
+            "y": 8
+          },
+          {
+            "x": 12,
+            "y": 8
+          },
+          {
+            "x": 11,
+            "y": 8
+          },
+          {
+            "x": 10,
+            "y": 8
+          },
+          {
+            "x": 9,
+            "y": 8
+          },
+          {
+            "x": 8,
+            "y": 8
+          },
+          {
+            "x": 7,
+            "y": 8
+          },
+          {
+            "x": 6,
+            "y": 8
+          },
+          {
+            "x": 5,
+            "y": 8
+          },
+          {
+            "x": 4,
+            "y": 8
+          }
+        ],
+        "guardianHP": 1000
+      }
+    }
+  ],
+  "errors": []
+}

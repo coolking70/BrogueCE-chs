@@ -126,7 +126,8 @@ function reflectedPath(grid: Grid, path: readonly Pos[], origin: Pos, towardCast
 
 /** Execution-only hooks; previews omit these and consume no reflection RNG. */
 export interface BoltExecution {
-    onCell(pos: Pos, hit: BoltHit | undefined): void;
+    /** false terminates after this contact (CE lethal BE_DAMAGE on player). */
+    onCell(pos: Pos, hit: BoltHit | undefined): boolean | void;
     onReflection?(reflection: BoltReflection): void;
     /** CE tunnelize at origin is free and does not identify the staff. */
     onTunnel?(pos: Pos, atOrigin: boolean): boolean;
@@ -142,7 +143,7 @@ export function staffBlinkDistance(enchantment: number): number {
  * tunneling excavates before post-contact collision and spends E per cell. A bare
  * onCell callback retains the W-3 pure-geometry API; execution hooks enable W-4. */
 export function traceBolt(grid: Grid, bolt: BoltConfig, from: Pos, aim: Pos, world: BoltWorld,
-    execution?: BoltExecution | ((pos: Pos, hit: BoltHit | undefined) => void),
+    execution?: BoltExecution | BoltExecution['onCell'],
     options: { reverseBlink?: boolean } = {}) {
     const flags = flagsFor(bolt), piercing = !!(flags & F.PASSES_THRU_CREATURES);
     const hooks = typeof execution === 'object' ? execution : undefined;
@@ -190,7 +191,7 @@ export function traceBolt(grid: Grid, bolt: BoltConfig, from: Pos, aim: Pos, wor
         }
         const hit = creature ? { creature, pos: { ...pos } } : undefined;
         if (hit) hits.push(hit);
-        onCell?.(pos, hit);
+        if (onCell?.(pos, hit) === false) break;
         if (creature && !piercing) break;
         let stillBlocked = !!(cellTerrainFlags(grid, pos.x, pos.y) & BLOCKS);
         if (tunneling && stillBlocked) {

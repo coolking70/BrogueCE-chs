@@ -4821,29 +4821,9 @@ export class Game {
         return autoID;
     }
 
-    /**
-     * P4-1b：怪物施法的效果落地出口，被 Monster.tryUseBolt 调用（对应 CE
-     * monsterCastSpell，Monsters.c:2764）。
-     *
-     * 设计取舍（"泛化 applyBoltEffect 但不破坏玩家路径"，详见报告）：没有
-     * 直接改造上面那个巨大的、按 item 措辞的 applyBoltEffect switch——它的每个
-     * 分支都绑死了"物品名 + 固定打玩家/固定回怪物"的叙事假设（这些旧假设已由 W-9/W-15 的命中分支替换），改起来风险远大于收益。这里另开一个
-     * 面向"施法者可以是怪物、目标可以是玩家或任意怪物"的精简出口，复用同一套
-     * 底层原语（traceBolt/createBoltResult 做路径与动画、applyStatusToMonster/
-     * applyTimedStatus 做状态、environment.ignite 做点火、CombatSystem.attack
-     * 做伤害判定），两条路径共享地基但不共享分支体，玩家原有调用
-     * （zapBoltFromPlayer → applyBoltEffect）保留。W-1 仅携带 caster/命中/落点
-     * 契约并返回结果；W-2 在旧分支观察 autoID；W-3 按真实接触逐格调用。
-     * W-9 起基础定向状态/治疗共用 applyBasicBoltEffect；其它分支保持旧边界。
-     *
-     * 伤害类 bolt（SPARK/FIRE/DRAGONFIRE/POISON_DART/DISTANCE_ATTACK）不走
-     * CE zap() 的 bolt 专属伤害公式——那个公式在 Combat.ts/CombatFormulas.ts
-     * （本轮禁改）里没有对应实现，重新发明一套会绕开项目既有的命中/防御/
-     * onHit 状态管线。改用 CombatSystem.attack(caster, target)：这正是 P4-1a
-     * 之前 'ranged' 占位桩已经在用的既有口径（centaur 等），伤害走怪物自己的
-     * damageString，命中率/onHit（MA_POISONS 等）全部沿用，是本项目对"怪物
-     * 远程攻击伤害"的既定简化，不是本轮新发明的。
-     */
+    /** Monster.tryUseBolt's contact/terrain exit. U06 BE_DAMAGE uses the
+     * shared CE staffDamage primitive at catalog magnitude; BE_ATTACK keeps
+     * CombatSystem.attack. Travel owns reflection and actual recipients. */
     public castMonsterBolt(caster: Monster, target: Creature, ceBoltName: string): BoltResult | undefined {
         const meta = MONSTER_BOLT_TABLE[ceBoltName];
         if (!meta || meta.effect === null) return; // 已知缺口/未映射，不应该走到这里
@@ -4865,6 +4845,9 @@ export class Game {
             onReflection: reflection => this.observeBoltReflection(reflection),
             onCell: (pos, hit) => {
                 if (hit) autoID = this.applyMonsterBoltHit(caster, hit.creature, ceBoltName, meta) || autoID;
+                // CE Items.c:5168-5178: lethal player damage returns before
+                // tile exposure and terminates even a piercing spark.
+                if (BOLT_EFFECT_CE_EFFECT[meta.effect!] === CEBoltEffect.DAMAGE && this.player.hp <= 0) return false;
                 autoID = this.applyBoltTerrainAt(visualBolt, pos) || autoID;
             },
         });
@@ -4889,12 +4872,54 @@ export class Game {
 
         switch (meta.effect) {
             case BoltEffect.SPARK:
-            case BoltEffect.DISTANCE_ATTACK:
-            case BoltEffect.POISON_DART:
             case BoltEffect.FIRE:
             case BoltEffect.DRAGONFIRE: {
-                // BE_ATTACK keeps weapon immunity; BE_DAMAGE keeps the legacy
-                // monster attack formula pending its separately scoped formula work.
+                autoID = true; // CE BE_DAMAGE identifies on contact, even immunity.
+                if ((meta.fiery && target.hasStatus('immune_fire'))
+                    || (target instanceof Monster && target.isInvulnerable())) {
+                    if (this.canObserveBoltTarget(target)) logger.log(i18next.t('bolt.invulnerable_no_effect', {
+                        target: targetName, defaultValue: `${targetName} is unaffected.`,
+                    }), '#aaaaaa');
+                    break; // immunity precedes all damage RNG; terrain still runs.
+                }
+                const damage = rollStaffDamage(meta.magnitude, rng);
+                const hpDamage = target.absorbShieldDamage(damage);
+                // CE inflictDamage transfers after shielding and before death,
+                // including when reflection makes caster and victim identical.
+                if (caster.hasAbility('MA_TRANSFERENCE')
+                    && !(target instanceof Monster && target.hasBehavior('MONST_INANIMATE'))) {
+                    caster.hp += Math.trunc(Math.min(hpDamage, target.hp) * (caster.isAlly ? 4 : 9) / 10);
+                }
+                target.takeDamage(hpDamage, true); // shield already consumed once.
+                if (hpDamage > 0) {
+                    // CE monsterCastSpell: a reflected monster bolt still kills
+                    // in the original caster's name, never in the reflector's.
+                    if (isPlayer) this.lastDamageSource = caster.name;
+                    this.spawnFloatingText(`-${hpDamage}`, target.loc.x, target.loc.y, 0xff5555);
+                    if (isPlayer) this.spawnBlood(target.loc.x, target.loc.y);
+                }
+                logCast('bolt.monster_cast_hit', `${casterLabel} hits ${targetName} with ${ceBoltName} for ${hpDamage} damage!`, '#ff8866');
+                if (target.hp > 0) {
+                    // CE survivor/moralAttack effects, also on a fully shielded
+                    // hit and on monster-origin reflected hits (Items.c:5195-5213).
+                    if (target instanceof Monster && !target.isAlly && target.state !== MonsterState.FLEEING) {
+                        target.state = MonsterState.HUNTING;
+                    }
+                    if (meta.fiery && (target instanceof Player || target instanceof Monster)) this.exposeCreatureToFire(target);
+                    if (target.hasStatus('paralyzed')) {
+                        target.setStatusDuration('paralyzed', 0);
+                        target.ticksUntilTurn = Math.min(caster.attackSpeed, 100) - 1;
+                    }
+                    target.setStatusDuration('entranced', 0);
+                    if (target instanceof Monster) this.trySplitMonster(target, caster);
+                }
+                // Death DF and carried drops retain the normal turn cleanup owner.
+                break;
+            }
+
+            case BoltEffect.DISTANCE_ATTACK:
+            case BoltEffect.POISON_DART: {
+                // BE_ATTACK retains its attack roll, weapon immunity and riders.
                 // Reflection already ran in travel and has no on-hit adjustment.
                 // Only install the armor hook when there is a runic effect to apply.
                 const armorRunic = isPlayer ? this.player.equippedArmor?.runicType : undefined;

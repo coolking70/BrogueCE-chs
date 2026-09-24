@@ -1,0 +1,1206 @@
+{
+  "inputs": 404,
+  "inputChanges": [],
+  "inputManifestSha256": "959d4cf22f9b97c8d5d02d0c29de2f6868d5cd3132640e50be368739184f522c",
+  "gates": [
+    {
+      "name": "ce-golden",
+      "status": 0,
+      "durationMs": 600
+    },
+    {
+      "name": "audit",
+      "status": 0,
+      "durationMs": 1498
+    },
+    {
+      "name": "build",
+      "status": 0,
+      "durationMs": 4223
+    },
+    {
+      "name": "regression",
+      "status": 0,
+      "durationMs": 619742
+    },
+    {
+      "name": "drift",
+      "status": 0,
+      "durationMs": 13829
+    }
+  ],
+  "regression": {
+    "numTotalTests": 2497,
+    "numPassedTests": 2488,
+    "numFailedTests": 0,
+    "numPendingTests": 8,
+    "numTodoTests": 1
+  },
+  "drift": {
+    "files": 1,
+    "passed": 1
+  },
+  "files": [
+    {
+      "file": "src/data/monsterBolts.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 18,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/data/monsterDamage.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 3,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/data/weapons.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 13,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/engine/Combat/BoltCatalog.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 6,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/engine/Combat/BoltContract.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 8,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/engine/Core/snapshotQuantity.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 1,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/engine/Core/startingKit.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 5,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/engine/UI/DetailGenerator.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 5,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/ai_1_scent_tracking.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 5,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/armor_display_effect.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 16,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/armor_model_effect.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 2,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/armor_runic_effect.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 12,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/b1_retire_invented.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 44,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/b2_transcription.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 21,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/b_1_weapon_specials.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 16,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 34,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/b_1b_identification_persistence.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 13,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/b_1c_detect_magic.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 24,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/b_2_throwing.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 16,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/b_4a_item_generation.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 24,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/b_4b_item_placement.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 15,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 5,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/c_0_add_loops.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 14,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/c_1_room_profile.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 14,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/c_2_lakes_determinism.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 1,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/c_2_lakes_e2e.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 6,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/c_3_walls_doors.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 15,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/c_4a_0_layer_model.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 20,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 30,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/c_4b_dungeon_feature.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 31,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/c_4c_promotion.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 21,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/c_5_fall_subsystem.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 13,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/c_6_autogenerators.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 17,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/c_7_lighting.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 25,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/c_8_connectivity.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 7,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/f_1_fire_as_terrain.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 11,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/f_2a_fire_mechanics.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 12,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/f_2b_creature_burning.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 13,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/f_2c_explosion.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 14,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/g_1_gas_volumetric.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 16,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/g_2_gas_df_wiring.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 17,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/g_3_gas_effects.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 26,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/generation_baseline.test.ts",
+      "gate": "drift",
+      "status": "passed",
+      "passed": 1,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/horde_selection.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 12,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/horde_terrain_spawn.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 10,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/hunger_curve_sim.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 3,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/hunger_regen.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 15,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/i_1_interaction.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 6,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/invented_content_pool.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 7,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/monster_damage_balance.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 2,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/monster_stats_effect.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 2,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p1_20_item_placement.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 1,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p1_24_death_sink.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 13,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p1_26_invariants.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 5,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p1_27_remove_drowning.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 9,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p1_28_flag_channel.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 14,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p1_29_lake_connectivity.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 7,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p1_30_i18n_gate.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 16,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p1_31_35_placement_snapshot.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 10,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p1_33_machine_chokepoint.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 7,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p1_34_loopmap_reset.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 2,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p1_37_machine_flag_i18n.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 9,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p1_42_secret_door_search.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 14,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p2_0_seeded_rng.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 6,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p2_1_tick_architecture.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 6,
+      "skipped": 4,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p2_2_real_speed.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 16,
+      "skipped": 2,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p2_3_objective_time.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 17,
+      "skipped": 2,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p2_4_animation_cadence.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 13,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p2_6_display_settings.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 19,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p4_10_waypoint.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 7,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p4_1b_monster_casting.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 16,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p4_2_monster_summoning.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 14,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p4_3_special_monster_flags.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 12,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p4_4_split_kamikaze.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 20,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p4_5_melee_specials.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 24,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p4_6_attack_geometry.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 14,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p4_7_player_weapon_geometry.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 17,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p4_8_scent_map.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 14,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/p4_9_safety_map.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 8,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/r_1_appearance.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 45,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/scroll_effects.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 20,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/smoke.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 3,
+      "skipped": 0,
+      "todo": 1,
+      "failed": 0
+    },
+    {
+      "file": "src/test/t_1_tail.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 9,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/u_00_new_run.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 17,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/u_01_instance_snapshot.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 17,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/u_05a_item_ownership.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 51,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/u_06_monster_damage.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 36,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/u_15a_shattering.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 18,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/ui_1_rendering.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 32,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/ui_2_protection.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 11,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/v_1a_blueprint_items.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 8,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/v_1c_machine_structure.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 12,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/v_2a_vestibule_return.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 3,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/v_2b_2b_blueprints.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 24,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/v_2b_3_wired.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 28,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 36,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/v_2b_5_dormant.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 17,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/v_2b_6_keys.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 18,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/v_2b_7_features.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 22,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/v_2b_9a_carriers.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 2,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/v_2b_9b_environment.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 4,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/v_2b_9c_effects.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 10,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/v_2b_9d_dungeon_profile.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 11,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/v_2b_9e_2_autogen.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 16,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/v_2b_9e_area_machine.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 44,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/w_10_poison.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 38,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/w_11_teleport_placement.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 37,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/w_12_blink_beckoning.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 50,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/w_13_tunneling.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 43,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/w_14_obstruction.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 24,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/w_15_shielding.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 57,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/w_16_conjuration.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 45,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/w_17_domination.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 42,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/w_18_entrancement.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 67,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/w_19_polymorph.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 53,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/w_20_cloning.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 56,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/w_21_empowerment.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 29,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/w_23_negation.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 42,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/w_24_wand_catalog.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 20,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/w_25_staff_catalog.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 31,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/w_26_arcana_closure.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 49,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/w_2_arcana_submission.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 30,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/w_3_bolt_trajectory.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 30,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/w_4_bolt_reflection.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 29,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/w_5_arcana_instance.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 18,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/w_6_arcana_recharge.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 28,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/w_7_arcana_enchantment.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 30,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/w_8_staff_damage.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 33,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    },
+    {
+      "file": "src/test/w_9_directed_status.test.ts",
+      "gate": "regression",
+      "status": "passed",
+      "passed": 77,
+      "skipped": 0,
+      "todo": 0,
+      "failed": 0
+    }
+  ]
+}
