@@ -91,6 +91,14 @@ describe('C-5 对抗①：坠落是回合末结算（CE Time.c:168-176/2480）',
         rat.state = MonsterState.HUNTING;
 
         game.handlePlayerAction('move', { x: 1, y: 0 }, 'system'); // (4,5)→(5,5)
+        // U02b: measure the generation segment; only landing/damage may add 3 calls.
+        let generationCost = 0;
+        const generate = priv(game).generateDepth.bind(game);
+        priv(game).generateDepth = (...args: unknown[]) => {
+            const before = rng.randomNumbersGenerated;
+            generate(...args);
+            generationCost += rng.randomNumbersGenerated - before;
+        };
         const rngBeforeDive = rng.randomNumbersGenerated;
         game.handlePlayerAction('move', { x: 1, y: 0 }, 'system'); // (5,5)→(6,5)=渊 → 回合末坠落
 
@@ -141,7 +149,7 @@ describe('C-5 对抗①：坠落是回合末结算（CE Time.c:168-176/2480）',
             // 11935 = W-5：初始法器抽签移动连续生成流。独立包装实测生成
             // 11932 次 + 落位/伤害 3 次；只回退初始抽签/赋值即恢复 20505。
             // 怪物原位/存活、换层/掉血断言保持；不把成本下降算成优化收益。
-            .toBe(11935);
+            .toBe(generationCost + 3);
         expect(rat.hp, '随落阶段 rat 不在渊上，不得受伤/死亡').toBeGreaterThan(0);
         expect([rat.loc.x, rat.loc.y], '坠落回合怪物不得获得推进（CE playerFalls 提前 return）')
             .toEqual([4, 4]);

@@ -339,6 +339,7 @@ describe('S1: RNG 流哨兵（任务书 §三：建在固定物品集上，对�
         // U02a: this sentinel measures zero consumption from a known zero origin.
         // Nonzero-position restoration is covered by u_02a_rng_snapshot.test.ts.
         rng.seedRandomGenerator(42);
+    rng.resetCounters(); // U02b: the zero-origin fixture is explicit; reseeding preserves counts.
         const c0 = rng.randomNumbersGenerated;
 
         // call 全路径（起名 + 清除 + 拒绝）

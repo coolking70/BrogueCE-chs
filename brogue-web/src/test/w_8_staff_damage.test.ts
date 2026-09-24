@@ -42,7 +42,7 @@ const evidence: unknown[] = [];
 afterAll(() => {
     if (process.env.W8_DISTRIBUTION_OUTPUT) fs.writeFileSync(process.env.W8_DISTRIBUTION_OUTPUT, JSON.stringify(evidence, null, 2) + '\n');
 });
-beforeEach(() => { vi.restoreAllMocks(); rng.seedRandomGenerator(8008); });
+beforeEach(() => { vi.restoreAllMocks(); rng.seedRandomGenerator(8008); rng.resetCounters(); });
 
 // Independent explicit CE dice: E2 U[3,9]; E3 3+U[0,4]+U[0,4];
 // E8 7+U[0,6]+U[0,6]+U[0,5]. All endpoints inclusive (Math.c:40-59).
@@ -82,7 +82,7 @@ describe('W-8 CE E distribution and substantive rolls', () => {
             g.spawnFloatingText = () => {};
             const counts = Array(weights.length).fill(0);
             const seed = 88000 + E;
-            rng.seedRandomGenerator(seed);
+            rng.seedRandomGenerator(seed); rng.resetCounters();
             for (let i = 0; i < n; i++) {
                 m.hp = 100;
                 zap(g, item);
@@ -107,7 +107,7 @@ describe('W-8 CE E distribution and substantive rolls', () => {
         const damage = [];
         for (const [charges, capacity, constant] of [[0, 2, 1], [1, 8, 20], [99, 99, 999]]) {
             item.charges = charges; item.maxCharges = capacity; m.hp = 100;
-            rng.seedRandomGenerator(8712);
+            rng.seedRandomGenerator(8712); rng.resetCounters();
             zap(g, item, m.loc, constant);
             damage.push(100 - m.hp);
             expect(rng.randomNumbersGenerated).toBe(3);

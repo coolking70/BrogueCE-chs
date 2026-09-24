@@ -20,6 +20,8 @@ export function wireConfirmRequest(game: Game): void {
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { Random } from './engine/Random';
+import { isLevelSeeds } from './engine/Core/LevelSeeds';
 import i18next from 'i18next';
 import GameCanvas from './components/GameCanvas.vue';
 import Sidebar from './components/Sidebar.vue';
@@ -50,7 +52,7 @@ const saveInfo = computed(() => {
     const raw = window.localStorage.getItem(SAVE_KEY);
     if (!raw) return null;
     const snapshot = JSON.parse(raw);
-    if (!snapshot || snapshot.version !== 2 || !snapshot.rngState) return null;
+    if (!snapshot || snapshot.version !== 2 || !Random.isState(snapshot.rngState) || !isLevelSeeds(snapshot.levelSeeds)) return null;
     return {
       depth: snapshot.depth,
       seed: snapshot.seed,

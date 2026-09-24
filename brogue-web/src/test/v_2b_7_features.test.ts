@@ -818,7 +818,7 @@ describe('V-2b-7 F：§2.1 携钥匙怪的完整形态（可达性 + 落点安�
         // dormantMonsters 摘走（F1 看不到），指令层仍必须完整。
         let instsSeen = 0;
         let outsourcedSeen = 0;
-        for (const seed of [424242, 777, 31337, 20260913, 42, 2026]) {
+        for (const seed of new Set([424242, 777, 31337, 20260913, 42, 2026, ...Array.from({ length: 32 }, (_, i) => i + 1)])) {
             const record: LevelMachines[] = [];
             const restore = installRecorder(record);
             try {

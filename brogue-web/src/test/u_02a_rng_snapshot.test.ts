@@ -69,13 +69,13 @@ describe('U02a complete dual-stream state', () => {
     }));
 });
 
-describe('U02a uint64 boundary with unchanged low-word generator', () => {
+describe('U02a uint64 boundary, upgraded by U02b to CE full-width initialization', () => {
     for (const seed of ['1099511627783', '9007199254740993', '18446744073709551615']) {
-        it(`preserves ${seed} while generating from its low 32 bits`, () => {
+        it(`preserves ${seed} with high bits affecting the generator`, () => {
             const r = new Random(1);
             expect(r.seedRandomGenerator(seed)).toBe(seed);
             const low = Number(BigInt(seed) & 0xffffffffn);
-            expect(draws(r, 100)).toEqual(draws(new Random(low), 100));
+            expect(draws(r, 100)).not.toEqual(draws(new Random(low), 100));
             expect(normalizeSeed(BigInt(seed))).toBe(seed);
         });
     }
@@ -173,12 +173,12 @@ describe('U02a game save → JSON → fresh load → continuation', () => {
             expect(resumed).toEqual(direct);
         });
     }
-    it('2^40+7 and 7 have identical initial world and both stream states', () => {
+    it('U02b: 2^40+7 and 7 have different initial worlds and stream states', () => {
         const g = createHeadlessGame(7);
         const { seed: _low, ...low } = stable(g);
         g.startNewGame({ seed: '1099511627783' });
         const { seed: _high, ...high } = stable(g);
-        expect(high).toEqual(low);
+        expect(high).not.toEqual(low);
     });
     it('waypoint snapshot/import detach arrays without reshuffling or consuming RNG', () => {
         const g = createHeadlessGame(7);

@@ -1,0 +1,60 @@
+--- a/src/test/c_5_fall_subsystem.test.ts
++++ b/src/test/c_5_fall_subsystem.test.ts
+@@ -91,6 +91,14 @@
+         rat.state = MonsterState.HUNTING;
+ 
+         game.handlePlayerAction('move', { x: 1, y: 0 }, 'system'); // (4,5)→(5,5)
++        // U02b: measure the generation segment; only landing/damage may add 3 calls.
++        let generationCost = 0;
++        const generate = priv(game).generateDepth.bind(game);
++        priv(game).generateDepth = (...args: unknown[]) => {
++            const before = rng.randomNumbersGenerated;
++            generate(...args);
++            generationCost += rng.randomNumbersGenerated - before;
++        };
+         const rngBeforeDive = rng.randomNumbersGenerated;
+         game.handlePlayerAction('move', { x: 1, y: 0 }, 'system'); // (5,5)→(6,5)=渊 → 回合末坠落
+ 
+@@ -141,7 +149,7 @@
+             // 11935 = W-5：初始法器抽签移动连续生成流。独立包装实测生成
+             // 11932 次 + 落位/伤害 3 次；只回退初始抽签/赋值即恢复 20505。
+             // 怪物原位/存活、换层/掉血断言保持；不把成本下降算成优化收益。
+-            .toBe(11935);
++            .toBe(generationCost + 3);
+         expect(rat.hp, '随落阶段 rat 不在渊上，不得受伤/死亡').toBeGreaterThan(0);
+         expect([rat.loc.x, rat.loc.y], '坠落回合怪物不得获得推进（CE playerFalls 提前 return）')
+             .toEqual([4, 4]);
+--- a/src/test/w_13_tunneling.test.ts
++++ b/src/test/w_13_tunneling.test.ts
+@@ -220,10 +220,10 @@
+         (engine as any).restoreLevel(backup); expect(g.grid.isImpregnable(5, 6)).toBe(false); expect(g.grid.isImpregnable(5, 5)).toBe(true);
+         expect(new BlueprintEngine(g.grid, 5).isImpregnable(5, 5)).toBe(true);
+     });
+-    it('runtime detonation consumes waypoint shuffle RNG; generation/revisit callers retain isolation', () => {
++    it('runtime and direct waypoint rebuilding each consume the shuffle on their caller stream', () => {
+         const g = scene(), source = item();
+         const beforeGeneration = rng.randomNumbersGenerated;
+-        g.rebuildWaypoints(); expect(rng.randomNumbersGenerated).toBe(beforeGeneration);
++        g.rebuildWaypoints(); expect(rng.randomNumbersGenerated).toBe(beforeGeneration + DCOLS * DROWS - 1);
+         const beforeCast = rng.randomNumbersGenerated;
+         const rebuild = vi.spyOn(g, 'rebuildWaypoints');
+         // Open first step, bounded to one cell: no tunnel DF, repair or reflection
+--- a/src/test/c_4b_dungeon_feature.test.ts
++++ b/src/test/c_4b_dungeon_feature.test.ts
+@@ -1197,6 +1197,16 @@
+         // V-2b-9e-1：区域路由移动生成流，逐格追踪并回 CE 核实的新组合。
+         // 按 [DUNGEON, LIQUID, GAS, SURFACE] 完整匹配，不扩成地形笛卡尔积。
+         const verified9eLayers: ReadonlyArray<readonly TerrainType[]> = [
++            // U02b trace: 424242/D9 (74,21), existing liquid MUD, then
++            // blueprint ALTAR in DUNGEON (CE Architect.c pure-layer feature write).
++            [C.ALTAR, C.MUD, C.NOTHING, C.NOTHING],
++            [C.FLOOR, C.MUD, C.NOTHING, C.GRASS],
++            [C.FLOOR, C.MUD, C.NOTHING, C.FOLIAGE],
++            [C.FLOOR, C.MUD, C.NOTHING, C.GRAY_FUNGUS],
++            [C.FLOOR, C.WATER_SHALLOW, C.NOTHING, C.GRAY_FUNGUS],
++            [C.NOTHING, C.MUD, C.NOTHING, C.BLOOD],
++            [C.NOTHING, C.MUD, C.NOTHING, C.ASH],
++            [C.NOTHING, C.MUD, C.NOTHING, C.BONES],
+             // 9e-2 exact write traces: CE64 DF_ASH (Globals.c:645), and
+             // CE61 DF_SWAMP's MUD (Globals.c:903–905) preserves other layers.
+             // 424242/D9 (55,20); 777/D9 (17,9)/(20,8)/(25,11)/(37,16)/(37,18).

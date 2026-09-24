@@ -1,0 +1,88 @@
+--- ai_docs/reports/u-02b-evidence/stage-c/Game.ts	2026-09-25 05:33:51
++++ ai_docs/reports/u-02b-evidence/stage-d/Game.ts	2026-09-25 05:34:31
+@@ -1151,6 +1151,7 @@
+                 if (entryStair) break;
+             }
+             if (entryStair) this.placePlayerOnLevelEntry(entryStair);
++            this.rebuildWaypoints(); // Revisit: live stream, no level reseeding.
+         } else {
+             // CE startLevel: draw a nonzero return seed, then initialize BOTH streams.
+             let oldSeed: bigint;
+@@ -1202,6 +1203,7 @@
+                         this.monsters.push(m);
+                     }
+                 }
++                this.rebuildWaypoints(); // CE: inside the new level stream, before oldSeed.
+                 level.visited = true;
+             } finally {
+                 // This is reseeding from oldSeed, not restoring the pre-entry state tuple.
+@@ -1209,15 +1211,8 @@
+             }
+         }
+ 
+-        // P4-10：waypoint 构建。CE RogueMain.c:707 的位置——新层的全部生成
+-        // 决策（地形/物品/怪物）已由上方 populateLevel 完成；重访层（cached
+-        // 分支）对应 RogueMain.c:771 的"恢复后再建"。setUpWaypoints 内部做了
+-        // CE RogueMain.c:691-707/733-735 的流隔离（快照/恢复），shuffleList
+-        // 的抽取不落在主流上，对生成基线与玩法序列都是零扰动。
+-        // C-0：环路图同样在两层落地后确定性重算（CE 的 IN_LOOP 是逐层
+-        // pmap flags；analyzeLoopMap 纯函数、不消费 RNG）。
++        // Pure derived topology; waypoint draws belong to the branches above.
+         this.loopMap = analyzeLoopMap(this.grid);
+-        this.rebuildWaypoints();
+ 
+         // 3. Force full refresh
+         // C-7：CE RogueMain.c:671 进层时 updateColors + updateRingBonuses
+@@ -7904,7 +7899,7 @@
+ 
+     /**
+      * P4-10：waypoint 全量重建。对应 CE setUpWaypoints 的三个调用时机：
+-     *   - 关卡生成决策完成之后（generateDepth 两个分支的汇合点，RogueMain.c:707）
++     *   - 关卡生成决策完成之后、oldSeed 回切之前（RogueMain.c:707）
+      *   - 重访缓存层恢复之后（同一位置，RogueMain.c:771）
+      *   - 地形剧变之后（Items.c:5558 BE_TUNNELING）——W-13 掘地结束接入。
+      */
+
+--- ai_docs/reports/u-02b-evidence/stage-c/WaypointMap.ts	2026-09-25 05:33:51
++++ ai_docs/reports/u-02b-evidence/stage-d/WaypointMap.ts	2026-09-25 05:34:31
+@@ -96,12 +96,6 @@
+ const NB_DIRS: ReadonlyArray<readonly [number, number]> =
+     [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [-1, 1], [1, -1], [1, 1]];
+ 
+-/** Preserve the existing waypoint-only isolation; CE levelSeed isolation belongs to U02b. */
+-function isolateRngDuring(fn: () => void): void {
+-    const saved = rng.getState();
+-    try { fn(); } finally { rng.setState(saved); }
+-}
+-
+ /** Current-layer random products and rolling refresh state; scanner is scratch space. */
+ export interface WaypointState {
+     coordinates: Array<{ x: number; y: number }>;
+@@ -145,22 +139,11 @@
+     }
+ 
+ 
+-    /**
+-     * CE Architect.c:3033 setUpWaypoints。调用时机（CE RogueMain.c:707/771、
+-     * Items.c:5558）：所有生成决策完成之后 / 重访恢复之后 / 地形剧变之后。
+-     *
+-     * RNG 流隔离（CE RogueMain.c:691-707 + 733-735 的语义复刻，见
+-     * isolateRngDuring 内注）：CE 在进层时把主流重播种到该层专属 levelSeed
+-     * 上跑全部生成（含本函数的 shuffleList），完成后恢复玩法流——shuffle
+-     * 的抽取不落在后续玩法流上。W-13：运行期掘地（Items.c:5558）没有
+-     * 进层那层隔离；duringPlay=true 时直接消费洗牌随机数，默认调用仍
+-     * 保持原有生成/重访隔离，不能把进层规则泛化到所有重建。
+-     */
+-    public setUpWaypoints(ctx: WaypointContext, duringPlay = false): void {
+-        if (duringPlay) this.setUpWaypointsInner(ctx);
+-        else isolateRngDuring(() => {
+-            this.setUpWaypointsInner(ctx);
+-        });
++    /** CE setUpWaypoints always consumes the selected stream. Game owns the
++     * new-level seed boundary; revisits and tunneling consume the live run stream.
++     * The legacy duringPlay argument is accepted for existing callers only. */
++    public setUpWaypoints(ctx: WaypointContext, _duringPlay = false): void {
++        this.setUpWaypointsInner(ctx);
+     }
+ 
+     private setUpWaypointsInner(ctx: WaypointContext): void {

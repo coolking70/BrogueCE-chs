@@ -53,7 +53,7 @@ describe('P4-3 验收 1：MONST_INVULNERABLE — Warden of Yendor 打不死', ()
     it('玩家近战攻击 50 次，Warden 血量不变，也不会死亡', () => {
         const game = createHeadlessGame(1);
         clearToOpenRoom(game);
-        rng.seedRandomGenerator(11);
+        rng.seedRandomGenerator(11); rng.resetCounters();
 
         const warden = new Monster(5, 5, monsterDataById('Warden_of_Yendor'));
         game.monsters.push(warden);
@@ -76,7 +76,7 @@ describe('P4-3 验收 2：MONST_IMMUNE_TO_WEAPONS', () => {
     it('revenant 受近战武器攻击 50 次，血量不变', () => {
         const game = createHeadlessGame(2);
         clearToOpenRoom(game);
-        rng.seedRandomGenerator(21);
+        rng.seedRandomGenerator(21); rng.resetCounters();
 
         const revenant = new Monster(5, 5, monsterDataById('revenant'));
         game.monsters.push(revenant);
@@ -92,7 +92,7 @@ describe('P4-3 验收 2：MONST_IMMUNE_TO_WEAPONS', () => {
     it('revenant 受怪物法术伤害（FIRE bolt，isWeaponAttack:false 出口）仍会掉血', () => {
         const game = createHeadlessGame(3);
         clearToOpenRoom(game);
-        rng.seedRandomGenerator(22);
+        rng.seedRandomGenerator(22); rng.resetCounters();
 
         const revenant = new Monster(6, 5, monsterDataById('revenant'));
         const dragon = new Monster(5, 5, monsterDataById('dragon')); // 借用其高伤害/高命中率
@@ -115,7 +115,7 @@ describe('P4-3 验收 3：MA_REFLECT_100 反射', () => {
     it('怪物侧：另一只怪物对 stone guardian 施放 SPARK，伤害反弹到施法者身上，guardian 血量不变', () => {
         const game = createHeadlessGame(4);
         clearToOpenRoom(game);
-        rng.seedRandomGenerator(31);
+        rng.seedRandomGenerator(31); rng.resetCounters();
 
         const guardian = new Monster(6, 5, monsterDataById('stone_guardian'));
         const caster = new Monster(5, 5, monsterDataById('spark_turret'));
@@ -136,7 +136,7 @@ describe('P4-3 验收 3：MA_REFLECT_100 反射', () => {
     it('玩家侧：玩家对 stone guardian 施放 FIRE，伤害反弹到玩家自己身上，guardian 血量不变', () => {
         const game = createHeadlessGame(5);
         clearToOpenRoom(game);
-        rng.seedRandomGenerator(32);
+        rng.seedRandomGenerator(32); rng.resetCounters();
 
         const guardian = new Monster(6, 5, monsterDataById('stone_guardian'));
         game.monsters.push(guardian);
@@ -150,7 +150,7 @@ describe('P4-3 验收 3：MA_REFLECT_100 反射', () => {
         staff.enchantment = 8; staff.charges = 1; staff.maxCharges = 8;
         // 飘字 ID 另耗一次 substantive RNG（既有行为）；此处隔离表现，只数伤害骰。
         game.spawnFloatingText = () => {};
-        rng.seedRandomGenerator(32); // 构造已完成；仅测施法耗骰。
+        rng.seedRandomGenerator(32); rng.resetCounters(); // 构造已完成；仅测施法耗骰。
         const reference = new Random(32);
         const expectedDamage = 7 + reference.randRange(0, 6) + reference.randRange(0, 6) + reference.randRange(0, 5);
         const result = game.zapBoltFromPlayer({ ...getBoltForItem('staff_of_fire')!, magnitude: 20 }, staff, guardian.loc);

@@ -22,7 +22,7 @@ function scene() {
     }
     g.player.loc={x:18,y:10}; g.player.hp=g.player.maxHp=150;
     g.spawnFloatingText=vi.fn(); (g as any).updateVision=vi.fn();
-    rng.seedRandomGenerator(808);
+    rng.seedRandomGenerator(808); rng.resetCounters();
     return g;
 }
 function mob(g:Game,id='spider',x=8,y=10) {
@@ -33,7 +33,7 @@ const surface=(g:Game,x:number,y=10)=>g.grid.getCell(x,y)!.layers[L.SURFACE]!;
 const set=(g:Game,x:number,t:T,y=10)=>g.grid.setTerrainLayer(x,y,L.SURFACE,t);
 const env=(g:Game,target?:Monster)=> (g as any).applyEnvironmentalEffects(target);
 afterEach(()=>vi.restoreAllMocks());
-beforeEach(()=>rng.seedRandomGenerator(808));
+beforeEach(()=>{rng.seedRandomGenerator(808);rng.resetCounters();}); rng.resetCounters();
 
 describe('U08 CE catalog and runtime qualification',()=>{
     it.each([
@@ -101,8 +101,8 @@ describe('U08 actual zap path and ordered DF fill',()=>{
         const g=scene(),m=mob(g,name==='SPIDERWEB'?'spider':'mangrove_dryad');g.player.loc={x:30,y:20};
         const target=mob(g,'rat',18);target.isAlly=true;
         const h=scene();h.player.loc={x:30,y:20};
-        rng.seedRandomGenerator(2026);const result=g.castMonsterBolt(m,target,name)!;const draws=rng.randomNumbersGenerated;
-        rng.seedRandomGenerator(2026);
+        rng.seedRandomGenerator(2026); rng.resetCounters();const result=g.castMonsterBolt(m,target,name)!;const draws=rng.randomNumbersGenerated;
+        rng.seedRandomGenerator(2026); rng.resetCounters();
         for(let x=9;x<=18;x++)spawnDungeonFeature(h.grid,x,10,catalogFeature(name==='SPIDERWEB'?DF.DF_WEB_SMALL:DF.DF_ANCIENT_SPIRIT_GRASS),false);
         spawnDungeonFeature(h.grid,18,10,catalogFeature(name==='SPIDERWEB'?DF.DF_WEB_LARGE:DF.DF_ANCIENT_SPIRIT_VINES),false);
         expect(rng.randomNumbersGenerated).toBe(draws);

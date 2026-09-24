@@ -20,7 +20,7 @@ import { createHeadlessGame } from './harness';
 const ids = 'lightning fire poison tunneling blinking entrancement obstruction discord conjuration healing haste protection'.split(' ').map(s=>'staff_of_'+s);
 const added = ids.slice(3,6), weights = [15,15,10,10,11,6,10,10,8,5,5,5];
 const oldIds = 'fire lightning poison healing haste conjuration light'.split(' ').map(s=>'staff_of_'+s);
-beforeEach(() => { if (!i18next.isInitialized) i18next.init({ lng: 'en', resources: {}, initImmediate: false }); rng.seedRandomGenerator(2525); ItemLoader.initConsumables(); });
+beforeEach(() => { if (!i18next.isInitialized) i18next.init({ lng: 'en', resources: {}, initImmediate: false }); rng.seedRandomGenerator(2525); rng.resetCounters(); ItemLoader.initConsumables(); });
 afterEach(() => vi.restoreAllMocks());
 function scene(id = 'rat') {
     const g = createHeadlessGame(2525, 'test');
@@ -73,7 +73,7 @@ describe('W-25 staff catalog', () => {
     it('64 seeds × 1000 real kind/instance draws: 12 kinds, weighted frequency, uncapped E, per-item exact RNG', () => {
         const g:any=Object.create(Game.prototype), counts=ids.map(()=>0), charges=ids.map(()=>({} as Record<number,number>));let calls=0,sumE=0;
         for(let seed=1;seed<=64;seed++) {
-            rng.seedRandomGenerator(seed*7919);
+            rng.seedRandomGenerator(seed*7919); rng.resetCounters();
             for(let n=0;n<1000;n++) {
                 const before=rng.randomNumbersGenerated;
                 const id=g.chooseKindFromPool(ItemLoader.genStaffs.map(s=>s.id),ItemLoader.genStaffs.map(s=>s.frequency),new Map());
@@ -192,7 +192,7 @@ describe('W-25 staff appearance/save migration',()=>{
         try{
             // Old configs had no explicit wood indices. Light also used ordinary index 6.
             ItemLoader.staffs=oldIds.map(id=>({...current.find(s=>s.id===id)!,flavorIndex:oldIds.indexOf(id)}));
-            rng.seedRandomGenerator(g.currentSeed);ItemLoader.initConsumables();legacy=Object.fromEntries(ItemLoader.arcanaFlavorMap);
+            rng.seedRandomGenerator(g.currentSeed); rng.resetCounters();ItemLoader.initConsumables();legacy=Object.fromEntries(ItemLoader.arcanaFlavorMap);
             const item=ItemLoader.spawnStaff('staff_of_fire',-1,-1)!;item.charges=0;item.staffRechargeRemaining=1234;g.player.inventory.addItem(item);
             ItemLoader.identify('staff_of_fire');ItemLoader.callKind('staff_of_haste','old haste');ItemLoader.magicPolarityRevealed.add('staff_of_poison');
             saved=JSON.parse(JSON.stringify(g.toSnapshot()));delete saved.staffFlavors;

@@ -301,6 +301,7 @@ describe('F-2a 对抗⑨（留痕，G-2 反转）：水体被点燃产出持续�
     it('深水被直燃一次 +15 蒸汽；火贴水时蒸汽总量逐回合增长（持续源）', () => {
         const game = createHeadlessGame(42);
         openRoom(game);
+        rng.seedRandomGenerator(42); // Fixed mechanism input after constructing the synthetic room.
         game.grid.setTerrain(10, 6, C.WATER_DEEP, '~', 0x1133aa);
         // 直燃旁路：CE 里这会点燃深水产蒸汽——G-2 起真的产。
         const r = exposeTileToFire(game.grid, 10, 6, true);

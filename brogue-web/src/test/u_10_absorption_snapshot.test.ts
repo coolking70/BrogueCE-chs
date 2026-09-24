@@ -70,6 +70,7 @@ it('current-layer active, dormant, cyclic carried/leader entities preserve their
     a.carriedMonster=p;p.leader=a;p.carriedMonster=d;d.leader=p;
     // U02a: retain this codec zero-draw sentinel at an explicit zero origin.
     rng.seedRandomGenerator(1010);
+    rng.resetCounters(); // U02b: the zero-origin fixture is explicit; reseeding preserves counts.
     g.monsters=[a];g.dormantMonsters=[d];const saved=json(g.toSnapshot());
     const before=[a,d,p].map(state);
     expect(g.loadSnapshot(saved)).toBe(true);expect(rng.randomNumbersGenerated).toBe(0); // The saved zero origin is restored; decoding draws nothing.

@@ -1,3 +1,4 @@
+import { rng } from '../engine/Random';
 /// <reference types="node" />
 /**
  * src/test/p1_31_35_placement_snapshot.test.ts — P1-31 玩家落位避开楼梯 +
@@ -282,6 +283,12 @@ describe('P1-35: 读档后的生成期派生态（loopMap / waypoint / 气味）
 
     it('T9 跨局读档：waypoint 必须已按读入网格重建（与显式重建一致且非空）', () => {
         const a = createHeadlessGame(42, 'normal');
+        // U02b: rebuilding consumes the live stream. Pin the explicit rebuild
+        // to the same input RNG as the original construction, not the later save point.
+        let waypointInput = rng.getState();
+        const rebuild = a.rebuildWaypoints.bind(a);
+        a.rebuildWaypoints = () => { waypointInput = rng.getState(); rebuild(); };
+        a.startNewGame({ seed: 42 });
         const snap = a.toSnapshot();
         const b = createHeadlessGame(777, 'normal');
         // 注入重建绝不可能产生的越界 sentinel，代替两局随机 waypoint
@@ -295,7 +302,8 @@ describe('P1-35: 读档后的生成期派生态（loopMap / waypoint / 气味）
         const afterLoad = JSON.stringify(b.waypoints.coordinates);
         // 先检查读档覆盖 sentinel，避免显式重建掩盖失败或先在幂等锚报错。
         expect(afterLoad, '读档后仍保留越界 sentinel waypoint').not.toBe(staleCoords);
-        b.rebuildWaypoints(); // 幂等性锚：已重建的话，显式重建不再改变
+        rng.setState(waypointInput);
+        b.rebuildWaypoints(); // 同一网格、实体、RNG 输入的重建结果必须相等
         expect(JSON.stringify(b.waypoints.coordinates)).toBe(afterLoad);
     });
 

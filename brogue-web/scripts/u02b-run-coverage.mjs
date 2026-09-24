@@ -1,0 +1,1 @@
+import{build}from'esbuild';import{execFileSync}from'node:child_process';await build({entryPoints:['scripts/u02b-coverage-probe.ts'],bundle:true,platform:'node',format:'esm',outfile:'/tmp/u02b-coverage.mjs',logLevel:'silent'});execFileSync('node',['/tmp/u02b-coverage.mjs'],{stdio:'ignore'});

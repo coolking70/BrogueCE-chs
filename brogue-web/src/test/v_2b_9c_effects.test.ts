@@ -52,6 +52,7 @@ function cast(g: Game, effect: BoltEffect, from: Pos, to: Pos): BoltResult {
 // Real CE features, real applyBlueprint, real populateLevel; only site selection is fixed.
 function buildStage(id: number): { g: Game; built: MachineResult; key: Item } {
     const g = stage(); g.depth = bp(id).depthRange[0];
+    g.levelSeeds[g.depth - 1]!.upStairsLoc = { ...g.player.loc }; // Explicit synthetic generation origin.
     let built: MachineResult | null = null;
     for (let seed = 1; seed <= 30 && !built; seed++) {
         rng.seedRandomGenerator(seed);

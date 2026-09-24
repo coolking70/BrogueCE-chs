@@ -96,10 +96,10 @@ describe('W-5 CE initial resources, independent E and charges', () => {
     it('ordinary generation dispatch uses the same initial draw (not a second roll)', () => {
         const g = bridge(Object.create(Game.prototype));
         for (const id of ['staff_of_poison', 'wand_of_slowness']) {
-            rng.seedRandomGenerator(12345);
+            rng.seedRandomGenerator(12345); rng.resetCounters();
             const direct = id.startsWith('staff') ? ItemLoader.spawnStaff(id, 3, 4)! : ItemLoader.spawnWand(id, 3, 4)!;
             const after = JSON.stringify(rng);
-            rng.seedRandomGenerator(12345);
+            rng.seedRandomGenerator(12345); rng.resetCounters();
             const dispatched = g.spawnKindById(id.startsWith('staff') ? ItemCategory.STAFF : ItemCategory.WAND, id, { x: 3, y: 4 }, 12);
             expect(state(dispatched)).toEqual(state(direct));
             expect(JSON.stringify(rng)).toBe(after);
@@ -148,7 +148,7 @@ describe('W-5 deterministic persistence / migration', () => {
 
 it('W-5 generated results: 12 fixed seeds (W-24/W-25/W-26 coverage supplements) × D1–26 retain category coverage and obey initial per-kind values', () => {
     const categories = new Set<ItemCategory>(), kinds = new Set<string>();
-    for (const seed of [42, 12345, 20250308, 999, 1, 7, 20260914, 20260923, 424242, 20260913, 24, 2]) {
+    for (const seed of new Set([42, 12345, 20250308, 999, 1, 7, 20260914, 20260923, 424242, 20260913, 24, 2, ...Array.from({ length: 32 }, (_, i) => i + 1)])) {
         const game = createHeadlessGame(seed);
         for (let depth = 1; depth <= 26; depth++) {
             if (depth > 1) { game.depth = depth; bridge(game).generateDepth(false, false); }

@@ -1,3 +1,4 @@
+import { initializeLevelSeeds, copyLevelSeeds, isLevelSeeds, type LevelSeed } from './LevelSeeds';
 import { NEGATABLE_TRAITS, NON_NEGATABLE_ABILITIES, NEGATABLE_MUTATIONS, hasNegatableBolt, negateBolts, negateCreatureStatusEffects } from '../Combat/Negation';
 import { cloneLocation } from '../Combat/Cloning';
 import { anyoneWantABite } from '../Combat/MonsterAbsorption';
@@ -37,7 +38,7 @@ import { ItemCategory, Item } from '../Items/Item';
 import { ItemLoader } from '../Items/ItemLoader';
 import { canEnchantArcana, enchantArcana } from '../Items/ArcanaEnchantment';
 import { equippedWisdomBonus, tickStaffRecharge, rechargeStaffFully } from '../Items/ArcanaRecharge';
-import { rng, Random, type RandomState } from '../Random';
+import { rng, Random, RNGType, type RandomState } from '../Random';
 import { normalizeSeed, isSeed, type SeedInput } from '../Seed';
 import monsterData from '../../data/monsters.json';
 import hordeData from '../../data/hordes.json';
@@ -187,6 +188,8 @@ export interface GameSnapshot {
     seed: string;
     /** U02a mandatory payload: pre-U02a saves are rejected, never reseeded. */
     rngState: RandomState;
+    /** Seed/visited metadata for every CE slot; cached world state remains U03. */
+    levelSeeds: LevelSeed[];
     /** Preserve the current layer's random waypoint products instead of drawing them again. */
     waypoints: ReturnType<WaypointSystem['getState']>;
     mode: GameMode;
@@ -555,6 +558,8 @@ export class Game {
     public gameOverInventory: Array<{ name: string; category: number; enchantment: number; color: number }> = [];
     public gameOverScore: number = 0;
 
+    public levelSeeds: LevelSeed[] = [];
+    private currentLevelDepth: number | null = null;
     public levels = new Map<number, LevelState>();
     public combatSystem: CombatSystem = new CombatSystem();
     public recordingStartAt: number = Date.now();
@@ -591,7 +596,10 @@ export class Game {
         this.inAutoTravelStep = false;
 
         this.mode = options?.mode ?? 'normal';
+        rng.setRNG(RNGType.RNG_SUBSTANTIVE);
         this.currentSeed = rng.seedRandomGenerator(seed);
+        rng.resetCounters();
+        this.levelSeeds = initializeLevelSeeds(rng, this.currentSeed);
 
         ItemLoader.initConsumables();
         logger.reset();
@@ -604,6 +612,7 @@ export class Game {
         resetMachineCounter();
 
         this.depth = 1;
+        this.currentLevelDepth = null;
         this.levels = new Map();
         this.monsters = [];
         this.dormantMonsters = []; // V-2b-5：休眠表随新局清零
@@ -1060,8 +1069,17 @@ export class Game {
     }
 
     private generateDepth(isGoingUp: boolean = false, isFirstLevel: boolean = false) {
+        const level = this.levelSeeds[this.depth - 1];
+        if (!level) throw new RangeError('Missing level seed');
+        if (level.visited && this.currentLevelDepth !== this.depth && !this.levels.has(this.depth) && this.mode !== 'test') {
+            // Current-layer saves cannot restore an earlier visited map (U03).
+            throw new Error('Visited level state is unavailable in this current-layer save');
+        }
+        rng.setRNG(RNGType.RNG_SUBSTANTIVE);
         if (this.mode === 'test') {
             this.generateTestDepth(isFirstLevel);
+            level.visited = true;
+            this.currentLevelDepth = this.depth;
             // P4-10：test 层同样建 waypoint（CE RogueMain.c:707 的位置——
             // 该层的全部生成决策已完成之后）。
             this.rebuildWaypoints();
@@ -1070,9 +1088,10 @@ export class Game {
             return;
         }
 
-        // Save current level state if it exists
-        if (this.grid && !isFirstLevel) {
-            this.levels.set(isGoingUp ? this.depth + 1 : this.depth - 1, {
+        // The active layer is already visited even before it has a detached cache entry.
+        // Track its real depth; test harnesses can jump depths or re-enter the current map.
+        if (this.grid && this.currentLevelDepth !== null) {
+            this.levels.set(this.currentLevelDepth, {
                 grid: this.grid,
                 environment: this.environment,
                 fov: this.fov,
@@ -1085,7 +1104,6 @@ export class Game {
                 machineCells: this.machineCells
             });
         }
-
         const cached = this.levels.get(this.depth);
 
         if (cached) {
@@ -1123,63 +1141,69 @@ export class Game {
                 if (entryStair) break;
             }
             if (entryStair) this.placePlayerOnLevelEntry(entryStair);
+            this.rebuildWaypoints(); // Revisit: live stream, no level reseeding.
         } else {
-            // 1. Generate new level
-            this.stats.maxDepth = Math.max(this.stats.maxDepth, this.depth);
-            const architect = new Architect();
-            this.grid = architect.generateLevel(this.depth);
-            this.dormantMonsters = [];
-            this.bindDormantAwakener();
-            this.environment = new EnvironmentManager(this.grid);
-            this.fov = new FOVSys(this.grid);
-            this.lightMap = new LightMap(this.grid);
-            // P4-8：新层新气味图（CE 跨层留存 levels[d].scentMap，web 不做）
-            this.scent = new ScentMap(DCOLS, DROWS);
+            // CE startLevel: draw a nonzero return seed, then initialize BOTH streams.
+            let oldSeed: bigint;
+            do { oldSeed = rng.rand64bits(); } while (oldSeed === 0n);
+            rng.seedRandomGenerator(level.levelSeed);
+            try {
+                // 1. Generate new level
+                this.stats.maxDepth = Math.max(this.stats.maxDepth, this.depth);
+                const architect = new Architect();
+                this.grid = architect.generateLevel(this.depth);
+                this.dormantMonsters = [];
+                this.bindDormantAwakener();
+                this.environment = new EnvironmentManager(this.grid);
+                this.fov = new FOVSys(this.grid);
+                this.lightMap = new LightMap(this.grid);
+                // P4-8：新层新气味图（CE 跨层留存 levels[d].scentMap，web 不做）
+                this.scent = new ScentMap(DCOLS, DROWS);
 
-            // Fresh state for new level
-            this.monsters = [];
-            this.items = [];
-            this.visibleMonsters.clear();
-            this.visibleItems.clear();
+                // Fresh state for new level
+                this.monsters = [];
+                this.items = [];
+                this.visibleMonsters.clear();
+                this.visibleItems.clear();
 
-            // 2. Populate level with monsters and items, and STAIRS
-            // （B-4b：architect.machines 不再传入——legacy machines 循环已删；
-            //  V-2b-1：architect.trapVaults/cages 不再传入——两数组及其消费
-            //  循环均为死代码，已删除）
-            this.populateLevel(
-                this.depth, isGoingUp, isFirstLevel,
-                architect.machineResults
-            );
+                // 2. Populate level with monsters and items, and STAIRS
+                // （B-4b：architect.machines 不再传入——legacy machines 循环已删；
+                //  V-2b-1：architect.trapVaults/cages 不再传入——两数组及其消费
+                //  循环均为死代码，已删除）
+                this.populateLevel(
+                    this.depth, isGoingUp, isFirstLevel,
+                    architect.machineResults
+                );
 
-            // C-5：取走坠到本层的怪物幸存者（CE startLevel "Load up next
-            // level's monsters and items, since one might have fallen from
-            // above"——RogueMain.c:673-676；重定位= restoreMonster 的
-            // MB_PREPLACED 分支，Architect.c:3537-3550）。CE 用
-            // getQualifyingPathLocNear，web 复用 P1-31 的同口径端口。
-            const fallen = this.pendingFallenByDepth.get(this.depth);
-            if (fallen && fallen.length > 0) {
-                this.pendingFallenByDepth.delete(this.depth);
-                for (const m of fallen) {
-                    const spot = this.findQualifyingPathLocNear(m.loc);
-                    if (spot) {
-                        m.loc.x = spot.x;
-                        m.loc.y = spot.y;
+                // C-5：取走坠到本层的怪物幸存者（CE startLevel "Load up next
+                // level's monsters and items, since one might have fallen from
+                // above"——RogueMain.c:673-676；重定位= restoreMonster 的
+                // MB_PREPLACED 分支，Architect.c:3537-3550）。CE 用
+                // getQualifyingPathLocNear，web 复用 P1-31 的同口径端口。
+                const fallen = this.pendingFallenByDepth.get(this.depth);
+                if (fallen && fallen.length > 0) {
+                    this.pendingFallenByDepth.delete(this.depth);
+                    for (const m of fallen) {
+                        const spot = this.findQualifyingPathLocNear(m.loc);
+                        if (spot) {
+                            m.loc.x = spot.x;
+                            m.loc.y = spot.y;
+                        }
+                        m.preplaced = false; // CE :3548 清 MB_PREPLACED
+                        this.monsters.push(m);
                     }
-                    m.preplaced = false; // CE :3548 清 MB_PREPLACED
-                    this.monsters.push(m);
                 }
+                this.rebuildWaypoints(); // CE: inside the new level stream, before oldSeed.
+                level.visited = true;
+            } finally {
+                // This is reseeding from oldSeed, not restoring the pre-entry state tuple.
+                rng.seedRandomGenerator(oldSeed);
             }
         }
 
-        // P4-10：waypoint 构建。CE RogueMain.c:707 的位置——新层的全部生成
-        // 决策（地形/物品/怪物）已由上方 populateLevel 完成；重访层（cached
-        // 分支）对应 RogueMain.c:771 的"恢复后再建"。setUpWaypoints 内部做了
-        // CE RogueMain.c:691-707/733-735 的流隔离（快照/恢复），shuffleList
-        // 的抽取不落在主流上，对生成基线与玩法序列都是零扰动。
-        // C-0：环路图同样在两层落地后确定性重算（CE 的 IN_LOOP 是逐层
-        // pmap flags；analyzeLoopMap 纯函数、不消费 RNG）。
+        this.currentLevelDepth = this.depth;
+        // Pure derived topology; waypoint draws belong to the branches above.
         this.loopMap = analyzeLoopMap(this.grid);
-        this.rebuildWaypoints();
 
         // 3. Force full refresh
         // C-7：CE RogueMain.c:671 进层时 updateColors + updateRingBonuses
@@ -1209,13 +1233,16 @@ export class Game {
         // P1-33 曾以"宝库地板改判 CHARRED_FLOOR"达成同样效果（当时 Game.ts
         // 禁改），P1-37 起用地形类型冒充旗标的做法废除，宝库恢复普通地板。
         const floorTiles: Pos[] = [];
+        // A previous floor's player position must not select this floor's stair deck.
+        // Keep the existing exclusion shape, anchored to this level's initialization plan.
+        const generationOrigin = this.levelSeeds[depth - 1]!.upStairsLoc;
         for (let x = 1; x < DCOLS - 1; x++) {
             for (let y = 1; y < DROWS - 1; y++) {
                 const cell = this.grid.getCell(x, y);
                 if (!cell || !cell.layers.includes(TerrainType.FLOOR)) continue; // F-1 跨层判定
                 if (cell.machineNumber !== 0) continue; // CE IS_IN_MACHINE
                 // Don't spawn right on top of player
-                if (Math.abs(x - this.player.loc.x) > 5 || Math.abs(y - this.player.loc.y) > 5) {
+                if (Math.abs(x - generationOrigin.x) > 5 || Math.abs(y - generationOrigin.y) > 5) {
                     floorTiles.push({ x, y });
                 }
             }
@@ -2833,7 +2860,7 @@ export class Game {
     }
 
     public update() {
-        // Run events until it's the player's turn 
+        // Run events until it's the player's turn
         // OR the queue is empty
 
         if (this.needsRender && this.onRenderRequested) {
@@ -7954,7 +7981,7 @@ export class Game {
 
     /**
      * P4-10：waypoint 全量重建。对应 CE setUpWaypoints 的三个调用时机：
-     *   - 关卡生成决策完成之后（generateDepth 两个分支的汇合点，RogueMain.c:707）
+     *   - 关卡生成决策完成之后、oldSeed 回切之前（RogueMain.c:707）
      *   - 重访缓存层恢复之后（同一位置，RogueMain.c:771）
      *   - 地形剧变之后（Items.c:5558 BE_TUNNELING）——W-13 掘地结束接入。
      */
@@ -8574,6 +8601,7 @@ export class Game {
             depth: this.depth,
             seed: this.currentSeed,
             rngState: rng.getState(),
+            levelSeeds: copyLevelSeeds(this.levelSeeds),
             waypoints: this.waypoints.getState(),
             mode: this.mode,
             ticksTillUpdateEnvironment: this.ticksTillUpdateEnvironment,
@@ -8626,7 +8654,7 @@ export class Game {
     }
 
     public loadSnapshot(snapshot: GameSnapshot): boolean {
-        if (!snapshot || snapshot.version !== 2 || !isSeed(snapshot.seed) || !Random.isState(snapshot.rngState) || !snapshot.waypoints) return false;
+        if (!snapshot || snapshot.version !== 2 || !isSeed(snapshot.seed) || !Random.isState(snapshot.rngState) || !snapshot.waypoints || !isLevelSeeds(snapshot.levelSeeds)) return false;
 
         const entityGraph = restoreEntityGraph(
             [...snapshot.monsters, ...snapshot.dormantMonsters, ...snapshot.entityGraph.monsters],
@@ -8636,6 +8664,8 @@ export class Game {
         this.mode = snapshot.mode;
         this.ticksTillUpdateEnvironment = snapshot.ticksTillUpdateEnvironment ?? 100;
         this.currentSeed = snapshot.seed;
+        this.currentLevelDepth = snapshot.depth;
+        this.levelSeeds = copyLevelSeeds(snapshot.levelSeeds);
         rng.setState(snapshot.rngState);
         // Rebuild deterministic flavor tables on a private stream, not the live run's RNG.
         ItemLoader.initConsumables(new Random(snapshot.seed));

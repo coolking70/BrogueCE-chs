@@ -128,6 +128,7 @@ function isCenterTreasure(item: unknown): boolean {
 const DEFAULT_SCAN_SEEDS = [424242, 20260913, 1, 777, 31337, 20260916, 42, 999, 12345, 55555, 31415, 27182];
 const SCAN_SEEDS: number[] = [
     ...DEFAULT_SCAN_SEEDS,
+    ...Array.from({ length: 32 }, (_, i) => i + 1).filter(seed => !DEFAULT_SCAN_SEEDS.includes(seed)),
     ...(proc?.env?.BP_CENTER_SCAN_SEEDS ?? '')
         .split(',')
         .map(s => parseInt(s.trim(), 10))

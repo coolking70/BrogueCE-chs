@@ -1,0 +1,107 @@
+--- ai_docs/reports/u-02b-evidence/stage-d/Game.ts	2026-09-25 05:34:31
++++ ai_docs/reports/u-02b-evidence/stage-cache/Game.ts	2026-09-25 05:58:47
+@@ -572,6 +572,7 @@
+     public gameOverScore: number = 0;
+ 
+     public levelSeeds: LevelSeed[] = [];
++    private currentLevelDepth: number | null = null;
+     public levels = new Map<number, LevelState>();
+     public combatSystem: CombatSystem = new CombatSystem();
+     public recordingStartAt: number = Date.now();
+@@ -624,6 +625,7 @@
+         resetMachineCounter();
+ 
+         this.depth = 1;
++        this.currentLevelDepth = null;
+         this.levels = new Map();
+         this.monsters = [];
+         this.dormantMonsters = []; // V-2b-5：休眠表随新局清零
+@@ -1082,7 +1084,7 @@
+     private generateDepth(isGoingUp: boolean = false, isFirstLevel: boolean = false) {
+         const level = this.levelSeeds[this.depth - 1];
+         if (!level) throw new RangeError('Missing level seed');
+-        if (level.visited && !this.levels.has(this.depth) && this.mode !== 'test') {
++        if (level.visited && this.currentLevelDepth !== this.depth && !this.levels.has(this.depth) && this.mode !== 'test') {
+             // Current-layer saves cannot restore an earlier visited map (U03).
+             throw new Error('Visited level state is unavailable in this current-layer save');
+         }
+@@ -1090,6 +1092,7 @@
+         if (this.mode === 'test') {
+             this.generateTestDepth(isFirstLevel);
+             level.visited = true;
++            this.currentLevelDepth = this.depth;
+             // P4-10：test 层同样建 waypoint（CE RogueMain.c:707 的位置——
+             // 该层的全部生成决策已完成之后）。
+             this.rebuildWaypoints();
+@@ -1098,9 +1101,10 @@
+             return;
+         }
+ 
+-        // Save current level state if it exists
+-        if (this.grid && !isFirstLevel) {
+-            this.levels.set(isGoingUp ? this.depth + 1 : this.depth - 1, {
++        // The active layer is already visited even before it has a detached cache entry.
++        // Track its real depth; test harnesses can jump depths or re-enter the current map.
++        if (this.grid && this.currentLevelDepth !== null) {
++            this.levels.set(this.currentLevelDepth, {
+                 grid: this.grid,
+                 environment: this.environment,
+                 fov: this.fov,
+@@ -1113,7 +1117,6 @@
+                 machineCells: this.machineCells
+             });
+         }
+-
+         const cached = this.levels.get(this.depth);
+ 
+         if (cached) {
+@@ -1169,13 +1172,13 @@
+                 this.lightMap = new LightMap(this.grid);
+                 // P4-8：新层新气味图（CE 跨层留存 levels[d].scentMap，web 不做）
+                 this.scent = new ScentMap(DCOLS, DROWS);
+-    
++
+                 // Fresh state for new level
+                 this.monsters = [];
+                 this.items = [];
+                 this.visibleMonsters.clear();
+                 this.visibleItems.clear();
+-    
++
+                 // 2. Populate level with monsters and items, and STAIRS
+                 // （B-4b：architect.machines 不再传入——legacy machines 循环已删；
+                 //  V-2b-1：architect.trapVaults/cages 不再传入——两数组及其消费
+@@ -1184,7 +1187,7 @@
+                     this.depth, isGoingUp, isFirstLevel,
+                     architect.machineResults
+                 );
+-    
++
+                 // C-5：取走坠到本层的怪物幸存者（CE startLevel "Load up next
+                 // level's monsters and items, since one might have fallen from
+                 // above"——RogueMain.c:673-676；重定位= restoreMonster 的
+@@ -1211,6 +1214,7 @@
+             }
+         }
+ 
++        this.currentLevelDepth = this.depth;
+         // Pure derived topology; waypoint draws belong to the branches above.
+         this.loopMap = analyzeLoopMap(this.grid);
+ 
+@@ -2869,7 +2873,7 @@
+     }
+ 
+     public update() {
+-        // Run events until it's the player's turn 
++        // Run events until it's the player's turn
+         // OR the queue is empty
+ 
+         if (this.needsRender && this.onRenderRequested) {
+@@ -8580,6 +8584,7 @@
+         this.mode = snapshot.mode;
+         this.ticksTillUpdateEnvironment = snapshot.ticksTillUpdateEnvironment ?? 100;
+         this.currentSeed = snapshot.seed;
++        this.currentLevelDepth = snapshot.depth;
+         this.levelSeeds = copyLevelSeeds(snapshot.levelSeeds);
+         rng.setState(snapshot.rngState);
+         // Rebuild deterministic flavor tables on a private stream, not the live run's RNG.

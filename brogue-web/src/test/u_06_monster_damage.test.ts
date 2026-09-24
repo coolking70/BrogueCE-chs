@@ -74,7 +74,7 @@ describe('U06 CE compiled staffDamage goldens and real contacts', () => {
             caster.onHitStatus = 'confused'; caster.onHitChance = 1; caster.onHitDuration = 99;
             caster.setStatusDuration('weakened', 10); caster.setStatusDuration('invisible', 10);
             target.hp = 100; target.state = MonsterState.ASLEEP; (target.statusDurations as Record<string, number>).burning = 0;
-            rng.seedRandomGenerator(601);
+            rng.seedRandomGenerator(601); rng.resetCounters();
             const result = g.castMonsterBolt(caster, target, name)!;
             losses.push(100 - target.hp);
             expect(rng.randomNumbersGenerated).toBe(clumps);
@@ -95,7 +95,7 @@ describe('U06 CE compiled staffDamage goldens and real contacts', () => {
         for (const defense of [0, 99999]) {
             const armor = new Item('armor', ']', 0, ItemCategory.ARMOR);
             armor.armor = defense; armor.runicType = 'immunity'; armor.enchantment = 50; g.player.equippedArmor = armor;
-            g.player.hp = 100; (g.player.statusDurations as Record<string, number>).burning = 0; rng.seedRandomGenerator(603);
+            g.player.hp = 100; (g.player.statusDurations as Record<string, number>).burning = 0; rng.seedRandomGenerator(603); rng.resetCounters();
             g.castMonsterBolt(caster, g.player, name); losses.push(100 - g.player.hp);
             expect(rng.randomNumbersGenerated).toBe(clumps);
             for (const id of ['poisoned', 'weakened', 'hallucinating', 'confused'] as const) expect(g.player.hasStatus(id)).toBe(false);

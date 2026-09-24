@@ -1,0 +1,239 @@
+--- ai_docs/reports/u-02b-evidence/stage-b/Random.ts	2026-09-25 05:32:49
++++ ai_docs/reports/u-02b-evidence/stage-c/Random.ts	2026-09-25 05:33:51
+@@ -17,10 +17,10 @@
+     public d: number = 0;
+ }
+ 
+-/** v1 deliberately identifies the pre-U02b low-32-bit seeding algorithm. */
++/** U02b: CE uint64 initialization and logical counts that survive reseeding. */
+ export interface RandomState {
+-    version: 1;
+-    algorithm: 'brogue-web-ranval32-low32-v1';
++    version: 2;
++    algorithm: 'brogue-web-ranval32-uint64-level-v2';
+     streams: [{ a: number; b: number; c: number; d: number }, { a: number; b: number; c: number; d: number }];
+     currentRNG: RNGType.RNG_SUBSTANTIVE | RNGType.RNG_COSMETIC;
+     randomNumbersGenerated: number;
+@@ -50,7 +50,7 @@
+ 
+     public getState(): RandomState {
+         return {
+-            version: 1, algorithm: 'brogue-web-ranval32-low32-v1',
++            version: 2, algorithm: 'brogue-web-ranval32-uint64-level-v2',
+             streams: [{ ...this.rngStates[0]! }, { ...this.rngStates[1]! }],
+             currentRNG: this.currentRNG as RandomState['currentRNG'],
+             randomNumbersGenerated: this.randomNumbersGenerated,
+@@ -62,7 +62,7 @@
+         if (!value || typeof value !== 'object') return false;
+         const s = value as RandomState;
+         const counter = (n: number) => Number.isSafeInteger(n) && n >= 0;
+-        return s.version === 1 && s.algorithm === 'brogue-web-ranval32-low32-v1'
++        return s.version === 2 && s.algorithm === 'brogue-web-ranval32-uint64-level-v2'
+             && (s.currentRNG === RNGType.RNG_SUBSTANTIVE || s.currentRNG === RNGType.RNG_COSMETIC)
+             && counter(s.randomNumbersGenerated) && counter(s.cosmeticNumbersGenerated)
+             && Array.isArray(s.streams) && s.streams.length === 2
+@@ -125,9 +125,13 @@
+         this.raninit(this.rngStates[RNGType.RNG_SUBSTANTIVE]!, fullWidthSeed);
+         this.raninit(this.rngStates[RNGType.RNG_COSMETIC]!, fullWidthSeed);
+ 
++        return fullSeed;
++    }
++
++    /** Only new-run / recording initialization resets logical counters. Reseeding does not. */
++    public resetCounters(): void {
+         this.randomNumbersGenerated = 0;
+         this.cosmeticNumbersGenerated = 0;
+-        return fullSeed;
+     }
+ 
+     private range(n: number, rng: RNGType): number {
+
+--- ai_docs/reports/u-02b-evidence/stage-b/Game.ts	2026-09-25 05:32:49
++++ ai_docs/reports/u-02b-evidence/stage-c/Game.ts	2026-09-25 05:33:51
+@@ -1,4 +1,4 @@
+-import { initializeLevelSeeds, type LevelSeed } from './LevelSeeds';
++import { initializeLevelSeeds, copyLevelSeeds, isLevelSeeds, type LevelSeed } from './LevelSeeds';
+ import { NEGATABLE_TRAITS, NON_NEGATABLE_ABILITIES, NEGATABLE_MUTATIONS, hasNegatableBolt, negateBolts, negateCreatureStatusEffects } from '../Combat/Negation';
+ import { cloneLocation } from '../Combat/Cloning';
+ import { anyoneWantABite } from '../Combat/MonsterAbsorption';
+@@ -201,6 +201,8 @@
+     seed: string;
+     /** U02a mandatory payload: pre-U02a saves are rejected, never reseeded. */
+     rngState: RandomState;
++    /** Seed/visited metadata for every CE slot; cached world state remains U03. */
++    levelSeeds: LevelSeed[];
+     /** Preserve the current layer's random waypoint products instead of drawing them again. */
+     waypoints: ReturnType<WaypointSystem['getState']>;
+     mode: GameMode;
+@@ -608,6 +610,7 @@
+         this.mode = options?.mode ?? 'normal';
+         rng.setRNG(RNGType.RNG_SUBSTANTIVE);
+         this.currentSeed = rng.seedRandomGenerator(seed);
++        rng.resetCounters();
+         this.levelSeeds = initializeLevelSeeds(rng, this.currentSeed);
+ 
+         ItemLoader.initConsumables();
+@@ -1077,8 +1080,16 @@
+     }
+ 
+     private generateDepth(isGoingUp: boolean = false, isFirstLevel: boolean = false) {
++        const level = this.levelSeeds[this.depth - 1];
++        if (!level) throw new RangeError('Missing level seed');
++        if (level.visited && !this.levels.has(this.depth) && this.mode !== 'test') {
++            // Current-layer saves cannot restore an earlier visited map (U03).
++            throw new Error('Visited level state is unavailable in this current-layer save');
++        }
++        rng.setRNG(RNGType.RNG_SUBSTANTIVE);
+         if (this.mode === 'test') {
+             this.generateTestDepth(isFirstLevel);
++            level.visited = true;
+             // P4-10：test 层同样建 waypoint（CE RogueMain.c:707 的位置——
+             // 该层的全部生成决策已完成之后）。
+             this.rebuildWaypoints();
+@@ -1141,50 +1152,60 @@
+             }
+             if (entryStair) this.placePlayerOnLevelEntry(entryStair);
+         } else {
+-            // 1. Generate new level
+-            this.stats.maxDepth = Math.max(this.stats.maxDepth, this.depth);
+-            const architect = new Architect();
+-            this.grid = architect.generateLevel(this.depth);
+-            this.dormantMonsters = [];
+-            this.bindDormantAwakener();
+-            this.environment = new EnvironmentManager(this.grid);
+-            this.fov = new FOVSys(this.grid);
+-            this.lightMap = new LightMap(this.grid);
+-            // P4-8：新层新气味图（CE 跨层留存 levels[d].scentMap，web 不做）
+-            this.scent = new ScentMap(DCOLS, DROWS);
+-
+-            // Fresh state for new level
+-            this.monsters = [];
+-            this.items = [];
+-            this.visibleMonsters.clear();
+-            this.visibleItems.clear();
+-
+-            // 2. Populate level with monsters and items, and STAIRS
+-            // （B-4b：architect.machines 不再传入——legacy machines 循环已删；
+-            //  V-2b-1：architect.trapVaults/cages 不再传入——两数组及其消费
+-            //  循环均为死代码，已删除）
+-            this.populateLevel(
+-                this.depth, isGoingUp, isFirstLevel,
+-                architect.machineResults
+-            );
+-
+-            // C-5：取走坠到本层的怪物幸存者（CE startLevel "Load up next
+-            // level's monsters and items, since one might have fallen from
+-            // above"——RogueMain.c:673-676；重定位= restoreMonster 的
+-            // MB_PREPLACED 分支，Architect.c:3537-3550）。CE 用
+-            // getQualifyingPathLocNear，web 复用 P1-31 的同口径端口。
+-            const fallen = this.pendingFallenByDepth.get(this.depth);
+-            if (fallen && fallen.length > 0) {
+-                this.pendingFallenByDepth.delete(this.depth);
+-                for (const m of fallen) {
+-                    const spot = this.findQualifyingPathLocNear(m.loc);
+-                    if (spot) {
+-                        m.loc.x = spot.x;
+-                        m.loc.y = spot.y;
+-                    }
+-                    m.preplaced = false; // CE :3548 清 MB_PREPLACED
+-                    this.monsters.push(m);
++            // CE startLevel: draw a nonzero return seed, then initialize BOTH streams.
++            let oldSeed: bigint;
++            do { oldSeed = rng.rand64bits(); } while (oldSeed === 0n);
++            rng.seedRandomGenerator(level.levelSeed);
++            try {
++                // 1. Generate new level
++                this.stats.maxDepth = Math.max(this.stats.maxDepth, this.depth);
++                const architect = new Architect();
++                this.grid = architect.generateLevel(this.depth);
++                this.dormantMonsters = [];
++                this.bindDormantAwakener();
++                this.environment = new EnvironmentManager(this.grid);
++                this.fov = new FOVSys(this.grid);
++                this.lightMap = new LightMap(this.grid);
++                // P4-8：新层新气味图（CE 跨层留存 levels[d].scentMap，web 不做）
++                this.scent = new ScentMap(DCOLS, DROWS);
++    
++                // Fresh state for new level
++                this.monsters = [];
++                this.items = [];
++                this.visibleMonsters.clear();
++                this.visibleItems.clear();
++    
++                // 2. Populate level with monsters and items, and STAIRS
++                // （B-4b：architect.machines 不再传入——legacy machines 循环已删；
++                //  V-2b-1：architect.trapVaults/cages 不再传入——两数组及其消费
++                //  循环均为死代码，已删除）
++                this.populateLevel(
++                    this.depth, isGoingUp, isFirstLevel,
++                    architect.machineResults
++                );
++    
++                // C-5：取走坠到本层的怪物幸存者（CE startLevel "Load up next
++                // level's monsters and items, since one might have fallen from
++                // above"——RogueMain.c:673-676；重定位= restoreMonster 的
++                // MB_PREPLACED 分支，Architect.c:3537-3550）。CE 用
++                // getQualifyingPathLocNear，web 复用 P1-31 的同口径端口。
++                const fallen = this.pendingFallenByDepth.get(this.depth);
++                if (fallen && fallen.length > 0) {
++                    this.pendingFallenByDepth.delete(this.depth);
++                    for (const m of fallen) {
++                        const spot = this.findQualifyingPathLocNear(m.loc);
++                        if (spot) {
++                            m.loc.x = spot.x;
++                            m.loc.y = spot.y;
++                        }
++                        m.preplaced = false; // CE :3548 清 MB_PREPLACED
++                        this.monsters.push(m);
++                    }
+                 }
++                level.visited = true;
++            } finally {
++                // This is reseeding from oldSeed, not restoring the pre-entry state tuple.
++                rng.seedRandomGenerator(oldSeed);
+             }
+         }
+ 
+@@ -1226,13 +1247,16 @@
+         // P1-33 曾以"宝库地板改判 CHARRED_FLOOR"达成同样效果（当时 Game.ts
+         // 禁改），P1-37 起用地形类型冒充旗标的做法废除，宝库恢复普通地板。
+         const floorTiles: Pos[] = [];
++        // A previous floor's player position must not select this floor's stair deck.
++        // Keep the existing exclusion shape, anchored to this level's initialization plan.
++        const generationOrigin = this.levelSeeds[depth - 1]!.upStairsLoc;
+         for (let x = 1; x < DCOLS - 1; x++) {
+             for (let y = 1; y < DROWS - 1; y++) {
+                 const cell = this.grid.getCell(x, y);
+                 if (!cell || !cell.layers.includes(TerrainType.FLOOR)) continue; // F-1 跨层判定
+                 if (cell.machineNumber !== 0) continue; // CE IS_IN_MACHINE
+                 // Don't spawn right on top of player
+-                if (Math.abs(x - this.player.loc.x) > 5 || Math.abs(y - this.player.loc.y) > 5) {
++                if (Math.abs(x - generationOrigin.x) > 5 || Math.abs(y - generationOrigin.y) > 5) {
+                     floorTiles.push({ x, y });
+                 }
+             }
+@@ -8498,6 +8522,7 @@
+             depth: this.depth,
+             seed: this.currentSeed,
+             rngState: rng.getState(),
++            levelSeeds: copyLevelSeeds(this.levelSeeds),
+             waypoints: this.waypoints.getState(),
+             mode: this.mode,
+             ticksTillUpdateEnvironment: this.ticksTillUpdateEnvironment,
+@@ -8550,7 +8575,7 @@
+     }
+ 
+     public loadSnapshot(snapshot: GameSnapshot): boolean {
+-        if (!snapshot || snapshot.version !== 2 || !isSeed(snapshot.seed) || !Random.isState(snapshot.rngState) || !snapshot.waypoints) return false;
++        if (!snapshot || snapshot.version !== 2 || !isSeed(snapshot.seed) || !Random.isState(snapshot.rngState) || !snapshot.waypoints || !isLevelSeeds(snapshot.levelSeeds)) return false;
+ 
+         const entityGraph = restoreEntityGraph(
+             [...snapshot.monsters, ...snapshot.dormantMonsters, ...snapshot.entityGraph.monsters],
+@@ -8560,6 +8585,7 @@
+         this.mode = snapshot.mode;
+         this.ticksTillUpdateEnvironment = snapshot.ticksTillUpdateEnvironment ?? 100;
+         this.currentSeed = snapshot.seed;
++        this.levelSeeds = copyLevelSeeds(snapshot.levelSeeds);
+         rng.setState(snapshot.rngState);
+         // Rebuild deterministic flavor tables on a private stream, not the live run's RNG.
+         ItemLoader.initConsumables(new Random(snapshot.seed));

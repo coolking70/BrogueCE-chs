@@ -1,0 +1,353 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/5620/brogue/brogue-web
+
+stdout | src/test/w_24_wand_catalog.test.ts > W-24 CE nine-row catalog and ordinary entry > parses the actual CE rows: order, frequency, market value, charge range, polarity, power and flavor slots
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/w_25_staff_catalog.test.ts > W-25 staff catalog > parses all twelve CE rows including non-contiguous wood slots, range, polarity, value and power
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/u_06_monster_damage.test.ts > U06 CE compiled staffDamage goldens and real contacts > 'SPARK' ignores caster accuracy/damage/status/riders and monster armor, consumes only CE dice
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/horde_selection.test.ts > horde 抽取 — 两套过滤口径（CE Monsters.c:1090 / 1133） > 开局铺怪候选池 >= 80 条，且包含 HORDE_LEADER_CAPTIVE 的 horde
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/horde_selection.test.ts > horde 抽取 — frequency 加权（CE Monsters.c:511 pickHordeType） > 固定 seed D5 抽 10000 次：各条占比绝对偏差 < 5 个百分点且卡方检验通过
+[horde_selection] D5 加权抽取频次表（seed=20260914, N=10000, χ²=16.1, 17 自由度 0.1% 临界值 40.8）：
+RAT                freq=150 期望占比=12.93% 实际=1272 (12.72%) 绝对偏差=0.21pp σ=33.6
+KOBOLD             freq=150 期望占比=12.93% 实际=1277 (12.77%) 绝对偏差=0.16pp σ=33.6
+JACKAL             freq= 50 期望占比=4.31% 实际=413 (4.13%) 绝对偏差=0.18pp σ=20.3
+EEL                freq=100 期望占比=8.62% 实际=850 (8.50%) 绝对偏差=0.12pp σ=28.1
+MONKEY             freq= 50 期望占比=4.31% 实际=460 (4.60%) 绝对偏差=0.29pp σ=20.3
+BLOAT              freq= 30 期望占比=2.59% 实际=245 (2.45%) 绝对偏差=0.14pp σ=15.9
+PIT_BLOAT          freq= 10 期望占比=0.86% 实际=77 (0.77%) 绝对偏差=0.09pp σ=9.2
+GOBLIN             freq=100 期望占比=8.62% 实际=872 (8.72%) 绝对偏差=0.10pp σ=28.1
+GOBLIN_CONJURER    freq= 60 期望占比=5.17% 实际=534 (5.34%) 绝对偏差=0.17pp σ=22.1
+TOAD               freq=100 期望占比=8.62% 实际=919 (9.19%) 绝对偏差=0.57pp σ=28.1
+PINK_JELLY         freq=100 期望占比=8.62% 实际=873 (8.73%) 绝对偏差=0.11pp σ=28.1
+GOBLIN_TOTEM       freq=100 期望占比=8.62% 实际=873 (8.73%) 绝对偏差=0.11pp σ=28.1
+ARROW_TURRET       freq=100 期望占比=8.62% 实际=826 (8.26%) 绝对偏差=0.36pp σ=28.1
+MONKEY             freq= 20 期望占比=1.72% 实际=158 (1.58%) 绝对偏差=0.14pp σ=13.0
+MONKEY             freq= 10 期望占比=0.86% 实际=100 (1.00%) 绝对偏差=0.14pp σ=9.2
+GOBLIN             freq= 10 期望占比=0.86% 实际=91 (0.91%) 绝对偏差=0.05pp σ=9.2
+OGRE               freq= 10 期望占比=0.86% 实际=83 (0.83%) 绝对偏差=0.03pp σ=9.2
+GOBLIN_MYSTIC      freq= 10 期望占比=0.86% 实际=77 (0.77%) 绝对偏差=0.09pp σ=9.2
+
+stdout | src/test/horde_selection.test.ts > horde 抽取 — out-of-depth（CE Monsters.c:797-805） > D10 触发率接近 10%（±3%），触发时深度落在 [11,15]
+[horde_selection] D10 OOD 触发率 10.29%（1029/10000），深度分布：D11=196 D12=224 D13=213 D14=200 D15=196
+
+ ✓ src/test/w_24_wand_catalog.test.ts (20 tests) 8151ms
+     ✓ 64 seeds × 1000 real kind+instance draws: all nine kinds, weighted frequencies, uniform charges, exact RNG calls  4514ms
+     ✓ wand_of_polymorphism: normal use/cancel/confirm runs the existing effect with no substitute config  646ms
+     ✓ wand_of_negation: normal use/cancel/confirm runs the existing effect with no substitute config  647ms
+     ✓ wand_of_domination: normal use/cancel/confirm runs the existing effect with no substitute config  595ms
+     ✓ wand_of_plenty: normal use/cancel/confirm runs the existing effect with no substitute config  612ms
+     ✓ legacy seven-row seed mapping, identity sets, calls, depleted instances survive real load; new rows remain unknown  554ms
+     ✓ new save preserves all eleven flavors; partial maps fill new identities uniquely without RNG  516ms
+stdout | src/test/horde_terrain_spawn.test.ts > 地形感知落点 — randomMatchingLocation 语义（CE Architect.c:3822） > 深水地图上能找到 WATER_DEEP 落格，且 EEL horde 领袖确实落在深水格上
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_25_staff_catalog.test.ts (31 tests) 11633ms
+     ✓ 64 seeds × 1000 real kind/instance draws: 12 kinds, weighted frequency, uncapped E, per-item exact RNG  4841ms
+     ✓ staff_of_tunneling: real selection, cancel, confirmation, resource/time/autoID and actual effect  809ms
+     ✓ staff_of_blinking: real selection, cancel, confirmation, resource/time/autoID and actual effect  644ms
+     ✓ staff_of_entrancement: real selection, cancel, confirmation, resource/time/autoID and actual effect  562ms
+     ✓ known blink/tunnel aim at cells, entrancement targets eligible enemies; unknown kinds retain generic candidates  515ms
+     ✓ E2: known-capacity preview and actual travel; remote cursor allowed, cancel zero consumption  455ms
+     ✓ E3: known-capacity preview and actual travel; remote cursor allowed, cancel zero consumption  592ms
+     ✓ E8: known-capacity preview and actual travel; remote cursor allowed, cancel zero consumption  542ms
+     ✓ known lethal landing refuses before charge/time/RNG; fire immunity permits existing effect  504ms
+     ✓ real blink scroll resets 10000/E; absent timer uses 1000 and full timer freezes  529ms
+     ✓ known kind/unknown range prompts; rejecting cancels, hidden kind never reveals lava risk or E  523ms
+     ✓ real old seven-row mapping, empty charges/calls/known sets and timer survive load without spawn  547ms
+     ✓ new maps, partial maps and current blink timer are deterministic  525ms
+stdout | src/test/v_2b_9c_effects.test.ts > V-2b-9c electrical trigger, isolated from turn promotion > non-electric / off-ray crystals stay off; only the last direct lightning hit releases the cage
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/horde_selection.test.ts > horde 抽取 — 周期刷怪 fuse（CE RogueMain.c:403 / Time.c:2322/2666） > 连续推进回合：fuse 单调递减，多次归零多次触发
+[horde_selection] 400 回合内周期刷怪触发次数：2（期望 ≈ 400/150 ≈ 2.7）
+
+ ✓ src/test/v_2b_9c_effects.test.ts (10 tests) 3621ms
+     ✓ non-electric / off-ray crystals stay off; only the last direct lightning hit releases the cage  641ms
+     ✓ a wall stops player electricity; monster SPARK lights the crystal and stops before its target  556ms
+     ✓ 51 mud horde really wakes on pickup; key and exit remain reachable  564ms
+     ✓ 54 pickup drives darkening, torch transition, ectoplasm and all dormant phantoms  643ms
+     ✓ 32 builds literal traps/pools and leaves a route to the altar and out  621ms
+     ✓ darkness reduces actual light while leaving the movement graph unchanged  584ms
+stdout | src/test/w_5_arcana_instance.test.ts > W-5 deterministic persistence / migration > versioned JSON snapshot preserves independent E, capacity, depletion and unknown-state flags on ground / in pack
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_06_monster_damage.test.ts (37 tests) 20613ms
+     ✓ 'SPARK' ignores caster accuracy/damage/status/riders and monster armor, consumes only CE dice  850ms
+     ✓ 'FIRE' ignores caster accuracy/damage/status/riders and monster armor, consumes only CE dice  719ms
+     ✓ 'DRAGONFIRE' ignores caster accuracy/damage/status/riders and monster armor, consumes only CE dice  635ms
+     ✓ 'SPARK' ignores player armor and armor runics; no melee on-hit statuses  639ms
+     ✓ 'FIRE' ignores player armor and armor runics; no melee on-hit statuses  545ms
+     ✓ 'DRAGONFIRE' ignores player armor and armor runics; no melee on-hit statuses  645ms
+     ✓ 'SPARK' reaches both CE endpoints with exactly the declared dice order  593ms
+     ✓ 'FIRE' reaches both CE endpoints with exactly the declared dice order  644ms
+     ✓ 'DRAGONFIRE' reaches both CE endpoints with exactly the declared dice order  654ms
+     ✓ FIRE: player immunity precedes RNG, preserves shield, emits immunity and ignites terrain  583ms
+     ✓ FIRE: status immunity precedes RNG, preserves shield, emits immunity and ignites terrain  609ms
+     ✓ FIRE: flag immunity precedes RNG, preserves shield, emits immunity and ignites terrain  504ms
+     ✓ FIRE: invulnerable immunity precedes RNG, preserves shield, emits immunity and ignites terrain  600ms
+     ✓ DRAGONFIRE: player immunity precedes RNG, preserves shield, emits immunity and ignites terrain  559ms
+     ✓ DRAGONFIRE: status immunity precedes RNG, preserves shield, emits immunity and ignites terrain  541ms
+     ✓ DRAGONFIRE: flag immunity precedes RNG, preserves shield, emits immunity and ignites terrain  562ms
+     ✓ DRAGONFIRE: invulnerable immunity precedes RNG, preserves shield, emits immunity and ignites terrain  554ms
+     ✓ spark harms fire/weapon immune targets, but invulnerability consumes no roll and does not stop piercing  521ms
+     ✓ shield=100 absorbs once; shield-only hits still burn and release control  545ms
+     ✓ shield=25 absorbs once; shield-only hits still burn and release control  610ms
+     ✓ shield=20 absorbs once; shield-only hits still burn and release control  619ms
+     ✓ transference remains after shields and before damage (ally=false), including reflected self-hit  576ms
+     ✓ transference remains after shields and before damage (ally=true), including reflected self-hit  558ms
+     ✓ negating innate fire immunity exposes the same target to the new direct damage exit  460ms
+     ✓ monster-origin reflected damage splits the surviving recipient after ignition  582ms
+     ✓ negation removes actual damage casting abilities; next turn cannot cast them  496ms
+     ✓ reflected spark kills caster and player in order; player death stops piercing and credits original caster  495ms
+     ✓ armor reflection identifies armor and deals fixed fire damage to the original caster  603ms
+     ✓ lethal flame does not ignite player or terrain after the death return  588ms
+     ✓ killed bloat reaches ordinary death DF/carried-drop cleanup exactly once  877ms
+     ✓ DISTANCE_ATTACK retains accuracy miss, weapon immunity, attack damage/riders and RNG  496ms
+     ✓ POISON_DART retains accuracy miss, weapon immunity, attack damage/riders and RNG  478ms
+     ✓ BE_ATTACK on an ASLEEP target short-circuits a false accuracy mock and wakes it  1035ms
+     ✓ WHIP remains CE BE_ATTACK on the existing geometry route, with no monster bolt-table addition  517ms
+stdout | src/test/u_08_terrain_bolts.test.ts > U08 CE catalog and runtime qualification > SPIDERWEB rejects teammates, invulnerable, web immune and current entanglement without rolling
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/horde_selection.test.ts > horde 抽取 — 数据层零失配与实际物种覆盖 > D1..D26 逐层生成：全局物种数 >= 30（修复前常规池仅能产出 9 种）
+[horde_selection] D1..D26 逐层怪物表（seed=424242）：
+D 1 | 共   6 只 / 3 种 | kobold×4, rat×1, jackal×1
+D 2 | 共   6 只 / 3 种 | rat×4, monkey×1, bloat×1
+D 3 | 共  17 只 / 4 种 | jackal×8, rat×3, kobold×3, goblin×3
+D 4 | 共  11 只 / 7 种 | goblin×4, kobold×2, monkey×1, goblin_conjurer×1, goblin_totem×1, bloat×1, toad×1
+D 5 | 共  19 只 / 8 种 | goblin×7, rat×3, kobold×2, goblin_totem×2, goblin_conjurer×2, eel×1, bloat×1, pink_jelly×1
+D 6 | 共  12 只 / 6 种 | monkey×4, pink_jelly×3, kobold×2, goblin×1, toad×1, ogre×1
+D 7 | 共  12 只 / 6 种 | stone_guardian×5, goblin×2, ogre×2, mirrored_totem×1, bog_monster×1, pink_jelly×1
+D 8 | 共  10 只 / 6 种 | goblin×4, goblin_totem×2, wraith×1, bog_monster×1, zombie×1, pink_jelly×1
+D 9 | 共   7 只 / 4 种 | ogre×2, vampire_bat×2, toad×2, goblin_conjurer×1
+D10 | 共  12 只 / 7 种 | bog_monster×4, eel×3, pink_jelly×1, spider×1, wisp×1, goblin×1, ogre×1
+D11 | 共  12 只 / 6 种 | acid_mound×5, goblin_conjurer×2, vampire_bat×2, goblin_mystic×1, wisp×1, pit_bloat×1
+D12 | 共  30 只 / 14 种 | acid_mound×5, goblin×4, sentinel×3, goblin_totem×3, vampire_bat×2, wraith×2, ogre×2, dar_blademaster×2, goblin_conjurer×2, wisp×1, zombie×1, ogre_shaman×1, troll×1, goblin_mystic×1
+D13 | 共  24 只 / 9 种 | sentinel×6, goblin×6, goblin_totem×3, acid_mound×3, goblin_conjurer×2, dar_blademaster×1, ogre×1, wraith×1, goblin_mystic×1
+D14 | 共  17 只 / 9 种 | goblin_mystic×3, goblin×3, goblin_totem×2, goblin_conjurer×2, naga×2, zombie×2, salamander×1, spider×1, pixie×1
+D15 | 共  14 只 / 9 种 | ogre×3, wraith×2, naga×2, salamander×2, acidic_jelly×1, ogre_totem×1, kraken×1, wisp×1, spider×1
+D16 | 共  19 只 / 11 种 | goblin_totem×3, goblin×3, wisp×3, goblin_mystic×2, dar_blademaster×2, goblin_conjurer×1, ogre_shaman×1, ogre×1, pixie×1, dar_priestess×1, dar_battlemage×1
+D17 | 共  20 只 / 12 种 | wraith×3, bog_monster×3, goblin×3, centaur×2, goblin_totem×2, phantom×1, wisp×1, naga×1, pixie×1, imp×1, goblin_conjurer×1, goblin_mystic×1
+D18 | 共   8 只 / 6 种 | troll×3, golem×1, phantom×1, zombie×1, acidic_jelly×1, dar_blademaster×1
+D19 | 共  52 只 / 18 种 | fury×9, dar_blademaster×8, dar_priestess×5, centaur×4, dar_battlemage×4, bog_monster×4, sentinel×3, bloat×3, golem×2, naga×2, troll×1, revenant×1, ogre_shaman×1, ogre×1, acidic_jelly×1, salamander×1, imp×1, pink_jelly×1
+D20 | 共  17 只 / 7 种 | bog_monster×9, ogre×3, imp×1, acidic_jelly×1, pixie×1, bloat×1, ogre_shaman×1
+D21 | 共   8 只 / 4 种 | centaur×4, revenant×2, imp×1, pixie×1
+D22 | 共  19 只 / 7 种 | eel×5, dar_blademaster×4, wraith×4, dar_priestess×2, dar_battlemage×2, tentacle_horror×1, phylactery×1
+D23 | 共  36 只 / 8 种 | fury×18, wraith×8, bog_monster×4, dar_blademaster×2, dar_priestess×1, dar_battlemage×1, golem×1, phylactery×1
+D24 | 共  17 只 / 9 种 | sentinel×3, dar_blademaster×3, imp×3, tentacle_horror×2, dar_battlemage×2, explosive_bloat×1, revenant×1, phylactery×1, dar_priestess×1
+D25 | 共  18 只 / 6 种 | dar_blademaster×7, dar_priestess×3, dar_battlemage×3, golem×2, revenant×2, phylactery×1
+D26 | 共  11 只 / 5 种 | fury×5, revenant×3, imp×1, phylactery×1, golem×1
+[horde_selection] 全局物种总数：44
+
+ ✓ src/test/u_08_terrain_bolts.test.ts (32 tests) 21170ms
+     ✓ SPIDERWEB rejects teammates, invulnerable, web immune and current entanglement without rolling  622ms
+     ✓ ANCIENT_SPIRIT_VINES rejects teammates, invulnerable, web immune and current entanglement without rolling  563ms
+     ✓ distinct forbidden flags: web rejects immobile/turret, vines rejects inanimate  533ms
+     ✓ real spider and dryad always cast, pay 400/100 ticks, and reject sleeping/hidden/blocked targets  1745ms
+     ✓ no target => no ticks/RNG; repeated web does not recast while occupied terrain holds  584ms
+     ✓ SPIDERWEB exactly reproduces pathDF once per reached cell then targetDF, including RNG  1288ms
+     ✓ ANCIENT_SPIRIT_VINES exactly reproduces pathDF once per reached cell then targetDF, including RNG  2264ms
+     ✓ SPIDERWEB hits intervening ally and stops; never reflects even from 100% undefined reflector  539ms
+     ✓ ANCIENT_SPIRIT_VINES hits intervening ally and stops; never reflects even from 100% undefined reflector  487ms
+     ✓ wall is reached, receives no surface, and stops travel; endpoint spread can fill adjacent legal cells  496ms
+     ✓ empty origin aim does not fabricate a landing or DF  590ms
+     ✓ origin is not a path step, but DF spread may reach it  584ms
+     ✓ vines immediately promote under player during fill, levitating=false  567ms
+     ✓ vines immediately promote under player during fill, levitating=true  563ms
+     ✓ refresh occurs during fill, not after it; nested grass fill cannot overwrite stronger vines  524ms
+     ✓ player walking and magical placement promote vines, monsters keep them  561ms
+     ✓ terrain 23 holds ordinary monster, immune spider walks, breaking preserves floor and water  554ms
+     ✓ terrain 135 holds ordinary monster, immune spider walks, breaking preserves floor and water  555ms
+     ✓ release clears only SURFACE even in a synthetic multi-layer entanglement  516ms
+     ✓ a manually installed learnable vines bolt executes for an ally without spending learning points  2536ms
+     ✓ gradual vines damage once, bypass shield, hurt web-immune/flying, exempt inanimate/invulnerable  517ms
+     ✓ respiration also protects from vines and identifies; lethal monster damage uses ordinary cleanup  647ms
+     ✓ spontaneous promotion is <1000 out of 0..10000 and leaves non-promoting grass  668ms
+     ✓ terrain 23 burns to plain fire, with original base/liquid intact  505ms
+     ✓ terrain 135 burns to plain fire, with original base/liquid intact  494ms
+     ✓ terrain 136 burns to plain fire, with original base/liquid intact  548ms
+     ✓ current snapshot retains new terrain/occupancy, next contact promotes and no learning is installed  1114ms
+stdout | src/test/f_2a_fire_mechanics.test.ts > F-2a 对抗①：蔓延只用 4 正交邻（CE Time.c:1692-1699 nbDirs 前 4 项） > 与火格只有对角连接的草格永远烧不到。错误实现：蔓延用 8 邻（web 旧行为）——五组独立对角对中必有草被点燃留痕。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/horde_selection.test.ts (12 tests) 53123ms
+     ✓ 开局铺怪候选池 >= 80 条，且包含 HORDE_LEADER_CAPTIVE 的 horde  1243ms
+     ✓ 周期刷怪候选池 >= 55 条（CE 锚点 58）  1050ms
+     ✓ 两套口径的开关差异：LEADER_CAPTIVE 与 NO_PERIODIC_SPAWN 只在开局池出现  1002ms
+     ✓ 固定 seed D5 抽 10000 次：各条占比绝对偏差 < 5 个百分点且卡方检验通过  1123ms
+     ✓ D1 永不触发 OOD  1107ms
+     ✓ D10 触发率接近 10%（±3%），触发时深度落在 [11,15]  1135ms
+     ✓ 开局 fuse ∈ [125,175]  1171ms
+     ✓ fuse 归零后当回合触发刷怪并重置，新怪为 WANDERING 且在玩家视野外  1209ms
+     ✓ 连续推进回合：fuse 单调递减，多次归零多次触发  6522ms
+     ✓ D1..D26 逐层生成：全局物种数 >= 30（修复前常规池仅能产出 9 种）  15122ms
+     ✓ 开局铺怪实际会刷出 HORDE_LEADER_CAPTIVE 的笼中俘虏（领袖 caged + WANDERING + HP 1/4）  22436ms
+stdout | src/test/p4_3_special_monster_flags.test.ts > P4-3 验收 1：MONST_INVULNERABLE — Warden of Yendor 打不死 > 玩家近战攻击 50 次，Warden 血量不变，也不会死亡
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/f_2a_fire_mechanics.test.ts (12 tests) 16631ms
+     ✓ 与火格只有对角连接的草格永远烧不到。错误实现：蔓延用 8 邻（web 旧行为）——五组独立对角对中必有草被点燃留痕。  1272ms
+     ✓ 大样本互不相邻草格各暴露一次：点燃数必须落在 15% 的二项分布带内。错误实现 a：固定 40%（web 旧值）→ 期望 130，远超上限；错误实现 b：100% 必燃 → 325；错误实现 c：掷骰被丢（永不燃）→ 0。  957ms
+     ✓ exposedToFire ≥12 时连 alwaysIgnite 都被拒绝；新回合（runFireUpdate）清零后恢复。错误实现 a：漏掉封顶检查——超封顶的直燃照样点燃；错误实现 b：漏掉每回合清零——第二回合怎么暴露都点不着。  830ms
+     ✓ 30 个草格直燃必须 100% 点燃（跳过 15% 掷骰）。错误实现：旁路失效（把 alwaysIgnite 当 false 掷骰）→ 期望只有 ~4-5 格点燃。  900ms
+     ✓ igniteForced（CE 火 DF 生成家族）在楼梯/祭坛上落不了火；对照地板照落。错误实现：绕开 DF 管线直写 SURFACE 层（F-1 旧 igniteForced）→ 楼梯/祭坛照烧。  910ms
+     ✓ 直燃路径（exposeTileToFire）同样伤不到楼梯/祭坛——它们不可燃，暴露计数都不动（CE :1308 T_IS_FLAMMABLE 先决）。  1230ms
+     ✓ 60 个火格推 60 个客观块后必须大半离场（EMBERS/ASH）。错误实现：promoteChance 没接上（火永生）或仍按 burnDuration 倒计时——前者离场数恒 0，后者在更早的 f_1 对抗④红。  1298ms
+     ✓ 火格在 skip 集里时它的邻居不掷骰；不在时 100% 可燃邻居（网）必被点燃。错误实现：runFireUpdate 忽略 opts.caughtFireCells。  1804ms
+     ✓ DF_PLAIN_FIRE / DF_EMBERS / DF_ASH 都是 start=0 的单点 DF——spawnMapDF 的 while(startProb>0) 不执行、零掷骰；合成扩散条目的probDec>0 闸门（c_4c C1）继续覆盖未来条目。错误实现：给火链 DF 抄上非零 start（每次点火多掷骰、移动 RNG 流）或start>0 且 probDec=0（spawnMapDF 死循环——目录级断言已在 c_4c 钉死）。  959ms
+     ✓ 深水被直燃一次 +15 蒸汽；火贴水时蒸汽总量逐回合增长（持续源）  2422ms
+     ✓ BOG（webOnly）目录记 T_IS_FLAMMABLE 但无 fireType/chanceToIgnite=0——直燃无 DF 可落、掷骰路径概率为 0：BOG 不再可点燃（web 旧白名单行为退役）。若未来给 BOG 定 CE 化的火数据，须先改 TerrainCatalog 再翻本断言。  971ms
+     ✓ 四种气体注入全合成密封房后的消散/扩散曲线必须与 S-1 基线逐位一致。错误实现：后续轮次顺手改动了 updateGases/addGas/客观块次序，或气体路径新增掷骰（流位移 → 舍入结果全变）。（基线 2026-09-17 S-1 实跑录制；注入 100 = volume 口径；CREEPING_DEATH 自 G-1 起无层载体，addGas 拒绝、曲线恒空——D2 留痕。）  3072ms
+ ✓ src/test/p4_3_special_monster_flags.test.ts (12 tests) 12854ms
+     ✓ 玩家近战攻击 50 次，Warden 血量不变，也不会死亡  935ms
+     ✓ revenant 受近战武器攻击 50 次，血量不变  2330ms
+     ✓ revenant 受怪物法术伤害（FIRE bolt，isWeaponAttack:false 出口）仍会掉血  1065ms
+     ✓ 怪物侧：另一只怪物对 stone guardian 施放 SPARK，伤害反弹到施法者身上，guardian 血量不变  867ms
+     ✓ 玩家侧：玩家对 stone guardian 施放 FIRE，伤害反弹到玩家自己身上，guardian 血量不变  992ms
+     ✓ phantom 站在玩家视野内也不会进入 visibleMonsters（无 telepathy 时）  1004ms
+     ✓ 玩家有 telepathy 时，phantom 会出现在 visibleMonsters 中  1366ms
+     ✓ 对照组：非隐形怪物（goblin）在同样视野条件下正常出现  943ms
+     ✓ wisp（DIES_IF_NEGATED）被敌对怪物的 NEGATION bolt 命中后直接死亡，而不是只清状态  1012ms
+     ✓ 对照组：没有 DIES_IF_NEGATED 的 goblin 被 NEGATION 命中只清状态，不会死  1387ms
+     ✓ stone guardian 带有该标志，但 web 没有 CE 的"机关/激活"子系统，因此它目前仍会像普通怪物一样每回合自主行动  950ms
+stdout | src/test/w_7_arcana_enchantment.test.ts > W-7 real read -> forced pack selection -> one completed turn > reading identifies only the scroll; invalid/cancel/move/repeated read do not settle time or draw RNG
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_8_staff_damage.test.ts (33 tests) 7535ms
+     ✓ staff_of_fire E=2: measured real zap distribution ignores constant 20 and charges=1  1235ms
+     ✓ staff_of_fire E=3: measured real zap distribution ignores constant 20 and charges=1  1217ms
+     ✓ staff_of_fire E=8: measured real zap distribution ignores constant 20 and charges=1  1094ms
+     ✓ staff_of_lightning E=2: measured real zap distribution ignores constant 20 and charges=1  1303ms
+     ✓ staff_of_lightning E=3: measured real zap distribution ignores constant 20 and charges=1  1361ms
+     ✓ staff_of_lightning E=8: measured real zap distribution ignores constant 20 and charges=1  1274ms
+ ✓ src/test/w_7_arcana_enchantment.test.ts (30 tests) 5726ms
+     ✓ reading identifies only the scroll; invalid/cancel/move/repeated read do not settle time or draw RNG  779ms
+     ✓ haste read does not fake a full objective block; next half-turn continues the reset  553ms
+     ✓ selects by live object reference across reorder, rejects same-id clones, proxy, ground and replaced items  571ms
+     ✓ a stale same-id scroll cannot enter the transaction or identify anything  505ms
+     ✓ empty/unsupported pack consumes the scroll and completes time without pending selection  491ms
+     ✓ pending transaction survives JSON reload; stale references fail; completed values/unknown flags persist  589ms
+     ✓ wand uses beyond initial count survive selection and JSON save/load without exposing identity  585ms
+     ✓ weapon path has exactly the legacy RNG state and result  554ms
+     ✓ armor path has exactly the legacy RNG state and result  544ms
+     ✓ arcana alternative never invokes equipment 20% rune path; spare gear/rings/charms remain outside scope  527ms
+ ❯ src/test/w_5_arcana_instance.test.ts (18 tests | 1 failed) 187169ms
+     ✓ CE staff conditional draws / exact threshold sequence [50] -> E=2 3ms
+     ✓ CE staff conditional draws / exact threshold sequence [49,15] -> E=3 0ms
+     ✓ CE staff conditional draws / exact threshold sequence [49,14,10] -> E=4 0ms
+     ✓ CE staff conditional draws / exact threshold sequence [49,14,9,10] -> E=5 0ms
+     ✓ CE staff conditional draws / exact threshold sequence [0,0,0,0,0,99] -> E=7 0ms
+     ✓ 50,000 staff draws follow CE 50% / 42.5% / 6.75% / 0.675%, including tail >5 6ms
+     ✓ wand_of_teleportation uses its inclusive CE range, endpoints and actual RNG footprint 1ms
+     ✓ wand_of_slowness uses its inclusive CE range, endpoints and actual RNG footprint 1ms
+     ✓ wand_of_beckoning uses its inclusive CE range, endpoints and actual RNG footprint 1ms
+     ✓ wand_of_invisibility uses its inclusive CE range, endpoints and actual RNG footprint 1ms
+     ✓ wand_of_empowerment uses its inclusive CE range, endpoints and actual RNG footprint 0ms
+     ✓ every existing CE staff spawns full with E=capacity; consumption changes current charges only 1ms
+     ✓ retired direct constructions remain available with fixed capacity and no initial draw 0ms
+     ✓ W-26 has twelve CE staffs; W-24 nine CE wand identities/frequencies remain unchanged 0ms
+     ✓ ordinary generation dispatch uses the same initial draw (not a second roll) 0ms
+     ✓ actual deserializer preserves independent values without touching either RNG stream or spawns 0ms
+     ✓ versioned JSON snapshot preserves independent E, capacity, depletion and unknown-state flags on ground / in pack  1014ms
+   × W-5 generated results: 12 fixed seeds (W-24/W-25/W-26 coverage supplements) × D1–26 retain category coverage and obey initial per-kind values 186137ms
+stdout | src/test/horde_terrain_spawn.test.ts > 修复验收 — 水生 horde 实际刷出 + 多 seed × D1-D26 统计（对照修复前 = 0 次） > 多 seed × D1-D26 全流程统计：水生 horde 出现次数 / 层数占比 / 无深水层数
+[horde_terrain_spawn] 8 seed × D1-D26（208 层）统计：
+  水生物种总出现次数：337；其中精确落在 spawnsIn 目标地形（horde 循环产物，修复前恒为 0）：252
+  非目标地形出现（笼子/蓝图/成员溢出等既有路径）：85
+  分物种：BOG_MONSTER×183(正确落格138) EEL×90(正确落格74) NAGA×23(正确落格10) KRAKEN×23(正确落格23) SALAMANDER×18(正确落格7)
+  有水生 horde 的层数：85/208 (40.9%)
+  有 WATER_DEEP 格的层数：93/208 (44.7%)
+  完全没有深水格的层数：115/208 (55.3%)
+  有 MUD 格的层数：155/208；有 LAVA 格的层数：54/208
+  非目标地形样本：seed=424242 D14 Salamander@8,21 terrain=25 | seed=424242 D14 Naga@7,20 terrain=99 | seed=424242 D14 Naga@8,20 terrain=99 | seed=424242 D15 Naga@20,13 terrain=2 | seed=424242 D15 Salamander@19,12 terrain=2 | seed=424242 D15 Salamander@19,13 terrain=2 | seed=424242 D19 vampiric Bog monster@71,15 terrain=2 | seed=424242 D19 Salamander@63,22 terrain=2 | seed=424242 D19 Naga@62,21 terrain=2 | seed=424242 D19 Naga@63,21 terrain=2 | seed=20260914 D9 Bog monster@38,13 terrain=99 | seed=20260914 D10 Bog monster@41,20 terrain=99
+  分深度：
+D 1: 水生层 0/8
+D 2: 水生层 3/8
+D 3: 水生层 3/8
+D 4: 水生层 1/8
+D 5: 水生层 1/8
+D 6: 水生层 3/8
+D 7: 水生层 3/8
+D 8: 水生层 3/8
+D 9: 水生层 3/8
+D10: 水生层 4/8
+D11: 水生层 1/8
+D12: 水生层 2/8
+D13: 水生层 3/8
+D14: 水生层 5/8
+D15: 水生层 6/8
+D16: 水生层 5/8
+D17: 水生层 4/8
+D18: 水生层 4/8
+D19: 水生层 3/8
+D20: 水生层 6/8
+D21: 水生层 3/8
+D22: 水生层 5/8
+D23: 水生层 4/8
+D24: 水生层 2/8
+D25: 水生层 4/8
+D26: 水生层 4/8
+
+ ✓ src/test/horde_terrain_spawn.test.ts (10 tests) 230605ms
+     ✓ 深水地图上能找到 WATER_DEEP 落格，且 EEL horde 领袖确实落在深水格上  889ms
+     ✓ findTerrainSpawnLocation 只返回目标地形格，且排除玩家近旁与已占用格  923ms
+     ✓ 无深水格时返回 null（调用方据此在 failsafe 50 内重抽 horde）  826ms
+     ✓ D8 候选池含两条 EEL horde 且加权抽取可命中（修复的前提条件）  1004ms
+     ✓ passableArcCount 弧段计数（CE Architect.c:171）：计数有界且与邻域可通行性一致  882ms
+     ✓ hordeFitsTerrain 口径不变：spawnsIn=null 恒真；DEEP_WATER 只认 WATER_DEEP  856ms
+     ✓ 仅作为无 spawnsIn horde 领袖出现的物种，经 horde 循环落格必在 FLOOR 上  45673ms
+     ✓ 多 seed × D1-D26：楼梯存在且可站立，floorTiles 路径物品（钥匙/护符）不落墙  60027ms
+     ✓ 盐渍深水图上重复 populateLevel：EEL horde 会被真实铺怪路径刷出且领袖在深水格  1088ms
+     ✓ 多 seed × D1-D26 全流程统计：水生 horde 出现次数 / 层数占比 / 无深水层数  118434ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/w_5_arcana_instance.test.ts > W-5 generated results: 12 fixed seeds (W-24/W-25/W-26 coverage supplements) × D1–26 retain category coverage and obey initial per-kind values
+AssertionError: expected [ 'staff_of_blinking', …(16) ] to deeply equal [ 'staff_of_blinking', …(20) ]
+
+- Expected
++ Received
+
+@@ -1,17 +1,13 @@
+  [
+    "staff_of_blinking",
+-   "staff_of_conjuration",
+    "staff_of_discord",
+    "staff_of_entrancement",
+    "staff_of_fire",
+-   "staff_of_haste",
+-   "staff_of_healing",
+    "staff_of_lightning",
+    "staff_of_obstruction",
+    "staff_of_poison",
+-   "staff_of_protection",
+    "staff_of_tunneling",
+    "wand_of_beckoning",
+    "wand_of_domination",
+    "wand_of_empowerment",
+    "wand_of_invisibility",
+
+ ❯ src/test/w_5_arcana_instance.test.ts:174:31
+    172|     }
+    173|     expect([...categories].sort()).toEqual(Object.values(ItemCategory)…
+    174|     expect([...kinds].sort()).toEqual([...ItemLoader.genStaffs, ...Ite…
+       |                               ^
+    175| });
+    176|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 11 passed (12)
+      Tests  1 failed | 256 passed (257)
+   Start at  05:56:01
+   Duration  241.50s (transform 3.69s, setup 0ms, import 14.42s, tests 578.83s, environment 4ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/5620/brogue/brogue-web/ai_docs/reports/u-02b-evidence/prefinal-expanded-corrected.json

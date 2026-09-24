@@ -22,7 +22,7 @@ const added = ['wand_of_polymorphism', 'wand_of_negation', 'wand_of_domination',
 const oldIds = ['wand_of_fire', 'wand_of_lightning', 'wand_of_teleportation', 'wand_of_slowness', 'wand_of_invisibility', 'wand_of_empowerment', 'wand_of_beckoning'];
 const weights = [3, 3, 3, 3, 1, 3, 2, 3, 1];
 const ranges = [[3,5], [2,5], [3,5], [4,6], [1,2], [2,4], [1,2], [3,5], [1,1]];
-beforeEach(() => { if (!i18next.isInitialized) i18next.init({ lng: 'en', resources: {}, initImmediate: false }); rng.seedRandomGenerator(2424); ItemLoader.initConsumables(); });
+beforeEach(() => { if (!i18next.isInitialized) i18next.init({ lng: 'en', resources: {}, initImmediate: false }); rng.seedRandomGenerator(2424); rng.resetCounters(); ItemLoader.initConsumables(); });
 afterEach(() => vi.restoreAllMocks());
 function scene(id = 'rat') {
     const g = createHeadlessGame(2424, 'test');
@@ -80,7 +80,7 @@ describe('W-24 CE nine-row catalog and ordinary entry', () => {
         const g: any = Object.create(Game.prototype), counts = ids.map(() => 0), charges = ids.map(() => ({} as Record<number, number>));
         let calls = 0;
         for (let seed = 1; seed <= 64; seed++) {
-            rng.seedRandomGenerator(seed * 7919);
+            rng.seedRandomGenerator(seed * 7919); rng.resetCounters();
             for (let n = 0; n < 1000; n++) {
                 const before = rng.randomNumbersGenerated;
                 const id = g.chooseKindFromPool(ItemLoader.genWands.map(w => w.id), ItemLoader.genWands.map(w => w.frequency), new Map());
@@ -166,7 +166,7 @@ describe('W-24 snapshot appearance and identity migration', () => {
         let legacy: Record<string, string>, saved: ReturnType<Game['toSnapshot']>;
         try {
             ItemLoader.wands = oldIds.map(id=>current.find(w=>w.id===id)!);
-            rng.seedRandomGenerator(g.currentSeed); ItemLoader.initConsumables();
+            rng.seedRandomGenerator(g.currentSeed); rng.resetCounters(); ItemLoader.initConsumables();
             legacy = Object.fromEntries(ItemLoader.arcanaFlavorMap);
             const wand = ItemLoader.spawnWand('wand_of_slowness',-1,-1)!; wand.charges = 0;
             ItemLoader.identifiedItems.add('wand_of_teleportation'); ItemLoader.callKind('wand_of_slowness','legacy slow');

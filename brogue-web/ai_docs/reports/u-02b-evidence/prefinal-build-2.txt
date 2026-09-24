@@ -1,0 +1,5 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+src/test/u_02b_level_rng.test.ts(79,14): error TS2345: Argument of type '"updateVision"' is not assignable to parameter of type '"startNewGame" | "loadReplay" | "replayPlay" | "replayPause" | "replayStep" | "replayRestart" | "replaySeek" | "hordeCandidates" | "pickHordeType" | "rollSpawnDepth" | "summonMinionsFor" | ... 67 more ... | "triggerGameOver"'.

@@ -1,0 +1,2441 @@
+{
+  "stage": "a",
+  "previous": "before",
+  "low": {
+    "layers": 0,
+    "fields": 0,
+    "byField": {}
+  },
+  "high": {
+    "layers": 52,
+    "fields": 195,
+    "byField": {
+      "fp": 52,
+      "species": 52,
+      "items": 43,
+      "n": 48
+    }
+  },
+  "extras": {
+    "layers": 52,
+    "fields": 208,
+    "byField": {
+      "waypoints": 52,
+      "rng": 52,
+      "flavors": 52,
+      "stairs": 52
+    }
+  },
+  "diffs": [
+    {
+      "seed": "1099511627783",
+      "depth": 1,
+      "field": "fp",
+      "before": "a1c6287c:4999",
+      "after": "d1533dd1:4996"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 1,
+      "field": "species",
+      "before": "Kobold,Rat",
+      "after": "Jackal,Rat"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 1,
+      "field": "items",
+      "before": 6,
+      "after": 5
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 2,
+      "field": "fp",
+      "before": "ac6f1653:4924",
+      "after": "18d346c8:4973"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 2,
+      "field": "n",
+      "before": 7,
+      "after": 11
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 2,
+      "field": "species",
+      "before": "Bloat,Eel,Jackal,Kobold",
+      "after": "Bloat,Eel,Jackal,Kobold,Pit bloat,Rat"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 2,
+      "field": "items",
+      "before": 5,
+      "after": 7
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 3,
+      "field": "fp",
+      "before": "b9f64582:5021",
+      "after": "16b208f4:5068"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 3,
+      "field": "n",
+      "before": 7,
+      "after": 9
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 3,
+      "field": "species",
+      "before": "Bloat,Goblin,Jackal,Rat",
+      "after": "Eel,Goblin conjurer,Jackal,Monkey,Rat"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 3,
+      "field": "items",
+      "before": 9,
+      "after": 6
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 4,
+      "field": "fp",
+      "before": "25abdcbb:4863",
+      "after": "fdc69461:4926"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 4,
+      "field": "n",
+      "before": 13,
+      "after": 8
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 4,
+      "field": "species",
+      "before": "Goblin,Goblin conjurer,Jackal,Kobold,Monkey,Pink jelly,Pit bloat,Toad",
+      "after": "Goblin,Goblin conjurer,Jackal,Toad"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 5,
+      "field": "fp",
+      "before": "92003a65:4859",
+      "after": "78eb7812:4865"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 5,
+      "field": "n",
+      "before": 11,
+      "after": 13
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 5,
+      "field": "species",
+      "before": "Goblin,Goblin conjurer,Goblin totem,Kobold,Rat",
+      "after": "Eel,Goblin,Goblin totem,Jackal,Pink jelly,Toad"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 5,
+      "field": "items",
+      "before": 5,
+      "after": 7
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 6,
+      "field": "fp",
+      "before": "3d27f364:4820",
+      "after": "49c934f2:4832"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 6,
+      "field": "n",
+      "before": 17,
+      "after": 7
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 6,
+      "field": "species",
+      "before": "Acid mound,Bloat,Eel,Goblin,Goblin mystic,Jackal,Pink jelly,Vampire bat",
+      "after": "Jackal,Kobold,Monkey,Pink jelly,Pit bloat,Toad"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 6,
+      "field": "items",
+      "before": 10,
+      "after": 8
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 7,
+      "field": "fp",
+      "before": "e6245f57:5004",
+      "after": "61376403:5682"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 7,
+      "field": "n",
+      "before": 7,
+      "after": 31
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 7,
+      "field": "species",
+      "before": "Acid mound,Centipede,Goblin,Goblin conjurer,Goblin mystic,Ogre,Toad",
+      "after": "Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Goblin warlord,Monkey,Ogre"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 7,
+      "field": "items",
+      "before": 19,
+      "after": 11
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 8,
+      "field": "fp",
+      "before": "c8f4f9ad:5506",
+      "after": "e3325b58:4812"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 8,
+      "field": "n",
+      "before": 40,
+      "after": 12
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 8,
+      "field": "species",
+      "before": "Centipede,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Goblin warlord,Jackal,Monkey,Ogre,Vampire bat",
+      "after": "Acid mound,Centipede,Eel,Ogre,Ogre totem,Toad"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 8,
+      "field": "items",
+      "before": 17,
+      "after": 12
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 9,
+      "field": "fp",
+      "before": "3eec2aa5:4868",
+      "after": "04c964d1:4850"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 9,
+      "field": "n",
+      "before": 16,
+      "after": 12
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 9,
+      "field": "species",
+      "before": "Acid mound,Centipede,Goblin,Goblin totem,Monkey,Toad,Vampire bat",
+      "after": "Acid mound,Centipede,Goblin,Goblin conjurer,Goblin mystic,Ogre,Spider,Vampire bat,Wisp"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 9,
+      "field": "items",
+      "before": 8,
+      "after": 9
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 10,
+      "field": "fp",
+      "before": "d107d66b:4920",
+      "after": "299b52cb:4853"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 10,
+      "field": "n",
+      "before": 22,
+      "after": 12
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 10,
+      "field": "species",
+      "before": "Centipede,Dar blademaster,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Ogre,Wraith",
+      "after": "Acid mound,Centipede,Goblin,Goblin totem,Toad,Wisp"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 10,
+      "field": "items",
+      "before": 6,
+      "after": 7
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 11,
+      "field": "fp",
+      "before": "6c6e0ff3:5050",
+      "after": "8ab9b822:4927"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 11,
+      "field": "species",
+      "before": "Bloat,Bog monster,Goblin,Goblin mystic,Jackal,Ogre,Spider,Vampire bat,Wisp,Zombie,grappling Goblin",
+      "after": "Acid mound,Centipede,Dar blademaster,Eel,Goblin,Goblin totem,Spider"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 11,
+      "field": "items",
+      "before": 7,
+      "after": 12
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 12,
+      "field": "fp",
+      "before": "ba1573a4:4790",
+      "after": "6ac5d7f8:4753"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 12,
+      "field": "n",
+      "before": 8,
+      "after": 20
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 12,
+      "field": "species",
+      "before": "Centipede,Dar priestess,Troll,Vampire bat,Wisp,vampiric Dar blademaster",
+      "after": "Dar blademaster,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Ogre,Spider,infested Naga,juggernaut Goblin,reflective Dar blademaster"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 13,
+      "field": "fp",
+      "before": "c52ca7db:5000",
+      "after": "6d645361:4831"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 13,
+      "field": "n",
+      "before": 10,
+      "after": 28
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 13,
+      "field": "species",
+      "before": "Acid mound,Ogre,Ogre shaman,Pink jelly,Troll,Wraith",
+      "after": "Acid mound,Bog monster,Dar battlemage,Dar blademaster,Dar priestess,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Sentinel,Wisp,reflective Acid mound"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 13,
+      "field": "items",
+      "before": 19,
+      "after": 13
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 14,
+      "field": "fp",
+      "before": "34b1064a:4957",
+      "after": "3752d637:4846"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 14,
+      "field": "species",
+      "before": "Ogre,Ogre shaman,Pixie,Sentinel,Spider,Wisp,Wraith",
+      "after": "Centaur,Centipede,Eel,Ogre,Ogre shaman,Ogre totem,Troll,Zombie,infested Wisp,toxic Eel,toxic Ogre"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 15,
+      "field": "fp",
+      "before": "f747d156:4852",
+      "after": "490d4c9b:4915"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 15,
+      "field": "n",
+      "before": 8,
+      "after": 11
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 15,
+      "field": "species",
+      "before": "Acidic jelly,Centaur,Ogre,Ogre shaman,Pixie,Wraith,explosive Troll",
+      "after": "Bog monster,Centaur,Dar blademaster,Eel,Pixie,Spider,toxic Dar blademaster"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 15,
+      "field": "items",
+      "before": 8,
+      "after": 7
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 16,
+      "field": "fp",
+      "before": "ad4727e2:4897",
+      "after": "e6bcc719:4913"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 16,
+      "field": "n",
+      "before": 21,
+      "after": 20
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 16,
+      "field": "species",
+      "before": "Acidic jelly,Centaur,Goblin,Goblin mystic,Goblin totem,Pit bloat,Troll,Wraith,agile Goblin conjurer,infested Troll,vampiric Troll",
+      "after": "Bog monster,Centaur,Eel,Naga,Ogre,Ogre shaman,Pit bloat,Wraith,reflective Pit bloat"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 16,
+      "field": "items",
+      "before": 12,
+      "after": 9
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 17,
+      "field": "fp",
+      "before": "2b2133a5:4859",
+      "after": "8b6d9878:4778"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 17,
+      "field": "n",
+      "before": 8,
+      "after": 20
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 17,
+      "field": "species",
+      "before": "Bloat,Troll,Wraith,Zombie",
+      "after": "Imp,Ogre,Ogre shaman,Ogre totem,Pixie,Sentinel,Troll,agile Ogre,infested Ogre,vampiric Sentinel"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 17,
+      "field": "items",
+      "before": 9,
+      "after": 11
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 18,
+      "field": "fp",
+      "before": "57cad8e4:4754",
+      "after": "2bb0a6bb:4872"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 18,
+      "field": "n",
+      "before": 16,
+      "after": 11
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 18,
+      "field": "species",
+      "before": "Acidic jelly,Dar blademaster,Ogre,Ogre totem,Phantom,Pixie,agile Ogre,explosive Dar blademaster,infested Dar priestess,juggernaut Imp,reflective Dar battlemage,reflective Troll",
+      "after": "Imp,Ogre,Ogre shaman,Pixie,Zombie,agile Troll"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 18,
+      "field": "items",
+      "before": 10,
+      "after": 14
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 19,
+      "field": "fp",
+      "before": "ad4d2c0c:4728",
+      "after": "c54cb497:4943"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 19,
+      "field": "n",
+      "before": 25,
+      "after": 19
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 19,
+      "field": "species",
+      "before": "Bog monster,Centaur,Dar battlemage,Dar blademaster,Dar priestess,Fury,Ogre,Ogre shaman,Pink jelly,Troll,infested Bog monster,reflective Acidic jelly,vampiric Dar blademaster",
+      "after": "Dar battlemage,Dar blademaster,Dar priestess,Imp,Naga,Ogre,Ogre totem,Phantom,Pink jelly,Pixie,Revenant,infested Dar blademaster,juggernaut Imp,reflective Bloat"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 19,
+      "field": "items",
+      "before": 6,
+      "after": 8
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 20,
+      "field": "fp",
+      "before": "4948822c:4917",
+      "after": "ad75421c:4937"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 20,
+      "field": "n",
+      "before": 16,
+      "after": 22
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 20,
+      "field": "species",
+      "before": "Bog monster,Dar blademaster,Dar priestess,Kraken,Ogre,Ogre shaman,Pink jelly,Revenant,explosive Pink jelly,reflective Dar battlemage",
+      "after": "Centaur,Dar battlemage,Dar blademaster,Dar priestess,Dragon,Naga,Ogre,Ogre shaman,Phantom,Phylactery,Pink jelly,Salamander,agile Naga,infested Dar priestess,reflective Centaur,reflective Naga,reflective Pink jelly"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 20,
+      "field": "items",
+      "before": 9,
+      "after": 12
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 21,
+      "field": "fp",
+      "before": "57bfe892:5007",
+      "after": "90a68950:4881"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 21,
+      "field": "n",
+      "before": 9,
+      "after": 27
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 21,
+      "field": "species",
+      "before": "Acidic jelly,Bog monster,Golem,Pink jelly,Pixie,agile Dar priestess,infested Golem",
+      "after": "Dar battlemage,Dar blademaster,Dar priestess,Golem,Phantom,Revenant,agile Dar blademaster,explosive Dar battlemage,infested Dar priestess,infested Pixie,juggernaut Dar blademaster,reflective Dar blademaster,toxic Dar blademaster"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 22,
+      "field": "fp",
+      "before": "0f4a6f81:4908",
+      "after": "9631f5e2:4879"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 22,
+      "field": "n",
+      "before": 14,
+      "after": 16
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 22,
+      "field": "species",
+      "before": "Bloat,Fury,Revenant,Wraith,reflective Bloat,toxic Fury,toxic Golem,toxic Wraith",
+      "after": "Bloat,Dar battlemage,Dar priestess,Imp,Pink jelly,grappling Golem,grappling Phantom"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 22,
+      "field": "items",
+      "before": 8,
+      "after": 10
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 23,
+      "field": "fp",
+      "before": "60e3d1be:4929",
+      "after": "98e7d3e1:4809"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 23,
+      "field": "n",
+      "before": 21,
+      "after": 19
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 23,
+      "field": "species",
+      "before": "Dar battlemage,Dar blademaster,Dar priestess,Fury,Imp,Kraken,Sentinel,Tentacle horror,agile Fury,explosive Dar battlemage,grappling Dar blademaster,grappling Golem,infested Fury,vampiric Dar blademaster,vampiric Sentinel",
+      "after": "Bog monster,Dar battlemage,Dar blademaster,Dar priestess,Fury,Kraken,Phantom,Tentacle horror,toxic Bog monster,vampiric Fury"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 23,
+      "field": "items",
+      "before": 10,
+      "after": 12
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 24,
+      "field": "fp",
+      "before": "44a2a2a1:4966",
+      "after": "8ec00860:4800"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 24,
+      "field": "n",
+      "before": 13,
+      "after": 27
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 24,
+      "field": "species",
+      "before": "Fury,Phylactery,Tentacle horror,grappling Fury,reflective Tentacle horror,toxic Explosive bloat,vampiric Fury",
+      "after": "Bog monster,Dar battlemage,Dar blademaster,Dar priestess,Fury,Imp,Revenant,Sentinel,agile Explosive bloat,grappling Sentinel,juggernaut Bog monster,juggernaut Dar blademaster,reflective Fury,toxic Fury"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 24,
+      "field": "items",
+      "before": 11,
+      "after": 7
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 25,
+      "field": "fp",
+      "before": "5573b0c4:4950",
+      "after": "007c0b4c:4793"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 25,
+      "field": "n",
+      "before": 25,
+      "after": 21
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 25,
+      "field": "species",
+      "before": "Bloat,Bog monster,Dar battlemage,Dar blademaster,Dar priestess,Fury,Tentacle horror,agile Bloat,explosive Revenant,grappling Fury,reflective Bog monster,reflective Fury,toxic Bog monster,vampiric Fury",
+      "after": "Dar battlemage,Dar blademaster,Dar priestess,Dragon,Fury,Golem,Phylactery,Revenant,agile Dar blademaster,agile Dar priestess,infested Dragon,infested Fury,juggernaut Tentacle horror,reflective Dar blademaster,vampiric Dar blademaster,vampiric Fury"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 26,
+      "field": "fp",
+      "before": "870d8685:4966",
+      "after": "92e9c6f5:4728"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 26,
+      "field": "n",
+      "before": 15,
+      "after": 12
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 26,
+      "field": "species",
+      "before": "Fury,Golem,Imp,Phylactery,Sentinel,Tentacle horror,agile Fury,explosive Sentinel,infested Sentinel,vampiric Revenant",
+      "after": "Dar blademaster,Dragon,Fury,Phylactery,Revenant,Tentacle horror,agile Fury,grappling Fury,juggernaut Tentacle horror"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 1,
+      "field": "fp",
+      "before": "05dfe7c0:5147",
+      "after": "cfcfb256:5042"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 1,
+      "field": "n",
+      "before": 7,
+      "after": 6
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 1,
+      "field": "species",
+      "before": "Jackal,Kobold,Rat",
+      "after": "Jackal,Rat"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 1,
+      "field": "items",
+      "before": 19,
+      "after": 7
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 2,
+      "field": "fp",
+      "before": "11847668:4902",
+      "after": "2d24e7c0:5116"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 2,
+      "field": "n",
+      "before": 9,
+      "after": 7
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 2,
+      "field": "species",
+      "before": "Goblin,Jackal,Kobold,Monkey,Rat",
+      "after": "Bloat,Eel,Kobold,Rat"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 2,
+      "field": "items",
+      "before": 5,
+      "after": 0
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 3,
+      "field": "fp",
+      "before": "29d8dbed:4972",
+      "after": "2166e137:5113"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 3,
+      "field": "n",
+      "before": 11,
+      "after": 8
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 3,
+      "field": "species",
+      "before": "Bloat,Eel,Jackal,Kobold,Monkey,Rat",
+      "after": "Jackal,Kobold,Pit bloat,Rat"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 3,
+      "field": "items",
+      "before": 5,
+      "after": 11
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 4,
+      "field": "fp",
+      "before": "d6f905a8:4852",
+      "after": "d9b60b26:5045"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 4,
+      "field": "n",
+      "before": 8,
+      "after": 14
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 4,
+      "field": "species",
+      "before": "Bloat,Goblin,Goblin conjurer,Jackal,Monkey,Pink jelly",
+      "after": "Goblin,Kobold,Monkey,Ogre,Pink jelly,Toad"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 4,
+      "field": "items",
+      "before": 8,
+      "after": 6
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 5,
+      "field": "fp",
+      "before": "80145d78:4976",
+      "after": "d4bb4265:4891"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 5,
+      "field": "n",
+      "before": 22,
+      "after": 6
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 5,
+      "field": "species",
+      "before": "Black jelly,Bloat,Goblin,Goblin conjurer,Goblin totem,Jackal,Kobold,Monkey,Pink jelly,Rat,Toad",
+      "after": "Kobold,Monkey,Rat,Toad"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 5,
+      "field": "items",
+      "before": 4,
+      "after": 5
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 6,
+      "field": "fp",
+      "before": "77be6d1e:4876",
+      "after": "3adff390:4836"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 6,
+      "field": "n",
+      "before": 10,
+      "after": 15
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 6,
+      "field": "species",
+      "before": "Goblin,Goblin totem,Kobold,Monkey,Vampire bat",
+      "after": "Acid mound,Goblin,Kobold,Monkey,Pink jelly,Toad,Vampire bat"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 6,
+      "field": "items",
+      "before": 6,
+      "after": 7
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 7,
+      "field": "fp",
+      "before": "9ed21c86:4892",
+      "after": "d3fb1d89:4990"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 7,
+      "field": "n",
+      "before": 15,
+      "after": 11
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 7,
+      "field": "species",
+      "before": "Goblin,Goblin mystic,Jackal,Monkey,Ogre,Vampire bat",
+      "after": "Centipede,Eel,Goblin,Goblin totem,Jackal,Toad"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 7,
+      "field": "items",
+      "before": 6,
+      "after": 11
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 8,
+      "field": "fp",
+      "before": "bd0086ca:4977",
+      "after": "9158d3c0:4896"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 8,
+      "field": "n",
+      "before": 11,
+      "after": 18
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 8,
+      "field": "species",
+      "before": "Goblin,Goblin conjurer,Goblin mystic,Toad,Vampire bat,Winged guardian",
+      "after": "Dar blademaster,Eel,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Pink jelly"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 8,
+      "field": "items",
+      "before": 12,
+      "after": 13
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 9,
+      "field": "fp",
+      "before": "a38a8b70:4874",
+      "after": "1619cc43:4925"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 9,
+      "field": "species",
+      "before": "Bog monster,Dar blademaster,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Kobold,Ogre,Toad",
+      "after": "Acid mound,Eel,Goblin,Goblin mystic,Jackal,Monkey,Ogre,Pink jelly,Spider"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 9,
+      "field": "items",
+      "before": 8,
+      "after": 9
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 10,
+      "field": "fp",
+      "before": "0735364a:4880",
+      "after": "0125100c:4834"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 10,
+      "field": "n",
+      "before": 23,
+      "after": 22
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 10,
+      "field": "species",
+      "before": "Centipede,Dar blademaster,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Toad",
+      "after": "Acid mound,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Jackal,Vampire bat"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 10,
+      "field": "items",
+      "before": 12,
+      "after": 7
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 11,
+      "field": "fp",
+      "before": "d9e429ac:4821",
+      "after": "2ecf7b51:5343"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 11,
+      "field": "n",
+      "before": 6,
+      "after": 52
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 11,
+      "field": "species",
+      "before": "Acid mound,Bog monster,Ogre,Toad",
+      "after": "Bog monster,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Jackal,Ogre,Sentinel,Stone guardian,Winged guardian,agile Centipede,explosive Jackal"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 11,
+      "field": "items",
+      "before": 7,
+      "after": 10
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 12,
+      "field": "fp",
+      "before": "7f579d5a:4851",
+      "after": "68ddde12:4846"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 12,
+      "field": "n",
+      "before": 19,
+      "after": 18
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 12,
+      "field": "species",
+      "before": "Bog monster,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Monkey,Spider,Wisp",
+      "after": "Bloat,Bog monster,Dar blademaster,Monkey,grappling Centipede"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 12,
+      "field": "items",
+      "before": 9,
+      "after": 8
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 13,
+      "field": "fp",
+      "before": "aaffb0b3:4709",
+      "after": "b5e67208:4820"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 13,
+      "field": "n",
+      "before": 8,
+      "after": 18
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 13,
+      "field": "species",
+      "before": "Acid mound,Centipede,Goblin,Goblin totem,Ogre,Spider,Zombie,toxic Goblin",
+      "after": "Centipede,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Ogre,Ogre totem,Wraith"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 14,
+      "field": "fp",
+      "before": "ca4acbc9:4752",
+      "after": "019d4080:4729"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 14,
+      "field": "n",
+      "before": 10,
+      "after": 22
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 14,
+      "field": "species",
+      "before": "Acidic jelly,Dar blademaster,Dar priestess,Goblin conjurer,Goblin mystic,Wisp,Zombie",
+      "after": "Centaur,Fury,Ogre,Ogre totem,Wisp,Wraith,explosive Wraith,toxic Ogre"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 14,
+      "field": "items",
+      "before": 15,
+      "after": 6
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 15,
+      "field": "fp",
+      "before": "d55f6de6:4877",
+      "after": "f9a9c3c1:4846"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 15,
+      "field": "n",
+      "before": 22,
+      "after": 12
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 15,
+      "field": "species",
+      "before": "Acidic jelly,Bloat,Centaur,Goblin,Goblin conjurer,Goblin mystic,Goblin totem,Ogre,Ogre shaman,Ogre totem",
+      "after": "Dar blademaster,Ogre,Ogre shaman,Salamander,Spider,Troll,Wraith,reflective Revenant"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 15,
+      "field": "items",
+      "before": 6,
+      "after": 8
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 16,
+      "field": "fp",
+      "before": "7d502743:4871",
+      "after": "52fbfde5:4890"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 16,
+      "field": "n",
+      "before": 8,
+      "after": 10
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 16,
+      "field": "species",
+      "before": "Eel,Explosive bloat,Wisp,Zombie",
+      "after": "Centaur,Dar blademaster,Dar priestess,Eel,Kraken,Phantom,Zombie"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 16,
+      "field": "items",
+      "before": 8,
+      "after": 10
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 17,
+      "field": "fp",
+      "before": "c64987e1:4956",
+      "after": "971e8931:4914"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 17,
+      "field": "n",
+      "before": 10,
+      "after": 13
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 17,
+      "field": "species",
+      "before": "Dar blademaster,Dar priestess,Eel,Kraken,Pink jelly,Troll,grappling Troll",
+      "after": "Acidic jelly,Centaur,Imp,Pixie,Troll,agile Centaur,infested Centaur"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 17,
+      "field": "items",
+      "before": 10,
+      "after": 9
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 18,
+      "field": "fp",
+      "before": "0ab92b42:4816",
+      "after": "ad3c827a:4807"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 18,
+      "field": "n",
+      "before": 15,
+      "after": 16
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 18,
+      "field": "species",
+      "before": "Acidic jelly,Bog monster,Naga,Ogre,Ogre shaman,Troll,explosive Naga,explosive Phantom",
+      "after": "Centaur,Dar battlemage,Dar blademaster,Dar priestess,Fury,Phantom,agile Centaur,agile Dar blademaster,infested Pink jelly"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 18,
+      "field": "items",
+      "before": 12,
+      "after": 8
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 19,
+      "field": "fp",
+      "before": "656ef617:4769",
+      "after": "0cc2aebc:4881"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 19,
+      "field": "n",
+      "before": 14,
+      "after": 18
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 19,
+      "field": "species",
+      "before": "Dar priestess,Explosive bloat,Fury,Imp,Kraken,Ogre,Ogre totem,Salamander,Troll,Wraith,grappling Ogre,toxic Fury",
+      "after": "Centaur,Dar battlemage,Dar blademaster,Dar priestess,Fury,Golem,Imp,Pixie,agile Dar battlemage,reflective Fury,toxic Dar blademaster"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 19,
+      "field": "items",
+      "before": 11,
+      "after": 16
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 20,
+      "field": "fp",
+      "before": "ab9f70c1:4881",
+      "after": "2ed67f6d:4862"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 20,
+      "field": "n",
+      "before": 16,
+      "after": 12
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 20,
+      "field": "species",
+      "before": "Centaur,Dar priestess,Fury,Phantom,Pink jelly,Pixie,Revenant,explosive Fury,infested Centaur,juggernaut Fury",
+      "after": "Dar priestess,Imp,Kraken,Pink jelly,Pixie,agile Centaur,explosive Kraken,infested Centaur,infested Pink jelly"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 20,
+      "field": "items",
+      "before": 14,
+      "after": 6
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 21,
+      "field": "fp",
+      "before": "d282c8e4:4898",
+      "after": "5c4a2726:4917"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 21,
+      "field": "n",
+      "before": 12,
+      "after": 32
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 21,
+      "field": "species",
+      "before": "Acidic jelly,Dar battlemage,Dar blademaster,Dar priestess,Dragon,Imp,Pink jelly,Revenant,agile Dar priestess,grappling Dar blademaster",
+      "after": "Acidic jelly,Bog monster,Centaur,Dar battlemage,Dar blademaster,Dar priestess,Explosive bloat,Fury,Golem,Imp,Pink jelly,Revenant,Wraith,agile Golem,agile Pink jelly,grappling Imp,toxic Bog monster"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 21,
+      "field": "items",
+      "before": 10,
+      "after": 14
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 22,
+      "field": "fp",
+      "before": "d67415fc:4807",
+      "after": "ea29f63e:4879"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 22,
+      "field": "n",
+      "before": 14,
+      "after": 21
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 22,
+      "field": "species",
+      "before": "Dar battlemage,Dar blademaster,Dar priestess,Golem,Imp,Tentacle horror,agile Phantom,agile Tentacle horror,explosive Dar blademaster,explosive Golem,infested Tentacle horror,toxic Golem",
+      "after": "Dar battlemage,Dar blademaster,Dar priestess,Golem,Imp,Phantom,Phylactery,Pink jelly,Tentacle horror,agile Dar blademaster,infested Dar priestess,infested Tentacle horror"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 23,
+      "field": "fp",
+      "before": "7a75d21e:4897",
+      "after": "9a8a1dc3:5065"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 23,
+      "field": "n",
+      "before": 19,
+      "after": 16
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 23,
+      "field": "species",
+      "before": "Dar battlemage,Dar blademaster,Fury,Imp,Revenant,Tentacle horror,Wraith,agile Dar battlemage,explosive Imp,infested Dar priestess",
+      "after": "Bloat,Bog monster,Phylactery,Wraith,infested Revenant,toxic Bog monster,vampiric Wraith"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 23,
+      "field": "items",
+      "before": 17,
+      "after": 10
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 24,
+      "field": "fp",
+      "before": "0b3c3eff:4821",
+      "after": "7e453a1d:4734"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 24,
+      "field": "n",
+      "before": 26,
+      "after": 10
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 24,
+      "field": "species",
+      "before": "Bog monster,Dar battlemage,Dar blademaster,Dar priestess,Fury,Golem,Revenant,Tentacle horror,explosive Dar priestess,grappling Fury,reflective Dragon,toxic Bog monster,vampiric Dar blademaster,vampiric Dragon",
+      "after": "Dar battlemage,Dar blademaster,Golem,Imp,Kraken,Revenant,reflective Dar priestess"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 25,
+      "field": "fp",
+      "before": "7030b49b:5037",
+      "after": "50d704ff:4943"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 25,
+      "field": "n",
+      "before": 10,
+      "after": 13
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 25,
+      "field": "species",
+      "before": "Dar battlemage,Dar blademaster,Dar priestess,Dragon,Golem,Revenant,grappling Tentacle horror,vampiric Dar blademaster",
+      "after": "Dar battlemage,Dar blademaster,Fury,Golem,Phylactery,explosive Dar priestess,explosive Fury"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 25,
+      "field": "items",
+      "before": 10,
+      "after": 9
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 26,
+      "field": "fp",
+      "before": "c15a6835:4883",
+      "after": "d1968c06:4953"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 26,
+      "field": "n",
+      "before": 7,
+      "after": 15
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 26,
+      "field": "species",
+      "before": "Bloat,Golem,Kraken,Phylactery,juggernaut Bloat,reflective Revenant",
+      "after": "Dar priestess,Fury,Phylactery,Revenant,agile Fury,explosive Fury,explosive Tentacle horror,infested Golem,reflective Dragon,reflective Tentacle horror"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 26,
+      "field": "items",
+      "before": 9,
+      "after": 12
+    }
+  ],
+  "extraDiffs": [
+    {
+      "seed": "1099511627783",
+      "depth": 1,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 1,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 1,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 1,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 2,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 2,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 2,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 2,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 3,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 3,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 3,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 3,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 4,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 4,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 4,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 4,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 5,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 5,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 5,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 5,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 6,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 6,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 6,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 6,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 7,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 7,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 7,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 7,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 8,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 8,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 8,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 8,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 9,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 9,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 9,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 9,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 10,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 10,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 10,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 10,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 11,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 11,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 11,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 11,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 12,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 12,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 12,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 12,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 13,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 13,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 13,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 13,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 14,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 14,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 14,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 14,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 15,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 15,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 15,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 15,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 16,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 16,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 16,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 16,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 17,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 17,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 17,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 17,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 18,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 18,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 18,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 18,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 19,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 19,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 19,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 19,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 20,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 20,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 20,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 20,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 21,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 21,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 21,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 21,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 22,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 22,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 22,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 22,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 23,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 23,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 23,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 23,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 24,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 24,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 24,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 24,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 25,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 25,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 25,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 25,
+      "field": "stairs"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 26,
+      "field": "waypoints"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 26,
+      "field": "rng"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 26,
+      "field": "flavors"
+    },
+    {
+      "seed": "1099511627783",
+      "depth": 26,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 1,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 1,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 1,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 1,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 2,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 2,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 2,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 2,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 3,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 3,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 3,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 3,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 4,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 4,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 4,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 4,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 5,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 5,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 5,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 5,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 6,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 6,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 6,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 6,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 7,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 7,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 7,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 7,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 8,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 8,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 8,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 8,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 9,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 9,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 9,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 9,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 10,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 10,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 10,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 10,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 11,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 11,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 11,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 11,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 12,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 12,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 12,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 12,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 13,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 13,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 13,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 13,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 14,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 14,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 14,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 14,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 15,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 15,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 15,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 15,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 16,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 16,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 16,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 16,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 17,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 17,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 17,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 17,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 18,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 18,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 18,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 18,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 19,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 19,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 19,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 19,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 20,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 20,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 20,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 20,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 21,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 21,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 21,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 21,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 22,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 22,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 22,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 22,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 23,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 23,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 23,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 23,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 24,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 24,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 24,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 24,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 25,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 25,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 25,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 25,
+      "field": "stairs"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 26,
+      "field": "waypoints"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 26,
+      "field": "rng"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 26,
+      "field": "flavors"
+    },
+    {
+      "seed": "18446744073709551615",
+      "depth": 26,
+      "field": "stairs"
+    }
+  ],
+  "changedInputs": [
+    "src/engine/Random.ts"
+  ]
+}

@@ -1,0 +1,38 @@
+--- ai_docs/reports/u-02b-evidence/stage-before/Random.ts	2026-09-25 05:30:54
++++ ai_docs/reports/u-02b-evidence/stage-a/Random.ts	2026-09-25 05:31:18
+@@ -97,13 +97,14 @@
+         return x.d;
+     }
+ 
+-    private raninit(x: Ranctx, seed: number) {
++    private raninit(x: Ranctx, seed: bigint) {
+         x.a = 0xf1ea5eed;
+-        x.b = seed >>> 0;
+-        x.c = seed >>> 0;
+-        x.d = seed >>> 0;
++        const low = Number(seed & 0xffffffffn);
++        x.b = low;
++        x.c = (low ^ Number(seed >> 32n)) >>> 0;
++        x.d = low;
+ 
+-        // U02a preserves the current sequence. CE's high-word XOR belongs to U02b.
++        // CE Math.c raninit: mix the high word into c before the 20 warmup draws.
+ 
+         for (let i = 0; i < 20; ++i) {
+             this.ranval(x);
+@@ -118,11 +119,11 @@
+             fullSeed = normalizeSeed(Math.floor(Date.now() / 1000) - 1352700000);
+         }
+ 
+-        // Preserve all 64 bits in storage; only this algorithm boundary takes the low word.
+-        const lowSeed = Number(BigInt(fullSeed) & 0xffffffffn);
++        // Keep the complete uint64 through the initialization boundary.
++        const fullWidthSeed = BigInt(fullSeed);
+ 
+-        this.raninit(this.rngStates[RNGType.RNG_SUBSTANTIVE]!, lowSeed);
+-        this.raninit(this.rngStates[RNGType.RNG_COSMETIC]!, lowSeed);
++        this.raninit(this.rngStates[RNGType.RNG_SUBSTANTIVE]!, fullWidthSeed);
++        this.raninit(this.rngStates[RNGType.RNG_COSMETIC]!, fullWidthSeed);
+ 
+         this.randomNumbersGenerated = 0;
+         this.cosmeticNumbersGenerated = 0;

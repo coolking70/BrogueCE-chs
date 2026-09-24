@@ -220,10 +220,10 @@ describe('W-13 reflection, creatures, maps and persistence', () => {
         (engine as any).restoreLevel(backup); expect(g.grid.isImpregnable(5, 6)).toBe(false); expect(g.grid.isImpregnable(5, 5)).toBe(true);
         expect(new BlueprintEngine(g.grid, 5).isImpregnable(5, 5)).toBe(true);
     });
-    it('runtime detonation consumes waypoint shuffle RNG; generation/revisit callers retain isolation', () => {
+    it('runtime and direct waypoint rebuilding each consume the shuffle on their caller stream', () => {
         const g = scene(), source = item();
         const beforeGeneration = rng.randomNumbersGenerated;
-        g.rebuildWaypoints(); expect(rng.randomNumbersGenerated).toBe(beforeGeneration);
+        g.rebuildWaypoints(); expect(rng.randomNumbersGenerated).toBe(beforeGeneration + DCOLS * DROWS - 1);
         const beforeCast = rng.randomNumbersGenerated;
         const rebuild = vi.spyOn(g, 'rebuildWaypoints');
         // Open first step, bounded to one cell: no tunnel DF, repair or reflection

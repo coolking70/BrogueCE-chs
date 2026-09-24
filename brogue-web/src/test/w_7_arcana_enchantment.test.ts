@@ -222,11 +222,11 @@ describe('W-7 equipment boundary and UI source coverage (S, no Vue import edge)'
         const scroll = ItemLoader.spawnScroll('scroll_of_enchantment', -1, -1)!;
         game.player.inventory.items.push(scroll);
         const bridge = game as unknown as { enchantEquippedItem(): boolean };
-        rng.seedRandomGenerator(12345);
+        rng.seedRandomGenerator(12345); rng.resetCounters();
         bridge.enchantEquippedItem();
         const expected = { ...target }, expectedRng = JSON.stringify(rng);
         Object.assign(target, original);
-        rng.seedRandomGenerator(12345);
+        rng.seedRandomGenerator(12345); rng.resetCounters();
         // Isolate the unchanged equipment mutation footprint from ordinary turn effects.
         vi.spyOn(game as unknown as { playerTurnEnded(): void }, 'playerTurnEnded').mockImplementation(() => {});
         game.readItem(scroll);
