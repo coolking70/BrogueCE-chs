@@ -560,7 +560,10 @@ describe('C-4b D：levelIsDisconnectedWithBlockingMap（CE Architect.c:3137-3198
 
 describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () => {
     it('E1 W-14 恰 135 条（原 134 + DF_FORCEFIELD）；历次闭包（C-6 增补 DF_GRASS/DF_FOLIAGE；B-3 增补 DF_FORCEFIELD_MELT/DF_SACRED_GLYPHS/DF_SHATTERING_SPELL；T-1 增补 DF_CRYSTAL_WALL；V-2b-2b 增补 DF_SHOW_TRAPDOOR_HALO/DF_SHOW_TRAPDOOR/DF_WOODEN_BARRICADE_BURN——TRAP_DOOR_HIDDEN.discoverType 与 WOODEN_BARRICADE.fireType 的载体，CE Globals.c:627/628/825；V-2b-3 增补 14 条 wired 载体 DF 链，见下；V-2b-4 增补 8 条祭坛族载体），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）', () => {
-        const keys = Object.keys(DUNGEON_FEATURE_CATALOG);
+        // U08 adds exactly IDs 57..60 (Globals.c:681-685). This historical
+        // 135-row assertion still pins every pre-U08 entry; the full 139-row
+        // count and new literal rows are pinned in u_08_terrain_bolts.test.ts.
+        const keys = Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => ![57, 58, 59, 60].includes(Number(k)));
         // V-2b-3：35 → 49（+14）。CE Globals.c 目录行逐条：
         //   DF_RUBBLE :612、DF_SHOW_PARALYSIS_GAS_TRAP :626、DF_INACTIVE_GLYPH :726、
         //   DF_REVEAL_LEVER :732、DF_MEDIUM_HOLE :813、DF_OPEN_PORTCULLIS :854、
@@ -753,6 +756,9 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
                 start.add(id!);
             }
         }
+        // U08's new real bolt consumers (CE GlobalsBrogue.c:83/88).
+        start.add(DF.DF_WEB_SMALL); start.add(DF.DF_WEB_LARGE);
+        start.add(DF.DF_ANCIENT_SPIRIT_VINES); start.add(DF.DF_ANCIENT_SPIRIT_GRASS);
         // 沿 subsequentDF 闭包展开（悬空引用在此翻红）。
         const closure = new Set<DF>();
         const queue = [...start];
@@ -767,7 +773,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // 集合相等：目录里多一条（闭包外）或少一条（漏抄）都翻红。
         const catalogKeys = new Set(Object.keys(DUNGEON_FEATURE_CATALOG).map(Number) as DF[]);
         expect([...closure].sort((a, b) => a - b)).toEqual([...catalogKeys].sort((a, b) => a - b));
-        expect(catalogKeys.size, 'F-2a：DF_ASH 入闭包 19→20；G-1：DF_GAS_FIRE 入闭包 20→21；' +
+        expect([...catalogKeys].filter(id => ![57, 58, 59, 60].includes(id)).length, 'U08 投影回原135条；F-2a：DF_ASH 入闭包 19→20；G-1：DF_GAS_FIRE 入闭包 20→21；' +
             'G-2：DF_EXPLOSION_FIRE（经 METHANE_GAS.promoteType）入闭包 21→22；' +
             'F-2c：DF_BLOAT_EXPLOSION（经 bloat 的 DFType）入闭包 22→23；' +
             'C-5：DF_HOLE_POTION（药水/pit bloat 起点）→ DF_HOLE_2 → DF_HOLE_DRAIN' +

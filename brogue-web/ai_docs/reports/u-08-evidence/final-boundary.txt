@@ -1,0 +1,101 @@
+{
+  "methodChecks": {
+    "src/engine/Core/Game.ts": {
+      "unchanged": 325,
+      "added": [
+        "spawnEntanglingBoltFeature"
+      ],
+      "differences": [
+        "handlePlayerAction",
+        "applyBoltTerrainAt",
+        "castMonsterBolt",
+        "finishTurnEpilogue",
+        "applyEnvironmentalEffects",
+        "handleSpecialTileEntry",
+        "getTerrainName"
+      ]
+    },
+    "src/entities/Monster.ts": {
+      "unchanged": 89,
+      "added": [],
+      "differences": [
+        "tryMoveTo"
+      ]
+    }
+  },
+  "preservedTables": {
+    "DUNGEON_FEATURE_CATALOG": {
+      "unchanged": 135,
+      "added": [
+        "[DF.DF_WEB_SMALL]",
+        "[DF.DF_WEB_LARGE]",
+        "[DF.DF_ANCIENT_SPIRIT_VINES]",
+        "[DF.DF_ANCIENT_SPIRIT_GRASS]"
+      ],
+      "differences": []
+    },
+    "TERRAIN_FLAGS": {
+      "unchanged": 135,
+      "added": [
+        "[TerrainType.ANCIENT_SPIRIT_VINES]",
+        "[TerrainType.ANCIENT_SPIRIT_GRASS]"
+      ],
+      "differences": []
+    },
+    "DRAW_PRIORITY": {
+      "unchanged": 135,
+      "added": [
+        "[TerrainType.ANCIENT_SPIRIT_VINES]",
+        "[TerrainType.ANCIENT_SPIRIT_GRASS]"
+      ],
+      "differences": []
+    },
+    "TERRAIN_HOME_LAYER": {
+      "unchanged": 135,
+      "added": [
+        "[TerrainType.ANCIENT_SPIRIT_VINES]",
+        "[TerrainType.ANCIENT_SPIRIT_GRASS]"
+      ],
+      "differences": []
+    },
+    "EXPECTED_VISIBLE": {
+      "unchanged": 135,
+      "added": [
+        "[TerrainType.ANCIENT_SPIRIT_VINES]",
+        "[TerrainType.ANCIENT_SPIRIT_GRASS]"
+      ],
+      "differences": []
+    },
+    "EXPECTED_GLOW": {
+      "unchanged": 135,
+      "added": [
+        "[TerrainType.ANCIENT_SPIRIT_VINES]",
+        "[TerrainType.ANCIENT_SPIRIT_GRASS]"
+      ],
+      "differences": []
+    }
+  },
+  "changed": [
+    "src/locales/zh_CN.json",
+    "src/test/c_4a_terrain_catalog.test.ts",
+    "src/test/w_2_arcana_submission.test.ts",
+    "src/test/c_7_lighting.test.ts",
+    "src/test/c_4b_dungeon_feature.test.ts",
+    "src/test/p4_1b_monster_casting.test.ts",
+    "src/test/r_1_appearance.test.ts",
+    "src/test/c_4a_0_layer_model.test.ts",
+    "src/data/monsterBolts.test.ts",
+    "src/entities/Monster.ts",
+    "src/engine/UI/Appearance.ts",
+    "src/engine/Core/Game.ts",
+    "src/engine/Combat/BoltCatalog.test.ts",
+    "src/engine/Combat/Bolt.ts",
+    "src/engine/Combat/BoltContract.test.ts",
+    "src/engine/Map/TerrainCatalog.ts",
+    "src/engine/Map/Promotion.ts",
+    "src/engine/Map/DungeonFeatureCatalog.ts",
+    "src/engine/Map/Grid.ts",
+    "src/engine/Map/DungeonFeature.ts"
+  ],
+  "protectedUnchanged": 354
+}

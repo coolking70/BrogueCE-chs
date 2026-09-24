@@ -1,0 +1,157 @@
+{
+  "variants/GlobalsBrogue.c": {
+    "sha256": "e8903aede4fad21b7823ccc547cf4219c76e87e061543188d8d90141cebffa1e",
+    "excerpts": [
+      {
+        "from": 83,
+        "to": 88,
+        "text": "    {\"spiderweb\",               \"launches a sticky web\",        \"can launch sticky webs\",                   '*',    &white,         NULL,               BE_NONE,        10,             DF_WEB_SMALL, DF_WEB_LARGE, (MONST_IMMOBILE | MONST_IMMUNE_TO_WEBS),   (BF_TARGET_ENEMIES | BF_NEVER_REFLECTS | BF_NOT_LEARNABLE)},\n    {\"spark\",                   \"shoots a spark\",               \"can throw sparks of lightning\",            0,      NULL,           &lightningColor_Brogue,    BE_DAMAGE,      1,              0,          0,          0,                          (BF_PASSES_THRU_CREATURES | BF_TARGET_ENEMIES | BF_ELECTRIC)},\n    {\"dragonfire\",              \"breathes a gout of white-hot flame\", \"can breathe gouts of white-hot flame\", 0,    NULL,           &dragonFireColor_Brogue,   BE_DAMAGE,      18,             DF_OBSIDIAN, 0,         MONST_IMMUNE_TO_FIRE,       (BF_TARGET_ENEMIES | BF_FIERY | BF_NOT_LEARNABLE)},\n    {\"arrow\",                   \"shoots an arrow\",              \"attacks from a distance\",                  G_WEAPON,&gray,         NULL,               BE_ATTACK,      1,              0,          0,          MONST_IMMUNE_TO_WEAPONS,    (BF_TARGET_ENEMIES | BF_NEVER_REFLECTS | BF_NOT_LEARNABLE)},\n    {\"poisoned dart\",           \"fires a dart\",                 \"fires strength-sapping darts\",             G_WEAPON,&centipedeColor_Brogue,NULL,              BE_ATTACK,      1,              0,          0,          0,                          (BF_TARGET_ENEMIES | BF_NEVER_REFLECTS | BF_NOT_LEARNABLE)},\n    {\"growing vines\",           \"releases carnivorous vines into the ground\", \"conjures carnivorous vines\", G_GRASS,&tanColor,      NULL,               BE_NONE,        5,              DF_ANCIENT_SPIRIT_GRASS, DF_ANCIENT_SPIRIT_VINES, (MONST_INANIMATE | MONST_IMMUNE_TO_WEBS),   (BF_TARGET_ENEMIES | BF_NEVER_REFLECTS)},"
+      }
+    ]
+  },
+  "brogue/Globals.c": {
+    "sha256": "0b104f15c5ef78e93b5142747c41ff82e82d027bd73f7633c6b430baebf45cff",
+    "excerpts": [
+      {
+        "from": 470,
+        "to": 470,
+        "text": " /*SPIDERWEB*/                  {G_WEB,     &white,                 0,                  19, 100,DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (T_ENTANGLES | T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT),\"a spiderweb\",       \"thick, sticky spiderwebs fill the area.\"},"
+      },
+      {
+        "from": 525,
+        "to": 526,
+        "text": " /*ANCIENT_SPIRIT_VINES*/       {G_VINE,    &lichenColor,           0,                  19, 100,DF_PLAIN_FIRE,0,DF_ANCIENT_SPIRIT_GRASS, 1000,  NO_LIGHT,       (T_ENTANGLES | T_CAUSES_DAMAGE | T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT | TM_PROMOTES_ON_PLAYER_ENTRY),\"thorned vines\",       \"thorned vines make a rustling noise as they quiver restlessly.\"}, // +tile\n /*ANCIENT_SPIRIT_GRASS*/       {G_GRASS,   &grassColor,            0,                  60, 15, DF_PLAIN_FIRE,0,0,                          0,  NO_LIGHT,       (T_IS_FLAMMABLE), (TM_STAND_IN_TILE),                                                               \"a tuft of grass\",      \"tufts of lush grass have improbably pushed upward through the stone ground.\"},"
+      },
+      {
+        "from": 681,
+        "to": 685,
+        "text": "    {SPIDERWEB,                 SURFACE,    15,     12,     0},\n    {SPIDERWEB,                 SURFACE,    100,    39,     0},\n\n    {ANCIENT_SPIRIT_VINES,      SURFACE,    75,     70,     0},\n    {ANCIENT_SPIRIT_GRASS,      SURFACE,    50,     47,     0},"
+      },
+      {
+        "from": 1067,
+        "to": 1068,
+        "text": "    {0, \"spider\",       G_SPIDER,    &white,         20,     70,     90,     {3, 4, 2},      20, 100,    200,    DF_GREEN_BLOOD, 0,    false,      0,      0,              {BOLT_SPIDERWEB},\n        (MONST_IMMUNE_TO_WEBS | MONST_CAST_SPELLS_SLOWLY | MONST_ALWAYS_USE_ABILITY), (MA_POISONS)},"
+      },
+      {
+        "from": 1163,
+        "to": 1164,
+        "text": "    {0, \"mangrove dryad\",G_ANCIENT_SPIRIT,   &tanColor,      70,     60,     175,    {2, 8, 2},      6,  100,    100,    DF_ASH_BLOOD,   0,    true,       0,      0,              {BOLT_ANCIENT_SPIRIT_VINES},\n        (MONST_IMMUNE_TO_WEBS | MONST_ALWAYS_USE_ABILITY | MONST_MAINTAINS_DISTANCE | MONST_NO_POLYMORPH | MONST_MALE | MONST_FEMALE), (0)},"
+      }
+    ]
+  },
+  "brogue/Monsters.c": {
+    "sha256": "1a311c884d2d22ea09009b2052c2036abe94e9a235279724cd0e86740b55c68f",
+    "excerpts": [
+      {
+        "from": 2544,
+        "to": 2575,
+        "text": "    if (caster == target) {\n        // Can't target yourself; that's the fundamental theorem of Brogue bolts.\n        return false;\n    }\n    if (caster->status[STATUS_DISCORDANT]\n        && caster->creatureState == MONSTER_WANDERING\n        && target == &player) {\n        // Discordant monsters always try to cast spells regardless of whether\n        // they're hunting the player, so that they cast at other monsters. This\n        // by bypasses the usual awareness checks, so the player and any allies\n        // can be hit when far away. Hence, we don't target the player with\n        // bolts if we're discordant and wandering.\n        return false;\n    }\n    if (caster->creatureState == MONSTER_ALLY && !caster->status[STATUS_DISCORDANT]\n            && (target->bookkeepingFlags & MB_MARKED_FOR_SACRIFICE)) {\n        // Don't let (sane) allies cast at sacrifice targets.\n        return false;\n    }\n\n    if (monsterIsHidden(target, caster)\n        || (target->bookkeepingFlags & MB_SUBMERGED)) {\n        // No bolt will affect a submerged creature. Can't shoot at invisible creatures unless it's in gas.\n        return false;\n    }\n    return openPathBetween(caster->loc, target->loc);\n}\n\nstatic boolean targetEligibleForCombatBuff(creature *caster, creature *target) {\n    if (caster->creatureState == MONSTER_ALLY) {\n        if (canDirectlySeeMonster(caster)) {\n            boolean handledPlayer = false;"
+      },
+      {
+        "from": 2596,
+        "to": 2676,
+        "text": "static boolean specificallyValidBoltTarget(creature *caster, creature *target, enum boltType theBoltType) {\n\n    if ((boltCatalog[theBoltType].flags & BF_TARGET_ALLIES)\n        && (!monstersAreTeammates(caster, target) || monstersAreEnemies(caster, target))) {\n\n        return false;\n    }\n    if ((boltCatalog[theBoltType].flags & BF_TARGET_ENEMIES)\n        && (!monstersAreEnemies(caster, target))) {\n\n        return false;\n    }\n    if ((boltCatalog[theBoltType].flags & BF_TARGET_ENEMIES)\n        && (target->info.flags & MONST_INVULNERABLE)) {\n\n        return false;\n    }\n    if (((target->info.flags & MONST_REFLECT_50) || (target->info.abilityFlags & MA_REFLECT_100))\n        && target->creatureState != MONSTER_ALLY\n        && !(boltCatalog[theBoltType].flags & (BF_NEVER_REFLECTS | BF_HALTS_BEFORE_OBSTRUCTION))) {\n        // Don't fire a reflectable bolt at a reflective target unless it's your ally.\n        return false;\n    }\n    if (boltCatalog[theBoltType].forbiddenMonsterFlags & target->info.flags) {\n        // Don't fire a bolt at a creature type that it won't affect.\n        return false;\n    }\n    if ((boltCatalog[theBoltType].flags & BF_FIERY)\n        && target->status[STATUS_IMMUNE_TO_FIRE]) {\n        // Don't shoot fireballs at fire-immune creatures.\n        return false;\n    }\n    if ((boltCatalog[theBoltType].flags & BF_FIERY)\n        && burnedTerrainFlagsAtLoc(caster->loc) & avoidedFlagsForMonster(&(caster->info))) {\n        // Don't shoot fireballs if you're standing on a tile that could combust into something that harms you.\n        return false;\n    }\n\n    // Rules specific to bolt effects:\n    switch (boltCatalog[theBoltType].boltEffect) {\n        case BE_BECKONING:\n            if (distanceBetween(caster->loc, target->loc) <= 1) {\n                return false;\n            }\n            break;\n        case BE_ATTACK:\n            if (cellHasTerrainFlag(target->loc, T_OBSTRUCTS_PASSABILITY)\n                && !(target->info.flags & MONST_ATTACKABLE_THRU_WALLS)) {\n                // Don't shoot an arrow at an embedded creature.\n                return false;\n            }\n            // continue to BE_DAMAGE below\n        case BE_DAMAGE:\n            if (target->status[STATUS_ENTRANCED]\n                && monstersAreEnemies(caster, target)) {\n                // Don't break your enemies' entrancement.\n                return false;\n            }\n            break;\n        case BE_NONE:\n            // BE_NONE bolts are always going to be all about the terrain effects,\n            // so our logic has to follow from the terrain parameters of the bolt's target DF.\n            if (boltCatalog[theBoltType].targetDF) {\n                const unsigned long terrainFlags = tileCatalog[dungeonFeatureCatalog[boltCatalog[theBoltType].targetDF].tile].flags;\n                if ((terrainFlags & T_ENTANGLES)\n                    && target->status[STATUS_STUCK]) {\n                    // Don't try to entangle a creature that is already entangled.\n                    return false;\n                }\n                if ((boltCatalog[theBoltType].flags & BF_TARGET_ENEMIES)\n                    && !(terrainFlags & avoidedFlagsForMonster(&(target->info)))\n                    && (!(terrainFlags & T_ENTANGLES) || (target->info.flags & MONST_IMMUNE_TO_WEBS))) {\n\n                    return false;\n                }\n            }\n            break;\n        case BE_DISCORD:\n            if (target->status[STATUS_DISCORDANT]\n                || target == &player) {\n                // Don't cast discord if the target is already discordant, or if it is the player."
+      },
+      {
+        "from": 2786,
+        "to": 2815,
+        "text": "static boolean monstUseBolt(creature *monst) {\n    short i;\n\n    if (!monst->info.bolts[0]) {\n        return false; // Don't waste time with monsters that can't cast anything.\n    }\n\n    boolean handledPlayer = false;\n    for (creatureIterator it = iterateCreatures(monsters); !handledPlayer || hasNextCreature(it);) {\n        creature *target = !handledPlayer ? &player : nextCreature(&it);\n        handledPlayer = true;\n        if (generallyValidBoltTarget(monst, target)) {\n            for (i = 0; monst->info.bolts[i]; i++) {\n                if (boltCatalog[monst->info.bolts[i]].boltEffect == BE_BLINKING) {\n                    continue; // Blinking is handled elsewhere.\n                }\n                if (specificallyValidBoltTarget(monst, target, monst->info.bolts[i])) {\n                    if ((monst->info.flags & MONST_ALWAYS_USE_ABILITY)\n                        || rand_percent(30)) {\n\n                        monsterCastSpell(monst, target, monst->info.bolts[i]);\n                        return true;\n                    }\n                }\n            }\n        }\n    }\n    return false;\n}\n"
+      },
+      {
+        "from": 1834,
+        "to": 1842,
+        "text": "void decrementMonsterStatus(creature *monst) {\n    short i, damage;\n    char buf[COLS], buf2[COLS];\n\n    monst->bookkeepingFlags &= ~MB_JUST_SUMMONED;\n\n    if (monst->currentHP < monst->info.maxHP\n        && monst->info.turnsBetweenRegen > 0\n        && !monst->status[STATUS_POISONED]) {"
+      }
+    ]
+  },
+  "brogue/Items.c": {
+    "sha256": "9767aedb42535cc2a78ec3b41d2cd7ebfb7efee25e338a4609fa6e8e15faab90",
+    "excerpts": [
+      {
+        "from": 5419,
+        "to": 5468,
+        "text": "\n        if (!(theBolt->flags & BF_PASSES_THRU_CREATURES)) {\n            terminateBolt = true;\n        }\n    }\n\n    // Handle ordinary bolt updates that aren't dependent on hitting a creature.\n    switch (theBolt->boltEffect) {\n        case BE_BLINKING:\n            if (caster == &player) {\n                player.loc.x = x;\n                player.loc.y = y;\n                if (lightingChanged) {\n                    *lightingChanged = true;\n                }\n            }\n            break;\n        default:\n            break;\n    }\n\n    if (theBolt->pathDF) {\n        spawnDungeonFeature(x, y, &dungeonFeatureCatalog[theBolt->pathDF], true, false);\n    }\n\n    if ((theBolt->flags & BF_FIERY)\n        && exposeTileToFire(x, y, true)) {\n\n        if (lightingChanged) {\n            *lightingChanged = true;\n        }\n        if (autoID) {\n            *autoID = true;\n        }\n    }\n\n    if ((theBolt->flags & BF_ELECTRIC)\n        && exposeTileToElectricity(x, y)) {\n\n        if (lightingChanged) {\n            *lightingChanged = true;\n        }\n        if (autoID) {\n            *autoID = true;\n        }\n    }\n\n    return terminateBolt;\n}\n"
+      },
+      {
+        "from": 5561,
+        "to": 5565,
+        "text": "\n    if (theBolt->targetDF) {\n        spawnDungeonFeature(x, y, &dungeonFeatureCatalog[theBolt->targetDF], true, false);\n    }\n}"
+      },
+      {
+        "from": 5665,
+        "to": 5712,
+        "text": "\n    backUpLighting(lights);\n    boltInView = true;\n    for (i=0; i<numCells; i++) {\n\n        x = listOfCoordinates[i].x;\n        y = listOfCoordinates[i].y;\n\n        monst = monsterAtLoc(listOfCoordinates[i]);\n\n        // Handle bolt reflection off of creatures (reflection off of terrain is handled further down).\n        if (monst\n            && !(theBolt->flags & BF_NEVER_REFLECTS)\n            && projectileReflects(shootingMonst, monst)\n            && i < MAX_BOLT_LENGTH - max(DCOLS, DROWS)) {\n\n            if (projectileReflects(shootingMonst, monst)) { // if it scores another reflection roll, reflect at caster\n                numCells = reflectBolt(originLoc.x, originLoc.y, listOfCoordinates, i, !alreadyReflected);\n            } else {\n                numCells = reflectBolt(-1, -1, listOfCoordinates, i, false); // otherwise reflect randomly\n            }\n\n            alreadyReflected = true;\n\n            if (boltInView) {\n                monsterName(monstName, monst, true);\n                sprintf(buf, \"%s deflect%s the %s\",\n                        monstName,\n                        (monst == &player ? \"\" : \"s\"),\n                        hideDetails ? \"bolt\" : theBolt->name);\n                combatMessage(buf, 0);\n            }\n            if (monst == &player\n                && rogue.armor\n                && rogue.armor->enchant2 == A_REFLECTION\n                && !(rogue.armor->flags & ITEM_RUNIC_IDENTIFIED)) {\n\n                autoIdentify(rogue.armor);\n            }\n            continue;\n        }\n\n        if (updateBolt(theBolt, shootingMonst, x, y, boltInView, alreadyReflected, &autoID, &lightingChanged)) {\n            break;\n        }\n\n        if (lightingChanged) {\n            updateVision(true);"
+      },
+      {
+        "from": 5787,
+        "to": 5811,
+        "text": "        if ((theBolt->flags & BF_HALTS_BEFORE_OBSTRUCTION)\n            && i + 1 < numCells) {\n\n            x2 = listOfCoordinates[i+1].x;\n            y2 = listOfCoordinates[i+1].y;\n\n            if (cellHasTerrainFlag((pos){ x2, y2 }, (T_OBSTRUCTS_VISION | T_OBSTRUCTS_PASSABILITY))) {\n                break;\n            }\n\n            if (!(theBolt->flags & BF_PASSES_THRU_CREATURES)) {\n                monst = monsterAtLoc(listOfCoordinates[i+1]);\n                if (monst && !(monst->bookkeepingFlags & MB_SUBMERGED)) {\n                    break;\n                }\n            }\n        }\n\n        // Tunnel if we hit a wall.\n        if (cellHasTerrainFlag((pos){ x, y }, (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION))\n            && theBolt->boltEffect == BE_TUNNELING\n            && tunnelize(x, y)) {\n\n            updateVision(true);\n            backUpLighting(lights);"
+      },
+      {
+        "from": 5870,
+        "to": 5874,
+        "text": "    }\n\n    detonateBolt(theBolt, shootingMonst, x, y, &autoID);\n\n    updateLighting();"
+      }
+    ]
+  },
+  "brogue/Architect.c": {
+    "sha256": "102add30e7bdf3964e173efa1c84befd8b46fa04c8a2d0d73e651c2e78da6912",
+    "excerpts": [
+      {
+        "from": 3210,
+        "to": 3276,
+        "text": "                     char spawnMap[DCOLS][DROWS],\n                     boolean blockedByOtherLayers,\n                     boolean refresh,\n                     boolean superpriority) {\n    short i, j;\n    creature *monst;\n    item *theItem;\n    boolean accomplishedSomething;\n\n    accomplishedSomething = false;\n\n    for (i=0; i<DCOLS; i++) {\n        for (j=0; j<DROWS; j++) {\n            if (    // If it's flagged for building in the spawn map,\n                spawnMap[i][j]\n                    // and the new cell doesn't already contain the fill terrain,\n                && pmap[i][j].layers[layer] != surfaceTileType\n                    // and the terrain in the layer to be overwritten has a higher priority number (unless superpriority),\n                && (superpriority || tileCatalog[pmap[i][j].layers[layer]].drawPriority >= tileCatalog[surfaceTileType].drawPriority)\n                    // and we won't be painting into the surface layer when that cell forbids it,\n                && !(layer == SURFACE && cellHasTerrainFlag((pos){ i, j }, T_OBSTRUCTS_SURFACE_EFFECTS))\n                    // and, if requested, the fill won't violate the priority of the most important terrain in this cell:\n                && (!blockedByOtherLayers || tileCatalog[pmap[i][j].layers[highestPriorityLayer(i, j, true)]].drawPriority >= tileCatalog[surfaceTileType].drawPriority)\n                ) {\n\n                if ((tileCatalog[surfaceTileType].flags & T_IS_FIRE)\n                    && !(tileCatalog[pmap[i][j].layers[layer]].flags & T_IS_FIRE)) {\n                    pmap[i][j].flags |= CAUGHT_FIRE_THIS_TURN;\n                }\n\n                if ((tileCatalog[pmap[i][j].layers[layer]].flags & T_PATHING_BLOCKER)\n                    != (tileCatalog[surfaceTileType].flags & T_PATHING_BLOCKER)) {\n\n                    rogue.staleLoopMap = true;\n                }\n\n                pmap[i][j].layers[layer] = surfaceTileType; // Place the terrain!\n                accomplishedSomething = true;\n\n                if (refresh) {\n                    refreshDungeonCell((pos){ i, j });\n                    if (player.loc.x == i && player.loc.y == j && !player.status[STATUS_LEVITATING] && refresh) {\n                        flavorMessage(tileFlavor(player.loc.x, player.loc.y));\n                    }\n                    if (pmap[i][j].flags & (HAS_MONSTER | HAS_PLAYER)) {\n                        monst = monsterAtLoc((pos){ i, j });\n                        applyInstantTileEffectsToCreature(monst);\n                        if (rogue.gameHasEnded) {\n                            return true;\n                        }\n                    }\n                    if (tileCatalog[surfaceTileType].flags & T_IS_FIRE) {\n                        if (pmap[i][j].flags & HAS_ITEM) {\n                            theItem = itemAtLoc((pos){ i, j });\n                            if (theItem->flags & ITEM_FLAMMABLE) {\n                                burnItem(theItem);\n                            }\n                        }\n                    }\n                }\n            } else {\n                spawnMap[i][j] = false; // so that the spawnmap reflects what actually got built\n            }\n        }\n    }\n    return accomplishedSomething;\n}"
+      },
+      {
+        "from": 3278,
+        "to": 3330,
+        "text": "static void spawnMapDF(short x, short y,\n                enum tileType propagationTerrain,\n                boolean requirePropTerrain,\n                short startProb,\n                short probDec,\n                char spawnMap[DCOLS][DROWS]) {\n\n    short i, j, dir, t, x2, y2;\n    boolean madeChange;\n\n    spawnMap[x][y] = t = 1; // incremented before anything else happens\n\n    madeChange = true;\n\n    while (madeChange && startProb > 0) {\n        madeChange = false;\n        t++;\n        for (i = 0; i < DCOLS; i++) {\n            for (j=0; j < DROWS; j++) {\n                if (spawnMap[i][j] == t - 1) {\n                    for (dir = 0; dir < 4; dir++) {\n                        x2 = i + nbDirs[dir][0];\n                        y2 = j + nbDirs[dir][1];\n                        if (coordinatesAreInMap(x2, y2)\n                            && (!requirePropTerrain || (propagationTerrain > 0 && cellHasTerrainType((pos){ x2, y2 }, propagationTerrain)))\n                            && (!cellHasTerrainFlag((pos){ x2, y2 }, T_OBSTRUCTS_SURFACE_EFFECTS) || (propagationTerrain > 0 && cellHasTerrainType((pos){ x2, y2 }, propagationTerrain)))\n                            && rand_percent(startProb)) {\n\n                            spawnMap[x2][y2] = t;\n                            madeChange = true;\n                        }\n                    }\n                }\n            }\n        }\n        startProb -= probDec;\n        if (t > 100) {\n            for (i = 0; i < DCOLS; i++) {\n                for (j=0; j < DROWS; j++) {\n                    if (spawnMap[i][j] == t) {\n                        spawnMap[i][j] = 2;\n                    } else if (spawnMap[i][j] > 0) {\n                        spawnMap[i][j] = 1;\n                    }\n                }\n            }\n            t = 2;\n        }\n    }\n    if (requirePropTerrain && !cellHasTerrainType((pos){ x, y }, propagationTerrain)) {\n        spawnMap[x][y] = 0;\n    }\n}"
+      },
+      {
+        "from": 3389,
+        "to": 3412,
+        "text": "            }\n            succeeded = true;\n        } else {\n            spawnMapDF(x, y,\n                       feat->propagationTerrain,\n                       (feat->propagationTerrain ? true : false),\n                       feat->startProbability,\n                       feat->probabilityDecrement,\n                       blockingMap);\n            if (!blocking || !levelIsDisconnectedWithBlockingMap(blockingMap, false)) {\n                if (feat->flags & DFF_EVACUATE_CREATURES_FIRST) { // first, evacuate creatures if necessary, so that they do not re-trigger the tile.\n                    evacuateCreatures(blockingMap);\n                }\n\n                //succeeded = fillSpawnMap(feat->layer, feat->tile, blockingMap, (feat->flags & DFF_BLOCKED_BY_OTHER_LAYERS), refreshCell, (feat->flags & DFF_SUPERPRIORITY));\n                fillSpawnMap(feat->layer,\n                             feat->tile,\n                             blockingMap,\n                             (feat->flags & DFF_BLOCKED_BY_OTHER_LAYERS),\n                             refreshCell,\n                             (feat->flags & DFF_SUPERPRIORITY)); // this can tweak the spawn map too\n                succeeded = true; // fail ONLY if we blocked the level. We succeed even if, thanks to priority, nothing gets built.\n            } else {\n                succeeded = false;"
+      }
+    ]
+  },
+  "brogue/Time.c": {
+    "sha256": "612382b0545d7c845ed19ad1a27a8a30b48a10452d77759b87ad130cd9ff0451",
+    "excerpts": [
+      {
+        "from": 290,
+        "to": 341,
+        "text": "  if (cellHasTMFlag((pos){*x, *y}, TM_PROMOTES_ON_PLAYER_ENTRY) &&\n      monst == &player) {\n    // Subject to same caveats as T_PROMOTES_ON_STEP above.\n    for (layer = 0; layer < NUMBER_TERRAIN_LAYERS; layer++) {\n      if (tileCatalog[pmap[*x][*y].layers[layer]].mechFlags &\n          TM_PROMOTES_ON_PLAYER_ENTRY) {\n        promoteTile(*x, *y, layer, false);\n      }\n    }\n  }\n\n  if (cellHasTMFlag((pos){*x, *y}, TM_PROMOTES_ON_SACRIFICE_ENTRY) &&\n      monst->machineHome == pmap[*x][*y].machineNumber &&\n      (monst->bookkeepingFlags & MB_MARKED_FOR_SACRIFICE)) {\n    // Subject to same caveats as T_PROMOTES_ON_STEP above.\n    for (layer = 0; layer < NUMBER_TERRAIN_LAYERS; layer++) {\n      if (tileCatalog[pmap[*x][*y].layers[layer]].mechFlags &\n          TM_PROMOTES_ON_SACRIFICE_ENTRY) {\n        promoteTile(*x, *y, layer, false);\n      }\n    }\n  }\n\n  // spiderwebs\n  if (cellHasTerrainFlag((pos){*x, *y}, T_ENTANGLES) &&\n      !monst->status[STATUS_STUCK] &&\n      !(monst->info.flags & (MONST_IMMUNE_TO_WEBS | MONST_INVULNERABLE)) &&\n      !(monst->bookkeepingFlags & MB_SUBMERGED)) {\n\n    monst->status[STATUS_STUCK] = monst->maxStatus[STATUS_STUCK] =\n        rand_range(3, 7);\n    if (monst == &player) {\n      if (!rogue.automationActive) {\n        // Don't interrupt exploration with this message.\n        sprintf(\n            buf2, \"you are stuck fast in %s!\",\n            tileCatalog[pmap[*x][*y].layers[layerWithFlag(*x, *y, T_ENTANGLES)]]\n                .description);\n        message(buf2, 0);\n      }\n    } else if (canDirectlySeeMonster(monst)) { // it's a monster\n      if (!rogue.automationActive) {\n        monsterName(buf, monst, true);\n        sprintf(\n            buf2, \"%s is stuck fast in %s!\", buf,\n            tileCatalog[pmap[*x][*y].layers[layerWithFlag(*x, *y, T_ENTANGLES)]]\n                .description);\n        message(buf2, 0);\n      }\n    }\n  }\n"
+      },
+      {
+        "from": 592,
+        "to": 640,
+        "text": "  if (cellHasTerrainFlag((pos){x, y}, T_CAUSES_DAMAGE) &&\n      !(monst->info.flags & (MONST_INANIMATE | MONST_INVULNERABLE)) &&\n      !(monst->bookkeepingFlags & MB_SUBMERGED)) {\n\n    damage = (monst->info.maxHP / 15) * ticks / 100;\n    damage = max(1, damage);\n    for (layer = 0;\n         layer < NUMBER_TERRAIN_LAYERS &&\n         !(tileCatalog[pmap[x][y].layers[layer]].flags & T_CAUSES_DAMAGE);\n         layer++)\n      ;\n    if (monst == &player) {\n      if (rogue.armor && (rogue.armor->flags & ITEM_RUNIC) &&\n          rogue.armor->enchant2 == A_RESPIRATION) {\n        if (!(rogue.armor->flags & ITEM_RUNIC_IDENTIFIED)) {\n          message(\"Your armor trembles and a pocket of clean air swirls around \"\n                  \"you.\",\n                  0);\n          autoIdentify(rogue.armor);\n        }\n      } else {\n        rogue.disturbed = true;\n        messageWithColor(tileCatalog[pmap[x][y].layers[layer]].flavorText,\n                         &badMessageColor, 0);\n        if (inflictDamage(NULL, &player, damage,\n                          tileCatalog[pmap[x][y].layers[layer]].backColor,\n                          true)) {\n          killCreature(&player, false);\n          sprintf(buf, \"Killed by %s\",\n                  tileCatalog[pmap[x][y].layers[layer]].description);\n          gameOver(buf, true);\n          return;\n        }\n      }\n    } else { // it's a monster\n      if (monst->creatureState == MONSTER_SLEEPING) {\n        monst->creatureState = MONSTER_TRACKING_SCENT;\n      }\n      if (inflictDamage(NULL, monst, damage,\n                        tileCatalog[pmap[x][y].layers[layer]].backColor,\n                        true)) {\n        if (canSeeMonster(monst)) {\n          monsterName(buf, monst, true);\n          sprintf(buf2, \"%s dies.\", buf);\n          messageWithColor(buf2, messageColorFromVictim(monst), 0);\n        }\n        killCreature(monst, false);\n        refreshDungeonCell((pos){x, y});\n        return;"
+      },
+      {
+        "from": 1619,
+        "to": 1664,
+        "text": "  // Do random tile promotions in two passes to keep generations distinct.\n  // First pass, make a note of each terrain layer at each coordinate that is\n  // going to promote:\n  for (i = 0; i < DCOLS; i++) {\n    for (j = 0; j < DROWS; j++) {\n      promotions[i][j] = 0;\n      for (layer = 0; layer < NUMBER_TERRAIN_LAYERS; layer++) {\n        tile = &(tileCatalog[pmap[i][j].layers[layer]]);\n        if (tile->promoteChance < 0) {\n          promoteChance = 0;\n          for (direction = 0; direction < 4; direction++) {\n            if (coordinatesAreInMap(i + nbDirs[direction][0],\n                                    j + nbDirs[direction][1]) &&\n                !cellHasTerrainFlag(\n                    (pos){i + nbDirs[direction][0], j + nbDirs[direction][1]},\n                    T_OBSTRUCTS_PASSABILITY) &&\n                pmap[i + nbDirs[direction][0]][j + nbDirs[direction][1]]\n                        .layers[layer] != pmap[i][j].layers[layer] &&\n                !(pmap[i][j].flags & CAUGHT_FIRE_THIS_TURN)) {\n              promoteChance += -1 * tile->promoteChance;\n            }\n          }\n        } else {\n          promoteChance = tile->promoteChance;\n        }\n        if (promoteChance && !(pmap[i][j].flags & CAUGHT_FIRE_THIS_TURN) &&\n            rand_range(0, 10000) < promoteChance) {\n          promotions[i][j] |= Fl(layer);\n          // promoteTile(i, j, layer, false);\n        }\n      }\n    }\n  }\n  // Second pass, do the promotions:\n  for (i = 0; i < DCOLS; i++) {\n    for (j = 0; j < DROWS; j++) {\n      for (layer = 0; layer < NUMBER_TERRAIN_LAYERS; layer++) {\n        if ((promotions[i][j] & Fl(layer))) {\n          //&& (tileCatalog[pmap[i][j].layers[layer]].promoteChance != 0)){\n          // make sure that it's still a promotable layer\n          promoteTile(i, j, layer, false);\n        }\n      }\n    }\n  }\n"
+      }
+    ]
+  },
+  "brogue/Movement.c": {
+    "sha256": "217a845436365640f08828a59e6476b75363ee38b9250dd5b1f7dbc58f8d2eb8",
+    "excerpts": [
+      {
+        "from": 1397,
+        "to": 1425,
+        "text": "        rogue.disturbed = true;\n        return false;\n      }\n    }\n\n    if (player.status[STATUS_STUCK] &&\n        cellHasTerrainFlag((pos){x, y}, T_ENTANGLES)) {\n      // Don't interrupt exploration with this message.\n      if (--player.status[STATUS_STUCK]) {\n        if (!rogue.automationActive) {\n          message(\"you struggle but cannot free yourself.\", 0);\n        }\n        moveEntrancedMonsters(direction);\n        committed = true;\n        playerTurnEnded();\n        return true;\n      } else {\n        if (!rogue.automationActive) {\n          message(\"you break free!\", 0);\n        }\n        if (tileCatalog[pmap[x][y].layers[SURFACE]].flags & T_ENTANGLES) {\n          pmap[x][y].layers[SURFACE] = NOTHING;\n        }\n      }\n    }\n\n    if (player.status[STATUS_NAUSEOUS]) {\n      committed = true;\n      if (rand_percent(25)) {"
+      }
+    ]
+  },
+  "brogue/Rogue.h": {
+    "sha256": "daa86933bf745f848fc56b4e697c941c78d3a3c6f2ff2744ff4c9daf589c7256",
+    "excerpts": [
+      {
+        "from": 1526,
+        "to": 1540,
+        "text": "    DF_FORCEFIELD,\n    DF_FORCEFIELD_MELT,\n    DF_SACRED_GLYPHS,\n    DF_LICHEN_GROW,\n    DF_TUNNELIZE,\n    DF_SHATTERING_SPELL,\n\n    // spiderwebs\n    DF_WEB_SMALL,\n    DF_WEB_LARGE,\n\n    // ancient spirit\n    DF_ANCIENT_SPIRIT_VINES,\n    DF_ANCIENT_SPIRIT_GRASS,\n"
+      }
+    ]
+  }
+}

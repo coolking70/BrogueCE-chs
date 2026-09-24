@@ -170,7 +170,7 @@ export function getBoltForItem(identityId: string): BoltConfig | undefined {
 //
 // Execution subset of the CE catalog, preserving the P4-1b routes. Full CE
 // metadata in BoltCatalog is not permission to cast every catalog entry.
-// SPIDERWEB / ANCIENT_SPIRIT_VINES remain effect:null (DF execution missing);
+// U08 SPIDERWEB / ANCIENT_SPIRIT_VINES execute BE_NONE through their terrain DFs;
 // BLINKING remains filtered by Monster.tryUseBolt. WHIP keeps its weapon route.
 export interface MonsterBoltMeta {
     ceType: CEBoltType;
@@ -209,12 +209,12 @@ export const MONSTER_BOLT_TABLE: Record<string, MonsterBoltMeta> = {
     DRAGONFIRE: monsterBoltMeta(CEBoltType.DRAGONFIRE, BoltEffect.DRAGONFIRE),
     BECKONING: monsterBoltMeta(CEBoltType.BECKONING, BoltEffect.BECKONING),
     SLOW_2: monsterBoltMeta(CEBoltType.SLOW_2, BoltEffect.SLOW),
-    SPIDERWEB: monsterBoltMeta(CEBoltType.SPIDERWEB, null),
-    ANCIENT_SPIRIT_VINES: monsterBoltMeta(CEBoltType.ANCIENT_SPIRIT_VINES, null),
+    SPIDERWEB: monsterBoltMeta(CEBoltType.SPIDERWEB, BoltEffect.NONE),
+    ANCIENT_SPIRIT_VINES: monsterBoltMeta(CEBoltType.ANCIENT_SPIRIT_VINES, BoltEffect.NONE),
 };
 
 /** 已知但本轮故意不实现的 CE bolt 名（供测试显式断言，防止悄悄新增未登记名字）。 */
-export const KNOWN_GAP_MONSTER_BOLT_NAMES: readonly string[] = ['SPIDERWEB', 'ANCIENT_SPIRIT_VINES'];
+export const KNOWN_GAP_MONSTER_BOLT_NAMES: readonly string[] = [];
 
 // ----- Legacy segment for thrown items (ordinary bolts use BoltTrajectory) -----
 

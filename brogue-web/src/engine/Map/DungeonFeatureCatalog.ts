@@ -50,6 +50,10 @@ export const DFF_CLEAR_LOWER_PRIORITY_TERRAIN = 1 << 10; // :1821 清空落点�
 /** CE `enum dungeonFeatureTypes`（Rogue.h:1469 起，DF_GRANITE_COLUMN=1）的成员。
  *  只列本轮闭包涉及的 19 个；id 与 CE 逐一对位（测试钉死）。 */
 export enum DF {
+    DF_WEB_SMALL = 57,
+    DF_WEB_LARGE = 58,
+    DF_ANCIENT_SPIRIT_VINES = 59,
+    DF_ANCIENT_SPIRIT_GRASS = 60,
     DF_CRYSTAL_WALL                = 2,   // :1471（T-1：autoGenerator 表 index 1
                                           // 的 DFType，Globals.c:607 目录行；
                                           // tile CRYSTAL_WALL B-3 已迁）
@@ -333,6 +337,31 @@ const df = (
  *   显式写成零值（项目约定：省略字段不序列化成 null/undefined）。
  */
 export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeatureEntry>>> = {
+    [DF.DF_WEB_SMALL]: {
+        id: DF.DF_WEB_SMALL, ceLine: 681, ceTile: 'SPIDERWEB', tile: TerrainType.WEB,
+        layer: DungeonLayer.SURFACE, startProbability: 15, probabilityDecrement: 12,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+    [DF.DF_WEB_LARGE]: {
+        id: DF.DF_WEB_LARGE, ceLine: 682, ceTile: 'SPIDERWEB', tile: TerrainType.WEB,
+        layer: DungeonLayer.SURFACE, startProbability: 100, probabilityDecrement: 39,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+    [DF.DF_ANCIENT_SPIRIT_VINES]: {
+        id: DF.DF_ANCIENT_SPIRIT_VINES, ceLine: 684, ceTile: 'ANCIENT_SPIRIT_VINES', tile: TerrainType.ANCIENT_SPIRIT_VINES,
+        layer: DungeonLayer.SURFACE, startProbability: 75, probabilityDecrement: 70,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+    [DF.DF_ANCIENT_SPIRIT_GRASS]: {
+        id: DF.DF_ANCIENT_SPIRIT_GRASS, ceLine: 685, ceTile: 'ANCIENT_SPIRIT_GRASS', tile: TerrainType.ANCIENT_SPIRIT_GRASS,
+        layer: DungeonLayer.SURFACE, startProbability: 50, probabilityDecrement: 47,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
     // {DOOR, DUNGEON, 0, 0, 0, "", GENERIC_FLASH_LIGHT} —— 密门搜索显形
     [DF.DF_SHOW_DOOR]: {
         id: DF.DF_SHOW_DOOR, ceLine: 624, ceTile: 'DOOR', tile: TerrainType.DOOR,

@@ -28,8 +28,8 @@ function byId(id: string): MonsterEntry {
 }
 
 // CE boltType 名字（去掉 "BOLT_" 前缀）里，web 的 BoltEffect 枚举（Bolt.ts:14 起）
-// 尚未实现的两种——留给 P4-1b 决定怎么处理，本轮不得新增枚举项、不得实现效果。
-const KNOWN_GAP_BOLT_NAMES = new Set(['SPIDERWEB', 'ANCIENT_SPIRIT_VINES']);
+// U08 已接通两种地形 bolt 的 NONE 执行出口；无需新增 effect 枚举。
+const KNOWN_GAP_BOLT_NAMES = new Set<string>(); // U08: both use BE_NONE terrain effects.
 
 // CE 里 boltType 的字符串名字与 boltEffect（BoltEffect 枚举对应的效果种类）不是一一对应：
 // BOLT_SLOW 与 BOLT_SLOW_2 都使用 BE_SLOW 这个效果，仅强度不同
@@ -38,6 +38,8 @@ const KNOWN_GAP_BOLT_NAMES = new Set(['SPIDERWEB', 'ANCIENT_SPIRIT_VINES']);
 // 这里只是为了校验"能映射到现有 BoltEffect"时，显式声明这一个别名关系。
 const BOLT_NAME_ALIASES: Record<string, keyof typeof BoltEffect> = {
     SLOW_2: 'SLOW',
+    SPIDERWEB: 'NONE',
+    ANCIENT_SPIRIT_VINES: 'NONE',
 };
 
 describe('monsters.json 的 bolts 字段（P4-1a 数据接线）', () => {
@@ -66,7 +68,7 @@ describe('monsters.json 的 bolts 字段（P4-1a 数据接线）', () => {
         expect(byId('arrow_turret').bolts).toEqual(['DISTANCE_ATTACK']);
     });
 
-    it('spider：单 bolt，属于已知缺口 SPIDERWEB（Globals.c:1067）', () => {
+    it('spider：单 bolt，U08 DF 施法 SPIDERWEB（Globals.c:1067）', () => {
         expect(byId('spider').bolts).toEqual(['SPIDERWEB']);
     });
 
@@ -104,7 +106,7 @@ describe('monsters.json 的 bolts 字段（P4-1a 数据接线）', () => {
         expect(byId('vampire').bolts).toEqual(['BLINKING', 'DISCORD']);
     });
 
-    it('mangrove_dryad：单 bolt，属于已知缺口 ANCIENT_SPIRIT_VINES（Globals.c:1163）', () => {
+    it('mangrove_dryad：单 bolt，U08 DF 施法 ANCIENT_SPIRIT_VINES（Globals.c:1163）', () => {
         expect(byId('mangrove_dryad').bolts).toEqual(['ANCIENT_SPIRIT_VINES']);
     });
 

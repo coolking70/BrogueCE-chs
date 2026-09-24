@@ -352,7 +352,12 @@ describe('W-2 actual autoID (CE Items.c:5112-5119,5220-5413,5444-5465,5470-5567)
         g.grid.setTerrain(10, 5, TerrainType.WALL);
         expect(g.castMonsterBolt(caster, target, 'SPARK')!.outcome).toEqual({ autoID: false, casterMovement: null });
         expect(g.castMonsterBolt(caster, target, 'BLINKING')!.outcome?.autoID).toBe(false);
-        for (const name of ['SPIDERWEB', 'ANCIENT_SPIRIT_VINES']) expect(g.castMonsterBolt(caster, target, name)).toBeUndefined();
+        // U08 BE_NONE executes DF but does not auto-identify (CE update/detonate).
+        for (const name of ['SPIDERWEB', 'ANCIENT_SPIRIT_VINES']) {
+            const result = g.castMonsterBolt(caster, target, name)!;
+            expect(result.landingPos).toEqual({ x: 10, y: 5 });
+            expect(result.outcome).toEqual({ autoID: false, casterMovement: null });
+        }
     });
 
     it('confirmed slow-speed casting runs real P2 advancement and locks repeated UI entry until completion', () => {

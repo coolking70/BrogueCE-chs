@@ -1,0 +1,218 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/aa85/brogue/brogue-web
+
+ ❯ src/engine/Combat/BoltCatalog.test.ts (6 tests | 1 failed) 8ms
+     × the 15 monster execution entries retain their old target/fire/magnitude projection and known gaps 3ms
+ ❯ src/test/w_2_arcana_submission.test.ts (30 tests | 1 failed) 300ms
+     × monster exits evaluate visible healing versus hidden healing and blocked/no-effect paths 5ms
+ ❯ src/test/p4_1b_monster_casting.test.ts (16 tests | 1 failed) 2533ms
+     × spider 本体确认：MONST_ALWAYS_USE_ABILITY 已标记，但 SPIDERWEB 是已知缺口，不会施放（不静默） 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/p4_1b_monster_casting.test.ts > P4-1b 验收 4：30% 概率 与 MONST_ALWAYS_USE_ABILITY > spider 本体确认：MONST_ALWAYS_USE_ABILITY 已标记，但 SPIDERWEB 是已知缺口，不会施放（不静默）
+AssertionError: expected +0 to be null
+
+- Expected:
+null
+
++ Received:
+0
+
+ ❯ src/test/p4_1b_monster_casting.test.ts:239:57
+    237|         expect(spiderData.behaviorFlags).toContain('MONST_ALWAYS_USE_A…
+    238|         expect(spiderData.bolts).toEqual(['SPIDERWEB']);
+    239|         expect(MONSTER_BOLT_TABLE['SPIDERWEB']!.effect).toBeNull();
+       |                                                         ^
+    240|         expect(KNOWN_GAP_MONSTER_BOLT_NAMES).toContain('SPIDERWEB');
+    241|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/test/w_2_arcana_submission.test.ts > W-2 actual autoID (CE Items.c:5112-5119,5220-5413,5444-5465,5470-5567) > monster exits evaluate visible healing versus hidden healing and blocked/no-effect paths
+AssertionError: expected { …(13) } to be undefined
+
+- Expected:
+undefined
+
++ Received:
+{
+  "aimPos": {
+    "x": 8,
+    "y": 5,
+  },
+  "bolt": {
+    "ceType": 23,
+    "char": "*",
+    "color": 16764006,
+    "effect": 0,
+    "id": "monster_bolt_spiderweb",
+    "magnitude": 10,
+    "maxRange": 0,
+    "name": "SPIDERWEB",
+    "piercing": false,
+    "selfTargeting": false,
+  },
+  "caster": Monster {
+    "abilities": Set {},
+    "abilityFlags": Set {},
+    "accuracy": 80,
+    "attackSpeed": 100,
+    "baseAttackSpeed": 100,
+    "baseMoveSpeed": 100,
+    "behaviorFlags": Set {},
+    "bolts": [],
+    "boundToLeader": false,
+    "boundToPlayer": false,
+    "carriedItem": undefined,
+    "carriedMonster": null,
+    "char": "r",
+    "color": 11163187,
+    "damageClumping": 1,
+    "damageString": "1d3",
+    "deathEffectTriggered": false,
+    "defense": 0,
+    "description": "老鼠是浅层地牢的拾荒者，永远在寻找腐烂的动物残骸。",
+    "doesNotTrackLeader": false,
+    "dominated": false,
+    "falling": false,
+    "givenUpOnScent": false,
+    "goldDropChance": 0,
+    "hp": 6,
+    "id": 156,
+    "isAlly": false,
+    "isCaged": false,
+    "isClone": false,
+    "isDormant": false,
+    "itemDropChance": 0,
+    "leader": null,
+    "loc": {
+      "x": 12,
+      "y": 5,
+    },
+    "machineHome": 0,
+    "maxHp": 6,
+    "maxShield": 0,
+    "maxStatus": {},
+    "movementSpeed": 100,
+    "mutation": undefined,
+    "name": undefined,
+    "newPowerCount": 0,
+    "onHitChance": 0,
+    "onHitDuration": 0,
+    "onHitStatus": undefined,
+    "poisonAmount": 0,
+    "polymorphKeepsSpeed": false,
+    "polymorphed": false,
+    "preplaced": false,
+    "regenCounter": 0,
+    "regenTurns": 20,
+    "safetySnapshot": null,
+    "seized": false,
+    "seizing": false,
+    "spawnLoc": {
+      "x": 0,
+      "y": 0,
+    },
+    "state": 1,
+    "statusDurations": {},
+    "statusImmunities": Set {
+      "confused",
+    },
+    "statusResistTurns": {
+      "paralyzed": 1,
+    },
+    "targetWaypointIndex": -1,
+    "ticksUntilTurn": 100,
+    "totalPowerCount": 0,
+    "typeId": "rat",
+    "wasNegated": false,
+    "waypointAlreadyVisited": null,
+    "weaknessAmount": 0,
+  },
+  "effect": 0,
+  "frames": [
+    {
+      "char": "*",
+      "color": 16764006,
+      "durationMs": 35,
+      "x": 11,
+      "y": 5,
+    },
+    {
+      "char": "*",
+      "color": 16764006,
+      "durationMs": 35,
+      "x": 10,
+      "y": 5,
+    },
+  ],
+  "hits": [],
+  "impactPos": {
+    "x": 10,
+    "y": 5,
+  },
+  "landingPos": {
+    "x": 10,
+    "y": 5,
+  },
+  "magnitude": 10,
+  "origin": {
+    "x": 12,
+    "y": 5,
+  },
+  "outcome": {
+    "autoID": false,
+    "casterMovement": null,
+  },
+  "path": [
+    {
+      "x": 11,
+      "y": 5,
+    },
+    {
+      "x": 10,
+      "y": 5,
+    },
+  ],
+  "reflections": [],
+}
+
+ ❯ src/test/w_2_arcana_submission.test.ts:355:115
+    353|         expect(g.castMonsterBolt(caster, target, 'SPARK')!.outcome).to…
+    354|         expect(g.castMonsterBolt(caster, target, 'BLINKING')!.outcome?…
+    355|         for (const name of ['SPIDERWEB', 'ANCIENT_SPIRIT_VINES']) expe…
+       |                                                                                                                   ^
+    356|     });
+    357|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/engine/Combat/BoltCatalog.test.ts > W-1 CE catalog contract (source rows, not execution coverage) > the 15 monster execution entries retain their old target/fire/magnitude projection and known gaps
+AssertionError: expected [] to deeply equal [ 'SPIDERWEB', 'ANCIENT_SPIRIT_VINES' ]
+
+- Expected
++ Received
+
+- [
+-   "SPIDERWEB",
+-   "ANCIENT_SPIRIT_VINES",
+- ]
++ []
+
+ ❯ src/engine/Combat/BoltCatalog.test.ts:128:46
+    126|             [false,true,false,2], [false,true,false,10], [false,true,f…
+    127|         ]);
+    128|         expect(KNOWN_GAP_MONSTER_BOLT_NAMES).toEqual(['SPIDERWEB', 'AN…
+       |                                              ^
+    129|         for (const name of KNOWN_GAP_MONSTER_BOLT_NAMES) expect(MONSTE…
+    130|         for (const name of ['POLYMORPH', 'PLENTY', 'WHIP']) expect(MON…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  3 failed | 49 passed (52)
+   Start at  23:06:14
+   Duration  3.10s (transform 712ms, setup 0ms, import 1.16s, tests 2.84s, environment 0ms)
+

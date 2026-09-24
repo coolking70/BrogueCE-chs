@@ -1,0 +1,11 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+error TS5033: Could not write file '/Users/coolking70/.codex/worktrees/aa85/brogue/brogue-web/node_modules/.tmp/tsconfig.app.tsbuildinfo': EPERM: operation not permitted, open '/Users/coolking70/.codex/worktrees/aa85/brogue/brogue-web/node_modules/.tmp/tsconfig.app.tsbuildinfo'.
+src/entities/Monster.ts(1960,49): error TS2304: Cannot find name 'DungeonLayer'.
+src/entities/Monster.ts(1961,29): error TS2304: Cannot find name 'TERRAIN_FLAGS'.
+src/entities/Monster.ts(1963,43): error TS2304: Cannot find name 'DungeonLayer'.
+src/test/c_7_lighting.test.ts(139,11): error TS2739: Type '{ 0: number; 1: number; 2: number; 3: number; 4: number; 5: number; 6: number; 7: number; 8: number; 9: LightKind; 10: number; 11: number; 12: number; 13: number; 14: number; 15: number; 16: number; 17: number; ... 116 more ...; 132: LightKind; }' is missing the following properties from type 'Record<TerrainType, number>': 135, 136
+src/test/r_1_appearance.test.ts(71,7): error TS2739: Type '{ 0: { char: string; color: string; bgColor: null; }; 1: { char: string; color: string; bgColor: null; }; 2: { char: string; color: string; bgColor: number; }; 3: { char: string; color: string; bgColor: null; }; 4: { char: string; color: string; bgColor: number; }; ... 129 more ...; 132: { ...; }; }' is missing the following properties from type 'Record<TerrainType, { char: string; color: string; bgColor: number | null; }>': 135, 136
+error TS5033: Could not write file '/Users/coolking70/.codex/worktrees/aa85/brogue/brogue-web/node_modules/.tmp/tsconfig.node.tsbuildinfo': EPERM: operation not permitted, open '/Users/coolking70/.codex/worktrees/aa85/brogue/brogue-web/node_modules/.tmp/tsconfig.node.tsbuildinfo'.

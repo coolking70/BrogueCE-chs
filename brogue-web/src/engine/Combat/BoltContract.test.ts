@@ -177,15 +177,28 @@ describe('W-1 caster/contact/landing/outcome contracts with W-3 actual routes', 
         expect(clone.leader).toBe(target);
     });
 
-    it('knowing the full CE catalog does not enable monster blink, web or vines', () => {
+    it('knowing the full CE catalog does not enable generic monster blink', () => {
         const game = scene();
-        for (const id of ['imp', 'spider', 'mangrove_dryad']) {
+        for (const id of ['imp']) {
             const caster = new Monster(8, 5, monsters.find(m => m.id === id)!);
             game.monsters = [caster];
             const before = JSON.stringify({ loc: caster.loc, hp: game.player.hp, grid: game.grid });
             for (let i = 0; i < 30; i++) expect(caster.tryUseBolt(game)).toBe(false);
             expect(JSON.stringify({ loc: caster.loc, hp: game.player.hp, grid: game.grid })).toBe(before);
-            if (id !== 'imp') expect(game.castMonsterBolt(caster, game.player, caster.bolts[0]!)).toBeUndefined();
         }
     });
+    it.each(['spider', 'mangrove_dryad'])('U08 %s has an executed terrain exit without a direct damage outcome', id => {
+        const game = scene();
+        vi.spyOn(game as any, 'updateVision').mockImplementation(() => {});
+        const caster = new Monster(8, 5, monsters.find(m => m.id === id)!);
+        game.monsters = [caster];
+        const hp = game.player.hp;
+        expect(caster.tryUseBolt(game)).toBe(true);
+        expect(game.player.hp).toBe(hp);
+        expect(game.grid.getCell(4, 5)!.layers).toContain(id === 'spider' ? TerrainType.WEB : TerrainType.ANCIENT_SPIRIT_GRASS);
+        const result = game.castMonsterBolt(caster, game.player, caster.bolts[0]!)!;
+        expect(result.landingPos).toEqual({ x: 4, y: 5 });
+        expect(result.outcome).toEqual({ autoID: false, casterMovement: null });
+    });
+
 });

@@ -56,6 +56,7 @@ import {
     promoteOnItemPickup,
     promoteOnItemPlaced,
     promoteOnStep,
+    breakEntanglingTerrain,
     promoteLayersWithMechFlag,
     triggerCreatureTrapLayers,
     consumeTrapTile,
@@ -3446,11 +3447,11 @@ export class Game {
                         return;
                     }
                     const currentCell = this.grid.getCell(this.player.loc.x, this.player.loc.y);
-                    if (currentCell && currentCell.terrain === TerrainType.WEB) {
+                    if (currentCell && (cellTerrainFlags(this.grid, this.player.x, this.player.y) & T_ENTANGLES)) {
                         if (rng.randPercent(50)) {
                             logger.log(i18next.t('env.stuck_web', { defaultValue: 'You struggle against the sticky web.' }), '#aaaaaa');
                             if (rng.randPercent(20)) {
-                                currentCell.terrain = TerrainType.FLOOR;
+                                breakEntanglingTerrain(this.grid, this.player.x, this.player.y);
                                 logger.log(i18next.t('env.break_web', { defaultValue: 'You break the web.' }), '#aaaaaa');
                             }
                             this.needsRender = true;
@@ -4265,15 +4266,39 @@ export class Game {
         };
     }
 
-    /** CE updateBolt :5440-5465: existing DF -> fire -> electricity, once per
-     * reached cell, before checking its post-effect obstruction flags. The only
-     * executable catalog pathDF today is dragonfire's existing DF_OBSIDIAN.
-     * Web/vines remain disabled; no new DF definitions or effect algorithms. */
+    /** U08 only: four terrain DFs, all flags=0 and no subsequentDF. CE refresh
+     * applies contact during fill, before the next cell. Web entanglement uses
+     * the existing terrain hold; only vines need immediate player promotion.
+     * No evacuation, horde spawn or generic U17 side effects are enabled. */
+    private spawnEntanglingBoltFeature(name: string, pos: Pos): void {
+        const id = name === 'DF_WEB_SMALL' ? DF.DF_WEB_SMALL
+            : name === 'DF_WEB_LARGE' ? DF.DF_WEB_LARGE
+            : name === 'DF_ANCIENT_SPIRIT_GRASS' ? DF.DF_ANCIENT_SPIRIT_GRASS
+            : name === 'DF_ANCIENT_SPIRIT_VINES' ? DF.DF_ANCIENT_SPIRIT_VINES : null;
+        if (id === null) return;
+        const result = spawnDungeonFeature(this.grid, pos.x, pos.y, catalogFeature(id), false, p => {
+            if (this.player.hp > 0 && this.player.x === p.x && this.player.y === p.y
+                && this.grid.getCell(p.x, p.y)?.layers.includes(TerrainType.ANCIENT_SPIRIT_VINES)) {
+                promoteLayersWithMechFlag(this.grid, p.x, p.y, TM_PROMOTES_ON_PLAYER_ENTRY);
+            }
+        });
+        if (result.pathingChanged) {
+            this.loopMap = analyzeLoopMap(this.grid);
+            this.updatedSafetyMapThisTurn = false;
+        }
+        if (result.builtCells.length) this.needsRender = true;
+    }
+
+    /** CE updateBolt :5440-5465: DF -> fire -> electricity, once per reached
+     * cell, before checking post-effect obstruction. Origin is not a step. */
     private applyBoltTerrainAt(bolt: BoltConfig, pos: Pos): boolean {
         const before = this.boltTerrainSignature([], pos);
         const definition = bolt.ceType === null ? undefined : CE_BOLT_CATALOG[bolt.ceType];
         if (definition?.pathDF === 'DF_OBSIDIAN') {
             spawnDungeonFeature(this.grid, pos.x, pos.y, catalogFeature(DF.DF_OBSIDIAN), false);
+        }
+        if (definition?.effect === CEBoltEffect.NONE && definition.pathDF) {
+            this.spawnEntanglingBoltFeature(definition.pathDF, pos);
         }
         const beforeFire = this.boltTerrainSignature([], pos);
         if (bolt.effect === BoltEffect.FIRE || bolt.effect === BoltEffect.DRAGONFIRE) {
@@ -4866,14 +4891,23 @@ export class Game {
         const meta = MONSTER_BOLT_TABLE[ceBoltName];
         if (!meta || meta.effect === null) return; // 已知缺口/未映射，不应该走到这里
 
+        if (meta.effect === BoltEffect.NONE && this.canObserveBoltTarget(caster)) {
+            if (ceBoltName === 'SPIDERWEB') logger.log(i18next.t('bolt.monster_cast_web', {
+                caster: caster.name, defaultValue: '{{caster}} launches a sticky web.',
+            }), '#cccccc');
+            else logger.log(i18next.t('bolt.monster_cast_vines', {
+                caster: caster.name, defaultValue: '{{caster}} releases carnivorous vines into the ground.',
+            }), '#99bb55');
+        }
+        const definition = CE_BOLT_CATALOG[meta.ceType];
         const visualBolt: BoltConfig = {
             id: `monster_bolt_${ceBoltName.toLowerCase()}`,
             ceType: meta.ceType,
             name: ceBoltName,
             effect: meta.effect,
             magnitude: meta.magnitude,
-            char: '*',
-            color: 0xffcc66,
+            char: meta.ceType === CEBoltType.ANCIENT_SPIRIT_VINES ? '"' : '*',
+            color: meta.effect === BoltEffect.NONE ? (meta.ceType === CEBoltType.SPIDERWEB ? 0xffffff : 0xddbb88) : 0xffcc66,
             maxRange: 0,
             piercing: false,
             selfTargeting: false,
@@ -4889,6 +4923,12 @@ export class Game {
                 autoID = this.applyBoltTerrainAt(visualBolt, pos) || autoID;
             },
         });
+        // CE detonateBolt :5562: target DF at the actual landing, even a wall
+        // or an intervening creature; never at the requested target by fiat.
+        if (meta.effect === BoltEffect.NONE && definition.targetDF && boltResult.landingPos) {
+            this.spawnEntanglingBoltFeature(definition.targetDF, boltResult.landingPos);
+            this.updateVision();
+        }
         this.pendingBoltFrames = boltResult.frames;
         this.currentBoltFrameIndex = 0;
         this.boltAnimStartTime = Date.now();
@@ -8037,6 +8077,8 @@ export class Game {
                 deathReason = i18next.t('death.killed_by', { monster: this.lastDamageSource, defaultValue: `Killed by a ${this.lastDamageSource}.` });
             } else if (this.lastDamageSource === 'fire') {
                 deathReason = i18next.t('death.burned', { defaultValue: 'Burned to death.' });
+            } else if (this.lastDamageSource === 'thorned vines') {
+                deathReason = i18next.t('death.vines', { defaultValue: 'Killed by thorned vines.' });
             } else if (this.lastDamageSource === 'steam') {
                 deathReason = i18next.t('death.scalded', { defaultValue: 'Scalded to death by steam.' });
             } else if (this.lastDamageSource === 'creeping death') {
@@ -8927,6 +8969,30 @@ export class Game {
 
             if (entity !== this.player || !deferPlayerNausea) this.applyNauseaFromTerrain(entity);
 
+            // CE Time.c:592-640: all layers, once, in layer order. U08 vines
+            // share gradual damage with gas; contact itself does not deal it.
+            const damagingTile = cell.layers.find(tile => TERRAIN_FLAGS[tile].flags & T_CAUSES_DAMAGE);
+            if (!instantTarget && damagingTile !== undefined) {
+                const exempt = entity instanceof Monster && (entity.hasBehavior('MONST_INANIMATE') || entity.isInvulnerable());
+                const armor = entity === this.player ? this.player.equippedArmor : null;
+                if (!exempt && armor?.runicType === 'respiration') {
+                    if (!armor.runicKnown) {
+                        armor.runicKnown = true;
+                        logger.log(i18next.t('runic.armor.respiration_gas', { defaultValue: 'Your armor trembles and a pocket of clean air swirls around you.' }), '#66ffff');
+                    }
+                } else if (!exempt) {
+                    entity.hp -= Math.max(1, Math.floor(entity.maxHp / 15)); // bypasses shields
+                    if (entity === this.player) {
+                        const vines = damagingTile === TerrainType.ANCIENT_SPIRIT_VINES;
+                        this.lastDamageSource = vines ? 'thorned vines' : damagingTile === TerrainType.STEAM ? 'steam' : 'caustic gas';
+                        if (vines) logger.log(i18next.t('env.player_vines', { defaultValue: 'The thorned vines tear at your flesh!' }), '#99bb55');
+                        else if (damagingTile === TerrainType.STEAM) logger.log(i18next.t('env.player_scalded', { defaultValue: 'The steam scalds you!' }), '#cccccc');
+                        else logger.log(i18next.t('env.player_poison_gas', { defaultValue: 'You breathe in toxic fumes!' }), '#aaeeaa');
+                    }
+                    if (entity.hp <= 0 && entity !== this.player) entity.die();
+                }
+            }
+
             // Gas —— G-3 重裁（F-0 §5.3-10/11）：
             // CE 的气体效果判定**无阈值**（站进即判，Time.c:421-497 的
             // 恶心/混乱/麻痹 + :592-655 的伤害），状态每回合 max() 刷新
@@ -8998,34 +9064,6 @@ export class Game {
                             if (entity === this.player && applied) {
                                 logger.log(i18next.t('status.player.paralyzed', { defaultValue: 'You are paralyzed!' }), '#ff9999');
                             }
-                        }
-                    }
-
-                    // 有害气体伤害（T_CAUSES_DAMAGE，Time.c:592-640）：
-                    // damage = max(1, maxHP/15 * ticks/100)（ticks=100 即
-                    // max(1, ⌊maxHP/15⌋)——大怪更怕毒气，小怪保底 1）。
-                    // 豁免 MONST_INANIMATE / MONST_INVULNERABLE / 潜水 +
-                    // 玩家 respiration 符文（:614-624）。悬浮不豁免
-                    // （CE 的悬浮守卫只在毒藤 T_CAUSES_POISON 分支）。
-                    if (!instantTarget && (gasFlags & T_CAUSES_DAMAGE) !== 0 && !respirationImmune) {
-                        const exempt = entity !== this.player
-                            && ((entity as Monster).hasBehavior('MONST_INANIMATE')
-                                || (entity as Monster).isInvulnerable());
-                        if (!exempt) {
-                            const damage = Math.max(1, Math.floor(entity.maxHp / 15));
-                            entity.hp -= damage; // CE Time.c:616-632: gradual terrain damage bypasses shields.
-                            if (entity === this.player) {
-                                this.lastDamageSource = gasTile === TerrainType.STEAM ? 'steam' : 'caustic gas';
-                                const msgKey = gasTile === TerrainType.STEAM
-                                    ? 'env.player_scalded'
-                                    : 'env.player_poison_gas';
-                                logger.log(i18next.t(msgKey, {
-                                    defaultValue: gasTile === TerrainType.STEAM
-                                        ? 'The steam scalds you!'
-                                        : 'You breathe in toxic fumes!'
-                                }), gasTile === TerrainType.STEAM ? '#cccccc' : '#aaeeaa');
-                            }
-                            if (entity.hp <= 0 && entity !== this.player) entity.die();
                         }
                     }
 
@@ -9444,6 +9482,9 @@ export class Game {
         // triggerPressurePlate 写成 FLOOR，这里的逐层扫描自然不会再看见它
         // （web 板语义吸收了 CE 的板晋升）；DOOR 在上方无分支，从这里走
         // CE 链（vanish→DF_OPEN_DOOR）真正开门。
+        if (cell.layers.includes(TerrainType.ANCIENT_SPIRIT_VINES)) {
+            promoteLayersWithMechFlag(this.grid, this.player.x, this.player.y, TM_PROMOTES_ON_PLAYER_ENTRY);
+        }
         const stepResults = promoteOnStep(this.grid, this.player.loc.x, this.player.loc.y);
         for (const r of stepResults) {
             if (r.mutated) this.needsRender = true;
@@ -9913,6 +9954,10 @@ export class Game {
                 return i18next.t('terrain.locked_door', { defaultValue: '锁住的门' });
             case TerrainType.ALTAR:
                 return i18next.t('terrain.altar', { defaultValue: '祭坛' });
+            case TerrainType.ANCIENT_SPIRIT_VINES:
+                return 'thorned vines';
+            case TerrainType.ANCIENT_SPIRIT_GRASS:
+                return 'a tuft of grass';
             case TerrainType.WEB:
                 return i18next.t('terrain.web', { defaultValue: '蛛网' });
             case TerrainType.BLOOD:

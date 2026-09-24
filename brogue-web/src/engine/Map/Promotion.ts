@@ -110,6 +110,7 @@ import {
     T_IS_DF_TRAP,
     T_OBSTRUCTS_GAS,
     T_OBSTRUCTS_PASSABILITY,
+    T_ENTANGLES,
     T_OBSTRUCTS_VISION,
     T_OBSTRUCTS_DIAGONAL_MOVEMENT,
     T_PATHING_BLOCKER,
@@ -1016,4 +1017,13 @@ export function tunnelize(grid: Grid, x: number, y: number, hooks: {
         }
     }
     return true;
+}
+
+/** U08: CE Movement.c:1417 / Monsters.c:3781 release only SURFACE.
+ * STATUS_STUCK countdown and release timing remain U14b's responsibility. */
+export function breakEntanglingTerrain(grid: Grid, x: number, y: number): void {
+    const cell = grid.getCell(x, y);
+    if (cell && (TERRAIN_FLAGS[cell.layers[DungeonLayer.SURFACE]!].flags & T_ENTANGLES)) {
+        grid.setTerrainLayer(x, y, DungeonLayer.SURFACE, TerrainType.NOTHING);
+    }
 }

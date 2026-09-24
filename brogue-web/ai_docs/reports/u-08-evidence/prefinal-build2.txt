@@ -1,0 +1,15 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+src/test/u_08_terrain_bolts.test.ts(108,23): error TS2341: Property 'cells' is private and only accessible within class 'Grid'.
+src/test/u_08_terrain_bolts.test.ts(108,76): error TS2341: Property 'cells' is private and only accessible within class 'Grid'.
+src/test/u_08_terrain_bolts.test.ts(135,42): error TS2571: Object is of type 'unknown'.
+src/test/u_08_terrain_bolts.test.ts(135,58): error TS2571: Object is of type 'unknown'.
+src/test/u_08_terrain_bolts.test.ts(146,23): error TS2345: Argument of type 'TerrainType | undefined' is not assignable to parameter of type 'TerrainType'.
+  Type 'undefined' is not assignable to type 'TerrainType'.
+src/test/u_08_terrain_bolts.test.ts(146,65): error TS2554: Expected 5 arguments, but got 4.
+src/test/u_08_terrain_bolts.test.ts(170,130): error TS2339: Property 'shieldAmount' does not exist on type 'Monster'.
+src/test/u_08_terrain_bolts.test.ts(175,77): error TS2554: Expected 4 arguments, but got 6.
+src/test/u_08_terrain_bolts.test.ts(182,36): error TS2353: Object literal may only specify known properties, and 'playerPos' does not exist in type 'PromotionDriverOptions'.
+src/test/u_08_terrain_bolts.test.ts(183,62): error TS2353: Object literal may only specify known properties, and 'playerPos' does not exist in type 'PromotionDriverOptions'.

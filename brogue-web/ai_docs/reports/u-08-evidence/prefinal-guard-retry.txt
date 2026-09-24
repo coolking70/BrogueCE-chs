@@ -1,0 +1,36 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/aa85/brogue/brogue-web
+
+ ❯ src/test/c_4a_0_layer_model.test.ts (20 tests | 1 failed | 18 skipped) 50ms
+     × 留痕（已反转，C-4b）：setTerrainLayer 调用点只出现在清单许可的文件 44ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/c_4a_0_layer_model.test.ts > C-4a-0 留痕（本轮明确不做的事，断言现状） > 留痕（已反转，C-4b）：setTerrainLayer 调用点只出现在清单许可的文件
+AssertionError: setTerrainLayer 调用点超出许可清单 engine/Generator/Architect.ts, engine/Map/DungeonFeature.ts, engine/Map/Promotion.ts, engine/Map/AutoGenerator.ts, engine/Generator/BlueprintEngine.ts：
+engine/Core/Game.ts:4275: this.grid.setTerrainLayer(pos.x, pos.y, layer,: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "engine/Core/Game.ts:4275: this.grid.setTerrainLayer(pos.x, pos.y, layer,",
++ ]
+
+ ❯ src/test/c_4a_0_layer_model.test.ts:670:111
+    668|             });
+    669|         }
+    670|         expect(offenders, `setTerrainLayer 调用点超出许可清单 ${[...ALLOWLIST].…
+       |                                                                                                               ^
+    671|     });
+    672|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 32 passed | 47 skipped (80)
+   Start at  23:15:48
+   Duration  12.37s (transform 2.37s, setup 0ms, import 5.09s, tests 10.49s, environment 1ms)
+

@@ -229,6 +229,10 @@ export function terrainAppearance(terrain: TerrainType, isVisible: boolean): Ter
             char = '_'; color = '#ffffcc'; bgColor = 0x443311; break;
         case TerrainType.WEB:
             char = '\\'; color = '#cccccc'; bgColor = 0x222222; break;
+        case TerrainType.ANCIENT_SPIRIT_VINES:
+            char = ':'; color = '#99bb55'; break;
+        case TerrainType.ANCIENT_SPIRIT_GRASS:
+            char = '"'; color = '#669944'; break;
         case TerrainType.BLOOD:
             char = '%'; color = '#aa2222'; bgColor = 0x330000; break;
         case TerrainType.MUD:

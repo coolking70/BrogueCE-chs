@@ -69,6 +69,8 @@ const DEFAULT_LOOK = { char: ' ', color: '#000000', bgColor: null };
  * 编译错误（见文件头漏授权形态①预警）。
  */
 const EXPECTED_VISIBLE: Record<TerrainType, { char: string; color: string; bgColor: number | null }> = {
+    [TerrainType.ANCIENT_SPIRIT_VINES]: { char: ':', color: '#99bb55', bgColor: null },
+    [TerrainType.ANCIENT_SPIRIT_GRASS]: { char: '"', color: '#669944', bgColor: null },
     [TerrainType.NOTHING]: DEFAULT_LOOK,
     [TerrainType.GRANITE]: { char: '#', color: '#444455', bgColor: null },
     [TerrainType.FLOOR]: { char: '.', color: '#aaaaaa', bgColor: 0x222233 },
@@ -328,7 +330,9 @@ describe('R-1 terrainAppearance 特征化（穷举钉死）', () => {
         // V-2b-9a：十二条新载体成员，103 → 115；RUBBLE 已存在。
         // V-2b-9b：九条活动态/效果落点，115 → 124；补完轮补齐
         // MACHINE_CHASM_EDGE / PUDDLE，124 → 126；9c 七条效果载体 126 → 133。
-        expect(ALL_TERRAINS.length).toBe(135);
+        // U08 adds two CE terrain carriers; preserve the old-universe count.
+        expect(ALL_TERRAINS.filter(t => t !== TerrainType.ANCIENT_SPIRIT_VINES && t !== TerrainType.ANCIENT_SPIRIT_GRASS).length).toBe(135);
+        expect(ALL_TERRAINS.length).toBe(137);
         expect(new Set(ALL_TERRAINS).size).toBe(ALL_TERRAINS.length);
     });
 

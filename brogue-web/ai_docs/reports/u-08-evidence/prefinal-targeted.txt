@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/aa85/brogue/brogue-web
+
+ ❯ src/test/r_1_appearance.test.ts (45 tests | 1 failed) 10ms
+     × 穷举表覆盖 TerrainType 全部成员（当前 69 个）、成员值无重复 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/r_1_appearance.test.ts > R-1 terrainAppearance 特征化（穷举钉死） > 穷举表覆盖 TerrainType 全部成员（当前 69 个）、成员值无重复
+AssertionError: expected 137 to be 135 // Object.is equality
+
+- Expected
++ Received
+
+- 135
++ 137
+
+ ❯ src/test/r_1_appearance.test.ts:333:37
+    331|         // V-2b-9b：九条活动态/效果落点，115 → 124；补完轮补齐
+    332|         // MACHINE_CHASM_EDGE / PUDDLE，124 → 126；9c 七条效果载体 126 → 133。
+    333|         expect(ALL_TERRAINS.length).toBe(135);
+       |                                     ^
+    334|         expect(new Set(ALL_TERRAINS).size).toBe(ALL_TERRAINS.length);
+    335|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 8 passed (9)
+      Tests  1 failed | 226 passed (227)
+   Start at  23:10:45
+   Duration  6.72s (transform 1.41s, setup 0ms, import 3.49s, tests 18.49s, environment 2ms)
+

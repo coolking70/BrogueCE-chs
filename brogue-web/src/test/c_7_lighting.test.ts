@@ -137,6 +137,8 @@ describe('C-7 光照目录（CE Globals.c:955-1020 逐值）', () => {
 describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () => {
     /** web 全部 43 tile 的 CE glowLight 期望值（逐条核过 CE Globals.c:321-744）。 */
     const EXPECTED_GLOW: Record<TerrainType, number> = {
+        [TerrainType.ANCIENT_SPIRIT_VINES]: 0,
+        [TerrainType.ANCIENT_SPIRIT_GRASS]: 0,
         [TerrainType.NOTHING]: 0,
         [TerrainType.GRANITE]: 0,
         [TerrainType.FLOOR]: 0,

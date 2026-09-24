@@ -251,6 +251,8 @@ export enum TerrainType {
     // V-2b-9c: complete mud / darkness / electricity promotion carriers.
     MACHINE_MUD_DORMANT, DARK_FLOOR_DARKENING, DARK_FLOOR, ECTOPLASM, HAUNTED_TORCH_TRANSITIONING, HAUNTED_TORCH, ELECTRIC_CRYSTAL_ON,
     MACHINE_GLYPH_INACTIVE, STENCH_SMOKE_GAS,
+    // U08: append only; preserve existing generation fingerprints.
+    ANCIENT_SPIRIT_VINES, ANCIENT_SPIRIT_GRASS,
 }
 
 export enum LightType {
@@ -321,6 +323,8 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.LOCKED_DOOR]: 15,
     [TerrainType.ALTAR]: 17,
     [TerrainType.WEB]: 19,
+    [TerrainType.ANCIENT_SPIRIT_VINES]: 19,
+    [TerrainType.ANCIENT_SPIRIT_GRASS]: 60,
     [TerrainType.BLOOD]: 80,
     [TerrainType.MUD]: 55,
     [TerrainType.CHASM_EDGE]: 80,
@@ -550,6 +554,8 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     [TerrainType.LOCKED_DOOR]: DungeonLayer.DUNGEON,
     [TerrainType.ALTAR]: DungeonLayer.DUNGEON,
     [TerrainType.WEB]: DungeonLayer.SURFACE,
+    [TerrainType.ANCIENT_SPIRIT_VINES]: DungeonLayer.SURFACE,
+    [TerrainType.ANCIENT_SPIRIT_GRASS]: DungeonLayer.SURFACE,
     [TerrainType.BLOOD]: DungeonLayer.SURFACE,
     [TerrainType.MUD]: DungeonLayer.LIQUID,
     [TerrainType.CHASM_EDGE]: DungeonLayer.LIQUID,

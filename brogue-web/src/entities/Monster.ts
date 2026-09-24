@@ -19,8 +19,9 @@ import type { Item } from '../engine/Items/Item';
 import type { StatusId } from './Creature';
 import { PERMANENT_STATUS_DURATION } from './Creature';
 import { TerrainType } from '../engine/Map/Grid';
+import { breakEntanglingTerrain } from '../engine/Map/Promotion';
 import { MONSTER_BOLT_TABLE, BoltEffect, type BoltConfig } from '../engine/Combat/Bolt';
-import { CEBoltType } from '../engine/Combat/BoltCatalog';
+import { CEBoltType, CE_BOLT_CATALOG } from '../engine/Combat/BoltCatalog';
 import { reflectionChance } from '../engine/Combat/CombatFormulas';
 import { bladeAvoids, bladeDiagonalBlocked, bladeStepToward, BLADE_DIRECTIONS } from '../engine/Combat/Conjuration';
 import { boltLine } from '../engine/Combat/BoltTrajectory';
@@ -108,8 +109,7 @@ export function generallyValidBoltTarget(caster: Monster, target: Creature, game
 
 /**
  * CE specificallyValidBoltTarget（Monsters.c:2596）。只覆盖 MONSTER_BOLT_TABLE
- * 里登记的 13 个已映射 bolt；effect===null（已知缺口）与 BLINKING 由调用方
- * （tryUseBolt）提前过滤，不会走到这里。
+ * 里登记的 15 个 bolt；BLINKING 由专调度处理。U08 的 BE_NONE 走 DF 资格。
  * 省略的分支：BF_NEVER_REFLECTS/反射判定（web 无护甲反射对怪物生效的路径）、
  * forbiddenMonsterFlags（仅对 BECKONING 目标做了 MONST_IMMOBILE 近似）、
  * NEGATION 的实际可达资格已于 W-23 对齐（保留 CE catalog 的敌方门）。
@@ -130,6 +130,16 @@ export function specificallyValidBoltTarget(caster: Monster, target: Creature, c
     if (meta.fiery && target.hasStatus('immune_fire')) return false;
 
     switch (meta.effect) {
+        case BoltEffect.NONE: {
+            // CE Monsters.c:2619 + 2655-2675. Both current NONE bolts entangle;
+            // their forbidden flags make the second avoided-terrain test moot.
+            const definition = CE_BOLT_CATALOG[meta.ceType];
+            if (target instanceof Monster && definition.forbiddenMonsterFlags.some(flag =>
+                target.hasBehavior(flag) || (flag === 'MONST_IMMOBILE' && target.hasBehavior('MONST_TURRET')))) return false;
+            // U14b owns STATUS_STUCK. The existing hold is the occupied terrain.
+            if (cellTerrainFlags(game.grid, target.x, target.y) & T_ENTANGLES) return false;
+            break;
+        }
         case BoltEffect.DISCORD:
             if (target.hasStatus('discordant') || target === game.player) return false;
             break;
@@ -1938,8 +1948,8 @@ export class Monster extends Creature {
         if (nx === this.x && ny === this.y || !game.grid.getCell(nx, ny)) return;
         if (this.hasStatus('nauseous') && game.tryVomit(this)) return;
         const currentCell = game.grid.getCell(this.loc.x, this.loc.y);
-        if (currentCell && currentCell.terrain === TerrainType.WEB
-            && !(this.typeId === 'spectral_blade' && this.doesNotTrackLeader)) {
+        if (currentCell && (cellTerrainFlags(game.grid, this.x, this.y) & T_ENTANGLES)
+            && !this.hasBehavior('MONST_IMMUNE_TO_WEBS') && !this.isInvulnerable()) {
             // Monsters have a chance to get stuck in webs.
             // Let's say 50% chance for now.
             if (rng.randPercent(50)) {
@@ -1948,7 +1958,7 @@ export class Monster extends Creature {
                 }
                 // Chance to break the web
                 if (rng.randPercent(20)) {
-                    currentCell.terrain = TerrainType.FLOOR;
+                    breakEntanglingTerrain(game.grid, this.x, this.y);
                     if (game.hasLineOfSight(this.loc.x, this.loc.y, game.player.loc.x, game.player.loc.y)) {
                         logger.log(i18next.t('env.monster_break_web', { monster: this.name, defaultValue: `The ${this.name} breaks the web.` }), '#aaaaaa');
                     }

@@ -117,7 +117,7 @@ describe('W-1 CE catalog contract (source rows, not execution coverage)', () => 
         expect(rng.randomNumbersGenerated).toBe(before);
     });
 
-    it('the 15 monster execution entries retain their old target/fire/magnitude projection and known gaps', () => {
+    it('the 15 monster execution entries retain their old target/fire/magnitude projection and U08 terrain exits', () => {
         expect(Object.keys(MONSTER_BOLT_TABLE)).toEqual('SHIELDING HASTE SPARK DISTANCE_ATTACK HEALING BLINKING NEGATION DISCORD POISON_DART FIRE DRAGONFIRE BECKONING SLOW_2 SPIDERWEB ANCIENT_SPIRIT_VINES'.split(' '));
         expect(Object.values(MONSTER_BOLT_TABLE).map(({ targetAllies, targetEnemies, fiery, magnitude }) => [targetAllies, targetEnemies, fiery, magnitude])).toEqual([
             [true,false,false,5], [true,false,false,2], [false,true,false,1], [false,true,false,1],
@@ -125,8 +125,8 @@ describe('W-1 CE catalog contract (source rows, not execution coverage)', () => 
             [false,true,false,1], [false,true,true,4], [false,true,true,18], [false,true,false,10],
             [false,true,false,2], [false,true,false,10], [false,true,false,5],
         ]);
-        expect(KNOWN_GAP_MONSTER_BOLT_NAMES).toEqual(['SPIDERWEB', 'ANCIENT_SPIRIT_VINES']);
-        for (const name of KNOWN_GAP_MONSTER_BOLT_NAMES) expect(MONSTER_BOLT_TABLE[name]!.effect).toBeNull();
+        expect(KNOWN_GAP_MONSTER_BOLT_NAMES).toEqual([]);
+        for (const name of ['SPIDERWEB', 'ANCIENT_SPIRIT_VINES']) expect(MONSTER_BOLT_TABLE[name]!.effect).toBe(BoltEffect.NONE);
         for (const name of ['POLYMORPH', 'PLENTY', 'WHIP']) expect(MONSTER_BOLT_TABLE[name]).toBeUndefined();
     });
 });

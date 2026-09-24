@@ -324,6 +324,17 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
         100, 'DF_PLAIN_FIRE', '', '', 0
     ),
 
+    // CE Globals.c:525-526: terrain, not creatures. Player contact promotes
+    // vines even while levitating; other creatures take gradual terrain damage.
+    [TerrainType.ANCIENT_SPIRIT_VINES]: e(
+        T_ENTANGLES | T_CAUSES_DAMAGE | T_IS_FLAMMABLE,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT | TM_PROMOTES_ON_PLAYER_ENTRY,
+        100, 'DF_PLAIN_FIRE', '', 'DF_ANCIENT_SPIRIT_GRASS', 1000
+    ),
+    [TerrainType.ANCIENT_SPIRIT_GRASS]: e(
+        T_IS_FLAMMABLE, TM_STAND_IN_TILE, 15, 'DF_PLAIN_FIRE', '', '', 0
+    ),
+
     // CE RED_BLOOD，Globals.c:453
     [TerrainType.BLOOD]: e(0, TM_STAND_IN_TILE, 0, 'DF_PLAIN_FIRE', '', '', 0),
 

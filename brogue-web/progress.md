@@ -1125,3 +1125,13 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 后续：U08 藤蔓/蛛网、U09 学习消费者矩阵、U10 吸收字段、U11 学习状态机仍未完成；不做旧存档兼容，不重捕获生成基线。
 
 - 最终路径审计补发现 CE Monsters.c:3569/3593 的游荡随从追领袖两个调用点；补齐俘虏领袖优先门（伤害上界/再生/毒/对角）和普通队伍跟随，6项新增专项及浏览器场景。前轮冻结运行已中止归档，编辑完后完整重启门禁，不拼接结果。
+
+## 2026-09-24 U08：蛛网与古灵藤蔓 DF 施法
+- 执行 u-08.prompt.md，依据 X-0 §4.1/§4.3/K07；读取 CE catalog → AI → zap/update/detonate → DF fill → instant/gradual tile effects。使用 develop-web-game 技能。
+- 冻结改义范围：P4-1b 蜘蛛 null 拒绝、W2 两 bolt undefined、BoltCatalog 已知缺口表、monsterBolts 数据映射缺口。CE 均 BE_NONE，沿途与终点均有 DF；其他断言只回归不放宽。
+- 追加地形/DF 载体，不变更生成入口；仅接 U08 所需逐格即时晋升/刷新。保留无 STUCK 计数的网移动近似，不开学习。
+- U08 已接 NONE 的 pathDF/targetDF，四个原CE DF；追加藤/草载体，逐格玩家即时晋升、四层持续伤害、死亡/燃烧/自发晋升与快照；32项新增专项通过。原三处 null/undefined 留痕先撞红留证再翻正。
+- 结构目录新增导致固定数量/闭包前提红；原135条AST逐条不变，补新起点/新成员并保留旧数量锚点、增加完整139/137计数。清网setTerrainLayer越界红改生产收口Promotion，白名单/扫描器未改。浏览器六场景与整页截图实看；修G_GRASS动画文字，console/page errors=0；技能Canvas黑图不计视觉通过。
+- 最终冻结运行：显式146文件反查范围（drift独立）、build、边界与SHA-256；结果仅回填u-08.report.md及证据。U14b计数/潜水、通用U17刷新、U09/U10/U11学习前置保留。无旧档兼容、生成回池或基线重捕获。
+
+- 最终前补发现BoltContract的物种循环拒绝留痕；保留imp原通用blink守卫，网/藤翻正并补实效断言。S补物种/英文别名。中途回归和首个冻结批次退出130归档，编辑完成后重启全部门禁。

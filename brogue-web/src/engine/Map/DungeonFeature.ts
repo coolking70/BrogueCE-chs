@@ -366,7 +366,8 @@ export function fillSpawnMap(
     surfaceTileType: TerrainType,
     spawnMap: SpawnMap,
     blockedByOtherLayers: boolean,
-    superpriority: boolean
+    superpriority: boolean,
+    onBuiltCell?: (pos: Pos) => void
 ): FillSpawnMapOutcome {
     const W = grid.width;
     const idx = (px: number, py: number): number => py * W + px;
@@ -409,6 +410,9 @@ export function fillSpawnMap(
                 // 落层！（Grid.ts setTerrainLayer：只写该层，不动其他层。）
                 grid.setTerrainLayer(i, j, layer, surfaceTileType);
                 accomplishedSomething = true;
+                // U08 opt-in contact at CE fillSpawnMap :3248-3258, before
+                // the next cell is filled (player vines may promote here).
+                onBuiltCell?.({ x: i, y: j });
             } else {
                 spawnMap[idx(i, j)] = 0; // spawnmap 反映实际建了什么（CE :3271）
             }
@@ -767,7 +771,8 @@ export function spawnDungeonFeature(
     x: number,
     y: number,
     feat: DungeonFeature,
-    abortIfBlocking: boolean
+    abortIfBlocking: boolean,
+    onBuiltCell?: (pos: Pos) => void
 ): SpawnFeatureResult {
     const result: SpawnFeatureResult = {
         succeeded: false,
@@ -842,7 +847,8 @@ export function spawnDungeonFeature(
                     feat.tile,
                     blockingMap,
                     !!(feat.flags & DFF_BLOCKED_BY_OTHER_LAYERS),
-                    !!(feat.flags & DFF_SUPERPRIORITY)
+                    !!(feat.flags & DFF_SUPERPRIORITY),
+                    onBuiltCell
                 ); // CE :3409 注释：fill 会把 spawnMap 改写成实际落点
                 result.caughtFireCells = fill.caughtFireCells;
                 result.pathingChanged = fill.pathingChanged;

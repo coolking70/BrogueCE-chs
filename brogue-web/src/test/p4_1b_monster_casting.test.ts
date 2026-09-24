@@ -212,8 +212,8 @@ describe('P4-1b 验收 4：30% 概率 与 MONST_ALWAYS_USE_ABILITY', () => {
         clearToOpenRoom(game);
         rng.seedRandomGenerator(99);
 
-        // spider 的 SPIDERWEB 是本轮已知缺口（effect: null），不会真的施放。
-        // 改用同样带 ALWAYS_USE_ABILITY 语义但换一个已实现 bolt 的自定义数据，
+        // 保留 P4-1b 的独立概率守卫；U08 蜘蛛本体另测真实 DF 施放。
+        // 此处使用相同 ALWAYS_USE_ABILITY 语义的自定义数据，
         // 直接复刻 spider 的行为标记来验证"跳过 30% 判定"这条规则本身。
         const alwaysCastData: MonsterData = {
             ...monsterDataById('spark_turret'),
@@ -232,12 +232,18 @@ describe('P4-1b 验收 4：30% 概率 与 MONST_ALWAYS_USE_ABILITY', () => {
         expect(hits).toBe(N);
     });
 
-    it('spider 本体确认：MONST_ALWAYS_USE_ABILITY 已标记，但 SPIDERWEB 是已知缺口，不会施放（不静默）', () => {
+    it('U08 spider 本体：ALWAYS_USE_ABILITY + BE_NONE 有真实 DF 出口', () => {
         const spiderData = monsterDataById('spider');
         expect(spiderData.behaviorFlags).toContain('MONST_ALWAYS_USE_ABILITY');
         expect(spiderData.bolts).toEqual(['SPIDERWEB']);
-        expect(MONSTER_BOLT_TABLE['SPIDERWEB']!.effect).toBeNull();
-        expect(KNOWN_GAP_MONSTER_BOLT_NAMES).toContain('SPIDERWEB');
+        expect(MONSTER_BOLT_TABLE['SPIDERWEB']!.effect).toBe(BoltEffect.NONE);
+        expect(KNOWN_GAP_MONSTER_BOLT_NAMES).not.toContain('SPIDERWEB');
+        const game = createHeadlessGame(20260914);
+        clearToOpenRoom(game);
+        const spider = new Monster(8, 5, spiderData);
+        game.monsters.push(spider);
+        expect(spider.tryUseBolt(game)).toBe(true);
+        expect(game.grid.getCell(game.player.x, game.player.y)!.layers).toContain(TerrainType.WEB);
     });
 });
 
