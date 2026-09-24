@@ -1,0 +1,158 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/e177/brogue/brogue-web
+
+stdout | src/test/u_09_learning_consumers.test.ts > U09 complete learning eligibility / negation / execution identity matrix > TELEPORT is erased by negation without consuming learning counts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_09_learning_consumers.test.ts (70 tests | 28 failed) 8567ms
+     × TELEPORT is erased by negation without consuming learning counts 132ms
+     × SLOW is erased by negation without consuming learning counts 224ms
+     × POLYMORPH is erased by negation without consuming learning counts 222ms
+     × NEGATION is erased by negation without consuming learning counts 210ms
+     × DOMINATION is erased by negation without consuming learning counts 209ms
+     × BECKONING is erased by negation without consuming learning counts 199ms
+     × INVISIBILITY is erased by negation without consuming learning counts 139ms
+     × LIGHTNING is erased by negation without consuming learning counts 134ms
+     × FIRE is erased by negation without consuming learning counts 142ms
+     × POISON is erased by negation without consuming learning counts 133ms
+     × TUNNELING is erased by negation without consuming learning counts 134ms
+     × BLINKING is erased by negation without consuming learning counts 139ms
+     × ENTRANCEMENT is erased by negation without consuming learning counts 149ms
+     × OBSTRUCTION is erased by negation without consuming learning counts 141ms
+     × DISCORD is erased by negation without consuming learning counts 136ms
+     × CONJURATION is erased by negation without consuming learning counts 139ms
+     × HEALING is erased by negation without consuming learning counts 138ms
+     × HASTE is erased by negation without consuming learning counts 133ms
+     × SLOW_2 is erased by negation without consuming learning counts 135ms
+     × SHIELDING is erased by negation without consuming learning counts 133ms
+     × SPARK is erased by negation without consuming learning counts 119ms
+     × ANCIENT_SPIRIT_VINES is erased by negation without consuming learning counts 117ms
+     × TELEPORT: eligible target, real cast, attack ticks; no power counter spent 120ms
+     × LIGHTNING uses magnitude10 (9..28, four clumps), pierces, and never calls physical attack 109ms
+     × LIGHTNING reflection owns transference and lethal source at the original monster 107ms
+     × MONST_REFLECT_50 reads reflectionChance(4) and real travel loses the ability after negation 111ms
+     × TRANSFERENCE ally=false: melee and bolt share shield/remainingHP/cap semantics 108ms
+     × TRANSFERENCE ally=true: melee and bolt share shield/remainingHP/cap semantics 107ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 28 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 complete learning eligibility / negation / execution identity matrix > TELEPORT is erased by negation without consuming learning counts
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 complete learning eligibility / negation / execution identity matrix > SLOW is erased by negation without consuming learning counts
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 complete learning eligibility / negation / execution identity matrix > POLYMORPH is erased by negation without consuming learning counts
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 complete learning eligibility / negation / execution identity matrix > NEGATION is erased by negation without consuming learning counts
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 complete learning eligibility / negation / execution identity matrix > DOMINATION is erased by negation without consuming learning counts
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 complete learning eligibility / negation / execution identity matrix > BECKONING is erased by negation without consuming learning counts
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 complete learning eligibility / negation / execution identity matrix > INVISIBILITY is erased by negation without consuming learning counts
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 complete learning eligibility / negation / execution identity matrix > LIGHTNING is erased by negation without consuming learning counts
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 complete learning eligibility / negation / execution identity matrix > FIRE is erased by negation without consuming learning counts
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 complete learning eligibility / negation / execution identity matrix > POISON is erased by negation without consuming learning counts
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 complete learning eligibility / negation / execution identity matrix > TUNNELING is erased by negation without consuming learning counts
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 complete learning eligibility / negation / execution identity matrix > BLINKING is erased by negation without consuming learning counts
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 complete learning eligibility / negation / execution identity matrix > ENTRANCEMENT is erased by negation without consuming learning counts
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 complete learning eligibility / negation / execution identity matrix > OBSTRUCTION is erased by negation without consuming learning counts
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 complete learning eligibility / negation / execution identity matrix > DISCORD is erased by negation without consuming learning counts
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 complete learning eligibility / negation / execution identity matrix > CONJURATION is erased by negation without consuming learning counts
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 complete learning eligibility / negation / execution identity matrix > HEALING is erased by negation without consuming learning counts
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 complete learning eligibility / negation / execution identity matrix > HASTE is erased by negation without consuming learning counts
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 complete learning eligibility / negation / execution identity matrix > SLOW_2 is erased by negation without consuming learning counts
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 complete learning eligibility / negation / execution identity matrix > SHIELDING is erased by negation without consuming learning counts
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 complete learning eligibility / negation / execution identity matrix > SPARK is erased by negation without consuming learning counts
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 complete learning eligibility / negation / execution identity matrix > ANCIENT_SPIRIT_VINES is erased by negation without consuming learning counts
+AssertionError: expected [ 4, 4 ] to deeply equal [ 3, 4 ]
+
+- Expected
++ Received
+
+  [
+-   3,
++   4,
+    4,
+  ]
+
+ ❯ src/test/u_09_learning_consumers.test.ts:65:53
+     63|         expect(CE_BOLT_CATALOG[B[name]].flags&F.NOT_NEGATABLE).toBe(0);
+     64|         expect(negate(g,m)).toBe(true); expect(m.bolts).toEqual([]);
+     65|         expect([m.newPowerCount,m.totalPowerCount]).toEqual([3,4]);
+       |                                                     ^
+     66|     });
+     67|     it.each(['TUNNELING','OBSTRUCTION'])('%s is learnable but neither …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/28]⎯
+
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 hand-installed abilities use the real AI loop, without natural learning > TELEPORT: eligible target, real cast, attack ticks; no power counter spent
+AssertionError: expected { x: 8, y: 5 } to not deeply equal { x: 8, y: 5 }
+
+Compared values have no visual difference.
+
+ ❯ src/test/u_09_learning_consumers.test.ts:94:54
+     92|         if(name==='LIGHTNING') expect(target.hp).toBeLessThan(100);
+     93|         if(name==='POLYMORPH') expect(target.typeId).not.toBe('rat');
+     94|         if(name==='TELEPORT') expect(target.loc).not.toEqual({x:8,y:5}…
+       |                                                      ^
+     95|         if(name==='CONJURATION') expect(g.monsters.filter(m=>m.typeId=…
+     96|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/28]⎯
+
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 real contacts, magnitude and caster ownership > LIGHTNING uses magnitude10 (9..28, four clumps), pierces, and never calls physical attack
+Error: The property "randClump" is not defined on the object.
+ ❯ src/test/u_09_learning_consumers.test.ts:189:69
+    187|     it('LIGHTNING uses magnitude10 (9..28, four clumps), pierces, and …
+    188|         const g=scene(),m=mob(g),first=mob(g,9),second=mob(g,7);m.accu…
+    189|         const attack=vi.spyOn(CombatSystem,'attack');const clump=vi.sp…
+       |                                                                     ^
+    190|         const result=g.castMonsterBolt(m,first,'LIGHTNING')!;
+    191|         expect(result.hits.map(h=>h.creature)).toEqual([first,second])…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/28]⎯
+
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 real contacts, magnitude and caster ownership > LIGHTNING reflection owns transference and lethal source at the original monster
+Error: The property "randClump" is not defined on the object.
+ ❯ src/test/u_09_learning_consumers.test.ts:196:12
+    194|     it('LIGHTNING reflection owns transference and lethal source at th…
+    195|         const g=scene(),m=mob(g),mirror=mob(g,8);mirror.abilityFlags.a…
+    196|         vi.spyOn(rng,'randClump').mockReturnValue(20);const result=g.c…
+       |            ^
+    197|         expect(result.hits[0]!.creature).toBe(m);expect(m.hp).toBe(0);…
+    198|         const other=mob(g,12,'rat',7);g.player.loc={x:8,y:7};g.player.…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/28]⎯
+
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 six installed flags: permanent status and passive consumers > MONST_REFLECT_50 reads reflectionChance(4) and real travel loses the ability after negation
+AssertionError: expected 48 to be 50 // Object.is equality
+
+- Expected
++ Received
+
+- 50
++ 48
+
+ ❯ src/test/u_09_learning_consumers.test.ts:234:97
+    232|     it('MONST_REFLECT_50 reads reflectionChance(4) and real travel los…
+    233|         const g=scene(),m=mob(g),target=mob(g,8);target.behaviorFlags.…
+    234|         expect(target.reflectChance()).toBe(reflectionChance(4));expec…
+       |                                                                                                 ^
+    235|         const percent=vi.spyOn(rng,'randPercent').mockReturnValue(true…
+    236|         expect(result.reflections).toHaveLength(1);expect(m.getStatusD…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/28]⎯
+
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 six installed flags: permanent status and passive consumers > TRANSFERENCE ally=false: melee and bolt share shield/remainingHP/cap semantics
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 six installed flags: permanent status and passive consumers > TRANSFERENCE ally=true: melee and bolt share shield/remainingHP/cap semantics
+Error: The property "randClump" is not defined on the object.
+ ❯ src/test/u_09_learning_consumers.test.ts:242:56
+    240|         const g=scene(),m=mob(g),target=mob(g,8);m.isAlly=ally;m.hp=10…
+    241|         CombatSystem.attack(m,target,{autoHit:true,isWeaponAttack:true…
+    242|         target.hp=7;target.applyShield(50);m.hp=100;vi.spyOn(rng,'rand…
+       |                                                        ^
+    243|         negate(g,m);target.hp=7;m.hp=100;g.castMonsterBolt(m,target,'L…
+    244|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/28]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  28 failed | 48 passed (76)
+   Start at  00:04:55
+   Duration  9.20s (transform 549ms, setup 0ms, import 773ms, tests 8.57s, environment 0ms)
+

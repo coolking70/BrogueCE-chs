@@ -1,0 +1,44 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/e177/brogue/brogue-web
+
+ ❯ src/engine/Combat/BoltCatalog.test.ts (6 tests | 1 failed) 16ms
+     × the 15 monster execution entries retain their old target/fire/magnitude projection and U08 terrain exits 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/engine/Combat/BoltCatalog.test.ts > W-1 CE catalog contract (source rows, not execution coverage) > the 15 monster execution entries retain their old target/fire/magnitude projection and U08 terrain exits
+AssertionError: expected [ Array(26) ] to deeply equal [ Array(15) ]
+
+- Expected
++ Received
+
+@@ -12,6 +12,17 @@
+    "DRAGONFIRE",
+    "BECKONING",
+    "SLOW_2",
+    "SPIDERWEB",
+    "ANCIENT_SPIRIT_VINES",
++   "TELEPORT",
++   "SLOW",
++   "POLYMORPH",
++   "DOMINATION",
++   "INVISIBILITY",
++   "LIGHTNING",
++   "POISON",
++   "ENTRANCEMENT",
++   "CONJURATION",
++   "TUNNELING",
++   "OBSTRUCTION",
+  ]
+
+ ❯ src/engine/Combat/BoltCatalog.test.ts:121:49
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 8 passed (9)
+      Tests  1 failed | 281 passed (282)
+   Start at  23:59:54
+   Duration  6.49s (transform 2.71s, setup 0ms, import 6.62s, tests 20.64s, environment 1ms)
+

@@ -117,16 +117,20 @@ describe('W-1 CE catalog contract (source rows, not execution coverage)', () => 
         expect(rng.randomNumbersGenerated).toBe(before);
     });
 
-    it('the 15 monster execution entries retain their old target/fire/magnitude projection and U08 terrain exits', () => {
-        expect(Object.keys(MONSTER_BOLT_TABLE)).toEqual('SHIELDING HASTE SPARK DISTANCE_ATTACK HEALING BLINKING NEGATION DISCORD POISON_DART FIRE DRAGONFIRE BECKONING SLOW_2 SPIDERWEB ANCIENT_SPIRIT_VINES'.split(' '));
+    it('the 15 native entries retain their projections, plus U09 learnable identities and CE forbidden exceptions', () => {
+        expect(Object.keys(MONSTER_BOLT_TABLE)).toEqual('SHIELDING HASTE SPARK DISTANCE_ATTACK HEALING BLINKING NEGATION DISCORD POISON_DART FIRE DRAGONFIRE BECKONING SLOW_2 SPIDERWEB ANCIENT_SPIRIT_VINES TELEPORT SLOW POLYMORPH DOMINATION INVISIBILITY LIGHTNING POISON ENTRANCEMENT CONJURATION TUNNELING OBSTRUCTION'.split(' '));
         expect(Object.values(MONSTER_BOLT_TABLE).map(({ targetAllies, targetEnemies, fiery, magnitude }) => [targetAllies, targetEnemies, fiery, magnitude])).toEqual([
             [true,false,false,5], [true,false,false,2], [false,true,false,1], [false,true,false,1],
             [true,false,false,5], [false,false,false,5], [false,true,false,10], [false,true,false,10],
             [false,true,false,1], [false,true,true,4], [false,true,true,18], [false,true,false,10],
             [false,true,false,2], [false,true,false,10], [false,true,false,5],
+            [false,true,false,10], [false,true,false,10], [false,true,false,10], [false,true,false,10],
+            [true,false,false,10], [false,true,false,10], [false,true,false,10], [false,true,false,10],
+            [false,true,false,10], [false,false,false,10], [false,false,false,10],
         ]);
         expect(KNOWN_GAP_MONSTER_BOLT_NAMES).toEqual([]);
         for (const name of ['SPIDERWEB', 'ANCIENT_SPIRIT_VINES']) expect(MONSTER_BOLT_TABLE[name]!.effect).toBe(BoltEffect.NONE);
-        for (const name of ['POLYMORPH', 'PLENTY', 'WHIP']) expect(MONSTER_BOLT_TABLE[name]).toBeUndefined();
+        expect(MONSTER_BOLT_TABLE.POLYMORPH!.effect).toBe(BoltEffect.POLYMORPH);
+        for (const name of ['PLENTY', 'WHIP']) expect(MONSTER_BOLT_TABLE[name]).toBeUndefined();
     });
 });

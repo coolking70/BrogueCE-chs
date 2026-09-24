@@ -21,7 +21,7 @@ import { PERMANENT_STATUS_DURATION } from './Creature';
 import { TerrainType } from '../engine/Map/Grid';
 import { breakEntanglingTerrain } from '../engine/Map/Promotion';
 import { MONSTER_BOLT_TABLE, BoltEffect, type BoltConfig } from '../engine/Combat/Bolt';
-import { CEBoltType, CE_BOLT_CATALOG } from '../engine/Combat/BoltCatalog';
+import { CEBoltType, CEBoltFlags, CE_BOLT_CATALOG } from '../engine/Combat/BoltCatalog';
 import { reflectionChance } from '../engine/Combat/CombatFormulas';
 import { bladeAvoids, bladeDiagonalBlocked, bladeStepToward, BLADE_DIRECTIONS } from '../engine/Combat/Conjuration';
 import { boltLine } from '../engine/Combat/BoltTrajectory';
@@ -108,34 +108,37 @@ export function generallyValidBoltTarget(caster: Monster, target: Creature, game
 }
 
 /**
- * CE specificallyValidBoltTarget（Monsters.c:2596）。只覆盖 MONSTER_BOLT_TABLE
- * 里登记的 15 个 bolt；BLINKING 由专调度处理。U08 的 BE_NONE 走 DF 资格。
- * 省略的分支：BF_NEVER_REFLECTS/反射判定（web 无护甲反射对怪物生效的路径）、
- * forbiddenMonsterFlags（仅对 BECKONING 目标做了 MONST_IMMOBILE 近似）、
- * NEGATION 的实际可达资格已于 W-23 对齐（保留 CE catalog 的敌方门）。
+ * CE specificallyValidBoltTarget（Monsters.c:2596）。U09 adds learnable
+ * identities and the catalog's forbidden/reflective target gates. BLINKING
+ * keeps its dedicated selector; TUNNELING/OBSTRUCTION are CE exceptions.
+ * General perception, combat-buff tactics and caster fire terrain remain U12.
  */
 export function specificallyValidBoltTarget(caster: Monster, target: Creature, ceBoltName: string, game: Game): boolean {
     const meta = MONSTER_BOLT_TABLE[ceBoltName];
-    if (!meta || meta.effect === null || meta.effect === BoltEffect.BLINKING) return false;
+    if (!meta || meta.effect === null || meta.effect === BoltEffect.BLINKING
+        || meta.effect === BoltEffect.TUNNELING || meta.effect === BoltEffect.OBSTRUCTION) return false;
+    const definition = CE_BOLT_CATALOG[meta.ceType];
 
     // CE MC:2604 BF_TARGET_ENEMIES runs BEFORE the NEGATION switch.
     // Thus same-team entrancement/fear branches below that gate are unreachable
     // with the shipped NEGATION catalog; W-18's bypass was incorrect.
     if (target.hasStatus('entranced')
-        && [BoltEffect.FIRE, BoltEffect.SPARK, BoltEffect.DRAGONFIRE, BoltEffect.DISTANCE_ATTACK, BoltEffect.POISON_DART].includes(meta.effect)
+        && [BoltEffect.FIRE, BoltEffect.LIGHTNING, BoltEffect.SPARK, BoltEffect.DRAGONFIRE, BoltEffect.DISTANCE_ATTACK, BoltEffect.POISON_DART].includes(meta.effect)
         && monstersAreEnemies(caster, target)) return false;
-    if (meta.targetAllies && !monstersAreTeammates(caster, target)) return false;
+    if (meta.targetAllies && (!monstersAreTeammates(caster, target) || monstersAreEnemies(caster, target))) return false;
     if (meta.targetEnemies && !monstersAreEnemies(caster, target)) return false;
     if (meta.targetEnemies && target instanceof Monster && target.hasBehavior('MONST_INVULNERABLE')) return false;
+    if (target instanceof Monster) {
+        if (!target.isAlly && (target.hasBehavior('MONST_REFLECT_50') || target.hasAbility('MA_REFLECT_100'))
+            && !(definition.flags & (CEBoltFlags.NEVER_REFLECTS | CEBoltFlags.HALTS_BEFORE_OBSTRUCTION))) return false;
+        if (definition.forbiddenMonsterFlags.some(flag => target.hasCEBehavior(flag))) return false;
+    }
     if (meta.fiery && target.hasStatus('immune_fire')) return false;
 
     switch (meta.effect) {
         case BoltEffect.NONE: {
             // CE Monsters.c:2619 + 2655-2675. Both current NONE bolts entangle;
             // their forbidden flags make the second avoided-terrain test moot.
-            const definition = CE_BOLT_CATALOG[meta.ceType];
-            if (target instanceof Monster && definition.forbiddenMonsterFlags.some(flag =>
-                target.hasBehavior(flag) || (flag === 'MONST_IMMOBILE' && target.hasBehavior('MONST_TURRET')))) return false;
             // U14b owns STATUS_STUCK. The existing hold is the occupied terrain.
             if (cellTerrainFlags(game.grid, target.x, target.y) & T_ENTANGLES) return false;
             break;
@@ -644,6 +647,15 @@ export class Monster extends Creature {
         return this.behaviorFlags.has(flag);
     }
 
+    /** Rogue.h:2093: web stores MONST_TURRET as a composite token. Read its
+     * six constituent bits at CE effect gates without changing spawn flags/RNG. */
+    public hasCEBehavior(flag: string): boolean {
+        return this.hasBehavior(flag) || (this.hasBehavior('MONST_TURRET') && [
+            'MONST_IMMUNE_TO_WEBS', 'MONST_NEVER_SLEEPS', 'MONST_IMMOBILE',
+            'MONST_INANIMATE', 'MONST_ATTACKABLE_THRU_WALLS', 'MONST_WILL_NOT_USE_STAIRS',
+        ].includes(flag));
+    }
+
     /**
      * P1-28：CE initializeStatus（Monsters.c:3904-3928）的 web 复刻——把
      * behaviorFlags 里的永久特性翻译成对应状态（MONST_FLIES →
@@ -654,22 +666,36 @@ export class Monster extends Creature {
      * isStatusPermanent 保证（CE updateMonsterStatus，Monsters.c:1852-1856 /
      * 1963-1967）。注意 CE 的 MONST_FLITS（飘忽移动）不翻译——它不是飞行，
      * 不豁免熔岩/压力板（web 现无对应机制，无需处理）。
-     * W-23: only initialization/form changes rederive these states. CE negation
+     * U09: initialization, form changes and explicit post-learning sync derive these states. CE negation
      * permanently strips the flags and clears their statuses; it never calls this.
      */
-    public syncFlagDerivedStatuses(): void {
+    public syncFlagDerivedStatuses(afterLearning = false): void {
+        if (afterLearning && this.hasBehavior('MONST_FIERY')) {
+            // FIERY cannot be learned, but an already-fiery recipient still
+            // reinitializes burning after learning another power (MC:3280).
+            (this.statusDurations as Record<string, number>).burning = PERMANENT_STATUS_DURATION;
+        }
         if (this.hasBehavior('MONST_FLIES')) {
             this.setStatusDuration('levitating', PERMANENT_STATUS_DURATION);
+            if (afterLearning) {
+                // CE absorption completion, Monsters.c:3283-3287. No corpse
+                // selection/installation/countdown here; U11 calls after install.
+                this.behaviorFlags.delete('MONST_RESTRICTED_TO_LIQUID');
+                this.behaviorFlags.delete('MONST_SUBMERGES');
+            }
         }
         if (this.hasBehavior('MONST_IMMUNE_TO_FIRE')) {
             this.setStatusDuration('immune_fire', PERMANENT_STATUS_DURATION);
+        }
+        if (this.hasBehavior('MONST_INVISIBLE')) {
+            this.setStatusDuration('invisible', PERMANENT_STATUS_DURATION);
         }
     }
 
     /** 见 Creature.isStatusPermanent：带旗标者的派生状态不随回合衰减。 */
     protected override isStatusPermanent(id: StatusId): boolean {
-        if (this.polymorphed && (id as string) === 'burning') return this.hasBehavior('MONST_FIERY');
-        if (this.polymorphed && id === 'invisible') return this.hasBehavior('MONST_INVISIBLE');
+        if ((id as string) === 'burning') return this.hasBehavior('MONST_FIERY');
+        if (id === 'invisible') return this.hasBehavior('MONST_INVISIBLE');
         if (id === 'levitating') return this.hasBehavior('MONST_FLIES');
         if (id === 'immune_fire') return this.hasBehavior('MONST_IMMUNE_TO_FIRE');
         return false;
@@ -1219,7 +1245,7 @@ export class Monster extends Creature {
     }
 
     public override canBePoisoned(): boolean {
-        return super.canBePoisoned() && !this.hasBehavior('MONST_INANIMATE') && !this.isInvulnerable();
+        return super.canBePoisoned() && !this.hasCEBehavior('MONST_INANIMATE') && !this.isInvulnerable();
     }
 
     /** CE Monsters.c:1839-1847: objective regeneration precedes poison decrement. */

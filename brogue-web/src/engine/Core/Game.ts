@@ -4476,7 +4476,7 @@ export class Game {
     }
 
     private boltLivingTarget(target: Creature): boolean {
-        return !(target instanceof Monster) || (!target.hasBehavior('MONST_INANIMATE') && !target.isInvulnerable());
+        return !(target instanceof Monster) || (!target.hasCEBehavior('MONST_INANIMATE') && !target.isInvulnerable());
     }
 
     /** W-9: shared player/monster directed effects. CE Items.c:4636-4706,
@@ -4546,6 +4546,65 @@ export class Game {
             target: target.name, defaultValue: `The ${target.name} is unaffected.`
         }), '#aaaaaa');
         return { accepted, autoID, healed };
+    }
+
+    /** CE updateBolt: immunity, then free captive, then destination search. */
+    private teleportBoltTarget(target: Creature): boolean {
+        if (target instanceof Monster && target.hasCEBehavior('MONST_IMMOBILE')) return false;
+        if (target instanceof Monster && target.isCaged) this.freeCaptive(target);
+        return this.teleportCreature(target);
+    }
+
+    private polymorphBoltTarget(target: Creature | undefined): boolean {
+        if (!(target instanceof Monster) || !target.polymorph(() => this.demoteMonsterFromLeadership(target))) return false;
+        const autoID = !target.hasStatus('invisible');
+        this.updateVision();
+        this.needsRender = true;
+        return autoID;
+    }
+
+    /** Items.c:5274-5300 always allies to the player, even for a hostile caster. */
+    private dominateBoltTarget(target: Creature | undefined): boolean {
+        let autoID = false;
+        // CE Items.c:5274-5300: no writes until the roll succeeds.
+        // Player, inanimate and invulnerable contacts cannot be dominated.
+        if (!(target instanceof Monster) || target.hasCEBehavior('MONST_INANIMATE') || target.isInvulnerable()) return false;
+        const success = rng.randPercent(wandDominate(target));
+        if (success) {
+            target.setStatusDuration('discordant', 0);
+            this.becomeAllyWith(target);
+            target.dominated = true;
+        }
+        // canSeeMonster is evaluated AFTER conversion; a newly allied
+        // invisible creature on a visible tile can now be observed.
+        autoID = this.canObserveBoltTarget(target);
+        if (autoID) logger.log(success
+            ? i18next.t('bolt.domination_success', { target: target.name, defaultValue: '{{target}} is bound to your will!' })
+            : i18next.t('bolt.domination_resisted', { target: target.name, defaultValue: '{{target}} resists the bolt of domination.' }),
+            success ? '#88ff88' : '#aaaaaa');
+        return autoID;
+    }
+
+    /** Items.c:5493-5514: actual landing, catalog/instance magnitude; blades
+     * are bound to the player for every caster. Reuses W16 placement/lifecycle. */
+    private conjureBladesAt(landing: Pos, magnitude: number): boolean {
+        let autoID = false;
+        const data = (monsterData as MonsterData[]).find(m => m.id === 'spectral_blade')!;
+        for (let i = 0; i < staffBladeCount(magnitude); i++) {
+            const at = bladeSpawnLocation(this, landing);
+            if (!at) break; // No invalid/off-map entities when the level is full.
+            const blade = new Monster(at.x, at.y, data);
+            blade.isAlly = true;
+            blade.boundToPlayer = true;
+            blade.doesNotTrackLeader = true;
+            // Player followers use leader=null (also used by freed captives).
+            // CE sets info.attackSpeed + 1, not movementSpeed or a lifetime.
+            blade.ticksUntilTurn = blade.attackSpeed + 1;
+            blade.goldDropChance = blade.itemDropChance = 0; // CE blade has no MONST_CARRY_ITEM_* flags.
+            this.monsters.push(blade);
+            autoID = true; // W-2 handoff: only a real entity identifies.
+        }
+        return autoID;
     }
 
     private applyBoltEffect(result: BoltResult, item: Item, alreadyReflected = false): boolean {
@@ -4644,14 +4703,11 @@ export class Game {
             case BoltEffect.TELEPORT: {
                 // CE Items.c:5220-5227: immunity precedes freeing; freeing
                 // precedes destination search, even if that search later fails.
-                if (target && !(target instanceof Monster && target.hasBehavior('MONST_IMMOBILE'))) {
-                    if (target instanceof Monster && target.isCaged) this.freeCaptive(target);
-                    if (this.teleportCreature(target)) {
-                        logger.log(i18next.t('bolt.teleport_hit', {
-                            name: item.displayName, target: target.name,
-                            defaultValue: `${item.displayName} teleports the ${target.name} away!`
-                        }), '#cc88ff');
-                    }
+                if (target && this.teleportBoltTarget(target)) {
+                    logger.log(i18next.t('bolt.teleport_hit', {
+                        name: item.displayName, target: target.name,
+                        defaultValue: `${item.displayName} teleports the ${target.name} away!`
+                    }), '#cc88ff');
                 } else if (!target) {
                     logMiss('bolt.teleport_miss', `${item.displayName} flashes but finds no target.`, '#cc88ff');
                 }
@@ -4675,33 +4731,12 @@ export class Game {
             }
 
             case BoltEffect.POLYMORPH: {
-                if (target instanceof Monster && target.polymorph(() => this.demoteMonsterFromLeadership(target))) {
-                    // CE Items.c:5261-5266 checks the NEW invisible status, not FOV.
-                    autoID = !target.hasStatus('invisible');
-                    this.updateVision();
-                    this.needsRender = true;
-                }
+                autoID = this.polymorphBoltTarget(target);
                 break;
             }
 
             case BoltEffect.DOMINATION: {
-                // CE Items.c:5274-5300: no writes until the roll succeeds.
-                // Player, inanimate and invulnerable contacts cannot be dominated.
-                if (!(target instanceof Monster) || target.hasBehavior('MONST_INANIMATE')
-                    || target.hasBehavior('MONST_TURRET') || target.isInvulnerable()) break;
-                const success = rng.randPercent(wandDominate(target));
-                if (success) {
-                    target.setStatusDuration('discordant', 0);
-                    this.becomeAllyWith(target);
-                    target.dominated = true;
-                }
-                // canSeeMonster is evaluated AFTER conversion; a newly allied
-                // invisible creature on a visible tile can now be observed.
-                autoID = this.canObserveBoltTarget(target);
-                if (autoID) logger.log(success
-                    ? i18next.t('bolt.domination_success', { target: target.name, defaultValue: '{{target}} is bound to your will!' })
-                    : i18next.t('bolt.domination_resisted', { target: target.name, defaultValue: '{{target}} resists the bolt of domination.' }),
-                    success ? '#88ff88' : '#aaaaaa');
+                autoID = this.dominateBoltTarget(target);
                 break;
             }
 
@@ -4760,21 +4795,7 @@ export class Game {
                 if (!result.landingPos) break;
                 const e = resolveCEBoltMagnitude(CEBoltType.CONJURATION, item.category === ItemCategory.STAFF
                     ? { kind: 'staff', enchantment: item.enchantment } : { kind: 'catalog' }).value;
-                const data = (monsterData as MonsterData[]).find(m => m.id === 'spectral_blade')!;
-                for (let i = 0; i < staffBladeCount(e); i++) {
-                    const at = bladeSpawnLocation(this, result.landingPos);
-                    if (!at) break; // No invalid/off-map entities when the level is full.
-                    const blade = new Monster(at.x, at.y, data);
-                    blade.isAlly = true;
-                    blade.boundToPlayer = true;
-                    blade.doesNotTrackLeader = true;
-                    // Player followers use leader=null (also used by freed captives).
-                    // CE sets info.attackSpeed + 1, not movementSpeed or a lifetime.
-                    blade.ticksUntilTurn = blade.attackSpeed + 1;
-                    blade.goldDropChance = blade.itemDropChance = 0; // CE blade has no MONST_CARRY_ITEM_* flags.
-                    this.monsters.push(blade);
-                    autoID = true; // W-2 handoff: only a real entity identifies.
-                }
+                autoID = this.conjureBladesAt(result.landingPos, e);
                 if (autoID) logMiss('staff.phantom_force', `Phantom force responds to ${item.displayName}.`, '#aaddff');
                 this.updateVision();
                 this.needsRender = true;
@@ -4889,7 +4910,8 @@ export class Game {
 
     public castMonsterBolt(caster: Monster, target: Creature, ceBoltName: string): BoltResult | undefined {
         const meta = MONSTER_BOLT_TABLE[ceBoltName];
-        if (!meta || meta.effect === null) return; // 已知缺口/未映射，不应该走到这里
+        if (!meta || meta.effect === null || meta.effect === BoltEffect.TUNNELING
+            || meta.effect === BoltEffect.OBSTRUCTION) return; // CE monsters never cast these.
 
         if (meta.effect === BoltEffect.NONE && this.canObserveBoltTarget(caster)) {
             if (ceBoltName === 'SPIDERWEB') logger.log(i18next.t('bolt.monster_cast_web', {
@@ -4929,6 +4951,10 @@ export class Game {
             this.spawnEntanglingBoltFeature(definition.targetDF, boltResult.landingPos);
             this.updateVision();
         }
+        if (meta.effect === BoltEffect.CONJURATION && boltResult.landingPos) {
+            autoID = this.conjureBladesAt(boltResult.landingPos, meta.magnitude);
+            this.updateVision();
+        }
         this.pendingBoltFrames = boltResult.frames;
         this.currentBoltFrameIndex = 0;
         this.boltAnimStartTime = Date.now();
@@ -4949,6 +4975,7 @@ export class Game {
         };
 
         switch (meta.effect) {
+            case BoltEffect.LIGHTNING:
             case BoltEffect.SPARK:
             case BoltEffect.FIRE:
             case BoltEffect.DRAGONFIRE: {
@@ -4964,10 +4991,7 @@ export class Game {
                 const hpDamage = target.absorbShieldDamage(damage);
                 // CE inflictDamage transfers after shielding and before death,
                 // including when reflection makes caster and victim identical.
-                if (caster.hasAbility('MA_TRANSFERENCE')
-                    && !(target instanceof Monster && target.hasBehavior('MONST_INANIMATE'))) {
-                    caster.hp += Math.trunc(Math.min(hpDamage, target.hp) * (caster.isAlly ? 4 : 9) / 10);
-                }
+                CombatSystem.transferMonsterHealth(caster, target, hpDamage);
                 target.takeDamage(hpDamage, true); // shield already consumed once.
                 if (hpDamage > 0) {
                     // CE monsterCastSpell: a reflected monster bolt still kills
@@ -5087,6 +5111,27 @@ export class Game {
                 logCast('bolt.monster_cast_discord', `${casterLabel} sows discord in ${targetName}!`, '#ff88ff');
                 break;
             }
+
+            case BoltEffect.TELEPORT:
+                this.teleportBoltTarget(target);
+                break; // CE teleport never sets autoID.
+
+            case BoltEffect.POLYMORPH:
+                autoID = this.polymorphBoltTarget(target);
+                break;
+
+            case BoltEffect.DOMINATION:
+                autoID = this.dominateBoltTarget(target);
+                break;
+
+            case BoltEffect.POISON:
+                autoID = target.addPoison(staffPoison(meta.magnitude), 1) && this.canObserveBoltTarget(target);
+                break;
+
+            case BoltEffect.INVISIBILITY:
+            case BoltEffect.ENTRANCEMENT:
+                autoID = this.applyBasicBoltEffect(target, meta.effect, meta.magnitude).autoID;
+                break;
 
             case BoltEffect.NEGATION: {
                 const affected = this.negateCreatureMagic(target);

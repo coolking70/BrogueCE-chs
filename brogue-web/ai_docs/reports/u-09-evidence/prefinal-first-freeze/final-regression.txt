@@ -1,0 +1,1208 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/e177/brogue/brogue-web
+
+stdout | src/test/b_1a_identification.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_4a_terrain_catalog.test.ts > C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时点的枚举全集逐位） > Game.canMoveTo（查表）≡ 旧清单：合成格逐地形实测（含生成中出现不了的地形）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/f_2b_creature_burning.test.ts > F-2b 对抗①②：燃烧状态挂载与刷新语义 > 对抗①：离开火格后燃烧必须继续——状态没挂上的实现（伤害只在站火格时发生，web 旧"平扣"形态）在此翻红。CE：exposeCreatureToFire 只上状态（Time.c:59-60），伤害来自每回合燃烧结算（Time.c:2581-2591），与脚下地形无关；烧 ~7 回合后自然熄灭，伤害随之停止。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_7_lighting.test.ts > C-7 updateVision 集成（CE Time.c:859 → Light.c:208 → Movement.c:2582） > 对抗⑤消费面：深层岩浆自发光——glowLight 列没接上/不被消费即红
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/f_2a_fire_mechanics.test.ts > F-2a 对抗①：蔓延只用 4 正交邻（CE Time.c:1692-1699 nbDirs 前 4 项） > 与火格只有对角连接的草格永远烧不到。错误实现：蔓延用 8 邻（web 旧行为）——五组独立对角对中必有草被点燃留痕。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/v_2b_4_altars.test.ts > V-2b-4 D：自创祭坛组子系统已拆除（留痕 + 越界守卫） > D4 行为：从祭坛取物只入包，**不再**塌陷同组祭坛（构造两座祭坛做判别）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_4b_dungeon_feature.test.ts > C-4b F：留痕（本轮明确不做的事；C-4c 翻转） > F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/c_4b_dungeon_feature.test.ts (31 tests) 2264ms
+     ✓ F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空  1976ms
+ ✓ src/test/c_7_lighting.test.ts (25 tests) 2484ms
+     ✓ 对抗⑤消费面：深层岩浆自发光——glowLight 列没接上/不被消费即红  515ms
+     ✓ 对抗④集成面：矿灯深度衰减在视野上可观测——深层可见格骤减  415ms
+     ✓ VISIBLE = 掩码 ∧ 光强>50：玩家格恒可见，墙后格不因光而可见  501ms
+     ✓ 渲染馈送：getLight 接口拿到矿灯光（UI-1 起渲染改走 lightAt 三通道，本接口保留为兼容面）  366ms
+     ✓ 无地形光：矿灯不驱散阴影 → 减半一次；playerInDarkness 为 false（矿灯中心恒亮）  323ms
+     ✓ 站进祭坛烛光（CANDLE_LIGHT 载体）：阴影被驱散 → 潜行范围恢复 14+adj  319ms
+stdout | src/test/c_4a_0_layer_model.test.ts > C-4a-0 存档 > 新格式往返：四层逐层还原（含测试手造的多层格）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/f_2a_fire_mechanics.test.ts (12 tests) 5959ms
+     ✓ 与火格只有对角连接的草格永远烧不到。错误实现：蔓延用 8 邻（web 旧行为）——五组独立对角对中必有草被点燃留痕。  565ms
+     ✓ 大样本互不相邻草格各暴露一次：点燃数必须落在 15% 的二项分布带内。错误实现 a：固定 40%（web 旧值）→ 期望 130，远超上限；错误实现 b：100% 必燃 → 325；错误实现 c：掷骰被丢（永不燃）→ 0。  404ms
+     ✓ exposedToFire ≥12 时连 alwaysIgnite 都被拒绝；新回合（runFireUpdate）清零后恢复。错误实现 a：漏掉封顶检查——超封顶的直燃照样点燃；错误实现 b：漏掉每回合清零——第二回合怎么暴露都点不着。  385ms
+     ✓ 30 个草格直燃必须 100% 点燃（跳过 15% 掷骰）。错误实现：旁路失效（把 alwaysIgnite 当 false 掷骰）→ 期望只有 ~4-5 格点燃。  324ms
+     ✓ igniteForced（CE 火 DF 生成家族）在楼梯/祭坛上落不了火；对照地板照落。错误实现：绕开 DF 管线直写 SURFACE 层（F-1 旧 igniteForced）→ 楼梯/祭坛照烧。  332ms
+     ✓ 直燃路径（exposeTileToFire）同样伤不到楼梯/祭坛——它们不可燃，暴露计数都不动（CE :1308 T_IS_FLAMMABLE 先决）。  352ms
+     ✓ 60 个火格推 60 个客观块后必须大半离场（EMBERS/ASH）。错误实现：promoteChance 没接上（火永生）或仍按 burnDuration 倒计时——前者离场数恒 0，后者在更早的 f_1 对抗④红。  428ms
+     ✓ 火格在 skip 集里时它的邻居不掷骰；不在时 100% 可燃邻居（网）必被点燃。错误实现：runFireUpdate 忽略 opts.caughtFireCells。  699ms
+     ✓ DF_PLAIN_FIRE / DF_EMBERS / DF_ASH 都是 start=0 的单点 DF——spawnMapDF 的 while(startProb>0) 不执行、零掷骰；合成扩散条目的probDec>0 闸门（c_4c C1）继续覆盖未来条目。错误实现：给火链 DF 抄上非零 start（每次点火多掷骰、移动 RNG 流）或start>0 且 probDec=0（spawnMapDF 死循环——目录级断言已在 c_4c 钉死）。  409ms
+     ✓ 深水被直燃一次 +15 蒸汽；火贴水时蒸汽总量逐回合增长（持续源）  424ms
+     ✓ BOG（webOnly）目录记 T_IS_FLAMMABLE 但无 fireType/chanceToIgnite=0——直燃无 DF 可落、掷骰路径概率为 0：BOG 不再可点燃（web 旧白名单行为退役）。若未来给 BOG 定 CE 化的火数据，须先改 TerrainCatalog 再翻本断言。  361ms
+     ✓ 四种气体注入全合成密封房后的消散/扩散曲线必须与 S-1 基线逐位一致。错误实现：后续轮次顺手改动了 updateGases/addGas/客观块次序，或气体路径新增掷骰（流位移 → 舍入结果全变）。（基线 2026-09-17 S-1 实跑录制；注入 100 = volume 口径；CREEPING_DEATH 自 G-1 起无层载体，addGas 拒绝、曲线恒空——D2 留痕。）  1274ms
+stdout | src/test/v_2b_7_features.test.ts > V-2b-7 D：MachineResult.featureSpawns（CE Architect.c:1484-1486 的落点暴露） > D1 5 seed × D1..D9：每个「网格机器格」都能追到机器自己的落点记录
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/f_2b_creature_burning.test.ts (13 tests) 17192ms
+     ✓ 对抗①：离开火格后燃烧必须继续——状态没挂上的实现（伤害只在站火格时发生，web 旧"平扣"形态）在此翻红。CE：exposeCreatureToFire 只上状态（Time.c:59-60），伤害来自每回合燃烧结算（Time.c:2581-2591），与脚下地形无关；烧 ~7 回合后自然熄灭，伤害随之停止。  490ms
+     ✓ 对抗②：站在火里反复暴露，剩余时长必须刷新到恰好 7 而非叠加——写成 current + 7 的堆叠实现 12 块后累计 80+，在此翻红。CE Time.c:59-60：status = max(status, 7)。（CE 的 max 语义下靠暴露本身到不了 >7，"更高值保留"半边不可达，不设断言。）  417ms
+     ✓ 对抗③：燃烧的生物蹚进浅水必须被扑灭——灭火分支失效（站水里还在烧）在此翻红。CE Time.c:226-232：TM_EXTINGUISHES_FIRE && burning && !levitating → extinguishFireOnCreature。  359ms
+     ✓ 对抗④a：火盖水的格子（药水/爆炸把 PLAIN_FIRE 铺在浅水上）——非悬浮生物免疫点火（Time.c:34-35 的合取豁免：!levitating && 灭火层）。捕获的错误实现：豁免漏掉灭火层条件（站水上的火照烧）或漏掉整个合取。  363ms
+     ✓ 对抗④b：同一个火盖水格子——悬浮生物照样被点燃（Time.c:34-35 括号只包 !levitating && 灭火层的合取：悬浮者悬在水上方，不被水豁免）。捕获的错误实现：把 !levitating 括号读反/扩大成"整个豁免要求非悬浮"或"悬浮也免点火"。旗标飞行的 vampire_bat（派生悬浮）在此当探针。  329ms
+     ✓ 对抗④c：悬浮且在烧的生物悬在浅水上不被扑灭（Time.c:228 灭火守卫的!levitating——水只灭踩在水里的火）。捕获的错误实现：灭火分支漏掉!levitating 守卫（悬在水上的火被水灭）。  305ms
+     ✓ 对抗⑤：喝下抗火药水后站进火里必须完全不掉血、不上燃烧状态——P1-44 的三重断线（grantTemporaryImmunity('burning' as any)：键不存在 + 通道无读者 + 伤害端查的是 immune_fire）复发时在此翻红。CE Items.c:8188-8193：IMMUNE_TO_FIRE = magnitude，且 exposeCreatureToFire 的豁免让免疫者连状态都拿不到（Time.c:31 直接 return）。  319ms
+     ✓ 对抗⑨：着火时喝药必须立即扑灭（CE Items.c:8190-8191：若在烧则extinguishFireOnCreature）——只加免疫、不灭 existing 火的半实现翻红。  370ms
+     ✓ 在火格挂上状态后走到草地，草地必须被直燃（alwaysIgnite：Gas.ignite 即CE Time.c:539 exposeTileToFire(x,y,true)）；未着火的对照生物不得点燃脚下草地。捕获的错误实现：else-if 接线缺失（移动火种不点火）或漏掉burning 前置（任何生物都能点火）。  474ms
+     ✓ 四种气体注入全合成密封房后的消散/扩散曲线必须与 S-1 基线逐位一致（与 f_2a 对抗⑪ 同一基线的等价副本，翻正时两处一起改）。错误实现：燃烧状态机顺手改动了 updateGases/addGas/客观块次序，或燃烧掷骰污染了气体试验的 RNG 流（新增抽取 → 流位移 → 舍入结果全变）。  1160ms
+     ✓ 对抗⑧：燃烧伤害必须落在 CE rand_range(1,3) 的支撑集内——30 只独立各烧一块的 rat 总伤 ∈ [30, 90]（支撑带，带外概率为 0，非统计脆弱）。捕获的错误实现：0 伤害（结算段没接）或 ≥4/块（量级走样）。"伤害恒等于 2"的平扣复辟由 p1_28 对照组的分布锁翻红。  11851ms
+     ✓ 对抗⑩：玩家被烧死 → hp 归零、lastDamageSource=fire、回合收尾判定game over（death.burned 通道）。捕获的错误实现：燃烧伤害漏设lastDamageSource（死因错报）或玩家死亡链断线。  363ms
+     ✓ 对抗⑪：怪物被烧死 → die() 收口（hp=0、尸符）+ "burns to death" 铭牌（CE Monsters.c:1887-1895 "%s burns to death." + killCreature）。捕获的错误实现：烧死只扣血不收口（尸体满血赖在怪物表）。  390ms
+ ✓ src/test/r_1_appearance.test.ts (45 tests) 15ms
+ ✓ src/test/v_2b_3_wired.test.ts (28 tests) 20ms
+stdout | src/test/c_4c_promotion.test.ts > D：Game 集成（真实事件链） > D1 踩门开门 + 同回合客观块自动关门（CE：OPEN_DOOR promoteChance=10000）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A1 门位契约：真实关卡上每个门位都有正交轴两侧严格地板，且环路确实被开辟
+[c_0] A1 新开门合计=463，含新环门层=125/130
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A2/A3 对抗：漏"两侧地板"检查、试对角——两种错误实现在同批真实 grid 上都产生门位违例（守卫：断言非空转）
+[c_0] noFlankCheck：门位=67900 违例=65919
+[c_0] diagonal：门位=1094 违例=427
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A4 对抗（S-1 改造：锚定合成输入）：判据写反（< 而非 >）→ 蜂窝化，门位总数暴涨（> 正确对照 ×3）
+[c_0] A4(合成输入) 正确对照=6 判据写反=198（比值 33.0×；华夫格 inverted=190）
+
+ ✓ src/test/b_1a_identification.test.ts (34 tests) 48217ms
+     ✓ 未鉴定武器只给基础伤害与力量需求；不显示实际伤害与被诅咒  465ms
+     ✓ 未识别魔杖：名称与详情都不显示充能；使用后显示次数而非充能  438ms
+     ✓ 实例鉴定后显示充能 [剩余]；空杖敲一下亮充能上限 [?/上限]（跟着风味名走）  382ms
+     ✓ 种类揭示作用于所有实例：喝一瓶生命药水，另一瓶同名  307ms
+     ✓ 熟悉度只亮实例：护甲穿满 1000 回合，同种新护甲仍未知  1801ms
+     ✓ 边界：999 块不亮、第 1000 块亮（只亮实例）；脱下不计数  1844ms
+     ✓ 边界：1499 块不亮、第 1500 块实例+种类一起亮（CE identify()）  2634ms
+     ✓ 上一局识别的种类不得漏进新局；护符/护符石无未知态（预亮）  634ms
+     ✓ L1 全链 D1..D26 每件生成物品都落在物品合法格（CE T_OBSTRUCTS_ITEMS|T_PATHING_BLOCKER 回避）  24533ms
+     ✓ L2 同种子双跑全链物品签名逐位一致（非确定性掷骰——Math.random 类泄漏——在此翻红）  11895ms
+     ✓ 快照携带鉴定字段；读档后种类集、实例旗标、绰号全部还原  826ms
+stdout | src/test/g_2_gas_df_wiring.test.ts > G-2 对抗②：CE 蒸汽源是"每回合 +15 于被点燃水格"的持续源 > 火贴水期间蒸汽总量逐回合增长（一次性实现的注入-衰减形态在此翻红）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/g_2_gas_df_wiring.test.ts (17 tests) 1955ms
+     ✓ 火贴水期间蒸汽总量逐回合增长（一次性实现的注入-衰减形态在此翻红）  418ms
+     ✓ 浅水不可燃（CE SHALLOW_WATER ign=0）：贴火不产蒸汽——灭火层不是蒸锅炉  365ms
+     ✓ 火场 B（seed2026 场景流复位）十字街四象限草地：点火蔓延曲线逐位 = S-1 基线。错误实现：本轮顺手改动火侧蔓延概率/衰老掷骰/4 邻判据——曲线形态立变。原 FIRE-NAT seed2026 哨兵锚定真实地图取景点 + 真实怪物 AI 流位置（C-5/C-6 两次实证漂移），S-1 起改锚全合成场景。  405ms
+     ✓ 火场 C（seed777 场景流复位）蜂窝孔草地：点火蔓延曲线逐位 = S-1 基线。原 seed777 哨兵依赖玩家第 22 回合死亡截断（文件自注"更脆弱"），合成场景下玩家与火隔离，40 回合全程可观测，脆弱点一并消除。  325ms
+     ✓ 泥格晋升命中后：沼气经 GAS 分支落地、gasGrid 镜像经 Game 对账分支同步  429ms
+stdout | src/test/v_2b_2b_blueprints.test.ts > V-2b-2b T8：整局生成入池（抽签资格 + 深度区间 + 递归路径） > reward 三条各自出现；前厅三条合并出现
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/v_2b_2b_blueprints.test.ts (24 tests) 48582ms
+     ✓ reward 三条各自出现；前厅三条合并出现  48385ms
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A5 对抗：漏 costMap[x][y]=1 同步更新 → 后续候选用过时距离，门位合计严格偏多
+[c_0] A5 同序正确对照=721 漏同步=944（52 层合计）
+
+stdout | src/test/c_4c_promotion.test.ts > C-4c E：§五 实测测量（真实关卡、多种子；只测量不断言规模） > E1 每回合晋升频谱 + 缓办分类 + 硫矿实测（wait 站桩，逐回合采样）
+[C-4c 实测 D1] 7 种子 × 40 回合（wait 站桩）
+  客观块总数=268，晋升掷骰总数=9092（平均 33.93 次/块）
+  晋升按源地形：MUD=94
+  缓办按缺失 tile：ALTAR_CAGE_CLOSED=760
+  OPEN_DOOR 自动关门次数=0
+  硫矿：起点 0 格 → 终点 0 格；ACTIVE_BRIMSTONE 缓办 0 次（期望 ≈ 0.08×格数×块数）
+[C-4c 实测 D20] 7 种子 × 40 回合（wait 站桩）
+  客观块总数=111，晋升掷骰总数=6409（平均 57.74 次/块）
+  晋升按源地形：MUD=52，STAIRS_UP=3，INERT_BRIMSTONE=1
+  缓办按缺失 tile：ALTAR_CAGE_CLOSED=158，ACTIVE_BRIMSTONE=1
+  OPEN_DOOR 自动关门次数=0
+  硫矿：起点 2 格 → 终点 2 格；ACTIVE_BRIMSTONE 缓办 1 次（期望 ≈ 0.08×格数×块数）
+
+stdout | src/test/c_4c_promotion.test.ts > C-4c E：§五 实测测量（真实关卡、多种子；只测量不断言规模） > E2 玩家行走 60 回合：踩踏开门→自动关门链在真实行走里的触发计数
+[C-4c 行走实测 seed=424242] 60 回合内 OPEN_DOOR 自动关门 0 次（每次关门对应一次踩踏开门）
+[C-4c 行走实测 seed=777] 60 回合内 OPEN_DOOR 自动关门 2 次（每次关门对应一次踩踏开门）
+[C-4c 行走实测 seed=31337] 60 回合内 OPEN_DOOR 自动关门 6 次（每次关门对应一次踩踏开门）
+
+stdout | src/test/c_4c_promotion.test.ts > C-4c E：§五 实测测量（真实关卡、多种子；只测量不断言规模） > E3 静态盘点：31 地形中 promoteChance≠0 的活数据、负值死数据
+[C-4c 静态盘点]
+  活 promoteChance：OPEN_DOOR:10000→DF_CLOSED_DOOR；MUD:100→DF_METHANE_GAS_PUFF；INERT_BRIMSTONE:800→DF_ACTIVE_BRIMSTONE；PLAIN_FIRE:500→DF_EMBERS；EMBERS:300→DF_ASH；GAS_FIRE:8000→（无 DF）；GAS_EXPLOSION:10000→（无 DF）；MACHINE_FLOOD_WATER_SPREADING:2500→DF_WATER_SPREADS；MACHINE_COLLAPSE_EDGE_SPREADING:2500→DF_COLLAPSE_SPREADS；CHASM_WITH_HIDDEN_BRIDGE_ACTIVE:6000→DF_BRIDGE_ACTIVATE；PUDDLE:100→（无 DF）；DARK_FLOOR_DARKENING:1500→DF_DARK_FLOOR；HAUNTED_TORCH_TRANSITIONING:2000→DF_HAUNTED_TORCH；MACHINE_GLYPH_INACTIVE:10000→DF_ACTIVE_GLYPH；ANCIENT_SPIRIT_VINES:1000→DF_ANCIENT_SPIRIT_GRASS
+  负值（扩散型）载体：HOLE:-1000；HOLE_EDGE:-500；FORCEFIELD:-200；FORCEFIELD_MELT:-10000；LAVA_RETRACTING:-1500；FLOOD_WATER_SHALLOW:-100；FLOOD_WATER_DEEP:-200
+
+ ✓ src/test/c_4c_promotion.test.ts (21 tests) 48367ms
+     ✓ D1 踩门开门 + 同回合客观块自动关门（CE：OPEN_DOOR promoteChance=10000）  348ms
+     ✓ D2 踩楼梯触发 DF_REPEL_CREATURES（tile=NOTHING 的合法无地形 DF；驱离登记未实现）  374ms
+     ✓ D3 决定性复验（§五.5）：同种子同操作序列跑两遍，逐回合四层快照全等  1038ms
+     ✓ E1 每回合晋升频谱 + 缓办分类 + 硫矿实测（wait 站桩，逐回合采样）  44587ms
+     ✓ E2 玩家行走 60 回合：踩踏开门→自动关门链在真实行走里的触发计数  1987ms
+stdout | src/test/v_2b_6_keys.test.ts > V-2b-6 C：keyMatchesLocation / keyInPackFor 的否定面（对抗：任意钥匙开任意锁必红） > C1 否定面①：keyLoc 指向 X 的钥匙开不了 Y（坐标不匹配、机器号不同）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/v_2b_4_altars.test.ts (36 tests) 75991ms
+     ✓ D4 行为：从祭坛取物只入包，**不再**塌陷同组祭坛（构造两座祭坛做判别）  471ms
+     ✓ E1 实测：`reward_statuary`（15 号）在 6 seed × D1-D26 上建成 **0 台**（frequency=0 的结构性后果）  36338ms
+     ✓ E2 实测：每局护符数恒为 1（noAmulet=0 / multiAmulet=0）——两套来源不可能叠加  38577ms
+     ✓ E3 直投仍是唯一来源（留痕）：spawnBlueprintItem 无 AMULET 分支 ⇒ 即便 15 号建成也发不出护符  407ms
+stdout | src/test/p1_37_machine_flag_i18n.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > B1 IN_LOOP 只出现在非阻挡格上（130 层逐格）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_4a_terrain_catalog.test.ts > C-4a F：干跑测量——calculateMap 改用 isPathingBlocker 的影响（只测量不修复） > 15 种子 × D1-D26：cost 图逐格分歧表（下一轮 C-4b 的输入）
+[C-4a 干跑测量] 15 种子 × D1-D26（每层内部格全扫）
+  语义分歧（cost 1 → OBSTRUCTION，距离图将改变）：11449 格
+    按地形：WATER_DEEP=2553，CRYSTAL_WALL=1851，LAVA=1804，TRAP=1627，STATUE_INERT=595，INERT_BRIMSTONE=532，BLOODFLOWER_STALK=506，GAS_TRAP_PARALYSIS_HIDDEN=441，TRAP_DOOR_HIDDEN=402，PRESSURE_PLATE=321，MUD_WALL=240，LAVA_RETRACTABLE=181，STATUE_DORMANT=81，LOCKED_DOOR=77，TURRET_DORMANT=73，WALL_MONSTER_DORMANT=46，RAT_TRAP_WALL_DORMANT=37，MONSTER_CAGE_CLOSED=21，GAS_TRAP_PARALYSIS=20，WOODEN_BARRICADE=8，FLAMETHROWER_HIDDEN=8，TORCH_WALL=7，STATUE_INERT_DOORWAY=5，FLOOD_TRAP=4，PILOT_LIGHT_DORMANT=4，STATUE_DORMANT_DOORWAY=3，WALL_LEVER_HIDDEN=1，BRAZIER=1
+  数值分歧（FORBIDDEN → OBSTRUCTION，均不可走，仅 cost 数值变）：4041 格
+    按地形：CHASM=2288，SECRET_DOOR=1753
+
+ ✓ src/test/c_4a_terrain_catalog.test.ts (30 tests) 98841ms
+     ✓ Game.canMoveTo（查表）≡ 旧清单：合成格逐地形实测（含生成中出现不了的地形）  443ms
+     ✓ B-3：迁移后新增的墙族 tile 的通行判定 = CE 查表口径（挡通行、不进旧清单）  393ms
+     ✓ V-2b-3：wired 载体九条的通行判定 = CE 查表口径（四条墙族挡通行、五条可走）  389ms
+     ✓ V-2b-4：祭坛族七条的通行判定 = CE 查表口径（三条墙族挡通行、四条可走）  413ms
+     ✓ V-2b-5：休眠载体七条的通行判定 = CE 查表口径（五条墙族挡通行、两条可走）  333ms
+     ✓ V-2b-7：DF 特征系统轮载体的通行判定 = CE 查表口径（三条挡通行、十六条可走）  301ms
+     ✓ 15 种子 × D1-D26：cost 图逐格分歧表（下一轮 C-4b 的输入）  96237ms
+stdout | src/test/v_2b_5_dormant.test.ts > V-2b-5 B：toggleMonsterDormancy（CE Monsters.c:4156-4210 双向直译） > B1 睡下方向：换表 + isDormant + 格标记；getMonsterAt 从此看不见它
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > B2 对抗：漏 checkLoopiness 剥离 → 整片可通行区被标环（loopFraction==passableFraction）；生产严格更小且上限受控
+[c_0] B2 IN_LOOP 合计=20401/119406（17.1%），单层峰值=34.0%
+
+ ✓ src/test/v_2b_5_dormant.test.ts (17 tests) 24928ms
+     ✓ B1 睡下方向：换表 + isDormant + 格标记；getMonsterAt 从此看不见它  419ms
+     ✓ B2 醒来方向：移回 monsters（prepend）+ 清标记 + 200 tick 不动  417ms
+     ✓ B3 格被占则重选址（CE :4168-4181）——被普通怪占与被玩家占两种形态  834ms
+     ✓ B4 两表皆无 → 无操作（CE 两次 removeCreature 都失败时不做任何事）  426ms
+     ✓ C1 blockingMap 半句：DF 铺开多大一片，那片里的休眠怪全醒（不只原点）  440ms
+     ✓ C2 原点半句：builtCells 为空时原点那只仍要醒（startProbability=0 的 DF，CE :679 形态）  423ms
+     ✓ C3 不带唤醒旗标的 DF 不得唤醒（DF_ALTAR_INERT：flags=0、tile=ALTAR web 有）  377ms
+     ✓ C4 连通性否决失败（succeeded=false）时不得唤醒（CE 该段在 if(succeeded) 里）  388ms
+     ✓ D1 三 seed × D1-D26：机器怪记属机；休眠怪在 dormantMonsters 且不在 monsters；两者无交集  21197ms
+stdout | src/test/c_4a_0_layer_model.test.ts > C-4a-0 干跑测量：15 种子 × D1-D26 跨层清除事件表 > 全量生成并输出 (层, 旧地形 → 新地形) × 次数（C-4a 的分歧规模输入；只测量不修复）
+[C-4a-0 干跑测量] 15 种子 × D1-D26 共 390 层，跨层清除事件 105716 次，组合 57 种。按层合计：DUNGEON=103930，LIQUID=497，SURFACE=1289
+| 层 | 被清地形 → 新地形 | 次数 |
+| --- | --- | --- |
+| DUNGEON | FLOOR → WATER_SHALLOW | 24772 |
+| DUNGEON | FLOOR → WATER_DEEP | 2159 |
+| DUNGEON | FLOOR → CHASM | 1966 |
+| DUNGEON | FLOOR → LAVA | 1426 |
+| DUNGEON | FLOOR → GRASS | 33741 |
+| DUNGEON | FLOOR → FOLIAGE | 15600 |
+| DUNGEON | FLOOR → WEB | 15197 |
+| DUNGEON | FLOOR → MUD | 7017 |
+| DUNGEON | FLOOR → CHASM_EDGE | 910 |
+| DUNGEON | FLOOR → OBSIDIAN | 512 |
+| DUNGEON | FLOOR → INERT_BRIMSTONE | 537 |
+| DUNGEON | WALL → WATER_SHALLOW | 8 |
+| DUNGEON | WALL → LAVA | 1 |
+| DUNGEON | WALL → GRASS | 7 |
+| DUNGEON | WALL → FOLIAGE | 8 |
+| DUNGEON | WALL → WEB | 2 |
+| DUNGEON | WALL → MUD | 1 |
+| DUNGEON | DOOR → WATER_SHALLOW | 29 |
+| DUNGEON | DOOR → CHASM_EDGE | 26 |
+| DUNGEON | DOOR → OBSIDIAN | 11 |
+| LIQUID | WATER_SHALLOW → FLOOR | 219 |
+| LIQUID | WATER_SHALLOW → WALL | 13 |
+| LIQUID | WATER_SHALLOW → STAIRS_UP | 7 |
+| LIQUID | WATER_SHALLOW → STAIRS_DOWN | 2 |
+| LIQUID | WATER_SHALLOW → SECRET_DOOR | 5 |
+| LIQUID | WATER_DEEP → WALL | 42 |
+| LIQUID | WATER_DEEP → STAIRS_UP | 1 |
+| LIQUID | CHASM → FLOOR | 33 |
+| LIQUID | CHASM → STAIRS_UP | 2 |
+| LIQUID | CHASM → STAIRS_DOWN | 1 |
+| LIQUID | MUD → FLOOR | 76 |
+| LIQUID | MUD → STAIRS_UP | 15 |
+| LIQUID | MUD → STAIRS_DOWN | 16 |
+| LIQUID | MUD → SECRET_DOOR | 44 |
+| LIQUID | CHASM_EDGE → FLOOR | 15 |
+| LIQUID | CHASM_EDGE → BRIDGE_EDGE | 6 |
+| SURFACE | GRASS → FLOOR | 902 |
+| SURFACE | GRASS → STAIRS_UP | 36 |
+| SURFACE | GRASS → STAIRS_DOWN | 36 |
+| SURFACE | FOLIAGE → FLOOR | 215 |
+| SURFACE | FOLIAGE → STAIRS_UP | 4 |
+| SURFACE | FOLIAGE → STAIRS_DOWN | 1 |
+| SURFACE | WEB → FLOOR | 15 |
+| SURFACE | BLOOD → STAIRS_UP | 1 |
+| SURFACE | BLOOD → STAIRS_DOWN | 1 |
+| SURFACE | BLOOD → LOCKED_DOOR | 1 |
+| SURFACE | ASH → FLOOR | 4 |
+| SURFACE | ASH → STAIRS_UP | 3 |
+| SURFACE | ASH → STAIRS_DOWN | 1 |
+| SURFACE | ASH → SECRET_DOOR | 39 |
+| SURFACE | BONES → STAIRS_UP | 1 |
+| SURFACE | BONES → SECRET_DOOR | 1 |
+| SURFACE | BONES → LOCKED_DOOR | 1 |
+| SURFACE | GRAY_FUNGUS → FLOOR | 1 |
+| SURFACE | GRAY_FUNGUS → STAIRS_UP | 5 |
+| SURFACE | GRAY_FUNGUS → STAIRS_DOWN | 5 |
+| SURFACE | GRAY_FUNGUS → SECRET_DOOR | 16 |
+
+ ✓ src/test/c_4a_0_layer_model.test.ts (20 tests) 128503ms
+     ✓ 新格式往返：四层逐层还原（含测试手造的多层格）  851ms
+     ✓ 旧格式兼容：只有 terrain 字段的存档读入后 getter 逐格还原且层归一（读到 NOTHING 即翻红）  941ms
+     ✓ 同种子两次完整生成链（D1→D26），四层逐格逐层相等  25914ms
+     ✓ 留痕（已反转，G-1）：生成不产气——生成链走完后 GAS 层仍恒空；注气则入层  2614ms
+     ✓ 全量生成并输出 (层, 旧地形 → 新地形) × 次数（C-4a 的分歧规模输入；只测量不修复）  98156ms
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A6 生产锚定：生产新开门数落在 K=6 次同输入正确对照的散布带内（抓住生产侧的一切判据/同步/方向错误）
+[c_0] A6 生产=199 正确对照散布=[198, 200]（52 层合计，K=6）
+
+stdout | src/test/b_4a_item_generation.test.ts > B-4a 计量表：基表频率与 CE 表原值 > enchanting / life / strength 的基表（json）频率为 0，跑完一局后仍为 0（CE memcpy 还原语义）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_5_fall_subsystem.test.ts > C-5 对抗①：坠落是回合末结算（CE Time.c:168-176/2480） > 踩上渊格的同一动作里怪物不得获得回合（CE：playerFalls 整段 return，没有怪物推进）；坠落本体在玩家回合末照常发生
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > C1 核心：真实环路存在——扫描开出的门位是真环边（移除后两侧仍连通 = 两条不共边路径）
+[c_0] C1 新开门=196，真环边=196，桥=0
+
+stdout | src/test/p1_33_machine_chokepoint.test.ts > P1-33 机器阶段不切断关卡 > a) 端到端复验：15 种子 × D1-D26 零不可达 + 机器非塌缩 + 机器结构合同
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+[p1_33] V-1c 后 15 种子 × D1-D26 = 390 层：坏层=无；机器 1264 台（平均 3.24/层，零机器层 9），锁门机器 77 台。历史基线：P1-33 时 1920 台（4.92/层，全类别）；V-1c 起顶层抽签只剩 CE 配额的奖励机器（约每 4 层 1 间 + 15% 加成，CE addMachines Architect.c:1757-1775），实测 87 台（0.22/层）。
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > C2 对抗守卫 + 核心对照：树状对照（门位回填成墙）割点率显著高于生产——证明 C1/C2 断言有牙
+[c_0] C2 work-grid 割点率：生产=7.0% 树状对照=9.4%（52 层平均）
+
+ ✓ src/test/c_5_fall_subsystem.test.ts (13 tests) 41893ms
+     ✓ 踩上渊格的同一动作里怪物不得获得回合（CE：playerFalls 整段 return，没有怪物推进）；坠落本体在玩家回合末照常发生  653ms
+     ✓ 悬浮玩家站渊上多回合：不坠、层不变；且已发现渊格在悬浮时不触发跳渊确认  752ms
+     ✓ 飞行怪（MONST_FLIES）站渊上不坠；睡着的落地怪同场景必坠——豁免判据缺失即在此翻红  606ms
+     ✓ 干地落点：240 连坠样本全部落在 [8,10]，中值 9 的频数落在二项 ±3σ 带内  20538ms
+     ✓ 深水落点零伤害（CE :1146-1150 "unharmed"）；浅水落点减半（CE :1156-1158 TM_ALLOWS_SUBMERGING，damage /= 2 整除）  1744ms
+     ✓ 渊上高血怪在玩家回合末离开本层且活着（坠层不坠亡），玩家跟下去能遇见它——"怪物不会掉"或"掉了即消失"的实现都在此翻红  866ms
+     ✓ 已发现的渊：确认弹出、拒绝则不移动不耗回合；接受则坠落  884ms
+     ✓ 未发现的渊：不弹确认直接坠落（蒙眼跳坑是 CE 原味——方向写反即在此翻红）  1301ms
+     ✓ 真实生成：解禁后深渊族地形出现（对 c_2_lakes_e2e 的单元级快速代理）  12470ms
+     ✓ 喝下坠药水：原地开出 HOLE（DF_HOLE_POTION → DF_HOLE_2 链）且回合末坠落；悬浮时洞照开、人不坠（CE Items.c:8098-8100）  1184ms
+     ✓ pit_bloat 死亡触发 DF_HOLE_POTION（Globals.c:1039 死亡 DFType）——原地出洞  486ms
+     ✓ 草地上点火蔓延曲线逐位恒定（test 层 + 流复位，对流位移结构性免疫）  405ms
+stdout | src/test/b_1c_detect_magic.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/p1_33_machine_chokepoint.test.ts (7 tests) 124788ms
+     ✓ a) 端到端复验：15 种子 × D1-D26 零不可达 + 机器非塌缩 + 机器结构合同  103488ms
+     ✓ e) 决定性：同种子同深度的机器布局与地形指纹逐一一致  3122ms
+     ✓ f) Architect 层不变量：机器阶段之后所有非机器可走格仍属同一连通块  18167ms
+ ✓ src/test/b_1c_detect_magic.test.ts (24 tests) 6001ms
+     ✓ 照过之后：种类极性已揭示、实例 magicDetected 为真，但种类仍未识别、显示名仍是风味名  326ms
+     ✓ 食物在背包里时不会被 detect magic 记成"有魔法"（CAN_BE_DETECTED 写错即翻红）  316ms
+     ✓ 存读一轮：两级状态都往返；新局清零（CE resetItemTableEntry :8777）  633ms
+     ✓ 新局 / 读档都会复位 pendingUseConfirm  1350ms
+     ✓ Monster 实例上没有 carriedItem 字段  338ms
+stdout | src/test/c_6_autogenerators.test.ts > C-6 集成：真实目录在真实生成里的行为 > 实测：草/树的实际生成数随深度分布（CE 数量公式的 web 落地曲线）
+[c_6] 草/树生成数随深度分布（2 种子合计，built 口径）:
+D1	grass=18	foliage=14
+D2	grass=16	foliage=8
+D3	grass=14	foliage=0
+D4	grass=12	foliage=0
+D5	grass=12	foliage=0
+D6	grass=10	foliage=0
+D7	grass=8	foliage=0
+D8	grass=6	foliage=0
+D9	grass=4	foliage=0
+D10	grass=4	foliage=0
+D11	grass=0	foliage=0
+D12	grass=0	foliage=0
+D13	grass=0	foliage=0
+D14	grass=0	foliage=0
+D15	grass=0	foliage=0
+D16	grass=0	foliage=0
+D17	grass=0	foliage=0
+D18	grass=0	foliage=0
+D19	grass=0	foliage=0
+D20	grass=0	foliage=0
+D21	grass=0	foliage=0
+D22	grass=0	foliage=0
+D23	grass=0	foliage=0
+D24	grass=0	foliage=0
+D25	grass=0	foliage=0
+D26	grass=0	foliage=0
+
+ ✓ src/test/c_6_autogenerators.test.ts (17 tests) 12545ms
+     ✓ AD-8 接线：generateTerrain 跑非机器趟且真的长草/树；generateLevel 跑机器趟  1621ms
+     ✓ 实测：草/树的实际生成数随深度分布（CE 数量公式的 web 落地曲线）  10725ms
+stdout | src/test/p1_24_death_sink.test.ts > P1-24 验收 1：die() 归零 hp，怪物真的被移出列表 > 对抗性①：熔岩烧死后 hp 必须精确为 0（CE Combat.c:2042 currentHP=0）。捕获的错误实现：die() 保持旧版只改外观不归零——6 HP 的老鼠被烧死后 hp 仍是 6，断言 hp===0 直接失败。（P1-27 补做：载体由"深水淹死"换成 CE 唯一即死地形熔岩，同一 die() 收口；rat 无悬浮/火焰免疫/MONST_INVULNERABLE，三条熔岩豁免均不适用。）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/p1_24_death_sink.test.ts (13 tests) 8119ms
+     ✓ 对抗性①：熔岩烧死后 hp 必须精确为 0（CE Combat.c:2042 currentHP=0）。捕获的错误实现：die() 保持旧版只改外观不归零——6 HP 的老鼠被烧死后 hp 仍是 6，断言 hp===0 直接失败。（P1-27 补做：载体由"深水淹死"换成 CE 唯一即死地形熔岩，同一 die() 收口；rat 无悬浮/火焰免疫/MONST_INVULNERABLE，三条熔岩豁免均不适用。）  845ms
+     ✓ 对抗性①（续）：熔岩烧死的怪物必须在下一次回合清扫中被移出 this.monsters。捕获的错误实现：同上——旧实现 hp>0，filter(m => m.hp > 0) 永远清不掉，怪物赖在列表里。（P1-27 补做：载体由淹死换成熔岩，清扫路径同一。）  599ms
+     ✓ 对抗性①（续）：熔岩烧死的尸体不再苏醒/不再行动——沉睡老鼠被烧死后 takeTurn 必须是空转。捕获的错误实现：die() 不归零（旧版）时，takeTurn 会照常走"沉睡→惊醒"分支，在玩家头顶弹 '!' 漂浮字并进入追击。（P1-27 补做：载体由淹死换成熔岩。）  491ms
+     ✓ 对抗性②（P1-27 重写为断言新事实）：移除自创淹死后，深水里的怪物不产生任何死亡消息——连续两轮环境结算，"drown" 必须零出现，Logger 里必须根本不存在这条合并条目。捕获的错误实现：①WEB_ONLY_DEEP_WATER_DROWNING 被改回 true（或任何深水致死实现复活）——第一轮就冒出 "drowns"；②只删致死逻辑、却把消息日志留在标志之外的"半吊子移除"重排。与 p1_27 文件对抗性①（seed 71）的区别：那条从 hp/在场通道断言"活着"，本条专门盯消息通道（Logger 合并条目本身必须不存在——原"count===1"断言在新事实下的对应物）。  694ms
+     ✓ 对抗性②（续）：熔岩烧死同理，"incinerated" 只播一次。  682ms
+     ✓ 对抗性③：hp -= N 之后才调用 die() 的既有路径不得被改成重复结算——火焰致死的尸体 hp 必须精确停在 0（CE 口径），不能是负数。捕获的错误实现：把 die() 写成"再补一刀"（如 hp -= maxHp 确保死亡），受害者被火焰扣到 0 后又被补刀扣成负数，=== 0 断言失败。【F-2b 翻正】原断言"2 HP 恰好一烧即死"（环境分支平扣 2）随燃烧状态机到期：环境首过只上 STATUS_BURNING（Time.c:527→:59-60），伤害来自燃烧结算段的 rand_range(1,3)（Time.c:2582/Monsters.c:1882）——故先挂状态、再以 1 HP 走一回合结算（任意掷骰必死）。die() 归零守卫原样保留。  496ms
+     ✓ 对抗性③（续）：蒸汽致死同样精确归零——1 HP 受害者被蒸汽扣 1 后死透，不残留负 hp（重复结算实现会把它扣成 -1 或更低）。  514ms
+     ✓ 留痕（P1-28 验收打回后重写，原前提不可达）：岩浆致死的死亡 DF 闸门不被抑制，载体为"带 MA_DF_ON_DEATH 且不飞"的怪。原载体"岩浆里的 explosive bloat 烧死后照样爆燃"考的机制是「岩浆致死走 killCreature(monst, false)（Time.c:218），死亡地形不被抑制」；P1-28 的 initializeStatus 翻译层使该前提不可达——deathDF 内容已在 web 实现的只有 bloat / explosive_bloat（Globals.c:1037-1038 / 1084-1085），二者全带 MONST_FLIES，经翻译层（Monsters.c:3904-3928）派生永久悬浮，CE 里永远不可能死于岩浆；CE 唯一不飞的 MA_DF_ON_DEATH 怪 vampire (Globals.c:1131-1132) 的 DF_BLOOD_EXPLOSION 是纯血迹装饰，web 无血迹层（P4-4 登记未实现），"照样爆燃"式的 DF 内容断言无载体。本条改为三段：①数据层锁死不可达的全部前提（旗标来源、翻译层派生、catalog 不飞集合、变异通道旗标）——monsters.json / mutations.json 漂移或翻译层改动即在此翻红，提示前提可能恢复可达；②可达半边继续锁原机制：explosive 变异 troll（D11-15 可自然出现、不飞、可走入岩浆——CE 完全可达的状态）与 vampire 被岩浆烧死后 deathEffectTriggered 必须翻 true——"岩浆里就不用触发死亡 DF"的错误实现在此挂掉；③现状留痕：二者的 DF 内容（DF_MUTATION_EXPLOSION / DF_BLOOD_EXPLOSION）web 尚无实现分支（triggerDeathFeatures 仅按 typeId 认 bloat/explosive_bloat 两分支），故无毒气、无点燃——此负向断言在内容实现之日翻红，届时应改回真实内容断言。"死亡地形不被地形抑制"的 DF 内容半边由下一条深水爆燃继续锁（triggerDeathFeatures 不读地形，与岩浆同一代码路径）。  1105ms
+     ✓ 对抗性④（续，P1-27 载体重写）：深水里的 explosive bloat 被玩家砍死后照样爆燃——"水里燃起大火"是 CE 行为：GAS_EXPLOSION 火格铺在表层、覆盖在水上；killCreature 的死亡 DF 分支只认 MB_IS_FALLING（Combat.c:1963-1965），爆炸伤害只豁免爆炸免疫与 MB_SUBMERGED（Time.c:343-345），站水里的生物没有豁免。原载体"淹死后触发 DF"已随淹死移除；本条同时接管原"深水毒气"条的深水角——上一轮还是 web 自创即死地形的深水，不抑制死亡地形。捕获的错误实现：①"水中死亡抑制死亡地形"被实现成水中跳过 DF——isBurning 恒 false；②给深水补 CE 的 TM_EXTINGUISHES_FIRE 语义时把死亡点燃一并掐掉——同样在此失败。  474ms
+     ✓ 玩家近战击杀 bloat：仍被清扫、仍掉落、死亡地形照常触发、hp 精确归零。捕获的错误实现：die() 归零被写成"在 die() 里额外扣一次伤害/改动 takeDamage语义"——hp 会偏离 0，或掉落/清扫路径被误伤。  625ms
+     ✓ 对照组：战斗致死与水淹致死走同一条收口——被玩家砍死在水里的 bloat 一样放毒气（CE：killCreature 不区分伤害来源，只看 administrativeDeath/MB_IS_FALLING）。  598ms
+     ✓ 玩家泡在深水里（P1-27 重写为断言新事实）：不 game over，hp 与外观都不受影响——连续两轮环境结算也是同样结果。CE 深水零伤害（Time.c:1146-1150 "You fall into deep water, unharmed."），web 自创的玩家淹死分支已被 WEB_ONLY_DEEP_WATER_DROWNING=false 退出生效路径。捕获的错误实现：①标志被改回 true（或玩家分支被复活）——第一轮 isGameOver 就翻 true；②"半吊子移除"——不 game over 了却把玩家 hp 清 0 或 char 变 %（误走了 die()）。任一都在本条失败。  484ms
+     ✓ 玩家在熔岩中：同样走 triggerGameOver，hp 与外观不被 die() 触碰。  509ms
+ ✓ src/test/p1_37_machine_flag_i18n.test.ts (9 tests) 122286ms
+     ✓ AD1: 5 种子 × D1-D26 —— 楼梯/钥匙/护符绝不落机器格；机器格上的物品与怪物必须是机器自身的布点  31729ms
+     ✓ AD2: 生成层不含任何 CHARRED_FLOOR——宝库地板已恢复普通 FLOOR（改判转换回退即红）  32477ms
+     ✓ AD3a: 5 种子 × D1-D26 每台机器的旗标穿存档往返；旧存档（无字段）读入为无机器  56425ms
+     ✓ AD5a: 充能/诅咒/解咒文案无英文字母（六条登记项 + 两条漏网项的渲染面）  488ms
+     ✓ AD5b: 刺剑突进命中追加"猛烈突刺"，普通近战不带（B-1 登记项补齐）  494ms
+     ✓ AD5c: 附魔觉醒符文的文案走 i18n（runic 插值为内部 id，既有缺口照旧登记）  487ms
+stdout | src/test/p4_8_scent_map.test.ts > P4-8 A: 气味图数值（scentDistance / updateScent / addScentToCell） > T2 气味值 = turnNumber - 距离（越新越大）；墙格与墙后无味
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_3_walls_doors.test.ts > C-3 管线集成 > T12 连通性闸门（15 种子 × D1-D26）：密门视作通路口径下坏层=0；机器格外的可走格单一连通块
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+[c_3] 实测（5 种子 × D1-D26 合计）：孤儿门移除 十字=12 封死=21；密门 D1-5=10 D6-13=82 D14-19=124 D20-26=201；对角穿缝消除=35
+[c_3] 连通性：修正口径（密门视作通路）坏层=无；canMoveTo 字面口径坏层=77（seed424242/D19、seed424242/D24、seed777/D11、seed777/D16、seed777/D19、seed777/D21、seed777/D24、seed20260913/D13、seed20260913/D15、seed20260913/D18、seed20260913/D19、seed20260913/D20…）——字面口径坏层为密门假阳性，p1_26/p1_33 重校准属验收方职责（本轮禁改）。
+
+ ✓ src/test/c_3_walls_doors.test.ts (15 tests) 158436ms
+     ✓ T4 生产调用记录：第 5 步 false、第 14 步 true（实参写反在此翻红）  990ms
+     ✓ T5 真实关卡不变量：终态 GRANITE 的 8 邻必全部不暴露（等价于 CE 裸露补墙收敛）  2361ms
+     ✓ T10 真实关卡：对角穿缝全数消除，且确有真实移除（非空转）  3471ms
+     ✓ T11 决定性：同种子两次全管线生成，指纹与 C-3 统计逐一一致  3692ms
+     ✓ T13 C-0 E1 全管线延伸：环路门位经 finishDoors/finishWalls(true) 后仍不落回墙  6527ms
+     ✓ T12 连通性闸门（15 种子 × D1-D26）：密门视作通路口径下坏层=0；机器格外的可走格单一连通块  140791ms
+     ✓ T14 留痕（明确不做）：C-4 promoteTile(ACTIVE 态) / 主动搜索行动  548ms
+stdout | src/test/b_1_weapon_specials.test.ts > B-1 匕首背刺（ITEM_SNEAK_ATTACK_BONUS） > 对抗性【匕首偷袭写成 ×3】：熟睡目标挨匕首必须 ×5 —— 5 个种子的伤害全部∈ {15,20}（raw 3/4）。写成 ×3 的实现在 raw=3 的种子上给 9 → 在这里翻车。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > C3 末态对照：全管线关卡（经湖泊+机器）的可通行图割点率受控（树状退化即翻红）
+[c_0] C3 末态割点=1677/38063（平均 4.4%），单层 p95=11.5%，峰值（观测）=14.4%
+
+ ✓ src/test/p4_8_scent_map.test.ts (14 tests) 22503ms
+     ✓ T2 气味值 = turnNumber - 距离（越新越大）；墙格与墙后无味  327ms
+     ✓ T3 addScentToCell 的 || 条件（Movement.c:2877）：门与深水留味，门后无味  316ms
+     ✓ T4 updateScent/scentTurnNumber 挂主观玩家块：haste 两动作 +6、重刷两次  367ms
+     ✓ T9 隐身时 scentTurnNumber 每回合 +10（Time.c:2506-2509）  307ms
+     ✓ T10 scentTurnNumber 越过 20000 触发 15000 回卷（Time.c:2511/2924）  337ms
+     ✓ T5 追踪怪顺梯度上坡、把门当气味跳板；结局按 CE 实带断言成功率（AI-1 改写）  16890ms
+     ✓ T6 绕拐角：L 形墙隔断视线，怪物顺气味锥钻过拐角、绕过横臂东端贴脸玩家  488ms
+     ✓ T7 决定性：同种子同操作序列 → 同一张气味图 + 同一条怪物轨迹  1525ms
+     ✓ T8 对照组：脚下恒为当前值；被遮挡格冻结、相对年龄单调递增  310ms
+     ✓ T11 返工核心：陈旧痕迹必须能甩掉——冻结在陈旧气味格上的追踪怪回到 WANDERING  305ms
+     ✓ T12 awareness*3 硬截断在 HUNTING 态也生效（"even if hunting"）——可见也截  311ms
+     ✓ T13 对照组：MONST_ALWAYS_HUNTING 不受任何截断影响（CE updateMonsterState 首分支强制追踪）  308ms
+     ✓ T14 追踪态 3% 丢目标：走 RNG_SUBSTANTIVE（500 次计数可证）、同种子逐位可复现、统计上远高于半数保持  708ms
+stdout | src/test/b_4b_item_placement.test.ts > B-4b 每层数量与落位（真实生成链） > T7 数量 = 3 + 无上界几何(60%) + 深度加成；均匀 3-6 实现必红
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/p4_5_melee_specials.test.ts > P4-5 验收 1：MA_SEIZES 抓取 > 对抗性①：抓取那一下必须是 0 伤害、hit=false —— 错误实现（漏掉 return false，继续走正常攻击流程）会让这一下打出真实伤害，玩家 HP 会下降。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/p4_5_melee_specials.test.ts (24 tests) 14995ms
+     ✓ 对抗性①：抓取那一下必须是 0 伤害、hit=false —— 错误实现（漏掉 return false，继续走正常攻击流程）会让这一下打出真实伤害，玩家 HP 会下降。  554ms
+     ✓ kraken（另一只原生 MA_SEIZES 怪物）同样在第一下抓住而不是造成伤害  608ms
+     ✓ 变异途径：goblin 携带 grappling 变异（注入 MA_SEIZES）同样触发抓取，验证 abilityFlags 走 hasAbility 而非写死怪物种类白名单  568ms
+     ✓ 两个标记都置位后，第二次 attack() 不再抓取，而是走正常命中判定/伤害流程  585ms
+     ✓ 对抗性⑥：抓取不参与命中掷骰（CE return false 早于 attackHit）—— accuracy=0 的 bog_monster 在正常公式下命中率恒为 0%，第一次贴身仍必须抓住；错误实现（把抓取放在命中掷骰之后）永远抓不住。  563ms
+     ✓ 对抗性⑦：被抓者面对抓着自己的攻击者必中（CE Combat.c:125-130：defender SEIZED && attacker SEIZING → hitProbability 直接返回 100）—— accuracy=0 的抓取者抓住后第二击必须命中并造成伤害；漏掉这条规则的错误实现会继续按 0% 公式恒 miss。  1366ms
+     ✓ 对照组：goblin（不带 MA_SEIZES）攻击玩家不会触发抓取，玩家不会被标记为 seized  643ms
+     ✓ 对抗性②：被抓住后尝试移动到空地必须被阻挡（不消耗位移）—— 错误实现（移动处理完全不检查 player.seized）会让玩家自由移开。挣扎要消耗回合（CE "you struggle"分支走 playerTurnEnded）；不耗回合的错误实现会被 tick 断言抓住。  620ms
+     ✓ 撞向抓着自己的怪物仍然是正常攻击（CE playerMoves 的攻击分支先于 MB_SEIZED 检查，Movement.c:1267 的挣扎只拦"移动进空地"）—— 错误实现（把 seized 检查放在攻击判断之前）会让玩家永远无法反击抓取者。  596ms
+     ✓ failsafe 解除还要检查相邻：抓取者仍然活着但已不在玩家旁边时，玩家移动不再被阻拦 （CE Movement.c:1267-1296 的搜索条件含 distanceBetween==1；只检查抓取者是否存活的错误实现会继续拦人）。  534ms
+     ✓ 必做：抓取者死亡后被抓者能正常移动（杀死 bog_monster 后玩家立刻能走开）  592ms
+     ✓ 敌方 90%：vampire bat 攻击玩家命中后，攻击者回血 = floor(min(damage,防御方HP)*9/10)  1216ms
+     ✓ 盟友 40%：isAlly=true 的 vampire bat 攻击敌方怪物，回血比例必须是 4/10 而不是 9/10  736ms
+     ✓ 变异途径：goblin 携带 vampiric 变异攻击玩家，同样按敌方 90% 回血  549ms
+     ✓ 对抗性①：吸血量不能超过目标剩余血量 —— 漏掉 min(damage, currentHP) 的错误实现会按完整伤害骰值回血（目标只剩 1 HP 时，vampire bat 最小伤害是 2，正确实现 floor(min(2..6,1)*9/10)=floor(0.9)=0，没有 min() 的实现永远 >0）。  430ms
+     ✓ 对抗性②：吸血没有 maxHP 上限 —— 复核确认 CE inflictDamage（Combat.c:1871）在 attacker->currentHP += transferenceAmount 之后紧接着只有玩家血量归零判断，没有任何 clamp 到 maxHP 的代码；错误的"好心" clamp 实现会把这里摁回 maxHp。  483ms
+     ✓ 对照组：非吸血怪（ogre）攻击玩家命中后自身 HP 不变  542ms
+     ✓ MONST_INANIMATE 目标不触发吸血（Combat.c:1849-1851 的排除条件）  496ms
+     ✓ ogre 命中玩家后，把玩家沿"攻击者→玩家"方向推开一格  517ms
+     ✓ 变异途径：goblin 携带 juggernaut 变异同样能推动目标  580ms
+     ✓ 对抗性①：击退不能有 damage>0 的门槛 —— 照邻居 MA_POISONS/MA_CAUSES_WEAKNESS抄错的实现（在 Monster.ts 调用点加一个 `&& result.damage > 0`）会在 0 伤害命中时跳过推挤；这里用 MONST_IMMUNE_TO_WEAPONS 目标强制近战伤害为 0（但 hit仍为 true），走真实的 ally-vs-monster 集成路径（Monster.takeTurn 调用点，不是直接调用 processStaggerHit），验证调用点本身没有加这个门槛。  536ms
+     ✓ 对抗性②：终点是墙/已被占用时不应该发生推挤（目标原地不动）  557ms
+     ✓ 对抗性③：目标被打死的那一下不触发击退（CE specialHit 只在 Combat.c:1385 起的else-survive 分支调用，inflictDamage 杀死目标时走的是 if-killed 分支，走不到specialHit）—— 调用点忘记检查 target.hp>0 的错误实现，会把已经死亡的目标"死后诈尸挪一格"，用 ally 分支的真实集成路径（Monster.takeTurn）验证。  547ms
+     ✓ 对照组：goblin（不带 MA_ATTACKS_STAGGER）命中玩家不会推动玩家  574ms
+stdout | src/test/scroll_effects.test.ts > teleport_random 卷轴（Items.c:7803） > 读卷轴后玩家坐标改变，且新位置合法可站立、卷轴被消耗
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/b_1_weapon_specials.test.ts (16 tests) 36472ms
+     ✓ 对抗性【匕首偷袭写成 ×3】：熟睡目标挨匕首必须 ×5 —— 5 个种子的伤害全部∈ {15,20}（raw 3/4）。写成 ×3 的实现在 raw=3 的种子上给 9 → 在这里翻车。  3643ms
+     ✓ 对抗性【普通武器也 ×5 / 匕首无差别 ×5】：匕首打清醒 HUNTING 目标必须零倍率 —— 伤害恰为 raw {3,4}；"×5 全局生效"的实现给 15/20 → 在这里翻车。  3645ms
+     ✓ 对照组【普通武器熟睡目标仍 ×3】：剑打熟睡目标伤害 ∈ {21,24,27} 且都不被 5 整除 —— 匕首旗标泄漏到普通武器（×5）的实现给 35/40/45 → 在这里翻车。  8712ms
+     ✓ 对抗性【WANDERING 不在偷袭触发集】：剑打游荡（WANDERING）目标必须自动命中且 ×3 —— 防御 300 下命中率仅 ≈2.2%，10 个种子全中的实现才可能做到；漏掉 WANDERING 触发的实现里游荡目标照常掷命中 → 几乎必 miss → 在这里翻车。对照组：同一只怪 HUNTING 态 10 种子必出 miss。  10434ms
+     ✓ 对抗性【突进漏实现 / 只打相邻】：正东方 2 格外的敌人必须在玩家移动后挨打且玩家进到中间格 —— 没实现突进、或把它写成"打相邻敌人"的实现里2 格外的敌人毫发无损 → 在这里翻车。  629ms
+     ✓ 对抗性【突进波及相邻斜角】：移动方向斜前方的相邻敌人不挨打 —— 突进只看两格之外那一格；"移动时顺手打所有相邻"的实现 → 在这里翻车。  511ms
+     ✓ 对抗性【突进无自动命中 / 倍率写错】：防御 300（命中率 ≈2.2%）的两格外敌人，突进必须 5 种子全中且伤害 ∈ {9,12,15}（raw 3..5 的 ×3）—— 漏自动命中的实现几乎必 miss；写成 ×5 的实现给 15/20/25 → 都在这里翻车。  2708ms
+     ✓ 对照组【普通剑无突进】：剑朝两格外的敌人移动只是走一格，敌人不掉血 ——突进传染到普通武器的实现 → 在这里翻车。  500ms
+     ✓ 对抗性【QUICKLY 分支漏实现】：同样打 6 击，刺剑放出来的敌人行动窗口是剑的一半——刺剑吃 2 次反击、剑吃 5 次；漏 QUICKLY 分支的刺剑按 100 tick恢复 → 反击 5 次 → 在这里翻车。  1254ms
+     ✓ 对抗性【恢复量写错（attackSpeed 而非 attackSpeed/2）】：窃取攻击恢复量 ——刺剑一次攻击的恢复恰为 50 tick（Time.c:2445-2446 的 attackSpeed/2）；写成整段 attackSpeed 的实现记录到 100 → 在这里翻车。  939ms
+     ✓ 对抗性【分支优先级写反（钝器命中反而走 QUICKLY）】：双旗标武器（STAGGER+QUICKLY，数据中不存在，专测分支序）命中时必须走 STAGGER 支恢复 200 tick（Time.c:2442-2444 先判）——优先级倒置的实现走 QUICKLY 支记 50 → 在这里翻车。行为镜像：敌 moveSpeed=150、身后墙，200-tick 窗口吃 1 次反击（QUICKLY 误判时 50-tick 窗口为 0 次）。  1230ms
+     ✓ 对抗性【判据写成"所有相邻敌人" / "所有落格相邻"】：向东移动一格 —— 只有同时与 (4,5)、(5,5) 两格相邻的敌人（(5,4)）挨打；移动前独有的 (3,5) 与移动后独有的 (6,5) 都毫发无损。三种错误判据在这里各有翻车点。  489ms
+     ✓ 对抗性【对角移动漏判 / 只看直线】：向东南斜走一格 (4,5)→(5,6) —— 双相邻格是 (5,5) 与 (4,6) 两格，两只敌人都要挨打；仅与移动前相邻的 (3,6) 不挨打。对角双相邻集合与直线不同，"只对直线移动生效"或"打满所有旧邻"的实现都在这里翻车。  621ms
+     ✓ 留痕（本轮明确不做：CE abortAttack 确认提示）+ 盟友不进 hitList：连枷弧线上站着盟友、双相邻格上有敌人时——整回合一次走完（无任何确认回合，currentTick 恰好 +attackSpeed），盟友毫发无损、敌人挨打；CE 需要确认的酸怪场景 web 照打（同一条 hitList 路径）。  505ms
+     ✓ 留痕（本轮明确不做：镜像盟友继承武器旗标，CE Combat.c:755-772）：web 盟友没有武器槽，玩家武器旗标不存在被盟友继承的通路——盟友实例上无 equippedWeapon/flags 武器旗标字段。  646ms
+ ✓ src/test/v_2b_6_keys.test.ts (18 tests) 179883ms
+     ✓ C1 否定面①：keyLoc 指向 X 的钥匙开不了 Y（坐标不匹配、机器号不同）  392ms
+     ✓ C2 否定面②：跨层带下去的钥匙不认同坐标的锁（originDepth 判据；删掉 depth 检查必红）  417ms
+     ✓ C3 否定面③：非 KEY 类别物品永不匹配（category 门；漏掉即"任意物品开锁"）  412ms
+     ✓ C4 肯定面：机器号匹配（MF_SKELETON_KEY 的机器条目 → 认同机器的任意锁/笼）  370ms
+     ✓ C5 keyInPackFor：只从玩家背包找；匹配的背包钥匙被找到、别人的锁不返回  397ms
+     ✓ D1 携带钥匙的怪死亡 → 物品落怪原地、keyLoc/originDepth 保留；活怪不掉  395ms
+     ✓ D2 否定面：掉落守卫——死在不可落格（熔岩）上的怪物品不进 items（不凭空消失进岩浆）  401ms
+     ✓ E1 多 seed 扫描：Kennel 的 DF 列真落位（featureDF 分支执行 + 地形侧确有产物）  57181ms
+     ✓ F1 多 seed × D1-D26：每把锁都有同层匹配钥匙，且锁格与钥匙格都在玩家可达分量内  47959ms
+     ✓ F2 笼群形态（§6.2）：每台带笼的机器都有钥匙认（机器号匹配），且钥匙/携带者可达  71476ms
+     ✓ F3 §6.3（单元口径）：disposableHere=false 的钥匙开锁后保留（CE Movement.c:636-656 收口）  477ms
+stdout | src/test/g_3_gas_effects.test.ts > G-3 对抗①：效果判定无阈值（CE Time.c:421-497 站进即判） > 体积 1 的蒸汽也结算：max(1,⌊30/15⌋)=2 伤害（阈值 >20 的实现 → 0 伤害翻红）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/p4_4_split_kamikaze.test.ts > P4-4 验收 1：分裂 — pink/acidic/black jelly > 对抗性①：血量对半必须是 (hp+1)/2 向上取整，不能是 floor(hp/2)。1 HP 的果冻分裂后，母体与克隆体都应存活于 1 HP —— 用 floor 会把母体打到 0 HP（应为存活但用例失败）。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/scroll_effects.test.ts (20 tests) 14096ms
+     ✓ 读卷轴后玩家坐标改变，且新位置合法可站立、卷轴被消耗  501ms
+     ✓ protect_weapon：装备 isProtected=true；原诅咒则解除并额外打 malevolent 消息  483ms
+     ✓ protect_armor：装备 isProtected=true，未诅咒时无 malevolent 消息  492ms
+     ✓ 无对应装备时：不崩、卷轴照常消耗、打 "quickly disperses" 消息  499ms
+     ✓ toSnapshot → loadSnapshot 往返后装备 isProtected 保持 true  1173ms
+     ✓ 读卷轴后玩家周围新增 1-3 只怪物，均为 HUNTING  509ms
+     ✓ 视野内怪物获得 discordant（30 回合）；无生命怪豁免  509ms
+     ✓ AI 侧生效：discordant 怪物把相邻的其他怪物选为攻击目标  507ms
+     ✓ AI 目标选择覆盖全部 8 个相邻方向（回归：右下 [1,1] 曾缺失）  4004ms
+     ✓ 视野内+距离内的怪被清魔法；diesIfNegated 的当场死；距离外的完全不受影响  504ms
+     ✓ 玩家自己的状态也被清（CE :4834 negate(&player) 先于怪物循环、无消息）  587ms
+     ✓ 地面物品：附魔归零/符文消失/自动鉴定/解咒/探魔标记清除；距离外的原样不动  585ms
+     ✓ 脚下与 4 正邻的 SURFACE 层落 SACRED_GLYPH（100/100 十字波前），T_SACRED 旗标成立  584ms
+     ✓ 行为终点（反空转链）：SafetyMap 把圣徽格判为怪物禁入——读卷轴前后同一格的图值必须改变  561ms
+     ✓ 半径 9 内的墙变 FORCEFIELD；半径外的墙不变；边界格变 CRYSTAL_WALL（非 FORCEFIELD）  570ms
+     ✓ 视野：挡视线的墙被打碎后，玩家当场看到墙后（updateVision 不等回合结算）  548ms
+     ✓ 对抗②场景：DUNGEON 层的 DOOR 被圣徽盖住（glyph prio 7 < door 8，有效地形是圣徽）仍须被晶化——读 layers[DUNGEON] 而非 cell.terrain  524ms
+     ✓ negation：读一次消耗 0 次随机数（CE negationBlast 全程零掷骰）  336ms
+     ✓ sanctuary：读一次消耗 4 次（DF_SACRED_GLYPHS 100/100 十字波前：4 正邻各掷一次 rand_percent(100)）  318ms
+stdout | src/test/f_2c_explosion.test.ts > F-2c 对抗①②：爆炸伤害公式与免疫窗（Time.c:343-353） > 对抗①：伤害必须取 max(15-20, maxHP/2)——取小者、只掷 15-20、或按当前血量折算的实现全部翻红。maxHp=200 已损到 hp=60 的怪：maxHP/2=100 > 15-20 → 伤害恰 100 → 当场死亡；按当前血量 50%（30）或按 15-20 的实现它都活。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/p4_4_split_kamikaze.test.ts (20 tests) 13436ms
+     ✓ 对抗性①：血量对半必须是 (hp+1)/2 向上取整，不能是 floor(hp/2)。1 HP 的果冻分裂后，母体与克隆体都应存活于 1 HP —— 用 floor 会把母体打到 0 HP（应为存活但用例失败）。  773ms
+     ✓ 对抗性②：走廊里攻击者所在格必须并入连通群，克隆体才可能出现在玩家身后。漏掉这一步的实现里，1 格宽走廊中克隆体永远只会出现在果冻远离玩家的那一侧，玩家这一侧（(4,5)）永远选不中——多次不同种子重复分裂应能观察到两侧都被选中过。  602ms
+     ✓ 对抗性③：连通群与合格格子的搜索必须是四方向，不能是八方向（含对角）。果冻与玩家之间只留一条正交走廊，唯一开放的对角格 (7,4) 不应被选中——八方向实现会偶尔选中它，四方向实现永远不会。  601ms
+     ✓ acidic jelly 与 black jelly 也能分裂（同一套算法，覆盖三只果冻的名单要求）  1160ms
+     ✓ 分裂条件：defender.hp<=0（已死）时不分裂，也不额外扣血  524ms
+     ✓ 无合格格子时不分裂：果冻被完全堵死（四邻全是墙或已占用），血量不变  546ms
+     ✓ 端到端：玩家近战攻击真的会经由 handlePlayerAction 触发分裂（不是只有单元测试里手调）  538ms
+     ✓ 对抗性④：kamikaze 检查必须在命中掷骰之前。把 defender 的防御力拉到"正常情况下命中率≈0%"，kamikaze 攻击者仍必定"命中"（自毁），伤害恒为 0。若实现把该检查放在命中判定之后，本用例会因为大量 miss 而在统计上偏离"每次都自毁"。  701ms
+     ✓ 自爆怪物攻击玩家：玩家血量不变，攻击者死亡  534ms
+     ✓ 对照组：vampire 有 MA_DF_ON_DEATH 但没有 MA_KAMIKAZE，攻击不应自爆  479ms
+     ✓ 对照组：goblin 没有任何特殊旗标，正常战斗不受影响  462ms
+     ✓ bloat 死亡在原地释放毒气（GasType.POISON，G-1 起注入 CE 体积 2000）  475ms
+     ✓ F-2c 翻转：explosive bloat 死亡铺 GAS_EXPLOSION 爆炸圈——死亡格与四邻必中（第一波 350%≥100），爆炸地形是火  493ms
+     ✓ F-2c 翻转：explosive bloat 死亡在默认（不可燃）石地板上也铺开 GAS_EXPLOSION 爆炸圈（DF 管线不看可燃性）  625ms
+     ✓ F-2c 翻转：爆炸伤害瞬时不经燃烧状态（第 1 笔 max(15-20, maxHP/2)），燃烧是后续另一笔（第 2 笔 1-3）  1328ms
+     ✓ 对抗性⑤：同一只怪物的死亡地形效果只能触发一次。若实现没有 deathEffectTriggered 兜底且被多次调用（例如某条路径在同一回合内重复扫描），毒气密度会被反复叠加，超过单次触发应有的量——这里直接调用两次断言密度不变。  546ms
+     ✓ 对照组：vampire 死亡不产生毒气/火焰（DF_BLOOD_EXPLOSION 是血迹装饰，web 无血迹层，本轮不接）  588ms
+     ✓ 对照组：goblin（无 MA_DF_ON_DEATH）死亡不触发也不被标记  593ms
+     ✓ pit_bloat 只自爆、不产生毒气/火焰/洞（web 无坠落子系统，登记为已知缺口）  565ms
+     ✓ 盟友在有其它可选目标时，不会把尚未贴脸的 bloat 选为追击目标  1300ms
+ ✓ src/test/g_3_gas_effects.test.ts (26 tests) 14058ms
+     ✓ 体积 1 的蒸汽也结算：max(1,⌊30/15⌋)=2 伤害（阈值 >20 的实现 → 0 伤害翻红）  625ms
+     ✓ 体积 1 的麻痹气体也上状态（旧阈值实现 → 状态缺失翻红）  573ms
+     ✓ GAS 层 tile 在、体积为 0 的收层前窗口（Time.c:1361-1368 怪癖）同样命中  658ms
+     ✓ 蒸汽对玩家（maxHp 30）= 2/回合，不是旧定值 1（定值实现翻红）  674ms
+     ✓ 毒气对 zombie（maxHp 80）= 5/回合，不是 1（CE"大怪更怕毒气"）  625ms
+     ✓ 毒气对 troll（maxHp 65）= 4/回合  560ms
+     ✓ 下限 1：rat（maxHp 6）受 1 点而不是 ⌊6/15⌋=0（漏钳制 → 0 伤害翻红）  563ms
+     ✓ 连站两回合混乱不叠加：时长恒 25（stack 实现 → 50 翻红）  569ms
+     ✓ 更强的既有状态不被气体覆盖：先 confused 40，气体刷新后仍 40（覆盖实现 → 25 翻红）  536ms
+     ✓ 麻痹同式：先 paralyzed 30，气体刷新后仍 30；无状态时上 20  1106ms
+     ✓ 喝麻痹药水：脚下 GAS 层 = PARALYSIS_GAS、云真实铺开（直上状态的旧实现翻红）  507ms
+     ✓ 玩家喝下后自食其果：经效果判定上麻痹 20（旧直上 8 的实现翻红）  518ms
+     ✓ 玩家站毒气：hp −2 且无 poisoned 状态（CE 的毒状态走 addPoison，与气体无关）  510ms
+     ✓ 毒气致死玩家的死因归 tile description：lastDamageSource = caustic gas（Time.c:622-625）  635ms
+     ✓ 穿 respiration 符文甲站毒气：不掉血、符文自动鉴定（Time.c:617-622）  508ms
+     ✓ 同甲对混乱/麻痹也豁免（T_RESPIRATION_IMMUNITIES 全组，Rogue.h:1956）  1104ms
+     ✓ 无甲对照：同样的毒气掉 2 点（豁免分支误伤所有人的实现翻红）  596ms
+     ✓ 豁免前置是 T_RESPIRATION_IMMUNITIES 组旗标：甲烷（组外）不触发自动鉴定（CE Time.c:409-412 cellHasTerrainFlag 前置；越界鉴定在此翻红）  534ms
+     ✓ PARALYSIS_GAS 携带 T_CAUSES_PARALYSIS 且效果可观测；无 T_CAUSES_DAMAGE/CONFUSION  555ms
+     ✓ MONST_INANIMATE 怪不沾混乱/麻痹/伤害（CE Time.c:444/:474/:594 豁免）  529ms
+     ✓ 火场 B（seed2026 场景流复位）逐位 = S-1 基线（效果重裁不烧火侧行为）  571ms
+     ✓ 火场 C（seed777 场景流复位）逐位 = S-1 基线  461ms
+     ✓ 效果结算零 RNG 消耗：站气回合前后实质抽取计数不动（同 seed 可复现旁证）  536ms
+ ✓ src/test/f_2c_explosion.test.ts (14 tests) 9035ms
+     ✓ 对抗①：伤害必须取 max(15-20, maxHP/2)——取小者、只掷 15-20、或按当前血量折算的实现全部翻红。maxHp=200 已损到 hp=60 的怪：maxHP/2=100 > 15-20 → 伤害恰 100 → 当场死亡；按当前血量 50%（30）或按 15-20 的实现它都活。  770ms
+     ✓ 对抗②：免疫窗缺失——同一生物站在爆炸格上连续两个客观块，第二块不得重复扣血。没上 STATUS_EXPLOSION_IMMUNITY 的实现第二块再扣 100 → hp 归零（翻红）。  506ms
+     ✓ 对抗③a：免疫跟着生物走，不跟格走——挨炸后**移动到另一格爆炸地形**上仍免疫。按格记账的实现（Set<格>）在新格查不到记录 → 再扣一次（翻红）。CE 依据：Time.c:347 是 monst->status[STATUS_EXPLOSION_IMMUNITY] = 5——生物身上的状态（任务书"按格记账"为转述错误，按 CE 翻正）。  497ms
+     ✓ 对抗③b：免疫窗时长恰 5 回合（Time.c:347 字面 5）——第 2~5 块被挡、第 6 块恢复受击。记 3（太短：第 5 块就掉血）或 10/无限（第 6 块不掉血）的实现都翻红。递减走 tickStatuses 全键遍历（玩家 Time.c:2298 / 怪 Monsters.c default 分支的同轨等价）。  551ms
+     ✓ 对抗④：爆炸格在下一个晋升趟必须清层消失（promoteType 0：清层不落新 DF）。promoteChance 记 0（永不衰老）或漏抄 VANISHES_UPON_PROMOTION（晋升了但地形留着）的实现都翻红。CE：Globals.c:496 第 8 列 10000 + mechFlags VANISHES；Time.c:1644 掷骰必中、:1254-1266 清层。  658ms
+     ✓ 对抗④b：当回合刚落地的爆炸格被 CAUGHT_FIRE_THIS_TURN 豁免（跳过衰老掷骰，Time.c:1625）——下一个晋升趟才消失。实测寿命 = 落地块 + 1。漏掉豁免的实现当场把爆炸格收走（爆炸圈闪现一帧，翻红）。  1058ms
+     ✓ 对抗⑤：bloat 爆炸的第 1 笔是瞬时的 max(15-20, maxHP/2)（不经燃烧状态、不等客观块），第 2 笔是爆炸铺的火点燃生物后的燃烧结算 1-3。把两笔合并成一笔（只点燃烧不瞬伤 / 燃烧段再爆一次 50）的实现都翻红。CE 依据：fillSpawnMap refresh 分支（Architect.c:3255）当场结算 + Time.c:527 火点燃生物 → :2581 燃烧 1-3。  692ms
+     ✓ 对抗⑥：石地板上死亡格必落 GAS_EXPLOSION（种子格无条件标记），且 BFS 距离 2/3 的格必中（第 2/3 波 250%/150% ≥ 100 恒真）——退回 igniteForced×5（落 PLAIN_FIRE、只到距离 1）或参数错记 60/17（距离 2 只有 43%）的实现都翻红。CE：Globals.c:654 {GAS_EXPLOSION, SURFACE, 350, 100}。  591ms
+     ✓ 对抗⑦：点燃 8 邻全挡格的甲烷 → 走 promoteType DF_EXPLOSION_FIRE → GAS_EXPLOSION 落到原点格、站上面的生物在客观块内吃到爆炸伤害并上免疫。G-2 的预测（"填 tile 后爆炸圈自动成形"）经真实 objectiveTimeBlock 验收；走 fireType（GAS_FIRE）的错误选路实现翻红。  561ms
+     ✓ 对抗⑧：悬浮生物站在爆炸格上照常受击。把熔岩/深水的悬浮豁免（Time.c:183-190）错误地复制到爆炸段的实现翻红——CE 爆炸段没有STATUS_LEVITATING 守卫（只查 STATUS_EXPLOSION_IMMUNITY 与 MB_SUBMERGED，web 无潜水簿记已登记）。  1028ms
+     ✓ 对抗⑨a：玩家站在爆炸格 → 掉 max(15-20, maxHP/2) 血且 lastDamageSource = violent explosion（CE gameOver "Killed by a violent explosion" 的web 等价铭牌链）。  569ms
+     ✓ 对抗⑨b：dampening 护甲符文完全吸收爆炸伤害并自动鉴定（Time.c:352-359："Your %s pulses and absorbs the damage." + autoIdentify）——扣血的实现（漏掉该分支）翻红。  499ms
+     ✓ 草块点火蔓延-衰老曲线逐位等于 S-1 基线（seed42 场景流复位）。错误实现：本轮顺手改动火蔓延概率/衰老掷骰/4 邻判据——曲线形态立变。原 FIRE-NAT 哨兵锚定真实地图 + 真实怪物 AI 的流位置（C-5/C-6 两次实证漂移），S-1 起改锚全合成场景。  597ms
+     ✓ POISON 100 体积注入 (10,8) 后前 5 个客观块的中心格体积 + 全场总体积签名逐位一致（完整 14 回合全格基线仍在 f_2b 对抗⑦/f_2a 对抗⑪）——updateGases/addGas/客观块次序被顺手改动的实现在此翻红  453ms
+ ✓ src/test/v_1b_alternative.test.ts (9 tests) 740ms
+ ✓ src/test/ui_1_rendering.test.ts (32 tests) 1789ms
+stdout | src/test/horde_terrain_spawn.test.ts > 地形感知落点 — randomMatchingLocation 语义（CE Architect.c:3822） > 深水地图上能找到 WATER_DEEP 落格，且 EEL horde 领袖确实落在深水格上
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/p4_7_player_weapon_geometry.test.ts > P4-7 玩家鞭（ITEM_ATTACKS_EXTEND） > 对抗性【射程写成 2 或无限】：距离 4 必须甩得到且原地不出手；距离 6 必须甩不到、走近一格 —— 把射程写成 2 的实现在距离 4 翻车，写成无限/6 的实现在距离 6 翻车（CE getImpactLoc maxDistance=5，Movement.c:888）。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/p4_7_player_weapon_geometry.test.ts (17 tests) 9608ms
+     ✓ 对抗性【射程写成 2 或无限】：距离 4 必须甩得到且原地不出手；距离 6 必须甩不到、走近一格 —— 把射程写成 2 的实现在距离 4 翻车，写成无限/6 的实现在距离 6 翻车（CE getImpactLoc maxDistance=5，Movement.c:888）。  1128ms
+     ✓ 对抗性【不打第一个受阻点/多目标齐打】：CE 的鞭只打 getImpactLoc 停下的那一个目标（Movement.c:888-894），而挡弹者若不可攻击（盟友）则整鞭落空—— 前方 2 格站着盟友、敌人 4 格时：移动过去、两人都毫发无损；跳过盟友直取敌人或双目标齐打的实现都会翻车。  933ms
+     ✓ 鞭击杀走完整结算：1 HP 敌人在 3 格外被抽死 —— 击杀计数 +1（几何出口与贴脸近战共用 resolvePlayerMeleeAttackOn 的击杀/掉落路径）。  647ms
+     ✓ 对抗性【攻击顺序写成正序】：CE Movement.c:1005-1009 人为倒序攻击（先远后近）—— 两个 1 HP 敌人（贴脸 + 2 格外）都被刺死，但日志里远处目标的命中消息必须在前；正序实现的消息顺序相反。  527ms
+     ✓ 对抗性【把矛当普通近战】：贴脸与 2 格外的两个敌人必须同时掉血 —— 只打贴脸一个的实现（漏掉穿透收集）在这里翻车。  809ms
+     ✓ 对抗性【几何伸进墙里】：CE Movement.c:1173-1186 的几何检查在"移动未被阻挡"分支内 —— 贴脸是墙、敌人 2 格外时，朝墙移动不出手也不耗回合；漏掉该门控（或漏掉 :976-979 穿墙 break）的实现会把 2 格外的敌人隔墙刺穿。  921ms
+     ✓ 对抗性【横扫误伤盟友】：CE buildHitList 的 monsterWillAttackTarget 复查（Combat.c:2079）—— 主目标与另一斜角敌人（1 HP，必死）被扫掉，斜角盟友必须毫发无损；漏掉敌我过滤的实现会把盟友一起砍了。  467ms
+     ✓ 横扫要扫满 8 个邻格里的多个敌人（CE buildHitList sweep 分支 i 走满 0..7，Combat.c:2072-2086）—— 5 个方向围上来的 1 HP 敌人全部被扫死；只打主目标或漏掉斜角的实现在这里翻车。  550ms
+     ✓ 对抗性【只做击退、漏了额外恢复回合】：钝器命中且目标身后是墙（无空间击退，CE "if there is room"）时，额外恢复的一回合让敌人的攻击落进玩家窗口 —— mace 命中后玩家恰好掉 1 点（200-tick 窗口内敌人 t=150 攻击一次）；漏掉额外恢复的实现只给 100 tick，敌人 t=150 的攻击落空（玩家满血）→ 在这里翻车。  588ms
+     ✓ 对抗性【只做额外恢复、漏了击退】：有空间时命中必须把目标推开一格 —— 被推开的敌人当回合离场，腾出的 t=150 行动用于"走回来"（耗时 150）而非攻击，玩家满血；漏掉击退的实现里敌人原地连击……原地攻击一下（玩家 -1 HP）→ 在这里翻车。  493ms
+     ✓ 对照组【普通剑不得有钝器口径】：同样的站位与速度参数换剑（身后墙）：100-tick 窗口内敌人 t=150 的攻击落空，玩家满血；钝器旗标泄漏到普通武器的实现会变成 200-tick 窗口（玩家 -1 HP）→ 在这里翻车。  473ms
+     ✓ dagger：贴脸只打贴脸那一个目标 —— 身后直线上与斜角的探针都毫发无损（"全武器都横扫/穿透"的错误实现在这里翻车）。  624ms
+     ✓ sword：贴脸只打贴脸那一个目标 —— 身后直线上与斜角的探针都毫发无损（"全武器都横扫/穿透"的错误实现在这里翻车）。  484ms
+     ✓ broadsword：贴脸只打贴脸那一个目标 —— 身后直线上与斜角的探针都毫发无损（"全武器都横扫/穿透"的错误实现在这里翻车）。  467ms
+     ✓ 对抗性【普通剑隔空够不到】：距离 3 的敌人对普通剑不可达 —— 朝它移动一格只走不打；任何"普通武器也有射程"的实现（鞭化/矛化传染）在这里翻车。  490ms
+stdout | src/test/v_1c_machine_structure.test.ts > V-1c 资格过滤（CE blueprintQualifies，Architect.c:455-468） > Q1b（V-2a 反转）端到端：3 seeds × D1-D26 的机器类别 = reward ∪ 递归两类（vestibule/key_guard），thematic 绝迹
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/v_1c_machine_structure.test.ts (12 tests) 31768ms
+     ✓ Q1b（V-2a 反转）端到端：3 seeds × D1-D26 的机器类别 = reward ∪ 递归两类（vestibule/key_guard），thematic 绝迹  27755ms
+     ✓ Q4b 开局清零（CE RogueMain.c:292）：startNewGame 后计数器归零  491ms
+     ✓ Q7 计数器随存档往返：读档后配额不重置（"读档后继续下楼"场景）  3033ms
+     ✓ R4 feature 放不满最小实例数 → 整机回滚、地图复原  416ms
+stdout | src/test/g_1_gas_volumetric.test.ts > G-1 对抗③：每玩家回合两轮 updateVolumetricMedia（Time.c:1606） > 一次 wait 后气体必须到达切比雪夫距离 2（单轮实现只到 1，在此翻红）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/g_1_gas_volumetric.test.ts (16 tests) 4136ms
+     ✓ 一次 wait 后气体必须到达切比雪夫距离 2（单轮实现只到 1，在此翻红）  586ms
+     ✓ Game.objectiveTimeBlock 的探测守卫：无气体回合跳过两轮（CE Time.c:1600-1613）  561ms
+     ✓ 草块点火蔓延-衰老曲线逐位等于 S-1 基线。错误实现：本轮顺手改动火侧蔓延概率/衰老掷骰/4 邻判据——曲线形态立变（本轮不许碰火的守卫保留）。原 FIRE-NAT seed42 哨兵锚定真实地图取景点 + 真实怪物 AI 流位置（C-5/C-6 两次实证漂移），S-1 起改锚全合成场景。  612ms
+     ✓ toSnapshot → loadSnapshot：GAS 层与体积逐格还原  1760ms
+     ✓ clearGasAt（房间基线还原路径）清的是真相：重建镜像后气不复活  573ms
+stdout | src/test/p2_2_real_speed.test.ts > P2-2 A: 真实速度生效（对抗性） > A1 怪物初始 ticksUntilTurn = moveSpeed；速度字段与 monsters.json 一致（Monsters.c:116/119-120）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/blueprint_center.test.ts > 蓝图宝藏落点（machine center）可通行性 > b) 全局扫描（12 seeds × D1..D26）：房间 center 可通行、区域 origin 属于 interior（CE8 空域单独验证）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+[bp-center] seed=424242 D1..D26 substantive RNG 抽取总数: 802030
+[bp-center] seed=20260913 D1..D26 substantive RNG 抽取总数: 794872
+[bp-center] seed=1 D1..D26 substantive RNG 抽取总数: 940570
+[bp-center] seed=777 D1..D26 substantive RNG 抽取总数: 819792
+[bp-center] seed=31337 D1..D26 substantive RNG 抽取总数: 858875
+[bp-center] seed=20260916 D1..D26 substantive RNG 抽取总数: 867433
+[bp-center] seed=42 D1..D26 substantive RNG 抽取总数: 782855
+[bp-center] seed=999 D1..D26 substantive RNG 抽取总数: 676074
+[bp-center] seed=12345 D1..D26 substantive RNG 抽取总数: 868729
+[bp-center] seed=55555 D1..D26 substantive RNG 抽取总数: 781536
+[bp-center] seed=31415 D1..D26 substantive RNG 抽取总数: 759564
+[bp-center] seed=27182 D1..D26 substantive RNG 抽取总数: 701532
+[bp-center] 扫描 12 seeds × 26 层 = 312 层，共 1021 台 machine，center 违例 0 条（涉及 0 层）；不可通行 terrain 分布：（无）
+[bp-center] center 上共见到 0 件宝藏：（无）；宝藏违例 0 条
+
+ ✓ src/test/blueprint_center.test.ts (5 tests) 102637ms
+     ✓ b) 全局扫描（12 seeds × D1..D26）：房间 center 可通行、区域 origin 属于 interior（CE8 空域单独验证）  102629ms
+stdout | src/test/u_09_learning_consumers.test.ts > U09 complete learning eligibility / negation / execution identity matrix > TELEPORT is erased by negation and CE refunds all learning slots
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > E1 门位落位：管线内门位从不落回墙；生产落位函数在真实门位拓扑上呈 60% 门分布
+[c_0] E1 落位函数 DOOR=119 FLOOR=70（63.0%）
+
+stdout | src/test/p2_2_real_speed.test.ts > P2-2 E: headless 不阻塞 > E1 animationEnabled 默认 false；400 回合同步推进耗时正常
+[p2_2] 400 回合 headless 耗时 3052ms（died=false）
+
+ ✓ src/test/p2_2_real_speed.test.ts (18 tests | 2 skipped) 13367ms
+     ✓ A1 怪物初始 ticksUntilTurn = moveSpeed；速度字段与 monsters.json 一致（Monsters.c:116/119-120）  567ms
+     ✓ A2 豺狼 moveSpeed=50：玩家一次移动内行动两次（恒速架构下只会行动一次）  800ms
+     ✓ A3 食人魔 attackSpeed=200：连续三个玩家回合只攻击第 1、3 次（半速攻击）  705ms
+     ✓ A4a haste：玩家速度减半，100 速怪物每两个玩家动作才行动一次  644ms
+     ✓ A4b slowed：玩家速度翻倍，一次玩家动作内 100 速怪物行动两次  482ms
+     ✓ A5 haste 到期后速度恢复 info 基准（CE Time.c:2261-2273）  515ms
+     ✓ A6 slowed 玩家攻击：耗时 = attackSpeed(200) 且不叠加 movementSpeed；窗口内 100 速怪物行动两次  552ms
+     ✓ B1 泥泞不再双倍耗时（CE 玩家移动耗时与地形无关）  486ms
+     ✓ B2 拾取耗时 = movementSpeed（不再是自创的 50）  485ms
+     ✓ C1 锁定期内玩家输入被忽略（不录制、不推进），autoPath 不推进下一步  569ms
+     ✓ C2 解锁后玩家动作恢复接受  583ms
+     ✓ C3 动画模式与同步模式同 seed 逐回合结果完全一致（动画不触碰玩法）  1851ms
+     ✓ D1 推进循环内抛异常：锁仍被解除、收尾恰好一次、游戏不卡死  576ms
+     ✓ D2 锁超时：deadline 一过即强制快进收尾（自过期保险）  603ms
+     ✓ E1 animationEnabled 默认 false；400 回合同步推进耗时正常  3944ms
+stdout | src/test/w_18_entrancement.test.ts > W-18 CE effect and trace > E=2, not charges/catalog magnitude; weaker recast replaces
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_09_learning_consumers.test.ts (71 tests) 21846ms
+     ✓ TELEPORT is erased by negation and CE refunds all learning slots  333ms
+     ✓ SLOW is erased by negation and CE refunds all learning slots  335ms
+     ✓ INVISIBILITY is erased by negation and CE refunds all learning slots  328ms
+     ✓ LIGHTNING is erased by negation and CE refunds all learning slots  312ms
+     ✓ FIRE is erased by negation and CE refunds all learning slots  329ms
+     ✓ POISON is erased by negation and CE refunds all learning slots  525ms
+     ✓ TUNNELING is erased by negation and CE refunds all learning slots  474ms
+     ✓ BLINKING is erased by negation and CE refunds all learning slots  337ms
+     ✓ ENTRANCEMENT is erased by negation and CE refunds all learning slots  301ms
+     ✓ OBSTRUCTION is erased by negation and CE refunds all learning slots  314ms
+     ✓ DISCORD is erased by negation and CE refunds all learning slots  342ms
+     ✓ CONJURATION is erased by negation and CE refunds all learning slots  359ms
+     ✓ HEALING is erased by negation and CE refunds all learning slots  350ms
+     ✓ HASTE is erased by negation and CE refunds all learning slots  636ms
+     ✓ SLOW_2 is erased by negation and CE refunds all learning slots  634ms
+     ✓ SLOW: eligible target, real cast, attack ticks; no power counter spent  319ms
+     ✓ POLYMORPH: eligible target, real cast, attack ticks; no power counter spent  326ms
+     ✓ DOMINATION: eligible target, real cast, attack ticks; no power counter spent  330ms
+     ✓ CONJURATION: eligible target, real cast, attack ticks; no power counter spent  322ms
+     ✓ TELEPORT applies its CE faction, invulnerable, forbidden and reflectability gates  316ms
+     ✓ CONJURATION applies its CE faction, invulnerable, forbidden and reflectability gates  303ms
+     ✓ allied reflective recipient remains eligible and contact reflection is still resolved by travel  372ms
+     ✓ TURRET contributes all six bits at effect gates; no sleep/initialization RNG rewrite  303ms
+     ✓ TELEPORT frees a captive even when destination search fails; IMMOBILE prevents both  304ms
+     ✓ POLYMORPH uses W19 in-place species replacement; player contact is immune without species RNG  309ms
+     ✓ DOMINATION from hostile caster still converts to player allegiance, demotes leadership and clears discord  311ms
+     ✓ DOMINATION failure and player contact preserve ownership and spend only the eligible roll  301ms
+     ✓ CONJURATION detonates before the intercepted creature and creates 15 player-bound blades even for a hostile caster  578ms
+     ✓ CONJURATION on a full grid creates no overlapping/off-map creature  535ms
+     ✓ LIGHTNING uses magnitude10 (9..29, four clumps), pierces, and never calls physical attack  317ms
+     ✓ LIGHTNING reflection owns transference and lethal source at the original monster  323ms
+     ✓ MONST_FLIES synchronizes, survives ticks/current snapshots and is permanently negated  316ms
+     ✓ MONST_IMMUNE_TO_FIRE synchronizes, survives ticks/current snapshots and is permanently negated  304ms
+     ✓ MONST_INVISIBLE synchronizes, survives ticks/current snapshots and is permanently negated  332ms
+     ✓ MONST_REFLECT_50 reads reflectionChance(4) and real travel loses the ability after negation  315ms
+     ✓ TRANSFERENCE ally=false: melee and bolt share shield/remainingHP/cap semantics  311ms
+     ✓ TRANSFERENCE ally=true: melee and bolt share shield/remainingHP/cap semantics  302ms
+     ✓ TRANSFERENCE and weakness reject a MONST_INANIMATE victim  324ms
+stdout | src/test/w_20_cloning.test.ts > W-20 save, identity and actual submission > JSON round trip keeps all clone runtime/containers/references and next ids beyond dormant high id
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/v_2b_7_features.test.ts (22 tests) 328006ms
+     ✓ D1 5 seed × D1..D9：每个「网格机器格」都能追到机器自己的落点记录  10357ms
+     ✓ D2 落点记录带诊断字段（featureIndex/terrain/featureDF），且位置与网格机器格一致  1048ms
+     ✓ E3 Game 段（确定性）：finalizeBlueprintMonster 消费 fleeing；dormant 分支按 CE 顺序覆盖它  412ms
+     ✓ F1 携钥匙怪的出生态可达、不在致死地形上，且携带品带 keyLoc 绑定  138226ms
+     ✓ F2 携带指令：钥匙有绑定；CE8 非钥匙奖励有完整的外包/领养来源  51493ms
+     ✓ G2 引擎面：47/52 号因领养落点不可达而退池，且它确实不再生成  126439ms
+ ✓ src/test/w_20_cloning.test.ts (57 tests) 4572ms
+     ✓ JSON round trip keeps all clone runtime/containers/references and next ids beyond dormant high id  437ms
+     ✓ ordinary named clone stays ordinary, and high dormant id is reserved  389ms
+     ✓ player clone and polymorphed clone remain Monsters with actual form after restore  379ms
+     ✓ cancel costs nothing; real confirmation spends charge/turn, newborn waits 101 then acts  917ms
+     ✓ matches compiled original BE_PLENTY and cloneMonster for every HP 1..137  386ms
+     ✓ player clone is a legitimate polymorph source, before and after saving  1065ms
+     ✓ real melee clone kill does not advance weapon familiarity, original kill does  307ms
+     ✓ original saved mutation provenance survives, so self split keeps its mutation-only trait  458ms
+stdout | src/test/c_1_room_profile.test.ts > C-1 行为断言：真实生成关卡（5 种子 × D1-D26） > B2 对抗（attach 池混入 6/7 号房）：CE 调整后 [6]/[7]=0 → 抽取计数逐层钉死
+[c_1] B2 入口房抽取=5/5，大洞窟首房间=61/130
+
+stdout | src/test/f_1_fire_as_terrain.test.ts > F-1 对抗①（F-2a 翻正门半边）：drawPriority 双向——火压住草（10<60） > 燃烧草格的有效地形 = PLAIN_FIRE（CE：可燃物被火消耗，同层替换）；火 DF 落在门上时有效地形仍是门（prio 8 < 10）。错误实现 a：prio 抄成 >60 → 草压住火，第一对断言红；错误实现 b：prio 抄成 <8 → 火压住门，第二对断言红。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/t_1_tail.test.ts > T-1 A：spawnBlueprintItem 无 id 分支 = chooseKind 基表加权（CE Architect.c:1504 → Items.c:409-420） > AD-A1 对抗：frequency=0 的种类（enchant/life/strength/dart）从蓝图路径恰为 0（等概率实现 1/13~1/15 → 红）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_18_entrancement.test.ts (67 tests) 22593ms
+     ✓ E=3, not charges/catalog magnitude; weaker recast replaces  304ms
+     ✓ E=8, not charges/catalog magnitude; weaker recast replaces  308ms
+     ✓ MONST_INANIMATE rejects without waking or changing budget  318ms
+     ✓ random reflection affects actual bystander only  325ms
+     ✓ actual player direction 1,0 yields exactly opposite single step  303ms
+     ✓ actual player direction -1,0 yields exactly opposite single step  307ms
+     ✓ actual player direction 0,1 yields exactly opposite single step  365ms
+     ✓ actual player direction 0,-1 yields exactly opposite single step  333ms
+     ✓ actual player direction 1,1 yields exactly opposite single step  324ms
+     ✓ actual player direction -1,-1 yields exactly opposite single step  318ms
+     ✓ actual player direction 1,-1 yields exactly opposite single step  311ms
+     ✓ actual player direction -1,1 yields exactly opposite single step  330ms
+     ✓ speed 50: one follow per player move, zero autonomous move/attack/cast/summon  589ms
+     ✓ speed 100: one follow per player move, zero autonomous move/attack/cast/summon  554ms
+     ✓ speed 200: one follow per player move, zero autonomous move/attack/cast/summon  327ms
+     ✓ haste player: follow occurs each action while duration decrements only at 100 objective ticks  326ms
+     ✓ slow player cannot induce multiple follow steps; expiry resumes real AI on that objective boundary  326ms
+     ✓ player wall collision with dirty render does not advance objective time or follower  308ms
+     ✓ non-turn action talk leaves actual location and budget unchanged  301ms
+     ✓ non-turn action nonsense leaves actual location and budget unchanged  309ms
+     ✓ non-turn action examine leaves actual location and budget unchanged  321ms
+     ✓ non-turn action stairs_up leaves actual location and budget unchanged  318ms
+     ✓ invalid movement and cancelled dive never trigger follower  316ms
+     ✓ directional melee even a miss follows; struck recipient releases before follow and really attacks on the next wait  301ms
+     ✓ hostile entranced creature can still attack ally (CE enemy fallback)  332ms
+     ✓ hostile entranced creature can still attack player (CE enemy fallback)  336ms
+     ✓ entranced ally neither attacks nor swaps with player teammate  310ms
+     ✓ controlled MA_ATTACKS_PENETRATE uses real P4-6 attack output  842ms
+     ✓ controlled MA_ATTACKS_EXTEND uses real P4-6 attack output  933ms
+     ✓ controlled MA_ATTACKS_ALL_ADJACENT uses real P4-6 attack output  304ms
+     ✓ ally AI does not pursue/attack entranced enemy; damage bolt selection also skips it  318ms
+     ✓ CE enemy catalog gate rejects same-team entrancement; actual negation contact still frees it  372ms
+     ✓ entranced seizer cannot hold player; moving seizer clears its own grip  459ms
+     ✓ seized entranced monster spends movement budget but stays held  429ms
+     ✓ living immobile target is eligible: CE moveMonster itself has no immobile gate  400ms
+     ✓ fire immunity protects on lava; flight prevents chasm descent  333ms
+     ✓ follow onto gas pressure plate actually triggers terrain DF  313ms
+     ✓ chasm: W11 marks falling, C5 transfers survivor once and clears entrancement/grabs  392ms
+     ✓ thrown weapon miss releases; environmental/direct generic damage and poison do not  352ms
+     ✓ fire staff damage breaks entrancement even fully absorbed by shielding  319ms
+     ✓ aquatic melee rejects a levitating target before release; kamikaze also leaves recipient entranced  330ms
+     ✓ player-origin reflected fire damages a bystander without moralAttack release (CE Items5210)  329ms
+     ✓ fire immunity rejects before release  318ms
+     ✓ save/load preserves duration/timing and actual follow/wait; absent status remains absent  378ms
+     ✓ entranced jackal retains actual speed/traits after JSON load, then obeys physical movement rules  345ms
+     ✓ entranced eel retains actual speed/traits after JSON load, then obeys physical movement rules  327ms
+     ✓ dormant and test-room snapshot carriers preserve the new payload  327ms
+     ✓ selection/cancel costs nothing; confirmed fixture consumes charge/time once without follow  335ms
+stdout | src/test/w_11_teleport_placement.test.ts > W-11 generic placement and C-5 entry effects > monster falling is consumed by C-5 at turn end, only once, with its own fall damage range
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/f_1_fire_as_terrain.test.ts (11 tests) 9298ms
+     ✓ 燃烧草格的有效地形 = PLAIN_FIRE（CE：可燃物被火消耗，同层替换）；火 DF 落在门上时有效地形仍是门（prio 8 < 10）。错误实现 a：prio 抄成 >60 → 草压住火，第一对断言红；错误实现 b：prio 抄成 <8 → 火压住门，第二对断言红。  1954ms
+     ✓ 点燃后 isBurning === 有火地形；经晋升驱动衰老成 EMBERS 后镜像同步消失。错误实现：火地形与 isBurning 出现两个事实来源（脱钩/幽灵火）。  560ms
+     ✓ igniteForced 在非可燃地形（地板）上：火 DF 照落、烧的是火地形本身，衰老后落 EMBERS/ASH（CE：火 DF 铺在任何地表上，石地板不参与燃烧）。错误实现：地板火"原样熄灭不留痕"（F-1 行为）——F-2a 产物是 CE 的。  510ms
+     ✓ 蔓延出的火同样是"火地形"（CE：可燃物被消耗）。错误实现：只在 ignite 入口落火地形、火段蔓延路径绕过。  623ms
+     ✓ 落位/寻路图在燃烧格上的判定与迁移前一致。错误实现：火写进读者不看的层、或漏更新镜像位。  590ms
+     ✓ 火的寿命必须由 promoteChance 概率衰老承担（几何分布，PLAIN_FIRE 均值约 20 回合），不得回退成 4-7 硬倒计时。错误实现：任何形式的固定倒计时——60 个燃烧格推 8 个客观块后必须仍大半在烧（旧模型 0% 存活到第 8 回合）。  579ms
+     ✓ 草烧尽不再是 CHARRED_FLOOR（F-1 红线已反转）：衰老产物 EMBERS → ASH，CHARRED_FLOOR 不再由火烧尽生产。错误实现：把产物改回 CHARRED_FLOOR（旧 web 行为）或跳过 EMBERS 直落 ASH。  502ms
+     ✓ 燃烧中的草+地板存档→读档：火还在、层一致；读档后能继续衰老成 EMBERS。错误实现：快照漏层（火消失）或漏镜像位（复活/丢火）。（F-2a：burnDuration/burnTerrain 随倒计时模型退役，不再往返。）  1128ms
+     ✓ 旧存档迁移：isBurning=true 而层里无火（F-1 前格式）→ 读档自动补火层；反常组合（无火标志却有火层）→ 自动摘除。  1735ms
+     ✓ 注气写入 GAS 层（POISON_GAS 落在注入格）；点火/蔓延/衰老全程 GAS 层  602ms
+     ✓ 燃烧格（有效地形=火）不吃血迹；CE：血 DF 的优先级判定弹开火（10<80）。错误实现：把 spawnBlood 改成跨层读 → 血的 terrain setter 会清掉火层，制造脱钩。  513ms
+ ✓ src/test/w_11_teleport_placement.test.ts (37 tests) 2183ms
+     ✓ monster falling is consumed by C-5 at turn end, only once, with its own fall damage range  652ms
+     ✓ real visibility is recomputed immediately at a previously hidden player destination  631ms
+     ✓ real C-5 player turn end consumes the falling flag, changes depth and never gives the old monster a turn  847ms
+stdout | src/test/w_17_domination.test.ts > W-17 item ownership, captive, horde, minions, grab and combat consumers > detached bound enemy dies through normal turn/death settlement once; allied bound follower survives
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/w_19_polymorph.test.ts > W-19 save and actual submission > JSON round-trip retains current species, speed, item identity, hostile relation, and later death
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_19_polymorph.test.ts (53 tests) 1681ms
+     ✓ JSON round-trip retains current species, speed, item identity, hostile relation, and later death  447ms
+     ✓ tagged dormant list and test-room reconstruction preserve form and references  417ms
+     ✓ cancel is zero cost; actual confirm spends one charge/turn and transforms in place  324ms
+     ✓ 101 wait protects the cast action; the transformed creature acts on the next objective advance  321ms
+ ✓ src/test/w_17_domination.test.ts (42 tests) 2573ms
+     ✓ detached bound enemy dies through normal turn/death settlement once; allied bound follower survives  370ms
+     ✓ the converted ally attacks its former team, and an awake enemy can retaliate  336ms
+     ✓ active/dormant JSON round trip retains allegiance, cleared discord, item key binding and re-elected leader references  355ms
+     ✓ horde blade leader/binding round trip uses the shared entity contract  384ms
+     ✓ actual test-room reset restores both the ally and hostile follower references from JSON baselines  324ms
+     ✓ explicit pending fixture: cancel costs zero; confirmation at HP=19 consumes one charge/turn and visible result autoIDs  306ms
+     ✓ explicit pending fixture: cancel costs zero; confirmation at HP=100 consumes one charge/turn and visible result autoIDs  322ms
+stdout | src/test/p1_42_secret_door_search.test.ts > P1-42 A：searchForSecrets 对齐 CE Movement.c:2459-2489 > A1 半径 = strength/10（整除）：半径外密格零掷骰（捕获：半径误用 strength 本身）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > B3 safety map 集成：真实 loopMap 驱动 isInLoop（同谓词重算逐格一致 + 禁用变体可区分）
+[c_0] B3 IN_LOOP-=10 影响格=65593/297830（22.0%），受影响层=127/130
+
+stdout | src/test/c_1_room_profile.test.ts > C-1 行为断言：真实生成关卡（5 种子 × D1-D26） > B3 对抗（maxRoomCount/attempts 未生效）：attach 数 ≤ 35 硬上限；旧实现（≤14）被max 抛离；物理地板量交叉印证
+[c_1] B3 attach 均值=16.3（130 层），峰值=27；floor+door 均值=618（C-0 基线 156.8）
+
+ ✓ src/test/c_0_add_loops.test.ts (14 tests) 356292ms
+     ✓ A1 门位契约：真实关卡上每个门位都有正交轴两侧严格地板，且环路确实被开辟  18942ms
+     ✓ A2/A3 对抗：漏"两侧地板"检查、试对角——两种错误实现在同批真实 grid 上都产生门位违例（守卫：断言非空转）  19923ms
+     ✓ A5 对抗：漏 costMap[x][y]=1 同步更新 → 后续候选用过时距离，门位合计严格偏多  8552ms
+     ✓ B1 IN_LOOP 只出现在非阻挡格上（130 层逐格）  33434ms
+     ✓ B2 对抗：漏 checkLoopiness 剥离 → 整片可通行区被标环（loopFraction==passableFraction）；生产严格更小且上限受控  34147ms
+     ✓ A6 生产锚定：生产新开门数落在 K=6 次同输入正确对照的散布带内（抓住生产侧的一切判据/同步/方向错误）  9795ms
+     ✓ C1 核心：真实环路存在——扫描开出的门位是真环边（移除后两侧仍连通 = 两条不共边路径）  9345ms
+     ✓ C2 对抗守卫 + 核心对照：树状对照（门位回填成墙）割点率显著高于生产——证明 C1/C2 断言有牙  26177ms
+     ✓ C3 末态对照：全管线关卡（经湖泊+机器）的可通行图割点率受控（树状退化即翻红）  54472ms
+     ✓ D1 决定性：同种子两次生成 → 指纹/loopMap/门位/work grid 逐一一致  45626ms
+     ✓ E1 门位落位：管线内门位从不落回墙；生产落位函数在真实门位拓扑上呈 60% 门分布  37924ms
+     ✓ B3 safety map 集成：真实 loopMap 驱动 isInLoop（同谓词重算逐格一致 + 禁用变体可区分）  48751ms
+     ✓ B4 analyzeLoopMap 纯函数口径：Game.loopMap 与对末态网格直接重算一致（缓存层同口径）  9171ms
+stdout | src/test/w_12_blink_beckoning.test.ts > W-12 uses W-11 placement: destination effects, pickup and P2/C-5 > real vision is refreshed at the actual player blink destination
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/b_4b_item_placement.test.ts (15 tests) 184208ms
+     ✓ T7 数量 = 3 + 无上界几何(60%) + 深度加成；均匀 3-6 实现必红  41327ms
+     ✓ T7b 人口物品的落位性质：非机器 / 非环 / 非走廊弧 / 无物品阻挡旗标  2867ms
+     ✓ T8 金币：堆数在 CE 公式带内、quantity 在 rand_range(50+d10, 100+d15) 带内  11506ms
+     ✓ T9 金币产量调度：整局 goldGenerated 贴 aggregate 界带（测量带 [29529,30522] ± 余量）  27580ms
+     ✓ T10 拾取入账 = quantity（不再是硬编码 +10）  494ms
+     ✓ T11 每层：每把 LOCKED_DOOR 恰有一钥；其余 KEY 的绑定必须能认到本层的「钥匙消费点」  53054ms
+     ✓ T12 食物/力量药水不落走廊（passableArcCount ≤ 1）、不落机器格  28702ms
+     ✓ T14 食物保底：foodSpawned 累计曲线不跌破 POW_FOOD 下限（长局不饿死）  18605ms
+ ✓ src/test/w_12_blink_beckoning.test.ts (50 tests) 2080ms
+     ✓ real vision is refreshed at the actual player blink destination  623ms
+     ✓ real P2 confirmation consumes one charge/action; the beckoned monster cannot act immediately  610ms
+     ✓ real C-5 consumes a blink landing fall once at turn end, after the movement result  787ms
+ ✓ src/test/w_4_bolt_reflection.test.ts (29 tests) 39ms
+stdout | src/test/p2_3_objective_time.test.ts > P2-3 A: 客观时间生效（对抗性核心） > A1 haste 下连续两次动作，客观块只触发一次（营养 -1；门 100→50→100）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/p1_28_flag_channel.test.ts > P1-28：熔岩豁免经旗标通道生效 > 对抗性①（验收核心）：火焰免疫的 Wisp 站在熔岩里连续多回合必须存活。Wisp 同时带 MONST_IMMUNE_TO_FIRE 与 MONST_FLIES，CE 里两道豁免齐备（Monsters.c:3917/3915 派生永久状态）。捕获的错误实现：改动前的 web——熔岩分支只查 abilities.has('immune_fire')（全库无写入者，恒 false），wisp 第一轮就被烧死（hp=0、char='%'）。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/t_1_tail.test.ts > T-1 A：spawnBlueprintItem 无 id 分支 = chooseKind 基表加权（CE Architect.c:1504 → Items.c:409-420） > 整局附魔卷轴/life/strength 总数：测量带（4 seed × D1-D26，与改造前同口径对比见报告）
+[t_1] 整局产出（T-1 加权后，4 seed）:
+seed1	enchant=15	life=7	strength=9	蓝图无id抽取={"WAND":2,"WEAPON|ARMOR|WAND":4,"WEAPON":3,"STAFF|RING|CHARM":4,"RING":2,"CHARM":2,"SCROLL|POTION":3,"POTION":10,"SCROLL":5,"POTION|SCROLL|WEAPON|ARMOR|RING":1}
+seed42	enchant=15	life=6	strength=9	蓝图无id抽取={"STAFF":9,"WAND":2,"WEAPON|ARMOR|WAND":4,"ARMOR":2,"WEAPON":1,"STAFF|RING|CHARM":4,"RING":1}
+seed123456	enchant=11	life=7	strength=8	蓝图无id抽取={"WAND":1,"WEAPON|ARMOR|WAND":3,"ARMOR":3,"STAFF|RING|CHARM":3,"CHARM":2,"STAFF":1,"WEAPON":2,"POTION|SCROLL|WEAPON|ARMOR|RING":3,"POTION":1,"SCROLL":7}
+seed654321	enchant=15	life=7	strength=10	蓝图无id抽取={"WAND":2,"WEAPON|ARMOR|WAND":5,"WEAPON":2,"ARMOR":3,"STAFF|RING|CHARM":5,"STAFF":4,"RING":1}
+
+ ✓ src/test/p2_3_objective_time.test.ts (19 tests | 2 skipped) 6436ms
+     ✓ A1 haste 下连续两次动作，客观块只触发一次（营养 -1；门 100→50→100）  427ms
+     ✓ A2 slowed 下一次动作，客观块触发两次（营养 -2；门回到 100）  402ms
+     ✓ B1 回血主观（haste 两动作回血两次），营养客观（同条件下只 -1）  345ms
+     ✓ B3 怪物状态按 tick 递减：haste 两动作 -1，slowed 一动作 -2  619ms
+     ✓ C1 haste 两次动作只递减一次（fuse 5→4），不触发刷怪  581ms
+     ✓ C2 slowed 一次动作递减两次（fuse 2→0）并触发一次周期刷怪  550ms
+     ✓ D1a quaff 是完整回合（CE Items.c:7633 apply → playerTurnEnded）  311ms
+     ✓ D1b read 是完整回合（CE Items.c:7633 apply → playerTurnEnded）  318ms
+     ✓ D1c eat 是完整回合（CE Items.c:7633 apply → playerTurnEnded）  302ms
+     ✓ D2 楼梯不消耗回合（CE useStairs 无 playerTurnEnded），但换层同步客观门  741ms
+     ✓ haste 在客观块内到期后，门对齐玩家剩余 tick（而非机械 +100）  414ms
+ ✓ src/test/p1_28_flag_channel.test.ts (14 tests) 7313ms
+     ✓ 对抗性①（验收核心）：火焰免疫的 Wisp 站在熔岩里连续多回合必须存活。Wisp 同时带 MONST_IMMUNE_TO_FIRE 与 MONST_FLIES，CE 里两道豁免齐备（Monsters.c:3917/3915 派生永久状态）。捕获的错误实现：改动前的 web——熔岩分支只查 abilities.has('immune_fire')（全库无写入者，恒 false），wisp 第一轮就被烧死（hp=0、char='%'）。  646ms
+     ✓ 对抗性②：只有 MONST_FLIES（无火免）的 vampire_bat 站熔岩也必须存活——CE 里 MONST_FLIES 派生永久 STATUS_LEVITATING（Monsters.c:3915-3916），熔岩条款的第一豁免就是悬浮。捕获的错误实现：只把 MONST_IMMUNE_TO_FIRE 接进判定、漏掉飞行豁免（或反向），bat 被烧死。  554ms
+     ✓ 对照组：既不免疫也不飞的 rat 站熔岩照样烧死——防止"把熔岩分支整体关掉"或"翻译层误把所有怪都派生豁免"的错误实现。  532ms
+     ✓ 对照组（P1-27 回归守卫）：MONST_INVULNERABLE 的 Warden of Yendor 站熔岩继续存活——本轮不得改坏 P1-27 补齐的第三条豁免。捕获的错误实现：重构熔岩分支时丢掉 isInvulnerable 条款。  520ms
+     ✓ 对抗性④：Wisp 站在燃烧格上不受伤——火免旗标在火焰地形处同样生效（CE：T_IS_FIRE → exposeCreatureToFire，STATUS_IMMUNE_TO_FIRE 直接return）。捕获的错误实现：改动前的 web——火焰分支的火免通道同样是死的abilities 查询，wisp 每轮被平扣 2 点。  572ms
+     ✓ 对照组：rat 站燃烧格当块先挂燃烧状态（7−1=6）、同块按 CE rand_range(1,3) 掉血——锁定火焰分支本身仍然工作（防止"顺手把火焰分支关掉"）。【F-2b 翻正】原断言为平扣 2（hp 10 → tick 2 → 6），随燃烧状态机到期。捕获的错误实现：①状态没挂上/火分支失效（hp 与状态均不动）；②退回平扣旧实现（伤害恒 2，脱离 1-3 支撑集的分布锁）；③时长写错（叠加实现烧几块后 >6）。  528ms
+     ✓ 对抗性⑤：MONST_INVULNERABLE 的 Warden 站燃烧格不受伤——CE exposeCreatureToFire 的 MONST_INVULNERABLE 豁免（Time.c:31），原 web 火焰分支没有这条。捕获的错误实现：只修旗标通道、漏补无敌豁免。  517ms
+     ✓ 对抗性⑥：旗标飞行的 vampire_bat 站燃烧格照样被点燃并掉血——CE 火焰地形不豁免悬浮生物（Time.c:527 无悬浮条款），原 web 的 !hasStatus('levitating') 豁免会让 bat 经派生悬浮状态获得 CE 没有的火免（本轮移除该豁免）。【F-2b 翻正】原断言为悬浮 tick 1 平扣 2；新事实：悬浮照样挂上燃烧状态并按 1-3 掉血。捕获的错误实现：恢复悬浮豁免（bat 拿不到燃烧状态、不掉血）。  514ms
+     ✓ 对抗性⑥（玩家侧）：悬浮药水状态下的玩家站燃烧格照样被点燃——CE 玩家悬浮踩火同样被 exposeCreatureToFire 点燃（Time.c:8085 玩家同条款）。【F-2b 翻正】原断言为悬浮玩家 tick 1 平扣 2；新事实同怪物侧：挂状态、同块 1-3 掉血。捕获的错误实现：怪物侧移除悬浮豁免、玩家侧残留（分支拆成两半），或任一侧恢复悬浮豁免。  516ms
+     ✓ 对抗性⑦：fiery bolt 的目标筛选必须把火免旗标怪排除在外——CE specificallyValidBoltTarget 读 target->status[STATUS_IMMUNE_TO_FIRE] （Monsters.c:2624），旗标怪恒有该状态。捕获的错误实现：改动前的 web——wisp 没有状态，FIRE bolt 视其为合法目标。  496ms
+     ✓ 对抗性⑧：消魔永久剥离飞行，随后接触熔岩致死  512ms
+     ✓ 对抗性⑨：快照往返后 wisp 的派生免疫必须存活、且在熔岩里继续存活——serializeMonster 不持久化 behaviorFlags（读档怪没有旗标），本条锁定"翻译成 statusDurations"方案对存档的存活属性。捕获的错误实现：改为"读取处直接查 behaviorFlags"的方案——读档重建的怪没有旗标，往返后熔岩死。  1403ms
+stdout | src/test/w_2_arcana_submission.test.ts > W-2 actual autoID (CE Items.c:5112-5119,5220-5413,5444-5465,5470-5567) > confirmed slow-speed casting runs real P2 advancement and locks repeated UI entry until completion
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_2_arcana_submission.test.ts (30 tests) 1413ms
+     ✓ confirmed slow-speed casting runs real P2 advancement and locks repeated UI entry until completion  1308ms
+stdout | src/test/p4_9_safety_map.test.ts > P4-9: safety map（怪物逃跑寻路） > T1 死胡同：贪心实现钻进死胡同口（陷阱实证），safety map 实现沿正确路线南下
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_3_bolt_trajectory.test.ts (30 tests) 52ms
+ ✓ src/test/u_07_monster_blink.test.ts (53 tests) 226ms
+stdout | src/test/w_15_shielding.test.ts > W-15 CE shield units, fixed-point formula, max and decay > objective scheduler: haste two half-actions/slow double-block, zero shield RNG
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/p4_9_safety_map.test.ts (8 tests) 4172ms
+     ✓ T1 死胡同：贪心实现钻进死胡同口（陷阱实证），safety map 实现沿正确路线南下  407ms
+     ✓ T2 双重扫描 + 数值变换的解析解：密封走廊值 = 27-x；符号反/漏饱和全灭  416ms
+     ✓ T3 IN_LOOP -=10（Time.c:1925-1927）：环路格直接减 10，且经第二次扫描传到非环路格  376ms
+     ✓ T4 惰性更新（Time.c:2616 闩锁 + 2618-2626 主动预更新 break）：一回合恰好一次  316ms
+     ✓ T5 察觉不到玩家的逃跑者用私有快照（Monsters.c:2380-2400 双路径），察觉后释放  313ms
+     ✓ T6 对照组：非逃跑状态不碰 safety map，行为与改动前一致  325ms
+     ✓ T7 决定性：同种子同局面 → 全图逐格相等 + 轨迹逐位相等（链路零随机）  683ms
+     ✓ T8 真实关卡势场：玩家站在开局楼梯上（打回原场景）也必须有梯度与逃跑方向  1331ms
+ ✓ src/engine/Combat/CombatFormulas.test.ts (31 tests | 4 todo) 34ms
+ ✓ src/test/w_15_shielding.test.ts (57 tests) 2063ms
+     ✓ objective scheduler: haste two half-actions/slow double-block, zero shield RNG  432ms
+     ✓ player fall uses reducer without calling takeDamage or introducing another death owner  328ms
+     ✓ falling monster keeps unspent shield while pending; activation monster still dies directly  404ms
+     ✓ ordinary melee uses armor-before-shield too  408ms
+     ✓ JSON roundtrip retains partial shields for player, active and dormant monsters plus half-block  445ms
+stdout | src/test/b_2_throwing.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/v_2b_9c_effects.test.ts > V-2b-9c electrical trigger, isolated from turn promotion > non-electric / off-ray crystals stay off; only the last direct lightning hit releases the cage
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/v_2b_9c_effects.test.ts (10 tests) 2248ms
+     ✓ non-electric / off-ray crystals stay off; only the last direct lightning hit releases the cage  430ms
+     ✓ a wall stops player electricity; monster SPARK lights the crystal and stops before its target  367ms
+     ✓ 51 mud horde really wakes on pickup; key and exit remain reachable  336ms
+     ✓ 54 pickup drives darkening, torch transition, ectoplasm and all dormant phantoms  384ms
+     ✓ 32 builds literal traps/pools and leaves a route to the altar and out  384ms
+     ✓ darkness reduces actual light while leaving the movement graph unchanged  335ms
+stdout | src/test/t_1_tail.test.ts > T-1 B：DF_CRYSTAL_WALL 接线（CE Globals.c:607 + GlobalsBrogue.c:115/151） > 行为终点：真实目录 × 真实管线，水晶墙在其深度带内真实出现（多 seed × D14-D26 + D40）
+[t_1] 水晶墙分布（3 seed × D14-D26+D40）:
+seed424242 D14	crystal=0
+seed424242 D15	crystal=0
+seed424242 D16	crystal=0
+seed424242 D17	crystal=0
+seed424242 D18	crystal=14
+seed424242 D19	crystal=0
+seed424242 D20	crystal=0
+seed424242 D21	crystal=22
+seed424242 D22	crystal=15
+seed424242 D23	crystal=0
+seed424242 D24	crystal=12
+seed424242 D25	crystal=18
+seed424242 D26	crystal=9
+seed424242 D40	crystal=590
+seed777 D14	crystal=0
+seed777 D15	crystal=0
+seed777 D16	crystal=0
+seed777 D17	crystal=0
+seed777 D18	crystal=0
+seed777 D19	crystal=0
+seed777 D20	crystal=14
+seed777 D21	crystal=0
+seed777 D22	crystal=0
+seed777 D23	crystal=24
+seed777 D24	crystal=0
+seed777 D25	crystal=16
+seed777 D26	crystal=16
+seed777 D40	crystal=565
+seed31337 D14	crystal=14
+seed31337 D15	crystal=0
+seed31337 D16	crystal=0
+seed31337 D17	crystal=0
+seed31337 D18	crystal=0
+seed31337 D19	crystal=0
+seed31337 D20	crystal=7
+seed31337 D21	crystal=10
+seed31337 D22	crystal=0
+seed31337 D23	crystal=0
+seed31337 D24	crystal=14
+seed31337 D25	crystal=16
+seed31337 D26	crystal=8
+seed31337 D40	crystal=536
+合计 1920 格 / 19 层有水晶
+
+ ✓ src/test/t_1_tail.test.ts (9 tests) 53043ms
+     ✓ AD-A1 对抗：frequency=0 的种类（enchant/life/strength/dart）从蓝图路径恰为 0（等概率实现 1/13~1/15 → 红）  2041ms
+     ✓ AD-A2 对抗：identify 占比贴 CE 加权值 30/133（等概率 1/13 在此翻红）  1358ms
+     ✓ AD-A3：类别抽取本身的 RNG 消耗——卷轴/药水恰 1（CE chooseKind 恰 1 次 rand_range；武器/护甲 ≥1，其附魔/符文模型另有 CE 原生掷骰）  531ms
+     ✓ 整局附魔卷轴/life/strength 总数：测量带（4 seed × D1-D26，与改造前同口径对比见报告）  36506ms
+     ✓ 行为终点：真实目录 × 真实管线，水晶墙在其深度带内真实出现（多 seed × D14-D26 + D40）  12478ms
+stdout | src/test/p4_6_attack_geometry.test.ts > P4-6 矛（MA_ATTACKS_PENETRATE） > 对抗性【头号风险·矛≠斧】：照 Rogue.h:2120 反了的注释实现成横扫会翻车 —— goblin 贴脸玩家、玩家身后直线上有盟友、斜角上另有盟友：正确的矛打玩家+身后线上目标、绝不碰斜角；做反成斧的实现必然扫到斜角探针。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/b_2_throwing.test.ts (16 tests) 5372ms
+     ✓ T1: 弹道中间的怪被命中/激怒，投掷物到不了目标格  408ms
+     ✓ T4: 墙挡弹道——投掷物停在墙前一格，不穿墙、不落墙格  343ms
+     ✓ T2: 命中骰存在——强制 miss 时零伤害（必中实现翻红）  324ms
+     ✓ T6: 麻痹药水碎裂亮种类 + 麻痹气云；坠门药水碎裂亮种类 + 铺洞  650ms
+     ✓ T7: 幻觉药水特例——默认不亮；实例被 detect magic 照过则亮  639ms
+     ✓ T8: 堆叠投掷递减 1，不得整包消失/整包落地  312ms
+     ✓ W1: 投掷击杀不消耗任何武器熟悉度（CE hitMonsterWithProjectileWeapon 不调 decrementWeaponAutoIDTimer）  323ms
+     ✓ S1c: 正常目标（必中）恰消耗 3 掷——命中骰+伤害骰+血迹骰  347ms
+stdout | src/test/p4_10_waypoint.test.ts > P4-10: waypoint 游荡导航 > T1 覆盖性（真实关卡，零改造）：扫描结束后不存在未覆盖格，且 wpCount 在 [1..40]
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_1_room_profile.test.ts > C-1 行为断言：真实生成关卡（5 种子 × D1-D26） > B4 对抗（corridorChance 写反/未消费）：浅层走廊附着显著多于深层
+[c_1] B4 走廊房均值：浅层(D1-5)=10.5/层，深层(D20-26)=1.3/层
+
+stdout | src/test/w_13_tunneling.test.ts > W-13 reflection, creatures, maps and persistence > current flags round-trip through a real snapshot; legacy saves clear flags instead of retaining another map
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_13_tunneling.test.ts (43 tests) 1467ms
+     ✓ current flags round-trip through a real snapshot; legacy saves clear flags instead of retaining another map  462ms
+ ✓ src/test/p4_10_waypoint.test.ts (7 tests) 6469ms
+     ✓ T1 覆盖性（真实关卡，零改造）：扫描结束后不存在未覆盖格，且 wpCount 在 [1..40]  3147ms
+     ✓ T2 增量刷新（Time.c:2710-2714）：每个玩家回合恰好重算一个 waypoint  519ms
+     ✓ T3 游荡怪确实在走向 waypoint：同目标下每步距离恰好 -1（严格下坡的解析推论）  386ms
+     ✓ T4 到达后换点（Monsters.c:3608-3615）：无下坡步 ⇒ 当前目标标记已访问并换点  360ms
+     ✓ T5 沉睡/不可移动/被囚禁怪格禁入（Architect.c:3019-3026）：一格峡谷挡住距离场，苏醒后放行  1089ms
+     ✓ T6 决定性：同种子 → 同一套 waypoint 坐标 + 同一游荡轨迹 + 同一刷新计数  657ms
+     ✓ T7 对照组：HUNTING 怪物行为完全不变，waypoint 系统零调用  308ms
+stdout | src/test/w_25_staff_catalog.test.ts > W-25 staff catalog > parses all twelve CE rows including non-contiguous wood slots, range, polarity, value and power
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/p4_6_attack_geometry.test.ts (14 tests) 9334ms
+     ✓ 对抗性【头号风险·矛≠斧】：照 Rogue.h:2120 反了的注释实现成横扫会翻车 —— goblin 贴脸玩家、玩家身后直线上有盟友、斜角上另有盟友：正确的矛打玩家+身后线上目标、绝不碰斜角；做反成斧的实现必然扫到斜角探针。  647ms
+     ✓ 对抗性【射程只有相邻】：CE 的矛是"直线穿透至多 2 格"（handleSpearAttacks range=2，Movement.c:923）——goblin 在 2 格直线外就应该隔空刺到玩家且原地不出手；只会相邻近战的实现会让 goblin 走进中间格、玩家不掉血。  510ms
+     ✓ 对抗性【攻击顺序写成正序】：CE Movement.c:1005-1009 人为倒序攻击（"so that spears of force can send both monsters flying"，先远后近）—— 2 格外的远处目标必须先于贴脸玩家挨打；正序实现的日志顺序相反。同时断言矛循环两个目标都挨打（CE 的矛攻击循环没有 dying 复查，远处目标死后贴脸的照样挨打）。  536ms
+     ✓ 对抗性【矛穿过了墙】：CE Movement.c:976-979 遇到阻挡通行/视线的格子立即 break —— goblin 与玩家之间隔一格墙时绝不能隔着墙刺到玩家；漏掉 break 的实现会把 2 格外的玩家隔墙刺穿。  615ms
+     ✓ 对抗性【头号风险·斧≠矛】：照 Rogue.h:2121 反了的注释实现成直线穿透会翻车 —— naga 贴脸玩家、斜角上有盟友、直线上 2 格外另有盟友：正确的斧扫到玩家+斜角、绝不碰 2 格外的目标；做反成矛的实现打不到斜角、反而会打到 2 格外的探针。两个探针双向锁死。  535ms
+     ✓ 横扫要扫满 8 个邻格里的多个敌人（CE buildHitList sweep 分支 i 走满 0..7，Combat.c:2072-2086）—— naga 被玩家 + 4 个盟友团团围住时 5 个 全部挨打；只打主目标或漏掉斜角的实现在这里翻车。  578ms
+     ✓ 对抗性【横扫误伤同阵营】：CE buildHitList sweep 分支的 monsterWillAttackTarget 复查（Combat.c:2079）+ 攻击循环复查（Monsters.c:3883）—— naga 旁边站着 同阵营同类时绝不扫它；漏掉 willAttackTarget 的实现会把同类一起砍了。  588ms
+     ✓ 射程边界：距玩家 5 格甩得到（getImpactLoc maxDistance=5，Items.c:4307），距 6 格甩不到只走近 —— 把射程写成无限的实现在 6 格翻车。  1435ms
+     ✓ 对抗性【射程写成 2】：距离 4 也必须甩得到（4 ≤ 射程 5）—— 只会 2 格内出手的实现（把鞭当相邻近战延伸一格）会让 salamander 走近而玩家满血。  793ms
+     ✓ 对抗性【不打第一个受阻点/打多个目标】：CE 的鞭只打 getImpactLoc 停下的那一个目标（Movement.c:888-894）—— 前方 2 格站着盟友、玩家在 4 格时，被抽的是挡弹的盟友、玩家毫发无损；跳过盟友直取玩家或双目标齐打的实现都会翻车。  463ms
+     ✓ 对照组：三旗标皆无的 rat 在矛的标志性站位下只打贴脸那一个目标 —— 身后线上与斜角的探针都毫发无损（任何几何"传染"都会在这里翻车）。  467ms
+     ✓ 对照组：rat 在 2 格直线外只走近、不攻击（普通怪没有远程几何）—— 把几何检查挂错到所有怪物身上的实现在这里翻车。  595ms
+     ✓ 旗标分发走 abilityFlags 而非种类白名单：注入 MA_ATTACKS_EXTEND 的 rat 在 4 格外甩鞭；注入 MA_ATTACKS_ALL_ADJACENT 的 rat 贴脸时扫掉斜角。（mutations.json 现无携带这三个旗标的变异，按 P4-5 的变异测试意图改为 直接注入 abilityFlags，验证的是同一条 hasAbility 分发路径。）  1569ms
+stdout | src/test/w_10_poison.test.ts > W-10 objective time, recovery and persistence > hasted: same 200 ticks despite different action count
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_10_poison.test.ts (38 tests) 4023ms
+     ✓ hasted: same 200 ticks despite different action count  413ms
+     ✓ normal: same 200 ticks despite different action count  373ms
+     ✓ slowed: same 200 ticks despite different action count  389ms
+     ✓ 50-tick action has no pulse, second completes the block; final poison pulse cannot regenerate  375ms
+     ✓ starvation still hurts while poisoned; lethal poison cannot be healed or relabelled starvation  326ms
+     ✓ JSON save/load retains both species doses, paused regen and half-block  598ms
+     ✓ normal hostile melee uses the same single dose as geometry  459ms
+     ✓ poison death drops loot/carried item, triggers death DF and removes corpse once at same turn end  347ms
+     ✓ G-3 gas stays direct terrain damage, never adds a dose or countdown  363ms
+     ✓ UI staff submission consumes once; cancel never poisons, confirms tick once and save keeps E separate  345ms
+ ✓ src/test/w_25_staff_catalog.test.ts (31 tests) 7215ms
+     ✓ 64 seeds × 1000 real kind/instance draws: 12 kinds, weighted frequency, uncapped E, per-item exact RNG  2691ms
+     ✓ staff_of_tunneling: real selection, cancel, confirmation, resource/time/autoID and actual effect  402ms
+     ✓ staff_of_blinking: real selection, cancel, confirmation, resource/time/autoID and actual effect  337ms
+     ✓ staff_of_entrancement: real selection, cancel, confirmation, resource/time/autoID and actual effect  332ms
+     ✓ known blink/tunnel aim at cells, entrancement targets eligible enemies; unknown kinds retain generic candidates  374ms
+     ✓ E2: known-capacity preview and actual travel; remote cursor allowed, cancel zero consumption  365ms
+     ✓ E3: known-capacity preview and actual travel; remote cursor allowed, cancel zero consumption  483ms
+     ✓ E8: known-capacity preview and actual travel; remote cursor allowed, cancel zero consumption  432ms
+     ✓ known lethal landing refuses before charge/time/RNG; fire immunity permits existing effect  420ms
+     ✓ real blink scroll resets 10000/E; absent timer uses 1000 and full timer freezes  324ms
+     ✓ known kind/unknown range prompts; rejecting cancels, hidden kind never reveals lava risk or E  330ms
+     ✓ real old seven-row mapping, empty charges/calls/known sets and timer survive load without spawn  401ms
+stdout | src/test/u_06_monster_damage.test.ts > U06 CE compiled staffDamage goldens and real contacts > 'SPARK' ignores caster accuracy/damage/status/riders and monster armor, consumes only CE dice
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/invented_content_pool.test.ts > D2 附魔卷轴送符文路径（enchantEquippedItem）：自创符文 0 出现 > 8000 次附魔：武器/护甲只授 CE 符文，vampirism/venom/vitality 出现 0 次
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/p1_42_secret_door_search.test.ts (14 tests) 60399ms
+     ✓ A1 半径 = strength/10（整除）：半径外密格零掷骰（捕获：半径误用 strength 本身）  596ms
+     ✓ A2 距离衰减系数 ×10：d = strength/10 处命中率恰为 0（捕获：衰减写成 ×1）  25783ms
+     ✓ A3 阻挡格 2/3 折扣：终搜对 d=6 密门的命中率 ≤ 85%（捕获：漏乘 2/3）  17799ms
+     ✓ A4 SEARCHED_FROM_HERE：同一格的自动搜索只发生一次（捕获：漏置位/漏检查）  772ms
+     ✓ A5 充能只按连续回合累积：隔回合清零、第 5 连搜恰好一次终搜播报（捕获：充能不要求连续）  1103ms
+     ✓ A6 可见性要求：隔墙密门零掷骰、终搜序列也搜不到（捕获：漏掉 playerCanDirectlySee）  9646ms
+     ✓ A7 percent ≤ 0 仍消耗一次抽取（RNG 流一致，CE Math.c:62 rand_percent 先抽后夹）  569ms
+     ✓ B2 行为留痕：移动本身不再触发任何密门掷骰——发现只来自自动/主动搜索  481ms
+     ✓ C2 留痕：陷阱的搜索发现不实现——搜索不改变 TRAP 格、不产出陷阱消息（KNOWN_TO_BE_TRAP_FREE 登记未实现）  519ms
+     ✓ C3 留痕：连通性闸门判据未被本轮触碰——analysisAllowsMove 仍放行密门  690ms
+     ✓ D1 同种子两次运行快照逐位相等（捕获：任何非确定性——如未播种随机数）  1443ms
+     ✓ D2 不同种子的原始生成层互不相同（反向 sanity：断言链路真的落在种子相关内容上）  992ms
+stdout | src/test/horde_terrain_spawn.test.ts > 修复验收 — 水生 horde 实际刷出 + 多 seed × D1-D26 统计（对照修复前 = 0 次） > 多 seed × D1-D26 全流程统计：水生 horde 出现次数 / 层数占比 / 无深水层数
+[horde_terrain_spawn] 8 seed × D1-D26（208 层）统计：
+  水生物种总出现次数：351；其中精确落在 spawnsIn 目标地形（horde 循环产物，修复前恒为 0）：244
+  非目标地形出现（笼子/蓝图/成员溢出等既有路径）：107
+  分物种：BOG_MONSTER×206(正确落格156) EEL×78(正确落格50) KRAKEN×26(正确落格26) SALAMANDER×24(正确落格7) NAGA×17(正确落格5)
+  有水生 horde 的层数：91/208 (43.8%)
+  有 WATER_DEEP 格的层数：83/208 (39.9%)
+  完全没有深水格的层数：125/208 (60.1%)
+  有 MUD 格的层数：148/208；有 LAVA 格的层数：59/208
+  非目标地形样本：seed=424242 D13 Bog monster@58,17 terrain=2 | seed=424242 D13 reflective Eel@29,8 terrain=10 | seed=424242 D13 Eel@29,9 terrain=10 | seed=424242 D13 Eel@29,10 terrain=6 | seed=424242 D14 Bog monster@19,9 terrain=2 | seed=424242 D15 Eel@70,15 terrain=6 | seed=424242 D15 Eel@71,14 terrain=6 | seed=424242 D15 Bog monster@65,17 terrain=99 | seed=424242 D15 Bog monster@64,16 terrain=11 | seed=424242 D15 Bog monster@65,16 terrain=11 | seed=424242 D15 Bog monster@66,16 terrain=11 | seed=424242 D16 Eel@1,18 terrain=6
+  分深度：
+D 1: 水生层 0/8
+D 2: 水生层 2/8
+D 3: 水生层 3/8
+D 4: 水生层 3/8
+D 5: 水生层 2/8
+D 6: 水生层 0/8
+D 7: 水生层 2/8
+D 8: 水生层 3/8
+D 9: 水生层 2/8
+D10: 水生层 1/8
+D11: 水生层 5/8
+D12: 水生层 3/8
+D13: 水生层 5/8
+D14: 水生层 4/8
+D15: 水生层 4/8
+D16: 水生层 5/8
+D17: 水生层 4/8
+D18: 水生层 7/8
+D19: 水生层 7/8
+D20: 水生层 5/8
+D21: 水生层 2/8
+D22: 水生层 2/8
+D23: 水生层 6/8
+D24: 水生层 3/8
+D25: 水生层 6/8
+D26: 水生层 5/8
+
+ ✓ src/test/horde_terrain_spawn.test.ts (10 tests) 138709ms
+     ✓ 深水地图上能找到 WATER_DEEP 落格，且 EEL horde 领袖确实落在深水格上  513ms
+     ✓ findTerrainSpawnLocation 只返回目标地形格，且排除玩家近旁与已占用格  553ms
+     ✓ 无深水格时返回 null（调用方据此在 failsafe 50 内重抽 horde）  519ms
+     ✓ D8 候选池含两条 EEL horde 且加权抽取可命中（修复的前提条件）  465ms
+     ✓ passableArcCount 弧段计数（CE Architect.c:171）：计数有界且与邻域可通行性一致  452ms
+     ✓ hordeFitsTerrain 口径不变：spawnsIn=null 恒真；DEEP_WATER 只认 WATER_DEEP  592ms
+     ✓ 仅作为无 spawnsIn horde 领袖出现的物种，经 horde 循环落格必在 FLOOR 上  25539ms
+     ✓ 多 seed × D1-D26：楼梯存在且可站立，floorTiles 路径物品（钥匙/护符）不落墙  35401ms
+     ✓ 盐渍深水图上重复 populateLevel：EEL horde 会被真实铺怪路径刷出且领袖在深水格  1242ms
+     ✓ 多 seed × D1-D26 全流程统计：水生 horde 出现次数 / 层数占比 / 无深水层数  73430ms
+stdout | src/test/b_1b_identification_persistence.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/u_14a_status_gaps.test.ts > U14a compiled CE weakness goldens and actual combat > strength potion clears layers immediately, keeps countdown one until tick
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/b_1b_identification_persistence.test.ts (13 tests) 5507ms
+     ✓ 存读档往返：种类识别、实例附魔态、充能上限知识、使用计数全部还原  571ms
+     ✓ 已鉴定剑读档后仍已鉴定；未鉴定剑仍未鉴定；两者互不污染  529ms
+     ✓ 绰号盖过风味；种类识别后真名短路、绰号必须消失  343ms
+     ✓ call 拒绝已识别种类（CE "you already know what that is."）  323ms
+     ✓ 空/纯空白文本清除绰号；新局不残留上一局绰号  875ms
+     ✓ 读卷轴只进待选、不落账；点选谁谁亮（"随机挑"的实现此处必红）  335ms
+     ✓ 两枚戒指读档后各归各槽；状态（熟悉度计数）不串  330ms
+     ✓ 读档与新局都复位 pendingIdentify  614ms
+     ✓ 持久化 / call / 选择 / 揭示全链零掷骰消耗  404ms
+stdout | src/test/w_9_directed_status.test.ts > W-9 observation and shared-entry boundaries > real P2 confirmation with haste reflected=false charges once; caster ticks follow actual recipient
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_9_directed_status.test.ts (77 tests) 1180ms
+     ✓ real P2 confirmation with haste reflected=false charges once; caster ticks follow actual recipient  615ms
+     ✓ real P2 confirmation with haste reflected=true charges once; caster ticks follow actual recipient  503ms
+ ✓ src/test/u_06_monster_damage.test.ts (37 tests) 11614ms
+     ✓ 'SPARK' ignores caster accuracy/damage/status/riders and monster armor, consumes only CE dice  373ms
+     ✓ 'FIRE' ignores caster accuracy/damage/status/riders and monster armor, consumes only CE dice  351ms
+     ✓ 'DRAGONFIRE' ignores caster accuracy/damage/status/riders and monster armor, consumes only CE dice  338ms
+     ✓ 'SPARK' ignores player armor and armor runics; no melee on-hit statuses  386ms
+     ✓ 'FIRE' ignores player armor and armor runics; no melee on-hit statuses  326ms
+     ✓ 'DRAGONFIRE' ignores player armor and armor runics; no melee on-hit statuses  329ms
+     ✓ FIRE: status immunity precedes RNG, preserves shield, emits immunity and ignites terrain  312ms
+     ✓ FIRE: flag immunity precedes RNG, preserves shield, emits immunity and ignites terrain  327ms
+     ✓ FIRE: invulnerable immunity precedes RNG, preserves shield, emits immunity and ignites terrain  308ms
+     ✓ DRAGONFIRE: player immunity precedes RNG, preserves shield, emits immunity and ignites terrain  467ms
+     ✓ DRAGONFIRE: status immunity precedes RNG, preserves shield, emits immunity and ignites terrain  411ms
+     ✓ DRAGONFIRE: flag immunity precedes RNG, preserves shield, emits immunity and ignites terrain  341ms
+     ✓ DRAGONFIRE: invulnerable immunity precedes RNG, preserves shield, emits immunity and ignites terrain  311ms
+     ✓ spark harms fire/weapon immune targets, but invulnerability consumes no roll and does not stop piercing  320ms
+     ✓ shield=100 absorbs once; shield-only hits still burn and release control  330ms
+     ✓ shield=25 absorbs once; shield-only hits still burn and release control  327ms
+     ✓ shield=20 absorbs once; shield-only hits still burn and release control  326ms
+     ✓ monster-origin reflected damage splits the surviving recipient after ignition  307ms
+     ✓ negation removes actual damage casting abilities; next turn cannot cast them  303ms
+     ✓ reflected spark kills caster and player in order; player death stops piercing and credits original caster  301ms
+     ✓ lethal flame does not ignite player or terrain after the death return  400ms
+     ✓ killed bloat reaches ordinary death DF/carried-drop cleanup exactly once  356ms
+     ✓ DISTANCE_ATTACK retains accuracy miss, weapon immunity, attack damage/riders and RNG  381ms
+     ✓ POISON_DART retains accuracy miss, weapon immunity, attack damage/riders and RNG  329ms
+     ✓ BE_ATTACK on an ASLEEP target short-circuits a false accuracy mock and wakes it  685ms
+ ✓ src/test/u_14a_status_gaps.test.ts (49 tests) 8111ms
+     ✓ strength potion clears layers immediately, keeps countdown one until tick  497ms
+     ✓ weakened runs on objective time for both actors  362ms
+     ✓ nauseous runs on objective time for both actors  349ms
+     ✓ darkness runs on objective time for both actors  336ms
+     ✓ magical_fear runs on objective time for both actors  356ms
+     ✓ darkness never changes the miner light/FOV input in U14a  333ms
+     ✓ terrain exposure: player  331ms
+     ✓ vomit replaces move with movement time and DF, not damage  300ms
+     ✓ vomit replaces melee with movement time and DF, not damage  403ms
+     ✓ vomit replaces entranced with movement time and DF, not damage  369ms
+     ✓ no vomit check for rest or failed wall move; failed nausea roll permits movement  345ms
+     ✓ monster physical intent vomits before melee and moving, not spell dispatch  367ms
+     ✓ fear cannot recover from full HP or attack when cornered; ordinary fleeing can  334ms
+     ✓ direct monster bolt clears magical fear but preserves ordinary fleeing; auto-negation sees fear  337ms
+     ✓ player, active/dormant monsters and clones round-trip amounts and independent maxStatus  619ms
+     ✓ magical fleeing permits summoning but cannot cast attack bolts  716ms
+stdout | src/test/v_2b_9d_dungeon_profile.test.ts > V-2b-9d redesign algorithm, not a floor fill > CE 13 really builds, materializes reachable rewards and preserves the shrunken machine-cell contract
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/p1_31_35_placement_snapshot.test.ts > P1-31: 进层落位避开楼梯（CE RogueMain.c:817-869） > T1 出生态不站楼梯：多种子地形码实测，格可通行、无怪、与楼梯正交邻接
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/v_2b_9d_dungeon_profile.test.ts (11 tests) 5068ms
+     ✓ DP_GOBLIN_WARREN builds separated rooms with its unadjusted room-type distribution  369ms
+     ✓ DP_SENTINEL_SANCTUARY builds separated rooms with its unadjusted room-type distribution  542ms
+     ✓ CE 13 really builds, materializes reachable rewards and preserves the shrunken machine-cell contract  1809ms
+     ✓ CE 14 really builds, materializes reachable rewards and preserves the shrunken machine-cell contract  2266ms
+stdout | src/test/c_1_room_profile.test.ts > C-1 行为断言：真实生成关卡（5 种子 × D1-D26） > B5 房型分布随深度变化（行为）：浅层十字房主导、深层洞穴主导
+[c_1] B5 浅层(D1-10, n=1800)：十字 40.2% 洞穴 6.6% | 深层(D17-26, n=1800)：十字 18.4% 洞穴 33.2%
+
+ ✓ src/test/p1_31_35_placement_snapshot.test.ts (10 tests) 14062ms
+     ✓ T1 出生态不站楼梯：多种子地形码实测，格可通行、无怪、与楼梯正交邻接  3526ms
+     ✓ T2 方向序 = CE Rogue.h:413-422（北>南>西>东）：十字舞台必落北格  528ms
+     ✓ T3 4 邻域全不合格 → 兜底搜索：密封舞台唯一合格格在外环，必被找到  736ms
+     ✓ T4 真实下潜/爬回两条进层路径：落位不站楼梯且正交邻接目标楼梯  918ms
+     ✓ T5 CE 不可达态锁死：玩家被摆上楼梯 → CE 顺序必然平图 {-111,30000}、方向率 0  1220ms
+     ✓ T6 T8 等价（P4-9 零改造关卡梯度断言）：玩家不站楼梯的真实关卡必有梯度  1427ms
+     ✓ T7 跨局读档：loopMap 必须与读入网格的 analyzeLoopMap 逐格相等  1115ms
+     ✓ T8 存档往返：自往返 + 跨局，loopMap 与重算结果逐格相等  1797ms
+     ✓ T9 跨局读档：waypoint 必须已按读入网格重建（与显式重建一致且非空）  1670ms
+     ✓ T10 跨局读档：气味图重置（turnNumber 复位、陈局气味轨迹清零）  1122ms
+stdout | src/test/v_1a_blueprint_items.test.ts > V-1a B：行为终点（整局下移） > T4 蓝图路径零直投：整局无一次 _random_good_ 抽取、蓝图产出不含 enchanting/life/strength
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/w_16_conjuration.test.ts > W-16 player binding, AI, first action, and real death > first wait = 101 ticks under player action cost 50, then normal 50-tick movement
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_16_conjuration.test.ts (45 tests) 4477ms
+     ✓ first wait = 101 ticks under player action cost 50, then normal 50-tick movement  340ms
+     ✓ first wait = 101 ticks under player action cost 100, then normal 50-tick movement  322ms
+     ✓ first wait = 101 ticks under player action cost 200, then normal 50-tick movement  380ms
+     ✓ 200 objective ticks do not expire a blade or settle loot, kills, death DF, or die  379ms
+     ✓ awake enemies retaliate against an adjacent blade  384ms
+     ✓ hunting enemy prefers an accessible adjacent player over a summoned blade  379ms
+     ✓ JSON restores actual species despite translated name, ally/binding/AI, ticks, flying and negate vulnerability  778ms
+     ✓ dormant and test-room restoration use the same tagged blade payload  657ms
+     ✓ down/up stairs leave blades alive on their original cached level, no follower/death/loot path  342ms
+     ✓ real UI commit cancels without mutation, then spends one charge, identifies and leaves three waiting blades  335ms

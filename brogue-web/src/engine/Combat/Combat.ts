@@ -281,33 +281,26 @@ export class CombatSystem {
         const applyTo = defender;
         if (damage > 0) {
             const hpDamage = applyTo.absorbShieldDamage(damage);
-            // --- P4-5: MA_TRANSFERENCE (Combat.c:1849-1871, inflictDamage()) ---
-            // 前置条件：defender（这里是实际承伤对象 applyTo，对应 CE reflectBolt
-            // 换靶后传进 inflictDamage 的 defender）不是 MONST_INANIMATE/
-            // MONST_INVULNERABLE。transferenceAmount = min(穿盾后的 damage, 承伤对象当前HP)
-            // ——不能超过对方剩余血量；再按"攻击者是否是盟友"取 40%/90%（整数除法，
-            // 向零截断，与 C 的 short 除法同口径）。复核结论（写入报告）：CE
-            // `attacker->currentHP += transferenceAmount` 紧跟着只有玩家血量
-            // 归零的判断，没有 maxHP 上限——这里照实现，不做 clamp。
-            // 玩家戒指 rogue.transference 不在本轮范围，只接怪物/变异的 MA_TRANSFERENCE。
-            if (attacker instanceof Monster && attacker.hasAbility('MA_TRANSFERENCE') &&
-                !(applyTo instanceof Monster && (applyTo.hasBehavior('MONST_INANIMATE') || applyTo.isInvulnerable()))) {
-                const cappedAmount = Math.min(hpDamage, applyTo.hp);
-                const transferAmount = attacker.isAlly
-                    ? Math.trunc(cappedAmount * 4 / 10)  // allies: 40% recovery rate
-                    : Math.trunc(cappedAmount * 9 / 10); // enemies: 90% recovery rate
-                attacker.hp += transferAmount; // 有意不 clamp 到 maxHp，见上方注释
-            }
+            CombatSystem.transferMonsterHealth(attacker, applyTo, hpDamage);
             applyTo.takeDamage(hpDamage, true); // already passed through the shield exactly once
             if (poisonDuration > 0) applyTo.addPoison(poisonDuration, 1);
         }
 
         if (isWeaponAttack && defender.hp > 0 && damage > 0 && attacker instanceof Monster && attacker.hasAbility('MA_CAUSES_WEAKNESS')
-            && !(defender instanceof Monster && (defender.hasBehavior('MONST_INANIMATE') || defender.isInvulnerable()))) {
+            && !(defender instanceof Monster && (defender.hasCEBehavior('MONST_INANIMATE') || defender.isInvulnerable()))) {
             defender.weaken(300); // GlobalsBrogue.c:onHitWeakenDuration, survivor gate; damage is the pre-shield roll.
         }
 
         return { damage, weaponName, hit: true, backstab, lunge: lungeAttack, triggeredRunic };
+    }
+
+    /** CE inflictDamage (Combat.c:1847-1871), after shielding and before
+     * subtracting HP. The original attacker owns reflected damage; no maxHP cap.
+     * Environment/poison ticks have no attacker and do not call this helper. */
+    public static transferMonsterHealth(attacker: Creature, defender: Creature, hpDamage: number): void {
+        if (!(attacker instanceof Monster) || !attacker.hasAbility('MA_TRANSFERENCE')
+            || (defender instanceof Monster && (defender.hasCEBehavior('MONST_INANIMATE') || defender.isInvulnerable()))) return;
+        attacker.hp += Math.trunc(Math.min(hpDamage, defender.hp) * (attacker.isAlly ? 4 : 9) / 10);
     }
 
     /**

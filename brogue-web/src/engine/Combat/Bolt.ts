@@ -168,7 +168,7 @@ export function getBoltForItem(identityId: string): BoltConfig | undefined {
 
 // ----- Monster-cast bolt metadata (P4-1b) -----
 //
-// Execution subset of the CE catalog, preserving the P4-1b routes. Full CE
+// Native monster bolts plus the U09 learnable catalog identities. Full CE
 // metadata in BoltCatalog is not permission to cast every catalog entry.
 // U08 SPIDERWEB / ANCIENT_SPIRIT_VINES execute BE_NONE through their terrain DFs;
 // BLINKING remains filtered by Monster.tryUseBolt. WHIP keeps its weapon route.
@@ -179,7 +179,7 @@ export interface MonsterBoltMeta {
     targetAllies: boolean;
     targetEnemies: boolean;
     fiery: boolean;
-    /** CE catalog value; monster damage still uses the legacy CombatSystem.attack. */
+    /** CE catalog value: BE_DAMAGE uses staffDamage; BE_ATTACK uses attack. */
     magnitude: number;
 }
 
@@ -211,6 +211,18 @@ export const MONSTER_BOLT_TABLE: Record<string, MonsterBoltMeta> = {
     SLOW_2: monsterBoltMeta(CEBoltType.SLOW_2, BoltEffect.SLOW),
     SPIDERWEB: monsterBoltMeta(CEBoltType.SPIDERWEB, BoltEffect.NONE),
     ANCIENT_SPIRIT_VINES: monsterBoltMeta(CEBoltType.ANCIENT_SPIRIT_VINES, BoltEffect.NONE),
+    TELEPORT: monsterBoltMeta(CEBoltType.TELEPORT, BoltEffect.TELEPORT),
+    SLOW: monsterBoltMeta(CEBoltType.SLOW, BoltEffect.SLOW),
+    POLYMORPH: monsterBoltMeta(CEBoltType.POLYMORPH, BoltEffect.POLYMORPH),
+    DOMINATION: monsterBoltMeta(CEBoltType.DOMINATION, BoltEffect.DOMINATION),
+    INVISIBILITY: monsterBoltMeta(CEBoltType.INVISIBILITY, BoltEffect.INVISIBILITY),
+    LIGHTNING: monsterBoltMeta(CEBoltType.LIGHTNING, BoltEffect.LIGHTNING),
+    POISON: monsterBoltMeta(CEBoltType.POISON, BoltEffect.POISON),
+    ENTRANCEMENT: monsterBoltMeta(CEBoltType.ENTRANCEMENT, BoltEffect.ENTRANCEMENT),
+    CONJURATION: monsterBoltMeta(CEBoltType.CONJURATION, BoltEffect.CONJURATION),
+    // CE learnable, but specificallyValidBoltTarget explicitly forbids casting.
+    TUNNELING: monsterBoltMeta(CEBoltType.TUNNELING, BoltEffect.TUNNELING),
+    OBSTRUCTION: monsterBoltMeta(CEBoltType.OBSTRUCTION, BoltEffect.OBSTRUCTION),
 };
 
 /** 已知但本轮故意不实现的 CE bolt 名（供测试显式断言，防止悄悄新增未登记名字）。 */

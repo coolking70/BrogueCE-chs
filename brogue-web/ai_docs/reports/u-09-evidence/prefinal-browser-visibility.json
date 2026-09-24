@@ -1,0 +1,729 @@
+{
+  "states": [
+    {
+      "name": "teleport",
+      "state": {
+        "caster": {
+          "id": 22,
+          "typeId": "rat",
+          "hp": 6,
+          "loc": {
+            "x": 16,
+            "y": 10
+          },
+          "isAlly": true,
+          "status": {},
+          "weakness": 0,
+          "poison": 0,
+          "bolts": [
+            "TELEPORT"
+          ],
+          "newPowerCount": 2,
+          "totalPowerCount": 3,
+          "visible": true
+        },
+        "target": {
+          "id": 23,
+          "typeId": "rat",
+          "hp": 100,
+          "loc": {
+            "x": 48,
+            "y": 25
+          },
+          "isAlly": false,
+          "status": {},
+          "weakness": 0,
+          "poison": 0,
+          "bolts": [],
+          "newPowerCount": 0,
+          "totalPowerCount": 0,
+          "visible": false
+        },
+        "blades": [],
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 300,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 16,
+              "y": 10,
+              "hp": 6,
+              "maxHp": 6,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 2,
+              "totalPowerCount": 3,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_ALWAYS_USE_ABILITY",
+                "MONST_ALWAYS_HUNTING"
+              ],
+              "abilityFlags": [],
+              "bolts": [
+                "TELEPORT"
+              ],
+              "typeId": "rat",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        }
+      }
+    },
+    {
+      "name": "slow",
+      "state": {
+        "caster": {
+          "id": 22,
+          "typeId": "rat",
+          "hp": 6,
+          "loc": {
+            "x": 17,
+            "y": 10
+          },
+          "isAlly": true,
+          "status": {},
+          "weakness": 0,
+          "poison": 0,
+          "bolts": [
+            "SLOW"
+          ],
+          "newPowerCount": 2,
+          "totalPowerCount": 3,
+          "visible": true
+        },
+        "target": {
+          "id": 23,
+          "typeId": "rat",
+          "hp": 100,
+          "loc": {
+            "x": 13,
+            "y": 10
+          },
+          "isAlly": false,
+          "status": {
+            "slowed": 49
+          },
+          "weakness": 0,
+          "poison": 0,
+          "bolts": [],
+          "newPowerCount": 0,
+          "totalPowerCount": 0,
+          "visible": true
+        },
+        "blades": [],
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 300,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 17,
+              "y": 10,
+              "hp": 6,
+              "maxHp": 6,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 2,
+              "totalPowerCount": 3,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_ALWAYS_USE_ABILITY",
+                "MONST_ALWAYS_HUNTING"
+              ],
+              "abilityFlags": [],
+              "bolts": [
+                "SLOW"
+              ],
+              "typeId": "rat",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "老鼠",
+              "x": 13,
+              "y": 10,
+              "hp": 100,
+              "maxHp": 100,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 9900,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        }
+      }
+    },
+    {
+      "name": "polymorph",
+      "state": {
+        "caster": {
+          "id": 22,
+          "typeId": "rat",
+          "hp": 6,
+          "loc": {
+            "x": 17,
+            "y": 10
+          },
+          "isAlly": true,
+          "status": {},
+          "weakness": 0,
+          "poison": 0,
+          "bolts": [
+            "POLYMORPH"
+          ],
+          "newPowerCount": 2,
+          "totalPowerCount": 3,
+          "visible": true
+        },
+        "target": {
+          "id": 23,
+          "typeId": "vampire",
+          "hp": 75,
+          "loc": {
+            "x": 13,
+            "y": 10
+          },
+          "isAlly": false,
+          "status": {},
+          "weakness": 0,
+          "poison": 0,
+          "bolts": [
+            "BLINKING",
+            "DISCORD"
+          ],
+          "newPowerCount": 0,
+          "totalPowerCount": 0,
+          "visible": true
+        },
+        "blades": [],
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 300,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 17,
+              "y": 10,
+              "hp": 6,
+              "maxHp": 6,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 2,
+              "totalPowerCount": 3,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_ALWAYS_USE_ABILITY",
+                "MONST_ALWAYS_HUNTING"
+              ],
+              "abilityFlags": [],
+              "bolts": [
+                "POLYMORPH"
+              ],
+              "typeId": "rat",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "吸血鬼",
+              "x": 13,
+              "y": 10,
+              "hp": 75,
+              "maxHp": 75,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 120,
+              "defense": 60,
+              "damage": "1d12+3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_FLEES_NEAR_DEATH",
+                "MONST_MALE"
+              ],
+              "abilityFlags": [
+                "MA_TRANSFERENCE",
+                "MA_DF_ON_DEATH",
+                "MA_CAST_SUMMON",
+                "MA_ENTER_SUMMONS"
+              ],
+              "bolts": [
+                "BLINKING",
+                "DISCORD"
+              ],
+              "typeId": "vampire",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 9900,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        }
+      }
+    },
+    {
+      "name": "domination",
+      "state": {
+        "caster": {
+          "id": 22,
+          "typeId": "rat",
+          "hp": 6,
+          "loc": {
+            "x": 16,
+            "y": 10
+          },
+          "isAlly": true,
+          "status": {},
+          "weakness": 0,
+          "poison": 0,
+          "bolts": [
+            "DOMINATION"
+          ],
+          "newPowerCount": 2,
+          "totalPowerCount": 3,
+          "visible": true
+        },
+        "target": {
+          "id": 23,
+          "typeId": "rat",
+          "hp": 1,
+          "loc": {
+            "x": 13,
+            "y": 10
+          },
+          "isAlly": true,
+          "status": {},
+          "weakness": 0,
+          "poison": 0,
+          "bolts": [],
+          "newPowerCount": 0,
+          "totalPowerCount": 0,
+          "visible": true
+        },
+        "blades": [],
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 300,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 16,
+              "y": 10,
+              "hp": 6,
+              "maxHp": 6,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 2,
+              "totalPowerCount": 3,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_ALWAYS_USE_ABILITY",
+                "MONST_ALWAYS_HUNTING"
+              ],
+              "abilityFlags": [],
+              "bolts": [
+                "DOMINATION"
+              ],
+              "typeId": "rat",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "老鼠",
+              "x": 13,
+              "y": 10,
+              "hp": 1,
+              "maxHp": 100,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": true,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 9900,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        }
+      }
+    },
+    {
+      "name": "invisibility",
+      "state": {
+        "caster": {
+          "id": 22,
+          "typeId": "rat",
+          "hp": 6,
+          "loc": {
+            "x": 16,
+            "y": 10
+          },
+          "isAlly": false,
+          "status": {},
+          "weakness": 0,
+          "poison": 0,
+          "bolts": [
+            "INVISIBILITY"
+          ],
+          "newPowerCount": 2,
+          "totalPowerCount": 3,
+          "visible": true
+        },
+        "target": {
+          "id": 23,
+          "typeId": "rat",
+          "hp": 100,
+          "loc": {
+            "x": 13,
+            "y": 10
+          },
+          "isAlly": false,
+          "status": {
+            "invisible": 149
+          },
+          "weakness": 0,
+          "poison": 0,
+          "bolts": [],
+          "newPowerCount": 0,
+          "totalPowerCount": 0,
+          "visible": true
+        },
+        "blades": [],
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 300,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 16,
+              "y": 10,
+              "hp": 6,
+              "maxHp": 6,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 2,
+              "totalPowerCount": 3,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_ALWAYS_USE_ABILITY",
+                "MONST_ALWAYS_HUNTING"
+              ],
+              "abilityFlags": [],
+              "bolts": [
+                "INVISIBILITY"
+              ],
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "老鼠",
+              "x": 13,
+              "y": 10,
+              "hp": 100,
+              "maxHp": 100,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 9900,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        }
+      }
+    }
+  ],
+  "errors": []
+}

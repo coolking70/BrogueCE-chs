@@ -1,0 +1,64 @@
+{
+  "methodChecks": {
+    "src/engine/Core/Game.ts": {
+      "unchanged": 330,
+      "differences": [
+        "boltLivingTarget",
+        "applyBoltEffect",
+        "castMonsterBolt",
+        "applyMonsterBoltHit"
+      ],
+      "added": [
+        "teleportBoltTarget",
+        "polymorphBoltTarget",
+        "dominateBoltTarget",
+        "conjureBladesAt"
+      ]
+    },
+    "src/entities/Monster.ts": {
+      "unchanged": 95,
+      "differences": [
+        "specificallyValidBoltTarget",
+        "syncFlagDerivedStatuses",
+        "isStatusPermanent",
+        "canBePoisoned"
+      ],
+      "added": [
+        "hasCEBehavior"
+      ]
+    },
+    "src/engine/Combat/Combat.ts": {
+      "unchanged": 2,
+      "differences": [
+        "attack"
+      ],
+      "added": [
+        "transferMonsterHealth"
+      ]
+    }
+  },
+  "nativeBoltEntriesUnchanged": 15,
+  "newBoltEntries": 11,
+  "changed": [
+    "src/entities/Monster.ts",
+    "src/engine/Core/Game.ts",
+    "src/engine/Combat/BoltCatalog.test.ts",
+    "src/engine/Combat/Bolt.ts",
+    "src/engine/Combat/Combat.ts"
+  ],
+  "protectedUnchanged": 375,
+  "assertionChanges": {
+    "removed": [
+      "expect(Object.keys(MONSTER_BOLT_TABLE)).toEqual('SHIELDING HASTE SPARK DISTANCE_ATTACK HEALING BLINKING NEGATION DISCORD POISON_DART FIRE DRAGONFIRE BECKONING SLOW_2 SPIDERWEB ANCIENT_SPIRIT_VINES'.split(' '))",
+      "expect(Object.values(MONSTER_BOLT_TABLE).map(({ targetAllies, targetEnemies, fiery, magnitude }) => [targetAllies, targetEnemies, fiery, magnitude])).toEqual([\n    [true, false, false, 5], [true, false, false, 2], [false, true, false, 1], [false, true, false, 1],\n    [true, false, false, 5], [false, false, false, 5], [false, true, false, 10], [false, true, false, 10],\n    [false, true, false, 1], [false, true, true, 4], [false, true, true, 18], [false, true, false, 10],\n    [false, true, false, 2], [false, true, false, 10], [false, true, false, 5],\n])"
+    ],
+    "added": [
+      "expect(Object.keys(MONSTER_BOLT_TABLE)).toEqual('SHIELDING HASTE SPARK DISTANCE_ATTACK HEALING BLINKING NEGATION DISCORD POISON_DART FIRE DRAGONFIRE BECKONING SLOW_2 SPIDERWEB ANCIENT_SPIRIT_VINES TELEPORT SLOW POLYMORPH DOMINATION INVISIBILITY LIGHTNING POISON ENTRANCEMENT CONJURATION TUNNELING OBSTRUCTION'.split(' '))",
+      "expect(Object.values(MONSTER_BOLT_TABLE).map(({ targetAllies, targetEnemies, fiery, magnitude }) => [targetAllies, targetEnemies, fiery, magnitude])).toEqual([\n    [true, false, false, 5], [true, false, false, 2], [false, true, false, 1], [false, true, false, 1],\n    [true, false, false, 5], [false, false, false, 5], [false, true, false, 10], [false, true, false, 10],\n    [false, true, false, 1], [false, true, true, 4], [false, true, true, 18], [false, true, false, 10],\n    [false, true, false, 2], [false, true, false, 10], [false, true, false, 5],\n    [false, true, false, 10], [false, true, false, 10], [false, true, false, 10], [false, true, false, 10],\n    [true, false, false, 10], [false, true, false, 10], [false, true, false, 10], [false, true, false, 10],\n    [false, true, false, 10], [false, false, false, 10], [false, false, false, 10],\n])",
+      "expect(MONSTER_BOLT_TABLE.POLYMORPH!.effect).toBe(BoltEffect.POLYMORPH)",
+      "expect(MONSTER_BOLT_TABLE.POLYMORPH!.effect)"
+    ]
+  },
+  "generationBaselineSha256": "5f51e8848a5874ff41cecaa04a7b39de21fc3871f8a0142b32f0499f3ed9fba1",
+  "lockSha256": "3d9027a9ff655ec834674ebbf4b8ff0c00257b8906a375270163ecba5f53e253"
+}

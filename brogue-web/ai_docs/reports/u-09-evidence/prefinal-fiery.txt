@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/e177/brogue/brogue-web
+
+ ❯ src/test/u_09_learning_consumers.test.ts (72 tests | 1 failed) 7662ms
+     × an already-FIERY recipient rederives permanent burning after learning another power, without making FIERY learnable 109ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_09_learning_consumers.test.ts > U09 six installed flags: permanent status and passive consumers > an already-FIERY recipient rederives permanent burning after learning another power, without making FIERY learnable
+AssertionError: expected undefined to be 1000 // Object.is equality
+
+- Expected:
+1000
+
++ Received:
+undefined
+
+ ❯ src/test/u_09_learning_consumers.test.ts:247:70
+    245|         m.behaviorFlags.add('MONST_REFLECT_50');m.syncFlagDerivedStatu…
+    246|         for(let i=0;i<10;i++)m.tickStatuses();
+    247|         expect((m.statusDurations as Record<string,number>).burning).t…
+       |                                                                      ^
+    248|         expect([m.newPowerCount,m.totalPowerCount]).toEqual([0,0]);
+    249|         negate(g,m);m.syncFlagDerivedStatuses(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 113 passed (114)
+   Start at  00:25:46
+   Duration  8.29s (transform 658ms, setup 0ms, import 1.07s, tests 7.98s, environment 0ms)
+

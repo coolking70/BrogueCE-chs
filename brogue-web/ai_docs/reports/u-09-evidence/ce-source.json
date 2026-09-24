@@ -1,0 +1,511 @@
+{
+  "sources": {
+    "brogue/Rogue.h": "daa86933bf745f848fc56b4e697c941c78d3a3c6f2ff2744ff4c9daf589c7256",
+    "brogue/Monsters.c": "1a311c884d2d22ea09009b2052c2036abe94e9a235279724cd0e86740b55c68f",
+    "brogue/Combat.c": "44aef978d782926ca41edd9c933086ad13b5687f25f97f6b1b662b023d89bda3",
+    "brogue/Items.c": "9767aedb42535cc2a78ec3b41d2cd7ebfb7efee25e338a4609fa6e8e15faab90",
+    "brogue/PowerTables.c": "9254b4a7f1b33ccdf4d1894c20d53b481dd06e14caffb1cfa47fe4a094718a4d",
+    "variants/GlobalsBrogue.c": "e8903aede4fad21b7823ccc547cf4219c76e87e061543188d8d90141cebffa1e"
+  },
+  "predicateSha256": "f5fed3973e164c33561569e161a689d6dd1f674d6e2fcf61b283c949424ff7b8",
+  "catalog": [
+    {
+      "name": "TELEPORT",
+      "effect": "BE_TELEPORT",
+      "magnitude": 10,
+      "forbidden": "MONST_IMMOBILE",
+      "flags": "(BF_TARGET_ENEMIES)",
+      "learnable": true,
+      "negatable": true,
+      "source": "{\"teleportation spell\",     \"casts a teleport spell\",       \"can teleport other creatures\",             0,      NULL,           &blue,              BE_TELEPORT,    10,             0,          0,          MONST_IMMOBILE,             (BF_TARGET_ENEMIES)},",
+      "initialSources": []
+    },
+    {
+      "name": "SLOW",
+      "effect": "BE_SLOW",
+      "magnitude": 10,
+      "forbidden": "MONST_INANIMATE",
+      "flags": "(BF_TARGET_ENEMIES)",
+      "learnable": true,
+      "negatable": true,
+      "source": "{\"slowing spell\",           \"casts a slowing spell\",        \"can slow $HISHER enemies\",                 0,      NULL,           &green,             BE_SLOW,        10,             0,          0,          MONST_INANIMATE,            (BF_TARGET_ENEMIES)},",
+      "initialSources": []
+    },
+    {
+      "name": "POLYMORPH",
+      "effect": "BE_POLYMORPH",
+      "magnitude": 10,
+      "forbidden": "MONST_INANIMATE",
+      "flags": "(BF_TARGET_ENEMIES)",
+      "learnable": true,
+      "negatable": true,
+      "source": "{\"polymorph spell\",         \"casts a polymorphism spell\",   \"can polymorph other creatures\",            0,      NULL,           &purple,            BE_POLYMORPH,   10,             0,          0,          MONST_INANIMATE,            (BF_TARGET_ENEMIES)},",
+      "initialSources": []
+    },
+    {
+      "name": "NEGATION",
+      "effect": "BE_NEGATION",
+      "magnitude": 10,
+      "forbidden": "0",
+      "flags": "(BF_TARGET_ENEMIES)",
+      "learnable": true,
+      "negatable": true,
+      "source": "{\"negation magic\",          \"casts a negation spell\",       \"can cast negation\",                        0,      NULL,           &pink,              BE_NEGATION,    10,             0,          0,          0,                          (BF_TARGET_ENEMIES)},",
+      "initialSources": [
+        "dar_priestess",
+        "pixie"
+      ]
+    },
+    {
+      "name": "DOMINATION",
+      "effect": "BE_DOMINATION",
+      "magnitude": 10,
+      "forbidden": "MONST_INANIMATE",
+      "flags": "(BF_TARGET_ENEMIES)",
+      "learnable": true,
+      "negatable": true,
+      "source": "{\"domination spell\",        \"casts a domination spell\",     \"can dominate other creatures\",             0,      NULL,           &dominationColor_Brogue,   BE_DOMINATION,  10,             0,          0,          MONST_INANIMATE,            (BF_TARGET_ENEMIES)},",
+      "initialSources": []
+    },
+    {
+      "name": "BECKONING",
+      "effect": "BE_BECKONING",
+      "magnitude": 10,
+      "forbidden": "MONST_IMMOBILE",
+      "flags": "(BF_TARGET_ENEMIES)",
+      "learnable": true,
+      "negatable": true,
+      "source": "{\"beckoning spell\",         \"casts a beckoning spell\",      \"can cast beckoning\",                       0,      NULL,           &beckonColor_Brogue,       BE_BECKONING,   10,             0,          0,          MONST_IMMOBILE,             (BF_TARGET_ENEMIES)},",
+      "initialSources": [
+        "mirrored_totem"
+      ]
+    },
+    {
+      "name": "PLENTY",
+      "effect": "BE_PLENTY",
+      "magnitude": 10,
+      "forbidden": "MONST_INANIMATE",
+      "flags": "(BF_TARGET_ALLIES | BF_NOT_LEARNABLE)",
+      "learnable": false,
+      "negatable": true,
+      "source": "{\"spell of plenty\",         \"casts a spell of plenty\",      \"can duplicate other creatures\",            0,      NULL,           &rainbow,           BE_PLENTY,      10,             0,          0,          MONST_INANIMATE,            (BF_TARGET_ALLIES | BF_NOT_LEARNABLE)},",
+      "initialSources": []
+    },
+    {
+      "name": "INVISIBILITY",
+      "effect": "BE_INVISIBILITY",
+      "magnitude": 10,
+      "forbidden": "MONST_INANIMATE",
+      "flags": "(BF_TARGET_ALLIES)",
+      "learnable": true,
+      "negatable": true,
+      "source": "{\"invisibility magic\",      \"casts invisibility magic\",     \"can turn creatures invisible\",             0,      NULL,           &darkBlue,          BE_INVISIBILITY, 10,            0,          0,          MONST_INANIMATE,            (BF_TARGET_ALLIES)},",
+      "initialSources": []
+    },
+    {
+      "name": "EMPOWERMENT",
+      "effect": "BE_EMPOWERMENT",
+      "magnitude": 10,
+      "forbidden": "MONST_INANIMATE",
+      "flags": "(BF_TARGET_ALLIES | BF_NOT_LEARNABLE)",
+      "learnable": false,
+      "negatable": true,
+      "source": "{\"empowerment sorcery\",     \"casts empowerment\",            \"can cast empowerment\",                     0,      NULL,           &empowermentColor_Brogue,  BE_EMPOWERMENT, 10,             0,          0,          MONST_INANIMATE,            (BF_TARGET_ALLIES | BF_NOT_LEARNABLE)},",
+      "initialSources": []
+    },
+    {
+      "name": "LIGHTNING",
+      "effect": "BE_DAMAGE",
+      "magnitude": 10,
+      "forbidden": "0",
+      "flags": "(BF_PASSES_THRU_CREATURES | BF_TARGET_ENEMIES | BF_ELECTRIC)",
+      "learnable": true,
+      "negatable": true,
+      "source": "{\"lightning\",               \"casts lightning\",              \"can hurl lightning bolts\",                 0,      NULL,           &lightningColor_Brogue,    BE_DAMAGE,      10,             0,          0,          0,                          (BF_PASSES_THRU_CREATURES | BF_TARGET_ENEMIES | BF_ELECTRIC)},",
+      "initialSources": []
+    },
+    {
+      "name": "FIRE",
+      "effect": "BE_DAMAGE",
+      "magnitude": 4,
+      "forbidden": "MONST_IMMUNE_TO_FIRE",
+      "flags": "(BF_TARGET_ENEMIES | BF_FIERY)",
+      "learnable": true,
+      "negatable": true,
+      "source": "{\"flame\",                   \"casts a gout of flame\",        \"can hurl gouts of flame\",                  0,      NULL,           &fireBoltColor_Brogue,     BE_DAMAGE,      4,              0,          0,          MONST_IMMUNE_TO_FIRE,       (BF_TARGET_ENEMIES | BF_FIERY)},",
+      "initialSources": [
+        "dar_battlemage",
+        "lich",
+        "flame_turret",
+        "flamedancer"
+      ]
+    },
+    {
+      "name": "POISON",
+      "effect": "BE_POISON",
+      "magnitude": 10,
+      "forbidden": "MONST_INANIMATE",
+      "flags": "(BF_TARGET_ENEMIES)",
+      "learnable": true,
+      "negatable": true,
+      "source": "{\"poison ray\",              \"casts a poison ray\",           \"can cast poisonous bolts\",                 0,      NULL,           &poisonColor_Brogue,       BE_POISON,      10,             0,          0,          MONST_INANIMATE,            (BF_TARGET_ENEMIES)},",
+      "initialSources": []
+    },
+    {
+      "name": "TUNNELING",
+      "effect": "BE_TUNNELING",
+      "magnitude": 10,
+      "forbidden": "0",
+      "flags": "(BF_PASSES_THRU_CREATURES)",
+      "learnable": true,
+      "negatable": true,
+      "source": "{\"tunneling magic\",         \"casts tunneling\",              \"can tunnel\",                               0,      NULL,           &brown,             BE_TUNNELING,   10,             0,          0,          0,                          (BF_PASSES_THRU_CREATURES)},",
+      "initialSources": []
+    },
+    {
+      "name": "BLINKING",
+      "effect": "BE_BLINKING",
+      "magnitude": 5,
+      "forbidden": "0",
+      "flags": "(BF_HALTS_BEFORE_OBSTRUCTION)",
+      "learnable": true,
+      "negatable": true,
+      "source": "{\"blink trajectory\",        \"blinks\",                       \"can blink\",                                0,      NULL,           &white,             BE_BLINKING,    5,              0,          0,          0,                          (BF_HALTS_BEFORE_OBSTRUCTION)},",
+      "initialSources": [
+        "dar_blademaster",
+        "imp",
+        "vampire",
+        "winged_guardian"
+      ]
+    },
+    {
+      "name": "ENTRANCEMENT",
+      "effect": "BE_ENTRANCEMENT",
+      "magnitude": 10,
+      "forbidden": "MONST_INANIMATE",
+      "flags": "(BF_TARGET_ENEMIES)",
+      "learnable": true,
+      "negatable": true,
+      "source": "{\"entrancement ray\",        \"casts entrancement\",           \"can cast entrancement\",                    0,      NULL,           &yellow,            BE_ENTRANCEMENT,10,             0,          0,          MONST_INANIMATE,            (BF_TARGET_ENEMIES)},",
+      "initialSources": []
+    },
+    {
+      "name": "OBSTRUCTION",
+      "effect": "BE_OBSTRUCTION",
+      "magnitude": 10,
+      "forbidden": "0",
+      "flags": "(BF_HALTS_BEFORE_OBSTRUCTION)",
+      "learnable": true,
+      "negatable": true,
+      "source": "{\"obstruction magic\",       \"casts obstruction\",            \"can cast obstruction\",                     0,      NULL,           &forceFieldColor_Brogue,   BE_OBSTRUCTION, 10,             0,          0,          0,                          (BF_HALTS_BEFORE_OBSTRUCTION)},",
+      "initialSources": []
+    },
+    {
+      "name": "DISCORD",
+      "effect": "BE_DISCORD",
+      "magnitude": 10,
+      "forbidden": "MONST_INANIMATE",
+      "flags": "(BF_TARGET_ENEMIES)",
+      "learnable": true,
+      "negatable": true,
+      "source": "{\"spell of discord\",        \"casts a spell of discord\",     \"can cast discord\",                         0,      NULL,           &discordColor,      BE_DISCORD,     10,             0,          0,          MONST_INANIMATE,            (BF_TARGET_ENEMIES)},",
+      "initialSources": [
+        "dar_battlemage",
+        "pixie",
+        "vampire",
+        "ifrit"
+      ]
+    },
+    {
+      "name": "CONJURATION",
+      "effect": "BE_CONJURATION",
+      "magnitude": 10,
+      "forbidden": "MONST_IMMUNE_TO_WEAPONS",
+      "flags": "(BF_HALTS_BEFORE_OBSTRUCTION | BF_TARGET_ENEMIES)",
+      "learnable": true,
+      "negatable": true,
+      "source": "{\"conjuration magic\",       \"casts a conjuration bolt\",     \"can cast conjuration\",                     0,      NULL,           &spectralBladeColor_Brogue, BE_CONJURATION,10,             0,          0,          MONST_IMMUNE_TO_WEAPONS,    (BF_HALTS_BEFORE_OBSTRUCTION | BF_TARGET_ENEMIES)},",
+      "initialSources": []
+    },
+    {
+      "name": "HEALING",
+      "effect": "BE_HEALING",
+      "magnitude": 5,
+      "forbidden": "0",
+      "flags": "(BF_TARGET_ALLIES)",
+      "learnable": true,
+      "negatable": true,
+      "source": "{\"healing magic\",           \"casts healing\",                \"can heal $HISHER allies\",                  0,      NULL,           &darkRed,           BE_HEALING,     5,              0,          0,          0,                          (BF_TARGET_ALLIES)},",
+      "initialSources": [
+        "ogre_totem",
+        "dar_priestess",
+        "sentinel",
+        "unicorn"
+      ]
+    },
+    {
+      "name": "HASTE",
+      "effect": "BE_HASTE",
+      "magnitude": 2,
+      "forbidden": "MONST_INANIMATE",
+      "flags": "(BF_TARGET_ALLIES)",
+      "learnable": true,
+      "negatable": true,
+      "source": "{\"haste spell\",             \"casts a haste spell\",          \"can haste $HISHER allies\",                 0,      NULL,           &orange,            BE_HASTE,       2,              0,          0,          MONST_INANIMATE,            (BF_TARGET_ALLIES)},",
+      "initialSources": [
+        "goblin_totem",
+        "ogre_shaman",
+        "dar_priestess"
+      ]
+    },
+    {
+      "name": "SLOW_2",
+      "effect": "BE_SLOW",
+      "magnitude": 2,
+      "forbidden": "MONST_INANIMATE",
+      "flags": "(BF_TARGET_ENEMIES)",
+      "learnable": true,
+      "negatable": true,
+      "source": "{\"slowing spell\",           \"casts a slowing spell\",        \"can slow $HISHER enemies\",                 0,      NULL,           &green,             BE_SLOW,        2,              0,          0,          MONST_INANIMATE,            (BF_TARGET_ENEMIES)},",
+      "initialSources": [
+        "ogre_totem",
+        "dar_battlemage",
+        "pixie"
+      ]
+    },
+    {
+      "name": "SHIELDING",
+      "effect": "BE_SHIELDING",
+      "magnitude": 5,
+      "forbidden": "MONST_INANIMATE",
+      "flags": "(BF_TARGET_ALLIES)",
+      "learnable": true,
+      "negatable": true,
+      "source": "{\"protection magic\",        \"casts protection\",             \"can cast protection\",                      0,      NULL,           &shieldingColor_Brogue,    BE_SHIELDING,   5,              0,          0,          MONST_INANIMATE,            (BF_TARGET_ALLIES)},",
+      "initialSources": [
+        "goblin_mystic",
+        "unicorn"
+      ]
+    },
+    {
+      "name": "SPIDERWEB",
+      "effect": "BE_NONE",
+      "magnitude": 10,
+      "forbidden": "(MONST_IMMOBILE | MONST_IMMUNE_TO_WEBS)",
+      "flags": "(BF_TARGET_ENEMIES | BF_NEVER_REFLECTS | BF_NOT_LEARNABLE)",
+      "learnable": false,
+      "negatable": true,
+      "source": "{\"spiderweb\",               \"launches a sticky web\",        \"can launch sticky webs\",                   '*',    &white,         NULL,               BE_NONE,        10,             DF_WEB_SMALL, DF_WEB_LARGE, (MONST_IMMOBILE | MONST_IMMUNE_TO_WEBS),   (BF_TARGET_ENEMIES | BF_NEVER_REFLECTS | BF_NOT_LEARNABLE)},",
+      "initialSources": [
+        "spider"
+      ]
+    },
+    {
+      "name": "SPARK",
+      "effect": "BE_DAMAGE",
+      "magnitude": 1,
+      "forbidden": "0",
+      "flags": "(BF_PASSES_THRU_CREATURES | BF_TARGET_ENEMIES | BF_ELECTRIC)",
+      "learnable": true,
+      "negatable": true,
+      "source": "{\"spark\",                   \"shoots a spark\",               \"can throw sparks of lightning\",            0,      NULL,           &lightningColor_Brogue,    BE_DAMAGE,      1,              0,          0,          0,                          (BF_PASSES_THRU_CREATURES | BF_TARGET_ENEMIES | BF_ELECTRIC)},",
+      "initialSources": [
+        "goblin_totem",
+        "spark_turret",
+        "ogre_shaman",
+        "dar_priestess",
+        "sentinel",
+        "pixie"
+      ]
+    },
+    {
+      "name": "DRAGONFIRE",
+      "effect": "BE_DAMAGE",
+      "magnitude": 18,
+      "forbidden": "MONST_IMMUNE_TO_FIRE",
+      "flags": "(BF_TARGET_ENEMIES | BF_FIERY | BF_NOT_LEARNABLE)",
+      "learnable": false,
+      "negatable": true,
+      "source": "{\"dragonfire\",              \"breathes a gout of white-hot flame\", \"can breathe gouts of white-hot flame\", 0,    NULL,           &dragonFireColor_Brogue,   BE_DAMAGE,      18,             DF_OBSIDIAN, 0,         MONST_IMMUNE_TO_FIRE,       (BF_TARGET_ENEMIES | BF_FIERY | BF_NOT_LEARNABLE)},",
+      "initialSources": [
+        "dragon"
+      ]
+    },
+    {
+      "name": "DISTANCE_ATTACK",
+      "effect": "BE_ATTACK",
+      "magnitude": 1,
+      "forbidden": "MONST_IMMUNE_TO_WEAPONS",
+      "flags": "(BF_TARGET_ENEMIES | BF_NEVER_REFLECTS | BF_NOT_LEARNABLE)",
+      "learnable": false,
+      "negatable": true,
+      "source": "{\"arrow\",                   \"shoots an arrow\",              \"attacks from a distance\",                  G_WEAPON,&gray,         NULL,               BE_ATTACK,      1,              0,          0,          MONST_IMMUNE_TO_WEAPONS,    (BF_TARGET_ENEMIES | BF_NEVER_REFLECTS | BF_NOT_LEARNABLE)},",
+      "initialSources": [
+        "arrow_turret",
+        "centaur"
+      ]
+    },
+    {
+      "name": "POISON_DART",
+      "effect": "BE_ATTACK",
+      "magnitude": 1,
+      "forbidden": "0",
+      "flags": "(BF_TARGET_ENEMIES | BF_NEVER_REFLECTS | BF_NOT_LEARNABLE)",
+      "learnable": false,
+      "negatable": true,
+      "source": "{\"poisoned dart\",           \"fires a dart\",                 \"fires strength-sapping darts\",             G_WEAPON,&centipedeColor_Brogue,NULL,              BE_ATTACK,      1,              0,          0,          0,                          (BF_TARGET_ENEMIES | BF_NEVER_REFLECTS | BF_NOT_LEARNABLE)},",
+      "initialSources": [
+        "dart_turret"
+      ]
+    },
+    {
+      "name": "ANCIENT_SPIRIT_VINES",
+      "effect": "BE_NONE",
+      "magnitude": 5,
+      "forbidden": "(MONST_INANIMATE | MONST_IMMUNE_TO_WEBS)",
+      "flags": "(BF_TARGET_ENEMIES | BF_NEVER_REFLECTS)",
+      "learnable": true,
+      "negatable": true,
+      "source": "{\"growing vines\",           \"releases carnivorous vines into the ground\", \"conjures carnivorous vines\", G_GRASS,&tanColor,      NULL,               BE_NONE,        5,              DF_ANCIENT_SPIRIT_GRASS, DF_ANCIENT_SPIRIT_VINES, (MONST_INANIMATE | MONST_IMMUNE_TO_WEBS),   (BF_TARGET_ENEMIES | BF_NEVER_REFLECTS)},",
+      "initialSources": [
+        "mangrove_dryad"
+      ]
+    },
+    {
+      "name": "WHIP",
+      "effect": "BE_ATTACK",
+      "magnitude": 1,
+      "forbidden": "MONST_IMMUNE_TO_WEAPONS",
+      "flags": "(BF_TARGET_ENEMIES | BF_NEVER_REFLECTS | BF_NOT_LEARNABLE | BF_DISPLAY_CHAR_ALONG_LENGTH)",
+      "learnable": false,
+      "negatable": true,
+      "source": "{\"whip\",                    \"whips\",                        \"wields a whip\",                            '*',    &tanColor,      NULL,               BE_ATTACK,      1,              0,          0,          MONST_IMMUNE_TO_WEAPONS,    (BF_TARGET_ENEMIES | BF_NEVER_REFLECTS | BF_NOT_LEARNABLE | BF_DISPLAY_CHAR_ALONG_LENGTH)},",
+      "initialSources": []
+    }
+  ],
+  "legacy": {
+    "abilities": [
+      {
+        "id": "troll",
+        "value": [
+          "regenerating"
+        ]
+      },
+      {
+        "id": "centaur",
+        "value": [
+          "ranged"
+        ]
+      },
+      {
+        "id": "vampire",
+        "value": [
+          "regenerating"
+        ]
+      }
+    ],
+    "onHitStatus": [
+      {
+        "id": "kobold",
+        "value": "confused"
+      },
+      {
+        "id": "goblin",
+        "value": "paralyzed"
+      },
+      {
+        "id": "vampire",
+        "value": "paralyzed"
+      }
+    ],
+    "statusImmunities": [
+      {
+        "id": "rat",
+        "value": [
+          "confused"
+        ]
+      },
+      {
+        "id": "jackal",
+        "value": [
+          "confused"
+        ]
+      },
+      {
+        "id": "goblin",
+        "value": [
+          "hallucinating"
+        ]
+      },
+      {
+        "id": "ogre",
+        "value": [
+          "confused",
+          "hallucinating"
+        ]
+      },
+      {
+        "id": "vampire",
+        "value": [
+          "poisoned"
+        ]
+      }
+    ],
+    "statusResistTurns": [
+      {
+        "id": "rat",
+        "value": {
+          "paralyzed": 1
+        }
+      },
+      {
+        "id": "kobold",
+        "value": {
+          "paralyzed": 2,
+          "hallucinating": 1
+        }
+      },
+      {
+        "id": "jackal",
+        "value": {
+          "hallucinating": 1,
+          "paralyzed": 1
+        }
+      },
+      {
+        "id": "goblin",
+        "value": {
+          "confused": 2
+        }
+      },
+      {
+        "id": "ogre",
+        "value": {
+          "paralyzed": 3,
+          "confused": 3
+        }
+      },
+      {
+        "id": "troll",
+        "value": {
+          "paralyzed": 2,
+          "confused": 2
+        }
+      },
+      {
+        "id": "centaur",
+        "value": {
+          "paralyzed": 1
+        }
+      },
+      {
+        "id": "vampire",
+        "value": {
+          "confused": 2,
+          "hallucinating": 2
+        }
+      }
+    ]
+  },
+  "oracleCases": 198
+}

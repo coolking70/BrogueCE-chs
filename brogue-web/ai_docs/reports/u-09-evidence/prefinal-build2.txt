@@ -1,0 +1,17 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+src/test/u_09_learning_consumers.test.ts(9,10): error TS6133: 'BoltEffect' is declared but its value is never read.
+src/test/u_09_learning_consumers.test.ts(69,101): error TS2341: Property 'cells' is private and only accessible within class 'Grid'.
+src/test/u_09_learning_consumers.test.ts(73,38): error TS2341: Property 'cells' is private and only accessible within class 'Grid'.
+src/test/u_09_learning_consumers.test.ts(147,9): error TS2322: Type 'Set<string>' is not assignable to type 'Set<number>'.
+  Type 'string' is not assignable to type 'number'.
+src/test/u_09_learning_consumers.test.ts(147,11): error TS2341: Property 'machineCells' is private and only accessible within class 'Game'.
+src/test/u_09_learning_consumers.test.ts(189,79): error TS2345: Argument of type '"randClump"' is not assignable to parameter of type '"randClumpedRange" | "setRNG" | "seedRandomGenerator" | "randRange" | "randPercent" | "shuffleList" | "rollD"'.
+src/test/u_09_learning_consumers.test.ts(196,22): error TS2345: Argument of type '"randClump"' is not assignable to parameter of type '"randClumpedRange" | "setRNG" | "seedRandomGenerator" | "randRange" | "randPercent" | "shuffleList" | "rollD"'.
+src/test/u_09_learning_consumers.test.ts(241,39): error TS2353: Object literal may only specify known properties, and 'autoHit' does not exist in type '{ isWeaponAttack?: boolean | undefined; beforeDamage?: ((damage: number) => number) | undefined; lungeAttack?: boolean | undefined; }'.
+src/test/u_09_learning_consumers.test.ts(242,66): error TS2345: Argument of type '"randClump"' is not assignable to parameter of type '"randClumpedRange" | "setRNG" | "seedRandomGenerator" | "randRange" | "randPercent" | "shuffleList" | "rollD"'.
+src/test/u_09_learning_consumers.test.ts(247,39): error TS2353: Object literal may only specify known properties, and 'autoHit' does not exist in type '{ isWeaponAttack?: boolean | undefined; beforeDamage?: ((damage: number) => number) | undefined; lungeAttack?: boolean | undefined; }'.
+src/test/u_09_learning_consumers.test.ts(252,39): error TS2353: Object literal may only specify known properties, and 'autoHit' does not exist in type '{ isWeaponAttack?: boolean | undefined; beforeDamage?: ((damage: number) => number) | undefined; lungeAttack?: boolean | undefined; }'.
+src/test/u_09_learning_consumers.test.ts(255,106): error TS2353: Object literal may only specify known properties, and 'autoHit' does not exist in type '{ isWeaponAttack?: boolean | undefined; beforeDamage?: ((damage: number) => number) | undefined; lungeAttack?: boolean | undefined; }'.

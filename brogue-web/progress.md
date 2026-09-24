@@ -1135,3 +1135,15 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 最终冻结运行：显式146文件反查范围（drift独立）、build、边界与SHA-256；结果仅回填u-08.report.md及证据。U14b计数/潜水、通用U17刷新、U09/U10/U11学习前置保留。无旧档兼容、生成回池或基线重捕获。
 
 - 最终前补发现BoltContract的物种循环拒绝留痕；保留imp原通用blink守卫，网/藤翻正并补实效断言。S补物种/英文别名。中途回归和首个冻结批次退出130归档，编辑完成后重启全部门禁。
+
+## 2026-09-24 U09：学习能力消费者矩阵
+- 用户任务：执行 u-09.prompt.md，以 X-0 §4.1 / §4.3 U09 / K08 为准；使用 develop-web-game 技能。
+- CE 核实 6 项旗标、22 项可学 bolt；TUNNELING/OBSTRUCTION 保持 CE 禁止施放例外，不开启自然学习，不加吸收字段。
+- 预计改义：BoltCatalog 的 15 项映射穷举/未映射 POLYMORPH 前提；新增九项出口与两项禁止身份。专属 forbidden/反射资格将按 CE 核实；总体 tryUseBolt 调度不动。其他旧守卫只回归不可放宽。
+- 九项怪物出口完成，玩家/怪物共用传送、变形、支配、刀刃落点原语；支配/刀刃固定玩家归属。禁施两项只建身份、AI和直接出口均拒绝。追加逐bolt forbidden与反射回避门，未改tryUseBolt/takeTurn调度。
+- 永久隐形纳入同步/不衰减；显式学习后同步飞行清水栖限制。合并怪物近战/法伤吸血公式；TURRET六位只在已核效果门展开，不改变生成期flags/RNG。K25仅审计，vampire旧毒免与legacy命中状态保留。
+- 新增71项专项，含198组原CE specificallyValidBoltTarget编译对照；旧BoltCatalog15项前提实测撞红，原15行AST逐项不变后扩11身份。新夹具误写反射50而CE为48、消魔不返额度而CE返total、伤害API/高端值，均按源码改夹具，不改旧守卫。
+- 浏览器11场景、实际等待输入+状态/归属/额度验证，console/page errors=0；实看截图。技能客户端Canvas黑图，改有头整页截图。复现既有U21/K17隐形显示泄漏与K16末帧残留，记录而不扩大UI轮；不声称完整视觉通过。Vite热更新后动态夹具类实例不一致，重启服务器后变形通过；正常初始ticks=100并核对每输入仅一次cast。
+- 编辑完成后冻结SHA，执行CE/boundary/build、R∪S显式回归和test:drift；结果只回填u-09.report.md及证据。学习恢复本身后续为U10字段与U11状态机，未开启自然抽签或旧档迁移。
+- 最终CE复核补充：FIERY不可学，但已有FIERY的学员安装别项后仍按MC:3280同步burning1000。本轮补显式afterLearning分支和永久性消费者，保留初始化不赋烧以免扩入生成；新增组合测试，总72项。首个冻结批次主动中断并归档prefinal-first-freeze，全部编辑后从CE/build重启最终门禁，不拼接旧结果。
+- 最后定向验证：U09 72项 + W23 42项全部通过；浏览器重跑13场景，含已有FIERY学员同步/消魔，console/page errors=0，最新截图已实看。此前11场景/71项是中途记录；最终结果只采用本次冻结批次，见报告及final-check/final-files。

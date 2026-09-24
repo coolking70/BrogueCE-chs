@@ -1,0 +1,2495 @@
+{
+  "formulas": {
+    "reflection48": 48,
+    "lightningLow": 9,
+    "lightningHigh": 29
+  },
+  "tests": [
+    {
+      "name": "TELEPORT",
+      "label": "enemy",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "TELEPORT",
+      "label": "teammate",
+      "casterAlly": false,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "TELEPORT",
+      "label": "allied",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "TELEPORT",
+      "label": "player",
+      "casterAlly": false,
+      "targetAlly": true,
+      "playerTarget": true,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "TELEPORT",
+      "label": "MONST_INANIMATE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_INANIMATE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "TELEPORT",
+      "label": "MONST_TURRET",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_TURRET"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "TELEPORT",
+      "label": "MONST_IMMOBILE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMOBILE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "TELEPORT",
+      "label": "MONST_IMMUNE_TO_WEAPONS",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMUNE_TO_WEAPONS"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "TELEPORT",
+      "label": "MONST_INVULNERABLE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_INVULNERABLE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "TELEPORT",
+      "label": "MONST_REFLECT_50",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_REFLECT_50"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "TELEPORT",
+      "label": "MONST_IMMUNE_TO_FIRE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMUNE_TO_FIRE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "TELEPORT",
+      "label": "reflect100",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [
+        "MA_REFLECT_100"
+      ],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "TELEPORT",
+      "label": "ally-reflect50",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_REFLECT_50"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "TELEPORT",
+      "label": "ally-reflect100",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [
+        "MA_REFLECT_100"
+      ],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "TELEPORT",
+      "label": "STATUS_ENTRANCED",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_ENTRANCED"
+      ],
+      "expected": true
+    },
+    {
+      "name": "TELEPORT",
+      "label": "STATUS_SLOWED",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_SLOWED"
+      ],
+      "expected": true
+    },
+    {
+      "name": "TELEPORT",
+      "label": "STATUS_INVISIBLE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_INVISIBLE"
+      ],
+      "expected": true
+    },
+    {
+      "name": "TELEPORT",
+      "label": "STATUS_IMMUNE_TO_FIRE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_IMMUNE_TO_FIRE"
+      ],
+      "expected": true
+    },
+    {
+      "name": "SLOW",
+      "label": "enemy",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "SLOW",
+      "label": "teammate",
+      "casterAlly": false,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "SLOW",
+      "label": "allied",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "SLOW",
+      "label": "player",
+      "casterAlly": false,
+      "targetAlly": true,
+      "playerTarget": true,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "SLOW",
+      "label": "MONST_INANIMATE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_INANIMATE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "SLOW",
+      "label": "MONST_TURRET",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_TURRET"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "SLOW",
+      "label": "MONST_IMMOBILE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMOBILE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "SLOW",
+      "label": "MONST_IMMUNE_TO_WEAPONS",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMUNE_TO_WEAPONS"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "SLOW",
+      "label": "MONST_INVULNERABLE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_INVULNERABLE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "SLOW",
+      "label": "MONST_REFLECT_50",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_REFLECT_50"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "SLOW",
+      "label": "MONST_IMMUNE_TO_FIRE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMUNE_TO_FIRE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "SLOW",
+      "label": "reflect100",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [
+        "MA_REFLECT_100"
+      ],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "SLOW",
+      "label": "ally-reflect50",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_REFLECT_50"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "SLOW",
+      "label": "ally-reflect100",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [
+        "MA_REFLECT_100"
+      ],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "SLOW",
+      "label": "STATUS_ENTRANCED",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_ENTRANCED"
+      ],
+      "expected": true
+    },
+    {
+      "name": "SLOW",
+      "label": "STATUS_SLOWED",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_SLOWED"
+      ],
+      "expected": false
+    },
+    {
+      "name": "SLOW",
+      "label": "STATUS_INVISIBLE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_INVISIBLE"
+      ],
+      "expected": true
+    },
+    {
+      "name": "SLOW",
+      "label": "STATUS_IMMUNE_TO_FIRE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_IMMUNE_TO_FIRE"
+      ],
+      "expected": true
+    },
+    {
+      "name": "POLYMORPH",
+      "label": "enemy",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "POLYMORPH",
+      "label": "teammate",
+      "casterAlly": false,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "POLYMORPH",
+      "label": "allied",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "POLYMORPH",
+      "label": "player",
+      "casterAlly": false,
+      "targetAlly": true,
+      "playerTarget": true,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "POLYMORPH",
+      "label": "MONST_INANIMATE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_INANIMATE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "POLYMORPH",
+      "label": "MONST_TURRET",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_TURRET"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "POLYMORPH",
+      "label": "MONST_IMMOBILE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMOBILE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "POLYMORPH",
+      "label": "MONST_IMMUNE_TO_WEAPONS",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMUNE_TO_WEAPONS"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "POLYMORPH",
+      "label": "MONST_INVULNERABLE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_INVULNERABLE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "POLYMORPH",
+      "label": "MONST_REFLECT_50",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_REFLECT_50"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "POLYMORPH",
+      "label": "MONST_IMMUNE_TO_FIRE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMUNE_TO_FIRE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "POLYMORPH",
+      "label": "reflect100",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [
+        "MA_REFLECT_100"
+      ],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "POLYMORPH",
+      "label": "ally-reflect50",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_REFLECT_50"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "POLYMORPH",
+      "label": "ally-reflect100",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [
+        "MA_REFLECT_100"
+      ],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "POLYMORPH",
+      "label": "STATUS_ENTRANCED",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_ENTRANCED"
+      ],
+      "expected": true
+    },
+    {
+      "name": "POLYMORPH",
+      "label": "STATUS_SLOWED",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_SLOWED"
+      ],
+      "expected": true
+    },
+    {
+      "name": "POLYMORPH",
+      "label": "STATUS_INVISIBLE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_INVISIBLE"
+      ],
+      "expected": true
+    },
+    {
+      "name": "POLYMORPH",
+      "label": "STATUS_IMMUNE_TO_FIRE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_IMMUNE_TO_FIRE"
+      ],
+      "expected": true
+    },
+    {
+      "name": "DOMINATION",
+      "label": "enemy",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "DOMINATION",
+      "label": "teammate",
+      "casterAlly": false,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "DOMINATION",
+      "label": "allied",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "DOMINATION",
+      "label": "player",
+      "casterAlly": false,
+      "targetAlly": true,
+      "playerTarget": true,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "DOMINATION",
+      "label": "MONST_INANIMATE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_INANIMATE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "DOMINATION",
+      "label": "MONST_TURRET",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_TURRET"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "DOMINATION",
+      "label": "MONST_IMMOBILE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMOBILE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "DOMINATION",
+      "label": "MONST_IMMUNE_TO_WEAPONS",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMUNE_TO_WEAPONS"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "DOMINATION",
+      "label": "MONST_INVULNERABLE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_INVULNERABLE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "DOMINATION",
+      "label": "MONST_REFLECT_50",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_REFLECT_50"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "DOMINATION",
+      "label": "MONST_IMMUNE_TO_FIRE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMUNE_TO_FIRE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "DOMINATION",
+      "label": "reflect100",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [
+        "MA_REFLECT_100"
+      ],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "DOMINATION",
+      "label": "ally-reflect50",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_REFLECT_50"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "DOMINATION",
+      "label": "ally-reflect100",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [
+        "MA_REFLECT_100"
+      ],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "DOMINATION",
+      "label": "STATUS_ENTRANCED",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_ENTRANCED"
+      ],
+      "expected": true
+    },
+    {
+      "name": "DOMINATION",
+      "label": "STATUS_SLOWED",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_SLOWED"
+      ],
+      "expected": true
+    },
+    {
+      "name": "DOMINATION",
+      "label": "STATUS_INVISIBLE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_INVISIBLE"
+      ],
+      "expected": true
+    },
+    {
+      "name": "DOMINATION",
+      "label": "STATUS_IMMUNE_TO_FIRE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_IMMUNE_TO_FIRE"
+      ],
+      "expected": true
+    },
+    {
+      "name": "INVISIBILITY",
+      "label": "enemy",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "INVISIBILITY",
+      "label": "teammate",
+      "casterAlly": false,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "INVISIBILITY",
+      "label": "allied",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "INVISIBILITY",
+      "label": "player",
+      "casterAlly": false,
+      "targetAlly": true,
+      "playerTarget": true,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "INVISIBILITY",
+      "label": "MONST_INANIMATE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_INANIMATE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "INVISIBILITY",
+      "label": "MONST_TURRET",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_TURRET"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "INVISIBILITY",
+      "label": "MONST_IMMOBILE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMOBILE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "INVISIBILITY",
+      "label": "MONST_IMMUNE_TO_WEAPONS",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMUNE_TO_WEAPONS"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "INVISIBILITY",
+      "label": "MONST_INVULNERABLE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_INVULNERABLE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "INVISIBILITY",
+      "label": "MONST_REFLECT_50",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_REFLECT_50"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "INVISIBILITY",
+      "label": "MONST_IMMUNE_TO_FIRE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMUNE_TO_FIRE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "INVISIBILITY",
+      "label": "reflect100",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [
+        "MA_REFLECT_100"
+      ],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "INVISIBILITY",
+      "label": "ally-reflect50",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_REFLECT_50"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "INVISIBILITY",
+      "label": "ally-reflect100",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [
+        "MA_REFLECT_100"
+      ],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "INVISIBILITY",
+      "label": "STATUS_ENTRANCED",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_ENTRANCED"
+      ],
+      "expected": false
+    },
+    {
+      "name": "INVISIBILITY",
+      "label": "STATUS_SLOWED",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_SLOWED"
+      ],
+      "expected": false
+    },
+    {
+      "name": "INVISIBILITY",
+      "label": "STATUS_INVISIBLE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_INVISIBLE"
+      ],
+      "expected": false
+    },
+    {
+      "name": "INVISIBILITY",
+      "label": "STATUS_IMMUNE_TO_FIRE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_IMMUNE_TO_FIRE"
+      ],
+      "expected": false
+    },
+    {
+      "name": "LIGHTNING",
+      "label": "enemy",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "LIGHTNING",
+      "label": "teammate",
+      "casterAlly": false,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "LIGHTNING",
+      "label": "allied",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "LIGHTNING",
+      "label": "player",
+      "casterAlly": false,
+      "targetAlly": true,
+      "playerTarget": true,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "LIGHTNING",
+      "label": "MONST_INANIMATE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_INANIMATE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "LIGHTNING",
+      "label": "MONST_TURRET",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_TURRET"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "LIGHTNING",
+      "label": "MONST_IMMOBILE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMOBILE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "LIGHTNING",
+      "label": "MONST_IMMUNE_TO_WEAPONS",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMUNE_TO_WEAPONS"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "LIGHTNING",
+      "label": "MONST_INVULNERABLE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_INVULNERABLE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "LIGHTNING",
+      "label": "MONST_REFLECT_50",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_REFLECT_50"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "LIGHTNING",
+      "label": "MONST_IMMUNE_TO_FIRE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMUNE_TO_FIRE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "LIGHTNING",
+      "label": "reflect100",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [
+        "MA_REFLECT_100"
+      ],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "LIGHTNING",
+      "label": "ally-reflect50",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_REFLECT_50"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "LIGHTNING",
+      "label": "ally-reflect100",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [
+        "MA_REFLECT_100"
+      ],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "LIGHTNING",
+      "label": "STATUS_ENTRANCED",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_ENTRANCED"
+      ],
+      "expected": false
+    },
+    {
+      "name": "LIGHTNING",
+      "label": "STATUS_SLOWED",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_SLOWED"
+      ],
+      "expected": true
+    },
+    {
+      "name": "LIGHTNING",
+      "label": "STATUS_INVISIBLE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_INVISIBLE"
+      ],
+      "expected": true
+    },
+    {
+      "name": "LIGHTNING",
+      "label": "STATUS_IMMUNE_TO_FIRE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_IMMUNE_TO_FIRE"
+      ],
+      "expected": true
+    },
+    {
+      "name": "POISON",
+      "label": "enemy",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "POISON",
+      "label": "teammate",
+      "casterAlly": false,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "POISON",
+      "label": "allied",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "POISON",
+      "label": "player",
+      "casterAlly": false,
+      "targetAlly": true,
+      "playerTarget": true,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "POISON",
+      "label": "MONST_INANIMATE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_INANIMATE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "POISON",
+      "label": "MONST_TURRET",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_TURRET"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "POISON",
+      "label": "MONST_IMMOBILE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMOBILE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "POISON",
+      "label": "MONST_IMMUNE_TO_WEAPONS",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMUNE_TO_WEAPONS"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "POISON",
+      "label": "MONST_INVULNERABLE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_INVULNERABLE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "POISON",
+      "label": "MONST_REFLECT_50",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_REFLECT_50"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "POISON",
+      "label": "MONST_IMMUNE_TO_FIRE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMUNE_TO_FIRE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "POISON",
+      "label": "reflect100",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [
+        "MA_REFLECT_100"
+      ],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "POISON",
+      "label": "ally-reflect50",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_REFLECT_50"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "POISON",
+      "label": "ally-reflect100",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [
+        "MA_REFLECT_100"
+      ],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "POISON",
+      "label": "STATUS_ENTRANCED",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_ENTRANCED"
+      ],
+      "expected": true
+    },
+    {
+      "name": "POISON",
+      "label": "STATUS_SLOWED",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_SLOWED"
+      ],
+      "expected": true
+    },
+    {
+      "name": "POISON",
+      "label": "STATUS_INVISIBLE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_INVISIBLE"
+      ],
+      "expected": true
+    },
+    {
+      "name": "POISON",
+      "label": "STATUS_IMMUNE_TO_FIRE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_IMMUNE_TO_FIRE"
+      ],
+      "expected": true
+    },
+    {
+      "name": "ENTRANCEMENT",
+      "label": "enemy",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "ENTRANCEMENT",
+      "label": "teammate",
+      "casterAlly": false,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "ENTRANCEMENT",
+      "label": "allied",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "ENTRANCEMENT",
+      "label": "player",
+      "casterAlly": false,
+      "targetAlly": true,
+      "playerTarget": true,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "ENTRANCEMENT",
+      "label": "MONST_INANIMATE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_INANIMATE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "ENTRANCEMENT",
+      "label": "MONST_TURRET",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_TURRET"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "ENTRANCEMENT",
+      "label": "MONST_IMMOBILE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMOBILE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "ENTRANCEMENT",
+      "label": "MONST_IMMUNE_TO_WEAPONS",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMUNE_TO_WEAPONS"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "ENTRANCEMENT",
+      "label": "MONST_INVULNERABLE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_INVULNERABLE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "ENTRANCEMENT",
+      "label": "MONST_REFLECT_50",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_REFLECT_50"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "ENTRANCEMENT",
+      "label": "MONST_IMMUNE_TO_FIRE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMUNE_TO_FIRE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "ENTRANCEMENT",
+      "label": "reflect100",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [
+        "MA_REFLECT_100"
+      ],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "ENTRANCEMENT",
+      "label": "ally-reflect50",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_REFLECT_50"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "ENTRANCEMENT",
+      "label": "ally-reflect100",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [
+        "MA_REFLECT_100"
+      ],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "ENTRANCEMENT",
+      "label": "STATUS_ENTRANCED",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_ENTRANCED"
+      ],
+      "expected": true
+    },
+    {
+      "name": "ENTRANCEMENT",
+      "label": "STATUS_SLOWED",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_SLOWED"
+      ],
+      "expected": true
+    },
+    {
+      "name": "ENTRANCEMENT",
+      "label": "STATUS_INVISIBLE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_INVISIBLE"
+      ],
+      "expected": true
+    },
+    {
+      "name": "ENTRANCEMENT",
+      "label": "STATUS_IMMUNE_TO_FIRE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_IMMUNE_TO_FIRE"
+      ],
+      "expected": true
+    },
+    {
+      "name": "CONJURATION",
+      "label": "enemy",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "CONJURATION",
+      "label": "teammate",
+      "casterAlly": false,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "CONJURATION",
+      "label": "allied",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "CONJURATION",
+      "label": "player",
+      "casterAlly": false,
+      "targetAlly": true,
+      "playerTarget": true,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "CONJURATION",
+      "label": "MONST_INANIMATE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_INANIMATE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "CONJURATION",
+      "label": "MONST_TURRET",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_TURRET"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "CONJURATION",
+      "label": "MONST_IMMOBILE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMOBILE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "CONJURATION",
+      "label": "MONST_IMMUNE_TO_WEAPONS",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMUNE_TO_WEAPONS"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "CONJURATION",
+      "label": "MONST_INVULNERABLE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_INVULNERABLE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "CONJURATION",
+      "label": "MONST_REFLECT_50",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_REFLECT_50"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "CONJURATION",
+      "label": "MONST_IMMUNE_TO_FIRE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMUNE_TO_FIRE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "CONJURATION",
+      "label": "reflect100",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [
+        "MA_REFLECT_100"
+      ],
+      "status": [],
+      "expected": true
+    },
+    {
+      "name": "CONJURATION",
+      "label": "ally-reflect50",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_REFLECT_50"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "CONJURATION",
+      "label": "ally-reflect100",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [
+        "MA_REFLECT_100"
+      ],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "CONJURATION",
+      "label": "STATUS_ENTRANCED",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_ENTRANCED"
+      ],
+      "expected": true
+    },
+    {
+      "name": "CONJURATION",
+      "label": "STATUS_SLOWED",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_SLOWED"
+      ],
+      "expected": true
+    },
+    {
+      "name": "CONJURATION",
+      "label": "STATUS_INVISIBLE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_INVISIBLE"
+      ],
+      "expected": true
+    },
+    {
+      "name": "CONJURATION",
+      "label": "STATUS_IMMUNE_TO_FIRE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_IMMUNE_TO_FIRE"
+      ],
+      "expected": true
+    },
+    {
+      "name": "TUNNELING",
+      "label": "enemy",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "TUNNELING",
+      "label": "teammate",
+      "casterAlly": false,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "TUNNELING",
+      "label": "allied",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "TUNNELING",
+      "label": "player",
+      "casterAlly": false,
+      "targetAlly": true,
+      "playerTarget": true,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "TUNNELING",
+      "label": "MONST_INANIMATE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_INANIMATE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "TUNNELING",
+      "label": "MONST_TURRET",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_TURRET"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "TUNNELING",
+      "label": "MONST_IMMOBILE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMOBILE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "TUNNELING",
+      "label": "MONST_IMMUNE_TO_WEAPONS",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMUNE_TO_WEAPONS"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "TUNNELING",
+      "label": "MONST_INVULNERABLE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_INVULNERABLE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "TUNNELING",
+      "label": "MONST_REFLECT_50",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_REFLECT_50"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "TUNNELING",
+      "label": "MONST_IMMUNE_TO_FIRE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMUNE_TO_FIRE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "TUNNELING",
+      "label": "reflect100",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [
+        "MA_REFLECT_100"
+      ],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "TUNNELING",
+      "label": "ally-reflect50",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_REFLECT_50"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "TUNNELING",
+      "label": "ally-reflect100",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [
+        "MA_REFLECT_100"
+      ],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "TUNNELING",
+      "label": "STATUS_ENTRANCED",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_ENTRANCED"
+      ],
+      "expected": false
+    },
+    {
+      "name": "TUNNELING",
+      "label": "STATUS_SLOWED",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_SLOWED"
+      ],
+      "expected": false
+    },
+    {
+      "name": "TUNNELING",
+      "label": "STATUS_INVISIBLE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_INVISIBLE"
+      ],
+      "expected": false
+    },
+    {
+      "name": "TUNNELING",
+      "label": "STATUS_IMMUNE_TO_FIRE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_IMMUNE_TO_FIRE"
+      ],
+      "expected": false
+    },
+    {
+      "name": "OBSTRUCTION",
+      "label": "enemy",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "OBSTRUCTION",
+      "label": "teammate",
+      "casterAlly": false,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "OBSTRUCTION",
+      "label": "allied",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "OBSTRUCTION",
+      "label": "player",
+      "casterAlly": false,
+      "targetAlly": true,
+      "playerTarget": true,
+      "behavior": [],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "OBSTRUCTION",
+      "label": "MONST_INANIMATE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_INANIMATE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "OBSTRUCTION",
+      "label": "MONST_TURRET",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_TURRET"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "OBSTRUCTION",
+      "label": "MONST_IMMOBILE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMOBILE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "OBSTRUCTION",
+      "label": "MONST_IMMUNE_TO_WEAPONS",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMUNE_TO_WEAPONS"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "OBSTRUCTION",
+      "label": "MONST_INVULNERABLE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_INVULNERABLE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "OBSTRUCTION",
+      "label": "MONST_REFLECT_50",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_REFLECT_50"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "OBSTRUCTION",
+      "label": "MONST_IMMUNE_TO_FIRE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_IMMUNE_TO_FIRE"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "OBSTRUCTION",
+      "label": "reflect100",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [
+        "MA_REFLECT_100"
+      ],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "OBSTRUCTION",
+      "label": "ally-reflect50",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [
+        "MONST_REFLECT_50"
+      ],
+      "ability": [],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "OBSTRUCTION",
+      "label": "ally-reflect100",
+      "casterAlly": true,
+      "targetAlly": true,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [
+        "MA_REFLECT_100"
+      ],
+      "status": [],
+      "expected": false
+    },
+    {
+      "name": "OBSTRUCTION",
+      "label": "STATUS_ENTRANCED",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_ENTRANCED"
+      ],
+      "expected": false
+    },
+    {
+      "name": "OBSTRUCTION",
+      "label": "STATUS_SLOWED",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_SLOWED"
+      ],
+      "expected": false
+    },
+    {
+      "name": "OBSTRUCTION",
+      "label": "STATUS_INVISIBLE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_INVISIBLE"
+      ],
+      "expected": false
+    },
+    {
+      "name": "OBSTRUCTION",
+      "label": "STATUS_IMMUNE_TO_FIRE",
+      "casterAlly": true,
+      "targetAlly": false,
+      "playerTarget": false,
+      "behavior": [],
+      "ability": [],
+      "status": [
+        "STATUS_IMMUNE_TO_FIRE"
+      ],
+      "expected": false
+    }
+  ]
+}
