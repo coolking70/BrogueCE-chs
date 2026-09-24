@@ -1,0 +1,31 @@
+(node:63392) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/coolking70/.codex/skills/develop-web-game/scripts/web_game_playwright_client.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/coolking70/.codex/skills/develop-web-game/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+browserType.launch: Target page, context or browser has been closed
+Browser logs:
+
+<launching> /Users/coolking70/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument,OptimizationHints --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --disable-infobars --disable-search-engine-choice-screen --disable-sync --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --use-gl=angle --use-angle=swiftshader --user-data-dir=/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/playwright_chromiumdev_profile-Eet2Jg --remote-debugging-pipe --no-startup-window
+<launched> pid=63403
+[pid=63403][err] [0924/140601.192808:ERROR:base/power_monitor/thermal_state_observer_mac.mm:140] ThermalStateObserverMac unable to register to power notifications. Result: 9
+[pid=63403][err] [0924/140601.202976:ERROR:net/dns/dns_config_service_posix.cc:138] DNS config watch failed to start.
+[pid=63403][err] [0924/140601.204255:WARNING:net/dns/dns_config_service_posix.cc:197] Failed to read DnsConfig.
+[pid=63403][err] [0924/140601.207969:FATAL:base/apple/mach_port_rendezvous_mac.cc:155] Check failed: kr == KERN_SUCCESS. bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.63403: Permission denied (1100)
+Call log:
+[2m  - <launching> /Users/coolking70/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument,OptimizationHints --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --disable-infobars --disable-search-engine-choice-screen --disable-sync --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --use-gl=angle --use-angle=swiftshader --user-data-dir=/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/playwright_chromiumdev_profile-Eet2Jg --remote-debugging-pipe --no-startup-window[22m
+[2m  - <launched> pid=63403[22m
+[2m  - [pid=63403][err] [0924/140601.192808:ERROR:base/power_monitor/thermal_state_observer_mac.mm:140] ThermalStateObserverMac unable to register to power notifications. Result: 9[22m
+[2m  - [pid=63403][err] [0924/140601.202976:ERROR:net/dns/dns_config_service_posix.cc:138] DNS config watch failed to start.[22m
+[2m  - [pid=63403][err] [0924/140601.204255:WARNING:net/dns/dns_config_service_posix.cc:197] Failed to read DnsConfig.[22m
+[2m  - [pid=63403][err] [0924/140601.207969:FATAL:base/apple/mach_port_rendezvous_mac.cc:155] Check failed: kr == KERN_SUCCESS. bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.63403: Permission denied (1100)[22m
+[2m  - [pid=63403] <gracefully close start>[22m
+[2m  - [pid=63403] <kill>[22m
+[2m  - [pid=63403] <will force kill>[22m
+[2m  - [pid=63403] exception while trying to kill process: Error: kill EPERM[22m
+[2m  - [pid=63403] <process did exit: exitCode=null, signal=SIGTRAP>[22m
+[2m  - [pid=63403] starting temporary directories cleanup[22m
+[2m  - [pid=63403] finished temporary directories cleanup[22m
+[2m  - [pid=63403] <gracefully close end>[22m
+
+    at main (/Users/coolking70/.codex/skills/develop-web-game/scripts/web_game_playwright_client.js:266:34)
+    at /Users/coolking70/.codex/skills/develop-web-game/scripts/web_game_playwright_client.js:353:1

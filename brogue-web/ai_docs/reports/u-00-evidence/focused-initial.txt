@@ -1,0 +1,27 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/8b4d/brogue/brogue-web
+
+ ❯ src/test/u_00_new_run.test.ts (17 tests | 1 failed) 9575ms
+     × old grid cannot wake B; current grid wakes exactly once after repeated starts 371ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_00_new_run.test.ts > U00 full new-run equivalence > old grid cannot wake B; current grid wakes exactly once after repeated starts
+Error: DUNGEON_FEATURE_CATALOG 缺 DF#undefined（本轮闭包未抄录该条目）
+ ❯ Module.catalogFeature src/engine/Map/DungeonFeature.ts:620:15
+    618|     const entry: DungeonFeatureEntry | undefined = DUNGEON_FEATURE_CAT…
+    619|     if (!entry) {
+    620|         throw new Error(`DUNGEON_FEATURE_CATALOG 缺 DF#${df}（本轮闭包未抄录该条目…
+       |               ^
+    621|     }
+    622|     if (entry.tile === null) {
+ ❯ src/test/u_00_new_run.test.ts:169:34
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 16 passed (17)
+   Start at  14:03:42
+   Duration  10.20s (transform 328ms, setup 0ms, import 540ms, tests 9.57s, environment 0ms)
+

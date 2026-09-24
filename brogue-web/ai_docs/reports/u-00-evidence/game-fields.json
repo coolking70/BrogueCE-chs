@@ -1,0 +1,596 @@
+[
+  {
+    "name": "grid",
+    "static": false,
+    "line": 547,
+    "declaration": "public grid!: Grid;"
+  },
+  {
+    "name": "environment",
+    "static": false,
+    "line": 548,
+    "declaration": "public environment!: EnvironmentManager;"
+  },
+  {
+    "name": "fov",
+    "static": false,
+    "line": 549,
+    "declaration": "public fov!: FOVSys;"
+  },
+  {
+    "name": "lightMap",
+    "static": false,
+    "line": 550,
+    "declaration": "public lightMap!: LightMap;"
+  },
+  {
+    "name": "player",
+    "static": false,
+    "line": 551,
+    "declaration": "public player: Player;"
+  },
+  {
+    "name": "minersLight",
+    "static": false,
+    "line": 558,
+    "declaration": "public minersLight: MinersLightState = { radiusHundredths: 0, radialFadeToPercent: 35 };"
+  },
+  {
+    "name": "minersLightBaseFixpt",
+    "static": false,
+    "line": 559,
+    "declaration": "private minersLightBaseFixpt: number = 0;"
+  },
+  {
+    "name": "autoPath",
+    "static": false,
+    "line": 560,
+    "declaration": "public autoPath: Pos[] = [];"
+  },
+  {
+    "name": "monsters",
+    "static": false,
+    "line": 561,
+    "declaration": "public monsters: Monster[] = [];"
+  },
+  {
+    "name": "dormantMonsters",
+    "static": false,
+    "line": 569,
+    "declaration": "public dormantMonsters: Monster[] = [];"
+  },
+  {
+    "name": "items",
+    "static": false,
+    "line": 570,
+    "declaration": "public items: Item[] = [];"
+  },
+  {
+    "name": "visibleMonsters",
+    "static": false,
+    "line": 571,
+    "declaration": "public visibleMonsters = new Set<Monster>();"
+  },
+  {
+    "name": "visibleItems",
+    "static": false,
+    "line": 572,
+    "declaration": "public visibleItems = new Set<Item>();"
+  },
+  {
+    "name": "isMouseTraveling",
+    "static": false,
+    "line": 573,
+    "declaration": "public isMouseTraveling: boolean = false;"
+  },
+  {
+    "name": "everSeenItems",
+    "static": false,
+    "line": 574,
+    "declaration": "public everSeenItems: Set<Item> = new Set();"
+  },
+  {
+    "name": "everSeenMonsters",
+    "static": false,
+    "line": 575,
+    "declaration": "public everSeenMonsters: Set<Monster> = new Set();"
+  },
+  {
+    "name": "travelTargetItem",
+    "static": false,
+    "line": 576,
+    "declaration": "public travelTargetItem: Item | undefined = undefined;"
+  },
+  {
+    "name": "floatingTexts",
+    "static": false,
+    "line": 577,
+    "declaration": "public floatingTexts: FloatingText[] = [];"
+  },
+  {
+    "name": "onRenderRequested",
+    "static": false,
+    "line": 580,
+    "declaration": "public onRenderRequested: (() => void) | null = null;"
+  },
+  {
+    "name": "onConfirmRequest",
+    "static": false,
+    "line": 588,
+    "declaration": "public onConfirmRequest: ((message: string) => boolean) | null = null;"
+  },
+  {
+    "name": "playerFalling",
+    "static": false,
+    "line": 597,
+    "declaration": "private playerFalling: boolean = false;"
+  },
+  {
+    "name": "displacementTrapDepressions",
+    "static": false,
+    "line": 599,
+    "declaration": "private displacementTrapDepressions?: WeakMap<Grid, Set<number>>;"
+  },
+  {
+    "name": "pendingFallenByDepth",
+    "static": false,
+    "line": 608,
+    "declaration": "private pendingFallenByDepth: Map<number, Monster[]> = new Map();"
+  },
+  {
+    "name": "needsRender",
+    "static": false,
+    "line": 610,
+    "declaration": "private needsRender: boolean = true;"
+  },
+  {
+    "name": "isInventoryOpen",
+    "static": false,
+    "line": 611,
+    "declaration": "public isInventoryOpen: boolean = false;"
+  },
+  {
+    "name": "pendingIdentify",
+    "static": false,
+    "line": 621,
+    "declaration": "public pendingIdentify: boolean = false;"
+  },
+  {
+    "name": "pendingEnchantment",
+    "static": false,
+    "line": 622,
+    "declaration": "public pendingEnchantment: boolean = false;"
+  },
+  {
+    "name": "pendingArcana",
+    "static": false,
+    "line": 624,
+    "declaration": "public pendingArcana: { item: Item; cursor: Pos } | null = null;"
+  },
+  {
+    "name": "isThrowing",
+    "static": false,
+    "line": 626,
+    "declaration": "public isThrowing: boolean = false;"
+  },
+  {
+    "name": "throwItemTarget",
+    "static": false,
+    "line": 627,
+    "declaration": "public throwItemTarget: Item | null = null;"
+  },
+  {
+    "name": "isExamining",
+    "static": false,
+    "line": 629,
+    "declaration": "public isExamining: boolean = false;"
+  },
+  {
+    "name": "inspectTarget",
+    "static": false,
+    "line": 630,
+    "declaration": "public inspectTarget: DetailInfo | null = null;"
+  },
+  {
+    "name": "examinedEntityIds",
+    "static": false,
+    "line": 631,
+    "declaration": "public examinedEntityIds = new Set<string | number>();"
+  },
+  {
+    "name": "depth",
+    "static": false,
+    "line": 633,
+    "declaration": "public depth: number = 1;"
+  },
+  {
+    "name": "mode",
+    "static": false,
+    "line": 634,
+    "declaration": "public mode: GameMode = 'normal';"
+  },
+  {
+    "name": "currentSeed",
+    "static": false,
+    "line": 635,
+    "declaration": "public currentSeed: number = 0;"
+  },
+  {
+    "name": "meteredItems",
+    "static": false,
+    "line": 643,
+    "declaration": "private meteredItems: { frequency: number; numberSpawned: number }[] = ItemLoader.initMeteredItems();"
+  },
+  {
+    "name": "foodSpawned",
+    "static": false,
+    "line": 645,
+    "declaration": "private foodSpawned: number = 0;"
+  },
+  {
+    "name": "goldGenerated",
+    "static": false,
+    "line": 652,
+    "declaration": "private goldGenerated: number = 0;"
+  },
+  {
+    "name": "monsterSpawnFuse",
+    "static": false,
+    "line": 655,
+    "declaration": "public monsterSpawnFuse: number = 0;"
+  },
+  {
+    "name": "ticksTillUpdateEnvironment",
+    "static": false,
+    "line": 660,
+    "declaration": "public ticksTillUpdateEnvironment: number = 100;"
+  },
+  {
+    "name": "lastPromotionUpdate",
+    "static": false,
+    "line": 664,
+    "declaration": "public lastPromotionUpdate: PromotionUpdateResult | null = null;"
+  },
+  {
+    "name": "pendingCaughtFireCells",
+    "static": false,
+    "line": 668,
+    "declaration": "private pendingCaughtFireCells: Pos[] = [];"
+  },
+  {
+    "name": "scent",
+    "static": false,
+    "line": 673,
+    "declaration": "public scent: ScentMap = new ScentMap(DCOLS, DROWS);"
+  },
+  {
+    "name": "safetyMap",
+    "static": false,
+    "line": 679,
+    "declaration": "public safetyMap: number[][] = allocShortGrid(DCOLS, DROWS, SAFETY_MAX_DISTANCE);"
+  },
+  {
+    "name": "updatedSafetyMapThisTurn",
+    "static": false,
+    "line": 680,
+    "declaration": "public updatedSafetyMapThisTurn: boolean = false;"
+  },
+  {
+    "name": "loopMap",
+    "static": false,
+    "line": 688,
+    "declaration": "public loopMap: boolean[][] = emptyLoopMap();"
+  },
+  {
+    "name": "waypoints",
+    "static": false,
+    "line": 696,
+    "declaration": "public waypoints: WaypointSystem = new WaypointSystem();"
+  },
+  {
+    "name": "machineCells",
+    "static": false,
+    "line": 702,
+    "declaration": "private machineCells: Set<number> = new Set();"
+  },
+  {
+    "name": "isGameOver",
+    "static": false,
+    "line": 705,
+    "declaration": "public isGameOver: boolean = false;"
+  },
+  {
+    "name": "gameOverWon",
+    "static": false,
+    "line": 706,
+    "declaration": "public gameOverWon: boolean = false;"
+  },
+  {
+    "name": "gameOverReason",
+    "static": false,
+    "line": 707,
+    "declaration": "public gameOverReason: string = '';"
+  },
+  {
+    "name": "stats",
+    "static": false,
+    "line": 708,
+    "declaration": "public stats = {\n        kills: 0,\n        gold: 0,\n        turns: 0,\n        maxDepth: 1\n    };"
+  },
+  {
+    "name": "lastDamageSource",
+    "static": false,
+    "line": 714,
+    "declaration": "public lastDamageSource: string = '';"
+  },
+  {
+    "name": "gameOverInventory",
+    "static": false,
+    "line": 715,
+    "declaration": "public gameOverInventory: Array<{ name: string; category: number; enchantment: number; color: number }> = [];"
+  },
+  {
+    "name": "gameOverScore",
+    "static": false,
+    "line": 716,
+    "declaration": "public gameOverScore: number = 0;"
+  },
+  {
+    "name": "levels",
+    "static": false,
+    "line": 718,
+    "declaration": "public levels = new Map<number, LevelState>();"
+  },
+  {
+    "name": "combatSystem",
+    "static": false,
+    "line": 719,
+    "declaration": "public combatSystem: CombatSystem = new CombatSystem();"
+  },
+  {
+    "name": "recordingStartAt",
+    "static": false,
+    "line": 720,
+    "declaration": "public recordingStartAt: number = Date.now();"
+  },
+  {
+    "name": "recordedInputEvents",
+    "static": false,
+    "line": 721,
+    "declaration": "public recordedInputEvents: RecordedInputEvent[] = [];"
+  },
+  {
+    "name": "recordedInputIndex",
+    "static": false,
+    "line": 722,
+    "declaration": "private recordedInputIndex: number = 0;"
+  },
+  {
+    "name": "replayRecording",
+    "static": false,
+    "line": 723,
+    "declaration": "public replayRecording: GameRecording | null = null;"
+  },
+  {
+    "name": "replayEvents",
+    "static": false,
+    "line": 724,
+    "declaration": "public replayEvents: RecordedInputEvent[] = [];"
+  },
+  {
+    "name": "replayCursor",
+    "static": false,
+    "line": 725,
+    "declaration": "public replayCursor: number = 0;"
+  },
+  {
+    "name": "replayStatus",
+    "static": false,
+    "line": 726,
+    "declaration": "public replayStatus: ReplayStatus = 'idle';"
+  },
+  {
+    "name": "replayFrameAccumulator",
+    "static": false,
+    "line": 727,
+    "declaration": "private replayFrameAccumulator: number = 0;"
+  },
+  {
+    "name": "replayFramesPerStep",
+    "static": false,
+    "line": 728,
+    "declaration": "private readonly replayFramesPerStep: number = 6;"
+  },
+  {
+    "name": "signTexts",
+    "static": false,
+    "line": 729,
+    "declaration": "public signTexts = new Map<string, string>();"
+  },
+  {
+    "name": "resetPlateRoomByPos",
+    "static": false,
+    "line": 730,
+    "declaration": "public resetPlateRoomByPos = new Map<string, number>();"
+  },
+  {
+    "name": "testRooms",
+    "static": false,
+    "line": 731,
+    "declaration": "public testRooms = new Map<number, TestRoomState>();"
+  },
+  {
+    "name": "currentTestCategory",
+    "static": false,
+    "line": 732,
+    "declaration": "public currentTestCategory: TestAssetCategory | null = null;"
+  },
+  {
+    "name": "SPAWNS_IN_TERRAIN",
+    "static": true,
+    "line": 1914,
+    "declaration": "private static readonly SPAWNS_IN_TERRAIN: Record<string, TerrainType> = {\n        DEEP_WATER: TerrainType.WATER_DEEP,\n        SHALLOW_WATER: TerrainType.WATER_SHALLOW,\n        MUD: TerrainType.MUD,\n        MACHINE_MUD_DORMANT: TerrainType.MACHINE_MUD_DORMANT,\n        LAVA: TerrainType.LAVA,\n        // V-2b-5：休眠机器族的两个生成期专用落点（CE hordeCatalog 的\n        // STATUE_DORMANT / TURRET_DORMANT 行——蓝图的 MF_GENERATE_HORDE\n        // 把 horde 落在刚铺好的休眠载体格上）。普通地图不会有这两种地形，\n        // 普通铺怪池又用 HORDE_MACHINE_ONLY 排除了这些 horde，所以这条映射\n        // 只会被机器 horde 路径行使。\n        STATUE_DORMANT: TerrainType.STATUE_DORMANT,\n        TURRET_DORMANT: TerrainType.TURRET_DORMANT,\n        // V-2b-6：10 号 Kennel 的笼子（CE hordeCatalog_Brogue 的 kennel 怪群\n        // spawnsIn 列 = MONSTER_CAGE_CLOSED，GlobalsBrogue.c:890 起）。\n        MONSTER_CAGE_CLOSED: TerrainType.MONSTER_CAGE_CLOSED,\n    };"
+  },
+  {
+    "name": "pendingUseConfirm",
+    "static": false,
+    "line": 3840,
+    "declaration": "public pendingUseConfirm: Item | null = null;"
+  },
+  {
+    "name": "pendingBoltFrames",
+    "static": false,
+    "line": 4580,
+    "declaration": "public pendingBoltFrames: BoltFrame[] = [];"
+  },
+  {
+    "name": "currentBoltFrameIndex",
+    "static": false,
+    "line": 4581,
+    "declaration": "public currentBoltFrameIndex: number = 0;"
+  },
+  {
+    "name": "boltAnimStartTime",
+    "static": false,
+    "line": 4582,
+    "declaration": "public boltAnimStartTime: number = 0;"
+  },
+  {
+    "name": "THROWN_FUNCTIONAL_POTION_EFFECTS",
+    "static": true,
+    "line": 5812,
+    "declaration": "private static readonly THROWN_FUNCTIONAL_POTION_EFFECTS: ReadonlySet<string> =\n        new Set(['poison_burst', 'confusion_burst', 'paralyze_burst', 'fire_burst', 'fall_down']);"
+  },
+  {
+    "name": "justRested",
+    "static": false,
+    "line": 6029,
+    "declaration": "private justRested: boolean = false;"
+  },
+  {
+    "name": "justSearched",
+    "static": false,
+    "line": 6037,
+    "declaration": "private justSearched: boolean = false;"
+  },
+  {
+    "name": "searchingCharge",
+    "static": false,
+    "line": 6046,
+    "declaration": "private searchingCharge: number = 0;"
+  },
+  {
+    "name": "secretScanDepth",
+    "static": false,
+    "line": 6056,
+    "declaration": "private secretScanDepth: number = -1;"
+  },
+  {
+    "name": "levelHasSecrets",
+    "static": false,
+    "line": 6057,
+    "declaration": "private levelHasSecrets: boolean = false;"
+  },
+  {
+    "name": "FALL_DAMAGE_MIN",
+    "static": true,
+    "line": 7382,
+    "declaration": "private static readonly FALL_DAMAGE_MIN = 8;"
+  },
+  {
+    "name": "FALL_DAMAGE_MAX",
+    "static": true,
+    "line": 7383,
+    "declaration": "private static readonly FALL_DAMAGE_MAX = 10;"
+  },
+  {
+    "name": "poisonedDuringTurn",
+    "static": false,
+    "line": 7732,
+    "declaration": "private poisonedDuringTurn = false;"
+  },
+  {
+    "name": "animationEnabled",
+    "static": false,
+    "line": 8230,
+    "declaration": "public animationEnabled: boolean = false;"
+  },
+  {
+    "name": "ANIMATION_PAUSE_MS",
+    "static": true,
+    "line": 8240,
+    "declaration": "public static readonly ANIMATION_PAUSE_MS = 25;"
+  },
+  {
+    "name": "ANIMATION_LOCK_TIMEOUT_MS",
+    "static": true,
+    "line": 8242,
+    "declaration": "private static readonly ANIMATION_LOCK_TIMEOUT_MS = 5000;"
+  },
+  {
+    "name": "isAdvancing",
+    "static": false,
+    "line": 8245,
+    "declaration": "public isAdvancing = false;"
+  },
+  {
+    "name": "lastAdvancementError",
+    "static": false,
+    "line": 8247,
+    "declaration": "public lastAdvancementError: unknown = null;"
+  },
+  {
+    "name": "pendingPauseMs",
+    "static": false,
+    "line": 8249,
+    "declaration": "public pendingPauseMs = 0;"
+  },
+  {
+    "name": "advancementIter",
+    "static": false,
+    "line": 8251,
+    "declaration": "private advancementIter: Generator<number, void, void> | null = null;"
+  },
+  {
+    "name": "animationAccumulatorMs",
+    "static": false,
+    "line": 8252,
+    "declaration": "private animationAccumulatorMs = 0;"
+  },
+  {
+    "name": "animationLockDeadline",
+    "static": false,
+    "line": 8253,
+    "declaration": "private animationLockDeadline = 0;"
+  },
+  {
+    "name": "inAutoTravelStep",
+    "static": false,
+    "line": 8285,
+    "declaration": "private inAutoTravelStep = false;"
+  },
+  {
+    "name": "BURNING_DURATION_TURNS",
+    "static": true,
+    "line": 9011,
+    "declaration": "private static readonly BURNING_DURATION_TURNS = 7;"
+  },
+  {
+    "name": "EXPLOSION_IMMUNITY_TURNS",
+    "static": true,
+    "line": 9133,
+    "declaration": "private static readonly EXPLOSION_IMMUNITY_TURNS = 5;"
+  },
+  {
+    "name": "hoveredCell",
+    "static": false,
+    "line": 9651,
+    "declaration": "public hoveredCell: Pos | null = null;"
+  },
+  {
+    "name": "hoveredText",
+    "static": false,
+    "line": 9652,
+    "declaration": "public hoveredText: string = '';"
+  }
+]

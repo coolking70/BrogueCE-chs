@@ -18,6 +18,7 @@ import {
     getRewardRoomsGenerated,
     setRewardRoomsGenerated,
     resetRewardRoomsGenerated,
+    resetMachineCounter,
     type MachineMonsterSpawn,
     type MachineResult
 } from '../Generator/BlueprintEngine';
@@ -43,7 +44,7 @@ import mutationData from '../../data/mutations.json';
 import type { MonsterData, MonsterAbility, MutationData } from '../../entities/Monster';
 import { MonsterState } from '../../entities/Monster';
 import { Direction, type Pos } from '../../types';
-import { ensureEntityIdAbove, allocateEntityId, type StatusId, type Creature } from '../../entities/Creature';
+import { ensureEntityIdAbove, allocateEntityId, resetEntityIds, type StatusId, type Creature } from '../../entities/Creature';
 import { timeSystem } from '../Systems/Time';
 import { generateMonsterDetail, generateItemDetail, type DetailInfo } from '../UI/DetailGenerator';
 import { logger } from '../Systems/Logger';
@@ -738,19 +739,30 @@ export class Game {
     }
 
     public startNewGame(options?: { seed?: number; mode?: GameMode }) {
+        // U00: retire the old run before seeding/allocating the next one. Returning
+        // the iterator must not run an old turn's epilogue against the new world.
+        this.discardInFlightAdvancement();
+        if (this.grid) setDormantAwakener(this.grid, null);
+        for (const level of this.levels.values()) setDormantAwakener(level.grid, null);
+        this.animationLockDeadline = 0;
+        this.lastAdvancementError = null;
+        this.inAutoTravelStep = false;
+
         this.mode = options?.mode ?? 'normal';
         this.currentSeed = rng.seedRandomGenerator(options?.seed ?? 0);
 
         ItemLoader.initConsumables();
-        logger.messages = [];
+        logger.reset();
         timeSystem.currentTick = 0;
 
         // V-1c：奖励房配额计数随新局清零（CE RogueMain.c:292）。必须先于首层
         // 生成——配额公式按它决定本层建几台奖励机器。
         resetRewardRoomsGenerated();
+        // Normal generation resets this per level; test mode can bypass it.
+        resetMachineCounter();
 
         this.depth = 1;
-        this.levels.clear();
+        this.levels = new Map();
         this.monsters = [];
         this.dormantMonsters = []; // V-2b-5：休眠表随新局清零
         this.items = [];
@@ -760,12 +772,28 @@ export class Game {
         this.foodSpawned = 0;
         // B-4b：金币产量计数随新局清零（CE RogueMain.c:384）。
         this.goldGenerated = 0;
-        this.visibleMonsters.clear();
-        this.visibleItems.clear();
+        this.visibleMonsters = new Set();
+        this.visibleItems = new Set();
         this.autoPath = [];
-        this.discardInFlightAdvancement();
-        this.everSeenItems.clear();
-        this.everSeenMonsters.clear();
+        this.everSeenItems = new Set();
+        this.everSeenMonsters = new Set();
+        this.travelTargetItem = undefined;
+        this.playerFalling = false;
+        this.displacementTrapDepressions = undefined;
+        this.pendingFallenByDepth = new Map();
+        this.lastPromotionUpdate = null;
+        this.pendingCaughtFireCells = [];
+        this.machineCells = new Set();
+        this.waypoints = new WaypointSystem();
+        this.safetyMap = allocShortGrid(DCOLS, DROWS, SAFETY_MAX_DISTANCE);
+        this.updatedSafetyMapThisTurn = false;
+        this.isGameOver = false;
+        this.gameOverWon = false;
+        this.gameOverReason = '';
+        this.stats = { kills: 0, gold: 0, turns: 0, maxDepth: 1 };
+        this.lastDamageSource = '';
+        this.gameOverInventory = [];
+        this.gameOverScore = 0;
         this.isMouseTraveling = false;
         this.isInventoryOpen = false;
         this.pendingIdentify = false;
@@ -775,6 +803,12 @@ export class Game {
         this.pendingUseConfirm = null;
         this.isThrowing = false;
         this.throwItemTarget = null;
+        this.isExamining = false;
+        this.inspectTarget = null;
+        this.examinedEntityIds = new Set();
+        this.pendingBoltFrames = [];
+        this.currentBoltFrameIndex = 0;
+        this.boltAnimStartTime = 0;
         this.hoveredCell = null;
         this.hoveredText = '';
         this.floatingTexts = [];
@@ -782,16 +816,23 @@ export class Game {
         this.recordedInputEvents = [];
         this.recordedInputIndex = 0;
         this.clearReplay();
-        this.signTexts.clear();
-        this.resetPlateRoomByPos.clear();
-        this.testRooms.clear();
+        this.signTexts = new Map();
+        this.resetPlateRoomByPos = new Map();
+        this.testRooms = new Map();
         this.currentTestCategory = null;
 
         // P1-42：CE 开局时 rogue 全局字段随 game 加载归零——justSearched
         // （Rogue.h:2449）与 STATUS_SEARCHING 充能（Time.c:2397）不跨局保留。
         this.justSearched = false;
         this.searchingCharge = 0;
+        this.justRested = false;
+        this.secretScanDepth = -1;
+        this.levelHasSecrets = false;
+        this.poisonedDuringTurn = false;
 
+        // No RNG draws: stable run-local IDs include carried/leader references.
+        // UI callbacks and animationEnabled are session settings and stay intact.
+        resetEntityIds();
         this.player = new Player(Math.floor(DCOLS / 2), Math.floor(DROWS / 2));
         // RogueMain.c:403：monsterSpawnFuse 在开局时初始化（先于首层生成，保证 rng 流稳定）
         this.monsterSpawnFuse = rng.randRange(SPAWN_FUSE_MIN, SPAWN_FUSE_MAX);

@@ -1061,3 +1061,12 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 最终生产仅5文件（ArcanaRecharge仅注释）；Game、全部效果/Map/生成器、魔杖目录、原九杖字段与相对顺序、退池定义不变。冻结src/public/scripts/progress/CE/配置/报告依据后执行build、R+S显式文件回归、独立drift与前后SHA。之后仅回填报告/证据。
 - 后续仍需W22学习及怪物blink/藤蔓依赖、机器法器配发/发现屏、未建模状态、怪物伤害公式/完整flare/多层及RNG持久化等，按w-26报告的带来源登记继续全项目勘察。
 - 首次完整冻结门禁：build/drift通过；2348passed/1failed/8skipped/5todo，401输入前后SHA一致。唯一失败为W9末例仍要求discord构造null，是本轮目录入池后过期的留形；同文件76项效果测试通过。原整轮结果保留prefinal-w9-catalog。只改该目录断言与过期夹具注释、补测试白名单；不改效果。编辑结束后重新从build完整冻结复跑，不沿用旧绿文件。最终并行度8，timeout/skip/todo不变。
+
+## 2026-09-24 U00：开新局状态归零
+
+用户任务：执行 ai_docs/tasks/u-00.prompt.md，以 X-0 §4.1/§4.2 U00/§3.1 K39 为准。
+- 全枚举 91 个 Game 实例字段、8 个 static 字段、60 个 ItemLoader 静态字段及模块状态；补清整局统计/终局/请求/动画/缓存，归零实体、日志与机器分配器，注销旧层休眠回调。保留显示/接线偏好，未改存档或生成顺序。
+- 新增 17 项 U00 整图深比较与双流抽取计数验证；4 种模式 × 标题/死亡/restart/seek。4 seed × 26 层与入场 HEAD 比较，两条 RNG 状态及计数不漂移。
+- 浏览器真实菜单、胜利/死亡返标题、新局、seek(0) 与显示设置保持通过。记录既有 replayInfo 非响应式与动画 seek(2) 停在 1 的问题；U27 后续处理，不顺带修改。
+- 最终门禁逐文件与 SHA-256 以 ai_docs/reports/u-00.report.md、u-00-evidence/final-check.json 为准；interim 日志不用于最终声明。
+- 后续：U01 存档字段，U27 的两个已复现问题。不要重捕获生成基线。

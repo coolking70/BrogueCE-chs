@@ -1,0 +1,56 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/8b4d/brogue/brogue-web
+
+ ✓ src/test/v_2b_3_wired.test.ts (28 tests) 17ms
+ ✓ src/test/v_2b_2a_placement_flags.test.ts (27 tests) 1076ms
+stdout | src/test/c_6_autogenerators.test.ts > C-6 集成：真实目录在真实生成里的行为 > 实测：草/树的实际生成数随深度分布（CE 数量公式的 web 落地曲线）
+[c_6] 草/树生成数随深度分布（2 种子合计，built 口径）:
+D1	grass=18	foliage=14
+D2	grass=16	foliage=8
+D3	grass=14	foliage=0
+D4	grass=12	foliage=0
+D5	grass=12	foliage=0
+D6	grass=10	foliage=0
+D7	grass=8	foliage=0
+D8	grass=6	foliage=0
+D9	grass=4	foliage=0
+D10	grass=4	foliage=0
+D11	grass=0	foliage=0
+D12	grass=0	foliage=0
+D13	grass=0	foliage=0
+D14	grass=0	foliage=0
+D15	grass=0	foliage=0
+D16	grass=0	foliage=0
+D17	grass=0	foliage=0
+D18	grass=0	foliage=0
+D19	grass=0	foliage=0
+D20	grass=0	foliage=0
+D21	grass=0	foliage=0
+D22	grass=0	foliage=0
+D23	grass=0	foliage=0
+D24	grass=0	foliage=0
+D25	grass=0	foliage=0
+D26	grass=0	foliage=0
+
+ ✓ src/test/c_6_autogenerators.test.ts (17 tests) 6514ms
+     ✓ AD-8 接线：generateTerrain 跑非机器趟且真的长草/树；generateLevel 跑机器趟  897ms
+     ✓ 实测：草/树的实际生成数随深度分布（CE 数量公式的 web 落地曲线）  5511ms
+ ✓ src/test/v_1b_alternative.test.ts (9 tests) 359ms
+ ✓ src/engine/Combat/CombatFormulas.test.ts (41 tests | 4 todo) 17ms
+ ✓ src/test/c_2_lakes.test.ts (17 tests) 61ms
+ ✓ src/test/v_2b_9e_area_machine.test.ts (44 tests) 95ms
+ ✓ src/engine/Random.test.ts (6 tests) 14ms
+stdout | src/test/p1_29_adversarial_gate.test.ts > P1-29 对抗 AD1：闸门短路（总是接受候选位置）时不可达必须回升 > 短接 lakeDisruptsPassability 后，湖泊阶段出现大量不连通层
+[p1_29 AD1] 闸门短路后：24/130 层湖泊阶段不连通（闸门正常时应为 0）
+
+ ✓ src/test/p1_29_adversarial_gate.test.ts (1 test) 14054ms
+     ✓ 短接 lakeDisruptsPassability 后，湖泊阶段出现大量不连通层  14053ms
+ ✓ src/test/v_2b_8_autogen.test.ts (2 tests) 10296ms
+     ✓ production generation builds forced thematic machines, not merely catalog data  10293ms
+
+ Test Files  10 passed (10)
+      Tests  188 passed | 4 todo (192)
+   Start at  14:31:25
+   Duration  34.09s (transform 249ms, setup 0ms, import 498ms, tests 32.50s, environment 2ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/8b4d/brogue/brogue-web/ai_docs/reports/u-00-evidence/final-support-tests.json

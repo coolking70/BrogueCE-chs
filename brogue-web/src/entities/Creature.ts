@@ -32,6 +32,11 @@ export const PERMANENT_STATUS_DURATION = 1000;
 // 否则读档后新建实体会与存档实体撞号（见 Game.loadSnapshot）。
 let nextEntityId = 1;
 
+/** IDs belong to one run; call only after discarding the previous world's references. */
+export function resetEntityIds(): void {
+    nextEntityId = 1;
+}
+
 export function allocateEntityId(): number {
     return nextEntityId++;
 }

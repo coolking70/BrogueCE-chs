@@ -1,0 +1,7 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+src/test/u_00_new_run.test.ts(169,52): error TS2551: Property 'SHATTERING_SPELL' does not exist on type 'typeof DF'. Did you mean 'DF_SHATTERING_SPELL'?
+src/test/u_00_new_run.test.ts(170,18): error TS2554: Expected 5 arguments, but got 4.
+src/test/u_00_new_run.test.ts(172,18): error TS2554: Expected 5 arguments, but got 4.

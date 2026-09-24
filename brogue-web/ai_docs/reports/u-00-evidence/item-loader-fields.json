@@ -1,0 +1,302 @@
+[
+  {
+    "name": "weapons",
+    "line": 69,
+    "declaration": "public static weapons = weaponsData as any[];"
+  },
+  {
+    "name": "armors",
+    "line": 70,
+    "declaration": "public static armors = armorsData as any[];"
+  },
+  {
+    "name": "potions",
+    "line": 71,
+    "declaration": "public static potions = consumablesData.potions as ConsumableConfig[];"
+  },
+  {
+    "name": "scrolls",
+    "line": 72,
+    "declaration": "public static scrolls = consumablesData.scrolls as ConsumableConfig[];"
+  },
+  {
+    "name": "food",
+    "line": 73,
+    "declaration": "public static food = consumablesData.food as ConsumableConfig[];"
+  },
+  {
+    "name": "wands",
+    "line": 74,
+    "declaration": "public static wands = arcanaData.wands as ArcanaConfig[];"
+  },
+  {
+    "name": "staffs",
+    "line": 75,
+    "declaration": "public static staffs = arcanaData.staffs as ArcanaConfig[];"
+  },
+  {
+    "name": "rings",
+    "line": 76,
+    "declaration": "public static rings = arcanaData.rings as ArcanaConfig[];"
+  },
+  {
+    "name": "charms",
+    "line": 77,
+    "declaration": "public static charms = arcanaData.charms as ArcanaConfig[];"
+  },
+  {
+    "name": "keys",
+    "line": 78,
+    "declaration": "public static keys = arcanaData.keys as ArcanaConfig[];"
+  },
+  {
+    "name": "amulets",
+    "line": 79,
+    "declaration": "public static amulets = arcanaData.amulets as ArcanaConfig[];"
+  },
+  {
+    "name": "genPotions",
+    "line": 85,
+    "declaration": "public static genPotions = ItemLoader.filterPool(ItemLoader.potions);"
+  },
+  {
+    "name": "genScrolls",
+    "line": 86,
+    "declaration": "public static genScrolls = ItemLoader.filterPool(ItemLoader.scrolls);"
+  },
+  {
+    "name": "genFood",
+    "line": 87,
+    "declaration": "public static genFood = ItemLoader.filterPool(ItemLoader.food);"
+  },
+  {
+    "name": "genWands",
+    "line": 88,
+    "declaration": "public static genWands = ItemLoader.filterPool(ItemLoader.wands);"
+  },
+  {
+    "name": "genStaffs",
+    "line": 89,
+    "declaration": "public static genStaffs = ItemLoader.filterPool(ItemLoader.staffs);"
+  },
+  {
+    "name": "genRings",
+    "line": 90,
+    "declaration": "public static genRings = ItemLoader.filterPool(ItemLoader.rings);"
+  },
+  {
+    "name": "genCharms",
+    "line": 91,
+    "declaration": "public static genCharms = ItemLoader.filterPool(ItemLoader.charms);"
+  },
+  {
+    "name": "genKeys",
+    "line": 92,
+    "declaration": "public static genKeys = ItemLoader.filterPool(ItemLoader.keys);"
+  },
+  {
+    "name": "genAmulets",
+    "line": 93,
+    "declaration": "public static genAmulets = ItemLoader.filterPool(ItemLoader.amulets);"
+  },
+  {
+    "name": "genWeapons",
+    "line": 94,
+    "declaration": "public static genWeapons = ItemLoader.filterPool(ItemLoader.weapons);"
+  },
+  {
+    "name": "genArmors",
+    "line": 95,
+    "declaration": "public static genArmors = ItemLoader.filterPool(ItemLoader.armors);"
+  },
+  {
+    "name": "ALL_WEAPON_RUNICS",
+    "line": 105,
+    "declaration": "public static readonly ALL_WEAPON_RUNICS = [\n        'paralyzing', 'venom', 'quietus', 'vampirism', 'speed',\n        'confusion', 'force', 'slaying', 'mercy'\n    ] as const;"
+  },
+  {
+    "name": "GENERATED_WEAPON_RUNICS",
+    "line": 109,
+    "declaration": "public static readonly GENERATED_WEAPON_RUNICS = [\n        'paralyzing', 'quietus', 'speed', 'confusion', 'force', 'slaying', 'mercy'\n    ] as const;"
+  },
+  {
+    "name": "ALL_ARMOR_RUNICS",
+    "line": 112,
+    "declaration": "public static readonly ALL_ARMOR_RUNICS = [\n        'reflection', 'dampening', 'mutuality', 'respiration', 'vitality',\n        'absorption', 'reprisal', 'immunity'\n    ] as const;"
+  },
+  {
+    "name": "GENERATED_ARMOR_RUNICS",
+    "line": 116,
+    "declaration": "public static readonly GENERATED_ARMOR_RUNICS = [\n        'reflection', 'dampening', 'mutuality', 'respiration', 'absorption', 'reprisal', 'immunity'\n    ] as const;"
+  },
+  {
+    "name": "CE_NUMBER_SCROLL_KINDS",
+    "line": 137,
+    "declaration": "public static readonly CE_NUMBER_SCROLL_KINDS = 14;"
+  },
+  {
+    "name": "CE_METERED_ITEMS_TABLE",
+    "line": 146,
+    "declaration": "public static readonly CE_METERED_ITEMS_TABLE: readonly {\n        category: 'SCROLL' | 'POTION';\n        ceKind: string;\n        webId: string | null;\n        initialFrequency: number;\n        incrementFrequency: number;\n        decrementFrequency: number;\n        genMultiplier: number;\n        genIncrement: number;\n        levelScaling: number;\n        levelGuarantee: number;\n        itemNumberGuarantee: number;\n    }[] = [\n        // ---- 14 卷轴（scrollTable_Brogue 顺序）----\n        { category: 'SCROLL', ceKind: 'SCROLL_ENCHANTING',        webId: 'scroll_of_enchantment',    initialFrequency: 60, incrementFrequency: 30, decrementFrequency: 50, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'SCROLL', ceKind: 'SCROLL_IDENTIFY',          webId: 'scroll_of_identify',       initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'SCROLL', ceKind: 'SCROLL_TELEPORT',          webId: 'scroll_of_teleportation',  initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelGuarantee: 0, itemNumberGuarantee: 0, levelScaling: 0 },\n        { category: 'SCROLL', ceKind: 'SCROLL_REMOVE_CURSE',      webId: 'scroll_of_remove_curse',   initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'SCROLL', ceKind: 'SCROLL_RECHARGING',        webId: 'scroll_of_recharging',     initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'SCROLL', ceKind: 'SCROLL_PROTECT_ARMOR',     webId: 'scroll_of_protect_armor',  initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'SCROLL', ceKind: 'SCROLL_PROTECT_WEAPON',    webId: 'scroll_of_protect_weapon', initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'SCROLL', ceKind: 'SCROLL_SANCTUARY',         webId: 'scroll_of_sanctuary',      initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'SCROLL', ceKind: 'SCROLL_MAGIC_MAPPING',     webId: 'scroll_of_magic_mapping',  initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'SCROLL', ceKind: 'SCROLL_NEGATION',          webId: 'scroll_of_negation',       initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'SCROLL', ceKind: 'SCROLL_SHATTERING',        webId: 'scroll_of_shattering',     initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'SCROLL', ceKind: 'SCROLL_DISCORD',           webId: 'scroll_of_discord',        initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'SCROLL', ceKind: 'SCROLL_AGGRAVATE_MONSTER', webId: null,                       initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'SCROLL', ceKind: 'SCROLL_SUMMON_MONSTER',    webId: 'scroll_of_summon_monsters', initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        // ---- 16 药水（potionTable_Brogue 顺序）----\n        { category: 'POTION', ceKind: 'POTION_LIFE',          webId: 'potion_of_life',           initialFrequency: 0, incrementFrequency: 34, decrementFrequency: 150, genMultiplier: 4, genIncrement: 3, levelScaling: 1, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'POTION', ceKind: 'POTION_STRENGTH',      webId: 'potion_of_strength',       initialFrequency: 40, incrementFrequency: 17, decrementFrequency: 50, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'POTION', ceKind: 'POTION_TELEPATHY',     webId: 'potion_of_telepathy',      initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'POTION', ceKind: 'POTION_LEVITATION',    webId: 'potion_of_levitation',     initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'POTION', ceKind: 'POTION_DETECT_MAGIC',  webId: 'potion_of_detect_magic',   initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'POTION', ceKind: 'POTION_SPEED',         webId: 'potion_of_haste',          initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'POTION', ceKind: 'POTION_FIRE_IMMUNITY', webId: 'potion_of_fire_immunity',  initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'POTION', ceKind: 'POTION_INVISIBILITY',  webId: 'potion_of_invisibility',   initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'POTION', ceKind: 'POTION_POISON',        webId: 'potion_of_poison',         initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'POTION', ceKind: 'POTION_PARALYSIS',     webId: 'potion_of_paralysis',      initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'POTION', ceKind: 'POTION_HALLUCINATION', webId: 'potion_of_hallucination',  initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'POTION', ceKind: 'POTION_CONFUSION',     webId: 'potion_of_confusion',      initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'POTION', ceKind: 'POTION_INCINERATION',  webId: 'potion_of_incineration',   initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'POTION', ceKind: 'POTION_DARKNESS',      webId: null,                       initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'POTION', ceKind: 'POTION_DESCENT',       webId: 'potion_of_descent',        initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n        { category: 'POTION', ceKind: 'POTION_LICHEN',        webId: 'potion_of_creeping_death', initialFrequency: 0, incrementFrequency: 0, decrementFrequency: 0, genMultiplier: 0, genIncrement: 0, levelScaling: 0, levelGuarantee: 0, itemNumberGuarantee: 0 },\n    ];"
+  },
+  {
+    "name": "_ceItemGenProbs",
+    "line": 248,
+    "declaration": "private static _ceItemGenProbs: readonly { category: ItemCategory; weight: number }[] | null = null;"
+  },
+  {
+    "name": "CE_POW_FOOD",
+    "line": 290,
+    "declaration": "public static readonly CE_POW_FOOD: readonly number[] = [\n        65536, 167059, 288797, 425854, 575558, 736180, 906488, 1085553, 1272645,\n        1467168, 1668630, 1876612, 2090756, 2310749, 2536314, 2767208, 3003211,\n        3244126, 3489773, 3739989, 3994624, 4253540, 4516609, 4783712, 5054741,\n        5329591, 5608167, 5890379, 6176141, 6465373, 6758000, 7053950, 7353155,\n        7655551, 7961076, 8269672, 8581283, 8895856, 9213341, 9533687, 9856849,\n        10182782, 10511443, 10842789, 11176783, 11513384, 11852556, 12194264,\n        12538472, 12885148,\n    ];"
+  },
+  {
+    "name": "CE_POW_GOLD",
+    "line": 307,
+    "declaration": "public static readonly CE_POW_GOLD: readonly number[] = [\n        0, 1, 8, 28, 68, 135, 236, 378, 568, 813, 1122, 1500, 1956, 2497, 3131,\n        3864, 4705, 5660, 6738, 7946, 9292, 10783, 12427, 14232, 16204, 18353,\n    ];"
+  },
+  {
+    "name": "WEAPON_RUNIC_BY_CE_INDEX",
+    "line": 346,
+    "declaration": "public static readonly WEAPON_RUNIC_BY_CE_INDEX: readonly (string | null)[] = [\n        'speed',       // W_SPEED\n        'quietus',     // W_QUIETUS\n        'paralyzing',  // W_PARALYSIS（web 拼写差异）\n        null,          // W_MULTIPLICITY —— web 未实现\n        null,          // W_SLOWING —— web 未实现\n        'confusion',   // W_CONFUSION\n        'force',       // W_FORCE\n        'slaying',     // W_SLAYING\n        'mercy',       // W_MERCY（CE 列入坏符文段 rand_range(8,9)）\n        null,          // W_PLENTY —— web 未实现\n    ];"
+  },
+  {
+    "name": "ARMOR_RUNIC_BY_CE_INDEX",
+    "line": 364,
+    "declaration": "public static readonly ARMOR_RUNIC_BY_CE_INDEX: readonly (string | null)[] = [\n        null,          // A_MULTIPLICITY —— web 未实现\n        'mutuality',   // A_MUTUALITY\n        'absorption',  // A_ABSORPTION\n        'reprisal',    // A_REPRISAL\n        'immunity',    // A_IMMUNITY\n        'reflection',  // A_REFLECTION\n        'respiration', // A_RESPIRATION\n        'dampening',   // A_DAMPENING\n        null,          // A_BURDEN —— web 未实现\n        null,          // A_VULNERABILITY —— web 未实现\n        null,          // A_IMMOLATION —— web 未实现\n    ];"
+  },
+  {
+    "name": "CE_NUMBER_GOOD_WEAPON_ENCHANT_KINDS",
+    "line": 379,
+    "declaration": "public static readonly CE_NUMBER_GOOD_WEAPON_ENCHANT_KINDS = 8;"
+  },
+  {
+    "name": "CE_NUMBER_WEAPON_RUNIC_KINDS",
+    "line": 380,
+    "declaration": "public static readonly CE_NUMBER_WEAPON_RUNIC_KINDS = 10;"
+  },
+  {
+    "name": "CE_NUMBER_GOOD_ARMOR_ENCHANT_KINDS",
+    "line": 382,
+    "declaration": "public static readonly CE_NUMBER_GOOD_ARMOR_ENCHANT_KINDS = 8;"
+  },
+  {
+    "name": "CE_NUMBER_ARMOR_ENCHANT_KINDS",
+    "line": 383,
+    "declaration": "public static readonly CE_NUMBER_ARMOR_ENCHANT_KINDS = 11;"
+  },
+  {
+    "name": "CE_MONSTER_CLASSES",
+    "line": 391,
+    "declaration": "private static readonly CE_MONSTER_CLASSES: readonly {\n        name: string; frequency: number; maxDepth: number;\n    }[] = [\n        { name: 'abomination', frequency: 10, maxDepth: -1 },\n        { name: 'dar',         frequency: 10, maxDepth: 22 },\n        { name: 'animal',      frequency: 10, maxDepth: 10 },\n        { name: 'goblin',      frequency: 10, maxDepth: 10 },\n        { name: 'ogre',        frequency: 10, maxDepth: 16 },\n        { name: 'dragon',      frequency: 10, maxDepth: -1 },\n        { name: 'undead',      frequency: 10, maxDepth: -1 },\n        { name: 'jelly',       frequency: 10, maxDepth: 15 },\n        { name: 'turret',      frequency: 5,  maxDepth: 18 },\n        { name: 'infernal',    frequency: 10, maxDepth: -1 },\n        { name: 'mage',        frequency: 10, maxDepth: -1 },\n        { name: 'waterborne',  frequency: 10, maxDepth: 17 },\n        { name: 'airborne',    frequency: 10, maxDepth: 15 },\n        { name: 'fireborne',   frequency: 10, maxDepth: 12 },\n        { name: 'troll',       frequency: 10, maxDepth: 15 },\n    ];"
+  },
+  {
+    "name": "potionFlavorMap",
+    "line": 441,
+    "declaration": "public static potionFlavorMap = new Map<string, { name: string, color: number }>();"
+  },
+  {
+    "name": "scrollFlavorMap",
+    "line": 442,
+    "declaration": "public static scrollFlavorMap = new Map<string, string>();"
+  },
+  {
+    "name": "staffFlavorSlots",
+    "line": 443,
+    "declaration": "private static staffFlavorSlots: string[] = [];"
+  },
+  {
+    "name": "arcanaFlavorMap",
+    "line": 444,
+    "declaration": "public static arcanaFlavorMap = new Map<string, string>();"
+  },
+  {
+    "name": "identifiedItems",
+    "line": 447,
+    "declaration": "public static identifiedItems = new Set<string>();"
+  },
+  {
+    "name": "callTitles",
+    "line": 462,
+    "declaration": "public static callTitles = new Map<string, string>();"
+  },
+  {
+    "name": "WEAPON_KILLS_TO_AUTO_ID",
+    "line": 488,
+    "declaration": "public static readonly WEAPON_KILLS_TO_AUTO_ID = 20;"
+  },
+  {
+    "name": "ARMOR_DELAY_TO_AUTO_ID",
+    "line": 489,
+    "declaration": "public static readonly ARMOR_DELAY_TO_AUTO_ID = 1000;"
+  },
+  {
+    "name": "RING_DELAY_TO_AUTO_ID",
+    "line": 490,
+    "declaration": "public static readonly RING_DELAY_TO_AUTO_ID = 1500;"
+  },
+  {
+    "name": "DEGENERATE_CHARGE_WAND_KINDS",
+    "line": 497,
+    "declaration": "private static readonly DEGENERATE_CHARGE_WAND_KINDS: ReadonlySet<string> = new Set(['wand_of_empowerment']);"
+  },
+  {
+    "name": "INSTANT_ID_RING_KINDS",
+    "line": 504,
+    "declaration": "private static readonly INSTANT_ID_RING_KINDS: ReadonlySet<string> = new Set([\n        'ring_of_clairvoyance', 'ring_of_light', 'ring_of_stealth',\n    ]);"
+  },
+  {
+    "name": "MAGIC_POLARITY",
+    "line": 537,
+    "declaration": "private static readonly MAGIC_POLARITY: Readonly<Record<string, number>> = {\n        // 药水（CE 16 类中 web 有 16 条，含 2 条自创）\n        potion_of_life: 1,            // life\n        potion_of_strength: 1,        // strength\n        potion_of_telepathy: 1,       // telepathy\n        potion_of_levitation: 1,      // levitation\n        potion_of_detect_magic: 1,    // detect magic\n        // B-1c 更正：CE POTION_SPEED 在 web 的 id 是 `potion_of_haste`\n        // （consumables.json，trueName \"Potion of Speed\"、effect \"speed\"）。\n        // B-1a 写成 `potion_of_speed` → 该键在表里恒查不到，速度药水此前\n        // 落在\"无极性\"（0）而不参与善意分组；B-0 §5.1-9 \"web 缺速度药水\"\n        // 的目录缺口结论同样不成立。见 b_1c 报告 §与预设不符。\n        potion_of_haste: 1,           // speed\n        potion_of_fire_immunity: 1,   // fire immunity\n        potion_of_invisibility: 1,    // invisibility\n        potion_of_poison: -1,         // caustic gas（CE 原生，web 误退池，B-4 回池）\n        potion_of_paralysis: -1,      // paralysis\n        potion_of_hallucination: -1,  // hallucination\n        potion_of_confusion: -1,      // confusion\n        potion_of_incineration: -1,   // incineration\n        potion_of_descent: -1,        // descent\n        potion_of_creeping_death: -1, // creeping death（=POTION_LICHEN，退池）\n        potion_of_healing: 0,         // 自创（CE 无），退池\n        // 卷轴（web 14 条，含 1 条自创；CE aggravate monsters web 缺）\n        scroll_of_enchantment: 1,     // enchanting\n        scroll_of_identify: 1,        // identify\n        scroll_of_teleportation: 1,   // teleportation\n        scroll_of_remove_curse: 1,    // remove curse\n        scroll_of_recharging: 1,      // recharging\n        scroll_of_protect_armor: 1,   // protect armor\n        scroll_of_protect_weapon: 1,  // protect weapon\n        scroll_of_sanctuary: 1,       // sanctuary\n        scroll_of_magic_mapping: 1,   // magic mapping\n        scroll_of_negation: 1,        // negation\n        scroll_of_shattering: 1,      // shattering\n        scroll_of_discord: 1,         // discord\n        scroll_of_summon_monsters: -1,// summon monsters\n        scroll_of_amnesia: 0,         // 自创（CE 无），退池\n        // 魔杖（CE 全 9 条 + 2 条退池兼容定义，GlobalsBrogue.c:702-710）\n        wand_of_teleportation: 1,     // teleportation\n        wand_of_slowness: 1,          // slowness\n        wand_of_polymorphism: 1,\n        wand_of_negation: 1,\n        wand_of_domination: 1,\n        wand_of_beckoning: 1,         // beckoning\n        wand_of_plenty: -1,\n        wand_of_invisibility: -1,     // invisibility\n        wand_of_empowerment: -1,      // empowerment\n        wand_of_fire: 0,              // CE 法杖错位实体，退池\n        wand_of_lightning: 0,         // 同上\n        // 法杖（CE 全 12 条 + 1 条退池兼容定义，Globals.c:1642-1653）\n        staff_of_lightning: 1,        // lightning\n        staff_of_fire: 1,             // firebolt\n        staff_of_poison: 1,           // poison\n        staff_of_tunneling: 1,\n        staff_of_blinking: 1,\n        staff_of_entrancement: 1,\n        staff_of_obstruction: 1,\n        staff_of_discord: 1,\n        staff_of_conjuration: 1,      // conjuration\n        staff_of_healing: -1,         // healing\n        staff_of_haste: -1,           // haste\n        staff_of_protection: -1,\n        staff_of_light: 0,            // 自创，退池\n        // 戒指（web 6 条，全 +1；CE light/reaping web 缺）\n        ring_of_clairvoyance: 1,\n        ring_of_stealth: 1,\n        ring_of_regeneration: 1,\n        ring_of_transference: 1,\n        ring_of_awareness: 1,\n        ring_of_wisdom: 1,\n    };"
+  },
+  {
+    "name": "magicPolarityRevealed",
+    "line": 628,
+    "declaration": "public static magicPolarityRevealed = new Set<string>();"
+  },
+  {
+    "name": "_hasIntrinsicPolarity",
+    "line": 635,
+    "declaration": "private static _hasIntrinsicPolarity: ReadonlySet<ItemCategory> | null = null;"
+  },
+  {
+    "name": "_canBeDetected",
+    "line": 636,
+    "declaration": "private static _canBeDetected: ReadonlySet<ItemCategory> | null = null;"
+  },
+  {
+    "name": "potionColors",
+    "line": 918,
+    "declaration": "public static potionColors = [\n        { name: 'Red Potion', color: 0xff4444 },\n        { name: 'Blue Potion', color: 0x4444ff },\n        { name: 'Green Potion', color: 0x44ff44 },\n        { name: 'Bubbly Potion', color: 0xffffff },\n        { name: 'Viscous Potion', color: 0x884400 },\n        { name: 'Smoky Potion', color: 0x555555 },\n        { name: 'Golden Potion', color: 0xffdd44 },\n        { name: 'Purple Potion', color: 0xaa44ff },\n        // itemColorsRef 21 色，去与上方重复的 green/blue 后补入 19 色\n        { name: '深红色药水', color: 0x8b0000 },   // crimson\n        { name: '猩红色药水', color: 0xe34234 },   // scarlet\n        { name: '橙色药水', color: 0xff8800 },     // orange\n        { name: '黄色药水', color: 0xffff00 },     // yellow\n        { name: '靛蓝色药水', color: 0x3f00b0 },   // indigo\n        { name: '紫罗兰色药水', color: 0x9b30ff }, // violet\n        { name: '暗紫红色药水', color: 0x9f6a7a }, // puce\n        { name: '紫红色药水', color: 0xe0b0ff },   // mauve\n        { name: '酒红色药水', color: 0x800020 },   // burgundy\n        { name: '青绿色药水', color: 0x30d5c8 },   // turquoise\n        { name: '海蓝色药水', color: 0x7fffd4 },   // aquamarine\n        { name: '灰色药水', color: 0xaaaaaa },     // gray\n        { name: '粉色药水', color: 0xff88bb },     // pink\n        { name: '白色药水', color: 0xf5f5f5 },     // white\n        { name: '薰衣草色药水', color: 0xb57edc }, // lavender\n        { name: '棕褐色药水', color: 0xd2b48c },   // tan\n        { name: '棕色药水', color: 0xa0522d },     // brown\n        { name: '青色药水', color: 0x00e5e5 },     // cyan\n        { name: '黑色药水', color: 0x222222 }      // black\n    ];"
+  },
+  {
+    "name": "titlePhonemes",
+    "line": 954,
+    "declaration": "public static titlePhonemes = [\n        '玄妙', '天书', '灵符', '古咒', '星辰',\n        '妙法', '幻影', '金光', '火雷', '水月',\n        '虚空', '玉简', '道典', '法阵', '秘术',\n        '奥义', '冥力', '苍穹', '混沌', '无极',\n        '灵魂'\n    ];"
+  },
+  {
+    "name": "wandFlavorNames",
+    "line": 962,
+    "declaration": "public static wandFlavorNames = [\n        'Copper Wand',\n        'Oak Wand',\n        'Crystal Wand',\n        'Ivory Wand',\n        'Carved Wand',\n        'Runed Wand',\n        // itemMetalsRef 12 金属，去与 Copper Wand（铜）重复的 copper，补入 11 种\n        '青铜魔杖', // bronze\n        '钢铁魔杖', // steel\n        '黄铜魔杖', // brass\n        '白锡魔杖', // pewter\n        '镍魔杖',   // nickel\n        '铝魔杖',   // aluminum\n        '钨魔杖',   // tungsten\n        '钛魔杖',   // titanium\n        '钴魔杖',   // cobalt\n        '铬魔杖',   // chromium\n        '银魔杖'    // silver\n    ];"
+  },
+  {
+    "name": "staffFlavorNames",
+    "line": 983,
+    "declaration": "public static staffFlavorNames = [\n        'Ashwood Staff',\n        'Bronze Staff',\n        'Blackwood Staff',\n        'Marble Staff',\n        'Twisted Staff',\n        'Polished Staff',\n        // itemWoodsRef 21 种木材全量补入\n        '柚木法杖',     // teak\n        '橡木法杖',     // oak\n        '红木法杖',     // redwood\n        '花楸木法杖',   // rowan\n        '柳木法杖',     // willow\n        '桃花心木法杖', // mahogany\n        '松木法杖',     // pinewood\n        '枫木法杖',     // maple\n        '竹法杖',       // bamboo\n        '铁木法杖',     // ironwood\n        '梨木法杖',     // pearwood\n        '桦木法杖',     // birch\n        '樱桃木法杖',   // cherry\n        '桉木法杖',     // eucalyptus\n        '胡桃木法杖',   // walnut\n        '雪松木法杖',   // cedar\n        '玫瑰木法杖',   // rosewood\n        '紫杉木法杖',   // yew\n        '檀香木法杖',   // sandalwood\n        '山核桃木法杖', // hickory\n        '铁杉木法杖'    // hemlock\n    ];"
+  },
+  {
+    "name": "ringFlavorNames",
+    "line": 1014,
+    "declaration": "public static ringFlavorNames = [\n        'Agate Ring',\n        'Copper Ring',\n        'Jade Ring',\n        'Silver Ring',\n        'Iron Ring',\n        'Gold Ring',\n        // itemGemsRef 18 石，去与 Agate Ring（玛瑙）重复的 agate，补入 17 种\n        '钻石戒指',     // diamond\n        '蛋白石戒指',   // opal\n        '石榴石戒指',   // garnet\n        '红宝石戒指',   // ruby\n        '紫水晶戒指',   // amethyst\n        '黄玉戒指',     // topaz\n        '缟玛瑙戒指',   // onyx\n        '碧玺戒指',     // tourmaline\n        '蓝宝石戒指',   // sapphire\n        '黑曜石戒指',   // obsidian\n        '孔雀石戒指',   // malachite\n        '海蓝宝石戒指', // aquamarine\n        '祖母绿戒指',   // emerald\n        '玉戒指',       // jade\n        '变石戒指',     // alexandrite\n        '血石戒指',     // bloodstone\n        '碧玉戒指'      // jasper\n    ];"
+  },
+  {
+    "name": "charmFlavorNames",
+    "line": 1041,
+    "declaration": "public static charmFlavorNames = [\n        'Bone Charm',\n        'Amber Charm',\n        'Stone Charm',\n        'Glass Charm',\n        'Bronze Charm',\n        'Ivory Charm'\n    ];"
+  },
+  {
+    "name": "THROWING_WEAPON_KINDS",
+    "line": 1265,
+    "declaration": "private static readonly THROWING_WEAPON_KINDS: ReadonlySet<string> = new Set([\n        'dart', 'incendiary_dart', 'javelin',\n    ]);"
+  }
+]

@@ -1,0 +1,36 @@
+{
+  "missingReportLinks": [],
+  "inputFiles": 334,
+  "changedInputs": [],
+  "testCounts": {
+    "final-tests.json": {
+      "numPassedTests": 2294,
+      "numFailedTests": 0,
+      "numPendingTests": 8,
+      "numTodoTests": 1,
+      "numTotalTests": 2303
+    },
+    "final-support-tests.json": {
+      "numPassedTests": 188,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "numTodoTests": 4,
+      "numTotalTests": 192
+    },
+    "final-drift.json": {
+      "numPassedTests": 1,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "numTodoTests": 0,
+      "numTotalTests": 1
+    }
+  },
+  "modifiedTrackedFiles": [
+    "progress.md",
+    "src/engine/Core/Game.ts",
+    "src/engine/Items/ItemLoader.ts",
+    "src/engine/Systems/Logger.ts",
+    "src/entities/Creature.ts"
+  ],
+  "reportSha256": "6df92af3f4140f0e9fac1a9a67a5f45283ec36bd02759ff9dd4660c40f7509f5"
+}

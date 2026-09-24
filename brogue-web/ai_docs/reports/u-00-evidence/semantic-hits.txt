@@ -1,0 +1,1328 @@
+src/App.vue:91:const startNewGame = (payload: { seed?: number; mode: GameMode }) => {
+src/App.vue:92:  activeGame.startNewGame({ seed: payload.seed, mode: payload.mode });
+src/App.vue:195:const replayRestart = () => {
+src/App.vue:196:  activeGame.replayRestart();
+src/App.vue:240:    activeGame.isGameOver = false;
+src/App.vue:273:      @new-game="startNewGame"
+src/App.vue:283:      @replay-restart="replayRestart"
+src/components/AgentControls.vue:26:    if (!activeGame || !activeGame.player || activeGame.isGameOver) return null;
+src/components/GameCanvas.vue:664:  activeGame.discardInFlightAdvancement();
+src/components/GameEndOverlay.vue:5:const isGameOver = ref(false);
+src/components/GameEndOverlay.vue:8:const stats = ref({
+src/components/GameEndOverlay.vue:22:        if (activeGame.isGameOver && !isGameOver.value) {
+src/components/GameEndOverlay.vue:23:            isGameOver.value = true;
+src/components/GameEndOverlay.vue:26:            stats.value = { ...activeGame.stats };
+src/components/GameEndOverlay.vue:29:        } else if (!activeGame.isGameOver && isGameOver.value) {
+src/components/GameEndOverlay.vue:30:            isGameOver.value = false;
+src/components/GameEndOverlay.vue:40:    isGameOver.value = false;
+src/components/GameEndOverlay.vue:59:    <div v-if="isGameOver" class="game-end-overlay">
+src/components/GameEndOverlay.vue:75:            <div class="stats-grid">
+src/components/GameEndOverlay.vue:77:                    <div class="stat-label">{{ $t('endgame.stats_depth', { defaultValue: 'Max Depth' }) }}</div>
+src/components/GameEndOverlay.vue:78:                    <div class="stat-value">{{ stats.maxDepth }}</div>
+src/components/GameEndOverlay.vue:81:                    <div class="stat-label">{{ $t('endgame.stats_kills', { defaultValue: 'Monsters Defeated' }) }}</div>
+src/components/GameEndOverlay.vue:82:                    <div class="stat-value">{{ stats.kills }}</div>
+src/components/GameEndOverlay.vue:85:                    <div class="stat-label">{{ $t('endgame.stats_gold', { defaultValue: 'Gold Collected' }) }}</div>
+src/components/GameEndOverlay.vue:86:                    <div class="stat-value">{{ stats.gold }}</div>
+src/components/GameEndOverlay.vue:89:                    <div class="stat-label">{{ $t('endgame.stats_turns', { defaultValue: 'Turns' }) }}</div>
+src/components/GameEndOverlay.vue:90:                    <div class="stat-value">{{ stats.turns }}</div>
+src/components/GameEndOverlay.vue:186:.stats-grid {
+src/components/Sidebar.vue:83:    <div class="stats-card">
+src/components/Sidebar.vue:192:.stats-card {
+src/data/monsters.test.ts:10: * 五字段由 scripts/merge_monster_stats.cjs 从 monsters_ce2.json 合并
+src/engine/Combat/BoltCatalog.test.ts:2:import { readFileSync } from 'node:fs';
+src/engine/Combat/BoltCatalog.test.ts:10:const ce = (file: string) => readFileSync(new URL(`../../../../BrogueCE-master/src/${file}`, import.meta.url), 'utf8');
+src/engine/Combat/Combat.ts:85:        // --- Determine attacker stats ---
+src/engine/Combat/Combat.ts:104:        // --- Determine defender stats ---
+src/engine/Combat/Negation.ts:14:// Globals.c mutationCatalog: removing the mutation identity never reverses info stats.
+src/engine/Core/Game.ts:12:import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, setDormantAwakener, spawnDungeonFeature } from '../Map/DungeonFeature';
+src/engine/Core/Game.ts:47:import { ensureEntityIdAbove, allocateEntityId, resetEntityIds, type StatusId, type Creature } from '../../entities/Creature';
+src/engine/Core/Game.ts:341:     * B-0 §1.8）。旧存档无此字段 → initConsumables 的开局态兜底（鉴定丢失，
+src/engine/Core/Game.ts:353:     * 的快照等价物，Rogue.h:1436）。旧存档无此字段 → initConsumables 的开局
+src/engine/Core/Game.ts:399:    stats?: {
+src/engine/Core/Game.ts:608:    private pendingFallenByDepth: Map<number, Monster[]> = new Map();
+src/engine/Core/Game.ts:705:    public isGameOver: boolean = false;
+src/engine/Core/Game.ts:708:    public stats = {
+src/engine/Core/Game.ts:738:        this.startNewGame();
+src/engine/Core/Game.ts:741:    public startNewGame(options?: { seed?: number; mode?: GameMode }) {
+src/engine/Core/Game.ts:744:        this.discardInFlightAdvancement();
+src/engine/Core/Game.ts:745:        if (this.grid) setDormantAwakener(this.grid, null);
+src/engine/Core/Game.ts:746:        for (const level of this.levels.values()) setDormantAwakener(level.grid, null);
+src/engine/Core/Game.ts:754:        ItemLoader.initConsumables();
+src/engine/Core/Game.ts:783:        this.pendingFallenByDepth = new Map();
+src/engine/Core/Game.ts:790:        this.isGameOver = false;
+src/engine/Core/Game.ts:793:        this.stats = { kills: 0, gold: 0, turns: 0, maxDepth: 1 };
+src/engine/Core/Game.ts:809:        this.pendingBoltFrames = [];
+src/engine/Core/Game.ts:835:        resetEntityIds();
+src/engine/Core/Game.ts:1279:            this.stats.maxDepth = Math.max(this.stats.maxDepth, this.depth);
+src/engine/Core/Game.ts:1310:            const fallen = this.pendingFallenByDepth.get(this.depth);
+src/engine/Core/Game.ts:1312:                this.pendingFallenByDepth.delete(this.depth);
+src/engine/Core/Game.ts:3191:        this.startNewGame({ seed: safeRecording.seed, mode: safeRecording.mode });
+src/engine/Core/Game.ts:3218:    public replayRestart() {
+src/engine/Core/Game.ts:3762:                        this.stats.gold += item.quantity;
+src/engine/Core/Game.ts:4149:            && (this.isInputLocked() || this.isGameOver || this.player.hp <= 0
+src/engine/Core/Game.ts:4276:        if (this.isInputLocked() || this.isGameOver || this.player.hp <= 0 || this.player.hasStatus('paralyzed')
+src/engine/Core/Game.ts:4380:        if (this.isGameOver || this.player.hp <= 0 || this.player.hasStatus('paralyzed')
+src/engine/Core/Game.ts:4555:        this.pendingBoltFrames = result.frames;
+src/engine/Core/Game.ts:4580:    public pendingBoltFrames: BoltFrame[] = [];
+src/engine/Core/Game.ts:4586:        if (this.pendingBoltFrames.length === 0) return false;
+src/engine/Core/Game.ts:4589:        for (let i = 0; i < this.pendingBoltFrames.length; i++) {
+src/engine/Core/Game.ts:4590:            const frame = this.pendingBoltFrames[i]!;
+src/engine/Core/Game.ts:4598:        this.pendingBoltFrames = [];
+src/engine/Core/Game.ts:4605:        if (this.pendingBoltFrames.length === 0) return null;
+src/engine/Core/Game.ts:4606:        return this.pendingBoltFrames[this.currentBoltFrameIndex] ?? null;
+src/engine/Core/Game.ts:5091:        this.pendingBoltFrames = boltResult.frames;
+src/engine/Core/Game.ts:5312:        if (!this.pendingEnchantment || this.isInputLocked() || this.isGameOver
+src/engine/Core/Game.ts:5865:            thrown.id = allocateEntityId();
+src/engine/Core/Game.ts:5904:                            this.stats.kills++;
+src/engine/Core/Game.ts:6044:     * 满充终搜自身。开局归零见 startNewGame。
+src/engine/Core/Game.ts:6655:            this.stats.kills++;
+src/engine/Core/Game.ts:7019:            this.stats.kills++;
+src/engine/Core/Game.ts:7146:            if (this.isGameOver) break;
+src/engine/Core/Game.ts:7563:                        const q = this.pendingFallenByDepth.get(targetDepth);
+src/engine/Core/Game.ts:7565:                        else this.pendingFallenByDepth.set(targetDepth, [m]);
+src/engine/Core/Game.ts:7946:                if (this.isGameOver || this.player.hp <= 0) return;
+src/engine/Core/Game.ts:7968:                if (this.isGameOver) break; // CE Time.c:2721 的 gameHasEnded 守卫
+src/engine/Core/Game.ts:7978:            if (this.isGameOver) return; // CE Time.c:2756-2758
+src/engine/Core/Game.ts:8184:        this.stats.turns++;
+src/engine/Core/Game.ts:8191:        if (this.player.hp <= 0 && !this.isGameOver) {
+src/engine/Core/Game.ts:8372:    public discardInFlightAdvancement(): void {
+src/engine/Core/Game.ts:8627:            stats: { ...this.stats }
+src/engine/Core/Game.ts:8806:        ensureEntityIdAbove(Math.max(
+src/engine/Core/Game.ts:8818:        ItemLoader.initConsumables();
+src/engine/Core/Game.ts:8822:        // B-1b：读档恢复全局种类鉴定态与绰号（P1-48）。initConsumables 已把
+src/engine/Core/Game.ts:8837:        // B-1c：极性揭示回放（initConsumables 已清零；旧存档停在全零）
+src/engine/Core/Game.ts:8942:        if (snapshot.stats) {
+src/engine/Core/Game.ts:8943:            this.stats = { ...snapshot.stats };
+src/engine/Core/Game.ts:8973:        this.discardInFlightAdvancement();
+src/engine/Core/Game.ts:9504:     * （见 DungeonFeature.setDormantAwakener 的头注），而 `this.grid` 随层换新
+src/engine/Core/Game.ts:9509:        setDormantAwakener(this.grid, (origin, builtCells) =>
+src/engine/Core/Game.ts:10133:            if (target === this.player && target.hp > 0 && !this.isGameOver) this.pickUpItemAfterDisplacement();
+src/engine/Core/Game.ts:10268:        if (item.category === ItemCategory.GOLD) this.stats.gold += item.quantity;
+src/engine/Core/Game.ts:10564:        if (this.isGameOver) return;
+src/engine/Core/Game.ts:10565:        this.isGameOver = true;
+src/engine/Core/Game.ts:10581:        let score = this.stats.gold;
+src/engine/Core/Game.ts:10582:        score += this.stats.maxDepth * 50;
+src/engine/Core/Game.ts:10583:        score += this.stats.kills * 10;
+src/engine/Generator/Architect.ts:408:        // p4_7/monster_stats_effect 的接敌场景在窄井里无法成立）。
+src/engine/Items/Item.ts:9:import { allocateEntityId } from '../../entities/Creature';
+src/engine/Items/Item.ts:157:        this.id = allocateEntityId();
+src/engine/Items/ItemLoader.ts:459:     *  - 新局清零（resetItemTableEntry，Items.c:8778-8779）——见 initConsumables。
+src/engine/Items/ItemLoader.ts:626:     * 新局清零：CE resetItemTableEntry（Items.c:8777）——见 initConsumables。
+src/engine/Items/ItemLoader.ts:914:    // 每个池必须 ≥ 对应物品种类数（initConsumables 里不足会 console.error），
+src/engine/Items/ItemLoader.ts:1050:    public static initConsumables() {
+src/engine/Items/ItemLoader.ts:1080:     * initConsumables has already shuffled the full, unchanged flavor list, so the
+src/engine/Items/itemFlavors.test.ts:4: * 背景：外观池曾小于物品种类数（药水 8 池 vs 16 种……），initConsumables 里
+src/engine/Items/itemFlavors.test.ts:37:    ItemLoader.initConsumables();
+src/engine/Map/AutoGenerator.ts:655:    const stats: AutoGeneratorRunStats = {
+src/engine/Map/AutoGenerator.ts:753:            stats.entries.push(stat);
+src/engine/Map/AutoGenerator.ts:754:            stats.totalBuilt += stat.built;
+src/engine/Map/AutoGenerator.ts:757:    return stats;
+src/engine/Map/DungeonFeature.ts:670:export function setDormantAwakener(grid: Grid, fn: DormantAwakener | null): void {
+src/engine/Map/Grid.ts:51:    // terrainFingerprint 按数值哈希，中间插值会重排全部既有指纹）：
+src/engine/Map/Grid.ts:66:    // 只追加在尾部（terrainFingerprint 按数值哈希，既有值不变）。
+src/engine/Map/Grid.ts:145:    // 不变——terrainFingerprint 按数值哈希）。CE 行号即目录行：
+src/engine/Map/Grid.ts:157:    // 只追加在尾部（terrainFingerprint 按数值哈希，既有枚举值不变）。
+src/engine/Map/Grid.ts:169:    // 七个休眠载体地形。只追加在尾部（terrainFingerprint 按数值哈希，既有
+src/engine/Map/Grid.ts:186:    // （terrainFingerprint 按数值哈希，既有枚举值不变）。
+src/engine/Map/Grid.ts:201:    //    只追加在尾部（terrainFingerprint 按数值哈希，既有枚举值不变）。
+src/engine/Map/WallDoorFinish.ts:123:    const stats: DiagonalFinishStats = { passes: 0, removed: 0 };
+src/engine/Map/WallDoorFinish.ts:127:        stats.passes++;
+src/engine/Map/WallDoorFinish.ts:155:                    stats.removed++;
+src/engine/Map/WallDoorFinish.ts:161:    return stats;
+src/engine/Map/WallDoorFinish.ts:191:    const stats: DoorFinishStats = {
+src/engine/Map/WallDoorFinish.ts:199:            stats.eligibleDoors++;
+src/engine/Map/WallDoorFinish.ts:206:                stats.orphanFlooredCross++;
+src/engine/Map/WallDoorFinish.ts:215:                stats.orphanFlooredSealed++;
+src/engine/Map/WallDoorFinish.ts:220:                stats.secretDoors++;
+src/engine/Map/WallDoorFinish.ts:224:    return stats;
+src/engine/Map/WallDoorFinish.ts:246:    const stats: WallFinishStats = { includingDiagonals, graniteWalled: 0, wallsReverted: 0 };
+src/engine/Map/WallDoorFinish.ts:260:                        stats.graniteWalled++;
+src/engine/Map/WallDoorFinish.ts:271:                    stats.wallsReverted++;
+src/engine/Map/WallDoorFinish.ts:276:    return stats;
+src/engine/UI/DetailGenerator.ts:144:    // --- Basic stats ---
+src/engine/UI/DetailGenerator.ts:145:    const statsLines: DetailLine[] = [];
+src/engine/UI/DetailGenerator.ts:146:    statsLines.push({ text: `生命值: ${monster.hp}/${monster.maxHp}`, color: '#66ccff' });
+src/engine/UI/DetailGenerator.ts:150:        statsLines.push({ text: `伤害: ${dmgStr}` });
+src/engine/UI/DetailGenerator.ts:156:    if (monAcc !== 100) statsLines.push({ text: `精度: ${monAcc}` });
+src/engine/UI/DetailGenerator.ts:157:    if (monDef > 0) statsLines.push({ text: `防御: ${monDef}` });
+src/engine/UI/DetailGenerator.ts:162:    if (moveSpd < 100) statsLines.push({ text: '移动速度较快', color: '#ff8844' });
+src/engine/UI/DetailGenerator.ts:163:    else if (moveSpd > 100) statsLines.push({ text: '移动速度较慢' });
+src/engine/UI/DetailGenerator.ts:164:    if (atkSpd < 100) statsLines.push({ text: '攻击速度较快', color: '#ff8844' });
+src/engine/UI/DetailGenerator.ts:165:    else if (atkSpd > 100) statsLines.push({ text: '攻击速度较慢' });
+src/engine/UI/DetailGenerator.ts:169:        statsLines.push({ text: '再生极快', color: '#44ff44' });
+src/engine/UI/DetailGenerator.ts:171:        statsLines.push({ text: '再生较快', color: '#44ff44' });
+src/engine/UI/DetailGenerator.ts:174:    sections.push({ header: '基本属性', lines: statsLines });
+src/engine/UI/DetailGenerator.ts:308:    // --- Weapon stats ---
+src/engine/UI/DetailGenerator.ts:310:        const statsLines: DetailLine[] = [];
+src/engine/UI/DetailGenerator.ts:314:            statsLines.push({ text: `基础伤害: ${item.damage} (${lo}~${hi})` });
+src/engine/UI/DetailGenerator.ts:323:                statsLines.push({
+src/engine/UI/DetailGenerator.ts:331:            statsLines.push({
+src/engine/UI/DetailGenerator.ts:340:            statsLines.push({ text: `${item.displayName}不会被酸液腐蚀。`, color: '#44ff44' });
+src/engine/UI/DetailGenerator.ts:344:        sections.push({ header: '武器属性', lines: statsLines });
+src/engine/UI/DetailGenerator.ts:347:    // --- Armor stats ---
+src/engine/UI/DetailGenerator.ts:349:        const statsLines: DetailLine[] = [];
+src/engine/UI/DetailGenerator.ts:355:            statsLines.push({ text: `基础防御值: ${item.armor}` });
+src/engine/UI/DetailGenerator.ts:362:                    statsLines.push({
+src/engine/UI/DetailGenerator.ts:371:            statsLines.push({
+src/engine/UI/DetailGenerator.ts:378:            statsLines.push({ text: `${item.displayName}不会被酸液腐蚀。`, color: '#44ff44' });
+src/engine/UI/DetailGenerator.ts:381:        sections.push({ header: '护甲属性', lines: statsLines });
+src/engine/UI/DetailGenerator.ts:401:        const statsLines: DetailLine[] = [];
+src/engine/UI/DetailGenerator.ts:407:                statsLines.push({ text: `充能: ${item.charges}/${item.maxCharges}` });
+src/engine/UI/DetailGenerator.ts:411:                statsLines.push({ text: `充能上限: ${item.maxCharges}（当前余量未知）` });
+src/engine/UI/DetailGenerator.ts:414:            statsLines.push({ text: `已使用 ${item.timesUsed} 次（充能未知）`, color: '#aaaaff' });
+src/engine/UI/DetailGenerator.ts:416:        statsLines.push({ text: item.category === ItemCategory.WAND
+src/engine/UI/DetailGenerator.ts:422:            statsLines.push({ text: '自然回电速度为普通法杖的一半' });
+src/engine/UI/DetailGenerator.ts:424:                statsLines.push({ text: `最多瞬移 ${staffBlinkDistance(item.enchantment)} 格（附魔后 ${staffBlinkDistance(item.enchantment + 1)} 格）` });
+src/engine/UI/DetailGenerator.ts:427:        sections.push({ header: '法器属性', lines: statsLines });
+src/engine/UI/DetailGenerator.ts:431:        const statsLines: DetailLine[] = [];
+src/engine/UI/DetailGenerator.ts:433:            statsLines.push({ text: `冷却回合: ${item.cooldownTurns}` });
+src/engine/UI/DetailGenerator.ts:436:            statsLines.push({ text: `剩余冷却: ${item.cooldownRemaining}`, color: '#ff8844' });
+src/engine/UI/DetailGenerator.ts:438:        sections.push({ header: '护符属性', lines: statsLines });
+src/entities/Creature.ts:31:// 读档路径必须调用 ensureEntityIdAbove 把计数器推到存档最大 id 之上，
+src/entities/Creature.ts:36:export function resetEntityIds(): void {
+src/entities/Creature.ts:40:export function allocateEntityId(): number {
+src/entities/Creature.ts:44:export function ensureEntityIdAbove(maxInUseId: number): void {
+src/entities/Creature.ts:122:        this.id = allocateEntityId();
+src/entities/Monster.ts:6:import { Creature, allocateEntityId } from './Creature';
+src/entities/Monster.ts:383:    // 修正）——调度器、DetailGenerator 与 monster_stats_effect 的 legacy 回置
+src/entities/Monster.ts:454:        clone.id = allocateEntityId();
+src/test/armor_model_effect.test.ts:12: * 方法（沿用 monster_stats_effect.test.ts 的 legacy/wired 配对聚合模式）：
+src/test/armor_model_effect.test.ts:22: * Math.random（同 seed 不可复现），与 monster_stats_effect.test.ts 文件头所记
+src/test/armor_model_effect.test.ts:215:/** 相邻敌人则攻击，否则向楼下推进（参考 monster_stats_effect 的策略）。 */
+src/test/b1_retire_invented.test.ts:12:import { createHeadlessGame, terrainFingerprint } from './harness';
+src/test/b1_retire_invented.test.ts:133:                        fp: terrainFingerprint(game.grid), n: game.monsters.length,
+src/test/b2_transcription.test.ts:14:import { createHeadlessGame, terrainFingerprint } from './harness';
+src/test/b2_transcription.test.ts:108:                        fp:terrainFingerprint(game.grid),n:game.monsters.length,
+src/test/b_1a_identification.test.ts:30:import { readFileSync } from 'node:fs';
+src/test/b_1a_identification.test.ts:397:        // 错误实现：initConsumables 漏 clear 或 startNewGame 漏调 initConsumables → 本断言红
+src/test/b_1a_identification.test.ts:738:        const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), '..', 'components', 'InventoryOverlay.vue'), 'utf-8');
+src/test/b_1b_identification_persistence.test.ts:10: *   C2  空文本未清除绰号 / 新局未清零绰号         → callKind / initConsumables 缺半
+src/test/b_1b_identification_persistence.test.ts:17: *   X1  挂起中的选择跨场景泄漏                    → loadSnapshot/startNewGame 未复位
+src/test/b_1b_identification_persistence.test.ts:206:        // 错误实现"initConsumables 漏清 callTitles"：新局残留
+src/test/b_1b_identification_persistence.test.ts:353:        game.startNewGame({ seed: 9 });
+src/test/b_1c_detect_magic.test.ts:247:        const turnsBefore = game.stats.turns;
+src/test/b_1c_detect_magic.test.ts:254:        expect(game.stats.turns, 'CE `return false`：取消不推进回合').toBe(turnsBefore);
+src/test/b_4a_item_generation.test.ts:111:        // startNewGame 会先 init 再生成 D1（+increment 后才生成物品）——开局后
+src/test/b_4b_item_placement.test.ts:339:        const before = game.stats.gold;
+src/test/b_4b_item_placement.test.ts:342:        expect(game.stats.gold, '拾取后账面应恰增加 quantity').toBe(before + gold.quantity);
+src/test/c_0_add_loops.test.ts:30:import { createHeadlessGame, terrainFingerprint } from './harness';
+src/test/c_0_add_loops.test.ts:657:                fps1.push(`D${depth}:${terrainFingerprint(game.grid)}:${countLoopCells(game.loopMap)}`);
+src/test/c_0_add_loops.test.ts:661:                fps2.push(`D${depth}:${terrainFingerprint(game.grid)}:${countLoopCells(game.loopMap)}`);
+src/test/c_1_room_profile.test.ts:34:import { createHeadlessGame, terrainFingerprint } from './harness';
+src/test/c_1_room_profile.test.ts:340:                        `fp=${terrainFingerprint(grid)}`);
+src/test/c_2_lakes_determinism.test.ts:12:import { terrainFingerprint } from './harness';
+src/test/c_2_lakes_determinism.test.ts:36:                    rows.push(`D${depth}:${terrainFingerprint(g)}|岩浆${countTerrain(g, TerrainType.LAVA)}` +
+src/test/c_2_lakes_e2e.test.ts:18:import { terrainFingerprint } from './harness';
+src/test/c_2_lakes_e2e.test.ts:125:    const statsBefore = { ...Architect.lakeGateStats };
+src/test/c_2_lakes_e2e.test.ts:166:                seed, depth, fp: terrainFingerprint(g),
+src/test/c_2_lakes_e2e.test.ts:181:    const stats = Architect.lakeGateStats;
+src/test/c_2_lakes_e2e.test.ts:183:        `placed=${stats.placed - statsBefore.placed} skipped=${stats.skipped - statsBefore.skipped}`);
+src/test/c_3_walls_doors.test.ts:34:import { createHeadlessGame, terrainFingerprint } from './harness';
+src/test/c_3_walls_doors.test.ts:277:        const stats = finishDoors(g, 1);
+src/test/c_3_walls_doors.test.ts:279:        expect(stats.orphanFlooredCross).toBe(1);
+src/test/c_3_walls_doors.test.ts:280:        expect(stats.orphanFlooredSealed).toBe(0);
+src/test/c_3_walls_doors.test.ts:281:        expect(stats.secretDoors).toBe(0);
+src/test/c_3_walls_doors.test.ts:287:        const stats = finishDoors(g, 1);
+src/test/c_3_walls_doors.test.ts:289:        expect(stats.orphanFlooredCross).toBe(0);
+src/test/c_3_walls_doors.test.ts:290:        expect(stats.orphanFlooredSealed).toBe(1);
+src/test/c_3_walls_doors.test.ts:294:        const stats2 = finishDoors(g2, 1);
+src/test/c_3_walls_doors.test.ts:296:        expect(stats2.orphanFlooredCross + stats2.orphanFlooredSealed).toBe(0);
+src/test/c_3_walls_doors.test.ts:345:        const stats = finishDoors(g, MAX_DEPTH);
+src/test/c_3_walls_doors.test.ts:347:        expect(stats.eligibleDoors, '机器门不计入 eligibleDoors').toBe(0);
+src/test/c_3_walls_doors.test.ts:348:        expect(stats.secretDoors).toBe(0);
+src/test/c_3_walls_doors.test.ts:380:            const stats = removeDiagonalOpenings(g);
+src/test/c_3_walls_doors.test.ts:381:            if (stats.removed === 2 && stats.passes >= 3) { chosen = seed; break; }
+src/test/c_3_walls_doors.test.ts:442:                    lines.push(`D${depth}:${terrainFingerprint(arch.grid)}` +
+src/test/c_4a_0_layer_model.test.ts:15: * startNewGame 会重播种（D1 恒可复现），但 generateDepth 沿用当前流且
+src/test/c_4a_0_layer_model.test.ts:17: * "从 startNewGame 起的完整生成链"，不是任意中间层的跳读。生成基线
+src/test/c_4a_0_layer_model.test.ts:21:import { readFileSync, readdirSync, statSync } from 'node:fs';
+src/test/c_4a_0_layer_model.test.ts:539:        let stats = getCrossLayerClearStats();
+src/test/c_4a_0_layer_model.test.ts:540:        expect(stats).toContainEqual({ layer: L.SURFACE, from: C.GRASS, to: C.FLOOR, count: 1 });
+src/test/c_4a_0_layer_model.test.ts:544:        stats = getCrossLayerClearStats();
+src/test/c_4a_0_layer_model.test.ts:545:        expect(stats.filter((s) => s.to === C.WATER_SHALLOW)).toEqual([]);
+src/test/c_4a_0_layer_model.test.ts:546:        expect(stats.filter((s) => s.to === C.WATER_DEEP)).toEqual([]);
+src/test/c_4a_0_layer_model.test.ts:612:        // startNewGame 重播种使整条链可复现；若在 a 走链途中创建 b 再对比，
+src/test/c_4a_0_layer_model.test.ts:662:            readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
+src/test/c_4a_0_layer_model.test.ts:714:        const gridSrc = readFileSync(
+src/test/c_4a_0_layer_model.test.ts:738:        const stats = getCrossLayerClearStats();
+src/test/c_4a_0_layer_model.test.ts:739:        const total = stats.reduce((acc, s) => acc + s.count, 0);
+src/test/c_4a_0_layer_model.test.ts:745:        const gasEvents = stats.filter((s) => s.layer === L.GAS);
+src/test/c_4a_0_layer_model.test.ts:751:        for (const s of stats) {
+src/test/c_4a_0_layer_model.test.ts:758:        for (const s of stats) {
+src/test/c_4a_0_layer_model.test.ts:763:            `跨层清除事件 ${total} 次，组合 ${stats.length} 种。按层合计：` +
+src/test/c_4a_terrain_catalog.test.ts:20:import { readFileSync, readdirSync, statSync } from 'node:fs';
+src/test/c_4a_terrain_catalog.test.ts:840:            readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
+src/test/c_4b_dungeon_feature.test.ts:23:import { readFileSync, readdirSync, statSync } from 'node:fs';
+src/test/c_4b_dungeon_feature.test.ts:1123:            stripComments(readFileSync(f, 'utf8')).split('\n').forEach((line, i) => {
+src/test/c_4b_dungeon_feature.test.ts:1171:            readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
+src/test/c_4c_promotion.test.ts:21:import { readFileSync, readdirSync, statSync } from 'node:fs';
+src/test/c_4c_promotion.test.ts:213:            readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
+src/test/c_4c_promotion.test.ts:479:                if (game.isGameOver) break;
+src/test/c_4c_promotion.test.ts:523:                    if (game.isGameOver || game.player.hp <= 0) break;
+src/test/c_4c_promotion.test.ts:584:            while (turns < 60 && !game.isGameOver) {
+src/test/c_7_lighting.test.ts:747:            let text = fs.readFileSync(file, 'utf8');
+src/test/c_7_lighting.test.ts:775:            const text = fs.readFileSync(file, 'utf8');
+src/test/c_7_lighting.test.ts:781:        const canvas = fs.readFileSync(path.join(compDir, 'GameCanvas.vue'), 'utf8');
+src/test/f_2b_creature_burning.test.ts:489:        expect(game.isGameOver).toBe(true);
+src/test/f_2c_explosion.test.ts:430:            if (game.isGameOver) break;
+src/test/g_1_gas_volumetric.test.ts:301:            if (game.isGameOver) break;
+src/test/g_2_gas_df_wiring.test.ts:296:        if (game.isGameOver) break;
+src/test/g_3_gas_effects.test.ts:387:        if (game.isGameOver) break;
+src/test/generation_baseline.test.ts:2:import { createHeadlessGame, terrainFingerprint } from './harness';
+src/test/generation_baseline.test.ts:3:import base from './fixtures/generation_baseline.json';
+src/test/generation_baseline.test.ts:24: * 重采方式：用 createHeadlessGame + terrainFingerprint 按本文件的字段口径
+src/test/generation_baseline.test.ts:25: * 重新生成 fixtures/generation_baseline.json（见 P1-20 提交）。
+src/test/generation_baseline.test.ts:42:                    fp: terrainFingerprint(g.grid), n: g.monsters.length,
+src/test/harness.ts:15: * - rng / timeSystem / logger 是全局单例：startNewGame 会重置 rng 种子、timeSystem
+src/test/harness.ts:48:    /** 玩家是否在本次运行中死亡（isGameOver 或 hp<=0）。 */
+src/test/harness.ts:74: * 注意：Game 构造器内部会以"当前时间"种子先跑一次 startNewGame；
+src/test/harness.ts:75: * 随后这里以固定 seed 再次 startNewGame 覆盖之——rng/timeSystem/logger 均会被
+src/test/harness.ts:76: * startNewGame 重置，因此最终状态只由 (seed, mode) 决定。
+src/test/harness.ts:81:    game.startNewGame({ seed, mode });
+src/test/harness.ts:132:            if (game.isGameOver || game.player.hp <= 0) {
+src/test/harness.ts:139:            if (game.isGameOver || game.player.hp <= 0) {
+src/test/harness.ts:156:export function terrainFingerprint(grid: Grid): string {
+src/test/horde_selection.test.ts:192:        for (let i = 0; i < 400 && !game.isGameOver && game.player.hp > 0; i++) {
+src/test/horde_selection.test.ts:194:            if (game.isGameOver || game.player.hp <= 0) break;
+src/test/hunger_curve_sim.test.ts:95:        if (game.isGameOver || game.player.hp <= 0) {
+src/test/hunger_curve_sim.test.ts:117:    if (game.isGameOver || game.player.hp <= 0) {
+src/test/i18n_scan.ts:20:import { readFileSync, readdirSync, statSync } from 'node:fs';
+src/test/i18n_scan.ts:508:        const code = readFileSync(file, 'utf-8');
+src/test/i18n_scan.ts:553:        const code = readFileSync(file, 'utf-8');
+src/test/monster_stats_effect.test.ts:2: * src/test/monster_stats_effect.test.ts — 怪物五项战斗数值（accuracy/defense/
+src/test/monster_stats_effect.test.ts:211:        console.log(`[monster_stats_effect] legacy: runs=${legacy.runs} turns=${legacy.turnsRun} died=${legacy.died} maxDepth=${legacy.maxDepthReached} attacks=${legacy.attacks} hits=${legacy.hits} rate=${rate(legacy)} damageTaken=${legacy.damageTaken} kills=${legacy.kills}`);
+src/test/monster_stats_effect.test.ts:212:        console.log(`[monster_stats_effect]   legacy 目标: ${tallyStr(legacy) || '无'}`);
+src/test/monster_stats_effect.test.ts:213:        console.log(`[monster_stats_effect] wired : runs=${wired.runs} turns=${wired.turnsRun} died=${wired.died} maxDepth=${wired.maxDepthReached} attacks=${wired.attacks} hits=${wired.hits} rate=${rate(wired)} damageTaken=${wired.damageTaken} kills=${wired.kills}`);
+src/test/monster_stats_effect.test.ts:214:        console.log(`[monster_stats_effect]   wired 目标: ${tallyStr(wired) || '无'}`);
+src/test/monster_stats_effect.test.ts:301:        console.log(`[monster_stats_effect] troll 接敌: attempts=${attempts} hits=${hits} rate=${(hits / Math.max(1, attempts) * 100).toFixed(1)}%`);
+src/test/p1_24_death_sink.test.ts:392:        expect(game.stats.kills).toBe(1);       // 前置确认：确实死于玩家这刀
+src/test/p1_24_death_sink.test.ts:423:        expect(game.stats.kills).toBe(1);
+src/test/p1_24_death_sink.test.ts:466:        '①标志被改回 true（或玩家分支被复活）——第一轮 isGameOver 就翻 true；' +
+src/test/p1_24_death_sink.test.ts:480:        expect(game.isGameOver).toBe(false);
+src/test/p1_24_death_sink.test.ts:495:        expect(game.isGameOver).toBe(true);
+src/test/p1_26_invariants.test.ts:26:import { createHeadlessGame, terrainFingerprint, analysisAllowsMove } from './harness';
+src/test/p1_26_invariants.test.ts:158:    return { seed, depth, up, down, walkable, gridArea: grid.width * grid.height, machineCells, reach, downReachable, fp: terrainFingerprint(grid) };
+src/test/p1_26_invariants.test.ts:161:/** 与 p2_3 / generation_baseline 同款驱动：D1 来自 startNewGame，
+src/test/p1_27_remove_drowning.test.ts:138:        '第 1 轮结算 isGameOver 就翻 true，本条失败。', () => {
+src/test/p1_27_remove_drowning.test.ts:153:        expect(game.isGameOver).toBe(false);
+src/test/p1_27_remove_drowning.test.ts:179:        expect(game.isGameOver).toBe(false);
+src/test/p1_27_remove_drowning.test.ts:206:        '捕获的错误实现：同上——熔岩分支被整体退役时 isGameOver 停留 false。', () => {
+src/test/p1_27_remove_drowning.test.ts:214:        expect(game.isGameOver).toBe(true);
+src/test/p1_28_flag_channel.test.ts:339:        expect(game.isGameOver).toBe(false);
+src/test/p1_29_lake_connectivity.test.ts:29:import { createHeadlessGame, terrainFingerprint, analysisAllowsMove } from './harness';
+src/test/p1_29_lake_connectivity.test.ts:106:        const statsBefore = { ...Architect.lakeGateStats };
+src/test/p1_29_lake_connectivity.test.ts:130:        const stats = Architect.lakeGateStats;
+src/test/p1_29_lake_connectivity.test.ts:132:            `闸门 placed=${stats.placed - statsBefore.placed} skipped=${stats.skipped - statsBefore.skipped}，` +
+src/test/p1_29_lake_connectivity.test.ts:218:                    fps.push(`D${depth}:深水${countTerrain(grid, TerrainType.WATER_DEEP)}:${terrainFingerprint(grid)}`);
+src/test/p1_33_machine_chokepoint.test.ts:41:import { createHeadlessGame, terrainFingerprint, analysisAllowsMove } from './harness';
+src/test/p1_33_machine_chokepoint.test.ts:515:                lines.push(`D${depth}:${terrainFingerprint(arch.grid)}::${digest}`);
+src/test/p1_34_loopmap_reset.test.ts:7: *   随后的 `startNewGame({ mode: 'test' })` 走 generateTestDepth 提前 return，
+src/test/p1_34_loopmap_reset.test.ts:64:        game.startNewGame({ seed: 20260915, mode: 'test' });
+src/test/p1_42_secret_door_search.test.ts:36:import { readFileSync } from 'node:fs';
+src/test/p1_42_secret_door_search.test.ts:236:        const src = readFileSync(
+src/test/p1_42_secret_door_search.test.ts:372:            turns: game.stats.turns,
+src/test/p2_0_seeded_rng.test.ts:19:import { readFileSync, readdirSync } from 'node:fs';
+src/test/p2_0_seeded_rng.test.ts:25:import { allocateEntityId } from '../entities/Creature';
+src/test/p2_0_seeded_rng.test.ts:202:        const c0 = allocateEntityId();
+src/test/p2_0_seeded_rng.test.ts:204:        const c1 = allocateEntityId();
+src/test/p2_0_seeded_rng.test.ts:264:                if (readFileSync(p, 'utf8').includes('Math.random(')) {
+src/test/p2_1_tick_architecture.test.ts:12: * `src/test/generation_baseline.test.ts` + `fixtures/generation_baseline.json`
+src/test/p2_1_tick_architecture.test.ts:28: * A. 零行为变化（本轮核心验收）：与 src/test/fixtures/p2_baseline.json
+src/test/p2_1_tick_architecture.test.ts:45:import { readFileSync, readdirSync } from 'node:fs';
+src/test/p2_1_tick_architecture.test.ts:49:import { createHeadlessGame, runTurns, terrainFingerprint } from './harness';
+src/test/p2_1_tick_architecture.test.ts:58:    readFileSync(new URL('./fixtures/p2_baseline.json', import.meta.url), 'utf8')
+src/test/p2_1_tick_architecture.test.ts:91:        fp: terrainFingerprint(game.grid),
+src/test/p2_1_tick_architecture.test.ts:228:        const timeTs = readFileSync(join(srcRoot, 'engine/Systems/Time.ts'), 'utf8');
+src/test/p2_1_tick_architecture.test.ts:242:                if (/scheduleEvent|eventQueue|advanceToNextEvent|clearEventsForActor|ScheduledEvent/.test(readFileSync(p, 'utf8'))) {
+src/test/p2_1_tick_architecture.test.ts:252:        const gameTs = readFileSync(join(srcRoot, 'engine/Core/Game.ts'), 'utf8');
+src/test/p2_2_real_speed.test.ts:12: * `src/test/generation_baseline.test.ts` + `fixtures/generation_baseline.json`
+src/test/p2_2_real_speed.test.ts:51:import { readFileSync } from 'node:fs';
+src/test/p2_2_real_speed.test.ts:53:import { createHeadlessGame, runTurns, terrainFingerprint, type TurnAction } from './harness';
+src/test/p2_2_real_speed.test.ts:64:    readFileSync(new URL('./fixtures/p2_2_baseline.json', import.meta.url), 'utf8')
+src/test/p2_2_real_speed.test.ts:73:    readFileSync(new URL('./fixtures/p2_baseline.json', import.meta.url), 'utf8')
+src/test/p2_2_real_speed.test.ts:127:        if (game.isGameOver || game.player.hp <= 0) break;
+src/test/p2_2_real_speed.test.ts:141:        turns: game.stats.turns,
+src/test/p2_2_real_speed.test.ts:318:        expect(game.stats.turns).toBe(0); // 收尾未跑，回合计数未增
+src/test/p2_2_real_speed.test.ts:337:        expect(game.stats.turns).toBe(1); // 收尾恰好一次
+src/test/p2_2_real_speed.test.ts:354:        expect(game.stats.turns).toBe(2);
+src/test/p2_2_real_speed.test.ts:392:        expect(game.stats.turns).toBe(1); // 收尾恰好一次，回合未丢
+src/test/p2_2_real_speed.test.ts:409:        const turnsBefore = game.stats.turns;
+src/test/p2_2_real_speed.test.ts:423:        expect(game.stats.turns).toBe(turnsBefore + 1);
+src/test/p2_2_real_speed.test.ts:462:                fp: terrainFingerprint(g.grid),
+src/test/p2_3_objective_time.test.ts:12: * `src/test/generation_baseline.test.ts` + `fixtures/generation_baseline.json`
+src/test/p2_3_objective_time.test.ts:49:import { readFileSync } from 'node:fs';
+src/test/p2_3_objective_time.test.ts:51:import { createHeadlessGame, runTurns, terrainFingerprint } from './harness';
+src/test/p2_3_objective_time.test.ts:60:    readFileSync(new URL('./fixtures/p2_3_baseline.json', import.meta.url), 'utf8')
+src/test/p2_3_objective_time.test.ts:69:    readFileSync(new URL('./fixtures/p2_2_baseline.json', import.meta.url), 'utf8')
+src/test/p2_3_objective_time.test.ts:72:    readFileSync(new URL('./fixtures/p2_baseline.json', import.meta.url), 'utf8')
+src/test/p2_3_objective_time.test.ts:359:                fp: terrainFingerprint(g.grid),
+src/test/p2_4_animation_cadence.test.ts:26:import { readFileSync } from 'node:fs';
+src/test/p2_4_animation_cadence.test.ts:112:        expect(game.stats.turns).toBe(1); // 收尾恰好一次
+src/test/p2_4_animation_cadence.test.ts:138:        expect(game.stats.turns).toBe(1);
+src/test/p2_4_animation_cadence.test.ts:167:        expect(game.stats.turns).toBe(1);
+src/test/p2_4_animation_cadence.test.ts:188:        expect(game.stats.turns).toBe(1);         // 收尾同步执行
+src/test/p2_4_animation_cadence.test.ts:192:        expect(game.stats.turns).toBe(2);
+src/test/p2_4_animation_cadence.test.ts:211:        expect(game.stats.turns).toBe(1);
+src/test/p2_4_animation_cadence.test.ts:226:        expect(game.stats.turns).toBe(0); // 收尾未跑
+src/test/p2_4_animation_cadence.test.ts:243:        expect(game.stats.turns).toBe(1); // 收尾恰好一次
+src/test/p2_4_animation_cadence.test.ts:278:        const src = readFileSync(new URL('../components/GameCanvas.vue', import.meta.url), 'utf8');
+src/test/p2_6_display_settings.test.ts:20:import { readFileSync } from 'node:fs';
+src/test/p2_6_display_settings.test.ts:305:        const src = readFileSync(new URL('../components/GameCanvas.vue', import.meta.url), 'utf8');
+src/test/p2_6_display_settings.test.ts:315:        const src = readFileSync(new URL('../components/Sidebar.vue', import.meta.url), 'utf8');
+src/test/p4_7_player_weapon_geometry.test.ts:170:        const killsBefore = (game as any).stats.kills as number;
+src/test/p4_7_player_weapon_geometry.test.ts:173:        expect((game as any).stats.kills).toBe(killsBefore + 1); // 关键断言：完整结算
+src/test/p4_7_player_weapon_geometry.test.ts:249:        const killsBefore = (game as any).stats.kills as number;
+src/test/p4_7_player_weapon_geometry.test.ts:253:        expect((game as any).stats.kills).toBe(killsBefore + 2);
+src/test/p4_7_player_weapon_geometry.test.ts:273:        expect((game as any).stats.kills).toBe(5);
+src/test/r_1_appearance.test.ts:26:import { readFileSync } from 'node:fs';
+src/test/r_1_appearance.test.ts:661:    const src = readFileSync(new URL('../components/GameCanvas.vue', import.meta.url), 'utf8');
+src/test/r_1_appearance.test.ts:712:        const appearanceSrc = readFileSync(new URL('../engine/UI/Appearance.ts', import.meta.url), 'utf8');
+src/test/smoke.test.ts:6: * b) 同一 seed 生成两次：D1..D5 的 terrainFingerprint 两两相等。
+src/test/smoke.test.ts:21:import { createHeadlessGame, runTurns, terrainFingerprint, type RunTurnsResult } from './harness';
+src/test/smoke.test.ts:85:    it(`b) 同一 seed ${DETERMINISM_SEED} 生成两次：D1..D5 的 terrainFingerprint 两两相等`, () => {
+src/test/smoke.test.ts:89:            const marks = [terrainFingerprint(game.grid)];
+src/test/smoke.test.ts:92:                marks.push(terrainFingerprint(game.grid));
+src/test/u_00_new_run.test.ts:6:import { allocateEntityId } from '../entities/Creature';
+src/test/u_00_new_run.test.ts:54:        rewards: getRewardRoomsGenerated(), nextEntityId: allocateEntityId(), nextMachineNumber: nextMachineNumber() });
+src/test/u_00_new_run.test.ts:79:    a.pendingFallenByDepth.set(1, [oldMonster]);
+src/test/u_00_new_run.test.ts:80:    a.pendingFallenByDepth.set(3, [oldMonster]);
+src/test/u_00_new_run.test.ts:82:    g.stats = { gold: 987, kills: 12, turns: 91, maxDepth: 18 };
+src/test/u_00_new_run.test.ts:90:        pendingBoltFrames: [{ old: true }], currentBoltFrameIndex: 2, boltAnimStartTime: 123,
+src/test/u_00_new_run.test.ts:101:    // before the new run's clock/stats are initialized.
+src/test/u_00_new_run.test.ts:137:                const oldStats = g.stats;
+src/test/u_00_new_run.test.ts:144:                        if (entrance === 'restart') game.replayRestart(); else game.replaySeek(2);
+src/test/u_00_new_run.test.ts:145:                    } else game.startNewGame({ seed: rec.seed, mode });
+src/test/u_00_new_run.test.ts:150:                    expect(g.isGameOver).toBe(true);
+src/test/u_00_new_run.test.ts:152:                    g.isGameOver = false; // App.handleReturnToTitle delegates next start to Game.
+src/test/u_00_new_run.test.ts:154:                const bindings = vi.spyOn(DFModule, 'setDormantAwakener');
+src/test/u_00_new_run.test.ts:180:        g.startNewGame({ seed: 12345 });
+src/test/u_00_new_run.test.ts:181:        g.startNewGame({ seed: 12345 });
+src/test/ui_1_rendering.test.ts:29:import { readFileSync } from 'node:fs';
+src/test/ui_1_rendering.test.ts:189:        const src = readFileSync(new URL('../engine/UI/Appearance.ts', import.meta.url), 'utf8');
+src/test/ui_1_rendering.test.ts:375:        const src = readFileSync(
+src/test/ui_1_rendering.test.ts:430:        const src = readFileSync(new URL('../App.vue', import.meta.url), 'utf8');
+src/test/ui_2_protection.test.ts:11: *      readFileSync 静态守卫模式。
+src/test/ui_2_protection.test.ts:26:import { readFileSync } from 'node:fs';
+src/test/ui_2_protection.test.ts:251:    const overlaySrc = readFileSync(
+src/test/v_1a_blueprint_items.test.ts:29:import { readFileSync } from 'node:fs';
+src/test/v_1a_blueprint_items.test.ts:106:        const json = readFileSync(new URL('../data/blueprints.json', import.meta.url), 'utf8');
+src/test/v_1a_blueprint_items.test.ts:121:        const gameTs = readFileSync(new URL('../engine/Core/Game.ts', import.meta.url), 'utf8');
+src/test/v_1c_machine_structure.test.ts:296:    it('Q4b 开局清零（CE RogueMain.c:292）：startNewGame 后计数器归零', () => {
+src/test/v_1c_machine_structure.test.ts:298:        createHeadlessGame(42); // 构造即 startNewGame
+src/test/v_2b_4_altars.test.ts:16:import { readFileSync, readdirSync, statSync } from 'node:fs';
+src/test/v_2b_4_altars.test.ts:594:            const code = stripComments(readFileSync(f, 'utf8'));
+src/test/v_2b_4_altars.test.ts:607:        // 测试树下的 json（含 fixtures/generation_baseline.json 的 note 文案）
+src/test/v_2b_4_altars.test.ts:615:            const code = rel.endsWith('.json') ? readFileSync(f, 'utf8') : stripComments(readFileSync(f, 'utf8'));
+src/test/v_2b_4_altars.test.ts:624:        const src = stripComments(readFileSync(
+src/test/v_2b_4_altars.test.ts:673:        const zh = readFileSync(fileURLToPath(new URL('../locales/zh_CN.json', import.meta.url)), 'utf8');
+src/test/v_2b_4_altars.test.ts:674:        const legacy = readFileSync(fileURLToPath(new URL('../locales/zh_CN.legacy.json', import.meta.url)), 'utf8');
+src/test/v_2b_4_altars.test.ts:761:        const src = stripComments(readFileSync(
+src/test/v_2b_5_dormant.test.ts:40:    setDormantAwakener, spawnDungeonFeature, catalogFeature, type DungeonFeature,
+src/test/v_2b_5_dormant.test.ts:504:        setDormantAwakener(grid, (o, b) => awakenAt(game, o, b));
+src/test/v_2b_7_features.test.ts:23:import { readFileSync } from 'node:fs';
+src/test/v_2b_7_features.test.ts:684:        const ratData = (JSON.parse(readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../data/monsters.json'), 'utf8')) as Array<{ id: string }>)
+src/test/v_2b_9b_environment.test.ts:5:import { readFileSync } from 'node:fs';
+src/test/v_2b_9b_environment.test.ts:77:    const source = readFileSync(new URL('../engine/Generator/BlueprintEngine.ts', import.meta.url), 'utf8');
+src/test/v_2b_9c_effects.test.ts:2:import { readFileSync } from 'node:fs';
+src/test/v_2b_9c_effects.test.ts:100:        const ce = readFileSync(new URL('../../../BrogueCE-master/src/variants/GlobalsBrogue.c', import.meta.url), 'utf8').split('\n');
+src/test/v_2b_9d_dungeon_profile.test.ts:2:import { readFileSync } from 'node:fs';
+src/test/v_2b_9d_dungeon_profile.test.ts:52:        const ce=readFileSync(new URL('../../../BrogueCE-master/src/variants/GlobalsBrogue.c',import.meta.url),'utf8').split('\n');
+src/test/v_2b_9e_2_autogen.test.ts:9:import { createHeadlessGame, terrainFingerprint } from './harness';
+src/test/v_2b_9e_2_autogen.test.ts:113:        const before=terrainFingerprint(grid);
+src/test/v_2b_9e_2_autogen.test.ts:115:        expect(terrainFingerprint(grid)).toBe(before);
+src/test/v_2b_9e_2_autogen.test.ts:193:                    fp:terrainFingerprint(game.grid),n:game.monsters.length,
+src/test/v_2b_9e_2_autogen.test.ts:242:        const stats=runAutogenerators(grid,10,true,[AUTO_GENERATOR_CATALOG[0]!,AUTO_GENERATOR_CATALOG[45]!],callback);
+src/test/v_2b_9e_2_autogen.test.ts:243:        expect(stats.entries).toEqual([]);
+src/test/w_10_poison.test.ts:2:import { readFileSync } from 'node:fs';
+src/test/w_10_poison.test.ts:26:    g.stats = { kills: 0, gold: 0, turns: 0, maxDepth: 1 };
+src/test/w_10_poison.test.ts:59:        const ce = readFileSync('../BrogueCE-master/src/brogue/PowerTables.c', 'utf8');
+src/test/w_10_poison.test.ts:132:        expect(g.stats.turns).toBe(actions);
+src/test/w_10_poison.test.ts:146:        expect(g.isGameOver).toBe(true); expect(gameover).toHaveBeenCalledTimes(1);
+src/test/w_10_poison.test.ts:224:        expect(g.stats.kills).toBe(hp === 1 ? 0 : 1);
+src/test/w_10_poison.test.ts:233:        expect(g.stats.kills).toBe(1); expect(gas).toHaveBeenCalledTimes(1); expect(drops).toHaveBeenCalledTimes(1);
+src/test/w_12_blink_beckoning.test.ts:30:    g.recordedInputEvents = []; g.stats = { kills: 0, gold: 0, maxDepth: 1, turns: 0 };
+src/test/w_12_blink_beckoning.test.ts:200:        expect(g.stats.gold).toBe(47); expect(g.items).not.toContain(item);
+src/test/w_12_blink_beckoning.test.ts:245:        const result = blink(g); expect(g.isGameOver).toBe(true); expect(g.player.loc).toEqual({ x: 10, y: 5 });
+src/test/w_13_tunneling.test.ts:5:import { cellTerrainFlags, setDormantAwakener } from '../engine/Map/DungeonFeature';
+src/test/w_13_tunneling.test.ts:152:        const before = JSON.stringify(g.grid), release = vi.spyOn(g, 'freeCaptive'), awake = vi.fn(); setDormantAwakener(g.grid, awake);
+src/test/w_13_tunneling.test.ts:194:        setDormantAwakener(g.grid, awake); cast(g, 2, { x: 6, y: 5 }, 2);
+src/test/w_15_shielding.test.ts:28:    g.stats = { kills: 0, gold: 0, turns: 0, maxDepth: 1 };
+src/test/w_15_shielding.test.ts:224:        expect(m.hp).toBe(100); expect(shield(m)).toEqual([50,130]); expect((g as any).pendingFallenByDepth.get(2)).toContain(m);
+src/test/w_16_conjuration.test.ts:30: g.spawnFloatingText=vi.fn();g.stats={kills:0,gold:0,turns:0,maxDepth:1};
+src/test/w_16_conjuration.test.ts:45:  const values=fs.readFileSync('ai_docs/reports/w-16-evidence/ce-blade-count.txt','utf8').trim().split('\n');
+src/test/w_16_conjuration.test.ts:147:  const die=vi.spyOn(b as any,'die'),loot=vi.spyOn(g as any,'dropMonsterLoot');const before=g.stats.kills;
+src/test/w_16_conjuration.test.ts:150:  expect(die).not.toHaveBeenCalled();expect(loot).not.toHaveBeenCalled();expect(g.stats.kills).toBe(before);expect(g.items).toHaveLength(0);
+src/test/w_17_domination.test.ts:29: g.spawnFloatingText=vi.fn();g.stats={kills:0,gold:0,turns:0,maxDepth:1};return g;
+src/test/w_17_domination.test.ts:42:  const rows=fs.readFileSync('ai_docs/reports/w-17-evidence/ce-domination.txt','utf8').trim().split('\n');
+src/test/w_17_domination.test.ts:241:  g.useArcanaItem(wand);g.setArcanaTarget(m.x,m.y);const before=g.stats.turns;
+src/test/w_17_domination.test.ts:242:  g.cancelArcanaSelection();expect(wand.charges).toBe(2);expect(g.stats.turns).toBe(before);expect(m.isAlly).toBe(false);
+src/test/w_17_domination.test.ts:244:  expect(r?.outcome?.autoID).toBe(true);expect(wand.charges).toBe(1);expect(g.stats.turns).toBe(before+1);expect(m.isAlly).toBe(hp===19);
+src/test/w_17_domination.test.ts:248:  expect(JSON.parse(fs.readFileSync('src/data/arcana.json','utf8')).wands.some((w:{id:string})=>w.id==='wand_of_domination')).toBe(true);
+src/test/w_18_entrancement.test.ts:45:  for(const row of fs.readFileSync('ai_docs/reports/w-18-evidence/ce-entrancement.txt','utf8').trim().split('\n')){
+src/test/w_18_entrancement.test.ts:201:  expect((g as any).pendingFallenByDepth.get(g.depth+1)).toEqual([m]);const hp=m.hp;wait(g);expect(m.hp).toBe(hp);
+src/test/w_19_polymorph.test.ts:27: g.spawnFloatingText=vi.fn();g.stats={kills:0,gold:0,turns:0,maxDepth:1};return g;
+src/test/w_19_polymorph.test.ts:42:  const rows=JSON.parse(fs.readFileSync('ai_docs/reports/w-19-evidence/ce-catalog.json','utf8'));
+src/test/w_19_polymorph.test.ts:55:  const rows=fs.readFileSync('ai_docs/reports/w-19-evidence/ce-polymorph.txt','utf8').trim().split('\n');
+src/test/w_19_polymorph.test.ts:123:  const oldId=m.id,loc=m.loc,key=m.carriedItem,oldHP=m.hp,oldMax=m.maxHp,oldStats={...g.stats},way=m.waypointAlreadyVisited,safety=m.safetySnapshot;
+src/test/w_19_polymorph.test.ts:126:  expect(m.loc).toBe(loc);expect(m.carriedItem).toBe(key);expect(m.leader).toBe(leader);expect(child.leader).toBe(m);expect(m.waypointAlreadyVisited).toBe(way);expect(m.safetySnapshot).toBe(safety);expect(carried.hp).toBeGreaterThan(0);expect(g.stats).toEqual(oldStats);expect(g.items).toEqual([]);
+src/test/w_19_polymorph.test.ts:196:  const turns=g.stats.turns;g.useArcanaItem(wand);g.cancelArcanaSelection();expect(wand.charges).toBe(3);expect(g.stats.turns).toBe(turns);expect(m.typeId).toBe('rat');
+src/test/w_19_polymorph.test.ts:197:  g.useArcanaItem(wand);g.setArcanaTarget(m.x,m.y);const original=rng.randRange.bind(rng);vi.spyOn(rng,'randRange').mockImplementation((lo,hi)=>lo===1&&hi===67?index('jackal'):original(lo,hi));g.confirmArcanaTarget();expect(wand.charges).toBe(2);expect(g.stats.turns).toBe(turns+1);expect(m.typeId).toBe('jackal');expect(g.monsters).toContain(m);
+src/test/w_20_cloning.test.ts:26: g.spawnFloatingText=vi.fn();g.stats={kills:0,gold:0,turns:0,maxDepth:1};return g;
+src/test/w_20_cloning.test.ts:137:  const zap=g.zapBoltFromPlayer.bind(g);vi.spyOn(g,'zapBoltFromPlayer').mockImplementation((_b,it,to)=>zap(cfg(),it,to));const turns=g.stats.turns;g.useArcanaItem(wand);g.cancelArcanaSelection();expect(wand.charges).toBe(3);expect(g.stats.turns).toBe(turns);expect(g.monsters).toHaveLength(1);
+src/test/w_20_cloning.test.ts:138:  const attack=vi.spyOn(CombatSystem,'attack');g.useArcanaItem(wand);g.setArcanaTarget(5,5);g.confirmArcanaTarget();const c=g.monsters[1]!;expect(wand.charges).toBe(2);expect(g.stats.turns).toBe(turns+1);expect(c.ticksUntilTurn).toBe(1);expect(attack).not.toHaveBeenCalled();const turn=vi.spyOn(c,'takeTurn');g.handlePlayerAction('wait');expect(turn).toHaveBeenCalled();
+src/test/w_20_cloning.test.ts:145:  const rows=fs.readFileSync('ai_docs/reports/w-20-evidence/ce-clone.txt','utf8').trim().split('\n');
+src/test/w_21_empowerment.test.ts:26: g.spawnFloatingText=vi.fn();g.stats={kills:0,gold:0,turns:0,maxDepth:1};return g;
+src/test/w_21_empowerment.test.ts:35:const stats=(m:Monster)=>[m.maxHp,m.hp,m.defense,m.accuracy,CombatSystem.parseDamageString(m.damageString).min,CombatSystem.parseDamageString(m.damageString).max,m.newPowerCount,m.totalPowerCount];
+src/test/w_21_empowerment.test.ts:40:  const rows=fs.readFileSync('ai_docs/reports/w-21-evidence/ce-empower.txt','utf8').trim().split('\n').filter(l=>l.startsWith('empower '));
+src/test/w_21_empowerment.test.ts:47:   if(JSON.stringify(stats(m))!==JSON.stringify(expected)||!result.outcome?.autoID)failures.push({row,actual:stats(m)});
+src/test/w_21_empowerment.test.ts:54:  const before=stats(m),mutation=structuredClone(m.mutation),flags=[...m.behaviorFlags],bolts=[...m.bolts];cast(g,m);
+src/test/w_21_empowerment.test.ts:68:  const line=fs.readFileSync('ai_docs/reports/w-21-evidence/ce-empower.txt','utf8').split('\n').find(l=>l.startsWith(`heal ${duration} `))!;
+src/test/w_21_empowerment.test.ts:105:  g.useArcanaItem(item);g.setArcanaTarget(m.x,m.y);const before=g.stats.turns;g.confirmArcanaTarget();expect(item.charges).toBe(0);expect(item.timesUsed).toBe(1);expect(item.isIdentified).toBe(true);expect(g.stats.turns).toBe(before+1);expect(m.totalPowerCount).toBe(1);expect(m.maxHp).toBe(18);
+src/test/w_21_empowerment.test.ts:110: it('W-20 cloneMonster copies stats and counts; subsequent hits are independent',()=>{
+src/test/w_21_empowerment.test.ts:111:  const g=scene(),m=mob(g);cast(g,m);cast(g,m);const c=g.cloneMonster(m)!;expect(stats(c)).toEqual(stats(m));expect(c.totalPowerCount).toBe(2);c.empower();expect(c.totalPowerCount).toBe(3);expect(m.totalPowerCount).toBe(2);expect(c.maxHp).toBe(m.maxHp+12);
+src/test/w_21_empowerment.test.ts:116:  expect(stats(c)).toEqual(stats(m));expect(m.hp).toBe(16);expect(m.maxHp).toBe(74);expect(c.totalPowerCount).toBe(2);
+src/test/w_21_empowerment.test.ts:127:  const original=stats(m),saved=JSON.parse(JSON.stringify(g.toSnapshot()));expect(g.loadSnapshot(saved)).toBe(true);expect(stats(g.monsters[0]!)).toEqual(original);expect(stats(g.dormantMonsters[0]!)).toEqual(original);
+src/test/w_21_empowerment.test.ts:128:  expect(stats((g as any).createMonsterFromSnapshot(saved.monsters[0]))).toEqual(original);
+src/test/w_21_empowerment.test.ts:132: it('save after polymorph keeps retained counts alongside the new catalog stats',()=>{
+src/test/w_21_empowerment.test.ts:133:  const g=live(),m=mob(g);cast(g,m);vi.spyOn(rng,'randRange').mockReturnValue(4);m.polymorph(()=>{});vi.restoreAllMocks();const before=stats(m);g.loadSnapshot(JSON.parse(JSON.stringify(g.toSnapshot())));expect(stats(g.monsters[0]!)).toEqual(before);expect(g.monsters[0]!.totalPowerCount).toBe(1);
+src/test/w_21_empowerment.test.ts:136:  const g=scene(),m=mob(g);cast(g,m);cast(g,m);m.newPowerCount=0;const before=stats(m);(g as any).negateCreatureMagic(m);expect(stats(m)).toEqual([...before.slice(0,6),2,2]);
+src/test/w_23_negation.test.ts:33:    g.spawnFloatingText = vi.fn(); g.stats = { kills: 0, gold: 0, turns: 0, maxDepth: 1 };
+src/test/w_23_negation.test.ts:52:        const rows = fs.readFileSync('ai_docs/reports/w-23-evidence/ce-negation.txt', 'utf8').split('\n').filter(s => s.startsWith(`status ${+player} `));
+src/test/w_24_wand_catalog.test.ts:25:beforeEach(() => { if (!i18next.isInitialized) i18next.init({ lng: 'en', resources: {}, initImmediate: false }); rng.seedRandomGenerator(2424); ItemLoader.initConsumables(); });
+src/test/w_24_wand_catalog.test.ts:45:        const ce = fs.readFileSync('../BrogueCE-master/src/variants/GlobalsBrogue.c', 'utf8');
+src/test/w_24_wand_catalog.test.ts:125:        const wand = ItemLoader.spawnWand(id,-1,-1)!, before = wand.charges!, turns = g.stats.turns, oldType = m.typeId;
+src/test/w_24_wand_catalog.test.ts:128:        expect([wand.charges,g.stats.turns,rng.randomNumbersGenerated]).toEqual([before,turns,calls]);
+src/test/w_24_wand_catalog.test.ts:130:        expect(result).not.toBeNull(); expect(wand.charges).toBe(before-1); expect(wand.timesUsed).toBe(1); expect(g.stats.turns).toBe(turns+1);
+src/test/w_24_wand_catalog.test.ts:169:            rng.seedRandomGenerator(g.currentSeed); ItemLoader.initConsumables();
+src/test/w_25_staff_catalog.test.ts:23:beforeEach(() => { if (!i18next.isInitialized) i18next.init({ lng: 'en', resources: {}, initImmediate: false }); rng.seedRandomGenerator(2525); ItemLoader.initConsumables(); });
+src/test/w_25_staff_catalog.test.ts:43:        const body = fs.readFileSync('../BrogueCE-master/src/brogue/Globals.c','utf8').split('itemTable staffTable[NUMBER_STAFF_KINDS] = {')[1]!.split('\n};')[0]!;
+src/test/w_25_staff_catalog.test.ts:111:        const before=[item.charges,g.stats.turns,rng.randomNumbersGenerated];
+src/test/w_25_staff_catalog.test.ts:113:        expect([item.charges,g.stats.turns,rng.randomNumbersGenerated]).toEqual(before);
+src/test/w_25_staff_catalog.test.ts:115:        expect(result?.outcome?.autoID).toBe(true);expect(item.charges).toBe(2);expect(g.stats.turns).toBe(before[1]!+1);expect(ItemLoader.identifiedItems.has(id)).toBe(true);
+src/test/w_25_staff_catalog.test.ts:169:        const before=[item.charges,g.stats.turns,rng.randomNumbersGenerated];g.useArcanaItem(item);g.setArcanaTarget(25,5);
+src/test/w_25_staff_catalog.test.ts:171:        expect([item.charges,g.stats.turns,rng.randomNumbersGenerated]).toEqual(before);
+src/test/w_25_staff_catalog.test.ts:183:        expect(g.getArcanaPreview()?.risk).toBe('possible');g.onConfirmRequest=vi.fn(()=>false);const before=[item.charges,g.stats.turns,rng.randomNumbersGenerated];
+src/test/w_25_staff_catalog.test.ts:184:        expect(g.confirmArcanaTarget()).toBeNull();expect(g.onConfirmRequest).toHaveBeenCalledOnce();expect([item.charges,g.stats.turns,rng.randomNumbersGenerated]).toEqual(before);
+src/test/w_25_staff_catalog.test.ts:194:            rng.seedRandomGenerator(g.currentSeed);ItemLoader.initConsumables();legacy=Object.fromEntries(ItemLoader.arcanaFlavorMap);
+src/test/w_26_arcana_closure.test.ts:25:beforeEach(()=>{rng.seedRandomGenerator(2626);ItemLoader.initConsumables();});
+src/test/w_26_arcana_closure.test.ts:57:        const before={charges:item.charges!,turns:g.stats.turns,rng:JSON.stringify(rng),hp:m.hp,loc:{...m.loc},type:m.typeId};
+src/test/w_26_arcana_closure.test.ts:61:        expect([item.charges,g.stats.turns,JSON.stringify(rng)]).toEqual([before.charges,before.turns,before.rng]);
+src/test/w_26_arcana_closure.test.ts:64:        expect(item.charges).toBe(before.charges-1);expect(g.stats.turns).toBe(before.turns+1);
+src/test/w_26_arcana_closure.test.ts:90:        const committed=[item.charges,g.stats.turns,JSON.stringify(rng)];expect(g.confirmArcanaTarget()).toBeNull();expect([item.charges,g.stats.turns,JSON.stringify(rng)]).toEqual(committed);
+src/test/w_26_arcana_closure.test.ts:91:        audit.push({id,ceType:getBoltForItem(id)!.ceType,autoID,charges:item.charges,turnDelta:g.stats.turns-before.turns,hp:m.hp,loc:m.loc,statuses:m.statusDurations,entities:g.monsters.length});
+src/test/w_26_arcana_closure.test.ts:138:            ItemLoader.staffs=current.filter(s=>!added.includes(s.id));rng.seedRandomGenerator(g.currentSeed);ItemLoader.initConsumables();
+src/test/w_2_arcana_submission.test.ts:18:// transaction fixtures. The final test also uses the real P2 scheduler.
+src/test/w_3_bolt_trajectory.test.ts:41:    // W-8: fix instance E for trajectory fixtures; old 6/10 HP constants are retired.
+src/test/w_4_bolt_reflection.test.ts:39:    // W-8: fix instance E for trajectory fixtures; old 6/10 HP constants are retired.
+src/test/w_6_arcana_recharge.test.ts:203:        const beforeTurns = game.stats.turns;
+src/test/w_6_arcana_recharge.test.ts:211:        expect(game.stats.turns).toBe(beforeTurns + 1);
+src/test/w_7_arcana_enchantment.test.ts:2:import { readFileSync } from 'node:fs';
+src/test/w_7_arcana_enchantment.test.ts:113:        const before = JSON.stringify(rng), tick = timeSystem.currentTick, turns = game.stats.turns;
+src/test/w_7_arcana_enchantment.test.ts:128:        expect([timeSystem.currentTick, game.stats.turns]).toEqual([tick, turns]);
+src/test/w_7_arcana_enchantment.test.ts:133:        expect([timeSystem.currentTick, game.stats.turns]).toEqual([tick + 100, turns + 1]);
+src/test/w_7_arcana_enchantment.test.ts:257:        const src = readFileSync(fileURLToPath(new URL('../components/InventoryOverlay.vue', import.meta.url)), 'utf8');
+scripts/extract_hordes.cjs:439:    const globalsC = fs.readFileSync(path.join(ceDir, 'src', 'variants', 'GlobalsBrogue.c'), 'utf8');
+scripts/extract_hordes.cjs:440:    const rogueH = fs.readFileSync(path.join(ceDir, 'src', 'brogue', 'Rogue.h'), 'utf8');
+scripts/extract_hordes.cjs:441:    const brogueGlobalsC = fs.readFileSync(path.join(ceDir, 'src', 'brogue', 'Globals.c'), 'utf8');
+scripts/extract_hordes.cjs:520:    const webMonsters = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'src', 'data', 'monsters.json'), 'utf8'));
+scripts/extract_monster_bolts.cjs:176:    const source = fs.readFileSync(globalsPath, 'utf8');
+scripts/extract_monster_bolts.cjs:204:    const monsters = JSON.parse(fs.readFileSync(monstersJsonPath, 'utf8'));
+scripts/merge_monster_stats.cjs:3: * scripts/merge_monster_stats.cjs — 把 CE 真实战斗数值合并进运行时怪物表，
+scripts/merge_monster_stats.cjs:16: *   node scripts/merge_monster_stats.cjs
+scripts/merge_monster_stats.cjs:19: *   node scripts/merge_monster_stats.cjs --check-ce <path/to/Globals.c>
+scripts/merge_monster_stats.cjs:24: *   node scripts/merge_monster_stats.cjs --dump-ce <path/to/Globals.c>
+scripts/merge_monster_stats.cjs:48:    return JSON.parse(fs.readFileSync(p, 'utf8'));
+scripts/merge_monster_stats.cjs:52:function withStatsInserted(monster, stats) {
+scripts/merge_monster_stats.cjs:58:            for (const f of STAT_FIELDS) out[f] = stats[f];
+scripts/merge_monster_stats.cjs:62:    if (!inserted) for (const f of STAT_FIELDS) out[f] = stats[f];
+scripts/merge_monster_stats.cjs:70:        //   node scripts/merge_monster_stats.cjs --check-ce <path/to/Globals.c>
+scripts/merge_monster_stats.cjs:95:        const stats = {};
+scripts/merge_monster_stats.cjs:101:            stats[f] = v;
+scripts/merge_monster_stats.cjs:104:        return withStatsInserted(mon, stats);
+scripts/merge_monster_stats.cjs:125:    const text = fs.readFileSync(globalsCPath, 'utf8');
+scripts/merge_monster_stats.cjs:235:            console.error('用法: node scripts/merge_monster_stats.cjs --check-ce <path/to/Globals.c>');
+scripts/merge_monster_stats.cjs:242:            console.error('用法: node scripts/merge_monster_stats.cjs --dump-ce <path/to/Globals.c>');
+scripts/merge_monster_stats.cjs:249:        console.error('用法: node scripts/merge_monster_stats.cjs [--check-ce <Globals.c> | --dump-ce <Globals.c>]');
+scripts/u00-browser-check.mjs:21:  const s=await page.evaluate(()=>({text:JSON.parse(window.render_game_to_text()),stats:{...window.activeGame.stats},
+scripts/u00-browser-check.mjs:22:   over:window.activeGame.isGameOver,reason:window.activeGame.gameOverReason,seed:window.activeGame.currentSeed,
+scripts/u00-browser-check.mjs:23:   inspect:window.activeGame.inspectTarget,bolt:window.activeGame.pendingBoltFrames.length,
+scripts/u00-browser-check.mjs:32: await page.evaluate(()=>{const g=window.activeGame;g.stats.gold=987;g.stats.kills=12;g.stats.maxDepth=18;});
+scripts/u00-browser-check.mjs:34: let s=await capture('menu-new');assert.deepEqual(s.stats,{kills:0,gold:0,turns:0,maxDepth:1});
+scripts/u00-browser-check.mjs:37:  await page.evaluate(won=>{const g=window.activeGame;g.stats.gold=987;g.stats.kills=12;
+scripts/u00-browser-check.mjs:40:  s=await capture(won?'title-new':'death-new');assert.deepEqual(s.stats,{kills:0,gold:0,turns:0,maxDepth:1});
+scripts/u00-browser-check.mjs:56: await page.evaluate(()=>{const g=window.activeGame;g.stats.gold=987;g.isGameOver=true;g.replayRestart();});
+scripts/u00-browser-check.mjs:57: s=await capture('replay-restart');assert.equal(s.replay,0);assert.equal(s.stats.gold,0);
+scripts/u00-browser-check.mjs:64: s=await capture('replay-seek-zero');assert.equal(s.replay,0);assert.deepEqual(s.stats,{kills:0,gold:0,turns:0,maxDepth:1});
+scripts/u00-final-check.mjs:9:const hash=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
+scripts/u00-final-check.mjs:14:const all=JSON.parse(fs.readFileSync(`${dir}/closure.json`)).all;
+scripts/u00-generation-check.mjs:15:import {terrainFingerprint} from './src/test/harness';
+scripts/u00-generation-check.mjs:21: g.startNewGame({seed});
+scripts/u00-generation-check.mjs:24:  rows.push({seed,depth,terrain:terrainFingerprint(g.grid),rng:JSON.parse(JSON.stringify(rng)),draws:[...draws]});
+scripts/u00-test-scope.mjs:12:    const raw = fs.readFileSync(f, 'utf8');
+scripts/u00-test-scope.mjs:51:    lifecycle: /startNewGame|replayRestart|stats|pendingFallenByDepth|isGameOver/,
+scripts/u00-test-scope.mjs:52:    expanded: /resetEntityIds|allocateEntityId|ensureEntityIdAbove|initConsumables|setDormantAwakener|discardInFlightAdvancement|pendingBoltFrames/,
+scripts/u00-test-scope.mjs:53:    readers: /readFileSync|readFile\(|fixtures|terrainFingerprint/,
+scripts/u00-test-scope.mjs:55:const S = Object.fromEntries(Object.entries(patterns).map(([k, re]) => [k, tests.filter(f => re.test(fs.readFileSync(f, 'utf8'))).sort()]));
+scripts/u00-test-scope.mjs:63:    fs.readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
+scripts/u00-test-scope.mjs:68:const tree = ts.createSourceFile('Game.ts', fs.readFileSync('src/engine/Core/Game.ts', 'utf8'), ts.ScriptTarget.Latest, true);
+scripts/w10-browser-check.mjs:40:            g.items = []; g.floatingTexts = []; g.pendingBoltFrames = []; g.monsters = []; g.dormantMonsters = [];
+scripts/w10-final-check.mjs:10:const manifest = () => [...walk('src'), ...walk('public'), ...walk('scripts'), 'progress.md', 'ai_docs/tasks/w-10.prompt.md', 'ai_docs/reports/w-0-survey.report.md', '../BrogueCE-master/src/brogue/Items.c', '../BrogueCE-master/src/brogue/PowerTables.c', '../BrogueCE-master/src/variants/GlobalsBrogue.c', '../BrogueCE-master/src/brogue/Combat.c', '../BrogueCE-master/src/brogue/Time.c', '../BrogueCE-master/src/brogue/Monsters.c', ...fs.readdirSync('.').filter(f => /^(package.*\.json|tsconfig.*\.json|vite\.config\..*|index\.html)$/.test(f))].sort().map(p => `${sha(fs.readFileSync(p))}  ${p}`).join('\n') + '\n';
+scripts/w10-final-check.mjs:20:const oldMethods = methods(head('src/engine/Core/Game.ts').toString()), newMethods = methods(fs.readFileSync('src/engine/Core/Game.ts', 'utf8'));
+scripts/w10-final-check.mjs:23:const unchangedFiles = ['src/data/arcana.json', 'src/data/monsters.json', 'src/data/mutations.json', 'src/engine/Combat/BoltCatalog.ts', 'src/engine/Combat/BoltTrajectory.ts', 'src/engine/Items/Item.ts', 'src/engine/Items/ItemLoader.ts', 'src/engine/Items/ArcanaInstance.ts', 'src/engine/Items/ArcanaRecharge.ts', 'src/engine/Items/ArcanaEnchantment.ts', 'src/engine/Random.ts', 'src/engine/Environment/Gas.ts', 'src/engine/Map/Promotion.ts', 'src/engine/Map/DungeonFeature.ts', 'src/engine/Map/TerrainCatalog.ts', 'src/test/fixtures/generation_baseline.json'];
+scripts/w10-final-check.mjs:39:    const after = cases(fs.readFileSync('src/engine/Core/Game.ts', 'utf8'), name);
+scripts/w10-final-check.mjs:48:    unchangedFiles: Object.fromEntries(unchangedFiles.map(f => [f, { head: sha(head(f)), current: sha(fs.readFileSync(f)), equal: head(f).equals(fs.readFileSync(f)) }])),
+scripts/w10-final-check.mjs:56:const scope = JSON.parse(fs.readFileSync(`${dir}/closure.json`, 'utf8'));
+scripts/w10-final-check.mjs:79:    const data = JSON.parse(fs.readFileSync(`${dir}/final-${run}.json`, 'utf8'));
+scripts/w10-test-scope.mjs:11:    const raw = fs.readFileSync(f, 'utf8');
+scripts/w10-test-scope.mjs:50:    readers: /readFileSync|readFile\(|import\(|require\(|fixtures|toSnapshot|saveSnapshot|loadSnapshot/,
+scripts/w10-test-scope.mjs:52:const S = Object.fromEntries(Object.entries(patterns).map(([k, re]) => [k, tests.filter(f => re.test(fs.readFileSync(f, 'utf8'))).sort()]));
+scripts/w11-final-check.mjs:10:const manifest = () => [...walk('src'), ...walk('public'), ...walk('scripts'), 'progress.md', 'ai_docs/tasks/w-11.prompt.md', 'ai_docs/reports/w-0-survey.report.md', '../BrogueCE-master/src/brogue/Items.c', '../BrogueCE-master/src/brogue/PowerTables.c', '../BrogueCE-master/src/variants/GlobalsBrogue.c', '../BrogueCE-master/src/brogue/Combat.c', '../BrogueCE-master/src/brogue/Time.c', '../BrogueCE-master/src/brogue/Monsters.c', '../BrogueCE-master/src/brogue/Grid.c', '../BrogueCE-master/src/brogue/Dijkstra.c', '../BrogueCE-master/src/brogue/Movement.c', '../BrogueCE-master/src/brogue/Rogue.h', ...fs.readdirSync('.').filter(f => /^(package.*\.json|tsconfig.*\.json|vite\.config\..*|index\.html)$/.test(f))].sort().map(p => `${sha(fs.readFileSync(p))}  ${p}`).join('\n') + '\n';
+scripts/w11-final-check.mjs:20:const oldMethods = methods(head('src/engine/Core/Game.ts').toString()), newMethods = methods(fs.readFileSync('src/engine/Core/Game.ts', 'utf8'));
+scripts/w11-final-check.mjs:23:const unchangedFiles = ['src/data/arcana.json', 'src/data/monsters.json', 'src/data/mutations.json', 'src/engine/Combat/Bolt.ts', 'src/engine/Combat/BoltCatalog.ts', 'src/engine/Combat/BoltTrajectory.ts', 'src/engine/Items/Item.ts', 'src/engine/Items/ItemLoader.ts', 'src/engine/Items/ArcanaInstance.ts', 'src/engine/Items/ArcanaRecharge.ts', 'src/engine/Items/ArcanaEnchantment.ts', 'src/engine/Random.ts', 'src/engine/Environment/Gas.ts', 'src/engine/Map/DungeonFeature.ts', 'src/engine/Map/TerrainCatalog.ts', 'src/entities/Creature.ts', 'src/entities/Monster.ts', 'src/entities/Player.ts', 'src/test/fixtures/generation_baseline.json'];
+scripts/w11-final-check.mjs:39:    const after = cases(fs.readFileSync('src/engine/Core/Game.ts', 'utf8'), name);
+scripts/w11-final-check.mjs:50:const newTerrainFunctions = terrainFunctions(fs.readFileSync('src/engine/Map/Promotion.ts', 'utf8'));
+scripts/w11-final-check.mjs:56:    unchangedFiles: Object.fromEntries(unchangedFiles.map(f => [f, { head: sha(head(f)), current: sha(fs.readFileSync(f)), equal: head(f).equals(fs.readFileSync(f)) }])),
+scripts/w11-final-check.mjs:65:const scope = JSON.parse(fs.readFileSync(`${dir}/closure.json`, 'utf8'));
+scripts/w11-final-check.mjs:88:    const data = JSON.parse(fs.readFileSync(`${dir}/final-${run}.json`, 'utf8'));
+scripts/w11-negative-check.mjs:7:const original = fs.readFileSync(file, 'utf8');
+scripts/w11-negative-check.mjs:20:const summary = { mutation: 'remove every occupancy check', test: 'commit revalidates live occupation', exitCode: result.status, before: sha(original), restored: sha(fs.readFileSync(file)), restoredExactly: fs.readFileSync(file, 'utf8') === original };
+scripts/w11-test-scope.mjs:11:    const raw = fs.readFileSync(f, 'utf8');
+scripts/w11-test-scope.mjs:50:    readers: /readFileSync|readFile\(|import\(|require\(|fixtures|toSnapshot|saveSnapshot|loadSnapshot/,
+scripts/w11-test-scope.mjs:52:const S = Object.fromEntries(Object.entries(patterns).map(([k, re]) => [k, tests.filter(f => re.test(fs.readFileSync(f, 'utf8'))).sort()]));
+scripts/w12-browser-check.mjs:42:            g.items = []; g.floatingTexts = []; g.pendingBoltFrames = []; g.monsters = []; g.dormantMonsters = [];
+scripts/w12-browser-check.mjs:55:                    g.stats.gold = 0;
+scripts/w12-browser-check.mjs:84:            gold: window.activeGame.stats.gold, ground: window.activeGame.items.length }));
+scripts/w12-final-check.mjs:10:const manifest = () => [...walk('src'), ...walk('public'), ...walk('scripts'), 'progress.md', 'ai_docs/tasks/w-12.prompt.md', 'ai_docs/reports/w-0-survey.report.md', '../BrogueCE-master/src/brogue/Items.c', '../BrogueCE-master/src/brogue/PowerTables.c', '../BrogueCE-master/src/variants/GlobalsBrogue.c', '../BrogueCE-master/src/brogue/Combat.c', '../BrogueCE-master/src/brogue/Time.c', '../BrogueCE-master/src/brogue/Monsters.c', '../BrogueCE-master/src/brogue/Grid.c', '../BrogueCE-master/src/brogue/Dijkstra.c', '../BrogueCE-master/src/brogue/Movement.c', '../BrogueCE-master/src/brogue/Rogue.h', ...fs.readdirSync('.').filter(f => /^(package.*\.json|tsconfig.*\.json|vite\.config\..*|index\.html)$/.test(f))].sort().map(p => `${sha(fs.readFileSync(p))}  ${p}`).join('\n') + '\n';
+scripts/w12-final-check.mjs:20:const oldMethods = methods(head('src/engine/Core/Game.ts').toString()), newMethods = methods(fs.readFileSync('src/engine/Core/Game.ts', 'utf8'));
+scripts/w12-final-check.mjs:23:const unchangedFiles = ['src/data/arcana.json', 'src/data/monsters.json', 'src/data/mutations.json', 'src/engine/Combat/Bolt.ts', 'src/engine/Combat/BoltCatalog.ts', 'src/engine/Movement/CreaturePlacement.ts', 'src/engine/Map/Promotion.ts', 'src/engine/Items/Item.ts', 'src/engine/Items/ItemLoader.ts', 'src/engine/Items/ArcanaInstance.ts', 'src/engine/Items/ArcanaRecharge.ts', 'src/engine/Items/ArcanaEnchantment.ts', 'src/engine/Random.ts', 'src/engine/Environment/Gas.ts', 'src/engine/Map/DungeonFeature.ts', 'src/engine/Map/TerrainCatalog.ts', 'src/entities/Creature.ts', 'src/entities/Monster.ts', 'src/entities/Player.ts', 'src/test/fixtures/generation_baseline.json'];
+scripts/w12-final-check.mjs:39:    const after = cases(fs.readFileSync('src/engine/Core/Game.ts', 'utf8'), name);
+scripts/w12-final-check.mjs:50:const newTerrainFunctions = terrainFunctions(fs.readFileSync('src/engine/Map/Promotion.ts', 'utf8'));
+scripts/w12-final-check.mjs:57:    unchangedFiles: Object.fromEntries(unchangedFiles.map(f => [f, { head: sha(head(f)), current: sha(fs.readFileSync(f)), equal: head(f).equals(fs.readFileSync(f)) }])),
+scripts/w12-final-check.mjs:66:const scope = JSON.parse(fs.readFileSync(`${dir}/closure.json`, 'utf8'));
+scripts/w12-final-check.mjs:89:    const data = JSON.parse(fs.readFileSync(`${dir}/final-${run}.json`, 'utf8'));
+scripts/w12-negative-check.mjs:19:    const original = fs.readFileSync(file, 'utf8');
+scripts/w12-negative-check.mjs:27:        data = JSON.parse(fs.readFileSync(`${dir}/negative-${name}.json`, 'utf8'));
+scripts/w12-negative-check.mjs:30:        before: sha(original), restored: sha(fs.readFileSync(file)), restoredExactly: fs.readFileSync(file, 'utf8') === original };
+scripts/w12-test-scope.mjs:11:    const raw = fs.readFileSync(f, 'utf8');
+scripts/w12-test-scope.mjs:50:    readers: /readFileSync|readFile\(|import\(|require\(|fixtures|toSnapshot|saveSnapshot|loadSnapshot/,
+scripts/w12-test-scope.mjs:52:const S = Object.fromEntries(Object.entries(patterns).map(([k, re]) => [k, tests.filter(f => re.test(fs.readFileSync(f, 'utf8'))).sort()]));
+scripts/w13-browser-check.mjs:41:            g.items = []; g.floatingTexts = []; g.pendingBoltFrames = []; g.monsters = []; g.dormantMonsters = [];
+scripts/w13-final-check.mjs:10:const manifest = () => [...walk('src'), ...walk('public'), ...walk('scripts'), 'progress.md', 'ai_docs/tasks/w-13.prompt.md', 'ai_docs/reports/w-0-survey.report.md', '../BrogueCE-master/src/brogue/Items.c', '../BrogueCE-master/src/brogue/PowerTables.c', '../BrogueCE-master/src/variants/GlobalsBrogue.c', '../BrogueCE-master/src/brogue/Combat.c', '../BrogueCE-master/src/brogue/Time.c', '../BrogueCE-master/src/brogue/Monsters.c', '../BrogueCE-master/src/brogue/Grid.c', '../BrogueCE-master/src/brogue/Dijkstra.c', '../BrogueCE-master/src/brogue/Movement.c', '../BrogueCE-master/src/brogue/Rogue.h', ...fs.readdirSync('.').filter(f => /^(package.*\.json|tsconfig.*\.json|vite\.config\..*|index\.html)$/.test(f))].sort().map(p => `${sha(fs.readFileSync(p))}  ${p}`).join('\n') + '\n';
+scripts/w13-final-check.mjs:20:const oldMethods = methods(head('src/engine/Core/Game.ts').toString()), newMethods = methods(fs.readFileSync('src/engine/Core/Game.ts', 'utf8'));
+scripts/w13-final-check.mjs:23:const unchangedFiles = ['src/data/arcana.json', 'src/data/monsters.json', 'src/data/mutations.json', 'src/engine/Combat/Bolt.ts', 'src/engine/Combat/BoltCatalog.ts', 'src/engine/Movement/CreaturePlacement.ts', 'src/engine/Items/Item.ts', 'src/engine/Items/ItemLoader.ts', 'src/engine/Items/ArcanaInstance.ts', 'src/engine/Items/ArcanaRecharge.ts', 'src/engine/Items/ArcanaEnchantment.ts', 'src/engine/Random.ts', 'src/engine/Environment/Gas.ts', 'src/engine/Map/DungeonFeature.ts', 'src/engine/Map/TerrainCatalog.ts', 'src/entities/Creature.ts', 'src/entities/Monster.ts', 'src/entities/Player.ts', 'src/test/fixtures/generation_baseline.json'];
+scripts/w13-final-check.mjs:39:    const after = cases(fs.readFileSync('src/engine/Core/Game.ts', 'utf8'), name);
+scripts/w13-final-check.mjs:50:const newTerrainFunctions = terrainFunctions(fs.readFileSync('src/engine/Map/Promotion.ts', 'utf8'));
+scripts/w13-final-check.mjs:55:        === methods(fs.readFileSync('src/engine/Map/WaypointMap.ts', 'utf8'))[k]),
+scripts/w13-final-check.mjs:60:    unchangedFiles: Object.fromEntries(unchangedFiles.map(f => [f, { head: sha(head(f)), current: sha(fs.readFileSync(f)), equal: head(f).equals(fs.readFileSync(f)) }])),
+scripts/w13-final-check.mjs:69:const scope = JSON.parse(fs.readFileSync(`${dir}/closure.json`, 'utf8'));
+scripts/w13-final-check.mjs:92:    const data = JSON.parse(fs.readFileSync(`${dir}/final-${run}.json`, 'utf8'));
+scripts/w13-test-scope.mjs:11:    const raw = fs.readFileSync(f, 'utf8');
+scripts/w13-test-scope.mjs:48:    readers: /readFileSync|readFile\(|import\(|require\(|fixtures|toSnapshot|saveSnapshot|loadSnapshot/,
+scripts/w13-test-scope.mjs:50:const S = Object.fromEntries(Object.entries(patterns).map(([k, re]) => [k, tests.filter(f => re.test(fs.readFileSync(f, 'utf8'))).sort()]));
+scripts/w14-browser-check.mjs:42:            g.items = []; g.floatingTexts = []; g.pendingBoltFrames = []; g.monsters = []; g.dormantMonsters = [];
+scripts/w14-final-check.mjs:10:const manifest = () => [...walk('src'), ...walk('public'), ...walk('scripts'), 'progress.md', 'ai_docs/tasks/w-14.prompt.md', 'ai_docs/reports/w-0-survey.report.md', '../BrogueCE-master/src/brogue/Items.c', '../BrogueCE-master/src/brogue/PowerTables.c', '../BrogueCE-master/src/variants/GlobalsBrogue.c', '../BrogueCE-master/src/brogue/Combat.c', '../BrogueCE-master/src/brogue/Time.c', '../BrogueCE-master/src/brogue/Monsters.c', '../BrogueCE-master/src/brogue/Grid.c', '../BrogueCE-master/src/brogue/Globals.c', '../BrogueCE-master/src/brogue/Architect.c', '../BrogueCE-master/src/brogue/Dijkstra.c', '../BrogueCE-master/src/brogue/Movement.c', '../BrogueCE-master/src/brogue/Rogue.h', ...fs.readdirSync('.').filter(f => /^(package.*\.json|tsconfig.*\.json|vite\.config\..*|index\.html)$/.test(f))].sort().map(p => `${sha(fs.readFileSync(p))}  ${p}`).join('\n') + '\n';
+scripts/w14-final-check.mjs:20:const oldMethods = methods(head('src/engine/Core/Game.ts').toString()), newMethods = methods(fs.readFileSync('src/engine/Core/Game.ts', 'utf8'));
+scripts/w14-final-check.mjs:23:const unchangedFiles = ['src/data/arcana.json', 'src/data/monsters.json', 'src/data/mutations.json', 'src/engine/Combat/Bolt.ts', 'src/engine/Combat/BoltCatalog.ts', 'src/engine/Movement/CreaturePlacement.ts', 'src/engine/Items/Item.ts', 'src/engine/Items/ItemLoader.ts', 'src/engine/Items/ArcanaInstance.ts', 'src/engine/Items/ArcanaRecharge.ts', 'src/engine/Items/ArcanaEnchantment.ts', 'src/engine/Random.ts', 'src/engine/Environment/Gas.ts', 'src/engine/Map/DungeonFeature.ts', 'src/engine/Map/Grid.ts', 'src/engine/Generator/BlueprintEngine.ts', 'src/engine/Map/AutoGenerator.ts', 'src/engine/Map/WaypointMap.ts', 'src/engine/Combat/BoltTrajectory.ts', 'src/entities/Creature.ts', 'src/entities/Monster.ts', 'src/entities/Player.ts', 'src/test/fixtures/generation_baseline.json'];
+scripts/w14-final-check.mjs:39:    const after = cases(fs.readFileSync('src/engine/Core/Game.ts', 'utf8'), name);
+scripts/w14-final-check.mjs:50:const newTerrainFunctions = terrainFunctions(fs.readFileSync('src/engine/Map/Promotion.ts', 'utf8'));
+scripts/w14-final-check.mjs:55:        === methods(fs.readFileSync('src/engine/Map/WaypointMap.ts', 'utf8'))[k]),
+scripts/w14-final-check.mjs:60:    unchangedFiles: Object.fromEntries(unchangedFiles.map(f => [f, { head: sha(head(f)), current: sha(fs.readFileSync(f)), equal: head(f).equals(fs.readFileSync(f)) }])),
+scripts/w14-final-check.mjs:69:const scope = JSON.parse(fs.readFileSync(`${dir}/closure.json`, 'utf8'));
+scripts/w14-final-check.mjs:92:    const data = JSON.parse(fs.readFileSync(`${dir}/final-${run}.json`, 'utf8'));
+scripts/w14-negative-check.mjs:5:const file = 'src/engine/Map/Promotion.ts', original = fs.readFileSync(file, 'utf8');
+scripts/w14-negative-check.mjs:21:        const data = JSON.parse(fs.readFileSync(`${dir}/negative-${name}.json`, 'utf8'));
+scripts/w14-negative-check.mjs:27:fs.writeFileSync(`${dir}/negative-summary.json`, JSON.stringify({ results, shaBefore: sha(original), shaAfter: sha(fs.readFileSync(file)), restored: fs.readFileSync(file, 'utf8') === original }, null, 2) + '\n');
+scripts/w14-test-scope.mjs:11:    const raw = fs.readFileSync(f, 'utf8');
+scripts/w14-test-scope.mjs:48:    readers: /readFileSync|readFile\(|import\(|require\(|fixtures|toSnapshot|saveSnapshot|loadSnapshot/,
+scripts/w14-test-scope.mjs:50:const S = Object.fromEntries(Object.entries(patterns).map(([k, re]) => [k, tests.filter(f => re.test(fs.readFileSync(f, 'utf8'))).sort()]));
+scripts/w15-browser-check.mjs:28:  g.items=[];g.monsters=[];g.dormantMonsters=[];g.floatingTexts=[];g.pendingBoltFrames=[];g.player.inventory.items=[];
+scripts/w15-damage-audit.mjs:26: let source;try{source=version==='HEAD'?execFileSync('git',['show',`HEAD:brogue-web/${f}`],{encoding:'utf8',stdio:['ignore','pipe','ignore']}):fs.readFileSync(f,'utf8');}catch{return [];}
+scripts/w15-damage-audit.mjs:34:const math=fs.readFileSync('../BrogueCE-master/src/brogue/Math.c','utf8'),power=fs.readFileSync('../BrogueCE-master/src/brogue/PowerTables.c','utf8');
+scripts/w15-final-check.mjs:12:const old=methods(head('src/engine/Core/Game.ts').toString()),now=methods(fs.readFileSync('src/engine/Core/Game.ts','utf8'));
+scripts/w15-final-check.mjs:14:const protectedFiles=['src/data/arcana.json','src/data/monsters.json','src/data/mutations.json','src/engine/Combat/BoltCatalog.ts','src/engine/Combat/BoltTrajectory.ts','src/engine/Movement/CreaturePlacement.ts','src/engine/Items/Item.ts','src/engine/Items/ItemLoader.ts','src/engine/Items/ArcanaInstance.ts','src/engine/Items/ArcanaRecharge.ts','src/engine/Items/ArcanaEnchantment.ts','src/engine/Random.ts','src/engine/Environment/Gas.ts','src/engine/Map/DungeonFeature.ts','src/engine/Map/DungeonFeatureCatalog.ts','src/engine/Map/TerrainCatalog.ts','src/engine/Map/Promotion.ts','src/engine/Map/Grid.ts','src/engine/Generator/BlueprintEngine.ts','src/engine/Map/AutoGenerator.ts','src/engine/Map/WaypointMap.ts','src/entities/Player.ts','src/test/fixtures/generation_baseline.json'];
+scripts/w15-final-check.mjs:15:const boundary={head:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),changedGameMethods:Object.keys(old).filter(k=>old[k]!==now[k]),addedGameMethods:Object.keys(now).filter(k=>!(k in old)),unchangedFiles:Object.fromEntries(protectedFiles.map(f=>[f,{sha:sha(fs.readFileSync(f)),equal:head(f).equals(fs.readFileSync(f))}])),protectedMethods:Object.fromEntries(['generateDepth','objectiveTimeBlock','playerTurnEnded','finishTurnEpilogue','triggerDeathFeatures','dropMonsterLoot','removeDeadMonsters','handlePlayerAction','tickCreatureStatuses','applyDirectBoltDamage','applyBasicBoltEffect','applyBoltResult','rebuildWaypoints','tickArcanaResources','useArcanaItem','castMonsterBolt'].map(k=>[k,old[k]!==undefined&&old[k]===now[k]]))};
+scripts/w15-final-check.mjs:19:const scope=JSON.parse(fs.readFileSync(`${dir}/closure.json`,'utf8'));
+scripts/w15-final-check.mjs:20:const manifest=()=>[...walk('src'),...walk('public'),...walk('scripts'),'progress.md','ai_docs/tasks/w-15.prompt.md','ai_docs/reports/w-0-survey.report.md',...['Items','PowerTables','Math','Combat','Time','Monsters','Movement','Rogue','Globals','Architect'].map(s=>`../BrogueCE-master/src/brogue/${s}.${s==='Rogue'?'h':'c'}`),'../BrogueCE-master/src/variants/GlobalsBrogue.c',...fs.readdirSync('.').filter(f=>/^(package.*\.json|tsconfig.*\.json|vite\.config\..*|index\.html)$/.test(f))].sort().map(f=>`${sha(fs.readFileSync(f))}  ${f}`).join('\n')+'\n';
+scripts/w15-final-check.mjs:34: const d=JSON.parse(fs.readFileSync(`${dir}/final-${run}.json`,'utf8'));
+scripts/w15-negative-check.mjs:13: const original=fs.readFileSync(file,'utf8');if(!original.includes(from))throw Error(name+' mutation anchor missing');
+scripts/w15-negative-check.mjs:19: const data=JSON.parse(fs.readFileSync(`${dir}/negative-${name}.json`,'utf8'));
+scripts/w15-negative-check.mjs:20: results.push({name,exit:r.status,failed:data.numFailedTests,before:hash(original),after:hash(fs.readFileSync(file))});
+scripts/w15-test-scope.mjs:11:    const raw = fs.readFileSync(f, 'utf8');
+scripts/w15-test-scope.mjs:50:    readers: /readFileSync|readFile\(|import\(|require\(|fixtures|toSnapshot|saveSnapshot|loadSnapshot/,
+scripts/w15-test-scope.mjs:52:const S = Object.fromEntries(Object.entries(patterns).map(([k, re]) => [k, tests.filter(f => re.test(fs.readFileSync(f, 'utf8'))).sort()]));
+scripts/w16-browser-check.mjs:23:  g.monsters=[];g.dormantMonsters=[];g.items=[];g.pendingBoltFrames=[];g.floatingTexts=[];g.autoPath=[];g.isMouseTraveling=false;
+scripts/w16-ce-golden.mjs:7:const source=fs.readFileSync('../BrogueCE-master/src/brogue/PowerTables.c','utf8');
+scripts/w16-final-check.mjs:12:const old=methods(head('src/engine/Core/Game.ts').toString()),now=methods(fs.readFileSync('src/engine/Core/Game.ts','utf8'));
+scripts/w16-final-check.mjs:14:const protectedFiles=['src/data/arcana.json','src/data/monsters.json','src/data/mutations.json','src/engine/Combat/Bolt.ts','src/engine/Combat/BoltCatalog.ts','src/engine/Combat/BoltTrajectory.ts','src/engine/Movement/CreaturePlacement.ts','src/engine/Items/Item.ts','src/engine/Items/ItemLoader.ts','src/engine/Items/ArcanaInstance.ts','src/engine/Items/ArcanaRecharge.ts','src/engine/Items/ArcanaEnchantment.ts','src/engine/Random.ts','src/engine/Environment/Gas.ts','src/engine/Map/DungeonFeature.ts','src/engine/Map/DungeonFeatureCatalog.ts','src/engine/Map/TerrainCatalog.ts','src/engine/Map/Promotion.ts','src/engine/Map/Grid.ts','src/engine/Generator/BlueprintEngine.ts','src/engine/Map/AutoGenerator.ts','src/engine/Map/WaypointMap.ts','src/entities/Player.ts','src/test/fixtures/generation_baseline.json'];
+scripts/w16-final-check.mjs:15:const boundary={head:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),changedGameMethods:Object.keys(old).filter(k=>old[k]!==now[k]),addedGameMethods:Object.keys(now).filter(k=>!(k in old)),unchangedFiles:Object.fromEntries(protectedFiles.map(f=>[f,{sha:sha(fs.readFileSync(f)),equal:head(f).equals(fs.readFileSync(f))}])),protectedMethods:Object.fromEntries(['generateDepth','objectiveTimeBlock','playerTurnEnded','finishTurnEpilogue','triggerDeathFeatures','dropMonsterLoot','removeDeadMonsters','handlePlayerAction','tickCreatureStatuses','applyDirectBoltDamage','applyBasicBoltEffect','rebuildWaypoints','tickArcanaResources','useArcanaItem','castMonsterBolt','summonMinionsFor','trySplitMonster','findNearbySpawnSpot'].map(k=>[k,old[k]!==undefined&&old[k]===now[k]]))};
+scripts/w16-final-check.mjs:19:const scope=JSON.parse(fs.readFileSync(`${dir}/closure.json`,'utf8'));
+scripts/w16-final-check.mjs:20:const manifest=()=>[...walk('src'),...walk('public'),...walk('scripts'),'progress.md',`${dir}/ce-blade-count.c`,`${dir}/ce-blade-count.txt`,'ai_docs/tasks/w-16.prompt.md','ai_docs/reports/w-0-survey.report.md',...['Items','PowerTables','Math','Combat','Time','Monsters','Movement','Rogue','Globals','Architect','Grid','RogueMain'].map(s=>`../BrogueCE-master/src/brogue/${s}.${s==='Rogue'?'h':'c'}`),'../BrogueCE-master/src/variants/GlobalsBrogue.c',...fs.readdirSync('.').filter(f=>/^(package.*\.json|tsconfig.*\.json|vite\.config\..*|index\.html)$/.test(f))].sort().map(f=>`${sha(fs.readFileSync(f))}  ${f}`).join('\n')+'\n';
+scripts/w16-final-check.mjs:31:const batch=JSON.parse(fs.readFileSync(`${dir}/final-regression.json`,'utf8'));
+scripts/w16-final-check.mjs:47: const d=JSON.parse(fs.readFileSync(`${dir}/final-${run}.json`,'utf8'));
+scripts/w16-negative-check.mjs:3:const dir='ai_docs/reports/w-16-evidence',file='src/engine/Core/Game.ts';const original=fs.readFileSync(file,'utf8');
+scripts/w16-negative-check.mjs:15:  const data=JSON.parse(fs.readFileSync(`${dir}/negative-${name}.json`));results.push({name,exit:r.status,failed:data.numFailedTests});
+scripts/w16-negative-check.mjs:17: results.at(-1).restored=hash(fs.readFileSync(file))===hash(original);
+scripts/w16-negative-check.mjs:19:fs.writeFileSync(`${dir}/negative-summary.json`,JSON.stringify({before:hash(original),after:hash(fs.readFileSync(file)),results},null,2)+'\n');
+scripts/w16-test-scope.mjs:11:    const raw = fs.readFileSync(f, 'utf8');
+scripts/w16-test-scope.mjs:49:    readers: /readFileSync|readFile\(|import\(|require\(|fixtures|toSnapshot|saveSnapshot|loadSnapshot/,
+scripts/w16-test-scope.mjs:51:const S = Object.fromEntries(Object.entries(patterns).map(([k, re]) => [k, tests.filter(f => re.test(fs.readFileSync(f, 'utf8'))).sort()]));
+scripts/w17-browser-check.mjs:22:  g.dormantMonsters=[];g.items=[];g.monsters=[];g.pendingBoltFrames=[];g.floatingTexts=[];g.autoPath=[];g.isMouseTraveling=false;
+scripts/w17-ce-golden.mjs:7:const source=fs.readFileSync('../BrogueCE-master/src/brogue/PowerTables.c','utf8');
+scripts/w17-ce-golden.mjs:9:const percent=fs.readFileSync('../BrogueCE-master/src/brogue/Math.c','utf8').match(/boolean rand_percent\(short percent\) \{[^}]*}/)?.[0];
+scripts/w17-ce-golden.mjs:36: console.log(fs.readFileSync(`${dir}/ce-domination.txt`,'utf8').split('\n').filter(s=>/^(19|20|100) 100 /.test(s)).join('\n'));
+scripts/w17-final-check.mjs:12:const old=methods(head('src/engine/Core/Game.ts').toString()),now=methods(fs.readFileSync('src/engine/Core/Game.ts','utf8'));
+scripts/w17-final-check.mjs:14:const protectedFiles=['src/data/arcana.json','src/data/monsters.json','src/data/mutations.json','src/engine/Combat/Bolt.ts','src/engine/Combat/BoltCatalog.ts','src/engine/Combat/BoltTrajectory.ts','src/engine/Movement/CreaturePlacement.ts','src/engine/Items/Item.ts','src/engine/Items/ItemLoader.ts','src/engine/Items/ArcanaInstance.ts','src/engine/Items/ArcanaRecharge.ts','src/engine/Items/ArcanaEnchantment.ts','src/engine/Random.ts','src/engine/Environment/Gas.ts','src/engine/Map/DungeonFeature.ts','src/engine/Map/DungeonFeatureCatalog.ts','src/engine/Map/TerrainCatalog.ts','src/engine/Map/Promotion.ts','src/engine/Map/Grid.ts','src/engine/Generator/BlueprintEngine.ts','src/engine/Map/AutoGenerator.ts','src/engine/Map/WaypointMap.ts','src/entities/Player.ts','src/test/fixtures/generation_baseline.json'];
+scripts/w17-final-check.mjs:15:const boundary={head:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),changedGameMethods:Object.keys(old).filter(k=>old[k]!==now[k]),addedGameMethods:Object.keys(now).filter(k=>!(k in old)),unchangedFiles:Object.fromEntries(protectedFiles.map(f=>[f,{sha:sha(fs.readFileSync(f)),equal:head(f).equals(fs.readFileSync(f))}])),protectedMethods:Object.fromEntries(['generateDepth','objectiveTimeBlock','finishTurnEpilogue','triggerDeathFeatures','dropMonsterLoot','removeDeadMonsters','handlePlayerAction','tickCreatureStatuses','applyDirectBoltDamage','applyBasicBoltEffect','rebuildWaypoints','tickArcanaResources','useArcanaItem','castMonsterBolt','findNearbySpawnSpot'].map(k=>[k,old[k]!==undefined&&old[k]===now[k]]))};
+scripts/w17-final-check.mjs:25:const unchangedExistingTests=trackedTests.every(f=>head(f).equals(fs.readFileSync(f)));
+scripts/w17-final-check.mjs:29:const scope=JSON.parse(fs.readFileSync(`${dir}/closure.json`,'utf8'));
+scripts/w17-final-check.mjs:30:const manifest=()=>[...walk('src'),...walk('public'),...walk('scripts'),'progress.md',`${dir}/ce-domination.c`,`${dir}/ce-domination.txt`,'ai_docs/tasks/w-17.prompt.md','ai_docs/reports/w-0-survey.report.md',...['Items','PowerTables','Math','Combat','Time','Monsters','Movement','Rogue','Globals','Architect','Grid','RogueMain'].map(s=>`../BrogueCE-master/src/brogue/${s}.${s==='Rogue'?'h':'c'}`),'../BrogueCE-master/src/variants/GlobalsBrogue.c',...fs.readdirSync('.').filter(f=>/^(package.*\.json|tsconfig.*\.json|vite\.config\..*|index\.html)$/.test(f))].sort().map(f=>`${sha(fs.readFileSync(f))}  ${f}`).join('\n')+'\n';
+scripts/w17-final-check.mjs:41:const batch=JSON.parse(fs.readFileSync(`${dir}/final-regression.json`,'utf8'));
+scripts/w17-final-check.mjs:57: const d=JSON.parse(fs.readFileSync(`${dir}/final-${run}.json`,'utf8'));
+scripts/w17-negative-check.mjs:12:for(const [name,file,from,to,test]of cases){const original=fs.readFileSync(file,'utf8');if(original.split(from).length!==2)throw Error(`ambiguous mutation ${name}`);
+scripts/w17-negative-check.mjs:15:  const data=JSON.parse(fs.readFileSync(`${dir}/negative-${name}.json`));results.push({name,file,exit:r.status,failed:data.numFailedTests,before:sha(original)});
+scripts/w17-negative-check.mjs:17: results.at(-1).after=sha(fs.readFileSync(file));results.at(-1).restored=results.at(-1).before===results.at(-1).after;
+scripts/w17-test-scope.mjs:11:    const raw = fs.readFileSync(f, 'utf8');
+scripts/w17-test-scope.mjs:49:    readers: /readFileSync|readFile\(|import\(|require\(|fixtures|toSnapshot|saveSnapshot|loadSnapshot/,
+scripts/w17-test-scope.mjs:51:const S = Object.fromEntries(Object.entries(patterns).map(([k, re]) => [k, tests.filter(f => re.test(fs.readFileSync(f, 'utf8'))).sort()]));
+scripts/w18-browser-check.mjs:25:   g.player.inventory.items=[];g.player.equippedWeapon=g.player.equippedArmor=g.player.ringLeft=g.player.ringRight=null;g.isInventoryOpen=false;g.pendingArcana=null;g.dormantMonsters=[];g.items=[];g.pendingBoltFrames=[];g.floatingTexts=[];g.autoPath=[];g.isMouseTraveling=false;
+scripts/w18-browser-check.mjs:33: const capture=async name=>{await page.waitForTimeout(450);await page.evaluate(()=>{const g=window.activeGame;g.pendingBoltFrames=[];g.needsRender=true;g.update();});await page.waitForTimeout(100);const state=await page.evaluate(()=>JSON.parse(window.render_game_to_text()));states.push({name,state});await page.screenshot({path:`${dir}/browser-${name}.png`,fullPage:true});return state;};
+scripts/w18-ce-golden.mjs:3:const source=fs.readFileSync('../BrogueCE-master/src/brogue/PowerTables.c','utf8');
+scripts/w18-final-check.mjs:12:const old=methods(head('src/engine/Core/Game.ts').toString()),now=methods(fs.readFileSync('src/engine/Core/Game.ts','utf8'));
+scripts/w18-final-check.mjs:14:const protectedFiles=['src/data/arcana.json','src/data/monsters.json','src/data/mutations.json','src/engine/Combat/Bolt.ts','src/engine/Combat/BoltCatalog.ts','src/engine/Combat/BoltTrajectory.ts','src/engine/Items/Item.ts','src/engine/Items/ItemLoader.ts','src/engine/Items/ArcanaInstance.ts','src/engine/Items/ArcanaRecharge.ts','src/engine/Items/ArcanaEnchantment.ts','src/engine/Random.ts','src/engine/Environment/Gas.ts','src/engine/Map/DungeonFeature.ts','src/engine/Map/DungeonFeatureCatalog.ts','src/engine/Map/TerrainCatalog.ts','src/engine/Map/Promotion.ts','src/engine/Map/Grid.ts','src/engine/Generator/BlueprintEngine.ts','src/engine/Map/AutoGenerator.ts','src/engine/Map/WaypointMap.ts','src/entities/Player.ts','src/test/fixtures/generation_baseline.json'];
+scripts/w18-final-check.mjs:15:const boundary={head:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),changedGameMethods:Object.keys(old).filter(k=>old[k]!==now[k]),addedGameMethods:Object.keys(now).filter(k=>!(k in old)),unchangedFiles:Object.fromEntries(protectedFiles.map(f=>[f,{sha:sha(fs.readFileSync(f)),equal:head(f).equals(fs.readFileSync(f))}])),protectedMethods:Object.fromEntries(['generateDepth','objectiveTimeBlock','finishTurnEpilogue','triggerDeathFeatures','dropMonsterLoot','removeDeadMonsters','playerTurnEnded','tickCreatureStatuses','rebuildWaypoints','tickArcanaResources','useArcanaItem','castMonsterBolt','findNearbySpawnSpot','spawnHordeAt','summonMinionsFor','trySplitMonster'].map(k=>[k,old[k]!==undefined&&old[k]===now[k]]))};
+scripts/w18-final-check.mjs:19:const unchangedExistingTests=trackedTests.every(f=>head(f).equals(fs.readFileSync(f)));
+scripts/w18-final-check.mjs:23:const scope=JSON.parse(fs.readFileSync(`${dir}/closure.json`,'utf8'));
+scripts/w18-final-check.mjs:24:const manifest=()=>[...walk('src'),...walk('public'),...walk('scripts'),'progress.md',`${dir}/ce-entrancement.c`,`${dir}/ce-entrancement.txt`,'ai_docs/tasks/w-18.prompt.md','ai_docs/reports/w-0-survey.report.md',...['Items','PowerTables','Math','Combat','Time','Monsters','Movement','Rogue','Globals','Architect','Grid','RogueMain','IO','GlobalsBase'].map(s=>`../BrogueCE-master/src/brogue/${s}.${s==='Rogue'?'h':'c'}`),'../BrogueCE-master/src/variants/GlobalsBrogue.c',...fs.readdirSync('.').filter(f=>/^(package.*\.json|tsconfig.*\.json|vite\.config\..*|index\.html)$/.test(f))].sort().map(f=>`${sha(fs.readFileSync(f))}  ${f}`).join('\n')+'\n';
+scripts/w18-final-check.mjs:35:const batch=JSON.parse(fs.readFileSync(`${dir}/final-regression.json`,'utf8'));
+scripts/w18-final-check.mjs:51: const d=JSON.parse(fs.readFileSync(`${dir}/final-${run}.json`,'utf8'));
+scripts/w18-negative-check.mjs:11:for(const [name,file,from,to,test]of cases){const original=fs.readFileSync(file,'utf8');if(original.split(from).length!==2)throw Error(`ambiguous mutation ${name}`);
+scripts/w18-negative-check.mjs:14:  const data=JSON.parse(fs.readFileSync(`${dir}/negative-${name}.json`));results.push({name,file,exit:r.status,failed:data.numFailedTests,before:sha(original)});
+scripts/w18-negative-check.mjs:16: results.at(-1).after=sha(fs.readFileSync(file));results.at(-1).restored=results.at(-1).before===results.at(-1).after;
+scripts/w18-test-scope.mjs:11:    const raw = fs.readFileSync(f, 'utf8');
+scripts/w18-test-scope.mjs:50:    readers: /readFileSync|readFile\(|import\(|require\(|fixtures|toSnapshot|saveSnapshot|loadSnapshot/,
+scripts/w18-test-scope.mjs:52:const S = Object.fromEntries(Object.entries(patterns).map(([k, re]) => [k, tests.filter(f => re.test(fs.readFileSync(f, 'utf8'))).sort()]));
+scripts/w19-browser-check.mjs:25:   g.player.inventory.items=[];g.player.equippedWeapon=g.player.equippedArmor=g.player.ringLeft=g.player.ringRight=null;g.isInventoryOpen=false;g.pendingArcana=null;g.dormantMonsters=[];g.items=[];g.pendingBoltFrames=[];g.floatingTexts=[];g.autoPath=[];g.isMouseTraveling=false;g.levels.clear();
+scripts/w19-browser-check.mjs:34: const capture=async name=>{await page.waitForTimeout(400);await page.evaluate(()=>{const g=window.activeGame;g.pendingBoltFrames=[];g.needsRender=true;g.update();});await page.waitForTimeout(100);const state=await page.evaluate(()=>({text:JSON.parse(window.render_game_to_text()),monsters:window.activeGame.monsters.map(m=>({id:m.id,type:m.typeId,hp:m.hp,maxHp:m.maxHp,ally:m.isAlly,leader:m.leader?.id??null,status:{...m.statusDurations},move:m.moveSpeed,attack:m.attackSpeed,ticks:m.ticksUntilTurn,key:m.carriedItem?.id??null})),charges:window.w19Wand.charges}));states.push({name,state});await page.screenshot({path:`${dir}/browser-${name}.png`,fullPage:true});return state;};
+scripts/w19-ce-golden.mjs:3:const read=n=>fs.readFileSync(`../BrogueCE-master/src/brogue/${n}`,'utf8');
+scripts/w19-final-check.mjs:12:const old=methods(head('src/engine/Core/Game.ts').toString()),now=methods(fs.readFileSync('src/engine/Core/Game.ts','utf8'));
+scripts/w19-final-check.mjs:14:const protectedFiles=['src/data/arcana.json','src/data/monsters.json','src/data/mutations.json','src/engine/Combat/BoltCatalog.ts','src/engine/Combat/BoltTrajectory.ts','src/engine/Items/Item.ts','src/engine/Items/ItemLoader.ts','src/engine/Items/ArcanaInstance.ts','src/engine/Items/ArcanaRecharge.ts','src/engine/Items/ArcanaEnchantment.ts','src/engine/Random.ts','src/engine/Environment/Gas.ts','src/engine/Map/DungeonFeature.ts','src/engine/Map/DungeonFeatureCatalog.ts','src/engine/Map/TerrainCatalog.ts','src/engine/Map/Promotion.ts','src/engine/Map/Grid.ts','src/engine/Generator/BlueprintEngine.ts','src/engine/Map/AutoGenerator.ts','src/engine/Map/WaypointMap.ts','src/entities/Player.ts','src/entities/Creature.ts','src/engine/Combat/Combat.ts','src/test/fixtures/generation_baseline.json'];
+scripts/w19-final-check.mjs:15:const boundary={head:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),changedGameMethods:Object.keys(old).filter(k=>old[k]!==now[k]),addedGameMethods:Object.keys(now).filter(k=>!(k in old)),unchangedFiles:Object.fromEntries(protectedFiles.map(f=>[f,{sha:sha(fs.readFileSync(f)),equal:head(f).equals(fs.readFileSync(f))}])),protectedMethods:Object.fromEntries(['generateDepth','objectiveTimeBlock','finishTurnEpilogue','triggerDeathFeatures','dropMonsterLoot','removeDeadMonsters','playerTurnEnded','tickCreatureStatuses','rebuildWaypoints','tickArcanaResources','useArcanaItem','castMonsterBolt','findNearbySpawnSpot','spawnHordeAt','summonMinionsFor','trySplitMonster'].map(k=>[k,old[k]!==undefined&&old[k]===now[k]]))};
+scripts/w19-final-check.mjs:19:const changedExistingTests=trackedTests.filter(f=>!head(f).equals(fs.readFileSync(f)));
+scripts/w19-final-check.mjs:24:const scope=JSON.parse(fs.readFileSync(`${dir}/closure.json`,'utf8'));
+scripts/w19-final-check.mjs:25:const manifest=()=>[...walk('src'),...walk('public'),...walk('scripts'),'progress.md',`${dir}/ce-polymorph.c`,`${dir}/ce-polymorph.txt`,`${dir}/ce-catalog.json`,'ai_docs/tasks/w-19.prompt.md','ai_docs/reports/w-0-survey.report.md',...['Items','PowerTables','Math','Combat','Time','Monsters','Movement','Rogue','Globals','Architect','Grid','RogueMain','IO','GlobalsBase'].map(s=>`../BrogueCE-master/src/brogue/${s}.${s==='Rogue'?'h':'c'}`),'../BrogueCE-master/src/variants/GlobalsBrogue.c',...fs.readdirSync('.').filter(f=>/^(package.*\.json|tsconfig.*\.json|vite\.config\..*|index\.html)$/.test(f))].sort().map(f=>`${sha(fs.readFileSync(f))}  ${f}`).join('\n')+'\n';
+scripts/w19-final-check.mjs:36:const batch=JSON.parse(fs.readFileSync(`${dir}/final-regression.json`,'utf8'));
+scripts/w19-final-check.mjs:52: const d=JSON.parse(fs.readFileSync(`${dir}/final-${run}.json`,'utf8'));
+scripts/w19-negative-check.mjs:14: const before=fs.readFileSync(file);if(!before.toString().includes(from))throw Error(`No mutation target: ${name}`);
+scripts/w19-negative-check.mjs:15: try{fs.writeFileSync(file,before.toString().replace(from,to));const result=spawnSync(process.execPath,['node_modules/vitest/vitest.mjs','run','src/test/w_19_polymorph.test.ts','--maxWorkers=1','--reporter=json',`--outputFile=${dir}/negative-${name}.json`],{encoding:'utf8'});fs.writeFileSync(`${dir}/negative-${name}.log`,result.stdout+result.stderr);const r=JSON.parse(fs.readFileSync(`${dir}/negative-${name}.json`));summary.push({name,file,exit:result.status,failed:r.numFailedTests,passed:r.numPassedTests,shaBefore:sha(before)});if(result.status===0||r.numFailedTests===0)throw Error(`Undetected mutation: ${name}`);
+scripts/w19-negative-check.mjs:16: }finally{fs.writeFileSync(file,before);if(summary.at(-1)?.name===name)summary.at(-1).shaAfter=sha(fs.readFileSync(file));}
+scripts/w19-test-scope.mjs:11:    const raw = fs.readFileSync(f, 'utf8');
+scripts/w19-test-scope.mjs:49:    readers: /readFileSync|readFile\(|import\(|require\(|fixtures|toSnapshot|saveSnapshot|loadSnapshot/,
+scripts/w19-test-scope.mjs:51:const S = Object.fromEntries(Object.entries(patterns).map(([k, re]) => [k, tests.filter(f => re.test(fs.readFileSync(f, 'utf8'))).sort()]));
+scripts/w20-browser-check.mjs:14:   g.player.inventory.items=[];g.player.equippedWeapon=g.player.equippedArmor=g.player.ringLeft=g.player.ringRight=null;g.isInventoryOpen=false;g.pendingArcana=null;g.dormantMonsters=[];g.items=[];g.pendingBoltFrames=[];g.floatingTexts=[];g.autoPath=[];g.isMouseTraveling=false;g.levels.clear();
+scripts/w20-browser-check.mjs:22: const capture=async name=>{await page.waitForTimeout(250);await page.evaluate(()=>{const g=window.activeGame;g.pendingBoltFrames=[];g.needsRender=true;g.update();});await page.waitForTimeout(100);const state=await page.evaluate(()=>({text:JSON.parse(window.render_game_to_text()),monsters:window.activeGame.monsters.map(m=>({id:m.id,name:m.name,type:m.typeId,hp:m.hp,maxHp:m.maxHp,ally:m.isAlly,caged:m.isCaged,leader:m.leader?.id??null,status:{...m.statusDurations},clone:m.isClone,damage:m.damageString,defense:m.defense,ticks:m.ticksUntilTurn,key:m.carriedItem?.id??null})),charges:window.w20Wand.charges}));states.push({name,state});await page.screenshot({path:`${dir}/browser-${name}.png`,fullPage:true});return state;};
+scripts/w20-ce-golden.mjs:5:const read=n=>fs.readFileSync(`../BrogueCE-master/src/brogue/${n}`,'utf8');
+scripts/w20-final-check.mjs:12:const old=methods(head('src/engine/Core/Game.ts').toString()),now=methods(fs.readFileSync('src/engine/Core/Game.ts','utf8'));
+scripts/w20-final-check.mjs:14:const protectedFiles=['src/data/arcana.json','src/data/monsters.json','src/data/mutations.json','src/engine/Combat/BoltCatalog.ts','src/engine/Combat/BoltTrajectory.ts','src/engine/Items/Item.ts','src/engine/Items/ItemLoader.ts','src/engine/Items/ArcanaInstance.ts','src/engine/Items/ArcanaRecharge.ts','src/engine/Items/ArcanaEnchantment.ts','src/engine/Random.ts','src/engine/Environment/Gas.ts','src/engine/Map/DungeonFeature.ts','src/engine/Map/DungeonFeatureCatalog.ts','src/engine/Map/TerrainCatalog.ts','src/engine/Map/Promotion.ts','src/engine/Map/Grid.ts','src/engine/Generator/BlueprintEngine.ts','src/engine/Map/AutoGenerator.ts','src/engine/Map/WaypointMap.ts','src/entities/Player.ts','src/entities/Creature.ts','src/engine/Combat/Combat.ts','src/test/fixtures/generation_baseline.json'];
+scripts/w20-final-check.mjs:15:const boundary={head:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),changedGameMethods:Object.keys(old).filter(k=>old[k]!==now[k]),addedGameMethods:Object.keys(now).filter(k=>!(k in old)),unchangedFiles:Object.fromEntries(protectedFiles.map(f=>[f,{sha:sha(fs.readFileSync(f)),equal:head(f).equals(fs.readFileSync(f))}])),protectedMethods:Object.fromEntries(['generateDepth','objectiveTimeBlock','finishTurnEpilogue','triggerDeathFeatures','dropMonsterLoot','removeDeadMonsters','playerTurnEnded','tickCreatureStatuses','rebuildWaypoints','tickArcanaResources','useArcanaItem','castMonsterBolt','findNearbySpawnSpot','spawnHordeAt','summonMinionsFor'].map(k=>[k,old[k]!==undefined&&old[k]===now[k]]))};
+scripts/w20-final-check.mjs:19:const changedExistingTests=trackedTests.filter(f=>!head(f).equals(fs.readFileSync(f)));
+scripts/w20-final-check.mjs:24:const scope=JSON.parse(fs.readFileSync(`${dir}/closure.json`,'utf8'));
+scripts/w20-final-check.mjs:25:const manifest=()=>[...walk('src'),...walk('public'),...walk('scripts'),'progress.md',`${dir}/ce-clone.c`,`${dir}/ce-clone.txt`,'ai_docs/tasks/w-20.prompt.md','ai_docs/reports/w-0-survey.report.md',...['Items','PowerTables','Math','Combat','Time','Monsters','Movement','Rogue','Globals','Architect','Grid','RogueMain','IO','GlobalsBase'].map(s=>`../BrogueCE-master/src/brogue/${s}.${s==='Rogue'?'h':'c'}`),'../BrogueCE-master/src/variants/GlobalsBrogue.c',...fs.readdirSync('.').filter(f=>/^(package.*\.json|tsconfig.*\.json|vite\.config\..*|index\.html)$/.test(f))].sort().map(f=>`${sha(fs.readFileSync(f))}  ${f}`).join('\n')+'\n';
+scripts/w20-final-check.mjs:36:const batch=JSON.parse(fs.readFileSync(`${dir}/final-regression.json`,'utf8'));
+scripts/w20-final-check.mjs:52: const d=JSON.parse(fs.readFileSync(`${dir}/final-${run}.json`,'utf8'));
+scripts/w20-negative-check.mjs:7: ['duplicate-id','src/entities/Monster.ts','clone.id = allocateEntityId();','clone.id = this.id;','audits EVERY'],
+scripts/w20-negative-check.mjs:13:for(const [name,file,from,to,test] of cases){const original=fs.readFileSync(file);if(!original.toString().includes(from))throw Error(name+' replacement missing');let r;
+scripts/w20-negative-check.mjs:16: const restored=sha(fs.readFileSync(file))===sha(original),detected=r.status!==0&&/AssertionError/.test(r.stdout+r.stderr);results.push({name,file,test,exit:r.status,detected,restored,sha:sha(original)});if(!detected||!restored)throw Error(JSON.stringify(results.at(-1)));
+scripts/w20-test-scope.mjs:11:    const raw = fs.readFileSync(f, 'utf8');
+scripts/w20-test-scope.mjs:49:    readers: /readFileSync|readFile\(|import\(|require\(|fixtures|toSnapshot|saveSnapshot|loadSnapshot/,
+scripts/w20-test-scope.mjs:51:const S = Object.fromEntries(Object.entries(patterns).map(([k, re]) => [k, tests.filter(f => re.test(fs.readFileSync(f, 'utf8'))).sort()]));
+scripts/w21-browser-check.mjs:14:   g.player.inventory.items=[];g.player.equippedWeapon=g.player.equippedArmor=g.player.ringLeft=g.player.ringRight=null;g.isInventoryOpen=false;g.inspectTarget=null;g.pendingArcana=null;g.dormantMonsters=[];g.items=[];g.pendingBoltFrames=[];g.floatingTexts=[];g.autoPath=[];g.isMouseTraveling=false;g.levels.clear();
+scripts/w21-browser-check.mjs:21: const capture=async name=>{await page.waitForTimeout(300);await page.evaluate(()=>{const g=window.activeGame;g.needsRender=true;g.update();});await page.waitForTimeout(60);const state=await page.evaluate(()=>({text:JSON.parse(window.render_game_to_text()),monsters:window.activeGame.monsters.map(m=>({id:m.id,type:m.typeId,hp:m.hp,maxHp:m.maxHp,accuracy:m.accuracy,defense:m.defense,damage:m.damageString,newPowerCount:m.newPowerCount,totalPowerCount:m.totalPowerCount,status:{...m.statusDurations},poisonAmount:m.poisonAmount,ally:m.isAlly})),charges:window.w21Wand.charges,frames:window.activeGame.pendingBoltFrames}));states.push({name,state});await page.screenshot({path:`${dir}/browser-${name}.png`,fullPage:true});return state;};
+scripts/w21-browser-check.mjs:24: await page.evaluate(()=>{const g=window.activeGame;g.pendingBoltFrames=[];g.useArcanaItem(window.w21Wand);g.setArcanaTarget(8,5);});await page.keyboard.press('Enter');s=await capture('second-hit');assert.equal(s.monsters[0].maxHp,30);assert.equal(s.monsters[0].totalPowerCount,2);assert.equal(s.monsters[0].damage,'3-5');assert.equal(s.text.monsters[0].newPowerCount,2);assert.equal(s.charges,1);
+scripts/w21-ce-golden.mjs:7:const read=n=>fs.readFileSync(`../BrogueCE-master/src/brogue/${n}`,'utf8');
+scripts/w21-final-check.mjs:12:const old=methods(head('src/engine/Core/Game.ts').toString()),now=methods(fs.readFileSync('src/engine/Core/Game.ts','utf8'));
+scripts/w21-final-check.mjs:14:const protectedFiles=['src/data/monsters.json','src/data/mutations.json','src/engine/Combat/BoltCatalog.ts','src/engine/Combat/BoltTrajectory.ts','src/engine/Items/Item.ts','src/engine/Items/ItemLoader.ts','src/engine/Items/ArcanaInstance.ts','src/engine/Items/ArcanaRecharge.ts','src/engine/Items/ArcanaEnchantment.ts','src/engine/Random.ts','src/engine/Environment/Gas.ts','src/engine/Map/DungeonFeature.ts','src/engine/Map/DungeonFeatureCatalog.ts','src/engine/Map/TerrainCatalog.ts','src/engine/Map/Promotion.ts','src/engine/Map/Grid.ts','src/engine/Generator/BlueprintEngine.ts','src/engine/Map/AutoGenerator.ts','src/engine/Map/WaypointMap.ts','src/entities/Player.ts','src/engine/Combat/Combat.ts','src/test/fixtures/generation_baseline.json'];
+scripts/w21-final-check.mjs:15:const arcanaBefore=JSON.parse(head('src/data/arcana.json')),arcanaAfter=JSON.parse(fs.readFileSync('src/data/arcana.json','utf8'));
+scripts/w21-final-check.mjs:18:const boundary={head:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),changedGameMethods:Object.keys(old).filter(k=>old[k]!==now[k]),addedGameMethods:Object.keys(now).filter(k=>!(k in old)),unchangedFiles:Object.fromEntries(protectedFiles.map(f=>[f,{sha:sha(fs.readFileSync(f)),equal:head(f).equals(fs.readFileSync(f))}])),protectedMethods:Object.fromEntries(['generateDepth','objectiveTimeBlock','finishTurnEpilogue','triggerDeathFeatures','dropMonsterLoot','removeDeadMonsters','playerTurnEnded','tickCreatureStatuses','rebuildWaypoints','tickArcanaResources','useArcanaItem','castMonsterBolt','findNearbySpawnSpot','spawnHordeAt','summonMinionsFor'].map(k=>[k,old[k]!==undefined&&old[k]===now[k]]))};
+scripts/w21-final-check.mjs:22:const changedExistingTests=trackedTests.filter(f=>!head(f).equals(fs.readFileSync(f)));
+scripts/w21-final-check.mjs:27:const scope=JSON.parse(fs.readFileSync(`${dir}/closure.json`,'utf8'));
+scripts/w21-final-check.mjs:28:const manifest=()=>[...walk('src'),...walk('public'),...walk('scripts'),'progress.md',`${dir}/ce-empower.c`,`${dir}/ce-empower.txt`,'ai_docs/tasks/w-21.prompt.md','ai_docs/reports/w-0-survey.report.md',...['Items','PowerTables','Math','Combat','Time','Monsters','Movement','Rogue','Globals','Architect','Grid','RogueMain','IO','GlobalsBase'].map(s=>`../BrogueCE-master/src/brogue/${s}.${s==='Rogue'?'h':'c'}`),'../BrogueCE-master/src/variants/GlobalsBrogue.c',...fs.readdirSync('.').filter(f=>/^(package.*\.json|tsconfig.*\.json|vite\.config\..*|index\.html)$/.test(f))].sort().map(f=>`${sha(fs.readFileSync(f))}  ${f}`).join('\n')+'\n';
+scripts/w21-final-check.mjs:39:const batch=JSON.parse(fs.readFileSync(`${dir}/final-regression.json`,'utf8'));
+scripts/w21-final-check.mjs:55: const d=JSON.parse(fs.readFileSync(`${dir}/final-${run}.json`,'utf8'));
+scripts/w21-negative-check.mjs:14:for(const [name,file,from,to,test] of cases){const original=fs.readFileSync(file);if(!original.toString().includes(from))throw Error(name+' replacement missing');let r;
+scripts/w21-negative-check.mjs:17: const restored=sha(fs.readFileSync(file))===sha(original),detected=r.status!==0&&/AssertionError/.test(r.stdout+r.stderr);results.push({name,file,test,exit:r.status,detected,restored,sha:sha(original)});if(!detected||!restored)throw Error(JSON.stringify(results.at(-1)));
+scripts/w21-test-scope.mjs:11:    const raw = fs.readFileSync(f, 'utf8');
+scripts/w21-test-scope.mjs:49:    readers: /readFileSync|readFile\(|import\(|require\(|fixtures|toSnapshot|saveSnapshot|loadSnapshot/,
+scripts/w21-test-scope.mjs:51:const S = Object.fromEntries(Object.entries(patterns).map(([k, re]) => [k, tests.filter(f => re.test(fs.readFileSync(f, 'utf8'))).sort()]));
+scripts/w22-ce-audit.mjs:9:const read = n => fs.readFileSync(`../BrogueCE-master/src/brogue/${n}`, 'utf8');
+scripts/w22-ce-audit.mjs:20:const catalog = fs.readFileSync('../BrogueCE-master/src/variants/GlobalsBrogue.c', 'utf8');
+scripts/w22-final-check.mjs:11:const unchangedFromHead = () => tracked.every(f => fs.readFileSync(f).equals(execFileSync('git', ['show', `HEAD:brogue-web/${f}`])));
+scripts/w22-final-check.mjs:14:const scope = JSON.parse(fs.readFileSync(`${dir}/closure.json`, 'utf8'));
+scripts/w22-final-check.mjs:18:    .sort().map(f => `${sha(fs.readFileSync(f))}  ${f}`).join('\n') + '\n';
+scripts/w22-final-check.mjs:37:const batch = JSON.parse(fs.readFileSync(`${dir}/final-regression.json`, 'utf8'));
+scripts/w22-final-check.mjs:48:    const json = JSON.parse(fs.readFileSync(`${dir}/final-${name}.json`, 'utf8'));
+scripts/w22-test-scope.mjs:13:    const raw = fs.readFileSync(f, 'utf8');
+scripts/w22-test-scope.mjs:53:    readers: /readFileSync|readFile\(|import\(|require\(|fixtures/,
+scripts/w22-test-scope.mjs:55:const S = Object.fromEntries(Object.entries(patterns).map(([k, re]) => [k, tests.filter(f => re.test(fs.readFileSync(f, 'utf8'))).sort()]));
+scripts/w22-test-scope.mjs:63:for (const f of files) fs.readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
+scripts/w23-browser-check.mjs:34:            g.pendingBoltFrames = []; g.floatingTexts = []; g.autoPath = []; g.isMouseTraveling = false; g.levels.clear();
+scripts/w23-ce-audit.mjs:7:const read = n => fs.readFileSync(`../BrogueCE-master/src/brogue/${n}`, 'utf8');
+scripts/w23-final-check.mjs:15:    'src/test/fixtures/generation_baseline.json', 'package.json', 'package-lock.json', 'vite.config.ts'];
+scripts/w23-final-check.mjs:18:const old = methods(head('src/engine/Core/Game.ts').toString()), now = methods(fs.readFileSync('src/engine/Core/Game.ts', 'utf8'));
+scripts/w23-final-check.mjs:22:const changedExistingTests = tracked.filter(f => f.endsWith('.test.ts') && !head(f).equals(fs.readFileSync(f)));
+scripts/w23-final-check.mjs:25:    { equal: head(f).equals(fs.readFileSync(f)), sha: sha(fs.readFileSync(f)) }])) };
+scripts/w23-final-check.mjs:30:const scope = JSON.parse(fs.readFileSync(`${dir}/closure.json`, 'utf8'));
+scripts/w23-final-check.mjs:34:    .sort().map(f => `${sha(fs.readFileSync(f))}  ${f}`).join('\n') + '\n';
+scripts/w23-final-check.mjs:53:const batch = JSON.parse(fs.readFileSync(`${dir}/final-regression.json`, 'utf8'));
+scripts/w23-final-check.mjs:64:    const json = JSON.parse(fs.readFileSync(`${dir}/final-${name}.json`, 'utf8'));
+scripts/w23-test-scope.mjs:12:    const raw = fs.readFileSync(f, 'utf8');
+scripts/w23-test-scope.mjs:54:    readers: /readFileSync|readFile\(|import\(|require\(|fixtures|toSnapshot|saveSnapshot|loadSnapshot/,
+scripts/w23-test-scope.mjs:56:const S = Object.fromEntries(Object.entries(patterns).map(([k, re]) => [k, tests.filter(f => re.test(fs.readFileSync(f, 'utf8'))).sort()]));
+scripts/w23-test-scope.mjs:63:for (const f of files) fs.readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
+scripts/w24-browser-check.mjs:15:  window.w24L=L;const g=window.activeGame;g.startNewGame({seed:2424,mode:'test'});g.animationEnabled=false;
+scripts/w24-browser-check.mjs:17:   rng.seedRandomGenerator(2424);L.initConsumables();g.grid=new Grid(g.grid.width,g.grid.height);
+scripts/w24-browser-check.mjs:26:   g.pendingBoltFrames=[];g.floatingTexts=[];g.autoPath=[];g.isMouseTraveling=false;g.levels.clear();
+scripts/w24-browser-check.mjs:46:   const w=L.spawnWand('wand_of_'+suffix,-1,-1);g.player.inventory.addItem(w);window.w24Before={charges:w.charges,turns:g.stats.turns};g.isInventoryOpen=true;
+scripts/w24-browser-check.mjs:50:  await page.keyboard.press('Escape');assert.deepEqual(await page.evaluate(()=>({charges:window.activeGame.player.inventory.items[0].charges,turns:window.activeGame.stats.turns})),await page.evaluate(()=>window.w24Before));
+scripts/w24-coverage.ts:3:import { createHeadlessGame, terrainFingerprint } from '../src/test/harness';
+scripts/w24-coverage.ts:27:    g.startNewGame({ seed, mode: 'normal' });
+scripts/w24-coverage.ts:35:            baseline: { fp: terrainFingerprint(g.grid), n: g.monsters.length, species: [...new Set(g.monsters.map((m: any) => m.name))].sort().join(','), items: g.items.length } });
+scripts/w24-final-check.mjs:12:const old=methods(head('src/engine/Core/Game.ts').toString()),now=methods(fs.readFileSync('src/engine/Core/Game.ts','utf8'));
+scripts/w24-final-check.mjs:17:const unexpected=changed.filter(f=>!production.includes(f)&&!allowedTests.includes(f)&&f!=='src/test/fixtures/generation_baseline.json');
+scripts/w24-final-check.mjs:18:const dataOld=JSON.parse(head('src/data/arcana.json')),dataNew=JSON.parse(fs.readFileSync('src/data/arcana.json'));
+scripts/w24-final-check.mjs:22:const baselineHash=sha(fs.readFileSync('src/test/fixtures/generation_baseline.json'));
+scripts/w24-final-check.mjs:25:if(unexpected.length||changedMethods.some(k=>!['toSnapshot','loadSnapshot'].includes(k))||!unchangedCategories||!retired||!empowermentTextUnchanged||baselineHash!==JSON.parse(fs.readFileSync(`${dir}/baseline-hashes.json`)).after)throw Error('Scope changed');
+scripts/w24-final-check.mjs:27:const scope=JSON.parse(fs.readFileSync(`${dir}/closure.json`));
+scripts/w24-final-check.mjs:30:const manifest=()=>[...new Set([...walk('src'),...walk('public'),...walk('scripts'),...walk('../BrogueCE-master/src'),...tracked,'progress.md','ai_docs/tasks/w-24.prompt.md','ai_docs/reports/w-0-survey.report.md',`${dir}/closure.json`,`${dir}/browser-states.json`,`${dir}/drift-attribution.json`,`${dir}/drift-summary-before-recapture.md`])].sort().map(f=>`${sha(fs.readFileSync(f))}  ${f}`).join('\n')+'\n';
+scripts/w24-final-check.mjs:36:const batch=JSON.parse(fs.readFileSync(`${dir}/final-regression.json`));
+scripts/w24-final-check.mjs:45:for(const name of ['regression','drift',...retries.map(r=>r.name)])for(const t of JSON.parse(fs.readFileSync(`${dir}/final-${name}.json`)).testResults){
+scripts/w24-final-check.mjs:52:const summary={head:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),results,retries,counts,fileCount:finalFiles.length,filesHashed:before.trim().split('\n').length,shaBefore:sha(before),shaAfter:sha(after),unchanged:before===after,baselineBefore:JSON.parse(fs.readFileSync(`${dir}/baseline-hashes.json`)).before,baselineAfter:baselineHash};
+scripts/w24-generation.ts:5:import { createHeadlessGame, terrainFingerprint } from '../src/test/harness';
+scripts/w24-generation.ts:9:const base = JSON.parse(fs.readFileSync(`${dir}/baseline-before.json`, 'utf8'));
+scripts/w24-generation.ts:27:        trace.length = 0; g.startNewGame({seed});
+scripts/w24-generation.ts:30:            rows.push({ fp: terrainFingerprint(g.grid), n: g.monsters.length,
+scripts/w24-generation.ts:42:    const summary = { baselineBeforeSHA256: createHash('sha256').update(fs.readFileSync(`${dir}/baseline-before.json`)).digest('hex'),
+scripts/w24-test-scope.mjs:12:    const raw = fs.readFileSync(f, 'utf8');
+scripts/w24-test-scope.mjs:52:    G: /ItemLoader|arcana\.json|terrainFingerprint|generateDepth|chooseKind/,
+scripts/w24-test-scope.mjs:55:    readers: /readFileSync|readFile\(|import\(|require\(|fixtures|toSnapshot|saveSnapshot|loadSnapshot/,
+scripts/w24-test-scope.mjs:57:const S = Object.fromEntries(Object.entries(patterns).map(([k, re]) => [k, tests.filter(f => re.test(fs.readFileSync(f, 'utf8'))).sort()]));
+scripts/w24-test-scope.mjs:64:for (const f of files) fs.readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
+scripts/w25-browser-check.mjs:15:  window.w25L=L;const g=window.activeGame;g.startNewGame({seed:2525,mode:'test'});g.animationEnabled=false;
+scripts/w25-browser-check.mjs:17:   rng.seedRandomGenerator(2525);L.initConsumables();g.grid=new Grid(g.grid.width,g.grid.height);
+scripts/w25-browser-check.mjs:26:   g.pendingBoltFrames=[];g.floatingTexts=[];g.autoPath=[];g.isMouseTraveling=false;g.levels.clear();
+scripts/w25-browser-check.mjs:48:   window.w25Before={charges:w.charges,turns:g.stats.turns};g.isInventoryOpen=true;
+scripts/w25-browser-check.mjs:52:  await page.keyboard.press('Escape');assert.deepEqual(await page.evaluate(()=>({charges:window.activeGame.player.inventory.items[0].charges,turns:window.activeGame.stats.turns})),await page.evaluate(()=>window.w25Before));
+scripts/w25-browser-check.mjs:55:  assert.equal(await page.evaluate(()=>window.activeGame.stats.turns),await page.evaluate(()=>window.w25Before.turns+1));
+scripts/w25-coverage.ts:3:import { createHeadlessGame, terrainFingerprint } from '../src/test/harness';
+scripts/w25-coverage.ts:27:    g.startNewGame({ seed, mode: 'normal' });
+scripts/w25-coverage.ts:35:            baseline: { fp: terrainFingerprint(g.grid), n: g.monsters.length, species: [...new Set(g.monsters.map((m: any) => m.name))].sort().join(','), items: g.items.length } });
+scripts/w25-final-check.mjs:12:const old=methods(head('src/engine/Core/Game.ts').toString()),now=methods(fs.readFileSync('src/engine/Core/Game.ts','utf8'));
+scripts/w25-final-check.mjs:18:const dataOld=JSON.parse(head('src/data/arcana.json')),dataNew=JSON.parse(fs.readFileSync('src/data/arcana.json'));
+scripts/w25-final-check.mjs:26:const baselineHash=sha(fs.readFileSync('src/test/fixtures/generation_baseline.json'));
+scripts/w25-final-check.mjs:29:if(unexpected.length||changedMethods.some(k=>!allowedMethods.includes(k))||!unchangedCategories||!retired||!w26Absent||!effectUnchanged||baselineHash!==JSON.parse(fs.readFileSync(`${dir}/baseline-hashes.json`)).after)throw Error('Scope changed');
+scripts/w25-final-check.mjs:31:const scope=JSON.parse(fs.readFileSync(`${dir}/closure.json`));
+scripts/w25-final-check.mjs:34:const manifest=()=>[...new Set([...walk('src'),...walk('public'),...walk('scripts'),...walk('../BrogueCE-master/src'),...tracked,'progress.md','ai_docs/tasks/w-25.prompt.md','ai_docs/reports/w-0-survey.report.md',`${dir}/closure.json`,`${dir}/browser-states.json`,`${dir}/drift-attribution.json`,`${dir}/drift-summary-before-recapture.md`])].sort().map(f=>`${sha(fs.readFileSync(f))}  ${f}`).join('\n')+'\n';
+scripts/w25-final-check.mjs:40:const batch=JSON.parse(fs.readFileSync(`${dir}/final-regression.json`));
+scripts/w25-final-check.mjs:49:for(const name of ['regression','drift',...retries.map(r=>r.name)])for(const t of JSON.parse(fs.readFileSync(`${dir}/final-${name}.json`)).testResults){
+scripts/w25-final-check.mjs:56:const summary={head:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),results,retries,counts,fileCount:finalFiles.length,filesHashed:before.trim().split('\n').length,shaBefore:sha(before),shaAfter:sha(after),unchanged:before===after,baselineBefore:JSON.parse(fs.readFileSync(`${dir}/baseline-hashes.json`)).before,baselineAfter:baselineHash};
+scripts/w25-generation.ts:4:import {createHeadlessGame,terrainFingerprint} from '../src/test/harness';
+scripts/w25-generation.ts:7:const dir='ai_docs/reports/w-25-evidence',base=JSON.parse(fs.readFileSync(`${dir}/baseline-before.json`,'utf8'));
+scripts/w25-generation.ts:16:  const g:any=createHeadlessGame(seed),rows:any[]=[];levels[seed]=rows;trace.length=0;g.startNewGame({seed});
+scripts/w25-generation.ts:19:   rows.push({fp:terrainFingerprint(g.grid),n:g.monsters.length,species:[...new Set(g.monsters.map((m:any)=>m.name))].sort().join(','),items:g.items.length});calls[seed]!.push(rng.randomNumbersGenerated);
+scripts/w25-test-scope.mjs:12:    const raw = fs.readFileSync(f, 'utf8');
+scripts/w25-test-scope.mjs:52:    G: /ItemLoader|arcana\.json|terrainFingerprint|generateDepth|chooseKind/,
+scripts/w25-test-scope.mjs:56:    readers: /readFileSync|readFile\(|import\(|require\(|fixtures|toSnapshot|saveSnapshot|loadSnapshot/,
+scripts/w25-test-scope.mjs:58:const S = Object.fromEntries(Object.entries(patterns).map(([k, re]) => [k, tests.filter(f => re.test(fs.readFileSync(f, 'utf8'))).sort()]));
+scripts/w25-test-scope.mjs:65:for (const f of files) fs.readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
+scripts/w26-browser-check.mjs:15:  window.w26L=L;const g=window.activeGame;g.startNewGame({seed:2626,mode:'test'});g.animationEnabled=false;
+scripts/w26-browser-check.mjs:17:   rng.seedRandomGenerator(2626);L.initConsumables();g.grid=new Grid(g.grid.width,g.grid.height);
+scripts/w26-browser-check.mjs:26:   g.pendingBoltFrames=[];g.floatingTexts=[];g.autoPath=[];g.isMouseTraveling=false;g.levels.clear();
+scripts/w26-browser-check.mjs:47:   window.w26Before={charges:w.charges,turns:g.stats.turns};g.isInventoryOpen=true;
+scripts/w26-browser-check.mjs:51:  await page.keyboard.press('Escape');assert.deepEqual(await page.evaluate(()=>({charges:window.activeGame.player.inventory.items[0].charges,turns:window.activeGame.stats.turns})),await page.evaluate(()=>window.w26Before));
+scripts/w26-browser-check.mjs:54:  assert.equal(await page.evaluate(()=>window.activeGame.stats.turns),await page.evaluate(()=>window.w26Before.turns+1));
+scripts/w26-coverage.ts:3:import { createHeadlessGame, terrainFingerprint } from '../src/test/harness';
+scripts/w26-coverage.ts:27:    g.startNewGame({ seed, mode: 'normal' });
+scripts/w26-coverage.ts:35:            baseline: { fp: terrainFingerprint(g.grid), n: g.monsters.length, species: [...new Set(g.monsters.map((m: any) => m.name))].sort().join(','), items: g.items.length } });
+scripts/w26-final-check.mjs:12:const old=methods(head('src/engine/Core/Game.ts').toString()),now=methods(fs.readFileSync('src/engine/Core/Game.ts','utf8'));
+scripts/w26-final-check.mjs:18:const dataOld=JSON.parse(head('src/data/arcana.json')),dataNew=JSON.parse(fs.readFileSync('src/data/arcana.json'));
+scripts/w26-final-check.mjs:26:const effectUnchanged=head('src/engine/Core/Game.ts').equals(fs.readFileSync('src/engine/Core/Game.ts'));
+scripts/w26-final-check.mjs:27:const rechargeCodeUnchanged=code(head('src/engine/Items/ArcanaRecharge.ts').toString())===code(fs.readFileSync('src/engine/Items/ArcanaRecharge.ts','utf8'));
+scripts/w26-final-check.mjs:28:const loaderOld=methods(head('src/engine/Items/ItemLoader.ts').toString()),loaderNow=methods(fs.readFileSync('src/engine/Items/ItemLoader.ts','utf8'));
+scripts/w26-final-check.mjs:30:const baselineHash=sha(fs.readFileSync('src/test/fixtures/generation_baseline.json'));
+scripts/w26-final-check.mjs:33:if(unexpected.length||changedMethods.length||!unchangedCategories||!retired||!oldStaffsUnchanged||!completeCatalog||!effectUnchanged||!rechargeCodeUnchanged||!loaderMethodsUnchanged||baselineHash!==JSON.parse(fs.readFileSync(`${dir}/baseline-hashes.json`)).after)throw Error('Scope changed');
+scripts/w26-final-check.mjs:35:const scope=JSON.parse(fs.readFileSync(`${dir}/closure.json`));
+scripts/w26-final-check.mjs:38:const manifest=()=>[...new Set([...walk('src'),...walk('public'),...walk('scripts'),...walk('../BrogueCE-master/src'),...tracked,'progress.md','ai_docs/tasks/w-26.prompt.md','ai_docs/reports/w-0-survey.report.md',...Array.from({length:25},(_,i)=>`ai_docs/reports/w-${i+1}.report.md`),`${dir}/closure.json`,`${dir}/browser-states.json`,`${dir}/drift-attribution.json`,`${dir}/drift-summary-before-recapture.md`])].sort().map(f=>`${sha(fs.readFileSync(f))}  ${f}`).join('\n')+'\n';
+scripts/w26-final-check.mjs:44:const batch=JSON.parse(fs.readFileSync(`${dir}/final-regression.json`));
+scripts/w26-final-check.mjs:53:for(const name of ['regression','drift',...retries.map(r=>r.name)])for(const t of JSON.parse(fs.readFileSync(`${dir}/final-${name}.json`)).testResults){
+scripts/w26-final-check.mjs:60:const summary={head:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),results,retries,counts,fileCount:finalFiles.length,filesHashed:before.trim().split('\n').length,shaBefore:sha(before),shaAfter:sha(after),unchanged:before===after,baselineBefore:JSON.parse(fs.readFileSync(`${dir}/baseline-hashes.json`)).before,baselineAfter:baselineHash};
+scripts/w26-generation.ts:4:import {createHeadlessGame,terrainFingerprint} from '../src/test/harness';
+scripts/w26-generation.ts:7:const dir='ai_docs/reports/w-26-evidence',base=JSON.parse(fs.readFileSync(`${dir}/baseline-before.json`,'utf8'));
+scripts/w26-generation.ts:16:  const g:any=createHeadlessGame(seed),rows:any[]=[];levels[seed]=rows;trace.length=0;g.startNewGame({seed});
+scripts/w26-generation.ts:19:   rows.push({fp:terrainFingerprint(g.grid),n:g.monsters.length,species:[...new Set(g.monsters.map((m:any)=>m.name))].sort().join(','),items:g.items.length});calls[seed]!.push(rng.randomNumbersGenerated);
+scripts/w26-test-scope.mjs:12:    const raw = fs.readFileSync(f, 'utf8');
+scripts/w26-test-scope.mjs:52:    G: /ItemLoader|arcana\.json|terrainFingerprint|generateDepth|chooseKind/,
+scripts/w26-test-scope.mjs:57:    readers: /readFileSync|readFile\(|import\(|require\(|fixtures|toSnapshot|saveSnapshot|loadSnapshot/,
+scripts/w26-test-scope.mjs:59:const S = Object.fromEntries(Object.entries(patterns).map(([k, re]) => [k, tests.filter(f => re.test(fs.readFileSync(f, 'utf8'))).sort()]));
+scripts/w26-test-scope.mjs:66:for (const f of files) fs.readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
+scripts/w5-sample.ts:3:import { createHeadlessGame, terrainFingerprint } from '../src/test/harness';
+scripts/w5-sample.ts:27:    g.startNewGame({ seed, mode: 'normal' });
+scripts/w5-sample.ts:35:            baseline: { fp: terrainFingerprint(g.grid), n: g.monsters.length, species: [...new Set(g.monsters.map((m: any) => m.name))].sort().join(','), items: g.items.length } });
+scripts/w5-test-scope.mjs:7:for(const f of files){const s=ts.createSourceFile(f,fs.readFileSync(f,'utf8'),ts.ScriptTarget.Latest,true), imports=[];
+scripts/w5-test-scope.mjs:12:const patterns={Q:/useArcanaItem|spawnStaff|spawnWand|tickArcanaResources|rechargeRandomArcana|enchantEquippedItem|magicCharDiscoverySuffix|arcanaFlavor/,G:/ItemLoader|arcana\.json|terrainFingerprint|generateDepth|chooseKind/,storage:/readFileSync|loadSnapshot|saveSnapshot|toSnapshot|serializeItem|deserializeItem|maxCharges|charges|enchantment/,observation:/createHeadlessGame|startNewGame|Architect|generate\(|populate|spawn|seed|distribution/};
+scripts/w5-test-scope.mjs:13:const R=tests.filter(f=>seen.has(f)).sort(); const S=Object.fromEntries(Object.entries(patterns).map(([k,re])=>[k,tests.filter(f=>re.test(fs.readFileSync(f,'utf8'))).sort()]));
+scripts/w6-final-check.mjs:9:const manifest = () => [...walk('src'), ...walk('scripts'), 'package.json', 'package-lock.json', 'vite.config.ts', 'tsconfig.json', 'tsconfig.app.json', 'tsconfig.node.json'].sort().map(p => `${sha(fs.readFileSync(p))}  ${p}`).join('\n')+'\n';
+scripts/w6-final-check.mjs:12:const scope = JSON.parse(fs.readFileSync(`${dir}/closure.json`, 'utf8'));
+scripts/w6-test-scope.mjs:7:for(const f of files){const s=ts.createSourceFile(f,fs.readFileSync(f,'utf8'),ts.ScriptTarget.Latest,true), imports=[];
+scripts/w6-test-scope.mjs:12:const patterns={Q:/useArcanaItem|spawnStaff|spawnWand|tickArcanaResources|rechargeRandomArcana|rechargeStaffsAndCharms|enchantEquippedItem|magicCharDiscoverySuffix|arcanaFlavor/,C:/CombatSystem|takeDamage|tickCreatureStatuses|statusDurations|tickStatuses/,recharging:/recharging|ringWisdom|wisdom|recharge|cooldownRemaining/,G:/ItemLoader|arcana\.json|terrainFingerprint|generateDepth|chooseKind/,storage:/readFileSync|loadSnapshot|saveSnapshot|toSnapshot|serializeItem|deserializeItem|maxCharges|charges|enchantment/,observation:/createHeadlessGame|startNewGame|Architect|generate\(|populate|spawn|seed|distribution/};
+scripts/w6-test-scope.mjs:13:const R=tests.filter(f=>seen.has(f)).sort(); const S=Object.fromEntries(Object.entries(patterns).map(([k,re])=>[k,tests.filter(f=>re.test(fs.readFileSync(f,'utf8'))).sort()]));
+scripts/w7-browser-check.mjs:38:            pending: window.activeGame.pendingEnchantment, turns: window.activeGame.stats.turns,
+scripts/w7-final-check.mjs:9:const manifest = () => [...walk('src'), ...walk('scripts'), 'package.json', 'package-lock.json', 'vite.config.ts', 'tsconfig.json', 'tsconfig.app.json', 'tsconfig.node.json'].sort().map(p => `${sha(fs.readFileSync(p))}  ${p}`).join('\n')+'\n';
+scripts/w7-final-check.mjs:12:const scope = JSON.parse(fs.readFileSync(`${dir}/closure.json`, 'utf8'));
+scripts/w7-test-scope.mjs:7:for(const f of files){const s=ts.createSourceFile(f,fs.readFileSync(f,'utf8'),ts.ScriptTarget.Latest,true), imports=[];
+scripts/w7-test-scope.mjs:12:const patterns={U:/InputManager|engine\/Input|InventoryOverlay|GameCanvas|handlePlayerAction/,Q:/useArcanaItem|spawnStaff|spawnWand|tickArcanaResources|rechargeStaffsAndCharms|enchantEquippedItem|magicCharDiscoverySuffix|arcanaFlavor/,G:/ItemLoader|arcana\.json|terrainFingerprint|generateDepth|chooseKind/,enchant:/enchant/i,storage:/readFileSync|loadSnapshot|saveSnapshot|toSnapshot|serializeItem|deserializeItem|maxCharges|charges|enchantment/,observation:/createHeadlessGame|startNewGame|Architect|generate\(|populate|spawn|seed|distribution/};
+scripts/w7-test-scope.mjs:13:const R=tests.filter(f=>seen.has(f)).sort(); const S=Object.fromEntries(Object.entries(patterns).map(([k,re])=>[k,tests.filter(f=>re.test(fs.readFileSync(f,'utf8'))).sort()]));
+scripts/w8-browser-check.mjs:42:            g.items = []; g.floatingTexts = []; g.pendingBoltFrames = [];
+scripts/w8-final-check.mjs:10:const manifest = () => [...walk('src'), ...walk('public'), ...walk('scripts'), ...fs.readdirSync('.').filter(f => /^(package.*\.json|tsconfig.*\.json|vite\.config\..*|index\.html)$/.test(f))].sort().map(p => `${sha(fs.readFileSync(p))}  ${p}`).join('\n') + '\n';
+scripts/w8-final-check.mjs:20:const oldMethods = methods(head('src/engine/Core/Game.ts').toString()), newMethods = methods(fs.readFileSync('src/engine/Core/Game.ts', 'utf8'));
+scripts/w8-final-check.mjs:23:const unchangedFiles = ['src/data/arcana.json', 'src/engine/Combat/BoltCatalog.ts', 'src/engine/Combat/Combat.ts', 'src/engine/Combat/BoltTrajectory.ts', 'src/engine/Items/Item.ts', 'src/engine/Items/ItemLoader.ts', 'src/engine/Items/ArcanaInstance.ts', 'src/engine/Items/ArcanaRecharge.ts', 'src/engine/Items/ArcanaEnchantment.ts', 'src/engine/Random.ts', 'src/test/fixtures/generation_baseline.json'];
+scripts/w8-final-check.mjs:27:    unchangedFiles: Object.fromEntries(unchangedFiles.map(f => [f, { head: sha(head(f)), current: sha(fs.readFileSync(f)), equal: head(f).equals(fs.readFileSync(f)) }])),
+scripts/w8-final-check.mjs:35:const scope = JSON.parse(fs.readFileSync(`${dir}/closure.json`, 'utf8'));
+scripts/w8-final-check.mjs:58:    const data = JSON.parse(fs.readFileSync(`${dir}/final-${run}.json`, 'utf8'));
+scripts/w8-test-scope.mjs:11:    const raw = fs.readFileSync(f, 'utf8');
+scripts/w8-test-scope.mjs:48:    readers: /readFileSync|readFile\(|import\(|require\(|fixtures|toSnapshot|saveSnapshot|loadSnapshot/,
+scripts/w8-test-scope.mjs:50:const S = Object.fromEntries(Object.entries(patterns).map(([k, re]) => [k, tests.filter(f => re.test(fs.readFileSync(f, 'utf8'))).sort()]));
+scripts/w9-browser-check.mjs:45:            g.items = []; g.floatingTexts = []; g.pendingBoltFrames = []; g.monsters = [];
+scripts/w9-final-check.mjs:10:const manifest = () => [...walk('src'), ...walk('public'), ...walk('scripts'), 'progress.md', 'ai_docs/tasks/w-9.prompt.md', 'ai_docs/reports/w-0-survey.report.md', '../BrogueCE-master/src/brogue/Items.c', '../BrogueCE-master/src/brogue/PowerTables.c', '../BrogueCE-master/src/variants/GlobalsBrogue.c', ...fs.readdirSync('.').filter(f => /^(package.*\.json|tsconfig.*\.json|vite\.config\..*|index\.html)$/.test(f))].sort().map(p => `${sha(fs.readFileSync(p))}  ${p}`).join('\n') + '\n';
+scripts/w9-final-check.mjs:20:const oldMethods = methods(head('src/engine/Core/Game.ts').toString()), newMethods = methods(fs.readFileSync('src/engine/Core/Game.ts', 'utf8'));
+scripts/w9-final-check.mjs:23:const unchangedFiles = ['src/data/arcana.json', 'src/engine/Combat/BoltCatalog.ts', 'src/engine/Combat/Combat.ts', 'src/engine/Combat/BoltTrajectory.ts', 'src/engine/Items/Item.ts', 'src/engine/Items/ItemLoader.ts', 'src/engine/Items/ArcanaInstance.ts', 'src/engine/Items/ArcanaRecharge.ts', 'src/engine/Items/ArcanaEnchantment.ts', 'src/engine/Random.ts', 'src/entities/Creature.ts', 'src/entities/Monster.ts', 'src/entities/Player.ts', 'src/engine/Combat/StaffDamage.ts', 'src/engine/Combat/BoltReflection.ts', 'src/engine/Combat/BoltTargeting.ts', 'src/test/scroll_effects.test.ts', 'src/test/p4_1b_monster_casting.test.ts', 'src/test/p2_2_real_speed.test.ts', 'src/test/fixtures/generation_baseline.json'];
+scripts/w9-final-check.mjs:39:    const after = cases(fs.readFileSync('src/engine/Core/Game.ts', 'utf8'), name);
+scripts/w9-final-check.mjs:48:    unchangedFiles: Object.fromEntries(unchangedFiles.map(f => [f, { head: sha(head(f)), current: sha(fs.readFileSync(f)), equal: head(f).equals(fs.readFileSync(f)) }])),
+scripts/w9-final-check.mjs:57:const scope = JSON.parse(fs.readFileSync(`${dir}/closure.json`, 'utf8'));
+scripts/w9-final-check.mjs:80:    const data = JSON.parse(fs.readFileSync(`${dir}/final-${run}.json`, 'utf8'));
+scripts/w9-test-scope.mjs:11:    const raw = fs.readFileSync(f, 'utf8');
+scripts/w9-test-scope.mjs:50:    readers: /readFileSync|readFile\(|import\(|require\(|fixtures|toSnapshot|saveSnapshot|loadSnapshot/,
+scripts/w9-test-scope.mjs:52:const S = Object.fromEntries(Object.entries(patterns).map(([k, re]) => [k, tests.filter(f => re.test(fs.readFileSync(f, 'utf8'))).sort()]));
+scripts/x0-inventory.mjs:17:const hashes = Object.fromEntries(tracked.map(f => [f, crypto.createHash('sha256').update(fs.readFileSync(path.join(repo, f))).digest('hex')]));
+scripts/x0-inventory.mjs:25:  const before = JSON.parse(fs.readFileSync(path.join(dest, 'tracked-before.json'), 'utf8'));
+scripts/x0-inventory.mjs:31:const source = f => ts.createSourceFile(f, fs.readFileSync(f, 'utf8'), ts.ScriptTarget.Latest, true);
+scripts/x0-inventory.mjs:61:write('game-members.json', { lines: fs.readFileSync(gameFile, 'utf8').split('\n').length - 1, members });
+scripts/x0-inventory.mjs:66:  gameLines: fs.readFileSync(gameFile, 'utf8').split('\n').length - 1,
+scripts/x0-inventory.mjs:82:console.log(JSON.stringify(JSON.parse(fs.readFileSync(path.join(dest, 'inventory-summary.json'), 'utf8')), null, 2));
+scripts/x0-observe.mjs:39:  g.stats.gold = 987; g.stats.kills = 12; g.stats.maxDepth = 18;
+scripts/x0-observe.mjs:40:  g.isGameOver = true;
+scripts/x0-observe.mjs:41:  g.pendingFallenByDepth.set(8, []);
+scripts/x0-observe.mjs:42:  g.startNewGame({ seed: 424242, mode: 'test' });
+scripts/x0-observe.mjs:43:  const restart = { stats: { ...g.stats }, isGameOver: g.isGameOver, fallenDepths: [...g.pendingFallenByDepth.keys()] };
+scripts/x0-observe.mjs:44:  g.isGameOver = false;
+ai_docs/SESSION_HANDOFF.md:46:  startNewGame 不清 stats（K39）
+ai_docs/SESSION_HANDOFF.md:1372:`monster_stats_effect` / `p1_29` 这些**重型长跑测试集体超时翻红**。发生过两次。
+ai_docs/SESSION_HANDOFF.md:1384:`invented_content_pool` 52s，另有 `armor_model_effect`、`monster_stats_effect`、
+ai_docs/T-1_tail_report.md:166:- `src/test/fixtures/generation_baseline.json` — 授权重捕获（note 追加、
+ai_docs/T-1_tail_report.md:283: .../src/test/fixtures/generation_baseline.json     | 1490 ++++++++++----------
+ai_docs/armor_display_fix_report.md:114:statsLines.push({ text: `基础护甲值: ${item.armor}` });
+ai_docs/armor_display_fix_report.md:120:    statsLines.push({
+ai_docs/armor_display_fix_report.md:129:statsLines.push({ text: `基础防御值: ${item.armor}` });
+ai_docs/armor_display_fix_report.md:133:    statsLines.push({
+ai_docs/armor_model_report.md:96:方法：新增 `src/test/armor_model_effect.test.ts`（沿用 `monster_stats_effect.test.ts` 的 legacy/wired 配对聚合模式）。
+ai_docs/b_0_phase_b_survey.md:18:   （`serializeItem`/`GameSnapshot` 无此字段，读档走 `initConsumables()` 全清，
+ai_docs/b_0_phase_b_survey.md:125:  **web 已刻意分岔**：`initConsumables` 走 `RNG_COSMETIC`（ItemLoader.ts:255），
+ai_docs/b_0_phase_b_survey.md:268:  `ItemLoader.initConsumables()`（Game.ts:6161）→ 清空+重洗。
+ai_docs/b_0_phase_b_survey.md:431:  `runicKnown=true` 但 runicType=undefined（startNewGame Game.ts:502-530 手工清）。
+ai_docs/b_0_phase_b_survey.md:591:   Items.c:268-273）；开局飞镖在 startNewGame 手工清除故未暴露。
+ai_docs/b_0_phase_b_survey.md:898:        // 这里直接比对两遍链生成签名，证明 initConsumables 后主流仍可复现）
+ai_docs/b_1a_identification_report.md:52:  `initConsumables()` 本就 clear 整个 Set——本轮补上**护符/护符石预亮**
+ai_docs/b_1a_identification_report.md:78:`Game.ts` 只动了物品/鉴定相关区段（startNewGame 开局三件套、objectiveTimeBlock
+ai_docs/b_1a_identification_report.md:168:fixture 未动（`git status` 无 fixtures 变更）。另加**哨兵测试**（A13）把
+ai_docs/b_1a_identification_report.md:192:| A9 | 上一局识别的种类不漏进新局；护符/护符石预亮清单精确 | initConsumables 漏 clear / startNewGame 漏调 |
+ai_docs/b_1a_identification_report.md:260:**RV4 — initConsumables 注释掉 `identifiedItems.clear()`**：
+ai_docs/b_1b_identification_persistence_report.md:120:`loadSnapshot` 在 `initConsumables()`（清到开局态）之后：
+ai_docs/b_1b_identification_persistence_report.md:148:| 新局清零 | resetItemTableEntry，Items.c:8778-8779 | `initConsumables()` 内 `callTitles.clear()`（loadSnapshot 先清后回放，两全） |
+ai_docs/b_1b_identification_persistence_report.md:278:| C2 | 空白文本清除绰号；新局清零 | callKind 未实现清除；initConsumables 漏清 |
+ai_docs/b_1b_identification_persistence_report.md:435:边界自查：`src/engine/Generator/`、`src/engine/Map/`、`src/engine/Environment/`、`src/entities/` 下除 Player.ts 外、`BrogueCE-master/`、`src/data/*.json`、`src/engine/Random.ts`、`src/test/fixtures/*`、`src/test/harness.ts`、清单外既有测试（含 p1_37）——**零触碰**。未执行任何 git 写操作。
+ai_docs/b_1c_detect_magic_report.md:270:| `src/engine/Items/ItemLoader.ts` | 新增 `magicPolarityRevealed:Set`、`HAS_INTRINSIC_POLARITY` / `CAN_BE_DETECTED` 类别集（**惰性 getter**，见下）、`kindPolarity()`、`isPolarityRevealed()`（留形挂点接真状态）、`itemMagicPolarity()`、`magicCharDiscoverySuffix()`、`detectMagicOnItem()`、`polarityKnownCount()`、`tryIdentifyLastItemKindsAllPolarityCategories()`；修 `tryIdentifyLastItemKind` 的对侧计数口径（§四）；修 `potion_of_speed` → `potion_of_haste`（§5.1）；`initConsumables` 清零极性揭示 |
+ai_docs/b_4a_report.md:104:  - 字段 `meteredItems` / `foodSpawned`，`startNewGame` 重置（CE RogueMain.c:229-252）。
+ai_docs/b_4a_report.md:127:- `src/test/fixtures/generation_baseline.json`：重捕获（4 seed × D1-D26 全量）。
+ai_docs/b_4b_report.md:97:   - 拾取：`stats.gold += item.quantity`（原硬编码 +10 移除）；
+ai_docs/b_4b_report.md:106:7. **`src/test/fixtures/generation_baseline.json`**：授权重捕获（因改墙口径收窄实际捕获两次，最终态与代码一致）。`note` 追加本轮授权理由与二次捕获说明、`capturedAt` 更新为 `B-4b (物品落位与数量对齐后)`、行内 `d` 字段保留；重捕获后该测试绿。
+ai_docs/b_4b_report.md:174:  - `p4_8_scent_map`：**无风险**——其场景走 `mode='test'` 合成层（`generateTestDepth`），不经过 populateLevel；构造器内的 normal 模式 D1 也会被 `startNewGame` 重播种冲掉。
+ai_docs/blueprint_center_fix_report.md:178:  （`monster_stats_effect`、`monster_damage_balance`）与 `horde_terrain_spawn`
+ai_docs/blueprint_center_fix_report.md:209:  `Tests 2 failed | 197 passed`（monster_stats_effect 10499ms、
+ai_docs/blueprint_center_fix_report.md:211:- **对照 B**：HEAD 引擎下 `npx vitest run src/test/monster_stats_effect.test.ts`
+ai_docs/blueprint_center_fix_report.md:229:5. **既有 5s 超时悬崖 flake（环境性，非本修复引入）**：`monster_stats_effect.test.ts`
+ai_docs/blueprint_center_fix_report.md:247:| 08:04（修复后，新测试默认 12 seed） | 201 passed / 1 failed | monster_stats_effect 超时（5585ms） |
+ai_docs/blueprint_center_fix_report.md:248:| 08:26（对照 A：HEAD 引擎 + 无新测试文件） | 197 passed / 2 failed | monster_stats_effect 10499ms、horde_terrain_spawn 超时 |
+ai_docs/blueprint_center_fix_report.md:249:| 08:47–08:59（对照 B 后多次重试） | 199–200 passed / 2–3 failed | monster_damage_balance（5204–7142ms）、monster_stats_effect（13921–16102ms）、horde_terrain_spawn（6260ms）等既有用例轮换超时 |
+ai_docs/c_1_room_profile_report.md:39:8 邻域仅 1 格可走（monster_stats_effect 接敌场景实测 attempts=1，属真实开局退化），
+ai_docs/c_1_room_profile_report.md:209:- monster_stats_effect（D1 前厅加宽后恢复）、p1_29 AD1-AD3、blueprint_center a)/b)、
+ai_docs/c_1_room_profile_report.md:259:   证据链：① `Game` 构造器先以**时间种子**跑一局普通模式 startNewGame，其
+ai_docs/c_1_room_profile_report.md:261:   ② 测试的 `startNewGame({seed, mode:'test'})` 走 test 分支**提前 return**（Game.ts:592-600），
+ai_docs/c_1_room_profile_report.md:303:> `src/engine/`、fixtures、data 零改动（本轮结束时 `git diff src/engine/` 为空）。
+ai_docs/c_2_lakes_report.md:405:| 边界：只动允许清单；无 git 写操作；无临时文件 | ✅ §八 git status；Game.ts / Combat / Items / data/*.json / fixtures / Random.ts / 既有测试零改动；LoopMap/SafetyMap/WaypointMap/Connectivity 零改动 |
+ai_docs/c_3_walls_and_doors_report.md:236:   不刷新 fixtures。c_0/c_1/c_2/p1_29 的自洽型决定性测试（同代码两遍
+ai_docs/c_3_walls_and_doors_report.md:270:3. `generation_baseline`：按常规流程重采（fixtures 本轮未动）。
+ai_docs/c_3_walls_and_doors_report.md:292:- `generation_baseline`：预期红（fixtures 禁刷新，RNG 流移动，§九-7）；
+ai_docs/c_4a_0_layer_model_report.md:434:Random.ts / vite.config.ts / 既有测试与 fixtures 零改动）。
+ai_docs/c_4a_0_layer_model_report.md:461:   `startNewGame` 重播种，但 `generateDepth` **沿用当前流**，且 web 没有
+ai_docs/c_4a_0_layer_model_report.md:466:   因此"同种子两次生成四层逐格相等"的可复现单元是**从 startNewGame 起
+ai_docs/c_4a_terrain_catalog_report.md:114:`generation_baseline` **未重采而绿**（`src/test/fixtures/` 零改动，git status
+ai_docs/c_4a_terrain_catalog_report.md:352:fixtures/ 与全部既有测试零改动。）
+ai_docs/c_4b_dungeon_feature_report.md:197:             readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
+ai_docs/c_4b_dungeon_feature_report.md:404:vite.config.ts、fixtures/*、harness.ts、其它既有测试文件）。
+ai_docs/c_5_fall_subsystem_report.md:82:| `monstersFall` | 同名私有方法；幸存者 → `pendingFallenByDepth`（目标层未生成）或直接并入缓存层怪物表（已生成）；`generateDepth` 新层分支排空 + `findQualifyingPathLocNear` 重定位 + 清 `preplaced`（CE `restoreMonster` Architect.c:3537-3550 的 MB_PREPLACED 分支） |
+ai_docs/dev_roadmap_2026Q3.md:564:- 写一次性脚本（放 `scripts/merge_monster_stats.cjs`，可提交），以 `id` 为键把 ce2 的 `accuracy / defense / regen / moveSpeed / attackSpeed` 合并进 `monsters.json`。
+ai_docs/dev_roadmap_2026Q3.md:568:- `Monster.ts` 的 `?? 100 / ?? 0` 默认值保留作兜底，但新增一条构建期校验：任何缺这 5 个字段的条目在 `initConsumables` 同级的加载点 `console.warn`。
+ai_docs/dev_roadmap_2026Q3.md:685:## P1-13 修复 monster_stats_effect.test.ts 的统计脆弱性
+ai_docs/dev_roadmap_2026Q3.md:687:`monster_stats_effect.test.ts:194` 断言 `legacy.hits === legacy.attacks` 严格相等，
+ai_docs/dev_roadmap_2026Q3.md:755:**背景**：`Game.ts:272-318` `startNewGame()` 里**没有任何 `inventory.addItem`**，玩家赤手空拳、无甲、无口粮开局。CE（`RogueMain.c:420-443`）给：口粮 ×1、匕首（已鉴定+已装备）、飞镖 ×15、皮甲（已鉴定+已装备）。
+ai_docs/dev_roadmap_2026Q3.md:758:- `startNewGame()` 末尾（`new Player(...)` 之后、`generateDepth` 之前）按 CE 顺序发放：口粮 → 匕首（`enchantment=0`、清除 cursed/runic、`identify`、`equip`）→ 飞镖 ×15（同样清干净并 identify）→ 皮甲（同上，equip）。**发放顺序必须与 CE 一致**，因为它影响 RNG 消耗顺序。
+ai_docs/dev_roadmap_2026Q3.md:877:   - terrainFingerprint(grid)：把整层 terrain 逐格拼成字符串后做稳定哈希，用于确定性比对。
+ai_docs/dev_roadmap_2026Q3.md:880:   - 同一 seed 生成两次，D1..D5 的 terrainFingerprint 必须两两相等；
+ai_docs/dev_roadmap_2026Q3.md:909:1. 新建可提交的脚本 scripts/merge_monster_stats.cjs，以 id 为键，把 monsters_ce2.json 的
+ai_docs/dev_roadmap_2026Q3.md:988:背景：Game.ts:272-318 的 startNewGame() 里没有任何 inventory.addItem 调用，玩家赤手空拳、
+ai_docs/dev_roadmap_2026Q3.md:994:1. 在 startNewGame() 中 new Player(...) 之后、generateDepth(...) 之前，按 CE 的顺序发放：
+ai_docs/f_0_fire_gas_survey.md:368:- 决定性：依赖"完整生成链"（startNewGame 重播种），符合项目常识 §四。
+ai_docs/f_0_fire_gas_survey.md:646:  `c_4a_terrain_catalog.test.ts`、`monster_stats_effect.test.ts`、
+ai_docs/f_0_fire_gas_survey.md:743:                    if (game.isGameOver || game.player.hp <= 0) break;
+ai_docs/f_0_fire_gas_survey.md:810:                if (game.isGameOver || game.player.hp <= 0) break;
+ai_docs/f_0_fire_gas_survey.md:854:                if (game.isGameOver) break;
+ai_docs/f_0_fire_gas_survey.md:899:                if (game.isGameOver || p.hp <= 0) break;
+ai_docs/f_0_fire_gas_survey.md:902:                if (!monsterNear(game, p.loc.x, p.loc.y, 2) && !game.isGameOver) clean.push(hp0 - p.hp);
+ai_docs/f_0_fire_gas_survey.md:916:                    if (game.isGameOver || p.hp <= 0) break;
+ai_docs/f_0_fire_gas_survey.md:921:                    if (!monsterNear(game, p.loc.x, p.loc.y, 2) && !game.isGameOver) clean.push(hp0 - p.hp);
+ai_docs/f_2a_fire_mechanics_report.md:120:- `TerrainType` 尾部追加 `EMBERS`、`ASH`（既有枚举值不动——terrainFingerprint
+ai_docs/f_2b_creature_burning_report.md:323:| ⑩ | 玩家烧死链断（漏 lastDamageSource / 死因错报） | hp≤0、lastDamageSource=='fire'、finishTurnEpilogue → isGameOver |
+ai_docs/f_2c_explosion_report.md:500:  vite.config.ts、test/fixtures/*、test/harness.ts、其余既有测试。
+ai_docs/flaky_test_fix_report.md:1:# flaky 测试修复报告：monster_stats_effect.test.ts
+ai_docs/flaky_test_fix_report.md:4:- 对象：`src/test/monster_stats_effect.test.ts`（本轮**唯一**改动的文件；未触碰任何 src/ 实现文件、其他 .test.ts、src/data/ 下 json；未执行任何 git 写操作）
+ai_docs/flaky_test_fix_report.md:43:命令：`npx vitest run src/test/monster_stats_effect.test.ts`，连续 10 次：
+ai_docs/flaky_test_fix_report.md:62:[monster_stats_effect] legacy: runs=32 turns=13405 died=6 maxDepth=5 attacks=372 hits=372 rate=100.0% damageTaken=398 kills=157
+ai_docs/flaky_test_fix_report.md:63:[monster_stats_effect]   legacy 目标: Jackal(def=0):67攻/67中 Kobold(def=0):119攻/119中 Rat(def=0):126攻/126中 Acid mound(def=0):4攻/4中 Bloat(def=0):9攻/9中 Monkey(def=0):21攻/21中 Goblin(def=0):24攻/24中 Pit bloat(def=0):2攻/2中
+ai_docs/flaky_test_fix_report.md:64:[monster_stats_effect] wired : runs=32 turns=13454 died=6 maxDepth=5 attacks=441 hits=429 rate=97.3% damageTaken=402 kills=167
+ai_docs/flaky_test_fix_report.md:65:[monster_stats_effect]   wired 目标: Jackal(def=0):65攻/65中 Kobold(def=0):130攻/130中 Rat(def=0):140攻/138中 Monkey(def=17):42攻/37中 Bloat(def=0):9攻/9中 Goblin(def=10):26攻/22中 Pink jelly(def=0):22攻/22中 Eel(def=27):3攻/2中 Toad(def=0):2攻/2中 Pit bloat(def=0):2攻/2中
+ai_docs/flaky_test_fix_report.md:66:[monster_stats_effect] troll 接敌: attempts=30 hits=13 rate=43.3%
+ai_docs/flaky_test_fix_report.md:83:[monster_stats_effect] legacy: runs=32 turns=8063 died=17 maxDepth=3 attacks=458 hits=176 rate=38.4% damageTaken=694 kills=70
+ai_docs/flaky_test_fix_report.md:96:[monster_stats_effect] wired : runs=32 turns=9597 died=14 maxDepth=3 attacks=608 hits=200 rate=32.9% damageTaken=639 kills=85
+ai_docs/flaky_test_fix_report.md:105: ❯ src/test/monster_stats_effect.test.ts:244:41   // expect(wired.attacksOnDefended).toBeGreaterThan(0)
+ai_docs/flaky_test_fix_report.md:149:- `git status`：仅 `M src/test/monster_stats_effect.test.ts`（+ 新增本报告）。
+ai_docs/g_1_gas_volumetric_report.md:507:  Random.ts、vite.config.ts、harness.ts、fixtures/）。
+ai_docs/g_2_gas_df_wiring_report.md:390:  Random.ts、vite.config.ts、harness.ts、fixtures/）。
+ai_docs/g_3_gas_effects_report.md:349:f_2a / f_2b / c_4b / c_4c / p4_4 / monster_stats_effect /
+ai_docs/g_3_gas_effects_report.md:352:扩散快照、与效果判定解耦，实测逐位不动；monster_stats_effect /
+ai_docs/g_3_gas_effects_report.md:519:src/test/fixtures/*、src/test/harness.ts、zh_CN.legacy.json、
+ai_docs/headless_harness_report.md:14:| `src/test/harness.ts` | 新建 | 导出 3 个函数：`createHeadlessGame` / `runTurns` / `terrainFingerprint` |
+ai_docs/headless_harness_report.md:25:// 全部文案走引擎自带的 defaultValue）→ new Game() → startNewGame({seed, mode})。
+ai_docs/headless_harness_report.md:32:// 玩家死亡（isGameOver 或 hp<=0）提前返回，died 如实报告，不吞不掉不外挂。
+ai_docs/headless_harness_report.md:34:terrainFingerprint(grid): string
+ai_docs/headless_harness_report.md:209:// D1 已随 startNewGame 生成；此后每层：game.depth = d; (game as any).generateDepth(false, false);
+ai_docs/horde_selection_report.md:61:- 新增公开字段 `Game.monsterSpawnFuse`；`startNewGame` 里 `= rand_range(125, 175)`（先于首层生成，位置对应 CE 的 rogue 初始化段）；
+ai_docs/horde_selection_report.md:101:⚠️ 如实说明：`monster_stats_effect.test.ts:194` 是**基线自带的统计性偶发**（详见 §8.4），本轮会话中它复现过 2 次（`legacy.hits 185 vs attacks 186`、`143 vs 146`），复跑即绿；新测试单独压测 12/12 稳定。
+ai_docs/horde_selection_report.md:174:- 开局 fuse ∈ [125,175] ✅（`startNewGame` 按 RogueMain.c:403 初始化）；
+ai_docs/horde_selection_report.md:238:`monster_stats_effect.test.ts:194` 断言 `legacy.hits === legacy.attacks`（严格相等），但该测试头部自注引擎 Monster.ts 游走分支使用未播种 `Math.random()`，且 Game.ts 幻态绊趔（`hallucinating` 35% 偏转移动）可把"预期攻击"偏成移动，使命中数少于攻击数。本轮改动前基线即复现失败（143 vs 146），本轮会话中又偶发 2 次（185 vs 186），复跑即绿。属既有测试的统计脆弱性，按边界未动。
+ai_docs/item_flavor_pool_report.md:8:`ItemLoader.initConsumables()` 为每类未鉴定物品从固定池中洗牌分配外观。
+ai_docs/item_flavor_pool_report.md:115:`initConsumables` 拆为 `initConsumables` + 私有 `assignAllFlavors` +
+ai_docs/item_flavor_pool_report.md:129:`startNewGame` 的顺序是 `rng.seedRandomGenerator(seed)` → `initConsumables()`
+ai_docs/item_flavor_pool_report.md:133:处理：`initConsumables` 全程在 `rng.setRNG(RNGType.RNG_COSMETIC)` 下执行并
+ai_docs/item_flavor_pool_report.md:143:1. **既有测试 `src/test/monster_stats_effect.test.ts` 存在原生闪失，且被本任务
+ai_docs/monster_stats_merge_report.md:27: scripts/merge_monster_stats.cjs          （合并 + --check-ce/--dump-ce 校验）
+ai_docs/monster_stats_merge_report.md:29: src/test/monster_stats_effect.test.ts    （前后效果采样，2 用例）
+ai_docs/monster_stats_merge_report.md:30: ai_docs/monster_stats_merge_report.md    （本报告）
+ai_docs/monster_stats_merge_report.md:38:`scripts/merge_monster_stats.cjs` 以 `id` 为键，从 `monsters_ce2.json` 取五个数值字段，
+ai_docs/monster_stats_merge_report.md:105:`src/test/monster_stats_effect.test.ts`，`createHeadlessGame` + `runTurns`，
+ai_docs/night_plan_2026-09-15.md:14:2. **文件边界是硬约束**。永远禁改 `src/engine/UI/DetailGenerator.ts`（否则执行方会删标签而不是实现行为）、`src/data/*.json`（除非该轮明确需要）、`src/test/fixtures/*`（尤其不许重新捕获 `generation_baseline.json`）、`src/engine/Random.ts`。
+ai_docs/p1_20_item_placement_report.md:162:   `p2_3_objective_time.test.ts`，均比对 `src/test/fixtures/` 下的
+ai_docs/p1_20_item_placement_report.md:277:从而间接改变了该层及后续层的 RNG 消耗路径，使已记录的 `src/test/fixtures/`
+ai_docs/p1_24_death_sink_report.md:5:未触碰：`src/engine/Core/Game.ts`、`src/engine/Environment/Gas.ts`、全部 `src/data/*.json`、全部 fixtures、`src/engine/Random.ts`
+ai_docs/p1_24_death_sink_report.md:152:  测试 §五.玩家路径 两条锁定（isGameOver=true、hp 不动、char 仍 '@'）。
+ai_docs/p1_24_death_sink_report.md:324:| Player 走 triggerGameOver 不受影响 | ✅ 两条测试（深水/熔岩：isGameOver、hp=30 不动、char '@'） |
+ai_docs/p1_26_invariant_assertions_report.md:226:| 边界：只动允许清单文件；engine/data/fixtures/其它测试未动；无 git 写操作；无仓库内临时文件 | ✅ 改动仅 §〇 开头所列两文件；探针数据写 `/tmp`（仓库外） |
+ai_docs/p1_27_remove_drowning_report.md:5:未触碰：`src/test/scroll_effects.test.ts`、`src/engine/UI/DetailGenerator.ts`、全部 `src/data/*.json`、全部 `src/test/fixtures/*`、`src/engine/Random.ts`、`src/engine/Environment/Gas.ts`、`src/entities/Creature.ts`、`src/test/p1_24_death_sink.test.ts`
+ai_docs/p1_27_remove_drowning_report.md:290:未触碰：`src/engine/`（Game.ts 的 diff 全部属于上一轮，本轮零改动）、其它任何既有测试、`src/data/*.json`、`src/test/fixtures/*`、`src/entities/`
+ai_docs/p1_27_remove_drowning_report.md:325:- **新断言**：**同一结论**，前提从"淹死"换成"被玩家砍死"（hp=1 + defense=-999，必中必死，不依赖伤害掷骰）——`handlePlayerAction` 的攻击分支先查 `getMonsterAt` 后查地形（Game.ts:2252/2275），站深水格的怪照常被砍；`igniteForced` 不看地形可燃性（Gas.ts:106），全引擎无"水熄火"逻辑（updateFires 只会傍水生成蒸汽）。新增 `stats.kills===1`（前置确认死于玩家这刀）与"同回合已被清扫"两条断言，**比原条更强**。
+ai_docs/p1_27_remove_drowning_report.md:332:- **新断言**：玩家泡深水（两轮结算）**不 game over**、hp=30 不动、char='@' 不变。原机制（玩家死不走 die()）**没有失去载体**：同 describe 的熔岩条继续绿锁着它。新条锁移除本身：标志复活 → isGameOver 翻 true；半吊子移除（不 game over 但误走 die()）→ hp/char 断言红。
+ai_docs/p1_27_remove_drowning_report.md:353: AssertionError: expected true to be false // Object.is equality ← isGameOver 翻 true
+ai_docs/p1_28_flag_channel_report.md:6:未触碰：全部 `src/data/*.json`、全部 `src/test/fixtures/*`、`DetailGenerator.ts`、`Random.ts`、全部既有测试文件
+ai_docs/p1_28_flag_channel_report.md:335:| 基线（fixtures）不刷新、既有测试不改 | ✅ 基线全绿未动；既有测试文件零改动（含 p1_24） |
+ai_docs/p1_28_flag_channel_report.md:344:> fixtures、其它测试文件零改动（反向验证的临时改坏已精确还原，见本节四）。
+ai_docs/p1_28_flag_channel_report.md:463:| 文件边界（只动 p1_24_death_sink.test.ts / 新增测试文件） | ✅ diff 仅该文件；engine/entities/data/fixtures/其它测试零改动 |
+ai_docs/p1_29_lake_connectivity_report.md:327:| 边界：只动允许清单；禁改文件未动；无 git 写操作；无仓库内临时文件 | ✅ 见 §八 git status；Game.ts / data/*.json / fixtures / Random.ts / 其它既有测试零改动；探针已删 |
+ai_docs/p1_31_35_placement_and_snapshot_report.md:6:未执行任何 git 写操作；未触碰 `src/test/fixtures/*`、`src/data/*.json`、
+ai_docs/p1_31_35_placement_and_snapshot_report.md:245:| 基线不刷新、如实报告 | ✅ 未动 fixtures；§四 |
+ai_docs/p1_33_machine_chokepoint_report.md:288:| 不刷新 fixtures；generation_baseline 变红如实报告 | ✓ | 未动 fixtures；§8 说明成因与重捕获请求 |
+ai_docs/p1_34_flaky_determinism_report.md:12:`startNewGame({ mode: 'test' })`，走 `generateTestDepth` **提前 return**，从不重算
+ai_docs/p1_34_flaky_determinism_report.md:40:| 第二个 RNG 实例 | 全仓只有 `Random.ts` 的 `rng` 单例，每次 `startNewGame` 重播种 | 排除 |
+ai_docs/p1_34_flaky_determinism_report.md:42:| `timeSystem` / `logger` | `startNewGame` 均重置 | 排除 |
+ai_docs/p1_34_flaky_determinism_report.md:78:1. `createHeadlessGame` → `new Game()` → 构造器 `startNewGame()`（无参 →
+ai_docs/p1_34_flaky_determinism_report.md:81:2. harness 随后 `game.startNewGame({ seed, mode: 'test' })` →
+ai_docs/p1_34_flaky_determinism_report.md:121:  错误实现下"残留全 false"巧合蒙混过关）→ `startNewGame({mode:'test'})` →
+ai_docs/p1_34_flaky_determinism_report.md:162:| 边界：未动 Generator、fixtures、data、Random.ts、既有测试 | ✅ | `git diff --stat` 仅 Game.ts +8；新增 1 个测试文件 |
+ai_docs/p1_37_machine_flag_and_i18n_report.md:292:Connectivity、BrogueCE-master/、src/data/、src/test/fixtures/、Random.ts、
+ai_docs/p1_6_regression_fixes_report.md:101:             statsLines.push({ text: `基础伤害: ${item.damage} (${lo}~${hi})` });
+ai_docs/p2_0_seeded_rng_acceptance_review.md:54:| 3. ID 唯一；读档不撞号 | ✅ | 6000 实体无重复；"敌意存档"（id 抬到 5,000,000+ 区间）读档后存档 id 保真、新建实体 id 全部 > 存档最大值且无撞号；`ensureEntityIdAbove` 守卫行为精确（推到 maxId+777 后下一号恰为 maxId+778） |
+ai_docs/p2_0_seeded_rng_acceptance_review.md:146:   （GameCanvas 辅助函数 + ItemLoader.initConsumables）不嵌套，严格等价；未来若出现
+ai_docs/p2_0_seeded_rng_report.md:56:  `rng.randRange(1, 100000000)` 都改为模块级单调递增计数器 `allocateEntityId()`
+ai_docs/p2_0_seeded_rng_report.md:113:export function allocateEntityId(): number { return nextEntityId++; }
+ai_docs/p2_0_seeded_rng_report.md:114:export function ensureEntityIdAbove(maxInUseId: number): void {
+ai_docs/p2_0_seeded_rng_report.md:121:ensureEntityIdAbove(Math.max(
+ai_docs/p2_0_seeded_rng_report.md:186:### 5.1 地形指纹（`harness.terrainFingerprint`，生成后立即取）
+ai_docs/p2_1_tick_architecture_report.md:45:fixture：`src/test/fixtures/p2_baseline.json`（head=dc614be，4 seed）。
+ai_docs/p2_2_real_speed_report.md:6:新增文件：`src/test/p2_2_real_speed.test.ts`、`src/test/fixtures/p2_2_baseline.json`、本报告
+ai_docs/p2_2_real_speed_report.md:33:1. `monster_stats_effect.test.ts` 的 legacy 模式每回合直接写 `m.moveSpeed = 100; m.attackSpeed = 100` 并要求立即生效（该测试不可修改）；
+ai_docs/p2_2_real_speed_report.md:88:**场景重建防继承**：`startNewGame` / `loadSnapshot` 调用 `discardInFlightAdvancement()`，新场景绝不继承可能卡死的锁。
+ai_docs/p2_2_real_speed_report.md:99:| 2 | 锁定期玩家输入被忽略 | ✅ | C1（不录制、不推进、stats.turns 不变） |
+ai_docs/p2_2_real_speed_report.md:127:D1 断言链：注入 `takeTurn` 抛错 → `stepAdvancement` 消费到该步后内部捕获 → `lastAdvancementError` 为该 Error → `isAdvancing/isInputLocked` 均为 false → `stats.turns` 恰 +1（收尾恰好一次）→ 玩家输入恢复接受（录制 +1）。D2 断言链：mock `Date.now` 越过 deadline → 一步内强制快进收尾 → 解锁、`stats.turns` +1、玩家立即可操作。
+ai_docs/p2_2_real_speed_report.md:156:- 本轮代码隔离运行：balance 2.69s / 5s、stats_effect 7.43s / 60s，裕度充足；
+ai_docs/p2_2_real_speed_report.md:181:未跟踪新增：`src/test/p2_2_real_speed.test.ts`、`src/test/fixtures/p2_2_baseline.json`、本报告。
+ai_docs/p2_3_objective_time_report.md:5:新增 `src/test/p2_3_objective_time.test.ts`、`src/test/fixtures/p2_3_baseline.json`。
+ai_docs/p2_3_objective_time_report.md:36:| `stats.turns++` / wizard 回血 / 死亡结算 | （提示词未逐条列） | CE 的 `playerTurnNumber++` 在 do 循环（主观，Time.c:2500） | 留在 epilogue |
+ai_docs/p2_3_objective_time_report.md:88:web（`Game.advancementLoop`，P2-3 后）与上**逐行同构**：第三候选 → 全体扣减 → 门递减 → `<= 0` 时 `+100` 并执行 `objectiveTimeBlock()` → 客观块致死（`isGameOver`）即退出 → 归零怪物行动（带 `isGameOver` 守卫）→ 玩家扣减 → 致死退出。顺序差异仅一处：CE 的怪物行动循环以 `gameHasEnded == false` 为迭代守卫，web 用循环体内 `break` 等价实现。
+ai_docs/p2_3_objective_time_report.md:93:- 初值 100（RogueMain.c:404 → `startNewGame`）。
+ai_docs/p2_3_objective_time_report.md:223:未跟踪新增：`src/test/p2_3_objective_time.test.ts`、`src/test/fixtures/p2_3_baseline.json`。
+ai_docs/p2_6_display_settings_report.md:90:| 1 | 玩法零影响，三份 fixture 比对全过 | ✅ | 全量 30 文件全绿（含引用 fixtures 的 p2_1/p2_2/p2_3）；玩法代码零 diff |
+ai_docs/p4_10_waypoint_report.md:86:`batchScan`）；`DetailGenerator.ts`、`data/*.json`、`fixtures/*`、`Random.ts`、
+ai_docs/p4_10_waypoint_report.md:320:fixtures/、data/*.json、Random.ts、Gas.ts、DetailGenerator.ts、
+ai_docs/p4_1a_monster_bolts_data_report.md:11:- 未触碰：`Bolt.ts` / `Monster.ts` / `Game.ts` / `src/test/fixtures/*.json` / 任何已有 `.test.ts`
+ai_docs/p4_1b_monster_casting_report.md:7:- 未触碰：`src/data/` 下任何 json、`src/test/fixtures/` 下任何 json、Architect.ts、BlueprintEngine.ts、CombatFormulas.ts、Combat.ts、Player.ts、Creature.ts、ItemLoader.ts、Item.ts、DetailGenerator.ts、Random.ts、任何 `.vue`。
+ai_docs/p4_1b_monster_casting_report.md:158:**Play 期 RNG 流确实会移动**（预期内，任务已说明）：`rng.randPercent(30)` 的判定本身、`tryUseBolt` 遍历 `[player, ...monsters]` 时对每个候选目标的视线/合法性检查虽然不消耗 RNG，但一旦真正施法，会通过 `CombatSystem.attack`（伤害类 bolt）或状态施加消耗与此前"该怪物本回合做什么"完全不同的 RNG 序列——这是任务描述里明确预期且授权的改动，不需要重采任何 fixture（`src/test/fixtures/` 下的 json 本轮也确实一次没碰）。
+ai_docs/p4_2_monster_summoning_report.md:7:- 未触碰：`src/data/` 下任何 json（含 `monsters.json`/`hordes.json`）、`src/test/fixtures/` 下任何 json、Bolt.ts、Combat.ts、CombatFormulas.ts、Architect.ts、BlueprintEngine.ts、Player.ts、Creature.ts、ItemLoader.ts、Item.ts、DetailGenerator.ts、Random.ts、任何 `.vue`。
+ai_docs/p4_3_special_monster_flags_report.md:322:- 未触碰 `src/data/`、`src/test/fixtures/`、`CombatFormulas.ts`、`Bolt.ts`、
+ai_docs/p4_4_split_kamikaze_report.md:218:| 文件边界 | 仅改动 `Combat.ts`/`Game.ts`/`Monster.ts` + 新测试文件，未碰 `DetailGenerator.ts`/`data/*.json`/`fixtures`/`Random.ts` |
+ai_docs/p4_5_melee_specials_report.md:361:| 文件边界 | 未触碰任何禁止文件（`DetailGenerator.ts`/`data/*.json`/`test/fixtures/*`/`Random.ts`/`Gas.ts`） |
+ai_docs/p4_6_attack_geometry_report.md:30:**文件边界**：未触碰 `DetailGenerator.ts`、任何 `src/data/*.json`、任何 `src/test/fixtures/*`（`generation_baseline.json` 未刷新——本轮不涉及生成与 RNG 种子流的地形部分）、`Random.ts`、`Gas.ts`。未执行任何 git 写操作。
+ai_docs/p4_6_attack_geometry_report.md:184:9. **RNG 流移动说明（项目常识 §四 的强制披露）**：几何攻击把部分原本"移动"的回合变成"攻击"，这些回合消耗的随机数次数改变——**同 seed 的玩法过程与旧版本不再逐位一致**；地图生成不受影响（startNewGame 不跑怪物回合），地形指纹基线无需刷新、本轮未刷新。
+ai_docs/p4_7_player_weapon_geometry_report.md:42:**文件边界**：未触碰 `DetailGenerator.ts`、`src/data/` 下除 weapons.json 外的任何 json、任何 `src/test/fixtures/*`、`Random.ts`、`Gas.ts`、`Monster.ts`。未执行任何 git 写操作。
+ai_docs/p4_7_player_weapon_geometry_report.md:72:3. 鞭 3 格外击杀 1 HP 敌人 → `stats.kills` +1：几何出口必须走完整击杀/掉落结算（漏接 `resolvePlayerMeleeAttackOn` 的实现翻车）。
+ai_docs/p4_7_player_weapon_geometry_report.md:174:10. **玩家横扫循环的 `!rogue.gameHasEnded` 复查**——web 循环有 `hp <= 0` 复查（对应 MB_IS_DYING），gameHasEnded 等价守卫由 advancementLoop 自身的 `isGameOver` 检查承担。
+ai_docs/p4_8_scent_map_report.md:44:禁改文件（DetailGenerator.ts、data/*.json、fixtures/*、Random.ts、Gas.ts）
+ai_docs/p4_8_scent_map_report.md:404:`p2_3_baseline.json` 在 `src/test/fixtures/*`——本轮**禁改**（任务书明令
+ai_docs/p4_8_scent_map_report.md:511:| 边界（可改 4 文件+新测试；禁改清单） | ✅ Game.ts/Monster.ts/Scent.ts/FOV.ts（上轮入口，本轮未再动）+ 两个测试文件；fixtures/data/Random/Gas/DetailGenerator 零触碰（p2_3 基线因禁区不可修，11.5） |
+ai_docs/p4_9_safety_map_report.md:70:禁改文件（DetailGenerator.ts、data/*.json、fixtures/*、Random.ts、Gas.ts）
+ai_docs/parity_gap_review.md:67:`Game.ts:272-318` `startNewGame()` 只 `new Player(...)`，**没有任何 `inventory.addItem`**。玩家赤手空拳、无甲、无口粮开局。
+ai_docs/parity_plan.md:57:- [x] 新增 `Game.startNewGame({seed, mode})`
+ai_docs/project_conventions.md:108:  `rng` 是全局单例，`startNewGame` 重播种，但 `generateDepth` 沿用当前流位置，
+ai_docs/project_conventions.md:502:`monster_stats_effect` 42.8s（2 例）。
+ai_docs/reports/audit-debt.report.md:144:- `git diff --exit-code -- brogue-web/src/engine brogue-web/src/data/blueprints.json brogue-web/src/test/fixtures/generation_baseline.json`
+ai_docs/reports/audit-seedluck.report.md:27:| `generation_baseline.test.ts:18-38` + `fixtures/generation_baseline.json` | 4 个固定 seed × D1-D26 | 每层地形 fingerprint、怪物总数、物种字符串、物品总数逐字段等于捕获值 | **高（有意哨兵）** | **响**：任何合法生成流调整也会产生大量 diff；不会静默空转 | 保留为独立、明确允许重采的“生成漂移快照”，不要让它冒充机制正确性；验收门禁中与性质测试分组，并要求重采说明 |
+ai_docs/reports/bp-mapping.report.md:266:基线 `src/test/fixtures/generation_baseline.json` 在 **Git HEAD、任务开始、最终复跑前、最终复跑后** 的 SHA-256 均为：
+ai_docs/reports/fix-audit-tail.report.md:125:- 最终 diff 未触及 `TerrainType` 定义、`src/test/fixtures/generation_baseline.json`、
+ai_docs/reports/fix-randomstage.report.md:104:生产代码最终改动为零；`src/test/fixtures/generation_baseline.json` 未触碰；
+ai_docs/reports/v-2a-perf.report.md:112:| monster_stats_effect 聚合 | ✓ 287,260ms（全局默认 300s，余量 13s） | 任务书 §4：本轮门禁实测绿，**无需申请授权** |
+ai_docs/reports/v-2a-perf.report.md:145:3. **monster_stats_effect 余量仅 13s**（287s / 300s 默认线）。本轮门禁
+ai_docs/reports/v-2a-perf.report.md:160:| §4 monster_stats_effect 实测跑不完才申报 | 实测绿（287s），不申报；贴线事实登记 §6.3 |
+ai_docs/reports/v-2b-1.report.md:242: brogue-web/src/test/fixtures/generation_baseline.json | 746 ++++++++++-----------
+ai_docs/reports/v-2b-2a.report.md:9:基线重捕获 `src/test/fixtures/generation_baseline.json`（最后一步）。
+ai_docs/reports/v-2b-2a.report.md:250: brogue-web/src/test/fixtures/generation_baseline.json   |  12 +-
+ai_docs/reports/v-2b-2b.report.md:39:新增地形全部**只追加在枚举尾部**（既有枚举值不变，terrainFingerprint 兼容）。
+ai_docs/reports/v-2b-2b.report.md:155:新 fixture 已按既有格式重捕获（`src/test/fixtures/generation_baseline.json`，note 字段
+ai_docs/reports/v-2b-2b.report.md:264: brogue-web/src/test/fixtures/generation_baseline.json | 661 ++++++++--------
+ai_docs/reports/v-2b-3.report.md:17:| 改动文件 | — | 9 个 `src/test/*.test.ts` + `src/test/fixtures/generation_baseline.json` |
+ai_docs/reports/v-2b-3.report.md:108: .../src/test/fixtures/generation_baseline.json     | 466 ++++++++++-----------
+ai_docs/reports/v-2b-3.report.md:682:- `src/test/fixtures/generation_baseline.json`（§4 授权的最后一步）。
+ai_docs/reports/v-2b-4.report.md:233:| 12 | 本文件自己的 `v_2b_4_altars` D2 | —— | **自造 bug** | 初版只扫 `.ts/.tsx/.vue`，`blueprints.json` 不在扫描面；RV4 反向验证发现后改为"代码 + `src/data/*.json`"，并排除测试树下的 json（fixtures 的 note 文案里含该旗标字样，属文档字符串不是生产数据） |
+ai_docs/reports/v-2b-4.report.md:412: .../src/test/fixtures/generation_baseline.json     | 750 ++++++++++-----------
+ai_docs/reports/v-2b-5.report.md:38:- **blockingMap 半句**：CE :3491 条件是 `monst->loc == (x,y) || blockingMap[monst->loc]`——**两个析取项都要**。落点集用 `result.builtCells`（= fill 之后的 blockingMap 非零集，CE :3409 注释同口径）；**原点必须另传**：startProbability=0 的 DF（如 CE :679 DF_SHATTERING_SPELL）在 CE 里 blockingMap[x][y] 也不置位，只看 builtCells 会漏原点那一只。web 经 `setDormantAwakener(grid, fn)` 出栈（见下），`Game.awakenDormantMonstersAt(origin, builtCells)` 逐条核对两个半句后 `toggleMonsterDormancy`；
+ai_docs/reports/v-2b-5.report.md:182:| `src/engine/Map/DungeonFeature.ts` 中 `setDormantAwakener` 按 Grid 键控 | 任务书只写了"§1.3 的唤醒消费"；注册机制是落地形态的一部分 | 按 Grid 键控是唯一同时满足"不串测试实例 + 不改未授权的 Promotion.ts"的形态（头注详述） |
+ai_docs/reports/v-2b-6.report.md:122:- 重捕获：`fixtures/generation_baseline.json` 已按同口径重采（键序 777/31337/424242/20260913 不变），`note` 记录成因拆分；重采后 `generation_baseline` 单测绿。
+ai_docs/reports/v-2b-7.report.md:303:**重捕获**：`fixtures/generation_baseline.json` 按同口径重采（键序与 seeds 序保持不变），
+ai_docs/reports/v-2b-7.report.md:546:| `src/test/monster_stats_effect.test.ts > 怪物五项数值接线效果：legacy vs wired（32 seed × 500 回合配对聚合） > 聚合对比：命中率与累计受伤量` | 900s |
+ai_docs/reports/v-2b-7.report.md:650: .../src/test/fixtures/generation_baseline.json     |  762 ++++++------
+ai_docs/reports/v-2b-9a-finish.report.md:38:最终状态下执行 `npm run test:drift`：1 个文件、1 个测试通过。没有修改或重捕获 `src/test/fixtures/generation_baseline.json`，证明补完只修正数据守卫与测试穷举表，没有移动生成流。
+ai_docs/reports/v-2b-9a-finish.report.md:68:- 清单外改动：仅新增任务书要求的 `ai_docs/reports/v-2b-9a-finish.report.md`。未改 `src/data/blueprints.json`、`src/test/fixtures/generation_baseline.json` 或只读的 `BrogueCE-master/`。
+ai_docs/reports/v-2b-9a.report.md:66:无。未修改 `src/data/blueprints.json`、`src/test/fixtures/generation_baseline.json`，未修改只读 `BrogueCE-master/`。
+ai_docs/reports/v-2b-9e-1-finish.report.md:124:| src/test/fixtures/generation_baseline.json | `b57c60a9ffb626a4840836666b15d8efc12b7540a631c5c08887e7c8d1093252` |
+ai_docs/reports/w-0-survey.report.md:312:  const s = ts.createSourceFile(f,fs.readFileSync(f,'utf8'),ts.ScriptTarget.Latest,true);
+ai_docs/reports/w-0-survey.report.md:348:| G：生成/物品 | `ItemLoader\|arcana\.json\|terrainFingerprint\|generateDepth\|chooseKind` | 56；b_4a/b_4b、invented_content_pool、blueprint_center、v_2b_6_keys、generation_baseline |
+ai_docs/reports/w-0-survey.report.md:351:表里的竖线是正则交替（复制时使用普通 `|`）。命中数是静态检索线索，不能作为授权测试数量。还应补搜 JSON/源码 `readFileSync`、快照 fixtures 和 `src/engine/**` 测试；改存储字段必反查 `saveSnapshot/loadSnapshot`。
+ai_docs/reports/w-0-survey.report.md:386:| **W-19 变形** | POLYMORPH：合格物种抽取、非原物种、去盟友/突变、血量公式、能力/速度/状态/携带生物重置；polymorphism 魔杖待入池 | W-4、W-9、W-17 的关系原语 | 否；仅施法抽物种 | G、M、变形 helper/保存；不改 monsters.json 种类数据 → R(实际文件)+S(M,C,B) | monster_stats_effect、P1-28 永久旗标、P4-3/4/5、实体 id/leader/死亡链；用现有 CE 对应物种投影表，不按深度随意 spawn 替换 |
+ai_docs/reports/w-0-survey.report.md:388:| **W-21 强化数值与计数** | EMPOWERMENT 的 +12/+10/伤害增量、全疗/解状态、重复强化、newPowerCount/totalPowerCount 保存；empowerment 魔杖 | W-4、W-9、W-20 | 否 | G、M、保存/说明 → R(实际文件)+S(M,C,Q) 并搜 empower/mutation | monster_stats_effect、克隆/变形后属性、快照；去掉“只能强化一次”的错误说明；本轮明确尚未完成学习 |
+ai_docs/reports/w-1.report.md:59:- 配置/桥接字段（7 文件）：`BoltConfig|BoltResult|MonsterBoltMeta|MONSTER_BOLT_TABLE|KNOWN_GAP_MONSTER_BOLT_NAMES|RAW_BOLT_DATA|selfTargeting|piercing|magnitude|impactPos|pendingBoltFrames|buildBoltFrames|createBoltResult|ceType|CE_BOLT|CEBolt|landingPos|casterMovement|autoID`。
+ai_docs/reports/w-1.report.md:60:- 动态读取/快照补查（38 文件）：`readFileSync|readFile\(|import\(|require\(|fixtures|toSnapshot|saveSnapshot|loadSnapshot`。检查了 Game/Bolt/arcana 的实际读取目标、全源码扫描门，以及快照入口；没有新增持久化字段，toSnapshot/loadSnapshot 未修改。
+ai_docs/reports/w-1.report.md:74:- 一次拟最终批跑在代码复核发现“电束最后包含格上的接触记录遗漏”后主动中止（exit 130），只修补新元数据记录并增加覆盖，随后重新冻结源码、测试、fixtures、主要配置及本轮 CE 依据；不把中止运行或中途构建当作最终结果。
+ai_docs/reports/w-1.report.md:153:| `src/test/monster_stats_effect.test.ts` | passed：P 2 | batch-5 |
+ai_docs/reports/w-1.report.md:208:核验清单包括 `src/**` 下全部文件（含测试/fixtures）、package 与 lock、Vite/三个 tsconfig，以及本轮引用的 CE Rogue.h/Globals.c/Items.c/PowerTables.c/GlobalsBrogue.c，共 198 文件。按相对仓库路径排序，逐行 `sha256 + 两空格 + path + 换行` 拼接，再对清单文本计算 SHA-256。报告本身不纳入，避免自引用；这不是对依赖安装目录或整个外部环境的哈希声明。
+ai_docs/reports/w-1.report.md:222:| `src/test/fixtures/generation_baseline.json` | `64f696b337c9503b0a8cb39fc73894e3edc624f7deffa68e23d8b892d1ac0058` |
+ai_docs/reports/w-1.report.md:254:  let text = fs.readFileSync(f,'utf8');
+ai_docs/reports/w-10.report.md:114:核验范围：src/**（含测试/fixtures）、public/**、scripts/**、package与lock、tsconfig/Vite/index、progress、本轮任务书、W-0报告，以及CE Items/PowerTables/Combat/Time/Monsters/GlobalsBrogue。每文件SHA-256按路径排序，以 `hash + 两空格 + path + 换行` 拼成清单，再算清单SHA-256。本报告/evidence不纳入以避免自引用，不声称覆盖node_modules或整机环境。
+ai_docs/reports/w-10.report.md:129:| `src/test/fixtures/generation_baseline.json` | `1549a4c5aae041ff5c4a7653ea22d07af88aecaf3740861b0cdb90a4656d5820` |
+ai_docs/reports/w-10.report.md:189:| `src/test/monster_stats_effect.test.ts` | passed：passed 2 | regression |
+ai_docs/reports/w-11.report.md:92:复现：`node scripts/w11-test-scope.mjs`。实际生产 seeds 为 `Game.ts`、新 `Movement/CreaturePlacement.ts`、`Map/Promotion.ts`。扫描整个 src（包括 src/engine 下测试），解析相对 import/re-export/type/dynamic literal import，求反向闭包 R；另做 W-0 的 S(B,M,D,Q)、teleport/fall/captive/isCaged/公开安置名，以及 readFile/fixtures/save/load 检索。无未解析相对边、无非字面动态导入。闭包是回归面，不是任意改断言的权限。
+ai_docs/reports/w-11.report.md:137:1549a4c5aae041ff5c4a7653ea22d07af88aecaf3740861b0cdb90a4656d5820  src/test/fixtures/generation_baseline.json
+ai_docs/reports/w-11.report.md:248:| `src/test/monster_stats_effect.test.ts` | passed | 2 | 0 | 0 |
+ai_docs/reports/w-12.report.md:53:反查命令：`node scripts/w12-test-scope.mjs`。递归扫描 src 的 TS/Vue/JSON，以实际生产文件 **Game.ts、BoltTrajectory.ts** 为 seeds；AST 解析相对 import/re-export/type/import()/require 字面量，求 R；再做 W-0 的 S(B,M,D,C)，增补 blink/beckoning/pickup/fall/captive/等待以及读文件、fixtures、快照检索。未解析边0，非字面动态导入0。闭包数据在 [closure.json](w-12-evidence/closure.json)，不是改断言许可。
+ai_docs/reports/w-12.report.md:178:| `src/test/monster_stats_effect.test.ts` | passed | 2 | 0 | 0 | 完整回归 |
+ai_docs/reports/w-13.report.md:75:运行 `node scripts/w13-test-scope.mjs`。以实际6个生产文件 Game、BoltTrajectory、Promotion、Grid、BlueprintEngine、WaypointMap 建 AST 相对 import/re-export/type/import()/require 字面量图；R(files)包含间接 harness；再合并 W-0 S(B,D)、tunneling/IMPREGNABLE/shatter/waypoint/loop/connectivity/safety/autoPath 及源码读取/fixtures/快照检索。扫描125个测试文件，**R=117**；S(B)=18、S(D)=35、专题45、readers46；并集**119**，额外两项为 blueprint_ce_coverage、p1_46_keybindings；未解析边与非字面动态导入均0。完整路径与分组见 [closure.json](w-13-evidence/closure.json)。范围是受影响闭包，不是修改断言授权。
+ai_docs/reports/w-13.report.md:84:| 新测试初版斜线坐标不可达、错把FORCEFIELD当反射墙、setDormantAwakener名称/配置缺省undefined误用 | 修正夹具/预期以符合现有API和CE原表；未改目录或普通反射。 |
+ai_docs/reports/w-13.report.md:89:| 最终脚本初次启动的复制替换误删readFileSync文件参数 | 在启动最终冻结/任何门禁前修正脚本；该次只报ENOENT，未当作测试结果。 |
+ai_docs/reports/w-13.report.md:195:| `src/test/monster_stats_effect.test.ts` | passed | 2 | 0 | 0 | regression |
+ai_docs/reports/w-14.report.md:90:R=118；S(B)=19、S(D)=36、阻障/保护/碎墙/路径缓存专题47、源码读取/fixtures/快照47；**并集119**。R外新增p1_46_keybindings；未解析边/非字面动态导入均0。[closure.json](w-14-evidence/closure.json) 保存完整路径、分组、正则与每seed结果，[scope-review.json](w-14-evidence/scope-review.json) 区分只回归断言和目录条目更新。
+ai_docs/reports/w-14.report.md:262:| `src/test/monster_stats_effect.test.ts` | passed | 2 | 0 | 0 | regression |
+ai_docs/reports/w-15.report.md:134:S按W-0 C/M/B/D（伤害状态/怪物关系/bolt/地形）再加shield、HP、poison/burning/starvation/fall/explosion/armor以及存档、源码读取、fixtures扫描，命中数分别24/58/20/36/77/48；联合为120文件。R外10文件是armors、hordes、CombatFormulas、blueprint_ce_coverage、p1_29_adversarial_gate、p1_46_keybindings、v_1b_alternative、v_2b_3_wired、v_2b_9a_carriers、v_2b_9b_environment。完整具体路径、每seed直接/反向引用、S命中与extra均见 [closure.json](w-15-evidence/closure.json)。
+ai_docs/reports/w-15.report.md:242:| `src/test/monster_stats_effect.test.ts` | 通过 | 2 | 0 | 0 |
+ai_docs/reports/w-16-evidence/browser-redraw-check.mjs:24:  g.monsters=[];g.dormantMonsters=[];g.items=[];g.pendingBoltFrames=[];g.floatingTexts=[];g.autoPath=[];g.isMouseTraveling=false;
+ai_docs/reports/w-16.report.md:170:| `src/test/monster_stats_effect.test.ts` | passed | 2 | 0 | 0 |
+ai_docs/reports/w-17.report.md:209:| `src/test/monster_stats_effect.test.ts` | 通过 | 2 | 0 | 0 |
+ai_docs/reports/w-18.report.md:183:| `src/test/monster_stats_effect.test.ts` | 2 | 0 | 0 | PASS (regression) |
+ai_docs/reports/w-19.report.md:205:冻结范围共 **307份输入**：src（含测试/fixtures）、public、scripts、progress、根构建/包配置、W-19任务与W-0报告、相关CE源码、C黄金程序/数值/编译目录。逐文件SHA-256按路径排序组成清单，再对清单求聚合SHA；运行前后逐字一致，结束后再次逐文件校验一致。随后只填写报告，不改运行输入。
+ai_docs/reports/w-19.report.md:269:| `src/test/monster_stats_effect.test.ts` | passed | 2 | 0 | 0 | regression |
+ai_docs/reports/w-2.report.md:82:| 文件/快照 | `readFileSync\|readFile\(\|import\(\|require\(\|fixtures\|toSnapshot\|saveSnapshot\|loadSnapshot` | 39 |
+ai_docs/reports/w-2.report.md:84:表中竖线为正则交替。重点读了 B-1a/c 的鉴定/空杖/后缀、P1-46 真键事件、P2-2/3/4 的计时/锁输入、R-1/UI-1/UI-2 的 `.vue` 源码读取、P4-3 手工私有 applyBoltEffect 桥接、9c compute/apply 电晶体桥接，以及 p1_37 的原充能链文案。**InventoryOverlay 没有直接 import 测试；S 识别了 UI-2 的 readFileSync 守卫，不能只看 R 的直接引用数。** 这些 UI 文件有些已因 Game 等依赖进入合并 R，S 的用途仍是确认具体无 import 行为断言不会漏审。
+ai_docs/reports/w-2.report.md:184:| `src/test/monster_stats_effect.test.ts` | passed：passed 2 | selected |
+ai_docs/reports/w-2.report.md:235:核验范围：src/** 全部源码、测试和 fixtures，package/lock、Vite/三个 tsconfig、progress.md、W-2任务书、W-0/W-1报告，以及本轮引用的 CE Rogue.h/Globals.c/Items.c/Monsters.c/IO.c/Time.c/PowerTables.c/GlobalsBrogue.c。对每个文件计算 SHA-256，按相对仓库路径排序，以 `hash + 两空格 + path + 换行` 拼接，再对清单文本做 SHA-256。本报告不纳入以避免自引用；不声称覆盖 node_modules 或整个机器环境。
+ai_docs/reports/w-2.report.md:251:| `src/test/fixtures/generation_baseline.json` | `64f696b337c9503b0a8cb39fc73894e3edc624f7deffa68e23d8b892d1ac0058` |
+ai_docs/reports/w-2.report.md:267:| `brogue-web/src/test/fixtures/generation_baseline.json` | `64f696b337c9503b0a8cb39fc73894e3edc624f7deffa68e23d8b892d1ac0058` |
+ai_docs/reports/w-2.report.md:281:测试交付6份：新增 W-2 测试；修改 B-1a、B-1c、P1-46、BoltContract 和 R-1 的上述窄范围留痕/绘制约束。其余测试、所有 fixtures、任务书、W-0/W-1 历史报告和 CE 源码未修改。附 `progress.md` 技能进度记录与本报告，共17份交付文件。node_modules 从本地主工作树复制，未联网安装或改锁文件；node_modules/dist 为忽略的验证产物。没有发现需要驳回 W-0 W-2 工作范围的证据；已明确列出当前引擎与完整 CE 效果之间的保留差异。
+ai_docs/reports/w-20.report.md:49:- 每次复制分配新 `allocateEntityId()`。不把源 id 留下来，也不用 RNG 造 id。位置查询失败先返回，既不分配 id 也不改 HP/列表。
+ai_docs/reports/w-20.report.md:210:| `src/test/monster_stats_effect.test.ts` | passed | 2 | 0 | 0 | regression |
+ai_docs/reports/w-21.report.md:163:R并集116。S严格使用W-0的 M/C/Q组，另加 empower/EMPOWER/mutation/newPowerCount/totalPowerCount、克隆/变形/保存/详情符号，以及文件读取/fixtures。命中数 Q=27、C=31、M=64、强化等补查62、readers54，最终并集 **124文件**；[closure.json](w-21-evidence/closure.json) 保存每种子直接/反向集合、每个pattern和实际全清单，[semantic-hits.txt](w-21-evidence/semantic-hits.txt) 保存强化/突变行号。
+ai_docs/reports/w-21.report.md:167:预计可翻正的唯一既有断言是 `w_2_arcana_submission.test.ts:154`：显式注释 old effect retained 的 `floor(hp*1.3)` → `hp+12`；实际先跑出 `18≠7`，原报告保存在 [initial-tests.json](w-21-evidence/initial-tests.json)。这是 CE 语义更新，不是为了放宽提交/取消/扣费门。其余131份既有测试不修改；`monster_stats_effect`、快照、W19/W20容器、生成及频率守卫只回归，不放宽。[test-boundary.json](w-21-evidence/test-boundary.json) 与 HEAD 比较这一边界。
+ai_docs/reports/w-21.report.md:285:| src/test/monster_stats_effect.test.ts | 2 | 0 | 0 | passed |
+ai_docs/reports/w-22.report.md:186:运行前后逐项 SHA-256 覆盖 **351个文件**：web源码/测试/fixtures/public/scripts/配置、附带CE的src、任务与权威规格、CE探针输入输出和反查清单。清单 [sha256-before.txt](w-22-evidence/sha256-before.txt) 与 [sha256-after.txt](w-22-evidence/sha256-after.txt) 字节完全相同；两份清单自身的SHA-256均为：
+ai_docs/reports/w-22.report.md:192:生成基线 `src/test/fixtures/generation_baseline.json` 的 SHA-256：`1549a4c5aae041ff5c4a7653ea22d07af88aecaf3740861b0cdb90a4656d5820`。原有源码、测试、配置/数据还逐项与 HEAD 比较，全部相等。报告与运行产生的结果文件不纳入被测源清单，避免自引用哈希；最终交付文件另见 [delivery-audit.json](w-22-evidence/delivery-audit.json)。
+ai_docs/reports/w-22.report.md:249:| `src/test/monster_stats_effect.test.ts` | 2 | 0 | 0 | regression |
+ai_docs/reports/w-23.report.md:320:| `src/test/monster_stats_effect.test.ts` | 2 | 0 | 0 | regression |
+ai_docs/reports/w-24.report.md:33:`initConsumables` 洗牌走 COSMETIC，且洗的是完整外观词表，新增4个目录条目本身不多抽 substantive。Game/Generator/Map/Random 的生成算法原样；最终边界审计核对 Game 只修改 `toSnapshot`、`loadSnapshot`。
+ai_docs/reports/w-24.report.md:116:旧版本没有保存 flavor map，`loadSnapshot` 按 seed 调用 initConsumables 重建；因此本轮若仅重排数组，旧魔杖的外观/玩家记忆会错位。新增可选 `GameSnapshot.wandFlavors`：新档保存11种 id→外观，读档先正常初始化，再恢复保存映射；缺失新种类按当前剩余槽确定性补齐，不重复外观。
+ai_docs/reports/w-24.report.md:249:| src/test/monster_stats_effect.test.ts | 2 | 0 | 0 | passed |
+ai_docs/reports/w-25.report.md:83:生成诊断先丢弃Game构造器的时间seed临时局，再显式startNewGame固定seed；只记录固定局。原seed为424242、777、20260913、31337，各D1–D26。
+ai_docs/reports/w-25.report.md:122:W-24保存了wandFlavors，但staff仍依seed和数组下标重建；本轮重排与CE槽修正会破坏原外观记忆。新增可选 `GameSnapshot.staffFlavors`，新档保存所有10种id→外观。读档先执行原initConsumables，再恢复显式映射；部分map保留合法不重复项，缺项从完整已洗牌词表取未用词，零RNG。
+ai_docs/reports/w-25.report.md:140:反查脚本 [w25-test-scope.mjs](../../scripts/w25-test-scope.mjs)：TS AST解析相对import/re-export/type import/字面动态import、Vue script；递归扫描src/test、src/engine/**与data；补源码readFile/fixtures/保存读方。计划及扩面留痕 [pre-edit-scope.md](w-25-evidence/pre-edit-scope.md)，编辑前 [scope-before.json](w-25-evidence/scope-before.json)。
+ai_docs/reports/w-25.report.md:249:| src/test/monster_stats_effect.test.ts | 2 | 0 | 0 | passed |
+ai_docs/reports/w-26.report.md:87:seed=424242、777、20260913、31337，D1–26。排除Game构造器的时间seed临时局，显式startNewGame固定seed后才开始记录。原九行内容/相对顺序用结构相等先检查，**没有本轮重排这个变量**。脚本兼容输出里的orderDiff是控制组自比较，不拿它作为独立重排实验；表序依据是输入结构比较。
+ai_docs/reports/w-26.report.md:221:[w26-test-scope.mjs](../../scripts/w26-test-scope.mjs) 递归读取src的TS/Vue/JSON，AST解析相对import/re-export/type-import/字面import()/require，含经harness的反向边；S严格采用W-0的G/Q/B/U/D/C六组，再加身份/极性/flavor/持久化与源码读取/fixtures检索。初次C曾用较宽状态词发现线索，最终已换回W-0原组 `CombatSystem|takeDamage|tickCreatureStatuses|statusDurations|tickStatuses`，没有根据测试结果删文件。
+ai_docs/reports/w-26.report.md:349:| `src/test/monster_stats_effect.test.ts` | 2 | 0 | 0 | passed / regression |
+ai_docs/reports/w-3.report.md:93:测试 3 份：新增 W-3；W-1 `BoltContract.test.ts` 留痕反转；P4-3 单例从伪造不完整 result/私有 switch 改走真实玩家入口，原 HP/反射期望不变。除此之外的所有测试/fixtures、W-0/W-1/W-2 历史报告、任务书、CE 源码均未修改。文档为本报告与 `progress.md`；依赖从本地主工作树复制，没有联网安装或改锁文件。
+ai_docs/reports/w-3.report.md:122:| 运行时读取/快照 | `readFileSync\|readFile\(\|import\(\|require\(\|fixtures\|toSnapshot\|saveSnapshot\|loadSnapshot` | 39 |
+ai_docs/reports/w-3.report.md:132:**这是最终状态下的运行结果，不是中途快照。** 实现、测试与验证输入在最终门禁前冻结；完成后仅在本报告回填运行证据，没有再编辑源码/测试/fixtures。
+ai_docs/reports/w-3.report.md:144:SHA-256 范围：`src/`（含全部测试与 fixtures）、`public/`、`scripts/` 下所有普通文件，以及根 `package*.json / tsconfig*.json / vite.config.* / index.html`，共 **202 文件**。按相对路径排序，逐文件生成 `sha256 + 两空格 + 路径 + 换行` 清单，再对清单求 hash。构建产物、依赖、报告与进度说明不属于运行输入，不纳入此集合。
+ai_docs/reports/w-3.report.md:162:| `src/test/fixtures/generation_baseline.json` | `64f696b337c9503b0a8cb39fc73894e3edc624f7deffa68e23d8b892d1ac0058` |
+ai_docs/reports/w-3.report.md:164:`arcana.json`、`generation_baseline.json` 与 HEAD 原始字节相同；所有 Map 生产文件、Monster.ts 亦相同。`applyDirectBoltDamage` 函数在 HEAD/最终状态均为 `e111ac1271ffacd90f787929727cb02ee3c2bdcb4ccb55888fed6b4217114779`。drift 按原始 **4 seed × D1–D26，共104层** 匹配，未改 fixtures、未设置重捕获入口。
+ai_docs/reports/w-3.report.md:221:| `src/test/monster_stats_effect.test.ts` | passed：passed 2 | selected |
+ai_docs/reports/w-4.report.md:64:- `arcana.json`、`ItemLoader.ts`、`Item.ts`、`Random.ts`、`Monster.ts`、`Player.ts`、`Creature.ts`、`BoltCatalog.ts`、`BoltTargeting.ts` 均字节未改。所有 Map 生产文件、生成 fixtures 和包/构建配置未改；未新增物品，未打开机器池，未启用怪物 BLINKING/网/藤。
+ai_docs/reports/w-4.report.md:91:| 运行时读取/快照 | `readFileSync|readFile\(|import\(|require\(|fixtures|toSnapshot|saveSnapshot|loadSnapshot` | 39 |
+ai_docs/reports/w-4.report.md:133:SHA-256范围：`src/`（含测试与fixtures）、`public/`、`scripts/` 全部普通文件，以及根 `package*.json / tsconfig*.json / vite.config.* / index.html`，共204文件。按相对路径排序，逐文件生成“hash + 两空格 + 路径 + 换行”清单，再对清单求hash。构建产物、依赖、报告/进度文本不属于运行输入，不纳入清单。运行前/中/后清单逐字一致，聚合hash：
+ai_docs/reports/w-4.report.md:155:| `src/test/fixtures/generation_baseline.json` | `64f696b337c9503b0a8cb39fc73894e3edc624f7deffa68e23d8b892d1ac0058` |
+ai_docs/reports/w-4.report.md:213:| `src/test/monster_stats_effect.test.ts` | passed：passed 2 | tests |
+ai_docs/reports/w-5.report.md:103:范围区分：整个既有 `loadSnapshot` 会重新播种并调用 `initConsumables` 洗 cosmetic 风味；它在本轮以前就存在。这里证明**新增实例迁移路径零抽数**，没有声称全局读档行为从来不操作 RNG。
+ai_docs/reports/w-5.report.md:119:`node scripts/w5-test-scope.mjs` 可复现 R+S，完整路径和 regex 见 closure.json。R 对实际四个生产文件做反向 import/re-export 闭包（包含 type import、经 harness 的间接边），99文件。S(Q)13、S(G)61、存档/字段/源码读取52，补充生成观测 `createHeadlessGame|startNewGame|Architect|generate\(|populate|spawn|seed|distribution` 命中104；并集112。
+ai_docs/reports/w-5.report.md:222:| `src/test/monster_stats_effect.test.ts` | 2 | 0 | 0 | 0 |
+ai_docs/reports/w-6-evidence/final-files.md:58:| `src/test/monster_stats_effect.test.ts` | 2 | 0 | 0 | 0 |
+ai_docs/reports/w-6.report.md:172:| `src/test/monster_stats_effect.test.ts` | 2 | 0 | 0 | 0 |
+ai_docs/reports/w-7.report.md:90:UI 的读源码测试没有普通 import 边，动态 import 也不被 R 冒充覆盖：S(U) 明确包括 `InventoryOverlay|GameCanvas|InputManager|engine/Input|handlePlayerAction`，并用 storage 的 `readFileSync` 再补。实际纳入 B-1a 免费入口、UI-2 背包符号、P1-46 真实键盘事件、P2-6 动态组件导入与源码布局守卫，以及新增 W-7 原引用接线守卫。P1-46/P2-6 是 R 之外的实际补集。完整 R/S/并集见 [closure.json](w-7-evidence/closure.json)，逐文件最终结果见下节。
+ai_docs/reports/w-7.report.md:125:冻结覆盖全部 `src/`（含测试/fixtures）、全部 `scripts/`、package/lock、Vite/TypeScript 配置，共 **216文件**。前后清单本身 SHA-256 均为：
+ai_docs/reports/w-7.report.md:129:生成基线 `src/test/fixtures/generation_baseline.json` 与开工基准一致，SHA-256：
+ai_docs/reports/w-7.report.md:196:| `src/test/monster_stats_effect.test.ts` | 2 | 0 | 0 | 0 |
+ai_docs/reports/w-8.report.md:117:| 源码/存档/fixture 读取 | `readFileSync\|readFile\(\|import\(\|require\(\|fixtures\|toSnapshot\|saveSnapshot\|loadSnapshot` | 44 |
+ai_docs/reports/w-8.report.md:182:冻结范围为 `src/`（含全部测试/fixtures）、`public/`、`scripts/`、根 `package*.json/tsconfig*.json/vite.config.*/index.html`，共 **223** 文件。对每个文件计算 SHA-256，再按路径排序组成 `hash + 两空格 + 路径 + 换行` 清单，对清单再次求哈希。运行前后清单逐字一致，中途也复核无变更；产物、依赖和报告/进度不属于运行输入。
+ai_docs/reports/w-8.report.md:244:| `src/test/monster_stats_effect.test.ts` | passed | passed 2 | regression |
+ai_docs/reports/w-9.report.md:124:核验范围：src/**（含测试/fixtures）、public/**、scripts/**、package与lock、tsconfig/Vite/index、progress、本轮任务书、W-0报告及本轮引用的CE Items.c/PowerTables.c/GlobalsBrogue.c。逐文件算SHA-256，按路径排序，用 `hash + 两空格 + path + 换行` 组成清单，再计算清单文本SHA-256；本报告与产出的evidence不纳入以避免自引用，不声称覆盖node_modules或整机环境。
+ai_docs/reports/w-9.report.md:136:| `src/test/fixtures/generation_baseline.json` | `1549a4c5aae041ff5c4a7653ea22d07af88aecaf3740861b0cdb90a4656d5820` |
+ai_docs/reports/w-9.report.md:194:| `src/test/monster_stats_effect.test.ts` | passed：passed 2 | regression |
+ai_docs/reports/x-0-survey.report.md:98:| K39 | **有效，新证实**：startNewGame未清stats、pendingFallenByDepth、isGameOver；探针保留金币987/击杀12/maxDepth18和旧坠层键。App:240只重置isGameOver，故正常返标题缓解结束锁，**不能说普通重开一定卡死**；统计串局仍成立。CE RogueMain.c:214清rogue。 | 本轮 | 是/间接/是 | U00；S–M，枚举run级状态和单例重入 |
+ai_docs/reports/x-0-survey.report.md:164:| **U00 开新局状态归零**：枚举run级状态，处理统计、结束锁、坠落队列和其他待处理请求；K39 | 无 | 间；否 | R: G、App.vue、harness；S: startNewGame、replayRestart、stats、pendingFallenByDepth、isGameOver | 新局起点断言/重放seek可能红；同实例A局→B局与新实例B局等价，正常返标题/死亡/重放三入口均验；不重置应跨局保留的显示设置 | A0/A5/A11/A16 |
+ai_docs/reports/x-0-survey.report.md:167:| **U03 整局和跨层保存**：levels、计量、pending坠层/跟随、层时间/气味、全局关系；K01/K03 | U01/U02 | 直/间；**是：schema迁移** | R: G、Grid/Scent、M、App.vue；S: levels、meteredItems、foodSpawned、goldGenerated、spawnFuse、pendingFallenByDepth、leaderId | p1_31_35、b_4a/b、c_5、W持久化/生成夹具；D1→D2→存读→D1与连续局等价，当前层/缓存层/休眠/随从都测；单列旧档不可恢复的历史层，不能伪造其原状态 | A0/A1/A2/A11/A12/A13 |
+ai_docs/reports/x-0-survey.report.md:214:| **UR Game分步拆分**；结构债 | 见§5，不做所有玩法前置 | **无，须证明**；**是：是否/何时拆** | R: §5私有调用清单、全部导入/源码扫描测试及harness；S: activeGame、setDormantAwakener、this、各迁移成员 | 私有入口/源码位置/模块初始化次序均可能红；逐步黄金轨迹/完整状态/两流计数零差异，行为修复与搬迁分提交 | 见§5步骤 |
+ai_docs/reports/x-0-survey.report.md:289:| D05 | monster_stats_merge_report §结论：五字段接入 | rat五字段→Monster构造的accuracy/defense/regen/双速消费者已核，抽样成立；67条零差异旧数字本轮未全表复算，不能重新背书。 |
+ai_docs/starting_kit_report.md:138:3. **src/engine/Core/Game.ts**：`startNewGame()` 内、easy/wizard 的 maxHp/strength 覆盖块（保持原样）之后、`generateDepth(false, true)` 之前，按 CE 顺序发放：口粮 → 匕首（enchantment=0、清 cursed/runic、runicKnown=true、addItem + equip）→ 飞镖 ×15（同上设置、quantity=15、不装备）→ 皮甲（同匕首、equip）。发放顺序不可调换：物品创建会消耗全局 rng，回放系统依赖该顺序。
+ai_docs/task.md:71:- [x] 11.2 实现 `ItemLoader.initConsumables()` 随机混淆算法，为药水分配随机颜色，为卷轴分配随机咒语名。
+ai_docs/tasks/audit-debt.prompt.md:17:- ❌ **不许碰 `src/test/fixtures/generation_baseline.json`**
+ai_docs/tasks/b-1.prompt.md:126:- `src/test/fixtures/*` —— 改 weapons.json 可能让 `generation_baseline` 变红。
+ai_docs/tasks/b-1a.prompt.md:95:- **`src/test/fixtures/*`**（见 §四：baseline 必须自然保持绿）
+ai_docs/tasks/b-1b.prompt.md:97:- **`src/test/fixtures/*`**、`src/test/harness.ts`、上面未列出的既有测试文件
+ai_docs/tasks/b-1c.prompt.md:97:- **`src/test/fixtures/*`**、`src/test/harness.ts`、上面未列出的既有测试文件
+ai_docs/tasks/b-2.prompt.md:105:- **`src/test/fixtures/*`**、`src/test/harness.ts`、上面未列出的既有测试文件
+ai_docs/tasks/b-3.prompt.md:57:- **不得重新捕获 `src/test/fixtures/generation_baseline.json`。**
+ai_docs/tasks/b-4a.prompt.md:203:- `src/test/generation_baseline.test.ts` + `src/test/fixtures/generation_baseline.json`
+ai_docs/tasks/b-4b.prompt.md:89:而且拾取时是 `this.stats.gold += 10`，**硬编码 10、无视 `quantity`**
+ai_docs/tasks/b-4b.prompt.md:199:- `src/test/generation_baseline.test.ts` + `src/test/fixtures/generation_baseline.json`
+ai_docs/tasks/b-4b.prompt.md:225:   `rand_range(50+d*10, 100+d*15)`；拾取后 `stats.gold` 增加的是 **quantity 而非 10**；
+ai_docs/tasks/b1-retire-invented.prompt.md:105:- `src/test/fixtures/generation_baseline.json`（**仅最后一步重捕获**）
+ai_docs/tasks/b2-transcription.prompt.md:117:- `src/test/fixtures/generation_baseline.json`（**仅最后一步重捕获**）
+ai_docs/tasks/bp-mapping.prompt.md:13:- ❌ **不许重捕获 `src/test/fixtures/generation_baseline.json`**
+ai_docs/tasks/c-0.prompt.md:134:- `src/test/fixtures/*` —— `generation_baseline.json` **必然全线变红**（`shuffleList` 消耗 RNG + 地图结构改变），这是**预期内**的。**不许刷新**，如实报告，由验收方授权重捕获。
+ai_docs/tasks/c-1.prompt.md:105:- `src/test/fixtures/*` —— `generation_baseline.json` **必然全线变红**，预期内，
+ai_docs/tasks/c-2.prompt.md:114:- `src/test/fixtures/*` —— `generation_baseline` **必然全线变红**，预期内，
+ai_docs/tasks/c-3.prompt.md:119:- `src/test/fixtures/*` —— `generation_baseline` **必然全线变红**，预期内，
+ai_docs/tasks/c-4a-0.prompt.md:158:- **`src/test/fixtures/*`** —— 见下面的门禁，本轮 baseline **必须保持绿**。
+ai_docs/tasks/c-4a.prompt.md:124:- **`src/test/fixtures/*`** —— baseline **必须保持绿**，不许刷新
+ai_docs/tasks/c-4b.prompt.md:117:- **`src/test/fixtures/*`** —— baseline **必须保持绿**，不许刷新
+ai_docs/tasks/c-4c.prompt.md:114:- **`src/test/fixtures/*`** —— baseline **不许刷新**。它若变红，
+ai_docs/tasks/c-5.prompt.md:104:- **`src/test/fixtures/generation_baseline.json`** —— 它**必然全线变红**
+ai_docs/tasks/c-6.prompt.md:89:- **`src/test/fixtures/generation_baseline.json`** —— 它**必然变红**
+ai_docs/tasks/c-7.prompt.md:114:- **`src/test/fixtures/*`**、`src/test/harness.ts`、上面未列出的既有测试文件
+ai_docs/tasks/c-8.prompt.md:109:- `src/test/fixtures/generation_baseline.json` —— **仅当** §2.3 做不到零消耗时才动，
+ai_docs/tasks/f-1.prompt.md:132:- **`src/test/fixtures/*`**、`src/test/harness.ts`
+ai_docs/tasks/f-2a.prompt.md:125:- **`src/test/fixtures/*`**、`src/test/harness.ts`
+ai_docs/tasks/f-2b.prompt.md:94:- **`src/test/fixtures/*`**、`src/test/harness.ts`
+ai_docs/tasks/f-2c.prompt.md:102:- **`src/test/fixtures/*`**、`src/test/harness.ts`
+ai_docs/tasks/fix-audit-tail.prompt.md:18:- ❌ **不许碰 `src/test/fixtures/generation_baseline.json`**
+ai_docs/tasks/fix-randomstage.prompt.md:49:- **不要碰 `src/test/fixtures/generation_baseline.json`**。本轮零生产改动 ⇒
+ai_docs/tasks/g-1.prompt.md:97:- **`src/test/fixtures/*`**、`src/test/harness.ts`
+ai_docs/tasks/g-2.prompt.md:111:- **`src/test/fixtures/*`**、`src/test/harness.ts`
+ai_docs/tasks/g-3.prompt.md:89:  - **`src/test/monster_stats_effect.test.ts`**、**`src/test/hunger_regen.test.ts`**
+ai_docs/tasks/g-3.prompt.md:101:- **`src/test/fixtures/*`**、`src/test/harness.ts`
+ai_docs/tasks/g-3.prompt.md:133:`monster_stats_effect` / `hunger_regen` 是重型长跑，翻红先单跑复核再下结论。
+ai_docs/tasks/m-1.prompt.md:104:- `src/test/fixtures/generation_baseline.json` ✅ 授权重捕获
+ai_docs/tasks/p1-24.prompt.md:55:- 任何 `src/test/fixtures/*`。**特别注意**：本轮几乎必然让 `p2_3_baseline.json` 的 **play 段**变红（淹死的怪物不再赖在列表里，会移动 RNG 流与怪物计数）。**不许重新捕获**，必须在报告里说明变红原因，由验收方判断是"有意变更还是真回归"后授权。`levels` 段是 `it.skip`、不该受影响；`generation_baseline.json` 也不该变红——**若它变红，说明你动了生成，必须停下来报告**。
+ai_docs/tasks/p1-26.prompt.md:74:- `src/test/fixtures/*` —— 包括**不许删除** `p2_3_baseline.json`（levels 段仍被引用）
+ai_docs/tasks/p1-27.prompt.md:45:- 任何 `src/test/fixtures/*`。`p2_3_baseline` 的 play 段可能变红（深水里的怪物不再死），**如实报告、不许刷新**。`generation_baseline.json` 不该变红。
+ai_docs/tasks/p1-28.prompt.md:65:- 任何 `src/test/fixtures/*`（基线若变红，如实报告、不许刷新）
+ai_docs/tasks/p1-29.prompt.md:86:- **`src/test/fixtures/*`** —— `generation_baseline.json` **必然全线变红**（地图会变），这是预期内的。**不许刷新**，如实报告，由验收方授权重捕获。
+ai_docs/tasks/p1-30.prompt.md:101:- `src/test/fixtures/*`
+ai_docs/tasks/p1-31.prompt.md:110:- `src/test/fixtures/*` —— 本轮**必然**让 `generation_baseline` 与
+ai_docs/tasks/p1-33.prompt.md:121:- `src/test/fixtures/*` —— `generation_baseline.json` 若变红，**不许刷新**，
+ai_docs/tasks/p1-34.prompt.md:62:- 任何 `src/data/*.json`、`src/test/fixtures/*`
+ai_docs/tasks/p1-37.prompt.md:104:- `src/test/fixtures/*` —— `generation_baseline` 可能因楼梯落点改变而变红，
+ai_docs/tasks/p1-42.prompt.md:109:- **`src/test/fixtures/*`**、`src/test/harness.ts`、其它既有测试文件
+ai_docs/tasks/p4-10.prompt.md:122:- **任何 `src/test/fixtures/*`** —— 包括 `generation_baseline.json`。按 CE 顺序实现的话它**应当保持绿**；若变红，那是你把 waypoint 构建插错了位置的信号，**修位置、不许刷新基线**。`p2_3_baseline.json` 的 play 段变红是预期内的，如实报告、由验收方裁决。
+ai_docs/tasks/p4-6.prompt.md:139:- 任何 `src/test/fixtures/*`，尤其**不要重新捕获** `generation_baseline.json`；若它变红说明你动了生成，必须报告而不是刷新基线
+ai_docs/tasks/p4-7.prompt.md:69:- 任何 `src/test/fixtures/*`。**特别注意**：改了 weapons.json 有可能让 `generation_baseline.json` 变红；**不许重新捕获基线**，必须在报告里说明变红原因并等验收方裁决
+ai_docs/tasks/p4-8.prompt.md:98:- 任何 `src/test/fixtures/*`，尤其不许重新捕获 `generation_baseline.json`
+ai_docs/tasks/p4-9.prompt.md:134:- 任何 `src/test/fixtures/*`。**本轮几乎必然让 `p2_3_baseline.json` 的 play 段变红**（逃跑路径改变会移动怪物位置与 RNG 流）。**不许重新捕获**，如实报告变红内容，由验收方判断"有意变更还是真回归"后授权。`generation_baseline.json` 不该变红——**若它变红，说明你动了生成，必须停下来报告**。
+ai_docs/tasks/s-1.prompt.md:114:- **`src/test/fixtures/*`**、`src/data/*`
+ai_docs/tasks/t-1.prompt.md:119:- `src/test/fixtures/generation_baseline.json` ✅ **授权重捕获**
+ai_docs/tasks/u-00.prompt.md:11:> 前置 无｜生成流：**间**；在场：否｜R: G、App.vue、harness；S: startNewGame、replayRestart、stats、
+ai_docs/tasks/u-00.prompt.md:12:> pendingFallenByDepth、isGameOver｜新局起点断言/重放 seek 可能红；**同实例 A 局→B 局与新实例 B 局等价**，
+ai_docs/tasks/u-00.prompt.md:19:K39 点名了 `stats`、`pendingFallenByDepth`、`isGameOver`——**这是勘察的探针发现，不是完整清单**。
+ai_docs/tasks/u-00.prompt.md:23:| 字段 | 属于 run 级（新局必须重置）/ 会话级（跨局保留，如显示设置）/ 由生成重新写入 | 当前 startNewGame 是否处理 | CE 依据 |
+ai_docs/tasks/v-1a.prompt.md:99:- `src/test/fixtures/generation_baseline.json` ✅ **授权重捕获**
+ai_docs/tasks/v-1c.prompt.md:168:- `src/test/fixtures/generation_baseline.json` ✅ 授权重捕获
+ai_docs/tasks/v-2a-finish.prompt.md:82:invented_content_pool, monster_stats_effect, p1_26_invariants,
+ai_docs/tasks/v-2a-finish.prompt.md:105:**顺序要求**：必须等第 1、2 节改完、其余门禁项全绿之后，**最后一步**才重捕获 `src/test/fixtures/generation_baseline.json`。提前捕获会把缺陷态固化进基线。
+ai_docs/tasks/v-2a-finish.prompt.md:127:- `src/test/fixtures/generation_baseline.json`（仅第 3 节的最后一步）
+ai_docs/tasks/v-2a-perf.prompt.md:41:若 `monster_stats_effect.test.ts` 经实测也确实跑不完（验收方的门禁里它超时了，但执行方单跑 292s 是绿的 —— 先实测再说），**回报申请授权**，不要自行修改。
+ai_docs/tasks/v-2a.prompt.md:103:- `src/test/fixtures/generation_baseline.json` ✅ 授权重捕获
+ai_docs/tasks/v-2b-1.prompt.md:146:本轮 1.1 / 1.2 / 1.6 都移动生成流，`src/test/fixtures/generation_baseline.json` 必须重捕获。
+ai_docs/tasks/v-2b-1.prompt.md:165:- `src/test/fixtures/generation_baseline.json`（仅 §3 的最后一步）
+ai_docs/tasks/v-2b-2a.prompt.md:67:- `src/test/fixtures/generation_baseline.json`（仅 §5 最后一步）
+ai_docs/tasks/v-2b-2b.prompt.md:112:- `src/test/fixtures/generation_baseline.json`（仅 §5 最后一步）
+ai_docs/tasks/v-2b-3-finish.prompt.md:113:  `src/engine/` 相关实现、`src/test/fixtures/generation_baseline.json`（仅最后一步）。
+ai_docs/tasks/v-2b-3.prompt.md:138:- `src/test/fixtures/generation_baseline.json`（仅 §4 最后一步）
+ai_docs/tasks/v-2b-4.prompt.md:97:- `src/test/fixtures/generation_baseline.json`（仅最后一步）
+ai_docs/tasks/v-2b-5.prompt.md:130:- `src/test/fixtures/generation_baseline.json`（仅最后一步）
+ai_docs/tasks/v-2b-5.prompt.md:140:  `horde_terrain_spawn`、`monster_stats_effect`
+ai_docs/tasks/v-2b-6.prompt.md:118:**测试与固件**：`src/test/fixtures/generation_baseline.json`（仅最后一步）、
+ai_docs/tasks/v-2b-7.prompt.md:92:**测试与固件**：`src/test/fixtures/generation_baseline.json`（仅最后一步）、
+ai_docs/tasks/v-2b-8.prompt.md:70:**测试与固件**：`src/test/fixtures/generation_baseline.json`（仅最后一步）、
+ai_docs/tasks/v-2b-9a-finish.prompt.md:91:**仍然不许改**：`src/data/blueprints.json`、`src/test/fixtures/generation_baseline.json`
+ai_docs/tasks/v-2b-9a.prompt.md:79:**明确不许改**：`src/data/blueprints.json`、`src/test/fixtures/generation_baseline.json`
+ai_docs/tasks/v-2b-9b-finish.prompt.md:40:`p2_2_real_speed`、`b_1_weapon_specials`、`ui_2_protection`、`monster_stats_effect`
+ai_docs/tasks/v-2b-9b-finish.prompt.md:187:`src/test/fixtures/generation_baseline.json` **仅最后一步重捕获**。
+ai_docs/tasks/v-2b-9b-finish2.prompt.md:154:`src/test/fixtures/generation_baseline.json` 仅最后一步重捕获。
+ai_docs/tasks/v-2b-9b.prompt.md:132:**固件**：`src/test/fixtures/generation_baseline.json`（**仅最后一步重捕获**）
+ai_docs/tasks/v-2b-9c.prompt.md:17:`monster_stats_effect` 这些跟那轮毫无关系的文件全在红。
+ai_docs/tasks/v-2b-9c.prompt.md:129:**固件**：`src/test/fixtures/generation_baseline.json`（**仅最后一步**）
+ai_docs/tasks/v-2b-9d.prompt.md:135:**固件**：`src/test/fixtures/generation_baseline.json`（**仅最后一步**）
+ai_docs/tasks/v-2b-9e-1.prompt.md:104:- `src/test/fixtures/generation_baseline.json`（**仅最后一步重捕获**）
+ai_docs/tasks/v-2b-9e-2.prompt.md:113:- `src/test/fixtures/generation_baseline.json`（**仅最后一步重捕获**）
+ai_docs/tasks/w-19.prompt.md:13:> 撞红预期：monster_stats_effect、P1-28 永久旗标、P4-3/4/5、**实体 id/leader/死亡链**；
+ai_docs/tasks/w-21.prompt.md:12:> 撞红预期：monster_stats_effect、**克隆/变形后属性**、快照；
+ai_docs/ui-2_report.md:105:readFileSync 模式）钉接线并守旧形态退场。
+ai_docs/v_1a_report.md:59:- `src/test/fixtures/generation_baseline.json`：**授权重捕获**（4 seed × D1-D26 全量重采；note 保留并追加 V-1a 条目；capturedAt 更新；seeds 不变。D1 指纹不变——D1 无机器，符合预期；D2 起全变）。
+ai_docs/v_1a_report.md:174: brogue-web/src/test/fixtures/generation_baseline.json | 736 ++++++++++-----------
+ai_docs/v_1b_report.md:187:   `git status --short src/test/fixtures/generation_baseline.json` 为空
+ai_docs/v_1c_report.md:56:| 2 | 奖励房配额 + 跨层计数器 | ✅ | `buildMachines()` 直译 CE addMachines :1757-1775；`rewardRoomsGenerated` 模块级计数器 + `get/set/reset` 三口；Game.ts：startNewGame 清零（RogueMain.c:292 等价）、toSnapshot/loadSnapshot 往返（旧档 `?? 0` 兜底） |
+ai_docs/v_1c_report.md:108:  startNewGame 清零；toSnapshot/loadSnapshot 往返。
+ai_docs/v_1c_report.md:118:- `src/test/fixtures/generation_baseline.json`：授权重捕获（note 追加、
+ai_docs/v_1c_report.md:127: .../src/test/fixtures/generation_baseline.json     | 1490 +++++------
+ai_docs/v_2a_report.md:150: src/test/fixtures/generation_baseline.json      | 742 +--   ← 授权重捕获（note 追加 V-2a 段）
+ai_docs/v_2a_report.md:280:| monster_stats_effect 聚合 | timed out 300s | **绿**（2/2，292s） | 纯并行负载 |
+ai_docs/v_2a_report.md:332:   （armor_model_effect / monster_stats_effect）的时长因此翻 3-8 倍，
+ai_docs/walkthrough.md:63:- Restructured `CombatSystem.attack` allowing damage modifiers checking active `Player.equippedWeapon.damage` stats.

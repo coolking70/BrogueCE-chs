@@ -1,0 +1,27 @@
+{
+  "name": "support",
+  "cmd": "npx",
+  "args": [
+    "vitest",
+    "run",
+    "src/engine/Combat/CombatFormulas.test.ts",
+    "src/engine/Random.test.ts",
+    "src/test/c_2_lakes.test.ts",
+    "src/test/c_6_autogenerators.test.ts",
+    "src/test/p1_29_adversarial_gate.test.ts",
+    "src/test/v_1b_alternative.test.ts",
+    "src/test/v_2b_2a_placement_flags.test.ts",
+    "src/test/v_2b_3_wired.test.ts",
+    "src/test/v_2b_8_autogen.test.ts",
+    "src/test/v_2b_9e_area_machine.test.ts",
+    "--maxWorkers=1",
+    "--reporter=default",
+    "--reporter=json",
+    "--outputFile.json=ai_docs/reports/u-00-evidence/final-support-tests.json"
+  ],
+  "status": 0,
+  "signal": null,
+  "durationMs": 34734,
+  "changed": [],
+  "inputManifestSha256": "1548338e07fcc3a628fc3ed5f39571f82f3f29299f6b5c864d90ab0e7edc3d8a"
+}

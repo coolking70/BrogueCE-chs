@@ -1,0 +1,75 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/8b4d/brogue/brogue-web
+
+stdout | src/test/c_4a_terrain_catalog.test.ts > C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时点的枚举全集逐位） > Game.canMoveTo（查表）≡ 旧清单：合成格逐地形实测（含生成中出现不了的地形）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_4b_dungeon_feature.test.ts > C-4b F：留痕（本轮明确不做的事；C-4c 翻转） > F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/c_4b_dungeon_feature.test.ts (31 tests) 1215ms
+     ✓ F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空  1066ms
+stdout | src/test/v_2b_7_features.test.ts > V-2b-7 D：MachineResult.featureSpawns（CE Architect.c:1484-1486 的落点暴露） > D1 5 seed × D1..D9：每个「网格机器格」都能追到机器自己的落点记录
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_4a_terrain_catalog.test.ts > C-4a F：干跑测量——calculateMap 改用 isPathingBlocker 的影响（只测量不修复） > 15 种子 × D1-D26：cost 图逐格分歧表（下一轮 C-4b 的输入）
+[C-4a 干跑测量] 15 种子 × D1-D26（每层内部格全扫）
+  语义分歧（cost 1 → OBSTRUCTION，距离图将改变）：11520 格
+    按地形：WATER_DEEP=2629，CRYSTAL_WALL=1883，LAVA=1725，TRAP=1629，STATUE_INERT=565，INERT_BRIMSTONE=548，BLOODFLOWER_STALK=515，GAS_TRAP_PARALYSIS_HIDDEN=437，TRAP_DOOR_HIDDEN=402，MUD_WALL=345，PRESSURE_PLATE=321，LAVA_RETRACTABLE=125，STATUE_DORMANT=90，LOCKED_DOOR=71，TURRET_DORMANT=66，RAT_TRAP_WALL_DORMANT=37，WALL_MONSTER_DORMANT=35，MONSTER_CAGE_CLOSED=21，GAS_TRAP_PARALYSIS=20，FLAMETHROWER_HIDDEN=11，TORCH_WALL=10，CHASM_WITH_HIDDEN_BRIDGE=10，WOODEN_BARRICADE=8，STATUE_INERT_DOORWAY=5，PILOT_LIGHT_DORMANT=4，FLOOD_TRAP=3，STATUE_DORMANT_DOORWAY=3，WALL_LEVER_HIDDEN=1，BRAZIER=1
+  数值分歧（FORBIDDEN → OBSTRUCTION，均不可走，仅 cost 数值变）：4049 格
+    按地形：CHASM=2314，SECRET_DOOR=1735
+
+ ✓ src/test/c_4a_terrain_catalog.test.ts (30 tests) 50753ms
+     ✓ 15 种子 × D1-D26：cost 图逐格分歧表（下一轮 C-4b 的输入）  49240ms
+stdout | src/test/v_2b_4_altars.test.ts > V-2b-4 D：自创祭坛组子系统已拆除（留痕 + 越界守卫） > D4 行为：从祭坛取物只入包，**不再**塌陷同组祭坛（构造两座祭坛做判别）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/v_2b_4_altars.test.ts (36 tests) 40416ms
+     ✓ E1 实测：`reward_statuary`（15 号）在 6 seed × D1-D26 上建成 **0 台**（frequency=0 的结构性后果）  19944ms
+     ✓ E2 实测：每局护符数恒为 1（noAmulet=0 / multiAmulet=0）——两套来源不可能叠加  19993ms
+stdout | src/test/f_2b_creature_burning.test.ts > F-2b 对抗①②：燃烧状态挂载与刷新语义 > 对抗①：离开火格后燃烧必须继续——状态没挂上的实现（伤害只在站火格时发生，web 旧"平扣"形态）在此翻红。CE：exposeCreatureToFire 只上状态（Time.c:59-60），伤害来自每回合燃烧结算（Time.c:2581-2591），与脚下地形无关；烧 ~7 回合后自然熄灭，伤害随之停止。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/f_2b_creature_burning.test.ts (13 tests) 9035ms
+     ✓ 四种气体注入全合成密封房后的消散/扩散曲线必须与 S-1 基线逐位一致（与 f_2a 对抗⑪ 同一基线的等价副本，翻正时两处一起改）。错误实现：燃烧状态机顺手改动了 updateGases/addGas/客观块次序，或燃烧掷骰污染了气体试验的 RNG 流（新增抽取 → 流位移 → 舍入结果全变）。  523ms
+     ✓ 对抗⑧：燃烧伤害必须落在 CE rand_range(1,3) 的支撑集内——30 只独立各烧一块的 rat 总伤 ∈ [30, 90]（支撑带，带外概率为 0，非统计脆弱）。捕获的错误实现：0 伤害（结算段没接）或 ≥4/块（量级走样）。"伤害恒等于 2"的平扣复辟由 p1_28 对照组的分布锁翻红。  6201ms
+stdout | src/test/f_2a_fire_mechanics.test.ts > F-2a 对抗①：蔓延只用 4 正交邻（CE Time.c:1692-1699 nbDirs 前 4 项） > 与火格只有对角连接的草格永远烧不到。错误实现：蔓延用 8 邻（web 旧行为）——五组独立对角对中必有草被点燃留痕。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/f_2a_fire_mechanics.test.ts (12 tests) 3926ms
+     ✓ 火格在 skip 集里时它的邻居不掷骰；不在时 100% 可燃邻居（网）必被点燃。错误实现：runFireUpdate 忽略 opts.caughtFireCells。  460ms
+     ✓ 深水被直燃一次 +15 蒸汽；火贴水时蒸汽总量逐回合增长（持续源）  525ms
+     ✓ BOG（webOnly）目录记 T_IS_FLAMMABLE 但无 fireType/chanceToIgnite=0——直燃无 DF 可落、掷骰路径概率为 0：BOG 不再可点燃（web 旧白名单行为退役）。若未来给 BOG 定 CE 化的火数据，须先改 TerrainCatalog 再翻本断言。  498ms
+     ✓ 四种气体注入全合成密封房后的消散/扩散曲线必须与 S-1 基线逐位一致。错误实现：后续轮次顺手改动了 updateGases/addGas/客观块次序，或气体路径新增掷骰（流位移 → 舍入结果全变）。（基线 2026-09-17 S-1 实跑录制；注入 100 = volume 口径；CREEPING_DEATH 自 G-1 起无层载体，addGas 拒绝、曲线恒空——D2 留痕。）  592ms
+stdout | src/test/c_7_lighting.test.ts > C-7 updateVision 集成（CE Time.c:859 → Light.c:208 → Movement.c:2582） > 对抗⑤消费面：深层岩浆自发光——glowLight 列没接上/不被消费即红
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/c_7_lighting.test.ts (25 tests) 1419ms
+stdout | src/test/b_1a_identification.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/b_1a_identification.test.ts (34 tests) 25553ms
+     ✓ 熟悉度只亮实例：护甲穿满 1000 回合，同种新护甲仍未知  874ms
+     ✓ 边界：999 块不亮、第 1000 块亮（只亮实例）；脱下不计数  855ms
+     ✓ 边界：1499 块不亮、第 1500 块实例+种类一起亮（CE identify()）  1195ms
+     ✓ 上一局识别的种类不得漏进新局；护符/护符石无未知态（预亮）  362ms
+     ✓ L1 全链 D1..D26 每件生成物品都落在物品合法格（CE T_OBSTRUCTS_ITEMS|T_PATHING_BLOCKER 回避）  13673ms
+     ✓ L2 同种子双跑全链物品签名逐位一致（非确定性掷骰——Math.random 类泄漏——在此翻红）  6124ms
+     ✓ 快照携带鉴定字段；读档后种类集、实例旗标、绰号全部还原  412ms
+stdout | src/test/c_4a_0_layer_model.test.ts > C-4a-0 存档 > 新格式往返：四层逐层还原（含测试手造的多层格）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/v_2b_7_features.test.ts (22 tests) 142027ms
+     ✓ D1 5 seed × D1..D9：每个「网格机器格」都能追到机器自己的落点记录  5481ms
+     ✓ D2 落点记录带诊断字段（featureIndex/terrain/featureDF），且位置与网格机器格一致  517ms
+     ✓ F1 携钥匙怪的出生态可达、不在致死地形上，且携带品带 keyLoc 绑定  67950ms
+     ✓ F2 携带指令：钥匙有绑定；CE8 非钥匙奖励有完整的外包/领养来源  20372ms
+     ✓ G2 引擎面：47/52 号因领养落点不可达而退池，且它确实不再生成  47476ms
+stdout | src/test/v_2b_2b_blueprints.test.ts > V-2b-2b T8：整局生成入池（抽签资格 + 深度区间 + 递归路径） > reward 三条各自出现；前厅三条合并出现
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/v_2b_2b_blueprints.test.ts (24 tests) 28450ms
+     ✓ reward 三条各自出现；前厅三条合并出现  28329ms
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A1 门位契约：真实关卡上每个门位都有正交轴两侧严格地板，且环路确实被开辟
+[c_0] A1 新开门合计=463，含新环门层=125/130
+

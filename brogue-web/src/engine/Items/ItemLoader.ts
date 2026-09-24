@@ -1048,15 +1048,15 @@ export class ItemLoader {
     ];
 
     public static initConsumables() {
-        this.potionFlavorMap.clear();
-        this.scrollFlavorMap.clear();
-        this.arcanaFlavorMap.clear();
-        this.identifiedItems.clear();
+        this.potionFlavorMap = new Map();
+        this.scrollFlavorMap = new Map();
+        this.arcanaFlavorMap = new Map();
+        this.identifiedItems = new Set();
         // B-1b：绰号随新局清零（CE resetItemTableEntry，Items.c:8778-8779）。
         // loadSnapshot 先走本方法再从快照回放，两全。
-        this.callTitles.clear();
+        this.callTitles = new Map();
         // B-1c：极性揭示随新局清零（CE resetItemTableEntry，Items.c:8777）。
-        this.magicPolarityRevealed.clear();
+        this.magicPolarityRevealed = new Set();
 
         // B-1a：CE 开局清零（shuffleFlavors → resetItemTableEntry，Items.c:8775-8800）
         // 只清五张风味表；护符表预置 identified=true（GlobalsBrogue.c:714-726，
