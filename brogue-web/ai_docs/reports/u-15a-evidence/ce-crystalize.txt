@@ -1,0 +1,37 @@
+static void crystalize(short radius) {
+    extern color forceFieldColor;
+    short i, j;
+    creature *monst;
+
+    for (i=0; i<DCOLS; i++) {
+        for (j=0; j < DROWS; j++) {
+            if ((player.loc.x - i) * (player.loc.x - i) + (player.loc.y - j) * (player.loc.y - j) <= radius * radius
+                && !(pmap[i][j].flags & IMPREGNABLE)) {
+
+                if (tileCatalog[pmap[i][j].layers[DUNGEON]].flags & (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION)) {
+
+                    pmap[i][j].layers[DUNGEON] = FORCEFIELD;
+                    spawnDungeonFeature(i, j, &dungeonFeatureCatalog[DF_SHATTERING_SPELL], true, false);
+
+                    if (pmap[i][j].flags & HAS_MONSTER) {
+                        monst = monsterAtLoc((pos){ i, j });
+                        if (monst->info.flags & MONST_ATTACKABLE_THRU_WALLS) {
+                            inflictLethalDamage(NULL, monst);
+                            killCreature(monst, false);
+                        } else {
+                            freeCaptivesEmbeddedAt(i, j);
+                        }
+                    }
+                    if (i == 0 || i == DCOLS - 1 || j == 0 || j == DROWS - 1) {
+                        pmap[i][j].layers[DUNGEON] = CRYSTAL_WALL; // boundary walls turn to crystal
+                    }
+                }
+            }
+        }
+    }
+    updateVision(false);
+    colorFlash(&forceFieldColor, 0, 0, radius, radius, player.loc.x, player.loc.y);
+    displayLevel();
+    refreshSideBar(-1, -1, false);
+}
+

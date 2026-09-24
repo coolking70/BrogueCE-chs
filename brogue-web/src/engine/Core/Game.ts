@@ -5,12 +5,12 @@ import { cloneLocation } from '../Combat/Cloning';
  * Main game state and orchestration
  */
 import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer, type Cell } from '../Map/Grid';
-import { blocksPassability, blocksVision, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_IS_FIRE, T_CAUSES_CONFUSION, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_PATHING_BLOCKER, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP } from '../Map/TerrainCatalog';
+import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_IS_FIRE, T_CAUSES_CONFUSION, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_PATHING_BLOCKER, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP } from '../Map/TerrainCatalog';
 import { isPathingBlocker } from '../Map/TerrainCatalog';
 // B-4b：物品落位热力图与食物落位原语（CE Items.c:463-535 / Architect.c:171,3822）
 import { ItemSpawnHeatMap, passableArcCount, randomMatchingLocation } from '../Items/ItemSpawnHeatMap';
 import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, setDormantAwakener, spawnDungeonFeature } from '../Map/DungeonFeature';
-import { DF, DUNGEON_FEATURE_CATALOG } from '../Map/DungeonFeatureCatalog';
+import { DF } from '../Map/DungeonFeatureCatalog';
 import { Architect } from '../Generator/Architect';
 // V-1c：奖励房配额计数器是 CE rogue.rewardRoomsGenerated 的 web 载体——
 // run 级全局，开局清零（RogueMain.c:292 等价）并随存档往返（见快照字段注）。
@@ -5364,30 +5364,11 @@ export class Game {
         }), '#ffffaa');
     }
 
-    /**
-     * Items.c:4904-4939 crystalize(radius)——SCROLL_SHATTERING 的本体
-     * （Items.c:8007-8010 卷轴侧先打消息再 crystalize(9)）。逐条：
-     *   1. 全图扫描：欧氏距离² ≤ radius² 且非 IMPREGNABLE（:4911-4912——
-     *      IMPREGNABLE 是 pmap 旗标，唯一置位源是机器蓝图 BP_IMPREGNABLE
-     *      （Architect.c:938），web 无机器系统，该位恒 0，守卫结构性为真，
-     *      登记无载体）；
-     *   2. 仅当该格 **DUNGEON 层**的 tile 带 T_OBSTRUCTS_PASSABILITY |
-     *      T_OBSTRUCTS_VISION 才处理（:4914——读 layers[DUNGEON]，不是
-     *      cell.terrain 的最高优先级结果，否则盖了 SURFACE 层的墙被漏判）；
-     *   3. layers[DUNGEON] = FORCEFIELD（:4916，直写层）→ 原地 spawn
-     *      DF_SHATTERING_SPELL（:4917，碎石 tile web 无载体，DF 条目登记）；
-     *   4. 格上有怪：MONST_ATTACKABLE_THRU_WALLS → 致死（inflictLethalDamage
-     *      + killCreature 的 web 等价口径 = takeDamage(hp)）；否则
-     *      freeCaptivesEmbeddedAt——web 无嵌墙俘虏载体（机器系统缺口），登记；
-     *   5. 边界格覆写 CRYSTAL_WALL（:4928-4929 "boundary walls turn to
-     *      crystal"——在 DF 之后，顺序照 CE）；
-     *   6. 收尾 updateVision（:4935）——crystalize 当场改了视线阻挡，
-     *      必须立即重算，不能等回合结算。
-     *   colorFlash/displayLevel/refreshSideBar（:4936-4938）web 无对应载体，
-     *   以 needsRender 收尾。
-     *   启发式同步：web FOV/寻路读 cell.isOpaque/isPassable（setTerrain 的
-     *   旧口径），直写层不经过 setTerrain，故按新 DUNGEON 地形重算——
-     *   FORCEFIELD/CRYSTAL_WALL 都不挡视线 ⇒ 墙碎后玩家当场看穿。
+    /** CE Items.c:4904-4939 crystalize: radius + IMPREGNABLE gate precedes
+     * every terrain/DF/creature mutation. Only DUNGEON obstruction qualifies;
+     * DF_SHATTERING_SPELL lays rubble and activates dormant monsters before
+     * embedded creature handling, then unprotected boundary walls crystallize.
+     * Refresh vision immediately; the web renderer consumes needsRender.
      */
     private crystalizeFromPlayer(radius: number): void {
         const px = this.player.loc.x;
@@ -5395,41 +5376,34 @@ export class Game {
         for (let i = 0; i < DCOLS; i++) {
             for (let j = 0; j < DROWS; j++) {
                 const distSq = (px - i) * (px - i) + (py - j) * (py - j);
-                if (distSq > radius * radius) continue; // CE :4911 欧氏距离²
+                if (distSq > radius * radius || this.grid.isImpregnable(i, j)) continue; // CE :4911-4912
                 const cell = this.grid.getCell(i, j);
                 if (!cell) continue;
-                // CE :4912 `!(pmap.flags & IMPREGNABLE)`：web 无机器蓝图系统，
-                // 该位恒 0——守卫结构性为真（登记无载体）。
                 const dungeonTile = cell.layers[DungeonLayer.DUNGEON]!;
                 // CE :4914：读 DUNGEON 层的旗标，不是 cell.terrain 的竞速结果。
                 if (!(TERRAIN_FLAGS[dungeonTile].flags & (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION))) continue;
 
                 cell.layers[DungeonLayer.DUNGEON] = TerrainType.FORCEFIELD; // CE :4916
-                // CE :4917 spawnDungeonFeature(DF_SHATTERING_SPELL)：该 DF 的
-                // tile 是 RUBBLE（Globals.c:679，start=0 只落原点一格碎石），
-                // web 无 RUBBLE 地形（登记于 DF_MISSING_TILES），catalogFeature
-                // 对 null tile 抛错——落地无载体，spawn 跳过（零 RNG，CE 的
-                // start=0 波前同样只标记原点）。RUBBLE 落地的轮次翻正为
-                // 无条件 catalogFeature + spawnDungeonFeature。
-                if (DUNGEON_FEATURE_CATALOG[DF.DF_SHATTERING_SPELL]?.tile !== null) {
-                    spawnDungeonFeature(this.grid, i, j, catalogFeature(DF.DF_SHATTERING_SPELL), false);
-                }
+                // CE :4917: RUBBLE on SURFACE, start=0; also wakes dormant monsters.
+                spawnDungeonFeature(this.grid, i, j, catalogFeature(DF.DF_SHATTERING_SPELL), false);
 
                 const monst = this.getMonsterAt(i, j); // CE :4919 HAS_MONSTER
                 if (monst) {
-                    if (monst.hasBehavior('MONST_ATTACKABLE_THRU_WALLS')) {
-                        monst.takeDamage(monst.hp, true); // CE :4922-4923 的 web 等价口径
+                    // MONST_TURRET is an unexpanded CE composite in web data.
+                    if (monst.hasBehavior('MONST_ATTACKABLE_THRU_WALLS') || monst.hasBehavior('MONST_TURRET')) {
+                        monst.takeDamage(monst.hp, true); // CE inflictLethalDamage bypasses shields.
+                    } else if (monst.isCaged && (cellTerrainFlags(this.grid, i, j) & T_OBSTRUCTS_PASSABILITY)) {
+                        // Movement.c:760 freeCaptivesEmbeddedAt, after the DF as in CE.
+                        this.freeCaptive(monst);
                     }
-                    // CE :4925 freeCaptivesEmbeddedAt(i, j)：web 无嵌墙俘虏
-                    // 载体（机器系统缺口），登记 deferral。
                 }
                 if (i === 0 || i === DCOLS - 1 || j === 0 || j === DROWS - 1) {
                     cell.layers[DungeonLayer.DUNGEON] = TerrainType.CRYSTAL_WALL; // CE :4928-4929（DF 之后覆写）
                 }
-                // 启发式同步（见方法注）：FOV 遮挡 = cell.isOpaque。
-                const eff = cell.terrain;
-                cell.isPassable = !blocksPassability(eff);
-                cell.isOpaque = blocksVision(eff);
+                // Retained layers still obstruct even when the display layer does not.
+                const flags = cellTerrainFlags(this.grid, i, j);
+                cell.isPassable = !(flags & T_OBSTRUCTS_PASSABILITY);
+                cell.isOpaque = !!(flags & T_OBSTRUCTS_VISION);
             }
         }
         this.updateVision(); // CE :4935 updateVision(false)——当场重算

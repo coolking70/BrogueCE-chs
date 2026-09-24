@@ -1079,3 +1079,14 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 浏览器真实菜单、胜利/死亡返标题、新局、seek(0) 与显示设置保持通过。记录既有 replayInfo 非响应式与动画 seek(2) 停在 1 的问题；U27 后续处理，不顺带修改。
 - 最终门禁逐文件与 SHA-256 以 ai_docs/reports/u-00.report.md、u-00-evidence/final-check.json 为准；interim 日志不用于最终声明。
 - 后续：U01 存档字段，U27 的两个已复现问题。不要重捕获生成基线。
+
+## 2026-09-24 U15a：碎墙卷轴不碎不可破坏格
+
+- 用户任务：执行 u-15a.prompt.md，以 X-0 §4.1 / §4.3 U15a / §3.1 K20 为准。
+- CE 全函数核实：IMPREGNABLE 前置门；仅 DUNGEON 判据；DF → 致死/释放 → 边界晶墙 → 视野刷新。边界不自动置位；web BP/MF 两写口和失败回滚保持。
+- 同函数内补接已有 freeCaptive、MONST_TURRET 复合标记、四层阻挡派生值；RUBBLE/休眠 DF 已有载体，移除过期空载体分支。
+- 允许改义仅上述碎墙路径；既有测试/基线/阈值不变，生成和其他卷轴不得改动。验证、R∪S 反查、浏览器与最终 SHA 证据见 u-15a.report.md / u-15a-evidence。
+- 新增18项专项全绿；首轮仅新夹具误把 SURFACE 放在数组下标2，修为显式 DungeonLayer 枚举，既有95项首轮94通过/1夹具失败已归档。构建通过。
+- 浏览器两场景：真实背包点击朗读；另一路菜单保存→刷新→继续→背包朗读；保护墙和边界不变，普通墙/边界分别变力场/晶墙，卷轴消耗、俘虏保留、回合+1，console/page errors=0。技能客户端沙箱启动受 MachPort 限制，提升后运行；canvas黑图已实看，不计视觉通过，有头整页截图已核验。
+- 反查R∪S共133文件，无未解析导入；AST确认Game只有crystalizeFromPlayer改变，155个来源/原测试/fixture文件SHA不变。最终运行脚本冻结输入前后SHA，之后仅回填报告和证据。
+- 后续：CE楼梯邻格IMPREGNABLE写口尚无web对应（不改赋值来源）；DF全局副作用/力场默认外观/怪物死亡收口、多层与RNG存档仍按X-0原任务边界处理。

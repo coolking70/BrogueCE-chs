@@ -1,0 +1,476 @@
+{
+  "changedMembers": [
+    "crystalizeFromPlayer"
+  ],
+  "unchangedHashes": {
+    "src/engine/Map/Grid.ts": "e511ee970b52f482dcfec34b7ac7894400eab381a04da856d5f18bf40874a2d1",
+    "src/engine/Generator/BlueprintEngine.ts": "cc5bd057a8b3ac7398e28355884894dbd6667c616d31ef2a4d55e77f5e69fa3a",
+    "src/engine/Map/DungeonFeature.ts": "2541d90a740f3a37f800d1e11e3243ebf8638dc57230db33aa40b2e95fee2ebc",
+    "src/engine/Map/DungeonFeatureCatalog.ts": "efea43d5ff36b2b5522ba835359ba4ff4a017e3592b9abdc15f18bc8c99c777f",
+    "src/engine/Map/Promotion.ts": "cc4634ce84ee849b901385ff6d1d587158d72e2adafca0a683deffce7175a65a",
+    "src/engine/Core/EntitySnapshot.ts": "d2d56548c3e6364bf4112ee4c41122d37339c65dfb8bd37c7b317b9214f40a59",
+    "src/data/blueprints.json": "ac7971985ec3472428360f6584aa9f9f5af0a492bd73d91abfed643e2a27527c",
+    "src/data/consumables.json": "94a1e2a5d4b8d7da190ebd95cf638249c6c34b650e74b01029962efcfe31899c",
+    "vite.config.ts": "ec54b42c24b0b2229a630ee56509709433aa3a9b2e8bff6de2063e1fbbea93ad",
+    "package.json": "a53b4b40692486c8c624f5cf9e9e5ae05ca1bb63718769df4d09cb1ae32caa85",
+    "package-lock.json": "3d9027a9ff655ec834674ebbf4b8ff0c00257b8906a375270163ecba5f53e253",
+    "src/data/armors.test.ts": "725307f2558cc771fcc517923cd908ed4c1865b848655595be111b9d39ce00c8",
+    "src/data/hordes.test.ts": "a8689eccabdc08015ebfb277dfebd794f282ffa83163d839e74b2762b924f6a7",
+    "src/data/monsterBolts.test.ts": "a231362aa34b5b0e00696ca5caf3cf70f750df49fb9d09a1966a493c58a96b0c",
+    "src/data/monsterDamage.test.ts": "eada3f87d4c8dc136c2432da9d2ea7ab0d534a03942ef144bada2787b38684a6",
+    "src/data/monsters.test.ts": "7bdd60f416005e0d6d73d9c3927494cceb8b0bdbc725c348dac02882e9f23cb2",
+    "src/data/weapons.test.ts": "cbac981fe657beffcaa8cf3d2340504a52960fc33c06f0d26cd5df11843d1924",
+    "src/engine/Combat/BoltCatalog.test.ts": "b8aa181c40e6ad0ca784dcb70f2ca058724e25d88599807354723b9ab3434a75",
+    "src/engine/Combat/BoltContract.test.ts": "2a88b9074e2d6ddd40df72874fb3432d875fc4c1f029ce84a3cf1e07ddf82114",
+    "src/engine/Combat/CombatFormulas.test.ts": "926464c67ba0534883ad1478ae36d78e3e3486f8f691a957479c51cfd283f6d3",
+    "src/engine/Core/snapshotQuantity.test.ts": "da8843aa8f6e3ae83504c64ea77911cbdd8c05d83addf8a8660c2070f5d8cadc",
+    "src/engine/Core/startingKit.test.ts": "109753576e00d2d21bf18c84a816196c0f77c44c0823b68944f03fa28e35e7f6",
+    "src/engine/Items/itemFlavors.test.ts": "1374822cfdc0db55ee0c572c4505dcd0d872745d943b94cc605244b9ffe0b02a",
+    "src/engine/Random.test.ts": "8a84dd78319b394b4411d8509068d7008ca596ea0b76083453a3367e2bfc9b00",
+    "src/engine/UI/DetailGenerator.test.ts": "48bb1885cffdc48c22044a67cdfebdb2a6463345ca0673352115540eb4e7f21c",
+    "src/test/ai_1_scent_tracking.test.ts": "740a1690b20b8392ae02742475a9f1fe7316827cdb46ad55faa75e5f52acd039",
+    "src/test/armor_display_effect.test.ts": "514c02837448b66419248328928f75b1529c4fd875aa8a701b40a0e559b2dc25",
+    "src/test/armor_model_effect.test.ts": "e1d2e8159a286c927958b54b137f35c8f0d6100fe50c4b5ee40283b52dfc21b4",
+    "src/test/armor_runic_effect.test.ts": "68648894439549bb03f6216b38c3cf331baedc4311bc3fd451c11c99562e4ad1",
+    "src/test/b1_retire_invented.test.ts": "ac055cb8021ca5fcc0d1eb4ddda16ef729d4ae5f294a4d32b33f64b5d2265d43",
+    "src/test/b2_transcription.test.ts": "d9a8cec771e1cb8c924a062ffbaaa7e7cdf293c1a902eb7fd5bc12fc98784834",
+    "src/test/b_1_weapon_specials.test.ts": "16f4fd51d9675ad58ca0e8884c633abad0f029b2760c8fedbc3b32dd5525548c",
+    "src/test/b_1a_identification.test.ts": "9954004e6e53b7368e625973a3a01c27b553c66d68877e62cc3b01ba05295986",
+    "src/test/b_1b_identification_persistence.test.ts": "a74d3cad68d548131e3dc34341cd2154e21aa314898ff2ec5261e3b7cd6ce715",
+    "src/test/b_1c_detect_magic.test.ts": "d508be47c14b36a0f13d9d5c41679c581e8b77dab3ed70fedca8f8399ea54cb5",
+    "src/test/b_2_throwing.test.ts": "761f3b8a32e4ac3480db8e1d62a42c247d3f0037057976ecd0ee8a4766a52254",
+    "src/test/b_4a_item_generation.test.ts": "57e9317adc7700c2c3a9e568987919d4e252584c24c6bb0e285a264865c33633",
+    "src/test/b_4b_item_placement.test.ts": "6ab840795a56655dd12fe4eec65627c6e25d66df327a64deae1ff62c7b94409a",
+    "src/test/blueprint_ce_coverage.test.ts": "4780d5d2f72eae268a08106f47823b8efe292ad98d419955e666df767d460c3d",
+    "src/test/blueprint_center.test.ts": "3533796c55c1ec8324dcbb7dc8156586b51af6b3aee8c984d85ef9588a675e6e",
+    "src/test/c_0_add_loops.test.ts": "1be9e5f420cb244d360bf08f8b2028d4d27803267fc04091e25fa251f94d7c32",
+    "src/test/c_1_room_profile.test.ts": "cea2652a656e1fa7e102cbb40b1fbbffa1e2fafca9ee7ab0fbd40b9411ea1062",
+    "src/test/c_2_lakes.test.ts": "338233fbf7452ec5934a0511c758fddfb3e30b02cf2d8e0f9cc3b53287c3acbd",
+    "src/test/c_2_lakes_determinism.test.ts": "b319f6047c2ea4bd8b2076ef47bf3ff60aa223e19f267fd8d09687e4085f925c",
+    "src/test/c_2_lakes_e2e.test.ts": "d45b1a66f047ab05e3e2d5a58ba70f86d7cdfe362d86aa4b8d22c780a107a393",
+    "src/test/c_3_walls_doors.test.ts": "fefbf3cfcd2b75e738a29e77d1372ef0966100d1648093914dc15adf94c25a1b",
+    "src/test/c_4a_0_layer_model.test.ts": "df75f557fe3f49725908202dd5ad2af28223ee28d20f7335ad2126f337057c7b",
+    "src/test/c_4a_terrain_catalog.test.ts": "3fe7665dd9fb0cea741ace580e59a1e5eb74413c6b59e5b4f2178d7cbda71a7b",
+    "src/test/c_4b_dungeon_feature.test.ts": "7e24e8f9367b4821ec0368b470fd527d894f2ec4e69a18138f7f280179db97ea",
+    "src/test/c_4c_promotion.test.ts": "fc228132bd7710ada5d0c223619d0b005f4d8feeac29bcba0c3fcc5d0add36a8",
+    "src/test/c_5_fall_subsystem.test.ts": "2f3ec7ba3d9af1f012979557e144a262c9ee23b075694f1ae6e31a9a9d3f75c0",
+    "src/test/c_6_autogenerators.test.ts": "36859741d5199f5e26647b267aca0f01262e1c98336f1e8650125fc17ca32938",
+    "src/test/c_7_lighting.test.ts": "dedd9b33afec6bc78e9a43b74ae3ab5e0093d3a921b6ba486f992ecd73f66daa",
+    "src/test/c_8_connectivity.test.ts": "28d1981b94fc9cd594e914281946d10b1be4c0a42849b597dae95400dca12464",
+    "src/test/f_1_fire_as_terrain.test.ts": "f0992a570e00348a08545cc4192a100f46c9120c439c0d895df47d81fe0bd438",
+    "src/test/f_2a_fire_mechanics.test.ts": "9fffdb163906a4ad8fa16b3adfca2344801de6374ce13c4dc995582c2f838fcb",
+    "src/test/f_2b_creature_burning.test.ts": "e7ff67fe361a0b3c79ab31e7e632a4165be3f75164617cccd4fa70eb5f675f4b",
+    "src/test/f_2c_explosion.test.ts": "de75b94a6f80289bba1e95f25a2c0de2a09921873e9d74ef7c77cc83a114eac9",
+    "src/test/fixtures/generation_baseline.json": "5f51e8848a5874ff41cecaa04a7b39de21fc3871f8a0142b32f0499f3ed9fba1",
+    "src/test/fixtures/p2_2_baseline.json": "ba5cfdab37e2bdf633714ac9da1b54c5db71318967c54cffdb47da7519f51726",
+    "src/test/fixtures/p2_3_baseline.json": "9b3bb0c149e968f6eccae04752e13390beaf4602c6e8216aa65426432f5ecf2e",
+    "src/test/fixtures/p2_baseline.json": "f1690f3748c3e49c0df692cbee283fb962719d9b290131b9507282a6b504fc4b",
+    "src/test/g_1_gas_volumetric.test.ts": "17f9d6aa5231b2a8011093b73549ebf482b4f287aa73699848c8475944cbb27f",
+    "src/test/g_2_gas_df_wiring.test.ts": "bc5d6e35ae164a7c57a87e30a4dc9fb5aa29045f316197a26588c0c54d5d2c63",
+    "src/test/g_3_gas_effects.test.ts": "e9d536d53d21743bdb210d23614c2fc8b082f8d7c2ba33f55211bba4111e5f14",
+    "src/test/generation_baseline.test.ts": "be114e3dcb54f0a375ce095dac96801d061b329f4880322ee6ac808796bf36ac",
+    "src/test/horde_selection.test.ts": "cbdee2bdfeff2794f3245929638d5774bf93217515384ddc0f2937ee5de12fc2",
+    "src/test/horde_terrain_spawn.test.ts": "6cc2e4bcdda99eda047c4528ea879edeba4bcaf8e48c9f9c9288e577e4cf4aae",
+    "src/test/hunger_curve_sim.test.ts": "6413a3a40ff624d2ac540491251a5ba4c0563af9a478d0ddc44f1016c5dd0fc9",
+    "src/test/hunger_regen.test.ts": "447e12bd011ee0b34c8f90d1a440fc1b008419afe7a2c94b755db20674e81992",
+    "src/test/i_1_interaction.test.ts": "b24ee4ca01f757a931740b7c9f3b5ffa0293b93cc82549ec074f6257f9eb705c",
+    "src/test/invented_content_pool.test.ts": "6d12a61b43e0aea28c805f6b4d20612e793a69f30103370c06925f17d8b8d904",
+    "src/test/monster_damage_balance.test.ts": "cb9c4193f3b423a5350e4350a73ce2f5174a7802aff309c60abba40bf78fb738",
+    "src/test/monster_stats_effect.test.ts": "8b3deffe0a77a56d5e3d29cf07ad782b88881779cac33af3e97459460b12177c",
+    "src/test/p1_20_item_placement.test.ts": "a7c90116ed76b6205ae68aa8bc4d2a0ad6b27ad941e6d6907636c0ae2b77e54d",
+    "src/test/p1_24_death_sink.test.ts": "d10a2a82cf335a8e1443523713145796c880f93d459def02bcd58a0c6eea97e5",
+    "src/test/p1_26_invariants.test.ts": "5d8c71b2e144cab3a37fbc08382bb55754acc0b1d311c6f64dbeb02269b8207b",
+    "src/test/p1_27_remove_drowning.test.ts": "239384734b92110ea8be62c8bede9882a31de286d75d1bae760cdcb9f62de33a",
+    "src/test/p1_28_flag_channel.test.ts": "9aa5020aa3c5493ed0bf972e7afb30dbde9ceef5bab23e1eac693a8547f9e956",
+    "src/test/p1_29_adversarial_gate.test.ts": "038267bdde93ce7cb999fea0b3e6adcf8d478af207a2155b2b767cdf6bd5153d",
+    "src/test/p1_29_lake_connectivity.test.ts": "9ecd078b85e4958ad865a931c76e01704a5c25868ee4d524b46f7e18348461a3",
+    "src/test/p1_30_i18n_gate.test.ts": "4f232c755398d9faedd672d29f5364921572f3f39f584653a1f7e582995943e0",
+    "src/test/p1_31_35_placement_snapshot.test.ts": "1a0887193687ce97bc0e12bf4c7f3fcfdbb9b5e7d08d8caac4e3085835845511",
+    "src/test/p1_33_machine_chokepoint.test.ts": "8cbe6221096fb000ddf6af96e334da411140258cdf9fd67e56dc0d35248d2819",
+    "src/test/p1_34_loopmap_reset.test.ts": "2c489279fd855e6272b89ad67c97a32016f0a4de98f51a390dcf0b54aa7df6cf",
+    "src/test/p1_37_machine_flag_i18n.test.ts": "f0b645ce37d93b38183f428337139ab44b18626051b9120357206b0cdf351d63",
+    "src/test/p1_42_secret_door_search.test.ts": "eca539311016b1896179c5577af0d8ee9b302eb2e385bfc09bb556748d7d11c7",
+    "src/test/p1_46_keybindings.test.ts": "dda1f333f17a482b657b4af48379d9a345558675351d0b77363938dfff17e801",
+    "src/test/p2_0_seeded_rng.test.ts": "78c95f78f4ab6767b878223ae03e6b543a71112e45c735fc0d8036c19467bb74",
+    "src/test/p2_1_tick_architecture.test.ts": "fe2fa5d393e054fdd7885615061e78eda981b19c15b07dd81348fdd8032ee12f",
+    "src/test/p2_2_real_speed.test.ts": "2b1a731ed904f6f2730ea087b262a33276ed5d4a6cffb37e954954ff0727911c",
+    "src/test/p2_3_objective_time.test.ts": "fb048765f5cbe05be4e8ec416a11541c3e2a0eef8abe9082031035fd414d0dab",
+    "src/test/p2_4_animation_cadence.test.ts": "16321c78b76e3e46963221df579a4214ff6c35e2c25fa4ece7d265fa146d20e6",
+    "src/test/p2_6_display_settings.test.ts": "e5f1cf8e946c7fa000e1423da6b535d557f4344b66b2117275d1767df9c00a62",
+    "src/test/p4_10_waypoint.test.ts": "324743474e73c4b9f610bcfae47584199dc82d072b77ee248e5bc61c20a2f8a6",
+    "src/test/p4_1b_monster_casting.test.ts": "cab3fa17c951931e501c33090301001f08dee46dbb8c8111226dc7114355bad3",
+    "src/test/p4_2_monster_summoning.test.ts": "85da4a3aa03831af60186094e4bf543283903b36d58631145b43d31c52d51392",
+    "src/test/p4_3_special_monster_flags.test.ts": "e60bcaf70fb34615ab98026f9493ae106ec5c592701c92bd92646647818e33f6",
+    "src/test/p4_4_split_kamikaze.test.ts": "6406d2a458fef6c663fbb6852d2e5e1fdecf4d93bc3e24973de5b7029fe75431",
+    "src/test/p4_5_melee_specials.test.ts": "eee90698a704524e83c41d345efed8a9dc2bdd1cef00525bbf96e6e0256e5982",
+    "src/test/p4_6_attack_geometry.test.ts": "ea50209ba8d0246a9b3c1c11ee4534fcbdeea7b1bbe7ed43c529ddaee8166ea3",
+    "src/test/p4_7_player_weapon_geometry.test.ts": "afda1066cc7c7383dcb686197372e20eb170bc7f7ed33ae203cf9025802deac8",
+    "src/test/p4_8_scent_map.test.ts": "117ef5ef6680880579a7e3c3d8e30c4a5ab672b11e692137f5306d16c6dfd21a",
+    "src/test/p4_9_safety_map.test.ts": "47392aeeebc5677d105121bc7f779a73f43b38c141836aa37e6f2e33502adeba",
+    "src/test/r_1_appearance.test.ts": "491876ea5d3f2d12072cb84032c81cb629c06863e85832848059173ab3b744b6",
+    "src/test/scroll_effects.test.ts": "8cf90fcf26841e3e4b8ece6c73efdbcf16e0fc72f54a8055ed0370246391c687",
+    "src/test/smoke.test.ts": "fde74dca9c292e6b085a1ecd0bb6fc1dd0bb93b00dd68e4456200d42a20e4a58",
+    "src/test/t_1_tail.test.ts": "1115819dc95bc1a55559f57eeeb3139b859a1713f6385362b07e52510fbcdac8",
+    "src/test/u_00_new_run.test.ts": "d27dd741f622a9806a13ea53b0e586098d8268d9e27f5de2f5ccb00e796de210",
+    "src/test/u_01_instance_snapshot.test.ts": "babeef505b750b21fe61d0328dcc4a25ec44c1eda8a98d55e159a685369a9479",
+    "src/test/u_05a_item_ownership.test.ts": "c7224fa20a40450bd0c028cd7b6108ecbc90aa55f3d72239b649809250ef51b5",
+    "src/test/ui_1_rendering.test.ts": "157d595791128bf9757cf903a862a4677822f5fa217e065ed7678605828466b6",
+    "src/test/ui_2_protection.test.ts": "e9d80e5cfc65fab18e811177ad79e098c598684945a449312d0b3da51c425541",
+    "src/test/v_1a_blueprint_items.test.ts": "53a81f97e1807b0c72d6f30a89e2046743e49e8384e0a05719970d156095cd13",
+    "src/test/v_1b_alternative.test.ts": "ad1e6214f3881d0dd56b2b7d5903a2488e22cc9f964c297a676294503f2b8916",
+    "src/test/v_1c_machine_structure.test.ts": "a372717dcea3ce8f2106918d1632a06a9f84bb28bbde356fb94bd654f79db476",
+    "src/test/v_2a_vestibule_return.test.ts": "e42ba83a120e07c6ff9563aabdba6eda65b4ccffb8f5c65736c7484e78a47e75",
+    "src/test/v_2b_2a_placement_flags.test.ts": "e07197ddd031a22cf8106385db8e78da589d961ec6d8f4ffda2ffbef9145f0b8",
+    "src/test/v_2b_2b_blueprints.test.ts": "801db82a1f28774ccf1775aae9c39122ba4b91429259a8fe87f2b960e24882be",
+    "src/test/v_2b_3_wired.test.ts": "4a124e1414a757550fd808f131a2b68ddf3fcc1e1ecc240308d3635dfd8569e7",
+    "src/test/v_2b_4_altars.test.ts": "bfc0364ac68d44b3390d5a1ce297343acbce9034f7b4a64bc7cb57d8bdb8cd3a",
+    "src/test/v_2b_5_dormant.test.ts": "6d0329fae5cb398feb7c6e8ea6ab29154f2283359febf69b74c59f4d37e95e89",
+    "src/test/v_2b_6_keys.test.ts": "acb73cbf8a5f2f30a76a3d8a7825a0c6f35185cc312a3be1907e50404ff4524e",
+    "src/test/v_2b_7_features.test.ts": "16f3a762677dda226694c8e34836fb086af5adb112fc47e544ff556f5dc7653d",
+    "src/test/v_2b_8_autogen.test.ts": "9ef67eef514620049f5c93926516ee949352a553d7662b2559e0c601f6afaa95",
+    "src/test/v_2b_9a_carriers.test.ts": "eb4c0b69781202075c31eab9cbceca1b7df282b660ad72a56ac41551e09a0080",
+    "src/test/v_2b_9b_environment.test.ts": "f6bc3b79f81ef4027e901bf17699ac2d22cf69d1fd1d0781890e32f6b9878ecb",
+    "src/test/v_2b_9c_effects.test.ts": "7a72932727669d67d8571fd30a519cd523c73bab8a08723f9df46e01adb67756",
+    "src/test/v_2b_9d_dungeon_profile.test.ts": "18e16c91a4a030dd7384ecce054dd44ddcee55e86fd141219c479614c13d911a",
+    "src/test/v_2b_9e_2_autogen.test.ts": "d6619a791c148b7ede46541c31b05d3c90ed46042c56528028f101c9467e121c",
+    "src/test/v_2b_9e_area_machine.test.ts": "948e72f0763aed80c003277dd59e43dd6ae7704a238ed7f9929ea5f22ca8e899",
+    "src/test/w_10_poison.test.ts": "c1915f5cb507cbe327c4e0599996c9d286151a3569d4f4600229612f826065da",
+    "src/test/w_11_teleport_placement.test.ts": "93458c467b03e7ab17ad7a8ea6fe57263333ca72951230b6db46ec241e8fadfc",
+    "src/test/w_12_blink_beckoning.test.ts": "b42cf61df17dc1a5d604053bf7e7b6ee308d11e4195ede6b4bb61afc3e9c200b",
+    "src/test/w_13_tunneling.test.ts": "8588d3ab2c7b2f6fcf9e57c024a0b3f5abe66f9ca11293f1364f4f07e597bc91",
+    "src/test/w_14_obstruction.test.ts": "609c3b0d8c7f2d4b3cc1bb10d65ae110f8260f4cf75192bfaeedd6eb7dbada4f",
+    "src/test/w_15_shielding.test.ts": "e685051da6cb97e42a8ae7a4a43ad7f433415959618e7afb918e280f719aa11d",
+    "src/test/w_16_conjuration.test.ts": "b35026f3fc3a5b0cf68b52ad6c42115d8f75397b709ba1541155692d89e245fc",
+    "src/test/w_17_domination.test.ts": "439887c584016f9aff562f01ee9d58d74098079c7990b9c52adb10f96863079f",
+    "src/test/w_18_entrancement.test.ts": "75f1c066edc1c92d0b03d378b7a7e01b93be6d2c817711ed24b5dfce48bb13d9",
+    "src/test/w_19_polymorph.test.ts": "d4366c2f8e8f5e21f9c9d71851d8e8c35b069248388b491aceae3ad727152b83",
+    "src/test/w_20_cloning.test.ts": "3474ee175e4d6652cfc9885045afa651ac8594aa9d7c0bfbb847c132a2735a69",
+    "src/test/w_21_empowerment.test.ts": "2602cd87fa814414d8ca19663ea43027a3e2f06f62fceb2451331a86a0ee11b9",
+    "src/test/w_23_negation.test.ts": "d3e800abaf257dc7fcb8e8af1a58c8cba21ed82fbc48de0f899f5083b30860f2",
+    "src/test/w_24_wand_catalog.test.ts": "380ed0a3edcfa0ef5ea1c00ce86e8ecb1fe2212e8a3b48a73920d66880f632e9",
+    "src/test/w_25_staff_catalog.test.ts": "445d702301e7e7bce1d896c6aa54a41ac712fc7720d60b0d5a5d879c85c5370a",
+    "src/test/w_26_arcana_closure.test.ts": "6a62130f2d33d5e7c9726807a1825ac95d231e459a6b7507d7c4b02d0a77cc37",
+    "src/test/w_2_arcana_submission.test.ts": "100579b1bf2bbf2b910f4ecd4dea85d51b76bed6897208c3cbd066e2329ef774",
+    "src/test/w_3_bolt_trajectory.test.ts": "7cc509c8056d90f38f393489348e4764a5886193ab81d3bfa03b4b8be3f2ae7d",
+    "src/test/w_4_bolt_reflection.test.ts": "10a6782300fc9a8c91db9fd5ac2a5cbb97465306e2bc7d4b62c93b5922c5ed2f",
+    "src/test/w_5_arcana_instance.test.ts": "89067832c3d53974db5f797c1cd5b8d99e52c433cde1859a11a94afbbe08e882",
+    "src/test/w_6_arcana_recharge.test.ts": "f87a7bf46b2cb7c5a15011d3595a06551ef2f6c1cfe7b21f50fd66cfc6ba8a9b",
+    "src/test/w_7_arcana_enchantment.test.ts": "ef74a23f18a24089d3d8bd592260fc83d6176f1079623ddadf4189ab06f27c02",
+    "src/test/w_8_staff_damage.test.ts": "42d089a8351c18578190b98c3c9998365be226910c047b639ca82e88c709c20d",
+    "src/test/w_9_directed_status.test.ts": "d879b51567a12e354d1428a64bc1e3c2163ba535ba1e9ad818b30bb9caa7a9a0"
+  },
+  "scopeCount": 133,
+  "blueprintSourceCounts": {
+    "BP": 8,
+    "MF": 38
+  },
+  "blueprintSources": [
+    {
+      "id": "reward_treasure_room",
+      "ceBlueprintId": 3,
+      "BP_IMPREGNABLE": true,
+      "features": [
+        {
+          "index": 5,
+          "terrain": "STATUE_INERT"
+        }
+      ]
+    },
+    {
+      "id": "reward_pedestal_permanent",
+      "ceBlueprintId": 4,
+      "BP_IMPREGNABLE": true,
+      "features": [
+        {
+          "index": 1,
+          "terrain": "STATUE_INERT"
+        }
+      ]
+    },
+    {
+      "id": "reward_pedestal_consumable",
+      "ceBlueprintId": 5,
+      "BP_IMPREGNABLE": true,
+      "features": [
+        {
+          "index": 1,
+          "terrain": "STATUE_INERT"
+        }
+      ]
+    },
+    {
+      "id": "reward_kennel",
+      "ceBlueprintId": 10,
+      "BP_IMPREGNABLE": false,
+      "features": [
+        {
+          "index": 0,
+          "terrain": "MONSTER_CAGE_CLOSED"
+        }
+      ]
+    },
+    {
+      "id": "reward_commutation",
+      "ceBlueprintId": 6,
+      "BP_IMPREGNABLE": true,
+      "features": [
+        {
+          "index": 1,
+          "terrain": "STATUE_INERT"
+        }
+      ]
+    },
+    {
+      "id": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "BP_IMPREGNABLE": true,
+      "features": [
+        {
+          "index": 2,
+          "terrain": "ALTAR_CAGE_OPEN"
+        },
+        {
+          "index": 3,
+          "terrain": "ALTAR_CAGE_OPEN"
+        },
+        {
+          "index": 4,
+          "terrain": "ALTAR_CAGE_OPEN"
+        },
+        {
+          "index": 5,
+          "terrain": "STATUE_INERT"
+        }
+      ]
+    },
+    {
+      "id": "reward_single_category_library",
+      "ceBlueprintId": 2,
+      "BP_IMPREGNABLE": true,
+      "features": [
+        {
+          "index": 2,
+          "terrain": "ALTAR_CAGE_OPEN"
+        },
+        {
+          "index": 3,
+          "terrain": "ALTAR_CAGE_OPEN"
+        },
+        {
+          "index": 4,
+          "terrain": "STATUE_INERT"
+        }
+      ]
+    },
+    {
+      "id": "reward_resurrection_altar",
+      "ceBlueprintId": 7,
+      "BP_IMPREGNABLE": true,
+      "features": [
+        {
+          "index": 1,
+          "terrain": "STATUE_INERT"
+        }
+      ]
+    },
+    {
+      "id": "reward_statuary",
+      "ceBlueprintId": 15,
+      "BP_IMPREGNABLE": false,
+      "features": [
+        {
+          "index": 2,
+          "terrain": "STATUE_INSTACRACK"
+        }
+      ]
+    },
+    {
+      "id": "vestibule_locked",
+      "ceBlueprintId": 16,
+      "BP_IMPREGNABLE": false,
+      "features": [
+        {
+          "index": 0,
+          "terrain": "LOCKED_DOOR"
+        }
+      ]
+    },
+    {
+      "id": "vestibule_pit_trap_field",
+      "ceBlueprintId": 23,
+      "BP_IMPREGNABLE": false,
+      "features": [
+        {
+          "index": 1,
+          "terrain": "SECRET_DOOR"
+        }
+      ]
+    },
+    {
+      "id": "vestibule_secret_lever",
+      "ceBlueprintId": 18,
+      "BP_IMPREGNABLE": false,
+      "features": [
+        {
+          "index": 0,
+          "terrain": "WORM_TUNNEL_OUTER_WALL"
+        },
+        {
+          "index": 1,
+          "terrain": "PORTCULLIS_CLOSED"
+        },
+        {
+          "index": 2,
+          "terrain": "WALL_LEVER_HIDDEN"
+        }
+      ]
+    },
+    {
+      "id": "vestibule_throwing_tutorial",
+      "ceBlueprintId": 22,
+      "BP_IMPREGNABLE": false,
+      "features": [
+        {
+          "index": 1,
+          "terrain": "PORTCULLIS_CLOSED"
+        },
+        {
+          "index": 2,
+          "terrain": "WORM_TUNNEL_OUTER_WALL"
+        }
+      ]
+    },
+    {
+      "id": "key_poison_gas",
+      "ceBlueprintId": 40,
+      "BP_IMPREGNABLE": false,
+      "features": [
+        {
+          "index": 5,
+          "terrain": "WALL_LEVER_HIDDEN_DORMANT"
+        }
+      ]
+    },
+    {
+      "id": "key_nested_library",
+      "ceBlueprintId": 26,
+      "BP_IMPREGNABLE": true,
+      "features": [
+        {
+          "index": 1,
+          "terrain": "WALL"
+        },
+        {
+          "index": 3,
+          "terrain": "ALTAR_CAGE_OPEN"
+        },
+        {
+          "index": 4,
+          "terrain": "ALTAR_CAGE_OPEN"
+        },
+        {
+          "index": 5,
+          "terrain": "ALTAR_CAGE_OPEN"
+        },
+        {
+          "index": 6,
+          "terrain": "STATUE_INERT"
+        }
+      ]
+    },
+    {
+      "id": "key_throwing_tutorial_cage",
+      "ceBlueprintId": 28,
+      "BP_IMPREGNABLE": false,
+      "features": [
+        {
+          "index": 0,
+          "terrain": "ALTAR_CAGE_RETRACTABLE"
+        }
+      ]
+    },
+    {
+      "id": "reward_vampire_lair",
+      "ceBlueprintId": 11,
+      "BP_IMPREGNABLE": false,
+      "features": [
+        {
+          "index": 1,
+          "terrain": "MONSTER_CAGE_CLOSED",
+          "featureDF": "DF_AMBIENT_BLOOD"
+        }
+      ]
+    },
+    {
+      "id": "key_sacrifice_altar",
+      "ceBlueprintId": 47,
+      "BP_IMPREGNABLE": false,
+      "features": [
+        {
+          "index": 3,
+          "terrain": "SACRIFICE_CAGE_DORMANT"
+        },
+        {
+          "index": 4,
+          "terrain": "DEMONIC_STATUE"
+        },
+        {
+          "index": 5,
+          "terrain": "STATUE_INSTACRACK"
+        }
+      ]
+    },
+    {
+      "id": "key_worm_tunnels",
+      "ceBlueprintId": 55,
+      "BP_IMPREGNABLE": false,
+      "features": [
+        {
+          "index": 5,
+          "terrain": "WALL_LEVER_HIDDEN"
+        }
+      ]
+    },
+    {
+      "id": "ce_36_environment",
+      "ceBlueprintId": 36,
+      "BP_IMPREGNABLE": false,
+      "features": [
+        {
+          "index": 6,
+          "terrain": "WALL_LEVER_HIDDEN"
+        }
+      ]
+    },
+    {
+      "id": "ce_38_environment",
+      "ceBlueprintId": 38,
+      "BP_IMPREGNABLE": false,
+      "features": [
+        {
+          "index": 6,
+          "terrain": "WALL_LEVER_HIDDEN"
+        }
+      ]
+    },
+    {
+      "id": "key_electric_crystals",
+      "ceBlueprintId": 52,
+      "BP_IMPREGNABLE": false,
+      "features": [
+        {
+          "index": 1,
+          "terrain": "ELECTRIC_CRYSTAL_OFF"
+        },
+        {
+          "index": 3,
+          "terrain": "ALTAR_CAGE_RETRACTABLE"
+        },
+        {
+          "index": 4,
+          "terrain": "TURRET_LEVER"
+        }
+      ]
+    }
+  ]
+}

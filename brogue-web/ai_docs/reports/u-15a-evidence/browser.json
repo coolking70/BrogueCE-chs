@@ -1,0 +1,499 @@
+{
+  "states": [
+    {
+      "reload": false,
+      "before": {
+        "cells": [
+          {
+            "x": 7,
+            "y": 5,
+            "dungeon": 3,
+            "surface": 0,
+            "machine": 17,
+            "protected": true,
+            "char": "#",
+            "color": 8947848
+          },
+          {
+            "x": 7,
+            "y": 7,
+            "dungeon": 3,
+            "surface": 0,
+            "machine": 0,
+            "protected": false,
+            "char": "#",
+            "color": 8947848
+          },
+          {
+            "x": 0,
+            "y": 5,
+            "dungeon": 3,
+            "surface": 0,
+            "machine": 0,
+            "protected": true,
+            "char": "#",
+            "color": 8947848
+          },
+          {
+            "x": 0,
+            "y": 7,
+            "dungeon": 3,
+            "surface": 0,
+            "machine": 0,
+            "protected": false,
+            "char": "#",
+            "color": 8947848
+          }
+        ],
+        "flags": [
+          402,
+          395
+        ],
+        "turns": 0,
+        "inventory": 1,
+        "captive": true,
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 5,
+            "y": 5,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "哥布林",
+              "x": 7,
+              "y": 5,
+              "hp": 15,
+              "maxHp": 15,
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d4+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_ATTACKS_PENETRATE",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": true,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 10000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "constants": {
+          "WALL": 3,
+          "FORCEFIELD": 43,
+          "CRYSTAL_WALL": 45,
+          "RUBBLE": 98
+        }
+      },
+      "after": {
+        "cells": [
+          {
+            "x": 7,
+            "y": 5,
+            "dungeon": 3,
+            "surface": 0,
+            "machine": 17,
+            "protected": true,
+            "char": "#",
+            "color": 8947848
+          },
+          {
+            "x": 7,
+            "y": 7,
+            "dungeon": 43,
+            "surface": 98,
+            "machine": 0,
+            "protected": false,
+            "char": "#",
+            "color": 8947848
+          },
+          {
+            "x": 0,
+            "y": 5,
+            "dungeon": 3,
+            "surface": 0,
+            "machine": 0,
+            "protected": true,
+            "char": "#",
+            "color": 8947848
+          },
+          {
+            "x": 0,
+            "y": 7,
+            "dungeon": 45,
+            "surface": 98,
+            "machine": 0,
+            "protected": false,
+            "char": "#",
+            "color": 8947848
+          }
+        ],
+        "flags": [
+          402,
+          395
+        ],
+        "turns": 1,
+        "inventory": 0,
+        "captive": true,
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 5,
+            "y": 5,
+            "hp": 30,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "哥布林",
+              "x": 7,
+              "y": 5,
+              "hp": 15,
+              "maxHp": 15,
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d4+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_ATTACKS_PENETRATE",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": true,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 9900,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "constants": {
+          "WALL": 3,
+          "FORCEFIELD": 43,
+          "CRYSTAL_WALL": 45,
+          "RUBBLE": 98
+        }
+      }
+    },
+    {
+      "reload": true,
+      "before": {
+        "cells": [
+          {
+            "x": 7,
+            "y": 5,
+            "dungeon": 3,
+            "surface": 0,
+            "machine": 17,
+            "protected": true,
+            "char": "#",
+            "color": 8947848
+          },
+          {
+            "x": 7,
+            "y": 7,
+            "dungeon": 3,
+            "surface": 0,
+            "machine": 0,
+            "protected": false,
+            "char": "#",
+            "color": 8947848
+          },
+          {
+            "x": 0,
+            "y": 5,
+            "dungeon": 3,
+            "surface": 0,
+            "machine": 0,
+            "protected": true,
+            "char": "#",
+            "color": 8947848
+          },
+          {
+            "x": 0,
+            "y": 7,
+            "dungeon": 3,
+            "surface": 0,
+            "machine": 0,
+            "protected": false,
+            "char": "#",
+            "color": 8947848
+          }
+        ],
+        "flags": [
+          402,
+          395
+        ],
+        "turns": 0,
+        "inventory": 1,
+        "captive": true,
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 5,
+            "y": 5,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "哥布林",
+              "x": 7,
+              "y": 5,
+              "hp": 15,
+              "maxHp": 15,
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d4+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_ATTACKS_PENETRATE",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": true,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 10000,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "constants": {
+          "WALL": 3,
+          "FORCEFIELD": 43,
+          "CRYSTAL_WALL": 45,
+          "RUBBLE": 98
+        }
+      },
+      "after": {
+        "cells": [
+          {
+            "x": 7,
+            "y": 5,
+            "dungeon": 3,
+            "surface": 0,
+            "machine": 17,
+            "protected": true,
+            "char": "#",
+            "color": 8947848
+          },
+          {
+            "x": 7,
+            "y": 7,
+            "dungeon": 43,
+            "surface": 98,
+            "machine": 0,
+            "protected": false,
+            "char": "#",
+            "color": 8947848
+          },
+          {
+            "x": 0,
+            "y": 5,
+            "dungeon": 3,
+            "surface": 0,
+            "machine": 0,
+            "protected": true,
+            "char": "#",
+            "color": 8947848
+          },
+          {
+            "x": 0,
+            "y": 7,
+            "dungeon": 45,
+            "surface": 98,
+            "machine": 0,
+            "protected": false,
+            "char": "#",
+            "color": 8947848
+          }
+        ],
+        "flags": [
+          402,
+          395
+        ],
+        "turns": 1,
+        "inventory": 0,
+        "captive": true,
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "x": 5,
+            "y": 5,
+            "hp": 30,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "哥布林",
+              "x": 7,
+              "y": 5,
+              "hp": 15,
+              "maxHp": 15,
+              "accuracy": 70,
+              "defense": 10,
+              "damage": "1d4+1",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [
+                "MA_ATTACKS_PENETRATE",
+                "MA_AVOID_CORRIDORS"
+              ],
+              "bolts": [],
+              "typeId": "goblin",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": true,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 9900,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        },
+        "constants": {
+          "WALL": 3,
+          "FORCEFIELD": 43,
+          "CRYSTAL_WALL": 45,
+          "RUBBLE": 98
+        }
+      }
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,464 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/d64d/brogue/brogue-web
+
+stdout | src/test/u_15a_shattering.test.ts > U15a IMPREGNABLE is an outer gate for every crystalize side effect > protected 3 preserves every layer, cell field, appearance and dormant occupant
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_15a_shattering.test.ts (18 tests | 16 failed) 2434ms
+     × protected 3 preserves every layer, cell field, appearance and dormant occupant 307ms
+     × protected 21 preserves every layer, cell field, appearance and dormant occupant 102ms
+     × protected 54 preserves every layer, cell field, appearance and dormant occupant 102ms
+     × protected 71 preserves every layer, cell field, appearance and dormant occupant 102ms
+     × protected 45 preserves every layer, cell field, appearance and dormant occupant 103ms
+     ✓ protected 2 preserves every layer, cell field, appearance and dormant occupant 105ms
+     × protected boundary (0,5) survives; neighboring unprotected boundary still crystallizes 100ms
+     × protected boundary (78,5) survives; neighboring unprotected boundary still crystallizes 101ms
+     × protected boundary (5,0) survives; neighboring unprotected boundary still crystallizes 100ms
+     × protected boundary (5,28) survives; neighboring unprotected boundary still crystallizes 126ms
+     × MONST_ATTACKABLE_THRU_WALLS dies through shielding only on the unprotected obstructing cell 125ms
+     × MONST_TURRET dies through shielding only on the unprotected obstructing cell 121ms
+     × DF awakens the unprotected dormant turret before lethal handling; protected one sleeps 118ms
+     × frees an embedded captive after rubble; a protected captive stays captive 120ms
+     ✓ only DUNGEON obstruction within Euclidean radius qualifies, regardless of visibility 119ms
+     × retained upper blocking layer continues to obstruct vision and movement 120ms
+     × protected machine and ordinary wall behave identically after reload=false 122ms
+     × protected machine and ordinary wall behave identically after reload=true 340ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 16 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_15a_shattering.test.ts > U15a IMPREGNABLE is an outer gate for every crystalize side effect > protected 3 preserves every layer, cell field, appearance and dormant occupant
+AssertionError: expected Cell{ x: 7, y: 5, …(17) } to deeply equal ObjectContaining{…}
+
+- Expected
++ Received
+
+@@ -1,20 +1,20 @@
+- ObjectContaining {
++ Cell {
+    "autoSearched": true,
+    "char": "#",
+    "color": 1193046,
+    "exposedToFire": 7,
+    "hasDormantMonster": true,
+    "hasMemory": true,
+    "isDiscovered": true,
+    "isExplored": false,
+-   "isOpaque": true,
++   "isOpaque": false,
+    "isPassable": false,
+    "isPowered": true,
+    "isVisible": true,
+    "layers": [
+-     3,
++     43,
+      7,
+      34,
+      46,
+    ],
+    "light": 0,
+
+ ❯ src/test/u_15a_shattering.test.ts:69:29
+     67|             const count = rng.randomNumbersGenerated;
+     68|             internal(g).crystalizeFromPlayer(9);
+     69|             expect(cell(g)).toEqual(expect.objectContaining(before));
+       |                             ^
+     70|             expect(JSON.parse(JSON.stringify(cell(g)))).toEqual(before…
+     71|             expect(cellAppearance(cell(g), appearanceContext)).toEqual…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/16]⎯
+
+ FAIL  src/test/u_15a_shattering.test.ts > U15a IMPREGNABLE is an outer gate for every crystalize side effect > protected 21 preserves every layer, cell field, appearance and dormant occupant
+AssertionError: expected Cell{ x: 7, y: 5, …(17) } to deeply equal ObjectContaining{…}
+
+- Expected
++ Received
+
+@@ -1,20 +1,20 @@
+- ObjectContaining {
++ Cell {
+    "autoSearched": true,
+    "char": "#",
+    "color": 1193046,
+    "exposedToFire": 7,
+    "hasDormantMonster": true,
+    "hasMemory": true,
+    "isDiscovered": true,
+    "isExplored": false,
+    "isOpaque": false,
+-   "isPassable": true,
++   "isPassable": false,
+    "isPowered": true,
+    "isVisible": true,
+    "layers": [
+-     21,
++     43,
+      7,
+      34,
+      46,
+    ],
+    "light": 0,
+
+ ❯ src/test/u_15a_shattering.test.ts:69:29
+     67|             const count = rng.randomNumbersGenerated;
+     68|             internal(g).crystalizeFromPlayer(9);
+     69|             expect(cell(g)).toEqual(expect.objectContaining(before));
+       |                             ^
+     70|             expect(JSON.parse(JSON.stringify(cell(g)))).toEqual(before…
+     71|             expect(cellAppearance(cell(g), appearanceContext)).toEqual…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/16]⎯
+
+ FAIL  src/test/u_15a_shattering.test.ts > U15a IMPREGNABLE is an outer gate for every crystalize side effect > protected 54 preserves every layer, cell field, appearance and dormant occupant
+AssertionError: expected Cell{ x: 7, y: 5, …(17) } to deeply equal ObjectContaining{…}
+
+- Expected
++ Received
+
+@@ -1,20 +1,20 @@
+- ObjectContaining {
++ Cell {
+    "autoSearched": true,
+    "char": "#",
+    "color": 1193046,
+    "exposedToFire": 7,
+    "hasDormantMonster": true,
+    "hasMemory": true,
+    "isDiscovered": true,
+    "isExplored": false,
+    "isOpaque": false,
+-   "isPassable": true,
++   "isPassable": false,
+    "isPowered": true,
+    "isVisible": true,
+    "layers": [
+-     54,
++     43,
+      7,
+      34,
+      46,
+    ],
+    "light": 0,
+
+ ❯ src/test/u_15a_shattering.test.ts:69:29
+     67|             const count = rng.randomNumbersGenerated;
+     68|             internal(g).crystalizeFromPlayer(9);
+     69|             expect(cell(g)).toEqual(expect.objectContaining(before));
+       |                             ^
+     70|             expect(JSON.parse(JSON.stringify(cell(g)))).toEqual(before…
+     71|             expect(cellAppearance(cell(g), appearanceContext)).toEqual…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/16]⎯
+
+ FAIL  src/test/u_15a_shattering.test.ts > U15a IMPREGNABLE is an outer gate for every crystalize side effect > protected 71 preserves every layer, cell field, appearance and dormant occupant
+AssertionError: expected Cell{ x: 7, y: 5, …(17) } to deeply equal ObjectContaining{…}
+
+- Expected
++ Received
+
+@@ -1,20 +1,20 @@
+- ObjectContaining {
++ Cell {
+    "autoSearched": true,
+    "char": "#",
+    "color": 1193046,
+    "exposedToFire": 7,
+    "hasDormantMonster": true,
+    "hasMemory": true,
+    "isDiscovered": true,
+    "isExplored": false,
+    "isOpaque": false,
+-   "isPassable": true,
++   "isPassable": false,
+    "isPowered": true,
+    "isVisible": true,
+    "layers": [
+-     71,
++     43,
+      7,
+      34,
+      46,
+    ],
+    "light": 0,
+
+ ❯ src/test/u_15a_shattering.test.ts:69:29
+     67|             const count = rng.randomNumbersGenerated;
+     68|             internal(g).crystalizeFromPlayer(9);
+     69|             expect(cell(g)).toEqual(expect.objectContaining(before));
+       |                             ^
+     70|             expect(JSON.parse(JSON.stringify(cell(g)))).toEqual(before…
+     71|             expect(cellAppearance(cell(g), appearanceContext)).toEqual…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/16]⎯
+
+ FAIL  src/test/u_15a_shattering.test.ts > U15a IMPREGNABLE is an outer gate for every crystalize side effect > protected 45 preserves every layer, cell field, appearance and dormant occupant
+AssertionError: expected Cell{ x: 7, y: 5, …(17) } to deeply equal ObjectContaining{…}
+
+- Expected
++ Received
+
+@@ -1,20 +1,20 @@
+- ObjectContaining {
++ Cell {
+    "autoSearched": true,
+    "char": "#",
+    "color": 1193046,
+    "exposedToFire": 7,
+    "hasDormantMonster": true,
+    "hasMemory": true,
+    "isDiscovered": true,
+    "isExplored": false,
+    "isOpaque": false,
+-   "isPassable": true,
++   "isPassable": false,
+    "isPowered": true,
+    "isVisible": true,
+    "layers": [
+-     45,
++     43,
+      7,
+      34,
+      46,
+    ],
+    "light": 0,
+
+ ❯ src/test/u_15a_shattering.test.ts:69:29
+     67|             const count = rng.randomNumbersGenerated;
+     68|             internal(g).crystalizeFromPlayer(9);
+     69|             expect(cell(g)).toEqual(expect.objectContaining(before));
+       |                             ^
+     70|             expect(JSON.parse(JSON.stringify(cell(g)))).toEqual(before…
+     71|             expect(cellAppearance(cell(g), appearanceContext)).toEqual…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/16]⎯
+
+ FAIL  src/test/u_15a_shattering.test.ts > U15a IMPREGNABLE is an outer gate for every crystalize side effect > protected boundary (0,5) survives; neighboring unprotected boundary still crystallizes
+ FAIL  src/test/u_15a_shattering.test.ts > U15a IMPREGNABLE is an outer gate for every crystalize side effect > protected boundary (78,5) survives; neighboring unprotected boundary still crystallizes
+ FAIL  src/test/u_15a_shattering.test.ts > U15a IMPREGNABLE is an outer gate for every crystalize side effect > protected boundary (5,0) survives; neighboring unprotected boundary still crystallizes
+ FAIL  src/test/u_15a_shattering.test.ts > U15a IMPREGNABLE is an outer gate for every crystalize side effect > protected boundary (5,28) survives; neighboring unprotected boundary still crystallizes
+AssertionError: expected 45 to be 3 // Object.is equality
+
+- Expected
++ Received
+
+- 3
++ 45
+
+ ❯ src/test/u_15a_shattering.test.ts:84:53
+     82|             g.grid.setTerrain(x, y, T.WALL); g.grid.setTerrain(nx, ny,…
+     83|             internal(g).crystalizeFromPlayer(9);
+     84|             expect(cell(g, x, y).layers[L.DUNGEON]).toBe(T.WALL);
+       |                                                     ^
+     85|             expect(cell(g, x, y).layers[L.SURFACE]).toBe(T.NOTHING);
+     86|             expect(cell(g, nx, ny).layers[L.DUNGEON]).toBe(T.CRYSTAL_W…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/16]⎯
+
+ FAIL  src/test/u_15a_shattering.test.ts > U15a IMPREGNABLE is an outer gate for every crystalize side effect > MONST_ATTACKABLE_THRU_WALLS dies through shielding only on the unprotected obstructing cell
+AssertionError: expected +0 to be 15 // Object.is equality
+
+- Expected
++ Received
+
+- 15
++ 0
+
+ ❯ src/test/u_15a_shattering.test.ts:99:30
+     97|             protect(g, 7, 5); const hp = alive.hp;
+     98|             internal(g).crystalizeFromPlayer(9);
+     99|             expect(alive.hp).toBe(hp); expect(doomed.hp).toBe(0);
+       |                              ^
+    100|             expect(alive.getStatusDuration('shielded')).toBe(1000);
+    101|         });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/16]⎯
+
+ FAIL  src/test/u_15a_shattering.test.ts > U15a IMPREGNABLE is an outer gate for every crystalize side effect > MONST_TURRET dies through shielding only on the unprotected obstructing cell
+AssertionError: expected 15 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 15
+
+ ❯ src/test/u_15a_shattering.test.ts:99:58
+     97|             protect(g, 7, 5); const hp = alive.hp;
+     98|             internal(g).crystalizeFromPlayer(9);
+     99|             expect(alive.hp).toBe(hp); expect(doomed.hp).toBe(0);
+       |                                                          ^
+    100|             expect(alive.getStatusDuration('shielded')).toBe(1000);
+    101|         });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/16]⎯
+
+ FAIL  src/test/u_15a_shattering.test.ts > U15a IMPREGNABLE is an outer gate for every crystalize side effect > DF awakens the unprotected dormant turret before lethal handling; protected one sleeps
+AssertionError: expected [] to deeply equal [ Monster{ id: 22, …(61) } ]
+
+- Expected
++ Received
+
+- [
+-   Monster {
+-     "abilities": Set {},
+-     "abilityFlags": Set {
+-       "MA_ATTACKS_PENETRATE",
+-       "MA_AVOID_CORRIDORS",
+-     },
+-     "accuracy": 70,
+-     "attackSpeed": 100,
+-     "baseAttackSpeed": 100,
+-     "baseMoveSpeed": 100,
+-     "behaviorFlags": Set {
+-       "MONST_TURRET",
+-     },
+-     "bolts": [],
+-     "boundToLeader": false,
+-     "boundToPlayer": false,
+-     "carriedItem": undefined,
+-     "carriedMonster": null,
+-     "char": "g",
+-     "color": 5592405,
+-     "damageString": "1d4+1",
+-     "deathEffectTriggered": false,
+-     "defense": 10,
+-     "description": "肮脏的小灵长类动物，部落式的哥布林经常成群结队地旅行，携带临时制作的石矛。",
+-     "doesNotTrackLeader": false,
+-     "dominated": false,
+-     "falling": false,
+-     "givenUpOnScent": false,
+-     "goldDropChance": 0,
+-     "hp": 15,
+-     "id": 22,
+-     "isAlly": false,
+-     "isCaged": false,
+-     "isClone": false,
+-     "isDormant": false,
+-     "itemDropChance": 0,
+-     "leader": null,
+-     "loc": {
+-       "x": 7,
+-       "y": 5,
+-     },
+-     "machineHome": 0,
+-     "maxHp": 15,
+-     "maxShield": 0,
+-     "movementSpeed": 100,
+-     "mutation": undefined,
+-     "name": "Goblin",
+-     "newPowerCount": 0,
+-     "onHitChance": 0.12,
+-     "onHitDuration": 1,
+-     "onHitStatus": "paralyzed",
+-     "poisonAmount": 0,
+-     "polymorphKeepsSpeed": false,
+-     "polymorphed": false,
+-     "preplaced": false,
+-     "regenCounter": 0,
+-     "regenTurns": 20,
+-     "safetySnapshot": null,
+-     "seized": false,
+-     "seizing": false,
+-     "spawnLoc": {
+-       "x": 0,
+-       "y": 0,
+-     },
+-     "state": 1,
+-     "statusDurations": {},
+-     "statusImmunities": Set {
+-       "hallucinating",
+-     },
+-     "statusResistTurns": {
+-       "confused": 2,
+-     },
+-     "targetWaypointIndex": -1,
+-     "ticksUntilTurn": 10000,
+-     "totalPowerCount": 0,
+-     "typeId": "goblin",
+-     "wasNegated": false,
+-     "waypointAlreadyVisited": null,
+-   },
+- ]
++ []
+
+ ❯ src/test/u_15a_shattering.test.ts:112:35
+    110|         protect(g, 7, 5);
+    111|         internal(g).crystalizeFromPlayer(9);
+    112|         expect(g.dormantMonsters).toEqual([asleep]); expect(asleep.hp)…
+       |                                   ^
+    113|         expect(cell(g).hasDormantMonster).toBe(true);
+    114|         expect(g.monsters).toContain(doomed); expect(doomed.hp).toBe(0…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/16]⎯
+
+ FAIL  src/test/u_15a_shattering.test.ts > U15a IMPREGNABLE is an outer gate for every crystalize side effect > frees an embedded captive after rubble; a protected captive stays captive
+AssertionError: expected "freeCaptive" to be called once with arguments: [ Monster{ id: 23, …(61) } ]
+
+Number of calls: 0
+
+ ❯ src/test/u_15a_shattering.test.ts:129:25
+    127|         });
+    128|         internal(g).crystalizeFromPlayer(9);
+    129|         expect(release).toHaveBeenCalledExactlyOnceWith(freed);
+       |                         ^
+    130|         expect(freed.isAlly).toBe(true); expect(freed.isCaged).toBe(fa…
+    131|         expect(captive.isCaged).toBe(true); expect(captive.isAlly).toB…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/16]⎯
+
+ FAIL  src/test/u_15a_shattering.test.ts > U15a IMPREGNABLE is an outer gate for every crystalize side effect > retained upper blocking layer continues to obstruct vision and movement
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/u_15a_shattering.test.ts:161:74
+    159|         expect(cell(g).layers[L.GAS]).toBe(T.NOTHING);
+    160|         expect(cellTerrainFlags(g.grid, 7, 5) & (T_OBSTRUCTS_PASSABILI…
+    161|         expect(cell(g).isPassable).toBe(false); expect(cell(g).isOpaqu…
+       |                                                                          ^
+    162|     });
+    163| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/16]⎯
+
+ FAIL  src/test/u_15a_shattering.test.ts > U15a real inventory read + U01 v2 JSON round trip > protected machine and ordinary wall behave identically after reload=false
+ FAIL  src/test/u_15a_shattering.test.ts > U15a real inventory read + U01 v2 JSON round trip > protected machine and ordinary wall behave identically after reload=true
+AssertionError: expected { layers: [ 43, +0, +0, 98 ], …(3) } to deeply equal { layers: [ 21, +0, +0, +0 ], …(3) }
+
+- Expected
++ Received
+
+  {
+    "char": "+",
+    "color": 11259375,
+    "layers": [
+-     21,
+-     0,
++     43,
+      0,
+      0,
++     98,
+    ],
+    "machine": 17,
+  }
+
+ ❯ src/test/u_15a_shattering.test.ts:189:118
+    187|         expect(ItemLoader.identifiedItems.has('scroll_of_shattering'))…
+    188|         expect(g.stats.turns).toBe(turns + 1);
+    189|         expect({ layers: cell(g).layers, machine: cell(g).machineNumbe…
+       |                                                                                                                      ^
+    190|         expect(g.grid.isImpregnable(7, 5)).toBe(true);
+    191|         expect(g.getMonsterAt(7, 5)?.isCaged).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/16]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  16 failed | 2 passed (18)
+   Start at  16:47:21
+   Duration  3.21s (transform 310ms, setup 0ms, import 697ms, tests 2.43s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/d64d/brogue/brogue-web/ai_docs/reports/u-15a-evidence/negative-original.json

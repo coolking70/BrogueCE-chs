@@ -1,0 +1,531 @@
+{
+  "pattern": "crystalizeFromPlayer|impregnableCells|isImpregnable|IMPREGNABLE",
+  "scannedTextFiles": 1461,
+  "hits": 526,
+  "files": [
+    {
+      "file": "BrogueCE-master/src/brogue/Architect.c",
+      "hits": 7
+    },
+    {
+      "file": "BrogueCE-master/src/brogue/Items.c",
+      "hits": 7
+    },
+    {
+      "file": "BrogueCE-master/src/brogue/Rogue.h",
+      "hits": 5
+    },
+    {
+      "file": "BrogueCE-master/src/variants/GlobalsBrogue.c",
+      "hits": 46
+    },
+    {
+      "file": "BrogueCE-master/src/variants/GlobalsBulletBrogue.c",
+      "hits": 42
+    },
+    {
+      "file": "BrogueCE-master/src/variants/GlobalsRapidBrogue.c",
+      "hits": 40
+    },
+    {
+      "file": "brogue-web/ai_docs/SESSION_HANDOFF.md",
+      "hits": 2
+    },
+    {
+      "file": "brogue-web/ai_docs/b_3_scroll_blasts_report.md",
+      "hits": 7
+    },
+    {
+      "file": "brogue-web/ai_docs/c_2_lakes_report.md",
+      "hits": 2
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/u-00-evidence/final-support-tests.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/u-00-evidence/final-tests.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/u-00-evidence/module-globals.json",
+      "hits": 2
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/u-00-evidence/semantic-hits.txt",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/u-01-evidence/final-tests.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/u-01-evidence/prefinal-legacy-fixtures/final-tests.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/u-01-evidence/semantic-hits.txt",
+      "hits": 5
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/u-05a-evidence/ce-features.json",
+      "hits": 5
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/u-05a-evidence/final-tests.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/u-05a-evidence/regression-initial.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/u-05a-evidence/semantic-hits.txt",
+      "hits": 8
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/u-15a.report.md",
+      "hits": 11
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/v-2b-0.report.md",
+      "hits": 3
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/v-2b-1.report.md",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/v-2b-2a.report.md",
+      "hits": 10
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/v-2b-2b.report.md",
+      "hits": 3
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/v-2b-3.report.md",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/v-2b-4.report.md",
+      "hits": 2
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/v-2b-6.report.md",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/v-2b-7.report.md",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/v-2b-9c.report.md",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/v-2b-9d.report.md",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-10-evidence/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-11-evidence/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-11-evidence/preflight.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-12-evidence/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-12-evidence/prefinal-failure/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-13-evidence/boundary.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-13-evidence/closure.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-13-evidence/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-13-evidence/prefinal-waypoint-gap/boundary.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-13-evidence/protected-generation.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-13.report.md",
+      "hits": 13
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-14-evidence/boundary.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-14-evidence/closure.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-14-evidence/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-14-evidence/focused.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-14-evidence/initial-failure.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-14-evidence/negative-blocking-veto.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-14-evidence/negative-fixed-area.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-14-evidence/negative-passability-cache.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-14-evidence/negative-protected-floor.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-14.report.md",
+      "hits": 5
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-15-evidence/boundary.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-15-evidence/damage-sites.json",
+      "hits": 2
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-15-evidence/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-15-evidence/prefinal-failure/boundary.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-15-evidence/prefinal-failure/damage-sites.json",
+      "hits": 2
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-15-evidence/prefinal-failure/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-16-evidence/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-17-evidence/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-17-evidence/prefinal-blade-tag/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-18-evidence/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-19-evidence/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-19-evidence/prefinal-w1-contract/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-20-evidence/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-21-evidence/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-21-evidence/prefinal-i18n/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-22-evidence/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-23-evidence/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-24-evidence/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-24-evidence/pre-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-25-evidence/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-25-evidence/prefinal-appearance/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-25-evidence/second-targeted.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-26-evidence/debt-source-index.txt",
+      "hits": 10
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-26-evidence/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-26-evidence/prefinal-w9-catalog/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-26-evidence/targeted-1.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-26.report.md",
+      "hits": 4
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-3.report.md",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-4.report.md",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-5-evidence/final-tests.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-5-evidence/post-broad.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-6-evidence/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-7-evidence/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-8-evidence/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/w-9-evidence/final-regression.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/x-0-evidence/game-members.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/x-0-evidence/inventory-summary.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/x-0-evidence/runtime-observations.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/x-0-evidence/test-any-accesses.json",
+      "hits": 3
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/x-0-evidence/test-private-name-references.json",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/reports/x-0-survey.report.md",
+      "hits": 5
+    },
+    {
+      "file": "brogue-web/ai_docs/tasks/b-3.prompt.md",
+      "hits": 2
+    },
+    {
+      "file": "brogue-web/ai_docs/tasks/b-4b.prompt.md",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/tasks/u-15a.prompt.md",
+      "hits": 8
+    },
+    {
+      "file": "brogue-web/ai_docs/tasks/v-2b-1.prompt.md",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/tasks/v-2b-2a.prompt.md",
+      "hits": 2
+    },
+    {
+      "file": "brogue-web/ai_docs/tasks/v-2b-2b.prompt.md",
+      "hits": 2
+    },
+    {
+      "file": "brogue-web/ai_docs/tasks/w-14.prompt.md",
+      "hits": 3
+    },
+    {
+      "file": "brogue-web/ai_docs/v_0_survey.md",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/ai_docs/v_2a_report.md",
+      "hits": 3
+    },
+    {
+      "file": "brogue-web/progress.md",
+      "hits": 7
+    },
+    {
+      "file": "brogue-web/scripts/u15a-audit.mjs",
+      "hits": 5
+    },
+    {
+      "file": "brogue-web/scripts/u15a-browser-check.mjs",
+      "hits": 5
+    },
+    {
+      "file": "brogue-web/scripts/u15a-test-scope.mjs",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/scripts/w13-browser-check.mjs",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/scripts/w13-final-check.mjs",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/scripts/w13-test-scope.mjs",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/scripts/w14-browser-check.mjs",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/scripts/w14-final-check.mjs",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/scripts/w14-negative-check.mjs",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/scripts/w14-test-scope.mjs",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/scripts/w15-final-check.mjs",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/src/data/blueprints.json",
+      "hits": 46
+    },
+    {
+      "file": "brogue-web/src/engine/Combat/BoltTrajectory.ts",
+      "hits": 3
+    },
+    {
+      "file": "brogue-web/src/engine/Core/Game.ts",
+      "hits": 8
+    },
+    {
+      "file": "brogue-web/src/engine/Generator/BlueprintEngine.ts",
+      "hits": 21
+    },
+    {
+      "file": "brogue-web/src/engine/Map/Grid.ts",
+      "hits": 4
+    },
+    {
+      "file": "brogue-web/src/engine/Map/LakeSystem.ts",
+      "hits": 3
+    },
+    {
+      "file": "brogue-web/src/engine/Map/Promotion.ts",
+      "hits": 3
+    },
+    {
+      "file": "brogue-web/src/test/c_4b_dungeon_feature.test.ts",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/src/test/u_15a_shattering.test.ts",
+      "hits": 14
+    },
+    {
+      "file": "brogue-web/src/test/v_2b_2a_placement_flags.test.ts",
+      "hits": 12
+    },
+    {
+      "file": "brogue-web/src/test/v_2b_2b_blueprints.test.ts",
+      "hits": 16
+    },
+    {
+      "file": "brogue-web/src/test/v_2b_3_wired.test.ts",
+      "hits": 3
+    },
+    {
+      "file": "brogue-web/src/test/v_2b_4_altars.test.ts",
+      "hits": 10
+    },
+    {
+      "file": "brogue-web/src/test/v_2b_7_features.test.ts",
+      "hits": 1
+    },
+    {
+      "file": "brogue-web/src/test/w_13_tunneling.test.ts",
+      "hits": 9
+    },
+    {
+      "file": "brogue-web/src/test/w_14_obstruction.test.ts",
+      "hits": 4
+    },
+    {
+      "file": "brogue-web/src/test/w_15_shielding.test.ts",
+      "hits": 1
+    }
+  ]
+}

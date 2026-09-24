@@ -1,0 +1,38 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/d64d/brogue/brogue-web
+
+ ❯ src/test/u_15a_shattering.test.ts (18 tests | 1 failed) 2031ms
+     × retained upper blocking layer continues to obstruct vision and movement 112ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_15a_shattering.test.ts > U15a IMPREGNABLE is an outer gate for every crystalize side effect > retained upper blocking layer continues to obstruct vision and movement
+AssertionError: expected [ 43, +0, +0, 3 ] to deeply equal [ 43, +0, 3, +0 ]
+
+- Expected
++ Received
+
+  [
+    43,
+    0,
+-   3,
+    0,
++   3,
+  ]
+
+ ❯ src/test/u_15a_shattering.test.ts:156:32
+    154|         g.grid.setTerrainLayer(7, 5, L.SURFACE, T.WALL);
+    155|         internal(g).crystalizeFromPlayer(9);
+    156|         expect(cell(g).layers).toEqual([T.FORCEFIELD, T.NOTHING, T.WAL…
+       |                                ^
+    157|         expect(cellTerrainFlags(g.grid, 7, 5) & (T_OBSTRUCTS_PASSABILI…
+    158|         expect(cell(g).isPassable).toBe(false); expect(cell(g).isOpaqu…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 94 passed (95)
+   Start at  16:43:12
+   Duration  5.07s (transform 937ms, setup 0ms, import 1.53s, tests 7.05s, environment 0ms)
+
