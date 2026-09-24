@@ -117,6 +117,10 @@ describe('P4-1b 验收 2：目标选择正确（BF_TARGET_ALLIES / BF_TARGET_ENE
         const ally = new Monster(9, 5, monsterDataById('goblin'));
         ally.isAlly = true;
         game.monsters.push(mystic, ally);
+        const enemy = new Monster(12, 5, monsterDataById('rat'));
+        game.monsters.push(enemy);
+        game.grid.getCell(mystic.x, mystic.y)!.isVisible = true;
+        game.grid.getCell(enemy.x, enemy.y)!.isVisible = true;
         game.player.hp = game.player.maxHp; // 友军阵营下玩家自己也是队友，但护盾目标应选到 ally 或玩家均可（都是队友）
 
         let cast = false;

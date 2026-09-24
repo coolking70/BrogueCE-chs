@@ -55,7 +55,7 @@ describe('W-18 CE effect and trace',()=>{
   const r=cast(g,m);expect(r.outcome?.autoID).toBe(false);expect(m.hasStatus('entranced')).toBe(false);expect(m.ticksUntilTurn).toBe(10000);expect(m.state).toBe(MonsterState.ASLEEP);
  });
  it('wakes recipient/teammates; applying to an ally retains allegiance',()=>{
-  const g=scene(),m=mob(g),friend=mob(g,'rat',15,8);m.state=friend.state=MonsterState.ASLEEP;friend.ticksUntilTurn=20;
+   const g=scene(),m=mob(g),friend=mob(g,'rat',15,8);friend.leader=m;m.state=friend.state=MonsterState.ASLEEP;friend.ticksUntilTurn=20;
   cast(g,m);expect(m.state).toBe(MonsterState.HUNTING);expect(friend.state).toBe(MonsterState.HUNTING);expect(m.ticksUntilTurn).toBe(100);expect(friend.ticksUntilTurn).toBe(100);
   m.isAlly=true;m.state=MonsterState.WANDERING;cast(g,m);expect(m.isAlly).toBe(true);expect(m.state).toBe(MonsterState.WANDERING);
  });

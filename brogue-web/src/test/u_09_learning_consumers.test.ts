@@ -86,6 +86,7 @@ describe('U09 hand-installed abilities use the real AI loop, without natural lea
             g.monsters=[];g.player.statusDurations={};
             const caster=mob(g),target=test.playerTarget?g.player:mob(g,8);caster.isAlly=test.casterAlly;
             if(target instanceof Monster) {target.isAlly=test.targetAlly;target.behaviorFlags=new Set(test.behavior);target.abilityFlags=new Set(test.ability);}
+            if(test.label==='teammate' && target instanceof Monster) target.leader=caster;
             const statuses={STATUS_ENTRANCED:'entranced',STATUS_SLOWED:'slowed',STATUS_INVISIBLE:'invisible',STATUS_IMMUNE_TO_FIRE:'immune_fire'} as const;
             for(const id of test.status) target.setStatusDuration(statuses[id as keyof typeof statuses],10);
             expect(specificallyValidBoltTarget(caster,target,test.name,g),`${test.name}/${test.label}`).toBe(test.expected);
@@ -94,6 +95,7 @@ describe('U09 hand-installed abilities use the real AI loop, without natural lea
     it.each(added)('%s: eligible target, real cast, attack ticks; no power counter spent', name => {
         const g=scene(),m=mob(g),target=mob(g,8);
         m.isAlly=name!=='INVISIBILITY'; target.isAlly=false;
+        if(name==='INVISIBILITY') target.leader=m;
         m.bolts=[name]; m.behaviorFlags.add('MONST_ALWAYS_USE_ABILITY'); m.behaviorFlags.add('MONST_CAST_SPELLS_SLOWLY');
         m.newPowerCount=2; m.totalPowerCount=3;
         if(name==='TELEPORT') for(let y=0;y<g.grid.height;y++)g.grid.setTerrain(20,y,T.WALL);
@@ -122,6 +124,7 @@ describe('U09 hand-installed abilities use the real AI loop, without natural lea
     it.each(added)('%s applies its CE faction, invulnerable, forbidden and reflectability gates', name => {
         const g=scene(),m=mob(g),target=mob(g,8);
         m.isAlly=name!=='INVISIBILITY';
+        if(name==='INVISIBILITY') target.leader=m;
         expect(specificallyValidBoltTarget(m,target,name,g)).toBe(true);
         target.isAlly=!target.isAlly;
         expect(specificallyValidBoltTarget(m,target,name,g)).toBe(false); target.isAlly=false;

@@ -131,6 +131,9 @@ describe('W-15 real player/monster bolt contacts', () => {
     it.each(['player','monster'])('monster magnitude5 =>356 for %s; shielded target is excluded until depleted', who => {
         const g = scene(), caster=mob(g,'goblin_mystic',10,5), target=who==='player'?g.player:mob(g);
         caster.isAlly=true; if(target instanceof Monster) target.isAlly=true;
+        const enemy = mob(g, 'rat', 15, 5);
+        g.grid.getCell(caster.x, caster.y)!.isVisible = true;
+        g.grid.getCell(enemy.x, enemy.y)!.isVisible = true;
         expect(g.castMonsterBolt(caster,target,'SHIELDING')!.outcome?.autoID).toBe(true);
         expect(shield(target)).toEqual([356,356]); expect(isShielded(target)).toBe(true);
         expect(specificallyValidBoltTarget(caster,target,'SHIELDING',g)).toBe(false);

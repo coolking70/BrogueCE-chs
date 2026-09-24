@@ -19,7 +19,7 @@ import { ItemLoader } from '../engine/Items/ItemLoader';
 import type { Item } from '../engine/Items/Item';
 import type { StatusId } from './Creature';
 import { PERMANENT_STATUS_DURATION } from './Creature';
-import { TerrainType } from '../engine/Map/Grid';
+import { DungeonLayer, TerrainType } from '../engine/Map/Grid';
 import { breakEntanglingTerrain } from '../engine/Map/Promotion';
 import { MONSTER_BOLT_TABLE, BoltEffect, type BoltConfig } from '../engine/Combat/Bolt';
 import { CEBoltType, CEBoltFlags, CE_BOLT_CATALOG } from '../engine/Combat/BoltCatalog';
@@ -30,8 +30,8 @@ import { hasBlink, blinkChance, monsterBlinkToPreferenceMap, monsterBlinkToSafet
     closestBlinkEnemy, blinkAllyFlees, blinkAllyAfterMagic, blinkTowardCreature, blinkTowardCaptiveLeader, allyShouldPursue, monsterAvoidsCorridor } from '../engine/Combat/MonsterBlink';
 import { updateMonsterCorpseAbsorption, moveAllyToCorpse, corpseAllyBeforeMagic } from '../engine/Combat/MonsterAbsorption';
 import { entrancementDiagonalBlocked, entrancementPassable } from '../engine/Movement/Entrancement';
-import { cellTerrainFlags, cellTerrainMechFlags } from '../engine/Map/DungeonFeature';
-import { T_ENTANGLES, TM_ALLOWS_SUBMERGING, T_LAVA_INSTA_DEATH, T_IS_DEEP_WATER, T_AUTO_DESCENT } from '../engine/Map/TerrainCatalog';
+import { burnedTerrainFlagsOfCell, cellTerrainFlags, cellTerrainMechFlags } from '../engine/Map/DungeonFeature';
+import { T_ENTANGLES, TM_ALLOWS_SUBMERGING, T_LAVA_INSTA_DEATH, T_IS_DEEP_WATER, T_AUTO_DESCENT, T_PATHING_BLOCKER, T_HARMFUL_TERRAIN, T_SACRED, T_IS_FIRE, T_SPONTANEOUSLY_IGNITES, T_IS_DF_TRAP, T_CAUSES_POISON, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_CONFUSION } from '../engine/Map/TerrainCatalog';
 
 const BLADE_SIGHT: BoltConfig = { id: 'blade_sight', name: '', ceType: CEBoltType.NONE,
     effect: BoltEffect.NONE, magnitude: 0, char: '', color: 0, maxRange: 0, piercing: false, selfTargeting: false };
@@ -53,18 +53,53 @@ function factionOf(c: Creature): Faction {
     return 'hostile';
 }
 
-/** CE monstersAreTeammates 的简化版：同阵营且都不处于 discordant。 */
+/** CE Monsters.c:372: following relationships survive discord. */
 export function monstersAreTeammates(a: Creature, b: Creature): boolean {
     if (a === b) return false;
-    if (a.hasStatus('discordant') || b.hasStatus('discordant')) return false;
-    return factionOf(a) === factionOf(b);
+    if (a instanceof Monster && a.leader === b) return true;
+    if (b instanceof Monster && b.leader === a) return true;
+    if (a instanceof Monster && b instanceof Monster && a.leader && a.leader === b.leader) return true;
+    return factionOf(a) === 'player' && factionOf(b) === 'player';
 }
 
-/** CE monstersAreEnemies 的简化版：阵营不同，或任一方 discordant（六亲不认）。 */
+/** CE Monsters.c:383: captive, discord, aquatic exception, then allegiance. */
 export function monstersAreEnemies(a: Creature, b: Creature): boolean {
     if (a === b) return false;
+    if ((a instanceof Monster && a.isCaged) || (b instanceof Monster && b.isCaged)) return false;
     if (a.hasStatus('discordant') || b.hasStatus('discordant')) return true;
+    // Aquatic hostility depends on terrain; the bolt selector supplies the map below.
     return factionOf(a) !== factionOf(b);
+}
+
+function boltEnemies(a: Creature, b: Creature, game: Game): boolean {
+    if (monstersAreEnemies(a, b)) return true;
+    if (a === b || (a instanceof Monster && a.isCaged) || (b instanceof Monster && b.isCaged)) return false;
+    const aquaticThreat = (liquid: Creature, victim: Creature) => liquid instanceof Monster
+        && liquid.hasBehavior('MONST_RESTRICTED_TO_LIQUID')
+        && !(victim instanceof Monster && victim.hasBehavior('MONST_IMMUNE_TO_WATER'))
+        && !victim.hasStatus('levitating')
+        && !!(cellTerrainFlags(game.grid, victim.x, victim.y) & T_IS_DEEP_WATER);
+    return aquaticThreat(a, b) || aquaticThreat(b, a);
+}
+
+function avoidedFlagsForCaster(caster: Monster): number {
+    let flags = T_PATHING_BLOCKER | T_HARMFUL_TERRAIN | T_SACRED;
+    if (caster.hasBehavior('MONST_INVULNERABLE')) flags &= ~(T_LAVA_INSTA_DEATH | T_SPONTANEOUSLY_IGNITES | T_IS_FIRE | T_HARMFUL_TERRAIN | T_IS_DF_TRAP);
+    if (caster.hasBehavior('MONST_IMMUNE_TO_FIRE') || caster.hasBehavior('MONST_FLIES')) flags &= ~T_LAVA_INSTA_DEATH;
+    if (caster.hasBehavior('MONST_IMMUNE_TO_FIRE')) flags &= ~(T_SPONTANEOUSLY_IGNITES | T_IS_FIRE);
+    if (caster.hasBehavior('MONST_IMMUNE_TO_WATER') || caster.hasBehavior('MONST_FLIES')) flags &= ~T_IS_DEEP_WATER;
+    if (caster.hasBehavior('MONST_FLIES')) flags &= ~(T_AUTO_DESCENT | T_IS_DF_TRAP | T_CAUSES_POISON);
+    if (caster.hasBehavior('MONST_INANIMATE')) flags &= ~(T_CAUSES_POISON | T_CAUSES_DAMAGE | T_CAUSES_PARALYSIS | T_CAUSES_CONFUSION);
+    return flags;
+}
+
+function eligibleForCombatBuff(caster: Monster, target: Creature, game: Game): boolean {
+    if (!caster.isAlly) return target instanceof Monster && target.state === MonsterState.HUNTING;
+    const casterCell = game.grid.getCell(caster.x, caster.y);
+    if (!casterCell?.isVisible || caster.hasStatus('invisible') && casterCell.layers[DungeonLayer.GAS] === TerrainType.NOTHING) return false;
+    return game.monsters.some(enemy => enemy.hp > 0 && boltEnemies(game.player, enemy, game)
+        && !!game.grid.getCell(enemy.x, enemy.y)?.isVisible
+        && (!enemy.hasStatus('invisible') || game.grid.getCell(enemy.x, enemy.y)?.layers[DungeonLayer.GAS] !== TerrainType.NOTHING));
 }
 
 /**
@@ -96,16 +131,18 @@ export function applyShieldStatus(c: Creature, tenths: number): void {
 }
 
 /**
- * CE generallyValidBoltTarget（Monsters.c:2543）。省略：MB_MARKED_FOR_SACRIFICE
- * 分支（web 无献祭机制）、MB_SUBMERGED 判定（web 无潜水簿记，用 invisible 状态
- * 近似 monsterIsHidden）。
+ * CE generallyValidBoltTarget（Monsters.c:2543）。MB_MARKED_FOR_SACRIFICE
+ * and MB_SUBMERGED have no runtime bookkeeping carrier yet.
  */
 export function generallyValidBoltTarget(caster: Monster, target: Creature, game: Game): boolean {
     if (caster === target) return false;
     if (caster.hasStatus('discordant') && caster.state === MonsterState.WANDERING && target === game.player) {
         return false;
     }
-    if (target.hasStatus('invisible')) return false;
+    if (target instanceof Monster && target.isDormant) return false;
+    const targetCell = game.grid.getCell(target.x, target.y);
+    const outlinedByGas = !!targetCell && targetCell.layers[DungeonLayer.GAS] !== TerrainType.NOTHING;
+    if (target.hasStatus('invisible') && !monstersAreTeammates(caster, target) && !outlinedByGas) return false;
     return game.hasLineOfSight(caster.loc.x, caster.loc.y, target.loc.x, target.loc.y);
 }
 
@@ -124,11 +161,9 @@ export function specificallyValidBoltTarget(caster: Monster, target: Creature, c
     // CE MC:2604 BF_TARGET_ENEMIES runs BEFORE the NEGATION switch.
     // Thus same-team entrancement/fear branches below that gate are unreachable
     // with the shipped NEGATION catalog; W-18's bypass was incorrect.
-    if (target.hasStatus('entranced')
-        && [BoltEffect.FIRE, BoltEffect.LIGHTNING, BoltEffect.SPARK, BoltEffect.DRAGONFIRE, BoltEffect.DISTANCE_ATTACK, BoltEffect.POISON_DART].includes(meta.effect)
-        && monstersAreEnemies(caster, target)) return false;
-    if (meta.targetAllies && (!monstersAreTeammates(caster, target) || monstersAreEnemies(caster, target))) return false;
-    if (meta.targetEnemies && !monstersAreEnemies(caster, target)) return false;
+    const enemies = boltEnemies(caster, target, game);
+    if (meta.targetAllies && (!monstersAreTeammates(caster, target) || enemies)) return false;
+    if (meta.targetEnemies && !enemies) return false;
     if (meta.targetEnemies && target instanceof Monster && target.hasBehavior('MONST_INVULNERABLE')) return false;
     if (target instanceof Monster) {
         if (!target.isAlly && (target.hasBehavior('MONST_REFLECT_50') || target.hasAbility('MA_REFLECT_100'))
@@ -136,8 +171,20 @@ export function specificallyValidBoltTarget(caster: Monster, target: Creature, c
         if (definition.forbiddenMonsterFlags.some(flag => target.hasCEBehavior(flag))) return false;
     }
     if (meta.fiery && target.hasStatus('immune_fire')) return false;
+    if (meta.fiery) {
+        const cell = game.grid.getCell(caster.x, caster.y);
+        if (cell && (burnedTerrainFlagsOfCell(cell) & avoidedFlagsForCaster(caster))) return false;
+    }
 
     switch (meta.effect) {
+        case BoltEffect.DISTANCE_ATTACK:
+        case BoltEffect.FIRE:
+        case BoltEffect.DRAGONFIRE:
+        case BoltEffect.LIGHTNING:
+        case BoltEffect.SPARK:
+        case BoltEffect.POISON_DART:
+            if (target.hasStatus('entranced') && enemies) return false;
+            break;
         case BoltEffect.NONE: {
             // CE Monsters.c:2619 + 2655-2675. Both current NONE bolts entangle;
             // their forbidden flags make the second avoided-terrain test moot.
@@ -150,15 +197,10 @@ export function specificallyValidBoltTarget(caster: Monster, target: Creature, c
             break;
         case BoltEffect.NEGATION:
             // CE MC:2613 reflective hostile gate, then :2681-2726 reasons.
-            if (target instanceof Monster && !target.isAlly
-                && (target.hasBehavior('MONST_REFLECT_50') || target.hasAbility('MA_REFLECT_100'))) return false;
-            if (monstersAreEnemies(caster, target)) {
+            if (enemies) {
                 if (target.hasStatus('hasted') || target.hasStatus('haste') || target.hasStatus('telepathy') || isShielded(target)) return true;
                 if (target instanceof Monster && (target.diesIfNegated() || target.isImmuneToWeapons())) return true;
-                const sameTeam = (caster.isAlly && (target === game.player || (target instanceof Monster && target.isAlly)))
-                    || caster.leader === target || (target instanceof Monster && (target.leader === caster
-                        || (caster.leader !== null && target.leader === caster.leader)));
-                if (sameTeam && target.hasStatus('discordant') && !caster.hasStatus('discordant')
+                if (monstersAreTeammates(caster, target) && target.hasStatus('discordant') && !caster.hasStatus('discordant')
                     && !(target instanceof Monster && target.diesIfNegated())) return true;
                 return (target.hasStatus('immune_fire') || target.hasStatus('levitating') || target.hasStatus('flying'))
                     && !!(cellTerrainFlags(game.grid, target.x, target.y) & (T_LAVA_INSTA_DEATH | T_IS_DEEP_WATER | T_AUTO_DESCENT));
@@ -169,9 +211,11 @@ export function specificallyValidBoltTarget(caster: Monster, target: Creature, c
             break;
         case BoltEffect.HASTE:
             if (target.hasStatus('hasted')) return false;
+            if (!eligibleForCombatBuff(caster, target, game)) return false;
             break;
         case BoltEffect.SHIELDING:
             if (isShielded(target)) return false;
+            if (!eligibleForCombatBuff(caster, target, game)) return false;
             break;
         case BoltEffect.HEALING:
             if (target.hp >= target.maxHp) return false;
