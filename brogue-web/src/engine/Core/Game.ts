@@ -455,6 +455,7 @@ export class Game {
 
     private needsRender: boolean = true;
     public isInventoryOpen: boolean = false;
+    public referenceScreen: 'discoveries' | 'help' | null = null;
 
     /**
      * B-1b：鉴定卷轴的目标待选态（CE promptForItemOfType，Items.c:7783-7802）。
@@ -3067,6 +3068,14 @@ export class Game {
     }
 
     public handlePlayerAction(action: string, data?: unknown, source: 'player' | 'system' = 'player') {
+        if (action === 'discoveries' || action === 'help') {
+            this.referenceScreen = this.referenceScreen === action ? null : action;
+            return;
+        }
+        if (this.referenceScreen) {
+            if (action === 'escape' || action === 'cancel_target') this.referenceScreen = null;
+            return;
+        }
         // P4-8 返工：justRested 每次输入先清零，仅 wait 分支置位（CE IO.c:2521-2527
         // 的 REST/PERIOD/NUMPAD5 置位、Time.c:2874 回合末清除的等价口径）。
         this.justRested = false;

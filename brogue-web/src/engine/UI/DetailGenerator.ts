@@ -5,6 +5,7 @@
  */
 
 import { ItemLoader } from '../Items/ItemLoader';
+import { itemKnowledge } from './ItemKnowledge';
 import { staffBlinkDistance } from '../Combat/BoltTrajectory';
 import type { Item } from '../Items/Item';
 import { ItemCategory } from '../Items/Item';
@@ -320,10 +321,11 @@ export function generateItemDetail(
     playerStrength: number
 ): DetailInfo {
     const sections: DetailSection[] = [];
+    const knowledge = itemKnowledge(item);
 
     // --- Description ---
     const desc = (item as any).description || '';
-    if (desc) {
+    if (desc && knowledge.kindKnown) {
         sections.push({
             lines: [{ text: desc, color: '#aaaacc' }]
         });
@@ -338,7 +340,7 @@ export function generateItemDetail(
             statsLines.push({ text: `基础伤害: ${item.damage} (${lo}~${hi})` });
 
             // B-1a 反泄露（CE Items.c:1488-1493）：附魔修正只在实例已鉴定后显示。
-            if (item.isIdentified && item.enchantment !== 0) {
+            if (knowledge.instanceKnown && item.enchantment !== 0) {
                 const strReq = item.strengthRequired || 12;
                 const ne = netEnchant(item.enchantment, playerStrength, strReq);
                 const frac = damageFraction(ne);
@@ -377,7 +379,7 @@ export function generateItemDetail(
             // B-1a 反泄露：净附魔段只在实例已鉴定后显示（同武器，CE 对未鉴定
             // 装备只给类型已知信息与力量需求）。
             statsLines.push({ text: `基础防御值: ${item.armor}` });
-            if (item.isIdentified) {
+            if (knowledge.instanceKnown) {
                 const strReq = item.strengthRequired || 12;
                 const ne = netEnchant(item.enchantment, playerStrength, strReq);
                 if (ne !== 0 || item.enchantment !== 0) {
@@ -406,7 +408,7 @@ export function generateItemDetail(
     }
 
     // --- Runic ---
-    if (item.runicType && item.runicKnown) {
+    if (item.runicType && knowledge.runicKnown) {
         const runicLines: DetailLine[] = [];
         if (item.category === ItemCategory.WEAPON) {
             const runicDesc = weaponRunicDescriptions[item.runicType];
@@ -426,11 +428,11 @@ export function generateItemDetail(
         // B-1a 反泄露（CE Items.c:1611-1634 / 1650-1653）：充能只在实例层已知
         // （ITEM_IDENTIFIED / ITEM_MAX_CHARGES_KNOWN）时显示；未识别魔杖显示
         // 使用次数（enchant2 计数，Items.c:7435）而非充能。
-        if (item.isIdentified) {
+        if (knowledge.instanceKnown) {
             if (item.charges !== undefined && item.maxCharges !== undefined) {
                 statsLines.push({ text: `充能: ${item.charges}/${item.maxCharges}` });
             }
-        } else if (item.maxChargesKnown) {
+        } else if (knowledge.capacityKnown) {
             if (item.maxCharges !== undefined) {
                 statsLines.push({ text: `充能上限: ${item.maxCharges}（当前余量未知）` });
             }
@@ -444,14 +446,14 @@ export function generateItemDetail(
         if (item.category === ItemCategory.STAFF && staffId === 'staff_of_blinking'
             && ItemLoader.identifiedItems.has(staffId)) {
             statsLines.push({ text: '自然回电速度为普通法杖的一半' });
-            if (item.isIdentified || item.maxChargesKnown) {
+            if (knowledge.instanceKnown) {
                 statsLines.push({ text: `最多瞬移 ${staffBlinkDistance(item.enchantment)} 格（附魔后 ${staffBlinkDistance(item.enchantment + 1)} 格）` });
             }
         }
         sections.push({ header: '法器属性', lines: statsLines });
     }
 
-    if (item.category === ItemCategory.CHARM) {
+    if (item.category === ItemCategory.CHARM && knowledge.kindKnown) {
         const statsLines: DetailLine[] = [];
         if (item.cooldownTurns) {
             statsLines.push({ text: `冷却回合: ${item.cooldownTurns}` });

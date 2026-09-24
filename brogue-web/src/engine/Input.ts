@@ -103,6 +103,12 @@ export class InputManager {
                 case 'I':
                     this.onActionCallback('toggle_inventory');
                     break;
+                case 'D':
+                    this.onActionCallback('discoveries');
+                    break;
+                case '?':
+                    this.onActionCallback('help');
+                    break;
                 case 'Escape':
                     this.onActionCallback('escape');
                     break;

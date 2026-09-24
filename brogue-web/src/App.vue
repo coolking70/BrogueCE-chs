@@ -29,6 +29,7 @@ import MainMenu from './components/MainMenu.vue';
 import ReplayControls from './components/ReplayControls.vue';
 import AgentControls from './components/AgentControls.vue';
 import DetailPanel from './components/DetailPanel.vue';
+import ReferenceOverlay from './components/ReferenceOverlay.vue';
 import { activeGame, type GameMode } from './engine/Core/Game';
 import { logger } from './engine/Systems/Logger';
 
@@ -259,6 +260,7 @@ const handleReturnToTitle = () => {
       <ReplayControls />
       <AgentControls />
       <DetailPanel />
+      <ReferenceOverlay />
       <button class="menu-btn" @click="menuOpen = true">{{ $t('menu.actions.menu', { defaultValue: 'Menu' }) }}</button>
     </template>
     <div v-else class="blank-stage"></div>

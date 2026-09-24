@@ -127,7 +127,8 @@ describe('W-25 staff catalog', () => {
         ItemLoader.identifiedItems.clear();const item=ItemLoader.spawnStaff('staff_of_blinking',0,0)!;item.enchantment=3;
         const text=()=>JSON.stringify(generateItemDetail(item,12));expect(text()).not.toContain('最多瞬移');expect(text()).not.toContain('一半');
         ItemLoader.identify('staff_of_blinking');expect(text()).toContain('一半');expect(text()).not.toContain('最多瞬移');
-        item.maxChargesKnown=true;expect(text()).toContain('最多瞬移 8 格（附魔后 10 格）');
+        // Capacity alone does not reveal actual enchantment; identify the instance first.
+        item.maxChargesKnown=true;item.identified=true;expect(text()).toContain('最多瞬移 8 格（附魔后 10 格）');
     });
     it('known blink/tunnel aim at cells, entrancement targets eligible enemies; unknown kinds retain generic candidates',()=>{
         const {g,m}=scene();
