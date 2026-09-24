@@ -1,0 +1,120 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/e009/brogue/brogue-web
+
+ ❯ src/test/u_07_monster_blink.test.ts (43 tests | 8 failed) 83ms
+     × hidden enemy is ignored in prediction but actual cast stops short and spends the attack clock 2ms
+     × hazard and immunity contract is based on real layers and temporary statuses 0ms
+     × paralyzed cannot enter the dedicated schedule 0ms
+     × entranced cannot enter the dedicated schedule 0ms
+     × ally=true escapes harmful terrain with no 30% lottery 2ms
+     × ally=false escapes harmful terrain with no 30% lottery 0ms
+     × invisible closer enemy is retried by enemy-map loop after the first scan misses it 0ms
+     × safe-terrain map seeds floor but not gas, doors, fire or forbidden chasms 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_07_monster_blink.test.ts > U07 rays, destination policy, ticks and resources > hidden enemy is ignored in prediction but actual cast stops short and spends the attack clock
+TypeError: other.addStatus is not a function
+ ❯ src/test/u_07_monster_blink.test.ts:109:91
+    107|     });
+    108|     it('hidden enemy is ignored in prediction but actual cast stops sh…
+    109|         const g=scene(),m=monster(g),other=monster(g,16,15,'rat');othe…
+       |                                                                                           ^
+    110|         expect(monsterBlinkImpact(g,m,{x:20,y:15})).toEqual({x:27,y:15…
+    111|         expect(monsterBlinkToPreferenceMap(g,m,p=>p.x===27&&p.y===15?1…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  src/test/u_07_monster_blink.test.ts > U07 rays, destination policy, ticks and resources > hazard and immunity contract is based on real layers and temporary statuses
+TypeError: m.addStatus is not a function
+ ❯ src/test/u_07_monster_blink.test.ts:127:56
+    125|         const g=scene(),m=monster(g,15,15,'rat'),p={x:20,y:15};m.bolts…
+    126|         g.grid.setTerrainLayer(p.x,p.y,DungeonLayer.LIQUID,T.LAVA);
+    127|         expect(monsterBlinkAvoids(g,m,p)).toBe(true);m.addStatus('levi…
+       |                                                        ^
+    128|         m.removeStatus('levitating');m.addStatus('immune_fire',10);exp…
+    129|         g.grid.setTerrain(p.x,p.y,T.STAIRS_DOWN);expect(monsterBlinkAv…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  src/test/u_07_monster_blink.test.ts > U07 AI call sites > paralyzed cannot enter the dedicated schedule
+ FAIL  src/test/u_07_monster_blink.test.ts > U07 AI call sites > entranced cannot enter the dedicated schedule
+TypeError: m.addStatus is not a function
+ ❯ src/test/u_07_monster_blink.test.ts:163:53
+    161|     it.each(['paralyzed','entranced','caged','asleep','immobile','turr…
+    162|         const g=scene(),m=monster(g);vi.spyOn(g.scent,'get').mockImple…
+    163|         if(gate==='paralyzed'||gate==='entranced')m.addStatus(gate,20);
+       |                                                     ^
+    164|         else if(gate==='caged')m.isCaged=true;else if(gate==='asleep')…
+    165|         else if(gate==='dormant')m.isDormant=true;else m.behaviorFlags…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  src/test/u_07_monster_blink.test.ts > U07 AI call sites > ally=true escapes harmful terrain with no 30% lottery
+TypeError: Cannot read properties of undefined (reading 'flags')
+ ❯ terrainFlagsOfCell src/engine/Map/DungeonFeature.ts:165:45
+    163|     let f = 0;
+    164|     for (let l = 0; l < DungeonLayer.COUNT; l++) {
+    165|         f |= TERRAIN_FLAGS[cell.layers[l]!].flags;
+       |                                             ^
+    166|     }
+    167|     return f;
+ ❯ cellTerrainFlags src/engine/Map/DungeonFeature.ts:158:12
+ ❯ flags src/engine/Combat/MonsterBlink.ts:27:36
+ ❯ blinkFromHarmfulTerrain src/engine/Combat/MonsterBlink.ts:222:15
+ ❯ Monster.takeTurn src/entities/Monster.ts:1266:17
+ ❯ src/test/u_07_monster_blink.test.ts:173:52
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  src/test/u_07_monster_blink.test.ts > U07 AI call sites > ally=false escapes harmful terrain with no 30% lottery
+TypeError: Cannot read properties of undefined (reading 'flags')
+ ❯ terrainFlagsOfCell src/engine/Map/DungeonFeature.ts:165:45
+    163|     let f = 0;
+    164|     for (let l = 0; l < DungeonLayer.COUNT; l++) {
+    165|         f |= TERRAIN_FLAGS[cell.layers[l]!].flags;
+       |                                             ^
+    166|     }
+    167|     return f;
+ ❯ cellTerrainFlags src/engine/Map/DungeonFeature.ts:158:12
+ ❯ flags src/engine/Combat/MonsterBlink.ts:27:36
+ ❯ blinkFromHarmfulTerrain src/engine/Combat/MonsterBlink.ts:222:15
+ ❯ Monster.takeTurn src/entities/Monster.ts:1866:31
+ ❯ src/test/u_07_monster_blink.test.ts:173:52
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  src/test/u_07_monster_blink.test.ts > U07 AI call sites > invisible closer enemy is retried by enemy-map loop after the first scan misses it
+TypeError: hidden.addStatus is not a function
+ ❯ src/test/u_07_monster_blink.test.ts:203:52
+    201|     it('invisible closer enemy is retried by enemy-map loop after the …
+    202|         const g=scene(),m=monster(g);m.isAlly=true;g.player.loc={x:14,…
+    203|         const hidden=monster(g,21,15,'rat');hidden.addStatus('invisibl…
+       |                                                    ^
+    204|         vi.spyOn(rng,'randPercent').mockReturnValue(false);
+    205|         const closest=closestBlinkEnemy(g,m)!;expect(closest.x).toBe(2…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  src/test/u_07_monster_blink.test.ts > U07 map boundaries > safe-terrain map seeds floor but not gas, doors, fire or forbidden chasms
+TypeError: Cannot read properties of undefined (reading 'flags')
+ ❯ terrainFlagsOfCell src/engine/Map/DungeonFeature.ts:165:45
+    163|     let f = 0;
+    164|     for (let l = 0; l < DungeonLayer.COUNT; l++) {
+    165|         f |= TERRAIN_FLAGS[cell.layers[l]!].flags;
+       |                                             ^
+    166|     }
+    167|     return f;
+ ❯ cellTerrainFlags src/engine/Map/DungeonFeature.ts:158:12
+ ❯ flags src/engine/Combat/MonsterBlink.ts:27:36
+ ❯ buildBlinkSafeTerrainMap src/engine/Combat/MonsterBlink.ts:191:48
+ ❯ src/test/u_07_monster_blink.test.ts:223:52
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+
+ Test Files  1 failed | 6 passed (7)
+      Tests  8 failed | 205 passed (213)
+   Start at  22:03:59
+   Duration  4.39s (transform 1.34s, setup 0ms, import 2.98s, tests 6.13s, environment 1ms)
+

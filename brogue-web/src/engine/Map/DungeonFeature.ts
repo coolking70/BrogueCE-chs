@@ -112,6 +112,7 @@ import {
     DFF_TREAT_AS_BLOCKING,
     DUNGEON_FEATURE_CATALOG,
 } from './DungeonFeatureCatalog';
+import { T_IS_FLAMMABLE, TM_EXPLOSIVE_PROMOTE } from './TerrainCatalog';
 import { DF, type DungeonFeatureEntry } from './DungeonFeatureCatalog';
 
 /** CE `nbDirs[0..3]`（GlobalsBase.c:38）——4 向正交，顺序逐项一致。 */
@@ -188,6 +189,24 @@ export function terrainMechFlagsOfCell(cell: Cell): number {
         f |= TERRAIN_FLAGS[cell.layers[l]!].mechFlags;
     }
     return f;
+}
+
+/** U07 / CE Monsters.c:1284: OR immediate burn successors of flammable
+ * layers, plus their explosive promotion. No terrain/DF execution or recursion.
+ * Keep catalog queries in this module alongside the discovery query. */
+export function burnedTerrainFlagsOfCell(cell: Cell): number {
+    let flags = 0;
+    for (const terrain of cell.layers) {
+        const tile = TERRAIN_FLAGS[terrain];
+        if (!(tile.flags & T_IS_FLAMMABLE)) continue;
+        for (const name of [tile.fireType, ...(tile.mechFlags & TM_EXPLOSIVE_PROMOTE ? [tile.promoteType] : [])]) {
+            if (!name) continue;
+            const successor = DUNGEON_FEATURE_CATALOG[DF[name as keyof typeof DF]];
+            if (!successor || successor.tile === null) throw new Error(`Unknown burn terrain: ${name}`);
+            flags |= TERRAIN_FLAGS[successor.tile].flags;
+        }
+    }
+    return flags;
 }
 
 /** CE Monsters.c:1259-1311: only secret layers' immediate discovery successors.

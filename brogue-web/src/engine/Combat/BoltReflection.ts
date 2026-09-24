@@ -48,7 +48,11 @@ export function projectileReflects(defender: Creature, attacker: Creature | null
 
 /** CE Monsters.c:2269-2295, including its asymmetric corner sampling. */
 export function randomReflectionOffset() {
-    const n = rng.randRange(0, 39);
+    return perimeterCoords(rng.randRange(0, 39));
+}
+
+/** Deterministic CE perimeter order shared with monster blink (no RNG). */
+export function perimeterCoords(n: number) {
     if (n <= 10) return { x: n - 5, y: -5 };
     if (n <= 21) return { x: n - 16, y: 5 };
     if (n <= 30) return { x: -5, y: n - 26 };

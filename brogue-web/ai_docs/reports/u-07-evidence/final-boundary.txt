@@ -1,0 +1,27 @@
+{
+  "protectedTrackedFiles": 1929,
+  "unexpectedChanges": [],
+  "methodChecks": {
+    "src/engine/Core/Game.ts": {
+      "unchanged": 330,
+      "added": [
+        "allyBlinkLeashLength",
+        "castMonsterBlink"
+      ],
+      "differences": []
+    },
+    "src/entities/Monster.ts": {
+      "unchanged": 89,
+      "added": [],
+      "differences": []
+    }
+  },
+  "p4OriginalAssertionsPreserved": 62,
+  "p4AddedAssertions": [
+    "expect(monsterBlinkToPreferenceMap(game, imp, p => p.x, true)).toBe(true)",
+    "expect(monsterBlinkToPreferenceMap(game, imp, p => p.x, true))",
+    "expect(imp.loc.x).toBeGreaterThan(8)",
+    "expect(imp.loc.x)"
+  ],
+  "initialManifestSha256": "cd6a912b689564c96e759123a306af33b172e0237a746000a1bb3a367979fa13"
+}

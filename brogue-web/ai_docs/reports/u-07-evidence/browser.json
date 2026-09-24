@@ -1,0 +1,752 @@
+{
+  "states": [
+    {
+      "name": "flee-before",
+      "state": {
+        "monster": {
+          "x": 14,
+          "y": 10,
+          "ticks": 0,
+          "hp": 1
+        },
+        "turns": 0,
+        "rng": 0,
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 100,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {
+              "telepathy": 100
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "小鬼",
+              "x": 14,
+              "y": 10,
+              "hp": 1,
+              "maxHp": 35,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 225,
+              "defense": 90,
+              "damage": "1d6+3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_ALWAYS_USE_ABILITY",
+                "MONST_ALWAYS_HUNTING"
+              ],
+              "abilityFlags": [
+                "MA_HIT_STEAL_FLEE"
+              ],
+              "bolts": [
+                "BLINKING"
+              ],
+              "typeId": "imp",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 0,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        }
+      }
+    },
+    {
+      "name": "flee-after",
+      "state": {
+        "monster": {
+          "x": 38,
+          "y": 27,
+          "ticks": 100,
+          "hp": 1
+        },
+        "turns": 1,
+        "rng": 0,
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 100,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {
+              "telepathy": 99
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "小鬼",
+              "x": 38,
+              "y": 27,
+              "hp": 1,
+              "maxHp": 35,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 225,
+              "defense": 90,
+              "damage": "1d6+3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_ALWAYS_USE_ABILITY",
+                "MONST_ALWAYS_HUNTING"
+              ],
+              "abilityFlags": [
+                "MA_HIT_STEAL_FLEE"
+              ],
+              "bolts": [
+                "BLINKING"
+              ],
+              "typeId": "imp",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        }
+      }
+    },
+    {
+      "name": "hunt-after",
+      "state": {
+        "monster": {
+          "x": 11,
+          "y": 10,
+          "ticks": 100,
+          "hp": 35
+        },
+        "turns": 1,
+        "rng": 2,
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 100,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {
+              "telepathy": 99
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "小鬼",
+              "x": 11,
+              "y": 10,
+              "hp": 35,
+              "maxHp": 35,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 225,
+              "defense": 90,
+              "damage": "1d6+3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_ALWAYS_USE_ABILITY",
+                "MONST_ALWAYS_HUNTING"
+              ],
+              "abilityFlags": [
+                "MA_HIT_STEAL_FLEE"
+              ],
+              "bolts": [
+                "BLINKING"
+              ],
+              "typeId": "imp",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        }
+      }
+    },
+    {
+      "name": "ally-after",
+      "state": {
+        "monster": {
+          "x": 18,
+          "y": 10,
+          "ticks": 100,
+          "hp": 35
+        },
+        "turns": 1,
+        "rng": 0,
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 22,
+            "y": 10,
+            "hp": 100,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {
+              "telepathy": 99
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "小鬼",
+              "x": 18,
+              "y": 10,
+              "hp": 35,
+              "maxHp": 35,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 225,
+              "defense": 90,
+              "damage": "1d6+3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_ALWAYS_USE_ABILITY",
+                "MONST_ALWAYS_HUNTING"
+              ],
+              "abilityFlags": [
+                "MA_HIT_STEAL_FLEE"
+              ],
+              "bolts": [
+                "BLINKING"
+              ],
+              "typeId": "imp",
+              "isAlly": true,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        }
+      }
+    },
+    {
+      "name": "blocked",
+      "state": {
+        "monster": {
+          "x": 16,
+          "y": 10,
+          "ticks": 0,
+          "hp": 35
+        },
+        "turns": 0,
+        "rng": 0,
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 10,
+            "y": 10,
+            "hp": 100,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {
+              "telepathy": 100
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "小鬼",
+              "x": 16,
+              "y": 10,
+              "hp": 35,
+              "maxHp": 35,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 225,
+              "defense": 90,
+              "damage": "1d6+3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_ALWAYS_USE_ABILITY",
+                "MONST_ALWAYS_HUNTING"
+              ],
+              "abilityFlags": [
+                "MA_HIT_STEAL_FLEE"
+              ],
+              "bolts": [
+                "BLINKING"
+              ],
+              "typeId": "imp",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 0,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        }
+      }
+    },
+    {
+      "name": "follower-after",
+      "state": {
+        "monster": {
+          "x": 27,
+          "y": 8,
+          "ticks": 100,
+          "hp": 35
+        },
+        "turns": 1,
+        "rng": 42,
+        "text": {
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 8,
+            "y": 24,
+            "hp": 100,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {
+              "telepathy": 99,
+              "invisible": 99
+            }
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 1,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 28,
+              "y": 10,
+              "hp": 6,
+              "maxHp": 6,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 9900,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            },
+            {
+              "name": "小鬼",
+              "x": 27,
+              "y": 8,
+              "hp": 35,
+              "maxHp": 35,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 225,
+              "defense": 90,
+              "damage": "1d6+3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [
+                "MONST_ALWAYS_USE_ABILITY",
+                "MONST_ALWAYS_HUNTING"
+              ],
+              "abilityFlags": [
+                "MA_HIT_STEAL_FLEE"
+              ],
+              "bolts": [
+                "BLINKING"
+              ],
+              "typeId": "imp",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": 23,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 0,
+              "maxShield": 0
+            }
+          ],
+          "items": []
+        }
+      }
+    },
+    {
+      "name": "flat-failure",
+      "failure": {
+        "before": {
+          "monster": {
+            "x": 14,
+            "y": 10,
+            "ticks": 17,
+            "hp": 35
+          },
+          "turns": 0,
+          "rng": 0,
+          "text": {
+            "mode": "explore",
+            "enchantmentTargets": [],
+            "arcanaPreview": null,
+            "arcanaTarget": null,
+            "coordinateSystem": {
+              "origin": "top-left",
+              "xAxis": "right",
+              "yAxis": "down"
+            },
+            "player": {
+              "weaknessAmount": 0,
+              "effectiveStrength": 12,
+              "maxStatus": {},
+              "x": 10,
+              "y": 10,
+              "hp": 100,
+              "nutrition": 2150,
+              "poisonAmount": 0,
+              "maxShield": 0,
+              "statuses": {
+                "telepathy": 100
+              }
+            },
+            "replay": {
+              "status": "idle",
+              "cursor": 0,
+              "total": 0
+            },
+            "recordedInputEvents": 0,
+            "autoPathLength": 0,
+            "monsters": [
+              {
+                "name": "小鬼",
+                "x": 14,
+                "y": 10,
+                "hp": 35,
+                "maxHp": 35,
+                "weaknessAmount": 0,
+                "maxStatus": {},
+                "accuracy": 225,
+                "defense": 90,
+                "damage": "1d6+3",
+                "newPowerCount": 0,
+                "totalPowerCount": 0,
+                "wasNegated": false,
+                "negated": false,
+                "mutation": null,
+                "behaviorFlags": [
+                  "MONST_ALWAYS_USE_ABILITY",
+                  "MONST_ALWAYS_HUNTING"
+                ],
+                "abilityFlags": [
+                  "MA_HIT_STEAL_FLEE"
+                ],
+                "bolts": [
+                  "BLINKING"
+                ],
+                "typeId": "imp",
+                "isAlly": false,
+                "boundToPlayer": false,
+                "dominated": false,
+                "isCaged": false,
+                "leaderId": null,
+                "discordant": 0,
+                "entranced": 0,
+                "doesNotTrackLeader": false,
+                "ticksUntilTurn": 17,
+                "poisonAmount": 0,
+                "poisoned": 0,
+                "shield": 0,
+                "maxShield": 0
+              }
+            ],
+            "items": []
+          }
+        },
+        "after": {
+          "monster": {
+            "x": 14,
+            "y": 10,
+            "ticks": 17,
+            "hp": 35
+          },
+          "turns": 0,
+          "rng": 0,
+          "text": {
+            "mode": "explore",
+            "enchantmentTargets": [],
+            "arcanaPreview": null,
+            "arcanaTarget": null,
+            "coordinateSystem": {
+              "origin": "top-left",
+              "xAxis": "right",
+              "yAxis": "down"
+            },
+            "player": {
+              "weaknessAmount": 0,
+              "effectiveStrength": 12,
+              "maxStatus": {},
+              "x": 10,
+              "y": 10,
+              "hp": 100,
+              "nutrition": 2150,
+              "poisonAmount": 0,
+              "maxShield": 0,
+              "statuses": {
+                "telepathy": 100
+              }
+            },
+            "replay": {
+              "status": "idle",
+              "cursor": 0,
+              "total": 0
+            },
+            "recordedInputEvents": 0,
+            "autoPathLength": 0,
+            "monsters": [
+              {
+                "name": "小鬼",
+                "x": 14,
+                "y": 10,
+                "hp": 35,
+                "maxHp": 35,
+                "weaknessAmount": 0,
+                "maxStatus": {},
+                "accuracy": 225,
+                "defense": 90,
+                "damage": "1d6+3",
+                "newPowerCount": 0,
+                "totalPowerCount": 0,
+                "wasNegated": false,
+                "negated": false,
+                "mutation": null,
+                "behaviorFlags": [
+                  "MONST_ALWAYS_USE_ABILITY",
+                  "MONST_ALWAYS_HUNTING"
+                ],
+                "abilityFlags": [
+                  "MA_HIT_STEAL_FLEE"
+                ],
+                "bolts": [
+                  "BLINKING"
+                ],
+                "typeId": "imp",
+                "isAlly": false,
+                "boundToPlayer": false,
+                "dominated": false,
+                "isCaged": false,
+                "leaderId": null,
+                "discordant": 0,
+                "entranced": 0,
+                "doesNotTrackLeader": false,
+                "ticksUntilTurn": 17,
+                "poisonAmount": 0,
+                "poisoned": 0,
+                "shield": 0,
+                "maxShield": 0
+              }
+            ],
+            "items": []
+          }
+        },
+        "ok": false
+      }
+    }
+  ],
+  "errors": []
+}

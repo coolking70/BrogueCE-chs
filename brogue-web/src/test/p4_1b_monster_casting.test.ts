@@ -10,7 +10,7 @@
  *   4. 30% 概率（固定 seed 大量采样）+ MONST_ALWAYS_USE_ABILITY 100% 施放
  *   5. 施法 tick（ticksUntilTurn = attackSpeed，CAST_SPELLS_SLOWLY ×2）
  *   6. 玩家既有施法路径未破坏（另跑一次全量回归即可，这里只做定向抽查）
- *   7. BLINKING 被跳过
+ *   7. 通用施法跳过 BLINKING，专调度负责瞬移
  *
  * 反向验证（项目规范 §5.2）：本文件编写过程中曾把 specificallyValidBoltTarget
  * 的 BF_TARGET_ALLIES 分支改坏（去掉 !monstersAreTeammates 检查），"目标选择
@@ -19,6 +19,7 @@
  */
 import { describe, it, expect } from 'vitest';
 import { createHeadlessGame } from './harness';
+import { monsterBlinkToPreferenceMap } from '../engine/Combat/MonsterBlink';
 import { Game } from '../engine/Core/Game';
 import { Monster, MonsterState, type MonsterData } from '../entities/Monster';
 import { TerrainType } from '../engine/Map/Grid';
@@ -278,7 +279,7 @@ describe('P4-1b 验收 5：施法 tick', () => {
     });
 });
 
-describe('P4-1b 验收 7：BLINKING 被跳过', () => {
+describe('P4-1b 验收 7：通用施法仍跳过 BLINKING，U07 专调度处理', () => {
     it('imp 只有 BLINKING 一个 bolt：monstUseBolt 永远不会施放它（CE 在别处处理）', () => {
         const game = createHeadlessGame(20260914);
         clearToOpenRoom(game);
@@ -293,6 +294,9 @@ describe('P4-1b 验收 7：BLINKING 被跳过', () => {
             if (imp.tryUseBolt(game)) cast = true;
         }
         expect(cast).toBe(false);
+        // U07: keep that rejection, and prove the dedicated path is executable.
+        expect(monsterBlinkToPreferenceMap(game, imp, p => p.x, true)).toBe(true);
+        expect(imp.loc.x).toBeGreaterThan(8);
     });
 });
 

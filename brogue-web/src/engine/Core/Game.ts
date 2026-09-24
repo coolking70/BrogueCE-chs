@@ -102,6 +102,7 @@ import { rollStaffDamage } from '../Combat/StaffDamage';
 import { canPlaceCreature, teleportCandidates, captiveItemDropCandidates } from '../Movement/CreaturePlacement';
 
 import { blinkTargetPreview } from '../Combat/BlinkTargeting';
+import { MONSTER_BLINK } from '../Combat/MonsterBlink';
 import { arcanaTargetCandidates, canObserveBoltCreature } from '../Combat/BoltTargeting';
 
 export type GameMode = 'normal' | 'easy' | 'wizard' | 'test';
@@ -4837,6 +4838,30 @@ export class Game {
     /** Monster.tryUseBolt's contact/terrain exit. U06 BE_DAMAGE uses the
      * shared CE staffDamage primitive at catalog magnitude; BE_ATTACK keeps
      * CombatSystem.attack. Travel owns reflection and actual recipients. */
+    /** CE moveAlly leash while resting/searching; seized/faster-enemy overrides
+     * belong to the monster decision, not the player action state. */
+    public allyBlinkLeashLength(): number {
+        return this.justRested || this.justSearched ? 10 : 4;
+    }
+
+    /** U07: CE zap from the dedicated monster selector. No inventory, player
+     * targeting guard or generic creature-target eligibility is involved. */
+    public castMonsterBlink(caster: Monster, aim: Pos): BoltResult {
+        const cell = this.grid.getCell(caster.x, caster.y);
+        if (cell?.isVisible && (!caster.hasStatus('invisible') || cell.layers[DungeonLayer.GAS])) {
+            logger.log(i18next.t('combat.monster_blinks', { monster: caster.name,
+                defaultValue: `The ${caster.name} blinks.` }), '#aaaaaa');
+        }
+        const result = traceBolt(this.grid, MONSTER_BLINK, caster.loc, aim, this.boltWorld(caster));
+        this.finishBlink(result);
+        this.pendingBoltFrames = result.frames;
+        this.currentBoltFrameIndex = 0;
+        this.boltAnimStartTime = Date.now();
+        result.outcome = { autoID: false, casterMovement: this.boltCasterMovement(result) };
+        this.needsRender = true;
+        return result;
+    }
+
     public castMonsterBolt(caster: Monster, target: Creature, ceBoltName: string): BoltResult | undefined {
         const meta = MONSTER_BOLT_TABLE[ceBoltName];
         if (!meta || meta.effect === null) return; // 已知缺口/未映射，不应该走到这里

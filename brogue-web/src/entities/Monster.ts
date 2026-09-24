@@ -24,6 +24,8 @@ import { CEBoltType } from '../engine/Combat/BoltCatalog';
 import { reflectionChance } from '../engine/Combat/CombatFormulas';
 import { bladeAvoids, bladeDiagonalBlocked, bladeStepToward, BLADE_DIRECTIONS } from '../engine/Combat/Conjuration';
 import { boltLine } from '../engine/Combat/BoltTrajectory';
+import { hasBlink, blinkChance, monsterBlinkToPreferenceMap, monsterBlinkToSafety, blinkFromHarmfulTerrain,
+    closestBlinkEnemy, blinkAllyFlees, blinkAllyAfterMagic, blinkTowardCreature, blinkTowardCaptiveLeader } from '../engine/Combat/MonsterBlink';
 import { entrancementDiagonalBlocked, entrancementPassable } from '../engine/Movement/Entrancement';
 import { cellTerrainFlags, cellTerrainMechFlags } from '../engine/Map/DungeonFeature';
 import { T_ENTANGLES, TM_ALLOWS_SUBMERGING, T_LAVA_INSTA_DEATH, T_IS_DEEP_WATER, T_AUTO_DESCENT } from '../engine/Map/TerrainCatalog';
@@ -1254,6 +1256,22 @@ export class Monster extends Creature {
         if (this.hasStatus('paralyzed') || this.hasStatus('entranced')) return;
         if (this.isCaged) return;
 
+        // U07: CE ally escape and fleeing blink precede ordinary magic. Only
+        // blink-capable, awake, mobile monsters enter this dedicated schedule.
+        const blinkReady = hasBlink(this) && this.state !== MonsterState.ASLEEP && !this.isDormant
+            && !this.hasBehavior('MONST_IMMOBILE') && !this.hasBehavior('MONST_TURRET');
+        let fleeingBlinkTried = false;
+        let blinkEnemy: Monster | null = null;
+        const blinkAlly = blinkReady && this.isAlly && !this.hasStatus('magical_fear') && !this.hasStatus('discordant');
+        if (blinkAlly) {
+            if (blinkFromHarmfulTerrain(game, this)) return;
+            blinkEnemy = closestBlinkEnemy(game, this);
+            if (blinkAllyFlees(game, this, blinkEnemy) && blinkChance(this) && monsterBlinkToSafety(game, this)) return;
+        } else if (blinkReady && this.state === MonsterState.FLEEING) {
+            fleeingBlinkTried = true;
+            if (blinkChance(this) && monsterBlinkToSafety(game, this)) return;
+        }
+
         // P4-1b：CE monstUseMagic 在移动/近战之前优先尝试（monstersTurn 各出口
         // 调用 monstUseMagic 都在移动决策之前）。沉睡怪物不参与（CE 沉睡怪物
         // 根本不进 monstersTurn）；ALLY 与 HUNTING/WANDERING 共用同一个出口，
@@ -1265,7 +1283,7 @@ export class Monster extends Creature {
             if (this.trySummon(game)) {
                 return;
             }
-            if (!(this.state === MonsterState.FLEEING && this.hasStatus('magical_fear')) && this.tryUseBolt(game)) {
+            if (!(this.state === MonsterState.FLEEING && (blinkReady || this.hasStatus('magical_fear'))) && this.tryUseBolt(game)) {
                 return;
             }
         }
@@ -1280,7 +1298,8 @@ export class Monster extends Creature {
             return;
         }
 
-        if (this.isAlly && !this.hasStatus('magical_fear')) {
+        if (this.isAlly && !this.hasStatus('magical_fear') && (!blinkReady || !this.hasStatus('discordant'))) {
+            if (blinkAlly && blinkAllyAfterMagic(game, this, blinkEnemy)) return;
             const independentBlade = this.typeId === 'spectral_blade' && this.doesNotTrackLeader;
             const canBladeStep = (p: { x: number; y: number }) => !(p.x === this.loc.x && p.y === this.loc.y)
                 && !bladeAvoids(game.grid, p) && !bladeDiagonalBlocked(game.grid, this.loc, p)
@@ -1494,6 +1513,7 @@ export class Monster extends Creature {
                 this.state = MonsterState.WANDERING;
                 return;
             } else {
+                if (blinkReady && !fleeingBlinkTried && blinkChance(this) && monsterBlinkToSafety(game, this)) return;
                 // P4-9：顺 safety map 下坡逃（CE Monsters.c:3503
                 // `dir = nextStep(getSafetyMap(monst), monst->loc, NULL, true)`）。
                 // getSafetyMap 的双路径（实时图 / 察觉不到玩家的怪物私有快照）
@@ -1563,6 +1583,19 @@ export class Monster extends Creature {
                 }
                 return;
             }
+        }
+
+        // CE :3434: ordinary magic has priority, then 30%/ALWAYS scent blink.
+        // No target visibility gate: the preference is the existing scent map.
+        if (blinkReady && this.state === MonsterState.HUNTING
+            && (!this.hasBehavior('MONST_RESTRICTED_TO_LIQUID')
+                || (cellTerrainMechFlags(game.grid, game.player.x, game.player.y) & TM_ALLOWS_SUBMERGING))
+            && blinkChance(this)
+            && monsterBlinkToPreferenceMap(game, this, p => game.scent.get(p.x, p.y), true)) return;
+
+        // CE wandering escape/captive-leader pursuit precedes adjacent combat.
+        if (blinkReady && this.state === MonsterState.WANDERING) {
+            if (blinkFromHarmfulTerrain(game, this) || blinkTowardCaptiveLeader(game, this)) return;
         }
 
         // W-16: close the new blade's combat loop without rewriting general ally
@@ -1820,6 +1853,8 @@ export class Monster extends Creature {
                     }
                 }
 
+                if (blinkReady && this.hasBehavior('MONST_ALWAYS_HUNTING') && this.givenUpOnScent
+                    && blinkTowardCreature(game, this, game.player)) return;
                 const path = Pathfind.findPath(game.grid, this.loc.x, this.loc.y, game.player.loc.x, game.player.loc.y, (x, y) => {
                     const c = game.grid.getCell(x, y);
                     if (!c) return false;
@@ -1837,6 +1872,10 @@ export class Monster extends Creature {
                 }
             }
         } else if (this.state === MonsterState.WANDERING) {
+            // CE :3591-3594: wandering followers stay with their own pack.
+            if (blinkReady && this.leader
+                && Math.max(Math.abs(this.x - this.leader.x), Math.abs(this.y - this.leader.y)) > 2
+                && blinkTowardCreature(game, this, this.leader)) return;
             // P4-10：CE Monsters.c:3602-3615——游荡 = 朝目标 waypoint 的距离图
             // 下坡走（nextStep(map, loc, monst, false)，正向对角优先级）；目标
             // 失效或无路 → chooseNewWanderDestination 换点再试；仍无路 → 如
