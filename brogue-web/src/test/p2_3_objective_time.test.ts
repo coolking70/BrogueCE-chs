@@ -51,6 +51,7 @@ import { readFileSync } from 'node:fs';
 import { createHeadlessGame, runTurns, terrainFingerprint } from './harness';
 import { Monster, MonsterState, type MonsterData } from '../entities/Monster';
 import { ItemLoader } from '../engine/Items/ItemLoader';
+import { ItemCategory } from '../engine/Items/Item';
 import { timeSystem } from '../engine/Systems/Time';
 import { TerrainType } from '../engine/Map/Grid';
 import monstersJson from '../data/monsters.json';
@@ -144,6 +145,8 @@ describe('P2-3 B: 主观/客观分离', () => {
 
     it('B2 饥饿伤害主观：haste 下每动作 -1 HP（两次动作 -2），不随客观块减半', () => {
         const game = createTimedGame();
+        // CE Time.c:949-963 会先自动吃包内食物；此用例只验证无食物的扣血链。
+        game.player.inventory.items = game.player.inventory.items.filter(i => i.category !== ItemCategory.FOOD);
         game.player.nutrition = 0;
         game.player.hp = 100;
         game.player.applyStatus('haste', 30);

@@ -17,6 +17,7 @@ import { describe, it, expect } from 'vitest';
 import { createHeadlessGame, type TurnPolicy } from './harness';
 import type { Game } from '../engine/Core/Game';
 import { rng } from '../engine/Random';
+import { ItemCategory } from '../engine/Items/Item';
 
 const SEEDS = [1, 7, 42];
 const TURNS = 2000;
@@ -75,7 +76,7 @@ function deathCause(game: Game): string {
 }
 
 /** 逐回合推进并采样（不复用 runTurns：需要逐回合的饥饿状态转移与曲线观测）。 */
-function simulate(seed: number, policy: TurnPolicy, label: string, maxTurns: number): SimResult {
+function simulate(seed: number, policy: TurnPolicy, label: string, maxTurns: number, withoutFood = false): SimResult {
     const game = createHeadlessGame(seed);
     const sim: SimResult = {
         seed,
@@ -92,6 +93,9 @@ function simulate(seed: number, policy: TurnPolicy, label: string, maxTurns: num
     };
     let lastState = game.player.hungerState;
     for (let t = 1; t <= maxTurns; t++) {
+        // The starvation scenario explicitly excludes food: CE automatically eats
+        // the starting ration at nutrition <= 1 (Time.c:949-963).
+        if (withoutFood) game.player.inventory.items = game.player.inventory.items.filter(i => i.category !== ItemCategory.FOOD);
         if (game.isGameOver || game.player.hp <= 0) {
             break;
         }
@@ -148,17 +152,18 @@ describe('2000 回合饥饿曲线实测（harness, 3 seeds × 2 策略）', () =
     }, 300000);
 
     it('seed 1 roam 延长至 2300 回合：nutrition 归零后的完整饿死流程', () => {
-        const r = simulate(1, roamPolicy, 'roam-extended', 2300);
+        const r = simulate(1, roamPolicy, 'roam-extended', 2300, true);
         console.log(`\n=== seed 1 roam, 2300 turns ===\n${formatResult(r)}\n`);
         // wait 策略会在前期被怪物击杀（实测 49-205 回合），故延长运行用 roam：
-        // T2100 昏厥 → T2150 nutrition 归零进入饿死 → 此后每回合扣 1 HP 直至死亡
+        // CE Time.c:949-970: at nutrition 1 with no food, checkNutrition immediately sets 0.
+        // Thus starvation starts at T2149, one turn before a plain decrement-to-zero model.
         expect(r.transitions).toEqual(expect.arrayContaining([
             { turn: 2100, state: 'faint' },
-            { turn: 2150, state: 'starving' },
+            { turn: 2149, state: 'starving' },
         ]));
         expect(r.died).toBe(true);
         expect(r.deathCause).toBe('starvation');
-        expect(r.turnsRun).toBeGreaterThanOrEqual(2150);
+        expect(r.turnsRun).toBeGreaterThanOrEqual(2149);
         expect(r.turnsRun).toBeLessThanOrEqual(2300);
     }, 300000);
 });

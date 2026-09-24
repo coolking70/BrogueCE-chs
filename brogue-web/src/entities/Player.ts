@@ -126,6 +126,12 @@ export class Player extends Creature {
         return transition;
     }
 
+    /** Reconcile the display tier after eating, without advancing objective time. */
+    public refreshHungerState(): void {
+        this.hungerState = this.computeHungerState();
+        this.hungerTransition = null;
+    }
+
     /**
      * 客观时间块调用（每 100 tick 一次；CE decrementPlayerStatus 的营养段，
      * Time.c:2213-2220——营养递减与 checkNutrition 都在客观块内）：

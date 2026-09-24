@@ -24,7 +24,7 @@ import {
     type MachineResult
 } from '../Generator/BlueprintEngine';
 import blueprintData from '../../data/blueprints.json';
-import { Player, type HungerState } from '../../entities/Player';
+import { Player, STOMACH_SIZE, type HungerState } from '../../entities/Player';
 import { Monster, monstersAreTeammates, monstersAreEnemies } from '../../entities/Monster';
 import { CombatSystem } from '../Combat/Combat';
 import { staffPoison } from '../Combat/Poison';
@@ -34,7 +34,7 @@ import { wandDominate } from '../Combat/Domination';
 import { staffBladeCount, bladeSpawnLocation } from '../Combat/Conjuration';
 import { weaponParalysisDuration, weaponConfusionDuration, weaponForceDistance, netEnchant, armorAbsorptionMax, armorReprisalPercent } from '../Combat/CombatFormulas';
 import { ItemCategory, Item } from '../Items/Item';
-import { ItemLoader, type ConsumableConfig } from '../Items/ItemLoader';
+import { ItemLoader } from '../Items/ItemLoader';
 import { canEnchantArcana, enchantArcana } from '../Items/ArcanaEnchantment';
 import { equippedWisdomBonus, tickStaffRecharge, rechargeStaffFully } from '../Items/ArcanaRecharge';
 import { rng } from '../Random';
@@ -3899,33 +3899,36 @@ export class Game {
         }
     }
 
-    public eatItem(item: Item) {
-        if (item.category !== ItemCategory.FOOD) return;
+    public eatItem(item: Item): void {
+        if (this.isInputLocked() || this.isGameOver || this.player.hp <= 0
+            || this.player.hasStatus('paralyzed')) return;
+        if (!this.consumeFood(item, true)) return;
+        // CE Items.c:7633 apply()：FOOD 分支后统一 playerTurnEnded()。
+        timeSystem.currentTick += this.player.movementSpeed;
+        this.playerTurnEnded();
+    }
 
-        if (this.player.inventory.removeItem(item)) {
-            const trueId = (item as any).consumableId;
-            const data = ItemLoader.food.find(f => f.id === trueId);
+    /** CE Items.c:7477-7505; automatic eating uses the same nutrition and message path. */
+    private consumeFood(item: Item, confirm: boolean): boolean {
+        if (item.category !== ItemCategory.FOOD || !this.player.inventory.items.includes(item)) return false;
+        const trueId = (item as Item & { consumableId?: string }).consumableId;
+        const data = ItemLoader.food.find(f => f.id === trueId);
+        if (!data) return false;
+        const nutrition = data.nutrition ?? 0;
+        if (confirm && STOMACH_SIZE - this.player.nutrition < nutrition
+            && !this.requestConfirm(i18next.t('food.not_hungry_confirm', {
+                food: trueId === 'ration_of_food' ? 'food' : 'mango',
+                defaultValue: `You're not hungry enough to fully enjoy the ${trueId === 'ration_of_food' ? 'food' : 'mango'}. Eat it anyway?`,
+            }))) return false;
 
-            if (data) {
-                logger.log(i18next.t('food.eat', { name: item.displayName, defaultValue: `You eat the ${item.displayName}.` }), '#cccccc');
-
-                if (data.effect === 'nourish') {
-                    // CE Items.c:7491: nutrition = min(food.power + nutrition, STOMACH_SIZE)
-                    const restore = (data as ConsumableConfig & { nutrition?: number }).nutrition ?? 0;
-                    this.player.nutrition = Math.min(this.player.maxNutrition, this.player.nutrition + restore);
-                    logger.log(i18next.t('food.nourish', { defaultValue: 'That tasted great! You feel full.' }), '#44ff44');
-                }
-
-                if (!ItemLoader.identifiedItems.has(trueId)) {
-                    ItemLoader.identify(trueId);
-                }
-            }
-
-            this.needsRender = true;
-            // CE Items.c:7633 apply()：FOOD 分支后统一 playerTurnEnded()——完整回合
-            timeSystem.currentTick += this.player.movementSpeed;
-            this.playerTurnEnded();
-        }
+        if (!this.player.inventory.removeItem(item)) return false;
+        this.player.nutrition = Math.min(STOMACH_SIZE, this.player.nutrition + nutrition);
+        this.player.refreshHungerState();
+        logger.log(trueId === 'ration_of_food'
+            ? i18next.t('food.ration_tasted', { defaultValue: 'That food tasted delicious!' })
+            : i18next.t('food.mango_tasted', { defaultValue: 'My, what a yummy mango!' }), '#44ff44');
+        this.needsRender = true;
+        return true;
     }
 
     public readItem(item: Item, confirmed: boolean = false) {
@@ -8109,10 +8112,31 @@ export class Game {
             logger.log(i18next.t('status.player.immunity_off', { status: this.getStatusLabel(im), defaultValue: `Your immunity to ${this.getStatusLabel(im)} fades.` }), '#cccccc');
         }
 
+        // CE Time.c:2213-2220 calls checkNutrition only outside paralysis.
         this.player.tickNutrition();
         const hungerTransition = this.player.consumeHungerTransition();
-        if (hungerTransition) {
+        if (hungerTransition && this.player.nutrition > 1) {
             this.logHungerTransition(hungerTransition);
+        }
+        if (!this.player.hasStatus('paralyzed') && this.player.nutrition <= 1) {
+            // Time.c:949-963 scans pack order, not food type or nutritional value.
+            const food = this.player.inventory.items.find(i => i.category === ItemCategory.FOOD);
+            if (food) {
+                const name = (food as Item & { consumableId?: string }).consumableId === 'mango'
+                    ? 'mango' : 'ration of food';
+                logger.log(i18next.t('food.auto_eat', {
+                    food: name, defaultValue: `Unable to control your hunger, you eat a ${name}.`,
+                }), '#ffcc44');
+                if (this.consumeFood(food, false)) {
+                    // CE calls playerTurnEnded within checkNutrition. The pending player
+                    // ticks are consumed by that nested turn, with no new action delay.
+                    this.playerTurnEnded();
+                }
+            } else if (this.player.nutrition === 1) {
+                this.player.nutrition = 0;
+                this.player.refreshHungerState();
+                this.logHungerTransition('starving');
+            }
         }
 
         // P4-10：滚动 waypoint 刷新（CE Time.c:2710-2714）——客观时间块的
