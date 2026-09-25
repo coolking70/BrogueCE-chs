@@ -233,12 +233,29 @@ const POW_15_RUNIC_DECREMENT = [ // PowerTables.c:231-240 (1-0.15)^x — W_FORCE
     26, 25, 24, 23, 22, 21, 21, 20, 19,
 ];
 
-/** web 符文名 → CE 递减表（对应 CE PowerTables.c:284-294 的 effectChances 数组）。
- * CE 的 W_SLOWING（POW_14）对应的 slowing 符文 web 尚未拥有，按本轮边界不予移植。 */
+/** CE W_SLOWING 的 POW_14 原表（PowerTables.c:241-250）。 */
+const POW_14_RUNIC_DECREMENT = [
+    65536, 63110, 60775, 58526, 56360, 54275, 52267, 50332, 48470, 46676, 44949, 43286, 41684, 40142, 38656, 37226,
+    35848, 34522, 33244, 32014, 30829, 29689, 28590, 27532, 26513, 25532, 24587, 23677, 22801, 21958, 21145, 20363,
+    19609, 18883, 18185, 17512, 16864, 16240, 15639, 15060, 14503, 13966, 13449, 12952, 12472, 12011, 11566, 11138,
+    10726, 10329, 9947, 9579, 9224, 8883, 8554, 8238, 7933, 7639, 7357, 7084, 6822, 6570, 6327, 6092,
+    5867, 5650, 5441, 5239, 5046, 4859, 4679, 4506, 4339, 4179, 4024, 3875, 3732, 3593, 3460, 3332,
+    3209, 3090, 2976, 2866, 2760, 2658, 2559, 2465, 2373, 2285, 2201, 2119, 2041, 1965, 1893, 1823,
+    1755, 1690, 1628, 1567, 1509, 1454, 1400, 1348, 1298, 1250, 1204, 1159, 1116, 1075, 1035, 997,
+    960, 924, 890, 857, 825, 795, 765, 737, 710, 684, 658, 634, 610, 588, 566, 545,
+    525, 505, 487, 469, 451, 435, 418, 403, 388, 374, 360, 346, 334, 321, 309, 298,
+    287, 276, 266, 256, 247, 237, 229, 220, 212, 204, 197, 189, 182, 176, 169, 163,
+    157, 151, 145, 140, 135, 130, 125, 120, 116, 111, 107, 103, 99, 96, 92, 89,
+    85, 82, 79, 76, 73, 71, 68, 66, 63, 61, 58, 56, 54, 52, 50, 48,
+    47, 45, 43, 42, 40, 38, 37, 36, 34,
+];
+
 const WEAPON_RUNIC_TABLE: Record<string, readonly number[]> = {
     speed: POW_16_RUNIC_DECREMENT, // W_SPEED
     quietus: POW_6_RUNIC_DECREMENT, // W_QUIETUS
     paralyzing: POW_7_RUNIC_DECREMENT, // W_PARALYSIS（web 命名为 paralyzing）
+    multiplicity: POW_15_RUNIC_DECREMENT,
+    slowing: POW_14_RUNIC_DECREMENT,
     confusion: POW_11_RUNIC_DECREMENT, // W_CONFUSION
     force: POW_15_RUNIC_DECREMENT, // W_FORCE
 };
@@ -402,28 +419,32 @@ export function weaponParalysisDuration(enchantment: number): number {
  * Weapon slowness duration.
  */
 export function weaponSlowDuration(enchantment: number): number {
-    return Math.max(3, 3 + Math.floor(enchantment / 2));
+    const fixed = Math.trunc(enchantment * FP_FACTOR);
+    return Math.max(3, Math.trunc(Math.trunc((Math.trunc(fixed / FP_FACTOR) + 2) * (fixed + 2 * FP_FACTOR) / 3) / FP_FACTOR));
 }
 
 /**
  * Weapon confusion duration.
  */
 export function weaponConfusionDuration(enchantment: number): number {
-    return Math.max(3, 3 + Math.floor(enchantment * 0.75));
+    return Math.max(3, Math.trunc(enchantment * 3 / 2));
 }
 
 /**
  * Number of spectral images from multiplicity runic.
- * CE: weaponImageCount(enchant) — roughly min(7, 1 + enchant/3)
+ * CE PowerTables.c:103: clamp(trunc(enchant/3), 1, 7).
  */
 export function weaponImageCount(enchantment: number): number {
-    return Math.max(1, Math.min(7, 1 + Math.floor(enchantment / 3)));
+    return Math.max(1, Math.min(7, Math.trunc(enchantment / 3)));
 }
+
+/** CE PowerTables.c:104. */
+export function weaponImageDuration(_enchantment: number): number { return 3; }
 
 /**
  * Force weapon knockback distance.
- * CE: weaponForceDistance(enchant) — roughly enchant/2 + 2
+ * CE PowerTables.c:101: max(4, trunc(enchant*2)+2).
  */
 export function weaponForceDistance(enchantment: number): number {
-    return Math.max(1, Math.floor(enchantment / 2) + 2);
+    return Math.max(4, Math.trunc(enchantment * 2) + 2);
 }

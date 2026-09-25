@@ -11,6 +11,7 @@ import { Monster, MonsterState } from '../../entities/Monster';
 import type { Item } from '../Items/Item';
 import { ringBonus } from '../Items/RingBonuses';
 import { rng } from '../Random';
+import { monsterIsInClass } from './MonsterClass';
 import {
     netEnchant,
     hitProbability,
@@ -257,28 +258,7 @@ export class CombatSystem {
         if (poisonDuration > 0) damage = 1;
 
 
-        // --- Check for runic trigger ---
         let triggeredRunic: string | undefined;
-        if (weaponRunic && attacker instanceof Player && attacker.equippedWeapon) {
-            // CE Combat.c:666-677：触发率取 runicWeaponChance——内部按 CE netEnchant
-            // （含力量修正，PowerTables.c:306-308）与武器基础伤害中值计算；此处传
-            // 已算好的净附魔 weaponEnchant 与 parseDamageString 的基础伤害区间
-            // （与 CE range.lowerBound/upperBound 同口径）。
-            const triggerChance = runicWeaponChance(
-                weaponEnchant ?? attacker.equippedWeapon.enchantment,
-                weaponRunic,
-                { damageMin: parts.min, damageMax: parts.max }
-            );
-            // Backstab doubles runic chance (CE: min(chance*2, (chance+100)/2))
-            let adjustedChance = triggerChance;
-            if (backstab && adjustedChance < 100) {
-                adjustedChance = Math.min(adjustedChance * 2, Math.floor((adjustedChance + 100) / 2));
-            }
-            if (rng.randPercent(adjustedChance)) {
-                triggeredRunic = weaponRunic;
-            }
-        }
-
         // Reflection has already selected the actual defender in bolt travel.
         const applyTo = defender;
         if (damage > 0) {
@@ -290,6 +270,33 @@ export class CombatSystem {
             // CE inflictDamage still applies the ring's minimum ±1 on a hit
             // whose weapon damage was reduced to zero.
             CombatSystem.transferMonsterHealth(attacker, applyTo, 0);
+        }
+
+        // --- Check for runic trigger ---
+        if (weaponRunic && attacker instanceof Player && attacker.equippedWeapon) {
+            // CE Combat.c:666-677：触发率取 runicWeaponChance——内部按 CE netEnchant
+            // （含力量修正，PowerTables.c:306-308）与武器基础伤害中值计算；此处传
+            // 已算好的净附魔 weaponEnchant 与 parseDamageString 的基础伤害区间
+            // （与 CE range.lowerBound/upperBound 同口径）。
+            const triggerChance = weaponRunic === 'slaying'
+                ? (defender instanceof Monster && monsterIsInClass(defender.typeId, attacker.equippedWeapon.vorpalEnemy) ? 100 : 0)
+                : defender instanceof Monster && (defender.hasCEBehavior('MONST_INANIMATE') || defender.isInvulnerable()) ? 0
+                : runicWeaponChance(
+                weaponEnchant ?? attacker.equippedWeapon.enchantment,
+                weaponRunic,
+                { damageMin: parts.min, damageMax: parts.max,
+                  attacksStagger: attacker.equippedWeapon.flags?.includes('ITEM_ATTACKS_STAGGER'),
+                  attacksQuickly: attacker.equippedWeapon.flags?.includes('ITEM_ATTACKS_QUICKLY') }
+            );
+            // Backstab doubles runic chance (CE: min(chance*2, (chance+100)/2))
+            let adjustedChance = triggerChance;
+            if (backstab && adjustedChance < 100) {
+                adjustedChance = Math.min(adjustedChance * 2, Math.floor((adjustedChance + 100) / 2));
+            }
+            if ((weaponRunic === 'speed' || weaponRunic === 'multiplicity' || defender.hp > 0)
+                && adjustedChance > 0 && rng.randPercent(adjustedChance)) {
+                triggeredRunic = weaponRunic;
+            }
         }
 
         if (isWeaponAttack && defender.hp > 0 && damage > 0 && attacker instanceof Monster && attacker.hasAbility('MA_CAUSES_WEAKNESS')
@@ -409,9 +416,14 @@ export class CombatSystem {
         let triggeredRunic: string | undefined;
         if (!killed && item.runicType) {
             const parts = CombatSystem.parseDamageString(item.damage || '1d3');
-            const chance = runicWeaponChance(enchant, item.runicType,
-                { damageMin: parts.min, damageMax: parts.max });
-            if (rng.randPercent(chance)) {
+            const chance = item.runicType === 'slaying'
+                ? (monsterIsInClass(defender.typeId, item.vorpalEnemy) ? 100 : 0)
+                : defender.hasCEBehavior('MONST_INANIMATE') || defender.isInvulnerable() ? 0
+                : runicWeaponChance(enchant, item.runicType,
+                    { damageMin: parts.min, damageMax: parts.max,
+                      attacksStagger: item.flags?.includes('ITEM_ATTACKS_STAGGER'),
+                      attacksQuickly: item.flags?.includes('ITEM_ATTACKS_QUICKLY') });
+            if (chance > 0 && rng.randPercent(chance)) {
                 triggeredRunic = item.runicType;
             }
         }

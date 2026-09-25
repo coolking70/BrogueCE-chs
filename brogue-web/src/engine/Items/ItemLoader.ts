@@ -339,21 +339,20 @@ export class ItemLoader {
     /**
      * CE 符文枚举 → web runicType 串的映射表（下标 = CE 枚举值）。
      * 武器（Rogue.h enum weaponEnchants）：0-7 好符文（NUMBER_GOOD=8），
-     * 8=W_MERCY（坏）、9=W_PLENTY（坏）。web 未实现的种类记 null——
-     * 掷骰照常消耗（对齐 CE 的 RNG 流），只是不落符文（登记：multiplicity/
-     * slowing/plenty 的效果实现轮补齐后回表）。
+     * 8=W_MERCY（坏）、9=W_PLENTY（坏）。本轮效果已实现，但生成映射
+     * 另轮处理；以下 null 仍照原样消耗抽取，只是不落符文，避免移动生成流。
      */
     public static readonly WEAPON_RUNIC_BY_CE_INDEX: readonly (string | null)[] = [
         'speed',       // W_SPEED
         'quietus',     // W_QUIETUS
         'paralyzing',  // W_PARALYSIS（web 拼写差异）
-        null,          // W_MULTIPLICITY —— web 未实现
-        null,          // W_SLOWING —— web 未实现
+        null,          // W_MULTIPLICITY —— 生成映射留后续轮次
+        null,          // W_SLOWING —— 生成映射留后续轮次
         'confusion',   // W_CONFUSION
         'force',       // W_FORCE
         'slaying',     // W_SLAYING
         'mercy',       // W_MERCY（CE 列入坏符文段 rand_range(8,9)）
-        null,          // W_PLENTY —— web 未实现
+        null,          // W_PLENTY —— 生成映射留后续轮次
     ];
 
     /**

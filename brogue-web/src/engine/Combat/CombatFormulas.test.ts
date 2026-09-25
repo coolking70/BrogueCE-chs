@@ -311,9 +311,10 @@ describe('runicWeaponChance — CE PowerTables.c:220-345', () => {
         expect(runicWeaponChance(20, 'vampirism', DAGGER)).toBe(RUNIC_WEAPON_BAD_CHANCE);
         expect(runicWeaponChance(20, 'venom', DAGGER)).toBe(RUNIC_WEAPON_BAD_CHANCE);
         expect(runicWeaponChance(-5, 'mercy', HAMMER)).toBe(RUNIC_WEAPON_BAD_CHANCE);
-        // CE 有表但 web 未实装的种类（multiplicity/slowing）按本轮边界不移植 → 表外口径
-        expect(runicWeaponChance(10, 'multiplicity', DAGGER)).toBe(RUNIC_WEAPON_BAD_CHANCE);
-        expect(runicWeaponChance(10, 'slowing', DAGGER)).toBe(RUNIC_WEAPON_BAD_CHANCE);
+        // U15d-1 验收裁决：CE PowerTables.c:241-250/284-294 为 multiplicity/slowing 提供
+        // POW_15/POW_14 表（旧"未实装→表外"边界已由 U15d 关闭），E10 匕首黄金值 74/72
+        expect(runicWeaponChance(10, 'multiplicity', DAGGER)).toBe(74);
+        expect(runicWeaponChance(10, 'slowing', DAGGER)).toBe(72);
         // 单参兼容形态（无类别信息）——旧调用点 armor_model_effect.test.ts 的形态
         expect(runicWeaponChance(10)).toBe(RUNIC_WEAPON_BAD_CHANCE);
     });

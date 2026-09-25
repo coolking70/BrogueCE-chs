@@ -40,7 +40,8 @@ import { staffProtection } from '../Combat/Shielding';
 import { staffEntrancementDuration, ENTRANCEMENT_DIRECTIONS, entrancementPassable, entrancementDiagonalBlocked } from '../Movement/Entrancement';
 import { wandDominate } from '../Combat/Domination';
 import { staffBladeCount, bladeSpawnLocation } from '../Combat/Conjuration';
-import { weaponParalysisDuration, weaponConfusionDuration, weaponForceDistance, netEnchant, armorAbsorptionMax, armorReprisalPercent } from '../Combat/CombatFormulas';
+import { weaponParalysisDuration, weaponConfusionDuration, weaponSlowDuration, weaponImageCount, weaponImageDuration, weaponForceDistance, netEnchant, damageFraction, armorAbsorptionMax, armorReprisalPercent } from '../Combat/CombatFormulas';
+import { monsterIsInClass } from '../Combat/MonsterClass';
 import { ItemCategory, Item } from '../Items/Item';
 import { ItemLoader } from '../Items/ItemLoader';
 import { canEnchantArcana, enchantArcana } from '../Items/ArcanaEnchantment';
@@ -3481,7 +3482,7 @@ export class Game {
                     this.playerRecoversFromAttacking(true);
                     this.moveEntrancedMonsters(dx, dy);
                     spentTurn = true;
-                    timeSystem.currentTick += this.player.attackSpeed;
+                    if (this.player.ticksUntilTurn !== -1) timeSystem.currentTick += this.player.attackSpeed;
                 } else if (blockingMonster) {
                     // Attack —— P4-7：CE Movement.c:1216-1247，buildHitList
                     // （sweep = 武器带 ITEM_ATTACKS_ALL_ADJACENT，Combat.c:2049-2090）
@@ -3500,7 +3501,7 @@ export class Game {
                     this.playerRecoversFromAttacking(anyAttackHit);
                     this.moveEntrancedMonsters(dx, dy);
                     spentTurn = true;
-                    timeSystem.currentTick += this.player.attackSpeed;
+                    if (this.player.ticksUntilTurn !== -1) timeSystem.currentTick += this.player.attackSpeed;
                 } else if (this.player.seized) {
                     // P4-5：CE Movement.c:1267-1297（MB_SEIZED 检查，playerMoves()
                     // 内，在攻击分支之后、地形判定之前——移动进空地才会走到这里，
@@ -3678,7 +3679,7 @@ export class Game {
                         // playerTurnEnded 只在 ticksUntilTurn==0 时补 movementSpeed，
                         // 攻击恢复已抢占该分支——currentTick 口径同步按攻击耗时记。
                         spentTurn = true;
-                        timeSystem.currentTick += this.player.attackSpeed;
+                        if (this.player.ticksUntilTurn !== -1) timeSystem.currentTick += this.player.attackSpeed;
                         this.playerRecoversFromAttacking(anySpecialHit);
                     } else {
                         // CE 的玩家移动耗时与地形无关（Time.c:2604 只看 movementSpeed）；
@@ -6537,99 +6538,6 @@ export class Game {
         // Ring effects are consumed directly from equipped effective enchantments.
     }
 
-    private tryTriggerWeaponRunic(target: Monster, damage: number) {
-        const weapon = this.player.equippedWeapon;
-        if (!weapon?.runicType) return;
-
-        if (weapon.runicType === 'paralyzing' && rng.randPercent(18)) {
-            const applied = this.applyStatusToMonster(target, 'paralyzed', 3, 'runic');
-            if (!applied) return;
-            weapon.runicKnown = true;
-            logger.log(
-                i18next.t('runic.weapon.paralyzing', {
-                    target: this.monsterDisplayName(target),
-                    defaultValue: `Runic power paralyzes the ${this.monsterDisplayName(target)}!`
-                }),
-                '#99ccff'
-            );
-            this.spawnFloatingText(i18next.t('status.float.paralyzed', { defaultValue: 'Paralyzed' }), target.loc.x, target.loc.y, 0x99ccff);
-            return;
-        }
-
-        if (weapon.runicType === 'venom' && rng.randPercent(20)) {
-            const extra = rng.randRange(1, 3);
-            target.takeDamage(extra);
-            weapon.runicKnown = true;
-            logger.log(
-                i18next.t('runic.weapon.venom_damage', {
-                    target: this.monsterDisplayName(target),
-                    damage: extra,
-                    defaultValue: `Runic venom wounds the ${this.monsterDisplayName(target)} for ${extra}.`
-                }),
-                '#88dd88'
-            );
-            this.spawnFloatingText(`-${extra}`, target.loc.x, target.loc.y, 0x66dd66);
-            return;
-        }
-
-        if (weapon.runicType === 'quietus' && rng.randPercent(5)) {
-            target.takeDamage(9999, true);
-            weapon.runicKnown = true;
-            logger.log(
-                i18next.t('runic.weapon.quietus', {
-                    target: this.monsterDisplayName(target),
-                    defaultValue: `Runic magic instantly slays the ${this.monsterDisplayName(target)}!`
-                }),
-                '#ccaaff'
-            );
-            return;
-        }
-
-        if (weapon.runicType === 'vampirism' && rng.randPercent(20)) {
-            const heal = Math.max(1, Math.floor(damage * 0.5));
-            this.player.hp = Math.min(this.player.maxHp, this.player.hp + heal);
-            weapon.runicKnown = true;
-            logger.log(
-                i18next.t('runic.weapon.vampirism', {
-                    target: this.monsterDisplayName(target),
-                    heal: heal,
-                    defaultValue: `Your weapon drains ${heal} life from the ${this.monsterDisplayName(target)}.`
-                }),
-                '#ff4444'
-            );
-            return;
-        }
-
-        if (weapon.runicType === 'speed' && rng.randPercent(20)) {
-            target.takeDamage(damage);
-            weapon.runicKnown = true;
-            logger.log(
-                i18next.t('runic.weapon.speed', {
-                    target: this.monsterDisplayName(target),
-                    defaultValue: `Your weapon blurs, striking the ${this.monsterDisplayName(target)} again for ${damage}!`
-                }),
-                '#ffffaa'
-            );
-            this.spawnFloatingText(`-${damage}`, target.loc.x, target.loc.y, 0x66dd66);
-            return;
-        }
-
-        if (weapon.runicType === 'confusion' && rng.randPercent(15)) {
-            const applied = this.applyStatusToMonster(target, 'confused', 6, 'runic');
-            if (!applied) return;
-            weapon.runicKnown = true;
-            logger.log(
-                i18next.t('runic.weapon.confusion', {
-                    target: this.monsterDisplayName(target),
-                    defaultValue: `The ${this.monsterDisplayName(target)} is confused by your strike!`
-                }),
-                '#cc99ff'
-            );
-            this.spawnFloatingText(i18next.t('status.float.confused', { defaultValue: 'Confused' }), target.loc.x, target.loc.y, 0x99ccff);
-            return;
-        }
-    }
-
     /**
      * Apply a weapon runic effect that was already determined to trigger by Combat.ts.
      * This is separate from tryTriggerWeaponRunic, which uses legacy flat-chance triggers.
@@ -6638,15 +6546,21 @@ export class Game {
     private applyWeaponRunicEffect(target: Monster, damage: number, runicType: string) {
         const weapon = this.player.equippedWeapon;
         if (!weapon) return;
-        weapon.runicKnown = true;
-
-        const enchant = weapon.enchantment;
+        const previouslyKnown = weapon.runicKnown;
+        // CE Combat.c:679-695: a visible flare/flash identifies before the
+        // effect; submerged targets identify only through an observable effect.
+        const visible = this.canObserveBoltTarget(target);
+        if (visible) weapon.runicKnown = true;
+        const enchant = netEnchant(weapon.enchantment, this.player.effectiveStrength, weapon.strengthRequired ?? 0);
 
         switch (runicType) {
             case 'paralyzing': {
                 const duration = weaponParalysisDuration(enchant);
-                const applied = this.applyStatusToMonster(target, 'paralyzed', duration, 'runic');
-                if (applied) {
+                // CE writes the status array directly; web's generic
+                // statusImmunities are not a weapon runic eligibility gate.
+                target.setStatusDuration('paralyzed', Math.max(target.getStatusDuration('paralyzed'), duration));
+                target.maxStatus.paralyzed = target.getStatusDuration('paralyzed');
+                if (visible) {
                     logger.log(i18next.t('runic.weapon.paralyzing', { target: this.monsterDisplayName(target), defaultValue: `Runic power paralyzes the ${this.monsterDisplayName(target)}!` }), '#99ccff');
                     this.spawnFloatingText(i18next.t('status.float.paralyzed', { defaultValue: 'Paralyzed' }), target.loc.x, target.loc.y, 0x99ccff);
                 }
@@ -6662,11 +6576,13 @@ export class Game {
             }
             case 'quietus': {
                 target.takeDamage(9999, true);
+                weapon.runicKnown = true;
                 logger.log(i18next.t('runic.weapon.quietus', { target: this.monsterDisplayName(target), defaultValue: `Runic magic instantly slays the ${this.monsterDisplayName(target)}!` }), '#ccaaff');
                 break;
             }
             case 'slaying': {
                 target.takeDamage(9999, true);
+                weapon.runicKnown = true;
                 logger.log(i18next.t('runic.weapon.slaying', { target: this.monsterDisplayName(target), defaultValue: `Your weapon of slaying destroys the ${this.monsterDisplayName(target)}!` }), '#ff6666');
                 break;
             }
@@ -6677,15 +6593,60 @@ export class Game {
                 break;
             }
             case 'speed': {
-                target.takeDamage(damage);
-                logger.log(i18next.t('runic.weapon.speed', { target: this.monsterDisplayName(target), defaultValue: `Your weapon blurs, striking the ${this.monsterDisplayName(target)} again for ${damage}!` }), '#ffffaa');
-                this.spawnFloatingText(`-${damage}`, target.loc.x, target.loc.y, 0xffffaa);
+                // CE grants a free player action; the attack recovery helper
+                // skips adding attackSpeed while this sentinel is negative.
+                if (this.player.ticksUntilTurn !== -1) {
+                    this.player.ticksUntilTurn = -1;
+                    weapon.runicKnown = true;
+                    logger.log(i18next.t('runic.weapon.speed', { target: this.monsterDisplayName(target), defaultValue: 'Your weapon trembles and time freezes for a moment!' }), '#ffffaa');
+                }
+                break;
+            }
+            case 'slowing': {
+                target.setStatusDuration('slowed', weaponSlowDuration(enchant));
+                target.setStatusDuration('hasted', 0);
+                if (visible) {
+                    weapon.runicKnown = true;
+                    logger.log(i18next.t('runic.weapon.slowing', { target: this.monsterDisplayName(target), defaultValue: `The ${this.monsterDisplayName(target)} slows down.` }), '#99cc99');
+                }
+                break;
+            }
+            case 'multiplicity': {
+                const data = (monsterData as MonsterData[]).find(m => m.id === 'spectral_blade')!;
+                const speedFactor = (weapon.flags?.includes('ITEM_ATTACKS_STAGGER') ? 2 : 1)
+                    * (weapon.flags?.includes('ITEM_ATTACKS_QUICKLY') ? 0.5 : 1);
+                const imageData = { ...data, attackSpeed: Math.trunc((data.attackSpeed ?? 100) * speedFactor) };
+                for (let i = 0; i < weaponImageCount(enchant); i++) {
+                    const at = bladeSpawnLocation(this, target.loc);
+                    if (!at) break;
+                    const blade = new Monster(at.x, at.y, imageData);
+                    blade.isAlly = true;
+                    blade.boundToPlayer = true;
+                    blade.doesNotTrackLeader = true;
+                    blade.ticksUntilTurn = 100;
+                    blade.accuracy = 100 + 5 * Math.trunc(enchant);
+                    const baseDamage = CombatSystem.parseDamageString(weapon.damage ?? '1d2');
+                    const factor = damageFraction(enchant);
+                    blade.damageString = `${Math.max(1, Math.trunc(baseDamage.min * factor))}-${Math.max(1, Math.trunc(baseDamage.max * factor))}`;
+                    blade.setStatusDuration('lifespan_remaining', weaponImageDuration(enchant));
+                    blade.goldDropChance = blade.itemDropChance = 0;
+                    if (weapon.flags?.includes('ITEM_ATTACKS_STAGGER')) {
+                        blade.abilityFlags.add('MA_ATTACKS_STAGGER');
+                    }
+                    if (weapon.flags?.includes('ITEM_ATTACKS_PENETRATE')) blade.abilityFlags.add('MA_ATTACKS_PENETRATE');
+                    if (weapon.flags?.includes('ITEM_ATTACKS_ALL_ADJACENT')) blade.abilityFlags.add('MA_ATTACKS_ALL_ADJACENT');
+                    if (weapon.flags?.includes('ITEM_ATTACKS_EXTEND')) blade.abilityFlags.add('MA_ATTACKS_EXTEND');
+                    this.monsters.push(blade);
+                }
+                weapon.runicKnown = true;
+                logger.log(i18next.t('runic.weapon.multiplicity', { name: weapon.displayName, defaultValue: `Your ${weapon.displayName} flashes, and spectral duplicates appear!` }), '#ffffff');
                 break;
             }
             case 'confusion': {
                 const confDuration = weaponConfusionDuration(enchant);
-                const applied = this.applyStatusToMonster(target, 'confused', confDuration, 'runic');
-                if (applied) {
+                target.setStatusDuration('confused', Math.max(target.getStatusDuration('confused'), confDuration));
+                target.maxStatus.confused = target.getStatusDuration('confused');
+                if (visible) {
                     logger.log(i18next.t('runic.weapon.confusion', { target: this.monsterDisplayName(target), defaultValue: `The ${this.monsterDisplayName(target)} is confused by your strike!` }), '#cc99ff');
                     this.spawnFloatingText(i18next.t('status.float.confused', { defaultValue: 'Confused' }), target.loc.x, target.loc.y, 0x99ccff);
                 }
@@ -6700,6 +6661,7 @@ export class Game {
                 const dy = target.loc.y - this.player.loc.y;
                 const ndx = Math.sign(dx);
                 const ndy = Math.sign(dy);
+                let traveled = 0;
                 for (let i = 0; i < dist; i++) {
                     const nx = target.loc.x + ndx;
                     const ny = target.loc.y + ndy;
@@ -6707,19 +6669,37 @@ export class Game {
                     if (!cell || !cell.isPassable || this.getMonsterAt(nx, ny)) break;
                     target.loc.x = nx;
                     target.loc.y = ny;
+                    traveled++;
+                }
+                // CE forceWeaponHit: a collision before full travel damages
+                // both the launched creature and the creature it strikes.
+                if (traveled > 0 && traveled < dist && target.hp > 0) {
+                    const other = this.getMonsterAt(target.x + ndx, target.y + ndy);
+                    if (!target.isImmuneToWeapons() && !target.isInvulnerable()) target.takeDamage(traveled);
+                    if (other && !other.isImmuneToWeapons() && !other.isInvulnerable()) other.takeDamage(traveled);
                 }
                 break;
             }
             case 'mercy': {
-                // Reduce the target to 1 HP instead of killing
-                if (target.hp <= 0) {
-                    target.hp = 1;
-                }
+                // CE heal(defender, onHitMercyHealPercent=50, false).
+                target.hp = Math.min(target.maxHp, target.hp + Math.trunc(target.maxHp / 2));
+                if (visible) weapon.runicKnown = true;
                 logger.log(i18next.t('runic.weapon.mercy', { target: this.monsterDisplayName(target), defaultValue: `Your weapon of mercy spares the ${this.monsterDisplayName(target)}.` }), '#88ff88');
+                break;
+            }
+            case 'plenty': {
+                const clone = this.cloneMonster(target);
+                if (clone && this.canObserveBoltTarget(clone)) weapon.runicKnown = true;
                 break;
             }
             default:
                 break;
+        }
+        if (!previouslyKnown && weapon.runicKnown) {
+            logger.log(i18next.t('runic.weapon.identified', {
+                name: weapon.displayName,
+                defaultValue: `Your ${weapon.name} must be ${weapon.displayName}.`
+            }), '#cccc99');
         }
     }
 
@@ -7227,7 +7207,7 @@ export class Game {
                 '#cccccc'
             );
         }
-        if (res.hit && res.damage > 0) {
+        if (res.hit) {
             const weaponStr = res.weaponName === 'bare hands' ? i18next.t('combat.bare_hands', { defaultValue: 'bare hands' }) : res.weaponName;
             if (res.backstab) {
                 logger.log(i18next.t('combat.backstab', { monster: this.monsterDisplayName(target), damage: res.damage, weapon: weaponStr, defaultValue: `You backstab the ${this.monsterDisplayName(target)} for ${res.damage} damage!` }), '#ff4444');
@@ -7242,8 +7222,6 @@ export class Game {
             // Handle runic trigger (enchantment-scaled chance computed in Combat.ts)
             if (res.triggeredRunic) {
                 this.applyWeaponRunicEffect(target, res.damage, res.triggeredRunic);
-            } else {
-                this.tryTriggerWeaponRunic(target, res.damage);
             }
             this.spawnBlood(target.loc.x, target.loc.y);
             // P4-4：CE splitMonster(defender, attacker)（Combat.c:1424，attack() 主路径）。
@@ -7268,7 +7246,8 @@ export class Game {
         // 此列——CE 的该块只在近战 attack() 里。
         if (res.hit && target.hasBehavior('MONST_DEFEND_DEGRADE_WEAPON')) {
             const weapon = this.player.equippedWeapon;
-            if (weapon && !weapon.isProtected && weapon.enchantment >= -10) {
+            if (weapon && !weapon.isProtected && weapon.enchantment >= -10
+                && !(weapon.runicType === 'slaying' && monsterIsInClass(target.typeId, weapon.vorpalEnemy))) {
                 weapon.enchantment -= 1;
                 if (weapon.quiverNumber) {
                     // CE :1436-1438——投掷武器重掷 quiverNumber（唯一一笔交互期掷骰）
