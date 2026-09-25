@@ -1,0 +1,13 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/blueprint_center.test.ts -t 空锚点 --maxWorkers=1
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a9ab/brogue/brogue-web
+
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 6 skipped (7)
+   Start at  05:48:03
+   Duration  863ms (transform 418ms, setup 0ms, import 777ms, tests 2ms, environment 0ms)
+

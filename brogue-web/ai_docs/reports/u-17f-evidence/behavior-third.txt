@@ -1,0 +1,35 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a9ab/brogue/brogue-web
+
+ ❯ src/test/u_17f_carriers.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_17f_carriers.test.ts [ src/test/u_17f_carriers.test.ts ]
+Error: Transform failed with 1 error:
+/Users/coolking70/.codex/worktrees/a9ab/brogue/brogue-web/src/engine/Core/Game.ts:8207:12: ERROR: Expected ";" but found "poisonedDuringTurn"
+  Plugin: vite:esbuild
+  File: /Users/coolking70/.codex/worktrees/a9ab/brogue/brogue-web/src/engine/Core/Game.ts:8207:12
+  
+  Expected ";" but found "poisonedDuringTurn"
+  8205 |      }
+  8206 |  
+  8207 |      private poisonedDuringTurn = false;
+       |              ^
+  8208 |  
+  8209 |      private removeDeadMonsters(): void {
+  
+ ❯ failureErrorWithLog node_modules/esbuild/lib/main.js:1467:15
+ ❯ node_modules/esbuild/lib/main.js:736:50
+ ❯ responseCallbacks.<computed> node_modules/esbuild/lib/main.js:603:9
+ ❯ handleIncomingPacket node_modules/esbuild/lib/main.js:658:12
+ ❯ Socket.readFromStdout node_modules/esbuild/lib/main.js:581:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  05:24:53
+   Duration  736ms (transform 474ms, setup 0ms, import 0ms, tests 0ms, environment 0ms)
+

@@ -50,6 +50,7 @@ export const DFF_CLEAR_LOWER_PRIORITY_TERRAIN = 1 << 10; // :1821 清空落点�
 /** CE `enum dungeonFeatureTypes`（Rogue.h:1469 起，DF_GRANITE_COLUMN=1）的成员。
  *  只列本轮闭包涉及的 19 个；id 与 CE 逐一对位（测试钉死）。 */
 export enum DF {
+    DF_GRANITE_CRUMBLES = 192, // CE Globals.c:881; active tunnel marker successor.
     DF_VENT_SPEW_POISON_GAS = 178, // CE Rogue.h:1703; Globals.c:855; required U17d successor.
     DF_ARMOR_IMMOLATION = 137, // CE Rogue.h:1636; Globals.c:786. Spawned by the immolation armor runic (U15d-2).
     DF_WEB_SMALL = 57,
@@ -1047,9 +1048,9 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     // {RAT_TRAP_WALL_CRACKING, DUNGEON, 0, 0, 0, "a scratching sound emanates
     //  from the nearby walls!", 0, 0, 0, 0, DF_RUBBLE}（:818）——
     // RAT_TRAP_WALL_DORMANT.promoteType（29 号鼠陷阱：墙上出现裂纹）。tile
-    // RAT_TRAP_WALL_CRACKING web 无（登记）；链尾 DF_RUBBLE 已在目录。
+    // U17f restores RAT_TRAP_WALL_CRACKING; DF_RUBBLE remains its immediate successor.
     [DF.DF_WALL_CRACK]: {
-        id: DF.DF_WALL_CRACK, ceLine: 818, ceTile: 'RAT_TRAP_WALL_CRACKING', tile: null,
+        id: DF.DF_WALL_CRACK, ceLine: 818, ceTile: 'RAT_TRAP_WALL_CRACKING', tile: TerrainType.RAT_TRAP_WALL_CRACKING,
         layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null,
         subsequentDF: DF.DF_RUBBLE,
@@ -1062,9 +1063,9 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     // STATUE_DORMANT / STATUE_DORMANT_DOORWAY.promoteType（21/43/69 号：
     // 雕像从"完好"变"开裂"。ceiling 上的后续由 tile STATUE_CRACKING 自己的
     // promoteChance 3500 推进 → DF_STATUE_SHATTER）。tile STATUE_CRACKING
-    // web 无（登记）；链尾 DF_RUBBLE 已在目录。
+    // U17f restored; the immediate successor remains DF_RUBBLE.
     [DF.DF_CRACKING_STATUE]: {
-        id: DF.DF_CRACKING_STATUE, ceLine: 872, ceTile: 'STATUE_CRACKING', tile: null,
+        id: DF.DF_CRACKING_STATUE, ceLine: 872, ceTile: 'STATUE_CRACKING', tile: TerrainType.STATUE_CRACKING,
         layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null,
         subsequentDF: DF.DF_RUBBLE,
@@ -1312,9 +1313,9 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     // {FLOOR_FLOODABLE, DUNGEON, 0, 0, 0, "the altar retracts into the ground
     // with a grinding sound.", GENERIC_FLASH_LIGHT}（:724）——
     // ALTAR_SWITCH_RETRACTING.promoteType（取物后祭坛沉入地面）。
-    // tile FLOOR_FLOODABLE web 无（登记）。
+    // U17f reconnects the existing FLOOR_FLOODABLE carrier.
     [DF.DF_ALTAR_RETRACT]: {
-        id: DF.DF_ALTAR_RETRACT, ceLine: 724, ceTile: 'FLOOR_FLOODABLE', tile: null,
+        id: DF.DF_ALTAR_RETRACT, ceLine: 724, ceTile: 'FLOOR_FLOODABLE', tile: TerrainType.FLOOR_FLOODABLE,
         layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: 'the altar retracts into the ground with a grinding sound.',
@@ -1324,9 +1325,9 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     // {PORTAL_LIGHT, SURFACE, 0, 0, (DFF_EVACUATE_CREATURES_FIRST |
     //  DFF_ACTIVATE_DORMANT_MONSTER), "the archway flashes, and you catch a
     //  glimpse of another world!"}（:725）——PORTAL.promoteType。
-    // tile PORTAL_LIGHT web 无（登记）。
+    // U17f restores PORTAL_LIGHT, with CE glow and one-turn promotion.
     [DF.DF_PORTAL_ACTIVATE]: {
-        id: DF.DF_PORTAL_ACTIVATE, ceLine: 725, ceTile: 'PORTAL_LIGHT', tile: null,
+        id: DF.DF_PORTAL_ACTIVATE, ceLine: 725, ceTile: 'PORTAL_LIGHT', tile: TerrainType.PORTAL_LIGHT,
         layer: DungeonLayer.SURFACE, startProbability: 0, probabilityDecrement: 0,
         flags: DFF_EVACUATE_CREATURES_FIRST | DFF_ACTIVATE_DORMANT_MONSTER,
         cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
@@ -1371,9 +1372,9 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     // {COFFIN_OPEN, DUNGEON, 0, 0, DFF_ACTIVATE_DORMANT_MONSTER, "the coffin
     //  opens and a dark figure rises!", 0, &darkGray, 3}（:807）——
     // COFFIN_CLOSED.promoteType（棺盖掀开，吸血鬼现身）。tile COFFIN_OPEN
-    // web 无（登记）。flashColor &darkGray 在 web 无载体列（同 V-2b-5 惯例）。
+    // U17f restored; flashColor darkGray uses the U17a transaction.
     [DF.DF_COFFIN_BURSTS]: {
-        id: DF.DF_COFFIN_BURSTS, ceLine: 807, ceTile: 'COFFIN_OPEN', tile: null,
+        id: DF.DF_COFFIN_BURSTS, ceLine: 807, ceTile: 'COFFIN_OPEN', tile: TerrainType.COFFIN_OPEN,
         layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
         flags: DFF_ACTIVATE_DORMANT_MONSTER, cePropagationTerrain: '', propagationTerrain: null,
         subsequentDF: null,
@@ -1405,11 +1406,10 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
 
     // {WORM_TUNNEL_MARKER_ACTIVE, LIQUID, 0, 0, 0}（:880）——
     // DF_WORM_TUNNEL_MARKER_DORMANT.promoteType（拉杆后标记转活跃，开始挖掘）。
-    // tile WORM_TUNNEL_MARKER_ACTIVE web 无（登记：CE displayChar = 0 的
-    // 不可见标记，与 DORMANT 同形；它是 DF_GRANITE_CRUMBLES 的起点，
-    // web 无该挖掘机制）。
+    // U17f: WORM_TUNNEL_MARKER_ACTIVE restored (CE displayChar = 0), an
+    // invisible marker. Its negative-chance frontier promotes DF_GRANITE_CRUMBLES.
     [DF.DF_WORM_TUNNEL_MARKER_ACTIVE]: {
-        id: DF.DF_WORM_TUNNEL_MARKER_ACTIVE, ceLine: 880, ceTile: 'WORM_TUNNEL_MARKER_ACTIVE', tile: null,
+        id: DF.DF_WORM_TUNNEL_MARKER_ACTIVE, ceLine: 880, ceTile: 'WORM_TUNNEL_MARKER_ACTIVE', tile: TerrainType.WORM_TUNNEL_MARKER_ACTIVE,
         layer: DungeonLayer.LIQUID, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: '', lightFlare: '', flashColor: '', effectRadius: 0,
@@ -1483,6 +1483,15 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
         description: "demonic cackling echoes through the room as the altar plunges downward!", lightFlare: '', flashColor: '', effectRadius: 0,
     },
 
+    // U17f: open granite, awaken its resident, then tunnelize via the transaction.
+    [DF.DF_GRANITE_CRUMBLES]: {
+        id: DF.DF_GRANITE_CRUMBLES, ceLine: 881, ceTile: 'FLOOR', tile: TerrainType.FLOOR,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: DFF_SUPERPRIORITY | DFF_ACTIVATE_DORMANT_MONSTER,
+        cePropagationTerrain: '', propagationTerrain: null, subsequentDF: DF.DF_TUNNELIZE,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+
 };
 
 /** 登记"CE 有 tileType 而 web 没有地形"的目录条目 id 清单
@@ -1503,59 +1512,6 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
  *  HEALING_CLOUD 的 DF（及 dewar×4、喷口、药水云等 24 条 GAS 目录的其余）
  *  本轮**未入目录**——载体盘点后无 web 载体的气体只登记不迁移（报告
  *  载体盘点表），故不在本清单。 */
-export const DF_MISSING_TILES: readonly DF[] = [
-    // V-2b-9d: inactive glyph and mud-floor stench carriers are complete.
-    // DF.DF_XXX 已于 V-2b-7 摘除（RUBBLE / LUMINESCENT_FUNGUS 地形落地）——见下方块注
-    // ── V-2b-4 增补（7 条，19 → 26）：祭坛族轮的八条新目录条目里，web 尚无
-    //    对应 tile 的七条；唯一带完整 tile 的是 DF_CAGE_DISAPPEARS
-    //   （tile ALTAR_INERT = web 既有 TerrainType.ALTAR），故不入列。
-    //    三条来自蓝图 feature 的 DF 列（6/7/15 号，web 的 FeatureDef 无 df
-    //    列——V-2b-7 接上后应随蓝图数据自动入闭包并摘除），五条来自新地形
-    //    三链字段。逐字段见 v_2b_4_altars.test.ts B 组。
-    // DF.DF_XXX 已于 V-2b-7 摘除（RUBBLE / LUMINESCENT_FUNGUS 地形落地）——见下方块注
-    DF.DF_WALL_CRACK,              // RAT_TRAP_WALL_CRACKING（29 号墙裂态）
-    DF.DF_CRACKING_STATUE,         // STATUE_CRACKING（21/43/69 号雕像开裂态）
-                                   // ★ 这两条与下方 DF_RUBBLE 构成休眠唤醒链的
-                                   // 结构性堵点：21/29/43/50/56/69/70 号的唤醒
-                                   // 全都要经过带 DFF_ACTIVATE_DORMANT_MONSTER
-                                   // 的 DF，而那三条（DF_STATUE_SHATTER /
-                                   // DF_WALL_SHATTER / DF_SHATTERING_SPELL）
-                                   // 的 tile 都是 RUBBLE——所以真正卡住一切的
-                                   // 是 DF_RUBBLE 本身。RUBBLE 地形落地的那一轮
-                                   // 应把上面四条一并摘除。见 v-2b-5 报告 §3。
-    // ── V-2b-6 增补（2 条，净 28 → 29）：钥匙轮七条新目录条目里 web 无
-    //    tile 的两条；另五条带完整 tile 故不入列——DF_CREATE_LEVER
-    //   （tile WALL_LEVER_HIDDEN，V-2b-3 已有）、DF_ACTIVATE_PORTCULLIS
-    //   （tile PORTCULLIS_CLOSED，V-2b-3 已有）、DF_AMBIENT_BLOOD
-    //   （tile RED_BLOOD = web 既有 TerrainType.BLOOD）、
-    //   DF_MONSTER_CAGE_OPENS（tile MONSTER_CAGE_OPEN，本轮新增）、
-    //   DF_BONES（tile BONES，本轮新增——featureDF 活消费者强制）。
-    //   同轮摘除：DF_OPEN_PORTCULLIS（上方注）。
-    // ── V-2b-7 摘除（5 条，29 − 5 = 24）：RUBBLE 与 LUMINESCENT_FUNGUS 两个
-    //    地形本轮落地（47 号 → 55 号 → 42/57/12/33 号蓝图的地形列与 DF 链
-    //    强制），于是下列五条的 tile 全部接上真载体：
-    //      DF_RUBBLE（:612）、DF_SHATTERING_SPELL（:679）、DF_WALL_SHATTER
-    //      （:924）、DF_STATUE_SHATTER（:873） → RUBBLE；
-    //      DF_LUMINESCENT_FUNGUS（:608） → LUMINESCENT_FUNGUS。
-    //    ★ 这条摘除**解开了 V-2b-5 登记的"休眠唤醒链结构性堵点"**：
-    //      v-2b-5 报告 §3 写"真正卡住一切的是 DF_RUBBLE 本身"——21/29/43/
-    //      50/56/69/70 号的唤醒都要经过带 DFF_ACTIVATE_DORMANT_MONSTER 且
-    //      tile=RUBBLE 的三条 DF。本轮 RUBBLE 落地，该堵点结构性消除
-    //      （守卫由 c_4b E4 与 v_2b_5 A3 双钉）。上方 V-2b-3/V-2b-4/V-2b-5
-    //      的旧注释保留，供后人看演化链。
-    // ── V-2b-7 增补（7 条，24 + 7 = 31）：本轮 22 条新目录条目里 tile 无 web
-    //    载体的七条。另 15 条带完整 tile 故不入列——逐条：DF_DEAD_FOLIAGE
-    //    （DEAD_FOLIAGE）、DF_VOMIT（VOMIT）、DF_TUNNELIZE（RUBBLE）、
-    //    DF_SMALL_DEAD_GRASS（DEAD_GRASS）、DF_GLYPH_CIRCLE（MACHINE_GLYPH）、
-    //    DF_TRIGGER_AREA（MACHINE_TRIGGER_FLOOR）、DF_SURROUND_WOODEN_BARRICADE
-    //    （WOODEN_BARRICADE）、DF_WORM_TUNNEL_MARKER_DORMANT
-    //    （WORM_TUNNEL_MARKER_DORMANT）、DF_SWAMP（GRAY_FUNGUS）、DF_SWAMP_MUD
-    //    （MUD）、DF_SWAMP_WATER（SHALLOW_WATER = TerrainType.WATER_SHALLOW）、
-    //    DF_FLAMETHROWER（PLAIN_FIRE）、DF_EMBERS_PATCH（EMBERS）、
-    //    DF_COFFIN_BURNS（PLAIN_FIRE）、DF_SACRIFICE_CAGE_ACTIVE
-    //    （ALTAR_CAGE_RETRACTABLE）。
-    DF.DF_ALTAR_RETRACT,           // FLOOR_FLOODABLE（42 号祭坛沉入地面）
-    DF.DF_PORTAL_ACTIVATE,         // PORTAL_LIGHT（12 号石门激活态）
-    DF.DF_COFFIN_BURSTS,           // COFFIN_OPEN（11 号棺盖掀开态）
-    DF.DF_WORM_TUNNEL_MARKER_ACTIVE, // WORM_TUNNEL_MARKER_ACTIVE（55 号活跃标记）
-];
+// U17f closes the last six registered gaps. Retain the explicit empty guard;
+// unported CE features outside this catalog are not implied to be implemented.
+export const DF_MISSING_TILES: readonly DF[] = [];

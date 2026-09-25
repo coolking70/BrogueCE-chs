@@ -1,0 +1,59 @@
+[
+  {
+    "mode": "normal",
+    "before": {
+      "dormant": [],
+      "path": [
+        {
+          "x": 5,
+          "y": 5
+        },
+        {
+          "x": 6,
+          "y": 5
+        }
+      ]
+    },
+    "after": {
+      "player": {
+        "x": 5,
+        "y": 5
+      },
+      "path": [],
+      "monsters": [],
+      "log": [
+        {
+          "id": 0,
+          "text": "the cages lower to cover the altars.",
+          "color": "#ffffff",
+          "count": 1
+        }
+      ]
+    }
+  },
+  {
+    "mode": "test",
+    "before": {
+      "dormant": [],
+      "path": [
+        {
+          "x": 5,
+          "y": 5
+        },
+        {
+          "x": 6,
+          "y": 5
+        }
+      ]
+    },
+    "after": {
+      "player": {
+        "x": 6,
+        "y": 5
+      },
+      "path": [],
+      "monsters": [],
+      "log": []
+    }
+  }
+]

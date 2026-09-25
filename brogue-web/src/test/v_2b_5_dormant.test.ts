@@ -168,8 +168,8 @@ describe('V-2b-5 A：七个休眠载体地形 ≡ CE Globals.c 原行', () => {
     it('A3 四条新 DF 条目 ≡ CE 目录行；DF_MISSING_TILES 顺延为 28（顺延不放宽）', () => {
         const cases: Array<[DF, { line: number; tile: string; hasTile: boolean; layer: L; start: number; decr: number; flags: number; subseq: DF | null; desc: string }]> = [
             [DF.DF_ALTAR_INERT, { line: 723, tile: 'ALTAR_INERT', hasTile: true, layer: L.DUNGEON, start: 0, decr: 0, flags: 0, subseq: null, desc: '' }],
-            [DF.DF_WALL_CRACK, { line: 818, tile: 'RAT_TRAP_WALL_CRACKING', hasTile: false, layer: L.DUNGEON, start: 0, decr: 0, flags: 0, subseq: DF.DF_RUBBLE, desc: 'a scratching sound emanates from the nearby walls!' }],
-            [DF.DF_CRACKING_STATUE, { line: 872, tile: 'STATUE_CRACKING', hasTile: false, layer: L.DUNGEON, start: 0, decr: 0, flags: 0, subseq: DF.DF_RUBBLE, desc: 'cracks begin snaking across the marble surface of the statue!' }],
+            [DF.DF_WALL_CRACK, { line: 818, tile: 'RAT_TRAP_WALL_CRACKING', hasTile: true, layer: L.DUNGEON, start: 0, decr: 0, flags: 0, subseq: DF.DF_RUBBLE, desc: 'a scratching sound emanates from the nearby walls!' }],
+            [DF.DF_CRACKING_STATUE, { line: 872, tile: 'STATUE_CRACKING', hasTile: true, layer: L.DUNGEON, start: 0, decr: 0, flags: 0, subseq: DF.DF_RUBBLE, desc: 'cracks begin snaking across the marble surface of the statue!' }],
             [DF.DF_TURRET_EMERGE, { line: 876, tile: 'WALL', hasTile: true, layer: L.DUNGEON, start: 0, decr: 0, flags: DFF_ACTIVATE_DORMANT_MONSTER, subseq: DF.DF_RUBBLE, desc: 'you hear a click, and the stones in the wall shift to reveal turrets!' }],
         ];
         for (const [id, want] of cases) {
@@ -193,9 +193,9 @@ describe('V-2b-5 A：七个休眠载体地形 ≡ CE Globals.c 原行', () => {
         // V-2b-7：29 → 31（摘 5 增 7，DF 特征系统轮——RUBBLE/LUMINESCENT_FUNGUS
         // 两条地形落地摘除四条 RUBBLE 链 DF 与 DF_LUMINESCENT_FUNGUS，新增
         // 七条 tile 无 web 载体的新条目）。
-        expect(DF_MISSING_TILES).toHaveLength(6); // U17e: five altar/pipe carriers restored; the other six stay missing.
-        expect(DF_MISSING_TILES).toContain(DF.DF_WALL_CRACK);
-        expect(DF_MISSING_TILES).toContain(DF.DF_CRACKING_STATUE);
+        expect(DF_MISSING_TILES).toEqual([]); // U17f: all six final gaps closed; guard retained. // U17e: five altar/pipe carriers restored; the other six stay missing.
+        expect(DF_MISSING_TILES).not.toContain(DF.DF_WALL_CRACK);
+        expect(DF_MISSING_TILES).not.toContain(DF.DF_CRACKING_STATUE);
         expect(DF_MISSING_TILES, '带完整 tile 的条目不得混进缺 tile 名单').not.toContain(DF.DF_ALTAR_INERT);
         expect(DF_MISSING_TILES, 'DF_TURRET_EMERGE 的 tile 是 WALL（web 有）').not.toContain(DF.DF_TURRET_EMERGE);
     });
@@ -549,6 +549,9 @@ describe('V-2b-5 D：生成接线（machineHome / dormantMonsters）', () => {
                 for (const m of game.dormantMonsters) {
                     expect(m.isDormant, `${seed}/D${depth} 休眠表里的怪 isDormant 必须为真`).toBe(true);
                     expect(m.machineHome, `${seed}/D${depth} 休眠怪必须记属机`).toBeGreaterThan(0);
+                    // U17f 验收修订：CE Architect.c:1657 仅对非盟友置 TRACKING_SCENT
+                    // （creatureState != MONSTER_ALLY）；传奇盟友（HORDE_ALLIED_WITH_PLAYER）豁免。
+                    if (m.isAlly) continue;
                     expect(m.state, `${seed}/D${depth} 休眠怪醒来应为 TRACKING_SCENT（web HUNTING）——否定条件漏写即红`)
                         .toBe(MonsterState.HUNTING);
                 }

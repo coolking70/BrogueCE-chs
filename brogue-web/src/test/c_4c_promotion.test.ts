@@ -653,6 +653,6 @@ describe('C-4c E：§五 实测测量（真实关卡、多种子；只测量不�
         // 地形落地后必须进入这份“且仅是”清单，不能继续假装它们不存在。
         expect(negative.sort(), '负值载体必须且仅为已迁移的 CE 原值')
             .toEqual(['FORCEFIELD:-200', 'FORCEFIELD_MELT:-10000', 'HOLE:-1000', 'HOLE_EDGE:-500',
-                'FLOOD_WATER_DEEP:-200', 'FLOOD_WATER_SHALLOW:-100', 'LAVA_RETRACTING:-1500'].sort());
+                'FLOOD_WATER_DEEP:-200', 'FLOOD_WATER_SHALLOW:-100', 'LAVA_RETRACTING:-1500', 'WORM_TUNNEL_MARKER_ACTIVE:-2000'].sort());
     });
 });

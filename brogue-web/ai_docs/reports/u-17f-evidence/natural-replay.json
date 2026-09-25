@@ -1,0 +1,2715 @@
+[
+  {
+    "name": "RAT_TRAP_WALL_DORMANT",
+    "depth": 7,
+    "machine": 3,
+    "trigger": {
+      "x": 54,
+      "y": 16
+    },
+    "before": [
+      {
+        "id": 137,
+        "type": "rat",
+        "loc": {
+          "x": 53,
+          "y": 17
+        }
+      },
+      {
+        "id": 136,
+        "type": "rat",
+        "loc": {
+          "x": 52,
+          "y": 16
+        }
+      },
+      {
+        "id": 135,
+        "type": "rat",
+        "loc": {
+          "x": 54,
+          "y": 15
+        }
+      },
+      {
+        "id": 134,
+        "type": "rat",
+        "loc": {
+          "x": 54,
+          "y": 17
+        }
+      },
+      {
+        "id": 133,
+        "type": "rat",
+        "loc": {
+          "x": 50,
+          "y": 16
+        }
+      },
+      {
+        "id": 132,
+        "type": "rat",
+        "loc": {
+          "x": 50,
+          "y": 19
+        }
+      },
+      {
+        "id": 131,
+        "type": "rat",
+        "loc": {
+          "x": 49,
+          "y": 17
+        }
+      },
+      {
+        "id": 130,
+        "type": "rat",
+        "loc": {
+          "x": 51,
+          "y": 19
+        }
+      },
+      {
+        "id": 129,
+        "type": "rat",
+        "loc": {
+          "x": 53,
+          "y": 16
+        }
+      },
+      {
+        "id": 128,
+        "type": "rat",
+        "loc": {
+          "x": 45,
+          "y": 19
+        }
+      },
+      {
+        "id": 127,
+        "type": "rat",
+        "loc": {
+          "x": 49,
+          "y": 18
+        }
+      },
+      {
+        "id": 126,
+        "type": "rat",
+        "loc": {
+          "x": 45,
+          "y": 16
+        }
+      },
+      {
+        "id": 125,
+        "type": "rat",
+        "loc": {
+          "x": 49,
+          "y": 19
+        }
+      },
+      {
+        "id": 124,
+        "type": "rat",
+        "loc": {
+          "x": 49,
+          "y": 16
+        }
+      },
+      {
+        "id": 123,
+        "type": "rat",
+        "loc": {
+          "x": 44,
+          "y": 16
+        }
+      },
+      {
+        "id": 122,
+        "type": "rat",
+        "loc": {
+          "x": 47,
+          "y": 16
+        }
+      },
+      {
+        "id": 121,
+        "type": "rat",
+        "loc": {
+          "x": 46,
+          "y": 14
+        }
+      }
+    ],
+    "active": [
+      {
+        "x": 42,
+        "y": 16,
+        "layers": [
+          "RAT_TRAP_WALL_CRACKING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 42,
+        "y": 17,
+        "layers": [
+          "RAT_TRAP_WALL_CRACKING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 42,
+        "y": 18,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 43,
+        "y": 14,
+        "layers": [
+          "RAT_TRAP_WALL_CRACKING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 43,
+        "y": 16,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "RUBBLE"
+        ]
+      },
+      {
+        "x": 43,
+        "y": 17,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "RUBBLE"
+        ]
+      },
+      {
+        "x": 43,
+        "y": 18,
+        "layers": [
+          "TRAP",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 44,
+        "y": 14,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 44,
+        "y": 15,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 44,
+        "y": 16,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 44,
+        "y": 17,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 44,
+        "y": 18,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 45,
+        "y": 14,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 45,
+        "y": 15,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 45,
+        "y": 16,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 45,
+        "y": 17,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 45,
+        "y": 18,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 45,
+        "y": 19,
+        "layers": [
+          "RAT_TRAP_WALL_CRACKING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 46,
+        "y": 14,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 46,
+        "y": 15,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 46,
+        "y": 16,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 46,
+        "y": 17,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 46,
+        "y": 18,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 46,
+        "y": 19,
+        "layers": [
+          "RAT_TRAP_WALL_CRACKING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 47,
+        "y": 13,
+        "layers": [
+          "RAT_TRAP_WALL_CRACKING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 47,
+        "y": 14,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "RUBBLE"
+        ]
+      },
+      {
+        "x": 47,
+        "y": 15,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 47,
+        "y": 16,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 47,
+        "y": 17,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 47,
+        "y": 18,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 47,
+        "y": 19,
+        "layers": [
+          "RAT_TRAP_WALL_CRACKING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 48,
+        "y": 14,
+        "layers": [
+          "RAT_TRAP_WALL_CRACKING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 48,
+        "y": 15,
+        "layers": [
+          "RAT_TRAP_WALL_CRACKING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 48,
+        "y": 16,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 48,
+        "y": 17,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 48,
+        "y": 18,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 48,
+        "y": 19,
+        "layers": [
+          "RAT_TRAP_WALL_CRACKING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 49,
+        "y": 15,
+        "layers": [
+          "RAT_TRAP_WALL_CRACKING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 49,
+        "y": 16,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 49,
+        "y": 17,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 49,
+        "y": 18,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 49,
+        "y": 19,
+        "layers": [
+          "RAT_TRAP_WALL_CRACKING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 50,
+        "y": 16,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 50,
+        "y": 17,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 50,
+        "y": 18,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 50,
+        "y": 19,
+        "layers": [
+          "RAT_TRAP_WALL_CRACKING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 51,
+        "y": 16,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 51,
+        "y": 17,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 51,
+        "y": 18,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 51,
+        "y": 19,
+        "layers": [
+          "RAT_TRAP_WALL_CRACKING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 52,
+        "y": 16,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "PARALYSIS_GAS",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 52,
+        "y": 17,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "PARALYSIS_GAS",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 52,
+        "y": 18,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "PARALYSIS_GAS",
+          "GRASS"
+        ]
+      },
+      {
+        "x": 52,
+        "y": 19,
+        "layers": [
+          "RAT_TRAP_WALL_CRACKING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 53,
+        "y": 16,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "PARALYSIS_GAS",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 53,
+        "y": 17,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "PARALYSIS_GAS",
+          "RUBBLE"
+        ]
+      },
+      {
+        "x": 53,
+        "y": 18,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "PARALYSIS_GAS",
+          "RUBBLE"
+        ]
+      },
+      {
+        "x": 53,
+        "y": 19,
+        "layers": [
+          "RAT_TRAP_WALL_CRACKING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 54,
+        "y": 15,
+        "layers": [
+          "RAT_TRAP_WALL_CRACKING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 54,
+        "y": 16,
+        "layers": [
+          "ALTAR",
+          "NOTHING",
+          "PARALYSIS_GAS",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 54,
+        "y": 17,
+        "layers": [
+          "MACHINE_PARALYSIS_VENT",
+          "NOTHING",
+          "PARALYSIS_GAS",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 54,
+        "y": 18,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "PARALYSIS_GAS",
+          "NOTHING"
+        ]
+      }
+    ],
+    "after": [
+      {
+        "id": 137,
+        "type": "rat",
+        "dormant": false,
+        "loc": {
+          "x": 53,
+          "y": 17
+        }
+      },
+      {
+        "id": 136,
+        "type": "rat",
+        "dormant": false,
+        "loc": {
+          "x": 52,
+          "y": 16
+        }
+      },
+      {
+        "id": 135,
+        "type": "rat",
+        "dormant": false,
+        "loc": {
+          "x": 54,
+          "y": 15
+        }
+      },
+      {
+        "id": 134,
+        "type": "rat",
+        "dormant": false,
+        "loc": {
+          "x": 54,
+          "y": 17
+        }
+      },
+      {
+        "id": 133,
+        "type": "rat",
+        "dormant": false,
+        "loc": {
+          "x": 50,
+          "y": 16
+        }
+      },
+      {
+        "id": 132,
+        "type": "rat",
+        "dormant": false,
+        "loc": {
+          "x": 50,
+          "y": 19
+        }
+      },
+      {
+        "id": 131,
+        "type": "rat",
+        "dormant": false,
+        "loc": {
+          "x": 49,
+          "y": 17
+        }
+      },
+      {
+        "id": 130,
+        "type": "rat",
+        "dormant": false,
+        "loc": {
+          "x": 51,
+          "y": 19
+        }
+      },
+      {
+        "id": 129,
+        "type": "rat",
+        "dormant": false,
+        "loc": {
+          "x": 53,
+          "y": 16
+        }
+      },
+      {
+        "id": 128,
+        "type": "rat",
+        "dormant": false,
+        "loc": {
+          "x": 45,
+          "y": 19
+        }
+      },
+      {
+        "id": 127,
+        "type": "rat",
+        "dormant": false,
+        "loc": {
+          "x": 49,
+          "y": 18
+        }
+      },
+      {
+        "id": 126,
+        "type": "rat",
+        "dormant": false,
+        "loc": {
+          "x": 45,
+          "y": 16
+        }
+      },
+      {
+        "id": 125,
+        "type": "rat",
+        "dormant": false,
+        "loc": {
+          "x": 49,
+          "y": 19
+        }
+      },
+      {
+        "id": 124,
+        "type": "rat",
+        "dormant": false,
+        "loc": {
+          "x": 49,
+          "y": 16
+        }
+      },
+      {
+        "id": 123,
+        "type": "rat",
+        "dormant": false,
+        "loc": {
+          "x": 44,
+          "y": 16
+        }
+      },
+      {
+        "id": 122,
+        "type": "rat",
+        "dormant": false,
+        "loc": {
+          "x": 47,
+          "y": 16
+        }
+      },
+      {
+        "id": 121,
+        "type": "rat",
+        "dormant": false,
+        "loc": {
+          "x": 46,
+          "y": 14
+        }
+      }
+    ],
+    "finalLayers": [
+      "FLOOR",
+      "NOTHING",
+      "NOTHING",
+      "RUBBLE"
+    ]
+  },
+  {
+    "name": "STATUE_DORMANT",
+    "depth": 11,
+    "machine": 2,
+    "trigger": {
+      "x": 70,
+      "y": 11
+    },
+    "before": [
+      {
+        "id": 219,
+        "type": "naga",
+        "loc": {
+          "x": 70,
+          "y": 10
+        }
+      }
+    ],
+    "active": [
+      {
+        "x": 70,
+        "y": 10,
+        "layers": [
+          "STATUE_CRACKING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 70,
+        "y": 11,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "RUBBLE"
+        ]
+      },
+      {
+        "x": 71,
+        "y": 10,
+        "layers": [
+          "FLOOR",
+          "MUD",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 71,
+        "y": 12,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 72,
+        "y": 11,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      }
+    ],
+    "after": [
+      {
+        "id": 219,
+        "type": "naga",
+        "dormant": false,
+        "loc": {
+          "x": 70,
+          "y": 10
+        }
+      }
+    ],
+    "finalLayers": [
+      "FLOOR",
+      "NOTHING",
+      "NOTHING",
+      "RUBBLE"
+    ]
+  },
+  {
+    "name": "COFFIN_CLOSED",
+    "depth": 23,
+    "machine": 1,
+    "trigger": {
+      "x": 71,
+      "y": 3
+    },
+    "before": [
+      {
+        "id": 579,
+        "type": "vampire",
+        "loc": {
+          "x": 73,
+          "y": 3
+        }
+      }
+    ],
+    "active": [
+      {
+        "x": 51,
+        "y": 4,
+        "layers": [
+          "SECRET_DOOR",
+          "NOTHING",
+          "NOTHING",
+          "BLOOD"
+        ]
+      },
+      {
+        "x": 52,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 52,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "BLOOD"
+        ]
+      },
+      {
+        "x": 52,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "BLOOD"
+        ]
+      },
+      {
+        "x": 53,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "BLOOD"
+        ]
+      },
+      {
+        "x": 53,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "BLOOD"
+        ]
+      },
+      {
+        "x": 53,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "BLOOD"
+        ]
+      },
+      {
+        "x": 54,
+        "y": 2,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 54,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 54,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "BLOOD"
+        ]
+      },
+      {
+        "x": 55,
+        "y": 1,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 55,
+        "y": 2,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 55,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 55,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 56,
+        "y": 1,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 56,
+        "y": 2,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "BLOOD"
+        ]
+      },
+      {
+        "x": 56,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 56,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 56,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 57,
+        "y": 2,
+        "layers": [
+          "MONSTER_CAGE_CLOSED",
+          "NOTHING",
+          "NOTHING",
+          "BLOOD"
+        ]
+      },
+      {
+        "x": 57,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 57,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 57,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 58,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 58,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 58,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 59,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 59,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 59,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 60,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 60,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 60,
+        "y": 6,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 61,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 61,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 61,
+        "y": 6,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 62,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 62,
+        "y": 6,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 63,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 63,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 63,
+        "y": 6,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 64,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 64,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 64,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 65,
+        "y": 2,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 65,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 66,
+        "y": 1,
+        "layers": [
+          "MONSTER_CAGE_CLOSED",
+          "NOTHING",
+          "NOTHING",
+          "BLOOD"
+        ]
+      },
+      {
+        "x": 66,
+        "y": 2,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "BLOOD"
+        ]
+      },
+      {
+        "x": 67,
+        "y": 1,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "BLOOD"
+        ]
+      },
+      {
+        "x": 67,
+        "y": 2,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "BLOOD"
+        ]
+      },
+      {
+        "x": 67,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 68,
+        "y": 1,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "BLOOD"
+        ]
+      },
+      {
+        "x": 68,
+        "y": 2,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "BLOOD"
+        ]
+      },
+      {
+        "x": 68,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 68,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "BLOOD"
+        ]
+      },
+      {
+        "x": 69,
+        "y": 2,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "BLOOD"
+        ]
+      },
+      {
+        "x": 69,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "BLOOD"
+        ]
+      },
+      {
+        "x": 69,
+        "y": 4,
+        "layers": [
+          "MONSTER_CAGE_CLOSED",
+          "NOTHING",
+          "NOTHING",
+          "BLOOD"
+        ]
+      },
+      {
+        "x": 70,
+        "y": 2,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "BLOOD"
+        ]
+      },
+      {
+        "x": 70,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "BLOOD"
+        ]
+      },
+      {
+        "x": 70,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 70,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 71,
+        "y": 2,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 71,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 71,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 71,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 72,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 72,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 72,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 73,
+        "y": 3,
+        "layers": [
+          "COFFIN_OPEN",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 73,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      }
+    ],
+    "after": [
+      {
+        "id": 579,
+        "type": "vampire",
+        "dormant": false,
+        "loc": {
+          "x": 73,
+          "y": 3
+        }
+      }
+    ],
+    "finalLayers": [
+      "COFFIN_OPEN",
+      "NOTHING",
+      "NOTHING",
+      "NOTHING"
+    ]
+  },
+  {
+    "name": "PORTAL",
+    "depth": 10,
+    "machine": 1,
+    "trigger": {
+      "x": 23,
+      "y": 4
+    },
+    "before": [
+      {
+        "id": 201,
+        "type": "mangrove_dryad",
+        "loc": {
+          "x": 17,
+          "y": 5
+        }
+      }
+    ],
+    "active": [
+      {
+        "x": 16,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 17,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 17,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "LUMINESCENT_FUNGUS"
+        ]
+      },
+      {
+        "x": 17,
+        "y": 5,
+        "layers": [
+          "PORTAL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 18,
+        "y": 2,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 18,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 18,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "LUMINESCENT_FUNGUS"
+        ]
+      },
+      {
+        "x": 18,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "LUMINESCENT_FUNGUS"
+        ]
+      },
+      {
+        "x": 18,
+        "y": 6,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "LUMINESCENT_FUNGUS"
+        ]
+      },
+      {
+        "x": 19,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 19,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 19,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 19,
+        "y": 6,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 19,
+        "y": 7,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 20,
+        "y": 2,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 20,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 20,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 20,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 20,
+        "y": 6,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 1,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 2,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "LUMINESCENT_FUNGUS"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 5,
+        "layers": [
+          "TRAP",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 6,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 7,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 2,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "LUMINESCENT_FUNGUS"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "LUMINESCENT_FUNGUS"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 6,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "LUMINESCENT_FUNGUS"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 4,
+        "layers": [
+          "ALTAR_KEYHOLE",
+          "NOTHING",
+          "NOTHING",
+          "LUMINESCENT_FUNGUS"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "LUMINESCENT_FUNGUS"
+        ]
+      },
+      {
+        "x": 24,
+        "y": 4,
+        "layers": [
+          "DOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      }
+    ],
+    "after": [
+      {
+        "id": 201,
+        "type": "mangrove_dryad",
+        "dormant": false,
+        "loc": {
+          "x": 17,
+          "y": 5
+        }
+      }
+    ],
+    "finalLayers": [
+      "PORTAL",
+      "NOTHING",
+      "NOTHING",
+      "NOTHING"
+    ]
+  },
+  {
+    "name": "ALTAR_SWITCH_RETRACTING",
+    "depth": 3,
+    "machine": 3,
+    "trigger": {
+      "x": 16,
+      "y": 1
+    },
+    "before": [],
+    "active": [
+      {
+        "x": 9,
+        "y": 1,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 9,
+        "y": 2,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "MACHINE_COLLAPSE_EDGE_SPREADING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 9,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "CHASM",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 10,
+        "y": 1,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 10,
+        "y": 2,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 10,
+        "y": 3,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "MACHINE_COLLAPSE_EDGE_SPREADING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 11,
+        "y": 1,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 11,
+        "y": 2,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 11,
+        "y": 3,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 11,
+        "y": 4,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 11,
+        "y": 5,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 11,
+        "y": 6,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 11,
+        "y": 7,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 11,
+        "y": 8,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 12,
+        "y": 1,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 12,
+        "y": 2,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 12,
+        "y": 3,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 12,
+        "y": 4,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 12,
+        "y": 5,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "MACHINE_COLLAPSE_EDGE_SPREADING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 13,
+        "y": 1,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 13,
+        "y": 2,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 13,
+        "y": 3,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 13,
+        "y": 4,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 13,
+        "y": 5,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 14,
+        "y": 1,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 14,
+        "y": 2,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 14,
+        "y": 3,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 14,
+        "y": 4,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 14,
+        "y": 5,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 15,
+        "y": 1,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 15,
+        "y": 2,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 15,
+        "y": 3,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 15,
+        "y": 4,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 15,
+        "y": 5,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 16,
+        "y": 1,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 16,
+        "y": 2,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 16,
+        "y": 3,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 16,
+        "y": 4,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 16,
+        "y": 5,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 17,
+        "y": 1,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 17,
+        "y": 2,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 17,
+        "y": 3,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 17,
+        "y": 4,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 17,
+        "y": 5,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 18,
+        "y": 1,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 18,
+        "y": 2,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 18,
+        "y": 3,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 18,
+        "y": 4,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 18,
+        "y": 5,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 19,
+        "y": 5,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 20,
+        "y": 5,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 20,
+        "y": 6,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "MACHINE_COLLAPSE_EDGE_SPREADING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 20,
+        "y": 7,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 5,
+        "layers": [
+          "FLOOR_FLOODABLE",
+          "MACHINE_COLLAPSE_EDGE_SPREADING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 6,
+        "layers": [
+          "FLOOR",
+          "CHASM",
+          "NOTHING",
+          "NOTHING"
+        ]
+      }
+    ],
+    "after": [],
+    "finalLayers": [
+      "FLOOR_FLOODABLE",
+      "NOTHING",
+      "NOTHING",
+      "NOTHING"
+    ]
+  }
+]

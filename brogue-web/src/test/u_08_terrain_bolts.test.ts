@@ -48,7 +48,7 @@ describe('U08 CE catalog and runtime qualification',()=>{
         // Retain the U08 universe: later additions are item fire (110),
         // foliage regrowth (63), U17c lever pull (96), and U17d immolation/poison spew (137/178).
         // U17e adds only the necessary open-cage / inert-pipe / sacrifice successors.
-        expect(Object.keys(DFC).filter(k=>Number(k)!==110 && Number(k)!==63 && Number(k)!==96 && Number(k)!==137 && Number(k)!==178 && ![84,142,146].includes(Number(k)))).toHaveLength(139);
+        expect(Object.keys(DFC).filter(k=>Number(k)!==110 && Number(k)!==63 && Number(k)!==96 && Number(k)!==137 && Number(k)!==178 && ![84,142,146,192].includes(Number(k)))).toHaveLength(139);
         expect(BC[B.SPIDERWEB]).toMatchObject({effect:E.NONE,pathDF:'DF_WEB_SMALL',targetDF:'DF_WEB_LARGE'});
         expect(BC[B.ANCIENT_SPIRIT_VINES]).toMatchObject({effect:E.NONE,pathDF:'DF_ANCIENT_SPIRIT_GRASS',targetDF:'DF_ANCIENT_SPIRIT_VINES'});
         expect(BC[B.SPIDERWEB].flags).toBe(F.TARGET_ENEMIES|F.NEVER_REFLECTS|F.NOT_LEARNABLE);

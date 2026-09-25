@@ -237,6 +237,8 @@ describe('A5: 层 1（种类）与层 2（实例）不合并', () => {
         const b = ItemLoader.spawnWeapon('sword', -1, -1)!;
         a.enchantment = 2;
         b.enchantment = 2;
+        // U17f: the assertion describes enchantment-only swords, independent of generation RNG.
+        a.runicType = b.runicType = undefined;
         ItemLoader.identifyInstance(a);
         expect(a.identified).toBe(true);
         expect(b.identified).toBe(false);
@@ -397,7 +399,8 @@ describe('A9: 开局清零（CE resetItemTableEntry，Items.c:8775-8800）', () 
         ItemLoader.identifiedItems.add('wand_of_slowness');
         expect(ItemLoader.identifiedItems.size).toBeGreaterThanOrEqual(9); // 3 + 6 护符 + 1 护符石
 
-        const gameB = createHeadlessGame(777);
+        // U17f: normal seed777 D1 now has a library that legitimately auto-identifies items.
+        const gameB = createHeadlessGame(777, 'test');
         // 错误实现：initConsumables 漏 clear 或 startNewGame 漏调 initConsumables → 本断言红
         expect(ItemLoader.identifiedItems.has('potion_of_life')).toBe(false);
         expect(ItemLoader.identifiedItems.has('scroll_of_teleportation')).toBe(false);

@@ -1,0 +1,546 @@
+{
+  "sources": {
+    "../BrogueCE-master/src/brogue/Globals.c": "0b104f15c5ef78e93b5142747c41ff82e82d027bd73f7633c6b430baebf45cff",
+    "../BrogueCE-master/src/brogue/Rogue.h": "daa86933bf745f848fc56b4e697c941c78d3a3c6f2ff2744ff4c9daf589c7256",
+    "../BrogueCE-master/src/variants/GlobalsBrogue.c": "e8903aede4fad21b7823ccc547cf4219c76e87e061543188d8d90141cebffa1e"
+  },
+  "tiles": {
+    "RAT_TRAP_WALL_CRACKING": {
+      "line": 560,
+      "drawPriority": 0,
+      "chanceToIgnite": 0,
+      "fireType": "DF_PLAIN_FIRE",
+      "discoverType": "",
+      "promoteType": "DF_WALL_SHATTER",
+      "promoteChance": 500,
+      "glowLight": "NO_LIGHT",
+      "flags": 63,
+      "mechFlags": 425984,
+      "description": "a cracking wall",
+      "flavorText": "Cracks are running ominously across the base of this rough stone wall."
+    },
+    "STATUE_CRACKING": {
+      "line": 353,
+      "drawPriority": 0,
+      "chanceToIgnite": 0,
+      "fireType": "DF_PLAIN_FIRE",
+      "discoverType": "",
+      "promoteType": "DF_STATUE_SHATTER",
+      "promoteChance": 3500,
+      "glowLight": "NO_LIGHT",
+      "flags": 29,
+      "mechFlags": 425984,
+      "description": "a cracking statue",
+      "flavorText": "Deep cracks ramble down the side of the statue even as you watch."
+    },
+    "COFFIN_OPEN": {
+      "line": 373,
+      "drawPriority": 17,
+      "chanceToIgnite": 20,
+      "fireType": "DF_PLAIN_FIRE",
+      "discoverType": "",
+      "promoteType": "",
+      "promoteChance": 0,
+      "glowLight": "NO_LIGHT",
+      "flags": 1024,
+      "mechFlags": 425984,
+      "description": "an empty coffin",
+      "flavorText": "an open wooden coffin rests in a bed of moss."
+    },
+    "WORM_TUNNEL_MARKER_ACTIVE": {
+      "line": 569,
+      "drawPriority": 100,
+      "chanceToIgnite": 0,
+      "fireType": "",
+      "discoverType": "",
+      "promoteType": "DF_GRANITE_CRUMBLES",
+      "promoteChance": -2000,
+      "glowLight": "NO_LIGHT",
+      "flags": 0,
+      "mechFlags": 32768,
+      "description": "a rough granite wall",
+      "flavorText": "The granite is split open with splinters of rock jutting out at odd angles."
+    },
+    "FLOOR_FLOODABLE": {
+      "line": 324,
+      "drawPriority": 95,
+      "chanceToIgnite": 0,
+      "fireType": "DF_PLAIN_FIRE",
+      "discoverType": "",
+      "promoteType": "",
+      "promoteChance": 0,
+      "glowLight": "NO_LIGHT",
+      "flags": 0,
+      "mechFlags": 0,
+      "description": "the ground",
+      "flavorText": ""
+    },
+    "PORTAL_LIGHT": {
+      "line": 488,
+      "drawPriority": 1,
+      "chanceToIgnite": 0,
+      "fireType": "",
+      "discoverType": "",
+      "promoteType": "",
+      "promoteChance": 10000,
+      "glowLight": "PORTAL_ACTIVATE_LIGHT",
+      "flags": 0,
+      "mechFlags": 163840,
+      "description": "blinding light",
+      "flavorText": "blinding light streams out of the archway."
+    }
+  },
+  "dfs": {
+    "DF_WALL_CRACK": {
+      "id": 155,
+      "tile": "RAT_TRAP_WALL_CRACKING",
+      "layer": "DUNGEON",
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "description": "a scratching sound emanates from the nearby walls!",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0,
+      "propagationTerrain": "",
+      "subsequentDF": "DF_RUBBLE"
+    },
+    "DF_CRACKING_STATUE": {
+      "id": 187,
+      "tile": "STATUE_CRACKING",
+      "layer": "DUNGEON",
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "description": "cracks begin snaking across the marble surface of the statue!",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0,
+      "propagationTerrain": "",
+      "subsequentDF": "DF_RUBBLE"
+    },
+    "DF_COFFIN_BURSTS": {
+      "id": 148,
+      "tile": "COFFIN_OPEN",
+      "layer": "DUNGEON",
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 16,
+      "description": "the coffin opens and a dark figure rises!",
+      "lightFlare": "",
+      "flashColor": "darkGray",
+      "effectRadius": 3,
+      "propagationTerrain": "",
+      "subsequentDF": null
+    },
+    "DF_WORM_TUNNEL_MARKER_ACTIVE": {
+      "id": 191,
+      "tile": "WORM_TUNNEL_MARKER_ACTIVE",
+      "layer": "LIQUID",
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "description": "",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0,
+      "propagationTerrain": "",
+      "subsequentDF": null
+    },
+    "DF_ALTAR_RETRACT": {
+      "id": 87,
+      "tile": "FLOOR_FLOODABLE",
+      "layer": "DUNGEON",
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "description": "the altar retracts into the ground with a grinding sound.",
+      "lightFlare": "GENERIC_FLASH_LIGHT",
+      "flashColor": "",
+      "effectRadius": 0,
+      "propagationTerrain": "",
+      "subsequentDF": null
+    },
+    "DF_PORTAL_ACTIVATE": {
+      "id": 88,
+      "tile": "PORTAL_LIGHT",
+      "layer": "SURFACE",
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 17,
+      "description": "the archway flashes, and you catch a glimpse of another world!",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0,
+      "propagationTerrain": "",
+      "subsequentDF": null
+    },
+    "DF_GRANITE_CRUMBLES": {
+      "id": 192,
+      "tile": "FLOOR",
+      "layer": "DUNGEON",
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 144,
+      "description": "",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0,
+      "propagationTerrain": "",
+      "subsequentDF": "DF_TUNNELIZE"
+    },
+    "DF_TUNNELIZE": {
+      "id": 55,
+      "tile": "RUBBLE",
+      "layer": "SURFACE",
+      "startProbability": 45,
+      "probabilityDecrement": 23,
+      "flags": 16,
+      "description": "",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0,
+      "propagationTerrain": "",
+      "subsequentDF": null
+    },
+    "DF_RUBBLE": {
+      "id": 7,
+      "tile": "RUBBLE",
+      "layer": "SURFACE",
+      "startProbability": 45,
+      "probabilityDecrement": 23,
+      "flags": 0,
+      "description": "",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0,
+      "propagationTerrain": "",
+      "subsequentDF": null
+    },
+    "DF_STATUE_SHATTER": {
+      "id": 188,
+      "tile": "RUBBLE",
+      "layer": "SURFACE",
+      "startProbability": 120,
+      "probabilityDecrement": 100,
+      "flags": 16,
+      "description": "the statue shatters!",
+      "lightFlare": "",
+      "flashColor": "darkGray",
+      "effectRadius": 3,
+      "propagationTerrain": "",
+      "subsequentDF": "DF_RUBBLE"
+    },
+    "DF_WALL_SHATTER": {
+      "id": 215,
+      "tile": "RUBBLE",
+      "layer": "SURFACE",
+      "startProbability": 120,
+      "probabilityDecrement": 100,
+      "flags": 16,
+      "description": "the nearby wall explodes in a shower of stone fragments!",
+      "lightFlare": "",
+      "flashColor": "darkGray",
+      "effectRadius": 3,
+      "propagationTerrain": "",
+      "subsequentDF": "DF_RUBBLE"
+    }
+  },
+  "blueprintFeatures": [
+    {
+      "blueprint": 11,
+      "index": 0,
+      "line": 256,
+      "terrain": "0",
+      "featureDF": "DF_AMBIENT_BLOOD",
+      "itemFlags": []
+    },
+    {
+      "blueprint": 11,
+      "index": 1,
+      "line": 257,
+      "terrain": "MONSTER_CAGE_CLOSED",
+      "featureDF": "DF_AMBIENT_BLOOD",
+      "itemFlags": []
+    },
+    {
+      "blueprint": 11,
+      "index": 2,
+      "line": 258,
+      "terrain": "COFFIN_CLOSED",
+      "featureDF": "DF_TRIGGER_AREA",
+      "itemFlags": [
+        "ITEM_IS_KEY",
+        "ITEM_PLAYER_AVOIDS"
+      ]
+    },
+    {
+      "blueprint": 11,
+      "index": 3,
+      "line": 259,
+      "terrain": "SECRET_DOOR",
+      "featureDF": "DF_AMBIENT_BLOOD",
+      "itemFlags": []
+    },
+    {
+      "blueprint": 12,
+      "index": 0,
+      "line": 262,
+      "terrain": "ALTAR_KEYHOLE",
+      "featureDF": "DF_LUMINESCENT_FUNGUS",
+      "itemFlags": [
+        "ITEM_IS_KEY",
+        "ITEM_PLAYER_AVOIDS",
+        "ITEM_TO_MACHINE"
+      ]
+    },
+    {
+      "blueprint": 12,
+      "index": 1,
+      "line": 263,
+      "terrain": "PORTAL",
+      "featureDF": "DF_LUMINESCENT_FUNGUS",
+      "itemFlags": []
+    },
+    {
+      "blueprint": 21,
+      "index": 0,
+      "line": 320,
+      "terrain": "STATUE_DORMANT_DOORWAY",
+      "featureDF": null,
+      "itemFlags": []
+    },
+    {
+      "blueprint": 21,
+      "index": 1,
+      "line": 321,
+      "terrain": "MACHINE_TRIGGER_FLOOR",
+      "featureDF": null,
+      "itemFlags": []
+    },
+    {
+      "blueprint": 29,
+      "index": 0,
+      "line": 366,
+      "terrain": "ALTAR_SWITCH",
+      "featureDF": null,
+      "itemFlags": []
+    },
+    {
+      "blueprint": 29,
+      "index": 1,
+      "line": 367,
+      "terrain": "MACHINE_PARALYSIS_VENT_HIDDEN",
+      "featureDF": null,
+      "itemFlags": []
+    },
+    {
+      "blueprint": 29,
+      "index": 2,
+      "line": 368,
+      "terrain": "RAT_TRAP_WALL_DORMANT",
+      "featureDF": null,
+      "itemFlags": []
+    },
+    {
+      "blueprint": 42,
+      "index": 0,
+      "line": 454,
+      "terrain": "ALTAR_SWITCH_RETRACTING",
+      "featureDF": "DF_SMALL_DEAD_GRASS",
+      "itemFlags": []
+    },
+    {
+      "blueprint": 42,
+      "index": 1,
+      "line": 455,
+      "terrain": "0",
+      "featureDF": "DF_DEAD_FOLIAGE",
+      "itemFlags": []
+    },
+    {
+      "blueprint": 42,
+      "index": 2,
+      "line": 456,
+      "terrain": "FOLIAGE",
+      "featureDF": null,
+      "itemFlags": []
+    },
+    {
+      "blueprint": 42,
+      "index": 3,
+      "line": 457,
+      "terrain": "GRASS",
+      "featureDF": null,
+      "itemFlags": []
+    },
+    {
+      "blueprint": 42,
+      "index": 4,
+      "line": 458,
+      "terrain": "DEAD_GRASS",
+      "featureDF": null,
+      "itemFlags": []
+    },
+    {
+      "blueprint": 42,
+      "index": 5,
+      "line": 459,
+      "terrain": "PILOT_LIGHT_DORMANT",
+      "featureDF": null,
+      "itemFlags": []
+    },
+    {
+      "blueprint": 43,
+      "index": 0,
+      "line": 462,
+      "terrain": "ALTAR_SWITCH",
+      "featureDF": null,
+      "itemFlags": []
+    },
+    {
+      "blueprint": 43,
+      "index": 1,
+      "line": 463,
+      "terrain": "STATUE_DORMANT",
+      "featureDF": null,
+      "itemFlags": []
+    },
+    {
+      "blueprint": 53,
+      "index": 0,
+      "line": 523,
+      "terrain": "DOOR",
+      "featureDF": null,
+      "itemFlags": []
+    },
+    {
+      "blueprint": 53,
+      "index": 1,
+      "line": 524,
+      "terrain": "0",
+      "featureDF": "DF_BONES",
+      "itemFlags": []
+    },
+    {
+      "blueprint": 53,
+      "index": 2,
+      "line": 525,
+      "terrain": "0",
+      "featureDF": "DF_ASH",
+      "itemFlags": []
+    },
+    {
+      "blueprint": 53,
+      "index": 3,
+      "line": 526,
+      "terrain": "0",
+      "featureDF": "DF_AMBIENT_BLOOD",
+      "itemFlags": []
+    },
+    {
+      "blueprint": 53,
+      "index": 4,
+      "line": 527,
+      "terrain": "0",
+      "featureDF": "DF_AMBIENT_BLOOD",
+      "itemFlags": []
+    },
+    {
+      "blueprint": 53,
+      "index": 5,
+      "line": 528,
+      "terrain": "ALTAR_SWITCH",
+      "featureDF": null,
+      "itemFlags": []
+    },
+    {
+      "blueprint": 53,
+      "index": 6,
+      "line": 529,
+      "terrain": "BRAZIER",
+      "featureDF": null,
+      "itemFlags": []
+    },
+    {
+      "blueprint": 53,
+      "index": 7,
+      "line": 530,
+      "terrain": "COFFIN_CLOSED",
+      "featureDF": null,
+      "itemFlags": []
+    },
+    {
+      "blueprint": 55,
+      "index": 0,
+      "line": 539,
+      "terrain": "ALTAR_INERT",
+      "featureDF": null,
+      "itemFlags": []
+    },
+    {
+      "blueprint": 55,
+      "index": 1,
+      "line": 540,
+      "terrain": "0",
+      "featureDF": null,
+      "itemFlags": []
+    },
+    {
+      "blueprint": 55,
+      "index": 2,
+      "line": 541,
+      "terrain": "GRANITE",
+      "featureDF": null,
+      "itemFlags": []
+    },
+    {
+      "blueprint": 55,
+      "index": 3,
+      "line": 542,
+      "terrain": "GRANITE",
+      "featureDF": "DF_WORM_TUNNEL_MARKER_DORMANT",
+      "itemFlags": []
+    },
+    {
+      "blueprint": 55,
+      "index": 4,
+      "line": 543,
+      "terrain": "WORM_TUNNEL_OUTER_WALL",
+      "featureDF": "DF_TUNNELIZE",
+      "itemFlags": []
+    },
+    {
+      "blueprint": 55,
+      "index": 5,
+      "line": 544,
+      "terrain": "WALL_LEVER_HIDDEN",
+      "featureDF": null,
+      "itemFlags": []
+    },
+    {
+      "blueprint": 69,
+      "index": 0,
+      "line": 610,
+      "terrain": "STATUE_DORMANT",
+      "featureDF": null,
+      "itemFlags": []
+    },
+    {
+      "blueprint": 69,
+      "index": 1,
+      "line": 611,
+      "terrain": "STATUE_DORMANT",
+      "featureDF": null,
+      "itemFlags": []
+    },
+    {
+      "blueprint": 69,
+      "index": 2,
+      "line": 612,
+      "terrain": "MACHINE_TRIGGER_FLOOR",
+      "featureDF": null,
+      "itemFlags": []
+    }
+  ]
+}

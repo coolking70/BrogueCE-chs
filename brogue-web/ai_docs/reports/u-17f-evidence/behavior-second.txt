@@ -1,0 +1,48 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a9ab/brogue/brogue-web
+
+ ❯ src/test/u_17f_carriers.test.ts (15 tests | 2 failed) 3563ms
+     × RUBBLE autogen CE row invokes the real DF and decorates reachable floor 5ms
+     × 88 matching key activates portal, evacuates occupant, awakens ally and temporary light vanishes 317ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_17f_carriers.test.ts > U17f independent CE catalogs, appearances and data starts > RUBBLE autogen CE row invokes the real DF and decorates reachable floor
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/u_17f_carriers.test.ts:72:66
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/test/u_17f_carriers.test.ts > U17f player trigger to final terrain and entity consumers > 88 matching key activates portal, evacuates occupant, awakens ally and temporary light vanishes
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/test/u_17f_carriers.test.ts:121:38
+    119|   const key=item(g,0,0);g.items=[];key.keyLoc=[{loc:{x:11,y:10},machin…
+    120|   // The entry consumer consumes a real matching key and wires the por…
+    121|   move(g,1,0);expect(ally.isDormant).toBe(false);expect(ally.isAlly).t…
+       |                                      ^
+    122|   expect(g.grid.getCell(15,10)!.layers[L.DUNGEON]).toBe(T.PORTAL);
+    123|   // End-of-turn promotion may already have removed the 10000-chance l…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 13 passed (15)
+   Start at  05:22:37
+   Duration  4.99s (transform 789ms, setup 0ms, import 1.27s, tests 3.56s, environment 0ms)
+

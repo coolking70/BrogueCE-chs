@@ -284,6 +284,8 @@ describe('B-1 刺剑突进（ITEM_LUNGE_ATTACKS）', () => {
             const foe = spawnEnemy(game, 'rat', 6, 5, { defense: 300 });
             foe.state = MonsterState.HUNTING;          // 隔离：触发源只有 lungeAttack
             const fBefore = foe.hp;
+            // U17f: seed the attack after construction; generation RNG is outside this contract.
+            rng.seedRandomGenerator(seed);
             move(game, 1, 0);
             expect(foe.hp, `seed=${seed}：突进必须自动命中`).toBeLessThan(fBefore);
             const d = fBefore - foe.hp;

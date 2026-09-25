@@ -1,0 +1,19 @@
+{
+  name: 'audit-final',
+  command: [
+    '/opt/homebrew/Cellar/node/25.2.1/bin/node',
+    'scripts/u17f-audit.mjs'
+  ],
+  started: '2026-09-25T22:07:28.459Z',
+  ended: '2026-09-25T22:07:29.118Z',
+  exit: 0,
+  signal: null
+}
+{
+  name: 'build-final',
+  command: [ 'npm', 'run', 'build' ],
+  started: '2026-09-25T22:07:29.120Z',
+  ended: '2026-09-25T22:07:34.551Z',
+  exit: 0,
+  signal: null
+}

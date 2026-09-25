@@ -47,12 +47,12 @@ describe('U17c CE independent catalog and scope',()=>{
   }
  });
  it('historical U17c projection after nine U17d closures; every other missing identity remains ordered',()=>{
-  expect(DF_MISSING_TILES).toEqual([179,180,182,183,185,85,140,141,143,155,187,174,175,14,19,87,88,145,148,191].filter(id=>![179,180,182,183,185,174,175,14,19,85,140,141,143,145].includes(id)));
+  expect(DF_MISSING_TILES).toEqual([]); // U17f final six closures; preserve the empty guard.
   for(const id of restored)expect(()=>catalogFeature(id)).not.toThrow();
  });
  it('CE-generated appearances preserve all old rows and represent the new glyphs',()=>{
   const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));
-  expect(Object.keys(rows)).toHaveLength(164);
+  expect(Object.keys(rows)).toHaveLength(169);
   for(const name of Object.keys(golden.tiles)){const t=T[name as keyof typeof T];expect(terrainAppearance(t,true)).toMatchObject({char:rows[name].char,color:rows[name].color,bgColor:rows[name].bgColor});}
  });
  it('three machine DF data starts restored, hidden-trap autoGen correct; secret lever and worm machines stay retired',()=>{

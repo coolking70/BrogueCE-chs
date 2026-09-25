@@ -1,0 +1,218 @@
+[
+  {
+    "file": "src/test/c_4a_terrain_catalog.test.ts",
+    "assertion": "全 TerrainType 键覆盖且字段结构齐全——拼写错/缺键在此翻红而非得 undefined",
+    "failureEvidence": "static-discovery.json",
+    "headProof": "head-premises-static-discovery.json"
+  },
+  {
+    "file": "src/test/c_4c_promotion.test.ts",
+    "assertion": "E3 静态盘点：31 地形中 promoteChance≠0 的活数据、负值死数据",
+    "failureEvidence": "static-discovery.json",
+    "headProof": "head-premises-static-discovery.json"
+  },
+  {
+    "file": "src/test/g_2_gas_df_wiring.test.ts",
+    "assertion": "F-2c 翻转：DF_EXPLOSION_FIRE 已接线（tile GAS_EXPLOSION 已迁），catalogFeature 正常转换且不在缺 tile 名单",
+    "failureEvidence": "static-discovery.json",
+    "headProof": "head-premises-static-discovery.json"
+  },
+  {
+    "file": "src/test/r_1_appearance.test.ts",
+    "assertion": "穷举表覆盖 TerrainType 全部成员（当前 69 个）、成员值无重复",
+    "failureEvidence": "static-discovery.json",
+    "headProof": "head-premises-static-discovery.json"
+  },
+  {
+    "file": "src/test/u_17a_df_transaction.test.ts",
+    "assertion": "historical U17a projection: 30 missing rows before the U17b/U17c/U17d/U17e carriers",
+    "failureEvidence": "static-discovery.json",
+    "headProof": "head-premises-static-discovery.json"
+  },
+  {
+    "file": "src/test/u_17b_carriers.test.ts",
+    "assertion": "historical U17b missing projection excludes exactly the five U17c and nine U17d closures",
+    "failureEvidence": "static-discovery.json",
+    "headProof": "head-premises-static-discovery.json"
+  },
+  {
+    "file": "src/test/u_17b_carriers.test.ts",
+    "assertion": "appearance golden extension keeps every previous row byte-equivalent in value",
+    "failureEvidence": "static-discovery.json",
+    "headProof": "head-premises-static-discovery.json"
+  },
+  {
+    "file": "src/test/u_17c_triggers.test.ts",
+    "assertion": "historical U17c projection after nine U17d closures; every other missing identity remains ordered",
+    "failureEvidence": "static-discovery.json",
+    "headProof": "head-premises-static-discovery.json"
+  },
+  {
+    "file": "src/test/u_17c_triggers.test.ts",
+    "assertion": "CE-generated appearances preserve all old rows and represent the new glyphs",
+    "failureEvidence": "static-discovery.json",
+    "headProof": "head-premises-static-discovery.json"
+  },
+  {
+    "file": "src/test/u_17d_vents.test.ts",
+    "assertion": "removes precisely nine registrations, preserves remaining ordered eleven and old numeric IDs",
+    "failureEvidence": "static-discovery.json",
+    "headProof": "head-premises-static-discovery.json"
+  },
+  {
+    "file": "src/test/u_17d_vents.test.ts",
+    "assertion": "157 CE-generated appearances include visible traps/vents/fire; hidden forms still look like floor",
+    "failureEvidence": "static-discovery.json",
+    "headProof": "head-premises-static-discovery.json"
+  },
+  {
+    "file": "src/test/u_17e_altars.test.ts",
+    "assertion": "removes exactly five missing rows and preserves saved numeric IDs",
+    "failureEvidence": "static-discovery.json",
+    "headProof": "head-premises-static-discovery.json"
+  },
+  {
+    "file": "src/test/u_17e_altars.test.ts",
+    "assertion": "164 CE appearances include exact glyph/color/background and localized terrain descriptions",
+    "failureEvidence": "static-discovery.json",
+    "headProof": "head-premises-static-discovery.json"
+  },
+  {
+    "file": "src/test/v_2b_3_wired.test.ts",
+    "assertion": "有载体的链环 tile 对位（气体 payoff 的三条线）+ DF_MISSING_TILES 顺延 8 → 19",
+    "failureEvidence": "static-discovery.json",
+    "headProof": "head-premises-static-discovery.json"
+  },
+  {
+    "file": "src/test/v_2b_5_dormant.test.ts",
+    "assertion": "A3 四条新 DF 条目 ≡ CE 目录行；DF_MISSING_TILES 顺延为 28（顺延不放宽）",
+    "failureEvidence": "static-discovery.json",
+    "headProof": "head-premises-static-discovery.json"
+  },
+  {
+    "file": "src/test/v_2b_7_features.test.ts",
+    "assertion": "B2 三条链环节与五条三链字段载体（:748/:903/:905 与 :625/:630/:724/:725/:746）",
+    "failureEvidence": "static-discovery.json",
+    "headProof": "head-premises-static-discovery.json"
+  },
+  {
+    "file": "src/test/c_4a_0_layer_model.test.ts",
+    "assertion": "归属表与 drawPriority 表与报告口径逐条一致（表被手滑改动即翻红）",
+    "failureEvidence": "static-more-exact.json",
+    "headProof": "head-premises-static-more-exact.json"
+  },
+  {
+    "file": "src/test/c_4b_dungeon_feature.test.ts",
+    "assertion": "E1 W-14 恰 135 条（原 134 + DF_FORCEFIELD）；历次闭包（C-6 增补 DF_GRASS/DF_FOLIAGE；B-3 增补 DF_FORCEFIELD_MELT/DF_SACRED_GLYPHS/DF_SHATTERING_SPELL；T-1 增补 DF_CRYSTAL_WALL；V-2b-2b 增补 DF_SHOW_TRAPDOOR_HALO/DF_SHOW_TRAPDOOR/DF_WOODEN_BARRICADE_BURN——TRAP_DOOR_HIDDEN.discoverType 与 WOODEN_BARRICADE.fireType 的载体，CE Globals.c:627/628/825；V-2b-3 增补 14 条 wired 载体 DF 链，见下；V-2b-4 增补 8 条祭坛族载体），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）",
+    "failureEvidence": "extra-static.json",
+    "headProof": "head-premises-extra-static.json"
+  },
+  {
+    "file": "src/test/c_4b_dungeon_feature.test.ts",
+    "assertion": "E2 闭包自洽：TerrainCatalog 字符串起点 + subsequentDF 展开 == 目录键集（多抄/漏抄/悬空全翻红）",
+    "failureEvidence": "extra-static.json",
+    "headProof": "head-premises-extra-static.json"
+  },
+  {
+    "file": "src/test/c_4b_dungeon_feature.test.ts",
+    "assertion": "E4 缺 tile 登记恰 26 条（G-2 后 6；B-3 增 DF_SHATTERING_SPELL——RUBBLE tile web 无；V-2b-2b 增 DF_SHOW_TRAPDOOR；V-2b-3 增 11 条 wired 载体链环节；V-2b-4 增 7 条祭坛族载体）：catalogFeature 对其抛错点名；对其余条目正常转换",
+    "failureEvidence": "extra-static.json",
+    "headProof": "head-premises-extra-static.json"
+  },
+  {
+    "file": "src/test/c_6_autogenerators.test.ts",
+    "assertion": "AD-7 表长 49、数值列逐条相等、死条目 index 0、基座列抽查",
+    "failureEvidence": "static-more-exact.json",
+    "headProof": "head-premises-static-more-exact.json"
+  },
+  {
+    "file": "src/test/c_6_autogenerators.test.ts",
+    "assertion": "哨兵 S-1：非机器 wired 条目仍只落草/树/水晶墙；机器接线集合精确覆盖 13 条",
+    "failureEvidence": "extra-static.json",
+    "headProof": "head-premises-extra-static.json"
+  },
+  {
+    "file": "src/test/c_7_lighting.test.ts",
+    "assertion": "全 tile 的 glowLight 逐值等于 CE 原列（结构性穷尽）",
+    "failureEvidence": "extra-static.json",
+    "headProof": "head-premises-extra-static.json"
+  },
+  {
+    "file": "src/test/c_7_lighting.test.ts",
+    "assertion": "非零恰 43 个（U17e 祭坛、管道与献祭坑），且都指向有载体的目录条目",
+    "failureEvidence": "static-more-exact.json",
+    "headProof": "head-premises-static-more-exact.json"
+  },
+  {
+    "file": "src/test/c_6_autogenerators.test.ts",
+    "assertion": "留痕 T4（T-1 反转 index 1/33）：装饰/植物/dewar 族未接——随各自 tile 落地轮反转",
+    "failureEvidence": "static-more-exact.json",
+    "headProof": "head-premises-static-more-exact.json"
+  },
+  {
+    "file": "src/test/c_7_lighting.test.ts",
+    "assertion": "留痕（对抗⑥）：除载体清单外，任何 LightKind 名不得出现在生产代码（接了无载体条目=空转链）",
+    "failureEvidence": "static-more-exact.json",
+    "headProof": "head-premises-static-more-exact.json"
+  },
+  {
+    "file": "src/test/u_08_terrain_bolts.test.ts",
+    "assertion": "new closed terrain set: 139 DFs, no entity/spawn flags; web forbidden to learn, vines eligible",
+    "failureEvidence": "late-catalog.json",
+    "headProof": "head-premises-late-catalog.json"
+  },
+  {
+    "file": "src/test/u_17e_altars.test.ts",
+    "assertion": "CE1/2 natural seed777 D2 library: borrowed item closes cages only after departure; return and replacement reopen the remaining collection",
+    "failureEvidence": "late-natural.json",
+    "headProof": "head-premises-late-natural.json"
+  },
+  {
+    "file": "src/test/c_4a_terrain_catalog.test.ts",
+    "assertion": "terrainAllowsMove（查表）≡ 旧排除清单 {GRANITE,WALL,SECRET_DOOR,LOCKED_DOOR,WATER_DEEP}",
+    "failureEvidence": "late-terrain.json",
+    "headProof": "head-premises-late-terrain.json"
+  },
+  {
+    "file": "src/test/c_4a_terrain_catalog.test.ts",
+    "assertion": "Game.canMoveTo（查表）≡ 旧清单：合成格逐地形实测（含生成中出现不了的地形）",
+    "failureEvidence": "late-terrain.json",
+    "headProof": "head-premises-late-terrain.json"
+  },
+  {
+    "file": "src/test/b_1_weapon_specials.test.ts",
+    "assertion": "对抗性【突进无自动命中 / 倍率写错】：防御 300（命中率 ≈2.2%）的两格外敌人，突进必须 5 种子全中且伤害 ∈ {9,12,15}（raw 3..5 的 ×3）—— 漏自动命中的实现几乎必 miss；写成 ×5 的实现给 15/20/25 → 都在这里翻车。",
+    "failureEvidence": "late-gameplay-current.json",
+    "headProof": "head-premises-late-gameplay.json"
+  },
+  {
+    "file": "src/test/b_1a_identification.test.ts",
+    "assertion": "实例揭示不外溢：鉴定一把剑，同种另一把仍藏附魔",
+    "failureEvidence": "late-gameplay-current.json",
+    "headProof": "head-premises-late-gameplay.json"
+  },
+  {
+    "file": "src/test/b_1a_identification.test.ts",
+    "assertion": "上一局识别的种类不得漏进新局；护符/护符石无未知态（预亮）",
+    "failureEvidence": "late-gameplay-current.json",
+    "headProof": "head-premises-late-gameplay.json"
+  },
+  {
+    "file": "src/test/p2_4_animation_cadence.test.ts",
+    "assertion": "C1 slowed + autoPath：stepAutoPath 同步完成，从未进入分步推进",
+    "failureEvidence": "late-gameplay-current.json",
+    "headProof": "head-premises-late-gameplay.json"
+  },
+  {
+    "file": "src/test/c_6_autogenerators.test.ts",
+    "assertion": "AD-8 接线：generateTerrain 跑非机器趟且真的长草/树；generateLevel 跑机器趟",
+    "failureEvidence": "late-rubble-integration.json",
+    "headProof": "head-premises-late-rubble-integration.json"
+  },
+  {
+    "file": "src/test/blueprint_center.test.ts",
+    "assertion": "e) 编号origin仅接声明feature；已清号center允许真实人口物品，额外直投仍为零",
+    "failureEvidence": "discovery.json",
+    "headProof": "head-premises-static-more.json"
+  }
+]

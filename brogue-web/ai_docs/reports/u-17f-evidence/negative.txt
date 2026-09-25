@@ -1,0 +1,11 @@
+file:///Users/coolking70/.codex/worktrees/a9ab/brogue/brogue-web/scripts/u17f-negative.mjs:19
+  const report=JSON.parse(fs.readFileSync(`${out}/negative-${c.name}.json`));results.push({name:c.name,exit:r.status,failed:report.numFailedTests,titles:report.testResults.flatMap(f=>f.assertionResults.filter(a=>a.status==='failed').map(a=>a.title))});if(r.status===0||report.numFailedTests===0)throw Error(`Surviving defect: ${c.name}`);
+                                                                                                                                                                                                                                                                                                             ^
+
+Error: Surviving defect: no-evacuation-transaction
+    at file:///Users/coolking70/.codex/worktrees/a9ab/brogue/brogue-web/scripts/u17f-negative.mjs:19:302
+    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:654:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v25.2.1

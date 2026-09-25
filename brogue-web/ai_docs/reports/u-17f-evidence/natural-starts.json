@@ -1,0 +1,344 @@
+[
+  {
+    "seed": 777,
+    "depth": 1,
+    "name": "ALTAR_CAGE_OPEN",
+    "cells": [
+      {
+        "x": 4,
+        "y": 5,
+        "machine": 1
+      },
+      {
+        "x": 6,
+        "y": 4,
+        "machine": 1
+      },
+      {
+        "x": 6,
+        "y": 7,
+        "machine": 1
+      },
+      {
+        "x": 8,
+        "y": 7,
+        "machine": 1
+      },
+      {
+        "x": 10,
+        "y": 5,
+        "machine": 1
+      },
+      {
+        "x": 13,
+        "y": 4,
+        "machine": 1
+      },
+      {
+        "x": 13,
+        "y": 6,
+        "machine": 1
+      }
+    ],
+    "items": [
+      {
+        "id": 7,
+        "category": 6,
+        "keyLoc": [
+          {
+            "loc": {
+              "x": 6,
+              "y": 4
+            },
+            "machine": 0,
+            "disposableHere": false
+          }
+        ],
+        "flags": [
+          "ITEM_IS_KEY",
+          "ITEM_KIND_AUTO_ID",
+          "ITEM_PLAYER_AVOIDS"
+        ]
+      },
+      {
+        "id": 12,
+        "category": 0,
+        "keyLoc": [
+          {
+            "loc": {
+              "x": 6,
+              "y": 7
+            },
+            "machine": 0,
+            "disposableHere": false
+          }
+        ],
+        "flags": [
+          "ITEM_ATTACKS_STAGGER",
+          "ITEM_IS_KEY",
+          "ITEM_KIND_AUTO_ID",
+          "ITEM_PLAYER_AVOIDS"
+        ]
+      },
+      {
+        "id": 13,
+        "category": 0,
+        "keyLoc": [
+          {
+            "loc": {
+              "x": 4,
+              "y": 5
+            },
+            "machine": 0,
+            "disposableHere": false
+          }
+        ],
+        "flags": [
+          "ITEM_ATTACKS_STAGGER",
+          "ITEM_IS_KEY",
+          "ITEM_KIND_AUTO_ID",
+          "ITEM_PLAYER_AVOIDS"
+        ]
+      },
+      {
+        "id": 16,
+        "category": 1,
+        "keyLoc": [
+          {
+            "loc": {
+              "x": 13,
+              "y": 6
+            },
+            "machine": 0,
+            "disposableHere": false
+          }
+        ],
+        "flags": [
+          "ITEM_IS_KEY",
+          "ITEM_KIND_AUTO_ID",
+          "ITEM_PLAYER_AVOIDS"
+        ]
+      },
+      {
+        "id": 17,
+        "category": 9,
+        "keyLoc": [
+          {
+            "loc": {
+              "x": 13,
+              "y": 4
+            },
+            "machine": 0,
+            "disposableHere": false
+          }
+        ],
+        "flags": [
+          "ITEM_IS_KEY",
+          "ITEM_KIND_AUTO_ID",
+          "ITEM_MAX_CHARGES_KNOWN",
+          "ITEM_PLAYER_AVOIDS"
+        ]
+      },
+      {
+        "id": 18,
+        "category": 8,
+        "keyLoc": [
+          {
+            "loc": {
+              "x": 8,
+              "y": 7
+            },
+            "machine": 0,
+            "disposableHere": false
+          }
+        ],
+        "flags": [
+          "ITEM_IS_KEY",
+          "ITEM_KIND_AUTO_ID",
+          "ITEM_MAX_CHARGES_KNOWN",
+          "ITEM_PLAYER_AVOIDS"
+        ]
+      },
+      {
+        "id": 19,
+        "category": 8,
+        "keyLoc": [
+          {
+            "loc": {
+              "x": 10,
+              "y": 5
+            },
+            "machine": 0,
+            "disposableHere": false
+          }
+        ],
+        "flags": [
+          "ITEM_IS_KEY",
+          "ITEM_KIND_AUTO_ID",
+          "ITEM_MAX_CHARGES_KNOWN",
+          "ITEM_PLAYER_AVOIDS"
+        ]
+      }
+    ]
+  },
+  {
+    "seed": 777,
+    "depth": 10,
+    "name": "PORTAL",
+    "cells": [
+      {
+        "x": 17,
+        "y": 5,
+        "machine": 1
+      }
+    ],
+    "items": []
+  },
+  {
+    "seed": 777,
+    "depth": 11,
+    "name": "STATUE_DORMANT",
+    "cells": [
+      {
+        "x": 70,
+        "y": 10,
+        "machine": 2
+      }
+    ],
+    "items": []
+  },
+  {
+    "seed": 777,
+    "depth": 23,
+    "name": "COFFIN_CLOSED",
+    "cells": [
+      {
+        "x": 73,
+        "y": 3,
+        "machine": 1
+      }
+    ],
+    "items": []
+  },
+  {
+    "seed": 424242,
+    "depth": 3,
+    "name": "ALTAR_SWITCH_RETRACTING",
+    "cells": [
+      {
+        "x": 16,
+        "y": 1,
+        "machine": 3
+      }
+    ],
+    "items": [
+      {
+        "id": 33,
+        "category": 10,
+        "keyLoc": [
+          {
+            "loc": {
+              "x": 74,
+              "y": 17
+            },
+            "machine": 0,
+            "disposableHere": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "seed": 424242,
+    "depth": 7,
+    "name": "RAT_TRAP_WALL_DORMANT",
+    "cells": [
+      {
+        "x": 42,
+        "y": 16,
+        "machine": 3
+      },
+      {
+        "x": 42,
+        "y": 17,
+        "machine": 3
+      },
+      {
+        "x": 43,
+        "y": 14,
+        "machine": 3
+      },
+      {
+        "x": 45,
+        "y": 19,
+        "machine": 3
+      },
+      {
+        "x": 46,
+        "y": 19,
+        "machine": 3
+      },
+      {
+        "x": 47,
+        "y": 13,
+        "machine": 3
+      },
+      {
+        "x": 47,
+        "y": 19,
+        "machine": 3
+      },
+      {
+        "x": 48,
+        "y": 14,
+        "machine": 3
+      },
+      {
+        "x": 48,
+        "y": 15,
+        "machine": 3
+      },
+      {
+        "x": 48,
+        "y": 19,
+        "machine": 3
+      },
+      {
+        "x": 49,
+        "y": 15,
+        "machine": 3
+      },
+      {
+        "x": 49,
+        "y": 19,
+        "machine": 3
+      },
+      {
+        "x": 50,
+        "y": 19,
+        "machine": 3
+      },
+      {
+        "x": 51,
+        "y": 19,
+        "machine": 3
+      },
+      {
+        "x": 52,
+        "y": 19,
+        "machine": 3
+      },
+      {
+        "x": 53,
+        "y": 19,
+        "machine": 3
+      },
+      {
+        "x": 54,
+        "y": 15,
+        "machine": 3
+      }
+    ],
+    "items": []
+  }
+]

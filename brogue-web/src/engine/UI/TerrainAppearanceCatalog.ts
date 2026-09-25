@@ -170,4 +170,10 @@ export const TERRAIN_APPEARANCES: Record<TerrainType, BaseTerrainAppearance> = {
     [TerrainType.SACRIFICE_ALTAR]: { char: "|", color: "#0c1116", bgColor: 5844269 }, // CE :544
     [TerrainType.PIPE_INERT]: { char: "+", color: "#000000", bgColor: null }, // CE :535
     [TerrainType.SACRIFICE_LAVA]: { char: "~", color: "#b23300", bgColor: 11678464 }, // CE :545
+    [TerrainType.RAT_TRAP_WALL_CRACKING]: { char: "#", color: "#111111", bgColor: 7365475, backDynamic: 'wallBackColor' }, // CE RAT_TRAP_WALL_CRACKING
+    [TerrainType.STATUE_CRACKING]: { char: "\u00df", color: "#706363", bgColor: 3355443, foreDynamic: 'wallBackColor' }, // CE STATUE_CRACKING
+    [TerrainType.COFFIN_OPEN]: { char: "-", color: "#000000", bgColor: 1967877 }, // CE COFFIN_OPEN
+    [TerrainType.WORM_TUNNEL_MARKER_ACTIVE]: { char: "", color: "#000000", bgColor: null }, // CE WORM_TUNNEL_MARKER_ACTIVE
+    [TerrainType.PORTAL_LIGHT]: { char: "", color: "#000000", bgColor: null }, // CE PORTAL_LIGHT
+
 };

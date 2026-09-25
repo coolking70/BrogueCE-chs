@@ -334,8 +334,8 @@ describe('V-2b-7 B：22 条新 DF 目录条目 ≡ CE Globals.c 原行', () => {
             const e = DUNGEON_FEATURE_CATALOG[id]!;
             expect(e.ceLine, `DF#${id} ceLine`).toBe(line);
             expect(e.ceTile, `DF#${id} ceTile`).toBe(ceTile);
-            expect(e.tile, `DF#${id} 无 web tile → null`).toBeNull();
-            expect(DF_MISSING_TILES, `DF#${id} 应在缺 tile 名单里`).toContain(id);
+            expect(e.tile, `U17f DF#${id} CE tile restored`).toBe(C[ceTile as keyof typeof C]);
+            expect(DF_MISSING_TILES, `U17f DF#${id} restored`).not.toContain(id);
         }
         expect(DUNGEON_FEATURE_CATALOG[DF.DF_SACRIFICE_ALTAR]).toMatchObject({ceLine:802,ceTile:'SACRIFICE_ALTAR',tile:C.SACRIFICE_ALTAR});
         expect(DF_MISSING_TILES).not.toContain(DF.DF_SACRIFICE_ALTAR);

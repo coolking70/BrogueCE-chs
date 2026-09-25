@@ -170,7 +170,8 @@ describe('P2-4 B: 慢动作才暂停且本回合锁存（验收 3）', () => {
 
 describe('P2-4 C: 自动寻路/鼠标行进全程不暂停（验收 4）', () => {
     it('C1 slowed + autoPath：stepAutoPath 同步完成，从未进入分步推进', () => {
-        const game = createHeadlessGame(777);
+        // U17f: exclude the natural wired library from this empty-room cadence fixture.
+        const game = createHeadlessGame(777, 'test');
         clearToOpenRoom(game);
         game.animationEnabled = true;
         // slowed（200 tick/步）：若误入动画路径，此场景必然产生暂停与输入锁

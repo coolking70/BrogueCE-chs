@@ -1,0 +1,20 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_17f_carriers.test.ts --maxWorkers=1 --reporter=default --reporter=json --outputFile.json=ai_docs/reports/u-17f-evidence/ally-positive.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a9ab/brogue/brogue-web
+
+stdout | src/test/u_17f_carriers.test.ts > U17f player trigger to final terrain and entity consumers > 155 pickup cracks rat walls, then existing wall shatter releases all residents and leaves loot reachable
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_17f_carriers.test.ts (18 tests) 2365ms
+     ✓ 187 player entry cracks doorway statue, waits shatter it, awakens existing monster and opens the passage  343ms
+     ✓ 191 player pulls lever, activates worm markers, frontier opens granite and reveals resident using existing wake transaction  307ms
+
+ Test Files  1 passed (1)
+      Tests  18 passed (18)
+   Start at  05:46:15
+   Duration  3.02s (transform 354ms, setup 0ms, import 577ms, tests 2.36s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/a9ab/brogue/brogue-web/ai_docs/reports/u-17f-evidence/ally-positive.json

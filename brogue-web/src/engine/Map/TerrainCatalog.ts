@@ -1232,6 +1232,13 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
     [TerrainType.PIPE_INERT]: e((0), (0), 0, 'DF_PLAIN_FIRE', '', '', 0, false, LightKind.NO_LIGHT), // CE :535
     [TerrainType.SACRIFICE_LAVA]: e((T_LAVA_INSTA_DEATH), (TM_ALLOWS_SUBMERGING | TM_LIST_IN_SIDEBAR), 0, 'DF_OBSIDIAN', '', '', 0, false, LightKind.LAVA_LIGHT), // CE :545
 
+    // U17f: CE final carrier rows.
+    [TerrainType.RAT_TRAP_WALL_CRACKING]: e((T_OBSTRUCTS_EVERYTHING), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_LIST_IN_SIDEBAR), 0, 'DF_PLAIN_FIRE', '', 'DF_WALL_SHATTER', 500, false, LightKind.NO_LIGHT), // CE :560
+    [TerrainType.STATUE_CRACKING]: e((T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_GAS | T_OBSTRUCTS_SURFACE_EFFECTS), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_LIST_IN_SIDEBAR), 0, 'DF_PLAIN_FIRE', '', 'DF_STATUE_SHATTER', 3500, false, LightKind.NO_LIGHT), // CE :353
+    [TerrainType.COFFIN_OPEN]: e((T_IS_FLAMMABLE), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_LIST_IN_SIDEBAR), 20, 'DF_PLAIN_FIRE', '', '', 0, false, LightKind.NO_LIGHT), // CE :373
+    [TerrainType.WORM_TUNNEL_MARKER_ACTIVE]: e((0), (TM_VANISHES_UPON_PROMOTION), 0, '', '', 'DF_GRANITE_CRUMBLES', -2000, false, LightKind.NO_LIGHT), // CE :569
+    [TerrainType.PORTAL_LIGHT]: e((0), (TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION), 0, '', '', '', 10000, false, LightKind.PORTAL_ACTIVATE_LIGHT), // CE :488
+
 };
 
 // ── 派生判据（名字照 CE，语义 = 旗标位测试；CE Movement/Dijkstra 等处

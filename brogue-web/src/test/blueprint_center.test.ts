@@ -134,6 +134,25 @@ function itemId(item: unknown): string {
     return o.consumableId ?? o.identityId ?? `category#${o.category}`;
 }
 
+/** U17f: CE8 has no interior. Its arbitrary anchor may coincide with a child
+ * machine's legitimate adopted-item feature (seed1 D12). Require the original
+ * instance ID, child adoption instruction and successful feature at that cell;
+ * an arbitrary item at the empty anchor is still rejected. */
+function outsourcedAnchorItems(parent: MachineResult): MachineResult['itemSpawns'] {
+    const bp = (blueprintData as BlueprintDef[]).find(b => b.id === parent.blueprintId);
+    if (bp?.ceBlueprintId !== 8 || parent.cells.length || parent.itemSpawns.length) return [];
+    const ids = new Set((parent.generatedItems ?? []).flatMap(i => i.instanceId ? [i.instanceId] : []));
+    const descendants = (m: MachineResult): MachineResult[] => m.subMachines.flatMap(c => [c, ...descendants(c)]);
+    const adopted = descendants(parent).flatMap(child => {
+        const def = (blueprintData as BlueprintDef[]).find(b => b.id === child.blueprintId);
+        return child.itemSpawns.filter(spawn => spawn.viaAdoption && spawn.instanceId && ids.has(spawn.instanceId)
+            && spawn.pos.x === parent.center.x && spawn.pos.y === parent.center.y
+            && child.featureSpawns.some(product => product.pos.x === spawn.pos.x && product.pos.y === spawn.pos.y
+                && def?.features[product.featureIndex]?.flags.includes('MF_ADOPT_ITEM')));
+    });
+    return [...new Map(adopted.map(spawn => [spawn.instanceId, spawn])).values()];
+}
+
 /**
  * isCenterTreasure 点名的显式宝藏 id 与前缀（P1-36 元断言的对象）。
  * 历史教训：这里曾写 'scroll_of_enchanting'（拼写错误，数据表无此键）、
@@ -170,7 +189,8 @@ function isCenterTreasure(item: unknown): boolean {
 // C-1（房间剖面对齐 CE）让地牢开阔约 3 倍，宝藏落在 machine center 上的概率随之
 // 降低，原来 3 个种子扫不到任何样本，用例 c) 的前置断言（样本数 > 0）因此翻红——
 // 这不是回归，是样本量不足。实测 40 种子稳定有样本；取 12 个在覆盖与耗时间折中。
-const DEFAULT_SCAN_SEEDS = [424242, 20260913, 1, 777, 31337, 20260916, 42, 999, 12345, 55555, 31415, 27182];
+// U17f: RUBBLE generation moves the sample; seed35 D6 supplies a real CE39 declared origin.
+const DEFAULT_SCAN_SEEDS = [35, 424242, 20260913, 1, 777, 31337, 20260916, 42, 999, 12345, 55555, 31415, 27182];
 const SCAN_SEEDS: number[] = [
     ...DEFAULT_SCAN_SEEDS,
     ...Array.from({ length: 32 }, (_, i) => i + 1).filter(seed => !DEFAULT_SCAN_SEEDS.includes(seed)),
@@ -249,6 +269,7 @@ function runScan(): ScanResult {
 
                 const centers = new Map<string, string>(); // "x,y" -> blueprintId
                 const originItemSpawns: MachineResult['itemSpawns'] = [];
+                const emptyAnchorSpawns = new Set<MachineResult['itemSpawns'][number]>();
                 for (const mr of entry?.results ?? []) {
                     result.machineCount++;
                     const cellSet = new Set(mr.cells.map(p => `${p.x},${p.y}`));
@@ -296,6 +317,9 @@ function runScan(): ScanResult {
                         expect(mr.subMachines.length).toBeGreaterThan(0);
                         expect(bpDef!.features.every(f => f.flags.includes('MF_BUILD_ANYWHERE_ON_LEVEL')
                             && f.flags.includes('MF_OUTSOURCE_ITEM_TO_MACHINE'))).toBe(true);
+                        for (const spawn of outsourcedAnchorItems(mr)) {
+                            emptyAnchorSpawns.add(spawn);
+                        }
                     }
                     const inside = emptyOutsource || cellSet.has(cKey);
                     const passable = (isVestibule || isArea) ? true : walkable(game, mr.center.x, mr.center.y);
@@ -328,6 +352,15 @@ function runScan(): ScanResult {
                     }
                 }
 
+                // Preserve the original origin sample counter, and never let an
+                // overlapping CE8 allowance justify the same instance twice.
+                const trueOriginSpawns = new Set(originItemSpawns);
+                const acceptedIds = new Set(originItemSpawns.flatMap(s => s.instanceId ? [s.instanceId] : []));
+                for (const spawn of emptyAnchorSpawns) if (!acceptedIds.has(spawn.instanceId!)) {
+                    originItemSpawns.push(spawn);
+                    acceptedIds.add(spawn.instanceId!);
+                }
+
                 // 用例 3：所有center坐标上的物品都检查通行性；坐标重合不等于中心直投。
                 for (const item of game.items) {
                     const key = `${item.loc.x},${item.loc.y}`;
@@ -342,8 +375,10 @@ function runScan(): ScanResult {
                             : !spawn.id || spawn.id === itemId(item)));
                     const ordinary = declared < 0 && consumeOrdinaryCenterItem(game, item, populationProducts);
                     if (declared >= 0) {
-                        originItemSpawns.splice(declared, 1);
-                        result.declaredOriginItems++;
+                        const [spawn] = originItemSpawns.splice(declared, 1);
+                        // An empty CE8 anchor overlap is legal, but cannot satisfy
+                        // the original non-vacuity guard for true BUILD_AT_ORIGIN area items.
+                        if (trueOriginSpawns.has(spawn!)) result.declaredOriginItems++;
                     } else if (ordinary) {
                         result.ordinaryCenterItems.push(`seed=${seed} D${depth} ${centers.get(key)} ${id} @ (${item.loc.x},${item.loc.y})`);
                     } else {
@@ -499,6 +534,26 @@ describe('蓝图宝藏落点（machine center）可通行性', () => {
         grid.getCell(5, 5)!.machineNumber = 0;
         expect(consumeOrdinaryCenterItem({grid}, item, products)).toBe(true);
         expect(consumeOrdinaryCenterItem({grid}, item, products)).toBe(false);
+    });
+
+    it('g) CE8 空锚点只接受原实例经子机成功领养的落物；伪造实例或 feature 不得放行', () => {
+        const pos = {x: 62, y: 26};
+        const spawn = {instanceId: '3:0', category: 'ARMOR', pos, viaAdoption: true};
+        const child = {blueprintId: 'key_explosive_trap', itemSpawns: [spawn],
+            featureSpawns: [{pos, featureIndex: 2}], subMachines: []};
+        const parent = {blueprintId: 'reward_outsourced_item', center: pos, cells: [], itemSpawns: [],
+            generatedItems: [{instanceId: '3:0'}], subMachines: [child]} as unknown as MachineResult;
+        expect(outsourcedAnchorItems(parent)).toEqual([spawn]);
+        spawn.instanceId = 'invented';
+        expect(outsourcedAnchorItems(parent)).toEqual([]);
+        spawn.instanceId = '3:0'; child.featureSpawns[0]!.featureIndex = 0;
+        expect(outsourcedAnchorItems(parent)).toEqual([]);
+        child.featureSpawns[0]!.featureIndex = 2; spawn.viaAdoption = false;
+        expect(outsourcedAnchorItems(parent)).toEqual([]);
+        spawn.viaAdoption = true; child.itemSpawns.push({...spawn});
+        expect(outsourcedAnchorItems(parent)).toHaveLength(1);
+        parent.generatedItems![0]!.instanceId = undefined;
+        expect(outsourcedAnchorItems(parent)).toEqual([]);
     });
 
     it('d) 元断言（P1-36）：isCenterTreasure 点名的 id 必须真实存在于数据表，前缀必须仍命中真实物品', () => {

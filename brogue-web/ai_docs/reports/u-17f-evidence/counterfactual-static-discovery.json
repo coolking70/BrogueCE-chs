@@ -1,0 +1,36 @@
+{
+  "head": "254455e79bb4dc79aff171716000c02c586f65b1",
+  "files": [
+    "src/test/c_4a_terrain_catalog.test.ts",
+    "src/test/c_4c_promotion.test.ts",
+    "src/test/g_2_gas_df_wiring.test.ts",
+    "src/test/r_1_appearance.test.ts",
+    "src/test/u_17a_df_transaction.test.ts",
+    "src/test/u_17b_carriers.test.ts",
+    "src/test/u_17c_triggers.test.ts",
+    "src/test/u_17d_vents.test.ts",
+    "src/test/u_17e_altars.test.ts",
+    "src/test/v_2b_3_wired.test.ts",
+    "src/test/v_2b_5_dormant.test.ts",
+    "src/test/v_2b_7_features.test.ts"
+  ],
+  "titles": [
+    "全 TerrainType 键覆盖且字段结构齐全——拼写错/缺键在此翻红而非得 undefined",
+    "E3 静态盘点：31 地形中 promoteChance≠0 的活数据、负值死数据",
+    "F-2c 翻转：DF_EXPLOSION_FIRE 已接线（tile GAS_EXPLOSION 已迁），catalogFeature 正常转换且不在缺 tile 名单",
+    "穷举表覆盖 TerrainType 全部成员（当前 69 个）、成员值无重复",
+    "historical U17a projection: 30 missing rows before the U17b/U17c/U17d/U17e carriers",
+    "historical U17b missing projection excludes exactly the five U17c and nine U17d closures",
+    "appearance golden extension keeps every previous row byte-equivalent in value",
+    "historical U17c projection after nine U17d closures; every other missing identity remains ordered",
+    "CE-generated appearances preserve all old rows and represent the new glyphs",
+    "removes precisely nine registrations, preserves remaining ordered eleven and old numeric IDs",
+    "157 CE-generated appearances include visible traps/vents/fire; hidden forms still look like floor",
+    "removes exactly five missing rows and preserves saved numeric IDs",
+    "164 CE appearances include exact glyph/color/background and localized terrain descriptions",
+    "有载体的链环 tile 对位（气体 payoff 的三条线）+ DF_MISSING_TILES 顺延 8 → 19",
+    "A3 四条新 DF 条目 ≡ CE 目录行；DF_MISSING_TILES 顺延为 28（顺延不放宽）",
+    "B2 三条链环节与五条三链字段载体（:748/:903/:905 与 :625/:630/:724/:725/:746）"
+  ],
+  "exit": 0
+}

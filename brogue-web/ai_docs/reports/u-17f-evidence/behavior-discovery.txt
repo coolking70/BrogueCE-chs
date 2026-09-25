@@ -1,0 +1,136 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a9ab/brogue/brogue-web
+
+stdout | src/test/u_17f_carriers.test.ts > U17f player trigger to final terrain and entity consumers > 155 pickup cracks rat walls, then existing wall shatter releases all residents and leaves loot reachable
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_17f_carriers.test.ts (15 tests | 6 failed) 3816ms
+     ✓ six tile rows and eleven DF rows match CE, including granite superpriority and actual flash fields 5ms
+     ✓ retains the empty missing-tile guard and preserves old IDs; five appended appearances come from CE 1ms
+     ✓ CE blueprint trigger and monster entry rows remain wired, including dormant marker and coffin trigger area 1ms
+     × RUBBLE autogen CE row invokes the real DF and decorates reachable floor 5ms
+     ✓ 155 pickup cracks rat walls, then existing wall shatter releases all residents and leaves loot reachable  649ms
+     × 187 player entry cracks doorway statue, waits shatter it, awakens existing monster and opens the passage 286ms
+     × 148 player approaches a CE trigger-area coffin, vampire rises with its original carried key exactly once 284ms
+     × 87 pickup retracts the altar into floodable ground; existing flood propagation crosses the new floor 599ms
+     × 88 matching key activates portal, evacuates occupant, awakens ally and temporary light vanishes 722ms
+     ✓ 191 player pulls lever, activates worm markers, frontier opens granite and reveals resident using existing wake transaction  791ms
+     ✓ RAT_TRAP_WALL_CRACKING exact CE promotion boundary 1ms
+     ✓ STATUE_CRACKING exact CE promotion boundary 0ms
+     ✓ PORTAL_LIGHT exact CE promotion boundary 0ms
+     × sealed active worm marker waits without RNG; one open orthogonal neighbor yields strict 2000 boundary 1ms
+     ✓ wrong key and circuit breaker cannot awaken portal resident  470ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_17f_carriers.test.ts > U17f independent CE catalogs, appearances and data starts > RUBBLE autogen CE row invokes the real DF and decorates reachable floor
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/u_17f_carriers.test.ts:72:66
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  src/test/u_17f_carriers.test.ts > U17f player trigger to final terrain and entity consumers > 187 player entry cracks doorway statue, waits shatter it, awakens existing monster and opens the passage
+AssertionError: expected 98 to be 165 // Object.is equality
+
+- Expected
++ Received
+
+- 165
++ 98
+
+ ❯ src/test/u_17f_carriers.test.ts:91:83
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  src/test/u_17f_carriers.test.ts > U17f player trigger to final terrain and entity consumers > 148 player approaches a CE trigger-area coffin, vampire rises with its original carried key exactly once
+AssertionError: expected 82 to be 166 // Object.is equality
+
+- Expected
++ Received
+
+- 166
++ 82
+
+ ❯ src/test/u_17f_carriers.test.ts:101:42
+     99|   // Position outside a real CE DF footprint, then cross its edge usin…
+    100|   g.player.loc={x:trigger.x-1,y:trigger.y};g.grid.setTerrain(g.player.…
+    101|   expect(g.grid.getCell(15,10)!.terrain).toBe(T.COFFIN_OPEN);expect(m.…
+       |                                          ^
+    102|   wait(g);expect(g.monsters.filter(n=>n.id===m.id)).toHaveLength(1);ex…
+    103|  });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  src/test/u_17f_carriers.test.ts > U17f player trigger to final terrain and entity consumers > 87 pickup retracts the altar into floodable ground; existing flood propagation crosses the new floor
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/u_17f_carriers.test.ts:112:100
+    110|   mark(g,10,11,T.PRESSURE_PLATE,9);g.player.loc={x:10,y:10};move(g,0,1…
+    111|   for(let i=0;i<60&&!g.grid.getCell(11,10)!.layers.some(t=>t===T.FLOOD…
+    112|   expect(g.grid.getCell(11,10)!.layers.some(t=>t===T.FLOOD_WATER_SHALL…
+       |                                                                                                    ^
+    113|  });
+    114|  it('88 matching key activates portal, evacuates occupant, awakens all…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  src/test/u_17f_carriers.test.ts > U17f player trigger to final terrain and entity consumers > 88 matching key activates portal, evacuates occupant, awakens ally and temporary light vanishes
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/test/u_17f_carriers.test.ts:120:38
+    118|   const key=item(g,0,0);g.items=[];key.keyLoc=[{x:11,y:10,machine:0,di…
+    119|   // The entry consumer consumes a real matching key and wires the por…
+    120|   move(g,1,0);expect(ally.isDormant).toBe(false);expect(ally.isAlly).t…
+       |                                      ^
+    121|   expect(g.grid.getCell(15,10)!.layers[L.DUNGEON]).toBe(T.PORTAL);
+    122|   // End-of-turn promotion may already have removed the 10000-chance l…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  src/test/u_17f_carriers.test.ts > U17f adversarial promotion boundaries and scope > sealed active worm marker waits without RNG; one open orthogonal neighbor yields strict 2000 boundary
+AssertionError: expected 98 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 98
+
+ ❯ src/test/u_17f_carriers.test.ts:146:108
+    144|   const roll=vi.spyOn(rng,'randRange').mockReturnValue(0);runPromotion…
+    145|   g.setTerrain(4,4,T.FLOOR);roll.mockReturnValue(2000);runPromotionUpd…
+    146|   roll.mockReturnValue(1999);runPromotionUpdate(g,{keyOnTileAt:()=>fal…
+       |                                                                                                            ^
+    147|  });
+    148|  it('wrong key and circuit breaker cannot awaken portal resident',()=>{
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed | 9 passed (15)
+   Start at  05:21:51
+   Duration  5.37s (transform 793ms, setup 0ms, import 1.40s, tests 3.82s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/a9ab/brogue/brogue-web/ai_docs/reports/u-17f-evidence/behavior-discovery.json

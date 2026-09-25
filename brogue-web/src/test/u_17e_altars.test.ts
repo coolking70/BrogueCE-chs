@@ -70,11 +70,12 @@ describe('U17e CE catalog and carrier scope',()=>{
   }
  });
  it('removes exactly five missing rows and preserves saved numeric IDs',()=>{
-  expect(DF_MISSING_TILES).toEqual([155,187,87,88,148,191]);expect(T.FLAMETHROWER).toBe(156);expect(T.ALTAR_CAGE_CLOSED).toBe(157);
+  expect(DF_MISSING_TILES).toEqual([]); // U17f closes the final six.
+ expect(T.FLAMETHROWER).toBe(156);expect(T.ALTAR_CAGE_CLOSED).toBe(157);
   for(const id of [85,140,141,143,145])expect(()=>catalogFeature(id)).not.toThrow();
  });
  it('164 CE appearances include exact glyph/color/background and localized terrain descriptions',()=>{
-  const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));expect(Object.keys(rows)).toHaveLength(164);const g=scene();
+  const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));expect(Object.keys(rows)).toHaveLength(169);const g=scene();
   for(const name of Object.keys(golden.tiles)){const t=T[name as keyof typeof T];expect(terrainAppearance(t,true)).toMatchObject({char:rows[name].char,color:rows[name].color,bgColor:rows[name].bgColor});expect((g as any).getTerrainName(t)).toMatch(/[\u3400-\u9fff]/);}
  });
 });
@@ -170,8 +171,8 @@ describe('U17e sacrifice horde → player activates → marked entry → lava an
 
 
 describe('U17e production data to playable room',()=>{
- it('CE1/2 natural seed777 D2 library: borrowed item closes cages only after departure; return and replacement reopen the remaining collection',()=>{
-  const g=createHeadlessGame(777);g.depth=2;(g as any).generateDepth(false,false);g.animationEnabled=false;g.monsters=[];g.dormantMonsters=[];
+ it('CE1/2 natural seed777 D1 library (U17f drift-adjusted fixture): borrowed item closes cages only after departure; return and replacement reopen the remaining collection',()=>{
+  const g=createHeadlessGame(777);g.animationEnabled=false;g.monsters=[];g.dormantMonsters=[];
   const loans=g.items.filter(i=>g.grid.getCell(i.x,i.y)!.terrain===T.ALTAR_CAGE_OPEN);expect(loans.length).toBeGreaterThan(1);
   const loan=loans[0]!,at={...loan.loc};expect(loan.category).not.toBe(C.KEY);expect(loan.flags).toContain('ITEM_IS_KEY');expect(loan.keyLoc).toContainEqual({loc:at,machine:0,disposableHere:false});
   const adjacent=[{x:at.x-1,y:at.y},{x:at.x+1,y:at.y},{x:at.x,y:at.y-1},{x:at.x,y:at.y+1}].find(p=>g.grid.getCell(p.x,p.y)?.isPassable&&!g.grid.getCell(p.x,p.y)?.layers.includes(T.ALTAR_CAGE_OPEN))!;expect(adjacent).toBeDefined();g.player.loc={...adjacent};

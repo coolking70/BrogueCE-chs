@@ -338,7 +338,7 @@ describe('C-6 表保真：49 条逐行对照 CE（GlobalsBrogue.c:114-170）', (
         expect(AUTO_GENERATOR_CATALOG[10]!.ceDf).toBe('DF_BUILD_ALGAE_WELL');
         // wired 集：T-1 前为草/树两条；T-1 接线 index 1（DF_CRYSTAL_WALL，
         // DF 条目补入目录）与 index 33（直接铺 CRYSTAL_WALL 地形，tile B-3 迁入）。
-        expect(WIRED_AUTOGENERATOR_INDEXES, 'C-6 接入集 + T-1 增补（载体盘点表裁决）').toEqual([1, 3, 8, 14, 16, 19, 21, 23, 25, 27, 29, 33, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]);
+        expect(WIRED_AUTOGENERATOR_INDEXES, 'C-6 接入集 + T-1 增补（载体盘点表裁决）').toEqual([1, 3, 7, 8, 14, 16, 19, 21, 23, 25, 27, 29, 33, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]);
         expect(AUTO_GENERATOR_CATALOG[3]!.df).toBeDefined();
         expect(AUTO_GENERATOR_CATALOG[8]!.df).toBeDefined();
         expect(AUTO_GENERATOR_CATALOG[1]!.df).toBeDefined();
@@ -366,8 +366,8 @@ describe('C-6 集成：真实目录在真实生成里的行为', () => {
         expect(arch.autogenNonMachine!.buildAreaMachines).toBe(false);
         const idxs = arch.autogenNonMachine!.entries.map(e => e.index);
         for (const i of idxs) {
-            // U17d: D5 additionally qualifies visible fire and hidden poison traps.
-            expect([3, 8, 19, 21], `统计里出现了非 wired 条目 index ${i}——无载体条目被接上`).toContain(i);
+            // U17f adds CE RUBBLE index7; U17d fire/poison entries remain eligible.
+            expect([3, 7, 8, 19, 21], `统计里出现了非 wired 条目 index ${i}——无载体条目被接上`).toContain(i);
         }
         expect(arch.autogenNonMachine!.totalBuilt, 'D5 草/树一条都没长——接线或数量公式错').toBeGreaterThan(0);
         // 机器趟在 generateLevel 阶段：generateTerrain 后应为 null。
@@ -474,10 +474,10 @@ describe('C-6 集成：真实目录在真实生成里的行为', () => {
             const e = AUTO_GENERATOR_CATALOG[i]!;
             if (e.machine === 0) {
                 const tile = e.df !== null ? e.ceDf : e.ceTerrain;
-                expect(['DF_GRASS', 'DF_FOLIAGE', 'DF_CRYSTAL_WALL', 'CRYSTAL_WALL', 'TRAP_DOOR_HIDDEN', 'GAS_TRAP_POISON', 'FLAMETHROWER', 'GAS_TRAP_POISON_HIDDEN', 'FLAMETHROWER_HIDDEN'], `wired 条目 ${i}（${tile}）超出裁决集`).toContain(tile);
+                expect(['DF_RUBBLE', 'DF_GRASS', 'DF_FOLIAGE', 'DF_CRYSTAL_WALL', 'CRYSTAL_WALL', 'TRAP_DOOR_HIDDEN', 'GAS_TRAP_POISON', 'FLAMETHROWER', 'GAS_TRAP_POISON_HIDDEN', 'FLAMETHROWER_HIDDEN'], `wired 条目 ${i}（${tile}）超出裁决集`).toContain(tile);
             }
         }
-        expect(WIRED_AUTOGENERATOR_INDEXES).toEqual([1, 3, 8, 14, 16, 19, 21, 23, 25, 27, 29, 33, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]);
+        expect(WIRED_AUTOGENERATOR_INDEXES).toEqual([1, 3, 7, 8, 14, 16, 19, 21, 23, 25, 27, 29, 33, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]);
     });
 });
 
@@ -527,7 +527,7 @@ describe('C-6 留痕：未接条目登记（每条写明激活轮）', () => {
         // T-1 反转：index 1（DF_CRYSTAL_WALL，DF 条目补齐）与 index 33
         //（直接铺 CRYSTAL_WALL 地形）已接，从本留痕摘除、移入 AD-7 的
         // wired 集断言（守卫顺延，不放宽）。原断言含 1 与 33。
-        const noTileRows = [2, 4, 5, 6, 7, 9, 10, 11, 12, 34, 35, 36, 37];
+        const noTileRows = [2, 4, 5, 6, 9, 10, 11, 12, 34, 35, 36, 37];
         for (const i of noTileRows) {
             expect(AUTO_GENERATOR_CATALOG[i]!.carrier, `index ${i} 应保持 no-tile`).toBe('no-tile');
         }

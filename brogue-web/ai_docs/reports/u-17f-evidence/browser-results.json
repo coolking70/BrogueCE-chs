@@ -1,0 +1,2102 @@
+{
+  "errors": [],
+  "results": [
+    {
+      "name": "rats-before",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 10,
+            "y": 10
+          },
+          "hp": 1000
+        },
+        "tiles": [
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "ALTAR_SWITCH",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 14,
+            "y": 10,
+            "layers": [
+              "RAT_TRAP_WALL_DORMANT",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 16,
+            "y": 10,
+            "layers": [
+              "RAT_TRAP_WALL_DORMANT",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 18,
+            "y": 10,
+            "layers": [
+              "RAT_TRAP_WALL_DORMANT",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          }
+        ],
+        "monsters": [],
+        "dormant": [
+          25,
+          24,
+          23
+        ],
+        "items": [
+          {
+            "name": "任务钥匙",
+            "loc": {
+              "x": 11,
+              "y": 10
+            }
+          }
+        ]
+      },
+      "text": {
+        "seed": "1716",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 1000,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "任务钥匙",
+            "x": 11,
+            "y": 10
+          }
+        ]
+      }
+    },
+    {
+      "name": "rats-active",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 11,
+            "y": 10
+          },
+          "hp": 1000
+        },
+        "tiles": [
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "ALTAR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 14,
+            "y": 10,
+            "layers": [
+              "RAT_TRAP_WALL_CRACKING",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 16,
+            "y": 10,
+            "layers": [
+              "RAT_TRAP_WALL_CRACKING",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 18,
+            "y": 10,
+            "layers": [
+              "RAT_TRAP_WALL_CRACKING",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          }
+        ],
+        "monsters": [],
+        "dormant": [
+          25,
+          24,
+          23
+        ],
+        "items": []
+      },
+      "text": {
+        "seed": "1716",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 11,
+          "y": 10,
+          "hp": 1000,
+          "nutrition": 2148,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 2,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "rats-after",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 11,
+            "y": 10
+          },
+          "hp": 1000
+        },
+        "tiles": [
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "ALTAR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 14,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "RUBBLE"
+            ]
+          },
+          {
+            "x": 16,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "RUBBLE"
+            ]
+          },
+          {
+            "x": 18,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "RUBBLE"
+            ]
+          }
+        ],
+        "monsters": [
+          {
+            "id": 23,
+            "ally": false,
+            "loc": {
+              "x": 14,
+              "y": 10
+            }
+          },
+          {
+            "id": 25,
+            "ally": false,
+            "loc": {
+              "x": 19,
+              "y": 11
+            }
+          },
+          {
+            "id": 24,
+            "ally": false,
+            "loc": {
+              "x": 17,
+              "y": 9
+            }
+          }
+        ],
+        "dormant": [],
+        "items": []
+      },
+      "text": {
+        "seed": "1716",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 11,
+          "y": 10,
+          "hp": 1000,
+          "nutrition": 2045,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 105,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 14,
+            "y": 10,
+            "hp": 6,
+            "maxHp": 6,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 200,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "老鼠",
+            "x": 19,
+            "y": 11,
+            "hp": 6,
+            "maxHp": 6,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "老鼠",
+            "x": 17,
+            "y": 9,
+            "hp": 6,
+            "maxHp": 6,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "statue-before",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 10,
+            "y": 10
+          },
+          "hp": 1000
+        },
+        "tiles": [
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "MACHINE_TRIGGER_FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 15,
+            "y": 10,
+            "layers": [
+              "STATUE_DORMANT_DOORWAY",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          }
+        ],
+        "monsters": [],
+        "dormant": [
+          22
+        ],
+        "items": []
+      },
+      "text": {
+        "seed": "1716",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 1000,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "statue-active",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 11,
+            "y": 10
+          },
+          "hp": 1000
+        },
+        "tiles": [
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 15,
+            "y": 10,
+            "layers": [
+              "STATUE_CRACKING",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          }
+        ],
+        "monsters": [],
+        "dormant": [
+          22
+        ],
+        "items": []
+      },
+      "text": {
+        "seed": "1716",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 11,
+          "y": 10,
+          "hp": 1000,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "statue-after",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 11,
+            "y": 10
+          },
+          "hp": 1000
+        },
+        "tiles": [
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 15,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "RUBBLE"
+            ]
+          }
+        ],
+        "monsters": [
+          {
+            "id": 22,
+            "ally": false,
+            "loc": {
+              "x": 15,
+              "y": 10
+            }
+          }
+        ],
+        "dormant": [],
+        "items": []
+      },
+      "text": {
+        "seed": "1716",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 11,
+          "y": 10,
+          "hp": 1000,
+          "nutrition": 2147,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 3,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "食人魔",
+            "x": 15,
+            "y": 10,
+            "hp": 55,
+            "maxHp": 55,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 125,
+            "defense": 60,
+            "damage": "1d5+8",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_MALE",
+              "MONST_FEMALE"
+            ],
+            "abilityFlags": [
+              "MA_AVOID_CORRIDORS",
+              "MA_ATTACKS_STAGGER"
+            ],
+            "bolts": [],
+            "typeId": "ogre",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 200,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "coffin-before",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 10,
+            "y": 10
+          },
+          "hp": 1000
+        },
+        "tiles": [
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "MACHINE_TRIGGER_FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 15,
+            "y": 10,
+            "layers": [
+              "COFFIN_CLOSED",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          }
+        ],
+        "monsters": [],
+        "dormant": [
+          22
+        ],
+        "items": []
+      },
+      "text": {
+        "seed": "1716",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 1000,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "coffin-active",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 11,
+            "y": 10
+          },
+          "hp": 1000
+        },
+        "tiles": [
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 15,
+            "y": 10,
+            "layers": [
+              "COFFIN_OPEN",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          }
+        ],
+        "monsters": [
+          {
+            "id": 22,
+            "ally": false,
+            "loc": {
+              "x": 15,
+              "y": 10
+            }
+          }
+        ],
+        "dormant": [],
+        "items": []
+      },
+      "text": {
+        "seed": "1716",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 11,
+          "y": 10,
+          "hp": 1000,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "吸血鬼",
+            "x": 15,
+            "y": 10,
+            "hp": 75,
+            "maxHp": 75,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 120,
+            "defense": 60,
+            "damage": "1d12+3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_FLEES_NEAR_DEATH",
+              "MONST_MALE"
+            ],
+            "abilityFlags": [
+              "MA_TRANSFERENCE",
+              "MA_DF_ON_DEATH",
+              "MA_CAST_SUMMON",
+              "MA_ENTER_SUMMONS"
+            ],
+            "bolts": [
+              "BLINKING",
+              "DISCORD"
+            ],
+            "typeId": "vampire",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "coffin-after",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 11,
+            "y": 10
+          },
+          "hp": 1000
+        },
+        "tiles": [
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 15,
+            "y": 10,
+            "layers": [
+              "COFFIN_OPEN",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          }
+        ],
+        "monsters": [
+          {
+            "id": 22,
+            "ally": false,
+            "loc": {
+              "x": 15,
+              "y": 10
+            }
+          }
+        ],
+        "dormant": [],
+        "items": []
+      },
+      "text": {
+        "seed": "1716",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 11,
+          "y": 10,
+          "hp": 1000,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "吸血鬼",
+            "x": 15,
+            "y": 10,
+            "hp": 75,
+            "maxHp": 75,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 120,
+            "defense": 60,
+            "damage": "1d12+3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_FLEES_NEAR_DEATH",
+              "MONST_MALE"
+            ],
+            "abilityFlags": [
+              "MA_TRANSFERENCE",
+              "MA_DF_ON_DEATH",
+              "MA_CAST_SUMMON",
+              "MA_ENTER_SUMMONS"
+            ],
+            "bolts": [
+              "BLINKING",
+              "DISCORD"
+            ],
+            "typeId": "vampire",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "floor-before",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 10,
+            "y": 10
+          },
+          "hp": 1000
+        },
+        "tiles": [
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "ALTAR_SWITCH_RETRACTING",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          }
+        ],
+        "monsters": [],
+        "dormant": [],
+        "items": [
+          {
+            "name": "任务钥匙",
+            "loc": {
+              "x": 11,
+              "y": 10
+            }
+          }
+        ]
+      },
+      "text": {
+        "seed": "1716",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 1000,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "任务钥匙",
+            "x": 11,
+            "y": 10
+          }
+        ]
+      }
+    },
+    {
+      "name": "floor-active",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 11,
+            "y": 10
+          },
+          "hp": 1000
+        },
+        "tiles": [
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "FLOOR_FLOODABLE",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          }
+        ],
+        "monsters": [],
+        "dormant": [],
+        "items": []
+      },
+      "text": {
+        "seed": "1716",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 11,
+          "y": 10,
+          "hp": 1000,
+          "nutrition": 2148,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 2,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "floor-after",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 11,
+            "y": 10
+          },
+          "hp": 1000
+        },
+        "tiles": [
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "FLOOR_FLOODABLE",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          }
+        ],
+        "monsters": [],
+        "dormant": [],
+        "items": []
+      },
+      "text": {
+        "seed": "1716",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 11,
+          "y": 10,
+          "hp": 1000,
+          "nutrition": 2148,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 2,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "portal-before",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 10,
+            "y": 10
+          },
+          "hp": 1000
+        },
+        "tiles": [
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "ALTAR_KEYHOLE",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 15,
+            "y": 10,
+            "layers": [
+              "PORTAL",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          }
+        ],
+        "monsters": [],
+        "dormant": [
+          22
+        ],
+        "items": []
+      },
+      "text": {
+        "seed": "1716",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 1000,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "portal-active",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 11,
+            "y": 10
+          },
+          "hp": 1000
+        },
+        "tiles": [
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "ALTAR_KEYHOLE",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 15,
+            "y": 10,
+            "layers": [
+              "PORTAL",
+              "NOTHING",
+              "NOTHING",
+              "PORTAL_LIGHT"
+            ]
+          }
+        ],
+        "monsters": [
+          {
+            "id": 22,
+            "ally": true,
+            "loc": {
+              "x": 15,
+              "y": 10
+            }
+          }
+        ],
+        "dormant": [],
+        "items": []
+      },
+      "text": {
+        "seed": "1716",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 11,
+          "y": 10,
+          "hp": 1000,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "伊弗利特",
+            "x": 15,
+            "y": 10,
+            "hp": 40,
+            "maxHp": 40,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 175,
+            "defense": 75,
+            "damage": "1d9+4",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_IMMUNE_TO_FIRE",
+              "MONST_FLIES",
+              "MONST_MALE"
+            ],
+            "abilityFlags": [],
+            "bolts": [
+              "DISCORD"
+            ],
+            "typeId": "ifrit",
+            "isAlly": true,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 200,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "portal-after",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 11,
+            "y": 10
+          },
+          "hp": 1000
+        },
+        "tiles": [
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "ALTAR_KEYHOLE",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 15,
+            "y": 10,
+            "layers": [
+              "PORTAL",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          }
+        ],
+        "monsters": [
+          {
+            "id": 22,
+            "ally": true,
+            "loc": {
+              "x": 13,
+              "y": 11
+            }
+          }
+        ],
+        "dormant": [],
+        "items": []
+      },
+      "text": {
+        "seed": "1716",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 11,
+          "y": 10,
+          "hp": 1000,
+          "nutrition": 2146,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 4,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "伊弗利特",
+            "x": 13,
+            "y": 11,
+            "hp": 40,
+            "maxHp": 40,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 175,
+            "defense": 75,
+            "damage": "1d9+4",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_IMMUNE_TO_FIRE",
+              "MONST_FLIES",
+              "MONST_MALE"
+            ],
+            "abilityFlags": [],
+            "bolts": [
+              "DISCORD"
+            ],
+            "typeId": "ifrit",
+            "isAlly": true,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 50,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "worms-before",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 10,
+            "y": 10
+          },
+          "hp": 1000
+        },
+        "tiles": [
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "WALL_LEVER",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 15,
+            "y": 10,
+            "layers": [
+              "GRANITE",
+              "WORM_TUNNEL_MARKER_DORMANT",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 16,
+            "y": 10,
+            "layers": [
+              "GRANITE",
+              "WORM_TUNNEL_MARKER_DORMANT",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 17,
+            "y": 10,
+            "layers": [
+              "GRANITE",
+              "WORM_TUNNEL_MARKER_DORMANT",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 18,
+            "y": 10,
+            "layers": [
+              "GRANITE",
+              "WORM_TUNNEL_MARKER_DORMANT",
+              "NOTHING",
+              "NOTHING"
+            ]
+          }
+        ],
+        "monsters": [],
+        "dormant": [
+          22
+        ],
+        "items": []
+      },
+      "text": {
+        "seed": "1716",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 1000,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "worms-active",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 10,
+            "y": 10
+          },
+          "hp": 1000
+        },
+        "tiles": [
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "WALL_LEVER_PULLED",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 15,
+            "y": 10,
+            "layers": [
+              "GRANITE",
+              "WORM_TUNNEL_MARKER_ACTIVE",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 16,
+            "y": 10,
+            "layers": [
+              "GRANITE",
+              "WORM_TUNNEL_MARKER_ACTIVE",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 17,
+            "y": 10,
+            "layers": [
+              "GRANITE",
+              "WORM_TUNNEL_MARKER_ACTIVE",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 18,
+            "y": 10,
+            "layers": [
+              "GRANITE",
+              "WORM_TUNNEL_MARKER_ACTIVE",
+              "NOTHING",
+              "NOTHING"
+            ]
+          }
+        ],
+        "monsters": [],
+        "dormant": [
+          22
+        ],
+        "items": []
+      },
+      "text": {
+        "seed": "1716",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 1000,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "worms-after",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 14,
+            "y": 10
+          },
+          "hp": 1000
+        },
+        "tiles": [
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "WALL_LEVER_PULLED",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 15,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "RUBBLE"
+            ]
+          },
+          {
+            "x": 16,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "RUBBLE"
+            ]
+          },
+          {
+            "x": 17,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "RUBBLE"
+            ]
+          },
+          {
+            "x": 18,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "RUBBLE"
+            ]
+          }
+        ],
+        "monsters": [
+          {
+            "id": 22,
+            "ally": false,
+            "loc": {
+              "x": 15,
+              "y": 10
+            }
+          }
+        ],
+        "dormant": [],
+        "items": []
+      },
+      "text": {
+        "seed": "1716",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 14,
+          "y": 10,
+          "hp": 1000,
+          "nutrition": 2141,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 9,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "地底蠕虫",
+            "x": 15,
+            "y": 10,
+            "hp": 80,
+            "maxHp": 80,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 160,
+            "defense": 40,
+            "damage": "1d5+17",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_NEVER_SLEEPS"
+            ],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "underworm",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "narrow",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 14,
+            "y": 10
+          },
+          "hp": 1000
+        },
+        "tiles": [
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "WALL_LEVER_PULLED",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 15,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "RUBBLE"
+            ]
+          },
+          {
+            "x": 16,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "RUBBLE"
+            ]
+          },
+          {
+            "x": 17,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "RUBBLE"
+            ]
+          },
+          {
+            "x": 18,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "RUBBLE"
+            ]
+          }
+        ],
+        "monsters": [
+          {
+            "id": 22,
+            "ally": false,
+            "loc": {
+              "x": 15,
+              "y": 10
+            }
+          }
+        ],
+        "dormant": [],
+        "items": []
+      },
+      "text": {
+        "seed": "1716",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 14,
+          "y": 10,
+          "hp": 1000,
+          "nutrition": 2141,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 9,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "地底蠕虫",
+            "x": 15,
+            "y": 10,
+            "hp": 80,
+            "maxHp": 80,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 160,
+            "defense": 40,
+            "damage": "1d5+17",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_NEVER_SLEEPS"
+            ],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "underworm",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      }
+    }
+  ]
+}

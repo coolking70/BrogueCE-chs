@@ -141,6 +141,12 @@ describe('C-7 光照目录（CE Globals.c:955-1020 逐值）', () => {
 describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () => {
     /** web 全部 43 tile 的 CE glowLight 期望值（逐条核过 CE Globals.c:321-744）。 */
     const EXPECTED_GLOW: Record<TerrainType, number> = {
+        [TerrainType.RAT_TRAP_WALL_CRACKING]: LightKind.NO_LIGHT, // U17f CE carrier
+        [TerrainType.STATUE_CRACKING]: LightKind.NO_LIGHT, // U17f CE carrier
+        [TerrainType.COFFIN_OPEN]: LightKind.NO_LIGHT, // U17f CE carrier
+        [TerrainType.WORM_TUNNEL_MARKER_ACTIVE]: LightKind.NO_LIGHT, // U17f CE carrier
+        [TerrainType.PORTAL_LIGHT]: LightKind.PORTAL_ACTIVATE_LIGHT, // U17f CE carrier
+
         [TerrainType.ALTAR_CAGE_CLOSED]: LightKind.CANDLE_LIGHT, // CE U17e
         [TerrainType.COMMUTATION_ALTAR_INERT]: LightKind.NO_LIGHT, // CE U17e
         [TerrainType.PIPE_GLOWING]: LightKind.CONFUSION_GAS_LIGHT, // CE U17e
@@ -340,12 +346,13 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         }
     });
 
-    it('非零恰 43 个（U17e 祭坛、管道与献祭坑），且都指向有载体的目录条目', () => {
+    it('非零恰 44 个（U17f 追加传送门光），且都指向有载体的目录条目', () => {
         const nonzero = Object.entries(TERRAIN_FLAGS)
             .filter(([, v]) => v.glowLight !== LightKind.NO_LIGHT)
             .map(([k]) => Number(k) as TerrainType)
             .sort((a, b) => a - b);
         expect(nonzero).toEqual([
+            TerrainType.PORTAL_LIGHT,
             TerrainType.ALTAR_CAGE_CLOSED, TerrainType.PIPE_GLOWING, TerrainType.SACRIFICE_ALTAR, TerrainType.SACRIFICE_LAVA,
             TerrainType.PILOT_LIGHT_DORMANT, TerrainType.PILOT_LIGHT,
             TerrainType.LAVA, TerrainType.ALTAR, TerrainType.EMBERS,
@@ -783,6 +790,7 @@ describe('C-7 光照 → 潜行判定（calculateStealthRange）', () => {
 
 describe('C-7 载体边界留痕', () => {
     const CARRIER_KINDS = new Set([
+        'PORTAL_ACTIVATE_LIGHT', // U17f: PORTAL_LIGHT has a real terrain glow consumer.
         'SACRIFICE_MARK_LIGHT', // U17e real HORDE_SACRIFICE_TARGET leader and lighting consumer
 
         'NO_LIGHT',            // 哨兵值，目录默认列

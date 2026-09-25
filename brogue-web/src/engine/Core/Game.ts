@@ -2174,6 +2174,9 @@ export class Game {
             leaderMon.isCaged = true;
             leaderMon.state = MonsterState.WANDERING;
             leaderMon.hp = Math.floor(leaderMon.maxHp / 4) + 1;
+        } else if (h.flags.includes('HORDE_ALLIED_WITH_PLAYER')) {
+            // CE Monsters.c:879: portal legendary allies use the existing allegiance consumer.
+            this.becomeAllyWith(leaderMon);
         }
         this.applyRandomMutation(leaderMon, depth);
         if (wandering) leaderMon.state = MonsterState.WANDERING;
@@ -2194,6 +2197,8 @@ export class Game {
                 if (wandering) mon.state = MonsterState.WANDERING;
                 mon.leader = leaderMon;
                 mon.boundToLeader = h.flags.includes('HORDE_DIES_ON_LEADER_DEATH');
+                // CE Monsters.c:753: the flag applies to every member as well as the leader.
+                if (h.flags.includes('HORDE_ALLIED_WITH_PLAYER')) this.becomeAllyWith(mon);
                 this.monsters.push(mon);
                 collected?.push(mon);
                 if (floorTiles) {
@@ -8213,11 +8218,37 @@ export class Game {
     /** CE Items.c:4062-4084: a matching key can be on the floor, in the
      * occupant player's pack, or carried by the occupying monster. */
     private keyOnTileAt(x: number, y: number): boolean {
+        return this.matchingKeyOnTileAt(x, y) !== null;
+    }
+
+    private matchingKeyOnTileAt(x: number, y: number): Item | null {
         const cell = this.grid.getCell(x, y) ?? undefined;
-        if (this.player.x === x && this.player.y === y && this.keyInPackFor(x, y, cell)) return true;
-        if (this.items.some(item => item.x === x && item.y === y && this.keyMatchesLocation(item, x, y, cell))) return true;
+        const packKey = this.player.x === x && this.player.y === y ? this.keyInPackFor(x, y, cell) : null;
+        if (packKey) return packKey;
+        const floorKey = this.items.find(item => item.x === x && item.y === y && this.keyMatchesLocation(item, x, y, cell));
+        if (floorKey) return floorKey;
         const carried = this.getMonsterAt(x, y)?.carriedItem;
-        return !!carried && this.keyMatchesLocation(carried, x, y, cell);
+        return carried && this.keyMatchesLocation(carried, x, y, cell) ? carried : null;
+    }
+
+    /** CE Time.c:543-546 / Movement.c:616-671: contact also uses keys on
+     * passable altars, with the existing coordinate/depth/machine contract. */
+    private useContactKeyAt(x: number, y: number): void {
+        if (!(cellTerrainMechFlags(this.grid, x, y) & TM_PROMOTES_WITH_KEY)) return;
+        const key = this.matchingKeyOnTileAt(x, y);
+        if (!key) return;
+        const cell = this.grid.getCell(x, y)!;
+        const disposable = key.keyLoc.some(entry => entry.disposableHere
+            && ((entry.loc.x === x && entry.loc.y === y)
+                || (entry.machine === cell.machineNumber)));
+        promoteLayersWithMechFlag(this.grid, x, y, TM_PROMOTES_WITH_KEY);
+        if (disposable) {
+            this.player.inventory.removeItem(key);
+            const floorIndex = this.items.indexOf(key);
+            if (floorIndex >= 0) this.items.splice(floorIndex, 1);
+            const carrier = this.getMonsterAt(x, y);
+            if (carrier?.carriedItem === key) carrier.carriedItem = null;
+        }
     }
 
     private poisonedDuringTurn = false;
@@ -9973,6 +10004,7 @@ export class Game {
             // CE instantaneous order: promotion -> entanglement/explosion ->
             // gas statuses -> ignition. Dead creatures cannot be ignited.
             if (instantTarget && entity.hp > 0) applyContactFire();
+            if (entity.hp > 0) this.useContactKeyAt(entity.loc.x, entity.loc.y);
         };
 
         if (instantTarget) {
@@ -11038,6 +11070,12 @@ export class Game {
             case TerrainType.SACRIFICE_ALTAR: return i18next.t('terrain.sacrifice_altar', { defaultValue: '献祭祭坛' });
             case TerrainType.SACRIFICE_ALTAR_DORMANT: return i18next.t('terrain.sacrifice_dormant', { defaultValue: '休眠的献祭祭坛' });
             case TerrainType.SACRIFICE_LAVA: return i18next.t('terrain.sacrifice_lava', { defaultValue: '献祭熔岩坑' });
+            case TerrainType.RAT_TRAP_WALL_CRACKING: return i18next.t('terrain.rat_trap_wall_cracking', { defaultValue: '开裂的鼠陷阱墙' });
+            case TerrainType.STATUE_CRACKING: return i18next.t('terrain.statue_cracking', { defaultValue: '开裂的雕像' });
+            case TerrainType.COFFIN_OPEN: return i18next.t('terrain.coffin_open', { defaultValue: '空棺木' });
+            case TerrainType.WORM_TUNNEL_MARKER_ACTIVE: return i18next.t('terrain.worm_tunnel_marker_active', { defaultValue: '开裂的花岗岩墙' });
+            case TerrainType.PORTAL_LIGHT: return i18next.t('terrain.portal_light', { defaultValue: '耀眼的光芒' });
+
             case TerrainType.GRANITE:
                 return i18next.t('terrain.granite', { defaultValue: '花岗岩墙壁' });
             case TerrainType.WALL:

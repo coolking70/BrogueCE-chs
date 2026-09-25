@@ -197,11 +197,11 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
     },
     {
         ceLine: 121, index: 7, terrain: null, ceTerrain: '0', layer: DUNGEON,
-        df: null, ceDf: 'DF_RUBBLE', ceDfId: 7, machine: 0, ceMachine: '0',
+        df: DF.DF_RUBBLE, ceDf: 'DF_RUBBLE', ceDfId: 7, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 0, maxDepth: 39, frequency: 30, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 4,
-        carrier: 'no-tile',
-        note: 'DF 落 RUBBLE tile（Globals.c:612）——web 无该地形。',
+        carrier: 'wired',
+        note: 'U17f: reconnect CE GlobalsBrogue.c:121 to the existing RUBBLE DF carrier.',
     },
     {
         ceLine: 122, index: 8, terrain: null, ceTerrain: '0', layer: DUNGEON,

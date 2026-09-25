@@ -1,0 +1,12 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+src/test/u_17b_carriers.test.ts(52,9): error TS6133: 'u17c' is declared but its value is never read.
+src/test/u_17f_carriers.test.ts(16,9): error TS6133: 'BlueprintEngine' is declared but its value is never read.
+src/test/u_17f_carriers.test.ts(71,46): error TS2341: Property 'cells' is private and only accessible within class 'Grid'.
+src/test/u_17f_carriers.test.ts(72,12): error TS2341: Property 'cells' is private and only accessible within class 'Grid'.
+src/test/u_17f_carriers.test.ts(98,25): error TS2341: Property 'cells' is private and only accessible within class 'Grid'.
+src/test/u_17f_carriers.test.ts(99,24): error TS2341: Property 'cells' is private and only accessible within class 'Grid'.
+src/test/u_17f_carriers.test.ts(139,24): error TS7053: Element implicitly has an 'any' type because expression of type 'number' can't be used to index type 'Record<TerrainType, DungeonLayer>'.
+  No index signature with a parameter of type 'number' was found on type 'Record<TerrainType, DungeonLayer>'.

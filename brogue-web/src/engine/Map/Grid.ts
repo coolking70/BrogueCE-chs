@@ -263,6 +263,8 @@ export enum TerrainType {
     MACHINE_METHANE_VENT_DORMANT, MACHINE_METHANE_VENT, PILOT_LIGHT, MACHINE_PARALYSIS_VENT, MACHINE_POISON_GAS_VENT_DORMANT, MACHINE_POISON_GAS_VENT, GAS_TRAP_POISON, FLAMETHROWER,
     // U17e: CE altar and pipe carriers, append-only saved IDs.
     ALTAR_CAGE_CLOSED, COMMUTATION_ALTAR_INERT, PIPE_GLOWING, RESURRECTION_ALTAR_INERT, SACRIFICE_ALTAR, PIPE_INERT, SACRIFICE_LAVA,
+    // U17f: append-only final DF carriers; FLOOR_FLOODABLE already exists.
+    RAT_TRAP_WALL_CRACKING, STATUE_CRACKING, COFFIN_OPEN, WORM_TUNNEL_MARKER_ACTIVE, PORTAL_LIGHT,
 
 }
 
@@ -535,6 +537,13 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.SACRIFICE_ALTAR]: 17,
     [TerrainType.PIPE_INERT]: 45,
     [TerrainType.SACRIFICE_LAVA]: 40,
+    // U17f: CE Globals.c final carriers.
+    [TerrainType.RAT_TRAP_WALL_CRACKING]: 0,
+    [TerrainType.STATUE_CRACKING]: 0,
+    [TerrainType.COFFIN_OPEN]: 17,
+    [TerrainType.WORM_TUNNEL_MARKER_ACTIVE]: 100,
+    [TerrainType.PORTAL_LIGHT]: 1,
+
 };
 
 /**
@@ -809,6 +818,13 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     [TerrainType.SACRIFICE_ALTAR]: DungeonLayer.DUNGEON,
     [TerrainType.PIPE_INERT]: DungeonLayer.SURFACE,
     [TerrainType.SACRIFICE_LAVA]: DungeonLayer.DUNGEON,
+    // U17f: CE Globals.c final carriers.
+    [TerrainType.RAT_TRAP_WALL_CRACKING]: DungeonLayer.DUNGEON,
+    [TerrainType.STATUE_CRACKING]: DungeonLayer.DUNGEON,
+    [TerrainType.COFFIN_OPEN]: DungeonLayer.DUNGEON,
+    [TerrainType.WORM_TUNNEL_MARKER_ACTIVE]: DungeonLayer.LIQUID,
+    [TerrainType.PORTAL_LIGHT]: DungeonLayer.SURFACE,
+
 };
 
 /**
