@@ -1,15 +1,20 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useTranslation } from 'i18next-vue';
 import { activeGame } from '../engine/Core/Game';
 
 const { t } = useTranslation();
+const pulse = ref(0);
+let timer: ReturnType<typeof setInterval> | undefined;
+onMounted(() => { timer = setInterval(() => { pulse.value++; }, 100); });
+onUnmounted(() => { if (timer) clearInterval(timer); });
 
-const isReplayActive = computed(() => !!activeGame.replayRecording);
-const isPlaying = computed(() => activeGame.replayStatus === 'playing');
+const isReplayActive = computed(() => { pulse.value; return !!activeGame.replayRecording; });
+const isPlaying = computed(() => { pulse.value; return activeGame.replayStatus === 'playing'; });
 
-const currentCursor = computed(() => activeGame.replayCursor);
-const totalEvents = computed(() => activeGame.replayEvents.length);
+const currentCursor = computed(() => { pulse.value; return activeGame.replayCursor; });
+const totalEvents = computed(() => { pulse.value; return activeGame.replayEvents.length; });
+const replayError = computed(() => { pulse.value; return activeGame.replayError; });
 
 const togglePlay = () => {
   if (isPlaying.value) {
@@ -39,11 +44,12 @@ const onSeek = (e: Event) => {
 
 <template>
   <div v-if="isReplayActive" class="replay-controls">
+    <div v-if="replayError" role="alert" class="replay-error">{{ replayError }}</div>
     <div class="controls-row">
-        <button @click="togglePlay" class="play-btn">
+        <button @click="togglePlay" class="play-btn" :disabled="!!replayError">
             {{ isPlaying ? t('replay.controls.pause', { defaultValue: 'Pause' }) : t('replay.controls.play', { defaultValue: 'Play' }) }}
         </button>
-        <button @click="stepPlay" class="step-btn">
+        <button @click="stepPlay" class="step-btn" :disabled="!!replayError">
             {{ t('replay.controls.step', { defaultValue: 'Step' }) }}
         </button>
         <div class="progress-text">
@@ -55,6 +61,7 @@ const onSeek = (e: Event) => {
 </template>
 
 <style scoped>
+.replay-error { color: #ff7777; font-weight: 700; margin-bottom: 6px; }
 .replay-controls {
     position: absolute;
     bottom: 20px;

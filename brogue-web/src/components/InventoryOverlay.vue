@@ -48,7 +48,7 @@ onMounted(() => {
 
 const closeInventory = () => {
     if (activeGame.pendingEnchantment) return; // CE mandatory target after reading.
-    activeGame.isInventoryOpen = false;
+    activeGame.handlePlayerAction('escape');
     selectedItem.value = null;
     updateInventoryState();
 };
@@ -184,12 +184,12 @@ const magicSigilColor = (item: Item): string => {
 
 // ── B-1c：恶意品使用确认（CE confirm()，Items.c:8054-8060 / 7761-7767）──
 const confirmMalevolentUse = () => {
-    activeGame.confirmPendingUse();
+    activeGame.executeItemCommand('confirm');
     updateInventoryState();
     closeInventory();
 };
 const cancelMalevolentUse = () => {
-    activeGame.cancelPendingUse();
+    activeGame.executeItemCommand('cancel');
     updateInventoryState();
 };
 
@@ -201,7 +201,7 @@ const selectItem = (item: Item) => {
 // canBeIdentified 的物品可选中（CE promptForItemOfType 只列合法目标）。
 const selectItemOrIdentify = (item: Item) => {
     if (pendingEnchantment.value) {
-        activeGame.chooseEnchantTarget(toRaw(item));
+        activeGame.executeItemCommand('enchant', toRaw(item), undefined, () => activeGame.chooseEnchantTarget(toRaw(item)));
         selectedItem.value = null;
         updateInventoryState();
         return;
@@ -218,7 +218,7 @@ const performInspect = (item: Item) => {
 };
 
 const performEquip = (item: Item) => {
-    activeGame.equipItem(item);
+    activeGame.executeItemCommand('equip', toRaw(item));
     closeInventory();
 };
 
@@ -228,24 +228,24 @@ const performUnequip = (item: Item) => {
         // Flash visual error logic could be here if we want it modal-centric
         return;
     }
-    activeGame.unequipItem(item);
+    activeGame.executeItemCommand('unequip', toRaw(item));
     closeInventory();
 };
 
 const performDrop = (item: Item) => {
-    activeGame.dropItem(item);
+    activeGame.executeItemCommand('drop', toRaw(item));
     closeInventory();
 };
 
 const performQuaff = (item: Item) => {
-    activeGame.quaffItem(item);
+    activeGame.executeItemCommand('quaff', toRaw(item));
     // B-1c：被确认闸拦下时不关面板——确认行就在这一行下方渲染
     if (activeGame.pendingUseConfirm) { updateInventoryState(); return; }
     closeInventory();
 };
 
 const performRead = (item: Item) => {
-    activeGame.readItem(toRaw(item));
+    activeGame.executeItemCommand('read', toRaw(item), undefined, () => activeGame.readItem(toRaw(item)));
     if (activeGame.pendingEnchantment) {
         selectedItem.value = null;
         cancelCall();
@@ -257,17 +257,17 @@ const performRead = (item: Item) => {
 };
 
 const performThrow = (item: Item) => {
-    activeGame.enterThrowMode(item);
+    activeGame.executeItemCommand('throw', toRaw(item));
     closeInventory();
 };
 
 const performEat = (item: Item) => {
-    activeGame.eatItem(item);
+    activeGame.executeItemCommand('eat', toRaw(item));
     closeInventory();
 };
 
 const performUse = (item: Item) => {
-    activeGame.useArcanaItem(toRaw(item));
+    activeGame.executeItemCommand('use', toRaw(item));
     selectedItem.value = null;
     // Selection closes inventory in the engine; refused uses keep it available.
     if (item.category === ItemCategory.CHARM) closeInventory();
@@ -276,7 +276,7 @@ const performUse = (item: Item) => {
 
 // ── B-1b：鉴定卷轴目标指定与 call 绰号 ─────────────────────────────
 const performIdentifySelect = (item: Item) => {
-    activeGame.chooseIdentifyTarget(item);
+    activeGame.executeItemCommand('identify', toRaw(item));
     updateInventoryState();
 };
 
@@ -292,7 +292,7 @@ const cancelCall = () => {
 
 const confirmCall = () => {
     if (!callTarget.value) return;
-    activeGame.callItem(callTarget.value, callText.value);
+    activeGame.executeItemCommand('call', toRaw(callTarget.value), callText.value);
     cancelCall();
     updateInventoryState();
 };

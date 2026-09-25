@@ -127,8 +127,8 @@ const saveReplay = () => {
     window.localStorage.setItem(REPLAY_KEY, JSON.stringify(activeGame.exportRecording()));
     storageTick.value++;
     logger.log(i18next.t('menu.log.replay_saved', { defaultValue: 'Replay saved.' }), '#88ff88');
-  } catch {
-    logger.log(i18next.t('menu.log.replay_save_failed', { defaultValue: 'Replay save failed.' }), '#ff6666');
+  } catch (error) {
+    logger.log(error instanceof Error ? error.message : i18next.t('menu.log.replay_save_failed', { defaultValue: 'Replay save failed.' }), '#ff6666');
   }
 };
 

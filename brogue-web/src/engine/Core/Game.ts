@@ -280,6 +280,9 @@ export interface RecordedInputEvent {
     player: Pos;
     action: string;
     data: RecordedInputData;
+    decisions?: boolean[];
+    turn?: number;
+    rng?: ReturnType<typeof rng.getState>;
 }
 
 export interface GameRecording {
@@ -293,6 +296,21 @@ export interface GameRecording {
 }
 
 type ReplayStatus = 'idle' | 'loaded' | 'playing' | 'finished';
+interface RecordingRuntime {
+    replayError: string | null;
+    commandDecisions: boolean[] | null;
+    replayDecisionCursor: number;
+    recordingFromNewGame: boolean;
+}
+const recordingRuntime = new WeakMap<Game, RecordingRuntime>();
+function recordingState(game: Game): RecordingRuntime {
+    let state = recordingRuntime.get(game);
+    if (!state) {
+        state = { replayError: null, commandDecisions: null, replayDecisionCursor: 0, recordingFromNewGame: true };
+        recordingRuntime.set(game, state);
+    }
+    return state;
+}
 type TestAssetCategory = 'weapons' | 'wands' | 'scrolls' | 'potions' | 'other' | 'terrain' | 'enemies' | 'blueprints' | 'runics';
 
 interface TestRoomState {
@@ -505,6 +523,14 @@ export class Game {
     public replayStatus: ReplayStatus = 'idle';
     private replayFrameAccumulator: number = 0;
     private readonly replayFramesPerStep: number = 6;
+    public get replayError(): string | null { return recordingState(this).replayError; }
+    private set replayError(value: string | null) { recordingState(this).replayError = value; }
+    private get commandDecisions(): boolean[] | null { return recordingState(this).commandDecisions; }
+    private set commandDecisions(value: boolean[] | null) { recordingState(this).commandDecisions = value; }
+    private get replayDecisionCursor(): number { return recordingState(this).replayDecisionCursor; }
+    private set replayDecisionCursor(value: number) { recordingState(this).replayDecisionCursor = value; }
+    private get recordingFromNewGame(): boolean { return recordingState(this).recordingFromNewGame; }
+    private set recordingFromNewGame(value: boolean) { recordingState(this).recordingFromNewGame = value; }
     public signTexts = new Map<string, string>();
     public resetPlateRoomByPos = new Map<string, number>();
     public testRooms = new Map<number, TestRoomState>();
@@ -610,6 +636,7 @@ export class Game {
         this.recordingStartAt = Date.now();
         this.recordedInputEvents = [];
         this.recordedInputIndex = 0;
+        this.recordingFromNewGame = true;
         this.clearReplay();
         this.signTexts = new Map();
         this.resetPlateRoomByPos = new Map();
@@ -3061,20 +3088,72 @@ export class Game {
         return String(data);
     }
 
-    private recordInputEvent(action: string, data?: unknown) {
+    private recordInputEvent(action: string, data: unknown, decisions: boolean[]) {
         this.recordedInputEvents.push({
             index: this.recordedInputIndex++,
             tick: timeSystem.currentTick,
             depth: this.depth,
             player: { x: this.player.loc.x, y: this.player.loc.y },
             action,
-            data: this.toRecordedInputData(data)
+            data: this.toRecordedInputData(data),
+            decisions,
+            turn: this.absoluteTurnNumber,
+            rng: rng.getState()
         });
     }
 
+    /** Every user command, including inventory and modal choices, crosses this boundary. */
+    public executeCommand(action: string, data?: unknown, perform?: () => void): void {
+        if (this.replayRecording || this.isInputLocked()) return;
+        const decisions: boolean[] = [];
+        this.commandDecisions = decisions;
+        try {
+            if (perform) perform(); else this.applyCommand(action, data);
+            if (this.recordingFromNewGame) this.recordInputEvent(action, data, decisions);
+        } finally {
+            this.commandDecisions = null;
+        }
+    }
+
+    private applyCommand(action: string, data?: unknown): void {
+        if (action.startsWith('item:')) {
+            const [operation, letter, ...rest] = String(data ?? '').split('|');
+            const item = this.player.inventory.items.find(i => i.inventoryLetter === letter);
+            if (operation !== 'confirm' && operation !== 'cancel' && !item) throw new Error(`Missing replay item ${letter}`);
+            switch (operation) {
+                case 'equip': this.equipItem(item!); break;
+                case 'unequip': this.unequipItem(item!); break;
+                case 'drop': this.dropItem(item!); break;
+                case 'quaff': this.quaffItem(item!); break;
+                case 'read': this.readItem(item!); break;
+                case 'throw': this.enterThrowMode(item!); break;
+                case 'eat': this.eatItem(item!); break;
+                case 'use': this.useArcanaItem(item!); break;
+                case 'identify': this.chooseIdentifyTarget(item!); break;
+                case 'enchant': this.chooseEnchantTarget(item!); break;
+                case 'call': this.callItem(item!, rest.join('|')); break;
+                case 'confirm': this.confirmPendingUse(); break;
+                case 'cancel': this.cancelPendingUse(); break;
+                default: throw new Error(`Unknown item command ${operation}`);
+            }
+        } else if (action === 'mouse_travel') {
+            const pos = data as Pos;
+            this.handleMouseTravel(pos.x, pos.y);
+        } else if (action === 'auto_step') {
+            this.stepAutoPath();
+        } else {
+            this.performPlayerAction(action, data, 'system');
+        }
+    }
+
+    public executeItemCommand(operation: string, item?: Item, title?: string, perform?: () => void): void {
+        this.executeCommand('item:command', `${operation}|${item?.inventoryLetter ?? ''}|${title ?? ''}`, perform);
+    }
+
     public exportRecording(): GameRecording {
+        if (!this.recordingFromNewGame) throw new Error('Recording requires a fresh new game; saved games cannot continue a recording');
         return {
-            version: 1,
+            version: 2,
             recordedAt: Date.now(),
             seed: this.currentSeed,
             mode: this.mode,
@@ -3085,7 +3164,10 @@ export class Game {
                 depth: event.depth,
                 player: { x: event.player.x, y: event.player.y },
                 action: event.action,
-                data: event.data
+                data: event.data,
+                decisions: [...(event.decisions ?? [])],
+                turn: event.turn,
+                rng: event.rng
             }))
         };
     }
@@ -3094,6 +3176,7 @@ export class Game {
         this.recordedInputEvents = [];
         this.recordedInputIndex = 0;
         this.recordingStartAt = Date.now();
+        this.recordingFromNewGame = false;
     }
 
     public clearReplay() {
@@ -3102,6 +3185,7 @@ export class Game {
         this.replayCursor = 0;
         this.replayStatus = 'idle';
         this.replayFrameAccumulator = 0;
+        this.replayError = null;
     }
 
     private decodeRecordedInputData(data: RecordedInputData): unknown {
@@ -3114,30 +3198,44 @@ export class Game {
         if (!recording || typeof recording !== 'object') return false;
         const r = recording as Partial<GameRecording>;
         const validSeed = isSeed(r.seed) || (typeof r.seed === 'number' && Number.isSafeInteger(r.seed) && r.seed >= 0);
-        return r.version === 1
+        return r.version === 2
             && validSeed
-            && typeof r.mode === 'string'
-            && Array.isArray(r.events);
+            && (r.mode === 'normal' || r.mode === 'easy' || r.mode === 'wizard' || r.mode === 'test')
+            && r.startDepth === 1
+            && Array.isArray(r.events)
+            && r.events.every((event, index) => !!event && typeof event === 'object'
+                && event.index === index
+                && typeof event.action === 'string'
+                && (event.data === null || typeof event.data === 'string'
+                    || (typeof event.data === 'number' && Number.isFinite(event.data))
+                    || (!!event.data && typeof event.data === 'object'
+                        && Number.isFinite(event.data.x) && Number.isFinite(event.data.y)))
+                && typeof event.tick === 'number' && Number.isFinite(event.tick)
+                && typeof event.turn === 'number' && Number.isFinite(event.turn)
+                && typeof event.depth === 'number' && Number.isFinite(event.depth)
+                && typeof event.player?.x === 'number' && typeof event.player?.y === 'number'
+                && Array.isArray(event.decisions) && event.decisions.every(d => typeof d === 'boolean')
+                && Random.isState(event.rng));
     }
 
     public loadReplay(recording: unknown): boolean {
         if (!this.isValidRecording(recording)) return false;
         const safeRecording: GameRecording = {
-            version: 1,
+            version: 2,
             recordedAt: recording.recordedAt ?? Date.now(),
             seed: normalizeSeed(recording.seed),
             mode: recording.mode,
             startDepth: recording.startDepth ?? 1,
-            events: recording.events.map((event, idx) => ({
-                index: typeof event.index === 'number' ? event.index : idx,
-                tick: typeof event.tick === 'number' ? event.tick : 0,
-                depth: typeof event.depth === 'number' ? event.depth : 1,
-                player: {
-                    x: typeof event.player?.x === 'number' ? event.player.x : 0,
-                    y: typeof event.player?.y === 'number' ? event.player.y : 0
-                },
-                action: typeof event.action === 'string' ? event.action : 'wait',
-                data: event.data ?? null
+            events: recording.events.map((event) => ({
+                index: event.index,
+                tick: event.tick,
+                depth: event.depth,
+                player: { ...event.player },
+                action: event.action,
+                data: event.data,
+                decisions: [...event.decisions!],
+                turn: event.turn,
+                rng: structuredClone(event.rng!)
             }))
         };
 
@@ -3154,7 +3252,7 @@ export class Game {
     }
 
     public replayPlay() {
-        if (!this.replayRecording) return;
+        if (!this.replayRecording || this.replayError) return;
         if (this.replayCursor >= this.replayEvents.length) {
             this.replayStatus = 'finished';
             return;
@@ -3170,11 +3268,18 @@ export class Game {
 
     public replayRestart() {
         if (!this.replayRecording) return;
+        // A stale programmatically injected recording cannot be played, but a restart
+        // still retires the old run through U00's single new-game boundary.
+        if (!this.isValidRecording(this.replayRecording)) {
+            const { seed, mode } = this.replayRecording;
+            this.startNewGame({ seed, mode });
+            return;
+        }
         this.loadReplay(this.replayRecording);
     }
 
     public replayStep(silent: boolean = false) {
-        if (!this.replayRecording) return;
+        if (!this.replayRecording || this.replayError) return;
         // P2-2 输入锁：动画推进期间回放步同样不得插入（否则会在怪物行动的
         // 半途落地玩家动作，破坏逐次演出的因果顺序）
         if (this.isInputLocked()) return;
@@ -3184,8 +3289,27 @@ export class Game {
         }
         const event = this.replayEvents[this.replayCursor];
         if (!event) return;
-        this.handlePlayerAction(event.action, this.decodeRecordedInputData(event.data), 'system');
-        this.update();
+        this.commandDecisions = event.decisions ?? [];
+        this.replayDecisionCursor = 0;
+        try {
+            this.applyCommand(event.action, this.decodeRecordedInputData(event.data));
+            const actual = { tick: timeSystem.currentTick, depth: this.depth,
+                player: this.player.loc, turn: this.absoluteTurnNumber, rng: rng.getState() };
+            if (actual.tick !== event.tick || actual.depth !== event.depth
+                || actual.player.x !== event.player.x || actual.player.y !== event.player.y
+                || actual.turn !== event.turn || this.replayDecisionCursor !== event.decisions!.length
+                || JSON.stringify(actual.rng) !== JSON.stringify(event.rng)) {
+                throw new Error(`state mismatch after command ${event.index + 1}`);
+            }
+            this.update();
+        } catch (error) {
+            this.replayError = `OOS at command ${event.index + 1}: ${error instanceof Error ? error.message : String(error)}`;
+            this.replayStatus = 'loaded';
+            logger.log(this.replayError, '#ff6666');
+            return;
+        } finally {
+            this.commandDecisions = null;
+        }
         this.replayCursor++;
 
         if (this.replayCursor >= this.replayEvents.length) {
@@ -3208,14 +3332,24 @@ export class Game {
 
     public replaySeek(targetIndex: number) {
         if (!this.replayRecording) return;
+        if (!this.isValidRecording(this.replayRecording)) {
+            const { seed, mode } = this.replayRecording;
+            this.startNewGame({ seed, mode });
+            return;
+        }
 
         const total = this.replayEvents.length;
         const clamped = Math.max(0, Math.min(Math.floor(targetIndex), total));
-        this.loadReplay(this.replayRecording);
-
-        for (let i = 0; i < clamped; i++) {
-            this.replayStep(true);
-            if (this.replayStatus === 'finished') break;
+        const animationEnabled = this.animationEnabled;
+        this.animationEnabled = false;
+        try {
+            this.loadReplay(this.replayRecording);
+            for (let i = 0; i < clamped; i++) {
+                this.replayStep(true);
+                if (this.replayStatus === 'finished' || this.replayError) break;
+            }
+        } finally {
+            this.animationEnabled = animationEnabled;
         }
 
         if (this.replayStatus === 'playing') {
@@ -3224,6 +3358,11 @@ export class Game {
     }
 
     public handlePlayerAction(action: string, data?: unknown, source: 'player' | 'system' = 'player') {
+        if (source === 'player') this.executeCommand(action, data);
+        else this.performPlayerAction(action, data, source);
+    }
+
+    private performPlayerAction(action: string, data?: unknown, source: 'player' | 'system' = 'system') {
         if (action === 'discoveries' || action === 'help') {
             this.referenceScreen = this.referenceScreen === action ? null : action;
             return;
@@ -3243,10 +3382,6 @@ export class Game {
         // （不录制、不生效）。system 源不受锁约束——harness/脚本驱动必须始终可用。
         if (source === 'player' && this.isInputLocked()) {
             return;
-        }
-
-        if (source === 'player') {
-            this.recordInputEvent(action, data);
         }
 
         // CE Items.c:7824-7835: once read, enchantment requires a valid target;
@@ -7646,8 +7781,14 @@ export class Game {
 
     /** CE confirm() 的 web 钩子转发；未接线时按"确认"处理（见字段注记）。 */
     private requestConfirm(message: string): boolean {
-        if (this.onConfirmRequest) return this.onConfirmRequest(message);
-        return true;
+        if (this.replayRecording) {
+            const decision = this.commandDecisions?.[this.replayDecisionCursor++];
+            if (typeof decision !== 'boolean') throw new Error('missing confirmation decision');
+            return decision;
+        }
+        const decision = this.onConfirmRequest ? this.onConfirmRequest(message) : true;
+        this.commandDecisions?.push(decision);
+        return decision;
     }
 
     /**
@@ -9172,6 +9313,8 @@ export class Game {
         this.travelTargetItem = run.travelTargetItemId === null ? undefined : entityGraph.items.get(run.travelTargetItemId);
         this.recordedInputEvents = run.recordedInputEvents; this.recordedInputIndex = run.recordedInputIndex;
         this.recordingStartAt = Date.now();
+        // A snapshot is not a reproducible new-run prefix. Do not export a partial log.
+        this.recordingFromNewGame = false;
         this.clearReplay();
         this.signTexts = new Map(run.signTexts); this.resetPlateRoomByPos = new Map(run.resetPlateRoomByPos);
         this.testRooms = new Map(run.testRooms); this.currentTestCategory = run.currentTestCategory;
@@ -10971,6 +11114,10 @@ export class Game {
         // P2-2 输入锁：怪物行动动画播完之前，自动探索/寻路不得推进下一步
         // （GameCanvas 的 ticker 会持续重试，解锁后自然继续）
         if (this.isInputLocked()) return;
+        const logStep = this.recordingFromNewGame && !this.replayRecording;
+        const previousDecisions = this.commandDecisions;
+        const decisions: boolean[] = [];
+        if (logStep) this.commandDecisions = decisions;
 
         // P2-4：本步连同其触发的攻击/拾取/回合结算一律按自动行进口径处理
         // （playerTurnEnded 同步推进、不暂停、不加锁）。try/finally 保证
@@ -10980,6 +11127,8 @@ export class Game {
             this.stepAutoPathInner();
         } finally {
             this.inAutoTravelStep = false;
+            this.commandDecisions = previousDecisions;
+            if (logStep) this.recordInputEvent('auto_step', undefined, decisions);
         }
     }
 

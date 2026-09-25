@@ -499,7 +499,7 @@ onMounted(async () => {
         const steps = Math.max(1, Math.round(ms / 100));
         for (let i = 0; i < steps; i++) {
             game.tickReplay();
-            if (!game.isTimePaused() && game.autoPath.length > 0) {
+            if (!game.replayRecording && !game.isTimePaused() && game.autoPath.length > 0) {
                 game.stepAutoPath();
             }
             game.update();
@@ -606,7 +606,7 @@ onMounted(async () => {
            if (game.pendingArcana) {
                if (e.button === 2) inputManager.triggerAction('escape');
                else if (e.button === 0) {
-                   game.handleMouseTravel(mapX, mapY);
+                    game.executeCommand('mouse_travel', { x: mapX, y: mapY });
                    game.update();
                }
                return; // Adjacent/origin clicks also belong to spell selection.
@@ -636,7 +636,7 @@ onMounted(async () => {
                    inputManager.triggerAction('move', dir);
                }
            } else {
-               game.handleMouseTravel(mapX, mapY);
+                game.executeCommand('mouse_travel', { x: mapX, y: mapY });
                game.update();
            }
         }
@@ -666,7 +666,7 @@ onMounted(async () => {
         const flareChanged = game.tickFlareAnimation(ticker.deltaMS);
         if (boltChanged || flareChanged) render();
 
-        if (game.autoPath.length > 0) {
+        if (!game.replayRecording && game.autoPath.length > 0) {
             pathingTimer++;
             if (pathingTimer > 4) { // 60/4 = 15 moves per second
                 game.stepAutoPath();
