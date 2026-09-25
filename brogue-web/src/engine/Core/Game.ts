@@ -50,7 +50,7 @@ import monsterData from '../../data/monsters.json';
 import hordeData from '../../data/hordes.json';
 import mutationData from '../../data/mutations.json';
 import type { MonsterData, MutationData } from '../../entities/Monster';
-import { MonsterState } from '../../entities/Monster';
+import { MonsterMode, MonsterState } from '../../entities/Monster';
 import { Direction, type Pos } from '../../types';
 import { ensureEntityIdAbove, allocateEntityId, resetEntityIds, getNextEntityId, restoreNextEntityId, type StatusId, type Creature } from '../../entities/Creature';
 import { timeSystem } from '../Systems/Time';
@@ -9794,9 +9794,8 @@ export class Game {
             mon.state = MonsterState.ASLEEP; // CE MONSTER_SLEEPING（:1648-1650）
         }
         if (spawn.fleeing) {
-            // ★ 半落：CE 同时置 creatureMode = MODE_PERM_FLEEING，web 无该维
-            //（Monster.ts 不在本轮授权清单），故永久性缺位——登记报告 §3。
             mon.state = MonsterState.FLEEING;
+            mon.creatureMode = MonsterMode.PERM_FLEEING;
         }
         if (spawn.dormant) {
             this.toggleMonsterDormancy(mon);

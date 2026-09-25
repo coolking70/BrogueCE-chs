@@ -14,7 +14,7 @@
  * 对抗性测试与"能捕获的具体错误实现"逐条标注在每个 it() 前的注释里；
  * 反向验证（真实改坏代码、跑出失败、贴输出、再还原）见报告。
  */
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { createHeadlessGame } from './harness';
 import { Game } from '../engine/Core/Game';
 import { Monster, MonsterState, type MonsterData } from '../entities/Monster';
@@ -486,23 +486,31 @@ describe('P4-5 验收 3：MA_ATTACKS_STAGGER 击退', () => {
 
     it('对抗性①：击退不能有 damage>0 的门槛 —— 照邻居 MA_POISONS/MA_CAUSES_WEAKNESS' +
         '抄错的实现（在 Monster.ts 调用点加一个 `&& result.damage > 0`）会在 0 伤害' +
-        '命中时跳过推挤；这里用 MONST_IMMUNE_TO_WEAPONS 目标强制近战伤害为 0（但 hit' +
+        '命中时跳过推挤；这里将实际近战结果限定为 0 伤害命中（但 hit' +
         '仍为 true），走真实的 ally-vs-monster 集成路径（Monster.takeTurn 调用点，' +
         '不是直接调用 processStaggerHit），验证调用点本身没有加这个门槛。', () => {
         const game = createHeadlessGame(32);
         clearToOpenRoom(game);
-        game.player.loc.x = 12; game.player.loc.y = 10; // 挪开，避免占用推挤终点 (4,5)
+        game.player.loc.x = 7; game.player.loc.y = 6; // 避开推挤终点，并让盟友处于 CE 牵引范围内
         const ogre = new Monster(6, 5, monsterDataById('ogre'));
         ogre.isAlly = true; // 走 ally-vs-monster 集成路径的真实调用点
         const target = new Monster(5, 5, monsterDataById('goblin'));
         target.defense = 0; // 保证命中
-        target.behaviorFlags.add('MONST_IMMUNE_TO_WEAPONS');
         target.hp = target.maxHp = 200;
         game.monsters.push(ogre, target);
+
+        // CE moveAlly 会在 attackWouldBeFutile 拒绝武器免疫目标。
+        // 保留真实 ally-vs-monster 调用链，只控制伤害结果以验证击退门槛。
+        const attack = CombatSystem.attack;
+        const spy = vi.spyOn(CombatSystem, 'attack').mockImplementation((attacker, defender, opts) => {
+            const result = attack(attacker, defender, opts);
+            return { ...result, hit: true, damage: 0 };
+        });
 
         ogre.takeTurn(game, 10);
 
         expect(target.loc.x).toBe(4); // 依然被推开——证明调用点没有 damage>0 门槛
+        spy.mockRestore();
     });
 
     it('对抗性②：终点是墙/已被占用时不应该发生推挤（目标原地不动）', () => {

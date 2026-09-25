@@ -21,20 +21,16 @@ import type { StatusId } from './Creature';
 import { PERMANENT_STATUS_DURATION } from './Creature';
 import { DungeonLayer, TerrainType } from '../engine/Map/Grid';
 import { breakEntanglingTerrain } from '../engine/Map/Promotion';
-import { MONSTER_BOLT_TABLE, BoltEffect, type BoltConfig } from '../engine/Combat/Bolt';
+import { MONSTER_BOLT_TABLE, BoltEffect } from '../engine/Combat/Bolt';
 import { CEBoltType, CEBoltFlags, CE_BOLT_CATALOG } from '../engine/Combat/BoltCatalog';
 import { reflectionChance } from '../engine/Combat/CombatFormulas';
 import { bladeAvoids, bladeDiagonalBlocked, bladeStepToward, BLADE_DIRECTIONS } from '../engine/Combat/Conjuration';
-import { boltLine } from '../engine/Combat/BoltTrajectory';
 import { hasBlink, blinkChance, monsterBlinkToPreferenceMap, monsterBlinkToSafety, blinkFromHarmfulTerrain,
     closestBlinkEnemy, blinkAllyFlees, blinkAllyAfterMagic, blinkTowardCreature, blinkTowardCaptiveLeader, allyShouldPursue, monsterAvoidsCorridor } from '../engine/Combat/MonsterBlink';
-import { updateMonsterCorpseAbsorption, moveAllyToCorpse, corpseAllyBeforeMagic } from '../engine/Combat/MonsterAbsorption';
+import { updateMonsterCorpseAbsorption, moveAllyToCorpse, corpseAllyBeforeMagic, passiveCorpseStep } from '../engine/Combat/MonsterAbsorption';
 import { entrancementDiagonalBlocked, entrancementPassable } from '../engine/Movement/Entrancement';
 import { burnedTerrainFlagsOfCell, cellTerrainFlags, cellTerrainMechFlags } from '../engine/Map/DungeonFeature';
 import { T_ENTANGLES, TM_ALLOWS_SUBMERGING, T_LAVA_INSTA_DEATH, T_IS_DEEP_WATER, T_AUTO_DESCENT, T_PATHING_BLOCKER, T_HARMFUL_TERRAIN, T_SACRED, T_IS_FIRE, T_SPONTANEOUSLY_IGNITES, T_IS_DF_TRAP, T_CAUSES_POISON, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_CONFUSION } from '../engine/Map/TerrainCatalog';
-
-const BLADE_SIGHT: BoltConfig = { id: 'blade_sight', name: '', ceType: CEBoltType.NONE,
-    effect: BoltEffect.NONE, magnitude: 0, char: '', color: 0, maxRange: 0, piercing: false, selfTargeting: false };
 
 // ----- P4-1b：怪物远程法术施放 -----
 //
@@ -249,6 +245,9 @@ export enum MonsterState {
     FLEEING
 }
 
+/** CE creatureMode is independent of the current creatureState. */
+export enum MonsterMode { NORMAL, PERM_FLEEING }
+
 export type MonsterAbility = 'flying' | 'regenerating' | 'ranged' | 'poisonous';
 
 export interface MonsterData {
@@ -300,6 +299,7 @@ export interface MutationData {
 
 export class Monster extends Creature {
     public state: MonsterState = MonsterState.ASLEEP;
+    public creatureMode: MonsterMode = MonsterMode.NORMAL;
     public damageString: string;
     public damageClumping: number;
     public goldDropChance: number = 0;
@@ -1396,25 +1396,31 @@ export class Monster extends Creature {
         if (this.hasStatus('paralyzed') || this.hasStatus('entranced')) return;
         if (this.isCaged) return;
 
+        if (this.creatureMode === MonsterMode.PERM_FLEEING
+            && (this.state === MonsterState.WANDERING || this.state === MonsterState.HUNTING)) {
+            this.state = MonsterState.FLEEING;
+        }
+
         // U07: CE ally escape and fleeing blink precede ordinary magic. Only
         // blink-capable, awake, mobile monsters enter this dedicated schedule.
         const blinkReady = hasBlink(this) && this.state !== MonsterState.ASLEEP && !this.isDormant
             && !this.hasBehavior('MONST_IMMOBILE') && !this.hasBehavior('MONST_TURRET');
         let fleeingBlinkTried = false;
-        let blinkEnemy: Monster | null = null;
-        const blinkAlly = blinkReady && this.isAlly && !this.hasStatus('magical_fear') && !this.hasStatus('discordant');
+        const normalAlly = this.isAlly && this.state !== MonsterState.FLEEING
+            && !this.hasStatus('magical_fear') && !this.hasStatus('discordant');
+        const blinkAlly = blinkReady && normalAlly;
+        if (blinkAlly && blinkFromHarmfulTerrain(game, this)) return;
+        if (normalAlly && corpseAllyBeforeMagic(game, this, null, p => this.tryCorpseMove(p, game))) return;
+        const blinkEnemy = normalAlly ? closestBlinkEnemy(game, this) : null;
         if (blinkAlly) {
-            if (blinkFromHarmfulTerrain(game, this)) return;
-            blinkEnemy = closestBlinkEnemy(game, this);
             if (blinkAllyFlees(game, this, blinkEnemy) && blinkChance(this) && monsterBlinkToSafety(game, this)) return;
         } else if (blinkReady && this.state === MonsterState.FLEEING) {
             fleeingBlinkTried = true;
             if (blinkChance(this) && monsterBlinkToSafety(game, this)) return;
         }
 
-        const corpseAlly = this.targetCorpseLoc && this.isAlly && !this.hasStatus('magical_fear') && !this.hasStatus('discordant');
-        const corpseEnemy = corpseAlly ? (blinkAlly ? blinkEnemy : closestBlinkEnemy(game, this)) : null;
-        if (corpseAlly && corpseAllyBeforeMagic(game, this, corpseEnemy, p => this.tryCorpseMove(p, game))) return;
+        // CE moveAlly retreats from enemies before magic for every ordinary ally.
+        if (normalAlly && corpseAllyBeforeMagic(game, this, blinkEnemy, p => this.tryCorpseMove(p, game))) return;
 
         // P4-1b：CE monstUseMagic 在移动/近战之前优先尝试（monstersTurn 各出口
         // 调用 monstUseMagic 都在移动决策之前）。沉睡怪物不参与（CE 沉睡怪物
@@ -1427,7 +1433,7 @@ export class Monster extends Creature {
             if (this.trySummon(game)) {
                 return;
             }
-            if (!(this.state === MonsterState.FLEEING && (blinkReady || this.hasStatus('magical_fear'))) && this.tryUseBolt(game)) {
+            if (this.state !== MonsterState.FLEEING && this.tryUseBolt(game)) {
                 return;
             }
         }
@@ -1442,51 +1448,20 @@ export class Monster extends Creature {
             return;
         }
 
-        if (this.isAlly && !this.hasStatus('magical_fear') && (!blinkReady || !this.hasStatus('discordant'))) {
+        if (normalAlly) {
             if (blinkAlly && blinkAllyAfterMagic(game, this, blinkEnemy)) return;
-            // Restrict this CE priority decision to pending corpse tasks; U12
-            // still owns the existing general ally target/following policy.
-            if (corpseAlly) {
-                if (!allyShouldPursue(game, this, corpseEnemy)
+            if (this.targetCorpseLoc) {
+                if (!allyShouldPursue(game, this, blinkEnemy)
                     && moveAllyToCorpse(game, this, p => this.tryCorpseMove(p, game))) return;
             }
             const independentBlade = this.typeId === 'spectral_blade' && this.doesNotTrackLeader;
             const canBladeStep = (p: { x: number; y: number }) => !(p.x === this.loc.x && p.y === this.loc.y)
                 && !bladeAvoids(game.grid, p) && !bladeDiagonalBlocked(game.grid, this.loc, p)
                 && !game.getMonsterAt(p.x, p.y) && !(game.player.loc.x === p.x && game.player.loc.y === p.y);
-            // Find closest hostile monster
-            let target: Monster | null = null;
-            let minDist = Infinity;
-            for (const other of game.monsters) {
-                if (other === this || other.hp <= 0 || other.isAlly || other.hasStatus('entranced')) continue;
-                if (independentBlade) {
-                    // CE moveAlly/traversiblePathBetween: the blade's terrain path,
-                    // not the player's FOV; never charge an invulnerable target.
-                    if (other.isCaged || other.isInvulnerable() || other.isImmuneToWeapons()) continue;
-                    const line = boltLine(game.grid, this.loc, other.loc, BLADE_SIGHT, {
-                        caster: this, creatureAt: p => creatureAtLoc(game, p.x, p.y),
-                    });
-                    let reachable = false;
-                    for (const p of line) {
-                        if (p.x === other.loc.x && p.y === other.loc.y) { reachable = true; break; }
-                        if (bladeAvoids(game.grid, p)) break;
-                    }
-                    if (!reachable || bladeAvoids(game.grid, other.loc)
-                        || (other.hasStatus('invisible') && !rng.randPercent(33))) continue;
-                } else if (!game.grid.getCell(other.loc.x, other.loc.y)?.isVisible) continue;
-
-                const dist = Math.max(Math.abs(this.loc.x - other.loc.x), Math.abs(this.loc.y - other.loc.y));
-                // P4-4：CE monsterFleesFrom（Monsters.c:2979-2982）—— 不主动冲向
-                // MA_KAMIKAZE 目标（膨胀怪），已经贴脸的除外（不阻止已经相邻的近战，
-                // 那部分由下面 minDist<=1 分支正常处理）。web 没有 monsterFleesFrom
-                // 的完整移植（它还管无敌怪物/献祭目标等，本轮只接 kamikaze 这一条，
-                // 其余在报告里登记为已知缺口）。
-                if (dist > 1 && other.hasAbility('MA_KAMIKAZE')) continue;
-                if (dist < minDist) {
-                    minDist = dist;
-                    target = other;
-                }
-            }
+            // CE selects by the ally's traversible path, even outside player FOV.
+            // The leash and futile-attack gates apply after selecting the closest enemy.
+            const target = allyShouldPursue(game, this, blinkEnemy) ? blinkEnemy : null;
+            const minDist = target ? Math.max(Math.abs(this.x - target.x), Math.abs(this.y - target.y)) : Infinity;
 
             if (target) {
                 // We have an enemy
@@ -1557,18 +1532,7 @@ export class Monster extends Creature {
                     if (this.tryGeometryRayTo(game, target, this.isAlly ? 'ally' : 'hostile')) {
                         return;
                     }
-                    const isFlying = this.abilities.has('flying') || this.hasBehavior('MONST_FLIES');
-                    const path = Pathfind.findPath(game.grid, this.loc.x, this.loc.y, target.loc.x, target.loc.y, (x, y) => {
-                        const c = game.grid.getCell(x, y);
-                        if (!c) return false;
-                        if (isFlying) return !c.isOpaque && !game.getMonsterAt(x, y) && !(game.player.loc.x === x && game.player.loc.y === y);
-                        return c.isPassable && !game.getMonsterAt(x, y) && !(game.player.loc.x === x && game.player.loc.y === y);
-                    });
-
-                    if (path && path.length > 0) {
-                        const nextStep = path[0]!;
-                        this.tryMoveTo(nextStep.x, nextStep.y, game);
-                    }
+                    passiveCorpseStep(game, this, target.loc, p => this.tryCorpseMove(p, game));
                 }
             } else {
                 if (independentBlade) {
@@ -1582,20 +1546,31 @@ export class Monster extends Creature {
                     }
                     return;
                 }
-                // Follow player
-                const distToPlayer = Math.max(Math.abs(this.loc.x - game.player.loc.x), Math.abs(this.loc.y - game.player.loc.y));
-                if (distToPlayer > 2) {
-                    const isFlying = this.abilities.has('flying') || this.hasBehavior('MONST_FLIES');
-                    const path = Pathfind.findPath(game.grid, this.loc.x, this.loc.y, game.player.loc.x, game.player.loc.y, (x, y) => {
-                        const c = game.grid.getCell(x, y);
-                        if (!c) return false;
-                        if (isFlying) return !c.isOpaque && !game.getMonsterAt(x, y);
-                        return c.isPassable && !game.getMonsterAt(x, y);
+                // CE moveAlly: near the player, mill about; farther away, follow
+                // scent until it fails, then path toward the leader.
+                const distToPlayer = Math.max(Math.abs(this.x - game.player.x), Math.abs(this.y - game.player.y));
+                if (this.doesNotTrackLeader || (distToPlayer < 3 && game.grid.getCell(this.x, this.y)?.isVisible)) {
+                    this.givenUpOnScent = false;
+                    if (rng.randPercent(30)) {
+                        const steps = BLADE_DIRECTIONS.map(([dx, dy]) => ({ x: this.x + dx, y: this.y + dy }))
+                            .filter(p => game.grid.getCell(p.x, p.y)?.isPassable && !game.getMonsterAt(p.x, p.y)
+                                && !(game.player.x === p.x && game.player.y === p.y));
+                        if (steps.length) {
+                            const step = steps[rng.randRange(0, steps.length - 1)]!;
+                            this.tryMoveTo(step.x, step.y, game);
+                        }
+                    }
+                } else {
+                    const dir = this.givenUpOnScent ? null : game.scent.stepDirection(game.grid, this.x, this.y, {
+                        canEnter: (x, y) => !!game.grid.getCell(x, y)?.isPassable && !game.getMonsterAt(x, y)
+                            && !(game.player.x === x && game.player.y === y),
                     });
-
-                    if (path && path.length > 0) {
-                        const nextStep = path[0]!;
-                        this.tryMoveTo(nextStep.x, nextStep.y, game);
+                    if (dir) this.tryMoveTo(this.x + dir[0], this.y + dir[1], game);
+                    else {
+                        this.givenUpOnScent = true;
+                        const path = Pathfind.findPath(game.grid, this.x, this.y, game.player.x, game.player.y,
+                            (x, y) => !!game.grid.getCell(x, y)?.isPassable && !game.getMonsterAt(x, y));
+                        if (path?.length) this.tryMoveTo(path[0]!.x, path[0]!.y, game);
                     }
                 }
             }
@@ -1657,9 +1632,9 @@ export class Monster extends Creature {
         const isFlying = this.abilities.has('flying') || this.hasBehavior('MONST_FLIES');
 
         if (this.state === MonsterState.FLEEING) {
-            if (!this.hasStatus('magical_fear') && this.hp > this.maxHp * 0.75) {
+            if (this.creatureMode === MonsterMode.NORMAL && !this.hasStatus('magical_fear') && this.hp > this.maxHp * 0.75) {
                 this.state = MonsterState.HUNTING;
-            } else if (!this.hasStatus('magical_fear') && distToPlayer > playerDetectRange + 2) {
+            } else if (this.creatureMode === MonsterMode.NORMAL && !this.hasStatus('magical_fear') && distToPlayer > playerDetectRange + 2) {
                 this.state = MonsterState.WANDERING;
                 return;
             } else {

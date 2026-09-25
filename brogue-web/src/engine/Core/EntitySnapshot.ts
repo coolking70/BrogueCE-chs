@@ -3,7 +3,7 @@
  * or legacy defaults: optional values retain their actual undefined semantics. */
 import { Item } from '../Items/Item';
 import { Creature, type StatusId } from '../../entities/Creature';
-import { Monster, type MonsterData, type MonsterAbility } from '../../entities/Monster';
+import { Monster, MonsterMode, type MonsterData, type MonsterAbility } from '../../entities/Monster';
 import { Player, type HungerState } from '../../entities/Player';
 
 export const ITEM_FIELDS = [
@@ -21,7 +21,7 @@ export const CREATURE_FIELDS = [
     'movementSpeed', 'attackSpeed',
 ] as const satisfies readonly (keyof Creature)[];
 export const MONSTER_FIELDS = [
-    ...CREATURE_FIELDS, 'state', 'damageString', 'damageClumping', 'goldDropChance', 'itemDropChance',
+    ...CREATURE_FIELDS, 'state', 'creatureMode', 'damageString', 'damageClumping', 'goldDropChance', 'itemDropChance',
     'onHitStatus', 'onHitChance', 'onHitDuration', 'statusResistTurns', 'isAlly',
     'dominated', 'boundToLeader', 'leaderlessAfterDemotion', 'isCaged', 'mutation', 'polymorphed', 'isClone',
     'wasNegated', 'newPowerCount', 'totalPowerCount', 'polymorphKeepsSpeed',
@@ -130,6 +130,8 @@ export function restoreEntityGraph(rows: readonly GameSnapshotMonster[], itemRow
     for (const s of saved.values()) {
         if (monsters.has(s.id)) continue;
         const m = Object.assign(Monster.allocateForSnapshot(s.form), copyFields(s, MONSTER_FIELDS));
+        // Saves written before creatureMode existed contain only creatureState.
+        if (m.creatureMode === undefined) m.creatureMode = MonsterMode.NORMAL;
         m.statusImmunities = new Set(s.statusImmunities);
         m.abilities = new Set(s.abilities);
         m.behaviorFlags = new Set(s.behaviorFlags);

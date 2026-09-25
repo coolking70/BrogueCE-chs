@@ -194,7 +194,8 @@ describe('W-17 item ownership, captive, horde, minions, grab and combat consumer
  });
  it('the converted ally attacks its former team, and an awake enemy can retaliate',()=>{
   const g=live(),m=mob(g),enemy=mob(g,'rat',10,5);enemy.state=MonsterState.HUNTING;m.damageString=enemy.damageString='1d1';m.regenTurns=0;
-  cast(g);vi.spyOn(rng,'randPercent').mockReturnValue(true);const attack=vi.spyOn(CombatSystem,'attack');const hp=enemy.hp;
+  cast(g);g.player.loc={x:7,y:5}; // CE moveAlly leash: keep the converted ally within four cells.
+  vi.spyOn(rng,'randPercent').mockReturnValue(true);const attack=vi.spyOn(CombatSystem,'attack');const hp=enemy.hp;
   m.takeTurn(g,10);expect(attack.mock.calls[0]![1]).toBe(enemy);expect(enemy.hp).toBeLessThan(hp);const own=m.hp;
   enemy.takeTurn(g,10);expect(m.hp).toBeLessThan(own);expect(g.player.hp).toBe(g.player.maxHp);
  });
