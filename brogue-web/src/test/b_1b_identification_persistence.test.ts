@@ -14,19 +14,20 @@
  *   R2  旧档单槽 equippedRingId 迁移丢失          → loadSnapshot 兼容分支缺失
  *   S1  RNG 哨兵：持久化/call/选择/揭示零掷骰     → 任何新增抽取（构造地图口径，
  *                                                  对生成器改动免疫，任务书 §三）
- *   X1  挂起中的选择跨场景泄漏                    → loadSnapshot/startNewGame 未复位
+ *   X1  已收费的鉴定选择读档丢失或重复收费；新局仍须复位（用户裁决/U03）
  *
  * CE 权威出处：identify 目标指定 Items.c:7774-7802；call Items.c:1347-1437；
  * callTitle 字段 Rogue.h:1426-1427；双槽 Items.c:8560-8566、Time.c:1988-2024；
  * 旧局清零 resetItemTableEntry Items.c:8775-8800。
  */
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect, beforeAll, vi } from 'vitest';
 import i18next from 'i18next';
 import { createHeadlessGame } from './harness';
 import { Game } from '../engine/Core/Game';
 import { Item } from '../engine/Items/Item';
 import { ItemLoader } from '../engine/Items/ItemLoader';
 import { rng } from '../engine/Random';
+import { timeSystem } from '../engine/Systems/Time';
 
 beforeAll(() => {
     if (!i18next.isInitialized) {
@@ -293,8 +294,8 @@ describe('R2: 戒指双槽随存档往返', () => {
     });
 });
 
-describe('X1: 挂起中的鉴定选择不跨场景', () => {
-    it('读档与新局都复位 pendingIdentify', () => {
+describe('X1: 已收费的鉴定选择随检查点恢复，新局清空', () => {
+    it('读档保留 pendingIdentify，新局仍复位', () => {
         const game = createHeadlessGame(42, 'test');
         isolatePlayer(game);
         makeSword(game, 1);
@@ -303,14 +304,54 @@ describe('X1: 挂起中的鉴定选择不跨场景', () => {
         game.readItem(scroll);
         expect(game.pendingIdentify).toBe(true);
 
-        // 读档复位
-        game.loadSnapshot(JSON.parse(JSON.stringify(game.toSnapshot())));
-        expect(game.pendingIdentify).toBe(false);
+        // 用户验收裁决/U03：已消耗卷轴的强制选择必须保留；CE Items.c:7783–7802 直到合法选择才结束。
+        expect(game.loadSnapshot(JSON.parse(JSON.stringify(game.toSnapshot())))).toBe(true);
+        expect(game.pendingIdentify).toBe(true);
+        expect(game.isInventoryOpen).toBe(true);
 
         // 新局复位
-        (game as unknown as { pendingIdentify: boolean }).pendingIdentify = true;
         game.startNewGame({ seed: 9 });
         expect(game.pendingIdentify).toBe(false);
+    });
+
+    it('读档后选择恰好鉴定一次，不重复消耗卷轴或回合', () => {
+        const game = createHeadlessGame(42, 'test');
+        isolatePlayer(game);
+        const sword = makeSword(game, 1), other = makeSword(game, 2);
+        const scroll = ItemLoader.spawnScroll('scroll_of_identify', -1, -1)!;
+        const spare = ItemLoader.spawnScroll('scroll_of_identify', -1, -1)!;
+        game.player.inventory.addItem(scroll);
+        game.player.inventory.addItem(spare);
+        const turns = game.stats.turns, tick = timeSystem.currentTick;
+        game.readItem(scroll);
+        expect(game.player.inventory.items).not.toContain(scroll);
+        expect(game.player.inventory.items).toContain(spare);
+        expect([game.stats.turns, timeSystem.currentTick]).toEqual([turns + 1, tick + 100]);
+        expect(game.pendingIdentify).toBe(true);
+        expect(game.loadSnapshot(JSON.parse(JSON.stringify(game.toSnapshot())))).toBe(true);
+        const loaded = game.player.inventory.items.find(i => i.id === sword.id)!;
+        const unchosen = game.player.inventory.items.find(i => i.id === other.id)!;
+        const remainingScroll = game.player.inventory.items.find(i => i.id === spare.id)!;
+        expect(game.player.inventory.items.some(i => i.id === scroll.id)).toBe(false);
+        const inventory = [...game.player.inventory.items];
+        expect(loaded.identified).toBe(false);
+        // 用户验收裁决/U03；CE 同一次读卷轴中的合法选择不再收费，重复提交不得再鉴定。
+        const identify = vi.spyOn(ItemLoader, 'identifyInstance');
+        try {
+            expect(game.chooseIdentifyTarget(loaded)).toBe(true);
+            expect(game.pendingIdentify).toBe(false);
+            expect(game.isInventoryOpen).toBe(false);
+            expect(loaded.identified).toBe(true);
+            expect(game.chooseIdentifyTarget(loaded)).toBe(false);
+            expect(game.chooseIdentifyTarget(unchosen)).toBe(false);
+            expect(unchosen.identified).toBe(false);
+            expect(identify).toHaveBeenCalledExactlyOnceWith(loaded);
+            expect(remainingScroll.quantity).toBe(1);
+            expect(game.player.inventory.items).toEqual(inventory);
+            expect([game.stats.turns, timeSystem.currentTick]).toEqual([turns + 1, tick + 100]);
+        } finally {
+            identify.mockRestore();
+        }
     });
 });
 

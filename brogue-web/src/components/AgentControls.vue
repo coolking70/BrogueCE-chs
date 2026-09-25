@@ -118,6 +118,9 @@ const recentLogs = computed(() => {
   opacity: 0.15; /* Almost invisible to humans but fully visible to DOM/Agents */
   transition: opacity 0.3s;
 }
+@media (max-width: 600px) {
+  .agent-controls { bottom: calc(48vh + 8px); right: 8px; }
+}
 
 .agent-controls:hover, .agent-controls:focus-within {
   opacity: 1; /* Reveals fully if hovered or focused */

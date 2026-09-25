@@ -1,0 +1,41 @@
+{
+  "allowed": [
+    "progress.md",
+    "scripts/u03-state-contract.json",
+    "src/engine/Core/Game.ts",
+    "src/engine/Generator/BlueprintEngine.ts",
+    "src/engine/Movement/CreaturePlacement.ts",
+    "src/test/blueprint_center.test.ts",
+    "src/test/fixtures/generation_baseline.json",
+    "src/test/u_03_whole_run_snapshot.test.ts",
+    "src/test/w_11_teleport_placement.test.ts"
+  ],
+  "sessionChanged": [
+    "progress.md",
+    "scripts/u03-state-contract.json",
+    "src/engine/Core/Game.ts",
+    "src/engine/Generator/BlueprintEngine.ts",
+    "src/engine/Movement/CreaturePlacement.ts",
+    "src/test/blueprint_center.test.ts",
+    "src/test/fixtures/generation_baseline.json",
+    "src/test/u_03_whole_run_snapshot.test.ts",
+    "src/test/w_11_teleport_placement.test.ts"
+  ],
+  "added": [
+    "scripts/u04c-attribution.mjs",
+    "scripts/u04c-browser-check.mjs",
+    "scripts/u04c-center-counterfactual.mjs",
+    "scripts/u04c-final-check.mjs",
+    "scripts/u04c-generation.ts",
+    "scripts/u04c-negative-check.mjs",
+    "scripts/u04c-recapture.mjs",
+    "scripts/u04c-test-scope.mjs",
+    "src/engine/Map/MachineCells.ts",
+    "src/test/u_04c_machine_cells.test.ts"
+  ],
+  "protectedTestCount": 156,
+  "allProtectedTestsUnchanged": true,
+  "p137SHA256": "d3473f3eff30961d8a8a23bd63648b4545711610864d9e762fe066bcdb4d82b3",
+  "baselineBefore": "c9f36fb51f8c0d8c3ac4d94b0ff6fbdb0889332915e508ccd6421495bc9fd704",
+  "baselineAfter": "572230efb156eb658bec5f5a7668bd3c847a6fafc167e7540cc94c87fb8e64e7"
+}

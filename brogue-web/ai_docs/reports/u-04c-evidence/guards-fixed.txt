@@ -1,0 +1,18 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web
+
+stdout | src/test/u_04c_machine_cells.test.ts > U04c CE machine membership, independent of construction interiors > successful external feature joins the same machine and its key matches by that cell number
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_04c_machine_cells.test.ts (7 tests) 2709ms
+     ✓ seed424242 D2: fixes the real 45-interior / 15-numbered mismatch before save and on every return  743ms
+     ✓ real seed777 external features and cleared areas feed the exact grid membership into heat maps  464ms
+     ✓ rejects mismatched, absent or duplicate active snapshot membership without altering state or RNG  515ms
+     ✓ rejects mismatched, absent or duplicate cached snapshot membership without altering state or RNG  491ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  08:38:36
+   Duration  3.31s (transform 322ms, setup 0ms, import 521ms, tests 2.71s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web/ai_docs/reports/u-04c-evidence/guards-fixed.json

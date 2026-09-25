@@ -1,0 +1,40 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web
+
+stdout | src/test/b_1b_identification_persistence.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/w_7_arcana_enchantment.test.ts > W-7 real read -> forced pack selection -> one completed turn > reading identifies only the scroll; invalid/cancel/move/repeated read do not settle time or draw RNG
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_7_arcana_enchantment.test.ts (30 tests) 4008ms
+     ✓ reading identifies only the scroll; invalid/cancel/move/repeated read do not settle time or draw RNG  581ms
+     ✓ haste read does not fake a full objective block; next half-turn continues the reset  402ms
+     ✓ selects by live object reference across reorder, rejects same-id clones, proxy, ground and replaced items  388ms
+     ✓ a stale same-id scroll cannot enter the transaction or identify anything  318ms
+     ✓ empty/unsupported pack consumes the scroll and completes time without pending selection  319ms
+     ✓ pending transaction survives JSON reload; stale references fail; completed values/unknown flags persist  401ms
+     ✓ wand uses beyond initial count survive selection and JSON save/load without exposing identity  500ms
+     ✓ weapon path has exactly the legacy RNG state and result  412ms
+     ✓ armor path has exactly the legacy RNG state and result  325ms
+     ✓ arcana alternative never invokes equipment 20% rune path; spare gear/rings/charms remain outside scope  347ms
+ ✓ src/test/b_1b_identification_persistence.test.ts (14 tests) 6178ms
+     ✓ 存读档往返：种类识别、实例附魔态、充能上限知识、使用计数全部还原  616ms
+     ✓ 已鉴定剑读档后仍已鉴定；未鉴定剑仍未鉴定；两者互不污染  442ms
+     ✓ 绰号盖过风味；种类识别后真名短路、绰号必须消失  385ms
+     ✓ call 拒绝已识别种类（CE "you already know what that is."）  340ms
+     ✓ 空/纯空白文本清除绰号；新局不残留上一局绰号  969ms
+     ✓ 读卷轴只进待选、不落账；点选谁谁亮（"随机挑"的实现此处必红）  424ms
+     ✓ 无可鉴物品：不进待选态、卷轴照常消耗（CE "already identified" 短路）  403ms
+     ✓ 非候选目标被拒绝且留在待选态；未进待选态时 choose 无效  350ms
+     ✓ 同一客观块两枚戒指各自扣减；只有右槽归零时只揭示右槽  320ms
+     ✓ 两枚同时归零：同块双双揭示（"只亮一只手"的实现必红）  330ms
+     ✓ 两枚戒指读档后各归各槽；状态（熟悉度计数）不串  352ms
+     ✓ 读档保留 pendingIdentify，新局仍复位  644ms
+     ✓ 读档后选择恰好鉴定一次，不重复消耗卷轴或回合  301ms
+
+ Test Files  2 passed (2)
+      Tests  44 passed (44)
+   Start at  08:02:51
+   Duration  7.74s (transform 1.35s, setup 0ms, import 2.77s, tests 10.19s, environment 1ms)
+

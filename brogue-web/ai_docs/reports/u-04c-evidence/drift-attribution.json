@@ -1,0 +1,2064 @@
+{
+  "beforeSHA256": "c9f36fb51f8c0d8c3ac4d94b0ff6fbdb0889332915e508ccd6421495bc9fd704",
+  "controlDiff": [],
+  "sourceDiff": [],
+  "finalDiff": [],
+  "fullSourceOnlyEqualsFinal": true,
+  "changedLayers": 0,
+  "firstBySeed": [
+    {
+      "seed": 424242,
+      "first": null
+    },
+    {
+      "seed": 777,
+      "first": null
+    },
+    {
+      "seed": 20260913,
+      "first": null
+    },
+    {
+      "seed": 31337,
+      "first": null
+    }
+  ],
+  "original424242D2": {
+    "interior": 45,
+    "numbered": 15,
+    "cleared": [
+      344,
+      345,
+      346,
+      348,
+      422,
+      423,
+      424,
+      425,
+      426,
+      427,
+      501,
+      502,
+      503,
+      504,
+      505,
+      506,
+      507,
+      580,
+      581,
+      582,
+      584,
+      585,
+      660,
+      661,
+      662,
+      663,
+      664,
+      740,
+      741,
+      742
+    ],
+    "external": [],
+    "blueprints": [
+      "trap_paralysis_revealed",
+      "ce_58_bloodwort",
+      "ce_58_bloodwort"
+    ],
+    "gridBefore": "2d45d52320a29154bd539de0428f3115b1674d2bec760d1c029f43944f7f70c2",
+    "rngBefore": {
+      "version": 2,
+      "algorithm": "brogue-web-ranval32-uint64-level-v2",
+      "streams": [
+        {
+          "a": 243722980,
+          "b": 3393823914,
+          "c": 384103434,
+          "d": 2074099199
+        },
+        {
+          "a": 354370817,
+          "b": 2386848970,
+          "c": 1353059272,
+          "d": 2725510477
+        }
+      ],
+      "currentRNG": 0,
+      "randomNumbersGenerated": 25085,
+      "cosmeticNumbersGenerated": 160
+    },
+    "rngAfter": {
+      "version": 2,
+      "algorithm": "brogue-web-ranval32-uint64-level-v2",
+      "streams": [
+        {
+          "a": 4082119252,
+          "b": 1867438272,
+          "c": 191444755,
+          "d": 2900918518
+        },
+        {
+          "a": 354370817,
+          "b": 2386848970,
+          "c": 1353059272,
+          "d": 2725510477
+        }
+      ],
+      "currentRNG": 0,
+      "randomNumbersGenerated": 25756,
+      "cosmeticNumbersGenerated": 160
+    },
+    "generatedWorld": "b929bd0fcc6c203ae7d6f2aa7edb3fa76b7c1008f10d08941a5e4c6c22a512db",
+    "rng": {
+      "version": 2,
+      "algorithm": "brogue-web-ranval32-uint64-level-v2",
+      "streams": [
+        {
+          "a": 2770309844,
+          "b": 1999692002,
+          "c": 3039754593,
+          "d": 4104613799
+        },
+        {
+          "a": 2770309844,
+          "b": 1999692002,
+          "c": 3039754593,
+          "d": 4104613799
+        }
+      ],
+      "currentRNG": 0,
+      "randomNumbersGenerated": 28046,
+      "cosmeticNumbersGenerated": 160
+    },
+    "machineCells": [
+      199,
+      200,
+      201,
+      202,
+      279,
+      344,
+      345,
+      346,
+      347,
+      348,
+      422,
+      423,
+      424,
+      425,
+      426,
+      427,
+      500,
+      501,
+      502,
+      503,
+      504,
+      505,
+      506,
+      507,
+      508,
+      580,
+      581,
+      582,
+      583,
+      584,
+      585,
+      660,
+      661,
+      662,
+      663,
+      664,
+      740,
+      741,
+      742,
+      820,
+      1009,
+      1087,
+      1088,
+      1089,
+      1167
+    ],
+    "itemPositions": [
+      {
+        "id": 26,
+        "name": "Whip",
+        "x": 66,
+        "y": 13
+      },
+      {
+        "id": 27,
+        "name": "Scroll of Identify",
+        "x": 45,
+        "y": 3
+      },
+      {
+        "id": 28,
+        "name": "Potion of Strength",
+        "x": 72,
+        "y": 7
+      },
+      {
+        "id": 29,
+        "name": "Potion of Life",
+        "x": 58,
+        "y": 25
+      },
+      {
+        "id": 30,
+        "name": "Potion of Paralysis",
+        "x": 8,
+        "y": 21
+      },
+      {
+        "id": 31,
+        "name": "Gold",
+        "x": 17,
+        "y": 27
+      },
+      {
+        "id": 32,
+        "name": "Gold",
+        "x": 76,
+        "y": 14
+      },
+      {
+        "id": 33,
+        "name": "Gold",
+        "x": 76,
+        "y": 24
+      },
+      {
+        "id": 34,
+        "name": "Gold",
+        "x": 56,
+        "y": 4
+      }
+    ],
+    "monsterPositions": [
+      {
+        "id": 20,
+        "name": "Rat",
+        "x": 53,
+        "y": 20
+      },
+      {
+        "id": 21,
+        "name": "Monkey",
+        "x": 59,
+        "y": 21
+      },
+      {
+        "id": 22,
+        "name": "Rat",
+        "x": 30,
+        "y": 16
+      },
+      {
+        "id": 23,
+        "name": "Rat",
+        "x": 15,
+        "y": 5
+      },
+      {
+        "id": 24,
+        "name": "Rat",
+        "x": 28,
+        "y": 7
+      },
+      {
+        "id": 25,
+        "name": "Bloat",
+        "x": 55,
+        "y": 14
+      }
+    ]
+  },
+  "final424242D2": {
+    "interior": 45,
+    "numbered": 15,
+    "cleared": [
+      344,
+      345,
+      346,
+      348,
+      422,
+      423,
+      424,
+      425,
+      426,
+      427,
+      501,
+      502,
+      503,
+      504,
+      505,
+      506,
+      507,
+      580,
+      581,
+      582,
+      584,
+      585,
+      660,
+      661,
+      662,
+      663,
+      664,
+      740,
+      741,
+      742
+    ],
+    "external": [],
+    "blueprints": [
+      "trap_paralysis_revealed",
+      "ce_58_bloodwort",
+      "ce_58_bloodwort"
+    ],
+    "gridBefore": "2d45d52320a29154bd539de0428f3115b1674d2bec760d1c029f43944f7f70c2",
+    "rngBefore": {
+      "version": 2,
+      "algorithm": "brogue-web-ranval32-uint64-level-v2",
+      "streams": [
+        {
+          "a": 243722980,
+          "b": 3393823914,
+          "c": 384103434,
+          "d": 2074099199
+        },
+        {
+          "a": 354370817,
+          "b": 2386848970,
+          "c": 1353059272,
+          "d": 2725510477
+        }
+      ],
+      "currentRNG": 0,
+      "randomNumbersGenerated": 25085,
+      "cosmeticNumbersGenerated": 160
+    },
+    "rngAfter": {
+      "version": 2,
+      "algorithm": "brogue-web-ranval32-uint64-level-v2",
+      "streams": [
+        {
+          "a": 4082119252,
+          "b": 1867438272,
+          "c": 191444755,
+          "d": 2900918518
+        },
+        {
+          "a": 354370817,
+          "b": 2386848970,
+          "c": 1353059272,
+          "d": 2725510477
+        }
+      ],
+      "currentRNG": 0,
+      "randomNumbersGenerated": 25756,
+      "cosmeticNumbersGenerated": 160
+    },
+    "generatedWorld": "4385a2a6128678bd344972320761615c949526b021ab05bbee66d35933b37a25",
+    "rng": {
+      "version": 2,
+      "algorithm": "brogue-web-ranval32-uint64-level-v2",
+      "streams": [
+        {
+          "a": 2770309844,
+          "b": 1999692002,
+          "c": 3039754593,
+          "d": 4104613799
+        },
+        {
+          "a": 2770309844,
+          "b": 1999692002,
+          "c": 3039754593,
+          "d": 4104613799
+        }
+      ],
+      "currentRNG": 0,
+      "randomNumbersGenerated": 28046,
+      "cosmeticNumbersGenerated": 160
+    },
+    "machineCells": [
+      199,
+      200,
+      201,
+      202,
+      279,
+      347,
+      500,
+      508,
+      583,
+      820,
+      1009,
+      1087,
+      1088,
+      1089,
+      1167
+    ],
+    "itemPositions": [
+      {
+        "id": 26,
+        "name": "Whip",
+        "x": 66,
+        "y": 13
+      },
+      {
+        "id": 27,
+        "name": "Scroll of Identify",
+        "x": 44,
+        "y": 22
+      },
+      {
+        "id": 28,
+        "name": "Potion of Strength",
+        "x": 72,
+        "y": 7
+      },
+      {
+        "id": 29,
+        "name": "Potion of Life",
+        "x": 60,
+        "y": 12
+      },
+      {
+        "id": 30,
+        "name": "Potion of Paralysis",
+        "x": 8,
+        "y": 11
+      },
+      {
+        "id": 31,
+        "name": "Gold",
+        "x": 15,
+        "y": 22
+      },
+      {
+        "id": 32,
+        "name": "Gold",
+        "x": 76,
+        "y": 14
+      },
+      {
+        "id": 33,
+        "name": "Gold",
+        "x": 76,
+        "y": 24
+      },
+      {
+        "id": 34,
+        "name": "Gold",
+        "x": 56,
+        "y": 6
+      }
+    ],
+    "monsterPositions": [
+      {
+        "id": 20,
+        "name": "Rat",
+        "x": 53,
+        "y": 20
+      },
+      {
+        "id": 21,
+        "name": "Monkey",
+        "x": 59,
+        "y": 21
+      },
+      {
+        "id": 22,
+        "name": "Rat",
+        "x": 30,
+        "y": 16
+      },
+      {
+        "id": 23,
+        "name": "Rat",
+        "x": 15,
+        "y": 5
+      },
+      {
+        "id": 24,
+        "name": "Rat",
+        "x": 28,
+        "y": 7
+      },
+      {
+        "id": 25,
+        "name": "Bloat",
+        "x": 55,
+        "y": 14
+      }
+    ]
+  },
+  "detailedDrift": [
+    {
+      "seed": 424242,
+      "depth": 1,
+      "fields": [
+        "generatedWorld"
+      ],
+      "itemPositionsChanged": false,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 12808,
+      "rngAfterCount": 12808,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 2,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 28046,
+      "rngAfterCount": 28046,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 3,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 80785,
+      "rngAfterCount": 80785,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 4,
+      "fields": [
+        "generatedWorld"
+      ],
+      "itemPositionsChanged": false,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 94822,
+      "rngAfterCount": 94822,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 5,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 113230,
+      "rngAfterCount": 113230,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 6,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 127022,
+      "rngAfterCount": 127022,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 7,
+      "fields": [
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 143248,
+      "rngAfterCount": 143247,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 8,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions",
+        "monsterPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": true,
+      "rngBeforeCount": 163576,
+      "rngAfterCount": 163625,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 9,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 186369,
+      "rngAfterCount": 186418,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 10,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 215678,
+      "rngAfterCount": 215727,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 11,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 254106,
+      "rngAfterCount": 254155,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 12,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 273817,
+      "rngAfterCount": 273866,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 13,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 299901,
+      "rngAfterCount": 299950,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 14,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 351589,
+      "rngAfterCount": 351638,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 15,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 400646,
+      "rngAfterCount": 400695,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 16,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 412006,
+      "rngAfterCount": 412055,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 17,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 477307,
+      "rngAfterCount": 477356,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 18,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 516927,
+      "rngAfterCount": 516976,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 19,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 561371,
+      "rngAfterCount": 561420,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 20,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 610259,
+      "rngAfterCount": 610308,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 21,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells"
+      ],
+      "itemPositionsChanged": false,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 654776,
+      "rngAfterCount": 654825,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 22,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 710155,
+      "rngAfterCount": 710204,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 23,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 771967,
+      "rngAfterCount": 772016,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 24,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 802257,
+      "rngAfterCount": 802306,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 25,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 837545,
+      "rngAfterCount": 837594,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 424242,
+      "depth": 26,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 881659,
+      "rngAfterCount": 881708,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 1,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 17360,
+      "rngAfterCount": 17360,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 2,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 41571,
+      "rngAfterCount": 41571,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 3,
+      "fields": [
+        "generatedWorld",
+        "machineCells"
+      ],
+      "itemPositionsChanged": false,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 58902,
+      "rngAfterCount": 58902,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 4,
+      "fields": [
+        "generatedWorld",
+        "machineCells"
+      ],
+      "itemPositionsChanged": false,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 77836,
+      "rngAfterCount": 77836,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 5,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 93438,
+      "rngAfterCount": 93438,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 6,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 112849,
+      "rngAfterCount": 112849,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 7,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 154039,
+      "rngAfterCount": 154039,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 8,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 174509,
+      "rngAfterCount": 174509,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 9,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 195732,
+      "rngAfterCount": 195732,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 10,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 218375,
+      "rngAfterCount": 218375,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 11,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 235071,
+      "rngAfterCount": 235071,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 12,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 246806,
+      "rngAfterCount": 246806,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 13,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 272244,
+      "rngAfterCount": 272244,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 14,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 295459,
+      "rngAfterCount": 295459,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 15,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 320154,
+      "rngAfterCount": 320154,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 16,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 396288,
+      "rngAfterCount": 396288,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 17,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 409598,
+      "rngAfterCount": 409598,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 18,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 433254,
+      "rngAfterCount": 433254,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 19,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 493946,
+      "rngAfterCount": 493946,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 20,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 516886,
+      "rngAfterCount": 516886,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 21,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 550240,
+      "rngAfterCount": 550240,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 22,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 586975,
+      "rngAfterCount": 586975,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 23,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 628203,
+      "rngAfterCount": 628203,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 24,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 696187,
+      "rngAfterCount": 696187,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 25,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 752191,
+      "rngAfterCount": 752191,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 777,
+      "depth": 26,
+      "fields": [
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 855884,
+      "rngAfterCount": 855883,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 1,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 21908,
+      "rngAfterCount": 21908,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 2,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 35677,
+      "rngAfterCount": 35677,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 3,
+      "fields": [
+        "generatedWorld"
+      ],
+      "itemPositionsChanged": false,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 49409,
+      "rngAfterCount": 49409,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 4,
+      "fields": [
+        "generatedWorld"
+      ],
+      "itemPositionsChanged": false,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 70926,
+      "rngAfterCount": 70926,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 5,
+      "fields": [
+        "generatedWorld"
+      ],
+      "itemPositionsChanged": false,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 100768,
+      "rngAfterCount": 100768,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 6,
+      "fields": [
+        "generatedWorld"
+      ],
+      "itemPositionsChanged": false,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 145580,
+      "rngAfterCount": 145580,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 7,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 166965,
+      "rngAfterCount": 166965,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 8,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 182304,
+      "rngAfterCount": 182304,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 9,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 195001,
+      "rngAfterCount": 195001,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 10,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 216492,
+      "rngAfterCount": 216492,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 11,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 259907,
+      "rngAfterCount": 259907,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 12,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 303414,
+      "rngAfterCount": 303414,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 13,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 346066,
+      "rngAfterCount": 346066,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 14,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 380985,
+      "rngAfterCount": 380985,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 15,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 407623,
+      "rngAfterCount": 407623,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 16,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 425870,
+      "rngAfterCount": 425870,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 17,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 472096,
+      "rngAfterCount": 472096,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 18,
+      "fields": [
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 506812,
+      "rngAfterCount": 506798,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 19,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 542639,
+      "rngAfterCount": 542625,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 20,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 581794,
+      "rngAfterCount": 581779,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 21,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 628477,
+      "rngAfterCount": 628462,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 22,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 680129,
+      "rngAfterCount": 680114,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 23,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 723132,
+      "rngAfterCount": 723117,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 24,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 745048,
+      "rngAfterCount": 745033,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 25,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 782764,
+      "rngAfterCount": 782749,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 20260913,
+      "depth": 26,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 826290,
+      "rngAfterCount": 826275,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 1,
+      "fields": [
+        "generatedWorld"
+      ],
+      "itemPositionsChanged": false,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 14387,
+      "rngAfterCount": 14387,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 2,
+      "fields": [
+        "generatedWorld"
+      ],
+      "itemPositionsChanged": false,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 36214,
+      "rngAfterCount": 36214,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 3,
+      "fields": [
+        "generatedWorld",
+        "machineCells"
+      ],
+      "itemPositionsChanged": false,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 51200,
+      "rngAfterCount": 51200,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 4,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 83238,
+      "rngAfterCount": 83238,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 5,
+      "fields": [
+        "generatedWorld"
+      ],
+      "itemPositionsChanged": false,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 100156,
+      "rngAfterCount": 100156,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 6,
+      "fields": [
+        "generatedWorld"
+      ],
+      "itemPositionsChanged": false,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 123641,
+      "rngAfterCount": 123641,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 7,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 160110,
+      "rngAfterCount": 160110,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 8,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 177506,
+      "rngAfterCount": 177506,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 9,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions",
+        "monsterPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": true,
+      "rngBeforeCount": 202656,
+      "rngAfterCount": 202656,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 10,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 243132,
+      "rngAfterCount": 243132,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 11,
+      "fields": [
+        "generatedWorld",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 260109,
+      "rngAfterCount": 260109,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 12,
+      "fields": [
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 274882,
+      "rngAfterCount": 274881,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 13,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions",
+        "monsterPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": true,
+      "rngBeforeCount": 292621,
+      "rngAfterCount": 292620,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 14,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 326538,
+      "rngAfterCount": 326537,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 15,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 374846,
+      "rngAfterCount": 374845,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 16,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 396065,
+      "rngAfterCount": 396064,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 17,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 439108,
+      "rngAfterCount": 439107,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 18,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 458670,
+      "rngAfterCount": 458669,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 19,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 504514,
+      "rngAfterCount": 504513,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 20,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 560076,
+      "rngAfterCount": 560075,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 21,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 593760,
+      "rngAfterCount": 593759,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 22,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 680043,
+      "rngAfterCount": 680042,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 23,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells"
+      ],
+      "itemPositionsChanged": false,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 705911,
+      "rngAfterCount": 705910,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 24,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 739104,
+      "rngAfterCount": 739103,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 25,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells"
+      ],
+      "itemPositionsChanged": false,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 830413,
+      "rngAfterCount": 830412,
+      "rngStreamsChanged": false
+    },
+    {
+      "seed": 31337,
+      "depth": 26,
+      "fields": [
+        "rngBefore",
+        "rngAfter",
+        "generatedWorld",
+        "rng",
+        "machineCells",
+        "itemPositions"
+      ],
+      "itemPositionsChanged": true,
+      "monsterPositionsChanged": false,
+      "rngBeforeCount": 875187,
+      "rngAfterCount": 875186,
+      "rngStreamsChanged": false
+    }
+  ],
+  "changedWorldLayers": 104,
+  "changedItemPositionLayers": 88,
+  "changedMonsterPositionLayers": 3,
+  "changedRNGCountLayers": 45,
+  "changedRNGStreamsLayers": 0,
+  "changedMembershipLayers": 94
+}

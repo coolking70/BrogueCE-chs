@@ -19,9 +19,8 @@ export function wireConfirmRequest(game: Game): void {
 </script>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { Random } from './engine/Random';
-import { isLevelSeeds } from './engine/Core/LevelSeeds';
+import { computed, ref, onMounted } from 'vue';
+import { saveSnapshot, readSnapshot, readSaveSummary, deleteSnapshot, type SaveSummary } from './engine/Core/SaveStorage';
 import i18next from 'i18next';
 import GameCanvas from './components/GameCanvas.vue';
 import Sidebar from './components/Sidebar.vue';
@@ -35,7 +34,6 @@ import ReferenceOverlay from './components/ReferenceOverlay.vue';
 import { activeGame, type GameMode } from './engine/Core/Game';
 import { logger } from './engine/Systems/Logger';
 
-const SAVE_KEY = 'brogue-web-save-v1';
 const REPLAY_KEY = 'brogue-web-replay-v1';
 
 // UI-1 第 6 条：把引擎确认钩子接到本组件（headless/测试环境不挂载 App，
@@ -46,31 +44,10 @@ const gameStarted = ref(false);
 const menuOpen = ref(true);
 const storageTick = ref(0);
 
-const saveInfo = computed(() => {
-  storageTick.value;
-  try {
-    const raw = window.localStorage.getItem(SAVE_KEY);
-    if (!raw) return null;
-    const snapshot = JSON.parse(raw);
-    if (!snapshot || snapshot.version !== 2 || !Random.isState(snapshot.rngState) || !isLevelSeeds(snapshot.levelSeeds)) return null;
-    return {
-      depth: snapshot.depth,
-      seed: snapshot.seed,
-      mode: snapshot.mode,
-      savedAt: snapshot.savedAt ?? 0
-    };
-  } catch {
-    return null;
-  }
-});
-
-const hasSave = computed(() => {
-  storageTick.value;
-  try {
-    return !!window.localStorage.getItem(SAVE_KEY);
-  } catch {
-    return false;
-  }
+const saveInfo = ref<SaveSummary | null>(null);
+const hasSave = computed(() => saveInfo.value !== null);
+onMounted(async () => {
+  try { saveInfo.value = await readSaveSummary(); } catch { saveInfo.value = null; }
 });
 
 const replayInfo = computed(() => {
@@ -105,10 +82,10 @@ const startNewGame = (payload: { seed?: string; mode: GameMode }) => {
   menuOpen.value = false;
 };
 
-const saveGame = () => {
+const saveGame = async () => {
   if (!gameStarted.value) return;
   try {
-    window.localStorage.setItem(SAVE_KEY, JSON.stringify(activeGame.toSnapshot()));
+    saveInfo.value = await saveSnapshot(activeGame.toSnapshot());
     storageTick.value++;
     logger.log(i18next.t('menu.log.game_saved', { defaultValue: 'Game saved.' }), '#88ff88');
   } catch {
@@ -116,11 +93,10 @@ const saveGame = () => {
   }
 };
 
-const continueGame = () => {
+const continueGame = async () => {
   try {
-    const raw = window.localStorage.getItem(SAVE_KEY);
-    if (!raw) return;
-    const snapshot = JSON.parse(raw);
+    const snapshot = await readSnapshot();
+    if (!snapshot) return;
     if (!activeGame.loadSnapshot(snapshot)) {
       logger.log(i18next.t('menu.log.save_format_not_supported', { defaultValue: 'Save format not supported.' }), '#ff6666');
       return;
@@ -134,9 +110,10 @@ const continueGame = () => {
   }
 };
 
-const deleteSave = () => {
+const deleteSave = async () => {
   try {
-    window.localStorage.removeItem(SAVE_KEY);
+    await deleteSnapshot();
+    saveInfo.value = null;
     storageTick.value++;
     logger.log(i18next.t('menu.log.save_deleted', { defaultValue: 'Save deleted.' }), '#ffaa88');
   } catch {
@@ -238,7 +215,7 @@ const importReplayJson = async (file: File) => {
   }
 };
 
-const handleReturnToTitle = () => {
+const handleReturnToTitle = async () => {
     // Return to menu logic
     activeGame.isGameOver = false;
     gameStarted.value = false;
@@ -246,7 +223,8 @@ const handleReturnToTitle = () => {
     
     // Clear save if player was killed/won to prevent infinite loops of death
     try {
-        window.localStorage.removeItem(SAVE_KEY);
+        await deleteSnapshot();
+        saveInfo.value = null;
     } catch {}
     storageTick.value++;
 };
@@ -328,5 +306,9 @@ const handleReturnToTitle = () => {
   border-radius: 6px;
   padding: 0 10px;
   cursor: pointer;
+}
+@media (max-width: 600px) {
+  .app-layout { flex-direction: column; }
+  .game-view { flex: 0 0 52vh; }
 }
 </style>

@@ -6,7 +6,7 @@ import type { Creature } from '../../entities/Creature';
 import { Monster } from '../../entities/Monster';
 import type { Pos } from '../../types';
 import { FOVSys } from '../Lighting/FOV';
-import { DCOLS, Grid, TerrainType } from '../Map/Grid';
+import { Grid, TerrainType } from '../Map/Grid';
 import { cellTerrainFlags } from '../Map/DungeonFeature';
 import {
     T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION,
@@ -19,8 +19,6 @@ export interface PlacementWorld {
     player: Creature;
     monsters: readonly Monster[];
     dormantMonsters?: readonly Monster[];
-    /** Game's machine footprint also includes cells without a machineNumber. */
-    machineCells?: ReadonlySet<number>;
 }
 
 /** Physical safety only: blink/beckoning may intentionally enter hazards,
@@ -86,7 +84,7 @@ export function teleportCandidates(world: PlacementWorld, target: Creature): Pos
         if (hasFarCell && distances[x]![y]! <= threshold) continue;
         const cell = grid.getCell(x, y)!;
         if (fov[x]?.[y] || (target.loc.x === x && target.loc.y === y)
-            || cell.machineNumber !== 0 || world.machineCells?.has(y * DCOLS + x)
+            || cell.machineNumber !== 0
             || cell.layers.includes(TerrainType.STAIRS_UP) || cell.layers.includes(TerrainType.STAIRS_DOWN)
             || (cellTerrainFlags(grid, x, y) & forbidden)
             || !canPlaceCreature(world, target, { x, y })) continue;

@@ -1,0 +1,115 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web
+
+stdout | src/test/v_2b_6_keys.test.ts > V-2b-6 C：keyMatchesLocation / keyInPackFor 的否定面（对抗：任意钥匙开任意锁必红） > C1 否定面①：keyLoc 指向 X 的钥匙开不了 Y（坐标不匹配、机器号不同）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/w_5_arcana_instance.test.ts > W-5 deterministic persistence / migration > versioned JSON snapshot preserves independent E, capacity, depletion and unknown-state flags on ground / in pack
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/invented_content_pool.test.ts > D2 附魔卷轴送符文路径（enchantEquippedItem）：自创符文 0 出现 > 8000 次附魔：武器/护甲只授 CE 符文，vampirism/venom/vitality 出现 0 次
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/v_2b_7_features.test.ts > V-2b-7 D：MachineResult.featureSpawns（CE Architect.c:1484-1486 的落点暴露） > D1 5 seed × D1..D9：每个「网格机器格」都能追到机器自己的落点记录
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A1 门位契约：真实关卡上每个门位都有正交轴两侧严格地板，且环路确实被开辟
+[c_0] A1 新开门合计=463，含新环门层=125/130
+
+stdout | src/test/c_1_room_profile.test.ts > C-1 行为断言：真实生成关卡（5 种子 × D1-D26） > B2 对抗（attach 池混入 6/7 号房）：CE 调整后 [6]/[7]=0 → 抽取计数逐层钉死
+[c_1] B2 入口房抽取=5/5，大洞窟首房间=61/130
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A2/A3 对抗：漏"两侧地板"检查、试对角——两种错误实现在同批真实 grid 上都产生门位违例（守卫：断言非空转）
+[c_0] noFlankCheck：门位=67900 违例=65919
+[c_0] diagonal：门位=1094 违例=427
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A4 对抗（S-1 改造：锚定合成输入）：判据写反（< 而非 >）→ 蜂窝化，门位总数暴涨（> 正确对照 ×3）
+[c_0] A4(合成输入) 正确对照=6 判据写反=198（比值 33.0×；华夫格 inverted=190）
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A5 对抗：漏 costMap[x][y]=1 同步更新 → 后续候选用过时距离，门位合计严格偏多
+[c_0] A5 同序正确对照=721 漏同步=944（52 层合计）
+
+stdout | src/test/p1_29_lake_connectivity.test.ts > P1-29 湖泊连通性 > 核心不变量：15 种子 × D1-D26 湖泊阶段完成态全连通（湖泊闸门合同）
+[p1_29] 湖泊阶段扫描：390 层，闸门 placed=363 skipped=8，深水格=1558 浅水格=23001
+
+stdout | src/test/c_1_room_profile.test.ts > C-1 行为断言：真实生成关卡（5 种子 × D1-D26） > B3 对抗（maxRoomCount/attempts 未生效）：attach 数 ≤ 35 硬上限；旧实现（≤14）被max 抛离；物理地板量交叉印证
+[c_1] B3 attach 均值=16.3（130 层），峰值=27；floor+door 均值=618（C-0 基线 156.8）
+
+stdout | src/test/c_1_room_profile.test.ts > C-1 行为断言：真实生成关卡（5 种子 × D1-D26） > B4 对抗（corridorChance 写反/未消费）：浅层走廊附着显著多于深层
+[c_1] B4 走廊房均值：浅层(D1-5)=10.5/层，深层(D20-26)=1.3/层
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > B1 IN_LOOP 只出现在非阻挡格上（130 层逐格）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_1_room_profile.test.ts > C-1 行为断言：真实生成关卡（5 种子 × D1-D26） > B5 房型分布随深度变化（行为）：浅层十字房主导、深层洞穴主导
+[c_1] B5 浅层(D1-10, n=1800)：十字 40.2% 洞穴 6.6% | 深层(D17-26, n=1800)：十字 18.4% 洞穴 33.2%
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > B2 对抗：漏 checkLoopiness 剥离 → 整片可通行区被标环（loopFraction==passableFraction）；生产严格更小且上限受控
+[c_0] B2 IN_LOOP 合计=18757/117631（15.9%），单层峰值=33.5%
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A6 生产锚定：生产新开门数落在 K=6 次同输入正确对照的散布带内（抓住生产侧的一切判据/同步/方向错误）
+[c_0] A6 生产=199 正确对照散布=[198, 200]（52 层合计，K=6）
+
+stdout | src/test/p1_29_lake_connectivity.test.ts > P1-29 湖泊连通性 > 端到端 10 种子 × D1-D26：坏层集合恰为已知机器阶段缺陷集（湖泊致坏层=0）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+[p1_29] 端到端扫描：260 层，坏层=无，深水格=1493 浅水格=14626
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > C1 核心：真实环路存在——扫描开出的门位是真环边（移除后两侧仍连通 = 两条不共边路径）
+[c_0] C1 新开门=196，真环边=196，桥=0
+
+ ✓ src/test/invented_content_pool.test.ts (7 tests) 124037ms
+     ✓ 8000 次附魔：武器/护甲只授 CE 符文，vampirism/venom/vitality 出现 0 次  875ms
+     ✓ 520 层生成的地面/机器/祭坛/金库物品中自创项出现 0 次  123109ms
+ ✓ src/test/v_2b_6_keys.test.ts (18 tests) 136622ms
+     ✓ C1 否定面①：keyLoc 指向 X 的钥匙开不了 Y（坐标不匹配、机器号不同）  427ms
+     ✓ C2 否定面②：跨层带下去的钥匙不认同坐标的锁（originDepth 判据；删掉 depth 检查必红）  378ms
+     ✓ C3 否定面③：非 KEY 类别物品永不匹配（category 门；漏掉即"任意物品开锁"）  328ms
+     ✓ C4 肯定面：机器号匹配（MF_SKELETON_KEY 的机器条目 → 认同机器的任意锁/笼）  340ms
+     ✓ C5 keyInPackFor：只从玩家背包找；匹配的背包钥匙被找到、别人的锁不返回  410ms
+     ✓ D1 携带钥匙的怪死亡 → 物品落怪原地、keyLoc/originDepth 保留；活怪不掉  348ms
+     ✓ D2 否定面：掉落守卫——死在不可落格（熔岩）上的怪物品不进 items（不凭空消失进岩浆）  441ms
+     ✓ E1 多 seed 扫描：Kennel 的 DF 列真落位（featureDF 分支执行 + 地形侧确有产物）  45444ms
+     ✓ F1 多 seed × D1-D26：每把锁都有同层匹配钥匙，且锁格与钥匙格都在玩家可达分量内  36676ms
+     ✓ F2 笼群形态（§6.2）：每台带笼的机器都有钥匙认（机器号匹配），且钥匙/携带者可达  51392ms
+     ✓ F3 §6.3（单元口径）：disposableHere=false 的钥匙开锁后保留（CE Movement.c:636-656 收口）  432ms
+stdout | src/test/b_4a_item_generation.test.ts > B-4a 计量表：基表频率与 CE 表原值 > enchanting / life / strength 的基表（json）频率为 0，跑完一局后仍为 0（CE memcpy 还原语义）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/p1_29_lake_connectivity.test.ts (7 tests) 144648ms
+     ✓ 核心不变量：15 种子 × D1-D26 湖泊阶段完成态全连通（湖泊闸门合同）  54774ms
+     ✓ 端到端 10 种子 × D1-D26：坏层集合恰为已知机器阶段缺陷集（湖泊致坏层=0）  63100ms
+     ✓ 决定性：同种子两次生成，地形指纹与深水格数逐一一致  26395ms
+     ✓ 判据口径钉死：terrainAllowsMove 与 Game.canMoveTo 对全部 TerrainType 逐一一致  376ms
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > C2 对抗守卫 + 核心对照：树状对照（门位回填成墙）割点率显著高于生产——证明 C1/C2 断言有牙
+[c_0] C2 work-grid 割点率：生产=7.0% 树状对照=9.4%（52 层平均）
+
+stdout | src/test/c_1_room_profile.test.ts > C-1 行为断言：真实生成关卡（5 种子 × D1-D26） > B8 环路收益：addLoops 新开门数显著高于 C-0 基线（2.7 扇/层）
+[c_1] B8 seed424242 新环门合计=104（26 层）
+[c_1] B8 seed777 新环门合计=92（26 层）
+[c_1] B8 seed20260913 新环门合计=85（26 层）
+[c_1] B8 seed31337 新环门合计=86（26 层）
+[c_1] B8 seed20260916 新环门合计=96（26 层）
+[c_1] B8 130 层新开环门合计=463（C-0 基线 351，均值 3.6 vs 2.7）
+
+stdout | src/test/c_1_room_profile.test.ts > C-1 行为断言：真实生成关卡（5 种子 × D1-D26） > B9 全管线 IN_LOOP 与深水观测（对照 C-0：IN_LOOP 池化 13.9%、深水 12.7 格/层）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+[c_1] B9 seed424242: IN_LOOP=4170 格 / 可通行 23631 格（17.6%）
+[c_1] B9 seed777: IN_LOOP=3508 格 / 可通行 23158 格（15.1%）
+[c_1] B9 seed20260913: IN_LOOP=3723 格 / 可通行 23143 格（16.1%）
+[c_1] B9 seed31337: IN_LOOP=3378 格 / 可通行 23792 格（14.2%）
+[c_1] B9 seed20260916: IN_LOOP=3978 格 / 可通行 23907 格（16.6%）
+[c_1] B9 池化 IN_LOOP=15.9%，IN_LOOP 绝对格数=18757，深水均值=6.1 格/层
+
+ ✓ src/test/c_1_room_profile.test.ts (14 tests) 185492ms
+     ✓ B1 对抗（首房间未固定为入口房）：D1 首房间恒为 ENTRANCE_ROOM，D2+ 恒非入口房  17643ms
+     ✓ B2 对抗（attach 池混入 6/7 号房）：CE 调整后 [6]/[7]=0 → 抽取计数逐层钉死  18622ms
+     ✓ B3 对抗（maxRoomCount/attempts 未生效）：attach 数 ≤ 35 硬上限；旧实现（≤14）被max 抛离；物理地板量交叉印证  19175ms
+     ✓ B4 对抗（corridorChance 写反/未消费）：浅层走廊附着显著多于深层  20421ms
+     ✓ B5 房型分布随深度变化（行为）：浅层十字房主导、深层洞穴主导  19696ms
+     ✓ B6 D1 入口房真实形状（work grid）：中心前厅连通 + 倒 T 落在底部中央  19766ms
+     ✓ B7 决定性：同种子两次生成，attach/走廊/房型抽取/门位/指纹逐一一致  17060ms
+     ✓ B8 环路收益：addLoops 新开门数显著高于 C-0 基线（2.7 扇/层）  20982ms
+     ✓ B9 全管线 IN_LOOP 与深水观测（对照 C-0：IN_LOOP 池化 13.9%、深水 12.7 格/层）  32123ms
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > C3 末态对照：全管线关卡（经湖泊+机器）的可通行图割点率受控（树状退化即翻红）
+[c_0] C3 末态割点=1835/36772（平均 5.0%），单层 p95=15.7%，峰值（观测）=16.2%
+

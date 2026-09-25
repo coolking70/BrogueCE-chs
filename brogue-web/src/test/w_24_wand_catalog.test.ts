@@ -159,30 +159,37 @@ describe('W-24 CE nine-row catalog and ordinary entry', () => {
     });
 });
 
-describe('W-24 snapshot appearance and identity migration', () => {
-    it('legacy seven-row seed mapping, identity sets, calls, depleted instances survive real load; new rows remain unknown', () => {
+describe('W-24 snapshot appearance and identity persistence', () => {
+    it('current mapping, identity sets, calls and depleted instances survive real load; legacy flavor saves are rejected', () => {
         const {g} = scene(), current = ItemLoader.wands;
-        // Reconstruct the genuine old assignment using its old order and unchanged flavor shuffle.
-        let legacy: Record<string, string>, saved: ReturnType<Game['toSnapshot']>;
-        try {
-            ItemLoader.wands = oldIds.map(id=>current.find(w=>w.id===id)!);
-            rng.seedRandomGenerator(g.currentSeed); rng.resetCounters(); ItemLoader.initConsumables();
-            legacy = Object.fromEntries(ItemLoader.arcanaFlavorMap);
-            const wand = ItemLoader.spawnWand('wand_of_slowness',-1,-1)!; wand.charges = 0;
-            ItemLoader.identifiedItems.add('wand_of_teleportation'); ItemLoader.callKind('wand_of_slowness','legacy slow');
-            ItemLoader.magicPolarityRevealed.add('wand_of_slowness'); g.player.inventory.addItem(wand);
-            saved = JSON.parse(JSON.stringify(g.toSnapshot())); delete saved.wandFlavors;
-        } finally { ItemLoader.wands = current; }
+        // 用户验收裁决/U03：保留当前完整外观往返，不再用旧七行目录重建缺失外观。
+        const flavors = Object.fromEntries(ItemLoader.arcanaFlavorMap);
+        const wand = ItemLoader.spawnWand('wand_of_slowness',-1,-1)!; wand.charges = 0;
+        ItemLoader.identifiedItems.add('wand_of_teleportation'); ItemLoader.callKind('wand_of_slowness','legacy slow');
+        ItemLoader.magicPolarityRevealed.add('wand_of_slowness'); g.player.inventory.addItem(wand);
+        const saved = JSON.parse(JSON.stringify(g.toSnapshot()));
         const spawn = vi.spyOn(ItemLoader,'spawnWand'); const roll = vi.spyOn(rng,'randClumpedRange');
         expect(g.loadSnapshot(saved)).toBe(true); expect(spawn).not.toHaveBeenCalled(); expect(roll).not.toHaveBeenCalled();
-        for (const id of oldIds) expect(ItemLoader.arcanaFlavorMap.get(id)).toBe(legacy[id]);
+        expect(Object.fromEntries(ItemLoader.arcanaFlavorMap)).toEqual(flavors);
         expect(new Set(current.map(w=>ItemLoader.arcanaFlavorMap.get(w.id))).size).toBe(11);
         for (const id of added) { expect(ItemLoader.identifiedItems.has(id)).toBe(false); expect(ItemLoader.arcanaFlavorMap.get(id)).toBeTruthy(); }
         expect(ItemLoader.identifiedItems.has('wand_of_teleportation')).toBe(true);
         expect(ItemLoader.callTitles.get('wand_of_slowness')).toBe('legacy slow'); expect(ItemLoader.isPolarityRevealed('wand_of_slowness')).toBe(true);
         expect(g.player.inventory.items[0]!.charges).toBe(0);
-        const upgraded = JSON.parse(JSON.stringify(g.toSnapshot())); expect(upgraded.wandFlavors).toBeDefined();
-        g.loadSnapshot(upgraded); expect(g.toSnapshot().wandFlavors).toEqual(upgraded.wandFlavors);
+        expect(g.toSnapshot().wandFlavors).toEqual(saved.wandFlavors);
+        expect(g.toSnapshot().flavors).toEqual(saved.flavors);
+        const roundTrip = JSON.parse(JSON.stringify(g.toSnapshot())); expect(roundTrip.wandFlavors).toBeDefined();
+        expect(g.loadSnapshot(roundTrip)).toBe(true); expect(g.toSnapshot().wandFlavors).toEqual(roundTrip.wandFlavors);
+
+        // 旧档只有七行外观投影（或依赖种子重建），没有 U03 必需的完整 flavors 状态。
+        const legacy = JSON.parse(JSON.stringify(saved)); delete legacy.flavors;
+        legacy.wandFlavors = Object.fromEntries(oldIds.map(id=>[id, saved.wandFlavors[id]]));
+        expect(g.loadSnapshot(legacy)).toBe(false);
+        delete legacy.wandFlavors;
+        expect(g.loadSnapshot(legacy)).toBe(false);
+        expect(g.toSnapshot().flavors).toEqual(saved.flavors);
+        expect(g.player.inventory.items[0]!.charges).toBe(0);
+        expect(spawn).not.toHaveBeenCalled(); expect(roll).not.toHaveBeenCalled();
     });
     it('new save preserves all eleven flavors; partial maps fill new identities uniquely without RNG', () => {
         const {g} = scene(); const saved = JSON.parse(JSON.stringify(g.toSnapshot()));

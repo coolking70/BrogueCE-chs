@@ -1,0 +1,11 @@
+file:///Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web/ai_docs/reports/u-04c-evidence/browser-diagnostic.mjs:7
+const equal=(a,b,label)=>{const d=first(a,b);if(d)throw Error(label+': '+JSON.stringify(d));};
+                                                        ^
+
+Error: checkpoint: {"path":"/visibleMonsterIds/0","actual":24}
+    at equal (file:///Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web/ai_docs/reports/u-04c-evidence/browser-diagnostic.mjs:7:57)
+    at file:///Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web/ai_docs/reports/u-04c-evidence/browser-diagnostic.mjs:42:90
+    at runNextTicks (node:internal/process/task_queues:64:5)
+    at process.processImmediate (node:internal/timers:472:9)
+
+Node.js v25.2.1

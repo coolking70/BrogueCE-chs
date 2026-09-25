@@ -124,7 +124,14 @@ describe('U02b layer lifecycle and persistence', () => {
  });
  it('JSON preserves detached seed/visited metadata and rejects old algorithms/malformed tables atomically', () => {
   const g=createHeadlessGame(7);generate(g,2);const saved=json(g.toSnapshot());
+  // 用户验收裁决/U03：D1→D2→存读→D1 必须等价于连续局（CE startLevel 恢复已访层）。
+  // 两条支线顺序执行，避免共用 RNG/时钟/物品表互相污染；只剔除保存墙钟。
+  const stable=(game:typeof g)=>{const {savedAt:_time,...state}=game.toSnapshot();return json(state);};
+  const checkpoint=stable(g);
+  generate(g,1,true);const continuousD1=stable(g);
+  generate(g,2);const continuousD2=stable(g);
   const fresh=createHeadlessGame(99);expect(fresh.loadSnapshot(saved)).toBe(true);
+  expect(stable(fresh)).toEqual(checkpoint);
   expect(fresh.levelSeeds).toEqual(saved.levelSeeds); expect(rng.getState()).toEqual(saved.rngState);
   saved.levelSeeds[0]!.visited=false; saved.levelSeeds[1]!.upStairsLoc.x++;
   expect(fresh.levelSeeds).not.toEqual(saved.levelSeeds);
@@ -136,7 +143,8 @@ describe('U02b layer lifecycle and persistence', () => {
    (s:any)=>s.rngState.algorithm='brogue-web-ranval32-low32-v1', (s:any)=>s.rngState.version=1,
   ]) {const bad=json(before);corrupt(bad);expect(fresh.loadSnapshot(bad)).toBe(false);expect(rng.getState()).toEqual(before.rngState);expect(fresh.levelSeeds).toEqual(before.levelSeeds);}
   expect(isLevelSeeds(new Array(41))).toBe(false);
-  expect(()=>generate(fresh,1,true)).toThrow('Visited level state is unavailable');
+  generate(fresh,1,true);expect(fresh.depth).toBe(1);expect(stable(fresh)).toEqual(continuousD1);
+  generate(fresh,2);expect(fresh.depth).toBe(2);expect(stable(fresh)).toEqual(continuousD2);
  });
 });
 

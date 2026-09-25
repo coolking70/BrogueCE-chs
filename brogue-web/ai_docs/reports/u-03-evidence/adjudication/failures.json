@@ -1,0 +1,9 @@
+[
+  {
+    "file": "src/test/p1_37_machine_flag_i18n.test.ts",
+    "title": "P1-37 机器旗标：宝库恢复地板、内容落点回避机器格 AD3a: 5 种子 × D1-D26 每台机器的旗标穿存档往返；缺机器字段的旧存档被拒绝",
+    "messages": [
+      "AssertionError: seed424242/D2: 读档后 machineCells 未按网格精确重建: expected Set{ 347, 506, 742, 500, 661, …(40) } to deeply equal Set{ 500, 583, 820, 347, 508, …(10) }\n    at /Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web/src/test/p1_37_machine_flag_i18n.test.ts:302:60\n    at file:///Users/coolking70/Documents/%E5%90%8C%E6%AD%A5%E7%A9%BA%E9%97%B4/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/Documents/%E5%90%8C%E6%AD%A5%E7%A9%BA%E9%97%B4/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/Documents/%E5%90%8C%E6%AD%A5%E7%A9%BA%E9%97%B4/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/Documents/%E5%90%8C%E6%AD%A5%E7%A9%BA%E9%97%B4/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/Documents/%E5%90%8C%E6%AD%A5%E7%A9%BA%E9%97%B4/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/Documents/%E5%90%8C%E6%AD%A5%E7%A9%BA%E9%97%B4/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/Documents/%E5%90%8C%E6%AD%A5%E7%A9%BA%E9%97%B4/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  }
+]

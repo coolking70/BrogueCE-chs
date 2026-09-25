@@ -186,24 +186,34 @@ describe('W-25 blink resources and selection',()=>{
     });
 });
 
-describe('W-25 staff appearance/save migration',()=>{
-    it('real old seven-row mapping, empty charges/calls/known sets and timer survive load without spawn',()=>{
-        const {g}=scene(),current=ItemLoader.staffs;let legacy:Record<string,string>,saved:ReturnType<Game['toSnapshot']>;
-        try{
-            // Old configs had no explicit wood indices. Light also used ordinary index 6.
-            ItemLoader.staffs=oldIds.map(id=>({...current.find(s=>s.id===id)!,flavorIndex:oldIds.indexOf(id)}));
-            rng.seedRandomGenerator(g.currentSeed); rng.resetCounters();ItemLoader.initConsumables();legacy=Object.fromEntries(ItemLoader.arcanaFlavorMap);
-            const item=ItemLoader.spawnStaff('staff_of_fire',-1,-1)!;item.charges=0;item.staffRechargeRemaining=1234;g.player.inventory.addItem(item);
-            ItemLoader.identify('staff_of_fire');ItemLoader.callKind('staff_of_haste','old haste');ItemLoader.magicPolarityRevealed.add('staff_of_poison');
-            saved=JSON.parse(JSON.stringify(g.toSnapshot()));delete saved.staffFlavors;
-        }finally{ItemLoader.staffs=current;}
+describe('W-25 staff appearance/save persistence',()=>{
+    it('current mapping, empty charges/calls/known sets and timer survive load; legacy flavor saves are rejected',()=>{
+        const {g}=scene(),current=ItemLoader.staffs;
+        // 用户验收裁决/U03：完整原表直接往返，不按旧七行目录补造木材外观或槽位。
+        const flavors=Object.fromEntries(ItemLoader.arcanaFlavorMap);
+        const item=ItemLoader.spawnStaff('staff_of_fire',-1,-1)!;item.charges=0;item.staffRechargeRemaining=1234;g.player.inventory.addItem(item);
+        ItemLoader.identify('staff_of_fire');ItemLoader.callKind('staff_of_haste','old haste');ItemLoader.magicPolarityRevealed.add('staff_of_poison');
+        const saved=JSON.parse(JSON.stringify(g.toSnapshot()));
         const spawn=vi.spyOn(ItemLoader,'spawnStaff');expect(g.loadSnapshot(saved)).toBe(true);expect(spawn).not.toHaveBeenCalled();
-        for(const id of oldIds)expect(ItemLoader.arcanaFlavorMap.get(id)).toBe(legacy[id]);
+        expect(Object.fromEntries(ItemLoader.arcanaFlavorMap)).toEqual(flavors);
         for(const id of added)expect(ItemLoader.identifiedItems.has(id)).toBe(false);
         expect([g.player.inventory.items[0]!.charges,g.player.inventory.items[0]!.staffRechargeRemaining]).toEqual([0,1234]);
         expect(ItemLoader.callTitles.get('staff_of_haste')).toBe('old haste');expect(ItemLoader.isPolarityRevealed('staff_of_poison')).toBe(true);
         expect(new Set(current.map(s=>ItemLoader.arcanaFlavorMap.get(s.id))).size).toBe(13);
-        const upgraded=JSON.parse(JSON.stringify(g.toSnapshot()));g.loadSnapshot(upgraded);expect(g.toSnapshot().staffFlavors).toEqual(upgraded.staffFlavors);
+        expect(g.toSnapshot().staffFlavors).toEqual(saved.staffFlavors);
+        expect(g.toSnapshot().flavors).toEqual(saved.flavors);
+        const roundTrip=JSON.parse(JSON.stringify(g.toSnapshot()));
+        expect(g.loadSnapshot(roundTrip)).toBe(true);expect(g.toSnapshot().staffFlavors).toEqual(roundTrip.staffFlavors);
+
+        // 旧档只有七行投影/种子回填，缺少 U03 必需的 flavors（含 staffSlots），应拒绝。
+        const legacy=JSON.parse(JSON.stringify(saved));delete legacy.flavors;
+        legacy.staffFlavors=Object.fromEntries(oldIds.map(id=>[id,saved.staffFlavors[id]]));
+        expect(g.loadSnapshot(legacy)).toBe(false);
+        delete legacy.staffFlavors;
+        expect(g.loadSnapshot(legacy)).toBe(false);
+        expect(g.toSnapshot().flavors).toEqual(saved.flavors);
+        expect([g.player.inventory.items[0]!.charges,g.player.inventory.items[0]!.staffRechargeRemaining]).toEqual([0,1234]);
+        expect(spawn).not.toHaveBeenCalled();
     });
     it('new maps, partial maps and current blink timer are deterministic',()=>{
         const {g}=scene();g.player.inventory.addItem(ItemLoader.spawnStaff('staff_of_blinking',-1,-1)!);

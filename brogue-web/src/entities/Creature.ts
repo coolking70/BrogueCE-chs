@@ -32,6 +32,10 @@ export const PERMANENT_STATUS_DURATION = 1000;
 // 否则读档后新建实体会与存档实体撞号（见 Game.loadSnapshot）。
 let nextEntityId = 1;
 
+/** A deleted entity still consumed an ID. Saving only the live maximum loses it. */
+export function getNextEntityId(): number { return nextEntityId; }
+export function restoreNextEntityId(value: number): void { nextEntityId = value; }
+
 /** IDs belong to one run; call only after discarding the previous world's references. */
 export function resetEntityIds(): void {
     nextEntityId = 1;

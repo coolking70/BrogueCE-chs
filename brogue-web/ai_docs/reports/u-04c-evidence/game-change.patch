@@ -1,0 +1,91 @@
+--- U03/current-Game.ts
++++ U04c/Game.ts
+@@ -1,4 +1,5 @@
+ import { snapshotGrid, restoreGrid, type CellSnapshot } from './LevelSnapshot';
++import { collectMachineCells, machineCellsMatchGrid } from '../Map/MachineCells';
+ import { initializeLevelSeeds, copyLevelSeeds, isLevelSeeds, type LevelSeed } from './LevelSeeds';
+ import { NEGATABLE_TRAITS, NON_NEGATABLE_ABILITIES, NEGATABLE_MUTATIONS, hasNegatableBolt, negateBolts, negateCreatureStatusEffects } from '../Combat/Negation';
+ import { cloneLocation } from '../Combat/Cloning';
+@@ -496,10 +497,9 @@
+     // the level RNG; revisit builds consume the live stream. U03 saves all products.
+     public waypoints: WaypointSystem = new WaypointSystem();
+ 
+-    // P1-31：本层机器格（CE pmap 的 IS_IN_MACHINE 旗标，Architect.c 生成期
+-    // 写入 machineNumber）。数据源是 BlueprintEngine 的 MachineResult.cells。
+-    // U03 saves the actual set independently of machineNumber: generation's
+-    // set is not always the full grid-derived set (K31, pending U04c).
++    // U04c: detached grid.machineNumber projection, never MachineResult.cells.
++    // Blueprint commit/rollback owns all number writes; rebuild after generation
++    // and each grid replacement. Snapshots validate this redundant projection.
+     private machineCells: Set<number> = new Set();
+ 
+     // Endgame & Stats
+@@ -1098,7 +1098,7 @@
+             this.items = cached.items;
+             this.visibleMonsters = cached.visibleMonsters;
+             this.visibleItems = cached.visibleItems;
+-            this.machineCells = cached.machineCells ?? new Set();
++            this.machineCells = collectMachineCells(this.grid);
+             this.bindDormantAwakener();
+ 
+             // Reposition player to stairs（P1-31：落位走 CE RogueMain.c:837-869，
+@@ -1199,11 +1199,9 @@
+         isFirstLevel: boolean = false,
+         machineResults: MachineResult[] = []
+     ) {
+-        // P1-31：本层机器格（CE pmap IS_IN_MACHINE，落位排除项之一）。
+-        this.machineCells = new Set();
+-        for (const mr of machineResults) {
+-            for (const c of mr.cells) this.machineCells.add(c.y * DCOLS + c.x);
+-        }
++        // U04c/K31: CE membership is the final per-cell machine flag, including
++        // external features and excluding cleared BP_NO_INTERIOR_FLAG cells.
++        this.machineCells = collectMachineCells(this.grid);
+ 
+         // Collect all valid floor tiles
+         // P1-37：牌堆排除机器格（machineNumber≠0 = CE 的 IS_IN_MACHINE，
+@@ -8578,7 +8576,7 @@
+             environmentState: level.environment.getState(),
+             pendingCaughtFireCells: (level.pendingCaughtFireCells ?? []).map(p => ({ ...p })),
+             trapDepressions: [...(this.displacementTrapDepressions?.get(level.grid) ?? [])],
+-            machineCells: [...(level.machineCells ?? [])],
++            machineCells: [...collectMachineCells(level.grid)],
+             visibleMonsterIds: [...level.visibleMonsters].map(m => m.id),
+             visibleItemIds: [...level.visibleItems].map(i => i.id),
+             awaySince: level.awaySince ?? 0,
+@@ -8663,6 +8661,7 @@
+                 || !Array.isArray(level.grid) || level.grid.length !== level.width * level.height
+                 || !Array.isArray(level.impregnableCells)
+                 || !level.grid.every(c => c && c.layers?.length === 4 && typeof c.machineNumber === 'number')
++                || !machineCellsMatchGrid(level.machineCells, level.grid)
+                 || !level.scent || level.scent.values.length !== level.width * level.height
+                 || !level.waypoints || !level.environmentState || !Array.isArray(level.monsters)
+                 || !Array.isArray(level.dormantMonsters) || !Array.isArray(level.items)) return false;
+@@ -8702,7 +8701,7 @@
+                     items: saved.items.map(i => resolve(entityGraph.items, i.id)),
+                     visibleMonsters: new Set(saved.visibleMonsterIds.map(id => resolve(entityGraph.monsters, id))),
+                     visibleItems: new Set(saved.visibleItemIds.map(id => resolve(entityGraph.items, id))),
+-                    machineCells: new Set(saved.machineCells), scent: ScentMap.fromState(saved.scent), waypoints,
++                    machineCells: collectMachineCells(grid), scent: ScentMap.fromState(saved.scent), waypoints,
+                     awaySince: saved.awaySince, pendingCaughtFireCells: saved.pendingCaughtFireCells.map(p => ({ ...p })),
+                 }];
+             }));
+@@ -9980,7 +9979,7 @@
+ 
+     /** CE teleport(..., INVALID_POS, false); no fallback after the final filter. */
+     private teleportCreature(target: Creature): boolean {
+-        const candidates = teleportCandidates({ grid: this.grid, player: this.player, monsters: this.monsters, dormantMonsters: this.dormantMonsters, machineCells: this.machineCells }, target);
++        const candidates = teleportCandidates({ grid: this.grid, player: this.player, monsters: this.monsters, dormantMonsters: this.dormantMonsters }, target);
+         if (candidates.length === 0) return false;
+         const destination = candidates[rng.randRange(0, candidates.length - 1)]!;
+         if (!this.canDisplaceCreature(target, destination)) return false;
+@@ -10035,8 +10034,7 @@
+                         || (this.player.loc.x === x && this.player.loc.y === y)
+                         || this.items.some(item => item.loc.x === x && item.loc.y === y)
+                         || !!this.grid.getCell(x, y)?.layers.some(t => t === TerrainType.STAIRS_UP || t === TerrainType.STAIRS_DOWN),
+-                    isMachineCell: (x, y) => !!this.machineCells?.has(y * DCOLS + x)
+-                        || !!this.grid.getCell(x, y)?.machineNumber,
++                    isMachineCell: (x, y) => (this.grid.getCell(x, y)?.machineNumber ?? 0) !== 0,
+                 });
+             // Pathological all-blocked item maps retain the item safely; CE's
+             // subsequent placeItemAt(-1,-1) has no defined safe placement there.

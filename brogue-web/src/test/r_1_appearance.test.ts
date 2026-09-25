@@ -5,21 +5,14 @@
  * 「格子/实体 → 外观」决策抽成 src/engine/UI/Appearance.ts 纯函数。
  * 本文件做两件事：
  *
- *  1. 特征化（characterization）：把现状输出**穷举钉死**——terrainAppearance
- *     对 TerrainType 全部 47 个成员 × 可见/不可见给出全等期望表；
+ *  1. terrainAppearance 的逐枚举期望由 CE tileCatalog、颜色与字形源生成；
  *     cellAppearance / entityAppearance 对三态（可见/记忆/未探索）与
  *     三类实体逐一钉死，包括幻觉掷骰的调用次数与顺序这类"怪癖"。
  *  2. 结构守卫：钉死 GameCanvas.vue 里**不得再出现外观决策**
  *     （颜色/字形字面量、决策 switch、决策 API 引用、直接幻觉掷骰），
  *     防止决策在未来的 UI 轮里又漏回 SFC。
  *
- * ⚠️ 漏授权形态①预警：下面 Record<TerrainType, …> 期望表是一张
- * **结构性穷举表**——将来任何一轮给 TerrainType 新增成员，
- * 本表会**当场编译报错（缺键）+ 运行时翻红（计数断言）**。
- * 这是有意的：新增地形时必须在此登记它的期望外观
- * （同时 Appearance.ts 的 terrainAppearance 需要新 case）。
- * 若新地形故意走 default（无专属外观），就在表里显式填
- * { char: ' ', color: '#000000', bgColor: null } 并注明"沿用 default"。
+ * 新地形须在 CE 别名映射与生成黄金表中登记。
  */
 
 import { describe, it, expect } from 'vitest';
@@ -37,9 +30,7 @@ import {
     HALLUCINATION_COLORS,
     HALLUCINATION_CHARS,
     G_FIRE_CHAR,
-    G_ASHES_CHAR,
     FIRE_FORE_COLOR,
-    ASH_FORE_COLOR,
     PARALYSIS_GAS_BG,
     METHANE_GAS_BG,
     PARALYSIS_GAS_FG,
@@ -52,6 +43,7 @@ import {
 import { Item, ItemCategory } from '../engine/Items/Item';
 import { MonsterState, type Monster } from '../entities/Monster';
 import { Player } from '../entities/Player';
+import ceTerrainGoldens from './fixtures/u21c-ce-terrain.json';
 
 // ════════════════════════ 工具 ════════════════════════
 
@@ -60,172 +52,18 @@ const ALL_TERRAINS: TerrainType[] = Object.values(TerrainType).filter(
     (v): v is TerrainType => typeof v === 'number',
 );
 
-/** terrainAppearance 走 default 分支的成员（无专属外观——UI-1 欠账登记处）。 */
-const DEFAULT_LOOK = { char: ' ', color: '#000000', bgColor: null };
-
-/**
- * 可见态穷举期望表。逐字转录自重构前 GameCanvas.vue getTerrainVisual
- * （原 126-184 行）的可见分支。Record<TerrainType,…> 让"漏成员"成为
- * 编译错误（见文件头漏授权形态①预警）。
- */
-const EXPECTED_VISIBLE: Record<TerrainType, { char: string; color: string; bgColor: number | null }> = {
-    [TerrainType.ANCIENT_SPIRIT_VINES]: { char: ':', color: '#99bb55', bgColor: null },
-    [TerrainType.ANCIENT_SPIRIT_GRASS]: { char: '"', color: '#669944', bgColor: null },
-    [TerrainType.NOTHING]: DEFAULT_LOOK,
-    [TerrainType.GRANITE]: { char: '#', color: '#444455', bgColor: null },
-    [TerrainType.FLOOR]: { char: '.', color: '#aaaaaa', bgColor: 0x222233 },
-    [TerrainType.WALL]: DEFAULT_LOOK,
-    [TerrainType.DOOR]: { char: '+', color: '#aa8844', bgColor: 0x332211 },
-    [TerrainType.OPEN_DOOR]: { char: "'", color: '#aa8844', bgColor: 0x221800 },
-    [TerrainType.WATER_SHALLOW]: { char: '~', color: '#3366cc', bgColor: 0x112244 },
-    [TerrainType.WATER_DEEP]: { char: '~', color: '#1133aa', bgColor: 0x001133 },
-    [TerrainType.CHASM]: DEFAULT_LOOK,
-    [TerrainType.LAVA]: DEFAULT_LOOK,
-    [TerrainType.GRASS]: { char: '"', color: '#33aa33', bgColor: 0x113311 },
-    [TerrainType.FOLIAGE]: { char: '♠', color: '#228822', bgColor: 0x112211 },
-    [TerrainType.BOG]: DEFAULT_LOOK,
-    [TerrainType.STAIRS_UP]: { char: '<', color: '#ffaa00', bgColor: 0x222233 },
-    [TerrainType.STAIRS_DOWN]: { char: '>', color: '#00aaff', bgColor: 0x222233 },
-    [TerrainType.CHARRED_FLOOR]: DEFAULT_LOOK,
-    [TerrainType.SIGN]: { char: '§', color: '#ffee88', bgColor: 0x332b11 },
-    [TerrainType.RESET_PLATE]: { char: '⊙', color: '#66ccff', bgColor: 0x113344 },
-    [TerrainType.TRAP]: { char: '^', color: '#cc4400', bgColor: 0x220800 },
-    [TerrainType.SECRET_DOOR]: { char: '#', color: '#555566', bgColor: null },
-    [TerrainType.PRESSURE_PLATE]: { char: '_', color: '#44cc44', bgColor: 0x112211 },
-    [TerrainType.LOCKED_DOOR]: { char: '+', color: '#dd9933', bgColor: 0x331100 },
-    [TerrainType.ALTAR]: { char: '_', color: '#ffffcc', bgColor: 0x443311 },
-    [TerrainType.WEB]: { char: '\\', color: '#cccccc', bgColor: 0x222222 },
-    [TerrainType.BLOOD]: { char: '%', color: '#aa2222', bgColor: 0x330000 },
-    [TerrainType.MUD]: { char: '~', color: '#664422', bgColor: 0x221100 },
-    // ── UI-1 第 1 条（2026-09-18 反转：火寿命链已有 CE 外观，不再是 default）──
-    [TerrainType.PLAIN_FIRE]: { char: G_FIRE_CHAR, color: FIRE_FORE_COLOR, bgColor: null },   // F-1 落地，UI-1 反转
-    [TerrainType.EMBERS]: { char: G_ASHES_CHAR, color: FIRE_FORE_COLOR, bgColor: null },      // F-2a 落地，UI-1 反转
-    [TerrainType.ASH]: { char: G_ASHES_CHAR, color: ASH_FORE_COLOR, bgColor: null },          // F-2a 落地，UI-1 反转
-    // ── 以下成员仍走 default（R-1 时如此；GAS_FIRE/GAS_EXPLOSION 同属 UI-1
-    // 反转——CE 里它们与 PLAIN_FIRE 同为 G_FIRE + fireForeColor）──
-    [TerrainType.GAS_FIRE]: { char: G_FIRE_CHAR, color: FIRE_FORE_COLOR, bgColor: null },     // G-2，UI-1 反转
-    [TerrainType.GAS_EXPLOSION]: { char: G_FIRE_CHAR, color: FIRE_FORE_COLOR, bgColor: null },// F-2c，UI-1 反转
-    [TerrainType.POISON_GAS]: DEFAULT_LOOK,       // G-1（气体视觉走 gasGrid 覆盖层）
-    [TerrainType.CONFUSION_GAS]: DEFAULT_LOOK,
-    [TerrainType.STEAM]: DEFAULT_LOOK,
-    [TerrainType.METHANE_GAS]: DEFAULT_LOOK,      // G-2（气体视觉走 gasGrid 覆盖层）
-    [TerrainType.PARALYSIS_GAS]: DEFAULT_LOOK,    // G-3（同上）
-    [TerrainType.CHASM_EDGE]: DEFAULT_LOOK,       // C-2
-    [TerrainType.OBSIDIAN]: DEFAULT_LOOK,         // C-2
-    [TerrainType.BRIDGE]: DEFAULT_LOOK,           // C-2
-    [TerrainType.BRIDGE_EDGE]: DEFAULT_LOOK,      // C-2
-    [TerrainType.INERT_BRIMSTONE]: DEFAULT_LOOK,  // C-2
-    [TerrainType.HOLE]: DEFAULT_LOOK,             // C-5
-    [TerrainType.HOLE_EDGE]: DEFAULT_LOOK,        // C-5
-    [TerrainType.FORCEFIELD]: DEFAULT_LOOK,       // B-3
-    [TerrainType.FORCEFIELD_MELT]: DEFAULT_LOOK,  // B-3
-    [TerrainType.CRYSTAL_WALL]: DEFAULT_LOOK,     // B-3
-    [TerrainType.SACRED_GLYPH]: DEFAULT_LOOK,     // B-3
-    // V-2b-2b 六条：机器蓝图地形载体，terrainAppearance 尚无专属分支
-    //（CE 外观接线归 UI 轮，与 C-2/B-3 的 DEFAULT_LOOK 欠账同登记）。
-    // 本文件不在 V-2b-2b 任务书 §6 授权清单——Record<TerrainType> 结构性
-    // 穷尽表不加成员连 npm run build 都无法通过，机械补齐，报告已申报。
-    [TerrainType.CARPET]: DEFAULT_LOOK,             // V-2b-2b
-    [TerrainType.STATUE_INERT]: DEFAULT_LOOK,       // V-2b-2b
-    [TerrainType.PEDESTAL]: DEFAULT_LOOK,           // V-2b-2b
-    [TerrainType.STATUE_INERT_DOORWAY]: DEFAULT_LOOK, // V-2b-2b
-    [TerrainType.WOODEN_BARRICADE]: DEFAULT_LOOK,   // V-2b-2b
-    [TerrainType.TRAP_DOOR_HIDDEN]: DEFAULT_LOOK,   // V-2b-2b
-    // V-2b-3 九条：wired 触发网络载体，terrainAppearance 尚无专属分支
-    //（CE 外观接线归 UI 轮，同上 DEFAULT_LOOK 欠账登记）。
-    [TerrainType.MACHINE_GLYPH]: DEFAULT_LOOK,              // V-2b-3
-    [TerrainType.PORTCULLIS_CLOSED]: DEFAULT_LOOK,          // V-2b-3
-    [TerrainType.WORM_TUNNEL_OUTER_WALL]: DEFAULT_LOOK,     // V-2b-3
-    [TerrainType.WALL_LEVER_HIDDEN]: DEFAULT_LOOK,          // V-2b-3
-    [TerrainType.GAS_TRAP_PARALYSIS]: DEFAULT_LOOK,         // V-2b-3
-    [TerrainType.GAS_TRAP_PARALYSIS_HIDDEN]: DEFAULT_LOOK,  // V-2b-3
-    [TerrainType.MACHINE_PARALYSIS_VENT_HIDDEN]: DEFAULT_LOOK, // V-2b-3
-    [TerrainType.MACHINE_METHANE_VENT_HIDDEN]: DEFAULT_LOOK,   // V-2b-3
-    [TerrainType.PILOT_LIGHT_DORMANT]: DEFAULT_LOOK,        // V-2b-3
-    // V-2b-4 七条：祭坛族轮的地形载体，terrainAppearance 尚无专属分支
-    //（CE 外观接线归 UI 轮，同上 DEFAULT_LOOK 欠账登记——与 V-2b-2b/2b-3
-    // 的六条/九条同款。注意这七条**不进本文件的 §6 授权清单之外的生产文件
-    // src/engine/UI/Appearance.ts**：本表是结构性穷尽表，不加成员连
-    // npm run build 都过不去，故机械补齐并申报）。
-    [TerrainType.ALTAR_CAGE_OPEN]: DEFAULT_LOOK,            // V-2b-4
-    [TerrainType.ALTAR_CAGE_RETRACTABLE]: DEFAULT_LOOK,     // V-2b-4
-    [TerrainType.COMMUTATION_ALTAR]: DEFAULT_LOOK,          // V-2b-4
-    [TerrainType.RESURRECTION_ALTAR]: DEFAULT_LOOK,         // V-2b-4
-    [TerrainType.AMULET_SWITCH]: DEFAULT_LOOK,              // V-2b-4
-    [TerrainType.STATUE_INSTACRACK]: DEFAULT_LOOK,          // V-2b-4
-    [TerrainType.TORCH_WALL]: DEFAULT_LOOK,                 // V-2b-4
-    // V-2b-5 七条：休眠唤醒轮的地形载体，terrainAppearance 尚无专属分支
-    //（CE 外观接线归 UI 轮，同上 DEFAULT_LOOK 欠账登记——与 V-2b-2b/2b-3/
-    // 2b-4 同款。结构性穷尽表，不加成员连 npm run build 都过不去，
-    // 机械补齐并申报）。
-    [TerrainType.ALTAR_SWITCH]: DEFAULT_LOOK,               // V-2b-5
-    [TerrainType.MACHINE_TRIGGER_FLOOR]: DEFAULT_LOOK,      // V-2b-5
-    [TerrainType.STATUE_DORMANT]: DEFAULT_LOOK,             // V-2b-5
-    [TerrainType.WALL_MONSTER_DORMANT]: DEFAULT_LOOK,       // V-2b-5
-    [TerrainType.RAT_TRAP_WALL_DORMANT]: DEFAULT_LOOK,      // V-2b-5
-    [TerrainType.STATUE_DORMANT_DOORWAY]: DEFAULT_LOOK,     // V-2b-5
-    [TerrainType.TURRET_DORMANT]: DEFAULT_LOOK,             // V-2b-5
-    // V-2b-6：六个新 tile 无专属渲染分支，走 DEFAULT_LOOK（与 V-2b-2b/3/4/5
-    // 的"CE 外观接线归 UI 轮"欠账同款口径）。
-    [TerrainType.MONSTER_CAGE_OPEN]: DEFAULT_LOOK,          // V-2b-6
-    [TerrainType.MONSTER_CAGE_CLOSED]: DEFAULT_LOOK,        // V-2b-6
-    [TerrainType.MACHINE_POISON_GAS_VENT_HIDDEN]: DEFAULT_LOOK, // V-2b-6
-    [TerrainType.PORTCULLIS_DORMANT]: DEFAULT_LOOK,         // V-2b-6
-    [TerrainType.WALL_LEVER_HIDDEN_DORMANT]: DEFAULT_LOOK,  // V-2b-6
-    [TerrainType.BONES]: DEFAULT_LOOK,                      // V-2b-6
-    // V-2b-7：19 条新 tile 无专属渲染分支，走 DEFAULT_LOOK（与
-    // V-2b-2b/3/4/5/6 的"CE 外观接线归 UI 轮"欠账同款口径。结构性穷尽表，
-    // 不加成员连 npm run build 都过不去，机械补齐并申报）。
-    [TerrainType.COFFIN_CLOSED]: DEFAULT_LOOK,              // V-2b-7
-    [TerrainType.ALTAR_KEYHOLE]: DEFAULT_LOOK,              // V-2b-7
-    [TerrainType.ALTAR_SWITCH_RETRACTING]: DEFAULT_LOOK,    // V-2b-7
-    [TerrainType.BRAZIER]: DEFAULT_LOOK,                    // V-2b-7
-    [TerrainType.DEMONIC_STATUE]: DEFAULT_LOOK,             // V-2b-7
-    [TerrainType.FLAMETHROWER_HIDDEN]: DEFAULT_LOOK,        // V-2b-7
-    [TerrainType.GAS_TRAP_POISON_HIDDEN]: DEFAULT_LOOK,     // V-2b-7
-    [TerrainType.MANACLE_L]: DEFAULT_LOOK,                  // V-2b-7
-    [TerrainType.MANACLE_T]: DEFAULT_LOOK,                  // V-2b-7
-    [TerrainType.PORTAL]: DEFAULT_LOOK,                     // V-2b-7
-    [TerrainType.SACRIFICE_ALTAR_DORMANT]: DEFAULT_LOOK,    // V-2b-7
-    [TerrainType.SACRIFICE_CAGE_DORMANT]: DEFAULT_LOOK,     // V-2b-7
-    [TerrainType.DEAD_GRASS]: DEFAULT_LOOK,                 // V-2b-7
-    [TerrainType.VOMIT]: DEFAULT_LOOK,                      // V-2b-7
-    [TerrainType.LUMINESCENT_FUNGUS]: DEFAULT_LOOK,         // V-2b-7
-    [TerrainType.DEAD_FOLIAGE]: DEFAULT_LOOK,               // V-2b-7
-    [TerrainType.RUBBLE]: DEFAULT_LOOK,                     // V-2b-7
-    [TerrainType.GRAY_FUNGUS]: DEFAULT_LOOK,                // V-2b-7
-    [TerrainType.WORM_TUNNEL_MARKER_DORMANT]: DEFAULT_LOOK,
-    [TerrainType.BLOODFLOWER_STALK]: DEFAULT_LOOK,
-    [TerrainType.HAVEN_BEDROLL]: DEFAULT_LOOK, // V-2b-7
-    [TerrainType.FLOOR_FLOODABLE]: DEFAULT_LOOK,
-    [TerrainType.CHASM_WITH_HIDDEN_BRIDGE]: DEFAULT_LOOK,
-    [TerrainType.LAVA_RETRACTABLE]: DEFAULT_LOOK,
-    [TerrainType.MUD_FLOOR]: DEFAULT_LOOK, [TerrainType.MUD_WALL]: DEFAULT_LOOK,
-    [TerrainType.MUD_DOORWAY]: DEFAULT_LOOK, [TerrainType.MARBLE_FLOOR]: DEFAULT_LOOK,
-    [TerrainType.FLOOD_TRAP]: DEFAULT_LOOK, [TerrainType.ELECTRIC_CRYSTAL_OFF]: DEFAULT_LOOK,
-    [TerrainType.TURRET_LEVER]: DEFAULT_LOOK, [TerrainType.HAUNTED_TORCH_DORMANT]: DEFAULT_LOOK,
-    [TerrainType.DARK_FLOOR_DORMANT]: DEFAULT_LOOK,
-    [TerrainType.MACHINE_FLOOD_WATER_DORMANT]: DEFAULT_LOOK,
-    [TerrainType.MACHINE_FLOOD_WATER_SPREADING]: DEFAULT_LOOK,
-    [TerrainType.MACHINE_COLLAPSE_EDGE_DORMANT]: DEFAULT_LOOK,
-    [TerrainType.MACHINE_COLLAPSE_EDGE_SPREADING]: DEFAULT_LOOK,
-    [TerrainType.CHASM_WITH_HIDDEN_BRIDGE_ACTIVE]: DEFAULT_LOOK,
-    [TerrainType.STONE_BRIDGE]: DEFAULT_LOOK,
-    [TerrainType.LAVA_RETRACTING]: DEFAULT_LOOK,
-    [TerrainType.FLOOD_WATER_SHALLOW]: DEFAULT_LOOK,
-    [TerrainType.FLOOD_WATER_DEEP]: DEFAULT_LOOK,
-    [TerrainType.MACHINE_CHASM_EDGE]: DEFAULT_LOOK,
-    [TerrainType.PUDDLE]: DEFAULT_LOOK,
-    [TerrainType.MACHINE_MUD_DORMANT]: DEFAULT_LOOK, // V-2b-9c; dedicated visuals remain UI debt.
-    [TerrainType.DARK_FLOOR_DARKENING]: DEFAULT_LOOK, // V-2b-9c; dedicated visuals remain UI debt.
-    [TerrainType.DARK_FLOOR]: DEFAULT_LOOK, // V-2b-9c; dedicated visuals remain UI debt.
-    [TerrainType.ECTOPLASM]: DEFAULT_LOOK, // V-2b-9c; dedicated visuals remain UI debt.
-    [TerrainType.HAUNTED_TORCH_TRANSITIONING]: DEFAULT_LOOK, // V-2b-9c; dedicated visuals remain UI debt.
-    [TerrainType.HAUNTED_TORCH]: DEFAULT_LOOK, // V-2b-9c; dedicated visuals remain UI debt.
-    [TerrainType.MACHINE_GLYPH_INACTIVE]: DEFAULT_LOOK, // V-2b-9d: UI debt as for existing glyph.
-    [TerrainType.STENCH_SMOKE_GAS]: DEFAULT_LOOK, // Gas overlay is separate.
-    [TerrainType.ELECTRIC_CRYSTAL_ON]: DEFAULT_LOOK, // V-2b-9c; dedicated visuals remain UI debt.
-};
+/** CE source parsed goldens; generated by scripts/u21c-ce-appearance.mjs. */
+const EXPECTED_VISIBLE: Record<TerrainType, { char: string; color: string; bgColor: number | null }> = Object.fromEntries(
+    Object.entries(ceTerrainGoldens).map(([name, { char, color, bgColor }]) => [TerrainType[name as keyof typeof TerrainType], { char, color, bgColor }]),
+) as Record<TerrainType, { char: string; color: string; bgColor: number | null }>;
+const floor = ceTerrainGoldens.FLOOR;
+const lightColor = (hex: string, channels: readonly number[]) => '#' + [0, 1, 2].map((i) => {
+    const base = parseInt(hex.slice(1 + i * 2, 3 + i * 2), 16);
+    const level = Math.max(0, channels[i]!);
+    const adjusted = level > 150 ? Math.trunc(Math.sqrt(level / 150) * 150) : level;
+    return Math.min(255, Math.trunc(base * adjusted / 100)).toString(16).padStart(2, '0');
+}).join('');
+const lightBg = (value: number, channels: readonly number[]) => parseInt(lightColor('#' + value.toString(16).padStart(6, '0'), channels).slice(1), 16);
 
 /** 造 Cell（terrain 走 setter 写回归属层）。只用于 DUNGEON/SURFACE 层地形。 */
 function makeCell(
@@ -337,6 +175,7 @@ describe('R-1 terrainAppearance 特征化（穷举钉死）', () => {
     });
 
     it('可见态：每个成员的 {char, color, bgColor} 全等钉死', () => {
+        expect(Object.keys(ceTerrainGoldens)).toHaveLength(ALL_TERRAINS.length);
         for (const t of ALL_TERRAINS) {
             expect(terrainAppearance(t, true), `TerrainType[${t}] 可见态`).toEqual(EXPECTED_VISIBLE[t]);
         }
@@ -365,7 +204,7 @@ describe('R-1 cellAppearance：未探索 / 可见 / 记忆 三态', () => {
 
     it('可见但无光 → 近黑（#222222 / 0x050505）——可见≠亮，这是原行为', () => {
         expect(cellAppearance(makeCell(TerrainType.FLOOR, { visible: true }), cellCtx())).toEqual({
-            char: '.', color: '#222222', bgColor: 0x050505,
+            char: floor.char, color: '#222222', bgColor: 0x050505,
         });
         expect(cellAppearance(makeCell(TerrainType.DOOR, { visible: true }), cellCtx())).toEqual({
             char: '+', color: '#222222', bgColor: 0x050505,
@@ -384,7 +223,7 @@ describe('R-1 cellAppearance：未探索 / 可见 / 记忆 三态', () => {
             makeCell(TerrainType.FLOOR, { visible: true }),
             cellCtx({ lightChannels: IDENTITY_LIGHT }),
         )!;
-        expect(visual).toEqual({ char: '.', color: '#aaaaaa', bgColor: 0x222233 });
+        expect(visual).toEqual({ char: floor.char, color: floor.color, bgColor: floor.bgColor });
     });
 
     it('可见但弱光 → 逐通道线性变暗（trunc(base*50/100)），不再被抬向光色', () => {
@@ -392,8 +231,8 @@ describe('R-1 cellAppearance：未探索 / 可见 / 记忆 三态', () => {
             makeCell(TerrainType.FLOOR, { visible: true }),
             cellCtx({ lightChannels: { r: 50, g: 50, b: 50 } }),
         )!;
-        expect(visual.color).toBe('#555555');  // trunc(170*50/100)=85
-        expect(visual.bgColor).toBe(0x111119); // (34,34,51)→(17,17,25)
+        expect(visual.color).toBe(lightColor(floor.color, [50, 50, 50]));
+        expect(visual.bgColor).toBe(lightBg(floor.bgColor, [50, 50, 50]));
     });
 
     it('过亮光（>100）先平方根压回再乘，颜色向饱和抬升——旧混合公式给不出的效果', () => {
@@ -402,8 +241,9 @@ describe('R-1 cellAppearance：未探索 / 可见 / 记忆 三态', () => {
             makeCell(TerrainType.FLOOR, { visible: true }),
             cellCtx({ lightChannels: { r: 180, g: 180, b: 180 } }),
         )!;
-        expect(visual.color).toBe('#ffffff');  // trunc(170*164/100)=278 → 钳 255
-        expect(visual.bgColor).toBe(0x373753); // 34*164/100=55, 51*164/100=83
+        expect(visual.color).toBe(lightColor(floor.color, [180, 180, 180]));
+        expect(visual.bgColor).toBe(lightBg(floor.bgColor, [180, 180, 180]));
+        expect(visual.color).not.toBe(lightColor(floor.color, [180, 180, 180].map(v => Math.trunc(v * 0.8))));
     });
 
     it('有色光是逐通道的：红通道亮、绿蓝通道灭 → 基色只剩红（混向单色的旧公式必红）', () => {
@@ -411,12 +251,12 @@ describe('R-1 cellAppearance：未探索 / 可见 / 记忆 三态', () => {
             makeCell(TerrainType.FLOOR, { visible: true }),
             cellCtx({ lightChannels: { r: 100, g: 20, b: 0 } }),
         )!;
-        expect(visual.color).toBe('#aa2200'); // (170*1, 170*0.2, 170*0) → (170,34,0)
+        expect(visual.color).toBe(lightColor(floor.color, [100, 20, 0]));
     });
 
     it('记忆态（已探索未可见）普通地形 → #333333 / 0x111111', () => {
         expect(cellAppearance(makeCell(TerrainType.FLOOR, { explored: true, memory: true }), cellCtx())).toEqual({
-            char: '.', color: '#333333', bgColor: 0x111111,
+            char: floor.char, color: '#333333', bgColor: 0x111111,
         });
     });
 
@@ -432,7 +272,7 @@ describe('R-1 cellAppearance：未探索 / 可见 / 记忆 三态', () => {
     it('已探索但 hasMemory=false 且不可见 → 走 terrainAppearance 的变暗（同一视觉）', () => {
         // 钉死 else-if 结构：memory 分支不触发时仍有基础变暗
         expect(cellAppearance(makeCell(TerrainType.FLOOR, { explored: true, memory: false }), cellCtx())).toEqual({
-            char: '.', color: '#333333', bgColor: 0x111111,
+            char: floor.char, color: '#333333', bgColor: 0x111111,
         });
     });
 });
@@ -500,9 +340,9 @@ describe('R-1 cellAppearance：燃烧 / 气体 / 幻觉覆盖', () => {
             makeCell(TerrainType.FLOOR, { visible: true }),
             cellCtx({ gas: gas(GasType.POISON, 0), lightChannels: IDENTITY_LIGHT }),
         )!;
-        expect(visual.char).toBe('.');
-        expect(visual.color).toBe('#aaaaaa'); // 与"无气体+恒等光"完全一致
-        expect(visual.bgColor).toBe(0x222233);
+        expect(visual.char).toBe(floor.char);
+        expect(visual.color).toBe(floor.color); // 与"无气体+恒等光"完全一致
+        expect(visual.bgColor).toBe(floor.bgColor);
     });
 
     it('PARALYSIS/METHANE 气体现在有渲染分支（UI-1 第 4 条反转旧留痕：此前钉死"无分支"）', () => {
@@ -513,8 +353,8 @@ describe('R-1 cellAppearance：燃烧 / 气体 / 幻觉覆盖', () => {
                 makeCell(TerrainType.FLOOR, { visible: true }),
                 cellCtx({ gas: gas(type, 999), lightChannels: IDENTITY_LIGHT }),
             )!;
-            expect(visual.char, `GasType[${type}]`).not.toBe('.');
-            expect(visual.bgColor, `GasType[${type}]`).not.toBe(0x222233);
+            expect(visual.char, `GasType[${type}]`).not.toBe(floor.char);
+            expect(visual.bgColor, `GasType[${type}]`).not.toBe(floor.bgColor);
         }
         // 燃烧格上气体字形让位（!isBurning 守卫在两个新分支同样生效）
         const onFire = cellAppearance(
@@ -537,7 +377,7 @@ describe('R-1 cellAppearance：燃烧 / 气体 / 幻觉覆盖', () => {
         const plain = cellAppearance(makeCell(TerrainType.FLOOR, { visible: true }), cellCtx({ hallucinating: true, cosmetic: miss }))!;
         expect(miss.percentCalls).toEqual([15]);
         expect(miss.pickSources).toEqual([]);
-        expect(plain).toEqual({ char: '.', color: '#222222', bgColor: 0x050505 });
+        expect(plain).toEqual({ char: floor.char, color: '#222222', bgColor: 0x050505 });
     });
 
     it('不可见格不消耗幻觉掷骰（记忆分支零 cosmetic 调用）', () => {

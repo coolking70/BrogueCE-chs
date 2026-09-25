@@ -779,6 +779,9 @@ describe('C-7 载体边界留痕', () => {
         'FUNGUS_LIGHT', 'DEMONIC_STATUE_LIGHT',
         'DARKNESS_CLOUD_LIGHT', 'ECTOPLASM_LIGHT', 'HAUNTED_TORCH_LIGHT',
         'GLYPH_LIGHT_DIM', 'GLYPH_LIGHT_BRIGHT', // V-2b-9d: active/inactive glyph carriers.
+        // U21c: CE Items.c:7901/7920/7939/8111 now creates these display flares.
+        'SCROLL_PROTECTION_LIGHT', 'SCROLL_ENCHANTMENT_LIGHT', 'POTION_STRENGTH_LIGHT',
+        'EMPOWERMENT_LIGHT',
     ]);
 
     function* prodTsFiles(dir: string): Generator<string> {

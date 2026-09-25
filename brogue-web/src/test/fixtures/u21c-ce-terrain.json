@@ -1,0 +1,961 @@
+{
+  "NOTHING": {
+    "ceTile": "NOTHING",
+    "ceLine": 321,
+    "char": " ",
+    "color": "#000000",
+    "bgColor": 0
+  },
+  "GRANITE": {
+    "ceTile": "GRANITE",
+    "ceLine": 322,
+    "char": "#",
+    "color": "#706363",
+    "bgColor": 1644825
+  },
+  "FLOOR": {
+    "ceTile": "FLOOR",
+    "ceLine": 323,
+    "char": "·",
+    "color": "#4c4c4c",
+    "bgColor": 328982
+  },
+  "WALL": {
+    "ceTile": "WALL",
+    "ceLine": 327,
+    "char": "#",
+    "color": "#111111",
+    "bgColor": 7365475
+  },
+  "DOOR": {
+    "ceTile": "DOOR",
+    "ceLine": 328,
+    "char": "+",
+    "color": "#b25926",
+    "bgColor": 4987148
+  },
+  "OPEN_DOOR": {
+    "ceTile": "OPEN_DOOR",
+    "ceLine": 329,
+    "char": "'",
+    "color": "#b25926",
+    "bgColor": 4987148
+  },
+  "WATER_SHALLOW": {
+    "ceTile": "SHALLOW_WATER",
+    "ceLine": 414,
+    "char": "",
+    "color": "#474799",
+    "bgColor": 3158166
+  },
+  "WATER_DEEP": {
+    "ceTile": "DEEP_WATER",
+    "ceLine": 413,
+    "char": "~",
+    "color": "#0c1433",
+    "bgColor": 792140
+  },
+  "CHASM": {
+    "ceTile": "CHASM",
+    "ceLine": 416,
+    "char": "∷",
+    "color": "#111126",
+    "bgColor": 0
+  },
+  "LAVA": {
+    "ceTile": "LAVA",
+    "ceLine": 420,
+    "char": "~",
+    "color": "#b23300",
+    "bgColor": 11678464
+  },
+  "GRASS": {
+    "ceTile": "GRASS",
+    "ceLine": 447,
+    "char": "\"",
+    "color": "#266626",
+    "bgColor": null
+  },
+  "FOLIAGE": {
+    "ceTile": "FOLIAGE",
+    "ceLine": 472,
+    "char": "♈",
+    "color": "#3fff3f",
+    "bgColor": null
+  },
+  "BOG": {
+    "ceTile": "MUD",
+    "ceLine": 415,
+    "char": "~",
+    "color": "#2d230c",
+    "bgColor": 3812113
+  },
+  "STAIRS_UP": {
+    "ceTile": "UP_STAIRS",
+    "ceLine": 334,
+    "char": "<",
+    "color": "#fff200",
+    "bgColor": 2500108
+  },
+  "STAIRS_DOWN": {
+    "ceTile": "DOWN_STAIRS",
+    "ceLine": 333,
+    "char": ">",
+    "color": "#fff200",
+    "bgColor": 2500108
+  },
+  "CHARRED_FLOOR": {
+    "ceTile": "ASH",
+    "ceLine": 461,
+    "char": "'",
+    "color": "#333333",
+    "bgColor": null
+  },
+  "SIGN": {
+    "ceTile": "MACHINE_GLYPH",
+    "ceLine": 404,
+    "char": "∷",
+    "color": "#330c0c",
+    "bgColor": null
+  },
+  "RESET_PLATE": {
+    "ceTile": "MACHINE_PRESSURE_PLATE_USED",
+    "ceLine": 403,
+    "char": "◇",
+    "color": "#4c4c4c",
+    "bgColor": 789565
+  },
+  "TRAP": {
+    "ceTile": "GAS_TRAP_POISON",
+    "ceLine": 378,
+    "char": "◇",
+    "color": "#bf3fd8",
+    "bgColor": null
+  },
+  "SECRET_DOOR": {
+    "ceTile": "SECRET_DOOR",
+    "ceLine": 330,
+    "char": "#",
+    "color": "#111111",
+    "bgColor": 7365475
+  },
+  "PRESSURE_PLATE": {
+    "ceTile": "MACHINE_PRESSURE_PLATE",
+    "ceLine": 402,
+    "char": "◇",
+    "color": "#ffffff",
+    "bgColor": 789565
+  },
+  "LOCKED_DOOR": {
+    "ceTile": "LOCKED_DOOR",
+    "ceLine": 331,
+    "char": "+",
+    "color": "#ffffff",
+    "bgColor": 2500172
+  },
+  "ALTAR": {
+    "ceTile": "ALTAR_INERT",
+    "ceLine": 362,
+    "char": "|",
+    "color": "#0c1116",
+    "bgColor": 5844269
+  },
+  "WEB": {
+    "ceTile": "SPIDERWEB",
+    "ceLine": 470,
+    "char": ":",
+    "color": "#ffffff",
+    "bgColor": null
+  },
+  "BLOOD": {
+    "ceTile": "RED_BLOOD",
+    "ceLine": 453,
+    "char": "·",
+    "color": "#993319",
+    "bgColor": null
+  },
+  "MUD": {
+    "ceTile": "MUD",
+    "ceLine": 415,
+    "char": "~",
+    "color": "#2d230c",
+    "bgColor": 3812113
+  },
+  "CHASM_EDGE": {
+    "ceTile": "CHASM_EDGE",
+    "ceLine": 417,
+    "char": "·",
+    "color": "#ffffff",
+    "bgColor": 789565
+  },
+  "OBSIDIAN": {
+    "ceTile": "OBSIDIAN",
+    "ceLine": 427,
+    "char": "·",
+    "color": "#4c4c4c",
+    "bgColor": 983060
+  },
+  "BRIDGE": {
+    "ceTile": "BRIDGE",
+    "ceLine": 428,
+    "char": "=",
+    "color": "#541e1e",
+    "bgColor": 1967877
+  },
+  "BRIDGE_EDGE": {
+    "ceTile": "BRIDGE_EDGE",
+    "ceLine": 430,
+    "char": "=",
+    "color": "#541e1e",
+    "bgColor": 1967877
+  },
+  "INERT_BRIMSTONE": {
+    "ceTile": "INERT_BRIMSTONE",
+    "ceLine": 426,
+    "char": "'",
+    "color": "#ff7f19",
+    "bgColor": 2956822
+  },
+  "PLAIN_FIRE": {
+    "ceTile": "PLAIN_FIRE",
+    "ceLine": 492,
+    "char": "⋏",
+    "color": "#b23300",
+    "bgColor": null
+  },
+  "EMBERS": {
+    "ceTile": "EMBERS",
+    "ceLine": 469,
+    "char": "'",
+    "color": "#b23300",
+    "bgColor": null
+  },
+  "ASH": {
+    "ceTile": "ASH",
+    "ceLine": 461,
+    "char": "'",
+    "color": "#333333",
+    "bgColor": null
+  },
+  "POISON_GAS": {
+    "ceTile": "POISON_GAS",
+    "ceLine": 502,
+    "char": " ",
+    "color": "#000000",
+    "bgColor": 12533720
+  },
+  "CONFUSION_GAS": {
+    "ceTile": "CONFUSION_GAS",
+    "ceLine": 503,
+    "char": " ",
+    "color": "#000000",
+    "bgColor": 10066329
+  },
+  "STEAM": {
+    "ceTile": "STEAM",
+    "ceLine": 508,
+    "char": " ",
+    "color": "#000000",
+    "bgColor": 16777215
+  },
+  "GAS_FIRE": {
+    "ceTile": "GAS_FIRE",
+    "ceLine": 495,
+    "char": "⋏",
+    "color": "#b23300",
+    "bgColor": null
+  },
+  "METHANE_GAS": {
+    "ceTile": "METHANE_GAS",
+    "ceLine": 507,
+    "char": " ",
+    "color": "#000000",
+    "bgColor": 7510310
+  },
+  "PARALYSIS_GAS": {
+    "ceTile": "PARALYSIS_GAS",
+    "ceLine": 506,
+    "char": " ",
+    "color": "#000000",
+    "bgColor": 16751016
+  },
+  "GAS_EXPLOSION": {
+    "ceTile": "GAS_EXPLOSION",
+    "ceLine": 496,
+    "char": "⋏",
+    "color": "#ffff00",
+    "bgColor": null
+  },
+  "HOLE": {
+    "ceTile": "HOLE",
+    "ceLine": 442,
+    "char": "∷",
+    "color": "#111126",
+    "bgColor": 0
+  },
+  "HOLE_EDGE": {
+    "ceTile": "HOLE_EDGE",
+    "ceLine": 444,
+    "char": "·",
+    "color": "#ffffff",
+    "bgColor": 789565
+  },
+  "FORCEFIELD": {
+    "ceTile": "FORCEFIELD",
+    "ceLine": 477,
+    "char": "#",
+    "color": "#003f3f",
+    "bgColor": 16191
+  },
+  "FORCEFIELD_MELT": {
+    "ceTile": "FORCEFIELD_MELT",
+    "ceLine": 478,
+    "char": "#",
+    "color": "#000000",
+    "bgColor": 16191
+  },
+  "CRYSTAL_WALL": {
+    "ceTile": "CRYSTAL_WALL",
+    "ceLine": 338,
+    "char": "#",
+    "color": "#666699",
+    "bgColor": 6710937
+  },
+  "SACRED_GLYPH": {
+    "ceTile": "SACRED_GLYPH",
+    "ceLine": 479,
+    "char": "∷",
+    "color": "#0c330c",
+    "bgColor": null
+  },
+  "CARPET": {
+    "ceTile": "CARPET",
+    "ceLine": 325,
+    "char": "·",
+    "color": "#3a4c60",
+    "bgColor": 2495500
+  },
+  "STATUE_INERT": {
+    "ceTile": "STATUE_INERT",
+    "ceLine": 351,
+    "char": "ß",
+    "color": "#706363",
+    "bgColor": 3355443
+  },
+  "PEDESTAL": {
+    "ceTile": "PEDESTAL",
+    "ceLine": 369,
+    "char": "|",
+    "color": "#0c1116",
+    "bgColor": 1641523
+  },
+  "STATUE_INERT_DOORWAY": {
+    "ceTile": "STATUE_INERT_DOORWAY",
+    "ceLine": 550,
+    "char": "ß",
+    "color": "#706363",
+    "bgColor": 3355443
+  },
+  "WOODEN_BARRICADE": {
+    "ceTile": "WOODEN_BARRICADE",
+    "ceLine": 341,
+    "char": "#",
+    "color": "#b25926",
+    "bgColor": 328982
+  },
+  "TRAP_DOOR_HIDDEN": {
+    "ceTile": "TRAP_DOOR_HIDDEN",
+    "ceLine": 379,
+    "char": "·",
+    "color": "#4c4c4c",
+    "bgColor": 328982
+  },
+  "MACHINE_GLYPH": {
+    "ceTile": "MACHINE_GLYPH",
+    "ceLine": 404,
+    "char": "∷",
+    "color": "#330c0c",
+    "bgColor": null
+  },
+  "PORTCULLIS_CLOSED": {
+    "ceTile": "PORTCULLIS_CLOSED",
+    "ceLine": 339,
+    "char": "#",
+    "color": "#7f7f7f",
+    "bgColor": 328982
+  },
+  "WORM_TUNNEL_OUTER_WALL": {
+    "ceTile": "WORM_TUNNEL_OUTER_WALL",
+    "ceLine": 570,
+    "char": "#",
+    "color": "#111111",
+    "bgColor": 7365475
+  },
+  "WALL_LEVER_HIDDEN": {
+    "ceTile": "WALL_LEVER_HIDDEN",
+    "ceLine": 347,
+    "char": "#",
+    "color": "#111111",
+    "bgColor": 7365475
+  },
+  "GAS_TRAP_PARALYSIS": {
+    "ceTile": "GAS_TRAP_PARALYSIS",
+    "ceLine": 382,
+    "char": "◇",
+    "color": "#ff99a8",
+    "bgColor": null
+  },
+  "GAS_TRAP_PARALYSIS_HIDDEN": {
+    "ceTile": "GAS_TRAP_PARALYSIS_HIDDEN",
+    "ceLine": 381,
+    "char": "·",
+    "color": "#4c4c4c",
+    "bgColor": 328982
+  },
+  "MACHINE_PARALYSIS_VENT_HIDDEN": {
+    "ceTile": "MACHINE_PARALYSIS_VENT_HIDDEN",
+    "ceLine": 383,
+    "char": "·",
+    "color": "#4c4c4c",
+    "bgColor": 328982
+  },
+  "MACHINE_METHANE_VENT_HIDDEN": {
+    "ceTile": "MACHINE_METHANE_VENT_HIDDEN",
+    "ceLine": 398,
+    "char": "·",
+    "color": "#4c4c4c",
+    "bgColor": 328982
+  },
+  "PILOT_LIGHT_DORMANT": {
+    "ceTile": "PILOT_LIGHT_DORMANT",
+    "ceLine": 342,
+    "char": "#",
+    "color": "#bf6026",
+    "bgColor": 7365475
+  },
+  "ALTAR_CAGE_OPEN": {
+    "ceTile": "ALTAR_CAGE_OPEN",
+    "ceLine": 364,
+    "char": "|",
+    "color": "#0c1116",
+    "bgColor": 5844269
+  },
+  "ALTAR_CAGE_RETRACTABLE": {
+    "ceTile": "ALTAR_CAGE_RETRACTABLE",
+    "ceLine": 368,
+    "char": "#",
+    "color": "#592d2d",
+    "bgColor": 2500134
+  },
+  "COMMUTATION_ALTAR": {
+    "ceTile": "COMMUTATION_ALTAR",
+    "ceLine": 532,
+    "char": "|",
+    "color": "#0c1116",
+    "bgColor": 2965293
+  },
+  "RESURRECTION_ALTAR": {
+    "ceTile": "RESURRECTION_ALTAR",
+    "ceLine": 538,
+    "char": "|",
+    "color": "#0c1116",
+    "bgColor": 4144414
+  },
+  "AMULET_SWITCH": {
+    "ceTile": "AMULET_SWITCH",
+    "ceLine": 529,
+    "char": "·",
+    "color": "#4c4c4c",
+    "bgColor": 328982
+  },
+  "STATUE_INSTACRACK": {
+    "ceTile": "STATUE_INSTACRACK",
+    "ceLine": 354,
+    "char": "ß",
+    "color": "#706363",
+    "bgColor": 3355443
+  },
+  "TORCH_WALL": {
+    "ceTile": "TORCH_WALL",
+    "ceLine": 337,
+    "char": "#",
+    "color": "#ffbf4c",
+    "bgColor": 7365475
+  },
+  "ALTAR_SWITCH": {
+    "ceTile": "ALTAR_SWITCH",
+    "ceLine": 366,
+    "char": "|",
+    "color": "#0c1116",
+    "bgColor": 5844269
+  },
+  "MACHINE_TRIGGER_FLOOR": {
+    "ceTile": "MACHINE_TRIGGER_FLOOR",
+    "ceLine": 361,
+    "char": "·",
+    "color": "#4c4c4c",
+    "bgColor": 328982
+  },
+  "STATUE_DORMANT": {
+    "ceTile": "STATUE_DORMANT",
+    "ceLine": 352,
+    "char": "ß",
+    "color": "#706363",
+    "bgColor": 3355443
+  },
+  "WALL_MONSTER_DORMANT": {
+    "ceTile": "WALL_MONSTER_DORMANT",
+    "ceLine": 357,
+    "char": "#",
+    "color": "#111111",
+    "bgColor": 7365475
+  },
+  "RAT_TRAP_WALL_DORMANT": {
+    "ceTile": "RAT_TRAP_WALL_DORMANT",
+    "ceLine": 559,
+    "char": "#",
+    "color": "#111111",
+    "bgColor": 7365475
+  },
+  "STATUE_DORMANT_DOORWAY": {
+    "ceTile": "STATUE_DORMANT_DOORWAY",
+    "ceLine": 551,
+    "char": "ß",
+    "color": "#706363",
+    "bgColor": 3355443
+  },
+  "TURRET_DORMANT": {
+    "ceTile": "TURRET_DORMANT",
+    "ceLine": 356,
+    "char": "#",
+    "color": "#111111",
+    "bgColor": 7365475
+  },
+  "MONSTER_CAGE_OPEN": {
+    "ceTile": "MONSTER_CAGE_OPEN",
+    "ceLine": 370,
+    "char": "|",
+    "color": "#050516",
+    "bgColor": 2500134
+  },
+  "MONSTER_CAGE_CLOSED": {
+    "ceTile": "MONSTER_CAGE_CLOSED",
+    "ceLine": 371,
+    "char": "#",
+    "color": "#7f7f7f",
+    "bgColor": 5000268
+  },
+  "MACHINE_POISON_GAS_VENT_HIDDEN": {
+    "ceTile": "MACHINE_POISON_GAS_VENT_HIDDEN",
+    "ceLine": 395,
+    "char": "·",
+    "color": "#4c4c4c",
+    "bgColor": 328982
+  },
+  "PORTCULLIS_DORMANT": {
+    "ceTile": "PORTCULLIS_DORMANT",
+    "ceLine": 340,
+    "char": "·",
+    "color": "#4c4c4c",
+    "bgColor": 328982
+  },
+  "WALL_LEVER_HIDDEN_DORMANT": {
+    "ceTile": "WALL_LEVER_HIDDEN_DORMANT",
+    "ceLine": 350,
+    "char": "#",
+    "color": "#111111",
+    "bgColor": 7365475
+  },
+  "BONES": {
+    "ceTile": "BONES",
+    "ceLine": 464,
+    "char": ",",
+    "color": "#cccc4c",
+    "bgColor": null
+  },
+  "COFFIN_CLOSED": {
+    "ceTile": "COFFIN_CLOSED",
+    "ceLine": 372,
+    "char": "-",
+    "color": "#541e1e",
+    "bgColor": 1967877
+  },
+  "ALTAR_KEYHOLE": {
+    "ceTile": "ALTAR_KEYHOLE",
+    "ceLine": 363,
+    "char": "|",
+    "color": "#0c1116",
+    "bgColor": 5844269
+  },
+  "ALTAR_SWITCH_RETRACTING": {
+    "ceTile": "ALTAR_SWITCH_RETRACTING",
+    "ceLine": 367,
+    "char": "|",
+    "color": "#0c1116",
+    "bgColor": 5844269
+  },
+  "BRAZIER": {
+    "ceTile": "BRAZIER",
+    "ceLine": 573,
+    "char": "⋏",
+    "color": "#b23300",
+    "bgColor": 3355443
+  },
+  "DEMONIC_STATUE": {
+    "ceTile": "DEMONIC_STATUE",
+    "ceLine": 547,
+    "char": "ß",
+    "color": "#706363",
+    "bgColor": 3355443
+  },
+  "FLAMETHROWER_HIDDEN": {
+    "ceTile": "FLAMETHROWER_HIDDEN",
+    "ceLine": 387,
+    "char": "·",
+    "color": "#4c4c4c",
+    "bgColor": 328982
+  },
+  "GAS_TRAP_POISON_HIDDEN": {
+    "ceTile": "GAS_TRAP_POISON_HIDDEN",
+    "ceLine": 377,
+    "char": "·",
+    "color": "#4c4c4c",
+    "bgColor": 328982
+  },
+  "MANACLE_L": {
+    "ceTile": "MANACLE_L",
+    "ceLine": 486,
+    "char": "-",
+    "color": "#7f7f7f",
+    "bgColor": null
+  },
+  "MANACLE_T": {
+    "ceTile": "MANACLE_T",
+    "ceLine": 484,
+    "char": "|",
+    "color": "#7f7f7f",
+    "bgColor": null
+  },
+  "PORTAL": {
+    "ceTile": "PORTAL",
+    "ceLine": 355,
+    "char": "Ω",
+    "color": "#706363",
+    "bgColor": 328982
+  },
+  "SACRIFICE_ALTAR_DORMANT": {
+    "ceTile": "SACRIFICE_ALTAR_DORMANT",
+    "ceLine": 543,
+    "char": "|",
+    "color": "#0c1116",
+    "bgColor": 5844269
+  },
+  "SACRIFICE_CAGE_DORMANT": {
+    "ceTile": "SACRIFICE_CAGE_DORMANT",
+    "ceLine": 546,
+    "char": "#",
+    "color": "#592d2d",
+    "bgColor": 2500134
+  },
+  "DEAD_GRASS": {
+    "ceTile": "DEAD_GRASS",
+    "ceLine": 448,
+    "char": "\"",
+    "color": "#332100",
+    "bgColor": null
+  },
+  "VOMIT": {
+    "ceTile": "VOMIT",
+    "ceLine": 457,
+    "char": "·",
+    "color": "#997f0c",
+    "bgColor": null
+  },
+  "LUMINESCENT_FUNGUS": {
+    "ceTile": "LUMINESCENT_FUNGUS",
+    "ceLine": 450,
+    "char": "\"",
+    "color": "#267f7f",
+    "bgColor": null
+  },
+  "DEAD_FOLIAGE": {
+    "ceTile": "DEAD_FOLIAGE",
+    "ceLine": 473,
+    "char": "♈",
+    "color": "#332100",
+    "bgColor": null
+  },
+  "RUBBLE": {
+    "ceTile": "RUBBLE",
+    "ceLine": 465,
+    "char": ",",
+    "color": "#7f7f7f",
+    "bgColor": null
+  },
+  "GRAY_FUNGUS": {
+    "ceTile": "GRAY_FUNGUS",
+    "ceLine": 449,
+    "char": "\"",
+    "color": "#4c4c4c",
+    "bgColor": null
+  },
+  "WORM_TUNNEL_MARKER_DORMANT": {
+    "ceTile": "WORM_TUNNEL_MARKER_DORMANT",
+    "ceLine": 568,
+    "char": "",
+    "color": "#000000",
+    "bgColor": null
+  },
+  "BLOODFLOWER_STALK": {
+    "ceTile": "BLOODFLOWER_STALK",
+    "ceLine": 513,
+    "char": "♈",
+    "color": "#4c0c66",
+    "bgColor": 2492185
+  },
+  "HAVEN_BEDROLL": {
+    "ceTile": "HAVEN_BEDROLL",
+    "ceLine": 517,
+    "char": "=",
+    "color": "#000000",
+    "bgColor": 1643532
+  },
+  "FLOOR_FLOODABLE": {
+    "ceTile": "FLOOR_FLOODABLE",
+    "ceLine": 324,
+    "char": "·",
+    "color": "#4c4c4c",
+    "bgColor": 328982
+  },
+  "CHASM_WITH_HIDDEN_BRIDGE": {
+    "ceTile": "CHASM_WITH_HIDDEN_BRIDGE",
+    "ceLine": 554,
+    "char": "∷",
+    "color": "#111126",
+    "bgColor": 0
+  },
+  "LAVA_RETRACTABLE": {
+    "ceTile": "LAVA_RETRACTABLE",
+    "ceLine": 421,
+    "char": "~",
+    "color": "#b23300",
+    "bgColor": 11678464
+  },
+  "MUD_FLOOR": {
+    "ceTile": "MUD_FLOOR",
+    "ceLine": 576,
+    "char": "·",
+    "color": "#3a2b11",
+    "bgColor": 986119
+  },
+  "MUD_WALL": {
+    "ceTile": "MUD_WALL",
+    "ceLine": 577,
+    "char": "#",
+    "color": "#8c7200",
+    "bgColor": 3350023
+  },
+  "MUD_DOORWAY": {
+    "ceTile": "MUD_DOORWAY",
+    "ceLine": 578,
+    "char": "Ω",
+    "color": "#8c7200",
+    "bgColor": 986119
+  },
+  "MARBLE_FLOOR": {
+    "ceTile": "MARBLE_FLOOR",
+    "ceLine": 326,
+    "char": "·",
+    "color": "#4c3a60",
+    "bgColor": 986145
+  },
+  "FLOOD_TRAP": {
+    "ceTile": "FLOOD_TRAP",
+    "ceLine": 390,
+    "char": "◇",
+    "color": "#0000ff",
+    "bgColor": null
+  },
+  "ELECTRIC_CRYSTAL_OFF": {
+    "ceTile": "ELECTRIC_CRYSTAL_OFF",
+    "ceLine": 563,
+    "char": "¤",
+    "color": "#666699",
+    "bgColor": 1644825
+  },
+  "TURRET_LEVER": {
+    "ceTile": "TURRET_LEVER",
+    "ceLine": 565,
+    "char": "/",
+    "color": "#111111",
+    "bgColor": 7365475
+  },
+  "HAUNTED_TORCH_DORMANT": {
+    "ceTile": "HAUNTED_TORCH_DORMANT",
+    "ceLine": 344,
+    "char": "#",
+    "color": "#ffbf4c",
+    "bgColor": 7365475
+  },
+  "DARK_FLOOR_DORMANT": {
+    "ceTile": "DARK_FLOOR_DORMANT",
+    "ceLine": 358,
+    "char": "·",
+    "color": "#4c4c4c",
+    "bgColor": 328982
+  },
+  "MACHINE_FLOOD_WATER_DORMANT": {
+    "ceTile": "MACHINE_FLOOD_WATER_DORMANT",
+    "ceLine": 432,
+    "char": "",
+    "color": "#474799",
+    "bgColor": 3158166
+  },
+  "MACHINE_FLOOD_WATER_SPREADING": {
+    "ceTile": "MACHINE_FLOOD_WATER_SPREADING",
+    "ceLine": 433,
+    "char": "",
+    "color": "#474799",
+    "bgColor": 3158166
+  },
+  "MACHINE_COLLAPSE_EDGE_DORMANT": {
+    "ceTile": "MACHINE_COLLAPSE_EDGE_DORMANT",
+    "ceLine": 418,
+    "char": "·",
+    "color": "#4c4c4c",
+    "bgColor": 328982
+  },
+  "MACHINE_COLLAPSE_EDGE_SPREADING": {
+    "ceTile": "MACHINE_COLLAPSE_EDGE_SPREADING",
+    "ceLine": 419,
+    "char": "·",
+    "color": "#ffffff",
+    "bgColor": 789565
+  },
+  "CHASM_WITH_HIDDEN_BRIDGE_ACTIVE": {
+    "ceTile": "CHASM_WITH_HIDDEN_BRIDGE_ACTIVE",
+    "ceLine": 555,
+    "char": "·",
+    "color": "#ffffff",
+    "bgColor": 789565
+  },
+  "STONE_BRIDGE": {
+    "ceTile": "STONE_BRIDGE",
+    "ceLine": 431,
+    "char": "·",
+    "color": "#ffffff",
+    "bgColor": 789565
+  },
+  "LAVA_RETRACTING": {
+    "ceTile": "LAVA_RETRACTING",
+    "ceLine": 422,
+    "char": "~",
+    "color": "#b23300",
+    "bgColor": 11678464
+  },
+  "FLOOD_WATER_SHALLOW": {
+    "ceTile": "FLOOD_WATER_SHALLOW",
+    "ceLine": 446,
+    "char": "",
+    "color": "#474799",
+    "bgColor": 3158166
+  },
+  "FLOOD_WATER_DEEP": {
+    "ceTile": "FLOOD_WATER_DEEP",
+    "ceLine": 445,
+    "char": "~",
+    "color": "#0c1433",
+    "bgColor": 792140
+  },
+  "MACHINE_CHASM_EDGE": {
+    "ceTile": "MACHINE_CHASM_EDGE",
+    "ceLine": 556,
+    "char": "·",
+    "color": "#ffffff",
+    "bgColor": 789565
+  },
+  "PUDDLE": {
+    "ceTile": "PUDDLE",
+    "ceLine": 463,
+    "char": "·",
+    "color": "#303096",
+    "bgColor": null
+  },
+  "MACHINE_MUD_DORMANT": {
+    "ceTile": "MACHINE_MUD_DORMANT",
+    "ceLine": 434,
+    "char": "·",
+    "color": "#2d230c",
+    "bgColor": 3812113
+  },
+  "DARK_FLOOR_DARKENING": {
+    "ceTile": "DARK_FLOOR_DARKENING",
+    "ceLine": 359,
+    "char": "·",
+    "color": "#4c4c4c",
+    "bgColor": 328982
+  },
+  "DARK_FLOOR": {
+    "ceTile": "DARK_FLOOR",
+    "ceLine": 360,
+    "char": "·",
+    "color": "#4c4c4c",
+    "bgColor": 328982
+  },
+  "ECTOPLASM": {
+    "ceTile": "ECTOPLASM",
+    "ceLine": 468,
+    "char": "·",
+    "color": "#72338c",
+    "bgColor": null
+  },
+  "HAUNTED_TORCH_TRANSITIONING": {
+    "ceTile": "HAUNTED_TORCH_TRANSITIONING",
+    "ceLine": 345,
+    "char": "#",
+    "color": "#ffbf4c",
+    "bgColor": 7365475
+  },
+  "HAUNTED_TORCH": {
+    "ceTile": "HAUNTED_TORCH",
+    "ceLine": 346,
+    "char": "#",
+    "color": "#bf3366",
+    "bgColor": 7365475
+  },
+  "ELECTRIC_CRYSTAL_ON": {
+    "ceTile": "ELECTRIC_CRYSTAL_ON",
+    "ceLine": 564,
+    "char": "¤",
+    "color": "#ffffff",
+    "bgColor": 6710937
+  },
+  "MACHINE_GLYPH_INACTIVE": {
+    "ceTile": "MACHINE_GLYPH_INACTIVE",
+    "ceLine": 405,
+    "char": "∷",
+    "color": "#330c0c",
+    "bgColor": null
+  },
+  "STENCH_SMOKE_GAS": {
+    "ceTile": "STENCH_SMOKE_GAS",
+    "ceLine": 505,
+    "char": " ",
+    "color": "#000000",
+    "bgColor": 10059532
+  },
+  "ANCIENT_SPIRIT_VINES": {
+    "ceTile": "ANCIENT_SPIRIT_VINES",
+    "ceLine": 525,
+    "char": ":",
+    "color": "#7f0c3f",
+    "bgColor": null
+  },
+  "ANCIENT_SPIRIT_GRASS": {
+    "ceTile": "GRASS",
+    "ceLine": 447,
+    "char": "\"",
+    "color": "#266626",
+    "bgColor": null
+  }
+}

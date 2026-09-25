@@ -14,6 +14,15 @@ export class Logger {
     public messages: LogMessage[] = [];
     private nextId: number = 0;
 
+    public getState() {
+        return { messages: this.messages.map(m => ({ ...m })), nextId: this.nextId };
+    }
+
+    public setState(state: ReturnType<Logger['getState']>): void {
+        this.messages = state.messages.map(m => ({ ...m }));
+        this.nextId = state.nextId;
+    }
+
     public reset(): void {
         this.messages = [];
         this.nextId = 0;

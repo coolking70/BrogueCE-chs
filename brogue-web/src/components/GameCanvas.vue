@@ -333,6 +333,8 @@ onMounted(async () => {
                     ? cellAppearance(cell, {
                         gas: game.environment.gasGrid[x]?.[y],
                         lightChannels: game.lightMap.lightAt(x, y),
+                        flareChannels: game.flareLightAt(x, y),
+                        depth: game.depth,
                         groundItem: itemAtCell.get(`${x},${y}`) ?? null,
                         carriedItem: null,
                         hallucinating,
@@ -652,9 +654,9 @@ onMounted(async () => {
         }
 
         // Bolt animation tick
-        if (game.tickBoltAnimation()) {
-            render();
-        }
+        const boltChanged = game.tickBoltAnimation();
+        const flareChanged = game.tickFlareAnimation(ticker.deltaMS);
+        if (boltChanged || flareChanged) render();
 
         if (game.autoPath.length > 0) {
             pathingTimer++;

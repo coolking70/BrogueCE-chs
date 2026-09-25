@@ -1,0 +1,85 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web
+
+stdout | src/test/p1_37_machine_flag_i18n.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/p1_37_machine_flag_i18n.test.ts (9 tests | 1 failed | 8 skipped) 10390ms
+     ↓ AD1: 5 种子 × D1-D26 —— 楼梯/钥匙/护符绝不落机器格；机器格上的物品与怪物必须是机器自身的布点
+     ↓ AD2: 生成层不含任何 CHARRED_FLOOR——宝库地板已恢复普通 FLOOR（改判转换回退即红）
+     × AD3a: 5 种子 × D1-D26 每台机器的旗标穿存档往返；缺机器字段的旧存档被拒绝 10389ms
+     ↓ AD3b: 人工墙上 feature 必在 interior 外；命中数 > 0 且逐格对应本机 feature 记录
+     ↓ AD4: 焦土长草不作用于机器格；真 CHARRED 格仍会复绿（机制活着，非空转）
+     ↓ AD5a: 充能/诅咒/解咒文案无英文字母（六条登记项 + 两条漏网项的渲染面）
+     ↓ AD5b: 刺剑突进命中追加"猛烈突刺"，普通近战不带（B-1 登记项补齐）
+     ↓ AD5c: 附魔觉醒符文的文案走 i18n（runic 插值为内部 id，既有缺口照旧登记）
+     ↓ 扫描器门：全仓 logger.log 裸字符串零英文；中文硬编码钉死在既有清单
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/p1_37_machine_flag_i18n.test.ts > P1-37 机器旗标：宝库恢复地板、内容落点回避机器格 > AD3a: 5 种子 × D1-D26 每台机器的旗标穿存档往返；缺机器字段的旧存档被拒绝
+AssertionError: seed424242/D2: 读档后 machineCells 未按网格精确重建: expected Set{ 347, 506, 742, 500, 661, …(40) } to deeply equal Set{ 500, 583, 820, 347, 508, …(10) }
+
+- Expected
++ Received
+
+@@ -7,11 +7,41 @@
+    199,
+    200,
+    201,
+    202,
+    279,
++   344,
++   345,
++   346,
+    347,
++   348,
++   422,
++   423,
++   424,
++   425,
++   426,
++   427,
+    500,
++   501,
++   502,
++   503,
++   504,
++   505,
++   506,
++   507,
+    508,
++   580,
++   581,
++   582,
+    583,
++   584,
++   585,
++   660,
++   661,
++   662,
++   663,
++   664,
++   740,
++   741,
++   742,
+    820,
+  }
+
+ ❯ src/test/p1_37_machine_flag_i18n.test.ts:302:60
+    300|                 }
+    301|                 expect((reloaded as unknown as { machineCells: Set<num…
+    302|                     `${label}: 读档后 machineCells 未按网格精确重建`).toEqual(gri…
+       |                                                            ^
+    303|
+    304|                 // 用户验收裁决/U03：缺 machineNumber 的旧档拒绝，不默认清零；当前格式逐格往返仍如上。
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 skipped (9)
+   Start at  08:07:11
+   Duration  11.88s (transform 827ms, setup 0ms, import 1.32s, tests 10.39s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web/ai_docs/reports/u-03-evidence/adjudication/p1-37-probe.json

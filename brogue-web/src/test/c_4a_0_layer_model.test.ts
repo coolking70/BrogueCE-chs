@@ -578,33 +578,20 @@ describe('C-4a-0 存档', () => {
         expect(reloaded.grid.getCell(11, 11)!.terrain).toBe(C.WATER_DEEP);
     });
 
-    it('旧格式兼容：只有 terrain 字段的存档读入后 getter 逐格还原且层归一（读到 NOTHING 即翻红）', () => {
+    it('拒绝只有 terrain、缺少四层 layers 的旧存档，保留当前世界', () => {
         const game = createHeadlessGame(777);
         const snap = game.toSnapshot();
-        const expected: Array<{ x: number; y: number; terrain: TerrainType }> =
-            snap.grid.map((c) => ({ x: c.x, y: c.y, terrain: c.terrain }));
 
-        // 模拟 C-4a-0 之前的旧存档：整张 grid 删掉 layers 字段。
+        // 用户验收裁决（沿用 U01）：不兼容旧档；U03 要求保存真实四层，不能由 terrain 补造。
         const legacy: typeof snap = {
             ...snap,
             grid: snap.grid.map(({ layers: _layers, ...rest }) => rest),
         };
         const reloaded = createHeadlessGame(1);
-        expect(reloaded.loadSnapshot(legacy)).toBe(true);
-
-        let checked = 0;
-        for (const cell of expected) {
-            const got = reloaded.grid.getCell(cell.x, cell.y)!;
-            // 错误实现示例：读不到 layers 时直接把层留成全 NOTHING → getter
-            // 返回 NOTHING → 这里翻红。
-            expect(got.terrain, `(${cell.x},${cell.y}) 旧档还原`).toBe(cell.terrain);
-            const home = TERRAIN_HOME_LAYER[cell.terrain];
-            for (let l = 0; l < L.COUNT; l++) {
-                expect(got.layers[l]).toBe(l === home ? cell.terrain : C.NOTHING);
-            }
-            checked++;
-        }
-        expect(checked).toBeGreaterThan(1000);
+        const grid = reloaded.grid, before = reloaded.toSnapshot().grid;
+        expect(reloaded.loadSnapshot(legacy)).toBe(false);
+        expect(reloaded.grid).toBe(grid);
+        expect(reloaded.toSnapshot().grid).toEqual(before);
     });
 });
 

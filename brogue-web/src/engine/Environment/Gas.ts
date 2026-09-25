@@ -138,6 +138,19 @@ export class EnvironmentManager {
      *  即时结算。 */
     private explosiveSpawnQueue: Pos[] = [];
 
+    public getState() {
+        return {
+            fireCaughtQueue: this.fireCaughtQueue.map(p => ({ ...p })),
+            explosiveSpawnQueue: this.explosiveSpawnQueue.map(p => ({ ...p })),
+        };
+    }
+
+    public setState(state: ReturnType<EnvironmentManager['getState']>): void {
+        this.fireCaughtQueue = state.fireCaughtQueue.map(p => ({ ...p }));
+        this.explosiveSpawnQueue = state.explosiveSpawnQueue.map(p => ({ ...p }));
+        this.syncGasMirror();
+    }
+
     constructor(grid: Grid) {
         this.grid = grid;
         // Initialize empty gas grid

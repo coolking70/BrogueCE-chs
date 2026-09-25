@@ -232,10 +232,13 @@ describe('W-13 reflection, creatures, maps and persistence', () => {
         expect(rebuild).toHaveBeenCalledExactlyOnceWith(true);
         expect(rng.randomNumbersGenerated - beforeCast).toBe(DCOLS * DROWS - 1);
     });
-    it('current flags round-trip through a real snapshot; legacy saves clear flags instead of retaining another map', () => {
+    it('current flags round-trip through a real snapshot; missing flags reject the save without changing the live map', () => {
         const g = createHeadlessGame(13013, 'test'); protect(g, 5); const snapshot = g.toSnapshot();
         expect(snapshot.impregnableCells).toContain(5 * DCOLS + 5); g.loadSnapshot(snapshot); expect(g.grid.isImpregnable(5, 5)).toBe(true);
-        delete snapshot.impregnableCells; g.loadSnapshot(snapshot); expect(g.grid.impregnableCells.size).toBe(0);
+        // 用户验收裁决/U03：不兼容缺字段旧档，不把未保存的不可破坏集合默认成空。
+        const before = new Set(g.grid.impregnableCells);
+        delete snapshot.impregnableCells; expect(g.loadSnapshot(snapshot)).toBe(false);
+        expect(g.grid.impregnableCells).toEqual(before);
     });
     it('W-25 exposes tunneling as an item with its existing effect', () => {
         expect(getBoltForItem('staff_of_tunneling')?.effect).toBe(BoltEffect.TUNNELING); expect(ItemLoader.staffs.some(i => i.id === 'staff_of_tunneling')).toBe(true);

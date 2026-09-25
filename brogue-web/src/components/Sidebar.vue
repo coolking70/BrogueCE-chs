@@ -7,6 +7,7 @@ import type { LogMessage } from '../engine/Systems/Logger';
 import { creatureStatusRows, isSidebarVisibleStatus } from '../engine/Status/statusConfig';
 import { STOMACH_SIZE, HUNGER_THRESHOLD, WEAK_THRESHOLD, FAINT_THRESHOLD } from '../entities/Player';
 import { computeSidebarWidth, displaySettings } from '../engine/Settings';
+import { visibleMonsterRows } from '../engine/UI/MonsterSidebar';
 
 // P2-6：侧栏宽度模式（固定 340px / 按容器宽 20% 且不低于最小宽度）。
 // 侧栏是 app-layout（100vw flex 行）的直接子元素，容器宽即窗口宽；
@@ -17,6 +18,9 @@ const onWindowResize = () => {
   containerWidth.value = window.innerWidth;
 };
 const sidebarStyle = computed(() => {
+  if (containerWidth.value <= 600) {
+    return { width: '100%', minWidth: '100%', maxWidth: '100%', height: '48vh' };
+  }
   const w = computeSidebarWidth(containerWidth.value, displaySettings.sidebarWidthMode);
   return { width: `${w}px`, minWidth: `${w}px`, maxWidth: `${w}px` };
 });
@@ -28,6 +32,7 @@ const playerNutrition = ref(STOMACH_SIZE);
 const logs = ref<LogMessage[]>([]);
 const hoverText = ref('');
 const playerStatuses = ref<ReturnType<typeof creatureStatusRows>>([]);
+const monsterRows = ref<ReturnType<typeof visibleMonsterRows>>([]);
 
 // Tiers mirror Player.computeHungerState: thresholds are CE Rogue.h:1125-1127
 const getNutritionStatus = (nutrition: number) => {
@@ -53,6 +58,7 @@ onMounted(() => {
       // UI-1 第 5 条：CE 有意不显示的状态（explosion_immunity 等，见
       // statusConfig.CE_EMPTY_NAME_STATUSES）不进侧栏（CE IO.c:4823 name[0] 门）。
       playerStatuses.value = creatureStatusRows(activeGame.player, isSidebarVisibleStatus);
+      monsterRows.value = visibleMonsterRows(activeGame.player, activeGame.grid, activeGame.monsters);
     }
     // Clone array for Vue reactivity
     logs.value = [...logger.messages].reverse(); 
@@ -111,6 +117,22 @@ onUnmounted(() => {
       </div>
     </div>
     
+    <div v-if="monsterRows.length" class="monster-panel">
+      <div class="monster-heading">{{ $t('sidebar.monsters') }}</div>
+      <div v-for="monster in monsterRows" :key="monster.id" class="monster-entry">
+        <div class="monster-line">
+          <span class="monster-glyph" :style="{ color: monster.color }">{{ monster.char }}</span>
+          <span class="monster-name">{{ monster.name }}</span>
+          <span class="monster-health">{{ monster.hp }}/{{ monster.maxHp }}</span>
+        </div>
+        <div class="monster-hp-track"><div class="monster-hp-fill"
+          :style="{ width: `${Math.max(0, Math.min(100, monster.hp / Math.max(1, monster.maxHp) * 100))}%`, background: monster.ally ? '#4ade80' : '#ef4444' }"></div></div>
+        <div v-if="monster.statuses.length" class="monster-statuses">
+          <span v-for="status in monster.statuses" :key="status.id" :style="{ color: status.color }">{{ status.label }} {{ status.value }}</span>
+        </div>
+      </div>
+    </div>
+
     <!-- Inspect Info -->
     <div v-if="hoverText" class="inspect-panel">
         <span class="inspect-icon">👁</span> {{ hoverText }}
@@ -137,6 +159,16 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+.monster-panel { max-height: 28vh; overflow-y: auto; margin-bottom: 1rem; padding: .65rem; background: rgba(0,0,0,.3); border-radius: 8px; }
+.monster-heading { font-size: .75rem; color: var(--text-secondary); margin-bottom: .5rem; }
+.monster-entry { margin-bottom: .55rem; font-family: var(--font-mono); font-size: .8rem; }
+.monster-line { display: flex; align-items: center; gap: .4rem; }
+.monster-glyph { width: 1.2em; font-weight: bold; }
+.monster-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.monster-health { color: var(--text-secondary); }
+.monster-hp-track { height: 4px; background: #24242c; margin: .2rem 0; }
+.monster-hp-fill { height: 100%; }
+.monster-statuses { display: flex; gap: .4rem; flex-wrap: wrap; font-size: .7rem; }
 .sidebar {
   /* 宽度由 computeSidebarWidth 按设置（固定/按比例）以内联样式驱动，
      三值同步避免 flex 压缩或撑开；固定模式 = 原来的 340px 现状。 */

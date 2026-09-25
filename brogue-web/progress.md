@@ -1206,3 +1206,31 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 闭包探索批次发现37条红：计数夹具/有限样本覆盖/旧waypoint假设/固定生成成本及地形组合；其中活动层重入误报是真实实现问题，补currentLevelDepth正确登记，stage-cache对156层所有观测零漂移。22项专项通过。
 - 扩展HEAD反事实457通过；新增零起点/合成固定origin/固定机制seed/保留原seed并追加连续1..32样本，1065个既有expect AST保持不变。
 - C5固定11935、W13旧waypoint隔离、C4b精确图层白名单的3条期望改义需任务书§5裁决；草案只在临时副本验证（3通过），尚未应用到真实测试。用户异步裁决已请求；不得把等待当批准。
+
+## 2026-09-25 U03：整局与跨层存档
+
+- 任务：执行 ai_docs/tasks/u-03.prompt.md，权威 X-0 §4.2 U03、§3.1 K01/K03；不兼容旧档。
+- 编辑前两份清单：允许改义为整局 schema whole-run-v1（实体外壳仍 v2）、各层完整网格/气味/环境队列、run 状态/ID 游标精确恢复、App 大存档存储；原实例合同、生成结果/两流消费、玩法公式、源码扫描守卫及所有既有 expect 不放宽。
+- CE 已读 RogueMain.startLevel、Time.monsterEntersLevel/monstersApproachStairs/resetScentTurnNumber。普通跟随需倒计时、路径/位移/状态全链，环境补跑需独立于整回合调度；按任务允许明确登记 U03b，本轮不引入近似行为。
+- 已知入场 U02b 三条待裁决红项（C4b/C5/W13）保持，最终重新验证并报告，不擅改旧期望。
+
+- U03 核心：所有已访层/当前层、全局实体图、pending 坠层、run 计量/ID/搜索/状态、气味/环境队列均保存。App 改用 IndexedDB 单事务保存世界与摘要；完整 26 层约 32.4 MB，避免 localStorage 容量限制。
+- 新增11项专项通过，原 U01/U02a/P1-35 通过。U02b 的“已访旧层不可回去”旧断言已因本轮修复翻红；旧格式 layers/机器/风味等守卫也需按用户“不兼容”裁决登记，原 expect 保持。
+- 浏览器首轮夹具直接 handlePlayerAction 漏掉真实 UI 回调的 update，导致可见集合不同；补齐同一输入链后复跑。技能客户端已运行并打开截图（黑色 canvas 输出不算视觉通过），独立整页截图用于验证。
+- 最终专项扩为14项：加入全部 Game 字段分类 AST 守卫、真实 monstersFall 到缓存/未生成层、唤醒/再休眠/死亡携带品落地的连续/存读等价。已通过；源码字段清单共94项。类型检查修正新测试的 Array.at（项目 lib 目标不支持），不改 tsconfig。
+- 已核当前 HEAD 的 C5/W13/C4b 规则与 U02b 历史报告不一致：旧报告的3红项不能视作本轮既有失败。最终以当前源码实跑为准。新增的旧档迁移/清 pendingIdentify/丢弃已访层旧期望保留，单独跑 HEAD 反事实；首次临时副本漏 CE JSON，已修补副本输入，实际测试不改。
+- 本轮不启用普通跨层追随，不执行50步预热/至多100步回层补跑；后续U03b须使用离层绝对客观时钟，接 CE 到达倒计时与地形/占位分支，并调用 U10 clearCorpseTargetOnLevelChange。U27可把 whole-run snapshot 作为稳定检查点；动画生成器中途拒绝保存。
+
+## 2026-09-25 U04c：K31 机器格单一来源
+- 用户追加 X-0 §4.2 U04c，同工作树续作 U03；CE 权威，允许生成变化，归因与独立守卫后重捕获 generation_baseline；不做旧存档兼容。
+- CE 合同：Architect.c:1228–1234 interior、1484–1488 成功外部 feature 写逐格编号；1691–1699 NO_INTERIOR_FLAG 清非 wired 格；Items.c:630–632 热图、Architect.c:3830 随机落位、Monsters.c:1175–1177 传送读逐格 IS_IN_MACHINE；Items.c:4036–4044 钥匙读该格编号。
+- 允许实施文件：Game.ts、Map/MachineCells.ts、CreaturePlacement.ts、BlueprintEngine.ts 注释；新增 U04c 守卫/证据脚本。machineCells 是全 grid.machineNumber!=0 的缓存投影，生成/返层/快照/读档统一；当前格式中集合不一致拒绝。
+- 预计改义：U03 独立伪造集合和 W11 只写集合的夹具转为真实网格编号；生成基线仅完成单变量归因及独立守卫后重采。P1-37 AD3a 原期望、其他玩法断言和 CE/数据/配置均不可放宽。R∪S 从反向依赖与 machineCells/machineNumber/mr.cells/NO_INTERIOR_FLAG/heatMap 等全仓语义检索获得。
+- 实现后原 P1-37 全文件9项、含130层AD3a全部通过，断言未改。新增7项U04c守卫通过；恢复union mr.cells的单点反向变体使2条生成守卫失败。独立B4b/V6共33项、C3/U05a共66项通过（包含390层连通性与钥匙可解性/产物唯一性）。
+- 漂移：旧实现复现原基线；只切换populateLevel来源的版本与完整修复在全部生成世界/RNG/落位轨迹逐字一致。104层原有fp/n/species/items未变，88层物品位置、3层怪物位置、45层RNG累计计数变化，结束时两流RNG状态无变。重捕获仅更新note，前后哈希见recapture.json；没有扩展或弱化原基线字段。
+- 中途新落点夹具误期望fall选原点，实际合同从radius1开始；改为仅一个邻格合法来验证机器排除，未改落位实现。W11夹具改为网格编号后移除未使用DCOLS导入；首次build类型报错保留。浏览器首跑在渲染完成前取预保存状态导致visibleMonsterIds差异，复跑从实际IndexedDB检查点比较并等待渲染，不排除可见字段。
+- 最终冻结入口 scripts/u04c-final-check.mjs：边界审计、R∪S显式154文件（常规153+drift1）、build、test:drift。之后只回填报告/派生证据；不再修改实现、断言、基线或扫描器。U04c仅纠正机器格来源，不声称修复CE整套生成几何或其余U04分项。
+- 浏览器最终补证：直接过楼梯后needsRender未置位，使存档时visibleMonsterIds为空、加载后UI update发现怪物。维持本轮边界不改渲染/更新实现；真实等待一回合形成完整行动检查点后，实际保存→刷新→继续→返D1的全状态（只排除菜单日志/savedAt）比较通过。首跑差异原样留存，不把立即过梯保存的可见集合也声明通过。为收纳已验证的浏览器脚本，首次冻结批次主动停止并归档prefinal-first-freeze，最终门禁全部重新冻结复跑。
+- 完整R∪S第二批收集154文件，3178通过/2失败，仅blueprint_center c/e旧合同：把旧center上物品都视为非法直投，CE清号后/空interior锚点已非机器格。该批build/drift通过、517输入changed=[]，完整归档prefinal-center-contract。
+- 根据用户“冲突以CE为准”修正第三个旧测试blueprint_center：追踪真实spawnPopulateItem对象与热图金币来源，只在grid编号0且单次消费时承认普通落物；声明feature、可通行性、center几何守卫保留，非法/重复直投仍红。43种子1118层中17件旧违例全有真实人口来源，另1件声明origin；2件是原宝藏类型。原始逐件列表和旧实现反事实/非法直投反向变体分别保留。生成代码和基线未进一步改动。
+- center最终守卫6/6通过（43种子、1118层），旧Game+原c/e反事实2/2通过；最终Game注入已清号center额外直投附魔卷轴的变体，新c/e均失败，非选中4项不计通过。金币来源同时要求真实热图候选；build通过。所有改动结束，重新冻结全部输入，第三批完整门禁为最终批次；仅回填报告/派生证据。

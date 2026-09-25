@@ -16,6 +16,7 @@ import { Monster, type MonsterData } from '../entities/Monster';
 import monsters from '../data/monsters.json';
 import mutations from '../data/mutations.json';
 import { rng } from '../engine/Random';
+import { LightKind } from '../engine/Map/LightCatalog';
 import { createHeadlessGame } from './harness';
 const data=(id:string)=>(monsters as MonsterData[]).find(d=>d.id===id)!;
 function install(g:Game){
@@ -88,7 +89,7 @@ describe('W-21 heal panacea follows individual CE branches',()=>{
 describe('W-21 contact gates, autoID and impact flash',()=>{
  it.each(['goblin_totem','arrow_turret','Warden_of_Yendor'])('immune %s blocks travel without any writes, flash, identification or RNG',id=>{
   const g=scene(),m=mob(g,id),behind=mob(g,'rat',12,5),item=wand();m.abilityFlags.delete('MA_REFLECT_100');m.hp=1;m.statusDurations={poisoned:7};m.poisonAmount=3;const before=dump(m),draw=rng.randomNumbersGenerated;
-  const r=g.zapBoltFromPlayer(bolt(),item,behind.loc);expect(dump(m)).toBe(before);expect(behind.newPowerCount).toBe(0);expect(r.outcome?.autoID).toBe(false);expect(r.frames.some(f=>f.durationMs===180)).toBe(false);expect(rng.randomNumbersGenerated).toBe(draw);
+  const r=g.zapBoltFromPlayer(bolt(),item,behind.loc);expect(dump(m)).toBe(before);expect(behind.newPowerCount).toBe(0);expect(r.outcome?.autoID).toBe(false);expect((g as any).activeFlares ?? []).toHaveLength(0);expect(r.frames.some(f=>f.durationMs===180)).toBe(false);expect(rng.randomNumbersGenerated).toBe(draw);
  });
  it('reflected beam reaches player but neither heals, cures nor empowers it',()=>{
   const g=scene(),m=mob(g,'stone_guardian');g.player.hp=1;g.player.statusDurations={poisoned:9,confused:9};g.player.poisonAmount=3;const before=dump(g.player),original=dump(m),r=cast(g,m);
@@ -97,7 +98,9 @@ describe('W-21 contact gates, autoID and impact flash',()=>{
  it.each(['visible','invisible','hidden','telepathic','entranced','ally-invisible'])('autoID observes %s and flash only exposes observable recipients',mode=>{
   const g=scene(),m=mob(g);if(mode.includes('invisible'))m.setStatusDuration('invisible',8);if(['hidden','telepathic','entranced'].includes(mode))g.grid.getCell(m.x,m.y)!.isVisible=false;
   if(mode==='telepathic')g.player.setStatusDuration('telepathy',8);if(mode==='entranced')m.setStatusDuration('entranced',8);if(mode==='ally-invisible')m.isAlly=true;
-  const seen=!['invisible','hidden'].includes(mode),r=cast(g,m);expect(m.totalPowerCount).toBe(1);expect(r.outcome?.autoID).toBe(seen);expect(r.frames.some(f=>f.durationMs===180&&f.x===m.x&&f.y===m.y)).toBe(seen);
+  const seen=!['invisible','hidden'].includes(mode),r=cast(g,m);expect(m.totalPowerCount).toBe(1);expect(r.outcome?.autoID).toBe(seen);
+  expect(r.frames.some(f=>f.durationMs===180&&f.x===m.x&&f.y===m.y)).toBe(false);
+  expect((g as any).activeFlares ?? []).toEqual(seen ? [{ x:m.x, y:m.y, kind:LightKind.EMPOWERMENT_LIGHT, coeff:100000, change:-15 }] : []);
  });
  it('empty shot and dead helper recipient have no effect',()=>{const g=scene();expect(g.zapBoltFromPlayer(bolt(),wand(),{x:9,y:5}).outcome?.autoID).toBe(false);const m=mob(g);m.hp=0;const before=dump(m);expect(m.empower()).toBe(false);expect(dump(m)).toBe(before);});
  it('actual inventory selection/cancel/submit spends one charge, identifies singleton wand and schedules one turn',()=>{

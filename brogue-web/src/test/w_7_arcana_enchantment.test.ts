@@ -20,15 +20,17 @@ function staff(e = 3, charges = 1, timer = 2700): Item {
     return item;
 }
 const state = (item: Item) => [item.enchantment, item.maxCharges, item.charges, item.staffRechargeRemaining];
-function setup(...items: Item[]) {
+function setup<T extends Item[]>(makeItems: () => [...T]) {
     const game = createHeadlessGame(42, 'test');
+    // 用户验收裁决/U03 §6 探针：先开局重置 ID，再造包内物品，避免与测试房地面物 ID19 冲突。
+    const items = makeItems();
     game.player.inventory.items = items;
     game.player.equippedWeapon = game.player.equippedArmor = null;
     game.player.ringLeft = game.player.ringRight = null;
     game.monsters = [];
     const scroll = ItemLoader.spawnScroll('scroll_of_enchantment', -1, -1)!;
     game.player.inventory.items.push(scroll);
-    return { game, scroll };
+    return { game, scroll, items };
 }
 const flags = (item: Item) => [item.identified, item.maxChargesKnown, item.timesUsed, item.magicDetected];
 
@@ -109,7 +111,7 @@ describe('W-7 / W-6 recharge normalization interaction', () => {
 
 describe('W-7 real read -> forced pack selection -> one completed turn', () => {
     it('reading identifies only the scroll; invalid/cancel/move/repeated read do not settle time or draw RNG', () => {
-        const item = staff(), { game, scroll } = setup(item);
+        const { game, scroll, items: [item] } = setup(() => [staff()]);
         const before = JSON.stringify(rng), tick = timeSystem.currentTick, turns = game.stats.turns;
         game.readItem(scroll);
         expect(game.pendingEnchantment).toBe(true);
@@ -139,7 +141,7 @@ describe('W-7 real read -> forced pack selection -> one completed turn', () => {
         expect(logger.messages.every(m => !m.text.includes('&#x2F;'))).toBe(true);
     });
     it('haste read does not fake a full objective block; next half-turn continues the reset', () => {
-        const item = staff(), { game, scroll } = setup(item);
+        const { game, scroll, items: [item] } = setup(() => [staff()]);
         game.player.applyStatus('haste', 20); game.player.refreshSpeeds();
         game.readItem(scroll); game.chooseEnchantTarget(item);
         expect([item.staffRechargeRemaining, game.ticksTillUpdateEnvironment]).toEqual([125, 50]);
@@ -147,7 +149,7 @@ describe('W-7 real read -> forced pack selection -> one completed turn', () => {
         expect([item.staffRechargeRemaining, game.ticksTillUpdateEnvironment]).toEqual([115, 100]);
     });
     it('selects by live object reference across reorder, rejects same-id clones, proxy, ground and replaced items', () => {
-        const a = staff(), b = staff(2, 0), { game, scroll } = setup(a, b);
+        const { game, scroll, items: [a, b] } = setup(() => [staff(), staff(2, 0)]);
         game.readItem(scroll);
         const impostor = Object.assign(staff(), { id: a.id });
         expect(game.chooseEnchantTarget(impostor)).toBe(false);
@@ -161,7 +163,7 @@ describe('W-7 real read -> forced pack selection -> one completed turn', () => {
         expect(state(b)).toEqual([2, 2, 0, 2700]);
     });
     it('a stale same-id scroll cannot enter the transaction or identify anything', () => {
-        const { game, scroll } = setup(staff());
+        const { game, scroll } = setup(() => [staff()]);
         const clone = Object.assign(new Item('clone', '?', 0, ItemCategory.SCROLL), scroll);
         const before = JSON.stringify(rng);
         game.readItem(clone);
@@ -171,7 +173,7 @@ describe('W-7 real read -> forced pack selection -> one completed turn', () => {
         expect(JSON.stringify(rng)).toBe(before);
     });
     it('empty/unsupported pack consumes the scroll and completes time without pending selection', () => {
-        const { game, scroll } = setup();
+        const { game, scroll } = setup(() => []);
         const tick = timeSystem.currentTick;
         game.readItem(scroll);
         expect(game.pendingEnchantment).toBe(false);
@@ -180,7 +182,9 @@ describe('W-7 real read -> forced pack selection -> one completed turn', () => {
         expect(ItemLoader.identifiedItems.has('scroll_of_enchantment')).toBe(true);
     });
     it('pending transaction survives JSON reload; stale references fail; completed values/unknown flags persist', () => {
-        const item = staff(), { game, scroll } = setup(item);
+        const { game, scroll, items: [item] } = setup(() => [staff()]);
+        expect(new Set([...game.items, ...game.player.inventory.items].map(i => i.id)).size)
+            .toBe(game.items.length + game.player.inventory.items.length);
         game.readItem(scroll);
         const pending = JSON.parse(JSON.stringify(game.toSnapshot()));
         expect(game.loadSnapshot(pending)).toBe(true);
@@ -194,14 +198,16 @@ describe('W-7 real read -> forced pack selection -> one completed turn', () => {
         expect(state(game.player.inventory.items[0]!)).toEqual([4, 4, 2, 115]);
         expect(flags(game.player.inventory.items[0]!)).toEqual(flags(item));
         expect(game.pendingEnchantment).toBe(false);
+        // 用户验收裁决/U03：强制附魔选择必须显式入档，缺字段拒绝，不能默认 false。
         delete pending.pendingEnchantment;
-        expect(game.loadSnapshot(pending)).toBe(true);
+        expect(game.loadSnapshot(pending)).toBe(false);
         expect(game.pendingEnchantment).toBe(false);
+        expect(state(game.player.inventory.items[0]!)).toEqual([4, 4, 2, 115]);
     });
     it('wand uses beyond initial count survive selection and JSON save/load without exposing identity', () => {
-        const wand = ItemLoader.spawnWand('wand_of_teleportation', 0, 0)!;
+        const { game, scroll, items: [wand] } = setup(() => [ItemLoader.spawnWand('wand_of_teleportation', 0, 0)!]);
         wand.charges = wand.maxCharges = 1;
-        const { game, scroll } = setup(wand), known = flags(wand);
+        const known = flags(wand);
         game.readItem(scroll); game.chooseEnchantTarget(wand);
         expect(wand.charges).toBe(4);
         const snapshot = JSON.parse(JSON.stringify(game.toSnapshot()));
@@ -236,7 +242,7 @@ describe('W-7 equipment boundary and UI source coverage (S, no Vue import edge)'
         expect(JSON.stringify(rng)).toBe(expectedRng);
     });
     it('arcana alternative never invokes equipment 20% rune path; spare gear/rings/charms remain outside scope', () => {
-        const item = staff(), { game, scroll } = setup(item);
+        const { game, scroll, items: [item] } = setup(() => [staff()]);
         const gear = ItemLoader.spawnWeapon('dagger', 0, 0)!;
         game.player.inventory.items.push(gear);
         game.player.equippedWeapon = gear;

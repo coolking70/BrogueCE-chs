@@ -1,3 +1,5 @@
+import { snapshotGrid, restoreGrid, type CellSnapshot } from './LevelSnapshot';
+import { collectMachineCells, machineCellsMatchGrid } from '../Map/MachineCells';
 import { initializeLevelSeeds, copyLevelSeeds, isLevelSeeds, type LevelSeed } from './LevelSeeds';
 import { NEGATABLE_TRAITS, NON_NEGATABLE_ABILITIES, NEGATABLE_MUTATIONS, hasNegatableBolt, negateBolts, negateCreatureStatusEffects } from '../Combat/Negation';
 import { cloneLocation } from '../Combat/Cloning';
@@ -7,7 +9,7 @@ import { anyoneWantABite } from '../Combat/MonsterAbsorption';
  * Main game state and orchestration
  */
 import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer, type Cell } from '../Map/Grid';
-import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_IS_FIRE, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP } from '../Map/TerrainCatalog';
+import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP } from '../Map/TerrainCatalog';
 import { isPathingBlocker } from '../Map/TerrainCatalog';
 // B-4b：物品落位热力图与食物落位原语（CE Items.c:463-535 / Architect.c:171,3822）
 import { ItemSpawnHeatMap, passableArcCount, randomMatchingLocation } from '../Items/ItemSpawnHeatMap';
@@ -20,7 +22,7 @@ import {
     getRewardRoomsGenerated,
     setRewardRoomsGenerated,
     resetRewardRoomsGenerated,
-    resetMachineCounter,
+    resetMachineCounter, getNextMachineNumber, restoreNextMachineNumber,
     type MachineItemSpawn, type MachineMonsterSpawn,
     type MachineResult
 } from '../Generator/BlueprintEngine';
@@ -46,7 +48,7 @@ import mutationData from '../../data/mutations.json';
 import type { MonsterData, MutationData } from '../../entities/Monster';
 import { MonsterState } from '../../entities/Monster';
 import { Direction, type Pos } from '../../types';
-import { ensureEntityIdAbove, allocateEntityId, resetEntityIds, type StatusId, type Creature } from '../../entities/Creature';
+import { ensureEntityIdAbove, allocateEntityId, resetEntityIds, getNextEntityId, restoreNextEntityId, type StatusId, type Creature } from '../../entities/Creature';
 import { timeSystem } from '../Systems/Time';
 import { generateMonsterDetail, generateItemDetail, type DetailInfo } from '../UI/DetailGenerator';
 import { logger } from '../Systems/Logger';
@@ -184,101 +186,56 @@ import { copyFields, PLAYER_FIELDS, collectEntityGraph, restoreEntityGraph,
     type EntitySnapshotGraph } from './EntitySnapshot';
 export type { GameSnapshotItem, GameSnapshotMonster } from './EntitySnapshot';
 
-export interface GameSnapshot {
-    version: number;
-    savedAt: number;
+export const WHOLE_RUN_SCHEMA = 'brogue-web-whole-run-v1' as const;
+
+export interface LevelSnapshot {
     depth: number;
-    seed: string;
-    /** U02a mandatory payload: pre-U02a saves are rejected, never reseeded. */
-    rngState: RandomState;
-    /** Seed/visited metadata for every CE slot; cached world state remains U03. */
-    levelSeeds: LevelSeed[];
-    /** Preserve the current layer's random waypoint products instead of drawing them again. */
-    waypoints: ReturnType<WaypointSystem['getState']>;
-    mode: GameMode;
-    /** W-6: retain partial P2 objective blocks across saves; legacy default is 100. */
-    ticksTillUpdateEnvironment?: number;
-    /** W-7: a read scroll awaits a mandatory target and its turn is not settled yet. */
-    pendingEnchantment?: boolean;
-    /** W-13: CE IMPREGNABLE flags for the saved map. Older saves have no flags. */
+    width: number;
+    height: number;
+    grid: CellSnapshot[];
     impregnableCells?: number[];
-    player: GameSnapshotPlayer;
-    /** Reachable payloads outside active/dormant/ground/pack ownership lists. */
-    entityGraph: EntitySnapshotGraph;
     monsters: GameSnapshotMonster[];
-    /**
-     * V-2b-5：休眠怪随存档往返（CE 的 dormantMonsters 链表）。旧存档无此
-     * 字段 → 空表兜底（与"该存档没有休眠怪"同义）。
-     */
     dormantMonsters: GameSnapshotMonster[];
     items: GameSnapshotItem[];
-    /**
-     * B-1b：全局种类鉴定态随存档往返（P1-48；对应 CE itemTable.identified /
-     * callTitle 的快照架构等价物——CE 走回放存档隐式持久，web 必须显式进快照，
-     * B-0 §1.8）。旧存档无此字段 → initConsumables 的开局态兜底（鉴定丢失，
-     * 与 B-1b 前行为一致）。
-     */
-    identifiedItems?: string[];
-    /** W-24: preserve wand appearance identities across catalog additions/reordering.
-     * Missing in older saves: rebuild the pre-W-24 seven slots deterministically. */
+    scent: ReturnType<ScentMap['getState']>;
+    waypoints: ReturnType<WaypointSystem['getState']>;
+    environmentState: ReturnType<EnvironmentManager['getState']>;
+    pendingCaughtFireCells: Pos[];
+    trapDepressions: number[];
+    machineCells: number[];
+    visibleMonsterIds: number[];
+    visibleItemIds: number[];
+    /** CE absoluteTurnNumber at departure; no catch-up simulation yet (U03b). */
+    awaySince: number;
+}
+
+export interface GameSnapshot extends LevelSnapshot {
+    /** U01 entity envelope version; schema discriminates whole-run saves. */
+    version: number;
+    schema: typeof WHOLE_RUN_SCHEMA;
+    savedAt: number;
+    seed: string;
+    rngState: RandomState;
+    levelSeeds: LevelSeed[];
+    currentLevelDepth: number;
+    /** Detached cached levels only. The active level is the top-level payload. */
+    levels: LevelSnapshot[];
+    pendingFallenByDepth: Array<{ depth: number; monsters: GameSnapshotMonster[] }>;
+    mode: GameMode;
+    ticksTillUpdateEnvironment: number;
+    pendingEnchantment: boolean;
+    player: GameSnapshotPlayer;
+    /** One graph across every floor, pending fall and ownership list. */
+    entityGraph: EntitySnapshotGraph;
+    identifiedItems: string[];
     wandFlavors?: Record<string, string>;
     staffFlavors?: Record<string, string>;
-    /** B-1b：玩家绰号（ItemLoader.callTitles 的落盘形态；Map 不能直接 JSON 化）。 */
-    callTitles?: Record<string, string>;
-    /**
-     * B-1c：detect magic 揭示过极性的种类集（CE itemTable.magicPolarityRevealed
-     * 的快照等价物，Rogue.h:1436）。旧存档无此字段 → initConsumables 的开局
-     * 全零兜底（等同"极性揭示丢失"，与 B-1c 前行为一致）。
-     */
-    magicPolarityRevealed?: string[];
-    /**
-     * V-1c：跨层奖励房配额计数器（CE rogue.rewardRoomsGenerated，Rogue.h:2504）
-     * 随存档往返。它在 BlueprintEngine 的配额公式里抑制"约每 4 层 1 间"之外的
-     * 额外奖励房——不进快照的话，读档后配额重新从 0 计数，奖励房泛滥。
-     * 旧存档无此字段 → 按 0 兜底（CE 语义的"开局态"；旧档本身出自无配额版本，
-     * 无更准的恢复目标）。
-     */
-    rewardRoomsGenerated?: number;
-    grid: Array<{
-        x: number;
-        y: number;
-        terrain: TerrainType;
-        /**
-         * C-4a-0：四层地形快照（CE pmap layers[NUMBER_TERRAIN_LAYERS]）。
-         * 旧存档（无此字段）按 setTerrain 语义还原：terrain 进归属层、
-         * 其余三层置 NOTHING——loadSnapshot 里钉死这条兼容路径。
-         */
-        layers?: TerrainType[];
-        char: string;
-        color: number;
-        isExplored: boolean;
-        hasMemory: boolean;
-        /**
-         * F-2a：isBurning 现为"跨层挂火地形"的派生读数（Grid.Cell getter），
-         * 快照里仍随写（新存档与 layers 恒一致，读档经对账分支空转；
-         * 旧存档迁移语义见 loadSnapshot）。burnDuration/burnTerrain 随
-         * 倒计时模型退役——旧存档数据里的同名字段读档时忽略。
-         */
-        isBurning: boolean;
-        isPassable: boolean;
-        isOpaque: boolean;
-        /** P1-37：机器旗标（IS_IN_MACHINE 等价物）随存档往返；0 缺省省体积，旧存档视为无机器。 */
-        machineNumber?: number;
-    }>;
-    gasGrid: Array<{
-        x: number;
-        y: number;
-        /** G-1 起 = GAS 层地形值（GasType 常量与其相等）；type/density 语义 = CE layers[GAS]/volume。 */
-        type: number;
-        /** G-1 起 = CE volume（0-65535），字段名保留为旧存档兼容。 */
-        density: number;
-    }>;
-    stats?: {
-        kills: number;
-        gold: number;
-        turns: number;
-        maxDepth: number;
-    };
+    flavors: ReturnType<typeof ItemLoader.snapshotFlavors>;
+    callTitles: Record<string, string>;
+    magicPolarityRevealed: string[];
+    rewardRoomsGenerated: number;
+    stats: Game['stats'];
+    run: ReturnType<Game['snapshotRunState']>;
 }
 
 export interface LevelState {
@@ -287,14 +244,17 @@ export interface LevelState {
     fov: FOVSys;
     lightMap: LightMap;
     monsters: Monster[];
-    /** V-2b-5：休眠怪随层缓存（CE 的 dormantMonsters 链表是全局的，但 CE 无
-     *  层缓存；web 的层缓存语义下它们属于生成它们的层，随层进退）。 */
+    /** CE levels[d].dormantMonsters: dormant ownership belongs to its floor. */
     dormantMonsters?: Monster[];
     items: Item[];
     visibleMonsters: Set<Monster>;
     visibleItems: Set<Item>;
     /** P1-31：该层的机器格集合（CE pmap machineNumber 派生），随层缓存。 */
     machineCells?: Set<number>;
+    scent?: ScentMap;
+    waypoints?: WaypointSystem;
+    awaySince?: number;
+    pendingCaughtFireCells?: Pos[];
 }
 
 export type RecordedInputData = number | { x: number; y: number } | string | null;
@@ -462,7 +422,7 @@ export class Game {
      * web 的 UI 是异步弹层——读卷轴的回合先正常推进（与 CE 同为整回合），
      * 弹层点选后立即落账、不再消耗回合（CE 的选择本身零回合成本）。
      * 选择期间复用背包弹层并封锁其余输入（escape/toggle 也不得关闭）。
-     * 不进存档：读档/新局重置（挂起中的选择不跨场景）。
+     * U03: mandatory selection survives a checkpoint; reopening costs no extra turn.
      */
     public pendingIdentify: boolean = false;
     public pendingEnchantment: boolean = false;
@@ -484,7 +444,7 @@ export class Game {
      * B-4a：≙ CE rogue.meteredItems（RogueMain.c:229-252 开局初始化；
      * Items.c:577-579 每层入口加频、674-686 写回、740-752 生成后扣减）。
      * 语义与索引全按 ItemLoader.CE_METERED_ITEMS_TABLE（前 14 卷轴后 16 药水）。
-     * 未入 GameSnapshot——存读档会重置计量（与 B-1a 字段族同批缺口，登记）。
+     * U03: preserved in GameSnapshot.run.meteredItems.
      */
     private meteredItems: { frequency: number; numberSpawned: number }[] = ItemLoader.initMeteredItems();
     /** B-4a：≙ CE rogue.foodSpawned（Items.c:697/732，食物保底公式的累计口径）。 */
@@ -493,7 +453,7 @@ export class Game {
      * B-4b：≙ CE rogue.goldGenerated（Items.c:781 每堆金币生成时累加；
      * :602/:604 的产量调度读它）。仅生成期金币堆计入——web 的怪物金币掉落
      * （goldDropChance，CE 无此机制）不计入，与 CE 的 goldGenerated 口径一致。
-     * 未入 GameSnapshot（与 meteredItems/foodSpawned 同批缺口，登记）。
+     * U03: preserved in GameSnapshot.run.goldGenerated.
      */
     private goldGenerated: number = 0;
 
@@ -513,9 +473,8 @@ export class Game {
     // 只在下一回合记账趟清）。web 无格旗标，由 Game 持有、按 CE 语义回喂驱动。
     private pendingCaughtFireCells: Pos[] = [];
 
-    // P4-8：当前层的气味图（CE scentMap + rogue.scentTurnNumber）。每层生成时
-    // 换新图（CE 跨层留存 levels[d].scentMap，web 不做多层留存）；每玩家回合
-    // 在 playerTurnEnded 的主观时间块里重刷一次（CE Time.c:2610）。
+    // CE levels[d].scentMap: each floor retains its values. The active map's
+    // turnNumber is the run clock, carried forward on entry (U03).
     public scent: ScentMap = new ScentMap(DCOLS, DROWS);
 
     // P4-9：safety map（CE 全局 safetyMap，Time.c:1791 updateSafetyMap 构建）。
@@ -537,14 +496,13 @@ export class Game {
     // wpRefreshTicker）。构建在 generateDepth 的生成决策全部完成之后
     //（CE RogueMain.c:707：digDungeon → placeStairs → initializeLevel →
     // setUpWaypoints）；重访缓存层同样重建（CE RogueMain.c:771）；每 100 tick
-    // 客观块滚动刷新一个（CE Time.c:2710-2714）。构建内部对流做了隔离
-    //（RogueMain.c:691-707/733-735 的快照/恢复复刻），不移动 RNG 流。
+    // 客观块滚动刷新一个（CE Time.c:2710-2714）。U02b: new-level builds use
+    // the level RNG; revisit builds consume the live stream. U03 saves all products.
     public waypoints: WaypointSystem = new WaypointSystem();
 
-    // P1-31：本层机器格（CE pmap 的 IS_IN_MACHINE 旗标，Architect.c 生成期
-    // 写入 machineNumber）。数据源是 BlueprintEngine 的 MachineResult.cells。
-    // P1-37 起旗标本身随存档往返（快照 grid 的 machineNumber 字段），读档时
-    // 从网格重建本集合——落位检查不再在读档层退化（P1-35 的登记已闭环）。
+    // U04c: detached grid.machineNumber projection, never MachineResult.cells.
+    // Blueprint commit/rollback owns all number writes; rebuild after generation
+    // and each grid replacement. Snapshots validate this redundant projection.
     private machineCells: Set<number> = new Set();
 
     // Endgame & Stats
@@ -563,6 +521,8 @@ export class Game {
 
     public levelSeeds: LevelSeed[] = [];
     private currentLevelDepth: number | null = null;
+    public absoluteTurnNumber = 0;
+    private currentLevelAwaySince = 0;
     public levels = new Map<number, LevelState>();
     public combatSystem: CombatSystem = new CombatSystem();
     public recordingStartAt: number = Date.now();
@@ -616,6 +576,8 @@ export class Game {
 
         this.depth = 1;
         this.currentLevelDepth = null;
+        this.absoluteTurnNumber = 0;
+        this.currentLevelAwaySince = 0;
         this.levels = new Map();
         this.monsters = [];
         this.dormantMonsters = []; // V-2b-5：休眠表随新局清零
@@ -632,6 +594,7 @@ export class Game {
         this.everSeenItems = new Set();
         this.everSeenMonsters = new Set();
         this.travelTargetItem = undefined;
+        this.scent = new ScentMap(DCOLS, DROWS);
         this.playerFalling = false;
         this.displacementTrapDepressions = undefined;
         this.pendingFallenByDepth = new Map();
@@ -661,6 +624,9 @@ export class Game {
         this.inspectTarget = null;
         this.examinedEntityIds = new Set();
         this.pendingBoltFrames = [];
+        this.activeFlares = [];
+        this.flareLightMap = null;
+        this.flareElapsedMs = 0;
         this.currentBoltFrameIndex = 0;
         this.boltAnimStartTime = 0;
         this.hoveredCell = null;
@@ -1075,8 +1041,8 @@ export class Game {
         const level = this.levelSeeds[this.depth - 1];
         if (!level) throw new RangeError('Missing level seed');
         if (level.visited && this.currentLevelDepth !== this.depth && !this.levels.has(this.depth) && this.mode !== 'test') {
-            // Current-layer saves cannot restore an earlier visited map (U03).
-            throw new Error('Visited level state is unavailable in this current-layer save');
+            // A visited map must have its real world payload, never regenerate it.
+            throw new Error('Visited level state is unavailable');
         }
         rng.setRNG(RNGType.RNG_SUBSTANTIVE);
         if (this.mode === 'test') {
@@ -1094,6 +1060,7 @@ export class Game {
         // The active layer is already visited even before it has a detached cache entry.
         // Track its real depth; test harnesses can jump depths or re-enter the current map.
         if (this.grid && this.currentLevelDepth !== null) {
+            setDormantAwakener(this.grid, null);
             this.levels.set(this.currentLevelDepth, {
                 grid: this.grid,
                 environment: this.environment,
@@ -1104,17 +1071,28 @@ export class Game {
                 items: this.items,
                 visibleMonsters: this.visibleMonsters,
                 visibleItems: this.visibleItems,
-                machineCells: this.machineCells
+                machineCells: this.machineCells,
+                scent: this.scent,
+                waypoints: this.waypoints,
+                awaySince: this.currentLevelDepth === this.depth ? this.currentLevelAwaySince : this.absoluteTurnNumber,
+                pendingCaughtFireCells: this.pendingCaughtFireCells,
             });
         }
+        const scentTurnNumber = this.scent.turnNumber;
         const cached = this.levels.get(this.depth);
 
         if (cached) {
             // Restore from cache
             this.grid = cached.grid;
+            this.scent = cached.scent ?? new ScentMap(DCOLS, DROWS);
+            this.scent.turnNumber = scentTurnNumber;
+            this.waypoints = cached.waypoints ?? new WaypointSystem();
+            this.currentLevelAwaySince = cached.awaySince ?? 0;
+            this.pendingCaughtFireCells = cached.pendingCaughtFireCells ?? [];
             this.environment = cached.environment;
             this.fov = cached.fov;
             this.lightMap = cached.lightMap;
+            this.activeFlares = []; this.flareLightMap = null; this.flareElapsedMs = 0;
             this.monsters = cached.monsters;
             // CE RogueMain.c:901 -> restoreMonster (Architect.c:3548-3550).
             // Only active residents of a revisited level; NOT JSON restoration,
@@ -1127,7 +1105,7 @@ export class Game {
             this.items = cached.items;
             this.visibleMonsters = cached.visibleMonsters;
             this.visibleItems = cached.visibleItems;
-            this.machineCells = cached.machineCells ?? new Set();
+            this.machineCells = collectMachineCells(this.grid);
             this.bindDormantAwakener();
 
             // Reposition player to stairs（P1-31：落位走 CE RogueMain.c:837-869，
@@ -1160,14 +1138,18 @@ export class Game {
                 this.environment = new EnvironmentManager(this.grid);
                 this.fov = new FOVSys(this.grid);
                 this.lightMap = new LightMap(this.grid);
-                // P4-8：新层新气味图（CE 跨层留存 levels[d].scentMap，web 不做）
+                this.activeFlares = []; this.flareLightMap = null; this.flareElapsedMs = 0;
                 this.scent = new ScentMap(DCOLS, DROWS);
+                this.scent.turnNumber = scentTurnNumber;
+                this.currentLevelAwaySince = 0;
+                this.pendingCaughtFireCells = [];
+                this.waypoints = new WaypointSystem();
 
                 // Fresh state for new level
                 this.monsters = [];
                 this.items = [];
-                this.visibleMonsters.clear();
-                this.visibleItems.clear();
+                this.visibleMonsters = new Set();
+                this.visibleItems = new Set();
 
                 // 2. Populate level with monsters and items, and STAIRS
                 // （B-4b：architect.machines 不再传入——legacy machines 循环已删；
@@ -1205,6 +1187,9 @@ export class Game {
         }
 
         this.currentLevelDepth = this.depth;
+        // Active ownership is never duplicated by a stale cached array.
+        this.levels.delete(this.depth);
+        this.updatedSafetyMapThisTurn = false;
         // Pure derived topology; waypoint draws belong to the branches above.
         this.loopMap = analyzeLoopMap(this.grid);
 
@@ -1222,11 +1207,9 @@ export class Game {
         isFirstLevel: boolean = false,
         machineResults: MachineResult[] = []
     ) {
-        // P1-31：本层机器格（CE pmap IS_IN_MACHINE，落位排除项之一）。
-        this.machineCells = new Set();
-        for (const mr of machineResults) {
-            for (const c of mr.cells) this.machineCells.add(c.y * DCOLS + c.x);
-        }
+        // U04c/K31: CE membership is the final per-cell machine flag, including
+        // external features and excluding cleared BP_NO_INTERIOR_FLAG cells.
+        this.machineCells = collectMachineCells(this.grid);
 
         // Collect all valid floor tiles
         // P1-37：牌堆排除机器格（machineNumber≠0 = CE 的 IS_IN_MACHINE，
@@ -2382,6 +2365,7 @@ export class Game {
         this.environment = new EnvironmentManager(this.grid);
         this.fov = new FOVSys(this.grid);
         this.lightMap = new LightMap(this.grid);
+                this.activeFlares = []; this.flareLightMap = null; this.flareElapsedMs = 0;
         // P4-8：test 层同样换新气味图
         this.scent = new ScentMap(DCOLS, DROWS);
         // P1-34：loopMap 必须随层重算。test 分支在 generateDepth（591-599）提前
@@ -3839,6 +3823,7 @@ export class Game {
                         logger.log(i18next.t('potion.heal_partial', { defaultValue: 'You feel slightly better.' }), '#44ff44');
                         break;
                     case 'gain_strength':
+                        this.createFlare(this.player.loc.x, this.player.loc.y, LightKind.POTION_STRENGTH_LIGHT);
                         this.player.strength += 1;
                         if (this.player.hasStatus('weakened')) this.player.setStatusDuration('weakened', 1);
                         this.player.weaknessAmount = 0;
@@ -4078,10 +4063,12 @@ export class Game {
                         }
                         break;
                     case 'protect_weapon':
+                            this.createFlare(this.player.loc.x, this.player.loc.y, LightKind.SCROLL_PROTECTION_LIGHT);
                         // Items.c:7922-7938 SCROLL_PROTECT_WEAPON
                         this.protectEquippedGear(this.player.equippedWeapon, 'weapon');
                         break;
                     case 'protect_armor':
+                            this.createFlare(this.player.loc.x, this.player.loc.y, LightKind.SCROLL_PROTECTION_LIGHT);
                         // Items.c:7906-7921 SCROLL_PROTECT_ARMOR
                         this.protectEquippedGear(this.player.equippedArmor, 'armor');
                         break;
@@ -4461,6 +4448,69 @@ export class Game {
         return changed;
     }
 
+    // CE Light.c:291-403. Flares are transient display light. Keeping their
+    // channels separate prevents render cadence from changing gameplay FOV/RNG.
+    private activeFlares: Array<{ x: number; y: number; kind: LightKind; coeff: number; change: number }> = [];
+    private flareLightMap: LightMap | null = null;
+    private flareElapsedMs = 0;
+
+    public createFlare(x: number, y: number, kind: LightKind): void {
+        if (!LIGHT_CATALOG[kind] || !this.grid.isValidPos(x, y)) return;
+        this.activeFlares ??= []; // legacy headless fixtures construct via Object.create(Game.prototype)
+        this.flareElapsedMs ??= 0;
+        this.activeFlares.push({ x, y, kind, coeff: 100000, change: -15 });
+        this.needsRender = true;
+    }
+
+    public visualLightAt(x: number, y: number) {
+        const base = this.lightMap.lightAt(x, y);
+        const flare = this.flareLightAt(x, y);
+        if (!base || !flare) return base;
+        return { r: base.r + flare.r, g: base.g + flare.g, b: base.b + flare.b };
+    }
+
+    public flareLightAt(x: number, y: number) {
+        return this.flareLightMap?.lightAt(x, y) ?? null;
+    }
+
+    /** One CE flare step per 10ms; the final step requests a clean redraw. */
+    public tickFlareAnimation(deltaMs: number): boolean {
+        if (!this.activeFlares.length) return false;
+        this.flareElapsedMs += Math.max(0, deltaMs);
+        if (this.flareElapsedMs < 10) return false;
+        const steps = Math.min(100, Math.floor(this.flareElapsedMs / 10));
+        this.flareElapsedMs %= 10;
+        for (let step = 0; step < steps; step++) {
+            this.activeFlares = this.activeFlares.filter(flare => {
+                flare.coeff += Math.trunc(flare.change * 100);
+                flare.change = Math.trunc(flare.change * 12 / 10);
+                return flare.coeff >= 0;
+            });
+        }
+        if (!this.activeFlares.length) {
+            this.flareLightMap = null;
+            return true;
+        }
+        const overlay = new LightMap(this.grid);
+        overlay.clearLighting();
+        for (const flare of this.activeFlares) {
+            const source = LIGHT_CATALOG[flare.kind]!;
+            const scale = flare.coeff / 100000;
+            overlay.paintLight({
+                light: { ...source, color: {
+                    ...source.color,
+                    red: Math.trunc(source.color.red * scale),
+                    green: Math.trunc(source.color.green * scale),
+                    blue: Math.trunc(source.color.blue * scale),
+                } },
+                x: flare.x, y: flare.y,
+                radiusHundredths: Math.trunc(source.radius.lowerBound * scale),
+            });
+        }
+        this.flareLightMap = overlay;
+        return true;
+    }
+
     // Bolt animation state (consumed by the render loop in GameCanvas.vue)
     public pendingBoltFrames: BoltFrame[] = [];
     public currentBoltFrameIndex: number = 0;
@@ -4482,7 +4532,7 @@ export class Game {
         // Animation finished
         this.pendingBoltFrames = [];
         this.currentBoltFrameIndex = 0;
-        return false;
+        return true; // redraw once to clear the last projectile frame
     }
 
     /** Get the current bolt frame to render (if any). */
@@ -4916,14 +4966,11 @@ export class Game {
                 if (target instanceof Monster && target.empower()) {
                     autoID = this.canObserveBoltTarget(target);
                     if (autoID) {
+                        this.createFlare(target.x, target.y, LightKind.EMPOWERMENT_LIGHT);
                         logger.log(i18next.t('bolt.empowerment_hit', {
                             name: item.displayName, target: this.monsterDisplayName(target),
                             defaultValue: `${item.displayName} empowers the ${this.monsterDisplayName(target)}!`
                         }), '#88ff99');
-                        // Observable impact flash. Full CE radius-6 animated
-                        // EMPOWERMENT_LIGHT radiance remains a lighting gap.
-                        result.frames.push({ x: target.x, y: target.y, char: target.char,
-                            color: 0x88ff99, durationMs: 180 });
                     }
                 } else if (!target) {
                     logMiss('bolt.empowerment_miss', `${item.displayName} fires but finds no target.`, '#ffff44');
@@ -5323,6 +5370,7 @@ export class Game {
             this.enchantEquippedItem();
             logger.log(i18next.t('scroll.enchant', { defaultValue: 'Arcane force sharpens your gear.' }), '#99ddff');
         }
+        this.createFlare(this.player.loc.x, this.player.loc.y, LightKind.SCROLL_ENCHANTMENT_LIGHT);
         this.pendingEnchantment = false;
         this.isInventoryOpen = false;
         this.needsRender = true;
@@ -7915,7 +7963,11 @@ export class Game {
         // 会一回合刷两次。
         this.scent.turnNumber += this.player.hasStatus('invisible') ? 10 : 3;
         if (this.scent.turnNumber > 20000) {
-            this.scent.resetTurnNumber(); // CE Time.c:2511-2513 → resetScentTurnNumber
+            this.scent.resetTurnNumber();
+            // CE Time.c:2924: roll back every visited floor's values as well.
+            for (const [depth, level] of this.levels) {
+                if (depth !== this.currentLevelDepth) level.scent?.resetTurnNumber();
+            }
         }
         this.scent.update(
             this.grid,
@@ -8120,6 +8172,7 @@ export class Game {
      * - DFChance 地形特征生成 / monstersApproachStairs → web 无对应系统，跳过（报告已列）
      */
     private objectiveTimeBlock(): void {
+        this.absoluteTurnNumber++;
         this.tickArcanaResources();
 
         // B-1a：CE Time.c:2664 processIncrementalAutoID——护甲/戒指的穿戴熟悉度
@@ -8572,97 +8625,100 @@ export class Game {
     private serializeItem(item: Item): GameSnapshotItem { return encodeItem(item); }
     private deserializeItem(s: GameSnapshotItem): Item { return decodeItem(s); }
 
-    public toSnapshot(): GameSnapshot {
-        const roots = [...this.monsters, ...this.dormantMonsters];
-        const ownedItems = [...this.items, ...this.player.inventory.items];
-        const graph = collectEntityGraph(roots, [...ownedItems,
-            ...[this.player.equippedWeapon, this.player.equippedArmor, this.player.ringLeft, this.player.ringRight]
-                .filter((item): item is Item => item !== null)]);
+    private snapshotRunState() {
+        const state = {
+            meteredItems: this.meteredItems, foodSpawned: this.foodSpawned, goldGenerated: this.goldGenerated,
+            monsterSpawnFuse: this.monsterSpawnFuse, absoluteTurnNumber: this.absoluteTurnNumber,
+            currentTick: timeSystem.currentTick, nextEntityId: getNextEntityId(), nextMachineNumber: getNextMachineNumber(),
+            playerFalling: this.playerFalling, pendingIdentify: this.pendingIdentify,
+            justSearched: this.justSearched, justRested: this.justRested, searchingCharge: this.searchingCharge,
+            secretScanDepth: this.secretScanDepth, levelHasSecrets: this.levelHasSecrets,
+            poisonedDuringTurn: this.poisonedDuringTurn,
+            safetyMap: this.safetyMap, updatedSafetyMapThisTurn: this.updatedSafetyMapThisTurn,
+            loopMap: this.loopMap,
+            isGameOver: this.isGameOver, gameOverWon: this.gameOverWon, gameOverReason: this.gameOverReason,
+            gameOverInventory: this.gameOverInventory, gameOverScore: this.gameOverScore, lastDamageSource: this.lastDamageSource,
+            everSeenItemIds: [...this.everSeenItems].map(i => i.id),
+            everSeenMonsterIds: [...this.everSeenMonsters].map(m => m.id),
+            examinedEntityIds: [...this.examinedEntityIds],
+            autoPath: this.autoPath, isMouseTraveling: this.isMouseTraveling, travelTargetItemId: this.travelTargetItem?.id ?? null,
+            recordedInputEvents: this.recordedInputEvents, recordedInputIndex: this.recordedInputIndex,
+            signTexts: [...this.signTexts], resetPlateRoomByPos: [...this.resetPlateRoomByPos],
+            testRooms: [...this.testRooms], currentTestCategory: this.currentTestCategory,
+            logger: logger.getState(),
+        };
+        // Plain detached data; works with Vue proxies and nested test-room rows.
+        return JSON.parse(JSON.stringify(state)) as typeof state;
+    }
 
-        const gridCells: GameSnapshot['grid'] = [];
-        for (let x = 0; x < this.grid.width; x++) {
-            for (let y = 0; y < this.grid.height; y++) {
-                const cell = this.grid.getCell(x, y);
-                if (!cell) continue;
-                gridCells.push({
-                    x,
-                    y,
-                    terrain: cell.terrain,
-                    layers: [...cell.layers],
-                    char: cell.char,
-                    color: cell.color,
-                    isExplored: cell.isExplored,
-                    hasMemory: cell.hasMemory,
-                    isBurning: cell.isBurning,
-                    isPassable: cell.isPassable,
-                    isOpaque: cell.isOpaque,
-                    // P1-37：机器旗标穿存档。0 不写（绝大多数格子无机器，省体积）
-                    ...(cell.machineNumber !== 0 ? { machineNumber: cell.machineNumber } : {})
-                });
-            }
-        }
-
-        const gasGrid: GameSnapshot['gasGrid'] = [];
-        for (let x = 0; x < this.grid.width; x++) {
-            for (let y = 0; y < this.grid.height; y++) {
-                const gas = this.environment.gasGrid[x]?.[y];
-                if (!gas || gas.density <= 0) continue;
-                // G-1：type=NONE 的不可见残气（CE 随机舍入的 volume 孤儿）
-                // 不入档——无渲染无效果，且 addGas 的载体校验本来就会拒绝
-                // NONE；旧档里 0-100 口径的旧枚举值则被 addGas 校验统一
-                // 丢弃（登记报告）。
-                if (gas.type === GasType.NONE) continue;
-                gasGrid.push({
-                    x,
-                    y,
-                    type: gas.type,
-                    density: gas.density
-                });
-            }
-        }
-
+    private activeLevelState(): LevelState {
         return {
-            version: 2,
-            savedAt: Date.now(),
-            depth: this.depth,
-            seed: this.currentSeed,
-            rngState: rng.getState(),
-            levelSeeds: copyLevelSeeds(this.levelSeeds),
-            waypoints: this.waypoints.getState(),
-            mode: this.mode,
-            ticksTillUpdateEnvironment: this.ticksTillUpdateEnvironment,
+            grid: this.grid, environment: this.environment, fov: this.fov, lightMap: this.lightMap,
+            monsters: this.monsters, dormantMonsters: this.dormantMonsters, items: this.items,
+            visibleMonsters: this.visibleMonsters, visibleItems: this.visibleItems,
+            machineCells: this.machineCells, scent: this.scent, waypoints: this.waypoints,
+            awaySince: this.currentLevelAwaySince, pendingCaughtFireCells: this.pendingCaughtFireCells,
+        };
+    }
+
+    private snapshotLevel(depth: number, level: LevelState): LevelSnapshot {
+        return {
+            depth, width: level.grid.width, height: level.grid.height,
+            grid: snapshotGrid(level.grid), impregnableCells: [...level.grid.impregnableCells],
+            monsters: level.monsters.map(serializeMonsterRow),
+            dormantMonsters: (level.dormantMonsters ?? []).map(serializeMonsterRow), items: level.items.map(encodeItem),
+            scent: (level.scent ?? new ScentMap(level.grid.width, level.grid.height)).getState(),
+            waypoints: (level.waypoints ?? new WaypointSystem()).getState(),
+            environmentState: level.environment.getState(),
+            pendingCaughtFireCells: (level.pendingCaughtFireCells ?? []).map(p => ({ ...p })),
+            trapDepressions: [...(this.displacementTrapDepressions?.get(level.grid) ?? [])],
+            machineCells: [...collectMachineCells(level.grid)],
+            visibleMonsterIds: [...level.visibleMonsters].map(m => m.id),
+            visibleItemIds: [...level.visibleItems].map(i => i.id),
+            awaySince: level.awaySince ?? 0,
+        };
+    }
+
+    /** Saves are turn-boundary checkpoints. A suspended JS generator cannot be
+     * encoded; callers may retry once its existing animation has completed. */
+    public toSnapshot(): GameSnapshot {
+        if (this.isAdvancing) throw new Error('Cannot save during turn advancement');
+        const levels = [...this.levels].filter(([depth]) => depth !== this.currentLevelDepth)
+            .sort(([a], [b]) => a - b);
+        const levelRoots = levels.flatMap(([, l]) => [...l.monsters, ...(l.dormantMonsters ?? [])]);
+        const pendingFallenByDepth = [...this.pendingFallenByDepth].sort(([a], [b]) => a - b)
+            .map(([depth, monsters]) => ({ depth, monsters: monsters.map(serializeMonsterRow) }));
+        const roots = [...this.monsters, ...this.dormantMonsters, ...levelRoots, ...[...this.pendingFallenByDepth.values()].flat()];
+        const ownedItems = [...this.items, ...this.player.inventory.items, ...levels.flatMap(([, l]) => l.items)];
+        const graph = collectEntityGraph([...roots, ...this.everSeenMonsters,
+            ...this.visibleMonsters, ...levels.flatMap(([, l]) => [...l.visibleMonsters])], [...ownedItems, ...this.everSeenItems,
+            ...this.visibleItems, ...levels.flatMap(([, l]) => [...l.visibleItems]),
+            ...[this.player.equippedWeapon, this.player.equippedArmor, this.player.ringLeft, this.player.ringRight, this.travelTargetItem]
+                .filter((item): item is Item => item != null)]);
+        return {
+            ...this.snapshotLevel(this.depth, this.activeLevelState()),
+            version: 2, schema: WHOLE_RUN_SCHEMA, savedAt: Date.now(),
+            seed: this.currentSeed, rngState: rng.getState(), levelSeeds: copyLevelSeeds(this.levelSeeds),
+            currentLevelDepth: this.currentLevelDepth ?? this.depth,
+            levels: levels.map(([depth, level]) => this.snapshotLevel(depth, level)), pendingFallenByDepth,
+            mode: this.mode, ticksTillUpdateEnvironment: this.ticksTillUpdateEnvironment,
             pendingEnchantment: this.pendingEnchantment,
-            impregnableCells: [...this.grid.impregnableCells],
             player: {
                 ...copyFields(this.player, PLAYER_FIELDS),
-                statusImmunities: [...this.player.statusImmunities],
-                hungerTransition: this.player.snapshotHungerTransition(),
-                inventoryCapacity: this.player.inventory.capacity,
-                inventory: this.player.inventory.items.map(encodeItem),
-                equippedWeaponId: this.player.equippedWeapon?.id ?? null,
-                equippedArmorId: this.player.equippedArmor?.id ?? null,
-                ringLeftId: this.player.ringLeft?.id ?? null,
-                ringRightId: this.player.ringRight?.id ?? null,
+                statusImmunities: [...this.player.statusImmunities], hungerTransition: this.player.snapshotHungerTransition(),
+                inventoryCapacity: this.player.inventory.capacity, inventory: this.player.inventory.items.map(encodeItem),
+                equippedWeaponId: this.player.equippedWeapon?.id ?? null, equippedArmorId: this.player.equippedArmor?.id ?? null,
+                ringLeftId: this.player.ringLeft?.id ?? null, ringRightId: this.player.ringRight?.id ?? null,
             },
-            monsters: this.monsters.map(serializeMonsterRow),
-            dormantMonsters: this.dormantMonsters.map(serializeMonsterRow),
-            items: this.items.map(encodeItem),
             entityGraph: {
                 monsters: graph.monsters.filter(m => !roots.includes(m)).map(serializeMonsterRow),
                 items: graph.items.filter(item => !ownedItems.includes(item)).map(encodeItem),
             },
-            // B-1b：全局种类鉴定态与绰号进存档（P1-48；Map 落盘为普通对象）
-            identifiedItems: [...ItemLoader.identifiedItems],
+            identifiedItems: [...ItemLoader.identifiedItems], callTitles: Object.fromEntries(ItemLoader.callTitles),
+            magicPolarityRevealed: [...ItemLoader.magicPolarityRevealed], flavors: ItemLoader.snapshotFlavors(),
             staffFlavors: Object.fromEntries(ItemLoader.staffs.map(s => [s.id, ItemLoader.arcanaFlavorMap.get(s.id)!])),
             wandFlavors: Object.fromEntries(ItemLoader.wands.map(w => [w.id, ItemLoader.arcanaFlavorMap.get(w.id)!])),
-            callTitles: Object.fromEntries(ItemLoader.callTitles),
-            // B-1c：种类级极性揭示进存档
-            magicPolarityRevealed: [...ItemLoader.magicPolarityRevealed],
-            // V-1c：跨层奖励房配额计数随存档往返
-            rewardRoomsGenerated: getRewardRoomsGenerated(),
-            grid: gridCells,
-            gasGrid,
-            stats: { ...this.stats }
+            rewardRoomsGenerated: getRewardRoomsGenerated(), stats: { ...this.stats }, run: this.snapshotRunState(),
         };
     }
 
@@ -8679,117 +8735,96 @@ export class Game {
         restoreEntityGraph(snapshots, [], monsters, [...this.items, ...this.player.inventory.items]);
     }
 
+    public static isSnapshot(value: unknown): value is GameSnapshot {
+        const s = value as GameSnapshot | null;
+        if (!s || s.version !== 2 || s.schema !== WHOLE_RUN_SCHEMA || !isSeed(s.seed)
+            || !Random.isState(s.rngState) || !isLevelSeeds(s.levelSeeds)
+            || s.currentLevelDepth !== s.depth || !s.run || !s.flavors || !s.player || !s.entityGraph
+            || !Number.isFinite(s.ticksTillUpdateEnvironment) || typeof s.pendingEnchantment !== 'boolean'
+            || !Array.isArray(s.identifiedItems) || !Array.isArray(s.magicPolarityRevealed)
+            || !s.callTitles || !s.stats || !Number.isFinite(s.rewardRoomsGenerated)
+            || !Array.isArray(s.run.meteredItems) || !Number.isFinite(s.run.foodSpawned)
+            || !Number.isFinite(s.run.goldGenerated) || !Number.isFinite(s.run.currentTick)
+            || !Number.isSafeInteger(s.run.nextEntityId) || s.run.nextEntityId < 1
+            || !Number.isFinite(s.run.monsterSpawnFuse) || !Number.isFinite(s.run.absoluteTurnNumber)
+            || typeof s.run.pendingIdentify !== 'boolean' || !s.run.logger
+            || !Array.isArray(s.levels) || !Array.isArray(s.pendingFallenByDepth)) return false;
+        const depths = new Set<number>();
+        for (const level of [s, ...s.levels]) {
+            if (!Number.isInteger(level.depth) || level.depth < 1 || level.depth > CE_DEEPEST_LEVEL
+                || depths.has(level.depth) || !s.levelSeeds[level.depth - 1]?.visited
+                || level.width !== DCOLS || level.height !== DROWS
+                || !Array.isArray(level.grid) || level.grid.length !== level.width * level.height
+                || !Array.isArray(level.impregnableCells)
+                || !level.grid.every(c => c && c.layers?.length === 4 && typeof c.machineNumber === 'number')
+                || !machineCellsMatchGrid(level.machineCells, level.grid)
+                || !level.scent || level.scent.values.length !== level.width * level.height
+                || !level.waypoints || !level.environmentState || !Array.isArray(level.monsters)
+                || !Array.isArray(level.dormantMonsters) || !Array.isArray(level.items)) return false;
+            depths.add(level.depth);
+        }
+        // Test mode has one synthetic room map instead of a traversable dungeon.
+        if (s.mode !== 'test' && s.levelSeeds.some((level, i) => level.visited && !depths.has(i + 1))) return false;
+        return true;
+    }
+
     public loadSnapshot(snapshot: GameSnapshot): boolean {
-        if (!snapshot || snapshot.version !== 2 || !isSeed(snapshot.seed) || !Random.isState(snapshot.rngState) || !snapshot.waypoints || !isLevelSeeds(snapshot.levelSeeds)) return false;
+        if (!Game.isSnapshot(snapshot)) return false;
+        // Decode the entire world before retiring the live one. All entity edges
+        // resolve in a single pass, including leaders on other floors and cycles.
+        const levelRows = [snapshot, ...snapshot.levels];
+        let entityGraph: ReturnType<typeof restoreEntityGraph>;
+        let restored: Map<number, LevelState>;
+        try {
+            entityGraph = restoreEntityGraph(
+                [...levelRows.flatMap(l => [...l.monsters, ...l.dormantMonsters]),
+                    ...snapshot.pendingFallenByDepth.flatMap(q => q.monsters), ...snapshot.entityGraph.monsters],
+                [...levelRows.flatMap(l => l.items), ...snapshot.player.inventory, ...snapshot.entityGraph.items]);
+            const resolve = <T>(map: Map<number, T>, id: number): T => {
+                const value = map.get(id);
+                if (!value) throw new Error(`Missing snapshot entity ${id}`);
+                return value;
+            };
+            restored = new Map(levelRows.map(saved => {
+                const grid = restoreGrid(saved.width, saved.height, saved.grid, saved.impregnableCells!);
+                const environment = new EnvironmentManager(grid);
+                environment.setState(saved.environmentState);
+                const waypoints = new WaypointSystem(); waypoints.setState(saved.waypoints);
+                return [saved.depth, {
+                    grid, environment, fov: new FOVSys(grid), lightMap: new LightMap(grid),
+                    monsters: saved.monsters.map(m => resolve(entityGraph.monsters, m.id)),
+                    dormantMonsters: saved.dormantMonsters.map(m => resolve(entityGraph.monsters, m.id)),
+                    items: saved.items.map(i => resolve(entityGraph.items, i.id)),
+                    visibleMonsters: new Set(saved.visibleMonsterIds.map(id => resolve(entityGraph.monsters, id))),
+                    visibleItems: new Set(saved.visibleItemIds.map(id => resolve(entityGraph.items, id))),
+                    machineCells: collectMachineCells(grid), scent: ScentMap.fromState(saved.scent), waypoints,
+                    awaySince: saved.awaySince, pendingCaughtFireCells: saved.pendingCaughtFireCells.map(p => ({ ...p })),
+                }];
+            }));
+        } catch { return false; }
 
-        const entityGraph = restoreEntityGraph(
-            [...snapshot.monsters, ...snapshot.dormantMonsters, ...snapshot.entityGraph.monsters],
-            [...snapshot.items, ...snapshot.player.inventory, ...snapshot.entityGraph.items]);
-        ensureEntityIdAbove(Math.max(snapshot.player.id, 0, ...entityGraph.monsters.keys(), ...entityGraph.items.keys()));
-
-        this.mode = snapshot.mode;
-        this.ticksTillUpdateEnvironment = snapshot.ticksTillUpdateEnvironment ?? 100;
-        this.currentSeed = snapshot.seed;
-        this.currentLevelDepth = snapshot.depth;
-        this.levelSeeds = copyLevelSeeds(snapshot.levelSeeds);
-        rng.setState(snapshot.rngState);
-        // Rebuild deterministic flavor tables on a private stream, not the live run's RNG.
-        ItemLoader.initConsumables(new Random(snapshot.seed));
-        ItemLoader.restoreWandFlavors(snapshot.wandFlavors);
-        ItemLoader.restoreStaffFlavors(snapshot.staffFlavors);
-
-        // B-1b：读档恢复全局种类鉴定态与绰号（P1-48）。initConsumables 已把
-        // 两者清到开局态；旧存档（无字段）就停留在开局态 = B-1b 前"鉴定全丢"
-        // 的既定迁移行为。
-        if (snapshot.identifiedItems) {
-            ItemLoader.identifiedItems.clear();
-            for (const kindId of snapshot.identifiedItems) {
-                ItemLoader.identifiedItems.add(kindId);
-            }
-        }
-        if (snapshot.callTitles) {
-            ItemLoader.callTitles.clear();
-            for (const [kindId, title] of Object.entries(snapshot.callTitles)) {
-                ItemLoader.callTitles.set(kindId, title);
-            }
-        }
-        // B-1c：极性揭示回放（initConsumables 已清零；旧存档停在全零）
-        if (snapshot.magicPolarityRevealed) {
-            ItemLoader.magicPolarityRevealed.clear();
-            for (const kindId of snapshot.magicPolarityRevealed) {
-                ItemLoader.magicPolarityRevealed.add(kindId);
-            }
-        }
-
-        // V-1c：奖励房配额计数恢复。旧存档无此字段 → 0（"开局态"兜底，
-        // 见 GameSnapshot.rewardRoomsGenerated 注）。
-        setRewardRoomsGenerated(snapshot.rewardRoomsGenerated ?? 0);
-
-        logger.messages = [];
-        timeSystem.currentTick = 0;
-        this.clearRecording();
-        this.clearReplay();
-
-        this.depth = snapshot.depth;
-        this.grid = new Grid(DCOLS, DROWS);
-        this.grid.impregnableCells = new Set(snapshot.impregnableCells ?? []);
-        this.dormantMonsters = []; // 读档重建（V-2b-5）：休眠怪不在 monsters 快照里
+        this.discardInFlightAdvancement();
+        if (this.grid) setDormantAwakener(this.grid, null);
+        for (const level of this.levels.values()) setDormantAwakener(level.grid, null);
+        this.animationLockDeadline = 0;
+        this.lastAdvancementError = null;
+        this.inAutoTravelStep = false;
+        this.mode = snapshot.mode; this.depth = snapshot.depth; this.currentLevelDepth = snapshot.currentLevelDepth;
+        this.currentSeed = snapshot.seed; this.levelSeeds = copyLevelSeeds(snapshot.levelSeeds);
+        this.ticksTillUpdateEnvironment = snapshot.ticksTillUpdateEnvironment;
+        const active = restored.get(this.depth)!;
+        this.grid = active.grid; this.environment = active.environment; this.fov = active.fov; this.lightMap = active.lightMap;
+        this.monsters = active.monsters; this.dormantMonsters = active.dormantMonsters!; this.items = active.items;
+        this.visibleMonsters = active.visibleMonsters; this.visibleItems = active.visibleItems;
+        this.machineCells = active.machineCells!; this.scent = active.scent!; this.waypoints = active.waypoints!;
+        this.currentLevelAwaySince = active.awaySince!; this.pendingCaughtFireCells = active.pendingCaughtFireCells!;
+        this.displacementTrapDepressions = new WeakMap();
+        for (const saved of levelRows) this.displacementTrapDepressions.set(restored.get(saved.depth)!.grid, new Set(saved.trapDepressions));
+        restored.delete(this.depth); this.levels = restored;
+        this.pendingFallenByDepth = new Map(snapshot.pendingFallenByDepth.map(q =>
+            [q.depth, q.monsters.map(m => entityGraph.monsters.get(m.id)!)]));
         this.bindDormantAwakener();
-        for (const c of snapshot.grid) {
-            const cell = this.grid.getCell(c.x, c.y);
-            if (!cell) continue;
-            if (c.layers) {
-                // C-4a-0 新格式：四层原样还原。不走 setTerrainLayer——
-                // "生产代码零调用点"的留痕约束；直填 layers 与存档逐层
-                // 状态一一对应，也不动 char/color 之外的任何派生位。
-                cell.layers = [
-                    c.layers[0] ?? TerrainType.NOTHING,
-                    c.layers[1] ?? TerrainType.NOTHING,
-                    c.layers[2] ?? TerrainType.NOTHING,
-                    c.layers[3] ?? TerrainType.NOTHING
-                ];
-                cell.char = c.char;
-                cell.color = c.color;
-            } else {
-                // 旧格式（只有 terrain 字段）：按 setTerrain 语义还原——
-                // terrain 进归属层、其余三层置 NOTHING。
-                this.grid.setTerrain(c.x, c.y, c.terrain, c.char, c.color);
-            }
-            cell.isExplored = c.isExplored;
-            cell.hasMemory = c.hasMemory;
-            cell.isVisible = false;
-            // F-2a：burnDuration/burnTerrain 随倒计时模型退役；isBurning 是
-            // 派生读数不直写——旧存档迁移经下方对账分支写层（读的是存档
-            // 数据里的 c.isBurning，不是派生位）。
-            cell.isPassable = c.isPassable;
-            cell.isOpaque = c.isOpaque;
-            // P1-37：机器旗标随存档恢复（缺省 0 = 旧存档无此字段，视为无机器）。
-            cell.machineNumber = c.machineNumber ?? 0;
-            // F-1 起的镜像对账（F-2a 语义更新）：isBurning 恒等于层里的火地形。
-            // 新存档两侧由派生保证，对账是空转；旧存档（数据 isBurning=true
-            // 而层里无火——F-1 前的火不成地形）在此补写 SURFACE 火地形，
-            // 反常组合（无火标志却有火地形）则摘除。
-            const hadFire = cell.layers.some((t) => (TERRAIN_FLAGS[t].flags & T_IS_FIRE) !== 0);
-            if (c.isBurning && !hadFire) {
-                cell.layers[DungeonLayer.SURFACE] = TerrainType.PLAIN_FIRE;
-            } else if (!c.isBurning && hadFire) {
-                for (let l = 0; l < cell.layers.length; l++) {
-                    if ((TERRAIN_FLAGS[cell.layers[l]!].flags & T_IS_FIRE) !== 0) {
-                        cell.layers[l] = TerrainType.NOTHING;
-                    }
-                }
-            }
-        }
-
-        this.environment = new EnvironmentManager(this.grid);
-        // G-1：addGas 自带载体校验——旧档（0-100 口径的旧枚举值 2/3/4/5，
-        // 以及 P1-45 幽灵气的 1）不再是合法 GAS 层地形值，统一被拒绝丢弃；
-        // 新档的值就是 GAS 层地形原值，精确还原。
-        for (const g of snapshot.gasGrid) {
-            this.environment.addGas(g.x, g.y, g.type as GasType, g.density);
-        }
-        this.fov = new FOVSys(this.grid);
-        this.lightMap = new LightMap(this.grid);
+        this.activeFlares = []; this.flareLightMap = null; this.flareElapsedMs = 0;
 
         this.player = new Player(snapshot.player.loc.x, snapshot.player.loc.y);
         Object.assign(this.player, copyFields(snapshot.player, PLAYER_FIELDS));
@@ -8800,67 +8835,55 @@ export class Game {
         const equipment = (id: number | null): Item | null => id === null ? null : entityGraph.items.get(id)!;
         this.player.equippedWeapon = equipment(snapshot.player.equippedWeaponId);
         this.player.equippedArmor = equipment(snapshot.player.equippedArmorId);
-        this.player.ringLeft = equipment(snapshot.player.ringLeftId);
-        this.player.ringRight = equipment(snapshot.player.ringRightId);
-        this.monsters = snapshot.monsters.map(m => entityGraph.monsters.get(m.id)!);
-        this.dormantMonsters = snapshot.dormantMonsters.map(m => entityGraph.monsters.get(m.id)!);
-        this.items = snapshot.items.map(it => entityGraph.items.get(it.id)!);
-        if (snapshot.stats) {
-            this.stats = { ...snapshot.stats };
-        }
+        this.player.ringLeft = equipment(snapshot.player.ringLeftId); this.player.ringRight = equipment(snapshot.player.ringRightId);
 
-        // P1-35：读档后生成期派生态必须与当前网格自洽。loopMap 是网格的纯
-        // 函数（P1-34 同一不变式的读档面），不重算就会沿用读档前那一局的
-        // 环路图——safety map 的 IN_LOOP -=10 偏好按错误环路生效，静默失效。
-        // analyzeLoopMap 纯函数、零 RNG 消耗，不影响读档的随机流。
-        this.loopMap = analyzeLoopMap(this.grid);
-        // U02a: rebuilding would reshuffle from the *current* RNG position and
-        // invalidate monsters' saved waypoint indices. Restore its random products.
-        this.waypoints = new WaypointSystem();
-        this.waypoints.setState(snapshot.waypoints);
-        // P1-35 复核顺带补：气味图快照 schema 无对应字段，陈局气味残留会
-        // 误导嗅觉追踪——重置为空图（CE 语义是恢复 levels[d].scentMap，
-        // web 缺数据源，报告登记）。
-        this.scent = new ScentMap(DCOLS, DROWS);
-        // P1-35 复核顺带补：机器格快照 schema 无对应字段，清空防上一层
-        // 残留。P1-37 起旗标本身随存档往返（grid 格的 machineNumber 字段），
-        // 据此重建——落位检查不再在读档层退化。
-        this.machineCells = new Set();
-        for (let x = 0; x < this.grid.width; x++) {
-            for (let y = 0; y < this.grid.height; y++) {
-                const cell = this.grid.getCell(x, y);
-                if (cell && cell.machineNumber !== 0) this.machineCells.add(y * DCOLS + x);
-            }
-        }
+        const run = JSON.parse(JSON.stringify(snapshot.run)) as GameSnapshot['run'];
+        this.meteredItems = run.meteredItems; this.foodSpawned = run.foodSpawned; this.goldGenerated = run.goldGenerated;
+        this.monsterSpawnFuse = run.monsterSpawnFuse; this.absoluteTurnNumber = run.absoluteTurnNumber;
+        timeSystem.currentTick = run.currentTick;
+        restoreNextMachineNumber(run.nextMachineNumber);
+        restoreNextEntityId(run.nextEntityId);
+        ensureEntityIdAbove(Math.max(snapshot.player.id, 0, ...entityGraph.monsters.keys(), ...entityGraph.items.keys()));
+        this.playerFalling = run.playerFalling;
+        this.justSearched = run.justSearched; this.justRested = run.justRested; this.searchingCharge = run.searchingCharge;
+        this.secretScanDepth = run.secretScanDepth; this.levelHasSecrets = run.levelHasSecrets;
+        this.poisonedDuringTurn = run.poisonedDuringTurn;
+        this.safetyMap = run.safetyMap; this.updatedSafetyMapThisTurn = run.updatedSafetyMapThisTurn; this.loopMap = run.loopMap;
+        this.stats = { ...snapshot.stats }; this.isGameOver = run.isGameOver; this.gameOverWon = run.gameOverWon;
+        this.gameOverReason = run.gameOverReason; this.gameOverInventory = run.gameOverInventory;
+        this.gameOverScore = run.gameOverScore; this.lastDamageSource = run.lastDamageSource;
+        this.everSeenItems = new Set(run.everSeenItemIds.map(id => entityGraph.items.get(id)!));
+        this.everSeenMonsters = new Set(run.everSeenMonsterIds.map(id => entityGraph.monsters.get(id)!));
+        this.examinedEntityIds = new Set(run.examinedEntityIds);
+        this.autoPath = run.autoPath; this.isMouseTraveling = run.isMouseTraveling;
+        this.travelTargetItem = run.travelTargetItemId === null ? undefined : entityGraph.items.get(run.travelTargetItemId);
+        this.recordedInputEvents = run.recordedInputEvents; this.recordedInputIndex = run.recordedInputIndex;
+        this.recordingStartAt = Date.now();
+        this.clearReplay();
+        this.signTexts = new Map(run.signTexts); this.resetPlateRoomByPos = new Map(run.resetPlateRoomByPos);
+        this.testRooms = new Map(run.testRooms); this.currentTestCategory = run.currentTestCategory;
+        logger.setState(run.logger);
+        ItemLoader.restoreFlavors(snapshot.flavors);
+        ItemLoader.identifiedItems = new Set(snapshot.identifiedItems);
+        ItemLoader.callTitles = new Map(Object.entries(snapshot.callTitles));
+        ItemLoader.magicPolarityRevealed = new Set(snapshot.magicPolarityRevealed);
+        setRewardRoomsGenerated(snapshot.rewardRoomsGenerated);
 
-        this.visibleMonsters.clear();
-        this.visibleItems.clear();
-        this.autoPath = [];
-        this.discardInFlightAdvancement();
-        this.everSeenItems.clear();
-        this.everSeenMonsters.clear();
-        this.levels.clear();
-        this.isMouseTraveling = false;
-        this.isInventoryOpen = false;
-        this.pendingIdentify = false;
-        this.pendingEnchantment = snapshot.pendingEnchantment ?? false;
-        if (this.pendingEnchantment) this.isInventoryOpen = true;
-        this.pendingArcana = null;
-        // B-1c：恶意品确认待决态不得跨场景泄漏（与 pendingIdentify 同处复位）
-        this.pendingUseConfirm = null;
-        this.isThrowing = false;
-        this.throwItemTarget = null;
-        this.hoveredCell = null;
-        this.hoveredText = '';
-        this.floatingTexts = [];
-        this.signTexts.clear();
-        this.resetPlateRoomByPos.clear();
-        this.testRooms.clear();
-        this.currentTestCategory = null;
+        this.pendingIdentify = run.pendingIdentify; this.pendingEnchantment = snapshot.pendingEnchantment;
+        this.isInventoryOpen = this.pendingIdentify || this.pendingEnchantment;
+        this.referenceScreen = null; this.pendingArcana = null; this.pendingUseConfirm = null;
+        this.isThrowing = false; this.throwItemTarget = null; this.isExamining = false; this.inspectTarget = null;
+        this.pendingBoltFrames = []; this.currentBoltFrameIndex = 0; this.boltAnimStartTime = 0;
+        this.hoveredCell = null; this.hoveredText = ''; this.floatingTexts = []; this.lastPromotionUpdate = null;
+        // Rebuild lighting without running update's discovery/auto-travel side
+        // effects. Grid memory and visibility are themselves snapshot fields.
+        this.updateVision();
+        for (const saved of snapshot.grid) {
+            const cell = this.grid.getCell(saved.x, saved.y)!;
+            cell.isVisible = saved.isVisible; cell.isExplored = saved.isExplored; cell.hasMemory = saved.hasMemory;
+        }
         this.needsRender = true;
-        this.update();
-        // Restore last: construction, derived-map rebuilds and a render callback must
-        // not consume the saved next draw (including cosmetic draws).
+        this.onRenderRequested?.();
         rng.setState(snapshot.rngState);
         return true;
     }
@@ -10053,7 +10076,7 @@ export class Game {
 
     /** CE teleport(..., INVALID_POS, false); no fallback after the final filter. */
     private teleportCreature(target: Creature): boolean {
-        const candidates = teleportCandidates({ grid: this.grid, player: this.player, monsters: this.monsters, dormantMonsters: this.dormantMonsters, machineCells: this.machineCells }, target);
+        const candidates = teleportCandidates({ grid: this.grid, player: this.player, monsters: this.monsters, dormantMonsters: this.dormantMonsters }, target);
         if (candidates.length === 0) return false;
         const destination = candidates[rng.randRange(0, candidates.length - 1)]!;
         if (!this.canDisplaceCreature(target, destination)) return false;
@@ -10108,8 +10131,7 @@ export class Game {
                         || (this.player.loc.x === x && this.player.loc.y === y)
                         || this.items.some(item => item.loc.x === x && item.loc.y === y)
                         || !!this.grid.getCell(x, y)?.layers.some(t => t === TerrainType.STAIRS_UP || t === TerrainType.STAIRS_DOWN),
-                    isMachineCell: (x, y) => !!this.machineCells?.has(y * DCOLS + x)
-                        || !!this.grid.getCell(x, y)?.machineNumber,
+                    isMachineCell: (x, y) => (this.grid.getCell(x, y)?.machineNumber ?? 0) !== 0,
                 });
             // Pathological all-blocked item maps retain the item safely; CE's
             // subsequent placeItemAt(-1,-1) has no defined safe placement there.

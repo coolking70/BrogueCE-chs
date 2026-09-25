@@ -16,7 +16,7 @@
  * 不得再出现外观决策（颜色/字形字面量、决策 switch）。
  */
 
-import { TerrainType, type Cell } from '../Map/Grid';
+import { TerrainType, DungeonLayer, DRAW_PRIORITY, type Cell } from '../Map/Grid';
 import { ColorUtils } from '../Map/Color';
 import { GasType, type GasCell } from '../Environment/Gas';
 import type { LightChannels } from '../Lighting/LightMap';
@@ -24,6 +24,8 @@ import { MonsterState, type Monster } from '../../entities/Monster';
 import type { Player } from '../../entities/Player';
 import { Item, ItemCategory } from '../Items/Item';
 import { ItemLoader } from '../Items/ItemLoader';
+import { TERRAIN_APPEARANCES } from './TerrainAppearanceCatalog';
+import { CE_AMULET_LEVEL } from '../Map/LightCatalog';
 
 /** W-25: selection trajectory styling belongs to the appearance layer; the
  * canvas only draws the geometry supplied by the read-only targeting preview. */
@@ -135,6 +137,8 @@ export interface EntityVisual {
  * 纯函数自身不持有任何地图/游戏引用。
  */
 export interface CellAppearanceContext {
+    /** Current depth for CE's dynamic tile colors. */
+    depth?: number;
     /** 该格气体镜像条目（无气体或越界时 undefined）。 */
     gas: GasCell | undefined;
     /**
@@ -143,6 +147,8 @@ export interface CellAppearanceContext {
      * applyColorMultiplier 逐通道乘法消费它，不再用旧 {color,intensity} 混合。
      */
     lightChannels: LightChannels | null;
+    /** Temporary CE flare light, added for drawing only. */
+    flareChannels?: LightChannels | null;
     /**
      * 该格的地面物品（CE itemAtLoc(loc)；渲染层每帧从 game.items 建索引传入）。
      * 探测魔法符号（IO.c:1219-1236 左支）的载体。
@@ -183,83 +189,32 @@ export interface EntityAppearanceContext {
 }
 
 /**
- * 地形的基础外观（不含气体/光照/幻觉/记忆/探测符号覆盖）。
- * 逐字搬自 GameCanvas.vue 原 getTerrainVisual（126-184 行）。
- *
- * UI-1 第 1 条（2026-09-18）给火寿命链补了 CE 外观（见 case 段注释）；
- * 仍落 default 的还有 NOTHING/WALL/CHASM/LAVA/BOG/CHARRED_FLOOR 与
- * C-2/C-5/B-3 追加的地形（FORCEFIELD/CRYSTAL_WALL/SACRED_GLYPH 等）。
+ * 地形的基础外观来自 CE tileCatalog；透明字形/前景在
+ * layeredTerrainAppearance 中按 IO.c 的独立优先级继承底层。
  */
-export function terrainAppearance(terrain: TerrainType, isVisible: boolean): TerrainVisual {
-    let char = ' ';
-    let color = '#000000';
-    let bgColor: number | null = null;
+const DYNAMIC_TILE_COLORS: Record<string, [readonly number[], readonly number[]]> = {
+    wallBackColor: [[45, 40, 40], [40, 30, 35]],
+    deepWaterBackColor: [[5, 10, 31], [5, 8, 20]],
+    shallowWaterBackColor: [[20, 20, 60], [12, 15, 40]],
+    floorBackColor: [[2, 2, 10], [5, 5, 5]],
+    chasmEdgeBackColor: [[5, 5, 25], [8, 8, 20]],
+};
 
-    switch (terrain) {
-        case TerrainType.GRANITE:
-            char = '#'; color = '#444455'; break;
-        case TerrainType.FLOOR:
-            char = '.'; color = '#aaaaaa'; bgColor = 0x222233; break;
-        case TerrainType.DOOR:
-            char = '+'; color = '#aa8844'; bgColor = 0x332211; break;
-        case TerrainType.OPEN_DOOR:
-            char = "'"; color = '#aa8844'; bgColor = 0x221800; break;
-        case TerrainType.WATER_SHALLOW:
-            char = '~'; color = '#3366cc'; bgColor = 0x112244; break;
-        case TerrainType.WATER_DEEP:
-            char = '~'; color = '#1133aa'; bgColor = 0x001133; break;
-        case TerrainType.GRASS:
-            char = '"'; color = '#33aa33'; bgColor = 0x113311; break;
-        case TerrainType.FOLIAGE:
-            char = '♠'; color = '#228822'; bgColor = 0x112211; break;
-        case TerrainType.STAIRS_DOWN:
-            char = '>'; color = '#00aaff'; bgColor = 0x222233; break;
-        case TerrainType.STAIRS_UP:
-            char = '<'; color = '#ffaa00'; bgColor = 0x222233; break;
-        case TerrainType.SIGN:
-            char = '§'; color = '#ffee88'; bgColor = 0x332b11; break;
-        case TerrainType.RESET_PLATE:
-            char = '⊙'; color = '#66ccff'; bgColor = 0x113344; break;
-        case TerrainType.TRAP:
-            char = '^'; color = '#cc4400'; bgColor = 0x220800; break;
-        case TerrainType.SECRET_DOOR:
-            // Render as wall so it looks hidden
-            char = '#'; color = '#555566'; break;
-        case TerrainType.PRESSURE_PLATE:
-            char = '_'; color = '#44cc44'; bgColor = 0x112211; break;
-        case TerrainType.LOCKED_DOOR:
-            char = '+'; color = '#dd9933'; bgColor = 0x331100; break;
-        case TerrainType.ALTAR:
-            char = '_'; color = '#ffffcc'; bgColor = 0x443311; break;
-        case TerrainType.WEB:
-            char = '\\'; color = '#cccccc'; bgColor = 0x222222; break;
-        case TerrainType.ANCIENT_SPIRIT_VINES:
-            char = ':'; color = '#99bb55'; break;
-        case TerrainType.ANCIENT_SPIRIT_GRASS:
-            char = '"'; color = '#669944'; break;
-        case TerrainType.BLOOD:
-            char = '%'; color = '#aa2222'; bgColor = 0x330000; break;
-        case TerrainType.MUD:
-            char = '~'; color = '#664422'; bgColor = 0x221100; break;
-        // ── UI-1 第 1 条：火寿命链的 CE 外观（Globals.c:461/469/492/495）──
-        // PLAIN_FIRE/GAS_FIRE 都是 G_FIRE + fireForeColor（GAS_EXPLOSION 是 web
-        // 的爆炸火载体，视觉同 PLAIN_FIRE——CE 爆炸留下的就是 plain fire）；
-        // ASH 与 EMBERS 同为 G_ASHES 字形，靠前景色区分（ashForeColor/fireForeColor）；
-        // 三者 backColor 均为 0（不画底色）。drawPriority（10/70/80，数值小者优先，
-        // Rogue.h:1910）在 web 的单值 cell.terrain 模型里无可观察载体，不迁移。
-        case TerrainType.PLAIN_FIRE:
-            char = G_FIRE_CHAR; color = FIRE_FORE_COLOR; break;
-        case TerrainType.GAS_FIRE:
-            char = G_FIRE_CHAR; color = FIRE_FORE_COLOR; break;
-        case TerrainType.GAS_EXPLOSION:
-            char = G_FIRE_CHAR; color = FIRE_FORE_COLOR; break;
-        case TerrainType.EMBERS:
-            char = G_ASHES_CHAR; color = FIRE_FORE_COLOR; break;
-        case TerrainType.ASH:
-            char = G_ASHES_CHAR; color = ASH_FORE_COLOR; break;
-        default:
-            char = ' '; break;
-    }
+function depthColor(name: string, depth: number): string {
+    const [start, end] = DYNAMIC_TILE_COLORS[name]!;
+    const weight = Math.max(0, Math.min(100, Math.trunc(depth * 100 / CE_AMULET_LEVEL)));
+    return '#' + start.map((value, index) => {
+        const component = Math.trunc((value * (100 - weight) + end[index]! * weight) / 100);
+        return Math.trunc(component * 255 / 100).toString(16).padStart(2, '0');
+    }).join('');
+}
+
+export function terrainAppearance(terrain: TerrainType, isVisible: boolean, depth = 1): TerrainVisual {
+    const base = TERRAIN_APPEARANCES[terrain];
+    if (!base) throw new Error(`Missing CE appearance for TerrainType ${terrain}`);
+    let { char, color, bgColor } = base;
+    if (base.foreDynamic) color = depthColor(base.foreDynamic, depth);
+    if (base.backDynamic) bgColor = Number.parseInt(depthColor(base.backDynamic, depth).slice(1), 16);
 
     // Dim explored but not currently visible tiles
     if (!isVisible) {
@@ -267,6 +222,31 @@ export function terrainAppearance(terrain: TerrainType, isVisible: boolean): Ter
         if (bgColor !== null) bgColor = 0x111111;
     }
 
+    return { char, color, bgColor };
+}
+
+/** IO.c:1160-1188 selects glyph, foreground and background independently by priority. */
+function layeredTerrainAppearance(cell: Cell, depth: number): TerrainVisual {
+    let char = ' ';
+    let color = '#000000';
+    let bgColor: number | null = null;
+    let charPriority = Infinity, forePriority = Infinity, backPriority = Infinity;
+    for (let layer = 0; layer < cell.layers.length; layer++) {
+        if (layer === DungeonLayer.GAS) continue;
+        const terrain = cell.layers[layer]!;
+        if (terrain === TerrainType.NOTHING) continue;
+        const base = TERRAIN_APPEARANCES[terrain];
+        if (!base) throw new Error(`Missing CE appearance for TerrainType ${terrain}`);
+        const visual = terrainAppearance(terrain, true, depth);
+        const priority = DRAW_PRIORITY[terrain];
+        if (visual.char && priority < charPriority) { char = visual.char; charPriority = priority; }
+        if (!base.transparentFore && priority < forePriority) { color = visual.color; forePriority = priority; }
+        if (visual.bgColor !== null && priority < backPriority) { bgColor = visual.bgColor; backPriority = priority; }
+    }
+    if (!cell.isVisible) {
+        color = '#333333';
+        if (bgColor !== null) bgColor = 0x111111;
+    }
     return { char, color, bgColor };
 }
 
@@ -297,11 +277,11 @@ export function cellAppearance(cell: Cell, ctx: CellAppearanceContext): TerrainV
             color: detected.color,
             // CE 对这种格子不做任何乘法/平均（IO.c:1349-1359 "do nothing"）——
             // 底色取未变暗的基础值。
-            bgColor: terrainAppearance(cell.terrain, true).bgColor,
+            bgColor: layeredTerrainAppearance(cell, ctx.depth ?? 1).bgColor,
         };
     }
 
-    let { char, color, bgColor } = terrainAppearance(cell.terrain, cell.isVisible);
+    let { char, color, bgColor } = layeredTerrainAppearance(cell, ctx.depth ?? 1);
 
     // Apply Environmental Overrides (Gas) —— 燃烧覆盖层已移除（UI-1 第 1 条：
     // 火视觉 = 地形本体；Grid.isBurning 仍供气体的 !isBurning 守卫使用）。
@@ -342,7 +322,11 @@ export function cellAppearance(cell: Cell, ctx: CellAppearanceContext): TerrainV
     // Apply dynamic lighting if the cell is currently visible
     // For memory/explored cells, we just dim them significantly.
     if (cell.isVisible) {
-        const light = ctx.lightChannels;
+        const base = ctx.lightChannels;
+        const flare = ctx.flareChannels;
+        const light = base && flare
+            ? { r: base.r + flare.r, g: base.g + flare.g, b: base.b + flare.b }
+            : base ?? flare;
         if (light && (light.r > 0 || light.g > 0 || light.b > 0)) {
             // UI-1 第 7 条：CE 的光照是**逐通道乘法**（IO.c:1434-1437 对前景与
             // 背景各做一次 applyColorMultiplier，乘数 = adjustedLightValue 后的

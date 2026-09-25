@@ -1,0 +1,252 @@
+src/engine/Core/LevelSnapshot.ts:8:    'isDiscovered', 'autoSearched', 'machineNumber', 'isPowered', 'hasDormantMonster',
+src/engine/Core/LevelSnapshot.ts:13:export type CellSnapshot = Omit<Pick<Cell, typeof CELL_FIELDS[number]>, 'layers' | 'machineNumber'> & {
+src/engine/Core/LevelSnapshot.ts:15:    machineNumber?: number;
+src/engine/Core/Game.ts:2:import { collectMachineCells, machineCellsMatchGrid } from '../Map/MachineCells';
+src/engine/Core/Game.ts:202:    machineCells: number[];
+src/engine/Core/Game.ts:249:    /** P1-31：该层的机器格集合（CE pmap machineNumber 派生），随层缓存。 */
+src/engine/Core/Game.ts:250:    machineCells?: Set<number>;
+src/engine/Core/Game.ts:304: * CE 的不变量是"楼梯永不在机器格内"（`placeStairs` 回避 IS_IN_MACHINE，
+src/engine/Core/Game.ts:325:    if (centre && centre.machineNumber === 0) return { x: cx, y: cy }; // 旧行为：原样
+src/engine/Core/Game.ts:330:        return c.machineNumber === 0 && c.isPassable && c.layers.includes(TerrainType.FLOOR);
+src/engine/Core/Game.ts:500:    // U04c: detached grid.machineNumber projection, never MachineResult.cells.
+src/engine/Core/Game.ts:503:    private machineCells: Set<number> = new Set();
+src/engine/Core/Game.ts:600:        this.machineCells = new Set();
+src/engine/Core/Game.ts:1068:                machineCells: this.machineCells,
+src/engine/Core/Game.ts:1101:            this.machineCells = collectMachineCells(this.grid);
+src/engine/Core/Game.ts:1203:        // external features and excluding cleared BP_NO_INTERIOR_FLAG cells.
+src/engine/Core/Game.ts:1204:        this.machineCells = collectMachineCells(this.grid);
+src/engine/Core/Game.ts:1207:        // P1-37：牌堆排除机器格（machineNumber≠0 = CE 的 IS_IN_MACHINE，
+src/engine/Core/Game.ts:1221:                if (cell.machineNumber !== 0) continue; // CE IS_IN_MACHINE
+src/engine/Core/Game.ts:1245:            // IS_IN_MACHINE 回避，见 vestibuleStairPos 头注）。
+src/engine/Core/Game.ts:1256:        // 机器格（IS_IN_MACHINE）在归零 pass 里被先置 0、不会触发改墙
+src/engine/Core/Game.ts:1263:            { machineCells: this.machineCells }
+src/engine/Core/Game.ts:1357:                    key.keyLoc = [{ loc: { x: mr.door.x, y: mr.door.y }, machine: mr.machineNumber, disposableHere: true }];
+src/engine/Core/Game.ts:1400:                    const leader = this.spawnHordeAtFeature(spawn, depth, mr.machineNumber);
+src/engine/Core/Game.ts:1413:                    this.finalizeBlueprintMonster(mon, spawn, mr.machineNumber);
+src/engine/Core/Game.ts:1536:                // HAS_MONSTER|HAS_STAIRS|HAS_ITEM|IS_IN_MACHINE（HAS_PLAYER 不查——
+src/engine/Core/Game.ts:1551:                        isMachineCell: (x, y) => this.machineCells.has(y * DCOLS + x),
+src/engine/Core/Game.ts:1606:     *        !(pmap flags & (HAS_MONSTER | HAS_STAIRS | IS_IN_MACHINE)))；
+src/engine/Core/Game.ts:1643:     *     IS_IN_MACHINE → machineCells（本层生成期数据）。
+src/engine/Core/Game.ts:1658:        if (this.machineCells.has(y * DCOLS + x)) return false;
+src/engine/Core/Game.ts:1666:     * HAS_MONSTER|HAS_STAIRS|IS_IN_MACHINE、hallwaysAllowed=true、
+src/engine/Core/Game.ts:1811:    private spawnHordeAtFeature(spawn: MachineMonsterSpawn, depth: number, machineNumber: number): Monster | null {
+src/engine/Core/Game.ts:1836:            this.finalizeBlueprintMonster(mon, spawn, machineNumber);
+src/engine/Core/Game.ts:1853:     * 排除 CE 的占用约束 HAS_MONSTER / HAS_PLAYER / HAS_ITEM / IS_IN_MACHINE
+src/engine/Core/Game.ts:1867:                if (cell.machineNumber !== 0) continue; // CE IS_IN_MACHINE
+src/engine/Core/Game.ts:1958:                            // **不含 IS_IN_MACHINE**）。
+src/engine/Core/Game.ts:1971:                            if (cell && cell.isPassable && cell.machineNumber === 0 && !this.monsters.some(m => m.loc.x === nx && m.loc.y === ny) && !(this.player.loc.x === nx && this.player.loc.y === ny)) {
+src/engine/Core/Game.ts:2166:     * P1-37：CE 的远格池不排机器、回退池排 IS_IN_MACHINE（Monsters.c:1110
+src/engine/Core/Game.ts:2184:                // CE 回退池的 IS_IN_MACHINE 排除：远格池不排，无远格可退时
+src/engine/Core/Game.ts:2186:                if (!isFar && cell.machineNumber !== 0) continue;
+src/engine/Core/Game.ts:2354:        this.machineCells.clear(); // P1-31：test 层无机器（防上一层残留）
+src/engine/Core/Game.ts:7548:     * IS_IN_MACHINE。落进深水时做"能不能游出来"检查：到最近干地的
+src/engine/Core/Game.ts:7566:            if (this.machineCells.has(y * DCOLS + x)) return false;
+src/engine/Core/Game.ts:7664:     * （machineNumber ≠ 0），0==0 的退化形态不可达，照抄。
+src/engine/Core/Game.ts:7672:            if (e.machine === (cell?.machineNumber ?? 0)) return true; // CE :4042
+src/engine/Core/Game.ts:7683:            if ((e.loc.x === x && e.loc.y === y) || e.machine === (cell?.machineNumber ?? 0)) return e;
+src/engine/Core/Game.ts:8563:            machineCells: this.machineCells, scent: this.scent, waypoints: this.waypoints,
+src/engine/Core/Game.ts:8579:            machineCells: [...collectMachineCells(level.grid)],
+src/engine/Core/Game.ts:8663:                || !level.grid.every(c => c && c.layers?.length === 4 && typeof c.machineNumber === 'number')
+src/engine/Core/Game.ts:8664:                || !machineCellsMatchGrid(level.machineCells, level.grid)
+src/engine/Core/Game.ts:8704:                    machineCells: collectMachineCells(grid), scent: ScentMap.fromState(saved.scent), waypoints,
+src/engine/Core/Game.ts:8723:        this.machineCells = active.machineCells!; this.scent = active.scent!; this.waypoints = active.waypoints!;
+src/engine/Core/Game.ts:9391:                // 其 machineCells 回避比 CE 多一项——web 侧必要，与
+src/engine/Core/Game.ts:9439:     *   - machineHome = machineNumber（:1661，"Monster remembers the machine
+src/engine/Core/Game.ts:9447:    private finalizeBlueprintMonster(mon: Monster, spawn: MachineMonsterSpawn, machineNumber: number): void {
+src/engine/Core/Game.ts:9448:        mon.machineHome = machineNumber;
+src/engine/Core/Game.ts:10037:                    isMachineCell: (x, y) => (this.grid.getCell(x, y)?.machineNumber ?? 0) !== 0,
+src/engine/Generator/Architect.ts:485:        // 孤儿门移除 + 密门升级。机器内部的门由 Cell.machineNumber 豁免
+src/engine/Generator/Architect.ts:486:        //（CE 2738-2739 `machineNumber == 0` 同款；BlueprintEngine 落位时写入）。
+src/engine/Generator/Architect.ts:828:     * 本轮两个阶段影响的行为由 machineNumber/选址闸门各自保证。
+src/engine/Generator/BlueprintEngine.ts:8: * IS_GATE_SITE ∧ !IS_IN_MACHINE ∧ roomSize[0] ≤ chokeMap ≤ roomSize[1]），
+src/engine/Generator/BlueprintEngine.ts:198:    machineNumber: number;
+src/engine/Generator/BlueprintEngine.ts:199:    cells: Pos[];           // Construction interior; final membership lives in grid.machineNumber (U04c).
+src/engine/Generator/BlueprintEngine.ts:216:     * `pmap[featX][featY].flags |= IS_IN_ROOM/AREA_MACHINE; machineNumber =
+src/engine/Generator/BlueprintEngine.ts:217:     * machineNumber;` 的 web 回声）。
+src/engine/Generator/BlueprintEngine.ts:222:     * 的铺装、DF 列……）合法地落在 interior 之外并带上 machineNumber，
+src/engine/Generator/BlueprintEngine.ts:224:     * 「网格机器格 − ∪mr.cells 必须都是机器自己的布点」的逐格断言从
+src/engine/Generator/BlueprintEngine.ts:575:// 尾部的 NO_INTERIOR_FLAG 段， Architect.c:858-945 / :1691-1702）。
+src/engine/Generator/BlueprintEngine.ts:583:export const BP_NO_INTERIOR_FLAG = 'BP_NO_INTERIOR_FLAG';
+src/engine/Generator/BlueprintEngine.ts:598:        machineNumber: number; trapType: Cell['trapType'];
+src/engine/Generator/BlueprintEngine.ts:947:     * machineNumber≠0，豁免。
+src/engine/Generator/BlueprintEngine.ts:963:                if ((this.grid.getCell(x, y)?.machineNumber ?? 0) !== 0) continue;
+src/engine/Generator/BlueprintEngine.ts:992:                if ((this.grid.getCell(x, y)?.machineNumber ?? 0) !== 0) continue;
+src/engine/Generator/BlueprintEngine.ts:1022:        // 区间；缓存生命周期内无机器建成，machineNumber 过滤结果不变。
+src/engine/Generator/BlueprintEngine.ts:1030:                    if ((this.grid.getCell(x, y)?.machineNumber ?? 0) !== 0) continue; // CE !IS_IN_MACHINE
+src/engine/Generator/BlueprintEngine.ts:1098:                if (cell && cell.terrain === TerrainType.FLOOR && cell.machineNumber === 0) {
+src/engine/Generator/BlueprintEngine.ts:1162:            if (!cell || cell.terrain !== TerrainType.FLOOR || cell.machineNumber !== 0) continue;
+src/engine/Generator/BlueprintEngine.ts:1230:        //    IMPREGNABLE。REDESIGN 消费 RNG。**先于 machineNumber 标记**（CE :1225
+src/engine/Generator/BlueprintEngine.ts:1231:        //    先于 :1231——OPEN 的扩张判据与 SURROUND 的邻格 machineNumber
+src/engine/Generator/BlueprintEngine.ts:1281:                    if ((this.grid.getCell(nx, ny)?.machineNumber ?? 0) !== 0) continue;
+src/engine/Generator/BlueprintEngine.ts:1317:            cell.machineNumber = machineNum;
+src/engine/Generator/BlueprintEngine.ts:1336:        // V-2a：machineNumber 是 findGateRoom 候选过滤（!IS_IN_MACHINE）的
+src/engine/Generator/BlueprintEngine.ts:1593:                        // BUILD_ANYWHERE 的格在 room.cells 之外，machineNumber
+src/engine/Generator/BlueprintEngine.ts:1594:                        // 在此刻补写；IS_IN_ROOM/AREA 之分 web 无载体，machineNumber
+src/engine/Generator/BlueprintEngine.ts:1595:                        // 即 IS_IN_MACHINE 的 web 等价物）。
+src/engine/Generator/BlueprintEngine.ts:1597:                        if (fcell && fcell.machineNumber === 0) fcell.machineNumber = machineNum;
+src/engine/Generator/BlueprintEngine.ts:1601:                        // 所以记录点必须与上面那条 machineNumber 写口同址
+src/engine/Generator/BlueprintEngine.ts:1651:                            //   addMachineNumberToKey(theItem, machineNumber,
+src/engine/Generator/BlueprintEngine.ts:1794:        // cell.machineNumber（web 的 IS_IN_MACHINE 等价物，CE Rogue.h:1113，
+src/engine/Generator/BlueprintEngine.ts:1800:        // 每回合白白消耗 RNG。现在 populateLevel 直接按 machineNumber 排除
+src/engine/Generator/BlueprintEngine.ts:1804:        // machineNumber≠0 排除），两处必须同进同退。
+src/engine/Generator/BlueprintEngine.ts:1813:        // V-2b-2b（CE Architect.c:1691-1702）：BP_NO_INTERIOR_FLAG——机器
+src/engine/Generator/BlueprintEngine.ts:1814:        // 建成后把非 wired 格的机器标记摘掉（IS_IN_MACHINE + machineNumber
+src/engine/Generator/BlueprintEngine.ts:1816:        // 落点（回避 IS_IN_MACHINE）可以在其中正常落。wired 判据照抄：
+src/engine/Generator/BlueprintEngine.ts:1818:        if (flags.has(BP_NO_INTERIOR_FLAG)) {
+src/engine/Generator/BlueprintEngine.ts:1822:                    if (!cell || cell.machineNumber !== machineNum) continue;
+src/engine/Generator/BlueprintEngine.ts:1824:                    cell.machineNumber = 0;
+src/engine/Generator/BlueprintEngine.ts:1876:            machineNumber: machineNum,
+src/engine/Generator/BlueprintEngine.ts:1920:                    || cell.machineNumber !== 0; // CE :680-684：不得吞并既有机器
+src/engine/Generator/BlueprintEngine.ts:2007:                    || this.grid.getCell(x, y)!.machineNumber !== 0) {
+src/engine/Generator/BlueprintEngine.ts:2008:                    tryAgain = true; // HAS_ITEM | HAS_MONSTER | IS_IN_MACHINE
+src/engine/Generator/BlueprintEngine.ts:2039:     *   陷阱等阻断寻路的地形）、machineNumber == 0（不得吞并其他机器——
+src/engine/Generator/BlueprintEngine.ts:2064:                    if (!cellIsBlocker(x, y) || (this.grid.getCell(x, y)?.machineNumber ?? 0) !== 0) continue;
+src/engine/Generator/BlueprintEngine.ts:2082:                            || (this.grid.getCell(nx, ny)?.machineNumber ?? 0) !== 0) {
+src/engine/Generator/BlueprintEngine.ts:2126:     * machineNumber/trapType）是这里的快照子集；其余字段
+src/engine/Generator/BlueprintEngine.ts:2140:                    machineNumber: c.machineNumber,
+src/engine/Generator/BlueprintEngine.ts:2162:                c.machineNumber = s.machineNumber;
+src/engine/Generator/BlueprintEngine.ts:2332:        // 4.（CE :558-575）MF_BUILD_IN_WALLS：墙、非 interior、machineNumber
+src/engine/Generator/BlueprintEngine.ts:2334:        //    BUILD_ANYWHERE 下非 T_PATHING_BLOCKER 且 machineNumber==0。
+src/engine/Generator/BlueprintEngine.ts:2337:                && (cell.machineNumber === 0 || cell.machineNumber === machineNum)
+src/engine/Generator/BlueprintEngine.ts:2349:                        && nCell.machineNumber === 0;
+src/engine/Generator/BlueprintEngine.ts:2363:        //    IS_CHOKEPOINT|IN_LOOP|IS_IN_MACHINE；否则只要求不在机器内。
+src/engine/Generator/BlueprintEngine.ts:2369:                    || cell.machineNumber !== 0)) {
+src/engine/Generator/BlueprintEngine.ts:2372:            return cell.machineNumber === 0;
+src/engine/Generator/BlueprintEngine.ts:2426: * 只有 MachineResult 指令），"触及其他机器即放弃"一支对应 machineNumber
+src/engine/Generator/BlueprintEngine.ts:2447:            if ((grid.getCell(nx, ny)?.machineNumber ?? 0) !== 0) return null; // CE 410-414
+src/engine/Map/MachineCells.ts:3:/** CE IS_IN_MACHINE (Rogue.h:1113). Blueprint interiors are construction
+src/engine/Map/MachineCells.ts:5: * BP_NO_INTERIOR_FLAG clears non-wired cells (Architect.c:1488,1691-1699).
+src/engine/Map/MachineCells.ts:12:            if (grid.getCell(x, y)!.machineNumber !== 0) cells.add(y * DCOLS + x);
+src/engine/Map/MachineCells.ts:21:export function machineCellsMatchGrid(
+src/engine/Map/MachineCells.ts:23:    grid: readonly { x: number; y: number; machineNumber?: number }[],
+src/engine/Map/MachineCells.ts:26:    const expected = new Set(grid.filter(c => c.machineNumber !== 0).map(c => c.y * DCOLS + c.x));
+src/engine/Map/WallDoorFinish.ts:117: * （CE 原文如此；生成期 machineNumber 恒 0，机器侧格不会被选中——CE 1938
+src/engine/Map/WallDoorFinish.ts:152:                    if (target.machineNumber !== 0) continue; // CE 1938
+src/engine/Map/WallDoorFinish.ts:186: * 单趟 raster 原位扫描（CE 无收敛环）；机器门由 machineNumber 豁免
+src/engine/Map/WallDoorFinish.ts:187: * （web：BlueprintEngine.applyBlueprint 落位时写入 Cell.machineNumber）。
+src/engine/Map/WallDoorFinish.ts:198:            if (cell.terrain !== TerrainType.DOOR || cell.machineNumber !== 0) continue;
+src/engine/Map/LoopMap.ts:488: * 在 chokeMap 阶段从 passMap 剔除（CE 285-288），默认 machineNumber !== 0。
+src/engine/Map/LoopMap.ts:492:    isMachineCell: (cell: Cell) => boolean = (cell) => cell.machineNumber !== 0
+src/engine/Map/LakeSystem.ts:295:                if (isSecretTerrain(subject.terrain) || subject.machineNumber !== 0) continue;
+src/engine/Map/LakeSystem.ts:427:    const inMachine = (x: number, y: number): boolean => (grid.getCell(x, y)?.machineNumber ?? 0) !== 0;
+src/engine/Map/AutoGenerator.ts:567: *      IS_IN_MACHINE 五个 pmap flags；这些在 CE 的 digDungeon 期恒空
+src/engine/Map/AutoGenerator.ts:569: *      机器格（Cell.machineNumber），照此投影。
+src/engine/Map/AutoGenerator.ts:599:            || cell.machineNumber !== 0
+src/engine/Map/TerrainCatalog.ts:938:    // cage key 经 MF_SKELETON_KEY 拿到机器号绑定，钥匙经 machineNumber
+src/engine/Map/Promotion.ts:65: *      （按 machineNumber 全图扫，:1276-1277 注释）、激活结束把**全图**
+src/engine/Map/Promotion.ts:209:    machineNumber: number;
+src/engine/Map/Promotion.ts:219: * CE 字面无 IS_IN_MACHINE 要求——只按 machineNumber 匹配（0 号机器的格
+src/engine/Map/Promotion.ts:220: * machineNumber 恒 0，扫描同样成立，照抄）。
+src/engine/Map/Promotion.ts:222:export function circuitBreakersPreventActivation(grid: Grid, machineNumber: number): boolean {
+src/engine/Map/Promotion.ts:226:            if (!cell || cell.machineNumber !== machineNumber) continue;
+src/engine/Map/Promotion.ts:243: * web 的 IS_IN_MACHINE 等价物 = machineNumber !== 0（BlueprintEngine 既定
+src/engine/Map/Promotion.ts:244: * 口径）：CE 的扫描条件是 IS_IN_MACHINE ∧ machineNumber 相等 ∧ 未通电 ∧
+src/engine/Map/Promotion.ts:245: * 格上任一层带 TM_IS_WIRED；machineNumber<=0 时 CE 的 IS_IN_MACHINE 恒假
+src/engine/Map/Promotion.ts:252: * ★ CE :1201-1227 的怪物激活段（machineHome == machineNumber 且
+src/engine/Map/Promotion.ts:257:export function activateMachine(grid: Grid, machineNumber: number): WiredActivationResult {
+src/engine/Map/Promotion.ts:259:        machineNumber,
+src/engine/Map/Promotion.ts:273:    if (machineNumber <= 0) return result; // web IS_IN_MACHINE 守卫（见头注）
+src/engine/Map/Promotion.ts:282:            if (cell.machineNumber !== machineNumber || cell.isPowered) continue;
+src/engine/Map/Promotion.ts:454:    //      contiguous"）——activateMachine 按 machineNumber 全图扫，不是按
+src/engine/Map/Promotion.ts:459:        if (!cell.isPowered && !circuitBreakersPreventActivation(grid, cell.machineNumber)) {
+src/engine/Map/Promotion.ts:462:            result.wired = activateMachine(grid, cell.machineNumber); // CE :1278 "It lives!!!"
+src/engine/Map/Grid.ts:939:    public machineNumber: number = 0;
+src/engine/Map/DungeonFeature.ts:50: * gateSealsOnlyInterior 是"单格门 + machineNumber 豁免"的另一个问题。
+src/engine/Movement/CreaturePlacement.ts:87:            || cell.machineNumber !== 0
+src/engine/Items/ItemSpawnHeatMap.ts:21: *   - IS_IN_MACHINE 由调用方注入（Game.populateLevel 的 machineCells，
+src/engine/Items/ItemSpawnHeatMap.ts:22: *     CE pmap 的 machineNumber != 0）；
+src/engine/Items/ItemSpawnHeatMap.ts:129:    /** CE IS_IN_MACHINE：本层机器格（y * DCOLS + x）。 */
+src/engine/Items/ItemSpawnHeatMap.ts:130:    machineCells: Set<number>;
+src/engine/Items/ItemSpawnHeatMap.ts:316:                    || exclusions.machineCells.has(idx)
+src/engine/Items/ItemSpawnHeatMap.ts:389:    /** CE IS_IN_MACHINE。 */
+src/entities/Monster.ts:452:     * Architect.c:1661 `monst->machineHome = machineNumber;`——注释原文
+../BrogueCE-master/src/brogue/RogueMain.c:650:            levels[oldLevelNumber - 1].mapStorage[i][j].machineNumber = pmap[i][j].machineNumber;
+../BrogueCE-master/src/brogue/RogueMain.c:758:                pmap[i][j].machineNumber = levels[rogue.depthLevel - 1].mapStorage[i][j].machineNumber;
+../BrogueCE-master/src/brogue/RogueMain.c:822:                             (HAS_MONSTER | HAS_ITEM | HAS_STAIRS | IS_IN_MACHINE), false, false);
+../BrogueCE-master/src/brogue/RogueMain.c:829:                                (HAS_MONSTER | HAS_ITEM | HAS_STAIRS | IS_IN_MACHINE), false, false);
+../BrogueCE-master/src/brogue/RogueMain.c:849:                && !(pmapAt(loc)->flags & (HAS_MONSTER | HAS_STAIRS | IS_IN_MACHINE))) {
+../BrogueCE-master/src/brogue/RogueMain.c:858:                                     T_PATHING_BLOCKER, (HAS_MONSTER | HAS_STAIRS | IS_IN_MACHINE),
+../BrogueCE-master/src/brogue/Items.c:631:                || (pmap[i][j].flags & (IS_CHOKEPOINT | IN_LOOP | IS_IN_MACHINE))
+../BrogueCE-master/src/brogue/Items.c:1177:static boolean swapItemEnchants(const short machineNumber) {
+../BrogueCE-master/src/brogue/Items.c:1187:                && pmap[i][j].machineNumber == machineNumber
+../BrogueCE-master/src/brogue/Items.c:1287:        if (pmap[x][y].machineNumber
+../BrogueCE-master/src/brogue/Items.c:1288:            && pmap[x][y].machineNumber == pmapAt(player.loc)->machineNumber
+../BrogueCE-master/src/brogue/Items.c:1294:            && pmap[x][y].machineNumber) {
+../BrogueCE-master/src/brogue/Items.c:1297:                   && pmap[x][y].machineNumber == pmapAt(nextItem->loc)->machineNumber
+../BrogueCE-master/src/brogue/Items.c:1305:            if (!circuitBreakersPreventActivation(pmap[x][y].machineNumber)
+../BrogueCE-master/src/brogue/Items.c:1306:                && swapItemEnchants(pmap[x][y].machineNumber)) {
+../BrogueCE-master/src/brogue/Items.c:1308:                activateMachine(pmap[x][y].machineNumber);
+../BrogueCE-master/src/brogue/Items.c:4043:            } else if (theItem->keyLoc[i].machine == pmapAt(loc)->machineNumber) {
+../BrogueCE-master/src/brogue/IO.c:2246:            if (pmap[i][j].machineNumber) {
+../BrogueCE-master/src/brogue/IO.c:2248:                applyColorAugment(&backColor, &(machineColors[pmap[i][j].machineNumber]), 50);
+../BrogueCE-master/src/brogue/IO.c:2250:                if (pmap[i][j].machineNumber < 10) {
+../BrogueCE-master/src/brogue/IO.c:2251:                    dchar ='0' + pmap[i][j].machineNumber;
+../BrogueCE-master/src/brogue/IO.c:2252:                } else if (pmap[i][j].machineNumber < 10 + 26) {
+../BrogueCE-master/src/brogue/IO.c:2253:                    dchar = 'a' + pmap[i][j].machineNumber - 10;
+../BrogueCE-master/src/brogue/IO.c:2255:                    dchar = 'A' + pmap[i][j].machineNumber - 10 - 26;
+../BrogueCE-master/src/brogue/Rogue.h:1113:    IS_IN_MACHINE               = (IS_IN_ROOM_MACHINE | IS_IN_AREA_MACHINE),    // sacred ground; don't generate items here, or teleport randomly to it
+../BrogueCE-master/src/brogue/Rogue.h:1118:                            | IS_CHOKEPOINT | IS_GATE_SITE | IS_IN_MACHINE | IMPREGNABLE),
+../BrogueCE-master/src/brogue/Rogue.h:1318:    unsigned char machineNumber;
+../BrogueCE-master/src/brogue/Rogue.h:2505:    short machineNumber;                // so each machine on a level gets a unique number
+../BrogueCE-master/src/brogue/Rogue.h:2653:    BP_NO_INTERIOR_FLAG             = Fl(13),   // don't flag the area as being part of a machine
+../BrogueCE-master/src/brogue/Rogue.h:3442:    void activateMachine(short machineNumber);
+../BrogueCE-master/src/brogue/Rogue.h:3443:    boolean circuitBreakersPreventActivation(short machineNumber);
+../BrogueCE-master/src/brogue/Monsters.c:1108:        getTerrainGrid(grid, 0, (T_PATHING_BLOCKER | T_HARMFUL_TERRAIN), (HAS_PLAYER | HAS_MONSTER | HAS_STAIRS | IN_FIELD_OF_VIEW | IS_IN_MACHINE));
+../BrogueCE-master/src/brogue/Monsters.c:1175:            getTerrainGrid(grid, 0, avoidedFlagsForMonster(&(monst->info)), (IS_IN_MACHINE | HAS_PLAYER | HAS_MONSTER | HAS_STAIRS));
+../BrogueCE-master/src/brogue/Monsters.c:1177:            getTerrainGrid(grid, 0, forbiddenFlagsForMonster(&(monst->info)), (IS_IN_MACHINE | HAS_PLAYER | HAS_MONSTER | HAS_STAIRS));
+../BrogueCE-master/src/brogue/Movement.c:649:    } else if (theItem->keyLoc[i].machine == pmap[x][y].machineNumber &&
+../BrogueCE-master/src/brogue/Time.c:302:      monst->machineHome == pmap[*x][*y].machineNumber &&
+../BrogueCE-master/src/brogue/Time.c:1173:void activateMachine(short machineNumber) {
+../BrogueCE-master/src/brogue/Time.c:1186:      if ((pmap[x][y].flags & IS_IN_MACHINE) &&
+../BrogueCE-master/src/brogue/Time.c:1187:          pmap[x][y].machineNumber == machineNumber &&
+../BrogueCE-master/src/brogue/Time.c:1205:    if (monst->machineHome == machineNumber &&
+../BrogueCE-master/src/brogue/Time.c:1230:boolean circuitBreakersPreventActivation(short machineNumber) {
+../BrogueCE-master/src/brogue/Time.c:1234:      if (pmap[i][j].machineNumber == machineNumber &&
+../BrogueCE-master/src/brogue/Time.c:1273:      !circuitBreakersPreventActivation(pmap[x][y].machineNumber)) {
+../BrogueCE-master/src/brogue/Time.c:1278:    activateMachine(pmap[x][y].machineNumber); // It lives!!!
+../BrogueCE-master/src/brogue/Architect.c:411:                || ((pmap[newX][newY].flags & IS_IN_MACHINE) && !(pmap[newX][newY].flags & IS_GATE_SITE))) {
+../BrogueCE-master/src/brogue/Architect.c:420:                && !(pmap[newX][newY].flags & IS_IN_MACHINE)) {
+../BrogueCE-master/src/brogue/Architect.c:499:                               short machineNumber,
+../BrogueCE-master/src/brogue/Architect.c:560:            && (pmap[x][y].machineNumber == 0 || pmap[x][y].machineNumber == machineNumber)
+../BrogueCE-master/src/brogue/Architect.c:569:                            && pmap[newX][newY].machineNumber == 0))) {
+../BrogueCE-master/src/brogue/Architect.c:579:            && (cellHasTerrainFlag((pos){ x, y }, T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER) || (pmap[x][y].flags & (IS_CHOKEPOINT | IN_LOOP | IS_IN_MACHINE)))) {
+../BrogueCE-master/src/brogue/Architect.c:582:            return !(pmap[x][y].flags & IS_IN_MACHINE);
+../BrogueCE-master/src/brogue/Architect.c:599:static void addMachineNumberToKey(item *theItem, short machineNumber, boolean disposableHere) {
+../BrogueCE-master/src/brogue/Architect.c:603:    theItem->keyLoc[i].machine = machineNumber;
+../BrogueCE-master/src/brogue/Architect.c:617:                    && pmap[i][j].machineNumber == 0) {
+../BrogueCE-master/src/brogue/Architect.c:634:                                && (!cellHasTerrainFlag((pos){ newX, newY }, T_OBSTRUCTS_PASSABILITY) || pmap[newX][newY].machineNumber != 0)) {
+../BrogueCE-master/src/brogue/Architect.c:688:            if (costMap[i][j] == 1 && (pmap[i][j].flags & IS_IN_MACHINE)) { //pmap[i][j].machineNumber) {
+../BrogueCE-master/src/brogue/Architect.c:919:                            && !pmap[newX][newY].machineNumber
+../BrogueCE-master/src/brogue/Architect.c:995:        machineNumber;
+../BrogueCE-master/src/brogue/Architect.c:1086:                            && !(pmap[i][j].flags & IS_IN_MACHINE)
+../BrogueCE-master/src/brogue/Architect.c:1185:                                if (pmap[p->sCols[i]][p->sRows[j]].flags & (HAS_ITEM | HAS_MONSTER | IS_IN_MACHINE)) {
+../BrogueCE-master/src/brogue/Architect.c:1228:    machineNumber = ++rogue.machineNumber; // Reserve this machine number, starting with 1.
+../BrogueCE-master/src/brogue/Architect.c:1233:                pmap[i][j].machineNumber = machineNumber;
+../BrogueCE-master/src/brogue/Architect.c:1370:                                               machineNumber, feature->flags, blueprintCatalog[bp].flags)) {
+../BrogueCE-master/src/brogue/Architect.c:1488:                    pmap[featX][featY].machineNumber = machineNumber;
+../BrogueCE-master/src/brogue/Architect.c:1526:                            addMachineNumberToKey(theItem, machineNumber, (feature->flags & MF_KEY_DISPOSABLE) ? true : false);
+../BrogueCE-master/src/brogue/Architect.c:1661:                                monst->machineHome = machineNumber; // Monster remembers the machine that spawned it.
+../BrogueCE-master/src/brogue/Architect.c:1691:    if (blueprintCatalog[bp].flags & BP_NO_INTERIOR_FLAG) {
+../BrogueCE-master/src/brogue/Architect.c:1694:                if (pmap[i][j].machineNumber == machineNumber
+../BrogueCE-master/src/brogue/Architect.c:1697:                    pmap[i][j].flags &= ~IS_IN_MACHINE;
+../BrogueCE-master/src/brogue/Architect.c:1698:                    pmap[i][j].machineNumber = 0;
+../BrogueCE-master/src/brogue/Architect.c:1938:                        if (!(pmap[x1][y1].flags & HAS_MONSTER) && pmap[x1][y1].machineNumber == 0) {
+../BrogueCE-master/src/brogue/Architect.c:2739:                && pmap[i][j].machineNumber == 0) {
+../BrogueCE-master/src/brogue/Architect.c:2769:            pmap[i][j].machineNumber = 0;
+../BrogueCE-master/src/brogue/Architect.c:2804:                && !pmap[i][j].machineNumber) {
+../BrogueCE-master/src/brogue/Architect.c:2810:                     && !pmap[k][j].machineNumber // No bridges in machines.
+../BrogueCE-master/src/brogue/Architect.c:2827:                    && !pmap[k][j].machineNumber // Cannot end in a machine.
+../BrogueCE-master/src/brogue/Architect.c:2842:                     && !pmap[i][k].machineNumber
+../BrogueCE-master/src/brogue/Architect.c:2859:                    && !pmap[i][k].machineNumber // Cannot end in a machine.
+../BrogueCE-master/src/brogue/Architect.c:2882:    rogue.machineNumber = 0;
+../BrogueCE-master/src/brogue/Architect.c:3543:                                 avoidedFlagsForMonster(&(monst->info)), (HAS_MONSTER | HAS_PLAYER | HAS_STAIRS | IS_IN_MACHINE), true);
+../BrogueCE-master/src/brogue/Architect.c:3597:                            (HAS_MONSTER | HAS_ITEM | HAS_STAIRS | IS_IN_MACHINE), false, false);
+../BrogueCE-master/src/brogue/Architect.c:3614:        if (pmap[newX][newY].flags & IS_IN_MACHINE) {
+../BrogueCE-master/src/brogue/Architect.c:3712:                                                        (HAS_MONSTER | HAS_ITEM | HAS_STAIRS | IS_IN_MACHINE), true, false);
+../BrogueCE-master/src/brogue/Architect.c:3738:                             (HAS_MONSTER | HAS_ITEM | HAS_STAIRS | IS_IN_MACHINE), true, false);
+../BrogueCE-master/src/brogue/Architect.c:3830:                                     || (pmapAt(*loc)->flags & (HAS_PLAYER | HAS_MONSTER | HAS_STAIRS | HAS_ITEM | IS_IN_MACHINE))
+../BrogueCE-master/src/brogue/SeedCatalog.c:82:    if (pmapAt(theItem->loc)->machineNumber > 0) {
+../BrogueCE-master/src/brogue/SeedCatalog.c:91:            sprintf(vaultNumber, isCsvFormat ? "%i" : " (vault %i)", pmapAt(theItem->loc)->machineNumber);
+../BrogueCE-master/src/brogue/SeedCatalog.c:98:                pmapAt(theItem->keyLoc[0].loc)->machineNumber - 1);
+../BrogueCE-master/src/brogue/SeedCatalog.c:225:                sprintf(vaultNumber, "%i", pmap[i][j].machineNumber);
+../BrogueCE-master/src/brogue/SeedCatalog.c:236:                c_altars[pmap[i][j].machineNumber] = true;

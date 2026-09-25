@@ -1,0 +1,39 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web
+
+stdout | src/test/p1_37_machine_flag_i18n.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/w_11_teleport_placement.test.ts > W-11 generic placement and C-5 entry effects > monster falling is consumed by C-5 at turn end, only once, with its own fall damage range
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_11_teleport_placement.test.ts (37 tests) 1189ms
+     ✓ monster falling is consumed by C-5 at turn end, only once, with its own fall damage range  379ms
+     ✓ real C-5 player turn end consumes the falling flag, changes depth and never gives the old monster a turn  520ms
+stdout | src/test/u_03_whole_run_snapshot.test.ts > U03 whole-run persistence > seed 7: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_03_whole_run_snapshot.test.ts (14 tests) 10716ms
+     ✓ seed 7: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  1926ms
+     ✓ seed 12345: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  1596ms
+     ✓ seed 202503: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  1553ms
+     ✓ restores one object per ID across active/cached/dormant/pending/carried/leader cycles  859ms
+     ✓ real monster fall into unvisited D2 survives JSON and subsequent dormancy/death  731ms
+     ✓ real monster fall into cached D2 survives JSON and subsequent dormancy/death  708ms
+     ✓ stores every writable cell field and pending environmental effects without replaying them  551ms
+     ✓ restores clock, search, generation accounting, pending mandatory choices and endgame over a dirty run  493ms
+     ✓ scent values survive reentry, share the run clock, and rewind on every visited floor  339ms
+     ✓ rejects incomplete/old worlds before altering the current game or RNG  722ms
+     ✓ refuses suspended turns, but loading retires an old animation without its epilogue  312ms
+     ✓ codec does not consume either RNG stream or expose aliased run/flavor/level containers  860ms
+ ✓ src/test/p1_37_machine_flag_i18n.test.ts (9 tests) 70125ms
+     ✓ AD1: 5 种子 × D1-D26 —— 楼梯/钥匙/护符绝不落机器格；机器格上的物品与怪物必须是机器自身的布点  17129ms
+     ✓ AD2: 生成层不含任何 CHARRED_FLOOR——宝库地板已恢复普通 FLOOR（改判转换回退即红）  16326ms
+     ✓ AD3a: 5 种子 × D1-D26 每台机器的旗标穿存档往返；缺机器字段的旧存档被拒绝  35839ms
+
+ Test Files  3 passed (3)
+      Tests  60 passed (60)
+   Start at  08:35:13
+   Duration  70.92s (transform 1.01s, setup 0ms, import 2.09s, tests 82.03s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web/ai_docs/reports/u-04c-evidence/targeted.json

@@ -1,0 +1,540 @@
+diff --git a/brogue-web/src/test/b_1b_identification_persistence.test.ts b/brogue-web/src/test/b_1b_identification_persistence.test.ts
+index ab896ed..6c20855 100644
+--- a/brogue-web/src/test/b_1b_identification_persistence.test.ts
++++ b/brogue-web/src/test/b_1b_identification_persistence.test.ts
+@@ -14,19 +14,20 @@
+  *   R2  旧档单槽 equippedRingId 迁移丢失          → loadSnapshot 兼容分支缺失
+  *   S1  RNG 哨兵：持久化/call/选择/揭示零掷骰     → 任何新增抽取（构造地图口径，
+  *                                                  对生成器改动免疫，任务书 §三）
+- *   X1  挂起中的选择跨场景泄漏                    → loadSnapshot/startNewGame 未复位
++ *   X1  已收费的鉴定选择读档丢失或重复收费；新局仍须复位（用户裁决/U03）
+  *
+  * CE 权威出处：identify 目标指定 Items.c:7774-7802；call Items.c:1347-1437；
+  * callTitle 字段 Rogue.h:1426-1427；双槽 Items.c:8560-8566、Time.c:1988-2024；
+  * 旧局清零 resetItemTableEntry Items.c:8775-8800。
+  */
+-import { describe, it, expect, beforeAll } from 'vitest';
++import { describe, it, expect, beforeAll, vi } from 'vitest';
+ import i18next from 'i18next';
+ import { createHeadlessGame } from './harness';
+ import { Game } from '../engine/Core/Game';
+ import { Item } from '../engine/Items/Item';
+ import { ItemLoader } from '../engine/Items/ItemLoader';
+ import { rng } from '../engine/Random';
++import { timeSystem } from '../engine/Systems/Time';
+ 
+ beforeAll(() => {
+     if (!i18next.isInitialized) {
+@@ -293,8 +294,8 @@ describe('R2: 戒指双槽随存档往返', () => {
+     });
+ });
+ 
+-describe('X1: 挂起中的鉴定选择不跨场景', () => {
+-    it('读档与新局都复位 pendingIdentify', () => {
++describe('X1: 已收费的鉴定选择随检查点恢复，新局清空', () => {
++    it('读档保留 pendingIdentify，新局仍复位', () => {
+         const game = createHeadlessGame(42, 'test');
+         isolatePlayer(game);
+         makeSword(game, 1);
+@@ -303,15 +304,55 @@ describe('X1: 挂起中的鉴定选择不跨场景', () => {
+         game.readItem(scroll);
+         expect(game.pendingIdentify).toBe(true);
+ 
+-        // 读档复位
+-        game.loadSnapshot(JSON.parse(JSON.stringify(game.toSnapshot())));
+-        expect(game.pendingIdentify).toBe(false);
++        // 用户验收裁决/U03：已消耗卷轴的强制选择必须保留；CE Items.c:7783–7802 直到合法选择才结束。
++        expect(game.loadSnapshot(JSON.parse(JSON.stringify(game.toSnapshot())))).toBe(true);
++        expect(game.pendingIdentify).toBe(true);
++        expect(game.isInventoryOpen).toBe(true);
+ 
+         // 新局复位
+-        (game as unknown as { pendingIdentify: boolean }).pendingIdentify = true;
+         game.startNewGame({ seed: 9 });
+         expect(game.pendingIdentify).toBe(false);
+     });
++
++    it('读档后选择恰好鉴定一次，不重复消耗卷轴或回合', () => {
++        const game = createHeadlessGame(42, 'test');
++        isolatePlayer(game);
++        const sword = makeSword(game, 1), other = makeSword(game, 2);
++        const scroll = ItemLoader.spawnScroll('scroll_of_identify', -1, -1)!;
++        const spare = ItemLoader.spawnScroll('scroll_of_identify', -1, -1)!;
++        game.player.inventory.addItem(scroll);
++        game.player.inventory.addItem(spare);
++        const turns = game.stats.turns, tick = timeSystem.currentTick;
++        game.readItem(scroll);
++        expect(game.player.inventory.items).not.toContain(scroll);
++        expect(game.player.inventory.items).toContain(spare);
++        expect([game.stats.turns, timeSystem.currentTick]).toEqual([turns + 1, tick + 100]);
++        expect(game.pendingIdentify).toBe(true);
++        expect(game.loadSnapshot(JSON.parse(JSON.stringify(game.toSnapshot())))).toBe(true);
++        const loaded = game.player.inventory.items.find(i => i.id === sword.id)!;
++        const unchosen = game.player.inventory.items.find(i => i.id === other.id)!;
++        const remainingScroll = game.player.inventory.items.find(i => i.id === spare.id)!;
++        expect(game.player.inventory.items.some(i => i.id === scroll.id)).toBe(false);
++        const inventory = [...game.player.inventory.items];
++        expect(loaded.identified).toBe(false);
++        // 用户验收裁决/U03；CE 同一次读卷轴中的合法选择不再收费，重复提交不得再鉴定。
++        const identify = vi.spyOn(ItemLoader, 'identifyInstance');
++        try {
++            expect(game.chooseIdentifyTarget(loaded)).toBe(true);
++            expect(game.pendingIdentify).toBe(false);
++            expect(game.isInventoryOpen).toBe(false);
++            expect(loaded.identified).toBe(true);
++            expect(game.chooseIdentifyTarget(loaded)).toBe(false);
++            expect(game.chooseIdentifyTarget(unchosen)).toBe(false);
++            expect(unchosen.identified).toBe(false);
++            expect(identify).toHaveBeenCalledExactlyOnceWith(loaded);
++            expect(remainingScroll.quantity).toBe(1);
++            expect(game.player.inventory.items).toEqual(inventory);
++            expect([game.stats.turns, timeSystem.currentTick]).toEqual([turns + 1, tick + 100]);
++        } finally {
++            identify.mockRestore();
++        }
++    });
+ });
+ 
+ describe('S1: RNG 流哨兵（任务书 §三：建在固定物品集上，对地图变化免疫）', () => {
+diff --git a/brogue-web/src/test/c_4a_0_layer_model.test.ts b/brogue-web/src/test/c_4a_0_layer_model.test.ts
+index dc2a568..cc04c53 100644
+--- a/brogue-web/src/test/c_4a_0_layer_model.test.ts
++++ b/brogue-web/src/test/c_4a_0_layer_model.test.ts
+@@ -578,33 +578,20 @@ describe('C-4a-0 存档', () => {
+         expect(reloaded.grid.getCell(11, 11)!.terrain).toBe(C.WATER_DEEP);
+     });
+ 
+-    it('旧格式兼容：只有 terrain 字段的存档读入后 getter 逐格还原且层归一（读到 NOTHING 即翻红）', () => {
++    it('拒绝只有 terrain、缺少四层 layers 的旧存档，保留当前世界', () => {
+         const game = createHeadlessGame(777);
+         const snap = game.toSnapshot();
+-        const expected: Array<{ x: number; y: number; terrain: TerrainType }> =
+-            snap.grid.map((c) => ({ x: c.x, y: c.y, terrain: c.terrain }));
+ 
+-        // 模拟 C-4a-0 之前的旧存档：整张 grid 删掉 layers 字段。
++        // 用户验收裁决（沿用 U01）：不兼容旧档；U03 要求保存真实四层，不能由 terrain 补造。
+         const legacy: typeof snap = {
+             ...snap,
+             grid: snap.grid.map(({ layers: _layers, ...rest }) => rest),
+         };
+         const reloaded = createHeadlessGame(1);
+-        expect(reloaded.loadSnapshot(legacy)).toBe(true);
+-
+-        let checked = 0;
+-        for (const cell of expected) {
+-            const got = reloaded.grid.getCell(cell.x, cell.y)!;
+-            // 错误实现示例：读不到 layers 时直接把层留成全 NOTHING → getter
+-            // 返回 NOTHING → 这里翻红。
+-            expect(got.terrain, `(${cell.x},${cell.y}) 旧档还原`).toBe(cell.terrain);
+-            const home = TERRAIN_HOME_LAYER[cell.terrain];
+-            for (let l = 0; l < L.COUNT; l++) {
+-                expect(got.layers[l]).toBe(l === home ? cell.terrain : C.NOTHING);
+-            }
+-            checked++;
+-        }
+-        expect(checked).toBeGreaterThan(1000);
++        const grid = reloaded.grid, before = reloaded.toSnapshot().grid;
++        expect(reloaded.loadSnapshot(legacy)).toBe(false);
++        expect(reloaded.grid).toBe(grid);
++        expect(reloaded.toSnapshot().grid).toEqual(before);
+     });
+ });
+ 
+diff --git a/brogue-web/src/test/f_1_fire_as_terrain.test.ts b/brogue-web/src/test/f_1_fire_as_terrain.test.ts
+index 04547ff..be2121b 100644
+--- a/brogue-web/src/test/f_1_fire_as_terrain.test.ts
++++ b/brogue-web/src/test/f_1_fire_as_terrain.test.ts
+@@ -21,7 +21,6 @@ import { describe, it, expect } from 'vitest';
+ import { createHeadlessGame } from './harness';
+ import { GasType } from '../engine/Environment/Gas';
+ import type { Game } from '../engine/Core/Game';
+-import type { GameSnapshot } from '../engine/Core/Game';
+ import { TerrainType, DungeonLayer, DRAW_PRIORITY, TERRAIN_HOME_LAYER } from '../engine/Map/Grid';
+ import { blocksPathing } from '../engine/Map/LoopMap';
+ import { isFireTerrain, blocksPassability } from '../engine/Map/TerrainCatalog';
+@@ -301,39 +300,23 @@ describe('F-1 对抗⑥：持久化往返（存一半即红）', () => {
+         expect(g1.isBurning).toBe(false);
+     });
+ 
+-    it('旧存档迁移：isBurning=true 而层里无火（F-1 前格式）→ 读档自动补火层；' +
+-        '反常组合（无火标志却有火层）→ 自动摘除。', () => {
++    it('旧格式燃烧镜像存档被拒绝，不自动补火或摘火', () => {
+         const game = createHeadlessGame(42);
+         openRoom(game);
+         game.grid.setTerrain(8, 6, C.GRASS, '"', 0x33aa33);
+-        const snap = JSON.parse(JSON.stringify(game.toSnapshot())) as GameSnapshot;
+-        // 手造旧格式燃烧格：有标志、无火层
+-        const cellSnap = snap.grid.find((c) => c.x === 8 && c.y === 6)!;
+-        cellSnap.isBurning = true;
+-        cellSnap.layers = (cellSnap.layers ?? []).map((t) => (isFireTerrain(t) ? C.NOTHING : t));
+-        expect(reloadedMirror(snap), '补写后该格必须挂火地形').toBe(true);
+-
+-        // 反常组合：无标志、有火层（手造层：DUNGEON=FLOOR + SURFACE 火）
+-        const snap2 = JSON.parse(JSON.stringify(game.toSnapshot())) as GameSnapshot;
+-        const cellSnap2 = snap2.grid.find((c) => c.x === 8 && c.y === 6)!;
+-        cellSnap2.isBurning = false;
+-        cellSnap2.layers = [C.FLOOR, C.NOTHING, C.NOTHING, C.PLAIN_FIRE];
+-        const g2 = createHeadlessGame(1);
+-        expect(g2.loadSnapshot(snap2)).toBe(true);
+-        const c2 = g2.grid.getCell(8, 6)!;
+-        expect(c2.isBurning).toBe(false);
+-        expect(c2.layers.some((t) => isFireTerrain(t)), '幽灵火必须被对账摘除').toBe(false);
+-        expect(c2.terrain, '摘火后露出手造的 DUNGEON 层地板').toBe(C.FLOOR);
++        // 用户验收裁决/U03：旧档不迁移。旧格式没有 whole-run schema；
++        // 当前格式的 isBurning 只是四层地形的只读投影，单改投影不能冒充旧格式。
++        for (const burning of [true, false]) {
++            const legacy = JSON.parse(JSON.stringify(game.toSnapshot()));
++            delete legacy.schema;
++            const cell = legacy.grid.find((c: { x: number; y: number }) => c.x === 8 && c.y === 6)!;
++            cell.isBurning = burning;
++            cell.layers = [C.FLOOR, C.NOTHING, C.NOTHING, burning ? C.GRASS : C.PLAIN_FIRE];
++            const reloaded = createHeadlessGame(1), before = reloaded.toSnapshot().grid;
++            expect(reloaded.loadSnapshot(legacy)).toBe(false);
++            expect(reloaded.toSnapshot().grid).toEqual(before);
++        }
+     });
+-
+-    /** 读旧格式快照并回答"该格是否挂上火地形"。 */
+-    function reloadedMirror(snap: GameSnapshot): boolean {
+-        const g = createHeadlessGame(1);
+-        expect(g.loadSnapshot(snap)).toBe(true);
+-        const c = g.grid.getCell(8, 6)!;
+-        expect(c.isBurning).toBe(true);
+-        return c.layers.some((t) => isFireTerrain(t));
+-    }
+ });
+ 
+ describe('F-1 对抗⑦（G-1 反转）：火不写 GAS 层；气体住进 GAS 层', () => {
+diff --git a/brogue-web/src/test/p1_37_machine_flag_i18n.test.ts b/brogue-web/src/test/p1_37_machine_flag_i18n.test.ts
+index e8c17a3..0c149cb 100644
+--- a/brogue-web/src/test/p1_37_machine_flag_i18n.test.ts
++++ b/brogue-web/src/test/p1_37_machine_flag_i18n.test.ts
+@@ -203,7 +203,7 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
+         expect(offenders, `生成层仍出现 CHARRED_FLOOR（宝库地板改判被回退？）\n${offenders.join('\n')}`).toEqual([]);
+     });
+ 
+-    it('AD3a: 5 种子 × D1-D26 每台机器的旗标穿存档往返；旧存档（无字段）读入为无机器', () => {
++    it('AD3a: 5 种子 × D1-D26 每台机器的旗标穿存档往返；缺机器字段的旧存档被拒绝', () => {
+         let levelsSeen = 0;
+         let machinesSeen = 0;
+         let flaggedCellsSeen = 0;
+@@ -301,16 +301,16 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
+                 expect((reloaded as unknown as { machineCells: Set<number> }).machineCells,
+                     `${label}: 读档后 machineCells 未按网格精确重建`).toEqual(gridDerived);
+ 
+-                // 每层都做旧存档兼容，且在同一实例刚恢复真实旗标后加载，防陈值残留。
++                // 用户验收裁决/U03：缺 machineNumber 的旧档拒绝，不默认清零；当前格式逐格往返仍如上。
+                 const legacy = JSON.parse(JSON.stringify(snapshot)) as ReturnType<Game['toSnapshot']>;
+                 for (const c of legacy.grid) delete c.machineNumber;
+-                expect(reloaded.loadSnapshot(legacy), `${label}: 旧存档读档失败`).toBe(true);
+-                for (const k of numbers.keys()) {
++                expect(reloaded.loadSnapshot(legacy), `${label}: 缺机器旗标的旧档必须拒绝`).toBe(false);
++                for (const [k, n] of numbers) {
+                     expect(reloaded.grid.getCell(k % DCOLS, Math.floor(k / DCOLS))!.machineNumber,
+-                        `${label}: 旧存档格 ${k} 残留机器旗标`).toBe(0);
++                        `${label}: 拒绝旧档后格 ${k} 旗标改变`).toBe(n);
+                 }
+-                expect((reloaded as unknown as { machineCells: Set<number> }).machineCells.size,
+-                    `${label}: 旧存档残留 machineCells`).toBe(0);
++                expect((reloaded as unknown as { machineCells: Set<number> }).machineCells,
++                    `${label}: 拒绝旧档后 machineCells 改变`).toEqual(gridDerived);
+             }
+         }
+         expect(levelsSeen, '必须覆盖全部 seed × 层，不能遇到首台机器就 break').toBe(SWEEP_SEEDS.length * MAX_DEPTH);
+diff --git a/brogue-web/src/test/u_02b_level_rng.test.ts b/brogue-web/src/test/u_02b_level_rng.test.ts
+index f18fde6..f29cf29 100644
+--- a/brogue-web/src/test/u_02b_level_rng.test.ts
++++ b/brogue-web/src/test/u_02b_level_rng.test.ts
+@@ -124,7 +124,14 @@ describe('U02b layer lifecycle and persistence', () => {
+  });
+  it('JSON preserves detached seed/visited metadata and rejects old algorithms/malformed tables atomically', () => {
+   const g=createHeadlessGame(7);generate(g,2);const saved=json(g.toSnapshot());
++  // 用户验收裁决/U03：D1→D2→存读→D1 必须等价于连续局（CE startLevel 恢复已访层）。
++  // 两条支线顺序执行，避免共用 RNG/时钟/物品表互相污染；只剔除保存墙钟。
++  const stable=(game:typeof g)=>{const {savedAt:_time,...state}=game.toSnapshot();return json(state);};
++  const checkpoint=stable(g);
++  generate(g,1,true);const continuousD1=stable(g);
++  generate(g,2);const continuousD2=stable(g);
+   const fresh=createHeadlessGame(99);expect(fresh.loadSnapshot(saved)).toBe(true);
++  expect(stable(fresh)).toEqual(checkpoint);
+   expect(fresh.levelSeeds).toEqual(saved.levelSeeds); expect(rng.getState()).toEqual(saved.rngState);
+   saved.levelSeeds[0]!.visited=false; saved.levelSeeds[1]!.upStairsLoc.x++;
+   expect(fresh.levelSeeds).not.toEqual(saved.levelSeeds);
+@@ -136,7 +143,8 @@ describe('U02b layer lifecycle and persistence', () => {
+    (s:any)=>s.rngState.algorithm='brogue-web-ranval32-low32-v1', (s:any)=>s.rngState.version=1,
+   ]) {const bad=json(before);corrupt(bad);expect(fresh.loadSnapshot(bad)).toBe(false);expect(rng.getState()).toEqual(before.rngState);expect(fresh.levelSeeds).toEqual(before.levelSeeds);}
+   expect(isLevelSeeds(new Array(41))).toBe(false);
+-  expect(()=>generate(fresh,1,true)).toThrow('Visited level state is unavailable');
++  generate(fresh,1,true);expect(fresh.depth).toBe(1);expect(stable(fresh)).toEqual(continuousD1);
++  generate(fresh,2);expect(fresh.depth).toBe(2);expect(stable(fresh)).toEqual(continuousD2);
+  });
+ });
+ 
+diff --git a/brogue-web/src/test/w_13_tunneling.test.ts b/brogue-web/src/test/w_13_tunneling.test.ts
+index 2b53b2c..fd20eb4 100644
+--- a/brogue-web/src/test/w_13_tunneling.test.ts
++++ b/brogue-web/src/test/w_13_tunneling.test.ts
+@@ -232,10 +232,13 @@ describe('W-13 reflection, creatures, maps and persistence', () => {
+         expect(rebuild).toHaveBeenCalledExactlyOnceWith(true);
+         expect(rng.randomNumbersGenerated - beforeCast).toBe(DCOLS * DROWS - 1);
+     });
+-    it('current flags round-trip through a real snapshot; legacy saves clear flags instead of retaining another map', () => {
++    it('current flags round-trip through a real snapshot; missing flags reject the save without changing the live map', () => {
+         const g = createHeadlessGame(13013, 'test'); protect(g, 5); const snapshot = g.toSnapshot();
+         expect(snapshot.impregnableCells).toContain(5 * DCOLS + 5); g.loadSnapshot(snapshot); expect(g.grid.isImpregnable(5, 5)).toBe(true);
+-        delete snapshot.impregnableCells; g.loadSnapshot(snapshot); expect(g.grid.impregnableCells.size).toBe(0);
++        // 用户验收裁决/U03：不兼容缺字段旧档，不把未保存的不可破坏集合默认成空。
++        const before = new Set(g.grid.impregnableCells);
++        delete snapshot.impregnableCells; expect(g.loadSnapshot(snapshot)).toBe(false);
++        expect(g.grid.impregnableCells).toEqual(before);
+     });
+     it('W-25 exposes tunneling as an item with its existing effect', () => {
+         expect(getBoltForItem('staff_of_tunneling')?.effect).toBe(BoltEffect.TUNNELING); expect(ItemLoader.staffs.some(i => i.id === 'staff_of_tunneling')).toBe(true);
+diff --git a/brogue-web/src/test/w_24_wand_catalog.test.ts b/brogue-web/src/test/w_24_wand_catalog.test.ts
+index 8b6dfe7..379887b 100644
+--- a/brogue-web/src/test/w_24_wand_catalog.test.ts
++++ b/brogue-web/src/test/w_24_wand_catalog.test.ts
+@@ -159,30 +159,37 @@ describe('W-24 CE nine-row catalog and ordinary entry', () => {
+     });
+ });
+ 
+-describe('W-24 snapshot appearance and identity migration', () => {
+-    it('legacy seven-row seed mapping, identity sets, calls, depleted instances survive real load; new rows remain unknown', () => {
++describe('W-24 snapshot appearance and identity persistence', () => {
++    it('current mapping, identity sets, calls and depleted instances survive real load; legacy flavor saves are rejected', () => {
+         const {g} = scene(), current = ItemLoader.wands;
+-        // Reconstruct the genuine old assignment using its old order and unchanged flavor shuffle.
+-        let legacy: Record<string, string>, saved: ReturnType<Game['toSnapshot']>;
+-        try {
+-            ItemLoader.wands = oldIds.map(id=>current.find(w=>w.id===id)!);
+-            rng.seedRandomGenerator(g.currentSeed); rng.resetCounters(); ItemLoader.initConsumables();
+-            legacy = Object.fromEntries(ItemLoader.arcanaFlavorMap);
+-            const wand = ItemLoader.spawnWand('wand_of_slowness',-1,-1)!; wand.charges = 0;
+-            ItemLoader.identifiedItems.add('wand_of_teleportation'); ItemLoader.callKind('wand_of_slowness','legacy slow');
+-            ItemLoader.magicPolarityRevealed.add('wand_of_slowness'); g.player.inventory.addItem(wand);
+-            saved = JSON.parse(JSON.stringify(g.toSnapshot())); delete saved.wandFlavors;
+-        } finally { ItemLoader.wands = current; }
++        // 用户验收裁决/U03：保留当前完整外观往返，不再用旧七行目录重建缺失外观。
++        const flavors = Object.fromEntries(ItemLoader.arcanaFlavorMap);
++        const wand = ItemLoader.spawnWand('wand_of_slowness',-1,-1)!; wand.charges = 0;
++        ItemLoader.identifiedItems.add('wand_of_teleportation'); ItemLoader.callKind('wand_of_slowness','legacy slow');
++        ItemLoader.magicPolarityRevealed.add('wand_of_slowness'); g.player.inventory.addItem(wand);
++        const saved = JSON.parse(JSON.stringify(g.toSnapshot()));
+         const spawn = vi.spyOn(ItemLoader,'spawnWand'); const roll = vi.spyOn(rng,'randClumpedRange');
+         expect(g.loadSnapshot(saved)).toBe(true); expect(spawn).not.toHaveBeenCalled(); expect(roll).not.toHaveBeenCalled();
+-        for (const id of oldIds) expect(ItemLoader.arcanaFlavorMap.get(id)).toBe(legacy[id]);
++        expect(Object.fromEntries(ItemLoader.arcanaFlavorMap)).toEqual(flavors);
+         expect(new Set(current.map(w=>ItemLoader.arcanaFlavorMap.get(w.id))).size).toBe(11);
+         for (const id of added) { expect(ItemLoader.identifiedItems.has(id)).toBe(false); expect(ItemLoader.arcanaFlavorMap.get(id)).toBeTruthy(); }
+         expect(ItemLoader.identifiedItems.has('wand_of_teleportation')).toBe(true);
+         expect(ItemLoader.callTitles.get('wand_of_slowness')).toBe('legacy slow'); expect(ItemLoader.isPolarityRevealed('wand_of_slowness')).toBe(true);
+         expect(g.player.inventory.items[0]!.charges).toBe(0);
+-        const upgraded = JSON.parse(JSON.stringify(g.toSnapshot())); expect(upgraded.wandFlavors).toBeDefined();
+-        g.loadSnapshot(upgraded); expect(g.toSnapshot().wandFlavors).toEqual(upgraded.wandFlavors);
++        expect(g.toSnapshot().wandFlavors).toEqual(saved.wandFlavors);
++        expect(g.toSnapshot().flavors).toEqual(saved.flavors);
++        const roundTrip = JSON.parse(JSON.stringify(g.toSnapshot())); expect(roundTrip.wandFlavors).toBeDefined();
++        expect(g.loadSnapshot(roundTrip)).toBe(true); expect(g.toSnapshot().wandFlavors).toEqual(roundTrip.wandFlavors);
++
++        // 旧档只有七行外观投影（或依赖种子重建），没有 U03 必需的完整 flavors 状态。
++        const legacy = JSON.parse(JSON.stringify(saved)); delete legacy.flavors;
++        legacy.wandFlavors = Object.fromEntries(oldIds.map(id=>[id, saved.wandFlavors[id]]));
++        expect(g.loadSnapshot(legacy)).toBe(false);
++        delete legacy.wandFlavors;
++        expect(g.loadSnapshot(legacy)).toBe(false);
++        expect(g.toSnapshot().flavors).toEqual(saved.flavors);
++        expect(g.player.inventory.items[0]!.charges).toBe(0);
++        expect(spawn).not.toHaveBeenCalled(); expect(roll).not.toHaveBeenCalled();
+     });
+     it('new save preserves all eleven flavors; partial maps fill new identities uniquely without RNG', () => {
+         const {g} = scene(); const saved = JSON.parse(JSON.stringify(g.toSnapshot()));
+diff --git a/brogue-web/src/test/w_25_staff_catalog.test.ts b/brogue-web/src/test/w_25_staff_catalog.test.ts
+index beca673..92bfb88 100644
+--- a/brogue-web/src/test/w_25_staff_catalog.test.ts
++++ b/brogue-web/src/test/w_25_staff_catalog.test.ts
+@@ -186,24 +186,34 @@ describe('W-25 blink resources and selection',()=>{
+     });
+ });
+ 
+-describe('W-25 staff appearance/save migration',()=>{
+-    it('real old seven-row mapping, empty charges/calls/known sets and timer survive load without spawn',()=>{
+-        const {g}=scene(),current=ItemLoader.staffs;let legacy:Record<string,string>,saved:ReturnType<Game['toSnapshot']>;
+-        try{
+-            // Old configs had no explicit wood indices. Light also used ordinary index 6.
+-            ItemLoader.staffs=oldIds.map(id=>({...current.find(s=>s.id===id)!,flavorIndex:oldIds.indexOf(id)}));
+-            rng.seedRandomGenerator(g.currentSeed); rng.resetCounters();ItemLoader.initConsumables();legacy=Object.fromEntries(ItemLoader.arcanaFlavorMap);
+-            const item=ItemLoader.spawnStaff('staff_of_fire',-1,-1)!;item.charges=0;item.staffRechargeRemaining=1234;g.player.inventory.addItem(item);
+-            ItemLoader.identify('staff_of_fire');ItemLoader.callKind('staff_of_haste','old haste');ItemLoader.magicPolarityRevealed.add('staff_of_poison');
+-            saved=JSON.parse(JSON.stringify(g.toSnapshot()));delete saved.staffFlavors;
+-        }finally{ItemLoader.staffs=current;}
++describe('W-25 staff appearance/save persistence',()=>{
++    it('current mapping, empty charges/calls/known sets and timer survive load; legacy flavor saves are rejected',()=>{
++        const {g}=scene(),current=ItemLoader.staffs;
++        // 用户验收裁决/U03：完整原表直接往返，不按旧七行目录补造木材外观或槽位。
++        const flavors=Object.fromEntries(ItemLoader.arcanaFlavorMap);
++        const item=ItemLoader.spawnStaff('staff_of_fire',-1,-1)!;item.charges=0;item.staffRechargeRemaining=1234;g.player.inventory.addItem(item);
++        ItemLoader.identify('staff_of_fire');ItemLoader.callKind('staff_of_haste','old haste');ItemLoader.magicPolarityRevealed.add('staff_of_poison');
++        const saved=JSON.parse(JSON.stringify(g.toSnapshot()));
+         const spawn=vi.spyOn(ItemLoader,'spawnStaff');expect(g.loadSnapshot(saved)).toBe(true);expect(spawn).not.toHaveBeenCalled();
+-        for(const id of oldIds)expect(ItemLoader.arcanaFlavorMap.get(id)).toBe(legacy[id]);
++        expect(Object.fromEntries(ItemLoader.arcanaFlavorMap)).toEqual(flavors);
+         for(const id of added)expect(ItemLoader.identifiedItems.has(id)).toBe(false);
+         expect([g.player.inventory.items[0]!.charges,g.player.inventory.items[0]!.staffRechargeRemaining]).toEqual([0,1234]);
+         expect(ItemLoader.callTitles.get('staff_of_haste')).toBe('old haste');expect(ItemLoader.isPolarityRevealed('staff_of_poison')).toBe(true);
+         expect(new Set(current.map(s=>ItemLoader.arcanaFlavorMap.get(s.id))).size).toBe(13);
+-        const upgraded=JSON.parse(JSON.stringify(g.toSnapshot()));g.loadSnapshot(upgraded);expect(g.toSnapshot().staffFlavors).toEqual(upgraded.staffFlavors);
++        expect(g.toSnapshot().staffFlavors).toEqual(saved.staffFlavors);
++        expect(g.toSnapshot().flavors).toEqual(saved.flavors);
++        const roundTrip=JSON.parse(JSON.stringify(g.toSnapshot()));
++        expect(g.loadSnapshot(roundTrip)).toBe(true);expect(g.toSnapshot().staffFlavors).toEqual(roundTrip.staffFlavors);
++
++        // 旧档只有七行投影/种子回填，缺少 U03 必需的 flavors（含 staffSlots），应拒绝。
++        const legacy=JSON.parse(JSON.stringify(saved));delete legacy.flavors;
++        legacy.staffFlavors=Object.fromEntries(oldIds.map(id=>[id,saved.staffFlavors[id]]));
++        expect(g.loadSnapshot(legacy)).toBe(false);
++        delete legacy.staffFlavors;
++        expect(g.loadSnapshot(legacy)).toBe(false);
++        expect(g.toSnapshot().flavors).toEqual(saved.flavors);
++        expect([g.player.inventory.items[0]!.charges,g.player.inventory.items[0]!.staffRechargeRemaining]).toEqual([0,1234]);
++        expect(spawn).not.toHaveBeenCalled();
+     });
+     it('new maps, partial maps and current blink timer are deterministic',()=>{
+         const {g}=scene();g.player.inventory.addItem(ItemLoader.spawnStaff('staff_of_blinking',-1,-1)!);
+diff --git a/brogue-web/src/test/w_6_arcana_recharge.test.ts b/brogue-web/src/test/w_6_arcana_recharge.test.ts
+index 2c87808..db4aa42 100644
+--- a/brogue-web/src/test/w_6_arcana_recharge.test.ts
++++ b/brogue-web/src/test/w_6_arcana_recharge.test.ts
+@@ -233,7 +233,7 @@ describe('W-6 recharging scroll: STAFF | CHARM, never WAND', () => {
+     });
+ });
+ 
+-describe('W-6 countdown persistence / zero-RNG legacy fallback', () => {
++describe('W-6 countdown persistence / incomplete snapshot rejection', () => {
+     it('pack/ground JSON round-trip preserves timer and partial P2 gate; next recharge matches uninterrupted continuation', () => {
+         const item = staff(), game = gameWith(item), ground = staff(8, 1);
+         item.staffRechargeRemaining = 7; ground.staffRechargeRemaining = 1234;
+@@ -252,10 +252,13 @@ describe('W-6 countdown persistence / zero-RNG legacy fallback', () => {
+         wait(game);
+         expect([loaded.charges, loaded.staffRechargeRemaining]).toEqual([1, 997]);
+         expect(rolls).toHaveBeenCalledTimes(2);
++        // 用户验收裁决/U03：客观门是必需检查点字段；不再为旧档补默认 100。
+         delete snapshot.ticksTillUpdateEnvironment;
+         game.ticksTillUpdateEnvironment = 50;
+-        expect(game.loadSnapshot(snapshot)).toBe(true);
+-        expect(game.ticksTillUpdateEnvironment).toBe(100);
++        expect(game.loadSnapshot(snapshot)).toBe(false);
++        expect(game.ticksTillUpdateEnvironment).toBe(50);
++        expect(game.player.inventory.items[0]).toBe(loaded);
++        expect([loaded.charges, loaded.staffRechargeRemaining]).toEqual([1, 997]);
+     });
+ 
+     it('signed countdown values round-trip without RNG or spawn', () => {
+diff --git a/brogue-web/src/test/w_7_arcana_enchantment.test.ts b/brogue-web/src/test/w_7_arcana_enchantment.test.ts
+index 08ac83d..67b5908 100644
+--- a/brogue-web/src/test/w_7_arcana_enchantment.test.ts
++++ b/brogue-web/src/test/w_7_arcana_enchantment.test.ts
+@@ -20,15 +20,17 @@ function staff(e = 3, charges = 1, timer = 2700): Item {
+     return item;
+ }
+ const state = (item: Item) => [item.enchantment, item.maxCharges, item.charges, item.staffRechargeRemaining];
+-function setup(...items: Item[]) {
++function setup<T extends Item[]>(makeItems: () => [...T]) {
+     const game = createHeadlessGame(42, 'test');
++    // 用户验收裁决/U03 §6 探针：先开局重置 ID，再造包内物品，避免与测试房地面物 ID19 冲突。
++    const items = makeItems();
+     game.player.inventory.items = items;
+     game.player.equippedWeapon = game.player.equippedArmor = null;
+     game.player.ringLeft = game.player.ringRight = null;
+     game.monsters = [];
+     const scroll = ItemLoader.spawnScroll('scroll_of_enchantment', -1, -1)!;
+     game.player.inventory.items.push(scroll);
+-    return { game, scroll };
++    return { game, scroll, items };
+ }
+ const flags = (item: Item) => [item.identified, item.maxChargesKnown, item.timesUsed, item.magicDetected];
+ 
+@@ -109,7 +111,7 @@ describe('W-7 / W-6 recharge normalization interaction', () => {
+ 
+ describe('W-7 real read -> forced pack selection -> one completed turn', () => {
+     it('reading identifies only the scroll; invalid/cancel/move/repeated read do not settle time or draw RNG', () => {
+-        const item = staff(), { game, scroll } = setup(item);
++        const { game, scroll, items: [item] } = setup(() => [staff()]);
+         const before = JSON.stringify(rng), tick = timeSystem.currentTick, turns = game.stats.turns;
+         game.readItem(scroll);
+         expect(game.pendingEnchantment).toBe(true);
+@@ -139,7 +141,7 @@ describe('W-7 real read -> forced pack selection -> one completed turn', () => {
+         expect(logger.messages.every(m => !m.text.includes('&#x2F;'))).toBe(true);
+     });
+     it('haste read does not fake a full objective block; next half-turn continues the reset', () => {
+-        const item = staff(), { game, scroll } = setup(item);
++        const { game, scroll, items: [item] } = setup(() => [staff()]);
+         game.player.applyStatus('haste', 20); game.player.refreshSpeeds();
+         game.readItem(scroll); game.chooseEnchantTarget(item);
+         expect([item.staffRechargeRemaining, game.ticksTillUpdateEnvironment]).toEqual([125, 50]);
+@@ -147,7 +149,7 @@ describe('W-7 real read -> forced pack selection -> one completed turn', () => {
+         expect([item.staffRechargeRemaining, game.ticksTillUpdateEnvironment]).toEqual([115, 100]);
+     });
+     it('selects by live object reference across reorder, rejects same-id clones, proxy, ground and replaced items', () => {
+-        const a = staff(), b = staff(2, 0), { game, scroll } = setup(a, b);
++        const { game, scroll, items: [a, b] } = setup(() => [staff(), staff(2, 0)]);
+         game.readItem(scroll);
+         const impostor = Object.assign(staff(), { id: a.id });
+         expect(game.chooseEnchantTarget(impostor)).toBe(false);
+@@ -161,7 +163,7 @@ describe('W-7 real read -> forced pack selection -> one completed turn', () => {
+         expect(state(b)).toEqual([2, 2, 0, 2700]);
+     });
+     it('a stale same-id scroll cannot enter the transaction or identify anything', () => {
+-        const { game, scroll } = setup(staff());
++        const { game, scroll } = setup(() => [staff()]);
+         const clone = Object.assign(new Item('clone', '?', 0, ItemCategory.SCROLL), scroll);
+         const before = JSON.stringify(rng);
+         game.readItem(clone);
+@@ -171,7 +173,7 @@ describe('W-7 real read -> forced pack selection -> one completed turn', () => {
+         expect(JSON.stringify(rng)).toBe(before);
+     });
+     it('empty/unsupported pack consumes the scroll and completes time without pending selection', () => {
+-        const { game, scroll } = setup();
++        const { game, scroll } = setup(() => []);
+         const tick = timeSystem.currentTick;
+         game.readItem(scroll);
+         expect(game.pendingEnchantment).toBe(false);
+@@ -180,7 +182,9 @@ describe('W-7 real read -> forced pack selection -> one completed turn', () => {
+         expect(ItemLoader.identifiedItems.has('scroll_of_enchantment')).toBe(true);
+     });
+     it('pending transaction survives JSON reload; stale references fail; completed values/unknown flags persist', () => {
+-        const item = staff(), { game, scroll } = setup(item);
++        const { game, scroll, items: [item] } = setup(() => [staff()]);
++        expect(new Set([...game.items, ...game.player.inventory.items].map(i => i.id)).size)
++            .toBe(game.items.length + game.player.inventory.items.length);
+         game.readItem(scroll);
+         const pending = JSON.parse(JSON.stringify(game.toSnapshot()));
+         expect(game.loadSnapshot(pending)).toBe(true);
+@@ -194,14 +198,16 @@ describe('W-7 real read -> forced pack selection -> one completed turn', () => {
+         expect(state(game.player.inventory.items[0]!)).toEqual([4, 4, 2, 115]);
+         expect(flags(game.player.inventory.items[0]!)).toEqual(flags(item));
+         expect(game.pendingEnchantment).toBe(false);
++        // 用户验收裁决/U03：强制附魔选择必须显式入档，缺字段拒绝，不能默认 false。
+         delete pending.pendingEnchantment;
+-        expect(game.loadSnapshot(pending)).toBe(true);
++        expect(game.loadSnapshot(pending)).toBe(false);
+         expect(game.pendingEnchantment).toBe(false);
++        expect(state(game.player.inventory.items[0]!)).toEqual([4, 4, 2, 115]);
+     });
+     it('wand uses beyond initial count survive selection and JSON save/load without exposing identity', () => {
+-        const wand = ItemLoader.spawnWand('wand_of_teleportation', 0, 0)!;
++        const { game, scroll, items: [wand] } = setup(() => [ItemLoader.spawnWand('wand_of_teleportation', 0, 0)!]);
+         wand.charges = wand.maxCharges = 1;
+-        const { game, scroll } = setup(wand), known = flags(wand);
++        const known = flags(wand);
+         game.readItem(scroll); game.chooseEnchantTarget(wand);
+         expect(wand.charges).toBe(4);
+         const snapshot = JSON.parse(JSON.stringify(game.toSnapshot()));
+@@ -236,7 +242,7 @@ describe('W-7 equipment boundary and UI source coverage (S, no Vue import edge)'
+         expect(JSON.stringify(rng)).toBe(expectedRng);
+     });
+     it('arcana alternative never invokes equipment 20% rune path; spare gear/rings/charms remain outside scope', () => {
+-        const item = staff(), { game, scroll } = setup(item);
++        const { game, scroll, items: [item] } = setup(() => [staff()]);
+         const gear = ItemLoader.spawnWeapon('dagger', 0, 0)!;
+         game.player.inventory.items.push(gear);
+         game.player.equippedWeapon = gear;

@@ -233,7 +233,7 @@ describe('W-6 recharging scroll: STAFF | CHARM, never WAND', () => {
     });
 });
 
-describe('W-6 countdown persistence / zero-RNG legacy fallback', () => {
+describe('W-6 countdown persistence / incomplete snapshot rejection', () => {
     it('pack/ground JSON round-trip preserves timer and partial P2 gate; next recharge matches uninterrupted continuation', () => {
         const item = staff(), game = gameWith(item), ground = staff(8, 1);
         item.staffRechargeRemaining = 7; ground.staffRechargeRemaining = 1234;
@@ -252,10 +252,13 @@ describe('W-6 countdown persistence / zero-RNG legacy fallback', () => {
         wait(game);
         expect([loaded.charges, loaded.staffRechargeRemaining]).toEqual([1, 997]);
         expect(rolls).toHaveBeenCalledTimes(2);
+        // 用户验收裁决/U03：客观门是必需检查点字段；不再为旧档补默认 100。
         delete snapshot.ticksTillUpdateEnvironment;
         game.ticksTillUpdateEnvironment = 50;
-        expect(game.loadSnapshot(snapshot)).toBe(true);
-        expect(game.ticksTillUpdateEnvironment).toBe(100);
+        expect(game.loadSnapshot(snapshot)).toBe(false);
+        expect(game.ticksTillUpdateEnvironment).toBe(50);
+        expect(game.player.inventory.items[0]).toBe(loaded);
+        expect([loaded.charges, loaded.staffRechargeRemaining]).toEqual([1, 997]);
     });
 
     it('signed countdown values round-trip without RNG or spawn', () => {

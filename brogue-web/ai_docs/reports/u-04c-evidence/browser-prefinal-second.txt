@@ -1,0 +1,9 @@
+file:///Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web/scripts/u04c-browser-check.mjs:6
+const equal=(a,b,label)=>{if(JSON.stringify(a)!==JSON.stringify(b))throw Error(label+' differs');};
+                                                                         ^
+
+Error: checkpoint differs
+    at equal (file:///Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web/scripts/u04c-browser-check.mjs:6:74)
+    at file:///Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web/scripts/u04c-browser-check.mjs:41:90
+
+Node.js v25.2.1

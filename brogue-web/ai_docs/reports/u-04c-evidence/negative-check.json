@@ -1,0 +1,20 @@
+{
+  "mutation": "Only restore union mr.cells in populateLevel",
+  "status": 1,
+  "failedTests": 2,
+  "failures": [
+    {
+      "title": "U04c CE machine membership, independent of construction interiors seed424242 D2: fixes the real 45-interior / 15-numbered mismatch before save and on every return",
+      "messages": [
+        "AssertionError: expected Set{ 347, 506, 742, 500, 661, …(40) } to deeply equal Set{ 500, 583, 820, 347, 508, …(10) }\n    at /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u04c-negative-xeHGUb/src/test/u_04c_machine_cells.test.ts:80:44\n    at file:///Users/coolking70/Documents/%E5%90%8C%E6%AD%A5%E7%A9%BA%E9%97%B4/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/Documents/%E5%90%8C%E6%AD%A5%E7%A9%BA%E9%97%B4/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/Documents/%E5%90%8C%E6%AD%A5%E7%A9%BA%E9%97%B4/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/Documents/%E5%90%8C%E6%AD%A5%E7%A9%BA%E9%97%B4/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/Documents/%E5%90%8C%E6%AD%A5%E7%A9%BA%E9%97%B4/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/Documents/%E5%90%8C%E6%AD%A5%E7%A9%BA%E9%97%B4/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/Documents/%E5%90%8C%E6%AD%A5%E7%A9%BA%E9%97%B4/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+      ]
+    },
+    {
+      "title": "U04c CE machine membership, independent of construction interiors real seed777 external features and cleared areas feed the exact grid membership into heat maps",
+      "messages": [
+        "AssertionError: expected Set{ 1552, 1315, 1621, 1074, …(62) } to deeply equal Set{ 249, 171, 250, 329, 251 }\n    at ItemSpawnHeatMap.<anonymous> (/private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u04c-negative-xeHGUb/src/test/u_04c_machine_cells.test.ts:101:45)\n    at ItemSpawnHeatMap.build (file:///Users/coolking70/Documents/%E5%90%8C%E6%AD%A5%E7%A9%BA%E9%97%B4/brogue/brogue-web/node_modules/@vitest/spy/dist/index.js:332:34)\n    at Game.populateLevel (/private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u04c-negative-xeHGUb/src/engine/Core/Game.ts:1261:42)\n    at Game.<anonymous> (/private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u04c-negative-xeHGUb/src/test/u_04c_machine_cells.test.ts:97:29)\n    at Game.populateLevel (file:///Users/coolking70/Documents/%E5%90%8C%E6%AD%A5%E7%A9%BA%E9%97%B4/brogue/brogue-web/node_modules/@vitest/spy/dist/index.js:332:34)\n    at Game.generateDepth (/private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u04c-negative-xeHGUb/src/engine/Core/Game.ts:1150:22)\n    at Game.startNewGame (/private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u04c-negative-xeHGUb/src/engine/Core/Game.ts:704:14)\n    at new Game (/private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u04c-negative-xeHGUb/src/engine/Core/Game.ts:543:14)\n    at createHeadlessGame (/private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u04c-negative-xeHGUb/src/test/harness.ts:80:18)\n    at /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u04c-negative-xeHGUb/src/test/u_04c_machine_cells.test.ts:107:22"
+      ]
+    }
+  ],
+  "caught": true
+}

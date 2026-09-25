@@ -1,0 +1,28 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web
+
+stdout | src/test/v_2b_6_keys.test.ts > V-2b-6 C：keyMatchesLocation / keyInPackFor 的否定面（对抗：任意钥匙开任意锁必红） > C1 否定面①：keyLoc 指向 X 的钥匙开不了 Y（坐标不匹配、机器号不同）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/b_4b_item_placement.test.ts > B-4b 每层数量与落位（真实生成链） > T7 数量 = 3 + 无上界几何(60%) + 深度加成；均匀 3-6 实现必红
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/b_4b_item_placement.test.ts (15 tests) 74035ms
+     ✓ T7 数量 = 3 + 无上界几何(60%) + 深度加成；均匀 3-6 实现必红  16193ms
+     ✓ T7b 人口物品的落位性质：非机器 / 非环 / 非走廊弧 / 无物品阻挡旗标  1232ms
+     ✓ T8 金币：堆数在 CE 公式带内、quantity 在 rand_range(50+d10, 100+d15) 带内  4321ms
+     ✓ T9 金币产量调度：整局 goldGenerated 贴 aggregate 界带（测量带 [29529,30522] ± 余量）  10815ms
+     ✓ T11 每层：每把 LOCKED_DOOR 恰有一钥；其余 KEY 的绑定必须能认到本层的「钥匙消费点」  22460ms
+     ✓ T12 食物/力量药水不落走廊（passableArcCount ≤ 1）、不落机器格  11277ms
+     ✓ T14 食物保底：foodSpawned 累计曲线不跌破 POW_FOOD 下限（长局不饿死）  7456ms
+ ✓ src/test/v_2b_6_keys.test.ts (18 tests) 83757ms
+     ✓ E1 多 seed 扫描：Kennel 的 DF 列真落位（featureDF 分支执行 + 地形侧确有产物）  28104ms
+     ✓ F1 多 seed × D1-D26：每把锁都有同层匹配钥匙，且锁格与钥匙格都在玩家可达分量内  22595ms
+     ✓ F2 笼群形态（§6.2）：每台带笼的机器都有钥匙认（机器号匹配），且钥匙/携带者可达  31308ms
+
+ Test Files  2 passed (2)
+      Tests  33 passed (33)
+   Start at  08:39:45
+   Duration  84.39s (transform 651ms, setup 0ms, import 1.10s, tests 157.79s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web/ai_docs/reports/u-04c-evidence/pre-recapture-guards.json

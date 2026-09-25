@@ -1,0 +1,30 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web
+
+stdout | src/test/u_05a_item_ownership.test.ts > U05a real consumer and U01 snapshot contract > ordinary monster owns one item before death, after reload/death, after pickup/reload
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_05a_item_ownership.test.ts (51 tests) 3240ms
+     ✓ ordinary monster owns one item before death, after reload/death, after pickup/reload  920ms
+     ✓ horde leader owns one item before death, after reload/death, after pickup/reload  828ms
+     ✓ handoff replaces the horde leader’s existing item without a second floor/inventory owner  727ms
+     ✓ duplicate deferred identity is rejected before either copy is instantiated  675ms
+stdout | src/test/c_3_walls_doors.test.ts > C-3 管线集成 > T12 连通性闸门（15 种子 × D1-D26）：密门视作通路口径下坏层=0；机器格外的可走格单一连通块
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+[c_3] 实测（5 种子 × D1-D26 合计）：孤儿门移除 十字=12 封死=21；密门 D1-5=10 D6-13=82 D14-19=124 D20-26=201；对角穿缝消除=35
+[c_3] 连通性：修正口径（密门视作通路）坏层=无；canMoveTo 字面口径坏层=73（seed424242/D22、seed777/D5、seed777/D14、seed20260913/D10、seed20260913/D12、seed20260913/D16、seed20260913/D20、seed20260913/D22、seed20260913/D24、seed31337/D4、seed31337/D10、seed31337/D11…）——字面口径坏层为密门假阳性，p1_26/p1_33 重校准属验收方职责（本轮禁改）。
+
+ ✓ src/test/c_3_walls_doors.test.ts (15 tests) 80020ms
+     ✓ T4 生产调用记录：第 5 步 false、第 14 步 true（实参写反在此翻红）  639ms
+     ✓ T5 真实关卡不变量：终态 GRANITE 的 8 邻必全部不暴露（等价于 CE 裸露补墙收敛）  1443ms
+     ✓ T10 真实关卡：对角穿缝全数消除，且确有真实移除（非空转）  1967ms
+     ✓ T11 决定性：同种子两次全管线生成，指纹与 C-3 统计逐一一致  2079ms
+     ✓ T13 C-0 E1 全管线延伸：环路门位经 finishDoors/finishWalls(true) 后仍不落回墙  3613ms
+     ✓ T12 连通性闸门（15 种子 × D1-D26）：密门视作通路口径下坏层=0；机器格外的可走格单一连通块  70010ms
+
+ Test Files  2 passed (2)
+      Tests  66 passed (66)
+   Start at  08:40:08
+   Duration  80.72s (transform 625ms, setup 0ms, import 1.19s, tests 83.26s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web/ai_docs/reports/u-04c-evidence/pre-recapture-topology-ownership.json

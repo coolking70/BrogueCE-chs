@@ -1048,6 +1048,21 @@ export class ItemLoader {
         'Ivory Charm'
     ];
 
+    public static snapshotFlavors() {
+        return {
+            potions: [...this.potionFlavorMap].map(([id, value]) => [id, { ...value }] as const),
+            scrolls: [...this.scrollFlavorMap], arcana: [...this.arcanaFlavorMap],
+            staffSlots: [...this.staffFlavorSlots],
+        };
+    }
+
+    public static restoreFlavors(state: ReturnType<typeof ItemLoader.snapshotFlavors>): void {
+        this.potionFlavorMap = new Map(state.potions.map(([id, value]) => [id, { ...value }]));
+        this.scrollFlavorMap = new Map(state.scrolls);
+        this.arcanaFlavorMap = new Map(state.arcana);
+        this.staffFlavorSlots = [...state.staffSlots];
+    }
+
     public static initConsumables(random: Random = rng) {
         this.potionFlavorMap = new Map();
         this.scrollFlavorMap = new Map();

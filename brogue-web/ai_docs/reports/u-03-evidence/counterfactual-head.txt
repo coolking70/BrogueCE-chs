@@ -1,0 +1,113 @@
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/brogue-u03-head-0iELeN/brogue-web
+
+stdout | src/test/p1_37_machine_flag_i18n.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/w_13_tunneling.test.ts > W-13 reflection, creatures, maps and persistence > current flags round-trip through a real snapshot; legacy saves clear flags instead of retaining another map
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_13_tunneling.test.ts (43 tests | 42 skipped) 835ms
+     ✓ current flags round-trip through a real snapshot; legacy saves clear flags instead of retaining another map  833ms
+stdout | src/test/w_25_staff_catalog.test.ts > W-25 staff appearance/save migration > real old seven-row mapping, empty charges/calls/known sets and timer survive load without spawn
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_4a_0_layer_model.test.ts > C-4a-0 存档 > 旧格式兼容：只有 terrain 字段的存档读入后 getter 逐格还原且层归一（读到 NOTHING 即翻红）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/c_4a_0_layer_model.test.ts (20 tests | 19 skipped) 1966ms
+     ✓ 旧格式兼容：只有 terrain 字段的存档读入后 getter 逐格还原且层归一（读到 NOTHING 即翻红）  1965ms
+ ✓ src/test/w_25_staff_catalog.test.ts (31 tests | 29 skipped) 962ms
+     ✓ real old seven-row mapping, empty charges/calls/known sets and timer survive load without spawn  505ms
+     ✓ new maps, partial maps and current blink timer are deterministic  456ms
+stdout | src/test/f_1_fire_as_terrain.test.ts > F-1 对抗⑥：持久化往返（存一半即红） > 旧存档迁移：isBurning=true 而层里无火（F-1 前格式）→ 读档自动补火层；反常组合（无火标志却有火层）→ 自动摘除。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/f_1_fire_as_terrain.test.ts (11 tests | 10 skipped) 2610ms
+     ✓ 旧存档迁移：isBurning=true 而层里无火（F-1 前格式）→ 读档自动补火层；反常组合（无火标志却有火层）→ 自动摘除。  2609ms
+stdout | src/test/b_1b_identification_persistence.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/b_1b_identification_persistence.test.ts (13 tests | 12 skipped) 1001ms
+     ✓ 读档与新局都复位 pendingIdentify  995ms
+stdout | src/test/w_6_arcana_recharge.test.ts > W-6 real P2 objective-time / inventory integration > all WAND kinds stay depleted (including retired ones); ground staffs do not tick; charm legacy cooldown still ticks once
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/w_7_arcana_enchantment.test.ts > W-7 real read -> forced pack selection -> one completed turn > pending transaction survives JSON reload; stale references fail; completed values/unknown flags persist
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_6_arcana_recharge.test.ts (28 tests | 24 skipped) 1063ms
+     ✓ all WAND kinds stay depleted (including retired ones); ground staffs do not tick; charm legacy cooldown still ticks once  537ms
+     ✓ pack/ground JSON round-trip preserves timer and partial P2 gate; next recharge matches uninterrupted continuation  524ms
+stdout | src/test/w_24_wand_catalog.test.ts > W-24 snapshot appearance and identity migration > legacy seven-row seed mapping, identity sets, calls, depleted instances survive real load; new rows remain unknown
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/w_7_arcana_enchantment.test.ts (30 tests | 1 failed | 27 skipped) 1523ms
+     ↓ staff with 0 uses: adds one, capacity=new E, timer=500/new E, no discovery/RNG
+     ↓ staff with 1 uses: adds one, capacity=new E, timer=500/new E, no discovery/RNG
+     ↓ staff with 3 uses: adds one, capacity=new E, timer=500/new E, no discovery/RNG
+     ↓ capacity synchronizes to CE E, never refills missing uses from an old capacity
+     ↓ reset replaces old timer undefined, never scales/retains it
+     ↓ reset replaces old timer -20, never scales/retains it
+     ↓ reset replaces old timer 0, never scales/retains it
+     ↓ reset replaces old timer 1, never scales/retains it
+     ↓ reset replaces old timer 2700, never scales/retains it
+     ↓ reset replaces old timer 99999, never scales/retains it
+     ↓ wand_of_teleportation adds its lower bound 3 on every enchant, without a cap or dice
+     ↓ wand_of_slowness adds its lower bound 2 on every enchant, without a cap or dice
+     ↓ wand_of_beckoning adds its lower bound 2 on every enchant, without a cap or dice
+     ↓ wand_of_invisibility adds its lower bound 3 on every enchant, without a cap or dice
+     ↓ wand_of_empowerment adds its lower bound 1 on every enchant, without a cap or dice
+     ↓ unsupported categories, retired wand ranges, and invalid staffs do not acquire invented rules
+     ↓ new-E reset avoids draining a charge from the old long timer; control proves the normalization loop still runs
+     ↓ full enchanted staff retains short timer; W-6 resumes it after the next use
+     ↓ at high E the reset expires on the read turn; next interval uses NEW E and retains overshoot
+     ↓ reading identifies only the scroll; invalid/cancel/move/repeated read do not settle time or draw RNG
+     ↓ haste read does not fake a full objective block; next half-turn continues the reset
+     ↓ selects by live object reference across reorder, rejects same-id clones, proxy, ground and replaced items
+     ↓ a stale same-id scroll cannot enter the transaction or identify anything
+     ↓ empty/unsupported pack consumes the scroll and completes time without pending selection
+     × pending transaction survives JSON reload; stale references fail; completed values/unknown flags persist 583ms
+     ↓ wand uses beyond initial count survive selection and JSON save/load without exposing identity
+     ✓ weapon path has exactly the legacy RNG state and result  505ms
+     ✓ armor path has exactly the legacy RNG state and result  433ms
+     ↓ arcana alternative never invokes equipment 20% rune path; spare gear/rings/charms remain outside scope
+     ↓ Vue keeps mandatory selection visible, suppresses other actions, and unwraps both item boundaries
+ ✓ src/test/w_24_wand_catalog.test.ts (20 tests | 19 skipped) 512ms
+     ✓ legacy seven-row seed mapping, identity sets, calls, depleted instances survive real load; new rows remain unknown  511ms
+stdout | src/test/u_02b_level_rng.test.ts > U02b layer lifecycle and persistence > JSON preserves detached seed/visited metadata and rejects old algorithms/malformed tables atomically
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_02b_level_rng.test.ts (22 tests | 21 skipped) 1653ms
+     ✓ JSON preserves detached seed/visited metadata and rejects old algorithms/malformed tables atomically  1651ms
+ ✓ src/test/p1_37_machine_flag_i18n.test.ts (9 tests | 8 skipped) 47057ms
+     ✓ AD3a: 5 种子 × D1-D26 每台机器的旗标穿存档往返；旧存档（无字段）读入为无机器  47056ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/w_7_arcana_enchantment.test.ts > W-7 real read -> forced pack selection -> one completed turn > pending transaction survives JSON reload; stale references fail; completed values/unknown flags persist
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/w_7_arcana_enchantment.test.ts:191:50
+    189|         expect(game.chooseEnchantTarget(item)).toBe(false);
+    190|         const loaded = game.player.inventory.items[0]!;
+    191|         expect(game.chooseEnchantTarget(loaded)).toBe(true);
+       |                                                  ^
+    192|         const completed = JSON.parse(JSON.stringify(game.toSnapshot())…
+    193|         expect(game.loadSnapshot(completed)).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 9 passed (10)
+      Tests  1 failed | 15 passed | 211 skipped (227)
+   Start at  07:35:14
+   Duration  48.70s (transform 3.18s, setup 0ms, import 9.32s, tests 59.18s, environment 3ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web/ai_docs/reports/u-03-evidence/counterfactual-head.json

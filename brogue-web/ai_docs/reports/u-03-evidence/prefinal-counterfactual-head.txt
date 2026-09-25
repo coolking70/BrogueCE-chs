@@ -1,0 +1,61 @@
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/brogue-u03-head-APReqI/brogue-web
+
+stdout | src/test/p1_37_machine_flag_i18n.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/w_13_tunneling.test.ts > W-13 reflection, creatures, maps and persistence > current flags round-trip through a real snapshot; legacy saves clear flags instead of retaining another map
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_13_tunneling.test.ts (43 tests | 42 skipped) 504ms
+     ✓ current flags round-trip through a real snapshot; legacy saves clear flags instead of retaining another map  502ms
+stdout | src/test/w_25_staff_catalog.test.ts > W-25 staff appearance/save migration > new maps, partial maps and current blink timer are deterministic
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_4a_0_layer_model.test.ts > C-4a-0 存档 > 旧格式兼容：只有 terrain 字段的存档读入后 getter 逐格还原且层归一（读到 NOTHING 即翻红）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/c_4a_0_layer_model.test.ts (20 tests | 19 skipped) 1621ms
+     ✓ 旧格式兼容：只有 terrain 字段的存档读入后 getter 逐格还原且层归一（读到 NOTHING 即翻红）  1620ms
+ ✓ src/test/w_25_staff_catalog.test.ts (31 tests | 30 skipped) 502ms
+     ✓ new maps, partial maps and current blink timer are deterministic  500ms
+stdout | src/test/f_1_fire_as_terrain.test.ts > F-1 对抗⑥：持久化往返（存一半即红） > 旧存档迁移：isBurning=true 而层里无火（F-1 前格式）→ 读档自动补火层；反常组合（无火标志却有火层）→ 自动摘除。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/f_1_fire_as_terrain.test.ts (11 tests | 10 skipped) 2270ms
+     ✓ 旧存档迁移：isBurning=true 而层里无火（F-1 前格式）→ 读档自动补火层；反常组合（无火标志却有火层）→ 自动摘除。  2268ms
+stdout | src/test/b_1b_identification_persistence.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/w_24_wand_catalog.test.ts > W-24 snapshot appearance and identity migration > legacy seven-row seed mapping, identity sets, calls, depleted instances survive real load; new rows remain unknown
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_24_wand_catalog.test.ts (20 tests | 19 skipped) 514ms
+     ✓ legacy seven-row seed mapping, identity sets, calls, depleted instances survive real load; new rows remain unknown  513ms
+ ❯ src/test/u_02b_level_rng.test.ts (0 test)
+ ✓ src/test/b_1b_identification_persistence.test.ts (13 tests | 12 skipped) 986ms
+     ✓ 读档与新局都复位 pendingIdentify  979ms
+ ✓ src/test/p1_37_machine_flag_i18n.test.ts (9 tests | 8 skipped) 49341ms
+     ✓ AD3a: 5 种子 × D1-D26 每台机器的旗标穿存档往返；旧存档（无字段）读入为无机器  49340ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_02b_level_rng.test.ts [ src/test/u_02b_level_rng.test.ts ]
+Error: ENOENT: no such file or directory, open 'ai_docs/reports/u-02b-evidence/ce-reference.json'
+ ❯ src/test/u_02b_level_rng.test.ts:9:26
+      7| import { DCOLS, DROWS } from '../engine/Map/Grid';
+      8| const json = <T>(value: T): T => JSON.parse(JSON.stringify(value));
+      9| const ce = JSON.parse(fs.readFileSync('ai_docs/reports/u-02b-evidence/…
+       |                          ^
+     10| afterEach(() => vi.restoreAllMocks());
+     11| const tuple = (r: Random, stream = 0) => Object.values(r.getState().st…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 7 passed (8)
+      Tests  7 passed | 140 skipped (147)
+   Start at  07:30:52
+   Duration  50.90s (transform 3.00s, setup 0ms, import 7.16s, tests 55.74s, environment 3ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web/ai_docs/reports/u-03-evidence/counterfactual-head.json

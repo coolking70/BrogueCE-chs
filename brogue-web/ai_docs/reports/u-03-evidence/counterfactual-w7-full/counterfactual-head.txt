@@ -1,0 +1,19 @@
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/brogue-u03-head-f2I0IU/brogue-web
+
+stdout | src/test/w_7_arcana_enchantment.test.ts > W-7 real read -> forced pack selection -> one completed turn > reading identifies only the scroll; invalid/cancel/move/repeated read do not settle time or draw RNG
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_7_arcana_enchantment.test.ts (30 tests) 3277ms
+     ✓ reading identifies only the scroll; invalid/cancel/move/repeated read do not settle time or draw RNG  341ms
+     ✓ pending transaction survives JSON reload; stale references fail; completed values/unknown flags persist  303ms
+     ✓ wand uses beyond initial count survive selection and JSON save/load without exposing identity  472ms
+     ✓ weapon path has exactly the legacy RNG state and result  401ms
+     ✓ armor path has exactly the legacy RNG state and result  396ms
+
+ Test Files  1 passed (1)
+      Tests  30 passed (30)
+   Start at  07:42:22
+   Duration  4.76s (transform 855ms, setup 0ms, import 1.31s, tests 3.28s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web/ai_docs/reports/u-03-evidence/counterfactual-w7-full/counterfactual-head.json

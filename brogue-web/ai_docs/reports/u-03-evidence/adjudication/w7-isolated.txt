@@ -1,0 +1,15 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web
+
+stdout | src/test/w_7_arcana_enchantment.test.ts > W-7 real read -> forced pack selection -> one completed turn > pending transaction survives JSON reload; stale references fail; completed values/unknown flags persist
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_7_arcana_enchantment.test.ts (30 tests | 29 skipped) 349ms
+     ✓ pending transaction survives JSON reload; stale references fail; completed values/unknown flags persist  348ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 29 skipped (30)
+   Start at  08:05:36
+   Duration  1.67s (transform 775ms, setup 0ms, import 1.18s, tests 349ms, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web/ai_docs/reports/u-03-evidence/adjudication/w7-isolated.json

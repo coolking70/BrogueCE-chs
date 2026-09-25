@@ -1,0 +1,12 @@
+import { Item, ItemCategory } from '/Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web/src/engine/Items/Item';
+import { ItemLoader } from '/Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web/src/engine/Items/ItemLoader';
+import { createHeadlessGame } from '/Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web/src/test/harness';
+const item = new Item('Hidden Lightning', '\\', 0xffffff, ItemCategory.STAFF);
+Object.assign(item, { identityId:'staff_of_lightning', arcanaInstanceVersion:1,enchantment:3,maxCharges:3,charges:1,staffRechargeRemaining:2700,identified:false,maxChargesKnown:false,timesUsed:7,magicDetected:true });
+const game = createHeadlessGame(42, 'test'); game.player.inventory.items=[item];
+game.player.equippedWeapon=game.player.equippedArmor=null;game.player.ringLeft=game.player.ringRight=null;game.monsters=[];
+const scroll=ItemLoader.spawnScroll('scroll_of_enchantment',-1,-1)!;game.player.inventory.items.push(scroll);game.readItem(scroll);
+const snapshot=JSON.parse(JSON.stringify(game.toSnapshot()));
+const evidence:any={originalItem:{id:item.id,category:item.category,identityId:item.identityId},duplicates:snapshot.items.filter((i:any)=>i.id===item.id).map((i:any)=>({id:i.id,category:i.category,identityId:i.identityId})),load:game.loadSnapshot(snapshot)};
+const loaded=game.player.inventory.items[0]!;evidence.loaded={id:loaded.id,category:loaded.category,identityId:loaded.identityId};evidence.eligible=game.canEnchantTarget(loaded);evidence.chosen=game.chooseEnchantTarget(loaded);
+console.log(JSON.stringify(evidence,null,2));

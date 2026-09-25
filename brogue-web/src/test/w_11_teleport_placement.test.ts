@@ -3,7 +3,7 @@ import { Game } from '../engine/Core/Game';
 import * as dungeonFeatures from '../engine/Map/DungeonFeature';
 import * as promotions from '../engine/Map/Promotion';
 import { DF } from '../engine/Map/DungeonFeatureCatalog';
-import { Grid, DCOLS, DungeonLayer, TerrainType as T } from '../engine/Map/Grid';
+import { Grid, DungeonLayer, TerrainType as T } from '../engine/Map/Grid';
 import { EnvironmentManager, GasType } from '../engine/Environment/Gas';
 import { Player } from '../entities/Player';
 import { Monster, type MonsterData } from '../entities/Monster';
@@ -44,7 +44,6 @@ function zap(g: Game) {
 }
 const candidates = (g: Game, target: Player | Monster) => teleportCandidates({
     grid: g.grid, player: g.player, monsters: g.monsters, dormantMonsters: g.dormantMonsters,
-    machineCells: (g as any).machineCells,
 }, target);
 function onlyDestination(g: Game, target: Player | Monster, at: { x: number; y: number }) {
     for (const p of candidates(g, target)) if (p.x !== at.x || p.y !== at.y) g.grid.getCell(p.x, p.y)!.machineNumber = 1;
@@ -66,7 +65,8 @@ describe('W-11 CE teleport destination policy', () => {
         g.grid.setTerrainLayer(13, 1, DungeonLayer.SURFACE, T.FORCEFIELD);
         g.grid.getCell(13, 1)!.isPassable = true; // stale presentation cache must not bypass layer flags
         g.grid.getCell(13, 2)!.machineNumber = 7;
-        (g as any).machineCells.add(3 * DCOLS + 13);
+        // U04c: CE IS_IN_MACHINE comes from the grid, including this second machine.
+        g.grid.getCell(13, 3)!.machineNumber = 8;
         g.grid.setTerrain(13, 4, T.STAIRS_UP); g.grid.setTerrain(13, 5, T.STAIRS_DOWN);
         g.player.loc = { x: 13, y: 6 }; monster(g, 13, 7);
         const sleeper = monster(g, 13, 8); sleeper.isDormant = true;

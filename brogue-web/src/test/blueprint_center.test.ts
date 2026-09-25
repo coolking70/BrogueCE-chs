@@ -32,9 +32,12 @@ import { Grid, TerrainType, DCOLS, DROWS } from '../engine/Map/Grid';
 import { BlueprintEngine } from '../engine/Generator/BlueprintEngine';
 import type { BlueprintDef, MachineResult } from '../engine/Generator/BlueprintEngine';
 import type { Pos } from '../types';
-import type { Game } from '../engine/Core/Game';
+import { Game } from '../engine/Core/Game';
 import { rng } from '../engine/Random';
-import { ItemCategory } from '../engine/Items/Item';
+import { ItemCategory, type Item } from '../engine/Items/Item';
+import { ItemLoader } from '../engine/Items/ItemLoader';
+import { ItemSpawnHeatMap } from '../engine/Items/ItemSpawnHeatMap';
+import fs from 'node:fs';
 import { createHeadlessGame } from './harness';
 import consumablesData from '../data/consumables.json';
 import arcanaData from '../data/arcana.json';
@@ -81,6 +84,48 @@ function installRecorder(record: LevelMachines[]): () => void {
     };
     return () => {
         proto.buildMachines = original;
+    };
+}
+
+/** U04c: trace actual population products, not merely their coordinates.
+ * CE Architect.c:1691–1699 clears non-wired membership; Items.c:630–632
+ * permits ordinary population there, even when the coordinate was an origin.
+ * Each real item identity can justify at most one ground occurrence.
+ */
+function consumeOrdinaryCenterItem(game: Pick<Game, 'grid'>, item: Item, products: Set<Item>): boolean {
+    return game.grid.getCell(item.loc.x, item.loc.y)?.machineNumber === 0 && products.delete(item);
+}
+function installPopulationRecorder(products: Set<Item>): () => void {
+    const proto = Game.prototype as unknown as { spawnPopulateItem(depth: number, offset: number): Item | null };
+    const populate = proto.spawnPopulateItem, gold = ItemLoader.spawnGold;
+    const pick = ItemSpawnHeatMap.prototype.getItemSpawnLoc, cool = ItemSpawnHeatMap.prototype.coolHeatMapAt;
+    let pendingItem: Item | null = null, goldLocation: Pos | null = null;
+    proto.spawnPopulateItem = function(depth, offset) {
+        const item = populate.call(this, depth, offset);
+        pendingItem = item;
+        if (item) products.add(item);
+        return item;
+    };
+    ItemSpawnHeatMap.prototype.getItemSpawnLoc = function() {
+        const loc = pick.call(this);
+        goldLocation = pendingItem ? null : loc;
+        return loc;
+    };
+    ItemSpawnHeatMap.prototype.coolHeatMapAt = function(x, y) {
+        cool.call(this, x, y);
+        if (pendingItem) { pendingItem = null; goldLocation = null; }
+    };
+    // Gold must consume an actual heat-map location once. A direct spawnGold
+    // at an unnumbered center without that location is still an invented drop.
+    ItemLoader.spawnGold = function(quantity, x, y) {
+        const item = gold.call(this, quantity, x, y);
+        if (item && goldLocation?.x === x && goldLocation.y === y) products.add(item);
+        goldLocation = null;
+        return item;
+    };
+    return () => {
+        proto.spawnPopulateItem = populate; ItemLoader.spawnGold = gold;
+        ItemSpawnHeatMap.prototype.getItemSpawnLoc = pick; ItemSpawnHeatMap.prototype.coolHeatMapAt = cool;
     };
 }
 
@@ -142,13 +187,15 @@ interface ScanResult {
     centerViolations: string[];
     /** 落在 center 上的不可通行宝藏清单 */
     treasureViolations: string[];
-    /** 落在任何机器 center 上的物品清单（V-2b-1 §1.3 安全前提钉点，见用例 e） */
+    /** 无声明feature或合法人口来源的center物品（见用例e）。 */
     itemsAtCenter: string[];
     /** 9e：蓝图明确声明、成功落位且可通行的区域 origin 地面物品。 */
     declaredOriginItems: number;
     /** center 上见到的宝藏类型计数（证明扫描非空转） */
     treasureTally: Map<string, number>;
     treasuresAtCenter: number;
+    unexplainedTreasuresAtCenter: number;
+    ordinaryCenterItems: string[];
     machineCount: number;
     levelCount: number;
 }
@@ -178,6 +225,8 @@ function runScan(): ScanResult {
         declaredOriginItems: 0,
         treasureTally: new Map(),
         treasuresAtCenter: 0,
+        unexplainedTreasuresAtCenter: 0,
+        ordinaryCenterItems: [],
         machineCount: 0,
         levelCount: 0,
     };
@@ -188,6 +237,8 @@ function runScan(): ScanResult {
         // 录制器必须先于 createHeadlessGame 安装，才能捕获 D1 的生成
         const record: LevelMachines[] = [];
         const restore = installRecorder(record);
+        const populationProducts = new Set<Item>();
+        const restorePopulation = installPopulationRecorder(populationProducts);
         const game = createHeadlessGame(seed);
         try {
             for (let depth = 1; depth <= 26; depth++) {
@@ -277,7 +328,7 @@ function runScan(): ScanResult {
                     }
                 }
 
-                // 用例 3：所有落在 center 上的物品（= 由 center 放置的宝藏）落格可通行
+                // 用例 3：所有center坐标上的物品都检查通行性；坐标重合不等于中心直投。
                 for (const item of game.items) {
                     const key = `${item.loc.x},${item.loc.y}`;
                     if (!centers.has(key)) continue;
@@ -289,9 +340,12 @@ function runScan(): ScanResult {
                         && (spawn.category === 'KEY'
                             ? !!spawn.keyLoc?.length && JSON.stringify(spawn.keyLoc) === JSON.stringify(item.keyLoc)
                             : !spawn.id || spawn.id === itemId(item)));
+                    const ordinary = declared < 0 && consumeOrdinaryCenterItem(game, item, populationProducts);
                     if (declared >= 0) {
                         originItemSpawns.splice(declared, 1);
                         result.declaredOriginItems++;
+                    } else if (ordinary) {
+                        result.ordinaryCenterItems.push(`seed=${seed} D${depth} ${centers.get(key)} ${id} @ (${item.loc.x},${item.loc.y})`);
                     } else {
                         result.itemsAtCenter.push(
                             `seed=${seed} D${depth} ${centers.get(key)} ${id} @ (${item.loc.x},${item.loc.y})`
@@ -299,6 +353,7 @@ function runScan(): ScanResult {
                     }
                     if (isCenterTreasure(item)) {
                         result.treasuresAtCenter++;
+                        if (declared < 0 && !ordinary) result.unexplainedTreasuresAtCenter++;
                         result.treasureTally.set(id, (result.treasureTally.get(id) ?? 0) + 1);
                     }
                     if (!walkable(game, item.loc.x, item.loc.y)) {
@@ -312,7 +367,7 @@ function runScan(): ScanResult {
                 }
             }
         } finally {
-            restore();
+            restore(); restorePopulation();
         }
         // 该 seed 全程（D1..D26）消耗的 substantive 随机数总数：
         // createHeadlessGame 已重置种子，此值只由 seed 与生成逻辑决定，
@@ -335,6 +390,9 @@ function runScan(): ScanResult {
         `宝藏违例 ${result.treasureViolations.length} 条`
     );
 
+    if (proc?.env?.BP_CENTER_EVIDENCE) {
+        fs.writeFileSync(proc.env.BP_CENTER_EVIDENCE, JSON.stringify({ ...result, treasureTally: [...result.treasureTally] }, null, 2) + '\n');
+    }
     scanCache = result;
     return result;
 }
@@ -394,16 +452,14 @@ describe('蓝图宝藏落点（machine center）可通行性', () => {
     // 「每个机器房中心塞一件好东西」，CE 的蓝图 feature 表里没有对应物
     // （CE 每个 feature 实例只摆一件、且由蓝图显式声明），它和祭坛每格 20%
     // 一起构成了 P1-50 里附魔卷轴每局 48-68 张的结构性来源。
-    // 于是 center 宝藏恒为 0，原护栏的前提失效。
-    //
-    // 按本项目的留痕反转规矩：**断言新事实，而不是删掉断言**。
-    // 护栏语义反转为「center 宝藏投放已拆除」——若有人把这个自创投放点
-    // 加回来，本条立刻红。落格可通行的原断言保留（恒真但零成本，
-    // 且一旦将来按 CE 蓝图正式接入 center 物品，它会继续生效）。
+    // U04c/K31（用户要求冲突以CE为准）：center坐标不是永久机器旗标。
+    // BP_NO_INTERIOR_FLAG清号后的中心以及CE8空域锚点允许普通populateItems
+    // 偶然落位；按真实产物身份追踪其来源，额外/重复直投仍为零，不用单纯
+    // machineNumber==0作为放行条件。所有中心物品可通行断言完整保留。
     it('c) 反转：machine center 的自创宝藏投放已拆除（B-4b），且如有 center 物品其落格必可通行', () => {
-        const { treasuresAtCenter, treasureViolations } = runScan();
+        const { unexplainedTreasuresAtCenter, treasureViolations } = runScan();
         for (const v of treasureViolations.slice(0, 60)) console.log('[bp-center] 宝藏违例:', v);
-        expect(treasuresAtCenter, 'center 宝藏投放应已被 B-4b 拆除（若 >0 说明自创投放点被加回）')
+        expect(unexplainedTreasuresAtCenter, '不得出现既非声明feature、也非真实普通人口物品的center宝藏')
             .toBe(0);
         expect(treasureViolations).toEqual([]);
     }, 900_000);
@@ -421,14 +477,29 @@ describe('蓝图宝藏落点（machine center）可通行性', () => {
     // center==door 的落格问题，而不是绕过本断言。
     // V-2b-9e：上段“任何机器”的历史前提过期。区域按 CE 显式 feature
     // 声明接物品；前厅/房间零 center 直投仍保持，且所有地面物品仍检查可达。
-    it('e) 区域 origin 仅接声明的地面 feature 物品，房间/前厅及额外直投仍为零', () => {
-        const { itemsAtCenter, declaredOriginItems } = runScan();
+    it('e) 编号origin仅接声明feature；已清号center允许真实人口物品，额外直投仍为零', () => {
+        const { itemsAtCenter, declaredOriginItems, ordinaryCenterItems } = runScan();
+        expect(ordinaryCenterItems.length, '必须观测到清号center上的真实普通落物，不能空转').toBeGreaterThan(0);
         expect(declaredOriginItems, '必须观测到真实的区域 origin 地面物品，不能空转').toBeGreaterThan(0);
         for (const v of itemsAtCenter.slice(0, 60)) console.log('[bp-center] center 物品违例:', v);
         expect(itemsAtCenter, `发现 ${itemsAtCenter.length} 件物品落在机器 center 上` +
-            '——没有对应的区域 BUILD_AT_ORIGIN 地面 feature，或物品重复直投。')
+            '——没有对应的区域 BUILD_AT_ORIGIN feature/清号格人口产物，或物品重复直投。')
             .toEqual([]);
     }, 900_000);
+
+    it('f) 普通人口豁免必须有真实对象来源、非机器格，且同一产物只能消费一次', () => {
+        const grid = new Grid(DCOLS, DROWS), item = ItemLoader.spawnScroll('scroll_of_enchantment', 5, 5)!;
+        grid.setTerrain(5, 5, TerrainType.FLOOR);
+        const products = new Set([item]);
+        // Counterexample: a resurrected direct-center treasure, even on released floor.
+        const invented = ItemLoader.spawnScroll('scroll_of_enchantment', 5, 5)!;
+        expect(consumeOrdinaryCenterItem({grid}, invented, products)).toBe(false);
+        grid.getCell(5, 5)!.machineNumber = 1;
+        expect(consumeOrdinaryCenterItem({grid}, item, products)).toBe(false);
+        grid.getCell(5, 5)!.machineNumber = 0;
+        expect(consumeOrdinaryCenterItem({grid}, item, products)).toBe(true);
+        expect(consumeOrdinaryCenterItem({grid}, item, products)).toBe(false);
+    });
 
     it('d) 元断言（P1-36）：isCenterTreasure 点名的 id 必须真实存在于数据表，前缀必须仍命中真实物品', () => {
         // 数据表全量 id 集（consumables.json：potions/scrolls/food；arcana.json：

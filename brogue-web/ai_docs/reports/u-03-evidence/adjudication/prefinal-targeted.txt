@@ -1,0 +1,36 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web
+
+stdout | src/test/b_1b_identification_persistence.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/b_1b_identification_persistence.test.ts (14 tests | 1 failed) 9922ms
+     × 读档后选择恰好鉴定一次，不重复消耗卷轴或回合 617ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/b_1b_identification_persistence.test.ts > X1: 已收费的鉴定选择随检查点恢复，新局清空 > 读档后选择恰好鉴定一次，不重复消耗卷轴或回合
+AssertionError: expected 2 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ src/test/b_1b_identification_persistence.test.ts:326:33
+    324|         const turns = game.stats.turns, tick = timeSystem.currentTick;
+    325|         game.readItem(scroll);
+    326|         expect(scroll.quantity).toBe(1);
+       |                                 ^
+    327|         expect([game.stats.turns, timeSystem.currentTick]).toEqual([tu…
+    328|         expect(game.pendingIdentify).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 7 passed (8)
+      Tests  1 failed | 198 passed (199)
+   Start at  08:01:36
+   Duration  26.98s (transform 6.37s, setup 0ms, import 13.77s, tests 83.81s, environment 3ms)
+

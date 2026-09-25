@@ -1,0 +1,13 @@
+        this.machineCells = new Set();
+        for (const mr of machineResults) {
+            for (const c of mr.cells) this.machineCells.add(c.y * DCOLS + c.x);
+        }
+
+=> only replacement =>
+
+        this.machineCells = new Set();
+        for (let y = 0; y < this.grid.height; y++) {
+            for (let x = 0; x < this.grid.width; x++) {
+                if (this.grid.getCell(x, y)!.machineNumber !== 0) this.machineCells.add(y * DCOLS + x);
+            }
+        }

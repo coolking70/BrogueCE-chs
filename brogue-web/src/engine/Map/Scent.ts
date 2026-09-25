@@ -15,7 +15,7 @@
  *   - U18a: 遮挡与留味已使用四层 flags，旧显示层近似已移除。
  *   - CE 的 diagonalBlocked（对角墙角）web 全局无对应判定，两处邻接检查均省略，
  *     与 P4-5/P4-6 以来移动代码的同口径一致。
- *   - 跨层气味留存不实现（CE levels[d].scentMap），web 换层即换新图。
+ *   - U03: 每层保留 values；Game 在换层时传递全局 turnNumber。
  */
 
 import type { Grid } from './Grid';
@@ -82,6 +82,18 @@ export class ScentMap {
         return this.values[y * this.width + x]!;
     }
 
+    public getState() {
+        return { width: this.width, height: this.height, turnNumber: this.turnNumber, values: Array.from(this.values) };
+    }
+
+    public static fromState(state: ReturnType<ScentMap['getState']>): ScentMap {
+        if (state.values.length !== state.width * state.height) throw new Error('Invalid scent dimensions');
+        const map = new ScentMap(state.width, state.height);
+        map.turnNumber = state.turnNumber;
+        map.values = Int32Array.from(state.values);
+        return map;
+    }
+
     private set(x: number, y: number, value: number): void {
         if (x < 0 || y < 0 || x >= this.width || y >= this.height) return;
         this.values[y * this.width + x] = value;
@@ -126,7 +138,7 @@ export class ScentMap {
     /**
      * CE Time.c:2924 resetScentTurnNumber 的单层版：rogue.scentTurnNumber
      * 逼近 unsigned short 上界时整体回卷 15000，图上超过 15000 的值同步回卷、
-     * 否则清零。跨层部分（CE 遍历 levels[d]）web 无多层留存，不实现。
+     * 否则清零。U03 Game also calls this for every cached visited floor.
      */
     public resetTurnNumber(): void {
         this.turnNumber -= 15000;

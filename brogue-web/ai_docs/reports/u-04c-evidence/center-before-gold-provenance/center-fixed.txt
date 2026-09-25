@@ -1,0 +1,60 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web
+
+stdout | src/test/blueprint_center.test.ts > 蓝图宝藏落点（machine center）可通行性 > b) 全局扫描（43 seeds × D1..D26）：房间 center 可通行、区域 origin 属于 interior（CE8 空域单独验证）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+[bp-center] seed=424242 D1..D26 substantive RNG 抽取总数: 881708
+[bp-center] seed=20260913 D1..D26 substantive RNG 抽取总数: 826275
+[bp-center] seed=1 D1..D26 substantive RNG 抽取总数: 776288
+[bp-center] seed=777 D1..D26 substantive RNG 抽取总数: 855883
+[bp-center] seed=31337 D1..D26 substantive RNG 抽取总数: 875186
+[bp-center] seed=20260916 D1..D26 substantive RNG 抽取总数: 928368
+[bp-center] seed=42 D1..D26 substantive RNG 抽取总数: 858060
+[bp-center] seed=999 D1..D26 substantive RNG 抽取总数: 787604
+[bp-center] seed=12345 D1..D26 substantive RNG 抽取总数: 744301
+[bp-center] seed=55555 D1..D26 substantive RNG 抽取总数: 797939
+[bp-center] seed=31415 D1..D26 substantive RNG 抽取总数: 819036
+[bp-center] seed=27182 D1..D26 substantive RNG 抽取总数: 911054
+[bp-center] seed=2 D1..D26 substantive RNG 抽取总数: 905869
+[bp-center] seed=3 D1..D26 substantive RNG 抽取总数: 974331
+[bp-center] seed=4 D1..D26 substantive RNG 抽取总数: 787664
+[bp-center] seed=5 D1..D26 substantive RNG 抽取总数: 859437
+[bp-center] seed=6 D1..D26 substantive RNG 抽取总数: 819496
+[bp-center] seed=7 D1..D26 substantive RNG 抽取总数: 974377
+[bp-center] seed=8 D1..D26 substantive RNG 抽取总数: 753679
+[bp-center] seed=9 D1..D26 substantive RNG 抽取总数: 782849
+[bp-center] seed=10 D1..D26 substantive RNG 抽取总数: 959804
+[bp-center] seed=11 D1..D26 substantive RNG 抽取总数: 764942
+[bp-center] seed=12 D1..D26 substantive RNG 抽取总数: 756114
+[bp-center] seed=13 D1..D26 substantive RNG 抽取总数: 820559
+[bp-center] seed=14 D1..D26 substantive RNG 抽取总数: 813878
+[bp-center] seed=15 D1..D26 substantive RNG 抽取总数: 873464
+[bp-center] seed=16 D1..D26 substantive RNG 抽取总数: 913429
+[bp-center] seed=17 D1..D26 substantive RNG 抽取总数: 884829
+[bp-center] seed=18 D1..D26 substantive RNG 抽取总数: 873692
+[bp-center] seed=19 D1..D26 substantive RNG 抽取总数: 804509
+[bp-center] seed=20 D1..D26 substantive RNG 抽取总数: 797160
+[bp-center] seed=21 D1..D26 substantive RNG 抽取总数: 910673
+[bp-center] seed=22 D1..D26 substantive RNG 抽取总数: 905506
+[bp-center] seed=23 D1..D26 substantive RNG 抽取总数: 831609
+[bp-center] seed=24 D1..D26 substantive RNG 抽取总数: 776455
+[bp-center] seed=25 D1..D26 substantive RNG 抽取总数: 882003
+[bp-center] seed=26 D1..D26 substantive RNG 抽取总数: 884788
+[bp-center] seed=27 D1..D26 substantive RNG 抽取总数: 857998
+[bp-center] seed=28 D1..D26 substantive RNG 抽取总数: 843217
+[bp-center] seed=29 D1..D26 substantive RNG 抽取总数: 886748
+[bp-center] seed=30 D1..D26 substantive RNG 抽取总数: 769469
+[bp-center] seed=31 D1..D26 substantive RNG 抽取总数: 877133
+[bp-center] seed=32 D1..D26 substantive RNG 抽取总数: 682535
+[bp-center] 扫描 43 seeds × 26 层 = 1118 层，共 3628 台 machine，center 违例 0 条（涉及 0 层）；不可通行 terrain 分布：（无）
+[bp-center] center 上共见到 2 件宝藏：ring_of_stealth×1, scroll_of_enchantment×1；宝藏违例 0 条
+
+ ✓ src/test/blueprint_center.test.ts (6 tests) 146709ms
+     ✓ b) 全局扫描（43 seeds × D1..D26）：房间 center 可通行、区域 origin 属于 interior（CE8 空域单独验证）  146706ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  09:04:20
+   Duration  147.37s (transform 317ms, setup 0ms, import 580ms, tests 146.71s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web/ai_docs/reports/u-04c-evidence/center-fixed.json

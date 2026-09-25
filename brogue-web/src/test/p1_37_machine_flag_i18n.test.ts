@@ -203,7 +203,7 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
         expect(offenders, `生成层仍出现 CHARRED_FLOOR（宝库地板改判被回退？）\n${offenders.join('\n')}`).toEqual([]);
     });
 
-    it('AD3a: 5 种子 × D1-D26 每台机器的旗标穿存档往返；旧存档（无字段）读入为无机器', () => {
+    it('AD3a: 5 种子 × D1-D26 每台机器的旗标穿存档往返；缺机器字段的旧存档被拒绝', () => {
         let levelsSeen = 0;
         let machinesSeen = 0;
         let flaggedCellsSeen = 0;
@@ -301,16 +301,16 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
                 expect((reloaded as unknown as { machineCells: Set<number> }).machineCells,
                     `${label}: 读档后 machineCells 未按网格精确重建`).toEqual(gridDerived);
 
-                // 每层都做旧存档兼容，且在同一实例刚恢复真实旗标后加载，防陈值残留。
+                // 用户验收裁决/U03：缺 machineNumber 的旧档拒绝，不默认清零；当前格式逐格往返仍如上。
                 const legacy = JSON.parse(JSON.stringify(snapshot)) as ReturnType<Game['toSnapshot']>;
                 for (const c of legacy.grid) delete c.machineNumber;
-                expect(reloaded.loadSnapshot(legacy), `${label}: 旧存档读档失败`).toBe(true);
-                for (const k of numbers.keys()) {
+                expect(reloaded.loadSnapshot(legacy), `${label}: 缺机器旗标的旧档必须拒绝`).toBe(false);
+                for (const [k, n] of numbers) {
                     expect(reloaded.grid.getCell(k % DCOLS, Math.floor(k / DCOLS))!.machineNumber,
-                        `${label}: 旧存档格 ${k} 残留机器旗标`).toBe(0);
+                        `${label}: 拒绝旧档后格 ${k} 旗标改变`).toBe(n);
                 }
-                expect((reloaded as unknown as { machineCells: Set<number> }).machineCells.size,
-                    `${label}: 旧存档残留 machineCells`).toBe(0);
+                expect((reloaded as unknown as { machineCells: Set<number> }).machineCells,
+                    `${label}: 拒绝旧档后 machineCells 改变`).toEqual(gridDerived);
             }
         }
         expect(levelsSeen, '必须覆盖全部 seed × 层，不能遇到首台机器就 break').toBe(SWEEP_SEEDS.length * MAX_DEPTH);

@@ -1,0 +1,47 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web
+
+stdout | src/test/u_04c_machine_cells.test.ts > U04c CE machine membership, independent of construction interiors > successful external feature joins the same machine and its key matches by that cell number
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_04c_machine_cells.test.ts (7 tests | 1 failed) 2455ms
+     ✓ area NO_INTERIOR_FLAG retains its wired origin and frees every ordinary interior cell 14ms
+     ✓ successful external feature joins the same machine and its key matches by that cell number 232ms
+     ✓ seed424242 D2: fixes the real 45-interior / 15-numbered mismatch before save and on every return  672ms
+     ✓ real seed777 external features and cleared areas feed the exact grid membership into heat maps  416ms
+     × heat, random item placement, entry, falling and teleport allow cleared floor and exclude numbered floor 206ms
+     ✓ rejects mismatched, absent or duplicate active snapshot membership without altering state or RNG  457ms
+     ✓ rejects mismatched, absent or duplicate cached snapshot membership without altering state or RNG  457ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_04c_machine_cells.test.ts > U04c CE machine membership, independent of construction interiors > heat, random item placement, entry, falling and teleport allow cleared floor and exclude numbered floor
+AssertionError: expected { x: 20, y: 8 } to deeply equal { x: 21, y: 7 }
+
+- Expected
++ Received
+
+  {
+-   "x": 21,
+-   "y": 7,
++   "x": 20,
++   "y": 8,
+  }
+
+ ❯ src/test/u_04c_machine_cells.test.ts:129:81
+    127|         expect(roll).toHaveBeenCalledTimes(4);roll.mockRestore();
+    128|         (g as any).placePlayerOnFallLanding(machine.x,machine.y);expec…
+    129|         (g as any).placePlayerOnFallLanding(free.x,free.y);expect(g.pl…
+       |                                                                                 ^
+    130|     });
+    131|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  08:37:44
+   Duration  3.05s (transform 325ms, setup 0ms, import 519ms, tests 2.45s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web/ai_docs/reports/u-04c-evidence/guards.json

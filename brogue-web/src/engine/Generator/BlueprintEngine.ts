@@ -196,7 +196,7 @@ export interface MachineResult {
     blueprintId: string;
     category: string;
     machineNumber: number;
-    cells: Pos[];           // All cells belonging to this machine
+    cells: Pos[];           // Construction interior; final membership lives in grid.machineNumber (U04c).
     center: Pos;
     door: Pos | null;
     /**
@@ -528,6 +528,8 @@ const TERRAIN_VISUALS: Record<string, { char: string; color: number }> = {
 // ----- Engine -----
 
 let nextMachineNumber = 1;
+export function getNextMachineNumber(): number { return nextMachineNumber; }
+export function restoreNextMachineNumber(value: number): void { nextMachineNumber = value; }
 
 /**
  * V-1c：跨层奖励房配额计数器。CE rogue.rewardRoomsGenerated（Rogue.h:2504

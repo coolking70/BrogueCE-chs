@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/d5c0/brogue/brogue-web
+
+ ❯ src/test/u_02b_level_rng.test.ts (22 tests | 1 failed) 24743ms
+     × JSON preserves detached seed/visited metadata and rejects old algorithms/malformed tables atomically 2211ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_02b_level_rng.test.ts > U02b layer lifecycle and persistence > JSON preserves detached seed/visited metadata and rejects old algorithms/malformed tables atomically
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ src/test/u_02b_level_rng.test.ts:139:38
+    137|   ]) {const bad=json(before);corrupt(bad);expect(fresh.loadSnapshot(ba…
+    138|   expect(isLevelSeeds(new Array(41))).toBe(false);
+    139|   expect(()=>generate(fresh,1,true)).toThrow('Visited level state is u…
+       |                                      ^
+    140|  });
+    141| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  1 failed | 93 passed (94)
+   Start at  07:17:26
+   Duration  31.44s (transform 3.40s, setup 0ms, import 6.40s, tests 78.20s, environment 1ms)
+

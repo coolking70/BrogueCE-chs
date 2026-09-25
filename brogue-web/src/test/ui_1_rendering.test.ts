@@ -55,6 +55,7 @@ import { isSidebarVisibleStatus, CE_EMPTY_NAME_STATUSES } from '../engine/Status
 import { Item, ItemCategory } from '../engine/Items/Item';
 import { MonsterState, type Monster } from '../entities/Monster';
 import type { Game } from '../engine/Core/Game';
+import ceTerrainGoldens from './fixtures/u21c-ce-terrain.json';
 
 // App.vue 的模块依赖链（GameCanvas → Input 单例）在模块加载期访问 window——
 // headless 下先 stub 再动态导入（p2_0 同款做法）。wireConfirmRequest 是纯逻辑，
@@ -99,6 +100,14 @@ function cellCtx(overrides: Partial<CellAppearanceContext> = {}): CellAppearance
 }
 
 const IDENTITY_LIGHT: LightChannels = { r: 100, g: 100, b: 100 };
+const floor = ceTerrainGoldens.FLOOR;
+const lightColor = (hex: string, channels: readonly number[]) => '#' + [0, 1, 2].map((i) => {
+    const base = parseInt(hex.slice(1 + i * 2, 3 + i * 2), 16);
+    const level = Math.max(0, channels[i]!);
+    const adjusted = level > 150 ? Math.trunc(Math.sqrt(level / 150) * 150) : level;
+    return Math.min(255, Math.trunc(base * adjusted / 100)).toString(16).padStart(2, '0');
+}).join('');
+const lightBg = (value: number, channels: readonly number[]) => parseInt(lightColor('#' + value.toString(16).padStart(6, '0'), channels).slice(1), 16);
 
 /**
  * 造探测态物品。极性按 CE Items.c:8267-8299 的实例分支取值：
@@ -239,7 +248,7 @@ describe('UI-1 第 3 条：探魔符号——两支守卫析取、符号按极�
             makeCell(TerrainType.FLOOR, { visible: true }),
             cellCtx({ groundItem: detectedWeapon(+2) }),
         )!;
-        expect(visual.char).toBe('.'); // 地板原样，不是魔法符号
+        expect(visual.char).toBe(floor.char); // 地板原样，不是魔法符号
         expect(visual.color).not.toBe(GOOD_MAGIC_COLOR);
     });
 
@@ -301,7 +310,7 @@ describe('UI-1 第 3 条：探魔符号——两支守卫析取、符号按极�
             makeCell(TerrainType.FLOOR, { visible: true }),
             cellCtx({ carriedItem: carried }),
         )!;
-        expect(visual.char).toBe('.');
+        expect(visual.char).toBe(floor.char);
     });
 });
 
@@ -348,8 +357,8 @@ describe('UI-1 第 4 条：PARALYSIS / METHANE 气体渲染', () => {
             makeCell(TerrainType.FLOOR, { visible: true }),
             cellCtx({ gas: gas(GasType.PARALYSIS, 0), lightChannels: IDENTITY_LIGHT }),
         )!;
-        expect(visual.char).toBe('.');
-        expect(visual.bgColor).toBe(0x222233);
+        expect(visual.char).toBe(floor.char);
+        expect(visual.bgColor).toBe(floor.bgColor);
     });
 });
 
@@ -436,23 +445,23 @@ describe('UI-1 第 6 条：Game.onConfirmRequest 生产侧接线', () => {
 
 describe('UI-1 第 7 条：光照按 CE 逐通道乘法（adjustedLightValue + applyColorMultiplier）', () => {
     it('对抗：过亮通道平方根压回（adjustedLightValue，IO.c:1732-1737）——漏写压回/用旧混合即红', () => {
-        // adjusted(180) = trunc(sqrt(180/150)*150) = 164；170*164/100 = 278 → 钳 255
+        // adjusted(180) = trunc(sqrt(180/150)*150) = 164；基色由 CE 黄金表给出。
         const visual = cellAppearance(
             makeCell(TerrainType.FLOOR, { visible: true }),
             cellCtx({ lightChannels: { r: 180, g: 180, b: 180 } }),
         )!;
-        expect(visual.color).toBe('#ffffff');
-        expect(visual.bgColor).toBe(0x373753);
+        expect(visual.color).toBe(lightColor(floor.color, [180, 180, 180]));
+        expect(visual.bgColor).toBe(lightBg(floor.bgColor, [180, 180, 180]));
     });
 
     it('对抗：有色光是**逐通道**的——单色混合实现（旧 light: {color,intensity} 形态）给不出这个值', () => {
-        // r=100/g=20/b=0 作用在 #aaaaaa → (170,34,0)；混向"光色"的实现无法同时满足
+        // r=100/g=20/b=0 逐通道作用在 CE 地板前景；混向单色的实现无法满足。
         // 三通道独立比例。
         const visual = cellAppearance(
             makeCell(TerrainType.FLOOR, { visible: true }),
             cellCtx({ lightChannels: { r: 100, g: 20, b: 0 } }),
         )!;
-        expect(visual.color).toBe('#aa2200');
+        expect(visual.color).toBe(lightColor(floor.color, [100, 20, 0]));
     });
 
     it('负通道按 max(0,·) 钳位（黑暗类光是负分量，CE colorMultiplierFromDungeonLight）', () => {
@@ -460,7 +469,7 @@ describe('UI-1 第 7 条：光照按 CE 逐通道乘法（adjustedLightValue + a
             makeCell(TerrainType.FLOOR, { visible: true }),
             cellCtx({ lightChannels: { r: -50, g: 100, b: 100 } }),
         )!;
-        expect(visual.color).toBe('#00aaaa'); // 红通道 ×0，绿蓝 ×1
+        expect(visual.color).toBe(lightColor(floor.color, [-50, 100, 100])); // 红通道 ×0，绿蓝 ×1
     });
 
     it('背景与前景用同一乘数（CE 对两者各做一次 applyColorMultiplier）', () => {
@@ -468,9 +477,9 @@ describe('UI-1 第 7 条：光照按 CE 逐通道乘法（adjustedLightValue + a
             makeCell(TerrainType.WATER_SHALLOW, { visible: true }),
             cellCtx({ lightChannels: { r: 50, g: 50, b: 50 } }),
         )!;
-        // bg 0x112244 = (17,34,68) → (8,17,34)
-        expect(visual.bgColor).toBe(0x081122);
-        expect(visual.color).toBe('#193366'); // #3366cc = (51,102,204) → 一半
+        const water = ceTerrainGoldens.WATER_SHALLOW;
+        expect(visual.bgColor).toBe(lightBg(water.bgColor, [50, 50, 50]));
+        expect(visual.color).toBe(lightColor(water.color, [50, 50, 50]));
     });
 
     it('全零通道与 null 光同走"可见但无光"近黑分支（不受乘法影响）', () => {
@@ -479,7 +488,7 @@ describe('UI-1 第 7 条：光照按 CE 逐通道乘法（adjustedLightValue + a
                 makeCell(TerrainType.FLOOR, { visible: true }),
                 cellCtx({ lightChannels: light }),
             )!;
-            expect(visual).toEqual({ char: '.', color: '#222222', bgColor: 0x050505 });
+            expect(visual).toEqual({ char: floor.char, color: '#222222', bgColor: 0x050505 });
         }
     });
 });

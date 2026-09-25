@@ -21,7 +21,6 @@ import { describe, it, expect } from 'vitest';
 import { createHeadlessGame } from './harness';
 import { GasType } from '../engine/Environment/Gas';
 import type { Game } from '../engine/Core/Game';
-import type { GameSnapshot } from '../engine/Core/Game';
 import { TerrainType, DungeonLayer, DRAW_PRIORITY, TERRAIN_HOME_LAYER } from '../engine/Map/Grid';
 import { blocksPathing } from '../engine/Map/LoopMap';
 import { isFireTerrain, blocksPassability } from '../engine/Map/TerrainCatalog';
@@ -301,39 +300,23 @@ describe('F-1 对抗⑥：持久化往返（存一半即红）', () => {
         expect(g1.isBurning).toBe(false);
     });
 
-    it('旧存档迁移：isBurning=true 而层里无火（F-1 前格式）→ 读档自动补火层；' +
-        '反常组合（无火标志却有火层）→ 自动摘除。', () => {
+    it('旧格式燃烧镜像存档被拒绝，不自动补火或摘火', () => {
         const game = createHeadlessGame(42);
         openRoom(game);
         game.grid.setTerrain(8, 6, C.GRASS, '"', 0x33aa33);
-        const snap = JSON.parse(JSON.stringify(game.toSnapshot())) as GameSnapshot;
-        // 手造旧格式燃烧格：有标志、无火层
-        const cellSnap = snap.grid.find((c) => c.x === 8 && c.y === 6)!;
-        cellSnap.isBurning = true;
-        cellSnap.layers = (cellSnap.layers ?? []).map((t) => (isFireTerrain(t) ? C.NOTHING : t));
-        expect(reloadedMirror(snap), '补写后该格必须挂火地形').toBe(true);
-
-        // 反常组合：无标志、有火层（手造层：DUNGEON=FLOOR + SURFACE 火）
-        const snap2 = JSON.parse(JSON.stringify(game.toSnapshot())) as GameSnapshot;
-        const cellSnap2 = snap2.grid.find((c) => c.x === 8 && c.y === 6)!;
-        cellSnap2.isBurning = false;
-        cellSnap2.layers = [C.FLOOR, C.NOTHING, C.NOTHING, C.PLAIN_FIRE];
-        const g2 = createHeadlessGame(1);
-        expect(g2.loadSnapshot(snap2)).toBe(true);
-        const c2 = g2.grid.getCell(8, 6)!;
-        expect(c2.isBurning).toBe(false);
-        expect(c2.layers.some((t) => isFireTerrain(t)), '幽灵火必须被对账摘除').toBe(false);
-        expect(c2.terrain, '摘火后露出手造的 DUNGEON 层地板').toBe(C.FLOOR);
+        // 用户验收裁决/U03：旧档不迁移。旧格式没有 whole-run schema；
+        // 当前格式的 isBurning 只是四层地形的只读投影，单改投影不能冒充旧格式。
+        for (const burning of [true, false]) {
+            const legacy = JSON.parse(JSON.stringify(game.toSnapshot()));
+            delete legacy.schema;
+            const cell = legacy.grid.find((c: { x: number; y: number }) => c.x === 8 && c.y === 6)!;
+            cell.isBurning = burning;
+            cell.layers = [C.FLOOR, C.NOTHING, C.NOTHING, burning ? C.GRASS : C.PLAIN_FIRE];
+            const reloaded = createHeadlessGame(1), before = reloaded.toSnapshot().grid;
+            expect(reloaded.loadSnapshot(legacy)).toBe(false);
+            expect(reloaded.toSnapshot().grid).toEqual(before);
+        }
     });
-
-    /** 读旧格式快照并回答"该格是否挂上火地形"。 */
-    function reloadedMirror(snap: GameSnapshot): boolean {
-        const g = createHeadlessGame(1);
-        expect(g.loadSnapshot(snap)).toBe(true);
-        const c = g.grid.getCell(8, 6)!;
-        expect(c.isBurning).toBe(true);
-        return c.layers.some((t) => isFireTerrain(t));
-    }
 });
 
 describe('F-1 对抗⑦（G-1 反转）：火不写 GAS 层；气体住进 GAS 层', () => {

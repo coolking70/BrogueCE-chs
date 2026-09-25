@@ -1,0 +1,398 @@
+{
+  "absoluteTurnNumber": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "activeFlares": {
+    "kind": "reset",
+    "contract": "U21c：CE flare 为瞬时视觉效果（Light.c createFlare/animateFlares 按帧衰减），新局/读档清空，不写入世界快照。"
+  },
+  "advancementIter": {
+    "kind": "reset",
+    "contract": "仅允许非 isAdvancing 检查点；load discard 旧 generator 且不执行回合尾声，其余锁清空。"
+  },
+  "animationAccumulatorMs": {
+    "kind": "reset",
+    "contract": "仅允许非 isAdvancing 检查点；load discard 旧 generator 且不执行回合尾声，其余锁清空。"
+  },
+  "animationEnabled": {
+    "kind": "session",
+    "contract": "会话接线、无状态服务、播放/动画偏好保持；不写入世界快照。"
+  },
+  "animationLockDeadline": {
+    "kind": "reset",
+    "contract": "仅允许非 isAdvancing 检查点；load discard 旧 generator 且不执行回合尾声，其余锁清空。"
+  },
+  "autoPath": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "boltAnimStartTime": {
+    "kind": "reset",
+    "contract": "界面、未提交且可取消的目标、动画/诊断清空；已结算的强制选择另有 persisted 字段。"
+  },
+  "combatSystem": {
+    "kind": "session",
+    "contract": "会话接线、无状态服务、播放/动画偏好保持；不写入世界快照。"
+  },
+  "currentBoltFrameIndex": {
+    "kind": "reset",
+    "contract": "界面、未提交且可取消的目标、动画/诊断清空；已结算的强制选择另有 persisted 字段。"
+  },
+  "currentLevelAwaySince": {
+    "kind": "level",
+    "contract": "当前层顶层载荷；缓存层 levels[]，字段/队列或实体 ID。awaySince 使用 objective block 计数。"
+  },
+  "currentLevelDepth": {
+    "kind": "persist",
+    "contract": "顶层同名字段（currentSeed→seed）；Player/实体用 U01，levels 是缓存数组，pending 队列持有全局图中同一对象。"
+  },
+  "currentSeed": {
+    "kind": "persist",
+    "contract": "顶层同名字段（currentSeed→seed）；Player/实体用 U01，levels 是缓存数组，pending 队列持有全局图中同一对象。"
+  },
+  "currentTestCategory": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "depth": {
+    "kind": "persist",
+    "contract": "顶层同名字段（currentSeed→seed）；Player/实体用 U01，levels 是缓存数组，pending 队列持有全局图中同一对象。"
+  },
+  "displacementTrapDepressions": {
+    "kind": "level",
+    "contract": "每个 Grid 的 WeakMap 条目保存到各层 trapDepressions，读档重建。"
+  },
+  "dormantMonsters": {
+    "kind": "level",
+    "contract": "当前层顶层载荷；缓存层 levels[]，字段/队列或实体 ID。awaySince 使用 objective block 计数。"
+  },
+  "environment": {
+    "kind": "level",
+    "contract": "Environment.getState 的火/爆炸队列；gasGrid 镜像由网格 GAS/volume 重建。"
+  },
+  "everSeenItems": {
+    "kind": "run",
+    "contract": "run 中 ID 列表/目标 ID；全局图包含仍被这些集合引用的实体。"
+  },
+  "everSeenMonsters": {
+    "kind": "run",
+    "contract": "run 中 ID 列表/目标 ID；全局图包含仍被这些集合引用的实体。"
+  },
+  "examinedEntityIds": {
+    "kind": "run",
+    "contract": "run 中 ID 列表/目标 ID；全局图包含仍被这些集合引用的实体。"
+  },
+  "flareElapsedMs": {
+    "kind": "reset",
+    "contract": "U21c：CE flare 为瞬时视觉效果（Light.c createFlare/animateFlares 按帧衰减），新局/读档清空，不写入世界快照。"
+  },
+  "flareLightMap": {
+    "kind": "reset",
+    "contract": "U21c：CE flare 为瞬时视觉效果（Light.c createFlare/animateFlares 按帧衰减），新局/读档清空，不写入世界快照。"
+  },
+  "floatingTexts": {
+    "kind": "reset",
+    "contract": "界面、未提交且可取消的目标、动画/诊断清空；已结算的强制选择另有 persisted 字段。"
+  },
+  "foodSpawned": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "fov": {
+    "kind": "derive",
+    "contract": "由当前层地形/玩家/深度构建 FOV 与逻辑光；不推进世界、不掷骰。缓存层进层时重算。"
+  },
+  "gameOverInventory": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "gameOverReason": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "gameOverScore": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "gameOverWon": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "goldGenerated": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "grid": {
+    "kind": "level",
+    "contract": "当前层顶层载荷；缓存层 levels[]，字段/队列或实体 ID。awaySince 使用 objective block 计数。"
+  },
+  "hoveredCell": {
+    "kind": "reset",
+    "contract": "界面、未提交且可取消的目标、动画/诊断清空；已结算的强制选择另有 persisted 字段。"
+  },
+  "hoveredText": {
+    "kind": "reset",
+    "contract": "界面、未提交且可取消的目标、动画/诊断清空；已结算的强制选择另有 persisted 字段。"
+  },
+  "inAutoTravelStep": {
+    "kind": "reset",
+    "contract": "仅允许非 isAdvancing 检查点；load discard 旧 generator 且不执行回合尾声，其余锁清空。"
+  },
+  "inspectTarget": {
+    "kind": "reset",
+    "contract": "界面、未提交且可取消的目标、动画/诊断清空；已结算的强制选择另有 persisted 字段。"
+  },
+  "isAdvancing": {
+    "kind": "reset",
+    "contract": "仅允许非 isAdvancing 检查点；load discard 旧 generator 且不执行回合尾声，其余锁清空。"
+  },
+  "isExamining": {
+    "kind": "reset",
+    "contract": "界面、未提交且可取消的目标、动画/诊断清空；已结算的强制选择另有 persisted 字段。"
+  },
+  "isGameOver": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "isInventoryOpen": {
+    "kind": "derive",
+    "contract": "有 pendingIdentify/pendingEnchantment 时重新打开强制选择；普通背包界面关闭。"
+  },
+  "isMouseTraveling": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "isThrowing": {
+    "kind": "reset",
+    "contract": "界面、未提交且可取消的目标、动画/诊断清空；已结算的强制选择另有 persisted 字段。"
+  },
+  "items": {
+    "kind": "level",
+    "contract": "当前层顶层载荷；缓存层 levels[]，字段/队列或实体 ID。awaySince 使用 objective block 计数。"
+  },
+  "justRested": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "justSearched": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "lastAdvancementError": {
+    "kind": "reset",
+    "contract": "仅允许非 isAdvancing 检查点；load discard 旧 generator 且不执行回合尾声，其余锁清空。"
+  },
+  "lastDamageSource": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "lastPromotionUpdate": {
+    "kind": "reset",
+    "contract": "界面、未提交且可取消的目标、动画/诊断清空；已结算的强制选择另有 persisted 字段。"
+  },
+  "levelHasSecrets": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "levelSeeds": {
+    "kind": "persist",
+    "contract": "顶层同名字段（currentSeed→seed）；Player/实体用 U01，levels 是缓存数组，pending 队列持有全局图中同一对象。"
+  },
+  "levels": {
+    "kind": "persist",
+    "contract": "顶层同名字段（currentSeed→seed）；Player/实体用 U01，levels 是缓存数组，pending 队列持有全局图中同一对象。"
+  },
+  "lightMap": {
+    "kind": "derive",
+    "contract": "由当前层地形/玩家/深度构建 FOV 与逻辑光；不推进世界、不掷骰。缓存层进层时重算。"
+  },
+  "loopMap": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "machineCells": {
+    "kind": "derived",
+    "contract": "U04c/K31: grid.machineNumber != 0 的缓存投影；生成/返层/读档重建，快照保存相同投影并拒绝不一致，不是独立状态。"
+  },
+  "meteredItems": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "minersLight": {
+    "kind": "derive",
+    "contract": "由当前层地形/玩家/深度构建 FOV 与逻辑光；不推进世界、不掷骰。缓存层进层时重算。"
+  },
+  "minersLightBaseFixpt": {
+    "kind": "derive",
+    "contract": "由当前层地形/玩家/深度构建 FOV 与逻辑光；不推进世界、不掷骰。缓存层进层时重算。"
+  },
+  "mode": {
+    "kind": "persist",
+    "contract": "顶层同名字段（currentSeed→seed）；Player/实体用 U01，levels 是缓存数组，pending 队列持有全局图中同一对象。"
+  },
+  "monsterSpawnFuse": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "monsters": {
+    "kind": "level",
+    "contract": "当前层顶层载荷；缓存层 levels[]，字段/队列或实体 ID。awaySince 使用 objective block 计数。"
+  },
+  "needsRender": {
+    "kind": "derive",
+    "contract": "请求重新绘制；load 不执行 update 的发现/自动行为副作用。"
+  },
+  "onConfirmRequest": {
+    "kind": "session",
+    "contract": "会话接线、无状态服务、播放/动画偏好保持；不写入世界快照。"
+  },
+  "onRenderRequested": {
+    "kind": "session",
+    "contract": "会话接线、无状态服务、播放/动画偏好保持；不写入世界快照。"
+  },
+  "pendingArcana": {
+    "kind": "reset",
+    "contract": "界面、未提交且可取消的目标、动画/诊断清空；已结算的强制选择另有 persisted 字段。"
+  },
+  "pendingBoltFrames": {
+    "kind": "reset",
+    "contract": "界面、未提交且可取消的目标、动画/诊断清空；已结算的强制选择另有 persisted 字段。"
+  },
+  "pendingCaughtFireCells": {
+    "kind": "level",
+    "contract": "当前层顶层载荷；缓存层 levels[]，字段/队列或实体 ID。awaySince 使用 objective block 计数。"
+  },
+  "pendingEnchantment": {
+    "kind": "persist",
+    "contract": "顶层同名字段（currentSeed→seed）；Player/实体用 U01，levels 是缓存数组，pending 队列持有全局图中同一对象。"
+  },
+  "pendingFallenByDepth": {
+    "kind": "persist",
+    "contract": "顶层同名字段（currentSeed→seed）；Player/实体用 U01，levels 是缓存数组，pending 队列持有全局图中同一对象。"
+  },
+  "pendingIdentify": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "pendingPauseMs": {
+    "kind": "reset",
+    "contract": "仅允许非 isAdvancing 检查点；load discard 旧 generator 且不执行回合尾声，其余锁清空。"
+  },
+  "pendingUseConfirm": {
+    "kind": "reset",
+    "contract": "界面、未提交且可取消的目标、动画/诊断清空；已结算的强制选择另有 persisted 字段。"
+  },
+  "player": {
+    "kind": "persist",
+    "contract": "顶层同名字段（currentSeed→seed）；Player/实体用 U01，levels 是缓存数组，pending 队列持有全局图中同一对象。"
+  },
+  "playerFalling": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "poisonedDuringTurn": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "recordedInputEvents": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "recordedInputIndex": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "recordingStartAt": {
+    "kind": "reset",
+    "contract": "仅录制墙钟元数据，不参与模拟/当前 export；load 重新开始墙钟。"
+  },
+  "referenceScreen": {
+    "kind": "reset",
+    "contract": "界面、未提交且可取消的目标、动画/诊断清空；已结算的强制选择另有 persisted 字段。"
+  },
+  "replayCursor": {
+    "kind": "reset",
+    "contract": "播放控制器复位；正常输入历史已存。完整录制命令/检查点播放入口归 U27。"
+  },
+  "replayEvents": {
+    "kind": "reset",
+    "contract": "播放控制器复位；正常输入历史已存。完整录制命令/检查点播放入口归 U27。"
+  },
+  "replayFrameAccumulator": {
+    "kind": "reset",
+    "contract": "播放控制器复位；正常输入历史已存。完整录制命令/检查点播放入口归 U27。"
+  },
+  "replayFramesPerStep": {
+    "kind": "session",
+    "contract": "会话接线、无状态服务、播放/动画偏好保持；不写入世界快照。"
+  },
+  "replayRecording": {
+    "kind": "reset",
+    "contract": "播放控制器复位；正常输入历史已存。完整录制命令/检查点播放入口归 U27。"
+  },
+  "replayStatus": {
+    "kind": "reset",
+    "contract": "播放控制器复位；正常输入历史已存。完整录制命令/检查点播放入口归 U27。"
+  },
+  "resetPlateRoomByPos": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "safetyMap": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "scent": {
+    "kind": "level",
+    "contract": "当前层顶层载荷；缓存层 levels[]，字段/队列或实体 ID。awaySince 使用 objective block 计数。"
+  },
+  "searchingCharge": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "secretScanDepth": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "signTexts": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "stats": {
+    "kind": "persist",
+    "contract": "顶层同名字段（currentSeed→seed）；Player/实体用 U01，levels 是缓存数组，pending 队列持有全局图中同一对象。"
+  },
+  "testRooms": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "throwItemTarget": {
+    "kind": "reset",
+    "contract": "界面、未提交且可取消的目标、动画/诊断清空；已结算的强制选择另有 persisted 字段。"
+  },
+  "ticksTillUpdateEnvironment": {
+    "kind": "persist",
+    "contract": "顶层同名字段（currentSeed→seed）；Player/实体用 U01，levels 是缓存数组，pending 队列持有全局图中同一对象。"
+  },
+  "travelTargetItem": {
+    "kind": "run",
+    "contract": "run 中 ID 列表/目标 ID；全局图包含仍被这些集合引用的实体。"
+  },
+  "updatedSafetyMapThisTurn": {
+    "kind": "run",
+    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+  },
+  "visibleItems": {
+    "kind": "level",
+    "contract": "当前层顶层载荷；缓存层 levels[]，字段/队列或实体 ID。awaySince 使用 objective block 计数。"
+  },
+  "visibleMonsters": {
+    "kind": "level",
+    "contract": "当前层顶层载荷；缓存层 levels[]，字段/队列或实体 ID。awaySince 使用 objective block 计数。"
+  },
+  "waypoints": {
+    "kind": "level",
+    "contract": "当前层顶层载荷；缓存层 levels[]，字段/队列或实体 ID。awaySince 使用 objective block 计数。"
+  }
+}
