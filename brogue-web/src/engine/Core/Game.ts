@@ -44,6 +44,7 @@ import { weaponParalysisDuration, weaponConfusionDuration, weaponForceDistance, 
 import { ItemCategory, Item } from '../Items/Item';
 import { ItemLoader } from '../Items/ItemLoader';
 import { canEnchantArcana, enchantArcana } from '../Items/ArcanaEnchantment';
+import { charmEffectDuration, charmHealing, charmProtection, charmRechargeDelay, isCharmKind } from '../Items/CharmModel';
 import { equippedWisdomBonus, tickStaffRecharge, rechargeStaffFully } from '../Items/ArcanaRecharge';
 import { rng, Random, RNGType, type RandomState } from '../Random';
 import { normalizeSeed, isSeed, type SeedInput } from '../Seed';
@@ -4281,31 +4282,44 @@ export class Game {
                 return;
             }
 
-            if (identityId === 'charm_of_health' || item.name.includes('Health')) {
-                const healed = Math.min(this.player.maxHp - this.player.hp, 8);
-                this.player.hp += healed;
+            if (!isCharmKind(identityId)) return;
+            const duration = charmEffectDuration(identityId, item.enchantment);
+            if (identityId === 'charm_of_health') {
+                const healed = this.player.heal(charmHealing(item.enchantment), false);
                 logger.log(i18next.t('arcana.charm_health', { item: item.name, heal: healed, defaultValue: `You invoke ${item.name} and recover ${healed} HP.` }), '#66ff88');
-            } else if (identityId === 'charm_of_invisibility' || item.name.includes('Invisibility')) {
-                this.applyTimedStatus(this.player, 'invisible', 18);
+            } else if (identityId === 'charm_of_invisibility') {
+                this.applyTimedStatus(this.player, 'invisible', duration);
+                this.player.setStatusDuration('invisible', duration);
+                this.player.maxStatus.invisible = duration;
                 logger.log(i18next.t('arcana.charm_invisibility', { item: item.name, defaultValue: `You invoke ${item.name} and vanish from sight.` }), '#99ccff');
-            } else if (identityId === 'charm_of_speed' || item.name.includes('Speed')) {
-                this.applyTimedStatus(this.player, 'levitating', 20);
+            } else if (identityId === 'charm_of_speed') {
+                this.player.setStatusDuration('slowed', 0);
+                this.player.setStatusDuration('haste', 0);
+                this.applyTimedStatus(this.player, 'hasted', duration);
+                this.player.setStatusDuration('hasted', duration);
+                this.player.maxStatus.hasted = duration;
                 logger.log(i18next.t('arcana.charm_speed', { item: item.name, defaultValue: `You invoke ${item.name} and feel unnaturally swift.` }), '#99ddff');
-            } else if (identityId === 'charm_of_protection' || item.name.includes('Protection')) {
-                // Grant temporary immunity to a random negative status
-                const negativeStatuses: StatusId[] = ['paralyzed', 'confused', 'hallucinating'];
-                const chosen = negativeStatuses[rng.randRange(0, negativeStatuses.length - 1)] as StatusId;
-                this.player.grantTemporaryImmunity(chosen, 15);
-                logger.log(i18next.t('arcana.charm_protection', { item: item.name, status: this.getStatusLabel(chosen), defaultValue: `You invoke ${item.name} and feel shielded against ${this.getStatusLabel(chosen)}.` }), '#ffffaa');
-            } else {
-                logger.log(i18next.t('arcana.charm_generic', { item: item.name, defaultValue: `You invoke ${item.name}.` }), '#88ccff');
+            } else if (identityId === 'charm_of_protection') {
+                this.player.applyShield(charmProtection(item.enchantment));
+                logger.log(i18next.t('arcana.charm_protection', { item: item.name, defaultValue: `A shimmering shield coalesces around you.` }), '#ffffaa');
+            } else if (identityId === 'charm_of_telepathy') {
+                this.applyTimedStatus(this.player, 'telepathy', duration);
+                this.player.setStatusDuration('telepathy', duration);
+                this.player.maxStatus.telepathy = duration;
+            } else if (identityId === 'charm_of_fire_immunity') {
+                this.applyTimedStatus(this.player, 'immune_fire', duration);
+                this.player.setStatusDuration('immune_fire', duration);
+                this.player.maxStatus.immune_fire = duration;
+                this.extinguishCreatureFire(this.player);
+                logger.log(i18next.t('arcana.charm_fire_immunity', { defaultValue: 'You no longer fear fire.' }), '#ffbb66');
             }
-            item.cooldownRemaining = item.cooldownTurns ?? 300;
+            item.cooldownTurns = charmRechargeDelay(identityId, item.enchantment);
+            item.cooldownRemaining = item.cooldownTurns;
             if (identityId && !ItemLoader.identifiedItems.has(identityId)) {
                 ItemLoader.identify(identityId);
                 logger.log(i18next.t('item.identify', { name: item.name, defaultValue: `You identify ${item.name}.` }), '#00ffff');
             }
-            timeSystem.currentTick += 100;
+            timeSystem.currentTick += this.player.movementSpeed;
             this.playerTurnEnded();
             return;
         }
@@ -5544,9 +5558,7 @@ export class Game {
         return true;
     }
 
-    /** CE Items.c:7904 -> rechargeItems(STAFF | CHARM), all items in the pack.
-     * CHARM uses the existing web cooldown representation; no charm model rewrite.
-     */
+    /** CE Items.c:7904 -> rechargeItems(STAFF | CHARM), all items in the pack. */
     private rechargeStaffsAndCharms(): boolean {
         let found = false;
         for (const item of this.player.inventory.items) {
@@ -5750,10 +5762,11 @@ export class Game {
                     ItemLoader.updateIdentifiableItem(theItem); // CE updateIdentifiableItems()
                     break;
                 case ItemCategory.CHARM:
-                    // CE :4874 charges = charmRechargeDelay(kind, enchant1)。
-                    // web 无护身符充能延迟系统（charmRechargeDelay 无实现、
-                    // charms 无充能语义），登记 deferral——不能清零充能充数
-                    // （CE 语义是"重置为再充能延迟"，不是清空）。
+                    // CE Items.c:4874: negation starts a full recharge cycle.
+                    if (isCharmKind(theItem.identityId)) {
+                        theItem.cooldownTurns = charmRechargeDelay(theItem.identityId, theItem.enchantment);
+                        theItem.cooldownRemaining = theItem.cooldownTurns;
+                    }
                     break;
                 default:
                     break;
@@ -6394,7 +6407,7 @@ export class Game {
     }
 
     public applyMonsterOnHitStatus(monsterName: string, status: StatusId, duration: number): boolean {
-        // Check temporary immunity from charm_of_protection
+        // Preserve immunity granted by existing status sources.
         if ((this.player.temporaryImmunities[status] ?? 0) > 0) {
             logger.log(
                 i18next.t('status.player.temp_immune', {

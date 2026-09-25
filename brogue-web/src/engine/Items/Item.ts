@@ -82,7 +82,7 @@ export class Item implements Entity {
     public runicType?: string;
     public runicKnown: boolean = false;
     /** W-5 schema marker: absent in legacy saves whose staff E was a placeholder. */
-    public arcanaInstanceVersion?: 1;
+    public arcanaInstanceVersion?: 1 | 2;
     /** Staff capacity (= E after creation/enchanting); wand's initial count, not a use cap. */
     public maxCharges?: number;
     /** Current uses; spending these must not change staff E. */

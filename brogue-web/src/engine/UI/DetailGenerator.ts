@@ -5,6 +5,7 @@
  */
 
 import { ItemLoader } from '../Items/ItemLoader';
+import { charmEffectDuration, charmHealing, charmProtection, charmRechargeDelay, isCharmKind } from '../Items/CharmModel';
 import { itemKnowledge } from './ItemKnowledge';
 import { staffBlinkDistance } from '../Combat/BoltTrajectory';
 import type { Item } from '../Items/Item';
@@ -457,8 +458,13 @@ export function generateItemDetail(
 
     if (item.category === ItemCategory.CHARM && knowledge.kindKnown) {
         const statsLines: DetailLine[] = [];
-        if (item.cooldownTurns) {
-            statsLines.push({ text: `冷却回合: ${item.cooldownTurns}` });
+        const id = item.identityId;
+        if (isCharmKind(id)) {
+            const effect = id === 'charm_of_health' ? `恢复生命 ${charmHealing(item.enchantment)}%`
+                : id === 'charm_of_protection' ? `护盾 ${charmProtection(item.enchantment) / 10} 点`
+                : `${charmEffectDuration(id, item.enchantment)} 回合`;
+            statsLines.push({ text: `效果: ${effect}` });
+            statsLines.push({ text: `冷却回合: ${charmRechargeDelay(id, item.enchantment)}` });
         }
         if (item.cooldownRemaining) {
             statsLines.push({ text: `剩余冷却: ${item.cooldownRemaining}`, color: '#ff8844' });

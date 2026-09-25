@@ -6,6 +6,7 @@ import { CE_ITEM_BOLT_TYPES, CE_BOLT_CATALOG, CEBoltFlags } from '../Combat/Bolt
 
 import { Item, ItemCategory } from './Item';
 import { initialStaffRecharge } from './ArcanaRecharge';
+import { charmRechargeDelay, isCharmKind } from './CharmModel';
 import { rollStaffEnchantment, rollWandCharges } from './ArcanaInstance';
 import weaponsData from '../../data/weapons.json';
 import armorsData from '../../data/armors.json';
@@ -57,7 +58,6 @@ export interface ArcanaConfig {
     color: number;
     maxCharges?: number;
     rechargeTurns?: number;
-    cooldownTurns?: number;
     /** D2：true = web 自创条目（CE 无对应），保留定义与效果实现，但退出生成池 */
     excludeFromGeneration?: boolean;
 }
@@ -1468,11 +1468,15 @@ export class ItemLoader {
 
     public static spawnCharm(id: string, x: number, y: number): Item | null {
         const data = this.charms.find((c) => c.id === id);
-        if (!data) return null;
+        if (!data || !isCharmKind(id)) return null;
         const charm = new Item(tn(data.name), '*', data.color, ItemCategory.CHARM);
         charm.loc = { x, y };
         charm.weight = data.weight;
-        charm.cooldownTurns = data.cooldownTurns ?? 300;
+        // CE Items.c:364-373: range {1,2,1}, then geometric 7% bonus.
+        charm.enchantment = rng.randClumpedRange(1, 2, 1);
+        while (rng.randPercent(7)) charm.enchantment++;
+        charm.arcanaInstanceVersion = 2;
+        charm.cooldownTurns = charmRechargeDelay(id, charm.enchantment);
         charm.cooldownRemaining = 0;
         (charm as any).identityId = id;
         // CE makeItemInto：护符无未知态，直接 ITEM_IDENTIFIED
@@ -1480,7 +1484,7 @@ export class ItemLoader {
         return charm;
     }
 
-    /** CE Items.c:347-373 birth rolls. General ring/charm effects remain U15. */
+    /** CE Items.c:347-373 ring birth rolls; charm birth rolls live in spawnCharm. */
     public static spawnMachineRing(id: string, x: number, y: number): Item | null {
         const ring = this.spawnRing(id, x, y);
         if (!ring) return null;
@@ -1497,9 +1501,7 @@ export class ItemLoader {
     public static spawnMachineCharm(id: string, x: number, y: number): Item | null {
         const charm = this.spawnCharm(id, x, y);
         if (!charm) return null;
-        charm.charges = 0;
-        charm.enchantment = rng.randClumpedRange(1, 2, 1);
-        while (rng.randPercent(7)) charm.enchantment++;
+        charm.charges = 0; // CE birth enchantment is rolled once, in spawnCharm.
         return charm;
     }
 
