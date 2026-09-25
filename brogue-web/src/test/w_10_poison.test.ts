@@ -102,7 +102,7 @@ describe('W-10 CE formula and real poison staff contacts', () => {
     it('invisibility prevents observation, not poison; weapon immunity is not poison immunity', () => {
         const g = scene(), m = mob(g); m.behaviorFlags.add('MONST_IMMUNE_TO_WEAPONS'); m.applyStatus('invisible', 100);
         expect(zap(g).outcome?.autoID).toBe(false); tick(g); expect(m.hp).toBe(99);
-        g.player.applyStatus('telepathy', 100); expect(zap(g).outcome?.autoID).toBe(true); expect(m.poisonAmount).toBe(2);
+        g.player.applyStatus('telepathy', 100); expect(zap(g).outcome?.autoID).toBe(false); expect(m.poisonAmount).toBe(2); // CE canSeeMonster: hidden invisible stays unobserved under telepathy
     });
     it('zero duration is inert; zero concentration increments establish but do not stack a dose', () => {
         const p = new Player(0, 0); expect(p.addPoison(0)).toBe(false);

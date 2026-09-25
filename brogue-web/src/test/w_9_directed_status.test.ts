@@ -190,10 +190,10 @@ describe('W-9 CE numeric and state rules', () => {
 });
 
 describe('W-9 observation and shared-entry boundaries', () => {
-    it.each([cases[2], cases[4]])('$id only identifies an observable recipient, telepathy restores observation', c => {
+    it.each([cases[2], cases[4]])('$id only identifies an observable recipient; telepathy does not reveal hidden invisible (CE)', c => {
         const g = scene(), m = monster(g); m.setStatusDuration('invisible', 99);
         expect(zap(g, c).outcome?.autoID).toBe(false);
-        g.player.applyStatus('telepathy', 10); expect(zap(g, c).outcome?.autoID).toBe(true);
+        g.player.applyStatus('telepathy', 10); expect(zap(g, c).outcome?.autoID).toBe(false); // CE Monsters.c:229–237
     });
     it('invisibility enemy disappearance is ambiguous; ally and telepathically revealed recipients identify', () => {
         const g = scene(), m = monster(g);

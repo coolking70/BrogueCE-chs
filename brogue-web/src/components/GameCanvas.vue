@@ -108,6 +108,7 @@ import { Application, Text, TextStyle, Graphics, Container } from 'pixi.js';
 // Appearance.ts 纯函数（ctx 显式注入），本组件只保留 Pixi 绘制。
 // 结构守卫（r_1_appearance.test.ts）钉死本文件不得再出现外观决策。
 import { ARCANA_TRAJECTORY_FILL, cellAppearance, itemAppearance, monsterAppearance, playerAppearance, type CosmeticRng } from '../engine/UI/Appearance';
+import { canSeeMonster, canDirectlySeeMonster, canDisplayMonster, monsterInGas } from '../engine/UI/MonsterVisibility';
 // DCOLS/DROWS 已在上方 <script lang="ts"> 模块块导入（computeMapOffset 用），
 // 同一模块内重复声明绑定会报错，这里只取 setup 独有的 Direction。
 import { Direction } from '../types';
@@ -313,6 +314,7 @@ onMounted(async () => {
         // UI-1 第 3 条接线：地面物品索引（探测魔法符号需要知道格子上有什么）。
         // 每帧建一次 O(items)，避免 3713 格 × 线性扫描。
         const itemAtCell = new Map<string, (typeof game.items)[number]>();
+        const gasBackgrounds = new Map<string, number>();
         for (const item of game.items) {
             itemAtCell.set(`${item.loc.x},${item.loc.y}`, item);
         }
@@ -344,6 +346,9 @@ onMounted(async () => {
                 }
 
                 const { char, color, bgColor } = visual;
+                if (bgColor !== null) {
+                    gasBackgrounds.set(`${x},${y}`, bgColor);
+                }
 
                 // Update background rect
                 if (bgColor !== null) {
@@ -413,12 +418,17 @@ onMounted(async () => {
         // Monsters
         for (const m of game.monsters) {
             const cell = game.grid.getCell(m.loc.x, m.loc.y);
+            const direct = canDirectlySeeMonster(game.player, game.grid, m);
+            const known = canSeeMonster(game.player, game.grid, m);
             const visual = monsterAppearance(m, {
                 cellVisible: !!cell?.isVisible,
                 cellHasMemory: !!cell?.hasMemory,
                 telepathy: telepathyRevealed || m.hasStatus('entranced'),
                 hallucinating,
                 cosmetic,
+                monsterVisibility: direct ? 'direct' : known ? 'known' : canDisplayMonster(game.player, game.grid, m) ? 'marker' : 'hidden',
+                gasBackground: monsterInGas(game.grid, m)
+                    ? gasBackgrounds.get(`${m.loc.x},${m.loc.y}`) : undefined,
             });
             if (visual) {
                 placeEntity(visual.char, visual.color, m.loc.x, m.loc.y, visual.interactive);
@@ -487,12 +497,8 @@ onMounted(async () => {
     };
 
     (window as Window & { render_game_to_text?: () => string }).render_game_to_text = () => {
-        const telepathyRevealed = !!game.player.statusDurations.telepathy;
         const visibleMonsters = game.monsters
-            .filter((m) => {
-                const cell = game.grid.getCell(m.loc.x, m.loc.y);
-                return m.hp > 0 && (!!cell?.isVisible || telepathyRevealed || m.hasStatus('entranced'));
-            })
+            .filter((m) => canSeeMonster(game.player, game.grid, m))
             .map((m) => ({ name: m.name, x: m.loc.x, y: m.loc.y, hp: m.hp,
                 maxHp: m.maxHp, weaknessAmount: m.weaknessAmount, maxStatus: { ...m.maxStatus }, accuracy: m.accuracy, defense: m.defense, damage: m.damageString,
                 newPowerCount: m.newPowerCount, totalPowerCount: m.totalPowerCount,
@@ -507,6 +513,9 @@ onMounted(async () => {
                 doesNotTrackLeader: m.doesNotTrackLeader, ticksUntilTurn: m.ticksUntilTurn,
                 poisonAmount: m.poisonAmount, poisoned: m.getStatusDuration('poisoned'),
                 shield: m.getStatusDuration('shielded'), maxShield: m.maxShield }));
+        const revealedLocations = game.monsters
+            .filter((m) => !canSeeMonster(game.player, game.grid, m) && canDisplayMonster(game.player, game.grid, m))
+            .map((m) => ({ x: m.loc.x, y: m.loc.y, marker: 'x' }));
         const visibleItems = game.items
             .filter((i) => game.grid.getCell(i.loc.x, i.loc.y)?.isVisible)
             .map((i) => ({ name: i.displayName, x: i.loc.x, y: i.loc.y }));
@@ -537,6 +546,7 @@ onMounted(async () => {
             recordedInputEvents: game.recordedInputEvents.length,
             autoPathLength: game.autoPath.length,
             monsters: visibleMonsters,
+            revealedLocations,
             items: visibleItems
         });
     };

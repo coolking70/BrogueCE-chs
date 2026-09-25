@@ -59,9 +59,9 @@ describe('W-18 CE effect and trace',()=>{
   cast(g,m);expect(m.state).toBe(MonsterState.HUNTING);expect(friend.state).toBe(MonsterState.HUNTING);expect(m.ticksUntilTurn).toBe(100);expect(friend.ticksUntilTurn).toBe(100);
   m.isAlly=true;m.state=MonsterState.WANDERING;cast(g,m);expect(m.isAlly).toBe(true);expect(m.state).toBe(MonsterState.WANDERING);
  });
- it('new entrancement itself reveals an unseen invisible recipient and auto-identifies',()=>{
+ it('new entrancement does not reveal a hidden invisible recipient (CE monsterIsHidden precedes monsterRevealed)',()=>{
   const g=scene(),m=mob(g);m.setStatusDuration('invisible',100);g.grid.getCell(10,5)!.isVisible=false;
-  expect(canObserveBoltCreature(g.player,g.grid,m)).toBe(false);const r=cast(g,m);expect(r.outcome?.autoID).toBe(true);expect(canObserveBoltCreature(g.player,g.grid,m)).toBe(true);
+  expect(canObserveBoltCreature(g.player,g.grid,m)).toBe(false);const r=cast(g,m);expect(r.outcome?.autoID).toBe(false);expect(canObserveBoltCreature(g.player,g.grid,m)).toBe(false); // CE Items.c:5354 autoID needs canSeeMonster; hidden invisible (Monsters.c:211) blocks it despite entrancement
  });
  it('real reflection confuses player, not reflector; actual confused direction drives all entranced monsters',()=>{
   const g=scene(),reflector=mob(g,'stone_guardian',8,5),follower=mob(g,'rat',12,8);follower.setStatusDuration('entranced',24);

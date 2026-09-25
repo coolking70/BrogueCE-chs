@@ -236,7 +236,7 @@ describe('W-2 automatic candidates (CE Items.c:5935-6032)', () => {
         rat.applyStatus('invisible', 20);
         expect(g.getArcanaCandidates(obj)).toEqual([]);
         g.player.applyStatus('telepathy', 20);
-        expect(g.getArcanaCandidates(obj)).toEqual([rat]);
+        expect(g.getArcanaCandidates(obj)).toEqual([]); // CE: telepathy does not reveal a hidden invisible monster
         g.player.statusDurations = {};
         rat.statusDurations = {};
         g.player.applyStatus('hallucinating', 20);

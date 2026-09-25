@@ -10,15 +10,14 @@ import { boltLine } from './BoltTrajectory';
 import { negationWillAffectMonster } from './Negation';
 import { wandDominate } from './Domination';
 import { CE_BOLT_CATALOG, CE_ITEM_BOLT_TYPES, CEBoltEffect, CEBoltFlags } from './BoltCatalog';
+import { canSeeMonster } from '../UI/MonsterVisibility';
 
 /** CE IO.c canSeeMonster/monsterRevealed: use perception, not merely a lit tile.
  * No new submerged bookkeeping or clairvoyance is introduced here. */
 export function canObserveBoltCreature(player: Player, grid: Grid, creature: Creature): boolean {
     if (creature === player) return true;
-    if (!(creature instanceof Monster) || creature.isDormant) return false;
-    if (player.hasStatus('telepathy') || creature.hasStatus('entranced')) return true;
-    return !!grid.getCell(creature.loc.x, creature.loc.y)?.isVisible
-        && (creature.isAlly || (!creature.isTrulyInvisible() && !creature.hasStatus('invisible')));
+    if (!('isDormant' in creature) || creature.isDormant) return false;
+    return canSeeMonster(player, grid, creature as Monster);
 }
 
 /** CE Items.c:5935-6032. Eligibility is ONLY for automatic candidates;

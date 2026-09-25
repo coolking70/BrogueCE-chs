@@ -108,6 +108,7 @@ import { canPlaceCreature, teleportCandidates, captiveItemDropCandidates } from 
 import { blinkTargetPreview } from '../Combat/BlinkTargeting';
 import { MONSTER_BLINK } from '../Combat/MonsterBlink';
 import { arcanaTargetCandidates, canObserveBoltCreature } from '../Combat/BoltTargeting';
+import { canSeeMonster, canDirectlySeeMonster, canDisplayMonster, monsterHidden } from '../UI/MonsterVisibility';
 
 export type GameMode = 'normal' | 'easy' | 'wizard' | 'test';
 
@@ -2171,8 +2172,8 @@ export class Game {
 
         if (atLeastOneMinion) {
             logger.log(i18next.t('monster.summon_minions', {
-                name: summoner.name,
-                defaultValue: `${summoner.name} incants darkly!`
+                name: this.monsterDisplayName(summoner),
+                defaultValue: `${this.monsterDisplayName(summoner)} incants darkly!`
             }), '#c084fc');
         }
 
@@ -2266,9 +2267,7 @@ export class Game {
     private handleExamineNearest() {
         // Find nearest visible monster
         const visibleMonsters = this.monsters.filter(m => {
-            if (m.hp <= 0) return false;
-            const cell = this.grid.getCell(m.loc.x, m.loc.y);
-            return cell && cell.isVisible;
+            return canSeeMonster(this.player, this.grid, m);
         });
 
         if (visibleMonsters.length > 0) {
@@ -2330,10 +2329,10 @@ export class Game {
 
     public handleInspectAt(x: number, y: number) {
         const cell = this.grid.getCell(x, y);
-        if (!cell || !cell.isVisible) return;
+        if (!cell) return;
 
         const monster = this.getMonsterAt(x, y);
-        if (monster && monster.hp > 0) {
+        if (monster && canSeeMonster(this.player, this.grid, monster)) {
             const weaponDamageStr = this.player.equippedWeapon?.damage ?? '1d2';
             const [n, d] = weaponDamageStr.split('d').map(Number);
             this.inspectTarget = generateMonsterDetail(
@@ -2355,7 +2354,7 @@ export class Game {
         }
 
         const item = this.items.find((i) => i.loc.x === x && i.loc.y === y);
-        if (item) {
+        if (item && cell.isVisible) {
             this.inspectTarget = generateItemDetail(item, this.player.effectiveStrength);
         }
     }
@@ -2873,18 +2872,12 @@ export class Game {
             const currentVisItems = new Set<Item>();
 
             for (const m of this.monsters) {
-                const cell = this.grid.getCell(m.loc.x, m.loc.y);
-                const telepathyRevealed = (this.player.hasStatus('telepathy') || m.hasStatus('entranced')) && m.hp > 0;
-                // P4-3：CE Monsters.c:200-203 monsterIsHidden —— MONST_INVISIBLE 的怪物
-                // （phantom）对非队友观察者恒定隐藏，忽略视野/光照/相邻；telepathy 与 W-18 催眠可透露位置（IO.c:1264 canSeeMonster 配合 monsterRevealed 显示幽灵符号，
-                // 这里简化为：仍能"察觉存在"但不能像正常怪物一样直接看见）。
-                const trulyInvisible = m.isTrulyInvisible() && !telepathyRevealed;
-                if (cell && (cell.isVisible || telepathyRevealed) && m.hp > 0 && !trulyInvisible) {
+                if (canSeeMonster(this.player, this.grid, m)) {
                     currentVisMonsters.add(m);
                     if (!this.visibleMonsters.has(m)) {
                         const seeMsg = i18next.t('vision.see_monster', { monster: m.name, defaultValue: `You see a ${m.name}.` });
                         const senseMsg = i18next.t('vision.sense_monster', { monster: m.name, defaultValue: `You sense a ${m.name}.` });
-                        logger.log(cell.isVisible ? seeMsg : senseMsg, '#ffccaa');
+                        logger.log(canDirectlySeeMonster(this.player, this.grid, m) ? seeMsg : senseMsg, '#ffccaa');
                     }
                 }
             }
@@ -2910,6 +2903,15 @@ export class Game {
             this.onRenderRequested();
             this.needsRender = false;
         }
+    }
+
+    /** CE monsterName: a hidden creature's identity is not available to messages. */
+    public monsterDisplayName(monster: Creature): string {
+        if (monster === this.player) return monster.name;
+        const target = monster as Monster;
+        const visibleAtDeath = target.hp <= 0 && !monsterHidden(this.grid, target)
+            && !!this.grid.getCell(target.loc.x, target.loc.y)?.isVisible;
+        return canSeeMonster(this.player, this.grid, target) || visibleAtDeath ? target.name : '某个生物';
     }
 
     public isTimePaused() {
@@ -4492,8 +4494,8 @@ export class Game {
         if ((target instanceof Monster && target.isInvulnerable())
             || (staff && result.effect === BoltEffect.FIRE && target.hasStatus('immune_fire'))) {
             logger.log(i18next.t('bolt.invulnerable_no_effect', {
-                target: target.name,
-                defaultValue: `The ${target.name} is unaffected.`
+                target: this.monsterDisplayName(target),
+                defaultValue: `The ${this.monsterDisplayName(target)} is unaffected.`
             }), '#aaaaaa');
             return null;
         }
@@ -4597,7 +4599,7 @@ export class Game {
                 throw new Error('Not a basic directed bolt effect');
         }
         if (!accepted) logger.log(i18next.t('bolt.invulnerable_no_effect', {
-            target: target.name, defaultValue: `The ${target.name} is unaffected.`
+            target: this.monsterDisplayName(target), defaultValue: `The ${this.monsterDisplayName(target)} is unaffected.`
         }), '#aaaaaa');
         return { accepted, autoID, healed };
     }
@@ -4633,8 +4635,8 @@ export class Game {
         // invisible creature on a visible tile can now be observed.
         autoID = this.canObserveBoltTarget(target);
         if (autoID) logger.log(success
-            ? i18next.t('bolt.domination_success', { target: target.name, defaultValue: '{{target}} is bound to your will!' })
-            : i18next.t('bolt.domination_resisted', { target: target.name, defaultValue: '{{target}} resists the bolt of domination.' }),
+            ? i18next.t('bolt.domination_success', { target: this.monsterDisplayName(target), defaultValue: '{{target}} is bound to your will!' })
+            : i18next.t('bolt.domination_resisted', { target: this.monsterDisplayName(target), defaultValue: '{{target}} resists the bolt of domination.' }),
             success ? '#88ff88' : '#aaaaaa');
         return autoID;
     }
@@ -4682,14 +4684,14 @@ export class Game {
                 if (target && damage !== null) {
                     logger.log(i18next.t('bolt.fire_hit', {
                         interpolation: { escapeValue: false },
-                        name: item.displayName, target: target.name, damage,
-                        defaultValue: `${item.displayName} scorches the ${target.name} for ${damage} damage!`
+                        name: item.displayName, target: this.monsterDisplayName(target), damage,
+                        defaultValue: `${item.displayName} scorches the ${this.monsterDisplayName(target)} for ${damage} damage!`
                     }), '#ff6600');
                     this.spawnFloatingText(`-${damage}`, target.loc.x, target.loc.y, 0xff4400);
                     if (target.hp <= 0) {
                         logger.log(i18next.t('bolt.fire_kill', {
-                            target: target.name,
-                            defaultValue: `The ${target.name} burns to death.`
+                            target: this.monsterDisplayName(target),
+                            defaultValue: `The ${this.monsterDisplayName(target)} burns to death.`
                         }), '#ff8800');
                     } else {
                         // CE :5207-5213: surviving fiery hit ignites the creature
@@ -4718,13 +4720,13 @@ export class Game {
                     this.spawnFloatingText(`-${damage}`, m.loc.x, m.loc.y, 0x33ccff);
                     logger.log(i18next.t('bolt.lightning_hit', {
                         interpolation: { escapeValue: false },
-                        name: item.displayName, target: m.name, damage,
-                        defaultValue: `Lightning from ${item.displayName} strikes the ${m.name} for ${damage} damage!`
+                        name: item.displayName, target: this.monsterDisplayName(m), damage,
+                        defaultValue: `Lightning from ${item.displayName} strikes the ${this.monsterDisplayName(m)} for ${damage} damage!`
                     }), '#33ccff');
                     if (m.hp <= 0) {
                         logger.log(i18next.t('bolt.lightning_kill', {
-                            target: m.name,
-                            defaultValue: `The ${m.name} is electrocuted!`
+                            target: this.monsterDisplayName(m),
+                            defaultValue: `The ${this.monsterDisplayName(m)} is electrocuted!`
                         }), '#55ddff');
                     } else if (m instanceof Monster && (!this.isDamageStaff(result.bolt, item) || !alreadyReflected)) {
                         // CE Items.c:5210-5213, including the reflection guard.
@@ -4745,8 +4747,8 @@ export class Game {
                     const applied = target.addPoison(staffPoison(enchantment), 1);
                     autoID = applied && this.canObserveBoltTarget(target); // CE Items.c:5322-5331
                     if (autoID) logger.log(i18next.t('bolt.poison_hit', {
-                        interpolation: { escapeValue: false }, name: item.displayName, target: target.name,
-                        defaultValue: `${item.displayName} envenomates the ${target.name}!`
+                        interpolation: { escapeValue: false }, name: item.displayName, target: this.monsterDisplayName(target),
+                        defaultValue: `${item.displayName} envenomates the ${this.monsterDisplayName(target)}!`
                     }), '#55cc55');
                 } else {
                     logMiss('bolt.poison_miss', `Poison streams from ${item.displayName} but finds no target.`, '#55cc55');
@@ -4759,8 +4761,8 @@ export class Game {
                 // precedes destination search, even if that search later fails.
                 if (target && this.teleportBoltTarget(target)) {
                     logger.log(i18next.t('bolt.teleport_hit', {
-                        name: item.displayName, target: target.name,
-                        defaultValue: `${item.displayName} teleports the ${target.name} away!`
+                        name: item.displayName, target: this.monsterDisplayName(target),
+                        defaultValue: `${item.displayName} teleports the ${this.monsterDisplayName(target)} away!`
                     }), '#cc88ff');
                 } else if (!target) {
                     logMiss('bolt.teleport_miss', `${item.displayName} flashes but finds no target.`, '#cc88ff');
@@ -4809,7 +4811,7 @@ export class Game {
                 const applied = this.applyBasicBoltEffect(target, effect, ceMagnitude);
                 autoID = applied.autoID;
                 if (!applied.accepted) break;
-                const targetName = target === this.player ? i18next.t('bolt.target_you', { defaultValue: 'you' }) : target.name;
+                const targetName = target === this.player ? i18next.t('bolt.target_you', { defaultValue: 'you' }) : this.monsterDisplayName(target);
                 const args = { interpolation: { escapeValue: false }, name: item.displayName, target: targetName, heal: applied.healed };
                 switch (effect) {
                     case BoltEffect.ENTRANCEMENT:
@@ -4836,8 +4838,8 @@ export class Game {
                 if (target) {
                     autoID = this.beckonCreature(target, result.caster);
                     logger.log(i18next.t('bolt.beckoning_hit', {
-                        name: item.displayName, target: target.name,
-                        defaultValue: `${item.displayName} pulls the ${target.name} toward you!`
+                        name: item.displayName, target: this.monsterDisplayName(target),
+                        defaultValue: `${item.displayName} pulls the ${this.monsterDisplayName(target)} toward you!`
                     }), '#88ccff');
                 } else {
                     logMiss('bolt.beckoning_miss', `No target answers ${item.displayName}.`, '#aaaaaa');
@@ -4896,8 +4898,8 @@ export class Game {
                     autoID = this.canObserveBoltTarget(target);
                     if (autoID) {
                         logger.log(i18next.t('bolt.empowerment_hit', {
-                            name: item.displayName, target: target.name,
-                            defaultValue: `${item.displayName} empowers the ${target.name}!`
+                            name: item.displayName, target: this.monsterDisplayName(target),
+                            defaultValue: `${item.displayName} empowers the ${this.monsterDisplayName(target)}!`
                         }), '#88ff99');
                         // Observable impact flash. Full CE radius-6 animated
                         // EMPOWERMENT_LIGHT radiance remains a lighting gap.
@@ -4949,8 +4951,8 @@ export class Game {
     public castMonsterBlink(caster: Monster, aim: Pos): BoltResult {
         const cell = this.grid.getCell(caster.x, caster.y);
         if (cell?.isVisible && (!caster.hasStatus('invisible') || cell.layers[DungeonLayer.GAS])) {
-            logger.log(i18next.t('combat.monster_blinks', { monster: caster.name,
-                defaultValue: `The ${caster.name} blinks.` }), '#aaaaaa');
+            logger.log(i18next.t('combat.monster_blinks', { monster: this.monsterDisplayName(caster),
+                defaultValue: `The ${this.monsterDisplayName(caster)} blinks.` }), '#aaaaaa');
         }
         const result = traceBolt(this.grid, MONSTER_BLINK, caster.loc, aim, this.boltWorld(caster));
         this.finishBlink(result);
@@ -4969,10 +4971,10 @@ export class Game {
 
         if (meta.effect === BoltEffect.NONE && this.canObserveBoltTarget(caster)) {
             if (ceBoltName === 'SPIDERWEB') logger.log(i18next.t('bolt.monster_cast_web', {
-                caster: caster.name, defaultValue: '{{caster}} launches a sticky web.',
+                caster: this.monsterDisplayName(caster), defaultValue: '{{caster}} launches a sticky web.',
             }), '#cccccc');
             else logger.log(i18next.t('bolt.monster_cast_vines', {
-                caster: caster.name, defaultValue: '{{caster}} releases carnivorous vines into the ground.',
+                caster: this.monsterDisplayName(caster), defaultValue: '{{caster}} releases carnivorous vines into the ground.',
             }), '#99bb55');
         }
         const definition = CE_BOLT_CATALOG[meta.ceType];
@@ -5023,7 +5025,7 @@ export class Game {
         let autoID = false;
         const isPlayer = target === this.player;
         const targetName = isPlayer ? i18next.t('bolt.target_you', { defaultValue: 'you' }) : (target as Monster).name;
-        const casterLabel = caster.name;
+        const casterLabel = this.monsterDisplayName(caster);
         const logCast = (key: string, defaultValue: string, color: string) => {
             logger.log(i18next.t(key, { caster: casterLabel, target: targetName, defaultValue }), color);
         };
@@ -6129,9 +6131,9 @@ export class Game {
             if (source !== 'gas') {
                 logger.log(
                     i18next.t('status.monster.immune', {
-                        monster: monster.name,
+                        monster: this.monsterDisplayName(monster),
                         status: this.getStatusLabel(status),
-                        defaultValue: `${monster.name} is immune to ${this.getStatusLabel(status)}.`
+                        defaultValue: `${this.monsterDisplayName(monster)} is immune to ${this.getStatusLabel(status)}.`
                     }),
                     '#b0b0b0'
                 );
@@ -6146,9 +6148,9 @@ export class Game {
         if (reduce > 0 && source !== 'gas') {
             logger.log(
                 i18next.t('status.monster.resisted', {
-                    monster: monster.name,
+                    monster: this.monsterDisplayName(monster),
                     status: this.getStatusLabel(status),
-                    defaultValue: `${monster.name} resists ${this.getStatusLabel(status)}.`
+                    defaultValue: `${this.monsterDisplayName(monster)} resists ${this.getStatusLabel(status)}.`
                 }),
                 '#b0e0ff'
             );
@@ -6268,8 +6270,8 @@ export class Game {
             weapon.runicKnown = true;
             logger.log(
                 i18next.t('runic.weapon.paralyzing', {
-                    target: target.name,
-                    defaultValue: `Runic power paralyzes the ${target.name}!`
+                    target: this.monsterDisplayName(target),
+                    defaultValue: `Runic power paralyzes the ${this.monsterDisplayName(target)}!`
                 }),
                 '#99ccff'
             );
@@ -6283,9 +6285,9 @@ export class Game {
             weapon.runicKnown = true;
             logger.log(
                 i18next.t('runic.weapon.venom_damage', {
-                    target: target.name,
+                    target: this.monsterDisplayName(target),
                     damage: extra,
-                    defaultValue: `Runic venom wounds the ${target.name} for ${extra}.`
+                    defaultValue: `Runic venom wounds the ${this.monsterDisplayName(target)} for ${extra}.`
                 }),
                 '#88dd88'
             );
@@ -6298,8 +6300,8 @@ export class Game {
             weapon.runicKnown = true;
             logger.log(
                 i18next.t('runic.weapon.quietus', {
-                    target: target.name,
-                    defaultValue: `Runic magic instantly slays the ${target.name}!`
+                    target: this.monsterDisplayName(target),
+                    defaultValue: `Runic magic instantly slays the ${this.monsterDisplayName(target)}!`
                 }),
                 '#ccaaff'
             );
@@ -6312,9 +6314,9 @@ export class Game {
             weapon.runicKnown = true;
             logger.log(
                 i18next.t('runic.weapon.vampirism', {
-                    target: target.name,
+                    target: this.monsterDisplayName(target),
                     heal: heal,
-                    defaultValue: `Your weapon drains ${heal} life from the ${target.name}.`
+                    defaultValue: `Your weapon drains ${heal} life from the ${this.monsterDisplayName(target)}.`
                 }),
                 '#ff4444'
             );
@@ -6326,8 +6328,8 @@ export class Game {
             weapon.runicKnown = true;
             logger.log(
                 i18next.t('runic.weapon.speed', {
-                    target: target.name,
-                    defaultValue: `Your weapon blurs, striking the ${target.name} again for ${damage}!`
+                    target: this.monsterDisplayName(target),
+                    defaultValue: `Your weapon blurs, striking the ${this.monsterDisplayName(target)} again for ${damage}!`
                 }),
                 '#ffffaa'
             );
@@ -6341,8 +6343,8 @@ export class Game {
             weapon.runicKnown = true;
             logger.log(
                 i18next.t('runic.weapon.confusion', {
-                    target: target.name,
-                    defaultValue: `The ${target.name} is confused by your strike!`
+                    target: this.monsterDisplayName(target),
+                    defaultValue: `The ${this.monsterDisplayName(target)} is confused by your strike!`
                 }),
                 '#cc99ff'
             );
@@ -6368,7 +6370,7 @@ export class Game {
                 const duration = weaponParalysisDuration(enchant);
                 const applied = this.applyStatusToMonster(target, 'paralyzed', duration, 'runic');
                 if (applied) {
-                    logger.log(i18next.t('runic.weapon.paralyzing', { target: target.name, defaultValue: `Runic power paralyzes the ${target.name}!` }), '#99ccff');
+                    logger.log(i18next.t('runic.weapon.paralyzing', { target: this.monsterDisplayName(target), defaultValue: `Runic power paralyzes the ${this.monsterDisplayName(target)}!` }), '#99ccff');
                     this.spawnFloatingText(i18next.t('status.float.paralyzed', { defaultValue: 'Paralyzed' }), target.loc.x, target.loc.y, 0x99ccff);
                 }
                 break;
@@ -6377,29 +6379,29 @@ export class Game {
                 const poisonDmg = Math.max(1, Math.floor(damage * 0.5));
                 const applied = this.applyStatusToMonster(target, 'poisoned', poisonDmg, 'runic');
                 if (applied) {
-                    logger.log(i18next.t('runic.weapon.venom', { target: target.name, damage: poisonDmg, defaultValue: `Runic venom poisons the ${target.name} for ${poisonDmg} turns.` }), '#88dd88');
+                    logger.log(i18next.t('runic.weapon.venom', { target: this.monsterDisplayName(target), damage: poisonDmg, defaultValue: `Runic venom poisons the ${this.monsterDisplayName(target)} for ${poisonDmg} turns.` }), '#88dd88');
                 }
                 break;
             }
             case 'quietus': {
                 target.takeDamage(9999, true);
-                logger.log(i18next.t('runic.weapon.quietus', { target: target.name, defaultValue: `Runic magic instantly slays the ${target.name}!` }), '#ccaaff');
+                logger.log(i18next.t('runic.weapon.quietus', { target: this.monsterDisplayName(target), defaultValue: `Runic magic instantly slays the ${this.monsterDisplayName(target)}!` }), '#ccaaff');
                 break;
             }
             case 'slaying': {
                 target.takeDamage(9999, true);
-                logger.log(i18next.t('runic.weapon.slaying', { target: target.name, defaultValue: `Your weapon of slaying destroys the ${target.name}!` }), '#ff6666');
+                logger.log(i18next.t('runic.weapon.slaying', { target: this.monsterDisplayName(target), defaultValue: `Your weapon of slaying destroys the ${this.monsterDisplayName(target)}!` }), '#ff6666');
                 break;
             }
             case 'vampirism': {
                 const heal = Math.max(1, Math.floor(damage * 0.5));
                 this.player.hp = Math.min(this.player.maxHp, this.player.hp + heal);
-                logger.log(i18next.t('runic.weapon.vampirism', { target: target.name, heal, defaultValue: `Your weapon drains ${heal} life from the ${target.name}.` }), '#ff4444');
+                logger.log(i18next.t('runic.weapon.vampirism', { target: this.monsterDisplayName(target), heal, defaultValue: `Your weapon drains ${heal} life from the ${this.monsterDisplayName(target)}.` }), '#ff4444');
                 break;
             }
             case 'speed': {
                 target.takeDamage(damage);
-                logger.log(i18next.t('runic.weapon.speed', { target: target.name, defaultValue: `Your weapon blurs, striking the ${target.name} again for ${damage}!` }), '#ffffaa');
+                logger.log(i18next.t('runic.weapon.speed', { target: this.monsterDisplayName(target), defaultValue: `Your weapon blurs, striking the ${this.monsterDisplayName(target)} again for ${damage}!` }), '#ffffaa');
                 this.spawnFloatingText(`-${damage}`, target.loc.x, target.loc.y, 0xffffaa);
                 break;
             }
@@ -6407,14 +6409,14 @@ export class Game {
                 const confDuration = weaponConfusionDuration(enchant);
                 const applied = this.applyStatusToMonster(target, 'confused', confDuration, 'runic');
                 if (applied) {
-                    logger.log(i18next.t('runic.weapon.confusion', { target: target.name, defaultValue: `The ${target.name} is confused by your strike!` }), '#cc99ff');
+                    logger.log(i18next.t('runic.weapon.confusion', { target: this.monsterDisplayName(target), defaultValue: `The ${this.monsterDisplayName(target)} is confused by your strike!` }), '#cc99ff');
                     this.spawnFloatingText(i18next.t('status.float.confused', { defaultValue: 'Confused' }), target.loc.x, target.loc.y, 0x99ccff);
                 }
                 break;
             }
             case 'force': {
                 const dist = weaponForceDistance(enchant);
-                logger.log(i18next.t('runic.weapon.force', { target: target.name, dist, defaultValue: `Your blow launches the ${target.name} backward ${dist} tiles!` }), '#ffffff');
+                logger.log(i18next.t('runic.weapon.force', { target: this.monsterDisplayName(target), dist, defaultValue: `Your blow launches the ${this.monsterDisplayName(target)} backward ${dist} tiles!` }), '#ffffff');
                 this.spawnFloatingText(i18next.t('runic.force_float', { defaultValue: 'Force!' }), target.loc.x, target.loc.y, 0xffffff);
                 // Apply knockback
                 const dx = target.loc.x - this.player.loc.x;
@@ -6436,7 +6438,7 @@ export class Game {
                 if (target.hp <= 0) {
                     target.hp = 1;
                 }
-                logger.log(i18next.t('runic.weapon.mercy', { target: target.name, defaultValue: `Your weapon of mercy spares the ${target.name}.` }), '#88ff88');
+                logger.log(i18next.t('runic.weapon.mercy', { target: this.monsterDisplayName(target), defaultValue: `Your weapon of mercy spares the ${this.monsterDisplayName(target)}.` }), '#88ff88');
                 break;
             }
             default:
@@ -6675,7 +6677,7 @@ export class Game {
             this.clearDisplacedEntanglement(m);
             const expired = m.tickStatuses();
             if (expired.includes('lifespan_remaining') && this.canObserveBoltTarget(m)) {
-                logger.log(i18next.t('status.monster.lifespan_off', { name: m.name, defaultValue: 'The {{name}} dissipates into thin air.' }), '#cccccc');
+                logger.log(i18next.t('status.monster.lifespan_off', { name: this.monsterDisplayName(m), defaultValue: 'The {{name}} dissipates into thin air.' }), '#cccccc');
             }
         }
     }
@@ -6947,13 +6949,13 @@ export class Game {
         if (res.hit && res.damage > 0) {
             const weaponStr = res.weaponName === 'bare hands' ? i18next.t('combat.bare_hands', { defaultValue: 'bare hands' }) : res.weaponName;
             if (res.backstab) {
-                logger.log(i18next.t('combat.backstab', { monster: target.name, damage: res.damage, weapon: weaponStr, defaultValue: `You backstab the ${target.name} for ${res.damage} damage!` }), '#ff4444');
+                logger.log(i18next.t('combat.backstab', { monster: this.monsterDisplayName(target), damage: res.damage, weapon: weaponStr, defaultValue: `You backstab the ${this.monsterDisplayName(target)} for ${res.damage} damage!` }), '#ff4444');
             } else if (lungeAttack) {
                 // B-1 登记项由 P1-37 补齐：CE 对突进命中追加"（猛烈突刺）"
                 // 措辞（Combat.c:1298-1299），中文 UI 走专用文案。
-                logger.log(i18next.t('combat.lunge_hit', { monster: target.name, damage: res.damage, weapon: weaponStr, defaultValue: `You hit the ${target.name} for ${res.damage} damage with a vicious lunge!` }), '#ffcc00');
+                logger.log(i18next.t('combat.lunge_hit', { monster: this.monsterDisplayName(target), damage: res.damage, weapon: weaponStr, defaultValue: `You hit the ${this.monsterDisplayName(target)} for ${res.damage} damage with a vicious lunge!` }), '#ffcc00');
             } else {
-                logger.log(i18next.t('combat.hit', { monster: target.name, damage: res.damage, weapon: weaponStr, defaultValue: `You hit the ${target.name} for ${res.damage} damage with ${weaponStr}.` }), '#ffcc00');
+                logger.log(i18next.t('combat.hit', { monster: this.monsterDisplayName(target), damage: res.damage, weapon: weaponStr, defaultValue: `You hit the ${this.monsterDisplayName(target)} for ${res.damage} damage with ${weaponStr}.` }), '#ffcc00');
             }
             this.spawnFloatingText(`-${res.damage}`, target.loc.x, target.loc.y, 0xff5555);
             // Handle runic trigger (enchantment-scaled chance computed in Combat.ts)
@@ -6966,7 +6968,7 @@ export class Game {
             // P4-4：CE splitMonster(defender, attacker)（Combat.c:1424，attack() 主路径）。
             this.trySplitMonster(target, this.player);
         } else {
-            logger.log(i18next.t('combat.miss', { monster: target.name, defaultValue: `You missed the ${target.name}.` }), '#888888');
+            logger.log(i18next.t('combat.miss', { monster: this.monsterDisplayName(target), defaultValue: `You missed the ${this.monsterDisplayName(target)}.` }), '#888888');
             this.spawnFloatingText(i18next.t('combat.miss_float', { defaultValue: 'Miss' }), target.loc.x, target.loc.y, 0xaaaaaa);
         }
 
@@ -7000,7 +7002,7 @@ export class Game {
 
         // Check if monster died
         if (target.hp <= 0) {
-            logger.log(i18next.t('combat.defeat', { monster: target.name, defaultValue: `You defeated the ${target.name}!` }), '#ffaa00');
+            logger.log(i18next.t('combat.defeat', { monster: this.monsterDisplayName(target), defaultValue: `You defeated the ${this.monsterDisplayName(target)}!` }), '#ffaa00');
             this.stats.kills++;
 
             // B-1a：CE Combat.c:1427-1430——玩家近战击杀非无生命怪
@@ -7263,8 +7265,8 @@ export class Game {
         }
 
         logger.log(i18next.t('combat.monster_splits', {
-            name: defender.name,
-            defaultValue: `The ${defender.name} splits in two!`
+            name: this.monsterDisplayName(defender),
+            defaultValue: `The ${this.monsterDisplayName(defender)} splits in two!`
         }), '#88ff88');
         this.needsRender = true;
     }
@@ -7311,8 +7313,8 @@ export class Game {
                 // startProbability（Globals.c:653，CE 的 bloat 毒气体积）。
                 this.environment.addGas(m.loc.x, m.loc.y, GasType.POISON, 2000);
                 logger.log(i18next.t('death.bloat_gas', {
-                    name: m.name,
-                    defaultValue: `The ${m.name} releases a cloud of caustic gas!`
+                    name: this.monsterDisplayName(m),
+                    defaultValue: `The ${this.monsterDisplayName(m)} releases a cloud of caustic gas!`
                 }), '#88ff88');
                 this.needsRender = true;
             } else if (m.typeId === 'explosive_bloat') {
@@ -7331,8 +7333,8 @@ export class Game {
                     ];
                 }
                 logger.log(i18next.t('death.bloat_explosion', {
-                    name: m.name,
-                    defaultValue: `The ${m.name} explodes in a burst of flame!`
+                    name: this.monsterDisplayName(m),
+                    defaultValue: `The ${this.monsterDisplayName(m)} explodes in a burst of flame!`
                 }), '#ff8800');
                 this.needsRender = true;
             } else if (m.typeId === 'pit_bloat') {
@@ -7517,8 +7519,8 @@ export class Game {
             const loc = this.grid.getCell(m.loc.x, m.loc.y);
             if (loc?.isVisible) {
                 logger.log(i18next.t('fall.monster_plunges', {
-                    name: m.name,
-                    defaultValue: `The ${m.name} plunges out of sight!`,
+                    name: this.monsterDisplayName(m),
+                    defaultValue: `The ${this.monsterDisplayName(m)} plunges out of sight!`,
                 }), '#aaaaaa');
                 this.needsRender = true;
             }
@@ -10106,8 +10108,8 @@ export class Game {
         if (!monster.isCaged) return;
         this.becomeAllyWith(monster);
         logger.log(i18next.t('monster.freed', {
-            monster: monster.name,
-            defaultValue: `The ${monster.name} is grateful for its freedom and joins you!`
+            monster: this.monsterDisplayName(monster),
+            defaultValue: `The ${this.monsterDisplayName(monster)} is grateful for its freedom and joins you!`
         }), '#88ff88');
         this.needsRender = true;
     }
@@ -10239,7 +10241,8 @@ export class Game {
         this.hoveredCell = { x, y };
         const cell = this.grid.getCell(x, y);
 
-        if (!cell || (!cell.hasMemory && !cell.isVisible)) {
+        const sensedMonster = this.getMonsterAt(x, y);
+        if (!cell || (!cell.hasMemory && !cell.isVisible && !(sensedMonster && canDisplayMonster(this.player, this.grid, sensedMonster)))) {
             this.hoveredText = i18next.t('hover.unknown', { defaultValue: '未知' });
             return;
         }
@@ -10248,10 +10251,12 @@ export class Game {
 
         // Check monster
         const m = this.getMonsterAt(x, y);
-        if (m && cell.isVisible) {
+        if (m && canSeeMonster(this.player, this.grid, m)) {
             const label = m.displaysNegation && !this.player.hasStatus('hallucinating')
                 ? i18next.t('negation.label', { defaultValue: 'Negated' }) : '';
             entities.push(label ? `${m.name} (${label})` : m.name);
+        } else if (m && canDisplayMonster(this.player, this.grid, m)) {
+            entities.push('x');
         }
 
         // Check items
@@ -10263,6 +10268,12 @@ export class Game {
         // Check player
         if (this.player.loc.x === x && this.player.loc.y === y && cell.isVisible) {
             entities.push(i18next.t('hover.you', { defaultValue: '你' }));
+        }
+
+        // CE IO.c:1278-1281 draws only the location marker on undiscovered cells.
+        if (!cell.isVisible && !cell.hasMemory) {
+            this.hoveredText = entities.join('、');
+            return;
         }
 
         const separator = i18next.t('hover.separator', { defaultValue: '、' });
@@ -10375,7 +10386,7 @@ export class Game {
                     break;
                 }
                 if (!this.everSeenMonsters.has(m)) {
-                    logger.log(i18next.t('explore.spot_monster_stop_exploring', { name: m.name, defaultValue: `You spot a ${m.name} and stop exploring.` }), '#ffaaaa');
+                    logger.log(i18next.t('explore.spot_monster_stop_exploring', { name: this.monsterDisplayName(m), defaultValue: `You spot a ${this.monsterDisplayName(m)} and stop exploring.` }), '#ffaaaa');
                     shouldPause = true;
                     this.everSeenMonsters.add(m);
                     break;

@@ -196,7 +196,8 @@ describe('P4-3 验收 4：MONST_INVISIBLE', () => {
         game.onRenderRequested = () => {};
         game.update();
 
-        expect(game.visibleMonsters.has(phantom)).toBe(true);
+        // U21a/CE Monsters.c:203–237: invisible & not in gas ⇒ monsterIsHidden; telepathy cannot override it.
+        expect(game.visibleMonsters.has(phantom)).toBe(false);
     });
 
     it('对照组：非隐形怪物（goblin）在同样视野条件下正常出现', () => {

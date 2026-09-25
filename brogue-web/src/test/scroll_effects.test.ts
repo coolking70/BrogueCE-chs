@@ -213,6 +213,8 @@ describe('discord_burst 卷轴（Items.c:8011 → discordBlast）', () => {
         game.scent.update(game.grid, game.player.loc.x, game.player.loc.y,
             Array.from({ length: game.grid.width }, () => new Array<boolean>(game.grid.height).fill(true)));
         const victimHpBefore = victim.hp;
+        // U21a：消息按 CE 只对玩家可见的怪物具名（否则“某个生物”）；本用例以日志判定目标，故声明两格可见。
+        for (const m of [attacker, victim]) game.grid.getCell(m.loc.x, m.loc.y)!.isVisible = true;
 
         attacker.takeTurn(game, 8);
 
@@ -261,6 +263,7 @@ describe('discord_burst 卷轴（Items.c:8011 → discordBlast）', () => {
             // 否则 CE 丢失判定会在第 1 回合把它切回 WANDERING。
             game.scent.update(game.grid, game.player.loc.x, game.player.loc.y,
                 Array.from({ length: game.grid.width }, () => new Array<boolean>(game.grid.height).fill(true)));
+            for (const m of [attacker, victim]) game.grid.getCell(m.loc.x, m.loc.y)!.isVisible = true; // U21a：具名消息需玩家可见
 
             attacker.takeTurn(game, 8);
 

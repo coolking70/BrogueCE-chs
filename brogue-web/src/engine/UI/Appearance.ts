@@ -176,6 +176,10 @@ export interface EntityAppearanceContext {
     hallucinating: boolean;
     /** 幻觉用纯视觉随机。 */
     cosmetic: CosmeticRng;
+    /** Shared CE visibility decision supplied by the game UI. */
+    monsterVisibility?: 'direct' | 'known' | 'marker' | 'hidden';
+    /** Rendered backing color for CE's gas silhouette rule. */
+    gasBackground?: number | null;
 }
 
 /**
@@ -463,7 +467,11 @@ export function monsterAppearance(monster: Monster, ctx: EntityAppearanceContext
     if (monster.hp <= 0) {
         return null;
     }
-    if (ctx.cellVisible) {
+    if (ctx.monsterVisibility === 'hidden') return null;
+    if (ctx.monsterVisibility === 'marker') {
+        return { char: 'x', color: '#ffffff', interactive: false };
+    }
+    if (ctx.monsterVisibility === 'direct' || (ctx.monsterVisibility === undefined && ctx.cellVisible)) {
         // Dim sleeping monsters slightly, or maybe draw them normally
         let color: string | number = monster.color;
         let char = monster.char;
@@ -473,14 +481,27 @@ export function monsterAppearance(monster: Monster, ctx: EntityAppearanceContext
         } else if (monster.state === MonsterState.ASLEEP) {
             color = 0x6688aa; // deep cold blue/gray if asleep
         }
+        if (monster.hasStatus?.('invisible') && ctx.gasBackground != null) {
+            const back = ctx.gasBackground;
+            if (!ctx.telepathy) {
+                color = back; // CE IO.c:1320-1333: silhouette matches the gas background.
+            } else {
+                const fore = typeof color === 'number' ? color : Number.parseInt(color.slice(1), 16);
+                color = [16, 8, 0].reduce((out, shift) => {
+                    const f = (fore >> shift) & 255;
+                    const b = (back >> shift) & 255;
+                    return out | (Math.round((f * 25 + b * 75) / 100) << shift);
+                }, 0);
+            }
+        }
         if (ctx.hallucinating && ctx.cosmetic.percent(35)) {
             color = ctx.cosmetic.pick(HALLUCINATION_COLORS);
             char = ctx.cosmetic.pick(HALLUCINATION_CHARS);
         }
         return { char, color, interactive: true };
     }
-    if (ctx.telepathy) {
-        return { char: monster.char, color: '#66ccff', interactive: false };
+    if (ctx.monsterVisibility === 'known' || (ctx.monsterVisibility === undefined && ctx.telepathy)) {
+        return { char: monster.char, color: ctx.monsterVisibility === 'known' ? monster.color : '#66ccff', interactive: false };
     }
     return null;
 }
