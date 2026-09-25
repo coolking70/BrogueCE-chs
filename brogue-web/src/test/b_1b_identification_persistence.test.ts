@@ -322,17 +322,22 @@ describe('X1: 已收费的鉴定选择随检查点恢复，新局清空', () => 
         const spare = ItemLoader.spawnScroll('scroll_of_identify', -1, -1)!;
         game.player.inventory.addItem(scroll);
         game.player.inventory.addItem(spare);
+        // U20/CE Items.c:988：同种卷轴合堆为一个背包对象（quantity 2）；读一张后该堆剩 1。
+        const stack = game.player.inventory.items.find(i => i === scroll || i === spare)!;
+        expect(stack.quantity).toBe(2);
         const turns = game.stats.turns, tick = timeSystem.currentTick;
-        game.readItem(scroll);
-        expect(game.player.inventory.items).not.toContain(scroll);
-        expect(game.player.inventory.items).toContain(spare);
+        game.readItem(stack);
+        expect(game.player.inventory.items).toContain(stack);
+        expect(stack.quantity).toBe(1);
         expect([game.stats.turns, timeSystem.currentTick]).toEqual([turns + 1, tick + 100]);
         expect(game.pendingIdentify).toBe(true);
         expect(game.loadSnapshot(JSON.parse(JSON.stringify(game.toSnapshot())))).toBe(true);
         const loaded = game.player.inventory.items.find(i => i.id === sword.id)!;
         const unchosen = game.player.inventory.items.find(i => i.id === other.id)!;
-        const remainingScroll = game.player.inventory.items.find(i => i.id === spare.id)!;
-        expect(game.player.inventory.items.some(i => i.id === scroll.id)).toBe(false);
+        // U20：合堆后的唯一卷轴对象是 stack（另一张已并入），读档后剩 1 张。
+        const remainingScroll = game.player.inventory.items.find(i => i.id === stack.id)!;
+        expect(remainingScroll.quantity).toBe(1);
+        expect(game.player.inventory.items.filter(i => i.id === scroll.id || i.id === spare.id)).toHaveLength(1);
         const inventory = [...game.player.inventory.items];
         expect(loaded.identified).toBe(false);
         // 用户验收裁决/U03；CE 同一次读卷轴中的合法选择不再收费，重复提交不得再鉴定。

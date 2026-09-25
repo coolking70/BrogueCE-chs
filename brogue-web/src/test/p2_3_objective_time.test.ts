@@ -265,9 +265,10 @@ describe('P2-3 D: 完整回合修正（花时间的动作怪物必须行动）',
         const rat = primedRat(game);
         const food = ItemLoader.spawnFood('ration_of_food', -1, -1)!;
         game.player.inventory.addItem(food);
+        const packFood = game.player.inventory.items.find(i => i.category === food.category && (i as any).identityId === (food as any).identityId)!; // U20：同种合堆
 
         const tickBefore = timeSystem.currentTick;
-        game.eatItem(food);
+        game.eatItem(packFood);
         expectFullTurn(game, rat, tickBefore);
     });
 

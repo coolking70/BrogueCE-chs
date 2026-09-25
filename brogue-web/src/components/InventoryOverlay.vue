@@ -96,7 +96,7 @@ const groupedItems = computed(() => {
     const alphabet = 'abcdefghijklmnopqrstuvwxyz';
     
     inventoryItems.value.forEach((item, index) => {
-        const letter = alphabet[index] || '?';
+        const letter = item.inventoryLetter ?? alphabet[index] ?? '?';
         const entry = { letter, item };
         
         switch (item.category) {
@@ -328,7 +328,7 @@ const confirmCall = () => {
                     <span class="item-sigil" :style="{ color: magicSigilColor(entry.item) }">{{ magicSigil(entry.item) }}</span>
                     <span class="item-char" :style="{ color: colorToCss(entry.item.color) }">{{ entry.item.char }}</span>
                     <span class="item-name">
-                       {{ getLocalizedName(entry.item.displayName) }}
+                       {{ getLocalizedName(entry.item.displayName) }}<span v-if="entry.item.quantity > 1"> ×{{ entry.item.quantity }}</span>
                        <span v-if="isEquipped(entry.item)" class="equipped-tag">{{ t('(equipped)') || '(equipped)' }}</span>
                        <span v-if="entry.item.strengthRequired && activeGame.player.effectiveStrength < entry.item.strengthRequired" class="strength-warning">
                            {{ t('[Req Str:') || '[Req Str:' }} {{ entry.item.strengthRequired }}]

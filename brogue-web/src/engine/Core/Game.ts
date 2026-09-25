@@ -3575,7 +3575,7 @@ export class Game {
                     return;
                 }
 
-                if (this.player.inventory.addItem(item)) {
+                if (item.category === ItemCategory.GOLD || this.player.inventory.addItem(item)) {
                     // B-4b：金币拾取按堆叠数量入账（CE Items.c:781 同口径——
                     // 生成堆的 quantity 在生成时掷出；原 +10 硬编码是占位）。
                     if (item.category === ItemCategory.GOLD) {
@@ -3632,11 +3632,22 @@ export class Game {
     }
 
     public dropItem(item: Item) {
-        if (this.player.inventory.removeItem(item)) {
-            this.player.unequip(item);
-            this.syncEquipmentStatuses();
-            item.loc = { x: this.player.loc.x, y: this.player.loc.y };
-            this.items.push(item);
+        if (this.player.inventory.items.includes(item)) {
+            // CE dropItem peels one food/potion/scroll, but drops an entire
+            // throwing-weapon stack. The peeled copy needs its own entity ID.
+            const peel = item.quantity > 1 && item.category !== ItemCategory.WEAPON;
+            let dropped = item;
+            if (peel) {
+                const copy = new Item(item.name, item.char, item.color, item.category);
+                dropped = Object.assign(copy, item, { id: copy.id, quantity: 1 });
+                item.quantity--;
+            } else {
+                this.player.inventory.removeItem(item);
+                this.player.unequip(item);
+                this.syncEquipmentStatuses();
+            }
+            dropped.loc = { x: this.player.loc.x, y: this.player.loc.y };
+            this.items.push(dropped);
             // C-4c：TM_PROMOTES_ON_ITEM（CE Items.c:1278-1286，物品落格时）。
             // 当前 31 地形零载体，调用为结构性忠实；实际触发数 0（报告）。
             for (const r of promoteOnItemPlaced(this.grid, this.player.loc.x, this.player.loc.y)) {
@@ -3789,7 +3800,7 @@ export class Game {
         if (this.gateMalevolentUse(item, confirmed)) return;
 
         // Remove from inventory
-        if (this.player.inventory.removeItem(item)) {
+        if (this.player.inventory.consumeOne(item)) {
             const trueId = (item as any).consumableId;
             const data = ItemLoader.potions.find(p => p.id === trueId);
 
@@ -3977,7 +3988,7 @@ export class Game {
                 defaultValue: `You're not hungry enough to fully enjoy the ${trueId === 'ration_of_food' ? 'food' : 'mango'}. Eat it anyway?`,
             }))) return false;
 
-        if (!this.player.inventory.removeItem(item)) return false;
+        if (!this.player.inventory.consumeOne(item)) return false;
         this.player.nutrition = Math.min(STOMACH_SIZE, this.player.nutrition + nutrition);
         this.player.refreshHungerState();
         logger.log(trueId === 'ration_of_food'
@@ -3997,7 +4008,7 @@ export class Game {
         // B-1c：CE Items.c:7757-7767——同款恶意品确认（读卷轴分支）。
         if (this.gateMalevolentUse(item, confirmed)) return;
 
-        if (this.player.inventory.removeItem(item)) {
+        if (this.player.inventory.consumeOne(item)) {
             const trueId = (item as any).consumableId;
             const data = ItemLoader.scrolls.find(s => s.id === trueId);
 
@@ -5862,7 +5873,7 @@ export class Game {
         this.isThrowing = false;
         this.throwItemTarget = null;
 
-        if (!this.grid.isValidPos(tx, ty)) return;
+        if (!this.grid.isValidPos(tx, ty) || !this.player.inventory.items.includes(item)) return;
 
         // CE throwCommand（Items.c:7099-7111）：已装备且是最后一件 → 诅咒装备
         // 扔不出去（取消，不耗回合）。confirm 弹层是 UI 债，登记。

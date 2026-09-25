@@ -124,6 +124,8 @@ export class Item implements Entity {
 
     /** 堆叠数量，对齐 CE item->quantity；开局飞镖（×15）与投掷物生成（5-18 / 3-6）使用 */
     public quantity: number = 1;
+    /** CE inventoryLetter: retained when other entries are removed. */
+    public inventoryLetter?: string;
     /**
      * B-4a：≙ CE item->quiverNumber（Items.c:271，投掷物生成时
      * rand_range(1, 60000)）；CE 的快速投掷目标轮换键。web 投掷交互

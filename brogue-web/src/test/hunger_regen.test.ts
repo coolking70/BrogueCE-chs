@@ -172,7 +172,8 @@ describe('偏差4：食物恢复量 ration 1800 / mango 1550', () => {
         expect(ration).not.toBeNull();
         expect(p.inventory.addItem(ration!)).toBe(true);
         p.nutrition = 100;
-        game.eatItem(ration!);
+        // U20/CE Items.c:988：同种口粮与开局口粮合堆，交互对象是背包里的那一堆。
+        game.eatItem(p.inventory.items.find(i => i.category === ration!.category && (i as any).identityId === (ration as any).identityId)!);
         expect(p.nutrition).toBe(1899)  // P2-3 起 eatItem/readItem 为完整回合：施加效果后同一动作的客观块随即递减 1（CE 同构）。;
     });
 
@@ -182,7 +183,7 @@ describe('偏差4：食物恢复量 ration 1800 / mango 1550', () => {
         const ration = ItemLoader.spawnFood('ration_of_food', p.x, p.y)!;
         p.inventory.addItem(ration);
         p.nutrition = 2100;
-        game.eatItem(ration);
+        game.eatItem(p.inventory.items.find(i => i.category === ration.category && (i as any).identityId === (ration as any).identityId)!); // U20：合堆对象
         // P2-3 起 eatItem 为完整回合：先 min(2100+1800, STOMACH_SIZE)=2150 封顶，
         // 随后同一动作的客观块递减 1（CE 同构：eat() → playerTurnEnded() → decrementPlayerStatus）。
         expect(p.nutrition).toBe(STOMACH_SIZE - 1);

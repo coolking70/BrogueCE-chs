@@ -7,7 +7,7 @@ import { Monster, type MonsterData, type MonsterAbility } from '../../entities/M
 import { Player, type HungerState } from '../../entities/Player';
 
 export const ITEM_FIELDS = [
-    'id', 'name', 'char', 'color', 'loc', 'category', 'weight', 'quantity',
+    'id', 'name', 'char', 'color', 'loc', 'category', 'weight', 'quantity', 'inventoryLetter',
     'damage', 'clumping', 'armor', 'strengthRequired', 'flags', 'isCursed', 'isProtected',
     'enchantment', 'runicType', 'runicKnown', 'arcanaInstanceVersion', 'maxCharges',
     'charges', 'identified', 'canBeIdentified', 'maxChargesKnown', 'magicDetected',

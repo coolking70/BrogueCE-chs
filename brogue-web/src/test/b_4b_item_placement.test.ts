@@ -338,7 +338,9 @@ describe('B-4b 每层数量与落位（真实生成链）', () => {
         game.items = [gold];
         const before = game.stats.gold;
         game.handlePlayerAction('pickup', undefined, 'system');
-        expect(game.player.inventory.items.some((i: any) => i.category === ItemCategory.GOLD), '金币应已入包').toBe(true);
+        // U20/CE：金币拾取只入账（rogue.gold += quantity），不占背包槽、不成为背包对象。
+        expect(game.player.inventory.items.some((i: any) => i.category === ItemCategory.GOLD), '金币不应入包').toBe(false);
+        expect(game.items.includes(gold), '金币已从地面拾走').toBe(false);
         expect(game.stats.gold, '拾取后账面应恰增加 quantity').toBe(before + gold.quantity);
     });
 });
