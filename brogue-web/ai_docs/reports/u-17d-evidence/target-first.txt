@@ -1,0 +1,174 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/e004/brogue/brogue-web
+
+stdout | src/test/u_17d_vents.test.ts > U17d player search → real visible carrier (179,183,174,14,19) > MACHINE_METHANE_VENT_HIDDEN search reveals without firing or wiring, persists and displays
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_17d_vents.test.ts (24 tests | 10 failed) 21582ms
+     ✓ all nine tile rows (including dormant torch light) equal CE sources 4ms
+     × nine restored DF and six successors/armor rows equal CE including no immediate poison successor 20ms
+     ✓ removes precisely nine registrations, preserves remaining ordered eleven and old numeric IDs 1ms
+     ✓ 157 CE-generated appearances include visible traps/vents/fire; hidden forms still look like floor 2ms
+     × four CE autogen starts have exact depth/rate columns; retired paralysis machines stay ineligible 2ms
+     ✓ MACHINE_METHANE_VENT_HIDDEN search reveals without firing or wiring, persists and displays  2282ms
+     ✓ MACHINE_PARALYSIS_VENT_HIDDEN search reveals without firing or wiring, persists and displays  2194ms
+     ✓ MACHINE_POISON_GAS_VENT_HIDDEN search reveals without firing or wiring, persists and displays  1628ms
+     ✓ GAS_TRAP_POISON_HIDDEN search reveals without firing or wiring, persists and displays  2001ms
+     ✓ FLAMETHROWER_HIDDEN search reveals without firing or wiring, persists and displays  1749ms
+     ✓ wall occlusion prevents vent discovery and no gas/flash is forged  867ms
+     × 180 player picks altar key → same-machine methane opens and emits; other machine stays hidden 1162ms
+     × 180 immediate 60 volume, then 5000/10000 promotion boundary; no forced evacuation 13ms
+     × 175 poison opening has no immediate gas; 10000 boundary emits exactly 25, remains active 1ms
+     × 175 actual pickup → poison vent → diffusion → existing caustic damage, no poisoned status or relocation 772ms
+     ✓ 183/185 pressure plate fires discovered or hidden paralysis vent, reveals silently and applies existing paralysis  1943ms
+     ✓ 185 gas payload is 350 and visible vent can be wired again; breaker prevents remote activation  804ms
+     × 182 actual pickup drops torch; wall/light preserved and existing fire loop ignites adjacent methane into explosion 1010ms
+     ✓ methane vent ignition 15% boundary uses DF_EMBERS and ceases gas after priority replaces it 0ms
+     × GAS_TRAP_POISON_HIDDEN real step discovers and emits through U17a while preserving trap 1118ms
+     × FLAMETHROWER_HIDDEN real step discovers and emits through U17a while preserving trap 652ms
+     ✓ known poison trap depresses once; empty environment re-arms; JSON restores depression  1785ms
+     ✓ levitation does not depress hidden traps; offscreen monsters fire without player knowledge reveal  771ms
+     × immolation catalog uses shared fire contact/scroll burning, not a new armor trigger 797ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 10 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_17d_vents.test.ts > U17d CE independent catalog, three chains and data starts > nine restored DF and six successors/armor rows equal CE including no immediate poison successor
+AssertionError: expected undefined to be 178 // Object.is equality
+
+- Expected:
+178
+
++ Received:
+undefined
+
+ ❯ src/test/u_17d_vents.test.ts:45:52
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯
+
+ FAIL  src/test/u_17d_vents.test.ts > U17d CE independent catalog, three chains and data starts > four CE autogen starts have exact depth/rate columns; retired paralysis machines stay ineligible
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/test/u_17d_vents.test.ts:61:161
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯
+
+ FAIL  src/test/u_17d_vents.test.ts > U17d wired activation, gas/fire and final entity consumers > 180 player picks altar key → same-machine methane opens and emits; other machine stays hidden
+AssertionError: expected [ …(4) ] to include Item{ spawnTurnNumber: +0, …(40) }
+ ❯ src/test/u_17d_vents.test.ts:79:36
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯
+
+ FAIL  src/test/u_17d_vents.test.ts > U17d wired activation, gas/fire and final entity consumers > 180 immediate 60 volume, then 5000/10000 promotion boundary; no forced evacuation
+TypeError: Cannot read properties of undefined (reading 'caughtFireCells')
+ ❯ runPromotionUpdate src/engine/Map/Promotion.ts:596:15
+    594|     const promotions = new Uint8Array(W * grid.height);
+    595|     const caughtFire = new Set<number>(
+    596|         (opts.caughtFireCells ?? []).map((p) => idx(p.x, p.y))
+       |               ^
+    597|     );
+    598|     let rngDraws = 0;
+ ❯ src/test/u_17d_vents.test.ts:83:60
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯
+
+ FAIL  src/test/u_17d_vents.test.ts > U17d wired activation, gas/fire and final entity consumers > 175 poison opening has no immediate gas; 10000 boundary emits exactly 25, remains active
+TypeError: Cannot read properties of undefined (reading 'caughtFireCells')
+ ❯ runPromotionUpdate src/engine/Map/Promotion.ts:596:15
+    594|     const promotions = new Uint8Array(W * grid.height);
+    595|     const caughtFire = new Set<number>(
+    596|         (opts.caughtFireCells ?? []).map((p) => idx(p.x, p.y))
+       |               ^
+    597|     );
+    598|     let rngDraws = 0;
+ ❯ src/test/u_17d_vents.test.ts:87:61
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯
+
+ FAIL  src/test/u_17d_vents.test.ts > U17d wired activation, gas/fire and final entity consumers > 175 actual pickup → poison vent → diffusion → existing caustic damage, no poisoned status or relocation
+AssertionError: expected 78 to be 154 // Object.is equality
+
+- Expected
++ Received
+
+- 154
++ 78
+
+ ❯ src/test/u_17d_vents.test.ts:90:250
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/10]⎯
+
+ FAIL  src/test/u_17d_vents.test.ts > U17d wired activation, gas/fire and final entity consumers > 182 actual pickup drops torch; wall/light preserved and existing fire loop ignites adjacent methane into explosion
+AssertionError: expected 61 to be 151 // Object.is equality
+
+- Expected
++ Received
+
+- 151
++ 61
+
+ ❯ src/test/u_17d_vents.test.ts:101:239
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/10]⎯
+
+ FAIL  src/test/u_17d_vents.test.ts > U17d traps use actual entry and reusable depression, not legacy trapType > GAS_TRAP_POISON_HIDDEN real step discovers and emits through U17a while preserving trap
+AssertionError: expected 88 to be 155 // Object.is equality
+
+- Expected
++ Received
+
+- 155
++ 88
+
+ ❯ src/test/u_17d_vents.test.ts:113:219
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/10]⎯
+
+ FAIL  src/test/u_17d_vents.test.ts > U17d traps use actual entry and reusable depression, not legacy trapType > FLAMETHROWER_HIDDEN real step discovers and emits through U17a while preserving trap
+AssertionError: expected 87 to be 156 // Object.is equality
+
+- Expected
++ Received
+
+- 156
++ 87
+
+ ❯ src/test/u_17d_vents.test.ts:113:219
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/10]⎯
+
+ FAIL  src/test/u_17d_vents.test.ts > U17d traps use actual entry and reusable depression, not legacy trapType > immolation catalog uses shared fire contact/scroll burning, not a new armor trigger
+Error: Unmapped CE flash color: yellow
+ ❯ Game.colorFlash src/engine/Core/Game.ts:4670:27
+    4668|         };
+    4669|         const color = colors[name];
+    4670|         if (!color) throw new Error(`Unmapped CE flash color: ${name}`…
+       |                           ^
+    4671|         const cells = new Map<number, number>();
+    4672|         const fieldOfView = discovered ? null : this.fov.computeFOVMas…
+ ❯ Object.flash src/engine/Core/Game.ts:9771:49
+ ❯ executeDungeonFeature src/engine/Map/DungeonFeature.ts:1054:70
+ ❯ spawnDungeonFeature src/engine/Map/DungeonFeature.ts:890:24
+ ❯ src/test/u_17d_vents.test.ts:126:122
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/10]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  10 failed | 14 passed (24)
+   Start at  00:31:02
+   Duration  24.16s (transform 1.17s, setup 0ms, import 2.33s, tests 21.58s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/e004/brogue/brogue-web/ai_docs/reports/u-17d-evidence/target-first.json

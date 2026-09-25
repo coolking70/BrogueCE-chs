@@ -244,10 +244,11 @@ describe('V-2b-3 A：载体地形逐字段 ≡ CE Globals.c（对抗：抄错任
         // DF_STATUE_SHATTER / DF_LUMINESCENT_FUNGUS 五条接上真 tile 摘出；
         // 22 条新条目里 web 无 tile 的七条入列。逐条见 DungeonFeatureCatalog
         // 的 V-2b-7 块注。
-        expect(DF_MISSING_TILES).toHaveLength(20); // U17c: five more carriers restored; the other 20 stay missing.
+        expect(DF_MISSING_TILES).toHaveLength(11); // U17d: exactly nine closures; the other eleven stay missing.
         expect(DF_MISSING_TILES).not.toContain(DF.DF_REVEAL_LEVER); // U17c closure
         for (const d of [DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY]) {
-            expect(DF_MISSING_TILES, `DF[${d}] 应在缺 tile 登记`).toContain(d);
+            expect(DF_MISSING_TILES, `U17d DF[${d}] 已恢复载体`).not.toContain(d);
+            expect(() => catalogFeature(d)).not.toThrow();
         }
         // ★ V-2b-7 反转（与下方 DF_OPEN_PORTCULLIS 同款）：DF_WALL_SHATTER 的
         // tile 是 RUBBLE，而 RUBBLE 地形本轮随 55 号 DF_TUNNELIZE 落地——
@@ -269,7 +270,8 @@ describe('V-2b-3 A：载体地形逐字段 ≡ CE Globals.c（对抗：抄错任
         }
         // V-2b-6 新登记的两条（越界守卫：一条都不能漏抄）。
         for (const d of [DF.DF_SHOW_POISON_GAS_VENT, DF.DF_POISON_GAS_VENT_OPEN]) {
-            expect(DF_MISSING_TILES, `DF[${d}] 应在缺 tile 登记`).toContain(d);
+            expect(DF_MISSING_TILES, `U17d DF[${d}] 已恢复载体`).not.toContain(d);
+            expect(() => catalogFeature(d)).not.toThrow();
         }
         // V-2b-4 新登记的七条（越界守卫：一条都不能漏抄）。
         // ★ V-2b-7：其中 DF_LUMINESCENT_FUNGUS 与 DF_STATUE_SHATTER 两条的
@@ -407,6 +409,12 @@ describe('V-2b-3 C：circuitBreakersPreventActivation（CE :1230-1242）', () =>
 
 describe('V-2b-3 D：promoteTile wired 分支端到端（67/68 与 24 号的机器形态）', () => {
     it('D1 端到端 67/68：踩触发板 → 全机通电 → 两喷口逐层晋升、payoff 按 CE :865 链尾缺 tile 缓办响亮登记', () => {
+        // U17d: preserve the original deferred-chain contract by explicitly injecting
+        // its former missing-tail premise. Positive CE67/68 payoff is in u_17d_vents.
+        const entry = DUNGEON_FEATURE_CATALOG[DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY]!;
+        const savedTile = entry.tile;
+        Object.assign(entry, {tile: null});
+        try {
         const g = floorGrid();
         g.setTerrain(4, 4, C.GAS_TRAP_PARALYSIS_HIDDEN, '.', 0x888888);
         g.setTerrain(9, 9, C.MACHINE_PARALYSIS_VENT_HIDDEN, '.', 0x888888);
@@ -435,6 +443,7 @@ describe('V-2b-3 D：promoteTile wired 分支端到端（67/68 与 24 号的机�
         // 电散尽（CE :1281-1285）。
         expect(g.getCell(4, 4)!.isPowered).toBe(false);
         expect(g.getCell(9, 9)!.isPowered).toBe(false);
+        } finally { Object.assign(entry, {tile: savedTile}); }
     });
 
     it('D1b 对抗：T_IS_DF_TRAP 载体踩上触发的 CE 形态——promoteTile 即通电，与是否先 spawn fireType 无关', () => {

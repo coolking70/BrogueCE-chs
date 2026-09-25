@@ -1295,3 +1295,16 @@ Original prompt: 请参考brogue-web/ai_docs目录下的ai工作文件，为我�
 - 发现轮169文件：3332通过/36红/8既有skip/1既有todo；HEAD反事实36/36绿。仅修过时目录投影、搜索布景与已核实生成写入前提；生产源码守卫白名单保持不变。
 - 唯一重捕获完成：74层/272字段，滚动基线SHA256 35e673280602484d81c787209cb0c8a35e8081a766c0c183feeb6397bbcfc2f3。B2完整34×26扫描21绿；23:22:51冻结580输入，171文件终验运行中。
 - 最终门禁全部通过：171文件/3403通过/8既有skip/1既有todo；build绿、drift 1/1绿；冻结580输入前后SHA全等，三份历史基线未变。报告 ai_docs/reports/u-17c.report.md 完成；不提交、不暂存。
+
+## 2026-09-26 U17d
+- Original prompt: 执行 ai_docs/tasks/u-17d.prompt.md，报告 u-17d.report.md，不提交。
+- 入场 HEAD c98ffd2；drift 先绿，激活后旧基线红留证。恢复指定9条DF的8种地形，补必要后继178与顺带目录137；其余11条缺口不动。
+- CE/当前分支裁决：毒气开口无立即后继；甲烷立即60体积；长明灯阻墙且常亮；甲烷喷口受火不会消失。当前HEAD没有U15d-2自燃效果，上游仍未实现，不伪造；CE67/68已由强制autoGen建造，保持原资格，不修改蓝图池。
+- 专项31条已通过，含四条真实autoGen铺装后用户踩踏、CE40整间取钥匙/喷气/搜杆开门、CE67/68整机。修复普通接触漏触发CE陷阱、毒气后继178缺失、137黄色闪光消费。
+- develop-web-game技能客户端黑canvas已查看，另有头页面真实键盘搜索/拾取/踩踏通过，6张关键图已检查。正在完成反向变体、生成分段归因、原守卫反事实与最终冻结门禁。
+
+U17d implementation is stable: 31 new tests pass, including full CE40 walking escape and CE67/68 real area-machine activation. All 15 isolated negative variants fail behavior assertions as intended. Exact HEAD counterfactual: 25 original guards pass on HEAD; 24 stale premises fail on new code, while the unchanged fire-reader guard passes after fixing Grid.FIRE_TERRAIN_TYPES. Headed browser rerun has zero page errors and checked screenshots. Stable 17-stage generation attribution uses identical production inputs; only four autoGen rows change the 104-layer sample. Expected rolling-baseline delta is 100 layers / 369 fields. No recapture yet; discovery regression still running, then one recapture and the frozen R∪S/build/drift gate.
+
+U17d final gate started 2026-09-26 01:24:26 CST. One authorized rolling-baseline recapture changed 100 layers / 369 fields; new SHA256 5dfb1c4d0a384da08a4c5cbec54a39348e89990cc773175f2a7997d97b90435b. Additional old premises were proved on exact HEAD and repaired: V2b7 trap carriers, U04c exact D2 membership count, V2a deterministic CE5 non-vacuity (duplicate-prize mutation fails), and W12 occupied discovery refresh (exactly two player-only instant calls; zero objective ticks and exactly 1000 gas). Late 67-test regression passes. Frozen 595 inputs; audit/build pass; 173-file R∪S is running with three workers, followed by drift. No source/test/script/resource/config/baseline edits during this run.
+
+U17d final gate completed 2026-09-26 02:03:06 CST: all 173 R∪S files pass (3460 passed, 8 existing skips, 1 existing todo, zero failures), build passes, drift 1/1 passes. All 595 frozen input hashes match before/after and current files; all three historical baselines and protected inputs remain unchanged. Rolling baseline was recaptured exactly once. Final report ai_docs/reports/u-17d.report.md completed. HEAD remains c98ffd2e85c3e003f60a0aeb39f39ee363f02492; no commit or staging.

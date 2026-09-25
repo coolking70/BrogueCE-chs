@@ -253,12 +253,12 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
     },
     // ---- Pre-revealed traps（GlobalsBrogue.c:129-136）----
     {
-        ceLine: 130, index: 14, terrain: null, ceTerrain: 'GAS_TRAP_POISON', layer: DUNGEON,
+        ceLine: 130, index: 14, terrain: TerrainType.GAS_TRAP_POISON, ceTerrain: 'GAS_TRAP_POISON', layer: DUNGEON,
         df: null, ceDf: '0', ceDfId: 0, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 2, maxDepth: 4, frequency: 20, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 1,
-        carrier: 'no-tile',
-        note: 'CE 陷阱是独立 tile（T_IS_DF_TRAP + fireType/ discoverType 链，显隐两态）。web 的通用 TRAP+trapType 是自创语义（teleport 等 CE 无），不同源——不得冒充载体。激活轮需按 CE tile 目录逐个落地。',
+        carrier: 'wired',
+        note: 'U17d: CE trap discovery and fire DF consumers restored.',
     },
     {
         ceLine: 131, index: 15, terrain: null, ceTerrain: 'NET_TRAP', layer: DUNGEON,
@@ -293,12 +293,12 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
         note: 'GAS_TRAP_CONFUSION tile 无。',
     },
     {
-        ceLine: 135, index: 19, terrain: null, ceTerrain: 'FLAMETHROWER', layer: DUNGEON,
+        ceLine: 135, index: 19, terrain: TerrainType.FLAMETHROWER, ceTerrain: 'FLAMETHROWER', layer: DUNGEON,
         df: null, ceDf: '0', ceDfId: 0, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 4, maxDepth: 12, frequency: 20, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 1,
-        carrier: 'no-tile',
-        note: 'FLAMETHROWER tile 无（火陷阱；火链本身 F/G 已收口，但 tile 不在）。',
+        carrier: 'wired',
+        note: 'U17d: CE trap discovery and fire DF consumers restored.',
     },
     {
         ceLine: 136, index: 20, terrain: null, ceTerrain: 'FLOOD_TRAP', layer: DUNGEON,
@@ -310,12 +310,12 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
     },
     // ---- Hidden traps（GlobalsBrogue.c:138-151）----
     {
-        ceLine: 139, index: 21, terrain: null, ceTerrain: 'GAS_TRAP_POISON_HIDDEN', layer: DUNGEON,
+        ceLine: 139, index: 21, terrain: TerrainType.GAS_TRAP_POISON_HIDDEN, ceTerrain: 'GAS_TRAP_POISON_HIDDEN', layer: DUNGEON,
         df: null, ceDf: '0', ceDfId: 0, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 5, maxDepth: 39, frequency: 20, minNumberIntercept: 100, minNumberSlope: 0, maxNumber: 3,
-        carrier: 'no-tile',
-        note: '隐藏态陷阱 tile（TM_IS_SECRET）无。',
+        carrier: 'wired',
+        note: 'U17d: CE trap discovery and fire DF consumers restored.',
     },
     {
         ceLine: 140, index: 22, terrain: null, ceTerrain: 'NET_TRAP_HIDDEN', layer: DUNGEON,
@@ -358,12 +358,12 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
         note: '隐藏态 tile 无。',
     },
     {
-        ceLine: 145, index: 27, terrain: null, ceTerrain: 'FLAMETHROWER_HIDDEN', layer: DUNGEON,
+        ceLine: 145, index: 27, terrain: TerrainType.FLAMETHROWER_HIDDEN, ceTerrain: 'FLAMETHROWER_HIDDEN', layer: DUNGEON,
         df: null, ceDf: '0', ceDfId: 0, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 13, maxDepth: 39, frequency: 20, minNumberIntercept: 100, minNumberSlope: 0, maxNumber: 3,
-        carrier: 'no-tile',
-        note: '隐藏态 tile 无。',
+        carrier: 'wired',
+        note: 'U17d: CE trap discovery and fire DF consumers restored.',
     },
     {
         ceLine: 146, index: 28, terrain: null, ceTerrain: 'FLOOD_TRAP_HIDDEN', layer: DUNGEON,

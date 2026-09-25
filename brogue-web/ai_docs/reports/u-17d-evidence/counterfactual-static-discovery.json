@@ -1,0 +1,37 @@
+{
+  "head": "c98ffd2e85c3e003f60a0aeb39f39ee363f02492",
+  "files": [
+    "src/test/c_4a_0_layer_model.test.ts",
+    "src/test/c_4a_terrain_catalog.test.ts",
+    "src/test/c_4b_dungeon_feature.test.ts",
+    "src/test/c_6_autogenerators.test.ts",
+    "src/test/g_2_gas_df_wiring.test.ts",
+    "src/test/r_1_appearance.test.ts",
+    "src/test/u_08_terrain_bolts.test.ts",
+    "src/test/u_17a_df_transaction.test.ts",
+    "src/test/u_17b_carriers.test.ts",
+    "src/test/u_17c_triggers.test.ts",
+    "src/test/v_2b_3_wired.test.ts"
+  ],
+  "titles": [
+    "归属表与 drawPriority 表与报告口径逐条一致（表被手滑改动即翻红）",
+    "全 TerrainType 键覆盖且字段结构齐全——拼写错/缺键在此翻红而非得 undefined",
+    "terrainAllowsMove（查表）≡ 旧排除清单 {GRANITE,WALL,SECRET_DOOR,LOCKED_DOOR,WATER_DEEP}",
+    "Game.canMoveTo（查表）≡ 旧清单：合成格逐地形实测（含生成中出现不了的地形）",
+    "E1 W-14 恰 135 条（原 134 + DF_FORCEFIELD）；历次闭包（C-6 增补 DF_GRASS/DF_FOLIAGE；B-3 增补 DF_FORCEFIELD_MELT/DF_SACRED_GLYPHS/DF_SHATTERING_SPELL；T-1 增补 DF_CRYSTAL_WALL；V-2b-2b 增补 DF_SHOW_TRAPDOOR_HALO/DF_SHOW_TRAPDOOR/DF_WOODEN_BARRICADE_BURN——TRAP_DOOR_HIDDEN.discoverType 与 WOODEN_BARRICADE.fireType 的载体，CE Globals.c:627/628/825；V-2b-3 增补 14 条 wired 载体 DF 链，见下；V-2b-4 增补 8 条祭坛族载体），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）",
+    "E2 闭包自洽：TerrainCatalog 字符串起点 + subsequentDF 展开 == 目录键集（多抄/漏抄/悬空全翻红）",
+    "E4 缺 tile 登记恰 26 条（G-2 后 6；B-3 增 DF_SHATTERING_SPELL——RUBBLE tile web 无；V-2b-2b 增 DF_SHOW_TRAPDOOR；V-2b-3 增 11 条 wired 载体链环节；V-2b-4 增 7 条祭坛族载体）：catalogFeature 对其抛错点名；对其余条目正常转换",
+    "哨兵 S-1：非机器 wired 条目仍只落草/树/水晶墙；机器接线集合精确覆盖 13 条",
+    "留痕 T2：陷阱族（显/隐）未接——按 CE tile 目录落地陷阱后反转（index 14-15/17-22/24-28/32）",
+    "F-2c 翻转：DF_EXPLOSION_FIRE 已接线（tile GAS_EXPLOSION 已迁），catalogFeature 正常转换且不在缺 tile 名单",
+    "穷举表覆盖 TerrainType 全部成员（当前 69 个）、成员值无重复",
+    "new closed terrain set: 139 DFs, no entity/spawn flags; web forbidden to learn, vines eligible",
+    "historical U17a projection: 30 missing rows before the U17b/U17c carriers",
+    "historical U17b missing projection excludes exactly the five U17c closures",
+    "only the five authorized registrations are removed; every other missing identity remains ordered",
+    "CE-generated appearances preserve all old rows and represent the new glyphs",
+    "有载体的链环 tile 对位（气体 payoff 的三条线）+ DF_MISSING_TILES 顺延 8 → 19",
+    "D1 端到端 67/68：踩触发板 → 全机通电 → 两喷口逐层晋升、payoff 按 CE :865 链尾缺 tile 缓办响亮登记"
+  ],
+  "exit": 0
+}

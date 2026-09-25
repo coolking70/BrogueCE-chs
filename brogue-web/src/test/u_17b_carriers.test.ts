@@ -48,14 +48,14 @@ describe('U17b CE data / closed first family',()=>{
    expect(f).toMatchObject({tile:T[row.tile as keyof typeof T],layer:L[row.layer as keyof typeof L],startProbability:row.startProbability,probabilityDecrement:row.probabilityDecrement,flags:row.flags,description:row.description,lightFlare:row.lightFlare,flashColor:row.flashColor,effectRadius:row.effectRadius,cePropagationTerrain:row.propagationTerrain,propagationTerrain:row.propagationTerrain?T[row.propagationTerrain as keyof typeof T]:null,subsequentDF:row.subsequentDF?DF[row.subsequentDF as keyof typeof DF]:null});
   }
  });
- it('historical U17b missing projection excludes exactly the five U17c closures',()=>{
+ it('historical U17b missing projection excludes exactly the five U17c and nine U17d closures',()=>{
   const u17c = [154,17,152,95,144];
-  expect(DF_MISSING_TILES).toEqual([DF.DF_MACHINE_PRESSURE_PLATE_USED, DF.DF_SHOW_TRAPDOOR, DF.DF_REVEAL_LEVER, DF.DF_MEDIUM_HOLE, DF.DF_SHOW_METHANE_VENT, DF.DF_METHANE_VENT_OPEN, DF.DF_PILOT_LIGHT, DF.DF_DISCOVER_PARALYSIS_VENT, DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY, DF.DF_ITEM_CAGE_CLOSE, DF.DF_ALTAR_COMMUTE, DF.DF_MAGIC_PIPING, DF.DF_ALTAR_RESURRECT, DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING, DF.DF_WALL_CRACK, DF.DF_CRACKING_STATUE, DF.DF_SHOW_POISON_GAS_VENT, DF.DF_POISON_GAS_VENT_OPEN, DF.DF_SHOW_POISON_GAS_TRAP, DF.DF_SHOW_FLAMETHROWER_TRAP, DF.DF_ALTAR_RETRACT, DF.DF_PORTAL_ACTIVATE, DF.DF_SACRIFICE_ALTAR, DF.DF_COFFIN_BURSTS, DF.DF_WORM_TUNNEL_MARKER_ACTIVE].filter(id=>!u17c.includes(id)));
+  expect(DF_MISSING_TILES).toEqual([DF.DF_MACHINE_PRESSURE_PLATE_USED, DF.DF_SHOW_TRAPDOOR, DF.DF_REVEAL_LEVER, DF.DF_MEDIUM_HOLE, DF.DF_SHOW_METHANE_VENT, DF.DF_METHANE_VENT_OPEN, DF.DF_PILOT_LIGHT, DF.DF_DISCOVER_PARALYSIS_VENT, DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY, DF.DF_ITEM_CAGE_CLOSE, DF.DF_ALTAR_COMMUTE, DF.DF_MAGIC_PIPING, DF.DF_ALTAR_RESURRECT, DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING, DF.DF_WALL_CRACK, DF.DF_CRACKING_STATUE, DF.DF_SHOW_POISON_GAS_VENT, DF.DF_POISON_GAS_VENT_OPEN, DF.DF_SHOW_POISON_GAS_TRAP, DF.DF_SHOW_FLAMETHROWER_TRAP, DF.DF_ALTAR_RETRACT, DF.DF_PORTAL_ACTIVATE, DF.DF_SACRIFICE_ALTAR, DF.DF_COFFIN_BURSTS, DF.DF_WORM_TUNNEL_MARKER_ACTIVE].filter(id=>!u17c.includes(id) && ![179,180,182,183,185,174,175,14,19].includes(id)));
  });
  it('appearance golden extension keeps every previous row byte-equivalent in value',()=>{
   const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));
   for(const name of Object.keys(golden.tiles))expect(rows[name].ceLine).toBe(golden.tiles[name as keyof typeof golden.tiles].line);
-  expect(Object.keys(rows)).toHaveLength(149);expect(restored.every(id=>!DF_MISSING_TILES.includes(id))).toBe(true);
+  expect(Object.keys(rows)).toHaveLength(157);expect(restored.every(id=>!DF_MISSING_TILES.includes(id))).toBe(true);
  });
 });
 

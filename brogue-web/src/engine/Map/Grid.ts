@@ -259,6 +259,8 @@ export enum TerrainType {
     TRAMPLED_FOLIAGE, ACTIVE_BRIMSTONE, BRIMSTONE_FIRE, OPEN_IRON_DOOR_INERT, BRIDGE_FALLING,
     // U17c: CE trigger carriers; append to preserve saved terrain IDs.
     MACHINE_PRESSURE_PLATE_USED, TRAP_DOOR, WALL_LEVER, WALL_LEVER_PULLED, MACHINE_TRIGGER_FLOOR_REPEATING,
+    // U17d: CE vent, pilot and trap carriers; append-only IDs.
+    MACHINE_METHANE_VENT_DORMANT, MACHINE_METHANE_VENT, PILOT_LIGHT, MACHINE_PARALYSIS_VENT, MACHINE_POISON_GAS_VENT_DORMANT, MACHINE_POISON_GAS_VENT, GAS_TRAP_POISON, FLAMETHROWER,
 }
 
 export enum LightType {
@@ -514,6 +516,15 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.ELECTRIC_CRYSTAL_ON]: 0,
     [TerrainType.MACHINE_GLYPH_INACTIVE]: 42,
     [TerrainType.STENCH_SMOKE_GAS]: 35,
+    // U17d, CE Globals.c:343,378,384,388,396-400.
+    [TerrainType.MACHINE_METHANE_VENT_DORMANT]: 30,
+    [TerrainType.MACHINE_METHANE_VENT]: 30,
+    [TerrainType.PILOT_LIGHT]: 0,
+    [TerrainType.MACHINE_PARALYSIS_VENT]: 30,
+    [TerrainType.MACHINE_POISON_GAS_VENT_DORMANT]: 30,
+    [TerrainType.MACHINE_POISON_GAS_VENT]: 30,
+    [TerrainType.GAS_TRAP_POISON]: 30,
+    [TerrainType.FLAMETHROWER]: 30,
 };
 
 /**
@@ -772,6 +783,15 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     [TerrainType.ELECTRIC_CRYSTAL_ON]: DungeonLayer.DUNGEON,
     [TerrainType.MACHINE_GLYPH_INACTIVE]: DungeonLayer.DUNGEON,
     [TerrainType.STENCH_SMOKE_GAS]: DungeonLayer.GAS,
+    // U17d, CE Globals.c:343,378,384,388,396-400.
+    [TerrainType.MACHINE_METHANE_VENT_DORMANT]: DungeonLayer.DUNGEON,
+    [TerrainType.MACHINE_METHANE_VENT]: DungeonLayer.DUNGEON,
+    [TerrainType.PILOT_LIGHT]: DungeonLayer.DUNGEON,
+    [TerrainType.MACHINE_PARALYSIS_VENT]: DungeonLayer.DUNGEON,
+    [TerrainType.MACHINE_POISON_GAS_VENT_DORMANT]: DungeonLayer.DUNGEON,
+    [TerrainType.MACHINE_POISON_GAS_VENT]: DungeonLayer.DUNGEON,
+    [TerrainType.GAS_TRAP_POISON]: DungeonLayer.DUNGEON,
+    [TerrainType.FLAMETHROWER]: DungeonLayer.DUNGEON,
 };
 
 /**
@@ -801,7 +821,8 @@ export const FIRE_TERRAIN_TYPES: readonly TerrainType[] = [
     TerrainType.GAS_EXPLOSION,
     TerrainType.BRAZIER,
     TerrainType.ITEM_FIRE,
-    TerrainType.BRIMSTONE_FIRE
+    TerrainType.BRIMSTONE_FIRE,
+    TerrainType.PILOT_LIGHT, // CE Globals.c:343; fire can occupy the DUNGEON layer.
 ];
 
 /** CE Movement.c:64-80 的纯数据版：对一层快照取最高优先层。 */

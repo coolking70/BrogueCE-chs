@@ -1,0 +1,71 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/e004/brogue/brogue-web
+
+stdout | src/test/u_17d_vents.test.ts > U17d player search → real visible carrier (179,183,174,14,19) > MACHINE_METHANE_VENT_HIDDEN search reveals without firing or wiring, persists and displays
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_17d_vents.test.ts (27 tests | 3 failed) 29045ms
+     ✓ all nine tile rows (including dormant torch light) equal CE sources 4ms
+     ✓ nine restored DF and six successors/armor rows equal CE including no immediate poison successor 2ms
+     ✓ removes precisely nine registrations, preserves remaining ordered eleven and old numeric IDs 1ms
+     ✓ 157 CE-generated appearances include visible traps/vents/fire; hidden forms still look like floor 2ms
+     ✓ four CE autogen starts have exact depth/rate columns; paralysis machine selection/forced-autoGen eligibility remains unchanged 1ms
+     ✓ MACHINE_METHANE_VENT_HIDDEN search reveals without firing or wiring, persists and displays  1876ms
+     ✓ MACHINE_PARALYSIS_VENT_HIDDEN search reveals without firing or wiring, persists and displays  1881ms
+     ✓ MACHINE_POISON_GAS_VENT_HIDDEN search reveals without firing or wiring, persists and displays  1677ms
+     ✓ GAS_TRAP_POISON_HIDDEN search reveals without firing or wiring, persists and displays  1861ms
+     ✓ FLAMETHROWER_HIDDEN search reveals without firing or wiring, persists and displays  2410ms
+     ✓ wall occlusion prevents vent discovery and no gas/flash is forged  1046ms
+     ✓ 180 player picks altar key → same-machine methane opens and emits; other machine stays hidden  1142ms
+     ✓ 180 immediate 60 volume, then 5000/10000 promotion boundary; no forced evacuation 1ms
+     ✓ 175 poison opening has no immediate gas; 10000 boundary emits exactly 25, remains active 1ms
+     ✓ 175 actual pickup → poison vent → diffusion → existing caustic damage, no poisoned status or relocation  875ms
+     ✓ 183/185 pressure plate fires discovered or hidden paralysis vent, reveals silently and applies existing paralysis  2265ms
+     ✓ 185 gas payload is 350 and visible vent can be wired again; breaker prevents remote activation  1218ms
+     × 182 actual pickup drops torch; wall/light preserved and existing fire loop ignites adjacent methane into explosion 1380ms
+     ✓ methane vent 15% ignition boundary overlays CE embers, retaining the non-vanishing vent 1ms
+     ✓ GAS_TRAP_POISON_HIDDEN real step discovers and emits through U17a while preserving trap  865ms
+     ✓ FLAMETHROWER_HIDDEN real step discovers and emits through U17a while preserving trap  1146ms
+     ✓ known poison trap depresses once; empty environment re-arms; JSON restores depression  2156ms
+     ✓ levitation does not depress hidden traps; offscreen monsters fire without player knowledge reveal  1132ms
+     ✓ immolation catalog uses shared fire contact/scroll burning, not a new armor trigger  1921ms
+   × CE67 whole area machine: a real player step opens all wired vents and paralysis expires after leaving 1280ms
+   × CE68 whole area machine: a real player step opens all wired vents and paralysis expires after leaving 984ms
+   ✓ CE40 whole room: actual altar pickup closes exit and starts gas; searching and pulling its created lever reopens exit  1911ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_17d_vents.test.ts > U17d wired activation, gas/fire and final entity consumers > 182 actual pickup drops torch; wall/light preserved and existing fire loop ignites adjacent methane into explosion
+AssertionError: expected 100 to be less than 100
+ ❯ src/test/u_17d_vents.test.ts:102:270
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/test/u_17d_vents.test.ts > CE67 whole area machine: a real player step opens all wired vents and paralysis expires after leaving
+ FAIL  src/test/u_17d_vents.test.ts > CE68 whole area machine: a real player step opens all wired vents and paralysis expires after leaving
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/u_17d_vents.test.ts:137:42
+    135|  const p=plates[0]!;g.player.loc={x:p.x-1,y:p.y};move(g,1,0);expect(g.…
+    136|  for(const v of vents)expect(v.layers[L.DUNGEON]).toBe(T.MACHINE_PARAL…
+    137|  expect(g.player.hasStatus('paralyzed')).toBe(true);expect(g.player.hp…
+       |                                          ^
+    138|  // Gas is transient and has no permanent seal; levitating allies/play…
+    139|  expect(result!.cells.every(p=>g.grid.getCell(p.x,p.y)!.isPassable)).t…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 24 passed (27)
+   Start at  00:35:40
+   Duration  32.01s (transform 1.32s, setup 0ms, import 2.69s, tests 29.04s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/e004/brogue/brogue-web/ai_docs/reports/u-17d-evidence/target-third.json

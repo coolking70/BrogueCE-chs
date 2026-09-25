@@ -18,7 +18,7 @@ import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_
 import { isPathingBlocker } from '../Map/TerrainCatalog';
 // B-4b：物品落位热力图与食物落位原语（CE Items.c:463-535 / Architect.c:171,3822）
 import { ItemSpawnHeatMap, passableArcCount, randomMatchingLocation } from '../Items/ItemSpawnHeatMap';
-import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, discoverSecretsAt, setDormantAwakener, setAllyResurrector, setDungeonFeatureEffects, resetDFMessageEligibility, terrainMechFlags, spawnDungeonFeature, type DungeonFeature } from '../Map/DungeonFeature';
+import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, discoverSecretsAt, setDormantAwakener, setAllyResurrector, setDungeonFeatureEffects, resetDFMessageEligibility, terrainMechFlags, spawnDungeonFeature } from '../Map/DungeonFeature';
 import { DF } from '../Map/DungeonFeatureCatalog';
 import { Architect } from '../Generator/Architect';
 // V-1c：奖励房配额计数器是 CE rogue.rewardRoomsGenerated 的 web 载体——
@@ -83,15 +83,6 @@ import {
 import { CE_DEEPEST_LEVEL } from '../Map/LakeSystem';
 import { WaypointSystem, WAYPOINT_SIGHT_RADIUS, type WaypointContext } from '../Map/WaypointMap';
 import i18next from 'i18next';
-
-/** CE Globals.c:786, DF_ARMOR_IMMOLATION. Runtime-only feature; the generation
- * catalog's closed set remains unchanged until the separate mapping round. */
-const ARMOR_IMMOLATION_FEATURE: DungeonFeature = {
-    tile: TerrainType.PLAIN_FIRE, layer: DungeonLayer.SURFACE,
-    startProbability: 100, probabilityDecrement: 45, flags: 0,
-    propagationTerrain: TerrainType.NOTHING, subsequentDF: null,
-    description: '', lightFlare: '', flashColor: 'yellow', effectRadius: 3,
-};
 
 /**
  * D2（G-1 / P1-45）：从随机生成池排除的药水。
@@ -4673,8 +4664,8 @@ export class Game {
      * frames. Drawing only; no FOV, memory contents or RNG changes. */
     private colorFlash(name: string, radius: number, origin: Pos, frames = 4, discovered = false): void {
         const colors: Record<string, { r: number; g: number; b: number }> = {
+            yellow: { r: 100, g: 100, b: 0 }, // CE GlobalsBase.c:86; DF_ARMOR_IMMOLATION
             gray: { r: 50, g: 50, b: 50 }, darkGray: { r: 30, g: 30, b: 30 }, darkBlue: { r: 0, g: 0, b: 50 },
-            yellow: { r: 100, g: 100, b: 0 },
         };
         const color = colors[name];
         if (!color) throw new Error(`Unmapped CE flash color: ${name}`);
@@ -6898,8 +6889,9 @@ export class Game {
             armor.runicKnown = true;
             logger.log(i18next.t('runic.armor.immolation', { name: armor.displayName,
                 defaultValue: `Flames suddenly explode out of your ${armor.displayName}!` }), '#ff8844');
+            // CE Combat.c:1086-1088: catalog DF_ARMOR_IMMOLATION, refresh on, no blocking abort.
             spawnDungeonFeature(this.grid, this.player.loc.x, this.player.loc.y,
-                ARMOR_IMMOLATION_FEATURE, false);
+                catalogFeature(DF.DF_ARMOR_IMMOLATION), false);
         }
         return remainingDamage;
     }
@@ -9534,10 +9526,14 @@ export class Game {
                 return;
             }
 
-            if (instantTarget) {
-                this.applyDisplacementTileEntry(instantTarget);
+            // CE Time.c:240: grounded creatures also depress CE traps during
+            // ordinary movement/wait contact, not just magical displacement.
+            // Legacy TRAP/pressure-plate entry remains handled by its existing path.
+            if (instantTarget || ((cellTerrainFlags(this.grid, x, y) & T_IS_DF_TRAP)
+                && !cell.layers.includes(TerrainType.TRAP) && !cell.layers.includes(TerrainType.PRESSURE_PLATE))) {
+                this.applyDisplacementTileEntry(entity);
                 // A teleport trap already committed and evaluated its new cell.
-                if (instantTarget.loc.x !== x || instantTarget.loc.y !== y) return;
+                if (entity.loc.x !== x || entity.loc.y !== y) return;
             }
 
             // Fire
@@ -10374,7 +10370,7 @@ export class Game {
      *     走 TerrainCatalog.blocksPassability 查表）；
      *   - percent ≥ 100 时 CE 还置 KNOWN_TO_BE_TRAP_FREE（:2473-2475）——web
      *     无"隐藏陷阱知识"设施（TRAP 恒可见），无处可接，登记不实现；
-     *   - 搜索当前已闭合的密门、隐藏陷门与隐藏墙杆；其余隐藏载体的
+     *   - 搜索当前已闭合的密门、陷门、墙杆、三种喷口和毒气/火焰陷阱；其余隐藏载体的
      *     显形链仍登记在 DF_MISSING_TILES，后续族接线前不伪造发现。
      *   - rand_percent 语义与 web randPercent 逐位一致（先抽
      *     rand_range(0,99) 再 clamp 比较，CE Math.c:62-65）——**percent ≤ 0
@@ -10388,7 +10384,7 @@ export class Game {
             this.levelHasSecrets = false;
             for (let x = 0; x < this.grid.width && !this.levelHasSecrets; x++) {
                 for (let y = 0; y < this.grid.height; y++) {
-                    if (this.grid.getCell(x, y)?.layers.some(t => t === TerrainType.SECRET_DOOR || t === TerrainType.TRAP_DOOR_HIDDEN || t === TerrainType.WALL_LEVER_HIDDEN)) { // F-1 跨层判定
+                    if (this.grid.getCell(x, y)?.layers.some(t => t === TerrainType.SECRET_DOOR || t === TerrainType.TRAP_DOOR_HIDDEN || t === TerrainType.WALL_LEVER_HIDDEN || t === TerrainType.MACHINE_METHANE_VENT_HIDDEN || t === TerrainType.MACHINE_PARALYSIS_VENT_HIDDEN || t === TerrainType.MACHINE_POISON_GAS_VENT_HIDDEN || t === TerrainType.GAS_TRAP_POISON_HIDDEN || t === TerrainType.FLAMETHROWER_HIDDEN)) { // F-1 跨层判定
                         this.levelHasSecrets = true;
                         break;
                     }
@@ -10409,7 +10405,7 @@ export class Game {
         for (let i = px - radius; i <= px + radius; i++) {
             for (let j = py - radius; j <= py + radius; j++) {
                 const cell = this.grid.getCell(i, j);
-                if (cell && cell.layers.some(t => t === TerrainType.SECRET_DOOR || t === TerrainType.TRAP_DOOR_HIDDEN || t === TerrainType.WALL_LEVER_HIDDEN)) { // F-1 跨层判定
+                if (cell && cell.layers.some(t => t === TerrainType.SECRET_DOOR || t === TerrainType.TRAP_DOOR_HIDDEN || t === TerrainType.WALL_LEVER_HIDDEN || t === TerrainType.MACHINE_METHANE_VENT_HIDDEN || t === TerrainType.MACHINE_PARALYSIS_VENT_HIDDEN || t === TerrainType.MACHINE_POISON_GAS_VENT_HIDDEN || t === TerrainType.GAS_TRAP_POISON_HIDDEN || t === TerrainType.FLAMETHROWER_HIDDEN)) { // F-1 跨层判定
                     secretCells.push({ x: i, y: j, cell });
                 }
             }
@@ -10701,6 +10697,11 @@ export class Game {
                 const key = y * this.grid.width + x;
                 if (!depressed.has(key)) {
                     depressed.add(key);
+                    // CE Time.c:249: visible hidden plates are discovered before
+                    // their fire DF. Depression precedes the recursive DF refresh.
+                    if (cell.isVisible && (cellTerrainMechFlags(this.grid, x, y) & TM_IS_SECRET)) {
+                        this.discoverSecretAt(x, y);
+                    }
                     triggerCreatureTrapLayers(this.grid, x, y);
                 }
             }
@@ -10775,6 +10776,27 @@ export class Game {
                 return i18next.t('terrain.crystal_portal', { defaultValue: '水晶传送门' });
             case TerrainType.STAIRS_DOWN:
                 return i18next.t('terrain.stairs_down', { defaultValue: '下行楼梯' });
+            case TerrainType.MACHINE_METHANE_VENT_DORMANT:
+            case TerrainType.MACHINE_POISON_GAS_VENT_DORMANT:
+            case TerrainType.MACHINE_PARALYSIS_VENT:
+                return i18next.t('terrain.inactive_gas_vent', { defaultValue: 'An inactive gas vent' });
+            case TerrainType.MACHINE_METHANE_VENT:
+            case TerrainType.MACHINE_POISON_GAS_VENT:
+                return i18next.t('terrain.gas_vent', { defaultValue: 'A gas vent' });
+            case TerrainType.PILOT_LIGHT:
+                return i18next.t('terrain.fallen_torch', { defaultValue: 'A fallen torch' });
+            case TerrainType.PILOT_LIGHT_DORMANT:
+                return i18next.t('terrain.wall_torch', { defaultValue: 'A wall-mounted torch' });
+            case TerrainType.GAS_TRAP_POISON:
+                return i18next.t('terrain.poison_gas_trap', { defaultValue: 'A caustic gas trap' });
+            case TerrainType.FLAMETHROWER:
+                return i18next.t('terrain.fire_trap', { defaultValue: 'A fire trap' });
+            case TerrainType.MACHINE_METHANE_VENT_HIDDEN:
+            case TerrainType.MACHINE_POISON_GAS_VENT_HIDDEN:
+            case TerrainType.MACHINE_PARALYSIS_VENT_HIDDEN:
+            case TerrainType.GAS_TRAP_POISON_HIDDEN:
+            case TerrainType.FLAMETHROWER_HIDDEN:
+                return i18next.t('terrain.floor', { defaultValue: '地板' });
             case TerrainType.MACHINE_PRESSURE_PLATE_USED:
                 return i18next.t('terrain.pressure_plate_used', { defaultValue: 'An inactive pressure plate' });
             case TerrainType.TRAP_DOOR:

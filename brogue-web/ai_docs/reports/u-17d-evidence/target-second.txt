@@ -1,0 +1,75 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/e004/brogue/brogue-web
+
+stdout | src/test/u_17d_vents.test.ts > U17d player search → real visible carrier (179,183,174,14,19) > MACHINE_METHANE_VENT_HIDDEN search reveals without firing or wiring, persists and displays
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_17d_vents.test.ts (24 tests | 3 failed) 25135ms
+     ✓ all nine tile rows (including dormant torch light) equal CE sources 4ms
+     ✓ nine restored DF and six successors/armor rows equal CE including no immediate poison successor 2ms
+     ✓ removes precisely nine registrations, preserves remaining ordered eleven and old numeric IDs 1ms
+     ✓ 157 CE-generated appearances include visible traps/vents/fire; hidden forms still look like floor 2ms
+     × four CE autogen starts have exact depth/rate columns; retired paralysis machines stay ineligible 6ms
+     ✓ MACHINE_METHANE_VENT_HIDDEN search reveals without firing or wiring, persists and displays  2576ms
+     ✓ MACHINE_PARALYSIS_VENT_HIDDEN search reveals without firing or wiring, persists and displays  2229ms
+     ✓ MACHINE_POISON_GAS_VENT_HIDDEN search reveals without firing or wiring, persists and displays  2325ms
+     ✓ GAS_TRAP_POISON_HIDDEN search reveals without firing or wiring, persists and displays  2261ms
+     ✓ FLAMETHROWER_HIDDEN search reveals without firing or wiring, persists and displays  2130ms
+     ✓ wall occlusion prevents vent discovery and no gas/flash is forged  1377ms
+     ✓ 180 player picks altar key → same-machine methane opens and emits; other machine stays hidden  817ms
+     ✓ 180 immediate 60 volume, then 5000/10000 promotion boundary; no forced evacuation 6ms
+     ✓ 175 poison opening has no immediate gas; 10000 boundary emits exactly 25, remains active 1ms
+     × 175 actual pickup → poison vent → diffusion → existing caustic damage, no poisoned status or relocation 1576ms
+     ✓ 183/185 pressure plate fires discovered or hidden paralysis vent, reveals silently and applies existing paralysis  2121ms
+     ✓ 185 gas payload is 350 and visible vent can be wired again; breaker prevents remote activation  711ms
+     × 182 actual pickup drops torch; wall/light preserved and existing fire loop ignites adjacent methane into explosion 779ms
+     ✓ methane vent 15% ignition boundary overlays CE embers, retaining the non-vanishing vent 0ms
+     ✓ GAS_TRAP_POISON_HIDDEN real step discovers and emits through U17a while preserving trap  812ms
+     ✓ FLAMETHROWER_HIDDEN real step discovers and emits through U17a while preserving trap  930ms
+     ✓ known poison trap depresses once; empty environment re-arms; JSON restores depression  2229ms
+     ✓ levitation does not depress hidden traps; offscreen monsters fire without player knowledge reveal  1107ms
+     ✓ immolation catalog uses shared fire contact/scroll burning, not a new armor trigger  1130ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_17d_vents.test.ts > U17d CE independent catalog, three chains and data starts > four CE autogen starts have exact depth/rate columns; retired paralysis machines stay ineligible
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/u_17d_vents.test.ts:61:200
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/test/u_17d_vents.test.ts > U17d wired activation, gas/fire and final entity consumers > 175 actual pickup → poison vent → diffusion → existing caustic damage, no poisoned status or relocation
+AssertionError: expected 100 to be less than 100
+ ❯ src/test/u_17d_vents.test.ts:91:138
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/test/u_17d_vents.test.ts > U17d wired activation, gas/fire and final entity consumers > 182 actual pickup drops torch; wall/light preserved and existing fire loop ignites adjacent methane into explosion
+TypeError: Cannot read properties of undefined (reading 'caughtFireCells')
+ ❯ runFireUpdate src/engine/Map/Promotion.ts:900:42
+    898|     // 火段的活 skip 集：入参遗留 + 本段内新登记的（CE 旗标是活的，
+    899|     // :1690 的判定在同一段扫描里即时可见——新点的火当回合不再被暴露）。
+    900|     const caught = new Set<number>((opts.caughtFireCells ?? []).map((p…
+       |                                          ^
+    901|
+    902|     for (let i = 0; i < grid.width; i++) {
+ ❯ src/test/u_17d_vents.test.ts:102:232
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 21 passed (24)
+   Start at  00:33:41
+   Duration  27.74s (transform 1.25s, setup 0ms, import 2.39s, tests 25.13s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/e004/brogue/brogue-web/ai_docs/reports/u-17d-evidence/target-second.json

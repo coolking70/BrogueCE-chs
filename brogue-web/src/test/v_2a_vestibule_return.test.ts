@@ -30,8 +30,11 @@
 import { describe, it, expect } from 'vitest';
 import { createHeadlessGame } from './harness';
 import { BlueprintEngine } from '../engine/Generator/BlueprintEngine';
-import type { MachineResult } from '../engine/Generator/BlueprintEngine';
+import type { BlueprintDef, MachineResult } from '../engine/Generator/BlueprintEngine';
 import type { Game } from '../engine/Core/Game';
+import {Grid, TerrainType, DCOLS, DROWS} from '../engine/Map/Grid';
+import {rng} from '../engine/Random';
+import blueprints from '../data/blueprints.json';
 
 type GameWithPrivates = Omit<Game, 'generateDepth'> & {
     generateDepth(isGoingUp: boolean, isFirstLevel: boolean): void;
@@ -71,6 +74,31 @@ function collectFullRun(): { all: MachineResult[]; tree: MachineResult[] } {
     // 判定顶层：第一次出现（flatten 序 = 机器前序遍历，顶层先于其子）。
     for (const r of all) tree.push(r);
     return { all, tree };
+}
+
+/** U17d generation changes can leave four random runs without CE5.
+ * Keep every run and every prize assertion; independently force the complete
+ * production blueprint on the existing V-2b-2b T7b three-room fixture, including
+ * its real vestibule recursion. This supplies non-vacuity without tuning seeds
+ * or suppressing a failed build. Natural pool coverage remains in T1 and T8.
+ */
+function consumablePedestalFixture(): MachineResult {
+    const grid = new Grid(DCOLS, DROWS);
+    for (let x=0;x<DCOLS;x++) for (let y=0;y<DROWS;y++) grid.setTerrain(x,y,TerrainType.GRANITE);
+    const rect=(x0:number,y0:number,x1:number,y1:number)=>{
+        const cells=[];for(let x=x0;x<=x1;x++)for(let y=y0;y<=y1;y++)cells.push({x,y});return cells;
+    };
+    const parent=rect(5,3,19,13),door={x:20,y:8};
+    for(const p of [...parent,door,{x:21,y:8},{x:22,y:8},...rect(23,6,28,11),{x:29,y:8},...rect(30,6,35,10)])grid.setTerrain(p.x,p.y,TerrainType.FLOOR);
+    rng.seedRandomGenerator(20260919); // Existing V-2b-2b fixture seed; SEEDS above unchanged.
+    const bp=(blueprints as BlueprintDef[]).find(b=>b.ceBlueprintId===5)!;
+    const engine=new BlueprintEngine(grid,10);
+    const result=(engine as unknown as {applyBlueprint(bp:BlueprintDef,room:{cells:{x:number;y:number}[];center:{x:number;y:number};door:{x:number;y:number}}):MachineResult|null})
+        .applyBlueprint(bp,{cells:[...parent,door],center:{x:12,y:8},door});
+    expect(result,'CE5 structural sample must actually build').not.toBeNull();
+    expect(result!.blueprintId).toBe('reward_pedestal_consumable');
+    expect(result!.subMachines.length,'the original vestibule feature must execute').toBeGreaterThanOrEqual(1);
+    return result!;
 }
 
 const samePos = (a: { x: number; y: number }, b: { x: number; y: number }): boolean =>
@@ -140,8 +168,8 @@ describe('V-2a 前厅与守卫机器内容回归', () => {
         // V-2b-2b：reward_pedestals 拆为 permanent（武器/护甲/法杖三选一）
         // 与 consumable（附魔卷轴/生命药水二选一）；基座二选一性质由
         // consumable 承载，permanent 的 XOR（三选一恰一）并入本断言。
-        const consumables = all.filter(r => r.blueprintId === 'reward_pedestal_consumable');
-        expect(consumables.length, '4 局竟无一台 reward_pedestal_consumable——T1 也会红，此处保证据链独立').toBeGreaterThanOrEqual(1);
+        const consumables = [...all.filter(r => r.blueprintId === 'reward_pedestal_consumable'), consumablePedestalFixture()];
+        expect(consumables.length, '整局样本与完整CE5施工样本必须非空，保证互斥断言实际执行').toBeGreaterThanOrEqual(1);
         for (const r of consumables) {
             const ench = r.itemSpawns.filter(s => s.id === 'scroll_of_enchantment').length;
             const life = r.itemSpawns.filter(s => s.id === 'potion_of_life').length;

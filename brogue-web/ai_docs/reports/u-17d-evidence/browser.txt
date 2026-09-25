@@ -1,0 +1,91 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Target page, context or browser has been closed
+Browser logs:
+
+<launching> /Users/coolking70/Library/Caches/ms-playwright/chromium-1208/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument,OptimizationHints --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --disable-infobars --disable-search-engine-choice-screen --disable-sync --no-sandbox --user-data-dir=/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/playwright_chromiumdev_profile-VcMyBh --remote-debugging-pipe --no-startup-window
+<launched> pid=361
+[pid=361][err] [0926/003810.948236:ERROR:third_party/crashpad/crashpad/util/mach/bootstrap.cc:65] bootstrap_check_in org.chromium.crashpad.child_port_handshake.365.43637339.NVVKIPENRUBIIXCY: Permission denied (1100)
+[pid=361][err] [0926/003810.949325:ERROR:third_party/crashpad/crashpad/util/file/file_io.cc:103] ReadExactly: expected 4, observed 0
+[pid=361][err] [0926/003810.950053:ERROR:third_party/crashpad/crashpad/util/mach/bootstrap.cc:65] bootstrap_check_in org.chromium.crashpad.child_port_handshake.363.43637336.LGQSMEZBPCIJGVQE: Permission denied (1100)
+[pid=361][err] [0926/003810.951041:ERROR:third_party/crashpad/crashpad/util/file/file_io.cc:103] ReadExactly: expected 4, observed 0
+[pid=361][err] [0926/003810.955012:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:208] open /Users/coolking70/Library/Application Support/Google/Chrome for Testing/Crashpad/settings.dat: Operation not permitted (1)
+[pid=361][err] [0926/003810.955191:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:208] open /Users/coolking70/Library/Application Support/Google/Chrome for Testing/Crashpad/settings.dat: Operation not permitted (1)
+[pid=361][err] Received signal 6
+[pid=361][err]  [0x0001195f4c74]
+[pid=361][err]  [0x0001195f8bdc]
+[pid=361][err]  [0x0001884dd744]
+[pid=361][err]  [0x0001884d38d8]
+[pid=361][err]  [0x0001883d9978]
+[pid=361][err]  [0x00018fba8d34]
+[pid=361][err]  [0x0001883314b0]
+[pid=361][err]  [0x00018831a630]
+[pid=361][err]  [0x00018fb7b8cc]
+[pid=361][err]  [0x00018fb7b6e8]
+[pid=361][err]  [0x00018d97669c]
+[pid=361][err]  [0x00018d97733c]
+[pid=361][err]  [0x00018d9763c8]
+[pid=361][err]  [0x00018d97986c]
+[pid=361][err]  [0x00018c99523c]
+[pid=361][err]  [0x00018c99320c]
+[pid=361][err]  [0x00018c992d00]
+[pid=361][err]  [0x000114ca32e8]
+[pid=361][err]  [0x000115463010]
+[pid=361][err]  [0x000115462e04]
+[pid=361][err]  [0x000114939b3c]
+[pid=361][err]  [0x000113ec8860]
+[pid=361][err]  [0x00011251a2f4]
+[pid=361][err]  [0x0001005d885c]
+[pid=361][err]  [0x0001881084e4]
+[pid=361][err] [end of stack trace]
+[pid=361] <process did exit: exitCode=null, signal=SIGABRT>
+[pid=361] starting temporary directories cleanup
+Call log:
+[2m  - <launching> /Users/coolking70/Library/Caches/ms-playwright/chromium-1208/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument,OptimizationHints --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --disable-infobars --disable-search-engine-choice-screen --disable-sync --no-sandbox --user-data-dir=/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/playwright_chromiumdev_profile-VcMyBh --remote-debugging-pipe --no-startup-window[22m
+[2m  - <launched> pid=361[22m
+[2m  - [pid=361][err] [0926/003810.948236:ERROR:third_party/crashpad/crashpad/util/mach/bootstrap.cc:65] bootstrap_check_in org.chromium.crashpad.child_port_handshake.365.43637339.NVVKIPENRUBIIXCY: Permission denied (1100)[22m
+[2m  - [pid=361][err] [0926/003810.949325:ERROR:third_party/crashpad/crashpad/util/file/file_io.cc:103] ReadExactly: expected 4, observed 0[22m
+[2m  - [pid=361][err] [0926/003810.950053:ERROR:third_party/crashpad/crashpad/util/mach/bootstrap.cc:65] bootstrap_check_in org.chromium.crashpad.child_port_handshake.363.43637336.LGQSMEZBPCIJGVQE: Permission denied (1100)[22m
+[2m  - [pid=361][err] [0926/003810.951041:ERROR:third_party/crashpad/crashpad/util/file/file_io.cc:103] ReadExactly: expected 4, observed 0[22m
+[2m  - [pid=361][err] [0926/003810.955012:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:208] open /Users/coolking70/Library/Application Support/Google/Chrome for Testing/Crashpad/settings.dat: Operation not permitted (1)[22m
+[2m  - [pid=361][err] [0926/003810.955191:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:208] open /Users/coolking70/Library/Application Support/Google/Chrome for Testing/Crashpad/settings.dat: Operation not permitted (1)[22m
+[2m  - [pid=361][err] Received signal 6[22m
+[2m  - [pid=361][err]  [0x0001195f4c74][22m
+[2m  - [pid=361][err]  [0x0001195f8bdc][22m
+[2m  - [pid=361][err]  [0x0001884dd744][22m
+[2m  - [pid=361][err]  [0x0001884d38d8][22m
+[2m  - [pid=361][err]  [0x0001883d9978][22m
+[2m  - [pid=361][err]  [0x00018fba8d34][22m
+[2m  - [pid=361][err]  [0x0001883314b0][22m
+[2m  - [pid=361][err]  [0x00018831a630][22m
+[2m  - [pid=361][err]  [0x00018fb7b8cc][22m
+[2m  - [pid=361][err]  [0x00018fb7b6e8][22m
+[2m  - [pid=361][err]  [0x00018d97669c][22m
+[2m  - [pid=361][err]  [0x00018d97733c][22m
+[2m  - [pid=361][err]  [0x00018d9763c8][22m
+[2m  - [pid=361][err]  [0x00018d97986c][22m
+[2m  - [pid=361][err]  [0x00018c99523c][22m
+[2m  - [pid=361][err]  [0x00018c99320c][22m
+[2m  - [pid=361][err]  [0x00018c992d00][22m
+[2m  - [pid=361][err]  [0x000114ca32e8][22m
+[2m  - [pid=361][err]  [0x000115463010][22m
+[2m  - [pid=361][err]  [0x000115462e04][22m
+[2m  - [pid=361][err]  [0x000114939b3c][22m
+[2m  - [pid=361][err]  [0x000113ec8860][22m
+[2m  - [pid=361][err]  [0x00011251a2f4][22m
+[2m  - [pid=361][err]  [0x0001005d885c][22m
+[2m  - [pid=361][err]  [0x0001881084e4][22m
+[2m  - [pid=361][err] [end of stack trace][22m
+[2m  - [pid=361] <process did exit: exitCode=null, signal=SIGABRT>[22m
+[2m  - [pid=361] starting temporary directories cleanup[22m
+[2m  - [pid=361] <gracefully close start>[22m
+[2m  - [pid=361] <kill>[22m
+[2m  - [pid=361] <skipped force kill spawnedProcess.killed=false processClosed=true>[22m
+[2m  - [pid=361] finished temporary directories cleanup[22m
+[2m  - [pid=361] <gracefully close end>[22m
+
+    at /Users/coolking70/.codex/worktrees/e004/brogue/brogue-web/scripts/u17d-browser.mjs:3:30
+
+Node.js v25.2.1

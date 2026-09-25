@@ -488,7 +488,7 @@ describe('G-2 对抗⑦：未迁移气体只登记（载体盘点表的显式留
         // V-2b-7：29 → 31（摘 5 增 7，DF 特征系统轮——RUBBLE/LUMINESCENT_FUNGUS
         // 两条地形落地摘除四条 RUBBLE 链 DF 与 DF_LUMINESCENT_FUNGUS，新增
         // 七条 tile 无 web 载体的新条目）。
-        expect(DF_MISSING_TILES).toHaveLength(20); // U17c: five more carriers restored; the other 20 stay missing.
+        expect(DF_MISSING_TILES).toHaveLength(11); // U17c: five more carriers restored; the other 20 stay missing.
         const f = catalogFeature(DF.DF_EXPLOSION_FIRE);
         expect(f.tile).toBe(C.GAS_EXPLOSION);
         expect(f.startProbability).toBe(60);

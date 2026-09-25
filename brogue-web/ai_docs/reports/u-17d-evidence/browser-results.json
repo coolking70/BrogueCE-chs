@@ -1,0 +1,1599 @@
+{
+  "errors": [],
+  "results": [
+    {
+      "name": "natural",
+      "state": {
+        "seed": "1719",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 38,
+          "y": 26,
+          "hp": 30,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 32,
+            "y": 23,
+            "hp": 6,
+            "maxHp": 6,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "题为「法阵灵符混沌」的卷轴",
+            "x": 41,
+            "y": 17
+          },
+          {
+            "name": "橙色药水",
+            "x": 31,
+            "y": 24
+          }
+        ]
+      }
+    },
+    {
+      "name": "hidden",
+      "state": {
+        "seed": "1719",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "revealed": [
+        "MACHINE_METHANE_VENT_DORMANT",
+        "MACHINE_PARALYSIS_VENT",
+        "MACHINE_POISON_GAS_VENT_DORMANT",
+        "GAS_TRAP_POISON",
+        "FLAMETHROWER"
+      ]
+    },
+    {
+      "name": "revealed",
+      "state": {
+        "seed": "1719",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2145,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 5,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "poison-before",
+      "state": {
+        "seed": "1719",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "钥匙",
+            "x": 11,
+            "y": 10
+          }
+        ]
+      }
+    },
+    {
+      "kind": "poison",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 11,
+            "y": 10
+          },
+          "hp": 100,
+          "status": {}
+        },
+        "tiles": [
+          {
+            "x": 13,
+            "y": 10,
+            "layers": [
+              "MACHINE_POISON_GAS_VENT",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 25
+          }
+        ],
+        "monsters": [],
+        "items": []
+      }
+    },
+    {
+      "name": "poison-after",
+      "state": {
+        "seed": "1719",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 11,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2148,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 2,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "methane-before",
+      "state": {
+        "seed": "1719",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "钥匙",
+            "x": 11,
+            "y": 10
+          }
+        ]
+      }
+    },
+    {
+      "kind": "methane",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 11,
+            "y": 10
+          },
+          "hp": 100,
+          "status": {}
+        },
+        "tiles": [
+          {
+            "x": 11,
+            "y": 8,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ],
+            "volume": 1
+          },
+          {
+            "x": 11,
+            "y": 9,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ],
+            "volume": 2
+          },
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "ALTAR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ],
+            "volume": 3
+          },
+          {
+            "x": 11,
+            "y": 11,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ],
+            "volume": 1
+          },
+          {
+            "x": 11,
+            "y": 12,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ],
+            "volume": 1
+          },
+          {
+            "x": 12,
+            "y": 8,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ],
+            "volume": 1
+          },
+          {
+            "x": 12,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "METHANE_GAS",
+              "NOTHING"
+            ],
+            "volume": 4
+          },
+          {
+            "x": 12,
+            "y": 11,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "METHANE_GAS",
+              "NOTHING"
+            ],
+            "volume": 4
+          },
+          {
+            "x": 12,
+            "y": 12,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ],
+            "volume": 1
+          },
+          {
+            "x": 13,
+            "y": 8,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ],
+            "volume": 1
+          },
+          {
+            "x": 13,
+            "y": 9,
+            "layers": [
+              "PILOT_LIGHT",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ],
+            "volume": 0
+          },
+          {
+            "x": 13,
+            "y": 10,
+            "layers": [
+              "MACHINE_METHANE_VENT",
+              "NOTHING",
+              "METHANE_GAS",
+              "GAS_EXPLOSION"
+            ],
+            "volume": 0
+          },
+          {
+            "x": 13,
+            "y": 11,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "METHANE_GAS",
+              "GAS_EXPLOSION"
+            ],
+            "volume": 4
+          },
+          {
+            "x": 13,
+            "y": 12,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ],
+            "volume": 2
+          },
+          {
+            "x": 14,
+            "y": 8,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ],
+            "volume": 1
+          },
+          {
+            "x": 14,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "METHANE_GAS",
+              "GAS_EXPLOSION"
+            ],
+            "volume": 5
+          },
+          {
+            "x": 14,
+            "y": 11,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "METHANE_GAS",
+              "GAS_EXPLOSION"
+            ],
+            "volume": 3
+          },
+          {
+            "x": 14,
+            "y": 12,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ],
+            "volume": 2
+          },
+          {
+            "x": 15,
+            "y": 9,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ],
+            "volume": 1
+          },
+          {
+            "x": 15,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ],
+            "volume": 2
+          },
+          {
+            "x": 15,
+            "y": 11,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ],
+            "volume": 2
+          },
+          {
+            "x": 15,
+            "y": 12,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ],
+            "volume": 1
+          }
+        ],
+        "monsters": [],
+        "items": []
+      }
+    },
+    {
+      "name": "methane-after",
+      "state": {
+        "seed": "1719",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 11,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2148,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 2,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "paralysis-before",
+      "state": {
+        "seed": "1719",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 14,
+            "y": 10,
+            "hp": 100,
+            "maxHp": 100,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "kind": "paralysis",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 11,
+            "y": 10
+          },
+          "hp": 100,
+          "status": {}
+        },
+        "tiles": [
+          {
+            "x": 12,
+            "y": 8,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 4
+          },
+          {
+            "x": 12,
+            "y": 9,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 9
+          },
+          {
+            "x": 12,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 13
+          },
+          {
+            "x": 12,
+            "y": 11,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 8
+          },
+          {
+            "x": 12,
+            "y": 12,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 5
+          },
+          {
+            "x": 13,
+            "y": 8,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 8
+          },
+          {
+            "x": 13,
+            "y": 9,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 17
+          },
+          {
+            "x": 13,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 26
+          },
+          {
+            "x": 13,
+            "y": 11,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 18
+          },
+          {
+            "x": 13,
+            "y": 12,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 9
+          },
+          {
+            "x": 14,
+            "y": 8,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 13
+          },
+          {
+            "x": 14,
+            "y": 9,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 26
+          },
+          {
+            "x": 14,
+            "y": 10,
+            "layers": [
+              "MACHINE_PARALYSIS_VENT",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 39
+          },
+          {
+            "x": 14,
+            "y": 11,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 25
+          },
+          {
+            "x": 14,
+            "y": 12,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 13
+          },
+          {
+            "x": 15,
+            "y": 8,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 8
+          },
+          {
+            "x": 15,
+            "y": 9,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 16
+          },
+          {
+            "x": 15,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 26
+          },
+          {
+            "x": 15,
+            "y": 11,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 17
+          },
+          {
+            "x": 15,
+            "y": 12,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 8
+          },
+          {
+            "x": 16,
+            "y": 8,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 4
+          },
+          {
+            "x": 16,
+            "y": 9,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 9
+          },
+          {
+            "x": 16,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 13
+          },
+          {
+            "x": 16,
+            "y": 11,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 8
+          },
+          {
+            "x": 16,
+            "y": 12,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "PARALYSIS_GAS",
+              "NOTHING"
+            ],
+            "volume": 4
+          }
+        ],
+        "monsters": [
+          {
+            "hp": 100,
+            "status": {
+              "paralyzed": 18
+            }
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "name": "paralysis-after",
+      "state": {
+        "seed": "1719",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 11,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 14,
+            "y": 10,
+            "hp": 100,
+            "maxHp": 100,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "poison-trap-before",
+      "state": {
+        "seed": "1719",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "kind": "poison-trap",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 11,
+            "y": 10
+          },
+          "hp": 94,
+          "status": {}
+        },
+        "tiles": [
+          {
+            "x": 9,
+            "y": 8,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 12
+          },
+          {
+            "x": 9,
+            "y": 9,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 24
+          },
+          {
+            "x": 9,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 37
+          },
+          {
+            "x": 9,
+            "y": 11,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 25
+          },
+          {
+            "x": 9,
+            "y": 12,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 12
+          },
+          {
+            "x": 10,
+            "y": 8,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 24
+          },
+          {
+            "x": 10,
+            "y": 9,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 48
+          },
+          {
+            "x": 10,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 74
+          },
+          {
+            "x": 10,
+            "y": 11,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 49
+          },
+          {
+            "x": 10,
+            "y": 12,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 25
+          },
+          {
+            "x": 11,
+            "y": 8,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 37
+          },
+          {
+            "x": 11,
+            "y": 9,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 74
+          },
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "GAS_TRAP_POISON",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 111
+          },
+          {
+            "x": 11,
+            "y": 11,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 74
+          },
+          {
+            "x": 11,
+            "y": 12,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 37
+          },
+          {
+            "x": 12,
+            "y": 8,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 24
+          },
+          {
+            "x": 12,
+            "y": 9,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 49
+          },
+          {
+            "x": 12,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 74
+          },
+          {
+            "x": 12,
+            "y": 11,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 49
+          },
+          {
+            "x": 12,
+            "y": 12,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 25
+          },
+          {
+            "x": 13,
+            "y": 8,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 12
+          },
+          {
+            "x": 13,
+            "y": 9,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 25
+          },
+          {
+            "x": 13,
+            "y": 10,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 37
+          },
+          {
+            "x": 13,
+            "y": 11,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 25
+          },
+          {
+            "x": 13,
+            "y": 12,
+            "layers": [
+              "FLOOR",
+              "NOTHING",
+              "POISON_GAS",
+              "NOTHING"
+            ],
+            "volume": 12
+          }
+        ],
+        "monsters": [],
+        "items": []
+      }
+    },
+    {
+      "name": "poison-trap-after",
+      "state": {
+        "seed": "1719",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 11,
+          "y": 10,
+          "hp": 94,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "fire-trap-before",
+      "state": {
+        "seed": "1719",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "卷轴",
+            "x": 11,
+            "y": 10
+          }
+        ]
+      }
+    },
+    {
+      "kind": "fire-trap",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 11,
+            "y": 10
+          },
+          "hp": 98,
+          "status": {
+            "burning": 6
+          }
+        },
+        "tiles": [
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "FLAMETHROWER",
+              "NOTHING",
+              "NOTHING",
+              "ITEM_FIRE"
+            ],
+            "volume": 0
+          }
+        ],
+        "monsters": [],
+        "items": []
+      }
+    },
+    {
+      "name": "fire-trap-after",
+      "state": {
+        "seed": "1719",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 11,
+          "y": 10,
+          "hp": 98,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "burning": 6
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "narrow",
+      "state": {
+        "seed": "1719",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 11,
+          "y": 10,
+          "hp": 98,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {
+            "burning": 6
+          }
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    }
+  ]
+}

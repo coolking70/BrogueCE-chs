@@ -777,12 +777,12 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
 
     // CE PILOT_LIGHT_DORMANT，Globals.c:342：休眠点火嘴（41 号载体，同上
     // 留形）。墙装火把（T_OBSTRUCTS_EVERYTHING）；wired 通电时晋升
-    // DF_PILOT_LIGHT → PILOT_LIGHT（火把落地点燃可燃物——tile web 无，登记）。
-    // glowLight CE 原列 TORCH_LIGHT，光照目录不在本轮授权清单，登记不迁移。
+    // DF_PILOT_LIGHT → PILOT_LIGHT（U17d: via the shared DF/fire transaction）。
+    // U17d: dormant and fallen torch both use the CE TORCH_LIGHT.
     [TerrainType.PILOT_LIGHT_DORMANT]: e(
         T_OBSTRUCTS_EVERYTHING,
         TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED,
-        0, 'DF_PLAIN_FIRE', '', 'DF_PILOT_LIGHT', 0
+        0, 'DF_PLAIN_FIRE', '', 'DF_PILOT_LIGHT', 0, false, LightKind.TORCH_LIGHT
     ),
 
     // ══ V-2b-4：祭坛族轮——CE 七条蓝图（1/2/6/7/15/26/28 号）的七个地形载体 ══
@@ -1214,6 +1214,15 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
     [TerrainType.FLOOD_WATER_DEEP]: e(T_IS_FLAMMABLE | T_IS_DEEP_WATER, TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_EXTINGUISHES_FIRE | TM_ALLOWS_SUBMERGING, 100, 'DF_STEAM_ACCUMULATION', '', 'DF_FLOOD_DRAIN', -200),
     [TerrainType.MACHINE_CHASM_EDGE]: e(0, TM_IS_WIRED, 0, 'DF_PLAIN_FIRE', '', 'DF_BRIDGE_ACTIVATE_ANNOUNCE', 0),
     [TerrainType.PUDDLE]: e(T_IS_FLAMMABLE, TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION, 20, '', '', '', 100),
+    // U17d: three terrain chains, directly checked against CE-source goldens.
+    [TerrainType.MACHINE_METHANE_VENT_DORMANT]: e(0, TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT, 0, 'DF_PLAIN_FIRE', '', 'DF_METHANE_VENT_OPEN', 0), // CE :399
+    [TerrainType.MACHINE_METHANE_VENT]: e(T_IS_FLAMMABLE, TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT, 15, 'DF_EMBERS', '', 'DF_VENT_SPEW_METHANE', 5000), // CE :400
+    [TerrainType.PILOT_LIGHT]: e(T_OBSTRUCTS_EVERYTHING | T_IS_FIRE, TM_STAND_IN_TILE | TM_LIST_IN_SIDEBAR, 0, 'DF_PLAIN_FIRE', '', '', 0, false, LightKind.TORCH_LIGHT), // CE :343
+    [TerrainType.MACHINE_PARALYSIS_VENT]: e(0, TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT, 0, 'DF_PLAIN_FIRE', '', 'DF_PARALYSIS_VENT_SPEW', 0), // CE :384
+    [TerrainType.MACHINE_POISON_GAS_VENT_DORMANT]: e(0, TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT, 0, 'DF_PLAIN_FIRE', '', 'DF_POISON_GAS_VENT_OPEN', 0), // CE :396
+    [TerrainType.MACHINE_POISON_GAS_VENT]: e(0, TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT, 0, 'DF_PLAIN_FIRE', '', 'DF_VENT_SPEW_POISON_GAS', 10000), // CE :397
+    [TerrainType.GAS_TRAP_POISON]: e(T_IS_DF_TRAP, TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT, 0, 'DF_POISON_GAS_CLOUD', '', '', 0), // CE :378
+    [TerrainType.FLAMETHROWER]: e(T_IS_DF_TRAP, TM_LIST_IN_SIDEBAR | TM_VISUALLY_DISTINCT, 0, 'DF_FLAMETHROWER', '', '', 0), // CE :388
 };
 
 // ── 派生判据（名字照 CE，语义 = 旗标位测试；CE Movement/Dijkstra 等处

@@ -155,4 +155,12 @@ export const TERRAIN_APPEARANCES: Record<TerrainType, BaseTerrainAppearance> = {
     [TerrainType.WALL_LEVER]: { char: "/", color: "#111111", bgColor: 7365475, backDynamic: 'wallBackColor' }, // CE :348
     [TerrainType.WALL_LEVER_PULLED]: { char: "\\", color: "#111111", bgColor: 7365475, backDynamic: 'wallBackColor' }, // CE :349
     [TerrainType.MACHINE_TRIGGER_FLOOR_REPEATING]: { char: "", color: "#000000", bgColor: null, transparentFore: true }, // CE :540
+    [TerrainType.MACHINE_METHANE_VENT_DORMANT]: { char: "=", color: '#4c4c4c', bgColor: null }, // CE :399
+    [TerrainType.MACHINE_METHANE_VENT]: { char: "=", color: '#4c4c4c', bgColor: null }, // CE :400
+    [TerrainType.PILOT_LIGHT]: { char: "\u22cf", color: '#b23300', bgColor: 7365475, backDynamic: 'wallBackColor' }, // CE :343
+    [TerrainType.MACHINE_PARALYSIS_VENT]: { char: "=", color: '#ff99a8', bgColor: null }, // CE :384
+    [TerrainType.MACHINE_POISON_GAS_VENT_DORMANT]: { char: "=", color: '#4c4c4c', bgColor: null }, // CE :396
+    [TerrainType.MACHINE_POISON_GAS_VENT]: { char: "=", color: '#4c4c4c', bgColor: null }, // CE :397
+    [TerrainType.GAS_TRAP_POISON]: { char: "\u25c7", color: '#bf3fd8', bgColor: null }, // CE :378
+    [TerrainType.FLAMETHROWER]: { char: "\u25c7", color: '#ff0000', bgColor: null }, // CE :388
 };

@@ -171,11 +171,11 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         // 9b 再补九个环境效果活动态/落点，115 → 124；补完轮闭合
         // MACHINE_CHASM_EDGE 与 DF_PUDDLE 的载体，124 → 126；9c 七条效果载体 126 → 133。
         // U08 appends two carriers; all old keys/fields stay pinned above.
-        expect(names.filter(n => n !== 'ANCIENT_SPIRIT_VINES' && n !== 'ANCIENT_SPIRIT_GRASS' && n !== 'DUNGEON_PORTAL' && n !== 'ITEM_FIRE' && !['TRAMPLED_FOLIAGE', 'ACTIVE_BRIMSTONE', 'BRIMSTONE_FIRE', 'OPEN_IRON_DOOR_INERT', 'BRIDGE_FALLING', 'MACHINE_PRESSURE_PLATE_USED', 'TRAP_DOOR', 'WALL_LEVER', 'WALL_LEVER_PULLED', 'MACHINE_TRIGGER_FLOOR_REPEATING'].includes(n)).length).toBe(135);
+        expect(names.filter(n => n !== 'ANCIENT_SPIRIT_VINES' && n !== 'ANCIENT_SPIRIT_GRASS' && n !== 'DUNGEON_PORTAL' && n !== 'ITEM_FIRE' && !['TRAMPLED_FOLIAGE', 'ACTIVE_BRIMSTONE', 'BRIMSTONE_FIRE', 'OPEN_IRON_DOOR_INERT', 'BRIDGE_FALLING', 'MACHINE_PRESSURE_PLATE_USED', 'TRAP_DOOR', 'WALL_LEVER', 'WALL_LEVER_PULLED', 'MACHINE_TRIGGER_FLOOR_REPEATING', 'MACHINE_METHANE_VENT_DORMANT', 'MACHINE_METHANE_VENT', 'PILOT_LIGHT', 'MACHINE_PARALYSIS_VENT', 'MACHINE_POISON_GAS_VENT_DORMANT', 'MACHINE_POISON_GAS_VENT', 'GAS_TRAP_POISON', 'FLAMETHROWER'].includes(n)).length).toBe(135);
         expect(names).toContain('DUNGEON_PORTAL'); // U04 CE Globals.c:336
         // U17a burnItem successor; historical 135-row projection remains fixed.
         expect(names).toContain('ITEM_FIRE');
-        expect(names.length).toBe(149);
+        expect(names.length).toBe(157);
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             const entry = TERRAIN_FLAGS[t];
@@ -578,7 +578,7 @@ describe('C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时
         C.STATUE_INERT, C.STATUE_INERT_DOORWAY, C.WOODEN_BARRICADE,
         C.PORTCULLIS_CLOSED, C.WORM_TUNNEL_OUTER_WALL, C.WALL_LEVER_HIDDEN,
         C.WALL_LEVER, C.WALL_LEVER_PULLED, // CE new walls; independent U17c flags guard
-        C.PILOT_LIGHT_DORMANT,
+        C.PILOT_LIGHT_DORMANT, C.PILOT_LIGHT, // U17d CE :343; movement covered by u_17d_vents.
         C.ALTAR_CAGE_RETRACTABLE, C.STATUE_INSTACRACK, C.TORCH_WALL,
         // V-2b-5：休眠唤醒轮七条里，五条是墙族（STATUE_DORMANT :352 /
         // STATUE_DORMANT_DOORWAY :551 / WALL_MONSTER_DORMANT :357 /

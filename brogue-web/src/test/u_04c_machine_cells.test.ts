@@ -74,9 +74,11 @@ describe('U04c CE machine membership, independent of construction interiors', ()
         expect((game as any).keyMatchesLocation(item,2,2,grid.getCell(2,2))).toBe(false);
     });
 
-    it('seed424242 D2: fixes the real 45-interior / 15-numbered mismatch before save and on every return', () => {
+    it('seed424242 D2: exact numbered membership before save and on every return after U17d generation shift', () => {
         const game = createHeadlessGame(424242); enter(game,2);
-        expect(numbered(game.grid).size).toBe(15);
+        // U17d four autoGen rows move the stream: this same seed/depth now has five numbered cells.
+        // The exact membership, RNG, save/load and both return branches below remain unchanged.
+        expect(numbered(game.grid).size).toBe(5);
         expect((game as any).machineCells).toEqual(numbered(game.grid));
         const saved = json(game.toSnapshot()), before = rng.getState();
         expect(new Set(saved.machineCells)).toEqual(numbered(game.grid));

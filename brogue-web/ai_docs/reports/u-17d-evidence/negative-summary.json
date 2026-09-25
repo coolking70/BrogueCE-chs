@@ -1,0 +1,135 @@
+[
+  {
+    "name": "missing-SHOW_METHANE_VENT",
+    "exit": 1,
+    "failed": 1,
+    "titles": [
+      "MACHINE_METHANE_VENT_HIDDEN search reveals without firing or wiring, persists and displays"
+    ]
+  },
+  {
+    "name": "missing-METHANE_VENT_OPEN",
+    "exit": 1,
+    "failed": 1,
+    "titles": [
+      "180 player picks altar key → same-machine methane opens and emits; other machine stays hidden"
+    ]
+  },
+  {
+    "name": "missing-PILOT_LIGHT",
+    "exit": 1,
+    "failed": 1,
+    "titles": [
+      "182 actual pickup drops torch; wall/light preserved and existing fire loop ignites adjacent methane into explosion"
+    ]
+  },
+  {
+    "name": "missing-DISCOVER_PARALYSIS_VENT",
+    "exit": 1,
+    "failed": 1,
+    "titles": [
+      "MACHINE_PARALYSIS_VENT_HIDDEN search reveals without firing or wiring, persists and displays"
+    ]
+  },
+  {
+    "name": "missing-REVEAL_PARALYSIS_VENT_SILENTLY",
+    "exit": 1,
+    "failed": 1,
+    "titles": [
+      "183/185 pressure plate fires discovered or hidden paralysis vent, reveals silently and applies existing paralysis"
+    ]
+  },
+  {
+    "name": "missing-SHOW_POISON_GAS_VENT",
+    "exit": 1,
+    "failed": 1,
+    "titles": [
+      "MACHINE_POISON_GAS_VENT_HIDDEN search reveals without firing or wiring, persists and displays"
+    ]
+  },
+  {
+    "name": "missing-POISON_GAS_VENT_OPEN",
+    "exit": 1,
+    "failed": 1,
+    "titles": [
+      "175 actual pickup → poison vent → diffusion → existing caustic damage, no poisoned status or relocation"
+    ]
+  },
+  {
+    "name": "missing-SHOW_POISON_GAS_TRAP",
+    "exit": 1,
+    "failed": 3,
+    "titles": [
+      "GAS_TRAP_POISON_HIDDEN search reveals without firing or wiring, persists and displays",
+      "GAS_TRAP_POISON_HIDDEN real step discovers and emits through U17a while preserving trap",
+      "autoGen 21: actual CE row placement → player wait on trap → final gas/fire and retained carrier"
+    ]
+  },
+  {
+    "name": "missing-SHOW_FLAMETHROWER_TRAP",
+    "exit": 1,
+    "failed": 3,
+    "titles": [
+      "FLAMETHROWER_HIDDEN search reveals without firing or wiring, persists and displays",
+      "FLAMETHROWER_HIDDEN real step discovers and emits through U17a while preserving trap",
+      "autoGen 27: actual CE row placement → player wait on trap → final gas/fire and retained carrier"
+    ]
+  },
+  {
+    "name": "no-ordinary-trap-entry",
+    "exit": 1,
+    "failed": 6,
+    "titles": [
+      "GAS_TRAP_POISON_HIDDEN real step discovers and emits through U17a while preserving trap",
+      "FLAMETHROWER_HIDDEN real step discovers and emits through U17a while preserving trap",
+      "autoGen 14: actual CE row placement → player wait on trap → final gas/fire and retained carrier",
+      "autoGen 19: actual CE row placement → player wait on trap → final gas/fire and retained carrier",
+      "autoGen 21: actual CE row placement → player wait on trap → final gas/fire and retained carrier",
+      "autoGen 27: actual CE row placement → player wait on trap → final gas/fire and retained carrier"
+    ]
+  },
+  {
+    "name": "no-vent-search",
+    "exit": 1,
+    "failed": 5,
+    "titles": [
+      "MACHINE_METHANE_VENT_HIDDEN search reveals without firing or wiring, persists and displays",
+      "MACHINE_PARALYSIS_VENT_HIDDEN search reveals without firing or wiring, persists and displays",
+      "MACHINE_POISON_GAS_VENT_HIDDEN search reveals without firing or wiring, persists and displays",
+      "GAS_TRAP_POISON_HIDDEN search reveals without firing or wiring, persists and displays",
+      "FLAMETHROWER_HIDDEN search reveals without firing or wiring, persists and displays"
+    ]
+  },
+  {
+    "name": "no-autogen-14",
+    "exit": 1,
+    "failed": 1,
+    "titles": [
+      "autoGen 14: actual CE row placement → player wait on trap → final gas/fire and retained carrier"
+    ]
+  },
+  {
+    "name": "no-autogen-19",
+    "exit": 1,
+    "failed": 1,
+    "titles": [
+      "autoGen 19: actual CE row placement → player wait on trap → final gas/fire and retained carrier"
+    ]
+  },
+  {
+    "name": "no-autogen-21",
+    "exit": 1,
+    "failed": 1,
+    "titles": [
+      "autoGen 21: actual CE row placement → player wait on trap → final gas/fire and retained carrier"
+    ]
+  },
+  {
+    "name": "no-autogen-27",
+    "exit": 1,
+    "failed": 1,
+    "titles": [
+      "autoGen 27: actual CE row placement → player wait on trap → final gas/fire and retained carrier"
+    ]
+  }
+]

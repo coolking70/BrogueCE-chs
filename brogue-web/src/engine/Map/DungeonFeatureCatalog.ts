@@ -50,6 +50,8 @@ export const DFF_CLEAR_LOWER_PRIORITY_TERRAIN = 1 << 10; // :1821 清空落点�
 /** CE `enum dungeonFeatureTypes`（Rogue.h:1469 起，DF_GRANITE_COLUMN=1）的成员。
  *  只列本轮闭包涉及的 19 个；id 与 CE 逐一对位（测试钉死）。 */
 export enum DF {
+    DF_VENT_SPEW_POISON_GAS = 178, // CE Rogue.h:1703; Globals.c:855; required U17d successor.
+    DF_ARMOR_IMMOLATION = 137, // CE Rogue.h:1636; Globals.c:786. Spawned by the immolation armor runic (U15d-2).
     DF_WEB_SMALL = 57,
     DF_WEB_LARGE = 58,
     DF_ANCIENT_SPIRIT_VINES = 59,
@@ -831,7 +833,7 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     // {MACHINE_METHANE_VENT_DORMANT, DUNGEON, 0, 0, 0, "you notice an inactive
     // gas vent…", GENERIC_FLASH_LIGHT}（:858）—— 甲烷喷口显形。
     [DF.DF_SHOW_METHANE_VENT]: {
-        id: DF.DF_SHOW_METHANE_VENT, ceLine: 858, ceTile: 'MACHINE_METHANE_VENT_DORMANT', tile: null,
+        id: DF.DF_SHOW_METHANE_VENT, ceLine: 858, ceTile: 'MACHINE_METHANE_VENT_DORMANT', tile: TerrainType.MACHINE_METHANE_VENT_DORMANT,
         layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: 'you notice an inactive gas vent hidden in a crevice of the floor.',
@@ -843,7 +845,7 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     //（MACHINE_METHANE_VENT_HIDDEN.promoteType）；tile MACHINE_METHANE_VENT
     // web 无（开启态喷口的驻留地形，登记）。
     [DF.DF_METHANE_VENT_OPEN]: {
-        id: DF.DF_METHANE_VENT_OPEN, ceLine: 859, ceTile: 'MACHINE_METHANE_VENT', tile: null,
+        id: DF.DF_METHANE_VENT_OPEN, ceLine: 859, ceTile: 'MACHINE_METHANE_VENT', tile: TerrainType.MACHINE_METHANE_VENT,
         layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null,
         subsequentDF: DF.DF_VENT_SPEW_METHANE,
@@ -863,9 +865,9 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
 
     // {PILOT_LIGHT, DUNGEON, 0, 0, 0, "a torch falls from its mount…",
     // FALLEN_TORCH_FLASH_LIGHT}（:861）—— 火嘴点燃（PILOT_LIGHT_DORMANT.
-    // promoteType；tile PILOT_LIGHT web 无，登记）。
+    // promoteType；tile PILOT_LIGHT U17d 已接回）。
     [DF.DF_PILOT_LIGHT]: {
-        id: DF.DF_PILOT_LIGHT, ceLine: 861, ceTile: 'PILOT_LIGHT', tile: null,
+        id: DF.DF_PILOT_LIGHT, ceLine: 861, ceTile: 'PILOT_LIGHT', tile: TerrainType.PILOT_LIGHT,
         layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: 'a torch falls from its mount and lies sputtering on the floor.',
@@ -875,7 +877,7 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     // {MACHINE_PARALYSIS_VENT, DUNGEON, 0, 0, 0, "you notice an inactive gas
     // vent…", GENERIC_FLASH_LIGHT}（:864）—— 麻痹喷口显形。
     [DF.DF_DISCOVER_PARALYSIS_VENT]: {
-        id: DF.DF_DISCOVER_PARALYSIS_VENT, ceLine: 864, ceTile: 'MACHINE_PARALYSIS_VENT', tile: null,
+        id: DF.DF_DISCOVER_PARALYSIS_VENT, ceLine: 864, ceTile: 'MACHINE_PARALYSIS_VENT', tile: TerrainType.MACHINE_PARALYSIS_VENT,
         layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: 'you notice an inactive gas vent hidden in a crevice of the floor.',
@@ -897,9 +899,9 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
 
     // {MACHINE_PARALYSIS_VENT, DUNGEON, 0, 0, 0}（:866）—— 喷口无声显形
     //（DF_PARALYSIS_VENT_SPEW 的链尾：喷气的同时把隐藏喷口变成可见喷口；
-    // tile MACHINE_PARALYSIS_VENT web 无，登记）。
+    // tile MACHINE_PARALYSIS_VENT U17d 已接回）。
     [DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY]: {
-        id: DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY, ceLine: 866, ceTile: 'MACHINE_PARALYSIS_VENT', tile: null,
+        id: DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY, ceLine: 866, ceTile: 'MACHINE_PARALYSIS_VENT', tile: TerrainType.MACHINE_PARALYSIS_VENT,
         layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: '', lightFlare: '', flashColor: '', effectRadius: 0,
@@ -1106,9 +1108,9 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
 
     // {MACHINE_POISON_GAS_VENT_DORMANT, DUNGEON, 0, 0, 0, "you notice an
     // inactive gas vent hidden in a crevice of the floor.", GENERIC_FLASH_LIGHT}
-    //（:851）——喷口显形体；tile MACHINE_POISON_GAS_VENT_DORMANT web 无（登记）。
+    //（:851）——喷口显形体；tile MACHINE_POISON_GAS_VENT_DORMANT U17d 已接回。
     [DF.DF_SHOW_POISON_GAS_VENT]: {
-        id: DF.DF_SHOW_POISON_GAS_VENT, ceLine: 851, ceTile: 'MACHINE_POISON_GAS_VENT_DORMANT', tile: null,
+        id: DF.DF_SHOW_POISON_GAS_VENT, ceLine: 851, ceTile: 'MACHINE_POISON_GAS_VENT_DORMANT', tile: TerrainType.MACHINE_POISON_GAS_VENT_DORMANT,
         layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: 'you notice an inactive gas vent hidden in a crevice of the floor.',
@@ -1117,9 +1119,9 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
 
     // {MACHINE_POISON_GAS_VENT, DUNGEON, 0, 0, 0, "deadly purple gas starts
     // wafting out of hidden vents in the floor!"}（:852）——毒气喷口开启体；
-    // tile MACHINE_POISON_GAS_VENT web 无（登记）。
+    // tile MACHINE_POISON_GAS_VENT U17d 已接回。
     [DF.DF_POISON_GAS_VENT_OPEN]: {
-        id: DF.DF_POISON_GAS_VENT_OPEN, ceLine: 852, ceTile: 'MACHINE_POISON_GAS_VENT', tile: null,
+        id: DF.DF_POISON_GAS_VENT_OPEN, ceLine: 852, ceTile: 'MACHINE_POISON_GAS_VENT', tile: TerrainType.MACHINE_POISON_GAS_VENT,
         layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: 'deadly purple gas starts wafting out of hidden vents in the floor!',
@@ -1289,16 +1291,16 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     // ——GAS_TRAP_POISON_HIDDEN.discoverType（搜索显形）。tile
     // GAS_TRAP_POISON web 无（登记）。
     [DF.DF_SHOW_POISON_GAS_TRAP]: {
-        id: DF.DF_SHOW_POISON_GAS_TRAP, ceLine: 625, ceTile: 'GAS_TRAP_POISON', tile: null,
+        id: DF.DF_SHOW_POISON_GAS_TRAP, ceLine: 625, ceTile: 'GAS_TRAP_POISON', tile: TerrainType.GAS_TRAP_POISON,
         layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: '', lightFlare: 'GENERIC_FLASH_LIGHT', flashColor: '', effectRadius: 0,
     },
 
     // {FLAMETHROWER, DUNGEON, 0, 0, 0, "", GENERIC_FLASH_LIGHT}（:630）
-    // ——FLAMETHROWER_HIDDEN.discoverType。tile FLAMETHROWER web 无（登记）。
+    // ——FLAMETHROWER_HIDDEN.discoverType。tile FLAMETHROWER U17d 已接回。
     [DF.DF_SHOW_FLAMETHROWER_TRAP]: {
-        id: DF.DF_SHOW_FLAMETHROWER_TRAP, ceLine: 630, ceTile: 'FLAMETHROWER', tile: null,
+        id: DF.DF_SHOW_FLAMETHROWER_TRAP, ceLine: 630, ceTile: 'FLAMETHROWER', tile: TerrainType.FLAMETHROWER,
         layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: '', lightFlare: 'GENERIC_FLASH_LIGHT', flashColor: '', effectRadius: 0,
@@ -1454,6 +1456,9 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     [DF.DF_TURRET_LEVER]: df(201, 896, 'WALL', TerrainType.WALL, DungeonLayer.DUNGEON, 0, 0, DFF_ACTIVATE_DORMANT_MONSTER, '', null, null, 'the wall above the lever shifts to reveal a spark turret!'),
     [DF.DF_STENCH_SMOLDER]: df(218, 931, 'STENCH_SMOKE_GAS', TerrainType.STENCH_SMOKE_GAS, DungeonLayer.GAS, 50, 0, 0, '', null, DF.DF_EMBERS),
     [DF.DF_ACTIVE_GLYPH]: df(90, 727, 'MACHINE_GLYPH', TerrainType.MACHINE_GLYPH, DungeonLayer.DUNGEON, 0, 0, 0, '', null, null),
+    // CE Combat.c:1087 uses this shared row; no separate effect-side definition.
+    [DF.DF_ARMOR_IMMOLATION]: { ...df(137, 786, 'PLAIN_FIRE', TerrainType.PLAIN_FIRE, DungeonLayer.SURFACE, 100, 45), flashColor: 'yellow', effectRadius: 3 },
+    [DF.DF_VENT_SPEW_POISON_GAS]: df(178, 855, 'POISON_GAS', TerrainType.POISON_GAS, DungeonLayer.GAS, 25, 0),
 };
 
 /** 登记"CE 有 tileType 而 web 没有地形"的目录条目 id 清单
@@ -1476,11 +1481,6 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
  *  载体盘点表），故不在本清单。 */
 export const DF_MISSING_TILES: readonly DF[] = [
     // V-2b-9d: inactive glyph and mud-floor stench carriers are complete.
-    DF.DF_SHOW_METHANE_VENT,       // MACHINE_METHANE_VENT_DORMANT（显形体）
-    DF.DF_METHANE_VENT_OPEN,       // MACHINE_METHANE_VENT（开启态喷口驻留体）
-    DF.DF_PILOT_LIGHT,             // PILOT_LIGHT（火嘴落地的火把）
-    DF.DF_DISCOVER_PARALYSIS_VENT, // MACHINE_PARALYSIS_VENT（显形体）
-    DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY, // MACHINE_PARALYSIS_VENT（同上）
     // DF.DF_XXX 已于 V-2b-7 摘除（RUBBLE / LUMINESCENT_FUNGUS 地形落地）——见下方块注
     // ── V-2b-4 增补（7 条，19 → 26）：祭坛族轮的八条新目录条目里，web 尚无
     //    对应 tile 的七条；唯一带完整 tile 的是 DF_CAGE_DISAPPEARS
@@ -1511,8 +1511,6 @@ export const DF_MISSING_TILES: readonly DF[] = [
     //   DF_MONSTER_CAGE_OPENS（tile MONSTER_CAGE_OPEN，本轮新增）、
     //   DF_BONES（tile BONES，本轮新增——featureDF 活消费者强制）。
     //   同轮摘除：DF_OPEN_PORTCULLIS（上方注）。
-    DF.DF_SHOW_POISON_GAS_VENT,    // MACHINE_POISON_GAS_VENT_DORMANT（显形体）
-    DF.DF_POISON_GAS_VENT_OPEN,    // MACHINE_POISON_GAS_VENT（开启态喷口驻留体）
     // ── V-2b-7 摘除（5 条，29 − 5 = 24）：RUBBLE 与 LUMINESCENT_FUNGUS 两个
     //    地形本轮落地（47 号 → 55 号 → 42/57/12/33 号蓝图的地形列与 DF 链
     //    强制），于是下列五条的 tile 全部接上真载体：
@@ -1536,8 +1534,6 @@ export const DF_MISSING_TILES: readonly DF[] = [
     //    DF_FLAMETHROWER（PLAIN_FIRE）、DF_EMBERS_PATCH（EMBERS）、
     //    DF_COFFIN_BURNS（PLAIN_FIRE）、DF_SACRIFICE_CAGE_ACTIVE
     //    （ALTAR_CAGE_RETRACTABLE）。
-    DF.DF_SHOW_POISON_GAS_TRAP,    // GAS_TRAP_POISON（30 号毒气板的显形体）
-    DF.DF_SHOW_FLAMETHROWER_TRAP,  // FLAMETHROWER（30 号喷火口的显形体）
     DF.DF_ALTAR_RETRACT,           // FLOOR_FLOODABLE（42 号祭坛沉入地面）
     DF.DF_PORTAL_ACTIVATE,         // PORTAL_LIGHT（12 号石门激活态）
     DF.DF_SACRIFICE_ALTAR,         // SACRIFICE_ALTAR（47 号献祭完成态）

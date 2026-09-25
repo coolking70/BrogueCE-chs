@@ -46,13 +46,13 @@ describe('U17c CE independent catalog and scope',()=>{
    expect(D[id]).toMatchObject({tile:T[row.tile as keyof typeof T],layer:L[row.layer as keyof typeof L],startProbability:row.startProbability,probabilityDecrement:row.probabilityDecrement,flags:row.flags,description:row.description,lightFlare:row.lightFlare,flashColor:row.flashColor,effectRadius:row.effectRadius,cePropagationTerrain:row.propagationTerrain,propagationTerrain:row.propagationTerrain?T[row.propagationTerrain as keyof typeof T]:null,subsequentDF:row.subsequentDF?DF[row.subsequentDF as keyof typeof DF]:null});
   }
  });
- it('only the five authorized registrations are removed; every other missing identity remains ordered',()=>{
-  expect(DF_MISSING_TILES).toEqual([179,180,182,183,185,85,140,141,143,155,187,174,175,14,19,87,88,145,148,191]);
+ it('historical U17c projection after nine U17d closures; every other missing identity remains ordered',()=>{
+  expect(DF_MISSING_TILES).toEqual([179,180,182,183,185,85,140,141,143,155,187,174,175,14,19,87,88,145,148,191].filter(id=>![179,180,182,183,185,174,175,14,19].includes(id)));
   for(const id of restored)expect(()=>catalogFeature(id)).not.toThrow();
  });
  it('CE-generated appearances preserve all old rows and represent the new glyphs',()=>{
   const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));
-  expect(Object.keys(rows)).toHaveLength(149);
+  expect(Object.keys(rows)).toHaveLength(157);
   for(const name of Object.keys(golden.tiles)){const t=T[name as keyof typeof T];expect(terrainAppearance(t,true)).toMatchObject({char:rows[name].char,color:rows[name].color,bgColor:rows[name].bgColor});}
  });
  it('three machine DF data starts restored, hidden-trap autoGen correct; secret lever and worm machines stay retired',()=>{

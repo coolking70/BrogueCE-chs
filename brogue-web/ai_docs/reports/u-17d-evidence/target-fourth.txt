@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/e004/brogue/brogue-web
+
+stdout | src/test/u_17d_vents.test.ts > U17d player search → real visible carrier (179,183,174,14,19) > MACHINE_METHANE_VENT_HIDDEN search reveals without firing or wiring, persists and displays
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_17d_vents.test.ts (27 tests) 30959ms
+     ✓ MACHINE_METHANE_VENT_HIDDEN search reveals without firing or wiring, persists and displays  2606ms
+     ✓ MACHINE_PARALYSIS_VENT_HIDDEN search reveals without firing or wiring, persists and displays  4629ms
+     ✓ MACHINE_POISON_GAS_VENT_HIDDEN search reveals without firing or wiring, persists and displays  2266ms
+     ✓ GAS_TRAP_POISON_HIDDEN search reveals without firing or wiring, persists and displays  2327ms
+     ✓ FLAMETHROWER_HIDDEN search reveals without firing or wiring, persists and displays  1781ms
+     ✓ wall occlusion prevents vent discovery and no gas/flash is forged  833ms
+     ✓ 180 player picks altar key → same-machine methane opens and emits; other machine stays hidden  741ms
+     ✓ 175 actual pickup → poison vent → diffusion → existing caustic damage, no poisoned status or relocation  886ms
+     ✓ 183/185 pressure plate fires discovered or hidden paralysis vent, reveals silently and applies existing paralysis  2494ms
+     ✓ 185 gas payload is 350 and visible vent can be wired again; breaker prevents remote activation  1154ms
+     ✓ 182 actual pickup drops torch; wall/light preserved and existing fire loop ignites adjacent methane into explosion  936ms
+     ✓ GAS_TRAP_POISON_HIDDEN real step discovers and emits through U17a while preserving trap  849ms
+     ✓ FLAMETHROWER_HIDDEN real step discovers and emits through U17a while preserving trap  1282ms
+     ✓ known poison trap depresses once; empty environment re-arms; JSON restores depression  1959ms
+     ✓ levitation does not depress hidden traps; offscreen monsters fire without player knowledge reveal  1277ms
+     ✓ immolation catalog uses shared fire contact/scroll burning, not a new armor trigger  1272ms
+   ✓ CE67 whole area machine: a real player step opens all wired vents; nearby occupants are paralyzed without damage  1285ms
+   ✓ CE68 whole area machine: a real player step opens all wired vents; nearby occupants are paralyzed without damage  1317ms
+   ✓ CE40 whole room: actual altar pickup closes exit and starts gas; searching and pulling its created lever reopens exit  1048ms
+
+ Test Files  1 passed (1)
+      Tests  27 passed (27)
+   Start at  00:37:10
+   Duration  33.35s (transform 1.23s, setup 0ms, import 2.16s, tests 30.96s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/e004/brogue/brogue-web/ai_docs/reports/u-17d-evidence/target-fourth.json

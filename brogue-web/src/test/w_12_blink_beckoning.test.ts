@@ -235,8 +235,15 @@ describe('W-12 uses W-11 placement: destination effects, pickup and P2/C-5', () 
     it('landing poison trap emits once for the moved creature, not a second objective tick', () => {
         const g = scene(), stationary = monster(g, 20);
         g.grid.setTerrain(10, 5, T.GAS_TRAP_POISON_HIDDEN);
-        const effects = vi.spyOn(g as any, 'applyEnvironmentalEffects'); blink(g);
-        expect(effects).toHaveBeenCalledExactlyOnceWith(g.player);
+        const effects = vi.spyOn(g as any, 'applyEnvironmentalEffects');
+        const objective = vi.spyOn(g as any, 'objectiveTimeBlock'), tick = timeSystem.currentTick;
+        blink(g);
+        // U17d: occupied-cell discovery DF14 refreshes instant contact too
+        // (CE Architect.c:3254-3257). Depression prevents a second emission.
+        expect(effects.mock.calls).toEqual([[g.player], [g.player]]);
+        expect(objective).not.toHaveBeenCalled(); expect(timeSystem.currentTick).toBe(tick);
+        expect(g.grid.getCell(10, 5)!.volume).toBe(1000);
+        expect(g.grid.getCell(10, 5)!.layers[DungeonLayer.DUNGEON]).toBe(T.GAS_TRAP_POISON);
         expect(g.grid.getCell(10, 5)!.layers[DungeonLayer.GAS]).toBe(T.POISON_GAS);
         expect(g.player.hp).toBe(100); expect(stationary.hp).toBe(100);
     });

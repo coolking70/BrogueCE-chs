@@ -1,0 +1,476 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/e004/brogue/brogue-web
+
+stdout | src/test/v_2b_6_keys.test.ts > V-2b-6 C：keyMatchesLocation / keyInPackFor 的否定面（对抗：任意钥匙开任意锁必红） > C1 否定面①：keyLoc 指向 X 的钥匙开不了 Y（坐标不匹配、机器号不同）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_4a_0_layer_model.test.ts > C-4a-0 存档 > 新格式往返：四层逐层还原（含测试手造的多层格）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_4a_0_layer_model.test.ts > C-4a-0 干跑测量：15 种子 × D1-D26 跨层清除事件表 > 全量生成并输出 (层, 旧地形 → 新地形) × 次数（C-4a 的分歧规模输入；只测量不修复）
+[C-4a-0 干跑测量] 15 种子 × D1-D26 共 390 层，跨层清除事件 102247 次，组合 45 种。按层合计：DUNGEON=100945，LIQUID=354，SURFACE=948
+| 层 | 被清地形 → 新地形 | 次数 |
+| --- | --- | --- |
+| DUNGEON | FLOOR → WATER_SHALLOW | 24081 |
+| DUNGEON | FLOOR → WATER_DEEP | 1888 |
+| DUNGEON | FLOOR → CHASM | 2142 |
+| DUNGEON | FLOOR → LAVA | 1602 |
+| DUNGEON | FLOOR → GRASS | 31988 |
+| DUNGEON | FLOOR → FOLIAGE | 15557 |
+| DUNGEON | FLOOR → WEB | 14969 |
+| DUNGEON | FLOOR → MUD | 6482 |
+| DUNGEON | FLOOR → CHASM_EDGE | 964 |
+| DUNGEON | FLOOR → OBSIDIAN | 562 |
+| DUNGEON | FLOOR → INERT_BRIMSTONE | 598 |
+| DUNGEON | WALL → WATER_SHALLOW | 5 |
+| DUNGEON | WALL → WATER_DEEP | 1 |
+| DUNGEON | WALL → CHASM | 1 |
+| DUNGEON | WALL → GRASS | 14 |
+| DUNGEON | WALL → FOLIAGE | 8 |
+| DUNGEON | WALL → WEB | 9 |
+| DUNGEON | WALL → MUD | 2 |
+| DUNGEON | WALL → OBSIDIAN | 1 |
+| DUNGEON | WALL → INERT_BRIMSTONE | 1 |
+| DUNGEON | DOOR → WATER_SHALLOW | 33 |
+| DUNGEON | DOOR → CHASM_EDGE | 27 |
+| DUNGEON | DOOR → OBSIDIAN | 10 |
+| LIQUID | WATER_SHALLOW → FLOOR | 167 |
+| LIQUID | WATER_SHALLOW → WALL | 3 |
+| LIQUID | WATER_SHALLOW → SECRET_DOOR | 2 |
+| LIQUID | WATER_DEEP → WALL | 6 |
+| LIQUID | CHASM → FLOOR | 6 |
+| LIQUID | LAVA → FLOOR | 1 |
+| LIQUID | MUD → FLOOR | 111 |
+| LIQUID | MUD → SECRET_DOOR | 43 |
+| LIQUID | CHASM_EDGE → FLOOR | 8 |
+| LIQUID | CHASM_EDGE → BRIDGE_EDGE | 7 |
+| SURFACE | GRASS → FLOOR | 662 |
+| SURFACE | FOLIAGE → FLOOR | 156 |
+| SURFACE | FOLIAGE → LOCKED_DOOR | 1 |
+| SURFACE | WEB → FLOOR | 67 |
+| SURFACE | BLOOD → FLOOR | 1 |
+| SURFACE | BLOOD → SECRET_DOOR | 1 |
+| SURFACE | ASH → FLOOR | 2 |
+| SURFACE | ASH → SECRET_DOOR | 20 |
+| SURFACE | BONES → FLOOR | 1 |
+| SURFACE | BONES → LOCKED_DOOR | 1 |
+| SURFACE | GRAY_FUNGUS → FLOOR | 25 |
+| SURFACE | GRAY_FUNGUS → SECRET_DOOR | 11 |
+
+ ❯ src/test/c_4a_0_layer_model.test.ts (20 tests | 1 failed) 612295ms
+     ✓ DungeonLayer 数值序逐值对齐 CE Rogue.h:1293-1300（GAS 在 SURFACE 之前） 2ms
+     ✓ 每个 TerrainType 成员都有归属层与 drawPriority（esbuild 不查类型，运行时钉死） 28ms
+     ✓ Cell.layers 长度为 4，新格四层全 NOTHING 1ms
+     ✓ 取 drawPriority 最小者：FLOOR(95) 之下的 GRASS(60) 胜出（比较方向写反即翻红） 0ms
+     ✓ 同优先级先遇到的层胜出：DUNGEON 的 WALL 压过 LIQUID 的 GRANITE（< 写成 <= 即翻红） 0ms
+     ✓ skipGas 跳过 GAS 层（CE skipGas 形参逐位照搬）；terrain getter 固定 skipGas（G-1） 0ms
+     ✓ setTerrain 覆盖后其余三层必须全空（漏清任一层 → getter 返回旧地形，翻红） 0ms
+     ✓ 直接赋值 cell.terrain = t 与 setTerrain 的层语义一致（禁改文件的 8 个直写点靠它逐位不变） 0ms
+     ✓ setTerrain 写 NOTHING：全层清空，getter 返回 NOTHING 0ms
+     ✓ 液体必须落 LIQUID：把某个液体写进 SURFACE 的错误实现在这里翻红 1ms
+     ✓ 表面地形必须落 SURFACE，结构地形必须落 DUNGEON 2ms
+     × 归属表与 drawPriority 表与报告口径逐条一致（表被手滑改动即翻红） 44ms
+     ✓ 跨层覆盖逐事件计数；同层覆盖不产生事件 0ms
+     ✓ 新格式往返：四层逐层还原（含测试手造的多层格）  3593ms
+     ✓ 拒绝只有 terrain、缺少四层 layers 的旧存档，保留当前世界  4029ms
+     ✓ 同种子两次完整生成链（D1→D26），四层逐格逐层相等  116489ms
+     ✓ 留痕（已反转，C-4b）：setTerrainLayer 调用点只出现在清单许可的文件 54ms
+     ✓ 留痕（已反转，G-1）：生成不产气——生成链走完后 GAS 层仍恒空；注气则入层  15974ms
+     ✓ 留痕：Grid.ts 未引入地形属性表（flags / mechFlags / promoteType / fireType / promoteChance 归 C-4a） 1ms
+     ✓ 全量生成并输出 (层, 旧地形 → 新地形) × 次数（C-4a 的分歧规模输入；只测量不修复）  472071ms
+stdout | src/test/c_4a_terrain_catalog.test.ts > C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时点的枚举全集逐位） > Game.canMoveTo（查表）≡ 旧清单：合成格逐地形实测（含生成中出现不了的地形）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/v_2b_6_keys.test.ts (18 tests) 712875ms
+     ✓ C1 否定面①：keyLoc 指向 X 的钥匙开不了 Y（坐标不匹配、机器号不同）  2089ms
+     ✓ C2 否定面②：跨层带下去的钥匙不认同坐标的锁（originDepth 判据；删掉 depth 检查必红）  1452ms
+     ✓ C3 否定面③：非 KEY 类别物品永不匹配（category 门；漏掉即"任意物品开锁"）  1934ms
+     ✓ C4 肯定面：机器号匹配（MF_SKELETON_KEY 的机器条目 → 认同机器的任意锁/笼）  1475ms
+     ✓ C5 keyInPackFor：只从玩家背包找；匹配的背包钥匙被找到、别人的锁不返回  1491ms
+     ✓ D1 携带钥匙的怪死亡 → 物品落怪原地、keyLoc/originDepth 保留；活怪不掉  1947ms
+     ✓ D2 否定面：掉落守卫——死在不可落格（熔岩）上的怪物品不进 items（不凭空消失进岩浆）  2064ms
+     ✓ E1 多 seed 扫描：Kennel 的 DF 列真落位（featureDF 分支执行 + 地形侧确有产物）  249123ms
+     ✓ F1 多 seed × D1-D26：每把锁都有同层匹配钥匙，且锁格与钥匙格都在玩家可达分量内  195227ms
+     ✓ F2 笼群形态（§6.2）：每台带笼的机器都有钥匙认（机器号匹配），且钥匙/携带者可达  254711ms
+     ✓ F3 §6.3（单元口径）：disposableHere=false 的钥匙开锁后保留（CE Movement.c:636-656 收口）  1323ms
+stdout | src/test/c_4c_promotion.test.ts > D：Game 集成（真实事件链） > D1 踩门开门 + 同回合客观块自动关门（CE：OPEN_DOOR promoteChance=10000）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_4c_promotion.test.ts > C-4c E：§五 实测测量（真实关卡、多种子；只测量不断言规模） > E1 每回合晋升频谱 + 缓办分类 + 硫矿实测（wait 站桩，逐回合采样）
+[C-4c 实测 D1] 7 种子 × 40 回合（wait 站桩）
+  客观块总数=280，晋升掷骰总数=5838（平均 20.85 次/块）
+  晋升按源地形：MUD=56，TRAMPLED_FOLIAGE=2，FOLIAGE=2
+  缓办按缺失 tile：ALTAR_CAGE_CLOSED=440
+  OPEN_DOOR 自动关门次数=0
+  硫矿：起点 0 格 → 终点 0 格；ACTIVE_BRIMSTONE 缓办 0 次（期望 ≈ 0.08×格数×块数）
+[C-4c 实测 D20] 7 种子 × 40 回合（wait 站桩）
+  客观块总数=210，晋升掷骰总数=16337（平均 77.80 次/块）
+  晋升按源地形：MUD=154，TRAMPLED_FOLIAGE=2
+  缓办按缺失 tile：ALTAR_CAGE_CLOSED=452
+  OPEN_DOOR 自动关门次数=0
+  硫矿：起点 0 格 → 终点 0 格；ACTIVE_BRIMSTONE 缓办 0 次（期望 ≈ 0.08×格数×块数）
+
+stdout | src/test/c_4c_promotion.test.ts > C-4c E：§五 实测测量（真实关卡、多种子；只测量不断言规模） > E2 玩家行走 60 回合：踩踏开门→自动关门链在真实行走里的触发计数
+[C-4c 行走实测 seed=424242] 60 回合内 OPEN_DOOR 自动关门 1 次（每次关门对应一次踩踏开门）
+[C-4c 行走实测 seed=777] 60 回合内 OPEN_DOOR 自动关门 0 次（每次关门对应一次踩踏开门）
+[C-4c 行走实测 seed=31337] 60 回合内 OPEN_DOOR 自动关门 0 次（每次关门对应一次踩踏开门）
+
+stdout | src/test/c_4c_promotion.test.ts > C-4c E：§五 实测测量（真实关卡、多种子；只测量不断言规模） > E3 静态盘点：31 地形中 promoteChance≠0 的活数据、负值死数据
+[C-4c 静态盘点]
+  活 promoteChance：OPEN_DOOR:10000→DF_CLOSED_DOOR；MUD:100→DF_METHANE_GAS_PUFF；INERT_BRIMSTONE:800→DF_ACTIVE_BRIMSTONE；PLAIN_FIRE:500→DF_EMBERS；EMBERS:300→DF_ASH；GAS_FIRE:8000→（无 DF）；GAS_EXPLOSION:10000→（无 DF）；MACHINE_FLOOD_WATER_SPREADING:2500→DF_WATER_SPREADS；MACHINE_COLLAPSE_EDGE_SPREADING:2500→DF_COLLAPSE_SPREADS；CHASM_WITH_HIDDEN_BRIDGE_ACTIVE:6000→DF_BRIDGE_ACTIVATE；PUDDLE:100→（无 DF）；DARK_FLOOR_DARKENING:1500→DF_DARK_FLOOR；HAUNTED_TORCH_TRANSITIONING:2000→DF_HAUNTED_TORCH；MACHINE_GLYPH_INACTIVE:10000→DF_ACTIVE_GLYPH；ANCIENT_SPIRIT_VINES:1000→DF_ANCIENT_SPIRIT_GRASS；ITEM_FIRE:3000→DF_EMBERS；TRAMPLED_FOLIAGE:100→DF_FOLIAGE_REGROW；ACTIVE_BRIMSTONE:10→DF_INERT_BRIMSTONE；BRIMSTONE_FIRE:2500→（无 DF）；BRIDGE_FALLING:10000→DF_BRIDGE_FALL；MACHINE_METHANE_VENT:5000→DF_VENT_SPEW_METHANE；MACHINE_POISON_GAS_VENT:10000→DF_VENT_SPEW_POISON_GAS
+  负值（扩散型）载体：HOLE:-1000；HOLE_EDGE:-500；FORCEFIELD:-200；FORCEFIELD_MELT:-10000；LAVA_RETRACTING:-1500；FLOOD_WATER_SHALLOW:-100；FLOOD_WATER_DEEP:-200
+
+ ✓ src/test/c_4c_promotion.test.ts (21 tests) 212060ms
+     ✓ D1 踩门开门 + 同回合客观块自动关门（CE：OPEN_DOOR promoteChance=10000）  1895ms
+     ✓ D2 踩楼梯触发 DF_REPEL_CREATURES（tile=NOTHING 的合法无地形 DF；U17a 实际驱离）  1394ms
+     ✓ D3 决定性复验（§五.5）：同种子同操作序列跑两遍，逐回合四层快照全等  5223ms
+     ✓ E1 每回合晋升频谱 + 缓办分类 + 硫矿实测（wait 站桩，逐回合采样）  195379ms
+     ✓ E2 玩家行走 60 回合：踩踏开门→自动关门链在真实行走里的触发计数  8077ms
+stdout | src/test/v_2b_5_dormant.test.ts > V-2b-5 B：toggleMonsterDormancy（CE Monsters.c:4156-4210 双向直译） > B1 睡下方向：换表 + isDormant + 格标记；getMonsterAt 从此看不见它
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/v_2b_5_dormant.test.ts (17 tests) 108787ms
+     ✓ B1 睡下方向：换表 + isDormant + 格标记；getMonsterAt 从此看不见它  2031ms
+     ✓ B2 醒来方向：移回 monsters（prepend）+ 清标记 + 200 tick 不动  1550ms
+     ✓ B3 格被占则重选址（CE :4168-4181）——被普通怪占与被玩家占两种形态  3651ms
+     ✓ B4 两表皆无 → 无操作（CE 两次 removeCreature 都失败时不做任何事）  1850ms
+     ✓ C1 blockingMap 半句：DF 铺开多大一片，那片里的休眠怪全醒（不只原点）  1781ms
+     ✓ C2 原点半句：builtCells 为空时原点那只仍要醒（startProbability=0 的 DF，CE :679 形态）  1733ms
+     ✓ C3 不带唤醒旗标的 DF 不得唤醒（DF_ALTAR_INERT：flags=0、tile=ALTAR web 有）  1536ms
+     ✓ C4 连通性否决失败（succeeded=false）时不得唤醒（CE 该段在 if(succeeded) 里）  2006ms
+     ✓ D1 三 seed × D1-D26：机器怪记属机；休眠怪在 dormantMonsters 且不在 monsters；两者无交集  92612ms
+stdout | src/test/u_08_terrain_bolts.test.ts > U08 CE catalog and runtime qualification > SPIDERWEB rejects teammates, invulnerable, web immune and current entanglement without rolling
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_08_terrain_bolts.test.ts (32 tests) 30655ms
+     ✓ SPIDERWEB rejects teammates, invulnerable, web immune and current entanglement without rolling  1747ms
+     ✓ ANCIENT_SPIRIT_VINES rejects teammates, invulnerable, web immune and current entanglement without rolling  907ms
+     ✓ distinct forbidden flags: web rejects immobile/turret, vines rejects inanimate  882ms
+     ✓ real spider and dryad always cast, pay 400/100 ticks, and reject sleeping/hidden/blocked targets  2699ms
+     ✓ no target => no ticks/RNG; repeated web does not recast while occupied terrain holds  1059ms
+     ✓ SPIDERWEB exactly reproduces pathDF once per reached cell then targetDF, including RNG  1636ms
+     ✓ ANCIENT_SPIRIT_VINES exactly reproduces pathDF once per reached cell then targetDF, including RNG  1501ms
+     ✓ SPIDERWEB hits intervening ally and stops; never reflects even from 100% undefined reflector  1155ms
+     ✓ ANCIENT_SPIRIT_VINES hits intervening ally and stops; never reflects even from 100% undefined reflector  1333ms
+     ✓ wall is reached, receives no surface, and stops travel; endpoint spread can fill adjacent legal cells  765ms
+     ✓ empty origin aim does not fabricate a landing or DF  815ms
+     ✓ origin is not a path step, but DF spread may reach it  832ms
+     ✓ vines immediately promote under player during fill, levitating=false  774ms
+     ✓ vines immediately promote under player during fill, levitating=true  807ms
+     ✓ refresh occurs during fill, not after it; nested grass fill cannot overwrite stronger vines  773ms
+     ✓ player walking and magical placement promote vines, monsters keep them  772ms
+     ✓ terrain 23 holds ordinary monster, immune spider walks, breaking preserves floor and water  819ms
+     ✓ terrain 135 holds ordinary monster, immune spider walks, breaking preserves floor and water  1339ms
+     ✓ release clears only SURFACE even in a synthetic multi-layer entanglement  786ms
+     ✓ a manually installed learnable vines bolt executes for an ally without spending learning points  1088ms
+     ✓ gradual vines damage once, bypass shield, hurt web-immune/flying, exempt inanimate/invulnerable  1212ms
+     ✓ respiration also protects from vines and identifies; lethal monster damage uses ordinary cleanup  722ms
+     ✓ spontaneous promotion is <1000 out of 0..10000 and leaves non-promoting grass  1553ms
+     ✓ terrain 23 burns to plain fire, with original base/liquid intact  812ms
+     ✓ terrain 135 burns to plain fire, with original base/liquid intact  770ms
+     ✓ terrain 136 burns to plain fire, with original base/liquid intact  794ms
+     ✓ current snapshot retains new terrain/occupancy, next contact promotes and no learning is installed  2291ms
+stdout | src/test/c_4a_terrain_catalog.test.ts > C-4a F：干跑测量——calculateMap 改用 isPathingBlocker 的影响（只测量不修复） > 15 种子 × D1-D26：cost 图逐格分歧表（下一轮 C-4b 的输入）
+[C-4a 干跑测量] 15 种子 × D1-D26（每层内部格全扫）
+  语义分歧（cost 1 → OBSTRUCTION，距离图将改变）：13602 格
+    按地形：WATER_DEEP=2570，CRYSTAL_WALL=2232，TRAP=1628，LAVA=1620，TORCH_WALL=1566，STATUE_INERT=565，TRAP_DOOR_HIDDEN=548，BLOODFLOWER_STALK=525，GAS_TRAP_PARALYSIS_HIDDEN=456，ACTIVE_BRIMSTONE=418，PRESSURE_PLATE=326，GAS_TRAP_POISON_HIDDEN=319，FLAMETHROWER_HIDDEN=222，INERT_BRIMSTONE=116，STATUE_DORMANT=80，BRIMSTONE_FIRE=72，WALL_MONSTER_DORMANT=67，LOCKED_DOOR=66，TURRET_DORMANT=58，CHASM_WITH_HIDDEN_BRIDGE=28，FLAMETHROWER=27，RAT_TRAP_WALL_DORMANT=16，GAS_TRAP_PARALYSIS=15，MONSTER_CAGE_CLOSED=13，GAS_TRAP_POISON=11，PLAIN_FIRE=10，STATUE_INERT_DOORWAY=8，HAUNTED_TORCH_DORMANT=6，WOODEN_BARRICADE=4，PILOT_LIGHT_DORMANT=3，WALL_LEVER_HIDDEN_DORMANT=2，FLOOD_TRAP=2，STATUE_DORMANT_DOORWAY=2，WALL_LEVER_HIDDEN=1
+  数值分歧（FORBIDDEN → OBSTRUCTION，均不可走，仅 cost 数值变）：4822 格
+    按地形：CHASM=3030，SECRET_DOOR=1790，STATUE_INERT=2
+
+ ❯ src/test/c_4a_terrain_catalog.test.ts (30 tests | 4 failed) 461013ms
+     ✓ T_PATHING_BLOCKER 恰为七旗标并集：漏一员（popcount=6）或混入外员（≥8）都翻红 2ms
+     ✓ 其余复合旗标逐个对位（Rogue.h:1947-1954） 0ms
+     × 全 TerrainType 键覆盖且字段结构齐全——拼写错/缺键在此翻红而非得 undefined 21ms
+     ✓ webOnly 标记恰为 4 条：BOG / SIGN / RESET_PLATE / CHARRED_FLOOR，其余全 false 1ms
+     ✓ webOnly 地形的兜底旗标（写错即红）：BOG 可燃，SIGN/RESET_PLATE/CHARRED_FLOOR 零旗标 0ms
+     ✓ F-1 新增条目：PLAIN_FIRE（CE Globals.c:492）逐字段钉死 0ms
+     ✓ F-2a 新增条目：EMBERS（CE Globals.c:469）与 ASH（:461）逐字段钉死 0ms
+     ✓ G-1 新增条目：POISON_GAS（Globals.c:502）/ CONFUSION_GAS（:503）/ STEAM（:508）逐字段钉死 1ms
+     ✓ G-2 新增条目：GAS_FIRE（Globals.c:495）/ METHANE_GAS（:507）逐字段钉死 0ms
+     ✓ G-3 新增条目：PARALYSIS_GAS（CE Globals.c:506）逐字段钉死 0ms
+     ✓ B-3 新增条目：FORCEFIELD（Globals.c:477）/ FORCEFIELD_MELT（:478）逐字段钉死 0ms
+     ✓ B-3 新增条目：CRYSTAL_WALL（Globals.c:338）与 SACRED_GLYPH（:479）逐字段钉死 0ms
+     ✓ V-2b-2b 新增条目：机器蓝图地形载体六条逐字段钉死（CE Globals.c 原列） 1ms
+     × F-2a 守卫：Grid.FIRE_TERRAIN_TYPES（isBurning 派生集）≡ T_IS_FIRE 旗标载体集 2ms
+     ✓ blocksPassability ≠ isPathingBlocker：CHASM/TRAP/LAVA/WATER_DEEP/INERT_BRIMSTONE 只被后者挡 0ms
+     ✓ blocksVision ≠ blocksPassability：FOLIAGE/DOOR 挡视线不挡路 0ms
+     ✓ flags 抄错的可观测后果：T_IS_DEEP_WATER 只在深水；楼梯挡物品；蛛网缠绕 2ms
+     ✓ mechFlags 抄录抽查：深水灭火/可潜、锁门要钥匙、密门 IS_SECRET 0ms
+     × terrainAllowsMove（查表）≡ 旧排除清单 {GRANITE,WALL,SECRET_DOOR,LOCKED_DOOR,WATER_DEEP} 1ms
+     × Game.canMoveTo（查表）≡ 旧清单：合成格逐地形实测（含生成中出现不了的地形） 2163ms
+     ✓ B-3：迁移后新增的墙族 tile 的通行判定 = CE 查表口径（挡通行、不进旧清单）  1931ms
+     ✓ V-2b-3：wired 载体九条的通行判定 = CE 查表口径（四条墙族挡通行、五条可走）  1444ms
+     ✓ V-2b-4：祭坛族七条的通行判定 = CE 查表口径（三条墙族挡通行、四条可走）  1790ms
+     ✓ V-2b-5：休眠载体七条的通行判定 = CE 查表口径（五条墙族挡通行、两条可走）  1627ms
+     ✓ V-2b-6：钥匙轮载体的通行判定 = CE 查表口径（两条挡通行、四条可走）  2683ms
+     ✓ V-2b-7：DF 特征系统轮载体的通行判定 = CE 查表口径（三条挡通行、十六条可走）  1674ms
+     ✓ 留痕（已按自带指示扩清单，C-4c）：promote/fire 类字段的生产读者只出现在白名单文件 30ms
+     ✓ 留痕：setTerrain 启发式现状 = P1-38 分歧表（接 CE 判据的轮次须先更新测量报告再翻转本断言） 3ms
+     ✓ 留痕：Pathfinding.calculateMap cost 现状——深水/锁门/岩浆/陷阱 cost=1（C-4b 接 isPathingBlocker 后翻转为 PDS_OBSTRUCTION） 1ms
+     ✓ 15 种子 × D1-D26：cost 图逐格分歧表（下一轮 C-4b 的输入）  447630ms
+stdout | src/test/u_17b_carriers.test.ts > U17b triggers reach final terrain, entities, light and persistence > 61 actual step tramples foliage, opens sight; moving away allows regrowth; occupied regrowth retramples synchronously
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_6_autogenerators.test.ts > C-6 集成：真实目录在真实生成里的行为 > 实测：草/树的实际生成数随深度分布（CE 数量公式的 web 落地曲线）
+[c_6] 草/树生成数随深度分布（2 种子合计，built 口径）:
+D1	grass=18	foliage=14
+D2	grass=16	foliage=8
+D3	grass=14	foliage=0
+D4	grass=12	foliage=0
+D5	grass=12	foliage=0
+D6	grass=10	foliage=0
+D7	grass=8	foliage=0
+D8	grass=6	foliage=0
+D9	grass=4	foliage=0
+D10	grass=4	foliage=0
+D11	grass=0	foliage=0
+D12	grass=0	foliage=0
+D13	grass=0	foliage=0
+D14	grass=0	foliage=0
+D15	grass=0	foliage=0
+D16	grass=0	foliage=0
+D17	grass=0	foliage=0
+D18	grass=0	foliage=0
+D19	grass=0	foliage=0
+D20	grass=0	foliage=0
+D21	grass=0	foliage=0
+D22	grass=0	foliage=0
+D23	grass=0	foliage=0
+D24	grass=0	foliage=0
+D25	grass=0	foliage=0
+D26	grass=0	foliage=0
+
+ ❯ src/test/c_6_autogenerators.test.ts (17 tests | 1 failed) 25539ms
+     ✓ AD-1 对抗：两趟分流——buildAreaMachines 写反在此翻红（合成一趟必挂） 5ms
+     ✓ AD-2 对抗：数量公式的 /100、maxNumber 封顶、负数向零截断（任何一处错在此翻红） 1ms
+     ✓ AD-3 对抗：frequency 追加循环——写成 if 或漏掉在此翻红 1ms
+     ✓ AD-4a 对抗：落点必须检查 DUNGEON 基座（不检查的实现把草铺上墙） 1ms
+     ✓ AD-4b 对抗：落点必须检查 LIQUID 基座（DEEP_WATER 基座只落深水格） 1ms
+     ✓ AD-5 对抗：深度约束——写反或边界开合写错在此翻红（CE 含两端） 61ms
+     ✓ AD-6 对抗：randomMatchingLocation 的 CE 语义——500 次全败返回 null 且恰消耗 1000 个随机数 2ms
+     ✓ AD-7 表长 49、数值列逐条相等、死条目 index 0、基座列抽查 3ms
+     × AD-8 接线：generateTerrain 跑非机器趟且真的长草/树；generateLevel 跑机器趟 522ms
+     ✓ AD-7 哨兵：真实目录的机器趟零 RNG 消耗（空转链在此翻红）  435ms
+     ✓ 实测：草/树的实际生成数随深度分布（CE 数量公式的 web 落地曲线）  24502ms
+     ✓ 哨兵 S-1：非机器 wired 条目仍只落草/树/水晶墙；机器接线集合精确覆盖 13 条 1ms
+     ✓ 留痕 T1：光照类条目未接——C-7 光照目录落地后反转（index 13/30/31/38） 0ms
+     ✓ 留痕 T2：陷阱族（显/隐）未接——按 CE tile 目录落地陷阱后反转（index 14-15/17-22/24-28/32） 1ms
+     ✓ 留痕 T3 反转：V-2b-9e-2 接齐全部 13 条 CE 机器族 0ms
+     ✓ 留痕 T4（T-1 反转 index 1/33）：装饰/植物/dewar 族未接——随各自 tile 落地轮反转 0ms
+     ✓ 留痕 T5：index 0（granite column）是 CE 上游死条目——除非上游修复，永不接 0ms
+stdout | src/test/u_17a_df_transaction.test.ts > U17a actual Game consumers > recursive hole marks player falling without inventing an immediate floor-item update
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_17b_carriers.test.ts (20 tests) 20853ms
+     ✓ 61 actual step tramples foliage, opens sight; moving away allows regrowth; occupied regrowth retramples synchronously  1449ms
+     ✓ 61 fallen item also tramples regrowth; other layers block regrowth according to CE priority  1192ms
+     ✓ 66 environment activates inert brimstone at 800/10000 boundary, never an invented explosion  683ms
+     ✓ 104 player fire bolt ignites ACTIVE into INERT + sulfur fire, burns an occupant and scroll through the shared transaction  956ms
+     ✓ 104 active timeout at 10/10000 creates sulfur fire/light; 2500/10000 expiry leaves liquid, no embers  880ms
+     ✓ 83 wrong key leaves lock, matching key bump opens iron door, emits flare, consumes disposable key; later steps never reclose it  827ms
+     ✓ 83 reusable key persists; snapshot retains the iron tile, passability and appearance name  2490ms
+     ✓ 98 fire bolt collapses a rope span only, successor walks the bridge, then creature falls; stone bridge is nonflammable  1009ms
+     ✓ 98 a levitating player remains above the collapsed bridge; an earthbound player falls at turn boundary  819ms
+     ✓ bridge floor item fall: potion shatters, weapon queues exactly once, survives save/load and new-level landing  3272ms
+     ✓ fall landing uses item-only CE terrain veto: allows liquid, excludes occupied/machine/stair cells, and delays future catch-up  1401ms
+     ✓ D40 floor falls destroy even nonpotions without a D41 queue  748ms
+   ✓ fallen-item restore runs before the new-level RNG reseed, once; cached lower floors consume the same ownership queue  3454ms
+   ✓ fallen items on existing fire/lava burn before drifting; amulet survives lava and future items wait  829ms
+   ✓ fallen-item landing excludes each CE map veto and terrain obstruction, then chooses the nearest free ring  830ms
+stdout | src/test/c_7_lighting.test.ts > C-7 updateVision 集成（CE Time.c:859 → Light.c:208 → Movement.c:2582） > 黑暗药水真实入口使 FOV 缩小，逐 tick 衰减后恢复
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/c_7_lighting.test.ts (28 tests) 16735ms
+     ✓ 黑暗药水真实入口使 FOV 缩小，逐 tick 衰减后恢复  2091ms
+     ✓ 深水且未漂浮时半径减半，离水立即恢复  2029ms
+     ✓ CE 固有光让深层矿灯以外的 wisp 可见  2508ms
+     ✓ 对抗⑤消费面：深层岩浆自发光——glowLight 列没接上/不被消费即红  1399ms
+     ✓ 对抗④集成面：矿灯深度衰减在视野上可观测——深层可见格骤减  1698ms
+     ✓ VISIBLE = 掩码 ∧ 光强>50：玩家格恒可见，墙后格不因光而可见  1498ms
+     ✓ 渲染馈送：getLight 接口拿到矿灯光（UI-1 起渲染改走 lightAt 三通道，本接口保留为兼容面）  1763ms
+     ✓ 无地形光：矿灯不驱散阴影 → 减半一次；playerInDarkness 为 false（矿灯中心恒亮）  1443ms
+     ✓ 站进祭坛烛光（CANDLE_LIGHT 载体）：阴影被驱散 → 潜行范围恢复 14+adj  2212ms
+ ✓ src/test/u_17a_df_transaction.test.ts (27 tests) 21261ms
+     ✓ recursive hole marks player falling without inventing an immediate floor-item update  953ms
+     ✓ instant fire burns only scrolls, ignites and damages through recursive DF before returning  1786ms
+     ✓ lethal player contact ends the actual Game before burning items, filling later cells or running descendants  1472ms
+     ✓ direct and descendant fires register the current-turn skip without callers draining results  832ms
+     ✓ runtime evacuation moves real player and creature; generation refresh=false moves without contact/status  1215ms
+     ✓ alarm uses four-way path radius from origin, resets scent, preserves allies, wakes enemies and sets source status  2014ms
+     ✓ two Game/grid owners cannot redirect each others contact or messages  1743ms
+     ✓ actual stair movement changes level before REPEL_CREATURES can evict the player  2988ms
+     ✓ alarm source may be remote: wall detours reject nearby cells and only player-origin alarms add AGGRAVATING  793ms
+     ✓ alarm status, moved entities and post-load grid binding survive the existing snapshot contract  1627ms
+     ✓ flash obeys refresh, radius and animation lifetime without changing lighting or either RNG stream  795ms
+     ✓ transient flashes are discarded by load and new-run lifecycle without entering snapshots  1408ms
+     ✓ retired grid cannot mutate the replacement world after load  1088ms
+     ✓ retired grid cannot mutate the replacement world after new-run  1063ms
+     ✓ retired grid cannot mutate the replacement world after test-depth  1437ms
+stdout | src/test/u_17c_triggers.test.ts > U17c real actions → final terrain / entity / solvability > 154 player step powers only same-number remote gate and leaves an inactive pressure plate
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_4b_dungeon_feature.test.ts > C-4b F：留痕（本轮明确不做的事；C-4c 翻转） > F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/c_4b_dungeon_feature.test.ts (31 tests) 9601ms
+     ✓ A6 t>100 收敛分支 + 决定性：蛇形长廊全程淹没、值域被压回、同种子重跑逐字节相等  327ms
+     ✓ F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空  8860ms
+stdout | src/test/g_2_gas_df_wiring.test.ts > G-2 对抗②：CE 蒸汽源是"每回合 +15 于被点燃水格"的持续源 > 火贴水期间蒸汽总量逐回合增长（一次性实现的注入-衰减形态在此翻红）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_17c_triggers.test.ts (17 tests) 15879ms
+     ✓ 154 player step powers only same-number remote gate and leaves an inactive pressure plate  1424ms
+     ✓ 154 actual thrown weapon depresses a LIQUID plate, clears that layer and opens the linked cage  828ms
+     ✓ 154 monster placement uses the shared contact; breaker blocks power but not the plate state  1080ms
+     ✓ 17 manual search clears hidden base and surface, creates liquid hole + halo/flare, then confirmed player falls  1269ms
+     ✓ 17 search has no forged discovery behind a wall; hidden trapdoor falls without confirmation and levitation prevents falling  1030ms
+     ✓ 95 searching then bumping wall lever leaves player in place, consumes a turn and opens a distant gate exactly once  2096ms
+     ✓ 95 upstream dormant wired lever can be created after a cached no-secret scan, then searched and pulled  1649ms
+     ✓ 144 carpet-constrained propagation remains invisible; player entry/wait repeatedly sends power, monsters and items do not  941ms
+     ✓ 144 resurrection consumer: empty altar can retry on the retained floor after an ally enters purgatory  1072ms
+     ✓ 152 DF lays holes and each halo without evacuation; monster and floor items reuse the fall queues  3202ms
+   ✓ 152 CE22 whole blueprint builds the pit before the plate; actual throw opens its exit  1277ms
+ ✓ src/test/v_2b_3_wired.test.ts (28 tests) 115ms
+ ✓ src/test/r_1_appearance.test.ts (45 tests) 50ms
+ ✓ src/test/g_2_gas_df_wiring.test.ts (17 tests) 9409ms
+     ✓ 火贴水期间蒸汽总量逐回合增长（一次性实现的注入-衰减形态在此翻红）  1612ms
+     ✓ 浅水不可燃（CE SHALLOW_WATER ign=0）：贴火不产蒸汽——灭火层不是蒸锅炉  1720ms
+     ✓ 火场 B（seed2026 场景流复位）十字街四象限草地：点火蔓延曲线逐位 = S-1 基线。错误实现：本轮顺手改动火侧蔓延概率/衰老掷骰/4 邻判据——曲线形态立变。原 FIRE-NAT seed2026 哨兵锚定真实地图取景点 + 真实怪物 AI 流位置（C-5/C-6 两次实证漂移），S-1 起改锚全合成场景。  2916ms
+     ✓ 火场 C（seed777 场景流复位）蜂窝孔草地：点火蔓延曲线逐位 = S-1 基线。原 seed777 哨兵依赖玩家第 22 回合死亡截断（文件自注"更脆弱"），合成场景下玩家与火隔离，40 回合全程可观测，脆弱点一并消除。  1587ms
+     ✓ 泥格晋升命中后：沼气经 GAS 分支落地、gasGrid 镜像经 Game 对账分支同步  1537ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/c_4a_0_layer_model.test.ts > C-4a-0 归属层表（错误归属 → 具体后果翻红） > 归属表与 drawPriority 表与报告口径逐条一致（表被手滑改动即翻红）
+AssertionError: expected { '0': +0, '1': +0, '2': +0, …(154) } to deeply equal { '0': +0, '1': +0, '2': +0, …(146) }
+
+- Expected
++ Received
+
+@@ -53,11 +53,19 @@
+    "144": 0,
+    "145": 1,
+    "146": 0,
+    "147": 0,
+    "148": 1,
++   "149": 0,
+    "15": 0,
++   "150": 0,
++   "151": 0,
++   "152": 0,
++   "153": 0,
++   "154": 0,
++   "155": 0,
++   "156": 0,
+    "16": 0,
+    "17": 0,
+    "18": 0,
+    "19": 0,
+    "2": 0,
+
+ ❯ src/test/c_4a_0_layer_model.test.ts:229:36
+    227|
+    228|     it('归属表与 drawPriority 表与报告口径逐条一致（表被手滑改动即翻红）', () => {
+    229|         expect(TERRAIN_HOME_LAYER).toEqual({
+       |                                    ^
+    230|             // U17d: CE Globals.c:343/378/384/388/396-400.
+    231|             [C.MACHINE_METHANE_VENT_DORMANT]: L.DUNGEON,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  src/test/c_4a_terrain_catalog.test.ts > C-4a B：表完整性（esbuild 只剥类型，运行时钉死） > 全 TerrainType 键覆盖且字段结构齐全——拼写错/缺键在此翻红而非得 undefined
+AssertionError: expected 143 to be 135 // Object.is equality
+
+- Expected
++ Received
+
+- 135
++ 143
+
+ ❯ src/test/c_4a_terrain_catalog.test.ts:174:382
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  src/test/c_4a_terrain_catalog.test.ts > C-4a B：表完整性（esbuild 只剥类型，运行时钉死） > F-2a 守卫：Grid.FIRE_TERRAIN_TYPES（isBurning 派生集）≡ T_IS_FIRE 旗标载体集
+AssertionError: 本断言失败 = 目录里的火地形集合变了: expected [ 31, 37, 40, 85, 138, 141, 151 ] to deeply equal [ 31, 37, 40, 85, 138, 141 ]
+
+- Expected
++ Received
+
+@@ -3,6 +3,7 @@
+    37,
+    40,
+    85,
+    138,
+    141,
++   151,
+  ]
+
+ ❯ src/test/c_4a_terrain_catalog.test.ts:473:53
+    471|             .map((k) => (TerrainType as unknown as Record<string, Terr…
+    472|             .filter((t) => (TERRAIN_FLAGS[t].flags & T_IS_FIRE) !== 0);
+    473|         expect(flagCarriers, '本断言失败 = 目录里的火地形集合变了').toEqual([...FIRE_T…
+       |                                                     ^
+    474|         for (const t of FIRE_TERRAIN_TYPES) {
+    475|             expect(isFireTerrain(t), `${TerrainType[t]} 应带 T_IS_FIRE 旗…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  src/test/c_4a_terrain_catalog.test.ts > C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时点的枚举全集逐位） > terrainAllowsMove（查表）≡ 旧排除清单 {GRANITE,WALL,SECRET_DOOR,LOCKED_DOOR,WATER_DEEP}
+AssertionError: PILOT_LIGHT: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/c_4a_terrain_catalog.test.ts:620:63
+    618|             const t = (TerrainType as unknown as Record<string, Terrai…
+    619|             if (POST_LEGACY_TILES.has(t)) continue; // 迁移后新增，无旧判据（见组注）
+    620|             expect(terrainAllowsMove(t), `${TerrainType[t]}`).toBe(leg…
+       |                                                               ^
+    621|         }
+    622|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  src/test/c_4a_terrain_catalog.test.ts > C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时点的枚举全集逐位） > Game.canMoveTo（查表）≡ 旧清单：合成格逐地形实测（含生成中出现不了的地形）
+AssertionError: PILOT_LIGHT: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/c_4a_terrain_catalog.test.ts:632:60
+    630|             if (POST_LEGACY_TILES.has(t)) continue; // 迁移后新增，无旧判据（见组注）
+    631|             game.grid.setTerrain(20, 20, t);
+    632|             expect(canMoveTo(20, 20), `${TerrainType[t]}`).toBe(legacy…
+       |                                                            ^
+    633|         }
+    634|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  src/test/c_6_autogenerators.test.ts > C-6 集成：真实目录在真实生成里的行为 > AD-8 接线：generateTerrain 跑非机器趟且真的长草/树；generateLevel 跑机器趟
+AssertionError: 统计里出现了非 wired 条目 index 21——无载体条目被接上: expected [ 3, 8 ] to include 21
+ ❯ src/test/c_6_autogenerators.test.ts:369:69
+    367|         const idxs = arch.autogenNonMachine!.entries.map(e => e.index);
+    368|         for (const i of idxs) {
+    369|             expect([3, 8], `统计里出现了非 wired 条目 index ${i}——无载体条目被接上`).to…
+       |                                                                     ^
+    370|         }
+    371|         expect(arch.autogenNonMachine!.totalBuilt, 'D5 草/树一条都没长——接线或数量…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  3 failed | 12 passed (15)
+      Tests  6 failed | 362 passed (368)
+   Start at  00:36:27
+   Duration  1146.17s (transform 3.09s, setup 0ms, import 25.66s, tests 2257.13s, environment 6ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/e004/brogue/brogue-web/ai_docs/reports/u-17d-evidence/guard-discovery.json

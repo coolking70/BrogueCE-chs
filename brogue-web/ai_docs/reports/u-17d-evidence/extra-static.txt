@@ -1,0 +1,177 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/e004/brogue/brogue-web
+
+ ✓ src/test/c_4c_promotion.test.ts (21 tests | 19 skipped) 12ms
+ ❯ src/test/v_2b_5_dormant.test.ts (17 tests | 1 failed | 16 skipped) 19ms
+     ↓ A1 逐字段钉死（flags/mech/ignite/fire/discover/promote/glow/prio/home）
+     ↓ A2 STATUE_INSTACRACK 链位更正钉死：promoteType=DF_STATUE_SHATTER、discoverType 空
+     × A3 四条新 DF 条目 ≡ CE 目录行；DF_MISSING_TILES 顺延为 28（顺延不放宽） 17ms
+     ↓ 21 号 vestibule_statue_monster（:318-321）
+     ↓ 29 号 key_rat_trap_dormant（:364-368）
+     ↓ 41 号 key_explosive_trap（:445-449，V-2b-3 推迟项）
+     ↓ 43 号 key_statuary（:460-463）与 50 号 key_worm_trap（:505-508）
+     ↓ 56 号 key_turret_trap（:545-548）；69/70 号（:608-616）freq 0 退池留形
+     ↓ B1 睡下方向：换表 + isDormant + 格标记；getMonsterAt 从此看不见它
+     ↓ B2 醒来方向：移回 monsters（prepend）+ 清标记 + 200 tick 不动
+     ↓ B3 格被占则重选址（CE :4168-4181）——被普通怪占与被玩家占两种形态
+     ↓ B4 两表皆无 → 无操作（CE 两次 removeCreature 都失败时不做任何事）
+     ↓ C1 blockingMap 半句：DF 铺开多大一片，那片里的休眠怪全醒（不只原点）
+     ↓ C2 原点半句：builtCells 为空时原点那只仍要醒（startProbability=0 的 DF，CE :679 形态）
+     ↓ C3 不带唤醒旗标的 DF 不得唤醒（DF_ALTAR_INERT：flags=0、tile=ALTAR web 有）
+     ↓ C4 连通性否决失败（succeeded=false）时不得唤醒（CE 该段在 if(succeeded) 里）
+     ↓ D1 三 seed × D1-D26：机器怪记属机；休眠怪在 dormantMonsters 且不在 monsters；两者无交集
+ ❯ src/test/u_17b_carriers.test.ts (20 tests | 1 failed | 19 skipped) 11ms
+     ↓ five complete tile rows come from CE, including flags, all three chains and glow
+     ↓ nine CE DF rows include the new regrowth successor and all inherited edge fields
+     ↓ historical U17b missing projection excludes exactly the five U17c closures
+     × appearance golden extension keeps every previous row byte-equivalent in value 10ms
+     ↓ 61 actual step tramples foliage, opens sight; moving away allows regrowth; occupied regrowth retramples synchronously
+     ↓ 61 fallen item also tramples regrowth; other layers block regrowth according to CE priority
+     ↓ 66 environment activates inert brimstone at 800/10000 boundary, never an invented explosion
+     ↓ 104 player fire bolt ignites ACTIVE into INERT + sulfur fire, burns an occupant and scroll through the shared transaction
+     ↓ 104 active timeout at 10/10000 creates sulfur fire/light; 2500/10000 expiry leaves liquid, no embers
+     ↓ 83 wrong key leaves lock, matching key bump opens iron door, emits flare, consumes disposable key; later steps never reclose it
+     ↓ 83 reusable key persists; snapshot retains the iron tile, passability and appearance name
+     ↓ 98 fire bolt collapses a rope span only, successor walks the bridge, then creature falls; stone bridge is nonflammable
+     ↓ 98 a levitating player remains above the collapsed bridge; an earthbound player falls at turn boundary
+     ↓ no evacuation is invented: all five DFs preserve position; brimstone contact still ignites
+     ↓ bridge floor item fall: potion shatters, weapon queues exactly once, survives save/load and new-level landing
+     ↓ fall landing uses item-only CE terrain veto: allows liquid, excludes occupied/machine/stair cells, and delays future catch-up
+     ↓ D40 floor falls destroy even nonpotions without a D41 queue
+   ↓ fallen-item restore runs before the new-level RNG reseed, once; cached lower floors consume the same ownership queue
+   ↓ fallen items on existing fire/lava burn before drifting; amulet survives lava and future items wait
+   ↓ fallen-item landing excludes each CE map veto and terrain obstruction, then chooses the nearest free ring
+ ❯ src/test/c_7_lighting.test.ts (28 tests | 2 failed | 26 skipped) 51ms
+     ↓ 恰好 60 条，且 LightKind 枚举成员与下标一一对位（esbuild 剥类型，缺条目运行时才暴露）
+     ↓ NO_LIGHT 是 CE {0} 原样（含 clumpFactor=0）
+     ↓ 对抗③：矿灯条目 passThroughCreatures = true（Globals.c:958 原列；写成 false 即红）
+     ↓ 关键地形光条目逐字段等于 CE 原值（含 randomRange 型半径——抄成定值即红）
+     × 全 tile 的 glowLight 逐值等于 CE 原列（结构性穷尽） 37ms
+     × 非零恰 37 个（U17b 硫磺火后继），且都指向有载体的目录条目 12ms
+     ↓ 深度衰减方向与精确值：随深度单调收缩（写反/改公式即红）
+     ↓ 光明戒指倍率分支（Light.c:125-131）：正倍率放大有下限、负倍率除法收缩
+     ↓ 黑暗状态立方衰减 + 1/20 下限 + 2*FP 退化托底（Light.c:134-148）
+     ↓ 水中减半（Light.c:150-152，同量纲 3*FP 退化下限）
+     ↓ 矿灯颜色随深度插值（updateColors + applyColorAverage 的 C 整除口径）
+     ↓ VISIBILITY_THRESHOLD = 50（Rogue.h:184）
+     ↓ 对抗①：径向衰减方向——中心最亮、随距离单调变暗（写反即红）
+     ↓ 对抗②：区间半径 {500,1000} 的确定性取中点 750（取 lowerBound/upperBound 定值即红）
+     ↓ 对抗③行为面：passThroughCreatures=false 时生物截断光路，=true 时穿透
+     ↓ IS_IN_SHADOW 语义：矿灯（maintainShadows）不驱散阴影，地形正色光驱散（Light.c:70-71/97-99）
+     ↓ 黑暗药水真实入口使 FOV 缩小，逐 tick 衰减后恢复
+     ↓ 深水且未漂浮时半径减半，离水立即恢复
+     ↓ CE 固有光让深层矿灯以外的 wisp 可见
+     ↓ 对抗⑤消费面：深层岩浆自发光——glowLight 列没接上/不被消费即红
+     ↓ 对抗④集成面：矿灯深度衰减在视野上可观测——深层可见格骤减
+     ↓ VISIBLE = 掩码 ∧ 光强>50：玩家格恒可见，墙后格不因光而可见
+     ↓ 渲染馈送：getLight 接口拿到矿灯光（UI-1 起渲染改走 lightAt 三通道，本接口保留为兼容面）
+     ↓ 无地形光：矿灯不驱散阴影 → 减半一次；playerInDarkness 为 false（矿灯中心恒亮）
+     ↓ 站进祭坛烛光（CANDLE_LIGHT 载体）：阴影被驱散 → 潜行范围恢复 14+adj
+     ↓ playerInDarkness 判据：负色光压过矿灯时翻真（Light.c:283-287 的 −10 余量口径）
+     ↓ 留痕（对抗⑥）：除载体清单外，任何 LightKind 名不得出现在生产代码（接了无载体条目=空转链）
+     ↓ 留痕（UI-1 第 7 条已反转，2026-09-18）：渲染层消费 lightAt 三通道做 CE 乘法，仍不得直接 import 光照目录/paintLight
+ ✓ src/test/v_2b_3_wired.test.ts (28 tests | 27 skipped) 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/c_7_lighting.test.ts > C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列） > 全 tile 的 glowLight 逐值等于 CE 原列（结构性穷尽）
+AssertionError: TerrainType.61 glowLight 不符: expected 33 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 33
+
+ ❯ src/test/c_7_lighting.test.ts:323:81
+    321|             const expected = EXPECTED_GLOW[t];
+    322|             expect(expected, `TerrainType.${t} 缺期望值（表没跟上新 tile？）`).toB…
+    323|             expect(TERRAIN_FLAGS[t].glowLight, `TerrainType.${t} glowL…
+       |                                                                                 ^
+    324|         }
+    325|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/test/c_7_lighting.test.ts > C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列） > 非零恰 37 个（U17b 硫磺火后继），且都指向有载体的目录条目
+AssertionError: expected [ Array(39) ] to deeply equal [ Array(37) ]
+
+- Expected
++ Received
+
+@@ -10,10 +10,11 @@
+    44,
+    45,
+    46,
+    49,
+    53,
++   61,
+    62,
+    63,
+    65,
+    68,
+    69,
+@@ -34,6 +35,7 @@
+    132,
+    133,
+    137,
+    138,
+    141,
++   151,
+  ]
+
+ ❯ src/test/c_7_lighting.test.ts:332:25
+    330|             .map(([k]) => Number(k) as TerrainType)
+    331|             .sort((a, b) => a - b);
+    332|         expect(nonzero).toEqual([
+       |                         ^
+    333|             TerrainType.LAVA, TerrainType.ALTAR, TerrainType.EMBERS,
+    334|             TerrainType.CONFUSION_GAS, TerrainType.GAS_FIRE,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/test/u_17b_carriers.test.ts > U17b CE data / closed first family > appearance golden extension keeps every previous row byte-equivalent in value
+AssertionError: expected [ 'NOTHING', 'GRANITE', …(155) ] to have a length of 149 but got 157
+
+- Expected
++ Received
+
+- 149
++ 157
+
+ ❯ src/test/u_17b_carriers.test.ts:58:29
+     56|   const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrai…
+     57|   for(const name of Object.keys(golden.tiles))expect(rows[name].ceLine…
+     58|   expect(Object.keys(rows)).toHaveLength(149);expect(restored.every(id…
+       |                             ^
+     59|  });
+     60| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/test/v_2b_5_dormant.test.ts > V-2b-5 A：七个休眠载体地形 ≡ CE Globals.c 原行 > A3 四条新 DF 条目 ≡ CE 目录行；DF_MISSING_TILES 顺延为 28（顺延不放宽）
+AssertionError: expected [ 85, 140, 141, 143, 155, 187, …(5) ] to have a length of 20 but got 11
+
+- Expected
++ Received
+
+- 20
++ 11
+
+ ❯ src/test/v_2b_5_dormant.test.ts:196:34
+    194|         // 两条地形落地摘除四条 RUBBLE 链 DF 与 DF_LUMINESCENT_FUNGUS，新增
+    195|         // 七条 tile 无 web 载体的新条目）。
+    196|         expect(DF_MISSING_TILES).toHaveLength(20); // U17c: five more …
+       |                                  ^
+    197|         expect(DF_MISSING_TILES).toContain(DF.DF_WALL_CRACK);
+    198|         expect(DF_MISSING_TILES).toContain(DF.DF_CRACKING_STATUE);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  3 failed | 2 passed (5)
+      Tests  4 failed | 3 passed | 107 skipped (114)
+   Start at  00:44:39
+   Duration  4.95s (transform 2.50s, setup 0ms, import 8.08s, tests 96ms, environment 19ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/e004/brogue/brogue-web/ai_docs/reports/u-17d-evidence/extra-static.json

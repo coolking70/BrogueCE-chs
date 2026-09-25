@@ -146,6 +146,14 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         [TerrainType.WALL_LEVER]: 0, // CE U17c
         [TerrainType.WALL_LEVER_PULLED]: 0, // CE U17c
         [TerrainType.MACHINE_TRIGGER_FLOOR_REPEATING]: 0, // CE U17c
+        [TerrainType.MACHINE_METHANE_VENT_DORMANT]: 0, // CE U17d
+        [TerrainType.MACHINE_METHANE_VENT]: 0, // CE U17d
+        [TerrainType.PILOT_LIGHT]: LightKind.TORCH_LIGHT, // CE U17d
+        [TerrainType.MACHINE_PARALYSIS_VENT]: 0, // CE U17d
+        [TerrainType.MACHINE_POISON_GAS_VENT_DORMANT]: 0, // CE U17d
+        [TerrainType.MACHINE_POISON_GAS_VENT]: 0, // CE U17d
+        [TerrainType.GAS_TRAP_POISON]: 0, // CE U17d
+        [TerrainType.FLAMETHROWER]: 0, // CE U17d
 
         [TerrainType.TRAMPLED_FOLIAGE]: 0, [TerrainType.ACTIVE_BRIMSTONE]: 0,
         [TerrainType.BRIMSTONE_FIRE]: LightKind.BRIMSTONE_FIRE_LIGHT,
@@ -224,12 +232,12 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         [TerrainType.GAS_TRAP_PARALYSIS_HIDDEN]: 0,     // Globals.c:381 NO_LIGHT
         [TerrainType.MACHINE_PARALYSIS_VENT_HIDDEN]: 0, // Globals.c:383 NO_LIGHT
         [TerrainType.MACHINE_METHANE_VENT_HIDDEN]: 0,   // Globals.c:398 NO_LIGHT
-        [TerrainType.PILOT_LIGHT_DORMANT]: 0,           // Globals.c:342 原列 TORCH_LIGHT，登记不迁移
+        [TerrainType.PILOT_LIGHT_DORMANT]: LightKind.TORCH_LIGHT, // U17d restores CE Globals.c:342
         // V-2b-4 七条（祭坛族轮，CE 原列）：ALTAR_CAGE_OPEN/RETRACTABLE 与
         // RESURRECTION_ALTAR 都是 CANDLE_LIGHT（Globals.c:364/368/538 第 10 列）；
         // TORCH_WALL 是 TORCH_LIGHT（:337）——三枚 LightKind 目录里都有成员
         // （CANDLE_LIGHT=53、TORCH_LIGHT=33），故本轮**真实点亮**（与
-        // PILOT_LIGHT_DORMANT 的"登记不迁移"不同，载体的光照语义本轮生效）。
+        // PILOT_LIGHT_DORMANT 当时的"登记不迁移"不同，载体的光照语义本轮生效）。
         // AMULET_SWITCH（:529）、STATUE_INSTACRACK（:354）为 NO_LIGHT。
         // COMMUTATION_ALTAR 的 CE 原列即 NO_LIGHT（:532，注释块首列的
         // "// commutation device" 段没有烛光——置换祭坛不发光是 CE 原样）。
@@ -324,12 +332,13 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         }
     });
 
-    it('非零恰 37 个（U17b 硫磺火后继），且都指向有载体的目录条目', () => {
+    it('非零恰 39 个（U17d 两态长明灯），且都指向有载体的目录条目', () => {
         const nonzero = Object.entries(TERRAIN_FLAGS)
             .filter(([, v]) => v.glowLight !== LightKind.NO_LIGHT)
             .map(([k]) => Number(k) as TerrainType)
             .sort((a, b) => a - b);
         expect(nonzero).toEqual([
+            TerrainType.PILOT_LIGHT_DORMANT, TerrainType.PILOT_LIGHT,
             TerrainType.LAVA, TerrainType.ALTAR, TerrainType.EMBERS,
             TerrainType.CONFUSION_GAS, TerrainType.GAS_FIRE,
             TerrainType.GAS_EXPLOSION, TerrainType.PLAIN_FIRE, TerrainType.ITEM_FIRE, TerrainType.BRIMSTONE_FIRE,
@@ -779,7 +788,7 @@ describe('C-7 载体边界留痕', () => {
         // V-2b-4（祭坛族轮）反转：TORCH_WALL（Globals.c:337）落地——它在 CE
         // 的 glowLight 列就是 TORCH_LIGHT，载体就是 tile 本身，与上面 B-3 的
         // 四种同款（updateVision 会真实点亮，"无载体空转链"的留痕前提失效）。
-        // 注意：PILOT_LIGHT_DORMANT（:342）的 TORCH_LIGHT 仍**不迁移**
+        // U17d：PILOT_LIGHT_DORMANT（:342）的 TORCH_LIGHT 现已恢复
         // （登记在 EXPECTED_GLOW 里为 0）——载体与光名是两件事，本清单只登记
         // "光名现在有真实载体"。
         'TORCH_LIGHT',

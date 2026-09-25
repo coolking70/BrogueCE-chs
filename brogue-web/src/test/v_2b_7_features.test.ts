@@ -318,10 +318,13 @@ describe('V-2b-7 B：22 条新 DF 目录条目 ≡ CE Globals.c 原行', () => {
         // 链的完整闭包：DF_SWAMP → DF_SWAMP_MUD → DF_SWAMP_WATER → 0
         expect(DUNGEON_FEATURE_CATALOG[DF.DF_SWAMP_WATER]!.subsequentDF).toBeNull();
 
+        // U17d: only these two CE trap carriers were restored; the other five remain missing.
+        for (const [id, line, tile] of [[DF.DF_SHOW_POISON_GAS_TRAP, 625, C.GAS_TRAP_POISON], [DF.DF_SHOW_FLAMETHROWER_TRAP, 630, C.FLAMETHROWER]] as const) {
+            expect(DUNGEON_FEATURE_CATALOG[id]).toMatchObject({ceLine: line, ceTile: C[tile], tile, layer: L.DUNGEON, flags: 0});
+            expect(DF_MISSING_TILES).not.toContain(id);
+        }
         // 五条 tile 无 web 载体的（进 DF_MISSING_TILES）
         const missing: Array<[DF, number, string]> = [
-            [DF.DF_SHOW_POISON_GAS_TRAP, 625, 'GAS_TRAP_POISON'],
-            [DF.DF_SHOW_FLAMETHROWER_TRAP, 630, 'FLAMETHROWER'],
             [DF.DF_ALTAR_RETRACT, 724, 'FLOOR_FLOODABLE'],
             [DF.DF_PORTAL_ACTIVATE, 725, 'PORTAL_LIGHT'],
             [DF.DF_SACRIFICE_ALTAR, 802, 'SACRIFICE_ALTAR'],

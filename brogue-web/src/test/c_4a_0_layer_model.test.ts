@@ -227,6 +227,16 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
 
     it('归属表与 drawPriority 表与报告口径逐条一致（表被手滑改动即翻红）', () => {
         expect(TERRAIN_HOME_LAYER).toEqual({
+            // U17d: CE Globals.c:343/378/384/388/396-400.
+            [C.MACHINE_METHANE_VENT_DORMANT]: L.DUNGEON,
+            [C.MACHINE_METHANE_VENT]: L.DUNGEON,
+            [C.PILOT_LIGHT]: L.DUNGEON,
+            [C.MACHINE_PARALYSIS_VENT]: L.DUNGEON,
+            [C.MACHINE_POISON_GAS_VENT_DORMANT]: L.DUNGEON,
+            [C.MACHINE_POISON_GAS_VENT]: L.DUNGEON,
+            [C.GAS_TRAP_POISON]: L.DUNGEON,
+            [C.FLAMETHROWER]: L.DUNGEON,
+
             [C.MACHINE_PRESSURE_PLATE_USED]: L.DUNGEON,
             [C.TRAP_DOOR]: L.LIQUID,
             [C.WALL_LEVER]: L.DUNGEON,
@@ -386,6 +396,15 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.STENCH_SMOKE_GAS]: L.GAS,
         });
         expect(DRAW_PRIORITY).toEqual({
+            [C.MACHINE_METHANE_VENT_DORMANT]: 30,
+            [C.MACHINE_METHANE_VENT]: 30,
+            [C.PILOT_LIGHT]: 0,
+            [C.MACHINE_PARALYSIS_VENT]: 30,
+            [C.MACHINE_POISON_GAS_VENT_DORMANT]: 30,
+            [C.MACHINE_POISON_GAS_VENT]: 30,
+            [C.GAS_TRAP_POISON]: 30,
+            [C.FLAMETHROWER]: 30,
+
             [C.MACHINE_PRESSURE_PLATE_USED]: 15,
             [C.TRAP_DOOR]: 30,
             [C.WALL_LEVER]: 0,

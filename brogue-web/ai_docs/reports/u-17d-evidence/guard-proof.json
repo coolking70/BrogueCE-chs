@@ -1,0 +1,32 @@
+{
+  "head": "c98ffd2e85c3e003f60a0aeb39f39ee363f02492",
+  "selections": {
+    "归属表与 drawPriority 表与报告口径逐条一致（表被手滑改动即翻红）": "src/test/c_4a_0_layer_model.test.ts",
+    "全 TerrainType 键覆盖且字段结构齐全——拼写错/缺键在此翻红而非得 undefined": "src/test/c_4a_terrain_catalog.test.ts",
+    "terrainAllowsMove（查表）≡ 旧排除清单 {GRANITE,WALL,SECRET_DOOR,LOCKED_DOOR,WATER_DEEP}": "src/test/c_4a_terrain_catalog.test.ts",
+    "Game.canMoveTo（查表）≡ 旧清单：合成格逐地形实测（含生成中出现不了的地形）": "src/test/c_4a_terrain_catalog.test.ts",
+    "E1 W-14 恰 135 条（原 134 + DF_FORCEFIELD）；历次闭包（C-6 增补 DF_GRASS/DF_FOLIAGE；B-3 增补 DF_FORCEFIELD_MELT/DF_SACRED_GLYPHS/DF_SHATTERING_SPELL；T-1 增补 DF_CRYSTAL_WALL；V-2b-2b 增补 DF_SHOW_TRAPDOOR_HALO/DF_SHOW_TRAPDOOR/DF_WOODEN_BARRICADE_BURN——TRAP_DOOR_HIDDEN.discoverType 与 WOODEN_BARRICADE.fireType 的载体，CE Globals.c:627/628/825；V-2b-3 增补 14 条 wired 载体 DF 链，见下；V-2b-4 增补 8 条祭坛族载体），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）": "src/test/c_4b_dungeon_feature.test.ts",
+    "E2 闭包自洽：TerrainCatalog 字符串起点 + subsequentDF 展开 == 目录键集（多抄/漏抄/悬空全翻红）": "src/test/c_4b_dungeon_feature.test.ts",
+    "E4 缺 tile 登记恰 26 条（G-2 后 6；B-3 增 DF_SHATTERING_SPELL——RUBBLE tile web 无；V-2b-2b 增 DF_SHOW_TRAPDOOR；V-2b-3 增 11 条 wired 载体链环节；V-2b-4 增 7 条祭坛族载体）：catalogFeature 对其抛错点名；对其余条目正常转换": "src/test/c_4b_dungeon_feature.test.ts",
+    "哨兵 S-1：非机器 wired 条目仍只落草/树/水晶墙；机器接线集合精确覆盖 13 条": "src/test/c_6_autogenerators.test.ts",
+    "留痕 T2：陷阱族（显/隐）未接——按 CE tile 目录落地陷阱后反转（index 14-15/17-22/24-28/32）": "src/test/c_6_autogenerators.test.ts",
+    "F-2c 翻转：DF_EXPLOSION_FIRE 已接线（tile GAS_EXPLOSION 已迁），catalogFeature 正常转换且不在缺 tile 名单": "src/test/g_2_gas_df_wiring.test.ts",
+    "穷举表覆盖 TerrainType 全部成员（当前 69 个）、成员值无重复": "src/test/r_1_appearance.test.ts",
+    "new closed terrain set: 139 DFs, no entity/spawn flags; web forbidden to learn, vines eligible": "src/test/u_08_terrain_bolts.test.ts",
+    "historical U17a projection: 30 missing rows before the U17b/U17c carriers": "src/test/u_17a_df_transaction.test.ts",
+    "historical U17b missing projection excludes exactly the five U17c closures": "src/test/u_17b_carriers.test.ts",
+    "only the five authorized registrations are removed; every other missing identity remains ordered": "src/test/u_17c_triggers.test.ts",
+    "CE-generated appearances preserve all old rows and represent the new glyphs": "src/test/u_17c_triggers.test.ts",
+    "有载体的链环 tile 对位（气体 payoff 的三条线）+ DF_MISSING_TILES 顺延 8 → 19": "src/test/v_2b_3_wired.test.ts",
+    "D1 端到端 67/68：踩触发板 → 全机通电 → 两喷口逐层晋升、payoff 按 CE :865 链尾缺 tile 缓办响亮登记": "src/test/v_2b_3_wired.test.ts",
+    "全 tile 的 glowLight 逐值等于 CE 原列（结构性穷尽）": "src/test/c_7_lighting.test.ts",
+    "非零恰 37 个（U17b 硫磺火后继），且都指向有载体的目录条目": "src/test/c_7_lighting.test.ts",
+    "appearance golden extension keeps every previous row byte-equivalent in value": "src/test/u_17b_carriers.test.ts",
+    "A3 四条新 DF 条目 ≡ CE 目录行；DF_MISSING_TILES 顺延为 28（顺延不放宽）": "src/test/v_2b_5_dormant.test.ts",
+    "F-2a 守卫：Grid.FIRE_TERRAIN_TYPES（isBurning 派生集）≡ T_IS_FIRE 旗标载体集": "src/test/c_4a_terrain_catalog.test.ts",
+    "AD-8 接线：generateTerrain 跑非机器趟且真的长草/树；generateLevel 跑机器趟": "src/test/c_6_autogenerators.test.ts",
+    "AD-7 表长 49、数值列逐条相等、死条目 index 0、基座列抽查": "src/test/c_6_autogenerators.test.ts"
+  },
+  "current": 1,
+  "original": 0
+}
