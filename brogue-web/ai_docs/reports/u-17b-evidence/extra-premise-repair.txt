@@ -1,0 +1,13 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/v_2b_3_wired.test.ts src/test/v_2b_5_dormant.test.ts src/test/g_2_gas_df_wiring.test.ts -t 有载体的链环|A3 四条新|F-2c 翻转 --maxWorkers=2
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/1b98/brogue/brogue-web
+
+
+ Test Files  3 passed (3)
+      Tests  4 passed | 58 skipped (62)
+   Start at  21:01:08
+   Duration  1.57s (transform 1.22s, setup 0ms, import 2.51s, tests 14ms, environment 1ms)
+

@@ -1,0 +1,47 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_17b_carriers.test.ts
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/1b98/brogue/brogue-web
+
+ ❯ src/test/u_17b_carriers.test.ts (17 tests | 1 failed) 2734ms
+     × nine CE DF rows include the new regrowth successor and all inherited edge fields 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_17b_carriers.test.ts > U17b CE data / closed first family > nine CE DF rows include the new regrowth successor and all inherited edge fields
+AssertionError: expected { id: 105, ceLine: 745, …(13) } to match object { tile: 'NOTHING', …(11) }
+(3 matching properties omitted from actual)
+
+- Expected
++ Received
+
+@@ -2,13 +2,13 @@
+    "cePropagationTerrain": "",
+    "description": "the rope bridge snaps from the heat and plunges into the chasm!",
+    "effectRadius": 0,
+    "flags": 0,
+    "flashColor": "",
+-   "layer": "DUNGEON",
++   "layer": 0,
+    "lightFlare": "FALLEN_TORCH_FLASH_LIGHT",
+    "probabilityDecrement": 0,
+    "propagationTerrain": null,
+    "startProbability": 0,
+    "subsequentDF": 99,
+-   "tile": "NOTHING",
++   "tile": 0,
+  }
+
+ ❯ src/test/u_17b_carriers.test.ts:48:14
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 16 passed (17)
+   Start at  20:46:53
+   Duration  3.38s (transform 343ms, setup 0ms, import 567ms, tests 2.73s, environment 0ms)
+

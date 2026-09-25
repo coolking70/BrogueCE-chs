@@ -1,0 +1,110 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_17b_carriers.test.ts --reporter=default
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/1b98/brogue/brogue-web
+
+stdout | src/test/u_17b_carriers.test.ts > U17b triggers reach final terrain, entities, light and persistence > 61 actual step tramples foliage, opens sight; moving away allows regrowth; occupied regrowth retramples synchronously
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_17b_carriers.test.ts (17 tests | 5 failed) 2487ms
+     ✓ five complete tile rows come from CE, including flags, all three chains and glow 1ms
+     × nine CE DF rows include the new regrowth successor and all inherited edge fields 2ms
+     ✓ removes exactly five missing rows; all other 25 registrations remain unchanged 0ms
+     ✓ appearance golden extension keeps every previous row byte-equivalent in value 0ms
+     ✓ 61 actual step tramples foliage, opens sight; moving away allows regrowth; occupied regrowth retramples synchronously 208ms
+     × 61 fallen item also tramples regrowth; other layers block regrowth according to CE priority 189ms
+     ✓ 66 environment activates inert brimstone at 800/10000 boundary, never an invented explosion 190ms
+     ✓ 104 player fire bolt ignites ACTIVE into INERT + sulfur fire, burns an occupant and scroll through the shared transaction 150ms
+     ✓ 104 active timeout at 10/10000 creates sulfur fire/light; 2500/10000 expiry leaves liquid, no embers 149ms
+     ✓ 83 wrong key leaves lock, matching key bump opens iron door, emits flare, consumes disposable key; later steps never reclose it 144ms
+     ✓ 83 reusable key persists; snapshot retains the iron tile, passability and appearance name 289ms
+     × 98 fire bolt collapses a rope span only, successor walks the bridge, then creature falls; stone bridge is nonflammable 155ms
+     × 98 a levitating player remains above the collapsed bridge; an earthbound player falls at turn boundary 209ms
+     ✓ no evacuation is invented: all five DFs preserve position; brimstone contact still ignites 0ms
+     × bridge floor item fall: potion shatters, weapon queues exactly once, survives save/load and new-level landing 416ms
+     ✓ fall landing uses item-only CE terrain veto: allows liquid, excludes occupied/machine/stair cells, and delays future catch-up 191ms
+     ✓ D40 floor falls destroy even nonpotions without a D41 queue 192ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_17b_carriers.test.ts > U17b CE data / closed first family > nine CE DF rows include the new regrowth successor and all inherited edge fields
+AssertionError: expected 61 to be 60 // Object.is equality
+
+- Expected
++ Received
+
+- 60
++ 61
+
+ ❯ src/test/u_17b_carriers.test.ts:47:52
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/test/u_17b_carriers.test.ts > U17b triggers reach final terrain, entities, light and persistence > 61 fallen item also tramples regrowth; other layers block regrowth according to CE priority
+AssertionError: expected 11 to be 139 // Object.is equality
+
+- Expected
++ Received
+
+- 139
++ 11
+
+ ❯ src/test/u_17b_carriers.test.ts:72:50
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/test/u_17b_carriers.test.ts > U17b triggers reach final terrain, entities, light and persistence > 98 fire bolt collapses a rope span only, successor walks the bridge, then creature falls; stone bridge is nonflammable
+AssertionError: expected 8 to be 143 // Object.is equality
+
+- Expected
++ Received
+
+- 143
++ 8
+
+ ❯ src/test/u_17b_carriers.test.ts:103:49
+    101|   const g=scene();for(let x=8;x<=12;x++)g.grid.setTerrainLayer(x,5,L.L…
+    102|   fire(g,8,5);expect(g.grid.getCell(8,5)!.layers[L.LIQUID]).toBe(T.CHA…
+    103|   expect(g.grid.getCell(9,5)!.layers[L.LIQUID]).toBe(T.BRIDGE_FALLING)…
+       |                                                 ^
+    104|   forcePromotion(0);for(let n=0;n<8;n++)advance(g);
+    105|   for(let x=8;x<=12;x++)expect(g.grid.getCell(x,5)!.layers[L.LIQUID]).…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/test/u_17b_carriers.test.ts > U17b triggers reach final terrain, entities, light and persistence > 98 a levitating player remains above the collapsed bridge; an earthbound player falls at turn boundary
+TypeError: g.player.removeStatus is not a function
+ ❯ src/test/u_17b_carriers.test.ts:111:12
+    109|   const g=scene();g.grid.setTerrainLayer(5,5,L.LIQUID,T.BRIDGE);g.play…
+    110|   exposeTileToFire(g.grid,5,5,true);expect(cellTerrainFlags(g.grid,5,5…
+    111|   g.player.removeStatus('levitating');(g as any).applyInstantTileEffec…
+       |            ^
+    112|   g.handlePlayerAction('wait',undefined,'system');expect(g.depth).toBe…
+    113|  });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  src/test/u_17b_carriers.test.ts > U17b triggers reach final terrain, entities, light and persistence > bridge floor item fall: potion shatters, weapon queues exactly once, survives save/load and new-level landing
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/test/u_17b_carriers.test.ts:124:103
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 12 passed (17)
+   Start at  20:45:39
+   Duration  3.20s (transform 355ms, setup 0ms, import 635ms, tests 2.49s, environment 0ms)
+

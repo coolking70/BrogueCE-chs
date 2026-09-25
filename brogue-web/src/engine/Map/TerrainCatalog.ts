@@ -157,6 +157,18 @@ const e = (
  * 运行时钉死——esbuild 只剥类型，缺键要到运行时才暴露（undefined）。
  */
 export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
+    // U17b: CE Globals.c:474/425/493/332/429, all probabilities in CE units.
+    [TerrainType.TRAMPLED_FOLIAGE]: e(T_IS_FLAMMABLE, TM_VANISHES_UPON_PROMOTION,
+        15, 'DF_PLAIN_FIRE', '', 'DF_FOLIAGE_REGROW', 100),
+    [TerrainType.ACTIVE_BRIMSTONE]: e(T_IS_FLAMMABLE | T_SPONTANEOUSLY_IGNITES, 0,
+        100, 'DF_INERT_BRIMSTONE', '', 'DF_INERT_BRIMSTONE', 10),
+    [TerrainType.BRIMSTONE_FIRE]: e(T_IS_FIRE, TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT,
+        0, '', '', '', 2500, false, LightKind.BRIMSTONE_FIRE_LIGHT),
+    [TerrainType.OPEN_IRON_DOOR_INERT]: e(T_OBSTRUCTS_SURFACE_EFFECTS, TM_STAND_IN_TILE | TM_VISUALLY_DISTINCT,
+        50, 'DF_EMBERS', '', '', 0),
+    [TerrainType.BRIDGE_FALLING]: e(T_IS_FLAMMABLE, TM_VANISHES_UPON_PROMOTION,
+        50, 'DF_BRIDGE_FALL', '', 'DF_BRIDGE_FALL', 10000),
+
     // CE NOTHING，Globals.c:321
     [TerrainType.NOTHING]: e(0, 0, 0, 'DF_PLAIN_FIRE', '', '', 0),
 

@@ -1,0 +1,29 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/1b98/brogue/brogue-web
+
+stdout | src/test/u_17b_carriers.test.ts > fallen items on existing fire/lava burn before drifting; amulet survives lava and future items wait
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_17b_carriers.test.ts (19 tests | 1 failed | 18 skipped) 764ms
+   × fallen items on existing fire/lava burn before drifting; amulet survives lava and future items wait 763ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_17b_carriers.test.ts > fallen items on existing fire/lava burn before drifting; amulet survives lava and future items wait
+AssertionError: expected [ …(3) ] to not include Item{ spawnTurnNumber: 90, …(39) }
+ ❯ src/test/u_17b_carriers.test.ts:164:22
+    162|  expect(g.items).toEqual([scroll,weapon,amulet]);expect(weapon.loc).to…
+    163|  (g as any).absoluteTurnNumber=90;advance(g);
+    164|  expect(g.items).not.toContain(scroll);expect(g.items).not.toContain(w…
+       |                      ^
+    165|  expect(g.grid.getCell(8,5)!.layers[L.SURFACE]).toBe(T.ITEM_FIRE);expe…
+    166|  amulet.loc={x:12,y:5};(g as any).destroyFloorItemsInLava();expect(g.i…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 18 skipped (19)
+   Start at  21:15:38
+   Duration  2.62s (transform 959ms, setup 0ms, import 1.67s, tests 764ms, environment 0ms)
+

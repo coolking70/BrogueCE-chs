@@ -1,0 +1,68 @@
+
+> brogue-web@0.0.0 test:drift
+> vitest run src/test/generation_baseline.test.ts
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/1b98/brogue/brogue-web
+
+stdout | src/test/generation_baseline.test.ts > 滚动生成基线：地图生成无非预期漂移 > 4 seed × D1-D26：地形指纹 / 怪物数 / 物种集合 / 物品数与基线一致
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/generation_baseline.test.ts (1 test | 1 failed) 42073ms
+     × 4 seed × D1-D26：地形指纹 / 怪物数 / 物种集合 / 物品数与基线一致 42072ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/generation_baseline.test.ts > 滚动生成基线：地图生成无非预期漂移 > 4 seed × D1-D26：地形指纹 / 怪物数 / 物种集合 / 物品数与基线一致
+AssertionError: 生成结果偏离基线 27 处（若非有意改动，请查清成因）: expected [ …(27) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "seed424242 D1 fp: 基线=e2a766ba:4916 现在=53cd888b:4917",
++   "seed424242 D2 fp: 基线=a5fb4d73:4988 现在=b297c8aa:4989",
++   "seed424242 D5 fp: 基线=c457ba74:4863 现在=35700289:4864",
++   "seed424242 D10 fp: 基线=3717cae7:4835 现在=5206497a:4836",
++   "seed424242 D17 fp: 基线=efd24f5c:4886 现在=f1fc38e2:4888",
++   "seed424242 D18 fp: 基线=6b2d89ba:4815 现在=d6e1c16c:4826",
++   "seed424242 D20 fp: 基线=336be27e:4815 现在=64acc36b:4816",
++   "seed424242 D24 fp: 基线=454e79ef:4870 现在=66eaa1ae:4871",
++   "seed777 D1 fp: 基线=1e66835f:4892 现在=d6b6170c:4893",
++   "seed777 D3 fp: 基线=ddeb5a2b:4992 现在=91ea1983:4994",
++   "seed777 D4 fp: 基线=9c272ae3:5069 现在=cef6e98a:5070",
++   "seed777 D11 fp: 基线=18362044:4850 现在=0b6741e7:4851",
++   "seed777 D16 fp: 基线=2d0b59e3:4849 现在=acfb84d8:4850",
++   "seed777 D17 fp: 基线=9383c2e0:4868 现在=3ad2ebbf:4869",
++   "seed777 D19 fp: 基线=1e748fc9:4891 现在=d0695d82:4892",
++   "seed777 D20 fp: 基线=8c538c58:4791 现在=dc899c92:4800",
++   "seed777 D24 fp: 基线=afbf88ca:4890 现在=5aab7d4d:4891",
++   "seed20260913 D5 fp: 基线=5efdb781:4860 现在=0199deaa:4861",
++   "seed20260913 D7 fp: 基线=c2b8457c:4930 现在=90bdc165:4931",
++   "seed20260913 D12 fp: 基线=44bf6169:4851 现在=fba79172:4852",
++   "seed20260913 D26 fp: 基线=a857bb9f:4952 现在=33312640:4968",
++   "seed31337 D1 fp: 基线=5c1a14c6:4948 现在=dbefc853:4949",
++   "seed31337 D2 fp: 基线=a2e097d6:4889 现在=67650ca7:4890",
++   "seed31337 D7 fp: 基线=aa135b75:5045 现在=cba27dd4:5046",
++   "seed31337 D20 fp: 基线=6aab2eb9:4917 现在=baa467c5:4919",
++   "seed31337 D21 fp: 基线=caba7f7b:4841 现在=da8c0c0e:4855",
++   "seed31337 D23 fp: 基线=3b75779a:4816 现在=86b49941:4817",
++ ]
+
+ ❯ src/test/generation_baseline.test.ts:51:67
+     49|             }
+     50|         }
+     51|         expect(diffs, `生成结果偏离基线 ${diffs.length} 处（若非有意改动，请查清成因）`).toEq…
+       |                                                                   ^
+     52|     });
+     53| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  20:57:55
+   Duration  43.66s (transform 800ms, setup 0ms, import 1.42s, tests 42.07s, environment 0ms)
+

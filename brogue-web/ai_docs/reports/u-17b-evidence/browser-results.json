@@ -1,0 +1,852 @@
+{
+  "results": [
+    {
+      "name": "natural",
+      "state": {
+        "seed": "1718",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 38,
+          "y": 26,
+          "hp": 30,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "狗头人",
+            "x": 39,
+            "y": 3,
+            "hp": 7,
+            "maxHp": 7,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d4",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "kobold",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "题为「火雷灵符玉简」的卷轴",
+            "x": 45,
+            "y": 23
+          }
+        ]
+      }
+    },
+    {
+      "name": "foliage-before",
+      "state": {
+        "seed": "1718",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "trampled": {
+        "loc": {
+          "x": 11,
+          "y": 10
+        },
+        "tile": 139,
+        "expected": 139,
+        "opaque": false
+      }
+    },
+    {
+      "name": "foliage-trampled",
+      "state": {
+        "seed": "1718",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 11,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "foliage-cleared",
+      "state": {
+        "seed": "1718",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2148,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 2,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "regrowth": {
+        "turns": 76,
+        "tile": 11,
+        "expected": 11
+      }
+    },
+    {
+      "name": "foliage-regrown",
+      "state": {
+        "seed": "1718",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2072,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 2,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "activation": {
+        "turns": 2,
+        "tile": 140,
+        "expected": 140
+      }
+    },
+    {
+      "name": "brimstone-active",
+      "state": {
+        "seed": "1718",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2148,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "brimstone-aim",
+      "state": {
+        "seed": "1718",
+        "mode": "arcana_target",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": {
+          "name": "橡木法杖 [2/2]",
+          "x": 13,
+          "y": 10
+        },
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2148,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "sulfur": {
+        "tile": 30,
+        "expected": 30,
+        "fire": 141,
+        "fireExpected": 141,
+        "charges": 1
+      }
+    },
+    {
+      "name": "sulfur-fire",
+      "state": {
+        "seed": "1718",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2147,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "iron-door-locked",
+      "state": {
+        "seed": "1718",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "iron": {
+        "loc": {
+          "x": 11,
+          "y": 10
+        },
+        "tile": 142,
+        "expected": 142,
+        "consumed": true
+      }
+    },
+    {
+      "name": "iron-door-open",
+      "state": {
+        "seed": "1718",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 12,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2147,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 3,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "bridge-before",
+      "state": {
+        "seed": "1718",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 11,
+          "y": 7,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 14,
+            "y": 10,
+            "hp": 100,
+            "maxHp": 100,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "长剑",
+            "x": 15,
+            "y": 10
+          }
+        ]
+      }
+    },
+    {
+      "name": "bridge-collapsing",
+      "state": {
+        "seed": "1718",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 11,
+          "y": 7,
+          "hp": 100,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 14,
+            "y": 10,
+            "hp": 100,
+            "maxHp": 100,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "长剑",
+            "x": 15,
+            "y": 10
+          }
+        ]
+      }
+    },
+    {
+      "bridge": {
+        "tiles": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8
+        ],
+        "expected": 8,
+        "itemQueued": true,
+        "monsterQueued": true
+      }
+    },
+    {
+      "name": "bridge-fallen",
+      "state": {
+        "seed": "1718",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 11,
+          "y": 7,
+          "hp": 100,
+          "nutrition": 2140,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 10,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "narrow",
+      "state": {
+        "seed": "1718",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 11,
+          "y": 7,
+          "hp": 100,
+          "nutrition": 2140,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 10,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "checkpoint": {
+        "ok": true,
+        "queued": [
+          22
+        ]
+      }
+    },
+    {
+      "landed": {
+        "depth": 2,
+        "items": [
+          {
+            "id": 22,
+            "loc": {
+              "x": 15,
+              "y": 10
+            },
+            "spawnTurnNumber": 2
+          }
+        ],
+        "queue": false
+      }
+    },
+    {
+      "name": "fallen-items-d2",
+      "state": {
+        "seed": "1718",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 12,
+          "y": 9,
+          "hp": 90,
+          "nutrition": 2140,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 11,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "老鼠",
+            "x": 14,
+            "y": 10,
+            "hp": 91,
+            "maxHp": 100,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "rat",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "金戒指",
+            "x": 5,
+            "y": 6
+          },
+          {
+            "name": "猩红色药水",
+            "x": 14,
+            "y": 8
+          },
+          {
+            "name": "长剑",
+            "x": 15,
+            "y": 10
+          }
+        ]
+      }
+    }
+  ],
+  "errors": []
+}

@@ -255,6 +255,8 @@ export enum TerrainType {
     ANCIENT_SPIRIT_VINES, ANCIENT_SPIRIT_GRASS,
     DUNGEON_PORTAL, // CE deepest-level stair; append preserves existing IDs.
     ITEM_FIRE, // U17a: burnItem direct successor, CE Globals.c:498. Append only.
+    // U17b: append only; existing terrain IDs are snapshot/fingerprint identities.
+    TRAMPLED_FOLIAGE, ACTIVE_BRIMSTONE, BRIMSTONE_FIRE, OPEN_IRON_DOOR_INERT, BRIDGE_FALLING,
 }
 
 export enum LightType {
@@ -337,6 +339,11 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.INERT_BRIMSTONE]: 40,
     [TerrainType.PLAIN_FIRE]: 10,
     [TerrainType.ITEM_FIRE]: 10,
+    [TerrainType.TRAMPLED_FOLIAGE]: 60,
+    [TerrainType.ACTIVE_BRIMSTONE]: 40,
+    [TerrainType.BRIMSTONE_FIRE]: 10,
+    [TerrainType.OPEN_IRON_DOOR_INERT]: 90,
+    [TerrainType.BRIDGE_FALLING]: 45,
     // F-2a：CE EMBERS 70 / ASH 80（Globals.c:469/461 原值）。两者都是纯装饰
     // 表面层：余烬/灰烬压不住火（10）、草（60）、网（19），但会被血（80）同级
     // 竞争——CE fillSpawnMap 判据（Architect.c:3228）原样生效。
@@ -570,6 +577,11 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     [TerrainType.INERT_BRIMSTONE]: DungeonLayer.LIQUID,
     [TerrainType.PLAIN_FIRE]: DungeonLayer.SURFACE,
     [TerrainType.ITEM_FIRE]: DungeonLayer.SURFACE,
+    [TerrainType.TRAMPLED_FOLIAGE]: DungeonLayer.SURFACE,
+    [TerrainType.ACTIVE_BRIMSTONE]: DungeonLayer.LIQUID,
+    [TerrainType.BRIMSTONE_FIRE]: DungeonLayer.SURFACE,
+    [TerrainType.OPEN_IRON_DOOR_INERT]: DungeonLayer.DUNGEON,
+    [TerrainType.BRIDGE_FALLING]: DungeonLayer.LIQUID,
     // F-2a：DF_EMBERS {EMBERS, SURFACE}（Globals.c:747）、
     // DF_ASH {ASH, SURFACE}（Globals.c:672，执行方逐字段复核）。
     [TerrainType.EMBERS]: DungeonLayer.SURFACE,
@@ -764,7 +776,8 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
  * BRAZIER（Globals.c:573，V-2b-7 引入——53 号 Zombie crypt 的仪式火盆，
  * 唯一带 T_OBSTRUCTS_PASSABILITY 的火地形：它是"烧着的堵格体"）。
  * ITEM_FIRE（Globals.c:498，U17a burnItem 的后继）。
- * CE 其余四种火地形（BRIMSTONE_FIRE /
+ * BRIMSTONE_FIRE（Globals.c:493，U17b 硫磺循环）。
+ * CE 其余火地形（
  * FLAMEDANCER_FIRE / DART_EXPLOSION / CREATURE_FIRE）
  * web 尚无——后续轮次落地时随目录条目在此补行。
  */
@@ -773,7 +786,8 @@ export const FIRE_TERRAIN_TYPES: readonly TerrainType[] = [
     TerrainType.GAS_FIRE,
     TerrainType.GAS_EXPLOSION,
     TerrainType.BRAZIER,
-    TerrainType.ITEM_FIRE
+    TerrainType.ITEM_FIRE,
+    TerrainType.BRIMSTONE_FIRE
 ];
 
 /** CE Movement.c:64-80 的纯数据版：对一层快照取最高优先层。 */

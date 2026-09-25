@@ -46,7 +46,7 @@ describe('U08 CE catalog and runtime qualification',()=>{
     });
     it('new closed terrain set: 139 DFs, no entity/spawn flags; web forbidden to learn, vines eligible',()=>{
         // U17a adds only burnItem's DF_ITEM_FIRE (110); retain the U08 universe.
-        expect(Object.keys(DFC).filter(k=>Number(k)!==110)).toHaveLength(139);
+        expect(Object.keys(DFC).filter(k=>Number(k)!==110 && Number(k)!==63)).toHaveLength(139);
         expect(BC[B.SPIDERWEB]).toMatchObject({effect:E.NONE,pathDF:'DF_WEB_SMALL',targetDF:'DF_WEB_LARGE'});
         expect(BC[B.ANCIENT_SPIRIT_VINES]).toMatchObject({effect:E.NONE,pathDF:'DF_ANCIENT_SPIRIT_GRASS',targetDF:'DF_ANCIENT_SPIRIT_VINES'});
         expect(BC[B.SPIDERWEB].flags).toBe(F.TARGET_ENEMIES|F.NEVER_REFLECTS|F.NOT_LEARNABLE);

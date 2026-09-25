@@ -1,0 +1,5 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_17b_carriers.test.ts src/test/c_4a_0_layer_model.test.ts src/test/c_4a_terrain_catalog.test.ts src/test/c_4b_dungeon_feature.test.ts src/test/c_4c_promotion.test.ts src/test/c_7_lighting.test.ts src/test/r_1_appearance.test.ts src/test/u_08_terrain_bolts.test.ts src/test/u_17a_df_transaction.test.ts src/test/u_01_instance_snapshot.test.ts src/test/u_03_whole_run_snapshot.test.ts --maxWorkers=4 --reporter=json --outputFile=ai_docs/reports/u-17b-evidence/targeted.json
+
+JSON report written to /Users/coolking70/.codex/worktrees/1b98/brogue/brogue-web/ai_docs/reports/u-17b-evidence/targeted.json

@@ -595,7 +595,7 @@ describe('C-3 管线集成', () => {
         expect(componentBad, `非机器可走格（密门视作通路）存在不连通块：\n${componentBad.slice(0, 10).join('\n')}`).toEqual([]);
     }, 600_000);
 
-    it('T14 留痕（明确不做）：C-4 promoteTile(ACTIVE 态) / 主动搜索行动', () => {
+    it('T14 范围登记：U17b ACTIVE_BRIMSTONE 已落地；旧别名与 search 包装未引入', () => {
         // C-6：原首条断言（"runAutogenerators 无 web 对应物，出现即删"）已按
         // 其自带指示删除——C-6 已落地（src/engine/Map/AutoGenerator.ts，
         // 两趟接线见 Generator/Architect.ts）。"复核 overlay 占位退出"的结论：
@@ -606,10 +606,10 @@ describe('C-3 管线集成', () => {
         // （原断言内容存档：expect(Architect.prototype.runAutogenerators)
         //     .toBeUndefined()——"runAutogenerators 已出现——C-6 已落地"）
 
-        // C-4：DF 目录 / promoteTile 未实现。CE 硫矿点火链的 ACTIVE_BRIMSTONE
-        // 终态地形不存在于 web 枚举。C-4 落地后删除本断言。
+        // U17b: CE Globals.c:425/695 carrier now exists. Append-only web ID;
+        // the full CE row and live timeout/fire loop have independent U17b guards.
         expect((TerrainType as unknown as Record<string, unknown>).ACTIVE_BRIMSTONE,
-            'ACTIVE_BRIMSTONE 已出现——C-4 已落地，请删除本留痕').toBeUndefined();
+            'U17b ACTIVE_BRIMSTONE 保持追加的序列化地形 ID').toBe(140);
         expect((TerrainType as unknown as Record<string, unknown>).ACTIVE,
             '硫矿 ACTIVE 态已出现——C-4 已落地，请删除本留痕').toBeUndefined();
 

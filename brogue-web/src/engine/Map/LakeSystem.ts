@@ -25,11 +25,11 @@
  *    "走过去就死"——这与 CE 一致（CE 的 T_LAVA_INSTA_DEATH 也只挡 AI 寻路，
  *    玩家可以直接走进岩浆）。闸门在验证时把整湖当阻断物，干地（含楼梯
  *    落点）必有完全不穿湖的连通路径；坏层=0 由 e2e 测试复验。
- * 3. INERT_BRIMSTONE 生成 + 登记缺失：CE 的惰性硫矿踩上去**无即时后果**
+ * 3. INERT_BRIMSTONE 生成与演化：CE 的惰性硫矿踩上去**无即时后果**
  *    （T_SPONTANEOUSLY_IGNITES 只进 T_LAKE_PATHING_BLOCKER / T_PATHING_
  *    BLOCKER——影响 AI 寻路偏好与可燃性，不挡玩家直接移动；Globals.c:426
- *    的 TM 列为 0）。web 缺失的是"点火 → ACTIVE_BRIMSTONE → 爆炸 → 黑曜石"
- *    的 DF 链（C-4 promoteTile 范围）；生成惰性态本身忠于 CE。
+ *    的 TM 列为 0）。U17b 已接 INERT → ACTIVE → INERT + BRIMSTONE_FIRE 循环；CE 此链没有爆炸或转黑曜石
+ *    （CE Globals.c:425-426/695-696/744）；生成惰性态本身忠于 CE。
  *
  * 与 CE 的结构性差异（web 单层地形模型，报告均有登记）：
  * - web 一格一个 terrain，无 CE 的 DUNGEON/LIQUID/SURFACE 三层。液体直接

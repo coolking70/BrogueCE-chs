@@ -14,7 +14,7 @@ import { anyoneWantABite } from '../Combat/MonsterAbsorption';
  * Main game state and orchestration
  */
 import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer, DRAW_PRIORITY, type Cell } from '../Map/Grid';
-import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_DIAGONAL_MOVEMENT, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP, T_HARMFUL_TERRAIN, T_SACRED, T_IS_FIRE } from '../Map/TerrainCatalog';
+import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_DIAGONAL_MOVEMENT, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_WITH_KEY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP, T_HARMFUL_TERRAIN, T_SACRED, T_IS_FIRE, T_LAVA_INSTA_DEATH } from '../Map/TerrainCatalog';
 import { isPathingBlocker } from '../Map/TerrainCatalog';
 // B-4b：物品落位热力图与食物落位原语（CE Items.c:463-535 / Architect.c:171,3822）
 import { ItemSpawnHeatMap, passableArcCount, randomMatchingLocation } from '../Items/ItemSpawnHeatMap';
@@ -228,6 +228,7 @@ export interface GameSnapshot extends LevelSnapshot {
     currentLevelDepth: number;
     /** Detached cached levels only. The active level is the top-level payload. */
     levels: LevelSnapshot[];
+    pendingFallenItemsByDepth: Array<{ depth: number; items: GameSnapshotItem[] }>;
     pendingFallenByDepth: Array<{ depth: number; monsters: GameSnapshotMonster[] }>;
     purgatory: GameSnapshotMonster[];
     mode: GameMode;
@@ -375,6 +376,7 @@ export class Game {
      * 之后取走（restoreMonster-lite 重定位后并入 this.monsters）；
      * 目标层已缓存时直接并入缓存层的怪物表。
      */
+    private pendingFallenItemsByDepth: Map<number, Item[]> = new Map();
     private pendingFallenByDepth: Map<number, Monster[]> = new Map();
 
     private needsRender: boolean = true;
@@ -566,6 +568,7 @@ export class Game {
         this.playerFalling = false;
         this.displacementTrapDepressions = undefined;
         this.pendingFallenByDepth = new Map();
+        this.pendingFallenItemsByDepth = new Map();
         this.lastPromotionUpdate = null;
         this.pendingCaughtFireCells = [];
         this.machineCells = new Set();
@@ -1163,6 +1166,9 @@ export class Game {
                     architect.machineResults
                 );
 
+                // CE initializeLevel restores fallen items before monsters, in the level RNG stream.
+                this.restoreFallenItems();
+
                 // C-5：取走坠到本层的怪物幸存者（CE startLevel "Load up next
                 // level's monsters and items, since one might have fallen from
                 // above"——RogueMain.c:673-676；重定位= restoreMonster 的
@@ -1188,6 +1194,8 @@ export class Game {
                 rng.seedRandomGenerator(oldSeed);
             }
         }
+
+        if (cached) this.restoreFallenItems();
 
         // No active-floor alias while environmental falls modify ownership.
         this.levels.delete(this.depth);
@@ -3537,7 +3545,8 @@ export class Game {
                             this.grid.setTerrain(newX, newY, TerrainType.MONSTER_CAGE_OPEN, '|', 0x999999);
                             logger.log(i18next.t('cage.unlocked', { defaultValue: 'You unlock the cage with a key.' }), '#88ff88');
                         } else {
-                            this.grid.setTerrain(newX, newY, TerrainType.OPEN_DOOR, "'", 0xaa8844);
+                            // CE useKeyAt: the key promotes the actual layer through the DF transaction.
+                            promoteLayersWithMechFlag(this.grid, newX, newY, TM_PROMOTES_WITH_KEY);
                             logger.log(i18next.t('door.unlocked', { defaultValue: 'You unlock the door with a key.' }), '#88ff88');
                         }
 
@@ -8088,11 +8097,67 @@ export class Game {
         this.needsRender = true;
     }
 
+    /** CE Items.c:1220-1254. A fall is an environment effect, not a DF refresh.
+     * Keep the object in exactly one floor/queue; potions and D40 falls perish. */
+    private fallFloorItems(): void {
+        for (const item of [...this.items]) {
+            if (this.absoluteTurnNumber < item.spawnTurnNumber
+                || !(cellTerrainFlags(this.grid, item.x, item.y) & T_AUTO_DESCENT)) continue;
+            const cell = this.grid.getCell(item.x, item.y)!;
+            if (cell.isVisible) logger.log(i18next.t('item.plunges', {
+                item: item.displayName, defaultValue: '{{item}} plunges out of sight!'
+            }), '#ffffaa');
+            this.items.splice(this.items.indexOf(item), 1);
+            if (item.category !== ItemCategory.POTION && this.depth < CE_DEEPEST_LEVEL) {
+                item.spawnTurnNumber = this.absoluteTurnNumber;
+                const nextDepth = this.depth + 1;
+                const queue = this.pendingFallenItemsByDepth.get(nextDepth) ?? [];
+                queue.push(item);
+                this.pendingFallenItemsByDepth.set(nextDepth, queue);
+            }
+            this.needsRender = true;
+        }
+    }
+
+    /** CE Architect.c:3574-3603 restoreItems/getQualifyingLocNear. Items may land
+     * in water, chasm or lava; only T_OBSTRUCTS_ITEMS and the CE map flags veto. */
+    private restoreFallenItems(): void {
+        const queue = this.pendingFallenItemsByDepth.get(this.depth);
+        if (!queue?.length) return;
+        this.pendingFallenItemsByDepth.delete(this.depth);
+        for (const item of queue) {
+            let candidates: Pos[] = [];
+            for (let r = 0; r < Math.max(this.grid.width, this.grid.height) && !candidates.length; r++) {
+                for (let x = item.x - r; x <= item.x + r; x++) for (let y = item.y - r; y <= item.y + r; y++) {
+                    if (Math.max(Math.abs(x - item.x), Math.abs(y - item.y)) !== r) continue;
+                    const cell = this.grid.getCell(x, y);
+                    if (!cell || (cellTerrainFlags(this.grid, x, y) & T_OBSTRUCTS_ITEMS)
+                        || cell.machineNumber || this.getMonsterAt(x, y)
+                        || this.items.some(other => other.x === x && other.y === y)
+                        || cell.layers.some(t => t === TerrainType.STAIRS_UP || t === TerrainType.STAIRS_DOWN || t === TerrainType.DUNGEON_PORTAL)) continue;
+                    candidates.push({ x, y });
+                }
+            }
+            if (!candidates.length) {
+                const pending = this.pendingFallenItemsByDepth.get(this.depth) ?? [];
+                pending.push(item); this.pendingFallenItemsByDepth.set(this.depth, pending);
+                continue;
+            }
+            item.loc = candidates[rng.randRange(1, candidates.length) - 1]!;
+            this.items.push(item);
+            promoteOnItemPlaced(this.grid, item.x, item.y);
+        }
+    }
+
     /** CE Items.c:1209-1277: floor items on moving liquid drift at environment updates. */
     private driftFloorItems(): void {
         for (const item of [...this.items]) {
             const { x, y } = item.loc;
-            if (!(cellTerrainFlags(this.grid, x, y) & T_MOVES_ITEMS)) continue;
+            if (this.absoluteTurnNumber < item.spawnTurnNumber) continue;
+            if (!(cellTerrainFlags(this.grid, x, y) & T_MOVES_ITEMS)) {
+                promoteOnItemPlaced(this.grid, x, y);
+                continue;
+            }
             let candidates: Pos[] = [];
             for (let radius = 0; radius < Math.max(this.grid.width, this.grid.height) && !candidates.length; radius++) {
                 for (let nx = x - radius; nx <= x + radius; nx++) {
@@ -8547,9 +8612,9 @@ export class Game {
         // Explosive contact is synchronous in the DF transaction. Drain the
         // environment's compatibility observation queue without replaying damage.
         this.environment.takeExplosiveSpawnCells();
+        this.fallFloorItems();
+        this.burnFloorItems();
         this.driftFloorItems();
-
-        this.destroyFloorItemsInLava();
     }
 
     /** RogueMain.startLevel: run 50 updates for a new map, at most 100 for a
@@ -8909,7 +8974,9 @@ export class Game {
         const pendingFallenByDepth = [...this.pendingFallenByDepth].sort(([a], [b]) => a - b)
             .map(([depth, monsters]) => ({ depth, monsters: monsters.map(serializeMonsterRow) }));
         const roots = [...this.monsters, ...this.dormantMonsters, ...this.purgatory, ...levelRoots, ...[...this.pendingFallenByDepth.values()].flat()];
-        const ownedItems = [...this.items, ...this.player.inventory.items, ...levels.flatMap(([, l]) => l.items)];
+        const pendingFallenItemsByDepth = [...this.pendingFallenItemsByDepth].sort(([a], [b]) => a - b)
+            .map(([depth, items]) => ({ depth, items: items.map(encodeItem) }));
+        const ownedItems = [...[...this.pendingFallenItemsByDepth.values()].flat(), ...this.items, ...this.player.inventory.items, ...levels.flatMap(([, l]) => l.items)];
         const graph = collectEntityGraph([...roots, ...this.everSeenMonsters,
             ...this.visibleMonsters, ...levels.flatMap(([, l]) => [...l.visibleMonsters])], [...ownedItems, ...this.everSeenItems,
             ...this.visibleItems, ...levels.flatMap(([, l]) => [...l.visibleItems]),
@@ -8920,7 +8987,7 @@ export class Game {
             version: 2, schema: WHOLE_RUN_SCHEMA, savedAt: Date.now(),
             seed: this.currentSeed, rngState: rng.getState(), levelSeeds: copyLevelSeeds(this.levelSeeds),
             currentLevelDepth: this.currentLevelDepth ?? this.depth,
-            levels: levels.map(([depth, level]) => this.snapshotLevel(depth, level)), pendingFallenByDepth,
+            levels: levels.map(([depth, level]) => this.snapshotLevel(depth, level)), pendingFallenByDepth, pendingFallenItemsByDepth,
             purgatory: this.purgatory.map(serializeMonsterRow),
             mode: this.mode, ticksTillUpdateEnvironment: this.ticksTillUpdateEnvironment,
             pendingEnchantment: this.pendingEnchantment,
@@ -8969,7 +9036,7 @@ export class Game {
             || !Number.isSafeInteger(s.run.nextEntityId) || s.run.nextEntityId < 1
             || !Number.isFinite(s.run.monsterSpawnFuse) || !Number.isFinite(s.run.absoluteTurnNumber)
             || typeof s.run.pendingIdentify !== 'boolean' || !s.run.logger
-            || !Array.isArray(s.levels) || !Array.isArray(s.pendingFallenByDepth)
+            || !Array.isArray(s.levels) || !Array.isArray(s.pendingFallenByDepth) || !Array.isArray(s.pendingFallenItemsByDepth)
             || (s.purgatory !== undefined && !Array.isArray(s.purgatory))) return false;
         const depths = new Set<number>();
         for (const level of [s, ...s.levels]) {
@@ -8995,6 +9062,8 @@ export class Game {
         }
         if (!Array.isArray(s.entityGraph.monsters) || !Array.isArray(s.entityGraph.items)
             || s.pendingFallenByDepth.some(level => !level || !Array.isArray(level.monsters))) return false;
+        if (s.pendingFallenItemsByDepth.some(q => !q || !Number.isInteger(q.depth) || q.depth < 1 || q.depth > CE_DEEPEST_LEVEL
+            || !Array.isArray(q.items) || q.items.some(item => !Number.isFinite(item.spawnTurnNumber)))) return false;
         const rows = [...s.monsters, ...s.dormantMonsters, ...(s.purgatory ?? []), ...s.entityGraph.monsters,
             ...s.levels.flatMap(l => [...l.monsters, ...l.dormantMonsters]), ...s.pendingFallenByDepth.flatMap(l => l.monsters)];
         if (rows.some(m => !Number.isInteger(m.entersLevelIn) || m.entersLevelIn < 0 || m.entersLevelIn > 150
@@ -9015,7 +9084,7 @@ export class Game {
             entityGraph = restoreEntityGraph(
                 [...levelRows.flatMap(l => [...l.monsters, ...l.dormantMonsters]),
                      ...snapshot.pendingFallenByDepth.flatMap(q => q.monsters), ...(snapshot.purgatory ?? []), ...snapshot.entityGraph.monsters],
-                [...levelRows.flatMap(l => l.items), ...snapshot.player.inventory, ...snapshot.entityGraph.items]);
+                [...levelRows.flatMap(l => l.items), ...snapshot.pendingFallenItemsByDepth.flatMap(q => q.items), ...snapshot.player.inventory, ...snapshot.entityGraph.items]);
             const resolve = <T>(map: Map<number, T>, id: number): T => {
                 const value = map.get(id);
                 if (!value) throw new Error(`Missing snapshot entity ${id}`);
@@ -9058,6 +9127,8 @@ export class Game {
         this.displacementTrapDepressions = new WeakMap();
         for (const saved of levelRows) this.displacementTrapDepressions.set(restored.get(saved.depth)!.grid, new Set(saved.trapDepressions));
         restored.delete(this.depth); this.levels = restored;
+        this.pendingFallenItemsByDepth = new Map(snapshot.pendingFallenItemsByDepth.map(q =>
+            [q.depth, q.items.map(item => entityGraph.items.get(item.id)!)]));
         this.pendingFallenByDepth = new Map(snapshot.pendingFallenByDepth.map(q =>
             [q.depth, q.monsters.map(m => entityGraph.monsters.get(m.id)!)]));
         this.purgatory = (snapshot.purgatory ?? []).map(m => entityGraph.monsters.get(m.id)!);
@@ -9630,18 +9701,21 @@ export class Game {
         this.destroyFloorItemsInLava();
     }
 
-    private destroyFloorItemsInLava(): void {
-        // Destroy items in lava
-        for (let i = this.items.length - 1; i >= 0; i--) {
-            const item = this.items[i];
-            if (!item) continue;
-            const itemCell = this.grid.getCell(item.loc.x, item.loc.y);
-            if (itemCell && itemCell.layers.includes(TerrainType.LAVA)) { // F-1 跨层判定
-                // Potions might shatter or boil, but for now they just burn up
-                logger.log(i18next.t('item.destroyed_lava', { name: item.name, defaultValue: `${item.name} burns up in the lava.` }), '#aa5555');
-                this.items.splice(i, 1);
+    /** CE Items.c:1256-1261: fire/lava destruction precedes liquid drift.
+     * Future arrivals are inert during catch-up, and the amulet resists lava. */
+    private burnFloorItems(lavaOnly = false): void {
+        for (const item of [...this.items]) {
+            if (this.absoluteTurnNumber < item.spawnTurnNumber) continue;
+            const flags = cellTerrainFlags(this.grid, item.x, item.y);
+            if (((flags & T_LAVA_INSTA_DEATH) && item.category !== ItemCategory.AMULET)
+                || (!lavaOnly && (flags & T_IS_FIRE) && item.category === ItemCategory.SCROLL)) {
+                this.burnFloorItem(item);
             }
         }
+    }
+
+    private destroyFloorItemsInLava(): void {
+        this.burnFloorItems(true);
     }
 
     public getMonsterAt(x: number, y: number): Monster | undefined {
@@ -9780,14 +9854,21 @@ export class Game {
      * Falling/drifting/enchant swaps remain in the floor-item time phase. */
     private burnFloorItemsAt(pos: Pos): void {
         for (const item of [...this.items]) {
-            if (item.x !== pos.x || item.y !== pos.y || item.category !== ItemCategory.SCROLL) continue;
-            this.items.splice(this.items.indexOf(item), 1);
-            if (this.grid.getCell(pos.x, pos.y)?.isVisible) logger.log(i18next.t('df.item_burns', {
-                item: item.displayName, defaultValue: '{{item}} burns up!'
-            }), '#ffaa55');
-            this.refreshDungeonFeatureCell(pos);
-            spawnDungeonFeature(this.grid, pos.x, pos.y, catalogFeature(DF.DF_ITEM_FIRE), false);
+            if (item.x === pos.x && item.y === pos.y && item.category === ItemCategory.SCROLL) this.burnFloorItem(item);
         }
+    }
+
+    /** CE Time.c:973 burnItem; removal precedes recursive DF refresh. */
+    private burnFloorItem(item: Item): void {
+        const index = this.items.indexOf(item);
+        if (index < 0) return;
+        const pos = { ...item.loc };
+        this.items.splice(index, 1);
+        if (this.grid.getCell(pos.x, pos.y)?.isVisible) logger.log(i18next.t('df.item_burns', {
+            item: item.displayName, defaultValue: '{{item}} burns up!'
+        }), '#ffaa55');
+        this.refreshDungeonFeatureCell(pos);
+        spawnDungeonFeature(this.grid, pos.x, pos.y, catalogFeature(DF.DF_ITEM_FIRE), false);
     }
 
     /** CE Items.c:4089: distance is path distance from the alarm, not from the
@@ -10722,6 +10803,18 @@ export class Game {
                 return i18next.t('terrain.crystal_portal', { defaultValue: '水晶传送门' });
             case TerrainType.STAIRS_DOWN:
                 return i18next.t('terrain.stairs_down', { defaultValue: '下行楼梯' });
+            case TerrainType.TRAMPLED_FOLIAGE:
+                return i18next.t('terrain.trampled_foliage', { defaultValue: 'Trampled foliage' });
+            case TerrainType.ACTIVE_BRIMSTONE:
+                return i18next.t('terrain.active_brimstone', { defaultValue: 'Hissing brimstone' });
+            case TerrainType.INERT_BRIMSTONE:
+                return i18next.t('terrain.inert_brimstone', { defaultValue: 'Hissing brimstone' });
+            case TerrainType.BRIMSTONE_FIRE:
+                return i18next.t('terrain.brimstone_fire', { defaultValue: 'Sulfurous flames' });
+            case TerrainType.OPEN_IRON_DOOR_INERT:
+                return i18next.t('terrain.open_iron_door_inert', { defaultValue: 'An open iron door' });
+            case TerrainType.BRIDGE_FALLING:
+                return i18next.t('terrain.bridge_falling', { defaultValue: 'A plummeting bridge' });
             case TerrainType.ITEM_FIRE:
                 return i18next.t('terrain.item_fire', { defaultValue: 'Crackling flames' });
             case TerrainType.CHARRED_FLOOR:

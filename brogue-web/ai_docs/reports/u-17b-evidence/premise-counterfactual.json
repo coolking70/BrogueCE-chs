@@ -1,0 +1,31 @@
+{
+  "head": "e560958169da5d1064a493d8736d4d5df7595730",
+  "files": [
+    "src/test/c_4a_0_layer_model.test.ts",
+    "src/test/c_4a_terrain_catalog.test.ts",
+    "src/test/c_4b_dungeon_feature.test.ts",
+    "src/test/c_4c_promotion.test.ts",
+    "src/test/c_7_lighting.test.ts",
+    "src/test/r_1_appearance.test.ts",
+    "src/test/u_08_terrain_bolts.test.ts",
+    "src/test/u_17a_df_transaction.test.ts"
+  ],
+  "titles": [
+    "归属表与 drawPriority 表与报告口径逐条一致（表被手滑改动即翻红）",
+    "全 TerrainType 键覆盖且字段结构齐全——拼写错/缺键在此翻红而非得 undefined",
+    "C6 subsequentDF 链：INERT_BRIMSTONE 落层后链上缺 tile 的 BRIMSTONE_FIRE 抛错；BRIDGE_FIRE→CHASM→抛",
+    "E1 W-14 恰 135 条（原 134 + DF_FORCEFIELD）；历次闭包（C-6 增补 DF_GRASS/DF_FOLIAGE；B-3 增补 DF_FORCEFIELD_MELT/DF_SACRED_GLYPHS/DF_SHATTERING_SPELL；T-1 增补 DF_CRYSTAL_WALL；V-2b-2b 增补 DF_SHOW_TRAPDOOR_HALO/DF_SHOW_TRAPDOOR/DF_WOODEN_BARRICADE_BURN——TRAP_DOOR_HIDDEN.discoverType 与 WOODEN_BARRICADE.fireType 的载体，CE Globals.c:627/628/825；V-2b-3 增补 14 条 wired 载体 DF 链，见下；V-2b-4 增补 8 条祭坛族载体），且 DF 枚举 id 与 CE 枚举逐一对位（Rogue.h:1469 起）",
+    "E2 闭包自洽：TerrainCatalog 字符串起点 + subsequentDF 展开 == 目录键集（多抄/漏抄/悬空全翻红）",
+    "E3 字段抽查：BRIDGE_FALL_PREP 的 prop/200/100、BRIDGE_FIRE 的描述与 tile=0、其余代表条目",
+    "E4 缺 tile 登记恰 26 条（G-2 后 6；B-3 增 DF_SHATTERING_SPELL——RUBBLE tile web 无；V-2b-2b 增 DF_SHOW_TRAPDOOR；V-2b-3 增 11 条 wired 载体链环节；V-2b-4 增 7 条祭坛族载体）：catalogFeature 对其抛错点名；对其余条目正常转换",
+    "A3 对抗：fireType / promoteType 选择——useFireDF 选错路时缓办记录互换即翻红",
+    "A4 缓办不改地形：缺 tile DF 的 vanish 先行会造成 CE 不存在的半晋升态——不允许",
+    "全 tile 的 glowLight 逐值等于 CE 原列（结构性穷尽）",
+    "非零恰 36 个（U17a burnItem 后继 ITEM_FIRE），且都指向有载体的目录条目",
+    "留痕（对抗⑥）：除载体清单外，任何 LightKind 名不得出现在生产代码（接了无载体条目=空转链）",
+    "穷举表覆盖 TerrainType 全部成员（当前 69 个）、成员值无重复",
+    "new closed terrain set: 139 DFs, no entity/spawn flags; web forbidden to learn, vines eligible",
+    "null tile registry remains exactly 30 and no five-family carrier is activated"
+  ],
+  "exit": 0
+}

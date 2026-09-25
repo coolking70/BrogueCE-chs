@@ -257,9 +257,9 @@ describe('U17a actual Game consumers',()=>{
         spawnDungeonFeature(g.grid,5,5,repel,false);
         expect(g.player.loc).not.toEqual({x:5,y:5});
     });
-    it('null tile registry remains exactly 30 and no five-family carrier is activated',()=>{
-        expect(Object.keys(DF_MISSING_TILES)).toHaveLength(30);
-        expect(Object.keys(DUNGEON_FEATURE_CATALOG)).toHaveLength(140);
+    it('historical U17a projection: 30 missing rows before the five U17b carriers',()=>{
+        expect([...DF_MISSING_TILES, 61, 66, 104, 83, 98]).toHaveLength(30);
+        expect(Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => Number(k) !== 63)).toHaveLength(140);
         expect(DF.DF_ITEM_FIRE).toBe(110);
         expect(catalogFeature(DF.DF_ITEM_FIRE)).toMatchObject({tile:T.ITEM_FIRE,layer:L.SURFACE,startProbability:0,flags:0,lightFlare:'FALLEN_TORCH_FLASH_LIGHT'});
     });

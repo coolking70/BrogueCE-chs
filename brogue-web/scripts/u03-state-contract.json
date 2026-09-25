@@ -267,6 +267,10 @@
     "kind": "persist",
     "contract": "顶层同名字段（currentSeed→seed）；Player/实体用 U01，levels 是缓存数组，pending 队列持有全局图中同一对象。"
   },
+  "pendingFallenItemsByDepth": {
+    "kind": "persist",
+    "contract": "U17b: 坠层物品队列进入全局实体图；入层落位，spawnTurnNumber 保护离层补跑，开新局清空。"
+  },
   "pendingFallenByDepth": {
     "kind": "persist",
     "contract": "顶层同名字段（currentSeed→seed）；Player/实体用 U01，levels 是缓存数组，pending 队列持有全局图中同一对象。"

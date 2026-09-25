@@ -227,6 +227,9 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
 
     it('归属表与 drawPriority 表与报告口径逐条一致（表被手滑改动即翻红）', () => {
         expect(TERRAIN_HOME_LAYER).toEqual({
+            // U17b CE Globals.c:474/425/493/332/429.
+            [C.TRAMPLED_FOLIAGE]: L.SURFACE, [C.ACTIVE_BRIMSTONE]: L.LIQUID,
+            [C.BRIMSTONE_FIRE]: L.SURFACE, [C.OPEN_IRON_DOOR_INERT]: L.DUNGEON, [C.BRIDGE_FALLING]: L.LIQUID,
             [C.ITEM_FIRE]: L.SURFACE, // CE Globals.c:498; burnItem successor.
             [C.ANCIENT_SPIRIT_VINES]: L.SURFACE, [C.ANCIENT_SPIRIT_GRASS]: L.SURFACE,
             [C.NOTHING]: L.DUNGEON, [C.GRANITE]: L.DUNGEON, [C.FLOOR]: L.DUNGEON,
@@ -377,6 +380,8 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.STENCH_SMOKE_GAS]: L.GAS,
         });
         expect(DRAW_PRIORITY).toEqual({
+            [C.TRAMPLED_FOLIAGE]: 60, [C.ACTIVE_BRIMSTONE]: 40,
+            [C.BRIMSTONE_FIRE]: 10, [C.OPEN_IRON_DOOR_INERT]: 90, [C.BRIDGE_FALLING]: 45,
             [C.ITEM_FIRE]: 10, // CE Globals.c:498.
             [C.ANCIENT_SPIRIT_VINES]: 19, [C.ANCIENT_SPIRIT_GRASS]: 60,
             [C.NOTHING]: 100, [C.GRANITE]: 0, [C.FLOOR]: 95, [C.WALL]: 0,

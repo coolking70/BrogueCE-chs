@@ -27,7 +27,8 @@
  *   sword   1d3+6 → raw 7..9（×3 → 21/24/27；若误 ×5 → 35/40/45）
  *   sword×3 的 21/24/27 与 dagger×5 的 15/20 均 ∉ 对方集合——伤害值域互相钳制。
  */
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
+import { rng } from '../engine/Random';
 import { createHeadlessGame } from './harness';
 import { Game } from '../engine/Core/Game';
 import { Monster, MonsterState, type MonsterData } from '../entities/Monster';
@@ -492,13 +493,24 @@ describe('B-1 数据留痕', () => {
             expect(w!.weight, `${id}.weight`).toBe(weight);
         }
 
-        // 真实装载链路：flags 从 json 流入 Item
-        expect(ItemLoader.spawnWeapon('dagger', -1, -1)?.flags)
-            .toEqual(['ITEM_SNEAK_ATTACK_BONUS']);
-        expect(ItemLoader.spawnWeapon('rapier', -1, -1)?.flags)
-            .toEqual(['ITEM_ATTACKS_QUICKLY', 'ITEM_LUNGE_ATTACKS']);
-        expect(ItemLoader.spawnWeapon('flail', -1, -1)?.flags)
-            .toEqual(['ITEM_PASS_ATTACKS']);
+        // U17b: generation now advances the shared RNG through live foliage.
+        // This metadata test needs ordinary weapons; select the CE 40% branch's
+        // negative case explicitly instead of inheriting a previous test's stream.
+        const ordinary = vi.spyOn(rng, 'randPercent').mockImplementation(percent => {
+            expect(percent).toBe(40);
+            return false;
+        });
+        try {
+            // 真实装载链路：flags 从 json 流入 Item
+            expect(ItemLoader.spawnWeapon('dagger', -1, -1)?.flags)
+                .toEqual(['ITEM_SNEAK_ATTACK_BONUS']);
+            expect(ItemLoader.spawnWeapon('rapier', -1, -1)?.flags)
+                .toEqual(['ITEM_ATTACKS_QUICKLY', 'ITEM_LUNGE_ATTACKS']);
+            expect(ItemLoader.spawnWeapon('flail', -1, -1)?.flags)
+                .toEqual(['ITEM_PASS_ATTACKS']);
+        } finally {
+            ordinary.mockRestore();
+        }
     });
 
     it('留痕（本轮明确不做：镜像盟友继承武器旗标，CE Combat.c:755-772）：web ' +

@@ -141,6 +141,9 @@ describe('C-7 光照目录（CE Globals.c:955-1020 逐值）', () => {
 describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () => {
     /** web 全部 43 tile 的 CE glowLight 期望值（逐条核过 CE Globals.c:321-744）。 */
     const EXPECTED_GLOW: Record<TerrainType, number> = {
+        [TerrainType.TRAMPLED_FOLIAGE]: 0, [TerrainType.ACTIVE_BRIMSTONE]: 0,
+        [TerrainType.BRIMSTONE_FIRE]: LightKind.BRIMSTONE_FIRE_LIGHT,
+        [TerrainType.OPEN_IRON_DOOR_INERT]: 0, [TerrainType.BRIDGE_FALLING]: 0,
         [TerrainType.DUNGEON_PORTAL]: LightKind.INCENDIARY_DART_LIGHT, // CE Globals.c:336
         [TerrainType.ANCIENT_SPIRIT_VINES]: 0,
         [TerrainType.ANCIENT_SPIRIT_GRASS]: 0,
@@ -315,7 +318,7 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         }
     });
 
-    it('非零恰 36 个（U17a burnItem 后继 ITEM_FIRE），且都指向有载体的目录条目', () => {
+    it('非零恰 37 个（U17b 硫磺火后继），且都指向有载体的目录条目', () => {
         const nonzero = Object.entries(TERRAIN_FLAGS)
             .filter(([, v]) => v.glowLight !== LightKind.NO_LIGHT)
             .map(([k]) => Number(k) as TerrainType)
@@ -323,7 +326,7 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         expect(nonzero).toEqual([
             TerrainType.LAVA, TerrainType.ALTAR, TerrainType.EMBERS,
             TerrainType.CONFUSION_GAS, TerrainType.GAS_FIRE,
-            TerrainType.GAS_EXPLOSION, TerrainType.PLAIN_FIRE, TerrainType.ITEM_FIRE,
+            TerrainType.GAS_EXPLOSION, TerrainType.PLAIN_FIRE, TerrainType.ITEM_FIRE, TerrainType.BRIMSTONE_FIRE,
             // B-3：三张卷轴的水晶/圣徽 tile（FORCEFIELD_MELT 与 FORCEFIELD
             // 共用 FORCEFIELD_LIGHT）。
             TerrainType.FORCEFIELD, TerrainType.FORCEFIELD_MELT,
@@ -786,6 +789,7 @@ describe('C-7 载体边界留痕', () => {
         // U21c: CE Items.c:7901/7920/7939/8111 now creates these display flares.
         'SCROLL_PROTECTION_LIGHT', 'SCROLL_ENCHANTMENT_LIGHT', 'POTION_STRENGTH_LIGHT',
         'EMPOWERMENT_LIGHT',
+        'BRIMSTONE_FIRE_LIGHT', // U17b: CE Globals.c:493, real sulfur fire glow.
         'INCENDIARY_DART_LIGHT', // U04: CE Globals.c:336 DUNGEON_PORTAL actual tile.
     ]);
 

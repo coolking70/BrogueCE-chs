@@ -50,6 +50,19 @@ import { createHeadlessGame } from './harness';
 // V-2b-7：E2 的起点改为数据驱动——直接扫蓝图的 featureDF 列。
 import blueprintData from '../data/blueprints.json';
 
+// U17b: these historical negative tests require a missing dependency. The real
+// carriers are now complete; inject only that premise and restore it in finally.
+function withMissingCarriers(ids: number[], test: () => void): void {
+    const entries = ids.map(id => DUNGEON_FEATURE_CATALOG[id as DF]!);
+    const tiles = entries.map(entry => entry.tile);
+    try {
+        entries.forEach(entry => Object.assign(entry, { tile: null }));
+        test();
+    } finally {
+        entries.forEach((entry, i) => Object.assign(entry, { tile: tiles[i] }));
+    }
+}
+
 const C = TerrainType;
 const L = DungeonLayer;
 
@@ -399,7 +412,7 @@ describe('C-4b C：spawnDungeonFeature 外壳（CE Architect.c:3359-3495）', ()
         expect(g.getCell(10, 10)!.layers[L.DUNGEON], 'FLOOR(95) > 50 被清（清完仍是 FLOOR，CE :3434）').toBe(C.FLOOR);
     });
 
-    it('C6 subsequentDF 链：INERT_BRIMSTONE 落层后链上缺 tile 的 BRIMSTONE_FIRE 抛错；BRIDGE_FIRE→CHASM→抛', () => {
+    it('C6 subsequentDF 链：INERT_BRIMSTONE 落层后链上缺 tile 的 BRIMSTONE_FIRE 抛错；BRIDGE_FIRE→CHASM→抛', () => withMissingCarriers([104, 98], () => {
         // DF_INERT_BRIMSTONE（tile ✓，start=0 → 原点一格）→ DF_BRIMSTONE_FIRE（登记 ✗）。
         const g = openGrid(20, 20);
         let threw = '';
@@ -431,7 +444,7 @@ describe('C-4b C：spawnDungeonFeature 外壳（CE Architect.c:3359-3495）', ()
         }), false);
         expect(res3.message, 'description 非空必须原样登记').toBe('test message registry');
         expect(g3.getCell(10, 10)!.layers[L.DUNGEON]).toBe(C.OPEN_DOOR);
-    });
+    }));
 
     it('C7 对抗：DFF_SUBSEQ_EVERYWHERE 只落在 fill 后的实际落点（用 fill 前 spawnMap 的实现在此翻红）', () => {
         // 场景：全场 FLOOR；(12..14, 9..11) 预铺 WATER_DEEP(40)。父 DF 铺
@@ -565,7 +578,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // count and new literal rows are pinned in u_08_terrain_bolts.test.ts.
         // U17a additionally projects out DF_ITEM_FIRE=110; its live burn chain
         // is pinned in u_17a_df_transaction.test.ts. The old 135 stay unchanged.
-        const keys = Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => ![57, 58, 59, 60, 110].includes(Number(k)));
+        const keys = Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => ![57, 58, 59, 60, 110, 63].includes(Number(k)));
         // V-2b-3：35 → 49（+14）。CE Globals.c 目录行逐条：
         //   DF_RUBBLE :612、DF_SHOW_PARALYSIS_GAS_TRAP :626、DF_INACTIVE_GLYPH :726、
         //   DF_REVEAL_LEVER :732、DF_MEDIUM_HOLE :813、DF_OPEN_PORTCULLIS :854、
@@ -777,7 +790,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // 集合相等：目录里多一条（闭包外）或少一条（漏抄）都翻红。
         const catalogKeys = new Set(Object.keys(DUNGEON_FEATURE_CATALOG).map(Number) as DF[]);
         expect([...closure].sort((a, b) => a - b)).toEqual([...catalogKeys].sort((a, b) => a - b));
-        expect([...catalogKeys].filter(id => ![57, 58, 59, 60, 110].includes(id)).length, 'U08 投影回原135条；F-2a：DF_ASH 入闭包 19→20；G-1：DF_GAS_FIRE 入闭包 20→21；' +
+        expect([...catalogKeys].filter(id => ![57, 58, 59, 60, 110, 63].includes(id)).length, 'U08 投影回原135条；F-2a：DF_ASH 入闭包 19→20；G-1：DF_GAS_FIRE 入闭包 20→21；' +
             'G-2：DF_EXPLOSION_FIRE（经 METHANE_GAS.promoteType）入闭包 21→22；' +
             'F-2c：DF_BLOAT_EXPLOSION（经 bloat 的 DFType）入闭包 22→23；' +
             'C-5：DF_HOLE_POTION（药水/pit bloat 起点）→ DF_HOLE_2 → DF_HOLE_DRAIN' +
@@ -816,7 +829,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         const prep = DUNGEON_FEATURE_CATALOG[DF.DF_BRIDGE_FALL_PREP]!;
         expect(prep.ceLine).toBe(736);
         expect(prep.ceTile).toBe('BRIDGE_FALLING');
-        expect(prep.tile).toBeNull();
+        expect(prep.tile).toBe(C.BRIDGE_FALLING);
         expect(prep.propagationTerrain, 'CE :736 的 propTerrain=BRIDGE').toBe(C.BRIDGE);
         expect(prep.startProbability).toBe(200);
         expect(prep.probabilityDecrement).toBe(100);
@@ -994,7 +1007,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // DF_PORTAL_ACTIVATE→PORTAL_LIGHT :725、DF_SACRIFICE_ALTAR→SACRIFICE_ALTAR
         // :802、DF_COFFIN_BURSTS→COFFIN_OPEN :807、DF_WORM_TUNNEL_MARKER_ACTIVE
         // →WORM_TUNNEL_MARKER_ACTIVE :880）。另 15 条带完整 tile 不入列。
-        expect(DF_MISSING_TILES.length).toBe(30); // V-2b-9d: glyph and stench carriers, 32 -> 30.
+        expect(DF_MISSING_TILES.length).toBe(25); // U17b: exactly five first-family carriers restored.
         // 登记条目确实都是 tile=null，且抛错带 CE tile 名。
         for (const id of DF_MISSING_TILES) {
             expect(DUNGEON_FEATURE_CATALOG[id]!.tile, `DF#${id} 应为 null tile`).toBeNull();

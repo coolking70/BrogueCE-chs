@@ -145,4 +145,9 @@ export const TERRAIN_APPEARANCES: Record<TerrainType, BaseTerrainAppearance> = {
     [TerrainType.ELECTRIC_CRYSTAL_ON]: { char: "\u00a4", color: '#ffffff', bgColor: 0x666699 }, // CE ELECTRIC_CRYSTAL_ON
     [TerrainType.STENCH_SMOKE_GAS]: { char: " ", color: '#000000', bgColor: 0x997f0c , transparentFore: true }, // CE STENCH_SMOKE_GAS
     [TerrainType.ANCIENT_SPIRIT_GRASS]: { char: "\"", color: '#266626', bgColor: null }, // CE ANCIENT_SPIRIT_GRASS
+    [TerrainType.TRAMPLED_FOLIAGE]: { char: "\"", color: '#3fff3f', bgColor: null }, // CE Globals.c:474
+    [TerrainType.ACTIVE_BRIMSTONE]: { char: "'", color: '#ff7f19', bgColor: 0x2d1e16 }, // CE Globals.c:425
+    [TerrainType.BRIMSTONE_FIRE]: { char: "\u22cf", color: '#b23300', bgColor: null }, // CE Globals.c:493
+    [TerrainType.OPEN_IRON_DOOR_INERT]: { char: "'", color: '#ffffff', bgColor: 0x26264c }, // CE Globals.c:332
+    [TerrainType.BRIDGE_FALLING]: { char: "=", color: '#541e1e', bgColor: 0x1e0705 }, // CE Globals.c:429
 };

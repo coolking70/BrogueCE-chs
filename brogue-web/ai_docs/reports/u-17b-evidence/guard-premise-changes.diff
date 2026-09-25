@@ -1,0 +1,406 @@
+diff --git a/brogue-web/src/test/b_1_weapon_specials.test.ts b/brogue-web/src/test/b_1_weapon_specials.test.ts
+index a973812..c649c61 100644
+--- a/brogue-web/src/test/b_1_weapon_specials.test.ts
++++ b/brogue-web/src/test/b_1_weapon_specials.test.ts
+@@ -27,7 +27,8 @@
+  *   sword   1d3+6 → raw 7..9（×3 → 21/24/27；若误 ×5 → 35/40/45）
+  *   sword×3 的 21/24/27 与 dagger×5 的 15/20 均 ∉ 对方集合——伤害值域互相钳制。
+  */
+-import { describe, it, expect } from 'vitest';
++import { describe, it, expect, vi } from 'vitest';
++import { rng } from '../engine/Random';
+ import { createHeadlessGame } from './harness';
+ import { Game } from '../engine/Core/Game';
+ import { Monster, MonsterState, type MonsterData } from '../entities/Monster';
+@@ -492,13 +493,24 @@ describe('B-1 数据留痕', () => {
+             expect(w!.weight, `${id}.weight`).toBe(weight);
+         }
+ 
+-        // 真实装载链路：flags 从 json 流入 Item
+-        expect(ItemLoader.spawnWeapon('dagger', -1, -1)?.flags)
+-            .toEqual(['ITEM_SNEAK_ATTACK_BONUS']);
+-        expect(ItemLoader.spawnWeapon('rapier', -1, -1)?.flags)
+-            .toEqual(['ITEM_ATTACKS_QUICKLY', 'ITEM_LUNGE_ATTACKS']);
+-        expect(ItemLoader.spawnWeapon('flail', -1, -1)?.flags)
+-            .toEqual(['ITEM_PASS_ATTACKS']);
++        // U17b: generation now advances the shared RNG through live foliage.
++        // This metadata test needs ordinary weapons; select the CE 40% branch's
++        // negative case explicitly instead of inheriting a previous test's stream.
++        const ordinary = vi.spyOn(rng, 'randPercent').mockImplementation(percent => {
++            expect(percent).toBe(40);
++            return false;
++        });
++        try {
++            // 真实装载链路：flags 从 json 流入 Item
++            expect(ItemLoader.spawnWeapon('dagger', -1, -1)?.flags)
++                .toEqual(['ITEM_SNEAK_ATTACK_BONUS']);
++            expect(ItemLoader.spawnWeapon('rapier', -1, -1)?.flags)
++                .toEqual(['ITEM_ATTACKS_QUICKLY', 'ITEM_LUNGE_ATTACKS']);
++            expect(ItemLoader.spawnWeapon('flail', -1, -1)?.flags)
++                .toEqual(['ITEM_PASS_ATTACKS']);
++        } finally {
++            ordinary.mockRestore();
++        }
+     });
+ 
+     it('留痕（本轮明确不做：镜像盟友继承武器旗标，CE Combat.c:755-772）：web ' +
+diff --git a/brogue-web/src/test/c_3_walls_doors.test.ts b/brogue-web/src/test/c_3_walls_doors.test.ts
+index 2453316..5ca499c 100644
+--- a/brogue-web/src/test/c_3_walls_doors.test.ts
++++ b/brogue-web/src/test/c_3_walls_doors.test.ts
+@@ -595,7 +595,7 @@ describe('C-3 管线集成', () => {
+         expect(componentBad, `非机器可走格（密门视作通路）存在不连通块：\n${componentBad.slice(0, 10).join('\n')}`).toEqual([]);
+     }, 600_000);
+ 
+-    it('T14 留痕（明确不做）：C-4 promoteTile(ACTIVE 态) / 主动搜索行动', () => {
++    it('T14 范围登记：U17b ACTIVE_BRIMSTONE 已落地；旧别名与 search 包装未引入', () => {
+         // C-6：原首条断言（"runAutogenerators 无 web 对应物，出现即删"）已按
+         // 其自带指示删除——C-6 已落地（src/engine/Map/AutoGenerator.ts，
+         // 两趟接线见 Generator/Architect.ts）。"复核 overlay 占位退出"的结论：
+@@ -606,10 +606,10 @@ describe('C-3 管线集成', () => {
+         // （原断言内容存档：expect(Architect.prototype.runAutogenerators)
+         //     .toBeUndefined()——"runAutogenerators 已出现——C-6 已落地"）
+ 
+-        // C-4：DF 目录 / promoteTile 未实现。CE 硫矿点火链的 ACTIVE_BRIMSTONE
+-        // 终态地形不存在于 web 枚举。C-4 落地后删除本断言。
++        // U17b: CE Globals.c:425/695 carrier now exists. Append-only web ID;
++        // the full CE row and live timeout/fire loop have independent U17b guards.
+         expect((TerrainType as unknown as Record<string, unknown>).ACTIVE_BRIMSTONE,
+-            'ACTIVE_BRIMSTONE 已出现——C-4 已落地，请删除本留痕').toBeUndefined();
++            'U17b ACTIVE_BRIMSTONE 保持追加的序列化地形 ID').toBe(140);
+         expect((TerrainType as unknown as Record<string, unknown>).ACTIVE,
+             '硫矿 ACTIVE 态已出现——C-4 已落地，请删除本留痕').toBeUndefined();
+ 
+diff --git a/brogue-web/src/test/c_4a_0_layer_model.test.ts b/brogue-web/src/test/c_4a_0_layer_model.test.ts
+index 5b1eca1..45f6c57 100644
+--- a/brogue-web/src/test/c_4a_0_layer_model.test.ts
++++ b/brogue-web/src/test/c_4a_0_layer_model.test.ts
+@@ -227,6 +227,9 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
+ 
+     it('归属表与 drawPriority 表与报告口径逐条一致（表被手滑改动即翻红）', () => {
+         expect(TERRAIN_HOME_LAYER).toEqual({
++            // U17b CE Globals.c:474/425/493/332/429.
++            [C.TRAMPLED_FOLIAGE]: L.SURFACE, [C.ACTIVE_BRIMSTONE]: L.LIQUID,
++            [C.BRIMSTONE_FIRE]: L.SURFACE, [C.OPEN_IRON_DOOR_INERT]: L.DUNGEON, [C.BRIDGE_FALLING]: L.LIQUID,
+             [C.ITEM_FIRE]: L.SURFACE, // CE Globals.c:498; burnItem successor.
+             [C.ANCIENT_SPIRIT_VINES]: L.SURFACE, [C.ANCIENT_SPIRIT_GRASS]: L.SURFACE,
+             [C.NOTHING]: L.DUNGEON, [C.GRANITE]: L.DUNGEON, [C.FLOOR]: L.DUNGEON,
+@@ -377,6 +380,8 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
+             [C.STENCH_SMOKE_GAS]: L.GAS,
+         });
+         expect(DRAW_PRIORITY).toEqual({
++            [C.TRAMPLED_FOLIAGE]: 60, [C.ACTIVE_BRIMSTONE]: 40,
++            [C.BRIMSTONE_FIRE]: 10, [C.OPEN_IRON_DOOR_INERT]: 90, [C.BRIDGE_FALLING]: 45,
+             [C.ITEM_FIRE]: 10, // CE Globals.c:498.
+             [C.ANCIENT_SPIRIT_VINES]: 19, [C.ANCIENT_SPIRIT_GRASS]: 60,
+             [C.NOTHING]: 100, [C.GRANITE]: 0, [C.FLOOR]: 95, [C.WALL]: 0,
+diff --git a/brogue-web/src/test/c_4a_terrain_catalog.test.ts b/brogue-web/src/test/c_4a_terrain_catalog.test.ts
+index 7e92a68..7bc1ccd 100644
+--- a/brogue-web/src/test/c_4a_terrain_catalog.test.ts
++++ b/brogue-web/src/test/c_4a_terrain_catalog.test.ts
+@@ -171,11 +171,11 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
+         // 9b 再补九个环境效果活动态/落点，115 → 124；补完轮闭合
+         // MACHINE_CHASM_EDGE 与 DF_PUDDLE 的载体，124 → 126；9c 七条效果载体 126 → 133。
+         // U08 appends two carriers; all old keys/fields stay pinned above.
+-        expect(names.filter(n => n !== 'ANCIENT_SPIRIT_VINES' && n !== 'ANCIENT_SPIRIT_GRASS' && n !== 'DUNGEON_PORTAL' && n !== 'ITEM_FIRE').length).toBe(135);
++        expect(names.filter(n => n !== 'ANCIENT_SPIRIT_VINES' && n !== 'ANCIENT_SPIRIT_GRASS' && n !== 'DUNGEON_PORTAL' && n !== 'ITEM_FIRE' && !['TRAMPLED_FOLIAGE', 'ACTIVE_BRIMSTONE', 'BRIMSTONE_FIRE', 'OPEN_IRON_DOOR_INERT', 'BRIDGE_FALLING'].includes(n)).length).toBe(135);
+         expect(names).toContain('DUNGEON_PORTAL'); // U04 CE Globals.c:336
+         // U17a burnItem successor; historical 135-row projection remains fixed.
+         expect(names).toContain('ITEM_FIRE');
+-        expect(names.length).toBe(139);
++        expect(names.length).toBe(144);
+         for (const name of names) {
+             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
+             const entry = TERRAIN_FLAGS[t];
+diff --git a/brogue-web/src/test/c_4b_dungeon_feature.test.ts b/brogue-web/src/test/c_4b_dungeon_feature.test.ts
+index bc548c6..2a801e4 100644
+--- a/brogue-web/src/test/c_4b_dungeon_feature.test.ts
++++ b/brogue-web/src/test/c_4b_dungeon_feature.test.ts
+@@ -50,6 +50,19 @@ import { createHeadlessGame } from './harness';
+ // V-2b-7：E2 的起点改为数据驱动——直接扫蓝图的 featureDF 列。
+ import blueprintData from '../data/blueprints.json';
+ 
++// U17b: these historical negative tests require a missing dependency. The real
++// carriers are now complete; inject only that premise and restore it in finally.
++function withMissingCarriers(ids: number[], test: () => void): void {
++    const entries = ids.map(id => DUNGEON_FEATURE_CATALOG[id as DF]!);
++    const tiles = entries.map(entry => entry.tile);
++    try {
++        entries.forEach(entry => Object.assign(entry, { tile: null }));
++        test();
++    } finally {
++        entries.forEach((entry, i) => Object.assign(entry, { tile: tiles[i] }));
++    }
++}
++
+ const C = TerrainType;
+ const L = DungeonLayer;
+ 
+@@ -399,7 +412,7 @@ describe('C-4b C：spawnDungeonFeature 外壳（CE Architect.c:3359-3495）', ()
+         expect(g.getCell(10, 10)!.layers[L.DUNGEON], 'FLOOR(95) > 50 被清（清完仍是 FLOOR，CE :3434）').toBe(C.FLOOR);
+     });
+ 
+-    it('C6 subsequentDF 链：INERT_BRIMSTONE 落层后链上缺 tile 的 BRIMSTONE_FIRE 抛错；BRIDGE_FIRE→CHASM→抛', () => {
++    it('C6 subsequentDF 链：INERT_BRIMSTONE 落层后链上缺 tile 的 BRIMSTONE_FIRE 抛错；BRIDGE_FIRE→CHASM→抛', () => withMissingCarriers([104, 98], () => {
+         // DF_INERT_BRIMSTONE（tile ✓，start=0 → 原点一格）→ DF_BRIMSTONE_FIRE（登记 ✗）。
+         const g = openGrid(20, 20);
+         let threw = '';
+@@ -431,7 +444,7 @@ describe('C-4b C：spawnDungeonFeature 外壳（CE Architect.c:3359-3495）', ()
+         }), false);
+         expect(res3.message, 'description 非空必须原样登记').toBe('test message registry');
+         expect(g3.getCell(10, 10)!.layers[L.DUNGEON]).toBe(C.OPEN_DOOR);
+-    });
++    }));
+ 
+     it('C7 对抗：DFF_SUBSEQ_EVERYWHERE 只落在 fill 后的实际落点（用 fill 前 spawnMap 的实现在此翻红）', () => {
+         // 场景：全场 FLOOR；(12..14, 9..11) 预铺 WATER_DEEP(40)。父 DF 铺
+@@ -565,7 +578,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
+         // count and new literal rows are pinned in u_08_terrain_bolts.test.ts.
+         // U17a additionally projects out DF_ITEM_FIRE=110; its live burn chain
+         // is pinned in u_17a_df_transaction.test.ts. The old 135 stay unchanged.
+-        const keys = Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => ![57, 58, 59, 60, 110].includes(Number(k)));
++        const keys = Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => ![57, 58, 59, 60, 110, 63].includes(Number(k)));
+         // V-2b-3：35 → 49（+14）。CE Globals.c 目录行逐条：
+         //   DF_RUBBLE :612、DF_SHOW_PARALYSIS_GAS_TRAP :626、DF_INACTIVE_GLYPH :726、
+         //   DF_REVEAL_LEVER :732、DF_MEDIUM_HOLE :813、DF_OPEN_PORTCULLIS :854、
+@@ -777,7 +790,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
+         // 集合相等：目录里多一条（闭包外）或少一条（漏抄）都翻红。
+         const catalogKeys = new Set(Object.keys(DUNGEON_FEATURE_CATALOG).map(Number) as DF[]);
+         expect([...closure].sort((a, b) => a - b)).toEqual([...catalogKeys].sort((a, b) => a - b));
+-        expect([...catalogKeys].filter(id => ![57, 58, 59, 60, 110].includes(id)).length, 'U08 投影回原135条；F-2a：DF_ASH 入闭包 19→20；G-1：DF_GAS_FIRE 入闭包 20→21；' +
++        expect([...catalogKeys].filter(id => ![57, 58, 59, 60, 110, 63].includes(id)).length, 'U08 投影回原135条；F-2a：DF_ASH 入闭包 19→20；G-1：DF_GAS_FIRE 入闭包 20→21；' +
+             'G-2：DF_EXPLOSION_FIRE（经 METHANE_GAS.promoteType）入闭包 21→22；' +
+             'F-2c：DF_BLOAT_EXPLOSION（经 bloat 的 DFType）入闭包 22→23；' +
+             'C-5：DF_HOLE_POTION（药水/pit bloat 起点）→ DF_HOLE_2 → DF_HOLE_DRAIN' +
+@@ -816,7 +829,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
+         const prep = DUNGEON_FEATURE_CATALOG[DF.DF_BRIDGE_FALL_PREP]!;
+         expect(prep.ceLine).toBe(736);
+         expect(prep.ceTile).toBe('BRIDGE_FALLING');
+-        expect(prep.tile).toBeNull();
++        expect(prep.tile).toBe(C.BRIDGE_FALLING);
+         expect(prep.propagationTerrain, 'CE :736 的 propTerrain=BRIDGE').toBe(C.BRIDGE);
+         expect(prep.startProbability).toBe(200);
+         expect(prep.probabilityDecrement).toBe(100);
+@@ -994,7 +1007,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
+         // DF_PORTAL_ACTIVATE→PORTAL_LIGHT :725、DF_SACRIFICE_ALTAR→SACRIFICE_ALTAR
+         // :802、DF_COFFIN_BURSTS→COFFIN_OPEN :807、DF_WORM_TUNNEL_MARKER_ACTIVE
+         // →WORM_TUNNEL_MARKER_ACTIVE :880）。另 15 条带完整 tile 不入列。
+-        expect(DF_MISSING_TILES.length).toBe(30); // V-2b-9d: glyph and stench carriers, 32 -> 30.
++        expect(DF_MISSING_TILES.length).toBe(25); // U17b: exactly five first-family carriers restored.
+         // 登记条目确实都是 tile=null，且抛错带 CE tile 名。
+         for (const id of DF_MISSING_TILES) {
+             expect(DUNGEON_FEATURE_CATALOG[id]!.tile, `DF#${id} 应为 null tile`).toBeNull();
+diff --git a/brogue-web/src/test/c_4c_promotion.test.ts b/brogue-web/src/test/c_4c_promotion.test.ts
+index 8b4912e..ae08e41 100644
+--- a/brogue-web/src/test/c_4c_promotion.test.ts
++++ b/brogue-web/src/test/c_4c_promotion.test.ts
+@@ -36,6 +36,19 @@ import {
+ import { rng } from '../engine/Random';
+ import { createHeadlessGame, runTurns } from './harness';
+ 
++// U17b: these historical negative tests require a missing dependency. The real
++// carriers are now complete; inject only that premise and restore it in finally.
++function withMissingCarriers(ids: number[], test: () => void): void {
++    const entries = ids.map(id => DUNGEON_FEATURE_CATALOG[id as DF]!);
++    const tiles = entries.map(entry => entry.tile);
++    try {
++        entries.forEach(entry => Object.assign(entry, { tile: null }));
++        test();
++    } finally {
++        entries.forEach((entry, i) => Object.assign(entry, { tile: tiles[i] }));
++    }
++}
++
+ const C = TerrainType;
+ const L = DungeonLayer;
+ 
+@@ -110,7 +123,7 @@ describe('C-4c A：promoteTile 本体（CE Time.c:1244-1287）', () => {
+         });
+     });
+ 
+-    it('A3 对抗：fireType / promoteType 选择——useFireDF 选错路时缓办记录互换即翻红', () => {
++    it('A3 对抗：fireType / promoteType 选择——useFireDF 选错路时缓办记录互换即翻红', () => withMissingCarriers([66, 104], () => {
+         // INERT_BRIMSTONE：promoteType=DF_ACTIVE_BRIMSTONE（tile 缺失，链断在
+         // 第一环）；fireType=DF_INERT_BRIMSTONE（tile 在，但 subsequentDF
+         // DF_BRIMSTONE_FIRE 缺失——链断在**中段**）。两路缓办记录不同：
+@@ -131,9 +144,9 @@ describe('C-4c A：promoteTile 本体（CE Time.c:1244-1287）', () => {
+         expect(rFire.deferred!.missingDf).toBe(DF.DF_BRIMSTONE_FIRE);
+         expect(rFire.deferred!.missingCeTile).toBe('BRIMSTONE_FIRE');
+         expect(g.getCell(5, 5)!.layers[L.LIQUID]).toBe(C.INERT_BRIMSTONE);
+-    });
++    }));
+ 
+-    it('A4 缓办不改地形：缺 tile DF 的 vanish 先行会造成 CE 不存在的半晋升态——不允许', () => {
++    it('A4 缓办不改地形：缺 tile DF 的 vanish 先行会造成 CE 不存在的半晋升态——不允许', () => withMissingCarriers([83], () => {
+         // LOCKED_DOOR：vanish 旗标在、promoteType=DF_OPEN_IRON_DOOR_INERT
+         // （tile 缺失）。错误实现"先 vanish 再发现缺 tile"→ 门被吃成 FLOOR
+         // （CE 不会出现的状态）。正确行为：整次缓办，门还在。
+@@ -143,7 +156,7 @@ describe('C-4c A：promoteTile 本体（CE Time.c:1244-1287）', () => {
+         expect(r.deferred).not.toBeNull();
+         expect(r.vanished).toBe(false);
+         expect(g.getCell(5, 5)!.layers[L.DUNGEON]).toBe(C.LOCKED_DOOR);
+-    });
++    }));
+ 
+     it('A5 已反转（V-2b-3）：接线机器分支真实通电——原"什么都不发生"断言改为"machineNumber=0 时耗掉两次洗牌的 RNG 且电散尽"', () => {
+         // 原留痕（C-4c→V-2b-3 反转，按 B-1 范式保留原断言内容）：
+@@ -353,7 +366,7 @@ describe('C-4c B：两趟驱动（CE Time.c:1619-1684）', () => {
+         expect(r2.rngDraws, '只剩 MUD 的 1 次').toBe(1);
+     });
+ 
+-    it('B6 普通型 promoteChance：掷骰在第一趟、落地在第二趟；缓办也照记（明细不丢）', () => {
++    it('B6 普通型 promoteChance：掷骰在第一趟、落地在第二趟；缓办也照记（明细不丢）', () => withMissingCarriers([66], () => {
+         const g = wallGrid();
+         g.setTerrain(5, 5, C.INERT_BRIMSTONE, '"', 0xccaa33); // chance 800，链缺 tile
+         const r = runPromotionUpdate(g, { keyOnTileAt: () => false });
+@@ -366,7 +379,7 @@ describe('C-4c B：两趟驱动（CE Time.c:1619-1684）', () => {
+         } else {
+             expect(r.promotions.length).toBe(0);
+         }
+-    });
++    }));
+ });
+ 
+ // ══════════════════════════════════════════════════════════════════════════
+@@ -444,6 +457,17 @@ describe('D：Game 集成（真实事件链）', () => {
+         game.grid.setTerrain(px + 1, py, C.FLOOR, '.', 0x888888);
+         game.grid.setTerrain(px + 2, py, C.STAIRS_DOWN, '>', 0x00aaff);
+         game.handlePlayerAction('move', { x: 1, y: 0 }, 'system');
++        // U17b: stationary items now promote terrain and advance the shared RNG.
++        // Pin the evacuation fixture, not the old stream: one legal ring target.
++        // The entered brimstone is walkable, but CE excludes it for evacuation.
++        for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++) {
++            if (!dx && !dy) continue;
++            const x = px + 2 + dx, y = py + dy;
++            game.grid.getCell(x, y)!.layers = [C.FLOOR, C.NOTHING, C.NOTHING, C.NOTHING];
++            game.grid.setTerrain(x, y, dx === 1 && dy === -1 ? C.FLOOR
++                : dx === -1 && dy === 0 ? C.INERT_BRIMSTONE : C.WALL);
++        }
++
+         game.handlePlayerAction('move', { x: 1, y: 0 }, 'system');
+         // Synthetic stairs are not grid.downStairsLoc: ordinary contact invokes repel.
+         // CE Architect.c:3332 uses raw footprint and relocates the actual player.
+diff --git a/brogue-web/src/test/c_7_lighting.test.ts b/brogue-web/src/test/c_7_lighting.test.ts
+index b0c3b4b..da2a3bf 100644
+--- a/brogue-web/src/test/c_7_lighting.test.ts
++++ b/brogue-web/src/test/c_7_lighting.test.ts
+@@ -141,6 +141,9 @@ describe('C-7 光照目录（CE Globals.c:955-1020 逐值）', () => {
+ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () => {
+     /** web 全部 43 tile 的 CE glowLight 期望值（逐条核过 CE Globals.c:321-744）。 */
+     const EXPECTED_GLOW: Record<TerrainType, number> = {
++        [TerrainType.TRAMPLED_FOLIAGE]: 0, [TerrainType.ACTIVE_BRIMSTONE]: 0,
++        [TerrainType.BRIMSTONE_FIRE]: LightKind.BRIMSTONE_FIRE_LIGHT,
++        [TerrainType.OPEN_IRON_DOOR_INERT]: 0, [TerrainType.BRIDGE_FALLING]: 0,
+         [TerrainType.DUNGEON_PORTAL]: LightKind.INCENDIARY_DART_LIGHT, // CE Globals.c:336
+         [TerrainType.ANCIENT_SPIRIT_VINES]: 0,
+         [TerrainType.ANCIENT_SPIRIT_GRASS]: 0,
+@@ -315,7 +318,7 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
+         }
+     });
+ 
+-    it('非零恰 36 个（U17a burnItem 后继 ITEM_FIRE），且都指向有载体的目录条目', () => {
++    it('非零恰 37 个（U17b 硫磺火后继），且都指向有载体的目录条目', () => {
+         const nonzero = Object.entries(TERRAIN_FLAGS)
+             .filter(([, v]) => v.glowLight !== LightKind.NO_LIGHT)
+             .map(([k]) => Number(k) as TerrainType)
+@@ -323,7 +326,7 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
+         expect(nonzero).toEqual([
+             TerrainType.LAVA, TerrainType.ALTAR, TerrainType.EMBERS,
+             TerrainType.CONFUSION_GAS, TerrainType.GAS_FIRE,
+-            TerrainType.GAS_EXPLOSION, TerrainType.PLAIN_FIRE, TerrainType.ITEM_FIRE,
++            TerrainType.GAS_EXPLOSION, TerrainType.PLAIN_FIRE, TerrainType.ITEM_FIRE, TerrainType.BRIMSTONE_FIRE,
+             // B-3：三张卷轴的水晶/圣徽 tile（FORCEFIELD_MELT 与 FORCEFIELD
+             // 共用 FORCEFIELD_LIGHT）。
+             TerrainType.FORCEFIELD, TerrainType.FORCEFIELD_MELT,
+@@ -786,6 +789,7 @@ describe('C-7 载体边界留痕', () => {
+         // U21c: CE Items.c:7901/7920/7939/8111 now creates these display flares.
+         'SCROLL_PROTECTION_LIGHT', 'SCROLL_ENCHANTMENT_LIGHT', 'POTION_STRENGTH_LIGHT',
+         'EMPOWERMENT_LIGHT',
++        'BRIMSTONE_FIRE_LIGHT', // U17b: CE Globals.c:493, real sulfur fire glow.
+         'INCENDIARY_DART_LIGHT', // U04: CE Globals.c:336 DUNGEON_PORTAL actual tile.
+     ]);
+ 
+diff --git a/brogue-web/src/test/g_2_gas_df_wiring.test.ts b/brogue-web/src/test/g_2_gas_df_wiring.test.ts
+index 0f64215..35a1028 100644
+--- a/brogue-web/src/test/g_2_gas_df_wiring.test.ts
++++ b/brogue-web/src/test/g_2_gas_df_wiring.test.ts
+@@ -488,7 +488,7 @@ describe('G-2 对抗⑦：未迁移气体只登记（载体盘点表的显式留
+         // V-2b-7：29 → 31（摘 5 增 7，DF 特征系统轮——RUBBLE/LUMINESCENT_FUNGUS
+         // 两条地形落地摘除四条 RUBBLE 链 DF 与 DF_LUMINESCENT_FUNGUS，新增
+         // 七条 tile 无 web 载体的新条目）。
+-        expect(DF_MISSING_TILES).toHaveLength(30); // V-2b-9d: glyph and stench carriers, 32 -> 30.
++        expect(DF_MISSING_TILES).toHaveLength(25); // U17b: exactly five first-family carriers restored; the other 25 stay missing.
+         const f = catalogFeature(DF.DF_EXPLOSION_FIRE);
+         expect(f.tile).toBe(C.GAS_EXPLOSION);
+         expect(f.startProbability).toBe(60);
+diff --git a/brogue-web/src/test/r_1_appearance.test.ts b/brogue-web/src/test/r_1_appearance.test.ts
+index ccc9a48..12b7e3b 100644
+--- a/brogue-web/src/test/r_1_appearance.test.ts
++++ b/brogue-web/src/test/r_1_appearance.test.ts
+@@ -169,8 +169,8 @@ describe('R-1 terrainAppearance 特征化（穷举钉死）', () => {
+         // V-2b-9b：九条活动态/效果落点，115 → 124；补完轮补齐
+         // MACHINE_CHASM_EDGE / PUDDLE，124 → 126；9c 七条效果载体 126 → 133。
+         // U08 adds two CE terrain carriers; preserve the old-universe count.
+-        expect(ALL_TERRAINS.filter(t => t !== TerrainType.ANCIENT_SPIRIT_VINES && t !== TerrainType.ANCIENT_SPIRIT_GRASS && t !== TerrainType.DUNGEON_PORTAL && t !== TerrainType.ITEM_FIRE).length).toBe(135);
+-        expect(ALL_TERRAINS.length).toBe(139);
++        expect(ALL_TERRAINS.filter(t => t !== TerrainType.ANCIENT_SPIRIT_VINES && t !== TerrainType.ANCIENT_SPIRIT_GRASS && t !== TerrainType.DUNGEON_PORTAL && t !== TerrainType.ITEM_FIRE && ![TerrainType.TRAMPLED_FOLIAGE, TerrainType.ACTIVE_BRIMSTONE, TerrainType.BRIMSTONE_FIRE, TerrainType.OPEN_IRON_DOOR_INERT, TerrainType.BRIDGE_FALLING].includes(t)).length).toBe(135);
++        expect(ALL_TERRAINS.length).toBe(144);
+         expect(new Set(ALL_TERRAINS).size).toBe(ALL_TERRAINS.length);
+     });
+ 
+diff --git a/brogue-web/src/test/u_08_terrain_bolts.test.ts b/brogue-web/src/test/u_08_terrain_bolts.test.ts
+index cca5e28..53a54fd 100644
+--- a/brogue-web/src/test/u_08_terrain_bolts.test.ts
++++ b/brogue-web/src/test/u_08_terrain_bolts.test.ts
+@@ -46,7 +46,7 @@ describe('U08 CE catalog and runtime qualification',()=>{
+     });
+     it('new closed terrain set: 139 DFs, no entity/spawn flags; web forbidden to learn, vines eligible',()=>{
+         // U17a adds only burnItem's DF_ITEM_FIRE (110); retain the U08 universe.
+-        expect(Object.keys(DFC).filter(k=>Number(k)!==110)).toHaveLength(139);
++        expect(Object.keys(DFC).filter(k=>Number(k)!==110 && Number(k)!==63)).toHaveLength(139);
+         expect(BC[B.SPIDERWEB]).toMatchObject({effect:E.NONE,pathDF:'DF_WEB_SMALL',targetDF:'DF_WEB_LARGE'});
+         expect(BC[B.ANCIENT_SPIRIT_VINES]).toMatchObject({effect:E.NONE,pathDF:'DF_ANCIENT_SPIRIT_GRASS',targetDF:'DF_ANCIENT_SPIRIT_VINES'});
+         expect(BC[B.SPIDERWEB].flags).toBe(F.TARGET_ENEMIES|F.NEVER_REFLECTS|F.NOT_LEARNABLE);
+diff --git a/brogue-web/src/test/u_17a_df_transaction.test.ts b/brogue-web/src/test/u_17a_df_transaction.test.ts
+index e567d28..e8ca463 100644
+--- a/brogue-web/src/test/u_17a_df_transaction.test.ts
++++ b/brogue-web/src/test/u_17a_df_transaction.test.ts
+@@ -257,9 +257,9 @@ describe('U17a actual Game consumers',()=>{
+         spawnDungeonFeature(g.grid,5,5,repel,false);
+         expect(g.player.loc).not.toEqual({x:5,y:5});
+     });
+-    it('null tile registry remains exactly 30 and no five-family carrier is activated',()=>{
+-        expect(Object.keys(DF_MISSING_TILES)).toHaveLength(30);
+-        expect(Object.keys(DUNGEON_FEATURE_CATALOG)).toHaveLength(140);
++    it('historical U17a projection: 30 missing rows before the five U17b carriers',()=>{
++        expect([...DF_MISSING_TILES, 61, 66, 104, 83, 98]).toHaveLength(30);
++        expect(Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => Number(k) !== 63)).toHaveLength(140);
+         expect(DF.DF_ITEM_FIRE).toBe(110);
+         expect(catalogFeature(DF.DF_ITEM_FIRE)).toMatchObject({tile:T.ITEM_FIRE,layer:L.SURFACE,startProbability:0,flags:0,lightFlare:'FALLEN_TORCH_FLASH_LIGHT'});
+     });
+diff --git a/brogue-web/src/test/v_2b_3_wired.test.ts b/brogue-web/src/test/v_2b_3_wired.test.ts
+index 5c54ec6..e281b63 100644
+--- a/brogue-web/src/test/v_2b_3_wired.test.ts
++++ b/brogue-web/src/test/v_2b_3_wired.test.ts
+@@ -244,7 +244,7 @@ describe('V-2b-3 A：载体地形逐字段 ≡ CE Globals.c（对抗：抄错任
+         // DF_STATUE_SHATTER / DF_LUMINESCENT_FUNGUS 五条接上真 tile 摘出；
+         // 22 条新条目里 web 无 tile 的七条入列。逐条见 DungeonFeatureCatalog
+         // 的 V-2b-7 块注。
+-        expect(DF_MISSING_TILES).toHaveLength(30); // V-2b-9d: glyph and stench carriers, 32 -> 30.
++        expect(DF_MISSING_TILES).toHaveLength(25); // U17b: exactly five first-family carriers restored; the other 25 stay missing.
+         for (const d of [DF.DF_REVEAL_LEVER,
+             DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY]) {
+             expect(DF_MISSING_TILES, `DF[${d}] 应在缺 tile 登记`).toContain(d);
+diff --git a/brogue-web/src/test/v_2b_5_dormant.test.ts b/brogue-web/src/test/v_2b_5_dormant.test.ts
+index ecb2da0..accb9eb 100644
+--- a/brogue-web/src/test/v_2b_5_dormant.test.ts
++++ b/brogue-web/src/test/v_2b_5_dormant.test.ts
+@@ -193,7 +193,7 @@ describe('V-2b-5 A：七个休眠载体地形 ≡ CE Globals.c 原行', () => {
+         // V-2b-7：29 → 31（摘 5 增 7，DF 特征系统轮——RUBBLE/LUMINESCENT_FUNGUS
+         // 两条地形落地摘除四条 RUBBLE 链 DF 与 DF_LUMINESCENT_FUNGUS，新增
+         // 七条 tile 无 web 载体的新条目）。
+-        expect(DF_MISSING_TILES).toHaveLength(30); // V-2b-9d: glyph and stench carriers, 32 -> 30.
++        expect(DF_MISSING_TILES).toHaveLength(25); // U17b: exactly five first-family carriers restored; the other 25 stay missing.
+         expect(DF_MISSING_TILES).toContain(DF.DF_WALL_CRACK);
+         expect(DF_MISSING_TILES).toContain(DF.DF_CRACKING_STATUE);
+         expect(DF_MISSING_TILES, '带完整 tile 的条目不得混进缺 tile 名单').not.toContain(DF.DF_ALTAR_INERT);

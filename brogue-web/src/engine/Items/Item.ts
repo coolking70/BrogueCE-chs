@@ -46,6 +46,8 @@ function calledLabel(categoryWord: 'potion' | 'scroll' | 'wand' | 'staff' | 'rin
 }
 
 export class Item implements Entity {
+    /** CE Items.updateFloorItems: ignore falls from the future during catch-up. */
+    public spawnTurnNumber: number = 0;
     public id: number;
     public char: string;
     public color: number;

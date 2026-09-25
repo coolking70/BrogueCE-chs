@@ -1,0 +1,8 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+src/test/c_7_lighting.test.ts(143,11): error TS2739: Type '{ 137: LightKind; 135: number; 136: number; 0: number; 1: number; 2: number; 3: number; 4: number; 5: number; 6: number; 7: number; 8: number; 9: LightKind; 10: number; 11: number; 12: number; ... 122 more ...; 132: LightKind; }' is missing the following properties from type 'Record<TerrainType, number>': 139, 140, 141, 142, 143
+src/test/u_17b_carriers.test.ts(82,104): error TS2345: Argument of type '"burning"' is not assignable to parameter of type 'StatusId'.
+src/test/u_17b_carriers.test.ts(94,208): error TS2341: Property 'activeFlares' is private and only accessible within class 'Game'.
+src/test/u_17b_carriers.test.ts(99,194): error TS2341: Property 'canMoveTo' is private and only accessible within class 'Game'.

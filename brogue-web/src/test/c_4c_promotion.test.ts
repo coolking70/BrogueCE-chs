@@ -36,6 +36,19 @@ import {
 import { rng } from '../engine/Random';
 import { createHeadlessGame, runTurns } from './harness';
 
+// U17b: these historical negative tests require a missing dependency. The real
+// carriers are now complete; inject only that premise and restore it in finally.
+function withMissingCarriers(ids: number[], test: () => void): void {
+    const entries = ids.map(id => DUNGEON_FEATURE_CATALOG[id as DF]!);
+    const tiles = entries.map(entry => entry.tile);
+    try {
+        entries.forEach(entry => Object.assign(entry, { tile: null }));
+        test();
+    } finally {
+        entries.forEach((entry, i) => Object.assign(entry, { tile: tiles[i] }));
+    }
+}
+
 const C = TerrainType;
 const L = DungeonLayer;
 
@@ -110,7 +123,7 @@ describe('C-4c A：promoteTile 本体（CE Time.c:1244-1287）', () => {
         });
     });
 
-    it('A3 对抗：fireType / promoteType 选择——useFireDF 选错路时缓办记录互换即翻红', () => {
+    it('A3 对抗：fireType / promoteType 选择——useFireDF 选错路时缓办记录互换即翻红', () => withMissingCarriers([66, 104], () => {
         // INERT_BRIMSTONE：promoteType=DF_ACTIVE_BRIMSTONE（tile 缺失，链断在
         // 第一环）；fireType=DF_INERT_BRIMSTONE（tile 在，但 subsequentDF
         // DF_BRIMSTONE_FIRE 缺失——链断在**中段**）。两路缓办记录不同：
@@ -131,9 +144,9 @@ describe('C-4c A：promoteTile 本体（CE Time.c:1244-1287）', () => {
         expect(rFire.deferred!.missingDf).toBe(DF.DF_BRIMSTONE_FIRE);
         expect(rFire.deferred!.missingCeTile).toBe('BRIMSTONE_FIRE');
         expect(g.getCell(5, 5)!.layers[L.LIQUID]).toBe(C.INERT_BRIMSTONE);
-    });
+    }));
 
-    it('A4 缓办不改地形：缺 tile DF 的 vanish 先行会造成 CE 不存在的半晋升态——不允许', () => {
+    it('A4 缓办不改地形：缺 tile DF 的 vanish 先行会造成 CE 不存在的半晋升态——不允许', () => withMissingCarriers([83], () => {
         // LOCKED_DOOR：vanish 旗标在、promoteType=DF_OPEN_IRON_DOOR_INERT
         // （tile 缺失）。错误实现"先 vanish 再发现缺 tile"→ 门被吃成 FLOOR
         // （CE 不会出现的状态）。正确行为：整次缓办，门还在。
@@ -143,7 +156,7 @@ describe('C-4c A：promoteTile 本体（CE Time.c:1244-1287）', () => {
         expect(r.deferred).not.toBeNull();
         expect(r.vanished).toBe(false);
         expect(g.getCell(5, 5)!.layers[L.DUNGEON]).toBe(C.LOCKED_DOOR);
-    });
+    }));
 
     it('A5 已反转（V-2b-3）：接线机器分支真实通电——原"什么都不发生"断言改为"machineNumber=0 时耗掉两次洗牌的 RNG 且电散尽"', () => {
         // 原留痕（C-4c→V-2b-3 反转，按 B-1 范式保留原断言内容）：
@@ -353,7 +366,7 @@ describe('C-4c B：两趟驱动（CE Time.c:1619-1684）', () => {
         expect(r2.rngDraws, '只剩 MUD 的 1 次').toBe(1);
     });
 
-    it('B6 普通型 promoteChance：掷骰在第一趟、落地在第二趟；缓办也照记（明细不丢）', () => {
+    it('B6 普通型 promoteChance：掷骰在第一趟、落地在第二趟；缓办也照记（明细不丢）', () => withMissingCarriers([66], () => {
         const g = wallGrid();
         g.setTerrain(5, 5, C.INERT_BRIMSTONE, '"', 0xccaa33); // chance 800，链缺 tile
         const r = runPromotionUpdate(g, { keyOnTileAt: () => false });
@@ -366,7 +379,7 @@ describe('C-4c B：两趟驱动（CE Time.c:1619-1684）', () => {
         } else {
             expect(r.promotions.length).toBe(0);
         }
-    });
+    }));
 });
 
 // ══════════════════════════════════════════════════════════════════════════
@@ -444,6 +457,17 @@ describe('D：Game 集成（真实事件链）', () => {
         game.grid.setTerrain(px + 1, py, C.FLOOR, '.', 0x888888);
         game.grid.setTerrain(px + 2, py, C.STAIRS_DOWN, '>', 0x00aaff);
         game.handlePlayerAction('move', { x: 1, y: 0 }, 'system');
+        // U17b: stationary items now promote terrain and advance the shared RNG.
+        // Pin the evacuation fixture, not the old stream: one legal ring target.
+        // The entered brimstone is walkable, but CE excludes it for evacuation.
+        for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++) {
+            if (!dx && !dy) continue;
+            const x = px + 2 + dx, y = py + dy;
+            game.grid.getCell(x, y)!.layers = [C.FLOOR, C.NOTHING, C.NOTHING, C.NOTHING];
+            game.grid.setTerrain(x, y, dx === 1 && dy === -1 ? C.FLOOR
+                : dx === -1 && dy === 0 ? C.INERT_BRIMSTONE : C.WALL);
+        }
+
         game.handlePlayerAction('move', { x: 1, y: 0 }, 'system');
         // Synthetic stairs are not grid.downStairsLoc: ordinary contact invokes repel.
         // CE Architect.c:3332 uses raw footprint and relocates the actual player.

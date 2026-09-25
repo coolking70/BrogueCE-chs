@@ -64,6 +64,7 @@ export enum DF {
     DF_FLOOD_DRAIN                 = 114, // :1607（FLOOD_WATER_DEEP.promoteType）
     DF_STEAM_ACCUMULATION          = 43,  // :1518
     DF_METHANE_GAS_PUFF            = 44,  // :1519
+    DF_FOLIAGE_REGROW              = 63,  // CE Rogue.h:1544; U17b required successor
     DF_TRAMPLED_FOLIAGE            = 61,  // :1542
     DF_ACTIVE_BRIMSTONE            = 66,  // :1549
     DF_INERT_BRIMSTONE             = 67,  // :1550
@@ -432,9 +433,16 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
         description: '', lightFlare: '', flashColor: '', effectRadius: 0,
     },
 
-    // {TRAMPLED_FOLIAGE, SURFACE, 0, 0, 0} —— 踩过的灌木丛
+    // CE :690: regrowth is a one-cell, cross-layer-blocked FOLIAGE DF.
+    [DF.DF_FOLIAGE_REGROW]: {
+        id: DF.DF_FOLIAGE_REGROW, ceLine: 690, ceTile: 'FOLIAGE', tile: TerrainType.FOLIAGE,
+        layer: DungeonLayer.SURFACE, startProbability: 0, probabilityDecrement: 0,
+        flags: DFF_BLOCKED_BY_OTHER_LAYERS, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
+    // CE :688: stepped-on foliage.
     [DF.DF_TRAMPLED_FOLIAGE]: {
-        id: DF.DF_TRAMPLED_FOLIAGE, ceLine: 688, ceTile: 'TRAMPLED_FOLIAGE', tile: null,
+        id: DF.DF_TRAMPLED_FOLIAGE, ceLine: 688, ceTile: 'TRAMPLED_FOLIAGE', tile: TerrainType.TRAMPLED_FOLIAGE,
         layer: DungeonLayer.SURFACE, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: '', lightFlare: '', flashColor: '', effectRadius: 0,
@@ -442,7 +450,7 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
 
     // {ACTIVE_BRIMSTONE, LIQUID, 0, 0, 0} —— 硫矿湖活性化
     [DF.DF_ACTIVE_BRIMSTONE]: {
-        id: DF.DF_ACTIVE_BRIMSTONE, ceLine: 695, ceTile: 'ACTIVE_BRIMSTONE', tile: null,
+        id: DF.DF_ACTIVE_BRIMSTONE, ceLine: 695, ceTile: 'ACTIVE_BRIMSTONE', tile: TerrainType.ACTIVE_BRIMSTONE,
         layer: DungeonLayer.LIQUID, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: '', lightFlare: '', flashColor: '', effectRadius: 0,
@@ -475,9 +483,9 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     },
 
     // {OPEN_IRON_DOOR_INERT, DUNGEON, 0, 0, 0, "", GENERIC_FLASH_LIGHT}
-    // —— 锁门用钥匙后的惰性铁门（web 尚无此 tile，登记）
+    // —— 锁门用钥匙后的惰性铁门（U17b 完整载体）
     [DF.DF_OPEN_IRON_DOOR_INERT]: {
-        id: DF.DF_OPEN_IRON_DOOR_INERT, ceLine: 720, ceTile: 'OPEN_IRON_DOOR_INERT', tile: null,
+        id: DF.DF_OPEN_IRON_DOOR_INERT, ceLine: 720, ceTile: 'OPEN_IRON_DOOR_INERT', tile: TerrainType.OPEN_IRON_DOOR_INERT,
         layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: '', lightFlare: 'GENERIC_FLASH_LIGHT', flashColor: '', effectRadius: 0,
@@ -485,9 +493,9 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
 
     // {BRIDGE_FALLING, LIQUID, 200, 100, 0, "", 0, 0, 0, BRIDGE}
     // —— 桥燃后沿绳桥蔓延的坠落段（propagationTerrain=BRIDGE；
-    //    BRIDGE_FALLING tile web 没有，登记）
+    //    U17b 沿桥传播坍塌中间态）
     [DF.DF_BRIDGE_FALL_PREP]: {
-        id: DF.DF_BRIDGE_FALL_PREP, ceLine: 736, ceTile: 'BRIDGE_FALLING', tile: null,
+        id: DF.DF_BRIDGE_FALL_PREP, ceLine: 736, ceTile: 'BRIDGE_FALLING', tile: TerrainType.BRIDGE_FALLING,
         layer: DungeonLayer.LIQUID, startProbability: 200, probabilityDecrement: 100,
         flags: 0, cePropagationTerrain: 'BRIDGE', propagationTerrain: TerrainType.BRIDGE,
         subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0,
@@ -562,9 +570,9 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
         description: '', lightFlare: 'EXPLOSION_FLARE_LIGHT', flashColor: '', effectRadius: 0,
     },
 
-    // {BRIMSTONE_FIRE, SURFACE, 0, 0, 0} —— 硫矿火（web 无此 tile，登记）
+    // {BRIMSTONE_FIRE, SURFACE, 0, 0, 0} —— 硫矿火（U17b 硫磺循环）
     [DF.DF_BRIMSTONE_FIRE]: {
-        id: DF.DF_BRIMSTONE_FIRE, ceLine: 744, ceTile: 'BRIMSTONE_FIRE', tile: null,
+        id: DF.DF_BRIMSTONE_FIRE, ceLine: 744, ceTile: 'BRIMSTONE_FIRE', tile: TerrainType.BRIMSTONE_FIRE,
         layer: DungeonLayer.SURFACE, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: '', lightFlare: '', flashColor: '', effectRadius: 0,
@@ -1462,11 +1470,6 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
  *  载体盘点表），故不在本清单。 */
 export const DF_MISSING_TILES: readonly DF[] = [
     // V-2b-9d: inactive glyph and mud-floor stench carriers are complete.
-    DF.DF_TRAMPLED_FOLIAGE,        // TRAMPLED_FOLIAGE
-    DF.DF_ACTIVE_BRIMSTONE,        // ACTIVE_BRIMSTONE
-    DF.DF_BRIMSTONE_FIRE,          // BRIMSTONE_FIRE
-    DF.DF_OPEN_IRON_DOOR_INERT,    // OPEN_IRON_DOOR_INERT
-    DF.DF_BRIDGE_FALL_PREP,        // BRIDGE_FALLING
     DF.DF_MACHINE_PRESSURE_PLATE_USED, // MACHINE_PRESSURE_PLATE_USED
     // DF.DF_XXX 已于 V-2b-7 摘除（RUBBLE / LUMINESCENT_FUNGUS 地形落地）——见下方块注
     DF.DF_SHOW_TRAPDOOR,           // TRAP_DOOR（V-2b-2b：搜索显形族 tile，web 无

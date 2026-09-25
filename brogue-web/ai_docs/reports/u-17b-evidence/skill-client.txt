@@ -1,0 +1,89 @@
+(node:87539) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/coolking70/.codex/skills/develop-web-game/scripts/web_game_playwright_client.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/coolking70/.codex/skills/develop-web-game/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+browserType.launch: Target page, context or browser has been closed
+Browser logs:
+
+<launching> /Users/coolking70/Library/Caches/ms-playwright/chromium-1208/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument,OptimizationHints --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --disable-infobars --disable-search-engine-choice-screen --disable-sync --no-sandbox --use-gl=angle --use-angle=swiftshader --user-data-dir=/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/playwright_chromiumdev_profile-IO70lc --remote-debugging-pipe --no-startup-window
+<launched> pid=87550
+[pid=87550][err] [0925/205113.771229:ERROR:third_party/crashpad/crashpad/util/mach/bootstrap.cc:65] bootstrap_check_in org.chromium.crashpad.child_port_handshake.87554.43408983.KCGNPZZITJQZSAUN: Permission denied (1100)
+[pid=87550][err] [0925/205113.772160:ERROR:third_party/crashpad/crashpad/util/file/file_io.cc:103] ReadExactly: expected 4, observed 0
+[pid=87550][err] [0925/205113.772673:ERROR:third_party/crashpad/crashpad/util/mach/bootstrap.cc:65] bootstrap_check_in org.chromium.crashpad.child_port_handshake.87552.43408981.YIFYBKZLPGDKYPKY: Permission denied (1100)
+[pid=87550][err] [0925/205113.773512:ERROR:third_party/crashpad/crashpad/util/file/file_io.cc:103] ReadExactly: expected 4, observed 0
+[pid=87550][err] [0925/205113.776714:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:208] open /Users/coolking70/Library/Application Support/Google/Chrome for Testing/Crashpad/settings.dat: Operation not permitted (1)
+[pid=87550][err] [0925/205113.776847:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:208] open /Users/coolking70/Library/Application Support/Google/Chrome for Testing/Crashpad/settings.dat: Operation not permitted (1)
+[pid=87550][err] Received signal 6
+[pid=87550][err]  [0x0001256e4c74]
+[pid=87550][err]  [0x0001256e8bdc]
+[pid=87550][err]  [0x0001884dd744]
+[pid=87550][err]  [0x0001884d38d8]
+[pid=87550][err]  [0x0001883d9978]
+[pid=87550][err]  [0x00018fba8d34]
+[pid=87550][err]  [0x0001883314b0]
+[pid=87550][err]  [0x00018831a630]
+[pid=87550][err]  [0x00018fb7b8cc]
+[pid=87550][err]  [0x00018fb7b6e8]
+[pid=87550][err]  [0x00018d97669c]
+[pid=87550][err]  [0x00018d97733c]
+[pid=87550][err]  [0x00018d9763c8]
+[pid=87550][err]  [0x00018d97986c]
+[pid=87550][err]  [0x00018c99523c]
+[pid=87550][err]  [0x00018c99320c]
+[pid=87550][err]  [0x00018c992d00]
+[pid=87550][err]  [0x000120d932e8]
+[pid=87550][err]  [0x000121553010]
+[pid=87550][err]  [0x000121552e04]
+[pid=87550][err]  [0x000120a29b3c]
+[pid=87550][err]  [0x00011ffb8860]
+[pid=87550][err]  [0x00011e60a2f4]
+[pid=87550][err]  [0x00010014885c]
+[pid=87550][err]  [0x0001881084e4]
+[pid=87550][err] [end of stack trace]
+Call log:
+[2m  - <launching> /Users/coolking70/Library/Caches/ms-playwright/chromium-1208/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument,OptimizationHints --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --disable-infobars --disable-search-engine-choice-screen --disable-sync --no-sandbox --use-gl=angle --use-angle=swiftshader --user-data-dir=/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/playwright_chromiumdev_profile-IO70lc --remote-debugging-pipe --no-startup-window[22m
+[2m  - <launched> pid=87550[22m
+[2m  - [pid=87550][err] [0925/205113.771229:ERROR:third_party/crashpad/crashpad/util/mach/bootstrap.cc:65] bootstrap_check_in org.chromium.crashpad.child_port_handshake.87554.43408983.KCGNPZZITJQZSAUN: Permission denied (1100)[22m
+[2m  - [pid=87550][err] [0925/205113.772160:ERROR:third_party/crashpad/crashpad/util/file/file_io.cc:103] ReadExactly: expected 4, observed 0[22m
+[2m  - [pid=87550][err] [0925/205113.772673:ERROR:third_party/crashpad/crashpad/util/mach/bootstrap.cc:65] bootstrap_check_in org.chromium.crashpad.child_port_handshake.87552.43408981.YIFYBKZLPGDKYPKY: Permission denied (1100)[22m
+[2m  - [pid=87550][err] [0925/205113.773512:ERROR:third_party/crashpad/crashpad/util/file/file_io.cc:103] ReadExactly: expected 4, observed 0[22m
+[2m  - [pid=87550][err] [0925/205113.776714:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:208] open /Users/coolking70/Library/Application Support/Google/Chrome for Testing/Crashpad/settings.dat: Operation not permitted (1)[22m
+[2m  - [pid=87550][err] [0925/205113.776847:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:208] open /Users/coolking70/Library/Application Support/Google/Chrome for Testing/Crashpad/settings.dat: Operation not permitted (1)[22m
+[2m  - [pid=87550][err] Received signal 6[22m
+[2m  - [pid=87550][err]  [0x0001256e4c74][22m
+[2m  - [pid=87550][err]  [0x0001256e8bdc][22m
+[2m  - [pid=87550][err]  [0x0001884dd744][22m
+[2m  - [pid=87550][err]  [0x0001884d38d8][22m
+[2m  - [pid=87550][err]  [0x0001883d9978][22m
+[2m  - [pid=87550][err]  [0x00018fba8d34][22m
+[2m  - [pid=87550][err]  [0x0001883314b0][22m
+[2m  - [pid=87550][err]  [0x00018831a630][22m
+[2m  - [pid=87550][err]  [0x00018fb7b8cc][22m
+[2m  - [pid=87550][err]  [0x00018fb7b6e8][22m
+[2m  - [pid=87550][err]  [0x00018d97669c][22m
+[2m  - [pid=87550][err]  [0x00018d97733c][22m
+[2m  - [pid=87550][err]  [0x00018d9763c8][22m
+[2m  - [pid=87550][err]  [0x00018d97986c][22m
+[2m  - [pid=87550][err]  [0x00018c99523c][22m
+[2m  - [pid=87550][err]  [0x00018c99320c][22m
+[2m  - [pid=87550][err]  [0x00018c992d00][22m
+[2m  - [pid=87550][err]  [0x000120d932e8][22m
+[2m  - [pid=87550][err]  [0x000121553010][22m
+[2m  - [pid=87550][err]  [0x000121552e04][22m
+[2m  - [pid=87550][err]  [0x000120a29b3c][22m
+[2m  - [pid=87550][err]  [0x00011ffb8860][22m
+[2m  - [pid=87550][err]  [0x00011e60a2f4][22m
+[2m  - [pid=87550][err]  [0x00010014885c][22m
+[2m  - [pid=87550][err]  [0x0001881084e4][22m
+[2m  - [pid=87550][err] [end of stack trace][22m
+[2m  - [pid=87550] <gracefully close start>[22m
+[2m  - [pid=87550] <kill>[22m
+[2m  - [pid=87550] <will force kill>[22m
+[2m  - [pid=87550] exception while trying to kill process: Error: kill EPERM[22m
+[2m  - [pid=87550] <process did exit: exitCode=null, signal=SIGABRT>[22m
+[2m  - [pid=87550] starting temporary directories cleanup[22m
+[2m  - [pid=87550] finished temporary directories cleanup[22m
+[2m  - [pid=87550] <gracefully close end>[22m
+
+    at main (/Users/coolking70/.codex/skills/develop-web-game/scripts/web_game_playwright_client.js:266:34)
+    at /Users/coolking70/.codex/skills/develop-web-game/scripts/web_game_playwright_client.js:353:1
