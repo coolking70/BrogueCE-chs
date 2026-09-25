@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/18ab/brogue/brogue-web
+
+ ❯ src/test/t_1_tail.test.ts (9 tests | 1 failed) 29831ms
+     × AD-A3：类别抽取本身的 RNG 消耗——卷轴/药水恰 1（CE chooseKind 恰 1 次 rand_range；武器/护甲 ≥1，其附魔/符文模型另有 CE 原生掷骰） 387ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/t_1_tail.test.ts > T-1 A：spawnBlueprintItem 无 id 分支 = chooseKind 基表加权（CE Architect.c:1504 → Items.c:409-420） > AD-A3：类别抽取本身的 RNG 消耗——卷轴/药水恰 1（CE chooseKind 恰 1 次 rand_range；武器/护甲 ≥1，其附魔/符文模型另有 CE 原生掷骰）
+AssertionError: SCROLL 蓝图抽取的 RNG 消耗必须恰为 1（多掷/少掷在此翻红）: expected 2 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ src/test/t_1_tail.test.ts:119:62
+    117|             expect(spawn(category, undefined, 0, 0, 10)).not.toBeNull(…
+    118|             expect(rng.randomNumbersGenerated - before,
+    119|                 `${category} 蓝图抽取的 RNG 消耗必须恰为 1（多掷/少掷在此翻红）`).toBe(1);
+       |                                                              ^
+    120|         }
+    121|         for (const category of ['WEAPON', 'ARMOR'] as const) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 67 passed (68)
+   Start at  15:43:36
+   Duration  43.46s (transform 801ms, setup 0ms, import 1.94s, tests 76.04s, environment 0ms)
+

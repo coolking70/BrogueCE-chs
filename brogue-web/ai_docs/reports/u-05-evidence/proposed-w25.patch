@@ -1,0 +1,27 @@
+--- src/test/w_25_staff_catalog.test.ts
++++ src/test/w_25_staff_catalog.test.ts
+@@ -137,10 +137,20 @@
+             ItemLoader.identify(id);expect(g.getArcanaCandidates(item)).toEqual(id==='staff_of_entrancement'?[m]:[]);
+         }
+     });
+-    it('machine direct/category staff requests remain the explicit pre-existing null boundary, with zero RNG',()=>{
+-        const g:any=Object.create(Game.prototype),before=JSON.stringify(rng);
+-        for(const id of ids)expect(g.spawnBlueprintItem('STAFF',id,3,4,1)).toBeNull();
+-        expect(g.spawnBlueprintItem('STAFF',undefined,3,4,1)).toBeNull();expect(JSON.stringify(rng)).toBe(before);
++    it('machine direct/category staff requests materialize CE identity/resources through U05',()=>{
++        const g:any=Object.create(Game.prototype);
++        for(const id of ids){
++            const before=rng.randomNumbersGenerated;
++            const item=g.spawnBlueprintItem('STAFF',id,3,4,1);
++            expect(item).not.toBeNull();expect(item.identityId).toBe(id);expect(item.category).toBe(ItemCategory.STAFF);
++            expect([item.charges,item.maxCharges]).toEqual([item.enchantment,item.enchantment]);
++            expect(item.staffRechargeRemaining).toBe(['staff_of_blinking','staff_of_obstruction'].includes(id)?1000:500);
++            expect(rng.randomNumbersGenerated-before).toBe(item.enchantment); // category + CE resource tail
++        }
++        const before=rng.randomNumbersGenerated;
++        const item=g.spawnBlueprintItem('STAFF',undefined,3,4,1);
++        expect(item).not.toBeNull();expect(ids).toContain(item.identityId);
++        expect(rng.randomNumbersGenerated-before).toBe(item.enchantment+1); // additionally chooseKind
+     });
+ });
+ 

@@ -1,4 +1,3 @@
-import { generateQualifiedMachineItem } from '../Items/MachineItemGeneration';
 import { stairFallbackQualifies, stairCandidates, clearStairVicinity } from '../Generator/Stairs';
 import { minionPlacement, generationDistances, qualifyingNear } from '../Generator/GenerationPlacement';
 import { scheduleLevelFollowers, travelDistanceMap, travelPlacement, restoreTravelPosition, APPROACHING_DOWNSTAIRS, APPROACHING_UPSTAIRS, APPROACHING_PIT } from '../Movement/LevelTravel';
@@ -51,7 +50,7 @@ import monsterData from '../../data/monsters.json';
 import hordeData from '../../data/hordes.json';
 import mutationData from '../../data/mutations.json';
 import type { MonsterData, MutationData } from '../../entities/Monster';
-import { MonsterMode, MonsterState } from '../../entities/Monster';
+import { MonsterState } from '../../entities/Monster';
 import { Direction, type Pos } from '../../types';
 import { ensureEntityIdAbove, allocateEntityId, resetEntityIds, getNextEntityId, restoreNextEntityId, type StatusId, type Creature } from '../../entities/Creature';
 import { timeSystem } from '../Systems/Time';
@@ -859,14 +858,17 @@ export class Game {
     }
 
     /** Resolve a blueprint item spawn category string to an actual item */
-    private spawnBlueprintItem(category: string, id: string | undefined, x: number, y: number, depth: number,
-        qualifiers?: readonly string[], previous: readonly Item[] = []): Item | null {
-        const generate = () => this.rollBlueprintItem(category, id, x, y, depth);
-        // Standalone/DF requests use generateItem; only machine creation applies Q.
-        return qualifiers === undefined ? generate() : generateQualifiedMachineItem(generate, qualifiers, previous);
-    }
+    private spawnBlueprintItem(category: string, id: string | undefined, x: number, y: number, depth: number): Item | null {
+        if (id) {
+            // Specific item
+            if (category === 'SCROLL') return ItemLoader.spawnScroll(id, x, y);
+            if (category === 'POTION') return ItemLoader.spawnPotion(id, x, y);
+            if (category === 'KEY') return ItemLoader.spawnKey(id, x, y);
+            if (category === 'STAFF') return ItemLoader.spawnStaff(id, x, y);
+            if (category === 'WAND') return ItemLoader.spawnWand(id, x, y);
+            return null;
+        }
 
-    private rollBlueprintItem(category: string, id: string | undefined, x: number, y: number, depth: number): Item | null {
         // V-1a：多类别掩码（CE machineFeature.itemCategory 是位掩码，如神祠
         // "Shrine -- safe haven…" 的 (POTION|SCROLL|WEAPON|ARMOR|RING)，
         // GlobalsBrogue.c:561-565）。blueprints.json 以 '|' 连接的字符串转录。
@@ -874,8 +876,8 @@ export class Game {
         // makeItemInto Items.c:171-179）：先 pickItemCategory(掩码)（Items.c:85-107：
         // 按 13 槽定序、itemGenerationProbabilities_Brogue 类别加权选出一个类别），
         // 再在选中类别内 chooseKind 基表频率选 kind——不是把五类合成一张池子
-        // 单次加权。单类别和显式 kind 同样先抽类别（CE 无提前返回）。
-        if (category) {
+        // 单次加权。递归进下方单类别分支即复用 T-1 已对齐的第二段。
+        if (category.includes('|')) {
             const maskSet = new Set(category.split('|').map(s => s.trim()).filter(s => s.length > 0));
             // CE_ITEM_GENERATION_PROBABILITIES 即 CE 13 槽走表序
             // （GOLD,SCROLL,POTION,STAFF,WAND,WEAPON,ARMOR,FOOD,RING,CHARM,AMULET,GEM,KEY；
@@ -885,29 +887,14 @@ export class Game {
             for (const s of slots) sum += s.weight;
             // CE sum==0 时原样返回掩码、makeItemInto 落 default 报错——web 掩码
             // 只含常规类别（各带正权重），此分支仅作防御，与 CE 的 fail 行为同向。
-            if (sum <= 0 && category.includes('|')) return null;
-            let roll = sum > 0 ? rng.randRange(1, sum) : 0;
+            if (sum <= 0) return null;
+            let roll = rng.randRange(1, sum);
             for (const s of slots) {
-                if (sum > 0 && roll <= s.weight) {
-                    category = ItemCategory[s.category];
-                    break;
+                if (roll <= s.weight) {
+                    return this.spawnBlueprintItem(ItemCategory[s.category], undefined, x, y, depth);
                 }
                 roll -= s.weight;
             }
-        }
-
-        if (id) {
-            // Specific item
-            if (category === 'WEAPON') return ItemLoader.spawnWeapon(id, x, y, depth);
-            if (category === 'ARMOR') return ItemLoader.spawnArmor(id, x, y, depth);
-            if (category === 'SCROLL') return ItemLoader.spawnScroll(id, x, y);
-            if (category === 'POTION') return ItemLoader.spawnPotion(id, x, y);
-            if (category === 'KEY') return ItemLoader.spawnKey(id, x, y);
-            if (category === 'STAFF') return ItemLoader.spawnStaff(id, x, y);
-            if (category === 'WAND') return ItemLoader.spawnWand(id, x, y);
-            if (category === 'RING') return ItemLoader.spawnMachineRing(id, x, y);
-            if (category === 'CHARM') return ItemLoader.spawnMachineCharm(id, x, y);
-            return null;
         }
 
         // Resolve by category.
@@ -982,15 +969,9 @@ export class Game {
                 const rings = ItemLoader.genRings;
                 if (rings.length > 0) {
                     const pick = ItemLoader.chooseKind(rings.map(r => r.frequency ?? 0));
-                    return ItemLoader.spawnMachineRing(rings[pick]!.id, x, y);
+                    return ItemLoader.spawnRing(rings[pick]!.id, x, y);
                 }
                 return null;
-            }
-            case 'CHARM': {
-                const charms = ItemLoader.genCharms;
-                if (!charms.length) return null;
-                const pick = ItemLoader.chooseKind(charms.map(c => c.frequency ?? 0));
-                return ItemLoader.spawnMachineCharm(charms[pick]!.id, x, y);
             }
             case 'KEY':
                 // B-4b：钥匙由锁具驱动（数量 == 锁数，见 machineResults 循环），
@@ -1458,30 +1439,16 @@ export class Game {
                 owners.add(identity);
             }
         }
-        const registry = new Map(machineResults.flatMap(m => m.generatedItems ?? [])
-            .filter(s => s.instanceId).map(s => [s.instanceId!, s]));
-        const instances = new Map<string | MachineItemSpawn, Item>();
+        const instances = new Map<string | MachineItemSpawn, Item | null>();
         const materialize = (spawn: MachineItemSpawn, pos: Pos): Item | null => {
             const identity = spawn.instanceId ?? spawn;
-            let item = instances.get(identity);
-            if (!item) {
-                // The CE duplicate list includes earlier creations and committed child
-                // creations, but not an incoming adopted item or a later sibling.
-                const previous = (spawn.priorItemIds ?? []).map(id => {
-                    const prior = registry.get(id);
-                    if (!prior) throw new Error(`Missing prior machine item: ${id}`);
-                    return instances.get(id) ?? materialize(prior, prior.pos)!;
-                });
-                item = this.spawnBlueprintItem(spawn.category, spawn.id, pos.x, pos.y, depth,
-                    spawn.itemQualifiers ?? [], previous) ?? undefined;
-                // CE generateItem never returns null. Invalid web requests must not
-                // silently publish a machine with a missing reward/required item.
-                if (!item) throw new Error(`Cannot generate machine item: ${spawn.category}/${spawn.id ?? '*'}`);
-                instances.set(identity, item);
+            if (instances.has(identity)) return instances.get(identity)!;
+            const item = this.spawnBlueprintItem(spawn.category, spawn.id, pos.x, pos.y, depth);
+            if (item) {
+                if (spawn.keyLoc) item.keyLoc = spawn.keyLoc.map(k => ({ ...k, loc: { ...k.loc } }));
+                item.originDepth = depth;
             }
-            item.loc = { ...pos };
-            if (spawn.keyLoc) item.keyLoc = spawn.keyLoc.map(k => ({ ...k, loc: { ...k.loc } }));
-            item.originDepth = depth;
+            instances.set(identity, item);
             return item;
         };
         const handOff = (mon: Monster, spawn: MachineMonsterSpawn): void => {
@@ -9841,8 +9808,9 @@ export class Game {
             mon.state = MonsterState.ASLEEP; // CE MONSTER_SLEEPING（:1648-1650）
         }
         if (spawn.fleeing) {
+            // ★ 半落：CE 同时置 creatureMode = MODE_PERM_FLEEING，web 无该维
+            //（Monster.ts 不在本轮授权清单），故永久性缺位——登记报告 §3。
             mon.state = MonsterState.FLEEING;
-            mon.creatureMode = MonsterMode.PERM_FLEEING;
         }
         if (spawn.dormant) {
             this.toggleMonsterDormancy(mon);

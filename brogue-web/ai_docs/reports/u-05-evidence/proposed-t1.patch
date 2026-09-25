@@ -1,0 +1,20 @@
+--- src/test/t_1_tail.test.ts
++++ src/test/t_1_tail.test.ts
+@@ -108,7 +108,7 @@
+         expect(pp, `telepathy 占比 ${pp.toFixed(4)}，期望 20/175≈0.1143`).toBeLessThan(0.145);
+     });
+ 
+-    it('AD-A3：类别抽取本身的 RNG 消耗——卷轴/药水恰 1（CE chooseKind 恰 1 次 rand_range；武器/护甲 ≥1，其附魔/符文模型另有 CE 原生掷骰）', () => {
++    it('AD-A3：类别抽取本身的 RNG 消耗——卷轴/药水恰 2（CE pickItemCategory + chooseKind 各 1 次 rand_range；武器/护甲 ≥1，其附魔/符文模型另有 CE 原生掷骰）', () => {
+         const game = createHeadlessGame(20260918);
+         const spawn = (game as unknown as BlueprintSpawn).spawnBlueprintItem.bind(game);
+         for (const category of ['SCROLL', 'POTION'] as const) {
+@@ -116,7 +116,7 @@
+             const before = rng.randomNumbersGenerated;
+             expect(spawn(category, undefined, 0, 0, 10)).not.toBeNull();
+             expect(rng.randomNumbersGenerated - before,
+-                `${category} 蓝图抽取的 RNG 消耗必须恰为 1（多掷/少掷在此翻红）`).toBe(1);
++                `${category} 蓝图抽取的 RNG 消耗必须恰为 2（类别 + 种类）`).toBe(2);
+         }
+         for (const category of ['WEAPON', 'ARMOR'] as const) {
+             rng.seedRandomGenerator(99);

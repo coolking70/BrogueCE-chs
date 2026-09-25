@@ -1,0 +1,95 @@
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u05-w25-review-QP4WvE
+
+stdout | src/test/w_25_staff_catalog.test.ts > W-25 staff catalog > machine direct/category staff requests remain the explicit pre-existing null boundary, with zero RNG
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/w_25_staff_catalog.test.ts (31 tests | 1 failed | 30 skipped) 20ms
+     ↓ parses all twelve CE rows including non-contiguous wood slots, range, polarity, value and power
+     ↓ all 110 tickets follow the CE row intervals through the real kind selector
+     ↓ 64 seeds × 1000 real kind/instance draws: 12 kinds, weighted frequency, uncapped E, per-item exact RNG
+     ↓ staff_of_lightning: unknown appearance, polarity, discovery and full identification
+     ↓ staff_of_fire: unknown appearance, polarity, discovery and full identification
+     ↓ staff_of_poison: unknown appearance, polarity, discovery and full identification
+     ↓ staff_of_tunneling: unknown appearance, polarity, discovery and full identification
+     ↓ staff_of_blinking: unknown appearance, polarity, discovery and full identification
+     ↓ staff_of_entrancement: unknown appearance, polarity, discovery and full identification
+     ↓ staff_of_obstruction: unknown appearance, polarity, discovery and full identification
+     ↓ staff_of_discord: unknown appearance, polarity, discovery and full identification
+     ↓ staff_of_conjuration: unknown appearance, polarity, discovery and full identification
+     ↓ staff_of_healing: unknown appearance, polarity, discovery and full identification
+     ↓ staff_of_haste: unknown appearance, polarity, discovery and full identification
+     ↓ staff_of_protection: unknown appearance, polarity, discovery and full identification
+     ↓ staff_of_tunneling: real selection, cancel, confirmation, resource/time/autoID and actual effect
+     ↓ staff_of_blinking: real selection, cancel, confirmation, resource/time/autoID and actual effect
+     ↓ staff_of_entrancement: real selection, cancel, confirmation, resource/time/autoID and actual effect
+     ↓ new positive kinds participate in elimination; known blink details expose distance only with capacity known
+     ↓ known blink/tunnel aim at cells, entrancement targets eligible enemies; unknown kinds retain generic candidates
+     × machine direct/category staff requests remain the explicit pre-existing null boundary, with zero RNG 19ms
+     ↓ staff_of_blinking: initial/reset/natural/enchantment CE exceptions
+     ↓ staff_of_obstruction: initial/reset/natural/enchantment CE exceptions
+     ↓ E2: known-capacity preview and actual travel; remote cursor allowed, cancel zero consumption
+     ↓ E3: known-capacity preview and actual travel; remote cursor allowed, cancel zero consumption
+     ↓ E8: known-capacity preview and actual travel; remote cursor allowed, cancel zero consumption
+     ↓ known lethal landing refuses before charge/time/RNG; fire immunity permits existing effect
+     ↓ real blink scroll resets 10000/E; absent timer uses 1000 and full timer freezes
+     ↓ known kind/unknown range prompts; rejecting cancels, hidden kind never reveals lava risk or E
+     ↓ current mapping, empty charges/calls/known sets and timer survive load; legacy flavor saves are rejected
+     ↓ new maps, partial maps and current blink timer are deterministic
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/w_25_staff_catalog.test.ts > W-25 staff catalog > machine direct/category staff requests remain the explicit pre-existing null boundary, with zero RNG
+AssertionError: expected Item{ isCursed: false, …(23) } to be null
+
+- Expected:
+null
+
++ Received:
+Item {
+  "arcanaInstanceVersion": 1,
+  "canBeIdentified": true,
+  "category": 7,
+  "char": "\\",
+  "charges": 3,
+  "color": 3394815,
+  "enchantment": 3,
+  "id": 23,
+  "identified": false,
+  "identityId": "staff_of_lightning",
+  "isCursed": false,
+  "isProtected": false,
+  "keyLoc": [],
+  "loc": {
+    "x": 3,
+    "y": 4,
+  },
+  "magicDetected": false,
+  "maxCharges": 3,
+  "maxChargesKnown": false,
+  "name": "Staff of Lightning",
+  "quantity": 1,
+  "rechargeCounter": 0,
+  "rechargeTurns": 320,
+  "runicKnown": false,
+  "staffRechargeRemaining": 500,
+  "weight": 4,
+}
+
+ ❯ src/test/w_25_staff_catalog.test.ts:142:76
+    140|     it('machine direct/category staff requests remain the explicit pre…
+    141|         const g:any=Object.create(Game.prototype),before=JSON.stringif…
+    142|         for(const id of ids)expect(g.spawnBlueprintItem('STAFF',id,3,4…
+       |                                                                            ^
+    143|         expect(g.spawnBlueprintItem('STAFF',undefined,3,4,1)).toBeNull…
+    144|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 30 skipped (31)
+   Start at  16:34:31
+   Duration  1.89s (transform 1.04s, setup 0ms, import 1.65s, tests 20ms, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/18ab/brogue/brogue-web/ai_docs/reports/u-05-evidence/w25-current-original.json

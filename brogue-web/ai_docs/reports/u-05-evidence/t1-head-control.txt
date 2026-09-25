@@ -1,0 +1,15 @@
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u05-counterfactual-fWJlsP
+
+stdout | src/test/t_1_tail.test.ts > T-1 A：spawnBlueprintItem 无 id 分支 = chooseKind 基表加权（CE Architect.c:1504 → Items.c:409-420） > AD-A3：类别抽取本身的 RNG 消耗——卷轴/药水恰 1（CE chooseKind 恰 1 次 rand_range；武器/护甲 ≥1，其附魔/符文模型另有 CE 原生掷骰）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/t_1_tail.test.ts (9 tests | 8 skipped) 1674ms
+     ✓ AD-A3：类别抽取本身的 RNG 消耗——卷轴/药水恰 1（CE chooseKind 恰 1 次 rand_range；武器/护甲 ≥1，其附魔/符文模型另有 CE 原生掷骰）  1672ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 8 skipped (9)
+   Start at  15:51:55
+   Duration  3.70s (transform 1.01s, setup 0ms, import 1.83s, tests 1.67s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/18ab/brogue/brogue-web/ai_docs/reports/u-05-evidence/t1-head-control.json

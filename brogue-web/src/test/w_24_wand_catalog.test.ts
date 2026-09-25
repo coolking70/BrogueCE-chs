@@ -135,11 +135,26 @@ describe('W-24 CE nine-row catalog and ordinary entry', () => {
         if (id === 'wand_of_domination') expect(m.isAlly && m.dominated).toBe(true);
         if (id === 'wand_of_plenty') { expect(g.monsters).toHaveLength(2); expect(g.monsters.map(v=>v.hp)).toEqual([3,3]); }
     });
-    it('machine WAND/STAFF debt stays explicit: direct and category requests yield null with zero RNG', () => {
-        const g: any = Object.create(Game.prototype), before = rng.randomNumbersGenerated;
-        for (const id of ids) expect(g.spawnBlueprintItem('WAND', id,3,4,1)).toBeNull();
-        for (const category of ['WAND','STAFF']) expect(g.spawnBlueprintItem(category, undefined,3,4,1)).toBeNull();
-        expect(rng.randomNumbersGenerated).toBe(before);
+    it('machine WAND/STAFF requests materialize CE identity/resources through U05', () => {
+        const g:any=Object.create(Game.prototype);
+        for(const id of ids){
+            const before=rng.randomNumbersGenerated;
+            const item=g.spawnBlueprintItem('WAND',id,3,4,1);
+            const [lo,hi]=WAND_INITIAL_RANGES[id]!;
+            expect(item).not.toBeNull();expect(item.identityId).toBe(id);expect(item.category).toBe(ItemCategory.WAND);
+            expect(item.charges).toBeGreaterThanOrEqual(lo);expect(item.charges).toBeLessThanOrEqual(hi);
+            expect(item.maxCharges).toBe(item.charges);
+            expect(rng.randomNumbersGenerated-before).toBe(1+(lo===hi?0:1));
+        }
+        for(const category of ['WAND','STAFF']){
+            const before=rng.randomNumbersGenerated;
+            const item=g.spawnBlueprintItem(category,undefined,3,4,1);
+            expect(item).not.toBeNull();expect(ItemCategory[item.category]).toBe(category);
+            const pool=category==='WAND'?ItemLoader.genWands:ItemLoader.genStaffs;
+            expect(pool.map(c=>c.id)).toContain(item.identityId);
+            const range=WAND_INITIAL_RANGES[item.identityId];
+            expect(rng.randomNumbersGenerated-before).toBe(category==='STAFF'?item.enchantment+1:2+(range![0]===range![1]?0:1));
+        }
     });
     it('new kinds participate in both polarity elimination groups and enchant by their CE lower bound', () => {
         for (const last of added) {

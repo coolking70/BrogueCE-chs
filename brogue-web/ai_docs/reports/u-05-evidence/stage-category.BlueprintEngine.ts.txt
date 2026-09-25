@@ -203,7 +203,7 @@ export interface MachineResult {
     /**
      * Items to spawn: { category, id?, pos }
      *  V-2b-2a：itemQualifiers = Q 族资格旗标（CE Architect.c:1506-1509），
-     *  随 feature 下传；U05 在 Game.spawnBlueprintItem 消费，领养保留源资格。
+     *  随 feature 下传；消费点 Game.spawnBlueprintItem（边界外，见头注）。
      *  V-2b-6：keyLoc = CE item.keyLoc（Rogue.h:1391-1395 keyLocationProfile 的
      *  web 投影，disposableHere 在手）——KEY 类 feature 经 Architect.c:1523-1527
      *  addLocationToKey / addMachineNumberToKey 写入的绑定，随指令下传，

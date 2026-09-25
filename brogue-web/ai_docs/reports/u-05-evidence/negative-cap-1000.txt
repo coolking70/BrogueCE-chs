@@ -1,0 +1,76 @@
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u05-counterfactual-fWJlsP
+
+stdout | src/test/u_05_machine_items.test.ts > U05 quality follows the one-owner transaction > later duplicate checks never relocate an already-owned outsourced instance
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_05_machine_items.test.ts (18 tests | 2 failed) 12077ms
+     ✓ STAFF: every explicit kind, category order, resource lottery and no depth gate 6ms
+     ✓ WAND: every explicit kind, category order, resource lottery and no depth gate 1ms
+     ✓ RING: every explicit kind, category order, resource lottery and no depth gate 1ms
+     ✓ CHARM: every explicit kind, category order, resource lottery and no depth gate 1ms
+     ✓ mixed masks draw category once, then kind, then resources (input mask order is irrelevant) 1ms
+     ✓ ring CE 16% curse and 10% positive tail; charm 7% tail starts ready 1ms
+     ✓ replays all 67 historical null requests as real items, independently of changed natural seeds 22ms
+     × matches 576 compiled original-CE predicates and all five retry boundaries 37ms
+     ✓ unconditional curse; require runic bit, throwing quantity, heavy kind/strength AND positive enchant 0ms
+     ✓ duplicates compare category and construction kind, never display names; all eight CE categories 0ms
+     × 1002 candidates at exhaustion; terminal invalid candidate retained; null propagates immediately 1ms
+     ✓ each retry redraws the entire category/kind/resource request 0ms
+     ✓ unimplemented CE runic effects retain ITEM_RUNIC through generation 10ms
+     ✓ earlier own and child creations enter parent duplicate scope; adopted source is not a child creation 2ms
+     ✓ later duplicate checks never relocate an already-owned outsourced instance  2973ms
+     ✓ invalid web loader request propagates as an error instead of publishing a missing item  2577ms
+     ✓ floor → JSON → death/pickup → JSON retains identity/resources/quality  3144ms
+     ✓ carrier → JSON → death/pickup → JSON retains identity/resources/quality  3298ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_05_machine_items.test.ts > U05 CE rejection and failsafe boundaries > matches 576 compiled original-CE predicates and all five retry boundaries
+AssertionError: expected { calls: 1000, cursed: true } to deeply equal { calls: 1002, cursed: true }
+
+- Expected
++ Received
+
+  {
+-   "calls": 1002,
++   "calls": 1000,
+    "cursed": true,
+  }
+
+ ❯ src/test/u_05_machine_items.test.ts:90:50
+     88|         for(const row of golden.boundaries){let calls=0;
+     89|             const item=generateQualifiedMachineItem(()=>Object.assign(…
+     90|             expect({calls,cursed:item.isCursed}).toEqual({calls:row.ca…
+       |                                                  ^
+     91|         }
+     92|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/test/u_05_machine_items.test.ts > U05 CE rejection and failsafe boundaries > 1002 candidates at exhaustion; terminal invalid candidate retained; null propagates immediately
+AssertionError: expected 1000 to be 1002 // Object.is equality
+
+- Expected
++ Received
+
+- 1002
++ 1000
+
+ ❯ src/test/u_05_machine_items.test.ts:113:80
+    111|     it('1002 candidates at exhaustion; terminal invalid candidate reta…
+    112|         let count=0;const rejected=()=>{count++;const i=weapon();i.isC…
+    113|         const last=generateQualifiedMachineItem(rejected,[],[])!;expec…
+       |                                                                                ^
+    114|         const none=vi.fn(()=>null);expect(generateQualifiedMachineItem…
+    115|         count=0;const accepted=generateQualifiedMachineItem(()=>{const…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 16 passed (18)
+   Start at  15:52:25
+   Duration  13.86s (transform 889ms, setup 0ms, import 1.57s, tests 12.08s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/18ab/brogue/brogue-web/ai_docs/reports/u-05-evidence/negative-cap-1000.json

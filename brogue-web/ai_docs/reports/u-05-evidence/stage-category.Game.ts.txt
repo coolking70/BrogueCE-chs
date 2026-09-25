@@ -51,7 +51,7 @@ import monsterData from '../../data/monsters.json';
 import hordeData from '../../data/hordes.json';
 import mutationData from '../../data/mutations.json';
 import type { MonsterData, MutationData } from '../../entities/Monster';
-import { MonsterMode, MonsterState } from '../../entities/Monster';
+import { MonsterState } from '../../entities/Monster';
 import { Direction, type Pos } from '../../types';
 import { ensureEntityIdAbove, allocateEntityId, resetEntityIds, getNextEntityId, restoreNextEntityId, type StatusId, type Creature } from '../../entities/Creature';
 import { timeSystem } from '../Systems/Time';
@@ -863,10 +863,12 @@ export class Game {
         qualifiers?: readonly string[], previous: readonly Item[] = []): Item | null {
         const generate = () => this.rollBlueprintItem(category, id, x, y, depth);
         // Standalone/DF requests use generateItem; only machine creation applies Q.
-        return qualifiers === undefined ? generate() : generateQualifiedMachineItem(generate, qualifiers, previous);
+        return generate();
     }
 
     private rollBlueprintItem(category: string, id: string | undefined, x: number, y: number, depth: number): Item | null {
+
+
         // V-1a：多类别掩码（CE machineFeature.itemCategory 是位掩码，如神祠
         // "Shrine -- safe haven…" 的 (POTION|SCROLL|WEAPON|ARMOR|RING)，
         // GlobalsBrogue.c:561-565）。blueprints.json 以 '|' 连接的字符串转录。
@@ -874,7 +876,7 @@ export class Game {
         // makeItemInto Items.c:171-179）：先 pickItemCategory(掩码)（Items.c:85-107：
         // 按 13 槽定序、itemGenerationProbabilities_Brogue 类别加权选出一个类别），
         // 再在选中类别内 chooseKind 基表频率选 kind——不是把五类合成一张池子
-        // 单次加权。单类别和显式 kind 同样先抽类别（CE 无提前返回）。
+        // 单次加权。递归进下方单类别分支即复用 T-1 已对齐的第二段。
         if (category) {
             const maskSet = new Set(category.split('|').map(s => s.trim()).filter(s => s.length > 0));
             // CE_ITEM_GENERATION_PROBABILITIES 即 CE 13 槽走表序
@@ -9841,8 +9843,9 @@ export class Game {
             mon.state = MonsterState.ASLEEP; // CE MONSTER_SLEEPING（:1648-1650）
         }
         if (spawn.fleeing) {
+            // ★ 半落：CE 同时置 creatureMode = MODE_PERM_FLEEING，web 无该维
+            //（Monster.ts 不在本轮授权清单），故永久性缺位——登记报告 §3。
             mon.state = MonsterState.FLEEING;
-            mon.creatureMode = MonsterMode.PERM_FLEEING;
         }
         if (spawn.dormant) {
             this.toggleMonsterDormancy(mon);

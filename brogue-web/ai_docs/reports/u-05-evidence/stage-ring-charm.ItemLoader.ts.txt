@@ -817,9 +817,6 @@ export class ItemLoader {
      * 之后对该类别跑"最后一种类升格"。
      */
     public static identifyItemKind(item: Item): void {
-        // U05 adds construction IDs to equipment for duplicate detection. They do
-        // not create a flavor/knowledge table: CE identifies equipment per instance.
-        if (item.category === ItemCategory.WEAPON || item.category === ItemCategory.ARMOR) return;
         const kindId = (item as any).consumableId ?? (item as any).identityId as string | undefined;
         if (kindId) this.identifiedItems.add(kindId);
 
@@ -1291,7 +1288,6 @@ export class ItemLoader {
 
         const weapon = new Item(tn(data.name), ')', 0xcccccc, ItemCategory.WEAPON);
         weapon.loc = { x, y };
-        weapon.identityId = id;
         weapon.weight = data.weight || 0;
         weapon.damage = data.damage;
         weapon.clumping = data.clumping;
@@ -1313,9 +1309,8 @@ export class ItemLoader {
                         this.CE_NUMBER_GOOD_WEAPON_ENCHANT_KINDS,
                         this.CE_NUMBER_WEAPON_RUNIC_KINDS - 1);
                     weapon.runicType = this.WEAPON_RUNIC_BY_CE_INDEX[ceIdx] ?? undefined;
-                    weapon.flags = [...(weapon.flags ?? []), 'ITEM_RUNIC'];
                     // CE 同步置 ITEM_RUNIC；web 的"有符文"由 runicType 承载——
-                    // 映射为空时效果尚未实现；ITEM_RUNIC 仍保留供机器 Q 筛选。
+                    // 映射为 null（种类未实现）时该件无符文，但掷骰已消耗（对齐流）。
                 }
             } else {
                 // 好符文阈值：rand_range(3,10) * (STAGGER?2:1) / (QUICKLY?2:1) / (EXTEND?2:1)
@@ -1327,7 +1322,6 @@ export class ItemLoader {
                 if (v > this.damageLowerBound(weapon.damage ?? '1d4')) {
                     const ceIdx = rng.randRange(0, this.CE_NUMBER_GOOD_WEAPON_ENCHANT_KINDS - 1);
                     weapon.runicType = this.WEAPON_RUNIC_BY_CE_INDEX[ceIdx] ?? undefined;
-                    weapon.flags = [...(weapon.flags ?? []), 'ITEM_RUNIC'];
                     if (weapon.runicType === 'slaying') {
                         // W_SLAYING → chooseVorpalEnemy()（CE :257-259）
                         weapon.vorpalEnemy = this.chooseVorpalEnemy(depth ?? 1);
@@ -1348,7 +1342,6 @@ export class ItemLoader {
             weapon.quiverNumber = rng.randRange(1, 60000);
             weapon.isCursed = false;            // flags &= ~(ITEM_CURSED | ITEM_RUNIC)
             weapon.runicType = undefined;
-            weapon.flags = weapon.flags?.filter(f => f !== 'ITEM_RUNIC');
             weapon.enchantment = 0;             // 投掷武器不能附魔
         }
         weapon.identified = false;
@@ -1364,7 +1357,6 @@ export class ItemLoader {
 
         const armor = new Item(tn(data.name), ']', 0x888888, ItemCategory.ARMOR);
         armor.loc = { x, y };
-        armor.identityId = id;
         armor.weight = data.weight || 0;
         // CE：theItem->armor = randClump(armorTable.range)。CE 六种护甲的 range
         // 全部是 {N,N,0}（退化区间），randClumpedRange 上界<=下界时**不消耗随机数**
@@ -1387,14 +1379,12 @@ export class ItemLoader {
                         this.CE_NUMBER_GOOD_ARMOR_ENCHANT_KINDS,
                         this.CE_NUMBER_ARMOR_ENCHANT_KINDS - 1);
                     armor.runicType = this.ARMOR_RUNIC_BY_CE_INDEX[ceIdx] ?? undefined;
-                    armor.flags = [...(armor.flags ?? []), 'ITEM_RUNIC'];
                 }
             } else if (rng.randRange(0, 95) > (armor.armor ?? 0) * 10) {
                 // 好符文：rand_range(0,95) > armor（CE 内部 ×10 标度，30..110）。
                 // 护甲越重越容易出好符文——与武器的 damage 阈值机制不同源。
                 const ceIdx = rng.randRange(0, this.CE_NUMBER_GOOD_ARMOR_ENCHANT_KINDS - 1);
                 armor.runicType = this.ARMOR_RUNIC_BY_CE_INDEX[ceIdx] ?? undefined;
-                armor.flags = [...(armor.flags ?? []), 'ITEM_RUNIC'];
                 if (armor.runicType === 'immunity') {
                     // A_IMMUNITY → chooseVorpalEnemy()（CE :302-304）
                     armor.vorpalEnemy = this.chooseVorpalEnemy(depth ?? 1);

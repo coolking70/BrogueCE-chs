@@ -1,0 +1,84 @@
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u05-w24-review-EHsYoI
+
+stdout | src/test/w_24_wand_catalog.test.ts > W-24 CE nine-row catalog and ordinary entry > machine WAND/STAFF debt stays explicit: direct and category requests yield null with zero RNG
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/w_24_wand_catalog.test.ts (20 tests | 1 failed | 19 skipped) 16ms
+     ↓ parses the actual CE rows: order, frequency, market value, charge range, polarity, power and flavor slots
+     ↓ all 22 tickets follow the CE intervals through the actual Game kind selection
+     ↓ 64 seeds × 1000 real kind+instance draws: all nine kinds, weighted frequencies, uniform charges, exact RNG calls
+     ↓ wand_of_teleportation: unknown flavor, polarity detection, discovery suffix and full identification
+     ↓ wand_of_slowness: unknown flavor, polarity detection, discovery suffix and full identification
+     ↓ wand_of_polymorphism: unknown flavor, polarity detection, discovery suffix and full identification
+     ↓ wand_of_negation: unknown flavor, polarity detection, discovery suffix and full identification
+     ↓ wand_of_domination: unknown flavor, polarity detection, discovery suffix and full identification
+     ↓ wand_of_beckoning: unknown flavor, polarity detection, discovery suffix and full identification
+     ↓ wand_of_plenty: unknown flavor, polarity detection, discovery suffix and full identification
+     ↓ wand_of_invisibility: unknown flavor, polarity detection, discovery suffix and full identification
+     ↓ wand_of_empowerment: unknown flavor, polarity detection, discovery suffix and full identification
+     ↓ wand_of_polymorphism: normal use/cancel/confirm runs the existing effect with no substitute config
+     ↓ wand_of_negation: normal use/cancel/confirm runs the existing effect with no substitute config
+     ↓ wand_of_domination: normal use/cancel/confirm runs the existing effect with no substitute config
+     ↓ wand_of_plenty: normal use/cancel/confirm runs the existing effect with no substitute config
+     × machine WAND/STAFF debt stays explicit: direct and category requests yield null with zero RNG 15ms
+     ↓ new kinds participate in both polarity elimination groups and enchant by their CE lower bound
+     ↓ current mapping, identity sets, calls and depleted instances survive real load; legacy flavor saves are rejected
+     ↓ new save preserves all eleven flavors; partial maps fill new identities uniquely without RNG
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/w_24_wand_catalog.test.ts > W-24 CE nine-row catalog and ordinary entry > machine WAND/STAFF debt stays explicit: direct and category requests yield null with zero RNG
+AssertionError: expected Item{ isCursed: false, …(23) } to be null
+
+- Expected:
+null
+
++ Received:
+Item {
+  "arcanaInstanceVersion": 1,
+  "canBeIdentified": true,
+  "category": 6,
+  "char": "/",
+  "charges": 4,
+  "color": 13408767,
+  "enchantment": 0,
+  "id": 18,
+  "identified": false,
+  "identityId": "wand_of_teleportation",
+  "isCursed": false,
+  "isProtected": false,
+  "keyLoc": [],
+  "loc": {
+    "x": 3,
+    "y": 4,
+  },
+  "magicDetected": false,
+  "maxCharges": 4,
+  "maxChargesKnown": false,
+  "name": "Wand of Teleportation",
+  "quantity": 1,
+  "rechargeCounter": 0,
+  "rechargeTurns": 150,
+  "runicKnown": false,
+  "timesUsed": 0,
+  "weight": 2,
+}
+
+ ❯ src/test/w_24_wand_catalog.test.ts:140:78
+    138|     it('machine WAND/STAFF debt stays explicit: direct and category re…
+    139|         const g: any = Object.create(Game.prototype), before = rng.ran…
+    140|         for (const id of ids) expect(g.spawnBlueprintItem('WAND', id,3…
+       |                                                                              ^
+    141|         for (const category of ['WAND','STAFF']) expect(g.spawnBluepri…
+    142|         expect(rng.randomNumbersGenerated).toBe(before);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 19 skipped (20)
+   Start at  16:35:54
+   Duration  1.94s (transform 1.07s, setup 0ms, import 1.71s, tests 16ms, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/18ab/brogue/brogue-web/ai_docs/reports/u-05-evidence/w24-current-original.json

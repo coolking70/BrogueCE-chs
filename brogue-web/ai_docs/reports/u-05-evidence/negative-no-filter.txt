@@ -1,0 +1,128 @@
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u05-counterfactual-fWJlsP
+
+stdout | src/test/u_05_machine_items.test.ts > U05 quality follows the one-owner transaction > later duplicate checks never relocate an already-owned outsourced instance
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_05_machine_items.test.ts (18 tests | 4 failed) 13669ms
+     ✓ STAFF: every explicit kind, category order, resource lottery and no depth gate 6ms
+     ✓ WAND: every explicit kind, category order, resource lottery and no depth gate 1ms
+     ✓ RING: every explicit kind, category order, resource lottery and no depth gate 1ms
+     ✓ CHARM: every explicit kind, category order, resource lottery and no depth gate 1ms
+     ✓ mixed masks draw category once, then kind, then resources (input mask order is irrelevant) 10ms
+     ✓ ring CE 16% curse and 10% positive tail; charm 7% tail starts ready 1ms
+     × replays all 67 historical null requests as real items, independently of changed natural seeds 6ms
+     × matches 576 compiled original-CE predicates and all five retry boundaries 8ms
+     ✓ unconditional curse; require runic bit, throwing quantity, heavy kind/strength AND positive enchant 0ms
+     ✓ duplicates compare category and construction kind, never display names; all eight CE categories 0ms
+     × 1002 candidates at exhaustion; terminal invalid candidate retained; null propagates immediately 0ms
+     × each retry redraws the entire category/kind/resource request 2ms
+     ✓ unimplemented CE runic effects retain ITEM_RUNIC through generation 0ms
+     ✓ earlier own and child creations enter parent duplicate scope; adopted source is not a child creation 2ms
+     ✓ later duplicate checks never relocate an already-owned outsourced instance  3290ms
+     ✓ invalid web loader request propagates as an error instead of publishing a missing item  2447ms
+     ✓ floor → JSON → death/pickup → JSON retains identity/resources/quality  3461ms
+     ✓ carrier → JSON → death/pickup → JSON retains identity/resources/quality  4430ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_05_machine_items.test.ts > U05 request → kind → CE resource → quality > replays all 67 historical null requests as real items, independently of changed natural seeds
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/test/u_05_machine_items.test.ts:70:72
+     68|             expect(item,JSON.stringify(row)).not.toBeNull();
+     69|             expect(row.args[0].split('|')).toContain(C[item.category]);
+     70|             expect(item.identityId).toBeTruthy();expect(item.isCursed)…
+       |                                                                        ^
+     71|             if(item.category===C.STAFF){expect(item.charges).toBe(item…
+     72|             if(item.category===C.WAND)expect(item.charges).toBeGreater…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/test/u_05_machine_items.test.ts > U05 CE rejection and failsafe boundaries > matches 576 compiled original-CE predicates and all five retry boundaries
+AssertionError: expected { calls: 1, cursed: true } to deeply equal { calls: 1002, cursed: true }
+
+- Expected
++ Received
+
+  {
+-   "calls": 1002,
++   "calls": 1,
+    "cursed": true,
+  }
+
+ ❯ src/test/u_05_machine_items.test.ts:90:50
+     88|         for(const row of golden.boundaries){let calls=0;
+     89|             const item=generateQualifiedMachineItem(()=>Object.assign(…
+     90|             expect({calls,cursed:item.isCursed}).toEqual({calls:row.ca…
+       |                                                  ^
+     91|         }
+     92|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/test/u_05_machine_items.test.ts > U05 CE rejection and failsafe boundaries > 1002 candidates at exhaustion; terminal invalid candidate retained; null propagates immediately
+AssertionError: expected 1 to be 1002 // Object.is equality
+
+- Expected
++ Received
+
+- 1002
++ 1
+
+ ❯ src/test/u_05_machine_items.test.ts:113:80
+    111|     it('1002 candidates at exhaustion; terminal invalid candidate reta…
+    112|         let count=0;const rejected=()=>{count++;const i=weapon();i.isC…
+    113|         const last=generateQualifiedMachineItem(rejected,[],[])!;expec…
+       |                                                                                ^
+    114|         const none=vi.fn(()=>null);expect(generateQualifiedMachineItem…
+    115|         count=0;const accepted=generateQualifiedMachineItem(()=>{const…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/test/u_05_machine_items.test.ts > U05 CE rejection and failsafe boundaries > each retry redraws the entire category/kind/resource request
+AssertionError: expected Item{ isCursed: true, …(17) } to be Item{ isCursed: false, …(17) } // Object.is equality
+
+- Expected
++ Received
+
+@@ -2,13 +2,13 @@
+    "canBeIdentified": false,
+    "category": 0,
+    "char": ")",
+    "color": 0,
+    "enchantment": 1,
+-   "id": 709,
++   "id": 708,
+    "identityId": "war_axe",
+-   "isCursed": false,
++   "isCursed": true,
+    "isProtected": false,
+    "keyLoc": [],
+    "loc": {
+      "x": -1,
+      "y": -1,
+
+ ❯ src/test/u_05_machine_items.test.ts:121:52
+    119|         const bad=Object.assign(weapon(),{isCursed:true}),good=weapon(…
+    120|         const roll=vi.spyOn(api,'rollBlueprintItem').mockReturnValueOn…
+    121|         expect(spawn('WEAPON|ARMOR',undefined,[])).toBe(good);
+       |                                                    ^
+    122|         expect(roll.mock.calls).toEqual([['WEAPON|ARMOR',undefined,7,8…
+    123|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 14 passed (18)
+   Start at  15:52:09
+   Duration  15.43s (transform 859ms, setup 0ms, import 1.57s, tests 13.67s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/18ab/brogue/brogue-web/ai_docs/reports/u-05-evidence/negative-no-filter.json

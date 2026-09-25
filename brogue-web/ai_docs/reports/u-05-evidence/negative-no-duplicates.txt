@@ -1,0 +1,70 @@
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u05-counterfactual-fWJlsP
+
+stdout | src/test/u_05_machine_items.test.ts > U05 quality follows the one-owner transaction > later duplicate checks never relocate an already-owned outsourced instance
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_05_machine_items.test.ts (18 tests | 2 failed) 11596ms
+     ✓ STAFF: every explicit kind, category order, resource lottery and no depth gate 6ms
+     ✓ WAND: every explicit kind, category order, resource lottery and no depth gate 1ms
+     ✓ RING: every explicit kind, category order, resource lottery and no depth gate 1ms
+     ✓ CHARM: every explicit kind, category order, resource lottery and no depth gate 1ms
+     ✓ mixed masks draw category once, then kind, then resources (input mask order is irrelevant) 1ms
+     ✓ ring CE 16% curse and 10% positive tail; charm 7% tail starts ready 1ms
+     ✓ replays all 67 historical null requests as real items, independently of changed natural seeds 6ms
+     × matches 576 compiled original-CE predicates and all five retry boundaries 6ms
+     ✓ unconditional curse; require runic bit, throwing quantity, heavy kind/strength AND positive enchant 0ms
+     × duplicates compare category and construction kind, never display names; all eight CE categories 1ms
+     ✓ 1002 candidates at exhaustion; terminal invalid candidate retained; null propagates immediately 1ms
+     ✓ each retry redraws the entire category/kind/resource request 0ms
+     ✓ unimplemented CE runic effects retain ITEM_RUNIC through generation 0ms
+     ✓ earlier own and child creations enter parent duplicate scope; adopted source is not a child creation 11ms
+     ✓ later duplicate checks never relocate an already-owned outsourced instance  2957ms
+     ✓ invalid web loader request propagates as an error instead of publishing a missing item  2476ms
+     ✓ floor → JSON → death/pickup → JSON retains identity/resources/quality  3059ms
+     ✓ carrier → JSON → death/pickup → JSON retains identity/resources/quality  3065ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_05_machine_items.test.ts > U05 CE rejection and failsafe boundaries > matches 576 compiled original-CE predicates and all five retry boundaries
+AssertionError: {"cat":0,"q":0,"profile":7}: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/u_05_machine_items.test.ts:86:117
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/test/u_05_machine_items.test.ts > U05 CE rejection and failsafe boundaries > duplicates compare category and construction kind, never display names; all eight CE categories
+AssertionError: expected [] to deeply equal [ 'duplicate' ]
+
+- Expected
++ Received
+
+- [
+-   "duplicate",
+- ]
++ []
+
+ ❯ src/test/u_05_machine_items.test.ts:106:53
+    104|         for(const category of [C.STAFF,C.WAND,C.POTION,C.SCROLL,C.RING…
+    105|             const a=Object.assign(weapon(),{category,identityId:'same'…
+    106|             expect(machineItemRejections(a,[],[b])).toEqual(['duplicat…
+       |                                                     ^
+    107|             expect(machineItemRejections(a,[],[b])).toEqual([]);
+    108|         }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 16 passed (18)
+   Start at  15:52:40
+   Duration  13.45s (transform 893ms, setup 0ms, import 1.65s, tests 11.60s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/18ab/brogue/brogue-web/ai_docs/reports/u-05-evidence/negative-no-duplicates.json

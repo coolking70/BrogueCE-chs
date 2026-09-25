@@ -817,9 +817,6 @@ export class ItemLoader {
      * 之后对该类别跑"最后一种类升格"。
      */
     public static identifyItemKind(item: Item): void {
-        // U05 adds construction IDs to equipment for duplicate detection. They do
-        // not create a flavor/knowledge table: CE identifies equipment per instance.
-        if (item.category === ItemCategory.WEAPON || item.category === ItemCategory.ARMOR) return;
         const kindId = (item as any).consumableId ?? (item as any).identityId as string | undefined;
         if (kindId) this.identifiedItems.add(kindId);
 

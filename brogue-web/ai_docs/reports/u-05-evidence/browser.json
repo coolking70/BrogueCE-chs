@@ -1,0 +1,111 @@
+{
+  "result": {
+    "before": [
+      {
+        "id": 12,
+        "kind": "staff_of_entrancement",
+        "category": 7,
+        "originDepth": 1,
+        "enchantment": 3,
+        "charges": 3,
+        "maxCharges": 3,
+        "staffRechargeRemaining": 500,
+        "isCursed": false
+      },
+      {
+        "id": 7,
+        "kind": "wand_of_negation",
+        "category": 6,
+        "originDepth": 1,
+        "enchantment": 0,
+        "charges": 6,
+        "maxCharges": 6,
+        "isCursed": false
+      }
+    ],
+    "after": [
+      {
+        "id": 12,
+        "kind": "staff_of_entrancement",
+        "category": 7,
+        "originDepth": 1,
+        "enchantment": 3,
+        "charges": 3,
+        "maxCharges": 3,
+        "staffRechargeRemaining": 500,
+        "isCursed": false
+      },
+      {
+        "id": 7,
+        "kind": "wand_of_negation",
+        "category": 6,
+        "originDepth": 1,
+        "enchantment": 0,
+        "charges": 6,
+        "maxCharges": 6,
+        "isCursed": false
+      }
+    ],
+    "text": {
+      "seed": "3",
+      "mode": "inventory",
+      "enchantmentTargets": [],
+      "arcanaPreview": null,
+      "arcanaTarget": null,
+      "coordinateSystem": {
+        "origin": "top-left",
+        "xAxis": "right",
+        "yAxis": "down"
+      },
+      "player": {
+        "weaknessAmount": 0,
+        "effectiveStrength": 12,
+        "maxStatus": {},
+        "x": 22,
+        "y": 25,
+        "hp": 30,
+        "nutrition": 2150,
+        "poisonAmount": 0,
+        "maxShield": 0,
+        "statuses": {}
+      },
+      "replay": {
+        "status": "idle",
+        "cursor": 0,
+        "total": 0
+      },
+      "recordedInputEvents": 0,
+      "autoPathLength": 0,
+      "monsters": [],
+      "revealedLocations": [],
+      "items": [
+        {
+          "name": "战锤",
+          "x": 20,
+          "y": 21
+        },
+        {
+          "name": "带甲",
+          "x": 19,
+          "y": 26
+        },
+        {
+          "name": "钉锤",
+          "x": 18,
+          "y": 21
+        },
+        {
+          "name": "花楸木法杖",
+          "x": 21,
+          "y": 27
+        },
+        {
+          "name": "山核桃木法杖",
+          "x": 19,
+          "y": 19
+        }
+      ]
+    }
+  },
+  "errors": []
+}

@@ -1,0 +1,45 @@
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u05-counterfactual-fWJlsP
+
+stdout | src/test/t_1_tail.test.ts > T-1 A：spawnBlueprintItem 无 id 分支 = chooseKind 基表加权（CE Architect.c:1504 → Items.c:409-420） > AD-A3：类别抽取本身的 RNG 消耗——卷轴/药水恰 1（CE chooseKind 恰 1 次 rand_range；武器/护甲 ≥1，其附魔/符文模型另有 CE 原生掷骰）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/t_1_tail.test.ts (9 tests | 1 failed | 8 skipped) 1848ms
+     ↓ AD-A1 对抗：frequency=0 的种类（enchant/life/strength/dart）从蓝图路径恰为 0（等概率实现 1/13~1/15 → 红）
+     ↓ AD-A2 对抗：identify 占比贴 CE 加权值 30/133（等概率 1/13 在此翻红）
+     × AD-A3：类别抽取本身的 RNG 消耗——卷轴/药水恰 1（CE chooseKind 恰 1 次 rand_range；武器/护甲 ≥1，其附魔/符文模型另有 CE 原生掷骰） 1846ms
+     ↓ 整局附魔卷轴/life/strength 总数：测量带（4 seed × D1-D26，与改造前同口径对比见报告）
+     ↓ AD-B1 表行与 DF 条目逐值钉死（抄错 CE 原值 → 红）
+     ↓ AD-B2 对抗：index 1 真实产出水晶墙 + DFF_CLEAR_OTHER_TERRAIN 语义（漏清/全局清 → 红）
+     ↓ AD-B3 对抗：index 33 terrain 分支真实行使——D40 直接铺 600 次（carrier 忘改 → built 0 → 红）
+     ↓ 行为终点：真实目录 × 真实管线，水晶墙在其深度带内真实出现（多 seed × D14-D26 + D40）
+     ↓ 恰 50 项，边界值与抽查位与 CE 一致
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/t_1_tail.test.ts > T-1 A：spawnBlueprintItem 无 id 分支 = chooseKind 基表加权（CE Architect.c:1504 → Items.c:409-420） > AD-A3：类别抽取本身的 RNG 消耗——卷轴/药水恰 1（CE chooseKind 恰 1 次 rand_range；武器/护甲 ≥1，其附魔/符文模型另有 CE 原生掷骰）
+AssertionError: SCROLL 蓝图抽取的 RNG 消耗必须恰为 1（多掷/少掷在此翻红）: expected 2 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ src/test/t_1_tail.test.ts:119:62
+    117|             expect(spawn(category, undefined, 0, 0, 10)).not.toBeNull(…
+    118|             expect(rng.randomNumbersGenerated - before,
+    119|                 `${category} 蓝图抽取的 RNG 消耗必须恰为 1（多掷/少掷在此翻红）`).toBe(1);
+       |                                                              ^
+    120|         }
+    121|         for (const category of ['WEAPON', 'ARMOR'] as const) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 skipped (9)
+   Start at  15:51:59
+   Duration  3.99s (transform 960ms, setup 0ms, import 1.96s, tests 1.85s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/18ab/brogue/brogue-web/ai_docs/reports/u-05-evidence/t1-current-original.json
