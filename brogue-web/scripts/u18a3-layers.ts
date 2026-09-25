@@ -1,0 +1,8 @@
+// Observation only: exact F3 seed/depth order, original assertions run separately.
+import fs from 'node:fs';import {Grid} from '../src/engine/Map/Grid';import {Game} from '../src/engine/Core/Game';import {createHeadlessGame} from '../src/test/harness';
+const writes:any[]=[],observations:any[]=[];let seed=0,depth=1;
+for(const method of ['setTerrain','setTerrainLayer']){const p:any=Grid.prototype,fn=p[method];p[method]=function(...args:any[]){const c=this.getCell(args[0],args[1]),before=c?[...c.layers]:null;const result=fn.apply(this,args);const after=c?[...c.layers]:null;if(before&&after&&JSON.stringify(before)!==JSON.stringify(after))writes.push({seed,depth,x:args[0],y:args[1],method,args:args.slice(2),before,after,stack:new Error().stack?.split('\n').slice(2,7)});return result;};}
+const p:any=Game.prototype,catchUp=p.catchUpEnvironment;p.catchUpEnvironment=function(...args:any[]){const tuples:any={};for(let x=0;x<this.grid.width;x++)for(let y=0;y<this.grid.height;y++){const c=this.grid.getCell(x,y),key=c.layers.join(',');(tuples[key]??=[]).push({x,y,machine:c.machineNumber});}observations.push({seed,depth:this.depth,tuples});return catchUp.apply(this,args);};
+for(seed of [424242,777]){depth=1;const g:any=createHeadlessGame(seed);g.startNewGame({seed});depth=9;g.depth=9;g.generateDepth(false,false);}
+const interesting=new Set(observations.flatMap(o=>Object.entries(o.tuples).filter(([k])=>k==='18,25,0,0').flatMap(([,cells]:any)=>cells.map((c:any)=>`${o.seed}/${o.depth}/${c.x}/${c.y}`))));
+fs.writeFileSync('ai_docs/reports/u-18a-3-evidence/layer-trace.json',JSON.stringify({observations,writes:writes.filter(w=>interesting.has(`${w.seed}/${w.depth}/${w.x}/${w.y}`))},null,2)+'\n');console.log({interesting:[...interesting]});

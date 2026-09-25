@@ -1,0 +1,11 @@
+--- MonsterBlink.ts
++++ MonsterBlink.ts
+@@ -75,7 +75,7 @@
+     if (!cell) return true;
+     const f = flags(g, p), here = flags(g, m.loc), mech = cellTerrainMechFlags(g.grid, p.x, p.y);
+     const defender = at(g, p);
+-    if (cell.layers.includes(TerrainType.STAIRS_UP) || cell.layers.includes(TerrainType.STAIRS_DOWN)) return true;
++    if (cell.layers.includes(TerrainType.STAIRS_UP) || cell.layers.includes(TerrainType.STAIRS_DOWN) || cell.layers.includes(TerrainType.DUNGEON_PORTAL)) return true;
+     if (m.hasBehavior('MONST_RESTRICTED_TO_LIQUID') && !(mech & T.TM_ALLOWS_SUBMERGING)) return true;
+     if (defender === g.player && !alliedState(m)) return false;
+     if (terrainBlocksMovement(cell)) {

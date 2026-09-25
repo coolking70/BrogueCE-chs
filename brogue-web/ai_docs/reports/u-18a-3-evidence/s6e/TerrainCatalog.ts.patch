@@ -1,0 +1,18 @@
+--- TerrainCatalog.ts
++++ TerrainCatalog.ts
+@@ -255,6 +255,15 @@
+         0, 'DF_PLAIN_FIRE', '', 'DF_REPEL_CREATURES', 0
+     ),
+ 
++    // CE Globals.c:336, terminal D40 stair.
++    [TerrainType.DUNGEON_PORTAL]: e(
++        T_OBSTRUCTS_ITEMS | T_OBSTRUCTS_SURFACE_EFFECTS,
++        TM_PROMOTES_ON_STEP | TM_STAND_IN_TILE | TM_LIST_IN_SIDEBAR |
++        TM_VISUALLY_DISTINCT | TM_BRIGHT_MEMORY |
++        TM_INTERRUPT_EXPLORATION_WHEN_SEEN | TM_INVERT_WHEN_HIGHLIGHTED,
++        0, 'DF_PLAIN_FIRE', '', 'DF_REPEL_CREATURES', 0, false, LightKind.INCENDIARY_DART_LIGHT
++    ),
++
+     // webOnly：web CHARRED_FLOOR = 燃烧后的地面（Game.ts:6381 火熄后写、
+     // Gas.ts:128 复燃判定）。CE 无对应条目——CE 的表现是 FLOOR 地面上覆
+     // ASH（Globals.c:461，SURFACE 层）；web 把它做成了 DUNGEON 层对 FLOOR

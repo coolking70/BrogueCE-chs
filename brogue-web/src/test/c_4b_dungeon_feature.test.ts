@@ -1197,6 +1197,10 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
         // V-2b-9e-1：区域路由移动生成流，逐格追踪并回 CE 核实的新组合。
         // 按 [DUNGEON, LIQUID, GAS, SURFACE] 完整匹配，不扩成地形笛卡尔积。
         const verified9eLayers: ReadonlyArray<readonly TerrainType[]> = [
+            // U18a-3: 424242/D9 (44,22): Architect.placeTraps writes TRAP,
+            // then DF_SWAMP_MUD (CE Globals.c:905, flags=0) writes LIQUID only.
+            // Exact writer trace: u-18a-3-evidence/layer-trace.json.
+            [C.TRAP, C.MUD, C.NOTHING, C.NOTHING],
             // U02b trace: 424242/D9 (74,21), existing liquid MUD, then
             // blueprint ALTAR in DUNGEON (CE Architect.c pure-layer feature write).
             [C.ALTAR, C.MUD, C.NOTHING, C.NOTHING],

@@ -1,0 +1,18 @@
+--- LevelSeeds.ts
++++ LevelSeeds.ts
+@@ -3,13 +3,12 @@
+ import { DCOLS, DROWS, type Pos } from '../../types';
+ 
+ /** CE GlobalsBrogue.c: deepestLevel=40, including terminal levels[40].
+- * The web currently exposes D1–D26; allocating the full table preserves CE's
+- * initialization draw order without extending the playable dungeon. */
++ * D26 contains the amulet; D40 contains the terminal portal. */
+ export const CE_DEEPEST_LEVEL = 40;
+ export interface LevelSeed {
+     levelSeed: string;
+     visited: boolean;
+-    /** CE initialization's planned coordinates; actual web stair placement is still U04. */
++    /** Planned coordinates until generated; then actual CE stair coordinates. */
+     upStairsLoc: Pos;
+     downStairsLoc: Pos;
+ }

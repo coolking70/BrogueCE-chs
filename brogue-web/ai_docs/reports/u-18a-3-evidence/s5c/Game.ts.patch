@@ -1,0 +1,39 @@
+--- Game.ts
++++ Game.ts
+@@ -1,4 +1,4 @@
+-import { minionPlacement } from '../Generator/GenerationPlacement';
++import { minionPlacement, generationDistances } from '../Generator/GenerationPlacement';
+ import { scheduleLevelFollowers, travelDistanceMap, travelPlacement, restoreTravelPosition, APPROACHING_DOWNSTAIRS, APPROACHING_UPSTAIRS, APPROACHING_PIT } from '../Movement/LevelTravel';
+ import { snapshotGrid, restoreGrid, type CellSnapshot } from './LevelSnapshot';
+ import { memoryTerrainAppearance } from '../UI/Appearance';
+@@ -12,7 +12,7 @@
+  * Main game state and orchestration
+  */
+ import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer, DRAW_PRIORITY, type Cell } from '../Map/Grid';
+-import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_DIAGONAL_MOVEMENT, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP } from '../Map/TerrainCatalog';
++import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_DIAGONAL_MOVEMENT, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP, T_HARMFUL_TERRAIN } from '../Map/TerrainCatalog';
+ import { isPathingBlocker } from '../Map/TerrainCatalog';
+ // B-4b：物品落位热力图与食物落位原语（CE Items.c:463-535 / Architect.c:171,3822）
+ import { ItemSpawnHeatMap, passableArcCount, randomMatchingLocation } from '../Items/ItemSpawnHeatMap';
+@@ -2246,17 +2246,19 @@
+         const far: Pos[] = [];
+         const near: Pos[] = [];
+         const minFarDist = Math.floor(DCOLS / 2);
++        const distances = generationDistances(this, this.player.loc, T_DIVIDES_LEVEL, true);
+         for (let x = 1; x < DCOLS - 1; x++) {
+             for (let y = 1; y < DROWS - 1; y++) {
+                 const cell = this.grid.getCell(x, y);
+-                if (!cell || !cell.isPassable) continue;
++                if (!cell || (cellTerrainFlags(this.grid, x, y) & (T_PATHING_BLOCKER | T_HARMFUL_TERRAIN))) continue;
+                 if (cell.isVisible) continue;
+                 // F-1：跨层判定（火盖在岩浆/深渊/楼梯上不改变落点排除）
+                 if (cell.layers.includes(TerrainType.LAVA) || cell.layers.includes(TerrainType.CHASM)) continue;
+                 if (cell.layers.includes(TerrainType.STAIRS_UP) || cell.layers.includes(TerrainType.STAIRS_DOWN)) continue;
+                 if (this.getMonsterAt(x, y)) continue;
+                 if (this.player.loc.x === x && this.player.loc.y === y) continue;
+-                const isFar = Math.max(Math.abs(x - this.player.loc.x), Math.abs(y - this.player.loc.y)) >= minFarDist;
++                const distance = distances[x]![y]!;
++                const isFar = distance >= minFarDist && distance < 30000;
+                 // CE 回退池的 IS_IN_MACHINE 排除：远格池不排，无远格可退时
+                 // （near 池）才回避机器（Monsters.c:1110 第二次 getTerrainGrid）
+                 if (!isFar && cell.machineNumber !== 0) continue;

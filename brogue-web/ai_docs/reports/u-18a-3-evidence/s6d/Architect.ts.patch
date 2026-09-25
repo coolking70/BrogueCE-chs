@@ -1,0 +1,16 @@
+--- Architect.ts
++++ Architect.ts
+@@ -193,6 +193,13 @@
+ }
+ 
+ export class Architect {
++    /** CE placeStairs writes DUNGEON and clears LIQUID/SURFACE, preserving GAS. */
++    public static installStair(grid: Grid, p: Pos, type: TerrainType): void {
++        grid.setTerrainLayer(p.x,p.y,DungeonLayer.DUNGEON,type);
++        grid.setTerrainLayer(p.x,p.y,DungeonLayer.LIQUID,TerrainType.NOTHING);
++        grid.setTerrainLayer(p.x,p.y,DungeonLayer.SURFACE,TerrainType.NOTHING);
++    }
++
+     /** CE prepareForStairs (:3654): torches flank the open mouth; expose and
+      * protect every neighboring wall. Only DUNGEON is written here. */
+     public static prepareStairLoc(grid: Grid, p: Pos): void {

@@ -1,0 +1,23 @@
+--- BlueprintEngine.ts
++++ BlueprintEngine.ts
+@@ -47,7 +47,6 @@
+ // 的名字解析与落位——CE Architect.c:1434-1440 的 web 等价物。
+ import { resolveDFName } from '../Map/Promotion';
+ import { catalogFeature } from '../Map/DungeonFeature';
+-import { DUNGEON_FEATURE_CATALOG } from '../Map/DungeonFeatureCatalog';
+ import { rng } from '../Random';
+ import type { Pos } from '../../types';
+ import blueprintData from '../../data/blueprints.json';
+@@ -2293,10 +2292,10 @@
+ 
+     /** CE Architect.c:1343-1350. Reentrant machine builds use distinct flag sets. */
+     private featureView(origin: Pos, flags: Set<string>): boolean[][] | null {
+-        if (!flags.has('MF_IN_VIEW_OF_ORIGIN')) return null;
++        if (!flags.has('MF_IN_VIEW_OF_ORIGIN') && !flags.has('MF_IN_PASSABLE_VIEW_OF_ORIGIN')) return null;
+         let view = this.featureViews.get(flags);
+         if (!view) {
+-            const mask = T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION;
++            const mask = flags.has('MF_IN_PASSABLE_VIEW_OF_ORIGIN') ? T_PATHING_BLOCKER : T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION;
+             view = new FOVSys(this.grid).computeFOVMask(origin.x, origin.y, Math.max(DCOLS, DROWS),
+                 cell => !!(terrainFlagsOfCell(cell) & mask));
+             view[origin.x]![origin.y] = true;

@@ -1,0 +1,11 @@
+--- GenerationPlacement.ts
++++ GenerationPlacement.ts
+@@ -22,7 +22,7 @@
+     return flags;
+ }
+ const matrix = (g: Grid, n: number) => Array.from({ length: g.width }, () => Array<number>(g.height).fill(n));
+-const stairs = (g: Grid, x: number, y: number) => g.getCell(x,y)!.layers.some(t => t === T.STAIRS_UP || t === T.STAIRS_DOWN);
++const stairs = (g: Grid, x: number, y: number) => g.getCell(x,y)!.layers.some(t => t === T.STAIRS_UP || t === T.STAIRS_DOWN || t === T.DUNGEON_PORTAL);
+ 
+ /** First nonempty Chebyshev ring, x-major/y-minor, CE rand_range(1,count). */
+ export function qualifyingNear(grid: Grid, target: Pos, qualifies: (x: number, y: number) => boolean): Pos | null {

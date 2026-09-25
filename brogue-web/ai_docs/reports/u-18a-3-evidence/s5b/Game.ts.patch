@@ -1,0 +1,100 @@
+--- Game.ts
++++ Game.ts
+@@ -1,3 +1,4 @@
++import { minionPlacement } from '../Generator/GenerationPlacement';
+ import { scheduleLevelFollowers, travelDistanceMap, travelPlacement, restoreTravelPosition, APPROACHING_DOWNSTAIRS, APPROACHING_UPSTAIRS, APPROACHING_PIT } from '../Movement/LevelTravel';
+ import { snapshotGrid, restoreGrid, type CellSnapshot } from './LevelSnapshot';
+ import { memoryTerrainAppearance } from '../UI/Appearance';
+@@ -2043,66 +2044,38 @@
+             if (!memberMData) continue;
+ 
+             for (let c = 0; c < count; c++) {
+-                searchLoop: for (let r = 1; r <= 5; r++) {
+-                    // Find a random free spot in a ring of radius `r`
+-                    // To keep it simple, checking all spots and picking the first valid one
+-                    for (let dx = -r; dx <= r; dx++) {
+-                        for (let dy = -r; dy <= r; dy++) {
+-                            if (Math.abs(dx) !== r && Math.abs(dy) !== r) continue;
+-                            const nx = centerPos.x + dx;
+-                            const ny = centerPos.y + dy;
+-                            const cell = this.grid.getCell(nx, ny);
+-                            // P1-37 + 验收方复核后的正确理由（执行方原引
+-                            // Monsters.c:809-819 → Architect.c:3543 不成立：
+-                            // 前者是 hordeID 重选循环，后者是"领袖撞上玩家/楼梯"
+-                            // 的重定位回退；成员铺开的真实对应物 spawnMinions
+-                            // Monsters.c:703-733 的禁忌旗标只有
+-                            // (HAS_PLAYER | HAS_STAIRS) 与 HAS_MONSTER，
+-                            // **不含 IS_IN_MACHINE**）。
+-                            //
+-                            // 但排除本身是必要的，理由在 web 侧：CE 的成员经
+-                            // getQualifyingPathLocNear 按**路径距离**落位，
+-                            // 锁门封住的密库在路径上走不进去，于是 CE 无需旗标
+-                            // 就结构性地把成员挡在了机器外面；web 这里是按
+-                            // 切比雪夫半径的**环形扫描**（上面的 r=1..5），
+-                            // 不看连通性——不排除就会把怪物直接塞进封死的宝库。
+-                            // 这与 P1-33 的 gateSealsOnlyInterior 同属
+-                            // "web 侧必要、CE 无对应"一类。
+-                            // 代价：移动 RNG 值序（424242/D26 楼梯位移）。
+-                            // 已登记 P1-41：把成员铺开改成路径距离落位，
+-                            // 届时这条排除应当随之取消。
+-                            if (cell && cell.isPassable && cell.machineNumber === 0 && !this.monsters.some(m => m.loc.x === nx && m.loc.y === ny) && !(this.player.loc.x === nx && this.player.loc.y === ny)) {
+-                                const mon = new Monster(nx, ny, memberMData);
+-                                this.applyRandomMutation(mon, depth);
+-                                if (wandering) mon.state = MonsterState.WANDERING;
+-                                // P4-2：CE spawnHorde 对常规（非召唤）horde 同样经
+-                                // spawnMinions 落地成员，无条件设置 leader/MB_FOLLOWER
+-                                // （Monsters.c:742-744）。web 补上 leader 关系，使
+-                                // countMinions 统计"某召唤者已有多少直接随从"时，
+-                                // 对本身就是常规 horde 领袖（如 goblin warlord 麾下的
+-                                // 哥布林战队）的召唤者也能算对既有随从数。
+-                                mon.leader = leaderMon;
+-                                // W-17: metadata only; no draw or placement change.
+-                                mon.boundToLeader = h.flags.includes('HORDE_DIES_ON_LEADER_DEATH');
+-                                this.monsters.push(mon);
+-                                collected?.push(mon);
+-
+-                                // Remove from floorTiles to avoid item overlaps
+-                                if (floorTiles) {
+-                                    const ftIdx = floorTiles.findIndex(ft => ft.x === nx && ft.y === ny);
+-                                    if (ftIdx !== -1) floorTiles.splice(ftIdx, 1);
+-                                }
+-
+-                                break searchLoop;
+-                            }
+-                        }
+-                    }
++                const pos = this.findMinionSpawnSpot(centerPos, memberMData, h.spawnsIn, false);
++                if (!pos) break;
++                const mon = new Monster(pos.x, pos.y, memberMData);
++                this.applyRandomMutation(mon, depth);
++                if (wandering) mon.state = MonsterState.WANDERING;
++                mon.leader = leaderMon;
++                mon.boundToLeader = h.flags.includes('HORDE_DIES_ON_LEADER_DEATH');
++                this.monsters.push(mon);
++                collected?.push(mon);
++                if (floorTiles) {
++                    const index = floorTiles.findIndex(p => p.x === pos.x && p.y === pos.y);
++                    if (index !== -1) floorTiles.splice(index, 1);
+                 }
+             }
+         }
+         return true;
+     }
+ 
++    /** CE spawnMinions: species catalog flags, then up to 20 special-tile retries.
++     * Preserve deferred machine materialization; no runtime immunity or monsterAvoids. */
++    private findMinionSpawnSpot(origin: Pos, species: MonsterData, spawnsIn: string | undefined, summoned: boolean): Pos | null {
++        const target = spawnsIn ? Game.SPAWNS_IN_TERRAIN[spawnsIn] : undefined;
++        if (spawnsIn && target === undefined) return null;
++        let failsafe = 0;
++        let pos: Pos | null;
++        do {
++            pos = minionPlacement(this, origin, species, summoned, target);
++            if (!pos) return null;
++        } while (target !== undefined && !this.grid.getCell(pos.x, pos.y)!.layers.includes(target) && failsafe++ < 20);
++        return failsafe >= 20 ? null : pos;
++    }
++
+     /**
+      * P4-2：在 center 周围按半径 1..5 做环形扫描，取第一个可站立、无怪物/玩家
+      * 占用的格子。纯确定性扫描顺序，不消耗 RNG——与 spawnHordeAt 现有的成员

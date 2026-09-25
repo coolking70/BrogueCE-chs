@@ -1,0 +1,38 @@
+--- Game.ts
++++ Game.ts
+@@ -1564,7 +1564,14 @@
+                 } else if (floorTiles.length > 0) {
+                     const idx = rng.randRange(0, floorTiles.length - 1);
+                     const pos = floorTiles[idx]!;
+-                    if (this.hordeFitsTerrain(cand, pos)) {
++                    const cell = this.grid.getCell(pos.x, pos.y)!;
++                    if (this.hordeFitsTerrain(cand, pos)
++                        && cell.layers[DungeonLayer.DUNGEON] === TerrainType.FLOOR
++                        && cell.layers[DungeonLayer.LIQUID] === TerrainType.NOTHING
++                        && !(cellTerrainFlags(this.grid, pos.x, pos.y) & T_OBSTRUCTS_ITEMS)
++                        && !this.getMonsterAt(pos.x, pos.y)
++                        && !this.dormantMonsters.some(m => m.hp > 0 && m.x === pos.x && m.y === pos.y)
++                        && !this.items.some(item => item.x === pos.x && item.y === pos.y)) {
+                         hData = cand;
+                         centerPos = pos;
+                         floorTiles.splice(idx, 1);
+@@ -1932,7 +1939,9 @@
+ 
+     /** Monsters.c:809-819：horde 落格地形约束（spawnsIn）。 */
+     private hordeFitsTerrain(h: HordeEntry, pos: Pos): boolean {
+-        if (!h.spawnsIn) return true;
++        // CE spawnHorde fixed-location selection uses PB, even for flyers.
++        // Species exemptions belong to spawnMinions, not this horde-level check.
++        if (!h.spawnsIn) return !(cellTerrainFlags(this.grid, pos.x, pos.y) & T_PATHING_BLOCKER);
+         const target = Game.SPAWNS_IN_TERRAIN[h.spawnsIn];
+         // STATUE_*/CAGE/TURRET/WALL 等生成期专用落点不匹配普通地图格（CE 同样重抽）
+         if (target === undefined) return false;
+@@ -1957,6 +1966,8 @@
+                 const cell = this.grid.getCell(x, y);
+                 if (!cell || !cell.layers.includes(target)) continue; // F-1 跨层判定
+                 if (cell.machineNumber !== 0) continue; // CE IS_IN_MACHINE
++                if (cell.layers.includes(TerrainType.STAIRS_UP) || cell.layers.includes(TerrainType.STAIRS_DOWN)) continue;
++                if (this.dormantMonsters.some(m => m.hp > 0 && m.x === x && m.y === y)) continue;
+                 if (this.getMonsterAt(x, y)) continue; // CE HAS_MONSTER
+                 if (this.player.loc.x === x && this.player.loc.y === y) continue; // CE HAS_PLAYER
+                 if (this.items.some(it => it.loc.x === x && it.loc.y === y)) continue; // CE HAS_ITEM

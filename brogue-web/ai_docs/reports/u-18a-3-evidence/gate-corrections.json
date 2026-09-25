@@ -1,0 +1,17 @@
+{
+  "productionTestConfigChangeOtherThanB2": false,
+  "changes": [
+    {
+      "file": "scripts/u18a3-browser.mjs",
+      "before": "f4f730330a1c06b622756a30e78dcbd8c147925f116897613b865c215f789146",
+      "after": "aeeb8694584070cd4579bc66fb9e1a289898841c7b4ba3b1492633c27508662d"
+    },
+    {
+      "file": "src/test/b2_transcription.test.ts",
+      "before": "ceec129229feefcd80fd1aa37377975e6d24c332b201471e4248a7b1522db1d3",
+      "after": "e214797614d24bf69a3cfa83118a6933376dae9e1beec347b2a786f50330c8ae"
+    }
+  ],
+  "b2Action": "Rerun entire B2 file against final test fixture; all other 158 gate files and production/config unchanged.",
+  "browserAction": "Rerun complete corrected browser driver and inspect final screenshots."
+}

@@ -129,7 +129,7 @@ describe('V-2b-9e-2 production census', () => {
     // <100, or returning after the first rejected location. Count only committed
     // flattened handoffs: rolled-back children and time-seeded constructor D1
     // must not inflate evidence. Extra connectivity calls consume no RNG.
-    it('observes five active forced carriers, CE66 quarantine, blocking retry, and empty rewards', () => {
+    it('observes six active forced carriers, CE66 restored, blocking retry, and empty rewards', () => {
         const proto=BlueprintEngine.prototype;
         const ip=proto as unknown as Internals;
         const validate=ip.interiorSatisfiesBlockingFlags;
@@ -196,15 +196,15 @@ describe('V-2b-9e-2 production census', () => {
         }
         if(process.env.V9E2_SCAN_OUTPUT)writeFileSync(process.env.V9E2_SCAN_OUTPUT,
             JSON.stringify({seeds:SEEDS,counts,levels,observations,recovered},null,2)+'\n');
-        expect([...observed].sort()).toEqual(SIX.filter(ce=>ce!==66).sort());
-        expect(counts.ce_66_environment ?? 0).toBe(0);
+        expect([...observed].sort()).toEqual(SIX.slice().sort());
+        expect(counts.ce_66_environment ?? 0).toBeGreaterThan(0);
         expect(recovered,'must observe <100 rejection followed by a committed bridge').toBeGreaterThan(0);
     },600_000);
 });
 
 describe('V-2b-9e-2 catalog and dispatch guards', () => {
     it('transcribes CE 8 exactly and leaves all six forced-only frequencies at zero', () => {
-        expect([...RETIRED_AUTOGENERATOR_MACHINES]).toEqual([66]);
+        expect([...RETIRED_AUTOGENERATOR_MACHINES]).toEqual([]);
         expect(data.find(b=>b.ceBlueprintId===8)).toEqual(CE8);
         expect(data.filter(b=>b.roomSize[0]===0).map(b=>b.ceBlueprintId)).toEqual([8]);
         for(const ce of SIX) {
@@ -228,21 +228,23 @@ describe('V-2b-9e-2 catalog and dispatch guards', () => {
                         if(m===ce) {count++;seen.add(depth);}return true;
                     });
                 }
-                expect(count>0).toBe(ce!==66 && (depth===min || depth===max));
+                expect(count>0).toBe(depth===min || depth===max);
             }
-            expect([...seen]).toEqual(ce===66 ? [] : [min,max]);
+            expect([...seen]).toEqual([min,max]);
             const callback=vi.fn(()=>true);
             runAutogenerators(openGrid(),min!,false,AUTO_GENERATOR_CATALOG,callback);
             expect(callback).not.toHaveBeenCalled();
         });
-    it('quarantines CE66 before RNG while retaining the wired row and literal blueprint', () => {
+    it('restores CE66 scheduler RNG while retaining the forced-only literal blueprint', () => {
         const callback=vi.fn(()=>true), grid=openGrid();
         rng.seedRandomGenerator(9);
         const before=rng.randomNumbersGenerated;
         const stats=runAutogenerators(grid,10,true,[AUTO_GENERATOR_CATALOG[0]!,AUTO_GENERATOR_CATALOG[45]!],callback);
-        expect(stats.entries).toEqual([]);
-        expect(callback).not.toHaveBeenCalled();
-        expect(rng.randomNumbersGenerated).toBe(before);
+        // U04: quarantine premise is retired; CE frequency is rolled even if count=0.
+        expect(stats.entries).toHaveLength(1);
+        expect(stats.entries[0]!.index).toBe(1); // index into the two-entry test catalog
+        expect(callback).toHaveBeenCalledTimes(stats.entries[0]!.built);
+        expect(rng.randomNumbersGenerated).toBeGreaterThan(before);
         expect(AUTO_GENERATOR_CATALOG[45]!.carrier).toBe('wired');
         expect(data.find(b=>b.ceBlueprintId===66)!.frequency).toBe(0);
     });

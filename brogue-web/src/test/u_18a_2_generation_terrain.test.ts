@@ -63,7 +63,11 @@ describe('U18a-2 step 4b: amulet floor-deck bypass',()=>{
 describe('U18a-2 step 4c: key floor-deck bypass',()=>{
     it('takes the last legal item tile, retaining one bound key and no extra RNG selection',()=>{
         const g=arena(DCOLS,DROWS);g.depth=2;g.levelSeeds[1].upStairsLoc={x:1,y:1};
-        tile(g,15,10);tile(g,16,10,T.FLOOR,T.INERT_BRIMSTONE);tile(g,19,10);tile(g,20,10);
+        tile(g,15,10);tile(g,16,10,T.FLOOR,T.INERT_BRIMSTONE);
+        // U04: population starts after stair placement. Preserve the original
+        // last-legal-key (15,10), binding and zero-extra-draw assertions.
+        tile(g,1,1,T.STAIRS_UP);tile(g,60,25,T.STAIRS_DOWN);
+        g.levelSeeds[1].downStairsLoc={x:60,y:25};
         const shuffle=vi.spyOn(rng,'shuffleList').mockImplementation(()=>{});
         const heat=vi.spyOn(ItemSpawnHeatMap,'build').mockReturnValue({getItemSpawnLoc:()=>null,coolHeatMapAt:()=>{}} as unknown as ItemSpawnHeatMap);
         const item=vi.spyOn(g,'spawnPopulateItem').mockReturnValue(null),horde=vi.spyOn(g,'spawnHordeAt').mockReturnValue(0);

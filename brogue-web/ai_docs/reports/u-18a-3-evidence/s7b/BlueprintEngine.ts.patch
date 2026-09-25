@@ -1,0 +1,30 @@
+--- BlueprintEngine.ts
++++ BlueprintEngine.ts
+@@ -33,6 +33,7 @@
+ } from '../Map/TerrainCatalog';
+ import {
+     cellTerrainFlags,
++    discoveredTerrainFlagsOfCell,
+     cellTerrainMechFlags,
+     createSpawnMap,
+     levelIsDisconnectedOnMovementGraph,
+@@ -1967,17 +1968,8 @@
+             let secretDoor = false;
+             if ((cellTerrainMechFlags(this.grid, x, y) & TM_IS_SECRET)
+                 && (flags & T_OBSTRUCTS_PASSABILITY)) {
+-                // CE Monsters.c:1300：只并入 secret 层的显形后旗标。
+-                let discoveredFlags = 0;
+-                for (const tile of cell.layers) {
+-                    const t = TERRAIN_FLAGS[tile];
+-                    if (!(t.mechFlags & TM_IS_SECRET)) continue;
+-                    const df = resolveDFName(t.discoverType);
+-                    const revealed = df !== null ? DUNGEON_FEATURE_CATALOG[df]?.tile : null;
+-                    // 未落地的 WALL_LEVER 等显形 tile 保持原阻挡，不能激活缺失机制。
+-                    discoveredFlags |= revealed != null ? TERRAIN_FLAGS[revealed].flags : df !== null ? t.flags : 0;
+-                }
+-                secretDoor = !(discoveredFlags & T_OBSTRUCTS_PASSABILITY);
++                // CE direct discover successor, including flag-only carriers.
++                secretDoor = !(discoveredTerrainFlagsOfCell(cell) & T_OBSTRUCTS_PASSABILITY);
+             }
+             if (!secretDoor && (flags & T_PATHING_BLOCKER)) cost[x]![y] = -1;
+         }

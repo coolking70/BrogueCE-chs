@@ -188,6 +188,16 @@ function makeSampler(agg: Agg, mode: 'legacy' | 'wired'): { policy: TurnPolicy; 
 /** 跑一个 seed 的 500 回合并把结果累进 agg。 */
 function runOnce(seed: number, agg: Agg, mode: 'legacy' | 'wired'): void {
     const game = createHeadlessGame(seed, 'normal');
+    // U18a-3: moved stairs invalidate the old sampling premise that a greedy
+    // 500-turn walk necessarily encounters defense > 0. Both paired runs now
+    // start with one actual catalog monkey in a legal adjacent cell; all seeds,
+    // turns, natural encounters, hit-rate limits and wiring assertions remain.
+    const priv = game as unknown as GamePrivates;
+    const spot = DIRS8.map(([dx,dy])=>({x:game.player.x+dx,y:game.player.y+dy}))
+        .find(p=>priv.canMoveTo(p.x,p.y)&&!game.getMonsterAt(p.x,p.y));
+    expect(spot, 'paired combat fixture needs a legal neighboring cell').toBeDefined();
+    const target = new Monster(spot!.x,spot!.y,monstersJson.find(m=>m.id==='monkey') as MonsterData);
+    target.state=MonsterState.HUNTING;game.monsters.push(target);
     const { policy, settle } = makeSampler(agg, mode);
     const r = runTurns(game, TURNS, policy);
     settle(game); // 补结算最后一个回合

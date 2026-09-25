@@ -1,3 +1,5 @@
+import { stairFallbackQualifies, stairCandidates, clearStairVicinity } from '../Generator/Stairs';
+import { minionPlacement, generationDistances, qualifyingNear } from '../Generator/GenerationPlacement';
 import { scheduleLevelFollowers, travelDistanceMap, travelPlacement, restoreTravelPosition, APPROACHING_DOWNSTAIRS, APPROACHING_UPSTAIRS, APPROACHING_PIT } from '../Movement/LevelTravel';
 import { snapshotGrid, restoreGrid, type CellSnapshot } from './LevelSnapshot';
 import { memoryTerrainAppearance } from '../UI/Appearance';
@@ -11,7 +13,7 @@ import { anyoneWantABite } from '../Combat/MonsterAbsorption';
  * Main game state and orchestration
  */
 import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer, DRAW_PRIORITY, type Cell } from '../Map/Grid';
-import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_DIAGONAL_MOVEMENT, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP, T_HARMFUL_TERRAIN } from '../Map/TerrainCatalog';
+import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_DIAGONAL_MOVEMENT, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP, T_HARMFUL_TERRAIN, T_SACRED } from '../Map/TerrainCatalog';
 import { isPathingBlocker } from '../Map/TerrainCatalog';
 // B-4b：物品落位热力图与食物落位原语（CE Items.c:463-535 / Architect.c:171,3822）
 import { ItemSpawnHeatMap, passableArcCount, randomMatchingLocation } from '../Items/ItemSpawnHeatMap';
@@ -304,53 +306,6 @@ interface TestRoomState {
         isPassable: boolean;
         isOpaque: boolean;
     }>;
-}
-
-/**
- * V-2b-4：首层固定前厅梯位的落点。
- *
- * CE 的不变量是"楼梯永不在机器格内"（`placeStairs` 回避 IS_IN_MACHINE，
- * Architect.c:3712/3738）。CE 的时序天然保证它——`placeStairs` 在
- * `digDungeon`（含 addMachines）之后调用。web 把首层的上行梯**硬编码**在
- * 地图正中（`{DCOLS/2, DROWS/2}`），同一时序下若正中已被机器覆盖就会破坏
- * 该不变量。
- *
- * V-2b-4 实测（seed999/D1）：CE 1 号蓝图 `reward_mixed_library` 的
- * gate choke 区间 [30,50] + BP_OPEN_INTERIOR 让机器内部可达数百格连通体，
- * 正中 (39,14) 落入其中——p1_33 的"机器结构合同"与 p1_37 的"内容落点不
- * 闯入机器格"双双翻红。修复按 CE 口径：梯位**避开机器格**。
- *
- * **严格最小**：正中只要不是机器格，就原样用它（哪怕它是岩石——旧行为
- * 就是把楼梯砸进正中，改动它会在 4 个基线种子上产生 94 处无谓偏离）。
- * 只有正中落在机器内部时，才按 Chebyshev 环序就近取第一个"非机器格、
- * 可通行、DUNGEON 层是 FLOOR"的格。**零 RNG**、确定性（环序固定）。
- * 找不到时返回 null，调用方退回硬编码正中（保持旧行为，不静默挪位）。
- */
-function vestibuleStairPos(grid: Grid): Pos | null {
-    const cx = Math.floor(DCOLS / 2);
-    const cy = Math.floor(DROWS / 2);
-    const centre = grid.getCell(cx, cy);
-    if (centre && centre.machineNumber === 0) return { x: cx, y: cy }; // 旧行为：原样
-    const usable = (x: number, y: number): boolean => {
-        if (x < 1 || y < 1 || x >= DCOLS - 1 || y >= DROWS - 1) return false;
-        const c = grid.getCell(x, y);
-        if (!c) return false;
-        return c.machineNumber === 0 && c.isPassable && c.layers.includes(TerrainType.FLOOR);
-    };
-    const rmax = Math.max(DCOLS, DROWS);
-    for (let r = 1; r < rmax; r++) {
-        for (let dx = -r; dx <= r; dx++) {
-            for (const dy of [-r, r]) {
-                if (usable(cx + dx, cy + dy)) return { x: cx + dx, y: cy + dy };
-            }
-        }
-        for (let dy = -r + 1; dy <= r - 1; dy++) {
-            for (const dx of [-r, r]) {
-                if (usable(cx + dx, cy + dy)) return { x: cx + dx, y: cy + dy };
-            }
-        }
-    }
-    return null;
 }
 
 export class Game {
@@ -1127,9 +1082,22 @@ export class Game {
             try {
                 // 1. Generate new level
                 this.stats.maxDepth = Math.max(this.stats.maxDepth, this.depth);
-                const architect = new Architect();
-                this.grid = architect.generateLevel(this.depth);
+                // CE RogueMain.startLevel: dig -> placeStairs, at most 50 attempts
+                // within this same level RNG stream. Failed geometry is discarded.
+                this.monsters = [];
+                this.items = [];
                 this.dormantMonsters = [];
+                let architect!: Architect;
+                let stairsPlaced = false;
+                for (let attempt = 0; attempt < 50; attempt++) {
+                    architect = new Architect();
+                    this.grid = architect.generateLevel(this.depth);
+                    if (this.placeStairs(architect.machineResults)) {
+                        stairsPlaced = true;
+                        break;
+                    }
+                }
+                if (!stairsPlaced) throw new Error(`Failed to place stairs at depth ${this.depth} after 50 attempts`);
                 this.bindDormantAwakener();
                 this.environment = new EnvironmentManager(this.grid);
                 this.fov = new FOVSys(this.grid);
@@ -1148,7 +1116,7 @@ export class Game {
                 this.visibleMonsters = new Set();
                 this.visibleItems = new Set();
 
-                // 2. Populate level with monsters and items, and STAIRS
+                // 2. Populate the successfully stair-equipped level with monsters and items
                 // （B-4b：architect.machines 不再传入——legacy machines 循环已删；
                 //  V-2b-1：architect.trapVaults/cages 不再传入——两数组及其消费
                 //  循环均为死代码，已删除）
@@ -1226,7 +1194,7 @@ export class Game {
         }
         const cell = this.grid.getCell(m.x, m.y);
         if (m.preplaced || (m.x === this.player.x && m.y === this.player.y)
-            || cell?.layers.includes(TerrainType.STAIRS_UP) || cell?.layers.includes(TerrainType.STAIRS_DOWN)) {
+            || cell?.layers.includes(TerrainType.STAIRS_UP) || cell?.layers.includes(TerrainType.STAIRS_DOWN) || cell?.layers.includes(TerrainType.DUNGEON_PORTAL)) {
             const spot = travelPlacement(this, m, m.loc, true, true, true);
             if (spot) m.loc = spot;
         }
@@ -1297,6 +1265,39 @@ export class Game {
         this.needsRender = true;
     }
 
+    /** CE placeStairs: closest qualifying wall ring, then no-liquid fallback.
+     * Deferred machine products only reserve their positions; U19c ordering stays separate. */
+    private placeStairs(machineResults: MachineResult[] = []): boolean {
+        const level = this.levelSeeds[this.depth - 1]!;
+        const occupied = new Set([
+            ...machineResults.flatMap(m => [...m.itemSpawns, ...m.monsterSpawns]).map(s => s.pos),
+            ...this.items.map(i => i.loc), ...this.monsters.map(m => m.loc), ...this.dormantMonsters.map(m => m.loc),
+        ].map(p => p.y * this.grid.width + p.x));
+        const candidates = stairCandidates(this.grid, occupied);
+        const choose = (target: Pos): Pos | null => {
+            const preferred = qualifyingNear(this.grid, target, (x, y) => candidates.has(y * this.grid.width + x));
+            if (preferred) {
+                Architect.prepareStairLoc(this.grid, preferred);
+                clearStairVicinity(this.grid, preferred, candidates);
+                return preferred;
+            }
+            return qualifyingNear(this.grid, target, (x, y) => stairFallbackQualifies(this.grid, x, y, occupied));
+        };
+        if (this.depth <= CE_DEEPEST_LEVEL) {
+            const down = choose(level.downStairsLoc);
+            if (!down) return false;
+            Architect.installStair(this.grid, down, this.depth === CE_DEEPEST_LEVEL ? TerrainType.DUNGEON_PORTAL : TerrainType.STAIRS_DOWN);
+            occupied.add(down.y * this.grid.width + down.x);
+            level.downStairsLoc = down;
+            if (!this.levelSeeds[this.depth]!.visited) this.levelSeeds[this.depth]!.upStairsLoc = { ...down };
+        }
+        const up = choose(level.upStairsLoc);
+        if (!up) return false;
+        Architect.installStair(this.grid, up, TerrainType.STAIRS_UP);
+        level.upStairsLoc = up;
+        return true;
+    }
+
     private populateLevel(
         depth: number,
         _isGoingUp: boolean = false,
@@ -1310,7 +1311,7 @@ export class Game {
         // Collect all valid floor tiles
         // P1-37：牌堆排除机器格（machineNumber≠0 = CE 的 IS_IN_MACHINE，
         // Rogue.h:1113）。CE 的楼梯（Architect.c:3712/3738）、随机物品
-        // （3597）、漫游怪群（3543）落点一律回避该旗标；web 的楼梯/护符/
+        // （3597）、漫游怪群（3543）落点一律回避该旗标；web 的护符/
         // 钥匙/随机物品/怪群领袖统一从本牌堆抽取，此处一处排除全部覆盖。
         // P1-33 曾以"宝库地板改判 CHARRED_FLOOR"达成同样效果（当时 Game.ts
         // 禁改），P1-37 起用地形类型冒充旗标的做法废除，宝库恢复普通地板。
@@ -1332,24 +1333,14 @@ export class Game {
 
         rng.shuffleList(floorTiles);
 
-        // Place stairs Down (not on depth 26 - the amulet floor is the deepest)
-        let stairsDownPos: Pos | null = null;
-        if (floorTiles.length > 0 && this.depth < 26) {
-            stairsDownPos = floorTiles.pop()!;
-            this.grid.setTerrain(stairsDownPos.x, stairsDownPos.y, TerrainType.STAIRS_DOWN, '>', 0x00aaff);
-        }
-
-        // Place stairs Up
-        let stairsUpPos: Pos | null = null;
-        if (this.depth > 1 && floorTiles.length > 0) {
-            stairsUpPos = floorTiles.pop()!;
-            this.grid.setTerrain(stairsUpPos.x, stairsUpPos.y, TerrainType.STAIRS_UP, '<', 0xffaa00);
-        } else if (this.depth === 1) {
-            // V-2b-4：首层固定前厅梯位——避开机器格（CE placeStairs 的
-            // IS_IN_MACHINE 回避，见 vestibuleStairPos 头注）。
-            stairsUpPos = vestibuleStairPos(this.grid)
-                ?? { x: Math.floor(DCOLS / 2), y: Math.floor(DROWS / 2) }; // Default vestibule
-            this.grid.setTerrain(stairsUpPos.x, stairsUpPos.y, TerrainType.STAIRS_UP, '<', 0xffaa00);
+        // placeStairs belongs to generateDepth's dig/retry transaction. Population
+        // only consumes the committed coordinates; it must not relocate stairs.
+        const stairsUpPos = this.levelSeeds[depth - 1]!.upStairsLoc;
+        const stairsDownPos = this.depth <= CE_DEEPEST_LEVEL ? this.levelSeeds[depth - 1]!.downStairsLoc : null;
+        for (let i = floorTiles.length - 1; i >= 0; i--) {
+            const p = floorTiles[i]!;
+            if ((p.x === stairsUpPos.x && p.y === stairsUpPos.y)
+                || (stairsDownPos && p.x === stairsDownPos.x && p.y === stairsDownPos.y)) floorTiles.splice(i, 1);
         }
 
         // B-4b：CE Items.c:608-655——物品落位热力图（上行梯泛洪 → 归零 pass →
@@ -1568,7 +1559,14 @@ export class Game {
                 } else if (floorTiles.length > 0) {
                     const idx = rng.randRange(0, floorTiles.length - 1);
                     const pos = floorTiles[idx]!;
-                    if (this.hordeFitsTerrain(cand, pos)) {
+                    const cell = this.grid.getCell(pos.x, pos.y)!;
+                    if (this.hordeFitsTerrain(cand, pos)
+                        && cell.layers[DungeonLayer.DUNGEON] === TerrainType.FLOOR
+                        && cell.layers[DungeonLayer.LIQUID] === TerrainType.NOTHING
+                        && !(cellTerrainFlags(this.grid, pos.x, pos.y) & T_OBSTRUCTS_ITEMS)
+                        && !this.getMonsterAt(pos.x, pos.y)
+                        && !this.dormantMonsters.some(m => m.hp > 0 && m.x === pos.x && m.y === pos.y)
+                        && !this.items.some(item => item.x === pos.x && item.y === pos.y)) {
                         hData = cand;
                         centerPos = pos;
                         floorTiles.splice(idx, 1);
@@ -1659,7 +1657,7 @@ export class Game {
                             if (this.getMonsterAt(x, y)) return true;
                             if (this.items.some(it => it.loc.x === x && it.loc.y === y)) return true;
                             const c = this.grid.getCell(x, y);
-                            if (c && (c.terrain === TerrainType.STAIRS_UP || c.terrain === TerrainType.STAIRS_DOWN)) return true;
+                            if (c && (c.terrain === TerrainType.STAIRS_UP || c.terrain === TerrainType.STAIRS_DOWN || c.terrain === TerrainType.DUNGEON_PORTAL)) return true;
                             return false;
                         },
                         isMachineCell: (x, y) => this.machineCells.has(y * DCOLS + x),
@@ -1750,7 +1748,7 @@ export class Game {
         if (!cell) return false;
         if (cellTerrainFlags(this.grid, x, y) & T_PATHING_BLOCKER) return false;
         if (cell.layers.includes(TerrainType.STAIRS_UP) ||
-            cell.layers.includes(TerrainType.STAIRS_DOWN)) return false;
+            cell.layers.includes(TerrainType.STAIRS_DOWN) || cell.layers.includes(TerrainType.DUNGEON_PORTAL)) return false;
         if (this.getMonsterAt(x, y)) return false;
         if (this.machineCells.has(y * DCOLS + x)) return false;
         return true;
@@ -1936,7 +1934,9 @@ export class Game {
 
     /** Monsters.c:809-819：horde 落格地形约束（spawnsIn）。 */
     private hordeFitsTerrain(h: HordeEntry, pos: Pos): boolean {
-        if (!h.spawnsIn) return true;
+        // CE spawnHorde fixed-location selection uses PB, even for flyers.
+        // Species exemptions belong to spawnMinions, not this horde-level check.
+        if (!h.spawnsIn) return !(cellTerrainFlags(this.grid, pos.x, pos.y) & T_PATHING_BLOCKER);
         const target = Game.SPAWNS_IN_TERRAIN[h.spawnsIn];
         // STATUE_*/CAGE/TURRET/WALL 等生成期专用落点不匹配普通地图格（CE 同样重抽）
         if (target === undefined) return false;
@@ -1961,6 +1961,8 @@ export class Game {
                 const cell = this.grid.getCell(x, y);
                 if (!cell || !cell.layers.includes(target)) continue; // F-1 跨层判定
                 if (cell.machineNumber !== 0) continue; // CE IS_IN_MACHINE
+                if (cell.layers.includes(TerrainType.STAIRS_UP) || cell.layers.includes(TerrainType.STAIRS_DOWN) || cell.layers.includes(TerrainType.DUNGEON_PORTAL)) continue;
+                if (this.dormantMonsters.some(m => m.hp > 0 && m.x === x && m.y === y)) continue;
                 if (this.getMonsterAt(x, y)) continue; // CE HAS_MONSTER
                 if (this.player.loc.x === x && this.player.loc.y === y) continue; // CE HAS_PLAYER
                 if (this.items.some(it => it.loc.x === x && it.loc.y === y)) continue; // CE HAS_ITEM
@@ -2036,64 +2038,36 @@ export class Game {
             if (!memberMData) continue;
 
             for (let c = 0; c < count; c++) {
-                searchLoop: for (let r = 1; r <= 5; r++) {
-                    // Find a random free spot in a ring of radius `r`
-                    // To keep it simple, checking all spots and picking the first valid one
-                    for (let dx = -r; dx <= r; dx++) {
-                        for (let dy = -r; dy <= r; dy++) {
-                            if (Math.abs(dx) !== r && Math.abs(dy) !== r) continue;
-                            const nx = centerPos.x + dx;
-                            const ny = centerPos.y + dy;
-                            const cell = this.grid.getCell(nx, ny);
-                            // P1-37 + 验收方复核后的正确理由（执行方原引
-                            // Monsters.c:809-819 → Architect.c:3543 不成立：
-                            // 前者是 hordeID 重选循环，后者是"领袖撞上玩家/楼梯"
-                            // 的重定位回退；成员铺开的真实对应物 spawnMinions
-                            // Monsters.c:703-733 的禁忌旗标只有
-                            // (HAS_PLAYER | HAS_STAIRS) 与 HAS_MONSTER，
-                            // **不含 IS_IN_MACHINE**）。
-                            //
-                            // 但排除本身是必要的，理由在 web 侧：CE 的成员经
-                            // getQualifyingPathLocNear 按**路径距离**落位，
-                            // 锁门封住的密库在路径上走不进去，于是 CE 无需旗标
-                            // 就结构性地把成员挡在了机器外面；web 这里是按
-                            // 切比雪夫半径的**环形扫描**（上面的 r=1..5），
-                            // 不看连通性——不排除就会把怪物直接塞进封死的宝库。
-                            // 这与 P1-33 的 gateSealsOnlyInterior 同属
-                            // "web 侧必要、CE 无对应"一类。
-                            // 代价：移动 RNG 值序（424242/D26 楼梯位移）。
-                            // 已登记 P1-41：把成员铺开改成路径距离落位，
-                            // 届时这条排除应当随之取消。
-                            if (cell && cell.isPassable && cell.machineNumber === 0 && !this.monsters.some(m => m.loc.x === nx && m.loc.y === ny) && !(this.player.loc.x === nx && this.player.loc.y === ny)) {
-                                const mon = new Monster(nx, ny, memberMData);
-                                this.applyRandomMutation(mon, depth);
-                                if (wandering) mon.state = MonsterState.WANDERING;
-                                // P4-2：CE spawnHorde 对常规（非召唤）horde 同样经
-                                // spawnMinions 落地成员，无条件设置 leader/MB_FOLLOWER
-                                // （Monsters.c:742-744）。web 补上 leader 关系，使
-                                // countMinions 统计"某召唤者已有多少直接随从"时，
-                                // 对本身就是常规 horde 领袖（如 goblin warlord 麾下的
-                                // 哥布林战队）的召唤者也能算对既有随从数。
-                                mon.leader = leaderMon;
-                                // W-17: metadata only; no draw or placement change.
-                                mon.boundToLeader = h.flags.includes('HORDE_DIES_ON_LEADER_DEATH');
-                                this.monsters.push(mon);
-                                collected?.push(mon);
-
-                                // Remove from floorTiles to avoid item overlaps
-                                if (floorTiles) {
-                                    const ftIdx = floorTiles.findIndex(ft => ft.x === nx && ft.y === ny);
-                                    if (ftIdx !== -1) floorTiles.splice(ftIdx, 1);
-                                }
-
-                                break searchLoop;
-                            }
-                        }
-                    }
+                const pos = this.findMinionSpawnSpot(centerPos, memberMData, h.spawnsIn, false);
+                if (!pos) break;
+                const mon = new Monster(pos.x, pos.y, memberMData);
+                this.applyRandomMutation(mon, depth);
+                if (wandering) mon.state = MonsterState.WANDERING;
+                mon.leader = leaderMon;
+                mon.boundToLeader = h.flags.includes('HORDE_DIES_ON_LEADER_DEATH');
+                this.monsters.push(mon);
+                collected?.push(mon);
+                if (floorTiles) {
+                    const index = floorTiles.findIndex(p => p.x === pos.x && p.y === pos.y);
+                    if (index !== -1) floorTiles.splice(index, 1);
                 }
             }
         }
         return true;
+    }
+
+    /** CE spawnMinions: species catalog flags, then up to 20 special-tile retries.
+     * Preserve deferred machine materialization; no runtime immunity or monsterAvoids. */
+    private findMinionSpawnSpot(origin: Pos, species: MonsterData, spawnsIn: string | null | undefined, summoned: boolean): Pos | null {
+        const target = spawnsIn ? Game.SPAWNS_IN_TERRAIN[spawnsIn] : undefined;
+        if (spawnsIn && target === undefined) return null;
+        let failsafe = 0;
+        let pos: Pos | null;
+        do {
+            pos = minionPlacement(this, origin, species, summoned, target);
+            if (!pos) return null;
+        } while (target !== undefined && !this.grid.getCell(pos.x, pos.y)!.layers.includes(target) && failsafe++ < 20);
+        return failsafe >= 20 ? null : pos;
     }
 
     /**
@@ -2129,42 +2103,14 @@ export class Game {
      * 当前 FOV 内的格子）。
      */
     private findSummonAtDistanceLocations(from: Pos): Pos[] {
-        const maxDist = Math.floor(DCOLS / 2);
-        const dist = new Map<string, number>();
-        const key = (x: number, y: number) => `${x},${y}`;
-        const queue: Pos[] = [from];
-        dist.set(key(from.x, from.y), 0);
-        let qi = 0;
-        while (qi < queue.length) {
-            const cur = queue[qi++]!;
-            const d = dist.get(key(cur.x, cur.y))!;
-            if (d >= maxDist) continue;
-            for (let dx = -1; dx <= 1; dx++) {
-                for (let dy = -1; dy <= 1; dy++) {
-                    if (dx === 0 && dy === 0) continue;
-                    const nx = cur.x + dx;
-                    const ny = cur.y + dy;
-                    const k = key(nx, ny);
-                    if (dist.has(k)) continue;
-                    const cell = this.grid.getCell(nx, ny);
-                    if (!cell || !cell.isPassable) continue;
-                    if (cell.layers.includes(TerrainType.LAVA) || cell.layers.includes(TerrainType.CHASM)) continue; // F-1 跨层判定
-                    dist.set(k, d + 1);
-                    queue.push({ x: nx, y: ny });
-                }
-            }
-        }
-
+        const distance = generationDistances(this, from, T_PATHING_BLOCKER | T_SACRED, true);
         const result: Pos[] = [];
-        for (const [k, d] of dist) {
-            if (d === 0 || d > maxDist) continue; // 排除起点自身
-            const parts = k.split(',');
-            const x = Number(parts[0]);
-            const y = Number(parts[1]);
-            const cell = this.grid.getCell(x, y);
-            if (!cell || cell.isVisible) continue; // 玩家 FOV 外
-            if (this.getMonsterAt(x, y)) continue;
-            if (this.player.loc.x === x && this.player.loc.y === y) continue;
+        for (let x = 0; x < this.grid.width; x++) for (let y = 0; y < this.grid.height; y++) {
+            const d = distance[x]![y]!;
+            const cell = this.grid.getCell(x, y)!;
+            if (d < 1 || d > Math.floor(DCOLS / 2) || cell.isVisible
+                || (cellTerrainFlags(this.grid, x, y) & (T_PATHING_BLOCKER | T_HARMFUL_TERRAIN))
+                || this.getMonsterAt(x, y) || (this.player.x === x && this.player.y === y)) continue;
             result.push({ x, y });
         }
         return result;
@@ -2215,7 +2161,7 @@ export class Game {
             const memberMData = (monsterData as MonsterData[]).find(m => m.id === member.type.toLowerCase());
             if (!memberMData) continue;
             for (let c = 0; c < count; c++) {
-                const pos = this.findNearbySpawnSpot(summoner.loc);
+                const pos = this.findMinionSpawnSpot(summoner.loc, memberMData, horde.spawnsIn, true);
                 if (!pos) continue;
                 const mon = new Monster(pos.x, pos.y, memberMData);
                 mon.leader = summoner;
@@ -2272,17 +2218,19 @@ export class Game {
         const far: Pos[] = [];
         const near: Pos[] = [];
         const minFarDist = Math.floor(DCOLS / 2);
+        const distances = generationDistances(this, this.player.loc, T_DIVIDES_LEVEL, true);
         for (let x = 1; x < DCOLS - 1; x++) {
             for (let y = 1; y < DROWS - 1; y++) {
                 const cell = this.grid.getCell(x, y);
-                if (!cell || !cell.isPassable) continue;
+                if (!cell || (cellTerrainFlags(this.grid, x, y) & (T_PATHING_BLOCKER | T_HARMFUL_TERRAIN))) continue;
                 if (cell.isVisible) continue;
                 // F-1：跨层判定（火盖在岩浆/深渊/楼梯上不改变落点排除）
                 if (cell.layers.includes(TerrainType.LAVA) || cell.layers.includes(TerrainType.CHASM)) continue;
-                if (cell.layers.includes(TerrainType.STAIRS_UP) || cell.layers.includes(TerrainType.STAIRS_DOWN)) continue;
+                if (cell.layers.includes(TerrainType.STAIRS_UP) || cell.layers.includes(TerrainType.STAIRS_DOWN) || cell.layers.includes(TerrainType.DUNGEON_PORTAL)) continue;
                 if (this.getMonsterAt(x, y)) continue;
                 if (this.player.loc.x === x && this.player.loc.y === y) continue;
-                const isFar = Math.max(Math.abs(x - this.player.loc.x), Math.abs(y - this.player.loc.y)) >= minFarDist;
+                const distance = distances[x]![y]!;
+                const isFar = distance >= minFarDist && distance < 30000;
                 // CE 回退池的 IS_IN_MACHINE 排除：远格池不排，无远格可退时
                 // （near 池）才回避机器（Monsters.c:1110 第二次 getTerrainGrid）
                 if (!isFar && cell.machineNumber !== 0) continue;
@@ -3324,8 +3272,15 @@ export class Game {
         }
 
         if (action === 'stairs_down') {
+            const terminal = this.grid.getCell(this.player.x, this.player.y)?.layers.includes(TerrainType.DUNGEON_PORTAL);
+            if (terminal && this.depth === CE_DEEPEST_LEVEL) {
+                const hasAmulet = this.player.inventory.items.some(i => i.category === ItemCategory.AMULET);
+                if (hasAmulet) this.triggerGameOver(true);
+                else logger.log(i18next.t('game.entrance_blocked', { defaultValue: 'The entrance is blocked. You cannot leave without the Amulet of Yendor.' }), '#aaaaaa');
+                return;
+            }
             const cell = this.grid.getCell(this.player.loc.x, this.player.loc.y);
-            if (cell && cell.layers.includes(TerrainType.STAIRS_DOWN)) { // F-1 跨层判定
+            if (cell && cell.layers.includes(TerrainType.STAIRS_DOWN) && this.depth < CE_DEEPEST_LEVEL) {
                 this.depth++;
                 this.generateDepth(false);
                 // CE RogueMain.c:562：换层时 synchronizePlayerTimeState
@@ -3339,7 +3294,7 @@ export class Game {
 
         if (action === 'wait_or_stairs_down') {
             const cell = this.grid.getCell(this.player.loc.x, this.player.loc.y);
-            if (cell && cell.layers.includes(TerrainType.STAIRS_DOWN)) { // F-1 跨层判定
+            if (cell && (cell.layers.includes(TerrainType.STAIRS_DOWN) || cell.layers.includes(TerrainType.DUNGEON_PORTAL))) { // F-1 跨层判定
                 this.handlePlayerAction('stairs_down', undefined, 'system');
             } else {
                 this.handlePlayerAction('wait', undefined, 'system');
@@ -5869,7 +5824,7 @@ export class Game {
                 const x = this.player.loc.x + dx!;
                 const y = this.player.loc.y + dy!;
                 const cell = this.grid.getCell(x, y);
-                if (!cell || !cell.isPassable || this.getMonsterAt(x, y)) continue;
+                if (!cell || (cellTerrainFlags(this.grid, x, y) & T_OBSTRUCTS_PASSABILITY) || this.getMonsterAt(x, y)) continue;
                 if (!rng.randPercent(10)) continue;
 
                 // CE spawnHorde(0, ...)：10% out-of-depth + 禁用集过滤 + frequency 加权抽 horde
@@ -5878,7 +5833,7 @@ export class Game {
                     ? [...HORDE_PERIODIC_FORBIDDEN_FLAGS, 'HORDE_NEVER_OOD']
                     : HORDE_PERIODIC_FORBIDDEN_FLAGS;
                 const horde = this.pickHordeType(this.hordeCandidates(spawn.depth, forbidden));
-                if (!horde) continue;
+                if (!horde || !this.hordeFitsTerrain(horde, { x, y })) continue;
 
                 const mData = (monsterData as MonsterData[]).find(m => m.id === horde.leader.toLowerCase());
                 if (!mData) continue;
@@ -7795,7 +7750,7 @@ export class Game {
             }
             if (this.getMonsterAt(x, y)) return false;
             if (cell.layers.includes(TerrainType.STAIRS_UP)
-                || cell.layers.includes(TerrainType.STAIRS_DOWN)) return false;
+                || cell.layers.includes(TerrainType.STAIRS_DOWN) || cell.layers.includes(TerrainType.DUNGEON_PORTAL)) return false;
             if (this.items.some((it) => it.loc.x === x && it.loc.y === y)) return false;
             if (this.machineCells.has(y * DCOLS + x)) return false;
             return true;
@@ -10416,7 +10371,7 @@ export class Game {
                     isOccupied: (x, y) => !!this.getMonsterAt(x, y)
                         || (this.player.loc.x === x && this.player.loc.y === y)
                         || this.items.some(item => item.loc.x === x && item.loc.y === y)
-                        || !!this.grid.getCell(x, y)?.layers.some(t => t === TerrainType.STAIRS_UP || t === TerrainType.STAIRS_DOWN),
+                        || !!this.grid.getCell(x, y)?.layers.some(t => t === TerrainType.STAIRS_UP || t === TerrainType.STAIRS_DOWN || t === TerrainType.DUNGEON_PORTAL),
                     isMachineCell: (x, y) => (this.grid.getCell(x, y)?.machineNumber ?? 0) !== 0,
                 });
             // Pathological all-blocked item maps retain the item safely; CE's
@@ -10536,6 +10491,8 @@ export class Game {
                 return i18next.t('terrain.bog', { defaultValue: '沼泽' });
             case TerrainType.STAIRS_UP:
                 return i18next.t('terrain.stairs_up', { defaultValue: '上行楼梯' });
+            case TerrainType.DUNGEON_PORTAL:
+                return i18next.t('terrain.crystal_portal', { defaultValue: '水晶传送门' });
             case TerrainType.STAIRS_DOWN:
                 return i18next.t('terrain.stairs_down', { defaultValue: '下行楼梯' });
             case TerrainType.CHARRED_FLOOR:

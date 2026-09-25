@@ -1,0 +1,962 @@
+[
+  {
+    "file": "brogue-web/src/test/ai_1_scent_tracking.test.ts",
+    "before": "740a1690b20b8392ae02742475a9f1fe7316827cdb46ad55faa75e5f52acd039",
+    "after": "740a1690b20b8392ae02742475a9f1fe7316827cdb46ad55faa75e5f52acd039",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/armor_display_effect.test.ts",
+    "before": "514c02837448b66419248328928f75b1529c4fd875aa8a701b40a0e559b2dc25",
+    "after": "514c02837448b66419248328928f75b1529c4fd875aa8a701b40a0e559b2dc25",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/armor_model_effect.test.ts",
+    "before": "e1d2e8159a286c927958b54b137f35c8f0d6100fe50c4b5ee40283b52dfc21b4",
+    "after": "e1d2e8159a286c927958b54b137f35c8f0d6100fe50c4b5ee40283b52dfc21b4",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/armor_runic_effect.test.ts",
+    "before": "68648894439549bb03f6216b38c3cf331baedc4311bc3fd451c11c99562e4ad1",
+    "after": "68648894439549bb03f6216b38c3cf331baedc4311bc3fd451c11c99562e4ad1",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/b1_retire_invented.test.ts",
+    "before": "ac055cb8021ca5fcc0d1eb4ddda16ef729d4ae5f294a4d32b33f64b5d2265d43",
+    "after": "ac055cb8021ca5fcc0d1eb4ddda16ef729d4ae5f294a4d32b33f64b5d2265d43",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/b2_transcription.test.ts",
+    "before": "d9a8cec771e1cb8c924a062ffbaaa7e7cdf293c1a902eb7fd5bc12fc98784834",
+    "after": "e214797614d24bf69a3cfa83118a6933376dae9e1beec347b2a786f50330c8ae",
+    "unchanged": false
+  },
+  {
+    "file": "brogue-web/src/test/b_1_weapon_specials.test.ts",
+    "before": "16f4fd51d9675ad58ca0e8884c633abad0f029b2760c8fedbc3b32dd5525548c",
+    "after": "16f4fd51d9675ad58ca0e8884c633abad0f029b2760c8fedbc3b32dd5525548c",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/b_1a_identification.test.ts",
+    "before": "4ec49fcbd1c3cf82c5bc13be95250a797a3fe3d2cebbc6282712a58643c979c4",
+    "after": "4ec49fcbd1c3cf82c5bc13be95250a797a3fe3d2cebbc6282712a58643c979c4",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/b_1b_identification_persistence.test.ts",
+    "before": "9ba94e9e7f8adf7663058180542cb6e8dab3db79da78bcb8e6b474f2962367d6",
+    "after": "9ba94e9e7f8adf7663058180542cb6e8dab3db79da78bcb8e6b474f2962367d6",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/b_1c_detect_magic.test.ts",
+    "before": "d508be47c14b36a0f13d9d5c41679c581e8b77dab3ed70fedca8f8399ea54cb5",
+    "after": "d508be47c14b36a0f13d9d5c41679c581e8b77dab3ed70fedca8f8399ea54cb5",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/b_2_throwing.test.ts",
+    "before": "4d46e8da3b89e576f8429004e80fe81c9ab6cbfacb2f45bf698f4d5860b2fecc",
+    "after": "4d46e8da3b89e576f8429004e80fe81c9ab6cbfacb2f45bf698f4d5860b2fecc",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/b_4a_item_generation.test.ts",
+    "before": "57e9317adc7700c2c3a9e568987919d4e252584c24c6bb0e285a264865c33633",
+    "after": "57e9317adc7700c2c3a9e568987919d4e252584c24c6bb0e285a264865c33633",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/b_4b_item_placement.test.ts",
+    "before": "ab94a10a1860e0c4557c5308d792636ad1ab351389f714a130c97188eb63554c",
+    "after": "ab94a10a1860e0c4557c5308d792636ad1ab351389f714a130c97188eb63554c",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/blueprint_ce_coverage.test.ts",
+    "before": "4780d5d2f72eae268a08106f47823b8efe292ad98d419955e666df767d460c3d",
+    "after": "4780d5d2f72eae268a08106f47823b8efe292ad98d419955e666df767d460c3d",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/blueprint_center.test.ts",
+    "before": "4e0738c2ce37166211b21a5d08bbc0a39695efd359b62ed6a0116872c5f22a44",
+    "after": "4e0738c2ce37166211b21a5d08bbc0a39695efd359b62ed6a0116872c5f22a44",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/c_0_add_loops.test.ts",
+    "before": "1be9e5f420cb244d360bf08f8b2028d4d27803267fc04091e25fa251f94d7c32",
+    "after": "1be9e5f420cb244d360bf08f8b2028d4d27803267fc04091e25fa251f94d7c32",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/c_1_room_profile.test.ts",
+    "before": "cea2652a656e1fa7e102cbb40b1fbbffa1e2fafca9ee7ab0fbd40b9411ea1062",
+    "after": "cea2652a656e1fa7e102cbb40b1fbbffa1e2fafca9ee7ab0fbd40b9411ea1062",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/c_2_lakes.test.ts",
+    "before": "338233fbf7452ec5934a0511c758fddfb3e30b02cf2d8e0f9cc3b53287c3acbd",
+    "after": "338233fbf7452ec5934a0511c758fddfb3e30b02cf2d8e0f9cc3b53287c3acbd",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/c_2_lakes_determinism.test.ts",
+    "before": "b319f6047c2ea4bd8b2076ef47bf3ff60aa223e19f267fd8d09687e4085f925c",
+    "after": "b319f6047c2ea4bd8b2076ef47bf3ff60aa223e19f267fd8d09687e4085f925c",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/c_2_lakes_e2e.test.ts",
+    "before": "d45b1a66f047ab05e3e2d5a58ba70f86d7cdfe362d86aa4b8d22c780a107a393",
+    "after": "d45b1a66f047ab05e3e2d5a58ba70f86d7cdfe362d86aa4b8d22c780a107a393",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/c_3_walls_doors.test.ts",
+    "before": "fefbf3cfcd2b75e738a29e77d1372ef0966100d1648093914dc15adf94c25a1b",
+    "after": "fefbf3cfcd2b75e738a29e77d1372ef0966100d1648093914dc15adf94c25a1b",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/c_4a_0_layer_model.test.ts",
+    "before": "328898f4da323b963cc701c4567f06c6bc29f4f98f6afed3a0f1736cc3e9518e",
+    "after": "b8276467d22944a39c0acb46f0a06043a885555ab1165e4585fb0d9a99d571ed",
+    "unchanged": false
+  },
+  {
+    "file": "brogue-web/src/test/c_4a_terrain_catalog.test.ts",
+    "before": "dbbda07fad1d730ba309dfc84631063c9e4f970c3a46fe5c1aa905a10c4b23fd",
+    "after": "9b668f7b225ded18cd150af8324638de8e004265d9db57d3178a77e53c8295ab",
+    "unchanged": false
+  },
+  {
+    "file": "brogue-web/src/test/c_4b_dungeon_feature.test.ts",
+    "before": "0cfd2b91b5f10338c084bbcacaee194cb94aa64cd84766dd14b4b6d91e13e9b7",
+    "after": "f11f3f02d0dde1a3b925a1fb147d05e6da21b914198dedda583416dc5edb6157",
+    "unchanged": false
+  },
+  {
+    "file": "brogue-web/src/test/c_4c_promotion.test.ts",
+    "before": "fc228132bd7710ada5d0c223619d0b005f4d8feeac29bcba0c3fcc5d0add36a8",
+    "after": "fc228132bd7710ada5d0c223619d0b005f4d8feeac29bcba0c3fcc5d0add36a8",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/c_5_fall_subsystem.test.ts",
+    "before": "512e224b205ca65abbf288623697ca6ec8b03959a1ccad34c3902962babe54cc",
+    "after": "512e224b205ca65abbf288623697ca6ec8b03959a1ccad34c3902962babe54cc",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/c_6_autogenerators.test.ts",
+    "before": "36859741d5199f5e26647b267aca0f01262e1c98336f1e8650125fc17ca32938",
+    "after": "36859741d5199f5e26647b267aca0f01262e1c98336f1e8650125fc17ca32938",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/c_7_lighting.test.ts",
+    "before": "483363be72132dd999ed7fdce1bdd55990eff47d7fcdd3864ba74b75a0d663b0",
+    "after": "ac2d8e91fcaf33f3a669d32877fd3c262b7e935101e64b1a97e84bda5e22c095",
+    "unchanged": false
+  },
+  {
+    "file": "brogue-web/src/test/c_8_connectivity.test.ts",
+    "before": "28d1981b94fc9cd594e914281946d10b1be4c0a42849b597dae95400dca12464",
+    "after": "28d1981b94fc9cd594e914281946d10b1be4c0a42849b597dae95400dca12464",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/f_1_fire_as_terrain.test.ts",
+    "before": "896eff1bf099bb89bd9e12042fb090ad63ad925ee66739003578a2fe53bc3b73",
+    "after": "896eff1bf099bb89bd9e12042fb090ad63ad925ee66739003578a2fe53bc3b73",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/f_2a_fire_mechanics.test.ts",
+    "before": "b9b4911a17b64132a06aa09a203a5fe8bf73d25b479c483f491bd2c9cb4b3b78",
+    "after": "b9b4911a17b64132a06aa09a203a5fe8bf73d25b479c483f491bd2c9cb4b3b78",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/f_2b_creature_burning.test.ts",
+    "before": "e7ff67fe361a0b3c79ab31e7e632a4165be3f75164617cccd4fa70eb5f675f4b",
+    "after": "e7ff67fe361a0b3c79ab31e7e632a4165be3f75164617cccd4fa70eb5f675f4b",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/f_2c_explosion.test.ts",
+    "before": "de75b94a6f80289bba1e95f25a2c0de2a09921873e9d74ef7c77cc83a114eac9",
+    "after": "de75b94a6f80289bba1e95f25a2c0de2a09921873e9d74ef7c77cc83a114eac9",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/fixtures/generation_baseline.json",
+    "before": "1ee4216e44e04b04f477149d29f5f1493b7d8a0ff4cfbcef32cdf038db80a28e",
+    "after": "1a9c6e0f8fc9bdb154b5400686cfccc6c83d097918113aae78e342b2c52f24c4",
+    "unchanged": false
+  },
+  {
+    "file": "brogue-web/src/test/fixtures/p2_2_baseline.json",
+    "before": "ba5cfdab37e2bdf633714ac9da1b54c5db71318967c54cffdb47da7519f51726",
+    "after": "ba5cfdab37e2bdf633714ac9da1b54c5db71318967c54cffdb47da7519f51726",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/fixtures/p2_3_baseline.json",
+    "before": "9b3bb0c149e968f6eccae04752e13390beaf4602c6e8216aa65426432f5ecf2e",
+    "after": "9b3bb0c149e968f6eccae04752e13390beaf4602c6e8216aa65426432f5ecf2e",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/fixtures/p2_baseline.json",
+    "before": "f1690f3748c3e49c0df692cbee283fb962719d9b290131b9507282a6b504fc4b",
+    "after": "f1690f3748c3e49c0df692cbee283fb962719d9b290131b9507282a6b504fc4b",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/fixtures/u03b-ce-follow.json",
+    "before": "8a6119074d82cd0e3a27953b71188afe2bf89196e402d748eb96d1a1912508c6",
+    "after": "8a6119074d82cd0e3a27953b71188afe2bf89196e402d748eb96d1a1912508c6",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/fixtures/u21c-ce-terrain.json",
+    "before": "4b9c9b9a10bde82bf7c8ad8866bffa59b21479b8ad83593b0f19d9cbc180d64a",
+    "after": "964c8808dc9b39760a3a84dc05e7ccc17af2182fc7f3779d86913fa9a6fb56ed",
+    "unchanged": false
+  },
+  {
+    "file": "brogue-web/src/test/g_1_gas_volumetric.test.ts",
+    "before": "17f9d6aa5231b2a8011093b73549ebf482b4f287aa73699848c8475944cbb27f",
+    "after": "17f9d6aa5231b2a8011093b73549ebf482b4f287aa73699848c8475944cbb27f",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/g_2_gas_df_wiring.test.ts",
+    "before": "e21b64dbc6b5b91ffe045dca35c27c9826e78e86bcceb725ed2b5c05719b61c3",
+    "after": "e21b64dbc6b5b91ffe045dca35c27c9826e78e86bcceb725ed2b5c05719b61c3",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/g_3_gas_effects.test.ts",
+    "before": "e9d536d53d21743bdb210d23614c2fc8b082f8d7c2ba33f55211bba4111e5f14",
+    "after": "e9d536d53d21743bdb210d23614c2fc8b082f8d7c2ba33f55211bba4111e5f14",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/generation_baseline.test.ts",
+    "before": "be114e3dcb54f0a375ce095dac96801d061b329f4880322ee6ac808796bf36ac",
+    "after": "be114e3dcb54f0a375ce095dac96801d061b329f4880322ee6ac808796bf36ac",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/harness.ts",
+    "before": "d8a7764e775cef6ba12a6b306f81157f2829bfd1e175e831a5b46760aae496aa",
+    "after": "d8a7764e775cef6ba12a6b306f81157f2829bfd1e175e831a5b46760aae496aa",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/horde_selection.test.ts",
+    "before": "cbdee2bdfeff2794f3245929638d5774bf93217515384ddc0f2937ee5de12fc2",
+    "after": "cbdee2bdfeff2794f3245929638d5774bf93217515384ddc0f2937ee5de12fc2",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/horde_terrain_spawn.test.ts",
+    "before": "6cc2e4bcdda99eda047c4528ea879edeba4bcaf8e48c9f9c9288e577e4cf4aae",
+    "after": "f9a176723820045858dff9caf465619788ee65c1b12ed42a4960a51cebde9048",
+    "unchanged": false
+  },
+  {
+    "file": "brogue-web/src/test/hunger_curve_sim.test.ts",
+    "before": "b3815ccbd27d88a080499316dc52bd3ffff6e475b5b9fe4d767f3dc44d98068e",
+    "after": "b3815ccbd27d88a080499316dc52bd3ffff6e475b5b9fe4d767f3dc44d98068e",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/hunger_regen.test.ts",
+    "before": "b21ac0460ad79e5ba3fd35c9f01062fd9a9de144b353490bb1cdadc72b2e1d67",
+    "after": "b21ac0460ad79e5ba3fd35c9f01062fd9a9de144b353490bb1cdadc72b2e1d67",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/i18n_scan.ts",
+    "before": "d02a67b67e13e736f61b728291bcdf2e524e718eb36943cfa4afb25f65671e05",
+    "after": "d02a67b67e13e736f61b728291bcdf2e524e718eb36943cfa4afb25f65671e05",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/i_1_interaction.test.ts",
+    "before": "b24ee4ca01f757a931740b7c9f3b5ffa0293b93cc82549ec074f6257f9eb705c",
+    "after": "b24ee4ca01f757a931740b7c9f3b5ffa0293b93cc82549ec074f6257f9eb705c",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/invented_content_pool.test.ts",
+    "before": "83e0ffb7dc2e679539b8e49ec8ee4d7e338edc7bbfbbee400d2c8f6a9f410b3a",
+    "after": "83e0ffb7dc2e679539b8e49ec8ee4d7e338edc7bbfbbee400d2c8f6a9f410b3a",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/monster_damage_balance.test.ts",
+    "before": "cb9c4193f3b423a5350e4350a73ce2f5174a7802aff309c60abba40bf78fb738",
+    "after": "cb9c4193f3b423a5350e4350a73ce2f5174a7802aff309c60abba40bf78fb738",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/monster_stats_effect.test.ts",
+    "before": "8b3deffe0a77a56d5e3d29cf07ad782b88881779cac33af3e97459460b12177c",
+    "after": "bb2da2125785b2e4ad44d870ea27469cd7d42ade177baa05d16277c794481f45",
+    "unchanged": false
+  },
+  {
+    "file": "brogue-web/src/test/p1_20_item_placement.test.ts",
+    "before": "a7c90116ed76b6205ae68aa8bc4d2a0ad6b27ad941e6d6907636c0ae2b77e54d",
+    "after": "a7c90116ed76b6205ae68aa8bc4d2a0ad6b27ad941e6d6907636c0ae2b77e54d",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p1_24_death_sink.test.ts",
+    "before": "d10a2a82cf335a8e1443523713145796c880f93d459def02bcd58a0c6eea97e5",
+    "after": "d10a2a82cf335a8e1443523713145796c880f93d459def02bcd58a0c6eea97e5",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p1_26_invariants.test.ts",
+    "before": "5d8c71b2e144cab3a37fbc08382bb55754acc0b1d311c6f64dbeb02269b8207b",
+    "after": "b8e8e0e6aeccf8fc09d6b85537e7a00727f21456c88abb849103ebda8ebb5be0",
+    "unchanged": false
+  },
+  {
+    "file": "brogue-web/src/test/p1_27_remove_drowning.test.ts",
+    "before": "239384734b92110ea8be62c8bede9882a31de286d75d1bae760cdcb9f62de33a",
+    "after": "239384734b92110ea8be62c8bede9882a31de286d75d1bae760cdcb9f62de33a",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p1_28_flag_channel.test.ts",
+    "before": "9aa5020aa3c5493ed0bf972e7afb30dbde9ceef5bab23e1eac693a8547f9e956",
+    "after": "9aa5020aa3c5493ed0bf972e7afb30dbde9ceef5bab23e1eac693a8547f9e956",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p1_29_adversarial_gate.test.ts",
+    "before": "038267bdde93ce7cb999fea0b3e6adcf8d478af207a2155b2b767cdf6bd5153d",
+    "after": "038267bdde93ce7cb999fea0b3e6adcf8d478af207a2155b2b767cdf6bd5153d",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p1_29_lake_connectivity.test.ts",
+    "before": "9ecd078b85e4958ad865a931c76e01704a5c25868ee4d524b46f7e18348461a3",
+    "after": "9ecd078b85e4958ad865a931c76e01704a5c25868ee4d524b46f7e18348461a3",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p1_30_i18n_gate.test.ts",
+    "before": "4f232c755398d9faedd672d29f5364921572f3f39f584653a1f7e582995943e0",
+    "after": "4f232c755398d9faedd672d29f5364921572f3f39f584653a1f7e582995943e0",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p1_31_35_placement_snapshot.test.ts",
+    "before": "177236db3ea21f37043377ba6da2d0ff74d27168200868136aaf120bb82e3419",
+    "after": "177236db3ea21f37043377ba6da2d0ff74d27168200868136aaf120bb82e3419",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p1_33_machine_chokepoint.test.ts",
+    "before": "8cbe6221096fb000ddf6af96e334da411140258cdf9fd67e56dc0d35248d2819",
+    "after": "8cbe6221096fb000ddf6af96e334da411140258cdf9fd67e56dc0d35248d2819",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p1_34_loopmap_reset.test.ts",
+    "before": "2c489279fd855e6272b89ad67c97a32016f0a4de98f51a390dcf0b54aa7df6cf",
+    "after": "2c489279fd855e6272b89ad67c97a32016f0a4de98f51a390dcf0b54aa7df6cf",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p1_37_machine_flag_i18n.test.ts",
+    "before": "d3473f3eff30961d8a8a23bd63648b4545711610864d9e762fe066bcdb4d82b3",
+    "after": "900fd7e8dcb6fc9d50c94d8fc8e0514ffa11d2df5ead13dbe88855ed8308e907",
+    "unchanged": false
+  },
+  {
+    "file": "brogue-web/src/test/p1_42_secret_door_search.test.ts",
+    "before": "eca539311016b1896179c5577af0d8ee9b302eb2e385bfc09bb556748d7d11c7",
+    "after": "eca539311016b1896179c5577af0d8ee9b302eb2e385bfc09bb556748d7d11c7",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p1_46_keybindings.test.ts",
+    "before": "dda1f333f17a482b657b4af48379d9a345558675351d0b77363938dfff17e801",
+    "after": "dda1f333f17a482b657b4af48379d9a345558675351d0b77363938dfff17e801",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p2_0_seeded_rng.test.ts",
+    "before": "78c95f78f4ab6767b878223ae03e6b543a71112e45c735fc0d8036c19467bb74",
+    "after": "78c95f78f4ab6767b878223ae03e6b543a71112e45c735fc0d8036c19467bb74",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p2_1_tick_architecture.test.ts",
+    "before": "fe2fa5d393e054fdd7885615061e78eda981b19c15b07dd81348fdd8032ee12f",
+    "after": "fe2fa5d393e054fdd7885615061e78eda981b19c15b07dd81348fdd8032ee12f",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p2_2_real_speed.test.ts",
+    "before": "2b1a731ed904f6f2730ea087b262a33276ed5d4a6cffb37e954954ff0727911c",
+    "after": "2b1a731ed904f6f2730ea087b262a33276ed5d4a6cffb37e954954ff0727911c",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p2_3_objective_time.test.ts",
+    "before": "614c7afcd958a43c55f69e3c4ee1d47bf3ebf83eb65013dd968c154d7e2c0397",
+    "after": "614c7afcd958a43c55f69e3c4ee1d47bf3ebf83eb65013dd968c154d7e2c0397",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p2_4_animation_cadence.test.ts",
+    "before": "16321c78b76e3e46963221df579a4214ff6c35e2c25fa4ece7d265fa146d20e6",
+    "after": "16321c78b76e3e46963221df579a4214ff6c35e2c25fa4ece7d265fa146d20e6",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p2_6_display_settings.test.ts",
+    "before": "e5f1cf8e946c7fa000e1423da6b535d557f4344b66b2117275d1767df9c00a62",
+    "after": "e5f1cf8e946c7fa000e1423da6b535d557f4344b66b2117275d1767df9c00a62",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p4_10_waypoint.test.ts",
+    "before": "324743474e73c4b9f610bcfae47584199dc82d072b77ee248e5bc61c20a2f8a6",
+    "after": "324743474e73c4b9f610bcfae47584199dc82d072b77ee248e5bc61c20a2f8a6",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p4_1b_monster_casting.test.ts",
+    "before": "197dbec3bc4070fe897fe6b6857c2d0a9580b7a83503c86ecb8ea273176302eb",
+    "after": "197dbec3bc4070fe897fe6b6857c2d0a9580b7a83503c86ecb8ea273176302eb",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p4_2_monster_summoning.test.ts",
+    "before": "85da4a3aa03831af60186094e4bf543283903b36d58631145b43d31c52d51392",
+    "after": "85da4a3aa03831af60186094e4bf543283903b36d58631145b43d31c52d51392",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p4_3_special_monster_flags.test.ts",
+    "before": "690524396030764370cda9b641f226e4f30916184b940a6491b577b8757abbed",
+    "after": "690524396030764370cda9b641f226e4f30916184b940a6491b577b8757abbed",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p4_4_split_kamikaze.test.ts",
+    "before": "6406d2a458fef6c663fbb6852d2e5e1fdecf4d93bc3e24973de5b7029fe75431",
+    "after": "6406d2a458fef6c663fbb6852d2e5e1fdecf4d93bc3e24973de5b7029fe75431",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p4_5_melee_specials.test.ts",
+    "before": "eee90698a704524e83c41d345efed8a9dc2bdd1cef00525bbf96e6e0256e5982",
+    "after": "eee90698a704524e83c41d345efed8a9dc2bdd1cef00525bbf96e6e0256e5982",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p4_6_attack_geometry.test.ts",
+    "before": "ea50209ba8d0246a9b3c1c11ee4534fcbdeea7b1bbe7ed43c529ddaee8166ea3",
+    "after": "ea50209ba8d0246a9b3c1c11ee4534fcbdeea7b1bbe7ed43c529ddaee8166ea3",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p4_7_player_weapon_geometry.test.ts",
+    "before": "afda1066cc7c7383dcb686197372e20eb170bc7f7ed33ae203cf9025802deac8",
+    "after": "afda1066cc7c7383dcb686197372e20eb170bc7f7ed33ae203cf9025802deac8",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p4_8_scent_map.test.ts",
+    "before": "117ef5ef6680880579a7e3c3d8e30c4a5ab672b11e692137f5306d16c6dfd21a",
+    "after": "117ef5ef6680880579a7e3c3d8e30c4a5ab672b11e692137f5306d16c6dfd21a",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/p4_9_safety_map.test.ts",
+    "before": "47392aeeebc5677d105121bc7f779a73f43b38c141836aa37e6f2e33502adeba",
+    "after": "47392aeeebc5677d105121bc7f779a73f43b38c141836aa37e6f2e33502adeba",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/r_1_appearance.test.ts",
+    "before": "d41da2b6a961b41353b3fcf4fdb5e39f6b01f01bab7dd32740b06a7431909745",
+    "after": "f07f496f21d7093799d86fa42bf7294c51eac083979b64eac5df830df41a63dc",
+    "unchanged": false
+  },
+  {
+    "file": "brogue-web/src/test/scroll_effects.test.ts",
+    "before": "4f80ffe965cb36e613321efffc699340bffad83ba07b6cc25df3a060920504c6",
+    "after": "4f80ffe965cb36e613321efffc699340bffad83ba07b6cc25df3a060920504c6",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/smoke.test.ts",
+    "before": "fde74dca9c292e6b085a1ecd0bb6fc1dd0bb93b00dd68e4456200d42a20e4a58",
+    "after": "fde74dca9c292e6b085a1ecd0bb6fc1dd0bb93b00dd68e4456200d42a20e4a58",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/t_1_tail.test.ts",
+    "before": "1115819dc95bc1a55559f57eeeb3139b859a1713f6385362b07e52510fbcdac8",
+    "after": "1115819dc95bc1a55559f57eeeb3139b859a1713f6385362b07e52510fbcdac8",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u20_inventory.test.ts",
+    "before": "1cd8a1ab56669bdfaf16226c5be6f4e7bad8e903eb3ce04134ab0f0f6939eff7",
+    "after": "1cd8a1ab56669bdfaf16226c5be6f4e7bad8e903eb3ce04134ab0f0f6939eff7",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u21c_flare_sidebar.test.ts",
+    "before": "7d927ba1facb5385b493487a3827d65bb365688808715886a3e8947c64a28cfc",
+    "after": "7d927ba1facb5385b493487a3827d65bb365688808715886a3e8947c64a28cfc",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u21c_terrain_appearance.test.ts",
+    "before": "da9ef1df4d4b829c8b8acd12cc055815d7a4c01b61b0ae8b767dda2cd6446564",
+    "after": "da9ef1df4d4b829c8b8acd12cc055815d7a4c01b61b0ae8b767dda2cd6446564",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u24_hardcoded_text.test.ts",
+    "before": "475f0c75bbc9b02e12206a7bcab0cecf0533220ce3677d485873404dfcad1013",
+    "after": "475f0c75bbc9b02e12206a7bcab0cecf0533220ce3677d485873404dfcad1013",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u_00_new_run.test.ts",
+    "before": "d27dd741f622a9806a13ea53b0e586098d8268d9e27f5de2f5ccb00e796de210",
+    "after": "d27dd741f622a9806a13ea53b0e586098d8268d9e27f5de2f5ccb00e796de210",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u_01_instance_snapshot.test.ts",
+    "before": "babeef505b750b21fe61d0328dcc4a25ec44c1eda8a98d55e159a685369a9479",
+    "after": "babeef505b750b21fe61d0328dcc4a25ec44c1eda8a98d55e159a685369a9479",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u_02a_rng_snapshot.test.ts",
+    "before": "b12eb3750815f46e62af0f2608488b63c6875d5d7a9b340858a2f8d35c685469",
+    "after": "b12eb3750815f46e62af0f2608488b63c6875d5d7a9b340858a2f8d35c685469",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u_02b_level_rng.test.ts",
+    "before": "994147de6463680082715cdab12d5593e79a278bf7f73c9bd6074952860cef03",
+    "after": "994147de6463680082715cdab12d5593e79a278bf7f73c9bd6074952860cef03",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u_03_whole_run_snapshot.test.ts",
+    "before": "fa16dd310222af116e224c1e037b428f46a43b54531b38085a36da85c209c932",
+    "after": "fa16dd310222af116e224c1e037b428f46a43b54531b38085a36da85c209c932",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u_03b_level_travel.test.ts",
+    "before": "866c0e423fd9c74b7901bb97b4241c91bd3f5a7d1f58c7da75c5336541719cae",
+    "after": "866c0e423fd9c74b7901bb97b4241c91bd3f5a7d1f58c7da75c5336541719cae",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u_04c_machine_cells.test.ts",
+    "before": "7141420d10da208f77b360efc3c51064cfa19e5eb0177d0d276999f8cead56b9",
+    "after": "7141420d10da208f77b360efc3c51064cfa19e5eb0177d0d276999f8cead56b9",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u_05a_item_ownership.test.ts",
+    "before": "c7224fa20a40450bd0c028cd7b6108ecbc90aa55f3d72239b649809250ef51b5",
+    "after": "c7224fa20a40450bd0c028cd7b6108ecbc90aa55f3d72239b649809250ef51b5",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u_06_monster_damage.test.ts",
+    "before": "c8db4fcfe1793e658f83b1b4d7cb96fc208bd04bf158940351d2125c13acc1fc",
+    "after": "c8db4fcfe1793e658f83b1b4d7cb96fc208bd04bf158940351d2125c13acc1fc",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u_07_monster_blink.test.ts",
+    "before": "f35693af628d87c7745465bb3ea2cced92ed2a39ba2a7961d81ce2c911300cb0",
+    "after": "f35693af628d87c7745465bb3ea2cced92ed2a39ba2a7961d81ce2c911300cb0",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u_08_terrain_bolts.test.ts",
+    "before": "546c49ccad17244728a335c6a8b080937913a228e46b25df6bbc6668175ac4a8",
+    "after": "546c49ccad17244728a335c6a8b080937913a228e46b25df6bbc6668175ac4a8",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u_09_learning_consumers.test.ts",
+    "before": "6768405b9639a758ce0d1e6a1b66891dba4938e0436d905b2a7355e87e2481c8",
+    "after": "6768405b9639a758ce0d1e6a1b66891dba4938e0436d905b2a7355e87e2481c8",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u_10_absorption_snapshot.test.ts",
+    "before": "7df1d7f1be1bd806c6b898b25f89a958379e30d381c3533aed8623457dfcd7f2",
+    "after": "7df1d7f1be1bd806c6b898b25f89a958379e30d381c3533aed8623457dfcd7f2",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u_11_corpse_learning.test.ts",
+    "before": "cfc5da49d90db95d0c344c48d40c9936ba9dc57dc6558522eb16b39e20a13343",
+    "after": "cfc5da49d90db95d0c344c48d40c9936ba9dc57dc6558522eb16b39e20a13343",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u_12a_cast_eligibility.test.ts",
+    "before": "61d71db0771cfc5f26280e54bc011e969762add17c2eafa646a8dbcc81b8b20b",
+    "after": "61d71db0771cfc5f26280e54bc011e969762add17c2eafa646a8dbcc81b8b20b",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u_13_combat_math.test.ts",
+    "before": "e7077262f26cc94545f607f7a2fa2d52baef439188a48af2e5e62760f77fd998",
+    "after": "e7077262f26cc94545f607f7a2fa2d52baef439188a48af2e5e62760f77fd998",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u_14a_status_gaps.test.ts",
+    "before": "60cfd5401113c42c93a93320a82cbc7b34ac61cbd670f93b47da92f77265bd9b",
+    "after": "60cfd5401113c42c93a93320a82cbc7b34ac61cbd670f93b47da92f77265bd9b",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u_14b_status_gaps.test.ts",
+    "before": "c958a5ff5b75d370d8dc84d9d9a7dbd58889b9a12323b2a34d54b6ee803f1dc8",
+    "after": "c958a5ff5b75d370d8dc84d9d9a7dbd58889b9a12323b2a34d54b6ee803f1dc8",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u_15a_shattering.test.ts",
+    "before": "286735d8eb30e2a4531f9ff639be7fdb3193621bef7eb4c5547a871db02e6f11",
+    "after": "286735d8eb30e2a4531f9ff639be7fdb3193621bef7eb4c5547a871db02e6f11",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u_15e_potions.test.ts",
+    "before": "0e6037539483091e2decdb57f012f79fa79e982da878de50a259ed795dcccb8c",
+    "after": "0e6037539483091e2decdb57f012f79fa79e982da878de50a259ed795dcccb8c",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u_15f_food.test.ts",
+    "before": "f1f2abe3faa07a0e3bf16880395d38f4afa31f5cca869c2d725b2dd92e107d71",
+    "after": "f1f2abe3faa07a0e3bf16880395d38f4afa31f5cca869c2d725b2dd92e107d71",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u_18_water_cage.test.ts",
+    "before": "6d590ff30d4059e0beae9f497fd7928df80508ba35e85ef5ea57764bd2eea6f5",
+    "after": "6d590ff30d4059e0beae9f497fd7928df80508ba35e85ef5ea57764bd2eea6f5",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u_18a_2_generation_terrain.test.ts",
+    "before": "587f577247418650a839019097265da1ccaab120dbc01ddd333c6d4e30833c35",
+    "after": "2470a48ff106ec856ea9ab345c546b48e3fe4d06cce64b0e75558d394a145913",
+    "unchanged": false
+  },
+  {
+    "file": "brogue-web/src/test/u_18a_terrain_contracts.test.ts",
+    "before": "6619f2c136c7e5e5f6cee040447cb4f96fdc50c8f498eaf7c240ebc9b93b8861",
+    "after": "6619f2c136c7e5e5f6cee040447cb4f96fdc50c8f498eaf7c240ebc9b93b8861",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/u_23_memory_mapping.test.ts",
+    "before": "554b99fc251a26e83a76bb348df1f1e202862c6dd35a8352411e4a5b806abcf1",
+    "after": "554b99fc251a26e83a76bb348df1f1e202862c6dd35a8352411e4a5b806abcf1",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/ui_1_rendering.test.ts",
+    "before": "9a8e966a83e807f0d1b332a9de5eb0c4cf51ef02246bd0984ebd44d7b0c4dcd3",
+    "after": "9a8e966a83e807f0d1b332a9de5eb0c4cf51ef02246bd0984ebd44d7b0c4dcd3",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/ui_2_protection.test.ts",
+    "before": "df9afa69ca5d3179454e6ad2810c845a875e9717795595c15fa89d4191e522ae",
+    "after": "df9afa69ca5d3179454e6ad2810c845a875e9717795595c15fa89d4191e522ae",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/v_1a_blueprint_items.test.ts",
+    "before": "53a81f97e1807b0c72d6f30a89e2046743e49e8384e0a05719970d156095cd13",
+    "after": "53a81f97e1807b0c72d6f30a89e2046743e49e8384e0a05719970d156095cd13",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/v_1b_alternative.test.ts",
+    "before": "ad1e6214f3881d0dd56b2b7d5903a2488e22cc9f964c297a676294503f2b8916",
+    "after": "ad1e6214f3881d0dd56b2b7d5903a2488e22cc9f964c297a676294503f2b8916",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/v_1c_machine_structure.test.ts",
+    "before": "a372717dcea3ce8f2106918d1632a06a9f84bb28bbde356fb94bd654f79db476",
+    "after": "a372717dcea3ce8f2106918d1632a06a9f84bb28bbde356fb94bd654f79db476",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/v_2a_vestibule_return.test.ts",
+    "before": "e42ba83a120e07c6ff9563aabdba6eda65b4ccffb8f5c65736c7484e78a47e75",
+    "after": "e42ba83a120e07c6ff9563aabdba6eda65b4ccffb8f5c65736c7484e78a47e75",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/v_2b_2a_placement_flags.test.ts",
+    "before": "e07197ddd031a22cf8106385db8e78da589d961ec6d8f4ffda2ffbef9145f0b8",
+    "after": "e07197ddd031a22cf8106385db8e78da589d961ec6d8f4ffda2ffbef9145f0b8",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/v_2b_2b_blueprints.test.ts",
+    "before": "801db82a1f28774ccf1775aae9c39122ba4b91429259a8fe87f2b960e24882be",
+    "after": "801db82a1f28774ccf1775aae9c39122ba4b91429259a8fe87f2b960e24882be",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/v_2b_3_wired.test.ts",
+    "before": "4a124e1414a757550fd808f131a2b68ddf3fcc1e1ecc240308d3635dfd8569e7",
+    "after": "4a124e1414a757550fd808f131a2b68ddf3fcc1e1ecc240308d3635dfd8569e7",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/v_2b_4_altars.test.ts",
+    "before": "bfc0364ac68d44b3390d5a1ce297343acbce9034f7b4a64bc7cb57d8bdb8cd3a",
+    "after": "bfc0364ac68d44b3390d5a1ce297343acbce9034f7b4a64bc7cb57d8bdb8cd3a",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/v_2b_5_dormant.test.ts",
+    "before": "6d0329fae5cb398feb7c6e8ea6ab29154f2283359febf69b74c59f4d37e95e89",
+    "after": "6d0329fae5cb398feb7c6e8ea6ab29154f2283359febf69b74c59f4d37e95e89",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/v_2b_6_keys.test.ts",
+    "before": "acb73cbf8a5f2f30a76a3d8a7825a0c6f35185cc312a3be1907e50404ff4524e",
+    "after": "acb73cbf8a5f2f30a76a3d8a7825a0c6f35185cc312a3be1907e50404ff4524e",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/v_2b_7_features.test.ts",
+    "before": "8e896ecb2ff24afa5d475728aec28d5a1b17443d49cc6d09a68027c885f0a10a",
+    "after": "8e896ecb2ff24afa5d475728aec28d5a1b17443d49cc6d09a68027c885f0a10a",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/v_2b_8_autogen.test.ts",
+    "before": "9ef67eef514620049f5c93926516ee949352a553d7662b2559e0c601f6afaa95",
+    "after": "9ef67eef514620049f5c93926516ee949352a553d7662b2559e0c601f6afaa95",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/v_2b_9a_carriers.test.ts",
+    "before": "eb4c0b69781202075c31eab9cbceca1b7df282b660ad72a56ac41551e09a0080",
+    "after": "eb4c0b69781202075c31eab9cbceca1b7df282b660ad72a56ac41551e09a0080",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/v_2b_9b_environment.test.ts",
+    "before": "f6bc3b79f81ef4027e901bf17699ac2d22cf69d1fd1d0781890e32f6b9878ecb",
+    "after": "f6bc3b79f81ef4027e901bf17699ac2d22cf69d1fd1d0781890e32f6b9878ecb",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/v_2b_9c_effects.test.ts",
+    "before": "1520a3089cdca0cf871ebe0525b8320a28e110e3a80b997268d01036cb0e56e2",
+    "after": "1520a3089cdca0cf871ebe0525b8320a28e110e3a80b997268d01036cb0e56e2",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/v_2b_9d_dungeon_profile.test.ts",
+    "before": "18e16c91a4a030dd7384ecce054dd44ddcee55e86fd141219c479614c13d911a",
+    "after": "18e16c91a4a030dd7384ecce054dd44ddcee55e86fd141219c479614c13d911a",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/v_2b_9e_2_autogen.test.ts",
+    "before": "d6619a791c148b7ede46541c31b05d3c90ed46042c56528028f101c9467e121c",
+    "after": "0b82365555581ebda835298d65e33a03288629fc85015cdb2b4233612eec884c",
+    "unchanged": false
+  },
+  {
+    "file": "brogue-web/src/test/v_2b_9e_area_machine.test.ts",
+    "before": "948e72f0763aed80c003277dd59e43dd6ae7704a238ed7f9929ea5f22ca8e899",
+    "after": "948e72f0763aed80c003277dd59e43dd6ae7704a238ed7f9929ea5f22ca8e899",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/w_10_poison.test.ts",
+    "before": "c719fef767c9974da9f6b14b45d461ffc0705ce408b71e047f2a67bc8bffda5d",
+    "after": "c719fef767c9974da9f6b14b45d461ffc0705ce408b71e047f2a67bc8bffda5d",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/w_11_teleport_placement.test.ts",
+    "before": "79763a98e16e415be01e97f4fe72d624b6c1e8150a6155af7c2d31312dc35ed7",
+    "after": "79763a98e16e415be01e97f4fe72d624b6c1e8150a6155af7c2d31312dc35ed7",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/w_12_blink_beckoning.test.ts",
+    "before": "b42cf61df17dc1a5d604053bf7e7b6ee308d11e4195ede6b4bb61afc3e9c200b",
+    "after": "b42cf61df17dc1a5d604053bf7e7b6ee308d11e4195ede6b4bb61afc3e9c200b",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/w_13_tunneling.test.ts",
+    "before": "c539dc704e8219cc45d8f5223fb4add05563215cc0223e725f68c167f38a453f",
+    "after": "c539dc704e8219cc45d8f5223fb4add05563215cc0223e725f68c167f38a453f",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/w_14_obstruction.test.ts",
+    "before": "609c3b0d8c7f2d4b3cc1bb10d65ae110f8260f4cf75192bfaeedd6eb7dbada4f",
+    "after": "609c3b0d8c7f2d4b3cc1bb10d65ae110f8260f4cf75192bfaeedd6eb7dbada4f",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/w_15_shielding.test.ts",
+    "before": "6b89877b3ef6943f7583e5f54577974c5e1eb47603afa04eec6664416c0fa8c9",
+    "after": "6b89877b3ef6943f7583e5f54577974c5e1eb47603afa04eec6664416c0fa8c9",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/w_16_conjuration.test.ts",
+    "before": "b35026f3fc3a5b0cf68b52ad6c42115d8f75397b709ba1541155692d89e245fc",
+    "after": "b35026f3fc3a5b0cf68b52ad6c42115d8f75397b709ba1541155692d89e245fc",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/w_17_domination.test.ts",
+    "before": "439887c584016f9aff562f01ee9d58d74098079c7990b9c52adb10f96863079f",
+    "after": "439887c584016f9aff562f01ee9d58d74098079c7990b9c52adb10f96863079f",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/w_18_entrancement.test.ts",
+    "before": "60a0409580cc7489c519e8be4505d54584734e9352e7b0a8ef6d8f4865f464ff",
+    "after": "60a0409580cc7489c519e8be4505d54584734e9352e7b0a8ef6d8f4865f464ff",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/w_19_polymorph.test.ts",
+    "before": "d4366c2f8e8f5e21f9c9d71851d8e8c35b069248388b491aceae3ad727152b83",
+    "after": "d4366c2f8e8f5e21f9c9d71851d8e8c35b069248388b491aceae3ad727152b83",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/w_20_cloning.test.ts",
+    "before": "771b154745f268805cff544cea217ef62a82829d44bd1b89c2ffac7950eacfce",
+    "after": "771b154745f268805cff544cea217ef62a82829d44bd1b89c2ffac7950eacfce",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/w_21_empowerment.test.ts",
+    "before": "ff450117b4fd0994b85fc92ad91f44b8f43b6efac9f45212bc796f30960fa843",
+    "after": "ff450117b4fd0994b85fc92ad91f44b8f43b6efac9f45212bc796f30960fa843",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/w_23_negation.test.ts",
+    "before": "d3e800abaf257dc7fcb8e8af1a58c8cba21ed82fbc48de0f899f5083b30860f2",
+    "after": "d3e800abaf257dc7fcb8e8af1a58c8cba21ed82fbc48de0f899f5083b30860f2",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/w_24_wand_catalog.test.ts",
+    "before": "3fde20f241b7d62a41dfa677f2f2c8abf5fd1829c9a068c53918468277419106",
+    "after": "3fde20f241b7d62a41dfa677f2f2c8abf5fd1829c9a068c53918468277419106",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/w_25_staff_catalog.test.ts",
+    "before": "a5d65adc4e401a61bcc8728a55925fe4d8b4d496cbbc02ba36c9b05768478d7e",
+    "after": "a5d65adc4e401a61bcc8728a55925fe4d8b4d496cbbc02ba36c9b05768478d7e",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/w_26_arcana_closure.test.ts",
+    "before": "6a62130f2d33d5e7c9726807a1825ac95d231e459a6b7507d7c4b02d0a77cc37",
+    "after": "6a62130f2d33d5e7c9726807a1825ac95d231e459a6b7507d7c4b02d0a77cc37",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/w_2_arcana_submission.test.ts",
+    "before": "e4bdd01d00678ddcd3b7d70c241213088bdac8190cf07e99a9513de78e31e8ed",
+    "after": "e4bdd01d00678ddcd3b7d70c241213088bdac8190cf07e99a9513de78e31e8ed",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/w_3_bolt_trajectory.test.ts",
+    "before": "17a8f09279c2fa23604331952decd046a1bdcfc111986e9cd544ca3b1c535127",
+    "after": "17a8f09279c2fa23604331952decd046a1bdcfc111986e9cd544ca3b1c535127",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/w_4_bolt_reflection.test.ts",
+    "before": "6b76949830a6621134ff6e443c21520f4cb6754f2fc6d1570194012cfc83ec71",
+    "after": "6b76949830a6621134ff6e443c21520f4cb6754f2fc6d1570194012cfc83ec71",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/w_5_arcana_instance.test.ts",
+    "before": "cc4b6d0fdfc87355ec3a52bcf59a6a5a9f9a293f046420e4f22699037a3f1777",
+    "after": "cc4b6d0fdfc87355ec3a52bcf59a6a5a9f9a293f046420e4f22699037a3f1777",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/w_6_arcana_recharge.test.ts",
+    "before": "ee1980a57a3d322b07b7e677e7c529a7ce1ca6458a67651b81ac585f1281baa2",
+    "after": "ee1980a57a3d322b07b7e677e7c529a7ce1ca6458a67651b81ac585f1281baa2",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/w_7_arcana_enchantment.test.ts",
+    "before": "6fdfac1c22ffa0950ea90f5758b6735bab1fb3606be3d9810b82967c18302e9b",
+    "after": "6fdfac1c22ffa0950ea90f5758b6735bab1fb3606be3d9810b82967c18302e9b",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/w_8_staff_damage.test.ts",
+    "before": "645694753d1259b9914b21dcefcbf2ab00334c7f66d68dd76de6f4ef8be8d2d4",
+    "after": "645694753d1259b9914b21dcefcbf2ab00334c7f66d68dd76de6f4ef8be8d2d4",
+    "unchanged": true
+  },
+  {
+    "file": "brogue-web/src/test/w_9_directed_status.test.ts",
+    "before": "65d5572dc89a48cb0c8cdd490203afe70aef5ee10f7a40212dfd839c4f93408f",
+    "after": "65d5572dc89a48cb0c8cdd490203afe70aef5ee10f7a40212dfd839c4f93408f",
+    "unchanged": true
+  }
+]

@@ -1,0 +1,30 @@
+--- AutoGenerator.ts
++++ AutoGenerator.ts
+@@ -510,7 +510,7 @@
+         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
+         minDepth: 5, maxDepth: 39, frequency: 6, minNumberIntercept: 0, minNumberSlope: 0, maxNumber: 2,
+         carrier: 'wired',
+-        note: 'V-2b-9e-2：CE 66 强制路径已接；因楼梯湖心孤岛由 RETIRED_AUTOGENERATOR_MACHINES 退池，蓝图 frequency=0 保留。',
++        note: 'V-2b-9e-2：CE 66 强制路径已接；U04 楼梯合同完成后恢复 autoGen，蓝图 frequency=0 保留（强制入口）。',
+     },
+     {
+         ceLine: 168, index: 46, terrain: null, ceTerrain: '0', layer: DUNGEON,
+@@ -543,15 +543,9 @@
+     .filter(e => e.carrier === 'wired')
+     .map(e => e.index);
+ 
+-/**
+- * V-2b-9e-2 有效退池登记：CE66 在 seed26/D7、seed42/D6 生成保留
+- * FLOOR 基底的深水；Game.populateLevel 的楼梯牌堆只检查 layers.includes(FLOOR)，
+- * 在深水中心补楼梯后产生八邻全为深水的孤岛。机器建完时主通路仍连通，
+- * 切断发生在稍后的楼梯落位；不是 REQUIRE_BLOCKING 阈值错误。
+- * 按任务 §4 退池留形：不改 CE66 蓝图/autoGen 数值，不放宽连通性。
+- * 楼梯候选以最终可通行地形过滤并通过上述样本后，才能摘除此过滤。
+- */
+-export const RETIRED_AUTOGENERATOR_MACHINES: ReadonlySet<number> = new Set([66]);
++/** U04 restores CE66 after final-layer stair placement and the CE retry loop.
++ * Keep the registry for explicit future carrier retirement; no other pool changes. */
++export const RETIRED_AUTOGENERATOR_MACHINES: ReadonlySet<number> = new Set();
+ 
+ // ---------------------------------------------------------------------------
+ // randomMatchingLocation（CE Architect.c:3822-3845，terrainType=-1 形态）

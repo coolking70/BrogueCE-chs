@@ -1,0 +1,26 @@
+--- Grid.ts
++++ Grid.ts
+@@ -253,6 +253,7 @@
+     MACHINE_GLYPH_INACTIVE, STENCH_SMOKE_GAS,
+     // U08: append only; preserve existing generation fingerprints.
+     ANCIENT_SPIRIT_VINES, ANCIENT_SPIRIT_GRASS,
++    DUNGEON_PORTAL, // CE deepest-level stair; append preserves existing IDs.
+ }
+ 
+ export enum LightType {
+@@ -314,6 +315,7 @@
+     [TerrainType.BOG]: 55,
+     [TerrainType.STAIRS_UP]: 30,
+     [TerrainType.STAIRS_DOWN]: 30,
++    [TerrainType.DUNGEON_PORTAL]: 30,
+     [TerrainType.CHARRED_FLOOR]: 95,
+     [TerrainType.SIGN]: 7,
+     [TerrainType.RESET_PLATE]: 15,
+@@ -545,6 +547,7 @@
+     [TerrainType.BOG]: DungeonLayer.LIQUID,
+     [TerrainType.STAIRS_UP]: DungeonLayer.DUNGEON,
+     [TerrainType.STAIRS_DOWN]: DungeonLayer.DUNGEON,
++    [TerrainType.DUNGEON_PORTAL]: DungeonLayer.DUNGEON,
+     [TerrainType.CHARRED_FLOOR]: DungeonLayer.DUNGEON,
+     [TerrainType.SIGN]: DungeonLayer.DUNGEON,
+     [TerrainType.RESET_PLATE]: DungeonLayer.DUNGEON,

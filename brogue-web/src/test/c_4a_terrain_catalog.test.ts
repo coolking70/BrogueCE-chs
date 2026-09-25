@@ -171,8 +171,9 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         // 9b 再补九个环境效果活动态/落点，115 → 124；补完轮闭合
         // MACHINE_CHASM_EDGE 与 DF_PUDDLE 的载体，124 → 126；9c 七条效果载体 126 → 133。
         // U08 appends two carriers; all old keys/fields stay pinned above.
-        expect(names.filter(n => n !== 'ANCIENT_SPIRIT_VINES' && n !== 'ANCIENT_SPIRIT_GRASS').length).toBe(135);
-        expect(names.length).toBe(137);
+        expect(names.filter(n => n !== 'ANCIENT_SPIRIT_VINES' && n !== 'ANCIENT_SPIRIT_GRASS' && n !== 'DUNGEON_PORTAL').length).toBe(135);
+        expect(names).toContain('DUNGEON_PORTAL'); // U04 CE Globals.c:336
+        expect(names.length).toBe(138);
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             const entry = TERRAIN_FLAGS[t];

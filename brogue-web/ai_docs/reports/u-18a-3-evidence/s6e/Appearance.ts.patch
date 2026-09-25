@@ -1,0 +1,20 @@
+--- Appearance.ts
++++ Appearance.ts
+@@ -253,7 +253,7 @@
+ /** Terrain portion of CE's rememberedAppearance, before unseen entities are overlaid. */
+ export function memoryTerrainAppearance(cell: Cell, depth: number): TerrainVisual {
+     const visual = layeredTerrainAppearance(cell, depth, cell.rememberedLayers);
+-    if (cell.rememberedTerrain === TerrainType.STAIRS_UP || cell.rememberedTerrain === TerrainType.STAIRS_DOWN) {
++    if (cell.rememberedTerrain === TerrainType.STAIRS_UP || cell.rememberedTerrain === TerrainType.STAIRS_DOWN || cell.rememberedTerrain === TerrainType.DUNGEON_PORTAL) {
+         return { ...visual, color: '#ffffff', bgColor: visual.bgColor === null ? null : 0x222222 };
+     }
+     return { ...visual, color: '#333333', bgColor: visual.bgColor === null ? null : 0x111111 };
+@@ -363,7 +363,7 @@
+     } else if (cell.hasMemory) {
+         // Out of sight memory
+         const knownTerrain = remembered ? cell.rememberedTerrain : cell.terrain;
+-        if (knownTerrain === TerrainType.STAIRS_UP || knownTerrain === TerrainType.STAIRS_DOWN) {
++        if (knownTerrain === TerrainType.STAIRS_UP || knownTerrain === TerrainType.STAIRS_DOWN || knownTerrain === TerrainType.DUNGEON_PORTAL) {
+             // Stairs stay fully or mostly bright
+             color = '#ffffff';
+             if (bgColor !== null) bgColor = 0x222222;

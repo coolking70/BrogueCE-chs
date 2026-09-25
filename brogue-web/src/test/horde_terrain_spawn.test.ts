@@ -190,7 +190,7 @@ describe('地形感知落点 — randomMatchingLocation 语义（CE Architect.c:
 });
 
 describe('地形感知落点 — 无 spawnsIn 的 horde 行为不变（仍落普通地板格）', () => {
-    it('hordeFitsTerrain 口径不变：spawnsIn=null 恒真；DEEP_WATER 只认 WATER_DEEP', () => {
+    it('hordeFitsTerrain CE PB：普通群拒绝深水；DEEP_WATER 只认 WATER_DEEP', () => {
         const game = createHeadlessGame(STAMP_SEED);
         const eel = findHorde('EEL', 'DEEP_WATER');
         const rat = (hordesJson as HordeEntry[]).find(h => h.leader === 'RAT' && h.spawnsIn === null && h.flags.length === 0);
@@ -207,9 +207,9 @@ describe('地形感知落点 — 无 spawnsIn 的 horde 行为不变（仍落普
         game.grid.setTerrain(floorPos!.x + 1, floorPos!.y, TerrainType.WATER_DEEP, '~', 0x1133aa);
         const waterPos = { x: floorPos!.x + 1, y: floorPos!.y };
 
-        // spawnsIn=null：任何格都匹配（落格选择仍走 FLOOR 池，不会取到深水格）
+        // CE Monsters.c:821：无 spawnsIn 的固定落点必须不含 PB。
         expect(privates(game).hordeFitsTerrain(rat!, floorPos!)).toBe(true);
-        expect(privates(game).hordeFitsTerrain(rat!, waterPos)).toBe(true);
+        expect(privates(game).hordeFitsTerrain(rat!, waterPos)).toBe(false);
         // DEEP_WATER：只认 WATER_DEEP（FLOOR 上不匹配 → failsafe 重抽）
         expect(privates(game).hordeFitsTerrain(eel, waterPos)).toBe(true);
         expect(privates(game).hordeFitsTerrain(eel, floorPos!)).toBe(false);

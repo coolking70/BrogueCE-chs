@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "file": "scripts/u18a3-browser.mjs",
+      "before": "f4f730330a1c06b622756a30e78dcbd8c147925f116897613b865c215f789146",
+      "after": "aeeb8694584070cd4579bc66fb9e1a289898841c7b4ba3b1492633c27508662d"
+    }
+  ],
+  "scope": "QA driver only: bind synthetic secret-door grid to FOV, LightMap and EnvironmentManager. No production/test/config change; final regression does not import this driver."
+}

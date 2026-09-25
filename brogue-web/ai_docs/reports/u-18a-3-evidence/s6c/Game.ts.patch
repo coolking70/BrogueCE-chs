@@ -1,0 +1,10 @@
+--- Game.ts
++++ Game.ts
+@@ -1260,6 +1260,7 @@
+         const choose = (target: Pos): Pos | null => {
+             const preferred = qualifyingNear(this.grid, target, (x, y) => candidates.has(y * this.grid.width + x));
+             if (preferred) {
++                Architect.prepareStairLoc(this.grid, preferred);
+                 clearStairVicinity(this.grid, preferred, candidates);
+                 return preferred;
+             }

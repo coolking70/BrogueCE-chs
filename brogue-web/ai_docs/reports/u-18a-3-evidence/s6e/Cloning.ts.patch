@@ -1,0 +1,11 @@
+--- Cloning.ts
++++ Cloning.ts
+@@ -34,7 +34,7 @@
+     const playerAt = (p: Pos) => world.player.x === p.x && world.player.y === p.y;
+     const qualifies = (p: Pos) => grid.isValidPos(p.x, p.y) && !(flags(p) & forbidden)
+         && !playerAt(p) && !world.monsters.some(m => !m.isDormant && m.hp > 0 && m.x === p.x && m.y === p.y)
+-        && !grid.getCell(p.x, p.y)!.layers.some(t => t === TerrainType.STAIRS_UP || t === TerrainType.STAIRS_DOWN);
++        && !grid.getCell(p.x, p.y)!.layers.some(t => t === TerrainType.STAIRS_UP || t === TerrainType.STAIRS_DOWN || t === TerrainType.DUNGEON_PORTAL);
+     if (qualifies(origin)) return { ...origin };
+     const distances = Array.from({ length: grid.width }, () => Array<number>(grid.height).fill(Infinity));
+     distances[origin.x]![origin.y] = 0;

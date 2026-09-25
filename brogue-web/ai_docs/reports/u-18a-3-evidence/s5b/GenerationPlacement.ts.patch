@@ -1,0 +1,87 @@
+--- GenerationPlacement.ts
++++ GenerationPlacement.ts
+@@ -0,0 +1,84 @@
++/** U18a-3: generation policies, separate from runtime monsterAvoids.
++ * CE Monsters.c:650-670,705-740; Grid.c:287-360; Dijkstra.c:209-248. */
++import type { MonsterData } from '../../entities/Monster';
++import type { Pos } from '../../types';
++import { Grid, TerrainType as T } from '../Map/Grid';
++import { cellTerrainFlags, terrainMechFlagsOfCell, discoveredTerrainFlagsOfCell } from '../Map/DungeonFeature';
++import { T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_DIAGONAL_MOVEMENT,
++    T_LAVA_INSTA_DEATH, T_SPONTANEOUSLY_IGNITES, T_IS_FIRE, T_IS_DEEP_WATER, T_AUTO_DESCENT, T_IS_DF_TRAP, TM_IS_SECRET, TERRAIN_FLAGS } from '../Map/TerrainCatalog';
++import { DijkstraMap } from '../Map/Pathfinding';
++import { passableArcCount } from '../Items/ItemSpawnHeatMap';
++import type { PlacementWorld } from '../Movement/CreaturePlacement';
++import { rng } from '../Random';
++
++export function speciesForbiddenFlags(species: Pick<MonsterData, 'behaviorFlags'>): number {
++    const has = (flag: string) => species.behaviorFlags?.includes(flag);
++    let flags = T_PATHING_BLOCKER;
++    if (has('MONST_INVULNERABLE')) flags &= ~(T_LAVA_INSTA_DEATH | T_SPONTANEOUSLY_IGNITES | T_IS_FIRE);
++    if (has('MONST_IMMUNE_TO_FIRE') || has('MONST_FLIES')) flags &= ~T_LAVA_INSTA_DEATH;
++    if (has('MONST_IMMUNE_TO_FIRE')) flags &= ~(T_SPONTANEOUSLY_IGNITES | T_IS_FIRE);
++    if (has('MONST_IMMUNE_TO_WATER') || has('MONST_FLIES')) flags &= ~T_IS_DEEP_WATER;
++    if (has('MONST_FLIES')) flags &= ~(T_AUTO_DESCENT | T_IS_DF_TRAP);
++    return flags;
++}
++const matrix = (g: Grid, n: number) => Array.from({ length: g.width }, () => Array<number>(g.height).fill(n));
++const stairs = (g: Grid, x: number, y: number) => g.getCell(x,y)!.layers.some(t => t === T.STAIRS_UP || t === T.STAIRS_DOWN);
++
++/** First nonempty Chebyshev ring, x-major/y-minor, CE rand_range(1,count). */
++export function qualifyingNear(grid: Grid, target: Pos, qualifies: (x: number, y: number) => boolean): Pos | null {
++    for (let r=0;r<Math.max(grid.width,grid.height);r++) {
++        const pool: Pos[]=[];
++        for(let x=target.x-r;x<=target.x+r;x++) for(let y=target.y-r;y<=target.y+r;y++) {
++            if (Math.max(Math.abs(x-target.x),Math.abs(y-target.y))===r && grid.isValidPos(x,y) && qualifies(x,y)) pool.push({x,y});
++        }
++        if(pool.length) return pool[rng.randRange(1,pool.length)-1]!;
++    }
++    return null;
++}
++
++/** Hallways differ for summoning. No IS_IN_MACHINE ban: paths enforce gates.
++ * spawnsIn only subtracts the tile's flags; the caller owns the 20-retry match. */
++export function minionPlacement(world: PlacementWorld, origin: Pos, species: MonsterData, summoned: boolean, spawnsIn?: T): Pos | null {
++    const {grid}=world;
++    const forbidden=speciesForbiddenFlags(species) & ~(spawnsIn === undefined ? 0 : TERRAIN_FLAGS[spawnsIn].flags);
++    const blocking=T_DIVIDES_LEVEL & forbidden;
++    const mapBlocked=(x:number,y:number)=>(world.player.x===x && world.player.y===y)||stairs(grid,x,y);
++    const occupied=(x:number,y:number)=>[...world.monsters,...(world.dormantMonsters??[])].some(m=>m.hp>0&&m.x===x&&m.y===y);
++    const valid=(x:number,y:number)=>!(cellTerrainFlags(grid,x,y)&forbidden)&&!occupied(x,y)
++        &&(summoned||passableArcCount(grid,x,y)<=1);
++    if (!(cellTerrainFlags(grid,origin.x,origin.y)&blocking) && !mapBlocked(origin.x,origin.y) && valid(origin.x,origin.y)) return {...origin};
++    const cost=matrix(grid,1),dist=matrix(grid,30000);
++    for(let x=0;x<grid.width;x++)for(let y=0;y<grid.height;y++) {
++        const flags=cellTerrainFlags(grid,x,y);
++        if ((flags&blocking)||mapBlocked(x,y)) cost[x]![y]=-1;
++        if ((blocking&(T_OBSTRUCTS_PASSABILITY|T_OBSTRUCTS_DIAGONAL_MOVEMENT))&&(flags&T_OBSTRUCTS_DIAGONAL_MOVEMENT)) cost[x]![y]=-2;
++    }
++    cost[origin.x]![origin.y]=1;dist[origin.x]![origin.y]=1;
++    new DijkstraMap(grid.width,grid.height).batchScan(dist,cost,true);
++    let best=30000;let pool:Pos[]=[];
++    for(let x=0;x<grid.width;x++)for(let y=0;y<grid.height;y++) {
++        const d=dist[x]![y]!;
++        if(d<=0||d>=30000||d>best||!valid(x,y))continue;
++        if(d<best){best=d;pool=[];}pool.push({x,y});
++    }
++    if(pool.length)return pool[rng.randRange(0,pool.length-1)]!;
++    return qualifyingNear(grid,origin,(x,y)=>!(cellTerrainFlags(grid,x,y)&blocking)&&!mapBlocked(x,y)&&valid(x,y));
++}
++
++/** calculateDistances(NULL,true,eightWays): secret exception bypasses mask. */
++export function generationDistances(world: PlacementWorld, origin: Pos, blocking: number, eightWays: boolean): number[][] {
++    const {grid}=world,cost=matrix(grid,1),dist=matrix(grid,30000);
++    for(let x=0;x<grid.width;x++)for(let y=0;y<grid.height;y++) {
++        const cell=grid.getCell(x,y)!,flags=cellTerrainFlags(grid,x,y);
++        if(world.monsters.some(m=>m.hp>0&&m.x===x&&m.y===y
++            &&(m.hasCEBehavior('MONST_IMMUNE_TO_WEAPONS')||m.hasCEBehavior('MONST_INVULNERABLE'))
++            &&(m.hasCEBehavior('MONST_IMMOBILE')||m.hasCEBehavior('MONST_GETS_TURN_ON_ACTIVATION'))))cost[x]![y]=-1;
++        else if((terrainMechFlagsOfCell(cell)&TM_IS_SECRET)&&(flags&T_OBSTRUCTS_PASSABILITY)
++            &&!(discoveredTerrainFlagsOfCell(cell)&T_OBSTRUCTS_PASSABILITY))cost[x]![y]=1;
++        else if(flags&T_OBSTRUCTS_PASSABILITY)cost[x]![y]=flags&T_OBSTRUCTS_DIAGONAL_MOVEMENT?-2:-1;
++        else if(flags&blocking)cost[x]![y]=-1;
++    }
++    if(origin.x>0&&origin.y>0&&origin.x<grid.width-1&&origin.y<grid.height-1){dist[origin.x]![origin.y]=0;cost[origin.x]![origin.y]=1;}
++    new DijkstraMap(grid.width,grid.height).batchScan(dist,cost,eightWays);
++    return dist;
++}

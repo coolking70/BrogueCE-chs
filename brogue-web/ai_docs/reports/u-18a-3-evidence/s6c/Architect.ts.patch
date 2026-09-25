@@ -1,0 +1,29 @@
+--- Architect.ts
++++ Architect.ts
+@@ -193,6 +193,26 @@
+ }
+ 
+ export class Architect {
++    /** CE prepareForStairs (:3654): torches flank the open mouth; expose and
++     * protect every neighboring wall. Only DUNGEON is written here. */
++    public static prepareStairLoc(grid: Grid, p: Pos): void {
++        for (const [dx, dy] of [[0,-1],[0,1],[-1,0],[1,0]] as const) {
++            if (!(cellTerrainFlags(grid, p.x+dx, p.y+dy) & T_OBSTRUCTS_PASSABILITY)) {
++                grid.setTerrainLayer(p.x-dy, p.y-dx, DungeonLayer.DUNGEON, TerrainType.TORCH_WALL);
++                grid.setTerrainLayer(p.x+dy, p.y+dx, DungeonLayer.DUNGEON, TerrainType.TORCH_WALL);
++                break;
++            }
++        }
++        for (let dx=-1; dx<=1; dx++) for (let dy=-1; dy<=1; dy++) {
++            if (!dx && !dy) continue;
++            const x=p.x+dx, y=p.y+dy;
++            if (grid.getCell(x,y)!.layers[DungeonLayer.DUNGEON] === TerrainType.GRANITE) {
++                grid.setTerrainLayer(x,y,DungeonLayer.DUNGEON,TerrainType.WALL);
++            }
++            if (cellTerrainFlags(grid,x,y) & T_OBSTRUCTS_PASSABILITY) grid.impregnableCells.add(y*grid.width+x);
++        }
++    }
++
+     public grid: Grid;
+     public machines: Array<{ door: Pos, center: Pos }> = [];
+     // V-2b-1：删除 web 自创的 trapVaults / cages 数组——声明后从未 push，

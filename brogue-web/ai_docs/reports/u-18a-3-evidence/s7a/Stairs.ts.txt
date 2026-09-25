@@ -1,0 +1,40 @@
+/** U04: Architect.c:3604-3759. Queries are separate from preparation/commit. */
+import type {Pos} from '../../types';
+import {Grid, TerrainType as T, DungeonLayer as L} from '../Map/Grid';
+import {cellTerrainFlags} from '../Map/DungeonFeature';
+import {T_PATHING_BLOCKER, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_ITEMS, T_AUTO_DESCENT,
+    T_IS_DEEP_WATER, T_LAVA_INSTA_DEATH, T_IS_DF_TRAP} from '../Map/TerrainCatalog';
+import {passableArcCount} from '../Items/ItemSpawnHeatMap';
+export const STAIR_FALLBACK_FLAGS=T_OBSTRUCTS_PASSABILITY|T_OBSTRUCTS_ITEMS|T_AUTO_DESCENT|T_IS_DEEP_WATER|T_LAVA_INSTA_DEATH|T_IS_DF_TRAP;
+export const CARDINALS=[[0,-1],[0,1],[-1,0],[1,0]] as const;
+
+export function stairFallbackQualifies(grid: Grid, x: number, y: number, occupied: ReadonlySet<number>): boolean {
+    const c=grid.getCell(x,y);
+    return !!c && !c.machineNumber && !occupied.has(y*grid.width+x)
+        && !(cellTerrainFlags(grid,x,y)&STAIR_FALLBACK_FLAGS)
+        && c.layers[L.LIQUID]===T.NOTHING && passableArcCount(grid,x,y)<2;
+}
+export function validStairLoc(grid: Grid, x: number, y: number, occupied: ReadonlySet<number>): boolean {
+    const c=grid.getCell(x,y);
+    if(x<1||y<1||x>=grid.width-1||y>=grid.height-1||c?.layers[L.DUNGEON]!==T.WALL
+        ||c.machineNumber||occupied.has(y*grid.width+x))return false;
+    for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++)if((dx||dy)&&grid.getCell(x+dx,y+dy)!.machineNumber)return false;
+    let walls=0;
+    for(const [dx,dy] of CARDINALS){
+        const f=cellTerrainFlags(grid,x+dx,y+dy);
+        if(f&T_OBSTRUCTS_PASSABILITY){walls++;continue;}
+        if((f&T_PATHING_BLOCKER)||passableArcCount(grid,x+dx,y+dy)>=2)return false;
+        if(!(cellTerrainFlags(grid,x-dx+dy,y-dy+dx)&T_OBSTRUCTS_PASSABILITY)
+            ||!(cellTerrainFlags(grid,x-dx-dy,y-dy-dx)&T_OBSTRUCTS_PASSABILITY))return false;
+    }
+    return walls===3;
+}
+export function stairCandidates(grid: Grid, occupied: ReadonlySet<number>): Set<number> {
+    const candidates=new Set<number>();
+    for(let x=0;x<grid.width;x++)for(let y=0;y<grid.height;y++)if(validStairLoc(grid,x,y,occupied))candidates.add(y*grid.width+x);
+    return candidates;
+}
+export function clearStairVicinity(grid: Grid, p: Pos, candidates: Set<number>): void {
+    // CE upper bound is exclusive (x+5, y+5), deliberately asymmetric.
+    for(let x=Math.max(0,p.x-5);x<Math.min(grid.width,p.x+5);x++)for(let y=Math.max(0,p.y-5);y<Math.min(grid.height,p.y+5);y++)candidates.delete(y*grid.width+x);
+}

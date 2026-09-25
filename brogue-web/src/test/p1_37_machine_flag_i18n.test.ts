@@ -30,6 +30,10 @@ import { TerrainType, Grid, DCOLS, DROWS } from '../engine/Map/Grid';
 import { EnvironmentManager } from '../engine/Environment/Gas';
 import { BlueprintEngine } from '../engine/Generator/BlueprintEngine';
 import type { BlueprintDef, MachineResult } from '../engine/Generator/BlueprintEngine';
+import { DijkstraMap } from '../engine/Map/Pathfinding';
+import { cellTerrainFlags } from '../engine/Map/DungeonFeature';
+import { speciesForbiddenFlags } from '../engine/Generator/GenerationPlacement';
+import { T_DIVIDES_LEVEL, T_OBSTRUCTS_DIAGONAL_MOVEMENT } from '../engine/Map/TerrainCatalog';
 import { rng } from '../engine/Random';
 import { logger } from '../engine/Systems/Logger';
 import { ItemCategory } from '../engine/Items/Item';
@@ -78,7 +82,7 @@ function installRecorder(record: LevelMachines[]): () => void {
 const key = (p: Pos): number => p.y * DCOLS + p.x;
 
 describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格', () => {
-    it('AD1: 5 种子 × D1-D26 —— 楼梯/钥匙/护符绝不落机器格；机器格上的物品与怪物必须是机器自身的布点', () => {
+    it('AD1: 5 种子 × D1-D26 —— 楼梯/钥匙/护符绝不落机器格；机器物品守原布点；非机器怪只准可达且物种合格的随从', () => {
         const violations: string[] = [];
         let machinesSeen = 0;
         let charredSeen = 0;
@@ -164,6 +168,27 @@ describe('P1-37 机器旗标：宝库恢复地板、内容落点回避机器格'
                     for (const mon of game.monsters) {
                         const k = key(mon.loc);
                         if (machineCells.has(k) && !monsterSpawnCells.has(k)) {
+                            // U18a-3: CE Monsters.c:729-732 has no IS_IN_MACHINE
+                            // ban for minions. Preserve the leader/deck guard and
+                            // independently require a real leader link, species-safe
+                            // endpoint and a route that cannot cross locked walls.
+                            const species = (monsterData as MonsterData[]).find(m => m.id === mon.typeId);
+                            if (mon.leader && species) {
+                                const forbidden = speciesForbiddenFlags(species);
+                                const block = T_DIVIDES_LEVEL & forbidden;
+                                const costs = Array.from({length:DCOLS},()=>Array<number>(DROWS).fill(1));
+                                const dist = Array.from({length:DCOLS},()=>Array<number>(DROWS).fill(30000));
+                                for(let x=0;x<DCOLS;x++)for(let y=0;y<DROWS;y++) {
+                                    const flags=cellTerrainFlags(game.grid,x,y);
+                                    if(flags&block)costs[x]![y]=-1;
+                                    if(flags&T_OBSTRUCTS_DIAGONAL_MOVEMENT)costs[x]![y]=-2;
+                                }
+                                const origin=mon.leader.loc;
+                                costs[origin.x]![origin.y]=1;dist[origin.x]![origin.y]=0;
+                                new DijkstraMap(DCOLS,DROWS).batchScan(dist,costs,true);
+                                if (!(cellTerrainFlags(game.grid,mon.x,mon.y)&forbidden)
+                                    && dist[mon.x]![mon.y]!<30000) continue;
+                            }
                             violations.push(`seed${seed}/D${d} 怪物 ${mon.name} 落在 (${mon.loc.x},${mon.loc.y}) 机器格内且不是机器布点（怪群回避被删？）`);
                         }
                     }

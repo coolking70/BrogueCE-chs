@@ -141,6 +141,7 @@ describe('C-7 光照目录（CE Globals.c:955-1020 逐值）', () => {
 describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () => {
     /** web 全部 43 tile 的 CE glowLight 期望值（逐条核过 CE Globals.c:321-744）。 */
     const EXPECTED_GLOW: Record<TerrainType, number> = {
+        [TerrainType.DUNGEON_PORTAL]: LightKind.INCENDIARY_DART_LIGHT, // CE Globals.c:336
         [TerrainType.ANCIENT_SPIRIT_VINES]: 0,
         [TerrainType.ANCIENT_SPIRIT_GRASS]: 0,
         [TerrainType.NOTHING]: 0,
@@ -313,7 +314,7 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         }
     });
 
-    it('非零恰 34 个（V-2b-9d 接通两个符文光载体），且都指向有载体的目录条目', () => {
+    it('非零恰 35 个（U04 接通 D40 水晶传送门），且都指向有载体的目录条目', () => {
         const nonzero = Object.entries(TERRAIN_FLAGS)
             .filter(([, v]) => v.glowLight !== LightKind.NO_LIGHT)
             .map(([k]) => Number(k) as TerrainType)
@@ -346,7 +347,7 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
             TerrainType.DARK_FLOOR, TerrainType.ECTOPLASM,
             TerrainType.HAUNTED_TORCH_TRANSITIONING, TerrainType.HAUNTED_TORCH,
             TerrainType.MACHINE_GLYPH, TerrainType.MACHINE_GLYPH_INACTIVE,
-            TerrainType.ELECTRIC_CRYSTAL_ON,
+            TerrainType.ELECTRIC_CRYSTAL_ON, TerrainType.DUNGEON_PORTAL,
         ].sort((a, b) => a - b));
         for (const t of nonzero) {
             expect(LIGHT_CATALOG[TERRAIN_FLAGS[t].glowLight]).toBeDefined();
@@ -695,6 +696,8 @@ describe('C-7 光照 → 潜行判定（calculateStealthRange）', () => {
     it('无地形光：矿灯不驱散阴影 → 减半一次；playerInDarkness 为 false（矿灯中心恒亮）', () => {
         const game = createHeadlessGame(77035);
         carvePlain(game);
+        // U04 stair torches lit the previous map; rebuild lighting for this plain.
+        (game as unknown as { updateVision(): void }).updateVision();
         const { range, darkness } = stealthOf(game);
         const armor = game.player.equippedArmor;
         const adj = armor ? Math.max(0, (armor.strengthRequired || 0) - 12) : 0;
@@ -782,6 +785,7 @@ describe('C-7 载体边界留痕', () => {
         // U21c: CE Items.c:7901/7920/7939/8111 now creates these display flares.
         'SCROLL_PROTECTION_LIGHT', 'SCROLL_ENCHANTMENT_LIGHT', 'POTION_STRENGTH_LIGHT',
         'EMPOWERMENT_LIGHT',
+        'INCENDIARY_DART_LIGHT', // U04: CE Globals.c:336 DUNGEON_PORTAL actual tile.
     ]);
 
     function* prodTsFiles(dir: string): Generator<string> {

@@ -1,0 +1,20 @@
+--- CreaturePlacement.ts
++++ CreaturePlacement.ts
+@@ -85,7 +85,7 @@
+         const cell = grid.getCell(x, y)!;
+         if (fov[x]?.[y] || (target.loc.x === x && target.loc.y === y)
+             || cell.machineNumber !== 0
+-            || cell.layers.includes(TerrainType.STAIRS_UP) || cell.layers.includes(TerrainType.STAIRS_DOWN)
++            || cell.layers.includes(TerrainType.STAIRS_UP) || cell.layers.includes(TerrainType.STAIRS_DOWN) || cell.layers.includes(TerrainType.DUNGEON_PORTAL)
+             || (cellTerrainFlags(grid, x, y) & forbidden)
+             || !canPlaceCreature(world, target, { x, y })) continue;
+         result.push({ x, y });
+@@ -105,7 +105,7 @@
+         const cell = grid.getCell(x, y);
+         return !!cell && !(flags(x, y) & T_OBSTRUCTS_ITEMS)
+             && !(world.player.loc.x === x && world.player.loc.y === y)
+-            && !cell.layers.includes(TerrainType.STAIRS_UP) && !cell.layers.includes(TerrainType.STAIRS_DOWN)
++            && !cell.layers.includes(TerrainType.STAIRS_UP) && !cell.layers.includes(TerrainType.STAIRS_DOWN) && !cell.layers.includes(TerrainType.DUNGEON_PORTAL)
+             && !items.some(item => item.loc.x === x && item.loc.y === y);
+     };
+     if (!(flags(origin.x, origin.y) & T_DIVIDES_LEVEL) && qualifies(origin.x, origin.y)) return [{ ...origin }];

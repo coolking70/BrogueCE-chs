@@ -184,16 +184,13 @@ function getFirstPass(): LevelScan[] {
 }
 
 describe('P1-26 生成器不变量（5 种子 × D1-D26，不依赖坐标）', () => {
-    it('每层楼梯存在：D1-D25 上下楼梯齐全；D26（护符层）有上楼梯、无下楼梯', () => {
-        // D26 无下楼梯是生成器的有意行为（populateLevel：depth < 26 才放，
-        // 护符层即最深层），与 CE 一致，故作为内容断言钉住。
+    it('每层楼梯存在：D1-D26 上下楼梯齐全；护符层不是最深层', () => {
+        // CE Architect.c:3719：仅 deepestLevel=40 改为 portal；D26 仍有下梯。
         const problems: string[] = [];
         for (const s of getFirstPass()) {
             if (!s.up) problems.push(`seed${s.seed}/D${s.depth} 缺上楼梯`);
-            if (s.depth < MAX_DEPTH && !s.down) problems.push(`seed${s.seed}/D${s.depth} 缺下楼梯`);
-            if (s.depth === MAX_DEPTH && s.down) {
-                problems.push(`seed${s.seed}/D${s.depth} 不应有下楼梯（护符层即最深层）`);
-            }
+            if (s.depth <= MAX_DEPTH && !s.down) problems.push(`seed${s.seed}/D${s.depth} 缺下楼梯`);
+
         }
         expect(problems, `楼梯存在性被破坏：\n${problems.join('\n')}`).toEqual([]);
     });

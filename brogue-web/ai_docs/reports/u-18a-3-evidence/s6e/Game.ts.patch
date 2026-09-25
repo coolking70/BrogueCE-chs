@@ -1,0 +1,104 @@
+--- Game.ts
++++ Game.ts
+@@ -1177,7 +1177,7 @@
+         }
+         const cell = this.grid.getCell(m.x, m.y);
+         if (m.preplaced || (m.x === this.player.x && m.y === this.player.y)
+-            || cell?.layers.includes(TerrainType.STAIRS_UP) || cell?.layers.includes(TerrainType.STAIRS_DOWN)) {
++            || cell?.layers.includes(TerrainType.STAIRS_UP) || cell?.layers.includes(TerrainType.STAIRS_DOWN) || cell?.layers.includes(TerrainType.DUNGEON_PORTAL)) {
+             const spot = travelPlacement(this, m, m.loc, true, true, true);
+             if (spot) m.loc = spot;
+         }
+@@ -1266,10 +1266,10 @@
+             }
+             return qualifyingNear(this.grid, target, (x, y) => stairFallbackQualifies(this.grid, x, y, occupied));
+         };
+-        if (this.depth < 26) {
++        if (this.depth <= CE_DEEPEST_LEVEL) {
+             const down = choose(level.downStairsLoc);
+             if (!down) return false;
+-            Architect.installStair(this.grid, down, TerrainType.STAIRS_DOWN);
++            Architect.installStair(this.grid, down, this.depth === CE_DEEPEST_LEVEL ? TerrainType.DUNGEON_PORTAL : TerrainType.STAIRS_DOWN);
+             occupied.add(down.y * this.grid.width + down.x);
+             level.downStairsLoc = down;
+             if (!this.levelSeeds[this.depth]!.visited) this.levelSeeds[this.depth]!.upStairsLoc = { ...down };
+@@ -1318,7 +1318,7 @@
+ 
+         if (!this.placeStairs(machineResults)) throw new Error('No qualifying stair location');
+         const stairsUpPos = this.levelSeeds[depth - 1]!.upStairsLoc;
+-        const stairsDownPos = this.depth < 26 ? this.levelSeeds[depth - 1]!.downStairsLoc : null;
++        const stairsDownPos = this.depth <= CE_DEEPEST_LEVEL ? this.levelSeeds[depth - 1]!.downStairsLoc : null;
+         for (let i = floorTiles.length - 1; i >= 0; i--) {
+             const p = floorTiles[i]!;
+             if ((p.x === stairsUpPos.x && p.y === stairsUpPos.y)
+@@ -1943,7 +1943,7 @@
+                 const cell = this.grid.getCell(x, y);
+                 if (!cell || !cell.layers.includes(target)) continue; // F-1 跨层判定
+                 if (cell.machineNumber !== 0) continue; // CE IS_IN_MACHINE
+-                if (cell.layers.includes(TerrainType.STAIRS_UP) || cell.layers.includes(TerrainType.STAIRS_DOWN)) continue;
++                if (cell.layers.includes(TerrainType.STAIRS_UP) || cell.layers.includes(TerrainType.STAIRS_DOWN) || cell.layers.includes(TerrainType.DUNGEON_PORTAL)) continue;
+                 if (this.dormantMonsters.some(m => m.hp > 0 && m.x === x && m.y === y)) continue;
+                 if (this.getMonsterAt(x, y)) continue; // CE HAS_MONSTER
+                 if (this.player.loc.x === x && this.player.loc.y === y) continue; // CE HAS_PLAYER
+@@ -2202,7 +2202,7 @@
+                 if (cell.isVisible) continue;
+                 // F-1：跨层判定（火盖在岩浆/深渊/楼梯上不改变落点排除）
+                 if (cell.layers.includes(TerrainType.LAVA) || cell.layers.includes(TerrainType.CHASM)) continue;
+-                if (cell.layers.includes(TerrainType.STAIRS_UP) || cell.layers.includes(TerrainType.STAIRS_DOWN)) continue;
++                if (cell.layers.includes(TerrainType.STAIRS_UP) || cell.layers.includes(TerrainType.STAIRS_DOWN) || cell.layers.includes(TerrainType.DUNGEON_PORTAL)) continue;
+                 if (this.getMonsterAt(x, y)) continue;
+                 if (this.player.loc.x === x && this.player.loc.y === y) continue;
+                 const distance = distances[x]![y]!;
+@@ -3248,8 +3248,15 @@
+         }
+ 
+         if (action === 'stairs_down') {
++            const terminal = this.grid.getCell(this.player.x, this.player.y)?.layers.includes(TerrainType.DUNGEON_PORTAL);
++            if (terminal && this.depth === CE_DEEPEST_LEVEL) {
++                const hasAmulet = this.player.inventory.items.some(i => i.category === ItemCategory.AMULET);
++                if (hasAmulet) this.triggerGameOver(true);
++                else logger.log(i18next.t('game.entrance_blocked', { defaultValue: 'The entrance is blocked. You cannot leave without the Amulet of Yendor.' }), '#aaaaaa');
++                return;
++            }
+             const cell = this.grid.getCell(this.player.loc.x, this.player.loc.y);
+-            if (cell && cell.layers.includes(TerrainType.STAIRS_DOWN)) { // F-1 跨层判定
++            if (cell && cell.layers.includes(TerrainType.STAIRS_DOWN) && this.depth < CE_DEEPEST_LEVEL) {
+                 this.depth++;
+                 this.generateDepth(false);
+                 // CE RogueMain.c:562：换层时 synchronizePlayerTimeState
+@@ -3263,7 +3270,7 @@
+ 
+         if (action === 'wait_or_stairs_down') {
+             const cell = this.grid.getCell(this.player.loc.x, this.player.loc.y);
+-            if (cell && cell.layers.includes(TerrainType.STAIRS_DOWN)) { // F-1 跨层判定
++            if (cell && (cell.layers.includes(TerrainType.STAIRS_DOWN) || cell.layers.includes(TerrainType.DUNGEON_PORTAL))) { // F-1 跨层判定
+                 this.handlePlayerAction('stairs_down', undefined, 'system');
+             } else {
+                 this.handlePlayerAction('wait', undefined, 'system');
+@@ -7719,7 +7726,7 @@
+             }
+             if (this.getMonsterAt(x, y)) return false;
+             if (cell.layers.includes(TerrainType.STAIRS_UP)
+-                || cell.layers.includes(TerrainType.STAIRS_DOWN)) return false;
++                || cell.layers.includes(TerrainType.STAIRS_DOWN) || cell.layers.includes(TerrainType.DUNGEON_PORTAL)) return false;
+             if (this.items.some((it) => it.loc.x === x && it.loc.y === y)) return false;
+             if (this.machineCells.has(y * DCOLS + x)) return false;
+             return true;
+@@ -10263,7 +10270,7 @@
+                     isOccupied: (x, y) => !!this.getMonsterAt(x, y)
+                         || (this.player.loc.x === x && this.player.loc.y === y)
+                         || this.items.some(item => item.loc.x === x && item.loc.y === y)
+-                        || !!this.grid.getCell(x, y)?.layers.some(t => t === TerrainType.STAIRS_UP || t === TerrainType.STAIRS_DOWN),
++                        || !!this.grid.getCell(x, y)?.layers.some(t => t === TerrainType.STAIRS_UP || t === TerrainType.STAIRS_DOWN || t === TerrainType.DUNGEON_PORTAL),
+                     isMachineCell: (x, y) => (this.grid.getCell(x, y)?.machineNumber ?? 0) !== 0,
+                 });
+             // Pathological all-blocked item maps retain the item safely; CE's
+@@ -10382,6 +10389,8 @@
+                 return i18next.t('terrain.bog', { defaultValue: '沼泽' });
+             case TerrainType.STAIRS_UP:
+                 return i18next.t('terrain.stairs_up', { defaultValue: '上行楼梯' });
++            case TerrainType.DUNGEON_PORTAL:
++                return i18next.t('terrain.crystal_portal', { defaultValue: '水晶传送门' });
+             case TerrainType.STAIRS_DOWN:
+                 return i18next.t('terrain.stairs_down', { defaultValue: '下行楼梯' });
+             case TerrainType.CHARRED_FLOOR:

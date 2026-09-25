@@ -7,7 +7,6 @@ import { DUNGEON_FEATURE_CATALOG as D, DF, DF_MISSING_TILES } from '../engine/Ma
 import { TERRAIN_FLAGS as T } from '../engine/Map/TerrainCatalog';
 import { catalogFeature } from '../engine/Map/DungeonFeature';
 import { promoteTile, resolveDFName } from '../engine/Map/Promotion';
-import { ItemLoader } from '../engine/Items/ItemLoader';
 import { rng } from '../engine/Random';
 import data from '../data/blueprints.json';
 import monsters from '../data/monsters.json';
@@ -16,6 +15,7 @@ import type { Pos } from '../types';
 
 type GameInternals = {
     populateLevel(depth: number, up: boolean, first: boolean, machines: MachineResult[]): void;
+    placeStairs(machines: MachineResult[]): boolean;
     generateDepth(up: boolean, first: boolean): void;
     canMoveTo(x: number, y: number): boolean;
 };
@@ -23,7 +23,6 @@ type GameInternals = {
 const SEEDS = [...Array.from({ length: 30 }, (_, i) => i + 1), 424242, 777, 20260913, 31337];
 const DIRS = [[0,-1],[0,1],[-1,0],[1,0],[-1,-1],[1,-1],[-1,1],[1,1]] as const;
 const bp = (ce: number) => (data as BlueprintDef[]).find(b => b.ceBlueprintId === ce)!;
-const sentinelName = () => ItemLoader.translateName('Sentinel');
 const sentinelData = monsters.find(m => m.id === 'sentinel')!;
 function isSentinel(mon: ReturnType<Game['getMonsterAt']>): boolean {
     // Mutation changes display name (e.g. "grappling Sentinel"). Check stable
@@ -229,16 +228,9 @@ describe('B2 layer semantics and CE71 materialization adversary', () => {
             expect(result).not.toBeNull();
             outcomes.push(grid.getCell(pos.x,pos.y)!.layers.slice());
         }
-        if(feature.terrain==='SECRET_DOOR') {
-            // B2 discovered an earlier gap: TERRAIN_MAP lacks SECRET_DOOR, so
-            // these two features are recorded as placed without any terrain write.
-            // Engine changes are forbidden this round; reverse this guard when
-            // the carrier is added (b2-transcription.report.md §4).
-            expect(outcomes).toEqual([0,1].map(()=>[C.FLOOR,C.WATER_SHALLOW,C.METHANE_GAS,C.GRASS]));
-        } else {
-            expect(outcomes).toEqual([[t,C.NOTHING,C.NOTHING,C.NOTHING],
-                [t,C.WATER_SHALLOW,C.METHANE_GAS,C.GRASS]]);
-        }
+        // U04b: both SECRET_DOOR carriers now perform the same real layer write.
+        expect(outcomes).toEqual([[t,C.NOTHING,C.NOTHING,C.NOTHING],
+            [t,C.WATER_SHALLOW,C.METHANE_GAS,C.GRASS]]);
     });
 
     it('the same CE71 machine realizes zero sentinels with the old id, and three living grid occupants with the real id', () => {
@@ -251,15 +243,19 @@ describe('B2 layer semantics and CE71 materialization adversary', () => {
             const machine=(new BlueprintEngine(grid,12,[blueprint]) as unknown as EngineInternals).applyBlueprint(blueprint,room);
             expect(machine,'CE71 construction coverage').not.toBeNull();
             expect(machine!.monsterSpawns).toHaveLength(3);
+            // U04 splits placement from population; exercise the real precondition.
+            expect((game as unknown as GameInternals).placeStairs([machine!])).toBe(true);
             (game as unknown as GameInternals).populateLevel(12,false,false,[machine!]);
             const actual=machine!.monsterSpawns.map(s=>game.getMonsterAt(s.pos.x,s.pos.y));
-            results.push(actual.filter(m=>m?.name===sentinelName()).length);
+            // The same stable species/behavior predicate used by the production census
+            // also accepts legitimate mutation prefixes (e.g. reflective Sentinel).
+            results.push(actual.filter(isSentinel).length);
             for(const spawn of machine!.monsterSpawns) {
                 expect(grid.getCell(spawn.pos.x,spawn.pos.y)!.layers[L.DUNGEON]).toBe(C.STATUE_INERT);
                 if(monsterId==='MK_SENTINEL')continue;
                 const mon=game.getMonsterAt(spawn.pos.x,spawn.pos.y);
                 expect(mon,'spawn directive without an actual grid occupant').toBeDefined();
-                expect(mon!.name).toBe(sentinelName());expect(mon!.hp).toBeGreaterThan(0);
+                expect(isSentinel(mon)).toBe(true);expect(mon!.hp).toBeGreaterThan(0);
                 expect(mon!.machineHome).toBe(machine!.machineNumber);
                 expect(game.monsters).toContain(mon);expect(game.dormantMonsters).not.toContain(mon);
             }

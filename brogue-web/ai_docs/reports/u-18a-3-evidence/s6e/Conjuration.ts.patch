@@ -1,0 +1,11 @@
+--- Conjuration.ts
++++ Conjuration.ts
+@@ -19,7 +19,7 @@
+ // for the detonation only. Flying blades may occupy water, lava, pits and traps.
+ const SPAWN_FORBIDDEN = T_OBSTRUCTS_PASSABILITY | T_IS_FIRE | T_CAUSES_EXPLOSIVE_DAMAGE | T_SACRED;
+ const same = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y;
+-const stairs = (grid: Grid, p: Pos) => grid.getCell(p.x, p.y)?.layers.some(t => t === TerrainType.STAIRS_UP || t === TerrainType.STAIRS_DOWN);
++const stairs = (grid: Grid, p: Pos) => grid.getCell(p.x, p.y)?.layers.some(t => t === TerrainType.STAIRS_UP || t === TerrainType.STAIRS_DOWN || t === TerrainType.DUNGEON_PORTAL);
+ 
+ export function bladeDiagonalBlocked(grid: Grid, from: Pos, to: Pos): boolean {
+     return from.x !== to.x && from.y !== to.y && !!((cellTerrainFlags(grid, to.x, from.y)

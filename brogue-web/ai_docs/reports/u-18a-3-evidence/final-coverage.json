@@ -1,0 +1,1287 @@
+{
+  "method": "159-file main run plus complete 21-test B2 rerun after its fixture correction. Main raw failure retained. Other 158 files and every production/config/baseline input unchanged. Not a claim that the main command exited zero.",
+  "files": 159,
+  "totals": {
+    "passed": 3269,
+    "skipped": 8,
+    "todo": 1
+  },
+  "results": [
+    {
+      "file": "src/data/monsterBolts.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 18
+      },
+      "durationMs": 7.11669921875
+    },
+    {
+      "file": "src/data/monsterDamage.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 3
+      },
+      "durationMs": 10.06103515625
+    },
+    {
+      "file": "src/data/weapons.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 13
+      },
+      "durationMs": 4.154296875
+    },
+    {
+      "file": "src/engine/Combat/BoltCatalog.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 6
+      },
+      "durationMs": 14.421875
+    },
+    {
+      "file": "src/engine/Combat/BoltContract.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 10
+      },
+      "durationMs": 42.974609375
+    },
+    {
+      "file": "src/engine/Core/snapshotQuantity.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 1
+      },
+      "durationMs": 2718.683349609375
+    },
+    {
+      "file": "src/engine/Core/startingKit.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 5
+      },
+      "durationMs": 6909.323974609375
+    },
+    {
+      "file": "src/engine/UI/DetailGenerator.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 5
+      },
+      "durationMs": 7.705078125
+    },
+    {
+      "file": "src/engine/UI/Discoveries.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 3
+      },
+      "durationMs": 3.868896484375
+    },
+    {
+      "file": "src/test/ai_1_scent_tracking.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 5
+      },
+      "durationMs": 3740.0380859375
+    },
+    {
+      "file": "src/test/armor_display_effect.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 16
+      },
+      "durationMs": 3283.548095703125
+    },
+    {
+      "file": "src/test/armor_model_effect.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 2
+      },
+      "durationMs": 631146.537109375
+    },
+    {
+      "file": "src/test/armor_runic_effect.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 12
+      },
+      "durationMs": 9605.32763671875
+    },
+    {
+      "file": "src/test/b1_retire_invented.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 44
+      },
+      "durationMs": 261620.3095703125
+    },
+    {
+      "file": "src/test/b2_transcription.test.ts",
+      "source": "regression-b2-final.json",
+      "counts": {
+        "passed": 21
+      },
+      "durationMs": 564760.0720214844
+    },
+    {
+      "file": "src/test/b_1_weapon_specials.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 16
+      },
+      "durationMs": 63336.640380859375
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 34
+      },
+      "durationMs": 118201.1875
+    },
+    {
+      "file": "src/test/b_1b_identification_persistence.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 14
+      },
+      "durationMs": 12277.34228515625
+    },
+    {
+      "file": "src/test/b_1c_detect_magic.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 24
+      },
+      "durationMs": 12949.808837890625
+    },
+    {
+      "file": "src/test/b_2_throwing.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 16
+      },
+      "durationMs": 11640.4892578125
+    },
+    {
+      "file": "src/test/b_4a_item_generation.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 24
+      },
+      "durationMs": 577139.5847167969
+    },
+    {
+      "file": "src/test/b_4b_item_placement.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 15
+      },
+      "durationMs": 299349.5236816406
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 6
+      },
+      "durationMs": 556091.2744140625
+    },
+    {
+      "file": "src/test/c_0_add_loops.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 14
+      },
+      "durationMs": 526240.0324707031
+    },
+    {
+      "file": "src/test/c_1_room_profile.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 14
+      },
+      "durationMs": 289298.8640136719
+    },
+    {
+      "file": "src/test/c_2_lakes.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 17
+      },
+      "durationMs": 148.385498046875
+    },
+    {
+      "file": "src/test/c_2_lakes_determinism.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 1
+      },
+      "durationMs": 40664.21240234375
+    },
+    {
+      "file": "src/test/c_2_lakes_e2e.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 6
+      },
+      "durationMs": 101835.5146484375
+    },
+    {
+      "file": "src/test/c_3_walls_doors.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 15
+      },
+      "durationMs": 271917.8408203125
+    },
+    {
+      "file": "src/test/c_4a_0_layer_model.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 20
+      },
+      "durationMs": 280609.0654296875
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 30
+      },
+      "durationMs": 234435.29663085938
+    },
+    {
+      "file": "src/test/c_4b_dungeon_feature.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 31
+      },
+      "durationMs": 3907.1865234375
+    },
+    {
+      "file": "src/test/c_4c_promotion.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 21
+      },
+      "durationMs": 112575.85717773438
+    },
+    {
+      "file": "src/test/c_5_fall_subsystem.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 13
+      },
+      "durationMs": 61871.840576171875
+    },
+    {
+      "file": "src/test/c_6_autogenerators.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 17
+      },
+      "durationMs": 16701.227294921875
+    },
+    {
+      "file": "src/test/c_7_lighting.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 28
+      },
+      "durationMs": 7305.641357421875
+    },
+    {
+      "file": "src/test/c_8_connectivity.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 7
+      },
+      "durationMs": 414985.4260253906
+    },
+    {
+      "file": "src/test/f_1_fire_as_terrain.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 11
+      },
+      "durationMs": 16878.46923828125
+    },
+    {
+      "file": "src/test/f_2a_fire_mechanics.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 12
+      },
+      "durationMs": 17634.21484375
+    },
+    {
+      "file": "src/test/f_2b_creature_burning.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 13
+      },
+      "durationMs": 44661.672607421875
+    },
+    {
+      "file": "src/test/f_2c_explosion.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 14
+      },
+      "durationMs": 15675.498779296875
+    },
+    {
+      "file": "src/test/g_1_gas_volumetric.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 16
+      },
+      "durationMs": 8071.386474609375
+    },
+    {
+      "file": "src/test/g_2_gas_df_wiring.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 17
+      },
+      "durationMs": 6828.73291015625
+    },
+    {
+      "file": "src/test/g_3_gas_effects.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 26
+      },
+      "durationMs": 25549.561279296875
+    },
+    {
+      "file": "src/test/horde_selection.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 12
+      },
+      "durationMs": 53570.451416015625
+    },
+    {
+      "file": "src/test/horde_terrain_spawn.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 10
+      },
+      "durationMs": 181216.05078125
+    },
+    {
+      "file": "src/test/hunger_curve_sim.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 3
+      },
+      "durationMs": 45006.501708984375
+    },
+    {
+      "file": "src/test/hunger_regen.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 15
+      },
+      "durationMs": 4563.482177734375
+    },
+    {
+      "file": "src/test/i_1_interaction.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 6
+      },
+      "durationMs": 7434.17578125
+    },
+    {
+      "file": "src/test/invented_content_pool.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 7
+      },
+      "durationMs": 290956.58935546875
+    },
+    {
+      "file": "src/test/monster_damage_balance.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 2
+      },
+      "durationMs": 45777.60107421875
+    },
+    {
+      "file": "src/test/monster_stats_effect.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 2
+      },
+      "durationMs": 193884.15991210938
+    },
+    {
+      "file": "src/test/p1_20_item_placement.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 1
+      },
+      "durationMs": 61128.56591796875
+    },
+    {
+      "file": "src/test/p1_24_death_sink.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 13
+      },
+      "durationMs": 17169.642333984375
+    },
+    {
+      "file": "src/test/p1_26_invariants.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 5
+      },
+      "durationMs": 235247.20703125
+    },
+    {
+      "file": "src/test/p1_27_remove_drowning.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 9
+      },
+      "durationMs": 9012.076171875
+    },
+    {
+      "file": "src/test/p1_28_flag_channel.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 14
+      },
+      "durationMs": 18709.505126953125
+    },
+    {
+      "file": "src/test/p1_29_adversarial_gate.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 1
+      },
+      "durationMs": 33113.968017578125
+    },
+    {
+      "file": "src/test/p1_29_lake_connectivity.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 7
+      },
+      "durationMs": 281228.9382324219
+    },
+    {
+      "file": "src/test/p1_30_i18n_gate.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 16
+      },
+      "durationMs": 10524.625244140625
+    },
+    {
+      "file": "src/test/p1_31_35_placement_snapshot.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 10
+      },
+      "durationMs": 23200.1572265625
+    },
+    {
+      "file": "src/test/p1_33_machine_chokepoint.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 7
+      },
+      "durationMs": 266315.0339355469
+    },
+    {
+      "file": "src/test/p1_34_loopmap_reset.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 2
+      },
+      "durationMs": 2650.84326171875
+    },
+    {
+      "file": "src/test/p1_37_machine_flag_i18n.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 9
+      },
+      "durationMs": 251875.05297851562
+    },
+    {
+      "file": "src/test/p1_42_secret_door_search.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 14
+      },
+      "durationMs": 102025.974609375
+    },
+    {
+      "file": "src/test/p2_0_seeded_rng.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 6
+      },
+      "durationMs": 11136.734375
+    },
+    {
+      "file": "src/test/p2_1_tick_architecture.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 6,
+        "skipped": 4
+      },
+      "durationMs": 2660.148193359375
+    },
+    {
+      "file": "src/test/p2_2_real_speed.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 16,
+        "skipped": 2
+      },
+      "durationMs": 21383.1875
+    },
+    {
+      "file": "src/test/p2_3_objective_time.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 17,
+        "skipped": 2
+      },
+      "durationMs": 14087.7236328125
+    },
+    {
+      "file": "src/test/p2_4_animation_cadence.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 13
+      },
+      "durationMs": 7954.166015625
+    },
+    {
+      "file": "src/test/p2_6_display_settings.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 19
+      },
+      "durationMs": 28.595703125
+    },
+    {
+      "file": "src/test/p4_10_waypoint.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 7
+      },
+      "durationMs": 13662.613525390625
+    },
+    {
+      "file": "src/test/p4_1b_monster_casting.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 16
+      },
+      "durationMs": 18515.397705078125
+    },
+    {
+      "file": "src/test/p4_2_monster_summoning.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 14
+      },
+      "durationMs": 46226.787353515625
+    },
+    {
+      "file": "src/test/p4_3_special_monster_flags.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 12
+      },
+      "durationMs": 12668.065673828125
+    },
+    {
+      "file": "src/test/p4_4_split_kamikaze.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 20
+      },
+      "durationMs": 24730.73779296875
+    },
+    {
+      "file": "src/test/p4_5_melee_specials.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 24
+      },
+      "durationMs": 28530.4423828125
+    },
+    {
+      "file": "src/test/p4_6_attack_geometry.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 14
+      },
+      "durationMs": 17436.97021484375
+    },
+    {
+      "file": "src/test/p4_7_player_weapon_geometry.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 17
+      },
+      "durationMs": 19051.60205078125
+    },
+    {
+      "file": "src/test/p4_8_scent_map.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 14
+      },
+      "durationMs": 35689.69921875
+    },
+    {
+      "file": "src/test/p4_9_safety_map.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 8
+      },
+      "durationMs": 7888.99658203125
+    },
+    {
+      "file": "src/test/r_1_appearance.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 45
+      },
+      "durationMs": 21.33984375
+    },
+    {
+      "file": "src/test/scroll_effects.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 20
+      },
+      "durationMs": 32540.60009765625
+    },
+    {
+      "file": "src/test/smoke.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 3,
+        "todo": 1
+      },
+      "durationMs": 25499.927001953125
+    },
+    {
+      "file": "src/test/t_1_tail.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 9
+      },
+      "durationMs": 84793.55981445312
+    },
+    {
+      "file": "src/test/u20_inventory.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 5
+      },
+      "durationMs": 2855.611572265625
+    },
+    {
+      "file": "src/test/u21c_flare_sidebar.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 3
+      },
+      "durationMs": 1995.349609375
+    },
+    {
+      "file": "src/test/u21c_terrain_appearance.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 2
+      },
+      "durationMs": 7.830810546875
+    },
+    {
+      "file": "src/test/u24_hardcoded_text.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 3
+      },
+      "durationMs": 591.091552734375
+    },
+    {
+      "file": "src/test/u_00_new_run.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 17
+      },
+      "durationMs": 56241.852783203125
+    },
+    {
+      "file": "src/test/u_01_instance_snapshot.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 17
+      },
+      "durationMs": 11164.7041015625
+    },
+    {
+      "file": "src/test/u_02a_rng_snapshot.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 45
+      },
+      "durationMs": 44089.995361328125
+    },
+    {
+      "file": "src/test/u_02b_level_rng.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 22
+      },
+      "durationMs": 35547.1103515625
+    },
+    {
+      "file": "src/test/u_03_whole_run_snapshot.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 14
+      },
+      "durationMs": 39845.8388671875
+    },
+    {
+      "file": "src/test/u_03b_level_travel.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 36
+      },
+      "durationMs": 33488.08935546875
+    },
+    {
+      "file": "src/test/u_04c_machine_cells.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 7
+      },
+      "durationMs": 13510.898193359375
+    },
+    {
+      "file": "src/test/u_05a_item_ownership.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 51
+      },
+      "durationMs": 10834.951904296875
+    },
+    {
+      "file": "src/test/u_06_monster_damage.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 37
+      },
+      "durationMs": 22948.04541015625
+    },
+    {
+      "file": "src/test/u_07_monster_blink.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 53
+      },
+      "durationMs": 315.70458984375
+    },
+    {
+      "file": "src/test/u_08_terrain_bolts.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 32
+      },
+      "durationMs": 18631.28076171875
+    },
+    {
+      "file": "src/test/u_09_learning_consumers.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 72
+      },
+      "durationMs": 38013.789306640625
+    },
+    {
+      "file": "src/test/u_10_absorption_snapshot.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 40
+      },
+      "durationMs": 15200.758544921875
+    },
+    {
+      "file": "src/test/u_11_corpse_learning.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 91
+      },
+      "durationMs": 54705.05517578125
+    },
+    {
+      "file": "src/test/u_12a_cast_eligibility.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 4
+      },
+      "durationMs": 2865.33251953125
+    },
+    {
+      "file": "src/test/u_13_combat_math.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 40
+      },
+      "durationMs": 1485.0126953125
+    },
+    {
+      "file": "src/test/u_14a_status_gaps.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 49
+      },
+      "durationMs": 16573.74169921875
+    },
+    {
+      "file": "src/test/u_14b_status_gaps.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 97
+      },
+      "durationMs": 20605.34228515625
+    },
+    {
+      "file": "src/test/u_15a_shattering.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 18
+      },
+      "durationMs": 11867.64892578125
+    },
+    {
+      "file": "src/test/u_15e_potions.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 4
+      },
+      "durationMs": 6064.743896484375
+    },
+    {
+      "file": "src/test/u_15f_food.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 4
+      },
+      "durationMs": 2651.934326171875
+    },
+    {
+      "file": "src/test/u_18_water_cage.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 6
+      },
+      "durationMs": 6188.214111328125
+    },
+    {
+      "file": "src/test/u_18a_2_generation_terrain.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 32
+      },
+      "durationMs": 8948.156494140625
+    },
+    {
+      "file": "src/test/u_18a_3_generation.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 26
+      },
+      "durationMs": 2535.0546875
+    },
+    {
+      "file": "src/test/u_18a_terrain_contracts.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 24
+      },
+      "durationMs": 13.39794921875
+    },
+    {
+      "file": "src/test/u_23_memory_mapping.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 2
+      },
+      "durationMs": 1120.34765625
+    },
+    {
+      "file": "src/test/ui_1_rendering.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 32
+      },
+      "durationMs": 11.224609375
+    },
+    {
+      "file": "src/test/ui_2_protection.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 11
+      },
+      "durationMs": 9650.943603515625
+    },
+    {
+      "file": "src/test/v_1a_blueprint_items.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 8
+      },
+      "durationMs": 136963.39135742188
+    },
+    {
+      "file": "src/test/v_1b_alternative.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 9
+      },
+      "durationMs": 972.123046875
+    },
+    {
+      "file": "src/test/v_1c_machine_structure.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 12
+      },
+      "durationMs": 58015.531982421875
+    },
+    {
+      "file": "src/test/v_2a_vestibule_return.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 3
+      },
+      "durationMs": 186146.31567382812
+    },
+    {
+      "file": "src/test/v_2b_2a_placement_flags.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 27
+      },
+      "durationMs": 2814.1923828125
+    },
+    {
+      "file": "src/test/v_2b_2b_blueprints.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 24
+      },
+      "durationMs": 126272.64892578125
+    },
+    {
+      "file": "src/test/v_2b_3_wired.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 28
+      },
+      "durationMs": 32.657958984375
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 36
+      },
+      "durationMs": 186684.41088867188
+    },
+    {
+      "file": "src/test/v_2b_5_dormant.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 17
+      },
+      "durationMs": 58179.4443359375
+    },
+    {
+      "file": "src/test/v_2b_6_keys.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 18
+      },
+      "durationMs": 302492.3037109375
+    },
+    {
+      "file": "src/test/v_2b_7_features.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 22
+      },
+      "durationMs": 1001262.0090332031
+    },
+    {
+      "file": "src/test/v_2b_8_autogen.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 2
+      },
+      "durationMs": 24358.525146484375
+    },
+    {
+      "file": "src/test/v_2b_9a_carriers.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 2
+      },
+      "durationMs": 2.80419921875
+    },
+    {
+      "file": "src/test/v_2b_9b_environment.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 4
+      },
+      "durationMs": 28.972900390625
+    },
+    {
+      "file": "src/test/v_2b_9c_effects.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 10
+      },
+      "durationMs": 2644.18896484375
+    },
+    {
+      "file": "src/test/v_2b_9d_dungeon_profile.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 11
+      },
+      "durationMs": 4919.0986328125
+    },
+    {
+      "file": "src/test/v_2b_9e_2_autogen.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 16
+      },
+      "durationMs": 194430.40869140625
+    },
+    {
+      "file": "src/test/v_2b_9e_area_machine.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 44
+      },
+      "durationMs": 277.85107421875
+    },
+    {
+      "file": "src/test/w_10_poison.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 38
+      },
+      "durationMs": 6851.3525390625
+    },
+    {
+      "file": "src/test/w_11_teleport_placement.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 37
+      },
+      "durationMs": 4740.484375
+    },
+    {
+      "file": "src/test/w_12_blink_beckoning.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 50
+      },
+      "durationMs": 4219.54052734375
+    },
+    {
+      "file": "src/test/w_13_tunneling.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 43
+      },
+      "durationMs": 2414.486083984375
+    },
+    {
+      "file": "src/test/w_14_obstruction.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 24
+      },
+      "durationMs": 1377.152587890625
+    },
+    {
+      "file": "src/test/w_15_shielding.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 57
+      },
+      "durationMs": 4595.382080078125
+    },
+    {
+      "file": "src/test/w_16_conjuration.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 45
+      },
+      "durationMs": 10043.94384765625
+    },
+    {
+      "file": "src/test/w_17_domination.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 42
+      },
+      "durationMs": 6137.2587890625
+    },
+    {
+      "file": "src/test/w_18_entrancement.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 67
+      },
+      "durationMs": 36052.685791015625
+    },
+    {
+      "file": "src/test/w_19_polymorph.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 53
+      },
+      "durationMs": 4027.20263671875
+    },
+    {
+      "file": "src/test/w_20_cloning.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 57
+      },
+      "durationMs": 6015.838623046875
+    },
+    {
+      "file": "src/test/w_21_empowerment.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 29
+      },
+      "durationMs": 3283.823974609375
+    },
+    {
+      "file": "src/test/w_23_negation.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 42
+      },
+      "durationMs": 1659.60546875
+    },
+    {
+      "file": "src/test/w_24_wand_catalog.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 20
+      },
+      "durationMs": 8046.985595703125
+    },
+    {
+      "file": "src/test/w_25_staff_catalog.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 31
+      },
+      "durationMs": 13128.78857421875
+    },
+    {
+      "file": "src/test/w_26_arcana_closure.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 49
+      },
+      "durationMs": 28629.79052734375
+    },
+    {
+      "file": "src/test/w_2_arcana_submission.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 30
+      },
+      "durationMs": 1302.88330078125
+    },
+    {
+      "file": "src/test/w_3_bolt_trajectory.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 30
+      },
+      "durationMs": 41.6279296875
+    },
+    {
+      "file": "src/test/w_4_bolt_reflection.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 29
+      },
+      "durationMs": 43.748779296875
+    },
+    {
+      "file": "src/test/w_5_arcana_instance.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 18
+      },
+      "durationMs": 560784.39453125
+    },
+    {
+      "file": "src/test/w_6_arcana_recharge.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 28
+      },
+      "durationMs": 6041.61083984375
+    },
+    {
+      "file": "src/test/w_7_arcana_enchantment.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 30
+      },
+      "durationMs": 8136.46533203125
+    },
+    {
+      "file": "src/test/w_8_staff_damage.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 33
+      },
+      "durationMs": 5744.4931640625
+    },
+    {
+      "file": "src/test/w_9_directed_status.test.ts",
+      "source": "regression-final.json",
+      "counts": {
+        "passed": 77
+      },
+      "durationMs": 4181.1513671875
+    }
+  ]
+}

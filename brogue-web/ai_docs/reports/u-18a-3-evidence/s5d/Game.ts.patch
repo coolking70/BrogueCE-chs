@@ -1,0 +1,70 @@
+--- Game.ts
++++ Game.ts
+@@ -12,7 +12,7 @@
+  * Main game state and orchestration
+  */
+ import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer, DRAW_PRIORITY, type Cell } from '../Map/Grid';
+-import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_DIAGONAL_MOVEMENT, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP, T_HARMFUL_TERRAIN } from '../Map/TerrainCatalog';
++import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_DIAGONAL_MOVEMENT, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP, T_HARMFUL_TERRAIN, T_SACRED } from '../Map/TerrainCatalog';
+ import { isPathingBlocker } from '../Map/TerrainCatalog';
+ // B-4b：物品落位热力图与食物落位原语（CE Items.c:463-535 / Architect.c:171,3822）
+ import { ItemSpawnHeatMap, passableArcCount, randomMatchingLocation } from '../Items/ItemSpawnHeatMap';
+@@ -2109,42 +2109,14 @@
+      * 当前 FOV 内的格子）。
+      */
+     private findSummonAtDistanceLocations(from: Pos): Pos[] {
+-        const maxDist = Math.floor(DCOLS / 2);
+-        const dist = new Map<string, number>();
+-        const key = (x: number, y: number) => `${x},${y}`;
+-        const queue: Pos[] = [from];
+-        dist.set(key(from.x, from.y), 0);
+-        let qi = 0;
+-        while (qi < queue.length) {
+-            const cur = queue[qi++]!;
+-            const d = dist.get(key(cur.x, cur.y))!;
+-            if (d >= maxDist) continue;
+-            for (let dx = -1; dx <= 1; dx++) {
+-                for (let dy = -1; dy <= 1; dy++) {
+-                    if (dx === 0 && dy === 0) continue;
+-                    const nx = cur.x + dx;
+-                    const ny = cur.y + dy;
+-                    const k = key(nx, ny);
+-                    if (dist.has(k)) continue;
+-                    const cell = this.grid.getCell(nx, ny);
+-                    if (!cell || !cell.isPassable) continue;
+-                    if (cell.layers.includes(TerrainType.LAVA) || cell.layers.includes(TerrainType.CHASM)) continue; // F-1 跨层判定
+-                    dist.set(k, d + 1);
+-                    queue.push({ x: nx, y: ny });
+-                }
+-            }
+-        }
+-
++        const distance = generationDistances(this, from, T_PATHING_BLOCKER | T_SACRED, true);
+         const result: Pos[] = [];
+-        for (const [k, d] of dist) {
+-            if (d === 0 || d > maxDist) continue; // 排除起点自身
+-            const parts = k.split(',');
+-            const x = Number(parts[0]);
+-            const y = Number(parts[1]);
+-            const cell = this.grid.getCell(x, y);
+-            if (!cell || cell.isVisible) continue; // 玩家 FOV 外
+-            if (this.getMonsterAt(x, y)) continue;
+-            if (this.player.loc.x === x && this.player.loc.y === y) continue;
++        for (let x = 0; x < this.grid.width; x++) for (let y = 0; y < this.grid.height; y++) {
++            const d = distance[x]![y]!;
++            const cell = this.grid.getCell(x, y)!;
++            if (d < 1 || d > Math.floor(DCOLS / 2) || cell.isVisible
++                || (cellTerrainFlags(this.grid, x, y) & (T_PATHING_BLOCKER | T_HARMFUL_TERRAIN))
++                || this.getMonsterAt(x, y) || (this.player.x === x && this.player.y === y)) continue;
+             result.push({ x, y });
+         }
+         return result;
+@@ -2198,7 +2170,7 @@
+             const memberMData = (monsterData as MonsterData[]).find(m => m.id === member.type.toLowerCase());
+             if (!memberMData) continue;
+             for (let c = 0; c < count; c++) {
+-                const pos = this.findNearbySpawnSpot(summoner.loc);
++                const pos = this.findMinionSpawnSpot(summoner.loc, memberMData, horde.spawnsIn, true);
+                 if (!pos) continue;
+                 const mon = new Monster(pos.x, pos.y, memberMData);
+                 mon.leader = summoner;

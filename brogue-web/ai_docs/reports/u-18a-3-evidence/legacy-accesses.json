@@ -1,0 +1,576 @@
+[
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 1361,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "c.isPassable"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 1986,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "this.grid.getCell(cx, cy)?.isPassable"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 2083,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 2689,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 2690,
+    "field": "isOpaque",
+    "kind": "read",
+    "expression": "cell.isOpaque"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 2725,
+    "field": "isPassable",
+    "kind": "write",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 2726,
+    "field": "isOpaque",
+    "kind": "write",
+    "expression": "cell.isOpaque"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 2809,
+    "field": "isOpaque",
+    "kind": "read",
+    "expression": "cell.isOpaque"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 2892,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 2892,
+    "field": "isOpaque",
+    "kind": "read",
+    "expression": "cell.isOpaque"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 3394,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "destCell?.isPassable"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 5762,
+    "field": "isPassable",
+    "kind": "write",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 5763,
+    "field": "isOpaque",
+    "kind": "write",
+    "expression": "cell.isOpaque"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 6583,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 6915,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 6966,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7011,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7011,
+    "field": "isOpaque",
+    "kind": "read",
+    "expression": "cell.isOpaque"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7040,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7047,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7047,
+    "field": "isOpaque",
+    "kind": "read",
+    "expression": "cell.isOpaque"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 7389,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9770,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9782,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "nextCell.isPassable"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9865,
+    "field": "isOpaque",
+    "kind": "read",
+    "expression": "cell.isOpaque"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9889,
+    "field": "isPassable",
+    "kind": "write",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9889,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "terrain.isPassable"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9890,
+    "field": "isOpaque",
+    "kind": "write",
+    "expression": "cell.isOpaque"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 9890,
+    "field": "isOpaque",
+    "kind": "read",
+    "expression": "terrain.isOpaque"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 10030,
+    "field": "isOpaque",
+    "kind": "read",
+    "expression": "c.isOpaque"
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "line": 10366,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "cell?.isPassable"
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "line": 556,
+    "field": "isPassable",
+    "kind": "write",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "line": 589,
+    "field": "isPassable",
+    "kind": "write",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "line": 1572,
+    "field": "isPassable",
+    "kind": "write",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "line": 2134,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "c.isPassable"
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "line": 2135,
+    "field": "isOpaque",
+    "kind": "read",
+    "expression": "c.isOpaque"
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "line": 2156,
+    "field": "isPassable",
+    "kind": "write",
+    "expression": "c.isPassable"
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "line": 2156,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "s.isPassable"
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "line": 2157,
+    "field": "isOpaque",
+    "kind": "write",
+    "expression": "c.isOpaque"
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "line": 2157,
+    "field": "isOpaque",
+    "kind": "read",
+    "expression": "s.isOpaque"
+  },
+  {
+    "file": "src/engine/Lighting/FOV.ts",
+    "line": 152,
+    "field": "isOpaque",
+    "kind": "read",
+    "expression": "this.grid.getCell(mapX, mapY)?.isOpaque"
+  },
+  {
+    "file": "src/engine/Lighting/FOV.ts",
+    "line": 158,
+    "field": "isOpaque",
+    "kind": "read",
+    "expression": "this.grid.getCell(mapX, mapY)?.isOpaque"
+  },
+  {
+    "file": "src/engine/Lighting/LightMap.ts",
+    "line": 261,
+    "field": "isOpaque",
+    "kind": "read",
+    "expression": "cell.isOpaque"
+  },
+  {
+    "file": "src/engine/Lighting/LightMap.ts",
+    "line": 440,
+    "field": "isOpaque",
+    "kind": "read",
+    "expression": "this.grid.getCell(mapX, mapY)?.isOpaque"
+  },
+  {
+    "file": "src/engine/Lighting/LightMap.ts",
+    "line": 446,
+    "field": "isOpaque",
+    "kind": "read",
+    "expression": "this.grid.getCell(mapX, mapY)?.isOpaque"
+  },
+  {
+    "file": "src/engine/Map/Grid.ts",
+    "line": 1063,
+    "field": "isPassable",
+    "kind": "write",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/engine/Map/Grid.ts",
+    "line": 1069,
+    "field": "isOpaque",
+    "kind": "write",
+    "expression": "cell.isOpaque"
+  },
+  {
+    "file": "src/engine/Map/Grid.ts",
+    "line": 1096,
+    "field": "isPassable",
+    "kind": "write",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/engine/Map/Grid.ts",
+    "line": 1102,
+    "field": "isOpaque",
+    "kind": "write",
+    "expression": "cell.isOpaque"
+  },
+  {
+    "file": "src/engine/Map/LakeSystem.ts",
+    "line": 336,
+    "field": "isPassable",
+    "kind": "write",
+    "expression": "subject.isPassable"
+  },
+  {
+    "file": "src/engine/Map/LakeSystem.ts",
+    "line": 336,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "targetCell.isPassable"
+  },
+  {
+    "file": "src/engine/Map/Pathfinding.ts",
+    "line": 79,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "line": 934,
+    "field": "isPassable",
+    "kind": "write",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "line": 935,
+    "field": "isOpaque",
+    "kind": "write",
+    "expression": "cell.isOpaque"
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "line": 999,
+    "field": "isPassable",
+    "kind": "write",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "line": 1000,
+    "field": "isOpaque",
+    "kind": "write",
+    "expression": "cell.isOpaque"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 1085,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 1085,
+    "field": "isOpaque",
+    "kind": "read",
+    "expression": "cell.isOpaque"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 1120,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 1128,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 1128,
+    "field": "isOpaque",
+    "kind": "read",
+    "expression": "cell.isOpaque"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 1169,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "cell.isPassable"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 1560,
+    "field": "isOpaque",
+    "kind": "read",
+    "expression": "c.isOpaque"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 1561,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "c.isPassable"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 1588,
+    "field": "isOpaque",
+    "kind": "read",
+    "expression": "c.isOpaque"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 1589,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "c.isPassable"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 1641,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "c.isPassable"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 1672,
+    "field": "isOpaque",
+    "kind": "read",
+    "expression": "c.isOpaque"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 1672,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "c.isPassable"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 1931,
+    "field": "isOpaque",
+    "kind": "read",
+    "expression": "c.isOpaque"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 1931,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "c.isPassable"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 1964,
+    "field": "isOpaque",
+    "kind": "read",
+    "expression": "c.isOpaque"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 1965,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "c.isPassable"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 2004,
+    "field": "isOpaque",
+    "kind": "read",
+    "expression": "c.isOpaque"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 2005,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "c.isPassable"
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "line": 2065,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "c.isPassable"
+  },
+  {
+    "file": "scripts/u18a2-generation.ts",
+    "line": 24,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "c.isPassable"
+  },
+  {
+    "file": "scripts/w13-browser-check.mjs",
+    "line": 76,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "c.isPassable"
+  },
+  {
+    "file": "scripts/w13-browser-check.mjs",
+    "line": 76,
+    "field": "isOpaque",
+    "kind": "read",
+    "expression": "c.isOpaque"
+  },
+  {
+    "file": "scripts/w14-browser-check.mjs",
+    "line": 59,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "p.c.isPassable"
+  },
+  {
+    "file": "scripts/w14-browser-check.mjs",
+    "line": 60,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "g.grid.getCell(x, 5).isPassable"
+  },
+  {
+    "file": "scripts/w26-browser-check.mjs",
+    "line": 56,
+    "field": "isPassable",
+    "kind": "read",
+    "expression": "c.isPassable"
+  }
+]

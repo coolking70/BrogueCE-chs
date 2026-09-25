@@ -1,0 +1,20 @@
+--- Game.ts
++++ Game.ts
+@@ -1655,7 +1655,7 @@
+                             if (this.getMonsterAt(x, y)) return true;
+                             if (this.items.some(it => it.loc.x === x && it.loc.y === y)) return true;
+                             const c = this.grid.getCell(x, y);
+-                            if (c && (c.terrain === TerrainType.STAIRS_UP || c.terrain === TerrainType.STAIRS_DOWN)) return true;
++                            if (c && (c.terrain === TerrainType.STAIRS_UP || c.terrain === TerrainType.STAIRS_DOWN || c.terrain === TerrainType.DUNGEON_PORTAL)) return true;
+                             return false;
+                         },
+                         isMachineCell: (x, y) => this.machineCells.has(y * DCOLS + x),
+@@ -1746,7 +1746,7 @@
+         if (!cell) return false;
+         if (cellTerrainFlags(this.grid, x, y) & T_PATHING_BLOCKER) return false;
+         if (cell.layers.includes(TerrainType.STAIRS_UP) ||
+-            cell.layers.includes(TerrainType.STAIRS_DOWN)) return false;
++            cell.layers.includes(TerrainType.STAIRS_DOWN) || cell.layers.includes(TerrainType.DUNGEON_PORTAL)) return false;
+         if (this.getMonsterAt(x, y)) return false;
+         if (this.machineCells.has(y * DCOLS + x)) return false;
+         return true;

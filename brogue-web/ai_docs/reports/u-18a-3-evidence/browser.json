@@ -1,0 +1,523 @@
+{
+  "results": [
+    {
+      "name": "d26",
+      "text": {
+        "seed": "42",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 63,
+          "y": 15,
+          "hp": 10000,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "小鬼",
+            "x": 45,
+            "y": 6,
+            "hp": 35,
+            "maxHp": 35,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 225,
+            "defense": 90,
+            "damage": "1d6+3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [
+              "MA_HIT_STEAL_FLEE"
+            ],
+            "bolts": [
+              "BLINKING"
+            ],
+            "typeId": "imp",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "触手恐魔",
+            "x": 56,
+            "y": 17,
+            "hp": 120,
+            "maxHp": 120,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 225,
+            "defense": 95,
+            "damage": "1d11+24",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "tentacle_horror",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          },
+          {
+            "name": "巫妖圣体",
+            "x": 54,
+            "y": 9,
+            "hp": 30,
+            "maxHp": 30,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 0,
+            "defense": 0,
+            "damage": "0d1",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [
+              "MONST_IMMUNE_TO_WEBS",
+              "MONST_NEVER_SLEEPS",
+              "MONST_IMMOBILE",
+              "MONST_INANIMATE",
+              "MONST_ALWAYS_HUNTING",
+              "MONST_WILL_NOT_USE_STAIRS",
+              "MONST_DIES_IF_NEGATED"
+            ],
+            "abilityFlags": [
+              "MA_CAST_SUMMON",
+              "MA_ENTER_SUMMONS"
+            ],
+            "bolts": [],
+            "typeId": "phylactery",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "金币",
+            "x": 57,
+            "y": 13
+          },
+          {
+            "name": "金币",
+            "x": 55,
+            "y": 14
+          },
+          {
+            "name": "金币",
+            "x": 59,
+            "y": 18
+          }
+        ]
+      }
+    },
+    {
+      "travel": {
+        "down": 27,
+        "up": 26
+      }
+    },
+    {
+      "name": "ce17-secret",
+      "text": {
+        "seed": "42",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 9,
+          "y": 12,
+          "hp": 10000,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "ce": 17,
+      "before": {
+        "ce": 17,
+        "door": 19,
+        "expected": 19,
+        "passable": false
+      },
+      "after": {
+        "revealed": true,
+        "searches": 3,
+        "passable": true
+      }
+    },
+    {
+      "name": "ce17-discovered",
+      "text": {
+        "seed": "42",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 9,
+          "y": 12,
+          "hp": 10000,
+          "nutrition": 2146,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "ce27-secret",
+      "text": {
+        "seed": "42",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 9,
+          "y": 12,
+          "hp": 10000,
+          "nutrition": 2145,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "ce": 27,
+      "before": {
+        "ce": 27,
+        "door": 19,
+        "expected": 19,
+        "passable": false
+      },
+      "after": {
+        "revealed": true,
+        "searches": 1,
+        "passable": true
+      }
+    },
+    {
+      "name": "ce27-discovered",
+      "text": {
+        "seed": "42",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 9,
+          "y": 12,
+          "hp": 10000,
+          "nutrition": 2144,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "d40-portal",
+      "text": {
+        "seed": "42",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 54,
+          "y": 25,
+          "hp": 10000,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "金币",
+            "x": 54,
+            "y": 24
+          }
+        ]
+      }
+    },
+    {
+      "name": "narrow",
+      "text": {
+        "seed": "42",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 54,
+          "y": 26,
+          "hp": 10000,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "金币",
+            "x": 54,
+            "y": 24
+          }
+        ]
+      }
+    },
+    {
+      "terminal": {
+        "depth": 40,
+        "tile": 137,
+        "expected": 137
+      },
+      "repel": {
+        "depth": 40,
+        "over": false
+      },
+      "victory": {
+        "depth": 40,
+        "over": true
+      }
+    },
+    {
+      "name": "victory",
+      "text": {
+        "seed": "42",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 54,
+          "y": 26,
+          "hp": 10000,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "金币",
+            "x": 54,
+            "y": 24
+          }
+        ]
+      }
+    }
+  ],
+  "errors": []
+}

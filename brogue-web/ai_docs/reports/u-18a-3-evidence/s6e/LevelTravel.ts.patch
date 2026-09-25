@@ -1,0 +1,11 @@
+--- LevelTravel.ts
++++ LevelTravel.ts
+@@ -90,7 +90,7 @@
+     const qualifies=(p:Pos)=> {
+         const cell=grid.getCell(p.x,p.y);
+         return !!cell && !(excludeOrigin && p.x === origin.x && p.y === origin.y) && !(cellTerrainFlags(grid,p.x,p.y)&(forbidden|blocking))
+-            && !cell.layers.includes(TerrainType.STAIRS_UP) && !cell.layers.includes(TerrainType.STAIRS_DOWN)
++            && !cell.layers.includes(TerrainType.STAIRS_UP) && !cell.layers.includes(TerrainType.STAIRS_DOWN) && !cell.layers.includes(TerrainType.DUNGEON_PORTAL)
+             && (!machines || cell.machineNumber===0)
+             && (!occupied || ![world.player,...world.monsters].some(c=>c!==target && c.hp>0 && c.x===p.x && c.y===p.y));
+     };

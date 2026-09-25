@@ -1,0 +1,18 @@
+--- BlueprintEngine.ts
++++ BlueprintEngine.ts
+@@ -272,6 +272,7 @@
+     WALL: TerrainType.WALL,
+     GRANITE: TerrainType.GRANITE,
+     DOOR: TerrainType.DOOR,
++    SECRET_DOOR: TerrainType.SECRET_DOOR,
+     OPEN_DOOR: TerrainType.OPEN_DOOR,
+     WATER_SHALLOW: TerrainType.WATER_SHALLOW,
+     WATER_DEEP: TerrainType.WATER_DEEP,
+@@ -385,6 +386,7 @@
+ };
+ 
+ const TERRAIN_VISUALS: Record<string, { char: string; color: number }> = {
++    SECRET_DOOR: { char: '#', color: 0x111111 }, // U21c / CE WALL appearance before discover
+     GRASS: { char: '"', color: 0x33aa33 },
+     FOLIAGE: { char: '♠', color: 0x228822 },
+     BOG: { char: '~', color: 0x556633 },

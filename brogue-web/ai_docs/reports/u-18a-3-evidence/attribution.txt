@@ -1,0 +1,247 @@
+[
+  {
+    stage: 's5a',
+    previous: 's0',
+    changedLayers: 90,
+    baselineChangedLayers: 21,
+    fieldCounts: {
+      n: 14,
+      itemState: 90,
+      monsterState: 79,
+      events: 90,
+      species: 17,
+      items: 16,
+      rng: 87,
+      terrain: 13
+    }
+  },
+  {
+    stage: 's5b',
+    previous: 's5a',
+    changedLayers: 96,
+    baselineChangedLayers: 90,
+    fieldCounts: {
+      n: 67,
+      species: 83,
+      items: 76,
+      rng: 93,
+      itemState: 95,
+      monsterState: 95,
+      events: 95,
+      terrain: 29,
+      player: 1
+    }
+  },
+  {
+    stage: 's5c',
+    previous: 's5b',
+    changedLayers: 0,
+    baselineChangedLayers: 0,
+    fieldCounts: {}
+  },
+  {
+    stage: 's5d',
+    previous: 's5c',
+    changedLayers: 0,
+    baselineChangedLayers: 0,
+    fieldCounts: {}
+  },
+  {
+    stage: 's5e',
+    previous: 's5d',
+    changedLayers: 0,
+    baselineChangedLayers: 0,
+    fieldCounts: {}
+  },
+  {
+    stage: 's6a',
+    previous: 's5e',
+    changedLayers: 67,
+    baselineChangedLayers: 45,
+    fieldCounts: {
+      fp: 38,
+      terrain: 47,
+      stairs: 38,
+      itemState: 55,
+      events: 67,
+      player: 37,
+      monsterState: 31,
+      species: 4,
+      rng: 47,
+      items: 6,
+      n: 3
+    }
+  },
+  {
+    stage: 's6b',
+    previous: 's6a',
+    changedLayers: 104,
+    baselineChangedLayers: 104,
+    fieldCounts: {
+      fp: 104,
+      n: 87,
+      species: 95,
+      items: 76,
+      terrain: 104,
+      rng: 104,
+      player: 104,
+      stairs: 104,
+      itemState: 104,
+      monsterState: 104,
+      events: 104
+    }
+  },
+  {
+    stage: 's6c',
+    previous: 's6b',
+    changedLayers: 104,
+    baselineChangedLayers: 104,
+    fieldCounts: {
+      fp: 104,
+      terrain: 104,
+      itemState: 23,
+      n: 1,
+      species: 1,
+      items: 1,
+      rng: 3,
+      monsterState: 6,
+      events: 8
+    }
+  },
+  {
+    stage: 's6d',
+    previous: 's6c',
+    changedLayers: 104,
+    baselineChangedLayers: 0,
+    fieldCounts: { terrain: 104 }
+  },
+  {
+    stage: 's6e',
+    previous: 's6d',
+    changedLayers: 4,
+    baselineChangedLayers: 4,
+    fieldCounts: {
+      fp: 4,
+      n: 2,
+      species: 3,
+      items: 2,
+      terrain: 4,
+      rng: 3,
+      stairs: 4,
+      itemState: 4,
+      monsterState: 3,
+      events: 4
+    }
+  },
+  {
+    stage: 's6f',
+    previous: 's6e',
+    changedLayers: 104,
+    baselineChangedLayers: 99,
+    fieldCounts: {
+      fp: 61,
+      terrain: 79,
+      stairs: 61,
+      monsterState: 103,
+      events: 104,
+      n: 86,
+      species: 91,
+      items: 70,
+      rng: 101,
+      itemState: 101,
+      player: 37
+    }
+  },
+  {
+    stage: 's6g',
+    previous: 's6f',
+    changedLayers: 88,
+    baselineChangedLayers: 88,
+    fieldCounts: {
+      fp: 86,
+      n: 78,
+      species: 86,
+      items: 71,
+      terrain: 86,
+      rng: 87,
+      player: 36,
+      stairs: 53,
+      itemState: 88,
+      monsterState: 88,
+      events: 88
+    }
+  },
+  {
+    stage: 's7a',
+    previous: 's6g',
+    changedLayers: 0,
+    baselineChangedLayers: 0,
+    fieldCounts: {}
+  },
+  {
+    stage: 's7b',
+    previous: 's7a',
+    changedLayers: 0,
+    baselineChangedLayers: 0,
+    fieldCounts: {}
+  },
+  {
+    stage: 's7c',
+    previous: 's7b',
+    changedLayers: 41,
+    baselineChangedLayers: 11,
+    fieldCounts: {
+      fp: 6,
+      terrain: 36,
+      events: 41,
+      n: 1,
+      species: 2,
+      rng: 38,
+      stairs: 2,
+      itemState: 39,
+      monsterState: 40,
+      items: 6,
+      player: 1
+    }
+  },
+  {
+    stage: 's7d',
+    previous: 's7c',
+    changedLayers: 0,
+    baselineChangedLayers: 0,
+    fieldCounts: {}
+  },
+  {
+    stage: 's8',
+    previous: 's7d',
+    changedLayers: 48,
+    baselineChangedLayers: 9,
+    fieldCounts: {
+      fp: 5,
+      terrain: 37,
+      rng: 48,
+      events: 48,
+      n: 3,
+      species: 3,
+      items: 7,
+      player: 2,
+      stairs: 3,
+      itemState: 22,
+      monsterState: 22
+    }
+  },
+  {
+    stage: 's8b',
+    previous: 's8',
+    changedLayers: 0,
+    baselineChangedLayers: 0,
+    fieldCounts: {}
+  },
+  {
+    stage: 's8c',
+    previous: 's8b',
+    changedLayers: 0,
+    baselineChangedLayers: 0,
+    fieldCounts: {}
+  }
+]

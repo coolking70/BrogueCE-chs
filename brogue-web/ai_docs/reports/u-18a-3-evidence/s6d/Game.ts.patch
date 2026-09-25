@@ -1,0 +1,19 @@
+--- Game.ts
++++ Game.ts
+@@ -1269,14 +1269,14 @@
+         if (this.depth < 26) {
+             const down = choose(level.downStairsLoc);
+             if (!down) return false;
+-            this.grid.setTerrain(down.x, down.y, TerrainType.STAIRS_DOWN, '>', 0x00aaff);
++            Architect.installStair(this.grid, down, TerrainType.STAIRS_DOWN);
+             occupied.add(down.y * this.grid.width + down.x);
+             level.downStairsLoc = down;
+             if (!this.levelSeeds[this.depth]!.visited) this.levelSeeds[this.depth]!.upStairsLoc = { ...down };
+         }
+         const up = choose(level.upStairsLoc);
+         if (!up) return false;
+-        this.grid.setTerrain(up.x, up.y, TerrainType.STAIRS_UP, '<', 0xffaa00);
++        Architect.installStair(this.grid, up, TerrainType.STAIRS_UP);
+         level.upStairsLoc = up;
+         return true;
+     }

@@ -1,0 +1,11 @@
+--- SafetyMap.ts
++++ SafetyMap.ts
+@@ -135,7 +135,7 @@
+     for (let i = 0; i < grid.width; i++) {
+         for (let j = 0; j < grid.height; j++) {
+             const layers = grid.getCell(i, j)?.layers;
+-            if (layers?.includes(TerrainType.STAIRS_UP) || layers?.includes(TerrainType.STAIRS_DOWN)) {
++            if (layers?.includes(TerrainType.STAIRS_UP) || layers?.includes(TerrainType.STAIRS_DOWN) || layers?.includes(TerrainType.DUNGEON_PORTAL)) {
+                 playerCostMap[i]![j] = CE_PDS_FORBIDDEN;
+                 monsterCostMap[i]![j] = CE_PDS_FORBIDDEN;
+             }

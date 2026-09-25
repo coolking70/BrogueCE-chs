@@ -1,0 +1,51 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/a528/brogue/brogue-web
+
+stdout | src/test/b2_transcription.test.ts > B2 layer semantics and CE71 materialization adversary > the same CE71 machine realizes zero sentinels with the old id, and three living grid occupants with the real id
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/b2_transcription.test.ts (21 tests | 1 failed | 20 skipped) 767ms
+     ↓ observes committed CE71 machines and their actual occupants on 34 seed × D1–D26
+     ↓ CE 31/F1 has personalSpace 5
+     ↓ CE 39/F0 has personalSpace 2
+     ↓ CE 44/F3 has personalSpace 2
+     ↓ CE 40/F0 has personalSpace 2
+     ↓ CE 40/F1 has personalSpace 2
+     ↓ CE 40/F2 has personalSpace 2
+     ↓ CE 40/F3 has personalSpace 2
+     ↓ CE 40/F4 has personalSpace 2
+     ↓ retains CE40 F5/F6=1 and fills CE31 hallway flag, CE10 weight, CE71 exact monster id
+     ↓ CE55 MAXIMIZE is present while its preexisting engine quarantine remains effective
+     ↓ CE 6/F2 keeps the registered missing-tile DF 141 disconnected
+     ↓ CE 7/F2 keeps the registered missing-tile DF 144 disconnected
+     ↓ CE 22/F0 keeps the registered missing-tile DF 152 disconnected
+     ↓ CE 28/F1 keeps the registered missing-tile DF 152 disconnected
+     ↓ CE15 fungus follows tile, promote/fire, propagation and subsequentDF edges without deferred promotion
+     ↓ CE 16/F0 layer contract and actual production carrier are distinguished
+     ↓ CE 17/F0 layer contract and actual production carrier are distinguished
+     ↓ CE 27/F0 layer contract and actual production carrier are distinguished
+     ↓ CE 27/F1 layer contract and actual production carrier are distinguished
+     × the same CE71 machine realizes zero sentinels with the old id, and three living grid occupants with the real id 765ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/b2_transcription.test.ts > B2 layer semantics and CE71 materialization adversary > the same CE71 machine realizes zero sentinels with the old id, and three living grid occupants with the real id
+AssertionError: missing upstairs: expected undefined to be defined
+ ❯ stairsConnected src/test/b2_transcription.test.ts:43:36
+     41|         if(t===C.STAIRS_DOWN) down={x,y};
+     42|     }
+     43|     expect(up, 'missing upstairs').toBeDefined();
+       |                                    ^
+     44|     // D26 intentionally has no downstairs; it is excluded from the ra…
+     45|     if(game.depth===26) return true;
+ ❯ src/test/b2_transcription.test.ts:259:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 20 skipped (21)
+   Start at  14:59:46
+   Duration  2.76s (transform 1.14s, setup 0ms, import 1.78s, tests 767ms, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/a528/brogue/brogue-web/ai_docs/reports/u-18a-3-evidence/ce71-target.json

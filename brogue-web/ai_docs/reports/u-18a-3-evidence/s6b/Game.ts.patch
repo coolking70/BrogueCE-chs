@@ -1,0 +1,112 @@
+--- Game.ts
++++ Game.ts
+@@ -1,5 +1,5 @@
+-import { stairFallbackQualifies } from '../Generator/Stairs';
+-import { minionPlacement, generationDistances } from '../Generator/GenerationPlacement';
++import { stairFallbackQualifies, stairCandidates, clearStairVicinity } from '../Generator/Stairs';
++import { minionPlacement, generationDistances, qualifyingNear } from '../Generator/GenerationPlacement';
+ import { scheduleLevelFollowers, travelDistanceMap, travelPlacement, restoreTravelPosition, APPROACHING_DOWNSTAIRS, APPROACHING_UPSTAIRS, APPROACHING_PIT } from '../Movement/LevelTravel';
+ import { snapshotGrid, restoreGrid, type CellSnapshot } from './LevelSnapshot';
+ import { memoryTerrainAppearance } from '../UI/Appearance';
+@@ -307,18 +307,6 @@
+     }>;
+ }
+ 
+-/** Transitional floor-deck placement: only final all-layer fallback sites. */
+-function vestibuleStairPos(grid: Grid, occupied: ReadonlySet<number>): Pos | null {
+-    const cx = Math.floor(DCOLS / 2), cy = Math.floor(DROWS / 2);
+-    for (let r = 0; r < Math.max(DCOLS, DROWS); r++) {
+-        for (let x = cx-r; x <= cx+r; x++) for (let y = cy-r; y <= cy+r; y++) {
+-            if (Math.max(Math.abs(x-cx), Math.abs(y-cy)) === r
+-                && stairFallbackQualifies(grid, x, y, occupied)) return { x, y };
+-        }
+-    }
+-    return null;
+-}
+-
+ export class Game {
+     public grid!: Grid;
+     public environment!: EnvironmentManager;
+@@ -1260,6 +1248,38 @@
+         this.needsRender = true;
+     }
+ 
++    /** CE placeStairs: closest qualifying wall ring, then no-liquid fallback.
++     * Deferred machine products only reserve their positions; U19c ordering stays separate. */
++    private placeStairs(machineResults: MachineResult[] = []): boolean {
++        const level = this.levelSeeds[this.depth - 1]!;
++        const occupied = new Set([
++            ...machineResults.flatMap(m => [...m.itemSpawns, ...m.monsterSpawns]).map(s => s.pos),
++            ...this.items.map(i => i.loc), ...this.monsters.map(m => m.loc), ...this.dormantMonsters.map(m => m.loc),
++        ].map(p => p.y * this.grid.width + p.x));
++        const candidates = stairCandidates(this.grid, occupied);
++        const choose = (target: Pos): Pos | null => {
++            const preferred = qualifyingNear(this.grid, target, (x, y) => candidates.has(y * this.grid.width + x));
++            if (preferred) {
++                clearStairVicinity(this.grid, preferred, candidates);
++                return preferred;
++            }
++            return qualifyingNear(this.grid, target, (x, y) => stairFallbackQualifies(this.grid, x, y, occupied));
++        };
++        if (this.depth < 26) {
++            const down = choose(level.downStairsLoc);
++            if (!down) return false;
++            this.grid.setTerrain(down.x, down.y, TerrainType.STAIRS_DOWN, '>', 0x00aaff);
++            occupied.add(down.y * this.grid.width + down.x);
++            level.downStairsLoc = down;
++            if (!this.levelSeeds[this.depth]!.visited) this.levelSeeds[this.depth]!.upStairsLoc = { ...down };
++        }
++        const up = choose(level.upStairsLoc);
++        if (!up) return false;
++        this.grid.setTerrain(up.x, up.y, TerrainType.STAIRS_UP, '<', 0xffaa00);
++        level.upStairsLoc = up;
++        return true;
++    }
++
+     private populateLevel(
+         depth: number,
+         _isGoingUp: boolean = false,
+@@ -1295,36 +1315,13 @@
+ 
+         rng.shuffleList(floorTiles);
+ 
+-        // U04 final placement contract, before replacing the candidate algorithm.
+-        const occupied = new Set(machineResults.flatMap(m => [...m.itemSpawns, ...m.monsterSpawns])
+-            .map(s => s.pos.y * this.grid.width + s.pos.x));
+-        const takeStair = (): Pos | null => {
+-            for (let i = floorTiles.length - 1; i >= 0; i--) {
+-                const p = floorTiles[i]!;
+-                if (stairFallbackQualifies(this.grid, p.x, p.y, occupied)) return floorTiles.splice(i, 1)[0]!;
+-            }
+-            return null;
+-        };
+-        // Depth boundary is changed in its own stage.
+-        let stairsDownPos: Pos | null = null;
+-        if (floorTiles.length > 0 && this.depth < 26) {
+-            stairsDownPos = takeStair();
+-            if (!stairsDownPos) throw new Error("No valid down stair");
+-            this.grid.setTerrain(stairsDownPos.x, stairsDownPos.y, TerrainType.STAIRS_DOWN, '>', 0x00aaff);
+-        }
+-
+-        // Place stairs Up
+-        let stairsUpPos: Pos | null = null;
+-        if (this.depth > 1 && floorTiles.length > 0) {
+-            stairsUpPos = takeStair();
+-            if (!stairsUpPos) throw new Error("No valid up stair");
+-            this.grid.setTerrain(stairsUpPos.x, stairsUpPos.y, TerrainType.STAIRS_UP, '<', 0xffaa00);
+-        } else if (this.depth === 1) {
+-            // V-2b-4：首层固定前厅梯位——避开机器格（CE placeStairs 的
+-            // IS_IN_MACHINE 回避，见 vestibuleStairPos 头注）。
+-            stairsUpPos = vestibuleStairPos(this.grid, occupied);
+-            if (!stairsUpPos) throw new Error("No valid entrance stair");
+-            this.grid.setTerrain(stairsUpPos.x, stairsUpPos.y, TerrainType.STAIRS_UP, '<', 0xffaa00);
++        if (!this.placeStairs(machineResults)) throw new Error('No qualifying stair location');
++        const stairsUpPos = this.levelSeeds[depth - 1]!.upStairsLoc;
++        const stairsDownPos = this.depth < 26 ? this.levelSeeds[depth - 1]!.downStairsLoc : null;
++        for (let i = floorTiles.length - 1; i >= 0; i--) {
++            const p = floorTiles[i]!;
++            if ((p.x === stairsUpPos.x && p.y === stairsUpPos.y)
++                || (stairsDownPos && p.x === stairsDownPos.x && p.y === stairsDownPos.y)) floorTiles.splice(i, 1);
+         }
+ 
+         // B-4b：CE Items.c:608-655——物品落位热力图（上行梯泛洪 → 归零 pass →

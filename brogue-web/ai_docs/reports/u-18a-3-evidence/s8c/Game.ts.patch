@@ -1,0 +1,49 @@
+--- Game.ts
++++ Game.ts
+@@ -1112,13 +1112,13 @@
+                 this.visibleMonsters = new Set();
+                 this.visibleItems = new Set();
+ 
+-                // 2. Populate level with monsters and items, and STAIRS
++                // 2. Populate the successfully stair-equipped level with monsters and items
+                 // （B-4b：architect.machines 不再传入——legacy machines 循环已删；
+                 //  V-2b-1：architect.trapVaults/cages 不再传入——两数组及其消费
+                 //  循环均为死代码，已删除）
+                 this.populateLevel(
+                     this.depth, isGoingUp, isFirstLevel,
+-                    architect.machineResults, true
++                    architect.machineResults
+                 );
+ 
+                 // C-5：取走坠到本层的怪物幸存者（CE startLevel "Load up next
+@@ -1298,8 +1298,7 @@
+         depth: number,
+         _isGoingUp: boolean = false,
+         _isFirstLevel: boolean = false,
+-        machineResults: MachineResult[] = [],
+-        stairsPlaced: boolean = false
++        machineResults: MachineResult[] = []
+     ) {
+         // U04c/K31: CE membership is the final per-cell machine flag, including
+         // external features and excluding cleared BP_NO_INTERIOR_FLAG cells.
+@@ -1308,7 +1307,7 @@
+         // Collect all valid floor tiles
+         // P1-37：牌堆排除机器格（machineNumber≠0 = CE 的 IS_IN_MACHINE，
+         // Rogue.h:1113）。CE 的楼梯（Architect.c:3712/3738）、随机物品
+-        // （3597）、漫游怪群（3543）落点一律回避该旗标；web 的楼梯/护符/
++        // （3597）、漫游怪群（3543）落点一律回避该旗标；web 的护符/
+         // 钥匙/随机物品/怪群领袖统一从本牌堆抽取，此处一处排除全部覆盖。
+         // P1-33 曾以"宝库地板改判 CHARRED_FLOOR"达成同样效果（当时 Game.ts
+         // 禁改），P1-37 起用地形类型冒充旗标的做法废除，宝库恢复普通地板。
+@@ -1330,9 +1329,8 @@
+ 
+         rng.shuffleList(floorTiles);
+ 
+-        // The generation path places stairs before population. Direct synthetic
+-        // population callers retain a checked placement entry for their fixtures.
+-        if (!stairsPlaced && !this.placeStairs(machineResults)) throw new Error('No qualifying stair location');
++        // placeStairs belongs to generateDepth's dig/retry transaction. Population
++        // only consumes the committed coordinates; it must not relocate stairs.
+         const stairsUpPos = this.levelSeeds[depth - 1]!.upStairsLoc;
+         const stairsDownPos = this.depth <= CE_DEEPEST_LEVEL ? this.levelSeeds[depth - 1]!.downStairsLoc : null;
+         for (let i = floorTiles.length - 1; i >= 0; i--) {

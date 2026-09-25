@@ -1,0 +1,29 @@
+--- Game.ts
++++ Game.ts
+@@ -2064,7 +2064,7 @@
+ 
+     /** CE spawnMinions: species catalog flags, then up to 20 special-tile retries.
+      * Preserve deferred machine materialization; no runtime immunity or monsterAvoids. */
+-    private findMinionSpawnSpot(origin: Pos, species: MonsterData, spawnsIn: string | undefined, summoned: boolean): Pos | null {
++    private findMinionSpawnSpot(origin: Pos, species: MonsterData, spawnsIn: string | null | undefined, summoned: boolean): Pos | null {
+         const target = spawnsIn ? Game.SPAWNS_IN_TERRAIN[spawnsIn] : undefined;
+         if (spawnsIn && target === undefined) return null;
+         let failsafe = 0;
+@@ -5817,7 +5817,7 @@
+                 const x = this.player.loc.x + dx!;
+                 const y = this.player.loc.y + dy!;
+                 const cell = this.grid.getCell(x, y);
+-                if (!cell || !cell.isPassable || this.getMonsterAt(x, y)) continue;
++                if (!cell || (cellTerrainFlags(this.grid, x, y) & T_OBSTRUCTS_PASSABILITY) || this.getMonsterAt(x, y)) continue;
+                 if (!rng.randPercent(10)) continue;
+ 
+                 // CE spawnHorde(0, ...)：10% out-of-depth + 禁用集过滤 + frequency 加权抽 horde
+@@ -5826,7 +5826,7 @@
+                     ? [...HORDE_PERIODIC_FORBIDDEN_FLAGS, 'HORDE_NEVER_OOD']
+                     : HORDE_PERIODIC_FORBIDDEN_FLAGS;
+                 const horde = this.pickHordeType(this.hordeCandidates(spawn.depth, forbidden));
+-                if (!horde) continue;
++                if (!horde || !this.hordeFitsTerrain(horde, { x, y })) continue;
+ 
+                 const mData = (monsterData as MonsterData[]).find(m => m.id === horde.leader.toLowerCase());
+                 if (!mData) continue;

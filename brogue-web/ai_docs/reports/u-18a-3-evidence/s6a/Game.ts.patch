@@ -1,0 +1,104 @@
+--- Game.ts
++++ Game.ts
+@@ -1,3 +1,4 @@
++import { stairFallbackQualifies } from '../Generator/Stairs';
+ import { minionPlacement, generationDistances } from '../Generator/GenerationPlacement';
+ import { scheduleLevelFollowers, travelDistanceMap, travelPlacement, restoreTravelPosition, APPROACHING_DOWNSTAIRS, APPROACHING_UPSTAIRS, APPROACHING_PIT } from '../Movement/LevelTravel';
+ import { snapshotGrid, restoreGrid, type CellSnapshot } from './LevelSnapshot';
+@@ -306,48 +307,13 @@
+     }>;
+ }
+ 
+-/**
+- * V-2b-4：首层固定前厅梯位的落点。
+- *
+- * CE 的不变量是"楼梯永不在机器格内"（`placeStairs` 回避 IS_IN_MACHINE，
+- * Architect.c:3712/3738）。CE 的时序天然保证它——`placeStairs` 在
+- * `digDungeon`（含 addMachines）之后调用。web 把首层的上行梯**硬编码**在
+- * 地图正中（`{DCOLS/2, DROWS/2}`），同一时序下若正中已被机器覆盖就会破坏
+- * 该不变量。
+- *
+- * V-2b-4 实测（seed999/D1）：CE 1 号蓝图 `reward_mixed_library` 的
+- * gate choke 区间 [30,50] + BP_OPEN_INTERIOR 让机器内部可达数百格连通体，
+- * 正中 (39,14) 落入其中——p1_33 的"机器结构合同"与 p1_37 的"内容落点不
+- * 闯入机器格"双双翻红。修复按 CE 口径：梯位**避开机器格**。
+- *
+- * **严格最小**：正中只要不是机器格，就原样用它（哪怕它是岩石——旧行为
+- * 就是把楼梯砸进正中，改动它会在 4 个基线种子上产生 94 处无谓偏离）。
+- * 只有正中落在机器内部时，才按 Chebyshev 环序就近取第一个"非机器格、
+- * 可通行、DUNGEON 层是 FLOOR"的格。**零 RNG**、确定性（环序固定）。
+- * 找不到时返回 null，调用方退回硬编码正中（保持旧行为，不静默挪位）。
+- */
+-function vestibuleStairPos(grid: Grid): Pos | null {
+-    const cx = Math.floor(DCOLS / 2);
+-    const cy = Math.floor(DROWS / 2);
+-    const centre = grid.getCell(cx, cy);
+-    if (centre && centre.machineNumber === 0) return { x: cx, y: cy }; // 旧行为：原样
+-    const usable = (x: number, y: number): boolean => {
+-        if (x < 1 || y < 1 || x >= DCOLS - 1 || y >= DROWS - 1) return false;
+-        const c = grid.getCell(x, y);
+-        if (!c) return false;
+-        return c.machineNumber === 0 && c.isPassable && c.layers.includes(TerrainType.FLOOR);
+-    };
+-    const rmax = Math.max(DCOLS, DROWS);
+-    for (let r = 1; r < rmax; r++) {
+-        for (let dx = -r; dx <= r; dx++) {
+-            for (const dy of [-r, r]) {
+-                if (usable(cx + dx, cy + dy)) return { x: cx + dx, y: cy + dy };
+-            }
+-        }
+-        for (let dy = -r + 1; dy <= r - 1; dy++) {
+-            for (const dx of [-r, r]) {
+-                if (usable(cx + dx, cy + dy)) return { x: cx + dx, y: cy + dy };
+-            }
++/** Transitional floor-deck placement: only final all-layer fallback sites. */
++function vestibuleStairPos(grid: Grid, occupied: ReadonlySet<number>): Pos | null {
++    const cx = Math.floor(DCOLS / 2), cy = Math.floor(DROWS / 2);
++    for (let r = 0; r < Math.max(DCOLS, DROWS); r++) {
++        for (let x = cx-r; x <= cx+r; x++) for (let y = cy-r; y <= cy+r; y++) {
++            if (Math.max(Math.abs(x-cx), Math.abs(y-cy)) === r
++                && stairFallbackQualifies(grid, x, y, occupied)) return { x, y };
+         }
+     }
+     return null;
+@@ -1329,23 +1295,35 @@
+ 
+         rng.shuffleList(floorTiles);
+ 
+-        // Place stairs Down (not on depth 26 - the amulet floor is the deepest)
++        // U04 final placement contract, before replacing the candidate algorithm.
++        const occupied = new Set(machineResults.flatMap(m => [...m.itemSpawns, ...m.monsterSpawns])
++            .map(s => s.pos.y * this.grid.width + s.pos.x));
++        const takeStair = (): Pos | null => {
++            for (let i = floorTiles.length - 1; i >= 0; i--) {
++                const p = floorTiles[i]!;
++                if (stairFallbackQualifies(this.grid, p.x, p.y, occupied)) return floorTiles.splice(i, 1)[0]!;
++            }
++            return null;
++        };
++        // Depth boundary is changed in its own stage.
+         let stairsDownPos: Pos | null = null;
+         if (floorTiles.length > 0 && this.depth < 26) {
+-            stairsDownPos = floorTiles.pop()!;
++            stairsDownPos = takeStair();
++            if (!stairsDownPos) throw new Error("No valid down stair");
+             this.grid.setTerrain(stairsDownPos.x, stairsDownPos.y, TerrainType.STAIRS_DOWN, '>', 0x00aaff);
+         }
+ 
+         // Place stairs Up
+         let stairsUpPos: Pos | null = null;
+         if (this.depth > 1 && floorTiles.length > 0) {
+-            stairsUpPos = floorTiles.pop()!;
++            stairsUpPos = takeStair();
++            if (!stairsUpPos) throw new Error("No valid up stair");
+             this.grid.setTerrain(stairsUpPos.x, stairsUpPos.y, TerrainType.STAIRS_UP, '<', 0xffaa00);
+         } else if (this.depth === 1) {
+             // V-2b-4：首层固定前厅梯位——避开机器格（CE placeStairs 的
+             // IS_IN_MACHINE 回避，见 vestibuleStairPos 头注）。
+-            stairsUpPos = vestibuleStairPos(this.grid)
+-                ?? { x: Math.floor(DCOLS / 2), y: Math.floor(DROWS / 2) }; // Default vestibule
++            stairsUpPos = vestibuleStairPos(this.grid, occupied);
++            if (!stairsUpPos) throw new Error("No valid entrance stair");
+             this.grid.setTerrain(stairsUpPos.x, stairsUpPos.y, TerrainType.STAIRS_UP, '<', 0xffaa00);
+         }
+ 

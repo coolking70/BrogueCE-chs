@@ -1,0 +1,65 @@
+--- BlueprintEngine.ts
++++ BlueprintEngine.ts
+@@ -1,3 +1,4 @@
++import { FOVSys } from '../Lighting/FOV';
+ import { genericPathCost } from '../Map/TerrainRules';
+ /**
+  * src/engine/Generator/BlueprintEngine.ts
+@@ -24,6 +25,7 @@
+ import {
+     T_OBSTRUCTS_ITEMS,
+     T_OBSTRUCTS_PASSABILITY,
++    T_OBSTRUCTS_VISION,
+     T_PATHING_BLOCKER,
+     isPathingBlocker,
+     TERRAIN_FLAGS,
+@@ -34,6 +36,7 @@
+ import {
+     cellTerrainFlags,
+     discoveredTerrainFlagsOfCell,
++    terrainFlagsOfCell,
+     cellTerrainMechFlags,
+     createSpawnMap,
+     levelIsDisconnectedOnMovementGraph,
+@@ -1435,6 +1438,7 @@
+         for (const [feat, feature] of bp.features.entries()) {
+             if (skipFeature[feat]) continue; // CE Architect.c:1329：未被选中的替代 feature 整条跳过
+             const fFlags = new Set(feature.flags);
++            this.featureView(origin, fFlags); // CE snapshot once, before this feature's writes.
+             const minInstances = feature.minimumInstanceCount ?? feature.instanceCount[0];
+             // V-2b-2a（CE :1387-1394）：MF_EVERYWHERE → 铺满所有合格格，且
+             // **不掷 instanceCount**（CE 的 rand_range 只在非 EVERYWHERE 分支，
+@@ -2285,6 +2289,22 @@
+      *     FAR 以曼哈顿最近/最远选格近似（V-2b-1 留形），界折叠进选格策略，
+      *     不在候选判定里。
+      */
++    private readonly featureViews = new WeakMap<Set<string>, boolean[][]>();
++
++    /** CE Architect.c:1343-1350. Reentrant machine builds use distinct flag sets. */
++    private featureView(origin: Pos, flags: Set<string>): boolean[][] | null {
++        if (!flags.has('MF_IN_VIEW_OF_ORIGIN')) return null;
++        let view = this.featureViews.get(flags);
++        if (!view) {
++            const mask = T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION;
++            view = new FOVSys(this.grid).computeFOVMask(origin.x, origin.y, Math.max(DCOLS, DROWS),
++                cell => !!(terrainFlagsOfCell(cell) & mask));
++            view[origin.x]![origin.y] = true;
++            this.featureViews.set(flags, view);
++        }
++        return view;
++    }
++
+     private cellIsFeatureCandidate(
+         x: number,
+         y: number,
+@@ -2318,7 +2338,9 @@
+ 
+         // （CE :526-529 occupied——web 的 used/struck 由调用方先行排除，口径
+         // 一致：usedCells = center/door 预留 + personalSpace + 已落格。）
+-        // （CE :531-535 viewMap 与 :537-557 distance 界——见方法头注的处置。）
++        // CE :531-535. BUILD_AT_ORIGIN already returned above, as in CE.
++        const view = this.featureView(origin, fFlags);
++        if (view && !view[x]?.[y]) return false;
+ 
+         // 4.（CE :558-575）MF_BUILD_IN_WALLS：墙、非 interior、machineNumber
+         //    为 0 或本机，且四正方向之一是 interior（非 origin），或
