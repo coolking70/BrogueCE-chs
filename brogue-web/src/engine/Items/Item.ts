@@ -20,7 +20,8 @@ export enum ItemCategory {
     RING,
     CHARM,
     KEY,
-    AMULET
+    AMULET,
+    GEM
 }
 
 /** 未识别魔杖的使用次数后缀（CE Items.c:1615-1634：once/twice/N times）。 */

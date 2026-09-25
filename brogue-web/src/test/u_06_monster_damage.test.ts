@@ -193,7 +193,7 @@ describe('U06 reflected attribution/death and preserved BE_ATTACK', () => {
         expect([caster.hp, g.player.hp, behind.hp, guardian.hp]).toEqual([0, 0, 100, 100]);
         expect(g.lastDamageSource).toBe(name);
         priv(g).finishTurnEpilogue();
-        expect(g.isGameOver).toBe(true); expect(g.gameOverReason).toBe(`Killed by a ${name}.`);
+        expect(g.isGameOver).toBe(true); expect(g.gameOverReason).toBe(`Killed by a ${name} on depth 1.`); // U26b: CE RogueMain.c:1162 includes depth
         expect(g.gameOverReason).not.toContain('reflected'); expect(g.monsters).not.toContain(caster);
     });
     it('armor reflection identifies armor and deals fixed fire damage to the original caster', () => {

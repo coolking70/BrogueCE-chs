@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
 import { activeGame } from '../engine/Core/Game';
+import { readHighScores, type HighScoreEntry } from '../engine/Core/HighScores';
 
 const isGameOver = ref(false);
 const won = ref(false);
@@ -12,6 +13,7 @@ const stats = ref({
     maxDepth: 1
 });
 const score = ref(0);
+const highScores = ref<HighScoreEntry[]>([]);
 const inventory = ref<Array<{ name: string; category: number; enchantment: number; color: number }>>([]);
 
 let timer: number;
@@ -25,6 +27,7 @@ onMounted(() => {
             reason.value = activeGame.gameOverReason;
             stats.value = { ...activeGame.stats };
             score.value = activeGame.gameOverScore;
+            highScores.value = readHighScores();
             inventory.value = [...activeGame.gameOverInventory];
         } else if (!activeGame.isGameOver && isGameOver.value) {
             isGameOver.value = false;
@@ -71,6 +74,17 @@ function enchantLabel(ench: number): string {
                 <span class="score-label">{{ $t('endgame.score', { defaultValue: 'Score' }) }}</span>
                 <span class="score-value">{{ score.toLocaleString() }}</span>
             </div>
+
+            <section class="high-scores" aria-label="High scores">
+                <h2>{{ $t('endgame.high_scores', { defaultValue: 'High Scores' }) }}</h2>
+                <ol>
+                    <li v-for="entry in highScores.filter(row => row.score > 0)" :key="`${entry.recordedAt}-${entry.description}`">
+                        <span class="high-score-value">{{ entry.score.toLocaleString() }}</span>
+                        <time>{{ entry.date }}</time>
+                        <span>{{ entry.description }}</span>
+                    </li>
+                </ol>
+            </section>
 
             <div class="stats-grid">
                 <div class="stat-item">
@@ -182,6 +196,19 @@ function enchantLabel(ench: number): string {
     font-size: 2rem;
     font-weight: bold;
 }
+
+.high-scores {
+    max-height: 220px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.high-scores h2 { color: #ffd700; font-size: 1rem; text-align: center; }
+.high-scores ol { padding-left: 2.5rem; }
+.high-scores li { margin: 5px 0; color: #ccc; }
+.high-scores li span, .high-scores li time { margin-right: 10px; }
+.high-score-value { color: #ffd700; }
 
 .stats-grid {
     display: grid;

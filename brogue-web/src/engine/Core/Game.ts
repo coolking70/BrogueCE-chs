@@ -43,6 +43,8 @@ import { staffBladeCount, bladeSpawnLocation } from '../Combat/Conjuration';
 import { weaponParalysisDuration, weaponConfusionDuration, weaponSlowDuration, weaponImageCount, weaponImageDuration, armorImageCount, weaponForceDistance, netEnchant, damageFraction, armorAbsorptionMax, armorReprisalPercent } from '../Combat/CombatFormulas';
 import { monsterIsInClass } from '../Combat/MonsterClass';
 import { ItemCategory, Item } from '../Items/Item';
+import { endgameScore, lumenstoneCount } from './Endgame';
+import { saveHighScore } from './HighScores';
 import { ItemLoader } from '../Items/ItemLoader';
 import { canEnchantArcana, enchantArcana } from '../Items/ArcanaEnchantment';
 import { charmEffectDuration, charmHealing, charmProtection, charmRechargeDelay, isCharmKind } from '../Items/CharmModel';
@@ -283,6 +285,7 @@ export interface RecordedInputEvent {
     decisions?: boolean[];
     turn?: number;
     rng?: ReturnType<typeof rng.getState>;
+    end?: { won: boolean; superVictory: boolean; score: number };
 }
 
 export interface GameRecording {
@@ -332,6 +335,8 @@ interface TestRoomState {
         isOpaque: boolean;
     }>;
 }
+
+const superVictoryState = new WeakMap<Game, boolean>();
 
 export class Game {
     public grid!: Grid;
@@ -496,6 +501,8 @@ export class Game {
     // Endgame & Stats
     public isGameOver: boolean = false;
     public gameOverWon: boolean = false;
+    public get gameOverSuperVictory(): boolean { return superVictoryState.get(this) ?? false; }
+    public set gameOverSuperVictory(value: boolean) { superVictoryState.set(this, value); }
     public gameOverReason: string = '';
     public stats = {
         kills: 0,
@@ -606,6 +613,7 @@ export class Game {
         this.updatedSafetyMapThisTurn = false;
         this.isGameOver = false;
         this.gameOverWon = false;
+        this.gameOverSuperVictory = false;
         this.gameOverReason = '';
         this.stats = { kills: 0, gold: 0, turns: 0, maxDepth: 1 };
         this.lastDamageSource = '';
@@ -3098,7 +3106,8 @@ export class Game {
             data: this.toRecordedInputData(data),
             decisions,
             turn: this.absoluteTurnNumber,
-            rng: rng.getState()
+            rng: rng.getState(),
+            ...(this.isGameOver ? { end: { won: this.gameOverWon, superVictory: this.gameOverSuperVictory, score: this.gameOverScore } } : {})
         });
     }
 
@@ -3167,7 +3176,8 @@ export class Game {
                 data: event.data,
                 decisions: [...(event.decisions ?? [])],
                 turn: event.turn,
-                rng: event.rng
+                rng: event.rng,
+                ...(event.end ? { end: { ...event.end } } : {})
             }))
         };
     }
@@ -3215,7 +3225,10 @@ export class Game {
                 && typeof event.depth === 'number' && Number.isFinite(event.depth)
                 && typeof event.player?.x === 'number' && typeof event.player?.y === 'number'
                 && Array.isArray(event.decisions) && event.decisions.every(d => typeof d === 'boolean')
-                && Random.isState(event.rng));
+                && Random.isState(event.rng)
+                && (event.end === undefined || (typeof event.end.won === 'boolean'
+                    && typeof event.end.superVictory === 'boolean'
+                    && Number.isSafeInteger(event.end.score))));
     }
 
     public loadReplay(recording: unknown): boolean {
@@ -3235,7 +3248,8 @@ export class Game {
                 data: event.data,
                 decisions: [...event.decisions!],
                 turn: event.turn,
-                rng: structuredClone(event.rng!)
+                rng: structuredClone(event.rng!),
+                ...(event.end ? { end: { ...event.end } } : {})
             }))
         };
 
@@ -3300,6 +3314,10 @@ export class Game {
                 || actual.turn !== event.turn || this.replayDecisionCursor !== event.decisions!.length
                 || JSON.stringify(actual.rng) !== JSON.stringify(event.rng)) {
                 throw new Error(`state mismatch after command ${event.index + 1}`);
+            }
+            if (!!event.end !== this.isGameOver || (event.end && (this.gameOverWon !== event.end.won
+                || this.gameOverSuperVictory !== event.end.superVictory || this.gameOverScore !== event.end.score))) {
+                throw new Error(`endgame mismatch after command ${event.index + 1}`);
             }
             this.update();
         } catch (error) {
@@ -3486,7 +3504,7 @@ export class Game {
             const terminal = this.grid.getCell(this.player.x, this.player.y)?.layers.includes(TerrainType.DUNGEON_PORTAL);
             if (terminal && this.depth === CE_DEEPEST_LEVEL) {
                 const hasAmulet = this.player.inventory.items.some(i => i.category === ItemCategory.AMULET);
-                if (hasAmulet) this.triggerGameOver(true);
+                if (hasAmulet) this.triggerGameOver(true, undefined, true);
                 else logger.log(i18next.t('game.entrance_blocked', { defaultValue: 'The entrance is blocked. You cannot leave without the Amulet of Yendor.' }), '#aaaaaa');
                 return;
             }
@@ -11240,14 +11258,21 @@ export class Game {
         this.playerTurnEnded();
     }
 
-    public triggerGameOver(won: boolean, reason?: string) {
+    public triggerGameOver(won: boolean, reason?: string, superVictory: boolean = false) {
         if (this.isGameOver) return;
         this.isGameOver = true;
         this.gameOverWon = won;
+        this.gameOverSuperVictory = won && superVictory;
+        const deathReason = reason || i18next.t('death.unknown', { defaultValue: 'Killed by unknown causes.' });
         this.gameOverReason = won
-            ? i18next.t('death.victory_reason', { defaultValue: 'Escaped the Dungeons of Doom with the Amulet of Yendor!' })
-            : (reason || i18next.t('death.unknown', { defaultValue: 'Killed by unknown causes.' }));
-        this.recordedInputIndex = this.recordedInputEvents.length; // Stop accepting inputs
+            ? i18next.t(superVictory ? 'endgame.mastered' : 'endgame.escaped', {
+                defaultValue: superVictory ? 'Mastered the Dungeons of Doom!' : 'Escaped the Dungeons of Doom!'
+            })
+            : i18next.t('death.on_depth', {
+                reason: deathReason.replace(/[.!。]+$/, ''), depth: this.depth,
+                defaultValue: '{{reason}} on depth {{depth}}.'
+            });
+        this.recordedInputIndex = this.recordedInputEvents.length;
 
         // Capture inventory for end screen
         this.gameOverInventory = this.player.inventory.items.map(item => ({
@@ -11257,19 +11282,22 @@ export class Game {
             color: item.color
         }));
 
-        // Calculate score: gold + item values + depth bonus
-        let score = this.stats.gold;
-        score += this.stats.maxDepth * 50;
-        score += this.stats.kills * 10;
-        for (const item of this.player.inventory.items) {
-            if (item.category === ItemCategory.AMULET) {
-                score += 10000; // Amulet is worth a lot
-            } else {
-                score += 100 + Math.max(0, item.enchantment) * 50;
-            }
+        const items = this.player.inventory.items;
+        this.gameOverScore = endgameScore(this.stats.gold, items, won, this.gameOverSuperVictory, this.mode === 'easy');
+        const gems = lumenstoneCount(items);
+        const description = won
+            ? i18next.t(gems === 0 ? 'endgame.score_escaped' : gems === 1 ? 'endgame.score_one_gem' : 'endgame.score_many_gems', {
+                verb: superVictory ? i18next.t('endgame.mastered_verb', { defaultValue: 'Mastered' })
+                    : i18next.t('endgame.escaped_verb', { defaultValue: 'Escaped' }),
+                count: gems,
+                defaultValue: gems === 0 ? '{{verb}} the Dungeons of Doom!'
+                    : gems === 1 ? '{{verb}} the Dungeons of Doom with a lumenstone!'
+                        : '{{verb}} the Dungeons of Doom with {{count}} lumenstones!'
+            })
+            : this.gameOverReason;
+        if (!this.replayRecording && (!won || this.mode !== 'wizard')) {
+            saveHighScore(this.gameOverScore, description);
         }
-        if (won) score *= 2; // Victory doubles score
-        this.gameOverScore = score;
 
         this.needsRender = true;
     }
