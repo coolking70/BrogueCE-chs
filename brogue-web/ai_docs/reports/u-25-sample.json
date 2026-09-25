@@ -1,0 +1,1826 @@
+{
+  "seed": "424242",
+  "depth": 3,
+  "machines": [
+    {
+      "seed": "424242",
+      "depth": 3,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "machineNumber": 1,
+      "status": "committed",
+      "features": [
+        {
+          "index": 0,
+          "request": {
+            "terrain": "CARPET",
+            "instanceCount": [
+              0,
+              0
+            ],
+            "minimum": 0,
+            "flags": [
+              "MF_EVERYWHERE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 72,
+              "y": 21
+            },
+            {
+              "x": 71,
+              "y": 23
+            },
+            {
+              "x": 73,
+              "y": 18
+            },
+            {
+              "x": 74,
+              "y": 19
+            },
+            {
+              "x": 76,
+              "y": 21
+            },
+            {
+              "x": 72,
+              "y": 20
+            },
+            {
+              "x": 75,
+              "y": 21
+            },
+            {
+              "x": 76,
+              "y": 22
+            },
+            {
+              "x": 73,
+              "y": 23
+            },
+            {
+              "x": 72,
+              "y": 22
+            },
+            {
+              "x": 75,
+              "y": 19
+            },
+            {
+              "x": 73,
+              "y": 25
+            },
+            {
+              "x": 72,
+              "y": 19
+            },
+            {
+              "x": 74,
+              "y": 21
+            },
+            {
+              "x": 74,
+              "y": 20
+            },
+            {
+              "x": 75,
+              "y": 18
+            },
+            {
+              "x": 74,
+              "y": 22
+            },
+            {
+              "x": 71,
+              "y": 21
+            },
+            {
+              "x": 75,
+              "y": 22
+            },
+            {
+              "x": 73,
+              "y": 19
+            },
+            {
+              "x": 74,
+              "y": 23
+            },
+            {
+              "x": 74,
+              "y": 18
+            },
+            {
+              "x": 76,
+              "y": 19
+            },
+            {
+              "x": 74,
+              "y": 24
+            },
+            {
+              "x": 71,
+              "y": 22
+            },
+            {
+              "x": 71,
+              "y": 20
+            },
+            {
+              "x": 73,
+              "y": 24
+            },
+            {
+              "x": 76,
+              "y": 20
+            },
+            {
+              "x": 73,
+              "y": 20
+            },
+            {
+              "x": 72,
+              "y": 23
+            },
+            {
+              "x": 75,
+              "y": 23
+            },
+            {
+              "x": 75,
+              "y": 20
+            },
+            {
+              "x": 72,
+              "y": 24
+            },
+            {
+              "x": 73,
+              "y": 22
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 1,
+          "request": {
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_BUILD_AT_ORIGIN",
+              "MF_PERMIT_BLOCKING",
+              "MF_BUILD_VESTIBULE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 74,
+              "y": 17
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 2,
+          "request": {
+            "terrain": "ALTAR_CAGE_OPEN",
+            "itemCategory": "WAND",
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_IMPREGNABLE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 72,
+              "y": 21
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 3,
+          "request": {
+            "terrain": "ALTAR_CAGE_OPEN",
+            "itemCategory": "WEAPON|ARMOR|WAND",
+            "instanceCount": [
+              3,
+              3
+            ],
+            "minimum": 3,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_NO_THROWING_WEAPONS",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_IMPREGNABLE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 71,
+              "y": 23
+            },
+            {
+              "x": 74,
+              "y": 19
+            },
+            {
+              "x": 76,
+              "y": 21
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 4,
+          "request": {
+            "terrain": "ALTAR_CAGE_OPEN",
+            "itemCategory": "STAFF|RING|CHARM",
+            "instanceCount": [
+              2,
+              3
+            ],
+            "minimum": 2,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_NO_THROWING_WEAPONS",
+              "MF_TREAT_AS_BLOCKING",
+              "MF_IMPREGNABLE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 73,
+              "y": 23
+            },
+            {
+              "x": 73,
+              "y": 25
+            },
+            {
+              "x": 72,
+              "y": 19
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 5,
+          "request": {
+            "terrain": "STATUE_INERT",
+            "instanceCount": [
+              2,
+              3
+            ],
+            "minimum": 0,
+            "flags": [
+              "MF_TREAT_AS_BLOCKING",
+              "MF_BUILD_IN_WALLS",
+              "MF_IMPREGNABLE"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 70,
+              "y": 21
+            },
+            {
+              "x": 76,
+              "y": 23
+            }
+          ],
+          "status": "placed"
+        }
+      ],
+      "products": [
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 72,
+            "y": 21
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 71,
+            "y": 23
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 73,
+            "y": 18
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 74,
+            "y": 19
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 76,
+            "y": 21
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 72,
+            "y": 20
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 75,
+            "y": 21
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 76,
+            "y": 22
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 73,
+            "y": 23
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 72,
+            "y": 22
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 75,
+            "y": 19
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 73,
+            "y": 25
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 72,
+            "y": 19
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 74,
+            "y": 21
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 74,
+            "y": 20
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 75,
+            "y": 18
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 74,
+            "y": 22
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 71,
+            "y": 21
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 75,
+            "y": 22
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 73,
+            "y": 19
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 74,
+            "y": 23
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 74,
+            "y": 18
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 76,
+            "y": 19
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 74,
+            "y": 24
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 71,
+            "y": 22
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 71,
+            "y": 20
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 73,
+            "y": 24
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 76,
+            "y": 20
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 73,
+            "y": 20
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 72,
+            "y": 23
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 75,
+            "y": 23
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 75,
+            "y": 20
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 72,
+            "y": 24
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "CARPET",
+          "pos": {
+            "x": 73,
+            "y": 22
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 2,
+          "name": "ALTAR_CAGE_OPEN",
+          "pos": {
+            "x": 72,
+            "y": 21
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 3,
+          "name": "ALTAR_CAGE_OPEN",
+          "pos": {
+            "x": 71,
+            "y": 23
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 3,
+          "name": "ALTAR_CAGE_OPEN",
+          "pos": {
+            "x": 74,
+            "y": 19
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 3,
+          "name": "ALTAR_CAGE_OPEN",
+          "pos": {
+            "x": 76,
+            "y": 21
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 4,
+          "name": "ALTAR_CAGE_OPEN",
+          "pos": {
+            "x": 73,
+            "y": 23
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 4,
+          "name": "ALTAR_CAGE_OPEN",
+          "pos": {
+            "x": 73,
+            "y": 25
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 4,
+          "name": "ALTAR_CAGE_OPEN",
+          "pos": {
+            "x": 72,
+            "y": 19
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 5,
+          "name": "STATUE_INERT",
+          "pos": {
+            "x": 70,
+            "y": 21
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 5,
+          "name": "STATUE_INERT",
+          "pos": {
+            "x": 76,
+            "y": 23
+          }
+        },
+        {
+          "kind": "item",
+          "featureIndex": 2,
+          "sourceMachineNumber": 1,
+          "sourceFeatureIndex": 2,
+          "instanceId": 38,
+          "name": "Wand of Teleportation",
+          "pos": {
+            "x": 72,
+            "y": 21
+          },
+          "owner": "floor"
+        },
+        {
+          "kind": "item",
+          "featureIndex": 3,
+          "sourceMachineNumber": 1,
+          "sourceFeatureIndex": 3,
+          "instanceId": 41,
+          "name": "Dagger",
+          "pos": {
+            "x": 71,
+            "y": 23
+          },
+          "owner": "floor"
+        },
+        {
+          "kind": "item",
+          "featureIndex": 3,
+          "sourceMachineNumber": 1,
+          "sourceFeatureIndex": 3,
+          "instanceId": 42,
+          "name": "War Hammer",
+          "pos": {
+            "x": 74,
+            "y": 19
+          },
+          "owner": "floor"
+        },
+        {
+          "kind": "item",
+          "featureIndex": 3,
+          "sourceMachineNumber": 1,
+          "sourceFeatureIndex": 3,
+          "instanceId": 43,
+          "name": "Whip",
+          "pos": {
+            "x": 76,
+            "y": 21
+          },
+          "owner": "floor"
+        },
+        {
+          "kind": "item",
+          "featureIndex": 4,
+          "sourceMachineNumber": 1,
+          "sourceFeatureIndex": 4,
+          "instanceId": 44,
+          "name": "Staff of Blinking",
+          "pos": {
+            "x": 73,
+            "y": 23
+          },
+          "owner": "floor"
+        },
+        {
+          "kind": "item",
+          "featureIndex": 4,
+          "sourceMachineNumber": 1,
+          "sourceFeatureIndex": 4,
+          "instanceId": 45,
+          "name": "Charm of Speed",
+          "pos": {
+            "x": 73,
+            "y": 25
+          },
+          "owner": "floor"
+        },
+        {
+          "kind": "item",
+          "featureIndex": 4,
+          "sourceMachineNumber": 1,
+          "sourceFeatureIndex": 4,
+          "instanceId": 46,
+          "name": "Staff of Poison",
+          "pos": {
+            "x": 72,
+            "y": 19
+          },
+          "owner": "floor"
+        }
+      ],
+      "interiorIterations": 2,
+      "interiorAddedCells": 3
+    },
+    {
+      "seed": "424242",
+      "depth": 3,
+      "blueprintId": "vestibule_flammable_barricade",
+      "ceBlueprintId": 19,
+      "machineNumber": 2,
+      "status": "committed",
+      "features": [
+        {
+          "index": 0,
+          "request": {
+            "terrain": "WOODEN_BARRICADE",
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_PERMIT_BLOCKING",
+              "MF_BUILD_AT_ORIGIN"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 74,
+              "y": 17
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 1,
+          "request": {
+            "itemCategory": "POTION",
+            "itemId": "potion_of_incineration",
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_GENERATE_ITEM",
+              "MF_BUILD_ANYWHERE_ON_LEVEL",
+              "MF_NOT_IN_HALLWAY"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 29,
+              "y": 13
+            }
+          ],
+          "status": "placed"
+        }
+      ],
+      "products": [
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "WOODEN_BARRICADE",
+          "pos": {
+            "x": 74,
+            "y": 17
+          }
+        },
+        {
+          "kind": "item",
+          "featureIndex": 1,
+          "sourceMachineNumber": 2,
+          "sourceFeatureIndex": 1,
+          "instanceId": 37,
+          "name": "Potion of Incineration",
+          "pos": {
+            "x": 29,
+            "y": 13
+          },
+          "owner": "floor"
+        }
+      ]
+    },
+    {
+      "seed": "424242",
+      "depth": 3,
+      "blueprintId": "trap_paralysis_revealed",
+      "ceBlueprintId": 67,
+      "machineNumber": 3,
+      "status": "committed",
+      "features": [
+        {
+          "index": 0,
+          "request": {
+            "terrain": "GAS_TRAP_PARALYSIS",
+            "instanceCount": [
+              1,
+              2
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_NEAR_ORIGIN",
+              "MF_NOT_IN_HALLWAY"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 14,
+              "y": 23
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 1,
+          "request": {
+            "terrain": "MACHINE_PARALYSIS_VENT_HIDDEN",
+            "instanceCount": [
+              3,
+              4
+            ],
+            "minimum": 2,
+            "flags": [
+              "MF_FAR_FROM_ORIGIN",
+              "MF_NOT_IN_HALLWAY"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 17,
+              "y": 26
+            },
+            {
+              "x": 20,
+              "y": 23
+            },
+            {
+              "x": 11,
+              "y": 24
+            }
+          ],
+          "status": "placed"
+        }
+      ],
+      "products": [
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "GAS_TRAP_PARALYSIS",
+          "pos": {
+            "x": 14,
+            "y": 23
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "MACHINE_PARALYSIS_VENT_HIDDEN",
+          "pos": {
+            "x": 17,
+            "y": 26
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "MACHINE_PARALYSIS_VENT_HIDDEN",
+          "pos": {
+            "x": 20,
+            "y": 23
+          }
+        },
+        {
+          "kind": "terrain",
+          "featureIndex": 1,
+          "name": "MACHINE_PARALYSIS_VENT_HIDDEN",
+          "pos": {
+            "x": 11,
+            "y": 24
+          }
+        }
+      ]
+    },
+    {
+      "seed": "424242",
+      "depth": 3,
+      "blueprintId": "ce_58_bloodwort",
+      "ceBlueprintId": 58,
+      "machineNumber": 4,
+      "status": "committed",
+      "features": [
+        {
+          "index": 0,
+          "request": {
+            "terrain": "BLOODFLOWER_STALK",
+            "featureDF": "DF_GRASS",
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_BUILD_AT_ORIGIN",
+              "MF_NOT_IN_HALLWAY"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 56,
+              "y": 19
+            }
+          ],
+          "status": "placed"
+        },
+        {
+          "index": 1,
+          "request": {
+            "featureDF": "DF_BLOODFLOWER_PODS_GROW_INITIAL",
+            "instanceCount": [
+              1,
+              1
+            ],
+            "minimum": 1,
+            "flags": [
+              "MF_BUILD_AT_ORIGIN",
+              "MF_TREAT_AS_BLOCKING"
+            ]
+          },
+          "iterations": 1,
+          "placements": [
+            {
+              "x": 56,
+              "y": 19
+            }
+          ],
+          "status": "placed"
+        }
+      ],
+      "products": [
+        {
+          "kind": "terrain",
+          "featureIndex": 0,
+          "name": "BLOODFLOWER_STALK",
+          "pos": {
+            "x": 56,
+            "y": 19
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 0,
+          "name": "DF_GRASS",
+          "pos": {
+            "x": 56,
+            "y": 19
+          }
+        },
+        {
+          "kind": "featureDF",
+          "featureIndex": 1,
+          "name": "DF_BLOODFLOWER_PODS_GROW_INITIAL",
+          "pos": {
+            "x": 56,
+            "y": 19
+          }
+        }
+      ]
+    }
+  ],
+  "products": [
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 72,
+        "y": 21
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 71,
+        "y": 23
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 73,
+        "y": 18
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 74,
+        "y": 19
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 76,
+        "y": 21
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 72,
+        "y": 20
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 75,
+        "y": 21
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 76,
+        "y": 22
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 73,
+        "y": 23
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 72,
+        "y": 22
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 75,
+        "y": 19
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 73,
+        "y": 25
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 72,
+        "y": 19
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 74,
+        "y": 21
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 74,
+        "y": 20
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 75,
+        "y": 18
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 74,
+        "y": 22
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 71,
+        "y": 21
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 75,
+        "y": 22
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 73,
+        "y": 19
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 74,
+        "y": 23
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 74,
+        "y": 18
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 76,
+        "y": 19
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 74,
+        "y": 24
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 71,
+        "y": 22
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 71,
+        "y": 20
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 73,
+        "y": 24
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 76,
+        "y": 20
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 73,
+        "y": 20
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 72,
+        "y": 23
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 75,
+        "y": 23
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 75,
+        "y": 20
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 72,
+        "y": 24
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "CARPET",
+      "pos": {
+        "x": 73,
+        "y": 22
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 2,
+      "name": "ALTAR_CAGE_OPEN",
+      "pos": {
+        "x": 72,
+        "y": 21
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 3,
+      "name": "ALTAR_CAGE_OPEN",
+      "pos": {
+        "x": 71,
+        "y": 23
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 3,
+      "name": "ALTAR_CAGE_OPEN",
+      "pos": {
+        "x": 74,
+        "y": 19
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 3,
+      "name": "ALTAR_CAGE_OPEN",
+      "pos": {
+        "x": 76,
+        "y": 21
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 4,
+      "name": "ALTAR_CAGE_OPEN",
+      "pos": {
+        "x": 73,
+        "y": 23
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 4,
+      "name": "ALTAR_CAGE_OPEN",
+      "pos": {
+        "x": 73,
+        "y": 25
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 4,
+      "name": "ALTAR_CAGE_OPEN",
+      "pos": {
+        "x": 72,
+        "y": 19
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 5,
+      "name": "STATUE_INERT",
+      "pos": {
+        "x": 70,
+        "y": 21
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "terrain",
+      "featureIndex": 5,
+      "name": "STATUE_INERT",
+      "pos": {
+        "x": 76,
+        "y": 23
+      }
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "item",
+      "featureIndex": 2,
+      "sourceMachineNumber": 1,
+      "sourceFeatureIndex": 2,
+      "instanceId": 38,
+      "name": "Wand of Teleportation",
+      "pos": {
+        "x": 72,
+        "y": 21
+      },
+      "owner": "floor"
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "item",
+      "featureIndex": 3,
+      "sourceMachineNumber": 1,
+      "sourceFeatureIndex": 3,
+      "instanceId": 41,
+      "name": "Dagger",
+      "pos": {
+        "x": 71,
+        "y": 23
+      },
+      "owner": "floor"
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "item",
+      "featureIndex": 3,
+      "sourceMachineNumber": 1,
+      "sourceFeatureIndex": 3,
+      "instanceId": 42,
+      "name": "War Hammer",
+      "pos": {
+        "x": 74,
+        "y": 19
+      },
+      "owner": "floor"
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "item",
+      "featureIndex": 3,
+      "sourceMachineNumber": 1,
+      "sourceFeatureIndex": 3,
+      "instanceId": 43,
+      "name": "Whip",
+      "pos": {
+        "x": 76,
+        "y": 21
+      },
+      "owner": "floor"
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "item",
+      "featureIndex": 4,
+      "sourceMachineNumber": 1,
+      "sourceFeatureIndex": 4,
+      "instanceId": 44,
+      "name": "Staff of Blinking",
+      "pos": {
+        "x": 73,
+        "y": 23
+      },
+      "owner": "floor"
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "item",
+      "featureIndex": 4,
+      "sourceMachineNumber": 1,
+      "sourceFeatureIndex": 4,
+      "instanceId": 45,
+      "name": "Charm of Speed",
+      "pos": {
+        "x": 73,
+        "y": 25
+      },
+      "owner": "floor"
+    },
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "item",
+      "featureIndex": 4,
+      "sourceMachineNumber": 1,
+      "sourceFeatureIndex": 4,
+      "instanceId": 46,
+      "name": "Staff of Poison",
+      "pos": {
+        "x": 72,
+        "y": 19
+      },
+      "owner": "floor"
+    },
+    {
+      "machineNumber": 2,
+      "blueprintId": "vestibule_flammable_barricade",
+      "ceBlueprintId": 19,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "WOODEN_BARRICADE",
+      "pos": {
+        "x": 74,
+        "y": 17
+      }
+    },
+    {
+      "machineNumber": 2,
+      "blueprintId": "vestibule_flammable_barricade",
+      "ceBlueprintId": 19,
+      "kind": "item",
+      "featureIndex": 1,
+      "sourceMachineNumber": 2,
+      "sourceFeatureIndex": 1,
+      "instanceId": 37,
+      "name": "Potion of Incineration",
+      "pos": {
+        "x": 29,
+        "y": 13
+      },
+      "owner": "floor"
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "trap_paralysis_revealed",
+      "ceBlueprintId": 67,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "GAS_TRAP_PARALYSIS",
+      "pos": {
+        "x": 14,
+        "y": 23
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "trap_paralysis_revealed",
+      "ceBlueprintId": 67,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "MACHINE_PARALYSIS_VENT_HIDDEN",
+      "pos": {
+        "x": 17,
+        "y": 26
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "trap_paralysis_revealed",
+      "ceBlueprintId": 67,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "MACHINE_PARALYSIS_VENT_HIDDEN",
+      "pos": {
+        "x": 20,
+        "y": 23
+      }
+    },
+    {
+      "machineNumber": 3,
+      "blueprintId": "trap_paralysis_revealed",
+      "ceBlueprintId": 67,
+      "kind": "terrain",
+      "featureIndex": 1,
+      "name": "MACHINE_PARALYSIS_VENT_HIDDEN",
+      "pos": {
+        "x": 11,
+        "y": 24
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "ce_58_bloodwort",
+      "ceBlueprintId": 58,
+      "kind": "terrain",
+      "featureIndex": 0,
+      "name": "BLOODFLOWER_STALK",
+      "pos": {
+        "x": 56,
+        "y": 19
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "ce_58_bloodwort",
+      "ceBlueprintId": 58,
+      "kind": "featureDF",
+      "featureIndex": 0,
+      "name": "DF_GRASS",
+      "pos": {
+        "x": 56,
+        "y": 19
+      }
+    },
+    {
+      "machineNumber": 4,
+      "blueprintId": "ce_58_bloodwort",
+      "ceBlueprintId": 58,
+      "kind": "featureDF",
+      "featureIndex": 1,
+      "name": "DF_BLOODFLOWER_PODS_GROW_INITIAL",
+      "pos": {
+        "x": 56,
+        "y": 19
+      }
+    }
+  ],
+  "matches": [
+    {
+      "machineNumber": 1,
+      "blueprintId": "reward_mixed_library",
+      "ceBlueprintId": 1,
+      "kind": "item",
+      "featureIndex": 2,
+      "sourceMachineNumber": 1,
+      "sourceFeatureIndex": 2,
+      "instanceId": 38,
+      "name": "Wand of Teleportation",
+      "pos": {
+        "x": 72,
+        "y": 21
+      },
+      "owner": "floor"
+    }
+  ]
+}

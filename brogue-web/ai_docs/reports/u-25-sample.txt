@@ -1,0 +1,77 @@
+seed 424242 / D3: 4 machines, 59 products
+instance #38: 1 match(es); machine #1 CE1 feature #2 source #1/#2
+machine #1 CE1 reward_mixed_library committed; interior expansion 2 iterations, +3 cells
+  feature #0 placed 34 placements / 1 iterations; request={"terrain":"CARPET","instanceCount":[0,0],"minimum":0,"flags":["MF_EVERYWHERE"]}
+  feature #1 placed 1 placements / 1 iterations; request={"instanceCount":[1,1],"minimum":1,"flags":["MF_BUILD_AT_ORIGIN","MF_PERMIT_BLOCKING","MF_BUILD_VESTIBULE"]}
+  feature #2 placed 1 placements / 1 iterations; request={"terrain":"ALTAR_CAGE_OPEN","itemCategory":"WAND","instanceCount":[1,1],"minimum":1,"flags":["MF_GENERATE_ITEM","MF_TREAT_AS_BLOCKING","MF_IMPREGNABLE"]}
+  feature #3 placed 3 placements / 1 iterations; request={"terrain":"ALTAR_CAGE_OPEN","itemCategory":"WEAPON|ARMOR|WAND","instanceCount":[3,3],"minimum":3,"flags":["MF_GENERATE_ITEM","MF_NO_THROWING_WEAPONS","MF_TREAT_AS_BLOCKING","MF_IMPREGNABLE"]}
+  feature #4 placed 3 placements / 1 iterations; request={"terrain":"ALTAR_CAGE_OPEN","itemCategory":"STAFF|RING|CHARM","instanceCount":[2,3],"minimum":2,"flags":["MF_GENERATE_ITEM","MF_NO_THROWING_WEAPONS","MF_TREAT_AS_BLOCKING","MF_IMPREGNABLE"]}
+  feature #5 placed 2 placements / 1 iterations; request={"terrain":"STATUE_INERT","instanceCount":[2,3],"minimum":0,"flags":["MF_TREAT_AS_BLOCKING","MF_BUILD_IN_WALLS","MF_IMPREGNABLE"]}
+  terrain #- CARPET @72,21 from feature #0
+  terrain #- CARPET @71,23 from feature #0
+  terrain #- CARPET @73,18 from feature #0
+  terrain #- CARPET @74,19 from feature #0
+  terrain #- CARPET @76,21 from feature #0
+  terrain #- CARPET @72,20 from feature #0
+  terrain #- CARPET @75,21 from feature #0
+  terrain #- CARPET @76,22 from feature #0
+  terrain #- CARPET @73,23 from feature #0
+  terrain #- CARPET @72,22 from feature #0
+  terrain #- CARPET @75,19 from feature #0
+  terrain #- CARPET @73,25 from feature #0
+  terrain #- CARPET @72,19 from feature #0
+  terrain #- CARPET @74,21 from feature #0
+  terrain #- CARPET @74,20 from feature #0
+  terrain #- CARPET @75,18 from feature #0
+  terrain #- CARPET @74,22 from feature #0
+  terrain #- CARPET @71,21 from feature #0
+  terrain #- CARPET @75,22 from feature #0
+  terrain #- CARPET @73,19 from feature #0
+  terrain #- CARPET @74,23 from feature #0
+  terrain #- CARPET @74,18 from feature #0
+  terrain #- CARPET @76,19 from feature #0
+  terrain #- CARPET @74,24 from feature #0
+  terrain #- CARPET @71,22 from feature #0
+  terrain #- CARPET @71,20 from feature #0
+  terrain #- CARPET @73,24 from feature #0
+  terrain #- CARPET @76,20 from feature #0
+  terrain #- CARPET @73,20 from feature #0
+  terrain #- CARPET @72,23 from feature #0
+  terrain #- CARPET @75,23 from feature #0
+  terrain #- CARPET @75,20 from feature #0
+  terrain #- CARPET @72,24 from feature #0
+  terrain #- CARPET @73,22 from feature #0
+  terrain #- ALTAR_CAGE_OPEN @72,21 from feature #2
+  terrain #- ALTAR_CAGE_OPEN @71,23 from feature #3
+  terrain #- ALTAR_CAGE_OPEN @74,19 from feature #3
+  terrain #- ALTAR_CAGE_OPEN @76,21 from feature #3
+  terrain #- ALTAR_CAGE_OPEN @73,23 from feature #4
+  terrain #- ALTAR_CAGE_OPEN @73,25 from feature #4
+  terrain #- ALTAR_CAGE_OPEN @72,19 from feature #4
+  terrain #- STATUE_INERT @70,21 from feature #5
+  terrain #- STATUE_INERT @76,23 from feature #5
+  item #38 Wand of Teleportation @72,21 from feature #2 owner=floor
+  item #41 Dagger @71,23 from feature #3 owner=floor
+  item #42 War Hammer @74,19 from feature #3 owner=floor
+  item #43 Whip @76,21 from feature #3 owner=floor
+  item #44 Staff of Blinking @73,23 from feature #4 owner=floor
+  item #45 Charm of Speed @73,25 from feature #4 owner=floor
+  item #46 Staff of Poison @72,19 from feature #4 owner=floor
+machine #2 CE19 vestibule_flammable_barricade committed
+  feature #0 placed 1 placements / 1 iterations; request={"terrain":"WOODEN_BARRICADE","instanceCount":[1,1],"minimum":1,"flags":["MF_PERMIT_BLOCKING","MF_BUILD_AT_ORIGIN"]}
+  feature #1 placed 1 placements / 1 iterations; request={"itemCategory":"POTION","itemId":"potion_of_incineration","instanceCount":[1,1],"minimum":1,"flags":["MF_GENERATE_ITEM","MF_BUILD_ANYWHERE_ON_LEVEL","MF_NOT_IN_HALLWAY"]}
+  terrain #- WOODEN_BARRICADE @74,17 from feature #0
+  item #37 Potion of Incineration @29,13 from feature #1 owner=floor
+machine #3 CE67 trap_paralysis_revealed committed
+  feature #0 placed 1 placements / 1 iterations; request={"terrain":"GAS_TRAP_PARALYSIS","instanceCount":[1,2],"minimum":1,"flags":["MF_NEAR_ORIGIN","MF_NOT_IN_HALLWAY"]}
+  feature #1 placed 3 placements / 1 iterations; request={"terrain":"MACHINE_PARALYSIS_VENT_HIDDEN","instanceCount":[3,4],"minimum":2,"flags":["MF_FAR_FROM_ORIGIN","MF_NOT_IN_HALLWAY"]}
+  terrain #- GAS_TRAP_PARALYSIS @14,23 from feature #0
+  terrain #- MACHINE_PARALYSIS_VENT_HIDDEN @17,26 from feature #1
+  terrain #- MACHINE_PARALYSIS_VENT_HIDDEN @20,23 from feature #1
+  terrain #- MACHINE_PARALYSIS_VENT_HIDDEN @11,24 from feature #1
+machine #4 CE58 ce_58_bloodwort committed
+  feature #0 placed 1 placements / 1 iterations; request={"terrain":"BLOODFLOWER_STALK","featureDF":"DF_GRASS","instanceCount":[1,1],"minimum":1,"flags":["MF_BUILD_AT_ORIGIN","MF_NOT_IN_HALLWAY"]}
+  feature #1 placed 1 placements / 1 iterations; request={"featureDF":"DF_BLOODFLOWER_PODS_GROW_INITIAL","instanceCount":[1,1],"minimum":1,"flags":["MF_BUILD_AT_ORIGIN","MF_TREAT_AS_BLOCKING"]}
+  terrain #- BLOODFLOWER_STALK @56,19 from feature #0
+  featureDF #- DF_GRASS @56,19 from feature #0
+  featureDF #- DF_BLOODFLOWER_PODS_GROW_INITIAL @56,19 from feature #1

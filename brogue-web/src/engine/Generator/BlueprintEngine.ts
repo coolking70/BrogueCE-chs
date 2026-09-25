@@ -51,6 +51,7 @@ import { rng } from '../Random';
 import type { Pos } from '../../types';
 import blueprintData from '../../data/blueprints.json';
 import { Architect, type DungeonProfileId } from './Architect';
+import { getMachineObservationHook, getMachineObservationSeed, recordMachineRollback, type MachineFeatureTrace, type MachineTrace } from './MachineObservation';
 
 /** 格键（CE pmap 的 DCOLS×DROWS 线性下标；与 backupLevel/impregnableCells 同一口径）。 */
 const cellKey = (x: number, y: number): number => y * DCOLS + x;
@@ -134,6 +135,8 @@ export interface MachineItemSpawn {
     /** U17e library items carry CE ITEM_IS_KEY and their existing item flags. */
     itemFlags?: string[];
     instanceId?: string;
+    sourceFeatureIndex?: number;
+    placementFeatureIndex?: number;
     category: string;
     id?: string;
     pos: Pos;
@@ -151,6 +154,7 @@ export interface MachineItemSpawn {
  * （CE MF_GENERATE_HORDE 分支，:1591-1599）两形并列，数据上互斥。
  */
 export interface MachineMonsterSpawn {
+    sourceFeatureIndex?: number;
     /** CE `feature->monsterID` 分支（Architect.c:1601）的单只生成。 */
     monsterId?: string;
     /**
@@ -196,6 +200,7 @@ export interface MachineMonsterSpawn {
 
 /** Committed machine transaction, consumed by Game.populateLevel. */
 export interface MachineResult {
+    observation?: MachineTrace;
     blueprintId: string;
     category: string;
     machineNumber: number;
@@ -1205,6 +1210,10 @@ export class BlueprintEngine {
         ctx: { adoptiveItem?: MachineResult['itemSpawns'][number] | null } = {}
     ): MachineResult | null {
         const machineNum = nextMachineNumber++;
+        const observation: MachineTrace | undefined = getMachineObservationHook() ? {
+            seed: getMachineObservationSeed(), depth: this.depth, blueprintId: bp.id, ceBlueprintId: bp.ceBlueprintId,
+            machineNumber: machineNum, status: 'committed', features: [], products: [],
+        } : undefined;
         const flags = new Set(bp.flags);
         const effFlags = effectiveBpFlags(bp);
         const subMachines: MachineResult[] = [];
@@ -1236,7 +1245,12 @@ export class BlueprintEngine {
         //    先于 :1231——OPEN 的扩张判据与 SURROUND 的邻格 machineNumber
         //    检查都依赖该顺序）。
         if (flags.has(BP_MAXIMIZE_INTERIOR) || flags.has(BP_OPEN_INTERIOR)) {
-            this.expandMachineInterior(interior, flags.has(BP_MAXIMIZE_INTERIOR) ? 1 : 4);
+            const before = interior.size;
+            const minNeighbors = flags.has(BP_MAXIMIZE_INTERIOR) ? 1 : 4;
+            // Observation-off keeps the original two-argument call (V-2b-9d spies on it).
+            const iterations = observation ? this.expandMachineInterior(interior, minNeighbors, true)
+                : this.expandMachineInterior(interior, minNeighbors);
+            if (observation) { observation.interiorIterations = iterations; observation.interiorAddedCells = interior.size - before; }
         }
 
         // CE :869-881：清空内部——DUNGEON 层 FLOOR、其余层 NOTHING
@@ -1440,6 +1454,17 @@ export class BlueprintEngine {
         let torchBearer: MachineMonsterSpawn | null = null;
 
         for (const [feat, feature] of bp.features.entries()) {
+            const featureTrace: MachineFeatureTrace | undefined = observation ? {
+                index: feat,
+                request: { terrain: feature.terrain, featureDF: feature.featureDF,
+                    itemCategory: feature.itemCategory, itemId: feature.itemId,
+                    monsterId: feature.monsterId, hordeFlags: feature.hordeFlags,
+                    instanceCount: [...feature.instanceCount],
+                    minimum: feature.minimumInstanceCount ?? feature.instanceCount[0],
+                    flags: [...feature.flags] },
+                iterations: 0, placements: [], status: 'skipped',
+            } : undefined;
+            if (featureTrace) observation!.features.push(featureTrace);
             if (skipFeature[feat]) continue; // CE Architect.c:1329：未被选中的替代 feature 整条跳过
             const fFlags = new Set(feature.flags);
             this.featureView(origin, fFlags); // CE snapshot once, before this feature's writes.
@@ -1617,6 +1642,7 @@ export class BlueprintEngine {
                             featureDF: feature.featureDF,
                             featureIndex: feat,
                         });
+                        featureTrace?.placements.push({ x: pos.x, y: pos.y });
 
                         // V-2b-2a（CE :1491-1493）：MF_IMPREGNABLE → 不可挖掘标记
                         if (fFlags.has('MF_IMPREGNABLE')) {
@@ -1639,6 +1665,7 @@ export class BlueprintEngine {
                             // "自产自销室内钥匙"形态；web 的 key_rat_trap 室内
                             // 钥匙是该形态孤例，继续被消费端跳过——B-4b 原判）。
                             theItem = { ...ctx.adoptiveItem, pos: { x: pos.x, y: pos.y }, viaAdoption: true };
+                            if (observation) theItem.placementFeatureIndex = feat;
                             ctx.adoptiveItem = null;
                         } else if (fFlags.has('MF_GENERATE_ITEM') && feature.itemCategory) {
                             const itemQualifiers = ITEM_QUALIFIER_FLAGS.filter(f => fFlags.has(f));
@@ -1651,6 +1678,7 @@ export class BlueprintEngine {
                                 isAltar: fFlags.has('MF_ALTAR'),
                                 itemQualifiers: itemQualifiers.length > 0 ? itemQualifiers : undefined
                             };
+                            if (observation) { theItem.sourceFeatureIndex = feat; theItem.placementFeatureIndex = feat; }
                             generatedItems.push(theItem);
                             priorItemIds.push(theItem.instanceId!);
                             // V-2b-6（CE Architect.c:1523-1527）：KEY 物品的锁位
@@ -1719,7 +1747,7 @@ export class BlueprintEngine {
                                 }
                                 if (success) break;
                             }
-                            if (!success) return null;
+                            if (!success) return recordMachineRollback(observation, `feature #${feat}: child machine failed`);
                             theItem = null; // CE :1585: outsourced item cannot also be carried here.
                         }
                         const carryItem = fFlags.has('MF_MONSTER_TAKE_ITEM') ? theItem : null;
@@ -1749,6 +1777,7 @@ export class BlueprintEngine {
                                 // V-2b-7（CE :1651-1654）：33 号 Thief area。
                                 fleeing: fFlags.has('MF_MONSTER_FLEEING'),
                             });
+                            if (observation) monsterSpawns[monsterSpawns.length - 1]!.sourceFeatureIndex = feat;
                             if (carryItem) {
                                 torch = carryItem;
                                 torchBearer = monsterSpawns[monsterSpawns.length - 1]!;
@@ -1776,6 +1805,7 @@ export class BlueprintEngine {
                                 // V-2b-7（CE :1648-1654 的两条并列分支）。
                                 fleeing: fFlags.has('MF_MONSTER_FLEEING'),
                             });
+                            if (observation) monsterSpawns[monsterSpawns.length - 1]!.sourceFeatureIndex = feat;
                             if (carryItem) {
                                 torch = carryItem;
                                 torchBearer = monsterSpawns[monsterSpawns.length - 1]!;
@@ -1795,6 +1825,10 @@ export class BlueprintEngine {
                     }
                 }
             } while (repeatUntilNoProgress && roundPlaced >= minInstances);
+            if (featureTrace) {
+                featureTrace.iterations = repeatUntilNoProgress ? repeatRounds : 1;
+                featureTrace.status = placed < minInstances && !repeatUntilNoProgress ? 'insufficient' : 'placed';
+            }
 
             // V-1c：CE :1675-1687——本 feature（最后一轮）实际落位数达不到
             // minimumInstanceCount（web 缺省 = instanceCount[0]，见 FeatureDef 注）
@@ -1802,7 +1836,7 @@ export class BlueprintEngine {
             // findFeaturePosition 找不到可落格（房间太小/格子被占光）与
             // V-2b-2a 的阻断否决（CE :1444-1452）。REPEAT 豁免（CE :1675）。
             if (placed < minInstances && !repeatUntilNoProgress) {
-                return null;
+                return recordMachineRollback(observation, `feature #${feat}: ${placed} < minimum ${minInstances}`);
             }
 
         }
@@ -1854,7 +1888,7 @@ export class BlueprintEngine {
         for (const spawn of itemSpawns) {
             if (!spawn.viaAdoption) continue;
             const cell = this.grid.getCell(spawn.pos.x, spawn.pos.y);
-            if (!cell || isPathingBlocker(cell.terrain)) return null;
+            if (!cell || isPathingBlocker(cell.terrain)) return recordMachineRollback(observation, 'adopted item destination blocked');
         }
 
         // Do not publish a transaction with an unowned creation or duplicate
@@ -1871,7 +1905,7 @@ export class BlueprintEngine {
         if ([...ownerCounts.values()].some(count => count !== 1)
             || [...generatedItems, ...children.flatMap(m => m.generatedItems ?? [])]
                 .some(item => ownerCounts.get(item.instanceId!) !== 1)
-            || (adoptedInstanceId !== undefined && ownerCounts.get(adoptedInstanceId) !== 1)) return null;
+            || (adoptedInstanceId !== undefined && ownerCounts.get(adoptedInstanceId) !== 1)) return recordMachineRollback(observation, 'item ownership invariant');
 
         // V-2b-9c: #32 can overlay the pre-feature center with deep water.
         // Keep the existing web room-center contract in final terrain, without
@@ -1884,11 +1918,11 @@ export class BlueprintEngine {
             candidates.sort((a, b) =>
                 Math.abs(a.x - room.center.x) + Math.abs(a.y - room.center.y)
                 - Math.abs(b.x - room.center.x) - Math.abs(b.y - room.center.y));
-            if (!candidates.length) return null;
+            if (!candidates.length) return recordMachineRollback(observation, 'no passable room center');
             finalCenter = candidates[0]!;
         }
 
-        return {
+        const result: MachineResult = {
             blueprintId: bp.id,
             category: bp.category,
             machineNumber: machineNum,
@@ -1903,8 +1937,10 @@ export class BlueprintEngine {
             featureSpawns,
             needsKey,
             generatedKey: machineGeneratedKey,
-            subMachines
+            subMachines,
         };
+        if (observation) result.observation = observation;
+        return result;
     }
 
     /**
@@ -2056,14 +2092,16 @@ export class BlueprintEngine {
      * 该入口的调用点白名单在 c_4a_0_layer_model.test.ts，本轮已按其自带
      * 指示扩入本文件）。
      */
-    private expandMachineInterior(interior: Set<number>, minimumInteriorNeighbors: number): void {
+    private expandMachineInterior(interior: Set<number>, minimumInteriorNeighbors: number, measure = false): number {
         const inMapInner = (x: number, y: number): boolean =>
             x >= 1 && y >= 1 && x < DCOLS - 1 && y < DROWS - 1; // CE 循环域 1..DCOLS-2 / 1..DROWS-2
         const cellIsBlocker = (x: number, y: number): boolean =>
             (cellTerrainFlags(this.grid, x, y) & T_PATHING_BLOCKER) !== 0;
 
         let madeChange = true;
+        let iterations = 0;
         while (madeChange) {
+            if (measure) iterations++;
             madeChange = false;
             for (let x = 1; x < DCOLS - 1; x++) {
                 for (let y = 1; y < DROWS - 1; y++) {
@@ -2113,7 +2151,6 @@ export class BlueprintEngine {
                 }
             }
         }
-
         // 收尾：interior 内的门与密门清成 FLOOR（CE :666-674）。
         for (const k of interior) {
             const x = k % DCOLS, y = Math.floor(k / DCOLS);
@@ -2123,6 +2160,7 @@ export class BlueprintEngine {
                 this.grid.setTerrainLayer(x, y, DungeonLayer.DUNGEON, TerrainType.FLOOR);
             }
         }
+        return iterations;
     }
 
     /**

@@ -33,6 +33,7 @@ import {
     type MachineResult
 } from '../Generator/BlueprintEngine';
 import blueprintData from '../../data/blueprints.json';
+import { getMachineObservationHook, setMachineObservationSeed, type MachineTrace } from '../Generator/MachineObservation';
 import { Player, STOMACH_SIZE, type HungerState } from '../../entities/Player';
 import { Monster, monstersAreTeammates, monstersAreEnemies } from '../../entities/Monster';
 import { CombatSystem } from '../Combat/Combat';
@@ -568,6 +569,7 @@ export class Game {
         this.mode = options?.mode ?? 'normal';
         rng.setRNG(RNGType.RNG_SUBSTANTIVE);
         this.currentSeed = rng.seedRandomGenerator(seed);
+        if (getMachineObservationHook()) setMachineObservationSeed(this.currentSeed);
         rng.resetCounters();
         this.levelSeeds = initializeLevelSeeds(rng, this.currentSeed);
 
@@ -1514,6 +1516,14 @@ export class Game {
         const registry = new Map(machineResults.flatMap(m => m.generatedItems ?? [])
             .filter(s => s.instanceId).map(s => [s.instanceId!, s]));
         const instances = new Map<string | MachineItemSpawn, Item>();
+        const recordItem = getMachineObservationHook() ? (trace: MachineTrace, mr: MachineResult,
+            spawn: MachineItemSpawn, item: Item, owner: 'floor' | 'monster', ownerId?: number): void => {
+            const parsed = spawn.instanceId ? Number(spawn.instanceId.split(':')[0]) : mr.machineNumber;
+            trace.products.push({ kind: 'item', featureIndex: spawn.placementFeatureIndex ?? spawn.sourceFeatureIndex ?? null,
+                sourceMachineNumber: Number.isSafeInteger(parsed) ? parsed : mr.machineNumber,
+                sourceFeatureIndex: spawn.sourceFeatureIndex,
+                instanceId: item.id, name: item.name, pos: { ...item.loc }, owner, ownerId });
+        } : null;
         const materialize = (spawn: MachineItemSpawn, pos: Pos): Item | null => {
             const identity = spawn.instanceId ?? spawn;
             let item = instances.get(identity);
@@ -1541,12 +1551,23 @@ export class Game {
             item.originDepth = depth;
             return item;
         };
-        const handOff = (mon: Monster, spawn: MachineMonsterSpawn): void => {
+        const handOff = (mon: Monster, spawn: MachineMonsterSpawn, mr: MachineResult): void => {
             if (!spawn.carriedItem) return;
             // CE :1705-1710 discards the bearer's previous carried item.
             mon.carriedItem = materialize(spawn.carriedItem, mon.loc);
+            if (mr.observation && mon.carriedItem) recordItem!(mr.observation, mr, spawn.carriedItem, mon.carriedItem, 'monster', mon.id);
         };
         for (const mr of machineResults) {
+            const trace = mr.observation;
+            if (trace) {
+                trace.seed = this.currentSeed;
+                for (const feature of mr.featureSpawns) {
+                    if (feature.terrain) trace.products.push({ kind: 'terrain', featureIndex: feature.featureIndex,
+                        name: feature.terrain, pos: { ...feature.pos } });
+                    if (feature.featureDF) trace.products.push({ kind: 'featureDF', featureIndex: feature.featureIndex,
+                        name: feature.featureDF, pos: { ...feature.pos } });
+                }
+            }
             // Spawn keys for locked doors
             // V-2b-6：generatedKey 机器跳过补偿循环——CE Architect.c 里钥匙
             // 只由 KEY feature 生成（:1523 addLocationToKey），没有"每锁一把
@@ -1578,7 +1599,11 @@ export class Game {
                 // 的室内钥匙"形态。web 的 key_rat_trap 室内钥匙（无外包）是该
                 // 形态孤例：落在本机锁门之内、无钥匙不可达（死货），继续跳过、
                 // 由补偿循环供钥匙；16 号门钥匙 / 10 号 cage key 经领养落地。
-                if (spawn.category === 'KEY' && !spawn.viaAdoption) continue;
+                if (spawn.category === 'KEY' && !spawn.viaAdoption) {
+                    if (trace) trace.products.push({ kind: 'item', featureIndex: spawn.placementFeatureIndex ?? spawn.sourceFeatureIndex ?? null,
+                        pos: { ...spawn.pos }, outcome: 'unadopted key skipped' });
+                    continue;
+                }
                 // P1-43：蓝图特征落点可能选中护城河的岩浆格（key_lava_moat 一类），
                 // 物品于是掉进岩浆——实测 seed777/D7 scroll_of_enchantment
                 // @ (26,12) terrain=LAVA。CE 的物品落位一律回避
@@ -1595,9 +1620,16 @@ export class Game {
                 // （`Rogue.h:1948` 的并集含 T_SPONTANEOUSLY_IGNITES / T_LAVA_INSTA_DEATH /
                 // T_AUTO_DESCENT / T_IS_DEEP_WATER…），而 C-4a 早就把它做成了
                 // `isPathingBlocker`——我当时没用它，这正是"统一判据"要防的事。
-                if (!spawnCell || isPathingBlocker(spawnCell.terrain)) continue;
+                if (!spawnCell || isPathingBlocker(spawnCell.terrain)) {
+                    if (trace) trace.products.push({ kind: 'item', featureIndex: spawn.placementFeatureIndex ?? spawn.sourceFeatureIndex ?? null,
+                        pos: { ...spawn.pos }, outcome: 'destination blocked' });
+                    continue;
+                }
                 const item = materialize(spawn, spawn.pos);
-                if (item) this.items.push(item);
+                if (item) {
+                    this.items.push(item);
+                    if (trace) recordItem!(trace, mr, spawn, item, 'floor');
+                }
             }
 
             // Spawn monsters
@@ -1606,8 +1638,15 @@ export class Game {
                 // 按 horde 表成群生成（CE 在 spawnHorde 内部抽 horde 与核地形，
                 // 落点即 feature 落点）。
                 if (spawn.hordeFlags) {
+                    const beforeIds = trace ? new Set([...this.monsters, ...this.dormantMonsters].map(m => m.id)) : null;
                     const leader = this.spawnHordeAtFeature(spawn, depth, mr.machineNumber);
-                    if (leader) handOff(leader, spawn);
+                    if (leader) handOff(leader, spawn, mr);
+                    if (trace && beforeIds) for (const mon of [...this.monsters, ...this.dormantMonsters]) {
+                        if (beforeIds.has(mon.id)) continue;
+                        trace.products.push({ kind: 'monster', featureIndex: spawn.sourceFeatureIndex ?? null,
+                            instanceId: mon.id, name: mon.name, pos: { ...mon.loc },
+                            owner: mon.isDormant ? 'dormant' : 'floor' });
+                    }
                     continue;
                 }
                 if (!spawn.monsterId) continue;
@@ -1616,12 +1655,16 @@ export class Game {
                     const mon = new Monster(spawn.pos.x, spawn.pos.y, mData);
                     if (spawn.isAlly) mon.isAlly = true;
                     if (spawn.isCaged) mon.isCaged = true;
-                    handOff(mon, spawn);
+                    handOff(mon, spawn, mr);
                     this.applyRandomMutation(mon, depth);
                     this.monsters.push(mon);
                     this.finalizeBlueprintMonster(mon, spawn, mr.machineNumber);
+                    if (trace) trace.products.push({ kind: 'monster', featureIndex: spawn.sourceFeatureIndex ?? null,
+                        instanceId: mon.id, name: mon.name, pos: { ...mon.loc },
+                        owner: spawn.dormant ? 'dormant' : 'floor' });
                 }
             }
+            if (trace) getMachineObservationHook()?.(trace);
         }
 
         // （P1-31：进层落位不再在此处直接站上楼梯——移到本方法末尾、
