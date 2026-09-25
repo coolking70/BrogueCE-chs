@@ -93,11 +93,21 @@ describe('C-5 对抗①：坠落是回合末结算（CE Time.c:168-176/2480）',
         game.handlePlayerAction('move', { x: 1, y: 0 }, 'system'); // (4,5)→(5,5)
         // U02b: measure the generation segment; only landing/damage may add 3 calls.
         let generationCost = 0;
+        // U03b / CE startLevel: fall landing now happens inside generateDepth,
+        // after catch-up. Measure that subphase separately, preserving the
+        // original generation + landing + clumped-damage assertion below.
+        let landingCost = 0;
+        const landing = (game as any).placePlayerOnFallLanding.bind(game);
+        (game as any).placePlayerOnFallLanding = (...args: unknown[]) => {
+            const before = rng.randomNumbersGenerated;
+            landing(...args);
+            landingCost += rng.randomNumbersGenerated - before;
+        };
         const generate = priv(game).generateDepth.bind(game);
         priv(game).generateDepth = (...args: unknown[]) => {
             const before = rng.randomNumbersGenerated;
             generate(...args);
-            generationCost += rng.randomNumbersGenerated - before;
+            generationCost += rng.randomNumbersGenerated - before - landingCost;
         };
         const rngBeforeDive = rng.randomNumbersGenerated;
         game.handlePlayerAction('move', { x: 1, y: 0 }, 'system'); // (5,5)→(6,5)=渊 → 回合末坠落

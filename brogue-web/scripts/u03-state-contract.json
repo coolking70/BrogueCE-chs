@@ -1,7 +1,7 @@
 {
   "absoluteTurnNumber": {
     "kind": "run",
-    "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
+    "contract": "U03b：客观块加一；环境补跑暂借历史值后恢复。"
   },
   "activeFlares": {
     "kind": "reset",
@@ -394,5 +394,9 @@
   "waypoints": {
     "kind": "level",
     "contract": "当前层顶层载荷；缓存层 levels[]，字段/队列或实体 ID。awaySince 使用 objective block 计数。"
+  },
+  "currentLevelExitedVia": {
+    "kind": "level",
+    "contract": "U03b playerExitedVia：本层最后一次坑降出口，随层保存/恢复。"
   }
 }

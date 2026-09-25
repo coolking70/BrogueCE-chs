@@ -270,7 +270,10 @@ describe('W-11 generic placement and C-5 entry effects', () => {
         expect(fireCalls()).toBe(1);
         g.placeCreature(m, { x: 14, y: 1 }); g.placeCreature(m, { x: 13, y: 1 });
         expect(fireCalls()).toBe(1);
-        (g as any).applyEnvironmentalEffects();
+        // U03b / CE Time.c:1669–1673: a real environment update releases
+        // PRESSURE_PLATE_DEPRESSED only when no creature/item occupies the tile.
+        g.placeCreature(m, { x: 14, y: 1 });
+        (g as any).updateEnvironment();
         g.placeCreature(m, { x: 14, y: 1 }); g.placeCreature(m, { x: 13, y: 1 });
         expect(fireCalls()).toBe(2);
     });

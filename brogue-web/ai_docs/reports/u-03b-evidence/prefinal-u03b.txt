@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/6011/brogue/brogue-web
+
+ ❯ src/test/u_03b_level_travel.test.ts (30 tests | 1 failed) 10927ms
+     × real gas, fire and promotion evolve, without touching player or monster states, debt, hunger, scent or resources 616ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_03b_level_travel.test.ts > U03b isolated environment catch-up > real gas, fire and promotion evolve, without touching player or monster states, debt, hunger, scent or resources
+AssertionError: expected 2 to be 4 // Object.is equality
+
+- Expected
++ Received
+
+- 4
++ 2
+
+ ❯ src/test/u_03b_level_travel.test.ts:157:61
+    155|   expect([g.stats.turns,g.absoluteTurnNumber,g.ticksTillUpdateEnvironm…
+    156|   expect(gases).toHaveBeenCalledTimes(14);expect(fires).toHaveBeenCall…
+    157|   expect(g.grid.getCell(13,5).layers[DungeonLayer.DUNGEON]).toBe(Terra…
+       |                                                             ^
+    158|   expect(g.grid.getCell(10,5).volume).toBeLessThan(1500);
+    159|   gases.mockRestore();fires.mockRestore();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 29 passed (30)
+   Start at  09:57:43
+   Duration  11.56s (transform 330ms, setup 0ms, import 542ms, tests 10.93s, environment 0ms)
+

@@ -890,6 +890,17 @@ export class Cell {
     public isExplored: boolean = false;
     public isVisible: boolean = false;
     public hasMemory: boolean = false; // Does the player remember this tile
+    /** Last observed terrain, independent of subsequent world changes. */
+    public rememberedTerrain: TerrainType = TerrainType.NOTHING;
+    public rememberedAppearance: { char: string; color: string; bgColor: number | null } | null = null;
+    public rememberedLayers: TerrainType[] = [];
+    public rememberedItem: { name: string; char: string; color: string | number } | null = null;
+    public rememberedItemCategory: number | null = null;
+    public isMagicMapped: boolean = false;
+    public rememberedTerrainFlags: number = 0;
+    public rememberedTMFlags: number = 0;
+    public knownTrapFree: boolean = false;
+    public rememberedFlags: { passable: boolean; opaque: boolean; trapFree: boolean } | null = null;
 
     // Light
     public light: LightType = LightType.NO_LIGHT;

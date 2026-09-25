@@ -1,0 +1,86 @@
+[
+  {
+    "file": "src/test/c_4a_0_layer_model.test.ts",
+    "title": "C-4a-0 留痕（本轮明确不做的事，断言现状） 留痕（已反转，G-1）：生成不产气——生成链走完后 GAS 层仍恒空；注气则入层",
+    "messages": [
+      "AssertionError: seed=424242 D12 (3,26) 生成不产气: expected 38 to be +0 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/src/test/c_4a_0_layer_model.test.ts:674:113\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  },
+  {
+    "file": "src/test/c_4b_dungeon_feature.test.ts",
+    "title": "C-4b F：留痕（本轮明确不做的事；C-4c 翻转） F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空",
+    "messages": [
+      "AssertionError: expected 52 to be 2 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/src/test/c_4b_dungeon_feature.test.ts:1284:60\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  },
+  {
+    "file": "src/test/c_5_fall_subsystem.test.ts",
+    "title": "C-5 对抗①：坠落是回合末结算（CE Time.c:168-176/2480） 踩上渊格的同一动作里怪物不得获得回合（CE：playerFalls 整段 return，没有怪物推进）；坠落本体在玩家回合末照常发生",
+    "messages": [
+      "AssertionError: 坠落回合的 RNG 消耗增量偏离（= 换层生成的固定消耗，CE 坠落门整段 return：无推进循环/客观块的额外消耗）: expected 130927 to be 130928 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/src/test/c_5_fall_subsystem.test.ts:152:14\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  },
+  {
+    "file": "src/test/g_2_gas_df_wiring.test.ts",
+    "title": "G-2 对抗⑨：MUD → DF_METHANE_GAS_PUFF 晋升链自动产气 + 镜像对账 泥格晋升命中后：沼气经 GAS 分支落地、gasGrid 镜像经 Game 对账分支同步",
+    "messages": [
+      "AssertionError: 两轮真实扩散后两格各为 1 体积: expected [ 2, +0 ] to deeply equal [ 1, 1 ]\n    at /Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/src/test/g_2_gas_df_wiring.test.ts:603:33\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  },
+  {
+    "file": "src/test/u_02b_level_rng.test.ts",
+    "title": "U02b layer lifecycle and persistence first layer starts from its table seed; later entry retries zero oldSeed and returns before vision",
+    "messages": [
+      "AssertionError: expected [ [ { a: 889461895, …(3) }, …(1) ] ] to deeply equal [ [ { a: 237676488, …(3) }, …(1) ] ]\n    at /Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/src/test/u_02b_level_rng.test.ts:99:24\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  },
+  {
+    "file": "src/test/u_02b_level_rng.test.ts",
+    "title": "different actual D1 actions cannot change D2–D6 terrain, seed 7",
+    "messages": [
+      "AssertionError: expected [ [ …(2291) ], [ …(2291) ], …(3) ] to deeply equal [ [ …(2291) ], [ …(2291) ], …(3) ]\n    at /Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/src/test/u_02b_level_rng.test.ts:170:121\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  },
+  {
+    "file": "src/test/u_02b_level_rng.test.ts",
+    "title": "different actual D1 actions cannot change D2–D6 terrain, seed 1099511627783",
+    "messages": [
+      "AssertionError: expected [ [ …(2291) ], [ …(2291) ], …(3) ] to deeply equal [ [ …(2291) ], [ …(2291) ], …(3) ]\n    at /Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/src/test/u_02b_level_rng.test.ts:170:121\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  },
+  {
+    "file": "src/test/u_02b_level_rng.test.ts",
+    "title": "different actual D1 actions cannot change D2–D6 terrain, seed 18446744073709551615",
+    "messages": [
+      "AssertionError: expected [ [ …(2291) ], [ …(2291) ], …(3) ] to deeply equal [ [ …(2291) ], [ …(2291) ], …(3) ]\n    at /Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/src/test/u_02b_level_rng.test.ts:170:121\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  },
+  {
+    "file": "src/test/u_03b_level_travel.test.ts",
+    "title": "U03b CE level travel real entry clears an absent leader, while JSON decoding alone preserves its identity",
+    "messages": [
+      "AssertionError: expected Monster{ baseMoveSpeed: 100, …(74) } to be null\n    at /Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/src/test/u_03b_level_travel.test.ts:146:107\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  },
+  {
+    "file": "src/test/u_10_absorption_snapshot.test.ts",
+    "title": "a queued survivor entering a newly generated level retains its counter; it is not a cached resident restore",
+    "messages": [
+      "AssertionError: expected { targetCorpseLoc: null, …(8) } to deeply equal { targetCorpseLoc: null, …(8) }\n    at /Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/src/test/u_10_absorption_snapshot.test.ts:200:54\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  },
+  {
+    "file": "src/test/ui_2_protection.test.ts",
+    "title": "UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 resolvePlayerMeleeAttackOn） quiverNumber 为零值时不掷骰、保持未定义；徒手（无武器）不降级不炸",
+    "messages": [
+      "AssertionError: expected 15 to be less than 15\n    at /Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/src/test/ui_2_protection.test.ts:207:26\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  },
+  {
+    "file": "src/test/w_11_teleport_placement.test.ts",
+    "title": "W-11 generic placement and C-5 entry effects CE fire-trap depression prevents retrigger until the next objective environmental update",
+    "messages": [
+      "AssertionError: expected 1 to be 2 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/src/test/w_11_teleport_placement.test.ts:275:29\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  }
+]

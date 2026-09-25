@@ -593,6 +593,14 @@ describe('G-2 对抗⑨：MUD → DF_METHANE_GAS_PUFF 晋升链自动产气 + �
         expect(promo, 'MUD 晋升必须发生在 LIQUID 层').toBeDefined();
         expect(promo!.deferred, 'DF_METHANE_GAS_PUFF tile 已迁：不缓办').toBeNull();
         expect(promo!.spawn!.gasVolumeAdded, '沼气一缕 = 2 体积（Globals.c:667）').toBe(2);
+        // Preserve the original immediate mirror obligation before another diffusion
+        // could repair a missing promotion-to-mirror update.
+        expectMirrorMatchesTruth(game);
+        // U03b / CE Time.c:1600–1616: gas diffuses BEFORE promotions.
+        // Advance to the next real environment phase, suppressing a second puff
+        // so the original two-cell conservation assertions still isolate 2 units.
+        mudEntry.promoteChance = 0;
+        try { priv(game).objectiveTimeBlock(); } finally { mudEntry.promoteChance = saved; }
         // 体积守恒地散开（甲烷无消散旗标），镜像必须与真相逐格一致
         // （G-1 预测的后半：Game 的 gasVolumeAdded 对账分支自动成为活路径）。
         // 2 体积已由上面的同步返回值钉死。两格均分不产生舍入误差，

@@ -1,4 +1,6 @@
+import { scheduleLevelFollowers, travelDistanceMap, travelPlacement, restoreTravelPosition, APPROACHING_DOWNSTAIRS, APPROACHING_UPSTAIRS, APPROACHING_PIT } from '../Movement/LevelTravel';
 import { snapshotGrid, restoreGrid, type CellSnapshot } from './LevelSnapshot';
+import { memoryTerrainAppearance } from '../UI/Appearance';
 import { collectMachineCells, machineCellsMatchGrid } from '../Map/MachineCells';
 import { initializeLevelSeeds, copyLevelSeeds, isLevelSeeds, type LevelSeed } from './LevelSeeds';
 import { NEGATABLE_TRAITS, NON_NEGATABLE_ABILITIES, NEGATABLE_MUTATIONS, hasNegatableBolt, negateBolts, negateCreatureStatusEffects } from '../Combat/Negation';
@@ -8,12 +10,12 @@ import { anyoneWantABite } from '../Combat/MonsterAbsorption';
  * src/engine/Core/Game.ts
  * Main game state and orchestration
  */
-import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer, type Cell } from '../Map/Grid';
+import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer, DRAW_PRIORITY, type Cell } from '../Map/Grid';
 import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP } from '../Map/TerrainCatalog';
 import { isPathingBlocker } from '../Map/TerrainCatalog';
 // B-4b：物品落位热力图与食物落位原语（CE Items.c:463-535 / Architect.c:171,3822）
 import { ItemSpawnHeatMap, passableArcCount, randomMatchingLocation } from '../Items/ItemSpawnHeatMap';
-import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, setDormantAwakener, spawnDungeonFeature } from '../Map/DungeonFeature';
+import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, discoverSecretsAt, setDormantAwakener, terrainMechFlags, spawnDungeonFeature } from '../Map/DungeonFeature';
 import { DF } from '../Map/DungeonFeatureCatalog';
 import { Architect } from '../Generator/Architect';
 // V-1c：奖励房配额计数器是 CE rogue.rewardRoomsGenerated 的 web 载体——
@@ -186,7 +188,7 @@ import { copyFields, PLAYER_FIELDS, collectEntityGraph, restoreEntityGraph,
     type EntitySnapshotGraph } from './EntitySnapshot';
 export type { GameSnapshotItem, GameSnapshotMonster } from './EntitySnapshot';
 
-export const WHOLE_RUN_SCHEMA = 'brogue-web-whole-run-v1' as const;
+export const WHOLE_RUN_SCHEMA = 'brogue-web-whole-run-v2' as const;
 
 export interface LevelSnapshot {
     depth: number;
@@ -205,8 +207,9 @@ export interface LevelSnapshot {
     machineCells: number[];
     visibleMonsterIds: number[];
     visibleItemIds: number[];
-    /** CE absoluteTurnNumber at departure; no catch-up simulation yet (U03b). */
+    /** CE absoluteTurnNumber at departure. */
     awaySince: number;
+    playerExitedVia: Pos;
 }
 
 export interface GameSnapshot extends LevelSnapshot {
@@ -254,6 +257,7 @@ export interface LevelState {
     scent?: ScentMap;
     waypoints?: WaypointSystem;
     awaySince?: number;
+    playerExitedVia?: Pos;
     pendingCaughtFireCells?: Pos[];
 }
 
@@ -523,6 +527,7 @@ export class Game {
     private currentLevelDepth: number | null = null;
     public absoluteTurnNumber = 0;
     private currentLevelAwaySince = 0;
+    private currentLevelExitedVia: Pos = { x: 0, y: 0 };
     public levels = new Map<number, LevelState>();
     public combatSystem: CombatSystem = new CombatSystem();
     public recordingStartAt: number = Date.now();
@@ -578,6 +583,7 @@ export class Game {
         this.currentLevelDepth = null;
         this.absoluteTurnNumber = 0;
         this.currentLevelAwaySince = 0;
+        this.currentLevelExitedVia = { x: 0, y: 0 };
         this.levels = new Map();
         this.monsters = [];
         this.dormantMonsters = []; // V-2b-5：休眠表随新局清零
@@ -1037,7 +1043,8 @@ export class Game {
         return allMonsters.find(m => m.id === monsterId) ?? null;
     }
 
-    private generateDepth(isGoingUp: boolean = false, isFirstLevel: boolean = false) {
+    private generateDepth(isGoingUp: boolean = false, isFirstLevel: boolean = false, fell: boolean = false) {
+        const exit = { ...this.player.loc };
         const level = this.levelSeeds[this.depth - 1];
         if (!level) throw new RangeError('Missing level seed');
         if (level.visited && this.currentLevelDepth !== this.depth && !this.levels.has(this.depth) && this.mode !== 'test') {
@@ -1057,6 +1064,10 @@ export class Game {
             return;
         }
 
+        if (this.currentLevelDepth !== null && this.currentLevelDepth !== this.depth) {
+            if (fell) this.currentLevelExitedVia = { ...exit };
+            scheduleLevelFollowers(this.grid, this.monsters, exit, fell ? 0 : isGoingUp ? -1 : 1);
+        }
         // The active layer is already visited even before it has a detached cache entry.
         // Track its real depth; test harnesses can jump depths or re-enter the current map.
         if (this.grid && this.currentLevelDepth !== null) {
@@ -1075,6 +1086,7 @@ export class Game {
                 scent: this.scent,
                 waypoints: this.waypoints,
                 awaySince: this.currentLevelDepth === this.depth ? this.currentLevelAwaySince : this.absoluteTurnNumber,
+                playerExitedVia: { ...this.currentLevelExitedVia },
                 pendingCaughtFireCells: this.pendingCaughtFireCells,
             });
         }
@@ -1088,19 +1100,13 @@ export class Game {
             this.scent.turnNumber = scentTurnNumber;
             this.waypoints = cached.waypoints ?? new WaypointSystem();
             this.currentLevelAwaySince = cached.awaySince ?? 0;
+            this.currentLevelExitedVia = { ...(cached.playerExitedVia ?? { x: 0, y: 0 }) };
             this.pendingCaughtFireCells = cached.pendingCaughtFireCells ?? [];
             this.environment = cached.environment;
             this.fov = cached.fov;
             this.lightMap = cached.lightMap;
             this.activeFlares = []; this.flareLightMap = null; this.flareElapsedMs = 0;
             this.monsters = cached.monsters;
-            // CE RogueMain.c:901 -> restoreMonster (Architect.c:3548-3550).
-            // Only active residents of a revisited level; NOT JSON restoration,
-            // dormant entities, or the monsterEntersLevel position-only reset.
-            for (const m of this.monsters) {
-                m.isAbsorbing = false;
-                m.corpseAbsorptionCounter = 0;
-            }
             this.dormantMonsters = cached.dormantMonsters ?? [];
             this.items = cached.items;
             this.visibleMonsters = cached.visibleMonsters;
@@ -1108,20 +1114,6 @@ export class Game {
             this.machineCells = collectMachineCells(this.grid);
             this.bindDormantAwakener();
 
-            // Reposition player to stairs（P1-31：落位走 CE RogueMain.c:837-869，
-            // 先置楼梯位再向 4 邻域找合格格——不再直接站上楼梯）
-            const targetStairType = isGoingUp ? TerrainType.STAIRS_DOWN : TerrainType.STAIRS_UP;
-            let entryStair: Pos | null = null;
-            for (let x = 0; x < this.grid.width; x++) {
-                for (let y = 0; y < this.grid.height; y++) {
-                    if (this.grid.getCell(x, y)?.layers.includes(targetStairType)) { // F-1 跨层判定
-                        entryStair = { x, y };
-                        break;
-                    }
-                }
-                if (entryStair) break;
-            }
-            if (entryStair) this.placePlayerOnLevelEntry(entryStair);
             this.rebuildWaypoints(); // Revisit: live stream, no level reseeding.
         } else {
             // CE startLevel: draw a nonzero return seed, then initialize BOTH streams.
@@ -1142,6 +1134,7 @@ export class Game {
                 this.scent = new ScentMap(DCOLS, DROWS);
                 this.scent.turnNumber = scentTurnNumber;
                 this.currentLevelAwaySince = 0;
+                this.currentLevelExitedVia = { x: 0, y: 0 };
                 this.pendingCaughtFireCells = [];
                 this.waypoints = new WaypointSystem();
 
@@ -1186,6 +1179,18 @@ export class Game {
             }
         }
 
+        // No active-floor alias while environmental falls modify ownership.
+        this.levels.delete(this.depth);
+        for (let x = 0; x < this.grid.width; x++) for (let y = 0; y < this.grid.height; y++) {
+            this.grid.getCell(x, y)!.isVisible = false;
+        }
+        this.catchUpEnvironment(cached ? Math.max(0, this.absoluteTurnNumber - (cached.awaySince ?? 0)) : 50);
+        if (fell) this.placePlayerOnFallLanding(exit.x, exit.y);
+        else {
+            const entry = this.levelStair(isGoingUp ? TerrainType.STAIRS_DOWN : TerrainType.STAIRS_UP);
+            if (entry) this.placePlayerOnLevelEntry(entry);
+        }
+        this.restoreLevelResidents();
         this.currentLevelDepth = this.depth;
         // Active ownership is never duplicated by a stale cached array.
         this.levels.delete(this.depth);
@@ -1197,14 +1202,101 @@ export class Game {
         // C-7：CE RogueMain.c:671 进层时 updateColors + updateRingBonuses
         // （级联 updateMinersLightRadius）+ updateVision 的对应位置——
         // updateVision 内部先重算矿灯半径再做光照/可见性。
+        this.needsRender = true;
         this.updateVision();
         this.onRenderRequested?.();
     }
 
+    private levelStair(type: TerrainType): Pos | null {
+        for (let x = 0; x < this.grid.width; x++) for (let y = 0; y < this.grid.height; y++) {
+            if (this.grid.getCell(x, y)!.layers.includes(type)) return { x, y };
+        }
+        return null;
+    }
+
+    /** CE Architect.restoreMonster; JSON decoding never invokes this lifecycle. */
+    private restoreLevelResident(m: Monster, map?: number[][]): void {
+        if (m.entersLevelIn > 0) {
+            if (map) restoreTravelPosition(this.grid, m, map);
+            m.preplaced = true;
+        }
+        const cell = this.grid.getCell(m.x, m.y);
+        if (m.preplaced || (m.x === this.player.x && m.y === this.player.y)
+            || cell?.layers.includes(TerrainType.STAIRS_UP) || cell?.layers.includes(TerrainType.STAIRS_DOWN)) {
+            const spot = travelPlacement(this, m, m.loc, true, true, true);
+            if (spot) m.loc = spot;
+        }
+        m.preplaced = false;
+        m.entersLevelIn = m.approaching = 0;
+        m.isAbsorbing = false;
+        m.corpseAbsorptionCounter = 0;
+        // CE MB_FOLLOWER: a real level entry retires an absent monster leader.
+        // This does not run during JSON decoding, which preserves the whole graph.
+        if (m.leader && !this.monsters.includes(m.leader)) m.leader = null;
+    }
+
+    private restoreLevelResidents(): void {
+        const stairs = travelDistanceMap(this.grid, this.monsters, this.player.loc, T_PATHING_BLOCKER);
+        const pit = travelDistanceMap(this.grid, this.monsters, this.currentLevelExitedVia, T_PATHING_BLOCKER);
+        for (const m of this.monsters) {
+            if (m.hp <= 0) continue;
+            this.restoreLevelResident(m, m.approaching & APPROACHING_PIT ? pit : stairs);
+        }
+    }
+
+    /** CE Time.monstersApproachStairs: visited adjacent floors only, once per
+     * objective block, never during environment catch-up or JSON restoration. */
+    private monstersApproachStairs(): void {
+        for (const depth of [this.depth - 1, this.depth + 1]) {
+            const level = this.levels.get(depth);
+            if (!level || !this.levelSeeds[depth - 1]?.visited) continue;
+            for (const m of [...level.monsters]) {
+                if (m.hp <= 0) continue;
+                if (m.entersLevelIn > 1) m.entersLevelIn--;
+                else if (m.entersLevelIn === 1) this.monsterEntersLevel(m, level);
+            }
+        }
+    }
+
+    private monsterEntersLevel(m: Monster, source: LevelState): void {
+        const pit = !(m.approaching & (APPROACHING_DOWNSTAIRS | APPROACHING_UPSTAIRS));
+        const origin = pit ? source.playerExitedVia : this.levelStair(m.approaching & APPROACHING_DOWNSTAIRS
+            ? TerrainType.STAIRS_UP : TerrainType.STAIRS_DOWN);
+        if (!origin) throw new Error('Missing level travel exit');
+        m.loc = { ...origin };
+        m.clearCorpseTargetOnLevelChange();
+        if (!pit) {
+            const spot = travelPlacement(this, m, m.loc, false, false, false);
+            if (spot) m.loc = spot;
+            const occupant = [this.player, ...this.monsters].find(c => c.hp > 0 && c.x === m.x && c.y === m.y);
+            if (occupant) {
+                const displaced = travelPlacement(this, occupant, m.loc, true, false, false, true);
+                if (displaced) occupant.loc = displaced;
+            }
+        }
+        source.monsters.splice(source.monsters.indexOf(m), 1);
+        source.visibleMonsters.delete(m);
+        this.monsters.unshift(m);
+        m.entersLevelIn = 0;
+        m.preplaced = true;
+        m.falling = false;
+        this.restoreLevelResident(m);
+        m.ticksUntilTurn = m.movementSpeed;
+        if (pit && !m.hasStatus('levitating')) {
+            const damage = rng.randClumpedRange(6, 12, 2);
+            if (!m.isInvulnerable()) {
+                m.interruptCorpseAbsorption(damage);
+                m.hp -= m.absorbShieldDamage(damage);
+                if (m.hp <= 0) (m as unknown as { die(): void }).die();
+            }
+        }
+        this.needsRender = true;
+    }
+
     private populateLevel(
         depth: number,
-        isGoingUp: boolean = false,
-        isFirstLevel: boolean = false,
+        _isGoingUp: boolean = false,
+        _isFirstLevel: boolean = false,
         machineResults: MachineResult[] = []
     ) {
         // U04c/K31: CE membership is the final per-cell machine flag, including
@@ -1591,18 +1683,6 @@ export class Game {
             }
         }
 
-        // P1-31：进层落位（CE RogueMain.c:817-869 "Position the player"，
-        // 在全部生成决策完成之后执行）。CE stairDirection=±1 时先把玩家
-        // 置于目标楼梯位、再向 4 邻域找合格格；web 首层的"强制 vestibule
-        // 楼梯压着出生点"对应 CE stairDirection=0（fell into the level），
-        // 以当前出生点（即 vestibule 楼梯格）为目标走同一 4 邻域规则挪离
-        // 楼梯（与 CE getQualifyingLocNear 的口径差异在报告登记）。
-        if (!isFirstLevel) {
-            const entryStair = isGoingUp ? stairsDownPos : stairsUpPos;
-            if (entryStair) this.placePlayerOnLevelEntry(entryStair);
-        } else {
-            this.placePlayerOnLevelEntry({ x: this.player.loc.x, y: this.player.loc.y });
-        }
     }
 
     /**
@@ -2852,6 +2932,16 @@ export class Game {
                 if (visible) {
                     cell.isExplored = true;
                     cell.hasMemory = true;
+                    cell.rememberedTerrain = cell.terrain;
+                    cell.rememberedLayers = [...cell.layers];
+                    cell.rememberedAppearance = memoryTerrainAppearance(cell, this.depth);
+                    cell.rememberedTerrainFlags = cellTerrainFlags(this.grid, x, y);
+                    cell.rememberedTMFlags = cellTerrainMechFlags(this.grid, x, y);
+                    cell.rememberedFlags = { passable: cell.isPassable, opaque: cell.isOpaque,
+                        trapFree: (cell.rememberedTerrainFlags & T_IS_DF_TRAP) === 0 };
+                    const item = this.items.find(i => i.loc.x === x && i.loc.y === y);
+                    cell.rememberedItem = item ? { name: item.displayName, char: item.char, color: item.color } : null;
+                    cell.rememberedItemCategory = item?.category ?? null;
                 }
             }
         }
@@ -4019,12 +4109,36 @@ export class Game {
                 // Execute effect
                 switch (data.effect) {
                     case 'reveal_map':
-                        // Simple full reveal
+                        // Items.c:7945-7971: reveal secret doors, then map only
+                        // dungeon/liquid layers of undiscovered non-granite cells.
                         for (let x = 0; x < DCOLS; x++) {
                             for (let y = 0; y < DROWS; y++) {
                                 const cell = this.grid.getCell(x, y);
-                                if (cell) cell.isExplored = true;
+                                if (!cell) continue;
+                                if (discoverSecretsAt(this.grid, x, y)) { // CE discover()（Movement.c:2437）
+                                    cell.isDiscovered = true;
+                                    cell.isExplored = false;
+                                }
+                                if (cell.isExplored || cell.layers[DungeonLayer.DUNGEON] === TerrainType.GRANITE) continue;
+                                const dungeon = cell.layers[DungeonLayer.DUNGEON]!;
+                                const liquid = cell.layers[DungeonLayer.LIQUID]!;
+                                const mappedFlags = TERRAIN_FLAGS[dungeon].flags | TERRAIN_FLAGS[liquid].flags;
+                                cell.rememberedTerrainFlags = mappedFlags;
+                                cell.rememberedTMFlags = terrainMechFlags(dungeon) | terrainMechFlags(liquid);
+                                cell.isMagicMapped = true;
+                                cell.rememberedLayers = [dungeon, liquid, TerrainType.NOTHING, TerrainType.NOTHING];
+                                cell.rememberedTerrain = liquid !== TerrainType.NOTHING && DRAW_PRIORITY[liquid] < DRAW_PRIORITY[dungeon] ? liquid : dungeon;
+                                cell.rememberedAppearance = memoryTerrainAppearance(cell, this.depth);
+                                cell.rememberedFlags = {
+                                    passable: (mappedFlags & T_OBSTRUCTS_PASSABILITY) === 0,
+                                    opaque: (mappedFlags & T_OBSTRUCTS_VISION) !== 0,
+                                    trapFree: (mappedFlags & T_IS_DF_TRAP) === 0,
+                                };
                             }
+                        }
+                        for (let x = 0; x < DCOLS; x++) for (let y = 0; y < DROWS; y++) {
+                            const cell = this.grid.getCell(x, y)!;
+                            if (!(cellTerrainFlags(this.grid, x, y) & T_IS_DF_TRAP)) cell.knownTrapFree = true;
                         }
                         logger.log(i18next.t('scroll.mapping', { defaultValue: 'You have clairvoyance of the floor!' }), '#aaaaff');
                         break;
@@ -7548,11 +7662,10 @@ export class Game {
             // CE :1141 startLevel(rogue.depthLevel - 1, 0)——非楼梯入口
             //（stairDirection==0），web 与楼梯共用 generateDepth(false)，
             // 落位差异在下一行修正。
-            this.generateDepth(false);
+            this.generateDepth(false, false, true);
             this.synchronizePlayerTimeState();
 
-            // CE RogueMain.c:820-841：以旧渊格 (px,py) 为心落位。
-            this.placePlayerOnFallLanding(px, py);
+            // generateDepth has placed the player after environment catch-up.
 
             // CE :1143-1162：落地伤害。
             const landX = this.player.loc.x;
@@ -8180,7 +8293,7 @@ export class Game {
      * - decrementPlayerStatus()       → tickTemporaryImmunities + tickNutrition
      *   （营养递减与饥饿档位在 CE 位于 decrementPlayerStatus 内、由客观块调用；
      *   回血/饥饿伤害则是主观的，见 finishTurnEpilogue 的 recoverPerTurn）
-     * - DFChance 地形特征生成 / monstersApproachStairs → web 无对应系统，跳过（报告已列）
+     * - DFChance 地形特征生成仍由后续内容轮负责；普通跨梯跟随接入块尾。
      */
     private objectiveTimeBlock(): void {
         this.absoluteTurnNumber++;
@@ -8217,29 +8330,8 @@ export class Game {
         // Monsters.c:1877-1901），随本调用在环境段之后执行。
         this.tickCreatureStatuses();
 
-        // C-5：CE updateEnvironment 的第一条语句（Time.c:1597 monstersFall）
-        // ——100-tick 客观块内的渊上怪物在此坠落（先于晋升/火/气各段）。
-        this.monstersFall();
+        this.updateEnvironment();
 
-        // C-4c：CE updateEnvironment 的晋升段（Time.c:1619-1684）——两趟随机
-        // 晋升 + 记账趟。位置对应 CE 客观块里的 updateEnvironment（:2695，
-        // 在 decrementPlayerStatus 之前）；web 的 updateFires/updateGases 承担
-        // CE 的火/气体段，CE 的"晋升在火之前"次序据此保持。
-        // F-2a：CE 的 CAUGHT_FIRE_THIS_TURN 在点燃瞬间生效（Architect.c:3235），
-        // 下一 updateEnvironment 的晋升段据此跳过新火格的衰老掷骰（:1625）。
-        // web 的旗标等价物归 Game 所有：玩家动作期间 ignite/igniteForced 攒下
-        // 的登记必须在本块晋升驱动**之前**并入 skip 集，否则新点的火会被
-        // 立即衰老（实测：起火当块即变 EMBERS、永不蔓延）。
-        const queuedFire = this.environment.takeNewlyCaughtFire();
-        const caughtFireSkip = queuedFire.length > 0
-            ? [...this.pendingCaughtFireCells, ...queuedFire]
-            : this.pendingCaughtFireCells;
-        this.lastPromotionUpdate = runPromotionUpdate(this.grid, {
-            keyOnTileAt: (x, y) => this.items.some(
-                (it) => it.category === ItemCategory.KEY && it.loc.x === x && it.loc.y === y
-            ),
-            caughtFireCells: caughtFireSkip,
-        });
         // AI-1：CE Time.c:2698——客观块内玩家所站格的 TM_PROMOTES_ON_CREATURE
         // 晋升（applyInstantTileEffectsToCreature(&player)）发生在 updateEnvironment
         // 的晋升段（:2695）**之后**：OPEN_DOOR 自带 promoteChance=10000
@@ -8252,69 +8344,9 @@ export class Game {
         // CE 顺序补踩门晋升；promoteTile 本体无 RNG（Promotion.ts），不移流。
         const playerStepPromotions = promoteOnStep(this.grid, this.player.loc.x, this.player.loc.y);
         if (playerStepPromotions.length > 0) {
-            this.lastPromotionUpdate.promotions.push(...playerStepPromotions);
+            this.lastPromotionUpdate!.promotions.push(...playerStepPromotions);
             if (playerStepPromotions.some((r) => r.mutated)) this.needsRender = true;
         }
-        // F-2a：CE :1665-1668 的记账趟语义——上回合遗留的起火登记在此清空，
-        // 只有记账趟之后 WITHOUT_KEY 晋升新点的火存活到下一回合。
-        this.pendingCaughtFireCells = this.lastPromotionUpdate.caughtFireRemaining;
-        if (this.lastPromotionUpdate.renderDirty) {
-            this.needsRender = true;
-        }
-        // DF 消息（CE :3370 message/playerCanSee 门控的游戏侧消费）：
-        // 原点格对玩家可见才播，一次 spawn 至多一条。CE 目录描述是源文英文，
-        // 与 CE 侧一致直记，不走 i18n（无键可译；报告已登记）。
-        for (const p of this.lastPromotionUpdate.promotions) {
-            if (p.spawn?.message && p.spawn.builtCells.some(
-                (c) => this.grid.getCell(c.x, c.y)?.isVisible
-            )) {
-                logger.log(p.spawn.message, '#aaaaaa');
-            }
-        }
-        // G-1：晋升链若接出了 GAS 层 DF（Architect.c:3384 volume 累加走
-        // Cell.volume），镜像须对账一次。当前目录尚无已接线的 GAS DF
-        // （归 G-2），本分支今天不可达——防御性对账，接线后即为活路径。
-        if (this.lastPromotionUpdate.promotions.some((p) => (p.spawn?.gasVolumeAdded ?? 0) > 0)
-            || this.lastPromotionUpdate.withoutKeyPromotions.some((p) => (p.spawn?.gasVolumeAdded ?? 0) > 0)) {
-            this.environment.syncGasMirror();
-        }
-
-        // Let environment update
-        // F-2a：updateFires 即 CE updateEnvironment 的火段（Time.c:1688-1700，
-        // Promotion.runFireUpdate）。火段新登记的起火格（新点的火 + 上一玩家
-        // 动作里 ignite/igniteForced 攒下的队列）并入 pendingCaughtFireCells，
-        // 下一客观块的晋升驱动据此跳过它们的衰老掷骰（CE :1625 一格一回合
-        // 至多晋升/衰老一次的语义）。遗留集不清丢：CE 的旗标活到下一记账趟。
-        const fireCaught = this.environment.updateFires(this.pendingCaughtFireCells);
-        if (fireCaught.length > 0) {
-            this.pendingCaughtFireCells = [...this.pendingCaughtFireCells, ...fireCaught];
-        }
-        // F-2c：火段的爆炸落格（甲烷爆轰 → DF_EXPLOSION_FIRE）在落格瞬间
-        // 结算（CE fillSpawnMap refresh 分支 Architect.c:3255-3260——发生在
-        // 火段内部、updateVolumetricMedia 之前，故排干点在 updateGases 前）。
-        // 顺带覆盖晋升趟落下的爆炸地形（本轮目录无此路径；CE promoteTile
-        // :1268 同样 refreshCell=true，防御性对齐）。
-        const explosiveCells = this.environment.takeExplosiveSpawnCells();
-        for (const p of this.lastPromotionUpdate.promotions) {
-            if (p.spawn) explosiveCells.push(...p.spawn.builtCells);
-        }
-        for (const p of this.lastPromotionUpdate.withoutKeyPromotions) {
-            if (p.spawn) explosiveCells.push(...p.spawn.builtCells);
-        }
-        this.applyInstantExplosionAt(explosiveCells);
-        // G-1：CE Time.c:1600-1616——先全场探测 GAS 层非空，非空才
-        // `updateVolumetricMedia()` 连调**两次**（:1606 注释 "// update gases
-        // twice"；一次调用 = 一轮 8 邻体积均分，两轮 = 气体每回合推进约
-        // 2 格、消散期望也 ×2——QUICK 档约 −1.0/回合、SLOW 档约 −0.4）。
-        // 探测守卫同时保住无气体回合的 RNG 流：updateVolumetricMedia 每格
-        // 每轮各消耗一次随机舍入掷骰，空跑一回合就要白烧 2×DCOLS×DROWS 次
-        // 抽取并移动后续一切随机事件（CE 的探测就是干这个的）。
-        if (this.environment.hasVolumetricGas()) {
-            this.environment.updateGases();
-            this.environment.updateGases();
-        }
-        this.driftFloorItems();
-
         // U14a: CE player exposure follows the objective decrement and gas update.
         this.applyNauseaFromTerrain(this.player);
 
@@ -8357,7 +8389,128 @@ export class Game {
         // P4-10：滚动 waypoint 刷新（CE Time.c:2710-2714）——客观时间块的
         // 最后一步（CE 里在 monstersApproachStairs 之后）。每 100 tick 恰好
         // 重算一个 waypoint；全量重建只在关卡生成/重访时发生。
+        if (this.isGameOver || this.player.hp <= 0) return;
+        this.monstersApproachStairs();
         this.waypoints.rollingRefresh(this.wpContext());
+    }
+
+    /** CE Time.updateEnvironment. No player/monster status tick, regeneration,
+     * nutrition, charging, spawning, scent, approach timer or action accounting. */
+    private updateEnvironment(): void {
+        // C-5：CE updateEnvironment 的第一条语句（Time.c:1597 monstersFall）
+        // ——100-tick 客观块内的渊上怪物在此坠落（先于晋升/火/气各段）。
+        this.monstersFall();
+        for (let x = 0; x < this.grid.width; x++) for (let y = 0; y < this.grid.height; y++) {
+            this.grid.getCell(x, y)!.exposedToFire = 0;
+        }
+
+        // G-1：CE Time.c:1600-1616——先全场探测 GAS 层非空，非空才
+        // `updateVolumetricMedia()` 连调**两次**（:1606 注释 "// update gases
+        // twice"；一次调用 = 一轮 8 邻体积均分，两轮 = 气体每回合推进约
+        // 2 格、消散期望也 ×2——QUICK 档约 −1.0/回合、SLOW 档约 −0.4）。
+        // 探测守卫同时保住无气体回合的 RNG 流：updateVolumetricMedia 每格
+        // 每轮各消耗一次随机舍入掷骰，空跑一回合就要白烧 2×DCOLS×DROWS 次
+        // 抽取并移动后续一切随机事件（CE 的探测就是干这个的）。
+        if (this.environment.hasVolumetricGas()) {
+            this.environment.updateGases();
+            this.environment.updateGases();
+        }
+
+        // C-4c：CE updateEnvironment 的晋升段（Time.c:1619-1684）——两趟随机
+        // 晋升 + 记账趟。位置对应 CE 客观块里的 updateEnvironment（:2695，
+        // 在 decrementPlayerStatus 之前）；web 的 updateFires/updateGases 承担
+        // CE 的火/气体段，CE 的"晋升在火之前"次序据此保持。
+        // F-2a：CE 的 CAUGHT_FIRE_THIS_TURN 在点燃瞬间生效（Architect.c:3235），
+        // 下一 updateEnvironment 的晋升段据此跳过新火格的衰老掷骰（:1625）。
+        // web 的旗标等价物归 Game 所有：玩家动作期间 ignite/igniteForced 攒下
+        // 的登记必须在本块晋升驱动**之前**并入 skip 集，否则新点的火会被
+        // 立即衰老（实测：起火当块即变 EMBERS、永不蔓延）。
+        const queuedFire = this.environment.takeNewlyCaughtFire();
+        const caughtFireSkip = queuedFire.length > 0
+            ? [...this.pendingCaughtFireCells, ...queuedFire]
+            : this.pendingCaughtFireCells;
+        this.lastPromotionUpdate = runPromotionUpdate(this.grid, {
+            keyOnTileAt: (x, y) => this.items.some(
+                (it) => it.category === ItemCategory.KEY && it.loc.x === x && it.loc.y === y
+            ),
+            caughtFireCells: caughtFireSkip,
+        });
+        // F-2a：CE :1665-1668 的记账趟语义——上回合遗留的起火登记在此清空，
+        // 只有记账趟之后 WITHOUT_KEY 晋升新点的火存活到下一回合。
+        this.pendingCaughtFireCells = this.lastPromotionUpdate.caughtFireRemaining;
+        if (this.lastPromotionUpdate.renderDirty) {
+            this.needsRender = true;
+        }
+        // DF 消息（CE :3370 message/playerCanSee 门控的游戏侧消费）：
+        // 原点格对玩家可见才播，一次 spawn 至多一条。CE 目录描述是源文英文，
+        // 与 CE 侧一致直记，不走 i18n（无键可译；报告已登记）。
+        for (const p of this.lastPromotionUpdate.promotions) {
+            if (p.spawn?.message && p.spawn.builtCells.some(
+                (c) => this.grid.getCell(c.x, c.y)?.isVisible
+            )) {
+                logger.log(p.spawn.message, '#aaaaaa');
+            }
+        }
+        // G-1：晋升链若接出了 GAS 层 DF（Architect.c:3384 volume 累加走
+        // Cell.volume），镜像须对账一次。当前目录尚无已接线的 GAS DF
+        // （归 G-2），本分支今天不可达——防御性对账，接线后即为活路径。
+        if (this.lastPromotionUpdate.promotions.some((p) => (p.spawn?.gasVolumeAdded ?? 0) > 0)
+            || this.lastPromotionUpdate.withoutKeyPromotions.some((p) => (p.spawn?.gasVolumeAdded ?? 0) > 0)) {
+            this.environment.syncGasMirror();
+        }
+
+        // CE PRESSURE_PLATE_DEPRESSED clears only after the tile becomes empty.
+        const depressed = this.displacementTrapDepressions?.get(this.grid);
+        if (depressed) for (const key of depressed) {
+            const x = key % DCOLS, y = Math.floor(key / DCOLS);
+            if (!(this.player.x === x && this.player.y === y) && !this.getMonsterAt(x, y)
+                && !this.items.some(item => item.loc.x === x && item.loc.y === y)) depressed.delete(key);
+        }
+
+        // Let environment update
+        // F-2a：updateFires 即 CE updateEnvironment 的火段（Time.c:1688-1700，
+        // Promotion.runFireUpdate）。火段新登记的起火格（新点的火 + 上一玩家
+        // 动作里 ignite/igniteForced 攒下的队列）并入 pendingCaughtFireCells，
+        // 下一客观块的晋升驱动据此跳过它们的衰老掷骰（CE :1625 一格一回合
+        // 至多晋升/衰老一次的语义）。遗留集不清丢：CE 的旗标活到下一记账趟。
+        const fireCaught = this.environment.updateFires(this.pendingCaughtFireCells);
+        if (fireCaught.length > 0) {
+            this.pendingCaughtFireCells = [...this.pendingCaughtFireCells, ...fireCaught];
+        }
+        // F-2c：火段的爆炸落格（甲烷爆轰 → DF_EXPLOSION_FIRE）在落格瞬间
+        // 结算（CE fillSpawnMap refresh 分支 Architect.c:3255-3260——发生在
+        // 火段内部；CE 的气体扩散已在晋升之前完成）。
+        // 顺带覆盖晋升趟落下的爆炸地形（本轮目录无此路径；CE promoteTile
+        // :1268 同样 refreshCell=true，防御性对齐）。
+        const explosiveCells = this.environment.takeExplosiveSpawnCells();
+        for (const p of this.lastPromotionUpdate.promotions) {
+            if (p.spawn) explosiveCells.push(...p.spawn.builtCells);
+        }
+        for (const p of this.lastPromotionUpdate.withoutKeyPromotions) {
+            if (p.spawn) explosiveCells.push(...p.spawn.builtCells);
+        }
+        this.applyInstantExplosionAt(explosiveCells);
+        this.driftFloorItems();
+
+        this.destroyFloorItemsInLava();
+    }
+
+    /** RogueMain.startLevel: run 50 updates for a new map, at most 100 for a
+     * revisit. oldSeed is already installed. Borrow historical absolute time,
+     * put the player in limbo, then restore both even if an update throws. */
+    private catchUpEnvironment(timeAway: number): void {
+        const position = { ...this.player.loc }, now = this.absoluteTurnNumber;
+        this.player.loc = { x: 0, y: 0 };
+        try {
+            for (let remaining = Math.max(0, Math.min(100, Math.trunc(timeAway))) - 1; remaining >= 0; remaining--) {
+                this.absoluteTurnNumber = Math.max(now, remaining) - remaining;
+                this.updateEnvironment();
+            }
+        } finally {
+            this.absoluteTurnNumber = now;
+            this.player.loc = position;
+        }
+        if (this.ticksTillUpdateEnvironment <= 0) this.ticksTillUpdateEnvironment += 100;
     }
 
     /**
@@ -8668,7 +8821,7 @@ export class Game {
             monsters: this.monsters, dormantMonsters: this.dormantMonsters, items: this.items,
             visibleMonsters: this.visibleMonsters, visibleItems: this.visibleItems,
             machineCells: this.machineCells, scent: this.scent, waypoints: this.waypoints,
-            awaySince: this.currentLevelAwaySince, pendingCaughtFireCells: this.pendingCaughtFireCells,
+            awaySince: this.currentLevelAwaySince, playerExitedVia: { ...this.currentLevelExitedVia }, pendingCaughtFireCells: this.pendingCaughtFireCells,
         };
     }
 
@@ -8687,6 +8840,7 @@ export class Game {
             visibleMonsterIds: [...level.visibleMonsters].map(m => m.id),
             visibleItemIds: [...level.visibleItems].map(i => i.id),
             awaySince: level.awaySince ?? 0,
+            playerExitedVia: { ...(level.playerExitedVia ?? { x: 0, y: 0 }) },
         };
     }
 
@@ -8762,18 +8916,32 @@ export class Game {
             || !Array.isArray(s.levels) || !Array.isArray(s.pendingFallenByDepth)) return false;
         const depths = new Set<number>();
         for (const level of [s, ...s.levels]) {
-            if (!Number.isInteger(level.depth) || level.depth < 1 || level.depth > CE_DEEPEST_LEVEL
+            if (!level || !Number.isInteger(level.depth) || level.depth < 1 || level.depth > CE_DEEPEST_LEVEL
                 || depths.has(level.depth) || !s.levelSeeds[level.depth - 1]?.visited
                 || level.width !== DCOLS || level.height !== DROWS
                 || !Array.isArray(level.grid) || level.grid.length !== level.width * level.height
                 || !Array.isArray(level.impregnableCells)
-                || !level.grid.every(c => c && c.layers?.length === 4 && typeof c.machineNumber === 'number')
+                || !level.grid.every(c => c && c.layers?.length === 4 && typeof c.machineNumber === 'number'
+                    && typeof c.rememberedTerrain === 'number' && Array.isArray(c.rememberedLayers)
+                    && (c.rememberedLayers.length === 0 || c.rememberedLayers.length === 4)
+                    && typeof c.isMagicMapped === 'boolean' && typeof c.knownTrapFree === 'boolean'
+                    && typeof c.rememberedTerrainFlags === 'number' && typeof c.rememberedTMFlags === 'number'
+                    && c.rememberedAppearance !== undefined && c.rememberedItem !== undefined
+                    && c.rememberedItemCategory !== undefined && c.rememberedFlags !== undefined)
                 || !machineCellsMatchGrid(level.machineCells, level.grid)
                 || !level.scent || level.scent.values.length !== level.width * level.height
                 || !level.waypoints || !level.environmentState || !Array.isArray(level.monsters)
+                || !Number.isFinite(level.awaySince) || !level.playerExitedVia
+                || !Number.isInteger(level.playerExitedVia.x) || !Number.isInteger(level.playerExitedVia.y)
                 || !Array.isArray(level.dormantMonsters) || !Array.isArray(level.items)) return false;
             depths.add(level.depth);
         }
+        if (!Array.isArray(s.entityGraph.monsters) || !Array.isArray(s.entityGraph.items)
+            || s.pendingFallenByDepth.some(level => !level || !Array.isArray(level.monsters))) return false;
+        const rows = [...s.monsters, ...s.dormantMonsters, ...s.entityGraph.monsters,
+            ...s.levels.flatMap(l => [...l.monsters, ...l.dormantMonsters]), ...s.pendingFallenByDepth.flatMap(l => l.monsters)];
+        if (rows.some(m => !Number.isInteger(m.entersLevelIn) || m.entersLevelIn < 0 || m.entersLevelIn > 150
+            || !Number.isInteger(m.approaching) || m.approaching < 0 || m.approaching > 7)) return false;
         // Test mode has one synthetic room map instead of a traversable dungeon.
         if (s.mode !== 'test' && s.levelSeeds.some((level, i) => level.visited && !depths.has(i + 1))) return false;
         return true;
@@ -8809,7 +8977,7 @@ export class Game {
                     visibleMonsters: new Set(saved.visibleMonsterIds.map(id => resolve(entityGraph.monsters, id))),
                     visibleItems: new Set(saved.visibleItemIds.map(id => resolve(entityGraph.items, id))),
                     machineCells: collectMachineCells(grid), scent: ScentMap.fromState(saved.scent), waypoints,
-                    awaySince: saved.awaySince, pendingCaughtFireCells: saved.pendingCaughtFireCells.map(p => ({ ...p })),
+                    awaySince: saved.awaySince, playerExitedVia: { ...saved.playerExitedVia }, pendingCaughtFireCells: saved.pendingCaughtFireCells.map(p => ({ ...p })),
                 }];
             }));
         } catch { return false; }
@@ -8828,6 +8996,7 @@ export class Game {
         this.monsters = active.monsters; this.dormantMonsters = active.dormantMonsters!; this.items = active.items;
         this.visibleMonsters = active.visibleMonsters; this.visibleItems = active.visibleItems;
         this.machineCells = active.machineCells!; this.scent = active.scent!; this.waypoints = active.waypoints!;
+        this.currentLevelExitedVia = { ...active.playerExitedVia! };
         this.currentLevelAwaySince = active.awaySince!; this.pendingCaughtFireCells = active.pendingCaughtFireCells!;
         this.displacementTrapDepressions = new WeakMap();
         for (const saved of levelRows) this.displacementTrapDepressions.set(restored.get(saved.depth)!.grid, new Set(saved.trapDepressions));
@@ -8892,6 +9061,16 @@ export class Game {
         for (const saved of snapshot.grid) {
             const cell = this.grid.getCell(saved.x, saved.y)!;
             cell.isVisible = saved.isVisible; cell.isExplored = saved.isExplored; cell.hasMemory = saved.hasMemory;
+            cell.rememberedTerrain = saved.rememberedTerrain;
+            cell.rememberedAppearance = saved.rememberedAppearance;
+            cell.rememberedLayers = saved.rememberedLayers;
+            cell.rememberedItem = saved.rememberedItem;
+            cell.rememberedItemCategory = saved.rememberedItemCategory;
+            cell.isMagicMapped = saved.isMagicMapped;
+            cell.rememberedTerrainFlags = saved.rememberedTerrainFlags;
+            cell.rememberedTMFlags = saved.rememberedTMFlags;
+            cell.knownTrapFree = saved.knownTrapFree;
+            cell.rememberedFlags = saved.rememberedFlags;
         }
         this.needsRender = true;
         this.onRenderRequested?.();
@@ -9408,9 +9587,10 @@ export class Game {
             checkEntity(m, m.name);
         }
 
-        // CE updateEnvironment clears PRESSURE_PLATE_DEPRESSED each objective block.
-        this.displacementTrapDepressions?.delete(this.grid);
+        this.destroyFloorItemsInLava();
+    }
 
+    private destroyFloorItemsInLava(): void {
         // Destroy items in lava
         for (let i = this.items.length - 1; i >= 0; i--) {
             const item = this.items[i];
@@ -9622,10 +9802,13 @@ export class Game {
             const curr = queue.shift()!;
             const cell = this.grid.getCell(curr.x, curr.y);
 
-            const hasLoot = this.items.some(i => i.loc.x === curr.x && i.loc.y === curr.y);
+            const hasLoot = cell?.isVisible
+                ? this.items.some(i => i.loc.x === curr.x && i.loc.y === curr.y)
+                : !!cell?.rememberedItem;
             const isPlayerOnLoot = (curr.x === this.player.loc.x && curr.y === this.player.loc.y);
 
-            if (cell && (!cell.isExplored || (hasLoot && !isPlayerOnLoot)) && cell.isPassable) {
+            if (cell && (!cell.isExplored || (hasLoot && !isPlayerOnLoot))
+                && (cell.isVisible ? cell.isPassable : cell.rememberedFlags?.passable ?? !cell.isExplored)) {
                 target = curr;
                 break;
             }
@@ -9636,8 +9819,8 @@ export class Game {
                 const ny = curr.y + d[1];
                 const nextCell = this.grid.getCell(nx, ny);
                 if (nextCell && this.grid.isValidPos(nx, ny) &&
-                    !nextCell.layers.includes(TerrainType.WATER_DEEP) && // F-1 跨层判定
-                    (nextCell.isPassable || !nextCell.isExplored)) {
+                    !(nextCell.isVisible ? nextCell.layers : nextCell.rememberedLayers).includes(TerrainType.WATER_DEEP) &&
+                    (nextCell.isVisible ? nextCell.isPassable : nextCell.rememberedFlags?.passable ?? !nextCell.isExplored)) {
                     const key = `${nx},${ny}`;
                     if (!visited.has(key)) {
                         visited.add(key);
@@ -9676,7 +9859,8 @@ export class Game {
             this.everSeenItems.add(i);
         }
 
-        this.travelTargetItem = this.items.find(i => i.loc.x === x && i.loc.y === y);
+        this.travelTargetItem = this.grid.getCell(x, y)?.isVisible
+            ? this.items.find(i => i.loc.x === x && i.loc.y === y) : undefined;
 
         this.setAutoPath(x, y);
     }
@@ -10300,7 +10484,8 @@ export class Game {
         const cell = this.grid.getCell(x, y);
 
         const sensedMonster = this.getMonsterAt(x, y);
-        if (!cell || (!cell.hasMemory && !cell.isVisible && !(sensedMonster && canDisplayMonster(this.player, this.grid, sensedMonster)))) {
+        if (!cell || (!cell.hasMemory && !cell.isMagicMapped && !cell.isVisible
+            && !(sensedMonster && canDisplayMonster(this.player, this.grid, sensedMonster)))) {
             this.hoveredText = i18next.t('hover.unknown', { defaultValue: '未知' });
             return;
         }
@@ -10318,9 +10503,11 @@ export class Game {
         }
 
         // Check items
-        const itemsAtLoc = this.items.filter(i => i.loc.x === x && i.loc.y === y);
-        if (cell.isVisible || cell.hasMemory) {
-            itemsAtLoc.forEach(i => entities.push(i.displayName));
+        if (cell.isVisible) {
+            this.items.filter(i => i.loc.x === x && i.loc.y === y)
+                .forEach(i => entities.push(i.displayName));
+        } else if (cell.hasMemory && cell.rememberedItem) {
+            entities.push(cell.rememberedItem.name);
         }
 
         // Check player
@@ -10329,7 +10516,7 @@ export class Game {
         }
 
         // CE IO.c:1278-1281 draws only the location marker on undiscovered cells.
-        if (!cell.isVisible && !cell.hasMemory) {
+        if (!cell.isVisible && !cell.hasMemory && !cell.isMagicMapped) {
             this.hoveredText = entities.join('、');
             return;
         }
@@ -10340,9 +10527,11 @@ export class Game {
         // 站进毒气时 CE 悬浮提示显示"a cloud of caustic gas"）。
         // terrain getter 本身固定 skipGas（Grid.ts G-1 注：玩法读者走旗标
         // 并集世界），显示侧的气体偏好在这里补。
-        const gasTile = cell.layers[DungeonLayer.GAS]!;
+        const knownLayers = cell.isVisible ? cell.layers : cell.rememberedLayers;
+        const gasTile = knownLayers[DungeonLayer.GAS] ?? TerrainType.NOTHING;
         const tName = this.getTerrainName(
-            gasTile !== TerrainType.NOTHING ? gasTile : cell.terrain
+            gasTile !== TerrainType.NOTHING ? gasTile
+                : cell.isVisible ? cell.terrain : cell.rememberedTerrain
         );
 
         let baseText = '';
@@ -10356,7 +10545,7 @@ export class Game {
             baseText = tName;
         }
 
-        if (!cell.isVisible && cell.hasMemory && cell.isExplored) {
+        if (!cell.isVisible && (cell.hasMemory || cell.isMagicMapped)) {
             if (entities.length > 0) {
                 this.hoveredText = i18next.t('hover.remember_entity', {
                     entities: entities.join(separator),
@@ -10372,7 +10561,7 @@ export class Game {
             this.hoveredText = baseText;
         }
 
-        if (cell.layers.includes(TerrainType.SIGN)) { // F-1 跨层判定
+        if (knownLayers.includes(TerrainType.SIGN)) {
             const signText = this.signTexts.get(this.posKey(x, y));
             if (signText) {
                 this.hoveredText = `${this.hoveredText} ${signText}`;
@@ -10381,7 +10570,16 @@ export class Game {
     }
 
     public setAutoPath(x: number, y: number) {
-        const path = Pathfind.findPath(this.grid, this.player.loc.x, this.player.loc.y, x, y, this.canMoveTo.bind(this));
+        const knownPassable = (px: number, py: number): boolean => {
+            const cell = this.grid.getCell(px, py);
+            if (!cell) return false;
+            if (cell.isVisible) return this.canMoveTo(px, py);
+            if (cell.hasMemory || cell.isMagicMapped) {
+                return !cell.rememberedLayers.some(t => blocksPassability(t) || isDeepWater(t));
+            }
+            return true; // An unknown frontier has no known obstruction.
+        };
+        const path = Pathfind.findPath(this.grid, this.player.loc.x, this.player.loc.y, x, y, knownPassable);
         if (path && path.length > 0) {
             this.autoPath = path;
         } else {

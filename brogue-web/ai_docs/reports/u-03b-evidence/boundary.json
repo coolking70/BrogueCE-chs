@@ -1,0 +1,35 @@
+{
+  "allowed": [
+    "progress.md",
+    "scripts/u03-state-contract.json",
+    "src/engine/Core/EntitySnapshot.ts",
+    "src/engine/Core/Game.ts",
+    "src/entities/Monster.ts",
+    "src/test/fixtures/generation_baseline.json",
+    "src/test/c_5_fall_subsystem.test.ts",
+    "src/test/g_2_gas_df_wiring.test.ts",
+    "src/test/u_02b_level_rng.test.ts",
+    "src/test/c_4a_0_layer_model.test.ts",
+    "src/test/c_4b_dungeon_feature.test.ts",
+    "src/test/ui_2_protection.test.ts",
+    "src/test/w_11_teleport_placement.test.ts"
+  ],
+  "changed": [
+    "src/test/w_11_teleport_placement.test.ts",
+    "src/test/u_02b_level_rng.test.ts",
+    "src/test/c_5_fall_subsystem.test.ts",
+    "src/test/ui_2_protection.test.ts",
+    "src/test/c_4b_dungeon_feature.test.ts",
+    "src/test/g_2_gas_df_wiring.test.ts",
+    "src/test/c_4a_0_layer_model.test.ts",
+    "src/entities/Monster.ts",
+    "src/test/fixtures/generation_baseline.json",
+    "src/engine/Core/EntitySnapshot.ts",
+    "src/engine/Core/Game.ts",
+    "scripts/u03-state-contract.json",
+    "progress.md"
+  ],
+  "protectedTests": 156,
+  "allProtectedTestsUnchanged": true,
+  "CEUnchanged": true
+}

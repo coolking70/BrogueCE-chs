@@ -1,0 +1,978 @@
+{
+  "controlMatchesBaseline": true,
+  "transitions": [
+    {
+      "from": "control",
+      "to": "follow",
+      "baselineFields": [],
+      "generation": [],
+      "interaction": [
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 6,
+          "fields": [
+            "rng",
+            "monsters"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 5,
+          "fields": [
+            "rng",
+            "monsters"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 6,
+          "fields": [
+            "rng",
+            "grid",
+            "monsters"
+          ]
+        }
+      ]
+    },
+    {
+      "from": "follow",
+      "to": "bridge",
+      "baselineFields": [],
+      "generation": [],
+      "interaction": [
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 2,
+          "fields": [
+            "rng"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 3,
+          "fields": [
+            "rng",
+            "grid",
+            "monsters"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 4,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 5,
+          "fields": [
+            "rng",
+            "grid",
+            "monsters"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 6,
+          "fields": [
+            "rng",
+            "grid",
+            "monsters"
+          ]
+        }
+      ]
+    },
+    {
+      "from": "bridge",
+      "to": "environment",
+      "baselineFields": [],
+      "generation": [
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 1,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 2,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 3,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 4,
+          "fields": [
+            "rng"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 5,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 6,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 7,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 8,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 9,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 10,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 11,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 12,
+          "fields": [
+            "rng"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 13,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 14,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 15,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 16,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 17,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 18,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 19,
+          "fields": [
+            "rng"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 20,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 21,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 22,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 23,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 24,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 25,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 26,
+          "fields": [
+            "rng"
+          ]
+        },
+        {
+          "seed": "31337",
+          "depthOrCheckpoint": 3,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "31337",
+          "depthOrCheckpoint": 4,
+          "fields": [
+            "rng"
+          ]
+        },
+        {
+          "seed": "31337",
+          "depthOrCheckpoint": 5,
+          "fields": [
+            "rng"
+          ]
+        },
+        {
+          "seed": "31337",
+          "depthOrCheckpoint": 6,
+          "fields": [
+            "rng"
+          ]
+        },
+        {
+          "seed": "31337",
+          "depthOrCheckpoint": 7,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "31337",
+          "depthOrCheckpoint": 8,
+          "fields": [
+            "rng",
+            "grid",
+            "monsters"
+          ]
+        },
+        {
+          "seed": "31337",
+          "depthOrCheckpoint": 9,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "31337",
+          "depthOrCheckpoint": 10,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "31337",
+          "depthOrCheckpoint": 11,
+          "fields": [
+            "rng"
+          ]
+        },
+        {
+          "seed": "31337",
+          "depthOrCheckpoint": 12,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "31337",
+          "depthOrCheckpoint": 13,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "31337",
+          "depthOrCheckpoint": 14,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "31337",
+          "depthOrCheckpoint": 15,
+          "fields": [
+            "rng"
+          ]
+        },
+        {
+          "seed": "31337",
+          "depthOrCheckpoint": 16,
+          "fields": [
+            "rng"
+          ]
+        },
+        {
+          "seed": "31337",
+          "depthOrCheckpoint": 17,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "31337",
+          "depthOrCheckpoint": 18,
+          "fields": [
+            "rng"
+          ]
+        },
+        {
+          "seed": "31337",
+          "depthOrCheckpoint": 19,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "31337",
+          "depthOrCheckpoint": 20,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "31337",
+          "depthOrCheckpoint": 21,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "31337",
+          "depthOrCheckpoint": 22,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "31337",
+          "depthOrCheckpoint": 23,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "31337",
+          "depthOrCheckpoint": 24,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "31337",
+          "depthOrCheckpoint": 25,
+          "fields": [
+            "rng"
+          ]
+        },
+        {
+          "seed": "31337",
+          "depthOrCheckpoint": 26,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 3,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 4,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 5,
+          "fields": [
+            "rng"
+          ]
+        },
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 6,
+          "fields": [
+            "rng"
+          ]
+        },
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 7,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 8,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 9,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 10,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 11,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 12,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 13,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 14,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 15,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 16,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 17,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 18,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 19,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 20,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 21,
+          "fields": [
+            "rng"
+          ]
+        },
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 22,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 23,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 24,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 25,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "424242",
+          "depthOrCheckpoint": 26,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 1,
+          "fields": [
+            "rng"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 2,
+          "fields": [
+            "rng"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 3,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 4,
+          "fields": [
+            "rng"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 5,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 6,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 7,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 8,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 9,
+          "fields": [
+            "rng"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 10,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 11,
+          "fields": [
+            "rng"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 12,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 13,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 14,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 15,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 16,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 17,
+          "fields": [
+            "rng"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 18,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 19,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 20,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 21,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 22,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 23,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 24,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 25,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 26,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        }
+      ],
+      "interaction": [
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 1,
+          "fields": [
+            "rng",
+            "grid",
+            "monsters"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 2,
+          "fields": [
+            "rng",
+            "grid"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 3,
+          "fields": [
+            "rng",
+            "grid",
+            "monsters"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 4,
+          "fields": [
+            "rng",
+            "grid",
+            "monsters"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 5,
+          "fields": [
+            "rng",
+            "grid",
+            "monsters"
+          ]
+        },
+        {
+          "seed": "777",
+          "depthOrCheckpoint": 6,
+          "fields": [
+            "rng",
+            "grid",
+            "monsters"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 1,
+          "fields": [
+            "rng",
+            "monsters"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 2,
+          "fields": [
+            "rng"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 3,
+          "fields": [
+            "rng",
+            "monsters"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 4,
+          "fields": [
+            "rng",
+            "monsters"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 5,
+          "fields": [
+            "rng",
+            "monsters"
+          ]
+        },
+        {
+          "seed": "20260913",
+          "depthOrCheckpoint": 6,
+          "fields": [
+            "rng",
+            "grid",
+            "monsters"
+          ]
+        }
+      ]
+    }
+  ]
+}

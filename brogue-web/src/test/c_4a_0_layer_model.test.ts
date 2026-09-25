@@ -667,14 +667,25 @@ describe('C-4a-0 留痕（本轮明确不做的事，断言现状）', () => {
         //      地形 + 体积（G-1 的迁层主张本身）。
         for (const seed of [424242, 20260916]) {
             const g: any = createHeadlessGame(seed);
-            for (const depth of [1, 5, 12, 26]) {
-                if (depth > 1) { g.depth = depth; g.generateDepth(false, false); }
+            // U03b: observe the genuine generation boundary, then run all 50
+            // environment updates. The whitelist and every original expectation
+            // still apply to generation; no live post-warmup terrain is erased.
+            const catchUp = g.catchUpEnvironment.bind(g);
+            g.catchUpEnvironment = (...args: unknown[]) => {
+                const depth = g.depth;
                 for (let x = 0; x < g.grid.width; x++) {
                     for (let y = 0; y < g.grid.height; y++) {
                         expect(g.grid.getCell(x, y)!.layers[L.GAS], `seed=${seed} D${depth} (${x},${y}) 生成不产气`).toBe(C.NOTHING);
                     }
                 }
+                return catchUp(...args);
+            };
+            for (const depth of [1, 5, 12, 26]) {
+                if (depth === 1) g.startNewGame({ seed });
+                if (depth > 1) { g.depth = depth; g.generateDepth(false, false); }
+
             }
+            delete g.catchUpEnvironment;
             // ②（只在 D1 行使，避免全图扫描×深度×种子的浪费）：
             // 找一块真实地板注入（生成图没有坐标保证）。
             let spot: { x: number; y: number } | null = null;

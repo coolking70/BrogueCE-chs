@@ -203,6 +203,8 @@ describe('UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 res
         sword.quiverNumber = undefined;
 
         const mound = spawnDegrader(game, 5, 5);
+        // U03b: this tests the on-hit quiver gate, independent of generation RNG.
+        Object.assign(mound, { defense: 0, isCaged: true });
         priv(game).resolvePlayerMeleeAttackOn(mound);
         expect(mound.hp).toBeLessThan(mound.maxHp);
         expect(sword.enchantment).toBe(-1);
@@ -213,6 +215,7 @@ describe('UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 res
         carveBigRoom(game2);
         game2.player.equippedWeapon = null;
         const mound2 = spawnDegrader(game2, 5, 5);
+        Object.assign(mound2, { defense: 0, isCaged: true });
         expect(() => priv(game2).resolvePlayerMeleeAttackOn(mound2)).not.toThrow();
         expect(mound2.hp).toBeLessThan(mound2.maxHp);
         expect(allTexts()).not.toContain('weakens');

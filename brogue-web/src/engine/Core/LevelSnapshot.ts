@@ -4,7 +4,9 @@ import { copyFields } from './EntitySnapshot';
 
 export const CELL_FIELDS = [
     'x', 'y', 'layers', 'char', 'color', 'volume', 'isExplored', 'isVisible',
-    'hasMemory', 'light', 'isPassable', 'isOpaque', 'exposedToFire', 'trapType',
+    'hasMemory', 'rememberedTerrain', 'rememberedAppearance', 'rememberedLayers', 'rememberedItem', 'rememberedItemCategory',
+    'isMagicMapped', 'rememberedTerrainFlags', 'rememberedTMFlags', 'knownTrapFree', 'rememberedFlags',
+    'light', 'isPassable', 'isOpaque', 'exposedToFire', 'trapType',
     'isDiscovered', 'autoSearched', 'machineNumber', 'isPowered', 'hasDormantMonster',
 ] as const satisfies readonly (keyof Cell)[];
 

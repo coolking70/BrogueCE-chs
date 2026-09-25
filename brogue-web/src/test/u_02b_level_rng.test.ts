@@ -91,7 +91,10 @@ describe('U02b layer lifecycle and persistence', () => {
   const wp=g.rebuildWaypoints.bind(g);let wpDelta=0;
   vi.spyOn(g,'rebuildWaypoints').mockImplementation(()=>{const c=rng.randomNumbersGenerated;wp();wpDelta=rng.randomNumbersGenerated-c;});
   const beforeVision:unknown[]=[];
-  vi.spyOn(g as any,'updateVision').mockImplementation(()=>{beforeVision.push(rng.getState().streams);});
+  // U03b / CE RogueMain.c:734–806: observe oldSeed before environment consumes it.
+  // Keep the original reseed expectation; vision now correctly follows 50 updates.
+  const catchUp=(g as any).catchUpEnvironment.bind(g);
+  vi.spyOn(g as any,'catchUpEnvironment').mockImplementation((...args:unknown[])=>{beforeVision.push(rng.getState().streams);catchUp(...args);});
   generate(g,2);
   expect(raw64).toHaveBeenCalledTimes(2);
   expect(reseed.mock.calls.map(c=>c[0])).toEqual([g.levelSeeds[1]!.levelSeed,123n]);
@@ -163,8 +166,12 @@ for(const seed of ['7','1099511627783','18446744073709551615']) it(`different ac
   const position={...g.player.loc};
   if(branch) for(let i=0;i<257;i++) rng.randRange(0,9999);
   const consumed=rng.randomNumbersGenerated;
-  const maps=[];
-  for(let d=2;d<=6;d++){generate(g,d);maps.push(terrain(g));}
+  const maps:ReturnType<typeof terrain>[]=[];
+  // U03b: layer-seed isolation concerns generation, before live-stream catch-up.
+  // Run the real catch-up afterward; it may legitimately depend on prior actions.
+  const catchUp=(g as any).catchUpEnvironment.bind(g);
+  vi.spyOn(g as any,'catchUpEnvironment').mockImplementation((...args:unknown[])=>{maps.push(json(terrain(g)));catchUp(...args);});
+  for(let d=2;d<=6;d++){generate(g,d);}
   return {start,position,consumed,maps};
  };
  const a=run(0),b=run(1);expect(b.position).not.toEqual(b.start);expect(b.consumed).not.toBe(a.consumed);expect(b.maps).toEqual(a.maps);

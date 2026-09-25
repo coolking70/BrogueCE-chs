@@ -1,0 +1,34 @@
+{
+  "reason": "Remove trailing whitespace on two empty lines found by git diff --check after the frozen final batch. No production code, assertions, TypeScript printed AST, or compiled JavaScript changed.",
+  "files": [
+    {
+      "file": "src/test/c_4a_0_layer_model.test.ts",
+      "changedLines": [
+        686
+      ],
+      "beforeSHA256": "09218680ac8205c192c5a65ce4ff8ddb74860b2b85d43d557dd26fb641e2525a",
+      "afterSHA256": "328898f4da323b963cc701c4567f06c6bc29f4f98f6afed3a0f1736cc3e9518e",
+      "typescriptPrintedASTEqual": true,
+      "compiledJavaScriptEqual": true,
+      "onlyEmptyLineWhitespaceRemoved": true
+    },
+    {
+      "file": "src/test/c_4b_dungeon_feature.test.ts",
+      "changedLines": [
+        1500
+      ],
+      "beforeSHA256": "1b11e31807043e022e5535d572dc9f4a753f593eb6bbdfa6113b14e0466906ff",
+      "afterSHA256": "0cfd2b91b5f10338c084bbcacaee194cb94aa64cd84766dd14b4b6d91e13e9b7",
+      "typescriptPrintedASTEqual": true,
+      "compiledJavaScriptEqual": true,
+      "onlyEmptyLineWhitespaceRemoved": true
+    }
+  ],
+  "changed": [
+    "src/test/c_4a_0_layer_model.test.ts",
+    "src/test/c_4b_dungeon_feature.test.ts"
+  ],
+  "testedManifestSHA256": "cc04e3ba43fe48cfd562124f34b6f0487f30debff7876d9065f0299b61f8c813",
+  "deliveryManifestSHA256": "61680442c739c4ff04db1015a48f7fa6143d95d6c9791b0ab0b6d688e65f69de",
+  "fullRegressionRepeatedAfterFormatting": false
+}

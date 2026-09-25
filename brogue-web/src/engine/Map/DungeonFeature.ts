@@ -112,7 +112,7 @@ import {
     DFF_TREAT_AS_BLOCKING,
     DUNGEON_FEATURE_CATALOG,
 } from './DungeonFeatureCatalog';
-import { T_IS_FLAMMABLE, TM_EXPLOSIVE_PROMOTE } from './TerrainCatalog';
+import { T_IS_FLAMMABLE, TM_EXPLOSIVE_PROMOTE, type TerrainFlagsEntry } from './TerrainCatalog';
 import { DF, type DungeonFeatureEntry } from './DungeonFeatureCatalog';
 
 /** CE `nbDirs[0..3]`（GlobalsBase.c:38）——4 向正交，顺序逐项一致。 */
@@ -679,6 +679,32 @@ export function levelIsDisconnectedOnMovementGraph(
 /** 把目录条目转成 spawnDungeonFeature 入参。tile 登记（null）的条目抛错——
  *  CE 对这些 DF 的行为在 web 无忠实语义可给，静默跳过会让 C-4c 接出
  *  "永不触发的晋升链"，故按项目授权反驳条款拒绝并点名缺的 tile。 */
+/**
+ * CE Movement.c:2437 discover(x, y)：每个带 TM_IS_SECRET 的层先清为 FLOOR/NOTHING，
+ * 再在原点 spawn 其 discoverType DF（abortIfBlocking=false）。web 目录尚缺后继 tile 的秘密层
+ * 保持原状（不伪造揭示），返回是否至少揭示了一层。供魔法测绘等调用方共用（U23）。
+ */
+/** 单个地形的 mechFlags（供需要逐层读取的调用方，如 U23 记忆 rememberedTMFlags；受 C-4c 读者白名单约束）。 */
+export function terrainMechFlags(t: TerrainType): number {
+    return TERRAIN_FLAGS[t].mechFlags;
+}
+
+export function discoverSecretsAt(grid: Grid, x: number, y: number): boolean {
+    const cell = grid.getCell(x, y);
+    if (!cell) return false;
+    let revealed = false;
+    for (let layer = 0; layer < DungeonLayer.COUNT; layer++) {
+        const entry: TerrainFlagsEntry = TERRAIN_FLAGS[cell.layers[layer]!];
+        if (!(entry.mechFlags & TM_IS_SECRET) || !entry.discoverType) continue;
+        const id: DF | undefined = DF[entry.discoverType as keyof typeof DF];
+        if (id === undefined || DUNGEON_FEATURE_CATALOG[id]?.tile == null) continue; // tile absent from web catalog
+        grid.setTerrainLayer(x, y, layer, layer === DungeonLayer.DUNGEON ? TerrainType.FLOOR : TerrainType.NOTHING);
+        spawnDungeonFeature(grid, x, y, catalogFeature(id), false);
+        revealed = true;
+    }
+    return revealed;
+}
+
 export function catalogFeature(df: DF): DungeonFeature {
     const entry: DungeonFeatureEntry | undefined = DUNGEON_FEATURE_CATALOG[df];
     if (!entry) {

@@ -194,8 +194,8 @@ it('U11: the outer scheduler withholds paralyzed actions; an unlearnable death d
     (g as any).removeDeadMonsters();expect(state(m)).toEqual(idle);
 });
 
-it('a queued survivor entering a newly generated level retains its counter; it is not a cached resident restore', () => {
+it('a queued survivor clears active absorption at real level entry while retaining its learning payload', () => {
     const g=scene(),m=pending(mob());g.monsters=[m];g.mode='normal';m.falling=true;m.behaviorFlags.add('MONST_INVULNERABLE');const before=state(m);
     (g as any).monstersFall();g.depth++;(g as any).generateDepth(false);
-    expect(g.monsters).toContain(m);expect(state(m)).toEqual({...before,targetCorpseLoc:null});expect(m.preplaced).toBe(false);
+    expect(g.monsters).toContain(m);expect(state(m)).toEqual({...before,targetCorpseLoc:null,corpseAbsorptionCounter:0,isAbsorbing:false});expect(m.preplaced).toBe(false);
 });

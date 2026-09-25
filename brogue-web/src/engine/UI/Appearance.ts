@@ -226,14 +226,14 @@ export function terrainAppearance(terrain: TerrainType, isVisible: boolean, dept
 }
 
 /** IO.c:1160-1188 selects glyph, foreground and background independently by priority. */
-function layeredTerrainAppearance(cell: Cell, depth: number): TerrainVisual {
+function layeredTerrainAppearance(cell: Cell, depth: number, layers = cell.layers): TerrainVisual {
     let char = ' ';
     let color = '#000000';
     let bgColor: number | null = null;
     let charPriority = Infinity, forePriority = Infinity, backPriority = Infinity;
-    for (let layer = 0; layer < cell.layers.length; layer++) {
+    for (let layer = 0; layer < layers.length; layer++) {
         if (layer === DungeonLayer.GAS) continue;
-        const terrain = cell.layers[layer]!;
+        const terrain = layers[layer]!;
         if (terrain === TerrainType.NOTHING) continue;
         const base = TERRAIN_APPEARANCES[terrain];
         if (!base) throw new Error(`Missing CE appearance for TerrainType ${terrain}`);
@@ -248,6 +248,15 @@ function layeredTerrainAppearance(cell: Cell, depth: number): TerrainVisual {
         if (bgColor !== null) bgColor = 0x111111;
     }
     return { char, color, bgColor };
+}
+
+/** Terrain portion of CE's rememberedAppearance, before unseen entities are overlaid. */
+export function memoryTerrainAppearance(cell: Cell, depth: number): TerrainVisual {
+    const visual = layeredTerrainAppearance(cell, depth, cell.rememberedLayers);
+    if (cell.rememberedTerrain === TerrainType.STAIRS_UP || cell.rememberedTerrain === TerrainType.STAIRS_DOWN) {
+        return { ...visual, color: '#ffffff', bgColor: visual.bgColor === null ? null : 0x222222 };
+    }
+    return { ...visual, color: '#333333', bgColor: visual.bgColor === null ? null : 0x111111 };
 }
 
 /**
@@ -270,18 +279,21 @@ export function cellAppearance(cell: Cell, ctx: CellAppearanceContext): TerrainV
     // CE IO.c:1219-1240：探测魔法符号。它压过地形/记忆字形，且不受
     // 「未探索即不画」的门限制（detect magic 的本意就是照出未探索区的物品）。
     const detected = detectedMagicAppearance(cell, ctx);
-    if (!cell.isExplored && !cell.isVisible) {
+    if (!cell.isExplored && !cell.isVisible && !cell.isMagicMapped) {
         if (!detected) return null;
         return {
             char: detected.char,
             color: detected.color,
             // CE 对这种格子不做任何乘法/平均（IO.c:1349-1359 "do nothing"）——
             // 底色取未变暗的基础值。
-            bgColor: layeredTerrainAppearance(cell, ctx.depth ?? 1).bgColor,
+            bgColor: terrainAppearance(TerrainType.FLOOR, true, ctx.depth ?? 1).bgColor,
         };
     }
 
-    let { char, color, bgColor } = layeredTerrainAppearance(cell, ctx.depth ?? 1);
+    const remembered = !cell.isVisible && cell.rememberedLayers.length === DungeonLayer.COUNT;
+    let { char, color, bgColor } = !cell.isVisible && cell.rememberedAppearance
+        ? cell.rememberedAppearance
+        : layeredTerrainAppearance(cell, ctx.depth ?? 1, remembered ? cell.rememberedLayers : cell.layers);
 
     // Apply Environmental Overrides (Gas) —— 燃烧覆盖层已移除（UI-1 第 1 条：
     // 火视觉 = 地形本体；Grid.isBurning 仍供气体的 !isBurning 守卫使用）。
@@ -350,7 +362,8 @@ export function cellAppearance(cell: Cell, ctx: CellAppearanceContext): TerrainV
         // "do nothing"——不做记忆变暗、不乘光，符号与底色保持全亮。
     } else if (cell.hasMemory) {
         // Out of sight memory
-        if (cell.terrain === TerrainType.STAIRS_UP || cell.terrain === TerrainType.STAIRS_DOWN) {
+        const knownTerrain = remembered ? cell.rememberedTerrain : cell.terrain;
+        if (knownTerrain === TerrainType.STAIRS_UP || knownTerrain === TerrainType.STAIRS_DOWN) {
             // Stairs stay fully or mostly bright
             color = '#ffffff';
             if (bgColor !== null) bgColor = 0x222222;
@@ -424,10 +437,14 @@ export function itemAppearance(item: Item, ctx: EntityAppearanceContext): Entity
         };
     }
     if (ctx.cellHasMemory) {
-        // Render memory item faintly
         return { char: item.char, color: '#666666', interactive: false };
     }
     return null;
+}
+
+export function rememberedItemAppearance(cell: Cell): EntityVisual | null {
+    if (!cell.hasMemory || cell.isVisible || !cell.rememberedItem) return null;
+    return { char: cell.rememberedItem.char, color: '#666666', interactive: false };
 }
 
 /**

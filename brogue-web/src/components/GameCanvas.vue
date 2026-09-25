@@ -107,7 +107,7 @@ import { Application, Text, TextStyle, Graphics, Container } from 'pixi.js';
 // R-1 渲染纯重构：格子/实体「画什么字符、什么颜色」的决策已抽到
 // Appearance.ts 纯函数（ctx 显式注入），本组件只保留 Pixi 绘制。
 // 结构守卫（r_1_appearance.test.ts）钉死本文件不得再出现外观决策。
-import { ARCANA_TRAJECTORY_FILL, cellAppearance, itemAppearance, monsterAppearance, playerAppearance, type CosmeticRng } from '../engine/UI/Appearance';
+import { ARCANA_TRAJECTORY_FILL, cellAppearance, itemAppearance, rememberedItemAppearance, monsterAppearance, playerAppearance, type CosmeticRng } from '../engine/UI/Appearance';
 import { canSeeMonster, canDirectlySeeMonster, canDisplayMonster, monsterInGas } from '../engine/UI/MonsterVisibility';
 // DCOLS/DROWS 已在上方 <script lang="ts"> 模块块导入（computeMapOffset 用），
 // 同一模块内重复声明绑定会报错，这里只取 setup 独有的 Direction。
@@ -403,6 +403,13 @@ onMounted(async () => {
         };
 
         // Items
+        for (let x = 0; x < DCOLS; x++) for (let y = 0; y < DROWS; y++) {
+            const cell = game.grid.getCell(x, y);
+            if (cell) {
+                const visual = rememberedItemAppearance(cell);
+                if (visual) placeEntity(visual.char, visual.color, x, y, visual.interactive);
+            }
+        }
         for (const item of game.items) {
             const cell = game.grid.getCell(item.loc.x, item.loc.y);
             const visual = itemAppearance(item, {
@@ -412,7 +419,7 @@ onMounted(async () => {
                 hallucinating,
                 cosmetic,
             });
-            if (visual) {
+            if (visual && cell?.isVisible) {
                 placeEntity(visual.char, visual.color, item.loc.x, item.loc.y, visual.interactive);
             }
         }

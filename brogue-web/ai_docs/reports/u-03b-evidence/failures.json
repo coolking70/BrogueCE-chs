@@ -1,0 +1,16 @@
+[
+  {
+    "file": "src/test/u_03_whole_run_snapshot.test.ts",
+    "title": "U03 whole-run persistence restores one object per ID across active/cached/dormant/pending/carried/leader cycles",
+    "messages": [
+      "AssertionError: expected null to be Monster{ baseMoveSpeed: 100, …(74) } // Object.is equality\n    at /Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/src/test/u_03_whole_run_snapshot.test.ts:102:82\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  },
+  {
+    "file": "src/test/u_10_absorption_snapshot.test.ts",
+    "title": "a queued survivor entering a newly generated level retains its counter; it is not a cached resident restore",
+    "messages": [
+      "AssertionError: expected { targetCorpseLoc: null, …(8) } to deeply equal { targetCorpseLoc: null, …(8) }\n    at /Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/src/test/u_10_absorption_snapshot.test.ts:200:54\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/6011/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+    ]
+  }
+]

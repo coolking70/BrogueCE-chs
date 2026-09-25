@@ -29,7 +29,7 @@ export const MONSTER_FIELDS = [
     'absorptionFlags', 'absorbBehavior', 'absorptionBolt', 'isAbsorbing',
     'description', 'deathEffectTriggered', 'deathProcessed', 'bolts', 'typeId', 'boundToPlayer',
     'doesNotTrackLeader', 'givenUpOnScent', 'safetySnapshot', 'falling', 'preplaced',
-    'isDormant', 'machineHome', 'targetWaypointIndex', 'waypointAlreadyVisited',
+    'entersLevelIn', 'approaching', 'isDormant', 'machineHome', 'targetWaypointIndex', 'waypointAlreadyVisited',
     'regenTurns', 'accuracy', 'defense', 'regenCounter', 'spawnLoc',
 ] as const satisfies readonly (keyof Monster)[];
 export const PLAYER_FIELDS = [

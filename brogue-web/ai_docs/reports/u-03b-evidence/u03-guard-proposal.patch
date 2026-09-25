@@ -1,0 +1,14 @@
+--- a/brogue-web/src/test/u_03_whole_run_snapshot.test.ts
++++ b/brogue-web/src/test/u_03_whole_run_snapshot.test.ts
+@@ -99,8 +99,9 @@
+         expect(getNextEntityId()).toBe(nextId); expect(stable(loaded)).toEqual((({ savedAt: _time, ...s }) => s)(saved));
+         enter(loaded, 3); expect(loaded.monsters).toContain(fall); expect((loaded as any).pendingFallenByDepth.has(3)).toBe(false);
+         expect(fall.carriedItem).toBe(d.carriedItem);
+-        enter(loaded, 1); expect(loaded.monsters).toContain(f); expect(f.leader).toBe(l);
+-        // Ordinary stair-follow scheduling is intentionally deferred to U03b.
++        enter(loaded, 1); expect(loaded.monsters).toContain(f); expect(f.leader).toBeNull();
++        // CE Architect.restoreMonster retires an absent leader on real entry.
++        // No objective block elapsed here, so the leader has not followed.
+         expect(loaded.monsters).not.toContain(l);
+     });
+ 

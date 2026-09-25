@@ -1,0 +1,180 @@
+diff --git a/brogue-web/src/test/c_4a_0_layer_model.test.ts b/brogue-web/src/test/c_4a_0_layer_model.test.ts
+index cc04c53..acfeed9 100644
+--- a/brogue-web/src/test/c_4a_0_layer_model.test.ts
++++ b/brogue-web/src/test/c_4a_0_layer_model.test.ts
+@@ -667,14 +667,25 @@ describe('C-4a-0 留痕（本轮明确不做的事，断言现状）', () => {
+         //      地形 + 体积（G-1 的迁层主张本身）。
+         for (const seed of [424242, 20260916]) {
+             const g: any = createHeadlessGame(seed);
+-            for (const depth of [1, 5, 12, 26]) {
+-                if (depth > 1) { g.depth = depth; g.generateDepth(false, false); }
++            // U03b: observe the genuine generation boundary, then run all 50
++            // environment updates. The whitelist and every original expectation
++            // still apply to generation; no live post-warmup terrain is erased.
++            const catchUp = g.catchUpEnvironment.bind(g);
++            g.catchUpEnvironment = (...args: unknown[]) => {
++                const depth = g.depth;
+                 for (let x = 0; x < g.grid.width; x++) {
+                     for (let y = 0; y < g.grid.height; y++) {
+                         expect(g.grid.getCell(x, y)!.layers[L.GAS], `seed=${seed} D${depth} (${x},${y}) 生成不产气`).toBe(C.NOTHING);
+                     }
+                 }
++                return catchUp(...args);
++            };
++            for (const depth of [1, 5, 12, 26]) {
++                if (depth === 1) g.startNewGame({ seed });
++                if (depth > 1) { g.depth = depth; g.generateDepth(false, false); }
++                
+             }
++            delete g.catchUpEnvironment;
+             // ②（只在 D1 行使，避免全图扫描×深度×种子的浪费）：
+             // 找一块真实地板注入（生成图没有坐标保证）。
+             let spot: { x: number; y: number } | null = null;
+diff --git a/brogue-web/src/test/c_4b_dungeon_feature.test.ts b/brogue-web/src/test/c_4b_dungeon_feature.test.ts
+index 24f5df7..219a567 100644
+--- a/brogue-web/src/test/c_4b_dungeon_feature.test.ts
++++ b/brogue-web/src/test/c_4b_dungeon_feature.test.ts
+@@ -1252,8 +1252,12 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
+         ];
+         for (const seed of [424242, 777]) {
+             const g: any = createHeadlessGame(seed);
+-            for (const depth of [1, 9]) {
+-                if (depth > 1) { g.depth = depth; g.generateDepth(false, false); }
++            // U03b: observe the genuine generation boundary, then run all 50
++            // environment updates. The whitelist and every original expectation
++            // still apply to generation; no live post-warmup terrain is erased.
++            const catchUp = g.catchUpEnvironment.bind(g);
++            g.catchUpEnvironment = (...args: unknown[]) => {
++                const depth = g.depth;
+                 for (let x = 0; x < g.grid.width; x++) {
+                     for (let y = 0; y < g.grid.height; y++) {
+                         const cell = g.grid.getCell(x, y)!;
+@@ -1488,7 +1492,14 @@ describe('C-4b F：留痕（本轮明确不做的事；C-4c 翻转）', () => {
+                         expect(cell.layers[L.GAS], `seed=${seed} D${depth} (${x},${y}) GAS 恒空`).toBe(C.NOTHING);
+                     }
+                 }
++                return catchUp(...args);
++            };
++            for (const depth of [1, 9]) {
++                if (depth === 1) g.startNewGame({ seed });
++                if (depth > 1) { g.depth = depth; g.generateDepth(false, false); }
++                
+             }
++            delete g.catchUpEnvironment;
+         }
+     });
+ });
+diff --git a/brogue-web/src/test/c_5_fall_subsystem.test.ts b/brogue-web/src/test/c_5_fall_subsystem.test.ts
+index 9296f41..96ad17b 100644
+--- a/brogue-web/src/test/c_5_fall_subsystem.test.ts
++++ b/brogue-web/src/test/c_5_fall_subsystem.test.ts
+@@ -93,11 +93,21 @@ describe('C-5 对抗①：坠落是回合末结算（CE Time.c:168-176/2480）',
+         game.handlePlayerAction('move', { x: 1, y: 0 }, 'system'); // (4,5)→(5,5)
+         // U02b: measure the generation segment; only landing/damage may add 3 calls.
+         let generationCost = 0;
++        // U03b / CE startLevel: fall landing now happens inside generateDepth,
++        // after catch-up. Measure that subphase separately, preserving the
++        // original generation + landing + clumped-damage assertion below.
++        let landingCost = 0;
++        const landing = (game as any).placePlayerOnFallLanding.bind(game);
++        (game as any).placePlayerOnFallLanding = (...args: unknown[]) => {
++            const before = rng.randomNumbersGenerated;
++            landing(...args);
++            landingCost += rng.randomNumbersGenerated - before;
++        };
+         const generate = priv(game).generateDepth.bind(game);
+         priv(game).generateDepth = (...args: unknown[]) => {
+             const before = rng.randomNumbersGenerated;
+             generate(...args);
+-            generationCost += rng.randomNumbersGenerated - before;
++            generationCost += rng.randomNumbersGenerated - before - landingCost;
+         };
+         const rngBeforeDive = rng.randomNumbersGenerated;
+         game.handlePlayerAction('move', { x: 1, y: 0 }, 'system'); // (5,5)→(6,5)=渊 → 回合末坠落
+diff --git a/brogue-web/src/test/g_2_gas_df_wiring.test.ts b/brogue-web/src/test/g_2_gas_df_wiring.test.ts
+index a75cafe..0f64215 100644
+--- a/brogue-web/src/test/g_2_gas_df_wiring.test.ts
++++ b/brogue-web/src/test/g_2_gas_df_wiring.test.ts
+@@ -593,6 +593,14 @@ describe('G-2 对抗⑨：MUD → DF_METHANE_GAS_PUFF 晋升链自动产气 + 
+         expect(promo, 'MUD 晋升必须发生在 LIQUID 层').toBeDefined();
+         expect(promo!.deferred, 'DF_METHANE_GAS_PUFF tile 已迁：不缓办').toBeNull();
+         expect(promo!.spawn!.gasVolumeAdded, '沼气一缕 = 2 体积（Globals.c:667）').toBe(2);
++        // Preserve the original immediate mirror obligation before another diffusion
++        // could repair a missing promotion-to-mirror update.
++        expectMirrorMatchesTruth(game);
++        // U03b / CE Time.c:1600–1616: gas diffuses BEFORE promotions.
++        // Advance to the next real environment phase, suppressing a second puff
++        // so the original two-cell conservation assertions still isolate 2 units.
++        mudEntry.promoteChance = 0;
++        try { priv(game).objectiveTimeBlock(); } finally { mudEntry.promoteChance = saved; }
+         // 体积守恒地散开（甲烷无消散旗标），镜像必须与真相逐格一致
+         // （G-1 预测的后半：Game 的 gasVolumeAdded 对账分支自动成为活路径）。
+         // 2 体积已由上面的同步返回值钉死。两格均分不产生舍入误差，
+diff --git a/brogue-web/src/test/u_02b_level_rng.test.ts b/brogue-web/src/test/u_02b_level_rng.test.ts
+index f29cf29..c6ef2f7 100644
+--- a/brogue-web/src/test/u_02b_level_rng.test.ts
++++ b/brogue-web/src/test/u_02b_level_rng.test.ts
+@@ -91,7 +91,10 @@ describe('U02b layer lifecycle and persistence', () => {
+   const wp=g.rebuildWaypoints.bind(g);let wpDelta=0;
+   vi.spyOn(g,'rebuildWaypoints').mockImplementation(()=>{const c=rng.randomNumbersGenerated;wp();wpDelta=rng.randomNumbersGenerated-c;});
+   const beforeVision:unknown[]=[];
+-  vi.spyOn(g as any,'updateVision').mockImplementation(()=>{beforeVision.push(rng.getState().streams);});
++  // U03b / CE RogueMain.c:734–806: observe oldSeed before environment consumes it.
++  // Keep the original reseed expectation; vision now correctly follows 50 updates.
++  const catchUp=(g as any).catchUpEnvironment.bind(g);
++  vi.spyOn(g as any,'catchUpEnvironment').mockImplementation((...args:unknown[])=>{beforeVision.push(rng.getState().streams);catchUp(...args);});
+   generate(g,2);
+   expect(raw64).toHaveBeenCalledTimes(2);
+   expect(reseed.mock.calls.map(c=>c[0])).toEqual([g.levelSeeds[1]!.levelSeed,123n]);
+@@ -163,8 +166,12 @@ for(const seed of ['7','1099511627783','18446744073709551615']) it(`different ac
+   const position={...g.player.loc};
+   if(branch) for(let i=0;i<257;i++) rng.randRange(0,9999);
+   const consumed=rng.randomNumbersGenerated;
+-  const maps=[];
+-  for(let d=2;d<=6;d++){generate(g,d);maps.push(terrain(g));}
++  const maps:ReturnType<typeof terrain>[]=[];
++  // U03b: layer-seed isolation concerns generation, before live-stream catch-up.
++  // Run the real catch-up afterward; it may legitimately depend on prior actions.
++  const catchUp=(g as any).catchUpEnvironment.bind(g);
++  vi.spyOn(g as any,'catchUpEnvironment').mockImplementation((...args:unknown[])=>{maps.push(json(terrain(g)));catchUp(...args);});
++  for(let d=2;d<=6;d++){generate(g,d);}
+   return {start,position,consumed,maps};
+  };
+  const a=run(0),b=run(1);expect(b.position).not.toEqual(b.start);expect(b.consumed).not.toBe(a.consumed);expect(b.maps).toEqual(a.maps);
+diff --git a/brogue-web/src/test/ui_2_protection.test.ts b/brogue-web/src/test/ui_2_protection.test.ts
+index 88d4b59..ba005d0 100644
+--- a/brogue-web/src/test/ui_2_protection.test.ts
++++ b/brogue-web/src/test/ui_2_protection.test.ts
+@@ -203,6 +203,8 @@ describe('UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 res
+         sword.quiverNumber = undefined;
+ 
+         const mound = spawnDegrader(game, 5, 5);
++        // U03b: this tests the on-hit quiver gate, independent of generation RNG.
++        Object.assign(mound, { defense: 0, isCaged: true });
+         priv(game).resolvePlayerMeleeAttackOn(mound);
+         expect(mound.hp).toBeLessThan(mound.maxHp);
+         expect(sword.enchantment).toBe(-1);
+@@ -213,6 +215,7 @@ describe('UI-2 第 1 件：武器降级（CE Combat.c:1432-1450，web 落点 res
+         carveBigRoom(game2);
+         game2.player.equippedWeapon = null;
+         const mound2 = spawnDegrader(game2, 5, 5);
++        Object.assign(mound2, { defense: 0, isCaged: true });
+         expect(() => priv(game2).resolvePlayerMeleeAttackOn(mound2)).not.toThrow();
+         expect(mound2.hp).toBeLessThan(mound2.maxHp);
+         expect(allTexts()).not.toContain('weakens');
+diff --git a/brogue-web/src/test/w_11_teleport_placement.test.ts b/brogue-web/src/test/w_11_teleport_placement.test.ts
+index d5ee5d1..78dad42 100644
+--- a/brogue-web/src/test/w_11_teleport_placement.test.ts
++++ b/brogue-web/src/test/w_11_teleport_placement.test.ts
+@@ -270,7 +270,10 @@ describe('W-11 generic placement and C-5 entry effects', () => {
+         expect(fireCalls()).toBe(1);
+         g.placeCreature(m, { x: 14, y: 1 }); g.placeCreature(m, { x: 13, y: 1 });
+         expect(fireCalls()).toBe(1);
+-        (g as any).applyEnvironmentalEffects();
++        // U03b / CE Time.c:1669–1673: a real environment update releases
++        // PRESSURE_PLATE_DEPRESSED only when no creature/item occupies the tile.
++        g.placeCreature(m, { x: 14, y: 1 });
++        (g as any).updateEnvironment();
+         g.placeCreature(m, { x: 14, y: 1 }); g.placeCreature(m, { x: 13, y: 1 });
+         expect(fireCalls()).toBe(2);
+     });

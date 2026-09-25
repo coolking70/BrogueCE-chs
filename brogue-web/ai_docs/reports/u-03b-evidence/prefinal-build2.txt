@@ -1,0 +1,9 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+src/test/u_03b_level_travel.test.ts(3,26): error TS6133: 'DungeonLayer' is declared but its value is never read.
+src/test/u_03b_level_travel.test.ts(4,28): error TS6133: 'GasType' is declared but its value is never read.
+src/test/u_03b_level_travel.test.ts(11,1): error TS6133: 'timeSystem' is declared but its value is never read.
+src/test/u_03b_level_travel.test.ts(60,42): error TS2551: Property 'SLEEPING' does not exist on type 'typeof MonsterState'. Did you mean 'FLEEING'?
+src/test/u_03b_level_travel.test.ts(95,92): error TS2322: Type 'number' is not assignable to type 'string'.

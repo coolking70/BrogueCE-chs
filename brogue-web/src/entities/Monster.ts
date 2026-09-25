@@ -425,6 +425,9 @@ export class Monster extends Creature {
      * Game.monstersFall（CE Time.c:1530）结算——置位者即使本回合内离开了
      * 渊格也照坠（CE :1537 的 `MB_IS_FALLING ||` 分支）。
      */
+    /** CE STATUS_ENTERS_LEVEL_IN and MB_APPROACHING_*; owned by off-level scheduling. */
+    public entersLevelIn = 0;
+    public approaching = 0;
     public falling: boolean = false;
     /**
      * C-5：CE bookkeepingFlags & MB_PREPLACED——"随层预放置"位。坠层幸存者
