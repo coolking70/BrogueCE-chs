@@ -1,0 +1,60 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_17a_df_transaction.test.ts src/test/c_4b_dungeon_feature.test.ts src/test/u_01_instance_snapshot.test.ts src/test/u_03_whole_run_snapshot.test.ts --maxWorkers=4 --reporter=default --reporter=json --outputFile.json=ai_docs/reports/u-17a-evidence/message-identity-repair.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web
+
+stdout | src/test/u_17a_df_transaction.test.ts > U17a actual Game consumers > recursive hole marks player falling without inventing an immediate floor-item update
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/u_01_instance_snapshot.test.ts > ordinary uses the complete graph contract, including private base speeds
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_4b_dungeon_feature.test.ts > C-4b F：留痕（本轮明确不做的事；C-4c 翻转） > F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/c_4b_dungeon_feature.test.ts (31 tests) 2372ms
+     ✓ F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空  2146ms
+stdout | src/test/u_03_whole_run_snapshot.test.ts > U03 whole-run persistence > seed 7: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_01_instance_snapshot.test.ts (17 tests) 4169ms
+   ✓ ordinary uses the complete graph contract, including private base speeds  413ms
+   ✓ polymorph uses the complete graph contract, including private base speeds  311ms
+   ✓ clone uses the complete graph contract, including private base speeds  302ms
+   ✓ player clone uses the complete graph contract, including private base speeds  379ms
+   ✓ naturally generated D1-D3 ordinary/ground/pack entities deeply round-trip, without deriving from catalog  930ms
+ ✓ src/test/u_17a_df_transaction.test.ts (27 tests) 5495ms
+     ✓ recursive hole marks player falling without inventing an immediate floor-item update  435ms
+     ✓ instant fire burns only scrolls, ignites and damages through recursive DF before returning  620ms
+     ✓ lethal player contact ends the actual Game before burning items, filling later cells or running descendants  323ms
+     ✓ direct and descendant fires register the current-turn skip without callers draining results  387ms
+     ✓ runtime evacuation moves real player and creature; generation refresh=false moves without contact/status  393ms
+     ✓ alarm uses four-way path radius from origin, resets scent, preserves allies, wakes enemies and sets source status  325ms
+     ✓ two Game/grid owners cannot redirect each others contact or messages  508ms
+     ✓ actual stair movement changes level before REPEL_CREATURES can evict the player  678ms
+     ✓ alarm status, moved entities and post-load grid binding survive the existing snapshot contract  346ms
+     ✓ transient flashes are discarded by load and new-run lifecycle without entering snapshots  312ms
+     ✓ retired grid cannot mutate the replacement world after load  311ms
+     ✓ retired grid cannot mutate the replacement world after new-run  324ms
+ ✓ src/test/u_03_whole_run_snapshot.test.ts (14 tests) 14958ms
+     ✓ seed 7: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  3087ms
+     ✓ seed 12345: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  2407ms
+     ✓ seed 202503: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  1853ms
+     ✓ restores one object per ID across active/cached/dormant/pending/carried/leader cycles  1268ms
+     ✓ real monster fall into unvisited D2 survives JSON and subsequent dormancy/death  921ms
+     ✓ real monster fall into cached D2 survives JSON and subsequent dormancy/death  823ms
+     ✓ stores every writable cell field and pending environmental effects without replaying them  701ms
+     ✓ restores clock, search, generation accounting, pending mandatory choices and endgame over a dirty run  759ms
+     ✓ scent values survive reentry, share the run clock, and rewind on every visited floor  552ms
+     ✓ rejects incomplete/old worlds before altering the current game or RNG  1033ms
+     ✓ refuses suspended turns, but loading retires an old animation without its epilogue  383ms
+     ✓ codec does not consume either RNG stream or expose aliased run/flavor/level containers  1095ms
+
+ Test Files  4 passed (4)
+      Tests  89 passed (89)
+   Start at  19:45:33
+   Duration  16.14s (transform 1.25s, setup 0ms, import 4.37s, tests 26.99s, environment 1ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web/ai_docs/reports/u-17a-evidence/message-identity-repair.json

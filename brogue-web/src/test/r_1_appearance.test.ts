@@ -169,8 +169,8 @@ describe('R-1 terrainAppearance 特征化（穷举钉死）', () => {
         // V-2b-9b：九条活动态/效果落点，115 → 124；补完轮补齐
         // MACHINE_CHASM_EDGE / PUDDLE，124 → 126；9c 七条效果载体 126 → 133。
         // U08 adds two CE terrain carriers; preserve the old-universe count.
-        expect(ALL_TERRAINS.filter(t => t !== TerrainType.ANCIENT_SPIRIT_VINES && t !== TerrainType.ANCIENT_SPIRIT_GRASS && t !== TerrainType.DUNGEON_PORTAL).length).toBe(135);
-        expect(ALL_TERRAINS.length).toBe(138);
+        expect(ALL_TERRAINS.filter(t => t !== TerrainType.ANCIENT_SPIRIT_VINES && t !== TerrainType.ANCIENT_SPIRIT_GRASS && t !== TerrainType.DUNGEON_PORTAL && t !== TerrainType.ITEM_FIRE).length).toBe(135);
+        expect(ALL_TERRAINS.length).toBe(139);
         expect(new Set(ALL_TERRAINS).size).toBe(ALL_TERRAINS.length);
     });
 

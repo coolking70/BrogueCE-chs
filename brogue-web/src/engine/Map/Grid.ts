@@ -254,6 +254,7 @@ export enum TerrainType {
     // U08: append only; preserve existing generation fingerprints.
     ANCIENT_SPIRIT_VINES, ANCIENT_SPIRIT_GRASS,
     DUNGEON_PORTAL, // CE deepest-level stair; append preserves existing IDs.
+    ITEM_FIRE, // U17a: burnItem direct successor, CE Globals.c:498. Append only.
 }
 
 export enum LightType {
@@ -335,6 +336,7 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.BRIDGE_EDGE]: 45,
     [TerrainType.INERT_BRIMSTONE]: 40,
     [TerrainType.PLAIN_FIRE]: 10,
+    [TerrainType.ITEM_FIRE]: 10,
     // F-2a：CE EMBERS 70 / ASH 80（Globals.c:469/461 原值）。两者都是纯装饰
     // 表面层：余烬/灰烬压不住火（10）、草（60）、网（19），但会被血（80）同级
     // 竞争——CE fillSpawnMap 判据（Architect.c:3228）原样生效。
@@ -567,6 +569,7 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     [TerrainType.BRIDGE_EDGE]: DungeonLayer.SURFACE,
     [TerrainType.INERT_BRIMSTONE]: DungeonLayer.LIQUID,
     [TerrainType.PLAIN_FIRE]: DungeonLayer.SURFACE,
+    [TerrainType.ITEM_FIRE]: DungeonLayer.SURFACE,
     // F-2a：DF_EMBERS {EMBERS, SURFACE}（Globals.c:747）、
     // DF_ASH {ASH, SURFACE}（Globals.c:672，执行方逐字段复核）。
     [TerrainType.EMBERS]: DungeonLayer.SURFACE,
@@ -760,15 +763,17 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
  * 的载体，瞬时爆炸地形，T_CAUSES_EXPLOSIVE_DAMAGE 在手）、
  * BRAZIER（Globals.c:573，V-2b-7 引入——53 号 Zombie crypt 的仪式火盆，
  * 唯一带 T_OBSTRUCTS_PASSABILITY 的火地形：它是"烧着的堵格体"）。
- * CE 其余五种火地形（BRIMSTONE_FIRE /
- * FLAMEDANCER_FIRE / DART_EXPLOSION / ITEM_FIRE / CREATURE_FIRE）
+ * ITEM_FIRE（Globals.c:498，U17a burnItem 的后继）。
+ * CE 其余四种火地形（BRIMSTONE_FIRE /
+ * FLAMEDANCER_FIRE / DART_EXPLOSION / CREATURE_FIRE）
  * web 尚无——后续轮次落地时随目录条目在此补行。
  */
 export const FIRE_TERRAIN_TYPES: readonly TerrainType[] = [
     TerrainType.PLAIN_FIRE,
     TerrainType.GAS_FIRE,
     TerrainType.GAS_EXPLOSION,
-    TerrainType.BRAZIER
+    TerrainType.BRAZIER,
+    TerrainType.ITEM_FIRE
 ];
 
 /** CE Movement.c:64-80 的纯数据版：对一层快照取最高优先层。 */

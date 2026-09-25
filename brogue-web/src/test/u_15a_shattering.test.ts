@@ -116,18 +116,25 @@ describe('U15a IMPREGNABLE is an outer gate for every crystalize side effect', (
         expect(cell(g, 8).layers[L.SURFACE]).toBe(T.RUBBLE);
     });
 
-    it('frees an embedded captive after rubble; a protected captive stays captive', () => {
+    it.each([false, true])('frees a captive only if still embedded after instant promotions, retained blocker=%s', retainedBlocker => {
         const g = scene(); const captive = monster(g), freed = monster(g, 8);
         for (const m of [captive, freed]) { m.isCaged = true; g.grid.setTerrain(m.x, m.y, T.WALL); }
         protect(g, 7, 5);
+        // Time.c:274 promotes FORCEFIELD -> MELT -> NOTHING during rubble refresh.
+        // Movement.c:760 frees only captives that are STILL in blocking terrain.
+        // A retained WALL forbids the rubble surface, so fill/instant is skipped.
+        if (retainedBlocker) g.grid.setTerrainLayer(8, 5, L.LIQUID, T.WALL);
         const original = g.freeCaptive.bind(g);
         const release = vi.spyOn(g, 'freeCaptive').mockImplementation(m => {
-            expect(cell(g, m.x, m.y).layers[L.SURFACE]).toBe(T.RUBBLE);
+            expect(cell(g, m.x, m.y).layers[L.SURFACE]).toBe(T.NOTHING);
             original(m);
         });
         internal(g).crystalizeFromPlayer(9);
-        expect(release).toHaveBeenCalledExactlyOnceWith(freed);
-        expect(freed.isAlly).toBe(true); expect(freed.isCaged).toBe(false);
+        if (retainedBlocker) expect(release).toHaveBeenCalledExactlyOnceWith(freed);
+        else expect(release).not.toHaveBeenCalled();
+        expect(freed.isAlly).toBe(retainedBlocker); expect(freed.isCaged).toBe(!retainedBlocker);
+        expect(cell(g, 8).layers[L.DUNGEON]).toBe(retainedBlocker ? T.FORCEFIELD : T.FLOOR);
+        expect(cell(g, 8).layers[L.SURFACE]).toBe(T.NOTHING);
         expect(captive.isCaged).toBe(true); expect(captive.isAlly).toBe(false);
     });
 
@@ -190,7 +197,8 @@ describe('U15a real inventory read + U01 v2 JSON round trip', () => {
         expect(g.grid.isImpregnable(7, 5)).toBe(true);
         expect(g.getMonsterAt(7, 5)?.isCaged).toBe(true);
         expect(g.getMonsterAt(8, 5)).toBeUndefined();
-        expect(cell(g, 8).layers[L.DUNGEON]).toBe(T.FORCEFIELD);
-        expect(cell(g, 8).layers[L.SURFACE]).toBe(T.RUBBLE);
+        // Occupied forcefield melts in the nested instant contact before lethal handling.
+        expect(cell(g, 8).layers[L.DUNGEON]).toBe(T.FLOOR);
+        expect(cell(g, 8).layers[L.SURFACE]).toBe(T.NOTHING);
     });
 });

@@ -1,0 +1,47 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/c_4a_terrain_catalog.test.ts src/test/c_4b_dungeon_feature.test.ts src/test/c_7_lighting.test.ts src/test/u_08_terrain_bolts.test.ts src/test/u_17a_df_transaction.test.ts --maxWorkers=2 -t 目录|迁移安全|留痕（对抗⑥）|glowLight|非零恰|U08|U17a
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web
+
+ ❯ src/test/c_4b_dungeon_feature.test.ts (31 tests | 1 failed | 26 skipped) 50ms
+     × E2 闭包自洽：TerrainCatalog 字符串起点 + subsequentDF 展开 == 目录键集（多抄/漏抄/悬空全翻红） 30ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/c_4b_dungeon_feature.test.ts > C-4b E：目录完整性（CE Globals.c:603-932 抄录质量） > E2 闭包自洽：TerrainCatalog 字符串起点 + subsequentDF 展开 == 目录键集（多抄/漏抄/悬空全翻红）
+AssertionError: expected [ Array(139) ] to deeply equal [ Array(140) ]
+
+- Expected
++ Received
+
+@@ -57,11 +57,10 @@
+    105,
+    106,
+    107,
+    108,
+    109,
+-   110,
+    112,
+    113,
+    114,
+    115,
+    116,
+
+ ❯ src/test/c_4b_dungeon_feature.test.ts:777:52
+    775|         // 集合相等：目录里多一条（闭包外）或少一条（漏抄）都翻红。
+    776|         const catalogKeys = new Set(Object.keys(DUNGEON_FEATURE_CATALO…
+    777|         expect([...closure].sort((a, b) => a - b)).toEqual([...catalog…
+       |                                                    ^
+    778|         expect([...catalogKeys].filter(id => ![57, 58, 59, 60, 110].in…
+    779|             'G-2：DF_EXPLOSION_FIRE（经 METHANE_GAS.promoteType）入闭包 21→22…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 4 passed (5)
+      Tests  1 failed | 74 passed | 67 skipped (142)
+   Start at  17:48:30
+   Duration  31.67s (transform 1.93s, setup 0ms, import 7.93s, tests 50.17s, environment 2ms)
+

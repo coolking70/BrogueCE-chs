@@ -1,0 +1,82 @@
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17a-counterfactual-9brMJh
+
+stdout | src/test/u_17a_df_transaction.test.ts > U17a actual Game consumers > instant fire burns only scrolls, ignites and damages through recursive DF before returning
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_17a_df_transaction.test.ts (27 tests | 2 failed | 25 skipped) 224ms
+     ↓ evacuates from the raw footprint BEFORE priority rejects fill, including generation refresh=false
+     ↓ uses species forbidden terrain, all occupants, x/y ring order, and no extra roll on singleton
+     ↓ blocking veto has no evacuation/aggravation/recursion; PERMIT_BLOCKING permits the same footprint
+     ↓ refresh occurs per cell before clear, aggravation, subsequent, shore invalidation and awakening
+     ↓ EVERY uses only successfully filled cells; descendants inherit refresh=false and live context
+     ↓ BLOCKED_BY_OTHER_LAYERS filters footprint before descendants
+     ↓ gas refresh does not contact/burn/evacuate; following DF does contact and clear
+     ↓ description precedes veto, is visibility-gated and resets per turn; nested contexts restore after an error
+     ↓ message eligibility follows DF identity, not shared text; fresh catalog projections retain identity
+     ↓ game end during fill stops further fill/contact and subsequent, while failed DF still refreshes player hazard
+     × generic occupied contact dissolves both forcefield stages, also for direct DF and promotion recursion 4ms
+     ↓ recursive hole marks player falling without inventing an immediate floor-item update
+     × instant fire burns only scrolls, ignites and damages through recursive DF before returning 219ms
+     ↓ lethal player contact ends the actual Game before burning items, filling later cells or running descendants
+     ↓ direct and descendant fires register the current-turn skip without callers draining results
+     ↓ runtime evacuation moves real player and creature; generation refresh=false moves without contact/status
+     ↓ alarm uses four-way path radius from origin, resets scent, preserves allies, wakes enemies and sets source status
+     ↓ two Game/grid owners cannot redirect each others contact or messages
+     ↓ actual stair movement changes level before REPEL_CREATURES can evict the player
+     ↓ alarm source may be remote: wall detours reject nearby cells and only player-origin alarms add AGGRAVATING
+     ↓ alarm status, moved entities and post-load grid binding survive the existing snapshot contract
+     ↓ flash obeys refresh, radius and animation lifetime without changing lighting or either RNG stream
+     ↓ transient flashes are discarded by load and new-run lifecycle without entering snapshots
+     ↓ retired grid cannot mutate the replacement world after load
+     ↓ retired grid cannot mutate the replacement world after new-run
+     ↓ retired grid cannot mutate the replacement world after test-depth
+     ↓ null tile registry remains exactly 30 and no five-family carrier is activated
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_17a_df_transaction.test.ts > U17a DF transaction: CE ordering and recursive world effects > generic occupied contact dissolves both forcefield stages, also for direct DF and promotion recursion
+AssertionError: expected 43 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 43
+
+ ❯ src/test/u_17a_df_transaction.test.ts:132:51
+    130|         const g=grid();setDungeonFeatureEffects(g,{occupied:p=>p.x===6…
+    131|         spawnDungeonFeature(g,6,4,feat(),false);
+    132|         expect(g.getCell(6,4)!.layers[L.SURFACE]).toBe(T.NOTHING);expe…
+       |                                                   ^
+    133|         spawnObstruction(g,8,4,2,()=>false);expect(g.getCell(8,4)!.isP…
+    134|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/test/u_17a_df_transaction.test.ts > U17a actual Game consumers > instant fire burns only scrolls, ignites and damages through recursive DF before returning
+AssertionError: expected 100 to be 50 // Object.is equality
+
+- Expected
++ Received
+
+- 50
++ 100
+
+ ❯ src/test/u_17a_df_transaction.test.ts:147:22
+    145|         for(const category of [ItemCategory.SCROLL,ItemCategory.POTION…
+    146|         spawnDungeonFeature(g.grid,7,5,feat({tile:T.NOTHING,subsequent…
+    147|         expect(m.hp).toBe(50);expect((g as any).burningDuration(m)).to…
+       |                      ^
+    148|         expect(g.items.map(i=>i.category)).toEqual([ItemCategory.POTIO…
+    149|         expect(g.grid.getCell(7,5)!.layers[L.SURFACE]).toBe(T.ITEM_FIR…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 25 skipped (27)
+   Start at  19:46:38
+   Duration  1.09s (transform 447ms, setup 0ms, import 764ms, tests 224ms, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web/ai_docs/reports/u-17a-evidence/counterfactual-no-refresh.json

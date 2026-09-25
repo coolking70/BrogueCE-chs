@@ -1,0 +1,36 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web
+
+stdout | src/test/u_17a_df_transaction.test.ts > U17a actual Game consumers > lethal player contact ends the actual Game before burning items, filling later cells or running descendants
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_17a_df_transaction.test.ts (23 tests | 1 failed | 22 skipped) 194ms
+     × lethal player contact ends the actual Game before burning items, filling later cells or running descendants 193ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_17a_df_transaction.test.ts > U17a actual Game consumers > lethal player contact ends the actual Game before burning items, filling later cells or running descendants
+AssertionError: CE Time.c:367 returns before gas statuses after lethal explosion: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/test/u_17a_df_transaction.test.ts:148:116
+    146|         spawnDungeonFeature(g.grid,5,5,feat({tile:T.GAS_EXPLOSION,star…
+    147|         expect(g.isGameOver).toBe(true);expect(g.player.hp).toBeLessTh…
+    148|         expect(g.player.hasStatus('confused'), 'CE Time.c:367 returns …
+       |                                                                                                                    ^
+    149|         expect(g.items).toContain(scroll);expect(g.grid.getCell(4,5)!.…
+    150|         expect(g.grid.getCell(6,5)!.layers[L.SURFACE]).toBe(T.NOTHING);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 22 skipped (23)
+   Start at  19:05:42
+   Duration  1.02s (transform 359ms, setup 0ms, import 742ms, tests 194ms, environment 0ms)
+

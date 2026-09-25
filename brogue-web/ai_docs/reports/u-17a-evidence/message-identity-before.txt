@@ -1,0 +1,30 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_17a_df_transaction.test.ts -t message eligibility follows --maxWorkers=1
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web
+
+ ❯ src/test/u_17a_df_transaction.test.ts (27 tests | 1 failed | 26 skipped) 4ms
+     × message eligibility follows DF identity, not shared text; fresh catalog projections retain identity 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_17a_df_transaction.test.ts > U17a DF transaction: CE ordering and recursive world effects > message eligibility follows DF identity, not shared text; fresh catalog projections retain identity
+AssertionError: expected "vi.fn()" to be called 2 times, but got 1 times
+ ❯ src/test/u_17a_df_transaction.test.ts:113:66
+    111|         const first=feat({description:'shared text'}),second=feat({des…
+    112|         spawnDungeonFeature(g,6,4,first,false);spawnDungeonFeature(g,6…
+    113|         spawnDungeonFeature(g,6,4,second,false);expect(describe).toHav…
+       |                                                                  ^
+    114|         const catalog=()=>{const f=catalogFeature(DF.DF_REPEL_CREATURE…
+    115|         spawnDungeonFeature(g,6,4,catalog(),false);spawnDungeonFeature…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 26 skipped (27)
+   Start at  19:44:04
+   Duration  806ms (transform 356ms, setup 0ms, import 721ms, tests 4ms, environment 0ms)
+

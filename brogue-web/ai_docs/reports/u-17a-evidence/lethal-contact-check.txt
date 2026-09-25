@@ -1,0 +1,13 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_17a_df_transaction.test.ts src/test/u24_hardcoded_text.test.ts --maxWorkers=2
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web
+
+
+ Test Files  2 passed (2)
+      Tests  25 passed (25)
+   Start at  18:00:21
+   Duration  10.46s (transform 1.33s, setup 0ms, import 2.68s, tests 9.09s, environment 1ms)
+

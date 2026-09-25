@@ -1,0 +1,8 @@
+{ name: 'no-evacuation', exit: 1, expected: 1 }
+{ name: 'no-refresh', exit: 1, expected: 1 }
+{ name: 'subsequent-loses-refresh', exit: 1, expected: 1 }
+{ name: 'no-aggravation', exit: 1, expected: 1 }
+{ name: 'deferred-death', exit: 1, expected: 1 }
+{ name: 'no-item-fire', exit: 1, expected: 1 }
+{ name: 'no-fire-registration', exit: 1, expected: 1 }
+{ name: 'no-blocking-veto', exit: 1, expected: 1 }

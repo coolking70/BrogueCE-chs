@@ -388,6 +388,10 @@ export const TERRAIN_FLAGS: Record<TerrainType, TerrainFlagsEntry> = {
     // F-1 曾把 promoteChance 记 0（保 burnDuration 倒计时、不移 RNG 流），
     // F-2a 按任务书 §二.2 翻正为 500 并由 runPromotionUpdate 自然驱动。
     // C-7：glowLight = FIRE_LIGHT（Globals.c:492 原列，登记不迁移已翻转）。
+    // CE Globals.c:498: burnItem leaves a shorter-lived white fire.
+    [TerrainType.ITEM_FIRE]: e(T_IS_FIRE,
+        TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT,
+        0, '', '', 'DF_EMBERS', 3000, false, LightKind.FIRE_LIGHT),
     [TerrainType.PLAIN_FIRE]: e(
         T_IS_FIRE,
         TM_STAND_IN_TILE | TM_VANISHES_UPON_PROMOTION | TM_VISUALLY_DISTINCT,

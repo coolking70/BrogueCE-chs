@@ -1,0 +1,30 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/w_13_tunneling.test.ts -t DF rubble --maxWorkers=1
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web
+
+ ❯ src/test/w_13_tunneling.test.ts (43 tests | 1 failed | 42 skipped) 39ms
+     × DF rubble activates a dormant embedded turret before the tunnel kills it; ordinary creatures survive 38ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/w_13_tunneling.test.ts > W-13 reflection, creatures, maps and persistence > DF rubble activates a dormant embedded turret before the tunnel kills it; ordinary creatures survive
+AssertionError: expected "vi.fn()" to be called at least once
+ ❯ src/test/w_13_tunneling.test.ts:195:23
+    193|         const awake = vi.fn(() => { turret.isDormant = false; g.monste…
+    194|         setDormantAwakener(g.grid, awake); cast(g, 2, { x: 6, y: 5 }, …
+    195|         expect(awake).toHaveBeenCalled(); expect(turret.hp).toBe(0); e…
+       |                       ^
+    196|         expect(g.grid.getCell(5, 5)!.layers[L.SURFACE]).toBe(T.RUBBLE);
+    197|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 42 skipped (43)
+   Start at  18:22:01
+   Duration  1.35s (transform 723ms, setup 0ms, import 1.17s, tests 39ms, environment 0ms)
+

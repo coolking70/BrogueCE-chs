@@ -55,7 +55,7 @@ const roamPolicy: TurnPolicy = (game) => {
     return { action: 'move', data: { x: dx, y: dy } };
 };
 
-interface Transition { turn: number; state: string }
+interface Transition { turn: number; objectiveTurn: number; state: string }
 interface CurveSample { turn: number; nutrition: number; hp: number; state: string }
 interface SimResult {
     seed: number;
@@ -91,6 +91,7 @@ function simulate(seed: number, policy: TurnPolicy, label: string, maxTurns: num
         transitions: [],
         curve: [{ turn: 0, nutrition: game.player.nutrition, hp: game.player.hp, state: game.player.hungerState }],
     };
+    const objectiveStart = game.absoluteTurnNumber;
     let lastState = game.player.hungerState;
     for (let t = 1; t <= maxTurns; t++) {
         // The starvation scenario explicitly excludes food: CE automatically eats
@@ -103,7 +104,7 @@ function simulate(seed: number, policy: TurnPolicy, label: string, maxTurns: num
         game.handlePlayerAction(action?.action ?? 'wait', action?.data, 'system');
         sim.turnsRun = t;
         if (game.player.hungerState !== lastState) {
-            sim.transitions.push({ turn: t, state: game.player.hungerState });
+            sim.transitions.push({ turn: t, objectiveTurn: game.absoluteTurnNumber - objectiveStart, state: game.player.hungerState });
             lastState = game.player.hungerState;
         }
         if (t % CHECKPOINT === 0) {
@@ -157,7 +158,9 @@ describe('2000 回合饥饿曲线实测（harness, 3 seeds × 2 策略）', () =
         // wait 策略会在前期被怪物击杀（实测 49-205 回合），故延长运行用 roam：
         // CE Time.c:949-970: at nutrition 1 with no food, checkNutrition immediately sets 0.
         // Thus starvation starts at T2149, one turn before a plain decrement-to-zero model.
-        expect(r.transitions).toEqual(expect.arrayContaining([
+        // U17a restored stair traversal: input attempts are not objective turns.
+        // Keep exact CE hunger thresholds, measured in actual objective blocks.
+        expect(r.transitions.map(t => ({ turn: t.objectiveTurn, state: t.state }))).toEqual(expect.arrayContaining([
             { turn: 2100, state: 'faint' },
             { turn: 2149, state: 'starving' },
         ]));

@@ -1,0 +1,50 @@
+{
+  "inputCount": 545,
+  "inputDifferences": [],
+  "currentSourceDifferences": [],
+  "tests": {
+    "numTotalTests": 3343,
+    "numPassedTests": 3334,
+    "numFailedTests": 0,
+    "numPendingTests": 8,
+    "numTodoTests": 1
+  },
+  "files": 165,
+  "gates": [
+    {
+      "name": "audit-final",
+      "exit": 0,
+      "started": "2026-09-25T11:46:34.241Z",
+      "ended": "2026-09-25T11:46:34.785Z"
+    },
+    {
+      "name": "build-final",
+      "exit": 0,
+      "started": "2026-09-25T11:46:34.786Z",
+      "ended": "2026-09-25T11:46:40.536Z"
+    },
+    {
+      "name": "regression-final",
+      "exit": 0,
+      "started": "2026-09-25T11:46:40.537Z",
+      "ended": "2026-09-25T12:10:51.108Z"
+    },
+    {
+      "name": "drift-final",
+      "exit": 0,
+      "started": "2026-09-25T12:10:51.109Z",
+      "ended": "2026-09-25T12:11:11.330Z"
+    }
+  ],
+  "baselineUnchanged": true,
+  "originalGuardsUnchanged": [
+    "src/engine/Combat/BoltContract.test.ts",
+    "src/test/w_13_tunneling.test.ts",
+    "src/test/w_14_obstruction.test.ts",
+    "src/test/u_00_new_run.test.ts",
+    "src/test/u_01_instance_snapshot.test.ts",
+    "src/test/u_03_whole_run_snapshot.test.ts"
+  ],
+  "indexEmpty": true,
+  "headUnchanged": true
+}

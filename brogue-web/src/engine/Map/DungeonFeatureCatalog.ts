@@ -83,6 +83,7 @@ export enum DF {
     DF_BRIDGE_FIRE                 = 105, // :1597
     DF_EMBERS                      = 107, // :1599
     DF_OBSIDIAN                    = 109, // :1601
+    DF_ITEM_FIRE                   = 110, // :1602; U17a burnItem successor
     DF_POISON_GAS_CLOUD            = 125, // :1620
     DF_MACHINE_PRESSURE_PLATE_USED = 154, // :1663
     // V-2b-2b：TRAP_DOOR_HIDDEN.discoverType 与 WOODEN_BARRICADE.fireType 的
@@ -504,6 +505,13 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     // {PLAIN_FIRE, SURFACE, 0, 0, 0} —— 平火（F-2a：tile 翻正 PLAIN_FIRE；
     // 点火链 promoteTile(useFireDF) 的落点。start=0：单点、零 RNG——
     // CE spawnMapDF 的 while(startProb>0) 不执行，符合 probDec 约定）
+    // CE Globals.c:750 / Time.c:990: burnItem's immediate successor.
+    [DF.DF_ITEM_FIRE]: {
+        id: DF.DF_ITEM_FIRE, ceLine: 750, ceTile: 'ITEM_FIRE', tile: TerrainType.ITEM_FIRE,
+        layer: DungeonLayer.SURFACE, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: 'FALLEN_TORCH_FLASH_LIGHT', flashColor: '', effectRadius: 0,
+    },
     [DF.DF_PLAIN_FIRE]: {
         id: DF.DF_PLAIN_FIRE, ceLine: 740, ceTile: 'PLAIN_FIRE', tile: TerrainType.PLAIN_FIRE,
         layer: DungeonLayer.SURFACE, startProbability: 0, probabilityDecrement: 0,

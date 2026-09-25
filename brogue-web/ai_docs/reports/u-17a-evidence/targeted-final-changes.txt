@@ -1,0 +1,37 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_17a_df_transaction.test.ts src/test/u_08_terrain_bolts.test.ts src/test/w_14_obstruction.test.ts src/test/u24_hardcoded_text.test.ts src/test/u21c_terrain_appearance.test.ts --maxWorkers=2
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web
+
+ ❯ src/test/u_08_terrain_bolts.test.ts (32 tests | 1 failed) 22555ms
+     × new closed terrain set: 139 DFs, no entity/spawn flags; web forbidden to learn, vines eligible 16ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_08_terrain_bolts.test.ts > U08 CE catalog and runtime qualification > new closed terrain set: 139 DFs, no entity/spawn flags; web forbidden to learn, vines eligible
+AssertionError: expected [ Array(140) ] to have a length of 139 but got 140
+
+- Expected
++ Received
+
+- 139
++ 140
+
+ ❯ src/test/u_08_terrain_bolts.test.ts:48:34
+     46|     });
+     47|     it('new closed terrain set: 139 DFs, no entity/spawn flags; web fo…
+     48|         expect(Object.keys(DFC)).toHaveLength(139);
+       |                                  ^
+     49|         expect(BC[B.SPIDERWEB]).toMatchObject({effect:E.NONE,pathDF:'D…
+     50|         expect(BC[B.ANCIENT_SPIRIT_VINES]).toMatchObject({effect:E.NON…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 4 passed (5)
+      Tests  1 failed | 81 passed (82)
+   Start at  17:46:46
+   Duration  24.44s (transform 1.79s, setup 0ms, import 6.13s, tests 35.64s, environment 2ms)
+

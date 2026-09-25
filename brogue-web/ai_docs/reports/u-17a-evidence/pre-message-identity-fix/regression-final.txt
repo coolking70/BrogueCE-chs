@@ -1,0 +1,185 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/data/monsterBolts.test.ts src/data/monsterDamage.test.ts src/data/monsters.test.ts src/data/weapons.test.ts src/engine/Combat/BoltCatalog.test.ts src/engine/Combat/BoltContract.test.ts src/engine/Core/snapshotQuantity.test.ts src/engine/Core/startingKit.test.ts src/engine/Items/itemFlavors.test.ts src/engine/UI/DetailGenerator.test.ts src/engine/UI/Discoveries.test.ts src/test/ai_1_scent_tracking.test.ts src/test/armor_display_effect.test.ts src/test/armor_model_effect.test.ts src/test/armor_runic_effect.test.ts src/test/b1_retire_invented.test.ts src/test/b2_transcription.test.ts src/test/b_1_weapon_specials.test.ts src/test/b_1a_identification.test.ts src/test/b_1b_identification_persistence.test.ts src/test/b_1c_detect_magic.test.ts src/test/b_2_throwing.test.ts src/test/b_4a_item_generation.test.ts src/test/b_4b_item_placement.test.ts src/test/blueprint_center.test.ts src/test/c_0_add_loops.test.ts src/test/c_1_room_profile.test.ts src/test/c_2_lakes.test.ts src/test/c_2_lakes_determinism.test.ts src/test/c_2_lakes_e2e.test.ts src/test/c_3_walls_doors.test.ts src/test/c_4a_0_layer_model.test.ts src/test/c_4a_terrain_catalog.test.ts src/test/c_4b_dungeon_feature.test.ts src/test/c_4c_promotion.test.ts src/test/c_5_fall_subsystem.test.ts src/test/c_6_autogenerators.test.ts src/test/c_7_lighting.test.ts src/test/c_8_connectivity.test.ts src/test/f_1_fire_as_terrain.test.ts src/test/f_2a_fire_mechanics.test.ts src/test/f_2b_creature_burning.test.ts src/test/f_2c_explosion.test.ts src/test/g_1_gas_volumetric.test.ts src/test/g_2_gas_df_wiring.test.ts src/test/g_3_gas_effects.test.ts src/test/horde_selection.test.ts src/test/horde_terrain_spawn.test.ts src/test/hunger_curve_sim.test.ts src/test/hunger_regen.test.ts src/test/i_1_interaction.test.ts src/test/invented_content_pool.test.ts src/test/monster_damage_balance.test.ts src/test/monster_stats_effect.test.ts src/test/p1_20_item_placement.test.ts src/test/p1_24_death_sink.test.ts src/test/p1_26_invariants.test.ts src/test/p1_27_remove_drowning.test.ts src/test/p1_28_flag_channel.test.ts src/test/p1_29_adversarial_gate.test.ts src/test/p1_29_lake_connectivity.test.ts src/test/p1_30_i18n_gate.test.ts src/test/p1_31_35_placement_snapshot.test.ts src/test/p1_33_machine_chokepoint.test.ts src/test/p1_34_loopmap_reset.test.ts src/test/p1_37_machine_flag_i18n.test.ts src/test/p1_42_secret_door_search.test.ts src/test/p2_0_seeded_rng.test.ts src/test/p2_1_tick_architecture.test.ts src/test/p2_2_real_speed.test.ts src/test/p2_3_objective_time.test.ts src/test/p2_4_animation_cadence.test.ts src/test/p2_6_display_settings.test.ts src/test/p4_10_waypoint.test.ts src/test/p4_1b_monster_casting.test.ts src/test/p4_2_monster_summoning.test.ts src/test/p4_3_special_monster_flags.test.ts src/test/p4_4_split_kamikaze.test.ts src/test/p4_5_melee_specials.test.ts src/test/p4_6_attack_geometry.test.ts src/test/p4_7_player_weapon_geometry.test.ts src/test/p4_8_scent_map.test.ts src/test/p4_9_safety_map.test.ts src/test/r_1_appearance.test.ts src/test/scroll_effects.test.ts src/test/smoke.test.ts src/test/t_1_tail.test.ts src/test/u20_inventory.test.ts src/test/u21c_flare_sidebar.test.ts src/test/u21c_terrain_appearance.test.ts src/test/u24_hardcoded_text.test.ts src/test/u_00_new_run.test.ts src/test/u_01_instance_snapshot.test.ts src/test/u_02a_rng_snapshot.test.ts src/test/u_02b_level_rng.test.ts src/test/u_03_whole_run_snapshot.test.ts src/test/u_03b_level_travel.test.ts src/test/u_04c_machine_cells.test.ts src/test/u_05_machine_items.test.ts src/test/u_05a_item_ownership.test.ts src/test/u_06_monster_damage.test.ts src/test/u_07_monster_blink.test.ts src/test/u_08_terrain_bolts.test.ts src/test/u_09_learning_consumers.test.ts src/test/u_10_absorption_snapshot.test.ts src/test/u_11_corpse_learning.test.ts src/test/u_12a_cast_eligibility.test.ts src/test/u_12b_ally_mode.test.ts src/test/u_13_combat_math.test.ts src/test/u_14a_status_gaps.test.ts src/test/u_14b_status_gaps.test.ts src/test/u_15a_shattering.test.ts src/test/u_15e_potions.test.ts src/test/u_15f_food.test.ts src/test/u_16_lifecycle.test.ts src/test/u_17a_df_transaction.test.ts src/test/u_18_water_cage.test.ts src/test/u_18a_2_generation_terrain.test.ts src/test/u_18a_3_generation.test.ts src/test/u_18a_terrain_contracts.test.ts src/test/u_23_memory_mapping.test.ts src/test/ui_1_rendering.test.ts src/test/ui_2_protection.test.ts src/test/v_1a_blueprint_items.test.ts src/test/v_1b_alternative.test.ts src/test/v_1c_machine_structure.test.ts src/test/v_2a_vestibule_return.test.ts src/test/v_2b_2a_placement_flags.test.ts src/test/v_2b_2b_blueprints.test.ts src/test/v_2b_3_wired.test.ts src/test/v_2b_4_altars.test.ts src/test/v_2b_5_dormant.test.ts src/test/v_2b_6_keys.test.ts src/test/v_2b_7_features.test.ts src/test/v_2b_8_autogen.test.ts src/test/v_2b_9a_carriers.test.ts src/test/v_2b_9b_environment.test.ts src/test/v_2b_9c_effects.test.ts src/test/v_2b_9d_dungeon_profile.test.ts src/test/v_2b_9e_2_autogen.test.ts src/test/v_2b_9e_area_machine.test.ts src/test/w_10_poison.test.ts src/test/w_11_teleport_placement.test.ts src/test/w_12_blink_beckoning.test.ts src/test/w_13_tunneling.test.ts src/test/w_14_obstruction.test.ts src/test/w_15_shielding.test.ts src/test/w_16_conjuration.test.ts src/test/w_17_domination.test.ts src/test/w_18_entrancement.test.ts src/test/w_19_polymorph.test.ts src/test/w_20_cloning.test.ts src/test/w_21_empowerment.test.ts src/test/w_23_negation.test.ts src/test/w_24_wand_catalog.test.ts src/test/w_25_staff_catalog.test.ts src/test/w_26_arcana_closure.test.ts src/test/w_2_arcana_submission.test.ts src/test/w_3_bolt_trajectory.test.ts src/test/w_4_bolt_reflection.test.ts src/test/w_5_arcana_instance.test.ts src/test/w_6_arcana_recharge.test.ts src/test/w_7_arcana_enchantment.test.ts src/test/w_8_staff_damage.test.ts src/test/w_9_directed_status.test.ts --maxWorkers=6 --reporter=default --reporter=json --outputFile.json=ai_docs/reports/u-17a-evidence/regression-final.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web
+
+stdout | src/test/c_4a_terrain_catalog.test.ts > C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时点的枚举全集逐位） > Game.canMoveTo（查表）≡ 旧清单：合成格逐地形实测（含生成中出现不了的地形）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/b_4a_item_generation.test.ts > B-4a 计量表：基表频率与 CE 表原值 > enchanting / life / strength 的基表（json）频率为 0，跑完一局后仍为 0（CE memcpy 还原语义）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/v_2b_7_features.test.ts > V-2b-7 D：MachineResult.featureSpawns（CE Architect.c:1484-1486 的落点暴露） > D1 5 seed × D1..D9：每个「网格机器格」都能追到机器自己的落点记录
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A1 门位契约：真实关卡上每个门位都有正交轴两侧严格地板，且环路确实被开辟
+[c_0] A1 新开门合计=463，含新环门层=125/130
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A2/A3 对抗：漏"两侧地板"检查、试对角——两种错误实现在同批真实 grid 上都产生门位违例（守卫：断言非空转）
+[c_0] noFlankCheck：门位=67900 违例=65919
+[c_0] diagonal：门位=1094 违例=427
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A4 对抗（S-1 改造：锚定合成输入）：判据写反（< 而非 >）→ 蜂窝化，门位总数暴涨（> 正确对照 ×3）
+[c_0] A4(合成输入) 正确对照=6 判据写反=198（比值 33.0×；华夫格 inverted=190）
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A5 对抗：漏 costMap[x][y]=1 同步更新 → 后续候选用过时距离，门位合计严格偏多
+[c_0] A5 同序正确对照=721 漏同步=944（52 层合计）
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > B1 IN_LOOP 只出现在非阻挡格上（130 层逐格）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > B2 对抗：漏 checkLoopiness 剥离 → 整片可通行区被标环（loopFraction==passableFraction）；生产严格更小且上限受控
+[c_0] B2 IN_LOOP 合计=19070/118207（16.1%），单层峰值=33.3%
+
+stdout | src/test/c_4a_terrain_catalog.test.ts > C-4a F：干跑测量——calculateMap 改用 isPathingBlocker 的影响（只测量不修复） > 15 种子 × D1-D26：cost 图逐格分歧表（下一轮 C-4b 的输入）
+[C-4a 干跑测量] 15 种子 × D1-D26（每层内部格全扫）
+  语义分歧（cost 1 → OBSTRUCTION，距离图将改变）：13347 格
+    按地形：WATER_DEEP=3075，CRYSTAL_WALL=1907，TRAP=1626，LAVA=1624，TORCH_WALL=1573，INERT_BRIMSTONE=606，BLOODFLOWER_STALK=590，STATUE_INERT=559，TRAP_DOOR_HIDDEN=521，GAS_TRAP_PARALYSIS_HIDDEN=462，PRESSURE_PLATE=319，STATUE_DORMANT=120，LOCKED_DOOR=78，CHASM_WITH_HIDDEN_BRIDGE=58，TURRET_DORMANT=49，WALL_MONSTER_DORMANT=48，RAT_TRAP_WALL_DORMANT=31，FLAMETHROWER_HIDDEN=21，GAS_TRAP_PARALYSIS=18，WOODEN_BARRICADE=18，MONSTER_CAGE_CLOSED=15，STATUE_DORMANT_DOORWAY=7，STATUE_INERT_DOORWAY=6，HAUNTED_TORCH_DORMANT=5，WALL_LEVER_HIDDEN_DORMANT=4，FLOOD_TRAP=3，WORM_TUNNEL_OUTER_WALL=1，WALL_LEVER_HIDDEN=1，PILOT_LIGHT_DORMANT=1，BRAZIER=1
+  数值分歧（FORBIDDEN → OBSTRUCTION，均不可走，仅 cost 数值变）：4980 格
+    按地形：CHASM=3206，SECRET_DOOR=1756，WOODEN_BARRICADE=8，STATUE_INERT=7，CRYSTAL_WALL=2，BLOODFLOWER_STALK=1
+
+ ✓ src/test/c_4a_terrain_catalog.test.ts (30 tests) 129922ms
+     ✓ Game.canMoveTo（查表）≡ 旧清单：合成格逐地形实测（含生成中出现不了的地形）  655ms
+     ✓ B-3：迁移后新增的墙族 tile 的通行判定 = CE 查表口径（挡通行、不进旧清单）  379ms
+     ✓ V-2b-3：wired 载体九条的通行判定 = CE 查表口径（四条墙族挡通行、五条可走）  394ms
+     ✓ V-2b-4：祭坛族七条的通行判定 = CE 查表口径（三条墙族挡通行、四条可走）  407ms
+     ✓ V-2b-5：休眠载体七条的通行判定 = CE 查表口径（五条墙族挡通行、两条可走）  461ms
+     ✓ V-2b-6：钥匙轮载体的通行判定 = CE 查表口径（两条挡通行、四条可走）  457ms
+     ✓ V-2b-7：DF 特征系统轮载体的通行判定 = CE 查表口径（三条挡通行、十六条可走）  439ms
+     ✓ 15 种子 × D1-D26：cost 图逐格分歧表（下一轮 C-4b 的输入）  126700ms
+stdout | src/test/v_2b_4_altars.test.ts > V-2b-4 D：自创祭坛组子系统已拆除（留痕 + 越界守卫） > D4 行为：从祭坛取物只入包，**不再**塌陷同组祭坛（构造两座祭坛做判别）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A6 生产锚定：生产新开门数落在 K=6 次同输入正确对照的散布带内（抓住生产侧的一切判据/同步/方向错误）
+[c_0] A6 生产=199 正确对照散布=[198, 200]（52 层合计，K=6）
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > C1 核心：真实环路存在——扫描开出的门位是真环边（移除后两侧仍连通 = 两条不共边路径）
+[c_0] C1 新开门=196，真环边=196，桥=0
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > C2 对抗守卫 + 核心对照：树状对照（门位回填成墙）割点率显著高于生产——证明 C1/C2 断言有牙
+[c_0] C2 work-grid 割点率：生产=7.0% 树状对照=9.4%（52 层平均）
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > C3 末态对照：全管线关卡（经湖泊+机器）的可通行图割点率受控（树状退化即翻红）
+[c_0] C3 末态割点=1797/36784（平均 4.9%），单层 p95=13.5%，峰值（观测）=15.0%
+
+ ✓ src/test/v_2b_4_altars.test.ts (36 tests) 120518ms
+     ✓ D4 行为：从祭坛取物只入包，**不再**塌陷同组祭坛（构造两座祭坛做判别）  474ms
+     ✓ E1 实测：`reward_statuary`（15 号）在 6 seed × D1-D26 上建成 **0 台**（frequency=0 的结构性后果）  52203ms
+     ✓ E2 实测：每局护符数恒为 1（noAmulet=0 / multiAmulet=0）——两套来源不可能叠加  66683ms
+     ✓ E3 直投仍是唯一来源（留痕）：spawnBlueprintItem 无 AMULET 分支 ⇒ 即便 15 号建成也发不出护符  937ms
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > E1 门位落位：管线内门位从不落回墙；生产落位函数在真实门位拓扑上呈 60% 门分布
+[c_0] E1 落位函数 DOOR=119 FLOOR=70（63.0%）
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > B3 safety map 集成：真实 loopMap 驱动 isInLoop（同谓词重算逐格一致 + 禁用变体可区分）
+[c_0] B3 IN_LOOP-=10 影响格=55301/297830（18.6%），受影响层=129/130
+
+ ✓ src/test/c_0_add_loops.test.ts (14 tests) 363721ms
+     ✓ A1 门位契约：真实关卡上每个门位都有正交轴两侧严格地板，且环路确实被开辟  15973ms
+     ✓ A2/A3 对抗：漏"两侧地板"检查、试对角——两种错误实现在同批真实 grid 上都产生门位违例（守卫：断言非空转）  17103ms
+     ✓ A5 对抗：漏 costMap[x][y]=1 同步更新 → 后续候选用过时距离，门位合计严格偏多  7085ms
+     ✓ B1 IN_LOOP 只出现在非阻挡格上（130 层逐格）  42521ms
+     ✓ B2 对抗：漏 checkLoopiness 剥离 → 整片可通行区被标环（loopFraction==passableFraction）；生产严格更小且上限受控  44003ms
+     ✓ A6 生产锚定：生产新开门数落在 K=6 次同输入正确对照的散布带内（抓住生产侧的一切判据/同步/方向错误）  8275ms
+     ✓ C1 核心：真实环路存在——扫描开出的门位是真环边（移除后两侧仍连通 = 两条不共边路径）  7541ms
+     ✓ C2 对抗守卫 + 核心对照：树状对照（门位回填成墙）割点率显著高于生产——证明 C1/C2 断言有牙  20098ms
+     ✓ C3 末态对照：全管线关卡（经湖泊+机器）的可通行图割点率受控（树状退化即翻红）  44038ms
+     ✓ D1 决定性：同种子两次生成 → 指纹/loopMap/门位/work grid 逐一一致  56721ms
+     ✓ E1 门位落位：管线内门位从不落回墙；生产落位函数在真实门位拓扑上呈 60% 门分布  32247ms
+     ✓ B3 safety map 集成：真实 loopMap 驱动 isInLoop（同谓词重算逐格一致 + 禁用变体可区分）  57894ms
+     ✓ B4 analyzeLoopMap 纯函数口径：Game.loopMap 与对末态网格直接重算一致（缓存层同口径）  10195ms
+stdout | src/test/w_5_arcana_instance.test.ts > W-5 deterministic persistence / migration > versioned JSON snapshot preserves independent E, capacity, depletion and unknown-state flags on ground / in pack
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/b_4a_item_generation.test.ts (24 tests) 419843ms
+     ✓ enchanting / life / strength 的基表（json）频率为 0，跑完一局后仍为 0（CE memcpy 还原语义）  7664ms
+     ✓ 计量状态随开局重置：新局的 initialFrequency 与 CE 一致（enchant 60 / life 0 / strength 40）  494ms
+     ✓ 附魔卷轴整局总数落在测量带内（V-1a 后实测 13-16/局；带宽余量 [8, 20]）  85333ms
+     ✓ 每个 seed 在 D6 前必出现第一只 life（n=0 时 4*0+3 < d+offset 最迟 D6 恒真）  7914ms
+     ✓ 整局食物产出落在测量带内（测量 9-13/局；带宽余量 [5, 18]）——食物保底在起作用  26737ms
+     ✓ war_axe / incendiary_dart / javelin 在整局生成中出现（10 seed 合计 ≥8 件）  98115ms
+     ✓ halberd 整局生成 0 出现（D2 退池维持）  35345ms
+     ✓ dart 在整局随机生成中几乎不出现（基表频率 0；仅机器等概率路径偶得，10 局 ≤12 把）  106836ms
+     ✓ potion_of_poison（CE caustic gas）整局生成中出现——B-4a 回池的直接产物  47104ms
+     ✓ 同 seed 两次 D1-D5 的物品多重集一致（无未播种/乱序泄漏）  4097ms
+stdout | src/test/blueprint_center.test.ts > 蓝图宝藏落点（machine center）可通行性 > b) 全局扫描（43 seeds × D1..D26）：房间 center 可通行、区域 origin 属于 interior（CE8 空域单独验证）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+[bp-center] seed=424242 D1..D26 substantive RNG 抽取总数: 1889161
+[bp-center] seed=20260913 D1..D26 substantive RNG 抽取总数: 1886901
+[bp-center] seed=1 D1..D26 substantive RNG 抽取总数: 1848763
+[bp-center] seed=777 D1..D26 substantive RNG 抽取总数: 2072287
+[bp-center] seed=31337 D1..D26 substantive RNG 抽取总数: 1979898
+[bp-center] seed=20260916 D1..D26 substantive RNG 抽取总数: 2221519
+[bp-center] seed=42 D1..D26 substantive RNG 抽取总数: 1817740
+[bp-center] seed=999 D1..D26 substantive RNG 抽取总数: 2029257
+[bp-center] seed=12345 D1..D26 substantive RNG 抽取总数: 2086523
+[bp-center] seed=55555 D1..D26 substantive RNG 抽取总数: 1784543
+[bp-center] seed=31415 D1..D26 substantive RNG 抽取总数: 1864092
+[bp-center] seed=27182 D1..D26 substantive RNG 抽取总数: 1948322
+[bp-center] seed=2 D1..D26 substantive RNG 抽取总数: 1971076
+[bp-center] seed=3 D1..D26 substantive RNG 抽取总数: 1956290
+[bp-center] seed=4 D1..D26 substantive RNG 抽取总数: 1890254
+[bp-center] seed=5 D1..D26 substantive RNG 抽取总数: 1989492
+[bp-center] seed=6 D1..D26 substantive RNG 抽取总数: 2038761
+[bp-center] seed=7 D1..D26 substantive RNG 抽取总数: 2044561
+[bp-center] seed=8 D1..D26 substantive RNG 抽取总数: 1961427
+[bp-center] seed=9 D1..D26 substantive RNG 抽取总数: 1764882
+[bp-center] seed=10 D1..D26 substantive RNG 抽取总数: 1948480
+[bp-center] seed=11 D1..D26 substantive RNG 抽取总数: 1748582
+[bp-center] seed=12 D1..D26 substantive RNG 抽取总数: 1581432
+[bp-center] seed=13 D1..D26 substantive RNG 抽取总数: 2123100
+[bp-center] seed=14 D1..D26 substantive RNG 抽取总数: 1953921
+[bp-center] seed=15 D1..D26 substantive RNG 抽取总数: 1841095
+[bp-center] seed=16 D1..D26 substantive RNG 抽取总数: 1961237
+[bp-center] seed=17 D1..D26 substantive RNG 抽取总数: 2017685
+[bp-center] seed=18 D1..D26 substantive RNG 抽取总数: 2048465
+[bp-center] seed=19 D1..D26 substantive RNG 抽取总数: 1835175
+[bp-center] seed=20 D1..D26 substantive RNG 抽取总数: 2215270
+[bp-center] seed=21 D1..D26 substantive RNG 抽取总数: 2047410
+[bp-center] seed=22 D1..D26 substantive RNG 抽取总数: 2275429
+[bp-center] seed=23 D1..D26 substantive RNG 抽取总数: 2014677
+[bp-center] seed=24 D1..D26 substantive RNG 抽取总数: 1839190
+[bp-center] seed=25 D1..D26 substantive RNG 抽取总数: 1788561
+[bp-center] seed=26 D1..D26 substantive RNG 抽取总数: 1653150
+[bp-center] seed=27 D1..D26 substantive RNG 抽取总数: 1946496
+[bp-center] seed=28 D1..D26 substantive RNG 抽取总数: 2013815
+[bp-center] seed=29 D1..D26 substantive RNG 抽取总数: 2018621
+[bp-center] seed=30 D1..D26 substantive RNG 抽取总数: 1914757
+[bp-center] seed=31 D1..D26 substantive RNG 抽取总数: 2076349
+[bp-center] seed=32 D1..D26 substantive RNG 抽取总数: 1720339
+[bp-center] 扫描 43 seeds × 26 层 = 1118 层，共 3658 台 machine，center 违例 0 条（涉及 0 层）；不可通行 terrain 分布：（无）
+[bp-center] center 上共见到 2 件宝藏：potion_of_life×2；宝藏违例 0 条
+
+ ✓ src/test/blueprint_center.test.ts (6 tests) 421152ms
+     ✓ b) 全局扫描（43 seeds × D1..D26）：房间 center 可通行、区域 origin 属于 interior（CE8 空域单独验证）  421145ms
+stdout | src/test/c_8_connectivity.test.ts > C-8 生成期 DF 放置否决：web 移动图口径 > T1 复现样本回归：seed12 逐层下潜到 D25，上/下行楼梯互相可达且非机器可走格单连通
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/armor_model_effect.test.ts > 护甲模型改造前后配对对照（5 档 × 20 seed × 400 回合） > 聚合对比：玩家被命中率 / 累计受伤 / 死亡次数
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+[armor_model_effect] 无护甲
+[armor_model_effect]   legacy(防御值=0): attacks=128 hits=98 rate=76.6% dmg=244 (dmg/atk=1.91) died=1/20 turns=7996 maxDepth=3
+[armor_model_effect]   wired (防御值=0): attacks=128 hits=100 rate=78.1% dmg=243 (dmg/atk=1.90) died=1/20 turns=7995 maxDepth=3
+[armor_model_effect] 皮甲+0（显示3）
+[armor_model_effect]   legacy(防御值=3): attacks=294 hits=226 rate=76.9% dmg=229 (dmg/atk=0.78) died=0/20 turns=8000 maxDepth=3
+[armor_model_effect]   wired (防御值=30): attacks=310 hits=171 rate=55.2% dmg=419 (dmg/atk=1.35) died=2/20 turns=7235 maxDepth=2
+[armor_model_effect] 皮甲+3（显示6）
+[armor_model_effect]   legacy(防御值=4): attacks=294 hits=226 rate=76.9% dmg=226 (dmg/atk=0.77) died=0/20 turns=8000 maxDepth=3
+[armor_model_effect]   wired (防御值=60): attacks=374 hits=133 rate=35.6% dmg=327 (dmg/atk=0.87) died=1/20 turns=7874 maxDepth=3
+[armor_model_effect] 板甲+0（显示11）
+[armor_model_effect]   legacy(防御值=11): attacks=141 hits=89 rate=63.1% dmg=89 (dmg/atk=0.63) died=0/20 turns=8000 maxDepth=3
+[armor_model_effect]   wired (防御值=110): attacks=127 hits=18 rate=14.2% dmg=40 (dmg/atk=0.31) died=0/20 turns=8000 maxDepth=3
+[armor_model_effect] 板甲+3（显示14）
+[armor_model_effect]   legacy(防御值=13): attacks=139 hits=83 rate=59.7% dmg=83 (dmg/atk=0.60) died=0/20 turns=8000 maxDepth=3
+[armor_model_effect]   wired (防御值=140): attacks=130 hits=10 rate=7.7% dmg=24 (dmg/atk=0.18) died=0/20 turns=8000 maxDepth=3
+
+stdout | src/test/armor_model_effect.test.ts > 定向验证：真实怪物(acc=100)攻击穿甲玩家，防御值进入命中掷骰 > 板甲+3：wired 命中率显著低于 legacy，且均非 0/100%（60 次挥击）
+[armor_model_effect] 定向: monkey(acc=100) 60 挥击 → 无护甲 wired=60/60 板甲+3 legacy=47/60 板甲+3 wired=10/60
+
+ ✓ src/test/armor_model_effect.test.ts (2 tests) 458902ms
+     ✓ 聚合对比：玩家被命中率 / 累计受伤 / 死亡次数  456934ms
+     ✓ 板甲+3：wired 命中率显著低于 legacy，且均非 0/100%（60 次挥击）  1966ms
+stdout | src/test/v_2b_6_keys.test.ts > V-2b-6 C：keyMatchesLocation / keyInPackFor 的否定面（对抗：任意钥匙开任意锁必红） > C1 否定面①：keyLoc 指向 X 的钥匙开不了 Y（坐标不匹配、机器号不同）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+

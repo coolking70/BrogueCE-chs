@@ -1,0 +1,140 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/data/monsterBolts.test.ts src/data/monsterDamage.test.ts src/data/monsters.test.ts src/data/weapons.test.ts src/engine/Combat/BoltCatalog.test.ts src/engine/Combat/BoltContract.test.ts src/engine/Core/snapshotQuantity.test.ts src/engine/Core/startingKit.test.ts src/engine/Items/itemFlavors.test.ts src/engine/UI/DetailGenerator.test.ts src/engine/UI/Discoveries.test.ts src/test/ai_1_scent_tracking.test.ts src/test/armor_display_effect.test.ts src/test/armor_model_effect.test.ts src/test/armor_runic_effect.test.ts src/test/b1_retire_invented.test.ts src/test/b2_transcription.test.ts src/test/b_1_weapon_specials.test.ts src/test/b_1a_identification.test.ts src/test/b_1b_identification_persistence.test.ts src/test/b_1c_detect_magic.test.ts src/test/b_2_throwing.test.ts src/test/b_4a_item_generation.test.ts src/test/b_4b_item_placement.test.ts src/test/blueprint_center.test.ts src/test/c_0_add_loops.test.ts src/test/c_1_room_profile.test.ts src/test/c_2_lakes.test.ts src/test/c_2_lakes_determinism.test.ts src/test/c_2_lakes_e2e.test.ts src/test/c_3_walls_doors.test.ts src/test/c_4a_0_layer_model.test.ts src/test/c_4a_terrain_catalog.test.ts src/test/c_4b_dungeon_feature.test.ts src/test/c_4c_promotion.test.ts src/test/c_5_fall_subsystem.test.ts src/test/c_6_autogenerators.test.ts src/test/c_7_lighting.test.ts src/test/c_8_connectivity.test.ts src/test/f_1_fire_as_terrain.test.ts src/test/f_2a_fire_mechanics.test.ts src/test/f_2b_creature_burning.test.ts src/test/f_2c_explosion.test.ts src/test/g_1_gas_volumetric.test.ts src/test/g_2_gas_df_wiring.test.ts src/test/g_3_gas_effects.test.ts src/test/horde_selection.test.ts src/test/horde_terrain_spawn.test.ts src/test/hunger_curve_sim.test.ts src/test/hunger_regen.test.ts src/test/i_1_interaction.test.ts src/test/invented_content_pool.test.ts src/test/monster_damage_balance.test.ts src/test/monster_stats_effect.test.ts src/test/p1_20_item_placement.test.ts src/test/p1_24_death_sink.test.ts src/test/p1_26_invariants.test.ts src/test/p1_27_remove_drowning.test.ts src/test/p1_28_flag_channel.test.ts src/test/p1_29_adversarial_gate.test.ts src/test/p1_29_lake_connectivity.test.ts src/test/p1_30_i18n_gate.test.ts src/test/p1_31_35_placement_snapshot.test.ts src/test/p1_33_machine_chokepoint.test.ts src/test/p1_34_loopmap_reset.test.ts src/test/p1_37_machine_flag_i18n.test.ts src/test/p1_42_secret_door_search.test.ts src/test/p2_0_seeded_rng.test.ts src/test/p2_1_tick_architecture.test.ts src/test/p2_2_real_speed.test.ts src/test/p2_3_objective_time.test.ts src/test/p2_4_animation_cadence.test.ts src/test/p2_6_display_settings.test.ts src/test/p4_10_waypoint.test.ts src/test/p4_1b_monster_casting.test.ts src/test/p4_2_monster_summoning.test.ts src/test/p4_3_special_monster_flags.test.ts src/test/p4_4_split_kamikaze.test.ts src/test/p4_5_melee_specials.test.ts src/test/p4_6_attack_geometry.test.ts src/test/p4_7_player_weapon_geometry.test.ts src/test/p4_8_scent_map.test.ts src/test/p4_9_safety_map.test.ts src/test/r_1_appearance.test.ts src/test/scroll_effects.test.ts src/test/smoke.test.ts src/test/t_1_tail.test.ts src/test/u20_inventory.test.ts src/test/u21c_flare_sidebar.test.ts src/test/u21c_terrain_appearance.test.ts src/test/u24_hardcoded_text.test.ts src/test/u_00_new_run.test.ts src/test/u_01_instance_snapshot.test.ts src/test/u_02a_rng_snapshot.test.ts src/test/u_02b_level_rng.test.ts src/test/u_03_whole_run_snapshot.test.ts src/test/u_03b_level_travel.test.ts src/test/u_04c_machine_cells.test.ts src/test/u_05_machine_items.test.ts src/test/u_05a_item_ownership.test.ts src/test/u_06_monster_damage.test.ts src/test/u_07_monster_blink.test.ts src/test/u_08_terrain_bolts.test.ts src/test/u_09_learning_consumers.test.ts src/test/u_10_absorption_snapshot.test.ts src/test/u_11_corpse_learning.test.ts src/test/u_12a_cast_eligibility.test.ts src/test/u_12b_ally_mode.test.ts src/test/u_13_combat_math.test.ts src/test/u_14a_status_gaps.test.ts src/test/u_14b_status_gaps.test.ts src/test/u_15a_shattering.test.ts src/test/u_15e_potions.test.ts src/test/u_15f_food.test.ts src/test/u_16_lifecycle.test.ts src/test/u_17a_df_transaction.test.ts src/test/u_18_water_cage.test.ts src/test/u_18a_2_generation_terrain.test.ts src/test/u_18a_3_generation.test.ts src/test/u_18a_terrain_contracts.test.ts src/test/u_23_memory_mapping.test.ts src/test/ui_1_rendering.test.ts src/test/ui_2_protection.test.ts src/test/v_1a_blueprint_items.test.ts src/test/v_1b_alternative.test.ts src/test/v_1c_machine_structure.test.ts src/test/v_2a_vestibule_return.test.ts src/test/v_2b_2a_placement_flags.test.ts src/test/v_2b_2b_blueprints.test.ts src/test/v_2b_3_wired.test.ts src/test/v_2b_4_altars.test.ts src/test/v_2b_5_dormant.test.ts src/test/v_2b_6_keys.test.ts src/test/v_2b_7_features.test.ts src/test/v_2b_8_autogen.test.ts src/test/v_2b_9a_carriers.test.ts src/test/v_2b_9b_environment.test.ts src/test/v_2b_9c_effects.test.ts src/test/v_2b_9d_dungeon_profile.test.ts src/test/v_2b_9e_2_autogen.test.ts src/test/v_2b_9e_area_machine.test.ts src/test/w_10_poison.test.ts src/test/w_11_teleport_placement.test.ts src/test/w_12_blink_beckoning.test.ts src/test/w_13_tunneling.test.ts src/test/w_14_obstruction.test.ts src/test/w_15_shielding.test.ts src/test/w_16_conjuration.test.ts src/test/w_17_domination.test.ts src/test/w_18_entrancement.test.ts src/test/w_19_polymorph.test.ts src/test/w_20_cloning.test.ts src/test/w_21_empowerment.test.ts src/test/w_23_negation.test.ts src/test/w_24_wand_catalog.test.ts src/test/w_25_staff_catalog.test.ts src/test/w_26_arcana_closure.test.ts src/test/w_2_arcana_submission.test.ts src/test/w_3_bolt_trajectory.test.ts src/test/w_4_bolt_reflection.test.ts src/test/w_5_arcana_instance.test.ts src/test/w_6_arcana_recharge.test.ts src/test/w_7_arcana_enchantment.test.ts src/test/w_8_staff_damage.test.ts src/test/w_9_directed_status.test.ts --maxWorkers=4 --reporter=default --reporter=json --outputFile.json=ai_docs/reports/u-17a-evidence/regression-final.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web
+
+stdout | src/test/c_4a_terrain_catalog.test.ts > C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时点的枚举全集逐位） > Game.canMoveTo（查表）≡ 旧清单：合成格逐地形实测（含生成中出现不了的地形）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/v_2b_4_altars.test.ts > V-2b-4 D：自创祭坛组子系统已拆除（留痕 + 越界守卫） > D4 行为：从祭坛取物只入包，**不再**塌陷同组祭坛（构造两座祭坛做判别）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_4b_dungeon_feature.test.ts > C-4b F：留痕（本轮明确不做的事；C-4c 翻转） > F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/c_4b_dungeon_feature.test.ts (31 tests) 11199ms
+     ✓ F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空  10516ms
+stdout | src/test/c_7_lighting.test.ts > C-7 updateVision 集成（CE Time.c:859 → Light.c:208 → Movement.c:2582） > 黑暗药水真实入口使 FOV 缩小，逐 tick 衰减后恢复
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/c_7_lighting.test.ts (28 tests) 16028ms
+     ✓ 黑暗药水真实入口使 FOV 缩小，逐 tick 衰减后恢复  1864ms
+     ✓ 深水且未漂浮时半径减半，离水立即恢复  2728ms
+     ✓ CE 固有光让深层矿灯以外的 wisp 可见  1330ms
+     ✓ 对抗⑤消费面：深层岩浆自发光——glowLight 列没接上/不被消费即红  1399ms
+     ✓ 对抗④集成面：矿灯深度衰减在视野上可观测——深层可见格骤减  1726ms
+     ✓ VISIBLE = 掩码 ∧ 光强>50：玩家格恒可见，墙后格不因光而可见  1775ms
+     ✓ 渲染馈送：getLight 接口拿到矿灯光（UI-1 起渲染改走 lightAt 三通道，本接口保留为兼容面）  1738ms
+     ✓ 无地形光：矿灯不驱散阴影 → 减半一次；playerInDarkness 为 false（矿灯中心恒亮）  1859ms
+     ✓ 站进祭坛烛光（CANDLE_LIGHT 载体）：阴影被驱散 → 潜行范围恢复 14+adj  1532ms
+stdout | src/test/f_2b_creature_burning.test.ts > F-2b 对抗①②：燃烧状态挂载与刷新语义 > 对抗①：离开火格后燃烧必须继续——状态没挂上的实现（伤害只在站火格时发生，web 旧"平扣"形态）在此翻红。CE：exposeCreatureToFire 只上状态（Time.c:59-60），伤害来自每回合燃烧结算（Time.c:2581-2591），与脚下地形无关；烧 ~7 回合后自然熄灭，伤害随之停止。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/v_2b_7_features.test.ts > V-2b-7 D：MachineResult.featureSpawns（CE Architect.c:1484-1486 的落点暴露） > D1 5 seed × D1..D9：每个「网格机器格」都能追到机器自己的落点记录
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/f_2b_creature_burning.test.ts (13 tests) 83561ms
+     ✓ 对抗①：离开火格后燃烧必须继续——状态没挂上的实现（伤害只在站火格时发生，web 旧"平扣"形态）在此翻红。CE：exposeCreatureToFire 只上状态（Time.c:59-60），伤害来自每回合燃烧结算（Time.c:2581-2591），与脚下地形无关；烧 ~7 回合后自然熄灭，伤害随之停止。  1648ms
+     ✓ 对抗②：站在火里反复暴露，剩余时长必须刷新到恰好 7 而非叠加——写成 current + 7 的堆叠实现 12 块后累计 80+，在此翻红。CE Time.c:59-60：status = max(status, 7)。（CE 的 max 语义下靠暴露本身到不了 >7，"更高值保留"半边不可达，不设断言。）  2084ms
+     ✓ 对抗③：燃烧的生物蹚进浅水必须被扑灭——灭火分支失效（站水里还在烧）在此翻红。CE Time.c:226-232：TM_EXTINGUISHES_FIRE && burning && !levitating → extinguishFireOnCreature。  2649ms
+     ✓ 对抗④a：火盖水的格子（药水/爆炸把 PLAIN_FIRE 铺在浅水上）——非悬浮生物免疫点火（Time.c:34-35 的合取豁免：!levitating && 灭火层）。捕获的错误实现：豁免漏掉灭火层条件（站水上的火照烧）或漏掉整个合取。  1748ms
+     ✓ 对抗④b：同一个火盖水格子——悬浮生物照样被点燃（Time.c:34-35 括号只包 !levitating && 灭火层的合取：悬浮者悬在水上方，不被水豁免）。捕获的错误实现：把 !levitating 括号读反/扩大成"整个豁免要求非悬浮"或"悬浮也免点火"。旗标飞行的 vampire_bat（派生悬浮）在此当探针。  1863ms
+     ✓ 对抗④c：悬浮且在烧的生物悬在浅水上不被扑灭（Time.c:228 灭火守卫的!levitating——水只灭踩在水里的火）。捕获的错误实现：灭火分支漏掉!levitating 守卫（悬在水上的火被水灭）。  1932ms
+     ✓ 对抗⑤：喝下抗火药水后站进火里必须完全不掉血、不上燃烧状态——P1-44 的三重断线（grantTemporaryImmunity('burning' as any)：键不存在 + 通道无读者 + 伤害端查的是 immune_fire）复发时在此翻红。CE Items.c:8188-8193：IMMUNE_TO_FIRE = magnitude，且 exposeCreatureToFire 的豁免让免疫者连状态都拿不到（Time.c:31 直接 return）。  1634ms
+     ✓ 对抗⑨：着火时喝药必须立即扑灭（CE Items.c:8190-8191：若在烧则extinguishFireOnCreature）——只加免疫、不灭 existing 火的半实现翻红。  1798ms
+     ✓ 在火格挂上状态后走到草地，草地必须被直燃（alwaysIgnite：Gas.ignite 即CE Time.c:539 exposeTileToFire(x,y,true)）；未着火的对照生物不得点燃脚下草地。捕获的错误实现：else-if 接线缺失（移动火种不点火）或漏掉burning 前置（任何生物都能点火）。  1694ms
+     ✓ 四种气体注入全合成密封房后的消散/扩散曲线必须与 S-1 基线逐位一致（与 f_2a 对抗⑪ 同一基线的等价副本，翻正时两处一起改）。错误实现：燃烧状态机顺手改动了 updateGases/addGas/客观块次序，或燃烧掷骰污染了气体试验的 RNG 流（新增抽取 → 流位移 → 舍入结果全变）。  5556ms
+     ✓ 对抗⑧：燃烧伤害必须落在 CE rand_range(1,3) 的支撑集内——30 只独立各烧一块的 rat 总伤 ∈ [30, 90]（支撑带，带外概率为 0，非统计脆弱）。捕获的错误实现：0 伤害（结算段没接）或 ≥4/块（量级走样）。"伤害恒等于 2"的平扣复辟由 p1_28 对照组的分布锁翻红。  56497ms
+     ✓ 对抗⑩：玩家被烧死 → hp 归零、lastDamageSource=fire、回合收尾判定game over（death.burned 通道）。捕获的错误实现：燃烧伤害漏设lastDamageSource（死因错报）或玩家死亡链断线。  1497ms
+     ✓ 对抗⑪：怪物被烧死 → die() 收口（hp=0、尸符）+ "burns to death" 铭牌（CE Monsters.c:1887-1895 "%s burns to death." + killCreature）。捕获的错误实现：烧死只扣血不收口（尸体满血赖在怪物表）。  2957ms
+stdout | src/test/f_2a_fire_mechanics.test.ts > F-2a 对抗①：蔓延只用 4 正交邻（CE Time.c:1692-1699 nbDirs 前 4 项） > 与火格只有对角连接的草格永远烧不到。错误实现：蔓延用 8 邻（web 旧行为）——五组独立对角对中必有草被点燃留痕。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/f_2a_fire_mechanics.test.ts (12 tests) 25383ms
+     ✓ 与火格只有对角连接的草格永远烧不到。错误实现：蔓延用 8 邻（web 旧行为）——五组独立对角对中必有草被点燃留痕。  1724ms
+     ✓ 大样本互不相邻草格各暴露一次：点燃数必须落在 15% 的二项分布带内。错误实现 a：固定 40%（web 旧值）→ 期望 130，远超上限；错误实现 b：100% 必燃 → 325；错误实现 c：掷骰被丢（永不燃）→ 0。  2047ms
+     ✓ exposedToFire ≥12 时连 alwaysIgnite 都被拒绝；新回合（runFireUpdate）清零后恢复。错误实现 a：漏掉封顶检查——超封顶的直燃照样点燃；错误实现 b：漏掉每回合清零——第二回合怎么暴露都点不着。  1352ms
+     ✓ 30 个草格直燃必须 100% 点燃（跳过 15% 掷骰）。错误实现：旁路失效（把 alwaysIgnite 当 false 掷骰）→ 期望只有 ~4-5 格点燃。  2221ms
+     ✓ igniteForced（CE 火 DF 生成家族）在楼梯/祭坛上落不了火；对照地板照落。错误实现：绕开 DF 管线直写 SURFACE 层（F-1 旧 igniteForced）→ 楼梯/祭坛照烧。  1609ms
+     ✓ 直燃路径（exposeTileToFire）同样伤不到楼梯/祭坛——它们不可燃，暴露计数都不动（CE :1308 T_IS_FLAMMABLE 先决）。  3110ms
+     ✓ 60 个火格推 60 个客观块后必须大半离场（EMBERS/ASH）。错误实现：promoteChance 没接上（火永生）或仍按 burnDuration 倒计时——前者离场数恒 0，后者在更早的 f_1 对抗④红。  1519ms
+     ✓ 火格在 skip 集里时它的邻居不掷骰；不在时 100% 可燃邻居（网）必被点燃。错误实现：runFireUpdate 忽略 opts.caughtFireCells。  3033ms
+     ✓ DF_PLAIN_FIRE / DF_EMBERS / DF_ASH 都是 start=0 的单点 DF——spawnMapDF 的 while(startProb>0) 不执行、零掷骰；合成扩散条目的probDec>0 闸门（c_4c C1）继续覆盖未来条目。错误实现：给火链 DF 抄上非零 start（每次点火多掷骰、移动 RNG 流）或start>0 且 probDec=0（spawnMapDF 死循环——目录级断言已在 c_4c 钉死）。  1361ms
+     ✓ 深水被直燃一次 +15 蒸汽；火贴水时蒸汽总量逐回合增长（持续源）  1430ms
+     ✓ BOG（webOnly）目录记 T_IS_FLAMMABLE 但无 fireType/chanceToIgnite=0——直燃无 DF 可落、掷骰路径概率为 0：BOG 不再可点燃（web 旧白名单行为退役）。若未来给 BOG 定 CE 化的火数据，须先改 TerrainCatalog 再翻本断言。  1404ms
+     ✓ 四种气体注入全合成密封房后的消散/扩散曲线必须与 S-1 基线逐位一致。错误实现：后续轮次顺手改动了 updateGases/addGas/客观块次序，或气体路径新增掷骰（流位移 → 舍入结果全变）。（基线 2026-09-17 S-1 实跑录制；注入 100 = volume 口径；CREEPING_DEATH 自 G-1 起无层载体，addGas 拒绝、曲线恒空——D2 留痕。）  4567ms
+stdout | src/test/b_1a_identification.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/v_2b_4_altars.test.ts (36 tests) 334651ms
+     ✓ D4 行为：从祭坛取物只入包，**不再**塌陷同组祭坛（构造两座祭坛做判别）  1778ms
+     ✓ E1 实测：`reward_statuary`（15 号）在 6 seed × D1-D26 上建成 **0 台**（frequency=0 的结构性后果）  167325ms
+     ✓ E2 实测：每局护符数恒为 1（noAmulet=0 / multiAmulet=0）——两套来源不可能叠加  163675ms
+     ✓ E3 直投仍是唯一来源（留痕）：spawnBlueprintItem 无 AMULET 分支 ⇒ 即便 15 号建成也发不出护符  1397ms
+stdout | src/test/c_4a_0_layer_model.test.ts > C-4a-0 存档 > 新格式往返：四层逐层还原（含测试手造的多层格）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/b_1a_identification.test.ts (34 tests) 208038ms
+     ✓ 未鉴定武器只给基础伤害与力量需求；不显示实际伤害与被诅咒  1590ms
+     ✓ 未识别魔杖：名称与详情都不显示充能；使用后显示次数而非充能  1450ms
+     ✓ 实例鉴定后显示充能 [剩余]；空杖敲一下亮充能上限 [?/上限]（跟着风味名走）  1791ms
+     ✓ 种类揭示作用于所有实例：喝一瓶生命药水，另一瓶同名  2393ms
+     ✓ 熟悉度只亮实例：护甲穿满 1000 回合，同种新护甲仍未知  6172ms
+     ✓ 边界：19 杀不亮、第 20 杀亮；无生命怪不计入  840ms
+     ✓ 接线：真实近战击杀扣减 1；击杀无生命怪不扣减（CE Monsters.c:157-159）  941ms
+     ✓ 边界：999 块不亮、第 1000 块亮（只亮实例）；脱下不计数  5813ms
+     ✓ 边界：1499 块不亮、第 1500 块实例+种类一起亮（CE identify()）  8480ms
+     ✓ 戴上即亮种类：clairvoyance/stealth（CE Items.c:8583-8586）；普通戒指不行  869ms
+     ✓ 上一局识别的种类不得漏进新局；护符/护符石无未知态（预亮）  3431ms
+     ✓ enchanting / identify 读的瞬间自亮；其它卷轴效果后亮  699ms
+     ✓ 目标池按 CAN_BE_IDENTIFIED 过滤；命中者附魔/符文一起亮  960ms
+     ✓ L1 全链 D1..D26 每件生成物品都落在物品合法格（CE T_OBSTRUCTS_ITEMS|T_PATHING_BLOCKER 回避）  110997ms
+     ✓ L2 同种子双跑全链物品签名逐位一致（非确定性掷骰——Math.random 类泄漏——在此翻红）  50843ms
+     ✓ 快照携带鉴定字段；读档后种类集、实例旗标、绰号全部还原  2594ms
+     ✓ callKind 落账 + 显示名进入 called 态；武器仍不可 call（题字未实现）  1163ms
+     ✓ Player 有 ringLeft/ringRight；第二枚进右槽不顶掉第一枚；双占拒绝  1038ms
+     ✓ Game.uncurseItem / rechargeArcanaItem 已不存在；卷轴等价物仍在位  2415ms
+     ✓ 扔武器到弹道上的怪：有命中结算（掉血或被激怒，不再零效果）  683ms
+     ✓ 越界守卫：扔到空地的物品仍落在目标格（原留痕的存活部分）  636ms
+     ✓ negation/sanctuary/shattering 读取后无机制效果  1026ms
+     ✓ 喝 detect magic：既亮该种类，也揭示背包内其余种类的极性  1181ms
+stdout | src/test/c_4a_terrain_catalog.test.ts > C-4a F：干跑测量——calculateMap 改用 isPathingBlocker 的影响（只测量不修复） > 15 种子 × D1-D26：cost 图逐格分歧表（下一轮 C-4b 的输入）
+[C-4a 干跑测量] 15 种子 × D1-D26（每层内部格全扫）
+  语义分歧（cost 1 → OBSTRUCTION，距离图将改变）：13347 格
+    按地形：WATER_DEEP=3075，CRYSTAL_WALL=1907，TRAP=1626，LAVA=1624，TORCH_WALL=1573，INERT_BRIMSTONE=606，BLOODFLOWER_STALK=590，STATUE_INERT=559，TRAP_DOOR_HIDDEN=521，GAS_TRAP_PARALYSIS_HIDDEN=462，PRESSURE_PLATE=319，STATUE_DORMANT=120，LOCKED_DOOR=78，CHASM_WITH_HIDDEN_BRIDGE=58，TURRET_DORMANT=49，WALL_MONSTER_DORMANT=48，RAT_TRAP_WALL_DORMANT=31，FLAMETHROWER_HIDDEN=21，GAS_TRAP_PARALYSIS=18，WOODEN_BARRICADE=18，MONSTER_CAGE_CLOSED=15，STATUE_DORMANT_DOORWAY=7，STATUE_INERT_DOORWAY=6，HAUNTED_TORCH_DORMANT=5，WALL_LEVER_HIDDEN_DORMANT=4，FLOOD_TRAP=3，WORM_TUNNEL_OUTER_WALL=1，WALL_LEVER_HIDDEN=1，PILOT_LIGHT_DORMANT=1，BRAZIER=1
+  数值分歧（FORBIDDEN → OBSTRUCTION，均不可走，仅 cost 数值变）：4980 格
+    按地形：CHASM=3206，SECRET_DOOR=1756，WOODEN_BARRICADE=8，STATUE_INERT=7，CRYSTAL_WALL=2，BLOODFLOWER_STALK=1
+
+ ✓ src/test/c_4a_terrain_catalog.test.ts (30 tests) 412736ms
+     ✓ Game.canMoveTo（查表）≡ 旧清单：合成格逐地形实测（含生成中出现不了的地形）  1632ms
+     ✓ B-3：迁移后新增的墙族 tile 的通行判定 = CE 查表口径（挡通行、不进旧清单）  1615ms
+     ✓ V-2b-3：wired 载体九条的通行判定 = CE 查表口径（四条墙族挡通行、五条可走）  2070ms
+     ✓ V-2b-4：祭坛族七条的通行判定 = CE 查表口径（三条墙族挡通行、四条可走）  2251ms
+     ✓ V-2b-5：休眠载体七条的通行判定 = CE 查表口径（五条墙族挡通行、两条可走）  3052ms
+     ✓ V-2b-6：钥匙轮载体的通行判定 = CE 查表口径（两条挡通行、四条可走）  2831ms
+     ✓ V-2b-7：DF 特征系统轮载体的通行判定 = CE 查表口径（三条挡通行、十六条可走）  1605ms
+     ✓ 15 种子 × D1-D26：cost 图逐格分歧表（下一轮 C-4b 的输入）  397566ms
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A1 门位契约：真实关卡上每个门位都有正交轴两侧严格地板，且环路确实被开辟
+[c_0] A1 新开门合计=463，含新环门层=125/130
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A2/A3 对抗：漏"两侧地板"检查、试对角——两种错误实现在同批真实 grid 上都产生门位违例（守卫：断言非空转）
+[c_0] noFlankCheck：门位=67900 违例=65919
+[c_0] diagonal：门位=1094 违例=427
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A4 对抗（S-1 改造：锚定合成输入）：判据写反（< 而非 >）→ 蜂窝化，门位总数暴涨（> 正确对照 ×3）
+[c_0] A4(合成输入) 正确对照=6 判据写反=198（比值 33.0×；华夫格 inverted=190）
+
+stdout | src/test/c_0_add_loops.test.ts > C-0 地牢环路（addLoops）+ IN_LOOP > A5 对抗：漏 costMap[x][y]=1 同步更新 → 后续候选用过时距离，门位合计严格偏多
+[c_0] A5 同序正确对照=721 漏同步=944（52 层合计）
+
+stdout | src/test/v_2b_2b_blueprints.test.ts > V-2b-2b T8：整局生成入池（抽签资格 + 深度区间 + 递归路径） > reward 三条各自出现；前厅三条合并出现
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/v_2b_2b_blueprints.test.ts (24 tests) 171006ms
+     ✓ reward 三条各自出现；前厅三条合并出现  170526ms
+ ✓ src/test/v_2b_3_wired.test.ts (28 tests) 34ms
+stdout | src/test/c_4c_promotion.test.ts > D：Game 集成（真实事件链） > D1 踩门开门 + 同回合客观块自动关门（CE：OPEN_DOOR promoteChance=10000）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+

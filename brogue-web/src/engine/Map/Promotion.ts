@@ -84,7 +84,7 @@
  *   │   （:1686-1701）               │ isBurning 系统；接 CE 火地形需     │
  *   │                                │ PLAIN_FIRE 等 tile，属后续轮次     │
  *   │ monstersFall / 体积气体        │ 不在本驱动（C-5 / Gas.ts 既有）    │
- *   │ DFF_EVACUATE_CREATURES_FIRST   │ spawn 结果 evacuationRequired 登记 │
+ *   │ DFF_EVACUATE_CREATURES_FIRST   │ 共享 DF 事务先疏散实体 │
  *   │ monstersFall 之外的即时地形后果│ spawn 结果登记（C-4b 差异表）      │
  *   └────────────────────────────────┴────────────────────────────────────┘
  *
@@ -127,6 +127,7 @@ import {
 import {
     catalogFeature,
     spawnDungeonFeature,
+    refreshDungeonCellTerrain,
     cellTerrainFlags,
     cellTerrainMechFlags,
     type SpawnFeatureResult,
@@ -426,7 +427,7 @@ export function promoteTile(
     // Architect.c:3359，**五个形参**）。所以那行的 `true` 是 refreshCell，
     // `false` 才是 abortIfBlocking。执行方把它读成四参、得出
     // "abortIfBlocking 字面是 true"，并据此在这里传了 true。
-    // web 的 spawnDungeonFeature 无渲染需求、不带 refreshCell，
+    // web 的 spawnDungeonFeature 以 options.refreshSideEffects 承载刷新，
     // 第 5 参就是 abortIfBlocking —— 应传 **false**。
     //
     // 今天无可观测差别（当前晋升链里没有 T_PATHING_BLOCKER 的产物），
@@ -469,9 +470,7 @@ export function promoteTile(
         }
     }
 
-    if (sourceTerrain === TerrainType.FORCEFIELD || sourceTerrain === TerrainType.FORCEFIELD_MELT) {
-        refreshForcefieldPassability(grid, x, y);
-    }
+    refreshDungeonCellTerrain(grid, x, y);
     return result;
 }
 
@@ -931,42 +930,15 @@ export function obstructionDecrement(enchantment: number): number {
     return Math.max(1, Math.floor(75 * powers[e - 2]! / 65536));
 }
 
-/** Grid's legacy effective-tile heuristic does not know that crystals block.
- * Synchronize the path consumers for both placement and the two melt stages. */
-function refreshForcefieldPassability(grid: Grid, x: number, y: number): void {
-    const cell = grid.getCell(x, y)!;
-    const flags = cellTerrainFlags(grid, x, y);
-    cell.isPassable = !(flags & T_OBSTRUCTS_PASSABILITY);
-    cell.isOpaque = !!(flags & T_OBSTRUCTS_VISION);
-}
-
-/** CE detonateBolt: a dynamic SURFACE DF at the final landing, allowing closure
- * of corridors. Architect.c:3299-3304/3224-3232 use SURFACE obstruction flags,
- * NOT IMPREGNABLE. Keep the existing generation/scroll DF callers unchanged.
- *
- * The shared web DF primitive lacks CE's refreshCell -> instant creature tile
- * effects callback. For this new effect, replay its forcefield promotion chain
- * on occupied built cells: FORCEFIELD -> MELT -> NOTHING (including flyers).
- * CE does both via recursive refresh in fillSpawnMap/promoteTile, not evacuation.
- */
+/** CE detonateBolt supplies a dynamic decrement; all contact, recursive
+ * promotion and refresh now belong to the shared DF transaction. */
 export function spawnObstruction(
     grid: Grid, x: number, y: number, enchantment: number,
     occupied: (pos: Pos) => boolean,
 ): SpawnFeatureResult {
     const feat = catalogFeature(DF.DF_FORCEFIELD);
     feat.probabilityDecrement = obstructionDecrement(enchantment);
-    const result = spawnDungeonFeature(grid, x, y, feat, false);
-    for (const pos of result.builtCells) {
-        const cell = grid.getCell(pos.x, pos.y)!;
-        if (occupied(pos)) {
-            while (cell.layers[DungeonLayer.SURFACE] === TerrainType.FORCEFIELD
-                || cell.layers[DungeonLayer.SURFACE] === TerrainType.FORCEFIELD_MELT) {
-                promoteTile(grid, pos.x, pos.y, DungeonLayer.SURFACE, false);
-            }
-        }
-        refreshForcefieldPassability(grid, pos.x, pos.y);
-    }
-    return result;
+    return spawnDungeonFeature(grid, x, y, feat, false, { effects: { occupied } });
 }
 
 

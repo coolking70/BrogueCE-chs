@@ -1,0 +1,29 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web
+
+stdout | src/test/u_17a_df_transaction.test.ts > U17a actual Game consumers > recursive hole marks player falling; a ground item stays until the floor-item phase
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_17a_df_transaction.test.ts (16 tests | 1 failed) 1213ms
+     × recursive hole marks player falling; a ground item stays until the floor-item phase 203ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_17a_df_transaction.test.ts > U17a actual Game consumers > recursive hole marks player falling; a ground item stays until the floor-item phase
+TypeError: g.itemsFall is not a function
+ ❯ src/test/u_17a_df_transaction.test.ts:129:20
+    127|         spawnDungeonFeature(g.grid,5,5,feat({tile:T.NOTHING,subsequent…
+    128|         expect((g as any).playerFalling).toBe(true);expect(g.items).to…
+    129|         (g as any).itemsFall();expect(g.items).not.toContain(item);
+       |                    ^
+    130|     });
+    131|     it('instant fire burns only scrolls, ignites and damages through r…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 39 passed (40)
+   Start at  17:24:00
+   Duration  1.96s (transform 656ms, setup 0ms, import 1.32s, tests 1.69s, environment 0ms)
+

@@ -232,7 +232,8 @@ describe('F-2c 对抗⑤：两笔伤害分离（爆炸瞬时 + 燃烧后续）',
         // 第 1 笔：死亡 DF 落格瞬时（(8,6) 在第一波 350%≥100 必中圈内）。
         priv(game).triggerDeathFeatures();
         expect(victim.hp, '第 1 笔瞬时爆炸伤害恰 50（不瞬伤的合并实现在此翻红）').toBe(50);
-        expect(priv(game).burningDuration(victim), '第 1 笔不经燃烧状态').toBe(0);
+        // U17a: 同一次 instant 调用在爆炸段之后也执行 Time.c:527 点火；伤害仍分两笔。
+        expect(priv(game).burningDuration(victim), '即时点火只挂状态，尚未结算燃烧伤害').toBe(7);
 
         // 环境段：爆炸铺的火点燃受害者（第 2 笔载体）；爆炸本身被免疫窗挡住。
         priv(game).applyEnvironmentalEffects();

@@ -1,0 +1,212 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web
+
+stdout | src/test/p4_4_split_kamikaze.test.ts > P4-4 验收 1：分裂 — pink/acidic/black jelly > 对抗性①：血量对半必须是 (hp+1)/2 向上取整，不能是 floor(hp/2)。1 HP 的果冻分裂后，母体与克隆体都应存活于 1 HP —— 用 floor 会把母体打到 0 HP（应为存活但用例失败）。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_4c_promotion.test.ts > D：Game 集成（真实事件链） > D1 踩门开门 + 同回合客观块自动关门（CE：OPEN_DOOR promoteChance=10000）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/hunger_curve_sim.test.ts > 2000 回合饥饿曲线实测（harness, 3 seeds × 2 策略） > wait 策略：纯饥饿曲线
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+=== wait policy × 2000 turns ===
+seed=1 policy=wait turns=133 died=true cause=Rat
+  nutrition 2150 -> 2017, hp=0, state=normal
+  transitions: (none)
+  curve: T0:n2150/hp30/normal
+seed=7 policy=wait turns=76 died=true cause=Kobold
+  nutrition 2150 -> 2074, hp=0, state=normal
+  transitions: (none)
+  curve: T0:n2150/hp30/normal
+seed=42 policy=wait turns=53 died=true cause=Kobold
+  nutrition 2150 -> 2097, hp=0, state=normal
+  transitions: (none)
+  curve: T0:n2150/hp30/normal
+
+
+stdout | src/test/u_03_whole_run_snapshot.test.ts > U03 whole-run persistence > seed 7: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/p4_4_split_kamikaze.test.ts (20 tests) 9132ms
+     ✓ 对抗性①：血量对半必须是 (hp+1)/2 向上取整，不能是 floor(hp/2)。1 HP 的果冻分裂后，母体与克隆体都应存活于 1 HP —— 用 floor 会把母体打到 0 HP（应为存活但用例失败）。  671ms
+     ✓ 对抗性②：走廊里攻击者所在格必须并入连通群，克隆体才可能出现在玩家身后。漏掉这一步的实现里，1 格宽走廊中克隆体永远只会出现在果冻远离玩家的那一侧，玩家这一侧（(4,5)）永远选不中——多次不同种子重复分裂应能观察到两侧都被选中过。  481ms
+     ✓ 对抗性③：连通群与合格格子的搜索必须是四方向，不能是八方向（含对角）。果冻与玩家之间只留一条正交走廊，唯一开放的对角格 (7,4) 不应被选中——八方向实现会偶尔选中它，四方向实现永远不会。  503ms
+     ✓ acidic jelly 与 black jelly 也能分裂（同一套算法，覆盖三只果冻的名单要求）  690ms
+     ✓ 分裂条件：defender.hp<=0（已死）时不分裂，也不额外扣血  307ms
+     ✓ 端到端：玩家近战攻击真的会经由 handlePlayerAction 触发分裂（不是只有单元测试里手调）  328ms
+     ✓ 对抗性④：kamikaze 检查必须在命中掷骰之前。把 defender 的防御力拉到"正常情况下命中率≈0%"，kamikaze 攻击者仍必定"命中"（自毁），伤害恒为 0。若实现把该检查放在命中判定之后，本用例会因为大量 miss 而在统计上偏离"每次都自毁"。  447ms
+     ✓ 自爆怪物攻击玩家：玩家血量不变，攻击者死亡  567ms
+     ✓ 对照组：vampire 有 MA_DF_ON_DEATH 但没有 MA_KAMIKAZE，攻击不应自爆  592ms
+     ✓ 对照组：goblin 没有任何特殊旗标，正常战斗不受影响  497ms
+     ✓ bloat 死亡在原地释放毒气（GasType.POISON，G-1 起注入 CE 体积 2000）  341ms
+     ✓ F-2c 翻转：explosive bloat 死亡铺 GAS_EXPLOSION 爆炸圈——死亡格与四邻必中（第一波 350%≥100），爆炸地形是火  393ms
+     ✓ F-2c 翻转：explosive bloat 死亡在默认（不可燃）石地板上也铺开 GAS_EXPLOSION 爆炸圈（DF 管线不看可燃性）  319ms
+     ✓ F-2c 翻转：爆炸伤害瞬时不经燃烧状态（第 1 笔 max(15-20, maxHP/2)），燃烧是后续另一笔（第 2 笔 1-3）  423ms
+     ✓ 对抗性⑤：同一只怪物的死亡地形效果只能触发一次。若实现没有 deathEffectTriggered 兜底且被多次调用（例如某条路径在同一回合内重复扫描），毒气密度会被反复叠加，超过单次触发应有的量——这里直接调用两次断言密度不变。  428ms
+     ✓ 对照组：vampire 死亡不产生毒气/火焰（DF_BLOOD_EXPLOSION 是血迹装饰，web 无血迹层，本轮不接）  479ms
+     ✓ 对照组：goblin（无 MA_DF_ON_DEATH）死亡不触发也不被标记  663ms
+     ✓ pit_bloat 只自爆、不产生毒气/火焰/洞（web 无坠落子系统，登记为已知缺口）  363ms
+     ✓ 盟友在有其它可选目标时，不会把尚未贴脸的 bloat 选为追击目标  339ms
+stdout | src/test/f_2c_explosion.test.ts > F-2c 对抗①②：爆炸伤害公式与免疫窗（Time.c:343-353） > 对抗①：伤害必须取 max(15-20, maxHP/2)——取小者、只掷 15-20、或按当前血量折算的实现全部翻红。maxHp=200 已损到 hp=60 的怪：maxHP/2=100 > 15-20 → 伤害恰 100 → 当场死亡；按当前血量 50%（30）或按 15-20 的实现它都活。
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/hunger_curve_sim.test.ts > 2000 回合饥饿曲线实测（harness, 3 seeds × 2 策略） > roam 策略：移动/战斗节奏下的饥饿进度
+
+=== roam policy × 2000 turns ===
+seed=1 policy=roam turns=2000 died=false
+  nutrition 2150 -> 157, hp=30, state=hungry
+  transitions: hungry@1806
+  curve: T0:n2150/hp30/normal  T250:n1900/hp30/normal  T500:n1650/hp30/normal  T750:n1401/hp30/normal  T1000:n1153/hp30/normal  T1250:n903/hp30/normal  T1500:n653/hp30/normal  T1750:n403/hp30/normal  T2000:n157/hp30/hungry
+seed=7 policy=roam turns=2000 died=false
+  nutrition 2150 -> 155, hp=26, state=hungry
+  transitions: hungry@1805
+  curve: T0:n2150/hp30/normal  T250:n1903/hp30/normal  T500:n1655/hp30/normal  T750:n1405/hp30/normal  T1000:n1155/hp30/normal  T1250:n905/hp30/normal  T1500:n655/hp30/normal  T1750:n405/hp30/normal  T2000:n155/hp26/hungry
+seed=42 policy=roam turns=2000 died=false
+  nutrition 2150 -> 155, hp=30, state=hungry
+  transitions: hungry@1805
+  curve: T0:n2150/hp30/normal  T250:n1900/hp30/normal  T500:n1650/hp30/normal  T750:n1400/hp30/normal  T1000:n1151/hp30/normal  T1250:n904/hp30/normal  T1500:n654/hp30/normal  T1750:n405/hp30/normal  T2000:n155/hp30/hungry
+
+
+ ✓ src/test/f_2c_explosion.test.ts (14 tests) 5869ms
+     ✓ 对抗①：伤害必须取 max(15-20, maxHP/2)——取小者、只掷 15-20、或按当前血量折算的实现全部翻红。maxHp=200 已损到 hp=60 的怪：maxHP/2=100 > 15-20 → 伤害恰 100 → 当场死亡；按当前血量 50%（30）或按 15-20 的实现它都活。  397ms
+     ✓ 对抗②：免疫窗缺失——同一生物站在爆炸格上连续两个客观块，第二块不得重复扣血。没上 STATUS_EXPLOSION_IMMUNITY 的实现第二块再扣 100 → hp 归零（翻红）。  369ms
+     ✓ 对抗③a：免疫跟着生物走，不跟格走——挨炸后**移动到另一格爆炸地形**上仍免疫。按格记账的实现（Set<格>）在新格查不到记录 → 再扣一次（翻红）。CE 依据：Time.c:347 是 monst->status[STATUS_EXPLOSION_IMMUNITY] = 5——生物身上的状态（任务书"按格记账"为转述错误，按 CE 翻正）。  530ms
+     ✓ 对抗③b：免疫窗时长恰 5 回合（Time.c:347 字面 5）——第 2~5 块被挡、第 6 块恢复受击。记 3（太短：第 5 块就掉血）或 10/无限（第 6 块不掉血）的实现都翻红。递减走 tickStatuses 全键遍历（玩家 Time.c:2298 / 怪 Monsters.c default 分支的同轨等价）。  497ms
+     ✓ 对抗④：爆炸格在下一个晋升趟必须清层消失（promoteType 0：清层不落新 DF）。promoteChance 记 0（永不衰老）或漏抄 VANISHES_UPON_PROMOTION（晋升了但地形留着）的实现都翻红。CE：Globals.c:496 第 8 列 10000 + mechFlags VANISHES；Time.c:1644 掷骰必中、:1254-1266 清层。  329ms
+     ✓ 对抗④b：当回合刚落地的爆炸格被 CAUGHT_FIRE_THIS_TURN 豁免（跳过衰老掷骰，Time.c:1625）——下一个晋升趟才消失。实测寿命 = 落地块 + 1。漏掉豁免的实现当场把爆炸格收走（爆炸圈闪现一帧，翻红）。  331ms
+     ✓ 对抗⑤：bloat 爆炸的第 1 笔是瞬时的 max(15-20, maxHP/2)（不经燃烧状态、不等客观块），第 2 笔是爆炸铺的火点燃生物后的燃烧结算 1-3。把两笔合并成一笔（只点燃烧不瞬伤 / 燃烧段再爆一次 50）的实现都翻红。CE 依据：fillSpawnMap refresh 分支（Architect.c:3255）当场结算 + Time.c:527 火点燃生物 → :2581 燃烧 1-3。  442ms
+     ✓ 对抗⑥：石地板上死亡格必落 GAS_EXPLOSION（种子格无条件标记），且 BFS 距离 2/3 的格必中（第 2/3 波 250%/150% ≥ 100 恒真）——退回 igniteForced×5（落 PLAIN_FIRE、只到距离 1）或参数错记 60/17（距离 2 只有 43%）的实现都翻红。CE：Globals.c:654 {GAS_EXPLOSION, SURFACE, 350, 100}。  338ms
+     ✓ 对抗⑦：点燃 8 邻全挡格的甲烷 → 走 promoteType DF_EXPLOSION_FIRE → GAS_EXPLOSION 落到原点格、站上面的生物在客观块内吃到爆炸伤害并上免疫。G-2 的预测（"填 tile 后爆炸圈自动成形"）经真实 objectiveTimeBlock 验收；走 fireType（GAS_FIRE）的错误选路实现翻红。  338ms
+     ✓ 对抗⑧：悬浮生物站在爆炸格上照常受击。把熔岩/深水的悬浮豁免（Time.c:183-190）错误地复制到爆炸段的实现翻红——CE 爆炸段没有STATUS_LEVITATING 守卫（只查 STATUS_EXPLOSION_IMMUNITY 与 MB_SUBMERGED，web 无潜水簿记已登记）。  430ms
+     ✓ 对抗⑨a：玩家站在爆炸格 → 掉 max(15-20, maxHP/2) 血且 lastDamageSource = violent explosion（CE gameOver "Killed by a violent explosion" 的web 等价铭牌链）。  369ms
+     ✓ 对抗⑨b：dampening 护甲符文完全吸收爆炸伤害并自动鉴定（Time.c:352-359："Your %s pulses and absorbs the damage." + autoIdentify）——扣血的实现（漏掉该分支）翻红。  497ms
+     ✓ 草块点火蔓延-衰老曲线逐位等于 S-1 基线（seed42 场景流复位）。错误实现：本轮顺手改动火蔓延概率/衰老掷骰/4 邻判据——曲线形态立变。原 FIRE-NAT 哨兵锚定真实地图 + 真实怪物 AI 的流位置（C-5/C-6 两次实证漂移），S-1 起改锚全合成场景。  751ms
+stdout | src/test/u_15a_shattering.test.ts > U15a IMPREGNABLE is an outer gate for every crystalize side effect > protected 3 preserves every layer, cell field, appearance and dormant occupant
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_03_whole_run_snapshot.test.ts (14 tests) 16254ms
+     ✓ seed 7: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  2918ms
+     ✓ seed 12345: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  2656ms
+     ✓ seed 202503: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  2225ms
+     ✓ restores one object per ID across active/cached/dormant/pending/carried/leader cycles  1422ms
+     ✓ real monster fall into unvisited D2 survives JSON and subsequent dormancy/death  1114ms
+     ✓ real monster fall into cached D2 survives JSON and subsequent dormancy/death  1073ms
+     ✓ stores every writable cell field and pending environmental effects without replaying them  669ms
+     ✓ restores clock, search, generation accounting, pending mandatory choices and endgame over a dirty run  672ms
+     ✓ scent values survive reentry, share the run clock, and rewind on every visited floor  527ms
+     ✓ rejects incomplete/old worlds before altering the current game or RNG  1185ms
+     ✓ refuses suspended turns, but loading retires an old animation without its epilogue  450ms
+     ✓ codec does not consume either RNG stream or expose aliased run/flavor/level containers  1274ms
+stdout | src/test/hunger_curve_sim.test.ts > 2000 回合饥饿曲线实测（harness, 3 seeds × 2 策略） > seed 1 roam 延长至 2300 回合：nutrition 归零后的完整饿死流程
+
+=== seed 1 roam, 2300 turns ===
+seed=1 policy=roam-extended turns=2181 died=true cause=starvation
+  nutrition 2150 -> 0, hp=0, state=starving
+  transitions: hungry@1806, weak@2007, faint@2107, starving@2156
+  curve: T0:n2150/hp30/normal  T250:n1900/hp30/normal  T500:n1650/hp30/normal  T750:n1401/hp30/normal  T1000:n1153/hp30/normal  T1250:n903/hp30/normal  T1500:n653/hp30/normal  T1750:n403/hp30/normal  T2000:n157/hp30/hungry
+
+
+ ✓ src/test/hunger_curve_sim.test.ts (3 tests) 17059ms
+     ✓ wait 策略：纯饥饿曲线  2030ms
+     ✓ roam 策略：移动/战斗节奏下的饥饿进度  10942ms
+     ✓ seed 1 roam 延长至 2300 回合：nutrition 归零后的完整饿死流程  4086ms
+stdout | src/test/w_13_tunneling.test.ts > W-13 reflection, creatures, maps and persistence > current flags round-trip through a real snapshot; missing flags reject the save without changing the live map
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_13_tunneling.test.ts (43 tests) 827ms
+     ✓ current flags round-trip through a real snapshot; missing flags reject the save without changing the live map  336ms
+ ✓ src/engine/Combat/BoltContract.test.ts (10 tests) 26ms
+ ✓ src/test/r_1_appearance.test.ts (45 tests) 8ms
+stdout | src/test/u_17a_df_transaction.test.ts > U17a actual Game consumers > recursive hole marks player falling without inventing an immediate floor-item update
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/w_14_obstruction.test.ts > W-14 existing promotion lifetime > real objective time consumes the existing melt chain and snapshots retain the field layer
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_14_obstruction.test.ts (24 tests) 481ms
+     ✓ real objective time consumes the existing melt chain and snapshots retain the field layer  427ms
+ ❯ src/test/u_15a_shattering.test.ts (19 tests | 1 failed) 4693ms
+     ✓ protected 3 preserves every layer, cell field, appearance and dormant occupant 250ms
+     ✓ protected 21 preserves every layer, cell field, appearance and dormant occupant 190ms
+     ✓ protected 54 preserves every layer, cell field, appearance and dormant occupant 180ms
+     ✓ protected 71 preserves every layer, cell field, appearance and dormant occupant 191ms
+     ✓ protected 45 preserves every layer, cell field, appearance and dormant occupant 183ms
+     ✓ protected 2 preserves every layer, cell field, appearance and dormant occupant 181ms
+     ✓ protected boundary (0,5) survives; neighboring unprotected boundary still crystallizes 282ms
+     ✓ protected boundary (78,5) survives; neighboring unprotected boundary still crystallizes 273ms
+     ✓ protected boundary (5,0) survives; neighboring unprotected boundary still crystallizes 263ms
+     ✓ protected boundary (5,28) survives; neighboring unprotected boundary still crystallizes 281ms
+     ✓ MONST_ATTACKABLE_THRU_WALLS dies through shielding only on the unprotected obstructing cell 195ms
+     ✓ MONST_TURRET dies through shielding only on the unprotected obstructing cell 203ms
+     ✓ DF awakens the unprotected dormant turret before lethal handling; protected one sleeps 205ms
+     ✓ frees a captive only if still embedded after instant promotions, retained blocker=false 184ms
+     × frees a captive only if still embedded after instant promotions, retained blocker=true 178ms
+     ✓ only DUNGEON obstruction within Euclidean radius qualifies, regardless of visibility 296ms
+     ✓ retained upper blocking layer continues to obstruct vision and movement 279ms
+     ✓ protected machine and ordinary wall behave identically after reload=false 290ms
+     ✓ protected machine and ordinary wall behave identically after reload=true  587ms
+ ✓ src/test/u_17a_df_transaction.test.ts (22 tests) 3747ms
+     ✓ instant fire burns only scrolls, ignites and damages through recursive DF before returning  401ms
+     ✓ two Game/grid owners cannot redirect each others contact or messages  552ms
+     ✓ actual stair movement changes level before REPEL_CREATURES can evict the player  695ms
+     ✓ alarm status, moved entities and post-load grid binding survive the existing snapshot contract  452ms
+stdout | src/test/c_4c_promotion.test.ts > C-4c E：§五 实测测量（真实关卡、多种子；只测量不断言规模） > E1 每回合晋升频谱 + 缓办分类 + 硫矿实测（wait 站桩，逐回合采样）
+[C-4c 实测 D1] 7 种子 × 40 回合（wait 站桩）
+  客观块总数=275，晋升掷骰总数=5600（平均 20.36 次/块）
+  晋升按源地形：FOLIAGE=75，MUD=53
+  缓办按缺失 tile：ALTAR_CAGE_CLOSED=420
+  OPEN_DOOR 自动关门次数=0
+  硫矿：起点 0 格 → 终点 0 格；ACTIVE_BRIMSTONE 缓办 0 次（期望 ≈ 0.08×格数×块数）
+[C-4c 实测 D20] 7 种子 × 40 回合（wait 站桩）
+  客观块总数=216，晋升掷骰总数=15948（平均 73.83 次/块）
+  晋升按源地形：MUD=151，INERT_BRIMSTONE=45，FOLIAGE=33
+  缓办按缺失 tile：ALTAR_CAGE_CLOSED=170，ACTIVE_BRIMSTONE=45
+  OPEN_DOOR 自动关门次数=0
+  硫矿：起点 19 格 → 终点 19 格；ACTIVE_BRIMSTONE 缓办 45 次（期望 ≈ 0.08×格数×块数）
+
+stdout | src/test/c_4c_promotion.test.ts > C-4c E：§五 实测测量（真实关卡、多种子；只测量不断言规模） > E2 玩家行走 60 回合：踩踏开门→自动关门链在真实行走里的触发计数
+[C-4c 行走实测 seed=424242] 60 回合内 OPEN_DOOR 自动关门 0 次（每次关门对应一次踩踏开门）
+[C-4c 行走实测 seed=777] 60 回合内 OPEN_DOOR 自动关门 0 次（每次关门对应一次踩踏开门）
+[C-4c 行走实测 seed=31337] 60 回合内 OPEN_DOOR 自动关门 7 次（每次关门对应一次踩踏开门）
+
+stdout | src/test/c_4c_promotion.test.ts > C-4c E：§五 实测测量（真实关卡、多种子；只测量不断言规模） > E3 静态盘点：31 地形中 promoteChance≠0 的活数据、负值死数据
+[C-4c 静态盘点]
+  活 promoteChance：OPEN_DOOR:10000→DF_CLOSED_DOOR；MUD:100→DF_METHANE_GAS_PUFF；INERT_BRIMSTONE:800→DF_ACTIVE_BRIMSTONE；PLAIN_FIRE:500→DF_EMBERS；EMBERS:300→DF_ASH；GAS_FIRE:8000→（无 DF）；GAS_EXPLOSION:10000→（无 DF）；MACHINE_FLOOD_WATER_SPREADING:2500→DF_WATER_SPREADS；MACHINE_COLLAPSE_EDGE_SPREADING:2500→DF_COLLAPSE_SPREADS；CHASM_WITH_HIDDEN_BRIDGE_ACTIVE:6000→DF_BRIDGE_ACTIVATE；PUDDLE:100→（无 DF）；DARK_FLOOR_DARKENING:1500→DF_DARK_FLOOR；HAUNTED_TORCH_TRANSITIONING:2000→DF_HAUNTED_TORCH；MACHINE_GLYPH_INACTIVE:10000→DF_ACTIVE_GLYPH；ANCIENT_SPIRIT_VINES:1000→DF_ANCIENT_SPIRIT_GRASS；ITEM_FIRE:3000→DF_EMBERS
+  负值（扩散型）载体：HOLE:-1000；HOLE_EDGE:-500；FORCEFIELD:-200；FORCEFIELD_MELT:-10000；LAVA_RETRACTING:-1500；FLOOD_WATER_SHALLOW:-100；FLOOD_WATER_DEEP:-200
+
+ ✓ src/test/c_4c_promotion.test.ts (21 tests) 40938ms
+     ✓ D1 踩门开门 + 同回合客观块自动关门（CE：OPEN_DOOR promoteChance=10000）  672ms
+     ✓ D2 踩楼梯触发 DF_REPEL_CREATURES（tile=NOTHING 的合法无地形 DF；U17a 实际驱离）  470ms
+     ✓ D3 决定性复验（§五.5）：同种子同操作序列跑两遍，逐回合四层快照全等  1207ms
+     ✓ E1 每回合晋升频谱 + 缓办分类 + 硫矿实测（wait 站桩，逐回合采样）  37388ms
+     ✓ E2 玩家行走 60 回合：踩踏开门→自动关门链在真实行走里的触发计数  1177ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_15a_shattering.test.ts > U15a IMPREGNABLE is an outer gate for every crystalize side effect > frees a captive only if still embedded after instant promotions, retained blocker=true
+AssertionError: expected 43 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 43
+
+ ❯ src/test/u_15a_shattering.test.ts:135:46
+    133|         else expect(release).not.toHaveBeenCalled();
+    134|         expect(freed.isAlly).toBe(retainedBlocker); expect(freed.isCag…
+    135|         expect(cell(g, 8).layers[L.DUNGEON]).toBe(T.FLOOR);
+       |                                              ^
+    136|         expect(cell(g, 8).layers[L.SURFACE]).toBe(T.NOTHING);
+    137|         expect(captive.isCaged).toBe(true); expect(captive.isAlly).toB…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 10 passed (11)
+      Tests  1 failed | 234 passed (235)
+   Start at  18:35:51
+   Duration  41.75s (transform 1.27s, setup 0ms, import 5.19s, tests 99.03s, environment 2ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web/ai_docs/reports/u-17a-evidence/targeted-repair.json

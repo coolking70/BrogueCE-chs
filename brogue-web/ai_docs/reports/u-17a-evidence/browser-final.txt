@@ -1,0 +1,23 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected "actual" not to be strictly deep-equal to:
+
+{
+  x: 10,
+  y: 10
+}
+
+    at file:///Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web/scripts/u17a-browser.mjs:39:12
+    at runNextTicks (node:internal/process/task_queues:64:5)
+    at process.processImmediate (node:internal/timers:472:9) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: { x: 10, y: 10 },
+  expected: { x: 10, y: 10 },
+  operator: 'notDeepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v25.2.1

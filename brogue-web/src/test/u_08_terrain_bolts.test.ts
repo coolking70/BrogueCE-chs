@@ -45,7 +45,8 @@ describe('U08 CE catalog and runtime qualification',()=>{
             flags:0,subsequentDF:null,propagationTerrain:null,effectRadius:0,lightFlare:''});
     });
     it('new closed terrain set: 139 DFs, no entity/spawn flags; web forbidden to learn, vines eligible',()=>{
-        expect(Object.keys(DFC)).toHaveLength(139);
+        // U17a adds only burnItem's DF_ITEM_FIRE (110); retain the U08 universe.
+        expect(Object.keys(DFC).filter(k=>Number(k)!==110)).toHaveLength(139);
         expect(BC[B.SPIDERWEB]).toMatchObject({effect:E.NONE,pathDF:'DF_WEB_SMALL',targetDF:'DF_WEB_LARGE'});
         expect(BC[B.ANCIENT_SPIRIT_VINES]).toMatchObject({effect:E.NONE,pathDF:'DF_ANCIENT_SPIRIT_GRASS',targetDF:'DF_ANCIENT_SPIRIT_VINES'});
         expect(BC[B.SPIDERWEB].flags).toBe(F.TARGET_ENEMIES|F.NEVER_REFLECTS|F.NOT_LEARNABLE);
@@ -101,6 +102,9 @@ describe('U08 actual zap path and ordered DF fill',()=>{
         const g=scene(),m=mob(g,name==='SPIDERWEB'?'spider':'mangrove_dryad');g.player.loc={x:30,y:20};
         const target=mob(g,'rat',18);target.isAlly=true;
         const h=scene();h.player.loc={x:30,y:20};
+        // U17a: both worlds need identical occupants. DF contact now applies
+        // entanglement during fill, so an empty reference omits real RNG draws.
+        mob(h,name==='SPIDERWEB'?'spider':'mangrove_dryad');mob(h,'rat',18).isAlly=true;
         rng.seedRandomGenerator(2026); rng.resetCounters();const result=g.castMonsterBolt(m,target,name)!;const draws=rng.randomNumbersGenerated;
         rng.seedRandomGenerator(2026); rng.resetCounters();
         for(let x=9;x<=18;x++)spawnDungeonFeature(h.grid,x,10,catalogFeature(name==='SPIDERWEB'?DF.DF_WEB_SMALL:DF.DF_ANCIENT_SPIRIT_GRASS),false);

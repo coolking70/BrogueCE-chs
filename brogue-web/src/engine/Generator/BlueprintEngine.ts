@@ -1521,7 +1521,7 @@ export class BlueprintEngine {
                         const dfFeat = catalogFeature(dfId);
                         const abortIfBlocking = !fFlags.has('MF_PERMIT_BLOCKING');
                         terrainSucceeded = spawnDungeonFeature(
-                            this.grid, pos.x, pos.y, dfFeat, abortIfBlocking
+                            this.grid, pos.x, pos.y, dfFeat, abortIfBlocking, { refreshSideEffects: false }
                         ).succeeded;
                     }
 

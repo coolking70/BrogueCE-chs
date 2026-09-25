@@ -149,6 +149,8 @@ export interface CellAppearanceContext {
     lightChannels: LightChannels | null;
     /** Temporary CE flare light, added for drawing only. */
     flareChannels?: LightChannels | null;
+    /** CE hiliteCell adds color after lighting/memory, without revealing tiles. */
+    flashChannels?: LightChannels | null;
     /**
      * 该格的地面物品（CE itemAtLoc(loc)；渲染层每帧从 game.items 建索引传入）。
      * 探测魔法符号（IO.c:1219-1236 左支）的载体。
@@ -371,6 +373,18 @@ export function cellAppearance(cell: Cell, ctx: CellAppearanceContext): TerrainV
             color = '#333333';
             if (bgColor !== null) bgColor = 0x111111;
         }
+    }
+
+    if (ctx.flashChannels) {
+        const flash = ctx.flashChannels;
+        const augment = (value: string | number): string => {
+            const rgb = ColorUtils.hexToRGB(value);
+            return ColorUtils.rgbToHex({ r: Math.min(255, rgb.r + Math.trunc(flash.r * 255 / 100)),
+                g: Math.min(255, rgb.g + Math.trunc(flash.g * 255 / 100)),
+                b: Math.min(255, rgb.b + Math.trunc(flash.b * 255 / 100)) });
+        };
+        color = augment(color);
+        bgColor = parseInt(augment(bgColor ?? 0).slice(1), 16);
     }
 
     return { char, color, bgColor };

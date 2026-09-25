@@ -36,6 +36,7 @@ export const STATUS_CONFIG: Record<BurningStatusId, StatusConfigEntry> = {
     magical_fear: { id: 'magical_fear', label: '魔法恐惧', color: '#fca5a5', isDebuff: true },
     stuck: { id: 'stuck', label: '缠绕', color: '#d6d3d1', isDebuff: true },
     donning: { id: 'donning', label: '穿甲', color: '#94a3b8', isDebuff: true },
+    aggravating: { id: 'aggravating', label: '喧闹', color: '#fca5a5', isDebuff: true },
     enraged: { id: 'enraged', label: '', color: '#f87171', isDebuff: false },
     lifespan_remaining: { id: 'lifespan_remaining', label: '寿命', color: '#c4b5fd', isDebuff: false },
     flying: { id: 'flying', label: '飞行', color: '#bae6fd', isDebuff: false },

@@ -6,7 +6,7 @@
 import type { Entity, Pos } from '../types';
 import { Direction } from '../types';
 
-export type StatusId = 'paralyzed' | 'invisible' | 'telepathy' | 'levitating' | 'hallucinating' | 'confused' | 'regenerating' | 'haste' | 'poisoned' | 'slowed' | 'hasted' | 'weakened' | 'flying' | 'immune_fire' | 'discordant' | 'shielded' | 'entranced' | 'nauseous' | 'darkness' | 'magical_fear' | 'stuck' | 'donning' | 'enraged' | 'lifespan_remaining';
+export type StatusId = 'paralyzed' | 'invisible' | 'telepathy' | 'levitating' | 'hallucinating' | 'confused' | 'regenerating' | 'haste' | 'poisoned' | 'slowed' | 'hasted' | 'weakened' | 'flying' | 'immune_fire' | 'discordant' | 'shielded' | 'entranced' | 'nauseous' | 'darkness' | 'magical_fear' | 'stuck' | 'donning' | 'enraged' | 'lifespan_remaining' | 'aggravating';
 type StatusStackMode = 'refresh' | 'stack';
 
 /**
@@ -168,7 +168,7 @@ export class Creature implements Entity {
         if (duration <= 0 || this.statusImmunities.has(id)) return false;
         // CE sources assign current/max together, not max(old, new).
         // STUCK is applied only when absent; contact never refreshes it.
-        if (id === 'stuck' || id === 'donning' || id === 'enraged' || id === 'lifespan_remaining') {
+        if (id === 'stuck' || id === 'donning' || id === 'enraged' || id === 'lifespan_remaining' || id === 'aggravating') {
             if (id === 'stuck' && this.hasStatus(id)) return false;
             const changed = this.getStatusDuration(id) !== duration || this.maxStatus[id] !== duration;
             this.setStatusDuration(id, duration);

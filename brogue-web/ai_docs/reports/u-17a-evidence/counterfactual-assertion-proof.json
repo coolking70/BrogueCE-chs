@@ -1,0 +1,84 @@
+[
+  {
+    "name": "no-evacuation",
+    "failedTests": [
+      "U17a DF transaction: CE ordering and recursive world effects evacuates from the raw footprint BEFORE priority rejects fill, including generation refresh=false",
+      "U17a DF transaction: CE ordering and recursive world effects blocking veto has no evacuation/aggravation/recursion; PERMIT_BLOCKING permits the same footprint",
+      "U17a actual Game consumers runtime evacuation moves real player and creature; generation refresh=false moves without contact/status"
+    ],
+    "count": 3
+  },
+  {
+    "name": "no-refresh",
+    "failedTests": [
+      "U17a DF transaction: CE ordering and recursive world effects generic occupied contact dissolves both forcefield stages, also for direct DF and promotion recursion",
+      "U17a actual Game consumers instant fire burns only scrolls, ignites and damages through recursive DF before returning"
+    ],
+    "count": 2
+  },
+  {
+    "name": "subsequent-loses-refresh",
+    "failedTests": [
+      "U17a DF transaction: CE ordering and recursive world effects EVERY uses only successfully filled cells; descendants inherit refresh=false and live context"
+    ],
+    "count": 1
+  },
+  {
+    "name": "no-aggravation",
+    "failedTests": [
+      "U17a actual Game consumers alarm uses four-way path radius from origin, resets scent, preserves allies, wakes enemies and sets source status"
+    ],
+    "count": 1
+  },
+  {
+    "name": "message-text-collision",
+    "failedTests": [
+      "U17a DF transaction: CE ordering and recursive world effects message eligibility follows DF identity, not shared text; fresh catalog projections retain identity"
+    ],
+    "count": 1
+  },
+  {
+    "name": "retired-grid-leaks",
+    "failedTests": [
+      "U17a actual Game consumers retired grid cannot mutate the replacement world after load",
+      "U17a actual Game consumers retired grid cannot mutate the replacement world after new-run",
+      "U17a actual Game consumers retired grid cannot mutate the replacement world after test-depth"
+    ],
+    "count": 3
+  },
+  {
+    "name": "lethal-continues-gas",
+    "failedTests": [
+      "U17a actual Game consumers lethal player contact ends the actual Game before burning items, filling later cells or running descendants"
+    ],
+    "count": 1
+  },
+  {
+    "name": "deferred-death",
+    "failedTests": [
+      "U17a actual Game consumers lethal player contact ends the actual Game before burning items, filling later cells or running descendants"
+    ],
+    "count": 1
+  },
+  {
+    "name": "no-item-fire",
+    "failedTests": [
+      "U17a actual Game consumers instant fire burns only scrolls, ignites and damages through recursive DF before returning"
+    ],
+    "count": 1
+  },
+  {
+    "name": "no-fire-registration",
+    "failedTests": [
+      "U17a actual Game consumers direct and descendant fires register the current-turn skip without callers draining results"
+    ],
+    "count": 1
+  },
+  {
+    "name": "no-blocking-veto",
+    "failedTests": [
+      "U17a DF transaction: CE ordering and recursive world effects blocking veto has no evacuation/aggravation/recursion; PERMIT_BLOCKING permits the same footprint"
+    ],
+    "count": 1
+  }
+]

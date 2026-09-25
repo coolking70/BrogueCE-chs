@@ -1,0 +1,63 @@
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17a-counterfactual-9brMJh
+
+stdout | src/test/u_17a_df_transaction.test.ts > U17a actual Game consumers > lethal player contact ends the actual Game before burning items, filling later cells or running descendants
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_17a_df_transaction.test.ts (27 tests | 1 failed | 26 skipped) 361ms
+     ↓ evacuates from the raw footprint BEFORE priority rejects fill, including generation refresh=false
+     ↓ uses species forbidden terrain, all occupants, x/y ring order, and no extra roll on singleton
+     ↓ blocking veto has no evacuation/aggravation/recursion; PERMIT_BLOCKING permits the same footprint
+     ↓ refresh occurs per cell before clear, aggravation, subsequent, shore invalidation and awakening
+     ↓ EVERY uses only successfully filled cells; descendants inherit refresh=false and live context
+     ↓ BLOCKED_BY_OTHER_LAYERS filters footprint before descendants
+     ↓ gas refresh does not contact/burn/evacuate; following DF does contact and clear
+     ↓ description precedes veto, is visibility-gated and resets per turn; nested contexts restore after an error
+     ↓ message eligibility follows DF identity, not shared text; fresh catalog projections retain identity
+     ↓ game end during fill stops further fill/contact and subsequent, while failed DF still refreshes player hazard
+     ↓ generic occupied contact dissolves both forcefield stages, also for direct DF and promotion recursion
+     ↓ recursive hole marks player falling without inventing an immediate floor-item update
+     ↓ instant fire burns only scrolls, ignites and damages through recursive DF before returning
+     × lethal player contact ends the actual Game before burning items, filling later cells or running descendants 360ms
+     ↓ direct and descendant fires register the current-turn skip without callers draining results
+     ↓ runtime evacuation moves real player and creature; generation refresh=false moves without contact/status
+     ↓ alarm uses four-way path radius from origin, resets scent, preserves allies, wakes enemies and sets source status
+     ↓ two Game/grid owners cannot redirect each others contact or messages
+     ↓ actual stair movement changes level before REPEL_CREATURES can evict the player
+     ↓ alarm source may be remote: wall detours reject nearby cells and only player-origin alarms add AGGRAVATING
+     ↓ alarm status, moved entities and post-load grid binding survive the existing snapshot contract
+     ↓ flash obeys refresh, radius and animation lifetime without changing lighting or either RNG stream
+     ↓ transient flashes are discarded by load and new-run lifecycle without entering snapshots
+     ↓ retired grid cannot mutate the replacement world after load
+     ↓ retired grid cannot mutate the replacement world after new-run
+     ↓ retired grid cannot mutate the replacement world after test-depth
+     ↓ null tile registry remains exactly 30 and no five-family carrier is activated
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_17a_df_transaction.test.ts > U17a actual Game consumers > lethal player contact ends the actual Game before burning items, filling later cells or running descendants
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/test/u_17a_df_transaction.test.ts:160:30
+    158|         const scroll=new Item('test','?',0xffffff,ItemCategory.SCROLL)…
+    159|         spawnDungeonFeature(g.grid,5,5,feat({tile:T.GAS_EXPLOSION,star…
+    160|         expect(g.isGameOver).toBe(true);expect(g.player.hp).toBeLessTh…
+       |                              ^
+    161|         expect(g.player.hasStatus('confused'), 'CE Time.c:370 returns …
+    162|         expect(g.items).toContain(scroll);expect(g.grid.getCell(4,5)!.…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 26 skipped (27)
+   Start at  19:46:51
+   Duration  1.83s (transform 771ms, setup 0ms, import 1.30s, tests 361ms, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web/ai_docs/reports/u-17a-evidence/counterfactual-deferred-death.json

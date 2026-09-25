@@ -1,0 +1,109 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web
+
+stdout | src/test/u_17a_df_transaction.test.ts > U17a actual Game consumers > retired grid cannot mutate the replacement world after load
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_17a_df_transaction.test.ts (26 tests | 3 failed | 23 skipped) 1063ms
+     × retired grid cannot mutate the replacement world after load 334ms
+     × retired grid cannot mutate the replacement world after new-run 383ms
+     × retired grid cannot mutate the replacement world after test-depth 345ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_17a_df_transaction.test.ts > U17a actual Game consumers > retired grid cannot mutate the replacement world after load
+AssertionError: expected { depth: 1, width: 79, …(40) } to deeply equal { depth: 1, width: 79, …(40) }
+
+- Expected
++ Received
+
+@@ -44978,11 +44978,11 @@
+    "playerExitedVia": [Object],
+    "purgatory": [Array],
+    "rewardRoomsGenerated": 0,
+    "rngState": [Object],
+    "run": [Object],
+-   "savedAt": 1790335895918,
++   "savedAt": 1790335895929,
+    "scent": [Object],
+    "schema": "brogue-web-whole-run-v2",
+    "seed": "1717",
+    "staffFlavors": [Object],
+    "stats": [Object],
+
+ ❯ src/test/u_17a_df_transaction.test.ts:241:60
+    239|         const repel=feat({tile:T.NOTHING,flags:EVAC});
+    240|         spawnDungeonFeature(retired,5,5,repel,false);
+    241|         expect(JSON.parse(JSON.stringify(g.toSnapshot()))).toEqual(bef…
+       |                                                            ^
+    242|         spawnDungeonFeature(g.grid,5,5,repel,false);
+    243|         expect(g.player.loc).not.toEqual({x:5,y:5});
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/test/u_17a_df_transaction.test.ts > U17a actual Game consumers > retired grid cannot mutate the replacement world after new-run
+AssertionError: expected { depth: 1, width: 79, …(40) } to deeply equal { depth: 1, width: 79, …(40) }
+
+- Expected
++ Received
+
+@@ -45015,11 +45015,11 @@
+    "playerExitedVia": [Object],
+    "purgatory": [Array],
+    "rewardRoomsGenerated": 0,
+    "rngState": [Object],
+    "run": [Object],
+-   "savedAt": 1790335896308,
++   "savedAt": 1790335896318,
+    "scent": [Object],
+    "schema": "brogue-web-whole-run-v2",
+    "seed": "1720",
+    "staffFlavors": [Object],
+    "stats": [Object],
+
+ ❯ src/test/u_17a_df_transaction.test.ts:241:60
+    239|         const repel=feat({tile:T.NOTHING,flags:EVAC});
+    240|         spawnDungeonFeature(retired,5,5,repel,false);
+    241|         expect(JSON.parse(JSON.stringify(g.toSnapshot()))).toEqual(bef…
+       |                                                            ^
+    242|         spawnDungeonFeature(g.grid,5,5,repel,false);
+    243|         expect(g.player.loc).not.toEqual({x:5,y:5});
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/test/u_17a_df_transaction.test.ts > U17a actual Game consumers > retired grid cannot mutate the replacement world after test-depth
+AssertionError: expected { depth: 1, width: 79, …(40) } to deeply equal { depth: 1, width: 79, …(40) }
+
+- Expected
++ Received
+
+@@ -44599,11 +44599,11 @@
+    "playerExitedVia": [Object],
+    "purgatory": [Array],
+    "rewardRoomsGenerated": 0,
+    "rngState": [Object],
+    "run": [Object],
+-   "savedAt": 1790335896659,
++   "savedAt": 1790335896669,
+    "scent": [Object],
+    "schema": "brogue-web-whole-run-v2",
+    "seed": "1717",
+    "staffFlavors": [Object],
+    "stats": [Object],
+
+ ❯ src/test/u_17a_df_transaction.test.ts:241:60
+    239|         const repel=feat({tile:T.NOTHING,flags:EVAC});
+    240|         spawnDungeonFeature(retired,5,5,repel,false);
+    241|         expect(JSON.parse(JSON.stringify(g.toSnapshot()))).toEqual(bef…
+       |                                                            ^
+    242|         spawnDungeonFeature(g.grid,5,5,repel,false);
+    243|         expect(g.player.loc).not.toEqual({x:5,y:5});
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 23 skipped (26)
+   Start at  19:31:35
+   Duration  1.72s (transform 343ms, setup 0ms, import 567ms, tests 1.06s, environment 0ms)
+

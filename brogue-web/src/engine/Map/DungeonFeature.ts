@@ -1,7 +1,7 @@
 /**
  * src/engine/Map/DungeonFeature.ts — CE 地形特征（dungeon feature）子系统（C-4b）
  *
- * 纯库：生产代码零调用点（留痕测试钉死，调用方全部在 C-4c）。
+ * 生成与运行时共用；算法与实例效果通过按 Grid 绑定的端口连接。
  * 三个算法与一个连通性检查，全部照 CE 源码移植（BrogueCE-master/src/brogue/
  * Architect.c，只读）：
  *   - spawnMapDF            Architect.c:3278-3330（扩散波前）
@@ -51,27 +51,11 @@
  * 三者判据与算法形状都不同，不能互相替代。Connectivity.ts 本轮禁改，
  * 也无需改——新函数放在本文件。
  *
- * 与 CE 的有意差异（登记表，均为游戏侧副作用，库无法承载）：
- *   ┌──────────────────────────────┬──────────────────────────────────────┐
- *   │ CE 行为                      │ web 处置                              │
- *   ├──────────────────────────────┼──────────────────────────────────────┤
- *   │ refreshCell 刷新/玩家脚下的  │ 参数不入签名；调用方（C-4c）负责      │
- *   │ 即时地形效果/物品点燃        │                                       │
- *   │ CAUGHT_FIRE_THIS_TURN (:3235)│ 结果对象 caughtFireCells（无生产存储）│
- *   │ rogue.staleLoopMap (:3243)   │ 结果对象 pathingChanged               │
- *   │ message/playerCanSee (:3370) │ 结果对象 message（视野门控属 C-4c；   │
- *   │                              │ messageDisplayed 不跟踪）             │
- *   │ evacuateCreatures (:3332)    │ 结果对象 evacuationRequired 置位，    │
- *   │                              │ 不搬怪（任务书 §三明确不做）          │
- *   │ aggravateMonsters (:3443)    │ 结果对象 aggravateRadius              │
- *   │ colorFlash/createFlare       │ 不实现（数据仍登记在目录）            │
- *   │ updatedMapToShoreThisTurn    │ 结果对象 touchesShoreMap              │
- *   │ (:3481-3485)                 │                                       │
- *   │ DFF_RESURRECT_ALLY (:3365)   │ 按 Grid 注册 Game 复活回调          │
- *   │ pmap.volume (GAS, :3385)     │ G-1 起 Cell.volume 直接累加           │
- *   │                              │ （CE uint16 回绕 → 65535 钳制）；     │
- *   │                              │ 结果对象 gasVolumeAdded 仍登记        │
- *   └──────────────────────────────┴──────────────────────────────────────┘
+ * U17a: grid-scoped effects execute evacuation, synchronous cell contact,
+ * description, alarm, flash/flare and invalidation in CE order. The result is
+ * an observation, never a second dispatch queue. Generation passes refresh=false;
+ * recursive promotion/subsequent calls inherit the transaction. Catalog gaps
+ * still fail explicitly; this round does not activate the five missing families.
  */
 import type { Pos } from '../../types';
 import { rng } from '../Random';
@@ -114,6 +98,88 @@ import {
 } from './DungeonFeatureCatalog';
 import { T_IS_FLAMMABLE, TM_EXPLOSIVE_PROMOTE, type TerrainFlagsEntry } from './TerrainCatalog';
 import { DF, type DungeonFeatureEntry } from './DungeonFeatureCatalog';
+import { qualifyingNear } from '../Generator/GenerationPlacement';
+import { promoteLayersWithMechFlag } from './Promotion';
+import { TM_PROMOTES_ON_CREATURE } from './TerrainCatalog';
+import { T_OBSTRUCTS_VISION } from './TerrainCatalog';
+
+/** CE owns a world, not a return-value event queue. Ports are scoped to a grid;
+ * recursion (including promotion during fill) sees the same live transaction. */
+export interface DungeonFeatureEffects {
+    creatures?(): readonly { loc: Pos; forbiddenTerrain: number }[];
+    occupied?(pos: Pos): boolean;
+    refreshCell?(pos: Pos): void;
+    flavor?(pos: Pos): void;
+    instantEffects?(pos: Pos): void;
+    burnItems?(pos: Pos): void;
+    caughtFire?(pos: Pos): void;
+    playerFireOrDescent?(): void;
+    describe?(feat: DungeonFeature, origin: Pos): boolean;
+    aggravate?(radius: number, origin: Pos): void;
+    flare?(kind: string, origin: Pos): void;
+    flash?(color: string, radius: number, origin: Pos): void;
+    invalidatePathing?(): void;
+    invalidateShore?(): void;
+    gameHasEnded?(): boolean;
+}
+export interface DungeonFeatureOptions {
+    refreshSideEffects?: boolean;
+    effects?: DungeonFeatureEffects;
+}
+const featureEffects = new WeakMap<Grid, DungeonFeatureEffects>();
+type FeatureTransaction = DungeonFeatureOptions & { caughtFire: Pos[] };
+const activeOptions = new WeakMap<Grid, FeatureTransaction>();
+const displayedMessages = new WeakMap<Grid, Set<DF | DungeonFeature>>();
+export function setDungeonFeatureEffects(grid: Grid, effects: DungeonFeatureEffects | null): void {
+    if (effects) featureEffects.set(grid, effects);
+    else featureEffects.delete(grid);
+}
+export function resetDFMessageEligibility(grid: Grid): void {
+    displayedMessages.delete(grid);
+}
+
+function evacuateCreatures(grid: Grid, map: SpawnMap, effects: DungeonFeatureEffects): void {
+    // Scan x then y, querying live positions after each relocation. Dormant
+    // creatures are absent from HAS_MONSTER in CE and from this port's list.
+    for (let x = 0; x < grid.width; x++) for (let y = 0; y < grid.height; y++) {
+        if (!map[y * grid.width + x]) continue;
+        const creatures = effects.creatures?.() ?? [];
+        const creature = creatures.find(c => c.loc.x === x && c.loc.y === y);
+        if (!creature) continue;
+        const next = qualifyingNear(grid, { x, y }, (nx, ny) =>
+            !map[ny * grid.width + nx]
+            && !(cellTerrainFlags(grid, nx, ny) & creature.forbiddenTerrain)
+            && !creatures.some(c => c.loc.x === nx && c.loc.y === ny));
+        // CE assumes a destination exists. On a fully sealed synthetic map,
+        // preserve the entity instead of copying C's uninitialized newLoc.
+        if (next) Object.assign(creature.loc, next);
+    }
+}
+
+function refreshFeatureCell(grid: Grid, pos: Pos, tile: TerrainType, effects: DungeonFeatureEffects): boolean {
+    refreshDungeonCellTerrain(grid, pos.x, pos.y);
+    effects.refreshCell?.(pos);
+    effects.flavor?.(pos);
+    if (effects.instantEffects) effects.instantEffects(pos);
+    else if (effects.occupied?.(pos)) {
+        // Entity-free terrain clients can still supply CE occupancy. The same
+        // recursive refresh handles every ON_CREATURE tile, including crystals.
+        promoteLayersWithMechFlag(grid, pos.x, pos.y, TM_PROMOTES_ON_CREATURE);
+    }
+    if (effects.gameHasEnded?.()) return true;
+    if (TERRAIN_FLAGS[tile].flags & T_IS_FIRE) effects.burnItems?.(pos);
+    return false;
+}
+
+/** Compatibility fields for legacy clients; engine rules use the same flags.
+ * This refresh applies to all terrain, including a promotion that only erases. */
+export function refreshDungeonCellTerrain(grid: Grid, x: number, y: number): void {
+    const cell = grid.getCell(x, y);
+    if (!cell) return;
+    const flags = cellTerrainFlags(grid, x, y);
+    cell.isPassable = !(flags & T_OBSTRUCTS_PASSABILITY);
+    cell.isOpaque = !!(flags & T_OBSTRUCTS_VISION);
+}
 
 /** CE `nbDirs[0..3]`（GlobalsBase.c:38）——4 向正交，顺序逐项一致。 */
 const DIRS4: ReadonlyArray<readonly [number, number]> = [
@@ -127,6 +193,8 @@ const DIRS4: ReadonlyArray<readonly [number, number]> = [
  * 无传播地形限制；subsequentDF 走目录解析（CE 0 = 无 → null）。
  */
 export interface DungeonFeature {
+    /** Stable catalog identity; custom features retain their object identity. */
+    catalogId?: DF;
     tile: TerrainType;
     layer: DungeonLayer;
     startProbability: number;
@@ -367,7 +435,7 @@ export function fillSpawnMap(
     spawnMap: SpawnMap,
     blockedByOtherLayers: boolean,
     superpriority: boolean,
-    onBuiltCell?: (pos: Pos) => void
+    onBuiltCell?: (pos: Pos, caughtFire: boolean) => void | boolean
 ): FillSpawnMapOutcome {
     const W = grid.width;
     const idx = (px: number, py: number): number => py * W + px;
@@ -410,9 +478,11 @@ export function fillSpawnMap(
                 // 落层！（Grid.ts setTerrainLayer：只写该层，不动其他层。）
                 grid.setTerrainLayer(i, j, layer, surfaceTileType);
                 accomplishedSomething = true;
-                // U08 opt-in contact at CE fillSpawnMap :3248-3258, before
-                // the next cell is filled (player vines may promote here).
-                onBuiltCell?.({ x: i, y: j });
+                // CE fillSpawnMap :3248-3258: contact may recurse before
+                // the next cell is filled. Fire registration is not refresh-gated.
+                if (onBuiltCell?.({ x: i, y: j }, !!(newFlags & T_IS_FIRE) && !(oldFlags & T_IS_FIRE)) === true) {
+                    return { accomplishedSomething, caughtFireCells, pathingChanged };
+                }
             } else {
                 spawnMap[idx(i, j)] = 0; // spawnmap 反映实际建了什么（CE :3271）
             }
@@ -717,6 +787,7 @@ export function catalogFeature(df: DF): DungeonFeature {
         );
     }
     return {
+        catalogId: df,
         tile: entry.tile,
         layer: entry.layer,
         startProbability: entry.startProbability,
@@ -740,7 +811,7 @@ export function catalogFeature(df: DF): DungeonFeature {
  * `dormantMonsters`，并对每只怪调 `toggleMonsterDormancy`——而 web 的休眠表
  * 与 `toggleMonsterDormancy` 都住在 `Game`（怪物列表 `Game.monsters` /
  * `Game.dormantMonsters` 是实例状态，不是模块状态）。`spawnDungeonFeature`
- * 是纯地形函数、不 import Game，因此把"谁被唤醒"这一步以回调出栈。
+ * 不 import Game，因此把"谁被唤醒"这一步以回调出栈。
  *
  * **为什么按 Grid 登记**：调用点分散在 `Game`（六处 DF 直落）与
  * `Promotion.promoteTile`（晋升链落 DF，正是雕像唤醒的实际路径）。加形参
@@ -781,12 +852,11 @@ export interface SpawnFeatureResult {
     /** GAS 特例的 volume 增量（CE :3385 `pmap.volume += startProbability`；
      *  G-1 起同时直接累加进 Cell.volume——此字段保留为返回值审计口径）。 */
     gasVolumeAdded: number;
-    /** DFF_EVACUATE_CREATURES_FIRST 置位（evacuateCreatures 未实现）。 */
+    /** DFF_EVACUATE_CREATURES_FIRST 置位（evacuateCreatures 已执行；此字段仅供审计）。 */
     evacuationRequired: boolean;
-    /** CE description（非空即登记；playerCanSee 门控与 messageDisplayed
-     *  一次性语义属游戏侧）。 */
+    /** CE description 审计值；已在事务起点按可见性与每回合资格派发。 */
     message: string | null;
-    /** DFF_AGGRAVATES_MONSTERS && effectRadius 时的聚怪半径登记。 */
+    /** DFF_AGGRAVATES_MONSTERS && effectRadius 时的已执行的聚怪半径（审计）。 */
     aggravateRadius: number | null;
     /** CE :3481-3485：tile 带 T_IS_DEEP_WATER | T_LAVA_INSTA_DEATH |
      *  T_AUTO_DESCENT 时 CE 会置 updatedMapToShoreThisTurn = false。 */
@@ -804,7 +874,33 @@ export function spawnDungeonFeature(
     y: number,
     feat: DungeonFeature,
     abortIfBlocking: boolean,
-    onBuiltCell?: (pos: Pos) => void
+    options?: DungeonFeatureOptions | ((pos: Pos) => void)
+): SpawnFeatureResult {
+    const previous = activeOptions.get(grid);
+    const requested = typeof options === 'function' ? {} : options;
+    const inherited: DungeonFeatureOptions = previous ?? {};
+    const transaction = {
+        refreshSideEffects: requested?.refreshSideEffects ?? inherited.refreshSideEffects ?? true,
+        effects: { ...featureEffects.get(grid), ...inherited.effects, ...requested?.effects },
+        caughtFire: previous?.caughtFire ?? [],
+    };
+    activeOptions.set(grid, transaction);
+    try {
+        const firstFire = transaction.caughtFire.length;
+        const result = executeDungeonFeature(grid, x, y, feat, abortIfBlocking,
+            transaction.refreshSideEffects, transaction.effects, typeof options === 'function' ? options : undefined);
+        // Retain the audit/standalone-environment contract across descendants.
+        result.caughtFireCells = transaction.caughtFire.slice(firstFire);
+        return result;
+    } finally {
+        if (previous) activeOptions.set(grid, previous);
+        else activeOptions.delete(grid);
+    }
+}
+
+function executeDungeonFeature(
+    grid: Grid, x: number, y: number, feat: DungeonFeature, abortIfBlocking: boolean,
+    refresh: boolean, effects: DungeonFeatureEffects, onBuiltCell?: (pos: Pos) => void,
 ): SpawnFeatureResult {
     const result: SpawnFeatureResult = {
         succeeded: false,
@@ -820,6 +916,14 @@ export function spawnDungeonFeature(
 
     if ((feat.flags & DFF_RESURRECT_ALLY) && !allyResurrectors.get(grid)?.({ x, y })) return result;
 
+    // CE description precedes the blocking veto and is independent of refresh.
+    // During construction no cell is visible, so describe returns false.
+    const seen = displayedMessages.get(grid) ?? new Set<DF | DungeonFeature>();
+    displayedMessages.set(grid, seen);
+    const messageKey = feat.catalogId ?? feat;
+    if (feat.description && !seen.has(messageKey) && effects.describe?.(feat, { x, y })) {
+        seen.add(messageKey);
+    }
     const W = grid.width;
     const idx = (px: number, py: number): number => py * W + px;
     const blockingMap = createSpawnMap(grid); // CE :3375 zeroOutGrid
@@ -845,6 +949,7 @@ export function spawnDungeonFeature(
                 cell.volume = Math.min(65535, cell.volume + feat.startProbability);
                 grid.setTerrainLayer(x, y, DungeonLayer.GAS, feat.tile);
             }
+            if (refresh) effects.refreshCell?.({ x, y });
             result.gasVolumeAdded = feat.startProbability;
             result.succeeded = true;
         } else {
@@ -867,8 +972,8 @@ export function spawnDungeonFeature(
                 || (levelIsDisconnectedWithBlockingMap(grid, blockingMap, false) === 0
                     && !levelIsDisconnectedOnMovementGraph(grid, blockingMap))) {
                 if (feat.flags & DFF_EVACUATE_CREATURES_FIRST) {
-                    // CE :3399-3401 evacuateCreatures——游戏侧，登记不实现。
                     result.evacuationRequired = true;
+                    evacuateCreatures(grid, blockingMap, effects);
                 }
                 const fill = fillSpawnMap(
                     grid,
@@ -877,10 +982,18 @@ export function spawnDungeonFeature(
                     blockingMap,
                     !!(feat.flags & DFF_BLOCKED_BY_OTHER_LAYERS),
                     !!(feat.flags & DFF_SUPERPRIORITY),
-                    onBuiltCell
+                    (pos, caughtFire) => {
+                        if (caughtFire) {
+                            activeOptions.get(grid)!.caughtFire.push(pos);
+                            effects.caughtFire?.(pos);
+                        }
+                        onBuiltCell?.(pos);
+                        return refresh && refreshFeatureCell(grid, pos, feat.tile, effects);
+                    }
                 ); // CE :3409 注释：fill 会把 spawnMap 改写成实际落点
                 result.caughtFireCells = fill.caughtFireCells;
                 result.pathingChanged = fill.pathingChanged;
+                if (fill.pathingChanged) effects.invalidatePathing?.();
                 result.succeeded = true; // CE :3410：只有堵了关卡才算失败
             } else {
                 result.succeeded = false;
@@ -892,6 +1005,7 @@ export function spawnDungeonFeature(
         result.succeeded = true;
         if (feat.flags & DFF_EVACUATE_CREATURES_FIRST) {
             result.evacuationRequired = true;
+            evacuateCreatures(grid, blockingMap, effects);
         }
     }
 
@@ -934,14 +1048,23 @@ export function spawnDungeonFeature(
 
     if (result.succeeded) {
         if ((feat.flags & DFF_AGGRAVATES_MONSTERS) && feat.effectRadius) {
-            result.aggravateRadius = feat.effectRadius; // CE :3443-3445，登记
+            result.aggravateRadius = feat.effectRadius;
+            effects.aggravate?.(feat.effectRadius, { x, y });
         }
+        if (refresh && feat.flashColor && feat.effectRadius) effects.flash?.(feat.flashColor, feat.effectRadius, { x, y });
+        if (refresh && feat.lightFlare) effects.flare?.(feat.lightFlare, { x, y });
         result.touchesShoreMap = !!(
             feat.tile
             && (TERRAIN_FLAGS[feat.tile].flags
                 & (T_IS_DEEP_WATER | T_LAVA_INSTA_DEATH | T_AUTO_DESCENT))
         );
     }
+
+    // CE performs this even when connectivity rejected the DF.
+    if (refresh && (TERRAIN_FLAGS[feat.tile].flags & (T_IS_FIRE | T_AUTO_DESCENT))) {
+        effects.playerFireOrDescent?.();
+    }
+    if (effects.gameHasEnded?.()) return result;
 
     if (result.succeeded && feat.subsequentDF) {
         // CE :3467-3480：subsequentDF 经目录解析（缺 tile 的登记条目在此抛错）。
@@ -954,6 +1077,8 @@ export function spawnDungeonFeature(
             spawnDungeonFeature(grid, x, y, sub, abortIfBlocking);
         }
     }
+
+    if (result.succeeded && result.touchesShoreMap) effects.invalidateShore?.();
 
     // CE :3487-3496「awaken dormant creatures?」——**在 subsequentDF 链之后**
     //（CE 的第二个 `if (succeeded)` 块内部：subseqDF(:3468-3480) → 岸图

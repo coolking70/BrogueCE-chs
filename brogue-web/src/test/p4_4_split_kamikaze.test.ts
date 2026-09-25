@@ -433,8 +433,8 @@ describe('P4-4 验收 3：死亡地形 — bloat 毒气 / explosive bloat 爆燃
         expect(victim.hp, '爆炸瞬时伤害 = max(15-20, maxHP/2) = 50——不瞬伤的实现在此翻红').toBe(50);
         expect(
             priv(game).burningDuration(victim),
-            '第 1 笔不得借道燃烧状态（瞬时不经燃烧）'
-        ).toBe(0);
+            'U17a：同一次 instant 调用随后挂燃烧 7；燃烧伤害仍等待状态段'
+        ).toBe(7);
 
         // ---- 环境段（CE Time.c:2671）：爆炸铺的火把受害者点燃（第 2 笔载体），
         // 但爆炸伤害本身被五回合免疫窗挡住，不再扣。

@@ -1,0 +1,89 @@
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17a-counterfactual-9brMJh
+
+stdout | src/test/u_17a_df_transaction.test.ts > U17a actual Game consumers > runtime evacuation moves real player and creature; generation refresh=false moves without contact/status
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_17a_df_transaction.test.ts (27 tests | 3 failed | 23 skipped) 342ms
+     × evacuates from the raw footprint BEFORE priority rejects fill, including generation refresh=false 4ms
+     ↓ uses species forbidden terrain, all occupants, x/y ring order, and no extra roll on singleton
+     × blocking veto has no evacuation/aggravation/recursion; PERMIT_BLOCKING permits the same footprint 1ms
+     ↓ refresh occurs per cell before clear, aggravation, subsequent, shore invalidation and awakening
+     ↓ EVERY uses only successfully filled cells; descendants inherit refresh=false and live context
+     ↓ BLOCKED_BY_OTHER_LAYERS filters footprint before descendants
+     ✓ gas refresh does not contact/burn/evacuate; following DF does contact and clear 0ms
+     ↓ description precedes veto, is visibility-gated and resets per turn; nested contexts restore after an error
+     ↓ message eligibility follows DF identity, not shared text; fresh catalog projections retain identity
+     ↓ game end during fill stops further fill/contact and subsequent, while failed DF still refreshes player hazard
+     ↓ generic occupied contact dissolves both forcefield stages, also for direct DF and promotion recursion
+     ↓ recursive hole marks player falling without inventing an immediate floor-item update
+     ↓ instant fire burns only scrolls, ignites and damages through recursive DF before returning
+     ↓ lethal player contact ends the actual Game before burning items, filling later cells or running descendants
+     ↓ direct and descendant fires register the current-turn skip without callers draining results
+     × runtime evacuation moves real player and creature; generation refresh=false moves without contact/status 336ms
+     ↓ alarm uses four-way path radius from origin, resets scent, preserves allies, wakes enemies and sets source status
+     ↓ two Game/grid owners cannot redirect each others contact or messages
+     ↓ actual stair movement changes level before REPEL_CREATURES can evict the player
+     ↓ alarm source may be remote: wall detours reject nearby cells and only player-origin alarms add AGGRAVATING
+     ↓ alarm status, moved entities and post-load grid binding survive the existing snapshot contract
+     ↓ flash obeys refresh, radius and animation lifetime without changing lighting or either RNG stream
+     ↓ transient flashes are discarded by load and new-run lifecycle without entering snapshots
+     ↓ retired grid cannot mutate the replacement world after load
+     ↓ retired grid cannot mutate the replacement world after new-run
+     ↓ retired grid cannot mutate the replacement world after test-depth
+     ↓ null tile registry remains exactly 30 and no five-family carrier is activated
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_17a_df_transaction.test.ts > U17a DF transaction: CE ordering and recursive world effects > evacuates from the raw footprint BEFORE priority rejects fill, including generation refresh=false
+AssertionError: expected { x: 6, y: 4 } to not deeply equal { x: 6, y: 4 }
+
+Compared values have no visual difference.
+
+ ❯ src/test/u_17a_df_transaction.test.ts:48:32
+     46|         const result=spawnDungeonFeature(g,6,4,feat({flags:EVAC}),fals…
+     47|         expect(result.builtCells).toEqual([]);expect(result.evacuation…
+     48|         expect(entity.loc).not.toEqual({x:6,y:4});
+       |                                ^
+     49|         expect(g.getCell(6,4)!.layers[L.SURFACE]).toBe(T.FORCEFIELD);
+     50|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/test/u_17a_df_transaction.test.ts > U17a DF transaction: CE ordering and recursive world effects > blocking veto has no evacuation/aggravation/recursion; PERMIT_BLOCKING permits the same footprint
+AssertionError: expected { x: 6, y: 4 } to not deeply equal { x: 6, y: 4 }
+
+Compared values have no visual difference.
+
+ ❯ src/test/u_17a_df_transaction.test.ts:69:27
+     67|         expect(spawnDungeonFeature(g,6,4,f,true).succeeded).toBe(false…
+     68|         expect(spawnDungeonFeature(g,6,4,{...f,flags:f.flags|PERMIT},t…
+     69|         expect(a.loc).not.toEqual({x:6,y:4});expect(alarm).toHaveBeenC…
+       |                           ^
+     70|     });
+     71|     it('refresh occurs per cell before clear, aggravation, subsequent,…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/test/u_17a_df_transaction.test.ts > U17a actual Game consumers > runtime evacuation moves real player and creature; generation refresh=false moves without contact/status
+AssertionError: expected { x: 7, y: 5 } to not deeply equal { x: 7, y: 5 }
+
+Compared values have no visual difference.
+
+ ❯ src/test/u_17a_df_transaction.test.ts:174:27
+    172|         const g=scene(),m=rat(g,7,5);const before={...m.loc};
+    173|         spawnDungeonFeature(g.grid,7,5,feat({flags:EVAC,tile:T.PLAIN_F…
+    174|         expect(m.loc).not.toEqual(before);expect((g as any).burningDur…
+       |                           ^
+    175|         spawnDungeonFeature(g.grid,5,5,catalogFeature(DF.DF_REPEL_CREA…
+    176|         expect(g.player.loc).not.toEqual({x:5,y:5});
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 1 passed | 23 skipped (27)
+   Start at  19:46:37
+   Duration  1.25s (transform 444ms, setup 0ms, import 806ms, tests 342ms, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web/ai_docs/reports/u-17a-evidence/counterfactual-no-evacuation.json

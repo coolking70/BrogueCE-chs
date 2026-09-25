@@ -1,0 +1,219 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web
+
+ ❯ src/test/f_2c_explosion.test.ts (14 tests | 1 failed) 4996ms
+     × 对抗⑤：bloat 爆炸的第 1 笔是瞬时的 max(15-20, maxHP/2)（不经燃烧状态、不等客观块），第 2 笔是爆炸铺的火点燃生物后的燃烧结算 1-3。把两笔合并成一笔（只点燃烧不瞬伤 / 燃烧段再爆一次 50）的实现都翻红。CE 依据：fillSpawnMap refresh 分支（Architect.c:3255）当场结算 + Time.c:527 火点燃生物 → :2581 燃烧 1-3。 371ms
+ ❯ src/test/u_08_terrain_bolts.test.ts (32 tests | 2 failed) 6290ms
+     × SPIDERWEB exactly reproduces pathDF once per reached cell then targetDF, including RNG 417ms
+     × ANCIENT_SPIRIT_VINES exactly reproduces pathDF once per reached cell then targetDF, including RNG 286ms
+ ❯ src/test/w_14_obstruction.test.ts (24 tests | 4 failed) 391ms
+     × allows sealing a one-cell corridor; the generation connectivity veto remains effective 3ms
+     × IMPREGNABLE alone permits fields; surface-obstructing walls and all layers are respected 1ms
+     × only exposed edges age; each stage still blocks and eventual melt restores passage and underlying layers 1ms
+     × scroll DUNGEON forcefields retain their separate layer semantics through the same melt chain 0ms
+ ❯ src/test/c_4c_promotion.test.ts (21 tests | 1 failed) 39729ms
+     × D2 踩楼梯触发 DF_REPEL_CREATURES（tile=NOTHING 的合法无地形 DF；驱离登记未实现） 289ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/c_4c_promotion.test.ts > D：Game 集成（真实事件链） > D2 踩楼梯触发 DF_REPEL_CREATURES（tile=NOTHING 的合法无地形 DF；驱离登记未实现）
+AssertionError: expected { x: 41, y: 25 } to deeply equal { x: 40, y: 26 }
+
+- Expected
++ Received
+
+  {
+-   "x": 40,
+-   "y": 26,
++   "x": 41,
++   "y": 25,
+  }
+
+ ❯ src/test/c_4c_promotion.test.ts:448:33
+    446|         game.handlePlayerAction('move', { x: 1, y: 0 }, 'system');
+    447|         game.handlePlayerAction('move', { x: 1, y: 0 }, 'system');
+    448|         expect(game.player.loc).toEqual({ x: px + 2, y: py });
+       |                                 ^
+    449|         // 踩上楼梯的那次 handleSpecialTileEntry 已走过 promoteOnStep（CE 允许
+    450|         // 每次踏入重复触发，Time.c:278-285 注释自认）；这里再触发一次做单元
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  src/test/f_2c_explosion.test.ts > F-2c 对抗⑤：两笔伤害分离（爆炸瞬时 + 燃烧后续） > 对抗⑤：bloat 爆炸的第 1 笔是瞬时的 max(15-20, maxHP/2)（不经燃烧状态、不等客观块），第 2 笔是爆炸铺的火点燃生物后的燃烧结算 1-3。把两笔合并成一笔（只点燃烧不瞬伤 / 燃烧段再爆一次 50）的实现都翻红。CE 依据：fillSpawnMap refresh 分支（Architect.c:3255）当场结算 + Time.c:527 火点燃生物 → :2581 燃烧 1-3。
+AssertionError: 第 1 笔不经燃烧状态: expected 7 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 7
+
+ ❯ src/test/f_2c_explosion.test.ts:235:67
+    233|         priv(game).triggerDeathFeatures();
+    234|         expect(victim.hp, '第 1 笔瞬时爆炸伤害恰 50（不瞬伤的合并实现在此翻红）').toBe(50);
+    235|         expect(priv(game).burningDuration(victim), '第 1 笔不经燃烧状态').toBe…
+       |                                                                   ^
+    236|
+    237|         // 环境段：爆炸铺的火点燃受害者（第 2 笔载体）；爆炸本身被免疫窗挡住。
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  src/test/u_08_terrain_bolts.test.ts > U08 actual zap path and ordered DF fill > SPIDERWEB exactly reproduces pathDF once per reached cell then targetDF, including RNG
+AssertionError: expected 100 to be 97 // Object.is equality
+
+- Expected
++ Received
+
+- 97
++ 100
+
+ ❯ src/test/u_08_terrain_bolts.test.ts:108:44
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  src/test/u_08_terrain_bolts.test.ts > U08 actual zap path and ordered DF fill > ANCIENT_SPIRIT_VINES exactly reproduces pathDF once per reached cell then targetDF, including RNG
+AssertionError: expected 152 to be 153 // Object.is equality
+
+- Expected
++ Received
+
+- 153
++ 152
+
+ ❯ src/test/u_08_terrain_bolts.test.ts:108:44
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  src/test/w_14_obstruction.test.ts > W-14 detonation and terrain boundaries > allows sealing a one-cell corridor; the generation connectivity veto remains effective
+AssertionError: expected [ { x: 3, y: 4 }, …(11) ] to be null
+
+- Expected:
+null
+
++ Received:
+[
+  {
+    "x": 3,
+    "y": 4,
+  },
+  {
+    "x": 4,
+    "y": 4,
+  },
+  {
+    "x": 5,
+    "y": 4,
+  },
+  {
+    "x": 6,
+    "y": 4,
+  },
+  {
+    "x": 7,
+    "y": 4,
+  },
+  {
+    "x": 8,
+    "y": 4,
+  },
+  {
+    "x": 9,
+    "y": 4,
+  },
+  {
+    "x": 10,
+    "y": 4,
+  },
+  {
+    "x": 11,
+    "y": 4,
+  },
+  {
+    "x": 12,
+    "y": 4,
+  },
+  {
+    "x": 13,
+    "y": 4,
+  },
+  {
+    "x": 14,
+    "y": 4,
+  },
+]
+
+ ❯ src/test/w_14_obstruction.test.ts:147:72
+    145|         expect(path()).not.toBeNull();
+    146|         expect(spawnObstruction(grid, 8, 4, 2, () => false).succeeded)…
+    147|         expect(surface(grid, 8, 4)).toBe(T.FORCEFIELD); expect(path())…
+       |                                                                        ^
+    148|         const gen = corridor(); const feat = catalogFeature(DF.DF_FORC…
+    149|         rng.seedRandomGenerator(14014);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  src/test/w_14_obstruction.test.ts > W-14 detonation and terrain boundaries > IMPREGNABLE alone permits fields; surface-obstructing walls and all layers are respected
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/test/w_14_obstruction.test.ts:165:33
+    163|         expect(cellTerrainFlags(grid, 12, 7) & T_OBSTRUCTS_PASSABILITY…
+    164|         expect(cellTerrainFlags(grid, 12, 7) & T_OBSTRUCTS_VISION).toB…
+    165|         expect(cell.isPassable).toBe(false); expect(cell.isOpaque).toB…
+       |                                 ^
+    166|     });
+    167|     it('invalidates active path/safety caches without adding a non-CE …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  src/test/w_14_obstruction.test.ts > W-14 existing promotion lifetime > only exposed edges age; each stage still blocks and eventual melt restores passage and underlying layers
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/test/w_14_obstruction.test.ts:186:49
+    184|         expect(surface(grid, 8, 6)).toBe(T.FORCEFIELD); // no open nei…
+    185|         expect(surface(grid, 11, 6)).toBe(T.FORCEFIELD_MELT);
+    186|         expect(grid.getCell(11, 6)!.isPassable).toBe(false);
+       |                                                 ^
+    187|         runPromotionUpdate(grid, { keyOnTileAt: () => false });
+    188|         expect(surface(grid, 11, 6)).toBe(T.NOTHING); expect(grid.getC…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  src/test/w_14_obstruction.test.ts > W-14 existing promotion lifetime > scroll DUNGEON forcefields retain their separate layer semantics through the same melt chain
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/test/w_14_obstruction.test.ts:196:103
+    194|         promoteTile(grid, 12, 7, L.DUNGEON, false);
+    195|         expect(grid.getCell(12, 7)!.layers[L.DUNGEON]).toBe(T.FLOOR);
+    196|         expect(surface(grid, 12, 7)).toBe(T.FORCEFIELD_MELT); expect(g…
+       |                                                                                                       ^
+    197|         promoteTile(grid, 12, 7, L.SURFACE, false);
+    198|         expect(surface(grid, 12, 7)).toBe(T.NOTHING); expect(grid.getC…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+
+ Test Files  4 failed | 3 passed (7)
+      Tests  8 failed | 133 passed (141)
+   Start at  17:19:49
+   Duration  40.45s (transform 796ms, setup 0ms, import 2.89s, tests 56.75s, environment 1ms)
+

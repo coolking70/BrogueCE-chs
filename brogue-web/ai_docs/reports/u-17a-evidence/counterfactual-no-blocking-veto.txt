@@ -1,0 +1,60 @@
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17a-counterfactual-9brMJh
+
+ ❯ src/test/u_17a_df_transaction.test.ts (27 tests | 1 failed | 26 skipped) 8ms
+     ↓ evacuates from the raw footprint BEFORE priority rejects fill, including generation refresh=false
+     ↓ uses species forbidden terrain, all occupants, x/y ring order, and no extra roll on singleton
+     × blocking veto has no evacuation/aggravation/recursion; PERMIT_BLOCKING permits the same footprint 7ms
+     ↓ refresh occurs per cell before clear, aggravation, subsequent, shore invalidation and awakening
+     ↓ EVERY uses only successfully filled cells; descendants inherit refresh=false and live context
+     ↓ BLOCKED_BY_OTHER_LAYERS filters footprint before descendants
+     ↓ gas refresh does not contact/burn/evacuate; following DF does contact and clear
+     ↓ description precedes veto, is visibility-gated and resets per turn; nested contexts restore after an error
+     ↓ message eligibility follows DF identity, not shared text; fresh catalog projections retain identity
+     ↓ game end during fill stops further fill/contact and subsequent, while failed DF still refreshes player hazard
+     ↓ generic occupied contact dissolves both forcefield stages, also for direct DF and promotion recursion
+     ↓ recursive hole marks player falling without inventing an immediate floor-item update
+     ↓ instant fire burns only scrolls, ignites and damages through recursive DF before returning
+     ↓ lethal player contact ends the actual Game before burning items, filling later cells or running descendants
+     ↓ direct and descendant fires register the current-turn skip without callers draining results
+     ↓ runtime evacuation moves real player and creature; generation refresh=false moves without contact/status
+     ↓ alarm uses four-way path radius from origin, resets scent, preserves allies, wakes enemies and sets source status
+     ↓ two Game/grid owners cannot redirect each others contact or messages
+     ↓ actual stair movement changes level before REPEL_CREATURES can evict the player
+     ↓ alarm source may be remote: wall detours reject nearby cells and only player-origin alarms add AGGRAVATING
+     ↓ alarm status, moved entities and post-load grid binding survive the existing snapshot contract
+     ↓ flash obeys refresh, radius and animation lifetime without changing lighting or either RNG stream
+     ↓ transient flashes are discarded by load and new-run lifecycle without entering snapshots
+     ↓ retired grid cannot mutate the replacement world after load
+     ↓ retired grid cannot mutate the replacement world after new-run
+     ↓ retired grid cannot mutate the replacement world after test-depth
+     ↓ null tile registry remains exactly 30 and no five-family carrier is activated
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_17a_df_transaction.test.ts > U17a DF transaction: CE ordering and recursive world effects > blocking veto has no evacuation/aggravation/recursion; PERMIT_BLOCKING permits the same footprint
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/test/u_17a_df_transaction.test.ts:67:61
+     65|         setDungeonFeatureEffects(g,{creatures:()=>[a],aggravate:alarm}…
+     66|         const f=feat({flags:EVAC|AGGRAVATE,effectRadius:4,subsequentDF…
+     67|         expect(spawnDungeonFeature(g,6,4,f,true).succeeded).toBe(false…
+       |                                                             ^
+     68|         expect(spawnDungeonFeature(g,6,4,{...f,flags:f.flags|PERMIT},t…
+     69|         expect(a.loc).not.toEqual({x:6,y:4});expect(alarm).toHaveBeenC…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 26 skipped (27)
+   Start at  19:46:57
+   Duration  1.64s (transform 759ms, setup 0ms, import 1.48s, tests 8ms, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web/ai_docs/reports/u-17a-evidence/counterfactual-no-blocking-veto.json

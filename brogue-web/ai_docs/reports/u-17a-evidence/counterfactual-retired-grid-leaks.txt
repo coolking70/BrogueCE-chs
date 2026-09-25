@@ -1,0 +1,61 @@
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17a-counterfactual-9brMJh
+
+stdout | src/test/u_17a_df_transaction.test.ts > U17a actual Game consumers > retired grid cannot mutate the replacement world after load
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_17a_df_transaction.test.ts (27 tests | 3 failed | 24 skipped) 1935ms
+     ↓ evacuates from the raw footprint BEFORE priority rejects fill, including generation refresh=false
+     ↓ uses species forbidden terrain, all occupants, x/y ring order, and no extra roll on singleton
+     ↓ blocking veto has no evacuation/aggravation/recursion; PERMIT_BLOCKING permits the same footprint
+     ↓ refresh occurs per cell before clear, aggravation, subsequent, shore invalidation and awakening
+     ↓ EVERY uses only successfully filled cells; descendants inherit refresh=false and live context
+     ↓ BLOCKED_BY_OTHER_LAYERS filters footprint before descendants
+     ↓ gas refresh does not contact/burn/evacuate; following DF does contact and clear
+     ↓ description precedes veto, is visibility-gated and resets per turn; nested contexts restore after an error
+     ↓ message eligibility follows DF identity, not shared text; fresh catalog projections retain identity
+     ↓ game end during fill stops further fill/contact and subsequent, while failed DF still refreshes player hazard
+     ↓ generic occupied contact dissolves both forcefield stages, also for direct DF and promotion recursion
+     ↓ recursive hole marks player falling without inventing an immediate floor-item update
+     ↓ instant fire burns only scrolls, ignites and damages through recursive DF before returning
+     ↓ lethal player contact ends the actual Game before burning items, filling later cells or running descendants
+     ↓ direct and descendant fires register the current-turn skip without callers draining results
+     ↓ runtime evacuation moves real player and creature; generation refresh=false moves without contact/status
+     ↓ alarm uses four-way path radius from origin, resets scent, preserves allies, wakes enemies and sets source status
+     ↓ two Game/grid owners cannot redirect each others contact or messages
+     ↓ actual stair movement changes level before REPEL_CREATURES can evict the player
+     ↓ alarm source may be remote: wall detours reject nearby cells and only player-origin alarms add AGGRAVATING
+     ↓ alarm status, moved entities and post-load grid binding survive the existing snapshot contract
+     ↓ flash obeys refresh, radius and animation lifetime without changing lighting or either RNG stream
+     ↓ transient flashes are discarded by load and new-run lifecycle without entering snapshots
+     × retired grid cannot mutate the replacement world after load 673ms
+     × retired grid cannot mutate the replacement world after new-run 698ms
+     × retired grid cannot mutate the replacement world after test-depth 563ms
+     ↓ null tile registry remains exactly 30 and no five-family carrier is activated
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_17a_df_transaction.test.ts > U17a actual Game consumers > retired grid cannot mutate the replacement world after load
+ FAIL  src/test/u_17a_df_transaction.test.ts > U17a actual Game consumers > retired grid cannot mutate the replacement world after new-run
+ FAIL  src/test/u_17a_df_transaction.test.ts > U17a actual Game consumers > retired grid cannot mutate the replacement world after test-depth
+AssertionError: expected { depth: 1, width: 79, …(40) } to deeply equal { depth: 1, width: 79, …(40) }
+
+Compared values have no visual difference.
+
+ ❯ src/test/u_17a_df_transaction.test.ts:256:33
+    254|         const repel=feat({tile:T.NOTHING,flags:EVAC});
+    255|         spawnDungeonFeature(retired,5,5,repel,false);
+    256|         expect(worldSnapshot()).toEqual(before);
+       |                                 ^
+    257|         spawnDungeonFeature(g.grid,5,5,repel,false);
+    258|         expect(g.player.loc).not.toEqual({x:5,y:5});
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 24 skipped (27)
+   Start at  19:46:45
+   Duration  3.25s (transform 733ms, setup 0ms, import 1.11s, tests 1.94s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web/ai_docs/reports/u-17a-evidence/counterfactual-retired-grid-leaks.json

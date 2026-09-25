@@ -1,0 +1,310 @@
+diff --git a/brogue-web/scripts/u21c-ce-appearance.mjs b/brogue-web/scripts/u21c-ce-appearance.mjs
+index d85a2f7..2061d5f 100644
+--- a/brogue-web/scripts/u21c-ce-appearance.mjs
++++ b/brogue-web/scripts/u21c-ce-appearance.mjs
+@@ -23,7 +23,7 @@ const required = (condition, message) => { if (!condition) throw Error(message);
+ const enumBody = gridSource.match(/export enum TerrainType\s*\{([\s\S]*?)\n\}/)?.[1];
+ required(enumBody, 'TerrainType enum absent');
+ const names = enumBody.replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, '').split(',').map(s => s.trim().replace(/\s*=.*$/, '')).filter(Boolean);
+-required(names.length === 138 && new Set(names).size === names.length, `Unexpected TerrainType set: ${names.length}`);
++required(names.length === 139 && new Set(names).size === names.length, `Unexpected TerrainType set: ${names.length}`);
+ 
+ const colors = new Map();
+ for (const source of [ce, base]) {
+diff --git a/brogue-web/src/test/c_4a_0_layer_model.test.ts b/brogue-web/src/test/c_4a_0_layer_model.test.ts
+index f486065..5b1eca1 100644
+--- a/brogue-web/src/test/c_4a_0_layer_model.test.ts
++++ b/brogue-web/src/test/c_4a_0_layer_model.test.ts
+@@ -227,6 +227,7 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
+ 
+     it('归属表与 drawPriority 表与报告口径逐条一致（表被手滑改动即翻红）', () => {
+         expect(TERRAIN_HOME_LAYER).toEqual({
++            [C.ITEM_FIRE]: L.SURFACE, // CE Globals.c:498; burnItem successor.
+             [C.ANCIENT_SPIRIT_VINES]: L.SURFACE, [C.ANCIENT_SPIRIT_GRASS]: L.SURFACE,
+             [C.NOTHING]: L.DUNGEON, [C.GRANITE]: L.DUNGEON, [C.FLOOR]: L.DUNGEON,
+             [C.WALL]: L.DUNGEON, [C.DOOR]: L.DUNGEON, [C.OPEN_DOOR]: L.DUNGEON,
+@@ -376,6 +377,7 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
+             [C.STENCH_SMOKE_GAS]: L.GAS,
+         });
+         expect(DRAW_PRIORITY).toEqual({
++            [C.ITEM_FIRE]: 10, // CE Globals.c:498.
+             [C.ANCIENT_SPIRIT_VINES]: 19, [C.ANCIENT_SPIRIT_GRASS]: 60,
+             [C.NOTHING]: 100, [C.GRANITE]: 0, [C.FLOOR]: 95, [C.WALL]: 0,
+             [C.DOOR]: 8, [C.OPEN_DOOR]: 25, [C.SECRET_DOOR]: 0, [C.LOCKED_DOOR]: 15,
+diff --git a/brogue-web/src/test/c_4a_terrain_catalog.test.ts b/brogue-web/src/test/c_4a_terrain_catalog.test.ts
+index 5c7709f..7e92a68 100644
+--- a/brogue-web/src/test/c_4a_terrain_catalog.test.ts
++++ b/brogue-web/src/test/c_4a_terrain_catalog.test.ts
+@@ -171,9 +171,11 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
+         // 9b 再补九个环境效果活动态/落点，115 → 124；补完轮闭合
+         // MACHINE_CHASM_EDGE 与 DF_PUDDLE 的载体，124 → 126；9c 七条效果载体 126 → 133。
+         // U08 appends two carriers; all old keys/fields stay pinned above.
+-        expect(names.filter(n => n !== 'ANCIENT_SPIRIT_VINES' && n !== 'ANCIENT_SPIRIT_GRASS' && n !== 'DUNGEON_PORTAL').length).toBe(135);
++        expect(names.filter(n => n !== 'ANCIENT_SPIRIT_VINES' && n !== 'ANCIENT_SPIRIT_GRASS' && n !== 'DUNGEON_PORTAL' && n !== 'ITEM_FIRE').length).toBe(135);
+         expect(names).toContain('DUNGEON_PORTAL'); // U04 CE Globals.c:336
+-        expect(names.length).toBe(138);
++        // U17a burnItem successor; historical 135-row projection remains fixed.
++        expect(names).toContain('ITEM_FIRE');
++        expect(names.length).toBe(139);
+         for (const name of names) {
+             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
+             const entry = TERRAIN_FLAGS[t];
+diff --git a/brogue-web/src/test/c_4b_dungeon_feature.test.ts b/brogue-web/src/test/c_4b_dungeon_feature.test.ts
+index e22e73c..bc548c6 100644
+--- a/brogue-web/src/test/c_4b_dungeon_feature.test.ts
++++ b/brogue-web/src/test/c_4b_dungeon_feature.test.ts
+@@ -563,7 +563,9 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
+         // U08 adds exactly IDs 57..60 (Globals.c:681-685). This historical
+         // 135-row assertion still pins every pre-U08 entry; the full 139-row
+         // count and new literal rows are pinned in u_08_terrain_bolts.test.ts.
+-        const keys = Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => ![57, 58, 59, 60].includes(Number(k)));
++        // U17a additionally projects out DF_ITEM_FIRE=110; its live burn chain
++        // is pinned in u_17a_df_transaction.test.ts. The old 135 stay unchanged.
++        const keys = Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => ![57, 58, 59, 60, 110].includes(Number(k)));
+         // V-2b-3：35 → 49（+14）。CE Globals.c 目录行逐条：
+         //   DF_RUBBLE :612、DF_SHOW_PARALYSIS_GAS_TRAP :626、DF_INACTIVE_GLYPH :726、
+         //   DF_REVEAL_LEVER :732、DF_MEDIUM_HOLE :813、DF_OPEN_PORTCULLIS :854、
+@@ -696,6 +698,8 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
+         // 字符串自动入闭包。
+         // W-14：detonateBolt 动态复制 DF_FORCEFIELD；不是 pathDF/targetDF 或生成起点。
+         start.add(DF.DF_FORCEFIELD);
++        // U17a: burnItem is a real runtime root (Time.c:990), not a terrain string.
++        start.add(DF.DF_ITEM_FIRE);
+         start.add(DF.DF_SACRED_GLYPHS);
+         start.add(DF.DF_SHATTERING_SPELL);
+         // V-2b-3：DF_MEDIUM_HOLE 第三起点（数据起点，web 当前零消费者）——
+@@ -773,7 +777,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
+         // 集合相等：目录里多一条（闭包外）或少一条（漏抄）都翻红。
+         const catalogKeys = new Set(Object.keys(DUNGEON_FEATURE_CATALOG).map(Number) as DF[]);
+         expect([...closure].sort((a, b) => a - b)).toEqual([...catalogKeys].sort((a, b) => a - b));
+-        expect([...catalogKeys].filter(id => ![57, 58, 59, 60].includes(id)).length, 'U08 投影回原135条；F-2a：DF_ASH 入闭包 19→20；G-1：DF_GAS_FIRE 入闭包 20→21；' +
++        expect([...catalogKeys].filter(id => ![57, 58, 59, 60, 110].includes(id)).length, 'U08 投影回原135条；F-2a：DF_ASH 入闭包 19→20；G-1：DF_GAS_FIRE 入闭包 20→21；' +
+             'G-2：DF_EXPLOSION_FIRE（经 METHANE_GAS.promoteType）入闭包 21→22；' +
+             'F-2c：DF_BLOAT_EXPLOSION（经 bloat 的 DFType）入闭包 22→23；' +
+             'C-5：DF_HOLE_POTION（药水/pit bloat 起点）→ DF_HOLE_2 → DF_HOLE_DRAIN' +
+diff --git a/brogue-web/src/test/c_4c_promotion.test.ts b/brogue-web/src/test/c_4c_promotion.test.ts
+index 2250a56..8b4912e 100644
+--- a/brogue-web/src/test/c_4c_promotion.test.ts
++++ b/brogue-web/src/test/c_4c_promotion.test.ts
+@@ -437,7 +437,7 @@ describe('D：Game 集成（真实事件链）', () => {
+         ).toBe(C.OPEN_DOOR);
+     });
+ 
+-    it('D2 踩楼梯触发 DF_REPEL_CREATURES（tile=NOTHING 的合法无地形 DF；驱离登记未实现）', () => {
++    it('D2 踩楼梯触发 DF_REPEL_CREATURES（tile=NOTHING 的合法无地形 DF；U17a 实际驱离）', () => {
+         const game = createHeadlessGame(424242);
+         const px = game.player.loc.x;
+         const py = game.player.loc.y;
+@@ -445,7 +445,10 @@ describe('D：Game 集成（真实事件链）', () => {
+         game.grid.setTerrain(px + 2, py, C.STAIRS_DOWN, '>', 0x00aaff);
+         game.handlePlayerAction('move', { x: 1, y: 0 }, 'system');
+         game.handlePlayerAction('move', { x: 1, y: 0 }, 'system');
+-        expect(game.player.loc).toEqual({ x: px + 2, y: py });
++        // Synthetic stairs are not grid.downStairsLoc: ordinary contact invokes repel.
++        // CE Architect.c:3332 uses raw footprint and relocates the actual player.
++        expect(game.player.loc).toEqual({ x: px + 3, y: py - 1 });
++        expect(game.grid.getCell(game.player.x, game.player.y)!.isPassable).toBe(true);
+         // 踩上楼梯的那次 handleSpecialTileEntry 已走过 promoteOnStep（CE 允许
+         // 每次踏入重复触发，Time.c:278-285 注释自认）；这里再触发一次做单元
+         // 口径断言：楼梯不消失、DF 成功、驱离登记置位、地形不动。
+diff --git a/brogue-web/src/test/c_7_lighting.test.ts b/brogue-web/src/test/c_7_lighting.test.ts
+index 9a17403..b0c3b4b 100644
+--- a/brogue-web/src/test/c_7_lighting.test.ts
++++ b/brogue-web/src/test/c_7_lighting.test.ts
+@@ -175,6 +175,7 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
+         [TerrainType.BRIDGE]: 0,
+         [TerrainType.BRIDGE_EDGE]: 0,
+         [TerrainType.INERT_BRIMSTONE]: 0,                            // Globals.c:426 NO_LIGHT
++        [TerrainType.ITEM_FIRE]: LightKind.FIRE_LIGHT,               // U17a Globals.c:498
+         [TerrainType.PLAIN_FIRE]: LightKind.FIRE_LIGHT,              // Globals.c:492
+         [TerrainType.EMBERS]: LightKind.EMBER_LIGHT,                 // Globals.c:469
+         [TerrainType.ASH]: 0,                                        // Globals.c:461 NO_LIGHT
+@@ -314,7 +315,7 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
+         }
+     });
+ 
+-    it('非零恰 35 个（U04 接通 D40 水晶传送门），且都指向有载体的目录条目', () => {
++    it('非零恰 36 个（U17a burnItem 后继 ITEM_FIRE），且都指向有载体的目录条目', () => {
+         const nonzero = Object.entries(TERRAIN_FLAGS)
+             .filter(([, v]) => v.glowLight !== LightKind.NO_LIGHT)
+             .map(([k]) => Number(k) as TerrainType)
+@@ -322,7 +323,7 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
+         expect(nonzero).toEqual([
+             TerrainType.LAVA, TerrainType.ALTAR, TerrainType.EMBERS,
+             TerrainType.CONFUSION_GAS, TerrainType.GAS_FIRE,
+-            TerrainType.GAS_EXPLOSION, TerrainType.PLAIN_FIRE,
++            TerrainType.GAS_EXPLOSION, TerrainType.PLAIN_FIRE, TerrainType.ITEM_FIRE,
+             // B-3：三张卷轴的水晶/圣徽 tile（FORCEFIELD_MELT 与 FORCEFIELD
+             // 共用 FORCEFIELD_LIGHT）。
+             TerrainType.FORCEFIELD, TerrainType.FORCEFIELD_MELT,
+diff --git a/brogue-web/src/test/f_2c_explosion.test.ts b/brogue-web/src/test/f_2c_explosion.test.ts
+index 4504e90..423e6da 100644
+--- a/brogue-web/src/test/f_2c_explosion.test.ts
++++ b/brogue-web/src/test/f_2c_explosion.test.ts
+@@ -232,7 +232,8 @@ describe('F-2c 对抗⑤：两笔伤害分离（爆炸瞬时 + 燃烧后续）',
+         // 第 1 笔：死亡 DF 落格瞬时（(8,6) 在第一波 350%≥100 必中圈内）。
+         priv(game).triggerDeathFeatures();
+         expect(victim.hp, '第 1 笔瞬时爆炸伤害恰 50（不瞬伤的合并实现在此翻红）').toBe(50);
+-        expect(priv(game).burningDuration(victim), '第 1 笔不经燃烧状态').toBe(0);
++        // U17a: 同一次 instant 调用在爆炸段之后也执行 Time.c:527 点火；伤害仍分两笔。
++        expect(priv(game).burningDuration(victim), '即时点火只挂状态，尚未结算燃烧伤害').toBe(7);
+ 
+         // 环境段：爆炸铺的火点燃受害者（第 2 笔载体）；爆炸本身被免疫窗挡住。
+         priv(game).applyEnvironmentalEffects();
+diff --git a/brogue-web/src/test/fixtures/u21c-ce-terrain.json b/brogue-web/src/test/fixtures/u21c-ce-terrain.json
+index 8bcbae4..a4e97dd 100644
+--- a/brogue-web/src/test/fixtures/u21c-ce-terrain.json
++++ b/brogue-web/src/test/fixtures/u21c-ce-terrain.json
+@@ -964,5 +964,12 @@
+     "char": "Ω",
+     "color": "#666699",
+     "bgColor": 1644863
++  },
++  "ITEM_FIRE": {
++    "ceTile": "ITEM_FIRE",
++    "ceLine": 498,
++    "char": "⋏",
++    "color": "#ffffff",
++    "bgColor": null
+   }
+ }
+diff --git a/brogue-web/src/test/hunger_curve_sim.test.ts b/brogue-web/src/test/hunger_curve_sim.test.ts
+index 5c3372a..52f77c9 100644
+--- a/brogue-web/src/test/hunger_curve_sim.test.ts
++++ b/brogue-web/src/test/hunger_curve_sim.test.ts
+@@ -55,7 +55,7 @@ const roamPolicy: TurnPolicy = (game) => {
+     return { action: 'move', data: { x: dx, y: dy } };
+ };
+ 
+-interface Transition { turn: number; state: string }
++interface Transition { turn: number; objectiveTurn: number; state: string }
+ interface CurveSample { turn: number; nutrition: number; hp: number; state: string }
+ interface SimResult {
+     seed: number;
+@@ -91,6 +91,7 @@ function simulate(seed: number, policy: TurnPolicy, label: string, maxTurns: num
+         transitions: [],
+         curve: [{ turn: 0, nutrition: game.player.nutrition, hp: game.player.hp, state: game.player.hungerState }],
+     };
++    const objectiveStart = game.absoluteTurnNumber;
+     let lastState = game.player.hungerState;
+     for (let t = 1; t <= maxTurns; t++) {
+         // The starvation scenario explicitly excludes food: CE automatically eats
+@@ -103,7 +104,7 @@ function simulate(seed: number, policy: TurnPolicy, label: string, maxTurns: num
+         game.handlePlayerAction(action?.action ?? 'wait', action?.data, 'system');
+         sim.turnsRun = t;
+         if (game.player.hungerState !== lastState) {
+-            sim.transitions.push({ turn: t, state: game.player.hungerState });
++            sim.transitions.push({ turn: t, objectiveTurn: game.absoluteTurnNumber - objectiveStart, state: game.player.hungerState });
+             lastState = game.player.hungerState;
+         }
+         if (t % CHECKPOINT === 0) {
+@@ -157,7 +158,9 @@ describe('2000 回合饥饿曲线实测（harness, 3 seeds × 2 策略）', () =
+         // wait 策略会在前期被怪物击杀（实测 49-205 回合），故延长运行用 roam：
+         // CE Time.c:949-970: at nutrition 1 with no food, checkNutrition immediately sets 0.
+         // Thus starvation starts at T2149, one turn before a plain decrement-to-zero model.
+-        expect(r.transitions).toEqual(expect.arrayContaining([
++        // U17a restored stair traversal: input attempts are not objective turns.
++        // Keep exact CE hunger thresholds, measured in actual objective blocks.
++        expect(r.transitions.map(t => ({ turn: t.objectiveTurn, state: t.state }))).toEqual(expect.arrayContaining([
+             { turn: 2100, state: 'faint' },
+             { turn: 2149, state: 'starving' },
+         ]));
+diff --git a/brogue-web/src/test/p4_4_split_kamikaze.test.ts b/brogue-web/src/test/p4_4_split_kamikaze.test.ts
+index a7cfde6..5d39c48 100644
+--- a/brogue-web/src/test/p4_4_split_kamikaze.test.ts
++++ b/brogue-web/src/test/p4_4_split_kamikaze.test.ts
+@@ -433,8 +433,8 @@ describe('P4-4 验收 3：死亡地形 — bloat 毒气 / explosive bloat 爆燃
+         expect(victim.hp, '爆炸瞬时伤害 = max(15-20, maxHP/2) = 50——不瞬伤的实现在此翻红').toBe(50);
+         expect(
+             priv(game).burningDuration(victim),
+-            '第 1 笔不得借道燃烧状态（瞬时不经燃烧）'
+-        ).toBe(0);
++            'U17a：同一次 instant 调用随后挂燃烧 7；燃烧伤害仍等待状态段'
++        ).toBe(7);
+ 
+         // ---- 环境段（CE Time.c:2671）：爆炸铺的火把受害者点燃（第 2 笔载体），
+         // 但爆炸伤害本身被五回合免疫窗挡住，不再扣。
+diff --git a/brogue-web/src/test/r_1_appearance.test.ts b/brogue-web/src/test/r_1_appearance.test.ts
+index 24c6681..ccc9a48 100644
+--- a/brogue-web/src/test/r_1_appearance.test.ts
++++ b/brogue-web/src/test/r_1_appearance.test.ts
+@@ -169,8 +169,8 @@ describe('R-1 terrainAppearance 特征化（穷举钉死）', () => {
+         // V-2b-9b：九条活动态/效果落点，115 → 124；补完轮补齐
+         // MACHINE_CHASM_EDGE / PUDDLE，124 → 126；9c 七条效果载体 126 → 133。
+         // U08 adds two CE terrain carriers; preserve the old-universe count.
+-        expect(ALL_TERRAINS.filter(t => t !== TerrainType.ANCIENT_SPIRIT_VINES && t !== TerrainType.ANCIENT_SPIRIT_GRASS && t !== TerrainType.DUNGEON_PORTAL).length).toBe(135);
+-        expect(ALL_TERRAINS.length).toBe(138);
++        expect(ALL_TERRAINS.filter(t => t !== TerrainType.ANCIENT_SPIRIT_VINES && t !== TerrainType.ANCIENT_SPIRIT_GRASS && t !== TerrainType.DUNGEON_PORTAL && t !== TerrainType.ITEM_FIRE).length).toBe(135);
++        expect(ALL_TERRAINS.length).toBe(139);
+         expect(new Set(ALL_TERRAINS).size).toBe(ALL_TERRAINS.length);
+     });
+ 
+diff --git a/brogue-web/src/test/u_08_terrain_bolts.test.ts b/brogue-web/src/test/u_08_terrain_bolts.test.ts
+index 6270109..cca5e28 100644
+--- a/brogue-web/src/test/u_08_terrain_bolts.test.ts
++++ b/brogue-web/src/test/u_08_terrain_bolts.test.ts
+@@ -45,7 +45,8 @@ describe('U08 CE catalog and runtime qualification',()=>{
+             flags:0,subsequentDF:null,propagationTerrain:null,effectRadius:0,lightFlare:''});
+     });
+     it('new closed terrain set: 139 DFs, no entity/spawn flags; web forbidden to learn, vines eligible',()=>{
+-        expect(Object.keys(DFC)).toHaveLength(139);
++        // U17a adds only burnItem's DF_ITEM_FIRE (110); retain the U08 universe.
++        expect(Object.keys(DFC).filter(k=>Number(k)!==110)).toHaveLength(139);
+         expect(BC[B.SPIDERWEB]).toMatchObject({effect:E.NONE,pathDF:'DF_WEB_SMALL',targetDF:'DF_WEB_LARGE'});
+         expect(BC[B.ANCIENT_SPIRIT_VINES]).toMatchObject({effect:E.NONE,pathDF:'DF_ANCIENT_SPIRIT_GRASS',targetDF:'DF_ANCIENT_SPIRIT_VINES'});
+         expect(BC[B.SPIDERWEB].flags).toBe(F.TARGET_ENEMIES|F.NEVER_REFLECTS|F.NOT_LEARNABLE);
+@@ -101,6 +102,9 @@ describe('U08 actual zap path and ordered DF fill',()=>{
+         const g=scene(),m=mob(g,name==='SPIDERWEB'?'spider':'mangrove_dryad');g.player.loc={x:30,y:20};
+         const target=mob(g,'rat',18);target.isAlly=true;
+         const h=scene();h.player.loc={x:30,y:20};
++        // U17a: both worlds need identical occupants. DF contact now applies
++        // entanglement during fill, so an empty reference omits real RNG draws.
++        mob(h,name==='SPIDERWEB'?'spider':'mangrove_dryad');mob(h,'rat',18).isAlly=true;
+         rng.seedRandomGenerator(2026); rng.resetCounters();const result=g.castMonsterBolt(m,target,name)!;const draws=rng.randomNumbersGenerated;
+         rng.seedRandomGenerator(2026); rng.resetCounters();
+         for(let x=9;x<=18;x++)spawnDungeonFeature(h.grid,x,10,catalogFeature(name==='SPIDERWEB'?DF.DF_WEB_SMALL:DF.DF_ANCIENT_SPIRIT_GRASS),false);
+diff --git a/brogue-web/src/test/u_15a_shattering.test.ts b/brogue-web/src/test/u_15a_shattering.test.ts
+index 990af86..cb2eca3 100644
+--- a/brogue-web/src/test/u_15a_shattering.test.ts
++++ b/brogue-web/src/test/u_15a_shattering.test.ts
+@@ -116,18 +116,25 @@ describe('U15a IMPREGNABLE is an outer gate for every crystalize side effect', (
+         expect(cell(g, 8).layers[L.SURFACE]).toBe(T.RUBBLE);
+     });
+ 
+-    it('frees an embedded captive after rubble; a protected captive stays captive', () => {
++    it.each([false, true])('frees a captive only if still embedded after instant promotions, retained blocker=%s', retainedBlocker => {
+         const g = scene(); const captive = monster(g), freed = monster(g, 8);
+         for (const m of [captive, freed]) { m.isCaged = true; g.grid.setTerrain(m.x, m.y, T.WALL); }
+         protect(g, 7, 5);
++        // Time.c:274 promotes FORCEFIELD -> MELT -> NOTHING during rubble refresh.
++        // Movement.c:760 frees only captives that are STILL in blocking terrain.
++        // A retained WALL forbids the rubble surface, so fill/instant is skipped.
++        if (retainedBlocker) g.grid.setTerrainLayer(8, 5, L.LIQUID, T.WALL);
+         const original = g.freeCaptive.bind(g);
+         const release = vi.spyOn(g, 'freeCaptive').mockImplementation(m => {
+-            expect(cell(g, m.x, m.y).layers[L.SURFACE]).toBe(T.RUBBLE);
++            expect(cell(g, m.x, m.y).layers[L.SURFACE]).toBe(T.NOTHING);
+             original(m);
+         });
+         internal(g).crystalizeFromPlayer(9);
+-        expect(release).toHaveBeenCalledExactlyOnceWith(freed);
+-        expect(freed.isAlly).toBe(true); expect(freed.isCaged).toBe(false);
++        if (retainedBlocker) expect(release).toHaveBeenCalledExactlyOnceWith(freed);
++        else expect(release).not.toHaveBeenCalled();
++        expect(freed.isAlly).toBe(retainedBlocker); expect(freed.isCaged).toBe(!retainedBlocker);
++        expect(cell(g, 8).layers[L.DUNGEON]).toBe(retainedBlocker ? T.FORCEFIELD : T.FLOOR);
++        expect(cell(g, 8).layers[L.SURFACE]).toBe(T.NOTHING);
+         expect(captive.isCaged).toBe(true); expect(captive.isAlly).toBe(false);
+     });
+ 
+@@ -190,7 +197,8 @@ describe('U15a real inventory read + U01 v2 JSON round trip', () => {
+         expect(g.grid.isImpregnable(7, 5)).toBe(true);
+         expect(g.getMonsterAt(7, 5)?.isCaged).toBe(true);
+         expect(g.getMonsterAt(8, 5)).toBeUndefined();
+-        expect(cell(g, 8).layers[L.DUNGEON]).toBe(T.FORCEFIELD);
+-        expect(cell(g, 8).layers[L.SURFACE]).toBe(T.RUBBLE);
++        // Occupied forcefield melts in the nested instant contact before lethal handling.
++        expect(cell(g, 8).layers[L.DUNGEON]).toBe(T.FLOOR);
++        expect(cell(g, 8).layers[L.SURFACE]).toBe(T.NOTHING);
+     });
+ });

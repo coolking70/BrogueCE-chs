@@ -1,0 +1,15 @@
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17a-counterfactual-94WdI7
+
+stdout | src/test/p4_4_split_kamikaze.test.ts > P4-4 验收 3：死亡地形 — bloat 毒气 / explosive bloat 爆燃 > F-2c 翻转：爆炸伤害瞬时不经燃烧状态（第 1 笔 max(15-20, maxHP/2)），燃烧是后续另一笔（第 2 笔 1-3）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/p4_4_split_kamikaze.test.ts (20 tests | 19 skipped) 791ms
+     ✓ F-2c 翻转：爆炸伤害瞬时不经燃烧状态（第 1 笔 max(15-20, maxHP/2)），燃烧是后续另一笔（第 2 笔 1-3）  790ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 19 skipped (20)
+   Start at  18:20:30
+   Duration  2.25s (transform 730ms, setup 0ms, import 1.32s, tests 791ms, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web/ai_docs/reports/u-17a-evidence/counterfactual-head-kamikaze-premise.json

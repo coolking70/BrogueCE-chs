@@ -706,7 +706,7 @@ export function runAutogenerators(
                 // CE：DF 无条件先落（spawnDungeonFeature(..., false, true)——
                 // refreshCell=false 属游戏侧（web 签名无此参），abortIfBlocking=true）。
                 if (gen.df !== null) {
-                    const result = spawnDungeonFeature(grid, loc.x, loc.y, catalogFeature(gen.df), true);
+                    const result = spawnDungeonFeature(grid, loc.x, loc.y, catalogFeature(gen.df), true, { refreshSideEffects: false });
                     if (result.succeeded) {
                         builtThisInstance = true;
                     }

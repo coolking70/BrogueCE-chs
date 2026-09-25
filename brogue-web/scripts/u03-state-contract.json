@@ -402,5 +402,9 @@
   "currentLevelExitedVia": {
     "kind": "level",
     "contract": "U03b playerExitedVia：本层最后一次坑降出口，随层保存/恢复。"
+  },
+  "terrainFlashes": {
+    "kind": "reset",
+    "contract": "U17a：CE colorFlash 是瞬时显示状态；新局、换层、读档清空，不写入世界快照、不推进模拟。"
   }
 }

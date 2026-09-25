@@ -334,6 +334,7 @@ onMounted(async () => {
                         gas: game.environment.gasGrid[x]?.[y],
                         lightChannels: game.lightMap.lightAt(x, y),
                         flareChannels: game.flareLightAt(x, y),
+                        flashChannels: game.terrainFlashAt(x, y),
                         depth: game.depth,
                         groundItem: itemAtCell.get(`${x},${y}`) ?? null,
                         carriedItem: null,

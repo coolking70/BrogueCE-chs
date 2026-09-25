@@ -563,7 +563,9 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // U08 adds exactly IDs 57..60 (Globals.c:681-685). This historical
         // 135-row assertion still pins every pre-U08 entry; the full 139-row
         // count and new literal rows are pinned in u_08_terrain_bolts.test.ts.
-        const keys = Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => ![57, 58, 59, 60].includes(Number(k)));
+        // U17a additionally projects out DF_ITEM_FIRE=110; its live burn chain
+        // is pinned in u_17a_df_transaction.test.ts. The old 135 stay unchanged.
+        const keys = Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => ![57, 58, 59, 60, 110].includes(Number(k)));
         // V-2b-3：35 → 49（+14）。CE Globals.c 目录行逐条：
         //   DF_RUBBLE :612、DF_SHOW_PARALYSIS_GAS_TRAP :626、DF_INACTIVE_GLYPH :726、
         //   DF_REVEAL_LEVER :732、DF_MEDIUM_HOLE :813、DF_OPEN_PORTCULLIS :854、
@@ -696,6 +698,8 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // 字符串自动入闭包。
         // W-14：detonateBolt 动态复制 DF_FORCEFIELD；不是 pathDF/targetDF 或生成起点。
         start.add(DF.DF_FORCEFIELD);
+        // U17a: burnItem is a real runtime root (Time.c:990), not a terrain string.
+        start.add(DF.DF_ITEM_FIRE);
         start.add(DF.DF_SACRED_GLYPHS);
         start.add(DF.DF_SHATTERING_SPELL);
         // V-2b-3：DF_MEDIUM_HOLE 第三起点（数据起点，web 当前零消费者）——
@@ -773,7 +777,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
         // 集合相等：目录里多一条（闭包外）或少一条（漏抄）都翻红。
         const catalogKeys = new Set(Object.keys(DUNGEON_FEATURE_CATALOG).map(Number) as DF[]);
         expect([...closure].sort((a, b) => a - b)).toEqual([...catalogKeys].sort((a, b) => a - b));
-        expect([...catalogKeys].filter(id => ![57, 58, 59, 60].includes(id)).length, 'U08 投影回原135条；F-2a：DF_ASH 入闭包 19→20；G-1：DF_GAS_FIRE 入闭包 20→21；' +
+        expect([...catalogKeys].filter(id => ![57, 58, 59, 60, 110].includes(id)).length, 'U08 投影回原135条；F-2a：DF_ASH 入闭包 19→20；G-1：DF_GAS_FIRE 入闭包 20→21；' +
             'G-2：DF_EXPLOSION_FIRE（经 METHANE_GAS.promoteType）入闭包 21→22；' +
             'F-2c：DF_BLOAT_EXPLOSION（经 bloat 的 DFType）入闭包 22→23；' +
             'C-5：DF_HOLE_POTION（药水/pit bloat 起点）→ DF_HOLE_2 → DF_HOLE_DRAIN' +

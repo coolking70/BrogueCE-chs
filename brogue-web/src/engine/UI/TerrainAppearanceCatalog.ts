@@ -38,6 +38,7 @@ export const TERRAIN_APPEARANCES: Record<TerrainType, BaseTerrainAppearance> = {
     [TerrainType.BRIDGE]: { char: "=", color: '#541e1e', bgColor: 0x1e0705 }, // CE BRIDGE
     [TerrainType.BRIDGE_EDGE]: { char: "=", color: '#541e1e', bgColor: 0x1e0705 }, // CE BRIDGE_EDGE
     [TerrainType.INERT_BRIMSTONE]: { char: "'", color: '#ff7f19', bgColor: 0x2d1e16 }, // CE INERT_BRIMSTONE
+    [TerrainType.ITEM_FIRE]: { char: "\u22cf", color: '#ffffff', bgColor: null }, // CE ITEM_FIRE
     [TerrainType.PLAIN_FIRE]: { char: "\u22cf", color: '#b23300', bgColor: null }, // CE PLAIN_FIRE
     [TerrainType.EMBERS]: { char: "'", color: '#b23300', bgColor: null }, // CE EMBERS
     [TerrainType.ASH]: { char: "'", color: '#333333', bgColor: null }, // CE ASH

@@ -116,6 +116,12 @@ export class ScentMap {
         }
     }
 
+    /** Alarm replaces prior player trails even when the new value is older. */
+    public replaceScent(grid: Grid, x: number, y: number, distance: number): void {
+        this.set(x, y, 0);
+        this.addScent(grid, x, y, distance);
+    }
+
     /**
      * CE Time.c:764 updateScent。mask 为按 T_OBSTRUCTS_SCENT 遮挡算出的
      * 全图 FOV 掩码（Game 侧用 FOVSys.computeFOVMask 生成）；玩家所在格

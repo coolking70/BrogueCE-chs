@@ -1,0 +1,89 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_17a_df_transaction.test.ts src/test/c_4b_dungeon_feature.test.ts src/test/u_01_instance_snapshot.test.ts src/test/u_03_whole_run_snapshot.test.ts --maxWorkers=4 --reporter=default --reporter=json --outputFile.json=ai_docs/reports/u-17a-evidence/message-identity-repair.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web
+
+stdout | src/test/u_01_instance_snapshot.test.ts > ordinary uses the complete graph contract, including private base speeds
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/u_17a_df_transaction.test.ts > U17a actual Game consumers > recursive hole marks player falling without inventing an immediate floor-item update
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_4b_dungeon_feature.test.ts > C-4b F：留痕（本轮明确不做的事；C-4c 翻转） > F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/c_4b_dungeon_feature.test.ts (31 tests) 2816ms
+     ✓ F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空  2586ms
+stdout | src/test/u_03_whole_run_snapshot.test.ts > U03 whole-run persistence > seed 7: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_01_instance_snapshot.test.ts (17 tests) 4452ms
+   ✓ player clone uses the complete graph contract, including private base speeds  447ms
+   ✓ naturally generated D1-D3 ordinary/ground/pack entities deeply round-trip, without deriving from catalog  1143ms
+   ✓ spear next attack keeps penetration/lunge, damage and action cost  370ms
+   ✓ rapier next attack keeps penetration/lunge, damage and action cost  333ms
+ ❯ src/test/u_17a_df_transaction.test.ts (27 tests | 1 failed) 5629ms
+     ✓ evacuates from the raw footprint BEFORE priority rejects fill, including generation refresh=false 4ms
+     ✓ uses species forbidden terrain, all occupants, x/y ring order, and no extra roll on singleton 0ms
+     ✓ blocking veto has no evacuation/aggravation/recursion; PERMIT_BLOCKING permits the same footprint 1ms
+     ✓ refresh occurs per cell before clear, aggravation, subsequent, shore invalidation and awakening 0ms
+     ✓ EVERY uses only successfully filled cells; descendants inherit refresh=false and live context 0ms
+     ✓ BLOCKED_BY_OTHER_LAYERS filters footprint before descendants 0ms
+     ✓ gas refresh does not contact/burn/evacuate; following DF does contact and clear 0ms
+     ✓ description precedes veto, is visibility-gated and resets per turn; nested contexts restore after an error 1ms
+     × message eligibility follows DF identity, not shared text; fresh catalog projections retain identity 2ms
+     ✓ game end during fill stops further fill/contact and subsequent, while failed DF still refreshes player hazard 0ms
+     ✓ generic occupied contact dissolves both forcefield stages, also for direct DF and promotion recursion 0ms
+     ✓ recursive hole marks player falling without inventing an immediate floor-item update  432ms
+     ✓ instant fire burns only scrolls, ignites and damages through recursive DF before returning  499ms
+     ✓ lethal player contact ends the actual Game before burning items, filling later cells or running descendants 266ms
+     ✓ direct and descendant fires register the current-turn skip without callers draining results  432ms
+     ✓ runtime evacuation moves real player and creature; generation refresh=false moves without contact/status  349ms
+     ✓ alarm uses four-way path radius from origin, resets scent, preserves allies, wakes enemies and sets source status  384ms
+     ✓ two Game/grid owners cannot redirect each others contact or messages  688ms
+     ✓ actual stair movement changes level before REPEL_CREATURES can evict the player  706ms
+     ✓ alarm source may be remote: wall detours reject nearby cells and only player-origin alarms add AGGRAVATING 174ms
+     ✓ alarm status, moved entities and post-load grid binding survive the existing snapshot contract  394ms
+     ✓ flash obeys refresh, radius and animation lifetime without changing lighting or either RNG stream 203ms
+     ✓ transient flashes are discarded by load and new-run lifecycle without entering snapshots 234ms
+     ✓ retired grid cannot mutate the replacement world after load 252ms
+     ✓ retired grid cannot mutate the replacement world after new-run 256ms
+     ✓ retired grid cannot mutate the replacement world after test-depth  348ms
+     ✓ null tile registry remains exactly 30 and no five-family carrier is activated 1ms
+ ✓ src/test/u_03_whole_run_snapshot.test.ts (14 tests) 14735ms
+     ✓ seed 7: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  3533ms
+     ✓ seed 12345: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  2446ms
+     ✓ seed 202503: D1 → D2 → JSON load → D1 → new D3 equals continuous play field-for-field  1864ms
+     ✓ restores one object per ID across active/cached/dormant/pending/carried/leader cycles  988ms
+     ✓ real monster fall into unvisited D2 survives JSON and subsequent dormancy/death  901ms
+     ✓ real monster fall into cached D2 survives JSON and subsequent dormancy/death  969ms
+     ✓ stores every writable cell field and pending environmental effects without replaying them  655ms
+     ✓ restores clock, search, generation accounting, pending mandatory choices and endgame over a dirty run  547ms
+     ✓ scent values survive reentry, share the run clock, and rewind on every visited floor  419ms
+     ✓ rejects incomplete/old worlds before altering the current game or RNG  931ms
+     ✓ refuses suspended turns, but loading retires an old animation without its epilogue  373ms
+     ✓ codec does not consume either RNG stream or expose aliased run/flavor/level containers  1019ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_17a_df_transaction.test.ts > U17a DF transaction: CE ordering and recursive world effects > message eligibility follows DF identity, not shared text; fresh catalog projections retain identity
+AssertionError: expected "vi.fn()" to be called 2 times, but got 1 times
+ ❯ src/test/u_17a_df_transaction.test.ts:113:66
+    111|         const first=feat({description:'shared text'}),second=feat({des…
+    112|         spawnDungeonFeature(g,6,4,first,false);spawnDungeonFeature(g,6…
+    113|         spawnDungeonFeature(g,6,4,second,false);expect(describe).toHav…
+       |                                                                  ^
+    114|         const catalog=()=>{const f=catalogFeature(DF.DF_REPEL_CREATURE…
+    115|         spawnDungeonFeature(g,6,4,catalog(),false);spawnDungeonFeature…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  1 failed | 88 passed (89)
+   Start at  19:44:33
+   Duration  15.79s (transform 1.29s, setup 0ms, import 3.93s, tests 27.63s, environment 1ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web/ai_docs/reports/u-17a-evidence/message-identity-repair.json

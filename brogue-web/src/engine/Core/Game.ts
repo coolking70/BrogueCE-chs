@@ -1,6 +1,6 @@
 import { generateQualifiedMachineItem } from '../Items/MachineItemGeneration';
 import { stairFallbackQualifies, stairCandidates, clearStairVicinity } from '../Generator/Stairs';
-import { minionPlacement, generationDistances, qualifyingNear } from '../Generator/GenerationPlacement';
+import { minionPlacement, generationDistances, qualifyingNear, speciesForbiddenFlags } from '../Generator/GenerationPlacement';
 import { scheduleLevelFollowers, travelDistanceMap, travelPlacement, restoreTravelPosition, APPROACHING_DOWNSTAIRS, APPROACHING_UPSTAIRS, APPROACHING_PIT } from '../Movement/LevelTravel';
 import { snapshotGrid, restoreGrid, type CellSnapshot } from './LevelSnapshot';
 import { memoryTerrainAppearance } from '../UI/Appearance';
@@ -14,11 +14,11 @@ import { anyoneWantABite } from '../Combat/MonsterAbsorption';
  * Main game state and orchestration
  */
 import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer, DRAW_PRIORITY, type Cell } from '../Map/Grid';
-import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_DIAGONAL_MOVEMENT, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP, T_HARMFUL_TERRAIN, T_SACRED } from '../Map/TerrainCatalog';
+import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_DIAGONAL_MOVEMENT, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP, T_HARMFUL_TERRAIN, T_SACRED, T_IS_FIRE } from '../Map/TerrainCatalog';
 import { isPathingBlocker } from '../Map/TerrainCatalog';
 // B-4b：物品落位热力图与食物落位原语（CE Items.c:463-535 / Architect.c:171,3822）
 import { ItemSpawnHeatMap, passableArcCount, randomMatchingLocation } from '../Items/ItemSpawnHeatMap';
-import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, discoverSecretsAt, setDormantAwakener, setAllyResurrector, terrainMechFlags, spawnDungeonFeature } from '../Map/DungeonFeature';
+import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, discoverSecretsAt, setDormantAwakener, setAllyResurrector, setDungeonFeatureEffects, resetDFMessageEligibility, terrainMechFlags, spawnDungeonFeature } from '../Map/DungeonFeature';
 import { DF } from '../Map/DungeonFeatureCatalog';
 import { Architect } from '../Generator/Architect';
 // V-1c：奖励房配额计数器是 CE rogue.rewardRoomsGenerated 的 web 载体——
@@ -517,8 +517,8 @@ export class Game {
         // U00: retire the old run before seeding/allocating the next one. Returning
         // the iterator must not run an old turn's epilogue against the new world.
         this.discardInFlightAdvancement();
-        if (this.grid) { setDormantAwakener(this.grid, null); setAllyResurrector(this.grid, null); }
-        for (const level of this.levels.values()) { setDormantAwakener(level.grid, null); setAllyResurrector(level.grid, null); }
+        if (this.grid) { setDormantAwakener(this.grid, null); setAllyResurrector(this.grid, null); setDungeonFeatureEffects(this.grid, null); }
+        for (const level of this.levels.values()) { setDormantAwakener(level.grid, null); setAllyResurrector(level.grid, null); setDungeonFeatureEffects(level.grid, null); }
         this.purgatory = [];
         this.animationLockDeadline = 0;
         this.lastAdvancementError = null;
@@ -592,6 +592,7 @@ export class Game {
         this.examinedEntityIds = new Set();
         this.pendingBoltFrames = [];
         this.activeFlares = [];
+        this.terrainFlashes = [];
         this.flareLightMap = null;
         this.flareElapsedMs = 0;
         this.currentBoltFrameIndex = 0;
@@ -1065,6 +1066,8 @@ export class Game {
         // Track its real depth; test harnesses can jump depths or re-enter the current map.
         if (this.grid && this.currentLevelDepth !== null) {
             setDormantAwakener(this.grid, null);
+            setAllyResurrector(this.grid, null);
+            setDungeonFeatureEffects(this.grid, null);
             this.levels.set(this.currentLevelDepth, {
                 grid: this.grid,
                 environment: this.environment,
@@ -1098,7 +1101,7 @@ export class Game {
             this.environment = cached.environment;
             this.fov = cached.fov;
             this.lightMap = cached.lightMap;
-            this.activeFlares = []; this.flareLightMap = null; this.flareElapsedMs = 0;
+            this.activeFlares = []; this.terrainFlashes = []; this.flareLightMap = null; this.flareElapsedMs = 0;
             this.monsters = cached.monsters;
             this.dormantMonsters = cached.dormantMonsters ?? [];
             this.items = cached.items;
@@ -1136,7 +1139,7 @@ export class Game {
                 this.environment = new EnvironmentManager(this.grid);
                 this.fov = new FOVSys(this.grid);
                 this.lightMap = new LightMap(this.grid);
-                this.activeFlares = []; this.flareLightMap = null; this.flareElapsedMs = 0;
+                this.activeFlares = []; this.terrainFlashes = []; this.flareLightMap = null; this.flareElapsedMs = 0;
                 this.scent = new ScentMap(DCOLS, DROWS);
                 this.scent.turnNumber = scentTurnNumber;
                 this.currentLevelAwaySince = 0;
@@ -2439,6 +2442,8 @@ export class Game {
     }
 
     private generateTestDepth(isFirstLevel: boolean) {
+        if (this.grid) { setDormantAwakener(this.grid, null); setAllyResurrector(this.grid, null); setDungeonFeatureEffects(this.grid, null); }
+        for (const level of this.levels.values()) { setDormantAwakener(level.grid, null); setAllyResurrector(level.grid, null); setDungeonFeatureEffects(level.grid, null); }
         this.levels.clear();
         this.monsters = [];
         this.items = [];
@@ -2455,7 +2460,7 @@ export class Game {
         this.environment = new EnvironmentManager(this.grid);
         this.fov = new FOVSys(this.grid);
         this.lightMap = new LightMap(this.grid);
-                this.activeFlares = []; this.flareLightMap = null; this.flareElapsedMs = 0;
+                this.activeFlares = []; this.terrainFlashes = []; this.flareLightMap = null; this.flareElapsedMs = 0;
         // P4-8：test 层同样换新气味图
         this.scent = new ScentMap(DCOLS, DROWS);
         // P1-34：loopMap 必须随层重算。test 分支在 generateDepth（591-599）提前
@@ -3610,6 +3615,23 @@ export class Game {
                     // 之外），移动【后】结算（Movement.c:1480-1492）。
                     // 挣扎出网的 return 分支在上面：没动成就没有移动攻击。
                     if (this.playerVomitAttempt()) return;
+                    // CE Movement.c:1432-1441 intercepts the actual stair
+                    // coordinates before ordinary entry. Otherwise the newly
+                    // live REPEL_CREATURES transaction ejects the player before
+                    // the stair command can ever be used.
+                    const levelStairs = this.levelSeeds?.[this.depth - 1];
+                    const destination = this.grid.getCell(newX, newY)!;
+                    const descending = levelStairs?.downStairsLoc.x === newX && levelStairs.downStairsLoc.y === newY
+                        && destination.layers.some(t => t === TerrainType.STAIRS_DOWN || t === TerrainType.DUNGEON_PORTAL);
+                    const ascending = levelStairs?.upStairsLoc.x === newX && levelStairs.upStairsLoc.y === newY
+                        && destination.layers.includes(TerrainType.STAIRS_UP);
+                    if (descending || ascending) {
+                        const origin = { ...this.player.loc }, oldDepth = this.depth;
+                        this.player.loc = { x: newX, y: newY };
+                        this.handlePlayerAction(descending ? 'stairs_down' : 'stairs_up', undefined, 'system');
+                        if (this.depth === oldDepth) this.player.loc = origin;
+                        return;
+                    }
                     const specialTargets = this.buildLungeFlailHitList(dx, dy, newX, newY);
 
                     // Move
@@ -4433,6 +4455,7 @@ export class Game {
     /** Execute an explicit aim. Direct engine callers can retain the candidate/
      * last-direction fallback; inventory use always goes through confirmation. */
     public zapBoltFromPlayer(bolt: BoltConfig, item: Item, aim?: Pos): BoltResult {
+        this.bindDungeonFeatureEffects();
         const first = aim ? undefined : this.getArcanaCandidates(item)[0];
         const dir = this.directionToVec(this.player.lastMoveDirection ?? Direction.RIGHT);
         const target = aim ?? (bolt.selfTargeting ? this.player.loc : first?.loc) ?? { x: this.player.loc.x + dir.x * 20, y: this.player.loc.y + dir.y * 20 };
@@ -4482,27 +4505,15 @@ export class Game {
         };
     }
 
-    /** U08 only: four terrain DFs, all flags=0 and no subsequentDF. CE refresh
-     * applies contact during fill, before the next cell. Web entanglement uses
-     * the existing terrain hold; only vines need immediate player promotion.
-     * No evacuation, horde spawn or generic U17 side effects are enabled. */
+    /** Bolt identities select DFs; the common transaction handles all contact,
+     * recursive promotion, path invalidation and creature/item refresh. */
     private spawnEntanglingBoltFeature(name: string, pos: Pos): void {
         const id = name === 'DF_WEB_SMALL' ? DF.DF_WEB_SMALL
             : name === 'DF_WEB_LARGE' ? DF.DF_WEB_LARGE
             : name === 'DF_ANCIENT_SPIRIT_GRASS' ? DF.DF_ANCIENT_SPIRIT_GRASS
             : name === 'DF_ANCIENT_SPIRIT_VINES' ? DF.DF_ANCIENT_SPIRIT_VINES : null;
         if (id === null) return;
-        const result = spawnDungeonFeature(this.grid, pos.x, pos.y, catalogFeature(id), false, p => {
-            if (this.player.hp > 0 && this.player.x === p.x && this.player.y === p.y
-                && this.grid.getCell(p.x, p.y)?.layers.includes(TerrainType.ANCIENT_SPIRIT_VINES)) {
-                promoteLayersWithMechFlag(this.grid, p.x, p.y, TM_PROMOTES_ON_PLAYER_ENTRY);
-            }
-        });
-        if (result.pathingChanged) {
-            this.loopMap = analyzeLoopMap(this.grid);
-            this.updatedSafetyMapThisTurn = false;
-        }
-        if (result.builtCells.length) this.needsRender = true;
+        spawnDungeonFeature(this.grid, pos.x, pos.y, catalogFeature(id), false);
     }
 
     /** CE updateBolt :5440-5465: DF -> fire -> electricity, once per reached
@@ -4609,6 +4620,49 @@ export class Game {
     private flareLightMap: LightMap | null = null;
     private flareElapsedMs = 0;
 
+    private terrainFlashes: Array<{ cells: Map<number, number>; color: { r: number; g: number; b: number }; radius: number; frames: number; elapsed: number }> = [];
+
+    /** CE IO.colorFlash: snapshot qualifying cells, then expand/fade in 50ms
+     * frames. Drawing only; no FOV, memory contents or RNG changes. */
+    private colorFlash(name: string, radius: number, origin: Pos, frames = 4, discovered = false): void {
+        const colors: Record<string, { r: number; g: number; b: number }> = {
+            gray: { r: 50, g: 50, b: 50 }, darkGray: { r: 30, g: 30, b: 30 }, darkBlue: { r: 0, g: 0, b: 50 },
+        };
+        const color = colors[name];
+        if (!color) throw new Error(`Unmapped CE flash color: ${name}`);
+        const cells = new Map<number, number>();
+        const fieldOfView = discovered ? null : this.fov.computeFOVMask(this.player.x, this.player.y,
+            this.grid.width + this.grid.height, cell => !!(cellTerrainFlags(this.grid, cell.x, cell.y) & T_OBSTRUCTS_VISION));
+        for (let x = Math.max(0, origin.x - radius); x <= Math.min(this.grid.width - 1, origin.x + radius); x++) {
+            for (let y = Math.max(0, origin.y - radius); y <= Math.min(this.grid.height - 1, origin.y + radius); y++) {
+                const cell = this.grid.getCell(x, y)!;
+                const squared = (x-origin.x)**2 + (y-origin.y)**2;
+                if (squared <= radius**2 && (discovered ? cell.isExplored || cell.isMagicMapped : fieldOfView?.[x]?.[y] || cell.isVisible)) {
+                    cells.set(y * this.grid.width + x, Math.floor(Math.sqrt(squared)));
+                }
+            }
+        }
+        if (cells.size) (this.terrainFlashes ??= []).push({ cells, color, radius, frames, elapsed: 0 });
+        this.needsRender = true;
+    }
+
+    public terrainFlashAt(x: number, y: number): { r: number; g: number; b: number } | null {
+        let result: { r: number; g: number; b: number } | null = null;
+        for (const flash of this.terrainFlashes ?? []) {
+            const distance = flash.cells.get(y * this.grid.width + x);
+            const frame = Math.min(flash.frames, 1 + Math.floor(flash.elapsed / 50));
+            const radius = Math.max(1, Math.trunc(flash.radius * frame / flash.frames));
+            if (distance === undefined || distance > radius) continue;
+            const fade = Math.min(100, Math.trunc((flash.frames - frame) * 500 / flash.frames));
+            const intensity = Math.trunc(fade * (100 - Math.trunc(100 * (radius - distance - 2) / radius)) / 100);
+            result ??= { r: 0, g: 0, b: 0 };
+            result.r += Math.trunc(flash.color.r * intensity / 100);
+            result.g += Math.trunc(flash.color.g * intensity / 100);
+            result.b += Math.trunc(flash.color.b * intensity / 100);
+        }
+        return result;
+    }
+
     public createFlare(x: number, y: number, kind: LightKind): void {
         if (!LIGHT_CATALOG[kind] || !this.grid.isValidPos(x, y)) return;
         this.activeFlares ??= []; // legacy headless fixtures construct via Object.create(Game.prototype)
@@ -4630,9 +4684,14 @@ export class Game {
 
     /** One CE flare step per 10ms; the final step requests a clean redraw. */
     public tickFlareAnimation(deltaMs: number): boolean {
-        if (!this.activeFlares.length) return false;
+        const flashChanged = !!this.terrainFlashes?.length;
+        this.terrainFlashes = (this.terrainFlashes ?? []).filter(flash => {
+            flash.elapsed += Math.max(0, deltaMs);
+            return flash.elapsed < flash.frames * 50;
+        });
+        if (!this.activeFlares.length) return flashChanged;
         this.flareElapsedMs += Math.max(0, deltaMs);
-        if (this.flareElapsedMs < 10) return false;
+        if (this.flareElapsedMs < 10) return flashChanged;
         const steps = Math.min(100, Math.floor(this.flareElapsedMs / 10));
         this.flareElapsedMs %= 10;
         for (let step = 0; step < steps; step++) {
@@ -5087,18 +5146,10 @@ export class Game {
                 const e = resolveCEBoltMagnitude(CEBoltType.OBSTRUCTION, item.category === ItemCategory.STAFF
                     ? { kind: 'staff', enchantment: item.enchantment } : { kind: 'catalog' }).value;
                 const world = this.boltWorld(result.caster);
-                const placed = spawnObstruction(this.grid, result.landingPos.x, result.landingPos.y, e,
+                spawnObstruction(this.grid, result.landingPos.x, result.landingPos.y, e,
                     pos => !!world.creatureAt(pos));
                 // A visible effect is not required: CE detonateBolt always autoIDs.
                 autoID = true;
-                if (placed.pathingChanged) {
-                    this.loopMap = analyzeLoopMap(this.grid);
-                    this.updatedSafetyMapThisTurn = false;
-                    this.autoPath = [];
-                    this.isMouseTraveling = false;
-                    // CE only rebuilds waypoints for tunneling, not obstruction.
-                    // Existing rolling refresh reads the new passability.
-                }
                 this.updateVision();
                 this.needsRender = true;
                 break;
@@ -5189,6 +5240,7 @@ export class Game {
         const meta = MONSTER_BOLT_TABLE[ceBoltName];
         if (!meta || meta.effect === null || meta.effect === BoltEffect.TUNNELING
             || meta.effect === BoltEffect.OBSTRUCTION) return; // CE monsters never cast these.
+        this.bindDungeonFeatureEffects(); // Direct engine callers share the same world ports as player bolts.
 
         if (meta.effect === BoltEffect.NONE && this.canObserveBoltTarget(caster)) {
             if (ceBoltName === 'SPIDERWEB') logger.log(i18next.t('bolt.monster_cast_web', {
@@ -6300,6 +6352,7 @@ export class Game {
             range = Math.ceil(range / 2);
         }
 
+        range += this.player.getStatusDuration('aggravating');
         if (range < 2 && !this.justRested) {
             range = 2;
         } else if (range < 1) {
@@ -7516,7 +7569,7 @@ export class Game {
      *     DF_BLOAT_EXPLOSION（Globals.c:654，GAS_EXPLOSION tile，start 350 /
      *     decr 100）。web 此前用 igniteForced×5 近似（F-2b §十.2 登记），
      *     现改走 DF 铺设 + 落格瞬时爆炸伤害（fillSpawnMap refresh 分支的
-     *     web 等价，applyInstantExplosionAt）——伤害是 max(15-20, maxHP/2)
+     *     web 等价，共享 DF refresh 事务）——伤害是 max(15-20, maxHP/2)
      *     的瞬时结算，与后续燃烧（火点燃生物）是两笔，不合并。
      *     新落爆炸格的起火登记并入 pendingCaughtFireCells（CE 旗标即时生效，
      *     下一晋升趟跳过其衰老掷骰）。
@@ -7550,15 +7603,7 @@ export class Game {
                 // （fillSpawnMap 的 drawPriority 判据），与旧 igniteForced
                 // 近似的"四方向火焰"形态一并退役。
                 const feat = catalogFeature(DF.DF_BLOAT_EXPLOSION);
-                const spawn = spawnDungeonFeature(this.grid, m.loc.x, m.loc.y, feat, false);
-                this.applyInstantExplosionAt(spawn.builtCells);
-                // CE :3235：新落火地形当场登记 CAUGHT_FIRE_THIS_TURN。
-                if (spawn.caughtFireCells.length > 0) {
-                    this.pendingCaughtFireCells = [
-                        ...this.pendingCaughtFireCells,
-                        ...spawn.caughtFireCells,
-                    ];
-                }
+                spawnDungeonFeature(this.grid, m.loc.x, m.loc.y, feat, false);
                 logger.log(i18next.t('death.bloat_explosion', {
                     name: this.monsterDisplayName(m),
                     defaultValue: `The ${this.monsterDisplayName(m)} explodes in a burst of flame!`
@@ -8078,6 +8123,7 @@ export class Game {
     }
 
     private playerTurnEnded() {
+        resetDFMessageEligibility(this.grid);
         this.poisonedDuringTurn = this.player.hasStatus('poisoned');
         this.killOrphanedBoundFollowers();
         this.removeDeadMonsters();
@@ -8480,16 +8526,6 @@ export class Game {
         if (this.lastPromotionUpdate.renderDirty) {
             this.needsRender = true;
         }
-        // DF 消息（CE :3370 message/playerCanSee 门控的游戏侧消费）：
-        // 原点格对玩家可见才播，一次 spawn 至多一条。CE 目录描述是源文英文，
-        // 与 CE 侧一致直记，不走 i18n（无键可译；报告已登记）。
-        for (const p of this.lastPromotionUpdate.promotions) {
-            if (p.spawn?.message && p.spawn.builtCells.some(
-                (c) => this.grid.getCell(c.x, c.y)?.isVisible
-            )) {
-                logger.log(p.spawn.message, '#aaaaaa');
-            }
-        }
         // G-1：晋升链若接出了 GAS 层 DF（Architect.c:3384 volume 累加走
         // Cell.volume），镜像须对账一次。当前目录尚无已接线的 GAS DF
         // （归 G-2），本分支今天不可达——防御性对账，接线后即为活路径。
@@ -8516,19 +8552,9 @@ export class Game {
         if (fireCaught.length > 0) {
             this.pendingCaughtFireCells = [...this.pendingCaughtFireCells, ...fireCaught];
         }
-        // F-2c：火段的爆炸落格（甲烷爆轰 → DF_EXPLOSION_FIRE）在落格瞬间
-        // 结算（CE fillSpawnMap refresh 分支 Architect.c:3255-3260——发生在
-        // 火段内部；CE 的气体扩散已在晋升之前完成）。
-        // 顺带覆盖晋升趟落下的爆炸地形（本轮目录无此路径；CE promoteTile
-        // :1268 同样 refreshCell=true，防御性对齐）。
-        const explosiveCells = this.environment.takeExplosiveSpawnCells();
-        for (const p of this.lastPromotionUpdate.promotions) {
-            if (p.spawn) explosiveCells.push(...p.spawn.builtCells);
-        }
-        for (const p of this.lastPromotionUpdate.withoutKeyPromotions) {
-            if (p.spawn) explosiveCells.push(...p.spawn.builtCells);
-        }
-        this.applyInstantExplosionAt(explosiveCells);
+        // Explosive contact is synchronous in the DF transaction. Drain the
+        // environment's compatibility observation queue without replaying damage.
+        this.environment.takeExplosiveSpawnCells();
         this.driftFloorItems();
 
         this.destroyFloorItemsInLava();
@@ -9022,8 +9048,8 @@ export class Game {
         } catch { return false; }
 
         this.discardInFlightAdvancement();
-        if (this.grid) { setDormantAwakener(this.grid, null); setAllyResurrector(this.grid, null); }
-        for (const level of this.levels.values()) { setDormantAwakener(level.grid, null); setAllyResurrector(level.grid, null); }
+        if (this.grid) { setDormantAwakener(this.grid, null); setAllyResurrector(this.grid, null); setDungeonFeatureEffects(this.grid, null); }
+        for (const level of this.levels.values()) { setDormantAwakener(level.grid, null); setAllyResurrector(level.grid, null); setDungeonFeatureEffects(level.grid, null); }
         this.animationLockDeadline = 0;
         this.lastAdvancementError = null;
         this.inAutoTravelStep = false;
@@ -9044,7 +9070,7 @@ export class Game {
             [q.depth, q.monsters.map(m => entityGraph.monsters.get(m.id)!)]));
         this.purgatory = (snapshot.purgatory ?? []).map(m => entityGraph.monsters.get(m.id)!);
         this.bindDormantAwakener();
-        this.activeFlares = []; this.flareLightMap = null; this.flareElapsedMs = 0;
+        this.activeFlares = []; this.terrainFlashes = []; this.flareLightMap = null; this.flareElapsedMs = 0;
 
         this.player = new Player(snapshot.player.loc.x, snapshot.player.loc.y);
         Object.assign(this.player, copyFields(snapshot.player, PLAYER_FIELDS));
@@ -9333,33 +9359,6 @@ export class Game {
         return true;
     }
 
-    /**
-     * CE fillSpawnMap refresh 分支（Architect.c:3255-3260）的爆炸部分：
-     * 爆炸 tile 新落到某格时，对该格上的生物**当场**结算
-     * applyInstantTileEffectsToCreature——这是"瞬时伤害"的出处（不经燃烧
-     * 状态、不等下一个客观块）。免疫窗守卫在 resolveExplosionDamage 内，
-     * 同一块多格命中同一生物只结算一次（首格上免疫，后续格被窗挡住——
-     * CE 同款：applyInstantTileEffectsToCreature 每次调用都查 status）。
-     * 调用点：bloat 死亡 DF（triggerDeathFeatures）、甲烷爆轰（火段后排干
-     * takeExplosiveSpawnCells）、晋升趟落下的爆炸地形（本轮目录无此路径，
-     * 防御性覆盖与 CE promoteTile refreshCell=true 对齐）。
-     */
-    private applyInstantExplosionAt(cells: Pos[]): void {
-        if (cells.length === 0) return;
-        const px = this.player.loc.x;
-        const py = this.player.loc.y;
-        for (const p of cells) {
-            if (p.x === px && p.y === py) {
-                this.resolveExplosionDamage(this.player);
-            }
-            for (const m of this.monsters) {
-                if (m.hp > 0 && m.loc.x === p.x && m.loc.y === p.y) {
-                    this.resolveExplosionDamage(m);
-                }
-            }
-        }
-    }
-
     /** Ordinary objective updates keep their original all-creature/gradual path.
      * Displacement evaluates just its recipient, without an extra gas damage tick
      * or global item destruction (CE instant versus gradual tile effects).
@@ -9441,6 +9440,7 @@ export class Game {
                 && !(entity.abilities && entity.abilities.has('immune_fire'))
                 && !(entity.isInvulnerable && entity.isInvulnerable())
                 && (!instantTarget || (!(cellTerrainFlags(this.grid, x, y) & T_ENTANGLES)
+                    && !(cellTerrainFlags(this.grid, x, y) & T_OBSTRUCTS_PASSABILITY)
                     && !this.cellExtinguishesFire(x, y)))) {
                 // 熔岩豁免对齐 CE applyInstantTileEffectsToCreature（Time.c:183-190）：
                 // 悬浮（STATUS_LEVITATING）、火焰免疫（STATUS_IMMUNE_TO_FIRE）、
@@ -9481,26 +9481,31 @@ export class Game {
                 this.extinguishCreatureFire(entity);
             }
 
-            if (cell.isBurning) {
-                // CE Time.c:527-528：踩 T_IS_FIRE → exposeCreatureToFire。
-                // 豁免（MB_IS_DYING / IMMUNE_TO_FIRE / MONST_INVULNERABLE /
-                // MB_SUBMERGED / 非悬浮+灭火层）全在 exposeCreatureToFire 内。
-                this.exposeCreatureToFire(entity);
-            } else if (this.burningDuration(entity) > 0) {
-                // CE Time.c:529-540（else if：已火格无需再点）：着火生物点燃
-                // 所踩的可燃非火格——alwaysIgnite 直燃（Gas.ignite 即 CE :539
-                // exposeTileToFire(x,y,true)，可燃性与 12 次暴露封顶由其自守）。
-                // CE :538 的 MB_SUBMERGED|MB_IS_FALLING 守卫：web 无潜水/坠落
-                // 簿记（登记退化；水格已被上面的灭火分支扑灭，且水体链本身缓办）。
-                this.environment.ignite(x, y);
-            }
+            const applyContactFire = () => {
+                if (cell.isBurning) {
+                    // CE Time.c:527-528：踩 T_IS_FIRE → exposeCreatureToFire。
+                    // 豁免（MB_IS_DYING / IMMUNE_TO_FIRE / MONST_INVULNERABLE /
+                    // MB_SUBMERGED / 非悬浮+灭火层）全在 exposeCreatureToFire 内。
+                    this.exposeCreatureToFire(entity);
+                } else if (this.burningDuration(entity) > 0) {
+                    // CE Time.c:529-540（else if：已火格无需再点）：着火生物点燃
+                    // 所踩的可燃非火格——alwaysIgnite 直燃（Gas.ignite 即 CE :539
+                    // exposeTileToFire(x,y,true)，可燃性与 12 次暴露封顶由其自守）。
+                    // CE :538 的 MB_SUBMERGED|MB_IS_FALLING 守卫：web 无潜水/坠落
+                    // 簿记（登记退化；水格已被上面的灭火分支扑灭，且水体链本身缓办）。
+                    this.environment.ignite(x, y);
+                }
+            };
+            if (!instantTarget) applyContactFire();
 
             // Explosion —— F-2c：爆炸瞬时伤害（Time.c:343-396，位于蜘蛛网段
             // 之后、毒气段 :411 之前的同一函数内——web 对应插在火段与气段
             // 之间）。守卫与免疫窗都在 resolveExplosionDamage 内；落格瞬间的
-            // 另外两个调用点见 applyInstantExplosionAt。
+            // DF 逐格接触与普通地形结算共用此伤害出口。
             this.applyEntanglementFromTerrain(entity);
             this.resolveExplosionDamage(entity);
+            // CE Time.c:370/392 returns on lethal contact before gas statuses.
+            if (instantTarget && entity.hp <= 0) return;
 
             if (entity !== this.player || !deferPlayerNausea) this.applyNauseaFromTerrain(entity);
 
@@ -9616,6 +9621,9 @@ export class Game {
                     }
                 }
             }
+            // CE instantaneous order: promotion -> entanglement/explosion ->
+            // gas statuses -> ignition. Dead creatures cannot be ignited.
+            if (instantTarget && entity.hp > 0) applyContactFire();
         };
 
         if (instantTarget) {
@@ -9661,6 +9669,174 @@ export class Game {
         setDormantAwakener(this.grid, (origin, builtCells) =>
             this.awakenDormantMonstersAt(origin, builtCells));
         setAllyResurrector(this.grid, origin => this.resurrectAlly(origin));
+        this.bindDungeonFeatureEffects();
+    }
+
+    private bindDungeonFeatureEffects(): void {
+        setDungeonFeatureEffects(this.grid, {
+            creatures: () => [this.player, ...this.monsters.filter(m => !m.isDormant)]
+                .filter(c => c.hp > 0).map(c => ({ loc: c.loc, forbiddenTerrain:
+                    c instanceof Monster ? speciesForbiddenFlags({ behaviorFlags: [...c.behaviorFlags] }) : T_PATHING_BLOCKER })),
+            refreshCell: pos => this.refreshDungeonFeatureCell(pos),
+            flavor: pos => {
+                if (this.player.x === pos.x && this.player.y === pos.y && !this.player.hasStatus('levitating')) {
+                    logger.log(i18next.t('df.flavor', { terrain: this.getTerrainName(this.grid.getCell(pos.x, pos.y)!.terrain),
+                        defaultValue: 'You are standing on {{terrain}}.' }), '#aaaaaa');
+                }
+            },
+            instantEffects: pos => {
+                const creature = this.player.hp > 0 && this.player.x === pos.x && this.player.y === pos.y
+                    ? this.player : this.monsters.find(m => m.hp > 0 && !m.isDormant && m.x === pos.x && m.y === pos.y);
+                if (creature) this.applyDungeonFeatureContact(creature);
+            },
+            burnItems: pos => this.burnFloorItemsAt(pos),
+            caughtFire: pos => {
+                this.pendingCaughtFireCells ??= [];
+                if (!this.pendingCaughtFireCells.some(p => p.x === pos.x && p.y === pos.y)) this.pendingCaughtFireCells.push(pos);
+            },
+            playerFireOrDescent: () => {
+                if (cellTerrainFlags(this.grid, this.player.x, this.player.y) & (T_IS_FIRE | T_AUTO_DESCENT)) {
+                    this.applyDungeonFeatureContact(this.player);
+                }
+            },
+            describe: (feat, pos) => {
+                if ((this.player.x === 0 && this.player.y === 0) || !this.grid.getCell(pos.x, pos.y)?.isVisible) return false;
+                logger.log(this.dungeonFeatureDescription(feat.description));
+                return true;
+            },
+            aggravate: (radius, origin) => this.aggravateMonsters(radius, origin),
+            flash: (color, radius, pos) => this.colorFlash(color, radius, pos),
+            flare: (kind, pos) => this.createFlare(pos.x, pos.y, LightKind[kind as keyof typeof LightKind]),
+            invalidatePathing: () => {
+                this.loopMap = analyzeLoopMap(this.grid);
+                this.updatedSafetyMapThisTurn = false;
+                this.autoPath = []; this.isMouseTraveling = false;
+            },
+            invalidateShore: () => { this.updatedSafetyMapThisTurn = false; },
+            gameHasEnded: () => this.isGameOver === true,
+        });
+    }
+
+    /** A lethal instantaneous DF contact ends the fill immediately (CE Time.c:369-370).
+     * Ordinary gradual/status deaths keep their existing turn-boundary cleanup. */
+    private applyDungeonFeatureContact(creature: Creature): void {
+        this.applyEnvironmentalEffects(creature);
+        if (creature === this.player && creature.hp <= 0 && !this.isGameOver) {
+            this.triggerGameOver(false, this.lastDamageSource === 'violent explosion'
+                ? i18next.t('death.explosion', { defaultValue: 'Killed by a violent explosion.' })
+                : i18next.t('death.killed_by', { monster: this.lastDamageSource, defaultValue: 'Killed by {{monster}}.' }));
+        }
+    }
+
+    private refreshDungeonFeatureCell(pos: Pos): void {
+        const cell = this.grid.getCell(pos.x, pos.y);
+        if (cell?.isVisible) {
+            cell.isExplored = true; cell.hasMemory = true;
+            cell.rememberedTerrain = cell.terrain;
+            cell.rememberedLayers = [...cell.layers];
+            cell.rememberedAppearance = memoryTerrainAppearance(cell, this.depth);
+            cell.rememberedTerrainFlags = cellTerrainFlags(this.grid, pos.x, pos.y);
+            cell.rememberedTMFlags = cellTerrainMechFlags(this.grid, pos.x, pos.y);
+            cell.rememberedFlags = { passable: cell.isPassable, opaque: cell.isOpaque,
+                trapFree: !(cell.rememberedTerrainFlags & T_IS_DF_TRAP) };
+            const item = this.items.find(i => i.x === pos.x && i.y === pos.y);
+            cell.rememberedItem = item ? { name: item.displayName, char: item.char, color: item.color } : null;
+            cell.rememberedItemCategory = item?.category ?? null;
+        }
+        this.needsRender = true;
+    }
+
+    private dungeonFeatureDescription(description: string): string {
+        switch (description) {
+            case "An old friend emerges from a bloom of sacred light!": return i18next.t('df.message_1', { defaultValue: "An old friend emerges from a bloom of sacred light!" });
+            case "a cloud of caustic gas sprays upward from the floor!": return i18next.t('df.message_2', { defaultValue: "a cloud of caustic gas sprays upward from the floor!" });
+            case "a demonic presence whispers its demand: \"Bring to me the marked sacrifice!\"": return i18next.t('df.message_3', { defaultValue: "a demonic presence whispers its demand: \"Bring to me the marked sacrifice!\"" });
+            case "a scratching sound emanates from the nearby walls!": return i18next.t('df.message_4', { defaultValue: "a scratching sound emanates from the nearby walls!" });
+            case "a stone bridge extends from the floor with a grinding sound.": return i18next.t('df.message_5', { defaultValue: "a stone bridge extends from the floor with a grinding sound." });
+            case "a torch falls from its mount and lies sputtering on the floor.": return i18next.t('df.message_6', { defaultValue: "a torch falls from its mount and lies sputtering on the floor." });
+            case "across the bog, bubbles rise ominously from the mud.": return i18next.t('df.message_7', { defaultValue: "across the bog, bubbles rise ominously from the mud." });
+            case "as flames begin to lick the coffin, its tenant bursts forth!": return i18next.t('df.message_8', { defaultValue: "as flames begin to lick the coffin, its tenant bursts forth!" });
+            case "cracks begin snaking across the marble surface of the statue!": return i18next.t('df.message_9', { defaultValue: "cracks begin snaking across the marble surface of the statue!" });
+            case "deadly purple gas starts wafting out of hidden vents in the floor!": return i18next.t('df.message_10', { defaultValue: "deadly purple gas starts wafting out of hidden vents in the floor!" });
+            case "explosive methane gas starts wafting out of hidden vents in the floor!": return i18next.t('df.message_11', { defaultValue: "explosive methane gas starts wafting out of hidden vents in the floor!" });
+            case "flames quickly consume the wooden barricade.": return i18next.t('df.message_12', { defaultValue: "flames quickly consume the wooden barricade." });
+            case "hissing fills the air as the lava begins to cool.": return i18next.t('df.message_13', { defaultValue: "hissing fills the air as the lava begins to cool." });
+            case "paralytic gas sprays upward from hidden vents in the floor!": return i18next.t('df.message_14', { defaultValue: "paralytic gas sprays upward from hidden vents in the floor!" });
+            case "the altar retracts into the ground with a grinding sound.": return i18next.t('df.message_15', { defaultValue: "the altar retracts into the ground with a grinding sound." });
+            case "the archway flashes, and you catch a glimpse of another world!": return i18next.t('df.message_16', { defaultValue: "the archway flashes, and you catch a glimpse of another world!" });
+            case "the area is flooded as water rises through imperceptible holes in the ground.": return i18next.t('df.message_17', { defaultValue: "the area is flooded as water rises through imperceptible holes in the ground." });
+            case "the cage lifts off of the altar.": return i18next.t('df.message_18', { defaultValue: "the cage lifts off of the altar." });
+            case "the cages lower to cover the altars.": return i18next.t('df.message_19', { defaultValue: "the cages lower to cover the altars." });
+            case "the coffin opens and a dark figure rises!": return i18next.t('df.message_20', { defaultValue: "the coffin opens and a dark figure rises!" });
+            case "the crystal absorbs the electricity and begins to glow.": return i18next.t('df.message_21', { defaultValue: "the crystal absorbs the electricity and begins to glow." });
+            case "the items on the two altars flash with a brilliant light!": return i18next.t('df.message_22', { defaultValue: "the items on the two altars flash with a brilliant light!" });
+            case "the light in the room flickers and you feel a chill in the air.": return i18next.t('df.message_23', { defaultValue: "the light in the room flickers and you feel a chill in the air." });
+            case "the nearby wall explodes in a shower of stone fragments!": return i18next.t('df.message_24', { defaultValue: "the nearby wall explodes in a shower of stone fragments!" });
+            case "the portcullis slowly rises from the ground into a slot in the ceiling.": return i18next.t('df.message_25', { defaultValue: "the portcullis slowly rises from the ground into a slot in the ceiling." });
+            case "the rope bridge snaps from the heat and plunges into the chasm!": return i18next.t('df.message_26', { defaultValue: "the rope bridge snaps from the heat and plunges into the chasm!" });
+            case "the statue shatters!": return i18next.t('df.message_27', { defaultValue: "the statue shatters!" });
+            case "the wall above the lever shifts to reveal a spark turret!": return i18next.t('df.message_28', { defaultValue: "the wall above the lever shifts to reveal a spark turret!" });
+            case "with a heavy mechanical sound, an iron portcullis falls from the ceiling!": return i18next.t('df.message_29', { defaultValue: "with a heavy mechanical sound, an iron portcullis falls from the ceiling!" });
+            case "you hear a click, and the stones in the wall shift to reveal turrets!": return i18next.t('df.message_30', { defaultValue: "you hear a click, and the stones in the wall shift to reveal turrets!" });
+            case "you notice a lever hidden behind a loose stone in the wall.": return i18next.t('df.message_31', { defaultValue: "you notice a lever hidden behind a loose stone in the wall." });
+            case "you notice an inactive gas vent hidden in a crevice of the floor.": return i18next.t('df.message_32', { defaultValue: "you notice an inactive gas vent hidden in a crevice of the floor." });
+            default: return description; // custom engine-provided localized feature
+        }
+    }
+
+    /** Architect.fillSpawnMap burns only ITEM_FLAMMABLE (CE: scrolls).
+     * Falling/drifting/enchant swaps remain in the floor-item time phase. */
+    private burnFloorItemsAt(pos: Pos): void {
+        for (const item of [...this.items]) {
+            if (item.x !== pos.x || item.y !== pos.y || item.category !== ItemCategory.SCROLL) continue;
+            this.items.splice(this.items.indexOf(item), 1);
+            if (this.grid.getCell(pos.x, pos.y)?.isVisible) logger.log(i18next.t('df.item_burns', {
+                item: item.displayName, defaultValue: '{{item}} burns up!'
+            }), '#ffaa55');
+            this.refreshDungeonFeatureCell(pos);
+            spawnDungeonFeature(this.grid, pos.x, pos.y, catalogFeature(DF.DF_ITEM_FIRE), false);
+        }
+    }
+
+    /** CE Items.c:4089: distance is path distance from the alarm, not from the
+     * player and not Euclidean radius. Secret doors use calculateDistances. */
+    private aggravateMonsters(radius: number, origin: Pos): void {
+        this.waypoints.coordinates[0] = { ...origin };
+        this.waypoints.refreshWaypoint(0, this.wpContext());
+        const distances = generationDistances(this, origin, T_PATHING_BLOCKER, false);
+        for (const m of this.monsters) {
+            if (m.hp <= 0 || m.isDormant || distances[m.x]![m.y]! > radius) continue;
+            if (m.state === MonsterState.ASLEEP) {
+                m.state = m.creatureMode === MonsterMode.PERM_FLEEING ? MonsterState.FLEEING : MonsterState.HUNTING;
+                m.ticksUntilTurn = 100;
+                for (const mate of this.monsters) {
+                    if (mate !== m && monstersAreTeammates(m, mate) && mate.creatureMode === MonsterMode.NORMAL) {
+                        if (mate.state === MonsterState.ASLEEP || mate.state === MonsterState.WANDERING) mate.ticksUntilTurn = Math.max(100, mate.ticksUntilTurn);
+                        if (!m.isAlly) mate.state = MonsterState.HUNTING;
+                    }
+                }
+            }
+            if (!m.isAlly && (m.leader as Creature | null) !== this.player) {
+                m.state = m.creatureMode === MonsterMode.PERM_FLEEING ? MonsterState.FLEEING : MonsterState.HUNTING;
+                m.behaviorFlags.delete('MONST_MAINTAINS_DISTANCE');
+                m.abilityFlags.delete('MA_AVOID_CORRIDORS');
+            }
+        }
+        for (let x = 0; x < this.grid.width; x++) for (let y = 0; y < this.grid.height; y++) {
+            const distance = distances[x]![y]!;
+            if (distance >= 0 && distance <= radius) this.scent.replaceScent(this.grid, x, y, 2 * distance);
+        }
+        if (this.player.x === origin.x && this.player.y === origin.y) this.player.applyStatus('aggravating', radius);
+        if (distances[this.player.x]?.[this.player.y]! <= radius) {
+            discoverSecretsAt(this.grid, origin.x, origin.y);
+            const cell = this.grid.getCell(origin.x, origin.y)!;
+            cell.hasMemory = true; cell.isDiscovered = true; cell.isExplored = true;
+            this.colorFlash('gray', radius, origin, 10, true);
+            if (!cell.isVisible) logger.log(i18next.t('df.alarm', {
+                defaultValue: 'You hear a piercing shriek; something must have triggered a nearby alarm.'
+            }), '#aaaaaa');
+        }
+        this.needsRender = true;
     }
 
     /** CE Monsters.c:2898-2945: choose from purgatory, then restore the same entity. */
@@ -10554,6 +10730,8 @@ export class Game {
                 return i18next.t('terrain.crystal_portal', { defaultValue: '水晶传送门' });
             case TerrainType.STAIRS_DOWN:
                 return i18next.t('terrain.stairs_down', { defaultValue: '下行楼梯' });
+            case TerrainType.ITEM_FIRE:
+                return i18next.t('terrain.item_fire', { defaultValue: 'Crackling flames' });
             case TerrainType.CHARRED_FLOOR:
                 return i18next.t('terrain.charred_floor', { defaultValue: '烧焦的地面' });
             case TerrainType.SIGN:

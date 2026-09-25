@@ -437,7 +437,7 @@ describe('D：Game 集成（真实事件链）', () => {
         ).toBe(C.OPEN_DOOR);
     });
 
-    it('D2 踩楼梯触发 DF_REPEL_CREATURES（tile=NOTHING 的合法无地形 DF；驱离登记未实现）', () => {
+    it('D2 踩楼梯触发 DF_REPEL_CREATURES（tile=NOTHING 的合法无地形 DF；U17a 实际驱离）', () => {
         const game = createHeadlessGame(424242);
         const px = game.player.loc.x;
         const py = game.player.loc.y;
@@ -445,7 +445,10 @@ describe('D：Game 集成（真实事件链）', () => {
         game.grid.setTerrain(px + 2, py, C.STAIRS_DOWN, '>', 0x00aaff);
         game.handlePlayerAction('move', { x: 1, y: 0 }, 'system');
         game.handlePlayerAction('move', { x: 1, y: 0 }, 'system');
-        expect(game.player.loc).toEqual({ x: px + 2, y: py });
+        // Synthetic stairs are not grid.downStairsLoc: ordinary contact invokes repel.
+        // CE Architect.c:3332 uses raw footprint and relocates the actual player.
+        expect(game.player.loc).toEqual({ x: px + 3, y: py - 1 });
+        expect(game.grid.getCell(game.player.x, game.player.y)!.isPassable).toBe(true);
         // 踩上楼梯的那次 handleSpecialTileEntry 已走过 promoteOnStep（CE 允许
         // 每次踏入重复触发，Time.c:278-285 注释自认）；这里再触发一次做单元
         // 口径断言：楼梯不消失、DF 成功、驱离登记置位、地形不动。

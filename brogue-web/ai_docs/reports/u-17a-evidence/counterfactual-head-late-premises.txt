@@ -1,0 +1,72 @@
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17a-counterfactual-PWGQmF
+
+ ✓ src/engine/Combat/BoltContract.test.ts (10 tests) 41ms
+stdout | src/test/u_15a_shattering.test.ts > U15a IMPREGNABLE is an outer gate for every crystalize side effect > protected 3 preserves every layer, cell field, appearance and dormant occupant
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_15a_shattering.test.ts (18 tests) 6056ms
+     ✓ protected 21 preserves every layer, cell field, appearance and dormant occupant  392ms
+     ✓ protected 54 preserves every layer, cell field, appearance and dormant occupant  373ms
+     ✓ protected 71 preserves every layer, cell field, appearance and dormant occupant  367ms
+     ✓ protected boundary (5,0) survives; neighboring unprotected boundary still crystallizes  392ms
+     ✓ protected boundary (5,28) survives; neighboring unprotected boundary still crystallizes  383ms
+     ✓ MONST_ATTACKABLE_THRU_WALLS dies through shielding only on the unprotected obstructing cell  393ms
+     ✓ MONST_TURRET dies through shielding only on the unprotected obstructing cell  344ms
+     ✓ DF awakens the unprotected dormant turret before lethal handling; protected one sleeps  321ms
+     ✓ protected machine and ordinary wall behave identically after reload=true  632ms
+stdout | src/test/hunger_curve_sim.test.ts > 2000 回合饥饿曲线实测（harness, 3 seeds × 2 策略） > wait 策略：纯饥饿曲线
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+=== wait policy × 2000 turns ===
+seed=1 policy=wait turns=133 died=true cause=Rat
+  nutrition 2150 -> 2017, hp=0, state=normal
+  transitions: (none)
+  curve: T0:n2150/hp30/normal
+seed=7 policy=wait turns=76 died=true cause=Kobold
+  nutrition 2150 -> 2074, hp=0, state=normal
+  transitions: (none)
+  curve: T0:n2150/hp30/normal
+seed=42 policy=wait turns=53 died=true cause=Kobold
+  nutrition 2150 -> 2097, hp=0, state=normal
+  transitions: (none)
+  curve: T0:n2150/hp30/normal
+
+
+stdout | src/test/hunger_curve_sim.test.ts > 2000 回合饥饿曲线实测（harness, 3 seeds × 2 策略） > roam 策略：移动/战斗节奏下的饥饿进度
+
+=== roam policy × 2000 turns ===
+seed=1 policy=roam turns=2000 died=false
+  nutrition 2150 -> 150, hp=30, state=weak
+  transitions: hungry@1800, weak@2000
+  curve: T0:n2150/hp30/normal  T250:n1900/hp30/normal  T500:n1650/hp30/normal  T750:n1400/hp30/normal  T1000:n1150/hp30/normal  T1250:n900/hp30/normal  T1500:n650/hp30/normal  T1750:n400/hp30/normal  T2000:n150/hp30/weak
+seed=7 policy=roam turns=2000 died=false
+  nutrition 2150 -> 150, hp=30, state=weak
+  transitions: hungry@1800, weak@2000
+  curve: T0:n2150/hp30/normal  T250:n1900/hp30/normal  T500:n1650/hp30/normal  T750:n1400/hp28/normal  T1000:n1150/hp30/normal  T1250:n900/hp30/normal  T1500:n650/hp30/normal  T1750:n400/hp30/normal  T2000:n150/hp30/weak
+seed=42 policy=roam turns=2000 died=false
+  nutrition 2150 -> 150, hp=30, state=weak
+  transitions: hungry@1800, weak@2000
+  curve: T0:n2150/hp30/normal  T250:n1900/hp30/normal  T500:n1650/hp30/normal  T750:n1400/hp30/normal  T1000:n1150/hp28/normal  T1250:n900/hp30/normal  T1500:n650/hp30/normal  T1750:n400/hp30/normal  T2000:n150/hp30/weak
+
+
+stdout | src/test/hunger_curve_sim.test.ts > 2000 回合饥饿曲线实测（harness, 3 seeds × 2 策略） > seed 1 roam 延长至 2300 回合：nutrition 归零后的完整饿死流程
+
+=== seed 1 roam, 2300 turns ===
+seed=1 policy=roam-extended turns=2178 died=true cause=starvation
+  nutrition 2150 -> 0, hp=0, state=starving
+  transitions: hungry@1800, weak@2000, faint@2100, starving@2149
+  curve: T0:n2150/hp30/normal  T250:n1900/hp30/normal  T500:n1650/hp30/normal  T750:n1400/hp30/normal  T1000:n1150/hp30/normal  T1250:n900/hp30/normal  T1500:n650/hp30/normal  T1750:n400/hp30/normal  T2000:n150/hp30/weak
+
+
+ ✓ src/test/hunger_curve_sim.test.ts (3 tests) 21477ms
+     ✓ wait 策略：纯饥饿曲线  2191ms
+     ✓ roam 策略：移动/战斗节奏下的饥饿进度  14583ms
+     ✓ seed 1 roam 延长至 2300 回合：nutrition 归零后的完整饿死流程  4702ms
+
+ Test Files  3 passed (3)
+      Tests  31 passed (31)
+   Start at  18:31:46
+   Duration  30.18s (transform 752ms, setup 0ms, import 2.17s, tests 27.57s, environment 1ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/9bf2/brogue/brogue-web/ai_docs/reports/u-17a-evidence/counterfactual-head-late-premises.json

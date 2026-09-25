@@ -175,6 +175,7 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         [TerrainType.BRIDGE]: 0,
         [TerrainType.BRIDGE_EDGE]: 0,
         [TerrainType.INERT_BRIMSTONE]: 0,                            // Globals.c:426 NO_LIGHT
+        [TerrainType.ITEM_FIRE]: LightKind.FIRE_LIGHT,               // U17a Globals.c:498
         [TerrainType.PLAIN_FIRE]: LightKind.FIRE_LIGHT,              // Globals.c:492
         [TerrainType.EMBERS]: LightKind.EMBER_LIGHT,                 // Globals.c:469
         [TerrainType.ASH]: 0,                                        // Globals.c:461 NO_LIGHT
@@ -314,7 +315,7 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         }
     });
 
-    it('非零恰 35 个（U04 接通 D40 水晶传送门），且都指向有载体的目录条目', () => {
+    it('非零恰 36 个（U17a burnItem 后继 ITEM_FIRE），且都指向有载体的目录条目', () => {
         const nonzero = Object.entries(TERRAIN_FLAGS)
             .filter(([, v]) => v.glowLight !== LightKind.NO_LIGHT)
             .map(([k]) => Number(k) as TerrainType)
@@ -322,7 +323,7 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         expect(nonzero).toEqual([
             TerrainType.LAVA, TerrainType.ALTAR, TerrainType.EMBERS,
             TerrainType.CONFUSION_GAS, TerrainType.GAS_FIRE,
-            TerrainType.GAS_EXPLOSION, TerrainType.PLAIN_FIRE,
+            TerrainType.GAS_EXPLOSION, TerrainType.PLAIN_FIRE, TerrainType.ITEM_FIRE,
             // B-3：三张卷轴的水晶/圣徽 tile（FORCEFIELD_MELT 与 FORCEFIELD
             // 共用 FORCEFIELD_LIGHT）。
             TerrainType.FORCEFIELD, TerrainType.FORCEFIELD_MELT,
