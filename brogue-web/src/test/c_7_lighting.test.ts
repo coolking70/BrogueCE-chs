@@ -10,7 +10,7 @@
  *   playerInDarkness：Light.c:283-287；minersLightColor 动态插值：
  *   RogueMain.c:538-544 + IO.c:1529-1540 + Globals.c:120/121。
  *
- * 期望值的来源：本文件所有硬编码数字都由 CE 的 C 代码独立手工执行推导
+ * 半径黄金值由 scripts/u21b-ce-golden.py 抽取并编译本树 CE 原函数取得
  * （C 整除逐次 85%、fixpt 立方、整数截断），与被测实现零共享代码——
  * 实现抄错任何一步，这里的字面值就会翻红。
  */
@@ -28,12 +28,16 @@ import {
     minersLightColorAtDepth,
     minersLightBaseRadiusFixpt,
     updateMinersLightRadius,
+    MONSTER_INTRINSIC_LIGHT,
 } from '../engine/Map/LightCatalog';
 import { TERRAIN_FLAGS } from '../engine/Map/TerrainCatalog';
 import { Grid, TerrainType, DCOLS, DROWS } from '../engine/Map/Grid';
 import { LightMap } from '../engine/Lighting/LightMap';
 import { createHeadlessGame } from './harness';
 import type { Game } from '../engine/Core/Game';
+import { ItemLoader } from '../engine/Items/ItemLoader';
+import { Monster, type MonsterData } from '../entities/Monster';
+import monsters from '../data/monsters.json';
 
 // ---------------------------------------------------------------------------
 // 一、光照目录：结构与 CE 逐值对照
@@ -125,8 +129,8 @@ describe('C-7 光照目录（CE Globals.c:955-1020 逐值）', () => {
         expect(r(LightKind.INCENDIARY_DART_LIGHT).lowerBound).toBe(1500);
 
         // teleport/portal :1009 DCOLS*100
-        expect(r(LightKind.PORTAL_ACTIVATE_LIGHT).lowerBound).toBe(6400);
-        expect(CE_DCOLS).toBe(64); // 目录数据引用的是 CE 的 64，不是 web 的 79
+        expect(r(LightKind.PORTAL_ACTIVATE_LIGHT).lowerBound).toBe(7900);
+        expect(CE_DCOLS).toBe(79); // Rogue.h:127/168/174
     });
 });
 
@@ -359,13 +363,13 @@ describe('C-7 矿灯半径（RogueMain.c:666-670 + Light.c:120-154 逐行）', (
         // 期望值由 CE C 代码独立执行推导（逐次 *85/100 整除，非浮点 pow）：
         const EXPECTED: Array<[number, number, number]> = [
             // depth, radiusHundredths, radialFadeToPercent
-            [1, 5579, 40],
-            [2, 4776, 40],
-            [5, 3020, 40],
-            [10, 1465, 40],
-            [20, 469, 40],
-            [26, 317, 40],   // amulet 层：约 3.2 格
-            [40, 234, 40],   // 最深层：约 2.3 格
+            [1, 6854, 40],
+            [2, 5860, 40],
+            [5, 3685, 40],
+            [10, 1760, 40],
+            [20, 527, 40],
+            [26, 339, 40],
+            [40, 236, 40],
         ];
         let prev = Infinity;
         for (const [depth, rad, fade] of EXPECTED) {
@@ -377,29 +381,29 @@ describe('C-7 矿灯半径（RogueMain.c:666-670 + Light.c:120-154 逐行）', (
         }
         // d=0 锚（RogueMain.c:666 的 (DCOLS-1)*FP 起点 + :670 的 +2.25 格，
         // 零轮衰减）：以 FP_FACTOR 标度表达——fixpt 标度或补偿值写错即红
-        expect(minersLightBaseRadiusFixpt(0)).toBe(63 * FP_FACTOR + (FP_FACTOR * 225) / 100);
-        expect(minersLightBaseRadiusFixpt(1)).toBe(3656908); // 63*FP 逐次 85% 一轮 + 2.25 格
+        expect(minersLightBaseRadiusFixpt(0)).toBe(78 * FP_FACTOR + (FP_FACTOR * 225) / 100);
+        expect(minersLightBaseRadiusFixpt(1)).toBe(4492492); // 78*FP 逐次 85% 一轮 + 2.25 格
     });
 
     it('光明戒指倍率分支（Light.c:125-131）：正倍率放大有下限、负倍率除法收缩', () => {
         // LM=3：×3 放大，fade = 35 + min(65, 15) = 50
         expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(1), { lightMultiplier: 3 }))
-            .toEqual({ radiusHundredths: 16739, radialFadeToPercent: 50 });
+            .toEqual({ radiusHundredths: 20564, radialFadeToPercent: 50 });
         // LM=-2：除以 3 收缩，fade 钳在 35
         expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(1), { lightMultiplier: -2 }))
-            .toEqual({ radiusHundredths: 1859, radialFadeToPercent: 35 });
+            .toEqual({ radiusHundredths: 2284, radialFadeToPercent: 35 });
         // LM=-1：除以 2
         expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(1), { lightMultiplier: -1 }))
-            .toEqual({ radiusHundredths: 2789, radialFadeToPercent: 35 });
+            .toEqual({ radiusHundredths: 3427, radialFadeToPercent: 35 });
     });
 
     it('黑暗状态立方衰减 + 1/20 下限 + 2*FP 退化托底（Light.c:134-148）', () => {
         // STATUS_DARKNESS 满（15/15）：fraction → 0 → 下限 1/20
         expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(1), { darknessStatus: 15, darknessMax: 15 }))
-            .toEqual({ radiusHundredths: 278, radialFadeToPercent: 35 });
+            .toEqual({ radiusHundredths: 342, radialFadeToPercent: 35 });
         // 半程（5/15）：fraction = (2/3)^3 = 8/27
         expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(1), { darknessStatus: 5, darknessMax: 15 }))
-            .toEqual({ radiusHundredths: 1653, radialFadeToPercent: 36 });
+            .toEqual({ radiusHundredths: 2031, radialFadeToPercent: 36 });
         // 深层 + 满黑暗：由 fraction 决定（11 个百分之一格 ≈ 0.11 格）
         expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(40), { darknessStatus: 15, darknessMax: 15 }).radiusHundredths)
             .toBe(11);
@@ -409,10 +413,10 @@ describe('C-7 矿灯半径（RogueMain.c:666-670 + Light.c:120-154 逐行）', (
         expect(updateMinersLightRadius(0, { lightMultiplier: -10 }).radiusHundredths).toBe(2);
     });
 
-    it('水中减半（Light.c:150-152，同量纲 3*FP 退化下限）——载体缺口登记，公式分支保留', () => {
+    it('水中减半（Light.c:150-152，同量纲 3*FP 退化下限）', () => {
         expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(1), { inWater: 1 }))
-            .toEqual({ radiusHundredths: 2789, radialFadeToPercent: 40 });
-        expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(40), { inWater: 1 }).radiusHundredths).toBe(117);
+            .toEqual({ radiusHundredths: 3427, radialFadeToPercent: 40 });
+        expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(40), { inWater: 1 }).radiusHundredths).toBe(118);
         // 退化下限路径：零基础 + 正倍率地板 4*FP → 水中砍半 2*FP < 3*FP → 托到 3
         expect(updateMinersLightRadius(0, { inWater: 1 }).radiusHundredths).toBe(3);
     });
@@ -538,6 +542,59 @@ function carvePlain(game: Game): void {
 }
 
 describe('C-7 updateVision 集成（CE Time.c:859 → Light.c:208 → Movement.c:2582）', () => {
+    it('黑暗药水真实入口使 FOV 缩小，逐 tick 衰减后恢复', () => {
+        const game = createHeadlessGame(79210);
+        carvePlain(game);
+        game.player.loc = { x: 40, y: 15 };
+        game.depth = 20;
+        const update = (game as unknown as { updateVision(): void }).updateVision.bind(game);
+        const radius = () => (game as unknown as { minersLight: { radiusHundredths: number } }).minersLight.radiusHundredths;
+        update();
+        const normal = radius();
+        const target = game.grid.getCell(43, 15)!;
+        expect(target.isVisible).toBe(true);
+        const potion = ItemLoader.spawnPotion('potion_of_darkness', 0, 0)!;
+        game.player.inventory.addItem(potion);
+        game.quaffItem(potion);
+        expect(game.player.hasStatus('darkness')).toBe(true);
+        expect(radius()).toBeLessThan(normal);
+        expect(target.isVisible).toBe(false);
+        game.player.setStatusDuration('darkness', 1);
+        (game as unknown as { tickCreatureStatuses(): void }).tickCreatureStatuses();
+        expect(game.player.hasStatus('darkness')).toBe(false);
+        expect(radius()).toBe(normal);
+        expect(target.isVisible).toBe(true);
+    });
+
+    it('深水且未漂浮时半径减半，离水立即恢复', () => {
+        const game = createHeadlessGame(79211);
+        carvePlain(game);
+        game.player.loc = { x: 40, y: 15 };
+        game.depth = 10;
+        const update = (game as unknown as { updateVision(): void }).updateVision.bind(game);
+        const radius = () => (game as unknown as { minersLight: { radiusHundredths: number } }).minersLight.radiusHundredths;
+        update();
+        const normal = radius();
+        game.grid.getCell(40, 15)!.layers[0] = TerrainType.WATER_DEEP;
+        update();
+        expect(radius()).toBeLessThan(normal);
+        game.player.applyStatus('levitating', 10);
+        update();
+        expect(radius()).toBe(normal);
+    });
+
+    it('CE 固有光让深层矿灯以外的 wisp 可见', () => {
+        const game = createHeadlessGame(79212);
+        carvePlain(game);
+        game.player.loc = { x: 40, y: 15 };
+        game.depth = 40;
+        const data = (monsters as MonsterData[]).find(m => m.id === 'wisp')!;
+        const wisp = new Monster(46, 15, data);
+        game.monsters.push(wisp);
+        (game as unknown as { updateVision(): void }).updateVision();
+        expect(MONSTER_INTRINSIC_LIGHT.wisp).toBe(LightKind.WISP_LIGHT);
+        expect(game.grid.getCell(46, 15)!.isVisible).toBe(true);
+    });
     it('对抗⑤消费面：深层岩浆自发光——glowLight 列没接上/不被消费即红', () => {
         const game = createHeadlessGame(77031);
         carvePlain(game);
@@ -583,7 +640,7 @@ describe('C-7 updateVision 集成（CE Time.c:859 → Light.c:208 → Movement.c
             }
         }
 
-        // 开阔平原上 depth1 矿灯（55.8 格）几乎照 full-map，depth40（2.3 格）只剩身边一小圈
+        // 开阔平原上 depth1 矿灯（68.5 格）几乎照 full-map，depth40（2.3 格）只剩身边一小圈
         expect(visibleAtD1).toBeGreaterThan(1500);
         expect(visibleAtD40).toBeLessThan(40);
         // 方向哨兵

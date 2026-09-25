@@ -98,10 +98,13 @@ describe('U14a carriers, healing, negation and clocks',()=>{
         g.player.setStatusDuration('hasted',0);g.player.applyStatus('slowed',20);g.player.refreshSpeeds();
         wait(g);expect(g.player.getStatusDuration(id)).toBe(7);expect(m.getStatusDuration(id)).toBe(7);
     });
-    it('darkness never changes the miner light/FOV input in U14a',()=>{
-        const g=scene();(g as any).updateVision();const before=JSON.stringify(g.lightMap);
-        g.player.applyStatus('darkness',50);(g as any).updateVision();expect(JSON.stringify(g.lightMap)).toBe(before);
-        g.player.setStatusDuration('darkness',1);g.player.tickStatuses();expect(g.player.hasStatus('darkness')).toBe(false);
+    it('U21b consumes the U14a darkness carrier in miner light',()=>{
+        const g=scene();(g as any).updateVision();const before=(g as any).minersLight.radiusHundredths;
+        g.player.applyStatus('darkness',50);(g as any).updateVision();
+        expect((g as any).minersLight.radiusHundredths).toBeLessThan(before);
+        g.player.setStatusDuration('darkness',1);(g as any).tickCreatureStatuses();
+        expect(g.player.hasStatus('darkness')).toBe(false);
+        expect((g as any).minersLight.radiusHundredths).toBe(before);
     });
 });
 

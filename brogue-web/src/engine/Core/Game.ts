@@ -90,6 +90,8 @@ import { LightMap } from '../Lighting/LightMap';
 import {
     LIGHT_CATALOG,
     LightKind,
+    MONSTER_INTRINSIC_LIGHT,
+    MUTATION_LIGHT,
     VISIBILITY_THRESHOLD,
     minersLightBaseRadiusFixpt,
     minersLightColorAtDepth,
@@ -2729,19 +2731,21 @@ export class Game {
      * 矿灯半径重算。CE 的触发点与本轮载体现状：
      * - 进新层重置基础半径（RogueMain.c:666-671 → updateRingBonuses 级联）——
      *   本轮每次 updateVision 前重算（纯函数，值只随 depth 变化，等价）。
-     * - 光明戒指增减（Items.c:8728，updateRingBonuses 末尾）——web 无
-     *   ring_of_light 载体（D2 池/数据文件禁改），lightMultiplier 恒 1，登记。
-     * - 黑暗状态增减（Items.c:8090 喝药 / :4692 解除）——web 无
-     *   potion_of_darkness 入口；U14a 已建 darkness 状态载体，光照消费留 U21b。
-     * - 水中减半（Light.c:150-152，rogue.inWater）——web 无该状态载体，恒 0，登记。
+     * - 光明戒指（Items.c:8728）尚无可生成目录项，倍率保持基值 1。
+     * - 黑暗状态由药水施加，并在计时、治愈、消魔时变化。
+     * - inWater 按 Time.c:84-107 的深水、漂浮、缠绕、阻挡条件派生。
      */
     private refreshMinersLight(): void {
         this.minersLightBaseFixpt = minersLightBaseRadiusFixpt(this.depth);
+        const flags = cellTerrainFlags(this.grid, this.player.loc.x, this.player.loc.y);
+        const inWater = !!(flags & T_IS_DEEP_WATER)
+            && !this.player.hasStatus('levitating')
+            && !(flags & (T_ENTANGLES | T_OBSTRUCTS_PASSABILITY));
         this.minersLight = updateMinersLightRadius(this.minersLightBaseFixpt, {
             lightMultiplier: 1,
-            darknessStatus: 0,
-            darknessMax: 0,
-            inWater: 0,
+            darknessStatus: this.player.getStatusDuration('darkness'),
+            darknessMax: this.player.maxStatus.darkness,
+            inWater: Number(inWater),
         });
     }
 
@@ -2812,7 +2816,22 @@ export class Game {
             }
         }
 
-        // 2. 燃烧生物的光（Light.c:249-251：STATUS_BURNING 且非 MONST_FIERY；
+        // 2. 生物固有光（Light.c:243-245）及燃烧光（:249-251）。
+        for (const m of this.monsters) {
+            if (m.hp <= 0) continue;
+            const kind = MONSTER_INTRINSIC_LIGHT[m.typeId];
+            if (kind !== undefined) lm.paintLight({
+                light: LIGHT_CATALOG[kind]!, x: m.loc.x, y: m.loc.y,
+                hasCreatureAt: creatureBlocker,
+            });
+            const mutationKind = m.mutation && MUTATION_LIGHT[m.mutation.id];
+            if (mutationKind !== undefined) lm.paintLight({
+                light: LIGHT_CATALOG[mutationKind]!, x: m.loc.x, y: m.loc.y,
+                hasCreatureAt: creatureBlocker,
+            });
+        }
+
+        // 3. 燃烧生物的光（Light.c:249-251：STATUS_BURNING 且非 MONST_FIERY；
         //    CE 的遍历含玩家自己——updateLighting 的 handledPlayer 模式）
         const burningLight = LIGHT_CATALOG[LightKind.BURNING_CREATURE_LIGHT]!;
         const paintBurning = (entity: Player | Monster, fiery: boolean): void => {
@@ -2830,7 +2849,7 @@ export class Game {
             if (m.hp > 0) paintBurning(m, m.hasBehavior('MONST_FIERY'));
         }
 
-        // 3. 矿灯（Light.c:269：isMinersLight=true → 不驱散阴影、不圆截断）
+        // 4. 矿灯（Light.c:269：isMinersLight=true → 不驱散阴影、不圆截断）
         lm.paintLight({
             light: this.minersLightDef(),
             x: this.player.loc.x, y: this.player.loc.y,
@@ -5415,7 +5434,9 @@ export class Game {
             return true;
         }
         if (!monster?.isInvulnerable()) {
+            const hadPlayerDarkness = target === this.player && target.hasStatus('darkness');
             affected = negateCreatureStatusEffects(target, target === this.player) || affected;
+            if (hadPlayerDarkness && !target.hasStatus('darkness')) this.updateVision();
             if (monster?.hasBehavior('MONST_IMMUNE_TO_FIRE')) {
                 monster.behaviorFlags.delete('MONST_IMMUNE_TO_FIRE');
                 monster.wasNegated = affected = true;
@@ -6647,7 +6668,11 @@ export class Game {
             if (m.getStatusDuration('lifespan_remaining') !== 1) this.resolvePoisonDamage(m);
         }
         this.clearDisplacedEntanglement(this.player);
+        const priorDarkness = this.player.getStatusDuration('darkness');
+        const priorLevitation = this.player.hasStatus('levitating');
         const playerExpired = this.player.tickStatuses();
+        if (this.player.getStatusDuration('darkness') !== priorDarkness
+            || this.player.hasStatus('levitating') !== priorLevitation) this.updateVision();
         // CE Time.c:2261-2273：玩家 haste/slow 到期时恢复 info 基准速度并
         // synchronizePlayerTimeState（客观门对齐玩家剩余 tick）。web 的速度
         // 恢复由 tickStatuses → refreshSpeeds 完成，这里补同步调用。

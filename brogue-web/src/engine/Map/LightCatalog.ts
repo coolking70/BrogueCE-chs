@@ -23,13 +23,12 @@
  *   若复刻该消耗，生成期与交互期的 RNG 流都会移动（generation_baseline 翻红）。
  *   留痕：渲染轮要闪烁时用 cosmetic RNG 自接 rand 通道（web 侧设计选择，
  *   CE 无此分域对应），引擎阈值判定继续用基础分量。
- * - 半径里 DCOLS*100 的 DCOLS 按 **CE 的 64** 求值（= 6400），不用 web 的 79
- *   （types/index.ts 的 DCOLS 是 web 终端布局常量，地图几何与 CE 不同；
- *   目录数据与公式参数一律抄 CE 原值——D1）。
+ * - 当前 CE Rogue.h:127/168/174 的 DCOLS = 100 - 20 - 1 = 79。
+ *   半径中 DCOLS*100 因而是 7900。
  */
 
-/** CE 终端布局下的地图宽度（Rogue.h:168；CE DCOLS=64，供目录/公式引用）。 */
-export const CE_DCOLS = 64;
+/** 当前 CE 地图宽度（Rogue.h:127/168/174）。 */
+export const CE_DCOLS = 79;
 
 /** CE 16.16 定点因子（Rogue.h:99-101）。 */
 export const FP_FACTOR = 65536;
@@ -194,6 +193,32 @@ export enum LightKind {
     DEMONIC_STATUE_LIGHT,          // 59
 }
 
+/** Globals.c:1025-1162 monsterCatalog intrinsicLightType for web species IDs. */
+export const MONSTER_INTRINSIC_LIGHT: Readonly<Record<string, LightKind>> = {
+    goblin_totem: LightKind.IMP_LIGHT,
+    ogre_totem: LightKind.LICH_LIGHT,
+    spark_turret: LightKind.SPARK_TURRET_LIGHT,
+    explosive_bloat: LightKind.EXPLOSIVE_BLOAT_LIGHT,
+    wisp: LightKind.WISP_LIGHT,
+    salamander: LightKind.SALAMANDER_LIGHT,
+    sentinel: LightKind.SENTINEL_LIGHT,
+    lich: LightKind.LICH_LIGHT,
+    phylactery: LightKind.LICH_LIGHT,
+    pixie: LightKind.PIXIE_LIGHT,
+    imp: LightKind.IMP_LIGHT,
+    flamedancer: LightKind.FLAMEDANCER_LIGHT,
+    spectral_blade: LightKind.SPECTRAL_BLADE_LIGHT,
+    unicorn: LightKind.UNICORN_LIGHT,
+    ifrit: LightKind.IFRIT_LIGHT,
+    phoenix: LightKind.PHOENIX_LIGHT,
+    phoenix_egg: LightKind.PHOENIX_EGG_LIGHT,
+};
+
+/** Globals.c:1396-1414 mutationCatalog light column. */
+export const MUTATION_LIGHT: Readonly<Record<string, LightKind>> = {
+    explosive: LightKind.EXPLOSIVE_BLOAT_LIGHT,
+};
+
 /**
  * CE `lightCatalog[NUMBER_LIGHT_KINDS]`（Globals.c:955-1016）的 web 投影。
  * 条目数与顺序由 c_7 测试钉死（60 条、枚举名逐一对位）。
@@ -326,15 +351,7 @@ export interface MinersLightState {
 /**
  * CE updateMinersLightRadius（Light.c:120-154）的逐行复刻。
  *
- * 载体现状（C-7 登记）：
- * - lightMultiplier：CE 由 updateRingBonuses 按光明戒指附魔累加
- *   （Items.c:8685-8730，基础值 1）；web 无光明戒指载体（D2 池无
- *   ring_of_light），本轮恒传 1，公式结构完整保留——戒指落地时接
- *   effectiveRingEnchant 即可。
- * - STATUS_DARKNESS：CE 由黑暗药水设置（Items.c:8085-8093）；web 无黑暗
- *   药水载体，本轮恒传 0，立方衰减分支保留。
- * - rogue.inWater：CE 玩家站水中时矿灯减半（Light.c:148-150）；web 无
- *   inWater 载体，本轮恒传 false，分支保留。
+ * 调用者传入装备、黑暗状态和深水判据；计算顺序与 Light.c:120-154 一致。
  *
  * @param baseRadiusFixpt minersLightBaseRadiusFixpt(depth) 的 fixpt 值
  */
