@@ -1,0 +1,261 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_17e_altars.test.ts src/test/u_01_instance_snapshot.test.ts src/test/u_05a_item_ownership.test.ts src/test/u_17b_carriers.test.ts src/test/u_17c_triggers.test.ts --maxWorkers=2 --reporter=default --reporter=json --outputFile.json=ai_docs/reports/u-17e-evidence/new-guards-discovery.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web
+
+stdout | src/test/u_01_instance_snapshot.test.ts > ordinary uses the complete graph contract, including private base speeds
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/u_05a_item_ownership.test.ts > U05a real consumer and U01 snapshot contract > ordinary monster owns one item before death, after reload/death, after pickup/reload
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_05a_item_ownership.test.ts (51 tests | 1 failed) 12103ms
+     ✓ CE inventory is complete, disabled CE48 remains absent from web pool 5ms
+     ✓ CE8/F0: generation/adoption/outsourcing/carry conserves identity 3ms
+     ✓ CE8/F1: generation/adoption/outsourcing/carry conserves identity 2ms
+     ✓ CE8/F2: generation/adoption/outsourcing/carry conserves identity 35ms
+     ✓ CE8/F3: generation/adoption/outsourcing/carry conserves identity 10ms
+     ✓ CE10/F1: generation/adoption/outsourcing/carry conserves identity 4ms
+     ✓ CE11/F2: generation/adoption/outsourcing/carry conserves identity 2ms
+     ✓ CE12/F0: generation/adoption/outsourcing/carry conserves identity 5ms
+     ✓ CE16/F0: generation/adoption/outsourcing/carry conserves identity 1ms
+     × CE26/F5: generation/adoption/outsourcing/carry conserves identity 9ms
+     ✓ CE27/F0: generation/adoption/outsourcing/carry conserves identity 7ms
+     ✓ CE28/F0: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE29/F0: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE30/F0: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE31/F1: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE32/F0: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE33/F0: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE34/F1: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE35/F0: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE36/F0: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE37/F0: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE38/F0: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE39/F0: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE40/F0: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE41/F2: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE42/F0: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE43/F0: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE44/F1: generation/adoption/outsourcing/carry conserves identity 7ms
+     ✓ CE45/F0: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE46/F0: generation/adoption/outsourcing/carry conserves identity 2ms
+     ✓ CE46/F1: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE47/F3: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE48/F0: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE49/F0: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE50/F0: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE51/F1: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE52/F3: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE53/F5: generation/adoption/outsourcing/carry conserves identity 5ms
+     ✓ CE54/F0: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE55/F0: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE56/F0: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ CE57/F2: generation/adoption/outsourcing/carry conserves identity 1ms
+     ✓ adopt only once; later itemless instances/features do not erase the last valid torch pair 1ms
+     ✓ reject orphaned earlier torch in malformed multiple-generation TAKE features 2ms
+     ✓ adopt + outsource + carry transfers only to child, never parent ground/carrier 1ms
+     ✓ recursive child adopts then fails rolls back terrain, pending items/monsters and external item 146ms
+     ✓ recursive child succeeds, parent later fails rolls back terrain, pending items/monsters and external item 39ms
+     ✓ ordinary monster owns one item before death, after reload/death, after pickup/reload  3539ms
+     ✓ horde leader owns one item before death, after reload/death, after pickup/reload  3366ms
+     ✓ handoff replaces the horde leader’s existing item without a second floor/inventory owner  2894ms
+     ✓ duplicate deferred identity is rejected before either copy is instantiated  1985ms
+ ✓ src/test/u_01_instance_snapshot.test.ts (17 tests) 12113ms
+   ✓ ordinary uses the complete graph contract, including private base speeds  1214ms
+   ✓ polymorph uses the complete graph contract, including private base speeds  729ms
+   ✓ clone uses the complete graph contract, including private base speeds  684ms
+   ✓ dormant uses the complete graph contract, including private base speeds  652ms
+   ✓ player clone uses the complete graph contract, including private base speeds  1074ms
+   ✓ naturally generated D1-D3 ordinary/ground/pack entities deeply round-trip, without deriving from catalog  2706ms
+   ✓ spear next attack keeps penetration/lunge, damage and action cost  983ms
+   ✓ rapier next attack keeps penetration/lunge, damage and action cost  848ms
+   ✓ next unlock preserves disposableHere=false and origin-depth rejection  589ms
+   ✓ next unlock preserves disposableHere=true and origin-depth rejection  601ms
+   ✓ next scheduler action retains 37 tick wait; dormant carrier never acts; next death drops the same payload once  771ms
+   ✓ player hunger event, cached speeds, direction, status immunity and inventory/equipment identity survive the next consumers  578ms
+   ✓ version boundary rejects v1 before changing the live world; detached/player high IDs are reserved  576ms
+stdout | src/test/u_17e_altars.test.ts > U17e CE catalog and carrier scope > 164 CE appearances include exact glyph/color/background and localized terrain descriptions
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/u_17c_triggers.test.ts > U17c real actions → final terrain / entity / solvability > 154 player step powers only same-number remote gate and leaves an inactive pressure plate
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_17c_triggers.test.ts (17 tests | 2 failed) 11196ms
+     ✓ five tile rows and all three chains equal CE-source goldens, including an invisible repeating floor 3ms
+     ✓ seven DF rows match CE flags, probability, layer, description/light and successor exactly 1ms
+     × historical U17c projection after nine U17d closures; every other missing identity remains ordered 11ms
+     ✓ CE-generated appearances preserve all old rows and represent the new glyphs 2ms
+     ✓ three machine DF data starts restored, hidden-trap autoGen correct; secret lever and worm machines stay retired 1ms
+     ✓ 154 player step powers only same-number remote gate and leaves an inactive pressure plate  943ms
+     ✓ 154 actual thrown weapon depresses a LIQUID plate, clears that layer and opens the linked cage  642ms
+     ✓ 154 monster placement uses the shared contact; breaker blocks power but not the plate state  787ms
+     ✓ 17 manual search clears hidden base and surface, creates liquid hole + halo/flare, then confirmed player falls  862ms
+     ✓ 17 search has no forged discovery behind a wall; hidden trapdoor falls without confirmation and levitation prevents falling  1399ms
+     ✓ 95 searching then bumping wall lever leaves player in place, consumes a turn and opens a distant gate exactly once  1524ms
+     ✓ 95 upstream dormant wired lever can be created after a cached no-secret scan, then searched and pulled  771ms
+     × 144 carpet-constrained propagation remains invisible; player entry/wait repeatedly sends power, monsters and items do not 788ms
+     ✓ 144 resurrection consumer: empty altar can retry on the retained floor after an ally enters purgatory  574ms
+     ✓ 152 DF lays holes and each halo without evacuation; monster and floor items reuse the fall queues  2116ms
+     ✓ no invented evacuation flags; pending later-family discovery does not erase its source 1ms
+   ✓ 152 CE22 whole blueprint builds the pit before the plate; actual throw opens its exit  768ms
+stdout | src/test/u_17b_carriers.test.ts > U17b triggers reach final terrain, entities, light and persistence > 61 actual step tramples foliage, opens sight; moving away allows regrowth; occupied regrowth retramples synchronously
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_17e_altars.test.ts (19 tests) 16278ms
+     ✓ 164 CE appearances include exact glyph/color/background and localized terrain descriptions  928ms
+     ✓ 85 pickup closes same-machine cages, evacuates player and monster, preserves remaining loot and can reopen  798ms
+     ✓ a blocked or wrong-machine key cannot open a closed cage; save/load retains terrain and bound key  832ms
+     ✓ 140 two drops exchange enchantment and its knowledge, make both altars inert and 141 pipes charred  1553ms
+     ✓ 141 CE6 blueprint feature actually lays glowing pipes; a user drop pair consumes that generated network  858ms
+     ✓ does not consume items or altars when equal  880ms
+     ✓ does not consume items or altars when wand  669ms
+     ✓ does not consume items or altars when quiver  827ms
+     ✓ does not consume items or altars when other-machine  747ms
+     ✓ does not consume items or altars when breaker  605ms
+     ✓ staff capacity/charges clamp, recharge timer remains, known max charges transfer, harmful runes persist  742ms
+     ✓ staff shatters below two without losing the other item or duplicating an exchange  741ms
+     ✓ charm cooldown uses existing CE delay formula with integer percent; positive runes fade on nonpositive exchange  1700ms
+     ✓ 143 repeated floor entry retries with no dead ally then resurrects strongest saved ally once with CE light  1001ms
+     ✓ 145 pressure entry activates altar and cage; entranced marked creature enters and dies, opening surviving reward  1456ms
+     ✓ does not sacrifice unmarked creature  1191ms
+     ✓ does not sacrifice wrong-machine creature  741ms
+ ❯ src/test/u_17b_carriers.test.ts (20 tests | 1 failed) 15211ms
+     ✓ five complete tile rows come from CE, including flags, all three chains and glow 3ms
+     ✓ nine CE DF rows include the new regrowth successor and all inherited edge fields 1ms
+     × historical U17b missing projection excludes exactly the five U17c and nine U17d closures 13ms
+     ✓ appearance golden extension keeps every previous row byte-equivalent in value 1ms
+     ✓ 61 actual step tramples foliage, opens sight; moving away allows regrowth; occupied regrowth retramples synchronously  758ms
+     ✓ 61 fallen item also tramples regrowth; other layers block regrowth according to CE priority  1219ms
+     ✓ 66 environment activates inert brimstone at 800/10000 boundary, never an invented explosion  922ms
+     ✓ 104 player fire bolt ignites ACTIVE into INERT + sulfur fire, burns an occupant and scroll through the shared transaction  606ms
+     ✓ 104 active timeout at 10/10000 creates sulfur fire/light; 2500/10000 expiry leaves liquid, no embers  637ms
+     ✓ 83 wrong key leaves lock, matching key bump opens iron door, emits flare, consumes disposable key; later steps never reclose it  624ms
+     ✓ 83 reusable key persists; snapshot retains the iron tile, passability and appearance name  1420ms
+     ✓ 98 fire bolt collapses a rope span only, successor walks the bridge, then creature falls; stone bridge is nonflammable  814ms
+     ✓ 98 a levitating player remains above the collapsed bridge; an earthbound player falls at turn boundary  760ms
+     ✓ no evacuation is invented: all five DFs preserve position; brimstone contact still ignites 1ms
+     ✓ bridge floor item fall: potion shatters, weapon queues exactly once, survives save/load and new-level landing  2365ms
+     ✓ fall landing uses item-only CE terrain veto: allows liquid, excludes occupied/machine/stair cells, and delays future catch-up  1054ms
+     ✓ D40 floor falls destroy even nonpotions without a D41 queue  721ms
+   ✓ fallen-item restore runs before the new-level RNG reseed, once; cached lower floors consume the same ownership queue  2204ms
+   ✓ fallen items on existing fire/lava burn before drifting; amulet survives lava and future items wait  558ms
+   ✓ fallen-item landing excludes each CE map veto and terrain obstruction, then chooses the nearest free ring  525ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_05a_item_ownership.test.ts > U05a CE feature ownership matrix (spatial/DF algorithms covered by V regression) > CE26/F5: generation/adoption/outsourcing/carry conserves identity
+AssertionError: expected [ { loc: { x: 2, y: 2 }, …(2) }, …(1) ] to deeply equal [ { loc: { x: 2, y: 2 }, …(2) } ]
+
+- Expected
++ Received
+
+@@ -5,6 +5,14 @@
+        "x": 2,
+        "y": 2,
+      },
+      "machine": 7,
+    },
++   {
++     "disposableHere": false,
++     "loc": {
++       "x": 6,
++       "y": 8,
++     },
++     "machine": 0,
++   },
+  ]
+
+ ❯ src/test/u_05a_item_ownership.test.ts:72:163
+     70|         expect(expected).toBeGreaterThan(0);expect(owners).toHaveLengt…
+     71|         expect(new Set(owners.map(i=>i.instanceId)).size).toBe(expecte…
+     72|         if(f.flags.includes('MF_ADOPT_ITEM')){expect(generated).toHave…
+       |                                                                                                                                                                   ^
+     73|         else expect(owners.map(i=>i.instanceId).sort()).toEqual(genera…
+     74|         if(f.flags.includes('MF_MONSTER_TAKE_ITEM')){expect(r.itemSpaw…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/test/u_17b_carriers.test.ts > U17b CE data / closed first family > historical U17b missing projection excludes exactly the five U17c and nine U17d closures
+AssertionError: expected [ 155, 187, 87, 88, 148, 191 ] to deeply equal [ 85, 140, 141, 143, 155, 187, …(5) ]
+
+- Expected
++ Received
+
+  [
+-   85,
+-   140,
+-   141,
+-   143,
+    155,
+    187,
+    87,
+    88,
+-   145,
+    148,
+    191,
+  ]
+
+ ❯ src/test/u_17b_carriers.test.ts:53:28
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/test/u_17c_triggers.test.ts > U17c CE independent catalog and scope > historical U17c projection after nine U17d closures; every other missing identity remains ordered
+AssertionError: expected [ 155, 187, 87, 88, 148, 191 ] to deeply equal [ 85, 140, 141, 143, 155, 187, …(5) ]
+
+- Expected
++ Received
+
+  [
+-   85,
+-   140,
+-   141,
+-   143,
+    155,
+    187,
+    87,
+    88,
+-   145,
+    148,
+    191,
+  ]
+
+ ❯ src/test/u_17c_triggers.test.ts:50:28
+     48|  });
+     49|  it('historical U17c projection after nine U17d closures; every other …
+     50|   expect(DF_MISSING_TILES).toEqual([179,180,182,183,185,85,140,141,143…
+       |                            ^
+     51|   for(const id of restored)expect(()=>catalogFeature(id)).not.toThrow(…
+     52|  });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/test/u_17c_triggers.test.ts > U17c real actions → final terrain / entity / solvability > 144 carpet-constrained propagation remains invisible; player entry/wait repeatedly sends power, monsters and items do not
+AssertionError: expected 22 to be 160 // Object.is equality
+
+- Expected
++ Received
+
+- 160
++ 22
+
+ ❯ src/test/u_17c_triggers.test.ts:107:54
+    105|   mark(g,20,10,T.ALTAR_CAGE_RETRACTABLE);const m=rat(g,11,10);(g as an…
+    106|   const i=new Item('stone',')',0xffffff,ItemCategory.WEAPON);i.loc={x:…
+    107|   move(g,1,0);expect(g.grid.getCell(20,10)!.terrain).toBe(T.RESURRECTI…
+       |                                                      ^
+    108|   mark(g,20,10,T.ALTAR_CAGE_RETRACTABLE);g.handlePlayerAction('wait',u…
+    109|  });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  3 failed | 2 passed (5)
+      Tests  4 failed | 120 passed (124)
+   Start at  02:59:48
+   Duration  43.20s (transform 1.44s, setup 0ms, import 7.24s, tests 66.90s, environment 2ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/ai_docs/reports/u-17e-evidence/new-guards-discovery.json

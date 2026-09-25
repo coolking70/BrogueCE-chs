@@ -257,9 +257,9 @@ describe('U17a actual Game consumers',()=>{
         spawnDungeonFeature(g.grid,5,5,repel,false);
         expect(g.player.loc).not.toEqual({x:5,y:5});
     });
-    it('historical U17a projection: 30 missing rows before the U17b/U17c/U17d carriers',()=>{
-        expect([...DF_MISSING_TILES, 61, 66, 104, 83, 98, 154, 17, 152, 95, 144, 179, 180, 182, 183, 185, 174, 175, 14, 19]).toHaveLength(30);
-        expect(Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => Number(k) !== 63 && Number(k) !== 96 && Number(k) !== 137 && Number(k) !== 178)).toHaveLength(140);
+    it('historical U17a projection: 30 missing rows before the U17b/U17c/U17d/U17e carriers',()=>{
+        expect([...DF_MISSING_TILES, 61, 66, 104, 83, 98, 154, 17, 152, 95, 144, 179, 180, 182, 183, 185, 174, 175, 14, 19, 85, 140, 141, 143, 145]).toHaveLength(30);
+        expect(Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => Number(k) !== 63 && Number(k) !== 96 && Number(k) !== 137 && Number(k) !== 178 && ![84,142,146].includes(Number(k)))).toHaveLength(140);
         expect(DF.DF_ITEM_FIRE).toBe(110);
         expect(catalogFeature(DF.DF_ITEM_FIRE)).toMatchObject({tile:T.ITEM_FIRE,layer:L.SURFACE,startProbability:0,flags:0,lightFlare:'FALLEN_TORCH_FLASH_LIGHT'});
     });

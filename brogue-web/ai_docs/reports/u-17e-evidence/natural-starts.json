@@ -1,0 +1,124 @@
+[
+  {
+    "seed": 777,
+    "depth": 2,
+    "name": "ALTAR_CAGE_OPEN",
+    "cells": [
+      {
+        "x": 3,
+        "y": 24,
+        "machine": 1
+      },
+      {
+        "x": 4,
+        "y": 21,
+        "machine": 1
+      },
+      {
+        "x": 5,
+        "y": 25,
+        "machine": 1
+      },
+      {
+        "x": 7,
+        "y": 21,
+        "machine": 1
+      }
+    ],
+    "items": [
+      {
+        "id": 19,
+        "category": 7,
+        "keyLoc": [
+          {
+            "loc": {
+              "x": 5,
+              "y": 25
+            },
+            "machine": 0,
+            "disposableHere": false
+          }
+        ],
+        "flags": [
+          "ITEM_IS_KEY",
+          "ITEM_KIND_AUTO_ID",
+          "ITEM_MAX_CHARGES_KNOWN",
+          "ITEM_PLAYER_AVOIDS"
+        ]
+      },
+      {
+        "id": 20,
+        "category": 7,
+        "keyLoc": [
+          {
+            "loc": {
+              "x": 3,
+              "y": 24
+            },
+            "machine": 0,
+            "disposableHere": false
+          }
+        ],
+        "flags": [
+          "ITEM_IS_KEY",
+          "ITEM_KIND_AUTO_ID",
+          "ITEM_MAX_CHARGES_KNOWN",
+          "ITEM_PLAYER_AVOIDS"
+        ]
+      },
+      {
+        "id": 21,
+        "category": 7,
+        "keyLoc": [
+          {
+            "loc": {
+              "x": 7,
+              "y": 21
+            },
+            "machine": 0,
+            "disposableHere": false
+          }
+        ],
+        "flags": [
+          "ITEM_IS_KEY",
+          "ITEM_KIND_AUTO_ID",
+          "ITEM_MAX_CHARGES_KNOWN",
+          "ITEM_PLAYER_AVOIDS"
+        ]
+      },
+      {
+        "id": 23,
+        "category": 7,
+        "keyLoc": [
+          {
+            "loc": {
+              "x": 4,
+              "y": 21
+            },
+            "machine": 0,
+            "disposableHere": false
+          }
+        ],
+        "flags": [
+          "ITEM_IS_KEY",
+          "ITEM_KIND_AUTO_ID",
+          "ITEM_MAX_CHARGES_KNOWN",
+          "ITEM_PLAYER_AVOIDS"
+        ]
+      }
+    ]
+  },
+  {
+    "seed": 777,
+    "depth": 14,
+    "name": "RESURRECTION_ALTAR",
+    "cells": [
+      {
+        "x": 77,
+        "y": 18,
+        "machine": 1
+      }
+    ],
+    "items": []
+  }
+]

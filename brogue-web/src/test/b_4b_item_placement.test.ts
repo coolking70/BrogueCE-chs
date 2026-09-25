@@ -415,8 +415,16 @@ describe('B-4b 钥匙由锁具驱动（P1-50 的 140-166 已灭）', () => {
                 expect(lockKeys.length, `seed${seed} D${d} 认锁的钥匙 ${lockKeys.length} != 锁 ${locks}`).toBe(locks);
                 for (const k of lockKeys) {
                     for (const b of k.keyLoc) {
-                        expect(lockCells.has(`${b.loc.x},${b.loc.y}`),
-                            `seed${seed} D${d} 认锁钥匙的 keyLoc (${b.loc.x},${b.loc.y}) 不是本层的 LOCKED_DOOR`).toBe(true);
+                        // U17e / CE Architect.c:1521-1527: a CE26-adopted lock
+                        // key preserves its lock binding and appends its own
+                        // reusable library return slot. Other bindings remain invalid.
+                        const at = game.grid.getCell(b.loc.x, b.loc.y);
+                        const libraryReturn = k.flags?.includes('ITEM_IS_KEY')
+                            && b.machine === 0 && b.disposableHere === false
+                            && at?.machineNumber > 0
+                            && [TerrainType.ALTAR_CAGE_OPEN, TerrainType.ALTAR_CAGE_CLOSED].includes(at.terrain);
+                        expect(lockCells.has(`${b.loc.x},${b.loc.y}`) || libraryReturn,
+                            `seed${seed} D${d} 认锁钥匙的 keyLoc (${b.loc.x},${b.loc.y}) 既不是锁，也不是 CE 图书馆归还位`).toBe(true);
                     }
                 }
                 // ② 其余 KEY：绑定不得悬空

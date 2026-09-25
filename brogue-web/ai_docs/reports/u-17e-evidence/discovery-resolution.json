@@ -1,0 +1,38 @@
+[
+  {
+    "file": "b2_transcription.test.ts",
+    "title": "CE 6/F2 keeps the registered missing-tile DF 141 disconnected",
+    "resolution": "Old premise/fixture proved on HEAD, then narrowly corrected; assertions retain their intended contract.",
+    "positiveProof": "late-ce6-positive.json"
+  },
+  {
+    "file": "b_4b_item_placement.test.ts",
+    "title": "T11 每层：每把 LOCKED_DOOR 恰有一钥；其余 KEY 的绑定必须能认到本层的「钥匙消费点」",
+    "resolution": "Old premise/fixture proved on HEAD, then narrowly corrected; assertions retain their intended contract.",
+    "positiveProof": "late-key-positive.json"
+  },
+  {
+    "file": "g_1_gas_volumetric.test.ts",
+    "title": "Game.objectiveTimeBlock 的探测守卫：无气体回合跳过两轮（CE Time.c:1600-1613）",
+    "resolution": "Old premise/fixture proved on HEAD, then narrowly corrected; assertions retain their intended contract.",
+    "positiveProof": "late-gas-positive.json"
+  },
+  {
+    "file": "u_08_terrain_bolts.test.ts",
+    "title": "new closed terrain set: 139 DFs, no entity/spawn flags; web forbidden to learn, vines eligible",
+    "resolution": "Old premise/fixture proved on HEAD, then narrowly corrected; assertions retain their intended contract.",
+    "positiveProof": "late-catalog-positive.json"
+  },
+  {
+    "file": "u_17a_df_transaction.test.ts",
+    "title": "historical U17a projection: 30 missing rows before the U17b/U17c/U17d carriers",
+    "resolution": "Old premise/fixture proved on HEAD, then narrowly corrected; assertions retain their intended contract.",
+    "positiveProof": "late-catalog-positive.json"
+  },
+  {
+    "file": "u_17e_altars.test.ts",
+    "title": "two overlapping drops occupy one CE floor slot and cannot power a commutation machine",
+    "resolution": "Production same-cell fix landed while discovery was already running; fresh process and defect injection validate the final implementation.",
+    "positiveProof": "late-catalog-positive.json"
+  }
+]

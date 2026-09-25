@@ -327,7 +327,6 @@ describe('V-2b-7 B：22 条新 DF 目录条目 ≡ CE Globals.c 原行', () => {
         const missing: Array<[DF, number, string]> = [
             [DF.DF_ALTAR_RETRACT, 724, 'FLOOR_FLOODABLE'],
             [DF.DF_PORTAL_ACTIVATE, 725, 'PORTAL_LIGHT'],
-            [DF.DF_SACRIFICE_ALTAR, 802, 'SACRIFICE_ALTAR'],
             [DF.DF_COFFIN_BURSTS, 807, 'COFFIN_OPEN'],
             [DF.DF_WORM_TUNNEL_MARKER_ACTIVE, 880, 'WORM_TUNNEL_MARKER_ACTIVE'],
         ];
@@ -338,6 +337,8 @@ describe('V-2b-7 B：22 条新 DF 目录条目 ≡ CE Globals.c 原行', () => {
             expect(e.tile, `DF#${id} 无 web tile → null`).toBeNull();
             expect(DF_MISSING_TILES, `DF#${id} 应在缺 tile 名单里`).toContain(id);
         }
+        expect(DUNGEON_FEATURE_CATALOG[DF.DF_SACRIFICE_ALTAR]).toMatchObject({ceLine:802,ceTile:'SACRIFICE_ALTAR',tile:C.SACRIFICE_ALTAR});
+        expect(DF_MISSING_TILES).not.toContain(DF.DF_SACRIFICE_ALTAR);
         // 反方向：本轮已落地 tile 的四条**不得**留在名单里（守卫变强）
         for (const id of [DF.DF_RUBBLE, DF.DF_SHATTERING_SPELL, DF.DF_WALL_SHATTER, DF.DF_STATUE_SHATTER, DF.DF_LUMINESCENT_FUNGUS]) {
             expect(DF_MISSING_TILES, `DF#${id} 的 tile 已到位，不得留在缺 tile 名单`).not.toContain(id);

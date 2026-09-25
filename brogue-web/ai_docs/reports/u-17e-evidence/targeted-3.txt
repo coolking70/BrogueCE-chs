@@ -1,0 +1,220 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_17e_altars.test.ts src/test/u_05a_item_ownership.test.ts src/test/u_17b_carriers.test.ts src/test/u_17c_triggers.test.ts src/test/c_4a_0_layer_model.test.ts src/test/c_4a_terrain_catalog.test.ts src/test/c_4b_dungeon_feature.test.ts src/test/c_7_lighting.test.ts src/test/r_1_appearance.test.ts --testNamePattern=U17e|CE26/F5|historical U17|目录|键覆盖|terrainAllowsMove|Game.canMoveTo|归属表|非零恰|留痕（对抗⑥）|穷举表 --maxWorkers=2 --reporter=default --reporter=json --outputFile.json=ai_docs/reports/u-17e-evidence/targeted-3.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web
+
+stdout | src/test/u_17e_altars.test.ts > U17e CE catalog and carrier scope > 164 CE appearances include exact glyph/color/background and localized terrain descriptions
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_4a_terrain_catalog.test.ts > C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时点的枚举全集逐位） > Game.canMoveTo（查表）≡ 旧清单：合成格逐地形实测（含生成中出现不了的地形）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/c_4a_terrain_catalog.test.ts (30 tests | 27 skipped) 1244ms
+     ✓ Game.canMoveTo（查表）≡ 旧清单：合成格逐地形实测（含生成中出现不了的地形）  1218ms
+ ✓ src/test/c_7_lighting.test.ts (28 tests | 21 skipped) 45ms
+ ✓ src/test/c_4b_dungeon_feature.test.ts (31 tests | 26 skipped) 44ms
+ ❯ src/test/u_05a_item_ownership.test.ts (0 test)
+ ✓ src/test/c_4a_0_layer_model.test.ts (20 tests | 19 skipped) 5ms
+ ✓ src/test/u_17c_triggers.test.ts (17 tests | 16 skipped) 4ms
+ ✓ src/test/u_17b_carriers.test.ts (20 tests | 19 skipped) 4ms
+ ✓ src/test/r_1_appearance.test.ts (45 tests | 44 skipped) 3ms
+ ❯ src/test/u_17e_altars.test.ts (24 tests | 2 failed) 21301ms
+     ✓ seven tile rows and nine DF rows equal independently parsed CE, including three necessary successors 4ms
+     ✓ CE blueprint DF starts and all library item flag columns match raw source; frequencies and qualification stay separate 1ms
+     ✓ removes exactly five missing rows and preserves saved numeric IDs 1ms
+     ✓ 164 CE appearances include exact glyph/color/background and localized terrain descriptions  697ms
+     ✓ 85 pickup closes same-machine cages, evacuates player and monster, preserves remaining loot and can reopen  584ms
+     ✓ 85 user throws onto a wired plate while standing on an open altar: the shared transaction evacuates the player before closing  2564ms
+     ✓ a blocked or wrong-machine key cannot open a closed cage; save/load retains terrain and bound key  1005ms
+     ✓ 140 two drops exchange enchantment and its knowledge, make both altars inert and 141 pipes charred  749ms
+     ✓ 141 CE6 blueprint feature actually lays glowing pipes; a user drop pair consumes that generated network  601ms
+     ✓ does not consume items or altars when equal  897ms
+     ✓ does not consume items or altars when wand  782ms
+     ✓ does not consume items or altars when quiver  583ms
+     ✓ does not consume items or altars when other-machine  597ms
+     ✓ does not consume items or altars when breaker  536ms
+     ✓ staff capacity/charges clamp, recharge timer remains, known max charges transfer, harmful runes persist  645ms
+     ✓ staff shatters below two without losing the other item or duplicating an exchange  939ms
+     ✓ charm cooldown uses existing CE delay formula with integer percent; positive runes fade on nonpositive exchange  1882ms
+     ✓ 143 repeated floor entry retries with no dead ally then resurrects strongest saved ally once with CE light  966ms
+     ✓ 145 pressure entry activates altar and cage; entranced marked creature enters and dies, opening surviving reward  621ms
+     ✓ does not sacrifice unmarked creature  1160ms
+     ✓ does not sacrifice wrong-machine creature  911ms
+     ✓ CE1/2 natural seed777 D2 library: borrowed item closes cages only after departure; return and replacement reopen the remaining collection  2236ms
+     × CE6 full blueprint → walking and two drops → swapped items, two inert altars and charred generated pipes 1125ms
+     × CE7 full blueprint → user floor contact → U16 ally returns at the distinct inert altar 1214ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_05a_item_ownership.test.ts [ src/test/u_05a_item_ownership.test.ts ]
+Error: Transform failed with 1 error:
+/Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/src/test/u_05a_item_ownership.test.ts:75:8: ERROR: Unexpected "else"
+  Plugin: vite:esbuild
+  File: /Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/src/test/u_05a_item_ownership.test.ts:75:8
+  
+  Unexpected "else"
+  73 |              ? [...incoming.keyLoc!, {loc: owners[0]!.pos, machine: 0, disposableHere: false}]
+  74 |              : incoming.keyLoc); // U17e CE26 appends its return slot; all incoming bindings and identity remain intact.}
+  75 |          else expect(owners.map(i=>i.instanceId).sort()).toEqual(generated.map(i=>i.instanceId).sort());
+     |          ^
+  76 |          if(f.flags.includes('MF_MONSTER_TAKE_ITEM')){expect(r.itemSpawns).toHaveLength(0);expect(r.monsterSpawns.filt...
+  77 |          if(f.flags.includes('MF_OUTSOURCE_ITEM_TO_MACHINE')){expect(r.itemSpawns).toHaveLength(0);expect(r.monsterSpa...
+  
+ ❯ failureErrorWithLog node_modules/esbuild/lib/main.js:1467:15
+ ❯ node_modules/esbuild/lib/main.js:736:50
+ ❯ responseCallbacks.<computed> node_modules/esbuild/lib/main.js:603:9
+ ❯ handleIncomingPacket node_modules/esbuild/lib/main.js:658:12
+ ❯ Socket.readFromStdout node_modules/esbuild/lib/main.js:581:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_17e_altars.test.ts > U17e production data to playable room > CE6 full blueprint → walking and two drops → swapped items, two inert altars and charred generated pipes
+AssertionError: expected { x: 12, y: 10 } to deeply equal Cell{ x: 12, y: 10, …(28) }
+
+- Expected
++ Received
+
+- Cell {
+-   "autoSearched": true,
+-   "char": "|",
+-   "color": 13421823,
+-   "exposedToFire": 0,
+-   "hasDormantMonster": false,
+-   "hasMemory": true,
+-   "isClairvoyantVisible": false,
+-   "isDiscovered": false,
+-   "isExplored": true,
+-   "isMagicMapped": false,
+-   "isOpaque": false,
+-   "isPassable": true,
+-   "isPowered": false,
+-   "isVisible": true,
+-   "knownTrapFree": false,
+-   "layers": [
+-     64,
+-     0,
+-     0,
+-     159,
+-   ],
+-   "light": 0,
+-   "machineNumber": 1,
+-   "rememberedAppearance": {
+-     "bgColor": 1118481,
+-     "char": "|",
+-     "color": "#333333",
+-   },
+-   "rememberedFlags": {
+-     "opaque": false,
+-     "passable": true,
+-     "trapFree": true,
+-   },
+-   "rememberedItem": null,
+-   "rememberedItemCategory": null,
+-   "rememberedLayers": [
+-     64,
+-     0,
+-     0,
+-     159,
+-   ],
+-   "rememberedTMFlags": 34374656,
+-   "rememberedTerrain": 64,
+-   "rememberedTerrainFlags": 8,
+-   "trapType": null,
+-   "volume": 0,
++ {
+    "x": 12,
+    "y": 10,
+  }
+
+ ❯ walkTo src/test/u_17e_altars.test.ts:43:82
+     41|  }
+     42|  expect(prev.has(key(target)),'actual walkable path').toBe(true);const…
+     43|  for(const p of path){move(g,p.x-g.player.x,p.y-g.player.y);expect(g.p…
+       |                                                                                  ^
+     44| }
+     45| function wholeRoom(id:number){
+ ❯ src/test/u_17e_altars.test.ts:182:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/test/u_17e_altars.test.ts > U17e production data to playable room > CE7 full blueprint → user floor contact → U16 ally returns at the distinct inert altar
+AssertionError: expected { x: 14, y: 10 } to deeply equal Cell{ x: 14, y: 10, …(28) }
+
+- Expected
++ Received
+
+- Cell {
+-   "autoSearched": true,
+-   "char": "·",
+-   "color": 3886433,
+-   "exposedToFire": 0,
+-   "hasDormantMonster": false,
+-   "hasMemory": true,
+-   "isClairvoyantVisible": false,
+-   "isDiscovered": false,
+-   "isExplored": true,
+-   "isMagicMapped": false,
+-   "isOpaque": false,
+-   "isPassable": true,
+-   "isPowered": false,
+-   "isVisible": true,
+-   "knownTrapFree": false,
+-   "layers": [
+-     47,
+-     148,
+-     0,
+-     0,
+-   ],
+-   "light": 0,
+-   "machineNumber": 1,
+-   "rememberedAppearance": {
+-     "bgColor": 1118481,
+-     "char": "·",
+-     "color": "#333333",
+-   },
+-   "rememberedFlags": {
+-     "opaque": false,
+-     "passable": true,
+-     "trapFree": true,
+-   },
+-   "rememberedItem": null,
+-   "rememberedItemCategory": null,
+-   "rememberedLayers": [
+-     47,
+-     148,
+-     0,
+-     0,
+-   ],
+-   "rememberedTMFlags": 33856,
+-   "rememberedTerrain": 47,
+-   "rememberedTerrainFlags": 1024,
+-   "trapType": null,
+-   "volume": 0,
++ {
+    "x": 14,
+    "y": 10,
+  }
+
+ ❯ walkTo src/test/u_17e_altars.test.ts:43:82
+     41|  }
+     42|  expect(prev.has(key(target)),'actual walkable path').toBe(true);const…
+     43|  for(const p of path){move(g,p.x-g.player.x,p.y-g.player.y);expect(g.p…
+       |                                                                                  ^
+     44| }
+     45| function wholeRoom(id:number){
+ ❯ src/test/u_17e_altars.test.ts:186:144
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed | 7 passed (9)
+      Tests  2 failed | 41 passed | 172 skipped (215)
+   Start at  03:03:38
+   Duration  23.17s (transform 1.74s, setup 0ms, import 9.88s, tests 22.65s, environment 4ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/ai_docs/reports/u-17e-evidence/targeted-3.json

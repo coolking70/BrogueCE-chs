@@ -464,6 +464,8 @@ export class Monster extends Creature {
      * CE 怪物激活段（:1201-1227，本轮登记未接线，见报告 §1）。
      */
     public machineHome: number = 0;
+    /** CE MB_MARKED_FOR_SACRIFICE; set by the sacrifice horde leader source. */
+    public markedForSacrifice: boolean = false;
 
     /**
      * P4-10：CE monst->targetWaypointIndex（Monsters.c:127，初值 -1）。

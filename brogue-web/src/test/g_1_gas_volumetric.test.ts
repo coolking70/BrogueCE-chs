@@ -150,6 +150,14 @@ describe('G-1 对抗③：每玩家回合两轮 updateVolumetricMedia（Time.c:1
     it('Game.objectiveTimeBlock 的探测守卫：无气体回合跳过两轮（CE Time.c:1600-1613）', () => {
         const game = createHeadlessGame(7);
         openRoom(game);
+        // U17e: clearing all items leaves distant natural library altars without
+        // keys; their first wired closure has its own RNG cost. This gas-only
+        // fixture must isolate the whole map, not just the small test chamber.
+        for (let x = 0; x < game.grid.width; x++) for (let y = 0; y < game.grid.height; y++) {
+            if (x < 2 || x > 16 || y < 2 || y > 12) game.grid.setTerrain(x, y, C.WALL);
+            game.grid.getCell(x, y)!.machineNumber = 0;
+        }
+        game.dormantMonsters.length = 0;
         const cumBase = rng.randomNumbersGenerated; // create 后的累计抽取数
         priv(game).objectiveTimeBlock();
         const cum1 = rng.randomNumbersGenerated;

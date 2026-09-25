@@ -1,0 +1,72 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_17e_altars.test.ts src/test/c_4c_promotion.test.ts --maxWorkers=2 --reporter=default --reporter=json --outputFile.json=ai_docs/reports/u-17e-evidence/behavior-5.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web
+
+stdout | src/test/u_17e_altars.test.ts > U17e CE catalog and carrier scope > 164 CE appearances include exact glyph/color/background and localized terrain descriptions
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/c_4c_promotion.test.ts > D：Game 集成（真实事件链） > D1 踩门开门 + 同回合客观块自动关门（CE：OPEN_DOOR promoteChance=10000）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_17e_altars.test.ts (24 tests) 18149ms
+     ✓ 164 CE appearances include exact glyph/color/background and localized terrain descriptions  888ms
+     ✓ 85 pickup closes same-machine cages, evacuates player and monster, preserves remaining loot and can reopen  578ms
+     ✓ 85 user throws onto a wired plate while standing on an open altar: the shared transaction evacuates the player before closing  527ms
+     ✓ a blocked or wrong-machine key cannot open a closed cage; save/load retains terrain and bound key  548ms
+     ✓ 140 two drops exchange enchantment and its knowledge, make both altars inert and 141 pipes charred  643ms
+     ✓ 141 CE6 blueprint feature actually lays glowing pipes; a user drop pair consumes that generated network  507ms
+     ✓ does not consume items or altars when equal  730ms
+     ✓ does not consume items or altars when wand  685ms
+     ✓ does not consume items or altars when quiver  730ms
+     ✓ does not consume items or altars when other-machine  525ms
+     ✓ does not consume items or altars when breaker  515ms
+     ✓ staff capacity/charges clamp, recharge timer remains, known max charges transfer, harmful runes persist  683ms
+     ✓ staff shatters below two without losing the other item or duplicating an exchange  686ms
+     ✓ charm cooldown uses existing CE delay formula with integer percent; positive runes fade on nonpositive exchange  1559ms
+     ✓ 143 repeated floor entry retries with no dead ally then resurrects strongest saved ally once with CE light  1046ms
+     ✓ 145 pressure entry activates altar and cage; entranced marked creature enters and dies, opening surviving reward  1288ms
+     ✓ does not sacrifice unmarked creature  639ms
+     ✓ does not sacrifice wrong-machine creature  619ms
+     ✓ CE1/2 natural seed777 D2 library: borrowed item closes cages only after departure; return and replacement reopen the remaining collection  2387ms
+     ✓ CE6 full blueprint → walking and two drops → swapped items, two inert altars and charred generated pipes  1459ms
+     ✓ CE7 full blueprint → user floor contact → U16 ally returns at the distinct inert altar  890ms
+stdout | src/test/c_4c_promotion.test.ts > C-4c E：§五 实测测量（真实关卡、多种子；只测量不断言规模） > E1 每回合晋升频谱 + 缓办分类 + 硫矿实测（wait 站桩，逐回合采样）
+[C-4c 实测 D1] 7 种子 × 40 回合（wait 站桩）
+  客观块总数=280，晋升掷骰总数=5838（平均 20.85 次/块）
+  晋升按源地形：MUD=56，TRAMPLED_FOLIAGE=2，FOLIAGE=2
+  缓办按缺失 tile：（无）
+  OPEN_DOOR 自动关门次数=0
+  硫矿：起点 0 格 → 终点 0 格；ACTIVE_BRIMSTONE 缓办 0 次（期望 ≈ 0.08×格数×块数）
+[C-4c 实测 D20] 7 种子 × 40 回合（wait 站桩）
+  客观块总数=194，晋升掷骰总数=15843（平均 81.66 次/块）
+  晋升按源地形：MUD=156，TRAMPLED_FOLIAGE=3，ACTIVE_BRIMSTONE=1
+  缓办按缺失 tile：（无）
+  OPEN_DOOR 自动关门次数=0
+  硫矿：起点 0 格 → 终点 0 格；ACTIVE_BRIMSTONE 缓办 0 次（期望 ≈ 0.08×格数×块数）
+
+stdout | src/test/c_4c_promotion.test.ts > C-4c E：§五 实测测量（真实关卡、多种子；只测量不断言规模） > E2 玩家行走 60 回合：踩踏开门→自动关门链在真实行走里的触发计数
+[C-4c 行走实测 seed=424242] 60 回合内 OPEN_DOOR 自动关门 1 次（每次关门对应一次踩踏开门）
+[C-4c 行走实测 seed=777] 60 回合内 OPEN_DOOR 自动关门 0 次（每次关门对应一次踩踏开门）
+[C-4c 行走实测 seed=31337] 60 回合内 OPEN_DOOR 自动关门 0 次（每次关门对应一次踩踏开门）
+
+stdout | src/test/c_4c_promotion.test.ts > C-4c E：§五 实测测量（真实关卡、多种子；只测量不断言规模） > E3 静态盘点：31 地形中 promoteChance≠0 的活数据、负值死数据
+[C-4c 静态盘点]
+  活 promoteChance：OPEN_DOOR:10000→DF_CLOSED_DOOR；MUD:100→DF_METHANE_GAS_PUFF；INERT_BRIMSTONE:800→DF_ACTIVE_BRIMSTONE；PLAIN_FIRE:500→DF_EMBERS；EMBERS:300→DF_ASH；GAS_FIRE:8000→（无 DF）；GAS_EXPLOSION:10000→（无 DF）；MACHINE_FLOOD_WATER_SPREADING:2500→DF_WATER_SPREADS；MACHINE_COLLAPSE_EDGE_SPREADING:2500→DF_COLLAPSE_SPREADS；CHASM_WITH_HIDDEN_BRIDGE_ACTIVE:6000→DF_BRIDGE_ACTIVATE；PUDDLE:100→（无 DF）；DARK_FLOOR_DARKENING:1500→DF_DARK_FLOOR；HAUNTED_TORCH_TRANSITIONING:2000→DF_HAUNTED_TORCH；MACHINE_GLYPH_INACTIVE:10000→DF_ACTIVE_GLYPH；ANCIENT_SPIRIT_VINES:1000→DF_ANCIENT_SPIRIT_GRASS；ITEM_FIRE:3000→DF_EMBERS；TRAMPLED_FOLIAGE:100→DF_FOLIAGE_REGROW；ACTIVE_BRIMSTONE:10→DF_INERT_BRIMSTONE；BRIMSTONE_FIRE:2500→（无 DF）；BRIDGE_FALLING:10000→DF_BRIDGE_FALL；MACHINE_METHANE_VENT:5000→DF_VENT_SPEW_METHANE；MACHINE_POISON_GAS_VENT:10000→DF_VENT_SPEW_POISON_GAS
+  负值（扩散型）载体：HOLE:-1000；HOLE_EDGE:-500；FORCEFIELD:-200；FORCEFIELD_MELT:-10000；LAVA_RETRACTING:-1500；FLOOD_WATER_SHALLOW:-100；FLOOD_WATER_DEEP:-200
+
+ ✓ src/test/c_4c_promotion.test.ts (21 tests) 109626ms
+     ✓ D1 踩门开门 + 同回合客观块自动关门（CE：OPEN_DOOR promoteChance=10000）  1265ms
+     ✓ D2 踩楼梯触发 DF_REPEL_CREATURES（tile=NOTHING 的合法无地形 DF；U17a 实际驱离）  907ms
+     ✓ D3 决定性复验（§五.5）：同种子同操作序列跑两遍，逐回合四层快照全等  3200ms
+     ✓ E1 每回合晋升频谱 + 缓办分类 + 硫矿实测（wait 站桩，逐回合采样）  100371ms
+     ✓ E2 玩家行走 60 回合：踩踏开门→自动关门链在真实行走里的触发计数  3830ms
+
+ Test Files  2 passed (2)
+      Tests  45 passed (45)
+   Start at  03:06:33
+   Duration  111.59s (transform 1.72s, setup 0ms, import 3.53s, tests 127.78s, environment 1ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/ai_docs/reports/u-17e-evidence/behavior-5.json

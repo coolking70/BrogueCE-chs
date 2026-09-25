@@ -1,0 +1,22 @@
+HEAD:src/engine/Generator/BlueprintEngine.ts:322:    COMMUTATION_ALTAR: TerrainType.COMMUTATION_ALTAR,
+HEAD:src/engine/Generator/BlueprintEngine.ts:449:    COMMUTATION_ALTAR: { char: '|', color: 0xccccff },
+HEAD:src/engine/Map/DungeonFeatureCatalog.ts:159:    DF_ALTAR_COMMUTE               = 140, // :1641（COMMUTATION_ALTAR.
+HEAD:src/engine/Map/DungeonFeatureCatalog.ts:161:    DF_MAGIC_PIPING                = 141, // :1642（6 号蓝图 COMMUTATION_ALTAR
+HEAD:src/engine/Map/DungeonFeatureCatalog.ts:953:    // {COMMUTATION_ALTAR_INERT, DUNGEON, 0, 0, 0, "the items on the two altars
+HEAD:src/engine/Map/DungeonFeatureCatalog.ts:955:    // —— COMMUTATION_ALTAR.promoteType（6 号置换完成后的惰性态）。
+HEAD:src/engine/Map/DungeonFeatureCatalog.ts:956:    // tile COMMUTATION_ALTAR_INERT web 无（只迁活化态），登记。
+HEAD:src/engine/Map/DungeonFeatureCatalog.ts:958:        id: DF.DF_ALTAR_COMMUTE, ceLine: 793, ceTile: 'COMMUTATION_ALTAR_INERT', tile: null,
+HEAD:src/engine/Map/DungeonFeatureCatalog.ts:966:    // {PIPE_GLOWING, SURFACE, 90, 60, 0}（:794）—— 6 号蓝图 COMMUTATION_ALTAR
+HEAD:src/engine/Map/DungeonFeatureCatalog.ts:1493:    DF.DF_ALTAR_COMMUTE,           // COMMUTATION_ALTAR_INERT（置换完成后的惰性态）
+HEAD:src/engine/Map/DungeonFeatureCatalog.ts:1494:    DF.DF_MAGIC_PIPING,            // PIPE_GLOWING（6 号 COMMUTATION_ALTAR 的 DF 列）
+HEAD:src/engine/Map/Grid.ts:163:    COMMUTATION_ALTAR,          // Globals.c:532 置换祭坛（6 号）
+HEAD:src/engine/Map/Grid.ts:415:    // 同档）；ALTAR_CAGE_RETRACTABLE 17（:368）；COMMUTATION_ALTAR 17（:532）；
+HEAD:src/engine/Map/Grid.ts:421:    [TerrainType.COMMUTATION_ALTAR]: 17,
+HEAD:src/engine/Map/Grid.ts:676:    //  DF_ALTAR_COMMUTE {COMMUTATION_ALTAR_INERT, DUNGEON} :793、
+HEAD:src/engine/Map/Grid.ts:680:    [TerrainType.COMMUTATION_ALTAR]: DungeonLayer.DUNGEON,
+HEAD:src/engine/Map/TerrainCatalog.ts:110:export const TM_SWAP_ENCHANTS_ACTIVATION        = Fl(25);  // :1985
+HEAD:src/engine/Map/TerrainCatalog.ts:812:    // CE COMMUTATION_ALTAR，Globals.c:532：置换祭坛（6 号，两个一组）。
+HEAD:src/engine/Map/TerrainCatalog.ts:813:    // TM_SWAP_ENCHANTS_ACTIVATION 是本 tile 独有的"互换附魔"激活位。
+HEAD:src/engine/Map/TerrainCatalog.ts:815:    [TerrainType.COMMUTATION_ALTAR]: e(
+HEAD:src/engine/Map/TerrainCatalog.ts:817:        TM_VANISHES_UPON_PROMOTION | TM_IS_WIRED | TM_SWAP_ENCHANTS_ACTIVATION |
+HEAD:src/engine/UI/TerrainAppearanceCatalog.ts:75:    [TerrainType.COMMUTATION_ALTAR]: { char: "|", color: '#0c1116', bgColor: 0x2d3f2d }, // CE COMMUTATION_ALTAR

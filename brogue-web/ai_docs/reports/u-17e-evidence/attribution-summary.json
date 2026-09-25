@@ -1,0 +1,133 @@
+[
+  {
+    "from": "head",
+    "to": "base",
+    "layers": 104,
+    "baselineLayers": 0,
+    "baselineFields": 0,
+    "fields": {
+      "monsters": 104
+    }
+  },
+  {
+    "from": "base",
+    "to": "support",
+    "layers": 0,
+    "baselineLayers": 0,
+    "baselineFields": 0,
+    "fields": {}
+  },
+  {
+    "from": "support",
+    "to": "s0",
+    "layers": 41,
+    "baselineLayers": 1,
+    "baselineFields": 1,
+    "fields": {
+      "layers": 33,
+      "terrain": 33,
+      "rng": 41,
+      "fp": 1
+    }
+  },
+  {
+    "from": "s0",
+    "to": "s1",
+    "layers": 99,
+    "baselineLayers": 15,
+    "baselineFields": 16,
+    "fields": {
+      "fp": 15,
+      "layers": 82,
+      "terrain": 82,
+      "rng": 99,
+      "carriers": 12,
+      "items": 1,
+      "itemsState": 1
+    }
+  },
+  {
+    "from": "s1",
+    "to": "s2",
+    "layers": 0,
+    "baselineLayers": 0,
+    "baselineFields": 0,
+    "fields": {}
+  },
+  {
+    "from": "s2",
+    "to": "s3",
+    "layers": 0,
+    "baselineLayers": 0,
+    "baselineFields": 0,
+    "fields": {}
+  },
+  {
+    "from": "s3",
+    "to": "s4",
+    "layers": 0,
+    "baselineLayers": 0,
+    "baselineFields": 0,
+    "fields": {}
+  },
+  {
+    "from": "s4",
+    "to": "s5",
+    "layers": 0,
+    "baselineLayers": 0,
+    "baselineFields": 0,
+    "fields": {}
+  },
+  {
+    "from": "s5",
+    "to": "s6",
+    "layers": 11,
+    "baselineLayers": 5,
+    "baselineFields": 12,
+    "fields": {
+      "fp": 5,
+      "n": 3,
+      "species": 3,
+      "layers": 9,
+      "terrain": 9,
+      "monsters": 11,
+      "itemsState": 11,
+      "rng": 11,
+      "carriers": 2,
+      "player": 1,
+      "items": 1
+    }
+  },
+  {
+    "from": "s6",
+    "to": "s7",
+    "layers": 0,
+    "baselineLayers": 0,
+    "baselineFields": 0,
+    "fields": {}
+  },
+  {
+    "from": "s7",
+    "to": "s8",
+    "layers": 99,
+    "baselineLayers": 14,
+    "baselineFields": 15,
+    "fields": {
+      "fp": 14,
+      "layers": 82,
+      "terrain": 82,
+      "itemsState": 13,
+      "rng": 99,
+      "carriers": 12,
+      "items": 1
+    }
+  },
+  {
+    "from": "s8",
+    "to": "final",
+    "layers": 0,
+    "baselineLayers": 0,
+    "baselineFields": 0,
+    "fields": {}
+  }
+]

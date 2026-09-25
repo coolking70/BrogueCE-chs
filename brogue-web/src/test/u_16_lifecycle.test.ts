@@ -95,7 +95,7 @@ describe('U16 CE death and resurrection lifecycle', () => {
         const raised = g.purgatory.find(m => m.typeId === 'goblin')!;
         g.grid.setTerrain(20, 10, TerrainType.RESURRECTION_ALTAR);
         expect(promoteTile(g.grid, 20, 10, DungeonLayer.DUNGEON, false).spawn?.succeeded).toBe(true);
-        expect(g.grid.getCell(20, 10)?.terrain).toBe(TerrainType.ALTAR);
+        expect(g.grid.getCell(20, 10)?.terrain).toBe(TerrainType.RESURRECTION_ALTAR_INERT);
         expect(g.monsters).toContain(raised);
         expect(raised.hp).toBe(raised.maxHp);
         expect(g.purgatory).toHaveLength(1);

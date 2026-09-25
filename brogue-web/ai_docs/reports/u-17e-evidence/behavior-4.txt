@@ -1,0 +1,67 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_17e_altars.test.ts src/test/u_05a_item_ownership.test.ts --maxWorkers=2 --reporter=default --reporter=json --outputFile.json=ai_docs/reports/u-17e-evidence/behavior-4.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web
+
+stdout | src/test/u_17e_altars.test.ts > U17e CE catalog and carrier scope > 164 CE appearances include exact glyph/color/background and localized terrain descriptions
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/u_05a_item_ownership.test.ts > U05a real consumer and U01 snapshot contract > ordinary monster owns one item before death, after reload/death, after pickup/reload
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_05a_item_ownership.test.ts (51 tests) 9627ms
+     ✓ ordinary monster owns one item before death, after reload/death, after pickup/reload  2635ms
+     ✓ horde leader owns one item before death, after reload/death, after pickup/reload  2614ms
+     ✓ handoff replaces the horde leader’s existing item without a second floor/inventory owner  2434ms
+     ✓ duplicate deferred identity is rejected before either copy is instantiated  1701ms
+ ❯ src/test/u_17e_altars.test.ts (24 tests | 1 failed) 20060ms
+     ✓ seven tile rows and nine DF rows equal independently parsed CE, including three necessary successors 5ms
+     ✓ CE blueprint DF starts and all library item flag columns match raw source; frequencies and qualification stay separate 1ms
+     ✓ removes exactly five missing rows and preserves saved numeric IDs 1ms
+     ✓ 164 CE appearances include exact glyph/color/background and localized terrain descriptions  507ms
+     ✓ 85 pickup closes same-machine cages, evacuates player and monster, preserves remaining loot and can reopen  580ms
+     ✓ 85 user throws onto a wired plate while standing on an open altar: the shared transaction evacuates the player before closing  528ms
+     ✓ a blocked or wrong-machine key cannot open a closed cage; save/load retains terrain and bound key  953ms
+     ✓ 140 two drops exchange enchantment and its knowledge, make both altars inert and 141 pipes charred  702ms
+     ✓ 141 CE6 blueprint feature actually lays glowing pipes; a user drop pair consumes that generated network  564ms
+     ✓ does not consume items or altars when equal  723ms
+     ✓ does not consume items or altars when wand  742ms
+     ✓ does not consume items or altars when quiver  772ms
+     ✓ does not consume items or altars when other-machine  941ms
+     ✓ does not consume items or altars when breaker  544ms
+     ✓ staff capacity/charges clamp, recharge timer remains, known max charges transfer, harmful runes persist  740ms
+     ✓ staff shatters below two without losing the other item or duplicating an exchange  706ms
+     ✓ charm cooldown uses existing CE delay formula with integer percent; positive runes fade on nonpositive exchange  1548ms
+     ✓ 143 repeated floor entry retries with no dead ally then resurrects strongest saved ally once with CE light  1851ms
+     ✓ 145 pressure entry activates altar and cage; entranced marked creature enters and dies, opening surviving reward  1056ms
+     ✓ does not sacrifice unmarked creature  911ms
+     ✓ does not sacrifice wrong-machine creature  608ms
+     ✓ CE1/2 natural seed777 D2 library: borrowed item closes cages only after departure; return and replacement reopen the remaining collection  2262ms
+     × CE6 full blueprint → walking and two drops → swapped items, two inert altars and charred generated pipes 1544ms
+     ✓ CE7 full blueprint → user floor contact → U16 ally returns at the distinct inert altar  1270ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_17e_altars.test.ts > U17e production data to playable room > CE6 full blueprint → walking and two drops → swapped items, two inert altars and charred generated pipes
+AssertionError: expected +0 to be 162 // Object.is equality
+
+- Expected
++ Received
+
+- 162
++ 0
+
+ ❯ src/test/u_17e_altars.test.ts:182:238
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 74 passed (75)
+   Start at  03:05:07
+   Duration  22.08s (transform 1.43s, setup 0ms, import 3.54s, tests 29.69s, environment 1ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/ai_docs/reports/u-17e-evidence/behavior-4.json

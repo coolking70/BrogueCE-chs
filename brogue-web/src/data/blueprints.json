@@ -579,6 +579,7 @@
             },
             {
                 "terrain": "COMMUTATION_ALTAR",
+                "featureDF": "DF_MAGIC_PIPING",
                 "layer": "DUNGEON",
                 "instanceCount": [
                     2,
@@ -667,6 +668,11 @@
                     "MF_GENERATE_ITEM",
                     "MF_TREAT_AS_BLOCKING",
                     "MF_IMPREGNABLE"
+                ],
+                "itemFlags": [
+                    "ITEM_IS_KEY",
+                    "ITEM_KIND_AUTO_ID",
+                    "ITEM_PLAYER_AVOIDS"
                 ]
             },
             {
@@ -684,6 +690,11 @@
                     "MF_NO_THROWING_WEAPONS",
                     "MF_TREAT_AS_BLOCKING",
                     "MF_IMPREGNABLE"
+                ],
+                "itemFlags": [
+                    "ITEM_IS_KEY",
+                    "ITEM_KIND_AUTO_ID",
+                    "ITEM_PLAYER_AVOIDS"
                 ]
             },
             {
@@ -701,6 +712,12 @@
                     "MF_NO_THROWING_WEAPONS",
                     "MF_TREAT_AS_BLOCKING",
                     "MF_IMPREGNABLE"
+                ],
+                "itemFlags": [
+                    "ITEM_IS_KEY",
+                    "ITEM_KIND_AUTO_ID",
+                    "ITEM_MAX_CHARGES_KNOWN",
+                    "ITEM_PLAYER_AVOIDS"
                 ]
             },
             {
@@ -783,6 +800,12 @@
                     "MF_TREAT_AS_BLOCKING",
                     "MF_ALTERNATIVE",
                     "MF_IMPREGNABLE"
+                ],
+                "itemFlags": [
+                    "ITEM_IS_KEY",
+                    "ITEM_KIND_AUTO_ID",
+                    "ITEM_MAX_CHARGES_KNOWN",
+                    "ITEM_PLAYER_AVOIDS"
                 ]
             },
             {
@@ -800,6 +823,12 @@
                     "MF_TREAT_AS_BLOCKING",
                     "MF_ALTERNATIVE",
                     "MF_IMPREGNABLE"
+                ],
+                "itemFlags": [
+                    "ITEM_IS_KEY",
+                    "ITEM_KIND_AUTO_ID",
+                    "ITEM_MAX_CHARGES_KNOWN",
+                    "ITEM_PLAYER_AVOIDS"
                 ]
             },
             {
@@ -871,6 +900,7 @@
             },
             {
                 "terrain": "RESURRECTION_ALTAR",
+                "featureDF": "DF_MACHINE_FLOOR_TRIGGER_REPEATING",
                 "layer": "DUNGEON",
                 "instanceCount": [
                     1,
@@ -881,8 +911,7 @@
                 "flags": [
                     "MF_TREAT_AS_BLOCKING",
                     "MF_FAR_FROM_ORIGIN"
-                ],
-                "featureDF": "DF_MACHINE_FLOOR_TRIGGER_REPEATING"
+                ]
             },
             {
                 "instanceCount": [
@@ -2157,6 +2186,11 @@
                     "MF_NO_THROWING_WEAPONS",
                     "MF_TREAT_AS_BLOCKING",
                     "MF_IMPREGNABLE"
+                ],
+                "itemFlags": [
+                    "ITEM_IS_KEY",
+                    "ITEM_KIND_AUTO_ID",
+                    "ITEM_PLAYER_AVOIDS"
                 ]
             },
             {
@@ -2174,6 +2208,12 @@
                     "MF_NO_THROWING_WEAPONS",
                     "MF_TREAT_AS_BLOCKING",
                     "MF_IMPREGNABLE"
+                ],
+                "itemFlags": [
+                    "ITEM_IS_KEY",
+                    "ITEM_KIND_AUTO_ID",
+                    "ITEM_MAX_CHARGES_KNOWN",
+                    "ITEM_PLAYER_AVOIDS"
                 ]
             },
             {
@@ -2189,6 +2229,11 @@
                     "MF_ADOPT_ITEM",
                     "MF_TREAT_AS_BLOCKING",
                     "MF_IMPREGNABLE"
+                ],
+                "itemFlags": [
+                    "ITEM_IS_KEY",
+                    "ITEM_MAX_CHARGES_KNOWN",
+                    "ITEM_PLAYER_AVOIDS"
                 ]
             },
             {

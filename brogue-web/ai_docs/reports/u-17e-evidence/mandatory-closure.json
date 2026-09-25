@@ -1,0 +1,145 @@
+{
+  "families": {
+    "p1_30": [
+      "src/test/p1_30_i18n_gate.test.ts"
+    ],
+    "u24": [
+      "src/test/u24_hardcoded_text.test.ts"
+    ],
+    "u_01": [
+      "src/test/u_01_instance_snapshot.test.ts"
+    ],
+    "u_03": [
+      "src/test/u_03_whole_run_snapshot.test.ts",
+      "src/test/u_03b_level_travel.test.ts"
+    ],
+    "c_4a": [
+      "src/test/c_4a_0_layer_model.test.ts",
+      "src/test/c_4a_terrain_catalog.test.ts"
+    ],
+    "c_4b": [
+      "src/test/c_4b_dungeon_feature.test.ts"
+    ],
+    "c_4c": [
+      "src/test/c_4c_promotion.test.ts"
+    ],
+    "c_7": [
+      "src/test/c_7_lighting.test.ts"
+    ],
+    "r_1": [
+      "src/test/r_1_appearance.test.ts"
+    ],
+    "f_": [
+      "src/test/f_1_fire_as_terrain.test.ts",
+      "src/test/f_2a_fire_mechanics.test.ts",
+      "src/test/f_2b_creature_burning.test.ts",
+      "src/test/f_2c_explosion.test.ts"
+    ],
+    "g_": [
+      "src/test/g_1_gas_volumetric.test.ts",
+      "src/test/g_2_gas_df_wiring.test.ts",
+      "src/test/g_3_gas_effects.test.ts"
+    ],
+    "v_": [
+      "src/test/v_1a_blueprint_items.test.ts",
+      "src/test/v_1b_alternative.test.ts",
+      "src/test/v_1c_machine_structure.test.ts",
+      "src/test/v_2a_vestibule_return.test.ts",
+      "src/test/v_2b_2a_placement_flags.test.ts",
+      "src/test/v_2b_2b_blueprints.test.ts",
+      "src/test/v_2b_3_wired.test.ts",
+      "src/test/v_2b_4_altars.test.ts",
+      "src/test/v_2b_5_dormant.test.ts",
+      "src/test/v_2b_6_keys.test.ts",
+      "src/test/v_2b_7_features.test.ts",
+      "src/test/v_2b_8_autogen.test.ts",
+      "src/test/v_2b_9a_carriers.test.ts",
+      "src/test/v_2b_9b_environment.test.ts",
+      "src/test/v_2b_9c_effects.test.ts",
+      "src/test/v_2b_9d_dungeon_profile.test.ts",
+      "src/test/v_2b_9e_2_autogen.test.ts",
+      "src/test/v_2b_9e_area_machine.test.ts"
+    ],
+    "w_13": [
+      "src/test/w_13_tunneling.test.ts"
+    ],
+    "w_14": [
+      "src/test/w_14_obstruction.test.ts"
+    ],
+    "u_17a": [
+      "src/test/u_17a_df_transaction.test.ts"
+    ],
+    "u_17b": [
+      "src/test/u_17b_carriers.test.ts"
+    ],
+    "u_17c": [
+      "src/test/u_17c_triggers.test.ts"
+    ],
+    "u_17d": [
+      "src/test/u_17d_vents.test.ts"
+    ],
+    "u_17e": [
+      "src/test/u_17e_altars.test.ts"
+    ],
+    "u_16": [
+      "src/test/u_16_lifecycle.test.ts"
+    ],
+    "u_05a": [
+      "src/test/u_05a_item_ownership.test.ts"
+    ]
+  },
+  "sourceReaders": [
+    "src/engine/Combat/BoltCatalog.test.ts",
+    "src/test/b_1a_identification.test.ts",
+    "src/test/c_4a_0_layer_model.test.ts",
+    "src/test/c_4a_terrain_catalog.test.ts",
+    "src/test/c_4b_dungeon_feature.test.ts",
+    "src/test/c_4c_promotion.test.ts",
+    "src/test/c_7_lighting.test.ts",
+    "src/test/p1_42_secret_door_search.test.ts",
+    "src/test/p2_0_seeded_rng.test.ts",
+    "src/test/p2_1_tick_architecture.test.ts",
+    "src/test/p2_2_real_speed.test.ts",
+    "src/test/p2_3_objective_time.test.ts",
+    "src/test/p2_4_animation_cadence.test.ts",
+    "src/test/p2_6_display_settings.test.ts",
+    "src/test/r_1_appearance.test.ts",
+    "src/test/repo_hygiene.test.ts",
+    "src/test/u24_hardcoded_text.test.ts",
+    "src/test/u_01_instance_snapshot.test.ts",
+    "src/test/u_02b_level_rng.test.ts",
+    "src/test/u_03_whole_run_snapshot.test.ts",
+    "src/test/u_05_machine_items.test.ts",
+    "src/test/u_05a_item_ownership.test.ts",
+    "src/test/u_06_monster_damage.test.ts",
+    "src/test/u_09_learning_consumers.test.ts",
+    "src/test/u_13_combat_math.test.ts",
+    "src/test/u_14a_status_gaps.test.ts",
+    "src/test/u_14b_status_gaps.test.ts",
+    "src/test/u_17b_carriers.test.ts",
+    "src/test/u_17c_triggers.test.ts",
+    "src/test/u_17d_vents.test.ts",
+    "src/test/u_17e_altars.test.ts",
+    "src/test/ui_1_rendering.test.ts",
+    "src/test/ui_2_protection.test.ts",
+    "src/test/v_1a_blueprint_items.test.ts",
+    "src/test/v_2b_4_altars.test.ts",
+    "src/test/v_2b_7_features.test.ts",
+    "src/test/v_2b_9b_environment.test.ts",
+    "src/test/v_2b_9c_effects.test.ts",
+    "src/test/v_2b_9d_dungeon_profile.test.ts",
+    "src/test/w_10_poison.test.ts",
+    "src/test/w_16_conjuration.test.ts",
+    "src/test/w_17_domination.test.ts",
+    "src/test/w_18_entrancement.test.ts",
+    "src/test/w_19_polymorph.test.ts",
+    "src/test/w_20_cloning.test.ts",
+    "src/test/w_21_empowerment.test.ts",
+    "src/test/w_23_negation.test.ts",
+    "src/test/w_24_wand_catalog.test.ts",
+    "src/test/w_25_staff_catalog.test.ts",
+    "src/test/w_7_arcana_enchantment.test.ts"
+  ],
+  "missing": [],
+  "selected": 176
+}

@@ -141,6 +141,14 @@ describe('C-7 光照目录（CE Globals.c:955-1020 逐值）', () => {
 describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () => {
     /** web 全部 43 tile 的 CE glowLight 期望值（逐条核过 CE Globals.c:321-744）。 */
     const EXPECTED_GLOW: Record<TerrainType, number> = {
+        [TerrainType.ALTAR_CAGE_CLOSED]: LightKind.CANDLE_LIGHT, // CE U17e
+        [TerrainType.COMMUTATION_ALTAR_INERT]: LightKind.NO_LIGHT, // CE U17e
+        [TerrainType.PIPE_GLOWING]: LightKind.CONFUSION_GAS_LIGHT, // CE U17e
+        [TerrainType.RESURRECTION_ALTAR_INERT]: LightKind.NO_LIGHT, // CE U17e
+        [TerrainType.SACRIFICE_ALTAR]: LightKind.CANDLE_LIGHT, // CE U17e
+        [TerrainType.PIPE_INERT]: LightKind.NO_LIGHT, // CE U17e
+        [TerrainType.SACRIFICE_LAVA]: LightKind.LAVA_LIGHT, // CE U17e
+
         [TerrainType.MACHINE_PRESSURE_PLATE_USED]: 0, // CE U17c
         [TerrainType.TRAP_DOOR]: 0, // CE U17c
         [TerrainType.WALL_LEVER]: 0, // CE U17c
@@ -332,12 +340,13 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
         }
     });
 
-    it('非零恰 39 个（U17d 两态长明灯），且都指向有载体的目录条目', () => {
+    it('非零恰 43 个（U17e 祭坛、管道与献祭坑），且都指向有载体的目录条目', () => {
         const nonzero = Object.entries(TERRAIN_FLAGS)
             .filter(([, v]) => v.glowLight !== LightKind.NO_LIGHT)
             .map(([k]) => Number(k) as TerrainType)
             .sort((a, b) => a - b);
         expect(nonzero).toEqual([
+            TerrainType.ALTAR_CAGE_CLOSED, TerrainType.PIPE_GLOWING, TerrainType.SACRIFICE_ALTAR, TerrainType.SACRIFICE_LAVA,
             TerrainType.PILOT_LIGHT_DORMANT, TerrainType.PILOT_LIGHT,
             TerrainType.LAVA, TerrainType.ALTAR, TerrainType.EMBERS,
             TerrainType.CONFUSION_GAS, TerrainType.GAS_FIRE,
@@ -774,6 +783,8 @@ describe('C-7 光照 → 潜行判定（calculateStealthRange）', () => {
 
 describe('C-7 载体边界留痕', () => {
     const CARRIER_KINDS = new Set([
+        'SACRIFICE_MARK_LIGHT', // U17e real HORDE_SACRIFICE_TARGET leader and lighting consumer
+
         'NO_LIGHT',            // 哨兵值，目录默认列
         'MINERS_LIGHT',        // 载体：玩家（本轮接线）
         'BURNING_CREATURE_LIGHT', // 载体：STATUS_BURNING（F-2b 状态机）

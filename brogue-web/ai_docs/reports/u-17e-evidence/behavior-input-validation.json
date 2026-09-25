@@ -1,0 +1,27 @@
+{
+  "negativeDifferences": [
+    "src/test/b2_transcription.test.ts",
+    "src/test/b_4b_item_placement.test.ts",
+    "src/test/c_4b_dungeon_feature.test.ts",
+    "src/test/fixtures/generation_baseline.json",
+    "src/test/g_1_gas_volumetric.test.ts",
+    "src/test/g_2_gas_df_wiring.test.ts",
+    "src/test/u_08_terrain_bolts.test.ts",
+    "src/test/u_17a_df_transaction.test.ts",
+    "src/test/v_2b_3_wired.test.ts",
+    "src/test/v_2b_5_dormant.test.ts"
+  ],
+  "browserDifferences": [
+    "src/test/b2_transcription.test.ts",
+    "src/test/b_4b_item_placement.test.ts",
+    "src/test/c_4b_dungeon_feature.test.ts",
+    "src/test/fixtures/generation_baseline.json",
+    "src/test/g_1_gas_volumetric.test.ts",
+    "src/test/g_2_gas_df_wiring.test.ts",
+    "src/test/u_08_terrain_bolts.test.ts",
+    "src/test/u_17a_df_transaction.test.ts",
+    "src/test/v_2b_3_wired.test.ts",
+    "src/test/v_2b_5_dormant.test.ts"
+  ],
+  "explanation": "Only the single authorized baseline recapture and HEAD-proved test-premise/fixture/comment changes followed these runs. Production and U17e behavior sources match."
+}

@@ -131,6 +131,8 @@ export interface BlueprintDef {
 /** A deferred item instance. Adoption copies placement, never instanceId.
  * IDs are local to the generated level and consume no RNG/entity IDs. */
 export interface MachineItemSpawn {
+    /** U17e library items carry CE ITEM_IS_KEY and their existing item flags. */
+    itemFlags?: string[];
     instanceId?: string;
     category: string;
     id?: string;
@@ -1680,6 +1682,16 @@ export class BlueprintEngine {
                                     machineGeneratedKey = true;
                                 }
                             }
+                        }
+                        // CE Architect.c:1521-1527 also binds non-KEY category
+                        // library loans and adopted items. Preserve incoming lock
+                        // bindings: the library origin is an additional return slot.
+                        if (theItem && feature.itemFlags?.includes('ITEM_IS_KEY')) {
+                            theItem.itemFlags = [...new Set([...(theItem.itemFlags ?? []), ...feature.itemFlags])];
+                            theItem.keyLoc = [...(theItem.keyLoc ?? []), {
+                                loc: { x: pos.x, y: pos.y }, machine: 0,
+                                disposableHere: fFlags.has('MF_KEY_DISPOSABLE')
+                            }];
                         }
                         // The three destinations are exclusive for generated AND adopted items.
                         if (theItem && !fFlags.has('MF_OUTSOURCE_ITEM_TO_MACHINE')

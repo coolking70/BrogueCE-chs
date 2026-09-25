@@ -1,0 +1,182 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_17e_altars.test.ts --maxWorkers=1 --reporter=default --reporter=json --outputFile.json=ai_docs/reports/u-17e-evidence/behavior-whole.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web
+
+stdout | src/test/u_17e_altars.test.ts > U17e CE catalog and carrier scope > 164 CE appearances include exact glyph/color/background and localized terrain descriptions
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_17e_altars.test.ts (23 tests | 2 failed) 17292ms
+     ✓ seven tile rows and nine DF rows equal independently parsed CE, including three necessary successors 5ms
+     ✓ CE blueprint DF starts and all library item flag columns match raw source; frequencies and qualification stay separate 1ms
+     ✓ removes exactly five missing rows and preserves saved numeric IDs 1ms
+     ✓ 164 CE appearances include exact glyph/color/background and localized terrain descriptions  554ms
+     ✓ 85 pickup closes same-machine cages, evacuates player and monster, preserves remaining loot and can reopen  565ms
+     ✓ a blocked or wrong-machine key cannot open a closed cage; save/load retains terrain and bound key  577ms
+     ✓ 140 two drops exchange enchantment and its knowledge, make both altars inert and 141 pipes charred  696ms
+     ✓ 141 CE6 blueprint feature actually lays glowing pipes; a user drop pair consumes that generated network  553ms
+     ✓ does not consume items or altars when equal  574ms
+     ✓ does not consume items or altars when wand  588ms
+     ✓ does not consume items or altars when quiver  951ms
+     ✓ does not consume items or altars when other-machine  565ms
+     ✓ does not consume items or altars when breaker  769ms
+     ✓ staff capacity/charges clamp, recharge timer remains, known max charges transfer, harmful runes persist  972ms
+     ✓ staff shatters below two without losing the other item or duplicating an exchange  860ms
+     ✓ charm cooldown uses existing CE delay formula with integer percent; positive runes fade on nonpositive exchange  1425ms
+     ✓ 143 repeated floor entry retries with no dead ally then resurrects strongest saved ally once with CE light  786ms
+     ✓ 145 pressure entry activates altar and cage; entranced marked creature enters and dies, opening surviving reward  752ms
+     ✓ does not sacrifice unmarked creature  808ms
+     ✓ does not sacrifice wrong-machine creature  939ms
+     ✓ CE1/2 natural seed777 D2 library: borrowed item closes cages only after departure; return and replacement reopen the remaining collection  2398ms
+     × CE6 full blueprint → walking and two drops → swapped items, two inert altars and charred generated pipes 1130ms
+     × CE7 full blueprint → user floor contact → U16 ally returns at the distinct inert altar 822ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_17e_altars.test.ts > U17e production data to playable room > CE6 full blueprint → walking and two drops → swapped items, two inert altars and charred generated pipes
+AssertionError: expected { x: 12, y: 10 } to deeply equal Cell{ x: 12, y: 10, …(28) }
+
+- Expected
++ Received
+
+- Cell {
+-   "autoSearched": true,
+-   "char": "|",
+-   "color": 13421823,
+-   "exposedToFire": 0,
+-   "hasDormantMonster": false,
+-   "hasMemory": true,
+-   "isClairvoyantVisible": false,
+-   "isDiscovered": false,
+-   "isExplored": true,
+-   "isMagicMapped": false,
+-   "isOpaque": false,
+-   "isPassable": true,
+-   "isPowered": false,
+-   "isVisible": true,
+-   "knownTrapFree": false,
+-   "layers": [
+-     64,
+-     0,
+-     0,
+-     159,
+-   ],
+-   "light": 0,
+-   "machineNumber": 1,
+-   "rememberedAppearance": {
+-     "bgColor": 1118481,
+-     "char": "|",
+-     "color": "#333333",
+-   },
+-   "rememberedFlags": {
+-     "opaque": false,
+-     "passable": true,
+-     "trapFree": true,
+-   },
+-   "rememberedItem": null,
+-   "rememberedItemCategory": null,
+-   "rememberedLayers": [
+-     64,
+-     0,
+-     0,
+-     159,
+-   ],
+-   "rememberedTMFlags": 34374656,
+-   "rememberedTerrain": 64,
+-   "rememberedTerrainFlags": 8,
+-   "trapType": null,
+-   "volume": 0,
++ {
+    "x": 12,
+    "y": 10,
+  }
+
+ ❯ walkTo src/test/u_17e_altars.test.ts:43:82
+     41|  }
+     42|  expect(prev.has(key(target)),'actual walkable path').toBe(true);const…
+     43|  for(const p of path){move(g,p.x-g.player.x,p.y-g.player.y);expect(g.p…
+       |                                                                                  ^
+     44| }
+     45| function wholeRoom(id:number){
+ ❯ src/test/u_17e_altars.test.ts:177:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/test/u_17e_altars.test.ts > U17e production data to playable room > CE7 full blueprint → user floor contact → U16 ally returns at the distinct inert altar
+AssertionError: expected { x: 14, y: 10 } to deeply equal Cell{ x: 14, y: 10, …(28) }
+
+- Expected
++ Received
+
+- Cell {
+-   "autoSearched": true,
+-   "char": "·",
+-   "color": 3886433,
+-   "exposedToFire": 0,
+-   "hasDormantMonster": false,
+-   "hasMemory": true,
+-   "isClairvoyantVisible": false,
+-   "isDiscovered": false,
+-   "isExplored": true,
+-   "isMagicMapped": false,
+-   "isOpaque": false,
+-   "isPassable": true,
+-   "isPowered": false,
+-   "isVisible": true,
+-   "knownTrapFree": false,
+-   "layers": [
+-     47,
+-     148,
+-     0,
+-     0,
+-   ],
+-   "light": 0,
+-   "machineNumber": 1,
+-   "rememberedAppearance": {
+-     "bgColor": 1118481,
+-     "char": "·",
+-     "color": "#333333",
+-   },
+-   "rememberedFlags": {
+-     "opaque": false,
+-     "passable": true,
+-     "trapFree": true,
+-   },
+-   "rememberedItem": null,
+-   "rememberedItemCategory": null,
+-   "rememberedLayers": [
+-     47,
+-     148,
+-     0,
+-     0,
+-   ],
+-   "rememberedTMFlags": 33856,
+-   "rememberedTerrain": 47,
+-   "rememberedTerrainFlags": 1024,
+-   "trapType": null,
+-   "volume": 0,
++ {
+    "x": 14,
+    "y": 10,
+  }
+
+ ❯ walkTo src/test/u_17e_altars.test.ts:43:82
+     41|  }
+     42|  expect(prev.has(key(target)),'actual walkable path').toBe(true);const…
+     43|  for(const p of path){move(g,p.x-g.player.x,p.y-g.player.y);expect(g.p…
+       |                                                                                  ^
+     44| }
+     45| function wholeRoom(id:number){
+ ❯ src/test/u_17e_altars.test.ts:181:144
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 21 passed (23)
+   Start at  03:02:39
+   Duration  19.33s (transform 920ms, setup 0ms, import 1.84s, tests 17.29s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/ai_docs/reports/u-17e-evidence/behavior-whole.json

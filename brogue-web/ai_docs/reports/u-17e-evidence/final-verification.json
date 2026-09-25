@@ -1,0 +1,44 @@
+{
+  "verifiedAt": "2026-09-25T20:45:45.916639+00:00",
+  "head": "550d48ef5b22a4d73a923e20ac193ece171d72d0",
+  "stagedPaths": [],
+  "frozenInputCount": 613,
+  "currentInputCount": 613,
+  "frozenInputDifferences": [],
+  "baselineHashes": {
+    "src/test/fixtures/generation_baseline.json": "66dbe4353f22e033152d0166d88e5024fc1ccd0605e2afe3e134e0a6a860412a",
+    "src/test/fixtures/p2_2_baseline.json": "ba5cfdab37e2bdf633714ac9da1b54c5db71318967c54cffdb47da7519f51726",
+    "src/test/fixtures/p2_3_baseline.json": "9b3bb0c149e968f6eccae04752e13390beaf4602c6e8216aa65426432f5ecf2e",
+    "src/test/fixtures/p2_baseline.json": "f1690f3748c3e49c0df692cbee283fb962719d9b290131b9507282a6b504fc4b"
+  },
+  "baselineHashesMatchFinalGate": {
+    "src/test/fixtures/generation_baseline.json": true,
+    "src/test/fixtures/p2_2_baseline.json": true,
+    "src/test/fixtures/p2_3_baseline.json": true,
+    "src/test/fixtures/p2_baseline.json": true
+  },
+  "rollingBaselineWrites": 1,
+  "existingSkipTodoFilesEqualHEAD": {
+    "src/test/p2_1_tick_architecture.test.ts": true,
+    "src/test/p2_2_real_speed.test.ts": true,
+    "src/test/p2_3_objective_time.test.ts": true,
+    "src/test/smoke.test.ts": true
+  },
+  "gateExitCodes": {
+    "audit-final": 0,
+    "build-final": 0,
+    "regression-final": 0,
+    "drift-final": 0
+  },
+  "regression": {
+    "files": 176,
+    "passed": 3517,
+    "failed": 0,
+    "skipped": 8,
+    "todo": 1
+  },
+  "gitDiffCheck": {
+    "exit": 0,
+    "output": ""
+  }
+}

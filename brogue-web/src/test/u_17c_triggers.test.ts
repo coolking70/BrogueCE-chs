@@ -47,12 +47,12 @@ describe('U17c CE independent catalog and scope',()=>{
   }
  });
  it('historical U17c projection after nine U17d closures; every other missing identity remains ordered',()=>{
-  expect(DF_MISSING_TILES).toEqual([179,180,182,183,185,85,140,141,143,155,187,174,175,14,19,87,88,145,148,191].filter(id=>![179,180,182,183,185,174,175,14,19].includes(id)));
+  expect(DF_MISSING_TILES).toEqual([179,180,182,183,185,85,140,141,143,155,187,174,175,14,19,87,88,145,148,191].filter(id=>![179,180,182,183,185,174,175,14,19,85,140,141,143,145].includes(id)));
   for(const id of restored)expect(()=>catalogFeature(id)).not.toThrow();
  });
  it('CE-generated appearances preserve all old rows and represent the new glyphs',()=>{
   const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));
-  expect(Object.keys(rows)).toHaveLength(157);
+  expect(Object.keys(rows)).toHaveLength(164);
   for(const name of Object.keys(golden.tiles)){const t=T[name as keyof typeof T];expect(terrainAppearance(t,true)).toMatchObject({char:rows[name].char,color:rows[name].color,bgColor:rows[name].bgColor});}
  });
  it('three machine DF data starts restored, hidden-trap autoGen correct; secret lever and worm machines stay retired',()=>{
@@ -109,7 +109,7 @@ describe('U17c real actions → final terrain / entity / solvability',()=>{
  });
  it('144 resurrection consumer: empty altar can retry on the retained floor after an ally enters purgatory',()=>{
   const g=scene();mark(g,11,10,T.CARPET);mark(g,11,10,T.MACHINE_TRIGGER_FLOOR_REPEATING,7,L.LIQUID);mark(g,20,10,T.RESURRECTION_ALTAR);move(g,1,0);expect(g.grid.getCell(20,10)!.terrain).toBe(T.RESURRECTION_ALTAR);
-  const ally=rat(g,15,10);g.monsters=[];ally.hp=0;ally.isAlly=true;g.purgatory.push(ally);g.handlePlayerAction('wait',undefined,'system');expect(g.purgatory).toHaveLength(0);expect(g.monsters).toContain(ally);expect(ally.hp).toBeGreaterThan(0);expect(g.grid.getCell(20,10)!.terrain).toBe(T.ALTAR);
+  const ally=rat(g,15,10);g.monsters=[];ally.hp=0;ally.isAlly=true;g.purgatory.push(ally);g.handlePlayerAction('wait',undefined,'system');expect(g.purgatory).toHaveLength(0);expect(g.monsters).toContain(ally);expect(ally.hp).toBeGreaterThan(0);expect(g.grid.getCell(20,10)!.terrain).toBe(T.RESURRECTION_ALTAR_INERT);
  });
  it('152 DF lays holes and each halo without evacuation; monster and floor items reuse the fall queues',()=>{
   const g=scene(),m=rat(g,14,10),i=new Item('sword',')',0xffffff,ItemCategory.WEAPON),p=new Item('potion','!',0xffffff,ItemCategory.POTION);i.loc={x:14,y:10};p.loc={x:15,y:10};g.items.push(i,p);

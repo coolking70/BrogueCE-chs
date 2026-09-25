@@ -162,13 +162,13 @@ describe('B2 literal transcription and registered deferrals', () => {
         for(let depth=8;depth<=26;depth++) expect(blueprintQualifies(bp(55),depth,['BP_ADOPT_ITEM'])).toBe(false);
     });
     it.each([[6,2,DF.DF_MAGIC_PIPING]])(
-        'CE %i/F%i keeps the registered missing-tile DF %i disconnected', (ce,f,df) => {
-            // V-2b-4 §2.2 and V-2b-3 A7/A8: still missing carriers, not CE DF=0.
-            // When those tiles land, replace this deferral with a complete closure guard.
-            expect(bp(ce!).features[f!]!.featureDF).toBeUndefined();
-            expect(DF_MISSING_TILES).toContain(df);
-            expect(D[df as DF]!.tile).toBeNull();
-            expect(()=>catalogFeature(df as DF)).toThrow(/尚不存在的 tileType/);
+        'CE %i/F%i starts U17e DF %i; full-room drops consume the generated pipes', (ce,f,df) => {
+            // U17e proves the former deferral on HEAD; u_17e_altars exercises
+            // full blueprint construction through user drops to inert pipes.
+            expect(bp(ce!).features[f!]!.featureDF).toBe(DF[df as DF]);
+            expect(DF_MISSING_TILES).not.toContain(df);
+            expect(D[df as DF]!.tile).toBe(C.PIPE_GLOWING);
+            expect(catalogFeature(df as DF)).toMatchObject({tile:C.PIPE_GLOWING});
         });
     it.each([[7,2,144,C.MACHINE_TRIGGER_FLOOR_REPEATING],[22,0,152,C.TRAP_DOOR],[28,1,152,C.TRAP_DOOR]])(
         'CE %i/F%i now starts the closed U17c DF %i', (ce,f,df,tile) => {

@@ -1,0 +1,472 @@
+diff --git a/brogue-web/src/test/b2_transcription.test.ts b/brogue-web/src/test/b2_transcription.test.ts
+index 0deb5b5..22f8007 100644
+--- a/brogue-web/src/test/b2_transcription.test.ts
++++ b/brogue-web/src/test/b2_transcription.test.ts
+@@ -162,13 +162,13 @@ describe('B2 literal transcription and registered deferrals', () => {
+         for(let depth=8;depth<=26;depth++) expect(blueprintQualifies(bp(55),depth,['BP_ADOPT_ITEM'])).toBe(false);
+     });
+     it.each([[6,2,DF.DF_MAGIC_PIPING]])(
+-        'CE %i/F%i keeps the registered missing-tile DF %i disconnected', (ce,f,df) => {
+-            // V-2b-4 §2.2 and V-2b-3 A7/A8: still missing carriers, not CE DF=0.
+-            // When those tiles land, replace this deferral with a complete closure guard.
+-            expect(bp(ce!).features[f!]!.featureDF).toBeUndefined();
+-            expect(DF_MISSING_TILES).toContain(df);
+-            expect(D[df as DF]!.tile).toBeNull();
+-            expect(()=>catalogFeature(df as DF)).toThrow(/尚不存在的 tileType/);
++        'CE %i/F%i starts U17e DF %i; full-room drops consume the generated pipes', (ce,f,df) => {
++            // U17e proves the former deferral on HEAD; u_17e_altars exercises
++            // full blueprint construction through user drops to inert pipes.
++            expect(bp(ce!).features[f!]!.featureDF).toBe(DF[df as DF]);
++            expect(DF_MISSING_TILES).not.toContain(df);
++            expect(D[df as DF]!.tile).toBe(C.PIPE_GLOWING);
++            expect(catalogFeature(df as DF)).toMatchObject({tile:C.PIPE_GLOWING});
+         });
+     it.each([[7,2,144,C.MACHINE_TRIGGER_FLOOR_REPEATING],[22,0,152,C.TRAP_DOOR],[28,1,152,C.TRAP_DOOR]])(
+         'CE %i/F%i now starts the closed U17c DF %i', (ce,f,df,tile) => {
+diff --git a/brogue-web/src/test/b_4b_item_placement.test.ts b/brogue-web/src/test/b_4b_item_placement.test.ts
+index 5ac1a63..f1068da 100644
+--- a/brogue-web/src/test/b_4b_item_placement.test.ts
++++ b/brogue-web/src/test/b_4b_item_placement.test.ts
+@@ -415,8 +415,16 @@ describe('B-4b 钥匙由锁具驱动（P1-50 的 140-166 已灭）', () => {
+                 expect(lockKeys.length, `seed${seed} D${d} 认锁的钥匙 ${lockKeys.length} != 锁 ${locks}`).toBe(locks);
+                 for (const k of lockKeys) {
+                     for (const b of k.keyLoc) {
+-                        expect(lockCells.has(`${b.loc.x},${b.loc.y}`),
+-                            `seed${seed} D${d} 认锁钥匙的 keyLoc (${b.loc.x},${b.loc.y}) 不是本层的 LOCKED_DOOR`).toBe(true);
++                        // U17e / CE Architect.c:1521-1527: a CE26-adopted lock
++                        // key preserves its lock binding and appends its own
++                        // reusable library return slot. Other bindings remain invalid.
++                        const at = game.grid.getCell(b.loc.x, b.loc.y);
++                        const libraryReturn = k.flags?.includes('ITEM_IS_KEY')
++                            && b.machine === 0 && b.disposableHere === false
++                            && at?.machineNumber > 0
++                            && [TerrainType.ALTAR_CAGE_OPEN, TerrainType.ALTAR_CAGE_CLOSED].includes(at.terrain);
++                        expect(lockCells.has(`${b.loc.x},${b.loc.y}`) || libraryReturn,
++                            `seed${seed} D${d} 认锁钥匙的 keyLoc (${b.loc.x},${b.loc.y}) 既不是锁，也不是 CE 图书馆归还位`).toBe(true);
+                     }
+                 }
+                 // ② 其余 KEY：绑定不得悬空
+diff --git a/brogue-web/src/test/c_4a_0_layer_model.test.ts b/brogue-web/src/test/c_4a_0_layer_model.test.ts
+index c95332e..187f3b9 100644
+--- a/brogue-web/src/test/c_4a_0_layer_model.test.ts
++++ b/brogue-web/src/test/c_4a_0_layer_model.test.ts
+@@ -236,6 +236,13 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
+             [C.MACHINE_POISON_GAS_VENT]: L.DUNGEON,
+             [C.GAS_TRAP_POISON]: L.DUNGEON,
+             [C.FLAMETHROWER]: L.DUNGEON,
++            [C.SACRIFICE_LAVA]: L.DUNGEON,
++            [C.PIPE_INERT]: L.SURFACE,
++            [C.SACRIFICE_ALTAR]: L.DUNGEON,
++            [C.RESURRECTION_ALTAR_INERT]: L.DUNGEON,
++            [C.PIPE_GLOWING]: L.SURFACE,
++            [C.COMMUTATION_ALTAR_INERT]: L.DUNGEON,
++            [C.ALTAR_CAGE_CLOSED]: L.DUNGEON,
+ 
+             [C.MACHINE_PRESSURE_PLATE_USED]: L.DUNGEON,
+             [C.TRAP_DOOR]: L.LIQUID,
+@@ -404,6 +411,13 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
+             [C.MACHINE_POISON_GAS_VENT]: 30,
+             [C.GAS_TRAP_POISON]: 30,
+             [C.FLAMETHROWER]: 30,
++            [C.SACRIFICE_LAVA]: 40,
++            [C.PIPE_INERT]: 45,
++            [C.SACRIFICE_ALTAR]: 17,
++            [C.RESURRECTION_ALTAR_INERT]: 16,
++            [C.PIPE_GLOWING]: 45,
++            [C.COMMUTATION_ALTAR_INERT]: 17,
++            [C.ALTAR_CAGE_CLOSED]: 17,
+ 
+             [C.MACHINE_PRESSURE_PLATE_USED]: 15,
+             [C.TRAP_DOOR]: 30,
+diff --git a/brogue-web/src/test/c_4a_terrain_catalog.test.ts b/brogue-web/src/test/c_4a_terrain_catalog.test.ts
+index b1828f9..decdc67 100644
+--- a/brogue-web/src/test/c_4a_terrain_catalog.test.ts
++++ b/brogue-web/src/test/c_4a_terrain_catalog.test.ts
+@@ -171,11 +171,11 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
+         // 9b 再补九个环境效果活动态/落点，115 → 124；补完轮闭合
+         // MACHINE_CHASM_EDGE 与 DF_PUDDLE 的载体，124 → 126；9c 七条效果载体 126 → 133。
+         // U08 appends two carriers; all old keys/fields stay pinned above.
+-        expect(names.filter(n => n !== 'ANCIENT_SPIRIT_VINES' && n !== 'ANCIENT_SPIRIT_GRASS' && n !== 'DUNGEON_PORTAL' && n !== 'ITEM_FIRE' && !['TRAMPLED_FOLIAGE', 'ACTIVE_BRIMSTONE', 'BRIMSTONE_FIRE', 'OPEN_IRON_DOOR_INERT', 'BRIDGE_FALLING', 'MACHINE_PRESSURE_PLATE_USED', 'TRAP_DOOR', 'WALL_LEVER', 'WALL_LEVER_PULLED', 'MACHINE_TRIGGER_FLOOR_REPEATING', 'MACHINE_METHANE_VENT_DORMANT', 'MACHINE_METHANE_VENT', 'PILOT_LIGHT', 'MACHINE_PARALYSIS_VENT', 'MACHINE_POISON_GAS_VENT_DORMANT', 'MACHINE_POISON_GAS_VENT', 'GAS_TRAP_POISON', 'FLAMETHROWER'].includes(n)).length).toBe(135);
++        expect(names.filter(n => n !== 'ANCIENT_SPIRIT_VINES' && n !== 'ANCIENT_SPIRIT_GRASS' && n !== 'DUNGEON_PORTAL' && n !== 'ITEM_FIRE' && !['TRAMPLED_FOLIAGE', 'ACTIVE_BRIMSTONE', 'BRIMSTONE_FIRE', 'OPEN_IRON_DOOR_INERT', 'BRIDGE_FALLING', 'MACHINE_PRESSURE_PLATE_USED', 'TRAP_DOOR', 'WALL_LEVER', 'WALL_LEVER_PULLED', 'MACHINE_TRIGGER_FLOOR_REPEATING', 'MACHINE_METHANE_VENT_DORMANT', 'MACHINE_METHANE_VENT', 'PILOT_LIGHT', 'MACHINE_PARALYSIS_VENT', 'MACHINE_POISON_GAS_VENT_DORMANT', 'MACHINE_POISON_GAS_VENT', 'GAS_TRAP_POISON', 'FLAMETHROWER', 'ALTAR_CAGE_CLOSED', 'COMMUTATION_ALTAR_INERT', 'PIPE_GLOWING', 'RESURRECTION_ALTAR_INERT', 'SACRIFICE_ALTAR', 'PIPE_INERT', 'SACRIFICE_LAVA'].includes(n)).length).toBe(135);
+         expect(names).toContain('DUNGEON_PORTAL'); // U04 CE Globals.c:336
+         // U17a burnItem successor; historical 135-row projection remains fixed.
+         expect(names).toContain('ITEM_FIRE');
+-        expect(names.length).toBe(157);
++        expect(names.length).toBe(164);
+         for (const name of names) {
+             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
+             const entry = TERRAIN_FLAGS[t];
+@@ -603,7 +603,7 @@ describe('C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时
+         // MANACLE_T/PORTAL/SACRIFICE_ALTAR_DORMANT/DEAD_GRASS/VOMIT/
+         // LUMINESCENT_FUNGUS/DEAD_FOLIAGE/RUBBLE/GRAY_FUNGUS/WORM_TUNNEL_
+         // MARKER_DORMANT）**留在等价论域内**——不跳过，由本组逐位继续把关。
+-        C.BRAZIER, C.DEMONIC_STATUE, C.SACRIFICE_CAGE_DORMANT,
++        C.BRAZIER, C.DEMONIC_STATUE, C.SACRIFICE_CAGE_DORMANT, C.ALTAR_CAGE_CLOSED,
+         // V-2b-8：CE Globals.c:513 的 BLOODFLOWER_STALK 明确带
+         // T_OBSTRUCTS_PASSABILITY；这是迁移后新增成员，不属于旧硬编码清单。
+         C.BLOODFLOWER_STALK,
+diff --git a/brogue-web/src/test/c_4b_dungeon_feature.test.ts b/brogue-web/src/test/c_4b_dungeon_feature.test.ts
+index 3aa4441..695d7a6 100644
+--- a/brogue-web/src/test/c_4b_dungeon_feature.test.ts
++++ b/brogue-web/src/test/c_4b_dungeon_feature.test.ts
+@@ -578,7 +578,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
+         // count and new literal rows are pinned in u_08_terrain_bolts.test.ts.
+         // U17a additionally projects out DF_ITEM_FIRE=110; its live burn chain
+         // is pinned in u_17a_df_transaction.test.ts. The old 135 stay unchanged.
+-        const keys = Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => ![57, 58, 59, 60, 110, 63, 96, 137, 178].includes(Number(k)));
++        const keys = Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => ![57, 58, 59, 60, 110, 63, 96, 137, 178, 84, 142, 146].includes(Number(k)));
+         // V-2b-3：35 → 49（+14）。CE Globals.c 目录行逐条：
+         //   DF_RUBBLE :612、DF_SHOW_PARALYSIS_GAS_TRAP :626、DF_INACTIVE_GLYPH :726、
+         //   DF_REVEAL_LEVER :732、DF_MEDIUM_HOLE :813、DF_OPEN_PORTCULLIS :854、
+@@ -792,7 +792,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
+         // 集合相等：目录里多一条（闭包外）或少一条（漏抄）都翻红。
+         const catalogKeys = new Set(Object.keys(DUNGEON_FEATURE_CATALOG).map(Number) as DF[]);
+         expect([...closure].sort((a, b) => a - b)).toEqual([...catalogKeys].sort((a, b) => a - b));
+-        expect([...catalogKeys].filter(id => ![57, 58, 59, 60, 110, 63, 96, 137, 178].includes(id)).length, 'U08 投影回原135条；F-2a：DF_ASH 入闭包 19→20；G-1：DF_GAS_FIRE 入闭包 20→21；' +
++        expect([...catalogKeys].filter(id => ![57, 58, 59, 60, 110, 63, 96, 137, 178, 84, 142, 146].includes(id)).length, 'U08 投影回原135条；F-2a：DF_ASH 入闭包 19→20；G-1：DF_GAS_FIRE 入闭包 20→21；' +
+             'G-2：DF_EXPLOSION_FIRE（经 METHANE_GAS.promoteType）入闭包 21→22；' +
+             'F-2c：DF_BLOAT_EXPLOSION（经 bloat 的 DFType）入闭包 22→23；' +
+             'C-5：DF_HOLE_POTION（药水/pit bloat 起点）→ DF_HOLE_2 → DF_HOLE_DRAIN' +
+@@ -1009,7 +1009,7 @@ describe('C-4b E：目录完整性（CE Globals.c:603-932 抄录质量）', () =
+         // DF_PORTAL_ACTIVATE→PORTAL_LIGHT :725、DF_SACRIFICE_ALTAR→SACRIFICE_ALTAR
+         // :802、DF_COFFIN_BURSTS→COFFIN_OPEN :807、DF_WORM_TUNNEL_MARKER_ACTIVE
+         // →WORM_TUNNEL_MARKER_ACTIVE :880）。另 15 条带完整 tile 不入列。
+-        expect(DF_MISSING_TILES.length).toBe(11); // U17d: exactly nine further carriers restored.
++        expect(DF_MISSING_TILES.length).toBe(6); // U17e: five altar/pipe carriers restored; exactly six remain.
+         // 登记条目确实都是 tile=null，且抛错带 CE tile 名。
+         for (const id of DF_MISSING_TILES) {
+             expect(DUNGEON_FEATURE_CATALOG[id]!.tile, `DF#${id} 应为 null tile`).toBeNull();
+diff --git a/brogue-web/src/test/c_7_lighting.test.ts b/brogue-web/src/test/c_7_lighting.test.ts
+index 7772824..7ec6af4 100644
+--- a/brogue-web/src/test/c_7_lighting.test.ts
++++ b/brogue-web/src/test/c_7_lighting.test.ts
+@@ -141,6 +141,14 @@ describe('C-7 光照目录（CE Globals.c:955-1020 逐值）', () => {
+ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () => {
+     /** web 全部 43 tile 的 CE glowLight 期望值（逐条核过 CE Globals.c:321-744）。 */
+     const EXPECTED_GLOW: Record<TerrainType, number> = {
++        [TerrainType.ALTAR_CAGE_CLOSED]: LightKind.CANDLE_LIGHT, // CE U17e
++        [TerrainType.COMMUTATION_ALTAR_INERT]: LightKind.NO_LIGHT, // CE U17e
++        [TerrainType.PIPE_GLOWING]: LightKind.CONFUSION_GAS_LIGHT, // CE U17e
++        [TerrainType.RESURRECTION_ALTAR_INERT]: LightKind.NO_LIGHT, // CE U17e
++        [TerrainType.SACRIFICE_ALTAR]: LightKind.CANDLE_LIGHT, // CE U17e
++        [TerrainType.PIPE_INERT]: LightKind.NO_LIGHT, // CE U17e
++        [TerrainType.SACRIFICE_LAVA]: LightKind.LAVA_LIGHT, // CE U17e
++
+         [TerrainType.MACHINE_PRESSURE_PLATE_USED]: 0, // CE U17c
+         [TerrainType.TRAP_DOOR]: 0, // CE U17c
+         [TerrainType.WALL_LEVER]: 0, // CE U17c
+@@ -332,12 +340,13 @@ describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () =
+         }
+     });
+ 
+-    it('非零恰 39 个（U17d 两态长明灯），且都指向有载体的目录条目', () => {
++    it('非零恰 43 个（U17e 祭坛、管道与献祭坑），且都指向有载体的目录条目', () => {
+         const nonzero = Object.entries(TERRAIN_FLAGS)
+             .filter(([, v]) => v.glowLight !== LightKind.NO_LIGHT)
+             .map(([k]) => Number(k) as TerrainType)
+             .sort((a, b) => a - b);
+         expect(nonzero).toEqual([
++            TerrainType.ALTAR_CAGE_CLOSED, TerrainType.PIPE_GLOWING, TerrainType.SACRIFICE_ALTAR, TerrainType.SACRIFICE_LAVA,
+             TerrainType.PILOT_LIGHT_DORMANT, TerrainType.PILOT_LIGHT,
+             TerrainType.LAVA, TerrainType.ALTAR, TerrainType.EMBERS,
+             TerrainType.CONFUSION_GAS, TerrainType.GAS_FIRE,
+@@ -774,6 +783,8 @@ describe('C-7 光照 → 潜行判定（calculateStealthRange）', () => {
+ 
+ describe('C-7 载体边界留痕', () => {
+     const CARRIER_KINDS = new Set([
++        'SACRIFICE_MARK_LIGHT', // U17e real HORDE_SACRIFICE_TARGET leader and lighting consumer
++
+         'NO_LIGHT',            // 哨兵值，目录默认列
+         'MINERS_LIGHT',        // 载体：玩家（本轮接线）
+         'BURNING_CREATURE_LIGHT', // 载体：STATUS_BURNING（F-2b 状态机）
+diff --git a/brogue-web/src/test/g_1_gas_volumetric.test.ts b/brogue-web/src/test/g_1_gas_volumetric.test.ts
+index a7a5769..4577371 100644
+--- a/brogue-web/src/test/g_1_gas_volumetric.test.ts
++++ b/brogue-web/src/test/g_1_gas_volumetric.test.ts
+@@ -150,6 +150,14 @@ describe('G-1 对抗③：每玩家回合两轮 updateVolumetricMedia（Time.c:1
+     it('Game.objectiveTimeBlock 的探测守卫：无气体回合跳过两轮（CE Time.c:1600-1613）', () => {
+         const game = createHeadlessGame(7);
+         openRoom(game);
++        // U17e: clearing all items leaves distant natural library altars without
++        // keys; their first wired closure has its own RNG cost. This gas-only
++        // fixture must isolate the whole map, not just the small test chamber.
++        for (let x = 0; x < game.grid.width; x++) for (let y = 0; y < game.grid.height; y++) {
++            if (x < 2 || x > 16 || y < 2 || y > 12) game.grid.setTerrain(x, y, C.WALL);
++            game.grid.getCell(x, y)!.machineNumber = 0;
++        }
++        game.dormantMonsters.length = 0;
+         const cumBase = rng.randomNumbersGenerated; // create 后的累计抽取数
+         priv(game).objectiveTimeBlock();
+         const cum1 = rng.randomNumbersGenerated;
+diff --git a/brogue-web/src/test/g_2_gas_df_wiring.test.ts b/brogue-web/src/test/g_2_gas_df_wiring.test.ts
+index 694f06e..3065bd1 100644
+--- a/brogue-web/src/test/g_2_gas_df_wiring.test.ts
++++ b/brogue-web/src/test/g_2_gas_df_wiring.test.ts
+@@ -488,7 +488,7 @@ describe('G-2 对抗⑦：未迁移气体只登记（载体盘点表的显式留
+         // V-2b-7：29 → 31（摘 5 增 7，DF 特征系统轮——RUBBLE/LUMINESCENT_FUNGUS
+         // 两条地形落地摘除四条 RUBBLE 链 DF 与 DF_LUMINESCENT_FUNGUS，新增
+         // 七条 tile 无 web 载体的新条目）。
+-        expect(DF_MISSING_TILES).toHaveLength(11); // U17c: five more carriers restored; the other 20 stay missing.
++        expect(DF_MISSING_TILES).toHaveLength(6); // U17e: five altar/pipe carriers restored; the other six stay missing.
+         const f = catalogFeature(DF.DF_EXPLOSION_FIRE);
+         expect(f.tile).toBe(C.GAS_EXPLOSION);
+         expect(f.startProbability).toBe(60);
+diff --git a/brogue-web/src/test/r_1_appearance.test.ts b/brogue-web/src/test/r_1_appearance.test.ts
+index 3a708a8..204bc49 100644
+--- a/brogue-web/src/test/r_1_appearance.test.ts
++++ b/brogue-web/src/test/r_1_appearance.test.ts
+@@ -169,8 +169,8 @@ describe('R-1 terrainAppearance 特征化（穷举钉死）', () => {
+         // V-2b-9b：九条活动态/效果落点，115 → 124；补完轮补齐
+         // MACHINE_CHASM_EDGE / PUDDLE，124 → 126；9c 七条效果载体 126 → 133。
+         // U08 adds two CE terrain carriers; preserve the old-universe count.
+-        expect(ALL_TERRAINS.filter(t => t !== TerrainType.ANCIENT_SPIRIT_VINES && t !== TerrainType.ANCIENT_SPIRIT_GRASS && t !== TerrainType.DUNGEON_PORTAL && t !== TerrainType.ITEM_FIRE && ![TerrainType.TRAMPLED_FOLIAGE, TerrainType.ACTIVE_BRIMSTONE, TerrainType.BRIMSTONE_FIRE, TerrainType.OPEN_IRON_DOOR_INERT, TerrainType.BRIDGE_FALLING, TerrainType.MACHINE_PRESSURE_PLATE_USED, TerrainType.TRAP_DOOR, TerrainType.WALL_LEVER, TerrainType.WALL_LEVER_PULLED, TerrainType.MACHINE_TRIGGER_FLOOR_REPEATING, TerrainType.MACHINE_METHANE_VENT_DORMANT, TerrainType.MACHINE_METHANE_VENT, TerrainType.PILOT_LIGHT, TerrainType.MACHINE_PARALYSIS_VENT, TerrainType.MACHINE_POISON_GAS_VENT_DORMANT, TerrainType.MACHINE_POISON_GAS_VENT, TerrainType.GAS_TRAP_POISON, TerrainType.FLAMETHROWER].includes(t)).length).toBe(135);
+-        expect(ALL_TERRAINS.length).toBe(157);
++        expect(ALL_TERRAINS.filter(t => t !== TerrainType.ANCIENT_SPIRIT_VINES && t !== TerrainType.ANCIENT_SPIRIT_GRASS && t !== TerrainType.DUNGEON_PORTAL && t !== TerrainType.ITEM_FIRE && ![TerrainType.TRAMPLED_FOLIAGE, TerrainType.ACTIVE_BRIMSTONE, TerrainType.BRIMSTONE_FIRE, TerrainType.OPEN_IRON_DOOR_INERT, TerrainType.BRIDGE_FALLING, TerrainType.MACHINE_PRESSURE_PLATE_USED, TerrainType.TRAP_DOOR, TerrainType.WALL_LEVER, TerrainType.WALL_LEVER_PULLED, TerrainType.MACHINE_TRIGGER_FLOOR_REPEATING, TerrainType.MACHINE_METHANE_VENT_DORMANT, TerrainType.MACHINE_METHANE_VENT, TerrainType.PILOT_LIGHT, TerrainType.MACHINE_PARALYSIS_VENT, TerrainType.MACHINE_POISON_GAS_VENT_DORMANT, TerrainType.MACHINE_POISON_GAS_VENT, TerrainType.GAS_TRAP_POISON, TerrainType.FLAMETHROWER, TerrainType.ALTAR_CAGE_CLOSED, TerrainType.COMMUTATION_ALTAR_INERT, TerrainType.PIPE_GLOWING, TerrainType.RESURRECTION_ALTAR_INERT, TerrainType.SACRIFICE_ALTAR, TerrainType.PIPE_INERT, TerrainType.SACRIFICE_LAVA].includes(t)).length).toBe(135);
++        expect(ALL_TERRAINS.length).toBe(164);
+         expect(new Set(ALL_TERRAINS).size).toBe(ALL_TERRAINS.length);
+     });
+ 
+diff --git a/brogue-web/src/test/u_05a_item_ownership.test.ts b/brogue-web/src/test/u_05a_item_ownership.test.ts
+index b6081ad..7f9bfeb 100644
+--- a/brogue-web/src/test/u_05a_item_ownership.test.ts
++++ b/brogue-web/src/test/u_05a_item_ownership.test.ts
+@@ -69,7 +69,9 @@ describe('U05a CE feature ownership matrix (spatial/DF algorithms covered by V r
+         expect(r.featureSpawns).toHaveLength(count);
+         expect(expected).toBeGreaterThan(0);expect(owners).toHaveLength(expected);
+         expect(new Set(owners.map(i=>i.instanceId)).size).toBe(expected);
+-        if(f.flags.includes('MF_ADOPT_ITEM')){expect(generated).toHaveLength(0);expect(owners[0]!.instanceId).toBe(incoming.instanceId);expect(owners[0]!.keyLoc).toEqual(incoming.keyLoc);}
++        if(f.flags.includes('MF_ADOPT_ITEM')){expect(generated).toHaveLength(0);expect(owners[0]!.instanceId).toBe(incoming.instanceId);expect(owners[0]!.keyLoc).toEqual(f.itemFlags?.includes('ITEM_IS_KEY')
++            ? [...incoming.keyLoc!, {loc: owners[0]!.pos, machine: 0, disposableHere: false}]
++            : incoming.keyLoc); } // U17e CE26 appends its return slot; all incoming bindings and identity remain intact.
+         else expect(owners.map(i=>i.instanceId).sort()).toEqual(generated.map(i=>i.instanceId).sort());
+         if(f.flags.includes('MF_MONSTER_TAKE_ITEM')){expect(r.itemSpawns).toHaveLength(0);expect(r.monsterSpawns.filter(m=>m.carriedItem)).toHaveLength(1);}
+         if(f.flags.includes('MF_OUTSOURCE_ITEM_TO_MACHINE')){expect(r.itemSpawns).toHaveLength(0);expect(r.monsterSpawns.filter(m=>m.carriedItem)).toHaveLength(0);expect(r.subMachines).toHaveLength(expected);}
+diff --git a/brogue-web/src/test/u_08_terrain_bolts.test.ts b/brogue-web/src/test/u_08_terrain_bolts.test.ts
+index 6dacadc..6006582 100644
+--- a/brogue-web/src/test/u_08_terrain_bolts.test.ts
++++ b/brogue-web/src/test/u_08_terrain_bolts.test.ts
+@@ -47,7 +47,8 @@ describe('U08 CE catalog and runtime qualification',()=>{
+     it('new closed terrain set: 139 DFs, no entity/spawn flags; web forbidden to learn, vines eligible',()=>{
+         // Retain the U08 universe: later additions are item fire (110),
+         // foliage regrowth (63), U17c lever pull (96), and U17d immolation/poison spew (137/178).
+-        expect(Object.keys(DFC).filter(k=>Number(k)!==110 && Number(k)!==63 && Number(k)!==96 && Number(k)!==137 && Number(k)!==178)).toHaveLength(139);
++        // U17e adds only the necessary open-cage / inert-pipe / sacrifice successors.
++        expect(Object.keys(DFC).filter(k=>Number(k)!==110 && Number(k)!==63 && Number(k)!==96 && Number(k)!==137 && Number(k)!==178 && ![84,142,146].includes(Number(k)))).toHaveLength(139);
+         expect(BC[B.SPIDERWEB]).toMatchObject({effect:E.NONE,pathDF:'DF_WEB_SMALL',targetDF:'DF_WEB_LARGE'});
+         expect(BC[B.ANCIENT_SPIRIT_VINES]).toMatchObject({effect:E.NONE,pathDF:'DF_ANCIENT_SPIRIT_GRASS',targetDF:'DF_ANCIENT_SPIRIT_VINES'});
+         expect(BC[B.SPIDERWEB].flags).toBe(F.TARGET_ENEMIES|F.NEVER_REFLECTS|F.NOT_LEARNABLE);
+diff --git a/brogue-web/src/test/u_16_lifecycle.test.ts b/brogue-web/src/test/u_16_lifecycle.test.ts
+index 7a030ab..8796a79 100644
+--- a/brogue-web/src/test/u_16_lifecycle.test.ts
++++ b/brogue-web/src/test/u_16_lifecycle.test.ts
+@@ -95,7 +95,7 @@ describe('U16 CE death and resurrection lifecycle', () => {
+         const raised = g.purgatory.find(m => m.typeId === 'goblin')!;
+         g.grid.setTerrain(20, 10, TerrainType.RESURRECTION_ALTAR);
+         expect(promoteTile(g.grid, 20, 10, DungeonLayer.DUNGEON, false).spawn?.succeeded).toBe(true);
+-        expect(g.grid.getCell(20, 10)?.terrain).toBe(TerrainType.ALTAR);
++        expect(g.grid.getCell(20, 10)?.terrain).toBe(TerrainType.RESURRECTION_ALTAR_INERT);
+         expect(g.monsters).toContain(raised);
+         expect(raised.hp).toBe(raised.maxHp);
+         expect(g.purgatory).toHaveLength(1);
+diff --git a/brogue-web/src/test/u_17a_df_transaction.test.ts b/brogue-web/src/test/u_17a_df_transaction.test.ts
+index e82d7be..58ecb03 100644
+--- a/brogue-web/src/test/u_17a_df_transaction.test.ts
++++ b/brogue-web/src/test/u_17a_df_transaction.test.ts
+@@ -257,9 +257,9 @@ describe('U17a actual Game consumers',()=>{
+         spawnDungeonFeature(g.grid,5,5,repel,false);
+         expect(g.player.loc).not.toEqual({x:5,y:5});
+     });
+-    it('historical U17a projection: 30 missing rows before the U17b/U17c/U17d carriers',()=>{
+-        expect([...DF_MISSING_TILES, 61, 66, 104, 83, 98, 154, 17, 152, 95, 144, 179, 180, 182, 183, 185, 174, 175, 14, 19]).toHaveLength(30);
+-        expect(Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => Number(k) !== 63 && Number(k) !== 96 && Number(k) !== 137 && Number(k) !== 178)).toHaveLength(140);
++    it('historical U17a projection: 30 missing rows before the U17b/U17c/U17d/U17e carriers',()=>{
++        expect([...DF_MISSING_TILES, 61, 66, 104, 83, 98, 154, 17, 152, 95, 144, 179, 180, 182, 183, 185, 174, 175, 14, 19, 85, 140, 141, 143, 145]).toHaveLength(30);
++        expect(Object.keys(DUNGEON_FEATURE_CATALOG).filter(k => Number(k) !== 63 && Number(k) !== 96 && Number(k) !== 137 && Number(k) !== 178 && ![84,142,146].includes(Number(k)))).toHaveLength(140);
+         expect(DF.DF_ITEM_FIRE).toBe(110);
+         expect(catalogFeature(DF.DF_ITEM_FIRE)).toMatchObject({tile:T.ITEM_FIRE,layer:L.SURFACE,startProbability:0,flags:0,lightFlare:'FALLEN_TORCH_FLASH_LIGHT'});
+     });
+diff --git a/brogue-web/src/test/u_17b_carriers.test.ts b/brogue-web/src/test/u_17b_carriers.test.ts
+index 2e3935e..16f67fe 100644
+--- a/brogue-web/src/test/u_17b_carriers.test.ts
++++ b/brogue-web/src/test/u_17b_carriers.test.ts
+@@ -50,12 +50,12 @@ describe('U17b CE data / closed first family',()=>{
+  });
+  it('historical U17b missing projection excludes exactly the five U17c and nine U17d closures',()=>{
+   const u17c = [154,17,152,95,144];
+-  expect(DF_MISSING_TILES).toEqual([DF.DF_MACHINE_PRESSURE_PLATE_USED, DF.DF_SHOW_TRAPDOOR, DF.DF_REVEAL_LEVER, DF.DF_MEDIUM_HOLE, DF.DF_SHOW_METHANE_VENT, DF.DF_METHANE_VENT_OPEN, DF.DF_PILOT_LIGHT, DF.DF_DISCOVER_PARALYSIS_VENT, DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY, DF.DF_ITEM_CAGE_CLOSE, DF.DF_ALTAR_COMMUTE, DF.DF_MAGIC_PIPING, DF.DF_ALTAR_RESURRECT, DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING, DF.DF_WALL_CRACK, DF.DF_CRACKING_STATUE, DF.DF_SHOW_POISON_GAS_VENT, DF.DF_POISON_GAS_VENT_OPEN, DF.DF_SHOW_POISON_GAS_TRAP, DF.DF_SHOW_FLAMETHROWER_TRAP, DF.DF_ALTAR_RETRACT, DF.DF_PORTAL_ACTIVATE, DF.DF_SACRIFICE_ALTAR, DF.DF_COFFIN_BURSTS, DF.DF_WORM_TUNNEL_MARKER_ACTIVE].filter(id=>!u17c.includes(id) && ![179,180,182,183,185,174,175,14,19].includes(id)));
++  expect(DF_MISSING_TILES).toEqual([DF.DF_MACHINE_PRESSURE_PLATE_USED, DF.DF_SHOW_TRAPDOOR, DF.DF_REVEAL_LEVER, DF.DF_MEDIUM_HOLE, DF.DF_SHOW_METHANE_VENT, DF.DF_METHANE_VENT_OPEN, DF.DF_PILOT_LIGHT, DF.DF_DISCOVER_PARALYSIS_VENT, DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY, DF.DF_ITEM_CAGE_CLOSE, DF.DF_ALTAR_COMMUTE, DF.DF_MAGIC_PIPING, DF.DF_ALTAR_RESURRECT, DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING, DF.DF_WALL_CRACK, DF.DF_CRACKING_STATUE, DF.DF_SHOW_POISON_GAS_VENT, DF.DF_POISON_GAS_VENT_OPEN, DF.DF_SHOW_POISON_GAS_TRAP, DF.DF_SHOW_FLAMETHROWER_TRAP, DF.DF_ALTAR_RETRACT, DF.DF_PORTAL_ACTIVATE, DF.DF_SACRIFICE_ALTAR, DF.DF_COFFIN_BURSTS, DF.DF_WORM_TUNNEL_MARKER_ACTIVE].filter(id=>!u17c.includes(id) && ![179,180,182,183,185,174,175,14,19,85,140,141,143,145].includes(id)));
+  });
+  it('appearance golden extension keeps every previous row byte-equivalent in value',()=>{
+   const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));
+   for(const name of Object.keys(golden.tiles))expect(rows[name].ceLine).toBe(golden.tiles[name as keyof typeof golden.tiles].line);
+-  expect(Object.keys(rows)).toHaveLength(157);expect(restored.every(id=>!DF_MISSING_TILES.includes(id))).toBe(true);
++  expect(Object.keys(rows)).toHaveLength(164);expect(restored.every(id=>!DF_MISSING_TILES.includes(id))).toBe(true);
+  });
+ });
+ 
+diff --git a/brogue-web/src/test/u_17c_triggers.test.ts b/brogue-web/src/test/u_17c_triggers.test.ts
+index a1caae3..62a7d6f 100644
+--- a/brogue-web/src/test/u_17c_triggers.test.ts
++++ b/brogue-web/src/test/u_17c_triggers.test.ts
+@@ -47,12 +47,12 @@ describe('U17c CE independent catalog and scope',()=>{
+   }
+  });
+  it('historical U17c projection after nine U17d closures; every other missing identity remains ordered',()=>{
+-  expect(DF_MISSING_TILES).toEqual([179,180,182,183,185,85,140,141,143,155,187,174,175,14,19,87,88,145,148,191].filter(id=>![179,180,182,183,185,174,175,14,19].includes(id)));
++  expect(DF_MISSING_TILES).toEqual([179,180,182,183,185,85,140,141,143,155,187,174,175,14,19,87,88,145,148,191].filter(id=>![179,180,182,183,185,174,175,14,19,85,140,141,143,145].includes(id)));
+   for(const id of restored)expect(()=>catalogFeature(id)).not.toThrow();
+  });
+  it('CE-generated appearances preserve all old rows and represent the new glyphs',()=>{
+   const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));
+-  expect(Object.keys(rows)).toHaveLength(157);
++  expect(Object.keys(rows)).toHaveLength(164);
+   for(const name of Object.keys(golden.tiles)){const t=T[name as keyof typeof T];expect(terrainAppearance(t,true)).toMatchObject({char:rows[name].char,color:rows[name].color,bgColor:rows[name].bgColor});}
+  });
+  it('three machine DF data starts restored, hidden-trap autoGen correct; secret lever and worm machines stay retired',()=>{
+@@ -109,7 +109,7 @@ describe('U17c real actions → final terrain / entity / solvability',()=>{
+  });
+  it('144 resurrection consumer: empty altar can retry on the retained floor after an ally enters purgatory',()=>{
+   const g=scene();mark(g,11,10,T.CARPET);mark(g,11,10,T.MACHINE_TRIGGER_FLOOR_REPEATING,7,L.LIQUID);mark(g,20,10,T.RESURRECTION_ALTAR);move(g,1,0);expect(g.grid.getCell(20,10)!.terrain).toBe(T.RESURRECTION_ALTAR);
+-  const ally=rat(g,15,10);g.monsters=[];ally.hp=0;ally.isAlly=true;g.purgatory.push(ally);g.handlePlayerAction('wait',undefined,'system');expect(g.purgatory).toHaveLength(0);expect(g.monsters).toContain(ally);expect(ally.hp).toBeGreaterThan(0);expect(g.grid.getCell(20,10)!.terrain).toBe(T.ALTAR);
++  const ally=rat(g,15,10);g.monsters=[];ally.hp=0;ally.isAlly=true;g.purgatory.push(ally);g.handlePlayerAction('wait',undefined,'system');expect(g.purgatory).toHaveLength(0);expect(g.monsters).toContain(ally);expect(ally.hp).toBeGreaterThan(0);expect(g.grid.getCell(20,10)!.terrain).toBe(T.RESURRECTION_ALTAR_INERT);
+  });
+  it('152 DF lays holes and each halo without evacuation; monster and floor items reuse the fall queues',()=>{
+   const g=scene(),m=rat(g,14,10),i=new Item('sword',')',0xffffff,ItemCategory.WEAPON),p=new Item('potion','!',0xffffff,ItemCategory.POTION);i.loc={x:14,y:10};p.loc={x:15,y:10};g.items.push(i,p);
+diff --git a/brogue-web/src/test/u_17d_vents.test.ts b/brogue-web/src/test/u_17d_vents.test.ts
+index 431aa5d..8bc1f79 100644
+--- a/brogue-web/src/test/u_17d_vents.test.ts
++++ b/brogue-web/src/test/u_17d_vents.test.ts
+@@ -58,12 +58,12 @@ describe('U17d CE independent catalog, three chains and data starts',()=>{
+   }
+  });
+  it('removes precisely nine registrations, preserves remaining ordered eleven and old numeric IDs',()=>{
+-  expect(DF_MISSING_TILES).toEqual([85,140,141,143,155,187,87,88,145,148,191]);
++  expect(DF_MISSING_TILES).toEqual([155,187,87,88,148,191]);
+   for(const id of restored)expect(()=>catalogFeature(id)).not.toThrow();
+   expect(T.MACHINE_TRIGGER_FLOOR_REPEATING).toBe(148);expect(T.MACHINE_METHANE_VENT_DORMANT).toBe(149);expect(T.FLAMETHROWER).toBe(156);
+  });
+  it('157 CE-generated appearances include visible traps/vents/fire; hidden forms still look like floor',()=>{
+-  const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));expect(Object.keys(rows)).toHaveLength(157);
++  const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));expect(Object.keys(rows)).toHaveLength(164);
+   for(const name of Object.keys(golden.tiles)){const t=T[name as keyof typeof T];expect(terrainAppearance(t,true)).toMatchObject({char:rows[name].char,color:rows[name].color,bgColor:rows[name].bgColor});}
+   for(const t of [T.MACHINE_METHANE_VENT_HIDDEN,T.MACHINE_POISON_GAS_VENT_HIDDEN,T.MACHINE_PARALYSIS_VENT_HIDDEN,T.GAS_TRAP_POISON_HIDDEN,T.FLAMETHROWER_HIDDEN])expect(terrainAppearance(t,true)).toEqual(terrainAppearance(T.FLOOR,true));
+  });
+diff --git a/brogue-web/src/test/v_2b_3_wired.test.ts b/brogue-web/src/test/v_2b_3_wired.test.ts
+index e4130c3..53397a5 100644
+--- a/brogue-web/src/test/v_2b_3_wired.test.ts
++++ b/brogue-web/src/test/v_2b_3_wired.test.ts
+@@ -244,7 +244,7 @@ describe('V-2b-3 A：载体地形逐字段 ≡ CE Globals.c（对抗：抄错任
+         // DF_STATUE_SHATTER / DF_LUMINESCENT_FUNGUS 五条接上真 tile 摘出；
+         // 22 条新条目里 web 无 tile 的七条入列。逐条见 DungeonFeatureCatalog
+         // 的 V-2b-7 块注。
+-        expect(DF_MISSING_TILES).toHaveLength(11); // U17d: exactly nine closures; the other eleven stay missing.
++        expect(DF_MISSING_TILES).toHaveLength(6); // U17e: exactly five further closures; the other six stay missing.
+         expect(DF_MISSING_TILES).not.toContain(DF.DF_REVEAL_LEVER); // U17c closure
+         for (const d of [DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY]) {
+             expect(DF_MISSING_TILES, `U17d DF[${d}] 已恢复载体`).not.toContain(d);
+@@ -278,7 +278,8 @@ describe('V-2b-3 A：载体地形逐字段 ≡ CE Globals.c（对抗：抄错任
+         // tile（LUMINESCENT_FUNGUS / RUBBLE）本轮落地 → 从本清单摘出。
+         for (const d of [DF.DF_ITEM_CAGE_CLOSE,
+             DF.DF_ALTAR_COMMUTE, DF.DF_MAGIC_PIPING, DF.DF_ALTAR_RESURRECT]) {
+-            expect(DF_MISSING_TILES, `DF[${d}] 应在缺 tile 登记`).toContain(d);
++            expect(DF_MISSING_TILES, `U17e DF[${d}] 已恢复载体`).not.toContain(d);
++            expect(() => catalogFeature(d)).not.toThrow();
+         }
+         for (const d of [DF.DF_LUMINESCENT_FUNGUS, DF.DF_STATUE_SHATTER, DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING]) {
+             expect(DF_MISSING_TILES, `DF[${d}] 的 tile 已落地，不得留在名单里`).not.toContain(d);
+diff --git a/brogue-web/src/test/v_2b_4_altars.test.ts b/brogue-web/src/test/v_2b_4_altars.test.ts
+index a60993a..8bb4046 100644
+--- a/brogue-web/src/test/v_2b_4_altars.test.ts
++++ b/brogue-web/src/test/v_2b_4_altars.test.ts
+@@ -247,49 +247,49 @@ describe('V-2b-4 B：八条祭坛族 DF 目录条目的 CE 逐字段钉死', ()
+         const e = DUNGEON_FEATURE_CATALOG[DF.DF_ITEM_CAGE_CLOSE]!;
+         expect(e.ceLine).toBe(722);
+         expect(e.ceTile).toBe('ALTAR_CAGE_CLOSED');
+-        expect(e.tile).toBeNull();
++        expect(e.tile).toBe(C.ALTAR_CAGE_CLOSED);
+         expect(e.layer).toBe(L.DUNGEON);
+         expect(e.startProbability).toBe(0);
+         expect(e.probabilityDecrement).toBe(0);
+         expect(e.flags).toBe(DFF_EVACUATE_CREATURES_FIRST);
+         expect(e.description).toBe('the cages lower to cover the altars.');
+         expect(e.lightFlare).toBe('GENERIC_FLASH_LIGHT');
+-        expect(DF_MISSING_TILES).toContain(DF.DF_ITEM_CAGE_CLOSE);
++        expect(DF_MISSING_TILES).not.toContain(DF.DF_ITEM_CAGE_CLOSE);
+     });
+ 
+     it('B3 DF_ALTAR_COMMUTE（:793）与 DF_ALTAR_RESURRECT（:798）：两条惰性祭坛 + 各自的文案/光效', () => {
+         const cm = DUNGEON_FEATURE_CATALOG[DF.DF_ALTAR_COMMUTE]!;
+         expect(cm.ceLine).toBe(793);
+         expect(cm.ceTile).toBe('COMMUTATION_ALTAR_INERT');
+-        expect(cm.tile).toBeNull();
++        expect(cm.tile).toBe(C.COMMUTATION_ALTAR_INERT);
+         expect(cm.layer).toBe(L.DUNGEON);
+         expect(cm.flags, '置换完成条无 DFF 旗标').toBe(0);
+         expect(cm.description).toBe('the items on the two altars flash with a brilliant light!');
+         expect(cm.lightFlare).toBe('SCROLL_ENCHANTMENT_LIGHT');
+-        expect(DF_MISSING_TILES).toContain(DF.DF_ALTAR_COMMUTE);
++        expect(DF_MISSING_TILES).not.toContain(DF.DF_ALTAR_COMMUTE);
+ 
+         const rs = DUNGEON_FEATURE_CATALOG[DF.DF_ALTAR_RESURRECT]!;
+         expect(rs.ceLine).toBe(798);
+         expect(rs.ceTile).toBe('RESURRECTION_ALTAR_INERT');
+-        expect(rs.tile).toBeNull();
++        expect(rs.tile).toBe(C.RESURRECTION_ALTAR_INERT);
+         expect(rs.layer).toBe(L.DUNGEON);
+         expect(rs.flags, 'DFF_RESURRECT_ALLY（Rogue.h:1820）').toBe(DFF_RESURRECT_ALLY);
+         expect(rs.description).toBe('An old friend emerges from a bloom of sacred light!');
+         expect(rs.lightFlare).toBe('EMPOWERMENT_LIGHT');
+-        expect(DF_MISSING_TILES).toContain(DF.DF_ALTAR_RESURRECT);
++        expect(DF_MISSING_TILES).not.toContain(DF.DF_ALTAR_RESURRECT);
+     });
+ 
+     it('B4 DF_MAGIC_PIPING（:794）：6 号蓝图 DF 列的起点，90/60 扩散', () => {
+         const e = DUNGEON_FEATURE_CATALOG[DF.DF_MAGIC_PIPING]!;
+         expect(e.ceLine).toBe(794);
+         expect(e.ceTile).toBe('PIPE_GLOWING');
+-        expect(e.tile).toBeNull();
++        expect(e.tile).toBe(C.PIPE_GLOWING);
+         expect(e.layer).toBe(L.SURFACE);
+         expect(e.startProbability).toBe(90);
+         expect(e.probabilityDecrement).toBe(60);
+         expect(e.flags).toBe(0);
+         expect(e.subsequentDF).toBeNull();
+-        expect(DF_MISSING_TILES).toContain(DF.DF_MAGIC_PIPING);
++        expect(DF_MISSING_TILES).not.toContain(DF.DF_MAGIC_PIPING);
+     });
+ 
+     it('B5 DF_MACHINE_FLOOR_TRIGGER_REPEATING（:799）：**唯一落 LIQUID 层**且带 propTerrain=CARPET 的条目', () => {
+diff --git a/brogue-web/src/test/v_2b_5_dormant.test.ts b/brogue-web/src/test/v_2b_5_dormant.test.ts
+index 91599b8..40e8b80 100644
+--- a/brogue-web/src/test/v_2b_5_dormant.test.ts
++++ b/brogue-web/src/test/v_2b_5_dormant.test.ts
+@@ -193,7 +193,7 @@ describe('V-2b-5 A：七个休眠载体地形 ≡ CE Globals.c 原行', () => {
+         // V-2b-7：29 → 31（摘 5 增 7，DF 特征系统轮——RUBBLE/LUMINESCENT_FUNGUS
+         // 两条地形落地摘除四条 RUBBLE 链 DF 与 DF_LUMINESCENT_FUNGUS，新增
+         // 七条 tile 无 web 载体的新条目）。
+-        expect(DF_MISSING_TILES).toHaveLength(11); // U17c: five more carriers restored; the other 20 stay missing.
++        expect(DF_MISSING_TILES).toHaveLength(6); // U17e: five altar/pipe carriers restored; the other six stay missing.
+         expect(DF_MISSING_TILES).toContain(DF.DF_WALL_CRACK);
+         expect(DF_MISSING_TILES).toContain(DF.DF_CRACKING_STATUE);
+         expect(DF_MISSING_TILES, '带完整 tile 的条目不得混进缺 tile 名单').not.toContain(DF.DF_ALTAR_INERT);
+diff --git a/brogue-web/src/test/v_2b_7_features.test.ts b/brogue-web/src/test/v_2b_7_features.test.ts
+index 05a34d0..178185f 100644
+--- a/brogue-web/src/test/v_2b_7_features.test.ts
++++ b/brogue-web/src/test/v_2b_7_features.test.ts
+@@ -327,7 +327,6 @@ describe('V-2b-7 B：22 条新 DF 目录条目 ≡ CE Globals.c 原行', () => {
+         const missing: Array<[DF, number, string]> = [
+             [DF.DF_ALTAR_RETRACT, 724, 'FLOOR_FLOODABLE'],
+             [DF.DF_PORTAL_ACTIVATE, 725, 'PORTAL_LIGHT'],
+-            [DF.DF_SACRIFICE_ALTAR, 802, 'SACRIFICE_ALTAR'],
+             [DF.DF_COFFIN_BURSTS, 807, 'COFFIN_OPEN'],
+             [DF.DF_WORM_TUNNEL_MARKER_ACTIVE, 880, 'WORM_TUNNEL_MARKER_ACTIVE'],
+         ];
+@@ -338,6 +337,8 @@ describe('V-2b-7 B：22 条新 DF 目录条目 ≡ CE Globals.c 原行', () => {
+             expect(e.tile, `DF#${id} 无 web tile → null`).toBeNull();
+             expect(DF_MISSING_TILES, `DF#${id} 应在缺 tile 名单里`).toContain(id);
+         }
++        expect(DUNGEON_FEATURE_CATALOG[DF.DF_SACRIFICE_ALTAR]).toMatchObject({ceLine:802,ceTile:'SACRIFICE_ALTAR',tile:C.SACRIFICE_ALTAR});
++        expect(DF_MISSING_TILES).not.toContain(DF.DF_SACRIFICE_ALTAR);
+         // 反方向：本轮已落地 tile 的四条**不得**留在名单里（守卫变强）
+         for (const id of [DF.DF_RUBBLE, DF.DF_SHATTERING_SPELL, DF.DF_WALL_SHATTER, DF.DF_STATUE_SHATTER, DF.DF_LUMINESCENT_FUNGUS]) {
+             expect(DF_MISSING_TILES, `DF#${id} 的 tile 已到位，不得留在缺 tile 名单`).not.toContain(id);

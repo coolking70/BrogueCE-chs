@@ -195,7 +195,7 @@ function firstMissingTileInChain(df: DF): {
         if (!entry) {
             return { missingDf: cur, missingDfName: String(DF[cur]), missingCeTile: '?', reason: 'catalog-entry-missing' };
         }
-        if (entry.tile === null && cur !== DF.DF_ALTAR_RESURRECT) {
+        if (entry.tile === null) {
             return { missingDf: cur, missingDfName: String(DF[cur]), missingCeTile: entry.ceTile, reason: 'tile-missing-in-web' };
         }
         cur = entry.subsequentDF;
@@ -318,6 +318,15 @@ export function activateMachine(grid: Grid, machineNumber: number): WiredActivat
         }
     }
     return result;
+}
+
+/** CE Items.c:1305-1308: item effects commit only through an unblocked
+ * circuit, then the existing machine activation consumes all wired layers.
+ * Keep wiring ownership here; the caller supplies the existing item consumer. */
+export function promoteOnCommutation(grid: Grid, machineNumber: number, swap: () => boolean): boolean {
+    if (machineNumber <= 0 || circuitBreakersPreventActivation(grid, machineNumber) || !swap()) return false;
+    activateMachine(grid, machineNumber);
+    return true;
 }
 
 /** 清除全图 IS_POWERED（CE :1281-1285 的字面全图循环）。 */
@@ -456,12 +465,7 @@ export function promoteTile(
     // 但传 true 是潜伏偏离：C-5 的深渊、C-4d 的火焰/岩浆 DF 落地后，
     // 它会静默拒绝 CE 会执行的晋升。
     if (df !== null) {
-        // U16: the resurrection effect is game-side. Its distinct inert CE
-        // appearance maps to web's existing ALTAR after a successful raise.
-        const feat = df === DF.DF_ALTAR_RESURRECT
-            ? { ...catalogFeature(DF.DF_ALTAR_INERT), flags: DUNGEON_FEATURE_CATALOG[df]!.flags,
-                description: DUNGEON_FEATURE_CATALOG[df]!.description }
-            : catalogFeature(df);
+        const feat = catalogFeature(df);
         result.spawn = spawnDungeonFeature(grid, x, y, feat, false);
         // 无地形 DF（CE tile=0，如 DF_REPEL_CREATURES）footprint 只登记原点、
         // 不写地形——不计入 mutated（渲染与测量口径）。

@@ -171,11 +171,11 @@ describe('C-4a B：表完整性（esbuild 只剥类型，运行时钉死）', ()
         // 9b 再补九个环境效果活动态/落点，115 → 124；补完轮闭合
         // MACHINE_CHASM_EDGE 与 DF_PUDDLE 的载体，124 → 126；9c 七条效果载体 126 → 133。
         // U08 appends two carriers; all old keys/fields stay pinned above.
-        expect(names.filter(n => n !== 'ANCIENT_SPIRIT_VINES' && n !== 'ANCIENT_SPIRIT_GRASS' && n !== 'DUNGEON_PORTAL' && n !== 'ITEM_FIRE' && !['TRAMPLED_FOLIAGE', 'ACTIVE_BRIMSTONE', 'BRIMSTONE_FIRE', 'OPEN_IRON_DOOR_INERT', 'BRIDGE_FALLING', 'MACHINE_PRESSURE_PLATE_USED', 'TRAP_DOOR', 'WALL_LEVER', 'WALL_LEVER_PULLED', 'MACHINE_TRIGGER_FLOOR_REPEATING', 'MACHINE_METHANE_VENT_DORMANT', 'MACHINE_METHANE_VENT', 'PILOT_LIGHT', 'MACHINE_PARALYSIS_VENT', 'MACHINE_POISON_GAS_VENT_DORMANT', 'MACHINE_POISON_GAS_VENT', 'GAS_TRAP_POISON', 'FLAMETHROWER'].includes(n)).length).toBe(135);
+        expect(names.filter(n => n !== 'ANCIENT_SPIRIT_VINES' && n !== 'ANCIENT_SPIRIT_GRASS' && n !== 'DUNGEON_PORTAL' && n !== 'ITEM_FIRE' && !['TRAMPLED_FOLIAGE', 'ACTIVE_BRIMSTONE', 'BRIMSTONE_FIRE', 'OPEN_IRON_DOOR_INERT', 'BRIDGE_FALLING', 'MACHINE_PRESSURE_PLATE_USED', 'TRAP_DOOR', 'WALL_LEVER', 'WALL_LEVER_PULLED', 'MACHINE_TRIGGER_FLOOR_REPEATING', 'MACHINE_METHANE_VENT_DORMANT', 'MACHINE_METHANE_VENT', 'PILOT_LIGHT', 'MACHINE_PARALYSIS_VENT', 'MACHINE_POISON_GAS_VENT_DORMANT', 'MACHINE_POISON_GAS_VENT', 'GAS_TRAP_POISON', 'FLAMETHROWER', 'ALTAR_CAGE_CLOSED', 'COMMUTATION_ALTAR_INERT', 'PIPE_GLOWING', 'RESURRECTION_ALTAR_INERT', 'SACRIFICE_ALTAR', 'PIPE_INERT', 'SACRIFICE_LAVA'].includes(n)).length).toBe(135);
         expect(names).toContain('DUNGEON_PORTAL'); // U04 CE Globals.c:336
         // U17a burnItem successor; historical 135-row projection remains fixed.
         expect(names).toContain('ITEM_FIRE');
-        expect(names.length).toBe(157);
+        expect(names.length).toBe(164);
         for (const name of names) {
             const t = (TerrainType as unknown as Record<string, TerrainType>)[name]!;
             const entry = TERRAIN_FLAGS[t];
@@ -603,7 +603,7 @@ describe('C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时
         // MANACLE_T/PORTAL/SACRIFICE_ALTAR_DORMANT/DEAD_GRASS/VOMIT/
         // LUMINESCENT_FUNGUS/DEAD_FOLIAGE/RUBBLE/GRAY_FUNGUS/WORM_TUNNEL_
         // MARKER_DORMANT）**留在等价论域内**——不跳过，由本组逐位继续把关。
-        C.BRAZIER, C.DEMONIC_STATUE, C.SACRIFICE_CAGE_DORMANT,
+        C.BRAZIER, C.DEMONIC_STATUE, C.SACRIFICE_CAGE_DORMANT, C.ALTAR_CAGE_CLOSED,
         // V-2b-8：CE Globals.c:513 的 BLOODFLOWER_STALK 明确带
         // T_OBSTRUCTS_PASSABILITY；这是迁移后新增成员，不属于旧硬编码清单。
         C.BLOODFLOWER_STALK,

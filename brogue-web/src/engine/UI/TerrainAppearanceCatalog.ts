@@ -163,4 +163,11 @@ export const TERRAIN_APPEARANCES: Record<TerrainType, BaseTerrainAppearance> = {
     [TerrainType.MACHINE_POISON_GAS_VENT]: { char: "=", color: '#4c4c4c', bgColor: null }, // CE :397
     [TerrainType.GAS_TRAP_POISON]: { char: "\u25c7", color: '#bf3fd8', bgColor: null }, // CE :378
     [TerrainType.FLAMETHROWER]: { char: "\u25c7", color: '#ff0000', bgColor: null }, // CE :388
+    [TerrainType.ALTAR_CAGE_CLOSED]: { char: "#", color: "#592d2d", bgColor: 2500134 }, // CE :365
+    [TerrainType.COMMUTATION_ALTAR_INERT]: { char: "|", color: "#000000", bgColor: 2965293 }, // CE :533
+    [TerrainType.PIPE_GLOWING]: { char: "+", color: "#262626", bgColor: null }, // CE :534
+    [TerrainType.RESURRECTION_ALTAR_INERT]: { char: "|", color: "#000000", bgColor: 4144414 }, // CE :539
+    [TerrainType.SACRIFICE_ALTAR]: { char: "|", color: "#0c1116", bgColor: 5844269 }, // CE :544
+    [TerrainType.PIPE_INERT]: { char: "+", color: "#000000", bgColor: null }, // CE :535
+    [TerrainType.SACRIFICE_LAVA]: { char: "~", color: "#b23300", bgColor: 11678464 }, // CE :545
 };

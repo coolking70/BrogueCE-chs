@@ -1,0 +1,1360 @@
+{
+  "errors": [],
+  "results": [
+    {
+      "name": "natural",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 38,
+            "y": 26
+          },
+          "hp": 30
+        },
+        "tiles": [],
+        "items": [
+          {
+            "name": "皮甲",
+            "loc": {
+              "x": 24,
+              "y": 6
+            },
+            "E": 0
+          },
+          {
+            "name": "幻觉药水",
+            "loc": {
+              "x": 60,
+              "y": 8
+            },
+            "E": 0
+          },
+          {
+            "name": "附魔卷轴",
+            "loc": {
+              "x": 75,
+              "y": 14
+            },
+            "E": 0
+          },
+          {
+            "name": "武器保护卷轴",
+            "loc": {
+              "x": 67,
+              "y": 26
+            },
+            "E": 0
+          },
+          {
+            "name": "混乱药水",
+            "loc": {
+              "x": 47,
+              "y": 8
+            },
+            "E": 0
+          },
+          {
+            "name": "毒药",
+            "loc": {
+              "x": 35,
+              "y": 8
+            },
+            "E": 0
+          }
+        ],
+        "monsters": [
+          {
+            "id": 6,
+            "hp": 7,
+            "ally": false,
+            "marked": false,
+            "loc": {
+              "x": 68,
+              "y": 24
+            }
+          },
+          {
+            "id": 7,
+            "hp": 8,
+            "ally": false,
+            "marked": false,
+            "loc": {
+              "x": 72,
+              "y": 14
+            }
+          },
+          {
+            "id": 8,
+            "hp": 7,
+            "ally": false,
+            "marked": false,
+            "loc": {
+              "x": 38,
+              "y": 21
+            }
+          },
+          {
+            "id": 9,
+            "hp": 8,
+            "ally": false,
+            "marked": false,
+            "loc": {
+              "x": 61,
+              "y": 4
+            }
+          },
+          {
+            "id": 10,
+            "hp": 8,
+            "ally": false,
+            "marked": false,
+            "loc": {
+              "x": 22,
+              "y": 2
+            }
+          },
+          {
+            "id": 11,
+            "hp": 6,
+            "ally": false,
+            "marked": false,
+            "loc": {
+              "x": 23,
+              "y": 2
+            }
+          }
+        ],
+        "purgatory": 0
+      },
+      "text": {
+        "seed": "1715",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 38,
+          "y": 26,
+          "hp": 30,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "狗头人",
+            "x": 38,
+            "y": 21,
+            "hp": 7,
+            "maxHp": 7,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 80,
+            "defense": 0,
+            "damage": "1d4",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [],
+            "bolts": [],
+            "typeId": "kobold",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "cage-before",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 10,
+            "y": 10
+          },
+          "hp": 100
+        },
+        "tiles": [
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "ALTAR_CAGE_OPEN",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 15,
+            "y": 10,
+            "layers": [
+              "ALTAR_CAGE_OPEN",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          }
+        ],
+        "items": [
+          {
+            "name": "借出的戒指",
+            "loc": {
+              "x": 11,
+              "y": 10
+            },
+            "E": 2
+          },
+          {
+            "name": "剩余的戒指",
+            "loc": {
+              "x": 15,
+              "y": 10
+            },
+            "E": 2
+          }
+        ],
+        "monsters": [],
+        "purgatory": 0
+      },
+      "text": {
+        "seed": "1715",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "借出的戒指",
+            "x": 11,
+            "y": 10
+          },
+          {
+            "name": "剩余的戒指",
+            "x": 15,
+            "y": 10
+          }
+        ]
+      }
+    },
+    {
+      "name": "cage-closed",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 10,
+            "y": 10
+          },
+          "hp": 100
+        },
+        "tiles": [
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "ALTAR_CAGE_CLOSED",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 15,
+            "y": 10,
+            "layers": [
+              "ALTAR_CAGE_CLOSED",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          }
+        ],
+        "items": [
+          {
+            "name": "剩余的戒指",
+            "loc": {
+              "x": 15,
+              "y": 10
+            },
+            "E": 2
+          }
+        ],
+        "monsters": [],
+        "purgatory": 0
+      },
+      "text": {
+        "seed": "1715",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2147,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 3,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "剩余的戒指",
+            "x": 15,
+            "y": 10
+          }
+        ]
+      }
+    },
+    {
+      "name": "cage-reopened",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 11,
+            "y": 10
+          },
+          "hp": 100
+        },
+        "tiles": [
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "ALTAR_CAGE_OPEN",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 15,
+            "y": 10,
+            "layers": [
+              "ALTAR_CAGE_OPEN",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          }
+        ],
+        "items": [
+          {
+            "name": "剩余的戒指",
+            "loc": {
+              "x": 15,
+              "y": 10
+            },
+            "E": 2
+          }
+        ],
+        "monsters": [],
+        "purgatory": 0
+      },
+      "text": {
+        "seed": "1715",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 11,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2146,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 4,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "剩余的戒指",
+            "x": 15,
+            "y": 10
+          }
+        ]
+      }
+    },
+    {
+      "name": "commutation-before",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 10,
+            "y": 10
+          },
+          "hp": 100
+        },
+        "tiles": [
+          {
+            "x": 10,
+            "y": 10,
+            "layers": [
+              "COMMUTATION_ALTAR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 10,
+            "y": 11,
+            "layers": [
+              "NOTHING",
+              "NOTHING",
+              "NOTHING",
+              "PIPE_GLOWING"
+            ]
+          },
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "NOTHING",
+              "NOTHING",
+              "NOTHING",
+              "PIPE_GLOWING"
+            ]
+          },
+          {
+            "x": 11,
+            "y": 11,
+            "layers": [
+              "NOTHING",
+              "NOTHING",
+              "NOTHING",
+              "PIPE_GLOWING"
+            ]
+          },
+          {
+            "x": 12,
+            "y": 10,
+            "layers": [
+              "COMMUTATION_ALTAR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 12,
+            "y": 11,
+            "layers": [
+              "NOTHING",
+              "NOTHING",
+              "NOTHING",
+              "PIPE_GLOWING"
+            ]
+          }
+        ],
+        "items": [],
+        "monsters": [],
+        "purgatory": 0
+      },
+      "text": {
+        "seed": "1715",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "commutation-after",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 12,
+            "y": 10
+          },
+          "hp": 100
+        },
+        "tiles": [
+          {
+            "x": 10,
+            "y": 10,
+            "layers": [
+              "COMMUTATION_ALTAR_INERT",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 10,
+            "y": 11,
+            "layers": [
+              "NOTHING",
+              "NOTHING",
+              "NOTHING",
+              "PIPE_INERT"
+            ]
+          },
+          {
+            "x": 11,
+            "y": 10,
+            "layers": [
+              "NOTHING",
+              "NOTHING",
+              "NOTHING",
+              "PIPE_INERT"
+            ]
+          },
+          {
+            "x": 11,
+            "y": 11,
+            "layers": [
+              "NOTHING",
+              "NOTHING",
+              "NOTHING",
+              "PIPE_INERT"
+            ]
+          },
+          {
+            "x": 12,
+            "y": 10,
+            "layers": [
+              "COMMUTATION_ALTAR_INERT",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 12,
+            "y": 11,
+            "layers": [
+              "NOTHING",
+              "NOTHING",
+              "NOTHING",
+              "PIPE_INERT"
+            ]
+          }
+        ],
+        "items": [
+          {
+            "name": "甲剑",
+            "loc": {
+              "x": 10,
+              "y": 10
+            },
+            "E": 1
+          },
+          {
+            "name": "乙甲",
+            "loc": {
+              "x": 12,
+              "y": 10
+            },
+            "E": 5
+          }
+        ],
+        "monsters": [],
+        "purgatory": 0
+      },
+      "text": {
+        "seed": "1715",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 12,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2146,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 4,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "甲剑 +1",
+            "x": 10,
+            "y": 10
+          },
+          {
+            "name": "乙甲 +5",
+            "x": 12,
+            "y": 10
+          }
+        ]
+      }
+    },
+    {
+      "name": "resurrection-before",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 10,
+            "y": 10
+          },
+          "hp": 100
+        },
+        "tiles": [
+          {
+            "x": 14,
+            "y": 10,
+            "layers": [
+              "RESURRECTION_ALTAR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          }
+        ],
+        "items": [],
+        "monsters": [],
+        "purgatory": 1
+      },
+      "text": {
+        "seed": "1715",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "resurrection-after",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 11,
+            "y": 10
+          },
+          "hp": 100
+        },
+        "tiles": [
+          {
+            "x": 14,
+            "y": 10,
+            "layers": [
+              "RESURRECTION_ALTAR_INERT",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          }
+        ],
+        "items": [],
+        "monsters": [
+          {
+            "id": 22,
+            "hp": 15,
+            "ally": true,
+            "marked": false,
+            "loc": {
+              "x": 13,
+              "y": 10
+            }
+          }
+        ],
+        "purgatory": 0
+      },
+      "text": {
+        "seed": "1715",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 11,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "哥布林",
+            "x": 13,
+            "y": 10,
+            "hp": 15,
+            "maxHp": 15,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 70,
+            "defense": 10,
+            "damage": "1d4+1",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": -1,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [
+              "MA_ATTACKS_PENETRATE",
+              "MA_AVOID_CORRIDORS"
+            ],
+            "bolts": [],
+            "typeId": "goblin",
+            "isAlly": true,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 100,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": []
+      }
+    },
+    {
+      "name": "sacrifice-before",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 10,
+            "y": 10
+          },
+          "hp": 100
+        },
+        "tiles": [
+          {
+            "x": 15,
+            "y": 10,
+            "layers": [
+              "SACRIFICE_ALTAR_DORMANT",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 18,
+            "y": 10,
+            "layers": [
+              "SACRIFICE_CAGE_DORMANT",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          }
+        ],
+        "items": [
+          {
+            "name": "祭坛钥匙",
+            "loc": {
+              "x": 18,
+              "y": 10
+            },
+            "E": 0
+          }
+        ],
+        "monsters": [
+          {
+            "id": 23,
+            "hp": 12,
+            "ally": false,
+            "marked": true,
+            "loc": {
+              "x": 16,
+              "y": 10
+            }
+          }
+        ],
+        "purgatory": 0
+      },
+      "text": {
+        "seed": "1715",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 10,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2150,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 0,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "猴子",
+            "x": 16,
+            "y": 10,
+            "hp": 12,
+            "maxHp": 12,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 100,
+            "defense": 17,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [
+              "MA_HIT_STEAL_FLEE"
+            ],
+            "bolts": [],
+            "typeId": "monkey",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 10000,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "祭坛钥匙",
+            "x": 18,
+            "y": 10
+          }
+        ]
+      }
+    },
+    {
+      "name": "sacrifice-active",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 11,
+            "y": 10
+          },
+          "hp": 100
+        },
+        "tiles": [
+          {
+            "x": 15,
+            "y": 10,
+            "layers": [
+              "SACRIFICE_ALTAR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 18,
+            "y": 10,
+            "layers": [
+              "ALTAR_CAGE_RETRACTABLE",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          }
+        ],
+        "items": [
+          {
+            "name": "祭坛钥匙",
+            "loc": {
+              "x": 18,
+              "y": 10
+            },
+            "E": 0
+          }
+        ],
+        "monsters": [
+          {
+            "id": 23,
+            "hp": 12,
+            "ally": false,
+            "marked": true,
+            "loc": {
+              "x": 16,
+              "y": 10
+            }
+          }
+        ],
+        "purgatory": 0
+      },
+      "text": {
+        "seed": "1715",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 11,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2149,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 1,
+        "autoPathLength": 0,
+        "monsters": [
+          {
+            "name": "猴子",
+            "x": 16,
+            "y": 10,
+            "hp": 12,
+            "maxHp": 12,
+            "weaknessAmount": 0,
+            "maxStatus": {},
+            "accuracy": 100,
+            "defense": 17,
+            "damage": "1d3",
+            "newPowerCount": 0,
+            "totalPowerCount": 0,
+            "targetCorpseLoc": null,
+            "targetCorpseName": "",
+            "corpseAbsorptionCounter": 0,
+            "isAbsorbing": false,
+            "absorptionFlags": null,
+            "absorbBehavior": false,
+            "absorptionBolt": 0,
+            "wasNegated": false,
+            "negated": false,
+            "mutation": null,
+            "behaviorFlags": [],
+            "abilityFlags": [
+              "MA_HIT_STEAL_FLEE"
+            ],
+            "bolts": [],
+            "typeId": "monkey",
+            "isAlly": false,
+            "boundToPlayer": false,
+            "dominated": false,
+            "isCaged": false,
+            "leaderId": null,
+            "discordant": 0,
+            "entranced": 0,
+            "doesNotTrackLeader": false,
+            "ticksUntilTurn": 9900,
+            "poisonAmount": 0,
+            "poisoned": 0,
+            "shield": 0,
+            "maxShield": 0
+          }
+        ],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "祭坛钥匙",
+            "x": 18,
+            "y": 10
+          }
+        ]
+      }
+    },
+    {
+      "name": "sacrifice-complete",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 12,
+            "y": 10
+          },
+          "hp": 100
+        },
+        "tiles": [
+          {
+            "x": 15,
+            "y": 10,
+            "layers": [
+              "SACRIFICE_LAVA",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 18,
+            "y": 10,
+            "layers": [
+              "ALTAR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          }
+        ],
+        "items": [
+          {
+            "name": "祭坛钥匙",
+            "loc": {
+              "x": 18,
+              "y": 10
+            },
+            "E": 0
+          }
+        ],
+        "monsters": [],
+        "purgatory": 0
+      },
+      "text": {
+        "seed": "1715",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 12,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2147,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 2,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "祭坛钥匙",
+            "x": 18,
+            "y": 10
+          }
+        ]
+      }
+    },
+    {
+      "name": "narrow",
+      "state": {
+        "player": {
+          "loc": {
+            "x": 12,
+            "y": 10
+          },
+          "hp": 100
+        },
+        "tiles": [
+          {
+            "x": 15,
+            "y": 10,
+            "layers": [
+              "SACRIFICE_LAVA",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          },
+          {
+            "x": 18,
+            "y": 10,
+            "layers": [
+              "ALTAR",
+              "NOTHING",
+              "NOTHING",
+              "NOTHING"
+            ]
+          }
+        ],
+        "items": [
+          {
+            "name": "祭坛钥匙",
+            "loc": {
+              "x": 18,
+              "y": 10
+            },
+            "E": 0
+          }
+        ],
+        "monsters": [],
+        "purgatory": 0
+      },
+      "text": {
+        "seed": "1715",
+        "mode": "explore",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 12,
+          "y": 10,
+          "hp": 100,
+          "nutrition": 2147,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 2,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": [
+          {
+            "name": "祭坛钥匙",
+            "x": 18,
+            "y": 10
+          }
+        ]
+      }
+    }
+  ]
+}

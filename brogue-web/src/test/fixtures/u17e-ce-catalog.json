@@ -1,0 +1,353 @@
+{
+  "sources": {
+    "../BrogueCE-master/src/brogue/Globals.c": "0b104f15c5ef78e93b5142747c41ff82e82d027bd73f7633c6b430baebf45cff",
+    "../BrogueCE-master/src/brogue/Rogue.h": "daa86933bf745f848fc56b4e697c941c78d3a3c6f2ff2744ff4c9daf589c7256",
+    "../BrogueCE-master/src/variants/GlobalsBrogue.c": "e8903aede4fad21b7823ccc547cf4219c76e87e061543188d8d90141cebffa1e"
+  },
+  "tiles": {
+    "ALTAR_CAGE_CLOSED": {
+      "line": 365,
+      "drawPriority": 17,
+      "chanceToIgnite": 0,
+      "fireType": "",
+      "discoverType": "",
+      "promoteType": "DF_ITEM_CAGE_OPEN",
+      "promoteChance": 0,
+      "glowLight": "CANDLE_LIGHT",
+      "flags": 9,
+      "mechFlags": 951298,
+      "description": "an iron cage",
+      "flavorText": "the missing item must be replaced before you can access the remaining items."
+    },
+    "COMMUTATION_ALTAR_INERT": {
+      "line": 533,
+      "drawPriority": 17,
+      "chanceToIgnite": 0,
+      "fireType": "",
+      "discoverType": "",
+      "promoteType": "",
+      "promoteChance": 0,
+      "glowLight": "NO_LIGHT",
+      "flags": 8,
+      "mechFlags": 786432,
+      "description": "a scorched altar",
+      "flavorText": "scorch marks cover the surface of the altar, but it is cold to the touch."
+    },
+    "PIPE_GLOWING": {
+      "line": 534,
+      "drawPriority": 45,
+      "chanceToIgnite": 0,
+      "fireType": "DF_PLAIN_FIRE",
+      "discoverType": "",
+      "promoteType": "DF_INERT_PIPE",
+      "promoteChance": 0,
+      "glowLight": "CONFUSION_GAS_LIGHT",
+      "flags": 0,
+      "mechFlags": 33792,
+      "description": "glowing glass pipes",
+      "flavorText": "glass pipes are set into the floor and emit a soft glow of shifting color."
+    },
+    "RESURRECTION_ALTAR_INERT": {
+      "line": 539,
+      "drawPriority": 16,
+      "chanceToIgnite": 0,
+      "fireType": "",
+      "discoverType": "",
+      "promoteType": "",
+      "promoteChance": 0,
+      "glowLight": "NO_LIGHT",
+      "flags": 8,
+      "mechFlags": 786432,
+      "description": "a scorched altar",
+      "flavorText": "scorch marks cover the surface of the altar, but it is cold to the touch."
+    },
+    "SACRIFICE_ALTAR": {
+      "line": 544,
+      "drawPriority": 17,
+      "chanceToIgnite": 0,
+      "fireType": "",
+      "discoverType": "",
+      "promoteType": "DF_SACRIFICE_COMPLETE",
+      "promoteChance": 0,
+      "glowLight": "CANDLE_LIGHT",
+      "flags": 8,
+      "mechFlags": 820352,
+      "description": "a sacrifice altar",
+      "flavorText": "demonological symbols decorate this altar."
+    },
+    "PIPE_INERT": {
+      "line": 535,
+      "drawPriority": 45,
+      "chanceToIgnite": 0,
+      "fireType": "DF_PLAIN_FIRE",
+      "discoverType": "",
+      "promoteType": "",
+      "promoteChance": 0,
+      "glowLight": "NO_LIGHT",
+      "flags": 0,
+      "mechFlags": 0,
+      "description": "charred glass pipes",
+      "flavorText": "the inside of the glass pipes are charred."
+    },
+    "SACRIFICE_LAVA": {
+      "line": 545,
+      "drawPriority": 40,
+      "chanceToIgnite": 0,
+      "fireType": "DF_OBSIDIAN",
+      "discoverType": "",
+      "promoteType": "",
+      "promoteChance": 0,
+      "glowLight": "LAVA_LIGHT",
+      "flags": 256,
+      "mechFlags": 262656,
+      "description": "a sacrificial pit",
+      "flavorText": "the smell of burnt flesh lingers over this pit of lava."
+    }
+  },
+  "dfs": {
+    "DF_ITEM_CAGE_CLOSE": {
+      "id": 85,
+      "tile": "ALTAR_CAGE_CLOSED",
+      "layer": "DUNGEON",
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 1,
+      "description": "the cages lower to cover the altars.",
+      "lightFlare": "GENERIC_FLASH_LIGHT",
+      "flashColor": "",
+      "effectRadius": 0,
+      "propagationTerrain": "",
+      "subsequentDF": null
+    },
+    "DF_ALTAR_COMMUTE": {
+      "id": 140,
+      "tile": "COMMUTATION_ALTAR_INERT",
+      "layer": "DUNGEON",
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "description": "the items on the two altars flash with a brilliant light!",
+      "lightFlare": "SCROLL_ENCHANTMENT_LIGHT",
+      "flashColor": "",
+      "effectRadius": 0,
+      "propagationTerrain": "",
+      "subsequentDF": null
+    },
+    "DF_MAGIC_PIPING": {
+      "id": 141,
+      "tile": "PIPE_GLOWING",
+      "layer": "SURFACE",
+      "startProbability": 90,
+      "probabilityDecrement": 60,
+      "flags": 0,
+      "description": "",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0,
+      "propagationTerrain": "",
+      "subsequentDF": null
+    },
+    "DF_ALTAR_RESURRECT": {
+      "id": 143,
+      "tile": "RESURRECTION_ALTAR_INERT",
+      "layer": "DUNGEON",
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 512,
+      "description": "An old friend emerges from a bloom of sacred light!",
+      "lightFlare": "EMPOWERMENT_LIGHT",
+      "flashColor": "",
+      "effectRadius": 0,
+      "propagationTerrain": "",
+      "subsequentDF": null
+    },
+    "DF_SACRIFICE_ALTAR": {
+      "id": 145,
+      "tile": "SACRIFICE_ALTAR",
+      "layer": "DUNGEON",
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "description": "a demonic presence whispers its demand: \"Bring to me the marked sacrifice!\"",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0,
+      "propagationTerrain": "",
+      "subsequentDF": null
+    },
+    "DF_ITEM_CAGE_OPEN": {
+      "id": 84,
+      "tile": "ALTAR_CAGE_OPEN",
+      "layer": "DUNGEON",
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "description": "the cages lift off of the altars as you approach.",
+      "lightFlare": "GENERIC_FLASH_LIGHT",
+      "flashColor": "",
+      "effectRadius": 0,
+      "propagationTerrain": "",
+      "subsequentDF": null
+    },
+    "DF_INERT_PIPE": {
+      "id": 142,
+      "tile": "PIPE_INERT",
+      "layer": "SURFACE",
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "description": "",
+      "lightFlare": "SCROLL_ENCHANTMENT_LIGHT",
+      "flashColor": "",
+      "effectRadius": 0,
+      "propagationTerrain": "",
+      "subsequentDF": null
+    },
+    "DF_SACRIFICE_COMPLETE": {
+      "id": 146,
+      "tile": "SACRIFICE_LAVA",
+      "layer": "DUNGEON",
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "description": "demonic cackling echoes through the room as the altar plunges downward!",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0,
+      "propagationTerrain": "",
+      "subsequentDF": null
+    },
+    "DF_SACRIFICE_CAGE_ACTIVE": {
+      "id": 147,
+      "tile": "ALTAR_CAGE_RETRACTABLE",
+      "layer": "DUNGEON",
+      "startProbability": 0,
+      "probabilityDecrement": 0,
+      "flags": 0,
+      "description": "",
+      "lightFlare": "",
+      "flashColor": "",
+      "effectRadius": 0,
+      "propagationTerrain": "",
+      "subsequentDF": null
+    }
+  },
+  "blueprintFeatures": [
+    {
+      "blueprint": 1,
+      "index": 2,
+      "line": 187,
+      "terrain": "ALTAR_CAGE_OPEN",
+      "featureDF": null,
+      "itemFlags": [
+        "ITEM_IS_KEY",
+        "ITEM_KIND_AUTO_ID",
+        "ITEM_PLAYER_AVOIDS"
+      ]
+    },
+    {
+      "blueprint": 1,
+      "index": 3,
+      "line": 188,
+      "terrain": "ALTAR_CAGE_OPEN",
+      "featureDF": null,
+      "itemFlags": [
+        "ITEM_IS_KEY",
+        "ITEM_KIND_AUTO_ID",
+        "ITEM_PLAYER_AVOIDS"
+      ]
+    },
+    {
+      "blueprint": 1,
+      "index": 4,
+      "line": 189,
+      "terrain": "ALTAR_CAGE_OPEN",
+      "featureDF": null,
+      "itemFlags": [
+        "ITEM_IS_KEY",
+        "ITEM_KIND_AUTO_ID",
+        "ITEM_MAX_CHARGES_KNOWN",
+        "ITEM_PLAYER_AVOIDS"
+      ]
+    },
+    {
+      "blueprint": 2,
+      "index": 2,
+      "line": 195,
+      "terrain": "ALTAR_CAGE_OPEN",
+      "featureDF": null,
+      "itemFlags": [
+        "ITEM_IS_KEY",
+        "ITEM_KIND_AUTO_ID",
+        "ITEM_MAX_CHARGES_KNOWN",
+        "ITEM_PLAYER_AVOIDS"
+      ]
+    },
+    {
+      "blueprint": 2,
+      "index": 3,
+      "line": 196,
+      "terrain": "ALTAR_CAGE_OPEN",
+      "featureDF": null,
+      "itemFlags": [
+        "ITEM_IS_KEY",
+        "ITEM_KIND_AUTO_ID",
+        "ITEM_MAX_CHARGES_KNOWN",
+        "ITEM_PLAYER_AVOIDS"
+      ]
+    },
+    {
+      "blueprint": 6,
+      "index": 2,
+      "line": 225,
+      "terrain": "COMMUTATION_ALTAR",
+      "featureDF": "DF_MAGIC_PIPING",
+      "itemFlags": []
+    },
+    {
+      "blueprint": 7,
+      "index": 2,
+      "line": 231,
+      "terrain": "RESURRECTION_ALTAR",
+      "featureDF": "DF_MACHINE_FLOOR_TRIGGER_REPEATING",
+      "itemFlags": []
+    },
+    {
+      "blueprint": 26,
+      "index": 3,
+      "line": 352,
+      "terrain": "ALTAR_CAGE_OPEN",
+      "featureDF": null,
+      "itemFlags": [
+        "ITEM_IS_KEY",
+        "ITEM_KIND_AUTO_ID",
+        "ITEM_PLAYER_AVOIDS"
+      ]
+    },
+    {
+      "blueprint": 26,
+      "index": 4,
+      "line": 353,
+      "terrain": "ALTAR_CAGE_OPEN",
+      "featureDF": null,
+      "itemFlags": [
+        "ITEM_IS_KEY",
+        "ITEM_KIND_AUTO_ID",
+        "ITEM_MAX_CHARGES_KNOWN",
+        "ITEM_PLAYER_AVOIDS"
+      ]
+    },
+    {
+      "blueprint": 26,
+      "index": 5,
+      "line": 354,
+      "terrain": "ALTAR_CAGE_OPEN",
+      "featureDF": null,
+      "itemFlags": [
+        "ITEM_IS_KEY",
+        "ITEM_PLAYER_AVOIDS",
+        "ITEM_MAX_CHARGES_KNOWN"
+      ]
+    }
+  ]
+}

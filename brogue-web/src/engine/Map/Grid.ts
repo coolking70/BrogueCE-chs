@@ -261,6 +261,9 @@ export enum TerrainType {
     MACHINE_PRESSURE_PLATE_USED, TRAP_DOOR, WALL_LEVER, WALL_LEVER_PULLED, MACHINE_TRIGGER_FLOOR_REPEATING,
     // U17d: CE vent, pilot and trap carriers; append-only IDs.
     MACHINE_METHANE_VENT_DORMANT, MACHINE_METHANE_VENT, PILOT_LIGHT, MACHINE_PARALYSIS_VENT, MACHINE_POISON_GAS_VENT_DORMANT, MACHINE_POISON_GAS_VENT, GAS_TRAP_POISON, FLAMETHROWER,
+    // U17e: CE altar and pipe carriers, append-only saved IDs.
+    ALTAR_CAGE_CLOSED, COMMUTATION_ALTAR_INERT, PIPE_GLOWING, RESURRECTION_ALTAR_INERT, SACRIFICE_ALTAR, PIPE_INERT, SACRIFICE_LAVA,
+
 }
 
 export enum LightType {
@@ -525,6 +528,13 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.MACHINE_POISON_GAS_VENT]: 30,
     [TerrainType.GAS_TRAP_POISON]: 30,
     [TerrainType.FLAMETHROWER]: 30,
+    [TerrainType.ALTAR_CAGE_CLOSED]: 17,
+    [TerrainType.COMMUTATION_ALTAR_INERT]: 17,
+    [TerrainType.PIPE_GLOWING]: 45,
+    [TerrainType.RESURRECTION_ALTAR_INERT]: 16,
+    [TerrainType.SACRIFICE_ALTAR]: 17,
+    [TerrainType.PIPE_INERT]: 45,
+    [TerrainType.SACRIFICE_LAVA]: 40,
 };
 
 /**
@@ -792,6 +802,13 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     [TerrainType.MACHINE_POISON_GAS_VENT]: DungeonLayer.DUNGEON,
     [TerrainType.GAS_TRAP_POISON]: DungeonLayer.DUNGEON,
     [TerrainType.FLAMETHROWER]: DungeonLayer.DUNGEON,
+    [TerrainType.ALTAR_CAGE_CLOSED]: DungeonLayer.DUNGEON,
+    [TerrainType.COMMUTATION_ALTAR_INERT]: DungeonLayer.DUNGEON,
+    [TerrainType.PIPE_GLOWING]: DungeonLayer.SURFACE,
+    [TerrainType.RESURRECTION_ALTAR_INERT]: DungeonLayer.DUNGEON,
+    [TerrainType.SACRIFICE_ALTAR]: DungeonLayer.DUNGEON,
+    [TerrainType.PIPE_INERT]: DungeonLayer.SURFACE,
+    [TerrainType.SACRIFICE_LAVA]: DungeonLayer.DUNGEON,
 };
 
 /**

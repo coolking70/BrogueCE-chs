@@ -1,0 +1,27 @@
+{
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "G-1 \u5bf9\u6297\u2462\uff1a\u6bcf\u73a9\u5bb6\u56de\u5408\u4e24\u8f6e updateVolumetricMedia\uff08Time.c:1606\uff09"
+          ],
+          "fullName": "G-1 \u5bf9\u6297\u2462\uff1a\u6bcf\u73a9\u5bb6\u56de\u5408\u4e24\u8f6e updateVolumetricMedia\uff08Time.c:1606\uff09 Game.objectiveTimeBlock \u7684\u63a2\u6d4b\u5b88\u536b\uff1a\u65e0\u6c14\u4f53\u56de\u5408\u8df3\u8fc7\u4e24\u8f6e\uff08CE Time.c:1600-1613\uff09",
+          "status": "failed",
+          "title": "Game.objectiveTimeBlock \u7684\u63a2\u6d4b\u5b88\u536b\uff1a\u65e0\u6c14\u4f53\u56de\u5408\u8df3\u8fc7\u4e24\u8f6e\uff08CE Time.c:1600-1613\uff09",
+          "duration": 522.09275,
+          "failureMessages": [
+            "AssertionError: \u8fde\u7eed\u65e0\u6c14\u56de\u5408\u7684\u6bcf\u56de\u5408\u62bd\u53d6\u6570\u5e94\u6052\u5b9a: expected 107 to be 1 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/src/test/g_1_gas_volumetric.test.ts:158:14\n    at file:///Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+          ],
+          "meta": {},
+          "tags": []
+        }
+      ],
+      "startTime": 1790366039134,
+      "endTime": 1790366042784.6301,
+      "status": "failed",
+      "message": "",
+      "name": "/Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/src/test/g_1_gas_volumetric.test.ts"
+    }
+  ]
+}

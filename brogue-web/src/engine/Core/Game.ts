@@ -1,3 +1,4 @@
+import { itemIsSwappable, enchantLevelKnown, swapItemToEnchantLevel } from '../Items/Commutation';
 import { generateQualifiedMachineItem } from '../Items/MachineItemGeneration';
 import { stairFallbackQualifies, stairCandidates, clearStairVicinity } from '../Generator/Stairs';
 import { minionPlacement, generationDistances, qualifyingNear, speciesForbiddenFlags } from '../Generator/GenerationPlacement';
@@ -14,7 +15,7 @@ import { anyoneWantABite } from '../Combat/MonsterAbsorption';
  * Main game state and orchestration
  */
 import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer, DRAW_PRIORITY, type Cell } from '../Map/Grid';
-import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_DIAGONAL_MOVEMENT, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_WITH_KEY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP, T_HARMFUL_TERRAIN, T_SACRED, T_IS_FIRE, T_LAVA_INSTA_DEATH } from '../Map/TerrainCatalog';
+import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_DIAGONAL_MOVEMENT, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_WITH_KEY, TM_PROMOTES_ON_CREATURE, TM_SWAP_ENCHANTS_ACTIVATION, TM_PROMOTES_ON_SACRIFICE_ENTRY, T_IS_DF_TRAP, T_HARMFUL_TERRAIN, T_SACRED, T_IS_FIRE, T_LAVA_INSTA_DEATH } from '../Map/TerrainCatalog';
 import { isPathingBlocker } from '../Map/TerrainCatalog';
 // B-4b：物品落位热力图与食物落位原语（CE Items.c:463-535 / Architect.c:171,3822）
 import { ItemSpawnHeatMap, passableArcCount, randomMatchingLocation } from '../Items/ItemSpawnHeatMap';
@@ -68,6 +69,7 @@ import { ScentMap, obstructsScent } from '../Map/Scent';
 import { buildSafetyMap, allocShortGrid, SAFETY_MAX_DISTANCE } from '../Map/SafetyMap';
 import { analyzeLoopMap, emptyLoopMap } from '../Map/LoopMap';
 import {
+    promoteOnCommutation,
     discoverTerrain,
     promoteOnPlayerBump,
     promoteOnItemPickup,
@@ -1532,6 +1534,10 @@ export class Game {
             }
             item.loc = { ...pos };
             if (spawn.keyLoc) item.keyLoc = spawn.keyLoc.map(k => ({ ...k, loc: { ...k.loc } }));
+            if (spawn.itemFlags) {
+                item.flags = [...new Set([...(item.flags ?? []), ...spawn.itemFlags])];
+                if (spawn.itemFlags.includes('ITEM_MAX_CHARGES_KNOWN')) item.maxChargesKnown = true;
+            }
             item.originDepth = depth;
             return item;
         };
@@ -2118,6 +2124,8 @@ export class Game {
         if (!leaderMData) return false;
 
         const leaderMon = new Monster(centerPos.x, centerPos.y, leaderMData);
+        // CE Monsters.c:883-885: only the horde leader is the marked sacrifice.
+        leaderMon.markedForSacrifice = h.flags.includes('HORDE_SACRIFICE_TARGET');
         if (h.flags.includes('HORDE_LEADER_CAPTIVE')) {
             // Monsters.c:872-877：笼中俘虏 —— 上锁不行动、状态 WANDERING、HP 折至 1/4+1
             leaderMon.isCaged = true;
@@ -2945,7 +2953,7 @@ export class Game {
         // 2. 生物固有光（Light.c:243-245）及燃烧光（:249-251）。
         for (const m of this.monsters) {
             if (m.hp <= 0) continue;
-            const kind = MONSTER_INTRINSIC_LIGHT[m.typeId];
+            const kind = m.markedForSacrifice ? LightKind.SACRIFICE_MARK_LIGHT : MONSTER_INTRINSIC_LIGHT[m.typeId];
             if (kind !== undefined) lm.paintLight({
                 light: LIGHT_CATALOG[kind]!, x: m.loc.x, y: m.loc.y,
                 hasCreatureAt: creatureBlocker,
@@ -3690,7 +3698,8 @@ export class Game {
                     timeSystem.currentTick += this.player.movementSpeed;
                     this.moveEntrancedMonsters(dx, dy);
                 } else if (this.grid.getCell(newX, newY)?.layers.includes(TerrainType.LOCKED_DOOR) // F-1 跨层判定
-                    || this.grid.getCell(newX, newY)?.layers.includes(TerrainType.MONSTER_CAGE_CLOSED)) {
+                    || this.grid.getCell(newX, newY)?.layers.includes(TerrainType.MONSTER_CAGE_CLOSED)
+                    || this.grid.getCell(newX, newY)?.layers.includes(TerrainType.ALTAR_CAGE_CLOSED)) {
                     // V-2b-6：钥匙真实化（CE Movement.c:1160-1206 的 bump-to-unlock
                     // + Items.c:4036 keyMatchesLocation / 4051 keyInPackFor +
                     // Movement.c:616-656 useKeyAt 的 disposable 收口）。锁与笼共用
@@ -3699,6 +3708,7 @@ export class Game {
                     // 不再是"任意钥匙开任意锁"。
                     const keyCell = this.grid.getCell(newX, newY)!;
                     const isCage = keyCell.layers.includes(TerrainType.MONSTER_CAGE_CLOSED);
+                    const isItemCage = keyCell.layers.includes(TerrainType.ALTAR_CAGE_CLOSED);
                     const keyItem = this.keyInPackFor(newX, newY, keyCell);
                     if (keyItem) {
                         // CE Movement.c:636-656：只有匹配条目（同坐标或同机器）
@@ -3733,6 +3743,12 @@ export class Game {
                             }
                         }
 
+                        if (isItemCage && !this.getMonsterAt(newX, newY)) {
+                            // CE Movement.c:1166: a matching key permits entering
+                            // the cage; the key remains on that tile in the pack.
+                            this.player.loc = { x: newX, y: newY };
+                            this.handleSpecialTileEntry();
+                        }
                         this.needsRender = true;
                         spentTurn = true;
                         timeSystem.currentTick += this.player.movementSpeed;
@@ -8122,7 +8138,7 @@ export class Game {
      * （machineNumber ≠ 0），0==0 的退化形态不可达，照抄。
      */
     private keyMatchesLocation(theItem: Item, x: number, y: number, cell: Cell | undefined): boolean {
-        if (theItem.category !== ItemCategory.KEY) return false;
+        if (theItem.category !== ItemCategory.KEY && !theItem.flags?.includes('ITEM_IS_KEY')) return false;
         // undefined = 旧存档/测试裸造的钥匙，按当层处理（登记偏差：CE 恒有值）
         if (theItem.originDepth !== undefined && theItem.originDepth !== this.depth) return false;
         for (const e of theItem.keyLoc) {
@@ -8149,6 +8165,16 @@ export class Game {
             if (this.keyMatchesLocation(item, x, y, cell)) return item;
         }
         return null;
+    }
+
+    /** CE Items.c:4062-4084: a matching key can be on the floor, in the
+     * occupant player's pack, or carried by the occupying monster. */
+    private keyOnTileAt(x: number, y: number): boolean {
+        const cell = this.grid.getCell(x, y) ?? undefined;
+        if (this.player.x === x && this.player.y === y && this.keyInPackFor(x, y, cell)) return true;
+        if (this.items.some(item => item.x === x && item.y === y && this.keyMatchesLocation(item, x, y, cell))) return true;
+        const carried = this.getMonsterAt(x, y)?.carriedItem;
+        return !!carried && this.keyMatchesLocation(carried, x, y, cell);
     }
 
     private poisonedDuringTurn = false;
@@ -8312,11 +8338,50 @@ export class Game {
         }
     }
 
+    /** CE Items.c:1177-1208 / 1293-1308: scan x then y, lock the first
+     * eligible item and exchange with the first different level on this machine. */
+    private commuteFloorItems(): void {
+        // CE itemAtLoc exposes one floor item per cell. The web floor list may
+        // contain overlapping drops; they must not act as two separate altars.
+        const slots = new Map<string, Item>();
+        for (const item of this.items) {
+            const key = `${item.x},${item.y}`;
+            if (!slots.has(key)) slots.set(key, item);
+        }
+        const floorItems = [...slots.values()];
+        const machines = new Set(floorItems.filter(item =>
+            cellTerrainMechFlags(this.grid, item.x, item.y) & TM_SWAP_ENCHANTS_ACTIVATION)
+            .map(item => this.grid.getCell(item.x, item.y)!.machineNumber).filter(n => n > 0));
+        for (const machine of machines) {
+            promoteOnCommutation(this.grid, machine, () => {
+                const items = floorItems.filter(item => itemIsSwappable(item)
+                    && this.grid.getCell(item.x, item.y)?.machineNumber === machine
+                    && (cellTerrainMechFlags(this.grid, item.x, item.y) & TM_SWAP_ENCHANTS_ACTIVATION))
+                    .sort((a, b) => a.x - b.x || a.y - b.y);
+                const first = items[0], second = first && items.find(item => item.enchantment !== first.enchantment);
+                if (!first || !second) return false;
+                const oldLevel = first.enchantment, oldKnown = enchantLevelKnown(first);
+                for (const [item, level, known] of [[first, second.enchantment, enchantLevelKnown(second)],
+                    [second, oldLevel, oldKnown]] as const) {
+                    if (!swapItemToEnchantLevel(item, level, known)) {
+                        this.items.splice(this.items.indexOf(item), 1);
+                        if (this.grid.getCell(item.x, item.y)?.isVisible) logger.log(i18next.t('item.commutation_shatter', {
+                            item: item.displayName, defaultValue: '{{item}} shatters from the strain!'
+                        }), '#ffffaa');
+                    }
+                }
+                this.needsRender = true;
+                return true;
+            });
+        }
+    }
+
     /** CE Items.c:1209-1277: floor items on moving liquid drift at environment updates. */
     private driftFloorItems(): void {
         for (const item of [...this.items]) {
             const { x, y } = item.loc;
             if (this.absoluteTurnNumber < item.spawnTurnNumber) continue;
+            if (item.flags?.includes('ITEM_KIND_AUTO_ID')) ItemLoader.identifyItemKind(item);
             if (!(cellTerrainFlags(this.grid, x, y) & T_MOVES_ITEMS)) {
                 promoteOnItemPlaced(this.grid, x, y);
                 continue;
@@ -8735,9 +8800,7 @@ export class Game {
             ? [...this.pendingCaughtFireCells, ...queuedFire]
             : this.pendingCaughtFireCells;
         this.lastPromotionUpdate = runPromotionUpdate(this.grid, {
-            keyOnTileAt: (x, y) => this.items.some(
-                (it) => it.category === ItemCategory.KEY && it.loc.x === x && it.loc.y === y
-            ),
+            keyOnTileAt: (x, y) => this.keyOnTileAt(x, y),
             caughtFireCells: caughtFireSkip,
         });
         // F-2a：CE :1665-1668 的记账趟语义——上回合遗留的起火登记在此清空，
@@ -8778,6 +8841,7 @@ export class Game {
         this.fallFloorItems();
         this.burnFloorItems();
         this.driftFloorItems();
+        this.commuteFloorItems();
     }
 
     /** RogueMain.startLevel: run 50 updates for a new map, at most 100 for a
@@ -9663,7 +9727,7 @@ export class Game {
             const isFlying = entity.hasStatus('flying') || entity.hasStatus('levitating') || (entity.abilities && entity.abilities.has('flying'));
             // F-1 跨层判定：火盖在深水/岩浆上不改变致死地形判据
             //（CE applyInstantTileEffectsToCreature 的 cellHasTerrainFlag 是全层 OR）
-            if (cell.layers.includes(TerrainType.LAVA) && !isFlying
+            if ((cellTerrainFlags(this.grid, x, y) & T_LAVA_INSTA_DEATH) && !isFlying
                 && !entity.hasStatus('immune_fire')
                 && !(entity.abilities && entity.abilities.has('immune_fire'))
                 && !(entity.isInvulnerable && entity.isInvulnerable())
@@ -9695,6 +9759,16 @@ export class Game {
                 this.applyDisplacementTileEntry(entity);
                 // A teleport trap already committed and evaluated its new cell.
                 if (entity.loc.x !== x || entity.loc.y !== y) return;
+            }
+
+            // CE Time.c:301-312: sacrifice entry is independent of levitation.
+            // The DF refresh re-enters this function after replacing the altar
+            // with lava; the new terrain no longer has this activation bit.
+            if (entity instanceof Monster && entity.markedForSacrifice
+                && entity.machineHome === cell.machineNumber
+                && (cellTerrainMechFlags(this.grid, x, y) & TM_PROMOTES_ON_SACRIFICE_ENTRY)) {
+                promoteLayersWithMechFlag(this.grid, x, y, TM_PROMOTES_ON_SACRIFICE_ENTRY);
+                if (entity.hp <= 0) return;
             }
 
             // Fire
@@ -10002,6 +10076,8 @@ export class Game {
             case "the archway flashes, and you catch a glimpse of another world!": return i18next.t('df.message_16', { defaultValue: "the archway flashes, and you catch a glimpse of another world!" });
             case "the area is flooded as water rises through imperceptible holes in the ground.": return i18next.t('df.message_17', { defaultValue: "the area is flooded as water rises through imperceptible holes in the ground." });
             case "the cage lifts off of the altar.": return i18next.t('df.message_18', { defaultValue: "the cage lifts off of the altar." });
+            case "the cages lift off of the altars as you approach.": return i18next.t('df.cages_open', { defaultValue: 'the cages lift off of the altars as you approach.' });
+            case "demonic cackling echoes through the room as the altar plunges downward!": return i18next.t('df.sacrifice_complete', { defaultValue: 'demonic cackling echoes through the room as the altar plunges downward!' });
             case "the cages lower to cover the altars.": return i18next.t('df.message_19', { defaultValue: "the cages lower to cover the altars." });
             case "the coffin opens and a dark figure rises!": return i18next.t('df.message_20', { defaultValue: "the coffin opens and a dark figure rises!" });
             case "the crystal absorbs the electricity and begins to glow.": return i18next.t('df.message_21', { defaultValue: "the crystal absorbs the electricity and begins to glow." });
@@ -10909,6 +10985,16 @@ export class Game {
 
     private getTerrainName(terrain: TerrainType): string {
         switch (terrain) {
+            case TerrainType.ALTAR_CAGE_CLOSED: return i18next.t('terrain.altar_cage_closed', { defaultValue: '铁笼祭坛' });
+            case TerrainType.COMMUTATION_ALTAR: return i18next.t('terrain.commutation_altar', { defaultValue: '置换祭坛' });
+            case TerrainType.COMMUTATION_ALTAR_INERT: return i18next.t('terrain.commutation_inert', { defaultValue: '烧焦的置换祭坛' });
+            case TerrainType.RESURRECTION_ALTAR: return i18next.t('terrain.resurrection_altar', { defaultValue: '复活祭坛' });
+            case TerrainType.RESURRECTION_ALTAR_INERT: return i18next.t('terrain.resurrection_inert', { defaultValue: '烧焦的复活祭坛' });
+            case TerrainType.PIPE_GLOWING: return i18next.t('terrain.pipe_glowing', { defaultValue: '发光的玻璃管道' });
+            case TerrainType.PIPE_INERT: return i18next.t('terrain.pipe_inert', { defaultValue: '烧焦的玻璃管道' });
+            case TerrainType.SACRIFICE_ALTAR: return i18next.t('terrain.sacrifice_altar', { defaultValue: '献祭祭坛' });
+            case TerrainType.SACRIFICE_ALTAR_DORMANT: return i18next.t('terrain.sacrifice_dormant', { defaultValue: '休眠的献祭祭坛' });
+            case TerrainType.SACRIFICE_LAVA: return i18next.t('terrain.sacrifice_lava', { defaultValue: '献祭熔岩坑' });
             case TerrainType.GRANITE:
                 return i18next.t('terrain.granite', { defaultValue: '花岗岩墙壁' });
             case TerrainType.WALL:

@@ -69,7 +69,9 @@ describe('U05a CE feature ownership matrix (spatial/DF algorithms covered by V r
         expect(r.featureSpawns).toHaveLength(count);
         expect(expected).toBeGreaterThan(0);expect(owners).toHaveLength(expected);
         expect(new Set(owners.map(i=>i.instanceId)).size).toBe(expected);
-        if(f.flags.includes('MF_ADOPT_ITEM')){expect(generated).toHaveLength(0);expect(owners[0]!.instanceId).toBe(incoming.instanceId);expect(owners[0]!.keyLoc).toEqual(incoming.keyLoc);}
+        if(f.flags.includes('MF_ADOPT_ITEM')){expect(generated).toHaveLength(0);expect(owners[0]!.instanceId).toBe(incoming.instanceId);expect(owners[0]!.keyLoc).toEqual(f.itemFlags?.includes('ITEM_IS_KEY')
+            ? [...incoming.keyLoc!, {loc: owners[0]!.pos, machine: 0, disposableHere: false}]
+            : incoming.keyLoc); } // U17e CE26 appends its return slot; all incoming bindings and identity remain intact.
         else expect(owners.map(i=>i.instanceId).sort()).toEqual(generated.map(i=>i.instanceId).sort());
         if(f.flags.includes('MF_MONSTER_TAKE_ITEM')){expect(r.itemSpawns).toHaveLength(0);expect(r.monsterSpawns.filter(m=>m.carriedItem)).toHaveLength(1);}
         if(f.flags.includes('MF_OUTSOURCE_ITEM_TO_MACHINE')){expect(r.itemSpawns).toHaveLength(0);expect(r.monsterSpawns.filter(m=>m.carriedItem)).toHaveLength(0);expect(r.subMachines).toHaveLength(expected);}

@@ -1,0 +1,5 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+src/test/c_7_lighting.test.ts(143,11): error TS2740: Type '{ 144: number; 145: number; 146: number; 147: number; 148: number; 149: number; 150: number; 151: LightKind; 152: number; 153: number; 154: number; 155: number; 156: number; 139: number; 140: number; ... 141 more ...; 132: LightKind; }' is missing the following properties from type 'Record<TerrainType, number>': 157, 158, 159, 160, and 3 more.

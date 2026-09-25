@@ -1,0 +1,22 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+src/engine/Core/Game.ts(8016,83): error TS2345: Argument of type 'Cell | null' is not assignable to parameter of type 'Cell | undefined'.
+  Type 'null' is not assignable to type 'Cell | undefined'.
+src/engine/Core/Game.ts(8017,105): error TS2345: Argument of type 'Cell | null' is not assignable to parameter of type 'Cell | undefined'.
+  Type 'null' is not assignable to type 'Cell | undefined'.
+src/engine/Core/Game.ts(8019,68): error TS2345: Argument of type 'Cell | null' is not assignable to parameter of type 'Cell | undefined'.
+  Type 'null' is not assignable to type 'Cell | undefined'.
+src/test/u_17e_altars.test.ts(69,17): error TS2341: Property 'cells' is private and only accessible within class 'Grid'.
+src/test/u_17e_altars.test.ts(91,22): error TS2341: Property 'cells' is private and only accessible within class 'Grid'.
+src/test/u_17e_altars.test.ts(99,136): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(object: Record<TerrainType, TerrainFlagsEntry>, key: never, accessor: "get"): Mock<() => never>', gave the following error.
+    Argument of type 'TerrainType.RESURRECTION_ALTAR' is not assignable to parameter of type 'never'.
+  Overload 2 of 3, '(object: Record<TerrainType, TerrainFlagsEntry>, key: never, accessor: "set"): Mock<(arg: never) => void>', gave the following error.
+    Argument of type 'TerrainType.RESURRECTION_ALTAR' is not assignable to parameter of type 'never'.
+src/test/u_17e_altars.test.ts(99,180): error TS2345: Argument of type '{ mechFlags: number; flags: number; chanceToIgnite: number; fireType: string; discoverType: string; promoteType: string; promoteChance: number; glowLight: number; webOnly: boolean; }' is not assignable to parameter of type 'never'.
+src/test/u_17e_altars.test.ts(110,154): error TS2345: Argument of type 'string' is not assignable to parameter of type 'Charm'.
+src/test/u_17e_altars.test.ts(111,67): error TS2345: Argument of type 'string' is not assignable to parameter of type 'Charm'.
+src/test/u_17e_altars.test.ts(132,274): error TS2339: Property 'TRACKING_SCENT' does not exist on type 'typeof MonsterState'.
+src/test/u_17e_altars.test.ts(133,238): error TS2341: Property 'cells' is private and only accessible within class 'Grid'.

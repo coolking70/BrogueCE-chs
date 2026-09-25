@@ -1,0 +1,183 @@
+{
+  "seed": 31337,
+  "depth": 16,
+  "productionGameSha256": "dc4e9a580a5767a0a26f3820242f26df5a0d198ba5f8c42cd839933ea9f4c0a4",
+  "fixturePreparation": "Natural generation through D16; remove monsters, position player on first generated altar and provide two test items. Do not alter generated terrain, wiring, pipes or floor items.",
+  "original": {
+    "player": {
+      "x": 71,
+      "y": 15
+    },
+    "altars": [
+      {
+        "x": 30,
+        "y": 2,
+        "machine": 1
+      },
+      {
+        "x": 31,
+        "y": 5,
+        "machine": 1
+      }
+    ],
+    "pipes": [
+      {
+        "x": 29,
+        "y": 2
+      },
+      {
+        "x": 29,
+        "y": 5
+      },
+      {
+        "x": 30,
+        "y": 2
+      },
+      {
+        "x": 30,
+        "y": 3
+      },
+      {
+        "x": 30,
+        "y": 4
+      },
+      {
+        "x": 30,
+        "y": 5
+      },
+      {
+        "x": 31,
+        "y": 2
+      },
+      {
+        "x": 31,
+        "y": 3
+      },
+      {
+        "x": 31,
+        "y": 4
+      },
+      {
+        "x": 31,
+        "y": 5
+      },
+      {
+        "x": 31,
+        "y": 6
+      },
+      {
+        "x": 32,
+        "y": 4
+      },
+      {
+        "x": 32,
+        "y": 5
+      },
+      {
+        "x": 32,
+        "y": 6
+      }
+    ]
+  },
+  "walk": [
+    {
+      "x": 31,
+      "y": 2
+    },
+    {
+      "x": 31,
+      "y": 3
+    },
+    {
+      "x": 31,
+      "y": 4
+    },
+    {
+      "x": 31,
+      "y": 5
+    }
+  ],
+  "after": {
+    "enchantments": [
+      1,
+      5
+    ],
+    "altars": [
+      "COMMUTATION_ALTAR_INERT",
+      "COMMUTATION_ALTAR_INERT"
+    ],
+    "pipes": [
+      {
+        "x": 29,
+        "y": 2,
+        "surface": "PIPE_INERT"
+      },
+      {
+        "x": 29,
+        "y": 5,
+        "surface": "PIPE_INERT"
+      },
+      {
+        "x": 30,
+        "y": 2,
+        "surface": "NOTHING"
+      },
+      {
+        "x": 30,
+        "y": 3,
+        "surface": "PIPE_INERT"
+      },
+      {
+        "x": 30,
+        "y": 4,
+        "surface": "PIPE_INERT"
+      },
+      {
+        "x": 30,
+        "y": 5,
+        "surface": "PIPE_INERT"
+      },
+      {
+        "x": 31,
+        "y": 2,
+        "surface": "PIPE_INERT"
+      },
+      {
+        "x": 31,
+        "y": 3,
+        "surface": "PIPE_INERT"
+      },
+      {
+        "x": 31,
+        "y": 4,
+        "surface": "PIPE_INERT"
+      },
+      {
+        "x": 31,
+        "y": 5,
+        "surface": "NOTHING"
+      },
+      {
+        "x": 31,
+        "y": 6,
+        "surface": "PIPE_INERT"
+      },
+      {
+        "x": 32,
+        "y": 4,
+        "surface": "PIPE_INERT"
+      },
+      {
+        "x": 32,
+        "y": 5,
+        "surface": "PIPE_INERT"
+      },
+      {
+        "x": 32,
+        "y": 6,
+        "surface": "PIPE_INERT"
+      }
+    ]
+  },
+  "passed": true
+}

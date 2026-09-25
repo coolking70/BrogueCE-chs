@@ -247,49 +247,49 @@ describe('V-2b-4 B：八条祭坛族 DF 目录条目的 CE 逐字段钉死', () 
         const e = DUNGEON_FEATURE_CATALOG[DF.DF_ITEM_CAGE_CLOSE]!;
         expect(e.ceLine).toBe(722);
         expect(e.ceTile).toBe('ALTAR_CAGE_CLOSED');
-        expect(e.tile).toBeNull();
+        expect(e.tile).toBe(C.ALTAR_CAGE_CLOSED);
         expect(e.layer).toBe(L.DUNGEON);
         expect(e.startProbability).toBe(0);
         expect(e.probabilityDecrement).toBe(0);
         expect(e.flags).toBe(DFF_EVACUATE_CREATURES_FIRST);
         expect(e.description).toBe('the cages lower to cover the altars.');
         expect(e.lightFlare).toBe('GENERIC_FLASH_LIGHT');
-        expect(DF_MISSING_TILES).toContain(DF.DF_ITEM_CAGE_CLOSE);
+        expect(DF_MISSING_TILES).not.toContain(DF.DF_ITEM_CAGE_CLOSE);
     });
 
     it('B3 DF_ALTAR_COMMUTE（:793）与 DF_ALTAR_RESURRECT（:798）：两条惰性祭坛 + 各自的文案/光效', () => {
         const cm = DUNGEON_FEATURE_CATALOG[DF.DF_ALTAR_COMMUTE]!;
         expect(cm.ceLine).toBe(793);
         expect(cm.ceTile).toBe('COMMUTATION_ALTAR_INERT');
-        expect(cm.tile).toBeNull();
+        expect(cm.tile).toBe(C.COMMUTATION_ALTAR_INERT);
         expect(cm.layer).toBe(L.DUNGEON);
         expect(cm.flags, '置换完成条无 DFF 旗标').toBe(0);
         expect(cm.description).toBe('the items on the two altars flash with a brilliant light!');
         expect(cm.lightFlare).toBe('SCROLL_ENCHANTMENT_LIGHT');
-        expect(DF_MISSING_TILES).toContain(DF.DF_ALTAR_COMMUTE);
+        expect(DF_MISSING_TILES).not.toContain(DF.DF_ALTAR_COMMUTE);
 
         const rs = DUNGEON_FEATURE_CATALOG[DF.DF_ALTAR_RESURRECT]!;
         expect(rs.ceLine).toBe(798);
         expect(rs.ceTile).toBe('RESURRECTION_ALTAR_INERT');
-        expect(rs.tile).toBeNull();
+        expect(rs.tile).toBe(C.RESURRECTION_ALTAR_INERT);
         expect(rs.layer).toBe(L.DUNGEON);
         expect(rs.flags, 'DFF_RESURRECT_ALLY（Rogue.h:1820）').toBe(DFF_RESURRECT_ALLY);
         expect(rs.description).toBe('An old friend emerges from a bloom of sacred light!');
         expect(rs.lightFlare).toBe('EMPOWERMENT_LIGHT');
-        expect(DF_MISSING_TILES).toContain(DF.DF_ALTAR_RESURRECT);
+        expect(DF_MISSING_TILES).not.toContain(DF.DF_ALTAR_RESURRECT);
     });
 
     it('B4 DF_MAGIC_PIPING（:794）：6 号蓝图 DF 列的起点，90/60 扩散', () => {
         const e = DUNGEON_FEATURE_CATALOG[DF.DF_MAGIC_PIPING]!;
         expect(e.ceLine).toBe(794);
         expect(e.ceTile).toBe('PIPE_GLOWING');
-        expect(e.tile).toBeNull();
+        expect(e.tile).toBe(C.PIPE_GLOWING);
         expect(e.layer).toBe(L.SURFACE);
         expect(e.startProbability).toBe(90);
         expect(e.probabilityDecrement).toBe(60);
         expect(e.flags).toBe(0);
         expect(e.subsequentDF).toBeNull();
-        expect(DF_MISSING_TILES).toContain(DF.DF_MAGIC_PIPING);
+        expect(DF_MISSING_TILES).not.toContain(DF.DF_MAGIC_PIPING);
     });
 
     it('B5 DF_MACHINE_FLOOR_TRIGGER_REPEATING（:799）：**唯一落 LIQUID 层**且带 propTerrain=CARPET 的条目', () => {

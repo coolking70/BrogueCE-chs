@@ -1,0 +1,27 @@
+{
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）"
+          ],
+          "fullName": "C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列） 全 tile 的 glowLight 逐值等于 CE 原列（结构性穷尽）",
+          "status": "failed",
+          "title": "全 tile 的 glowLight 逐值等于 CE 原列（结构性穷尽）",
+          "duration": 5.241417000000013,
+          "failureMessages": [
+            "AssertionError: TerrainType.157 缺期望值（表没跟上新 tile？）: expected undefined to be defined\n    at /Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/src/test/c_7_lighting.test.ts:330:68\n    at file:///Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+          ],
+          "meta": {},
+          "tags": []
+        }
+      ],
+      "startTime": 1790362155788,
+      "endTime": 1790362159565.6738,
+      "status": "failed",
+      "message": "",
+      "name": "/Users/coolking70/.codex/worktrees/8f57/brogue/brogue-web/src/test/c_7_lighting.test.ts"
+    }
+  ]
+}
