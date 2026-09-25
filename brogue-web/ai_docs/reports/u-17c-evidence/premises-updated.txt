@@ -1,0 +1,104 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/c0d3/brogue/brogue-web
+
+ ✓ src/test/b2_transcription.test.ts (21 tests | 18 skipped) 18ms
+stdout | src/test/c_4a_terrain_catalog.test.ts > C-4a D：迁移安全性——查表实现 ≡ 旧硬编码（C-4a 时点的枚举全集逐位） > Game.canMoveTo（查表）≡ 旧清单：合成格逐地形实测（含生成中出现不了的地形）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/c_4a_terrain_catalog.test.ts (30 tests | 26 skipped) 1295ms
+     ✓ Game.canMoveTo（查表）≡ 旧清单：合成格逐地形实测（含生成中出现不了的地形）  1230ms
+ ✓ src/test/u_08_terrain_bolts.test.ts (32 tests | 31 skipped) 6ms
+ ✓ src/test/w_11_teleport_placement.test.ts (37 tests | 36 skipped) 8ms
+ ✓ src/test/c_6_autogenerators.test.ts (17 tests | 14 skipped) 8ms
+ ✓ src/test/c_7_lighting.test.ts (28 tests | 27 skipped) 15ms
+ ✓ src/test/g_2_gas_df_wiring.test.ts (17 tests | 16 skipped) 4ms
+ ❯ src/test/v_2b_3_wired.test.ts (28 tests | 1 failed | 27 skipped) 10ms
+     ↓ MACHINE_GLYPH（Globals.c:404）
+     ↓ PORTCULLIS_CLOSED（Globals.c:339）
+     ↓ WORM_TUNNEL_OUTER_WALL（Globals.c:570）
+     ↓ WALL_LEVER_HIDDEN（Globals.c:347）——CE 原样不带 TM_IS_WIRED
+     ↓ GAS_TRAP_PARALYSIS / _HIDDEN（Globals.c:382/381）
+     ↓ MACHINE_PARALYSIS_VENT_HIDDEN（Globals.c:383）与 MACHINE_METHANE_VENT_HIDDEN（:398）
+     ↓ PILOT_LIGHT_DORMANT（Globals.c:342）
+     ↓ 14 条新 DF 枚举 id ≡ CE Rogue.h 数序（对抗：抄错枚举位即错目录行）
+     × 有载体的链环 tile 对位（气体 payoff 的三条线）+ DF_MISSING_TILES 顺延 8 → 19 9ms
+     ↓ B1 对抗：机器号过滤——machine 1 的激活不通电 machine 2（漏掉 machineNumber 判据即红）
+     ↓ B2 对抗：两次洗牌无条件先掷（CE :1177-1180）——空机器/机器号 0 也掷 (W-1)+(H-1) 次
+     ↓ B3 对抗：相互递归只进闸一次——双 wired 格机器的激活 RNG 恰为一次洗牌对（:1177-1180 + :1277）
+     ↓ B4 对抗：逐层晋升（CE :1192-1196）——同格两个 wired 层都晋升（只晋升有效地形即红）
+     ↓ C1 对抗：断路器阻断激活——不洗牌、不耗 RNG、不置电（在洗牌后才查断路器即红）
+     ↓ C2 对抗：断路器只按机器号过滤——别的机器带断路器不阻断本机
+     ↓ D1 端到端 67/68：踩触发板 → 全机通电 → 两喷口逐层晋升、payoff 按 CE :865 链尾缺 tile 缓办响亮登记
+     ↓ D1b 对抗：T_IS_DF_TRAP 载体踩上触发的 CE 形态——promoteTile 即通电，与是否先 spawn fireType 无关
+     ↓ D2 端到端 24 号：符文落地与同机通电都成功（V-2b-9d 闭合载体）
+     ↓ D3 对抗：嵌套晋升不带电——activateMachine 内的 promoteTile 不再反向激活（wiredBranchHit=false）
+     ↓ 对抗：reqSpace=0 的 REPEAT 轮次超限必须显式抛错，消息带蓝图 id/feature 序号/轮数
+     ↓ 对抗：机器吞并前就在格上的 PRESSURE_PLATE（带电）必须剪线清层；feature 自带的载体不受影响
+     ↓ 对抗：不带 MF_GENERATE_MONSTER 的 monsterId feature 也要生成（24/25 号图腾/守卫的判定）
+     ↓ 18 号 lever：深度/房径/频率/旗标/三 feature 全等（featureCt=3，含 ALTERNATIVE 组）
+     ↓ 22 号 throwing tutorial：plate 走 MACHINE_PRESSURE_PLATE 别名 + LIQUID 层 + DF 列缺口登记
+     ↓ 24 号 beckoning：featureCt=3——CE 第 4 行 feature 是 featureCount 界外的死数据，不入表
+     ↓ 25 号 guardian：双 DOOR+守卫（ALTERNATIVE 组）+ 两批符文；minInsts=3 的 {10,10} 批次
+     ↓ 67/68 号麻痹陷阱：freq 0 + BP_NO_INTERIOR_FLAG + 显/隐两版载体对位
+     ↓ 22 号蓝图行使：MACHINE_PRESSURE_PLATE 别名 + 闸门族载体真实落格（vestibule 递归形态）
+stdout | src/test/c_4b_dungeon_feature.test.ts > C-4b F：留痕（本轮明确不做的事；C-4c 翻转） > F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/c_4b_dungeon_feature.test.ts (31 tests | 26 skipped) 9236ms
+     ✓ F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空  9148ms
+ ✓ src/test/c_4a_0_layer_model.test.ts (20 tests | 19 skipped) 4ms
+ ✓ src/test/u_17b_carriers.test.ts (20 tests | 18 skipped) 5ms
+ ✓ src/test/v_2b_5_dormant.test.ts (17 tests | 16 skipped) 7ms
+ ✓ src/test/u_17a_df_transaction.test.ts (27 tests | 26 skipped) 8ms
+ ✓ src/test/v_2b_4_altars.test.ts (36 tests | 35 skipped) 28ms
+ ✓ src/test/r_1_appearance.test.ts (45 tests | 44 skipped) 3ms
+stdout | src/test/p1_30_i18n_gate.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/p1_30_i18n_gate.test.ts (16 tests | 15 skipped) 3ms
+stdout | src/test/p1_42_secret_door_search.test.ts > P1-42 A：searchForSecrets 对齐 CE Movement.c:2459-2489 > A6 可见性要求：隔墙密门零掷骰、终搜序列也搜不到（捕获：漏掉 playerCanDirectlySee）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/p1_42_secret_door_search.test.ts (14 tests | 13 skipped) 24687ms
+     ✓ A6 可见性要求：隔墙密门零掷骰、终搜序列也搜不到（捕获：漏掉 playerCanDirectlySee）  24686ms
+stdout | src/test/c_2_lakes_e2e.test.ts > C-2 实测（15 种子 × D1-D26 真实生成） > 对抗 AD-B1：深度门槛实测——D1-3 无岩浆/硫矿/黑曜石；D4-16 无硫矿/黑曜石；D4+/D17+ 各自真的出现
+[c_2] 湖泊阶段扫描：390 层，闸门 placed=369 skipped=6
+
+stdout | src/test/c_2_lakes_e2e.test.ts > C-2 实测（15 种子 × D1-D26 真实生成） > C-5 已反转（原留痕：深渊族地形恒 0——C-5 坠落落地后解除）：真实生成中出现深渊族，且干地连通合同不被深渊破坏
+[c_2→C-5] 390 层深渊族地形总数 = 2810
+[c_2→C-5] 出现深渊族的层数 = 118/390
+
+stdout | src/test/c_2_lakes_e2e.test.ts > C-2 实测（15 种子 × D1-D26 真实生成） > C-3 已落地：removeDiagonalOpenings 扫到收敛，斜向豁口恒为 0
+[c_2] C-3 后：斜向豁口总数 = 0，残留层数 = 0/390
+
+stdout | src/test/c_2_lakes_e2e.test.ts > C-2 实测（15 种子 × D1-D26 真实生成） > 实测统计（报告数据源）：四类液体随深度的分布
+[c_2] 液体分布：
+D1-3: 层数=45 深水=142(均值3.2) 浅水=2400 岩浆=0 硫矿=0 黑曜石=0 有岩浆层数=0 有硫矿层数=0
+D4-9: 层数=90 深水=537(均值6.0) 浅水=5939 岩浆=371 硫矿=0 黑曜石=0 有岩浆层数=25 有硫矿层数=0
+D10-16: 层数=105 深水=528(均值5.0) 浅水=6760 岩浆=442 硫矿=0 黑曜石=0 有岩浆层数=29 有硫矿层数=0
+D17-26: 层数=150 深水=797(均值5.3) 浅水=8960 岩浆=440 硫矿=487 黑曜石=464 有岩浆层数=26 有硫矿层数=29
+
+ ✓ src/test/c_2_lakes_e2e.test.ts (6 tests) 121813ms
+     ✓ 对抗 AD-B1：深度门槛实测——D1-3 无岩浆/硫矿/黑曜石；D4-16 无硫矿/黑曜石；D4+/D17+ 各自真的出现  121805ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/v_2b_3_wired.test.ts > V-2b-3 A：载体地形逐字段 ≡ CE Globals.c（对抗：抄错任一位即红） > 有载体的链环 tile 对位（气体 payoff 的三条线）+ DF_MISSING_TILES 顺延 8 → 19
+AssertionError: DF[144] 应在缺 tile 登记: expected [ 179, 180, 182, 183, 185, 85, …(14) ] to include 144
+ ❯ src/test/v_2b_3_wired.test.ts:280:62
+    278|             DF.DF_ALTAR_COMMUTE, DF.DF_MAGIC_PIPING, DF.DF_ALTAR_RESUR…
+    279|             DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING]) {
+    280|             expect(DF_MISSING_TILES, `DF[${d}] 应在缺 tile 登记`).toContain…
+       |                                                              ^
+    281|         }
+    282|         for (const d of [DF.DF_LUMINESCENT_FUNGUS, DF.DF_STATUE_SHATTE…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 17 passed (18)
+      Tests  1 failed | 34 passed | 407 skipped (442)
+   Start at  23:14:31
+   Duration  123.82s (transform 3.35s, setup 0ms, import 20.20s, tests 157.16s, environment 6ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/c0d3/brogue/brogue-web/ai_docs/reports/u-17c-evidence/premises-updated.json

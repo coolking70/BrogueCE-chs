@@ -1,0 +1,1176 @@
+{
+  "seed": 22,
+  "depth": 15,
+  "observations": [
+    {
+      "number": 3,
+      "spawns": [
+        {
+          "pos": {
+            "x": 59,
+            "y": 19
+          },
+          "requested": "sentinel",
+          "terrain": 68,
+          "actual": "Sentinel",
+          "home": 3,
+          "isSentinel": true
+        },
+        {
+          "pos": {
+            "x": 60,
+            "y": 22
+          },
+          "requested": "sentinel",
+          "terrain": 48,
+          "actual": "grappling Sentinel",
+          "home": 3,
+          "isSentinel": true
+        },
+        {
+          "pos": {
+            "x": 64,
+            "y": 23
+          },
+          "requested": "sentinel",
+          "terrain": 48,
+          "actual": "Sentinel",
+          "home": 3,
+          "isSentinel": true
+        }
+      ]
+    }
+  ],
+  "machines": [
+    {
+      "blueprintId": "trap_paralysis_hidden",
+      "category": "thematic",
+      "machineNumber": 1,
+      "cells": [
+        {
+          "x": 28,
+          "y": 15
+        },
+        {
+          "x": 30,
+          "y": 10
+        },
+        {
+          "x": 28,
+          "y": 9
+        },
+        {
+          "x": 27,
+          "y": 17
+        },
+        {
+          "x": 31,
+          "y": 16
+        },
+        {
+          "x": 28,
+          "y": 14
+        },
+        {
+          "x": 29,
+          "y": 16
+        },
+        {
+          "x": 29,
+          "y": 15
+        },
+        {
+          "x": 32,
+          "y": 13
+        },
+        {
+          "x": 27,
+          "y": 14
+        },
+        {
+          "x": 28,
+          "y": 17
+        },
+        {
+          "x": 32,
+          "y": 15
+        },
+        {
+          "x": 28,
+          "y": 16
+        },
+        {
+          "x": 29,
+          "y": 17
+        },
+        {
+          "x": 34,
+          "y": 13
+        },
+        {
+          "x": 26,
+          "y": 13
+        },
+        {
+          "x": 30,
+          "y": 11
+        },
+        {
+          "x": 31,
+          "y": 14
+        },
+        {
+          "x": 29,
+          "y": 13
+        },
+        {
+          "x": 29,
+          "y": 14
+        },
+        {
+          "x": 27,
+          "y": 16
+        },
+        {
+          "x": 31,
+          "y": 13
+        },
+        {
+          "x": 32,
+          "y": 14
+        },
+        {
+          "x": 29,
+          "y": 10
+        },
+        {
+          "x": 30,
+          "y": 14
+        },
+        {
+          "x": 30,
+          "y": 15
+        },
+        {
+          "x": 33,
+          "y": 13
+        },
+        {
+          "x": 27,
+          "y": 15
+        },
+        {
+          "x": 26,
+          "y": 15
+        },
+        {
+          "x": 29,
+          "y": 9
+        },
+        {
+          "x": 27,
+          "y": 13
+        },
+        {
+          "x": 26,
+          "y": 16
+        },
+        {
+          "x": 30,
+          "y": 16
+        },
+        {
+          "x": 28,
+          "y": 13
+        },
+        {
+          "x": 29,
+          "y": 11
+        },
+        {
+          "x": 29,
+          "y": 12
+        },
+        {
+          "x": 28,
+          "y": 10
+        },
+        {
+          "x": 31,
+          "y": 15
+        },
+        {
+          "x": 30,
+          "y": 13
+        },
+        {
+          "x": 26,
+          "y": 14
+        }
+      ],
+      "center": {
+        "x": 27,
+        "y": 13
+      },
+      "door": null,
+      "itemSpawns": [],
+      "generatedItems": [],
+      "monsterSpawns": [],
+      "featureSpawns": [
+        {
+          "pos": {
+            "x": 27,
+            "y": 14
+          },
+          "terrain": "GAS_TRAP_PARALYSIS_HIDDEN",
+          "featureIndex": 0
+        },
+        {
+          "pos": {
+            "x": 30,
+            "y": 13
+          },
+          "terrain": "GAS_TRAP_PARALYSIS_HIDDEN",
+          "featureIndex": 0
+        },
+        {
+          "pos": {
+            "x": 31,
+            "y": 16
+          },
+          "terrain": "MACHINE_PARALYSIS_VENT_HIDDEN",
+          "featureIndex": 1
+        },
+        {
+          "pos": {
+            "x": 34,
+            "y": 13
+          },
+          "terrain": "MACHINE_PARALYSIS_VENT_HIDDEN",
+          "featureIndex": 1
+        },
+        {
+          "pos": {
+            "x": 30,
+            "y": 10
+          },
+          "terrain": "MACHINE_PARALYSIS_VENT_HIDDEN",
+          "featureIndex": 1
+        },
+        {
+          "pos": {
+            "x": 28,
+            "y": 17
+          },
+          "terrain": "MACHINE_PARALYSIS_VENT_HIDDEN",
+          "featureIndex": 1
+        }
+      ],
+      "needsKey": false,
+      "generatedKey": false,
+      "subMachines": []
+    },
+    {
+      "blueprintId": "ce_61_swamp",
+      "category": "thematic",
+      "machineNumber": 2,
+      "cells": [
+        {
+          "x": 22,
+          "y": 7
+        },
+        {
+          "x": 18,
+          "y": 9
+        },
+        {
+          "x": 15,
+          "y": 12
+        },
+        {
+          "x": 21,
+          "y": 8
+        },
+        {
+          "x": 13,
+          "y": 11
+        },
+        {
+          "x": 18,
+          "y": 16
+        },
+        {
+          "x": 20,
+          "y": 15
+        },
+        {
+          "x": 17,
+          "y": 10
+        },
+        {
+          "x": 20,
+          "y": 11
+        },
+        {
+          "x": 24,
+          "y": 6
+        },
+        {
+          "x": 23,
+          "y": 5
+        },
+        {
+          "x": 17,
+          "y": 15
+        },
+        {
+          "x": 15,
+          "y": 10
+        },
+        {
+          "x": 16,
+          "y": 10
+        },
+        {
+          "x": 26,
+          "y": 8
+        },
+        {
+          "x": 18,
+          "y": 11
+        },
+        {
+          "x": 19,
+          "y": 13
+        },
+        {
+          "x": 25,
+          "y": 7
+        },
+        {
+          "x": 22,
+          "y": 10
+        },
+        {
+          "x": 19,
+          "y": 14
+        },
+        {
+          "x": 15,
+          "y": 7
+        },
+        {
+          "x": 14,
+          "y": 9
+        },
+        {
+          "x": 23,
+          "y": 9
+        },
+        {
+          "x": 22,
+          "y": 8
+        },
+        {
+          "x": 18,
+          "y": 15
+        },
+        {
+          "x": 20,
+          "y": 9
+        },
+        {
+          "x": 20,
+          "y": 8
+        },
+        {
+          "x": 20,
+          "y": 14
+        },
+        {
+          "x": 17,
+          "y": 8
+        },
+        {
+          "x": 16,
+          "y": 8
+        },
+        {
+          "x": 20,
+          "y": 10
+        },
+        {
+          "x": 16,
+          "y": 7
+        },
+        {
+          "x": 21,
+          "y": 9
+        },
+        {
+          "x": 16,
+          "y": 11
+        },
+        {
+          "x": 19,
+          "y": 9
+        },
+        {
+          "x": 24,
+          "y": 8
+        },
+        {
+          "x": 17,
+          "y": 7
+        },
+        {
+          "x": 24,
+          "y": 7
+        },
+        {
+          "x": 14,
+          "y": 10
+        },
+        {
+          "x": 21,
+          "y": 7
+        },
+        {
+          "x": 15,
+          "y": 8
+        },
+        {
+          "x": 15,
+          "y": 11
+        },
+        {
+          "x": 19,
+          "y": 10
+        },
+        {
+          "x": 19,
+          "y": 16
+        },
+        {
+          "x": 23,
+          "y": 6
+        },
+        {
+          "x": 16,
+          "y": 9
+        },
+        {
+          "x": 17,
+          "y": 9
+        },
+        {
+          "x": 19,
+          "y": 15
+        },
+        {
+          "x": 15,
+          "y": 9
+        },
+        {
+          "x": 17,
+          "y": 6
+        },
+        {
+          "x": 25,
+          "y": 8
+        },
+        {
+          "x": 19,
+          "y": 17
+        },
+        {
+          "x": 18,
+          "y": 14
+        },
+        {
+          "x": 14,
+          "y": 11
+        },
+        {
+          "x": 23,
+          "y": 7
+        },
+        {
+          "x": 20,
+          "y": 16
+        },
+        {
+          "x": 19,
+          "y": 12
+        },
+        {
+          "x": 19,
+          "y": 11
+        },
+        {
+          "x": 23,
+          "y": 8
+        },
+        {
+          "x": 18,
+          "y": 10
+        },
+        {
+          "x": 21,
+          "y": 10
+        },
+        {
+          "x": 16,
+          "y": 6
+        },
+        {
+          "x": 22,
+          "y": 9
+        },
+        {
+          "x": 16,
+          "y": 12
+        }
+      ],
+      "center": {
+        "x": 20,
+        "y": 10
+      },
+      "door": null,
+      "itemSpawns": [],
+      "generatedItems": [],
+      "monsterSpawns": [],
+      "featureSpawns": [
+        {
+          "pos": {
+            "x": 22,
+            "y": 7
+          },
+          "featureDF": "DF_SWAMP",
+          "featureIndex": 0
+        },
+        {
+          "pos": {
+            "x": 18,
+            "y": 9
+          },
+          "featureDF": "DF_SWAMP",
+          "featureIndex": 0
+        },
+        {
+          "pos": {
+            "x": 15,
+            "y": 12
+          },
+          "featureDF": "DF_SWAMP",
+          "featureIndex": 0
+        },
+        {
+          "pos": {
+            "x": 21,
+            "y": 8
+          },
+          "featureDF": "DF_SWAMP",
+          "featureIndex": 0
+        },
+        {
+          "pos": {
+            "x": 13,
+            "y": 11
+          },
+          "featureDF": "DF_SWAMP",
+          "featureIndex": 0
+        },
+        {
+          "pos": {
+            "x": 18,
+            "y": 16
+          },
+          "featureDF": "DF_SWAMP",
+          "featureIndex": 0
+        },
+        {
+          "pos": {
+            "x": 20,
+            "y": 15
+          },
+          "featureDF": "DF_SWAMP",
+          "featureIndex": 0
+        },
+        {
+          "pos": {
+            "x": 17,
+            "y": 10
+          },
+          "featureDF": "DF_SWAMP",
+          "featureIndex": 0
+        }
+      ],
+      "needsKey": false,
+      "generatedKey": false,
+      "subMachines": []
+    },
+    {
+      "blueprintId": "ce_71_sentinels",
+      "category": "thematic",
+      "machineNumber": 3,
+      "cells": [
+        {
+          "x": 59,
+          "y": 19
+        },
+        {
+          "x": 54,
+          "y": 25
+        },
+        {
+          "x": 60,
+          "y": 22
+        },
+        {
+          "x": 64,
+          "y": 23
+        },
+        {
+          "x": 55,
+          "y": 25
+        },
+        {
+          "x": 62,
+          "y": 25
+        },
+        {
+          "x": 55,
+          "y": 22
+        },
+        {
+          "x": 58,
+          "y": 22
+        },
+        {
+          "x": 62,
+          "y": 24
+        },
+        {
+          "x": 60,
+          "y": 23
+        },
+        {
+          "x": 60,
+          "y": 20
+        },
+        {
+          "x": 61,
+          "y": 24
+        },
+        {
+          "x": 59,
+          "y": 22
+        },
+        {
+          "x": 56,
+          "y": 23
+        },
+        {
+          "x": 61,
+          "y": 23
+        },
+        {
+          "x": 59,
+          "y": 20
+        },
+        {
+          "x": 58,
+          "y": 25
+        },
+        {
+          "x": 58,
+          "y": 23
+        },
+        {
+          "x": 54,
+          "y": 22
+        },
+        {
+          "x": 57,
+          "y": 23
+        },
+        {
+          "x": 60,
+          "y": 25
+        },
+        {
+          "x": 55,
+          "y": 24
+        },
+        {
+          "x": 57,
+          "y": 24
+        },
+        {
+          "x": 59,
+          "y": 23
+        },
+        {
+          "x": 59,
+          "y": 24
+        },
+        {
+          "x": 60,
+          "y": 24
+        },
+        {
+          "x": 59,
+          "y": 26
+        },
+        {
+          "x": 60,
+          "y": 21
+        },
+        {
+          "x": 63,
+          "y": 23
+        },
+        {
+          "x": 55,
+          "y": 23
+        },
+        {
+          "x": 54,
+          "y": 23
+        },
+        {
+          "x": 59,
+          "y": 25
+        },
+        {
+          "x": 58,
+          "y": 20
+        },
+        {
+          "x": 53,
+          "y": 23
+        },
+        {
+          "x": 59,
+          "y": 21
+        },
+        {
+          "x": 61,
+          "y": 25
+        },
+        {
+          "x": 61,
+          "y": 21
+        },
+        {
+          "x": 54,
+          "y": 24
+        },
+        {
+          "x": 61,
+          "y": 22
+        },
+        {
+          "x": 62,
+          "y": 23
+        }
+      ],
+      "center": {
+        "x": 58,
+        "y": 23
+      },
+      "door": null,
+      "itemSpawns": [],
+      "generatedItems": [],
+      "monsterSpawns": [
+        {
+          "monsterId": "sentinel",
+          "pos": {
+            "x": 59,
+            "y": 19
+          },
+          "isAlly": false,
+          "isCaged": false,
+          "dormant": false,
+          "sleeping": false,
+          "fleeing": false
+        },
+        {
+          "monsterId": "sentinel",
+          "pos": {
+            "x": 60,
+            "y": 22
+          },
+          "isAlly": false,
+          "isCaged": false,
+          "dormant": false,
+          "sleeping": false,
+          "fleeing": false
+        },
+        {
+          "monsterId": "sentinel",
+          "pos": {
+            "x": 64,
+            "y": 23
+          },
+          "isAlly": false,
+          "isCaged": false,
+          "dormant": false,
+          "sleeping": false,
+          "fleeing": false
+        }
+      ],
+      "featureSpawns": [
+        {
+          "pos": {
+            "x": 59,
+            "y": 19
+          },
+          "terrain": "STATUE_INERT",
+          "featureIndex": 0
+        },
+        {
+          "pos": {
+            "x": 60,
+            "y": 22
+          },
+          "terrain": "STATUE_INERT",
+          "featureIndex": 0
+        },
+        {
+          "pos": {
+            "x": 64,
+            "y": 23
+          },
+          "terrain": "STATUE_INERT",
+          "featureIndex": 0
+        },
+        {
+          "pos": {
+            "x": 54,
+            "y": 25
+          },
+          "featureDF": "DF_ASH",
+          "featureIndex": 1
+        },
+        {
+          "pos": {
+            "x": 55,
+            "y": 25
+          },
+          "featureDF": "DF_ASH",
+          "featureIndex": 1
+        }
+      ],
+      "needsKey": false,
+      "generatedKey": false,
+      "subMachines": []
+    }
+  ],
+  "monsters": [
+    {
+      "name": "Sentinel",
+      "loc": {
+        "x": 59,
+        "y": 19
+      },
+      "hp": 50,
+      "home": 3
+    },
+    {
+      "name": "grappling Sentinel",
+      "loc": {
+        "x": 60,
+        "y": 22
+      },
+      "hp": 75,
+      "home": 3
+    },
+    {
+      "name": "Sentinel",
+      "loc": {
+        "x": 64,
+        "y": 23
+      },
+      "hp": 50,
+      "home": 3
+    },
+    {
+      "name": "Wraith",
+      "loc": {
+        "x": 9,
+        "y": 11
+      },
+      "hp": 50,
+      "home": 0
+    },
+    {
+      "name": "Bloat",
+      "loc": {
+        "x": 63,
+        "y": 23
+      },
+      "hp": 4,
+      "home": 0
+    },
+    {
+      "name": "Bloat",
+      "loc": {
+        "x": 63,
+        "y": 24
+      },
+      "hp": 4,
+      "home": 0
+    },
+    {
+      "name": "juggernaut Eel",
+      "loc": {
+        "x": 47,
+        "y": 16
+      },
+      "hp": 54,
+      "home": 0
+    },
+    {
+      "name": "Eel",
+      "loc": {
+        "x": 47,
+        "y": 15
+      },
+      "hp": 18,
+      "home": 0
+    },
+    {
+      "name": "reflective Eel",
+      "loc": {
+        "x": 48,
+        "y": 16
+      },
+      "hp": 18,
+      "home": 0
+    },
+    {
+      "name": "Eel",
+      "loc": {
+        "x": 48,
+        "y": 17
+      },
+      "hp": 18,
+      "home": 0
+    },
+    {
+      "name": "Eel",
+      "loc": {
+        "x": 47,
+        "y": 17
+      },
+      "hp": 18,
+      "home": 0
+    },
+    {
+      "name": "Wraith",
+      "loc": {
+        "x": 69,
+        "y": 10
+      },
+      "hp": 50,
+      "home": 0
+    },
+    {
+      "name": "Spider",
+      "loc": {
+        "x": 53,
+        "y": 4
+      },
+      "hp": 20,
+      "home": 0
+    },
+    {
+      "name": "Wraith",
+      "loc": {
+        "x": 45,
+        "y": 26
+      },
+      "hp": 50,
+      "home": 0
+    },
+    {
+      "name": "Eel",
+      "loc": {
+        "x": 40,
+        "y": 15
+      },
+      "hp": 18,
+      "home": 0
+    },
+    {
+      "name": "Eel",
+      "loc": {
+        "x": 40,
+        "y": 16
+      },
+      "hp": 18,
+      "home": 0
+    },
+    {
+      "name": "Eel",
+      "loc": {
+        "x": 39,
+        "y": 16
+      },
+      "hp": 18,
+      "home": 0
+    },
+    {
+      "name": "Eel",
+      "loc": {
+        "x": 41,
+        "y": 16
+      },
+      "hp": 18,
+      "home": 0
+    },
+    {
+      "name": "Eel",
+      "loc": {
+        "x": 41,
+        "y": 15
+      },
+      "hp": 18,
+      "home": 0
+    }
+  ],
+  "dormant": [],
+  "cells": [
+    {
+      "pos": {
+        "x": 59,
+        "y": 19
+      },
+      "cell": {
+        "layers": [
+          68,
+          0,
+          0,
+          0
+        ],
+        "char": "ß",
+        "color": 7237230,
+        "volume": 0,
+        "isExplored": false,
+        "isVisible": false,
+        "isClairvoyantVisible": false,
+        "hasMemory": false,
+        "rememberedTerrain": 0,
+        "rememberedAppearance": null,
+        "rememberedLayers": [],
+        "rememberedItem": null,
+        "rememberedItemCategory": null,
+        "isMagicMapped": false,
+        "rememberedTerrainFlags": 0,
+        "rememberedTMFlags": 0,
+        "knownTrapFree": false,
+        "rememberedFlags": null,
+        "light": 0,
+        "isPassable": true,
+        "isOpaque": false,
+        "exposedToFire": 0,
+        "trapType": null,
+        "isDiscovered": false,
+        "autoSearched": false,
+        "machineNumber": 0,
+        "isPowered": false,
+        "hasDormantMonster": false,
+        "x": 59,
+        "y": 19
+      }
+    },
+    {
+      "pos": {
+        "x": 60,
+        "y": 22
+      },
+      "cell": {
+        "layers": [
+          48,
+          0,
+          0,
+          0
+        ],
+        "char": "ß",
+        "color": 7237230,
+        "volume": 0,
+        "isExplored": false,
+        "isVisible": false,
+        "isClairvoyantVisible": false,
+        "hasMemory": false,
+        "rememberedTerrain": 0,
+        "rememberedAppearance": null,
+        "rememberedLayers": [],
+        "rememberedItem": null,
+        "rememberedItemCategory": null,
+        "isMagicMapped": false,
+        "rememberedTerrainFlags": 0,
+        "rememberedTMFlags": 0,
+        "knownTrapFree": false,
+        "rememberedFlags": null,
+        "light": 0,
+        "isPassable": true,
+        "isOpaque": false,
+        "exposedToFire": 0,
+        "trapType": null,
+        "isDiscovered": false,
+        "autoSearched": false,
+        "machineNumber": 0,
+        "isPowered": false,
+        "hasDormantMonster": false,
+        "x": 60,
+        "y": 22
+      }
+    },
+    {
+      "pos": {
+        "x": 64,
+        "y": 23
+      },
+      "cell": {
+        "layers": [
+          48,
+          0,
+          0,
+          0
+        ],
+        "char": "ß",
+        "color": 7237230,
+        "volume": 0,
+        "isExplored": false,
+        "isVisible": false,
+        "isClairvoyantVisible": false,
+        "hasMemory": false,
+        "rememberedTerrain": 0,
+        "rememberedAppearance": null,
+        "rememberedLayers": [],
+        "rememberedItem": null,
+        "rememberedItemCategory": null,
+        "isMagicMapped": false,
+        "rememberedTerrainFlags": 0,
+        "rememberedTMFlags": 0,
+        "knownTrapFree": false,
+        "rememberedFlags": null,
+        "light": 0,
+        "isPassable": true,
+        "isOpaque": false,
+        "exposedToFire": 0,
+        "trapType": null,
+        "isDiscovered": false,
+        "autoSearched": false,
+        "machineNumber": 0,
+        "isPowered": false,
+        "hasDormantMonster": false,
+        "x": 64,
+        "y": 23
+      }
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+
+> brogue-web@0.0.0 test:drift
+> vitest run src/test/generation_baseline.test.ts
+
+failed to load config from /Users/coolking70/.codex/worktrees/c0d3/brogue/brogue-web/vite.config.ts
+
+⎯⎯⎯⎯⎯⎯⎯ Startup Error ⎯⎯⎯⎯⎯⎯⎯⎯
+Error: EPERM: operation not permitted, open '/Users/coolking70/.codex/worktrees/c0d3/brogue/brogue-web/node_modules/.vite-temp/vite.config.ts.timestamp-1790346761591-e39092d19c566.mjs'
+    at async open (node:internal/fs/promises:641:25)
+    at async Object.writeFile (node:internal/fs/promises:1249:14)
+    at async loadConfigFromBundledFile (file:///Users/coolking70/Documents/%E5%90%8C%E6%AD%A5%E7%A9%BA%E9%97%B4/brogue/brogue-web/node_modules/vite/dist/node/chunks/config.js:35907:3)
+    at async bundleAndLoadConfigFile (file:///Users/coolking70/Documents/%E5%90%8C%E6%AD%A5%E7%A9%BA%E9%97%B4/brogue/brogue-web/node_modules/vite/dist/node/chunks/config.js:35797:17)
+    at async loadConfigFromFile (file:///Users/coolking70/Documents/%E5%90%8C%E6%AD%A5%E7%A9%BA%E9%97%B4/brogue/brogue-web/node_modules/vite/dist/node/chunks/config.js:35764:42)
+    at async resolveConfig (file:///Users/coolking70/Documents/%E5%90%8C%E6%AD%A5%E7%A9%BA%E9%97%B4/brogue/brogue-web/node_modules/vite/dist/node/chunks/config.js:35413:22)
+    at async _createServer (file:///Users/coolking70/Documents/%E5%90%8C%E6%AD%A5%E7%A9%BA%E9%97%B4/brogue/brogue-web/node_modules/vite/dist/node/chunks/config.js:25362:67)
+    at async createViteServer (file:///Users/coolking70/Documents/%E5%90%8C%E6%AD%A5%E7%A9%BA%E9%97%B4/brogue/brogue-web/node_modules/vitest/dist/chunks/cli-api.CnMVyzaz.js:8902:17)
+    at async createVitest (file:///Users/coolking70/Documents/%E5%90%8C%E6%AD%A5%E7%A9%BA%E9%97%B4/brogue/brogue-web/node_modules/vitest/dist/chunks/cli-api.CnMVyzaz.js:14288:18)
+    at async prepareVitest (file:///Users/coolking70/Documents/%E5%90%8C%E6%AD%A5%E7%A9%BA%E9%97%B4/brogue/brogue-web/node_modules/vitest/dist/chunks/cli-api.CnMVyzaz.js:14655:14) {
+  errno: -1,
+  code: 'EPERM',
+  syscall: 'open',
+  path: '/Users/coolking70/.codex/worktrees/c0d3/brogue/brogue-web/node_modules/.vite-temp/vite.config.ts.timestamp-1790346761591-e39092d19c566.mjs'
+}
+
+
+

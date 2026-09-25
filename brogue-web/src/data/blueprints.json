@@ -881,7 +881,8 @@
                 "flags": [
                     "MF_TREAT_AS_BLOCKING",
                     "MF_FAR_FROM_ORIGIN"
-                ]
+                ],
+                "featureDF": "DF_MACHINE_FLOOR_TRIGGER_REPEATING"
             },
             {
                 "instanceCount": [
@@ -1320,7 +1321,8 @@
                 "flags": [
                     "MF_TREAT_AS_BLOCKING",
                     "MF_NOT_IN_HALLWAY"
-                ]
+                ],
+                "featureDF": "DF_MEDIUM_HOLE"
             },
             {
                 "terrain": "PORTCULLIS_CLOSED",
@@ -2249,7 +2251,8 @@
                 "flags": [
                     "MF_TREAT_AS_BLOCKING",
                     "MF_NOT_IN_HALLWAY"
-                ]
+                ],
+                "featureDF": "DF_MEDIUM_HOLE"
             }
         ]
     },

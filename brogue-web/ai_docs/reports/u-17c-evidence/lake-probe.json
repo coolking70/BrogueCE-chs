@@ -1,0 +1,2255 @@
+[
+  {
+    "x": 21,
+    "y": 25,
+    "region": [
+      {
+        "x": 19,
+        "y": 23,
+        "layers": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 19,
+        "y": 24,
+        "layers": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 19,
+        "y": 25,
+        "layers": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 19,
+        "y": 26,
+        "layers": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 19,
+        "y": 27,
+        "layers": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 20,
+        "y": 23,
+        "layers": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 20,
+        "y": 24,
+        "layers": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 20,
+        "y": 25,
+        "layers": [
+          "WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 20,
+        "y": 26,
+        "layers": [
+          "WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 20,
+        "y": 27,
+        "layers": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 23,
+        "layers": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 24,
+        "layers": [
+          "WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 25,
+        "layers": [
+          "NOTHING",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 26,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 27,
+        "layers": [
+          "WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 23,
+        "layers": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 24,
+        "layers": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 25,
+        "layers": [
+          "NOTHING",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 26,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 27,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 23,
+        "layers": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 24,
+        "layers": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 25,
+        "layers": [
+          "NOTHING",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 26,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 27,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      }
+    ],
+    "writes": [
+      {
+        "x": 20,
+        "y": 23,
+        "args": [
+          20,
+          23,
+          0,
+          45
+        ],
+        "before": [
+          "WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/tmp/u17c-lake-probe.mjs:5922:15)",
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6226:22)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 23,
+        "args": [
+          21,
+          23,
+          0,
+          45
+        ],
+        "before": [
+          "NOTHING",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/tmp/u17c-lake-probe.mjs:5922:15)",
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6226:22)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 23,
+        "args": [
+          22,
+          23,
+          0,
+          45
+        ],
+        "before": [
+          "NOTHING",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/tmp/u17c-lake-probe.mjs:5922:15)",
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6226:22)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 24,
+        "args": [
+          22,
+          24,
+          0,
+          45
+        ],
+        "before": [
+          "NOTHING",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/tmp/u17c-lake-probe.mjs:5922:15)",
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6226:22)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 23,
+        "args": [
+          23,
+          23,
+          0,
+          45
+        ],
+        "before": [
+          "NOTHING",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/tmp/u17c-lake-probe.mjs:5922:15)",
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6226:22)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 24,
+        "args": [
+          23,
+          24,
+          0,
+          45
+        ],
+        "before": [
+          "NOTHING",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/tmp/u17c-lake-probe.mjs:5922:15)",
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6226:22)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)"
+        ]
+      },
+      {
+        "x": 20,
+        "y": 23,
+        "args": [
+          20,
+          23,
+          1,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 20,
+        "y": 23,
+        "args": [
+          20,
+          23,
+          3,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 23,
+        "args": [
+          21,
+          23,
+          1,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 23,
+        "args": [
+          21,
+          23,
+          3,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 23,
+        "args": [
+          22,
+          23,
+          1,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 23,
+        "args": [
+          22,
+          23,
+          3,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 24,
+        "args": [
+          22,
+          24,
+          1,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 24,
+        "args": [
+          22,
+          24,
+          3,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 23,
+        "args": [
+          23,
+          23,
+          1,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 23,
+        "args": [
+          23,
+          23,
+          3,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 24,
+        "args": [
+          23,
+          24,
+          1,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 24,
+        "args": [
+          23,
+          24,
+          3,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      }
+    ]
+  },
+  {
+    "x": 22,
+    "y": 25,
+    "region": [
+      {
+        "x": 20,
+        "y": 23,
+        "layers": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 20,
+        "y": 24,
+        "layers": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 20,
+        "y": 25,
+        "layers": [
+          "WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 20,
+        "y": 26,
+        "layers": [
+          "WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 20,
+        "y": 27,
+        "layers": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 23,
+        "layers": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 24,
+        "layers": [
+          "WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 25,
+        "layers": [
+          "NOTHING",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 26,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 27,
+        "layers": [
+          "WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 23,
+        "layers": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 24,
+        "layers": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 25,
+        "layers": [
+          "NOTHING",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 26,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 27,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 23,
+        "layers": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 24,
+        "layers": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 25,
+        "layers": [
+          "NOTHING",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 26,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 27,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 24,
+        "y": 23,
+        "layers": [
+          "WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 24,
+        "y": 24,
+        "layers": [
+          "WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 24,
+        "y": 25,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 24,
+        "y": 26,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 24,
+        "y": 27,
+        "layers": [
+          "WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      }
+    ],
+    "writes": [
+      {
+        "x": 20,
+        "y": 23,
+        "args": [
+          20,
+          23,
+          0,
+          45
+        ],
+        "before": [
+          "WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/tmp/u17c-lake-probe.mjs:5922:15)",
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6226:22)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 23,
+        "args": [
+          21,
+          23,
+          0,
+          45
+        ],
+        "before": [
+          "NOTHING",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/tmp/u17c-lake-probe.mjs:5922:15)",
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6226:22)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 23,
+        "args": [
+          22,
+          23,
+          0,
+          45
+        ],
+        "before": [
+          "NOTHING",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/tmp/u17c-lake-probe.mjs:5922:15)",
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6226:22)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 24,
+        "args": [
+          22,
+          24,
+          0,
+          45
+        ],
+        "before": [
+          "NOTHING",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/tmp/u17c-lake-probe.mjs:5922:15)",
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6226:22)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 23,
+        "args": [
+          23,
+          23,
+          0,
+          45
+        ],
+        "before": [
+          "NOTHING",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/tmp/u17c-lake-probe.mjs:5922:15)",
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6226:22)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 24,
+        "args": [
+          23,
+          24,
+          0,
+          45
+        ],
+        "before": [
+          "NOTHING",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/tmp/u17c-lake-probe.mjs:5922:15)",
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6226:22)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)"
+        ]
+      },
+      {
+        "x": 20,
+        "y": 23,
+        "args": [
+          20,
+          23,
+          1,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 20,
+        "y": 23,
+        "args": [
+          20,
+          23,
+          3,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 23,
+        "args": [
+          21,
+          23,
+          1,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 23,
+        "args": [
+          21,
+          23,
+          3,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 23,
+        "args": [
+          22,
+          23,
+          1,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 23,
+        "args": [
+          22,
+          23,
+          3,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 24,
+        "args": [
+          22,
+          24,
+          1,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 24,
+        "args": [
+          22,
+          24,
+          3,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 23,
+        "args": [
+          23,
+          23,
+          1,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 23,
+        "args": [
+          23,
+          23,
+          3,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 24,
+        "args": [
+          23,
+          24,
+          1,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 24,
+        "args": [
+          23,
+          24,
+          3,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      }
+    ]
+  },
+  {
+    "x": 23,
+    "y": 25,
+    "region": [
+      {
+        "x": 21,
+        "y": 23,
+        "layers": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 24,
+        "layers": [
+          "WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 25,
+        "layers": [
+          "NOTHING",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 26,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 27,
+        "layers": [
+          "WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 23,
+        "layers": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 24,
+        "layers": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 25,
+        "layers": [
+          "NOTHING",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 26,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 27,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 23,
+        "layers": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 24,
+        "layers": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 25,
+        "layers": [
+          "NOTHING",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 26,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 27,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 24,
+        "y": 23,
+        "layers": [
+          "WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 24,
+        "y": 24,
+        "layers": [
+          "WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 24,
+        "y": 25,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 24,
+        "y": 26,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 24,
+        "y": 27,
+        "layers": [
+          "WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 25,
+        "y": 23,
+        "layers": [
+          "WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 25,
+        "y": 24,
+        "layers": [
+          "WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 25,
+        "y": 25,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 25,
+        "y": 26,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      },
+      {
+        "x": 25,
+        "y": 27,
+        "layers": [
+          "WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ]
+      }
+    ],
+    "writes": [
+      {
+        "x": 21,
+        "y": 23,
+        "args": [
+          21,
+          23,
+          0,
+          45
+        ],
+        "before": [
+          "NOTHING",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/tmp/u17c-lake-probe.mjs:5922:15)",
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6226:22)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 23,
+        "args": [
+          22,
+          23,
+          0,
+          45
+        ],
+        "before": [
+          "NOTHING",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/tmp/u17c-lake-probe.mjs:5922:15)",
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6226:22)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 24,
+        "args": [
+          22,
+          24,
+          0,
+          45
+        ],
+        "before": [
+          "NOTHING",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/tmp/u17c-lake-probe.mjs:5922:15)",
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6226:22)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 23,
+        "args": [
+          23,
+          23,
+          0,
+          45
+        ],
+        "before": [
+          "NOTHING",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/tmp/u17c-lake-probe.mjs:5922:15)",
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6226:22)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 24,
+        "args": [
+          23,
+          24,
+          0,
+          45
+        ],
+        "before": [
+          "NOTHING",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/tmp/u17c-lake-probe.mjs:5922:15)",
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6226:22)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 23,
+        "args": [
+          21,
+          23,
+          1,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 21,
+        "y": 23,
+        "args": [
+          21,
+          23,
+          3,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 23,
+        "args": [
+          22,
+          23,
+          1,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 23,
+        "args": [
+          22,
+          23,
+          3,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 24,
+        "args": [
+          22,
+          24,
+          1,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 22,
+        "y": 24,
+        "args": [
+          22,
+          24,
+          3,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 23,
+        "args": [
+          23,
+          23,
+          1,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "INERT_BRIMSTONE",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 23,
+        "args": [
+          23,
+          23,
+          3,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 24,
+        "args": [
+          23,
+          24,
+          1,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "OBSIDIAN",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      },
+      {
+        "x": 23,
+        "y": 24,
+        "args": [
+          23,
+          24,
+          3,
+          0
+        ],
+        "before": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "CRYSTAL_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at executeDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6279:17)",
+          "    at spawnDungeonFeature (file:///private/tmp/u17c-lake-probe.mjs:6160:20)",
+          "    at runAutogenerators (file:///private/tmp/u17c-lake-probe.mjs:7908:26)",
+          "    at _Architect.designEnvironmentOvelays (file:///private/tmp/u17c-lake-probe.mjs:16757:30)",
+          "    at _Architect.generateTerrain (file:///private/tmp/u17c-lake-probe.mjs:16337:10)"
+        ]
+      }
+    ]
+  }
+]

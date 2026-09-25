@@ -1,0 +1,93 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_17c_triggers.test.ts
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/c0d3/brogue/brogue-web
+
+ ❯ src/test/u_17c_triggers.test.ts (16 tests | 3 failed) 5585ms
+     × only the five authorized registrations are removed; every other missing identity remains ordered 6ms
+     × CE-generated appearances preserve all old rows and represent the new glyphs 3ms
+     × 144 carpet-constrained propagation remains invisible; player entry/wait repeatedly sends power, monsters and items do not 551ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_17c_triggers.test.ts > U17c CE independent catalog and scope > only the five authorized registrations are removed; every other missing identity remains ordered
+AssertionError: expected [ 179, 180, 182, 183, 185, 85, …(14) ] to deeply equal [ 179, 180, 182, 183, 185, 85, …(14) ]
+
+- Expected
++ Received
+
+@@ -12,11 +12,11 @@
+    187,
+    174,
+    175,
+    14,
+    19,
+-   88,
+    87,
++   88,
+    145,
+    148,
+    191,
+  ]
+
+ ❯ src/test/u_17c_triggers.test.ts:50:28
+     48|  });
+     49|  it('only the five authorized registrations are removed; every other m…
+     50|   expect(DF_MISSING_TILES).toEqual([179,180,182,183,185,85,140,141,143…
+       |                            ^
+     51|   for(const id of restored)expect(()=>catalogFeature(id)).not.toThrow(…
+     52|  });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/test/u_17c_triggers.test.ts > U17c CE independent catalog and scope > CE-generated appearances preserve all old rows and represent the new glyphs
+AssertionError: expected { char: '◇', color: '#333333', …(1) } to match object { char: '◇', color: '#4c4c4c', …(1) }
+
+- Expected
++ Received
+
+  {
+-   "bgColor": 789565,
++   "bgColor": 1118481,
+    "char": "◇",
+-   "color": "#4c4c4c",
++   "color": "#333333",
+  }
+
+ ❯ src/test/u_17c_triggers.test.ts:56:111
+     54|   const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrai…
+     55|   expect(Object.keys(rows)).toHaveLength(149);
+     56|   for(const name of Object.keys(golden.tiles)){const t=T[name as keyof…
+       |                                                                                                               ^
+     57|  });
+     58|  it('three machine DF data starts restored, hidden-trap autoGen correc…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/test/u_17c_triggers.test.ts > U17c real actions → final terrain / entity / solvability > 144 carpet-constrained propagation remains invisible; player entry/wait repeatedly sends power, monsters and items do not
+AssertionError: expected 54 to be 79 // Object.is equality
+
+- Expected
++ Received
+
+- 79
++ 54
+
+ ❯ src/test/u_17c_triggers.test.ts:107:54
+    105|   mark(g,20,10,T.PORTCULLIS_CLOSED);const m=rat(g,11,10);(g as any).ap…
+    106|   const i=new Item('stone',')',0xffffff,ItemCategory.WEAPON);i.loc={x:…
+    107|   move(g,1,0);expect(g.grid.getCell(20,10)!.terrain).toBe(T.PORTCULLIS…
+       |                                                      ^
+    108|   mark(g,20,10,T.PORTCULLIS_CLOSED);g.handlePlayerAction('wait',undefi…
+    109|  });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 13 passed (16)
+   Start at  22:41:13
+   Duration  7.13s (transform 820ms, setup 0ms, import 1.37s, tests 5.59s, environment 0ms)
+

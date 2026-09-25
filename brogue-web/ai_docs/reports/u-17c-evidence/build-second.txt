@@ -1,0 +1,13 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+src/test/c_7_lighting.test.ts(143,11): error TS2739: Type '{ 139: number; 140: number; 141: LightKind; 142: number; 143: number; 137: LightKind; 135: number; 136: number; 0: number; 1: number; 2: number; 3: number; 4: number; 5: number; 6: number; ... 128 more ...; 132: LightKind; }' is missing the following properties from type 'Record<TerrainType, number>': 144, 145, 146, 147, 148
+src/test/u_17c_triggers.test.ts(5,47): error TS6133: 'T_AUTO_DESCENT' is declared but its value is never read.
+src/test/u_17c_triggers.test.ts(7,46): error TS6133: 'cellTerrainFlags' is declared but its value is never read.
+src/test/u_17c_triggers.test.ts(13,9): error TS6133: 'BlueprintEngine' is declared but its value is never read.
+src/test/u_17c_triggers.test.ts(59,191): error TS2339: Property 'featureDF' does not exist on type '{ instanceCount: number[]; minimumInstanceCount: number; personalSpace: number; flags: string[]; itemCategory?: undefined; terrain?: undefined; signText?: undefined; } | { itemCategory: string; ... 5 more ...; signText?: undefined; } | ... 91 more ... | { ...; }'.
+  Property 'featureDF' does not exist on type '{ instanceCount: number[]; minimumInstanceCount: number; personalSpace: number; flags: string[]; itemCategory?: undefined; terrain?: undefined; signText?: undefined; }'.
+src/test/u_17c_triggers.test.ts(69,59): error TS2341: Property 'cells' is private and only accessible within class 'Grid'.
+src/test/u_17c_triggers.test.ts(80,56): error TS2540: Cannot assign to 'mechFlags' because it is a read-only property.
+src/test/u_17c_triggers.test.ts(80,299): error TS2540: Cannot assign to 'mechFlags' because it is a read-only property.

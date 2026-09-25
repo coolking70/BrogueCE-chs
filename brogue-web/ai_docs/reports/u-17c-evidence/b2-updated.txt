@@ -1,0 +1,20 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/b2_transcription.test.ts --maxWorkers=1 --reporter=default --reporter=json --outputFile.json=ai_docs/reports/u-17c-evidence/b2-updated.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/c0d3/brogue/brogue-web
+
+stdout | src/test/b2_transcription.test.ts > B2 production census > observes committed CE71 machines and their actual occupants on 34 seed × D1–D26
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/b2_transcription.test.ts (21 tests) 833372ms
+     ✓ observes committed CE71 machines and their actual occupants on 34 seed × D1–D26  831877ms
+     ✓ the same CE71 machine realizes zero sentinels with the old id, and three living grid occupants with the real id  1484ms
+
+ Test Files  1 passed (1)
+      Tests  21 passed (21)
+   Start at  23:21:47
+   Duration  835.33s (transform 971ms, setup 0ms, import 1.70s, tests 833.37s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/c0d3/brogue/brogue-web/ai_docs/reports/u-17c-evidence/b2-updated.json

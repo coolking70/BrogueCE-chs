@@ -227,6 +227,12 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
 
     it('归属表与 drawPriority 表与报告口径逐条一致（表被手滑改动即翻红）', () => {
         expect(TERRAIN_HOME_LAYER).toEqual({
+            [C.MACHINE_PRESSURE_PLATE_USED]: L.DUNGEON,
+            [C.TRAP_DOOR]: L.LIQUID,
+            [C.WALL_LEVER]: L.DUNGEON,
+            [C.WALL_LEVER_PULLED]: L.DUNGEON,
+            [C.MACHINE_TRIGGER_FLOOR_REPEATING]: L.LIQUID,
+
             // U17b CE Globals.c:474/425/493/332/429.
             [C.TRAMPLED_FOLIAGE]: L.SURFACE, [C.ACTIVE_BRIMSTONE]: L.LIQUID,
             [C.BRIMSTONE_FIRE]: L.SURFACE, [C.OPEN_IRON_DOOR_INERT]: L.DUNGEON, [C.BRIDGE_FALLING]: L.LIQUID,
@@ -380,6 +386,12 @@ describe('C-4a-0 归属层表（错误归属 → 具体后果翻红）', () => {
             [C.STENCH_SMOKE_GAS]: L.GAS,
         });
         expect(DRAW_PRIORITY).toEqual({
+            [C.MACHINE_PRESSURE_PLATE_USED]: 15,
+            [C.TRAP_DOOR]: 30,
+            [C.WALL_LEVER]: 0,
+            [C.WALL_LEVER_PULLED]: 0,
+            [C.MACHINE_TRIGGER_FLOOR_REPEATING]: 95,
+
             [C.TRAMPLED_FOLIAGE]: 60, [C.ACTIVE_BRIMSTONE]: 40,
             [C.BRIMSTONE_FIRE]: 10, [C.OPEN_IRON_DOOR_INERT]: 90, [C.BRIDGE_FALLING]: 45,
             [C.ITEM_FIRE]: 10, // CE Globals.c:498.

@@ -1,0 +1,18 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+20 !== 144
+
+    at file:///Users/coolking70/.codex/worktrees/c0d3/brogue/brogue-web/scripts/u17c-browser.mjs:38:315 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 20,
+  expected: 144,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v25.2.1

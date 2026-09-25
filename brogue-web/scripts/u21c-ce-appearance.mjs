@@ -23,7 +23,7 @@ const required = (condition, message) => { if (!condition) throw Error(message);
 const enumBody = gridSource.match(/export enum TerrainType\s*\{([\s\S]*?)\n\}/)?.[1];
 required(enumBody, 'TerrainType enum absent');
 const names = enumBody.replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, '').split(',').map(s => s.trim().replace(/\s*=.*$/, '')).filter(Boolean);
-required(names.length === 144 && new Set(names).size === names.length, `Unexpected TerrainType set: ${names.length}`);
+required(names.length === 149 && new Set(names).size === names.length, `Unexpected TerrainType set: ${names.length}`);
 
 const colors = new Map();
 for (const source of [ce, base]) {

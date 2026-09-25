@@ -203,6 +203,10 @@ describe('P1-42 A：searchForSecrets 对齐 CE Movement.c:2459-2489', () => {
         const trials = 15;
         for (let i = 0; i < trials; i++) {
             const game = craftGame(42500 + i);
+            // U17c: isolate the entire FOV, including newly searchable traps.
+            // Seed42511 has five visible natural trapdoors outside the old r=8
+            // fixture. Preserve all zero-roll and hidden-door assertions below.
+            craftRoom(game, 10);
             placeSecretDoor(game, CX + 5, CY);
             for (let y = CY - 3; y <= CY + 3; y++) placeWall(game, CX + 2, y); // 隔墙
             game.fov.computeFOV(CX, CY, 10);

@@ -296,14 +296,14 @@ describe('V-2b-4 B：八条祭坛族 DF 目录条目的 CE 逐字段钉死', () 
         const e = DUNGEON_FEATURE_CATALOG[DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING]!;
         expect(e.ceLine).toBe(799);
         expect(e.ceTile).toBe('MACHINE_TRIGGER_FLOOR_REPEATING');
-        expect(e.tile).toBeNull();
+        expect(e.tile).toBe(C.MACHINE_TRIGGER_FLOOR_REPEATING);
         expect(e.layer, 'CE 该行的 layer 列是 LIQUID（可重复触发的机器地板）').toBe(L.LIQUID);
         expect(e.startProbability).toBe(300);
         expect(e.probabilityDecrement).toBe(100);
         expect(e.flags).toBe(DFF_SUPERPRIORITY);
         expect(e.cePropagationTerrain, 'propTerrain 列 = CARPET').toBe('CARPET');
         expect(e.propagationTerrain).toBe(C.CARPET);
-        expect(DF_MISSING_TILES).toContain(DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING);
+        expect(DF_MISSING_TILES).not.toContain(DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING);
     });
 
     it('B6 DF_CAGE_DISAPPEARS（:812）：八条里**唯一带完整 tile** 的——tile = ALTAR_INERT = web TerrainType.ALTAR', () => {

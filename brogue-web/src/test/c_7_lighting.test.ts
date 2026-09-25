@@ -141,6 +141,12 @@ describe('C-7 光照目录（CE Globals.c:955-1020 逐值）', () => {
 describe('C-7 TerrainCatalog.glowLight 列（CE tileCatalog 第 10 列）', () => {
     /** web 全部 43 tile 的 CE glowLight 期望值（逐条核过 CE Globals.c:321-744）。 */
     const EXPECTED_GLOW: Record<TerrainType, number> = {
+        [TerrainType.MACHINE_PRESSURE_PLATE_USED]: 0, // CE U17c
+        [TerrainType.TRAP_DOOR]: 0, // CE U17c
+        [TerrainType.WALL_LEVER]: 0, // CE U17c
+        [TerrainType.WALL_LEVER_PULLED]: 0, // CE U17c
+        [TerrainType.MACHINE_TRIGGER_FLOOR_REPEATING]: 0, // CE U17c
+
         [TerrainType.TRAMPLED_FOLIAGE]: 0, [TerrainType.ACTIVE_BRIMSTONE]: 0,
         [TerrainType.BRIMSTONE_FIRE]: LightKind.BRIMSTONE_FIRE_LIGHT,
         [TerrainType.OPEN_IRON_DOOR_INERT]: 0, [TerrainType.BRIDGE_FALLING]: 0,

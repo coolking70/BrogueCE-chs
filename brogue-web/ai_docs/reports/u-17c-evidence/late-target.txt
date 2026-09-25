@@ -1,0 +1,219 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_17c_triggers.test.ts src/test/u_08_terrain_bolts.test.ts src/test/c_2_lakes_e2e.test.ts src/test/p1_30_i18n_gate.test.ts --maxWorkers=2 --reporter=default --reporter=json --outputFile.json=ai_docs/reports/u-17c-evidence/late-target.json
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/c0d3/brogue/brogue-web
+
+stdout | src/test/u_08_terrain_bolts.test.ts > U08 CE catalog and runtime qualification > SPIDERWEB rejects teammates, invulnerable, web immune and current entanglement without rolling
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/u_17c_triggers.test.ts > U17c real actions → final terrain / entity / solvability > 154 player step powers only same-number remote gate and leaves an inactive pressure plate
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_17c_triggers.test.ts (17 tests) 11165ms
+     ✓ 154 player step powers only same-number remote gate and leaves an inactive pressure plate  1003ms
+     ✓ 154 actual thrown weapon depresses a LIQUID plate, clears that layer and opens the linked cage  1180ms
+     ✓ 154 monster placement uses the shared contact; breaker blocks power but not the plate state  532ms
+     ✓ 17 manual search clears hidden base and surface, creates liquid hole + halo/flare, then confirmed player falls  669ms
+     ✓ 17 search has no forged discovery behind a wall; hidden trapdoor falls without confirmation and levitation prevents falling  1086ms
+     ✓ 95 searching then bumping wall lever leaves player in place, consumes a turn and opens a distant gate exactly once  1966ms
+     ✓ 95 upstream dormant wired lever can be created after a cached no-secret scan, then searched and pulled  1105ms
+     ✓ 144 carpet-constrained propagation remains invisible; player entry/wait repeatedly sends power, monsters and items do not  595ms
+     ✓ 144 resurrection consumer: empty altar can retry on the retained floor after an ally enters purgatory  610ms
+     ✓ 152 DF lays holes and each halo without evacuation; monster and floor items reuse the fall queues  1861ms
+   ✓ 152 CE22 whole blueprint builds the pit before the plate; actual throw opens its exit  547ms
+ ❯ src/test/u_08_terrain_bolts.test.ts (32 tests | 1 failed) 25297ms
+     ✓ DF 57 copies CE id/tile/spread and no unrelated flags 3ms
+     ✓ DF 58 copies CE id/tile/spread and no unrelated flags 0ms
+     ✓ DF 59 copies CE id/tile/spread and no unrelated flags 0ms
+     ✓ DF 60 copies CE id/tile/spread and no unrelated flags 0ms
+     × new closed terrain set: 139 DFs, no entity/spawn flags; web forbidden to learn, vines eligible 13ms
+     ✓ SPIDERWEB rejects teammates, invulnerable, web immune and current entanglement without rolling  979ms
+     ✓ ANCIENT_SPIRIT_VINES rejects teammates, invulnerable, web immune and current entanglement without rolling  1123ms
+     ✓ distinct forbidden flags: web rejects immobile/turret, vines rejects inanimate  515ms
+     ✓ real spider and dryad always cast, pay 400/100 ticks, and reject sleeping/hidden/blocked targets  2638ms
+     ✓ no target => no ticks/RNG; repeated web does not recast while occupied terrain holds  558ms
+     ✓ SPIDERWEB exactly reproduces pathDF once per reached cell then targetDF, including RNG  1479ms
+     ✓ ANCIENT_SPIRIT_VINES exactly reproduces pathDF once per reached cell then targetDF, including RNG  1070ms
+     ✓ SPIDERWEB hits intervening ally and stops; never reflects even from 100% undefined reflector  525ms
+     ✓ ANCIENT_SPIRIT_VINES hits intervening ally and stops; never reflects even from 100% undefined reflector  526ms
+     ✓ wall is reached, receives no surface, and stops travel; endpoint spread can fill adjacent legal cells  633ms
+     ✓ empty origin aim does not fabricate a landing or DF  568ms
+     ✓ origin is not a path step, but DF spread may reach it  499ms
+     ✓ vines immediately promote under player during fill, levitating=false  604ms
+     ✓ vines immediately promote under player during fill, levitating=true  588ms
+     ✓ refresh occurs during fill, not after it; nested grass fill cannot overwrite stronger vines  586ms
+     ✓ player walking and magical placement promote vines, monsters keep them  631ms
+     ✓ terrain 23 holds ordinary monster, immune spider walks, breaking preserves floor and water  867ms
+     ✓ terrain 135 holds ordinary monster, immune spider walks, breaking preserves floor and water  603ms
+     ✓ release clears only SURFACE even in a synthetic multi-layer entanglement  623ms
+     ✓ a manually installed learnable vines bolt executes for an ally without spending learning points  539ms
+     ✓ gradual vines damage once, bypass shield, hurt web-immune/flying, exempt inanimate/invulnerable  634ms
+     ✓ respiration also protects from vines and identifies; lethal monster damage uses ordinary cleanup  860ms
+     ✓ spontaneous promotion is <1000 out of 0..10000 and leaves non-promoting grass  578ms
+     ✓ terrain 23 burns to plain fire, with original base/liquid intact  1755ms
+     ✓ terrain 135 burns to plain fire, with original base/liquid intact  1659ms
+     ✓ terrain 136 burns to plain fire, with original base/liquid intact  964ms
+     ✓ current snapshot retains new terrain/occupancy, next contact promotes and no learning is installed  2671ms
+stdout | src/test/p1_30_i18n_gate.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/p1_30_i18n_gate.test.ts (16 tests) 19153ms
+     ✓ 3 个 seed × 400 回合：无漏键、日志无裸键串  19123ms
+ ❯ src/test/c_2_lakes_e2e.test.ts (6 tests | 6 failed) 50619ms
+     × 对抗 AD-B1：深度门槛实测——D1-3 无岩浆/硫矿/黑曜石；D4-16 无硫矿/黑曜石；D4+/D17+ 各自真的出现 6425ms
+     × 对抗 AD-B3：黑曜石只作为硫矿镶边出现（每格都在某硫矿的圆盘半径 2 内） 10301ms
+     × C-5 已反转（原留痕：深渊族地形恒 0——C-5 坠落落地后解除）：真实生成中出现深渊族，且干地连通合同不被深渊破坏 9225ms
+     × C-3 已落地：removeDiagonalOpenings 扫到收敛，斜向豁口恒为 0 8615ms
+     × 湖泊阶段合同：干地全连通 + cleanUpLakeBoundaries 幂等（真实关卡） 8083ms
+     × 实测统计（报告数据源）：四类液体随深度的分布 7968ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/c_2_lakes_e2e.test.ts > C-2 实测（15 种子 × D1-D26 真实生成） > 对抗 AD-B1：深度门槛实测——D1-3 无岩浆/硫矿/黑曜石；D4-16 无硫矿/黑曜石；D4+/D17+ 各自真的出现
+AssertionError: seed424242/D18：存在切比雪夫 2 格内无硫矿的黑曜石——镶边液体/宽度取错: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ getSweep src/test/c_2_lakes_e2e.test.ts:163:72
+    161|             }
+    162|             expect(obsidianOk,
+    163|                 `seed${seed}/D${depth}：存在切比雪夫 2 格内无硫矿的黑曜石——镶边液体/宽度取错`)…
+       |                                                                        ^
+    164|
+    165|             rows.push({
+ ❯ src/test/c_2_lakes_e2e.test.ts:198:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  src/test/c_2_lakes_e2e.test.ts > C-2 实测（15 种子 × D1-D26 真实生成） > 对抗 AD-B3：黑曜石只作为硫矿镶边出现（每格都在某硫矿的圆盘半径 2 内）
+AssertionError: seed424242/D18：存在切比雪夫 2 格内无硫矿的黑曜石——镶边液体/宽度取错: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ getSweep src/test/c_2_lakes_e2e.test.ts:163:72
+    161|             }
+    162|             expect(obsidianOk,
+    163|                 `seed${seed}/D${depth}：存在切比雪夫 2 格内无硫矿的黑曜石——镶边液体/宽度取错`)…
+       |                                                                        ^
+    164|
+    165|             rows.push({
+ ❯ src/test/c_2_lakes_e2e.test.ts:217:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  src/test/c_2_lakes_e2e.test.ts > C-2 实测（15 种子 × D1-D26 真实生成） > C-5 已反转（原留痕：深渊族地形恒 0——C-5 坠落落地后解除）：真实生成中出现深渊族，且干地连通合同不被深渊破坏
+AssertionError: seed424242/D18：存在切比雪夫 2 格内无硫矿的黑曜石——镶边液体/宽度取错: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ getSweep src/test/c_2_lakes_e2e.test.ts:163:72
+    161|             }
+    162|             expect(obsidianOk,
+    163|                 `seed${seed}/D${depth}：存在切比雪夫 2 格内无硫矿的黑曜石——镶边液体/宽度取错`)…
+       |                                                                        ^
+    164|
+    165|             rows.push({
+ ❯ src/test/c_2_lakes_e2e.test.ts:230:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  src/test/c_2_lakes_e2e.test.ts > C-2 实测（15 种子 × D1-D26 真实生成） > C-3 已落地：removeDiagonalOpenings 扫到收敛，斜向豁口恒为 0
+AssertionError: seed424242/D18：存在切比雪夫 2 格内无硫矿的黑曜石——镶边液体/宽度取错: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ getSweep src/test/c_2_lakes_e2e.test.ts:163:72
+    161|             }
+    162|             expect(obsidianOk,
+    163|                 `seed${seed}/D${depth}：存在切比雪夫 2 格内无硫矿的黑曜石——镶边液体/宽度取错`)…
+       |                                                                        ^
+    164|
+    165|             rows.push({
+ ❯ src/test/c_2_lakes_e2e.test.ts:242:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  src/test/c_2_lakes_e2e.test.ts > C-2 实测（15 种子 × D1-D26 真实生成） > 湖泊阶段合同：干地全连通 + cleanUpLakeBoundaries 幂等（真实关卡）
+AssertionError: seed424242/D18：存在切比雪夫 2 格内无硫矿的黑曜石——镶边液体/宽度取错: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ getSweep src/test/c_2_lakes_e2e.test.ts:163:72
+    161|             }
+    162|             expect(obsidianOk,
+    163|                 `seed${seed}/D${depth}：存在切比雪夫 2 格内无硫矿的黑曜石——镶边液体/宽度取错`)…
+       |                                                                        ^
+    164|
+    165|             rows.push({
+ ❯ src/test/c_2_lakes_e2e.test.ts:251:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  src/test/c_2_lakes_e2e.test.ts > C-2 实测（15 种子 × D1-D26 真实生成） > 实测统计（报告数据源）：四类液体随深度的分布
+AssertionError: seed424242/D18：存在切比雪夫 2 格内无硫矿的黑曜石——镶边液体/宽度取错: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ getSweep src/test/c_2_lakes_e2e.test.ts:163:72
+    161|             }
+    162|             expect(obsidianOk,
+    163|                 `seed${seed}/D${depth}：存在切比雪夫 2 格内无硫矿的黑曜石——镶边液体/宽度取错`)…
+       |                                                                        ^
+    164|
+    165|             rows.push({
+ ❯ src/test/c_2_lakes_e2e.test.ts:261:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  src/test/u_08_terrain_bolts.test.ts > U08 CE catalog and runtime qualification > new closed terrain set: 139 DFs, no entity/spawn flags; web forbidden to learn, vines eligible
+AssertionError: expected [ Array(140) ] to have a length of 139 but got 140
+
+- Expected
++ Received
+
+- 139
++ 140
+
+ ❯ src/test/u_08_terrain_bolts.test.ts:49:79
+     47|     it('new closed terrain set: 139 DFs, no entity/spawn flags; web fo…
+     48|         // U17a adds only burnItem's DF_ITEM_FIRE (110); retain the U0…
+     49|         expect(Object.keys(DFC).filter(k=>Number(k)!==110 && Number(k)…
+       |                                                                               ^
+     50|         expect(BC[B.SPIDERWEB]).toMatchObject({effect:E.NONE,pathDF:'D…
+     51|         expect(BC[B.ANCIENT_SPIRIT_VINES]).toMatchObject({effect:E.NON…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
+
+ Test Files  2 failed | 2 passed (4)
+      Tests  7 failed | 64 passed (71)
+   Start at  23:02:17
+   Duration  65.27s (transform 1.88s, setup 0ms, import 8.11s, tests 106.23s, environment 2ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/c0d3/brogue/brogue-web/ai_docs/reports/u-17c-evidence/late-target.json

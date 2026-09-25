@@ -9,7 +9,8 @@
  *   机器/陷阱/楼梯之前的阶段）——液体组成以这一阶段为准。
  * - 15 种子同 P1-26/P1-29/P1-33。
  */
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
+import * as lakes from '../engine/Map/LakeSystem';
 import { Architect } from '../engine/Generator/Architect';
 import { terrainAllowsMove, DIRS8 } from '../engine/Map/Connectivity';
 import { cleanUpLakeBoundaries } from '../engine/Map/LakeSystem';
@@ -127,7 +128,33 @@ function getSweep(): LevelStats[] {
         rng.seedRandomGenerator(seed);
         const arch = new Architect();
         for (let depth = 1; depth <= MAX_DEPTH; depth++) {
-            const g = arch.generateTerrain(depth);
+            // U17c: observe the actual fillLakes boundary. Later CE
+            // DF_CRYSTAL_WALL (DFF_CLEAR_OTHER_TERRAIN) may erase brimstone:
+            // seed424242/D18 (21..23,23), recorded in lake-probe.json.
+            // Keep the exact radius-2 assertion before that independent writer;
+            // execute all autogenerators and remaining topology checks normally.
+            const fillLakes = lakes.fillLakes;
+            let observed = false;
+            const lakeBoundary = vi.spyOn(lakes, 'fillLakes').mockImplementation((...args) => {
+                fillLakes(...args);
+                const g = args[0];
+                observed = true;
+                // 黑曜石只随硫矿（对每格校验，越界格由 getCell 返回 null 自然排除）
+                let obsidianOk = true;
+                for (let x = 0; x < g.width; x++) {
+                    for (let y = 0; y < g.height; y++) {
+                        if (g.getCell(x, y)?.terrain === TerrainType.OBSIDIAN && !obsidianNearBrimstone(g, x, y)) {
+                            obsidianOk = false;
+                        }
+                    }
+                }
+                expect(obsidianOk,
+                    `seed${seed}/D${depth}：存在切比雪夫 2 格内无硫矿的黑曜石——镶边液体/宽度取错`).toBe(true);
+            });
+            let g: Grid;
+            try { g = arch.generateTerrain(depth); }
+            finally { lakeBoundary.mockRestore(); }
+            expect(observed, 'real fillLakes boundary must be observed').toBe(true);
 
             // 湖泊阶段连通性合同（P1-29 语义：terrainAllowsMove 口径 8 向一块）
             const { cells, first } = collectDry(g);
@@ -150,17 +177,6 @@ function getSweep(): LevelStats[] {
                 }
             }
 
-            // 黑曜石只随硫矿（对每格校验，越界格由 getCell 返回 null 自然排除）
-            let obsidianOk = true;
-            for (let x = 0; x < g.width; x++) {
-                for (let y = 0; y < g.height; y++) {
-                    if (g.getCell(x, y)?.terrain === TerrainType.OBSIDIAN && !obsidianNearBrimstone(g, x, y)) {
-                        obsidianOk = false;
-                    }
-                }
-            }
-            expect(obsidianOk,
-                `seed${seed}/D${depth}：存在切比雪夫 2 格内无硫矿的黑曜石——镶边液体/宽度取错`).toBe(true);
 
             rows.push({
                 seed, depth, fp: terrainFingerprint(g),

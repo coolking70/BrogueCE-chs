@@ -244,9 +244,9 @@ describe('V-2b-3 A：载体地形逐字段 ≡ CE Globals.c（对抗：抄错任
         // DF_STATUE_SHATTER / DF_LUMINESCENT_FUNGUS 五条接上真 tile 摘出；
         // 22 条新条目里 web 无 tile 的七条入列。逐条见 DungeonFeatureCatalog
         // 的 V-2b-7 块注。
-        expect(DF_MISSING_TILES).toHaveLength(25); // U17b: exactly five first-family carriers restored; the other 25 stay missing.
-        for (const d of [DF.DF_REVEAL_LEVER,
-            DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY]) {
+        expect(DF_MISSING_TILES).toHaveLength(20); // U17c: five more carriers restored; the other 20 stay missing.
+        expect(DF_MISSING_TILES).not.toContain(DF.DF_REVEAL_LEVER); // U17c closure
+        for (const d of [DF.DF_REVEAL_PARALYSIS_VENT_SILENTLY]) {
             expect(DF_MISSING_TILES, `DF[${d}] 应在缺 tile 登记`).toContain(d);
         }
         // ★ V-2b-7 反转（与下方 DF_OPEN_PORTCULLIS 同款）：DF_WALL_SHATTER 的
@@ -275,11 +275,10 @@ describe('V-2b-3 A：载体地形逐字段 ≡ CE Globals.c（对抗：抄错任
         // ★ V-2b-7：其中 DF_LUMINESCENT_FUNGUS 与 DF_STATUE_SHATTER 两条的
         // tile（LUMINESCENT_FUNGUS / RUBBLE）本轮落地 → 从本清单摘出。
         for (const d of [DF.DF_ITEM_CAGE_CLOSE,
-            DF.DF_ALTAR_COMMUTE, DF.DF_MAGIC_PIPING, DF.DF_ALTAR_RESURRECT,
-            DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING]) {
+            DF.DF_ALTAR_COMMUTE, DF.DF_MAGIC_PIPING, DF.DF_ALTAR_RESURRECT]) {
             expect(DF_MISSING_TILES, `DF[${d}] 应在缺 tile 登记`).toContain(d);
         }
-        for (const d of [DF.DF_LUMINESCENT_FUNGUS, DF.DF_STATUE_SHATTER]) {
+        for (const d of [DF.DF_LUMINESCENT_FUNGUS, DF.DF_STATUE_SHATTER, DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING]) {
             expect(DF_MISSING_TILES, `DF[${d}] 的 tile 已落地，不得留在名单里`).not.toContain(d);
         }
     });

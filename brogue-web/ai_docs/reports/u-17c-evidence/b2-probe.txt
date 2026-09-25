@@ -1,0 +1,57 @@
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-b2-XKeVfH
+
+stdout | src/test/b2_transcription.test.ts > B2 production census > observes committed CE71 machines and their actual occupants on 34 seed × D1–D26
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/b2_transcription.test.ts (21 tests | 1 failed | 20 skipped) 365788ms
+     × observes committed CE71 machines and their actual occupants on 34 seed × D1–D26 365787ms
+     ↓ CE 31/F1 has personalSpace 5
+     ↓ CE 39/F0 has personalSpace 2
+     ↓ CE 44/F3 has personalSpace 2
+     ↓ CE 40/F0 has personalSpace 2
+     ↓ CE 40/F1 has personalSpace 2
+     ↓ CE 40/F2 has personalSpace 2
+     ↓ CE 40/F3 has personalSpace 2
+     ↓ CE 40/F4 has personalSpace 2
+     ↓ retains CE40 F5/F6=1 and fills CE31 hallway flag, CE10 weight, CE71 exact monster id
+     ↓ CE55 MAXIMIZE is present while its preexisting engine quarantine remains effective
+     ↓ CE 6/F2 keeps the registered missing-tile DF 141 disconnected
+     ↓ CE 7/F2 keeps the registered missing-tile DF 144 disconnected
+     ↓ CE 22/F0 keeps the registered missing-tile DF 152 disconnected
+     ↓ CE 28/F1 keeps the registered missing-tile DF 152 disconnected
+     ↓ CE15 fungus follows tile, promote/fire, propagation and subsequentDF edges without deferred promotion
+     ↓ CE 16/F0 layer contract and actual production carrier are distinguished
+     ↓ CE 17/F0 layer contract and actual production carrier are distinguished
+     ↓ CE 27/F0 layer contract and actual production carrier are distinguished
+     ↓ CE 27/F1 layer contract and actual production carrier are distinguished
+     ↓ the same CE71 machine realizes zero sentinels with the old id, and three living grid occupants with the real id
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/b2_transcription.test.ts > B2 production census > observes committed CE71 machines and their actual occupants on 34 seed × D1–D26
+AssertionError: expected 68 to be 72 // Object.is equality
+
+- Expected
++ Received
+
+- 72
++ 68
+
+ ❯ src/test/b2_transcription.test.ts:91:55
+     89|                                 // Keep the living sentinel/home/three…
+     90|                                 // checks above; require the exact com…
+     91|                                 expect(spawn.terrain).toBe(C.WALL_MONS…
+       |                                                       ^
+     92|                                 const ownerIndex = call[3].findIndex(m…
+     93|                                 const later = call[3].slice(ownerIndex…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 20 skipped (21)
+   Start at  23:12:59
+   Duration  368.12s (transform 1.14s, setup 0ms, import 2.10s, tests 365.79s, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/c0d3/brogue/brogue-web/ai_docs/reports/u-17c-evidence/b2-probe.json

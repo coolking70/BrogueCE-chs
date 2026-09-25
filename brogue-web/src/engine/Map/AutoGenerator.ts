@@ -342,12 +342,12 @@ export const AUTO_GENERATOR_CATALOG: readonly AutoGeneratorEntry[] = [
         note: '隐藏态 tile 无。',
     },
     {
-        ceLine: 143, index: 25, terrain: null, ceTerrain: 'TRAP_DOOR', layer: DUNGEON,
+        ceLine: 143, index: 25, terrain: TerrainType.TRAP_DOOR_HIDDEN, ceTerrain: 'TRAP_DOOR_HIDDEN', layer: DUNGEON,
         df: null, ceDf: '0', ceDfId: 0, machine: 0, ceMachine: '0',
         requiredDungeonFoundationType: FLOOR, requiredLiquidFoundationType: NOTHING,
         minDepth: 9, maxDepth: 39, frequency: 20, minNumberIntercept: 100, minNumberSlope: 0, maxNumber: 2,
-        carrier: 'no-tile',
-        note: 'TRAP_DOOR_HIDDEN tile 无（坠层陷阱；坠落子系统 C-5 已收口，但 tile 不在——激活轮属接 DF/地形链，不属 C-5）。',
+        carrier: 'wired',
+        note: 'U17c: CE hidden trapdoor; search → DF_SHOW_TRAPDOOR and existing fall consumers.',
     },
     {
         ceLine: 144, index: 26, terrain: null, ceTerrain: 'GAS_TRAP_CONFUSION_HIDDEN', layer: DUNGEON,

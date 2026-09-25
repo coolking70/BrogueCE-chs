@@ -1,0 +1,1395 @@
+[
+  {
+    "seed": 424242,
+    "depth": 9,
+    "x": 13,
+    "y": 16,
+    "layers": [
+      "MUD_FLOOR",
+      "WATER_SHALLOW",
+      "NOTHING",
+      "NOTHING"
+    ],
+    "machineNumber": 1,
+    "error": "AssertionError: expected \"seed=424242 D9 (13,16) 两层组合 0:106 1:6 不属于任何已知合法形态\" not to be reached",
+    "observed": [
+      "MUD_FLOOR",
+      "WATER_SHALLOW",
+      "NOTHING",
+      "NOTHING"
+    ],
+    "writes": [
+      {
+        "method": "setTerrain",
+        "x": 13,
+        "y": 16,
+        "args": [
+          1,
+          " ",
+          3355443
+        ],
+        "before": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32342:19)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32410:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)",
+          "    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:654:26)"
+        ]
+      },
+      {
+        "method": "setTerrain",
+        "x": 13,
+        "y": 16,
+        "args": [
+          2,
+          ".",
+          8947848
+        ],
+        "before": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.translateWorkGridToTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32397:21)",
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32354:10)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32410:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)"
+        ]
+      },
+      {
+        "method": "setTerrain",
+        "x": 13,
+        "y": 16,
+        "args": [
+          6,
+          "~",
+          3368652
+        ],
+        "before": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.designEnvironmentOvelays (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32771:31)",
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32362:10)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32410:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 13,
+        "y": 16,
+        "args": [
+          3,
+          0
+        ],
+        "before": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.redesignInterior (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32314:19)",
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31289:32)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31003:27)",
+          "    at BlueprintEngine.buildMachines (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:30914:26)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32416:36)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 13,
+        "y": 16,
+        "args": [
+          2,
+          0
+        ],
+        "before": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.redesignInterior (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32315:19)",
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31289:32)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31003:27)",
+          "    at BlueprintEngine.buildMachines (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:30914:26)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32416:36)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 13,
+        "y": 16,
+        "args": [
+          0,
+          2
+        ],
+        "before": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "FLOOR",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.redesignInterior (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32321:19)",
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31289:32)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31003:27)",
+          "    at BlueprintEngine.buildMachines (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:30914:26)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32416:36)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 13,
+        "y": 16,
+        "args": [
+          0,
+          106
+        ],
+        "before": [
+          "FLOOR",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "MUD_FLOOR",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31438:29)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31003:27)",
+          "    at BlueprintEngine.buildMachines (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:30914:26)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32416:36)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7"
+        ]
+      }
+    ]
+  },
+  {
+    "seed": 424242,
+    "depth": 9,
+    "x": 13,
+    "y": 15,
+    "layers": [
+      "MUD_WALL",
+      "WATER_SHALLOW",
+      "NOTHING",
+      "NOTHING"
+    ],
+    "machineNumber": 1,
+    "error": "AssertionError: expected \"seed=424242 D9 (13,15) 两层组合 0:107 1:6 不属于任何已知合法形态\" not to be reached",
+    "observed": [
+      "MUD_WALL",
+      "WATER_SHALLOW",
+      "NOTHING",
+      "NOTHING"
+    ],
+    "writes": [
+      {
+        "method": "setTerrain",
+        "x": 13,
+        "y": 15,
+        "args": [
+          1,
+          " ",
+          3355443
+        ],
+        "before": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32342:19)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32410:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)",
+          "    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:654:26)"
+        ]
+      },
+      {
+        "method": "setTerrain",
+        "x": 13,
+        "y": 15,
+        "args": [
+          2,
+          ".",
+          8947848
+        ],
+        "before": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.translateWorkGridToTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32397:21)",
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32354:10)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32410:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)"
+        ]
+      },
+      {
+        "method": "setTerrain",
+        "x": 13,
+        "y": 15,
+        "args": [
+          6,
+          "~",
+          3368652
+        ],
+        "before": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.designEnvironmentOvelays (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32771:31)",
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32362:10)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32410:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 13,
+        "y": 15,
+        "args": [
+          3,
+          0
+        ],
+        "before": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.redesignInterior (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32314:19)",
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31289:32)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31003:27)",
+          "    at BlueprintEngine.buildMachines (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:30914:26)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32416:36)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 13,
+        "y": 15,
+        "args": [
+          2,
+          0
+        ],
+        "before": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.redesignInterior (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32315:19)",
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31289:32)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31003:27)",
+          "    at BlueprintEngine.buildMachines (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:30914:26)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32416:36)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 13,
+        "y": 15,
+        "args": [
+          0,
+          1
+        ],
+        "before": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "GRANITE",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.redesignInterior (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32318:19)",
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31289:32)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31003:27)",
+          "    at BlueprintEngine.buildMachines (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:30914:26)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32416:36)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 13,
+        "y": 15,
+        "args": [
+          0,
+          107
+        ],
+        "before": [
+          "GRANITE",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "MUD_WALL",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31438:29)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31003:27)",
+          "    at BlueprintEngine.buildMachines (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:30914:26)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32416:36)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7"
+        ]
+      }
+    ]
+  },
+  {
+    "seed": 424242,
+    "depth": 9,
+    "x": 10,
+    "y": 22,
+    "layers": [
+      "MUD_FLOOR",
+      "WATER_SHALLOW",
+      "NOTHING",
+      "GRASS"
+    ],
+    "machineNumber": 1,
+    "error": "AssertionError: expected 106 to be 2 // Object.is equality",
+    "observed": [
+      "MUD_FLOOR",
+      "WATER_SHALLOW",
+      "NOTHING",
+      "GRASS"
+    ],
+    "writes": [
+      {
+        "method": "setTerrain",
+        "x": 10,
+        "y": 22,
+        "args": [
+          1,
+          " ",
+          3355443
+        ],
+        "before": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32342:19)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32410:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)",
+          "    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:654:26)"
+        ]
+      },
+      {
+        "method": "setTerrain",
+        "x": 10,
+        "y": 22,
+        "args": [
+          2,
+          ".",
+          8947848
+        ],
+        "before": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.translateWorkGridToTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32397:21)",
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32354:10)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32410:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)"
+        ]
+      },
+      {
+        "method": "setTerrain",
+        "x": 10,
+        "y": 22,
+        "args": [
+          6,
+          "~",
+          3368652
+        ],
+        "before": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.designEnvironmentOvelays (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32771:31)",
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32362:10)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32410:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 10,
+        "y": 22,
+        "args": [
+          3,
+          0
+        ],
+        "before": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.redesignInterior (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32314:19)",
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31289:32)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31003:27)",
+          "    at BlueprintEngine.buildMachines (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:30914:26)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32416:36)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 10,
+        "y": 22,
+        "args": [
+          2,
+          0
+        ],
+        "before": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.redesignInterior (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32315:19)",
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31289:32)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31003:27)",
+          "    at BlueprintEngine.buildMachines (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:30914:26)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32416:36)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 10,
+        "y": 22,
+        "args": [
+          0,
+          2
+        ],
+        "before": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "FLOOR",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.redesignInterior (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32321:19)",
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31289:32)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31003:27)",
+          "    at BlueprintEngine.buildMachines (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:30914:26)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32416:36)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 10,
+        "y": 22,
+        "args": [
+          0,
+          106
+        ],
+        "before": [
+          "FLOOR",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "MUD_FLOOR",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31438:29)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31003:27)",
+          "    at BlueprintEngine.buildMachines (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:30914:26)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32416:36)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 10,
+        "y": 22,
+        "args": [
+          3,
+          10
+        ],
+        "before": [
+          "MUD_FLOOR",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "MUD_FLOOR",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "GRASS"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:13025:14)",
+          "    at executeDungeonFeature (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:13355:22)",
+          "    at spawnDungeonFeature (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:13289:20)",
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31415:32)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31003:27)",
+          "    at BlueprintEngine.buildMachines (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:30914:26)"
+        ]
+      }
+    ]
+  },
+  {
+    "seed": 424242,
+    "depth": 9,
+    "x": 12,
+    "y": 11,
+    "layers": [
+      "MUD_FLOOR",
+      "WATER_SHALLOW",
+      "NOTHING",
+      "BONES"
+    ],
+    "machineNumber": 1,
+    "error": "AssertionError: expected 106 to be 2 // Object.is equality",
+    "observed": [
+      "MUD_FLOOR",
+      "WATER_SHALLOW",
+      "NOTHING",
+      "BONES"
+    ],
+    "writes": [
+      {
+        "method": "setTerrain",
+        "x": 12,
+        "y": 11,
+        "args": [
+          1,
+          " ",
+          3355443
+        ],
+        "before": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32342:19)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32410:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)",
+          "    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:654:26)"
+        ]
+      },
+      {
+        "method": "setTerrain",
+        "x": 12,
+        "y": 11,
+        "args": [
+          2,
+          ".",
+          8947848
+        ],
+        "before": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.translateWorkGridToTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32397:21)",
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32354:10)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32410:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)"
+        ]
+      },
+      {
+        "method": "setTerrain",
+        "x": 12,
+        "y": 11,
+        "args": [
+          6,
+          "~",
+          3368652
+        ],
+        "before": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.designEnvironmentOvelays (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32771:31)",
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32362:10)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32410:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 12,
+        "y": 11,
+        "args": [
+          3,
+          0
+        ],
+        "before": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.redesignInterior (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32314:19)",
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31289:32)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31003:27)",
+          "    at BlueprintEngine.buildMachines (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:30914:26)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32416:36)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 12,
+        "y": 11,
+        "args": [
+          2,
+          0
+        ],
+        "before": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.redesignInterior (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32315:19)",
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31289:32)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31003:27)",
+          "    at BlueprintEngine.buildMachines (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:30914:26)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32416:36)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 12,
+        "y": 11,
+        "args": [
+          0,
+          2
+        ],
+        "before": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "FLOOR",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.redesignInterior (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32321:19)",
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31289:32)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31003:27)",
+          "    at BlueprintEngine.buildMachines (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:30914:26)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32416:36)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 12,
+        "y": 11,
+        "args": [
+          0,
+          106
+        ],
+        "before": [
+          "FLOOR",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "MUD_FLOOR",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31438:29)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31003:27)",
+          "    at BlueprintEngine.buildMachines (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:30914:26)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32416:36)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 12,
+        "y": 11,
+        "args": [
+          3,
+          81
+        ],
+        "before": [
+          "MUD_FLOOR",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "MUD_FLOOR",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "BONES"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:13025:14)",
+          "    at executeDungeonFeature (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:13355:22)",
+          "    at spawnDungeonFeature (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:13289:20)",
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31415:32)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31003:27)",
+          "    at BlueprintEngine.buildMachines (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:30914:26)"
+        ]
+      }
+    ]
+  },
+  {
+    "seed": 424242,
+    "depth": 9,
+    "x": 27,
+    "y": 24,
+    "layers": [
+      "FLOOR_FLOODABLE",
+      "WATER_SHALLOW",
+      "NOTHING",
+      "NOTHING"
+    ],
+    "machineNumber": 6,
+    "error": "AssertionError: expected \"seed=424242 D9 (27,24) 两层组合 0:103 1:6 不属于任何已知合法形态\" not to be reached",
+    "observed": [
+      "FLOOR_FLOODABLE",
+      "WATER_SHALLOW",
+      "NOTHING",
+      "NOTHING"
+    ],
+    "writes": [
+      {
+        "method": "setTerrain",
+        "x": 27,
+        "y": 24,
+        "args": [
+          1,
+          " ",
+          3355443
+        ],
+        "before": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32342:19)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32410:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)",
+          "    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:654:26)"
+        ]
+      },
+      {
+        "method": "setTerrain",
+        "x": 27,
+        "y": 24,
+        "args": [
+          2,
+          ".",
+          8947848
+        ],
+        "before": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.translateWorkGridToTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32397:21)",
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32354:10)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32410:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)"
+        ]
+      },
+      {
+        "method": "setTerrain",
+        "x": 27,
+        "y": 24,
+        "args": [
+          6,
+          "~",
+          3368652
+        ],
+        "before": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.designEnvironmentOvelays (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32771:31)",
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32362:10)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32410:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 27,
+        "y": 24,
+        "args": [
+          0,
+          103
+        ],
+        "before": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "FLOOR_FLOODABLE",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31438:29)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31003:27)",
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31515:36)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31003:27)",
+          "    at BlueprintEngine.buildMachines (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:30914:26)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32416:36)"
+        ]
+      }
+    ]
+  },
+  {
+    "seed": 424242,
+    "depth": 9,
+    "x": 24,
+    "y": 10,
+    "layers": [
+      "NOTHING",
+      "WATER_SHALLOW",
+      "NOTHING",
+      "ASH"
+    ],
+    "machineNumber": 0,
+    "error": "AssertionError: seed=424242 D9 (24,10) 两层格的 SURFACE 属未知来源: expected [ Array(13) ] to include 33",
+    "observed": [
+      "NOTHING",
+      "WATER_SHALLOW",
+      "NOTHING",
+      "ASH"
+    ],
+    "writes": [
+      {
+        "method": "setTerrain",
+        "x": 24,
+        "y": 10,
+        "args": [
+          1,
+          " ",
+          3355443
+        ],
+        "before": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32342:19)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32410:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)",
+          "    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:654:26)"
+        ]
+      },
+      {
+        "method": "setTerrain",
+        "x": 24,
+        "y": 10,
+        "args": [
+          2,
+          ".",
+          8947848
+        ],
+        "before": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.translateWorkGridToTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32397:21)",
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32354:10)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32410:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)"
+        ]
+      },
+      {
+        "method": "setTerrain",
+        "x": 24,
+        "y": 10,
+        "args": [
+          6,
+          "~",
+          3368652
+        ],
+        "before": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.designEnvironmentOvelays (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32771:31)",
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32362:10)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32410:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 24,
+        "y": 10,
+        "args": [
+          3,
+          33
+        ],
+        "before": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "NOTHING",
+          "WATER_SHALLOW",
+          "NOTHING",
+          "ASH"
+        ],
+        "stack": [
+          "    at fillSpawnMap (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:13025:14)",
+          "    at executeDungeonFeature (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:13355:22)",
+          "    at spawnDungeonFeature (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:13289:20)",
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31415:32)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31003:27)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32424:30"
+        ]
+      }
+    ]
+  },
+  {
+    "seed": 424242,
+    "depth": 9,
+    "x": 31,
+    "y": 20,
+    "layers": [
+      "FLOOR_FLOODABLE",
+      "NOTHING",
+      "NOTHING",
+      "FOLIAGE"
+    ],
+    "machineNumber": 6,
+    "error": "AssertionError: seed=424242 D9 (31,20) 两层组合 0:103 3:11 不满足 CE 优先级门: expected false to be true // Object.is equality",
+    "observed": [
+      "FLOOR_FLOODABLE",
+      "NOTHING",
+      "NOTHING",
+      "FOLIAGE"
+    ],
+    "writes": [
+      {
+        "method": "setTerrain",
+        "x": 31,
+        "y": 20,
+        "args": [
+          1,
+          " ",
+          3355443
+        ],
+        "before": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32342:19)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32410:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)",
+          "    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:654:26)"
+        ]
+      },
+      {
+        "method": "setTerrain",
+        "x": 31,
+        "y": 20,
+        "args": [
+          2,
+          ".",
+          8947848
+        ],
+        "before": [
+          "GRANITE",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "stack": [
+          "    at _Architect.translateWorkGridToTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32397:21)",
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32354:10)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32410:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)"
+        ]
+      },
+      {
+        "method": "setTerrain",
+        "x": 31,
+        "y": 20,
+        "args": [
+          11,
+          "♠",
+          2263074
+        ],
+        "before": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "after": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "stack": [
+          "    at _Architect.designEnvironmentOvelays (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32771:31)",
+          "    at _Architect.generateTerrain (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32362:10)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32410:10)",
+          "    at _Game.generateDepth (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:37704:33)",
+          "    at file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:46100:7",
+          "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)"
+        ]
+      },
+      {
+        "method": "setTerrainLayer",
+        "x": 31,
+        "y": 20,
+        "args": [
+          0,
+          103
+        ],
+        "before": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "after": [
+          "FLOOR_FLOODABLE",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "stack": [
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31438:29)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31003:27)",
+          "    at BlueprintEngine.applyBlueprint (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31515:36)",
+          "    at BlueprintEngine.buildAMachine (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:31003:27)",
+          "    at BlueprintEngine.buildMachines (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:30914:26)",
+          "    at _Architect.generateLevel (file:///private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-layer-trace-i0ZiHV/trace.mjs:32416:36)"
+        ]
+      }
+    ]
+  }
+]

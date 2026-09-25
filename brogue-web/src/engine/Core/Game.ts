@@ -66,6 +66,8 @@ import { ScentMap, obstructsScent } from '../Map/Scent';
 import { buildSafetyMap, allocShortGrid, SAFETY_MAX_DISTANCE } from '../Map/SafetyMap';
 import { analyzeLoopMap, emptyLoopMap } from '../Map/LoopMap';
 import {
+    discoverTerrain,
+    promoteOnPlayerBump,
     promoteOnItemPickup,
     promoteOnItemPlaced,
     promoteOnStep,
@@ -3467,6 +3469,20 @@ export class Game {
                 // 判断与移动分支照常执行）。
                 if (this.player.seized && !this.findLiveSeizer()) {
                     this.player.seized = false;
+                }
+
+                // CE Movement.c:1147-1161: bump the first obstructing
+                // PLAYER_ENTRY layer without moving into the wall.
+                if ((!blockingMonster || blockingMonster.isAlly || !this.canObserveBoltTarget(blockingMonster))
+                    && promoteOnPlayerBump(this.grid, newX, newY, () => {
+                        if (this.grid.getCell(newX, newY)?.layers.includes(TerrainType.WALL_LEVER)) {
+                            logger.log(i18next.t('machine.lever_pulled', { defaultValue: 'The lever moves.' }), '#cccccc');
+                        }
+                    })) {
+                    this.needsRender = true;
+                    timeSystem.currentTick += this.player.movementSpeed;
+                    this.playerTurnEnded();
+                    return;
                 }
 
                 // P4-7：CE Movement.c:1175-1186 —— 移动未被阻挡时（目标格可通行，
@@ -7697,7 +7713,9 @@ export class Game {
         const cell = this.grid.getCell(px, py);
         if (cell?.layers.includes(TerrainType.CHASM)) {
             logger.log(i18next.t('fall.flavor_chasm', { defaultValue: 'You plunge downward into the chasm!' }), '#ff8844');
-        } else if (cell?.layers.includes(TerrainType.HOLE)) {
+        } else if (cell?.layers.includes(TerrainType.TRAP_DOOR_HIDDEN)) {
+            logger.log(i18next.t('fall.flavor_trapdoor', { defaultValue: 'You plunge through a hidden trap door!' }), '#ff8844');
+        } else if (cell?.layers.includes(TerrainType.HOLE) || cell?.layers.includes(TerrainType.TRAP_DOOR)) {
             logger.log(i18next.t('fall.flavor_hole', { defaultValue: 'You plunge downward into the hole!' }), '#ff8844');
         } else {
             logger.log(i18next.t('fall.plunge', { defaultValue: 'You plunge downward!' }), '#ff8844');
@@ -8463,7 +8481,7 @@ export class Game {
         // 开门被同一回合的环境晋升立即回弹——门西侧的气味（updateScent 的
         // T_OBSTRUCTS_SCENT 掩码穿不过关着的门）因此比 CE 少刷新一轮。此处按
         // CE 顺序补踩门晋升；promoteTile 本体无 RNG（Promotion.ts），不移流。
-        const playerStepPromotions = promoteOnStep(this.grid, this.player.loc.x, this.player.loc.y);
+        const playerStepPromotions = promoteLayersWithMechFlag(this.grid, this.player.x, this.player.y, TM_PROMOTES_ON_CREATURE | TM_PROMOTES_ON_PLAYER_ENTRY);
         if (playerStepPromotions.length > 0) {
             this.lastPromotionUpdate!.promotions.push(...playerStepPromotions);
             if (playerStepPromotions.some((r) => r.mutated)) this.needsRender = true;
@@ -9775,6 +9793,7 @@ export class Game {
 
     private refreshDungeonFeatureCell(pos: Pos): void {
         const cell = this.grid.getCell(pos.x, pos.y);
+        if (cell?.layers.includes(TerrainType.WALL_LEVER_HIDDEN)) this.secretScanDepth = -1;
         if (cell?.isVisible) {
             cell.isExplored = true; cell.hasMemory = true;
             cell.rememberedTerrain = cell.terrain;
@@ -10310,15 +10329,9 @@ export class Game {
         //   1. 每步低强度自动搜索（playerTurnEnded，CE Time.c:2544-2549）；
         //   2. 主动搜索命令（handlePlayerAction 'search'，CE Time.c:2395-2430）。
 
-        // C-4c：TM_PROMOTES_ON_STEP 的玩家侧触发（CE Time.c:278-288
-        // pressurePlate 的 ON_CREATURE 分支；玩家入场即 ON_CREATURE）。
-        // 放在既有特化处理之后：PRESSURE_PLATE 已被 web 自己的
-        // triggerPressurePlate 写成 FLOOR，这里的逐层扫描自然不会再看见它
-        // （web 板语义吸收了 CE 的板晋升）；DOOR 在上方无分支，从这里走
-        // CE 链（vanish→DF_OPEN_DOOR）真正开门。
-        if (cell.layers.includes(TerrainType.ANCIENT_SPIRIT_VINES)) {
-            promoteLayersWithMechFlag(this.grid, this.player.x, this.player.y, TM_PROMOTES_ON_PLAYER_ENTRY);
-        }
+        // CE player entry activates PLAYER_ENTRY layers (vines/repeating floor)
+        // and creature/item step layers. A used machine plate has no step flags.
+        promoteLayersWithMechFlag(this.grid, this.player.x, this.player.y, TM_PROMOTES_ON_PLAYER_ENTRY);
         const stepResults = promoteOnStep(this.grid, this.player.loc.x, this.player.loc.y);
         for (const r of stepResults) {
             if (r.mutated) this.needsRender = true;
@@ -10346,11 +10359,8 @@ export class Game {
      *     走 TerrainCatalog.blocksPassability 查表）；
      *   - percent ≥ 100 时 CE 还置 KNOWN_TO_BE_TRAP_FREE（:2473-2475）——web
      *     无"隐藏陷阱知识"设施（TRAP 恒可见），无处可接，登记不实现；
-     *   - 密格判据：CE 是 cellHasTMFlag(TM_IS_SECRET)；web 取
-     *     terrain === SECRET_DOOR——TM_IS_SECRET 在 web 目录中的唯一持有者
-     *     就是 SECRET_DOOR（目录级等价由 p1_42 测试的绊线断言钉死）。写成
-     *     字段读取会触发 c_4a 目录留痕的白名单红灯（本轮禁改那三个测试
-     *     文件，见 discoverSecretAt 注记的冲突申报）；
+     *   - 搜索当前已闭合的密门、隐藏陷门与隐藏墙杆；其余隐藏载体的
+     *     显形链仍登记在 DF_MISSING_TILES，后续族接线前不伪造发现。
      *   - rand_percent 语义与 web randPercent 逐位一致（先抽
      *     rand_range(0,99) 再 clamp 比较，CE Math.c:62-65）——**percent ≤ 0
      *     也消耗一次抽取**，不可"剪枝跳过"，否则 RNG 流位移。
@@ -10358,12 +10368,12 @@ export class Game {
      * 返回是否发现了什么（CE 返回值；当前无消费者，留作对齐）。
      */
     private searchForSecrets(searchStrength: number): boolean {
-        // 每层一次的全格预扫守卫：无未发现密门的层零开销短路（见字段注记）。
+        // 每层一次的全格预扫守卫：无已支持密格的层零开销短路（见字段注记）。
         if (this.secretScanDepth !== this.depth) {
             this.levelHasSecrets = false;
             for (let x = 0; x < this.grid.width && !this.levelHasSecrets; x++) {
                 for (let y = 0; y < this.grid.height; y++) {
-                    if (this.grid.getCell(x, y)?.layers.includes(TerrainType.SECRET_DOOR)) { // F-1 跨层判定
+                    if (this.grid.getCell(x, y)?.layers.some(t => t === TerrainType.SECRET_DOOR || t === TerrainType.TRAP_DOOR_HIDDEN || t === TerrainType.WALL_LEVER_HIDDEN)) { // F-1 跨层判定
                         this.levelHasSecrets = true;
                         break;
                     }
@@ -10384,7 +10394,7 @@ export class Game {
         for (let i = px - radius; i <= px + radius; i++) {
             for (let j = py - radius; j <= py + radius; j++) {
                 const cell = this.grid.getCell(i, j);
-                if (cell && cell.layers.includes(TerrainType.SECRET_DOOR)) { // F-1 跨层判定
+                if (cell && cell.layers.some(t => t === TerrainType.SECRET_DOOR || t === TerrainType.TRAP_DOOR_HIDDEN || t === TerrainType.WALL_LEVER_HIDDEN)) { // F-1 跨层判定
                     secretCells.push({ x: i, y: j, cell });
                 }
             }
@@ -10420,35 +10430,14 @@ export class Game {
         return foundSomething;
     }
 
-    /**
-     * P1-42：CE discover(x, y)（Movement.c:2437-2457）对 SECRET_DOOR 的
-     * 等效实现——密格显形为门。
-     *
-     * CE 的顺序是先清密格所在层（DUNGEON→FLOOR，:2444-2451）再走
-     * discoverType 的 DF 落地链（:2452，五形参见 Rogue.h:2933；
-     * DF_SHOW_DOOR = 单格、无传播、DUNGEON 层落 DOOR，Globals.c:624）。
-     * 对 SECRET_DOOR 这一特例，净效果就是"该格 DUNGEON 层变 DOOR"。
-     *
-     * ★ 留痕与文件边界的冲突申报（第 7 起，项目常识"留痕规矩"）★
-     * 走 CE 原样（清层 + DF 目录落地）会给三份 C-4 留痕接上第一个游戏侧
-     * 读者——c_4b F1（DF 子系统符号白名单）、c_4a_0（落层写入口白名单）、
-     * c_4a 目录（promote/fire 字段读者白名单）——而本轮禁改清单不含这三个
-     * 测试文件（"违反即本轮作废"），任务书也未按常识要求提前把它们列入
-     * 允许清单。故本实现取**今日逐位等价**的直写形态：setTerrain(DOOR)
-     * （与被替换的旧 30% 代码同一写入口，且同时更新 char/color/isPassable/
-     * isOpaque——CE 落地链走的层感知写入口不更新这些，直写反而免去补写）。
-     * 等价前提"web 地形目录中 TM_IS_SECRET 的唯一持有者是 SECRET_DOOR"
-     * 由 p1_42_secret_door_search.test.ts 的目录绊线断言钉死；该前提被
-     * 打破时，本方法应迁移为 CE 原样（清层 + DF 链）并由验收方扩三份
-     * 白名单。
-     */
+    /** CE discovery shares DF laying, refresh, description and flare effects. */
     private discoverSecretAt(x: number, y: number): boolean {
         const cell = this.grid.getCell(x, y);
-        if (!cell || !cell.layers.includes(TerrainType.SECRET_DOOR)) return false; // F-1 跨层判定
-
-        this.grid.setTerrain(x, y, TerrainType.DOOR, '+', 0xaa8844);
+        if (!cell) return false;
+        const wasDoor = cell.layers.includes(TerrainType.SECRET_DOOR);
+        if (!discoverTerrain(this.grid, x, y)) return false;
         cell.isDiscovered = true;
-        logger.log(i18next.t('trap.secret_door_found', { defaultValue: 'You discovered a hidden door!' }), '#ffff88');
+        if (wasDoor) logger.log(i18next.t('trap.secret_door_found', { defaultValue: 'You discovered a hidden door!' }), '#ffff88');
         this.needsRender = true;
         return true;
     }
@@ -10517,22 +10506,11 @@ export class Game {
         this.needsRender = true;
     }
 
-    /** Pressure plate triggers all TRAP cells within radius 3. */
-    private triggerPressurePlate(px: number, py: number, target: Creature = this.player) {
-        logger.log(i18next.t('trap.pressure_plate', { defaultValue: 'You step on a pressure plate! Nearby traps spring to life!' }), '#ffcc44');
-        for (let dx = -3; dx <= 3; dx++) {
-            for (let dy = -3; dy <= 3; dy++) {
-                if (dx === 0 && dy === 0) continue;
-                const nx = px + dx;
-                const ny = py + dy;
-                const cell = this.grid.getCell(nx, ny);
-                if (cell?.layers.includes(TerrainType.TRAP)) { // F-1 跨层判定
-                    this.triggerTrap(nx, ny, cell, target);
-                }
-            }
-        }
-        // Convert plate to floor after use
-        consumeTrapTile(this.grid, px, py);
+    /** CE Time.c:240-274: machine pressure plates promote and power their
+     * machine; spatially nearby traps with another machine number are unrelated. */
+    private triggerPressurePlate(px: number, py: number, _target: Creature = this.player) {
+        logger.log(i18next.t('trap.pressure_plate', { defaultValue: 'A pressure plate clicks!' }), '#ffcc44');
+        triggerCreatureTrapLayers(this.grid, px, py);
         this.needsRender = true;
     }
 
@@ -10782,6 +10760,19 @@ export class Game {
                 return i18next.t('terrain.crystal_portal', { defaultValue: '水晶传送门' });
             case TerrainType.STAIRS_DOWN:
                 return i18next.t('terrain.stairs_down', { defaultValue: '下行楼梯' });
+            case TerrainType.MACHINE_PRESSURE_PLATE_USED:
+                return i18next.t('terrain.pressure_plate_used', { defaultValue: 'An inactive pressure plate' });
+            case TerrainType.TRAP_DOOR:
+                return i18next.t('terrain.trap_door', { defaultValue: 'A hole' });
+            case TerrainType.WALL_LEVER:
+                return i18next.t('terrain.wall_lever', { defaultValue: 'A lever' });
+            case TerrainType.WALL_LEVER_PULLED:
+                return i18next.t('terrain.wall_lever_pulled', { defaultValue: 'An inactive lever' });
+            case TerrainType.WALL_LEVER_HIDDEN:
+                return i18next.t('terrain.wall', { defaultValue: '墙壁' });
+            case TerrainType.MACHINE_TRIGGER_FLOOR_REPEATING:
+            case TerrainType.TRAP_DOOR_HIDDEN:
+                return i18next.t('terrain.floor', { defaultValue: '地板' });
             case TerrainType.TRAMPLED_FOLIAGE:
                 return i18next.t('terrain.trampled_foliage', { defaultValue: 'Trampled foliage' });
             case TerrainType.ACTIVE_BRIMSTONE:

@@ -281,9 +281,11 @@ describe('W-11 generic placement and C-5 entry effects', () => {
         const g = scene(), m = monster(g), playerBefore = { ...g.player.loc };
         const destination = { x: 13, y: 1 };
         onlyDestination(g, m, destination);
-        g.grid.setTerrain(10, 5, plate ? T.PRESSURE_PLATE : T.TRAP);
-        const trapX = plate ? 11 : 10;
-        g.grid.setTerrain(trapX, 5, T.TRAP); g.grid.getCell(trapX, 5)!.trapType = 'teleport';
+        g.grid.setTerrain(10, 5, T.TRAP);
+        g.grid.getCell(10, 5)!.trapType = 'teleport';
+        // U17c: a machine plate no longer activates unrelated nearby traps.
+        // Keep the nested-entrant contract with the same-cell layered trap.
+        if (plate) g.grid.setTerrainLayer(10, 5, DungeonLayer.LIQUID, T.PRESSURE_PLATE);
         const effects = vi.spyOn(g as any, 'applyEnvironmentalEffects');
         const entryPromotion = vi.spyOn(promotions, 'promoteLayersWithMechFlag');
         expect(g.placeCreature(m, { x: 10, y: 5 })).toBe(true);

@@ -257,6 +257,8 @@ export enum TerrainType {
     ITEM_FIRE, // U17a: burnItem direct successor, CE Globals.c:498. Append only.
     // U17b: append only; existing terrain IDs are snapshot/fingerprint identities.
     TRAMPLED_FOLIAGE, ACTIVE_BRIMSTONE, BRIMSTONE_FIRE, OPEN_IRON_DOOR_INERT, BRIDGE_FALLING,
+    // U17c: CE trigger carriers; append to preserve saved terrain IDs.
+    MACHINE_PRESSURE_PLATE_USED, TRAP_DOOR, WALL_LEVER, WALL_LEVER_PULLED, MACHINE_TRIGGER_FLOOR_REPEATING,
 }
 
 export enum LightType {
@@ -344,6 +346,12 @@ export const DRAW_PRIORITY: Record<TerrainType, number> = {
     [TerrainType.BRIMSTONE_FIRE]: 10,
     [TerrainType.OPEN_IRON_DOOR_INERT]: 90,
     [TerrainType.BRIDGE_FALLING]: 45,
+    [TerrainType.MACHINE_PRESSURE_PLATE_USED]: 15,
+    [TerrainType.TRAP_DOOR]: 30,
+    [TerrainType.WALL_LEVER]: 0,
+    [TerrainType.WALL_LEVER_PULLED]: 0,
+    [TerrainType.MACHINE_TRIGGER_FLOOR_REPEATING]: 95,
+
     // F-2a：CE EMBERS 70 / ASH 80（Globals.c:469/461 原值）。两者都是纯装饰
     // 表面层：余烬/灰烬压不住火（10）、草（60）、网（19），但会被血（80）同级
     // 竞争——CE fillSpawnMap 判据（Architect.c:3228）原样生效。
@@ -582,6 +590,12 @@ export const TERRAIN_HOME_LAYER: Record<TerrainType, DungeonLayer> = {
     [TerrainType.BRIMSTONE_FIRE]: DungeonLayer.SURFACE,
     [TerrainType.OPEN_IRON_DOOR_INERT]: DungeonLayer.DUNGEON,
     [TerrainType.BRIDGE_FALLING]: DungeonLayer.LIQUID,
+    [TerrainType.MACHINE_PRESSURE_PLATE_USED]: DungeonLayer.DUNGEON,
+    [TerrainType.TRAP_DOOR]: DungeonLayer.LIQUID,
+    [TerrainType.WALL_LEVER]: DungeonLayer.DUNGEON,
+    [TerrainType.WALL_LEVER_PULLED]: DungeonLayer.DUNGEON,
+    [TerrainType.MACHINE_TRIGGER_FLOOR_REPEATING]: DungeonLayer.LIQUID,
+
     // F-2a：DF_EMBERS {EMBERS, SURFACE}（Globals.c:747）、
     // DF_ASH {ASH, SURFACE}（Globals.c:672，执行方逐字段复核）。
     [TerrainType.EMBERS]: DungeonLayer.SURFACE,

@@ -122,6 +122,7 @@ export enum DF {
                                           // Globals.c:726 目录行）
     DF_REVEAL_LEVER                = 95,  // :1585（WALL_LEVER_HIDDEN.
                                           // discoverType，Globals.c:732 目录行）
+    DF_PULL_LEVER                  = 96, // CE Globals.c:733
     DF_MEDIUM_HOLE                 = 152, // :1661（22 号蓝图 feature 的 DF 列，
                                           // GlobalsBrogue.c:324 → Globals.c:813）
     DF_OPEN_PORTCULLIS             = 177, // :1702（PORTCULLIS_CLOSED.promoteType，
@@ -381,7 +382,7 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
         description: '', lightFlare: 'GENERIC_FLASH_LIGHT', flashColor: '', effectRadius: 0,
     },
     [DF.DF_SHOW_TRAPDOOR]: {
-        id: DF.DF_SHOW_TRAPDOOR, ceLine: 628, ceTile: 'TRAP_DOOR', tile: null,
+        id: DF.DF_SHOW_TRAPDOOR, ceLine: 628, ceTile: 'TRAP_DOOR', tile: TerrainType.TRAP_DOOR,
         layer: DungeonLayer.LIQUID, startProbability: 0, probabilityDecrement: 0,
         flags: DFF_CLEAR_OTHER_TERRAIN, cePropagationTerrain: '', propagationTerrain: null,
         subsequentDF: DF.DF_SHOW_TRAPDOOR_HALO,
@@ -622,10 +623,10 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     },
 
     // {MACHINE_PRESSURE_PLATE_USED, DUNGEON, 0, 0, 0} —— 用过的机器压力板
-    //（web 的 RESET_PLATE 是自创物、非此 tile，登记不冒认）
+    // U17c: independent CE carrier; RESET_PLATE remains the test-room control.
     [DF.DF_MACHINE_PRESSURE_PLATE_USED]: {
         id: DF.DF_MACHINE_PRESSURE_PLATE_USED, ceLine: 815, ceTile: 'MACHINE_PRESSURE_PLATE_USED',
-        tile: null,
+        tile: TerrainType.MACHINE_PRESSURE_PLATE_USED,
         layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: '', lightFlare: '', flashColor: '', effectRadius: 0,
@@ -784,10 +785,15 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     },
 
     // {WALL_LEVER, DUNGEON, 0, 0, 0, "you notice a lever…", GENERIC_FLASH_LIGHT}
-    //（:732）—— 墙杆显形（WALL_LEVER_HIDDEN.discoverType）。tile WALL_LEVER
-    // web 无（带 TM_IS_WIRED 的那半条链，登记"激活轮需重核"）。
+    //（:732）—— U17c: discovery reveals the wired lever; bump pulls it (:733).
+    [DF.DF_PULL_LEVER]: {
+        id: DF.DF_PULL_LEVER, ceLine: 733, ceTile: 'WALL_LEVER_PULLED', tile: TerrainType.WALL_LEVER_PULLED,
+        layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
+        flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
+        description: '', lightFlare: '', flashColor: '', effectRadius: 0,
+    },
     [DF.DF_REVEAL_LEVER]: {
-        id: DF.DF_REVEAL_LEVER, ceLine: 732, ceTile: 'WALL_LEVER', tile: null,
+        id: DF.DF_REVEAL_LEVER, ceLine: 732, ceTile: 'WALL_LEVER', tile: TerrainType.WALL_LEVER,
         layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,
         flags: 0, cePropagationTerrain: '', propagationTerrain: null, subsequentDF: null,
         description: 'you notice a lever hidden behind a loose stone in the wall.',
@@ -797,10 +803,10 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     // {TRAP_DOOR, LIQUID, 225, 100, (DFF_CLEAR_OTHER_TERRAIN | DFF_SUBSEQ_EVERYWHERE),
     // "", 0, 0, 0, 0, DF_SHOW_TRAPDOOR_HALO}（:813）—— 中洞（22 号蓝图 feature
     // 的 DF 列：板被掷中物品踩压时把自身格与波前格炸成 TRAP_DOOR 洞；tile
-    // TRAP_DOOR web 无——与 DF_SHOW_TRAPDOOR 同缺，登记）。链尾
+    // U17c: CE22/28 construction lays TRAP_DOOR; chain tail
     // DF_SHOW_TRAPDOOR_HALO 已在目录（V-2b-2b）。
     [DF.DF_MEDIUM_HOLE]: {
-        id: DF.DF_MEDIUM_HOLE, ceLine: 813, ceTile: 'TRAP_DOOR', tile: null,
+        id: DF.DF_MEDIUM_HOLE, ceLine: 813, ceTile: 'TRAP_DOOR', tile: TerrainType.TRAP_DOOR,
         layer: DungeonLayer.LIQUID, startProbability: 225, probabilityDecrement: 100,
         flags: DFF_CLEAR_OTHER_TERRAIN | DFF_SUBSEQ_EVERYWHERE,
         cePropagationTerrain: '', propagationTerrain: null,
@@ -983,10 +989,10 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     //  "", 0, 0, 0, CARPET}（:799）—— 7 号蓝图 RESURRECTION_ALTAR feature 的
     // DF 列（GlobalsBrogue.c:231）。**layer = LIQUID** 是本条的特点（可重复
     // 触发的机器地板陷阱），propTerrain = CARPET。tile MACHINE_TRIGGER_
-    // FLOOR_REPEATING web 无，登记。
+    // U17c: the transparent carrier persists and can power the machine again.
     [DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING]: {
         id: DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING, ceLine: 799,
-        ceTile: 'MACHINE_TRIGGER_FLOOR_REPEATING', tile: null,
+        ceTile: 'MACHINE_TRIGGER_FLOOR_REPEATING', tile: TerrainType.MACHINE_TRIGGER_FLOOR_REPEATING,
         layer: DungeonLayer.LIQUID, startProbability: 300, probabilityDecrement: 100,
         flags: DFF_SUPERPRIORITY, cePropagationTerrain: 'CARPET', propagationTerrain: TerrainType.CARPET,
         subsequentDF: null, description: '', lightFlare: '', flashColor: '', effectRadius: 0,
@@ -1470,20 +1476,6 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
  *  载体盘点表），故不在本清单。 */
 export const DF_MISSING_TILES: readonly DF[] = [
     // V-2b-9d: inactive glyph and mud-floor stench carriers are complete.
-    DF.DF_MACHINE_PRESSURE_PLATE_USED, // MACHINE_PRESSURE_PLATE_USED
-    // DF.DF_XXX 已于 V-2b-7 摘除（RUBBLE / LUMINESCENT_FUNGUS 地形落地）——见下方块注
-    DF.DF_SHOW_TRAPDOOR,           // TRAP_DOOR（V-2b-2b：搜索显形族 tile，web 无
-                                   // 该地形——显形链接线轮随新地形落地摘除）
-    // ── V-2b-3 增补（11 条，8 → 19）：wired 载体 DF 链里 web 尚无 tile 的
-    //    环节；链上 tile 已齐的三条（DF_SHOW_PARALYSIS_GAS_TRAP →
-    //    GAS_TRAP_PARALYSIS、DF_VENT_SPEW_METHANE → METHANE_GAS、
-    //    DF_PARALYSIS_VENT_SPEW → PARALYSIS_GAS）不入列。
-    // DF.DF_XXX 已于 V-2b-7 摘除（RUBBLE / LUMINESCENT_FUNGUS 地形落地）——见下方块注
-    DF.DF_REVEAL_LEVER,            // WALL_LEVER（显形后的带线墙杆——18 号激活
-                                   // 链的载体，激活轮随新地形落地重核）
-    DF.DF_MEDIUM_HOLE,             // TRAP_DOOR（同 DF_SHOW_TRAPDOOR 所缺）
-    // DF.DF_OPEN_PORTCULLIS 摘除（V-2b-6）：tile PORTCULLIS_DORMANT 本轮
-    // 随 40 号蓝图落地，该条已接上完整 tile。
     DF.DF_SHOW_METHANE_VENT,       // MACHINE_METHANE_VENT_DORMANT（显形体）
     DF.DF_METHANE_VENT_OPEN,       // MACHINE_METHANE_VENT（开启态喷口驻留体）
     DF.DF_PILOT_LIGHT,             // PILOT_LIGHT（火嘴落地的火把）
@@ -1501,13 +1493,6 @@ export const DF_MISSING_TILES: readonly DF[] = [
     DF.DF_ALTAR_COMMUTE,           // COMMUTATION_ALTAR_INERT（置换完成后的惰性态）
     DF.DF_MAGIC_PIPING,            // PIPE_GLOWING（6 号 COMMUTATION_ALTAR 的 DF 列）
     DF.DF_ALTAR_RESURRECT,         // RESURRECTION_ALTAR_INERT（复活完成后的惰性态）
-    DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING, // MACHINE_TRIGGER_FLOOR_REPEATING
-                                   // （7 号 RESURRECTION_ALTAR 的 DF 列）
-    // DF.DF_XXX 已于 V-2b-7 摘除（RUBBLE / LUMINESCENT_FUNGUS 地形落地）——见下方块注
-    // ── V-2b-5 增补（2 条，26 → 28）：休眠唤醒轮四条新条目里 web 无 tile 的
-    //    两条；另两条带完整 tile 故不入列——DF_ALTAR_INERT
-    //   （tile ALTAR_INERT = web 既有 TerrainType.ALTAR，与 DF_CAGE_DISAPPEARS
-    //    同款别名）与 DF_TURRET_EMERGE（tile = WALL，web 既有）。
     DF.DF_WALL_CRACK,              // RAT_TRAP_WALL_CRACKING（29 号墙裂态）
     DF.DF_CRACKING_STATUE,         // STATUE_CRACKING（21/43/69 号雕像开裂态）
                                    // ★ 这两条与下方 DF_RUBBLE 构成休眠唤醒链的

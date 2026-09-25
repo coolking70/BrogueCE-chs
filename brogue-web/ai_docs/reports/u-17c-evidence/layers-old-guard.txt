@@ -1,0 +1,35 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/c_4b_dungeon_feature.test.ts -t F3 留痕
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/c0d3/brogue/brogue-web
+
+stdout | src/test/c_4b_dungeon_feature.test.ts > C-4b F：留痕（本轮明确不做的事；C-4c 翻转） > F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/c_4b_dungeon_feature.test.ts (31 tests | 1 failed | 30 skipped) 2690ms
+     × F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空 2688ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/c_4b_dungeon_feature.test.ts > C-4b F：留痕（本轮明确不做的事；C-4c 翻转） > F3 留痕（C-6 已到期翻转）：生产生成的多层格仅限 CE 核实组合 + GAS 恒空
+AssertionError: expected "seed=424242 D9 (3,20) 两层组合 0:106 1:6 不属于任何已知合法形态" not to be reached
+ ❯ Game.g.catchUpEnvironment src/test/c_4b_dungeon_feature.test.ts:1507:40
+    1505|                                 // 均保留 DUNGEON=FLOOR。只新增这三种确证组合。
+    1506|                             } else {
+    1507|                                 expect.unreachable(
+       |                                        ^
+    1508|                                     `seed=${seed} D${depth} (${x},${y}…
+    1509|                                     nonEmpty.slice().sort().map((l) =>…
+ ❯ Game.generateDepth src/engine/Core/Game.ts:1207:14
+ ❯ src/test/c_4b_dungeon_feature.test.ts:1520:53
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 30 skipped (31)
+   Start at  22:50:58
+   Duration  4.60s (transform 929ms, setup 0ms, import 1.71s, tests 2.69s, environment 0ms)
+

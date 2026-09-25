@@ -150,4 +150,9 @@ export const TERRAIN_APPEARANCES: Record<TerrainType, BaseTerrainAppearance> = {
     [TerrainType.BRIMSTONE_FIRE]: { char: "\u22cf", color: '#b23300', bgColor: null }, // CE Globals.c:493
     [TerrainType.OPEN_IRON_DOOR_INERT]: { char: "'", color: '#ffffff', bgColor: 0x26264c }, // CE Globals.c:332
     [TerrainType.BRIDGE_FALLING]: { char: "=", color: '#541e1e', bgColor: 0x1e0705 }, // CE Globals.c:429
+    [TerrainType.MACHINE_PRESSURE_PLATE_USED]: { char: "\u25c7", color: "#4c4c4c", bgColor: 789565, backDynamic: 'chasmEdgeBackColor' }, // CE :403
+    [TerrainType.TRAP_DOOR]: { char: "\u2237", color: "#111126", bgColor: 0 }, // CE :380
+    [TerrainType.WALL_LEVER]: { char: "/", color: "#111111", bgColor: 7365475, backDynamic: 'wallBackColor' }, // CE :348
+    [TerrainType.WALL_LEVER_PULLED]: { char: "\\", color: "#111111", bgColor: 7365475, backDynamic: 'wallBackColor' }, // CE :349
+    [TerrainType.MACHINE_TRIGGER_FLOOR_REPEATING]: { char: "", color: "#000000", bgColor: null, transparentFore: true }, // CE :540
 };

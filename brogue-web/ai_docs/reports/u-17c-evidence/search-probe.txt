@@ -1,0 +1,36 @@
+
+ RUN  v4.1.11 /private/var/folders/2s/dmv643cj5493tlmrh5rfgwxw0000gn/T/u17c-search-LWLPYa
+
+stdout | src/test/p1_42_secret_door_search.test.ts > P1-42 A：searchForSecrets 对齐 CE Movement.c:2459-2489 > A6 可见性要求：隔墙密门零掷骰、终搜序列也搜不到（捕获：漏掉 playerCanDirectlySee）
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/p1_42_secret_door_search.test.ts (14 tests | 1 failed | 13 skipped) 28957ms
+     × A6 可见性要求：隔墙密门零掷骰、终搜序列也搜不到（捕获：漏掉 playerCanDirectlySee） 28955ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/p1_42_secret_door_search.test.ts > P1-42 A：searchForSecrets 对齐 CE Movement.c:2459-2489 > A6 可见性要求：隔墙密门零掷骰、终搜序列也搜不到（捕获：漏掉 playerCanDirectlySee）
+AssertionError: 第 11 局：不可见格不进入掷骰（CE：playerCanDirectlySee 先于 rand_percent）: expected 16 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 16
+
+ ❯ src/test/p1_42_secret_door_search.test.ts:220:106
+    218|             const spy = vi.spyOn(rng, 'randPercent');
+    219|             for (let k = 0; k < 5; k++) search(game);
+    220|             expect(spy.mock.calls.length, `第 ${i} 局：不可见格不进入掷骰（CE：playe…
+       |                                                                                                          ^
+    221|             if (doorTerrainAt(game, CX + 5, CY) !== TerrainType.SECRET…
+    222|             vi.restoreAllMocks();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 skipped (14)
+   Start at  23:03:29
+   Duration  31.38s (transform 1.23s, setup 0ms, import 2.20s, tests 28.96s, environment 0ms)
+

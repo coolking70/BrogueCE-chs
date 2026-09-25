@@ -1,6 +1,7 @@
 import { writeFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { Game } from '../engine/Core/Game';
+import { Architect } from '../engine/Generator/Architect';
 import { BlueprintEngine, blueprintQualifies, type BlueprintDef, type MachineResult } from '../engine/Generator/BlueprintEngine';
 import { Grid, DungeonLayer as L, TerrainType as C, DCOLS, DROWS, TERRAIN_HOME_LAYER } from '../engine/Map/Grid';
 import { DUNGEON_FEATURE_CATALOG as D, DF, DF_MISSING_TILES } from '../engine/Map/DungeonFeatureCatalog';
@@ -56,6 +57,23 @@ function stairsConnected(game: Game): boolean {
 describe('B2 production census', () => {
     it('observes committed CE71 machines and their actual occupants on 34 seed × D1–D26', () => {
         const handoff=vi.spyOn(Game.prototype as unknown as GameInternals,'populateLevel');
+        // U17c: CE prepareForStairs (:3663-3668) also overwrites non-wired
+        // statues. Record the real writer; do not accept arbitrary TORCH_WALL.
+        const torchOverwrites = new WeakMap<Grid, Set<number>>();
+        const prepareStairLoc = Architect.prepareStairLoc;
+        const stairs = vi.spyOn(Architect, 'prepareStairLoc').mockImplementation((grid, pos) => {
+            const prior: Pos[] = [];
+            for (let dx=-1;dx<=1;dx++) for (let dy=-1;dy<=1;dy++) {
+                const p={x:pos.x+dx,y:pos.y+dy};
+                if (grid.getCell(p.x,p.y)?.layers[L.DUNGEON] === C.STATUE_INERT) prior.push(p);
+            }
+            prepareStairLoc(grid,pos);
+            for (const p of prior) if (grid.getCell(p.x,p.y)!.layers[L.DUNGEON] === C.TORCH_WALL) {
+                let written=torchOverwrites.get(grid);
+                if (!written) { written=new Set(); torchOverwrites.set(grid,written); }
+                written.add(p.y*grid.width+p.x);
+            }
+        });
         const levels=[];
         let built=0, realized=0, bad=0;
         try {
@@ -82,7 +100,13 @@ describe('B2 production census', () => {
                         for(const spawn of machine.spawns) {
                             expect(spawn.isSentinel,'CE71 request exists but living sentinel grid occupant is missing').toBe(true);
                             expect(spawn.home).toBe(machine.number);
-                            if (spawn.terrain !== C.STATUE_INERT) {
+                            if (spawn.terrain === C.TORCH_WALL) {
+                                const k=spawn.pos.y*game.grid.width+spawn.pos.x;
+                                expect(torchOverwrites.get(game.grid)?.has(k),
+                                    `seed${seed}/D${depth}: only a recorded stair-preparation write may replace the statue`).toBe(true);
+                                expect(game.grid.getCell(spawn.pos.x,spawn.pos.y)!.machineNumber).toBe(0);
+                                expect(game.grid.impregnableCells.has(k)).toBe(true);
+                            } else if (spawn.terrain !== C.STATUE_INERT) {
                                 // CE71 clears its non-wired statue's machine flag.
                                 // CE70 runs later and may reuse that wall (:558–575).
                                 // Keep the living sentinel/home/three distinct spawns
@@ -109,7 +133,7 @@ describe('B2 production census', () => {
                     handoff.mockClear();
                 }
             }
-        } finally {handoff.mockRestore();}
+        } finally {handoff.mockRestore();stairs.mockRestore();}
         const result={seeds:SEEDS,built,realized,bad,connectivityLevels:SEEDS.length*25,levels};
         if(process.env.B2_SCAN_OUTPUT)writeFileSync(process.env.B2_SCAN_OUTPUT,JSON.stringify(result,null,2)+'\n');
         expect(levels).toHaveLength(SEEDS.length*26);
@@ -137,8 +161,7 @@ describe('B2 literal transcription and registered deferrals', () => {
         expect(bp(55).frequency).toBe(10);
         for(let depth=8;depth<=26;depth++) expect(blueprintQualifies(bp(55),depth,['BP_ADOPT_ITEM'])).toBe(false);
     });
-    it.each([[6,2,DF.DF_MAGIC_PIPING],[7,2,DF.DF_MACHINE_FLOOR_TRIGGER_REPEATING],
-        [22,0,DF.DF_MEDIUM_HOLE],[28,1,DF.DF_MEDIUM_HOLE]])(
+    it.each([[6,2,DF.DF_MAGIC_PIPING]])(
         'CE %i/F%i keeps the registered missing-tile DF %i disconnected', (ce,f,df) => {
             // V-2b-4 §2.2 and V-2b-3 A7/A8: still missing carriers, not CE DF=0.
             // When those tiles land, replace this deferral with a complete closure guard.
@@ -146,6 +169,13 @@ describe('B2 literal transcription and registered deferrals', () => {
             expect(DF_MISSING_TILES).toContain(df);
             expect(D[df as DF]!.tile).toBeNull();
             expect(()=>catalogFeature(df as DF)).toThrow(/尚不存在的 tileType/);
+        });
+    it.each([[7,2,144,C.MACHINE_TRIGGER_FLOOR_REPEATING],[22,0,152,C.TRAP_DOOR],[28,1,152,C.TRAP_DOOR]])(
+        'CE %i/F%i now starts the closed U17c DF %i', (ce,f,df,tile) => {
+            expect(bp(ce!).features[f!]!.featureDF).toBe(DF[df!]);
+            expect(DF_MISSING_TILES).not.toContain(df);
+            expect(D[df as DF]!.tile).toBe(tile);
+            expect(catalogFeature(df as DF).tile).toBe(tile);
         });
     it('CE15 fungus follows tile, promote/fire, propagation and subsequentDF edges without deferred promotion', () => {
         expect(bp(15).features[0]!.featureDF).toBe('DF_LUMINESCENT_FUNGUS');

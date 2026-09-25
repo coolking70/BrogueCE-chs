@@ -117,7 +117,9 @@ import {
     TM_EXPLOSIVE_PROMOTE,
     TM_EXTINGUISHES_FIRE,
     TM_IS_CIRCUIT_BREAKER,
+    TM_IS_SECRET,
     TM_IS_WIRED,
+    TM_PROMOTES_ON_PLAYER_ENTRY,
     TM_PROMOTES_ON_ITEM,
     TM_PROMOTES_ON_ITEM_PICKUP,
     TM_PROMOTES_ON_STEP,
@@ -199,6 +201,26 @@ function firstMissingTileInChain(df: DF): {
         cur = entry.subsequentDF;
     }
     return null;
+}
+
+/** CE Movement.c:2437-2457: preflight the DF, remove the hidden layer,
+ * then use the same DF transaction as promotion. Missing later-family carriers
+ * remain intact; discovery must not erase an undisplayable/unsolvable tile. */
+export function discoverTerrain(grid: Grid, x: number, y: number): boolean {
+    const cell = grid.getCell(x, y);
+    if (!cell) return false;
+    let discovered = false;
+    for (let layer = 0; layer < DungeonLayer.COUNT; layer++) {
+        const tile = TERRAIN_FLAGS[cell.layers[layer]!]!;
+        if (!(tile.mechFlags & TM_IS_SECRET)) continue;
+        const df = resolveDFName(tile.discoverType);
+        if (df === null || firstMissingTileInChain(df)) continue;
+        grid.setTerrainLayer(x, y, layer, layer === DungeonLayer.DUNGEON ? TerrainType.FLOOR : TerrainType.NOTHING);
+        spawnDungeonFeature(grid, x, y, catalogFeature(df), false);
+        discovered = true;
+    }
+    if (discovered) refreshDungeonCellTerrain(grid, x, y);
+    return discovered;
 }
 
 // ── 接线机器（CE Time.c:1173-1287 的 activateMachine / circuitBreakers 段，
@@ -497,6 +519,16 @@ export function promoteLayersWithMechFlag(
         }
     }
     return out;
+}
+
+/** CE Movement.c:1152-1160: select one entry layer, promote only if it blocks. */
+export function promoteOnPlayerBump(grid: Grid, x: number, y: number, before?: () => void): boolean {
+    const cell = grid.getCell(x, y);
+    const layer = cell?.layers.findIndex(t => (TERRAIN_FLAGS[t].mechFlags & TM_PROMOTES_ON_PLAYER_ENTRY) !== 0) ?? -1;
+    if (!cell || layer < 0 || !(TERRAIN_FLAGS[cell.layers[layer]!]!.flags & T_OBSTRUCTS_PASSABILITY)) return false;
+    before?.();
+    promoteTile(grid, x, y, layer, false);
+    return true;
 }
 
 /** TM_PROMOTES_ON_STEP（CE Rogue.h:1987 = ON_CREATURE | ON_ITEM）。 */

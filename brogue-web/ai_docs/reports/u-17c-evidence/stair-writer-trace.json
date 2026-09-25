@@ -1,0 +1,70 @@
+{
+  "seed": 22,
+  "depth": 15,
+  "x": 59,
+  "y": 19,
+  "terrain": "TORCH_WALL",
+  "sentinel": "Sentinel",
+  "writes": [
+    {
+      "depth": 15,
+      "args": [
+        59,
+        19,
+        0,
+        48
+      ],
+      "before": [
+        "FLOOR",
+        "NOTHING",
+        "NOTHING",
+        "NOTHING"
+      ],
+      "after": [
+        "STATUE_INERT",
+        "NOTHING",
+        "NOTHING",
+        "NOTHING"
+      ],
+      "stack": [
+        "    at BlueprintEngine.applyBlueprint (file:///private/tmp/u17c-stair-probe.mjs:31437:29)",
+        "    at BlueprintEngine.buildAMachine (file:///private/tmp/u17c-stair-probe.mjs:31002:27)",
+        "    at file:///private/tmp/u17c-stair-probe.mjs:32423:30",
+        "    at runAutogenerators (file:///private/tmp/u17c-stair-probe.mjs:24107:27)",
+        "    at _Architect.generateLevel (file:///private/tmp/u17c-stair-probe.mjs:32422:27)",
+        "    at _Game.generateDepth (file:///private/tmp/u17c-stair-probe.mjs:37703:33)",
+        "    at file:///private/tmp/u17c-stair-probe.mjs:46071:5"
+      ]
+    },
+    {
+      "depth": 15,
+      "args": [
+        59,
+        19,
+        0,
+        68
+      ],
+      "before": [
+        "STATUE_INERT",
+        "NOTHING",
+        "NOTHING",
+        "NOTHING"
+      ],
+      "after": [
+        "TORCH_WALL",
+        "NOTHING",
+        "NOTHING",
+        "NOTHING"
+      ],
+      "stack": [
+        "    at _Architect.prepareStairLoc (file:///private/tmp/u17c-stair-probe.mjs:32202:14)",
+        "    at choose (file:///private/tmp/u17c-stair-probe.mjs:37865:19)",
+        "    at _Game.placeStairs (file:///private/tmp/u17c-stair-probe.mjs:37872:20)",
+        "    at _Game.generateDepth (file:///private/tmp/u17c-stair-probe.mjs:37704:20)",
+        "    at file:///private/tmp/u17c-stair-probe.mjs:46071:5",
+        "    at ModuleJob.run (node:internal/modules/esm/module_job:413:25)",
+        "    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:654:26)"
+      ]
+    }
+  ]
+}

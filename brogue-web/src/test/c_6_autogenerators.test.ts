@@ -338,7 +338,7 @@ describe('C-6 表保真：49 条逐行对照 CE（GlobalsBrogue.c:114-170）', (
         expect(AUTO_GENERATOR_CATALOG[10]!.ceDf).toBe('DF_BUILD_ALGAE_WELL');
         // wired 集：T-1 前为草/树两条；T-1 接线 index 1（DF_CRYSTAL_WALL，
         // DF 条目补入目录）与 index 33（直接铺 CRYSTAL_WALL 地形，tile B-3 迁入）。
-        expect(WIRED_AUTOGENERATOR_INDEXES, 'C-6 接入集 + T-1 增补（载体盘点表裁决）').toEqual([1, 3, 8, 16, 23, 29, 33, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]);
+        expect(WIRED_AUTOGENERATOR_INDEXES, 'C-6 接入集 + T-1 增补（载体盘点表裁决）').toEqual([1, 3, 8, 16, 23, 25, 29, 33, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]);
         expect(AUTO_GENERATOR_CATALOG[3]!.df).toBeDefined();
         expect(AUTO_GENERATOR_CATALOG[8]!.df).toBeDefined();
         expect(AUTO_GENERATOR_CATALOG[1]!.df).toBeDefined();
@@ -473,10 +473,10 @@ describe('C-6 集成：真实目录在真实生成里的行为', () => {
             const e = AUTO_GENERATOR_CATALOG[i]!;
             if (e.machine === 0) {
                 const tile = e.df !== null ? e.ceDf : e.ceTerrain;
-                expect(['DF_GRASS', 'DF_FOLIAGE', 'DF_CRYSTAL_WALL', 'CRYSTAL_WALL'], `wired 条目 ${i}（${tile}）超出裁决集`).toContain(tile);
+                expect(['DF_GRASS', 'DF_FOLIAGE', 'DF_CRYSTAL_WALL', 'CRYSTAL_WALL', 'TRAP_DOOR_HIDDEN'], `wired 条目 ${i}（${tile}）超出裁决集`).toContain(tile);
             }
         }
-        expect(WIRED_AUTOGENERATOR_INDEXES).toEqual([1, 3, 8, 16, 23, 29, 33, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]);
+        expect(WIRED_AUTOGENERATOR_INDEXES).toEqual([1, 3, 8, 16, 23, 25, 29, 33, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]);
     });
 });
 
@@ -499,7 +499,8 @@ describe('C-6 留痕：未接条目登记（每条写明激活轮）', () => {
     });
 
     it('留痕 T2：陷阱族（显/隐）未接——按 CE tile 目录落地陷阱后反转（index 14-15/17-22/24-28/32）', () => {
-        const trapRows = [14, 15, 17, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 32];
+        expect(AUTO_GENERATOR_CATALOG[25]).toMatchObject({terrain: TerrainType.TRAP_DOOR_HIDDEN, carrier: 'wired'}); // CE :143, U17c
+        const trapRows = [14, 15, 17, 18, 19, 20, 21, 22, 24, 26, 27, 28, 32];
         for (const i of trapRows) {
             const e = AUTO_GENERATOR_CATALOG[i]!;
             expect(e.carrier, `index ${i}（${e.ceTerrain}）应保持 no-tile`).toBe('no-tile');

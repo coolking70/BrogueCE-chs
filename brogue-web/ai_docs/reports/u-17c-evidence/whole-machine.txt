@@ -1,0 +1,33 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_17c_triggers.test.ts -t 152 CE22
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/c0d3/brogue/brogue-web
+
+stdout | src/test/u_17c_triggers.test.ts > 152 CE22 whole blueprint builds the pit before the plate; actual throw opens its exit
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/u_17c_triggers.test.ts (17 tests | 1 failed | 16 skipped) 424ms
+   × 152 CE22 whole blueprint builds the pit before the plate; actual throw opens its exit 422ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/u_17c_triggers.test.ts > 152 CE22 whole blueprint builds the pit before the plate; actual throw opens its exit
+AssertionError: expected undefined to be defined
+ ❯ src/test/u_17c_triggers.test.ts:137:17
+    135|  expect((g as any).canMoveTo(6,9)).toBe(false);
+    136|  const origin=cells.find(p=>Math.max(Math.abs(p.x-plate.x),Math.abs(p.…
+    137|  expect(origin).toBeDefined();g.player.loc={...origin};const i=new Ite…
+       |                 ^
+    138|  expect(g.grid.getCell(plate.x,plate.y)!.layers[L.DUNGEON]).toBe(T.MAC…
+    139| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 16 skipped (17)
+   Start at  22:50:07
+   Duration  2.09s (transform 889ms, setup 0ms, import 1.47s, tests 424ms, environment 0ms)
+
