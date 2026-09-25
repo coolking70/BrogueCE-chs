@@ -11,11 +11,11 @@ import { anyoneWantABite } from '../Combat/MonsterAbsorption';
  * Main game state and orchestration
  */
 import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer, DRAW_PRIORITY, type Cell } from '../Map/Grid';
-import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_DIAGONAL_MOVEMENT, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP } from '../Map/TerrainCatalog';
+import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_DIAGONAL_MOVEMENT, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP, T_HARMFUL_TERRAIN } from '../Map/TerrainCatalog';
 import { isPathingBlocker } from '../Map/TerrainCatalog';
 // B-4b：物品落位热力图与食物落位原语（CE Items.c:463-535 / Architect.c:171,3822）
 import { ItemSpawnHeatMap, passableArcCount, randomMatchingLocation } from '../Items/ItemSpawnHeatMap';
-import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, discoverSecretsAt, setDormantAwakener, terrainMechFlags, spawnDungeonFeature } from '../Map/DungeonFeature';
+import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, discoverSecretsAt, setDormantAwakener, setAllyResurrector, terrainMechFlags, spawnDungeonFeature } from '../Map/DungeonFeature';
 import { DF } from '../Map/DungeonFeatureCatalog';
 import { Architect } from '../Generator/Architect';
 // V-1c：奖励房配额计数器是 CE rogue.rewardRoomsGenerated 的 web 载体——
@@ -224,6 +224,7 @@ export interface GameSnapshot extends LevelSnapshot {
     /** Detached cached levels only. The active level is the top-level payload. */
     levels: LevelSnapshot[];
     pendingFallenByDepth: Array<{ depth: number; monsters: GameSnapshotMonster[] }>;
+    purgatory: GameSnapshotMonster[];
     mode: GameMode;
     ticksTillUpdateEnvironment: number;
     pendingEnchantment: boolean;
@@ -376,6 +377,8 @@ export class Game {
      * `this.monsters` 读取者天然忽略，无需逐点加判断。
      */
     public dormantMonsters: Monster[] = [];
+    /** CE purgatory: eligible dead allies awaiting a resurrection altar. */
+    public purgatory: Monster[] = [];
     public items: Item[] = [];
     public visibleMonsters = new Set<Monster>();
     public visibleItems = new Set<Item>();
@@ -557,8 +560,9 @@ export class Game {
         // U00: retire the old run before seeding/allocating the next one. Returning
         // the iterator must not run an old turn's epilogue against the new world.
         this.discardInFlightAdvancement();
-        if (this.grid) setDormantAwakener(this.grid, null);
-        for (const level of this.levels.values()) setDormantAwakener(level.grid, null);
+        if (this.grid) { setDormantAwakener(this.grid, null); setAllyResurrector(this.grid, null); }
+        for (const level of this.levels.values()) { setDormantAwakener(level.grid, null); setAllyResurrector(level.grid, null); }
+        this.purgatory = [];
         this.animationLockDeadline = 0;
         this.lastAdvancementError = null;
         this.inAutoTravelStep = false;
@@ -2183,12 +2187,9 @@ export class Game {
      *     后逐个随机分配（对应 CE randomLocationInGrid 逐个 teleport）
      *   canSeeMonster(summoner) 消息                       → 简化为固定英文/中文
      *     兜底消息，不做"仅可见时才提示"的门（P4-1b 报告已记同类简化）
-     * 已知简化（未实现，登记不做）：
-     *   - MA_ENTER_SUMMONS 的 carriedMonster/demoteMonsterFromLeadership
-     *     （召唤者变成新生怪物的"乘客"，日后被摧毁怪物复活召唤者）——web 没有
-     *     carriedMonster 概念，任务验收口径本身也只要求"自身从场上消失、
-     *     同时出现新怪物"，未要求这层复活机制，故不做，报告已说明。
-     *   - itemPossible 参数（spawnMinions 召唤路径固定传 false，web 落地的
+     * MA_ENTER_SUMMONS stores the summoner in the last spawned host; its death
+     * releases the original entity through removeDeadMonsters.
+     * Remaining simplification: itemPossible 参数（spawnMinions 召唤路径固定传 false，web 落地的
      *     Monster 构造本来就不带物品，天然一致，不需要额外处理）。
      * 返回值：是否至少召到一只随从（供未来调用方判断用，当前调用方
      * Monster.trySummon 按 CE 语义不依赖这个返回值决定是否耗费本回合）。
@@ -2244,6 +2245,15 @@ export class Game {
                 name: this.monsterDisplayName(summoner),
                 defaultValue: `${this.monsterDisplayName(summoner)} incants darkly!`
             }), '#c084fc');
+        }
+
+        if (enterSummons) {
+            if (atLeastOneMinion) {
+                spawned[spawned.length - 1]!.carriedMonster = summoner;
+                this.demoteMonsterFromLeadership(summoner);
+            } else {
+                this.monsters.unshift(summoner);
+            }
         }
 
         return atLeastOneMinion;
@@ -7503,8 +7513,8 @@ export class Game {
      * 脚下炸出 HOLE_EDGE 波前 + 原点 HOLE（T_AUTO_DESCENT），站在上面的
      * 生物由回合末的坠落结算收走。
      */
-    private triggerDeathFeatures(): void {
-        for (const m of this.monsters) {
+    private triggerDeathFeatures(target?: Monster): void {
+        for (const m of target ? [target] : this.monsters) {
             if (m.hp > 0) continue;
             if (m.deathEffectTriggered) continue;
             if (!m.hasAbility('MA_DF_ON_DEATH')) continue;
@@ -7920,25 +7930,20 @@ export class Game {
     private poisonedDuringTurn = false;
 
     private removeDeadMonsters(): void {
-        // All callers, including direct damage cleanup, observe death terrain
-        // before asking for a bite. deathEffectTriggered only guards those DFs.
-        this.triggerDeathFeatures();
-        // V-2b-6：死亡清扫前结算携带品掉落（CE Monsters.c:4075-4083
-        // makeMonsterDropItem——击杀路径把 carriedItem 放回地面；CE 的
-        // getQualifyingPathLocNear 择邻格语义 web 用"落怪原地"近似：怪物
-        // 站的格必然可通行，登记偏差见报告）。CE 的物品落位守卫
-        // （T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER）照抄——掉不进岩浆/深渊。
+        // CE killCreature drops carried items before its death DF, then
+        // releases a carried creature before corpse learning and demotion.
         const processDeath = (m: Monster): void => {
             if (m.hp > 0 || m.deathProcessed) return;
             m.deathProcessed = true; // before callbacks/released creatures
             if (m.carriedItem) {
-                const dropCell = this.grid.getCell(m.loc.x, m.loc.y);
-                if (dropCell && !isPathingBlocker(dropCell.terrain)) {
-                    m.carriedItem.loc = { x: m.loc.x, y: m.loc.y };
-                    this.items.push(m.carriedItem);
+                const candidates = captiveItemDropCandidates(this, m.loc, this.items);
+                if (candidates.length > 0) {
+                    m.carriedItem.loc = { ...candidates[rng.randRange(0, candidates.length - 1)]! };
+                    if (!this.items.includes(m.carriedItem)) this.items.push(m.carriedItem);
                 }
                 m.carriedItem = null;
             }
+            this.triggerDeathFeatures(m);
             if (!m.isDormant) {
                 // Combat.c killCreature releases the passenger BEFORE learning.
                 // Summon withdrawal, polymorph disposal, dormancy and room reset
@@ -7946,21 +7951,37 @@ export class Game {
                 if (m.carriedMonster) {
                     const passenger = m.carriedMonster;
                     m.carriedMonster = null;
-                    passenger.loc = { ...m.loc };
-                    passenger.ticksUntilTurn = 200;
-                    this.monsters.unshift(passenger);
-                    this.applyDisplacementTileEntry(passenger);
-                    this.applyEnvironmentalEffects(passenger);
-                    if (passenger.hp <= 0) {
-                        this.triggerDeathFeatures();
-                        processDeath(passenger); // nested kill finishes before the host's bite
+                    if (passenger !== m && !passenger.deathProcessed && !this.monsters.includes(passenger)) {
+                        passenger.loc = { ...m.loc };
+                        passenger.ticksUntilTurn = 200;
+                        this.monsters.unshift(passenger);
+                        this.needsRender = true;
+                        if (this.grid.getCell(passenger.loc.x, passenger.loc.y)?.isVisible) {
+                            logger.log(i18next.t('monster.carried_appears', {
+                                name: this.monsterDisplayName(passenger),
+                                defaultValue: '{{name}} appears',
+                            }), '#ffffff');
+                        }
+                        this.applyDisplacementTileEntry(passenger);
+                        this.applyEnvironmentalEffects(passenger);
+                        if (passenger.hp <= 0) {
+                            processDeath(passenger); // nested kill finishes before the host's bite
+                        }
                     }
                 }
                 anyoneWantABite(this, m);
             }
+            this.demoteMonsterFromLeadership(m);
+            // CE RogueMain.c:960-969: a dead player ally enters purgatory
+            // only when its weapon auto-ID entitlement and resurrection flags allow it.
+            if (m.isAlly && !m.leader && !m.leaderlessAfterDemotion && !m.doesNotResurrect
+                && !m.isClone && (!m.hasBehavior('MONST_INANIMATE') || m.hasAbility('MA_ENTER_SUMMONS'))
+                && !this.purgatory.includes(m)) this.purgatory.unshift(m);
         };
         for (const m of [...this.monsters]) processDeath(m);
+        for (const m of [...this.dormantMonsters]) processDeath(m);
         this.monsters = this.monsters.filter(m => m.hp > 0);
+        this.dormantMonsters = this.dormantMonsters.filter(m => m.hp > 0);
     }
 
     /** CE Time.c:2561-2564: demotion detaches bound followers; they die
@@ -8044,7 +8065,6 @@ export class Game {
     private playerTurnEnded() {
         this.poisonedDuringTurn = this.player.hasStatus('poisoned');
         this.killOrphanedBoundFollowers();
-        this.triggerDeathFeatures();
         this.removeDeadMonsters();
 
         // C-5：CE Time.c:2480-2486——玩家坠落在回合一切其余结算之前
@@ -8526,10 +8546,8 @@ export class Game {
      * 饥饿伤害与回血（recoverPerTurn）、回合数、死亡结算。
      */
     private finishTurnEpilogue() {
-        // P4-4：推进循环（怪物互殴/环境效果）内产生的死亡在本回合结束前补触发一次，
-        // 与 playerTurnEnded 顶部那次合起来覆盖"玩家动作本身杀死目标"与"推进循环
-        // 内杀死目标"两种时序；deathEffectTriggered 保证不会被处理两次。
-        this.triggerDeathFeatures();
+        // Deaths from monster combat/environment resolve at this turn boundary;
+        // removeDeadMonsters handles item, DF, passenger and leadership in order.
         this.removeDeadMonsters();
 
         // 主观饥饿结算：饥饿伤害 / 回血（CE Time.c:2523-2541，每玩家动作一次）
@@ -8857,7 +8875,7 @@ export class Game {
         const levelRoots = levels.flatMap(([, l]) => [...l.monsters, ...(l.dormantMonsters ?? [])]);
         const pendingFallenByDepth = [...this.pendingFallenByDepth].sort(([a], [b]) => a - b)
             .map(([depth, monsters]) => ({ depth, monsters: monsters.map(serializeMonsterRow) }));
-        const roots = [...this.monsters, ...this.dormantMonsters, ...levelRoots, ...[...this.pendingFallenByDepth.values()].flat()];
+        const roots = [...this.monsters, ...this.dormantMonsters, ...this.purgatory, ...levelRoots, ...[...this.pendingFallenByDepth.values()].flat()];
         const ownedItems = [...this.items, ...this.player.inventory.items, ...levels.flatMap(([, l]) => l.items)];
         const graph = collectEntityGraph([...roots, ...this.everSeenMonsters,
             ...this.visibleMonsters, ...levels.flatMap(([, l]) => [...l.visibleMonsters])], [...ownedItems, ...this.everSeenItems,
@@ -8870,6 +8888,7 @@ export class Game {
             seed: this.currentSeed, rngState: rng.getState(), levelSeeds: copyLevelSeeds(this.levelSeeds),
             currentLevelDepth: this.currentLevelDepth ?? this.depth,
             levels: levels.map(([depth, level]) => this.snapshotLevel(depth, level)), pendingFallenByDepth,
+            purgatory: this.purgatory.map(serializeMonsterRow),
             mode: this.mode, ticksTillUpdateEnvironment: this.ticksTillUpdateEnvironment,
             pendingEnchantment: this.pendingEnchantment,
             player: {
@@ -8917,7 +8936,8 @@ export class Game {
             || !Number.isSafeInteger(s.run.nextEntityId) || s.run.nextEntityId < 1
             || !Number.isFinite(s.run.monsterSpawnFuse) || !Number.isFinite(s.run.absoluteTurnNumber)
             || typeof s.run.pendingIdentify !== 'boolean' || !s.run.logger
-            || !Array.isArray(s.levels) || !Array.isArray(s.pendingFallenByDepth)) return false;
+            || !Array.isArray(s.levels) || !Array.isArray(s.pendingFallenByDepth)
+            || (s.purgatory !== undefined && !Array.isArray(s.purgatory))) return false;
         const depths = new Set<number>();
         for (const level of [s, ...s.levels]) {
             if (!level || !Number.isInteger(level.depth) || level.depth < 1 || level.depth > CE_DEEPEST_LEVEL
@@ -8942,7 +8962,7 @@ export class Game {
         }
         if (!Array.isArray(s.entityGraph.monsters) || !Array.isArray(s.entityGraph.items)
             || s.pendingFallenByDepth.some(level => !level || !Array.isArray(level.monsters))) return false;
-        const rows = [...s.monsters, ...s.dormantMonsters, ...s.entityGraph.monsters,
+        const rows = [...s.monsters, ...s.dormantMonsters, ...(s.purgatory ?? []), ...s.entityGraph.monsters,
             ...s.levels.flatMap(l => [...l.monsters, ...l.dormantMonsters]), ...s.pendingFallenByDepth.flatMap(l => l.monsters)];
         if (rows.some(m => !Number.isInteger(m.entersLevelIn) || m.entersLevelIn < 0 || m.entersLevelIn > 150
             || !Number.isInteger(m.approaching) || m.approaching < 0 || m.approaching > 7)) return false;
@@ -8961,7 +8981,7 @@ export class Game {
         try {
             entityGraph = restoreEntityGraph(
                 [...levelRows.flatMap(l => [...l.monsters, ...l.dormantMonsters]),
-                    ...snapshot.pendingFallenByDepth.flatMap(q => q.monsters), ...snapshot.entityGraph.monsters],
+                     ...snapshot.pendingFallenByDepth.flatMap(q => q.monsters), ...(snapshot.purgatory ?? []), ...snapshot.entityGraph.monsters],
                 [...levelRows.flatMap(l => l.items), ...snapshot.player.inventory, ...snapshot.entityGraph.items]);
             const resolve = <T>(map: Map<number, T>, id: number): T => {
                 const value = map.get(id);
@@ -8987,8 +9007,8 @@ export class Game {
         } catch { return false; }
 
         this.discardInFlightAdvancement();
-        if (this.grid) setDormantAwakener(this.grid, null);
-        for (const level of this.levels.values()) setDormantAwakener(level.grid, null);
+        if (this.grid) { setDormantAwakener(this.grid, null); setAllyResurrector(this.grid, null); }
+        for (const level of this.levels.values()) { setDormantAwakener(level.grid, null); setAllyResurrector(level.grid, null); }
         this.animationLockDeadline = 0;
         this.lastAdvancementError = null;
         this.inAutoTravelStep = false;
@@ -9007,6 +9027,7 @@ export class Game {
         restored.delete(this.depth); this.levels = restored;
         this.pendingFallenByDepth = new Map(snapshot.pendingFallenByDepth.map(q =>
             [q.depth, q.monsters.map(m => entityGraph.monsters.get(m.id)!)]));
+        this.purgatory = (snapshot.purgatory ?? []).map(m => entityGraph.monsters.get(m.id)!);
         this.bindDormantAwakener();
         this.activeFlares = []; this.flareLightMap = null; this.flareElapsedMs = 0;
 
@@ -9624,6 +9645,72 @@ export class Game {
     private bindDormantAwakener(): void {
         setDormantAwakener(this.grid, (origin, builtCells) =>
             this.awakenDormantMonstersAt(origin, builtCells));
+        setAllyResurrector(this.grid, origin => this.resurrectAlly(origin));
+    }
+
+    /** CE Monsters.c:2898-2945: choose from purgatory, then restore the same entity. */
+    public resurrectAlly(origin: Pos): boolean {
+        const speciesOrder = (m: Monster): number => (monsterData as MonsterData[]).findIndex(data => data.id === m.typeId);
+        const candidate = [...this.purgatory].sort((a, b) =>
+            b.totalPowerCount - a.totalPowerCount || speciesOrder(b) - speciesOrder(a))[0];
+        if (!candidate) return false;
+        const valid = (x: number, y: number): boolean => {
+            const cell = this.grid.getCell(x, y);
+            return !!cell && cell.isPassable && !(cellTerrainFlags(this.grid, x, y) & (T_PATHING_BLOCKER | T_HARMFUL_TERRAIN))
+                && !this.getMonsterAt(x, y) && (this.player.loc.x !== x || this.player.loc.y !== y);
+        };
+        if (!this.grid.getCell(origin.x, origin.y)) return false;
+        // CE getQualifyingPathLocNear: shortest walk through non-blocking,
+        // non-harmful terrain; choose uniformly among equally near cells.
+        const cost = allocShortGrid(this.grid.width, this.grid.height, 1);
+        const dist = allocShortGrid(this.grid.width, this.grid.height, MAX_DISTANCE);
+        for (let x = 0; x < this.grid.width; x++) for (let y = 0; y < this.grid.height; y++) {
+            if (cellTerrainFlags(this.grid, x, y) & (T_PATHING_BLOCKER | T_HARMFUL_TERRAIN)) cost[x]![y] = -1;
+        }
+        cost[origin.x]![origin.y] = 1;
+        dist[origin.x]![origin.y] = 1;
+        new DijkstraMap(this.grid.width, this.grid.height).batchScan(dist, cost, true);
+        let best = MAX_DISTANCE;
+        const ties: Pos[] = [];
+        for (let x = 0; x < this.grid.width; x++) for (let y = 0; y < this.grid.height; y++) {
+            const d = dist[x]![y]!;
+            if (d >= MAX_DISTANCE || d > best || !valid(x, y)) continue;
+            if (d < best) { best = d; ties.length = 0; }
+            ties.push({ x, y });
+        }
+        let loc: Pos | null = ties.length ? ties[rng.randRange(0, ties.length - 1)]! : null;
+        // CE's path search falls back to a distance-only search when no
+        // reachable qualifying tile exists.
+        for (let radius = 0; radius < Math.max(this.grid.width, this.grid.height) && !loc; radius++) {
+            const ring: Pos[] = [];
+            for (let dx = -radius; dx <= radius; dx++) for (let dy = -radius; dy <= radius; dy++) {
+                if (Math.max(Math.abs(dx), Math.abs(dy)) !== radius) continue;
+                const x = origin.x + dx, y = origin.y + dy;
+                if (valid(x, y)) ring.push({ x, y });
+            }
+            if (ring.length) loc = ring[rng.randRange(0, ring.length - 1)]!;
+        }
+        if (!loc) return false;
+        this.purgatory.splice(this.purgatory.indexOf(candidate), 1);
+        candidate.loc = loc;
+        candidate.deathProcessed = false;
+        candidate.deathEffectTriggered = false;
+        candidate.falling = false;
+        if (!candidate.hasBehavior('MONST_FIERY')) (candidate.statusDurations as Record<string, number>).burning = 0;
+        candidate.setStatusDuration('discordant', 0);
+        candidate.heal(100, true);
+        if (candidate.hasAbility('MA_ENTER_SUMMONS')) {
+            const form = (monsterData as MonsterData[]).find(data => data.id === candidate.typeId);
+            if (form) {
+                candidate.abilityFlags = new Set(form.abilityFlags ?? []);
+                candidate.behaviorFlags = new Set(form.behaviorFlags ?? []);
+                candidate.syncFlagDerivedStatuses();
+            }
+            candidate.wasNegated = false;
+        }
+        this.monsters.unshift(candidate);
+        this.needsRender = true;
+        return true;
     }
 
     /**
@@ -10303,7 +10390,7 @@ export class Game {
         for (const follower of active) {
             if (follower === monster || follower.hp <= 0 || follower.leader !== monster) continue;
             if (follower.boundToLeader || follower.isDormant || dormant.has(follower)) follower.leader = null;
-            else if (!replacement) { replacement = follower; follower.leader = null; }
+            else if (!replacement) { replacement = follower; follower.leader = null; follower.leaderlessAfterDemotion = true; }
             else {
                 follower.leader = replacement;
                 follower.targetWaypointIndex = monster.targetWaypointIndex;
@@ -10345,6 +10432,7 @@ export class Game {
         monster.isCaged = false;
         monster.isAlly = true;
         monster.leader = null;
+        monster.leaderlessAfterDemotion = false;
         monster.seized = false;
         monster.state = MonsterState.WANDERING; // isAlly is web's MONSTER_ALLY state.
         this.needsRender = true;

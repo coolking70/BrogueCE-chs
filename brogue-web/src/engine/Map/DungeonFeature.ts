@@ -67,7 +67,7 @@
  *   │ colorFlash/createFlare       │ 不实现（数据仍登记在目录）            │
  *   │ updatedMapToShoreThisTurn    │ 结果对象 touchesShoreMap              │
  *   │ (:3481-3485)                 │                                       │
- *   │ DFF_RESURRECT_ALLY (:3365)   │ 目录 19 条不含；运行时遇到即抛错      │
+ *   │ DFF_RESURRECT_ALLY (:3365)   │ 按 Grid 注册 Game 复活回调          │
  *   │ pmap.volume (GAS, :3385)     │ G-1 起 Cell.volume 直接累加           │
  *   │                              │ （CE uint16 回绕 → 65535 钳制）；     │
  *   │                              │ 结果对象 gasVolumeAdded 仍登记        │
@@ -763,6 +763,12 @@ export function setDormantAwakener(grid: Grid, fn: DormantAwakener | null): void
     else dormantAwakeners.delete(grid);
 }
 
+const allyResurrectors = new WeakMap<Grid, (origin: Pos) => boolean>();
+export function setAllyResurrector(grid: Grid, fn: ((origin: Pos) => boolean) | null): void {
+    if (fn) allyResurrectors.set(grid, fn);
+    else allyResurrectors.delete(grid);
+}
+
 export interface SpawnFeatureResult {
     /** CE 返回值：false 仅当被连通性否决；"因优先级一格没建"仍算成功
      *  （CE :3410 注释）。 */
@@ -812,10 +818,7 @@ export function spawnDungeonFeature(
         touchesShoreMap: false,
     };
 
-    if (feat.flags & DFF_RESURRECT_ALLY) {
-        // CE :3365-3368 resurrectAlly——游戏侧，目录 19 条不含此旗标。
-        throw new Error('DFF_RESURRECT_ALLY 未实现（C-4b 登记；复活属游戏侧）');
-    }
+    if ((feat.flags & DFF_RESURRECT_ALLY) && !allyResurrectors.get(grid)?.({ x, y })) return result;
 
     const W = grid.width;
     const idx = (px: number, py: number): number => py * W + px;

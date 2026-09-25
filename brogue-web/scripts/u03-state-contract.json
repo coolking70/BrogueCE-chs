@@ -295,6 +295,10 @@
     "kind": "run",
     "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"
   },
+  "purgatory": {
+    "kind": "persist",
+    "contract": "顶层 purgatory 怪物行保存 CE 可复活盟友；与全局实体图共享 ID 和引用，读档恢复同一对象。"
+  },
   "recordedInputEvents": {
     "kind": "run",
     "contract": "run 同名键；Map 为 entries，嵌套结构深拷贝；常规跟随/环境补偿不新增消费者。"

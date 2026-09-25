@@ -316,6 +316,8 @@ export class Monster extends Creature {
     public dominated = false;
     /** CE MB_BOUND_TO_LEADER, set from the horde flag without drawing RNG. */
     public boundToLeader = false;
+    /** CE leader=NULL after group election differs from leader=&player. */
+    public leaderlessAfterDemotion = false;
     public isCaged: boolean = false;
     /**
      * V-2b-6：≙ CE creature->carriedItem（Rogue.h:2186 一带；机器侧写入点
@@ -331,6 +333,8 @@ export class Monster extends Creature {
     public polymorphed = false;
     /** W-20: clones have no carried loot or CE MB_WEAPON_AUTO_ID entitlement. */
     public isClone = false;
+    /** CE MB_DOES_NOT_RESURRECT, retained across whole-run saves. */
+    public doesNotResurrect = false;
     public wasNegated = false;
     public get displaysNegation(): boolean {
         return this.wasNegated && this.newPowerCount === this.totalPowerCount;
@@ -372,8 +376,8 @@ export class Monster extends Creature {
     public clearCorpseTargetOnLevelChange(): void {
         this.targetCorpseLoc = null;
     }
-    /** Carried creatures are detached payloads, never active occupants. W-19
-     * discards them without death/loot; full enter-summons lifecycle is separate. */
+    /** Carried creatures are detached payloads, never active occupants.
+     * Ordinary host death releases them; administrative disposal discards them. */
     public carriedMonster: Monster | null = null;
     /** CE computes current speed BEFORE initializeStatus clears haste/slow. */
     public polymorphKeepsSpeed = false;

@@ -23,11 +23,11 @@ export const CREATURE_FIELDS = [
 export const MONSTER_FIELDS = [
     ...CREATURE_FIELDS, 'state', 'damageString', 'damageClumping', 'goldDropChance', 'itemDropChance',
     'onHitStatus', 'onHitChance', 'onHitDuration', 'statusResistTurns', 'isAlly',
-    'dominated', 'boundToLeader', 'isCaged', 'mutation', 'polymorphed', 'isClone',
+    'dominated', 'boundToLeader', 'leaderlessAfterDemotion', 'isCaged', 'mutation', 'polymorphed', 'isClone',
     'wasNegated', 'newPowerCount', 'totalPowerCount', 'polymorphKeepsSpeed',
     'targetCorpseLoc', 'targetCorpseName', 'corpseAbsorptionCounter',
     'absorptionFlags', 'absorbBehavior', 'absorptionBolt', 'isAbsorbing',
-    'description', 'deathEffectTriggered', 'deathProcessed', 'bolts', 'typeId', 'boundToPlayer',
+    'description', 'deathEffectTriggered', 'deathProcessed', 'doesNotResurrect', 'bolts', 'typeId', 'boundToPlayer',
     'doesNotTrackLeader', 'givenUpOnScent', 'safetySnapshot', 'falling', 'preplaced',
     'entersLevelIn', 'approaching', 'isDormant', 'machineHome', 'targetWaypointIndex', 'waypointAlreadyVisited',
     'regenTurns', 'accuracy', 'defense', 'regenCounter', 'spawnLoc',

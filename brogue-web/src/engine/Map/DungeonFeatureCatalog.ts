@@ -952,7 +952,8 @@ export const DUNGEON_FEATURE_CATALOG: Readonly<Partial<Record<DF, DungeonFeature
     // {RESURRECTION_ALTAR_INERT, DUNGEON, 0, 0, DFF_RESURRECT_ALLY,
     //  "An old friend emerges from a bloom of sacred light!", EMPOWERMENT_LIGHT}
     // （:798）—— RESURRECTION_ALTAR.promoteType（7 号复活完成后的惰性态）。
-    // DFF_RESURRECT_ALLY（Rogue.h:1820）在 web 属游戏侧登记未实现。
+    // The distinct CE inert tile remains unrepresented in this catalog. U16's
+    // promotion path supplies the existing ALTAR appearance after resurrection.
     [DF.DF_ALTAR_RESURRECT]: {
         id: DF.DF_ALTAR_RESURRECT, ceLine: 798, ceTile: 'RESURRECTION_ALTAR_INERT', tile: null,
         layer: DungeonLayer.DUNGEON, startProbability: 0, probabilityDecrement: 0,

@@ -192,7 +192,7 @@ function firstMissingTileInChain(df: DF): {
         if (!entry) {
             return { missingDf: cur, missingDfName: String(DF[cur]), missingCeTile: '?', reason: 'catalog-entry-missing' };
         }
-        if (entry.tile === null) {
+        if (entry.tile === null && cur !== DF.DF_ALTAR_RESURRECT) {
             return { missingDf: cur, missingDfName: String(DF[cur]), missingCeTile: entry.ceTile, reason: 'tile-missing-in-web' };
         }
         cur = entry.subsequentDF;
@@ -433,7 +433,12 @@ export function promoteTile(
     // 但传 true 是潜伏偏离：C-5 的深渊、C-4d 的火焰/岩浆 DF 落地后，
     // 它会静默拒绝 CE 会执行的晋升。
     if (df !== null) {
-        const feat = catalogFeature(df);
+        // U16: the resurrection effect is game-side. Its distinct inert CE
+        // appearance maps to web's existing ALTAR after a successful raise.
+        const feat = df === DF.DF_ALTAR_RESURRECT
+            ? { ...catalogFeature(DF.DF_ALTAR_INERT), flags: DUNGEON_FEATURE_CATALOG[df]!.flags,
+                description: DUNGEON_FEATURE_CATALOG[df]!.description }
+            : catalogFeature(df);
         result.spawn = spawnDungeonFeature(grid, x, y, feat, false);
         // 无地形 DF（CE tile=0，如 DF_REPEL_CREATURES）footprint 只登记原点、
         // 不写地形——不计入 mutated（渲染与测量口径）。
