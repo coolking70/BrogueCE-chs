@@ -144,14 +144,14 @@ describe('absorption / reprisal / mutuality 恒触发（无概率判定）', () 
         expect(sawFull).toBe(true);
         expect(armor.runicKnown).toBe(true);
 
-        // 远程不触发（CE applyArmorRunicEffect 唯一调用点在近战 attack() 内，
-        // Combat.c:1272 恒传 melee=true）
+        // U15d-2 验收修订：CE 另有投掷调用点 Items.c:6822（melee=false），
+        // absorption 无 melee 门（Combat.c:896 起仅 multiplicity/reprisal 读 melee），投掷命中同样吸收
         const rangedAttacker = makeMonster(game, 4, 0);
         game.monsters = [rangedAttacker];
         for (let i = 0; i < 30; i++) {
             game.player.hp = 5;
-            game.tryTriggerArmorRunic(rangedAttacker, 8);
-            expect(game.player.hp).toBe(5); // 远程零吸收
+            game.tryTriggerArmorRunic(rangedAttacker, 8, false, false);
+            expect(game.player.hp).toBeGreaterThanOrEqual(6); // 投掷亦吸收 ≥1
         }
     });
 
@@ -170,11 +170,11 @@ describe('absorption / reprisal / mutuality 恒触发（无概率判定）', () 
         }
         expect(armor.runicKnown).toBe(true);
 
-        // 远程（CE Combat.c:1038 melee 门）：永不反弹
+        // 远程（CE Combat.c:1038 melee 门，melee 为调用方实参而非距离）：永不反弹
         const rangedAttacker = makeMonster(game, 4, 0);
         game.monsters = [rangedAttacker];
         for (let i = 0; i < 30; i++) {
-            game.tryTriggerArmorRunic(rangedAttacker, 20);
+            game.tryTriggerArmorRunic(rangedAttacker, 20, false, false);
             expect(rangedAttacker.hp).toBe(1000);
         }
     });
@@ -218,14 +218,14 @@ describe('absorption / reprisal / mutuality 恒触发（无概率判定）', () 
         game.tryTriggerArmorRunic(attacker, 10);
         expect(game.player.hp).toBe(20);
 
-        // 远程不触发：即使有相邻敌方也不摊派（CE Combat.c:1272 melee 门）
+        // U15d-2 验收修订：mutuality 无 melee 门，投掷命中（Items.c:6822, melee=false）同样与相邻敌方均摊
         const rangedAttacker = makeMonster(game, 4, 0);
         game.monsters = [rangedAttacker, enemyA];
         enemyA.hp = 100;
         game.player.hp = 20;
-        game.tryTriggerArmorRunic(rangedAttacker, 10);
-        expect(game.player.hp).toBe(20);
-        expect(enemyA.hp).toBe(100);
+        game.tryTriggerArmorRunic(rangedAttacker, 10, false, false);
+        expect(game.player.hp).toBe(25);
+        expect(enemyA.hp).toBe(95);
     });
 });
 
@@ -273,6 +273,7 @@ describe('reflection：仅远程触发、触发率随附魔走表；immunity 无
     it('immunity：移除恒真 randPercent(100) 后行为不变——每次受击全额抵挡', () => {
         const game = createHeadlessGame(20260914);
         const armor = equipRunicArmor(game, 'immunity', 5, 0);
+        armor.vorpalEnemy = 'animal'; // CE Combat.c:1058 monsterIsInClass 类别门；rat ∈ animal
         const attacker = makeMonster(game, 1, 0);
         game.monsters = [attacker];
 

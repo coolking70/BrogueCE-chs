@@ -18,7 +18,7 @@ import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_
 import { isPathingBlocker } from '../Map/TerrainCatalog';
 // B-4b：物品落位热力图与食物落位原语（CE Items.c:463-535 / Architect.c:171,3822）
 import { ItemSpawnHeatMap, passableArcCount, randomMatchingLocation } from '../Items/ItemSpawnHeatMap';
-import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, discoverSecretsAt, setDormantAwakener, setAllyResurrector, setDungeonFeatureEffects, resetDFMessageEligibility, terrainMechFlags, spawnDungeonFeature } from '../Map/DungeonFeature';
+import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, discoverSecretsAt, setDormantAwakener, setAllyResurrector, setDungeonFeatureEffects, resetDFMessageEligibility, terrainMechFlags, spawnDungeonFeature, type DungeonFeature } from '../Map/DungeonFeature';
 import { DF } from '../Map/DungeonFeatureCatalog';
 import { Architect } from '../Generator/Architect';
 // V-1c：奖励房配额计数器是 CE rogue.rewardRoomsGenerated 的 web 载体——
@@ -40,7 +40,7 @@ import { staffProtection } from '../Combat/Shielding';
 import { staffEntrancementDuration, ENTRANCEMENT_DIRECTIONS, entrancementPassable, entrancementDiagonalBlocked } from '../Movement/Entrancement';
 import { wandDominate } from '../Combat/Domination';
 import { staffBladeCount, bladeSpawnLocation } from '../Combat/Conjuration';
-import { weaponParalysisDuration, weaponConfusionDuration, weaponSlowDuration, weaponImageCount, weaponImageDuration, weaponForceDistance, netEnchant, damageFraction, armorAbsorptionMax, armorReprisalPercent } from '../Combat/CombatFormulas';
+import { weaponParalysisDuration, weaponConfusionDuration, weaponSlowDuration, weaponImageCount, weaponImageDuration, armorImageCount, weaponForceDistance, netEnchant, damageFraction, armorAbsorptionMax, armorReprisalPercent } from '../Combat/CombatFormulas';
 import { monsterIsInClass } from '../Combat/MonsterClass';
 import { ItemCategory, Item } from '../Items/Item';
 import { ItemLoader } from '../Items/ItemLoader';
@@ -83,6 +83,15 @@ import {
 import { CE_DEEPEST_LEVEL } from '../Map/LakeSystem';
 import { WaypointSystem, WAYPOINT_SIGHT_RADIUS, type WaypointContext } from '../Map/WaypointMap';
 import i18next from 'i18next';
+
+/** CE Globals.c:786, DF_ARMOR_IMMOLATION. Runtime-only feature; the generation
+ * catalog's closed set remains unchanged until the separate mapping round. */
+const ARMOR_IMMOLATION_FEATURE: DungeonFeature = {
+    tile: TerrainType.PLAIN_FIRE, layer: DungeonLayer.SURFACE,
+    startProbability: 100, probabilityDecrement: 45, flags: 0,
+    propagationTerrain: TerrainType.NOTHING, subsequentDF: null,
+    description: '', lightFlare: '', flashColor: 'yellow', effectRadius: 3,
+};
 
 /**
  * D2（G-1 / P1-45）：从随机生成池排除的药水。
@@ -4665,6 +4674,7 @@ export class Game {
     private colorFlash(name: string, radius: number, origin: Pos, frames = 4, discovered = false): void {
         const colors: Record<string, { r: number; g: number; b: number }> = {
             gray: { r: 50, g: 50, b: 50 }, darkGray: { r: 30, g: 30, b: 30 }, darkBlue: { r: 0, g: 0, b: 50 },
+            yellow: { r: 100, g: 100, b: 0 },
         };
         const color = colors[name];
         if (!color) throw new Error(`Unmapped CE flash color: ${name}`);
@@ -6478,10 +6488,6 @@ export class Game {
         let nullifyChance = 0;
         let durationReduction = 0;
 
-        if (this.player.equippedArmor?.runicType === 'dampening') {
-            durationReduction += 1;
-        }
-
         return { nullifyChance, durationReduction };
     }
 
@@ -6721,7 +6727,7 @@ export class Game {
 
     /** Runtime attacks pass beforeDamage=true so armor acts before shielding
      * (CE Combat.c:1272,1325). Default preserves the public post-hit API. */
-    public tryTriggerArmorRunic(attacker: Monster, incomingDamage: number, beforeDamage = false): number {
+    public tryTriggerArmorRunic(attacker: Monster, incomingDamage: number, beforeDamage = false, melee = true): number {
         let remainingDamage = incomingDamage;
         const prevent = (amount: number) => {
             remainingDamage -= amount;
@@ -6730,13 +6736,6 @@ export class Game {
         const armor = this.player.equippedArmor;
         if (!armor?.runicType) return remainingDamage;
 
-        // CE 以 melee 形参区分近战/远程（Combat.c:896 applyArmorRunicEffect）。
-        // web 仅有的两个调用点（Monster.ts 远程分支 dist>1 / 近战分支 dist<=1）
-        // 以攻击者相邻性等价区分。
-        const melee =
-            Math.abs(attacker.loc.x - this.player.loc.x) <= 1 &&
-            Math.abs(attacker.loc.y - this.player.loc.y) <= 1;
-
         // 符文强度吃 netEnchant（含力量修正、钳 [-20,50]），与 P1-11 的 playerDefense
         // 同源；取值口径与 Combat.ts:73-78 一致（strengthRequired 缺省 0）。
         const netEnch = netEnchant(armor.enchantment ?? 0, this.player.effectiveStrength, armor.strengthRequired ?? 0);
@@ -6744,11 +6743,39 @@ export class Game {
         // W-4: reflection is resolved before bolt contact, including adjacent
         // casts. No post-damage half-hit shortcut and no second reflection roll.
 
-        if (armor.runicType === 'mutuality' && melee) {
+        if (armor.runicType === 'multiplicity' && melee &&
+            !attacker.hasBehavior('MONST_INANIMATE') && !attacker.hasBehavior('MONST_INVULNERABLE') &&
+            rng.randPercent(33)) {
+            for (let i = 0; i < armorImageCount(netEnch); i++) {
+                const clone = this.cloneMonster(attacker);
+                if (!clone) break;
+                clone.isAlly = true;
+                clone.leader = null;
+                clone.boundToPlayer = true;
+                clone.doesNotTrackLeader = true;
+                clone.abilityFlags.delete('MA_CAST_SUMMON');
+                clone.abilityFlags.delete('MA_DF_ON_DEATH');
+                clone.behaviorFlags.add('MONST_DIES_IF_NEGATED');
+                clone.setStatusDuration('discordant', 0);
+                clone.setStatusDuration('lifespan_remaining', 3);
+                clone.maxStatus.lifespan_remaining = 3;
+                clone.hp = clone.maxHp = 1;
+                clone.defense = 0;
+                clone.ticksUntilTurn = 100;
+                clone.typeId = 'spectral_image';
+                clone.name = attacker.name.length <= 6 ? `spectral ${attacker.name}` : 'spectral clone';
+                clone.color = 0xff5555;
+            }
+            armor.runicKnown = true;
+            logger.log(i18next.t('runic.armor.multiplicity', { name: armor.displayName,
+                target: this.monsterDisplayName(attacker), defaultValue: `Your ${armor.displayName} flashes, and spectral images appear!` }), '#ff7777');
+            return remainingDamage;
+        }
+
+        if (armor.runicType === 'mutuality') {
             // CE Combat.c:976-1024（A_MUTUALITY）：恒触发（无概率判定）；伤害与相邻
             // 敌方均摊 share = (damage + count) / (count + 1)（C 整数除法），攻击者本身
-            // 不计入摊派名单（Combat.c:987 monst != attacker）。CE 的 applyArmorRunicEffect
-            // 唯一调用点在近战 attack() 内（Combat.c:1272 恒传 melee=true），故远程不触发。
+            // 不计入摊派名单（Combat.c:987）。近战与投掷命中均执行（Items.c:6822）。
             const hitList = this.monsters.filter(m =>
                 m !== attacker &&
                 m.hp > 0 &&
@@ -6767,8 +6794,9 @@ export class Game {
                     m.takeDamage(share, true);
                     this.spawnFloatingText(`-${share}`, m.loc.x, m.loc.y, 0xddaaff);
                 }
+                const wasKnown = armor.runicKnown;
                 armor.runicKnown = true;
-                logger.log(
+                if (!wasKnown) logger.log(
                     i18next.t('runic.armor.mutuality', {
                         target: attacker.name,
                         damage: share,
@@ -6793,51 +6821,20 @@ export class Game {
             return remainingDamage;
         }
 
-        if (armor.runicType === 'respiration' && rng.randPercent(20)) {
-            // CE 语义为毒气/蒸汽的常驻免疫（Time.c:411-424、Monsters.c:1414），
-            // 与受击无关；效果与触发事件均不同，本轮保留现有行为（差异见报告）。
-            // F-2b：原 'burning' as any 一行删除——temporaryImmunities 对燃烧
-            // 无任何读者（P1-44 三重断线登记），是纯死代码；行为零变化。
-            this.player.grantTemporaryImmunity('confused' as any, 1);
-            armor.runicKnown = true;
-            logger.log(
-                i18next.t('runic.armor.respiration', {
-                    defaultValue: `Your armor shields you from ambient hazards.`
-                }),
-                '#44ffff'
-            );
-            return remainingDamage;
-        }
-
-        if (armor.runicType === 'dampening' && rng.randPercent(25)) {
-            // CE 语义为爆炸伤害的常驻吸收（Time.c:355-367），与受击无关；
-            // 本轮保留现有行为（差异见报告）。
-            const healBack = Math.min(incomingDamage, 2);
-            prevent(healBack);
-            armor.runicKnown = true;
-            logger.log(
-                i18next.t('runic.armor.dampening', {
-                    heal: healBack,
-                    defaultValue: `Your armor absorbs impact and restores ${healBack} HP.`
-                }),
-                '#aaffaa'
-            );
-            this.spawnFloatingText(`+${healBack}`, this.player.loc.x, this.player.loc.y, 0xaaffaa);
-        }
-
-        if (armor.runicType === 'absorption' && melee) {
+        if (armor.runicType === 'absorption') {
             // CE Combat.c:1026-1035（A_ABSORPTION）：恒触发（无概率判定），每次受击
             // damage -= rand_range(1, armorAbsorptionMax(netEnchant))（PowerTables.c:107）；
             // 仅全额吸收时提示并自动鉴定（Combat.c:1030-1034），部分吸收静默。
-            // CE 唯一调用点在近战 attack() 内（Combat.c:1272），故远程不触发。
+            // 近战与投掷命中均执行（Items.c:6822）。
             const absorbRoll = rng.randRange(1, armorAbsorptionMax(netEnch));
             const absorbed = Math.min(absorbRoll, incomingDamage);
             if (absorbed > 0) {
                 prevent(absorbed);
             }
             if (absorbRoll >= incomingDamage) {
+                const wasKnown = armor.runicKnown;
                 armor.runicKnown = true;
-                logger.log(
+                if (!wasKnown) logger.log(
                     i18next.t('runic.armor.absorption', {
                         damage: absorbed,
                         defaultValue: `Your armor pulses and absorbs the blow!`
@@ -6857,27 +6854,24 @@ export class Game {
             // max(1, percent * damage / 100)（C 整数除法）。
             const reprisalDmg = Math.max(1, Math.trunc((armorReprisalPercent(netEnch) * incomingDamage) / 100));
             attacker.takeDamage(reprisalDmg, true);
-            armor.runicKnown = true;
-            logger.log(
-                i18next.t('runic.armor.reprisal', {
-                    target: attacker.name,
-                    damage: reprisalDmg,
-                    defaultValue: `Your armor retaliates with ${reprisalDmg} damage to ${attacker.name}!`
-                }),
-                '#ff8844'
-            );
+            if (canSeeMonster(this.player, this.grid, attacker)) {
+                armor.runicKnown = true;
+                logger.log(
+                    i18next.t('runic.armor.reprisal', {
+                        target: attacker.name,
+                        damage: reprisalDmg,
+                        defaultValue: `Your armor retaliates with ${reprisalDmg} damage to ${attacker.name}!`
+                    }), '#ff8844');
+            }
             this.spawnFloatingText(`-${reprisalDmg}`, attacker.loc.x, attacker.loc.y, 0xff8844);
             return remainingDamage;
         }
 
-        if (armor.runicType === 'immunity') {
-            // CE Combat.c:1058-1063（A_IMMUNITY）：被动常驻、无概率判定，仅当攻击者
-            // 属于护甲的 vorpalEnemy 类别时伤害归零（monsterIsInClass）。web 物品模型
-            // 尚无 vorpalEnemy 字段（本轮不可改 Item.ts），类别门无法落地——保留全额
-            // 抵挡效果，仅移除恒真的 randPercent(100)（类别判定差距见报告）。
+        if (armor.runicType === 'immunity' && monsterIsInClass(attacker.typeId, armor.vorpalEnemy)) {
             prevent(incomingDamage);
+            const wasKnown = armor.runicKnown;
             armor.runicKnown = true;
-            logger.log(
+            if (!wasKnown) logger.log(
                 i18next.t('runic.armor.immunity', {
                     target: attacker.name,
                     defaultValue: `Your armor's immunity protects you from the ${attacker.name}!`
@@ -6885,6 +6879,27 @@ export class Game {
                 '#ffff44'
             );
             return remainingDamage;
+        }
+        if (armor.runicType === 'burden' && rng.randPercent(10)) {
+            armor.strengthRequired = (armor.strengthRequired ?? 0) + 1;
+            armor.runicKnown = true;
+            logger.log(i18next.t('runic.armor.burden', { name: armor.displayName,
+                defaultValue: `Your ${armor.displayName} suddenly feels heavier!` }), '#ff8888');
+            return remainingDamage;
+        }
+        if (armor.runicType === 'vulnerability') {
+            const wasKnown = armor.runicKnown;
+            armor.runicKnown = true;
+            if (!wasKnown) logger.log(i18next.t('runic.armor.vulnerability', { name: armor.displayName,
+                defaultValue: `Your ${armor.displayName} pulses and you are wracked with pain!` }), '#ff8888');
+            return remainingDamage * 2;
+        }
+        if (armor.runicType === 'immolation' && rng.randPercent(10)) {
+            armor.runicKnown = true;
+            logger.log(i18next.t('runic.armor.immolation', { name: armor.displayName,
+                defaultValue: `Flames suddenly explode out of your ${armor.displayName}!` }), '#ff8844');
+            spawnDungeonFeature(this.grid, this.player.loc.x, this.player.loc.y,
+                ARMOR_IMMOLATION_FEATURE, false);
         }
         return remainingDamage;
     }

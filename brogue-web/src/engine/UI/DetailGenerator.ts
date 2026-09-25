@@ -62,13 +62,17 @@ const weaponRunicDescriptions: Record<string, string> = {
 
 const armorRunicDescriptions: Record<string, string> = {
     reflection: '受到法术射线攻击时有概率将射线反射回去。',
-    dampening: '受击时有概率回复少量生命值。',
-    mutuality: '受到近战攻击时，将部分伤害分摊给你身旁的其他敌人。',
+    dampening: '免疫爆炸伤害。',
+    mutuality: '受到武器攻击时，将伤害分摊给你身旁的其他敌人。',
     respiration: '免疫有害气体的影响。',
     vitality: '持续缓慢再生生命值。',
-    absorption: '受到近战攻击时吸收部分伤害；吸收量足够时可完全抵挡。',
+    absorption: '受到武器攻击时吸收部分伤害；吸收量足够时可完全抵挡。',
     reprisal: '受到近战攻击时，对攻击者造成一定比例的反击伤害。',
-    immunity: '受到攻击时抵挡该次伤害。',
+    immunity: '免疫指定怪物类别的武器攻击。',
+    multiplicity: '受到近战攻击时有概率生成攻击者的短命谱影。',
+    burden: '受击时有概率增加护甲力量需求。',
+    vulnerability: '受到武器攻击时承受双倍伤害。',
+    immolation: '受击时有概率在身边引发火焰。',
 };
 
 // ---------- Monster ability / behavior description ----------

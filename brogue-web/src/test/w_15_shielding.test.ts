@@ -45,6 +45,7 @@ const zap = (g: Game, E = 2, aim = { x: 8, y: 5 }) => g.zapBoltFromPlayer(config
 function armor(g: Game, type: string, E = 3) {
     const a = new Item('armor', ']', 0xffffff, ItemCategory.ARMOR);
     a.runicType = type; a.enchantment = E; a.strengthRequired = g.player.strength;
+    if (type === 'immunity') a.vorpalEnemy = 'animal'; // CE Combat.c:1058 类别门（夹具攻击者为 rat）
     g.player.equippedArmor = a; return a;
 }
 function live() {

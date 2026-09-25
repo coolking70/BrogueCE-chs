@@ -438,6 +438,11 @@ export function weaponImageCount(enchantment: number): number {
     return Math.max(1, Math.min(7, Math.trunc(enchantment / 3)));
 }
 
+/** CE PowerTables.c:108: clamp((int)(netEnchant / 3), 1, 5). */
+export function armorImageCount(enchantment: number): number {
+    return Math.max(1, Math.min(5, Math.trunc(enchantment / 3)));
+}
+
 /** CE PowerTables.c:104. */
 export function weaponImageDuration(_enchantment: number): number { return 3; }
 
