@@ -1,0 +1,83 @@
+--- Game.ts
++++ Game.ts
+@@ -11,7 +11,7 @@
+  * Main game state and orchestration
+  */
+ import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer, DRAW_PRIORITY, type Cell } from '../Map/Grid';
+-import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP } from '../Map/TerrainCatalog';
++import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_DIAGONAL_MOVEMENT, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_ON_CREATURE, T_IS_DF_TRAP } from '../Map/TerrainCatalog';
+ import { isPathingBlocker } from '../Map/TerrainCatalog';
+ // B-4b：物品落位热力图与食物落位原语（CE Items.c:463-535 / Architect.c:171,3822）
+ import { ItemSpawnHeatMap, passableArcCount, randomMatchingLocation } from '../Items/ItemSpawnHeatMap';
+@@ -1751,23 +1751,22 @@
+      * 不可穿过），结果格按 T_PATHING_BLOCKER + 三项占用旗标过滤，取
+      * "路径距离最小"的合格格；并列时 CE 用 rand_range 随机取一，web 同
+      *（rng）。CE 末端还有一重路径无关的 getQualifyingLocNear 兜底，web 以
+-     * 切比雪夫环搜索近似（同旗标面、同随机取一）。
++     * 切比雪夫环搜索（同旗标面、同随机取一）。
+      */
+     private findQualifyingPathLocNear(target: Pos): Pos | null {
++        // CE Grid.c:300：首格合格立即返回，不分配网格、不耗骰。DL 是 PB 的子集。
++        if (this.entryQualifiesForPlacement(target.x, target.y)) return { ...target };
+         const width = this.grid.width;
+         const height = this.grid.height;
+         const cost = allocShortGrid(width, height, 1);
+         const dist = allocShortGrid(width, height, MAX_DISTANCE);
+         for (let x = 0; x < width; x++) {
+             for (let y = 0; y < height; y++) {
+-                const cell = this.grid.getCell(x, y);
+-                // CE T_DIVIDES_LEVEL（Rogue.h:1949）：不可作为路径的地形
+-                // （F-1：跨层判定，火盖在深水/陷阱上不改变本判据——CE 全层 OR）
+-                const dividesLevel = !cell || !cell.isPassable ||
+-                    cell.layers.includes(TerrainType.LAVA) ||
+-                    cell.layers.includes(TerrainType.WATER_DEEP) ||
+-                    cell.layers.includes(TerrainType.TRAP);
+-                if (dividesLevel) cost[x]![y] = -1; // CE PDS_FORBIDDEN
++                const flags = cellTerrainFlags(this.grid, x, y);
++                // CE Grid.c:316–320：DL 禁路径；D 单独覆盖成 O，不能把 F 当墙角。
++                // 火和硫矿不在 DL 内，即使它们不合格为 PB 终点，也可作为路径。
++                if (flags & T_DIVIDES_LEVEL) cost[x]![y] = -1;
++                if (flags & T_OBSTRUCTS_DIAGONAL_MOVEMENT) cost[x]![y] = -2;
+             }
+         }
+         // CE Grid.c:324-326：源格距离 1、代价强制 1（楼梯可作路径起点）
+@@ -1778,8 +1777,8 @@
+ 
+         let best = MAX_DISTANCE;
+         const ties: Pos[] = [];
+-        for (let x = 1; x < width - 1; x++) {
+-            for (let y = 1; y < height - 1; y++) {
++        for (let x = 0; x < width; x++) {
++            for (let y = 0; y < height; y++) {
+                 const d = dist[x]![y]!;
+                 if (d <= 0 || d >= MAX_DISTANCE || d > best) continue;
+                 if (!this.entryQualifiesForPlacement(x, y)) continue;
+@@ -1791,24 +1790,24 @@
+             }
+         }
+         if (ties.length > 0) {
+-            return ties.length === 1 ? ties[0]! : ties[rng.randRange(0, ties.length - 1)]!;
++            return ties[rng.randRange(0, ties.length - 1)]!;
+         }
+         // CE Grid.c:347-356 的 getQualifyingLocNear 兜底（路径无关）：
+         // 切比雪夫环由近及远，首个含合格格的环内随机取一。
+-        for (let r = 1; r <= Math.max(width, height); r++) {
++        for (let r = 0; r < Math.max(width, height); r++) {
+             const ring: Pos[] = [];
+             for (let dx = -r; dx <= r; dx++) {
+                 for (let dy = -r; dy <= r; dy++) {
+                     if (Math.max(Math.abs(dx!), Math.abs(dy!)) !== r) continue;
+                     const x = target.x + dx!;
+                     const y = target.y + dy!;
+-                    if (x <= 0 || y <= 0 || x >= width - 1 || y >= height - 1) continue;
++                    if (x < 0 || y < 0 || x >= width || y >= height) continue;
+                     if (!this.entryQualifiesForPlacement(x, y)) continue;
+                     ring.push({ x, y });
+                 }
+             }
+             if (ring.length > 0) {
+-                return ring.length === 1 ? ring[0]! : ring[rng.randRange(0, ring.length - 1)]!;
++                return ring[rng.randRange(1, ring.length) - 1]!;
+             }
+         }
+         return null;

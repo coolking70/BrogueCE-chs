@@ -1,0 +1,75 @@
+
+<--- Last few GCs --->
+
+[56876:0xb9740c000]     9519 ms: Scavenge (during sweeping) 4085.1 (4089.0) -> 4082.6 (4089.5) MB, pooled: 0.0 MB, 1.59 / 0.00 ms (average mu = 0.224, current mu = 0.177) allocation failure; 
+[56876:0xb9740c000]    10167 ms: Mark-Compact (reduce) 4091.0 (4097.0) -> 4086.4 (4090.3) MB, pooled: 0.0 MB, 534.11 / 0.00 ms (+ 3.1 ms in 63 steps since start of marking, biggest step 2.1 ms, walltime since start of marking 541 ms) (average mu = 0.206, 
+FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory
+----- Native stack trace -----
+
+ 1: 0x106634d5c node::OOMErrorHandler(char const*, v8::OOMDetails const&) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+ 2: 0x1067e063c v8::Utils::ReportOOMFailure(v8::internal::Isolate*, char const*, v8::OOMDetails const&) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+ 3: 0x1067e05f4 v8::internal::V8::FatalProcessOutOfMemory(v8::internal::Isolate*, char const*, v8::OOMDetails const&) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+ 4: 0x10698e91c v8::internal::Heap::ShouldOptimizeForLoadTime() const [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+ 5: 0x106990f2c v8::internal::Heap::OldGenerationConsumedBytes() const [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+ 6: 0x106990dd4 v8::internal::Heap::RecomputeLimits(v8::internal::GarbageCollector, v8::base::TimeTicks) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+ 7: 0x10699e7a8 v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags, v8::internal::PerformHeapLimitCheck)::$_1::operator()() const [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+ 8: 0x10699e44c void heap::base::Stack::SetMarkerAndCallbackImpl<v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags, v8::internal::PerformHeapLimitCheck)::$_1>(heap::base::Stack*, void*, void const*) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+ 9: 0x106fc224c PushAllRegistersAndIterateStack [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+10: 0x10698ce18 v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags, v8::internal::PerformHeapLimitCheck) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+11: 0x1069853b4 std::__1::invoke_result<v8::internal::HeapAllocator::AllocateRawWithRetryOrFailSlowPath(int, v8::internal::AllocationType, v8::internal::AllocationOrigin, v8::internal::AllocationAlignment, v8::internal::AllocationHint)::$_0&>::type v8::internal::HeapAllocator::CollectGarbageAndRetryAllocation<v8::internal::HeapAllocator::AllocateRawWithRetryOrFailSlowPath(int, v8::internal::AllocationType, v8::internal::AllocationOrigin, v8::internal::AllocationAlignment, v8::internal::AllocationHint)::$_0&>(v8::internal::HeapAllocator::AllocateRawWithRetryOrFailSlowPath(int, v8::internal::AllocationType, v8::internal::AllocationOrigin, v8::internal::AllocationAlignment, v8::internal::AllocationHint)::$_0&, v8::internal::AllocationType) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+12: 0x106984220 v8::internal::HeapAllocator::AllocateRawWithRetryOrFailSlowPath(int, v8::internal::AllocationType, v8::internal::AllocationOrigin, v8::internal::AllocationAlignment, v8::internal::AllocationHint) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+13: 0x10696c59c v8::internal::Factory::NewFillerObject(int, v8::internal::AllocationAlignment, v8::internal::AllocationType, v8::internal::AllocationOrigin) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+14: 0x106c7cdd0 v8::internal::Runtime_AllocateInYoungGeneration(int, unsigned long*, v8::internal::Isolate*) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+15: 0x106455474 Builtins_CEntry_Return1_ArgvOnStack_NoBuiltinExit [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+16: 0x136a88628 
+17: 0x136a82c1c 
+18: 0x1063b55ec Builtins_InterpreterEntryTrampoline [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+19: 0x1063b55ec Builtins_InterpreterEntryTrampoline [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+20: 0x1366cac60 
+21: 0x1366d4780 
+22: 0x1064c86b0 Builtins_PromiseConstructor [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+23: 0x1063b1c4c Builtins_JSBuiltinsConstructStub [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+24: 0x1366d4b0c 
+25: 0x1366ca314 
+26: 0x1064c86b0 Builtins_PromiseConstructor [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+27: 0x1063b1c4c Builtins_JSBuiltinsConstructStub [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+28: 0x1366ca90c 
+29: 0x1366caa14 
+30: 0x136a37754 
+31: 0x1367cab54 
+32: 0x1366cab0c 
+33: 0x13675468c 
+34: 0x136768918 
+35: 0x136a62960 
+36: 0x1063f34c4 Builtins_AsyncFunctionAwaitResolveClosure [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+37: 0x1064ca058 Builtins_PromiseFulfillReactionJob [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+38: 0x1063e2920 Builtins_RunMicrotasks [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+39: 0x1063b2850 Builtins_JSRunMicrotasksEntry [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+40: 0x1068f6e18 v8::internal::(anonymous namespace)::Invoke(v8::internal::Isolate*, v8::internal::(anonymous namespace)::InvokeParams const&) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+41: 0x1068f74c8 v8::internal::(anonymous namespace)::InvokeWithTryCatch(v8::internal::Isolate*, v8::internal::(anonymous namespace)::InvokeParams const&) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+42: 0x1068f75b8 v8::internal::Execution::TryRunMicrotasks(v8::internal::Isolate*, v8::internal::MicrotaskQueue*) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+43: 0x1069197c8 v8::internal::MicrotaskQueue::RunMicrotasks(v8::internal::Isolate*) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+44: 0x1069195e4 v8::internal::MicrotaskQueue::PerformCheckpointInternal(v8::Isolate*) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+45: 0x1063b7298 Builtins_CallApiCallbackGeneric [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+46: 0x136677014 
+47: 0x1063b296c Builtins_JSEntryTrampoline [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+48: 0x1063b2610 Builtins_JSEntry [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+49: 0x1068f6e48 v8::internal::(anonymous namespace)::Invoke(v8::internal::Isolate*, v8::internal::(anonymous namespace)::InvokeParams const&) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+50: 0x1068f682c v8::internal::Execution::Call(v8::internal::Isolate*, v8::internal::DirectHandle<v8::internal::Object>, v8::internal::DirectHandle<v8::internal::Object>, v8::base::Vector<v8::internal::DirectHandle<v8::internal::Object> const>) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+51: 0x107500b9c v8::Function::Call(v8::Isolate*, v8::Local<v8::Context>, v8::Local<v8::Value>, int, v8::Local<v8::Value>*) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+52: 0x10658cc30 node::InternalCallbackScope::Close() [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+53: 0x10658ceb4 node::InternalMakeCallback(node::Environment*, v8::Local<v8::Object>, v8::Local<v8::Object>, v8::Local<v8::Function>, int, v8::Local<v8::Value>*, node::async_context, v8::Local<v8::Value>) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+54: 0x106598d70 node::AsyncWrap::MakeCallback(v8::Local<v8::Function>, int, v8::Local<v8::Value>*) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+55: 0x1066ea7e4 node::StreamBase::CallJSOnreadMethod(long, v8::Local<v8::ArrayBuffer>, unsigned long, node::StreamBase::StreamBaseJSChecks) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+56: 0x1066ebb40 node::EmitToJSStreamListener::OnStreamRead(long, uv_buf_t const&) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+57: 0x1066ee268 node::LibuvStreamWrap::OnUvRead(long, uv_buf_t const*) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+58: 0x1066ee66c node::LibuvStreamWrap::ReadStart()::$_1::__invoke(uv_stream_s*, long, uv_buf_t const*) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+59: 0x1023d7668 uv__stream_io [/opt/homebrew/Cellar/libuv/1.51.0/lib/libuv.1.0.0.dylib]
+60: 0x1023dce28 uv__io_poll [/opt/homebrew/Cellar/libuv/1.51.0/lib/libuv.1.0.0.dylib]
+61: 0x1023cea00 uv_run [/opt/homebrew/Cellar/libuv/1.51.0/lib/libuv.1.0.0.dylib]
+62: 0x10658d5c8 node::SpinEventLoopInternal(node::Environment*) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+63: 0x10665fe60 node::NodeMainInstance::Run(node::ExitCode*, node::Environment*) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+64: 0x10665fb94 node::NodeMainInstance::Run() [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+65: 0x10660df30 node::Start(int, char**) [/opt/homebrew/Cellar/node/25.2.1/lib/libnode.141.dylib]
+66: 0x1881084e4 start [/usr/lib/dyld]
+JSON report written to /Users/coolking70/.codex/worktrees/35c0/brogue/brogue-web/ai_docs/reports/u-18a-2-evidence/s4b-unit.json

@@ -22,8 +22,9 @@
  *     CE pmap 的 machineNumber != 0）；
  *   - T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER 与泛洪的旗标检查按 CE
  *     cellHasTerrainFlag 语义取**四层并集**（TerrainCatalog.TERRAIN_FLAGS）；
- *   - 泛洪的 secretPass（Monsters.c:3672）投影秘密层的直接发现后继旗标；
- *     与玩家记忆无关。暗杆发现后仍挡 P，不能当作密门穿过。
+ *   - 泛洪的 isPassableOrSecretDoor（Monsters.c:3672）里 CE 还要求
+ *     `!(discoveredTerrainFlagsAtLoc & T_OBSTRUCTS_PASSABILITY)`——生成期
+ *     玩家记忆为空、discovered == 当前地形，该条件退化为 TM_IS_SECRET 本身。
  *
  * 确定性：build / coolHeatMapAt / passableArcCount 不消费 RNG；
  * getItemSpawnLoc 每次恰消费 1 次掷骰（CE rand_range(1, totalHeat) 同形）。
@@ -44,7 +45,6 @@ import {
 } from '../Map/TerrainCatalog';
 import { analyzeLoopMap, blocksPathing } from '../Map/LoopMap';
 import { terrainAllowsMove } from '../Map/Connectivity';
-import { terrainPassableOrSecretDoor } from '../Map/TerrainRules';
 import { rng } from '../Random';
 import type { Pos } from '../../types';
 
@@ -87,11 +87,13 @@ function cellMechFlagUnion(cell: Cell): number {
 }
 
 /**
- * CE Monsters.c:3672；只读直接 discover DF 的后继，不执行发现或读取记忆。
+ * CE Monsters.c:3672 isPassableOrSecretDoor（生成期口径，见文件头）：
+ * 不挡通行，或（TM_IS_SECRET 且未揭示为阻挡——生成期恒未揭示）。
  */
 function isPassableOrSecretDoor(cell: Cell): boolean {
     if (!cell) return false;
-    return terrainPassableOrSecretDoor(cell);
+    if ((cellTerrainFlagUnion(cell) & T_OBSTRUCTS_PASSABILITY) === 0) return true;
+    return (cellMechFlagUnion(cell) & TM_IS_SECRET) !== 0;
 }
 
 /** CE Architect.c:48 cellIsPassableOrDoor（passableArcCount 的邻格判据）。 */

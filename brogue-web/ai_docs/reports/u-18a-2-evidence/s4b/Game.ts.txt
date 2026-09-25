@@ -1454,15 +1454,8 @@ export class Game {
             // 补偿钥匙"一说；16 号的门与钥匙同 feature（keyLoc 绑定经领养链
             // 落地），不跳过会让它拿到两把钥匙（B-4b 防的"钥匙 ×2"回流）。
             if (mr.needsKey && !mr.generatedKey && mr.door && floorTiles.length > 0) {
-                // 保持牌堆逆序；仅取物品合格格，危险格仍留给其他消费者。
-                let keyIndex = floorTiles.length - 1;
-                while (keyIndex >= 0) {
-                    const p = floorTiles[keyIndex]!;
-                    if (!(cellTerrainFlags(this.grid, p.x, p.y) & (T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER))) break;
-                    keyIndex--;
-                }
-                const keyPos = keyIndex >= 0 ? floorTiles.splice(keyIndex, 1)[0]! : null;
-                const key = keyPos ? ItemLoader.spawnKey('iron_key', keyPos.x, keyPos.y) : null;
+                const keyPos = floorTiles.pop()!;
+                const key = ItemLoader.spawnKey('iron_key', keyPos.x, keyPos.y);
                 if (key) {
                     key.keyLoc = [{ loc: { x: mr.door.x, y: mr.door.y }, machine: mr.machineNumber, disposableHere: true }];
                     key.originDepth = depth;

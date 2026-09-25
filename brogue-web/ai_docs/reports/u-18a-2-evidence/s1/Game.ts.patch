@@ -1,0 +1,33 @@
+--- Game.ts
++++ Game.ts
+@@ -1722,11 +1722,10 @@
+     }
+ 
+     /**
+-     * P1-31：落位合格格判定。CE 两个旗标面（Rogue.h:1948）的 web 近似：
++     * P1-31 / U18a-2：落位合格格判定。CE 两个旗标面（Rogue.h:1948）：
+      *   - T_PATHING_BLOCKER = T_OBSTRUCTS_PASSABILITY | T_AUTO_DESCENT |
+      *     T_IS_DF_TRAP | T_LAVA_INSTA_DEATH | T_IS_DEEP_WATER | T_IS_FIRE |
+-     *     T_SPONTANEOUSLY_IGNITES —— web：!isPassable（墙/花岗岩/深渊/密门）
+-     *     或 LAVA / WATER_DEEP / TRAP / 燃烧中；
++     *     T_SPONTANEOUSLY_IGNITES —— 全层旗标并集，不读绘制投影或旧派生位；
+      *   - HAS_MONSTER → getMonsterAt；HAS_STAIRS → 楼梯地形；
+      *     IS_IN_MACHINE → machineCells（本层生成期数据）。
+      * 楼梯本身不含 T_PATHING_BLOCKER（Globals.c:333-334），故 HAS_STAIRS
+@@ -1735,13 +1734,9 @@
+     private entryQualifiesForPlacement(x: number, y: number): boolean {
+         const cell = this.grid.getCell(x, y);
+         if (!cell) return false;
+-        if (!cell.isPassable) return false;
+-        if (cell.terrain === TerrainType.LAVA ||
+-            cell.terrain === TerrainType.WATER_DEEP ||
+-            cell.terrain === TerrainType.TRAP ||
+-            cell.isBurning) return false;
+-        if (cell.terrain === TerrainType.STAIRS_UP ||
+-            cell.terrain === TerrainType.STAIRS_DOWN) return false;
++        if (cellTerrainFlags(this.grid, x, y) & T_PATHING_BLOCKER) return false;
++        if (cell.layers.includes(TerrainType.STAIRS_UP) ||
++            cell.layers.includes(TerrainType.STAIRS_DOWN)) return false;
+         if (this.getMonsterAt(x, y)) return false;
+         if (this.machineCells.has(y * DCOLS + x)) return false;
+         return true;

@@ -1,0 +1,13 @@
+src/engine/Core/Game.ts:1786:        scanner.batchScan(dist, cost, true); // CE dijkstraScan(grid, costMap, true)
+src/engine/Combat/MonsterBlink.ts:177:    if (!diagonals) { new DijkstraMap(g.grid.width, g.grid.height).batchScan(map, costs, false); return; }
+src/engine/Combat/MonsterBlink.ts:293:    // destination. batchScan normally seeds only positive costs; allow this
+src/engine/Generator/Architect.ts:294:            scanner.batchScan(pathing, costs, false);
+src/engine/Generator/BlueprintEngine.ts:1927:        scanner.batchScan(dist, cost, false); // CE dijkstraScan(distanceMap, costMap, false)
+src/engine/Generator/BlueprintEngine.ts:1986:        // cost 为阻挡也入队；batchScan 只将正 cost 种子入队，故起点特判。
+src/engine/Generator/BlueprintEngine.ts:1992:        new DijkstraMap(DCOLS, DROWS).batchScan(dist, cost, false);
+src/engine/Map/Pathfinding.ts:68:    public calculateMap(grid: Grid, targetX: number, targetY: number, maxDistance: number = MAX_DISTANCE) {
+src/engine/Map/Pathfinding.ts:174:    public batchScan(distanceGrid: number[][], costGrid: number[][], useDiagonals: boolean, maxDistance: number = MAX_DISTANCE): void {
+src/engine/Map/SafetyMap.ts:147:    scanner.batchScan(safetyMap, playerCostMap, false);
+src/engine/Map/SafetyMap.ts:186:    scanner.batchScan(safetyMap, monsterCostMap, false);
+src/engine/Map/WaypointMap.ts:249:        this.scanner.batchScan(distance, cost, true);
+src/engine/Map/LoopMap.ts:131:                scanner.batchScan(pathMap, costMap, false);

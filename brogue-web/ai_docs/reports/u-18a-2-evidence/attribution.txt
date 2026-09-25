@@ -1,0 +1,76 @@
+[
+  {
+    stage: 's1',
+    previous: 's0',
+    changedLayers: 0,
+    fieldCounts: {},
+    baselineChangedLayers: 0
+  },
+  {
+    stage: 's2',
+    previous: 's1',
+    changedLayers: 1,
+    fieldCounts: { entries: 1, scans: 1 },
+    baselineChangedLayers: 0
+  },
+  {
+    stage: 's3',
+    previous: 's2',
+    changedLayers: 104,
+    fieldCounts: { scans: 104, rng: 21, entries: 21, terrain: 17, heat: 20 },
+    baselineChangedLayers: 0
+  },
+  {
+    stage: 's4a',
+    previous: 's3',
+    changedLayers: 0,
+    fieldCounts: {},
+    baselineChangedLayers: 0
+  },
+  {
+    stage: 's4b',
+    previous: 's4a',
+    changedLayers: 0,
+    fieldCounts: {},
+    baselineChangedLayers: 0
+  },
+  {
+    stage: 's4c',
+    previous: 's4b',
+    changedLayers: 0,
+    fieldCounts: {},
+    baselineChangedLayers: 0
+  }
+]
+{
+  '    at loopDoorSiteScan (bundle)': {
+    calls: 3950,
+    identicalInput: 3950,
+    outputChangedForIdenticalInput: 0,
+    allOutputsEqual: 3950
+  },
+  '    at BlueprintEngine.fillAreaInterior (bundle)': {
+    calls: 396,
+    identicalInput: 396,
+    outputChangedForIdenticalInput: 0,
+    allOutputsEqual: 396
+  },
+  '    at WaypointSystem.refreshWaypoint (bundle)': {
+    calls: 3654,
+    identicalInput: 3654,
+    outputChangedForIdenticalInput: 3585,
+    allOutputsEqual: 69
+  },
+  '    at BlueprintEngine.fillVestibuleInterior (bundle)': {
+    calls: 31,
+    identicalInput: 31,
+    outputChangedForIdenticalInput: 0,
+    allOutputsEqual: 31
+  },
+  '    at _Game.findQualifyingPathLocNear (bundle)': {
+    calls: 1,
+    identicalInput: 1,
+    outputChangedForIdenticalInput: 1,
+    allOutputsEqual: 0
+  }
+}

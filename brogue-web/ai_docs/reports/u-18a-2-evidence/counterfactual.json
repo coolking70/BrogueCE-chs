@@ -1,0 +1,44 @@
+[
+  {
+    "current": "s1",
+    "previous": "s0",
+    "reversedPatchReproducesPrevious": true,
+    "negativeGuard": "step 1",
+    "caught": 10
+  },
+  {
+    "current": "s2",
+    "previous": "s1",
+    "reversedPatchReproducesPrevious": true,
+    "negativeGuard": "step 2",
+    "caught": 4
+  },
+  {
+    "current": "s3",
+    "previous": "s2",
+    "reversedPatchReproducesPrevious": true,
+    "negativeGuard": "step 3",
+    "caught": 3
+  },
+  {
+    "current": "s4a",
+    "previous": "s3",
+    "reversedPatchReproducesPrevious": true,
+    "negativeGuard": "step 4a",
+    "caught": 1
+  },
+  {
+    "current": "s4b",
+    "previous": "s4a",
+    "reversedPatchReproducesPrevious": true,
+    "negativeGuard": "step 4b",
+    "caught": 1
+  },
+  {
+    "current": "s4c",
+    "previous": "s4b",
+    "reversedPatchReproducesPrevious": true,
+    "negativeGuard": "step 4c",
+    "caught": 1
+  }
+]

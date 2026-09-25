@@ -1,0 +1,31 @@
+--- Pathfinding.ts
++++ Pathfinding.ts
+@@ -119,7 +119,9 @@
+                 if (dir >= 4) {
+                     const way1 = this.getCell(head.x + dx[dir]!, head.y);
+                     const way2 = this.getCell(head.x, head.y + dy[dir]!);
+-                    if ((way1 && way1.cost === PDS_OBSTRUCTION) || (way2 && Math.abs(way2.cost) === PDS_OBSTRUCTION)) {
++                    // CE uses -2. calculateMap and legacy callers also supply the
++                    // positive 30000 sentinel; FORBIDDEN (-1/29999) is not a corner wall.
++                    if ([way1, way2].some(way => way && (way.cost === -2 || way.cost === PDS_OBSTRUCTION))) {
+                         continue;
+                     }
+                 }
+@@ -167,7 +169,7 @@
+      *   - 边界格代价强制 PDS_OBSTRUCTION（pdsBatchInput 的边框特例）；
+      *   - 种子值 < maxDistance 且代价 > 0 才进初始队列（30000 的格子靠松弛
+      *     再入队，仅是队列规模优化）。
+-     * 仅新增方法，不改动既有 calculateMap/updateMap 语义（既有调用方不受影响）。
++     * U18a-2：兼容负成本和旧正哨兵；两种阻挡输入都不能播种，O 才挡斜角。
+      */
+     public batchScan(distanceGrid: number[][], costGrid: number[][], useDiagonals: boolean, maxDistance: number = MAX_DISTANCE): void {
+         this.clear(maxDistance);
+@@ -181,7 +183,7 @@
+                     ? -2 // CE PDS_OBSTRUCTION：边框一律不可通行
+                     : costGrid[x]![y]!;
+                 link.cost = cost;
+-                if (cost > 0 && link.distance < maxDistance) {
++                if (cost > 0 && cost < PDS_FORBIDDEN && link.distance < maxDistance) {
+                     this.insertSorted(link);
+                 }
+             }

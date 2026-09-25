@@ -1,0 +1,26 @@
+--- Game.ts
++++ Game.ts
+@@ -1371,16 +1371,19 @@
+         }
+ 
+         // Spawn Amulet of Yendor on bottom floor
+-        if (this.depth === 26 && floorTiles.length > 0) {
++        // U18a-2：物品旁路只筛自己的候选，不改楼梯/horde 共用牌堆的资格。
++        const amuletTiles = this.depth === 26 ? floorTiles.filter(p =>
++            !(cellTerrainFlags(this.grid, p.x, p.y) & (T_OBSTRUCTS_ITEMS | T_PATHING_BLOCKER))) : [];
++        if (this.depth === 26 && amuletTiles.length > 0) {
+             const hasAmuletInWorld = this.items.some(i => i.category === ItemCategory.AMULET && (i as any).identityId === 'amulet_of_yendor');
+             const hasAmuletInInv = this.player.inventory.items.some(i => i.category === ItemCategory.AMULET && (i as any).identityId === 'amulet_of_yendor');
+             if (!hasAmuletInWorld && !hasAmuletInInv) {
+-                const amuletPosIdx = rng.randRange(0, floorTiles.length - 1);
+-                const amuletPos = floorTiles[amuletPosIdx]!;
++                const amuletPosIdx = rng.randRange(0, amuletTiles.length - 1);
++                const amuletPos = amuletTiles[amuletPosIdx]!;
+                 const amulet = ItemLoader.spawnAmulet('amulet_of_yendor', amuletPos.x, amuletPos.y);
+                 if (amulet) {
+                     this.items.push(amulet);
+-                    floorTiles.splice(amuletPosIdx, 1);
++                    floorTiles.splice(floorTiles.indexOf(amuletPos), 1);
+                 }
+             }
+         }
