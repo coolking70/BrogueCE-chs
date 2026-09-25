@@ -9,6 +9,7 @@ import { Creature } from '../../entities/Creature';
 import { Player } from '../../entities/Player';
 import { Monster, MonsterState } from '../../entities/Monster';
 import type { Item } from '../Items/Item';
+import { ringBonus } from '../Items/RingBonuses';
 import { rng } from '../Random';
 import {
     netEnchant,
@@ -285,6 +286,10 @@ export class CombatSystem {
             CombatSystem.transferMonsterHealth(attacker, applyTo, hpDamage);
             applyTo.takeDamage(hpDamage, true); // already passed through the shield exactly once
             if (poisonDuration > 0) applyTo.addPoison(poisonDuration, 1);
+        } else {
+            // CE inflictDamage still applies the ring's minimum ±1 on a hit
+            // whose weapon damage was reduced to zero.
+            CombatSystem.transferMonsterHealth(attacker, applyTo, 0);
         }
 
         if (isWeaponAttack && defender.hp > 0 && damage > 0 && attacker instanceof Monster && attacker.hasAbility('MA_CAUSES_WEAKNESS')
@@ -300,9 +305,18 @@ export class CombatSystem {
      * subtracting HP. The original attacker owns reflected damage; no maxHP cap.
      * Environment/poison ticks have no attacker and do not call this helper. */
     public static transferMonsterHealth(attacker: Creature, defender: Creature, hpDamage: number): void {
-        if (!(attacker instanceof Monster) || !attacker.hasAbility('MA_TRANSFERENCE')
-            || (defender instanceof Monster && (defender.hasCEBehavior('MONST_INANIMATE') || defender.isInvulnerable()))) return;
-        attacker.hp += Math.trunc(Math.min(hpDamage, defender.hp) * (attacker.isAlly ? 4 : 9) / 10);
+        if (defender instanceof Monster && (defender.hasCEBehavior('MONST_INANIMATE') || defender.isInvulnerable())) return;
+        const dealt = Math.min(hpDamage, defender.hp);
+        if (attacker instanceof Player) {
+            const bonus = ringBonus(attacker.rings(), 'ring_of_transference');
+            if (!bonus) return;
+            const amount = Math.trunc(dealt * bonus / 20);
+            const transfer = amount || (bonus > 0 ? 1 : -1);
+            if (transfer < 0) attacker.takeDamage(-transfer, true);
+            else attacker.hp += transfer;
+        } else if (attacker instanceof Monster && attacker.hasAbility('MA_TRANSFERENCE')) {
+            attacker.hp += Math.trunc(dealt * (attacker.isAlly ? 4 : 9) / 10);
+        }
     }
 
     /**
@@ -385,7 +399,9 @@ export class CombatSystem {
             damage = Math.round(damage * damageFraction(enchant));
         }
 
-        defender.takeDamage(damage);
+        const hpDamage = defender.absorbShieldDamage(damage);
+        CombatSystem.transferMonsterHealth(thrower, defender, hpDamage);
+        defender.takeDamage(hpDamage, true);
         const killed = defender.hp <= 0;
         defender.enrageAfterAttack();
 

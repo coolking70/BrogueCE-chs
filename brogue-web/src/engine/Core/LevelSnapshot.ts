@@ -3,7 +3,7 @@ import { Grid, type Cell, type TerrainType } from '../Map/Grid';
 import { copyFields } from './EntitySnapshot';
 
 export const CELL_FIELDS = [
-    'x', 'y', 'layers', 'char', 'color', 'volume', 'isExplored', 'isVisible',
+    'x', 'y', 'layers', 'char', 'color', 'volume', 'isExplored', 'isVisible', 'isClairvoyantVisible',
     'hasMemory', 'rememberedTerrain', 'rememberedAppearance', 'rememberedLayers', 'rememberedItem', 'rememberedItemCategory',
     'isMagicMapped', 'rememberedTerrainFlags', 'rememberedTMFlags', 'knownTrapFree', 'rememberedFlags',
     'light', 'isPassable', 'isOpaque', 'exposedToFire', 'trapType',

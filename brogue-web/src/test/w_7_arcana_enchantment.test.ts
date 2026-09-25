@@ -241,7 +241,7 @@ describe('W-7 equipment boundary and UI source coverage (S, no Vue import edge)'
         expect({ ...target }).toEqual(expected);
         expect(JSON.stringify(rng)).toBe(expectedRng);
     });
-    it('arcana alternative never invokes equipment 20% rune path; spare gear/rings/charms remain outside scope', () => {
+    it('arcana alternative never invokes equipment 20% rune path; spare gear/charms remain outside scope', () => {
         const { game, scroll, items: [item] } = setup(() => [staff()]);
         const gear = ItemLoader.spawnWeapon('dagger', 0, 0)!;
         game.player.inventory.items.push(gear);
@@ -253,7 +253,8 @@ describe('W-7 equipment boundary and UI source coverage (S, no Vue import edge)'
         expect(JSON.stringify(gear)).toBe(gearBefore);
         game.player.equippedWeapon = null;
         expect(game.canEnchantTarget(gear)).toBe(false);
-        for (const category of [ItemCategory.RING, ItemCategory.CHARM]) {
+        // U15b: CE Items.c:7839-7860 explicitly admits rings for enchanting.
+        for (const category of [ItemCategory.CHARM]) {
             const other = new Item('other', '=', 0, category);
             game.player.inventory.items.push(other);
             expect(game.canEnchantTarget(other)).toBe(false);

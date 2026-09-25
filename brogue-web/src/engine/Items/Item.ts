@@ -79,6 +79,8 @@ export class Item implements Entity {
     public isProtected: boolean = false;
     /** Staff E (CE enchant1); independent of remaining charges. W-5 initializes it. */
     public enchantment: number = 0;
+    /** CE timesEnchanted: caps a positive unidentified ring's effective enchant. */
+    public timesEnchanted: number = 0;
     public runicType?: string;
     public runicKnown: boolean = false;
     /** W-5 schema marker: absent in legacy saves whose staff E was a placeholder. */

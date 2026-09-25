@@ -46,6 +46,7 @@ import { ItemLoader } from '../Items/ItemLoader';
 import { canEnchantArcana, enchantArcana } from '../Items/ArcanaEnchantment';
 import { charmEffectDuration, charmHealing, charmProtection, charmRechargeDelay, isCharmKind } from '../Items/CharmModel';
 import { equippedWisdomBonus, tickStaffRecharge, rechargeStaffFully } from '../Items/ArcanaRecharge';
+import { ringBonus } from '../Items/RingBonuses';
 import { rng, Random, RNGType, type RandomState } from '../Random';
 import { normalizeSeed, isSeed, type SeedInput } from '../Seed';
 import monsterData from '../../data/monsters.json';
@@ -2936,13 +2937,24 @@ export class Game {
             maintainShadows: true,
         });
 
-        // 4. VISIBLE（Movement.c:2582-2589）：IN_FIELD_OF_VIEW ∧ 光强和>50
-        //    （CE 还有 !CLAIRVOYANT_DARKENED——web 无该机制，登记）。
+        // CE Time.c:660-704: positive clairvoyance reveals nearby cells through
+        // walls; a cursed ring darkens the same radius even inside ordinary FOV.
+        const clairvoyance = ringBonus(this.player.rings(), 'ring_of_clairvoyance');
+        const clairvoyanceRadius = clairvoyance > 0 ? clairvoyance + 1
+            : clairvoyance < 0 ? 1 - clairvoyance : 0;
         for (let x = 0; x < DCOLS; x++) {
             for (let y = 0; y < DROWS; y++) {
                 const cell = this.grid.getCell(x, y);
                 if (!cell) continue;
-                const visible = mask[x]![y]! && lm.lightSumAt(x, y) > VISIBILITY_THRESHOLD;
+                const dx = this.player.loc.x - x, dy = this.player.loc.y - y;
+                const inClairvoyance = clairvoyanceRadius > 0
+                    && dx * dx + dy * dy < clairvoyanceRadius * clairvoyanceRadius + clairvoyanceRadius
+                    && (cell.layers[DungeonLayer.DUNGEON] !== TerrainType.GRANITE || cell.isExplored);
+                const darkened = clairvoyance < 0 && inClairvoyance
+                    && (dx !== 0 || dy !== 0);
+                const directlyVisible = mask[x]![y]! && lm.lightSumAt(x, y) > VISIBILITY_THRESHOLD && !darkened;
+                cell.isClairvoyantVisible = clairvoyance > 0 && inClairvoyance && !directlyVisible;
+                const visible = directlyVisible || cell.isClairvoyantVisible;
                 cell.isVisible = visible;
                 if (visible) {
                     cell.isExplored = true;
@@ -4785,7 +4797,9 @@ export class Game {
         const damage = staff ? rollStaffDamage(resolveCEBoltMagnitude(result.bolt.ceType!, {
             kind: 'staff', enchantment: item.enchantment,
         }).value, rng) : result.magnitude;
-        target.takeDamage(damage);
+        const hpDamage = target.absorbShieldDamage(damage);
+        if (result.caster) CombatSystem.transferMonsterHealth(result.caster, target, hpDamage);
+        target.takeDamage(hpDamage, true);
         if (target.hp > 0) {
             if (target instanceof Monster && (!target.isAlly || target.hasStatus('magical_fear'))
                 && (target.state !== MonsterState.FLEEING || target.hasStatus('magical_fear'))) {
@@ -5558,18 +5572,26 @@ export class Game {
         return true;
     }
 
-    /** Keep the legacy weapon-first equipped-gear rule, including its RNG, intact.
-     * W-7 adds pack arcana as alternatives; it does not add rings/charms/spare gear.
-     */
+    /** CE scroll of enchanting accepts any carried ring (Items.c:7839-7860). */
     public canEnchantTarget(item: Item): boolean {
         return this.player.inventory.items.includes(item) && (canEnchantArcana(item)
+            || item.category === ItemCategory.RING
             || item === (this.player.equippedWeapon ?? this.player.equippedArmor));
     }
 
     public chooseEnchantTarget(item: Item): boolean {
         if (!this.pendingEnchantment || this.isInputLocked() || this.isGameOver
             || this.player.hp <= 0 || !this.canEnchantTarget(item)) return false;
-        if (canEnchantArcana(item)) {
+        if (item.category === ItemCategory.RING) {
+            item.timesEnchanted++;
+            item.enchantment++;
+            item.isCursed = false;
+            if (this.player.rings().includes(item) && item.identityId === 'ring_of_clairvoyance') {
+                this.updateVision();
+            }
+            logger.log(i18next.t('item.arcana_enchanted', { name: item.displayName,
+                interpolation: { escapeValue: false }, defaultValue: 'Your {{name}} gleams briefly in the darkness.' }), '#99ddff');
+        } else if (canEnchantArcana(item)) {
             enchantArcana(item);
             logger.log(i18next.t('item.arcana_enchanted', { name: item.displayName,
                 interpolation: { escapeValue: false }, defaultValue: 'Your {{name}} gleams briefly in the darkness.' }), '#99ddff');
@@ -6288,20 +6310,9 @@ export class Game {
     private secretScanDepth: number = -1;
     private levelHasSecrets: boolean = false;
 
-    /**
-     * P1-42：CE rogue.awarenessBonus（Rogue.h:2541）的 web 对应。
-     * CE 由装备重算赋值（Items.c:8690 清零、8712 按 `20 × 感知戒指附魔`
-     * 累加），影响两处：每步自动搜索强度（Time.c:2547）与主动搜索下限
-     * （Time.c:2418/2427）。
-     *
-     * web 有 `ring_of_awareness` 物品（arcana.json:174），但现行语义是 web
-     * 自创的（telepathy 状态 + 幻觉/麻痹抗性，Game.ts syncEquipmentStatuses /
-     * getPlayerStatusResistance），**不是** CE 的 awarenessBonus——不在此强行
-     * 接线（一件物品挂两套语义正是 P1-38 教训）。故恒回 CE 基线值 0，
-     * 戒指接线登记为未实现（见 p1_42 报告）。
-     */
+    /** CE Items.c:8712: awareness contributes twenty points per effective E. */
     private awarenessBonus(): number {
-        return 0;
+        return 20 * ringBonus(this.player.rings(), 'ring_of_awareness');
     }
 
     /**
@@ -6322,8 +6333,7 @@ export class Game {
      *   - 刚休息过（本回合是等待）减半 Time.c:813-815  ✅ justRested 近似为
      *     "本回合输入是 wait"（CE IO.c:2521-2527 的 REST/PERIOD/NUMPAD5）
      *   - STATUS_AGGRAVATING          Time.c:817-819  ❌ 略去——web 无该状态
-     *   - 戒指 stealthBonus           Time.c:822-824  ❌ 略去——web 未实装
-     *     （ring_of_stealth 属 D2 自创池，无代码消费）
+     *   - 戒指 stealthBonus           Time.c:822-824  ✅ 有效附魔接入
      *   - 下限钳制 2 / 1              Time.c:826-829  ✅ 照抄
      */
     private calculateStealthRange(): number {
@@ -6353,6 +6363,10 @@ export class Game {
         }
 
         range += this.player.getStatusDuration('aggravating');
+        // CE Time.c:821-823 / updateRingBonuses: a negative stealth bonus is multiplied by four.
+        const stealth = ringBonus(this.player.rings(), 'ring_of_stealth');
+        range -= stealth < 0 ? stealth * 4 : stealth;
+
         if (range < 2 && !this.justRested) {
             range = 2;
         } else if (range < 1) {
@@ -6434,23 +6448,9 @@ export class Game {
         return true;
     }
 
-    private getPlayerStatusResistance(status: StatusId): { nullifyChance: number; durationReduction: number } {
+    private getPlayerStatusResistance(_status: StatusId): { nullifyChance: number; durationReduction: number } {
         let nullifyChance = 0;
         let durationReduction = 0;
-
-        // B-1b：双戒指槽都要吃 awareness 抗性（CE updateRingBonuses 遍历两槽）
-        for (const ring of this.player.rings()) {
-            const ringIdentity = (ring as any)?.identityId as string | undefined;
-            if (ringIdentity === 'ring_of_awareness') {
-                if (status === 'confused' || status === 'hallucinating') {
-                    nullifyChance += 0.25;
-                    durationReduction += 1;
-                } else if (status === 'paralyzed') {
-                    nullifyChance += 0.1;
-                    durationReduction += 1;
-                }
-            }
-        }
 
         if (this.player.equippedArmor?.runicType === 'dampening') {
             durationReduction += 1;
@@ -6525,15 +6525,7 @@ export class Game {
     }
 
     private syncEquipmentStatuses() {
-        // B-1b：双戒指槽（CE updateRingBonuses 语义，两槽都生效）
-        for (const ring of this.player.rings()) {
-            const identityId = (ring as any).identityId as string | undefined;
-            if (identityId === 'ring_of_awareness') {
-                this.player.setStatusDuration('telepathy', 2);
-            } else if (identityId === 'ring_of_regeneration') {
-                this.player.setStatusDuration('regenerating', 2);
-            }
-        }
+        // Ring effects are consumed directly from equipped effective enchantments.
     }
 
     private tryTriggerWeaponRunic(target: Monster, damage: number) {
@@ -8203,7 +8195,7 @@ export class Game {
         // ---- P1-42：每步低强度自动搜索（CE Time.c:2544-2552，主观玩家块、
         // 怪物推进之前）----
         // 站上任何一格只搜一次（Cell.autoSearched = CE SEARCHED_FROM_HERE，
-        // Rogue.h:1090）；awarenessBonus 基线 0（见该方法注记），强度 30、
+        // Rogue.h:1090）；awarenessBonus 由戒指有效附魔给出，基础强度 30、
         // 半径 3。其后的充能清零：主动搜索只在连续回合累积，上一动作不是
         // 搜索（justSearched 为 false）则充能作废——CE Time.c:2550-2552。
         {

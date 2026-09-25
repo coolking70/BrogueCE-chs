@@ -328,7 +328,7 @@
       "maxDepth": 26,
       "weight": 1,
       "color": 16766976,
-      "description": "佩戴时持续获得再生状态；当前恢复速度不随附魔等级变化。",
+      "description": "佩戴后按附魔等级改变自然生命恢复速度；负附魔会减慢恢复。",
       "frequency": 1
     },
     {
@@ -338,7 +338,7 @@
       "maxDepth": 26,
       "weight": 1,
       "color": 11184895,
-      "description": "佩戴时获得短暂心灵感应，并有机会抵抗混乱、幻觉或麻痹；目前不会提高搜索概率。",
+      "description": "佩戴后提高发现陷阱与密门的搜索强度；负附魔会削弱感知。",
       "frequency": 1
     },
     {
@@ -348,7 +348,7 @@
       "maxDepth": 26,
       "weight": 1,
       "color": 10066329,
-      "description": "目前佩戴后不会改变怪物察觉你的判定。",
+      "description": "佩戴后缩短敌人察觉你的距离；负附魔会显著扩大察觉距离。",
       "frequency": 1
     },
     {
@@ -358,7 +358,7 @@
       "maxDepth": 26,
       "weight": 1,
       "color": 16711680,
-      "description": "目前佩戴后不会从攻击中吸取生命值。",
+      "description": "对生物造成直接伤害时按附魔等级吸取生命；负附魔会反噬自己。",
       "frequency": 1
     },
     {
@@ -378,7 +378,7 @@
       "maxDepth": 26,
       "weight": 1,
       "color": 3394815,
-      "description": "目前佩戴后不会揭示视野外的隐藏信息。",
+      "description": "佩戴后可透视附近墙壁和门；负附魔会使近处视野变暗。",
       "frequency": 1
     }
   ],

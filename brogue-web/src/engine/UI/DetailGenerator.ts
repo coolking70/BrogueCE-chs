@@ -10,6 +10,8 @@ import { itemKnowledge } from './ItemKnowledge';
 import { staffBlinkDistance } from '../Combat/BoltTrajectory';
 import type { Item } from '../Items/Item';
 import { ItemCategory } from '../Items/Item';
+import { turnsForFullRegenInThousandths } from '../Items/RingBonuses';
+import { ringWisdomMultiplierPercent } from '../Items/ArcanaRecharge';
 import type { Monster } from '../../entities/Monster';
 import { MonsterState } from '../../entities/Monster';
 import { creatureStatusRows } from '../Status/statusConfig';
@@ -470,6 +472,37 @@ export function generateItemDetail(
             statsLines.push({ text: `剩余冷却: ${item.cooldownRemaining}`, color: '#ff8844' });
         }
         sections.push({ header: '护符属性', lines: statsLines });
+    }
+
+    if (item.category === ItemCategory.RING) {
+        const lines: DetailLine[] = [];
+        const e = item.enchantment;
+        if (knowledge.instanceKnown && knowledge.kindKnown) {
+            switch (item.identityId) {
+                case 'ring_of_clairvoyance':
+                    lines.push({ text: e > 0 ? `透视半径 ${e + 1} 格；再附魔后 ${e + 2} 格`
+                        : e < 0 ? `致盲半径 ${1 - e} 格；再附魔后 ${-e} 格` : '无透视效果' });
+                    break;
+                case 'ring_of_stealth':
+                    lines.push({ text: `潜行察觉距离修正 ${e < 0 ? -4 * e : -e} 格` });
+                    break;
+                case 'ring_of_regeneration':
+                    lines.push({ text: `满血恢复约 ${Math.floor(turnsForFullRegenInThousandths(e) / 1000)} 回合（无戒指约 300 回合）；再附魔后约 ${Math.floor(turnsForFullRegenInThousandths(e + 1) / 1000)} 回合` });
+                    break;
+                case 'ring_of_transference':
+                    lines.push({ text: `直接伤害${e < 0 ? '反噬' : '吸血'} ${Math.abs(e) * 5}%；再附魔后 ${Math.abs(e + 1) * 5}%` });
+                    break;
+                case 'ring_of_awareness':
+                    lines.push({ text: `搜索强度修正 ${20 * e}` });
+                    break;
+                case 'ring_of_wisdom':
+                    lines.push({ text: `法杖充能速度为正常的 ${ringWisdomMultiplierPercent(e)}%；再附魔后 ${ringWisdomMultiplierPercent(e + 1)}%` });
+                    break;
+            }
+        } else {
+            lines.push({ text: `再佩戴 ${item.charges ?? 1500} 回合可自动鉴定；未鉴定时正附魔最多按 +${item.timesEnchanted + 1} 生效` });
+        }
+        if (lines.length) sections.push({ header: '戒指效果', lines });
     }
 
     return {

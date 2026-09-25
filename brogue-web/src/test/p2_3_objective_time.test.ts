@@ -129,15 +129,17 @@ describe('P2-3 A: 客观时间生效（对抗性核心）', () => {
 describe('P2-3 B: 主观/客观分离', () => {
     it('B1 回血主观（haste 两动作回血两次），营养客观（同条件下只 -1）', () => {
         const game = createTimedGame();
-        game.player.maxHp = 3000; // 回血速率 = maxHp/300 = 10/动作
-        game.player.hp = 2980;
+        // CE E=0 的回满时间为 302000 千分之一回合；maxHp=3000 时
+        // regenPerTurn=9、turnsBetweenRegen=1070，两动作合计恢复 19。
+        game.player.maxHp = 3000;
+        game.player.hp = 2981;
         game.player.applyStatus('haste', 30);
         game.player.refreshSpeeds();
 
         waitOnce(game);
         waitOnce(game);
 
-        // 主观：每动作回 10，两动作 +20（若错误地挂进客观块则只 +10）
+        // 主观：两动作共回 19（若错误地挂进客观块则只回 9 或 10）
         expect(game.player.hp).toBe(3000);
         // 客观：营养只随 100 tick 消耗
         expect(game.player.nutrition).toBe(999);

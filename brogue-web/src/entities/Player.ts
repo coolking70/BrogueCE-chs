@@ -8,6 +8,7 @@ import { Direction } from '../types';
 import { Inventory } from '../engine/Items/Inventory';
 import { Item, ItemCategory } from '../engine/Items/Item';
 import { rng } from '../engine/Random';
+import { ringBonus, turnsForFullRegenInThousandths } from '../engine/Items/RingBonuses';
 
 // Hunger/regen constants aligned with Brogue CE (Rogue.h:1123-1127)
 export const TURNS_FOR_FULL_REGEN = 300; // Rogue.h:1123
@@ -233,11 +234,22 @@ export class Player extends Creature {
         return 'normal';
     }
 
-    /** maxHp / TURNS_FOR_FULL_REGEN HP per turn, so a full pool always takes 300 turns (Items.c:8735-8750). */
+    /** CE Items.c:8736-8751, with the same integer divisions as fixpt. */
     private regenRatePerTurn(): number {
-        const base = this.maxHp / TURNS_FOR_FULL_REGEN;
-        // Web-only status kept as an aura, preserving its former 0.6x healing-time speedup
-        return this.hasStatus('regenerating') ? base / 0.6 : base;
+        const full = turnsForFullRegenInThousandths(ringBonus(this.rings(), 'ring_of_regeneration'));
+        let remainingHp = this.maxHp;
+        let perTurn = 0;
+        const wholeTurns = Math.floor(full / 1000);
+        if (wholeTurns > 0) {
+            while (remainingHp > wholeTurns) {
+                perTurn++;
+                remainingHp -= wholeTurns;
+            }
+        }
+        const interval = Math.floor(full / remainingHp);
+        const rate = perTurn + (interval > 0 ? 1000 / interval : 0);
+        // Legacy non-ring regeneration status still has other web producers.
+        return this.hasStatus('regenerating') ? rate / 0.6 : rate;
     }
 
     /** Thresholds are display/warning tiers only (IO.c:4785-4793); they never gate regen. */

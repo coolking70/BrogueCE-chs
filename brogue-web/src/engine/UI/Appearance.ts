@@ -335,7 +335,14 @@ export function cellAppearance(cell: Cell, ctx: CellAppearanceContext): TerrainV
 
     // Apply dynamic lighting if the cell is currently visible
     // For memory/explored cells, we just dim them significantly.
-    if (cell.isVisible) {
+    if (cell.isClairvoyantVisible) {
+        // CE IO.c:1371-1380: basicLightColor (180%) followed by
+        // clairvoyanceColor (50/90/50%); distinct from ordinary light.
+        const clairvoyantLight = { r: 90, g: 162, b: 90 };
+        color = multiplyByLightChannels(color, clairvoyantLight);
+        if (bgColor !== null) bgColor = parseInt(
+            multiplyByLightChannels(bgColor, clairvoyantLight).slice(1), 16);
+    } else if (cell.isVisible) {
         const base = ctx.lightChannels;
         const flare = ctx.flareChannels;
         const light = base && flare

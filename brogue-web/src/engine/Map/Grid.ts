@@ -897,6 +897,8 @@ export class Cell {
     // Flags for state
     public isExplored: boolean = false;
     public isVisible: boolean = false;
+    /** CE CLAIRVOYANT_VISIBLE without ordinary VISIBLE; renderer uses its tint. */
+    public isClairvoyantVisible: boolean = false;
     public hasMemory: boolean = false; // Does the player remember this tile
     /** Last observed terrain, independent of subsequent world changes. */
     public rememberedTerrain: TerrainType = TerrainType.NOTHING;

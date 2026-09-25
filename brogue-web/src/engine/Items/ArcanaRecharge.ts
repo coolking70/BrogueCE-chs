@@ -1,5 +1,6 @@
 import type { Item } from './Item';
 import type { Random } from '../Random';
+import { ringBonus } from './RingBonuses';
 
 /** CE Items.c:338: staffs start at 500 points (blink/obstruction: 1000), not a roll.
  * New instances and missing save fields share the same deterministic initializer.
@@ -48,15 +49,14 @@ export function ringWisdomRechargeIncrement(wisdom: number): number {
     return Math.floor(10 * POW_WISDOM[level + 10]! / 65536);
 }
 
-/** CE effectiveRingEnchant (Items.c:1901-1909) + updateRingBonuses (:8714).
- * Web has no ring enchanting/timesEnchanted yet: unknown positive rings provide
- * at most +1; negative enchantments apply in full. Kind discovery alone is not ID.
- */
+export function ringWisdomMultiplierPercent(wisdom: number): number {
+    const level = Math.max(-10, Math.min(27, Math.trunc(wisdom)));
+    return Math.floor(100 * POW_WISDOM[level + 10]! / 65536);
+}
+
+/** CE effectiveRingEnchant + updateRingBonuses, shared with all other rings. */
 export function equippedWisdomBonus(rings: readonly Item[]): number {
-    return rings.reduce((bonus, ring) => {
-        if ((ring as Item & { identityId?: string }).identityId !== 'ring_of_wisdom') return bonus;
-        return bonus + (ring.isIdentified ? ring.enchantment : Math.min(ring.enchantment, 1));
-    }, 0);
+    return ringBonus(rings, 'ring_of_wisdom');
 }
 
 /** Called exactly once per P2 objective 100-tick block, for inventory STAFF only.
