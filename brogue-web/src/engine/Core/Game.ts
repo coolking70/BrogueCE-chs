@@ -238,12 +238,14 @@ interface RecordingRuntime {
     commandDecisions: boolean[] | null;
     replayDecisionCursor: number;
     recordingFromNewGame: boolean;
+    pendingCommand: { kind: 'record'; event: RecordedInputEvent }
+        | { kind: 'replay'; event: RecordedInputEvent; silent: boolean } | null;
 }
 const recordingRuntime = new WeakMap<Game, RecordingRuntime>();
 function recordingState(game: Game): RecordingRuntime {
     let state = recordingRuntime.get(game);
     if (!state) {
-        state = { replayError: null, commandDecisions: null, replayDecisionCursor: 0, recordingFromNewGame: true };
+        state = { replayError: null, commandDecisions: null, replayDecisionCursor: 0, recordingFromNewGame: true, pendingCommand: null };
         recordingRuntime.set(game, state);
     }
     return state;
@@ -2575,29 +2577,42 @@ export class Game {
         return String(data);
     }
 
-    private recordInputEvent(action: string, data: unknown, decisions: boolean[]) {
-        this.recordedInputEvents.push({
+    private recordInputEvent(action: string, data: unknown, decisions: boolean[]): RecordedInputEvent {
+        const event: RecordedInputEvent = {
             index: this.recordedInputIndex++,
-            tick: timeSystem.currentTick,
-            depth: this.depth,
-            player: { x: this.player.loc.x, y: this.player.loc.y },
+            tick: 0,
+            depth: 0,
+            player: { x: 0, y: 0 },
             action,
             data: this.toRecordedInputData(data),
             decisions,
-            turn: this.absoluteTurnNumber,
-            rng: rng.getState(),
-            ...(this.isGameOver ? { end: { won: this.gameOverWon, superVictory: this.gameOverSuperVictory, score: this.gameOverScore } } : {})
-        });
+        };
+        this.updateRecordedCheckpoint(event);
+        this.recordedInputEvents.push(event);
+        return event;
+    }
+
+    private updateRecordedCheckpoint(event: RecordedInputEvent): void {
+        event.tick = timeSystem.currentTick;
+        event.depth = this.depth;
+        event.player = { x: this.player.loc.x, y: this.player.loc.y };
+        event.turn = this.absoluteTurnNumber;
+        event.rng = rng.getState();
+        if (this.isGameOver) event.end = { won: this.gameOverWon, superVictory: this.gameOverSuperVictory, score: this.gameOverScore };
+        else delete event.end;
     }
 
     /** Every user command, including inventory and modal choices, crosses this boundary. */
     public executeCommand(action: string, data?: unknown, perform?: () => void): void {
-        if (this.replayRecording || this.isInputLocked()) return;
+        if (this.replayRecording || this.isAdvancing || this.isInputLocked()) return;
         const decisions: boolean[] = [];
         this.commandDecisions = decisions;
         try {
             if (perform) perform(); else this.applyCommand(action, data);
-            if (this.recordingFromNewGame) this.recordInputEvent(action, data, decisions);
+            if (this.recordingFromNewGame) {
+                const event = this.recordInputEvent(action, data, [...decisions]);
+                if (this.isAdvancing) recordingState(this).pendingCommand = { kind: 'record', event };
+            }
         } finally {
             this.commandDecisions = null;
         }
@@ -2640,6 +2655,7 @@ export class Game {
 
     public exportRecording(): GameRecording {
         if (!this.recordingFromNewGame) throw new Error('Recording requires a fresh new game; saved games cannot continue a recording');
+        if (this.isAdvancing) throw new Error('Recording cannot be exported while a turn is advancing');
         return {
             version: 2,
             recordedAt: Date.now(),
@@ -2662,6 +2678,7 @@ export class Game {
     }
 
     public clearRecording() {
+        recordingState(this).pendingCommand = null;
         this.recordedInputEvents = [];
         this.recordedInputIndex = 0;
         this.recordingStartAt = Date.now();
@@ -2775,7 +2792,7 @@ export class Game {
         if (!this.replayRecording || this.replayError) return;
         // P2-2 输入锁：动画推进期间回放步同样不得插入（否则会在怪物行动的
         // 半途落地玩家动作，破坏逐次演出的因果顺序）
-        if (this.isInputLocked()) return;
+        if (this.isAdvancing || this.isInputLocked()) return;
         if (this.replayCursor >= this.replayEvents.length) {
             this.replayStatus = 'finished';
             return;
@@ -2786,29 +2803,33 @@ export class Game {
         this.replayDecisionCursor = 0;
         try {
             this.applyCommand(event.action, this.decodeRecordedInputData(event.data));
-            const actual = { tick: timeSystem.currentTick, depth: this.depth,
-                player: this.player.loc, turn: this.absoluteTurnNumber, rng: rng.getState() };
-            if (actual.tick !== event.tick || actual.depth !== event.depth
-                || actual.player.x !== event.player.x || actual.player.y !== event.player.y
-                || actual.turn !== event.turn || this.replayDecisionCursor !== event.decisions!.length
-                || JSON.stringify(actual.rng) !== JSON.stringify(event.rng)) {
-                throw new Error(`state mismatch after command ${event.index + 1}`);
+            if (this.isAdvancing) {
+                recordingState(this).pendingCommand = { kind: 'replay', event, silent };
+                return;
             }
-            if (!!event.end !== this.isGameOver || (event.end && (this.gameOverWon !== event.end.won
-                || this.gameOverSuperVictory !== event.end.superVictory || this.gameOverScore !== event.end.score))) {
-                throw new Error(`endgame mismatch after command ${event.index + 1}`);
-            }
-            this.update();
+            this.completeReplayEvent(event, silent);
         } catch (error) {
-            this.replayError = `OOS at command ${event.index + 1}: ${error instanceof Error ? error.message : String(error)}`;
-            this.replayStatus = 'loaded';
-            logger.log(this.replayError, '#ff6666');
-            return;
+            this.failReplayEvent(event, error);
         } finally {
-            this.commandDecisions = null;
+            if (!this.isAdvancing) this.commandDecisions = null;
         }
-        this.replayCursor++;
+    }
 
+    private completeReplayEvent(event: RecordedInputEvent, silent: boolean): void {
+        const actual = { tick: timeSystem.currentTick, depth: this.depth,
+            player: this.player.loc, turn: this.absoluteTurnNumber, rng: rng.getState() };
+        if (actual.tick !== event.tick || actual.depth !== event.depth
+            || actual.player.x !== event.player.x || actual.player.y !== event.player.y
+            || actual.turn !== event.turn || this.replayDecisionCursor !== event.decisions!.length
+            || JSON.stringify(actual.rng) !== JSON.stringify(event.rng)) {
+            throw new Error(`state mismatch after command ${event.index + 1}`);
+        }
+        if (!!event.end !== this.isGameOver || (event.end && (this.gameOverWon !== event.end.won
+            || this.gameOverSuperVictory !== event.end.superVictory || this.gameOverScore !== event.end.score))) {
+            throw new Error(`endgame mismatch after command ${event.index + 1}`);
+        }
+        this.update();
+        this.replayCursor++;
         if (this.replayCursor >= this.replayEvents.length) {
             this.replayStatus = 'finished';
             if (!silent) {
@@ -2817,6 +2838,12 @@ export class Game {
         } else if (this.replayStatus !== 'playing') {
             this.replayStatus = 'loaded';
         }
+    }
+
+    private failReplayEvent(event: RecordedInputEvent, error: unknown): void {
+        this.replayError = `OOS at command ${event.index + 1}: ${error instanceof Error ? error.message : String(error)}`;
+        this.replayStatus = 'loaded';
+        logger.log(this.replayError, '#ff6666');
     }
 
     public tickReplay() {
@@ -8179,11 +8206,26 @@ export class Game {
             this.player.ticksUntilTurn = 0;
         }
         this.finishTurnEpilogue();
+        const pending = recordingState(this).pendingCommand;
+        recordingState(this).pendingCommand = null;
+        if (pending?.kind === 'record') {
+            this.updateRecordedCheckpoint(pending.event);
+        } else if (pending?.kind === 'replay') {
+            try {
+                this.completeReplayEvent(pending.event, pending.silent);
+            } catch (error) {
+                this.failReplayEvent(pending.event, error);
+            } finally {
+                this.commandDecisions = null;
+            }
+        }
         this.update();
     }
 
     /** 场景重建（新游戏/读档/回放）时丢弃可能在途的推进，避免继承卡死的输入锁。 */
     public discardInFlightAdvancement(): void {
+        recordingState(this).pendingCommand = null;
+        this.commandDecisions = null;
         const iter = this.advancementIter;
         this.advancementIter = null;
         this.isAdvancing = false;

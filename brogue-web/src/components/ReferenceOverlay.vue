@@ -24,7 +24,10 @@ const commands = [
   ['Esc', '取消或关闭', 'Cancel or close'],
 ];
 let timer = 0;
-function close() { activeGame.referenceScreen = null; screen.value = null; }
+function close() {
+  activeGame.executeCommand('escape');
+  screen.value = activeGame.referenceScreen;
+}
 function onKey(e: KeyboardEvent) {
   if (!screen.value) return;
   e.preventDefault(); e.stopImmediatePropagation(); close();
