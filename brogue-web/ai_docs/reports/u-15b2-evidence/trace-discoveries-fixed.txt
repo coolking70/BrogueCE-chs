@@ -1,0 +1,7 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/engine/UI/Discoveries.test.ts src/test/u_r4_trace.test.ts src/test/u_r2_trace.test.ts src/test/u_15b2_ring_birth.test.ts --maxWorkers=2 --reporter=json --outputFile=ai_docs/reports/u-15b2-evidence/trace-discoveries-fixed.json
+
+(node:57145) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+JSON report written to /Users/coolking70/.codex/worktrees/0c38/brogue/brogue-web/ai_docs/reports/u-15b2-evidence/trace-discoveries-fixed.json

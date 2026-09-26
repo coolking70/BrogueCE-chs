@@ -1416,3 +1416,20 @@ U17f guard self-review: interrupted the second and short third freeze attempts t
 - 最终冻结：763 输入零变化；195 文件 / 3743 passed / 0 failed / 8 原有 skipped / 5 原有 todo；build、drift(1/1)、diff-check 全通过。
 - 27 场浏览器动作重放通过，控制台/页面错误 0。标准 canvas 黑图未作通过依据，使用已检查的 headed 全页截图。
 - 旧守卫的 HEAD 反事实和前提提案、全部证据见 ai_docs/reports/u-19f.report.md。未暂存、未提交。
+
+## 2026-09-26 U15b-2
+
+- 用户任务：执行 ai_docs/tasks/u-15b2.prompt.md，完成报告，不提交。入场 HEAD 50090e5；工作树干净。先记 drift，再按出生附魔、目录顺序、light、reaping 四段归因；独立守卫后一次重捕获。
+- 本地依赖从相同 package-lock 的主 checkout 复制，锁文件不变。
+
+- U15b2 出生/八条目录/光明/收割实现完成；15专项、144光照+1296法杖原CE组合与15反例通过。浏览器5状态节点、0错误，整页图已检查。唯一基线写入884425ec…→8ebde5e2…（9层13字段），UR2 trace不变。发现轮仍在完成全量长测，随后冻结终验。
+
+- U15b2 最终源码已固定；最终详情文本39项定向全绿；104层只读全记录与唯一捕获相等。完整发现轮若0失败，监督进程自动启动冻结后的build/全量npm test（4workers、无文件筛选）/drift。只可更新报告、进度和派生证据。
+
+- U15b2 终验前自检：CE enchant2/charges/enchant1 为 short；C宿主字段类型修正并扩展到1944资源组合，新极值先红后修复周期写回。停止等待中的自动终验，发现轮继续；扩展守卫/16反例/只读生成复核通过后再冻结。基线仍只写一次。
+
+- U15b2 short周期修复后：101定向通过、16反例全部检出；最终104层全记录及源码哈希检查通过，基线仍一写。已重新启动等待发现轮的冻结终验监督进程；后续只更新报告/派生证据。
+
+- U15b2 发现轮完整结束195文件：仅U24目录前提2项与UR4风味表trace1项红。U24原HEAD2绿后仅改8种/12%/14%前提；UR4四段证明只变30快照风味表（时间/RNG/实体均不变），按任务授权原捕获入口重录一次，20定向全绿。最终冻结build/全量npm test(4workers)/drift已启动，禁止再改输入。
+
+- 2026-09-26 22:53 CST：U15b2 最终冻结复跑全部通过。build、196文件完整默认回归（3758 passed / 0 failed / 8既有skipped / 5既有todo）、独立drift 1/1、diff-check全绿；R∪S189及点名守卫零遗漏，776冻结输入前后变化0。地图基线与UR4 trace各只重捕获一次，UR2/P2不变；全部前后SHA、旧守卫前提反事实及验收提案已记入ai_docs/reports/u-15b2.report.md。终验后仅补文档与派生证据，未暂存、未提交。

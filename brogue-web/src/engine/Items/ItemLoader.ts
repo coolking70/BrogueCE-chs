@@ -45,6 +45,7 @@ export interface ConsumableConfig {
 
 export interface ArcanaConfig {
     id: string;
+    description?: string;
     name: string;
     minDepth: number;
     maxDepth: number;
@@ -497,8 +498,7 @@ export class ItemLoader {
 
     /**
      * 戴上即识别种类的戒指（Items.c:8583-8586：RING_CLAIRVOYANCE / RING_LIGHT /
-     * RING_STEALTH）。web 无 light 戒指（目录缺口，B-0 §5.1-9），留形于此，
-     * 回池/新增轮次无需再查 CE。
+     * RING_STEALTH）。三种均已入池；种类揭示不等于正附魔实例全知。
      */
     private static readonly INSTANT_ID_RING_KINDS: ReadonlySet<string> = new Set([
         'ring_of_clairvoyance', 'ring_of_light', 'ring_of_stealth',
@@ -525,7 +525,7 @@ export class ItemLoader {
      * web 自创/错位实体（CE 无此种类）记 0 并注明：potion_of_healing（自创，退池）、
      * scroll_of_amnesia（自创，退池）、wand_of_fire / wand_of_lightning（CE 法杖
      * 错位实体，退池）、staff_of_light（自创，退池）。CE 有而 web 缺的种类
-     * （scroll aggravate、ring light/reaping）不在 web 表内，
+     * （scroll aggravate）不在 web 表内，
      * 不参与分组——补目录时须同时补本表（W-24～26 已补齐法器目录）。
      *
      * ★ D2 后果（结构性不可达，激活轮需重核）：potion_of_poison（=CE caustic gas，
@@ -598,13 +598,15 @@ export class ItemLoader {
         staff_of_haste: -1,           // haste
         staff_of_protection: -1,
         staff_of_light: 0,            // 自创，退池
-        // 戒指（web 6 条，全 +1；CE light/reaping web 缺）
+        // 戒指（CE 全 8 条，全 +1）
         ring_of_clairvoyance: 1,
         ring_of_stealth: 1,
         ring_of_regeneration: 1,
         ring_of_transference: 1,
+        ring_of_light: 1,
         ring_of_awareness: 1,
         ring_of_wisdom: 1,
+        ring_of_reaping: 1,
     };
 
     /** 升格规则参与判定的种类全集（CE 语义：整张种类表，含退池条目）。 */
@@ -1457,6 +1459,13 @@ export class ItemLoader {
         const ring = new Item(tn(data.name), '=', data.color, ItemCategory.RING);
         ring.loc = { x, y };
         ring.weight = data.weight;
+        ring.enchantment = rng.randClumpedRange(1, 3, 1);
+        if (rng.randPercent(16)) {
+            ring.enchantment *= -1;
+            ring.isCursed = true;
+        } else {
+            while (rng.randPercent(10)) ring.enchantment++;
+        }
         (ring as any).identityId = id;
         // B-1a：实例未知态 + 戴上熟悉度计数器（CE Items.c:353 charges=ringDelayToAutoID）
         ring.identified = false;
@@ -1483,17 +1492,10 @@ export class ItemLoader {
         return charm;
     }
 
-    /** CE Items.c:347-373 ring birth rolls; charm birth rolls live in spawnCharm. */
+    /** Machines use the same CE makeItemInto birth as ordinary rings; quality retries live outside. */
     public static spawnMachineRing(id: string, x: number, y: number): Item | null {
         const ring = this.spawnRing(id, x, y);
         if (!ring) return null;
-        ring.enchantment = rng.randClumpedRange(1, 3, 1);
-        if (rng.randPercent(16)) {
-            ring.enchantment *= -1;
-            ring.isCursed = true;
-        } else {
-            while (rng.randPercent(10)) ring.enchantment++;
-        }
         return ring;
     }
 

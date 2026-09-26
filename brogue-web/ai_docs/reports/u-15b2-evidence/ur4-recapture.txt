@@ -1,0 +1,15 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_r4_trace.test.ts --maxWorkers=1
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/0c38/brogue/brogue-web
+
+(node:57126) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  22:17:32
+   Duration  2.71s (transform 407ms, setup 0ms, import 661ms, tests 1.97s, environment 0ms)
+

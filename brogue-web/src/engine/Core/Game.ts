@@ -53,7 +53,7 @@ import { saveHighScore } from './HighScores';
 import { ItemLoader } from '../Items/ItemLoader';
 import { charmRechargeDelay, isCharmKind } from '../Items/CharmModel';
 import { equippedWisdomBonus, tickStaffRecharge, rechargeStaffFully } from '../Items/ArcanaRecharge';
-import { ringBonus } from '../Items/RingBonuses';
+import { ringBonus, ringLightMultiplier } from '../Items/RingBonuses';
 import { rng, Random, RNGType } from '../Random';
 import { normalizeSeed, isSeed, type SeedInput } from '../Seed';
 import monsterData from '../../data/monsters.json';
@@ -976,8 +976,7 @@ export class Game {
             }
             case 'RING': {
                 // V-1a：掩码路径的第五类。与上方四支同构：chooseKind 基表加权
-                // （CE 环之戒全 8 种基频 1，web 现有 6 种亦全为 1——light/reaping
-                // 目录缺口登记不补）。CE 环生成无深度门（makeItemInto 直用全表）。
+                // CE 全 8 种按 ringTable 顺序、基频 1，无深度门。
                 const rings = ItemLoader.genRings;
                 if (rings.length > 0) {
                     const pick = ItemLoader.chooseKind(rings.map(r => r.frequency ?? 0));
@@ -2999,8 +2998,8 @@ export class Game {
     /**
      * 矿灯半径重算。CE 的触发点与本轮载体现状：
      * - 进新层重置基础半径（RogueMain.c:666-671 → updateRingBonuses 级联）——
-     *   本轮每次 updateVision 前重算（纯函数，值只随 depth 变化，等价）。
-     * - 光明戒指（Items.c:8728）尚无可生成目录项，倍率保持基值 1。
+     *   本轮每次 updateVision 前重算（纯函数，读取当前装备/状态，等价）。
+     * - 光明戒指按两槽有效附魔计算倍率（Items.c:8685-8731）。
      * - 黑暗状态由药水施加，并在计时、治愈、消魔时变化。
      * - inWater 按 Time.c:84-107 的深水、漂浮、缠绕、阻挡条件派生。
      */
@@ -3011,7 +3010,7 @@ export class Game {
             && !this.player.hasStatus('levitating')
             && !(flags & (T_ENTANGLES | T_OBSTRUCTS_PASSABILITY));
         this.minersLight = updateMinersLightRadius(this.minersLightBaseFixpt, {
-            lightMultiplier: 1,
+            lightMultiplier: ringLightMultiplier(this.player.rings()),
             darknessStatus: this.player.getStatusDuration('darkness'),
             darknessMax: this.player.maxStatus.darkness,
             inWater: Number(inWater),
@@ -4075,8 +4074,8 @@ export class Game {
         if (this.player.equip(item, false)) {
             logger.log(i18next.t('item.equip', { name: item.name, defaultValue: `You equipped the ${item.name}.` }), '#88ff88');
             // B-1a：CE Items.c:8583-8586——clairvoyance/light/stealth 三戒指戴上
-            // 即 identifyItemKind（效果立即可感，无隐藏价值；web 无 light 戒指，
-            // 清单在 ItemLoader.INSTANT_ID_RING_KINDS）。CE 无消息，静默亮。
+            // 即 identifyItemKind；正附魔实例仍未知。清单在
+            // ItemLoader.INSTANT_ID_RING_KINDS。CE 无消息，静默亮。
             if (item.category === ItemCategory.RING
                 && ItemLoader.isInstantIdentifyRing(item)
                 && !(ItemLoader.identifiedItems.has((item as any).identityId))) {

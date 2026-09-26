@@ -1,0 +1,17 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('.item-row').first()[22m
+[2m    - locator resolved to <div data-v-ae423ead="" class="item-row selected-row">…</div>[22m
+[2m  - attempting click action[22m
+[2m    - waiting for element to be visible, enabled and stable[22m
+[2m  - element was detached from the DOM, retrying[22m
+
+    at /Users/coolking70/.codex/worktrees/0c38/brogue/brogue-web/scripts/u15b2-browser.mjs:37:109 {
+  name: 'TimeoutError'
+}
+
+Node.js v25.2.1

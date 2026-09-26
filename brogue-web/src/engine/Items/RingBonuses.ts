@@ -11,6 +11,12 @@ export function ringBonus(rings: readonly Item[], identity: string): number {
         ? sum + effectiveRingEnchant(ring) : sum, 0);
 }
 
+/** CE updateRingBonuses: baseline +1; skip zero on the cursed side. */
+export function ringLightMultiplier(rings: readonly Item[]): number {
+    const multiplier = 1 + ringBonus(rings, 'ring_of_light');
+    return multiplier <= 0 ? multiplier - 1 : multiplier;
+}
+
 // CE PowerTables.c:125-135, 16-bit fixed point 0.75^E, E=-10..50.
 const POW_REGEN = [
     1163770, 872827, 654620, 490965, 368224, 276168, 207126, 155344, 116508, 87381,

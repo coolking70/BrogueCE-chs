@@ -332,7 +332,8 @@ export function generateItemDetail(
     const knowledge = itemKnowledge(item);
 
     // --- Description ---
-    const desc = (item as any).description || '';
+    const desc = item.description || (item.category === ItemCategory.RING
+        ? ItemLoader.rings.find(r => r.id === item.identityId)?.description : '') || '';
     if (desc && knowledge.kindKnown) {
         sections.push({
             lines: [{ text: desc, color: '#aaaacc' }]
@@ -482,6 +483,9 @@ export function generateItemDetail(
         const lines: DetailLine[] = [];
         const e = item.enchantment;
         if (knowledge.instanceKnown && knowledge.kindKnown) {
+            // CE itemName(includeDetails) exposes actual E after instance ID.
+            // Keep it explicit here too, including light (which has no formula paragraph).
+            lines.push({ text: `附魔等级 ${e >= 0 ? '+' : ''}${e}` });
             switch (item.identityId) {
                 case 'ring_of_clairvoyance':
                     lines.push({ text: e > 0 ? `透视半径 ${e + 1} 格；再附魔后 ${e + 2} 格`
@@ -498,6 +502,9 @@ export function generateItemDetail(
                     break;
                 case 'ring_of_awareness':
                     lines.push({ text: `搜索强度修正 ${20 * e}` });
+                    break;
+                case 'ring_of_reaping':
+                    if (e) lines.push({ text: `每次近战命中每点伤害${e < 0 ? '消耗' : '恢复'}法杖与护符 0–${Math.abs(e)} 回合充能；再附魔后 0–${Math.abs(e + 1)} 回合` });
                     break;
                 case 'ring_of_wisdom':
                     lines.push({ text: `法杖充能速度为正常的 ${ringWisdomMultiplierPercent(e)}%；再附魔后 ${ringWisdomMultiplierPercent(e + 1)}%` });

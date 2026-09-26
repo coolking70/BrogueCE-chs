@@ -1,0 +1,100 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+... Skipped lines
+
+  [
+    {
++     charges: 1498,
+-     charges: 1499,
+      cooldown: undefined,
+      e: 2,
+      kind: 'ring_of_reaping',
+      remaining: undefined
+    },
+...
+      kind: 'staff_of_lightning',
++     remaining: 450
+-     remaining: 490
+    },
+    {
+      charges: undefined,
++     cooldown: 5,
+-     cooldown: 9,
+      e: 2,
+      kind: 'charm_of_health',
+      remaining: undefined
+    }
+  ]
+
+    at file:///Users/coolking70/.codex/worktrees/0c38/brogue/brogue-web/scripts/u15b2-browser.mjs:42:106 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: [
+    {
+      kind: 'ring_of_reaping',
+      e: 2,
+      charges: 1498,
+      remaining: undefined,
+      cooldown: undefined
+    },
+    {
+      kind: 'sword',
+      e: 0,
+      charges: 20,
+      remaining: undefined,
+      cooldown: undefined
+    },
+    {
+      kind: 'staff_of_lightning',
+      e: 3,
+      charges: 2,
+      remaining: 450,
+      cooldown: undefined
+    },
+    {
+      kind: 'charm_of_health',
+      e: 2,
+      charges: undefined,
+      remaining: undefined,
+      cooldown: 5
+    }
+  ],
+  expected: [
+    {
+      kind: 'ring_of_reaping',
+      e: 2,
+      charges: 1499,
+      remaining: undefined,
+      cooldown: undefined
+    },
+    {
+      kind: 'sword',
+      e: 0,
+      charges: 20,
+      remaining: undefined,
+      cooldown: undefined
+    },
+    {
+      kind: 'staff_of_lightning',
+      e: 3,
+      charges: 2,
+      remaining: 490,
+      cooldown: undefined
+    },
+    {
+      kind: 'charm_of_health',
+      e: 2,
+      charges: undefined,
+      remaining: undefined,
+      cooldown: 9
+    }
+  ],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v25.2.1

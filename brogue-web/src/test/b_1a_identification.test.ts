@@ -380,6 +380,8 @@ describe('A8: 戒指穿戴门槛（CE GlobalsBrogue.c:1042 = 1500 客观块）',
         const game = createHeadlessGame(42, 'test');
         isolatePlayer(game);
         const clair = ItemLoader.spawnRing('ring_of_clairvoyance', -1, -1)!;
+        clair.enchantment = 0; // This case exercises the CE nonpositive-E identification rule.
+        clair.isCursed = false;
         game.player.inventory.addItem(clair);
         game.equipItem(clair);
         expect(ItemLoader.identifiedItems.has('ring_of_clairvoyance')).toBe(true);
@@ -449,21 +451,21 @@ describe('A10: 通用卷轴 auto-ID 的例外在专属分支先自亮（CE Items
 describe('A11: 最后一种类自动升格（CE Items.c:6635-6673）', () => {
     it('戒指类（全 +1）：恰好剩 1 种未识别且对侧全识别 → 升格；剩 2 种不升格', () => {
         const ids = ItemLoader.rings.map(r => r.id);
-        expect(ids.length).toBe(6);
+        expect(ids.length).toBe(8);
         for (const id of ids) ItemLoader.identifiedItems.delete(id); // 清掉预亮（护符预亮不受影响）
         const unId = () => ids.filter(id => !ItemLoader.identifiedItems.has(id));
 
-        // 错误实现"≥2 未识别就升格"：识别第 4 种后仍剩 2 种，必须不升格
-        for (const id of ids.slice(0, 3)) ItemLoader.identifiedItems.add(id);
-        const probe = ItemLoader.spawnRing(ids[3]!, -1, -1)!;
+        // 错误实现"≥2 未识别就升格"：识别倒数第 3 种后仍剩 2 种，必须不升格
+        for (const id of ids.slice(0, -3)) ItemLoader.identifiedItems.add(id);
+        const probe = ItemLoader.spawnRing(ids[ids.length - 3]!, -1, -1)!;
         ItemLoader.identifyItemKind(probe);
-        expect(unId()).toEqual([ids[4]!, ids[5]!]);
+        expect(unId()).toEqual(ids.slice(-2));
 
-        // 识别第 5 种 → 恰剩 1 种 → 最后一种自动升格（对侧极性类为空 ≙ 全识别）
-        const trigger = ItemLoader.spawnRing(ids[4]!, -1, -1)!;
+        // 识别倒数第 2 种 → 恰剩 1 种 → 最后一种自动升格（对侧极性类为空 ≙ 全识别）
+        const trigger = ItemLoader.spawnRing(ids[ids.length - 2]!, -1, -1)!;
         ItemLoader.identifyItemKind(trigger);
         expect(unId()).toEqual([]);
-        expect(ItemLoader.identifiedItems.has(ids[5]!)).toBe(true);
+        expect(ItemLoader.identifiedItems.has(ids[ids.length - 1]!)).toBe(true);
     });
 
     it('极性分组：善意类剩 1 时，对侧（恶意）未全识别 → 不升格', () => {

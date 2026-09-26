@@ -385,8 +385,8 @@ export function updateMinersLightRadius(
     if (darknessStatus > 0) {
         const baseFraction = FP_FACTOR - Math.trunc((darknessStatus * FP_FACTOR) / darknessMax);
         fraction = Math.trunc(Math.trunc((baseFraction * baseFraction) / FP_FACTOR) * baseFraction / FP_FACTOR);
-        if (fraction < FP_FACTOR / 20) {
-            fraction = FP_FACTOR / 20;
+        if (fraction < Math.trunc(FP_FACTOR / 20)) {
+            fraction = Math.trunc(FP_FACTOR / 20);
         }
         lightRadius = Math.trunc((lightRadius * fraction) / FP_FACTOR);
     } else {

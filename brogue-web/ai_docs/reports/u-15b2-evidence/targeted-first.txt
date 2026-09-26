@@ -1,0 +1,5 @@
+
+> brogue-web@0.0.0 test
+> vitest run --exclude '**/generation_baseline.test.ts' src/test/u_15b_rings.test.ts src/test/u_05_machine_items.test.ts src/test/p1_30_i18n_gate.test.ts src/test/b_1a_identification.test.ts src/test/b_1b_identification_persistence.test.ts src/test/w_6_arcana_recharge.test.ts src/test/u_r2_trace.test.ts --maxWorkers=4 --reporter=json --outputFile=ai_docs/reports/u-15b2-evidence/targeted-first.json
+
+JSON report written to /Users/coolking70/.codex/worktrees/0c38/brogue/brogue-web/ai_docs/reports/u-15b2-evidence/targeted-first.json

@@ -1,6 +1,7 @@
-import type { Item } from './Item';
+import { ItemCategory, type Item } from './Item';
 import type { Random } from '../Random';
 import { ringBonus } from './RingBonuses';
+import { charmRechargeDelay, isCharmKind } from './CharmModel';
 
 /** CE Items.c:338: staffs start at 500 points (blink/obstruction: 1000), not a roll.
  * New instances and missing save fields share the same deterministic initializer.
@@ -59,17 +60,24 @@ export function equippedWisdomBonus(rings: readonly Item[]): number {
     return ringBonus(rings, 'ring_of_wisdom');
 }
 
-/** Called exactly once per P2 objective 100-tick block, for inventory STAFF only.
+/** Natural recharge calls once per objective 100-tick block; reaping supplies
+ * an additional signed multiplier for the same inventory STAFF resource.
  * Time.c:2036-2070: retain overshoot, including rolls needed to settle the timer
  * after reaching capacity at high wisdom. Only current uses and the timer change.
  */
 export function tickStaffRecharge(item: StaffResource, wisdom: number,
-    random: Pick<Random, 'randClumpedRange'>, identityId?: string): number {
+    random: Pick<Random, 'randClumpedRange'>, identityId?: string, multiplier = 1): number {
     const duration = staffChargeDuration(item, identityId);
     if (duration === undefined || item.maxCharges === undefined || item.charges === undefined) return 0;
     const before = item.charges;
     let remaining = restoreStaffRecharge(item.staffRechargeRemaining, identityId);
-    if (item.charges < item.maxCharges) remaining -= ringWisdomRechargeIncrement(wisdom);
+    // Time.c stores rechargeIncrement in a signed short, including the product.
+    const increment = (ringWisdomRechargeIncrement(wisdom) * multiplier << 16) >> 16;
+    if ((item.charges < item.maxCharges && increment > 0)
+        || (item.charges > 0 && increment < 0)) {
+        // enchant2 is a short too; CE writes it before settling either loop.
+        remaining = (remaining - increment << 16) >> 16;
+    }
     while (remaining <= 0) {
         if (item.charges < item.maxCharges) item.charges++;
         remaining += random.randClumpedRange(Math.max(Math.floor(duration / 3), 1), Math.floor(duration * 5 / 3), 3);
@@ -82,6 +90,26 @@ export function tickStaffRecharge(item: StaffResource, wisdom: number,
     }
     item.staffRechargeRemaining = remaining;
     return item.charges - before;
+}
+
+/** CE Time.c:2036-2090, the same resource units as one objective turn.
+ * Wisdom affects staffs only. A ready charm is never drained; a cooling one is
+ * clamped to its actual enchantment's recharge delay. Return newly ready charms.
+ */
+export function rechargeItemsIncrementally(items: readonly Item[], wisdom: number,
+    random: Pick<Random, 'randClumpedRange'>, multiplier: number): Item[] {
+    const ready: Item[] = [];
+    for (const item of items) {
+        if (item.category === ItemCategory.STAFF) {
+            tickStaffRecharge(item, wisdom, random, item.identityId, multiplier);
+        } else if (item.category === ItemCategory.CHARM && isCharmKind(item.identityId)
+            && (item.cooldownRemaining ?? 0) > 0) {
+            item.cooldownRemaining = Math.max(0, Math.min(
+                charmRechargeDelay(item.identityId, item.enchantment), item.cooldownRemaining! - multiplier));
+            if (item.cooldownRemaining === 0) ready.push(item);
+        }
+    }
+    return ready;
 }
 
 /** CE Items.c:4726-4729: full uses + deterministic kind-specific cycle reset. */

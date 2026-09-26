@@ -1,0 +1,1082 @@
+{
+  "headEqualsGolden": true,
+  "stages": [
+    {
+      "from": "s0",
+      "to": "birth",
+      "differences": [],
+      "count": 0
+    },
+    {
+      "from": "birth",
+      "to": "order",
+      "differences": [
+        {
+          "path": ".death.animated.rows[0].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".death.animated.rows[0].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".death.animated.rows[0].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".death.animated.rows[0].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".death.animated.rows[0].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".death.animated.rows[1].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".death.animated.rows[1].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".death.animated.rows[1].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".death.animated.rows[1].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".death.animated.rows[1].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".death.continuous.rows[0].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".death.continuous.rows[0].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".death.continuous.rows[0].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".death.continuous.rows[0].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".death.continuous.rows[0].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".death.continuous.rows[1].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".death.continuous.rows[1].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".death.continuous.rows[1].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".death.continuous.rows[1].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".death.continuous.rows[1].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".fall.animated.rows[0].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".fall.animated.rows[0].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".fall.animated.rows[0].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".fall.animated.rows[0].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".fall.animated.rows[0].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".fall.continuous.rows[0].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".fall.continuous.rows[0].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".fall.continuous.rows[0].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".fall.continuous.rows[0].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".fall.continuous.rows[0].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".hasted.animated.rows[0].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".hasted.animated.rows[0].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".hasted.animated.rows[0].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".hasted.animated.rows[0].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".hasted.animated.rows[0].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".hasted.animated.rows[1].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".hasted.animated.rows[1].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".hasted.animated.rows[1].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".hasted.animated.rows[1].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".hasted.animated.rows[1].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".hasted.animated.rows[2].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".hasted.animated.rows[2].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".hasted.animated.rows[2].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".hasted.animated.rows[2].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".hasted.animated.rows[2].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".hasted.continuous.rows[0].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".hasted.continuous.rows[0].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".hasted.continuous.rows[0].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".hasted.continuous.rows[0].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".hasted.continuous.rows[0].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".hasted.continuous.rows[1].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".hasted.continuous.rows[1].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".hasted.continuous.rows[1].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".hasted.continuous.rows[1].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".hasted.continuous.rows[1].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".hasted.continuous.rows[2].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".hasted.continuous.rows[2].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".hasted.continuous.rows[2].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".hasted.continuous.rows[2].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".hasted.continuous.rows[2].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[0].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[0].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[0].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[0].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[0].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[1].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[1].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[1].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[1].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[1].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[2].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[2].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[2].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[2].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[2].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[3].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[3].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[3].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[3].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[3].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[4].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[4].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[4].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[4].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[4].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[5].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[5].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[5].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[5].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[5].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[6].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[6].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[6].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[6].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[6].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[7].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[7].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[7].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[7].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[7].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[8].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[8].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[8].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[8].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".slowed-environment.animated.rows[8].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[0].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[0].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[0].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[0].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[0].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[1].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[1].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[1].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[1].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[1].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[2].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[2].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[2].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[2].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[2].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[3].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[3].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[3].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[3].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[3].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[4].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[4].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[4].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[4].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[4].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[5].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[5].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[5].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[5].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[5].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[6].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[6].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[6].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[6].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[6].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[7].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[7].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[7].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[7].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[7].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[8].state.flavors.arcana[24][0]",
+          "before": "ring_of_regeneration",
+          "after": "ring_of_clairvoyance"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[8].state.flavors.arcana[25][0]",
+          "before": "ring_of_awareness",
+          "after": "ring_of_stealth"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[8].state.flavors.arcana[26][0]",
+          "before": "ring_of_stealth",
+          "after": "ring_of_regeneration"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[8].state.flavors.arcana[28][0]",
+          "before": "ring_of_wisdom",
+          "after": "ring_of_awareness"
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[8].state.flavors.arcana[29][0]",
+          "before": "ring_of_clairvoyance",
+          "after": "ring_of_wisdom"
+        }
+      ],
+      "count": 150
+    },
+    {
+      "from": "order",
+      "to": "light",
+      "differences": [
+        {
+          "path": ".death.animated.rows[0].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".death.animated.rows[1].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".death.continuous.rows[0].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".death.continuous.rows[1].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".fall.animated.rows[0].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".fall.continuous.rows[0].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".hasted.animated.rows[0].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".hasted.animated.rows[1].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".hasted.animated.rows[2].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".hasted.continuous.rows[0].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".hasted.continuous.rows[1].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".hasted.continuous.rows[2].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".slowed-environment.animated.rows[0].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".slowed-environment.animated.rows[1].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".slowed-environment.animated.rows[2].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".slowed-environment.animated.rows[3].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".slowed-environment.animated.rows[4].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".slowed-environment.animated.rows[5].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".slowed-environment.animated.rows[6].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".slowed-environment.animated.rows[7].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".slowed-environment.animated.rows[8].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[0].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[1].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[2].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[3].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[4].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[5].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[6].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[7].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[8].state.flavors.arcana",
+          "beforeLength": 36,
+          "afterLength": 37
+        }
+      ],
+      "count": 30
+    },
+    {
+      "from": "light",
+      "to": "reaping",
+      "differences": [
+        {
+          "path": ".death.animated.rows[0].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".death.animated.rows[1].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".death.continuous.rows[0].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".death.continuous.rows[1].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".fall.animated.rows[0].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".fall.continuous.rows[0].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".hasted.animated.rows[0].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".hasted.animated.rows[1].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".hasted.animated.rows[2].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".hasted.continuous.rows[0].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".hasted.continuous.rows[1].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".hasted.continuous.rows[2].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".slowed-environment.animated.rows[0].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".slowed-environment.animated.rows[1].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".slowed-environment.animated.rows[2].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".slowed-environment.animated.rows[3].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".slowed-environment.animated.rows[4].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".slowed-environment.animated.rows[5].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".slowed-environment.animated.rows[6].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".slowed-environment.animated.rows[7].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".slowed-environment.animated.rows[8].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[0].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[1].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[2].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[3].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[4].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[5].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[6].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[7].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        },
+        {
+          "path": ".slowed-environment.continuous.rows[8].state.flavors.arcana",
+          "beforeLength": 37,
+          "afterLength": 38
+        }
+      ],
+      "count": 30
+    }
+  ]
+}

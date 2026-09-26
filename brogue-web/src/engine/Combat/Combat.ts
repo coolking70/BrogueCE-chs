@@ -10,6 +10,9 @@ import { Player } from '../../entities/Player';
 import { Monster, MonsterState } from '../../entities/Monster';
 import type { Item } from '../Items/Item';
 import { ringBonus } from '../Items/RingBonuses';
+import { equippedWisdomBonus, rechargeItemsIncrementally } from '../Items/ArcanaRecharge';
+import { logger } from '../Systems/Logger';
+import i18next from 'i18next';
 import { rng } from '../Random';
 import { monsterIsInClass } from './MonsterClass';
 import {
@@ -248,6 +251,24 @@ export class CombatSystem {
         // affect awareness through AI.
 
         if (damage > 0 && opts?.beforeDamage) damage = opts.beforeDamage(damage) ?? damage;
+
+        // CE Combat.c:1275-1289: only attack(), before inflictDamage/shielding,
+        // capped by current HP. Thrown weapons and bolts do not enter this path.
+        if (attacker instanceof Player
+            && !(defender instanceof Monster && (defender.hasCEBehavior('MONST_INANIMATE') || defender.isInvulnerable()))) {
+            const reaping = ringBonus(attacker.rings(), 'ring_of_reaping');
+            if (reaping) {
+                const bound = (Math.min(damage, defender.hp) * reaping << 16) >> 16;
+                const amount = reaping > 0 ? rng.randRange(0, bound) : rng.randRange(bound, 0);
+                if (amount) {
+                    const ready = rechargeItemsIncrementally(attacker.inventory.items,
+                        equippedWisdomBonus(attacker.rings()), rng, amount);
+                    for (const item of ready) logger.log(i18next.t('item.charm_recharged', {
+                        name: item.displayName, defaultValue: `Your ${item.displayName} has recharged.`,
+                    }), '#66ddff');
+                }
+            }
+        }
 
         // W-10 / CE Combat.c:1320-1323,1404,524-527: physical MA_POISONS
         // replaces rolled damage with 1 contact damage; the original roll becomes

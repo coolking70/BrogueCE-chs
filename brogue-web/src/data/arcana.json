@@ -322,23 +322,13 @@
   ],
   "rings": [
     {
-      "id": "ring_of_regeneration",
-      "name": "Ring of Regeneration",
-      "minDepth": 4,
+      "id": "ring_of_clairvoyance",
+      "name": "Ring of Clairvoyance",
+      "minDepth": 3,
       "maxDepth": 26,
       "weight": 1,
-      "color": 16766976,
-      "description": "佩戴后按附魔等级改变自然生命恢复速度；负附魔会减慢恢复。",
-      "frequency": 1
-    },
-    {
-      "id": "ring_of_awareness",
-      "name": "Ring of Awareness",
-      "minDepth": 2,
-      "maxDepth": 26,
-      "weight": 1,
-      "color": 11184895,
-      "description": "佩戴后提高发现陷阱与密门的搜索强度；负附魔会削弱感知。",
+      "color": 3394815,
+      "description": "佩戴后可透视附近墙壁和门；负附魔会使近处视野变暗。",
       "frequency": 1
     },
     {
@@ -352,6 +342,16 @@
       "frequency": 1
     },
     {
+      "id": "ring_of_regeneration",
+      "name": "Ring of Regeneration",
+      "minDepth": 4,
+      "maxDepth": 26,
+      "weight": 1,
+      "color": 16766976,
+      "description": "佩戴后按附魔等级改变自然生命恢复速度；负附魔会减慢恢复。",
+      "frequency": 1
+    },
+    {
       "id": "ring_of_transference",
       "name": "Ring of Transference",
       "minDepth": 4,
@@ -359,6 +359,26 @@
       "weight": 1,
       "color": 16711680,
       "description": "对生物造成直接伤害时按附魔等级吸取生命；负附魔会反噬自己。",
+      "frequency": 1
+    },
+    {
+      "id": "ring_of_light",
+      "name": "Ring of Light",
+      "minDepth": 1,
+      "maxDepth": 26,
+      "weight": 1,
+      "color": 16777113,
+      "description": "使你在地牢深处渐暗的光线中看得更远，不会让敌人更容易察觉你。",
+      "frequency": 1
+    },
+    {
+      "id": "ring_of_awareness",
+      "name": "Ring of Awareness",
+      "minDepth": 2,
+      "maxDepth": 26,
+      "weight": 1,
+      "color": 11184895,
+      "description": "佩戴后提高发现陷阱与密门的搜索强度；负附魔会削弱感知。",
       "frequency": 1
     },
     {
@@ -372,13 +392,13 @@
       "frequency": 1
     },
     {
-      "id": "ring_of_clairvoyance",
-      "name": "Ring of Clairvoyance",
-      "minDepth": 3,
+      "id": "ring_of_reaping",
+      "name": "Ring of Reaping",
+      "minDepth": 1,
       "maxDepth": 26,
       "weight": 1,
-      "color": 3394815,
-      "description": "佩戴后可透视附近墙壁和门；负附魔会使近处视野变暗。",
+      "color": 16733525,
+      "description": "每次近战命中敌人时为法杖和护符充能；诅咒的收割戒指会在命中时消耗充能。",
       "frequency": 1
     }
   ],

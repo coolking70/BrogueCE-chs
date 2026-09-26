@@ -1,0 +1,14 @@
+import fs from 'node:fs';import crypto from 'node:crypto';import assert from 'node:assert/strict';import {spawnSync} from 'node:child_process';import {gunzipSync} from 'node:zlib';
+const out='ai_docs/reports/u-15b2-evidence',file='ai_docs/reports/u-r4-trace.json.gz';
+const sha=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
+const read=p=>JSON.parse(gunzipSync(fs.readFileSync(p)));
+if(fs.existsSync(`${out}/trace-recapture.json`))throw Error('UR4 already recaptured');
+const before=sha(file),original=read(file),attributed=read(`${out}/ur4-reaping.json.gz`);
+assert.equal(before,JSON.parse(fs.readFileSync(`${out}/baseline-hashes-before.json`))[file]);
+assert.deepEqual(read(`${out}/ur4-s0.json.gz`),original);
+const strip=value=>{const r=structuredClone(value);for(const scene of Object.values(r))for(const mode of Object.values(scene))for(const row of mode.rows)delete row.state.flavors.arcana;return r;};
+assert.deepEqual(strip(attributed),strip(original));
+const fd=fs.openSync(`${out}/ur4-recapture.txt`,'w');
+const run=spawnSync('npm',['test','--','src/test/u_r4_trace.test.ts','--maxWorkers=1'],{env:{...process.env,UR4_CAPTURE:'1'},stdio:['ignore',fd,fd]});fs.closeSync(fd);if(run.status)throw Error('UR4 invariants failed');
+assert.deepEqual(read(file),attributed);
+fs.writeFileSync(`${out}/trace-recapture.json`,JSON.stringify({file,before,after:sha(file),writes:1,headEqualsOriginal:true,finalEqualsAttributed:true,onlyArcanaFlavorTableChanged:true},null,2)+'\n');

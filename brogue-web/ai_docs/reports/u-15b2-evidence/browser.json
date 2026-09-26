@@ -1,0 +1,657 @@
+{
+  "rows": [
+    {
+      "phase": "light-before",
+      "state": {
+        "light": {
+          "radiusHundredths": 339,
+          "radialFadeToPercent": 40
+        },
+        "visible": 36,
+        "rings": [],
+        "resources": [
+          {
+            "kind": "ring_of_light",
+            "e": 3,
+            "charges": 1500
+          }
+        ],
+        "monster": [],
+        "text": {
+          "seed": "1532",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 25,
+            "y": 16,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "phase": "light-equipped-unknown",
+      "state": {
+        "light": {
+          "radiusHundredths": 678,
+          "radialFadeToPercent": 45
+        },
+        "visible": 196,
+        "rings": [
+          {
+            "id": "ring_of_light",
+            "e": 3,
+            "known": false,
+            "charges": 1499
+          }
+        ],
+        "resources": [
+          {
+            "kind": "ring_of_light",
+            "e": 3,
+            "charges": 1499
+          }
+        ],
+        "monster": [],
+        "text": {
+          "seed": "1532",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 25,
+            "y": 16,
+            "hp": 30,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 4,
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "phase": "light-unequipped",
+      "state": {
+        "light": {
+          "radiusHundredths": 339,
+          "radialFadeToPercent": 40
+        },
+        "visible": 36,
+        "rings": [],
+        "resources": [
+          {
+            "kind": "ring_of_light",
+            "e": 3,
+            "charges": 1499
+          }
+        ],
+        "monster": [],
+        "text": {
+          "seed": "1532",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 25,
+            "y": 16,
+            "hp": 30,
+            "nutrition": 2148,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 7,
+          "autoPathLength": 0,
+          "monsters": [],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "phase": "reaping-2",
+      "before": {
+        "light": {
+          "radiusHundredths": 339,
+          "radialFadeToPercent": 40
+        },
+        "visible": 36,
+        "rings": [
+          {
+            "id": "ring_of_reaping",
+            "e": 2,
+            "known": true,
+            "charges": 1500
+          }
+        ],
+        "resources": [
+          {
+            "kind": "ring_of_reaping",
+            "e": 2,
+            "charges": 1500
+          },
+          {
+            "kind": "sword",
+            "e": 0,
+            "charges": 20
+          },
+          {
+            "kind": "staff_of_lightning",
+            "e": 3,
+            "charges": 2,
+            "remaining": 500
+          },
+          {
+            "kind": "charm_of_health",
+            "e": 2,
+            "cooldown": 10
+          }
+        ],
+        "monster": [
+          {
+            "hp": 4,
+            "shield": 1000
+          }
+        ],
+        "text": {
+          "seed": "1532",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 25,
+            "y": 16,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 26,
+              "y": 16,
+              "hp": 4,
+              "maxHp": 4,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": 0,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 1000,
+              "maxShield": 1000
+            }
+          ],
+          "revealedLocations": [],
+          "items": []
+        }
+      },
+      "after": {
+        "light": {
+          "radiusHundredths": 339,
+          "radialFadeToPercent": 40
+        },
+        "visible": 36,
+        "rings": [
+          {
+            "id": "ring_of_reaping",
+            "e": 2,
+            "known": true,
+            "charges": 1500
+          }
+        ],
+        "resources": [
+          {
+            "kind": "ring_of_reaping",
+            "e": 2,
+            "charges": 1500
+          },
+          {
+            "kind": "sword",
+            "e": 0,
+            "charges": 20
+          },
+          {
+            "kind": "staff_of_lightning",
+            "e": 3,
+            "charges": 2,
+            "remaining": 440
+          },
+          {
+            "kind": "charm_of_health",
+            "e": 2,
+            "cooldown": 4
+          }
+        ],
+        "monster": [
+          {
+            "hp": 4,
+            "shield": 650
+          }
+        ],
+        "text": {
+          "seed": "1532",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 25,
+            "y": 16,
+            "hp": 30,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 26,
+              "y": 16,
+              "hp": 4,
+              "maxHp": 4,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": 0,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 650,
+              "maxShield": 1000
+            }
+          ],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    },
+    {
+      "phase": "reaping--2",
+      "before": {
+        "light": {
+          "radiusHundredths": 339,
+          "radialFadeToPercent": 40
+        },
+        "visible": 36,
+        "rings": [
+          {
+            "id": "ring_of_reaping",
+            "e": -2,
+            "known": true,
+            "charges": 1500
+          }
+        ],
+        "resources": [
+          {
+            "kind": "ring_of_reaping",
+            "e": -2,
+            "charges": 1500
+          },
+          {
+            "kind": "sword",
+            "e": 0,
+            "charges": 20
+          },
+          {
+            "kind": "staff_of_lightning",
+            "e": 3,
+            "charges": 2,
+            "remaining": 500
+          },
+          {
+            "kind": "charm_of_health",
+            "e": 2,
+            "cooldown": 10
+          }
+        ],
+        "monster": [
+          {
+            "hp": 4,
+            "shield": 1000
+          }
+        ],
+        "text": {
+          "seed": "1532",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 25,
+            "y": 16,
+            "hp": 30,
+            "nutrition": 2150,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 26,
+              "y": 16,
+              "hp": 4,
+              "maxHp": 4,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": 0,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 1000,
+              "maxShield": 1000
+            }
+          ],
+          "revealedLocations": [],
+          "items": []
+        }
+      },
+      "after": {
+        "light": {
+          "radiusHundredths": 339,
+          "radialFadeToPercent": 40
+        },
+        "visible": 36,
+        "rings": [
+          {
+            "id": "ring_of_reaping",
+            "e": -2,
+            "known": true,
+            "charges": 1500
+          }
+        ],
+        "resources": [
+          {
+            "kind": "ring_of_reaping",
+            "e": -2,
+            "charges": 1500
+          },
+          {
+            "kind": "sword",
+            "e": 0,
+            "charges": 20
+          },
+          {
+            "kind": "staff_of_lightning",
+            "e": 3,
+            "charges": 2,
+            "remaining": 520
+          },
+          {
+            "kind": "charm_of_health",
+            "e": 2,
+            "cooldown": 12
+          }
+        ],
+        "monster": [
+          {
+            "hp": 4,
+            "shield": 650
+          }
+        ],
+        "text": {
+          "seed": "1532",
+          "mode": "explore",
+          "enchantmentTargets": [],
+          "arcanaPreview": null,
+          "arcanaTarget": null,
+          "coordinateSystem": {
+            "origin": "top-left",
+            "xAxis": "right",
+            "yAxis": "down"
+          },
+          "player": {
+            "weaknessAmount": 0,
+            "effectiveStrength": 12,
+            "maxStatus": {},
+            "x": 25,
+            "y": 16,
+            "hp": 30,
+            "nutrition": 2149,
+            "poisonAmount": 0,
+            "maxShield": 0,
+            "statuses": {}
+          },
+          "replay": {
+            "status": "idle",
+            "cursor": 0,
+            "total": 0
+          },
+          "recordedInputEvents": 0,
+          "autoPathLength": 0,
+          "monsters": [
+            {
+              "name": "老鼠",
+              "x": 26,
+              "y": 16,
+              "hp": 4,
+              "maxHp": 4,
+              "weaknessAmount": 0,
+              "maxStatus": {},
+              "accuracy": 80,
+              "defense": 0,
+              "damage": "1d3",
+              "newPowerCount": 0,
+              "totalPowerCount": 0,
+              "targetCorpseLoc": null,
+              "targetCorpseName": "",
+              "corpseAbsorptionCounter": 0,
+              "isAbsorbing": false,
+              "absorptionFlags": null,
+              "absorbBehavior": false,
+              "absorptionBolt": 0,
+              "wasNegated": false,
+              "negated": false,
+              "mutation": null,
+              "behaviorFlags": [],
+              "abilityFlags": [],
+              "bolts": [],
+              "typeId": "rat",
+              "isAlly": false,
+              "boundToPlayer": false,
+              "dominated": false,
+              "isCaged": false,
+              "leaderId": null,
+              "discordant": 0,
+              "entranced": 0,
+              "doesNotTrackLeader": false,
+              "ticksUntilTurn": 100,
+              "poisonAmount": 0,
+              "poisoned": 0,
+              "shield": 650,
+              "maxShield": 1000
+            }
+          ],
+          "revealedLocations": [],
+          "items": []
+        }
+      }
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,67 @@
+[
+  {
+    "file": "src/test/p2_1_tick_architecture.test.ts",
+    "test": "P2-1 A: 与 p2_baseline 逐项一致（零行为变化） 4 seed × D1-D26：地形指纹 / 怪物数 / 物种集合 / 物品数 全部一致",
+    "status": "skipped"
+  },
+  {
+    "file": "src/test/p2_1_tick_architecture.test.ts",
+    "test": "P2-1 A: 与 p2_baseline 逐项一致（零行为变化） 4 seed × 400 回合玩法状态：玩家坐标 HP / 所在层 / 全部怪物位置与 HP 一致",
+    "status": "skipped"
+  },
+  {
+    "file": "src/test/p2_1_tick_architecture.test.ts",
+    "test": "P2-1 B: ticksUntilTurn 真实驱动调度（对抗性） B1 字段存在且初始口径正确：怪物满 TICKS_PER_TURN、玩家 0",
+    "status": "skipped"
+  },
+  {
+    "file": "src/test/p2_1_tick_architecture.test.ts",
+    "test": "P2-1 B: ticksUntilTurn 真实驱动调度（对抗性） B3 恒速口径：一个玩家动作后每只存活怪物恰好行动一次、ticks 归满、玩家归零",
+    "status": "skipped"
+  },
+  {
+    "file": "src/test/p2_2_real_speed.test.ts",
+    "test": "P2-2 F: p2_2_baseline 一致性 4 seed × D1-D26 生成期指标与 p2_2_baseline 一致，且与 P2-1 旧基线 levels 段相同（速度未泄漏进生成）",
+    "status": "skipped"
+  },
+  {
+    "file": "src/test/p2_2_real_speed.test.ts",
+    "test": "P2-2 F: p2_2_baseline 一致性 4 seed × 400 回合玩法状态与 p2_2_baseline 一致",
+    "status": "skipped"
+  },
+  {
+    "file": "src/test/p2_3_objective_time.test.ts",
+    "test": "P2-3 F: p2_3_baseline 一致性 4 seed × D1-D26 生成期指标与 p2_3_baseline 一致，且与 P2-1/P2-2 旧基线 levels 段相同（本轮不触碰生成）",
+    "status": "skipped"
+  },
+  {
+    "file": "src/test/p2_3_objective_time.test.ts",
+    "test": "P2-3 F: p2_3_baseline 一致性 4 seed × 400 回合玩法状态与 p2_3_baseline 一致（本轮后的新基准）——P1-26 退役：相位快照当回归闸门会拦住一切有意改动，见上方注释",
+    "status": "skipped"
+  },
+  {
+    "file": "src/test/smoke.test.ts",
+    "test": "headless 冒烟 c-placeholder 红灯占位：待 P1-2 重新提取 hordes.json 后转为正式断言（加固为每层非水栖怪数 > 0 之类的形态）",
+    "status": "todo"
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.test.ts",
+    "test": "与 CE 不符的占位（暂不实现黄金值断言） weaponSlowDuration：web 为 3+floor(ench/2)；CE 为 (ench+2)^2/3（PowerTables.c:102）",
+    "status": "todo"
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.test.ts",
+    "test": "与 CE 不符的占位（暂不实现黄金值断言） weaponConfusionDuration：web 为 3+floor(ench*0.75)；CE 为 max(3, ench*3/2)（PowerTables.c:100）",
+    "status": "todo"
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.test.ts",
+    "test": "与 CE 不符的占位（暂不实现黄金值断言） weaponImageCount：web 为 1+floor(ench/3)；CE 为 clamp(ench/3, 1, 7)（PowerTables.c:103）",
+    "status": "todo"
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.test.ts",
+    "test": "与 CE 不符的占位（暂不实现黄金值断言） weaponForceDistance：web 为 floor(ench/2)+2（min 1）；CE 为 max(4, ench*2+2)（PowerTables.c:101）",
+    "status": "todo"
+  }
+]

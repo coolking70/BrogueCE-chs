@@ -1,0 +1,13 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('.item-row').filter({ hasText: '收割戒指' })[22m
+
+    at /Users/coolking70/.codex/worktrees/0c38/brogue/brogue-web/scripts/u15b2-browser.mjs:46:91 {
+  name: 'TimeoutError'
+}
+
+Node.js v25.2.1

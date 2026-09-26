@@ -1,0 +1,54 @@
+
+> brogue-web@0.0.0 test:drift
+> vitest run src/test/generation_baseline.test.ts
+
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/0c38/brogue/brogue-web
+
+stdout | src/test/generation_baseline.test.ts > 滚动生成基线：地图生成无非预期漂移 > 4 seed × D1-D26：地形指纹 / 怪物数 / 物种集合 / 物品数与基线一致
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/generation_baseline.test.ts (1 test | 1 failed) 50642ms
+     × 4 seed × D1-D26：地形指纹 / 怪物数 / 物种集合 / 物品数与基线一致 50641ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/generation_baseline.test.ts > 滚动生成基线：地图生成无非预期漂移 > 4 seed × D1-D26：地形指纹 / 怪物数 / 物种集合 / 物品数与基线一致
+AssertionError: 生成结果偏离基线 13 处（若非有意改动，请查清成因）: expected [ …(13) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "seed20260913 D7 fp: 基线=06105fbe:5742 现在=fb3a2305:5743",
++   "seed20260913 D10 fp: 基线=7f0d6028:4931 现在=5ce7f847:4931",
++   "seed20260913 D25 fp: 基线=302ae36a:5178 现在=dca6977d:5177",
++   "seed20260913 D26 fp: 基线=5b970a12:5092 现在=79aeeb0c:5093",
++   "seed31337 D2 fp: 基线=4599f792:5063 现在=2cb3672f:5114",
++   "seed31337 D2 n: 基线=6 现在=7",
++   "seed31337 D2 species: 基线=Bloat,Jackal,Kobold,Rat 现在=Bloat,Eel,Jackal,Kobold,Pit bloat,Rat",
++   "seed31337 D2 items: 基线=13 现在=15",
++   "seed31337 D15 fp: 基线=04db93d0:5135 现在=d09f3ee2:5135",
++   "seed31337 D18 fp: 基线=020f75d4:5053 现在=08644240:5053",
++   "seed31337 D20 fp: 基线=e6754a1e:4967 现在=40e342d5:4966",
++   "seed31337 D21 fp: 基线=1dbbd9a1:5054 现在=438cec53:5045",
++   "seed31337 D21 items: 基线=7 现在=9",
++ ]
+
+ ❯ src/test/generation_baseline.test.ts:51:67
+     49|             }
+     50|         }
+     51|         expect(diffs, `生成结果偏离基线 ${diffs.length} 处（若非有意改动，请查清成因）`).toEq…
+       |                                                                   ^
+     52|     });
+     53| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  21:53:30
+   Duration  52.27s (transform 844ms, setup 0ms, import 1.46s, tests 50.64s, environment 0ms)
+

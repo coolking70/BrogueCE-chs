@@ -1,0 +1,9 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+src/test/b_1a_identification.test.ts(460,48): error TS2550: Property 'at' does not exist on type 'string[]'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2022' or later.
+src/test/b_1a_identification.test.ts(465,50): error TS2550: Property 'at' does not exist on type 'string[]'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2022' or later.
+src/test/b_1a_identification.test.ts(468,51): error TS2550: Property 'at' does not exist on type 'string[]'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2022' or later.
+src/test/u_15b2_ring_birth.test.ts(120,45): error TS2550: Property 'at' does not exist on type '[l: number, h: number, _c: number][]'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2022' or later.
+src/test/u_15b2_ring_birth.test.ts(175,30): error TS2554: Expected 2 arguments, but got 1.
