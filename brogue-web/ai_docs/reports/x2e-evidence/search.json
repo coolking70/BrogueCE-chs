@@ -1,0 +1,3668 @@
+{
+  "seeds": [
+    "src/engine/Core/Game.ts",
+    "src/engine/Items/CharmModel.ts",
+    "src/engine/Items/ItemLoader.ts",
+    "src/engine/Items/ItemUseCoordinator.ts",
+    "src/engine/UI/DetailGenerator.ts",
+    "src/data/arcana.json",
+    "src/engine/Combat/Conjuration.ts",
+    "src/engine/Movement/CreaturePlacement.ts",
+    "src/entities/Monster.ts",
+    "src/locales/zh_CN.json"
+  ],
+  "symbols": "/charm|Charm|CHARM|crystalize|negationBlast|rechargeStaff|bladeSpawnLocation|teleportCandidates|lifespan_remaining|readFileSync|readFile|createSourceFile/",
+  "reverseImportClosure": [
+    "src/App.vue",
+    "src/components/AgentControls.vue",
+    "src/components/DetailPanel.vue",
+    "src/components/GameCanvas.vue",
+    "src/components/GameEndOverlay.vue",
+    "src/components/InventoryOverlay.vue",
+    "src/components/MainMenu.vue",
+    "src/components/ReferenceOverlay.vue",
+    "src/components/ReplayControls.vue",
+    "src/components/Sidebar.vue",
+    "src/data/arcana.json",
+    "src/data/monsterBolts.test.ts",
+    "src/data/monsterDamage.test.ts",
+    "src/data/weapons.test.ts",
+    "src/engine/Combat/BlinkTargeting.ts",
+    "src/engine/Combat/Bolt.ts",
+    "src/engine/Combat/BoltCatalog.test.ts",
+    "src/engine/Combat/BoltContract.test.ts",
+    "src/engine/Combat/BoltReflection.ts",
+    "src/engine/Combat/BoltTargeting.ts",
+    "src/engine/Combat/BoltTrajectory.ts",
+    "src/engine/Combat/Cloning.ts",
+    "src/engine/Combat/Combat.ts",
+    "src/engine/Combat/Conjuration.ts",
+    "src/engine/Combat/MonsterAbsorption.ts",
+    "src/engine/Combat/MonsterBlink.ts",
+    "src/engine/Combat/Negation.ts",
+    "src/engine/Combat/Polymorph.ts",
+    "src/engine/Core/Endgame.ts",
+    "src/engine/Core/EntitySnapshot.ts",
+    "src/engine/Core/Game.ts",
+    "src/engine/Core/GenerationCoordinator.ts",
+    "src/engine/Core/LevelSnapshot.ts",
+    "src/engine/Core/LevelState.ts",
+    "src/engine/Core/SaveStorage.ts",
+    "src/engine/Core/TimeCoordinator.ts",
+    "src/engine/Core/WholeRunSnapshot.ts",
+    "src/engine/Core/snapshotQuantity.test.ts",
+    "src/engine/Core/startingKit.test.ts",
+    "src/engine/Environment/Gas.ts",
+    "src/engine/Generator/Architect.ts",
+    "src/engine/Generator/BlueprintEngine.ts",
+    "src/engine/Generator/GenerationPlacement.ts",
+    "src/engine/Generator/MachineView.ts",
+    "src/engine/Generator/Stairs.ts",
+    "src/engine/Items/ArcanaEnchantment.ts",
+    "src/engine/Items/ArcanaRecharge.ts",
+    "src/engine/Items/CharmModel.ts",
+    "src/engine/Items/Commutation.ts",
+    "src/engine/Items/Inventory.ts",
+    "src/engine/Items/Item.ts",
+    "src/engine/Items/ItemLoader.ts",
+    "src/engine/Items/ItemSpawnHeatMap.ts",
+    "src/engine/Items/ItemUseCoordinator.ts",
+    "src/engine/Items/MachineItemGeneration.ts",
+    "src/engine/Items/RingBonuses.ts",
+    "src/engine/Items/itemFlavors.test.ts",
+    "src/engine/Map/AutoGenerator.ts",
+    "src/engine/Map/DungeonFeature.ts",
+    "src/engine/Map/LoopMap.ts",
+    "src/engine/Map/Pathfinding.ts",
+    "src/engine/Map/Promotion.ts",
+    "src/engine/Map/SafetyMap.ts",
+    "src/engine/Map/Scent.ts",
+    "src/engine/Map/TerrainRules.ts",
+    "src/engine/Map/WaypointMap.ts",
+    "src/engine/Movement/CreaturePlacement.ts",
+    "src/engine/Movement/Entrancement.ts",
+    "src/engine/Movement/LevelTravel.ts",
+    "src/engine/Movement/PlayerTravel.ts",
+    "src/engine/UI/Appearance.ts",
+    "src/engine/UI/DetailGenerator.test.ts",
+    "src/engine/UI/DetailGenerator.ts",
+    "src/engine/UI/Discoveries.test.ts",
+    "src/engine/UI/Discoveries.ts",
+    "src/engine/UI/ItemKnowledge.ts",
+    "src/engine/UI/MonsterSidebar.ts",
+    "src/engine/UI/MonsterVisibility.ts",
+    "src/entities/Monster.ts",
+    "src/entities/Player.ts",
+    "src/i18n.ts",
+    "src/locales/zh_CN.json",
+    "src/main.ts",
+    "src/test/ai_1_scent_tracking.test.ts",
+    "src/test/armor_display_effect.test.ts",
+    "src/test/armor_model_effect.test.ts",
+    "src/test/armor_runic_effect.test.ts",
+    "src/test/b1_retire_invented.test.ts",
+    "src/test/b2_transcription.test.ts",
+    "src/test/b_1_weapon_specials.test.ts",
+    "src/test/b_1a_identification.test.ts",
+    "src/test/b_1b_identification_persistence.test.ts",
+    "src/test/b_1c_detect_magic.test.ts",
+    "src/test/b_2_throwing.test.ts",
+    "src/test/b_4a_item_generation.test.ts",
+    "src/test/b_4b_item_placement.test.ts",
+    "src/test/blueprint_center.test.ts",
+    "src/test/c_0_add_loops.test.ts",
+    "src/test/c_1_room_profile.test.ts",
+    "src/test/c_2_lakes_determinism.test.ts",
+    "src/test/c_2_lakes_e2e.test.ts",
+    "src/test/c_3_walls_doors.test.ts",
+    "src/test/c_4a_0_layer_model.test.ts",
+    "src/test/c_4a_terrain_catalog.test.ts",
+    "src/test/c_4b_dungeon_feature.test.ts",
+    "src/test/c_4c_promotion.test.ts",
+    "src/test/c_5_fall_subsystem.test.ts",
+    "src/test/c_6_autogenerators.test.ts",
+    "src/test/c_7_lighting.test.ts",
+    "src/test/c_8_connectivity.test.ts",
+    "src/test/f_1_fire_as_terrain.test.ts",
+    "src/test/f_2a_fire_mechanics.test.ts",
+    "src/test/f_2b_creature_burning.test.ts",
+    "src/test/f_2c_explosion.test.ts",
+    "src/test/fixtures/u19a-machine-scenes.ts",
+    "src/test/fixtures/u19b-machine-scenes.ts",
+    "src/test/fixtures/u19c-machine-actions.ts",
+    "src/test/fixtures/u19d-machine-actions.ts",
+    "src/test/fixtures/u19e-machine-actions.ts",
+    "src/test/fixtures/u19f-auto-actions.ts",
+    "src/test/fixtures/u19f-machine-actions.ts",
+    "src/test/g_1_gas_volumetric.test.ts",
+    "src/test/g_2_gas_df_wiring.test.ts",
+    "src/test/g_3_gas_effects.test.ts",
+    "src/test/generation_baseline.test.ts",
+    "src/test/harness.ts",
+    "src/test/horde_selection.test.ts",
+    "src/test/horde_terrain_spawn.test.ts",
+    "src/test/hunger_curve_sim.test.ts",
+    "src/test/hunger_regen.test.ts",
+    "src/test/i_1_interaction.test.ts",
+    "src/test/invented_content_pool.test.ts",
+    "src/test/monster_damage_balance.test.ts",
+    "src/test/monster_stats_effect.test.ts",
+    "src/test/p1_20_item_placement.test.ts",
+    "src/test/p1_24_death_sink.test.ts",
+    "src/test/p1_26_invariants.test.ts",
+    "src/test/p1_27_remove_drowning.test.ts",
+    "src/test/p1_28_flag_channel.test.ts",
+    "src/test/p1_29_adversarial_gate.test.ts",
+    "src/test/p1_29_lake_connectivity.test.ts",
+    "src/test/p1_30_i18n_gate.test.ts",
+    "src/test/p1_31_35_placement_snapshot.test.ts",
+    "src/test/p1_33_machine_chokepoint.test.ts",
+    "src/test/p1_34_loopmap_reset.test.ts",
+    "src/test/p1_37_machine_flag_i18n.test.ts",
+    "src/test/p1_42_secret_door_search.test.ts",
+    "src/test/p2_0_seeded_rng.test.ts",
+    "src/test/p2_1_tick_architecture.test.ts",
+    "src/test/p2_2_real_speed.test.ts",
+    "src/test/p2_3_objective_time.test.ts",
+    "src/test/p2_4_animation_cadence.test.ts",
+    "src/test/p2_6_display_settings.test.ts",
+    "src/test/p4_10_waypoint.test.ts",
+    "src/test/p4_1b_monster_casting.test.ts",
+    "src/test/p4_2_monster_summoning.test.ts",
+    "src/test/p4_3_special_monster_flags.test.ts",
+    "src/test/p4_4_split_kamikaze.test.ts",
+    "src/test/p4_5_melee_specials.test.ts",
+    "src/test/p4_6_attack_geometry.test.ts",
+    "src/test/p4_7_player_weapon_geometry.test.ts",
+    "src/test/p4_8_scent_map.test.ts",
+    "src/test/p4_9_safety_map.test.ts",
+    "src/test/r_1_appearance.test.ts",
+    "src/test/scroll_effects.test.ts",
+    "src/test/smoke.test.ts",
+    "src/test/t_1_tail.test.ts",
+    "src/test/u20_inventory.test.ts",
+    "src/test/u21c_flare_sidebar.test.ts",
+    "src/test/u21c_terrain_appearance.test.ts",
+    "src/test/u24_hardcoded_text.test.ts",
+    "src/test/u25_machine_observation.test.ts",
+    "src/test/u_00_new_run.test.ts",
+    "src/test/u_01_instance_snapshot.test.ts",
+    "src/test/u_02a_rng_snapshot.test.ts",
+    "src/test/u_02b_level_rng.test.ts",
+    "src/test/u_03_whole_run_snapshot.test.ts",
+    "src/test/u_03b_level_travel.test.ts",
+    "src/test/u_04c_machine_cells.test.ts",
+    "src/test/u_05_machine_items.test.ts",
+    "src/test/u_05a_item_ownership.test.ts",
+    "src/test/u_06_monster_damage.test.ts",
+    "src/test/u_07_monster_blink.test.ts",
+    "src/test/u_08_terrain_bolts.test.ts",
+    "src/test/u_09_learning_consumers.test.ts",
+    "src/test/u_10_absorption_snapshot.test.ts",
+    "src/test/u_11_corpse_learning.test.ts",
+    "src/test/u_12a_cast_eligibility.test.ts",
+    "src/test/u_12b_ally_mode.test.ts",
+    "src/test/u_13_combat_math.test.ts",
+    "src/test/u_14a_status_gaps.test.ts",
+    "src/test/u_14b_status_gaps.test.ts",
+    "src/test/u_15a_shattering.test.ts",
+    "src/test/u_15b2_ring_birth.test.ts",
+    "src/test/u_15b_rings.test.ts",
+    "src/test/u_15c_charms.test.ts",
+    "src/test/u_15d2_armor_runic.test.ts",
+    "src/test/u_15d3_runic_generation.test.ts",
+    "src/test/u_15d_weapon_runic.test.ts",
+    "src/test/u_15e_potions.test.ts",
+    "src/test/u_15f_food.test.ts",
+    "src/test/u_16_lifecycle.test.ts",
+    "src/test/u_17a_df_transaction.test.ts",
+    "src/test/u_17b_carriers.test.ts",
+    "src/test/u_17c_triggers.test.ts",
+    "src/test/u_17d_vents.test.ts",
+    "src/test/u_17e_altars.test.ts",
+    "src/test/u_17f_carriers.test.ts",
+    "src/test/u_18_water_cage.test.ts",
+    "src/test/u_18a_2_generation_terrain.test.ts",
+    "src/test/u_18a_3_generation.test.ts",
+    "src/test/u_18a_terrain_contracts.test.ts",
+    "src/test/u_19a_machine_view.test.ts",
+    "src/test/u_19b_pending_occupancy.test.ts",
+    "src/test/u_19c_immediate_entities.test.ts",
+    "src/test/u_19d_machine_families.test.ts",
+    "src/test/u_19e_machine_families.test.ts",
+    "src/test/u_19f_autogen.test.ts",
+    "src/test/u_19f_fire.test.ts",
+    "src/test/u_19f_machines.test.ts",
+    "src/test/u_23_memory_mapping.test.ts",
+    "src/test/u_26a_deep_baseline.test.ts",
+    "src/test/u_26a_deep_levels.test.ts",
+    "src/test/u_26b_endgame.test.ts",
+    "src/test/u_27_recording.test.ts",
+    "src/test/u_r1_codec.test.ts",
+    "src/test/u_r2_trace.test.ts",
+    "src/test/u_r3_trace.test.ts",
+    "src/test/u_r4_trace.test.ts",
+    "src/test/ui_1_rendering.test.ts",
+    "src/test/ui_2_protection.test.ts",
+    "src/test/v_1a_blueprint_items.test.ts",
+    "src/test/v_1b_alternative.test.ts",
+    "src/test/v_1c_machine_structure.test.ts",
+    "src/test/v_2a_vestibule_return.test.ts",
+    "src/test/v_2b_2a_placement_flags.test.ts",
+    "src/test/v_2b_2b_blueprints.test.ts",
+    "src/test/v_2b_3_wired.test.ts",
+    "src/test/v_2b_4_altars.test.ts",
+    "src/test/v_2b_5_dormant.test.ts",
+    "src/test/v_2b_6_keys.test.ts",
+    "src/test/v_2b_7_features.test.ts",
+    "src/test/v_2b_8_autogen.test.ts",
+    "src/test/v_2b_9b_environment.test.ts",
+    "src/test/v_2b_9c_effects.test.ts",
+    "src/test/v_2b_9d_dungeon_profile.test.ts",
+    "src/test/v_2b_9e_2_autogen.test.ts",
+    "src/test/v_2b_9e_area_machine.test.ts",
+    "src/test/w_10_poison.test.ts",
+    "src/test/w_11_teleport_placement.test.ts",
+    "src/test/w_12_blink_beckoning.test.ts",
+    "src/test/w_13_tunneling.test.ts",
+    "src/test/w_14_obstruction.test.ts",
+    "src/test/w_15_shielding.test.ts",
+    "src/test/w_16_conjuration.test.ts",
+    "src/test/w_17_domination.test.ts",
+    "src/test/w_18_entrancement.test.ts",
+    "src/test/w_19_polymorph.test.ts",
+    "src/test/w_20_cloning.test.ts",
+    "src/test/w_21_empowerment.test.ts",
+    "src/test/w_23_negation.test.ts",
+    "src/test/w_24_wand_catalog.test.ts",
+    "src/test/w_25_staff_catalog.test.ts",
+    "src/test/w_26_arcana_closure.test.ts",
+    "src/test/w_2_arcana_submission.test.ts",
+    "src/test/w_3_bolt_trajectory.test.ts",
+    "src/test/w_4_bolt_reflection.test.ts",
+    "src/test/w_5_arcana_instance.test.ts",
+    "src/test/w_6_arcana_recharge.test.ts",
+    "src/test/w_7_arcana_enchantment.test.ts",
+    "src/test/w_8_staff_damage.test.ts",
+    "src/test/w_9_directed_status.test.ts",
+    "src/test/x2a_recording_checkpoint.test.ts",
+    "src/test/x2b_terrain_derivation.test.ts",
+    "src/test/x2c_hit_status_owner.test.ts",
+    "src/test/x2e_charms.test.ts"
+  ],
+  "sourceHits": [
+    {
+      "file": "src/components/InventoryOverlay.vue",
+      "line": 66,
+      "text": "case '-- CHARMS --': return t('inventory.category.charms');"
+    },
+    {
+      "file": "src/components/InventoryOverlay.vue",
+      "line": 88,
+      "text": "'-- CHARMS --': [],"
+    },
+    {
+      "file": "src/components/InventoryOverlay.vue",
+      "line": 112,
+      "text": "case ItemCategory.CHARM: groups['-- CHARMS --']!.push(entry); break;"
+    },
+    {
+      "file": "src/components/InventoryOverlay.vue",
+      "line": 151,
+      "text": "item.category === ItemCategory.WAND || item.category === ItemCategory.STAFF || item.category === ItemCategory.CHARM;"
+    },
+    {
+      "file": "src/components/InventoryOverlay.vue",
+      "line": 276,
+      "text": "if (item.category === ItemCategory.CHARM) closeInventory();"
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 405,
+      "text": "\"charms\": ["
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 407,
+      "text": "\"id\": \"charm_of_health\","
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 408,
+      "text": "\"name\": \"Charm of Health\","
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 417,
+      "text": "\"id\": \"charm_of_protection\","
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 418,
+      "text": "\"name\": \"Charm of Protection\","
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 427,
+      "text": "\"id\": \"charm_of_speed\","
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 428,
+      "text": "\"name\": \"Charm of Speed\","
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 437,
+      "text": "\"id\": \"charm_of_fire_immunity\","
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 438,
+      "text": "\"name\": \"Charm of Fire Immunity\","
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 447,
+      "text": "\"id\": \"charm_of_invisibility\","
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 448,
+      "text": "\"name\": \"Charm of Invisibility\","
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 457,
+      "text": "\"id\": \"charm_of_telepathy\","
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 458,
+      "text": "\"name\": \"Charm of Telepathy\","
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 467,
+      "text": "\"id\": \"charm_of_levitation\","
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 468,
+      "text": "\"name\": \"Charm of Levitation\","
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 478,
+      "text": "\"id\": \"charm_of_shattering\","
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 479,
+      "text": "\"name\": \"Charm of Shattering\","
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 489,
+      "text": "\"id\": \"charm_of_guardian\","
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 490,
+      "text": "\"name\": \"Charm of Guardian\","
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 500,
+      "text": "\"id\": \"charm_of_teleportation\","
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 501,
+      "text": "\"name\": \"Charm of Teleportation\","
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 511,
+      "text": "\"id\": \"charm_of_recharging\","
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 512,
+      "text": "\"name\": \"Charm of Recharging\","
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 522,
+      "text": "\"id\": \"charm_of_negation\","
+    },
+    {
+      "file": "src/data/arcana.json",
+      "line": 523,
+      "text": "\"name\": \"Charm of Negation\","
+    },
+    {
+      "file": "src/data/blueprints.json",
+      "line": 703,
+      "text": "\"itemCategory\": \"STAFF|RING|CHARM\","
+    },
+    {
+      "file": "src/data/blueprints.json",
+      "line": 2199,
+      "text": "\"itemCategory\": \"STAFF|RING|CHARM\","
+    },
+    {
+      "file": "src/data/blueprints.json",
+      "line": 6064,
+      "text": "\"name\": \"Outsourced item -- same item possibilities as in the good permanent item reward room (plus charms), but directly adopted by 1-2 key machines.\","
+    },
+    {
+      "file": "src/data/blueprints.json",
+      "line": 6145,
+      "text": "\"itemCategory\": \"CHARM\","
+    },
+    {
+      "file": "src/engine/Combat/BoltCatalog.test.ts",
+      "line": 2,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/engine/Combat/BoltCatalog.test.ts",
+      "line": 10,
+      "text": "const ce = (file: string) => readFileSync(new URL(`../../../../BrogueCE-master/src/${file}`, import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/engine/Combat/Combat.ts",
+      "line": 266,
+      "text": "for (const item of ready) logger.log(i18next.t('item.charm_recharged', {"
+    },
+    {
+      "file": "src/engine/Combat/Conjuration.ts",
+      "line": 33,
+      "text": "export function bladeSpawnLocation(world: Pick<PlacementWorld, 'grid' | 'player' | 'monsters' | 'dormantMonsters'>, origin: Pos, avoidedFlags = SPAWN_FORBIDDEN): Pos | null {"
+    },
+    {
+      "file": "src/engine/Combat/MonsterBlink.ts",
+      "line": 256,
+      "text": "if (!target || m.maxHp <= 1 || m.hasStatus('lifespan_remaining')) return false;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 46,
+      "text": "import { staffBladeCount, bladeSpawnLocation } from '../Combat/Conjuration';"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 50,
+      "text": "import { consumeForUse, finishItemUse, prepareThrownItem, boltWorldFor, commitArcanaTarget, hasIdentifyTarget, canIdentifyChosenItem, canEnchantChosenItem, enchantChosenItem, invokeCharm } from '../Items/ItemUseCoordinator';"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 54,
+      "text": "import { charmRechargeDelay, isCharmKind } from '../Items/CharmModel';"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 55,
+      "text": "import { equippedWisdomBonus, tickStaffRecharge, rechargeStaffFully } from '../Items/ArcanaRecharge';"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 127,
+      "text": "import { canPlaceCreature, teleportCandidates, captiveItemDropCandidates } from '../Movement/CreaturePlacement';"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 761,
+      "text": "case ItemCategory.CHARM:"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 762,
+      "text": "id = this.chooseKindFromPool(ItemLoader.genCharms.map(c => c.id), ItemLoader.genCharms.map(c => c.frequency), meteredFreq);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 802,
+      "text": "case ItemCategory.CHARM: return ItemLoader.spawnCharm(id, pos.x, pos.y);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 866,
+      "text": "// （GOLD,SCROLL,POTION,STAFF,WAND,WEAPON,ARMOR,FOOD,RING,CHARM,AMULET,GEM,KEY；"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 894,
+      "text": "if (category === 'CHARM') return ItemLoader.spawnMachineCharm(id, x, y);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 974,
+      "text": "case 'CHARM': {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 975,
+      "text": "const charms = ItemLoader.genCharms;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 976,
+      "text": "if (!charms.length) return null;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 977,
+      "text": "const pick = ItemLoader.chooseKind(charms.map(c => c.frequency ?? 0));"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 978,
+      "text": "return ItemLoader.spawnMachineCharm(charms[pick]!.id, x, y);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 2076,
+      "text": "...ItemLoader.charms.map((cfg) => ({"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 2078,
+      "text": "spawn: (x: number, y: number) => ({ item: ItemLoader.spawnCharm(cfg.id, x, y) ?? undefined })"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 3916,
+      "text": "if (!this.rechargeStaffsAndCharms()) {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 3917,
+      "text": "logger.log(i18next.t('scroll.recharge_item_empty', { defaultValue: 'No staffs or charms to recharge.' }), '#aaaaaa');"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 3931,
+      "text": "// Items.c:8004-8006 SCROLL_NEGATION: negationBlast(\"the scroll\", DCOLS)"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 3932,
+      "text": "this.negationBlastFromPlayer('the scroll');"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 3939,
+      "text": "// Items.c:8007-8010 SCROLL_SHATTERING: 先消息后 crystalize(9)"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 3941,
+      "text": "this.crystalizeFromPlayer(9);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 3983,
+      "text": "&& item.category !== ItemCategory.CHARM"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 3990,
+      "text": "if (item.category === ItemCategory.CHARM) {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 3997,
+      "text": "invokeCharm(this.player, item, identityId, {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 4000,
+      "text": "shatter: radius => this.crystalizeFromPlayer(radius),"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 4001,
+      "text": "summonGuardian: lifespan => this.summonCharmGuardian(lifespan),"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 4003,
+      "text": "rechargeStaffs: () => { this.rechargeStaffsAndCharms(false); },"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 4004,
+      "text": "negate: radius => this.negationBlastFromPlayer(i18next.t('arcana.charm_emitter', { defaultValue: 'Your charm' }), radius),"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 4582,
+      "text": "const at = bladeSpawnLocation(this, landing);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 4600,
+      "text": "private summonCharmGuardian(lifespan: number): void {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 4603,
+      "text": "const at = bladeSpawnLocation(this, this.player.loc,"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 4612,
+      "text": "guardian.setStatusDuration('lifespan_remaining', lifespan);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 4613,
+      "text": "guardian.maxStatus.lifespan_remaining = lifespan;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 5271,
+      "text": "/** CE Items.c:7904 -> rechargeItems(STAFF | CHARM), all items in the pack. */"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 5272,
+      "text": "private rechargeStaffsAndCharms(includeCharms = true): boolean {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 5276,
+      "text": "rechargeStaffFully(item, (item as any).identityId);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 5277,
+      "text": "} else if (includeCharms && item.category === ItemCategory.CHARM) {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 5388,
+      "text": "* Items.c:4827-4881 negationBlast(emitterName, distance)——SCROLL_NEGATION"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 5402,
+      "text": "*      RING 揭示 +0 / CHARM 重置充能延迟）。"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 5404,
+      "text": "private negationBlastFromPlayer(emitterName: string, distance = DCOLS): void {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 5473,
+      "text": "case ItemCategory.CHARM:"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 5475,
+      "text": "if (isCharmKind(theItem.identityId)) {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 5476,
+      "text": "theItem.cooldownTurns = charmRechargeDelay(theItem.identityId, theItem.enchantment);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 5503,
+      "text": "/** CE Items.c:4904-4939 crystalize: radius + IMPREGNABLE gate precedes"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 5509,
+      "text": "private crystalizeFromPlayer(radius: number): void {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 6232,
+      "text": "const at = bladeSpawnLocation(this, target.loc);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 6243,
+      "text": "blade.setStatusDuration('lifespan_remaining', weaponImageDuration(enchant));"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 6354,
+      "text": "clone.setStatusDuration('lifespan_remaining', 3);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 6355,
+      "text": "clone.maxStatus.lifespan_remaining = 3;"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 6530,
+      "text": "if (m.getStatusDuration('lifespan_remaining') !== 1) this.resolvePoisonDamage(m);"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 6566,
+      "text": "if (expired.includes('lifespan_remaining') && this.canObserveBoltTarget(m)) {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 8293,
+      "text": "} else if (item.category === ItemCategory.CHARM) {"
+    },
+    {
+      "file": "src/engine/Core/Game.ts",
+      "line": 9889,
+      "text": "const candidates = teleportCandidates({ grid: this.grid, player: this.player, monsters: this.monsters, dormantMonsters: this.dormantMonsters }, target, respectTerrainAvoidancePreferences);"
+    },
+    {
+      "file": "src/engine/Items/ArcanaEnchantment.ts",
+      "line": 3,
+      "text": "import { charmRechargeDelay, isCharmKind } from './CharmModel';"
+    },
+    {
+      "file": "src/engine/Items/ArcanaEnchantment.ts",
+      "line": 9,
+      "text": "if (item.category === ItemCategory.CHARM) return Number.isInteger(item.enchantment) && item.enchantment >= 1;"
+    },
+    {
+      "file": "src/engine/Items/ArcanaEnchantment.ts",
+      "line": 30,
+      "text": "} else if (item.category === ItemCategory.CHARM) {"
+    },
+    {
+      "file": "src/engine/Items/ArcanaEnchantment.ts",
+      "line": 33,
+      "text": "if (isCharmKind(item.identityId)) item.cooldownTurns = charmRechargeDelay(item.identityId, item.enchantment);"
+    },
+    {
+      "file": "src/engine/Items/ArcanaRecharge.ts",
+      "line": 4,
+      "text": "import { charmRechargeDelay, isCharmKind } from './CharmModel';"
+    },
+    {
+      "file": "src/engine/Items/ArcanaRecharge.ts",
+      "line": 96,
+      "text": "* Wisdom affects staffs only. A ready charm is never drained; a cooling one is"
+    },
+    {
+      "file": "src/engine/Items/ArcanaRecharge.ts",
+      "line": 97,
+      "text": "* clamped to its actual enchantment's recharge delay. Return newly ready charms."
+    },
+    {
+      "file": "src/engine/Items/ArcanaRecharge.ts",
+      "line": 105,
+      "text": "} else if (item.category === ItemCategory.CHARM && isCharmKind(item.identityId)"
+    },
+    {
+      "file": "src/engine/Items/ArcanaRecharge.ts",
+      "line": 108,
+      "text": "charmRechargeDelay(item.identityId, item.enchantment), item.cooldownRemaining! - multiplier));"
+    },
+    {
+      "file": "src/engine/Items/ArcanaRecharge.ts",
+      "line": 116,
+      "text": "export function rechargeStaffFully(item: StaffResource, identityId?: string): void {"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 3,
+      "text": "type Charm = 'charm_of_health' | 'charm_of_protection' | 'charm_of_speed'"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 4,
+      "text": "| 'charm_of_fire_immunity' | 'charm_of_invisibility' | 'charm_of_telepathy'"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 5,
+      "text": "| 'charm_of_levitation' | 'charm_of_shattering' | 'charm_of_guardian'"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 6,
+      "text": "| 'charm_of_teleportation' | 'charm_of_recharging' | 'charm_of_negation';"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 7,
+      "text": "const TABLE: Record<Charm, { duration: number; increment: 1 | 1.2 | 1.25; recharge: number; base: number }> = {"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 8,
+      "text": "charm_of_health: { duration: 3, increment: 1, recharge: 2500, base: 55 },"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 9,
+      "text": "charm_of_protection: { duration: 20, increment: 1, recharge: 1000, base: 60 },"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 10,
+      "text": "charm_of_speed: { duration: 7, increment: 1.2, recharge: 800, base: 65 },"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 11,
+      "text": "charm_of_fire_immunity: { duration: 10, increment: 1.25, recharge: 800, base: 60 },"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 12,
+      "text": "charm_of_invisibility: { duration: 5, increment: 1.2, recharge: 800, base: 65 },"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 13,
+      "text": "charm_of_telepathy: { duration: 25, increment: 1.25, recharge: 800, base: 65 },"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 14,
+      "text": "charm_of_levitation: { duration: 10, increment: 1.25, recharge: 800, base: 65 },"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 15,
+      "text": "charm_of_shattering: { duration: 0, increment: 1, recharge: 2500, base: 60 },"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 16,
+      "text": "charm_of_guardian: { duration: 18, increment: 1, recharge: 700, base: 70 },"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 17,
+      "text": "charm_of_teleportation: { duration: 0, increment: 1, recharge: 920, base: 60 },"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 18,
+      "text": "charm_of_recharging: { duration: 0, increment: 1, recharge: 10000, base: 55 },"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 19,
+      "text": "charm_of_negation: { duration: 0, increment: 1, recharge: 2500, base: 60 },"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 21,
+      "text": "export function isCharmKind(id: string | undefined): id is Charm { return !!id && id in TABLE; }"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 34,
+      "text": "export function charmEffectDuration(id: Charm, enchant: number): number {"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 43,
+      "text": "export function charmRechargeDelay(id: Charm, enchant: number): number {"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 47,
+      "text": "return Math.max(1, short(charmEffectDuration(id, level) + Math.trunc(row.recharge * fpPow(base, level) / FP)));"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 50,
+      "text": "export function charmShattering(enchant: number): number { return short(4 + Math.trunc(enchant)); }"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 51,
+      "text": "export function charmGuardianLifespan(enchant: number): number { return short(4 + 2 * Math.trunc(enchant)); }"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 52,
+      "text": "export function charmNegationRadius(enchant: number): number { return short(1 + 3 * Math.trunc(enchant)); }"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 53,
+      "text": "export function charmHealing(enchant: number): number { return Math.max(0, Math.min(100, Math.trunc(20 * enchant))); }"
+    },
+    {
+      "file": "src/engine/Items/CharmModel.ts",
+      "line": 54,
+      "text": "export function charmProtection(enchant: number): number {"
+    },
+    {
+      "file": "src/engine/Items/Commutation.ts",
+      "line": 3,
+      "text": "import { charmRechargeDelay, isCharmKind } from './CharmModel';"
+    },
+    {
+      "file": "src/engine/Items/Commutation.ts",
+      "line": 9,
+      "text": "ItemCategory.CHARM, ItemCategory.RING].includes(item.category) && !item.quiverNumber;"
+    },
+    {
+      "file": "src/engine/Items/Commutation.ts",
+      "line": 20,
+      "text": "|| (item.category === ItemCategory.CHARM && level < 1)) return false;"
+    },
+    {
+      "file": "src/engine/Items/Commutation.ts",
+      "line": 25,
+      "text": "if (item.category === ItemCategory.CHARM && isCharmKind(item.identityId)) {"
+    },
+    {
+      "file": "src/engine/Items/Commutation.ts",
+      "line": 27,
+      "text": "/ charmRechargeDelay(item.identityId, item.enchantment));"
+    },
+    {
+      "file": "src/engine/Items/Commutation.ts",
+      "line": 28,
+      "text": "item.cooldownTurns = charmRechargeDelay(item.identityId, level);"
+    },
+    {
+      "file": "src/engine/Items/Item.ts",
+      "line": 21,
+      "text": "CHARM,"
+    },
+    {
+      "file": "src/engine/Items/Item.ts",
+      "line": 286,
+      "text": "case ItemCategory.CHARM: {"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 9,
+      "text": "import { charmRechargeDelay, isCharmKind } from './CharmModel';"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 78,
+      "text": "public static charms = arcanaData.charms as ArcanaConfig[];"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 92,
+      "text": "public static genCharms = ItemLoader.filterPool(ItemLoader.charms);"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 237,
+      "text": "*  FOOD:2, RING:3, CHARM:2, AMULET:0, GEM:0, KEY:0}。"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 244,
+      "text": "* WEAPON:10, ARMOR:8, FOOD:2, RING:3, CHARM:2, AMULET:0, GEM:0, KEY:0}。"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 262,
+      "text": "{ category: ItemCategory.CHARM, weight: 2 },"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 652,
+      "text": "* CE CAN_BE_DETECTED（Rogue.h:770）= WEAPON|ARMOR|POTION|SCROLL|RING|CHARM|"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 659,
+      "text": "ItemCategory.RING, ItemCategory.CHARM, ItemCategory.WAND, ItemCategory.STAFF,"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 697,
+      "text": "case ItemCategory.CHARM:"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 698,
+      "text": "// CE :8283-8285 同样是表查，但 charmTable_Brogue 的 magicPolarity"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 700,
+      "text": "// fear 在内无一例外），与 magicCharDiscoverySuffix(CHARM) 恒 1 一致。"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 723,
+      "text": "*  - CHARM：CE 恒 1（:8253-8255）；"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 735,
+      "text": "case ItemCategory.CHARM:"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 865,
+      "text": "|| item.category === ItemCategory.CHARM || item.category === ItemCategory.GOLD"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1046,
+      "text": "public static charmFlavorNames = ["
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1047,
+      "text": "'Bone Charm',"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1048,
+      "text": "'Amber Charm',"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1049,
+      "text": "'Stone Charm',"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1050,
+      "text": "'Glass Charm',"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1051,
+      "text": "'Bronze Charm',"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1052,
+      "text": "'Ivory Charm'"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1085,
+      "text": "for (const c of this.charms) this.identifiedItems.add(c.id);"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1181,
+      "text": "this.assignArcanaFlavors(this.charms, this.charmFlavorNames, '护符', random);"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1201,
+      "text": "// Charms are identified at birth in CE. Preserve the legacy six-slot"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1202,
+      "text": "// shuffle's RNG footprint; additional charms never need an unknown name."
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1203,
+      "text": "if (pool !== this.charms && flavors.length < pool.length) {"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1217,
+      "text": "if (!flavor && pool === this.charms) return;"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1479,
+      "text": "public static spawnCharm(id: string, x: number, y: number): Item | null {"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1480,
+      "text": "const data = this.charms.find((c) => c.id === id);"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1481,
+      "text": "if (!data || !isCharmKind(id)) return null;"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1482,
+      "text": "const charm = new Item(tn(data.name), '*', data.color, ItemCategory.CHARM);"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1483,
+      "text": "charm.loc = { x, y };"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1484,
+      "text": "charm.weight = data.weight;"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1486,
+      "text": "charm.enchantment = rng.randClumpedRange(1, 2, 1);"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1487,
+      "text": "while (rng.randPercent(7)) charm.enchantment++;"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1488,
+      "text": "charm.arcanaInstanceVersion = 2;"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1489,
+      "text": "charm.cooldownTurns = charmRechargeDelay(id, charm.enchantment);"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1490,
+      "text": "charm.cooldownRemaining = 0;"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1491,
+      "text": "(charm as any).identityId = id;"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1493,
+      "text": "charm.identified = true;"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1494,
+      "text": "return charm;"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1504,
+      "text": "public static spawnMachineCharm(id: string, x: number, y: number): Item | null {"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1505,
+      "text": "const charm = this.spawnCharm(id, x, y);"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1506,
+      "text": "if (!charm) return null;"
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1507,
+      "text": "charm.charges = 0; // CE birth enchantment is rolled once, in spawnCharm."
+    },
+    {
+      "file": "src/engine/Items/ItemLoader.ts",
+      "line": 1508,
+      "text": "return charm;"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 10,
+      "text": "import { charmEffectDuration, charmHealing, charmProtection, charmRechargeDelay, charmShattering, charmGuardianLifespan, charmNegationRadius, isCharmKind } from './CharmModel';"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 58,
+      "text": "/** Invoke a ready charm. A false result leaves cooldown, identity and time untouched. */"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 59,
+      "text": "export function invokeCharm(player: Player, item: Item, identityId: string | undefined, ports: {"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 65,
+      "text": "rechargeStaffs: () => void;"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 69,
+      "text": "if (!isCharmKind(identityId)) return false;"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 70,
+      "text": "const duration = charmEffectDuration(identityId, item.enchantment);"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 71,
+      "text": "if (identityId === 'charm_of_health') {"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 72,
+      "text": "const healed = player.heal(charmHealing(item.enchantment), false);"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 73,
+      "text": "logger.log(i18next.t('arcana.charm_health', { item: item.name, heal: healed, defaultValue: `You invoke ${item.name} and recover ${healed} HP.` }), '#66ff88');"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 74,
+      "text": "} else if (identityId === 'charm_of_invisibility') {"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 78,
+      "text": "logger.log(i18next.t('arcana.charm_invisibility', { item: item.name, defaultValue: `You invoke ${item.name} and vanish from sight.` }), '#99ccff');"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 79,
+      "text": "} else if (identityId === 'charm_of_speed') {"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 85,
+      "text": "logger.log(i18next.t('arcana.charm_speed', { item: item.name, defaultValue: `You invoke ${item.name} and feel unnaturally swift.` }), '#99ddff');"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 86,
+      "text": "} else if (identityId === 'charm_of_protection') {"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 87,
+      "text": "player.applyShield(charmProtection(item.enchantment));"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 88,
+      "text": "logger.log(i18next.t('arcana.charm_protection', { item: item.name, defaultValue: `A shimmering shield coalesces around you.` }), '#ffffaa');"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 89,
+      "text": "} else if (identityId === 'charm_of_telepathy') {"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 93,
+      "text": "} else if (identityId === 'charm_of_fire_immunity') {"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 98,
+      "text": "logger.log(i18next.t('arcana.charm_fire_immunity', { defaultValue: 'You no longer fear fire.' }), '#ffbb66');"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 99,
+      "text": "} else if (identityId === 'charm_of_levitation') {"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 104,
+      "text": "} else if (identityId === 'charm_of_shattering') {"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 105,
+      "text": "logger.log(i18next.t('arcana.charm_shattering', { defaultValue: 'Your charm emits a wave of turquoise light that pierces the nearby walls!' }), '#40e0d0');"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 106,
+      "text": "ports.shatter(charmShattering(item.enchantment));"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 107,
+      "text": "} else if (identityId === 'charm_of_guardian') {"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 108,
+      "text": "logger.log(i18next.t('arcana.charm_guardian', { defaultValue: 'Your charm flashes and the form of a mythical guardian coalesces!' }), '#ccccff');"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 109,
+      "text": "ports.summonGuardian(charmGuardianLifespan(item.enchantment));"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 110,
+      "text": "} else if (identityId === 'charm_of_teleportation') {"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 112,
+      "text": "} else if (identityId === 'charm_of_recharging') {"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 113,
+      "text": "ports.rechargeStaffs();"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 114,
+      "text": "} else if (identityId === 'charm_of_negation') {"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 115,
+      "text": "// CE useCharm adds one to the magnitude displayed in itemDetails."
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 116,
+      "text": "ports.negate(charmNegationRadius(item.enchantment) + 1);"
+    },
+    {
+      "file": "src/engine/Items/ItemUseCoordinator.ts",
+      "line": 118,
+      "text": "item.cooldownTurns = charmRechargeDelay(identityId, item.enchantment);"
+    },
+    {
+      "file": "src/engine/Items/MachineItemGeneration.ts",
+      "line": 5,
+      "text": "ItemCategory.RING, ItemCategory.WEAPON, ItemCategory.ARMOR, ItemCategory.CHARM,"
+    },
+    {
+      "file": "src/engine/Items/itemFlavors.test.ts",
+      "line": 84,
+      "text": "expect(dup(ItemLoader.charmFlavorNames)).toEqual([]);"
+    },
+    {
+      "file": "src/engine/Items/itemFlavors.test.ts",
+      "line": 136,
+      "text": "for (const data of ItemLoader.charms) {"
+    },
+    {
+      "file": "src/engine/Items/itemFlavors.test.ts",
+      "line": 138,
+      "text": "const charm = ItemLoader.spawnCharm(data.id, 0, 0)!;"
+    },
+    {
+      "file": "src/engine/Items/itemFlavors.test.ts",
+      "line": 139,
+      "text": "expect(charm, data.id).not.toBeNull();"
+    },
+    {
+      "file": "src/engine/Items/itemFlavors.test.ts",
+      "line": 140,
+      "text": "expect(charm.identified, data.id).toBe(true);"
+    },
+    {
+      "file": "src/engine/Items/itemFlavors.test.ts",
+      "line": 142,
+      "text": "expect(charm.displayName.trim(), data.id).not.toBe('');"
+    },
+    {
+      "file": "src/engine/Items/itemFlavors.test.ts",
+      "line": 143,
+      "text": "expect(charm.displayName, data.id).toMatch(/[\\u4e00-\\u9fff]/);"
+    },
+    {
+      "file": "src/engine/Items/itemFlavors.test.ts",
+      "line": 144,
+      "text": "expect(charm.displayName, data.id).not.toMatch(/[A-Za-z]/);"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeatureCatalog.ts",
+      "line": 116,
+      "text": "DF_SHATTERING_SPELL            = 56,  // :1531（B-3：crystalize 每个命中格的"
+    },
+    {
+      "file": "src/engine/Map/DungeonFeatureCatalog.ts",
+      "line": 772,
+      "text": "// crystalize 在每个命中格 spawned，Items.c:4917）。CE 行号按 DF 枚举"
+    },
+    {
+      "file": "src/engine/Map/Grid.ts",
+      "line": 437,
+      "text": "// :607 {CRYSTAL_WALL, DUNGEON}）。注意 crystalize（Items.c:4916/4929）把"
+    },
+    {
+      "file": "src/engine/Map/TerrainCatalog.ts",
+      "line": 577,
+      "text": "// CE FORCEFIELD，Globals.c:477：SCROLL_SHATTERING 的 crystalize 打碎的墙"
+    },
+    {
+      "file": "src/engine/Map/TerrainCatalog.ts",
+      "line": 601,
+      "text": "// CE CRYSTAL_WALL，Globals.c:338：\"边界墙化晶\"（crystalize 的边界覆写，"
+    },
+    {
+      "file": "src/engine/Map/TerrainCatalog.ts",
+      "line": 663,
+      "text": "// 由 SCROLL_SHATTERING 的 crystalize 打碎——该链归 2b-7 接线）。旗标与"
+    },
+    {
+      "file": "src/engine/Map/TerrainType.ts",
+      "line": 96,
+      "text": "//   FORCEFIELD / FORCEFIELD_MELT（CE Globals.c:477/478）——crystalize"
+    },
+    {
+      "file": "src/engine/Map/TerrainType.ts",
+      "line": 99,
+      "text": "//   CRYSTAL_WALL（CE Globals.c:338）——crystalize 的边界覆写"
+    },
+    {
+      "file": "src/engine/Movement/CreaturePlacement.ts",
+      "line": 53,
+      "text": "export function teleportCandidates(world: PlacementWorld, target: Creature, respectTerrainAvoidancePreferences = false): Pos[] {"
+    },
+    {
+      "file": "src/engine/Status/statusConfig.ts",
+      "line": 41,
+      "text": "lifespan_remaining: { id: 'lifespan_remaining', label: '寿命', color: '#c4b5fd', isDebuff: false },"
+    },
+    {
+      "file": "src/engine/UI/DetailGenerator.ts",
+      "line": 8,
+      "text": "import { charmEffectDuration, charmHealing, charmProtection, charmRechargeDelay, charmShattering, charmGuardianLifespan, charmNegationRadius, isCharmKind } from '../Items/CharmModel';"
+    },
+    {
+      "file": "src/engine/UI/DetailGenerator.ts",
+      "line": 340,
+      "text": ": item.category === ItemCategory.CHARM ? ItemLoader.charms.find(c => c.id === item.identityId)?.description : '') || '';"
+    },
+    {
+      "file": "src/engine/UI/DetailGenerator.ts",
+      "line": 470,
+      "text": "if (item.category === ItemCategory.CHARM && knowledge.kindKnown) {"
+    },
+    {
+      "file": "src/engine/UI/DetailGenerator.ts",
+      "line": 473,
+      "text": "if (isCharmKind(id)) {"
+    },
+    {
+      "file": "src/engine/UI/DetailGenerator.ts",
+      "line": 476,
+      "text": "case 'charm_of_health': return `恢复生命 ${charmHealing(enchant)}%`;"
+    },
+    {
+      "file": "src/engine/UI/DetailGenerator.ts",
+      "line": 477,
+      "text": "case 'charm_of_protection': return `护盾 ${charmProtection(enchant) / 10} 点`;"
+    },
+    {
+      "file": "src/engine/UI/DetailGenerator.ts",
+      "line": 478,
+      "text": "case 'charm_of_levitation': return i18next.t('detail.charm.levitation', { turns: charmEffectDuration(id, enchant), defaultValue: 'Levitate for {{turns}} turns and break free of seizure' });"
+    },
+    {
+      "file": "src/engine/UI/DetailGenerator.ts",
+      "line": 479,
+      "text": "case 'charm_of_shattering': return i18next.t('detail.charm.shattering', { radius: charmShattering(enchant), defaultValue: 'Shatter walls up to {{radius}} spaces away' });"
+    },
+    {
+      "file": "src/engine/UI/DetailGenerator.ts",
+      "line": 480,
+      "text": "case 'charm_of_guardian': return i18next.t('detail.charm.guardian', { turns: charmGuardianLifespan(enchant), defaultValue: 'Summon a guardian for {{turns}} turns' });"
+    },
+    {
+      "file": "src/engine/UI/DetailGenerator.ts",
+      "line": 481,
+      "text": "case 'charm_of_teleportation': return i18next.t('detail.charm.teleportation', { defaultValue: 'Teleport elsewhere on this floor' });"
+    },
+    {
+      "file": "src/engine/UI/DetailGenerator.ts",
+      "line": 482,
+      "text": "case 'charm_of_recharging': return i18next.t('detail.charm.recharging', { defaultValue: 'Fully recharge staffs in your pack (not wands or charms)' });"
+    },
+    {
+      "file": "src/engine/UI/DetailGenerator.ts",
+      "line": 483,
+      "text": "case 'charm_of_negation': return i18next.t('detail.charm.negation', { radius: charmNegationRadius(enchant), defaultValue: 'Negate yourself and visible creatures and floor items up to {{radius}} spaces away' });"
+    },
+    {
+      "file": "src/engine/UI/DetailGenerator.ts",
+      "line": 484,
+      "text": "default: return `${charmEffectDuration(id, enchant)} 回合`;"
+    },
+    {
+      "file": "src/engine/UI/DetailGenerator.ts",
+      "line": 488,
+      "text": "statsLines.push({ text: `冷却回合: ${charmRechargeDelay(id, item.enchantment)}` });"
+    },
+    {
+      "file": "src/engine/UI/DetailGenerator.ts",
+      "line": 489,
+      "text": "statsLines.push({ text: i18next.t('detail.charm.enchanted', {"
+    },
+    {
+      "file": "src/engine/UI/DetailGenerator.ts",
+      "line": 490,
+      "text": "effect: effectAt(item.enchantment + 1), cooldown: charmRechargeDelay(id, item.enchantment + 1),"
+    },
+    {
+      "file": "src/entities/Creature.ts",
+      "line": 9,
+      "text": "export type StatusId = 'paralyzed' | 'invisible' | 'telepathy' | 'levitating' | 'hallucinating' | 'confused' | 'regenerating' | 'haste' | 'poisoned' | 'slowed' | 'hasted' | 'weakened' | 'flying' | 'immune_fire' | 'discordant' | 'shielded' | 'entranced' | 'nauseous' | 'darkness' | 'magical_fear' | 'stuck' | 'donning' | 'enraged' | 'lifespan_remaining' | 'aggravating';"
+    },
+    {
+      "file": "src/entities/Creature.ts",
+      "line": 172,
+      "text": "if (id === 'stuck' || id === 'donning' || id === 'enraged' || id === 'lifespan_remaining' || id === 'aggravating') {"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 746,
+      "text": "if (this.hp <= 0 && this.hasStatus('lifespan_remaining')) return [];"
+    },
+    {
+      "file": "src/entities/Monster.ts",
+      "line": 748,
+      "text": "if (expired.includes('lifespan_remaining') && this.hp > 0) this.die();"
+    },
+    {
+      "file": "src/entities/Player.ts",
+      "line": 46,
+      "text": "// Temporary status immunities from charm_of_protection"
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 118,
+      "text": "\"arcana.charm_health\": \"你召唤 {{item}} 的力量，恢复了 {{heal}} 点生命。\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 119,
+      "text": "\"arcana.charm_invisibility\": \"你召唤 {{item}} 的力量，身形随之消失。\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 120,
+      "text": "\"arcana.charm_speed\": \"你激活了{{item}}，动作变得更快。\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 121,
+      "text": "\"arcana.charm_protection\": \"你召唤 {{item}} 的力量，一层微光护盾在你周围凝聚。\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 122,
+      "text": "\"arcana.charm_fire_immunity\": \"你不再畏惧火焰。\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 447,
+      "text": "\"name.Charm of Protection\": \"守护符咒\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 448,
+      "text": "\"name.Charm of Health\": \"生命符咒\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 449,
+      "text": "\"name.Charm of Invisibility\": \"隐身符咒\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 450,
+      "text": "\"name.Charm of Speed\": \"速度符咒\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 451,
+      "text": "\"name.Charm of Telepathy\": \"心灵符咒\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 452,
+      "text": "\"name.Charm of Fire Immunity\": \"火焰免疫符咒\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 484,
+      "text": "\"name.Bone Charm\": \"骨质符咒\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 485,
+      "text": "\"name.Amber Charm\": \"琥珀符咒\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 486,
+      "text": "\"name.Stone Charm\": \"石质符咒\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 487,
+      "text": "\"name.Glass Charm\": \"玻璃符咒\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 488,
+      "text": "\"name.Bronze Charm\": \"青铜符咒\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 489,
+      "text": "\"name.Ivory Charm\": \"象牙符咒\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 573,
+      "text": "\"item.charm_recharged\": \"你的{{name}}已完成充能。\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 831,
+      "text": "\"inventory.category.charms\": \"护符\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 908,
+      "text": "\"name.Charm of Levitation\": \"悬浮符咒\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 909,
+      "text": "\"name.Charm of Shattering\": \"碎墙符咒\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 910,
+      "text": "\"name.Charm of Guardian\": \"守卫符咒\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 911,
+      "text": "\"name.Charm of Teleportation\": \"传送符咒\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 912,
+      "text": "\"name.Charm of Recharging\": \"充能符咒\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 913,
+      "text": "\"name.Charm of Negation\": \"消魔符咒\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 914,
+      "text": "\"arcana.charm_shattering\": \"你的护符散发出一道穿透附近墙壁的青绿色光波！\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 915,
+      "text": "\"arcana.charm_guardian\": \"你的护符闪光，一个传说中的守卫逐渐凝聚成形！\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 916,
+      "text": "\"arcana.charm_emitter\": \"你的护符\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 917,
+      "text": "\"detail.charm.levitation\": \"悬浮 {{turns}} 回合并挣脱抓取\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 918,
+      "text": "\"detail.charm.shattering\": \"碎墙半径 {{radius}} 格\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 919,
+      "text": "\"detail.charm.guardian\": \"召唤守卫，持续 {{turns}} 回合\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 920,
+      "text": "\"detail.charm.teleportation\": \"随机传送到本层的另一处\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 921,
+      "text": "\"detail.charm.recharging\": \"充满背包内的法杖（不影响魔杖和护符）\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 922,
+      "text": "\"detail.charm.negation\": \"消魔范围 {{radius}} 格，作用于自己、视野内生物与地面物品\","
+    },
+    {
+      "file": "src/locales/zh_CN.json",
+      "line": 923,
+      "text": "\"detail.charm.enchanted\": \"附魔后：{{effect}}；冷却 {{cooldown}} 回合\""
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 9,
+      "text": "\"arcana.charm_generic\": \"你召唤了 {{item}} 的力量。\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 346,
+      "text": "\"%s charm%s\": \"%s 护符%s\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 762,
+      "text": "\"Ascend without using a staff, wand or charm.\": \"在不使用法杖、魔杖或护符的情况下离开。\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 1005,
+      "text": "\"Outsourced item -- same item possibilities as in the good permanent item reward room (plus charms), but directly adopted by 1-2 key machines.\": \"外包物品 —— 与优质永久物品奖励房间的物品可能性相同（加上护符），但直接由 1-2 个关键机关接管。\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 1216,
+      "text": "\"What a perplexing charm!\": \"多么令人 perplexing 的护符！\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 1353,
+      "text": "\"\\n\\nEach blow that you land with a weapon will %s your staffs and charms by 0-%i turns per point of damage dealt. (If the ring is enchanted, this will %s to 0-%i turns per point of damage.)\": \"\\n\\n你用武器造成的每击将根据造成的伤害点数 %s 你的法杖和护符 0-%i 回合。 （如果戒指被附魔，这将 %s 至每点伤害 0-%i 回合。）\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 1369,
+      "text": "\"\\n\\nWhen used, a guardian will materialize for %i turns, and the charm will recharge in %i turns. (If the charm is enchanted, the guardian will last for %i turns and the charm will recharge in %i turns.)\": \"\\n\\n使用时，一名守护者将现身 %i 回合，护符将在 %i 回合后重新充能。（如果护符被附魔，守护者将持续 %i 回合，护符将在 %i 回合后重新充能。）\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 1370,
+      "text": "\"\\n\\nWhen used, the charm will dissolve the nearby walls up to %i spaces away, and recharge in %i turns. (If the charm is enchanted, it will reach up to %i spaces and recharge in %i turns.)\": \"\\n\\n使用时，护符将溶解最多 %i 格外的 nearby 墙壁，并在 %i 回合后重新充能。（如果护符被附魔，它将达到最多 %i 格外，并在 %i 回合后重新充能。）\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 1371,
+      "text": "\"\\n\\nWhen used, the charm will emit a wave of anti-magic up to %i spaces away, negating all magical effects on you and on creatures and dropped items in your field of view. It will recharge in %i turns. (If the charm is enchanted, it will reach up to %i spaces and recharge in %i turns.)\": \"\\n\\n使用时，护符将发出一股反魔法波，影响最多 %i 格外的区域，否定你以及你视野内生物和掉落物品上的所有魔法效果。它将在 %i 回合后重新充能。（如果护符被附魔，它将达到最多 %i 格外，并在 %i 回合后重新充能。）\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 1372,
+      "text": "\"\\n\\nWhen used, the charm will grant you immunity to fire for %i turns and recharge in %i turns. (If the charm is enchanted, the immunity will last %i turns and it will recharge in %i turns.)\": \"\\n\\n使用时，护符将赋予你火焰免疫 %i 回合，并在 %i 回合后重新充能。（如果护符被附魔，免疫将持续 %i 回合，并在 %i 回合后重新充能。）\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 1373,
+      "text": "\"\\n\\nWhen used, the charm will grant you telepathy for %i turns and recharge in %i turns. (If the charm is enchanted, the telepathy will last %i turns and it will recharge in %i turns.)\": \"\\n\\n使用时，护符将赋予你 telepathy %i 回合，并在 %i 回合后重新充能。（如果护符被附魔，telepathy 将持续 %i 回合，并在 %i 回合后重新充能。）\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 1374,
+      "text": "\"\\n\\nWhen used, the charm will haste you for %i turns and recharge in %i turns. (If the charm is enchanted, the haste will last %i turns and it will recharge in %i turns.)\": \"\\n\\n使用时，护符将使你加速 %i 回合，并在 %i 回合后重新充能。（如果护符被附魔，加速将持续 %i 回合，并在 %i 回合后重新充能。）\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 1375,
+      "text": "\"\\n\\nWhen used, the charm will heal %i%% of your health and recharge in %i turns. (If the charm is enchanted, it will heal %i%% of your health and recharge in %i turns.)\": \"\\n\\n使用时，护符将治疗你 %i%% 的生命值，并在 %i 回合后重新充能。（如果护符被附魔，它将治疗你 %i%% 的生命值，并在 %i 回合后重新充能。）\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 1376,
+      "text": "\"\\n\\nWhen used, the charm will lift you off the ground for %i turns and recharge in %i turns. (If the charm is enchanted, the levitation will last %i turns and it will recharge in %i turns.)\": \"\\n\\n使用时，护符将使你升离地面 %i 回合，并在 %i 回合后重新充能。（如果护符被附魔，漂浮将持续 %i 回合，并在 %i 回合后重新充能。）\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 1377,
+      "text": "\"\\n\\nWhen used, the charm will recharge your staffs (though not your wands or charms), after which it will recharge in %i turns. (If the charm is enchanted, it will recharge in %i turns.)\": \"\\n\\n使用时，护符将为你的法杖重新充能（但不是你的魔杖或护符），之后它将在 %i 回合后重新充能。（如果护符被附魔，它将在 %i 回合后重新充能。）\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 1378,
+      "text": "\"\\n\\nWhen used, the charm will shield you for up to 20 turns for up to %i%% of your total health and recharge in %i turns. (If the charm is enchanted, it will shield up to %i%% of your total health and recharge in %i turns.)\": \"\\n\\n使用时，护符将为你提供最多 20 回合的护盾，吸收最多 %i%% 总生命值的伤害，并在 %i 回合后重新充能。（如果护符被附魔，它将吸收最多 %i%% 总生命值的伤害，并在 %i 回合后重新充能。）\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 1379,
+      "text": "\"\\n\\nWhen used, the charm will teleport you elsewhere in the dungeon and recharge in %i turns. (If the charm is enchanted, it will recharge in %i turns.)\": \"\\n\\n使用时，护符将把你传送到地牢中的其他地方，并在 %i 回合后重新充能。（如果护符被附魔，它将在 %i 回合后重新充能。）\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 1380,
+      "text": "\"\\n\\nWhen used, the charm will turn you invisible for %i turns and recharge in %i turns. While invisible, monsters more than two spaces away cannot track you. (If the charm is enchanted, the invisibility will last %i turns and it will recharge in %i turns.)\": \"\\n\\n使用时，护符将使你隐形 %i 回合，并在 %i 回合后重新充能。隐形时，两格外以上的怪物无法追踪你。（如果护符被附魔，隐形将持续 %i 回合，并在 %i 回合后重新充能。）\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 1795,
+      "text": "\"negation charm\": \"否定护符\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 1872,
+      "text": "\"shattering charm\": \"粉碎护符\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 2164,
+      "text": "\"your charm\": \"你的护符\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 2165,
+      "text": "\"your charm emits a wave of turquoise light that pierces the nearby walls!\": \"你的护符释放出一股穿透附近墙壁的青绿光波！\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 2166,
+      "text": "\"your charm flashes and the form of a mythical guardian coalesces!\": \"你的护符闪耀，一个神话守护者的形态凝聚而出！\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 2215,
+      "text": "\" (If the charm is enchanted, the immunity will last %i turns and it will recharge in %i turns.)\": \"（如果护符附魔，免疫持续 %i 回合，并在 %i 回合内充能。）\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 2216,
+      "text": "\" (If the charm is enchanted, it will heal %i%% of your health and recharge in %i turns.)\": \"（如果护符附魔，恢复 %i%% 生命值，并在 %i 回合内充能。）\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 2217,
+      "text": "\" (If the charm is enchanted, the guardian will last for %i turns and the charm will recharge in %i turns.)\": \"（如果护符附魔，守卫持续 %i 回合，并在 %i 回合内充能。）\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 2218,
+      "text": "\"When used, the charm will grant you immunity to fire for %i turns and recharge in %i turns.\": \"使用时，护符将赋予你免疫火焰能力，持续 %i 回合，并在 %i 回合内充能。\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 2219,
+      "text": "\"When used, the charm will heal %i%% of your health and recharge in %i turns.\": \"使用时，护符将恢复你 %i%% 生命值，并在 %i 回合内充能。\","
+    },
+    {
+      "file": "src/locales/zh_CN.legacy.json",
+      "line": 2389,
+      "text": "\"-- CHARMS --\": \"—— 符咒 ——\","
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "line": 30,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "line": 417,
+      "text": "...ItemLoader.charms.map(c => c.id).sort(),"
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "line": 755,
+      "text": "* removeCurseFromInventory，充能走 recharging 卷轴的 rechargeStaffsAndCharms）。"
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "line": 763,
+      "text": "// W-6：卷轴改为全包 STAFF/CHARM，方法随语义改名；免费入口仍禁止。"
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "line": 766,
+      "text": "expect(typeof (game as unknown as Record<string, unknown>).rechargeStaffsAndCharms).toBe('function');"
+    },
+    {
+      "file": "src/test/b_1a_identification.test.ts",
+      "line": 773,
+      "text": "const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), '..', 'components', 'InventoryOverlay.vue'), 'utf-8');"
+    },
+    {
+      "file": "src/test/b_1c_detect_magic.test.ts",
+      "line": 96,
+      "text": "ItemCategory.SCROLL, ItemCategory.RING, ItemCategory.CHARM, ItemCategory.WAND,"
+    },
+    {
+      "file": "src/test/b_1c_detect_magic.test.ts",
+      "line": 165,
+      "text": "it('护身符恒 +1（CE charmTable 的 magicPolarity 列全 +1）；安卡恒 +1（CE :8295）', () => {"
+    },
+    {
+      "file": "src/test/b_1c_detect_magic.test.ts",
+      "line": 166,
+      "text": "const charm = ItemLoader.spawnCharm(ItemLoader.charms[0]!.id, -1, -1)!;"
+    },
+    {
+      "file": "src/test/b_1c_detect_magic.test.ts",
+      "line": 167,
+      "text": "expect(ItemLoader.itemMagicPolarity(charm), 'CE charmTable 全 +1').toBe(1);"
+    },
+    {
+      "file": "src/test/b_1c_detect_magic.test.ts",
+      "line": 168,
+      "text": "expect(ItemLoader.magicCharDiscoverySuffix(charm), 'CE :8253-8255 CHARM 恒 1').toBe(1);"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "line": 10,
+      "text": "* 物品（scroll_of_enchantment / potion_of_life / ring_* / charm_* 等）的落点 → 玩家永远拿不到。"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "line": 104,
+      "text": "const gameSource = fs.readFileSync(\"src/engine/Core/Game.ts\", \"utf8\");"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "line": 183,
+      "text": "export const CENTER_TREASURE_PREFIXES: readonly string[] = ['ring_', 'charm_', 'wand_'];"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "line": 185,
+      "text": "/** 题设点名了 5 类由 center 放置的宝藏（rings/charms 原走 trapVaults 路径——"
+    },
+    {
+      "file": "src/test/blueprint_center.test.ts",
+      "line": 572,
+      "text": "// wands/staffs/rings/charms/keys/amulets）。注意这里查的是**数据表存在性**"
+    },
+    {
+      "file": "src/test/c_4a_0_layer_model.test.ts",
+      "line": 21,
+      "text": "import { readFileSync, readdirSync, statSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/c_4a_0_layer_model.test.ts",
+      "line": 214,
+      "text": "// crystalize 对 FORCEFIELD/CRYSTAL_WALL 的 DUNGEON 直写是调用点行为，"
+    },
+    {
+      "file": "src/test/c_4a_0_layer_model.test.ts",
+      "line": 761,
+      "text": "readFileSync(f, 'utf8').split('\\n').forEach((line, i) => {"
+    },
+    {
+      "file": "src/test/c_4a_0_layer_model.test.ts",
+      "line": 824,
+      "text": "const gridSrc = readFileSync("
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 20,
+      "text": "import { readFileSync, readdirSync, statSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 379,
+      "text": "//     这正是 crystalize 打通视野断言的地形面前提）；"
+    },
+    {
+      "file": "src/test/c_4a_terrain_catalog.test.ts",
+      "line": 852,
+      "text": "readFileSync(f, 'utf8').split('\\n').forEach((line, i) => {"
+    },
+    {
+      "file": "src/test/c_4b_dungeon_feature.test.ts",
+      "line": 24,
+      "text": "import { readFileSync, readdirSync, statSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/c_4b_dungeon_feature.test.ts",
+      "line": 635,
+      "text": "expect(DF.DF_SHATTERING_SPELL, 'B-3：crystalize 的 DF（Rogue.h:1531，Globals.c:679）').toBe(56);"
+    },
+    {
+      "file": "src/test/c_4b_dungeon_feature.test.ts",
+      "line": 709,
+      "text": "// crystalize 的 per-cell spawn（Items.c:4917），web 消费点"
+    },
+    {
+      "file": "src/test/c_4b_dungeon_feature.test.ts",
+      "line": 710,
+      "text": "// Game.sanctuaryFromPlayer / crystalizeFromPlayer。"
+    },
+    {
+      "file": "src/test/c_4b_dungeon_feature.test.ts",
+      "line": 1151,
+      "text": "stripComments(readFileSync(f, 'utf8')).split('\\n').forEach((line, i) => {"
+    },
+    {
+      "file": "src/test/c_4b_dungeon_feature.test.ts",
+      "line": 1199,
+      "text": "readFileSync(f, 'utf8').split('\\n').forEach((line, i) => {"
+    },
+    {
+      "file": "src/test/c_4c_promotion.test.ts",
+      "line": 21,
+      "text": "import { readFileSync, readdirSync, statSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/c_4c_promotion.test.ts",
+      "line": 226,
+      "text": "readFileSync(f, 'utf8').split('\\n').forEach((line, i) => {"
+    },
+    {
+      "file": "src/test/c_7_lighting.test.ts",
+      "line": 883,
+      "text": "let text = fs.readFileSync(file, 'utf8');"
+    },
+    {
+      "file": "src/test/c_7_lighting.test.ts",
+      "line": 911,
+      "text": "const text = fs.readFileSync(file, 'utf8');"
+    },
+    {
+      "file": "src/test/c_7_lighting.test.ts",
+      "line": 917,
+      "text": "const canvas = fs.readFileSync(path.join(compDir, 'GameCanvas.vue'), 'utf8');"
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "line": 2,
+      "text": "\"note\": \"X2e independent D27–40 baseline, full runs through D1–40. Six charm effects then catalog restoration attribution in x2e.report.md; not a CE map-identity oracle.\","
+    },
+    {
+      "file": "src/test/fixtures/generation_baseline.json",
+      "line": 2,
+      "text": "\"note\": \"X2e: CE complete twelve-charm catalog in table order/frequency. Independently attributed; see x2e.report.md. D27–40 stay in their own fixture.\","
+    },
+    {
+      "file": "src/test/fixtures/u19e-ce-catalog.json",
+      "line": 67,
+      "text": "\"literal\": \"{0,         ALTAR_CAGE_OPEN,DUNGEON,    {2,3},      2,          (STAFF|RING|CHARM),-1,  0,              2,              0,          (ITEM_IS_KEY | ITEM_KIND_AUTO_ID | ITEM_MAX_CHARGES_KNOWN | ITEM_PLAYER_AVOIDS),    (MF_GENERATE_ITEM | MF_NO_THROWING_WEAPONS | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE)},\","
+    },
+    {
+      "file": "src/test/fixtures/u19e-ce-catalog.json",
+      "line": 336,
+      "text": "\"literal\": \"{0,         ALTAR_CAGE_OPEN,DUNGEON,    {1,2},      1,          (STAFF|RING|CHARM),-1,  0,              2,              0,          (ITEM_IS_KEY | ITEM_KIND_AUTO_ID | ITEM_MAX_CHARGES_KNOWN | ITEM_PLAYER_AVOIDS),    (MF_GENERATE_ITEM | MF_NO_THROWING_WEAPONS | MF_TREAT_AS_BLOCKING | MF_IMPREGNABLE)},\","
+    },
+    {
+      "file": "src/test/i18n_scan.ts",
+      "line": 20,
+      "text": "import { readFileSync, readdirSync, statSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/i18n_scan.ts",
+      "line": 512,
+      "text": "const code = readFileSync(file, 'utf-8');"
+    },
+    {
+      "file": "src/test/i18n_scan.ts",
+      "line": 557,
+      "text": "const code = readFileSync(file, 'utf-8');"
+    },
+    {
+      "file": "src/test/invented_content_pool.test.ts",
+      "line": 350,
+      "text": "for (const cat of ['POTION', 'SCROLL', 'WAND', 'STAFF', 'RING', 'CHARM', 'WEAPON', 'ARMOR']) {"
+    },
+    {
+      "file": "src/test/p1_30_i18n_gate.test.ts",
+      "line": 102,
+      "text": "for (const pool of ['wands', 'staffs', 'rings', 'charms', 'keys', 'amulets']) {"
+    },
+    {
+      "file": "src/test/p1_30_i18n_gate.test.ts",
+      "line": 108,
+      "text": "names.push(...ItemLoader.ringFlavorNames, ...ItemLoader.charmFlavorNames);"
+    },
+    {
+      "file": "src/test/p1_37_machine_flag_i18n.test.ts",
+      "line": 508,
+      "text": "// W-6：充能卷轴对全部 STAFF/CHARM 充能 → \"力量重新涌入\""
+    },
+    {
+      "file": "src/test/p1_37_machine_flag_i18n.test.ts",
+      "line": 513,
+      "text": "(game as unknown as { rechargeStaffsAndCharms(): boolean }).rechargeStaffsAndCharms();"
+    },
+    {
+      "file": "src/test/p1_42_secret_door_search.test.ts",
+      "line": 36,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/p1_42_secret_door_search.test.ts",
+      "line": 240,
+      "text": "const src = readFileSync("
+    },
+    {
+      "file": "src/test/p2_0_seeded_rng.test.ts",
+      "line": 19,
+      "text": "import { readFileSync, readdirSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/p2_0_seeded_rng.test.ts",
+      "line": 268,
+      "text": "if (readFileSync(p, 'utf8').includes('Math.random(')) {"
+    },
+    {
+      "file": "src/test/p2_1_tick_architecture.test.ts",
+      "line": 45,
+      "text": "import { readFileSync, readdirSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/p2_1_tick_architecture.test.ts",
+      "line": 58,
+      "text": "readFileSync(new URL('./fixtures/p2_baseline.json', import.meta.url), 'utf8')"
+    },
+    {
+      "file": "src/test/p2_1_tick_architecture.test.ts",
+      "line": 228,
+      "text": "const timeTs = readFileSync(join(srcRoot, 'engine/Systems/Time.ts'), 'utf8');"
+    },
+    {
+      "file": "src/test/p2_1_tick_architecture.test.ts",
+      "line": 242,
+      "text": "if (/scheduleEvent|eventQueue|advanceToNextEvent|clearEventsForActor|ScheduledEvent/.test(readFileSync(p, 'utf8'))) {"
+    },
+    {
+      "file": "src/test/p2_1_tick_architecture.test.ts",
+      "line": 252,
+      "text": "const gameTs = readFileSync(join(srcRoot, 'engine/Core/Game.ts'), 'utf8');"
+    },
+    {
+      "file": "src/test/p2_2_real_speed.test.ts",
+      "line": 51,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/p2_2_real_speed.test.ts",
+      "line": 64,
+      "text": "readFileSync(new URL('./fixtures/p2_2_baseline.json', import.meta.url), 'utf8')"
+    },
+    {
+      "file": "src/test/p2_2_real_speed.test.ts",
+      "line": 73,
+      "text": "readFileSync(new URL('./fixtures/p2_baseline.json', import.meta.url), 'utf8')"
+    },
+    {
+      "file": "src/test/p2_3_objective_time.test.ts",
+      "line": 49,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/p2_3_objective_time.test.ts",
+      "line": 61,
+      "text": "readFileSync(new URL('./fixtures/p2_3_baseline.json', import.meta.url), 'utf8')"
+    },
+    {
+      "file": "src/test/p2_3_objective_time.test.ts",
+      "line": 70,
+      "text": "readFileSync(new URL('./fixtures/p2_2_baseline.json', import.meta.url), 'utf8')"
+    },
+    {
+      "file": "src/test/p2_3_objective_time.test.ts",
+      "line": 73,
+      "text": "readFileSync(new URL('./fixtures/p2_baseline.json', import.meta.url), 'utf8')"
+    },
+    {
+      "file": "src/test/p2_4_animation_cadence.test.ts",
+      "line": 26,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/p2_4_animation_cadence.test.ts",
+      "line": 279,
+      "text": "const src = readFileSync(new URL('../components/GameCanvas.vue', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/p2_6_display_settings.test.ts",
+      "line": 20,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/p2_6_display_settings.test.ts",
+      "line": 305,
+      "text": "const src = readFileSync(new URL('../components/GameCanvas.vue', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/p2_6_display_settings.test.ts",
+      "line": 315,
+      "text": "const src = readFileSync(new URL('../components/Sidebar.vue', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/r_1_appearance.test.ts",
+      "line": 19,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/r_1_appearance.test.ts",
+      "line": 505,
+      "text": "const src = readFileSync(new URL('../components/GameCanvas.vue', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/r_1_appearance.test.ts",
+      "line": 556,
+      "text": "const appearanceSrc = readFileSync(new URL('../engine/UI/Appearance.ts', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/repo_hygiene.test.ts",
+      "line": 5,
+      "text": "import { readdirSync, readFileSync, statSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/repo_hygiene.test.ts",
+      "line": 23,
+      "text": "expect(files.filter(f => MARKER.test(readFileSync(f, 'utf8')))).toEqual([]);"
+    },
+    {
+      "file": "src/test/repo_hygiene.test.ts",
+      "line": 27,
+      "text": "try { JSON.parse(readFileSync(f, 'utf8')); return false; } catch { return true; }"
+    },
+    {
+      "file": "src/test/scroll_effects.test.ts",
+      "line": 284,
+      "text": "// CE 出处：negationBlast（Items.c:4827-4881，卷轴侧 :8004-8006）、"
+    },
+    {
+      "file": "src/test/scroll_effects.test.ts",
+      "line": 286,
+      "text": "// crystalize（:4904-4939，卷轴侧 :8007-8010 crystalize(9)）。"
+    },
+    {
+      "file": "src/test/scroll_effects.test.ts",
+      "line": 322,
+      "text": "describe('B-3 negation_burst 卷轴（Items.c:8004 → negationBlast :4827-4881）', () => {"
+    },
+    {
+      "file": "src/test/scroll_effects.test.ts",
+      "line": 450,
+      "text": "describe('B-3 shatter_burst 卷轴（Items.c:8007-8010 → crystalize(9)）', () => {"
+    },
+    {
+      "file": "src/test/scroll_effects.test.ts",
+      "line": 486,
+      "text": "// crystalize 收尾的 updateVision（CE :4935）已当场重算：力场墙不挡视线"
+    },
+    {
+      "file": "src/test/scroll_effects.test.ts",
+      "line": 525,
+      "text": "it('negation：读一次消耗 0 次随机数（CE negationBlast 全程零掷骰）', () => {"
+    },
+    {
+      "file": "src/test/scroll_effects.test.ts",
+      "line": 533,
+      "text": "it('shattering：读一次消耗 0 次（crystalize 无掷骰；DF_SHATTERING_SPELL start=0 零消耗且 tile 无载体跳过）', () => {"
+    },
+    {
+      "file": "src/test/u24_hardcoded_text.test.ts",
+      "line": 2,
+      "text": "import { readFileSync, readdirSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/u24_hardcoded_text.test.ts",
+      "line": 67,
+      "text": "const raw = readFileSync(file, 'utf8');"
+    },
+    {
+      "file": "src/test/u24_hardcoded_text.test.ts",
+      "line": 69,
+      "text": "const source = ts.createSourceFile(file, script, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);"
+    },
+    {
+      "file": "src/test/u24_hardcoded_text.test.ts",
+      "line": 97,
+      "text": "const template = parseSfc(readFileSync(file, 'utf8')).descriptor.template?.content;"
+    },
+    {
+      "file": "src/test/u_01_instance_snapshot.test.ts",
+      "line": 32,
+      "text": "const source = ts.createSourceFile(path, fs.readFileSync(path, 'utf8'), ts.ScriptTarget.Latest, true);"
+    },
+    {
+      "file": "src/test/u_01_instance_snapshot.test.ts",
+      "line": 201,
+      "text": "['rings','spawnRing'],['charms','spawnCharm'],['keys','spawnKey'],"
+    },
+    {
+      "file": "src/test/u_02b_level_rng.test.ts",
+      "line": 9,
+      "text": "const ce = JSON.parse(fs.readFileSync('ai_docs/reports/u-02b-evidence/ce-reference.json', 'utf8'));"
+    },
+    {
+      "file": "src/test/u_03_whole_run_snapshot.test.ts",
+      "line": 39,
+      "text": "const source = ts.createSourceFile('Game.ts', fs.readFileSync('src/engine/Core/Game.ts', 'utf8'), ts.ScriptTarget.Latest, true);"
+    },
+    {
+      "file": "src/test/u_03_whole_run_snapshot.test.ts",
+      "line": 43,
+      "text": "const contract = JSON.parse(fs.readFileSync('scripts/u03-state-contract.json', 'utf8'));"
+    },
+    {
+      "file": "src/test/u_03_whole_run_snapshot.test.ts",
+      "line": 48,
+      "text": "const source = ts.createSourceFile('Grid.ts', fs.readFileSync('src/engine/Map/Grid.ts', 'utf8'), ts.ScriptTarget.Latest, true);"
+    },
+    {
+      "file": "src/test/u_04c_machine_cells.test.ts",
+      "line": 8,
+      "text": "import { teleportCandidates } from '../engine/Movement/CreaturePlacement';"
+    },
+    {
+      "file": "src/test/u_04c_machine_cells.test.ts",
+      "line": 121,
+      "text": "const cells=teleportCandidates(g,g.player);"
+    },
+    {
+      "file": "src/test/u_05_machine_items.test.ts",
+      "line": 24,
+      "text": "['RING',ItemLoader.genRings,'spawnMachineRing'],['CHARM',ItemLoader.genCharms,'spawnMachineCharm'],"
+    },
+    {
+      "file": "src/test/u_05_machine_items.test.ts",
+      "line": 45,
+      "text": "rng.seedRandomGenerator(seed);const initial=rng.getState();const a=spawn('CHARM|STAFF|RING')!;const after=rng.getState();"
+    },
+    {
+      "file": "src/test/u_05_machine_items.test.ts",
+      "line": 46,
+      "text": "rng.setState(initial);const b=spawn('STAFF|RING|CHARM')!;"
+    },
+    {
+      "file": "src/test/u_05_machine_items.test.ts",
+      "line": 50,
+      "text": "it('ring CE 16% curse and 10% positive tail; charm 7% tail starts ready',()=>{"
+    },
+    {
+      "file": "src/test/u_05_machine_items.test.ts",
+      "line": 59,
+      "text": "const charm=ItemLoader.spawnMachineCharm('charm_of_health',0,0)!;"
+    },
+    {
+      "file": "src/test/u_05_machine_items.test.ts",
+      "line": 60,
+      "text": "expect(charm.enchantment).toBe(3);expect(charm.charges).toBe(0);expect(charm.cooldownRemaining).toBe(0);"
+    },
+    {
+      "file": "src/test/u_05_machine_items.test.ts",
+      "line": 61,
+      "text": "expect(charm.identified).toBe(true);expect(percent.mock.calls).toEqual([[7],[7]]);"
+    },
+    {
+      "file": "src/test/u_05_machine_items.test.ts",
+      "line": 64,
+      "text": "const history=JSON.parse(fs.readFileSync('ai_docs/reports/u-05-evidence/historical-null-requests.json','utf8'));"
+    },
+    {
+      "file": "src/test/u_05_machine_items.test.ts",
+      "line": 81,
+      "text": "const golden=JSON.parse(fs.readFileSync('ai_docs/reports/u-05-evidence/ce-golden.json','utf8'));"
+    },
+    {
+      "file": "src/test/u_05_machine_items.test.ts",
+      "line": 83,
+      "text": "const categories=[C.WEAPON,C.ARMOR,C.POTION,C.SCROLL,C.STAFF,C.WAND,C.RING,C.CHARM,C.KEY];"
+    },
+    {
+      "file": "src/test/u_05_machine_items.test.ts",
+      "line": 105,
+      "text": "for(const category of [C.STAFF,C.WAND,C.POTION,C.SCROLL,C.RING,C.WEAPON,C.ARMOR,C.CHARM]){"
+    },
+    {
+      "file": "src/test/u_05_machine_items.test.ts",
+      "line": 157,
+      "text": "['RING','ring_of_wisdom',[]],['CHARM','charm_of_health',[]],"
+    },
+    {
+      "file": "src/test/u_05a_item_ownership.test.ts",
+      "line": 34,
+      "text": "for(const line of fs.readFileSync('../BrogueCE-master/src/variants/GlobalsBrogue.c','utf8').split('\\n')){"
+    },
+    {
+      "file": "src/test/u_06_monster_damage.test.ts",
+      "line": 49,
+      "text": "const golden = JSON.parse(fs.readFileSync('ai_docs/reports/u-06-evidence/ce-staff-damage.json', 'utf8'))"
+    },
+    {
+      "file": "src/test/u_09_learning_consumers.test.ts",
+      "line": 45,
+      "text": "const source=fs.readFileSync('../BrogueCE-master/src/brogue/Rogue.h','utf8');"
+    },
+    {
+      "file": "src/test/u_09_learning_consumers.test.ts",
+      "line": 80,
+      "text": "const oracle=JSON.parse(fs.readFileSync('ai_docs/reports/u-09-evidence/ce-target-cases.json','utf8')) as {"
+    },
+    {
+      "file": "src/test/u_13_combat_math.test.ts",
+      "line": 15,
+      "text": "const golden = JSON.parse(fs.readFileSync('ai_docs/reports/u-13-evidence/ce-combat.json', 'utf8')) as {"
+    },
+    {
+      "file": "src/test/u_14a_status_gaps.test.ts",
+      "line": 2,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_14a_status_gaps.test.ts",
+      "line": 18,
+      "text": "const golden = JSON.parse(readFileSync('ai_docs/reports/u-14a-evidence/ce-weakness.json','utf8')) as Array<Record<string,number>>;"
+    },
+    {
+      "file": "src/test/u_14a_status_gaps.test.ts",
+      "line": 184,
+      "text": "const ce=readFileSync('../BrogueCE-master/src/brogue/Items.c','utf8');expect(ce).toContain('//void causeFear(');"
+    },
+    {
+      "file": "src/test/u_14b_status_gaps.test.ts",
+      "line": 2,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_14b_status_gaps.test.ts",
+      "line": 18,
+      "text": "const golden = JSON.parse(readFileSync('ai_docs/reports/u-14b-evidence/ce-donning.json', 'utf8')) as Array<Record<string, number>>;"
+    },
+    {
+      "file": "src/test/u_14b_status_gaps.test.ts",
+      "line": 30,
+      "text": "const states=['stuck','donning','enraged','lifespan_remaining'] as const;"
+    },
+    {
+      "file": "src/test/u_14b_status_gaps.test.ts",
+      "line": 117,
+      "text": "const g=scene(),m=mob();m.ticksUntilTurn=100000;g.monsters=[m];g.player.applyStatus('donning',8);m.applyStatus('enraged',8);m.applyStatus('lifespan_remaining',8);web(g,g.player);g.player.applyStatus('stuck',6);g.player.applyStatus(speed,20);"
+    },
+    {
+      "file": "src/test/u_14b_status_gaps.test.ts",
+      "line": 118,
+      "text": "wait(g);const delta=speed==='hasted'?0:2;expect(g.player.getStatusDuration('donning')).toBe(8-delta);expect(m.getStatusDuration('enraged')).toBe(8-delta);expect(m.getStatusDuration('lifespan_remaining')).toBe(8-delta);expect(g.player.getStatusDuration('stuck')).toBe(6);"
+    },
+    {
+      "file": "src/test/u_14b_status_gaps.test.ts",
+      "line": 119,
+      "text": "if(speed==='hasted'){wait(g);expect(g.player.getStatusDuration('donning')).toBe(7);expect(m.getStatusDuration('lifespan_remaining')).toBe(7);}"
+    },
+    {
+      "file": "src/test/u_14b_status_gaps.test.ts",
+      "line": 148,
+      "text": "const g=scene(),m=mob();g.monsters=[m];m.applyStatus('lifespan_remaining',1);m.applyShield(10000);m.ticksUntilTurn=100000;"
+    },
+    {
+      "file": "src/test/u_14b_status_gaps.test.ts",
+      "line": 150,
+      "text": "const kills=g.stats.kills;(g as any).tickCreatureStatuses();expect(m.hp).toBe(0);expect(m.maxStatus.lifespan_remaining).toBe(1);expect(g.stats.kills).toBe(kills);"
+    },
+    {
+      "file": "src/test/u_14b_status_gaps.test.ts",
+      "line": 154,
+      "text": "const g=scene(),m=mob();g.monsters=[m];m.hp=1;m.applyStatus('lifespan_remaining',1);"
+    },
+    {
+      "file": "src/test/u_14b_status_gaps.test.ts",
+      "line": 156,
+      "text": "(g as any).tickCreatureStatuses();expect(m.hp).toBe(0);expect(m.getStatusDuration('lifespan_remaining')).toBe(1);"
+    },
+    {
+      "file": "src/test/u_14b_status_gaps.test.ts",
+      "line": 160,
+      "text": "expect(blinkAllyFlees(g,m,enemy)).toBe(true);m.applyStatus('lifespan_remaining',3);expect(blinkAllyFlees(g,m,enemy)).toBe(false);"
+    },
+    {
+      "file": "src/test/u_14b_status_gaps.test.ts",
+      "line": 167,
+      "text": "const g=scene(),m=mob();g.monsters=[m];m.applyStatus('lifespan_remaining',7);(g as any).negateCreatureMagic(m);expect(m.hp).toBeGreaterThan(0);expect(m.getStatusDuration('lifespan_remaining')).toBe(7);"
+    },
+    {
+      "file": "src/test/u_14b_status_gaps.test.ts",
+      "line": 177,
+      "text": "const restored=g.monsters.find(c=>c.id===m.id)!;restored.setStatusDuration('lifespan_remaining',1);restored.tickStatuses();expect(restored.hp).toBe(0);"
+    },
+    {
+      "file": "src/test/u_14b_status_gaps.test.ts",
+      "line": 181,
+      "text": "for(const blade of g.monsters){expect(blade.hp).toBe(1);expect(blade.hasStatus('lifespan_remaining')).toBe(false);expect(blade.maxStatus.lifespan_remaining).toBeUndefined();}"
+    },
+    {
+      "file": "src/test/u_15a_shattering.test.ts",
+      "line": 14,
+      "text": "type Crystalize = { crystalizeFromPlayer(radius: number): void; updateVision(): void };"
+    },
+    {
+      "file": "src/test/u_15a_shattering.test.ts",
+      "line": 49,
+      "text": "describe('U15a IMPREGNABLE is an outer gate for every crystalize side effect', () => {"
+    },
+    {
+      "file": "src/test/u_15a_shattering.test.ts",
+      "line": 68,
+      "text": "internal(g).crystalizeFromPlayer(9);"
+    },
+    {
+      "file": "src/test/u_15a_shattering.test.ts",
+      "line": 83,
+      "text": "internal(g).crystalizeFromPlayer(9);"
+    },
+    {
+      "file": "src/test/u_15a_shattering.test.ts",
+      "line": 98,
+      "text": "internal(g).crystalizeFromPlayer(9);"
+    },
+    {
+      "file": "src/test/u_15a_shattering.test.ts",
+      "line": 111,
+      "text": "internal(g).crystalizeFromPlayer(9);"
+    },
+    {
+      "file": "src/test/u_15a_shattering.test.ts",
+      "line": 132,
+      "text": "internal(g).crystalizeFromPlayer(9);"
+    },
+    {
+      "file": "src/test/u_15a_shattering.test.ts",
+      "line": 149,
+      "text": "internal(g).crystalizeFromPlayer(9);"
+    },
+    {
+      "file": "src/test/u_15a_shattering.test.ts",
+      "line": 162,
+      "text": "internal(g).crystalizeFromPlayer(9);"
+    },
+    {
+      "file": "src/test/u_15b2_ring_birth.test.ts",
+      "line": 12,
+      "text": "import {charmRechargeDelay} from '../engine/Items/CharmModel';"
+    },
+    {
+      "file": "src/test/u_15b2_ring_birth.test.ts",
+      "line": 19,
+      "text": "const golden=JSON.parse(fs.readFileSync('ai_docs/reports/u-15b2-evidence/ce-golden.json','utf8'));"
+    },
+    {
+      "file": "src/test/u_15b2_ring_birth.test.ts",
+      "line": 27,
+      "text": "function charm(remaining=20){"
+    },
+    {
+      "file": "src/test/u_15b2_ring_birth.test.ts",
+      "line": 28,
+      "text": "return Object.assign(new Item('charm','*',0,C.CHARM),{identityId:'charm_of_health',enchantment:1,cooldownRemaining:remaining});"
+    },
+    {
+      "file": "src/test/u_15b2_ring_birth.test.ts",
+      "line": 32,
+      "text": "const s=staff(),c=charm();p.inventory.items=[p.ringLeft,s,c];"
+    },
+    {
+      "file": "src/test/u_15b2_ring_birth.test.ts",
+      "line": 41,
+      "text": "const ce=fs.readFileSync('../BrogueCE-master/src/brogue/Globals.c','utf8').split('itemTable ringTable[NUMBER_RING_KINDS] = {')[1]!.split('\\n};')[0]!;"
+    },
+    {
+      "file": "src/test/u_15b2_ring_birth.test.ts",
+      "line": 114,
+      "text": "describe('U15b2 reaping melee -> shared staff/charm resource units',()=>{"
+    },
+    {
+      "file": "src/test/u_15b2_ring_birth.test.ts",
+      "line": 131,
+      "text": "// Empty staffs cannot drain. Cooling charms can, and ignore wisdom."
+    },
+    {
+      "file": "src/test/u_15b2_ring_birth.test.ts",
+      "line": 162,
+      "text": "it('drains charged/full staffs, clamps cooling charms, leaves ready charms and wands alone',()=>{"
+    },
+    {
+      "file": "src/test/u_15b2_ring_birth.test.ts",
+      "line": 163,
+      "text": "const a=staff(3,3,2700),c=charm(20),ready=charm(0),wand=Object.assign(staff(),{category:C.WAND,charges:2});"
+    },
+    {
+      "file": "src/test/u_15b2_ring_birth.test.ts",
+      "line": 168,
+      "text": "rechargeItemsIncrementally([c],27,random,-1000);expect(c.cooldownRemaining).toBe(charmRechargeDelay('charm_of_health',1));"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 3,
+      "text": "import { charmEffectDuration, charmHealing, charmProtection, charmRechargeDelay } from '../engine/Items/CharmModel';"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 9,
+      "text": "describe('U15c CE charm table and use', () => {"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 11,
+      "text": "expect([1, 2, 5].map(e => charmRechargeDelay('charm_of_health', e))).toEqual([1377, 759, 128]);"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 12,
+      "text": "expect([1, 2, 5].map(e => charmRechargeDelay('charm_of_protection', e))).toEqual([619, 379, 97]);"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 13,
+      "text": "expect([1, 2, 5].map(e => charmRechargeDelay('charm_of_speed', e))).toEqual([527, 347, 109]);"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 14,
+      "text": "expect([1, 2, 5].map(e => charmRechargeDelay('charm_of_fire_immunity', e))).toEqual([491, 302, 92]);"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 15,
+      "text": "expect([1, 2, 5].map(e => charmRechargeDelay('charm_of_invisibility', e))).toEqual([524, 344, 104]);"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 16,
+      "text": "expect([1, 2, 5].map(e => charmRechargeDelay('charm_of_telepathy', e))).toEqual([550, 376, 168]);"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 17,
+      "text": "expect([1, 2, 5].map(e => charmEffectDuration('charm_of_speed', e))).toEqual([8, 10, 17]);"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 18,
+      "text": "expect([1, 2, 5].map(e => charmEffectDuration('charm_of_fire_immunity', e))).toEqual([12, 15, 30]);"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 19,
+      "text": "expect([1, 2, 5].map(charmHealing)).toEqual([20, 40, 100]);"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 20,
+      "text": "expect([1, 2, 5].map(charmProtection)).toEqual([150, 202, 498]);"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 24,
+      "text": "for (const id of ItemLoader.charms.map(c => c.id)) {"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 26,
+      "text": "const charm = ItemLoader.spawnCharm(id, -1, -1)!;"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 27,
+      "text": "charm.enchantment = 2;"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 28,
+      "text": "game.player.inventory.addItem(charm);"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 32,
+      "text": "game.useArcanaItem(charm);"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 33,
+      "text": "expect(charm.cooldownRemaining, id).toBe(charmRechargeDelay(id as Parameters<typeof charmRechargeDelay>[0], 2));"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 34,
+      "text": "if (id === 'charm_of_protection') expect(game.player.getStatusDuration('shielded')).toBe(202);"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 35,
+      "text": "if (id === 'charm_of_speed') {"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 40,
+      "text": "if (id === 'charm_of_telepathy') expect(game.player.getStatusDuration('telepathy')).toBe(39);"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 41,
+      "text": "if (id === 'charm_of_fire_immunity') expect(game.player.getStatusDuration('immune_fire')).toBe(15);"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 42,
+      "text": "if (id === 'charm_of_invisibility') expect(game.player.getStatusDuration('invisible')).toBe(7);"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 43,
+      "text": "game.useArcanaItem(charm);"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 44,
+      "text": "expect(charm.cooldownRemaining).toBe(charmRechargeDelay(id as Parameters<typeof charmRechargeDelay>[0], 2));"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 49,
+      "text": "it('enchanting recharges an active charm and increases its CE curve', () => {"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 50,
+      "text": "const charm = ItemLoader.spawnCharm('charm_of_health', 0, 0)!;"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 51,
+      "text": "charm.enchantment = 1;"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 52,
+      "text": "charm.cooldownRemaining = 90;"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 53,
+      "text": "expect(enchantArcana(charm)).toBe(true);"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 54,
+      "text": "expect([charm.enchantment, charm.cooldownRemaining]).toEqual([2, 0]);"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 57,
+      "text": "it('round trips the CE charm instance (no legacy-save migration, per project decision)', () => {"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 58,
+      "text": "const charm = ItemLoader.spawnCharm('charm_of_health', 0, 0)!;"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 59,
+      "text": "charm.enchantment = 5;"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 60,
+      "text": "charm.cooldownRemaining = 47;"
+    },
+    {
+      "file": "src/test/u_15c_charms.test.ts",
+      "line": 61,
+      "text": "expect(deserializeItem(serializeItem(charm))).toMatchObject({"
+    },
+    {
+      "file": "src/test/u_15d2_armor_runic.test.ts",
+      "line": 36,
+      "text": "image.getStatusDuration('lifespan_remaining'), image.ticksUntilTurn]).toEqual([true, true, 1, 1, 3, 100]);"
+    },
+    {
+      "file": "src/test/u_15d3_runic_generation.test.ts",
+      "line": 13,
+      "text": "const golden = JSON.parse(fs.readFileSync('ai_docs/reports/u-15d3-evidence/ce-golden.json', 'utf8'));"
+    },
+    {
+      "file": "src/test/u_15d_weapon_runic.test.ts",
+      "line": 164,
+      "text": "expect(image.getStatusDuration('lifespan_remaining')).toBe(3);"
+    },
+    {
+      "file": "src/test/u_17b_carriers.test.ts",
+      "line": 2,
+      "text": "import {readFileSync} from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_17b_carriers.test.ts",
+      "line": 55,
+      "text": "const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));"
+    },
+    {
+      "file": "src/test/u_17c_triggers.test.ts",
+      "line": 2,
+      "text": "import {readFileSync} from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_17c_triggers.test.ts",
+      "line": 54,
+      "text": "const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));"
+    },
+    {
+      "file": "src/test/u_17d_vents.test.ts",
+      "line": 2,
+      "text": "import {readFileSync} from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_17d_vents.test.ts",
+      "line": 67,
+      "text": "const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));expect(Object.keys(rows)).toHaveLength(190);"
+    },
+    {
+      "file": "src/test/u_17e_altars.test.ts",
+      "line": 2,
+      "text": "import {readFileSync} from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_17e_altars.test.ts",
+      "line": 13,
+      "text": "import {charmRechargeDelay} from '../engine/Items/CharmModel';"
+    },
+    {
+      "file": "src/test/u_17e_altars.test.ts",
+      "line": 78,
+      "text": "const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));expect(Object.keys(rows)).toHaveLength(190);const g=scene();"
+    },
+    {
+      "file": "src/test/u_17e_altars.test.ts",
+      "line": 141,
+      "text": "it('charm cooldown uses existing CE delay formula with integer percent; positive runes fade on nonpositive exchange',()=>{"
+    },
+    {
+      "file": "src/test/u_17e_altars.test.ts",
+      "line": 142,
+      "text": "const g=scene();altars(g);const a=item(g,10,10,C.CHARM,4),b=item(g,12,10,C.WEAPON,2);a.identityId='charm_of_health';a.cooldownTurns=charmRechargeDelay('charm_of_health',4);a.cooldownRemaining=Math.trunc(a.cooldownTurns*0.63);const fraction=Math.trunc(a.cooldownRemaining*100/a.cooldownTurns);"
+    },
+    {
+      "file": "src/test/u_17e_altars.test.ts",
+      "line": 143,
+      "text": "dropPair(g,a,b);expect(a.cooldownTurns).toBe(charmRechargeDelay('charm_of_health',2));expect(a.cooldownRemaining).toBeLessThanOrEqual(Math.trunc(fraction*a.cooldownTurns!/100));"
+    },
+    {
+      "file": "src/test/u_17f_carriers.test.ts",
+      "line": 2,
+      "text": "import {readFileSync} from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_17f_carriers.test.ts",
+      "line": 58,
+      "text": "const rows=JSON.parse(readFileSync('src/test/fixtures/u21c-ce-terrain.json','utf8'));expect(Object.keys(rows)).toHaveLength(190);"
+    },
+    {
+      "file": "src/test/u_19a_machine_view.test.ts",
+      "line": 3,
+      "text": "import {readFileSync} from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_19a_machine_view.test.ts",
+      "line": 31,
+      "text": "expect(crypto.createHash('sha256').update(readFileSync(`../BrogueCE-master/src/brogue/${file}`)).digest('hex')).toBe(golden.source[key]);"
+    },
+    {
+      "file": "src/test/u_19a_machine_view.test.ts",
+      "line": 99,
+      "text": "expect(crypto.createHash('sha256').update(readFileSync(carriers.file)).digest('hex')).toBe(carriers.sha256);"
+    },
+    {
+      "file": "src/test/u_19d_machine_families.test.ts",
+      "line": 2,
+      "text": "import {readFileSync} from 'node:fs';import crypto from 'node:crypto';"
+    },
+    {
+      "file": "src/test/u_19d_machine_families.test.ts",
+      "line": 19,
+      "text": "expect(crypto.createHash('sha256').update(readFileSync(golden.file)).digest('hex')).toBe(golden.sha256);"
+    },
+    {
+      "file": "src/test/u_19e_machine_families.test.ts",
+      "line": 2,
+      "text": "import {readFileSync} from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_19e_machine_families.test.ts",
+      "line": 20,
+      "text": "for(const [file,sha] of [[golden.file,golden.sha256],[golden.headerFile,golden.headerSHA256]])expect(crypto.createHash('sha256').update(readFileSync(file!)).digest('hex')).toBe(sha);"
+    },
+    {
+      "file": "src/test/u_19f_autogen.test.ts",
+      "line": 2,
+      "text": "import {readFileSync} from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_19f_autogen.test.ts",
+      "line": 18,
+      "text": "for(const [file,hash] of Object.entries(golden.sources))expect(crypto.createHash('sha256').update(readFileSync(file)).digest('hex')).toBe(hash);"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 2,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_26a_deep_levels.test.ts",
+      "line": 30,
+      "text": "const ce = readFileSync('../BrogueCE-master/src/variants/GlobalsBrogue.c', 'utf8');"
+    },
+    {
+      "file": "src/test/u_r2_trace.test.ts",
+      "line": 2,
+      "text": "import { readFileSync, writeFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_r2_trace.test.ts",
+      "line": 59,
+      "text": "trace('charm', () => ItemLoader.spawnCharm('charm_of_health', -1, -1), (g, i, snap) => {"
+    },
+    {
+      "file": "src/test/u_r2_trace.test.ts",
+      "line": 92,
+      "text": "else expect(traces).toEqual(JSON.parse(readFileSync(fixture, 'utf8')));"
+    },
+    {
+      "file": "src/test/u_r3_trace.test.ts",
+      "line": 2,
+      "text": "import { readFileSync, writeFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_r3_trace.test.ts",
+      "line": 53,
+      "text": "else expect(result).toEqual(JSON.parse(gunzipSync(readFileSync(fixture)).toString('utf8')));"
+    },
+    {
+      "file": "src/test/u_r4_trace.test.ts",
+      "line": 2,
+      "text": "import { readFileSync, writeFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/u_r4_trace.test.ts",
+      "line": 88,
+      "text": "else expect(result).toEqual(JSON.parse(gunzipSync(readFileSync(fixture)).toString('utf8')));"
+    },
+    {
+      "file": "src/test/ui_1_rendering.test.ts",
+      "line": 29,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/ui_1_rendering.test.ts",
+      "line": 198,
+      "text": "const src = readFileSync(new URL('../engine/UI/Appearance.ts', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/ui_1_rendering.test.ts",
+      "line": 384,
+      "text": "const src = readFileSync("
+    },
+    {
+      "file": "src/test/ui_1_rendering.test.ts",
+      "line": 439,
+      "text": "const src = readFileSync(new URL('../App.vue', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/ui_2_protection.test.ts",
+      "line": 11,
+      "text": "*      readFileSync 静态守卫模式。"
+    },
+    {
+      "file": "src/test/ui_2_protection.test.ts",
+      "line": 26,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/ui_2_protection.test.ts",
+      "line": 261,
+      "text": "const overlaySrc = readFileSync("
+    },
+    {
+      "file": "src/test/v_1a_blueprint_items.test.ts",
+      "line": 29,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/v_1a_blueprint_items.test.ts",
+      "line": 41,
+      "text": "const CE_CATEGORIES = new Set(['SCROLL', 'POTION', 'WEAPON', 'ARMOR', 'RING', 'KEY', 'FOOD', 'WAND', 'STAFF', 'CHARM', 'AMULET', 'GOLD', 'GEM']);"
+    },
+    {
+      "file": "src/test/v_1a_blueprint_items.test.ts",
+      "line": 106,
+      "text": "const json = readFileSync(new URL('../data/blueprints.json', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/v_1a_blueprint_items.test.ts",
+      "line": 121,
+      "text": "const gameTs = readFileSync(new URL('../engine/Core/Game.ts', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/v_1b_alternative.test.ts",
+      "line": 205,
+      "text": "// V-2b-9e-2: CE8 WEAPON / ARMOR / STAFF / CHARM, all random kinds."
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 16,
+      "text": "import { readFileSync, readdirSync, statSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 382,
+      "text": "expect(f(4)).toMatchObject({ terrain: 'ALTAR_CAGE_OPEN', itemCategory: 'STAFF|RING|CHARM', instanceCount: [2, 3], minimumInstanceCount: 2 });"
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 494,
+      "text": "expect(f(4)).toMatchObject({ terrain: 'ALTAR_CAGE_OPEN', itemCategory: 'STAFF|RING|CHARM', instanceCount: [1, 2], minimumInstanceCount: 1 });"
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 584,
+      "text": "const code = stripComments(readFileSync(f, 'utf8'));"
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 605,
+      "text": "const code = rel.endsWith('.json') ? readFileSync(f, 'utf8') : stripComments(readFileSync(f, 'utf8'));"
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 614,
+      "text": "const src = stripComments(readFileSync("
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 663,
+      "text": "const zh = readFileSync(fileURLToPath(new URL('../locales/zh_CN.json', import.meta.url)), 'utf8');"
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 664,
+      "text": "const legacy = readFileSync(fileURLToPath(new URL('../locales/zh_CN.legacy.json', import.meta.url)), 'utf8');"
+    },
+    {
+      "file": "src/test/v_2b_4_altars.test.ts",
+      "line": 755,
+      "text": "const src = stripComments(readFileSync("
+    },
+    {
+      "file": "src/test/v_2b_7_features.test.ts",
+      "line": 23,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/v_2b_7_features.test.ts",
+      "line": 688,
+      "text": "const ratData = (JSON.parse(readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../data/monsters.json'), 'utf8')) as Array<{ id: string }>)"
+    },
+    {
+      "file": "src/test/v_2b_7_features.test.ts",
+      "line": 853,
+      "text": "expect(['WEAPON', 'ARMOR', 'STAFF', 'CHARM']).toContain(s.carriedItem.category);"
+    },
+    {
+      "file": "src/test/v_2b_9b_environment.test.ts",
+      "line": 5,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/v_2b_9b_environment.test.ts",
+      "line": 77,
+      "text": "const source = readFileSync(new URL('../engine/Generator/BlueprintEngine.ts', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/v_2b_9c_effects.test.ts",
+      "line": 2,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/v_2b_9c_effects.test.ts",
+      "line": 101,
+      "text": "const ce = readFileSync(new URL('../../../BrogueCE-master/src/variants/GlobalsBrogue.c', import.meta.url), 'utf8').split('\\n');"
+    },
+    {
+      "file": "src/test/v_2b_9d_dungeon_profile.test.ts",
+      "line": 2,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/v_2b_9d_dungeon_profile.test.ts",
+      "line": 52,
+      "text": "const ce=readFileSync(new URL('../../../BrogueCE-master/src/variants/GlobalsBrogue.c',import.meta.url),'utf8').split('\\n');"
+    },
+    {
+      "file": "src/test/v_2b_9e_2_autogen.test.ts",
+      "line": 19,
+      "text": "\"name\": \"Outsourced item -- same item possibilities as in the good permanent item reward room (plus charms), but directly adopted by 1-2 key machines.\","
+    },
+    {
+      "file": "src/test/v_2b_9e_2_autogen.test.ts",
+      "line": 42,
+      "text": "\"layer\": \"DUNGEON\", \"itemCategory\": \"CHARM\", \"instanceCount\": [1, 2], \"minimumInstanceCount\": 1, \"personalSpace\": 0,"
+    },
+    {
+      "file": "src/test/v_2b_9e_2_autogen.test.ts",
+      "line": 108,
+      "text": "expect([...categories].sort()).toEqual(['ARMOR','CHARM','STAFF','WEAPON']);"
+    },
+    {
+      "file": "src/test/w_10_poison.test.ts",
+      "line": 2,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/w_10_poison.test.ts",
+      "line": 59,
+      "text": "const ce = readFileSync('../BrogueCE-master/src/brogue/PowerTables.c', 'utf8');"
+    },
+    {
+      "file": "src/test/w_11_teleport_placement.test.ts",
+      "line": 13,
+      "text": "import { teleportCandidates, canPlaceCreature, teleportForbiddenFlags, captiveItemDropCandidates } from '../engine/Movement/CreaturePlacement';"
+    },
+    {
+      "file": "src/test/w_11_teleport_placement.test.ts",
+      "line": 45,
+      "text": "const candidates = (g: Game, target: Player | Monster) => teleportCandidates({"
+    },
+    {
+      "file": "src/test/w_12_blink_beckoning.test.ts",
+      "line": 12,
+      "text": "import { teleportCandidates } from '../engine/Movement/CreaturePlacement';"
+    },
+    {
+      "file": "src/test/w_12_blink_beckoning.test.ts",
+      "line": 260,
+      "text": "for (const p of teleportCandidates({ grid: g.grid, player: g.player, monsters: g.monsters, dormantMonsters: g.dormantMonsters }, queryTarget)) if (p.x !== 25 || p.y !== 5) g.grid.getCell(p.x, p.y)!.machineNumber = 1;"
+    },
+    {
+      "file": "src/test/w_15_shielding.test.ts",
+      "line": 205,
+      "text": "if(source==='shatter') { m.behaviorFlags.add('MONST_ATTACKABLE_THRU_WALLS'); g.grid.setTerrain(m.x,m.y,T.WALL); (g as any).crystalizeFromPlayer(10); }"
+    },
+    {
+      "file": "src/test/w_16_conjuration.test.ts",
+      "line": 8,
+      "text": "import { staffBladeCount, bladeSpawnLocation } from '../engine/Combat/Conjuration';"
+    },
+    {
+      "file": "src/test/w_16_conjuration.test.ts",
+      "line": 45,
+      "text": "const values=fs.readFileSync('ai_docs/reports/w-16-evidence/ce-blade-count.txt','utf8').trim().split('\\n');"
+    },
+    {
+      "file": "src/test/w_16_conjuration.test.ts",
+      "line": 91,
+      "text": "expect(bladeSpawnLocation(g,origin)).toEqual(origin);expect(spy).not.toHaveBeenCalled();mob(g,'rat',10);"
+    },
+    {
+      "file": "src/test/w_16_conjuration.test.ts",
+      "line": 92,
+      "text": "expect(bladeSpawnLocation(g,origin)).toEqual({x:9,y:4});expect(spy).toHaveBeenCalledWith(0,7);"
+    },
+    {
+      "file": "src/test/w_16_conjuration.test.ts",
+      "line": 95,
+      "text": "const g=scene();g.grid.setTerrain(10,5,terrain);expect(bladeSpawnLocation(g,{x:10,y:5})).not.toEqual({x:10,y:5});"
+    },
+    {
+      "file": "src/test/w_16_conjuration.test.ts",
+      "line": 98,
+      "text": "const g=scene();g.grid.setTerrain(10,5,terrain);expect(bladeSpawnLocation(g,{x:10,y:5})).toEqual({x:10,y:5});"
+    },
+    {
+      "file": "src/test/w_16_conjuration.test.ts",
+      "line": 101,
+      "text": "const g=scene();expect(bladeSpawnLocation(g,g.player.loc)).not.toEqual(g.player.loc);"
+    },
+    {
+      "file": "src/test/w_16_conjuration.test.ts",
+      "line": 103,
+      "text": "expect(bladeSpawnLocation(g,{x:10,y:5})).toEqual({x:10,y:5});"
+    },
+    {
+      "file": "src/test/w_16_conjuration.test.ts",
+      "line": 109,
+      "text": "expect(bladeSpawnLocation(g,{x:5,y:5})).toEqual({x:7,y:5});"
+    },
+    {
+      "file": "src/test/w_16_conjuration.test.ts",
+      "line": 110,
+      "text": "mob(g,'rat',7,5);expect(bladeSpawnLocation(g,{x:5,y:5})).toEqual({x:4,y:4}); // CE geometric fallback"
+    },
+    {
+      "file": "src/test/w_17_domination.test.ts",
+      "line": 42,
+      "text": "const rows=fs.readFileSync('ai_docs/reports/w-17-evidence/ce-domination.txt','utf8').trim().split('\\n');"
+    },
+    {
+      "file": "src/test/w_17_domination.test.ts",
+      "line": 243,
+      "text": "expect(JSON.parse(fs.readFileSync('src/data/arcana.json','utf8')).wands.some((w:{id:string})=>w.id==='wand_of_domination')).toBe(true);"
+    },
+    {
+      "file": "src/test/w_18_entrancement.test.ts",
+      "line": 45,
+      "text": "for(const row of fs.readFileSync('ai_docs/reports/w-18-evidence/ce-entrancement.txt','utf8').trim().split('\\n')){"
+    },
+    {
+      "file": "src/test/w_19_polymorph.test.ts",
+      "line": 42,
+      "text": "const rows=JSON.parse(fs.readFileSync('ai_docs/reports/w-19-evidence/ce-catalog.json','utf8'));"
+    },
+    {
+      "file": "src/test/w_19_polymorph.test.ts",
+      "line": 55,
+      "text": "const rows=fs.readFileSync('ai_docs/reports/w-19-evidence/ce-polymorph.txt','utf8').trim().split('\\n');"
+    },
+    {
+      "file": "src/test/w_20_cloning.test.ts",
+      "line": 146,
+      "text": "const rows=fs.readFileSync('ai_docs/reports/w-20-evidence/ce-clone.txt','utf8').trim().split('\\n');"
+    },
+    {
+      "file": "src/test/w_21_empowerment.test.ts",
+      "line": 41,
+      "text": "const rows=fs.readFileSync('ai_docs/reports/w-21-evidence/ce-empower.txt','utf8').trim().split('\\n').filter(l=>l.startsWith('empower '));"
+    },
+    {
+      "file": "src/test/w_21_empowerment.test.ts",
+      "line": 69,
+      "text": "const line=fs.readFileSync('ai_docs/reports/w-21-evidence/ce-empower.txt','utf8').split('\\n').find(l=>l.startsWith(`heal ${duration} `))!;"
+    },
+    {
+      "file": "src/test/w_23_negation.test.ts",
+      "line": 52,
+      "text": "const rows = fs.readFileSync('ai_docs/reports/w-23-evidence/ce-negation.txt', 'utf8').split('\\n').filter(s => s.startsWith(`status ${+player} `));"
+    },
+    {
+      "file": "src/test/w_23_negation.test.ts",
+      "line": 115,
+      "text": "(g as any).negationBlastFromPlayer('scroll'); expect(m.hp).toBe(0);"
+    },
+    {
+      "file": "src/test/w_24_wand_catalog.test.ts",
+      "line": 45,
+      "text": "const ce = fs.readFileSync('../BrogueCE-master/src/variants/GlobalsBrogue.c', 'utf8');"
+    },
+    {
+      "file": "src/test/w_25_staff_catalog.test.ts",
+      "line": 12,
+      "text": "import { staffChargeDuration, tickStaffRecharge, rechargeStaffFully, restoreStaffRecharge } from '../engine/Items/ArcanaRecharge';"
+    },
+    {
+      "file": "src/test/w_25_staff_catalog.test.ts",
+      "line": 43,
+      "text": "const body = fs.readFileSync('../BrogueCE-master/src/brogue/Globals.c','utf8').split('itemTable staffTable[NUMBER_STAFF_KINDS] = {')[1]!.split('\\n};')[0]!;"
+    },
+    {
+      "file": "src/test/w_25_staff_catalog.test.ts",
+      "line": 161,
+      "text": "rechargeStaffFully(item,id);expect([item.charges,item.staffRechargeRemaining]).toEqual([3,3333]);"
+    },
+    {
+      "file": "src/test/w_25_staff_catalog.test.ts",
+      "line": 187,
+      "text": "const before=JSON.stringify(rng);(g as any).rechargeStaffsAndCharms();expect([item.charges,item.staffRechargeRemaining]).toEqual([3,3333]);"
+    },
+    {
+      "file": "src/test/w_26_arcana_closure.test.ts",
+      "line": 115,
+      "text": "const reset=JSON.stringify(rng);(g as any).rechargeStaffsAndCharms();expect([item.charges,item.staffRechargeRemaining]).toEqual([3,3333]);"
+    },
+    {
+      "file": "src/test/w_6_arcana_recharge.test.ts",
+      "line": 14,
+      "text": "rechargeStaffsAndCharms(): boolean;"
+    },
+    {
+      "file": "src/test/w_6_arcana_recharge.test.ts",
+      "line": 156,
+      "text": "it('all WAND kinds stay depleted (including retired ones); ground staffs do not tick; charm legacy cooldown still ticks once', () => {"
+    },
+    {
+      "file": "src/test/w_6_arcana_recharge.test.ts",
+      "line": 159,
+      "text": "const charm = ItemLoader.spawnCharm('charm_of_health', 0, 0)!;"
+    },
+    {
+      "file": "src/test/w_6_arcana_recharge.test.ts",
+      "line": 160,
+      "text": "charm.cooldownRemaining = 50;"
+    },
+    {
+      "file": "src/test/w_6_arcana_recharge.test.ts",
+      "line": 161,
+      "text": "const game = gameWith(...wands, charm), ground = staff();"
+    },
+    {
+      "file": "src/test/w_6_arcana_recharge.test.ts",
+      "line": 171,
+      "text": "expect(charm.cooldownRemaining).toBe(0);"
+    },
+    {
+      "file": "src/test/w_6_arcana_recharge.test.ts",
+      "line": 191,
+      "text": "describe('W-6 recharging scroll: STAFF | CHARM, never WAND', () => {"
+    },
+    {
+      "file": "src/test/w_6_arcana_recharge.test.ts",
+      "line": 192,
+      "text": "it('real read consumes scroll/time, fills every staff, clears every charm cooldown, leaves other resources alone', () => {"
+    },
+    {
+      "file": "src/test/w_6_arcana_recharge.test.ts",
+      "line": 194,
+      "text": "const charms = ItemLoader.charms.slice(0, 2).map(cfg => ItemLoader.spawnCharm(cfg.id, 0, 0)!);"
+    },
+    {
+      "file": "src/test/w_6_arcana_recharge.test.ts",
+      "line": 195,
+      "text": "charms.forEach(c => c.cooldownRemaining = 200);"
+    },
+    {
+      "file": "src/test/w_6_arcana_recharge.test.ts",
+      "line": 199,
+      "text": "const game = gameWith(a, b, full, ...charms, wand, r, scroll);"
+    },
+    {
+      "file": "src/test/w_6_arcana_recharge.test.ts",
+      "line": 208,
+      "text": "expect(charms.map(c => c.cooldownRemaining)).toEqual([0, 0]);"
+    },
+    {
+      "file": "src/test/w_6_arcana_recharge.test.ts",
+      "line": 215,
+      "text": "it('charm-only is eligible; empty or wand-only pack still consumes scroll but never adds wand uses', () => {"
+    },
+    {
+      "file": "src/test/w_6_arcana_recharge.test.ts",
+      "line": 216,
+      "text": "const charm = ItemLoader.spawnCharm(ItemLoader.charms[0]!.id, 0, 0)!;"
+    },
+    {
+      "file": "src/test/w_6_arcana_recharge.test.ts",
+      "line": 217,
+      "text": "const game = gameWith(charm);"
+    },
+    {
+      "file": "src/test/w_6_arcana_recharge.test.ts",
+      "line": 218,
+      "text": "charm.cooldownRemaining = 123;"
+    },
+    {
+      "file": "src/test/w_6_arcana_recharge.test.ts",
+      "line": 220,
+      "text": "expect(bridge(game).rechargeStaffsAndCharms()).toBe(true);"
+    },
+    {
+      "file": "src/test/w_6_arcana_recharge.test.ts",
+      "line": 221,
+      "text": "expect(charm.cooldownRemaining).toBe(0);"
+    },
+    {
+      "file": "src/test/w_6_arcana_recharge.test.ts",
+      "line": 224,
+      "text": "expect(bridge(game).rechargeStaffsAndCharms()).toBe(false);"
+    },
+    {
+      "file": "src/test/w_6_arcana_recharge.test.ts",
+      "line": 232,
+      "text": "expect(logger.messages.some(m => m.text.includes('No staffs or charms'))).toBe(true);"
+    },
+    {
+      "file": "src/test/w_7_arcana_enchantment.test.ts",
+      "line": 2,
+      "text": "import { readFileSync } from 'node:fs';"
+    },
+    {
+      "file": "src/test/w_7_arcana_enchantment.test.ts",
+      "line": 244,
+      "text": "it('arcana alternative never invokes equipment 20% rune path; spare gear/charms remain outside scope', () => {"
+    },
+    {
+      "file": "src/test/w_7_arcana_enchantment.test.ts",
+      "line": 257,
+      "text": "for (const category of [ItemCategory.CHARM]) {"
+    },
+    {
+      "file": "src/test/w_7_arcana_enchantment.test.ts",
+      "line": 264,
+      "text": "const src = readFileSync(fileURLToPath(new URL('../components/InventoryOverlay.vue', import.meta.url)), 'utf8');"
+    },
+    {
+      "file": "src/test/x2b_terrain_derivation.test.ts",
+      "line": 52,
+      "text": "const ast=ts.createSourceFile(file,fs.readFileSync(file,'utf8'),ts.ScriptTarget.Latest,true);"
+    },
+    {
+      "file": "src/test/x2b_terrain_derivation.test.ts",
+      "line": 68,
+      "text": "'src/engine/Core/Game.ts:crystalizeFromPlayer','src/engine/Core/Game.ts:resetTestRoom',"
+    },
+    {
+      "file": "src/test/x2b_terrain_derivation.test.ts",
+      "line": 156,
+      "text": "g.crystalizeFromPlayer(3);assertGrid(g.grid);expect(c.isOpaque).toBe(false);"
+    },
+    {
+      "file": "src/test/x2b_terrain_derivation.test.ts",
+      "line": 158,
+      "text": "g.crystalizeFromPlayer(3);assertGrid(g.grid);"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 8,
+      "text": "import * as charm from '../engine/Items/CharmModel';"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 16,
+      "text": "import { teleportCandidates } from '../engine/Movement/CreaturePlacement';"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 21,
+      "text": "const ids = ['levitation', 'shattering', 'guardian', 'teleportation', 'recharging', 'negation'].map(k => `charm_of_${k}`);"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 22,
+      "text": "const oracle = JSON.parse(fs.readFileSync(new URL('../../ai_docs/reports/x2e-evidence/ce-oracle.json', import.meta.url), 'utf8'));"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 23,
+      "text": "type Kind = Parameters<typeof charm.charmRechargeDelay>[0];"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 40,
+      "text": "const item = ItemLoader.spawnCharm(id, -1, -1)!;"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 53,
+      "text": "describe('X2e CE charm formulas and complete instances', () => {"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 58,
+      "text": "expect(charm.isCharmKind(id), id).toBe(true);"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 59,
+      "text": "expect(charm.charmEffectDuration(id, e), `${id}/E${e}/duration`).toBe(row.duration);"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 60,
+      "text": "expect(charm.charmRechargeDelay(id, e), `${id}/E${e}/recharge`).toBe(row.recharge);"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 61,
+      "text": "const magnitude = id === 'charm_of_health' ? charm.charmHealing(e)"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 62,
+      "text": ": id === 'charm_of_protection' ? charm.charmProtection(e)"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 63,
+      "text": ": id === 'charm_of_shattering' ? charm.charmShattering(e)"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 64,
+      "text": ": id === 'charm_of_guardian' ? charm.charmGuardianLifespan(e)"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 65,
+      "text": ": id === 'charm_of_negation' ? charm.charmNegationRadius(e) : 0;"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 74,
+      "text": "const item = ItemLoader.spawnCharm(id, 6, 7)!;"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 83,
+      "text": "expect(item).toMatchObject({ enchantment: 4, cooldownRemaining: 0, cooldownTurns: charm.charmRechargeDelay(id as Kind, 4) });"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 99,
+      "text": "expect(text).toContain(`冷却回合: ${charm.charmRechargeDelay(id as Kind, 2)}`);"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 100,
+      "text": "expect(text).toContain(`冷却 ${charm.charmRechargeDelay(id as Kind, 3)} 回合`);"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 103,
+      "text": "expect(text).not.toMatch(/charm_of_|Charm of|Unknown/);"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 109,
+      "text": "describe('X2e real charm effects through inventory use', () => {"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 129,
+      "text": "const effect = vi.spyOn(g as any, 'crystalizeFromPlayer');"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 154,
+      "text": "expect([guardian.getStatusDuration('lifespan_remaining'), guardian.maxStatus.lifespan_remaining]).toEqual([8, 8]);"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 187,
+      "text": "expect(teleportCandidates(g, g.player)).toContainEqual({ x: 50, y: 10 });"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 188,
+      "text": "expect(teleportCandidates(g, g.player, true)).not.toContainEqual({ x: 50, y: 10 });"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 206,
+      "text": "it('recharges every staff using W6 timers, excludes wands/other charms, and the scroll still charges all charms', () => {"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 222,
+      "text": "const all = ItemLoader.charms.map(c => give(g, c.id));"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 238,
+      "text": "const floor = ids.map((id, i) => ItemLoader.spawnCharm(id, 10, 11 + i % 3)!);"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 240,
+      "text": "const hiddenItem = ItemLoader.spawnCharm(ids[0]!, 8, 10)!;"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 241,
+      "text": "const outsideItem = ItemLoader.spawnCharm(ids[0]!, 15, 11)!;"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 245,
+      "text": "const effect = vi.spyOn(g as any, 'negationBlastFromPlayer');"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 250,
+      "text": "for (const c of floor) expect(c.cooldownRemaining).toBe(charm.charmRechargeDelay(c.identityId as Kind, c.enchantment));"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 258,
+      "text": "const ce = fs.readFileSync(new URL('../../../BrogueCE-master/src/variants/GlobalsBrogue.c', import.meta.url), 'utf8');"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 259,
+      "text": "const table = ce.split('itemTable charmTable_Brogue[] = {')[1]!.split('\\n};')[0]!.replace(/\\/\\/[^\\n]*/g, '');"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 261,
+      "text": "id: `charm_of_${m[1] === 'haste' ? 'speed' : m[1]!.replace(/ /g, '_')}`, frequency: Number(m[2]),"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 264,
+      "text": "expect(ItemLoader.genCharms.map(c => ({ id: c.id, frequency: c.frequency }))).toEqual(rows);"
+    },
+    {
+      "file": "src/test/x2e_charms.test.ts",
+      "line": 269,
+      "text": "const item = api.spawnBlueprintItem('CHARM', undefined, 7, 8, 1);"
+    }
+  ],
+  "mandatory": [
+    "src/engine/UI/Discoveries.test.ts",
+    "src/test/b_4a_item_generation.test.ts",
+    "src/test/invented_content_pool.test.ts",
+    "src/test/p1_30_i18n_gate.test.ts",
+    "src/test/u24_hardcoded_text.test.ts",
+    "src/test/u_01_instance_snapshot.test.ts",
+    "src/test/u_03_whole_run_snapshot.test.ts",
+    "src/test/u_03b_level_travel.test.ts",
+    "src/test/u_05_machine_items.test.ts",
+    "src/test/u_05a_item_ownership.test.ts",
+    "src/test/u_15a_shattering.test.ts",
+    "src/test/u_15c_charms.test.ts",
+    "src/test/u_15d2_armor_runic.test.ts",
+    "src/test/u_15d3_runic_generation.test.ts",
+    "src/test/u_15d_weapon_runic.test.ts",
+    "src/test/u_16_lifecycle.test.ts",
+    "src/test/u_r2_trace.test.ts",
+    "src/test/u_r3_trace.test.ts",
+    "src/test/u_r4_trace.test.ts",
+    "src/test/w_11_teleport_placement.test.ts",
+    "src/test/w_13_tunneling.test.ts",
+    "src/test/w_16_conjuration.test.ts",
+    "src/test/w_5_arcana_instance.test.ts",
+    "src/test/w_6_arcana_recharge.test.ts",
+    "src/test/w_7_arcana_enchantment.test.ts",
+    "src/test/x2e_charms.test.ts"
+  ]
+}

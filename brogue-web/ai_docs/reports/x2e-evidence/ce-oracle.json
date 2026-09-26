@@ -1,0 +1,4379 @@
+{
+  "sources": {
+    "../BrogueCE-master/src/brogue/Rogue.h": "daa86933bf745f848fc56b4e697c941c78d3a3c6f2ff2744ff4c9daf589c7256",
+    "../BrogueCE-master/src/brogue/GlobalsBase.c": "8e567a5a337111abcffac12acaf9a98ef0c8a9421b5023c63478ea42e2c56898",
+    "../BrogueCE-master/src/brogue/Math.c": "810481af6641841064f2dc1f051cfdaa9372e0de61dd0786d9b294c35adcaa69",
+    "../BrogueCE-master/src/brogue/PowerTables.c": "9254b4a7f1b33ccdf4d1894c20d53b481dd06e14caffb1cfa47fe4a094718a4d",
+    "../BrogueCE-master/src/variants/GlobalsBrogue.c": "e8903aede4fad21b7823ccc547cf4219c76e87e061543188d8d90141cebffa1e"
+  },
+  "cases": [
+    {
+      "enchant": 0,
+      "duration": 3,
+      "recharge": 1377,
+      "magnitude": 0,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 1,
+      "duration": 3,
+      "recharge": 1377,
+      "magnitude": 20,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 2,
+      "duration": 3,
+      "recharge": 759,
+      "magnitude": 40,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 3,
+      "duration": 3,
+      "recharge": 418,
+      "magnitude": 60,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 4,
+      "duration": 3,
+      "recharge": 231,
+      "magnitude": 80,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 5,
+      "duration": 3,
+      "recharge": 128,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 6,
+      "duration": 3,
+      "recharge": 72,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 7,
+      "duration": 3,
+      "recharge": 41,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 8,
+      "duration": 3,
+      "recharge": 23,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 9,
+      "duration": 3,
+      "recharge": 14,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 10,
+      "duration": 3,
+      "recharge": 9,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 11,
+      "duration": 3,
+      "recharge": 6,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 12,
+      "duration": 3,
+      "recharge": 4,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 13,
+      "duration": 3,
+      "recharge": 4,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 14,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 15,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 16,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 17,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 18,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 19,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 20,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 21,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 22,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 23,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 24,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 25,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 26,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 27,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 28,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 29,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 30,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 31,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 32,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 33,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 34,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 35,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 36,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 37,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 38,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 39,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 40,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 41,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 42,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 43,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 44,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 45,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 46,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 47,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 48,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 49,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 50,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 51,
+      "duration": 3,
+      "recharge": 3,
+      "magnitude": 100,
+      "id": "charm_of_health"
+    },
+    {
+      "enchant": 0,
+      "duration": 20,
+      "recharge": 619,
+      "magnitude": 150,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 1,
+      "duration": 20,
+      "recharge": 619,
+      "magnitude": 150,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 2,
+      "duration": 20,
+      "recharge": 379,
+      "magnitude": 202,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 3,
+      "duration": 20,
+      "recharge": 235,
+      "magnitude": 273,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 4,
+      "duration": 20,
+      "recharge": 149,
+      "magnitude": 369,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 5,
+      "duration": 20,
+      "recharge": 97,
+      "magnitude": 498,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 6,
+      "duration": 20,
+      "recharge": 66,
+      "magnitude": 672,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 7,
+      "duration": 20,
+      "recharge": 47,
+      "magnitude": 908,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 8,
+      "duration": 20,
+      "recharge": 36,
+      "magnitude": 1225,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 9,
+      "duration": 20,
+      "recharge": 30,
+      "magnitude": 1654,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 10,
+      "duration": 20,
+      "recharge": 26,
+      "magnitude": 2234,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 11,
+      "duration": 20,
+      "recharge": 23,
+      "magnitude": 3015,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 12,
+      "duration": 20,
+      "recharge": 22,
+      "magnitude": 4071,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 13,
+      "duration": 20,
+      "recharge": 21,
+      "magnitude": 5496,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 14,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 7420,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 15,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 10017,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 16,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 13523,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 17,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 18257,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 18,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 24647,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 19,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 33273,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 20,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 44919,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 21,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 60641,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 22,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 81865,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 23,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 110518,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 24,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 149199,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 25,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 201419,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 26,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 271916,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 27,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 367087,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 28,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 495567,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 29,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 669016,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 30,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 903172,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 31,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 1219282,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 32,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 1646031,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 33,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 2222142,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 34,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 2999891,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 35,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 4049854,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 36,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 5467303,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 37,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 7380859,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 38,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 9964160,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 39,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 13451616,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 40,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 18159681,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 41,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 24515570,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 42,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 33096019,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 43,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 44679626,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 44,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 60317496,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 45,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 81428619,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 46,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 109928636,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 47,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 148403659,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 48,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 200344940,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 49,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 270465669,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 50,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 365128653,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 51,
+      "duration": 20,
+      "recharge": 20,
+      "magnitude": 492923681,
+      "id": "charm_of_protection"
+    },
+    {
+      "enchant": 0,
+      "duration": 8,
+      "recharge": 527,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 1,
+      "duration": 8,
+      "recharge": 527,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 2,
+      "duration": 10,
+      "recharge": 347,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 3,
+      "duration": 12,
+      "recharge": 231,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 4,
+      "duration": 14,
+      "recharge": 156,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 5,
+      "duration": 17,
+      "recharge": 109,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 6,
+      "duration": 20,
+      "recharge": 80,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 7,
+      "duration": 25,
+      "recharge": 64,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 8,
+      "duration": 30,
+      "recharge": 55,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 9,
+      "duration": 36,
+      "recharge": 52,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 10,
+      "duration": 43,
+      "recharge": 53,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 11,
+      "duration": 52,
+      "recharge": 58,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 12,
+      "duration": 62,
+      "recharge": 66,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 13,
+      "duration": 74,
+      "recharge": 76,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 14,
+      "duration": 89,
+      "recharge": 90,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 15,
+      "duration": 107,
+      "recharge": 108,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 16,
+      "duration": 129,
+      "recharge": 129,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 17,
+      "duration": 155,
+      "recharge": 155,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 18,
+      "duration": 186,
+      "recharge": 186,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 19,
+      "duration": 223,
+      "recharge": 223,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 20,
+      "duration": 268,
+      "recharge": 268,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 21,
+      "duration": 322,
+      "recharge": 322,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 22,
+      "duration": 386,
+      "recharge": 386,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 23,
+      "duration": 463,
+      "recharge": 463,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 24,
+      "duration": 556,
+      "recharge": 556,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 25,
+      "duration": 667,
+      "recharge": 667,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 26,
+      "duration": 801,
+      "recharge": 801,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 27,
+      "duration": 961,
+      "recharge": 961,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 28,
+      "duration": 1153,
+      "recharge": 1153,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 29,
+      "duration": 1384,
+      "recharge": 1384,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 30,
+      "duration": 1661,
+      "recharge": 1661,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 31,
+      "duration": 1993,
+      "recharge": 1993,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 32,
+      "duration": 2392,
+      "recharge": 2392,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 33,
+      "duration": 2871,
+      "recharge": 2871,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 34,
+      "duration": 3445,
+      "recharge": 3445,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 35,
+      "duration": 4134,
+      "recharge": 4134,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 36,
+      "duration": 4961,
+      "recharge": 4961,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 37,
+      "duration": 5953,
+      "recharge": 5953,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 38,
+      "duration": 7144,
+      "recharge": 7144,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 39,
+      "duration": 8573,
+      "recharge": 8573,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 40,
+      "duration": 10288,
+      "recharge": 10288,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 41,
+      "duration": 12346,
+      "recharge": 12346,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 42,
+      "duration": 14815,
+      "recharge": 14815,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 43,
+      "duration": 17778,
+      "recharge": 17778,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 44,
+      "duration": 21334,
+      "recharge": 21334,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 45,
+      "duration": 25600,
+      "recharge": 25600,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 46,
+      "duration": 30721,
+      "recharge": 30721,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 47,
+      "duration": -28671,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 48,
+      "duration": -21298,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 49,
+      "duration": -12451,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 50,
+      "duration": -1833,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 51,
+      "duration": -1833,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_speed"
+    },
+    {
+      "enchant": 0,
+      "duration": 12,
+      "recharge": 491,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 1,
+      "duration": 12,
+      "recharge": 491,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 2,
+      "duration": 15,
+      "recharge": 302,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 3,
+      "duration": 19,
+      "recharge": 191,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 4,
+      "duration": 24,
+      "recharge": 127,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 5,
+      "duration": 30,
+      "recharge": 92,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 6,
+      "duration": 38,
+      "recharge": 75,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 7,
+      "duration": 47,
+      "recharge": 69,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 8,
+      "duration": 59,
+      "recharge": 72,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 9,
+      "duration": 74,
+      "recharge": 82,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 10,
+      "duration": 93,
+      "recharge": 97,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 11,
+      "duration": 116,
+      "recharge": 118,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 12,
+      "duration": 145,
+      "recharge": 146,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 13,
+      "duration": 181,
+      "recharge": 182,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 14,
+      "duration": 227,
+      "recharge": 227,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 15,
+      "duration": 284,
+      "recharge": 284,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 16,
+      "duration": 355,
+      "recharge": 355,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 17,
+      "duration": 444,
+      "recharge": 444,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 18,
+      "duration": 555,
+      "recharge": 555,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 19,
+      "duration": 693,
+      "recharge": 693,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 20,
+      "duration": 867,
+      "recharge": 867,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 21,
+      "duration": 1084,
+      "recharge": 1084,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 22,
+      "duration": 1355,
+      "recharge": 1355,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 23,
+      "duration": 1694,
+      "recharge": 1694,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 24,
+      "duration": 2117,
+      "recharge": 2117,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 25,
+      "duration": 2646,
+      "recharge": 2646,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 26,
+      "duration": 3308,
+      "recharge": 3308,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 27,
+      "duration": 4135,
+      "recharge": 4135,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 28,
+      "duration": 5169,
+      "recharge": 5169,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 29,
+      "duration": 6462,
+      "recharge": 6462,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 30,
+      "duration": 8077,
+      "recharge": 8077,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 31,
+      "duration": 10097,
+      "recharge": 10097,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 32,
+      "duration": 12621,
+      "recharge": 12621,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 33,
+      "duration": 15777,
+      "recharge": 15777,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 34,
+      "duration": 19721,
+      "recharge": 19721,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 35,
+      "duration": 24651,
+      "recharge": 24651,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 36,
+      "duration": 30814,
+      "recharge": 30814,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 37,
+      "duration": -27018,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 38,
+      "duration": -17388,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 39,
+      "duration": -5351,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 40,
+      "duration": 9695,
+      "recharge": 9695,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 41,
+      "duration": 28503,
+      "recharge": 28503,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 42,
+      "duration": -13523,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 43,
+      "duration": 15864,
+      "recharge": 15864,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 44,
+      "duration": -12938,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 45,
+      "duration": -32556,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 46,
+      "duration": 24841,
+      "recharge": 24841,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 47,
+      "duration": 31052,
+      "recharge": 31052,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 48,
+      "duration": -10337,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 49,
+      "duration": -29305,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 50,
+      "duration": -20247,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 51,
+      "duration": -20247,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_fire_immunity"
+    },
+    {
+      "enchant": 0,
+      "duration": 5,
+      "recharge": 524,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 1,
+      "duration": 5,
+      "recharge": 524,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 2,
+      "duration": 7,
+      "recharge": 344,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 3,
+      "duration": 8,
+      "recharge": 227,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 4,
+      "duration": 10,
+      "recharge": 152,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 5,
+      "duration": 12,
+      "recharge": 104,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 6,
+      "duration": 14,
+      "recharge": 74,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 7,
+      "duration": 17,
+      "recharge": 56,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 8,
+      "duration": 21,
+      "recharge": 46,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 9,
+      "duration": 25,
+      "recharge": 41,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 10,
+      "duration": 30,
+      "recharge": 40,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 11,
+      "duration": 37,
+      "recharge": 43,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 12,
+      "duration": 44,
+      "recharge": 48,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 13,
+      "duration": 53,
+      "recharge": 55,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 14,
+      "duration": 64,
+      "recharge": 65,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 15,
+      "duration": 77,
+      "recharge": 78,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 16,
+      "duration": 92,
+      "recharge": 92,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 17,
+      "duration": 110,
+      "recharge": 110,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 18,
+      "duration": 133,
+      "recharge": 133,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 19,
+      "duration": 159,
+      "recharge": 159,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 20,
+      "duration": 191,
+      "recharge": 191,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 21,
+      "duration": 230,
+      "recharge": 230,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 22,
+      "duration": 276,
+      "recharge": 276,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 23,
+      "duration": 331,
+      "recharge": 331,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 24,
+      "duration": 397,
+      "recharge": 397,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 25,
+      "duration": 476,
+      "recharge": 476,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 26,
+      "duration": 572,
+      "recharge": 572,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 27,
+      "duration": 686,
+      "recharge": 686,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 28,
+      "duration": 824,
+      "recharge": 824,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 29,
+      "duration": 989,
+      "recharge": 989,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 30,
+      "duration": 1186,
+      "recharge": 1186,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 31,
+      "duration": 1424,
+      "recharge": 1424,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 32,
+      "duration": 1709,
+      "recharge": 1709,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 33,
+      "duration": 2050,
+      "recharge": 2050,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 34,
+      "duration": 2461,
+      "recharge": 2461,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 35,
+      "duration": 2953,
+      "recharge": 2953,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 36,
+      "duration": 3544,
+      "recharge": 3544,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 37,
+      "duration": 4252,
+      "recharge": 4252,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 38,
+      "duration": 5103,
+      "recharge": 5103,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 39,
+      "duration": 6124,
+      "recharge": 6124,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 40,
+      "duration": 7348,
+      "recharge": 7348,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 41,
+      "duration": 8818,
+      "recharge": 8818,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 42,
+      "duration": 10582,
+      "recharge": 10582,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 43,
+      "duration": 12698,
+      "recharge": 12698,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 44,
+      "duration": 15238,
+      "recharge": 15238,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 45,
+      "duration": 18286,
+      "recharge": 18286,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 46,
+      "duration": 21943,
+      "recharge": 21943,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 47,
+      "duration": 26332,
+      "recharge": 26332,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 48,
+      "duration": 31598,
+      "recharge": 31598,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 49,
+      "duration": -27618,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 50,
+      "duration": -20034,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 51,
+      "duration": -20034,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_invisibility"
+    },
+    {
+      "enchant": 0,
+      "duration": 31,
+      "recharge": 550,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 1,
+      "duration": 31,
+      "recharge": 550,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 2,
+      "duration": 39,
+      "recharge": 376,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 3,
+      "duration": 48,
+      "recharge": 267,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 4,
+      "duration": 61,
+      "recharge": 203,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 5,
+      "duration": 76,
+      "recharge": 168,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 6,
+      "duration": 95,
+      "recharge": 155,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 7,
+      "duration": 119,
+      "recharge": 158,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 8,
+      "duration": 149,
+      "recharge": 174,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 9,
+      "duration": 186,
+      "recharge": 202,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 10,
+      "duration": 232,
+      "recharge": 242,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 11,
+      "duration": 291,
+      "recharge": 297,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 12,
+      "duration": 363,
+      "recharge": 367,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 13,
+      "duration": 454,
+      "recharge": 456,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 14,
+      "duration": 568,
+      "recharge": 569,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 15,
+      "duration": 710,
+      "recharge": 711,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 16,
+      "duration": 888,
+      "recharge": 888,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 17,
+      "duration": 1110,
+      "recharge": 1110,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 18,
+      "duration": 1387,
+      "recharge": 1387,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 19,
+      "duration": 1734,
+      "recharge": 1734,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 20,
+      "duration": 2168,
+      "recharge": 2168,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 21,
+      "duration": 2710,
+      "recharge": 2710,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 22,
+      "duration": 3388,
+      "recharge": 3388,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 23,
+      "duration": 4235,
+      "recharge": 4235,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 24,
+      "duration": 5293,
+      "recharge": 5293,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 25,
+      "duration": 6617,
+      "recharge": 6617,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 26,
+      "duration": 8271,
+      "recharge": 8271,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 27,
+      "duration": 10339,
+      "recharge": 10339,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 28,
+      "duration": 12924,
+      "recharge": 12924,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 29,
+      "duration": 16155,
+      "recharge": 16155,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 30,
+      "duration": 20194,
+      "recharge": 20194,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 31,
+      "duration": 25243,
+      "recharge": 25243,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 32,
+      "duration": 31554,
+      "recharge": 31554,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 33,
+      "duration": -26093,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 34,
+      "duration": -16233,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 35,
+      "duration": -3907,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 36,
+      "duration": 11501,
+      "recharge": 11501,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 37,
+      "duration": 30760,
+      "recharge": 30760,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 38,
+      "duration": -10702,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 39,
+      "duration": 19391,
+      "recharge": 19391,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 40,
+      "duration": -8529,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 41,
+      "duration": -27046,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 42,
+      "duration": 31729,
+      "recharge": 31729,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 43,
+      "duration": -25875,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 44,
+      "duration": 425,
+      "recharge": 425,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 45,
+      "duration": -15853,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 46,
+      "duration": -3432,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 47,
+      "duration": -20673,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 48,
+      "duration": 6926,
+      "recharge": 6926,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 49,
+      "duration": 25042,
+      "recharge": 25042,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 50,
+      "duration": -17849,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 51,
+      "duration": -17849,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_telepathy"
+    },
+    {
+      "enchant": 0,
+      "duration": 12,
+      "recharge": 531,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 1,
+      "duration": 12,
+      "recharge": 531,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 2,
+      "duration": 15,
+      "recharge": 352,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 3,
+      "duration": 19,
+      "recharge": 238,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 4,
+      "duration": 24,
+      "recharge": 166,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 5,
+      "duration": 30,
+      "recharge": 122,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 6,
+      "duration": 38,
+      "recharge": 98,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 7,
+      "duration": 47,
+      "recharge": 86,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 8,
+      "duration": 59,
+      "recharge": 84,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 9,
+      "duration": 74,
+      "recharge": 90,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 10,
+      "duration": 93,
+      "recharge": 103,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 11,
+      "duration": 116,
+      "recharge": 122,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 12,
+      "duration": 145,
+      "recharge": 149,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 13,
+      "duration": 181,
+      "recharge": 183,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 14,
+      "duration": 227,
+      "recharge": 228,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 15,
+      "duration": 284,
+      "recharge": 285,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 16,
+      "duration": 355,
+      "recharge": 355,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 17,
+      "duration": 444,
+      "recharge": 444,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 18,
+      "duration": 555,
+      "recharge": 555,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 19,
+      "duration": 693,
+      "recharge": 693,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 20,
+      "duration": 867,
+      "recharge": 867,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 21,
+      "duration": 1084,
+      "recharge": 1084,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 22,
+      "duration": 1355,
+      "recharge": 1355,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 23,
+      "duration": 1694,
+      "recharge": 1694,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 24,
+      "duration": 2117,
+      "recharge": 2117,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 25,
+      "duration": 2646,
+      "recharge": 2646,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 26,
+      "duration": 3308,
+      "recharge": 3308,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 27,
+      "duration": 4135,
+      "recharge": 4135,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 28,
+      "duration": 5169,
+      "recharge": 5169,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 29,
+      "duration": 6462,
+      "recharge": 6462,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 30,
+      "duration": 8077,
+      "recharge": 8077,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 31,
+      "duration": 10097,
+      "recharge": 10097,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 32,
+      "duration": 12621,
+      "recharge": 12621,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 33,
+      "duration": 15777,
+      "recharge": 15777,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 34,
+      "duration": 19721,
+      "recharge": 19721,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 35,
+      "duration": 24651,
+      "recharge": 24651,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 36,
+      "duration": 30814,
+      "recharge": 30814,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 37,
+      "duration": -27018,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 38,
+      "duration": -17388,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 39,
+      "duration": -5351,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 40,
+      "duration": 9695,
+      "recharge": 9695,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 41,
+      "duration": 28503,
+      "recharge": 28503,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 42,
+      "duration": -13523,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 43,
+      "duration": 15864,
+      "recharge": 15864,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 44,
+      "duration": -12938,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 45,
+      "duration": -32556,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 46,
+      "duration": 24841,
+      "recharge": 24841,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 47,
+      "duration": 31052,
+      "recharge": 31052,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 48,
+      "duration": -10337,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 49,
+      "duration": -29305,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 50,
+      "duration": -20247,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 51,
+      "duration": -20247,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_levitation"
+    },
+    {
+      "enchant": 0,
+      "duration": 0,
+      "recharge": 1499,
+      "magnitude": 4,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 1,
+      "duration": 0,
+      "recharge": 1499,
+      "magnitude": 5,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 2,
+      "duration": 0,
+      "recharge": 899,
+      "magnitude": 6,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 3,
+      "duration": 0,
+      "recharge": 539,
+      "magnitude": 7,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 4,
+      "duration": 0,
+      "recharge": 323,
+      "magnitude": 8,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 5,
+      "duration": 0,
+      "recharge": 194,
+      "magnitude": 9,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 6,
+      "duration": 0,
+      "recharge": 116,
+      "magnitude": 10,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 7,
+      "duration": 0,
+      "recharge": 69,
+      "magnitude": 11,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 8,
+      "duration": 0,
+      "recharge": 41,
+      "magnitude": 12,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 9,
+      "duration": 0,
+      "recharge": 25,
+      "magnitude": 13,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 10,
+      "duration": 0,
+      "recharge": 15,
+      "magnitude": 14,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 11,
+      "duration": 0,
+      "recharge": 9,
+      "magnitude": 15,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 12,
+      "duration": 0,
+      "recharge": 5,
+      "magnitude": 16,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 13,
+      "duration": 0,
+      "recharge": 3,
+      "magnitude": 17,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 14,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 18,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 15,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 19,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 16,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 20,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 17,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 21,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 18,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 22,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 19,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 23,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 20,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 24,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 21,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 25,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 22,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 26,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 23,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 27,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 24,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 28,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 25,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 29,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 26,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 30,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 27,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 31,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 28,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 32,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 29,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 33,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 30,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 34,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 31,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 35,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 32,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 36,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 33,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 37,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 34,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 38,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 35,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 39,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 36,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 40,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 37,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 41,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 38,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 42,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 39,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 43,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 40,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 44,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 41,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 45,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 42,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 46,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 43,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 47,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 44,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 48,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 45,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 49,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 46,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 50,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 47,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 51,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 48,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 52,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 49,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 53,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 50,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 54,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 51,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 55,
+      "id": "charm_of_shattering"
+    },
+    {
+      "enchant": 0,
+      "duration": 18,
+      "recharge": 507,
+      "magnitude": 4,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 1,
+      "duration": 18,
+      "recharge": 507,
+      "magnitude": 6,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 2,
+      "duration": 18,
+      "recharge": 360,
+      "magnitude": 8,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 3,
+      "duration": 18,
+      "recharge": 258,
+      "magnitude": 10,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 4,
+      "duration": 18,
+      "recharge": 186,
+      "magnitude": 12,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 5,
+      "duration": 18,
+      "recharge": 135,
+      "magnitude": 14,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 6,
+      "duration": 18,
+      "recharge": 100,
+      "magnitude": 16,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 7,
+      "duration": 18,
+      "recharge": 75,
+      "magnitude": 18,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 8,
+      "duration": 18,
+      "recharge": 58,
+      "magnitude": 20,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 9,
+      "duration": 18,
+      "recharge": 46,
+      "magnitude": 22,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 10,
+      "duration": 18,
+      "recharge": 37,
+      "magnitude": 24,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 11,
+      "duration": 18,
+      "recharge": 31,
+      "magnitude": 26,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 12,
+      "duration": 18,
+      "recharge": 27,
+      "magnitude": 28,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 13,
+      "duration": 18,
+      "recharge": 24,
+      "magnitude": 30,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 14,
+      "duration": 18,
+      "recharge": 22,
+      "magnitude": 32,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 15,
+      "duration": 18,
+      "recharge": 21,
+      "magnitude": 34,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 16,
+      "duration": 18,
+      "recharge": 20,
+      "magnitude": 36,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 17,
+      "duration": 18,
+      "recharge": 19,
+      "magnitude": 38,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 18,
+      "duration": 18,
+      "recharge": 19,
+      "magnitude": 40,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 19,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 42,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 20,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 44,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 21,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 46,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 22,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 48,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 23,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 50,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 24,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 52,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 25,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 54,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 26,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 56,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 27,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 58,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 28,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 60,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 29,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 62,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 30,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 64,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 31,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 66,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 32,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 68,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 33,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 70,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 34,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 72,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 35,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 74,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 36,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 76,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 37,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 78,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 38,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 80,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 39,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 82,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 40,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 84,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 41,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 86,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 42,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 88,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 43,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 90,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 44,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 92,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 45,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 94,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 46,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 96,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 47,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 98,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 48,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 100,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 49,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 102,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 50,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 104,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 51,
+      "duration": 18,
+      "recharge": 18,
+      "magnitude": 106,
+      "id": "charm_of_guardian"
+    },
+    {
+      "enchant": 0,
+      "duration": 0,
+      "recharge": 551,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 1,
+      "duration": 0,
+      "recharge": 551,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 2,
+      "duration": 0,
+      "recharge": 331,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 3,
+      "duration": 0,
+      "recharge": 198,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 4,
+      "duration": 0,
+      "recharge": 119,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 5,
+      "duration": 0,
+      "recharge": 71,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 6,
+      "duration": 0,
+      "recharge": 42,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 7,
+      "duration": 0,
+      "recharge": 25,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 8,
+      "duration": 0,
+      "recharge": 15,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 9,
+      "duration": 0,
+      "recharge": 9,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 10,
+      "duration": 0,
+      "recharge": 5,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 11,
+      "duration": 0,
+      "recharge": 3,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 12,
+      "duration": 0,
+      "recharge": 2,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 13,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 14,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 15,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 16,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 17,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 18,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 19,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 20,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 21,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 22,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 23,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 24,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 25,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 26,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 27,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 28,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 29,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 30,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 31,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 32,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 33,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 34,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 35,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 36,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 37,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 38,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 39,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 40,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 41,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 42,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 43,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 44,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 45,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 46,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 47,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 48,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 49,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 50,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 51,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_teleportation"
+    },
+    {
+      "enchant": 0,
+      "duration": 0,
+      "recharge": 5499,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 1,
+      "duration": 0,
+      "recharge": 5499,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 2,
+      "duration": 0,
+      "recharge": 3024,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 3,
+      "duration": 0,
+      "recharge": 1663,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 4,
+      "duration": 0,
+      "recharge": 914,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 5,
+      "duration": 0,
+      "recharge": 503,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 6,
+      "duration": 0,
+      "recharge": 276,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 7,
+      "duration": 0,
+      "recharge": 152,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 8,
+      "duration": 0,
+      "recharge": 83,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 9,
+      "duration": 0,
+      "recharge": 46,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 10,
+      "duration": 0,
+      "recharge": 25,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 11,
+      "duration": 0,
+      "recharge": 13,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 12,
+      "duration": 0,
+      "recharge": 7,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 13,
+      "duration": 0,
+      "recharge": 4,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 14,
+      "duration": 0,
+      "recharge": 2,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 15,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 16,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 17,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 18,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 19,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 20,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 21,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 22,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 23,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 24,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 25,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 26,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 27,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 28,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 29,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 30,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 31,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 32,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 33,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 34,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 35,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 36,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 37,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 38,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 39,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 40,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 41,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 42,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 43,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 44,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 45,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 46,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 47,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 48,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 49,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 50,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 51,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 0,
+      "id": "charm_of_recharging"
+    },
+    {
+      "enchant": 0,
+      "duration": 0,
+      "recharge": 1499,
+      "magnitude": 1,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 1,
+      "duration": 0,
+      "recharge": 1499,
+      "magnitude": 4,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 2,
+      "duration": 0,
+      "recharge": 899,
+      "magnitude": 7,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 3,
+      "duration": 0,
+      "recharge": 539,
+      "magnitude": 10,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 4,
+      "duration": 0,
+      "recharge": 323,
+      "magnitude": 13,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 5,
+      "duration": 0,
+      "recharge": 194,
+      "magnitude": 16,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 6,
+      "duration": 0,
+      "recharge": 116,
+      "magnitude": 19,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 7,
+      "duration": 0,
+      "recharge": 69,
+      "magnitude": 22,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 8,
+      "duration": 0,
+      "recharge": 41,
+      "magnitude": 25,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 9,
+      "duration": 0,
+      "recharge": 25,
+      "magnitude": 28,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 10,
+      "duration": 0,
+      "recharge": 15,
+      "magnitude": 31,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 11,
+      "duration": 0,
+      "recharge": 9,
+      "magnitude": 34,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 12,
+      "duration": 0,
+      "recharge": 5,
+      "magnitude": 37,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 13,
+      "duration": 0,
+      "recharge": 3,
+      "magnitude": 40,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 14,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 43,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 15,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 46,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 16,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 49,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 17,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 52,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 18,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 55,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 19,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 58,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 20,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 61,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 21,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 64,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 22,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 67,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 23,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 70,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 24,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 73,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 25,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 76,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 26,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 79,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 27,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 82,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 28,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 85,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 29,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 88,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 30,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 91,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 31,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 94,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 32,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 97,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 33,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 100,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 34,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 103,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 35,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 106,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 36,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 109,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 37,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 112,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 38,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 115,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 39,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 118,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 40,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 121,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 41,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 124,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 42,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 127,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 43,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 130,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 44,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 133,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 45,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 136,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 46,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 139,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 47,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 142,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 48,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 145,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 49,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 148,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 50,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 151,
+      "id": "charm_of_negation"
+    },
+    {
+      "enchant": 51,
+      "duration": 0,
+      "recharge": 1,
+      "magnitude": 154,
+      "id": "charm_of_negation"
+    }
+  ]
+}

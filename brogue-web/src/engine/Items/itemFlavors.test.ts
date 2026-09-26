@@ -4,13 +4,16 @@
  * 背景：外观池曾小于物品种类数（药水 8 池 vs 16 种……），initConsumables 里
  * `if (index < shuffled.length)` 静默跳过，导致部分物品永远显示 "Unknown"。
  * 本文件锁定三点验收标准：
- *   1. 每个外观池的大小 >= 对应物品种类数（六类全覆盖）；
- *   2. 固定 seed 初始化后，每种药水/卷轴/魔杖/法杖/戒指/护符都有非空外观，
+ *   1. 每个外观池的大小 >= 对应未知物品种类数（CE 五类）；
+ *   2. 固定 seed 初始化后，每种药水/卷轴/魔杖/法杖/戒指都有非空外观，
  *      且同类内无两种物品共用同一外观（双射）；
  *   3. 不同 seed 产生不同的外观分配（每局洗牌生效）。
  *
  * 池大小与词表对齐 BrogueCE（Rogue.h:1071-1077、Globals.c itemColorsRef /
  * itemWoodsRef / itemMetalsRef / itemGemsRef / titlePhonemes）。
+ * X2e 前提修正：CE Items.c:364–373 的护符出生即 ITEM_IDENTIFIED，
+ * 不属于未知外观五类。保留五类的全部覆盖/双射/中文断言，并另验护符无需外观。
+ * 原守卫 HEAD 绿、仅扩护符目录即三项红的反事实见 x2e.report.md；交验收方裁决。
  */
 import { describe, it, expect, beforeAll } from 'vitest';
 import i18next from 'i18next';
@@ -37,7 +40,7 @@ function initFlavors(seed: number): void {
     ItemLoader.initConsumables();
 }
 
-/** 六类物品的外观分配快照（id → 外观名），供跨 seed 比较。 */
+/** 五类未知物品的外观分配快照（id → 外观名），供跨 seed 比较。 */
 function flavorSnapshot(): Record<string, Record<string, string>> {
     const potion: Record<string, string> = {};
     for (const p of ItemLoader.potions) {
@@ -49,7 +52,7 @@ function flavorSnapshot(): Record<string, Record<string, string>> {
     }
     const arcana: Record<string, string> = {};
     for (const [pool, label] of [
-        ['wands', 'wand'], ['staffs', 'staff'], ['rings', 'ring'], ['charms', 'charm'],
+        ['wands', 'wand'], ['staffs', 'staff'], ['rings', 'ring'],
     ] as const) {
         for (const a of ItemLoader[pool]) {
             arcana[`${label}:${a.id}`] = ItemLoader.arcanaFlavorMap.get(a.id) ?? '';
@@ -59,13 +62,12 @@ function flavorSnapshot(): Record<string, Record<string, string>> {
 }
 
 describe('未鉴定物品外观池', () => {
-    it('1a. 每个外观池的大小 >= 对应物品种类数（六类全覆盖）', () => {
+    it('1a. 每个外观池的大小 >= 对应未知物品种类数（CE 五类全覆盖）', () => {
         expect(ItemLoader.potionColors.length).toBeGreaterThanOrEqual(ItemLoader.potions.length);
         expect(ItemLoader.titlePhonemes.length).toBeGreaterThanOrEqual(ItemLoader.scrolls.length);
         expect(ItemLoader.wandFlavorNames.length).toBeGreaterThanOrEqual(ItemLoader.wands.length);
         expect(ItemLoader.staffFlavorNames.length).toBeGreaterThanOrEqual(ItemLoader.staffs.length);
         expect(ItemLoader.ringFlavorNames.length).toBeGreaterThanOrEqual(ItemLoader.rings.length);
-        expect(ItemLoader.charmFlavorNames.length).toBeGreaterThanOrEqual(ItemLoader.charms.length);
     });
 
     it('1b. 各池内部无重复词条（双射的前提）', () => {
@@ -82,7 +84,7 @@ describe('未鉴定物品外观池', () => {
         expect(dup(ItemLoader.charmFlavorNames)).toEqual([]);
     });
 
-    it('2. 固定 seed 下六类物品全部有非空外观，且同类内两两不同（双射）', () => {
+    it('2. 固定 seed 下五类未知物品全部有非空外观，且同类内两两不同（双射）', () => {
         initFlavors(SEED_A);
 
         // 药水：名称与颜色都要构成双射（颜色是地牢里的实际外观）
@@ -102,9 +104,9 @@ describe('未鉴定物品外观池', () => {
         }
         expect(new Set(scrollTitles).size).toBe(ItemLoader.scrolls.length);
 
-        // 魔杖/法杖/戒指/护符
+        // 魔杖/法杖/戒指
         for (const [pool, label] of [
-            ['wands', '魔杖'], ['staffs', '法杖'], ['rings', '戒指'], ['charms', '护符'],
+            ['wands', '魔杖'], ['staffs', '法杖'], ['rings', '戒指'],
         ] as const) {
             const flavors = ItemLoader[pool].map(a => ItemLoader.arcanaFlavorMap.get(a.id));
             for (const f of flavors) {
@@ -123,10 +125,23 @@ describe('未鉴定物品外观池', () => {
             ...ItemLoader.wands.map(a => ItemLoader.arcanaFlavorMap.get(a.id)!),
             ...ItemLoader.staffs.map(a => ItemLoader.arcanaFlavorMap.get(a.id)!),
             ...ItemLoader.rings.map(a => ItemLoader.arcanaFlavorMap.get(a.id)!),
-            ...ItemLoader.charms.map(a => ItemLoader.arcanaFlavorMap.get(a.id)!),
         ];
         for (const name of all) {
             expect(name, `外观名 "${name}" 不应含未翻译的英文`).not.toMatch(/[A-Za-z]/);
+        }
+    });
+
+    it('2c. CE 护符出生即鉴定，无外观映射时仍显示完整中文名称', () => {
+        initFlavors(SEED_A);
+        for (const data of ItemLoader.charms) {
+            ItemLoader.arcanaFlavorMap.delete(data.id);
+            const charm = ItemLoader.spawnCharm(data.id, 0, 0)!;
+            expect(charm, data.id).not.toBeNull();
+            expect(charm.identified, data.id).toBe(true);
+            expect(ItemLoader.identifiedItems.has(data.id), data.id).toBe(true);
+            expect(charm.displayName.trim(), data.id).not.toBe('');
+            expect(charm.displayName, data.id).toMatch(/[\u4e00-\u9fff]/);
+            expect(charm.displayName, data.id).not.toMatch(/[A-Za-z]/);
         }
     });
 

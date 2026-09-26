@@ -7,7 +7,7 @@ import type { Pos } from '../../types';
 import type { BoltWorld } from '../Combat/BoltTrajectory';
 import { timeSystem } from '../Systems/Time';
 import { canEnchantArcana, enchantArcana } from './ArcanaEnchantment';
-import { charmEffectDuration, charmHealing, charmProtection, charmRechargeDelay, isCharmKind } from './CharmModel';
+import { charmEffectDuration, charmHealing, charmProtection, charmRechargeDelay, charmShattering, charmGuardianLifespan, charmNegationRadius, isCharmKind } from './CharmModel';
 import { logger } from '../Systems/Logger';
 import i18next from 'i18next';
 import type { StatusId } from '../../entities/Creature';
@@ -86,6 +86,11 @@ export function enchantingAutoIdentifiesTarget(item: Item): boolean {
 export function invokeCharm(player: Player, item: Item, identityId: string | undefined, ports: {
     applyTimedStatus: (status: StatusId, duration: number) => void;
     extinguish: () => void;
+    shatter: (radius: number) => void;
+    summonGuardian: (lifespan: number) => void;
+    teleport: () => void;
+    rechargeStaffs: () => void;
+    negate: (radius: number) => void;
     endTurn: () => void;
 }): boolean {
     if (!isCharmKind(identityId)) return false;
@@ -118,6 +123,24 @@ export function invokeCharm(player: Player, item: Item, identityId: string | und
         player.maxStatus.immune_fire = duration;
         ports.extinguish();
         logger.log(i18next.t('arcana.charm_fire_immunity', { defaultValue: 'You no longer fear fire.' }), '#ffbb66');
+    } else if (identityId === 'charm_of_levitation') {
+        ports.applyTimedStatus('levitating', duration);
+        player.setStatusDuration('levitating', duration);
+        player.maxStatus.levitating = duration;
+        player.seized = false;
+    } else if (identityId === 'charm_of_shattering') {
+        logger.log(i18next.t('arcana.charm_shattering', { defaultValue: 'Your charm emits a wave of turquoise light that pierces the nearby walls!' }), '#40e0d0');
+        ports.shatter(charmShattering(item.enchantment));
+    } else if (identityId === 'charm_of_guardian') {
+        logger.log(i18next.t('arcana.charm_guardian', { defaultValue: 'Your charm flashes and the form of a mythical guardian coalesces!' }), '#ccccff');
+        ports.summonGuardian(charmGuardianLifespan(item.enchantment));
+    } else if (identityId === 'charm_of_teleportation') {
+        ports.teleport();
+    } else if (identityId === 'charm_of_recharging') {
+        ports.rechargeStaffs();
+    } else if (identityId === 'charm_of_negation') {
+        // CE useCharm adds one to the magnitude displayed in itemDetails.
+        ports.negate(charmNegationRadius(item.enchantment) + 1);
     }
     item.cooldownTurns = charmRechargeDelay(identityId, item.enchantment);
     item.cooldownRemaining = item.cooldownTurns;

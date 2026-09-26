@@ -1,0 +1,197 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web
+
+stdout | src/test/u24_hardcoded_text.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u24_hardcoded_text.test.ts (3 tests) 719ms
+     ✓ requires translated floating labels and logger messages  706ms
+stdout | src/test/p1_30_i18n_gate.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/x2e_charms.test.ts > X2e CE charm formulas and complete instances > uses the same formulas for current/enchant preview in Chinese and leaves the five CE Discoveries groups intact
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/test/x2e_charms.test.ts (11 tests | 4 failed) 5517ms
+     ✓ matches 624 compiled original C cases, including clamp and signed-short boundaries 40ms
+     ✓ retains birth range/tail, identified state, cooldown, all own fields and zero-RNG enchanting for each new kind 5ms
+     ✓ uses the same formulas for current/enchant preview in Chinese and leaves the five CE Discoveries groups intact  903ms
+     ✓ overwrites levitation duration/maxStatus, frees seizure, and rejects cooling/foreign items without time or RNG  706ms
+     ✓ shatters through walls at CE radius, preserves outside/protected cells and invokes U15a exactly once  764ms
+     × summons a grounded, fire-immune bound guardian with CE lifetime, turn delay, save and expiry 562ms
+     ✓ keeps a no-space guardian attempt finite while still spending cooldown and a turn  540ms
+     × uses existing teleport selection/commit, clears seizure, updates vision and spends once even without destinations 536ms
+     × recharges every staff using W6 timers, excludes wands/other charms, and the scroll still charges all charms 845ms
+     ✓ negates self, creatures and floor items at radius+1, with LOS/radius boundaries and inventory exclusion  604ms
+     × matches all twelve CE table rows in order and frequency, including category-only machine requests 5ms
+stdout | src/test/u_15c_charms.test.ts > U15c CE charm table and use > applies the six CE effects, charges even at full health, and rejects charging attempts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_15c_charms.test.ts (4 tests) 7237ms
+     ✓ applies the six CE effects, charges even at full health, and rejects charging attempts  7232ms
+ ✓ src/test/p1_30_i18n_gate.test.ts (16 tests) 12473ms
+     ✓ 3 个 seed × 400 回合：无漏键、日志无裸键串  12454ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/x2e_charms.test.ts > X2e real charm effects through inventory use > summons a grounded, fire-immune bound guardian with CE lifetime, turn delay, save and expiry
+AssertionError: expected Monster{ id: 23, …(78) } to match object { typeId: 'guardian_spirit', …(10) }
+(73 matching properties omitted from actual)
+
+- Expected
++ Received
+
+- {
++ Monster {
+    "accuracy": 200,
+    "boundToPlayer": true,
+    "doesNotTrackLeader": true,
+    "goldDropChance": 0,
+    "hp": 1000,
+    "isAlly": true,
+    "itemDropChance": 0,
+    "leader": null,
+    "loc": {
+-     "x": 11,
++     "x": 9,
+      "y": 10,
+    },
+    "ticksUntilTurn": 101,
+    "typeId": "guardian_spirit",
+  }
+
+ ❯ src/test/x2e_charms.test.ts:150:26
+    148|         g.useArcanaItem(item);
+    149|         const guardian = g.monsters[0]!;
+    150|         expect(guardian).toMatchObject({ typeId: 'guardian_spirit', is…
+       |                          ^
+    151|             doesNotTrackLeader: true, leader: null, ticksUntilTurn: 10…
+    152|             goldDropChance: 0, itemDropChance: 0, loc: { x: 11, y: 10 …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/test/x2e_charms.test.ts > X2e real charm effects through inventory use > uses existing teleport selection/commit, clears seizure, updates vision and spends once even without destinations
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/test/x2e_charms.test.ts:189:73
+    187|         g.useArcanaItem(item);
+    188|         expect(teleport).toHaveBeenCalledExactlyOnceWith(g.player);
+    189|         expect(g.player.x).toBeGreaterThan(30); expect(g.player.seized…
+       |                                                                         ^
+    190|         expect(g.grid.getCell(g.player.x, g.player.y)!.isVisible).toBe…
+    191|         expect(item.cooldownRemaining).toBe(551);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/test/x2e_charms.test.ts > X2e real charm effects through inventory use > recharges every staff using W6 timers, excludes wands/other charms, and the scroll still charges all charms
+AssertionError: expected [ Array(12) ] to deeply equal [ Array(12) ]
+
+- Expected
++ Received
+
+@@ -8,7 +8,7 @@
+    0,
+    0,
+    0,
+    0,
+    0,
+-   0,
++   42,
+  ]
+
+ ❯ src/test/x2e_charms.test.ts:221:51
+    219|         g.player.inventory.items.push(scroll);
+    220|         g.readItem(scroll);
+    221|         expect(all.map(c => c.cooldownRemaining)).toEqual(all.map(() =…
+       |                                                   ^
+    222|         expect(wand.charges).toBe(wandCharge);
+    223|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/test/x2e_charms.test.ts > X2e CE pool restoration (run after effects stage) > matches all twelve CE table rows in order and frequency, including category-only machine requests
+AssertionError: expected [ { …(2) }, …(5) ] to deeply equal [ …(12) ]
+
+- Expected
++ Received
+
+  [
+    {
+      "frequency": 5,
+-     "id": "charm_of_health",
+-   },
+-   {
+-     "frequency": 5,
+      "id": "charm_of_protection",
+    },
+    {
+      "frequency": 5,
+-     "id": "charm_of_speed",
++     "id": "charm_of_health",
+    },
+    {
+-     "frequency": 3,
+-     "id": "charm_of_fire_immunity",
++     "frequency": 5,
++     "id": "charm_of_invisibility",
+    },
+    {
+      "frequency": 5,
+-     "id": "charm_of_invisibility",
++     "id": "charm_of_speed",
+    },
+    {
+      "frequency": 3,
+      "id": "charm_of_telepathy",
+    },
+    {
+-     "frequency": 1,
+-     "id": "charm_of_levitation",
+-   },
+-   {
+-     "frequency": 1,
+-     "id": "charm_of_shattering",
+-   },
+-   {
+-     "frequency": 5,
+-     "id": "charm_of_guardian",
+-   },
+-   {
+-     "frequency": 4,
+-     "id": "charm_of_teleportation",
+-   },
+-   {
+-     "frequency": 5,
+-     "id": "charm_of_recharging",
+-   },
+-   {
+-     "frequency": 5,
+-     "id": "charm_of_negation",
++     "frequency": 3,
++     "id": "charm_of_fire_immunity",
+    },
+  ]
+
+ ❯ src/test/x2e_charms.test.ts:258:87
+    256|         }));
+    257|         expect(rows).toHaveLength(12);
+    258|         expect(ItemLoader.genCharms.map(c => ({ id: c.id, frequency: c…
+       |                                                                                       ^
+    259|         const api = Object.create(Game.prototype) as any;
+    260|         const chosen = vi.spyOn(ItemLoader, 'chooseKind');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  4 failed | 30 passed (34)
+   Start at  05:00:24
+   Duration  15.78s (transform 2.77s, setup 0ms, import 9.01s, tests 25.95s, environment 2ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/ai_docs/reports/x2e-evidence/effects-tests.json

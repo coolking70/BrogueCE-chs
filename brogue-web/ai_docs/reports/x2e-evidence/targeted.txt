@@ -1,0 +1,92 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web
+
+stdout | src/test/u_15a_shattering.test.ts > U15a IMPREGNABLE is an outer gate for every crystalize side effect > protected 3 preserves every layer, cell field, appearance and dormant occupant
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/x2e_charms.test.ts > X2e CE charm formulas and complete instances > uses the same formulas for current/enchant preview in Chinese and leaves the five CE Discoveries groups intact
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/w_16_conjuration.test.ts > W-16 player binding, AI, first action, and real death > first wait = 101 ticks under player action cost 50, then normal 50-tick movement
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/test/u_01_instance_snapshot.test.ts > ordinary uses the complete graph contract, including private base speeds
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/x2e_charms.test.ts (11 tests) 9909ms
+     ✓ uses the same formulas for current/enchant preview in Chinese and leaves the five CE Discoveries groups intact  1457ms
+     ✓ overwrites levitation duration/maxStatus, frees seizure, and rejects cooling/foreign items without time or RNG  1552ms
+     ✓ shatters through walls at CE radius, preserves outside/protected cells and invokes U15a exactly once  1317ms
+     ✓ summons a grounded, fire-immune bound guardian with CE lifetime, turn delay, save and expiry  1256ms
+     ✓ keeps a no-space guardian attempt finite while still spending cooldown and a turn  1183ms
+     ✓ uses CE terrain-aware teleport selection/commit, disentangles, retains seizure flags and spends once even without destinations  1096ms
+     ✓ recharges every staff using W6 timers, excludes wands/other charms, and the scroll still charges all charms  925ms
+     ✓ negates self, creatures and floor items at radius+1, with LOS/radius boundaries and inventory exclusion  975ms
+stdout | src/test/w_11_teleport_placement.test.ts > W-11 generic placement and C-5 entry effects > monster falling is consumed by C-5 at turn end, only once, with its own fall damage range
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/w_16_conjuration.test.ts (45 tests) 16670ms
+     ✓ first wait = 101 ticks under player action cost 50, then normal 50-tick movement  1356ms
+     ✓ first wait = 101 ticks under player action cost 100, then normal 50-tick movement  1612ms
+     ✓ first wait = 101 ticks under player action cost 200, then normal 50-tick movement  1226ms
+     ✓ 200 objective ticks do not expire a blade or settle loot, kills, death DF, or die  2191ms
+     ✓ awake enemies retaliate against an adjacent blade  1051ms
+     ✓ hunting enemy prefers an accessible adjacent player over a summoned blade  922ms
+     ✓ JSON restores actual species despite translated name, ally/binding/AI, ticks, flying and negate vulnerability  1968ms
+     ✓ dormant and test-room restoration use the same tagged blade payload  3189ms
+     ✓ down/up stairs leave blades alive on their original cached level, no follower/death/loot path  1165ms
+     ✓ real UI commit cancels without mutation, then spends one charge, identifies and leaves three waiting blades  1441ms
+ ✓ src/test/w_11_teleport_placement.test.ts (37 tests) 8082ms
+     ✓ monster falling is consumed by C-5 at turn end, only once, with its own fall damage range  1891ms
+     ✓ real visibility is recomputed immediately at a previously hidden player destination  2343ms
+     ✓ real C-5 player turn end consumes the falling flag, changes depth and never gives the old monster a turn  3725ms
+stdout | src/test/u_16_lifecycle.test.ts > U16 CE death and resurrection lifecycle > releases a carried monster before leadership election, once, at 200 ticks
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ✓ src/test/u_01_instance_snapshot.test.ts (17 tests) 22879ms
+   ✓ ordinary uses the complete graph contract, including private base speeds  1584ms
+   ✓ polymorph uses the complete graph contract, including private base speeds  1774ms
+   ✓ clone uses the complete graph contract, including private base speeds  1193ms
+   ✓ dormant uses the complete graph contract, including private base speeds  2416ms
+   ✓ player clone uses the complete graph contract, including private base speeds  1141ms
+   ✓ naturally generated D1-D3 ordinary/ground/pack entities deeply round-trip, without deriving from catalog  4979ms
+   ✓ spear next attack keeps penetration/lunge, damage and action cost  1567ms
+   ✓ rapier next attack keeps penetration/lunge, damage and action cost  1621ms
+   ✓ next unlock preserves disposableHere=false and origin-depth rejection  1279ms
+   ✓ next unlock preserves disposableHere=true and origin-depth rejection  1122ms
+   ✓ next scheduler action retains 37 tick wait; dormant carrier never acts; next death drops the same payload once  1436ms
+   ✓ player hunger event, cached speeds, direction, status immunity and inventory/equipment identity survive the next consumers  1272ms
+   ✓ version boundary rejects v1 before changing the live world; detached/player high IDs are reserved  1313ms
+ ✓ src/test/u_15a_shattering.test.ts (19 tests) 24890ms
+     ✓ protected 3 preserves every layer, cell field, appearance and dormant occupant  1434ms
+     ✓ protected 21 preserves every layer, cell field, appearance and dormant occupant  1609ms
+     ✓ protected 54 preserves every layer, cell field, appearance and dormant occupant  1214ms
+     ✓ protected 71 preserves every layer, cell field, appearance and dormant occupant  1032ms
+     ✓ protected 45 preserves every layer, cell field, appearance and dormant occupant  2077ms
+     ✓ protected 2 preserves every layer, cell field, appearance and dormant occupant  1041ms
+     ✓ protected boundary (0,5) survives; neighboring unprotected boundary still crystallizes  915ms
+     ✓ protected boundary (78,5) survives; neighboring unprotected boundary still crystallizes  939ms
+     ✓ protected boundary (5,0) survives; neighboring unprotected boundary still crystallizes  883ms
+     ✓ protected boundary (5,28) survives; neighboring unprotected boundary still crystallizes  1595ms
+     ✓ MONST_ATTACKABLE_THRU_WALLS dies through shielding only on the unprotected obstructing cell  1411ms
+     ✓ MONST_TURRET dies through shielding only on the unprotected obstructing cell  1000ms
+     ✓ DF awakens the unprotected dormant turret before lethal handling; protected one sleeps  1425ms
+     ✓ frees a captive only if still embedded after instant promotions, retained blocker=false  1073ms
+     ✓ frees a captive only if still embedded after instant promotions, retained blocker=true  915ms
+     ✓ only DUNGEON obstruction within Euclidean radius qualifies, regardless of visibility  958ms
+     ✓ retained upper blocking layer continues to obstruct vision and movement  1129ms
+     ✓ protected machine and ordinary wall behave identically after reload=false  1611ms
+     ✓ protected machine and ordinary wall behave identically after reload=true  2627ms
+ ✓ src/test/u_16_lifecycle.test.ts (5 tests) 6780ms
+     ✓ releases a carried monster before leadership election, once, at 200 ticks  1255ms
+     ✓ stores an entering summoner in the final new host and elects followers across floors  1232ms
+     ✓ drops carried equipment once into an unoccupied item cell  1160ms
+     ✓ keeps eligible allies across a whole-run save and resurrects the strongest through the DF  1706ms
+     ✓ leaves the altar unchanged when purgatory is empty  1424ms
+
+ Test Files  6 passed (6)
+      Tests  134 passed (134)
+   Start at  05:05:00
+   Duration  29.80s (transform 5.46s, setup 0ms, import 17.75s, tests 89.21s, environment 2ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/ai_docs/reports/x2e-evidence/targeted.json

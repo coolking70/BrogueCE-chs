@@ -1,0 +1,42 @@
+
+ RUN  v4.1.11 /Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web
+
+stdout | src/engine/Items/itemFlavors.test.ts
+🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+ ❯ src/engine/Items/itemFlavors.test.ts (6 tests | 1 failed) 12ms
+     ✓ 1a. 每个外观池的大小 >= 对应未知物品种类数（CE 五类全覆盖） 1ms
+     ✓ 1b. 各池内部无重复词条（双射的前提） 0ms
+     ✓ 2. 固定 seed 下五类未知物品全部有非空外观，且同类内两两不同（双射） 3ms
+     ✓ 2b. zh_CN 资源下所有外观显示名都是中文（不得回退为英文键） 1ms
+     × 2c. CE 护符出生即鉴定，无外观映射时仍显示完整中文名称 3ms
+     ✓ 3. 不同 seed 产生不同的外观分配（每局洗牌生效） 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/engine/Items/itemFlavors.test.ts > 未鉴定物品外观池 > 2c. CE 护符出生即鉴定，无外观映射时仍显示完整中文名称
+AssertionError: charm_of_health: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/engine/Items/itemFlavors.test.ts:140:47
+    138|             const charm = ItemLoader.spawnCharm(data.id, 0, 0)!;
+    139|             expect(charm, data.id).not.toBeNull();
+    140|             expect(charm.identified, data.id).toBe(true);
+       |                                               ^
+    141|             expect(ItemLoader.identifiedItems.has(data.id), data.id).t…
+    142|             expect(charm.displayName.trim(), data.id).not.toBe('');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  05:59:25
+   Duration  164ms (transform 62ms, setup 0ms, import 76ms, tests 12ms, environment 0ms)
+
+JSON report written to /Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/ai_docs/reports/x2e-evidence/flavors-ce-premise-pool-bad-birth.json

@@ -1,7 +1,9 @@
 /** BrogueCE PowerTables.c and GlobalsBrogue.c:729-741. Values are 16-bit fixpt. */
 const FP = 65536;
 type Charm = 'charm_of_health' | 'charm_of_protection' | 'charm_of_speed'
-    | 'charm_of_fire_immunity' | 'charm_of_invisibility' | 'charm_of_telepathy';
+    | 'charm_of_fire_immunity' | 'charm_of_invisibility' | 'charm_of_telepathy'
+    | 'charm_of_levitation' | 'charm_of_shattering' | 'charm_of_guardian'
+    | 'charm_of_teleportation' | 'charm_of_recharging' | 'charm_of_negation';
 const TABLE: Record<Charm, { duration: number; increment: 1 | 1.2 | 1.25; recharge: number; base: number }> = {
     charm_of_health: { duration: 3, increment: 1, recharge: 2500, base: 55 },
     charm_of_protection: { duration: 20, increment: 1, recharge: 1000, base: 60 },
@@ -9,6 +11,12 @@ const TABLE: Record<Charm, { duration: number; increment: 1 | 1.2 | 1.25; rechar
     charm_of_fire_immunity: { duration: 10, increment: 1.25, recharge: 800, base: 60 },
     charm_of_invisibility: { duration: 5, increment: 1.2, recharge: 800, base: 65 },
     charm_of_telepathy: { duration: 25, increment: 1.25, recharge: 800, base: 65 },
+    charm_of_levitation: { duration: 10, increment: 1.25, recharge: 800, base: 65 },
+    charm_of_shattering: { duration: 0, increment: 1, recharge: 2500, base: 60 },
+    charm_of_guardian: { duration: 18, increment: 1, recharge: 700, base: 70 },
+    charm_of_teleportation: { duration: 0, increment: 1, recharge: 920, base: 60 },
+    charm_of_recharging: { duration: 0, increment: 1, recharge: 10000, base: 55 },
+    charm_of_negation: { duration: 0, increment: 1, recharge: 2500, base: 60 },
 };
 export function isCharmKind(id: string | undefined): id is Charm { return !!id && id in TABLE; }
 
@@ -29,14 +37,19 @@ export function charmEffectDuration(id: Charm, enchant: number): number {
     // GlobalsBase.c contains pre-rounded lookup tables, rather than fp_pow.
     const multiplier = increment === 1 ? FP : increment === 1.2
         ? POW_120[index]! : POW_125[index]!;
-    return Math.trunc(duration * multiplier / FP);
+    // CE returns short, including overflow at unusually high enchantments.
+    return short(Math.trunc(duration * multiplier / FP));
 }
 export function charmRechargeDelay(id: Charm, enchant: number): number {
     const level = Math.max(1, Math.min(50, Math.trunc(enchant)));
     const row = TABLE[id];
     const base = Math.trunc(FP * row.base / 100);
-    return Math.max(1, charmEffectDuration(id, level) + Math.trunc(row.recharge * fpPow(base, level) / FP));
+    return Math.max(1, short(charmEffectDuration(id, level) + Math.trunc(row.recharge * fpPow(base, level) / FP)));
 }
+function short(value: number): number { return (value << 16) >> 16; }
+export function charmShattering(enchant: number): number { return short(4 + Math.trunc(enchant)); }
+export function charmGuardianLifespan(enchant: number): number { return short(4 + 2 * Math.trunc(enchant)); }
+export function charmNegationRadius(enchant: number): number { return short(1 + 3 * Math.trunc(enchant)); }
 export function charmHealing(enchant: number): number { return Math.max(0, Math.min(100, Math.trunc(20 * enchant))); }
 export function charmProtection(enchant: number): number {
     const index = Math.max(0, Math.min(50, Math.trunc(enchant) - 1));

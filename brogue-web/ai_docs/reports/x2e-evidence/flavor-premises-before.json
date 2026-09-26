@@ -1,0 +1,31 @@
+[
+  {
+    "name": "flavors-original-s0",
+    "exit": 0,
+    "passed": 5,
+    "failed": 0,
+    "failures": []
+  },
+  {
+    "name": "flavors-original-effects",
+    "exit": 1,
+    "passed": 2,
+    "failed": 3,
+    "failures": [
+      "未鉴定物品外观池 1a. 每个外观池的大小 >= 对应物品种类数（六类全覆盖）",
+      "未鉴定物品外观池 2. 固定 seed 下六类物品全部有非空外观，且同类内两两不同（双射）",
+      "未鉴定物品外观池 2b. zh_CN 资源下所有外观显示名都是中文（不得回退为英文键）"
+    ]
+  },
+  {
+    "name": "flavors-original-pool",
+    "exit": 1,
+    "passed": 2,
+    "failed": 3,
+    "failures": [
+      "未鉴定物品外观池 1a. 每个外观池的大小 >= 对应物品种类数（六类全覆盖）",
+      "未鉴定物品外观池 2. 固定 seed 下六类物品全部有非空外观，且同类内两两不同（双射）",
+      "未鉴定物品外观池 2b. zh_CN 资源下所有外观显示名都是中文（不得回退为英文键）"
+    ]
+  }
+]

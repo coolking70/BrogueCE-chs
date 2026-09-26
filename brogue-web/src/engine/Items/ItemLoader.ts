@@ -1198,7 +1198,9 @@ export class ItemLoader {
     }
 
     private static assignArcanaFlavors(pool: ArcanaConfig[], flavors: string[], label: string, random: Random) {
-        if (flavors.length < pool.length) {
+        // Charms are identified at birth in CE. Preserve the legacy six-slot
+        // shuffle's RNG footprint; additional charms never need an unknown name.
+        if (pool !== this.charms && flavors.length < pool.length) {
             console.error(
                 `[ItemLoader] ${label}外观池不足：池 ${flavors.length} < ${label} ${pool.length} 种，` +
                 '不足者将显示为 Unknown'
@@ -1212,6 +1214,7 @@ export class ItemLoader {
             // Light keeps its definition untouched and uses CE's unused wood slot 2.
             const slot = isStaff ? entry.flavorIndex ?? (entry.id === 'staff_of_light' ? 2 : index) : index;
             const flavor = shuffled[slot];
+            if (!flavor && pool === this.charms) return;
             if (!flavor) {
                 console.error(`[ItemLoader] ${label} ${entry.id} 未分配到外观，将显示为 Unknown`);
                 return;

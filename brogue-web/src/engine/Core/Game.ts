@@ -19,7 +19,7 @@ import { anyoneWantABite } from '../Combat/MonsterAbsorption';
  * Main game state and orchestration
  */
 import { Grid, TerrainType, DCOLS, DROWS, DungeonLayer, DRAW_PRIORITY, type Cell } from '../Map/Grid';
-import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_DIAGONAL_MOVEMENT, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_WITH_KEY, TM_PROMOTES_ON_CREATURE, TM_SWAP_ENCHANTS_ACTIVATION, TM_PROMOTES_ON_SACRIFICE_ENTRY, T_IS_DF_TRAP, T_HARMFUL_TERRAIN, T_SACRED, T_IS_FIRE, T_LAVA_INSTA_DEATH } from '../Map/TerrainCatalog';
+import { blocksPassability, isDeepWater, isAutoDescent, TERRAIN_FLAGS, T_CAUSES_CONFUSION, T_CAUSES_NAUSEA, T_CAUSES_DAMAGE, T_CAUSES_PARALYSIS, T_CAUSES_EXPLOSIVE_DAMAGE, T_RESPIRATION_IMMUNITIES, TM_EXTINGUISHES_FIRE, T_AUTO_DESCENT, T_ENTANGLES, T_IS_DEEP_WATER, T_MOVES_ITEMS, T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_DIAGONAL_MOVEMENT, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION, T_OBSTRUCTS_ITEMS, TM_IS_SECRET, TM_ALLOWS_SUBMERGING, TM_PROMOTES_ON_PLAYER_ENTRY, TM_PROMOTES_WITH_KEY, TM_PROMOTES_ON_CREATURE, TM_SWAP_ENCHANTS_ACTIVATION, TM_PROMOTES_ON_SACRIFICE_ENTRY, T_IS_DF_TRAP, T_HARMFUL_TERRAIN, T_SACRED, T_IS_FIRE, T_LAVA_INSTA_DEATH, T_SPONTANEOUSLY_IGNITES } from '../Map/TerrainCatalog';
 // B-4b：物品落位热力图与食物落位原语（CE Items.c:463-535 / Architect.c:171,3822）
 import { randomMatchingLocation, passableArcCount as terrainPassableArcCount } from '../Items/ItemSpawnHeatMap';
 import { cellTerrainMechFlags, cellTerrainFlags, catalogFeature, discoverSecretsAt, setDormantAwakener, setAllyResurrector, setDungeonFeatureEffects, terrainMechFlags, spawnDungeonFeature } from '../Map/DungeonFeature';
@@ -37,7 +37,7 @@ import {
 import blueprintData from '../../data/blueprints.json';
 import { getMachineObservationHook, setMachineObservationSeed } from '../Generator/MachineObservation';
 import { Player, STOMACH_SIZE, type HungerState } from '../../entities/Player';
-import { Monster, monstersAreTeammates, monstersAreEnemies } from '../../entities/Monster';
+import { Monster, monstersAreTeammates, monstersAreEnemies, avoidedFlagsForCaster } from '../../entities/Monster';
 import { CombatSystem } from '../Combat/Combat';
 import { staffPoison } from '../Combat/Poison';
 import { staffProtection } from '../Combat/Shielding';
@@ -4001,6 +4001,11 @@ export class Game {
             invokeCharm(this.player, item, identityId, {
                 applyTimedStatus: (status, duration) => { this.applyTimedStatus(this.player, status, duration); },
                 extinguish: () => this.extinguishCreatureFire(this.player),
+                shatter: radius => this.crystalizeFromPlayer(radius),
+                summonGuardian: lifespan => this.summonCharmGuardian(lifespan),
+                teleport: () => this.teleportPlayerRandom(true),
+                rechargeStaffs: () => { this.rechargeStaffsAndCharms(false); },
+                negate: radius => this.negationBlastFromPlayer(i18next.t('arcana.charm_emitter', { defaultValue: 'Your charm' }), radius),
                 endTurn: () => this.playerTurnEnded(),
             });
             return;
@@ -4592,6 +4597,27 @@ export class Game {
             autoID = true; // W-2 handoff: only a real entity identifies.
         }
         return autoID;
+    }
+
+    /** CE Items.c summonGuardian: share conjuration placement and U16 lifespan/death.
+     * Unlike a flying blade, the fire-immune guardian avoids pits, traps and water. */
+    private summonCharmGuardian(lifespan: number): void {
+        const data = (monsterData as MonsterData[]).find(m => m.id === 'guardian_spirit')!;
+        const guardian = new Monster(this.player.x, this.player.y, data);
+        const at = bladeSpawnLocation(this, this.player.loc,
+            avoidedFlagsForCaster(guardian) & ~T_SPONTANEOUSLY_IGNITES);
+        if (!at) return;
+        guardian.loc = at;
+        guardian.isAlly = true;
+        guardian.state = MonsterState.HUNTING;
+        guardian.boundToPlayer = true;
+        guardian.doesNotTrackLeader = true;
+        guardian.ticksUntilTurn = guardian.attackSpeed + 1;
+        guardian.setStatusDuration('lifespan_remaining', lifespan);
+        guardian.maxStatus.lifespan_remaining = lifespan;
+        guardian.goldDropChance = guardian.itemDropChance = 0;
+        this.monsters.push(guardian);
+        this.needsRender = true;
     }
 
     private applyBoltEffect(result: BoltResult, item: Item, alreadyReflected = false): boolean {
@@ -5253,12 +5279,12 @@ export class Game {
     }
 
     /** CE Items.c:7904 -> rechargeItems(STAFF | CHARM), all items in the pack. */
-    private rechargeStaffsAndCharms(): boolean {
+    private rechargeStaffsAndCharms(includeCharms = true): boolean {
         let found = false;
         for (const item of this.player.inventory.items) {
             if (item.category === ItemCategory.STAFF) {
                 rechargeStaffFully(item, (item as any).identityId);
-            } else if (item.category === ItemCategory.CHARM) {
+            } else if (includeCharms && item.category === ItemCategory.CHARM) {
                 item.cooldownRemaining = 0;
             } else {
                 continue;
@@ -5384,7 +5410,7 @@ export class Game {
      *      （WEAPON/ARMOR 附魔归零+符文消失+自动鉴定 / STAFF·WAND 充能清零 /
      *      RING 揭示 +0 / CHARM 重置充能延迟）。
      */
-    private negationBlastFromPlayer(emitterName: string): void {
+    private negationBlastFromPlayer(emitterName: string, distance = DCOLS): void {
         logger.log(i18next.t('scroll.negate_burst', {
             emitter: emitterName,
             defaultValue: `${emitterName} emits a numbing torrent of anti-magic!`
@@ -5395,7 +5421,6 @@ export class Game {
 
         const px = this.player.loc.x;
         const py = this.player.loc.y;
-        const distance = DCOLS;
         for (const m of this.monsters) {
             if (m.hp <= 0) continue;
             if (!this.hasLineOfSight(px, py, m.loc.x, m.loc.y)) continue;
@@ -9872,8 +9897,8 @@ export class Game {
     }
 
     /** CE teleport(..., INVALID_POS, false); no fallback after the final filter. */
-    private teleportCreature(target: Creature): boolean {
-        const candidates = teleportCandidates({ grid: this.grid, player: this.player, monsters: this.monsters, dormantMonsters: this.dormantMonsters }, target);
+    private teleportCreature(target: Creature, respectTerrainAvoidancePreferences = false): boolean {
+        const candidates = teleportCandidates({ grid: this.grid, player: this.player, monsters: this.monsters, dormantMonsters: this.dormantMonsters }, target, respectTerrainAvoidancePreferences);
         if (candidates.length === 0) return false;
         const destination = candidates[rng.randRange(0, candidates.length - 1)]!;
         if (!this.canDisplaceCreature(target, destination)) return false;
@@ -10008,8 +10033,8 @@ export class Game {
 
     /** CE scroll/final-depth fall teleport: use the existing terrain-aware
      * destination policy and displacement commit, never a passable-only pool. */
-    private teleportPlayerRandom() {
-        this.teleportCreature(this.player);
+    private teleportPlayerRandom(respectTerrainAvoidancePreferences = false) {
+        this.teleportCreature(this.player, respectTerrainAvoidancePreferences);
     }
 
     private getTerrainName(terrain: TerrainType): string {

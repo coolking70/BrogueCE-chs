@@ -1,0 +1,197 @@
+[
+  {
+    "variant": "duration",
+    "title": "624 compiled",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2e CE charm formulas and complete instances matches 624 compiled original C cases, including clamp and signed-short boundaries",
+        "messages": [
+          "AssertionError: charm_of_speed/E2/duration: expected 8 to be 10 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/src/test/x2e_charms.test.ts:59:78\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "fixedpoint",
+    "title": "624 compiled",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2e CE charm formulas and complete instances matches 624 compiled original C cases, including clamp and signed-short boundaries",
+        "messages": [
+          "AssertionError: charm_of_teleportation/E12/recharge: expected 1 to be 2 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/src/test/x2e_charms.test.ts:60:77\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "short",
+    "title": "624 compiled",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2e CE charm formulas and complete instances matches 624 compiled original C cases, including clamp and signed-short boundaries",
+        "messages": [
+          "AssertionError: charm_of_speed/E47/duration: expected 36865 to be -28671 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/src/test/x2e_charms.test.ts:59:78\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "seizure",
+    "title": "overwrites levitation",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2e real charm effects through inventory use overwrites levitation duration/maxStatus, frees seizure, and rejects cooling/foreign items without time or RNG",
+        "messages": [
+          "AssertionError: expected [ 15, 15, true ] to deeply equal [ 15, 15, false ]\n    at /Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/src/test/x2e_charms.test.ts:116:108\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "shattering",
+    "title": "shatters through walls",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2e real charm effects through inventory use shatters through walls at CE radius, preserves outside/protected cells and invokes U15a exactly once",
+        "messages": [
+          "AssertionError: expected \"crystalizeFromPlayer\" to be called once with arguments: [ 5 ]\n\nReceived:\n\n  1st crystalizeFromPlayer call:\n\n  [\n-   5,\n+   6,\n  ]\n\n\nNumber of calls: 1\n\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1504:10)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/chai/index.js:1700:25)\n    at /Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/src/test/x2e_charms.test.ts:133:24\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "lifespan",
+    "title": "summons a grounded",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2e real charm effects through inventory use summons a grounded, fire-immune bound guardian with CE lifetime, turn delay, save and expiry",
+        "messages": [
+          "AssertionError: expected [ 18, 18 ] to deeply equal [ 8, 8 ]\n    at /Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/src/test/x2e_charms.test.ts:154:107\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "placement",
+    "title": "summons a grounded",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2e real charm effects through inventory use summons a grounded, fire-immune bound guardian with CE lifetime, turn delay, save and expiry",
+        "messages": [
+          "AssertionError: expected Monster{ id: 23, …(78) } to match object { typeId: 'guardian_spirit', …(10) }\n(73 matching properties omitted from actual)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1283:10)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/chai/index.js:1700:25)\n    at /Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/src/test/x2e_charms.test.ts:151:26\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "binding",
+    "title": "summons a grounded",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2e real charm effects through inventory use summons a grounded, fire-immune bound guardian with CE lifetime, turn delay, save and expiry",
+        "messages": [
+          "AssertionError: expected Monster{ id: 23, …(78) } to match object { typeId: 'guardian_spirit', …(10) }\n(73 matching properties omitted from actual)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1283:10)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/chai/index.js:1700:25)\n    at /Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/src/test/x2e_charms.test.ts:151:26\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "expiration",
+    "title": "summons a grounded",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2e real charm effects through inventory use summons a grounded, fire-immune bound guardian with CE lifetime, turn delay, save and expiry",
+        "messages": [
+          "AssertionError: expected [ +0, 8 ] to deeply equal [ 8, 8 ]\n    at /Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/src/test/x2e_charms.test.ts:154:107\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "teleport",
+    "title": "terrain-aware teleport",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2e real charm effects through inventory use uses CE terrain-aware teleport selection/commit, disentangles, retains seizure flags and spends once even without destinations",
+        "messages": [
+          "AssertionError: expected \"teleportCreature\" to be called once with arguments: [ Player{ id: 1, …(30) }, true ]\n\nReceived:\n\n  1st teleportCreature call:\n\n@@ -175,7 +175,7 @@\n      \"strength\": 12,\n      \"temporaryImmunities\": {},\n      \"ticksUntilTurn\": 0,\n      \"weaknessAmount\": 0,\n    },\n-   true,\n+   false,\n  ]\n\n\nNumber of calls: 1\n\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1504:10)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/chai/index.js:1700:25)\n    at /Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/src/test/x2e_charms.test.ts:192:26\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "recharge",
+    "title": "recharges every staff",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2e real charm effects through inventory use recharges every staff using W6 timers, excludes wands/other charms, and the scroll still charges all charms",
+        "messages": [
+          "AssertionError: expected +0 to be 42 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/src/test/x2e_charms.test.ts:219:80\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "negation",
+    "title": "negates self",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2e real charm effects through inventory use negates self, creatures and floor items at radius+1, with LOS/radius boundaries and inventory exclusion",
+        "messages": [
+          "AssertionError: expected 4 to be 5 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/src/test/x2e_charms.test.ts:247:42\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "cooldown",
+    "title": "overwrites levitation",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2e real charm effects through inventory use overwrites levitation duration/maxStatus, frees seizure, and rejects cooling/foreign items without time or RNG",
+        "messages": [
+          "AssertionError: expected +0 to be 352 // Object.is equality\n    at /Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/src/test/x2e_charms.test.ts:118:40\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "enchant",
+    "title": "retains birth range",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2e CE charm formulas and complete instances retains birth range/tail, identified state, cooldown, all own fields and zero-RNG enchanting for each new kind",
+        "messages": [
+          "AssertionError: expected Item{ spawnTurnNumber: +0, …(40) } to match object { enchantment: 4, …(2) }\n(40 matching properties omitted from actual)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1283:10)\n    at Proxy.<anonymous> (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/expect/dist/index.js:1156:15)\n    at Proxy.methodWrapper (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/chai/index.js:1700:25)\n    at /Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/src/test/x2e_charms.test.ts:83:26\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20"
+        ]
+      }
+    ]
+  },
+  {
+    "variant": "pool",
+    "title": "matches all twelve CE",
+    "exit": 1,
+    "failures": [
+      {
+        "test": "X2e CE pool restoration (run after effects stage) matches all twelve CE table rows in order and frequency, including category-only machine requests",
+        "messages": [
+          "AssertionError: expected [ …(6) ] to deeply equal [ …(12) ]\n    at /Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/src/test/x2e_charms.test.ts:264:87\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)\n    at file:///Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64"
+        ]
+      }
+    ]
+  }
+]

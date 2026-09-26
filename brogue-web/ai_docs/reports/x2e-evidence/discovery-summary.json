@@ -1,0 +1,32 @@
+{
+  "files": 204,
+  "passed": 3818,
+  "failed": 6,
+  "failures": [
+    "/Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/src/test/u_r3_trace.test.ts",
+    "/Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/src/test/u_r4_trace.test.ts",
+    "/Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/src/test/w_5_arcana_instance.test.ts",
+    "/Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/src/engine/Items/itemFlavors.test.ts"
+  ],
+  "resolvedTimeouts": [
+    {
+      "file": "/Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/src/test/w_5_arcana_instance.test.ts",
+      "tests": [
+        "W-5 generated results: 12 fixed seeds (W-24/W-25/W-26 coverage supplements) × D1–26 retain category coverage and obey initial per-kind values"
+      ],
+      "repeat": "w5-recheck.json"
+    }
+  ],
+  "resolvedPremises": [
+    {
+      "file": "/Users/coolking70/.codex/worktrees/b5f1/brogue/brogue-web/src/engine/Items/itemFlavors.test.ts",
+      "premise": "CE charms are identified at birth; five unknown appearance categories",
+      "evidence": [
+        "flavor-premises-before.json",
+        "flavor-premises-after.json"
+      ],
+      "acceptanceReview": true
+    }
+  ],
+  "completed": true
+}

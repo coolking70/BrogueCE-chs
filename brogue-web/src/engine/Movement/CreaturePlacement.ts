@@ -3,15 +3,16 @@
  * No mutation, generation hooks, or player-visibility writes in these queries.
  */
 import type { Creature } from '../../entities/Creature';
-import { Monster } from '../../entities/Monster';
+import { Monster, avoidedFlagsForCaster } from '../../entities/Monster';
 import type { Pos } from '../../types';
 import { FOVSys } from '../Lighting/FOV';
 import { Grid, TerrainType } from '../Map/Grid';
-import { cellTerrainFlags } from '../Map/DungeonFeature';
+import { cellTerrainFlags, cellTerrainMechFlags } from '../Map/DungeonFeature';
 import {
     T_PATHING_BLOCKER, T_DIVIDES_LEVEL, T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_VISION,
     T_LAVA_INSTA_DEATH, T_SPONTANEOUSLY_IGNITES, T_IS_FIRE, T_IS_DEEP_WATER,
     T_AUTO_DESCENT, T_IS_DF_TRAP, TERRAIN_FLAGS, T_OBSTRUCTS_ITEMS, T_OBSTRUCTS_DIAGONAL_MOVEMENT,
+    T_HARMFUL_TERRAIN, T_SACRED, TM_ALLOWS_SUBMERGING,
 } from '../Map/TerrainCatalog';
 
 export interface PlacementWorld {
@@ -49,9 +50,12 @@ export function teleportForbiddenFlags(target: Creature): number {
  * Four-way path distance > floor(width/2), including unreachable=30000.
  * CE's all-ones fallback occurs BEFORE terrain/map/FOV filtering, never after.
  */
-export function teleportCandidates(world: PlacementWorld, target: Creature): Pos[] {
+export function teleportCandidates(world: PlacementWorld, target: Creature, respectTerrainAvoidancePreferences = false): Pos[] {
     const { grid } = world;
     const forbidden = teleportForbiddenFlags(target);
+    const destinationFlags = respectTerrainAvoidancePreferences
+        ? target instanceof Monster ? avoidedFlagsForCaster(target) : forbidden | T_HARMFUL_TERRAIN | T_SACRED
+        : forbidden;
     const blocking = forbidden & T_DIVIDES_LEVEL;
     const distances = Array.from({ length: grid.width }, () => new Array<number>(grid.height).fill(30000));
     const costs = Array.from({ length: grid.width }, () => new Array<boolean>(grid.height).fill(false));
@@ -86,7 +90,9 @@ export function teleportCandidates(world: PlacementWorld, target: Creature): Pos
         if (fov[x]?.[y] || (target.loc.x === x && target.loc.y === y)
             || cell.machineNumber !== 0
             || cell.layers.includes(TerrainType.STAIRS_UP) || cell.layers.includes(TerrainType.STAIRS_DOWN) || cell.layers.includes(TerrainType.DUNGEON_PORTAL)
-            || (cellTerrainFlags(grid, x, y) & forbidden)
+            || (cellTerrainFlags(grid, x, y) & destinationFlags)
+            || (respectTerrainAvoidancePreferences && target instanceof Monster && target.hasBehavior('MONST_RESTRICTED_TO_LIQUID')
+                && !(cellTerrainMechFlags(grid, x, y) & TM_ALLOWS_SUBMERGING))
             || !canPlaceCreature(world, target, { x, y })) continue;
         result.push({ x, y });
     }

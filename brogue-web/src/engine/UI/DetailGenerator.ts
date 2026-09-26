@@ -5,7 +5,7 @@
  */
 
 import { ItemLoader } from '../Items/ItemLoader';
-import { charmEffectDuration, charmHealing, charmProtection, charmRechargeDelay, isCharmKind } from '../Items/CharmModel';
+import { charmEffectDuration, charmHealing, charmProtection, charmRechargeDelay, charmShattering, charmGuardianLifespan, charmNegationRadius, isCharmKind } from '../Items/CharmModel';
 import { itemKnowledge } from './ItemKnowledge';
 import { staffBlinkDistance } from '../Combat/BoltTrajectory';
 import type { Item } from '../Items/Item';
@@ -336,7 +336,8 @@ export function generateItemDetail(
 
     // --- Description ---
     const desc = item.description || (item.category === ItemCategory.RING
-        ? ItemLoader.rings.find(r => r.id === item.identityId)?.description : '') || '';
+        ? ItemLoader.rings.find(r => r.id === item.identityId)?.description
+        : item.category === ItemCategory.CHARM ? ItemLoader.charms.find(c => c.id === item.identityId)?.description : '') || '';
     if (desc && knowledge.kindKnown) {
         sections.push({
             lines: [{ text: desc, color: '#aaaacc' }]
@@ -470,11 +471,25 @@ export function generateItemDetail(
         const statsLines: DetailLine[] = [];
         const id = item.identityId;
         if (isCharmKind(id)) {
-            const effect = id === 'charm_of_health' ? `恢复生命 ${charmHealing(item.enchantment)}%`
-                : id === 'charm_of_protection' ? `护盾 ${charmProtection(item.enchantment) / 10} 点`
-                : `${charmEffectDuration(id, item.enchantment)} 回合`;
-            statsLines.push({ text: `效果: ${effect}` });
+            const effectAt = (enchant: number): string => {
+                switch (id) {
+                    case 'charm_of_health': return `恢复生命 ${charmHealing(enchant)}%`;
+                    case 'charm_of_protection': return `护盾 ${charmProtection(enchant) / 10} 点`;
+                    case 'charm_of_levitation': return i18next.t('detail.charm.levitation', { turns: charmEffectDuration(id, enchant), defaultValue: 'Levitate for {{turns}} turns and break free of seizure' });
+                    case 'charm_of_shattering': return i18next.t('detail.charm.shattering', { radius: charmShattering(enchant), defaultValue: 'Shatter walls up to {{radius}} spaces away' });
+                    case 'charm_of_guardian': return i18next.t('detail.charm.guardian', { turns: charmGuardianLifespan(enchant), defaultValue: 'Summon a guardian for {{turns}} turns' });
+                    case 'charm_of_teleportation': return i18next.t('detail.charm.teleportation', { defaultValue: 'Teleport elsewhere on this floor' });
+                    case 'charm_of_recharging': return i18next.t('detail.charm.recharging', { defaultValue: 'Fully recharge staffs in your pack (not wands or charms)' });
+                    case 'charm_of_negation': return i18next.t('detail.charm.negation', { radius: charmNegationRadius(enchant), defaultValue: 'Negate yourself and visible creatures and floor items up to {{radius}} spaces away' });
+                    default: return `${charmEffectDuration(id, enchant)} 回合`;
+                }
+            };
+            statsLines.push({ text: `效果: ${effectAt(item.enchantment)}` });
             statsLines.push({ text: `冷却回合: ${charmRechargeDelay(id, item.enchantment)}` });
+            statsLines.push({ text: i18next.t('detail.charm.enchanted', {
+                effect: effectAt(item.enchantment + 1), cooldown: charmRechargeDelay(id, item.enchantment + 1),
+                defaultValue: 'If enchanted: {{effect}}; recharge in {{cooldown}} turns',
+            }) });
         }
         if (item.cooldownRemaining) {
             statsLines.push({ text: `剩余冷却: ${item.cooldownRemaining}`, color: '#ff8844' });

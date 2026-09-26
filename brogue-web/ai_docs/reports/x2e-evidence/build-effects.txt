@@ -1,0 +1,6 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+src/test/x2e_charms.test.ts(145,36): error TS2339: Property 'DEEP_WATER' does not exist on type 'typeof TerrainType'.
+src/test/x2e_charms.test.ts(255,64): error TS2550: Property 'replaceAll' does not exist on type 'string'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2021' or later.

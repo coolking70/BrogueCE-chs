@@ -6,7 +6,7 @@ import type { PlacementWorld } from '../Movement/CreaturePlacement';
 import { type Grid, TerrainType } from '../Map/Grid';
 import { cellTerrainFlags } from '../Map/DungeonFeature';
 import { T_OBSTRUCTS_PASSABILITY, T_OBSTRUCTS_DIAGONAL_MOVEMENT,
-    T_IS_FIRE, T_CAUSES_EXPLOSIVE_DAMAGE, T_SACRED, T_SPONTANEOUSLY_IGNITES } from '../Map/TerrainCatalog';
+    T_IS_FIRE, T_CAUSES_EXPLOSIVE_DAMAGE, T_SACRED, T_SPONTANEOUSLY_IGNITES, T_DIVIDES_LEVEL } from '../Map/TerrainCatalog';
 import { rng } from '../Random';
 
 export function staffBladeCount(enchantment: number): number {
@@ -30,11 +30,11 @@ export function bladeDiagonalBlocked(grid: Grid, from: Pos, to: Pos): boolean {
  * x-major. Creatures/stairs forbid destinations but only the player blocks paths.
  * Dormant monsters do not carry CE HAS_MONSTER and intentionally do not occupy.
  */
-export function bladeSpawnLocation(world: Pick<PlacementWorld, 'grid' | 'player' | 'monsters' | 'dormantMonsters'>, origin: Pos): Pos | null {
+export function bladeSpawnLocation(world: Pick<PlacementWorld, 'grid' | 'player' | 'monsters' | 'dormantMonsters'>, origin: Pos, avoidedFlags = SPAWN_FORBIDDEN): Pos | null {
     const { grid } = world;
     if (!grid.isValidPos(origin.x, origin.y)) return null;
     const qualifies = (p: Pos) => grid.isValidPos(p.x, p.y)
-        && !(cellTerrainFlags(grid, p.x, p.y) & SPAWN_FORBIDDEN) && !stairs(grid, p)
+        && !(cellTerrainFlags(grid, p.x, p.y) & avoidedFlags) && !stairs(grid, p)
         && !same(world.player.loc, p) && !world.monsters.some(m => m.hp > 0 && !m.isDormant && same(m.loc, p));
     if (qualifies(origin)) return { ...origin };
     const distances = Array.from({ length: grid.width }, () => Array<number>(grid.height).fill(Infinity));
@@ -45,7 +45,7 @@ export function bladeSpawnLocation(world: Pick<PlacementWorld, 'grid' | 'player'
         for (const [dx, dy] of BLADE_DIRECTIONS) {
             const q = { x: p.x + dx, y: p.y + dy };
             if (!grid.isValidPos(q.x, q.y) || distances[q.x]![q.y] !== Infinity
-                || same(world.player.loc, q) || (cellTerrainFlags(grid, q.x, q.y) & T_OBSTRUCTS_PASSABILITY)
+                || same(world.player.loc, q) || (cellTerrainFlags(grid, q.x, q.y) & (T_DIVIDES_LEVEL & avoidedFlags))
                 || bladeDiagonalBlocked(grid, p, q)) continue;
             distances[q.x]![q.y] = distances[p.x]![p.y]! + 1;
             queue.push(q);

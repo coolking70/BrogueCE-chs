@@ -80,7 +80,7 @@ function boltEnemies(a: Creature, b: Creature, game: Game): boolean {
     return aquaticThreat(a, b) || aquaticThreat(b, a);
 }
 
-function avoidedFlagsForCaster(caster: Monster): number {
+export function avoidedFlagsForCaster(caster: Monster): number {
     let flags = T_PATHING_BLOCKER | T_HARMFUL_TERRAIN | T_SACRED;
     if (caster.hasBehavior('MONST_INVULNERABLE')) flags &= ~(T_LAVA_INSTA_DEATH | T_SPONTANEOUSLY_IGNITES | T_IS_FIRE | T_HARMFUL_TERRAIN | T_IS_DF_TRAP);
     if (caster.hasBehavior('MONST_IMMUNE_TO_FIRE') || caster.hasBehavior('MONST_FLIES')) flags &= ~T_LAVA_INSTA_DEATH;

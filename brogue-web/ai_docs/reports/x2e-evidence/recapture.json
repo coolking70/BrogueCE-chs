@@ -1,0 +1,39 @@
+{
+  "time": "2026-09-26T22:00:47.153Z",
+  "records": [
+    {
+      "file": "src/test/fixtures/generation_baseline.json",
+      "before": "8fbfc182a1c1e6e53a0cb5a5ac49cebfd343c0cf1aa65acb7b0ce5a7cf3afc8d",
+      "after": "4a6476b413be035fd07c29debd8546bdf74468b81d25b14f68a78a87e35e3eac",
+      "writes": 1,
+      "changes": []
+    },
+    {
+      "file": "src/test/fixtures/deep_generation_baseline.json",
+      "before": "4349308067bc804e90cd99149f6362b0f1a00bab25d44f858ea3500b2cb0780b",
+      "after": "c094786fde5f54eb6b54b630bbc6dc8f7614cf3aa8a1ef2f30267247b1f38aff",
+      "writes": 1,
+      "changes": []
+    },
+    {
+      "file": "ai_docs/reports/u-r2-trace.json",
+      "before": "4d6b62462fc8962732dd39a58f1c1a714909c7e8e3d9b98200b7f4804ec17bb9",
+      "after": "4d6b62462fc8962732dd39a58f1c1a714909c7e8e3d9b98200b7f4804ec17bb9",
+      "writes": 0
+    },
+    {
+      "file": "ai_docs/reports/u-r3-trace.json.gz",
+      "before": "3a9b0bc4de1bf4f1495c87cf7c41409ec589d4df702ae120b24dc0cfdb995382",
+      "after": "776c713cbf0cc44b776d6b4c02eebb837922096c4bab0076be3b6aea3e2566e1",
+      "writes": 1,
+      "originalMethod": "UR3_CAPTURE=1 npx vitest run src/test/u_r3_trace.test.ts --maxWorkers=1"
+    },
+    {
+      "file": "ai_docs/reports/u-r4-trace.json.gz",
+      "before": "45d759bfd78aaf14cb3a20413aefb5c78620aa844c3a49ff7daab2bdd683d67b",
+      "after": "86609968c4a08ee469a4deb2e816741b07ad0e3c87bceda69e918380067810b2",
+      "writes": 1,
+      "originalMethod": "UR4_CAPTURE=1 npx vitest run src/test/u_r4_trace.test.ts --maxWorkers=1"
+    }
+  ]
+}

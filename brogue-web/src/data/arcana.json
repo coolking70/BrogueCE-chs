@@ -317,7 +317,7 @@
       "rechargeTurns": 120,
       "color": 16767436,
       "excludeFromGeneration": true,
-        "description": "旧版法杖种类，当前不会在地牢中生成。"
+      "description": "旧版法杖种类，当前不会在地牢中生成。"
     }
   ],
   "rings": [
@@ -404,16 +404,6 @@
   ],
   "charms": [
     {
-      "id": "charm_of_protection",
-      "name": "Charm of Protection",
-      "minDepth": 4,
-      "maxDepth": 26,
-      "weight": 1,
-      "color": 16777113,
-      "description": "激活时获得按附魔等级增强的护盾，随后进入冷却。",
-      "frequency": 5
-    },
-    {
       "id": "charm_of_health",
       "name": "Charm of Health",
       "minDepth": 3,
@@ -424,13 +414,13 @@
       "frequency": 5
     },
     {
-      "id": "charm_of_invisibility",
-      "name": "Charm of Invisibility",
-      "minDepth": 5,
+      "id": "charm_of_protection",
+      "name": "Charm of Protection",
+      "minDepth": 4,
       "maxDepth": 26,
       "weight": 1,
-      "color": 8978431,
-      "description": "激活时获得按附魔等级延长的隐形状态，随后进入冷却。",
+      "color": 16777113,
+      "description": "激活时获得按附魔等级增强的护盾，随后进入冷却。",
       "frequency": 5
     },
     {
@@ -444,6 +434,26 @@
       "frequency": 5
     },
     {
+      "id": "charm_of_fire_immunity",
+      "name": "Charm of Fire Immunity",
+      "minDepth": 4,
+      "maxDepth": 26,
+      "weight": 1,
+      "color": 16744192,
+      "description": "激活时获得按附魔等级延长的火焰免疫并熄灭身上的火焰，随后进入冷却。",
+      "frequency": 3
+    },
+    {
+      "id": "charm_of_invisibility",
+      "name": "Charm of Invisibility",
+      "minDepth": 5,
+      "maxDepth": 26,
+      "weight": 1,
+      "color": 8978431,
+      "description": "激活时获得按附魔等级延长的隐形状态，随后进入冷却。",
+      "frequency": 5
+    },
+    {
       "id": "charm_of_telepathy",
       "name": "Charm of Telepathy",
       "minDepth": 3,
@@ -454,14 +464,70 @@
       "frequency": 3
     },
     {
-      "id": "charm_of_fire_immunity",
-      "name": "Charm of Fire Immunity",
-      "minDepth": 4,
-      "maxDepth": 26,
+      "id": "charm_of_levitation",
+      "name": "Charm of Levitation",
+      "minDepth": 1,
+      "maxDepth": 40,
       "weight": 1,
-      "color": 16744192,
-      "description": "激活时获得按附魔等级延长的火焰免疫并熄灭身上的火焰，随后进入冷却。",
-      "frequency": 3
+      "color": 11197951,
+      "description": "激活后浮离地面并挣脱抓取；持续时间随附魔等级增长。",
+      "frequency": 1,
+      "marketValue": 700
+    },
+    {
+      "id": "charm_of_shattering",
+      "name": "Charm of Shattering",
+      "minDepth": 1,
+      "maxDepth": 40,
+      "weight": 1,
+      "color": 4251856,
+      "description": "以你为中心瓦解附近未受保护的墙壁；范围随附魔等级增长。",
+      "frequency": 1,
+      "marketValue": 700
+    },
+    {
+      "id": "charm_of_guardian",
+      "name": "Charm of Guardian",
+      "minDepth": 1,
+      "maxDepth": 40,
+      "weight": 1,
+      "color": 13421772,
+      "description": "召唤一个短暂存在的守卫之灵为你作战；寿命随附魔等级增长。",
+      "frequency": 5,
+      "marketValue": 700
+    },
+    {
+      "id": "charm_of_teleportation",
+      "name": "Charm of Teleportation",
+      "minDepth": 1,
+      "maxDepth": 40,
+      "weight": 1,
+      "color": 13408767,
+      "description": "将你随机传送到本层的另一个位置。",
+      "frequency": 4,
+      "marketValue": 700
+    },
+    {
+      "id": "charm_of_recharging",
+      "name": "Charm of Recharging",
+      "minDepth": 1,
+      "maxDepth": 40,
+      "weight": 1,
+      "color": 6741503,
+      "description": "为背包内所有法杖充满能量，不影响魔杖或护符。",
+      "frequency": 5,
+      "marketValue": 700
+    },
+    {
+      "id": "charm_of_negation",
+      "name": "Charm of Negation",
+      "minDepth": 1,
+      "maxDepth": 40,
+      "weight": 1,
+      "color": 16751086,
+      "description": "消除你和范围内视野中的生物及地面物品的魔法；不影响背包物品。",
+      "frequency": 5,
+      "marketValue": 700
     }
   ],
   "keys": [

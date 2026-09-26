@@ -1,0 +1,5 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+src/engine/Core/Game.ts(4608,39): error TS2339: Property 'ALLY' does not exist on type 'typeof MonsterState'.
