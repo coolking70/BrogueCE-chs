@@ -1,0 +1,6482 @@
+[
+  {
+    "file": "src/engine/Combat/BlinkTargeting.ts",
+    "name": "blinkTargetPreview",
+    "start": 17,
+    "end": 56
+  },
+  {
+    "file": "src/engine/Combat/Bolt.ts",
+    "name": "exposeBoltPathToElectricity",
+    "start": 19,
+    "end": 28
+  },
+  {
+    "file": "src/engine/Combat/Bolt.ts",
+    "name": "getBoltConfigs",
+    "start": 155,
+    "end": 161
+  },
+  {
+    "file": "src/engine/Combat/Bolt.ts",
+    "name": "getBoltForItem",
+    "start": 164,
+    "end": 167
+  },
+  {
+    "file": "src/engine/Combat/Bolt.ts",
+    "name": "monsterBoltMeta",
+    "start": 186,
+    "end": 196
+  },
+  {
+    "file": "src/engine/Combat/Bolt.ts",
+    "name": "boltPath",
+    "start": 237,
+    "end": 261
+  },
+  {
+    "file": "src/engine/Combat/Bolt.ts",
+    "name": "buildBoltFrames",
+    "start": 278,
+    "end": 286
+  },
+  {
+    "file": "src/engine/Combat/Bolt.ts",
+    "name": "createBoltResult",
+    "start": 350,
+    "end": 369
+  },
+  {
+    "file": "src/engine/Combat/BoltCatalog.ts",
+    "name": "resolveCEBoltMagnitude",
+    "start": 293,
+    "end": 300
+  },
+  {
+    "file": "src/engine/Combat/BoltReflection.ts",
+    "name": "projectileReflects",
+    "start": 31,
+    "end": 47
+  },
+  {
+    "file": "src/engine/Combat/BoltReflection.ts",
+    "name": "randomReflectionOffset",
+    "start": 50,
+    "end": 52
+  },
+  {
+    "file": "src/engine/Combat/BoltReflection.ts",
+    "name": "perimeterCoords",
+    "start": 55,
+    "end": 60
+  },
+  {
+    "file": "src/engine/Combat/BoltTargeting.ts",
+    "name": "canObserveBoltCreature",
+    "start": 17,
+    "end": 21
+  },
+  {
+    "file": "src/engine/Combat/BoltTargeting.ts",
+    "name": "arcanaTargetCandidates",
+    "start": 25,
+    "end": 63
+  },
+  {
+    "file": "src/engine/Combat/BoltTrajectory.ts",
+    "name": "flagsFor",
+    "start": 26,
+    "end": 29
+  },
+  {
+    "file": "src/engine/Combat/BoltTrajectory.ts",
+    "name": "offsetLine",
+    "start": 31,
+    "end": 44
+  },
+  {
+    "file": "src/engine/Combat/BoltTrajectory.ts",
+    "name": "boltLine",
+    "start": 50,
+    "end": 101
+  },
+  {
+    "file": "src/engine/Combat/BoltTrajectory.ts",
+    "name": "reflectedPath",
+    "start": 107,
+    "end": 125
+  },
+  {
+    "file": "src/engine/Combat/BoltTrajectory.ts",
+    "name": "staffBlinkDistance",
+    "start": 137,
+    "end": 139
+  },
+  {
+    "file": "src/engine/Combat/BoltTrajectory.ts",
+    "name": "traceBolt",
+    "start": 145,
+    "end": 219
+  },
+  {
+    "file": "src/engine/Combat/Cloning.ts",
+    "name": "cloneAvoidedFlags",
+    "start": 14,
+    "end": 23
+  },
+  {
+    "file": "src/engine/Combat/Cloning.ts",
+    "name": "cloneLocation",
+    "start": 29,
+    "end": 67
+  },
+  {
+    "file": "src/engine/Combat/Combat.ts",
+    "name": "CombatSystem",
+    "start": 58,
+    "end": 454
+  },
+  {
+    "file": "src/engine/Combat/Combat.ts",
+    "name": "attack",
+    "start": 64,
+    "end": 330
+  },
+  {
+    "file": "src/engine/Combat/Combat.ts",
+    "name": "transferMonsterHealth",
+    "start": 335,
+    "end": 348
+  },
+  {
+    "file": "src/engine/Combat/Combat.ts",
+    "name": "parseDamageString",
+    "start": 353,
+    "end": 380
+  },
+  {
+    "file": "src/engine/Combat/Combat.ts",
+    "name": "resolveThrownWeapon",
+    "start": 398,
+    "end": 453
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.ts",
+    "name": "strengthModifier",
+    "start": 16,
+    "end": 23
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.ts",
+    "name": "netEnchant",
+    "start": 29,
+    "end": 32
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.ts",
+    "name": "accuracyFraction",
+    "start": 39,
+    "end": 41
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.ts",
+    "name": "damageFraction",
+    "start": 47,
+    "end": 49
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.ts",
+    "name": "monsterDamageAdjustmentAmount",
+    "start": 52,
+    "end": 54
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.ts",
+    "name": "monsterAccuracyAdjusted",
+    "start": 55,
+    "end": 57
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.ts",
+    "name": "monsterDefenseAdjusted",
+    "start": 58,
+    "end": 60
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.ts",
+    "name": "defenseFraction",
+    "start": 67,
+    "end": 69
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.ts",
+    "name": "hitProbability",
+    "start": 75,
+    "end": 86
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.ts",
+    "name": "playerDefense",
+    "start": 105,
+    "end": 114
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.ts",
+    "name": "clumpedRoll",
+    "start": 127,
+    "end": 149
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.ts",
+    "name": "runicWeaponChance",
+    "start": 300,
+    "end": 362
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.ts",
+    "name": "armorReprisalPercent",
+    "start": 371,
+    "end": 373
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.ts",
+    "name": "armorAbsorptionMax",
+    "start": 376,
+    "end": 378
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.ts",
+    "name": "reflectionChance",
+    "start": 405,
+    "end": 408
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.ts",
+    "name": "weaponParalysisDuration",
+    "start": 414,
+    "end": 416
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.ts",
+    "name": "weaponSlowDuration",
+    "start": 421,
+    "end": 424
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.ts",
+    "name": "weaponConfusionDuration",
+    "start": 429,
+    "end": 431
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.ts",
+    "name": "weaponImageCount",
+    "start": 437,
+    "end": 439
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.ts",
+    "name": "armorImageCount",
+    "start": 442,
+    "end": 444
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.ts",
+    "name": "weaponImageDuration",
+    "start": 447,
+    "end": 447
+  },
+  {
+    "file": "src/engine/Combat/CombatFormulas.ts",
+    "name": "weaponForceDistance",
+    "start": 453,
+    "end": 455
+  },
+  {
+    "file": "src/engine/Combat/Conjuration.ts",
+    "name": "staffBladeCount",
+    "start": 12,
+    "end": 15
+  },
+  {
+    "file": "src/engine/Combat/Conjuration.ts",
+    "name": "bladeDiagonalBlocked",
+    "start": 24,
+    "end": 27
+  },
+  {
+    "file": "src/engine/Combat/Conjuration.ts",
+    "name": "bladeSpawnLocation",
+    "start": 33,
+    "end": 69
+  },
+  {
+    "file": "src/engine/Combat/Conjuration.ts",
+    "name": "bladeAvoids",
+    "start": 72,
+    "end": 75
+  },
+  {
+    "file": "src/engine/Combat/Conjuration.ts",
+    "name": "bladeStepToward",
+    "start": 80,
+    "end": 94
+  },
+  {
+    "file": "src/engine/Combat/Domination.ts",
+    "name": "wandDominate",
+    "start": 4,
+    "end": 7
+  },
+  {
+    "file": "src/engine/Combat/MonsterAbsorption.ts",
+    "name": "corpseDistanceMap",
+    "start": 39,
+    "end": 55
+  },
+  {
+    "file": "src/engine/Combat/MonsterAbsorption.ts",
+    "name": "canAbsorb",
+    "start": 57,
+    "end": 68
+  },
+  {
+    "file": "src/engine/Combat/MonsterAbsorption.ts",
+    "name": "anyoneWantABite",
+    "start": 70,
+    "end": 108
+  },
+  {
+    "file": "src/engine/Combat/MonsterAbsorption.ts",
+    "name": "absorptionMessage",
+    "start": 110,
+    "end": 129
+  },
+  {
+    "file": "src/engine/Combat/MonsterAbsorption.ts",
+    "name": "updateMonsterCorpseAbsorption",
+    "start": 132,
+    "end": 162
+  },
+  {
+    "file": "src/engine/Combat/MonsterAbsorption.ts",
+    "name": "canApproachCorpse",
+    "start": 164,
+    "end": 167
+  },
+  {
+    "file": "src/engine/Combat/MonsterAbsorption.ts",
+    "name": "corpseAllyBeforeMagic",
+    "start": 172,
+    "end": 184
+  },
+  {
+    "file": "src/engine/Combat/MonsterAbsorption.ts",
+    "name": "moveAllyToCorpse",
+    "start": 188,
+    "end": 198
+  },
+  {
+    "file": "src/engine/Combat/MonsterAbsorption.ts",
+    "name": "passiveCorpseStep",
+    "start": 200,
+    "end": 216
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "name": "futile",
+    "start": 37,
+    "end": 42
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "name": "attacks",
+    "start": 43,
+    "end": 47
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "name": "permanentAvoided",
+    "start": 48,
+    "end": 55
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "name": "arcs",
+    "start": 56,
+    "end": 66
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "name": "monsterBlinkAvoids",
+    "start": 73,
+    "end": 110
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "name": "monsterAvoidsCorridor",
+    "start": 112,
+    "end": 126
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "name": "monsterBlinkImpact",
+    "start": 130,
+    "end": 141
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "name": "chooseMonsterBlink",
+    "start": 145,
+    "end": 161
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "name": "monsterBlinkToPreferenceMap",
+    "start": 162,
+    "end": 171
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "name": "scanBlinkMap",
+    "start": 176,
+    "end": 194
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "name": "buildBlinkSafeTerrainMap",
+    "start": 195,
+    "end": 205
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "name": "buildBlinkAllySafetyMap",
+    "start": 206,
+    "end": 223
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "name": "monsterBlinkToSafety",
+    "start": 224,
+    "end": 226
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "name": "blinkFromHarmfulTerrain",
+    "start": 227,
+    "end": 235
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "name": "blinkTraversiblePath",
+    "start": 236,
+    "end": 243
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "name": "closestBlinkEnemy",
+    "start": 244,
+    "end": 254
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "name": "blinkAllyFlees",
+    "start": 255,
+    "end": 263
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "name": "buildBlinkEnemyMap",
+    "start": 264,
+    "end": 280
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "name": "buildBlinkTargetMap",
+    "start": 283,
+    "end": 300
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "name": "blinkTowardCreature",
+    "start": 301,
+    "end": 305
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "name": "allyShouldPursue",
+    "start": 306,
+    "end": 314
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "name": "blinkAllyAfterMagic",
+    "start": 315,
+    "end": 329
+  },
+  {
+    "file": "src/engine/Combat/MonsterBlink.ts",
+    "name": "blinkTowardCaptiveLeader",
+    "start": 334,
+    "end": 341
+  },
+  {
+    "file": "src/engine/Combat/MonsterClass.ts",
+    "name": "monsterIsInClass",
+    "start": 20,
+    "end": 22
+  },
+  {
+    "file": "src/engine/Combat/Negation.ts",
+    "name": "negateCreatureStatusEffects",
+    "start": 28,
+    "end": 38
+  },
+  {
+    "file": "src/engine/Combat/Negation.ts",
+    "name": "boltFlags",
+    "start": 40,
+    "end": 43
+  },
+  {
+    "file": "src/engine/Combat/Negation.ts",
+    "name": "hasNegatableBolt",
+    "start": 45,
+    "end": 48
+  },
+  {
+    "file": "src/engine/Combat/Negation.ts",
+    "name": "negateBolts",
+    "start": 53,
+    "end": 61
+  },
+  {
+    "file": "src/engine/Combat/Negation.ts",
+    "name": "negationWillAffectMonster",
+    "start": 65,
+    "end": 75
+  },
+  {
+    "file": "src/engine/Combat/Poison.ts",
+    "name": "staffPoison",
+    "start": 8,
+    "end": 11
+  },
+  {
+    "file": "src/engine/Combat/Polymorph.ts",
+    "name": "knownPolymorphSpecies",
+    "start": 5,
+    "end": 7
+  },
+  {
+    "file": "src/engine/Combat/Polymorph.ts",
+    "name": "polymorphSpecies",
+    "start": 12,
+    "end": 19
+  },
+  {
+    "file": "src/engine/Combat/Polymorph.ts",
+    "name": "polymorphHP",
+    "start": 23,
+    "end": 26
+  },
+  {
+    "file": "src/engine/Combat/Shielding.ts",
+    "name": "staffProtection",
+    "start": 4,
+    "end": 20
+  },
+  {
+    "file": "src/engine/Combat/StaffDamage.ts",
+    "name": "staffDamageRange",
+    "start": 5,
+    "end": 11
+  },
+  {
+    "file": "src/engine/Combat/StaffDamage.ts",
+    "name": "rollStaffDamage",
+    "start": 15,
+    "end": 18
+  },
+  {
+    "file": "src/engine/Core/Endgame.ts",
+    "name": "itemValue",
+    "start": 9,
+    "end": 13
+  },
+  {
+    "file": "src/engine/Core/Endgame.ts",
+    "name": "endgameScore",
+    "start": 16,
+    "end": 27
+  },
+  {
+    "file": "src/engine/Core/Endgame.ts",
+    "name": "lumenstoneCount",
+    "start": 31,
+    "end": 33
+  },
+  {
+    "file": "src/engine/Core/EntitySnapshot.ts",
+    "name": "copyValue",
+    "start": 43,
+    "end": 48
+  },
+  {
+    "file": "src/engine/Core/EntitySnapshot.ts",
+    "name": "copyFields",
+    "start": 49,
+    "end": 51
+  },
+  {
+    "file": "src/engine/Core/EntitySnapshot.ts",
+    "name": "serializeItem",
+    "start": 94,
+    "end": 94
+  },
+  {
+    "file": "src/engine/Core/EntitySnapshot.ts",
+    "name": "deserializeItem",
+    "start": 95,
+    "end": 97
+  },
+  {
+    "file": "src/engine/Core/EntitySnapshot.ts",
+    "name": "serializeMonsterRow",
+    "start": 98,
+    "end": 105
+  },
+  {
+    "file": "src/engine/Core/EntitySnapshot.ts",
+    "name": "collectEntityGraph",
+    "start": 110,
+    "end": 121
+  },
+  {
+    "file": "src/engine/Core/EntitySnapshot.ts",
+    "name": "serializeMonster",
+    "start": 122,
+    "end": 128
+  },
+  {
+    "file": "src/engine/Core/EntitySnapshot.ts",
+    "name": "restoreEntityGraph",
+    "start": 131,
+    "end": 168
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "recordingState",
+    "start": 243,
+    "end": 250
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "Game",
+    "start": 275,
+    "end": 10414
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "startNewGame",
+    "start": 487,
+    "end": 658
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "spawnPopulateItem",
+    "start": 671,
+    "end": 770
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "chooseKindFromPool",
+    "start": 773,
+    "end": 777
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "spawnConsumableById",
+    "start": 780,
+    "end": 784
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "spawnKindById",
+    "start": 786,
+    "end": 799
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "decrementMeteredForSpawn",
+    "start": 808,
+    "end": 820
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "applyRandomMutation",
+    "start": 822,
+    "end": 838
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "spawnBlueprintItem",
+    "start": 841,
+    "end": 846
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "rollBlueprintItem",
+    "start": 848,
+    "end": 986
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "makeGenerationPorts",
+    "start": 991,
+    "end": 1094
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "placeAmuletForLevel",
+    "start": 1096,
+    "end": 1114
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "createMachineRuntime",
+    "start": 1116,
+    "end": 1118
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "resolveBlueprintMonster",
+    "start": 1121,
+    "end": 1151
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "generateDepth",
+    "start": 1153,
+    "end": 1155
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "levelStair",
+    "start": 1157,
+    "end": 1162
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "restoreLevelResident",
+    "start": 1165,
+    "end": 1183
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "restoreLevelResidents",
+    "start": 1185,
+    "end": 1192
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "monstersApproachStairs",
+    "start": 1196,
+    "end": 1206
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "monsterEntersLevel",
+    "start": 1208,
+    "end": 1241
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "placeStairs",
+    "start": 1245,
+    "end": 1247
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "populateLevel",
+    "start": 1249,
+    "end": 1251
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "placePlayerOnLevelEntry",
+    "start": 1265,
+    "end": 1287
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "entryQualifiesForPlacement",
+    "start": 1299,
+    "end": 1308
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "findQualifyingPathLocNear",
+    "start": 1321,
+    "end": 1379
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "hordeCandidates",
+    "start": 1386,
+    "end": 1392
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "pickHordeType",
+    "start": 1398,
+    "end": 1407
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "rollSpawnDepth",
+    "start": 1414,
+    "end": 1421
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "spawnHordeAtFeature",
+    "start": 1458,
+    "end": 1487
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "hordeFitsTerrain",
+    "start": 1490,
+    "end": 1498
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "findTerrainSpawnLocation",
+    "start": 1509,
+    "end": 1531
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "passableArcCount",
+    "start": 1538,
+    "end": 1552
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "spawnHordeAt",
+    "start": 1559,
+    "end": 1631
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "findMinionSpawnSpot",
+    "start": 1635,
+    "end": 1645
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "findNearbySpawnSpot",
+    "start": 1653,
+    "end": 1669
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "findSummonAtDistanceLocations",
+    "start": 1679,
+    "end": 1691
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "summonMinionsFor",
+    "start": 1717,
+    "end": 1780
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "findPeriodicSpawnLocation",
+    "start": 1791,
+    "end": 1817
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "spawnPeriodicHorde",
+    "start": 1823,
+    "end": 1842
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "posKey",
+    "start": 1844,
+    "end": 1846
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "getTestCategoryForDepth",
+    "start": 1848,
+    "end": 1851
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "getTestCategoryLabel",
+    "start": 1853,
+    "end": 1866
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "handleExamineNearest",
+    "start": 1868,
+    "end": 1929
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "handleInspectAt",
+    "start": 1931,
+    "end": 1961
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "createMonsterFromSnapshot",
+    "start": 1963,
+    "end": 1965
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "generateTestDepth",
+    "start": 1967,
+    "end": 2301
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "spawnBlood",
+    "start": 2303,
+    "end": 2316
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "spawnFloatingText",
+    "start": 2318,
+    "end": 2321
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "refreshMinersLight",
+    "start": 2340,
+    "end": 2352
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "minersLightDef",
+    "start": 2355,
+    "end": 2363
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "hasCreatureAtForLight",
+    "start": 2366,
+    "end": 2369
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "playerInDarkness",
+    "start": 2375,
+    "end": 2380
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "updateVision",
+    "start": 2388,
+    "end": 2501
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "update",
+    "start": 2503,
+    "end": 2548
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "monsterDisplayName",
+    "start": 2551,
+    "end": 2557
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "isTimePaused",
+    "start": 2559,
+    "end": 2561
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "toRecordedInputData",
+    "start": 2563,
+    "end": 2573
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "recordInputEvent",
+    "start": 2575,
+    "end": 2588
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "executeCommand",
+    "start": 2591,
+    "end": 2601
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "applyCommand",
+    "start": 2603,
+    "end": 2632
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "executeItemCommand",
+    "start": 2634,
+    "end": 2636
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "exportRecording",
+    "start": 2638,
+    "end": 2659
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "clearRecording",
+    "start": 2661,
+    "end": 2666
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "clearReplay",
+    "start": 2668,
+    "end": 2675
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "decodeRecordedInputData",
+    "start": 2677,
+    "end": 2681
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "isValidRecording",
+    "start": 2683,
+    "end": 2708
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "loadReplay",
+    "start": 2710,
+    "end": 2742
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "replayPlay",
+    "start": 2744,
+    "end": 2751
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "replayPause",
+    "start": 2753,
+    "end": 2757
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "replayRestart",
+    "start": 2759,
+    "end": 2769
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "replayStep",
+    "start": 2771,
+    "end": 2817
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "tickReplay",
+    "start": 2819,
+    "end": 2825
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "replaySeek",
+    "start": 2827,
+    "end": 2852
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "handlePlayerAction",
+    "start": 2854,
+    "end": 2857
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "performPlayerAction",
+    "start": 2859,
+    "end": 3405
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "equipItem",
+    "start": 3407,
+    "end": 3426
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "unequipItem",
+    "start": 3428,
+    "end": 3436
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "dropItem",
+    "start": 3438,
+    "end": 3466
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "requiresMalevolentUseConfirmation",
+    "start": 3489,
+    "end": 3494
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "malevolentUseConfirmPrompt",
+    "start": 3497,
+    "end": 3509
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "confirmPendingUse",
+    "start": 3512,
+    "end": 3522
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "cancelPendingUse",
+    "start": 3525,
+    "end": 3527
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "gateMalevolentUse",
+    "start": 3533,
+    "end": 3542
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "applyDetectMagic",
+    "start": 3559,
+    "end": 3598
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "quaffItem",
+    "start": 3600,
+    "end": 3770
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "eatItem",
+    "start": 3772,
+    "end": 3779
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "consumeFood",
+    "start": 3782,
+    "end": 3802
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "readItem",
+    "start": 3804,
+    "end": 3958
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "useArcanaItem",
+    "start": 3960,
+    "end": 4003
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "getArcanaCandidates",
+    "start": 4005,
+    "end": 4007
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "getArcanaPreview",
+    "start": 4009,
+    "end": 4012
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "setArcanaTarget",
+    "start": 4014,
+    "end": 4020
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "cycleArcanaTarget",
+    "start": 4022,
+    "end": 4031
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "cancelArcanaSelection",
+    "start": 4033,
+    "end": 4036
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "confirmArcanaTarget",
+    "start": 4040,
+    "end": 4080
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "zapBoltFromPlayer",
+    "start": 4086,
+    "end": 4101
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "directionToVec",
+    "start": 4104,
+    "end": 4116
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "computeBoltResult",
+    "start": 4121,
+    "end": 4123
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "boltWorld",
+    "start": 4125,
+    "end": 4127
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "spawnEntanglingBoltFeature",
+    "start": 4131,
+    "end": 4138
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "applyBoltTerrainAt",
+    "start": 4142,
+    "end": 4160
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "applyBoltResult",
+    "start": 4164,
+    "end": 4217
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "tunnelAt",
+    "start": 4221,
+    "end": 4236
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "colorFlash",
+    "start": 4248,
+    "end": 4272
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "terrainFlashAt",
+    "start": 4274,
+    "end": 4289
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "createFlare",
+    "start": 4291,
+    "end": 4297
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "visualLightAt",
+    "start": 4299,
+    "end": 4304
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "flareLightAt",
+    "start": 4306,
+    "end": 4308
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "tickFlareAnimation",
+    "start": 4311,
+    "end": 4351
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "tickBoltAnimation",
+    "start": 4359,
+    "end": 4375
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "getCurrentBoltFrame",
+    "start": 4378,
+    "end": 4381
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "observeBoltReflection",
+    "start": 4385,
+    "end": 4389
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "isDamageStaff",
+    "start": 4393,
+    "end": 4396
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "applyDirectBoltDamage",
+    "start": 4400,
+    "end": 4427
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "boltCasterMovement",
+    "start": 4429,
+    "end": 4433
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "canObserveBoltTarget",
+    "start": 4435,
+    "end": 4437
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "boltTerrainSignature",
+    "start": 4440,
+    "end": 4442
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "boltLivingTarget",
+    "start": 4444,
+    "end": 4446
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "applyBasicBoltEffect",
+    "start": 4453,
+    "end": 4515
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "teleportBoltTarget",
+    "start": 4518,
+    "end": 4522
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "polymorphBoltTarget",
+    "start": 4524,
+    "end": 4530
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "dominateBoltTarget",
+    "start": 4533,
+    "end": 4552
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "conjureBladesAt",
+    "start": 4556,
+    "end": 4574
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "applyBoltEffect",
+    "start": 4576,
+    "end": 4837
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "allyBlinkLeashLength",
+    "start": 4844,
+    "end": 4846
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "castMonsterBlink",
+    "start": 4850,
+    "end": 4864
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "castMonsterBolt",
+    "start": 4866,
+    "end": 4920
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "applyMonsterBoltHit",
+    "start": 4924,
+    "end": 5111
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "beginIdentifySelection",
+    "start": 5122,
+    "end": 5128
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "chooseIdentifyTarget",
+    "start": 5137,
+    "end": 5147
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "callItem",
+    "start": 5157,
+    "end": 5170
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "removeCurseFromInventory",
+    "start": 5172,
+    "end": 5179
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "canEnchantTarget",
+    "start": 5182,
+    "end": 5184
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "chooseEnchantTarget",
+    "start": 5186,
+    "end": 5202
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "enchantEquippedItem",
+    "start": 5204,
+    "end": 5226
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "rechargeStaffsAndCharms",
+    "start": 5229,
+    "end": 5243
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "protectEquippedGear",
+    "start": 5252,
+    "end": 5271
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "negateCreatureMagic",
+    "start": 5276,
+    "end": 5342
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "negationBlastFromPlayer",
+    "start": 5361,
+    "end": 5442
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "sanctuaryFromPlayer",
+    "start": 5453,
+    "end": 5459
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "crystalizeFromPlayer",
+    "start": 5467,
+    "end": 5505
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "discordBlastFromPlayer",
+    "start": 5513,
+    "end": 5531
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "summonMonstersAroundPlayer",
+    "start": 5544,
+    "end": 5588
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "enterThrowMode",
+    "start": 5590,
+    "end": 5594
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "throwMaxDistance",
+    "start": 5601,
+    "end": 5603
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "qualifyingThrowLanding",
+    "start": 5614,
+    "end": 5645
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "thrownPotionAutoIdentifies",
+    "start": 5669,
+    "end": 5680
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "throwItemAt",
+    "start": 5682,
+    "end": 5853
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "awarenessBonus",
+    "start": 5892,
+    "end": 5894
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "calculateStealthRange",
+    "start": 5917,
+    "end": 5954
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "tryVomit",
+    "start": 5958,
+    "end": 5968
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "playerVomitAttempt",
+    "start": 5970,
+    "end": 5975
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "applyTimedStatus",
+    "start": 5977,
+    "end": 5991
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "getStatusLabel",
+    "start": 5993,
+    "end": 5995
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "applyStatusToMonster",
+    "start": 5997,
+    "end": 6027
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "getPlayerStatusResistance",
+    "start": 6029,
+    "end": 6034
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "applyMonsterOnHitStatus",
+    "start": 6036,
+    "end": 6099
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "syncEquipmentStatuses",
+    "start": 6101,
+    "end": 6103
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "applyWeaponRunicEffect",
+    "start": 6110,
+    "end": 6268
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "tryTriggerArmorRunic",
+    "start": 6272,
+    "end": 6448
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "resolvePoisonDamage",
+    "start": 6453,
+    "end": 6467
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "tickCreatureStatuses",
+    "start": 6469,
+    "end": 6518
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "logHungerTransition",
+    "start": 6521,
+    "end": 6538
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "playerWillAttackTarget",
+    "start": 6556,
+    "end": 6560
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "buildLungeFlailHitList",
+    "start": 6581,
+    "end": 6612
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "buildPlayerMeleeHitList",
+    "start": 6625,
+    "end": 6648
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "tryPlayerWeaponGeometryAttack",
+    "start": 6656,
+    "end": 6665
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "playerWhipAttack",
+    "start": 6676,
+    "end": 6697
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "playerSpearAttack",
+    "start": 6708,
+    "end": 6735
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "dropMonsterLoot",
+    "start": 6738,
+    "end": 6756
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "resolvePlayerMeleeAttackOn",
+    "start": 6773,
+    "end": 6864
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "playerRecoversFromAttacking",
+    "start": 6877,
+    "end": 6887
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "synchronizePlayerTimeState",
+    "start": 6893,
+    "end": 6895
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "alliedCloneCount",
+    "start": 6926,
+    "end": 6934
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "moveEntrancedMonsters",
+    "start": 6965,
+    "end": 6970
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "findLiveSeizer",
+    "start": 6972,
+    "end": 6978
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "processStaggerHit",
+    "start": 6985,
+    "end": 6999
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "cloneMonster",
+    "start": 7004,
+    "end": 7016
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "trySplitMonster",
+    "start": 7022,
+    "end": 7106
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "triggerDeathFeatures",
+    "start": 7138,
+    "end": 7174
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "requestConfirm",
+    "start": 7199,
+    "end": 7208
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "diveConfirmationNeeded",
+    "start": 7216,
+    "end": 7228
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "creatureShouldFall",
+    "start": 7236,
+    "end": 7250
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "playerFalls",
+    "start": 7271,
+    "end": 7332
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "monstersFall",
+    "start": 7345,
+    "end": 7397
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "placePlayerOnFallLanding",
+    "start": 7408,
+    "end": 7465
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "fallPathDistance",
+    "start": 7472,
+    "end": 7507
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "keyMatchesLocation",
+    "start": 7522,
+    "end": 7531
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "keyMatchingEntry",
+    "start": 7535,
+    "end": 7542
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "keyInPackFor",
+    "start": 7545,
+    "end": 7550
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "keyOnTileAt",
+    "start": 7554,
+    "end": 7556
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "matchingKeyOnTileAt",
+    "start": 7558,
+    "end": 7566
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "useContactKeyAt",
+    "start": 7570,
+    "end": 7586
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "removeDeadMonsters",
+    "start": 7590,
+    "end": 7643
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "killOrphanedBoundFollowers",
+    "start": 7647,
+    "end": 7651
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "sweepDeepWaterItem",
+    "start": 7654,
+    "end": 7695
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "fallFloorItems",
+    "start": 7699,
+    "end": 7717
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "restoreFallenItems",
+    "start": 7721,
+    "end": 7747
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "commuteFloorItems",
+    "start": 7751,
+    "end": 7785
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "driftFloorItems",
+    "start": 7788,
+    "end": 7816
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "timePorts",
+    "start": 7819,
+    "end": 7905
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "playerTurnEnded",
+    "start": 7907,
+    "end": 7909
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "updateSafetyMap",
+    "start": 7917,
+    "end": 7928
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "wpContext",
+    "start": 7936,
+    "end": 7944
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "rebuildWaypoints",
+    "start": 7952,
+    "end": 7954
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "advancementLoop",
+    "start": 7962,
+    "end": 7964
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "objectiveTimeBlock",
+    "start": 7990,
+    "end": 7992
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "updateEnvironment",
+    "start": 7996,
+    "end": 7998
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "catchUpEnvironment",
+    "start": 8003,
+    "end": 8016
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "finishTurnEpilogue",
+    "start": 8026,
+    "end": 8028
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "isInputLocked",
+    "start": 8074,
+    "end": 8076
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "isAutoTraveling",
+    "start": 8091,
+    "end": 8093
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "beginAdvancement",
+    "start": 8099,
+    "end": 8106
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "tickAdvancement",
+    "start": 8112,
+    "end": 8119
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "stepAdvancement",
+    "start": 8129,
+    "end": 8153
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "finishAdvancement",
+    "start": 8161,
+    "end": 8180
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "discardInFlightAdvancement",
+    "start": 8183,
+    "end": 8196
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "processIncrementalAutoID",
+    "start": 8206,
+    "end": 8222
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "tickArcanaResources",
+    "start": 8224,
+    "end": 8238
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "serializeItem",
+    "start": 8240,
+    "end": 8240
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "deserializeItem",
+    "start": 8241,
+    "end": 8241
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "snapshotRunState",
+    "start": 8243,
+    "end": 8265
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "activeLevelState",
+    "start": 8267,
+    "end": 8275
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "snapshotLevel",
+    "start": 8277,
+    "end": 8279
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "toSnapshot",
+    "start": 8283,
+    "end": 8309
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "serializeMonster",
+    "start": 8311,
+    "end": 8311
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "deserializeMonster",
+    "start": 8313,
+    "end": 8317
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "restoreMonsterLeaders",
+    "start": 8319,
+    "end": 8322
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "isSnapshot",
+    "start": 8324,
+    "end": 8326
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "loadSnapshot",
+    "start": 8328,
+    "end": 8426
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "burningDuration",
+    "start": 8442,
+    "end": 8444
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "setBurningDuration",
+    "start": 8446,
+    "end": 8453
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "extinguishCreatureFire",
+    "start": 8460,
+    "end": 8466
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "cellExtinguishesFire",
+    "start": 8471,
+    "end": 8473
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "exposeCreatureToFire",
+    "start": 8492,
+    "end": 8509
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "resolveBurningDamage",
+    "start": 8523,
+    "end": 8543
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "explosionImmunityDuration",
+    "start": 8565,
+    "end": 8567
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "setExplosionImmunityDuration",
+    "start": 8569,
+    "end": 8576
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "resolveExplosionDamage",
+    "start": 8593,
+    "end": 8641
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "applyEntanglementFromTerrain",
+    "start": 8649,
+    "end": 8654
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "clearDisplacedEntanglement",
+    "start": 8657,
+    "end": 8659
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "playerStruggle",
+    "start": 8661,
+    "end": 8675
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "applyNauseaFromTerrain",
+    "start": 8678,
+    "end": 8691
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "applyEnvironmentalEffects",
+    "start": 8693,
+    "end": 8935
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "burnFloorItems",
+    "start": 8939,
+    "end": 8948
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "destroyFloorItemsInLava",
+    "start": 8950,
+    "end": 8952
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "getMonsterAt",
+    "start": 8954,
+    "end": 8956
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "bindDormantAwakener",
+    "start": 8967,
+    "end": 8972
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "bindDungeonFeatureEffects",
+    "start": 8974,
+    "end": 9017
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "applyDungeonFeatureContact",
+    "start": 9021,
+    "end": 9028
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "refreshDungeonFeatureCell",
+    "start": 9030,
+    "end": 9047
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "dungeonFeatureDescription",
+    "start": 9049,
+    "end": 9094
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "burnFloorItemsAt",
+    "start": 9098,
+    "end": 9102
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "burnFloorItem",
+    "start": 9105,
+    "end": 9115
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "aggravateMonsters",
+    "start": 9119,
+    "end": 9156
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "resurrectAlly",
+    "start": 9159,
+    "end": 9221
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "awakenDormantMonstersAt",
+    "start": 9230,
+    "end": 9237
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "toggleMonsterDormancy",
+    "start": 9260,
+    "end": 9316
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "finalizeBlueprintMonster",
+    "start": 9333,
+    "end": 9358
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "handleAutoExplore",
+    "start": 9363,
+    "end": 9436
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "handleMouseTravel",
+    "start": 9438,
+    "end": 9463
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "canMoveTo",
+    "start": 9465,
+    "end": 9478
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "hasLineOfSight",
+    "start": 9480,
+    "end": 9506
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "isInsideTestRoom",
+    "start": 9508,
+    "end": 9510
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "resetTestRoom",
+    "start": 9512,
+    "end": 9547
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "handleSpecialTileEntry",
+    "start": 9549,
+    "end": 9586
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "searchForSecrets",
+    "start": 9615,
+    "end": 9676
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "discoverSecretAt",
+    "start": 9679,
+    "end": 9688
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "manualSearch",
+    "start": 9696,
+    "end": 9720
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "triggerTrap",
+    "start": 9723,
+    "end": 9752
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "triggerPressurePlate",
+    "start": 9756,
+    "end": 9760
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "finishBlink",
+    "start": 9767,
+    "end": 9772
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "beckonCreature",
+    "start": 9779,
+    "end": 9794
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "canDisplaceCreature",
+    "start": 9801,
+    "end": 9804
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "placeCreature",
+    "start": 9806,
+    "end": 9826
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "teleportCreature",
+    "start": 9829,
+    "end": 9841
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "demoteMonsterFromLeadership",
+    "start": 9845,
+    "end": 9868
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "becomeAllyWith",
+    "start": 9872,
+    "end": 9904
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "freeCaptive",
+    "start": 9906,
+    "end": 9914
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "applyDisplacementTileEntry",
+    "start": 9917,
+    "end": 9947
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "pickUpItemAfterDisplacement",
+    "start": 9950,
+    "end": 9961
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "teleportPlayerRandom",
+    "start": 9964,
+    "end": 9981
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "getTerrainName",
+    "start": 9983,
+    "end": 10129
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "updateHover",
+    "start": 10131,
+    "end": 10219
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "setAutoPath",
+    "start": 10221,
+    "end": 10238
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "stepAutoPath",
+    "start": 10240,
+    "end": 10261
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "stepAutoPathInner",
+    "start": 10263,
+    "end": 10369
+  },
+  {
+    "file": "src/engine/Core/Game.ts",
+    "name": "triggerGameOver",
+    "start": 10371,
+    "end": 10413
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "name": "createMachineRuntime",
+    "start": 41,
+    "end": 140
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "name": "generateDepth",
+    "start": 142,
+    "end": 331
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "name": "placeStairs",
+    "start": 333,
+    "end": 363
+  },
+  {
+    "file": "src/engine/Core/GenerationCoordinator.ts",
+    "name": "populateLevel",
+    "start": 365,
+    "end": 811
+  },
+  {
+    "file": "src/engine/Core/HighScores.ts",
+    "name": "isEntry",
+    "start": 12,
+    "end": 19
+  },
+  {
+    "file": "src/engine/Core/HighScores.ts",
+    "name": "sorted",
+    "start": 21,
+    "end": 26
+  },
+  {
+    "file": "src/engine/Core/HighScores.ts",
+    "name": "readHighScores",
+    "start": 28,
+    "end": 37
+  },
+  {
+    "file": "src/engine/Core/HighScores.ts",
+    "name": "saveHighScore",
+    "start": 39,
+    "end": 59
+  },
+  {
+    "file": "src/engine/Core/LevelSeeds.ts",
+    "name": "initializeLevelSeeds",
+    "start": 17,
+    "end": 33
+  },
+  {
+    "file": "src/engine/Core/LevelSeeds.ts",
+    "name": "copyLevelSeeds",
+    "start": 35,
+    "end": 37
+  },
+  {
+    "file": "src/engine/Core/LevelSeeds.ts",
+    "name": "isLevelSeeds",
+    "start": 39,
+    "end": 45
+  },
+  {
+    "file": "src/engine/Core/LevelSnapshot.ts",
+    "name": "snapshotGrid",
+    "start": 22,
+    "end": 29
+  },
+  {
+    "file": "src/engine/Core/LevelSnapshot.ts",
+    "name": "restoreGrid",
+    "start": 31,
+    "end": 41
+  },
+  {
+    "file": "src/engine/Core/SaveStorage.ts",
+    "name": "database",
+    "start": 13,
+    "end": 21
+  },
+  {
+    "file": "src/engine/Core/SaveStorage.ts",
+    "name": "transaction",
+    "start": 23,
+    "end": 34
+  },
+  {
+    "file": "src/engine/Core/SaveStorage.ts",
+    "name": "saveSnapshot",
+    "start": 36,
+    "end": 47
+  },
+  {
+    "file": "src/engine/Core/SaveStorage.ts",
+    "name": "readSaveSummary",
+    "start": 49,
+    "end": 52
+  },
+  {
+    "file": "src/engine/Core/SaveStorage.ts",
+    "name": "readSnapshot",
+    "start": 54,
+    "end": 57
+  },
+  {
+    "file": "src/engine/Core/SaveStorage.ts",
+    "name": "deleteSnapshot",
+    "start": 59,
+    "end": 61
+  },
+  {
+    "file": "src/engine/Core/TimeCoordinator.ts",
+    "name": "advancementLoop",
+    "start": 99,
+    "end": 171
+  },
+  {
+    "file": "src/engine/Core/TimeCoordinator.ts",
+    "name": "objectiveTimeBlock",
+    "start": 173,
+    "end": 270
+  },
+  {
+    "file": "src/engine/Core/TimeCoordinator.ts",
+    "name": "updateEnvironment",
+    "start": 272,
+    "end": 348
+  },
+  {
+    "file": "src/engine/Core/TimeCoordinator.ts",
+    "name": "playerTurnEnded",
+    "start": 350,
+    "end": 457
+  },
+  {
+    "file": "src/engine/Core/TimeCoordinator.ts",
+    "name": "finishTurnEpilogue",
+    "start": 459,
+    "end": 510
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "name": "projectRunState",
+    "start": 32,
+    "end": 34
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "name": "snapshotLevel",
+    "start": 89,
+    "end": 106
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "name": "toWholeRunSnapshot",
+    "start": 146,
+    "end": 188
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "name": "decodePlayer",
+    "start": 190,
+    "end": 202
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "name": "decodeWholeRunWorld",
+    "start": 204,
+    "end": 236
+  },
+  {
+    "file": "src/engine/Core/WholeRunSnapshot.ts",
+    "name": "isWholeRunSnapshot",
+    "start": 238,
+    "end": 285
+  },
+  {
+    "file": "src/engine/Environment/Gas.ts",
+    "name": "isGasTerrain",
+    "start": 106,
+    "end": 108
+  },
+  {
+    "file": "src/engine/Environment/Gas.ts",
+    "name": "EnvironmentManager",
+    "start": 121,
+    "end": 474
+  },
+  {
+    "file": "src/engine/Environment/Gas.ts",
+    "name": "getState",
+    "start": 141,
+    "end": 146
+  },
+  {
+    "file": "src/engine/Environment/Gas.ts",
+    "name": "setState",
+    "start": 148,
+    "end": 152
+  },
+  {
+    "file": "src/engine/Environment/Gas.ts",
+    "name": "addGas",
+    "start": 174,
+    "end": 185
+  },
+  {
+    "file": "src/engine/Environment/Gas.ts",
+    "name": "clearGasAt",
+    "start": 188,
+    "end": 194
+  },
+  {
+    "file": "src/engine/Environment/Gas.ts",
+    "name": "hasVolumetricGas",
+    "start": 197,
+    "end": 206
+  },
+  {
+    "file": "src/engine/Environment/Gas.ts",
+    "name": "syncGasMirror",
+    "start": 209,
+    "end": 215
+  },
+  {
+    "file": "src/engine/Environment/Gas.ts",
+    "name": "syncMirrorAt",
+    "start": 217,
+    "end": 223
+  },
+  {
+    "file": "src/engine/Environment/Gas.ts",
+    "name": "ignite",
+    "start": 232,
+    "end": 235
+  },
+  {
+    "file": "src/engine/Environment/Gas.ts",
+    "name": "igniteForced",
+    "start": 252,
+    "end": 258
+  },
+  {
+    "file": "src/engine/Environment/Gas.ts",
+    "name": "takeNewlyCaughtFire",
+    "start": 267,
+    "end": 272
+  },
+  {
+    "file": "src/engine/Environment/Gas.ts",
+    "name": "takeExplosiveSpawnCells",
+    "start": 280,
+    "end": 285
+  },
+  {
+    "file": "src/engine/Environment/Gas.ts",
+    "name": "updateFires",
+    "start": 308,
+    "end": 347
+  },
+  {
+    "file": "src/engine/Environment/Gas.ts",
+    "name": "updateGases",
+    "start": 364,
+    "end": 473
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "name": "workInsertRoomAt",
+    "start": 82,
+    "end": 106
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "name": "coordinatesAreInMap",
+    "start": 108,
+    "end": 110
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "name": "dungeonDescentPercent",
+    "start": 116,
+    "end": 119
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "name": "adjustDungeonProfileForDepth",
+    "start": 122,
+    "end": 129
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "name": "adjustDungeonFirstRoomProfileForDepth",
+    "start": 132,
+    "end": 142
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "name": "cloneDungeonProfile",
+    "start": 144,
+    "end": 146
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "name": "randomLocationInGrid",
+    "start": 152,
+    "end": 170
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "name": "directionOfDoorSite",
+    "start": 177,
+    "end": 193
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "name": "Architect",
+    "start": 195,
+    "end": 1005
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "name": "installStair",
+    "start": 197,
+    "end": 201
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "name": "prepareStairLoc",
+    "start": 205,
+    "end": 221
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "name": "redesignInterior",
+    "start": 279,
+    "end": 347
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "name": "generateTerrain",
+    "start": 363,
+    "end": 412
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "name": "carveDungeon",
+    "start": 418,
+    "end": 452
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "name": "translateWorkGridToTerrain",
+    "start": 455,
+    "end": 472
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "name": "generateLevel",
+    "start": 474,
+    "end": 521
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "name": "placeTraps",
+    "start": 524,
+    "end": 591
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "name": "attachRooms",
+    "start": 601,
+    "end": 638
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "name": "designRandomRoom",
+    "start": 645,
+    "end": 714
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "name": "chooseRandomDoorSites",
+    "start": 721,
+    "end": 754
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "name": "attachHallwayTo",
+    "start": 761,
+    "end": 811
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "name": "workRoomFitsAt",
+    "start": 818,
+    "end": 834
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "name": "designEnvironmentOvelays",
+    "start": 861,
+    "end": 944
+  },
+  {
+    "file": "src/engine/Generator/Architect.ts",
+    "name": "placeGatedLakeBlob",
+    "start": 962,
+    "end": 1004
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "getNextMachineNumber",
+    "start": 553,
+    "end": 553
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "restoreNextMachineNumber",
+    "start": 554,
+    "end": 554
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "resetRewardRoomsGenerated",
+    "start": 566,
+    "end": 568
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "getRewardRoomsGenerated",
+    "start": 571,
+    "end": 573
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "setRewardRoomsGenerated",
+    "start": 576,
+    "end": 578
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "effectiveBpFlags",
+    "start": 652,
+    "end": 663
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "blueprintQualifies",
+    "start": 696,
+    "end": 711
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "BlueprintEngine",
+    "start": 713,
+    "end": 2501
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "hasItem",
+    "start": 766,
+    "end": 768
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "hasMonster",
+    "start": 770,
+    "end": 772
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "hasPendingOccupant",
+    "start": 774,
+    "end": 776
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "buildMachines",
+    "start": 792,
+    "end": 827
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "buildAMachine",
+    "start": 846,
+    "end": 930
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "gateSealsOnlyInterior",
+    "start": 941,
+    "end": 989
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "findGateRoom",
+    "start": 1009,
+    "end": 1063
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "getGateAnalysis",
+    "start": 1068,
+    "end": 1073
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "findSuitableRoom",
+    "start": 1085,
+    "end": 1140
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "floodFillRoom",
+    "start": 1143,
+    "end": 1170
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "hasAdjacentWall",
+    "start": 1172,
+    "end": 1180
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "applyBlueprint",
+    "start": 1190,
+    "end": 1205
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "applyBlueprintContents",
+    "start": 1207,
+    "end": 1971
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "fillVestibuleInterior",
+    "start": 1987,
+    "end": 2030
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "fillAreaInterior",
+    "start": 2039,
+    "end": 2083
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "interiorSatisfiesBlockingFlags",
+    "start": 2090,
+    "end": 2099
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "expandMachineInterior",
+    "start": 2119,
+    "end": 2188
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "backupLevel",
+    "start": 2198,
+    "end": 2217
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "restoreLevel",
+    "start": 2220,
+    "end": 2242
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "findFeaturePosition",
+    "start": 2259,
+    "end": 2339
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "featureView",
+    "start": 2366,
+    "end": 2374
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "cellIsFeatureCandidate",
+    "start": 2376,
+    "end": 2461
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "getLoopMap",
+    "start": 2464,
+    "end": 2469
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "isImpregnable",
+    "start": 2475,
+    "end": 2477
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "markPersonalSpace",
+    "start": 2488,
+    "end": 2500
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "mapMachineInterior",
+    "start": 2518,
+    "end": 2544
+  },
+  {
+    "file": "src/engine/Generator/BlueprintEngine.ts",
+    "name": "resetMachineCounter",
+    "start": 2547,
+    "end": 2549
+  },
+  {
+    "file": "src/engine/Generator/GenerationPlacement.ts",
+    "name": "speciesForbiddenFlags",
+    "start": 14,
+    "end": 23
+  },
+  {
+    "file": "src/engine/Generator/GenerationPlacement.ts",
+    "name": "qualifyingNear",
+    "start": 28,
+    "end": 37
+  },
+  {
+    "file": "src/engine/Generator/GenerationPlacement.ts",
+    "name": "minionPlacement",
+    "start": 41,
+    "end": 66
+  },
+  {
+    "file": "src/engine/Generator/GenerationPlacement.ts",
+    "name": "generationDistances",
+    "start": 69,
+    "end": 84
+  },
+  {
+    "file": "src/engine/Generator/MachineObservation.ts",
+    "name": "setMachineObservationHook",
+    "start": 47,
+    "end": 47
+  },
+  {
+    "file": "src/engine/Generator/MachineObservation.ts",
+    "name": "getMachineObservationHook",
+    "start": 48,
+    "end": 48
+  },
+  {
+    "file": "src/engine/Generator/MachineObservation.ts",
+    "name": "setMachineObservationSeed",
+    "start": 49,
+    "end": 49
+  },
+  {
+    "file": "src/engine/Generator/MachineObservation.ts",
+    "name": "getMachineObservationSeed",
+    "start": 50,
+    "end": 50
+  },
+  {
+    "file": "src/engine/Generator/MachineObservation.ts",
+    "name": "recordMachineRollback",
+    "start": 53,
+    "end": 60
+  },
+  {
+    "file": "src/engine/Generator/MachineView.ts",
+    "name": "computeMachineView",
+    "start": 14,
+    "end": 67
+  },
+  {
+    "file": "src/engine/Generator/RoomBuilder.ts",
+    "name": "createEmptyRoomGrid",
+    "start": 14,
+    "end": 20
+  },
+  {
+    "file": "src/engine/Generator/RoomBuilder.ts",
+    "name": "drawRectangleOnGrid",
+    "start": 22,
+    "end": 30
+  },
+  {
+    "file": "src/engine/Generator/RoomBuilder.ts",
+    "name": "drawCircleOnGrid",
+    "start": 32,
+    "end": 44
+  },
+  {
+    "file": "src/engine/Generator/RoomBuilder.ts",
+    "name": "designSmallRoom",
+    "start": 46,
+    "end": 50
+  },
+  {
+    "file": "src/engine/Generator/RoomBuilder.ts",
+    "name": "designCircularRoom",
+    "start": 52,
+    "end": 60
+  },
+  {
+    "file": "src/engine/Generator/RoomBuilder.ts",
+    "name": "cellularAutomataRound",
+    "start": 67,
+    "end": 95
+  },
+  {
+    "file": "src/engine/Generator/RoomBuilder.ts",
+    "name": "fillContiguousRegion",
+    "start": 97,
+    "end": 110
+  },
+  {
+    "file": "src/engine/Generator/RoomBuilder.ts",
+    "name": "createBlobOnGrid",
+    "start": 112,
+    "end": 225
+  },
+  {
+    "file": "src/engine/Generator/RoomBuilder.ts",
+    "name": "designCavern",
+    "start": 233,
+    "end": 235
+  },
+  {
+    "file": "src/engine/Generator/RoomBuilder.ts",
+    "name": "designEntranceRoom",
+    "start": 242,
+    "end": 254
+  },
+  {
+    "file": "src/engine/Generator/RoomBuilder.ts",
+    "name": "designCrossRoom",
+    "start": 261,
+    "end": 275
+  },
+  {
+    "file": "src/engine/Generator/RoomBuilder.ts",
+    "name": "designSymmetricalCrossRoom",
+    "start": 281,
+    "end": 296
+  },
+  {
+    "file": "src/engine/Generator/RoomBuilder.ts",
+    "name": "designChunkyRoom",
+    "start": 302,
+    "end": 323
+  },
+  {
+    "file": "src/engine/Generator/Stairs.ts",
+    "name": "stairFallbackQualifies",
+    "start": 11,
+    "end": 16
+  },
+  {
+    "file": "src/engine/Generator/Stairs.ts",
+    "name": "validStairLoc",
+    "start": 17,
+    "end": 31
+  },
+  {
+    "file": "src/engine/Generator/Stairs.ts",
+    "name": "stairCandidates",
+    "start": 32,
+    "end": 36
+  },
+  {
+    "file": "src/engine/Generator/Stairs.ts",
+    "name": "clearStairVicinity",
+    "start": 37,
+    "end": 40
+  },
+  {
+    "file": "src/engine/Input.ts",
+    "name": "InputManager",
+    "start": 8,
+    "end": 139
+  },
+  {
+    "file": "src/engine/Input.ts",
+    "name": "setCallback",
+    "start": 17,
+    "end": 19
+  },
+  {
+    "file": "src/engine/Input.ts",
+    "name": "triggerAction",
+    "start": 21,
+    "end": 25
+  },
+  {
+    "file": "src/engine/Input.ts",
+    "name": "handleKeyDown",
+    "start": 27,
+    "end": 134
+  },
+  {
+    "file": "src/engine/Input.ts",
+    "name": "handleKeyUp",
+    "start": 136,
+    "end": 138
+  },
+  {
+    "file": "src/engine/Items/ArcanaEnchantment.ts",
+    "name": "canEnchantArcana",
+    "start": 8,
+    "end": 16
+  },
+  {
+    "file": "src/engine/Items/ArcanaEnchantment.ts",
+    "name": "enchantArcana",
+    "start": 22,
+    "end": 41
+  },
+  {
+    "file": "src/engine/Items/ArcanaInstance.ts",
+    "name": "rollStaffEnchantment",
+    "start": 27,
+    "end": 37
+  },
+  {
+    "file": "src/engine/Items/ArcanaInstance.ts",
+    "name": "rollWandCharges",
+    "start": 40,
+    "end": 44
+  },
+  {
+    "file": "src/engine/Items/ArcanaInstance.ts",
+    "name": "restoreArcanaInstance",
+    "start": 52,
+    "end": 67
+  },
+  {
+    "file": "src/engine/Items/ArcanaRecharge.ts",
+    "name": "restoreStaffRecharge",
+    "start": 13,
+    "end": 16
+  },
+  {
+    "file": "src/engine/Items/ArcanaRecharge.ts",
+    "name": "isSlowStaff",
+    "start": 19,
+    "end": 21
+  },
+  {
+    "file": "src/engine/Items/ArcanaRecharge.ts",
+    "name": "initialStaffRecharge",
+    "start": 22,
+    "end": 24
+  },
+  {
+    "file": "src/engine/Items/ArcanaRecharge.ts",
+    "name": "staffRechargeBaseDuration",
+    "start": 25,
+    "end": 27
+  },
+  {
+    "file": "src/engine/Items/ArcanaRecharge.ts",
+    "name": "staffChargeDuration",
+    "start": 32,
+    "end": 35
+  },
+  {
+    "file": "src/engine/Items/ArcanaRecharge.ts",
+    "name": "ringWisdomRechargeIncrement",
+    "start": 48,
+    "end": 51
+  },
+  {
+    "file": "src/engine/Items/ArcanaRecharge.ts",
+    "name": "ringWisdomMultiplierPercent",
+    "start": 53,
+    "end": 56
+  },
+  {
+    "file": "src/engine/Items/ArcanaRecharge.ts",
+    "name": "equippedWisdomBonus",
+    "start": 59,
+    "end": 61
+  },
+  {
+    "file": "src/engine/Items/ArcanaRecharge.ts",
+    "name": "tickStaffRecharge",
+    "start": 68,
+    "end": 93
+  },
+  {
+    "file": "src/engine/Items/ArcanaRecharge.ts",
+    "name": "rechargeItemsIncrementally",
+    "start": 99,
+    "end": 113
+  },
+  {
+    "file": "src/engine/Items/ArcanaRecharge.ts",
+    "name": "rechargeStaffFully",
+    "start": 116,
+    "end": 119
+  },
+  {
+    "file": "src/engine/Items/CharmModel.ts",
+    "name": "isCharmKind",
+    "start": 13,
+    "end": 13
+  },
+  {
+    "file": "src/engine/Items/CharmModel.ts",
+    "name": "fpPow",
+    "start": 16,
+    "end": 24
+  },
+  {
+    "file": "src/engine/Items/CharmModel.ts",
+    "name": "charmEffectDuration",
+    "start": 26,
+    "end": 33
+  },
+  {
+    "file": "src/engine/Items/CharmModel.ts",
+    "name": "charmRechargeDelay",
+    "start": 34,
+    "end": 39
+  },
+  {
+    "file": "src/engine/Items/CharmModel.ts",
+    "name": "charmHealing",
+    "start": 40,
+    "end": 40
+  },
+  {
+    "file": "src/engine/Items/CharmModel.ts",
+    "name": "charmProtection",
+    "start": 41,
+    "end": 44
+  },
+  {
+    "file": "src/engine/Items/Commutation.ts",
+    "name": "itemIsSwappable",
+    "start": 7,
+    "end": 10
+  },
+  {
+    "file": "src/engine/Items/Commutation.ts",
+    "name": "enchantLevelKnown",
+    "start": 12,
+    "end": 14
+  },
+  {
+    "file": "src/engine/Items/Commutation.ts",
+    "name": "swapItemToEnchantLevel",
+    "start": 18,
+    "end": 52
+  },
+  {
+    "file": "src/engine/Items/Inventory.ts",
+    "name": "Inventory",
+    "start": 8,
+    "end": 92
+  },
+  {
+    "file": "src/engine/Items/Inventory.ts",
+    "name": "packCount",
+    "start": 13,
+    "end": 16
+  },
+  {
+    "file": "src/engine/Items/Inventory.ts",
+    "name": "hasSpace",
+    "start": 18,
+    "end": 28
+  },
+  {
+    "file": "src/engine/Items/Inventory.ts",
+    "name": "kind",
+    "start": 30,
+    "end": 32
+  },
+  {
+    "file": "src/engine/Items/Inventory.ts",
+    "name": "stacksWith",
+    "start": 34,
+    "end": 40
+  },
+  {
+    "file": "src/engine/Items/Inventory.ts",
+    "name": "nextLetter",
+    "start": 42,
+    "end": 45
+  },
+  {
+    "file": "src/engine/Items/Inventory.ts",
+    "name": "addItem",
+    "start": 47,
+    "end": 71
+  },
+  {
+    "file": "src/engine/Items/Inventory.ts",
+    "name": "consumeOne",
+    "start": 74,
+    "end": 78
+  },
+  {
+    "file": "src/engine/Items/Inventory.ts",
+    "name": "removeItem",
+    "start": 80,
+    "end": 87
+  },
+  {
+    "file": "src/engine/Items/Inventory.ts",
+    "name": "getWeight",
+    "start": 89,
+    "end": 91
+  },
+  {
+    "file": "src/engine/Items/Item.ts",
+    "name": "usedTimesLabel",
+    "start": 28,
+    "end": 31
+  },
+  {
+    "file": "src/engine/Items/Item.ts",
+    "name": "calledLabel",
+    "start": 39,
+    "end": 47
+  },
+  {
+    "file": "src/engine/Items/Item.ts",
+    "name": "Item",
+    "start": 49,
+    "end": 294
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "tn",
+    "start": 19,
+    "end": 21
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "kindIdOf",
+    "start": 24,
+    "end": 26
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "ItemLoader",
+    "start": 69,
+    "end": 1540
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "filterPool",
+    "start": 98,
+    "end": 100
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "initMeteredItems",
+    "start": 198,
+    "end": 203
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "incrementMeteredItems",
+    "start": 209,
+    "end": 213
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "chooseKind",
+    "start": 221,
+    "end": 230
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "pickItemCategory",
+    "start": 271,
+    "end": 283
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "aggregateGoldLowerBound",
+    "start": 314,
+    "end": 316
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "aggregateGoldUpperBound",
+    "start": 319,
+    "end": 321
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "foodGuaranteeTriggered",
+    "start": 330,
+    "end": 338
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "chooseVorpalEnemy",
+    "start": 415,
+    "end": 426
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "damageLowerBound",
+    "start": 431,
+    "end": 437
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "callKind",
+    "start": 464,
+    "end": 470
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "isInstantIdentifyRing",
+    "start": 507,
+    "end": 509
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "kindsOfFlavoredCategory",
+    "start": 612,
+    "end": 621
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "kindPolarity",
+    "start": 666,
+    "end": 669
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "isPolarityRevealed",
+    "start": 672,
+    "end": 674
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "itemMagicPolarity",
+    "start": 682,
+    "end": 712
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "magicCharDiscoverySuffix",
+    "start": 727,
+    "end": 744
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "detectMagicOnItem",
+    "start": 753,
+    "end": 763
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "polarityKnownCount",
+    "start": 769,
+    "end": 772
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "tryIdentifyLastItemKind",
+    "start": 783,
+    "end": 794
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "tryIdentifyLastItemKinds",
+    "start": 797,
+    "end": 802
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "tryIdentifyLastItemKindsAllPolarityCategories",
+    "start": 808,
+    "end": 812
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "identifyItemKind",
+    "start": 819,
+    "end": 833
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "identifyInstance",
+    "start": 839,
+    "end": 846
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "updateIdentifiableItem",
+    "start": 852,
+    "end": 868
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "decrementWeaponAutoIDTimer",
+    "start": 875,
+    "end": 885
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "decrementWornFamiliarity",
+    "start": 893,
+    "end": 912
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "translateName",
+    "start": 954,
+    "end": 954
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "snapshotFlavors",
+    "start": 1054,
+    "end": 1060
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "restoreFlavors",
+    "start": 1062,
+    "end": 1067
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "initConsumables",
+    "start": 1069,
+    "end": 1096
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "restoreWandFlavors",
+    "start": 1103,
+    "end": 1125
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "restoreStaffFlavors",
+    "start": 1130,
+    "end": 1147
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "assignAllFlavors",
+    "start": 1149,
+    "end": 1181
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "generateScrollTitle",
+    "start": 1184,
+    "end": 1197
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "assignArcanaFlavors",
+    "start": 1199,
+    "end": 1220
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "spawnPotion",
+    "start": 1222,
+    "end": 1238
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "spawnScroll",
+    "start": 1240,
+    "end": 1252
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "spawnFood",
+    "start": 1254,
+    "end": 1266
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "identify",
+    "start": 1268,
+    "end": 1270
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "getWeaponConfigs",
+    "start": 1272,
+    "end": 1274
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "getArmorConfigs",
+    "start": 1276,
+    "end": 1278
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "spawnWeapon",
+    "start": 1288,
+    "end": 1358
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "spawnArmor",
+    "start": 1360,
+    "end": 1409
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "spawnWand",
+    "start": 1411,
+    "end": 1430
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "spawnStaff",
+    "start": 1432,
+    "end": 1452
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "spawnRing",
+    "start": 1454,
+    "end": 1473
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "spawnCharm",
+    "start": 1475,
+    "end": 1491
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "spawnMachineRing",
+    "start": 1494,
+    "end": 1498
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "spawnMachineCharm",
+    "start": 1500,
+    "end": 1505
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "spawnKey",
+    "start": 1507,
+    "end": 1515
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "spawnGold",
+    "start": 1522,
+    "end": 1528
+  },
+  {
+    "file": "src/engine/Items/ItemLoader.ts",
+    "name": "spawnAmulet",
+    "start": 1530,
+    "end": 1539
+  },
+  {
+    "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+    "name": "inMap",
+    "start": 65,
+    "end": 67
+  },
+  {
+    "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+    "name": "cellTerrainFlagUnion",
+    "start": 70,
+    "end": 77
+  },
+  {
+    "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+    "name": "cellMechFlagUnion",
+    "start": 80,
+    "end": 87
+  },
+  {
+    "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+    "name": "isPassableOrSecretDoor",
+    "start": 92,
+    "end": 95
+  },
+  {
+    "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+    "name": "cellIsPassableOrDoor",
+    "start": 98,
+    "end": 104
+  },
+  {
+    "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+    "name": "passableArcCount",
+    "start": 111,
+    "end": 123
+  },
+  {
+    "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+    "name": "fillItemSpawnHeatMap",
+    "start": 137,
+    "end": 167
+  },
+  {
+    "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+    "name": "markChokepoints",
+    "start": 174,
+    "end": 209
+  },
+  {
+    "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+    "name": "playerReachableFrom",
+    "start": 215,
+    "end": 246
+  },
+  {
+    "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+    "name": "ItemSpawnHeatMap",
+    "start": 252,
+    "end": 378
+  },
+  {
+    "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+    "name": "heatAt",
+    "start": 266,
+    "end": 268
+  },
+  {
+    "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+    "name": "build",
+    "start": 288,
+    "end": 330
+  },
+  {
+    "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+    "name": "getItemSpawnLoc",
+    "start": 338,
+    "end": 351
+  },
+  {
+    "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+    "name": "coolHeatMapAt",
+    "start": 358,
+    "end": 377
+  },
+  {
+    "file": "src/engine/Items/ItemSpawnHeatMap.ts",
+    "name": "randomMatchingLocation",
+    "start": 398,
+    "end": 416
+  },
+  {
+    "file": "src/engine/Items/ItemUseCoordinator.ts",
+    "name": "consumeForUse",
+    "start": 16,
+    "end": 18
+  },
+  {
+    "file": "src/engine/Items/ItemUseCoordinator.ts",
+    "name": "hasIdentifyTarget",
+    "start": 20,
+    "end": 23
+  },
+  {
+    "file": "src/engine/Items/ItemUseCoordinator.ts",
+    "name": "canIdentifyChosenItem",
+    "start": 25,
+    "end": 29
+  },
+  {
+    "file": "src/engine/Items/ItemUseCoordinator.ts",
+    "name": "canEnchantChosenItem",
+    "start": 31,
+    "end": 35
+  },
+  {
+    "file": "src/engine/Items/ItemUseCoordinator.ts",
+    "name": "enchantChosenItem",
+    "start": 37,
+    "end": 56
+  },
+  {
+    "file": "src/engine/Items/ItemUseCoordinator.ts",
+    "name": "invokeCharm",
+    "start": 59,
+    "end": 103
+  },
+  {
+    "file": "src/engine/Items/ItemUseCoordinator.ts",
+    "name": "finishItemUse",
+    "start": 106,
+    "end": 109
+  },
+  {
+    "file": "src/engine/Items/ItemUseCoordinator.ts",
+    "name": "prepareThrownItem",
+    "start": 111,
+    "end": 124
+  },
+  {
+    "file": "src/engine/Items/ItemUseCoordinator.ts",
+    "name": "boltWorldFor",
+    "start": 126,
+    "end": 134
+  },
+  {
+    "file": "src/engine/Items/ItemUseCoordinator.ts",
+    "name": "commitArcanaTarget",
+    "start": 137,
+    "end": 158
+  },
+  {
+    "file": "src/engine/Items/MachineItemGeneration.ts",
+    "name": "machineItemRejections",
+    "start": 10,
+    "end": 21
+  },
+  {
+    "file": "src/engine/Items/MachineItemGeneration.ts",
+    "name": "generateQualifiedMachineItem",
+    "start": 27,
+    "end": 36
+  },
+  {
+    "file": "src/engine/Items/RingBonuses.ts",
+    "name": "effectiveRingEnchant",
+    "start": 4,
+    "end": 7
+  },
+  {
+    "file": "src/engine/Items/RingBonuses.ts",
+    "name": "ringBonus",
+    "start": 9,
+    "end": 12
+  },
+  {
+    "file": "src/engine/Items/RingBonuses.ts",
+    "name": "ringLightMultiplier",
+    "start": 15,
+    "end": 18
+  },
+  {
+    "file": "src/engine/Items/RingBonuses.ts",
+    "name": "turnsForFullRegenInThousandths",
+    "start": 28,
+    "end": 31
+  },
+  {
+    "file": "src/engine/Lighting/FOV.ts",
+    "name": "FOVSys",
+    "start": 8,
+    "end": 176
+  },
+  {
+    "file": "src/engine/Lighting/FOV.ts",
+    "name": "computeFOVMask",
+    "start": 22,
+    "end": 48
+  },
+  {
+    "file": "src/engine/Lighting/FOV.ts",
+    "name": "castLightMask",
+    "start": 50,
+    "end": 91
+  },
+  {
+    "file": "src/engine/Lighting/FOV.ts",
+    "name": "computeFOV",
+    "start": 98,
+    "end": 127
+  },
+  {
+    "file": "src/engine/Lighting/FOV.ts",
+    "name": "castLight",
+    "start": 129,
+    "end": 166
+  },
+  {
+    "file": "src/engine/Lighting/FOV.ts",
+    "name": "markVisible",
+    "start": 168,
+    "end": 175
+  },
+  {
+    "file": "src/engine/Lighting/LightMap.ts",
+    "name": "LightMap",
+    "start": 65,
+    "end": 455
+  },
+  {
+    "file": "src/engine/Lighting/LightMap.ts",
+    "name": "initCells",
+    "start": 82,
+    "end": 99
+  },
+  {
+    "file": "src/engine/Lighting/LightMap.ts",
+    "name": "clear",
+    "start": 102,
+    "end": 110
+  },
+  {
+    "file": "src/engine/Lighting/LightMap.ts",
+    "name": "getLight",
+    "start": 112,
+    "end": 115
+  },
+  {
+    "file": "src/engine/Lighting/LightMap.ts",
+    "name": "clearLighting",
+    "start": 123,
+    "end": 131
+  },
+  {
+    "file": "src/engine/Lighting/LightMap.ts",
+    "name": "lightAt",
+    "start": 134,
+    "end": 137
+  },
+  {
+    "file": "src/engine/Lighting/LightMap.ts",
+    "name": "lightSumAt",
+    "start": 140,
+    "end": 144
+  },
+  {
+    "file": "src/engine/Lighting/LightMap.ts",
+    "name": "inShadowAt",
+    "start": 147,
+    "end": 150
+  },
+  {
+    "file": "src/engine/Lighting/LightMap.ts",
+    "name": "paintLight",
+    "start": 156,
+    "end": 223
+  },
+  {
+    "file": "src/engine/Lighting/LightMap.ts",
+    "name": "addChannelsAt",
+    "start": 225,
+    "end": 231
+  },
+  {
+    "file": "src/engine/Lighting/LightMap.ts",
+    "name": "buildLightMask",
+    "start": 243,
+    "end": 283
+  },
+  {
+    "file": "src/engine/Lighting/LightMap.ts",
+    "name": "castLightMask",
+    "start": 285,
+    "end": 334
+  },
+  {
+    "file": "src/engine/Lighting/LightMap.ts",
+    "name": "fillRenderFromLighting",
+    "start": 342,
+    "end": 356
+  },
+  {
+    "file": "src/engine/Lighting/LightMap.ts",
+    "name": "addLight",
+    "start": 368,
+    "end": 396
+  },
+  {
+    "file": "src/engine/Lighting/LightMap.ts",
+    "name": "applyLightTo",
+    "start": 398,
+    "end": 405
+  },
+  {
+    "file": "src/engine/Lighting/LightMap.ts",
+    "name": "castLightRay",
+    "start": 407,
+    "end": 454
+  },
+  {
+    "file": "src/engine/Map/AutoGenerator.ts",
+    "name": "randomMatchingLocation",
+    "start": 559,
+    "end": 591
+  },
+  {
+    "file": "src/engine/Map/AutoGenerator.ts",
+    "name": "runAutogenerators",
+    "start": 630,
+    "end": 742
+  },
+  {
+    "file": "src/engine/Map/AutoGenerator.ts",
+    "name": "singleCellBlockingMap",
+    "start": 745,
+    "end": 749
+  },
+  {
+    "file": "src/engine/Map/Color.ts",
+    "name": "ColorUtils",
+    "start": 13,
+    "end": 64
+  },
+  {
+    "file": "src/engine/Map/Color.ts",
+    "name": "hexToRGB",
+    "start": 18,
+    "end": 27
+  },
+  {
+    "file": "src/engine/Map/Color.ts",
+    "name": "rgbToHex",
+    "start": 30,
+    "end": 33
+  },
+  {
+    "file": "src/engine/Map/Color.ts",
+    "name": "add",
+    "start": 36,
+    "end": 43
+  },
+  {
+    "file": "src/engine/Map/Color.ts",
+    "name": "multiply",
+    "start": 46,
+    "end": 52
+  },
+  {
+    "file": "src/engine/Map/Color.ts",
+    "name": "mix",
+    "start": 55,
+    "end": 63
+  },
+  {
+    "file": "src/engine/Map/Connectivity.ts",
+    "name": "terrainAllowsMove",
+    "start": 35,
+    "end": 37
+  },
+  {
+    "file": "src/engine/Map/Connectivity.ts",
+    "name": "lakeDisruptsPassability",
+    "start": 45,
+    "end": 89
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "setDungeonFeatureEffects",
+    "start": 133,
+    "end": 136
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "resetDFMessageEligibility",
+    "start": 137,
+    "end": 139
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "evacuateCreatures",
+    "start": 141,
+    "end": 157
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "refreshFeatureCell",
+    "start": 159,
+    "end": 172
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "refreshDungeonCellTerrain",
+    "start": 176,
+    "end": 182
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "createSpawnMap",
+    "start": 215,
+    "end": 217
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "cellTerrainFlags",
+    "start": 224,
+    "end": 228
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "terrainFlagsOfCell",
+    "start": 231,
+    "end": 237
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "cellTerrainMechFlags",
+    "start": 248,
+    "end": 252
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "terrainMechFlagsOfCell",
+    "start": 254,
+    "end": 260
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "burnedTerrainFlagsOfCell",
+    "start": 265,
+    "end": 278
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "discoveredTerrainFlagsOfCell",
+    "start": 285,
+    "end": 308
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "cellHasTerrainType",
+    "start": 311,
+    "end": 318
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "cellHasTerrainFlag",
+    "start": 321,
+    "end": 323
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "cellIsPassableOrDoor",
+    "start": 328,
+    "end": 337
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "cellHasTerrainMechFlagMask",
+    "start": 339,
+    "end": 341
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "spawnMapDF",
+    "start": 350,
+    "end": 410
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "fillSpawnMap",
+    "start": 431,
+    "end": 492
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "floodConnect",
+    "start": 500,
+    "end": 531
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "levelIsDisconnectedWithBlockingMap",
+    "start": 542,
+    "end": 617
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "levelIsDisconnectedOnMovementGraph",
+    "start": 647,
+    "end": 745
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "terrainMechFlags",
+    "start": 758,
+    "end": 760
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "discoverSecretsAt",
+    "start": 762,
+    "end": 776
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "catalogFeature",
+    "start": 778,
+    "end": 803
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "setDormantAwakener",
+    "start": 832,
+    "end": 835
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "setAllyResurrector",
+    "start": 838,
+    "end": 841
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "spawnDungeonFeature",
+    "start": 871,
+    "end": 899
+  },
+  {
+    "file": "src/engine/Map/DungeonFeature.ts",
+    "name": "executeDungeonFeature",
+    "start": 901,
+    "end": 1106
+  },
+  {
+    "file": "src/engine/Map/Grid.ts",
+    "name": "highestPriorityLayerOf",
+    "start": 902,
+    "end": 917
+  },
+  {
+    "file": "src/engine/Map/Grid.ts",
+    "name": "recordCrossLayerClear",
+    "start": 935,
+    "end": 938
+  },
+  {
+    "file": "src/engine/Map/Grid.ts",
+    "name": "getCrossLayerClearStats",
+    "start": 941,
+    "end": 950
+  },
+  {
+    "file": "src/engine/Map/Grid.ts",
+    "name": "resetCrossLayerClearStats",
+    "start": 953,
+    "end": 955
+  },
+  {
+    "file": "src/engine/Map/Grid.ts",
+    "name": "writeTerrainHome",
+    "start": 958,
+    "end": 963
+  },
+  {
+    "file": "src/engine/Map/Grid.ts",
+    "name": "Cell",
+    "start": 968,
+    "end": 1115
+  },
+  {
+    "file": "src/engine/Map/Grid.ts",
+    "name": "Grid",
+    "start": 1120,
+    "end": 1239
+  },
+  {
+    "file": "src/engine/Map/Grid.ts",
+    "name": "isImpregnable",
+    "start": 1128,
+    "end": 1130
+  },
+  {
+    "file": "src/engine/Map/Grid.ts",
+    "name": "initializeGrid",
+    "start": 1138,
+    "end": 1147
+  },
+  {
+    "file": "src/engine/Map/Grid.ts",
+    "name": "getCell",
+    "start": 1149,
+    "end": 1154
+  },
+  {
+    "file": "src/engine/Map/Grid.ts",
+    "name": "getCellPos",
+    "start": 1156,
+    "end": 1158
+  },
+  {
+    "file": "src/engine/Map/Grid.ts",
+    "name": "isValidPos",
+    "start": 1160,
+    "end": 1162
+  },
+  {
+    "file": "src/engine/Map/Grid.ts",
+    "name": "highestPriorityLayer",
+    "start": 1169,
+    "end": 1173
+  },
+  {
+    "file": "src/engine/Map/Grid.ts",
+    "name": "setTerrainLayer",
+    "start": 1187,
+    "end": 1205
+  },
+  {
+    "file": "src/engine/Map/Grid.ts",
+    "name": "setTerrain",
+    "start": 1207,
+    "end": 1238
+  },
+  {
+    "file": "src/engine/Map/LakeSystem.ts",
+    "name": "ceTerrainFlags",
+    "start": 92,
+    "end": 112
+  },
+  {
+    "file": "src/engine/Map/LakeSystem.ts",
+    "name": "isSecretTerrain",
+    "start": 115,
+    "end": 117
+  },
+  {
+    "file": "src/engine/Map/LakeSystem.ts",
+    "name": "liquidType",
+    "start": 140,
+    "end": 161
+  },
+  {
+    "file": "src/engine/Map/LakeSystem.ts",
+    "name": "cellKey",
+    "start": 167,
+    "end": 169
+  },
+  {
+    "file": "src/engine/Map/LakeSystem.ts",
+    "name": "stampTerrain",
+    "start": 183,
+    "end": 186
+  },
+  {
+    "file": "src/engine/Map/LakeSystem.ts",
+    "name": "fillLake",
+    "start": 194,
+    "end": 218
+  },
+  {
+    "file": "src/engine/Map/LakeSystem.ts",
+    "name": "createWreath",
+    "start": 227,
+    "end": 245
+  },
+  {
+    "file": "src/engine/Map/LakeSystem.ts",
+    "name": "fillLakes",
+    "start": 252,
+    "end": 263
+  },
+  {
+    "file": "src/engine/Map/LakeSystem.ts",
+    "name": "cleanUpLakeBoundaries",
+    "start": 278,
+    "end": 341
+  },
+  {
+    "file": "src/engine/Map/LakeSystem.ts",
+    "name": "pathingDistance",
+    "start": 359,
+    "end": 388
+  },
+  {
+    "file": "src/engine/Map/LakeSystem.ts",
+    "name": "buildABridge",
+    "start": 404,
+    "end": 505
+  },
+  {
+    "file": "src/engine/Map/LightCatalog.ts",
+    "name": "minersLightColorAtDepth",
+    "start": 307,
+    "end": 319
+  },
+  {
+    "file": "src/engine/Map/LightCatalog.ts",
+    "name": "minersLightBaseRadiusFixpt",
+    "start": 334,
+    "end": 341
+  },
+  {
+    "file": "src/engine/Map/LightCatalog.ts",
+    "name": "updateMinersLightRadius",
+    "start": 358,
+    "end": 416
+  },
+  {
+    "file": "src/engine/Map/LoopMap.ts",
+    "name": "inMap",
+    "start": 64,
+    "end": 67
+  },
+  {
+    "file": "src/engine/Map/LoopMap.ts",
+    "name": "extractWorkGrid",
+    "start": 79,
+    "end": 90
+  },
+  {
+    "file": "src/engine/Map/LoopMap.ts",
+    "name": "loopDoorSiteScan",
+    "start": 100,
+    "end": 140
+  },
+  {
+    "file": "src/engine/Map/LoopMap.ts",
+    "name": "addLoopsToWorkGrid",
+    "start": 143,
+    "end": 147
+  },
+  {
+    "file": "src/engine/Map/LoopMap.ts",
+    "name": "addLoops",
+    "start": 159,
+    "end": 180
+  },
+  {
+    "file": "src/engine/Map/LoopMap.ts",
+    "name": "applyLoopDoorSites",
+    "start": 188,
+    "end": 200
+  },
+  {
+    "file": "src/engine/Map/LoopMap.ts",
+    "name": "blocksPathing",
+    "start": 211,
+    "end": 226
+  },
+  {
+    "file": "src/engine/Map/LoopMap.ts",
+    "name": "checkLoopinessCell",
+    "start": 234,
+    "end": 278
+  },
+  {
+    "file": "src/engine/Map/LoopMap.ts",
+    "name": "stripNonLoopyCells",
+    "start": 286,
+    "end": 300
+  },
+  {
+    "file": "src/engine/Map/LoopMap.ts",
+    "name": "auditLoopFlood",
+    "start": 306,
+    "end": 320
+  },
+  {
+    "file": "src/engine/Map/LoopMap.ts",
+    "name": "emptyLoopMap",
+    "start": 323,
+    "end": 327
+  },
+  {
+    "file": "src/engine/Map/LoopMap.ts",
+    "name": "pruneLoopMarkings",
+    "start": 334,
+    "end": 356
+  },
+  {
+    "file": "src/engine/Map/LoopMap.ts",
+    "name": "analyzeLoopMap",
+    "start": 365,
+    "end": 377
+  },
+  {
+    "file": "src/engine/Map/LoopMap.ts",
+    "name": "floodFillCount",
+    "start": 443,
+    "end": 471
+  },
+  {
+    "file": "src/engine/Map/LoopMap.ts",
+    "name": "analyzeChokeMap",
+    "start": 490,
+    "end": 598
+  },
+  {
+    "file": "src/engine/Map/MachineCells.ts",
+    "name": "collectMachineCells",
+    "start": 8,
+    "end": 16
+  },
+  {
+    "file": "src/engine/Map/MachineCells.ts",
+    "name": "machineCellsMatchGrid",
+    "start": 21,
+    "end": 29
+  },
+  {
+    "file": "src/engine/Map/Pathfind.ts",
+    "name": "Pathfind",
+    "start": 9,
+    "end": 108
+  },
+  {
+    "file": "src/engine/Map/Pathfind.ts",
+    "name": "findPath",
+    "start": 15,
+    "end": 85
+  },
+  {
+    "file": "src/engine/Map/Pathfind.ts",
+    "name": "heuristic",
+    "start": 87,
+    "end": 92
+  },
+  {
+    "file": "src/engine/Map/Pathfind.ts",
+    "name": "reconstructPath",
+    "start": 94,
+    "end": 107
+  },
+  {
+    "file": "src/engine/Map/Pathfinding.ts",
+    "name": "DijkstraMap",
+    "start": 21,
+    "end": 215
+  },
+  {
+    "file": "src/engine/Map/Pathfinding.ts",
+    "name": "clear",
+    "start": 49,
+    "end": 59
+  },
+  {
+    "file": "src/engine/Map/Pathfinding.ts",
+    "name": "getCell",
+    "start": 61,
+    "end": 66
+  },
+  {
+    "file": "src/engine/Map/Pathfinding.ts",
+    "name": "calculateMap",
+    "start": 68,
+    "end": 101
+  },
+  {
+    "file": "src/engine/Map/Pathfinding.ts",
+    "name": "updateMap",
+    "start": 103,
+    "end": 156
+  },
+  {
+    "file": "src/engine/Map/Pathfinding.ts",
+    "name": "getDistance",
+    "start": 158,
+    "end": 161
+  },
+  {
+    "file": "src/engine/Map/Pathfinding.ts",
+    "name": "batchScan",
+    "start": 174,
+    "end": 200
+  },
+  {
+    "file": "src/engine/Map/Pathfinding.ts",
+    "name": "insertSorted",
+    "start": 203,
+    "end": 214
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "name": "resolveDFName",
+    "start": 156,
+    "end": 165
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "name": "firstMissingTileInChain",
+    "start": 187,
+    "end": 204
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "name": "discoverTerrain",
+    "start": 209,
+    "end": 224
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "name": "circuitBreakersPreventActivation",
+    "start": 245,
+    "end": 256
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "name": "activateMachine",
+    "start": 280,
+    "end": 321
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "name": "promoteOnCommutation",
+    "start": 326,
+    "end": 330
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "name": "clearAllPowered",
+    "start": 333,
+    "end": 340
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "name": "promoteTile",
+    "start": 381,
+    "end": 501
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "name": "promoteLayersWithMechFlag",
+    "start": 511,
+    "end": 526
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "name": "promoteOnPlayerBump",
+    "start": 529,
+    "end": 536
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "name": "promoteOnStep",
+    "start": 539,
+    "end": 541
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "name": "promoteOnItemPickup",
+    "start": 544,
+    "end": 546
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "name": "promoteOnItemPlaced",
+    "start": 549,
+    "end": 551
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "name": "runPromotionUpdate",
+    "start": 591,
+    "end": 716
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "name": "exposeTileToFire",
+    "start": 768,
+    "end": 858
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "name": "runFireUpdate",
+    "start": 886,
+    "end": 930
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "name": "triggerCreatureTrapLayers",
+    "start": 937,
+    "end": 949
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "name": "consumeTrapTile",
+    "start": 952,
+    "end": 954
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "name": "obstructionDecrement",
+    "start": 960,
+    "end": 967
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "name": "spawnObstruction",
+    "start": 971,
+    "end": 978
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "name": "tunnelize",
+    "start": 986,
+    "end": 1033
+  },
+  {
+    "file": "src/engine/Map/Promotion.ts",
+    "name": "breakEntanglingTerrain",
+    "start": 1036,
+    "end": 1041
+  },
+  {
+    "file": "src/engine/Map/SafetyMap.ts",
+    "name": "allocShortGrid",
+    "start": 40,
+    "end": 46
+  },
+  {
+    "file": "src/engine/Map/SafetyMap.ts",
+    "name": "copyShortGrid",
+    "start": 48,
+    "end": 50
+  },
+  {
+    "file": "src/engine/Map/SafetyMap.ts",
+    "name": "buildSafetyMap",
+    "start": 87,
+    "end": 196
+  },
+  {
+    "file": "src/engine/Map/SafetyMap.ts",
+    "name": "fleeingMonsterAwareOfPlayer",
+    "start": 220,
+    "end": 225
+  },
+  {
+    "file": "src/engine/Map/SafetyMap.ts",
+    "name": "getSafetyMapForMonster",
+    "start": 232,
+    "end": 248
+  },
+  {
+    "file": "src/engine/Map/SafetyMap.ts",
+    "name": "safetyNextStep",
+    "start": 262,
+    "end": 282
+  },
+  {
+    "file": "src/engine/Map/Scent.ts",
+    "name": "scentDistance",
+    "start": 29,
+    "end": 33
+  },
+  {
+    "file": "src/engine/Map/Scent.ts",
+    "name": "ScentMap",
+    "start": 66,
+    "end": 282
+  },
+  {
+    "file": "src/engine/Map/Scent.ts",
+    "name": "get",
+    "start": 80,
+    "end": 83
+  },
+  {
+    "file": "src/engine/Map/Scent.ts",
+    "name": "getState",
+    "start": 85,
+    "end": 87
+  },
+  {
+    "file": "src/engine/Map/Scent.ts",
+    "name": "fromState",
+    "start": 89,
+    "end": 95
+  },
+  {
+    "file": "src/engine/Map/Scent.ts",
+    "name": "set",
+    "start": 97,
+    "end": 100
+  },
+  {
+    "file": "src/engine/Map/Scent.ts",
+    "name": "addScent",
+    "start": 110,
+    "end": 117
+  },
+  {
+    "file": "src/engine/Map/Scent.ts",
+    "name": "replaceScent",
+    "start": 120,
+    "end": 123
+  },
+  {
+    "file": "src/engine/Map/Scent.ts",
+    "name": "update",
+    "start": 130,
+    "end": 142
+  },
+  {
+    "file": "src/engine/Map/Scent.ts",
+    "name": "resetTurnNumber",
+    "start": 149,
+    "end": 155
+  },
+  {
+    "file": "src/engine/Map/Scent.ts",
+    "name": "isLocalScentMaximum",
+    "start": 161,
+    "end": 172
+  },
+  {
+    "file": "src/engine/Map/Scent.ts",
+    "name": "stepDirection",
+    "start": 181,
+    "end": 219
+  },
+  {
+    "file": "src/engine/Map/Scent.ts",
+    "name": "awarenessDistance",
+    "start": 230,
+    "end": 240
+  },
+  {
+    "file": "src/engine/Map/Scent.ts",
+    "name": "awareOfTarget",
+    "start": 252,
+    "end": 281
+  },
+  {
+    "file": "src/engine/Map/TerrainCatalog.ts",
+    "name": "blocksPassability",
+    "start": 1270,
+    "end": 1272
+  },
+  {
+    "file": "src/engine/Map/TerrainCatalog.ts",
+    "name": "isPathingBlocker",
+    "start": 1275,
+    "end": 1277
+  },
+  {
+    "file": "src/engine/Map/TerrainCatalog.ts",
+    "name": "blocksVision",
+    "start": 1280,
+    "end": 1282
+  },
+  {
+    "file": "src/engine/Map/TerrainCatalog.ts",
+    "name": "obstructsItems",
+    "start": 1285,
+    "end": 1287
+  },
+  {
+    "file": "src/engine/Map/TerrainCatalog.ts",
+    "name": "obstructsDiagonalMovement",
+    "start": 1290,
+    "end": 1292
+  },
+  {
+    "file": "src/engine/Map/TerrainCatalog.ts",
+    "name": "isDeepWater",
+    "start": 1295,
+    "end": 1297
+  },
+  {
+    "file": "src/engine/Map/TerrainCatalog.ts",
+    "name": "isAutoDescent",
+    "start": 1306,
+    "end": 1308
+  },
+  {
+    "file": "src/engine/Map/TerrainCatalog.ts",
+    "name": "isFlammable",
+    "start": 1311,
+    "end": 1313
+  },
+  {
+    "file": "src/engine/Map/TerrainCatalog.ts",
+    "name": "isFireTerrain",
+    "start": 1321,
+    "end": 1323
+  },
+  {
+    "file": "src/engine/Map/TerrainRules.ts",
+    "name": "terrainBlocksMovement",
+    "start": 14,
+    "end": 16
+  },
+  {
+    "file": "src/engine/Map/TerrainRules.ts",
+    "name": "terrainBlocksVision",
+    "start": 19,
+    "end": 21
+  },
+  {
+    "file": "src/engine/Map/TerrainRules.ts",
+    "name": "terrainBlocksScent",
+    "start": 23,
+    "end": 25
+  },
+  {
+    "file": "src/engine/Map/TerrainRules.ts",
+    "name": "terrainPassableOrSecretDoor",
+    "start": 28,
+    "end": 33
+  },
+  {
+    "file": "src/engine/Map/TerrainRules.ts",
+    "name": "genericPathCost",
+    "start": 36,
+    "end": 42
+  },
+  {
+    "file": "src/engine/Map/TerrainRules.ts",
+    "name": "isUnseenPassableSecretDoor",
+    "start": 45,
+    "end": 47
+  },
+  {
+    "file": "src/engine/Map/TerrainRules.ts",
+    "name": "safetyTerrainCosts",
+    "start": 59,
+    "end": 74
+  },
+  {
+    "file": "src/engine/Map/WallDoorFinish.ts",
+    "name": "obstructsPassability",
+    "start": 46,
+    "end": 51
+  },
+  {
+    "file": "src/engine/Map/WallDoorFinish.ts",
+    "name": "obstructsVision",
+    "start": 54,
+    "end": 59
+  },
+  {
+    "file": "src/engine/Map/WallDoorFinish.ts",
+    "name": "obstructsDiagonalMovement",
+    "start": 62,
+    "end": 66
+  },
+  {
+    "file": "src/engine/Map/WallDoorFinish.ts",
+    "name": "isPathingBlocker",
+    "start": 69,
+    "end": 76
+  },
+  {
+    "file": "src/engine/Map/WallDoorFinish.ts",
+    "name": "secretDoorChance",
+    "start": 91,
+    "end": 94
+  },
+  {
+    "file": "src/engine/Map/WallDoorFinish.ts",
+    "name": "removeDiagonalOpenings",
+    "start": 122,
+    "end": 162
+  },
+  {
+    "file": "src/engine/Map/WallDoorFinish.ts",
+    "name": "finishDoors",
+    "start": 189,
+    "end": 225
+  },
+  {
+    "file": "src/engine/Map/WallDoorFinish.ts",
+    "name": "finishWalls",
+    "start": 245,
+    "end": 282
+  },
+  {
+    "file": "src/engine/Map/WaypointMap.ts",
+    "name": "WaypointSystem",
+    "start": 108,
+    "end": 392
+  },
+  {
+    "file": "src/engine/Map/WaypointMap.ts",
+    "name": "getState",
+    "start": 122,
+    "end": 130
+  },
+  {
+    "file": "src/engine/Map/WaypointMap.ts",
+    "name": "setState",
+    "start": 132,
+    "end": 139
+  },
+  {
+    "file": "src/engine/Map/WaypointMap.ts",
+    "name": "setUpWaypoints",
+    "start": 145,
+    "end": 147
+  },
+  {
+    "file": "src/engine/Map/WaypointMap.ts",
+    "name": "setUpWaypointsInner",
+    "start": 149,
+    "end": 196
+  },
+  {
+    "file": "src/engine/Map/WaypointMap.ts",
+    "name": "refreshWaypoint",
+    "start": 204,
+    "end": 250
+  },
+  {
+    "file": "src/engine/Map/WaypointMap.ts",
+    "name": "rollingRefresh",
+    "start": 257,
+    "end": 262
+  },
+  {
+    "file": "src/engine/Map/WaypointMap.ts",
+    "name": "ensureVisitedInitialized",
+    "start": 269,
+    "end": 277
+  },
+  {
+    "file": "src/engine/Map/WaypointMap.ts",
+    "name": "isValidWanderDestination",
+    "start": 283,
+    "end": 290
+  },
+  {
+    "file": "src/engine/Map/WaypointMap.ts",
+    "name": "nextStep",
+    "start": 299,
+    "end": 325
+  },
+  {
+    "file": "src/engine/Map/WaypointMap.ts",
+    "name": "isBlockedFor",
+    "start": 328,
+    "end": 343
+  },
+  {
+    "file": "src/engine/Map/WaypointMap.ts",
+    "name": "closestWaypointIndex",
+    "start": 350,
+    "end": 363
+  },
+  {
+    "file": "src/engine/Map/WaypointMap.ts",
+    "name": "chooseNewWanderDestination",
+    "start": 371,
+    "end": 391
+  },
+  {
+    "file": "src/engine/Movement/CreaturePlacement.ts",
+    "name": "canPlaceCreature",
+    "start": 28,
+    "end": 34
+  },
+  {
+    "file": "src/engine/Movement/CreaturePlacement.ts",
+    "name": "teleportForbiddenFlags",
+    "start": 37,
+    "end": 46
+  },
+  {
+    "file": "src/engine/Movement/CreaturePlacement.ts",
+    "name": "teleportCandidates",
+    "start": 52,
+    "end": 94
+  },
+  {
+    "file": "src/engine/Movement/CreaturePlacement.ts",
+    "name": "captiveItemDropCandidates",
+    "start": 101,
+    "end": 145
+  },
+  {
+    "file": "src/engine/Movement/Entrancement.ts",
+    "name": "staffEntrancementDuration",
+    "start": 8,
+    "end": 10
+  },
+  {
+    "file": "src/engine/Movement/Entrancement.ts",
+    "name": "entrancementDiagonalBlocked",
+    "start": 17,
+    "end": 20
+  },
+  {
+    "file": "src/engine/Movement/Entrancement.ts",
+    "name": "entrancementPassable",
+    "start": 22,
+    "end": 26
+  },
+  {
+    "file": "src/engine/Movement/LevelTravel.ts",
+    "name": "travelDistanceMap",
+    "start": 21,
+    "end": 48
+  },
+  {
+    "file": "src/engine/Movement/LevelTravel.ts",
+    "name": "scheduleLevelFollowers",
+    "start": 50,
+    "end": 74
+  },
+  {
+    "file": "src/engine/Movement/LevelTravel.ts",
+    "name": "travelAvoidedFlags",
+    "start": 77,
+    "end": 85
+  },
+  {
+    "file": "src/engine/Movement/LevelTravel.ts",
+    "name": "travelPlacement",
+    "start": 87,
+    "end": 114
+  },
+  {
+    "file": "src/engine/Movement/LevelTravel.ts",
+    "name": "restoreTravelPosition",
+    "start": 118,
+    "end": 131
+  },
+  {
+    "file": "src/engine/Random.ts",
+    "name": "Ranctx",
+    "start": 13,
+    "end": 18
+  },
+  {
+    "file": "src/engine/Random.ts",
+    "name": "Random",
+    "start": 30,
+    "end": 234
+  },
+  {
+    "file": "src/engine/Random.ts",
+    "name": "setRNG",
+    "start": 46,
+    "end": 49
+  },
+  {
+    "file": "src/engine/Random.ts",
+    "name": "getState",
+    "start": 51,
+    "end": 59
+  },
+  {
+    "file": "src/engine/Random.ts",
+    "name": "isState",
+    "start": 61,
+    "end": 73
+  },
+  {
+    "file": "src/engine/Random.ts",
+    "name": "setState",
+    "start": 76,
+    "end": 82
+  },
+  {
+    "file": "src/engine/Random.ts",
+    "name": "rot",
+    "start": 84,
+    "end": 88
+  },
+  {
+    "file": "src/engine/Random.ts",
+    "name": "ranval",
+    "start": 90,
+    "end": 98
+  },
+  {
+    "file": "src/engine/Random.ts",
+    "name": "raninit",
+    "start": 100,
+    "end": 112
+  },
+  {
+    "file": "src/engine/Random.ts",
+    "name": "seedRandomGenerator",
+    "start": 114,
+    "end": 129
+  },
+  {
+    "file": "src/engine/Random.ts",
+    "name": "resetCounters",
+    "start": 132,
+    "end": 135
+  },
+  {
+    "file": "src/engine/Random.ts",
+    "name": "range",
+    "start": 137,
+    "end": 147
+  },
+  {
+    "file": "src/engine/Random.ts",
+    "name": "randRange",
+    "start": 149,
+    "end": 162
+  },
+  {
+    "file": "src/engine/Random.ts",
+    "name": "rand64bits",
+    "start": 165,
+    "end": 171
+  },
+  {
+    "file": "src/engine/Random.ts",
+    "name": "randPercent",
+    "start": 173,
+    "end": 176
+  },
+  {
+    "file": "src/engine/Random.ts",
+    "name": "randClumpedRange",
+    "start": 178,
+    "end": 201
+  },
+  {
+    "file": "src/engine/Random.ts",
+    "name": "shuffleList",
+    "start": 204,
+    "end": 214
+  },
+  {
+    "file": "src/engine/Random.ts",
+    "name": "rollD",
+    "start": 219,
+    "end": 233
+  },
+  {
+    "file": "src/engine/Seed.ts",
+    "name": "normalizeSeed",
+    "start": 5,
+    "end": 15
+  },
+  {
+    "file": "src/engine/Seed.ts",
+    "name": "isSeed",
+    "start": 17,
+    "end": 20
+  },
+  {
+    "file": "src/engine/Settings.ts",
+    "name": "isMapScaleMode",
+    "start": 49,
+    "end": 51
+  },
+  {
+    "file": "src/engine/Settings.ts",
+    "name": "isSidebarWidthMode",
+    "start": 53,
+    "end": 55
+  },
+  {
+    "file": "src/engine/Settings.ts",
+    "name": "loadDisplaySettings",
+    "start": 58,
+    "end": 74
+  },
+  {
+    "file": "src/engine/Settings.ts",
+    "name": "saveDisplaySettings",
+    "start": 76,
+    "end": 82
+  },
+  {
+    "file": "src/engine/Settings.ts",
+    "name": "computeSidebarWidth",
+    "start": 100,
+    "end": 105
+  },
+  {
+    "file": "src/engine/Status/statusConfig.ts",
+    "name": "isSidebarVisibleStatus",
+    "start": 71,
+    "end": 73
+  },
+  {
+    "file": "src/engine/Status/statusConfig.ts",
+    "name": "creatureStatusRows",
+    "start": 76,
+    "end": 87
+  },
+  {
+    "file": "src/engine/Systems/EventBus.ts",
+    "name": "EventBusManager",
+    "start": 8,
+    "end": 29
+  },
+  {
+    "file": "src/engine/Systems/EventBus.ts",
+    "name": "on",
+    "start": 11,
+    "end": 16
+  },
+  {
+    "file": "src/engine/Systems/EventBus.ts",
+    "name": "off",
+    "start": 18,
+    "end": 21
+  },
+  {
+    "file": "src/engine/Systems/EventBus.ts",
+    "name": "emit",
+    "start": 23,
+    "end": 28
+  },
+  {
+    "file": "src/engine/Systems/Logger.ts",
+    "name": "Logger",
+    "start": 13,
+    "end": 53
+  },
+  {
+    "file": "src/engine/Systems/Logger.ts",
+    "name": "getState",
+    "start": 17,
+    "end": 19
+  },
+  {
+    "file": "src/engine/Systems/Logger.ts",
+    "name": "setState",
+    "start": 21,
+    "end": 24
+  },
+  {
+    "file": "src/engine/Systems/Logger.ts",
+    "name": "reset",
+    "start": 26,
+    "end": 29
+  },
+  {
+    "file": "src/engine/Systems/Logger.ts",
+    "name": "log",
+    "start": 31,
+    "end": 52
+  },
+  {
+    "file": "src/engine/Systems/Time.ts",
+    "name": "TimeSystem",
+    "start": 16,
+    "end": 18
+  },
+  {
+    "file": "src/engine/UI/Appearance.ts",
+    "name": "adjustedLightValue",
+    "start": 79,
+    "end": 82
+  },
+  {
+    "file": "src/engine/UI/Appearance.ts",
+    "name": "multiplyByLightChannels",
+    "start": 89,
+    "end": 100
+  },
+  {
+    "file": "src/engine/UI/Appearance.ts",
+    "name": "depthColor",
+    "start": 205,
+    "end": 212
+  },
+  {
+    "file": "src/engine/UI/Appearance.ts",
+    "name": "terrainAppearance",
+    "start": 214,
+    "end": 228
+  },
+  {
+    "file": "src/engine/UI/Appearance.ts",
+    "name": "layeredTerrainAppearance",
+    "start": 231,
+    "end": 253
+  },
+  {
+    "file": "src/engine/UI/Appearance.ts",
+    "name": "memoryTerrainAppearance",
+    "start": 256,
+    "end": 262
+  },
+  {
+    "file": "src/engine/UI/Appearance.ts",
+    "name": "cellAppearance",
+    "start": 280,
+    "end": 398
+  },
+  {
+    "file": "src/engine/UI/Appearance.ts",
+    "name": "detectedMagicAppearance",
+    "start": 417,
+    "end": 441
+  },
+  {
+    "file": "src/engine/UI/Appearance.ts",
+    "name": "itemAppearance",
+    "start": 450,
+    "end": 464
+  },
+  {
+    "file": "src/engine/UI/Appearance.ts",
+    "name": "rememberedItemAppearance",
+    "start": 466,
+    "end": 469
+  },
+  {
+    "file": "src/engine/UI/Appearance.ts",
+    "name": "monsterAppearance",
+    "start": 488,
+    "end": 529
+  },
+  {
+    "file": "src/engine/UI/Appearance.ts",
+    "name": "playerAppearance",
+    "start": 534,
+    "end": 536
+  },
+  {
+    "file": "src/engine/UI/Appearance.ts",
+    "name": "isMonsterEntity",
+    "start": 541,
+    "end": 544
+  },
+  {
+    "file": "src/engine/UI/Appearance.ts",
+    "name": "isPlayerEntity",
+    "start": 546,
+    "end": 549
+  },
+  {
+    "file": "src/engine/UI/Appearance.ts",
+    "name": "entityAppearance",
+    "start": 556,
+    "end": 560
+  },
+  {
+    "file": "src/engine/UI/DetailGenerator.ts",
+    "name": "generateMonsterDetail",
+    "start": 137,
+    "end": 314
+  },
+  {
+    "file": "src/engine/UI/DetailGenerator.ts",
+    "name": "trimFloatStr",
+    "start": 319,
+    "end": 321
+  },
+  {
+    "file": "src/engine/UI/DetailGenerator.ts",
+    "name": "signedTrimFloatStr",
+    "start": 324,
+    "end": 326
+  },
+  {
+    "file": "src/engine/UI/DetailGenerator.ts",
+    "name": "generateItemDetail",
+    "start": 330,
+    "end": 528
+  },
+  {
+    "file": "src/engine/UI/Discoveries.ts",
+    "name": "getDiscoveries",
+    "start": 18,
+    "end": 45
+  },
+  {
+    "file": "src/engine/UI/ItemKnowledge.ts",
+    "name": "kindIsKnown",
+    "start": 4,
+    "end": 6
+  },
+  {
+    "file": "src/engine/UI/ItemKnowledge.ts",
+    "name": "itemKnowledge",
+    "start": 9,
+    "end": 19
+  },
+  {
+    "file": "src/engine/UI/ItemKnowledge.ts",
+    "name": "discoverySuffix",
+    "start": 21,
+    "end": 23
+  },
+  {
+    "file": "src/engine/UI/MonsterSidebar.ts",
+    "name": "visibleMonsterRows",
+    "start": 8,
+    "end": 23
+  },
+  {
+    "file": "src/engine/UI/MonsterVisibility.ts",
+    "name": "monsterRevealed",
+    "start": 6,
+    "end": 9
+  },
+  {
+    "file": "src/engine/UI/MonsterVisibility.ts",
+    "name": "monsterHidden",
+    "start": 11,
+    "end": 15
+  },
+  {
+    "file": "src/engine/UI/MonsterVisibility.ts",
+    "name": "monsterInGas",
+    "start": 17,
+    "end": 20
+  },
+  {
+    "file": "src/engine/UI/MonsterVisibility.ts",
+    "name": "canSeeMonster",
+    "start": 22,
+    "end": 25
+  },
+  {
+    "file": "src/engine/UI/MonsterVisibility.ts",
+    "name": "canDirectlySeeMonster",
+    "start": 27,
+    "end": 30
+  },
+  {
+    "file": "src/engine/UI/MonsterVisibility.ts",
+    "name": "canDisplayMonster",
+    "start": 33,
+    "end": 35
+  },
+  {
+    "file": "src/engine/Visuals/FloatingText.ts",
+    "name": "FloatingText",
+    "start": 8,
+    "end": 31
+  },
+  {
+    "file": "src/engine/Visuals/FloatingText.ts",
+    "name": "update",
+    "start": 27,
+    "end": 30
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "getNextEntityId",
+    "start": 36,
+    "end": 36
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "restoreNextEntityId",
+    "start": 37,
+    "end": 37
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "resetEntityIds",
+    "start": 40,
+    "end": 42
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "allocateEntityId",
+    "start": 44,
+    "end": 46
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "ensureEntityIdAbove",
+    "start": 48,
+    "end": 52
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "Creature",
+    "start": 54,
+    "end": 325
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "hasAlteredSpeeds",
+    "start": 111,
+    "end": 113
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "refreshSpeeds",
+    "start": 115,
+    "end": 127
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "hasStatus",
+    "start": 145,
+    "end": 147
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "getStatusDuration",
+    "start": 149,
+    "end": 151
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "setStatusDuration",
+    "start": 153,
+    "end": 162
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "applyStatus",
+    "start": 164,
+    "end": 186
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "weaken",
+    "start": 189,
+    "end": 197
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "shortenMagicalFear",
+    "start": 200,
+    "end": 202
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "heal",
+    "start": 207,
+    "end": 220
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "canBePoisoned",
+    "start": 222,
+    "end": 224
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "addPoison",
+    "start": 229,
+    "end": 235
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "restorePoison",
+    "start": 238,
+    "end": 240
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "applyShield",
+    "start": 243,
+    "end": 249
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "restoreShield",
+    "start": 253,
+    "end": 261
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "absorbShieldDamage",
+    "start": 265,
+    "end": 274
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "isStatusPermanent",
+    "start": 281,
+    "end": 281
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "tickStatuses",
+    "start": 283,
+    "end": 300
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "move",
+    "start": 302,
+    "end": 304
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "takeDamage",
+    "start": 306,
+    "end": 311
+  },
+  {
+    "file": "src/entities/Creature.ts",
+    "name": "die",
+    "start": 313,
+    "end": 324
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "factionOf",
+    "start": 46,
+    "end": 50
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "monstersAreTeammates",
+    "start": 53,
+    "end": 59
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "monstersAreEnemies",
+    "start": 62,
+    "end": 68
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "boltEnemies",
+    "start": 70,
+    "end": 79
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "avoidedFlagsForCaster",
+    "start": 81,
+    "end": 90
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "eligibleForCombatBuff",
+    "start": 92,
+    "end": 99
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "countMinions",
+    "start": 114,
+    "end": 119
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "isShielded",
+    "start": 122,
+    "end": 124
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "applyShieldStatus",
+    "start": 125,
+    "end": 127
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "generallyValidBoltTarget",
+    "start": 133,
+    "end": 143
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "specificallyValidBoltTarget",
+    "start": 151,
+    "end": 231
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "creatureAtLoc",
+    "start": 234,
+    "end": 239
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "Monster",
+    "start": 300,
+    "end": 2127
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "interruptCorpseAbsorption",
+    "start": 360,
+    "end": 362
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "absorbShieldDamage",
+    "start": 364,
+    "end": 368
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "takeDamage",
+    "start": 370,
+    "end": 373
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "clearCorpseTargetOnLevelChange",
+    "start": 376,
+    "end": 378
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "copyForClone",
+    "start": 562,
+    "end": 594
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "copyPlayerForClone",
+    "start": 599,
+    "end": 622
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "empower",
+    "start": 627,
+    "end": 639
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "polymorph",
+    "start": 643,
+    "end": 711
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "setStatusDuration",
+    "start": 715,
+    "end": 718
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "applyStatus",
+    "start": 720,
+    "end": 724
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "enrageAfterAttack",
+    "start": 727,
+    "end": 729
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "tickStatuses",
+    "start": 731,
+    "end": 742
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "refreshSpeeds",
+    "start": 744,
+    "end": 748
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "hasBehavior",
+    "start": 750,
+    "end": 752
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "hasCEBehavior",
+    "start": 756,
+    "end": 761
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "syncFlagDerivedStatuses",
+    "start": 776,
+    "end": 797
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "isStatusPermanent",
+    "start": 800,
+    "end": 806
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "endTurnWithAttack",
+    "start": 825,
+    "end": 827
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "mutate",
+    "start": 829,
+    "end": 870
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "hasAbility",
+    "start": 872,
+    "end": 874
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "isInvulnerable",
+    "start": 881,
+    "end": 883
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "isImmuneToWeapons",
+    "start": 892,
+    "end": 894
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "reflectChance",
+    "start": 903,
+    "end": 907
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "diesIfNegated",
+    "start": 913,
+    "end": 915
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "isTrulyInvisible",
+    "start": 924,
+    "end": 926
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "trySummon",
+    "start": 941,
+    "end": 963
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "tryUseBolt",
+    "start": 978,
+    "end": 997
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "willAttackTarget",
+    "start": 1018,
+    "end": 1025
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "moveEntranced",
+    "start": 1031,
+    "end": 1065
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "performWhipAttack",
+    "start": 1077,
+    "end": 1102
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "performSpearAttack",
+    "start": 1115,
+    "end": 1146
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "performSweepAttack",
+    "start": 1159,
+    "end": 1180
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "tryGeometryMeleeAdjacent",
+    "start": 1189,
+    "end": 1200
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "resolveGeometryAttackOn",
+    "start": 1211,
+    "end": 1312
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "rayStepsTo",
+    "start": 1320,
+    "end": 1328
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "tryGeometryRayTo",
+    "start": 1336,
+    "end": 1347
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "canBePoisoned",
+    "start": 1349,
+    "end": 1351
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "recoverPerTick",
+    "start": 1354,
+    "end": 1362
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "dominationForm",
+    "start": 1366,
+    "end": 1368
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "allocateForSnapshot",
+    "start": 1372,
+    "end": 1377
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "snapshotForm",
+    "start": 1380,
+    "end": 1390
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "takeTurn",
+    "start": 1392,
+    "end": 2029
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "randFlittingDirection",
+    "start": 2037,
+    "end": 2054
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "canEnterWaterTerrain",
+    "start": 2057,
+    "end": 2066
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "tryCorpseMove",
+    "start": 2068,
+    "end": 2074
+  },
+  {
+    "file": "src/entities/Monster.ts",
+    "name": "tryMoveTo",
+    "start": 2076,
+    "end": 2126
+  },
+  {
+    "file": "src/entities/Player.ts",
+    "name": "Player",
+    "start": 22,
+    "end": 263
+  },
+  {
+    "file": "src/entities/Player.ts",
+    "name": "snapshotHungerTransition",
+    "start": 56,
+    "end": 56
+  },
+  {
+    "file": "src/entities/Player.ts",
+    "name": "restoreHungerTransition",
+    "start": 57,
+    "end": 57
+  },
+  {
+    "file": "src/entities/Player.ts",
+    "name": "tickTemporaryImmunities",
+    "start": 60,
+    "end": 72
+  },
+  {
+    "file": "src/entities/Player.ts",
+    "name": "grantTemporaryImmunity",
+    "start": 75,
+    "end": 78
+  },
+  {
+    "file": "src/entities/Player.ts",
+    "name": "equip",
+    "start": 83,
+    "end": 103
+  },
+  {
+    "file": "src/entities/Player.ts",
+    "name": "unequip",
+    "start": 105,
+    "end": 113
+  },
+  {
+    "file": "src/entities/Player.ts",
+    "name": "rings",
+    "start": 116,
+    "end": 121
+  },
+  {
+    "file": "src/entities/Player.ts",
+    "name": "consumeHungerTransition",
+    "start": 124,
+    "end": 128
+  },
+  {
+    "file": "src/entities/Player.ts",
+    "name": "refreshHungerState",
+    "start": 131,
+    "end": 134
+  },
+  {
+    "file": "src/entities/Player.ts",
+    "name": "tickNutrition",
+    "start": 143,
+    "end": 162
+  },
+  {
+    "file": "src/entities/Player.ts",
+    "name": "recoverPerTurn",
+    "start": 169,
+    "end": 192
+  },
+  {
+    "file": "src/entities/Player.ts",
+    "name": "updateNutrition",
+    "start": 199,
+    "end": 235
+  },
+  {
+    "file": "src/entities/Player.ts",
+    "name": "regenRatePerTurn",
+    "start": 238,
+    "end": 253
+  },
+  {
+    "file": "src/entities/Player.ts",
+    "name": "computeHungerState",
+    "start": 256,
+    "end": 262
+  },
+  {
+    "file": "src/i18n.ts",
+    "name": "setupI18n",
+    "start": 15,
+    "end": 17
+  },
+  {
+    "file": "src/test/fixtures/u19a-machine-scenes.ts",
+    "name": "machineScene",
+    "start": 16,
+    "end": 56
+  },
+  {
+    "file": "src/test/fixtures/u19a-machine-scenes.ts",
+    "name": "observeFromOrigin",
+    "start": 60,
+    "end": 81
+  },
+  {
+    "file": "src/test/fixtures/u19b-machine-scenes.ts",
+    "name": "preparePendingScene",
+    "start": 9,
+    "end": 33
+  },
+  {
+    "file": "src/test/fixtures/u19b-machine-scenes.ts",
+    "name": "pendingSceneState",
+    "start": 34,
+    "end": 40
+  },
+  {
+    "file": "src/test/fixtures/u19c-machine-actions.ts",
+    "name": "prepareImmediateAction",
+    "start": 5,
+    "end": 34
+  },
+  {
+    "file": "src/test/fixtures/u19c-machine-actions.ts",
+    "name": "performImmediateAction",
+    "start": 35,
+    "end": 41
+  },
+  {
+    "file": "src/test/fixtures/u19c-machine-actions.ts",
+    "name": "immediateActionState",
+    "start": 42,
+    "end": 45
+  },
+  {
+    "file": "src/test/fixtures/u19d-machine-actions.ts",
+    "name": "safe",
+    "start": 14,
+    "end": 14
+  },
+  {
+    "file": "src/test/fixtures/u19d-machine-actions.ts",
+    "name": "route",
+    "start": 15,
+    "end": 20
+  },
+  {
+    "file": "src/test/fixtures/u19d-machine-actions.ts",
+    "name": "runMachineActions",
+    "start": 21,
+    "end": 99
+  },
+  {
+    "file": "src/test/fixtures/u19e-machine-actions.ts",
+    "name": "runAltarActions",
+    "start": 15,
+    "end": 138
+  },
+  {
+    "file": "src/test/fixtures/u19f-auto-actions.ts",
+    "name": "runAutoActions",
+    "start": 14,
+    "end": 80
+  },
+  {
+    "file": "src/test/fixtures/u19f-machine-actions.ts",
+    "name": "runCrystalWormActions",
+    "start": 11,
+    "end": 69
+  },
+  {
+    "file": "src/test/harness.ts",
+    "name": "initI18nOnce",
+    "start": 60,
+    "end": 68
+  },
+  {
+    "file": "src/test/harness.ts",
+    "name": "createHeadlessGame",
+    "start": 78,
+    "end": 83
+  },
+  {
+    "file": "src/test/harness.ts",
+    "name": "defaultTurnPolicy",
+    "start": 91,
+    "end": 111
+  },
+  {
+    "file": "src/test/harness.ts",
+    "name": "runTurns",
+    "start": 118,
+    "end": 149
+  },
+  {
+    "file": "src/test/harness.ts",
+    "name": "terrainFingerprint",
+    "start": 156,
+    "end": 171
+  },
+  {
+    "file": "src/test/harness.ts",
+    "name": "analysisAllowsMove",
+    "start": 199,
+    "end": 205
+  },
+  {
+    "file": "src/test/i18n_scan.ts",
+    "name": "matchCalleeStart",
+    "start": 71,
+    "end": 75
+  },
+  {
+    "file": "src/test/i18n_scan.ts",
+    "name": "skipRegexLiteral",
+    "start": 81,
+    "end": 98
+  },
+  {
+    "file": "src/test/i18n_scan.ts",
+    "name": "skipTemplateHole",
+    "start": 104,
+    "end": 118
+  },
+  {
+    "file": "src/test/i18n_scan.ts",
+    "name": "skipTemplate",
+    "start": 121,
+    "end": 131
+  },
+  {
+    "file": "src/test/i18n_scan.ts",
+    "name": "skipQuoted",
+    "start": 134,
+    "end": 144
+  },
+  {
+    "file": "src/test/i18n_scan.ts",
+    "name": "findCallStarts",
+    "start": 150,
+    "end": 185
+  },
+  {
+    "file": "src/test/i18n_scan.ts",
+    "name": "findCallSites",
+    "start": 187,
+    "end": 193
+  },
+  {
+    "file": "src/test/i18n_scan.ts",
+    "name": "decodeEscapes",
+    "start": 199,
+    "end": 217
+  },
+  {
+    "file": "src/test/i18n_scan.ts",
+    "name": "parseStringExpr",
+    "start": 227,
+    "end": 313
+  },
+  {
+    "file": "src/test/i18n_scan.ts",
+    "name": "skipWs",
+    "start": 315,
+    "end": 318
+  },
+  {
+    "file": "src/test/i18n_scan.ts",
+    "name": "findTopLevelChar",
+    "start": 321,
+    "end": 341
+  },
+  {
+    "file": "src/test/i18n_scan.ts",
+    "name": "resolveIdentifierCandidates",
+    "start": 351,
+    "end": 405
+  },
+  {
+    "file": "src/test/i18n_scan.ts",
+    "name": "dedupe",
+    "start": 407,
+    "end": 415
+  },
+  {
+    "file": "src/test/i18n_scan.ts",
+    "name": "splitTopLevel",
+    "start": 418,
+    "end": 433
+  },
+  {
+    "file": "src/test/i18n_scan.ts",
+    "name": "splitCallArgs",
+    "start": 436,
+    "end": 458
+  },
+  {
+    "file": "src/test/i18n_scan.ts",
+    "name": "firstArgBareString",
+    "start": 480,
+    "end": 501
+  },
+  {
+    "file": "src/test/i18n_scan.ts",
+    "name": "findHardcodedLogStrings",
+    "start": 504,
+    "end": 526
+  },
+  {
+    "file": "src/test/i18n_scan.ts",
+    "name": "walk",
+    "start": 532,
+    "end": 544
+  },
+  {
+    "file": "src/test/i18n_scan.ts",
+    "name": "scanI18nUsage",
+    "start": 546,
+    "end": 629
+  },
+  {
+    "file": "src/types/index.ts",
+    "name": "posEq",
+    "start": 17,
+    "end": 19
+  }
+]

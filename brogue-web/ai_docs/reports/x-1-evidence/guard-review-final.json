@@ -1,0 +1,2891 @@
+[
+  {
+    "file": "src/test/b2_transcription.test.ts",
+    "cases": [
+      {
+        "name": "observes committed CE71 machines and their actual occupants on 34 seed × D1–D26",
+        "line": 58,
+        "assertions": [
+          {
+            "line": 85,
+            "text": "expect(call[0]).toBe(depth)"
+          },
+          {
+            "line": 98,
+            "text": "expect(machine.spawns).toHaveLength(3)"
+          },
+          {
+            "line": 99,
+            "text": "expect(new Set(machine.spawns.map(s=>`${s.pos.x},${s.pos.y}`)).size).toBe(3)"
+          },
+          {
+            "line": 101,
+            "text": "expect(spawn.isSentinel,'CE71 request exists but living sentinel grid occupant is missing').toBe(true)"
+          },
+          {
+            "line": 102,
+            "text": "expect(spawn.home).toBe(machine.number)"
+          },
+          {
+            "line": 105,
+            "text": "expect(torchOverwrites.get(game.grid)?.has(k), `seed${seed}/D${depth}: only a recorded stair-preparation write may replace the statue`).toBe(true)"
+          },
+          {
+            "line": 107,
+            "text": "expect(game.grid.getCell(spawn.pos.x,spawn.pos.y)!.machineNumber).toBe(0)"
+          },
+          {
+            "line": 108,
+            "text": "expect(game.grid.impregnableCells.has(k)).toBe(true)"
+          },
+          {
+            "line": 114,
+            "text": "expect(spawn.terrain).toBe(C.WALL_MONSTER_DORMANT)"
+          },
+          {
+            "line": 120,
+            "text": "expect(overwriter, `seed${seed}/D${depth}: no later CE70 feature explains the changed statue`).toBeDefined()"
+          },
+          {
+            "line": 121,
+            "text": "expect(game.grid.getCell(spawn.pos.x, spawn.pos.y)!.machineNumber).toBe(overwriter!.machineNumber)"
+          },
+          {
+            "line": 122,
+            "text": "expect(game.dormantMonsters.some(m => m.machineHome === overwriter!.machineNumber && m.loc.x === spawn.pos.x && m.loc.y === spawn.pos.y)).toBe(true)"
+          },
+          {
+            "line": 139,
+            "text": "expect(levels).toHaveLength(SEEDS.length*26)"
+          },
+          {
+            "line": 140,
+            "text": "expect(built,'natural CE71 construction coverage').toBeGreaterThan(0)"
+          },
+          {
+            "line": 141,
+            "text": "expect(realized).toBe(3*built)"
+          },
+          {
+            "line": 142,
+            "text": "expect(bad).toBe(0)"
+          }
+        ]
+      },
+      {
+        "name": "retains CE40 F5/F6=1 and fills CE31 hallway flag, CE10 weight, CE71 exact monster id",
+        "line": 151,
+        "assertions": [
+          {
+            "line": 152,
+            "text": "expect(bp(40).features.slice(5).map(f=>f.personalSpace)).toEqual([1,1])"
+          },
+          {
+            "line": 153,
+            "text": "expect(bp(31).features[1]!.flags).toEqual([ 'MF_ADOPT_ITEM','MF_FAR_FROM_ORIGIN','MF_TREAT_AS_BLOCKING','MF_NOT_IN_HALLWAY', ])"
+          },
+          {
+            "line": 156,
+            "text": "expect(bp(10).frequency).toBe(12)"
+          },
+          {
+            "line": 157,
+            "text": "expect(bp(71).features[0]!.monsterId).toBe('sentinel')"
+          }
+        ]
+      },
+      {
+        "name": "CE55 MAXIMIZE is present and U19f restores its closed tunnel consumer",
+        "line": 159,
+        "assertions": [
+          {
+            "line": 160,
+            "text": "expect(bp(55).flags).toContain('BP_MAXIMIZE_INTERIOR')"
+          },
+          {
+            "line": 161,
+            "text": "expect(bp(55).frequency).toBe(10)"
+          },
+          {
+            "line": 162,
+            "text": "expect(blueprintQualifies(bp(55),depth,['BP_ADOPT_ITEM'])).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "CE15 fungus follows tile, promote/fire, propagation and subsequentDF edges without deferred promotion",
+        "line": 180,
+        "assertions": [
+          {
+            "line": 181,
+            "text": "expect(bp(15).features[0]!.featureDF).toBe('DF_LUMINESCENT_FUNGUS')"
+          },
+          {
+            "line": 187,
+            "text": "expect(df,name).not.toBeNull()"
+          },
+          {
+            "line": 192,
+            "text": "expect(e,DF[df]).toBeDefined()"
+          },
+          {
+            "line": 193,
+            "text": "expect(DF_MISSING_TILES).not.toContain(df)"
+          },
+          {
+            "line": 194,
+            "text": "expect(()=>catalogFeature(df)).not.toThrow()"
+          },
+          {
+            "line": 195,
+            "text": "expect(e.tile).not.toBeNull()"
+          },
+          {
+            "line": 196,
+            "text": "expect(e.propagationTerrain).not.toBeNull()"
+          },
+          {
+            "line": 199,
+            "text": "expect(terrains.has(C.LUMINESCENT_FUNGUS)).toBe(true)"
+          },
+          {
+            "line": 204,
+            "text": "expect(promoteTile(grid,4,4,layer,fire).deferred,`${C[t]} fire=${fire}`).toBeNull()"
+          }
+        ]
+      },
+      {
+        "name": "the same CE71 machine realizes zero sentinels with the old id, and three living grid occupants with the real id",
+        "line": 266,
+        "assertions": [
+          {
+            "line": 274,
+            "text": "expect(machine,'CE71 construction coverage').not.toBeNull()"
+          },
+          {
+            "line": 275,
+            "text": "expect(machine!.monsterSpawns).toHaveLength(3)"
+          },
+          {
+            "line": 277,
+            "text": "expect((game as unknown as GameInternals).placeStairs([machine!])).toBe(true)"
+          },
+          {
+            "line": 284,
+            "text": "expect(grid.getCell(spawn.pos.x,spawn.pos.y)!.layers[L.DUNGEON]).toBe(C.STATUE_INERT)"
+          },
+          {
+            "line": 287,
+            "text": "expect(mon,'spawn directive without an actual grid occupant').toBeDefined()"
+          },
+          {
+            "line": 288,
+            "text": "expect(isSentinel(mon)).toBe(true)"
+          },
+          {
+            "line": 288,
+            "text": "expect(mon!.hp).toBeGreaterThan(0)"
+          },
+          {
+            "line": 289,
+            "text": "expect(mon!.machineHome).toBe(machine!.machineNumber)"
+          },
+          {
+            "line": 290,
+            "text": "expect(game.monsters).toContain(mon)"
+          },
+          {
+            "line": 290,
+            "text": "expect(game.dormantMonsters).not.toContain(mon)"
+          },
+          {
+            "line": 292,
+            "text": "expect(stairsConnected(game)).toBe(true)"
+          },
+          {
+            "line": 294,
+            "text": "expect(results).toEqual([0,3])"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/c_7_lighting.test.ts",
+    "cases": [
+      {
+        "name": "恰好 60 条，且 LightKind 枚举成员与下标一一对位（esbuild 剥类型，缺条目运行时才暴露）",
+        "line": 47,
+        "assertions": [
+          {
+            "line": 48,
+            "text": "expect(LIGHT_CATALOG).toHaveLength(60)"
+          },
+          {
+            "line": 50,
+            "text": "expect(LightKind.NO_LIGHT).toBe(0)"
+          },
+          {
+            "line": 51,
+            "text": "expect(LightKind.MINERS_LIGHT).toBe(1)"
+          },
+          {
+            "line": 52,
+            "text": "expect(LightKind.BURNING_CREATURE_LIGHT).toBe(2)"
+          },
+          {
+            "line": 53,
+            "text": "expect(LightKind.TORCH_LIGHT).toBe(33)"
+          },
+          {
+            "line": 54,
+            "text": "expect(LightKind.LAVA_LIGHT).toBe(34)"
+          },
+          {
+            "line": 55,
+            "text": "expect(LightKind.SUN_LIGHT).toBe(35)"
+          },
+          {
+            "line": 56,
+            "text": "expect(LightKind.FUNGUS_LIGHT).toBe(37)"
+          },
+          {
+            "line": 57,
+            "text": "expect(LightKind.EMBER_LIGHT).toBe(43)"
+          },
+          {
+            "line": 58,
+            "text": "expect(LightKind.FIRE_LIGHT).toBe(44)"
+          },
+          {
+            "line": 59,
+            "text": "expect(LightKind.EXPLOSION_LIGHT).toBe(46)"
+          },
+          {
+            "line": 60,
+            "text": "expect(LightKind.CONFUSION_GAS_LIGHT).toBe(49)"
+          },
+          {
+            "line": 61,
+            "text": "expect(LightKind.CANDLE_LIGHT).toBe(53)"
+          },
+          {
+            "line": 62,
+            "text": "expect(LightKind.DESCENT_LIGHT).toBe(58)"
+          },
+          {
+            "line": 63,
+            "text": "expect(LightKind.DEMONIC_STATUE_LIGHT).toBe(59)"
+          },
+          {
+            "line": 67,
+            "text": "expect(LIGHT_CATALOG[idx], `LIGHT_CATALOG[${key}] 缺条目`).toBeDefined()"
+          }
+        ]
+      },
+      {
+        "name": "NO_LIGHT 是 CE {0} 原样（含 clumpFactor=0）",
+        "line": 71,
+        "assertions": [
+          {
+            "line": 73,
+            "text": "expect(e.color).toEqual({ red: 0, green: 0, blue: 0, redRand: 0, greenRand: 0, blueRand: 0, rand: 0 })"
+          },
+          {
+            "line": 74,
+            "text": "expect(e.radius).toEqual({ lowerBound: 0, upperBound: 0, clumpFactor: 0 })"
+          },
+          {
+            "line": 75,
+            "text": "expect(e.radialFadeToPercent).toBe(0)"
+          },
+          {
+            "line": 76,
+            "text": "expect(e.passThroughCreatures).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "对抗③：矿灯条目 passThroughCreatures = true（Globals.c:958 原列；写成 false 即红）",
+        "line": 79,
+        "assertions": [
+          {
+            "line": 80,
+            "text": "expect(LIGHT_CATALOG[LightKind.MINERS_LIGHT]!.passThroughCreatures).toBe(true)"
+          },
+          {
+            "line": 83,
+            "text": "expect(LIGHT_CATALOG[LightKind.IMP_LIGHT]!.passThroughCreatures).toBe(true)"
+          },
+          {
+            "line": 84,
+            "text": "expect(LIGHT_CATALOG[LightKind.EXPLOSIVE_BLOAT_LIGHT]!.passThroughCreatures).toBe(true)"
+          },
+          {
+            "line": 85,
+            "text": "expect(LIGHT_CATALOG[LightKind.TELEPATHY_LIGHT]!.passThroughCreatures).toBe(true)"
+          },
+          {
+            "line": 86,
+            "text": "expect(LIGHT_CATALOG[LightKind.SUN_LIGHT]!.passThroughCreatures).toBe(true)"
+          },
+          {
+            "line": 87,
+            "text": "expect(LIGHT_CATALOG[LightKind.TORCH_LIGHT]!.passThroughCreatures).toBe(false)"
+          },
+          {
+            "line": 88,
+            "text": "expect(LIGHT_CATALOG[LightKind.LAVA_LIGHT]!.passThroughCreatures).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "关键地形光条目逐字段等于 CE 原值（含 randomRange 型半径——抄成定值即红）",
+        "line": 91,
+        "assertions": [
+          {
+            "line": 96,
+            "text": "expect(c(LightKind.TORCH_LIGHT)).toEqual({ red: 75, green: 38, blue: 15, redRand: 0, greenRand: 15, blueRand: 7, rand: 0 })"
+          },
+          {
+            "line": 97,
+            "text": "expect(r(LightKind.TORCH_LIGHT)).toEqual({ lowerBound: 1000, upperBound: 1000, clumpFactor: 1 })"
+          },
+          {
+            "line": 98,
+            "text": "expect(LIGHT_CATALOG[LightKind.TORCH_LIGHT]!.radialFadeToPercent).toBe(50)"
+          },
+          {
+            "line": 101,
+            "text": "expect(c(LightKind.LAVA_LIGHT)).toEqual({ red: 47, green: 13, blue: 0, redRand: 10, greenRand: 7, blueRand: 0, rand: 0 })"
+          },
+          {
+            "line": 102,
+            "text": "expect(r(LightKind.LAVA_LIGHT).lowerBound).toBe(300)"
+          },
+          {
+            "line": 105,
+            "text": "expect(r(LightKind.FIRE_LIGHT)).toEqual({ lowerBound: 500, upperBound: 1000, clumpFactor: 1 })"
+          },
+          {
+            "line": 108,
+            "text": "expect(r(LightKind.EMBER_LIGHT).lowerBound).toBe(200)"
+          },
+          {
+            "line": 109,
+            "text": "expect(LIGHT_CATALOG[LightKind.EMBER_LIGHT]!.radialFadeToPercent).toBe(50)"
+          },
+          {
+            "line": 112,
+            "text": "expect(r(LightKind.EXPLOSION_LIGHT).lowerBound).toBe(CE_DCOLS * 100)"
+          },
+          {
+            "line": 113,
+            "text": "expect(LIGHT_CATALOG[LightKind.EXPLOSION_LIGHT]!.radialFadeToPercent).toBe(100)"
+          },
+          {
+            "line": 116,
+            "text": "expect(c(LightKind.CONFUSION_GAS_LIGHT)).toEqual({ red: 10, green: 10, blue: 10, redRand: 10, greenRand: 10, blueRand: 10, rand: 0 })"
+          },
+          {
+            "line": 117,
+            "text": "expect(LIGHT_CATALOG[LightKind.CONFUSION_GAS_LIGHT]!.radialFadeToPercent).toBe(100)"
+          },
+          {
+            "line": 120,
+            "text": "expect(r(LightKind.CANDLE_LIGHT)).toEqual({ lowerBound: 200, upperBound: 400, clumpFactor: 1 })"
+          },
+          {
+            "line": 123,
+            "text": "expect(c(LightKind.IMP_LIGHT)).toEqual({ red: 100, green: 60, blue: 66, redRand: 0, greenRand: 0, blueRand: 0, rand: 0 })"
+          },
+          {
+            "line": 126,
+            "text": "expect(c(LightKind.DARKNESS_PATCH_LIGHT)).toEqual({ red: -10, green: -10, blue: -10, redRand: 0, greenRand: 0, blueRand: 0, rand: 0 })"
+          },
+          {
+            "line": 129,
+            "text": "expect(r(LightKind.INCENDIARY_DART_LIGHT).lowerBound).toBe(1500)"
+          },
+          {
+            "line": 132,
+            "text": "expect(r(LightKind.PORTAL_ACTIVATE_LIGHT).lowerBound).toBe(7900)"
+          },
+          {
+            "line": 133,
+            "text": "expect(CE_DCOLS).toBe(79)"
+          }
+        ]
+      },
+      {
+        "name": "全 tile 的 glowLight 逐值等于 CE 原列（结构性穷尽）",
+        "line": 362,
+        "assertions": [
+          {
+            "line": 365,
+            "text": "expect(expected, `TerrainType.${t} 缺期望值（表没跟上新 tile？）`).toBeDefined()"
+          },
+          {
+            "line": 366,
+            "text": "expect(TERRAIN_FLAGS[t].glowLight, `TerrainType.${t} glowLight 不符`).toBe(expected)"
+          }
+        ]
+      },
+      {
+        "name": "非零恰 50 个（U19f 菌林、光池与藻光），且都指向有载体的目录条目",
+        "line": 370,
+        "assertions": [
+          {
+            "line": 375,
+            "text": "expect(nonzero).toEqual([ TerrainType.FUNGUS_FOREST, TerrainType.TRAMPLED_FUNGUS_FOREST, TerrainType.SUNLIGHT_POOL, TerrainType.DARKNESS_PATCH, TerrainType.DEEP_WATER_ALGAE_1, TerrainType.DEEP_WATER_ALGAE_2, TerrainType.PORTAL_LIGHT, TerrainType.ALTAR_CAGE_CLOSED, TerrainType.PIPE_GLOWING, TerrainType.SACRIFICE_ALTAR, TerrainType.SACRIFICE_LAVA, TerrainType.PILOT_LIGHT_DORMANT, TerrainType.PILOT_LIGHT, TerrainType.LAVA, TerrainType.ALTAR, TerrainType.EMBERS, TerrainType.CONFUSION_GAS, TerrainType.GAS_FIRE, TerrainType.GAS_EXPLOSION, TerrainType.PLAIN_FIRE, TerrainType.ITEM_FIRE, TerrainType.BRIMSTONE_FIRE, // B-3：三张卷轴的水晶/圣徽 tile（FORCEFIELD_MELT 与 FORCEFIELD // 共用 FORCEFIELD_LIGHT）。 TerrainType.FORCEFIELD, TerrainType.FORCEFIELD_MELT, TerrainType.CRYSTAL_WALL, TerrainType.SACRED_GLYPH, // V-2b-2b：PEDESTAL（CE Globals.c:369 原列 = CANDLE_LIGHT）。 TerrainType.PEDESTAL, // V-2b-4：两个铁笼祭坛与复活祭坛的烛光（CANDLE_LIGHT，CE 原列）， // 以及墙装火把的 TORCH_LIGHT（Globals.c:337）。 TerrainType.ALTAR_CAGE_OPEN, TerrainType.ALTAR_CAGE_RETRACTABLE, TerrainType.RESURRECTION_ALTAR, TerrainType.TORCH_WALL, // V-2b-5：ALTAR_SWITCH 的烛光（Globals.c:366 原列 CANDLE_LIGHT）。 TerrainType.ALTAR_SWITCH, // V-2b-7：七条新点亮的 tile（Globals.c:363/367/543/546/573/547/450 // 第 10 列）——四条祭坛族烛光 + 火盆 + 恶魔雕像 + 发光菌。 TerrainType.ALTAR_KEYHOLE, TerrainType.ALTAR_SWITCH_RETRACTING, TerrainType.SACRIFICE_ALTAR_DORMANT, TerrainType.SACRIFICE_CAGE_DORMANT, TerrainType.BRAZIER, TerrainType.DEMONIC_STATUE, TerrainType.LUMINESCENT_FUNGUS, TerrainType.LAVA_RETRACTABLE, TerrainType.HAUNTED_TORCH_DORMANT, // V-2b-9b：岩浆回缩活动态保留 LAVA_LIGHT。 TerrainType.LAVA_RETRACTING, TerrainType.DARK_FLOOR, TerrainType.ECTOPLASM, TerrainType.HAUNTED_TORCH_TRANSITIONING, TerrainType.HAUNTED_TORCH, TerrainType.MACHINE_GLYPH, TerrainType.MACHINE_GLYPH_INACTIVE, TerrainType.ELECTRIC_CRYSTAL_ON, TerrainType.DUNGEON_PORTAL, ].sort((a, b) => a - b))"
+          },
+          {
+            "line": 416,
+            "text": "expect(LIGHT_CATALOG[TERRAIN_FLAGS[t].glowLight]).toBeDefined()"
+          }
+        ]
+      },
+      {
+        "name": "深度衰减方向与精确值：随深度单调收缩（写反/改公式即红）",
+        "line": 426,
+        "assertions": [
+          {
+            "line": 441,
+            "text": "expect(st.radiusHundredths, `depth ${depth} 半径`).toBe(rad)"
+          },
+          {
+            "line": 442,
+            "text": "expect(st.radialFadeToPercent, `depth ${depth} 衰减`).toBe(fade)"
+          },
+          {
+            "line": 443,
+            "text": "expect(st.radiusHundredths).toBeLessThan(prev)"
+          },
+          {
+            "line": 448,
+            "text": "expect(minersLightBaseRadiusFixpt(0)).toBe(78 * FP_FACTOR + (FP_FACTOR * 225) / 100)"
+          },
+          {
+            "line": 449,
+            "text": "expect(minersLightBaseRadiusFixpt(1)).toBe(4492492)"
+          }
+        ]
+      },
+      {
+        "name": "光明戒指倍率分支（Light.c:125-131）：正倍率放大有下限、负倍率除法收缩",
+        "line": 452,
+        "assertions": [
+          {
+            "line": 454,
+            "text": "expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(1), { lightMultiplier: 3 })) .toEqual({ radiusHundredths: 20564, radialFadeToPercent: 50 })"
+          },
+          {
+            "line": 457,
+            "text": "expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(1), { lightMultiplier: -2 })) .toEqual({ radiusHundredths: 2284, radialFadeToPercent: 35 })"
+          },
+          {
+            "line": 460,
+            "text": "expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(1), { lightMultiplier: -1 })) .toEqual({ radiusHundredths: 3427, radialFadeToPercent: 35 })"
+          }
+        ]
+      },
+      {
+        "name": "黑暗状态立方衰减 + 1/20 下限 + 2*FP 退化托底（Light.c:134-148）",
+        "line": 464,
+        "assertions": [
+          {
+            "line": 466,
+            "text": "expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(1), { darknessStatus: 15, darknessMax: 15 })) .toEqual({ radiusHundredths: 342, radialFadeToPercent: 35 })"
+          },
+          {
+            "line": 469,
+            "text": "expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(1), { darknessStatus: 5, darknessMax: 15 })) .toEqual({ radiusHundredths: 2031, radialFadeToPercent: 36 })"
+          },
+          {
+            "line": 472,
+            "text": "expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(40), { darknessStatus: 15, darknessMax: 15 }).radiusHundredths) .toBe(11)"
+          },
+          {
+            "line": 476,
+            "text": "expect(updateMinersLightRadius(0).radiusHundredths).toBe(4)"
+          },
+          {
+            "line": 477,
+            "text": "expect(updateMinersLightRadius(0, { lightMultiplier: -10 }).radiusHundredths).toBe(2)"
+          }
+        ]
+      },
+      {
+        "name": "水中减半（Light.c:150-152，同量纲 3*FP 退化下限）",
+        "line": 480,
+        "assertions": [
+          {
+            "line": 481,
+            "text": "expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(1), { inWater: 1 })) .toEqual({ radiusHundredths: 3427, radialFadeToPercent: 40 })"
+          },
+          {
+            "line": 483,
+            "text": "expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(40), { inWater: 1 }).radiusHundredths).toBe(118)"
+          },
+          {
+            "line": 485,
+            "text": "expect(updateMinersLightRadius(0, { inWater: 1 }).radiusHundredths).toBe(3)"
+          }
+        ]
+      },
+      {
+        "name": "矿灯颜色随深度插值（updateColors + applyColorAverage 的 C 整除口径）",
+        "line": 488,
+        "assertions": [
+          {
+            "line": 489,
+            "text": "expect(minersLightColorAtDepth(0)).toEqual({ red: 180, green: 180, blue: 180, redRand: 0, greenRand: 0, blueRand: 0, rand: 0 })"
+          },
+          {
+            "line": 491,
+            "text": "expect([d13.red, d13.green, d13.blue]).toEqual([135, 135, 150])"
+          },
+          {
+            "line": 492,
+            "text": "expect(minersLightColorAtDepth(26)).toMatchObject({ red: 90, green: 90, blue: 120 })"
+          },
+          {
+            "line": 493,
+            "text": "expect(minersLightColorAtDepth(40)).toMatchObject({ red: 90, green: 90, blue: 120 })"
+          },
+          {
+            "line": 494,
+            "text": "expect(minersLightColorAtDepth(1)).toMatchObject({ red: 177, green: 177, blue: 178 })"
+          }
+        ]
+      },
+      {
+        "name": "VISIBILITY_THRESHOLD = 50（Rogue.h:184）",
+        "line": 497,
+        "assertions": [
+          {
+            "line": 498,
+            "text": "expect(VISIBILITY_THRESHOLD).toBe(50)"
+          }
+        ]
+      },
+      {
+        "name": "对抗①：径向衰减方向——中心最亮、随距离单调变暗（写反即红）",
+        "line": 512,
+        "assertions": [
+          {
+            "line": 525,
+            "text": "expect(center).toBeGreaterThan(0)"
+          },
+          {
+            "line": 526,
+            "text": "expect(mid).toBeGreaterThan(0)"
+          },
+          {
+            "line": 527,
+            "text": "expect(edge).toBeGreaterThan(0)"
+          },
+          {
+            "line": 528,
+            "text": "expect(center).toBeGreaterThan(mid)"
+          },
+          {
+            "line": 529,
+            "text": "expect(mid).toBeGreaterThan(edge)"
+          },
+          {
+            "line": 532,
+            "text": "expect(center).toBe(360)"
+          },
+          {
+            "line": 533,
+            "text": "expect(mid).toBe(135)"
+          },
+          {
+            "line": 534,
+            "text": "expect(edge).toBe(105)"
+          }
+        ]
+      },
+      {
+        "name": "对抗②：区间半径 {500,1000} 的确定性取中点 750（取 lowerBound/upperBound 定值即红）",
+        "line": 537,
+        "assertions": [
+          {
+            "line": 542,
+            "text": "expect(lm.lightSumAt(16, 10)).toBeGreaterThan(0)"
+          },
+          {
+            "line": 543,
+            "text": "expect(lm.lightSumAt(19, 10)).toBe(0)"
+          }
+        ]
+      },
+      {
+        "name": "对抗③行为面：passThroughCreatures=false 时生物截断光路，=true 时穿透",
+        "line": 546,
+        "assertions": [
+          {
+            "line": 557,
+            "text": "expect(blocked.lightSumAt(12, 10)).toBeGreaterThan(0)"
+          },
+          {
+            "line": 558,
+            "text": "expect(blocked.lightSumAt(14, 10)).toBe(0)"
+          },
+          {
+            "line": 564,
+            "text": "expect(pass.lightSumAt(14, 10)).toBeGreaterThan(0)"
+          }
+        ]
+      },
+      {
+        "name": "IS_IN_SHADOW 语义：矿灯（maintainShadows）不驱散阴影，地形正色光驱散（Light.c:70-71/97-99）",
+        "line": 567,
+        "assertions": [
+          {
+            "line": 579,
+            "text": "expect(shadowed.lightSumAt(10, 10)).toBeGreaterThan(0)"
+          },
+          {
+            "line": 580,
+            "text": "expect(shadowed.inShadowAt(10, 10)).toBe(true)"
+          },
+          {
+            "line": 585,
+            "text": "expect(lit.inShadowAt(10, 10)).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "黑暗药水真实入口使 FOV 缩小，逐 tick 衰减后恢复",
+        "line": 609,
+        "assertions": [
+          {
+            "line": 619,
+            "text": "expect(target.isVisible).toBe(true)"
+          },
+          {
+            "line": 623,
+            "text": "expect(game.player.hasStatus('darkness')).toBe(true)"
+          },
+          {
+            "line": 624,
+            "text": "expect(radius()).toBeLessThan(normal)"
+          },
+          {
+            "line": 625,
+            "text": "expect(target.isVisible).toBe(false)"
+          },
+          {
+            "line": 628,
+            "text": "expect(game.player.hasStatus('darkness')).toBe(false)"
+          },
+          {
+            "line": 629,
+            "text": "expect(radius()).toBe(normal)"
+          },
+          {
+            "line": 630,
+            "text": "expect(target.isVisible).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "深水且未漂浮时半径减半，离水立即恢复",
+        "line": 633,
+        "assertions": [
+          {
+            "line": 644,
+            "text": "expect(radius()).toBeLessThan(normal)"
+          },
+          {
+            "line": 647,
+            "text": "expect(radius()).toBe(normal)"
+          }
+        ]
+      },
+      {
+        "name": "CE 固有光让深层矿灯以外的 wisp 可见",
+        "line": 650,
+        "assertions": [
+          {
+            "line": 659,
+            "text": "expect(MONSTER_INTRINSIC_LIGHT.wisp).toBe(LightKind.WISP_LIGHT)"
+          },
+          {
+            "line": 660,
+            "text": "expect(game.grid.getCell(46, 15)!.isVisible).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "对抗⑤消费面：深层岩浆自发光——glowLight 列没接上/不被消费即红",
+        "line": 662,
+        "assertions": [
+          {
+            "line": 676,
+            "text": "expect(sum).toBeGreaterThan(VISIBILITY_THRESHOLD)"
+          },
+          {
+            "line": 677,
+            "text": "expect(game.lightMap.lightSumAt(px + 12 * dir, py)).toBe(0)"
+          },
+          {
+            "line": 679,
+            "text": "expect(game.grid.getCell(px + 6 * dir, py)!.isVisible).toBe(true)"
+          },
+          {
+            "line": 681,
+            "text": "expect(game.grid.getCell(px + 6 * dir, py + 8 <= DROWS - 1 ? py + 8 : py - 8)!.isVisible).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "对抗④集成面：矿灯深度衰减在视野上可观测——深层可见格骤减",
+        "line": 684,
+        "assertions": [
+          {
+            "line": 708,
+            "text": "expect(visibleAtD1).toBeGreaterThan(1500)"
+          },
+          {
+            "line": 709,
+            "text": "expect(visibleAtD40).toBeLessThan(40)"
+          },
+          {
+            "line": 711,
+            "text": "expect(visibleAtD40).toBeLessThan(visibleAtD1)"
+          }
+        ]
+      },
+      {
+        "name": "VISIBLE = 掩码 ∧ 光强>50：玩家格恒可见，墙后格不因光而可见",
+        "line": 714,
+        "assertions": [
+          {
+            "line": 730,
+            "text": "expect(game.grid.getCell(px, py)!.isVisible).toBe(true)"
+          },
+          {
+            "line": 731,
+            "text": "expect(game.lightMap.lightSumAt(px + 5 * dir, py)).toBeGreaterThan(VISIBILITY_THRESHOLD)"
+          },
+          {
+            "line": 732,
+            "text": "expect(game.grid.getCell(px + 5 * dir, py)!.isVisible).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "渲染馈送：getLight 接口拿到矿灯光（UI-1 起渲染改走 lightAt 三通道，本接口保留为兼容面）",
+        "line": 735,
+        "assertions": [
+          {
+            "line": 741,
+            "text": "expect(feed.intensity).toBeGreaterThan(0)"
+          },
+          {
+            "line": 742,
+            "text": "expect(feed.color.r).toBeGreaterThan(0)"
+          }
+        ]
+      },
+      {
+        "name": "无地形光：矿灯不驱散阴影 → 减半一次；playerInDarkness 为 false（矿灯中心恒亮）",
+        "line": 759,
+        "assertions": [
+          {
+            "line": 767,
+            "text": "expect(darkness).toBe(false)"
+          },
+          {
+            "line": 768,
+            "text": "expect(range).toBe(Math.floor((14 + adj) / 2))"
+          }
+        ]
+      },
+      {
+        "name": "站进祭坛烛光（CANDLE_LIGHT 载体）：阴影被驱散 → 潜行范围恢复 14+adj",
+        "line": 771,
+        "assertions": [
+          {
+            "line": 783,
+            "text": "expect(game.lightMap.inShadowAt(px, py)).toBe(false)"
+          },
+          {
+            "line": 784,
+            "text": "expect(range).toBe(14 + adj)"
+          }
+        ]
+      },
+      {
+        "name": "playerInDarkness 判据：负色光压过矿灯时翻真（Light.c:283-287 的 −10 余量口径）",
+        "line": 787,
+        "assertions": [
+          {
+            "line": 807,
+            "text": "expect(ch.r + 10).toBeLessThan(90)"
+          },
+          {
+            "line": 808,
+            "text": "expect(ch.g + 10).toBeLessThan(90)"
+          },
+          {
+            "line": 809,
+            "text": "expect(ch.b + 10).toBeLessThan(120)"
+          },
+          {
+            "line": 811,
+            "text": "expect(lm.lightSumAt(10, 10)).toBe(0)"
+          }
+        ]
+      },
+      {
+        "name": "留痕（对抗⑥）：除载体清单外，任何 LightKind 名不得出现在生产代码（接了无载体条目=空转链）",
+        "line": 873,
+        "assertions": [
+          {
+            "line": 895,
+            "text": "expect(violations, violations.join('\\n')).toEqual([])"
+          }
+        ]
+      },
+      {
+        "name": "留痕（UI-1 第 7 条已反转，2026-09-18）：渲染层消费 lightAt 三通道做 CE 乘法，仍不得直接 import 光照目录/paintLight",
+        "line": 907,
+        "assertions": [
+          {
+            "line": 912,
+            "text": "expect(text).not.toMatch(/LightCatalog|LIGHT_CATALOG|paintLight/)"
+          },
+          {
+            "line": 918,
+            "text": "expect(canvas).toMatch(/lightMap\\.lightAt\\(/)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/c_8_connectivity.test.ts",
+    "cases": [
+      {
+        "name": "T1 复现样本回归：seed12 逐层下潜到 D25，上/下行楼梯互相可达且非机器可走格单连通",
+        "line": 148,
+        "assertions": [
+          {
+            "line": 155,
+            "text": "expect(up, 'D25 缺上行楼梯').not.toBeNull()"
+          },
+          {
+            "line": 156,
+            "text": "expect(down, 'D25 缺下行楼梯').not.toBeNull()"
+          },
+          {
+            "line": 158,
+            "text": "expect(reach.has(down!.y * game.grid.width + down!.x), `seed12/D25 上行楼梯到不了下行楼梯（卡死局回归）：up=(${up!.x},${up!.y}) down=(${down!.x},${down!.y}) 可达=${reach.size}`).toBe(true)"
+          },
+          {
+            "line": 173,
+            "text": "expect(unreachable, `seed12/D25 存在机器格外的不可走达格：${unreachable.slice(0, 5).map(p => `(${p.x},${p.y})`).join('、')}`).toEqual([])"
+          }
+        ]
+      },
+      {
+        "name": "T2 广度断言（区间来自修复前后实测）：30 seed × D1-D25 坏层=0",
+        "line": 176,
+        "assertions": [
+          {
+            "line": 189,
+            "text": "expect( reach.has(down.y * W + down.x) && back.has(up.y * W + up.x), `seed${seed}/D${d} 上/下行楼梯不互相可达（卡死局）：up=(${up.x},${up.y})→${reach.has(down.y * W + down.x)} down=(${down.x},${down.y})→${back.has(up.y * W + up.x)}`, ).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "T3 机制断言（AD1）：壕沟夹具上 CE 判据放行、移动图判据判切断、spawnDungeonFeature 真实否决",
+        "line": 203,
+        "assertions": [
+          {
+            "line": 209,
+            "text": "expect(levelIsDisconnectedWithBlockingMap(g, band, false)).toBe(0)"
+          },
+          {
+            "line": 211,
+            "text": "expect(levelIsDisconnectedOnMovementGraph(g, band), '移动图判据未识别壕沟切断（8 向或 ∪SECRET 口径丢失的实现在此翻红）').toBe(true)"
+          },
+          {
+            "line": 218,
+            "text": "expect(res.succeeded, '切断壕沟的水晶墙必须被否决（否决只跑 CE 判据的实现在此翻红）').toBe(false)"
+          },
+          {
+            "line": 219,
+            "text": "expect(g.getCell(20, 10)!.layers).toEqual(before)"
+          }
+        ]
+      },
+      {
+        "name": "T4 零 RNG 消耗（AD5）：否决与放行两条路径的掷骰增量均为 0",
+        "line": 222,
+        "assertions": [
+          {
+            "line": 241,
+            "text": "expect(ok.succeeded).toBe(true)"
+          },
+          {
+            "line": 242,
+            "text": "expect(vetoedCost, '否决路径不得消耗 RNG').toBe(0)"
+          },
+          {
+            "line": 243,
+            "text": "expect(builtCost, '放行路径（未切断）不得消耗 RNG').toBe(0)"
+          }
+        ]
+      },
+      {
+        "name": "T-AD2 判据丢掉密门口径：水晶墙封死唯一通路上的密门必须被否决",
+        "line": 246,
+        "assertions": [
+          {
+            "line": 255,
+            "text": "expect(levelIsDisconnectedOnMovementGraph(g, band), '密门口径丢失（漏并 SECRET_DOOR 的实现在此翻红）').toBe(true)"
+          },
+          {
+            "line": 258,
+            "text": "expect(res.succeeded, '封死密门的水晶墙必须被否决').toBe(false)"
+          },
+          {
+            "line": 259,
+            "text": "expect(g.getCell(20, 10)!.terrain).toBe(TerrainType.SECRET_DOOR)"
+          }
+        ]
+      },
+      {
+        "name": "T-AD3 方向数退化成 4 向：对角咽喉夹具上 4 向判据盲、8 向判据真",
+        "line": 262,
+        "assertions": [
+          {
+            "line": 272,
+            "text": "expect(levelIsDisconnectedOnMovementGraph(g, band), '对角咽喉未被判切断（分区/相触退化成 4 向的实现在此翻红）').toBe(true)"
+          },
+          {
+            "line": 275,
+            "text": "expect(res.succeeded, '封死对角咽喉的水晶墙必须被否决').toBe(false)"
+          },
+          {
+            "line": 276,
+            "text": "expect(g.getCell(2, 2)!.terrain).toBe(TerrainType.FLOOR)"
+          }
+        ]
+      },
+      {
+        "name": "T-AD4 过度否决守卫：贴带但未切断的放置必须照常放行（隔墙双室夹具）",
+        "line": 279,
+        "assertions": [
+          {
+            "line": 291,
+            "text": "expect(levelIsDisconnectedOnMovementGraph(g, band), '无害放置被误判切断（把\"贴带\"当\"切断\"的实现在此翻红）').toBe(false)"
+          },
+          {
+            "line": 294,
+            "text": "expect(res.succeeded, '墙格上的水晶墙必须照常放行').toBe(true)"
+          },
+          {
+            "line": 295,
+            "text": "expect(g.getCell(5, 7)!.terrain).toBe(TerrainType.CRYSTAL_WALL)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/u_00_new_run.test.ts",
+    "cases": [
+      {
+        "name": "old grid cannot wake B; current grid wakes exactly once after repeated starts",
+        "line": 177,
+        "assertions": [
+          {
+            "line": 185,
+            "text": "expect(spy).not.toHaveBeenCalled()"
+          },
+          {
+            "line": 187,
+            "text": "expect(spy).toHaveBeenCalledTimes(1)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/u_01_instance_snapshot.test.ts",
+    "cases": [
+      {
+        "name": "field coverage: declarations (including private/optional) AND runtime own fields are all registered",
+        "line": 74,
+        "assertions": [
+          {
+            "line": 79,
+            "text": "expect([...registered[name]].sort(),name).toEqual(all.sort())"
+          },
+          {
+            "line": 83,
+            "text": "expect(Object.keys(entities[name]).filter(k => !(registered[name] as readonly string[]).includes(k)),name).toEqual([])"
+          },
+          {
+            "line": 87,
+            "text": "expect(Object.keys(entities.Monster).filter(k => !(registered.Monster as readonly string[]).includes(k))).toEqual(['unregisteredFutureField'])"
+          }
+        ]
+      },
+      {
+        "name": "every declared Item value, nested key binding, flags and absent/false/zero values round-trip without aliasing or RNG",
+        "line": 90,
+        "assertions": [
+          {
+            "line": 97,
+            "text": "expect(ownState(restored)).toEqual(before)"
+          },
+          {
+            "line": 97,
+            "text": "expect(JSON.stringify(rng)).toBe(random)"
+          },
+          {
+            "line": 99,
+            "text": "expect(ownState(item)).toEqual(before)"
+          },
+          {
+            "line": 99,
+            "text": "expect(saved.keyLoc[0].loc.x).toBe(7)"
+          }
+        ]
+      },
+      {
+        "name": "naturally generated D1-D3 ordinary/ground/pack entities deeply round-trip, without deriving from catalog",
+        "line": 124,
+        "assertions": [
+          {
+            "line": 129,
+            "text": "expect(g.loadSnapshot(json(g.toSnapshot()))).toBe(true)"
+          },
+          {
+            "line": 129,
+            "text": "expect(graphState(g)).toEqual(before)"
+          },
+          {
+            "line": 131,
+            "text": "expect(count).toBeGreaterThan(10)"
+          }
+        ]
+      },
+      {
+        "name": "standalone/test-room graph codec preserves cycles, null/undefined and zero RNG/ID allocation",
+        "line": 134,
+        "assertions": [
+          {
+            "line": 139,
+            "text": "expect(ownState(restored)).toEqual(ownState(m))"
+          },
+          {
+            "line": 139,
+            "text": "expect(restored.carriedMonster!.leader).toBe(restored)"
+          },
+          {
+            "line": 140,
+            "text": "expect(JSON.stringify(rng)).toBe(before)"
+          },
+          {
+            "line": 140,
+            "text": "expect(allocateEntityId()).toBe(nextId+1)"
+          }
+        ]
+      },
+      {
+        "name": "next scheduler action retains 37 tick wait; dormant carrier never acts; next death drops the same payload once",
+        "line": 167,
+        "assertions": [
+          {
+            "line": 174,
+            "text": "expect(m.ticksUntilTurn).toBe(87)"
+          },
+          {
+            "line": 174,
+            "text": "expect(d.loc).toEqual({x:15,y:5})"
+          },
+          {
+            "line": 175,
+            "text": "expect(act()).toEqual(next)"
+          },
+          {
+            "line": 178,
+            "text": "expect(g.items).toHaveLength(1)"
+          },
+          {
+            "line": 178,
+            "text": "expect(die()).toEqual(dropped)"
+          }
+        ]
+      },
+      {
+        "name": "player hunger event, cached speeds, direction, status immunity and inventory/equipment identity survive the next consumers",
+        "line": 181,
+        "assertions": [
+          {
+            "line": 185,
+            "text": "expect(ownState(g.player)).toEqual(before)"
+          },
+          {
+            "line": 186,
+            "text": "expect(g.player.consumeHungerTransition()).toBe('weak')"
+          },
+          {
+            "line": 186,
+            "text": "expect(g.player.consumeHungerTransition()).toBeNull()"
+          },
+          {
+            "line": 187,
+            "text": "expect(g.player.equippedWeapon).toBe(g.player.inventory.items[0])"
+          },
+          {
+            "line": 187,
+            "text": "expect(g.player.hasStatus('confused')).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "version boundary rejects v1 before changing the live world; detached/player high IDs are reserved",
+        "line": 190,
+        "assertions": [
+          {
+            "line": 192,
+            "text": "expect(g.loadSnapshot({...saved,version:1})).toBe(false)"
+          },
+          {
+            "line": 192,
+            "text": "expect(graphState(g)).toEqual(before)"
+          },
+          {
+            "line": 193,
+            "text": "expect(allocateEntityId()).toBeGreaterThan(2100000)"
+          }
+        ]
+      },
+      {
+        "name": "all natural ItemLoader categories preserve their entire instance shape",
+        "line": 197,
+        "assertions": [
+          {
+            "line": 204,
+            "text": "expect(rows.length,table).toBeGreaterThan(0)"
+          },
+          {
+            "line": 206,
+            "text": "expect(item,row.id).toBeTruthy()"
+          },
+          {
+            "line": 207,
+            "text": "expect(Object.keys(item).filter(k => !(registered.Item as readonly string[]).includes(k))).toEqual([])"
+          },
+          {
+            "line": 208,
+            "text": "expect(ownState(g.deserializeItem(json(g.serializeItem(item))))).toEqual(ownState(item))"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/u_03_whole_run_snapshot.test.ts",
+    "cases": [
+      {
+        "name": "every Game instance field has an explicit U00 lifecycle/persistence decision",
+        "line": 38,
+        "assertions": [
+          {
+            "line": 44,
+            "text": "expect(Object.keys(contract).sort()).toEqual(fields)"
+          }
+        ]
+      },
+      {
+        "name": "Cell AST and own fields are explicitly covered, including volume/flags/memory",
+        "line": 47,
+        "assertions": [
+          {
+            "line": 51,
+            "text": "expect([...CELL_FIELDS].sort()).toEqual(fields)"
+          },
+          {
+            "line": 52,
+            "text": "expect(Object.keys(new Cell(2, 3)).sort()).toEqual(fields)"
+          }
+        ]
+      },
+      {
+        "name": "restores one object per ID across active/cached/dormant/pending/carried/leader cycles",
+        "line": 80,
+        "assertions": [
+          {
+            "line": 94,
+            "text": "expect(loaded.loadSnapshot(saved)).toBe(true)"
+          },
+          {
+            "line": 97,
+            "text": "expect(f.leader).toBe(l)"
+          },
+          {
+            "line": 97,
+            "text": "expect(p.leader).toBe(l)"
+          },
+          {
+            "line": 97,
+            "text": "expect(p.carriedMonster).toBe(d)"
+          },
+          {
+            "line": 98,
+            "text": "expect(l.carriedMonster).toBe(p)"
+          },
+          {
+            "line": 98,
+            "text": "expect(fall.carriedItem).toBe(d.carriedItem)"
+          },
+          {
+            "line": 98,
+            "text": "expect(fall.leader).toBe(l)"
+          },
+          {
+            "line": 99,
+            "text": "expect(getNextEntityId()).toBe(nextId)"
+          },
+          {
+            "line": 99,
+            "text": "expect(stable(loaded)).toEqual((({ savedAt: _time, ...s }) => s)(saved))"
+          },
+          {
+            "line": 100,
+            "text": "expect(loaded.monsters).toContain(fall)"
+          },
+          {
+            "line": 100,
+            "text": "expect((loaded as any).pendingFallenByDepth.has(3)).toBe(false)"
+          },
+          {
+            "line": 101,
+            "text": "expect(fall.carriedItem).toBe(d.carriedItem)"
+          },
+          {
+            "line": 102,
+            "text": "expect(loaded.monsters).toContain(f)"
+          },
+          {
+            "line": 102,
+            "text": "expect(f.leader).toBeNull()"
+          },
+          {
+            "line": 105,
+            "text": "expect(loaded.monsters).not.toContain(l)"
+          }
+        ]
+      },
+      {
+        "name": "stores every writable cell field and pending environmental effects without replaying them",
+        "line": 134,
+        "assertions": [
+          {
+            "line": 148,
+            "text": "expect(loaded.loadSnapshot(saved)).toBe(true)"
+          },
+          {
+            "line": 149,
+            "text": "expect(json(loaded.grid.getCell(8, 8))).toEqual(before)"
+          },
+          {
+            "line": 150,
+            "text": "expect(loaded.grid.getCell(8, 8)!.volume).toBe(3)"
+          },
+          {
+            "line": 151,
+            "text": "expect(loaded.environment.getState()).toEqual(saved.environmentState)"
+          },
+          {
+            "line": 152,
+            "text": "expect((loaded as any).pendingCaughtFireCells).toEqual([{ x: 10, y: 8 }])"
+          },
+          {
+            "line": 153,
+            "text": "expect((loaded as any).displacementTrapDepressions.get(loaded.grid)).toEqual(new Set([123]))"
+          },
+          {
+            "line": 154,
+            "text": "expect((loaded as any).machineCells).toEqual(expectedMachineCells)"
+          },
+          {
+            "line": 156,
+            "text": "expect(saved.grid.find(c => c.x === 8 && c.y === 8)!.layers![2]).toBe(TerrainType.GRASS)"
+          }
+        ]
+      },
+      {
+        "name": "restores clock, search, generation accounting, pending mandatory choices and endgame over a dirty run",
+        "line": 159,
+        "assertions": [
+          {
+            "line": 169,
+            "text": "expect(loaded.loadSnapshot(saved)).toBe(true)"
+          },
+          {
+            "line": 169,
+            "text": "expect(stable(loaded)).toEqual((({ savedAt: _time, ...s }) => s)(saved))"
+          },
+          {
+            "line": 170,
+            "text": "expect((loaded as any).meteredItems[0]).toEqual({ frequency: -3.25, numberSpawned: 19 })"
+          },
+          {
+            "line": 171,
+            "text": "expect([(loaded as any).foodSpawned, (loaded as any).goldGenerated, loaded.monsterSpawnFuse]).toEqual([4321, 987, 37])"
+          },
+          {
+            "line": 172,
+            "text": "expect([loaded.ticksTillUpdateEnvironment, loaded.absoluteTurnNumber, timeSystem.currentTick]).toEqual([29, 81, 1290])"
+          },
+          {
+            "line": 173,
+            "text": "expect([(loaded as any).searchingCharge, (loaded as any).justSearched, (loaded as any).playerFalling]).toEqual([12, true, true])"
+          },
+          {
+            "line": 174,
+            "text": "expect([loaded.isGameOver, loaded.gameOverWon, loaded.gameOverScore, loaded.lastDamageSource]).toEqual([true, true, 1234, 'test'])"
+          },
+          {
+            "line": 175,
+            "text": "expect(loaded.pendingIdentify).toBe(true)"
+          },
+          {
+            "line": 176,
+            "text": "expect(logger.messages[logger.messages.length - 1]!.text).toBe('retained history')"
+          },
+          {
+            "line": 177,
+            "text": "expect(loaded.isInventoryOpen).toBe(true)"
+          },
+          {
+            "line": 177,
+            "text": "expect((loaded as any).pendingFallenByDepth.size).toBe(0)"
+          }
+        ]
+      },
+      {
+        "name": "scent values survive reentry, share the run clock, and rewind on every visited floor",
+        "line": 180,
+        "assertions": [
+          {
+            "line": 184,
+            "text": "expect(g.scent.turnNumber).toBe(19999)"
+          },
+          {
+            "line": 185,
+            "text": "expect(old.get(x, y)).toBe(4999)"
+          },
+          {
+            "line": 185,
+            "text": "expect(g.scent.turnNumber).toBe(5002)"
+          },
+          {
+            "line": 186,
+            "text": "expect(g.scent.turnNumber).toBe(5002)"
+          },
+          {
+            "line": 186,
+            "text": "expect(g.scent.get(x, y)).toBe(4999)"
+          },
+          {
+            "line": 187,
+            "text": "expect(copied.getState()).toEqual(g.scent.getState())"
+          }
+        ]
+      },
+      {
+        "name": "rejects incomplete/old worlds before altering the current game or RNG",
+        "line": 190,
+        "assertions": [
+          {
+            "line": 199,
+            "text": "expect(g.loadSnapshot(bad)).toBe(false)"
+          },
+          {
+            "line": 199,
+            "text": "expect(stable(g)).toEqual(before)"
+          }
+        ]
+      },
+      {
+        "name": "refuses suspended turns, but loading retires an old animation without its epilogue",
+        "line": 203,
+        "assertions": [
+          {
+            "line": 205,
+            "text": "expect(() => g.toSnapshot()).toThrow('advancement')"
+          },
+          {
+            "line": 206,
+            "text": "expect(g.loadSnapshot(saved)).toBe(true)"
+          },
+          {
+            "line": 206,
+            "text": "expect(g.isAdvancing).toBe(false)"
+          },
+          {
+            "line": 207,
+            "text": "expect(stable(g)).toEqual((({ savedAt: _time, ...s }) => s)(saved))"
+          }
+        ]
+      },
+      {
+        "name": "codec does not consume either RNG stream or expose aliased run/flavor/level containers",
+        "line": 210,
+        "assertions": [
+          {
+            "line": 213,
+            "text": "expect(rng.getState()).toEqual(before)"
+          },
+          {
+            "line": 216,
+            "text": "expect(restored.loadSnapshot(json(saved))).toBe(true)"
+          },
+          {
+            "line": 217,
+            "text": "expect(rng.getState()).toEqual(before)"
+          },
+          {
+            "line": 218,
+            "text": "expect((g as any).meteredItems[0].frequency).not.toBe(saved.run.meteredItems[0]!.frequency)"
+          },
+          {
+            "line": 220,
+            "text": "expect((restored as any).meteredItems[0].frequency).not.toBe(saved.run.meteredItems[0]!.frequency)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/u_08_terrain_bolts.test.ts",
+    "cases": [
+      {
+        "name": "new closed terrain set: 139 DFs, no entity/spawn flags; web forbidden to learn, vines eligible",
+        "line": 47,
+        "assertions": [
+          {
+            "line": 51,
+            "text": "expect(Object.keys(DFC).filter(k=>Number(k)!==110 && Number(k)!==63 && Number(k)!==96 && Number(k)!==137 && Number(k)!==178 && ![84,142,146,192,5,9,11,12,18,20,21,22,42,64,65,71,72,73,74,75,76,77,78,79,80,126,127,128].includes(Number(k)))).toHaveLength(139)"
+          },
+          {
+            "line": 52,
+            "text": "expect(BC[B.SPIDERWEB]).toMatchObject({effect:E.NONE,pathDF:'DF_WEB_SMALL',targetDF:'DF_WEB_LARGE'})"
+          },
+          {
+            "line": 53,
+            "text": "expect(BC[B.ANCIENT_SPIRIT_VINES]).toMatchObject({effect:E.NONE,pathDF:'DF_ANCIENT_SPIRIT_GRASS',targetDF:'DF_ANCIENT_SPIRIT_VINES'})"
+          },
+          {
+            "line": 54,
+            "text": "expect(BC[B.SPIDERWEB].flags).toBe(F.TARGET_ENEMIES|F.NEVER_REFLECTS|F.NOT_LEARNABLE)"
+          },
+          {
+            "line": 55,
+            "text": "expect(BC[B.ANCIENT_SPIRIT_VINES].flags).toBe(F.TARGET_ENEMIES|F.NEVER_REFLECTS)"
+          },
+          {
+            "line": 56,
+            "text": "expect(MONSTER_BOLT_TABLE[name]!.effect).toBe(BoltEffect.NONE)"
+          },
+          {
+            "line": 57,
+            "text": "expect(TERRAIN_FLAGS[T.ANCIENT_SPIRIT_VINES]).toMatchObject({flags:T_ENTANGLES|T_CAUSES_DAMAGE|T_IS_FLAMMABLE, fireType:'DF_PLAIN_FIRE',promoteType:'DF_ANCIENT_SPIRIT_GRASS',promoteChance:1000})"
+          },
+          {
+            "line": 59,
+            "text": "expect(TERRAIN_FLAGS[T.ANCIENT_SPIRIT_VINES].mechFlags & TM_PROMOTES_ON_PLAYER_ENTRY).not.toBe(0)"
+          },
+          {
+            "line": 60,
+            "text": "expect(DRAW_PRIORITY[T.ANCIENT_SPIRIT_VINES]).toBe(19)"
+          },
+          {
+            "line": 60,
+            "text": "expect(DRAW_PRIORITY[T.ANCIENT_SPIRIT_GRASS]).toBe(60)"
+          },
+          {
+            "line": 61,
+            "text": "expect(TERRAIN_HOME_LAYER[T.ANCIENT_SPIRIT_VINES]).toBe(L.SURFACE)"
+          }
+        ]
+      },
+      {
+        "name": "distinct forbidden flags: web rejects immobile/turret, vines rejects inanimate",
+        "line": 74,
+        "assertions": [
+          {
+            "line": 76,
+            "text": "expect(specificallyValidBoltTarget(m,t,'SPIDERWEB',g)).toBe(false)"
+          },
+          {
+            "line": 77,
+            "text": "expect(specificallyValidBoltTarget(m,t,'ANCIENT_SPIRIT_VINES',g)).toBe(true)"
+          },
+          {
+            "line": 78,
+            "text": "expect(specificallyValidBoltTarget(m,t,'SPIDERWEB',g)).toBe(false)"
+          },
+          {
+            "line": 79,
+            "text": "expect(specificallyValidBoltTarget(m,t,'ANCIENT_SPIRIT_VINES',g)).toBe(false)"
+          },
+          {
+            "line": 80,
+            "text": "expect(specificallyValidBoltTarget(m,t,'SPIDERWEB',g)).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "real spider and dryad always cast, pay 400/100 ticks, and reject sleeping/hidden/blocked targets",
+        "line": 82,
+        "assertions": [
+          {
+            "line": 85,
+            "text": "expect(m.loc).toEqual(at)"
+          },
+          {
+            "line": 85,
+            "text": "expect(m.ticksUntilTurn).toBe(ticks)"
+          },
+          {
+            "line": 86,
+            "text": "expect(g.pendingBoltFrames.length).toBe(10)"
+          },
+          {
+            "line": 89,
+            "text": "expect(m.tryUseBolt(g)).toBe(false)"
+          },
+          {
+            "line": 91,
+            "text": "expect(m.tryUseBolt(g)).toBe(false)"
+          },
+          {
+            "line": 92,
+            "text": "expect(cast).not.toHaveBeenCalled()"
+          }
+        ]
+      },
+      {
+        "name": "no target => no ticks/RNG; repeated web does not recast while occupied terrain holds",
+        "line": 94,
+        "assertions": [
+          {
+            "line": 95,
+            "text": "expect(m.tryUseBolt(g)).toBe(true)"
+          },
+          {
+            "line": 98,
+            "text": "expect(m.tryUseBolt(g)).toBe(false)"
+          },
+          {
+            "line": 98,
+            "text": "expect(m.ticksUntilTurn).toBe(17)"
+          },
+          {
+            "line": 98,
+            "text": "expect(rng.randomNumbersGenerated).toBe(before)"
+          }
+        ]
+      },
+      {
+        "name": "wall is reached, receives no surface, and stops travel; endpoint spread can fill adjacent legal cells",
+        "line": 128,
+        "assertions": [
+          {
+            "line": 131,
+            "text": "expect(result.landingPos).toEqual({x:12,y:10})"
+          },
+          {
+            "line": 131,
+            "text": "expect(result.path).toHaveLength(4)"
+          },
+          {
+            "line": 132,
+            "text": "expect(surface(g,12)).toBe(T.NOTHING)"
+          },
+          {
+            "line": 132,
+            "text": "expect(surface(g,13)).toBe(T.WEB)"
+          },
+          {
+            "line": 132,
+            "text": "expect(surface(g,18)).toBe(T.NOTHING)"
+          }
+        ]
+      },
+      {
+        "name": "empty origin aim does not fabricate a landing or DF",
+        "line": 134,
+        "assertions": [
+          {
+            "line": 136,
+            "text": "expect(r.path).toEqual([])"
+          },
+          {
+            "line": 136,
+            "text": "expect(r.landingPos).toBeNull()"
+          },
+          {
+            "line": 136,
+            "text": "expect(rng.randomNumbersGenerated).toBe(before)"
+          }
+        ]
+      },
+      {
+        "name": "origin is not a path step, but DF spread may reach it",
+        "line": 138,
+        "assertions": [
+          {
+            "line": 141,
+            "text": "expect(calls.mock.calls.map(c=>c[1])).toEqual([...r.path,r.landingPos])"
+          },
+          {
+            "line": 142,
+            "text": "expect(calls.mock.calls.every(c=>(c[1] as {x:number;y:number}).x!==m.x || (c[1] as {x:number;y:number}).y!==m.y)).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "refresh occurs during fill, not after it; nested grass fill cannot overwrite stronger vines",
+        "line": 150,
+        "assertions": [
+          {
+            "line": 155,
+            "text": "expect(seen.length).toBeGreaterThan(1)"
+          },
+          {
+            "line": 155,
+            "text": "expect(seen.every(t=>t===T.ANCIENT_SPIRIT_VINES)).toBe(true)"
+          },
+          {
+            "line": 156,
+            "text": "expect(surface(g,18)).toBe(T.ANCIENT_SPIRIT_GRASS)"
+          }
+        ]
+      },
+      {
+        "name": "player walking and magical placement promote vines, monsters keep them",
+        "line": 161,
+        "assertions": [
+          {
+            "line": 163,
+            "text": "expect(surface(g,19)).toBe(T.ANCIENT_SPIRIT_GRASS)"
+          },
+          {
+            "line": 164,
+            "text": "expect(g.placeCreature(g.player,{x:20,y:10})).toBe(true)"
+          },
+          {
+            "line": 164,
+            "text": "expect(surface(g,20)).toBe(T.ANCIENT_SPIRIT_GRASS)"
+          },
+          {
+            "line": 165,
+            "text": "expect(g.placeCreature(m,{x:9,y:10})).toBe(true)"
+          },
+          {
+            "line": 165,
+            "text": "expect(surface(g,9)).toBe(T.ANCIENT_SPIRIT_VINES)"
+          }
+        ]
+      },
+      {
+        "name": "release clears only SURFACE even in a synthetic multi-layer entanglement",
+        "line": 177,
+        "assertions": [
+          {
+            "line": 179,
+            "text": "expect(surface(g,8)).toBe(T.NOTHING)"
+          },
+          {
+            "line": 180,
+            "text": "expect(g.grid.getCell(8,10)!.layers[L.LIQUID]).toBe(T.WEB)"
+          }
+        ]
+      },
+      {
+        "name": "a manually installed learnable vines bolt executes for an ally without spending learning points",
+        "line": 182,
+        "assertions": [
+          {
+            "line": 185,
+            "text": "expect(m.tryUseBolt(g)).toBe(true)"
+          },
+          {
+            "line": 185,
+            "text": "expect(surface(g,enemy.x)).toBe(T.ANCIENT_SPIRIT_VINES)"
+          },
+          {
+            "line": 185,
+            "text": "expect(m.newPowerCount).toBe(2)"
+          }
+        ]
+      },
+      {
+        "name": "gradual vines damage once, bypass shield, hurt web-immune/flying, exempt inanimate/invulnerable",
+        "line": 187,
+        "assertions": [
+          {
+            "line": 189,
+            "text": "expect(m.hp).toBe(150)"
+          },
+          {
+            "line": 190,
+            "text": "expect(m.hp).toBe(140)"
+          },
+          {
+            "line": 190,
+            "text": "expect(m.getStatusDuration('shielded')).toBe(100)"
+          },
+          {
+            "line": 191,
+            "text": "expect(m.hp).toBe(130)"
+          },
+          {
+            "line": 192,
+            "text": "expect(m.hp).toBe(130)"
+          }
+        ]
+      },
+      {
+        "name": "respiration also protects from vines and identifies; lethal monster damage uses ordinary cleanup",
+        "line": 194,
+        "assertions": [
+          {
+            "line": 196,
+            "text": "expect(g.player.hp).toBe(150)"
+          },
+          {
+            "line": 196,
+            "text": "expect(armor.runicKnown).toBe(true)"
+          },
+          {
+            "line": 197,
+            "text": "expect(m.hp).toBeLessThanOrEqual(0)"
+          },
+          {
+            "line": 197,
+            "text": "expect(g.monsters).not.toContain(m)"
+          }
+        ]
+      },
+      {
+        "name": "spontaneous promotion is <1000 out of 0..10000 and leaves non-promoting grass",
+        "line": 199,
+        "assertions": [
+          {
+            "line": 202,
+            "text": "expect(surface(g,8)).toBe(T.ANCIENT_SPIRIT_VINES)"
+          },
+          {
+            "line": 203,
+            "text": "expect(surface(g,8)).toBe(T.ANCIENT_SPIRIT_GRASS)"
+          },
+          {
+            "line": 204,
+            "text": "expect(TERRAIN_FLAGS[T.ANCIENT_SPIRIT_GRASS].promoteChance).toBe(0)"
+          }
+        ]
+      },
+      {
+        "name": "current snapshot retains new terrain/occupancy, next contact promotes and no learning is installed",
+        "line": 210,
+        "assertions": [
+          {
+            "line": 213,
+            "text": "expect(surface(h,12)).toBe(T.ANCIENT_SPIRIT_VINES)"
+          },
+          {
+            "line": 213,
+            "text": "expect(surface(h,13)).toBe(T.ANCIENT_SPIRIT_GRASS)"
+          },
+          {
+            "line": 214,
+            "text": "expect(h.monsters[0]!.bolts).toEqual(before)"
+          },
+          {
+            "line": 214,
+            "text": "expect(h.monsters[0]!.newPowerCount).toBe(2)"
+          },
+          {
+            "line": 215,
+            "text": "expect(h.placeCreature(h.player,{x:12,y:10})).toBe(true)"
+          },
+          {
+            "line": 215,
+            "text": "expect(surface(h,12)).toBe(T.ANCIENT_SPIRIT_GRASS)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/u_09_learning_consumers.test.ts",
+    "cases": [
+      {
+        "name": "CE masks are exactly four behaviors and two abilities; no TURRET, FIERY, POISONS or reflection100",
+        "line": 44,
+        "assertions": [
+          {
+            "line": 47,
+            "text": "expect(bits('LEARNABLE_BEHAVIORS')).toEqual(['MONST_INVISIBLE','MONST_FLIES','MONST_IMMUNE_TO_FIRE','MONST_REFLECT_50'])"
+          },
+          {
+            "line": 48,
+            "text": "expect(bits('LEARNABLE_ABILITIES')).toEqual(['MA_TRANSFERENCE','MA_CAUSES_WEAKNESS'])"
+          },
+          {
+            "line": 49,
+            "text": "expect(bits('MONST_TURRET')).toEqual(['MONST_IMMUNE_TO_WEBS','MONST_NEVER_SLEEPS','MONST_IMMOBILE','MONST_INANIMATE','MONST_ATTACKABLE_THRU_WALLS','MONST_WILL_NOT_USE_STAIRS'])"
+          }
+        ]
+      },
+      {
+        "name": "all 22 learnable identities have metadata; the seven unlearnable entries stay excluded",
+        "line": 51,
+        "assertions": [
+          {
+            "line": 53,
+            "text": "expect(actual.map(b=>[B[b.type],b.magnitude])).toEqual(learnedBolts)"
+          },
+          {
+            "line": 55,
+            "text": "expect(MONSTER_BOLT_TABLE[name]).toMatchObject({ceType:B[name],magnitude})"
+          },
+          {
+            "line": 56,
+            "text": "expect(MONSTER_BOLT_TABLE[name]!.effect).not.toBeNull()"
+          },
+          {
+            "line": 58,
+            "text": "expect(Object.values(CE_BOLT_CATALOG).filter(b=>b.flags&F.NOT_LEARNABLE).map(b=>B[b.type])) .toEqual(['PLENTY','EMPOWERMENT','SPIDERWEB','DRAGONFIRE','DISTANCE_ATTACK','POISON_DART','WHIP'])"
+          }
+        ]
+      },
+      {
+        "name": "matches the verbatim compiled CE predicate on all 198 new-identity target cases",
+        "line": 78,
+        "assertions": [
+          {
+            "line": 84,
+            "text": "expect(oracle.formulas).toEqual({reflection48:48,lightningLow:9,lightningHigh:29})"
+          },
+          {
+            "line": 84,
+            "text": "expect(oracle.tests).toHaveLength(198)"
+          },
+          {
+            "line": 92,
+            "text": "expect(specificallyValidBoltTarget(caster,target,test.name,g),`${test.name}/${test.label}`).toBe(test.expected)"
+          }
+        ]
+      },
+      {
+        "name": "preserves player-first/bolt-order and 30% rolls, including failed candidates without a roll",
+        "line": 116,
+        "assertions": [
+          {
+            "line": 121,
+            "text": "expect(m.tryUseBolt(g)).toBe(true)"
+          },
+          {
+            "line": 121,
+            "text": "expect(percent.mock.calls).toEqual([[30],[30]])"
+          },
+          {
+            "line": 122,
+            "text": "expect(cast).toHaveBeenCalledExactlyOnceWith(m,g.player,'POISON')"
+          }
+        ]
+      },
+      {
+        "name": "allied reflective recipient remains eligible and contact reflection is still resolved by travel",
+        "line": 144,
+        "assertions": [
+          {
+            "line": 146,
+            "text": "expect(specificallyValidBoltTarget(m,target,'INVISIBILITY',g)).toBe(true)"
+          },
+          {
+            "line": 148,
+            "text": "expect(result.hits.map(h=>h.creature)).toEqual([m])"
+          },
+          {
+            "line": 148,
+            "text": "expect(m.getStatusDuration('invisible')).toBe(150)"
+          },
+          {
+            "line": 149,
+            "text": "expect(target.hasStatus('invisible')).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "TURRET contributes all six bits at effect gates; no sleep/initialization RNG rewrite",
+        "line": 151,
+        "assertions": [
+          {
+            "line": 153,
+            "text": "expect(target.hasCEBehavior(flag)).toBe(true)"
+          },
+          {
+            "line": 154,
+            "text": "expect(specificallyValidBoltTarget(m,target,name,g)).toBe(false)"
+          },
+          {
+            "line": 157,
+            "text": "expect(target.loc).toEqual(pos)"
+          },
+          {
+            "line": 157,
+            "text": "expect(target.typeId).toBe('rat')"
+          },
+          {
+            "line": 157,
+            "text": "expect(target.statusDurations).toEqual({})"
+          },
+          {
+            "line": 158,
+            "text": "expect(percent).not.toHaveBeenCalled()"
+          },
+          {
+            "line": 158,
+            "text": "expect([...target.behaviorFlags]).toEqual(['MONST_TURRET'])"
+          }
+        ]
+      },
+      {
+        "name": "TELEPORT frees a captive even when destination search fails; IMMOBILE prevents both",
+        "line": 163,
+        "assertions": [
+          {
+            "line": 168,
+            "text": "expect(target.isCaged).toBe(false)"
+          },
+          {
+            "line": 168,
+            "text": "expect(target.isAlly).toBe(true)"
+          },
+          {
+            "line": 168,
+            "text": "expect(target.loc).toEqual({x:8,y:5})"
+          },
+          {
+            "line": 168,
+            "text": "expect(result.outcome?.autoID).toBe(false)"
+          },
+          {
+            "line": 169,
+            "text": "expect(target.isCaged).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "POLYMORPH uses W19 in-place species replacement; player contact is immune without species RNG",
+        "line": 171,
+        "assertions": [
+          {
+            "line": 175,
+            "text": "expect(target.id).toBe(id)"
+          },
+          {
+            "line": 175,
+            "text": "expect(target.typeId).toBe('phantom')"
+          },
+          {
+            "line": 175,
+            "text": "expect(target.getStatusDuration('invisible')).toBe(1000)"
+          },
+          {
+            "line": 175,
+            "text": "expect(result.outcome?.autoID).toBe(false)"
+          },
+          {
+            "line": 176,
+            "text": "expect(roll).not.toHaveBeenCalled()"
+          }
+        ]
+      },
+      {
+        "name": "DOMINATION from hostile caster still converts to player allegiance, demotes leadership and clears discord",
+        "line": 178,
+        "assertions": [
+          {
+            "line": 182,
+            "text": "expect(target.isAlly).toBe(true)"
+          },
+          {
+            "line": 182,
+            "text": "expect(target.leader).not.toBe(m)"
+          },
+          {
+            "line": 182,
+            "text": "expect(target.dominated).toBe(true)"
+          },
+          {
+            "line": 183,
+            "text": "expect(child.leader).not.toBe(target)"
+          },
+          {
+            "line": 183,
+            "text": "expect(target.hasStatus('discordant')).toBe(false)"
+          },
+          {
+            "line": 183,
+            "text": "expect(m.isAlly).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "DOMINATION failure and player contact preserve ownership and spend only the eligible roll",
+        "line": 185,
+        "assertions": [
+          {
+            "line": 187,
+            "text": "expect(target.isAlly).toBe(false)"
+          },
+          {
+            "line": 187,
+            "text": "expect(roll).toHaveBeenCalledTimes(1)"
+          },
+          {
+            "line": 188,
+            "text": "expect(roll).toHaveBeenCalledTimes(1)"
+          }
+        ]
+      },
+      {
+        "name": "CONJURATION detonates before the intercepted creature and creates 15 player-bound blades even for a hostile caster",
+        "line": 190,
+        "assertions": [
+          {
+            "line": 193,
+            "text": "expect(result.landingPos).toEqual({x:10,y:5})"
+          },
+          {
+            "line": 193,
+            "text": "expect(result.hits).toEqual([])"
+          },
+          {
+            "line": 193,
+            "text": "expect(blades).toHaveLength(15)"
+          },
+          {
+            "line": 194,
+            "text": "expect(blades[0]!.loc).toEqual({x:10,y:5})"
+          },
+          {
+            "line": 194,
+            "text": "expect(blocker.hp).toBe(100)"
+          },
+          {
+            "line": 195,
+            "text": "expect(new Set(blades.map(b=>`${b.x},${b.y}`)).size).toBe(15)"
+          },
+          {
+            "line": 196,
+            "text": "expect(b.isAlly && b.boundToPlayer && b.doesNotTrackLeader).toBe(true)"
+          },
+          {
+            "line": 196,
+            "text": "expect(b.leader).toBeNull()"
+          },
+          {
+            "line": 196,
+            "text": "expect(b.ticksUntilTurn).toBe(b.attackSpeed+1)"
+          },
+          {
+            "line": 196,
+            "text": "expect([b.goldDropChance,b.itemDropChance]).toEqual([0,0])"
+          },
+          {
+            "line": 197,
+            "text": "expect(g.monsters.filter(m=>m.typeId==='spectral_blade')).toHaveLength(15)"
+          }
+        ]
+      },
+      {
+        "name": "CONJURATION on a full grid creates no overlapping/off-map creature",
+        "line": 199,
+        "assertions": [
+          {
+            "line": 203,
+            "text": "expect(g.castMonsterBolt(m,g.player,'CONJURATION')!.outcome?.autoID).toBe(false)"
+          },
+          {
+            "line": 204,
+            "text": "expect(g.monsters.filter(m=>m.typeId==='spectral_blade')).toEqual([])"
+          }
+        ]
+      },
+      {
+        "name": "LIGHTNING uses magnitude10 (9..29, four clumps), pierces, and never calls physical attack",
+        "line": 206,
+        "assertions": [
+          {
+            "line": 210,
+            "text": "expect(result.hits.map(h=>h.creature)).toEqual([first,second])"
+          },
+          {
+            "line": 210,
+            "text": "expect([first.hp,second.hp]).toEqual([72,72])"
+          },
+          {
+            "line": 211,
+            "text": "expect(clump.mock.calls).toEqual([[9,29,4],[9,29,4]])"
+          },
+          {
+            "line": 211,
+            "text": "expect(attack).not.toHaveBeenCalled()"
+          }
+        ]
+      },
+      {
+        "name": "LIGHTNING reflection owns transference and lethal source at the original monster",
+        "line": 213,
+        "assertions": [
+          {
+            "line": 216,
+            "text": "expect(result.hits[0]!.creature).toBe(m)"
+          },
+          {
+            "line": 216,
+            "text": "expect(m.hp).toBe(0)"
+          },
+          {
+            "line": 216,
+            "text": "expect(mirror.hp).toBe(100)"
+          },
+          {
+            "line": 218,
+            "text": "expect(g.lastDamageSource).toBe(other.name)"
+          },
+          {
+            "line": 218,
+            "text": "expect(g.player.hp).toBe(0)"
+          }
+        ]
+      },
+      {
+        "name": "POISON magnitude10 stacks 40 turns and one concentration per contact; no immediate health transfer",
+        "line": 220,
+        "assertions": [
+          {
+            "line": 223,
+            "text": "expect([target.hp,target.getStatusDuration('poisoned'),target.poisonAmount,m.hp]).toEqual([100,80,2,5])"
+          }
+        ]
+      },
+      {
+        "name": "ENTRANCEMENT player contact confuses; monster contact wakes and entrains independently of caster allegiance",
+        "line": 225,
+        "assertions": [
+          {
+            "line": 227,
+            "text": "expect(target.getStatusDuration('entranced')).toBe(30)"
+          },
+          {
+            "line": 227,
+            "text": "expect(target.state).toBe(MonsterState.HUNTING)"
+          },
+          {
+            "line": 227,
+            "text": "expect(target.ticksUntilTurn).toBe(100)"
+          },
+          {
+            "line": 228,
+            "text": "expect(g.player.getStatusDuration('confused')).toBe(30)"
+          },
+          {
+            "line": 228,
+            "text": "expect(g.player.hasStatus('entranced')).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "learning flight clears aquatic restrictions, while initialization retains its own CE flags",
+        "line": 240,
+        "assertions": [
+          {
+            "line": 242,
+            "text": "expect(m.hasBehavior('MONST_RESTRICTED_TO_LIQUID')).toBe(true)"
+          },
+          {
+            "line": 243,
+            "text": "expect(m.hasBehavior('MONST_RESTRICTED_TO_LIQUID')).toBe(false)"
+          },
+          {
+            "line": 243,
+            "text": "expect(m.hasBehavior('MONST_SUBMERGES')).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "an already-FIERY recipient rederives permanent burning after learning another power, without making FIERY learnable",
+        "line": 245,
+        "assertions": [
+          {
+            "line": 247,
+            "text": "expect((m.statusDurations as Record<string,number>).burning ?? 0).toBe(0)"
+          },
+          {
+            "line": 250,
+            "text": "expect((m.statusDurations as Record<string,number>).burning).toBe(1000)"
+          },
+          {
+            "line": 251,
+            "text": "expect([m.newPowerCount,m.totalPowerCount]).toEqual([0,0])"
+          },
+          {
+            "line": 253,
+            "text": "expect((m.statusDurations as Record<string,number>).burning ?? 0).toBe(0)"
+          },
+          {
+            "line": 253,
+            "text": "expect(m.hasBehavior('MONST_FIERY')).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "installed flight and fire immunity protect against real environmental contact; invisibility enters perception",
+        "line": 255,
+        "assertions": [
+          {
+            "line": 258,
+            "text": "expect(m.hp).toBe(100)"
+          },
+          {
+            "line": 258,
+            "text": "expect(g.visibleMonsters.has(m)).toBe(false)"
+          },
+          {
+            "line": 259,
+            "text": "expect(specificallyValidBoltTarget(m,m,'FIRE',g)).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "MONST_REFLECT_50 reads reflectionChance(4) and real travel loses the ability after negation",
+        "line": 261,
+        "assertions": [
+          {
+            "line": 263,
+            "text": "expect(target.reflectChance()).toBe(reflectionChance(4))"
+          },
+          {
+            "line": 263,
+            "text": "expect(target.reflectChance()).toBe(48)"
+          },
+          {
+            "line": 265,
+            "text": "expect(result.reflections).toHaveLength(1)"
+          },
+          {
+            "line": 265,
+            "text": "expect(m.getStatusDuration('slowed')).toBe(50)"
+          },
+          {
+            "line": 265,
+            "text": "expect(target.hasStatus('slowed')).toBe(false)"
+          },
+          {
+            "line": 266,
+            "text": "expect(percent).toHaveBeenCalledWith(48)"
+          },
+          {
+            "line": 266,
+            "text": "expect(target.reflectChance()).toBe(0)"
+          }
+        ]
+      },
+      {
+        "name": "weakness affects a surviving monster through melee and BE_ATTACK, but never BE_DAMAGE; removing the ability preserves existing weakness",
+        "line": 279,
+        "assertions": [
+          {
+            "line": 282,
+            "text": "expect([target.weaknessAmount,target.getStatusDuration('weakened'),target.hp]).toEqual([2,300,100])"
+          },
+          {
+            "line": 283,
+            "text": "expect(target.weaknessAmount).toBe(2)"
+          },
+          {
+            "line": 284,
+            "text": "expect(target.weaknessAmount).toBe(2)"
+          },
+          {
+            "line": 284,
+            "text": "expect(target.weaknessAmount).toBe(2)"
+          }
+        ]
+      },
+      {
+        "name": "legacy on-hit/abilities/immunities are not learned or removed by negation",
+        "line": 286,
+        "assertions": [
+          {
+            "line": 289,
+            "text": "expect([...m.abilities]).toEqual(legacy)"
+          },
+          {
+            "line": 289,
+            "text": "expect([...m.statusImmunities]).toEqual(immunities)"
+          },
+          {
+            "line": 289,
+            "text": "expect(m.onHitStatus).toBe(onHit)"
+          },
+          {
+            "line": 290,
+            "text": "expect(m.hasAbility('MA_TRANSFERENCE')).toBe(false)"
+          },
+          {
+            "line": 290,
+            "text": "expect(m.hasStatus('invisible')).toBe(false)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/u_11_corpse_learning.test.ts",
+    "cases": [
+      {
+        "name": "scratch only rebuilds for a qualified bolt branch; a busy last ally still overwrites the map",
+        "line": 76,
+        "assertions": [
+          {
+            "line": 78,
+            "text": "expect(canAbsorb(g,m,scratch,prey,map)).toBe(true)"
+          },
+          {
+            "line": 78,
+            "text": "expect([...scratch]).toEqual([B.FIRE])"
+          },
+          {
+            "line": 80,
+            "text": "expect(canAbsorb(g,m,scratch,prey,map)).toBe(true)"
+          },
+          {
+            "line": 80,
+            "text": "expect([...scratch]).toEqual([B.SPARK])"
+          },
+          {
+            "line": 81,
+            "text": "expect(canAbsorb(g,m,scratch,prey,map)).toBe(false)"
+          },
+          {
+            "line": 81,
+            "text": "expect([...scratch]).toEqual([B.SPARK])"
+          },
+          {
+            "line": 84,
+            "text": "expect(anyoneWantABite(g,prey,maps)).toBe(false)"
+          },
+          {
+            "line": 84,
+            "text": "expect(maps).toHaveBeenCalledTimes(2)"
+          }
+        ]
+      },
+      {
+        "name": "distance uses permanent flags, secret doors, diagonal obstructions and stationary immune occupants",
+        "line": 105,
+        "assertions": [
+          {
+            "line": 108,
+            "text": "expect(corpseDistanceMap(g,m,prey.loc)[m.x]![m.y]).toBe(30000)"
+          },
+          {
+            "line": 109,
+            "text": "expect(corpseDistanceMap(g,m,prey.loc)[m.x]![m.y]).toBe(30000)"
+          },
+          {
+            "line": 110,
+            "text": "expect(corpseDistanceMap(g,m,prey.loc)[m.x]![m.y]).toBe(2)"
+          },
+          {
+            "line": 112,
+            "text": "expect(corpseDistanceMap(g,m,prey.loc)[m.x]![m.y]).toBe(2)"
+          },
+          {
+            "line": 113,
+            "text": "expect(guard.isImmuneToWeapons()).toBe(true)"
+          },
+          {
+            "line": 114,
+            "text": "expect(corpseDistanceMap(g,m,prey.loc)[m.x]![m.y]).toBe(30000)"
+          }
+        ]
+      },
+      {
+        "name": "bolt lottery preserves corpse order, removes owned/nonlearnable entries and rebuilds ourBolts for the winner",
+        "line": 124,
+        "assertions": [
+          {
+            "line": 128,
+            "text": "expect(anyoneWantABite(g,prey)).toBe(true)"
+          },
+          {
+            "line": 128,
+            "text": "expect(m.absorptionBolt).toBe(B.BLINKING)"
+          },
+          {
+            "line": 128,
+            "text": "expect(spy.mock.calls).toEqual([[1,1],[1,2]])"
+          }
+        ]
+      },
+      {
+        "name": "a player clone retains MK_YOU, so an acquired power on its corpse is learnable",
+        "line": 136,
+        "assertions": [
+          {
+            "line": 138,
+            "text": "expect(m.absorptionBolt).toBe(B.FIRE)"
+          }
+        ]
+      },
+      {
+        "name": "real player strike and monster attack, poison and burning deaths all reach allocation exactly once",
+        "line": 184,
+        "assertions": [
+          {
+            "line": 191,
+            "text": "expect(prey.hp,cause).toBeLessThanOrEqual(0)"
+          },
+          {
+            "line": 191,
+            "text": "expect(prey.deathProcessed,cause).toBe(true)"
+          },
+          {
+            "line": 191,
+            "text": "expect(m.targetCorpseLoc,cause).toEqual({x:5,y:8})"
+          },
+          {
+            "line": 192,
+            "text": "expect(task(m)).toEqual(before)"
+          },
+          {
+            "line": 192,
+            "text": "expect(spy).not.toHaveBeenCalled()"
+          }
+        ]
+      },
+      {
+        "name": "DF executes before learning; two deaths at the same square are distinct; a saved processed corpse never reassigns",
+        "line": 195,
+        "assertions": [
+          {
+            "line": 197,
+            "text": "expect(prey.deathEffectTriggered).toBe(true)"
+          },
+          {
+            "line": 197,
+            "text": "expect(prey.deathProcessed).toBe(true)"
+          },
+          {
+            "line": 198,
+            "text": "expect([a.targetCorpseLoc,b.targetCorpseLoc]).toEqual([null,null])"
+          },
+          {
+            "line": 200,
+            "text": "expect(remaining.targetCorpseLoc).toEqual({x:10,y:8})"
+          },
+          {
+            "line": 202,
+            "text": "expect(spy).not.toHaveBeenCalled()"
+          }
+        ]
+      },
+      {
+        "name": "dormant / administrative detached removals give no task; release occurs before host allocation",
+        "line": 204,
+        "assertions": [
+          {
+            "line": 205,
+            "text": "expect(m.targetCorpseLoc).toBeNull()"
+          },
+          {
+            "line": 206,
+            "text": "expect(m.targetCorpseLoc).toBeNull()"
+          },
+          {
+            "line": 208,
+            "text": "expect(g.monsters).toContain(passenger)"
+          },
+          {
+            "line": 208,
+            "text": "expect(passenger.ticksUntilTurn).toBe(200)"
+          },
+          {
+            "line": 208,
+            "text": "expect(passenger.loc).toEqual({x:10,y:8})"
+          },
+          {
+            "line": 208,
+            "text": "expect(passenger.targetCorpseLoc).toEqual(host.loc)"
+          }
+        ]
+      },
+      {
+        "name": "a passenger killed by its landing resolves its own death before the host selects a learner",
+        "line": 210,
+        "assertions": [
+          {
+            "line": 213,
+            "text": "expect(passenger.hp).toBeLessThanOrEqual(0)"
+          },
+          {
+            "line": 213,
+            "text": "expect(passenger.deathProcessed).toBe(true)"
+          },
+          {
+            "line": 214,
+            "text": "expect(m.absorptionBolt).toBe(B.FIRE)"
+          },
+          {
+            "line": 214,
+            "text": "expect(m.absorptionFlags).toBeNull()"
+          },
+          {
+            "line": 214,
+            "text": "expect(host.carriedMonster).toBeNull()"
+          }
+        ]
+      },
+      {
+        "name": "damage fully blocked by shield interrupts; restarting resets20 without reroll/refund; zero/invulnerability do not interrupt",
+        "line": 230,
+        "assertions": [
+          {
+            "line": 232,
+            "text": "expect(m.hp).toBe(hp)"
+          },
+          {
+            "line": 232,
+            "text": "expect(m.isAbsorbing).toBe(false)"
+          },
+          {
+            "line": 233,
+            "text": "expect(m.corpseAbsorptionCounter).toBe(20)"
+          },
+          {
+            "line": 233,
+            "text": "expect(m.isAbsorbing).toBe(true)"
+          },
+          {
+            "line": 233,
+            "text": "expect(spy).not.toHaveBeenCalled()"
+          },
+          {
+            "line": 234,
+            "text": "expect(m.isAbsorbing).toBe(true)"
+          },
+          {
+            "line": 234,
+            "text": "expect(m.isAbsorbing).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "expiry clears only the CE task fields, leaves name/behavior/new and never rebroadcasts; null target with lingering absorption expires",
+        "line": 236,
+        "assertions": [
+          {
+            "line": 238,
+            "text": "expect(task(m)).toEqual({loc:null,name:'corpse',counter:0,flag:null,behavior:true,bolt:B.NONE,absorbing:false,new:1,total:1})"
+          },
+          {
+            "line": 239,
+            "text": "expect(m.corpseAbsorptionCounter).toBe(-1)"
+          },
+          {
+            "line": 239,
+            "text": "expect(m.corpseAbsorptionCounter).toBe(-1)"
+          }
+        ]
+      },
+      {
+        "name": "a blocked twenty-action approach times out without spending or redistributing the corpse",
+        "line": 241,
+        "assertions": [
+          {
+            "line": 245,
+            "text": "expect(m.targetCorpseLoc).toBeNull()"
+          },
+          {
+            "line": 245,
+            "text": "expect(m.newPowerCount).toBe(1)"
+          },
+          {
+            "line": 245,
+            "text": "expect(m.absorptionFlags).toBeNull()"
+          },
+          {
+            "line": 245,
+            "text": "expect(other.targetCorpseLoc).toBeNull()"
+          }
+        ]
+      },
+      {
+        "name": "bolt takes precedence over residual flag; completion synchronizes all current permanent traits and retains name/behavior",
+        "line": 247,
+        "assertions": [
+          {
+            "line": 250,
+            "text": "expect(m.bolts).toEqual(['FIRE'])"
+          },
+          {
+            "line": 250,
+            "text": "expect(m.hasBehavior('MONST_REFLECT_50')).toBe(false)"
+          },
+          {
+            "line": 250,
+            "text": "expect(m.hasBehavior('MONST_RESTRICTED_TO_LIQUID')).toBe(false)"
+          },
+          {
+            "line": 250,
+            "text": "expect(m.hasBehavior('MONST_SUBMERGES')).toBe(false)"
+          },
+          {
+            "line": 251,
+            "text": "expect(m.statusDurations).toMatchObject({burning:1000,levitating:1000,invisible:1000})"
+          },
+          {
+            "line": 251,
+            "text": "expect([m.targetCorpseName,m.absorbBehavior,m.absorptionFlags,m.absorptionBolt]).toEqual(['corpse',true,null,B.NONE])"
+          }
+        ]
+      },
+      {
+        "name": "save at13 reloads without reselect/reset; the next13 actions finish once",
+        "line": 253,
+        "assertions": [
+          {
+            "line": 255,
+            "text": "expect(g.loadSnapshot(snapshot)).toBe(true)"
+          },
+          {
+            "line": 255,
+            "text": "expect(spy).not.toHaveBeenCalled()"
+          },
+          {
+            "line": 256,
+            "text": "expect(task(loaded)).toEqual(before)"
+          },
+          {
+            "line": 257,
+            "text": "expect(loaded.newPowerCount).toBe(1)"
+          },
+          {
+            "line": 257,
+            "text": "expect(loaded.newPowerCount).toBe(0)"
+          },
+          {
+            "line": 257,
+            "text": "expect(loaded.hasBehavior('MONST_FLIES')).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "negation preserves a pending task and refunds total; completion can reinstall it; polymorph preserves task",
+        "line": 259,
+        "assertions": [
+          {
+            "line": 261,
+            "text": "expect(task(m)).toEqual({...before,new:3})"
+          },
+          {
+            "line": 261,
+            "text": "expect(m.newPowerCount).toBe(2)"
+          },
+          {
+            "line": 261,
+            "text": "expect(m.hasBehavior('MONST_FLIES')).toBe(true)"
+          },
+          {
+            "line": 262,
+            "text": "expect(task(m)).toEqual(pending)"
+          },
+          {
+            "line": 262,
+            "text": "expect(m.hasAbility('MA_TRANSFERENCE')).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "clone copies task by value; return before16 can duplicate learning as CE permits, without a global token",
+        "line": 264,
+        "assertions": [
+          {
+            "line": 266,
+            "text": "expect(clone.targetCorpseLoc).toEqual(m.targetCorpseLoc)"
+          },
+          {
+            "line": 266,
+            "text": "expect(clone.targetCorpseLoc).not.toBe(m.targetCorpseLoc)"
+          },
+          {
+            "line": 267,
+            "text": "expect(clone.isAbsorbing).toBe(false)"
+          },
+          {
+            "line": 267,
+            "text": "expect(clone.targetCorpseLoc).not.toBeNull()"
+          },
+          {
+            "line": 269,
+            "text": "expect(clone.corpseAbsorptionCounter).toBe(20)"
+          },
+          {
+            "line": 270,
+            "text": "expect(clone.newPowerCount).toBe(0)"
+          },
+          {
+            "line": 271,
+            "text": "expect(m.newPowerCount).toBe(0)"
+          }
+        ]
+      },
+      {
+        "name": "level change clears only location; next action clears ongoing bit then expires the residual task",
+        "line": 273,
+        "assertions": [
+          {
+            "line": 275,
+            "text": "expect(m.isAbsorbing).toBe(true)"
+          },
+          {
+            "line": 275,
+            "text": "expect(m.isAbsorbing).toBe(false)"
+          },
+          {
+            "line": 275,
+            "text": "expect(m.absorptionFlags).toBeNull()"
+          },
+          {
+            "line": 275,
+            "text": "expect(m.newPowerCount).toBe(1)"
+          }
+        ]
+      },
+      {
+        "name": "normal scheduler consumes exactly20 actions at100 ticks even for a fast learner; completion does not move",
+        "line": 281,
+        "assertions": [
+          {
+            "line": 283,
+            "text": "expect(m.corpseAbsorptionCounter).toBe(1)"
+          },
+          {
+            "line": 283,
+            "text": "expect(m.newPowerCount).toBe(1)"
+          },
+          {
+            "line": 284,
+            "text": "expect(m.newPowerCount).toBe(0)"
+          },
+          {
+            "line": 284,
+            "text": "expect(m.loc).toEqual({x:8,y:8})"
+          }
+        ]
+      },
+      {
+        "name": "poison acquired during absorption is not a second start gate; direct monstersTurn updates before inner paralysis",
+        "line": 286,
+        "assertions": [
+          {
+            "line": 288,
+            "text": "expect(m.newPowerCount).toBe(0)"
+          }
+        ]
+      },
+      {
+        "name": "corpse outranks following/blink-follow, but magic, nearby combat and escaping hazards outrank corpse",
+        "line": 290,
+        "assertions": [
+          {
+            "line": 292,
+            "text": "expect(m.loc).toEqual({x:9,y:8})"
+          },
+          {
+            "line": 294,
+            "text": "expect(enemy.hp).toBeLessThan(100)"
+          },
+          {
+            "line": 294,
+            "text": "expect(m.isAbsorbing).toBe(false)"
+          },
+          {
+            "line": 295,
+            "text": "expect(m.isAbsorbing).toBe(false)"
+          },
+          {
+            "line": 295,
+            "text": "expect(m.loc).toEqual({x:9,y:8})"
+          },
+          {
+            "line": 296,
+            "text": "expect(m.isAbsorbing).toBe(false)"
+          },
+          {
+            "line": 296,
+            "text": "expect(m.loc).not.toEqual({x:9,y:8})"
+          }
+        ]
+      },
+      {
+        "name": "absorbing friend blocks walking; no implicit corpse-item disappearance or rediscovery check",
+        "line": 298,
+        "assertions": [
+          {
+            "line": 300,
+            "text": "expect(blocker.loc).toEqual({x:9,y:8})"
+          },
+          {
+            "line": 300,
+            "text": "expect(m.loc).not.toEqual(blocker.loc)"
+          },
+          {
+            "line": 301,
+            "text": "expect(m.hasAbility('MA_CAUSES_WEAKNESS')).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "lottery boundary calls versus actual RNG advancement: singleton0, multiple2; absorption0",
+        "line": 311,
+        "assertions": [
+          {
+            "line": 313,
+            "text": "expect(rng.randomNumbersGenerated).toBe(before)"
+          },
+          {
+            "line": 314,
+            "text": "expect(rng.randomNumbersGenerated).toBe(started)"
+          },
+          {
+            "line": 317,
+            "text": "expect(rng.randomNumbersGenerated-count).toBe(2)"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,2297 @@
+{
+  "scope": "Unmodified-code, synthetic in-memory observations; not natural occurrence rate or CE full-run equivalence",
+  "allyStatusLeak": [
+    {
+      "attack": 1,
+      "before": {
+        "player": 0,
+        "enemy": 0,
+        "hp": 10000
+      },
+      "after": {
+        "player": 2,
+        "enemy": 0,
+        "hp": 9999
+      },
+      "ally": "kobold",
+      "playerLoc": {
+        "x": 6,
+        "y": 8
+      },
+      "allyLoc": {
+        "x": 8,
+        "y": 8
+      },
+      "enemyLoc": {
+        "x": 9,
+        "y": 8
+      },
+      "onHitChance": 0.08
+    }
+  ],
+  "enchantEligibility": [
+    {
+      "identity": "dagger",
+      "weapon": true,
+      "armor": false,
+      "allowed": true
+    },
+    {
+      "identity": "dart",
+      "weapon": false,
+      "armor": false,
+      "allowed": false
+    },
+    {
+      "identity": "leather_armor",
+      "weapon": false,
+      "armor": true,
+      "allowed": false
+    },
+    {
+      "identity": "sword",
+      "weapon": false,
+      "armor": false,
+      "allowed": false
+    }
+  ],
+  "enchantResult": {
+    "before": {
+      "strength": 12,
+      "times": 0,
+      "enchant": 0
+    },
+    "after": {
+      "strength": 12,
+      "times": 0,
+      "enchant": 1
+    }
+  },
+  "removeCurseResult": [
+    {
+      "identity": "dagger",
+      "enchantment": 0,
+      "isCursed": false
+    },
+    {
+      "identity": "sword",
+      "enchantment": -2,
+      "isCursed": true
+    }
+  ],
+  "charmKinds": [
+    "charm_of_protection",
+    "charm_of_health",
+    "charm_of_invisibility",
+    "charm_of_speed",
+    "charm_of_telepathy",
+    "charm_of_fire_immunity"
+  ],
+  "charmDetails": [
+    {
+      "e": 1,
+      "detail": [
+        "效果: 恢复生命 20%",
+        "冷却回合: 1377"
+      ]
+    },
+    {
+      "e": 2,
+      "detail": [
+        "效果: 恢复生命 40%",
+        "冷却回合: 759"
+      ]
+    },
+    {
+      "e": 5,
+      "detail": [
+        "效果: 恢复生命 100%",
+        "冷却回合: 128"
+      ]
+    }
+  ],
+  "naturalCatalogLegacy": [
+    {
+      "id": "kobold",
+      "status": "confused",
+      "chance": 0.08,
+      "duration": 2
+    },
+    {
+      "id": "goblin",
+      "status": "paralyzed",
+      "chance": 0.12,
+      "duration": 1
+    },
+    {
+      "id": "vampire",
+      "status": "paralyzed",
+      "chance": 0.15,
+      "duration": 2
+    }
+  ],
+  "dropDefaults": {
+    "data": {
+      "id": "rat",
+      "name": "Rat",
+      "char": "r",
+      "color": 11163187,
+      "hp": 6,
+      "damage": "1d3",
+      "clumping": 1,
+      "accuracy": 80,
+      "defense": 0,
+      "regen": 20,
+      "moveSpeed": 100,
+      "attackSpeed": 100,
+      "minDepth": 1,
+      "maxDepth": 3,
+      "goldDropChance": 0.1,
+      "itemDropChance": 0.05,
+      "behaviorFlags": [],
+      "abilityFlags": [],
+      "statusImmunities": [
+        "confused"
+      ],
+      "statusResistTurns": {
+        "paralyzed": 1
+      },
+      "description": "老鼠是浅层地牢的拾荒者，永远在寻找腐烂的动物残骸。",
+      "bolts": []
+    },
+    "instance": {
+      "gold": 0,
+      "item": 0
+    }
+  },
+  "df": {
+    "count": 172,
+    "missingTiles": []
+  },
+  "retiredBlueprints": [
+    "reward_library",
+    "reward_consumables",
+    "vestibule_flammable",
+    "vestibule_guardian",
+    "vestibule_pit_traps",
+    "key_rat_trap",
+    "key_fire_trap",
+    "key_flood_trap",
+    "key_web_room",
+    "key_lava_moat",
+    "key_boss"
+  ],
+  "retiredQualifications": [
+    {
+      "id": "reward_library",
+      "depth1": false,
+      "depth12": false
+    },
+    {
+      "id": "reward_consumables",
+      "depth1": false,
+      "depth12": false
+    },
+    {
+      "id": "vestibule_flammable",
+      "depth1": false,
+      "depth12": false
+    },
+    {
+      "id": "vestibule_guardian",
+      "depth1": false,
+      "depth12": false
+    },
+    {
+      "id": "vestibule_pit_traps",
+      "depth1": false,
+      "depth12": false
+    },
+    {
+      "id": "key_rat_trap",
+      "depth1": false,
+      "depth12": false
+    },
+    {
+      "id": "key_fire_trap",
+      "depth1": false,
+      "depth12": false
+    },
+    {
+      "id": "key_flood_trap",
+      "depth1": false,
+      "depth12": false
+    },
+    {
+      "id": "key_web_room",
+      "depth1": false,
+      "depth12": false
+    },
+    {
+      "id": "key_lava_moat",
+      "depth1": false,
+      "depth12": false
+    },
+    {
+      "id": "key_boss",
+      "depth1": false,
+      "depth12": false
+    }
+  ],
+  "potionPool": [
+    "potion_of_life",
+    "potion_of_strength",
+    "potion_of_fire_immunity",
+    "potion_of_invisibility",
+    "potion_of_levitation",
+    "potion_of_telepathy",
+    "potion_of_haste",
+    "potion_of_detect_magic",
+    "potion_of_descent",
+    "potion_of_incineration",
+    "potion_of_poison",
+    "potion_of_confusion",
+    "potion_of_paralysis",
+    "potion_of_hallucination",
+    "potion_of_creeping_death"
+  ],
+  "replay": {
+    "events": 2,
+    "cursor": 2,
+    "error": null
+  },
+  "naturalDerivedFlags": {
+    "seed": 424242,
+    "depth": 1,
+    "count": 106,
+    "mismatches": [
+      {
+        "x": 1,
+        "y": 6,
+        "layers": [
+          "TORCH_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": false,
+          "opaque": true
+        }
+      },
+      {
+        "x": 1,
+        "y": 8,
+        "layers": [
+          "TORCH_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": false,
+          "opaque": true
+        }
+      },
+      {
+        "x": 4,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 4,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 5,
+        "y": 2,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 5,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 5,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 5,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "SUNLIGHT_POOL",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 5,
+        "y": 6,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 6,
+        "y": 2,
+        "layers": [
+          "FLOOR",
+          "SUNLIGHT_POOL",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 6,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "SUNLIGHT_POOL",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 6,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "SUNLIGHT_POOL",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 6,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "SUNLIGHT_POOL",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 6,
+        "y": 6,
+        "layers": [
+          "FLOOR",
+          "SUNLIGHT_POOL",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 7,
+        "y": 2,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 7,
+        "y": 3,
+        "layers": [
+          "FLOOR",
+          "SUNLIGHT_POOL",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 7,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "SUNLIGHT_POOL",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 8,
+        "y": 4,
+        "layers": [
+          "FLOOR",
+          "SUNLIGHT_POOL",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 26,
+        "y": 3,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 26,
+        "y": 4,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 26,
+        "y": 5,
+        "layers": [
+          "NOTHING",
+          "SUNLIGHT_POOL",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 26,
+        "y": 6,
+        "layers": [
+          "NOTHING",
+          "SUNLIGHT_POOL",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 27,
+        "y": 2,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 27,
+        "y": 3,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 27,
+        "y": 4,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 27,
+        "y": 5,
+        "layers": [
+          "NOTHING",
+          "SUNLIGHT_POOL",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 27,
+        "y": 6,
+        "layers": [
+          "NOTHING",
+          "SUNLIGHT_POOL",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 27,
+        "y": 10,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "BLOODFLOWER_STALK"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": false,
+          "opaque": false
+        }
+      },
+      {
+        "x": 27,
+        "y": 11,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "BLOODFLOWER_STALK"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": false,
+          "opaque": false
+        }
+      },
+      {
+        "x": 28,
+        "y": 2,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 28,
+        "y": 3,
+        "layers": [
+          "NOTHING",
+          "SUNLIGHT_POOL",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 28,
+        "y": 4,
+        "layers": [
+          "NOTHING",
+          "SUNLIGHT_POOL",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 28,
+        "y": 5,
+        "layers": [
+          "NOTHING",
+          "SUNLIGHT_POOL",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 28,
+        "y": 10,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "BLOODFLOWER_STALK"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": false,
+          "opaque": false
+        }
+      },
+      {
+        "x": 29,
+        "y": 3,
+        "layers": [
+          "NOTHING",
+          "SUNLIGHT_POOL",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 29,
+        "y": 4,
+        "layers": [
+          "NOTHING",
+          "SUNLIGHT_POOL",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 37,
+        "y": 27,
+        "layers": [
+          "TORCH_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": false,
+          "opaque": true
+        }
+      },
+      {
+        "x": 38,
+        "y": 23,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 38,
+        "y": 24,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 38,
+        "y": 25,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 39,
+        "y": 23,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 39,
+        "y": 24,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 39,
+        "y": 25,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 39,
+        "y": 26,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 39,
+        "y": 27,
+        "layers": [
+          "TORCH_WALL",
+          "NOTHING",
+          "NOTHING",
+          "NOTHING"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": false,
+          "opaque": true
+        }
+      },
+      {
+        "x": 40,
+        "y": 23,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 40,
+        "y": 24,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 40,
+        "y": 25,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 41,
+        "y": 22,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 41,
+        "y": 23,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 41,
+        "y": 24,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 41,
+        "y": 25,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 41,
+        "y": 26,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 42,
+        "y": 23,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 42,
+        "y": 25,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 47,
+        "y": 10,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 47,
+        "y": 11,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 47,
+        "y": 12,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 47,
+        "y": 13,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 48,
+        "y": 9,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 48,
+        "y": 10,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 48,
+        "y": 11,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 49,
+        "y": 9,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 49,
+        "y": 10,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 49,
+        "y": 11,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 49,
+        "y": 12,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 50,
+        "y": 10,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 50,
+        "y": 11,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 51,
+        "y": 10,
+        "layers": [
+          "NOTHING",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 52,
+        "y": 25,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 52,
+        "y": 26,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 52,
+        "y": 27,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 53,
+        "y": 25,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 53,
+        "y": 26,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 53,
+        "y": 27,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 54,
+        "y": 25,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 54,
+        "y": 26,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 55,
+        "y": 25,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 55,
+        "y": 26,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 58,
+        "y": 23,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 59,
+        "y": 22,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 59,
+        "y": 23,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 59,
+        "y": 24,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 60,
+        "y": 22,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 60,
+        "y": 23,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 60,
+        "y": 24,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 61,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 61,
+        "y": 22,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 61,
+        "y": 23,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 61,
+        "y": 24,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 61,
+        "y": 25,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 62,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 62,
+        "y": 22,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 62,
+        "y": 23,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 62,
+        "y": 24,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 62,
+        "y": 25,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 63,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 63,
+        "y": 23,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 63,
+        "y": 24,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 64,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 71,
+        "y": 7,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 72,
+        "y": 5,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 72,
+        "y": 6,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 72,
+        "y": 7,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 73,
+        "y": 6,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      },
+      {
+        "x": 73,
+        "y": 7,
+        "layers": [
+          "FLOOR",
+          "NOTHING",
+          "NOTHING",
+          "FOLIAGE"
+        ],
+        "actual": {
+          "passable": true,
+          "opaque": false
+        },
+        "expected": {
+          "passable": true,
+          "opaque": true
+        }
+      }
+    ]
+  },
+  "testModeRetired": [
+    {
+      "depth": 1,
+      "category": "weapons",
+      "found": [
+        {
+          "identity": "halberd",
+          "loc": {
+            "x": 56,
+            "y": 3
+          }
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "category": "wands",
+      "found": [
+        {
+          "identity": "wand_of_fire",
+          "loc": {
+            "x": 62,
+            "y": 3
+          }
+        },
+        {
+          "identity": "wand_of_lightning",
+          "loc": {
+            "x": 68,
+            "y": 3
+          }
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "category": "scrolls",
+      "found": [
+        {
+          "identity": "scroll_of_amnesia",
+          "loc": {
+            "x": 14,
+            "y": 11
+          }
+        }
+      ]
+    },
+    {
+      "depth": 4,
+      "category": "potions",
+      "found": [
+        {
+          "identity": "potion_of_healing",
+          "loc": {
+            "x": 14,
+            "y": 3
+          }
+        }
+      ]
+    },
+    {
+      "depth": 5,
+      "category": "other",
+      "found": [
+        {
+          "identity": "staff_of_light",
+          "loc": {
+            "x": 44,
+            "y": 11
+          }
+        }
+      ]
+    },
+    {
+      "depth": 6,
+      "category": "terrain",
+      "found": []
+    },
+    {
+      "depth": 7,
+      "category": "enemies",
+      "found": []
+    },
+    {
+      "depth": 8,
+      "category": "blueprints",
+      "found": []
+    },
+    {
+      "depth": 9,
+      "category": "runics",
+      "found": [
+        {
+          "identity": "dagger",
+          "runic": "venom",
+          "loc": {
+            "x": 14,
+            "y": 3
+          }
+        },
+        {
+          "identity": "dagger",
+          "runic": "vampirism",
+          "loc": {
+            "x": 26,
+            "y": 3
+          }
+        },
+        {
+          "identity": "leather_armor",
+          "runic": "vitality",
+          "loc": {
+            "x": 14,
+            "y": 11
+          }
+        }
+      ]
+    }
+  ]
+}

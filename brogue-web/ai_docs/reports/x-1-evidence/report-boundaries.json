@@ -1,0 +1,3791 @@
+[
+  {
+    "file": "ai_docs/reports/u-00.report.md",
+    "lines": [
+      {
+        "line": 5,
+        "text": "**结果：开新局统一清理整局状态；复用实例 A→B 与同配置新实例 B 深比较一致。保留显示设置、渲染/确认接线和动画偏好。未改存档格式、玩法、生成池或任何已有测试期望，未重捕获基线。** 最终门禁及逐文件结果见 §7；新发现的既有重放问题见 §9，不把“新局等价”扩写成“重放系统完整正确”。"
+      },
+      {
+        "line": 10,
+        "text": "2. `RogueMain.c:190–223` 先暂存 `playbackMode/playbackPaused/playbackFastForward/mode/hideSeed/displayStealthRangeMode/trueColorMode/currentGamePath`；释放旧计量表、`memset rogue`，再恢复这些字段。随后明确设 `gameHasEnded=false`、新局进行中、毫秒计数归零。**保留播放上下文的实际路径并不等于保留旧局状态**：普通新局入口已清播放位，播放入口另行设置。"
+      },
+      {
+        "line": 13,
+        "text": "5. `Items.c:8775–8860` 的 `shuffleFlavors → resetItemTableEntry` 清五类物品的鉴定、极性、called/callTitle，然后重新建立外观。本轮保留 web 已有外观 COSMETIC 隔离与洗牌次序；不搬 CE 的额外 RNG 消费。"
+      },
+      {
+        "line": 17,
+        "text": "- **A**：CE RogueMain.c:190–241（保留项、memset rogue、结束锁与计量重建）。"
+      },
+      {
+        "line": 24,
+        "text": "CE 没有 web 的异步弹层、数字实体 ID 或 JS 闭包；这些行明确按 A/F 的生命周期映射，不声称 C 中存在同名字段。CE 的等级种子、整局存档、计分和完整状态系统仍按 X-0 后续单元处理。"
+      },
+      {
+        "line": 39,
+        "text": "| `autoPath` | run | 已有复位；保留 | A/F（web 载体） |"
+      },
+      {
+        "line": 45,
+        "text": "| `isMouseTraveling` | run | 已有复位；保留 | A/F（web 载体） |"
+      },
+      {
+        "line": 49,
+        "text": "| `floatingTexts` | run | 已有复位；保留 | A/F（web 载体） |"
+      },
+      {
+        "line": 50,
+        "text": "| `onRenderRequested` | 会话 | 保留原函数；验证身份不变 | A 保留偏好；web 服务接线无 CE 同名字段 |"
+      },
+      {
+        "line": 51,
+        "text": "| `onConfirmRequest` | 会话 | 保留 App 接线；验证身份不变 | A 保留偏好；web 服务接线无 CE 同名字段 |"
+      },
+      {
+        "line": 55,
+        "text": "| `needsRender` | run | 已有复位；保留 | A/F（web 载体） |"
+      },
+      {
+        "line": 56,
+        "text": "| `isInventoryOpen` | run | 已有复位；保留 | A/F（web 载体） |"
+      },
+      {
+        "line": 57,
+        "text": "| `pendingIdentify` | run | 已有复位；保留 | A/F（web 载体） |"
+      },
+      {
+        "line": 58,
+        "text": "| `pendingEnchantment` | run | 已有复位；保留 | A/F（web 载体） |"
+      },
+      {
+        "line": 59,
+        "text": "| `pendingArcana` | run | 已有复位；保留 | A/F（web 载体） |"
+      },
+      {
+        "line": 60,
+        "text": "| `isThrowing` | run | 已有复位；保留 | A/F（web 载体） |"
+      },
+      {
+        "line": 61,
+        "text": "| `throwItemTarget` | run | 已有复位；保留 | A/F（web 载体） |"
+      },
+      {
+        "line": 65,
+        "text": "| `depth` | run | 已有复位；保留 | A/C |"
+      },
+      {
+        "line": 68,
+        "text": "| `meteredItems` | run | 已有复位；保留 | A/C |"
+      },
+      {
+        "line": 69,
+        "text": "| `foodSpawned` | run | 已有复位；保留 | A/C |"
+      },
+      {
+        "line": 70,
+        "text": "| `goldGenerated` | run | 已有复位；保留 | A/C |"
+      },
+      {
+        "line": 71,
+        "text": "| `monsterSpawnFuse` | run | 已有复位；保留 | A/C |"
+      },
+      {
+        "line": 72,
+        "text": "| `ticksTillUpdateEnvironment` | run | 已有复位；保留 | A/C |"
+      },
+      {
+        "line": 89,
+        "text": "| `combatSystem` | 会话 | 无实例可变字段的服务对象；保留 | A 保留偏好；web 服务接线无 CE 同名字段 |"
+      },
+      {
+        "line": 90,
+        "text": "| `recordingStartAt` | run | 已有复位；保留 | A/E；web JSON 录制协议 |"
+      },
+      {
+        "line": 91,
+        "text": "| `recordedInputEvents` | run | 已有复位；保留 | A/E；web JSON 录制协议 |"
+      },
+      {
+        "line": 92,
+        "text": "| `recordedInputIndex` | run | 已有复位；保留 | A/E；web JSON 录制协议 |"
+      },
+      {
+        "line": 93,
+        "text": "| `replayRecording` | run | 已有复位；保留 | A/E；web JSON 录制协议 |"
+      },
+      {
+        "line": 94,
+        "text": "| `replayEvents` | run | 已有复位；保留 | A/E；web JSON 录制协议 |"
+      },
+      {
+        "line": 95,
+        "text": "| `replayCursor` | run | 已有复位；保留 | A/E；web JSON 录制协议 |"
+      },
+      {
+        "line": 96,
+        "text": "| `replayStatus` | run | 已有复位；保留 | A/E；web JSON 录制协议 |"
+      },
+      {
+        "line": 97,
+        "text": "| `replayFrameAccumulator` | run | 已有复位；保留 | A/E；web JSON 录制协议 |"
+      },
+      {
+        "line": 98,
+        "text": "| `replayFramesPerStep` | 会话 | 固定帧间隔 6；保留 | A 保留偏好；web 服务接线无 CE 同名字段 |"
+      },
+      {
+        "line": 102,
+        "text": "| `currentTestCategory` | run | 已有复位；保留 | A/F（web 载体） |"
+      },
+      {
+        "line": 103,
+        "text": "| `SPAWNS_IN_TERRAIN` | 会话：规则常量 | 无需重置；保留 | 规则目录/公式，不是 rogue 可变状态 |"
+      },
+      {
+        "line": 104,
+        "text": "| `pendingUseConfirm` | run | 已有复位；保留 | A/F（web 载体） |"
+      },
+      {
+        "line": 108,
+        "text": "| `THROWN_FUNCTIONAL_POTION_EFFECTS` | 会话：规则常量 | 无需重置；保留 | 规则目录/公式，不是 rogue 可变状态 |"
+      },
+      {
+        "line": 110,
+        "text": "| `justSearched` | run | 已有复位；保留 | A/F（web 载体） |"
+      },
+      {
+        "line": 111,
+        "text": "| `searchingCharge` | run | 已有复位；保留 | A/F（web 载体） |"
+      },
+      {
+        "line": 114,
+        "text": "| `FALL_DAMAGE_MIN` | 会话：规则常量 | 无需重置；保留 | 规则目录/公式，不是 rogue 可变状态 |"
+      },
+      {
+        "line": 115,
+        "text": "| `FALL_DAMAGE_MAX` | 会话：规则常量 | 无需重置；保留 | 规则目录/公式，不是 rogue 可变状态 |"
+      },
+      {
+        "line": 117,
+        "text": "| `animationEnabled` | 会话 | 保留 headless/UI 偏好；验证 true 不被清 | A 保留偏好；web 服务接线无 CE 同名字段 |"
+      },
+      {
+        "line": 118,
+        "text": "| `ANIMATION_PAUSE_MS` | 会话：规则常量 | 无需重置；保留 | 规则目录/公式，不是 rogue 可变状态 |"
+      },
+      {
+        "line": 119,
+        "text": "| `ANIMATION_LOCK_TIMEOUT_MS` | 会话：规则常量 | 无需重置；保留 | 规则目录/公式，不是 rogue 可变状态 |"
+      },
+      {
+        "line": 127,
+        "text": "| `BURNING_DURATION_TURNS` | 会话：规则常量 | 无需重置；保留 | 规则目录/公式，不是 rogue 可变状态 |"
+      },
+      {
+        "line": 128,
+        "text": "| `EXPLOSION_IMMUNITY_TURNS` | 会话：规则常量 | 无需重置；保留 | 规则目录/公式，不是 rogue 可变状态 |"
+      },
+      {
+        "line": 129,
+        "text": "| `hoveredCell` | run | 已有复位；保留 | A/F（web 载体） |"
+      },
+      {
+        "line": 130,
+        "text": "| `hoveredText` | run | 已有复位；保留 | A/F（web 载体） |"
+      },
+      {
+        "line": 132,
+        "text": "## 3. 模块级状态全枚举与保留项"
+      },
+      {
+        "line": 138,
+        "text": "| `activeGame` / `window.activeGame` | 会话身份，内部 run | 保留同一个实例、执行完整重置；无第二次构造或替换 UI 引用 | A/F，web 接线 |"
+      },
+      {
+        "line": 142,
+        "text": "| `rng.RAND_MAX_COMBO` | 常量 | 保留 | 算法常量 |"
+      },
+      {
+        "line": 150,
+        "text": "| `BlueprintEngine.EFFECTIVE_BP_FLAGS_CACHE` | 会话纯派生缓存 | 保留；只由 blueprint 常量决定 | 不持有 run 实体；无 RNG |"
+      },
+      {
+        "line": 151,
+        "text": "| `Grid.crossLayerClearCounts` | 会话诊断 | 保留；跨层测量用，生产不得读取，非游戏状态 | Grid 的专用 resetCrossLayerClearStats 供测量隔离，不并入新局 |"
+      },
+      {
+        "line": 152,
+        "text": "| `displaySettings.mapScaleMode` | 会话偏好 | 保留 uniform/stretch | A 保留显示偏好；web Settings 持久化 |"
+      },
+      {
+        "line": 153,
+        "text": "| `displaySettings.sidebarWidthMode` | 会话偏好 | 保留 fixed/proportional | 同上 |"
+      },
+      {
+        "line": 154,
+        "text": "| `inputManager.keybMap` | 会话物理键状态 | 保留；只有键下/键上写入，无读取消费者，不是动作队列 | web 输入设施，无 CE 同名字段 |"
+      },
+      {
+        "line": 155,
+        "text": "| `inputManager.onActionCallback` | 会话组件接线 | 保留；Canvas 挂载 setCallback 是覆盖一次函数，无新局绑定 | web 接线 |"
+      },
+      {
+        "line": 156,
+        "text": "| `EventBus.listeners` | 会话服务 | 保留；全仓无 import/消费者，新局链不可达 | 非 run 世界 |"
+      },
+      {
+        "line": 157,
+        "text": "| i18next 语言/资源、DOM/Pixi 资源、Settings watcher/localStorage | 会话 | 保留；不删除存档/录像或显示存储，不添加监听器 | A 的显示偏好类比；App 自身返回标题的删存档行为未改 |"
+      },
+      {
+        "line": 158,
+        "text": "| `D2_EXCLUDED_POTIONS`、`RETIRED_INVENTED_BLUEPRINT_IDS`、`RETIRED_AUTOGENERATOR_MACHINES` | 规则常量 | 保留 | 生成池硬约束 |"
+      },
+      {
+        "line": 159,
+        "text": "| `NEGATABLE_TRAITS`、`NON_NEGATABLE_ABILITIES`、`NEGATABLE_MUTATIONS`、`PLAYER_ONE_TURN`、`CE_EMPTY_NAME_STATUSES` | 规则常量 | 保留 | 消魔/显示规则，不是局中知识 |"
+      },
+      {
+        "line": 160,
+        "text": "| 其余顶层目录/数值/方向表 | 常量 | 保留；完整清单见 module-globals.json | 无局内写回状态 |"
+      },
+      {
+        "line": 166,
+        "text": "| `weapons` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 167,
+        "text": "| `armors` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 168,
+        "text": "| `potions` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 169,
+        "text": "| `scrolls` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 170,
+        "text": "| `food` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 171,
+        "text": "| `wands` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 172,
+        "text": "| `staffs` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 173,
+        "text": "| `rings` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 174,
+        "text": "| `charms` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 175,
+        "text": "| `keys` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 176,
+        "text": "| `amulets` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 177,
+        "text": "| `genPotions` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 178,
+        "text": "| `genScrolls` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 179,
+        "text": "| `genFood` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 180,
+        "text": "| `genWands` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 181,
+        "text": "| `genStaffs` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 182,
+        "text": "| `genRings` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 183,
+        "text": "| `genCharms` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 184,
+        "text": "| `genKeys` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 185,
+        "text": "| `genAmulets` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 186,
+        "text": "| `genWeapons` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 187,
+        "text": "| `genArmors` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 188,
+        "text": "| `ALL_WEAPON_RUNICS` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 189,
+        "text": "| `GENERATED_WEAPON_RUNICS` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 190,
+        "text": "| `ALL_ARMOR_RUNICS` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 191,
+        "text": "| `GENERATED_ARMOR_RUNICS` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 192,
+        "text": "| `CE_NUMBER_SCROLL_KINDS` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 193,
+        "text": "| `CE_METERED_ITEMS_TABLE` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 194,
+        "text": "| `_ceItemGenProbs` | 会话纯派生缓存 | 保留；目录/类别枚举的惰性计算，无 run 输入 | 规则，不属 rogue |"
+      },
+      {
+        "line": 195,
+        "text": "| `CE_POW_FOOD` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 196,
+        "text": "| `CE_POW_GOLD` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 197,
+        "text": "| `WEAPON_RUNIC_BY_CE_INDEX` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 198,
+        "text": "| `ARMOR_RUNIC_BY_CE_INDEX` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 199,
+        "text": "| `CE_NUMBER_GOOD_WEAPON_ENCHANT_KINDS` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 200,
+        "text": "| `CE_NUMBER_WEAPON_RUNIC_KINDS` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 201,
+        "text": "| `CE_NUMBER_GOOD_ARMOR_ENCHANT_KINDS` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 202,
+        "text": "| `CE_NUMBER_ARMOR_ENCHANT_KINDS` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 203,
+        "text": "| `CE_MONSTER_CLASSES` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 210,
+        "text": "| `WEAPON_KILLS_TO_AUTO_ID` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 211,
+        "text": "| `ARMOR_DELAY_TO_AUTO_ID` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 212,
+        "text": "| `RING_DELAY_TO_AUTO_ID` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 213,
+        "text": "| `DEGENERATE_CHARGE_WAND_KINDS` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 214,
+        "text": "| `INSTANT_ID_RING_KINDS` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 215,
+        "text": "| `MAGIC_POLARITY` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 217,
+        "text": "| `_hasIntrinsicPolarity` | 会话纯派生缓存 | 保留；目录/类别枚举的惰性计算，无 run 输入 | 规则，不属 rogue |"
+      },
+      {
+        "line": 218,
+        "text": "| `_canBeDetected` | 会话纯派生缓存 | 保留；目录/类别枚举的惰性计算，无 run 输入 | 规则，不属 rogue |"
+      },
+      {
+        "line": 219,
+        "text": "| `potionColors` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 220,
+        "text": "| `titlePhonemes` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 221,
+        "text": "| `wandFlavorNames` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 222,
+        "text": "| `staffFlavorNames` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 223,
+        "text": "| `ringFlavorNames` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 224,
+        "text": "| `charmFlavorNames` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 225,
+        "text": "| `THROWING_WEAPON_KINDS` | 目录/规则常量 | 保留；生成池/公式/风味源，不是当前局鉴定或计量 | CE 相应 itemTable/公式；无局内写回 |"
+      },
+      {
+        "line": 237,
+        "text": "## 5. 等价性证明与边界"
+      },
+      {
+        "line": 257,
+        "text": "| `onRenderRequested/onConfirmRequest` | 函数身份不是可序列化数据；矩阵使用相同回调，并逐一 `toBe` 验证原函数保留 |"
+      },
+      {
+        "line": 273,
+        "text": "**预计改义断言清单**：已有测试中未发现必须保留 A 局 stats/结束锁/坠层队列/绝对 ID 偏移的断言，故“需要修改的已有断言”为空。预判的风险点为新局起点、重放 seek、ID/关系和旧容器引用；新增矩阵要求这些在 B 起点归零/重建。闭包只是回归范围，未据此放宽任何已有期望。"
+      },
+      {
+        "line": 429,
+        "text": "合计 133 个文件，2483/2496 用例通过，零失败。另有原来已标记的 **8 skipped + 5 todo**，本轮未新增、删除或修改跳过标记：P2-1 的两个退役基线与两个旧恒速断言共 4 skip、P2-2/3 各两个退役阶段基线共 4 skip；smoke 的 horde 占位 1 todo、CombatFormulas 的 slowing/confusion/image-count/force-distance 已知差异 4 todo。它们不计为已验证通过。构建只保留既有主 chunk >500 kB 的体积警告。104 层旧版/新版完整两流对照见 [fresh-generation.json](u-00-evidence/fresh-generation.json)。"
+      },
+      {
+        "line": 433,
+        "text": "- 初次新增 U00 测试 16/17 通过；剩余测试误用了 `DF.SHATTERING_SPELL`，实际是 `DF.DF_SHATTERING_SPELL`，并遗漏 spawnDungeonFeature 的必需布尔参数。修正测试夹具调用后 17/17，通过构建；没有改目录或生产 DF 守卫。保留 focused-initial/build-initial 日志。"
+      },
+      {
+        "line": 434,
+        "text": "- 浏览器第一次寻找 App 重放菜单超时；第二次 assert seek(2) 到达 2 实测为 1。两项均定位为既有问题，按任务要求登记在 §9。本轮新加的浏览器脚本保留正向 seek 的 requested/actual 观察，并验 seek(0) 的生命周期合同；不声称正向 seek 问题已修、不放宽已有测试。"
+      },
+      {
+        "line": 435,
+        "text": "- 补充全枚举时发现 test 开局可能绕过机器编号重置，补入零骰 resetMachineCounter，并在完整状态测试中通过真实下一次空蓝图分配观测该私有计数。此前进行中的门禁被主动中止，日志保留为 interim-*，**不用于最终结果**；所有代码/脚本定稿后重新启动 §7 全部门禁。"
+      },
+      {
+        "line": 436,
+        "text": "- 新实例生成顺序不变；drift 基线与所有已有测试文件均未修改。未改存档 DTO、版本、保存/载入入口、公式、目录、生成池或 CE 源码。显示缩放、侧栏宽度、语言/资源、函数接线与动画开关保留。"
+      },
+      {
+        "line": 445,
+        "text": "3. **既有架构边界复核（不是本轮新修）**：rng、ItemLoader、ID 分配仍是模块级，应用仍假设一份活动游戏；多 Game 并行推进不能独立消费随机/鉴定状态。本轮依次捕获 A→B 和 fresh B，没有同时运行它们。读档未恢复全部世界/计量等 X-0 K01/K02/K03/K04，仍交 U01/U02/U03；未扩张到这些单元。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-01.report.md",
+    "lines": [
+      {
+        "line": 3,
+        "text": "基准：`1c1136d`；规格：任务书 §1 用户裁决及 X-0 §4.1、§4.2 U01、§3.1 K02。实现采用 **version 2**；version 1 在修改当前局面前拒绝。没有实现旧档迁移、缺字段推断或旧档修复。W-24/W-25 的 flavor 恢复代码原样保留。"
+      },
+      {
+        "line": 11,
+        "text": "表中“修前”指入場 HEAD；“当前/分类”是最终合同。所有已声明实例值均需要保存：**本轮没有把任何实例字段列为可重建缓存或不属于存档**。尤其 safetySnapshot 虽叫地图快照却是历史知识，waypointAlreadyVisited 是历史访问位，hungerTransition 是待消费事件；把它们重算会改后续行为。getter/方法/原型不是实例字段；它们由类原型保留。undefined 可选值在 JSON 丢键后读回 undefined，和显式 false/0/null 分开处理。"
+      },
+      {
+        "line": 36,
+        "text": "| Item.arcanaInstanceVersion | 是 | 是；应入档，值深复制 | 现有实例标记原样保留，不再用于读档迁移 |"
+      },
+      {
+        "line": 45,
+        "text": "| Item.rechargeTurns | 是 | 是；应入档，值深复制 | 现有 legacy 数据载体，保留实例值；自然充能不读 |"
+      },
+      {
+        "line": 46,
+        "text": "| Item.rechargeCounter | 是 | 是；应入档，值深复制 | 现有 legacy 数据载体，保留实例值；自然充能不读 |"
+      },
+      {
+        "line": 54,
+        "text": "| Creature.id | 怪是；人否 | 是；应入档，值深复制 | 实体身份与后续 ID 分配 |"
+      },
+      {
+        "line": 63,
+        "text": "| Creature.poisonAmount | 是；读端有旧档归一化 | 是；应入档，值深复制 | CE creature.poisonAmount；非激活计数也保留 |"
+      },
+      {
+        "line": 92,
+        "text": "| Monster.carriedMonster | 否 | 是；应入档，ID 引用 | CE creature.carriedMonster；保留脱离占格表的实体及关系，释放玩法仍 U16 |"
+      },
+      {
+        "line": 93,
+        "text": "| Monster.polymorphKeepsSpeed | 仅变形/克隆等特例 | 是；应入档，值深复制 | CE 先算速度再清状态；当前速度保留门 |"
+      },
+      {
+        "line": 130,
+        "text": "`machineHome` 是机器数字 ID，不是 JS 实体指针；网格 machineNumber 随现有 grid 存档恢复，不重新分配机器号。`form` 是从**当前实例**投影的值对象，其中 private baseMoveSpeed/baseAttackSpeed 经 `snapshotForm` 写出、`allocateForSnapshot` 写回；不是从目录推断。其余重复的 form 描述只作既有形态投影保留，统一字段值是实例状态的权威。"
+      },
+      {
+        "line": 134,
+        "text": "- `EntitySnapshot.ts` 注册平面值字段、Set 字段和引用字段；普通、突变、变形、克隆、玩家克隆、谱影、休眠怪走同一合同。移除 polymorph/cloneState/entrancement/allegiance/spectralBlade/dominatedForm 多套条件性 runtime；保留实例上的对应事实位。"
+      },
+      {
+        "line": 135,
+        "text": "- `toSnapshot` 从 active+dormant 出发，遍历 leader/carriedMonster/carriedItem；地面、背包和装备物品并入图。当前表中的条目保留在原数组；仅额外可达的怪/物放入 `entityGraph`。不会将脱离占格的携带怪塞入 active 表，也不把同一物品复制成不同对象。"
+      },
+      {
+        "line": 156,
+        "text": "| 开锁下一步 | disposableHere false/true 两支；门实际晋升、钥匙保留/消耗，跨 originDepth 必须拒绝；存前和存后同动作结果相等。 |"
+      },
+      {
+        "line": 163,
+        "text": "补充自然覆盖：[natural-coverage.json](u-01-evidence/natural-coverage.json)。真实生成而非手工挂载：seed 424242 D1 地面 flags 武器、D5 绑定钥匙、D12 休眠 wraith（machineHome=2）；seed 777 D9 携带品 stone_guardian（machineHome=3、carriedItemId=183），四处读取完整 own-field 实体图，存读均完全相同。采样在发现新类别时执行一次存读，后续生成沿当前 RNG 继续；层号是此采样路径的定位，不能当作 U02 未实现前的“无读档同 seed 黄金位置”。该补充只写 evidence，冻结的生产/测试输入未改变。"
+      },
+      {
+        "line": 167,
+        "text": "浏览器证据：[browser.json](u-01-evidence/browser.json)，[复现脚本](../../scripts/u01-browser-check.mjs)。真实菜单 save→localStorage→刷新→Continue 后自然实体快照一致；受控遭遇中真实键盘右移，两只 rat 均由 200 降到 188；携带钥匙的怪死亡后只落一个 key，originDepth=1、machine=17、disposableHere=false 原样保留。console/page errors 均为 0。已打开并检查 [自然读档](u-01-evidence/browser-natural-restored.png)、[穿刺](u-01-evidence/browser-penetration.png)、[掉落](u-01-evidence/browser-drop.png) 整页截图。技能客户端 canvas 导出仍黑，已检查但不作为视觉通过；使用有头 Chromium 整页截图完成复核。首次浏览器沙箱 MachPort 通信失败，升级执行权限后通过，无审批拒绝。"
+      },
+      {
+        "line": 173,
+        "text": "| 文件 | 删改的具体旧档断言 | 保留/替代的非旧档守卫 |"
+      },
+      {
+        "line": 175,
+        "text": "| snapshotQuantity | 删除缺 quantity 回落 1 一例 | 15 支飞镖实际存读保留 |"
+      },
+      {
+        "line": 179,
+        "text": "| w_5_arcana_instance | 删除无版本 E 从容量推断、缺容量目录兜底、unversioned 二次加载部分 | 当前 E=0 独立于容量、耗尽、未知态、零 RNG/零 spawn 守卫保留 |"
+      },
+      {
+        "line": 180,
+        "text": "| w_6_arcana_recharge | 删除无 staffRechargeRemaining/无版本默认 500 的循环 | 实际倒计时、负/0/正值、下一步充能、零 RNG/spawn 保留；Game 客观块既有兜底未改 |"
+      },
+      {
+        "line": 182,
+        "text": "| w_15_shielding | 删除 loadSnapshot/test-room 缺 maxShield 丢盾部分 | 当前盾量/衰减/半块/休眠不改；独立旧 helper 的原有测试原样保留 |"
+      },
+      {
+        "line": 185,
+        "text": "| w_18_entrancement | 去掉删除已不存在 entrancement DTO tag 的语句；无 entranced 状态情形保留 | 时长、37 tick、抓取、移动等待行为不改 |"
+      },
+      {
+        "line": 186,
+        "text": "| w_19_polymorph | 删除精确旧名字猜种类三例、未知旧名字一例、删 polymorph tag 尾断言 | 正常物种免疫、实际变形/速度/钥匙/领袖/死亡与休眠全部保留 |"
+      },
+      {
+        "line": 188,
+        "text": "| w_21_empowerment | 删除缺两类计数默认为 0 的尾段 | 强化实际计数/属性、active/dormant/test-room 与变形保留 |"
+      },
+      {
+        "line": 189,
+        "text": "| w_23_negation | 删除缺 wasNegated/newPowerCount/totalPowerCount 默认为零的尾段 | 剥离能力/移除突变/当前知识与克隆/休眠/重置保留 |"
+      },
+      {
+        "line": 190,
+        "text": "| w_25_staff_catalog | 删除新/部分 flavor map 用例中的删 staffRechargeRemaining 模拟，改名为 current timer | 1000 实际初值、全部旧/部分 flavor map 兼容、13 唯一外观和零 RNG 断言保留；外观兼容代码零改动 |"
+      },
+      {
+        "line": 191,
+        "text": "| w_26_arcana_closure | 最后一例去掉缺版本/E/容量/计时器推断，独立反序列化环改验证实际 [8,8,0,1234] | 正常新身份、耗尽、容量已知、外观往返和零 RNG 断言保留 |"
+      },
+      {
+        "line": 192,
+        "text": "| p2_0_seeded_rng | ID 敌意存档夹具升级为重映射所有实体与全部 ID 边，移除已不存在的单环字段引用 | 原“读档后新建实体不能撞 ID”断言原样保留；加上玩家、携带图、双环 |"
+      },
+      {
+        "line": 213,
+        "text": "6. 浏览器权限/黑图处理见 §3；没有将未启动或黑图当通过。最终 build 保留 Vite 主 chunk >500 kB 既有告警，未扩轮优化。"
+      },
+      {
+        "line": 221,
+        "text": "| npm run build | 退出 0；vue-tsc + Vite 通过；保留既有 chunk 大小告警 | [build](u-01-evidence/final-build.txt) |"
+      },
+      {
+        "line": 363,
+        "text": "- [边界文件比对](u-01-evidence/unchanged-boundaries.json)确认 Random、ItemLoader、ArcanaRecharge、arcana.json 与生成基线均逐字等于 HEAD。生成基线 SHA-256：`fad7dc81a35afeff00f8bb0a9b38cb4e674d7ee584578127e270304d6c8d0bf3`。"
+      },
+      {
+        "line": 367,
+        "text": "- U05a 所有权/生成唯一性依然独立：同一个物品同时由怪和地面引用时，本轮保留同一对象身份，不修复其来源或归属。U16 carriedMonster 释放/寄宿玩法仍未实现，本轮只保留引用图。U02 完整 RNG、U03 层间缓存/气味/Game 级剩余状态仍缺，不把窄行为测试推广为整局相等。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-02a.report.md",
+    "lines": [
+      {
+        "line": 5,
+        "text": "本轮实现双流 RNG 无损恢复、uint64 种子输入/保存/显示；保持原生成算法及低 32 位播种规则。读档恢复当前层 waypoint 随机产物，避免恢复 RNG 后又因重洗牌改变怪物行为。未实现层种子隔离、整局跨层存档或旧档迁移。**有限的当前层续跑验证通过不等于任意整局状态已完整持久化；U03 的剩余边界见 §7。**"
+      },
+      {
+        "line": 7,
+        "text": "## 1. 状态结构和存档边界"
+      },
+      {
+        "line": 40,
+        "text": "MainMenu 保留文本输入，使用数字输入提示，不经过 `parseInt/Number`；非法输入禁用开局并标记 `aria-invalid`，显示范围提示。App、开局日志、存档摘要、`currentSeed`、录像 JSON、`render_game_to_text` 都传递完整字符串。"
+      },
+      {
+        "line": 42,
+        "text": "U02a 算法边界唯一缩窄处是 `Number(BigInt(fullSeed) & 0xffffffffn)`："
+      },
+      {
+        "line": 54,
+        "text": "- 在0、1、51、4096组混合抽取后，保存两流/计数/选择器，经 JSON 恢复，再比较下一次结果和256组后续操作及终态；覆盖大区间拒绝采样、clump、rollD。"
+      },
+      {
+        "line": 64,
+        "text": "浏览器脚本 [u02a-browser-check.mjs](../../scripts/u02a-browser-check.mjs) 实际操作 UI 输入→开局→保存→刷新页面→继续，验证三种高位 seed、两流、地图、所有实体根和 waypoint 原样，并执行后续键盘输入。1280×900及700×800展示完整最大种子；[browser.json](u-02a-evidence/browser.json) 记录状态和错误列表，console/page errors均为空。已实看 [输入/存档](u-02a-evidence/browser-mobile-seed.png) 与 [继续游戏](u-02a-evidence/browser-seed-2-continued.png)。窄屏截图曾捕获未合成完成的局部黑画面；在同一断言流程中只给每次截图前增加1000ms等待后重新捕获，未编辑冻结脚本/源码，见 [browser-capture.json](u-02a-evidence/browser-capture.json)。develop-web-game 技能客户端也已执行；其单独 Canvas 截图黑屏，不作为视觉通过证据，采用有头整页截图。"
+      },
+      {
+        "line": 75,
+        "text": "2. seed及录像导出由number变为字符串，合法uint64高位完整保留；非精确/非法输入和缺RNG旧档拒绝。"
+      },
+      {
+        "line": 76,
+        "text": "3. 当前层读档不重新抽取 waypoint 产物，保留滚动刷新位置及怪物已保存的目标索引含义。"
+      },
+      {
+        "line": 92,
+        "text": "其余中途处置：新测试的MonsterData导入类型补显式类型，未改业务；浏览器比较中 Playwright 保留undefined而JSON存档不保留，统一在测试侧先JSON往返再逐字段比较。Chromium沙箱Mach服务权限失败后，经自动审批在沙箱外运行成功；错误目录/环境的npx启动失败不计有效测试。未修改扫描器、放宽黄金值或用重捕基线掩盖差异。"
+      },
+      {
+        "line": 98,
+        "text": "1. `raninit(uint64_t seed)`：a=0xf1ea5eed；b/c/d取低32位；**c再异或高32位**；20次ranval。U02b在当前Random的raninit边界传入完整uint64（BigInt拆hi/lo），不能先缩为number。仍保留已有32位无符号运算和拒绝采样。"
+      },
+      {
+        "line": 99,
+        "text": "2. `rand_64bits()`：对当前选中的流**先hi、后lo调用两次原始ranval**，返回`(hi<<32)|lo`；SUBSTANTIVE只增加**一次**randomNumbersGenerated，无range拒绝采样。不能用两次randRange(0,UINT32_MAX)替代。建议对外仍以精确uint64/规范字符串边界保存。"
+      },
+      {
+        "line": 100,
+        "text": "3. `initializeRogue`先切SUBSTANTIVE并播种，初始化levels时遍历`i=0…deepestLevel`（含末端槽）。若`rogue.seed>>32`非零，levelSeed=rand_64bits；否则保持CE旧分支：先rand_range(0,9999)，再加10000×第二次rand_range(0,9999)。结果为0时改i+1。**每轮随后还有下梯坐标拒绝采样、向下一层传upStairsLoc；不能先批量只抽全部levelSeed而省掉中间消费，却宣称与CE逐骰同构。** 后续才初始化waypoints、cosmetic地形色、shuffleFlavors等。"
+      },
+      {
+        "line": 105,
+        "text": "**web精确接线点：** `Game.startNewGame`初始化层种子表并保持完整原始seed；`generateDepth`的`cached`/首次生成分支划清：Architect.generateLevel、populateLevel、机器/物品/怪物/落梯与waypoint构建纳入层流；回切须覆盖第一层和后续层。现在waypoint位于两分支汇合处且自身隔离，U02b必须有意识地拆分该调用时机、让新层setUpWaypoints真正消费层流；不能沿用当前的waypoint-only快照隔离当作CE oldSeed路径。`pendingFallenByDepth`实化/落位在当前populate之后，和CE预载顺序不同，应逐步标出对应边界；U03负责其完整持久化。"
+      },
+      {
+        "line": 107,
+        "text": "U02b还须明确当前web未实现CE的预分配上下梯坐标、颜色洗牌/环境预热等完整时序，决定哪些在该轮闭环、哪些留后续，不能仅加一个levelSeed字段便称CE同种子地图一致。保持本轮RNG载荷算法标签的版本边界；层seed表与visited关系须进未来整局schema。测试覆盖high=0/high≠0、生成出的levelSeed=0和oldSeed=0重试、首层/后层/重访、玩法插入不同抽取仍不改变未生成层的地形随机输入。"
+      },
+      {
+        "line": 109,
+        "text": "**预计漂移面：** 高位XOR会改变高位seed两流；初始化层seed/楼梯预抽、oldSeed抽取、所有新层流隔离即使对旧32位seed也会改变生成顺序。地形、机器/物品/怪物、waypoint、外观及后续玩法计数均需逐阶段独占归因。全局计量等状态仍可影响后层产物，不能将“随机输入隔离”夸成“交互完全不影响后层一切产物”。保留U02a原基线证据，U02b单独核准并捕获漂移，禁止混捕。"
+      },
+      {
+        "line": 135,
+        "text": "常规回归与drift合计146个文件、3,128项通过，另有13项原有未执行条目。8项skip位于`p2_1_tick_architecture`（4）、`p2_2_real_speed`（2）、`p2_3_objective_time`（2）；5项todo位于`smoke`（1）、`CombatFormulas`（4）。未新增或改动这些skip/todo。[逐文件JSON](u-02a-evidence/final-files.json)的`skipped`字段合并统计skip/todo；原始Vitest JSON保留二者区别。完整命令参数与退出码见 [final-check.json](u-02a-evidence/final-check.json)，没有使用无文件参数的全量vitest。"
+      },
+      {
+        "line": 148,
+        "text": "清单逐项包含源代码、测试、脚本、配置、CE源码和任务/规格输入；原基线文件与HEAD逐字节一致，未重捕。本报告及交付证据的哈希另存 [delivery-sha256.json](u-02a-evidence/delivery-sha256.json)，交付时再次校验468项冻结输入、报告链接及`git diff --check`，见 [delivery-check.json](u-02a-evidence/delivery-check.json)。中途批次保留供因果审计，`prefinal-*`不作为最终运行结果。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-02b.report.md",
+    "lines": [
+      {
+        "line": 3,
+        "text": "2026-09-25；规格为 X-0 §4.2 U02、§3.1 K04 和 U02a §6；本工作树 CE 原文优先。实现完整 uint64 初始化、交错层种子表、新层 oldSeed 回切及 waypoint 消费边界，并保留当前层无损 RNG 存读。**不宣称 CE 与 web 同种子整张地图相同；未实现 U03 整局跨层存档。**"
+      },
+      {
+        "line": 19,
+        "text": "**可比量边界：**这里取得的是 CE initializeRogue 的第一层及全部后层**预抽**楼梯坐标，不是执行完整 digDungeon/placeStairs 后的最终楼梯。web 的实际放梯仍有 U04 差异；没有运行完整 CE 同种子第1层地图，故不报最终楼梯位置一致。"
+      },
+      {
+        "line": 23,
+        "text": "- `Random.ts`：初始化边界接 bigint，完整 uint64 拆词；新增 `rand64bits(): bigint`、`resetCounters()`；seedRandomGenerator 保留选择器和双计数、同时初始化两流。"
+      },
+      {
+        "line": 25,
+        "text": "- startNewGame 先切 SUBSTANTIVE、播种、清计数、初始化整个表，再走既有外观/玩家/生成入口。high=0保留两次0…9999抽取，high≠0接raw64；两分支生成0都改槽号+1。"
+      },
+      {
+        "line": 26,
+        "text": "- generateDepth 新层分支包围 Architect、populate、机器实化、坠层幸存者落位和 waypoint；try/finally 保证异常也用 oldSeed 回切，成功才 visited=true。首层和后层走同一边界；缓存重访不取oldSeed、不重播种，waypoint直接消费当前流。"
+      },
+      {
+        "line": 28,
+        "text": "- WaypointMap 删除内部快照/恢复；旧 duringPlay 参数仅保留调用兼容，所有调用都真实消费所选流。Game决定新层隔离，重访/掘地没有这层隔离；读档仍直接恢复保存的 waypoint 产物，不重抽。"
+      },
+      {
+        "line": 32,
+        "text": "**不做旧存档兼容。**当前层JSON没有其他已访层的世界缓存。载入后再请求缺失的已访层会明确报错，不能把它当未访层重生。后续未访层可用原层种子，但计量等全局状态还未完整保存，不据此承诺读档后的所有跨层产物一致。"
+      },
+      {
+        "line": 43,
+        "text": "| c | 新层levelSeed/oldSeed边界，固定层位置输入，拆计数归零 | 104；397 | 52；196 |"
+      },
+      {
+        "line": 54,
+        "text": "3. c只接新层生成边界及其必要的固定位置输入，并拆计数清零；存档元数据和算法标签不取数。player位置依赖的负对照能重新打红2个种子；去掉层播种则3个种子全红。c相对b的原始diff保留，不把这些必要变化藏在最终基线中。"
+      },
+      {
+        "line": 55,
+        "text": "4. d只有Game调用时点与WaypointMap隔离删除。其156层baseline四字段无变化，但156层waypoint产物、156层RNG载荷变化；后者包含累加的waypoint逻辑计数。将waypoint移回oldSeed之后，生命周期守卫再次失败。地形不变是符合时序的结果：其生成已经结束，且oldSeed回切隔离后续流程。"
+      },
+      {
+        "line": 63,
+        "text": "[隔离证据](u-02b-evidence/isolation.json)：seed7、2^40+7、最大uint64，D1一支真实等待6回合；另一支真实移动后搜索，另插入257次主流抽取。动作后位置、主流状态确实不同。随后各自生成D2–D26，比较每格的所有terrain layers及machineNumber，**3×25=75层全部一致**。JSON含动作轨迹、入层前两流、逐层SHA。核心原因是随机输入在生成边界由固定层seed替换，牌堆不再读上一层位置。"
+      },
+      {
+        "line": 67,
+        "text": "U02a的自然等待/合成双向战斗，在0/3/11检查点JSON存读后各续跑12步，继续比较除savedAt外**完整GameSnapshot**，包括新增层表、waypoint、实体和双流，没有忽略随机字段。[续跑SHA](u-02b-evidence/continuation.json) 的自然轨迹相同；重引入读档waypoint重抽会再次分叉。U02a既有战斗/读取/录像断言保留并在最终回归中复跑。"
+      },
+      {
+        "line": 73,
+        "text": "| 位置 | 本轮结果/仍存差异 | 后续边界 |"
+      },
+      {
+        "line": 77,
+        "text": "| cosmetic地形色预洗牌、shuffleFlavors | CE先每格8次0…1000颜色取样，之后flavors在主流；web没有该颜色数组，flavors保留COSMETIC及原目录顺序 | 后续颜色/外观时序，未用无消费者空抽取假装对齐 |"
+      },
+      {
+        "line": 78,
+        "text": "| 开局monsterItemsHopper/起始物品 | web没有完整CE hopper；既有spawn起始物品构造消费顺序保留 | 后续生成/物品合同 |"
+      },
+      {
+        "line": 80,
+        "text": "| pendingFallenByDepth | web仍在populate之后实化幸存怪落位，已放在层流内；CE先挂入列表后initializeLevel | U03持久化及后续生命周期 |"
+      },
+      {
+        "line": 81,
+        "text": "| 玩家落位 | web在populate尾部、层流内落位；CE在回切/预热之后；旧层位置已不参与楼梯牌堆 | 后续进层协调；不改变既有P1-31期待 |"
+      },
+      {
+        "line": 82,
+        "text": "| waypoint | 新层整个构建真实消耗层流，重访/掘地消耗当前流；怪物visited数组仍按web既有惰性初始化 | 本轮边界已齐；怪物逐骰差异另列 |"
+      },
+      {
+        "line": 83,
+        "text": "| oldSeed回切后的环境 | **web原本没有CE50步新层预热/至多100步重访补跑，本轮未新增**；回切发生在既有vision/后续玩法环境更新之前，未用整回合代替纯环境 | 按U02a §6允许明确留后续；需随层离开时间/环境语义收口 |"
+      },
+      {
+        "line": 87,
+        "text": "环境预热、颜色时序等缺失没有当作“地图漂移不允许”而回避；它们是U02a施工说明要求明确决策的现有未移植路径。本轮闭合随机流边界，不把完整时间系统/楼梯算法一起重写。"
+      },
+      {
+        "line": 97,
+        "text": "- 完整闭包探索批次还发现计数归零前提分布在P4-3/U06/U08/W5/W7/W8/W24/W25；显式resetCounters后这些机制断言通过。V-9c合成蓝图直接调用populateLevel，显式把合成层origin设为原合成玩家位置，恢复其既定无变异舞台；F2a蒸汽夹具在合成房间后以42重播机制流，避免耦合新局耗骰。均不改expect。自然覆盖保留原seed并追加连续1…32（去重；blueprint_center共43种子、V-7 F2共38种子、W5共40种子；保留的历史测试标题不代表更新后的样本数），独立探针确认全部21种法器、非钥匙携带和seed8的origin地面物品存在。15个前提文件总计**1065个expect AST不变**；扩展的HEAD实现+HEAD守卫反事实**457项通过**，见[扩展反事实](u-02b-evidence/guard-expanded-counterfactual.json)。最早扩展反事实的6项失败是临时副本缺CE/历史fixture链接，补全引用后才取得有效结果。"
+      },
+      {
+        "line": 98,
+        "text": "- **待裁决，未擅自修改：**C5把旧生成成本钉为11935，新实现该完整落层动作25967；W13仍断言直接waypoint重建零计数；C4b旧白名单未涵盖新流命中的8个完整图层组合。任务书§5要求“不动期望、交验收方裁决”。[草案](u-02b-evidence/guard-migration-proposal.patch)仅在临时副本验证，C5改验生成段实测成本+落位伤害3次，W13改验2290次洗牌，C4b只列8个精确四层数组、保留其余守卫；[草案验证](u-02b-evidence/guard-migration-proposal.json)3项通过。C4b逐格写入来源见[terrain-trace](u-02b-evidence/terrain-trace.json)，包括CE8外包到CE35的ALTAR_INERT纯DUNGEON写入（GlobalsBrogue.c:399–403；Architect.c:1454附近）、CE61的DF_SWAMP泥/菌/浅水链（Globals.c:903–905），以及CE64的血/灰/骨SURFACE写入；没有把组合泛化为笛卡尔积。用户裁决请求保持待答，原3条测试期望仍留在真实文件中。"
+      },
+      {
+        "line": 99,
+        "text": "- 中途新增测试先暴露自身舞台问题：移动6步可能回到原位，改成移开后搜索，保证动作后位置不同；两个动作分支可能恰好消费相同次数，计数差异检查移到已明确插入257次主流噪声之后，地形深比较始终保留。新测试私有updateVision spy补测试侧cast。阶段b初次遗漏RNGType导入在运行前即失败，修正后才产生有效阶段数据；失败源码仍留prefinal-b-missing-import。"
+      },
+      {
+        "line": 110,
+        "text": "- [x] 先单变量归因；原基线保留；四阶段完成后才一次重捕。"
+      },
+      {
+        "line": 114,
+        "text": "- [x] 新层/重访边界、零seed、两流计数、逐字段续跑及正反隔离证据完成。"
+      },
+      {
+        "line": 121,
+        "text": "| 负对照 | 缺层播种/旧位置依赖/错误waypoint边界均被检出，退出0 | [负对照](u-02b-evidence/negative-summary.json) |"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-03.report.md",
+    "lines": [
+      {
+        "line": 5,
+        "text": "已实现整局 JSON 检查点：当前层、全部缓存层、待落怪、跨层实体关系、层气味/环境队列、计量与时间等 run 状态共同保存。App 使用 IndexedDB 保存整局，覆盖和摘要在同一事务中提交。**不兼容旧 schema，不将缺失的已访层重新生成。普通跨梯跟随和环境预热/离层补跑按任务书允许拆为 U03b；K03 因而仍有明确未闭合部分。**"
+      },
+      {
+        "line": 7,
+        "text": "裁决前专项14项、build、drift及浏览器检查通过；R∪S共153个文件，3162项通过、10项失败、8项skip及1项todo。§1–§8保留当时的实现与验收记录（当时总门禁未全绿）。用户随后明确授权修正 §6 的10项旧合同冲突及 W7 夹具；本次变更与最终复跑另见 §9，原始失败证据不覆盖。裁决后 R∪S 153/153 文件实际收集，3172项通过、1项失败、8 skip、1 todo；build/drift通过。剩余失败是 P1-37 此前被旧档分支挡住的当前格式 machineCells 重建断言，按授权保留，**总门禁仍未全绿**。"
+      },
+      {
+        "line": 9,
+        "text": "## 1. CE 复核和实施边界"
+      },
+      {
+        "line": 16,
+        "text": "| 同函数，664–789 | 新层分配空 scentMap；重访取对应层 scentMap；新层在层 seed 内生成，oldSeed 回切；新层准备50步环境预热，重访取离层时间差 | 复用 U02b 随机边界；保存每层 scent 值，入层承接全局 scent 时钟；不重生 visited 层 |"
+      },
+      {
+        "line": 21,
+        "text": "| `Recordings.c:loadSavedGame`，1421 起 | CE 通过录像重建整局 | web 保持 JSON 检查点产品选择，要求状态/后续行为等价，不复制 CE 文件格式 |"
+      },
+      {
+        "line": 23,
+        "text": "CE 的完整 rememberedAppearance/item/terrain flags 尚无 web 载体（X-0 K18/U23）；本轮保存现有 `isExplored/hasMemory` 及全部 Cell 字段，没有以当前地形伪造未实现的 CE 历史记忆。`restoreMonster` 的完整位置/时间恢复也未移植：当前 web 保留 U10 的 cached resident 清吸收进行态/计数行为。特别注意 CE 在新层初始化后先置 visited，后面的 restoreMonster 条件不能简单读成“只对旧层”；旧 U10 报告的该解释不能推广为完整 CE 结论，此生命周期差异一并留 U03b 复核。"
+      },
+      {
+        "line": 27,
+        "text": "外壳 `version:2` 继续标识 U01 实体合同，新增必需 `schema:'brogue-web-whole-run-v1'` 标识整局合同；两者一起校验。**保留数字2不代表旧 v2 存档兼容**：缺 schema/run/世界层、旧 RNG/非法层表均拒绝。旧 localStorage 存档不迁移、不删除，也不展示为可继续的新档。"
+      },
+      {
+        "line": 36,
+        "text": "| 每层（当前层在顶层，缓存层在 levels[]） | `depth,width,height,grid,impregnableCells,monsters,dormantMonsters,items,scent,waypoints,environmentState,pendingCaughtFireCells,trapDepressions,machineCells,visibleMonsterIds,visibleItemIds,awaySince` | 不重复保存活动层的旧缓存条目；所有集合/队列的顺序和值保留 |"
+      },
+      {
+        "line": 39,
+        "text": "| scent | `width,height,turnNumber,values` | Int32 值数组；当前层 turnNumber 是局内气味时钟，缓存值随层保留，入层时承接当前时钟 |"
+      },
+      {
+        "line": 44,
+        "text": "| items/pack/graph.items | `ITEM_FIELDS` | U01 的 ID、位置、数量、旗标、资源、鉴定/诅咒/符文/钥匙等值全保留；共享携带物不重复构造 |"
+      },
+      {
+        "line": 50,
+        "text": "| run：AI 派生缓存 | `safetyMap,updatedSafetyMapThisTurn,loopMap` | JSON load 保留实际缓存；真实换层仍按原入口重算 topology 并使 safety 过期 |"
+      },
+      {
+        "line": 55,
+        "text": "`layers/machineNumber/impregnableCells` 在 TS 类型中的可选标记仅保留旧负夹具的可表达性，运行时仍要求它们存在。没有因此增加旧档恢复分支。"
+      },
+      {
+        "line": 66,
+        "text": "- 会话保留：渲染/确认回调、无状态 combatSystem、动画偏好、replayFramesPerStep。显示设置、物理键接线、DOM/Pixi、EventBus/i18next 会话、常量目录/规则缓存及 Grid 诊断计数不入世界。"
+      },
+      {
+        "line": 75,
+        "text": "2. leader 在 D2、follower/休眠体在 D1、carriedMonster 循环、共享 carriedItem、未生成D3 pending 怪：恢复后直接验证 `===`；进入D3消费 pending 后关系和物品身份不变，返回D1仍指向同一个离层 leader。普通跨梯跟随未实现，所以该测试明确不会凭 load 把 leader 搬到D1。"
+      },
+      {
+        "line": 78,
+        "text": "5. 气味在跨层、重访及20000阈值回卷后保留正确值和全局年龄。删除过实体后游标不回退；脏实例中的旧pending/结局/计量不能残留。编码容器深拷贝，codec不耗双流。"
+      },
+      {
+        "line": 91,
+        "text": "浏览器实际26层 JSON写入→读回逐字相等→load→再导出逐字段相等；另验证覆盖事务主动 abort 后旧世界和摘要都保留、删除同时清空二者、重新写入后页面刷新可继续至D26。性能是本机本轮样本，不是所有设备承诺；IndexedDB配额/磁盘写入失败沿用保存失败提示。"
+      },
+      {
+        "line": 124,
+        "text": "| B1b | 要求读档清 pendingIdentify；这会丢失已经消耗的鉴定卷轴选择，本轮保留 |"
+      },
+      {
+        "line": 127,
+        "text": "[HEAD反事实脚本](../../scripts/u03-counterfactual.mjs) 在临时副本用原实现跑完全不改的这些断言，核实旧实现的行为。最终选择运行中15项通过，W7在选择目标的较早断言失败，不能把这一批称为全绿；补充在同一HEAD上运行**完整W7文件30/30通过**，见[补充JSON](u-03-evidence/counterfactual-w7-full/counterfactual-head.json)和[脚本副本](u-03-evidence/counterfactual-w7-full.mjs)。未修改其前提/期望；选择子集的异常保留，不能用补跑改写原进程退出码。附加[探针](u-03-evidence/counterfactual-w7-probe.txt)定位到夹具先构造staff再开新局重置ID：ID19同时用于包内staff和测试房地面物，旧恢复按ID先取了地面类别0，故choose失败。探针仅替换为HEAD Game源码，其他依赖使用本轮无行为改动的辅助方法版本；它是归因补证，不冒充完整HEAD套件。首次副本漏了U02b读取的CE JSON导致该文件未收集，失败保留；补齐同一HEAD fixture后重跑，最终结果见 §8。历史U02b报告记载的C4b/C5/W13三条旧红项与当前HEAD断言已不一致，因此本报告不沿用其失败数。"
+      },
+      {
+        "line": 133,
+        "text": "U03b 后续施工边界明确如下，不称为本轮已实现："
+      },
+      {
+        "line": 137,
+        "text": "- 当前层在顶层、缓存层在levels；跨层pending和关系必须共用现有全局图。不要恢复以前重复保留当前层旧数组的缓存结构。"
+      },
+      {
+        "line": 139,
+        "text": "U27 可直接复用 `toSnapshot() → JSON → loadSnapshot()` 为完整世界检查点；`Game.isSnapshot` 验whole-run/层表/RNG/关键必需字段。成功load不调用seedRandomGenerator，不重抽waypoint，最后恢复原双流；游戏时钟与命令历史/索引保留。**仍未实现完整输入命令日志、回放从检查点开始、OOS校验、播放游标/控制器恢复**；不要把旧exportRecording的startDepth=1解释成已有检查点录像。检查点只在`!isAdvancing`时采集；日期、UI待取消输入和播放会话不属于模拟检查点。"
+      },
+      {
+        "line": 145,
+        "text": "最终运行记录：[final-check.json](u-03-evidence/final-check.json)、[命令与退出码](u-03-evidence/final-run.txt)。总入口退出码为1，保留常规回归和HEAD选择反事实的失败，未将失败转换为成功。"
+      },
+      {
+        "line": 153,
+        "text": "| `npm run build` | 退出0；TypeScript及Vite通过，保留既有大于500kB chunk提示 | [final-build.txt](u-03-evidence/final-build.txt) |"
+      },
+      {
+        "line": 164,
+        "text": "2026-09-25，用户/验收方明确授权：仅修改 §6 点名的10个测试文件，不改生产代码；旧档不兼容按 U01 先例，保留当前格式往返；已消耗鉴定卷轴的选择跨存档保留；已访 D1 必须恢复并与连续局等价；W7 只修 ID 冲突的夹具前提。每处已在测试中注明用户裁决、U03 合同，B1b/U02b 同时注明对应 CE 路径。"
+      },
+      {
+        "line": 166,
+        "text": "| 项目 | 裁决后的断言与保留范围 |"
+      },
+      {
+        "line": 168,
+        "text": "| C4a-0 | 删除由 `terrain` 补造四层的旧档恢复分支；缺 `layers` 必须返回 false，当前网格保持不变。原当前格式四层/getter 往返完整保留。 |"
+      },
+      {
+        "line": 169,
+        "text": "| P1-37 | 五种子 × D1–D26 的当前格式逐机器、逐格编号与 machineCells 断言保留；缺 `machineNumber` 的旧档拒绝，失败后原编号/集合保持，不默认归零。 |"
+      },
+      {
+        "line": 170,
+        "text": "| F1 | 删除旧 `isBurning` 镜像补火/摘火迁移分支；无 whole-run schema 的两种旧镜像布局均拒绝且当前网格不变。原燃烧四层往返及读档后继续衰老成 EMBERS 保留。当前 schema 的 `isBurning` 是只读投影，单改投影并不构成旧格式，负夹具明确移除旧档本就没有的 schema。 |"
+      },
+      {
+        "line": 171,
+        "text": "| W13 | 不可破坏格当前格式往返保留；缺 `impregnableCells` 拒绝，原集合不清空。 |"
+      },
+      {
+        "line": 172,
+        "text": "| W6 | 包内/地面计时器、50 tick 客观门及续充能的当前格式等价断言保留；缺 `ticksTillUpdateEnvironment` 拒绝，原50 tick门及实体资源不变，不补默认100。 |"
+      },
+      {
+        "line": 173,
+        "text": "| W7 | pending/完成态 JSON 往返、过时对象拒绝、资源/未知旗标断言保留；缺 `pendingEnchantment` 拒绝，不默认 false，已完成的资源值不变。 |"
+      },
+      {
+        "line": 174,
+        "text": "| W24 | 删除以旧七行魔杖目录重建外观的存档分支；当前完整11种外观、种类知识、绰号、极性、耗尽充能及再次 JSON 往返保留。只有旧投影或依赖种子、缺完整 `flavors` 的档均拒绝；不 spawn、不抽充能骰。原独立 `restoreWandFlavors` 部分映射单元测试不改。 |"
+      },
+      {
+        "line": 175,
+        "text": "| W25 | 删除旧七行法杖目录/木材槽的存档迁移分支；当前完整13种外观、绰号、极性、未知种类、空充能、1234计时及再次 JSON 往返保留。缺完整 `flavors` 的旧投影/无投影档拒绝，资源和原表不变且不 spawn。原独立部分映射辅助函数测试不改。 |"
+      },
+      {
+        "line": 177,
+        "text": "| U02b | 把“历史层不可用”翻为存读后成功恢复 D1、再返回 D2；连续支线先完整执行，再从同一 D2 检查点恢复另一支线，防全局 RNG/时钟/外观串扰。读档即刻、返回 D1、再回 D2 的完整快照逐字段相等，仅移除 `savedAt`，保留两流 RNG、时钟、日志、所有层及实体状态。原种子表脱离引用/损坏档拒绝守卫保留。 |"
+      },
+      {
+        "line": 180,
+        "text": "[本轮测试差异](u-03-evidence/adjudication/authorized-tests.patch)及[边界审计](u-03-evidence/adjudication/boundary.json)记录相对本次续作开始时的变化：只有以上10个测试文件；生产代码、原 scripts 扫描器、其他测试、配置/锁文件、CE、生成基线均不变。报告和新证据另写入交付目录。原 `u03-audit.mjs` 的“所有旧测试零修改”适用于裁决前，因此没有改它的保护规则或用它覆盖 §8；本轮使用明确列出10文件的边界审计。"
+      },
+      {
+        "line": 182,
+        "text": "中途记录：八文件定向首跑198通过、1失败，失败是新增 B1b 夹具误设 `quantity=2` 并期待减一；当前读卷轴入口移除物品实例，改为两张独立卷轴以检验本次“不能重复收费”合同，未改生产消耗逻辑。修正后 B1b/W7 共44项通过。原始记录保留在[首轮日志](u-03-evidence/adjudication/prefinal-targeted.txt)和[修后定向日志](u-03-evidence/adjudication/prefinal-b1-w7.txt)，不与最终整批结果拼接。单独调用普通 `tsc` 的预检不能识别 Vue SFC，最终类型/构建门禁使用项目规定的 `npm run build`（vue-tsc + Vite）。"
+      },
+      {
+        "line": 184,
+        "text": "本轮没有改游戏行为或 UI；§4/§8 的浏览器与26层测量仍是原实现证据，本轮不冒称重新执行。最终门禁使用[本轮复跑入口](u-03-evidence/adjudication/rerun.mjs)，输出独立目录以保留 §8 原始结果。最终结果与冻结声明如下，取同一冻结输入的完整批次。"
+      },
+      {
+        "line": 186,
+        "text": "复跑进一步暴露了**原旧档分支在 D1 失败时挡住的当前格式断言**：P1-37 AD3a 在 `seed424242/D2` 的原第302行仍要求 `machineCells == grid 中 machineNumber≠0 的格集合`。独立[单例复现](u-03-evidence/adjudication/p1-37-probe.json)同样失败；[机制探针](u-03-evidence/adjudication/p1-machine-cells.json)证明保存前、存档内、恢复后均为同一45格，而网格推导为15格；整个 JSON 检查点（仅排除 savedAt）仍相等。这是 §4/§7 已登记的 K31 两套机器集合口径与“读档重建”旧要求之间的冲突，不能当成新的存档丢字段，也不能称 P1-37 的130层当前格式检查已全部通过。本次授权明确要求保留当前格式断言，因此第301–302行保持原文，生产恢复逻辑也保持原样；这条失败不通过改期望、skip或改生成基线消除。"
+      },
+      {
+        "line": 193,
+        "text": "| 本轮修改边界 | 仅10个授权测试变化；生产/脚本/其他测试/CE/配置/基线无变化；未新增 skip/todo/only | [boundary.json](u-03-evidence/adjudication/boundary.json) |"
+      },
+      {
+        "line": 194,
+        "text": "| `npm run build` | 退出0，vue-tsc + Vite通过；既有大于500kB chunk提示保留 | [build.txt](u-03-evidence/adjudication/build.txt) |"
+      },
+      {
+        "line": 201,
+        "text": "**最终复跑声明：** 所有授权测试编辑完成后，冻结515个输入，依次执行反查、build、完整常规 R∪S、drift。运行前后逐文件 SHA256 完全相同，`changed=[]`，见[运行前清单](u-03-evidence/adjudication/final-input-before.json)、[运行后清单](u-03-evidence/adjudication/final-input-after.json)。输入清单 SHA256 为 `e4f66ae989e746cf736dde94901309814922cc208866bb9c4a2ac165c4808877`，生成基线仍为 `c9f36fb51f8c0d8c3ac4d94b0ff6fbdb0889332915e508ccd6421495bc9fd704`。完整入口退出码为1，原因仅为上述保留的 P1-37 断言；**不声明总门禁全绿**。全部命令、退出码、用时和统计见[final-check.json](u-03-evidence/adjudication/final-check.json)、[运行日志](u-03-evidence/adjudication/final-run.txt)。最终门禁结束后仅回填报告及派生证据，未再改测试或生产代码，也没有拼接定向补跑结果。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-03b.report.md",
+    "lines": [
+      {
+        "line": 3,
+        "text": "2026-09-25。施工依据：[任务书](../tasks/u-03b.prompt.md)、[U03 §7](u-03.report.md#7-u03b-和-u27-接口)、X-0 K03。使用本工作树 BrogueCE 源码；没有查询或替换网络版 CE。实现及专项验收已完成；总门禁未全绿，保留两条需验收裁决的旧规则断言，详见 §6。"
+      },
+      {
+        "line": 38,
+        "text": "[U03b 专项测试](../../src/test/u_03b_level_travel.test.ts)共36项，覆盖两图、门与墙角、静止免伤阻断、全部资格排除、不可达盟友、1/150边界与速度算式、坑出口、相邻层时钟、折返推进、玩家挤占、上下入口、坑降死亡/护盾/悬浮、等待债、尸体目标与学习载荷分离、leader 生命周期、真实50 tick加速行动、楼梯/坑中途 JSON 续跑完整等价。"
+      },
+      {
+        "line": 46,
+        "text": "[浏览器脚本](../../scripts/u03b-browser-check.mjs)验证真实楼梯动作→盟友进入5步倒计时→菜单保存→刷新→继续→真实键盘等待→到达；读取即刻和后续世界逐字段比较，仅排除保存日期及菜单有意产生的 logger 消息。原输入事件、随机流、队列、时间、可见集合均参与比较。返回D1实际补跑6次，而 absolute/turns/nutrition/status 均保持原值；console/page errors为空。详见 [browser.json](u-03b-evidence/browser.json)。"
+      },
+      {
+        "line": 60,
+        "text": "[阶段入口](../../scripts/u03b-stage.mjs)、[归因明细](u-03b-evidence/attribution.json)和各 `stage-*.json` 保留独立结果。中间桥接分支仅断开 `catchUpEnvironment` 调用，其余与最终环境实现相同，因此可单独衡量补跑消费者。没有把“基线四字段没变”解释成 RNG 没变。"
+      },
+      {
+        "line": 68,
+        "text": "U03 的旧图测试在 JSON 恢复后仍正确保留同一 leader 对象，但第102行进一步要求**真实折返后**继续保留不在本层的 leader，与 CE `restoreMonster` 清 MB_FOLLOWER/leader 的生命周期冲突。[HEAD 反事实](u-03b-evidence/probe-head-graph.json)在原生产实现下通过；新独立测试同时守住“解码保留对象身份、实际进层清理异层 leader”两个阶段。仅该旧期望的[裁决草案](u-03b-evidence/u03-guard-proposal.patch)已提交用户，另一个 U10 旧断言要求首次进新层的 pending 幸存怪保留吸收计数/进行态；CE 在置 visited 后同样 restoreMonster，须清零。扩展 HEAD 反事实通过，U10 的[单处裁决草案](u-03b-evidence/u10-guard-proposal.patch)另已提交。两处原断言的最终状态以 §6 为准；不把等待当授权。"
+      },
+      {
+        "line": 70,
+        "text": "另外6条旧观测前提已做 HEAD 反事实（6通过、未选中用例不计通过）：C5 的进层成本观测现在单独扣出已移入 generateDepth 的坑落位骰；U02b 的 oldSeed 与纯生成地形观测移到真实 catch-up 入口，继续执行实际补跑；G2 在首轮验证产气与即时镜像后，抑制第二次产气并推进下一次真实环境阶段，验证两轮气体扩散。三文件189个原 expect 表达式完全保留，见 [AST审计](u-03b-evidence/premise-expect-audit.json)及[前提差异](u-03b-evidence/premise-only.patch)；三文件完整定向复跑52项通过。扩展 HEAD 反事实5项还证实 C4a/C4b、UI2、W11 和 U10 的旧规则依赖；其中前四项仅修前提：两个 C4 守卫在真实 catch-up 入口执行原整图扫描，再继续完整补跑；UI2 明确设 captive/defense=0以测命中分支；W11 改为格子腾空后运行真正的环境事务。四项定向通过。最终七个前提修正文件共683个原 expect 表达式 AST 等同，G2 还保留首轮即时镜像检查以免下一轮扩散掩盖缺失的镜像同步。未更改源码扫描器、期望值或生产环境公式来迁就它们，前提修正随报告提交验收。"
+      },
+      {
+        "line": 76,
+        "text": "入口：[u03b-final-check.mjs](../../scripts/u03b-final-check.mjs)。所有功能和前提调整完成后，冻结545个输入，依次运行前提审计、反查、build、完整常规 R∪S 和 drift；没有用早期定向结果拼接总数。常规批次耗时1236.6秒，drift耗时20.2秒。完整入口退出1，原因是以下两条保留的旧断言。"
+      },
+      {
+        "line": 81,
+        "text": "| 边界与前提审计 | 156个受保护旧测试无修改；CE无修改；七个前提修正文件683个原expect表达式AST等同 | [boundary.json](u-03b-evidence/boundary.json)、[AST审计](u-03b-evidence/premise-expect-audit.json) |"
+      },
+      {
+        "line": 82,
+        "text": "| `npm run build` | 退出0；vue-tsc + Vite通过，保留既有大chunk提示 | [final-build.txt](u-03b-evidence/final-build.txt) |"
+      },
+      {
+        "line": 95,
+        "text": "| `u_03_whole_run_snapshot.test.ts:102` | 真正返回D1时，异层leader被清为null，旧断言要求仍为原对象；文件其余13项通过，包括三种子连续局/读档局全字段等价。JSON解码保留对象身份的合同没有改变。 |"
+      },
+      {
+        "line": 96,
+        "text": "| `u_10_absorption_snapshot.test.ts:200` | pending幸存怪首次进入新层，`corpseAbsorptionCounter=0`、`isAbsorbing=false`，旧断言要求13/true；学习旗标、技能、名字与计数载荷均保留。文件其余39项通过。 |"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-04c.report.md",
+    "lines": [
+      {
+        "line": 13,
+        "text": "| interior 初始标记 | `Architect.c:1228–1234` 分配机器号、逐 interior 格写旗标/编号 | `BlueprintEngine.applyBlueprint` 原写口保留；`MachineResult.cells` 注释明确是施工 interior |"
+      },
+      {
+        "line": 14,
+        "text": "| 房间外 feature | `Architect.c:1482–1488` 成功实例也写旗标/编号；包括不产实体的 feature | `BlueprintEngine.ts:1593–1602` 的逐格写口/featureSpawns 保留；投影扫描全图，不限于 interior 或 itemSpawns |"
+      },
+      {
+        "line": 15,
+        "text": "| 区域机/清 interior | `Architect.c:1691–1699` 对本机器非 `TM_IS_WIRED | TM_IS_CIRCUIT_BREAKER` 格同时清旗标和编号 | 原 `BP_NO_INTERIOR_FLAG` 执行保留；派生集合不再把已清号的普通格加回来 |"
+      },
+      {
+        "line": 22,
+        "text": "| 持久化 | `RogueMain.c:650/758` 保存/恢复每格机器号，并保留地图旗标 | `snapshotLevel` 从该层 grid 派生；`isSnapshot` 检查冗余投影；`loadSnapshot` 从恢复后的各层 grid 派生，不消费 RNG |"
+      },
+      {
+        "line": 26,
+        "text": "## 2. 实现及断言边界"
+      },
+      {
+        "line": 28,
+        "text": "新增 [MachineCells.ts](../../src/engine/Map/MachineCells.ts) 的纯投影和快照一致性检查。`Game.machineCells` 保留为派生缓存：蓝图写入/回滚完成后、每次替换当前 grid 时重建；当前层和缓存层序列化也直接读取各自 grid。生产机器号写口仍由蓝图构建/回滚与网格恢复负责，运行期没有新增机器号写口。"
+      },
+      {
+        "line": 34,
+        "text": "- U03 的逐 Cell 字段/环境队列往返用例，撤掉人为伪造的 `machineCells={456}`，按网格编号验证投影；完整 Cell/队列/引用隔离断言保留。"
+      },
+      {
+        "line": 37,
+        "text": "- `blueprint_center` 不再以“旧center坐标上绝无普通物品”替代 CE 机器格合同；按真实人口产物对象及网格编号区分普通落物、声明feature与非法直投。金币还必须消费真实热图候选；同一对象只可解释一次。原center几何、全部物品可通行、feature一份指令一次消费及目录非空转断言均保留。完整归因见下节。"
+      },
+      {
+        "line": 46,
+        "text": "4. A 的基线字段与原基线 **0 差异**。B 与 C 的全部输出逐字段相同：生成前网格指纹、蓝图集合、完整世界快照哈希、物品/怪物位置、两流 RNG 状态及计数。不是只比较四个滚动字段。原始 [A](u-04c-evidence/generation-control.json)、[B](u-04c-evidence/generation-sourceOnly.json)、[C](u-04c-evidence/generation-final.json) 和 [归因汇总](u-04c-evidence/drift-attribution.json) 均保留。"
+      },
+      {
+        "line": 71,
+        "text": "新增 [u_04c_machine_cells.test.ts](../../src/test/u_04c_machine_cells.test.ts) 共7项：真实区域机清旗/保留wired、成功外部feature及钥匙正反匹配、原故障生成即正确及跨层连续/恢复等价、真实蓝图向热图传递精确集合、热图/随机落物/entry/fall/teleport消费者，以及当前/缓存层缺集合/多格/少格/重复格损坏档拒绝。期望由独立坐标扫描或确定蓝图布局给出，不用生产投影函数给自己做 oracle。纯投影另验网格和双流 RNG 不变。"
+      },
+      {
+        "line": 79,
+        "text": "**浏览器边界另行留痕：** 首次夹具直接调用楼梯行动后即保存，`needsRender` 未触发发现集合更新；读档后UI更新使 `visibleMonsterIds` 从空变为 `[24]`。等待渲染时间本身不能修正这一点。过梯后再实际等待一回合，形成完整行动检查点，完整比较通过。本轮未改渲染/发现逻辑，也不声称“立即过梯保存”的所有可见集合已通过；原差异见 [首跑日志](u-04c-evidence/browser-prefinal.txt)、[首字段定位](u-04c-evidence/browser-diagnostic.txt)。机器格在两种路径中都正确，U03/K31不再混为一项。"
+      },
+      {
+        "line": 81,
+        "text": "中途检查记录：新fall夹具原误期望选原点，而现有搜索从radius1开始，改用唯一合法邻格验证；未改生产落位算法。W11夹具调整后首次build发现无用DCOLS导入并移除。最初定向命令中两条文件名未匹配，实际收集B4b/V6两文件，随后明确补跑正确的C3/U05a两文件，未冒称首批已收集四文件。浏览器脚本修正前的首次冻结批次主动停止，保留于 `prefinal-first-freeze/`，不作为最终结果。"
+      },
+      {
+        "line": 89,
+        "text": "43种子×26层（1118层、3628台机器）的 [来源记录](u-04c-evidence/center-provenance.json) 显示：原报错17件全部是实际普通人口产物，所在格机器号为0，其中2件符合历史“宝藏类型”分类；另有1件按区域feature声明正常接纳。所有center几何和物品可通行检查均无违例。逐件列表保留，不把17改为新的容许常数。"
+      },
+      {
+        "line": 102,
+        "text": "| 修改边界 | 156份受保护既有测试不变；仅3份旧测试按本报告合同调整；P1-37全文件SHA256不变 | [boundary.json](u-04c-evidence/boundary.json) |"
+      },
+      {
+        "line": 103,
+        "text": "| `npm run build` | 退出0；vue-tsc + Vite通过，仅保留既有大于500kB chunk提示 | [final-build.txt](u-04c-evidence/final-build.txt) |"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-05.report.md",
+    "lines": [
+      {
+        "line": 13,
+        "text": "- 领养不重新生成、不重新筛选。外包十次失败/后续 feature 最小数量失败才走机器回滚；既有 U05a 的父子登记和撤销合同保持。"
+      },
+      {
+        "line": 15,
+        "text": "[CE 原文编译脚本](../../scripts/u05-ce-golden.mjs)抽取真实函数和重掷循环，仅替换分配、表和候选供应，得到 [576 组判定及5个边界](u-05-evidence/ce-golden.json)，由新测试逐项比对；[编译输入](u-05-evidence/ce-golden.c)可复核。没有把本轮 JS 逻辑翻译成 C 再自证。"
+      },
+      {
+        "line": 24,
+        "text": "- 武器/护甲在构造时保存 `identityId`，供去重使用；CE 已抽中但 web 效果尚未实现的符文也保留 `ITEM_RUNIC`，投掷武器事后剥掉它。字段沿 U01 现有编解码保存，无 schema 新增。构造 ID 不能成为装备“种类鉴定表”，回归捕获该外溢后，`identifyItemKind` 已明确排除武器/护甲，原 B-1a 断言不变。"
+      },
+      {
+        "line": 26,
+        "text": "## 3. 类别抽签与 RNG 对齐边界"
+      },
+      {
+        "line": 34,
+        "text": "| WEAPON/ARMOR/POTION/SCROLL | 类别 → kind（若未显式指定）→既有实例模型 | 保留基表、无深度过滤、无计量工作表；药水lichen退池、符文效果空槽等既存差异没有伪装成全CE |"
+      },
+      {
+        "line": 58,
+        "text": "[新专项](../../src/test/u_05_machine_items.test.ts)：19项，包含四类全现有kind的显式请求/类别请求、资源与RNG状态、掩码顺序、67历史请求、576 CE判定、五种边界、完整重抽、未实现符文bit、去重作用域、外包位置缓存回归、无效请求传播、六类完整U01字段往返、地面/携带→存读→死亡/拾取→存读。"
+      },
+      {
+        "line": 62,
+        "text": "历史 U05a 的 [67条null请求](u-05-evidence/historical-null-requests.json)逐条保留原seed/depth/category/id/位置，重放新入口后67→0。当前 HEAD 9seed自然对照为66次null，STAFF/WAND阶段剩14次，RING/CHARM阶段已为0，Q阶段仍0。**67是历史请求集合，66是当前分支自然集合，不把两个样本冒充完全相同生成轨迹。**"
+      },
+      {
+        "line": 69,
+        "text": "- W-24/W-25各有一条显式债务边界守卫，要求机器WAND/STAFF的显式id和类别请求均为null且零耗骰，恰与U05目标冲突。原守卫保留；分别在HEAD/当前/隔离候选上证明“旧实现通过 / 修复后原守卫失败 / 新身份与CE资源断言通过”。见 [W24反事实](u-05-evidence/w24-counterfactual.json)、[W25反事实](u-05-evidence/w25-counterfactual.json)及 [W24待审补丁](u-05-evidence/proposed-w24.patch)、[W25待审补丁](u-05-evidence/proposed-w25.patch)。候选不仅把null改为非null，还核对全部kind、类别、资源范围和精确耗骰。两份源测试同样未改，交验收方裁决。"
+      },
+      {
+        "line": 70,
+        "text": "- B-1a鉴定表外溢、P1-37外包落点红灯均修代码：前者排除装备种类表，后者不重写缓存前置物品位置。原守卫保留，专项复查通过；完整最终结果见§9。"
+      },
+      {
+        "line": 79,
+        "text": "必须原义回归：p1_30、U24、U01/U03字段合同、U05a唯一性；V机器配额/位置/钥匙/递归回滚，p1_37与连通性；W-5/24/25/26目录/资源/未知态；所有源码读取守卫。需重新裁决的旧期望为T-1总耗骰前提以及W24/W25的机器null债务边界。baseline只允许经过归因的生成结果变化，没有调整任一现有测试阈值。[169份既有测试逐文件SHA核对](u-05-evidence/original-guards.json)全部与HEAD字节相同。"
+      },
+      {
+        "line": 81,
+        "text": "## 8. 后续边界"
+      },
+      {
+        "line": 85,
+        "text": "- 武器/护甲未实现符文效果仍不补；`ITEM_RUNIC`保证Q不把抽中的CE符文误当无符文，并保留在实例中；这些空槽的具体runicType仍缺失，身份/效果须在符文目录轮补齐，不等于该符文玩法完成。"
+      },
+      {
+        "line": 86,
+        "text": "- U19c：CE在机器构建中即时实化怪物/物品的完整时序与失败回滚仍未整体移植；原本延迟horde失败无携带者的边界不在本轮假装完成。"
+      },
+      {
+        "line": 103,
+        "text": "| `npm run build` | 通过；保留Vite现有大chunk提示 | 13.67s |"
+      },
+      {
+        "line": 127,
+        "text": "`u05-attribution`只写候选/阶段证据，不写fixture。`u05-recapture.mjs`是本轮一次性操作，已有recapture记录后拒绝再次执行。`u05-final-check`按明确文件列表执行R∪S，另跑build、自然生成复验、test:drift并比较输入SHA；保留的T-1和W24/W25旧边界守卫会使最终脚本退出1，不能把它解释成全部通过。浏览器脚本连接本地5198端口，需要可启动Chromium的环境。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-05a.report.md",
+    "lines": [
+      {
+        "line": 13,
+        "text": "5. `1589–1627`：horde 返回领袖；显式 monsterID 若同格有怪，会替换。**只有 `monst && theItem && TAKE` 同时满足才覆盖 torch/torchBearer**。范围是整台机器，非每个 feature；后续无物品的实例不清空配对。一次领养的多实例合成例中，首个成功领养者保持携带，并非无条件交给最后生成的怪。"
+      },
+      {
+        "line": 23,
+        "text": "- [BlueprintEngine.ts](../../src/engine/Generator/BlueprintEngine.ts)：`MachineItemSpawn.instanceId` = 当前层 machineNumber + 本机创建序号，不消耗 RNG 或实体 ID。`generatedItems` 是创建登记，**不是额外生成指令**；外包后源登记保留，子机器新位置指令继承同一 instanceId，全部类别、种类、资格和 keyLoc 元数据随之保留。领养不登记新创建。"
+      },
+      {
+        "line": 24,
+        "text": "- 地面、子机器、怪物三种去向共用排他判断；外包成功清 `theItem`。torch 配对只在确有物品和怪物指令时更新，整机完工后提交一次。不会因无物品的后续 feature/instance 清空先前配对。"
+      },
+      {
+        "line": 29,
+        "text": "**防御边界**：当前 CE 目录不存在“同机连续自产多把 TAKE torch”或 TAKE 自产物却无怪的有效行。CE 字面循环对前者会只提交末次配对，早先生成品留在登记但无归属。web 对这种合成/损坏事务返回失败，避免发布幽灵；没有改目录去掩盖它。51 个新测试中包含这两个拒绝面。"
+      },
+      {
+        "line": 35,
+        "text": "每行在 [u_05a_item_ownership.test.ts](../../src/test/u_05a_item_ownership.test.ts) 独立运行，实例区间的最小/最大端点均构造；保留 item/monster/horde 字段与所有权 flags，去掉地理/DF 条件，以覆盖退池行而不修改实际池。外包端接收原 ID；自产数量由 feature 实例数独立给定；领养总数固定 1；携带者的地面数组为空。**这是逐 feature 所有权测试，不宣称退池整台机器玩法已完成**；空间/DF/全机器路径由现有 V 和自然生成守卫回归。"
+      },
+      {
+        "line": 88,
+        "text": "- 一次领养 + 三个同 feature 怪 + 后续 feature：仅第一次同时具备 item/monster 的配对携带，后续无物品者不擦除它。"
+      },
+      {
+        "line": 97,
+        "text": "4. 因果边界：seed777/D3、seed31337/D7 是各自第一处 blueprint-item 调用轨迹变化；进入 populateLevel 前的实质 RNG 计数分别同为 46395、167302。前者 #33 由地面转为 horde 携带，物品实化从 horde 生成前移到领袖产生后；后者 #57 同理，ARMOR 在 horde 的三次抽取之后实化，后续物品属性/RNG 继续传播。普通携带路径则删除原来多余的地面实化。seed424242、20260913 的 26 层物品调用轨迹均无变化。这里没有声称 CE 与 web 全流程同耗骰，只证明本次变化来自所有权/交接路径。"
+      },
+      {
+        "line": 107,
+        "text": "## 6. 独立守恒守卫与数量边界"
+      },
+      {
+        "line": 125,
+        "text": "逐层/逐机器原始证据：[generation-current.json](u-05a-evidence/generation-current.json)、[generation-control.json](u-05a-evidence/generation-control.json)。尚未发生于该样本的“有效携带指令但 horde 无候选/怪实化失败”的时序问题仍属 U19c 的延迟怪物构建边界；本轮没有伪造这种情况下的 CE 等价整图回滚。"
+      },
+      {
+        "line": 142,
+        "text": "- 若既有断言要求 ADOPT+TAKE 同时有地面品、horde 不拿品、无物品后续实例清空 torch，则应按 CE 合同更正。实际没有改写这样的既有断言；新增 51 例直接钉正确行为。"
+      },
+      {
+        "line": 159,
+        "text": "- 新用例首轮调用错 `rng.seed`/`Architect.generate`，以及给非领养源行强塞外来领养品，被新事务验证拒绝。修正测试装配到真实方法/正确输入，保留数量、回滚、身份断言；既有测试不改。"
+      },
+      {
+        "line": 162,
+        "text": "- 依任务书 §5“不改守卫”，本轮保留 T11 原文件；已提供 [待审观测补丁](u-05a-evidence/proposed-t11-observer.patch)，只扩展到地面/活动怪/休眠怪/包内并新增身份唯一性断言，数量/绑定/可解性阈值不动。是否应用已请求用户决定；批准前不更改该守卫。"
+      },
+      {
+        "line": 169,
+        "text": "新增登记：horde 消费者漏携带品（本轮修复）；CE48 是禁用的额外所有权行（仅验证）；“最后携带者”的条件和原报告描述需缩窄（本轮修复）；畸形多自产 torch 的 CE 字面无归属边界（web 整机拒绝）；67 次 null 实化仍交 U05。退池整机玩法、完整 CE 同 seed 差分、U19c 的生成期怪物失败回滚没有被本轮宣称完成。"
+      },
+      {
+        "line": 184,
+        "text": "**未全绿的唯一项是 B-4b/T11**：见 §10。保留了任务禁止擅改的旧守卫；[候选补丁的隔离验证](u-05a-evidence/proposed-t11-validation.txt) 在 6 seed × 26 层通过，但没有把候选结果冒充工作树 T11 已绿。当前交付为生产修复、归因/重捕获与报告完成，测试观测范围修正仍待用户授权。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-06.report.md",
+    "lines": [
+      {
+        "line": 5,
+        "text": "## 1. CE 权威执行路径与本轮边界"
+      },
+      {
+        "line": 33,
+        "text": "[编译脚本](../../scripts/u06-ce-golden.mjs) 从当前 CE 文件按函数边界提取 `staffDamageLow/High/staffDamage/randClumpedRange` 原文及 `fixpt/FP_BASE/FP_FACTOR`，用 clang 编译。仅以可枚举的 `rand_range` 替身返回合法骰面，穷举全部组合；这是分布/舍入/调用区间证据，不是 CE 与 web 全游戏 PRNG 同种子比较。"
+      },
+      {
+        "line": 38,
+        "text": "- 1/2/7 计数专指每次伤害的 `rand_range` 调用，对齐 CE `randClumpedRange`。反射概率/随机反射方向、地形 DF、分裂、后续燃烧和施法选择的抽签另计；底层 PRNG 拒绝采样的 `ranval` 次数不是这个计数。没有删除它们来凑总数。"
+      },
+      {
+        "line": 49,
+        "text": "| 反射 | W4 轨迹先选真实目标，原 caster 一直保留；怪物反射回施法者、继续穿透后面的玩家均逐次正确掷骰；反射甲仍鉴定。存活反射自击可燃烧/分裂，transference 按原施法者和盾后伤害计算。 |"
+      },
+      {
+        "line": 50,
+        "text": "| 玩家致死 | `castMonsterBolt` 接触回调返回 false，经 `BoltTrajectory` 停止穿透，保留致死接触但不再暴露本格火或伤害后方目标。正常回合尾结算死因 `Killed by a <caster>.` / 中文“被…杀死。”，反射者不抢归因。 |"
+      },
+      {
+        "line": 55,
+        "text": "**BE_ATTACK 保留证明**：CE `Items.c:5136–5145` 的 DISTANCE_ATTACK、POISON_DART、WHIP 调用 `attack(caster,monst,false)`，不是 staffDamage。本轮只把前两种从混合分支留下，分支内部执行代码不变；[边界审计](u-06-evidence/boundary.json) 对 HEAD 与最终版本提取 POISON_DART 的实际 fallthrough 分支，去注释后 AST 打印逐字相等。新增测试锁住未命中、武器免疫、毒攻击骑乘效果与非 staff RNG；WHIP 仍通过 `Monster.performWhipAttack → resolveGeometryAttackOn → CombatSystem.attack`，没有向怪物 bolt 表新增 WHIP。P4-6/W4/W10 等旧守卫只回归。"
+      },
+      {
+        "line": 61,
+        "text": "- BE_ATTACK 与 BE_DAMAGE 分离，旧近战代码和 WHIP 路径保留。"
+      },
+      {
+        "line": 71,
+        "text": "[完整闭包](u-06-evidence/closure.json)：扫描142测试文件，R=124，R∪S=129，未解析相对导入=0、非字面动态导入=0。S额外纳入 c_6、v_2b_3、v_2b_9a/9b/9e 共5文件。129中 generation_baseline 单独执行，其余128逐文件显式传给 vitest。全仓 [命中清单](u-06-evidence/semantic-hits.txt) 保留脚本/历史文档位置；W8/W9/…历史 final-check 依赖各轮旧 HEAD 和旧文件边界，是历史审计重现脚本，不能在本轮 HEAD 上冒充通用测试门禁，故保留原文、用本轮独立边界审计验证当前改动。现有源码扫描测试随 R∪S 原样运行。"
+      },
+      {
+        "line": 78,
+        "text": "| `w_4_bolt_reflection.test.ts` 一条 `monster return passes the real caster to combat ...` | 原锁反射后调用两次近战；现锁真实命中顺序仍为施法者→玩家，两次独立 catalog damage，保留反射/autoID/无伤反射者，并新增原caster归因 | Items 5168、5210–5213，Monsters 2776–2781 |"
+      },
+      {
+        "line": 80,
+        "text": "首轮完整复跑补核的 W3 项：`w_3_bolt_trajectory.test.ts` 的“monster spark uses ordered actual contacts beyond aim”内 `CombatSystem.attack` 两次调用断言，旧代码绑定了 K09 的近战替身。**同测试的命中顺序已经通过**，失败仅在要求 attack 调用；CE Items.c:5168 明确直接 inflictDamage，故改为 attack 零调用、两次 `(2,6,1)` 掷骰、目标HP分别98/94。原 `[first,second]` 接触顺序和 SLOW_2 的拦截状态断言保留。此为任务预告的旧伤害路径改义，不改阈值或扫描器。"
+      },
+      {
+        "line": 96,
+        "text": "- 首次完整冻结运行：CE黄金/边界/build/drift通过，128文件中127通过、1失败；2487passed/1failed/8skipped/1todo，404个输入前后SHA一致。唯一红灯为上述 W3 旧SPARK近战调用断言，已按执行事实补核。整轮日志/JSON/哈希归档 [prefinal-w3-legacy](u-06-evidence/prefinal-w3-legacy/final-check.json)，该轮不作为最终通过结果；修正后从CE/build开始完整重跑，不拼接前轮绿文件。"
+      },
+      {
+        "line": 104,
+        "text": "## 6. 浏览器与实现边界"
+      },
+      {
+        "line": 119,
+        "text": "最终执行 [u06-final-check.mjs](../../scripts/u06-final-check.mjs)：编译CE黄金 → 边界审计 → `npm run build` → 128个显式文件的 vitest（8 workers）→ 独立 `npm run test:drift`（1 worker）。不运行无参数全量 `npx vitest run`。冻结 `src/public/scripts/CE源码/progress/配置/任务与规格/黄金JSON/闭包JSON`，前后逐文件 SHA-256 比较；报告和运行输出不参与自引用哈希。"
+      },
+      {
+        "line": 130,
+        "text": "| 边界审计 | 通过；Game只改2方法，BE_ATTACK体相等，341既有文件哈希相同 | 1.498s |"
+      },
+      {
+        "line": 141,
+        "text": "- 保留的BE_ATTACK执行体（去注释AST输出）SHA-256：`deaa93509b4e0f19311e7ea31101c1ae3d821329c534d35074488d8f3176c1e5`。"
+      },
+      {
+        "line": 145,
+        "text": "- 未改生成流代码、生成基线或重新捕获；交互伤害减少旧近战抽签，**仍可能经共享 SUBSTANTIVE 流改变战斗后的后续生成**，这正是 X-0 的“间”标记。漂移门禁只能证明其既有纯生成口径，不承诺战斗后同种子全局 RNG 与旧 bug 一致。"
+      },
+      {
+        "line": 147,
+        "text": "- 新增36项 U06测试、5个 U06脚本（范围/CE黄金/边界/最终门禁/浏览器）、报告证据与进度；既有测试只改 §5.1 三文件5项。其余341个既有文件由哈希保持审计保护。"
+      },
+      {
+        "line": 149,
+        "text": "- **前轮缺口登记**：玩家 W8 `applyDirectBoltDamage/applyBoltEffect` 的反射致死尚未像 CE 那样设置专用死因/提前终止穿透；此次玩家测试保留原合同，怪物新出口按本轮范围对齐。后续若补通用 BE_DAMAGE 协调器，须独立授权玩家侧改义。"
+      },
+      {
+        "line": 150,
+        "text": "- **既有状态/伤害全链边界**：永久逃跑 mode、magical fear、ENRAGED、尸体吸收中断、完整血迹DF/闪光、玩家 transference ring、easy模式、完整 wakeUp/濒死逃跑与 killCreature携带怪释放/群体继任，并未因 U06 自动完成，归 X-0 U09/U12/U14/U16/U21。当前明确接入的 HUNTING/麻痹/入迷/火状态与怪物盾后 transference 已专项验证。"
+      },
+      {
+        "line": 151,
+        "text": "- 炮塔复合 MONST_TURRET 的 NEVER_SLEEPS 未在 Monster 构造器完整展开，合成实例仍可能随机睡眠（浏览器夹具显式清醒）；属于原旗标/AI边界，未改其生成/施法逻辑。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-07.report.md",
+    "lines": [
+      {
+        "line": 5,
+        "text": "**已接入怪物独立的 blink 决策、偏好图、40 周界择点、射线与位移提交。通用施法仍拒绝 BLINKING；玩家 W-12 路径保持。** 这关闭的是 K06 的“怪物没有执行出口”，不是 U12 整套 AI 或 W-22 学习的完成声明。现有模型边界及本轮目标距离图的缓存取舍见 §8。"
+      },
+      {
+        "line": 34,
+        "text": "- **敌人图**按 Monsters.c:3174–3206：阻通格给 -2/-1、avoids 格 -1，距离0是防OOS值但禁格不传播；可走格初值10000；合格敌人格0、cost1，八向扫描。共享 `Pathfinding.ts` 的旧负 -2 对角问题没有被顺手修改：此新消费者独立按 CE 在两个公共邻格检查 -2，其余四向扫描复用原扫描器。旧消费者/生成行为原样保留。"
+      },
+      {
+        "line": 57,
+        "text": "4. 只有严格更优才替换，因此平局保留最先候选，择点本身 **0 RNG**。"
+      },
+      {
+        "line": 58,
+        "text": "5. 更新最佳值后，若落点与起点切比雪夫距离 >1，或两个“反向”的公共邻格之一阻通，`gotOne=true`；否则清为false。后来的更优邻近对角格可以取消此前已经找到的长跳，不允许偷偷保留旧长跳。"
+      },
+      {
+        "line": 68,
+        "text": "| 30%门不通过 | 一个 `randPercent(30)` 的耗骰；后续继续行动。ALWAYS不掷该骰；逃险/远距跟随/pathToward本来就没有此门 |"
+      },
+      {
+        "line": 72,
+        "text": "| 休眠生物占最终落点 | 既有 W-11 提交守卫拒绝叠格；保留比 CE active HAS_MONSTER 更强的合同，不放宽该守卫；已选中施法的耗时仍在 |"
+      },
+      {
+        "line": 82,
+        "text": "P4-1b 第7项由“只有跳过证明”补为“**通用施法继续跳过，专调度确实执行**”：原500次 `tryUseBolt` 返回false保留；增加 `monsterBlinkToPreferenceMap` 返回true且位置确实前进。依据 CE `monstUseBolt` 2786起明确跳过 BE_BLINKING，而 `monsterBlinkToPreferenceMap` 2364–2367 单独发射。`specificallyValidBoltTarget` 原拒绝代码没有改；不是删掉拒绝守卫来放通通用施法。"
+      },
+      {
+        "line": 84,
+        "text": "浏览器使用 develop-web-game 技能：标准 Playwright 客户端执行移动并保存 text state，但它的 Canvas 导出黑图，**不计视觉通过**。另用有头 Playwright 在最终源码上复跑真实 `.` 等待 → 怪物行动，保存并实看 [逃跑前](u-07-evidence/browser-flee-before.png)、[逃跑后](u-07-evidence/browser-flee-after.png)、[追敌](u-07-evidence/browser-hunt-after.png)、[盟友跟随](u-07-evidence/browser-ally-after.png)、[力场截停](u-07-evidence/browser-blocked.png)、[游荡随从跟队](u-07-evidence/browser-follower-after.png)。[browser.json](u-07-evidence/browser.json) 包含位置/行动时钟/RNG和游戏 text state，另验证平图失败前后状态全等；console/page errors均0。截图是合成局面浏览器实跑，不声称自然生成复现率。夹具初始怪物时钟为0，玩家等待会推进两次怪物行动：逃跑图日志为×2、两次各最多12格；追敌图随后出现一次近战；盟友图随后走一步，JSON保留最终时钟。"
+      },
+      {
+        "line": 96,
+        "text": "| `p4_1b_monster_casting.test.ts` 第7项及文件说明 | CE Monsters.c:2786起的通用跳过与2299–2370的专调度同时成立 | 只改描述、增加专调度成功/位移两条正例；原测试的全部expect调用保留，未改期望 |"
+      },
+      {
+        "line": 107,
+        "text": "| U18a、c_4a、c_4b | 全层地形接口与发现后继；Terrain/DF真实读取边界；共享Pathfinding旧合同 |"
+      },
+      {
+        "line": 110,
+        "text": "| R∪S其余文件 | 原断言全部保留；准确逐文件最终结果见 §7 链接，不只按同名前缀筛测 |"
+      },
+      {
+        "line": 112,
+        "text": "[boundary.json](u-07-evidence/boundary.json) 验证1929个受保护既有文件SHA不变；Game原330成员的去注释AST全等，Monster除 `takeTurn` 外89成员全等；P4-1b原62个expect调用节点全部保留（包含内层expect和matcher节点，不把62说成62个测试）。"
+      },
+      {
+        "line": 120,
+        "text": "- 中途R∪S试跑与最终冻结试跑一度同时占用资源；明确定位并终止本任务旧试跑进程树，保留完整最终试跑。中途通过项不拼入最终结果。"
+      },
+      {
+        "line": 122,
+        "text": "- 相对任务初始 R种子额外修改：`BoltReflection.ts` 共享纯周界；`DungeonFeature.ts` 只读烧毁后继；`zh_CN.json` 一条可见瞬移消息；`progress.md` 技能留档；新增专项、范围/CE/边界/浏览器/最终验证脚本和本报告证据。全部已回填R∪S；既有地形/DF目录、生成、Pathfinding、SafetyMap、玩家施法方法和存档代码未修改。"
+      },
+      {
+        "line": 132,
+        "text": "**这是最终状态下的运行结果，不是中途快照。** 最后编辑完成后，从CE oracle/边界检查开始重新执行全部门禁；未拼接前轮结果。"
+      },
+      {
+        "line": 137,
+        "text": "| 边界/原断言保持 | 1929个受保护既有文件无变化；Game原330成员、Monster非takeTurn的89成员保持；P4-1b原expect全保留；退出0 |"
+      },
+      {
+        "line": 138,
+        "text": "| `npm run build` | 通过；只保留既有主chunk >500kB提示；退出0 |"
+      },
+      {
+        "line": 152,
+        "text": "## 8. 新发现、精确边界与 W-22 后续"
+      },
+      {
+        "line": 154,
+        "text": "1. **CE敌人图严格 `< shortestDistance`** 导致常见追敌瞬移没有源点；已忠实保留并测试普通失败与隐形重试成功。不能用“追敌应该一定瞬移”的错误前提放宽这个条件。"
+      },
+      {
+        "line": 155,
+        "text": "2. **地图缓存差别**：web 尚无CE `creature.mapToMe`，本轮目标距离图按需重建，而CE会保留缓存直到目标新位置的图值>3。新安全地形图/盟友安全图也按需构建，没有复制CE同一客观回合只计算一次的缓存。移位/地形变化后可能比CE旧缓存更及时；本轮没有声称缓存生命周期逐步同构。敌方 `safetySnapshot` 复用现有持久化字段，未改其语义。目标缓存若要精确复刻，应与U03层状态/U12缓存失效合同一起做，不伪造本轮存档兼容。"
+      },
+      {
+        "line": 157,
+        "text": "4. **整套AI边界**：本轮新增判断供blink专调度使用，不把旧普通移动、可见性选敌、觉醒/感知更新顺序、失败后的完整CE `moveAlly` 逃步/牵引/尸体分支一并重写；旧通用施法在状态更新前的架构仍属U12。成功时立即结束此次怪物行动；失败回到当前既有走路/魔法路径，不声称整套AI逐行动RNG与CE相同。新调用可能经共享SUBSTANTIVE改变后续互动随机序列，X-0生成流分类仍为“间”；生成门禁不等于整局录像逐步差分。"
+      },
+      {
+        "line": 159,
+        "text": "6. **W-22恢复还差什么**：U07给学到的BLINKING建立了真实决策/执行出口；U08古灵藤蔓（及网分支）、U09可学/可施放/可消魔的消费者矩阵、U10尸体吸收字段和保存、U11资格→选能力→走尸体→吸收计时→安装→消费→中断状态机仍未完成。W-21仍是“数值强化已落地、学习未完成”，不应因此开启学习抽签。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-08.report.md",
+    "lines": [
+      {
+        "line": 3,
+        "text": "基准：`38d7bca`，2026-09-24。依据任务书及 X-0 §4.1、§4.3 U08、§3.1 K07；权威为本工作树的 `BrogueCE-master`。**两种怪物 bolt 已有真实 DF 出口，K07 的 null 早退已解除。未开启学习，未实现 STUCK 计数，未开展通用 U17 或生成回池。**"
+      },
+      {
+        "line": 14,
+        "text": "- `monstUseBolt → monsterCastSpell → zap`：Monsters.c:2786–2815/2769–2783。`zap` 的坐标序列不把原点作为第一格，射线延伸到碰撞或地图边界，不以请求坐标强制终止。"
+      },
+      {
+        "line": 30,
+        "text": "CE：Globals.c:470、525–526；Time.c:290–341、592–640、1619–1664。藤蔓和草都不占怪物名额、不创建领袖/召唤物。生物可站在这些地形上，藤蔓与怪物不会争夺一个“实体位置”。**玩家即时接触藤蔓会先晋升成草，悬浮不豁免此晋升**；因此古灵对玩家的实际落点通常变成草，周围仍可能保留藤。怪物没有这一玩家专属晋升。"
+      },
+      {
+        "line": 38,
+        "text": "5. 网移动近似改读四层 ENTANGLES，怪物尊重 IMMUNE_TO_WEBS/INVULNERABLE；挣脱仅清 SURFACE，保留地基和液体。清层收口在 Promotion.breakEntanglingTerrain；源码扫描白名单未改。"
+      },
+      {
+        "line": 41,
+        "text": "## 3. AI、学习资格及明确边界"
+      },
+      {
+        "line": 49,
+        "text": "保留事项："
+      },
+      {
+        "line": 51,
+        "text": "- **U14b/U18**：没有 STATUS_STUCK/maxStatus[STUCK]。CE Time.c:319 的3–7计数、Movement.c:1402–1420/Monsters.c:3773–3784 的尝试移动递减，仍由现有50%挣扎、挣扎时20%破网近似替代；“站在缠绕地形”也不完全等于 CE 的已有 STUCK 状态。攻击目标占格时的挣脱顺序、潜水 MB_SUBMERGED 及 STUCK 随位移清理待后续。"
+      },
+      {
+        "line": 54,
+        "text": "- **W-22 恢复**：U07 与 U08 的缺执行出口前置已解决；仍需 U09 学习消费者矩阵、U10 吸收字段及持久化、U11 完整学习状态机。U14b 的网计数是本效果保留的明确近似。"
+      },
+      {
+        "line": 58,
+        "text": "[closure.json](u-08-evidence/closure.json) 以 TypeScript AST 递归反查 R 的直接/间接 imports、import type、动态字面量 import、Vue script；R 种子包括 Bolt、Monster、Game、DF/DFCatalog、TerrainCatalog、Grid、Appearance，并并入实际改动文件（含 Promotion）。S 全仓检索任务词及真实 WEB_SMALL/WEB_LARGE、T_ENTANGLES、T_CAUSES_DAMAGE、null 拒绝、KNOWN_GAP、castMonsterBolt、specificallyValidBoltTarget、学习与源码/fixture读取。记录包括 scripts 和 ai_docs 的注释/历史留痕，不把注释当新的执行要求。最终R命中140份测试，S扩展后并集146份（其中drift独立）；147份测试中未纳入的 `src/engine/Random.test.ts` 不在本轮R∪S。展开清单与命中分别见 closure.json、[semantic-hits.txt](u-08-evidence/semantic-hits.txt)。"
+      },
+      {
+        "line": 62,
+        "text": "| 文件 / 断言 | 修改边界与 CE 依据 |"
+      },
+      {
+        "line": 64,
+        "text": "| p4_1b_monster_casting：蜘蛛 null/known-gap | 翻为 BE_NONE、有真实施法并铺中玩家；GlobalsBrogue.c:83、Items.c:5440/5562。原 ALWAYS/30% 概率、ticks 等断言保留 |"
+      },
+      {
+        "line": 66,
+        "text": "| BoltContract.test：按物种反查的30次拒绝/世界不变及undefined | 保留imp通用blink拒绝，蜘蛛/古灵改验真实地形、无直接伤害及已评估outcome；与同一CE两行/DF执行路径对应 |"
+      },
+      {
+        "line": 68,
+        "text": "| data/monsterBolts：数据映射缺口 | 两名显式别名 NONE，清除缺口例外；67怪物/25施法怪/15种名字和原顺序均保留 |"
+      },
+      {
+        "line": 70,
+        "text": "| c_4a_0：全量归属/priority表；c_4a：键数量 | 仅补两个SURFACE/19与60字面量。原135键计数保留于旧成员投影，另锁137总数；旧值和完整字段扫描不动 |"
+      },
+      {
+        "line": 79,
+        "text": "| 四层读写边界、DF reader白名单、晋升/火/气/时间 | c_4a_0源码扫描、c_4b F1、c_4c、f/g、p2时序；旧字段值不动 |"
+      },
+      {
+        "line": 87,
+        "text": "- 旧拒绝断言：先运行保留原期望的3份测试，观察49 passed / 3 failed，见 [prefinal-old-rejections.txt](u-08-evidence/prefinal-old-rejections.txt)，再按上表翻正。"
+      },
+      {
+        "line": 88,
+        "text": "- 目录前提反事实：新4 DF/2地形令旧计数和闭包直接撞红。AST 对 HEAD 比较确认**原135个DF、135个Terrain flags、priority/home及原外观/光照期望项逐项完全相同**，只新增指定成员；见 [boundary.json](u-08-evidence/boundary.json)。据此只扩起点/新成员域，保留旧数量锚点并增全量计数；集合相等、原字段期望和扫描规则未放宽。"
+      },
+      {
+        "line": 96,
+        "text": "不变更生成目录/自动生成/蓝图/怪物池；没有重捕获任何基线。只追加两个地形枚举，原编号不动。没有学习状态机、STUCK计数、旧档兼容、通用U17或其他效果回池。依赖版本与锁文件不动。没有运行无参数全量 `npx vitest run`，测试由反查得到的显式文件清单启动。历史X-0/W-22/U18a/U07报告原样保留，本报告记录其过期部分。"
+      },
+      {
+        "line": 102,
+        "text": "| CE来源、边界审计 | 全部通过；旧135条DF、135条地形及原表项不变，354个既有输入文件未改 | [CE来源及SHA](u-08-evidence/ce-source.json)、[边界审计](u-08-evidence/boundary.json) |"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-09.report.md",
+    "lines": [
+      {
+        "line": 5,
+        "text": "**本轮完成 6 项可学旗标、22 项可学 bolt 的消费者核验，补齐九项怪物施放出口，补永久隐形同步及 TURRET 效果门。没有开启自然学习。W-22 学习恢复接下来是 U10 字段/持久化与 U11 状态机。** TUNNELING/OBSTRUCTION 保留 CE 禁施例外；现有 K17 显示泄漏、K25 legacy 毒免等边界仍单独登记，不把“执行出口已接”扩大成全项目 CE 对齐。"
+      },
+      {
+        "line": 35,
+        "text": "| MONST_FLIES，bit10 | L | 被动悬浮/地形资格 | 是，N | `levitating=1000`；学习完成时清 RESTRICTED_TO_LIQUID / SUBMERGES / CE MB_SUBMERGED | 原sync及环境/位移/移动消费者保留；**补**显式 `syncFlagDerivedStatuses(true)` 清两种已有水栖旗标。web尚无MB_SUBMERGED载体，不伪造字段；构造同步不清水栖 |"
+      },
+      {
+        "line": 45,
+        "text": "每行的可学“是”均来自B对应行 `!BF_NOT_LEARNABLE`；每行可消魔“是”均来自B的 `!BF_NOT_NEGATABLE` → N → web `negateBolts`。**学到bolt只追加技能身份，不立即施法，也没有需要随安装同步的永久status**；表中“无”据此填写。E=敌方门，A=友方且非敌方门；普通选靶还受Q共同门约束，通用感知/战术尚有U12边界。"
+      },
+      {
+        "line": 50,
+        "text": "| SLOW /10（62） | 是 | 是；E，排INANIMATE和已有slowed | 是 | 无 | `applyBasicBoltEffect`，50回合，清haste/重算速度 | **新增身份**；与SLOW_2分开保留强度 |"
+      },
+      {
+        "line": 79,
+        "text": "- `Monster.specificallyValidBoltTarget` 消费目录forbidden位和Q的反射回避门，LIGHTNING也不打敌方催眠者；INVISIBILITY是友方法术，CONJURATION的HALTS_BEFORE使其不受反射回避。保留一般目标遍历、bolt顺序、30%/ALWAYS短路和行动计时。选靶被拒不掷施法骰、不扣tick。"
+      },
+      {
+        "line": 81,
+        "text": "- 玩家和怪物共用四个窄原语：`teleportBoltTarget`、`polymorphBoltTarget`、`dominateBoltTarget`、`conjureBladesAt`。传送/状态/变形分别复用W11/W9/W19；刀刃落位复用W16 `bladeSpawnLocation`，未造第二套召唤落点系统。满图保持W16已有“停止创建合法实体”边界，不造重叠或越界刀刃；不宣称完整复刻CE无空格异常行为。"
+      },
+      {
+        "line": 83,
+        "text": "- 反射不转移吸血/死亡归属；自反射先给原caster回生命，再扣同一人的生命。POISON是状态写入，不给caster即时回血；后续毒/火/环境tick在CE以NULL攻击者调用伤害，也不追溯法术caster吸血。"
+      },
+      {
+        "line": 95,
+        "text": "## 5. K25 学习相关归属审计（保留，不全清）"
+      },
+      {
+        "line": 102,
+        "text": "| onHitStatus | kobold=confused；goblin/vampire=paralyzed | `Monster`玩家/怪物近战及G的BE_ATTACK可消费，仍保留旧概率/时长；不随学习复制，消魔不凭空抹除，不把它视为MA_CAUSES_WEAKNESS |"
+      },
+      {
+        "line": 106,
+        "text": "构造器、变形、克隆/当前快照保留这些原有字段；本轮不新增从尸体复制legacy字段的通道。消魔仍只按W23明确规则处理CE行为/能力/bolt/状态，不能凭“看起来像魔法”清legacy。后续U11只安装L/B确定的单项，不整包拷贝MonsterData；K25更广泛清理留其归属轮。"
+      },
+      {
+        "line": 118,
+        "text": "| `engine/Combat/BoltCatalog.test.ts`：MONSTER_BOLT_TABLE恰好15项、15项投影 | B/Q/H允许补九项执行；两项只登记身份并明确禁施。不是修改初始怪物目录的15种bolt统计 | 扩完整26项精确键顺序及完整投影，保留原15项所有数值/顺序，新增值亦为literal |"
+      },
+      {
+        "line": 119,
+        "text": "| 同文件：POLYMORPH未映射 | B:63/H:5260–5267；现在允许手工安装后有真实出口 | 改为POLYMORPH效果映射；PLENTY/WHIP未映射守卫保留 |"
+      },
+      {
+        "line": 128,
+        "text": "| UI/i18n、源码扫描与边界白名单 | R∪S内i18n/UI/r_1、c_4a_0/c_4b等读源码守卫；不改扫描器/正则/白名单 |"
+      },
+      {
+        "line": 130,
+        "text": "实际旧断言先保留运行，观察 **281 passed / 1 failed**，唯一失败为预告的15项前提，见 [日志](u-09-evidence/prefinal-existing.txt)。随后 [boundary.json](u-09-evidence/boundary.json) 对HEAD的AST逐项证实原15个映射完全不变，再扩新项完整期望。除此之外未修改既有测试。"
+      },
+      {
+        "line": 132,
+        "text": "新增 [u_09_learning_consumers.test.ts](../../src/test/u_09_learning_consumers.test.ts) **72项**：22种能力剥离与返额度、6个旗标、198组编译CE选靶、真AI及ticks/RNG、真实命中/反射/穿透/失败落位/满图、归属、永久状态/当前快照、吸血和削弱。早期新夹具有API名/私有字段类型错误、误写反射率50、LIGHTNING上界28、消魔额度不返还，均按当前CE/API改新夹具；没有据此修改生产公式或旧守卫。全开放房间传送无合法非FOV落点，成功夹具增加真实遮挡，失败场景另保留。"
+      },
+      {
+        "line": 142,
+        "text": "仍缺边界："
+      },
+      {
+        "line": 144,
+        "text": "1. **U21/K17显示消费者**：临时INVISIBILITY有150状态、AI/目标判断能读取，但`Game.update.visibleMonsters`只按固有隐形旗标过滤；`GameCanvas → monsterAppearance`又按cellVisible渲染，永久隐形也可能泄漏。浏览器首次相关断言撞红，证据 [prefinal-browser-visibility.json](u-09-evidence/prefinal-browser-visibility.json)/[日志](u-09-evidence/prefinal-browser-visibility.txt) 保留。最终只验U09状态/执行，不声称隐形视觉正确；K16末帧字形残留也仍能在截图看到。未将U21整套可见性/hover/文本改动偷并入本轮。"
+      },
+      {
+        "line": 145,
+        "text": "2. **U12/K10一般战术**：一般感知（含气体描边、潜水/献祭）、完整阵营关系、combat-buff目标策略、施法者脚下可燃地形回避、BE_ATTACK嵌墙等旧差异保留。原`tryUseBolt/takeTurn`及通用`generallyValidBoltTarget`AST不变；本轮198例只证明新增身份的受控专属门。"
+      },
+      {
+        "line": 149,
+        "text": "**U11之前没有新增的大系统执行出口阻塞**：CONJURATION已复用现有落点系统完成；两种禁施bolt是CE例外。学习链仍缺的是 **U10（吸收位置/名字/计数/所选能力/进行态及保存恢复）+ U11（尸体资格→选择→走尸→吸收→安装→扣次数，以及中断/死亡一次性分配）**。以上其他域的既有边界保持独立登记，不能因W-22恢复推进而关闭。"
+      },
+      {
+        "line": 155,
+        "text": "最终复跑入口：[u09-final-check.mjs](../../scripts/u09-final-check.mjs)。源码/测试/脚本/progress/CE及相关配置先冻结SHA-256，再依次执行CE原文编译、边界审计、build、显式回归、drift；报告及派生运行结果不纳入自引用输入。"
+      },
+      {
+        "line": 161,
+        "text": "| CE原文编译、边界审计 | 全部通过；198组目标资格；原15项bolt不变，375个既有输入文件未改 | [CE来源与SHA](u-09-evidence/ce-source.json)、[边界审计](u-09-evidence/boundary.json) |"
+      },
+      {
+        "line": 162,
+        "text": "| `npm run build` | 退出0；保留既有的大chunk warning | [构建日志](u-09-evidence/final-build.txt) |"
+      },
+      {
+        "line": 171,
+        "text": "完整命令与退出状态见 [final-run.txt](u-09-evidence/final-run.txt)，复现命令为 `node scripts/u09-final-check.mjs`。中途失败/中断仅保留于prefinal证据，不拼接为最终通过。最终运行后只回填本报告和派生证据，源码、测试、脚本、配置、progress与CE未再修改；交付前再次核对445个输入哈希均一致。`git diff --check`、报告链接与表格列数核验通过。全部交付文件哈希见 [delivery-integrity.json](u-09-evidence/delivery-integrity.json)。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-10.report.md",
+    "lines": [
+      {
+        "line": 13,
+        "text": "| `targetCorpseLoc` :2280 | 同名，`Pos \\| null` | `null` 对应 `INVALID_POS`；位置指向当前层尸体格，不是实体引用 | MONSTER_FIELDS 深复制；克隆额外复制坐标对象；变形保留 |"
+      },
+      {
+        "line": 14,
+        "text": "| `targetCorpseName[30]` :2281 | 同名，`string` | `''`；保存已选尸体名字，不在读档时重新从目录推导 | 字符串值复制，变形保留；不模拟 C 缓冲区长度 |"
+      },
+      {
+        "line": 18,
+        "text": "| `corpseAbsorptionCounter` :2285–2286 | 同名，`number` | `0`；尚未开始时也是 0，后续兼作赶到目标期限与吸收倒数；允许负数残留 | 原值保存，不钳制、不归一化成 20 |"
+      },
+      {
+        "line": 19,
+        "text": "| `bookkeepingFlags & MB_ABSORBING` :2158 | `isAbsorbing: boolean` | `false`；独立进行态 | 原值保存；克隆保留；变形保留 |"
+      },
+      {
+        "line": 27,
+        "text": "## 2. CE 全部写/清点：已接与后续边界"
+      },
+      {
+        "line": 40,
+        "text": "| Monsters.c:573 `*newMonst = *monst`，:578 后清位 | 克隆复制全部吸收字段；后续清位集合不含 MB_ABSORBING | `copyForClone` 保留标量，对 `targetCorpseLoc` 显式对象值复制，避免 JS 共享坐标；实际 cloneMonster 放置后仍保留旧目标 |"
+      },
+      {
+        "line": 42,
+        "text": "| Items.c:4465–4555 `negate`，:4544 | **没有清吸收字段**；存活非无敌分支 `newPowerCount=totalPowerCount` | 原消魔实现保持；普通、无敌、DIES_IF_NEGATED 三分支验证，独立任务七项均保留 |"
+      },
+      {
+        "line": 44,
+        "text": "`inflictDamage` 中断不依赖最终 HP 损失：近战/U06 法伤会先调用 `absorbShieldDamage`，再以穿盾伤害调用 `takeDamage(..., true)`；所以只在后者检查非零会漏掉全盾。本轮在前者保留原始量并清位，后者覆盖绕盾路径。零输入和无敌只约束吸收中断；没有顺便重写现有伤害免疫、死亡顺序、归因或盾公式。燃烧与藤蔓/蒸汽/腐蚀气的直接扣血入口调用同一原语；坠落/爆炸原有减盾入口自动覆盖。毒、反伤、碰撞、杖/魔杖和致死打击沿用 takeDamage。只有未启用的 D2 `CREEPING_DEATH` 旧直扣分支无 CE 可达对应，本轮未给它新增玩法，归 U15e/K34。"
+      },
+      {
+        "line": 76,
+        "text": "- 实际 `cloneMonster` 完成新位置放置后仍保留原 pending 状态，克隆位置对象不与原体共享；克隆再次存读保持。变形替换物种但保持九项值。"
+      },
+      {
+        "line": 77,
+        "text": "- 普通消魔返额度 `2→4`，目标/名字/13回合/所选项/进行态不变；无敌和消魔即死分支不返额度且保留任务值。消魔失飞后的环境伤害/坠落可以通过各自已接原语影响生命周期，不能称 negate 主体直接清任务。"
+      },
+      {
+        "line": 80,
+        "text": "- 手工任务经过怪物行动不倒数、不安装、不扣额度；有强化额度时死亡清扫也不自然分配任务。[边界审计](u-10-evidence/boundary.json) 另证 `takeTurn`、学习相关既有行动方法、死亡清扫、empower/negate/polymorph 的既有 AST 未改。"
+      },
+      {
+        "line": 103,
+        "text": "保持详情打开时直接调用 load 的截图存在间歇性捕获不完整：首次 [prefinal 图](u-10-evidence/prefinal-browser-loaded.png) 未见面板，延长等待/禁截图动画后一次正常，最终重跑的 [同场景截图](u-10-evidence/browser-loaded.png) 再现；DOM/字段断言始终通过。不能据此宣称这张图视觉通过或已定位其根因。另在冻结源码上按“检查→点击关闭→JSON load→重新检查”补验，整个 monster row 前后深相等，13/20红条在 [整页](u-10-evidence/browser-loaded-reopened.png) 和 [面板截图](u-10-evidence/browser-loaded-panel.png) 均正常，已实际打开；[状态证据](u-10-evidence/browser-load-followup.json)、[日志](u-10-evidence/browser-load-followup.txt)。此补验只新增证据，没有改冻结源码/脚本，也没有用黑图算通过。这里是手工夹具验收，不是自然学习演示；保留未关闭详情直接load时的截图限制。"
+      },
+      {
+        "line": 123,
+        "text": "| 强化/消魔/学习消费者及其边界 | W19/20/21/23、U06/07/08/09、BoltCatalog/BoltContract、P4；不启状态机、不放开禁施项 |"
+      },
+      {
+        "line": 128,
+        "text": "早期红项仅来自新夹具：写错玩家克隆方法名、Vue reactive 类型、攻击 opts/stealthRange 参数、burning 的既有扩展状态类型；以及误断言整局 load 保留 RNG。修正依据均为当前 API 与 U02 边界，保留独立 codec 的严格零RNG检查；见 [首轮定向日志](u-10-evidence/prefinal-targeted.txt)、[类型检查日志](u-10-evidence/prefinal-typecheck.txt)、[修正后相关回归](u-10-evidence/prefinal-targeted-retry.txt)。现有测试和生成fixture零编辑，不能把新夹具修正称为放宽旧守卫。启动脚本首次工作目录错误在写任何文件前失败，改正确 cwd 后执行；没有留下第二份项目目录。"
+      },
+      {
+        "line": 139,
+        "text": "- 缓存层 visited resident 清理已在 generateDepth 执行。U11 状态更新应处理保留的0/负数计数和旧目标，按CE分别清字段，不引入统一“全清任务”捷径。JSON load 不走这个清理。"
+      },
+      {
+        "line": 147,
+        "text": "- 原所有测试、AST覆盖守卫、fixture、配置、lock和CE保持不变。边界审计仅允许五个生产文件变化，另有新测试/审计脚本、progress与报告证据。"
+      },
+      {
+        "line": 157,
+        "text": "| 边界审计 | 通过；241个既有输入未改；旧测试/fixture零修改；原行动/死亡/强化/消魔/变形方法保持 | [boundary.json](u-10-evidence/boundary.json)、[CE字段来源与SHA](u-10-evidence/ce-fields.json) |"
+      },
+      {
+        "line": 158,
+        "text": "| `npm run build` | 退出0；保留既有的大chunk warning | [构建日志](u-10-evidence/final-build.txt) |"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-11.report.md",
+    "lines": [
+      {
+        "line": 7,
+        "text": "**empowerment 最终口径：数值强化保持原合同，学习状态机已闭环。** 在 U11 授权合同内可以收口 W-22 的“学习未完成”；不把这句话扩展成整个盟友 AI、死亡系统或整局持久化全部 CE 等价。具体保留边界见 §8。"
+      },
+      {
+        "line": 14,
+        "text": "| 尸体早退 | Combat.c:1676 起：无学习内容、阻通格、MK_SPECTRAL_IMAGE、INANIMATE、IMMOBILE | `MonsterAbsorption.anyoneWantABite`；TURRET 用 U09 `hasCEBehavior` 展开。MK_SPECTRAL_IMAGE 对应 spectral_sword；玩家克隆保留 MK_YOU，不能把 player_clone 也一概禁止。 |"
+      },
+      {
+        "line": 18,
+        "text": "| 赶路 | Monsters.c:1524–1595 / 3049–3257 | `moveAllyToCorpse` / `passiveCorpseStep` 保留轴向偏好掷骰和尝试次序，不用绕障 A* 替换尸体支线。只对有任务者插入逃险/逃敌步行回退；现有 blink/施法/近敌追击优先，尸体优先于跟随/跟随瞬移。 |"
+      },
+      {
+        "line": 21,
+        "text": "| 完成 | Monsters.c:3266–3308 | bolt 非 NONE 优先追加，否则按 absorbBehavior 安装单旗标；new--、total不减；调用 U09 `syncFlagDerivedStatuses(true)` 检查全部当前 traits；清 target、进行态、flag和bolt，保留名字、absorbBehavior。 |"
+      },
+      {
+        "line": 24,
+        "text": "生产主体是 [MonsterAbsorption.ts](../../src/engine/Combat/MonsterAbsorption.ts)。改动的已有方法由 [边界审计](u-11-evidence/boundary.json) 列出：Game 只有 `removeDeadMonsters`、`advancementLoop`；Monster 只有 `takeTurn`，新增 `tryCorpseMove` 和死亡字段；MonsterBlink 仅提取已有追击条件并阻止跟随瞬移越过尸体优先级。未改生成函数、强化数学、既有消魔/变形/克隆核心。"
+      },
+      {
+        "line": 45,
+        "text": "`ourBolts` 只有资格通过且没有缺失旗标时清空并重建。旗标成功早退或资格失败保留旧 scratch；选旗标不读它，选 bolt 前成功的 `canAbsorb` 必然刚重建当前盟友的集合。测试锁住脏值保留、当前赢家重建、尸体 bolt 原始顺序和排除既有/NOT_LEARNABLE 项。"
+      },
+      {
+        "line": 54,
+        "text": "- 宿主释放携带怪，200 tick等待、原格安置，再落格效果；释放者能参加宿主分配。乘客被熔岩杀死时，其 FIRE 尸体先分配，宿主随后发现学员已忙，不覆盖成宿主的虚弱能力。"
+      },
+      {
+        "line": 56,
+        "text": "- CE cloneMonster 是整结构复制，后续清位没有清 ABSORBING；未引入全局恰一次消费 token。早期离开后及时返回的克隆和原体可各自完成同一位置任务，这是 CE 可观察结果，专项明确验到两者各扣自己的额度。"
+      },
+      {
+        "line": 58,
+        "text": "web 仍沿用原来回合首/尾收集死亡的架构；本轮不是全项目即时 `killCreature` 事件化。多名同时死亡的全局事件次序、掉物安置近似和一般领导继任仍属死亡子系统边界，不能据此次一次性守卫宣称整个死亡链逐指令等价。"
+      },
+      {
+        "line": 62,
+        "text": "[U11专项](../../src/test/u_11_corpse_learning.test.ts) 的学习入口是实际强化杖命中、致死伤害及 Game 清扫；不把直接塞入 bolts/flags 当作学成证据。生命周期边界测试才手工构造中间任务。"
+      },
+      {
+        "line": 91,
+        "text": "| 中毒 / 燃烧无火免 | 目标保留，不能开始；赶路期限仍会耗尽。火免燃烧者可开始。 |"
+      },
+      {
+        "line": 93,
+        "text": "| 受伤 | 非零原始伤害清isAbsorbing；全盾也清，0和无敌不清。名字/选项/期限/额度保留；下一次开始重设20，零重选。 |"
+      },
+      {
+        "line": 94,
+        "text": "| 离开尸体 | 先减：17到16仅清进行态，保留目标；16到15再清目标/flag/bolt；不扣额度。 |"
+      },
+      {
+        "line": 95,
+        "text": "| 赶路超期 | 20次未启动到0清目标/进行态/选项；之后0到-1，负数不再调用更新。保留名字/absorbBehavior；不广播给别人。 |"
+      },
+      {
+        "line": 101,
+        "text": "| 变形 | creature任务/额度保留，新物种info在完成时接收选项。 |"
+      },
+      {
+        "line": 102,
+        "text": "| 复制 | 任务和进行态保留，位置值复制不共享；真实复制/快照接口由U10/W20回归，U11另验早期返回后两个个体各自完成。 |"
+      },
+      {
+        "line": 111,
+        "text": "走尸体的非等轴被动移动会按CE额外掷轴向偏好骰；学会后的施法和移动继续使用既有RNG。不能把“学习抽签只在死亡”误写为“整个学习链只有死亡耗随机”。共享SUBSTANTIVE流会因此影响后续交互和未来楼层；尚未进行U02分流/整局RNG恢复。"
+      },
+      {
+        "line": 113,
+        "text": "不改任何生成候选、频率、物种目录或锁文件。新物种动词表仅消息消费者读取。原基线SHA-256由边界审计和最终输入清单双重锁定；本轮`test:drift`独立执行，不重采。"
+      },
+      {
+        "line": 127,
+        "text": "| W22审计“未实现” | W22是当轮历史结论，不是应继续禁止学习的游戏规格 | 原报告、原审计脚本及证据保留；本报告作收口记录。重新执行同一CE函数审计，不改其期望。 |"
+      },
+      {
+        "line": 129,
+        "text": "[边界脚本](../../scripts/u11-audit.mjs) AST证明U10的62个及W21的91个原expect表达式逐项相同；已有测试没有删断言、放宽值、跳过或延长超时。未修改既有扫描器。"
+      },
+      {
+        "line": 133,
+        "text": "| 组 | 保留合同 |"
+      },
+      {
+        "line": 146,
+        "text": "## 8. 范围自检与保留限制"
+      },
+      {
+        "line": 150,
+        "text": "- 保留已证CE最后距离图缺陷和复制任务可重复学成；不私自修CE bug或追加消费token。"
+      },
+      {
+        "line": 154,
+        "text": "- 旧W21数值之外的展示/泛状态限制以及U21视觉边界不能随U11结案撤销。没有将学习闭环写成全项目完成。"
+      },
+      {
+        "line": 165,
+        "text": "| AST边界/原断言/文本数据审计 | exit 0 |"
+      },
+      {
+        "line": 166,
+        "text": "| npm run build | exit 0；vue-tsc和Vite通过，保留原大chunk提示 |"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-12a.report.md",
+    "lines": [
+      {
+        "line": 7,
+        "text": "`monstUseMagic` 先调用 `monsterSummons`；成功就结束本次施法尝试，否则进入 `monstUseBolt`。后者无 bolt 时早退；目标顺序为玩家，然后 `monsters` 链顺序；每个目标按目录 bolt 顺序尝试。目标先过 `generallyValidBoltTarget`，然后跳过 BLINKING，再过 `specificallyValidBoltTarget`。只有两道资格门通过后才执行 `MONST_ALWAYS_USE_ABILITY || rand_percent(30)`；失败继续下一个 bolt，不丢弃当前目标。web 的 `trySummon`/`tryUseBolt` 和行动出口保留此顺序。召唤内部自己的随机调用先于 bolt 尝试；本轮没有移动它，也没有改生成路径。"
+      },
+      {
+        "line": 15,
+        "text": "CE `monstersAreTeammates` 不等于同属敌方阵营：领袖/随从、同领袖随从、玩家与盟友、两名盟友才是队友。纷争不会清除这些队友关系。CE `monstersAreEnemies` 先排俘虏和自己，再判纷争，然后判深水中水栖怪对非水免/非悬浮者的敌意，最后按玩家阵营异或。web 对 bolt 门以 `isCaged`、`leader`、`isAlly`/`dominated`、`discordant` 和地形判这些条件。`monstersAreEnemies` 公共无地图签名保留基础关系，bolt 专用的 `boltEnemies` 加入深水例外。"
+      },
+      {
+        "line": 29,
+        "text": "## 改动与边界"
+      },
+      {
+        "line": 31,
+        "text": "改动 `src/entities/Monster.ts` 的队友/敌人关系、隐藏感知、公共 bolt 门和战斗增益资格；保留 U09 的各 bolt 专属 switch、forbidden 目录门、BLINKING 单独调度及玩家魔法执行链。删除 NEGATION 重复反射检查，并把原本抢在阵营门之前的攻击性催眠检查放回 effect switch。`tryUseBolt` 的玩家优先、怪物插入顺序、bolt 顺序和掷骰位置未改；新测试以固定两次 30% 骰核对顺序。无存档 schema 改动，也不做旧档兼容。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-12b.report.md",
+    "lines": [
+      {
+        "line": 11,
+        "text": "- 无目标时，独立幽灵剑游荡；普通盟友在玩家附近按 30% 概率游荡，否则先循气味，失效后向玩家寻路。保留 U07 的远距 blink 跟随和 U11 的尸体吸收。"
+      },
+      {
+        "line": 16,
+        "text": "- `p4_5_melee_specials` 原夹具要求盟友攻击武器免疫目标且离玩家六格。CE 的 `attackWouldBeFutile` 和四格牵引都会阻止该攻击。初次全测在此失败，证明旧前提依赖旧 AI。仅把玩家移入牵引范围，并将实际近战结果限定为命中但零伤害，保留“击退调用不以 `damage>0` 为门槛”的原断言。"
+      },
+      {
+        "line": 20,
+        "text": "## 范围边界"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-13.report.md",
+    "lines": [
+      {
+        "line": 3,
+        "text": "基准 `3d6b660`；权威为本工作树 CE 和 X-0 §4.1、§4.3 U13、§3.1 K15。实现已落地；**七条旧守卫已按验收裁决修正夹具，最终 R∪S、build、test:drift 全部通过，见 §9**。§6、§8 保留裁决前记录。虚弱完整效果仍依赖 U14，未伪造 `weaknessAmount`。"
+      },
+      {
+        "line": 10,
+        "text": "2. 设置战斗打扰；解除防守者 ENTRANCED，将 MAGICAL_FEAR 缩为 1；攻击玩家的游荡怪转为追踪。web 本轮保留已有控制状态模型，缺失项未新增。"
+      },
+      {
+        "line": 20,
+        "text": "本轮对齐第 5–7 步的基础数学/耗骰、完整 range 与玩家装备刷新；保留 W-15 护盾、W-21 强化、B-1 武器倍率/几何/攻速及 U15d 符文语义。**并非整条 specialHit/符文/表现层 RNG 的 CE 等价证明**，后续差异见 §7。"
+      },
+      {
+        "line": 24,
+        "text": "运行 `node scripts/u13-ce-golden.mjs`，从本地 CE 按完整函数边界提取原函数，`clang -std=c11 -Wall -Werror` 编译。包括 `strengthModifier/netEnchant`、怪物三种调整函数、`hitProbability/attackHit`、三个 PowerTables 函数、`randClump/randClumpedRange/rand_percent`、`recalculateEquipmentBonuses`。测试 harness 只供应最小 struct/global、关闭不在本轮的 slaying 类别匹配、枚举 `rand_range`；没有把 JS 公式抄进 C 作为 oracle。"
+      },
+      {
+        "line": 31,
+        "text": "- `playerDefense` 保留加法/内部 ×10 单位，结果存整数：32.5 → 32。没有引入护甲扣伤。"
+      },
+      {
+        "line": 49,
+        "text": "`Globals.c` 的 monsterCatalog 共玩家 1 + 怪物 67 行；全部重新解析核对 name/range。怪物已有 min/max 全部正确，补入独立 `clumping`：27 种 clump>1，12 种 `{0,0,0}`。武器重新核对 CE 15 行；标枪原有 `clumping=3`，其余补齐。退池 halberd 非 CE 项，保留原状。数据逐行对照见 [catalog-ranges.json](u-13-evidence/catalog-ranges.json)。"
+      },
+      {
+        "line": 51,
+        "text": "链路：JSON → `Monster.damageClumping` / `Item.clumping` →近战消费。怪物变形换成新物种 clump，强化只改 bounds，clone 复制运行值，snapshotForm 以及 U01 显式字段 codec 保留 clump；物品生成与 JSON 存读同样保留。合成测试对象未指定 clump 时使用原骰子记法解析值；这不是旧存档迁移。未新增旧档兼容。"
+      },
+      {
+        "line": 65,
+        "text": "玩家标枪 +10：原 `{3,11,3}` 经 CE 刷新为 `{5,20,3}`；能打出 6，旧“先掷后乘”无法满足同分布。168 个玩家装备边界在实际 attack 入口验证上下界，不只测试纯公式。"
+      },
+      {
+        "line": 71,
+        "text": "R(a,b)=rand_range(a,b)。普通无符文、无后续能力的基础攻击："
+      },
+      {
+        "line": 83,
+        "text": "| 非免疫、常数或零范围 | 只保留应有的命中骰，range 自身不耗骰 |"
+      },
+      {
+        "line": 95,
+        "text": "- W-21、W-15、B-1 保持语义，运行 R∪S 回归；BE_DAMAGE 保留 U06 的独立直接伤害路径，仅共享公式的投掷/详情消费者随公式量化变更，投掷算法本体未改。"
+      },
+      {
+        "line": 108,
+        "text": "| 同文件 playerDefense | 32.5→32、42.5→42，Items.c:8498–8526 的整数赋值；加法模型及钳零断言保留 |"
+      },
+      {
+        "line": 109,
+        "text": "| data/monsterDamage.test | 保留 min/max 和旧 notation 断言，增补独立 clump 精确值；Globals.c 全部 67 行 |"
+      },
+      {
+        "line": 124,
+        "text": "1. 新测试第一次把蜘蛛接触伤害当成原骰结果、把 BE_ATTACK 后续浮字/血迹忽略，修正新测试观测；产品毒/表现逻辑没改。"
+      },
+      {
+        "line": 127,
+        "text": "4. 依任务书 §4，以上旧守卫只增诊断，**保留原 seed/夹具状态/期望/阈值，不加 skip/fails，不改扫描器**。曾定向将 U06 目标设 HUNTING 验证其余链路可过；最终已撤回该夹具修改，交验收方裁决。"
+      },
+      {
+        "line": 130,
+        "text": "建议验收裁决（本轮未执行）：U06 miss 明确使用 HUNTING 目标，并另保留 asleep 短路正例；B-1a 将净附魔配置为 0 以满足鉴定测试的必中前提；UI-2 使用合法自动命中场景测试保护/腐蚀，而非负防御漏洞。必须保留现有保护/腐蚀/鉴定数值断言。"
+      },
+      {
+        "line": 132,
+        "text": "## 7. 边界、清单外文件与新发现登记"
+      },
+      {
+        "line": 136,
+        "text": "保留事项："
+      },
+      {
+        "line": 139,
+        "text": "- 投掷：本轮只改近战/BE_ATTACK；`resolveThrownWeapon` 仍用骰子记法 clump，标枪独立 clump 未接该出口，且乘后 round 与 CE trunc 仍不同。共享基础公式量化会影响其命中率，已纳入回归。后续投掷专项处理。"
+      },
+      {
+        "line": 151,
+        "text": "| 目录/边界审计 | 退出 0；67 怪物、15 CE 武器；30 个受保护文件与 HEAD 一致 |"
+      },
+      {
+        "line": 165,
+        "text": "| `b_1a_identification.test.ts` | 1 | strength=12、required=14、enchantment=0、defense=0；CE 命中率 72%，无生命 totem 不享 wandering 自动命中。旧耗骰位置曾使该种子碰巧命中；保留 hp<=0 断言 |"
+      },
+      {
+        "line": 166,
+        "text": "| `u_06_monster_damage.test.ts` | 2 | DISTANCE_ATTACK / POISON_DART 的目标为 ASLEEP，accuracy=0 也短路命中，实际 damage=9、HP=91；原 mock(false) 不能取消 CE 自动命中。原 HP=100 断言保留 |"
+      },
+      {
+        "line": 167,
+        "text": "| `ui_2_protection.test.ts` | 4 | 带保护命中、-10 腐蚀边界、quiver 重掷、击杀腐蚀四个夹具靠负防御“必中”；CE 钳零后各自落空。原命中/腐蚀断言均保留 |"
+      },
+      {
+        "line": 169,
+        "text": "上述失败已有单因素反向证明；**最终整套回归退出 1，验收尚需对旧守卫夹具作裁决**。没有用修阈值、重捕获、skip 或恢复错误算法换绿。其他已运行文件通过，并不替代 §7 保留的实现缺口。"
+      },
+      {
+        "line": 179,
+        "text": "验收方复核 §6 的七条旧守卫红灯后，明确裁决为 CE 规则下夹具前提不成立，并授权修正。本节记录裁决执行及最终复跑；§6、§8 的“未执行／待裁决／七项红灯”保留为裁决前历史记录，当前结论以本节为准。"
+      },
+      {
+        "line": 181,
+        "text": "### 9.1 七条夹具修正（原断言原样保留）"
+      },
+      {
+        "line": 183,
+        "text": "| # | 用例 / 原 seed | 本次仅修正的夹具前提 | 保留的原断言与意图 |"
+      },
+      {
+        "line": 185,
+        "text": "| 1 | `u_06`：DISTANCE_ATTACK miss；6006 | 目标显式置 `HUNTING`，使 `accuracy=0` 和 `randPercent=false` mock 走普通未命中路径 | HP=100；调用真实 `CombatSystem.attack`；调用命中骰、不调用 staff 骰；后续命中 HP=99、poisonAmount=1；武器免疫后 HP 不变 |"
+      },
+      {
+        "line": 186,
+        "text": "| 2 | `u_06`：POISON_DART miss；6006 | 同上，仅明确清醒状态 | 同上；BE_ATTACK 的命中、毒与武器免疫链路全部保留 |"
+      },
+      {
+        "line": 187,
+        "text": "| 3 | `b_1a` A6 真实击杀熟悉度；42 | 玩家力量设为剑的 `strengthRequired`（14），武器附魔显式设 0，净附魔恰为 0，防御 0 的 totem 满足必中前提 | 大鼠击杀返回 true、熟悉度减到 19；totem HP≤0，熟悉度仍为 19；19/20 杀边界测试完全未动 |"
+      },
+      {
+        "line": 195,
+        "text": "另按裁决新增 **1 条 ASLEEP 正例**，在同一用例内覆盖 DISTANCE_ATTACK 和 POISON_DART：accuracy=0、命中 mock=false、固定基础伤害 3；断言仍真实调用 attack、命中伤害 9、HP=91、唤醒为 HUNTING，且命中骰与 staff 骰均未调用。它和原两条清醒 miss 构成正反边界。"
+      },
+      {
+        "line": 199,
+        "text": "[逐行夹具 diff](u-13-evidence/adjudication/fixture-changes.patch)；[AST 保留核对](u-13-evidence/adjudication/fixture-audit.json)确认三个文件既有 **256 个断言表达式**、用例内原 seed 调用均一致（仅归一化已删除的诊断消息参数）。[与裁决前最终输入的比较](u-13-evidence/adjudication/prior-final-comparison.json)确认生产文件全部不变：源码差异仅这三个测试文件；重做反查后 R∪S 集合仍为 129 文件，`closure.json` 更新只反映诊断 import 移除后的依赖；另新增本次门禁运行器作为验证产物。生成基线未改、未重捕获。"
+      },
+      {
+        "line": 220,
+        "text": "本次只修正获授权的七条既有用例前提、增加指定正例、清理诊断并更新报告/验证产物；未改生产代码、未更改原断言/阈值/seed、未新增 skip/todo、未重捕获基线。§7 的 U14 等后续边界仍保留，不因本次门禁全绿扩大实现声明。裁决前报告及红灯日志保留，本次结果以 `adjudication/` 单独归档。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-14a.report.md",
+    "lines": [
+      {
+        "line": 24,
+        "text": "| 到期 | 1→0清amount；max保留历史值，符合CE并非所有到期都清max的规则；动态装备计算立即恢复。 |"
+      },
+      {
+        "line": 25,
+        "text": "| 消魔/治愈 | Globals:1797不可消魔。Items:4680–4684 panacea仅WEAKENED>1才清amount和时长；=1保留至下一tick。力量药水8102–8110立即amount=0，有状态则时长置1。普通治疗保留。 |"
+      },
+      {
+        "line": 34,
+        "text": "| 效果 | Movement:1236–1243/1423–1430、Monsters:3742–3746：物理移动/近战尝试randPercent(25)，成功调用vomit并消耗movementSpeed，铺DF_VOMIT。玩家正常近战/移动、怪物近战/移动、催眠跟步均接。休息/施法不掷，玩家撞墙不掷；保留玩家鞭矛先于恶心检查的CE顺序。没有持续扣血或额外营养损失。 |"
+      },
+      {
+        "line": 36,
+        "text": "| 消魔/治愈 | Globals:1808不可消魔。Items:4674–4676 panacea>1减至1，=1保持；普通治疗保留。 |"
+      },
+      {
+        "line": 45,
+        "text": "| 到期 | 1→0恢复HUNTING，玩家盟友身份由既有isAlly/leader保留或恢复；无fear的普通FLEEING不因tick清除。 |"
+      },
+      {
+        "line": 46,
+        "text": "| 被攻击 | 近战尝试含miss缩到1（Combat:356/1184）。投掷尝试在非俘虏/非普通逃跑等分支缩1并alert（Items:6790–6801）。BE_DAMAGE目标存活且符合AI门时清0并alert，其余moralAttack缩1（Items:5192–5212）。普通环境takeDamage不解除。已测miss、投掷、怪物直接bolt、普通逃跑保留。 |"
+      },
+      {
+        "line": 47,
+        "text": "| 消魔/治愈 | Globals:1815：可消魔，双方置0；消魔函数本身**不清FLEEING**，后续由原AI更新。panacea不清。自动消魔选靶谓词加fear但不加darkness，保持CE区别。 |"
+      },
+      {
+        "line": 56,
+        "text": "| 到期 | current归零、玩家日志，max保留。 |"
+      },
+      {
+        "line": 58,
+        "text": "| 保存/显示 | 既有必填快照链、克隆、侧栏/详情“黑暗(current/max)”；上黑暗前后LightMap相同的测试钉住本轮边界。 |"
+      },
+      {
+        "line": 91,
+        "text": "| W21 panacea | 恶心>1→1；虚弱>1才清amount和时长，=1仍有层数；黑暗>0清0；恐惧保留。逐项补齐，不做一键清所有debuff。 |"
+      },
+      {
+        "line": 92,
+        "text": "| W23消魔 | 恶心false、虚弱false；fear/darkness true，playerNegatedValue都0。自动选靶含fear但不含darkness。只追加精确成员，保留普通FLEEING和原敌我资格。 |"
+      },
+      {
+        "line": 93,
+        "text": "| ROT_GAS | CE Globals:504、DF:649/664；僵尸血和DFChance烟团会产腐气。web无该tile/DF及完整僵尸持续产气入口；未新增、不伪称自然恶心来源已闭合。留U09/U17及地形后续。 |"
+      },
+      {
+        "line": 96,
+        "text": "| 恶心药水/怪物onHit恶心 | CE未找到直接喝下或命中就NAUSEOUS的路径；web目录亦无相应onHitStatus。保留通用legacy免疫/抵抗载体，不全局清除K25。 |"
+      },
+      {
+        "line": 98,
+        "text": "| 黑暗药水/投掷黑暗云 | 饮用状态与黑暗气体/负光tile不同；web饮用目录和投掷DF入口仍缺。保留b_2无该药水的原断言；药水接入归U15e，光照归U21b。 |"
+      },
+      {
+        "line": 99,
+        "text": "| 到期/变形/复制 | 并非所有到期清max；initializeStatus清max。CE克隆复制creature结构体，maxStatus是内嵌数组。web到期保留max、变形清max、克隆独立复制容器，amount按值复制。 |"
+      },
+      {
+        "line": 103,
+        "text": "## 5. 黑暗和后续边界"
+      },
+      {
+        "line": 105,
+        "text": "U21b须在修正K40（CE_DCOLS实际79）的同轮重新核矿灯半径，再接darkness/maxStatus.darkness比例；同时核施加/衰减/到期/消魔/治愈后的矿灯、FOV刷新及后续潜行光照消费。本轮没有改Lighting、LightCatalog或地形/生成文件。"
+      },
+      {
+        "line": 107,
+        "text": "边界审计对Game.updateVision/calculateStealthRange/generateDepth/populateLevel做去注释AST比较，四方法与HEAD相同；221个其余已跟踪src/public文件SHA与HEAD一致，含生成器/地形/数据/原fixture。没有新增旧档回填或凭缺字段猜层数。"
+      },
+      {
+        "line": 109,
+        "text": "既有缺口：web无MB_SUBMERGED，恶心的CE潜水豁免无字段可接；web无MODE_PERM_FLEEING，受击AI门仍受此限制。一般AI/盟友目标/全局环境顺序不在本轮重写范围；只对新恶心保持玩家/怪物暴露顺序。怪物详情平均伤害仍是缩放截断后端点均值估计，不是完整逐骰面期望。"
+      },
+      {
+        "line": 124,
+        "text": "| 恶心20/max刷新、25%物理尝试呕吐/移动时间/DF/客观顺序 | Time:421–439/2671–2698；Movement:700/1236/1423；Monsters:3742 | 新增正反边界；g_3旧混乱/麻痹/毒气期望不改。 |"
+      },
+      {
+        "line": 126,
+        "text": "| 恐惧生命周期与受击/逃跑规则 | Monsters:1951/3490–3523；Combat:356/1184；Items:5192/6794 | 新增测试；普通FLEEING与W23“不任意全清”守卫保留。 |"
+      },
+      {
+        "line": 127,
+        "text": "| 四状态max/层数必填快照与克隆值语义 | Rogue.h状态数组/weaknessAmount；Monsters:cloneMonster结构体复制 | **唯一既有测试编辑为W20容器清单前提**：加入maxStatus、rich夹具值和反向修改输入；全部引用独立、值相等、字段全集期望保留并扩到新字段。 |"
+      },
+      {
+        "line": 158,
+        "text": "| 边界审计 | 221个保护文件与HEAD相同；4个生成/光照/潜行方法AST相同 |"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-14b.report.md",
+    "lines": [
+      {
+        "line": 5,
+        "text": "## 1. 交付与验收边界"
+      },
+      {
+        "line": 9,
+        "text": "- **四项在 CE 中都有活跃来源，没有“CE 无活跃来源”的状态。** 寿命的三个 CE 来源在 web 尚未实现，见 §4，不能拿这一事实冒充 CE 死代码。本轮完成寿命载体及现有消费者，没有恢复 U15c/d 的护符/分身符文目录。W16 刀刃仍 1 HP、无寿命。"
+      },
+      {
+        "line": 10,
+        "text": "- **尚有两条 U08 旧近似断言待裁决**：它们要求破网当次仍留原地，CE 最后一次挣扎会继续移动。保留原断言，另交 [最小改义提案](u-14b-evidence/u08-guard-proposal.patch)。已向用户提出裁决请求；未回复不视作授权。最终结果如实列失败，不以全绿交付。"
+      },
+      {
+        "line": 21,
+        "text": "| 主观/客观计时 | Movement.c:1402–1420、Monsters.c:3774–3784：按移动尝试递减，STUCK不随等待或客观时间自然减。`Creature.tickStatuses` 跳过stuck；Game/Monster移动分支递减。最后一次破网后继续本次移动；surface以外的网层保留。挣扎耗movementSpeed。 |"
+      },
+      {
+        "line": 24,
+        "text": "| 到期/位移 | Time.c:2293–2296、Monsters.c:1933–1937：所在格不再有网时清0。Monsters.c:1199、Items.c:5544：传送/闪现先解缠，再落格接触，落到另一张网会重新抽3–7；不会删出发格的网，也不混清SEIZED。失败落位保留。普通行走离网及客观检查清陈态。 |"
+      },
+      {
+        "line": 25,
+        "text": "| 消魔/治愈 | Globals.c:1807不可消魔；panacea未列STUCK，故保留。烧掉网后由失去地形的清理规则解除，不能把“消魔”“解缠”“破网”合成全清状态。 |"
+      },
+      {
+        "line": 32,
+        "text": "| 施加/刷新 | Items.c:8554–8557：普通装备护甲current=max=armor/10，强制装备不施加；8662–8665卸甲清current。web armor已采用CE值/10，取 `trunc(item.armor)`；`Game.equipItem`经`Player.equip(item,false)`触发。低层强制安装默认保留出生装备/测试装配语义。替换护甲重新赋值，不取旧值max；卸除清0、历史max保留。 |"
+      },
+      {
+        "line": 46,
+        "text": "| 保存/显示 | current/max沿既有容器保存/克隆。CE该状态名字为空（Globals.c:1814），故扩`CE_EMPTY_NAME_STATUSES`，侧栏和详情隐藏；文本调试状态仍可见。UI1原过滤结构守卫保留。 |"
+      },
+      {
+        "line": 56,
+        "text": "| 消魔/治愈 | Globals.c:1818寿命本身不可消魔，panacea不清；`MONST_DIES_IF_NEGATED`是另一条死亡规则，仍照原W23执行。分别测试有寿命普通怪保留、带该旗标直接死亡，不能由“有寿命”推导“可消魔致死”。 |"
+      },
+      {
+        "line": 67,
+        "text": "## 4. 来源清单及未实现边界"
+      },
+      {
+        "line": 74,
+        "text": "| 武器multiplicity谱影 | Combat.c:733–777生成MK_SPECTRAL_IMAGE，寿命=weaponImageDuration；PowerTables.c:104恒3 | web该符文仍未实现/未入池，归X-0 U15d。本轮不扩武器符文系统。 |"
+      },
+      {
+        "line": 75,
+        "text": "| 护甲multiplicity谱影 | Combat.c:921–960克隆攻击者，赋寿命3、HP1、defense0、DIES_IF_NEGATED等 | web该符文仍未实现，归U15d；不能只给普通clone加3回合来假装来源完成。 |"
+      },
+      {
+        "line": 76,
+        "text": "| guardian护符 | Items.c:7442–7459、7562；PowerTables.c:85，标准变体4+2×整数净附魔 | web缺guardian护符入口/目录，归U15c；载体已可供后续入口调用，未替换别的护符。 |"
+      },
+      {
+        "line": 87,
+        "text": "| STUCK3–7、无刷新、按移动次数、最后一次破网并移动 | Time:319；Movement:1402；Monsters:3774 | 新增专项；U08旧概率挣扎两例保留为红，提案待裁决。 |"
+      },
+      {
+        "line": 91,
+        "text": "| 空名状态载体清单加enraged | Globals:1814；IO:4823 | UI1测试标题原本明确要求新增载体时扩入；只扩清单，保留过滤逻辑与未知键/其它状态的原守卫。 |"
+      },
+      {
+        "line": 109,
+        "text": "4. **两项旧破网时序与CE无法同时成立**。专项给出2→1原地、1→0破网且移动、零挣扎概率骰；原U08期望保留未改。已请求用户裁决，附可审查patch；不能靠反转生产逻辑、mock掉移动、改扫描器或假造占格条件转绿。"
+      },
+      {
+        "line": 127,
+        "text": "| 边界审计 | 退出0；234个受保护文件及指定方法/旧expect保持 |"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-15a.report.md",
+    "lines": [
+      {
+        "line": 12,
+        "text": "| :4909–4912 | x 外循环、y 内循环；欧氏距离平方 ≤ radius²，且 **不带 IMPREGNABLE** | 在同一外层筛选处调用 `grid.isImpregnable(i,j)`；先于任何层写入、DF、致死、释放、边界覆写 |"
+      },
+      {
+        "line": 13,
+        "text": "| :4914 | **仅 DUNGEON 层**带 `T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION` 才处理 | 保留 DUNGEON 判据；不是有效显示地形，也不是四层任一阻挡；不要求 FOV/可见 |"
+      },
+      {
+        "line": 15,
+        "text": "| :4919–4926 | DF 后查询当前格怪物；`MONST_ATTACKABLE_THRU_WALLS` 致死并 killCreature，否则 `freeCaptivesEmbeddedAt` | 保留 `takeDamage(hp,true)` 无视护盾；补 web 尚未展开的 `MONST_TURRET` 复合标记及现成 `freeCaptive` 接线 |"
+      },
+      {
+        "line": 16,
+        "text": "| :4928–4929 | 命中地图四边时，DF/怪物处理后将 DUNGEON 覆写为 CRYSTAL_WALL | 顺序和层不变；只有**未受保护**的边界会晶化 |"
+      },
+      {
+        "line": 24,
+        "text": "- 原函数末尾只按 `cell.terrain` 同步 isPassable/isOpaque，会忽略保留的其他阻挡层（反向验证中的 SURFACE 墙在 FORCEFIELD 写入后被漏掉）。圣徽覆盖 DOOR 的例子验证的是入选必须读 DUNGEON，不能把它写成已证明“圣徽盖住 FORCEFIELD”。本轮仅在被晶化的格改读 `cellTerrainFlags` 四层并集。DUNGEON 的**入选条件**仍不变。"
+      },
+      {
+        "line": 26,
+        "text": "完整死亡链与绘制仍有项目级边界：CE killCreature 会立即执行掉物、死亡 DF、关系等；web 原有 hp=0→回合死亡收口未被重构，不宣称整个 K13 已闭合。CE turquoise colorFlash 的完整动画、力场默认外观、DF 通用刷新等沿 X-0 K16/K19、U16/U17/U21 登记，不扩改函数外系统。"
+      },
+      {
+        "line": 67,
+        "text": "**边界与 CE 额外来源纠正**：地图边界没有自动置位逻辑；如果由上述 BP/MF 覆盖，才受同一个保护门限制。未受保护的边界仍变晶墙。另读到 CE `Architect.c:3679` 楼梯布置会给楼梯八邻格中的阻挡格置位；web 全仓搜索无该赋值写口。遵守“不改 IMPREGNABLE 赋值来源”，本轮登记此生成差异，不借 U15a 补入。原注释“CE 唯一 BP 来源”与“web 无机器”均不成立。"
+      },
+      {
+        "line": 71,
+        "text": "新增 [u_15a_shattering.test.ts](../../src/test/u_15a_shattering.test.ts) 18 项：6 类保护格的完整四层/Cell 自有字段/`cellAppearance` 相等；4 条边界保护门；两类隔墙攻击标记穿盾致死；DF 唤醒先于致死；受保护俘虏保留、普通嵌墙俘虏释放；精确半径与半径外、无 FOV 门、仅 DUNGEON 资格；圣徽覆盖力场与保留的上层墙；两条真正的背包 `readItem` 路径。"
+      },
+      {
+        "line": 74,
+        "text": "- 真实入口不替换 readItem、效果、回合结算或编解码。第二条经 `JSON.stringify/parse(toSnapshot()) → 新 Game → loadSnapshot()`，确认 U01 `version=2`、保护集合原样恢复；读取背包真实 scroll，检查卷轴消耗、种类鉴定、turns+1、普通墙与 DF、炮塔死亡收口、保护机关格与俘虏保留。本轮没有新增旧档兼容、改 schema 或扩做 U03 多层持久化。"
+      },
+      {
+        "line": 75,
+        "text": "- 浏览器 [脚本](../../scripts/u15a-browser-check.mjs) 使用真实背包行和“朗读”按钮；另一场景通过菜单保存→刷新页面→继续→背包朗读。状态、render_game_to_text、两次前后截图见 [browser.json](u-15a-evidence/browser.json)、[直接前](u-15a-evidence/browser-direct-before.png)/[后](u-15a-evidence/browser-direct-after.png)、[存读前](u-15a-evidence/browser-restored-before.png)/[后](u-15a-evidence/browser-restored-after.png)。两场景通过，console/page errors 均为 0；截图已打开检查。受保护墙及边界的地形/标记/char/color不变，普通墙/边界分别 FORCEFIELD/CRYSTAL_WALL，卷轴耗尽、俘虏保留、回合+1。"
+      },
+      {
+        "line": 82,
+        "text": "S 主模式 `crystalizeFromPlayer|impregnableCells|isImpregnable|IMPREGNABLE`；扩展 shatter/SHATTER、freeCaptive、MONST_ATTACKABLE_THRU_WALLS、MONST_TURRET、readItem、toSnapshot/loadSnapshot；另纳入 readFile/fixtures/terrainFingerprint。扫描范围包括 src、scripts、ai_docs，逐行证据 [semantic-hits.txt](u-15a-evidence/semantic-hits.txt)。另按 Git 全仓文本清单补搜同名模式（含 CE、根目录与 progress，排除本轮证据自身），见 [whole-repository-scan.json](u-15a-evidence/whole-repository-scan.json) / [逐行命中](u-15a-evidence/whole-repository-hits.txt)。源码读方/旧验收脚本不是漏项：w13/w14-final-check 的 protectedMethods 是**各历史轮的改动边界**，其“碎墙不改”不是 U15a 永久禁止修复的合同；不重跑旧轮报告生成器覆盖旧证据，不改其守卫。c_4b 的 DF 调用扫描保留并实际回归。b_3 没有独立同名测试文件，其断言位于 scroll_effects。"
+      },
+      {
+        "line": 88,
+        "text": "| 保护格也被碎墙的旧行为/“无载体”留痕 | 跳过所有层、DF、致死、释放、边界改写；集合不删 |"
+      },
+      {
+        "line": 91,
+        "text": "| 仅有效显示层决定通行/遮挡 | 命中格从全部保留层并集同步；资格仍只读 DUNGEON |"
+      },
+      {
+        "line": 92,
+        "text": "| DF 已有 RUBBLE 却保留无载体条件 | 改为无条件调用已有目录/DF；正常格原有 DF 顺序与效果不变 |"
+      },
+      {
+        "line": 98,
+        "text": "- scroll_effects 全文件：半径9、半径外、普通边界晶化、DUNGEON 层被圣徽盖住仍命中、即时 FOV、消费/鉴定、其他卷轴与交互耗骰；普通格 DF 不退回空转。"
+      },
+      {
+        "line": 99,
+        "text": "- W13/W14：掘地 IMPREGNABLE 拒绝/反射、边界、对角修补、集合往返；阻障仍可铺受保护地板，力场消融与层规则不改。W15 穿盾致死；W17/19/20/23 的俘虏、关系、休眠、死亡与持久化合同不放宽。"
+      },
+      {
+        "line": 100,
+        "text": "- V2b2a/2b：MF/BP 写口、gate 豁免、周围八邻域、失败回滚；V2b3/4/5/7 等机器/DF/休眠/俘虏路径和载体数量守卫不改。c_4a/c_4b/c_4c 层模型、DF 调用白名单、优先级、晋升与效果保留。"
+      },
+      {
+        "line": 101,
+        "text": "- U01、snapshotQuantity、p1_31_35 及 R∪S 其他保存/实例断言保留；Game 其他方法、开局/生成/行动调度不改。"
+      },
+      {
+        "line": 112,
+        "text": "- 按 X-0 的“生成流：间”口径，本轮 drift 验的是原固定种子生成合同；玩家碎墙后存活/休眠/俘虏状态改变，可能经既有共享随机流影响后续互动和后层，不能将此门禁写成“任意不同玩法轨迹的后层永远相同”。"
+      },
+      {
+        "line": 114,
+        "text": "- 除生产函数外新增专项测试、反查/边界审计/浏览器/反向/最终复跑5脚本、progress、报告与证据。没有改既有测试、CE、依赖清单或基线；本机已有 node_modules 包通过不入 Git 的本地链接复用，缓存/构建输出留工作树。"
+      },
+      {
+        "line": 126,
+        "text": "共 **133 个文件通过，2509 项通过，8 项既有 skip，1 项既有 todo，0 失败**。回归/漂移 JSON 分别为 [final-tests.json](u-15a-evidence/final-tests.json)、[final-drift.json](u-15a-evidence/final-drift.json)；逐文件集合与 closure 完全一致。构建通过 vue-tsc 与 Vite，仅保留既有 >500kB chunk 提示。"
+      },
+      {
+        "line": 283,
+        "text": "- 没有为普通地图边界新增保护；没有补 CE 楼梯邻格写口。后者是本轮读源新确认的生成差异，应在生成/楼梯专项处理。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-15b.report.md",
+    "lines": [
+      {
+        "line": 18,
+        "text": "`timesEnchanted` 为实例字段，随 U01 物品快照字段表往返；附魔卷轴现在能选戒指，附魔时增加它并刷新已装备透视。未鉴定正 E 的实际效果上限为 `timesEnchanted+1`，负 E 全额生效；种类已知不等于实例已鉴定。详情仅在实例已知时显示 E 导出的数值，未知实例显示自动鉴定倒计时和生效上限。更新了五条原先描述“效果未实现/错误效果”的目录文本。"
+      },
+      {
+        "line": 22,
+        "text": "X-0 K22 所述 web 旧规则确实存在：感知戒指曾给 telepathy/状态抗性，再生戒指曾给两回合 `regenerating` 光环并固定 0.6 倍回血时间。CE `updateRingBonuses` 只把感知 E 送搜索、把再生 E 送定点回满公式，因此已改代码。无戒指来源的旧 `regenerating` 状态仍保留给现有非戒指生产者；不作为戒指效果。CE 详情用基准 300 回合，与公式 E=0 的内部值 302000 千分之一回合并列，不将展示文案当作内部公式。"
+      },
+      {
+        "line": 26,
+        "text": "W-7 的设备边界守卫曾把 RING 与 CHARM 同列为“不可选择”。反事实：CE `Items.c:7839-7860` 明确允许戒指附魔，且本轮 `canEnchantTarget` 已允许背包戒指，旧守卫只因这项过期前提红。仅将该夹具循环的类别从 `[RING, CHARM]` 缩为 `[CHARM]`，仍保留“非装备备用武器/护甲与护符不可选择”和“法器不触发装备 20% 符文 RNG”原断言；新 U15b 测试单独验证戒指可选。此旧边界修订同交验收方裁决。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-15b2.report.md",
+    "lines": [
+      {
+        "line": 10,
+        "text": "- `spawnMachineRing` 保留入口，直接复用普通出生。CE 的出生无差异；机器请求外层已有的品质重试/排重仍由 U05 管线处理。没有给机器重复抽一次 E。"
+      },
+      {
+        "line": 14,
+        "text": "- 法杖复用 W-6 的实际 E、当前充能、剩余周期与智慧定点表；乘数可为负。正向只推未满法杖，负向只消耗非空法杖；保留 CE 有符号 short 乘积、enchant2 写回及跨周期截断/随机间隔。护符不乘智慧；仅已有冷却大于 0 的护符受影响，钳制在 0 到其实际 E 的冷却上限，就绪时提示。"
+      },
+      {
+        "line": 38,
+        "text": "阶段明细见 [attribution.json](u-15b2-evidence/attribution.json)。阶段数据既记录普通地面戒指，也保留完整机器产物和实体摘要；不能把“地形未变”误当成“物品与 RNG 未变”。本轮闭合 kind 表序/频率差距，并不宣称整个 web 生成器已达到 CE 全流程同 seed 同图。"
+      },
+      {
+        "line": 52,
+        "text": "新增 `u_15b2_ring_birth.test.ts` 共 15 项：CE 表逐行顺序/频率、普通出生抽样边界、20 次长尾、80 seed × 8 种普通/机器同资源同 RNG、无效 kind 零抽样、U01 往返、两槽正负/未知 E、真实装备/卸下/载入光半径、护盾前 HP 上限、无效目标/未命中/零伤害、投掷不触发、正负资源边界、就绪提示与详情反泄露。"
+      },
+      {
+        "line": 54,
+        "text": "`scripts/u15b2-ce-oracle.py` 从本地原 CE 提取并编译 `updateMinersLightRadius`、`ringWisdomMultiplier`、`staffChargeDuration`、`rechargeItemsIncrementally`，以确定性间隔替身保持可比 RNG 边界，提供 **144 光照 + 1,944 法杖资源组合**，包含 short 溢出、智慧上下限、慢周期法杖、空/满充能。原函数代码及结果保存在 [ce-oracle.c](u-15b2-evidence/ce-oracle.c)、[ce-golden.json](u-15b2-evidence/ce-golden.json)。护符真实冷却公式另由生产 CharmModel 的既有 W-7 与本轮边界守卫验证，未用 C stub 冒充该公式真值。"
+      },
+      {
+        "line": 73,
+        "text": "原有 196 个测试文件中，仅上述两个文件变动，另 194 个逐字不变（[existing-test-changes.json](u-15b2-evidence/existing-test-changes.json)）。所有四项旧前提均有精确 HEAD 原断言通过证据；UR4 测试代码原样保留。"
+      },
+      {
+        "line": 85,
+        "text": "R∪S 由 `u15b2-audit.mjs` 对变更入口做逆向导入闭包，再并入戒指/光照/充能语义检索、全部读源码守卫与任务点名文件。当前闭包为 **189 个测试文件**；`tests.txt`、`search.json` 保留完整来源。点名包含 p1_30、U24、U01/U03、U05、U15b-1、b_1b、b_4a、W-6/7、w_5、UR2。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-15c.report.md",
+    "lines": [
+      {
+        "line": 28,
+        "text": "`npm run test:drift` 的 4 seed × D1–D26 门禁只报 seed 424242 的 D25 物品数 9→11、D26 10→8 两处；104 层的地形指纹、怪物数、物种均保持原值。反事实测试只在 `spawnCharm` 内停用本轮新增的附魔抽样掷骰，同一 seed 的 D25/D26 物品数回到旧基线 `[9,10]`（临时探针已删除）。因此漂移来自 CE 要求的新实例抽样对该层后续物品随机流的位移，不是地形或怪物生成逻辑修改。按任务书的旧守卫治理，不改基线和守卫，交验收方裁决是否重采这两处。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-15d.report.md",
+    "lines": [
+      {
+        "line": 3,
+        "text": "## 依据与边界"
+      },
+      {
+        "line": 46,
+        "text": "生成映射及护甲符文依任务书明确留到后续轮次。谱影通过既有 `bladeSpawnLocation` 近路生成；CE `getQualifyingPathLocNear` 的全部地形资格与 `generateMonster` 内部 RNG 细节在 web 尚无逐值对照，因此本轮仅锁定符文触发掷骰数、实体数量和生命周期。击退沿现有网格逐格移动，增加 CE 的提前碰撞距离伤害；完整闪烁弹道/视觉动画仍取决于既有 bolt 机制。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-15d2.report.md",
+    "lines": [
+      {
+        "line": 9,
+        "text": "- `immunity` 改为 `monsterIsInClass(attacker.typeId, armor.vorpalEnemy)` 类别门，复用 U15d-1 物种表；`respiration`、`dampening` 不再在普通受击时掷骰和施加自创效果，保留现有气体和爆炸消费者。`reprisal` 仅在攻击者可见时揭示。"
+      },
+      {
+        "line": 32,
+        "text": "`w_15_shielding.test.ts:233–239` 的 `immunity` 用例通过 helper 建护甲，但未设置 `vorpalEnemy`，却预期免掉 rat 的攻击并保留全部护盾。这与 CE 类别门冲突，生产代码没有为缺失类别的合成物件伪造免疫；该断言仍红，待验收方修订夹具前提。其余三种护甲符文的护盾顺序用例通过。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-15d3.report.md",
+    "lines": [
+      {
+        "line": 15,
+        "text": "| 物种抽签 | slaying / immunity | 15 类原表顺序，超出 `maxDepth` 的频率清零；一次 `rand_range(0,sum-1)` 加权抽签；原实现已符合 CE，保留 |"
+      },
+      {
+        "line": 21,
+        "text": "- `goodRunic/badRunic` 是池段语义；CE 实际代码先掷诅咒分支，再选对应池。没有“负面符文额外再掷诅咒”的步骤。非投掷装备坏符文总概率为 `40% × 50% × 33% = 6.6%`，负 E、诅咒与 `ITEM_RUNIC` 一起保留。"
+      },
+      {
+        "line": 23,
+        "text": "- 三种投掷武器 **先完整抽签，后抽数量和 quiverNumber，再清诅咒／符文位并将 E 归零**，不能提前跳过。CE 不清已抽到的 vorpalEnemy，web 同样保留该无效残留字段，消费者由实际符文门控。"
+      },
+      {
+        "line": 33,
+        "text": "[u15d3-attribution.mjs](../../scripts/u15d3-attribution.mjs) 使用隔离 esbuild 源覆盖，S0 装入精确 HEAD；前四段每次仅增加一个池的映射，第五段核验原有 vorpal 抽签不需修改，并装入最终详情／注释。各段固定4 seed × D1–26，保留原始压缩记录和输入 SHA，记录所有武器／护甲的普通／机器出生候选、投掷剥离后的数据、完整 RNG 状态、地形／实体摘要、机器产物与位置。"
+      },
+      {
+        "line": 45,
+        "text": "原因已定位：旧版照常抽 CE 枚举并置 `ITEM_RUNIC`，只是若干枚举映射为 `undefined`。本轮改变装备的实际符文，不改变抽签请求与机器品质筛选结果。生成阶段与实际战斗消费的边界清楚；并不宣称整个 web 生成器已与 CE 同 seed 同图。"
+      },
+      {
+        "line": 61,
+        "text": "- **7,026场景／34,694次逻辑 RNG 请求**：武器1,125，护甲4,686，物种抽签1,215；覆盖全部21种装备、所有好符文阈值／枚举、40%/50%/33%边界、坏池全项、20次连续10%长尾、投掷先掷后剥。物种验证全部有效票号及13个关键深度，含各 `maxDepth` 的边界内外。"
+      },
+      {
+        "line": 63,
+        "text": "- 17个隔离源码故障变体全部被行为断言检出：逐项撤掉7个映射、错武器池、错护甲池、两种阈值改为包含等号、漏投掷剥离、错诅咒符号、漏 `ITEM_RUNIC`、物种深度边界／多抽一次／炮台权重错误。没有修改交付源码来运行变体。见 [oracle-summary.json](u-15d3-evidence/oracle-summary.json)、[negative-summary.json](u-15d3-evidence/negative-summary.json)。"
+      },
+      {
+        "line": 73,
+        "text": "1. U05 原用 W_MULTIPLICITY 尚未实现作为 `runicType=undefined` 的隐式前提，验证“只有 ITEM_RUNIC 位也能通过Q筛选”。现在显式构造 bit-only 实例前提，保留 `ITEM_RUNIC`、`runicType=undefined` 和机器接受三条断言；完整生成映射由独立 C oracle 和实际 Q 出生测试把守。"
+      },
+      {
+        "line": 74,
+        "text": "2. B-4a 原用“护甲坏池全未实现”把所有 `runicType` 等同于好符文，plate 断言 `<5%`；完整映射后观察到总符文率7.5%，其中全为CE允许的坏符文。仅将该好符文阈值测试的采样前提显式限制为非诅咒符文，保留原 leather `>7%`、plate `<5%` 与附魔率上下界，注释更正为完整好池的leather理论13.5%。独立C oracle逐阈值，以及600 seed × 各重装备的坏符文检查另行约束坏池与plate，不靠统计放宽掩盖问题。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-15e.report.md",
+    "lines": [
+      {
+        "line": 28,
+        "text": "`potion_of_healing` 是 web 自创、已 `excludeFromGeneration` 的治疗药水，无 CE `drinkPotion` case；本轮保留其手动入口，不冒称 CE 药水。投掷按无害类处理。"
+      },
+      {
+        "line": 34,
+        "text": "- 投掷的既有五种功能分支、无害药水/幻觉鉴定特例、未碎裂落地与无效目标取消保持原执行链。新增黑暗瓶可手动取得，但其投掷目前仍按无害瓶处理；因此暂不回池。"
+      },
+      {
+        "line": 50,
+        "text": "## 后续登记"
+      },
+      {
+        "line": 53,
+        "text": "- U21b：黑暗状态进入矿灯半径及实时光照/FOV；当前 `updateVision` 消费仍未完成。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-15f.report.md",
+    "lines": [
+      {
+        "line": 8,
+        "text": "- CE 此进食路径没有芒果治疗。Web `consumables.json` 的芒果描述仍写“略微恢复生命值”，是既存目录文案与 CE 不符；按任务 §3 禁改目录，登记待另案处理，未实现治疗。"
+      },
+      {
+        "line": 14,
+        "text": "自动进食在 `objectiveTimeBlock` 的营养递减后执行，先按背包数组顺序选第一件 FOOD，再经相同 `consumeFood` 营养/消息路径消费，随后嵌套执行 `playerTurnEnded()`。进食后同步玩家的饥饿显示档位；无食物时保留主观饥饿伤害和死亡路径。麻痹与护符 20% 门仍在 `Player.tickNutrition`，本轮仅回归，未重写。"
+      },
+      {
+        "line": 28,
+        "text": "- `hunger_curve_sim` 原“自然保留开局口粮仍于 T2150 饿死”与 CE `Time.c:949-963` 自动进食相悖。只在其无食物死亡场景清除食物；其精确时点 T2150 仍与 CE `Time.c:965-970` 在营养 1 即置 0 冲突，反事实运行得到 T2149，故把该时点改为 T2149，死亡和归因期望保留。"
+      },
+      {
+        "line": 29,
+        "text": "- `p2_3_objective_time` 的 B2 原设营养 0 但保留开局口粮；CE 会先自动吃。仅补“无食物”前提，原每动作扣血期望完全保留。"
+      },
+      {
+        "line": 39,
+        "text": "## 撞红处置、边界与自检"
+      },
+      {
+        "line": 41,
+        "text": "第一轮 `p2_3_objective_time` B2 失败（带开局口粮却期待饿死），只补无食物前提；`hunger_curve_sim` 自然场景因自动吃而不死，补无食物前提后暴露 T2149/T2150 的旧时点错误，按 CE `Time.c:965-970` 修正时点，保留伤害/死亡期望。未修改扫描器、生成夹具或生成流。`consumables.json` 的芒果描述偏差已登记；未改数值、目录，也未加入治疗。按用户裁决，未做旧存档兼容。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-16.report.md",
+    "lines": [
+      {
+        "line": 13,
+        "text": "- CE 的 `RESURRECTION_ALTAR_INERT` 是独立地形，Web 尚未收录。保留目录中 `DF_ALTAR_RESURRECT.tile = null` 的事实登记和目录守卫；仅在祭坛的实际 `promoteTile` 路径将复活成功后的地形表示为现有 `ALTAR`。这保持祭坛单次触发，同时不擅自扩展蓝图机器的生成池。"
+      },
+      {
+        "line": 15,
+        "text": "## 验证与边界"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-17a.report.md",
+    "lines": [
+      {
+        "line": 13,
+        "text": "## 2. CE 核实及任务措辞的边界"
+      },
+      {
+        "line": 19,
+        "text": "| Architect.c:3365–3373：复活失败先返回；description 在连通性否决之前，按可见性及 messageDisplayed 门控 | 保留复活端口；描述在事务起点发送，按 Grid、每回合重置资格，现有描述经静态中文键翻译 |"
+      },
+      {
+        "line": 23,
+        "text": "| :3223–3246：优先级、其他层、SURFACE 禁止覆盖，起火标记及 staleLoopMap | 保留原铺装/阻挡算法；起火经统一端口进入本回合 skip 集，递归结果也聚合登记；通行变化触发现有环图/安全图消费者失效 |"
+      },
+      {
+        "line": 24,
+        "text": "| :3248–3270：refresh → 玩家脚下 flavor → instant creature effects → gameEnded 截断 → burnItem | 逐格同步执行，接触可能在下一个格写入前递归晋升；更新可见记忆；死亡后不继续本次 fill 的烧物/后续格 |"
+      },
+      {
+        "line": 25,
+        "text": "| :3423–3440：CLEAR_OTHER/CLEAR_LOWER 在 fill 之后，GAS 不清 | 沿实际保留 footprint 清层；没有把清层提前到生物接触之前 |"
+      },
+      {
+        "line": 42,
+        "text": "- `Map/DungeonFeature.ts`：`DungeonFeatureOptions` / `DungeonFeatureEffects`、按 Grid 的 WeakMap 绑定和 try/finally 递归上下文；统一驱离、逐格刷新和副作用顺序。返回字段保留为审计/独立环境调用兼容接口，不能代替实体端口。"
+      },
+      {
+        "line": 63,
+        "text": "| 消息资格/异常递归 | 不可见不消耗资格；每个DF同回合一次；不同DF同文本仍独立；目录重新投影保留同一身份；重置后再发；异常不泄漏事务设置 |"
+      },
+      {
+        "line": 64,
+        "text": "| gameEnded during fill；真实玩家 HP1 在混乱气体中接触爆炸 | 当场 isGameOver；致死后不再获得混乱气体状态；同格卷轴保留，后续格不铺、后继不执行 |"
+      },
+      {
+        "line": 66,
+        "text": "| 爆炸圈 + HP100 老鼠 + 卷轴/药水 | 调用返回时 HP50、burning>0；卷轴删除、药水保留、原地 ITEM_FIRE；后续晋升 EMBERS |"
+      },
+      {
+        "line": 69,
+        "text": "| 原点/远端警报、墙壁隔断、盟友 | 路径半径内敌人唤醒、圈外不动、盟友身份保留；气味改写、current/max 正确 |"
+      },
+      {
+        "line": 74,
+        "text": "| 持有退役 Grid，读档/新局/测试地图重建后再次在旧图触发 REPEL | 当前完整世界快照及 RNG 不变；当前图触发仍能驱离玩家。只将快照墙钟 savedAt 固定，全部世界字段保留严格比较 |"
+      },
+      {
+        "line": 79,
+        "text": "技能原始 Playwright 客户端也执行了移动按键和状态输出；它通过 canvas 抓取产生的黑图不当作视觉通过证据，补充客户端使用整页截图。最终补充客户端首跑遇到 Vite 热更新中的两份模块注册表，重启本任务本地服务后原样重跑通过；失败日志 `browser-final.txt` 和成功日志 `browser-final-retry.txt` 均保留。"
+      },
+      {
+        "line": 83,
+        "text": "所有旧前提修订均先在临时目录恢复原始 HEAD 代码与原始守卫做反事实，未编辑生产文件来做实验。HEAD 的 c4c/f2c/U08 为67/67、目录相关过滤组14/14、层表1/1、R1外观45/45、P4-4目标用例1/1，晚发现的 BoltContract/U15a/饥饿三文件31/31。证据见 `counterfactual-head-*.txt/json`。最终代码的十一个单变量缺陷变体（关驱离、关刷新、丢失后继刷新条件、关聚怪、删 ITEM_FIRE、漏起火登记、绕过阻挡否决、恢复延迟死亡、致死后继续气体状态、保留退役地图的世界端口、按文本合并不同DF的消息资格）均被独立测试抓红。"
+      },
+      {
+        "line": 89,
+        "text": "| C4c D2 | 名称原为“驱离登记未实现”，要求玩家留在假楼梯。Architect.c:3332–3355 真正驱离后，改为精确目的坐标及可通行断言；楼梯层不变、DF成功、无地形副作用的原断言全保留。自然楼梯另外按 Movement.c:1432 前置 useStairs 验证。 |"
+      },
+      {
+        "line": 90,
+        "text": "| F2c、P4-4 | 原来要求即时爆炸后 burning=0。Time.c:343爆炸与:527点火在同一次 applyInstant 内；改为恰7，HP恰50、免疫窗不重复爆炸、后续燃烧只扣1–3全部保留。 |"
+      },
+      {
+        "line": 92,
+        "text": "| U15a破碎 | RUBBLE刷新时，占用格的 FORCEFIELD→MELT→NOTHING 先执行，DUNGEON回FLOOR；之后才做 Items.c:4919 致死/释放。Movement.c:760只释放仍嵌在阻挡地形中的囚犯。原“必留结晶/碎石并释放”的前提修正；增加保留WALL的对照（禁止SURFACE铺装，所以跳过instant，仍可释放）。保护区、炮塔死亡、两种存读档路径原断言保留。 |"
+      },
+      {
+        "line": 94,
+        "text": "| C4a/C4b/U08目录 | 历史135/139条投影排除唯一新增ITEM_FIRE/110；新增数量/字段/行为独立钉住；DF闭包只新增真实burnItem根，集合全等保留。 |"
+      },
+      {
+        "line": 103,
+        "text": "- 玩家致死爆炸必须在fill内当场结束游戏。补共同即时接触出口的死亡结算，并以HP1+卷轴+后续格+后继的测试及浏览器验证，不延迟到回合尾声。复核 Time.c:370/392 又补即时接触内部的致死提前返回，防止死者随后获得气体状态；新增混乱气体断言在补丁前稳定失败、补丁后通过，见 `lethal-gas-before.txt`、`lethal-gas-repair.json`（73/73），未修改旧守卫。"
+      },
+      {
+        "line": 105,
+        "text": "- 消息资格由文本改为目录ID/自定义对象身份，匹配 Architect.c:3369 的 `feat->messageDisplayed`。当前可运行目录非空文案唯一，但通用事务不能合并不同DF的相同文本；新增对抗在修复前失败，修复后与C4b/U01/U03共89项通过（`message-identity-repair.json`），文本去重变体也被检出。首次新夹具误继承 FORCEFIELD 目录ID，已仅将两个自定义DF的ID清空；目录重复投影及不同ID同文案继续严格验证，诊断日志保留。"
+      },
+      {
+        "line": 137,
+        "text": "18:01轮完整结束后记录3314通过、14失败、8跳过、1 todo，build与drift通过，冻结输入差异为空；日志归档 `pre-binding-fix/`。处理这轮发现的真实回归与旧前提后，先定向复验。18:37轮复查发现怪物直接入口缺绑定而中止；修复并恢复原守卫后复跑；后续发现致死接触内部的提前返回遗漏，再中止归档 `pre-instant-return-fix/`。19:07轮复核发现旧图端口清理遗漏，归档 `pre-grid-retirement-fix/`；修复并通过74项定向检查后，19:34轮随后因消息资格身份复核而中止，归档 `pre-message-identity-fix/`。修正后再次冻结545项输入，从头完整复跑；开始时间以最终 `final-gates.json` 为准，没有复用之前的部分结果。6个 worker 仅改变并发数，没有更改超时或断言。"
+      },
+      {
+        "line": 143,
+        "text": "## 8. 保留边界"
+      },
+      {
+        "line": 145,
+        "text": "- 生成端仍沿用现有“蓝图请求→populateLevel 实体化”架构。事务支持 `refresh=false` 时对真实实体驱离；当前 Architect 构造时尚未实体化的请求没有冒充已存在怪物。完整 CE 的机器实体建造时序是现有 U19 后续边界，本轮未提前重排该生成流。"
+      },
+      {
+        "line": 149,
+        "text": "- 完全封死的合成地图找不到驱离目的格时，保留实体；CE 此处分支假定目的地存在，直接复制未初始化 newLoc 不适合照搬。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-17b.report.md",
+    "lines": [
+      {
+        "line": 7,
+        "text": "恢复 `61 / 66 / 104 / 83 / 98` 五条 DF 的真实地形，`DF_MISSING_TILES` 只移除这五条，其余 25 条按原顺序保留。地形枚举仅尾部追加，既有 ID 不变。另补 CE `DF_FOLIAGE_REGROW=63`，它是踩倒植被的必要后继，原先不在缺 tile 清单中，不算额外撤销一条缺口。"
+      },
+      {
+        "line": 9,
+        "text": "五条使用已有 U17a `spawnDungeonFeature` 事务与 `promoteTile`，没有新设火焰、驱离或机关旁路。修正锁门直接写 `OPEN_DOOR` 的旧路径：匹配钥匙通过 `TM_PROMOTES_WITH_KEY` 晋升，落下真正的 `OPEN_IRON_DOOR_INERT` 并产生目录闪光；原钥匙深度、坐标/机器号、一次性规则保留。"
+      },
+      {
+        "line": 18,
+        "text": "`pendingFallenItemsByDepth` 纳入 Game 生命周期和全局实体图，`Item.spawnTurnNumber` 纳入 U01 字段合同；新局清空、存档/读档保留、队列到楼层只转移一次。快照验证要求新增队列字段，缺此字段的旧快照会被拒绝，未提供旧档迁移。U01/U03 原守卫没有改动，只在 `scripts/u03-state-contract.json` 登记新增状态。"
+      },
+      {
+        "line": 27,
+        "text": "| 66 `ACTIVE_BRIMSTONE` | Globals:695，LIQUID，0/0，flags=0，无 subsequent；tile:425，priority40，flammable/spontaneously-ignites，点火100→67，promote10→67；INERT tile:426 的 promote800→66。 | 硫磺湖已有 INERT 起点→环境活化→玩家火杖点燃，或活性态概率晋升→67→104。800、10 的边界与中间层状态分别验证；浏览器从 INERT 等待实际活化。 |"
+      },
+      {
+        "line": 28,
+        "text": "| 104 `BRIMSTONE_FIRE` | Globals:744，SURFACE，0/0，flags=0；tile:493，priority10，T_IS_FIRE，VANISHES/STAND_IN_TILE/VISUALLY_DISTINCT，promote2500→无 DF；光为 `BRIMSTONE_FIRE_LIGHT`。 | 67 的 subsequentDF→104→统一即时着火/烧卷轴（烧物自身可再产生 ITEM_FIRE）/起火记账/光照→寿命到期只清火层，保留硫磺液层。玩家火杖经瞄准、Enter 提交，扣一充能并出现硫磺火。 |"
+      },
+      {
+        "line": 30,
+        "text": "| 98 `BRIDGE_FALLING`（DF 名为 `DF_BRIDGE_FALL_PREP`） | Globals:736，LIQUID，200/100，传播限定 BRIDGE，flags=0；tile:429，priority45，flammable/VANISHES，点火50→99，promote10000→99；99铺CHASM并再调用98；105负责桥断消息/闪光→99。 | 玩家火杖→BRIDGE.fireType=105→99→98 沿绳桥传播→后续环境晋升为CHASM→玩家/怪物既有坠层、物品新增坠层→显示深渊、实体在下层落位。石桥不带可燃位，不伪造坍塌。浏览器按键烧桥、怪物与长剑入队、JSON存读后实际跳入D2，长剑恰一件。 |"
+      },
+      {
+        "line": 38,
+        "text": "新增 `src/test/u_17b_carriers.test.ts`：20项，覆盖 CE全字段、只移除五条登记、三链/外观、每条实际触发、概率边界、层叠否决、错/可复用钥匙、持续开门、玩家悬浮/坠落、怪物坠落、药水破碎、D40销毁、新层/缓存层落位、入层 RNG 相位、独占所有权与 JSON 存读。"
+      },
+      {
+        "line": 44,
+        "text": "初版新夹具的修正不算旧守卫消红：CE DF 枚举从1开始，黄金生成器补显式0哨兵；DF 的0 tile/layer规范化；改用垂直射线避免火杖继续穿过整个桥；区分DF生物刷新和环境物品触发；用正常模式验证真正的下层生成。相关失败日志保留。类型检查同时发现未导入钥匙位、新地形光表未扩充、测试访问私有字段与旧burning类型，逐项修复。"
+      },
+      {
+        "line": 48,
+        "text": "原守卫先在新代码运行，保留红项；隔离副本还原 HEAD 后，原始15项全部通过。随后 V3/V5/G2 的三处30条登记计数、C3“ACTIVE_BRIMSTONE不存在”各自完成 HEAD 反事实。再发现B1的武器数据旗标夹具沿用前序随机流，生成了额外ITEM_RUNIC；完整HEAD文件16项通过后，仅明确选择CE 40%附魔分支的不触发面，保留全部原有旗标/数值断言。共20项旧目录/缺失/随机前提有反事实证据，另外 C4c D2 的旧随机落点由**仅撤销静止物品晋升**的反事实复现。证据在 `head-premises*.json`、`premise-counterfactual*.json`、`negative-D2-old-stationary-premise.json`。"
+      },
+      {
+        "line": 50,
+        "text": "- C4a-0 / C7 / R1：按CE扩充五行严格表及新的光载体许可；原地形ID、原行字段不改。139行外观黄金全部原值保留，只增五行，见 [ce-golden-extension.json](u-17b-evidence/ce-golden-extension.json)。"
+      },
+      {
+        "line": 51,
+        "text": "- C4a / C4b / U08 / U17a：旧目录宇宙用明确排除新增63或新增五tile的投影保留；新增集合由U17b独立精确断言。缺失清单的现实长度改为25，V3/V5/G2的其余缺口与行为断言保留。"
+      },
+      {
+        "line": 52,
+        "text": "- C4b C6 / C4c A3、A4、B6：保留原来“缺依赖应响亮失败/预检/不能半晋升”的断言，显式注入该测试所需要的缺tile前提并在finally恢复。真实五条闭包另由U17b正向/负向守卫验证。"
+      },
+      {
+        "line": 53,
+        "text": "- C4c D2：新增静止物品晋升改变共享RNG，旧随机驱离坐标不再稳定。只把楼梯周围设置为唯一合格目的地，原坐标、可通行、成功、驱离旗标、地形不变断言全部保留。"
+      },
+      {
+        "line": 55,
+        "text": "- C3 T14：把任务本就要求恢复的 ACTIVE_BRIMSTONE 从“不得存在”改为追加ID存在；旧的自创 ACTIVE 别名与 search 包装留痕原样保留。不是删除整条源码守卫。"
+      },
+      {
+        "line": 57,
+        "text": "前提差异完整交付 [guard-premise-changes.diff](u-17b-evidence/guard-premise-changes.diff) 供验收裁决。B1原58条、C4c原82条断言经AST打印逐项比对全部保留（B1额外增加40%门限1条），见 `fixture-only-assertions.json`。未改 p1_30、U24、U01/U03、W13/W14 的测试，六文件前后SHA逐一相同，见 `protected-guards.json`；也没有修改超时或增加skip来消红。"
+      },
+      {
+        "line": 61,
+        "text": "入场标准 `test:drift` 通过；实现后、重捕前先保留原基线的红色 drift 日志。四种子424242、777、20260913、31337 × D1–D26，共104层。`u17b-attribution.mjs` 使用只存在于 esbuild 内存中的逐阶段变体，不改工作区或基线；每阶段记录所有实际输入哈希。跟踪标准四字段、层/体积、全格、实体/物品、player、两流RNG、五种载体计数和坠落队列。默认值为0的新增物品时间字段在旧/新语义指纹中统一省略，非零时间及队列仍记录。"
+      },
+      {
+        "line": 67,
+        "text": "| s1→s2：66 | 5层指纹/层/全格/载体改变；未改变RNG。 | INERT环境活化与800边界。 |"
+      },
+      {
+        "line": 68,
+        "text": "| s2→s3：104 | 8层RNG改变；7层层/全格改变，2层指纹/载体改变。 | ACTIVE超时/火杖→67→104、即时着火/烧物、2500寿命边界。 |"
+      },
+      {
+        "line": 93,
+        "text": "发现轮167文件：3353通过、5失败、8既有skip、1既有todo，原始日志/JSON完整保留。红项为C3旧留痕、B1普通武器随机前提、P1-30死键，以及施工期缓存旧Game对上新测试的两个新守卫（落位RNG相位、火/熔岩消费）。后两项在最终代码独立整文件20/20通过；B1整文件HEAD16/16；P1-30要求的旧键已归档，守卫不改，P1-30+U24共19/19。"
+      },
+      {
+        "line": 111,
+        "text": "工具环境最初整目录符号链接使Vite尝试写只读主检出缓存，失败日志保留；改为本工作树内复制已有node_modules后运行，没有安装依赖或修改lock。Chromium在沙箱启动被系统阻止，自动审批允许本地测试浏览器启动后完成验证。构建只有原有大chunk提示。"
+      },
+      {
+        "line": 113,
+        "text": "## 7. 保留边界"
+      },
+      {
+        "line": 116,
+        "text": "- 本轮五条都有现有可执行上游，不需要伪造来自后续族的触发。原有蓝图 `FUNGUS_FOREST→FOLIAGE` 别名仍是V4已登记差异；不宣称真菌踩踏/再生家族已实现。"
+      },
+      {
+        "line": 118,
+        "text": "- 病态合成地图无任何物品落位候选时保留队列，不复制CE未定义坐标；正常新层/缓存层的落位、独占和回层均有测试。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-17c.report.md",
+    "lines": [
+      {
+        "line": 21,
+        "text": "| 154 | Globals.c:815；MACHINE_PRESSURE_PLATE_USED，DUNGEON，0/0，flags=0，无后继 | 生物踩板或物品落板 → 既有 Promotion wired 事务 → 同编号消费者晋升 → 留下不可重复触发的已用板。不同编号与断路器负例保留。 |"
+      },
+      {
+        "line": 25,
+        "text": "| 144 | :799；MACHINE_TRIGGER_FLOOR_REPEATING，LIQUID，300/100，SUPERPRIORITY，传播地形 CARPET | 恢复 CE7/F2；无字形、无前景/背景/发光，保留 wired 与 PLAYER_ENTRY，不消失；玩家进入和等待可重试。空复活祭坛不消耗机会，后来出现可复活盟友时，同一地板成功复活。怪物/物品不代替玩家触发此旗标。 |"
+      },
+      {
+        "line": 27,
+        "text": "Tile 原列：USED :403，TRAP_DOOR :380，WALL_LEVER :348，PULLED :349，REPEATING :540。TRAP_DOOR 带 T_AUTO_DESCENT；两种显形墙杆阻挡旗标仍按墙体；重复地板无 VANISHES。五种均 NO_LIGHT。DF16 本来已有，保留其 halo 与闪光；新增 DF96 (:733) 是墙杆必要终点。"
+      },
+      {
+        "line": 29,
+        "text": "所有铺装/后继/效果通过现有 `spawnDungeonFeature` 事务。搜索先预检链上缺失载体，再清密格层；后续未闭合族不会被清成空地。新入口放在 Promotion 模块，既有源码读者白名单没有放宽。Game 中原先仅限藤蔓的 PLAYER_ENTRY 处理扩至旗标消费者；目标时间步也覆盖该旗标。DF_CREATE_LEVER 产生新密格会使“本层无密格”缓存失效。"
+      },
+      {
+        "line": 33,
+        "text": "`AutoGenerator` 第25行原 web 标签误写为 TRAP_DOOR 且未接线；CE variants/GlobalsBrogue.c:143 实为 **TRAP_DOOR_HIDDEN**。恢复该入口，保留原数值列：D9..39、频率/深度参数20/100/0、次数上限2。"
+      },
+      {
+        "line": 35,
+        "text": "仍登记的边界：其他毒气/沼气/火嘴显形、祭坛惰性态、棺木/蠕虫等20条缺口未接；搜索只新增本族的隐藏陷门与墙杆。复活最终消费复用已实现的 U16 行为，其 RESURRECTION_ALTAR_INERT / DF143 仍在缺口登记，本报告不将其算作恢复。独立构造的暗杆交互不等于暗杆整台机器恢复资格。"
+      },
+      {
+        "line": 43,
+        "text": "按 develop-web-game 技能调用了指定 Playwright 客户端；其无头截图为黑画布，保留在 `skill-client/`，未作为视觉通过证据。随后使用有头 Chromium 跑真实页面输入并逐图检查，页面错误数组为空：[browser-results.json](u-17c-evidence/browser-results.json)。场景状态通过测试布景注入，操作使用真实键盘/鼠标和游戏入口；CE22 使用生产 BlueprintEngine 构造完整蓝图。"
+      },
+      {
+        "line": 51,
+        "text": "首个浏览器尝试把投掷目标设为相邻格，页面将相邻点击解释为移动；证据失败保留。验收布景改为距离3的合法投掷位置后通过，未改动界面输入规则。"
+      },
+      {
+        "line": 83,
+        "text": "修正只涉及已证实的前提；生产行为错误先改代码。最初把 bump 直接调用 promoteTile 及在 Game 读取原始 promote/mech 字段触发源码白名单；已移入 Promotion，白名单原文保留。P1-30首次施工期还发现新增文案键尚未补齐，只补中文资源键，P1-30与U24守卫不变。"
+      },
+      {
+        "line": 87,
+        "text": "| 144个tile、25条缺口、旧DF总数 | 五个新tile、指定五缺口移除、必要DF96；扩展逐字段/逐集合断言或保留历史投影，未以宽松下限代替精确数量。涉及 C4a/0/b、C7、R1、G2、V3/4/5、U08、U17a/b。 |"
+      },
+      {
+        "line": 90,
+        "text": "| C4b F3仅旧的层组合 | 原断言副本收集拒绝格，并追踪每格真实写者：[layer-writer-trace.json](u-17c-evidence/layer-writer-trace.json)。CE纯层写入验证后仅补七种完整四元组；三层上限、GAS恒空、机器归属原守卫保留，MUD_WALL也要求归属。 |"
+      },
+      {
+        "line": 92,
+        "text": "| W11压力板会遥控相邻普通传送陷阱 | CE机器板没有该半径行为；布景改为同格普通陷阱+LIQUID压力板。实际入场者、两次环境处理、目的地一次晋升等原断言全部保留。 |"
+      },
+      {
+        "line": 94,
+        "text": "| B2的CE71雕像仅可能被CE70藏怪墙替换 | seed22/D15 (59,19)被楼梯准备步骤改为TORCH_WALL，哨兵仍存活且home=3；[stair-writer-trace.json](u-17c-evidence/stair-writer-trace.json)记录实际调用栈，CE Architect.c:3663–3668原样如此。守卫仅接受真实prepareStairLoc调用中从STATUE_INERT改为TORCH_WALL的记录，并要求machineNumber=0、IMPREGNABLE；原CE70分支、三哨兵、不同落点、实际存活者、home、完整34种子连通性全部保留。 |"
+      },
+      {
+        "line": 96,
+        "text": "前提修正后的完整B2复跑：21通过，34种子×26层全样本，见 [b2-updated.json](u-17c-evidence/b2-updated.json)。其他定向复跑保留在 `premises-updated.json`、`target-last.txt`（98通过）、`closure-extra.txt`（35通过）；V3第一次定向复跑还暴露了内层旧缺口列表中的144，已按同一HEAD反事实修正为精确非缺口断言，随后全文件通过。"
+      },
+      {
+        "line": 106,
+        "text": "环境记录：复用本机已有依赖，未改package清单/lockfile；Vite缓存目录保留在当前工作树。最初默认沙箱无法绑定端口/启动浏览器，使用获准的本地开发服务和有头浏览器完成验证。build保留既有大chunk提示，未产生编译错误。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-17d.report.md",
+    "lines": [
+      {
+        "line": 14,
+        "text": "CE40 当前蓝图缺少 CE 的 BP_ADOPT_ITEM 等整机数据差异仍属后续蓝图工作。本轮可解性测试通过现有 BlueprintEngine 的真实 CE40 数据和 adoptiveItem 请求构建房间，不据此宣称已经修正其随机选池条件。源文件与保护合同哈希见 [protected-and-ce-inputs.json](u-17d-evidence/protected-and-ce-inputs.json)。"
+      },
+      {
+        "line": 24,
+        "text": "| 179 / :858 SHOW_METHANE_VENT | MACHINE_METHANE_VENT_DORMANT；发现描述/闪光 | 搜索隐藏喷口→显形且不通电、不产气；同编号 wired 保留；存档往返后仍可触发。 |"
+      },
+      {
+        "line": 26,
+        "text": "| 182 / :861 PILOT_LIGHT | PILOT_LIGHT；火炬掉落描述/闪光 | 取钥匙→同机休眠灯晋升；保留墙阻挡、TORCH_LIGHT，T_IS_FIRE 被既有火焰更新消费；相邻甲烷燃烧，浓气满足既有条件时爆炸、伤害实体并烧毁卷轴。 |"
+      },
+      {
+        "line": 28,
+        "text": "| 185 / :866 REVEAL_PARALYSIS_VENT_SILENTLY | MACHINE_PARALYSIS_VENT；无描述/闪光 | DF184 先写350体积麻痹气，再静默显形；隐藏和已发现喷口均可触发，保留 wired，再次激活累计700；实体原地获得既有麻痹状态、不扣血。 |"
+      },
+      {
+        "line": 29,
+        "text": "| 174 / :851 SHOW_POISON_GAS_VENT | MACHINE_POISON_GAS_VENT_DORMANT；发现描述/闪光 | 搜索隐藏喷口→显形且不产气；后续取钥匙接通原机器。 |"
+      },
+      {
+        "line": 31,
+        "text": "| 14 / :625 SHOW_POISON_GAS_TRAP | GAS_TRAP_POISON；发现闪光 | 搜索或可见生物踩隐藏陷阱→显形；普通进入/等待接触压下→既有DF125产1000毒气→扩散及腐蚀伤害，陷阱本体保留。 |"
+      },
+      {
+        "line": 32,
+        "text": "| 19 / :630 SHOW_FLAMETHROWER_TRAP | FLAMETHROWER；发现闪光 | 搜索或可见踩踏→显形；压下→既有DF106在SURFACE传播火焰100/37→燃烧状态、伤害、物品燃烧，本体保留。 |"
+      },
+      {
+        "line": 53,
+        "text": "新增31项独立测试覆盖 CE 原列、精确范围、真实数据起点、搜索/遮挡/闪光/存档、取钥匙、压力板、普通踩踏与等待、气体量及晋升概率边界、断路器与机器号、浓甲烷爆炸、物品损毁、悬浮、屏外怪物、重复触发及重新布防。四条 autoGen 各自使用真实表行施工后，由玩家等待触发并检查最终实体/地形状态。"
+      },
+      {
+        "line": 55,
+        "text": "CE67/68 使用生产 `buildAMachine` 整体构建，真实玩家踩板后所有喷口显形，邻近怪物获得麻痹、无伤害，机器区域仍可通行。CE40 使用真实整张蓝图施工，玩家从门外正常行走到祭坛取钥匙、出口关闭并喷毒气，再走到暗杆旁搜索、撞杆开闸，最后走出房间且存活。测试不在中途移动玩家坐标。最初四方向绕路并固定搜索五次的试走确实被持续气体杀死；保留失败证据，最终使用合法八方向最短路线、发现即停止搜索，验证的是可执行解法，未削减气体伤害。"
+      },
+      {
+        "line": 67,
+        "text": "初始 `test:drift` 通过；激活后对旧基线的失败保留在 `drift-after-activation.txt`。四个滚动基线种子×D1..26共104层，除四个基线字段，还观察四层地形/气体体积、完整格状态、实体/玩家/物品、RNG、待接收落物及载体数。阶段通过esbuild内存覆盖，工作树和基线不来回切换。"
+      },
+      {
+        "line": 69,
+        "text": "最初施工期观测保留在 `preliminary-generation/`。实现稳定后完整重跑17阶段，89个被编译输入文件的起始哈希全程一致，最终输入也与工作树一致：[attribution-input-consistency.json](u-17d-evidence/attribution-input-consistency.json)。各阶段原始观测为 `generation-*.json.gz`，输入覆盖为 `inputs-*.json`，差异详单见 [generation-stages.json](u-17d-evidence/generation-stages.json)。"
+      },
+      {
+        "line": 94,
+        "text": "DF180：s1→s2 仅恢复甲烷活动载体，104层观测不变。取钥匙才接通机器；正例检查即时60体积、后续5000概率和不同机器隔离，删载体使取钥匙后的状态失败。"
+      },
+      {
+        "line": 108,
+        "text": "DF19：s8→s9 仅恢复显形火陷阱，autoGen仍关闭，104层观测不变。搜索、踩踏及autoGen27施工后的等待都验证实际燃烧及本体保留；删载体令三条行为断言失败。"
+      },
+      {
+        "line": 110,
+        "text": "字段变化数不是变化格数，各阶段相对前一阶段，不能跨阶段相加充当最终差异。前九个DF在这104层纯生成观测中均未改变结果，但每条运行期链有独立正向及删线反向守卫。四条autoGen会额外消耗RNG并影响后续生成；不能用“地形名出现”替代其触发验收。"
+      },
+      {
+        "line": 120,
+        "text": "修改前在原始 HEAD 的隔离副本运行原失败断言：第一组18项全绿，补充光照/外观/缺口4项全绿，生成入口与火焰读者组6项全绿。证据分别为 `head-premises-static-discovery.json`、`head-premises-extra-static.json`、`head-premises-guard-discovery.json`。随后将这三组及C6 AD7共25条原断言汇总，在同一隔离副本中运行：原守卫+新生产代码为24失败/1通过（火焰读者已修正），原守卫+原始HEAD为25通过/0失败：[guard-proof.json](u-17d-evidence/guard-proof.json)。另有V-2b-7 B2在发现轮后续才执行到；原断言在HEAD单独通过后，仅将14/19由缺载体列表改为精确CE载体正向断言，其余五条仍逐条缺失：[counterfactual-feature-premise-discovery.json](u-17d-evidence/counterfactual-feature-premise-discovery.json)。施工期发现轮不作为最终冻结运行。"
+      },
+      {
+        "line": 124,
+        "text": "| 149地形、20缺口、原DF数 | 补八个精确层/优先级/外观/光照条目；仅九条缺口移除；历史数量守卫投影排除新增137/178。保留原精确集合及逐字段检查。 |"
+      },
+      {
+        "line": 125,
+        "text": "| 休眠长明灯暂不迁移光照 | 按CE :342恢复TORCH_LIGHT，连同活动态使发光集合37→39；源码目录黄金表验证两态。 |"
+      },
+      {
+        "line": 128,
+        "text": "| 麻痹喷口链尾185缺tile而必须缓办 | 旧失败事务测试显式注入该缺失前提并finally恢复，原缓办/零气体/电力清理断言完整保留；新增CE67/68整机正向行为测试。 |"
+      },
+      {
+        "line": 138,
+        "text": "- U04c：相同seed424242/D2的机器编号格从15变为5；仅更新这个精确生成锚点及标题，完整集合、RNG、存档及往返两分支相等断言不变，真实清号/外部feature的独立测试继续保留。"
+      },
+      {
+        "line": 139,
+        "text": "- V2a T3：四个原种子×26层在新随机流中没有消耗品基座。完整扫描、每台奖励互斥、原数量断言全部保留；另用既有V2b2b三房间夹具及其固定种子施工完整CE5生产蓝图（包括前厅递归），提供确定性的非空样本。8整局自然入池守卫仍在V2b2b T8，不改。修正后的T3通过；隔离副本移除CE5的MF_ALTERNATIVE后，原XOR断言明确报告“附魔1+生命1=2件”并失败：[negative-pedestal.json](u-17d-evidence/negative-pedestal.json)。"
+      },
+      {
+        "line": 140,
+        "text": "- W12：可见隐藏毒陷阱现在会先经DF14显形；CE Architect.c:3254–3257的fillSpawnMap对占用格执行即时效果，因此多一次同一玩家的即时刷新是正确行为。断言精确要求两次都只指向玩家，并新增客观时间块调用0次、tick不变、最终气体恰1000、显形本体正确；原玩家/静止怪HP不变的断言保留。并非放宽成“调用过即可”。"
+      },
+      {
+        "line": 142,
+        "text": "后续三文件定向复跑67通过/0失败。全部旧守卫修正的完整差异在 [guard-premise.diff](u-17d-evidence/guard-premise.diff)，交验收方裁决。保护合同和源码白名单原文不改。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-17e.report.md",
+    "lines": [
+      {
+        "line": 11,
+        "text": "CE47 领养资格排除保持原样；没有调整 CE6/7/47 或其他机器的频率、深度、尺寸、候选资格、生成池。CE6 的一处 `featureDF` 与 CE1/2/26 的八处图书馆 `itemFlags` 是本轮闭合数据起点的必要修复。CE7 的 `DF_MACHINE_FLOOR_TRIGGER_REPEATING` 已由前轮接好，本轮保留并复验其与真实惰性态的闭环。完整字段对比见 [scope-proof.json](u-17e-evidence/scope-proof.json)，Architect 与 AutoGenerator 文件哈希见 [protected-inputs.json](u-17e-evidence/protected-inputs.json)。整机资格／回池仍留 U19。"
+      },
+      {
+        "line": 19,
+        "text": "| 85 / Globals.c:722 | ALTAR_CAGE_CLOSED，DUNGEON，0/0，EVACUATE_CREATURES_FIRST，GENERIC_FLASH_LIGHT | 借走绑定物品并离开原祭坛 → 同机笼关闭，统一事务疏散生物而保留物品 → 携带原物品返回，84 开笼；放回后其余藏品继续可取 |"
+      },
+      {
+        "line": 22,
+        "text": "| 143 / :798 | RESURRECTION_ALTAR_INERT，DUNGEON，0/0，RESURRECT_ALLY，EMPOWERMENT_LIGHT | CE7/F2 的重复接触地板 → U16 原 purgatory／最强盟友选择／复活事务 → 盟友复活，祭坛独立惰性态且熄灯；无可复活盟友时保留重试能力 |"
+      },
+      {
+        "line": 23,
+        "text": "| 145 / :802 | SACRIFICE_ALTAR，DUNGEON，0/0，flags=0，恶魔索取文案 | 压力板激活休眠祭坛和奖品笼 → CE47 horde 来源的标记怪经催眠移动进入同机祭坛 → 146 献祭熔岩，现有熔岩结算杀死目标；wired 奖品笼打开、奖励保留 |"
+      },
+      {
+        "line": 32,
+        "text": "置换遵守 CE CAN_BE_SWAPPED（不含 wand）、quiver 排除、同机与断路器条件；相同附魔不消耗祭坛；staff 低于 2／charm 低于 1 会碎裂；staff 容量与当前充能钳制、charm 冷却整数百分比、知识迁移、好符文消退／坏符文保留与非负解咒均接现有实例。按 CE `itemAtLoc` 每格只取首件，同格重叠物品不会充当两座祭坛。"
+      },
+      {
+        "line": 37,
+        "text": "- CE 图书馆物品通常不是 KEY 类别，依靠 `ITEM_IS_KEY` 与归还位置绑定。BlueprintEngine 保留领养物品原来的锁绑定，再追加自己的归还位；Game 保留 item flags、深度与最大充能知识，并接现有种类鉴定。`keyOnTileAt` 检查匹配的地面物、占格玩家背包或占格怪物携物；离开借物格才关笼。"
+      },
+      {
+        "line": 39,
+        "text": "- SACRIFICE_LAVA 的即时死亡使用已有 `T_LAVA_INSTA_DEATH` 语义，保留飞行、火免疫、无敌等原有条件。复活、钥匙、惰性态、标记怪和交换后的物品均有保存恢复断言。"
+      },
+      {
+        "line": 63,
+        "text": "原守卫失败后，在隔离树还原精确 HEAD，保留原断言再运行：23 条目录／枚举／外观／光载体／旧缺口断言，3 条额外缺口与领养绑定断言，1 条全地形光值断言，后续完整回归又发现 B2 的 CE6 断开前提和 B4b 的“锁钥匙所有绑定都必须指向锁门”前提，各 1 条以及 U08/U17a 历史目录投影的 2 条同样完成 HEAD 反事实，再加 G1 局部房间夹具的 1 条，合计 **32/32 在 HEAD 通过**。对应新代码的失败原报告及 HEAD 结果保留在 evidence；仅修这些前提，未豁免行为守卫。"
+      },
+      {
+        "line": 65,
+        "text": "| 修订类别 | 修订内容与保留约束 |"
+      },
+      {
+        "line": 70,
+        "text": "| U16／U17c | 成功复活后的 ALTAR 替身 → RESURRECTION_ALTAR_INERT；盟友身份、一次性、空池重试等断言保留 |"
+      },
+      {
+        "line": 71,
+        "text": "| U05a CE26 | 领养物品的 keyLoc 从“仅传入绑定”变为“传入绑定 + 本机归还位”；实例身份、所有权、源输入不被修改的断言保留 |"
+      },
+      {
+        "line": 73,
+        "text": "| B4b T11 | 保留每锁恰一钥；认锁钥匙的额外绑定只能是携带 ITEM_IS_KEY、machine=0、不可消耗、位于非零机器内开／闭图书馆祭坛的归还位，其他绑定仍拒绝。额外注入 (0,0) 归还位错误验证守卫未失效 |"
+      },
+      {
+        "line": 74,
+        "text": "| G1 空气体 RNG | 原夹具只隔离局部房间却清空全层物品，远处图书馆关笼造成首回合额外 RNG。只把该夹具隔离到全图，保留两条原 RNG 断言；移除空气体探测闸的负例仍红 |"
+      },
+      {
+        "line": 77,
+        "text": "证据：[23 条 HEAD 反事实](u-17e-evidence/head-premises-static-discovery.json)、[额外 3 条](u-17e-evidence/head-premises-extra-premises.json)、[光值 1 条](u-17e-evidence/head-premises-glow-premise.json)、[B2 CE6 1 条](u-17e-evidence/head-premises-late-ce6-premise.json)、[B4b T11 1 条](u-17e-evidence/head-premises-late-key-premise.json)、[U08/U17a 2 条](u-17e-evidence/head-premises-late-catalog-premises.json)、[G1 夹具 1 条](u-17e-evidence/head-premises-late-gas-premise.json)、[守卫改动差异](u-17e-evidence/guard-premise.diff)。c4c A6 的初次失败属于实现越过模块边界，修复代码后通过，未列为旧前提修订。"
+      },
+      {
+        "line": 96,
+        "text": "| s6 → s7 | 保留既有 CE7 入口的相同代码对照，无新增杠杆 | 0 / 0 | 0 |"
+      },
+      {
+        "line": 117,
+        "text": "本次冻结从 **2026-09-26 03:59:22（Asia/Shanghai）** 开始，记录 `src/`、`public/`、`scripts/` 与项目配置共 613 个文件的逐文件 SHA256。报告及证据输出不作为测试输入。此前完整发现性回归中的 6 个失败均有单独定位与修复／前提反事实，见 [discovery-resolution.json](u-17e-evidence/discovery-resolution.json)；中间一次未完成的冻结尝试已中止并明确标记为无效验收，见 [interrupted-final-reason.json](u-17e-evidence/interrupted-final-reason.json)。不将发现性结果或局部绿灯代替最终完整复跑。"
+      },
+      {
+        "line": 132,
+        "text": "## 8. 保留边界"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-17f.report.md",
+    "lines": [
+      {
+        "line": 5,
+        "text": "本轮恢复全部六项 DF，追加五种地形（原 ID 0–163 保持，新增 164–168），复用已有 `FLOOR_FLOODABLE`。补入虫道必需后继 `DF_GRANITE_CRUMBLES=192`，DF 目录共 148 项，`DF_MISSING_TILES` 清空但守卫保留。按 CE 接回自动生成表 index 7 的 `DF_RUBBLE`。另修复实际交互暴露的两个末端缺口：可通行钥匙祭坛的接触用钥匙入口、传奇盟友 horde 的结盟标志消费。"
+      },
+      {
+        "line": 13,
+        "text": "| 148 COFFIN_BURSTS / 807 | COFFIN_OPEN，DUNGEON；tile 行 373 | CE11 的 TRIGGER_AREA→机器触发→开棺并唤醒吸血鬼；保留原携带钥匙，无重复实体；darkGray 闪光半径 3 |"
+      },
+      {
+        "line": 16,
+        "text": "| 88 PORTAL_ACTIVATE / 725 | PORTAL_LIGHT，SURFACE；tile 行 488 | 匹配钥匙接触祭坛→机器广播→先疏散占格生物、唤醒传奇盟友；真实 PORTAL_ACTIVATE_LIGHT 光源；10000 概率晋升清除光层，底层 PORTAL 保留 |"
+      },
+      {
+        "line": 20,
+        "text": "`Game.useContactKeyAt` 对照 Time.c:543–546、Movement.c:616–671，复用坐标/机器号/深度匹配及 `promoteLayersWithMechFlag`。背包、地面、占格怪物携带的匹配钥匙均可驱动链路；一次性钥匙从原所有者移除，非一次性钥匙保留。原入口只处理撞锁门/笼子，无法消费可通行的 `ALTAR_KEYHOLE`。传奇盟友入口对照 Monsters.c:879、753，领袖和成员复用 `becomeAllyWith`；自然 CE12 回放曾实证“已唤醒但敌对”，修复后同一真实 horde 的实体成为盟友。"
+      },
+      {
+        "line": 22,
+        "text": "**任务文字与 CE 的边界。** CE42 下沉祭坛本身没有洪水触发；没有增加自创淹水事件。测试先经玩家拾取恢复 `FLOOR_FLOODABLE`，再让独立、已实现的洪水机器传播到该格。CE55 的普通 underworm feature 未带 `MF_MONSTERS_DORMANT`；构造虫道中的休眠虫仅用于验证 DF192 明确声明的唤醒副作用，不声称 CE55 原生虫群休眠。CE55 的自然生成资格仍退池，因此虫道证据为构造载体上的真实玩家输入链，未伪造自然生成证据。"
+      },
+      {
+        "line": 26,
+        "text": "**用户触发与独立行为证据。** [u_17f_carriers.test.ts](../../src/test/u_17f_carriers.test.ts) 共 18 项，包含六条玩家动作链、原实体身份/钥匙/落物、不同机器隔离、疏散、存读档、概率严格边界、虫道封闭时零 RNG、错误钥匙/断路器，以及真实 CE69 建造→人口落位→玩家触发→唤醒。传送门测试直接消费 CE12 的真实 horde flags，没有手设目标的盟友身份。"
+      },
+      {
+        "line": 28,
+        "text": "自然回放保留生成地形、机器编号、驻留实体和物品绑定；只将玩家放到触发点邻格、提高生命并移除无关活动敌人。传送门将该层真实生成的匹配钥匙转入背包，作为触发前提；未声称完成整层寻钥匙路线。[生成起点](u-17f-evidence/natural-starts.json)、[回放状态](u-17f-evidence/natural-replay.json)、[回放日志](u-17f-evidence/natural-replay.txt) 与压缩存档可复核。"
+      },
+      {
+        "line": 50,
+        "text": "- DF191：只接 WORM_TUNNEL_MARKER_ACTIVE，差异 0；构造拉杆链验证负概率边界与 192→TUNNELIZE，CE55 上游资格保持关闭。"
+      },
+      {
+        "line": 69,
+        "text": "| 前提 | 处理与保留的约束 |"
+      },
+      {
+        "line": 75,
+        "text": "| U17e 自然图书馆 seed777 D2 | 原自然样本移至 D1；借出、离开关笼、归还再开等原行为断言完整保留 |"
+      },
+      {
+        "line": 78,
+        "text": "| P2-4 空房节奏用例 | test 模式排除自然有线图书馆。原场景即使清掉地面物品，机号仍在，首步会关笼并中止自动路径；两步、同步完成、无暂停/输入锁断言保留 |"
+      },
+      {
+        "line": 85,
+        "text": "第一次冻结尝试发现 C6 AD-8 的独立运行统计白名单仍少 index7，已中止并保留 [该次日志](u-17f-evidence/first-freeze-attempt/status.json)，补做 HEAD 证明和 C6 全 17 项正向验证后重新冻结；基线没有第二次写入。其后自审将 CE8 合法重合与真实区域 origin 的非空转计数严格分开，并对实例 ID 去重、拒绝缺失 ID；为保证原守卫强度，又中止两个未完成尝试（[记录二](u-17f-evidence/second-freeze-attempt/status.json)、[记录三](u-17f-evidence/third-freeze-attempt/status.json)），完成构建与负例后重新冻结。以上中断均未重捕获基线。最终完整命令为 `node scripts/u17f-final-check.mjs`，内部顺序：反查 → `npm run build` → `npm test -- --maxWorkers=6 --reporter=default --reporter=json --outputFile.json=ai_docs/reports/u-17f-evidence/regression-final.json` → `npm run test:drift`。脚本比较 src/public/scripts/config 全部输入哈希，并核对 R∪S 每个文件实际执行。"
+      },
+      {
+        "line": 89,
+        "text": "执行方冻结后的最终检查只完成反查与 build（exit 0），全量回归运行中 codex 会话因 401 Unauthorized 终止，未产出 regression-final.json。验收方将工作树三方合并至 main（含 U25/U26b/U27 等后续轮），在 Mac 本地完整复跑：185 文件中 184 通过、1 失败，3594 通过；build、test:drift 通过。"
+      },
+      {
+        "line": 91,
+        "text": "唯一失败为 `v_2b_5_dormant` D1 \"休眠怪一律 TRACKING_SCENT\"：777/D10 的传奇盟友经本轮 horde 结盟消费以盟友身份休眠。CE Architect.c:1657 明确仅对 `creatureState != MONSTER_ALLY` 置 TRACKING_SCENT，守卫前提漏此例外；验收方按 CE 仅对盟友跳过状态断言（isDormant/machineHome 断言保留），复跑 17/17 通过。另核 AutoGenerator index 7 = CE variants/GlobalsBrogue.c:121（DF_RUBBLE，0–39，freq 30，max 4）。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-18.report.md",
+    "lines": [
+      {
+        "line": 7,
+        "text": "- **踏入深水**：CE `Movement.c:1165–1172,1299–1365` 只将 `T_OBSTRUCTS_PASSABILITY` 当物理阻挡；危险确认中没有 `T_IS_DEEP_WATER`。web 的玩家移动分支现在允许无阻挡层的深水，保留 `canMoveTo` 的干地寻路口径及生成期镜像，避免改变生成流。CE `Time.c:84–107` 的 `rogue.inWater` 是光照/视野状态；本轮没有建立此载体，也没有据此虚构护甲或重量游泳惩罚。`Movement.c:2118–2135` 的怪物路径图、`Monsters.c:1387–1493,3768–3770` 的回避及水栖边界已核：怪物从干地回避深水，已在水中不回避；水免疫/飞行/悬浮及免网者的网桥是豁免；`MONST_RESTRICTED_TO_LIQUID` 不走不允许潜水的格。web 的气味、直寻、随机移动与实际提交步现在共用这些深水判据。完整 `monsterAvoids` 的其他地形/占格顺序仍属于 U18a/U12，未在本轮扩改。"
+      },
+      {
+        "line": 16,
+        "text": "R(files) 从本轮改动的 `Game.ts`、`Monster.ts`、`DungeonFeatureCatalog.ts`、`zh_CN.json`、`zh_CN.legacy.json` 和新用例出发，沿导入/调用反查 Grid、TerrainCatalog、TerrainRules、Item、Inventory、Creature、Player、Promotion、关系 helper 与快照编解码。S(pattern) 用 `DEEP_WATER|WATER_DEEP|T_MOVES_ITEMS|STUCK|SUBMERGED|keyMatchingEntry|becomeAllyWith|freeCaptive|itemsAt|readFileSync|readdirSync|i18next.t` 扫源码和测试。`rg` 在此 Windows 环境不可用，使用 `git grep` 和定向源码读取。潜水 `MB_SUBMERGED` 仍无 web 载体，本轮未建；这是报告登记的未闭合跨系统状态，涉及光照、可见性、战斗目标、火焰与快照，不能只在移动处加一个布尔值。"
+      },
+      {
+        "line": 25,
+        "text": "§3 自检：未移动生成流或重捕获；没有旧档兼容逻辑；`test:drift` 以当前基线验证。新发现：`canMoveTo` 的干地判据仍服务自动寻路与生成期镜像，玩家手动踏水在行动分支单独放行；自动寻路仍把深水当不可走，留给后续路径代价合同处理。冲落物的包/地位置在存读档后保持；X-0 K01 所列全局 RNG 恢复缺口仍会影响**读档后下一次**随机冲物的逐骰重演，不把状态往返误报为完整录像一致。CE 未见护甲重量导致淹死或改变冲物概率的分支，任务书该线索不应派生自创惩罚。"
+      },
+      {
+        "line": 34,
+        "text": "- `git diff --check`：通过。工作树保留未提交改动。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-18a-2.report.md",
+    "lines": [
+      {
+        "line": 7,
+        "text": "| 步骤 | 最终行为 | CE 依据与边界 |"
+      },
+      {
+        "line": 9,
+        "text": "| 1 入场终点 | `entryQualifiesForPlacement` 查全层 PB；保留怪物、机器、楼梯排除，楼梯检查 layers，覆盖物不能掩盖它 | RogueMain.c:839–869、Rogue.h:1948；不读有效 terrain、isPassable 或旧燃烧投影 |"
+      },
+      {
+        "line": 11,
+        "text": "| 2 末回退 | 无路径才走切比雪夫环，半径从 0 开始，允许地图边界，`randRange(1,count)-1`，空集返回 null | Monsters.c:3960–4028；单候选会调用退化 randRange，但 Random 不消耗 RNG；并列候选恰一次非退化抽取 |"
+      },
+      {
+        "line": 12,
+        "text": "| 3 扫描器 | 两个共同邻格都识别 -2 与旧正 30000 的 O；F=-1/29999 禁入但不挡斜角；正阻挡哨兵也不能作为传播种子 | Dijkstra.c:48–87、117–168；保留旧正哨兵接口，不改 A* 的对角代价 |"
+      },
+      {
+        "line": 14,
+        "text": "| 4b 护符旁路 | 在 D26 的原 floorTiles 顺序上仅为护符筛 `ITEMS\\|PB`，随机选中后从原牌堆删除该位置 | 只补落物地形资格，保留护符唯一性和原选点方式 |"
+      },
+      {
+        "line": 15,
+        "text": "| 4c 钥匙旁路 | 沿原牌堆逆序找首个 `!(ITEMS\\|PB)` 格，保留锁位/机器号绑定，不新增选点 RNG | 不在共享 floorTiles 上全局过滤，以免同时改变楼梯或 horde；不改机器 feature 物品资格 |"
+      },
+      {
+        "line": 17,
+        "text": "**任务书与 CE 的边界冲突**：任务验收的“终点合格且可达”适用于有路径分支。CE 明确保留 pathing-agnostic 末回退，不能据此承诺每种人工封闭地图都可达。本轮按 CE 实现并单测该分支；自然生成连通、落位、机器可解守卫仍原样回归。CE 的楼梯占用来自保存坐标；web 仍以 layers 中的楼梯代替，未提前实施 U04 的独立坐标合同。"
+      },
+      {
+        "line": 23,
+        "text": "采样由 [u18a2-generation.ts](../../scripts/u18a2-generation.ts) 实施：原基线四字段、完整 Cell 哈希、物品/怪物状态哈希、玩家位置、双流 RNG、入场候选变化及选择前后 RNG、每次 batchScan 的输入/输出哈希；入场路径额外保留完整成本/距离网格、资格访问顺序和全部抽取参数。构造器的临时随机局在正式 startNewGame 边界清除，避免混入无关观测。`terrain` 扩展字段是完整 Cell 哈希，不是只含地形的指纹；`heat` 含构建前后 RNG，不能把该字段变化直接当成热度变化。"
+      },
+      {
+        "line": 29,
+        "text": "| s3：共享扫描器 | 0 / 0 | 104 层 scan；21 层 RNG/entry；17 层完整 Cell；20 层 heat 构建前后 RNG | 修正对角捷径；D6 的并列候选改变引发一次额外 RNG，后续环境预热沿该流变化 |"
+      },
+      {
+        "line": 32,
+        "text": "| s4c：钥匙 | 0 / 0 | 0 层 | 样本原钥匙位置仍合格；对抗牌堆证明末尾硫矿被跳过且绑定/唯一性保留 |"
+      },
+      {
+        "line": 40,
+        "text": "[反事实脚本](../../scripts/u18a2-counterfactual.mjs) 对每阶段实际生成 unified patch，再仅反向应用该阶段补丁到临时副本：恢复字节等于上一阶段；独立进程重生成的所有记录逐值等于上一阶段。继而用上一阶段源码运行对应的新守卫，要求真实断言失败，不以进程崩溃充当检出。各阶段记录见 [counterfactual.json](u-18a-2-evidence/counterfactual.json)。没有在最终源码中保留测试开关或运行期 trace。"
+      },
+      {
+        "line": 56,
+        "text": "| 旧 calculateMap | 8 向、正哨兵 | 未找到生产调用；旧接口保留。专项覆盖正/负 O/F、两侧斜角、阻挡种子、零成本通道、多源负距离及边框 |"
+      },
+      {
+        "line": 62,
+        "text": "新增 [u_18a_2_generation_terrain.test.ts](../../src/test/u_18a_2_generation_terrain.test.ts) 共 32 项：全层终点真值（火盖水、暗杆、压板、硫矿、透明阻障、楼梯覆网）、怪/机器占用与四邻序；DL/火路/硫矿路、D/O、早退/无路/边界/并列序；负与正扫描器输入；暗杆与密门热度、机器及物品禁区；护符/钥匙实际 populateLevel 旁路与唯一性。钥匙选择前 RNG 等于牌堆处理前状态，绑定字段不变。对抗测试中的抽取控制只作用于一次护符选择，几何分布循环仍走真实 RNG。"
+      },
+      {
+        "line": 66,
+        "text": "保留的关键守卫包括 p1_26/29/30/31_35/37、c_0…c_8、b_4b、p1_20、全部选中的 V/blueprint/U05a、p4_9/10、U07、U01/U03/U24 和旧字段/DF 读者白名单。楼梯、horde、机器 feature 的物品资格和产物所有权未改；不把热图 secretPass 用作物理位移许可。"
+      },
+      {
+        "line": 68,
+        "text": "施工中遇到的问题均未通过放宽原守卫消除：依赖根链接使 Vite 临时文件写到沙箱外，改为逐包只读链接、缓存留本树；首次候选采样混入构造临时局，修观察边界后重采 s0/s1；新夹具错误写只读 isBurning、全局固定最低 RNG 导致几何循环不退出、抽离静态 spawnKey 丢失 this，均修正夹具。早期混合批次和崩溃输出不是最终通过证据；最终测试用 afterEach 恢复观察 spy，避免反事实失败污染后续用例。"
+      },
+      {
+        "line": 93,
+        "text": "依赖复用本机主检出的逐包链接，缓存和 dist 留在本工作树；两处 package-lock SHA256 均为 `3d9027a9ff655ec834674ebbf4b8ff0c00257b8906a375270163ecba5f53e253`。未安装或改动依赖，不宣称全新安装验证。没有改 CE、提交或暂存文件；本轮也不声称完成后续第 5–7 步或 CE 二进制全游戏差分。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-18a-3.report.md",
+    "lines": [
+      {
+        "line": 3,
+        "text": "本轮按 `u-18a.report.md` §6 第5–7步、X-0 §4.2 U04/U04b 与 §3.1 K27/K29 施工。怪群的各入口、楼梯最终落位/重试、CE66 回池、机器地形判据和暗门映射已接入。生成变化采用“各阶段观测、最后一次重捕获”。本文的最终门禁结果见 §7；中途失败均保留，不计作最终通过。"
+      },
+      {
+        "line": 7,
+        "text": "| 入口 | 本轮行为 | CE 依据与边界 |"
+      },
+      {
+        "line": 10,
+        "text": "| 随从 | `GenerationPlacement.speciesForbiddenFlags` 只读永久物种旗标；按 `DL & forbidden` 扫路径、forbidden 检查终点；常规禁走廊、召唤允许走廊；特殊层匹配保留20次重试 | `Monsters.c:650–670,705–740`、`Grid.c:287–360`。不调用运行期 monsterAvoids，不拿临时抗火/悬浮当物种属性 |"
+      },
+      {
+        "line": 15,
+        "text": "| view | 每条 feature 开始时固定一份视野；普通用 P\\|V、passable 用 PB；同时带两旗标时 PB 优先；BUILD_AT_ORIGIN 早返回保留 | `Architect.c:531–535,1343–1350`。复用现有 FOVSys；未修改整个游戏的 FOV 算法 |"
+      },
+      {
+        "line": 17,
+        "text": "`spawnHordeAt` 的成员数量仍沿用现有抽法，怪物生成/变异/机器延后实化顺序没有趁机并入 U19c。`findNearbySpawnSpot` 仍供复活消费，已不负责常规 horde 随从。"
+      },
+      {
+        "line": 22,
+        "text": "- 以 U02b 预抽坐标为目标，先最近切比雪夫候选圈，再 `P|ITEMS|DESCENT|DEEP|LAVA|DF_TRAP`、无 LIQUID、arc<2 的非机器回退格。严格保留 CE 回退掩码，不能把它误写成完整 PB。"
+      },
+      {
+        "line": 23,
+        "text": "- `Architect.prepareStairLoc` 放入口两侧火把、暴露花岗岩、加固邻壁；候选清除区保留 CE 上界不含 `x+5/y+5` 的不对称性。`installStair` 只写 DUNGEON、清 LIQUID/SURFACE，保留 GAS。写层职责仍在已有 Architect 白名单内。"
+      },
+      {
+        "line": 25,
+        "text": "- `populateLevel` 只消费已经安好的楼梯。早期保留的“直接调用就再安梯”分支使合成机器场景失败，已从代码删除；机器效果测试的可解性断言未改。"
+      },
+      {
+        "line": 66,
+        "text": "| s6d | 分层安梯，保留 GAS | 104 | 0 |"
+      },
+      {
+        "line": 67,
+        "text": "| s6e | D26 下梯与 D40 边界 | 4 | 4 |"
+      },
+      {
+        "line": 78,
+        "text": "s6d 的完整cell哈希也包含旧 char/color 缓存：替换整格 setTerrain 为按层安梯后不再写旧橙/蓝缓存，不能将104层哈希变化误读为104层都有 GAS 差异；GAS 保留由定向叠层用例验证。"
+      },
+      {
+        "line": 93,
+        "text": "| D26 没有下梯 | 原 P1-26 仅这一断言红；CE 最深40；把新边界测试放回 s6d 会红 | P1-26 的存在性改 D1…26 都有两梯；安全与连通断言原样保留 |"
+      },
+      {
+        "line": 99,
+        "text": "| 非机器布点怪物一律不能进机器 | s5a 原 P1-37 AD1绿，永久物种路径落位后红；CE minion forbiddenMapFlags 没有 IS_IN_MACHINE | 领袖/物品/钥匙/护符/楼梯约束保留；随从必须有真实 leader、物种合格终点及独立Dijkstra可达路线才允许；锁墙不能穿 |"
+      },
+      {
+        "line": 100,
+        "text": "| 500回合贪心找楼梯必遇有防御目标 | s0 原聚合绿；新安梯后 wired 只打到零防御物种，接线断言红 | 每个配对场景加入同一目录猴子作合法相邻目标；原32 seeds×500回合、自然遭遇、所有接线断言与命中率上下界保留 |"
+      },
+      {
+        "line": 101,
+        "text": "| 钥匙测试内部会先从牌堆拿走两个楼梯格 | 原 U18a-2 key 测试在 s0 绿；population拆分后实际最后合法格变20 | fixture直接提供已安楼梯状态与余下15/16候选；原唯一钥匙坐标15、绑定、危险层及零额外RNG断言全部保留 |"
+      },
+      {
+        "line": 105,
+        "text": "B2 的 CE71 合成场景还依赖旧的“population 内部安梯”：最终长跑报 missing upstairs 后，fixture 增加真实 `placeStairs` 前置调用，原上下梯连通、三只哨兵、HP、归属/休眠断言保留。新的合法 RNG 位置出现 reflective Sentinel，故名称比对改用**本文件原有**生产普查的 `isSentinel`（目录 description + MONST_TURRET），不把变异前缀当成错物种。旧阶段整文件通过记录、失败及修正记录分别为 regression-prefinal、ce71-target、ce71-corrected、ce71-complete；B2 最终整文件重跑，不只重跑这个用例。"
+      },
+      {
+        "line": 138,
+        "text": "**最终复跑声明**：上述159份按文件结果、B2完整复跑、build、test:drift均对应本报告交付的生产实现；最后只写报告/进度/派生验收证据，没有继续修改生产代码、测试或配置。仅重捕获一次基线。仍保留§1–3明确登记的边界（尤其网页端与严格CE连通图差异、固定房址暗门样本、未并入U19c/U26），不把局部闭环说成全CE等价。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-18a.report.md",
+    "lines": [
+      {
+        "line": 3,
+        "text": "2026-09-24；输入提交 `aca4857`。规格：`x-0-survey.report.md` §4.1、§4.3 U18a、§3.1 K42；事实重新读取本树 `BrogueCE-master`。**阶段 A 已建立逐调用者合同；阶段 B 修复气味、安全图、waypoint 的地形查询。生成落位保留现状，交 U18a-2；不宣称全部 AI、玩家移动或 FOV 已对齐。**"
+      },
+      {
+        "line": 29,
+        "text": "| 玩家手动走路、`canMoveTo`，G:3260–3500、9304–9317 | Movement.c:1069 起，1150–1180、1298–1371 | 四层 P；目标与起点均需可通行或有匹配钥匙；墙内可攻击目标例外；对角阻挡；玩家进入晋升先执行；已知熔岩拒绝、深渊/火/气/陷阱确认，状态/记忆/怪物改变结果 | canMoveTo 已 OR 四层，但额外禁深水；攻击前置还读 isPassable，钥匙/笼为特判，无完整对角和确认合同 | 保留；深水实际进入/网挣脱/开笼归 U18，不能本轮只删深水门槛。玩家几何与确认仍需专项迁移 |"
+      },
+      {
+        "line": 32,
+        "text": "| 逃跑安全图，Map/SafetyMap.ts | Time.c:1791–1938；Monsters.c:2360–2400、3503 | 四层，两张不同 cost；P/secret、圣徽、熔岩、无害怪、陷阱/深渊、火、水/硫矿、看不见的密门按序；玩家漂浮/火免；怪状态/驻足/激活/盟友；最后覆盖玩家和梯格 | 有效地形+旧派生位；CHASM 特判；硫矿遗漏；隐藏层陷阱/圣徽/水漏读；无 turnsSpentStationary，用 TURRET 近似激活 | **已修地形及激活 flag 查询**，保留 TURRET 旧近似与驻足缺口；两遍 4 向 scan、饱和/负号/环偏好/快照不变 |"
+      },
+      {
+        "line": 35,
+        "text": "| Dijkstra 引擎及旧 calculateMap，Map/Pathfinding.ts:68–103、172 起 | Dijkstra.c:117–255 | scan 不拥有统一“可走”：上游提供 cost；calculateDistances 分支为免伤驻留怪→密门例外→P/玩家未知→monsterAvoids/指定阻挡 mask→1 | calculateMap 只有旧 isPassable 启发式，当前未找到生产调用；batchScan 接受成本图 | 保留。发现负 -2 对角阻挡与内部正 30000 判断不一致，列入 U18a-2 的独立变量，不能混改共享生成扫描器 |"
+      },
+      {
+        "line": 39,
+        "text": "| 楼梯候选/准备，G floorCandidates 与 populateLevel:1200 起 | Architect.c:3604–3759 | 首选是 **WALL** 格，三正交邻挡 P，另一个非 PB 且弧数<2，两墙角挡 P，8 邻无机器；fallback 禁 `P\\|ITEMS\\|AUTO_DESCENT\\|DEEP\\|LAVA\\|DF_TRAP` 加怪/物/梯/机器；铺梯清 LIQUID/SURFACE | 含 FLOOR 的候选池先抽再过滤，非 CE 墙龛算法；D26 下梯另有边界 | 给 U04 合同，实施留 U18a-2/U04；不能把 fallback mask 当完整 validStairLoc |"
+      },
+      {
+        "line": 40,
+        "text": "| 机器前厅/区域/feature，Generator/BlueprintEngine.ts:1910–1990、2332–2364；DF 连通判据 | Architect.c:48–55、675–710、1162–1201、1340–1354、后续 feature 候选 | 前厅 PB/既有机器；区域 calculateDistances(PB,NULL,true,false)；passable-view 用 PB，普通 view 用 P\\|V；feature 还叠位置/墙/机器/占物等；cellIsPassableOrDoor 是 !PB 或 P 且 secret/key/connect | 前厅仍旧近似；区域已四层但密门投影缺载体时回原旗标；view 尚缺真实约束；一部分连通保底走 terrainAllowsMove | 留 U18a-2/U19a；保留各分支，不统一成 secretPass 或 generic cost |"
+      },
+      {
+        "line": 42,
+        "text": "| 自动探索/鼠标路径，G:9210–9278、9981/10078；Map/Pathfind.ts | Movement.c:2070–2180、2207–2258 | 玩家 creature cost 读记忆/已知、monsterAvoids、临时免疫返岸时间、占怪、陷阱知识；20 点网/恶心/拾取晋升成本、回避物+10；探索未知格成目标，测绘墙按 DUNGEON/LIQUID 特例，物品优先，梯 cost100 | BFS 用 isPassable 或未知格，物品只检查位置；最终 A* 用 canMoveTo；无 CE 风险成本/记忆；斜步 1.414 | 本轮合同，保留；不能把玩家物理通行替代探索安全/知识合同，接 U12/U23 |"
+      },
+      {
+        "line": 53,
+        "text": "| CreaturePlacement.teleportCandidates / Cloning 路径 | 禁区取永久物种flags，路径与终点mask分开（DL & forbidden），免伤驻留怪与secret分支；终点另过占用/FOV/梯/机器 | 已有四层局部实现；保留，U07不要误套战术safety图或玩家确认 |"
+      },
+      {
+        "line": 55,
+        "text": "已知信息残差：Safety/Waypoint 的 nextStep 仍是现时世界近似；web `isVisible` 也不是单独的 CE IN_FIELD_OF_VIEW 位，暗处的密门成本可能仍不同。楼梯覆盖现在查任意层的梯地形；CE 用保存的梯坐标（即使梯tile被移除也保留），web仍缺该独立坐标合同。"
+      },
+      {
+        "line": 59,
+        "text": "下表按 C/Monsters.c:1313–1513 的真实顺序，命中返回后不再进入后续。`tFlags/cFlags` 对玩家走 getLocationFlags 的记忆分支（Movement.c:2041–2068）；怪物读现时世界。`cellHas*` 仍读现时四层，所以不允许把整个函数统一改成一个“已知格”对象。"
+      },
+      {
+        "line": 129,
+        "text": "玩家手动行走不是上述 S 的玩家 cost：CE 火免熔岩 cost 的反直觉 `!immuneToFire` 已重新核实并原样保留；不得拿它来做玩家移动许可。玩家当前 canMoveTo 对四层 P/深水拒绝，对网/浅水/熔岩/深渊放行，后续玩法状态另外处理；这与 CE 手动确认及自动探索均有差异。"
+      },
+      {
+        "line": 133,
+        "text": "## 5. 阶段 B：修复与保留的界线"
+      },
+      {
+        "line": 139,
+        "text": "- `Scent.ts`：传播、留味、局部最大改用旗标；保留写味 `||` 和回合/RNG规则。"
+      },
+      {
+        "line": 140,
+        "text": "- `SafetyMap.ts`：严格按 CE 顺序派发地形成本、密门重置条件；保留动态占用/源格/两次扫描框架；梯格覆盖改查 layers，防止网/气显示层遮掉楼梯。新增实际 GETS_TURN_ON_ACTIVATION 查询；驻足计数缺口仍登记。"
+      },
+      {
+        "line": 145,
+        "text": "**生成流界线**：waypoint 初始化输出（覆盖/距离图）会改变，但既有 `isolateRngDuring` 在 finally 恢复两流状态、当前流及计数；后续游荡轨迹可以改变并间接影响之后生成，这与 X-0“间”列一致。本轮保证的是新局/直接 generateDepth 的既定生成观测不漂移，不承诺交互后的轨迹/RNG不变。除了 drift，还与 HEAD 对照 4 seeds×26层的地形、两 RNG 状态、实质计数、两流原始抽取数，见最终证据。没有通过重采掩盖变化。"
+      },
+      {
+        "line": 149,
+        "text": "| 顺序 | 单变量改动 | 必须先记录/保留的守卫 | 不能顺手混入 |"
+      },
+      {
+        "line": 156,
+        "text": "| 6 | U04 楼梯先落实最终落位合同，再墙龛候选/回退/清层；每个杠杆单独 trace | 首选/回退原因、上下梯互达、D26边界、CE66成功和失败种子 | 不在同一补丁顺便解 CE66 退池 |"
+      },
+      {
+        "line": 159,
+        "text": "每步流程：保存旧 baseline/hash → 原始 drift → 候选/拒绝原因/RNG trace 单变量归因 → 独立安全守卫 → 再决定重捕获。没有观察到的漂移不伪造归因，本轮上述清单是下一轮施工，不是已运行的实验。"
+      },
+      {
+        "line": 169,
+        "text": "| U18 | `terrainBlocksMovement` 与 §2玩家/§3怪物/§4深水和网 | 手动深水进入、卷物、潜水、网挣脱、开笼关系；保留“不做旧存档兼容”裁决 |"
+      },
+      {
+        "line": 175,
+        "text": "复现：在 brogue-web 执行 `node scripts/u18a-audit.mjs`。从规格七个 R 文件做字符串字面量引用闭包（包括源码扫描路径）并合并 S 的全 src/scripts 命中；文档另列。为保守起见保留注释命中，不把命中数量冒充真实运行时读者。输出 [search.json](u-18a-evidence/search.json)、[documentation-hits.json](u-18a-evidence/documentation-hits.json)、[legacy-accesses.json](u-18a-evidence/legacy-accesses.json)。旧字段访问另以 TypeScript AST 分清读取/赋值，不含注释：src/scripts 合计93处属性访问（71读、22写），含3份既有浏览器检查脚本，不把类型声明或注释算作读者。扫描还覆盖 src/test 外脚本；未改扫描器、白名单或原期望。"
+      },
+      {
+        "line": 197,
+        "text": "| G floorTiles/vestibule、entryQualifies/findQualifyingPath、horde/周期/召唤、弧数；Blueprint前厅 | 保留，进入 §6 单变量清单 |"
+      },
+      {
+        "line": 198,
+        "text": "| G updateVision、hasLineOfSight、search掩码；FOV/LightMap 所有 opaque读 | 保留，按 V 接 U21b；不把光学规则换成 P |"
+      },
+      {
+        "line": 199,
+        "text": "| G 几何攻击/甩尾/复活邻格/分裂及 M 鞭矛、移动各分支 | 保留，分别过攻击几何/位移物理/战术合同；不批量替换 |"
+      },
+      {
+        "line": 200,
+        "text": "| G 自动探索 BFS、鼠标移动 | BFS旧位保留；canMoveTo已经四层但非CE安全图；接知识/探索成本 |"
+      },
+      {
+        "line": 201,
+        "text": "| Pathfinding.calculateMap | 当前生产无调用，保留并标旧语义；不为未用接口扩生成面 |"
+      },
+      {
+        "line": 203,
+        "text": "| Grid、Promotion、Architect及G地形改写中的旧位赋值 | 原样保留；Promotion部分是真flags、Grid是旧投影的写入口不一致仍存在 |"
+      },
+      {
+        "line": 204,
+        "text": "| scripts/w13-browser-check、w14-browser-check、w26-browser-check | 既有浏览器验证脚本的观察读取保留；本轮未执行浏览器脚本 |"
+      },
+      {
+        "line": 215,
+        "text": "3. `T_DIVIDES_LEVEL` 不含火/硫矿；楼梯 fallback 也不含两者，而入场终点 PB 包含，必须保留区别。"
+      },
+      {
+        "line": 220,
+        "text": "任务 §3 自检：不实现 U04/U07/U08/U17/U18 的玩法；不改旧存档；不重捕获基线；不改原守卫/扫描器；生成侧已提供精确下一轮清单。清单外新增仅本轮只读审计/生成对照脚本、独立测试与证据；DF 文件为派生四层/发现旗标的既有事实查询宿主，未扩大 DF 执行链。未做浏览器或 CE 二进制逐回合差分，本轮验证为本地源码回源与 headless 合同/回归。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-19a.report.md",
+    "lines": [
+      {
+        "line": 3,
+        "text": "本轮执行 `ai_docs/tasks/u-19a.prompt.md`，以本仓库 CE 为准。修正蓝图视野的整数斜率边界；两个旗标的候选门、逐 feature 快照时机沿用已经合并的 U18a-3 接线。未修改机器资格、目录频率、玩家日常 FOV、pendingItems/pendingMonsters 或 horde 时序。未提交。"
+      },
+      {
+        "line": 18,
+        "text": "| 边界算法 | `Movement.c:2714–2878` 的八象限变换、32768 斜率精度、C 除法向零截断、列推进与圆形边界。阻挡格本身照亮；origin 由 `buildAMachine` 显式置真 |"
+      },
+      {
+        "line": 20,
+        "text": "| 候选门顺序 | `Architect.c:518–535`：`MF_BUILD_AT_ORIGIN` 早返回在 view 门之前；其余候选须在视图内。已有 hallway/perimeter/room-origin 规则保留 |"
+      },
+      {
+        "line": 22,
+        "text": "**按 CE 纠正任务书的表述边界**：PASSABLE_VIEW 是以 PB 遮挡的视图，不是可达性 flood fill，也不承诺墙内 feature 本格可站立；两种视图都包含遮挡端点。视图是 feature 建造时快照，后续 feature 可以再写门、墙或危险地形。DF 受约束的是候选 anchor，不是随后扩散的全部 footprint。机器生成约束也不等价于玩家光照可见性、暗杆已发现或整机谜题可解；这些边界没有被自行扩大成 CE 没有的规则。"
+      },
+      {
+        "line": 31,
+        "text": "- 对最终 32 项测试，隔离构建中仅去掉普通候选门：**11 failed / 21 passed**；仅去掉 passable 候选门：**13 failed / 19 passed**。保留 oracle、所有断言和机器原表不变：[ordinary 负例](u-19a-evidence/no-ordinary.txt)、[passable 负例](u-19a-evidence/no-passable.txt)、[变体构造](../../scripts/u19a-variants.mjs)。这些是预期红的反事实，未计为最终门禁失败。"
+      },
+      {
+        "line": 40,
+        "text": "下表使用固定房址，调用真实 `applyBlueprint` 写完整蓝图，保留每条 feature 的原顺序、旗标、最小数量、DF 与实体请求；没有缩减成单 feature 替身。它**不覆盖上游 roomSize/选址抽签**，也不冒称每台均自然抽中。这样才能对 frequency=0 或已退池载体直接核验本轮约束。CE36/38 使用 seed=2，其余 seed=1。"
+      },
+      {
+        "line": 65,
+        "text": "暗杆额外验证：见 [移动、搜索显露记录](u-19a-evidence/lever-reach.json) 和 `browser-lever-ce*.png`。本补验隔离普通散布怪物，保留所有机器居民，通过真实 `handlePlayerAction` 从 origin 逐步走到暗杆邻格，再搜索显露。前提来自 CE `forbiddenFlags=0`，只验证地形/视图合同，不证明任意敌情下都能立即走到。首次未隔离普通怪物，CE38 被战斗拖到144次动作、CE55在150次内未抵达；[首次完整记录](u-19a-evidence/lever-first-attempt/lever-reach.json) 保留，没有把这次结果算通过，也没有修改任何生产规则或既有守卫。"
+      },
+      {
+        "line": 72,
+        "text": "- 受影响载体中，CE18 的显式资格退池、CE55 的显式资格退池均保留；CE36/38 的替代 feature、CE15 的 frequency=0 均未改。其余既有 CE52/献祭笼领养资格限制和 autoGenerator 集合也未动。"
+      },
+      {
+        "line": 73,
+        "text": "- 当前源码没有“因为 view 缺失而单独退池”的资格分支。不能因本轮视图修好就擅自回池；已有杠杆/虫道/领养等退池理由与后续回池验收仍另轮登记。"
+      },
+      {
+        "line": 74,
+        "text": "- U19b 的前厅 pendingItems、U19c 的 horde 实化/回滚、NEAR/FAR 距离近似及玩家通用 FOV 不在本轮修改范围。"
+      },
+      {
+        "line": 84,
+        "text": "| s0→s1 | ordinary 改为 CE；passable 保留旧 scanner | 18 | 2个 fp |"
+      },
+      {
+        "line": 89,
+        "text": "**ordinary 归因**：9层 view 指纹变化；后续流传播中10层 terrain、11层活动怪物/物品/RNG、2层休眠实体、5层机器指纹变化。只有 seed20260913/D16、D26 的基线 fp 改变，分别为 `9f6ece6f:5068 → e6beec9d:5069`、`cc2e8309:4837 → 258fc923:4838`。怪物数量/物种集合/物品数量均未改变；这不等于实例/RNG 未变。"
+      },
+      {
+        "line": 120,
+        "text": "**最终复跑声明**：上述 build、185份完整文件测试、独立 drift 均对应交付的同一生产/测试/配置输入，四个命令全部 exit 0，之后仅整理报告、进度和派生验收证据，没有继续改生产代码、测试、配置或基线。基线只重捕获一次。§3 的 CE15 既有实化缺口、固定房址证据口径、原退池与后续轮边界保留，没有用本轮视图通过替代整机玩法/回池验收。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-19b.report.md",
+    "lines": [
+      {
+        "line": 11,
+        "text": "| `Architect.c:398–434` 房间递归 | 检查每个邻格的 HAS_ITEM；在已访问/chokeMap 界检查之前。另检查非 gate 的 IS_IN_MACHINE | 给 `mapMachineInterior` 传入当前 engine 的 pendingItems 查询；包含最终 interior 之外相邻物品的反例。既有 web 对机器 gate 的更严格规则不在本轮改动 |"
+      },
+      {
+        "line": 13,
+        "text": "| `Architect.c:1185` 区域外壳 | HAS_ITEM \\| HAS_MONSTER \\| IS_IN_MACHINE；撞上后进入原重试协议 | 已有接线保留，补行为与反向移除验证 |"
+      },
+      {
+        "line": 15,
+        "text": "| `Architect.c:1530–1534` / `Items.c:422–435` 地面物品 | 生成/领养后即时 placeItemAt 并置 HAS_ITEM；外包和怪物携带不置地面位 | 已有写入和所有权机制保留；父→子、子→父、外包→领养和回滚均检验 |"
+      },
+      {
+        "line": 22,
+        "text": "- [BlueprintEngine.ts](../../src/engine/Generator/BlueprintEngine.ts)：前厅与房间物品读取，供后续 AutoGenerator 使用的实时查询，纠正过时注释。"
+      },
+      {
+        "line": 33,
+        "text": "- 后续顶层机器、递归机器和第二趟 AutoGenerator 共享同一个 engine，物品请求的作用域没有局限于单条 feature 或单个 MachineResult。"
+      },
+      {
+        "line": 37,
+        "text": "专项构造完整父子事务：父 feature 在 origin 生成地面物品，然后同一 feature 建前厅；前厅也在该 origin 产物。旧实现返回成功且产生两个不同实例的同格地面请求；修复后前厅因 HAS_ITEM 失败，父机器整体回滚，已提交双产物数 **0**。另验“第一个子机器落物 → 父的后续 feature 再建前厅”同样拒绝并回滚。不是在 populateLevel 丢掉第二件来掩盖碰撞。"
+      },
+      {
+        "line": 41,
+        "text": "**“任何同格双产物都必须为零”与 CE 冲突。** 物品和怪物可共格，BATO 可以绕过 personalSpace，零 personalSpace 不预留格；CE `placeItemAt` 本身不做通用去重。测试显式保留这些正例。未以扩大禁叠范围修复本轮问题。"
+      },
+      {
+        "line": 45,
+        "text": "[专项测试](../../src/test/u_19b_pending_occupancy.test.ts) **18/18 通过**，含64行 C oracle、原点/非原点前厅、房间边界外邻格、活动/休眠/horde目标、Architect→AutoGenerator真实接线、父子可见性、领养单一身份、失败重试回滚、合法叠放及 CE15 玩家操作。"
+      },
+      {
+        "line": 47,
+        "text": "[变体脚本](../../scripts/u19b-variants.mjs) 只在隔离打包/测试加载中改指定生产读口，保留测试断言和目录；[反事实结果](u-19b-evidence/negative-summary.json) 的每个变体均失败："
+      },
+      {
+        "line": 62,
+        "text": "施工中首次 build 报新增测试装配的两处 TypeScript 类型错误（回调返回值、隐式参数），已修正后复跑；oracle 抽取器首次误把注释中的 `{` 计入括号层级，主动中止后改为只按去注释的代码定位函数边界，编译的 CE 正文仍原样。上述装配错误不作为生产反例。"
+      },
+      {
+        "line": 72,
+        "text": "随后仅更新 E3 的“该类别尚未支持”前提：从 null 改为验证 AMULET 类别、唯一种类、已鉴定、目标坐标；POTION 断言、E1 frequency=0、E2自然护符唯一性、E4 D26 fallback守卫均原样保留。**这里明确涉及缺失状态断言的翻转，不冒称只是随机布景调整。** 完整差异 [e3-premise-review.patch](u-19b-evidence/e3-premise-review.patch) 交验收方裁决；没有提交。祭坛整份与U19b专项合计 **54/54通过**：[完整正向复核](u-19b-evidence/e3-guard-positive.txt)。更新后再撤去 AMULET 支持，该 E3 **1失败**：[新守卫反事实](u-19b-evidence/e3-guard-negative.txt)。自然 fallback 不随该补线删除：CE15仍frequency=0，否则会破坏E1/E2/E4保护的自然流程。"
+      },
+      {
+        "line": 78,
+        "text": "方法边界：直接给定房址，完整 `applyBlueprint` → 深展开父子结果 → 真实 `populateLevel`。不代表上游自然选址抽中；观察者定位在产物或邻格，隔离普通散布敌人的战斗，保留所有机器居民/产物/地形。逐台记录验证本轮产物观察和拾取，不把单次搜索升级为所有原生谜题全解。CE18/55 等既有退池保持原状。"
+      },
+      {
+        "line": 80,
+        "text": "**CE47/52 不计通过**：完整 feature 均写入后仍被原来的 `adopted item destination blocked` 拒绝。精确 HEAD 与最终对照相同：[入口证据](u-19b-evidence/disabled-scene-head.txt)、[最终证据](u-19b-evidence/disabled-scene-probe.txt)。保留原失败条件及 U19 后续分轮，未绕过它们制造“每台都成功”的记录。"
+      },
+      {
+        "line": 82,
+        "text": "浏览器过程留痕：首次 CE10 被普通散布怪物包围，无法从预定观察位见到目标；隔离普通敌人后重新整跑。第二次 CE26 先搜索导致图书馆关闭笼子并驱离观察者，后续 `g` 不在产物格；最终按实际站位直接执行拾取，取物和笼闭结果正常。两次失败日志/记录保留为 `browser-*-first-attempt.*`。没有修改生产代码或旧守卫。技能客户端已实际执行并读取文本态（移动动作1次）；其 canvas PNG 仍是既有黑图，已打开确认，未把它计作视觉通过，视觉验收使用有头整页截图。"
+      },
+      {
+        "line": 101,
+        "text": "AMULET 因 CE15 frequency=0，不改变104层自然样本；完整固定场景从报错变为可拾取及唤醒。原始各阶段为 `generation-{s0,s1,s2,s3,undo-items,undo-monsters,undo-amulet}.json.gz`，[逐字段归因](u-19b-evidence/attribution.json)、`undo-*.patch` 均保留。"
+      },
+      {
+        "line": 127,
+        "text": "## 7. 保留的后续边界"
+      },
+      {
+        "line": 130,
+        "text": "- 保留已有房间选址对机器 gate 的更严格处理、center/door预留、NEAR/FAR近似，以及 CE47/52 领养目标阻塞退出。未将本轮解释成全 BlueprintEngine 与 CE 已逐位等价。"
+      },
+      {
+        "line": 131,
+        "text": "- CE15 仅闭合这条请求实化与真实拾取/守卫链；频率、D26常规护符投放、整局终局规则不在本轮调整。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-19c.report.md",
+    "lines": [
+      {
+        "line": 5,
+        "text": "本轮验证的是 **feature 调用位置、现有生成器的 RNG 消费时机、真实占用和实体事务**。不是完整 CE 建层或 `generateMonster` 内部的逐骰一致性证明；已发现而明确保留的边界见 §7。"
+      },
+      {
+        "line": 11,
+        "text": "| Architect.c:1495–1534 | item 生成/资格重掷先于子机器及怪物；非外包/非携带物立即 placeItemAt | 同一 `Item` 实例在 feature 创建，资格比较使用此前真实实例；领养复制请求但共享实例；先落地再进入后续 feature |"
+      },
+      {
+        "line": 12,
+        "text": "| Architect.c:1543–1583、470–489 | 子机器产物归入父事务；失败清除物品与怪物，不倒退 RNG | `applyBlueprint` 包装实体 checkpoint；失败和异常均恢复地图、删除新增实体；父失败涵盖已成功子机器；保留较早成功机器及其携物 |"
+      },
+      {
+        "line": 13,
+        "text": "| Architect.c:1591–1661 | horde/指定怪即时入表；活动怪占格；全队记 machineHome，按睡眠→逃跑→休眠顺序收尾 | Game adapter 在 feature 内调用真实 horde/Monster 路径；随从与领袖同步存在；后续建造直接读取真实活动怪 |"
+      },
+      {
+        "line": 15,
+        "text": "| Architect.c:1628–1644 | 保留 horde 原有领袖/随从；尚无角色的怪加入本机器部落 | 同机独立怪关联首个有效领袖；不覆盖已有 horde 成员关系 |"
+      },
+      {
+        "line": 17,
+        "text": "| Architect.c:1705–1710 | 最后有效物品/携带者配对在整机成功后交接，替换原携物 | 成功后交给同一真实领袖实例；后续没有携物的 feature 不抹掉有效配对；失败释放携物且不产生地面副本 |"
+      },
+      {
+        "line": 18,
+        "text": "| Monsters.c:2052–2067；Architect.c 的 HAS_ITEM/HAS_MONSTER 消费点 | HAS_MONSTER 只指活动表；携物不占地面 | 前厅、房间、区域和后续 AutoGenerator 查询 live adapter；楼梯忽略已实化请求的旧坐标；机器随从落位不把休眠表当活动位 |"
+      },
+      {
+        "line": 26,
+        "text": "Game 的每次新建层尝试均安装 adapter；成功网格沿用建造前注册的 DF 回调，不再重复注册；生成期间临时借用玩家离图位置，并在 `finally` 中恢复，环境预演和最终落位各自保持原合同。成功层的实体不再被旧的“fresh state”重置擦除。**独立 `new Architect` / `new BlueprintEngine` 未传 adapter 时保留地形/请求预览模式**，支持现有地图算法测试及手工 `populateLevel` 消费夹具；真实 Game 生产路径不走该延迟模式。"
+      },
+      {
+        "line": 28,
+        "text": "U05 的资格重掷算法未改；实化位置移动。CE 对机器 feature 的 placeItemAt 不套用普通散落物的拒绝条件，本轮即时物品按该位置放置；既有领养落点可达性检查及资格过滤仍保留。U04c 的 machineCells 仍从最终 grid 机器号派生。快照 schema、物品/怪物编解码未改变。"
+      },
+      {
+        "line": 37,
+        "text": "- 后续 DF 能唤醒已创建的休眠怪；物品移动或移除后，查询不再使用旧请求坐标。"
+      },
+      {
+        "line": 38,
+        "text": "- 后续 feature 失败、成功子机器随父失败、异常边界的事务代码；借入物品重试保留实例和绑定。"
+      },
+      {
+        "line": 40,
+        "text": "- 无携带者、携带者被后续替换或生命值降至 0/负数时，不发布无主物品；静默替换没有掉落副本。"
+      },
+      {
+        "line": 47,
+        "text": "最终复核补充 HP=-1 的负例，修复前能直接抓红，HP=0 对照通过：[修复前](u-19c-evidence/negative-hp-before-fix.txt)。修复后专项、U05a 与爆炸测试 **85/85 通过**：[专项复跑](u-19c-evidence/guards-final-preflight.txt)。此前未完成的冻结运行已中止并归档至 `prefinal-negative-hp/`，不计最终门禁。"
+      },
+      {
+        "line": 61,
+        "text": "| S3b→S4 | 回滚保留先前携物、静默删除的领导关系及子事务观测 | 0 | 0 |"
+      },
+      {
+        "line": 63,
+        "text": "| S5a→S5b | 楼梯不再重复保留已实化请求坐标 | 0 | 0 |"
+      },
+      {
+        "line": 66,
+        "text": "| S5d→S5 | 提前绑定后续 DF 的实体消费口 | 0 | 0 |"
+      },
+      {
+        "line": 71,
+        "text": "0 层变化只代表该自然样本未触发差异；对应边界仍由专项正反例测试。回滚不恢复 RNG，失败消耗被保留。"
+      },
+      {
+        "line": 86,
+        "text": "三份旧 p2 基线、blueprints.json 和 hordes.json 原样保留：[哈希表](u-19c-evidence/baseline-and-catalog-hashes.json)。"
+      },
+      {
+        "line": 93,
+        "text": "2. **F-2c 爆炸晋升夹具**：原测试在自然地图上数全图晋升，假设只有手放的爆炸一格。漂移后另一自然格也晋升，结果 2 而非 1。旧源码原测试通过，新源码原测试失败。改为单一合成地板上的爆炸；`promotions.length===1`、vanished、df=null、清 SURFACE 全部原样保留。[旧](u-19c-evidence/explosion-head-original.txt)、[新原守卫](u-19c-evidence/explosion-current-original.txt)、[待验收 patch](u-19c-evidence/explosion-premise-review.patch)。"
+      },
+      {
+        "line": 100,
+        "text": "扫描当前目录中涉及物品/怪物的 56 台 CE 蓝图，使用完整 feature 表和固定地图场景，走即时 adapter。**53 台完成实际玩家命令：38 次拾取转移、6 次唤醒、5 次击杀、4 次攻击免疫怪且 HP 正确保留。没有用“能看见身份”代替最终这 53 条操作结果。** 控制台/pageerror 为 0，所有场景均增加命令记录。"
+      },
+      {
+        "line": 118,
+        "text": "8 并发运行中 B2/W5 长跑分别在约 935/1081 秒后标红；为改用低并发终验，该次未完成运行已归档至 `prefinal-parallelism/`。中止前 692 份输入变化为 0；中止未生成完整错误详情，不能据此认定失败原因。最终门禁改为 4 并发，并添加失败即时落盘 reporter；生产源码、原断言及测试时限均未改变，不拼接前次成功项。 随后完整低并发运行中 B2 21 项约 396 秒、W5 18 项约 491 秒通过。"
+      },
+      {
+        "line": 128,
+        "text": "| 既有延后项 | 8 skipped、5 todo；本轮未新增，见[逐项清单](u-19c-evidence/existing-deferred-tests.json) |"
+      },
+      {
+        "line": 142,
+        "text": "## 7. 明确保留的边界"
+      },
+      {
+        "line": 144,
+        "text": "- **完整 CE RNG 不是本报告已证明的结论。** 现有 Monster 初始化仍使用 web 睡眠/突变实现；CE 的 waypoint/gender 初始化、monsterItemsHopper 随机携物及其 RNG，和 web 死亡时抽普通掉落的旧差异未在本轮重写。horde 数据也仍是现有 min/max 结构。上面的 CE oracle 只证明 feature 边界的调用顺序；真实 RNG 的全部状态用于阶段归因和观测中立性验证。"
+      },
+      {
+        "line": 145,
+        "text": "- CE horde 的伴随机器（如 goblin warren horde 的 CE62）及原建造器的失败重试策略仍沿用已有 web 实现。本轮未扩展成完整 `spawnHorde` / `buildAMachine` 的逐行移植。它们是后续 CE 全函数同构的边界，不能由本轮调用位置守卫推断已闭合。"
+      },
+      {
+        "line": 146,
+        "text": "- K30 的“延迟 horde 最终抽不到携带者”不再发生到 populate 才发现：建造当场得到空实体集合；有需要所有者的物品时触发现有 U05a 不变量并回滚。CE 对异常无主 torch 的历史行为没有被用来削弱 web 唯一所有权守卫；多生成 torch、携带者被后续覆盖等不满足该合同的合成输入仍拒绝整机。"
+      },
+      {
+        "line": 147,
+        "text": "- K31 的最终机器格来源继续维持 U04c 的 grid 合同，本轮未另造从请求坐标派生的 machineCells。真实实体占用不等于机器成员格，两者分别保留。"
+      },
+      {
+        "line": 148,
+        "text": "- CE28/47/52 的既有可达性/机关边界、U19d/e/f 的后续玩法与回池未扩入。没有调整任何蓝图/horde 数据或资格频率。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-19d.report.md",
+    "lines": [
+      {
+        "line": 16,
+        "text": "生产修改只有 [BlueprintEngine.ts](../../src/engine/Generator/BlueprintEngine.ts) 和 [Game.ts](../../src/engine/Core/Game.ts)。`isThrowingTutorialReward` 只认可 CE28 的领养产物、同机号可收笼、其他层无 pathing blocker、同机号 LIQUID 压力板；不把任意堵路地形或任意笼子当可领取奖励。普通物品落点保护、未知地形拒绝、物品唯一所有权和整机失败回滚保留。负例覆盖错机号、奖励格叠坑和压力板缺失。"
+      },
+      {
+        "line": 41,
+        "text": "[共享动作驱动器](../../src/test/fixtures/u19d-machine-actions.ts) 每步调用玩家命令；投掷调用 UI 同款 `executeItemCommand`。原始自然图、机器编号、钥匙绑定和休眠实体保留。准备阶段把观察者放到机器入口/边缘安全格，生命提高到10000，移除无关活动敌人并冻结居民的 AI 等待时间；之后不瞬移、不手写地形、不移交钥匙、不强制 RNG 或直接调用 promote。此证据证明机关路径与收益，不证明原始难度下整层无伤通关。"
+      },
+      {
+        "line": 75,
+        "text": "两条旧断言只因旧退池前提才绿：`u_17c_triggers` 的“暗杆仍退池”与 `v_2b_6_keys` F0。先在未修改生产代码时记录两条均通过：[旧前提 HEAD](u-19d-evidence/old-premises-head.json)；只恢复CE18后，两条按预期失败，**原 F1/F2 均通过**：[S1 原守卫](u-19d-evidence/old-premises-s1.txt)。随后仅把CE18资格预期改为真，保留其频率8和原feature数组，虫道退池断言保留；F1/F2 代码未改。"
+      },
+      {
+        "line": 87,
+        "text": "| S2→S3 | recipe-only人口消费保留同合同奖励 | 0 | 0 |"
+      },
+      {
+        "line": 95,
+        "text": "- [写入记录](u-19d-evidence/recapture.json)：`writes:1`。三份历史P2基线原样保留。"
+      },
+      {
+        "line": 97,
+        "text": "发现轮曾误将被丢弃的整层机器观测当作最终自然候选，现有U25原始hook保留这类记录；最终自然统计改用真实 `populateLevel` 入参，旧发现输出隔离在 `discovery/`。新笼合同初版也曾读取仅观测时赋值的 `placementFeatureIndex`；已去掉该依赖，最终U25观测开关守卫及无观察器CE28专项验证行为不受观察器影响。两者都未带入唯一基线捕获。"
+      },
+      {
+        "line": 116,
+        "text": "## 7. 后续归属与边界"
+      },
+      {
+        "line": 119,
+        "text": "- **CE52 → U19f；其领养共性问题同步登记U19e**：保留显式退池和可收笼领养拒绝。CE28的放行按蓝图身份限定，不会顺带放行电晶。CE55也保持退池。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-19e.report.md",
+    "lines": [
+      {
+        "line": 11,
+        "text": "| 置换 CE6 | `GlobalsBrogue.c:221–226`，D13–26、roomSize10–30、frequency50、BP_REWARD；生成 DF_MAGIC_PIPING 和两座祭坛。`Items.c:1177–1220/1293–1310` 消费同机不同附魔物品 | 资格、频率、数据和 U17e 交换消费者均保留。自然房间实际从入口开门，走到两坛丢弃、交换、拾回，验证两座惰性祭坛与管道变焦黑 |"
+      },
+      {
+        "line": 14,
+        "text": "| 闭笼取物归还 CE1/2/26 | `GlobalsBrogue.c:182–197/347–355`：CE1频率30、CE2频率15、D1–12、BP_REWARD；CE26频率35、D1–26、BP_ADOPT_ITEM。ITEM_IS_KEY 与非消耗归还位置；85关闭、84开启 | 三台本来都可生成。本轮分别验证借出、离开闭笼、原物返回、放回、再借另一件。CE26 自产藏品与领养钥匙的所有权均保留 |"
+      },
+      {
+        "line": 54,
+        "text": "[共享动作驱动器](../../src/test/fixtures/u19e-machine-actions.ts) 使用 `handlePlayerAction` 与 UI 同款 `executeItemCommand`；没有在运行中改地形、直接 promote、瞬移目标、重置 RNG 或手写奖励归属。自然地图、机器号、原物品和献祭 horde 保留。"
+      },
+      {
+        "line": 62,
+        "text": "| CE26 | 424242 / D26 / #3 | 50 | 借出 #688→闭笼→归还→借出 #689→返回；原领养钥匙 #682 保留 |"
+      },
+      {
+        "line": 79,
+        "text": "1. V-2b-7 G2 原要求 CE47 永不生成。原代码通过，最终代码原断言失败（原扫描出现6台），见 [HEAD](u-19e-evidence/old-premises-head.json) / [最终原断言](u-19e-evidence/old-premises-final.json)。保留14 seed×D1–26、原始堵路地形集合、CE52零出现；仅将 CE47 必须缺席改为必须出现，并由新整机守卫验其可解。"
+      },
+      {
+        "line": 80,
+        "text": "2. U19d 的专用 helper 单测随任务明确要求删除 helper；保留 CE28 物品身份、产物落位和存读断言，通用即时/备用落点合同由新专项覆盖。原“CE47/52 open-map builder 返回null”在解除过滤后仍因场址失败返回null，是不足以证明退池的夹具，改为保留CE28真实领养和CE52实际加权资格断言；CE47 改由真实自然整机负责。"
+      },
+      {
+        "line": 81,
+        "text": "3. U19d 的 CE40/43 固定自然样本在 HEAD 两项通过，在最终原样本两项失败。CE43 原位置已没有该机；CE40 新图中原四向/搜索脚本经历23步、在气体中耗尽生命，并非奖励丢失（[逐步记录](u-19e-evidence/ce40-old-scene.json)）。仅将两行种子/深度/机号更新到 seed6/D11 的自然样本，原行为断言完全保留；[更新后两项通过](u-19e-evidence/prior-natural-final.json)。未将旧脚本失败升级为新图不可解的结论。"
+      },
+      {
+        "line": 123,
+        "text": "## 8. 复现与交付边界"
+      },
+      {
+        "line": 136,
+        "text": "`u19e-attribution.mjs` 可重新计算分阶段正反向记录；`u19e-recapture.mjs` 已完成唯一写入，保留的 `recapture.json` 会拒绝第二次捕获。专项命令、浏览器动作、原守卫反事实、最终每文件结果均在本报告链接的证据目录中。三个既有测试文件的前提变化与两行自然样本重定位属于第5节列出的验收提案；没有通过减少扫描种子、数量阈值或新增 skip/todo 绕开它们。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-19f.report.md",
+    "lines": [
+      {
+        "line": 9,
+        "text": "CE52、CE55 已解除 `blueprintQualifies` 中的显式退池。全部 CE 蓝图均通过自身深度/旗标的资格校验，D2 的 `RETIRED_INVENTED_BLUEPRINT_IDS` 保留。`RETIRED_AUTOGENERATOR_MACHINES` 仍为空。"
+      },
+      {
+        "line": 15,
+        "text": "CE 撞杆入口已由 U19d 的通用 `promoteOnPlayerBump` 实现，符合 Movement.c:1152–1160，本轮保留并在整机反事实中覆盖。U19e 的闭笼领养物品修复与 U17f 的 DF191/192 也直接复用。"
+      },
+      {
+        "line": 21,
+        "text": "- `finishWalls` 原 `setTerrain` 会清空其他层，抹去暴露边缘的休眠虫道标记，剩余埋墙标记无法开始扩展。按 CE Architect.c:2496/2517 只写 DUNGEON，保留 LIQUID/SURFACE/GAS。没有改动墙暴露判据。"
+      },
+      {
+        "line": 23,
+        "text": "`FUNGUS_FOREST` 的旧 FOLIAGE 别名也恢复为独立菌林，保留 CE 的菌光、踏倒、再生和燃烧链。此项单独归因，没有混进 autoGen row 9。"
+      },
+      {
+        "line": 31,
+        "text": "**CE55：seed 13，D16，machine 4。** 入口 (41,9)，394 个正常命令。搜索显露墙杆，撞杆后 73 个 dormant 标记激活，隧道自然扩展；第 59 个命令时已开路。保留 4 条原生 Underworm 的正常 AI/战斗，途中击败它们，取得原钥匙 ID 341，返回入口。旧墙层实现的同一机器在 350 次等待后仍无路；撤销墙层修复的反事实再次失败。"
+      },
+      {
+        "line": 33,
+        "text": "共同观测边界：只在开始时将玩家移至实际入口、提高 HP 至 10000、移除无关怪物；保持本机居民、正常行动、战斗及 RNG，不宣称普通血量通关难度或所有种子都已穷举。奖励唯一性及存取档往返另行断言。"
+      },
+      {
+        "line": 37,
+        "text": "先运行旧 `test:drift`，1/1 通过，原始基线未变。固定四 seeds × 26 层共 104 层，逐阶段启用：旧 HEAD → 新载体支持但旧选择 → CE52 → CE55 → 菌林别名恢复 → 每一条 autoGen → 墙层保留。加载器变体不来回写工作树。每阶段记录地形指纹、实体/物品、休眠怪物、RNG、机器产物和视图哈希，详情见 `attribution.json` 及 `generation-*.json.gz`。"
+      },
+      {
+        "line": 39,
+        "text": "支持层本身变化 0 层；CE52 变化 71 层，CE55 变化 33 层，菌林别名变化 3 层（仅 fp/terrain）。以下“变化层数”是相邻阶段任一记录字段有差异的层数，包括 RNG 的后续传播，不表示机器在这些层都出现。"
+      },
+      {
+        "line": 93,
+        "text": "火/桥补充验证：autoGen 菌林真实火杖焚烧，甲烷储罐气云真实引燃并传播至爆轰；自然 CE65 seed4/D8 的石桥可踏入/返回且受火后保留。CE65 的 `DF_CATWALK_BRIDGE` 生成的是 STONE_BRIDGE，不能将其当成可燃绳桥；原 U17b 绳桥焚毁/坠落链保持在回归范围内。"
+      },
+      {
+        "line": 109,
+        "text": "此前 U19d/e 的固定自然种子因生成流变化需重新定位；保留相同机器族、命令驱动和原结果断言，候选动作和拒绝原因完整留存在 `prior-natural-retarget.json`。补充严格取样见 `prior-natural-strict.json` / `prior-natural-resurrection.json`，被拒绝的候选也保留；没有改弱原来的类别、机关状态、复活满血或存取档断言。"
+      },
+      {
+        "line": 116,
+        "text": "- T9 航点读档检查保留 sentinel 覆盖和原坐标；显式重建使用原构建时网格及 RNG。CE 在 50 次环境预热前建航点，seed42 预热会踩倒两格树丛，见 `waypoint-probe.json`。"
+      },
+      {
+        "line": 119,
+        "text": "- V-2b-7 的旧 14 种子没有抽到 CE52，旧“仍退池=0”断言会偶然绿；保留它们并追加自然种子 17，改为必须实际出现，与 U19f 整机及重新退池反事实配套。"
+      },
+      {
+        "line": 141,
+        "text": "[最终机器可读汇总](u-19f-evidence/final-summary.json)、[命名守卫覆盖](u-19f-evidence/named-guard-coverage.json)、[冻结前输入](u-19f-evidence/frozen-inputs-before.json)、[冻结后输入](u-19f-evidence/frozen-inputs-after.json)、[零输入差异](u-19f-evidence/frozen-input-differences.json)、[既有跳过/TODO 明细](u-19f-evidence/existing-deferred-tests.json)。第一次发现性全测曾报错，后续只在证实旧前提后修改；它未被当作本节的最终复跑。最终复跑期间没有修改任何受冻结文件。"
+      },
+      {
+        "line": 143,
+        "text": "HEAD 仍为 `e6247714a04358be3cde9bd3329c82e091730cc4`，暂存区为空，没有提交。报告及证据文件保留在工作区。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-20.report.md",
+    "lines": [
+      {
+        "line": 11,
+        "text": "- `Inventory` 按 CE 的物品数计算 26 上限；同种食物、药水、卷轴合堆，武器仅同种同箭袋编号合堆；保留满包箭袋编号预检的 CE 次序。背包字母首次入包时分配、移除后不重排，空出的字母可复用。"
+      },
+      {
+        "line": 27,
+        "text": "反事实由 CE 上述源码、对应测试的构造与断言，以及新增 U20 用例共同确定。依任务书“守卫靠旧规则才绿时先反事实证明、只修前提、交验收方裁决”，这些旧断言保留供验收方裁决；全量门禁不能声明为绿。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-21a.report.md",
+    "lines": [
+      {
+        "line": 38,
+        "text": "R（实际读方/改动）：`Appearance.ts`、`GameCanvas.vue`、`Game.ts`、`Monster.ts`、`BoltTargeting.ts`、新增 `MonsterVisibility.ts`。`Sidebar.vue` 无怪物列表，消费 `hoveredText` 与 logger；`DetailGenerator.ts` 仅在上游可见门后调用。保留 `getMonsterAt` 的世界占用/碰撞语义，未把它当展示谓词。"
+      },
+      {
+        "line": 45,
+        "text": "- 最终重点 W/P4 测试：224 例中 218 通过、6 红（`w_2_arcana_submission` 1、`w_9_directed_status` 2、`w_10_poison` 1、`w_18_entrancement` 1、`p4_3_special_monster_flags` 1）。这些旧断言都预设“隐形+心灵感应/催眠能识别并自动瞄准/自动鉴定”，与上述 CE `monsterIsHidden` 合成条件相反。反事实：若恢复旧 `canObserveBoltCreature` 的 telepathy 短路或旧 `visibleMonsters` 的 `telepathyRevealed` 放行，这些断言会绿，但浏览器具名输出/候选会比 CE 玩家知识更多。保留旧期望与测试原文，交验收方裁决；没有以修改守卫换绿。"
+      },
+      {
+        "line": 48,
+        "text": "已知边界：CE 的潜水隐藏、独立心灵揭示位暂无 web 载体。本轮浏览器夹具覆盖常规状态、心灵感应、气体和消息命名入口，未逐一执行所有攻击/法术消息路径。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-21b.report.md",
+    "lines": [
+      {
+        "line": 8,
+        "text": "- `Light.c:120-154`：先用 `lightMultiplier` 放大或缩小，再按 `STATUS_DARKNESS/maxStatus` 的定点三次方衰减（最低 1/20），最后在水中减半；径向衰减独立按倍率和黑暗 fraction 算。web 原公式保留，`Game.refreshMinersLight` 现传 U14a 黑暗载体、当前格深水判据（`Time.c:84-107` 的深水且非漂浮、非缠绕、非阻挡）。"
+      },
+      {
+        "line": 40,
+        "text": "5. 浏览器截图验收未完成：本机本地 Vite 页面启动成功，但计算机浏览器工具返回 `Browser is not available: iab`，随后浏览器与窗口清单均为空。已用真实方法入口做状态/FOV 回归；没有把它写成浏览器已验。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-21c.report.md",
+    "lines": [
+      {
+        "line": 23,
+        "text": "- `w_21_empowerment.test.ts` 原断言“可观察命中时 `result.frames` 包含 180ms 字形闪光”。CE `Items.c:5316` 调的是 `createFlare(..., EMPOWERMENT_LIGHT)`，任务书也明确旧 180ms 字形不等于 CE flare。保留该旧期望；29 项中 4 项因此失败，其他 25 项通过。新 flare 生命周期测试通过。其余 CE flare 触发点（例如部分 DF、召唤及符文）未在本轮全面接线，属于尚未闭合的 K16 子范围。"
+      },
+      {
+        "line": 26,
+        "text": "## 边界"
+      },
+      {
+        "line": 34,
+        "text": "1. `scripts/u21c-ce-appearance.mjs` 从当前 CE `Globals.c` 的 `tileCatalog` 和颜色常量、`GlobalsBase.c` 的基础颜色、`platformdependent.c` 与 `platform.h` 的字形映射，独立生成 `src/test/fixtures/u21c-ce-terrain.json`。137 条按 web 枚举名索引，每条保留 `ceTile`、`ceLine` 和解析得到的 `{char,color,bgColor}`；仅 web 专属名称使用脚本中的显式 CE 别名。脚本只从 `Grid.ts` 读取枚举名称，不读取 `Appearance.ts`、`TerrainAppearanceCatalog.ts` 或其运行输出。运行 `node scripts/u21c-ce-appearance.mjs --check` 可对照 CE 源重新计算并检查表未过期，实测 137 条通过。R-1 穷举可见态和记忆态继续逐成员全等断言；旧 web 自编 `DEFAULT_LOOK` 表已撤换。CE 动态色按深度 1、`AMULET_LEVEL=26` 的整数插值产生期望。"
+      },
+      {
+        "line": 36,
+        "text": "3. `bgColor: null` 在渲染消费端表示透明背景：`GameCanvas.vue` 仅在 `!== null` 时填充和登记背景；`Appearance.ts` 的分层继承、光照、记忆分支也以此为门。数值 `0` 则是 CE 明确给出的黑色背景，会被填充。保留这一种语义区分，未把 null 与 0 互换；黄金表中的 CE 零背景指针仍是 null，`&black` 则为数值 0。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-22.report.md",
+    "lines": [
+      {
+        "line": 33,
+        "text": "§3：未改生成、模型、鉴定、极性、外观状态；只读目录与展示判断；没有旧存档兼容代码。发现屏缺少的 CE 种类匿名保留，避免伪造外观。未提交 git。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-22b.report.md",
+    "lines": [
+      {
+        "line": 7,
+        "text": "## 改动与边界"
+      },
+      {
+        "line": 9,
+        "text": "- `Discoveries.ts` 保留 CE 表顺序，从 `ItemLoader.genScrolls/genRings/genPotions/genStaffs/genWands` 取当前实际生成池；缺失种类不显示匿名行。所有行显示大写真名。未鉴定百分比按同类未鉴定且在池内的频率总和计算，零频率不显示。"
+      },
+      {
+        "line": 10,
+        "text": "- `ReferenceOverlay.vue` 移除已知/未知计数、描述和原始频率；用三列独立堆叠复现 CE 分组，窄屏单列。已鉴定白色并有类别字形，未鉴定暗灰色并保留已揭示善/恶符号。"
+      },
+      {
+        "line": 11,
+        "text": "- `ItemKnowledge.ts`、背包详情、鉴定/极性/外观状态及生成路径未改。发现屏展示真名不改变外观映射的知识边界。"
+      },
+      {
+        "line": 27,
+        "text": "另有 web 退池项 `scroll_of_amnesia`、`potion_of_healing`、`staff_of_light`、`wand_of_fire`、`wand_of_lightning`，发现屏未列；web `potion_of_poison` 对应 CE 毒气药水槽位。缺失种类归各物品轮，不在本轮生成目录中补造。"
+      },
+      {
+        "line": 31,
+        "text": "R：复核 `ReferenceOverlay.vue` 的 D 键展示、宽窄布局与 `Discoveries.ts` 的池内分类；沿用 U22 对详情、输入和游戏 UI 动作的边界。S：复核 `identifiedItems`、`magicCharDiscoverySuffix`、`callTitles`、实际生成池与 `frequency`，只读取状态。针对 U22 原测试中隐藏真名和 14/8/16/12/9 匿名行的断言，改为本轮 CE 口径；详情附魔隐私断言保留。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-23.report.md",
+    "lines": [
+      {
+        "line": 11,
+        "text": "- 测绘卷轴保留 `isExplored=false`，跳过未发现花岗岩，记录 dungeon/liquid 层和两层旗标；可落地的秘密门、麻痹气陷阱按目录的发现目标显形。无陷阱格登记 `knownTrapFree`。卷轴路径没有调用实质 RNG。"
+      },
+      {
+        "line": 25,
+        "text": "## 已知边界"
+      },
+      {
+        "line": 34,
+        "text": "全仓 `npm test` 曾在迭代中启动，期间文件继续变动，故不把那次未完成运行作为最终验收结论；本报告以以上有终态结果的范围门禁为准。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-24.report.md",
+    "lines": [
+      {
+        "line": 10,
+        "text": "| 符文与浮字 | 已识别符文的物品名、详情标题和觉醒日志原显示 `paralyzing` 等内部 ID；现由 `runic.name.*` 译名。`Ally!`、`Paralyzed`、`Confused`、`Force!` 浮字改为翻译调用；数字伤害/治疗浮字保留数值。 |"
+      },
+      {
+        "line": 13,
+        "text": "| 描述语义 | `staff_of_light` 退池旧说明宣称致盲；改为退池说明。护符说明按当前执行效果校正：生命最多 8 HP、速度护符实际施加悬浮、防护随机免疫一种负面状态；心灵感应和火免护符目前只扣冷却，明确写出没有相应状态效果。戒指说明按当前佩戴消费者校正，未实现的潜行、转移、千里眼效果不再作出虚假承诺。生命药水、混乱药水、退池药水及芒果等文字按当前饮用/食用分支校正。符文详情中固定比例、物种限定、毒效果等与实际执行不符的承诺已改。剧毒符文即时伤害与中毒浓度分别使用不同日志键；突刺日志按命中与“猛烈突刺”呈现。 |"
+      },
+      {
+        "line": 14,
+        "text": "| 变量 | 新增/改动的 `sidebar.depth`、`machine.sign`、`combat.lunge_hit`、`runic.weapon.venom*` 等均保留对应插值参数。浏览器渲染与 P1-30 测试验证了真实资源路径。 |"
+      },
+      {
+        "line": 16,
+        "text": "任务书要求描述**当前实现**；CE 的护符和部分符文规则与 web 仍有差距（X-0 K23/K24/K26）。本轮文字按实际消费者编写，未把文案当作规则迁移。后续玩法轮完成后需再校正文案。"
+      },
+      {
+        "line": 24,
+        "text": "P1-30 的键扫描器扩到 `useTranslation()` 的 `t()`，并识别 Vue 绑定属性内的字面量翻译键；因此菜单、背包、回放的英文回退会亮红。已保留既有死键检查；本轮没有删除翻译键，无需迁入 `zh_CN.legacy.json`。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-25.report.md",
+    "lines": [
+      {
+        "line": 7,
+        "text": "- 新增默认关闭的 `setMachineObservationHook`。蓝图事务只在挂钩开启时建立 feature 请求、落格、迭代次数与回滚记录；不调用 RNG。成功机器在 `Game.populateLevel` 实化后补上最终物品/怪物实例 id、位置与持有者。延迟物品保留原始机器号与 feature 序号，领养落点另记接收 feature。地形和 DF 同样按 feature 记录。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-26b.report.md",
+    "lines": [
+      {
+        "line": 29,
+        "text": "## 边界"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-27.report.md",
+    "lines": [
+      {
+        "line": 5,
+        "text": "依据 `x-0-survey.report.md` §4.3 U27、§2 D23、§3.1 K38。录像格式升为 JSON v2；`loadReplay` 对 v1 和缺少校验字段的 JSON 直接返回 `false`，不迁移。CE `.broguerec` 二进制格式不在本轮范围。CE `Recordings.c:333-366,601-620` 在首次校验失败时停止回放；本实现依照该思路报首个分歧命令号，并按任务书额外比较位置、深度、tick、回合号及 RNG 两流完整状态。"
+      },
+      {
+        "line": 11,
+        "text": "- `Game.executeCommand` 是用户命令边界。键盘和 AgentControls 经 `handlePlayerAction` 进入；鼠标移动/目标点击、背包装卸、丢、喝、读、投、吃、用、鉴定与附魔选物、命名及确认/取消经同一边界进入。关闭背包也通过 `escape` 命令。搜索、休息、楼梯、自动探索与坠落沿原动作路径进入。"
+      },
+      {
+        "line": 20,
+        "text": "- 全量门禁的 W-7 源码守卫先以反事实运行确认失败：Vue 的 `readItem` / `chooseEnchantTarget` 显式 `toRaw` 调用被新边界隐藏。修复仅恢复这两个 Vue 解包调用，并通过回调在统一命令边界内执行；回放仍由日志命令分派。守卫未修改。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-r1.report.md",
+    "lines": [
+      {
+        "line": 5,
+        "text": "- 依据 `ai_docs/reports/x-0-survey.report.md` 的 UR1 行执行。`WholeRunSnapshot.ts` 承接 `LevelSnapshot`、`GameSnapshot` DTO、层与整局投影、验证、世界实体和层解码、玩家投影与运行态 JSON 投影。`Game.ts` 保留 `toSnapshot`、`loadSnapshot`、`isSnapshot`、`snapshotLevel`、`serializeItem`、`deserializeItem`、`serializeMonster`、`deserializeMonster`、`restoreMonsterLeaders` 原入口与 `this` 语义；活跃局面的替换、回调绑定及视野重建仍由 Game 协调。"
+      },
+      {
+        "line": 7,
+        "text": "- 保留原有字段及枚举顺序、`undefined`/`null` 区别、默认值、错误文案、异常捕获边界。`savedAt` 是唯一逐次变化的整局字段。U01/U03 字段合同 JSON 和 `test:drift` 脚本未改。"
+      },
+      {
+        "line": 13,
+        "text": "- 既有 p1_30、U00/U01/U03/U03b、U24、U27、`snapshotQuantity`、`b_1b`、`p1_31_35`、W-16/17/18/19/20/21/23 与旧 fixture 均属于完整回归集；W-22 历史报告明确未交付生产代码或对应运行时测试。U03 还覆盖多层已访问、关系循环、掉落和 JSON 读档。反查了 `src/test` 与 `scripts` 的源码读取点；现行守卫依赖 Game 类字段或保留的方法入口，没有指向已搬走的方法体的现行断言，因此无需迁移或放宽守卫。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-r2.report.md",
+    "lines": [
+      {
+        "line": 7,
+        "text": "- `Game` 保留原公开入口与私有 `boltWorld` 包装及其 `this` 语义；药水/卷轴的各类专属效果和射线地形/生物效果仍由 Game 的现有方法执行。`applyBoltEffect` 等私有调用入口未改名、未放宽可见性。"
+      },
+      {
+        "line": 33,
+        "text": "`u-r2-trace.json` 是重构前 Game 的逐步状态快照，属黄金夹具。**后续轮次若按 CE 正当改变物品/魔法行为使其翻红，应单变量归因后用 `scripts/ur2-capture-baseline.py` 的同法重录，并在报告登记；不得视作 UR2 回归而回退行为。**"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-r3.report.md",
+    "lines": [
+      {
+        "line": 5,
+        "text": "按任务书 §0 指向的 X-0 UR3 行完成纯重构。`GenerationCoordinator.ts` 承接 `generateDepth` 的新层、重访、坠落入层流程，楼梯 dig/retry、机器运行时实体 adapter、蓝图延迟产物提交、人口布设和入层前环境追赶的调用顺序。`Game.ts` 保留原私有方法包装和当前层字段，按实时读写访问器及已绑定的窄回调显式注入依赖；没有把 Game 实例传给协调层。D26 护符布设留在 Game 的实际 helper 中，供原源码守卫检查，协调层在原时点调用它。缓存层的数据形状移到 `LevelState.ts`，由 Game 保持原导出路径。"
+      },
+      {
+        "line": 7,
+        "text": "事务边界维持原顺序：每次失败的楼梯几何重试重新造图；成功的 BlueprintEngine 即时实体先占层，成功后人口阶段处理延迟的机器物品／怪物及 U25 观测；随后归还层 RNG，恢复坠落物和居民，追赶环境并落位玩家。没有改生成公式、随机调用或夹具预期。"
+      },
+      {
+        "line": 13,
+        "text": "先从 `HEAD`（`50090e5d6`）临时装回原 `Game.ts` 录制，再恢复工作树改动。夹具在 `ai_docs/reports/u-r3-trace.json.gz`，由 `src/test/u_r3_trace.test.ts` 解压逐项对比。逐深度及重访采样对完整 `toSnapshot()`、logger、两流 RNG 全状态与计数、U25 机器观测记录做 SHA-256 指纹，并保留深度、怪物／物品／观测数量供定位；坠落采样对完整快照、logger 和两流 RNG 做同样指纹。"
+      }
+    ]
+  },
+  {
+    "file": "ai_docs/reports/u-r4.report.md",
+    "lines": [
+      {
+        "line": 5,
+        "text": "按任务书 §0 所引 X-0 勘察报告 UR4 行实施纯重构。`Game.ts` 保留 `playerTurnEnded`、`advancementLoop`、`objectiveTimeBlock`、`updateEnvironment` 和 `finishTurnEpilogue` 的私有包装；协调实现在 `src/engine/Core/TimeCoordinator.ts`。Game 每次进入协调层时注入显式 `WorldPort`、`ClockPort`、`EffectsPort`，端口的读写访问器保持实时状态，回调闭包保留原 `this`。Monster 行动通过 `monsterTakeTurn(monster, stealthRange)` 窄回调返回 Game 执行，未把 Game 实例或 `Game as any` 传进协调层。动画生成器仍由 Game 持有，输入锁、超时、异常收束和 DF 绑定生命周期未改。"
+      },
+      {
+        "line": 7,
+        "text": "协调层保留原顺序：主观回合准备与搜索、按最早事件推进、每 100 tick 客观块、环境坠落／气体两轮／晋升／火／地面物品、状态与营养递减，以及回合尾声回血／饥饿伤害／死亡结算。公式、RNG 调用位置和动画暂停条件均原样迁移。"
+      }
+    ]
+  }
+]

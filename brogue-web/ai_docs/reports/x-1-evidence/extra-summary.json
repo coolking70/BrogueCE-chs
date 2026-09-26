@@ -1,0 +1,18 @@
+[
+  {
+    "name": "extra",
+    "args": [
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "src/test/c_7_lighting.test.ts",
+      "src/test/r_1_appearance.test.ts",
+      "src/test/ui_1_rendering.test.ts",
+      "--maxWorkers=2",
+      "--reporter=json",
+      "--outputFile=E:\\bench\\work\\x1\\brogue-web\\ai_docs\\reports\\x-1-evidence\\extra-results.json"
+    ],
+    "code": 0,
+    "signal": null,
+    "seconds": 6.19
+  }
+]

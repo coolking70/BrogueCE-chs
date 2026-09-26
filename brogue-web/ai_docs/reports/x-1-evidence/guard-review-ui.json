@@ -1,0 +1,1144 @@
+[
+  {
+    "file": "src/test/c_7_lighting.test.ts",
+    "cases": [
+      {
+        "name": "恰好 60 条，且 LightKind 枚举成员与下标一一对位（esbuild 剥类型，缺条目运行时才暴露）",
+        "line": 47,
+        "assertions": [
+          {
+            "line": 48,
+            "text": "expect(LIGHT_CATALOG).toHaveLength(60)"
+          },
+          {
+            "line": 50,
+            "text": "expect(LightKind.NO_LIGHT).toBe(0)"
+          },
+          {
+            "line": 51,
+            "text": "expect(LightKind.MINERS_LIGHT).toBe(1)"
+          },
+          {
+            "line": 52,
+            "text": "expect(LightKind.BURNING_CREATURE_LIGHT).toBe(2)"
+          },
+          {
+            "line": 53,
+            "text": "expect(LightKind.TORCH_LIGHT).toBe(33)"
+          },
+          {
+            "line": 54,
+            "text": "expect(LightKind.LAVA_LIGHT).toBe(34)"
+          },
+          {
+            "line": 55,
+            "text": "expect(LightKind.SUN_LIGHT).toBe(35)"
+          },
+          {
+            "line": 56,
+            "text": "expect(LightKind.FUNGUS_LIGHT).toBe(37)"
+          },
+          {
+            "line": 57,
+            "text": "expect(LightKind.EMBER_LIGHT).toBe(43)"
+          },
+          {
+            "line": 58,
+            "text": "expect(LightKind.FIRE_LIGHT).toBe(44)"
+          },
+          {
+            "line": 59,
+            "text": "expect(LightKind.EXPLOSION_LIGHT).toBe(46)"
+          },
+          {
+            "line": 60,
+            "text": "expect(LightKind.CONFUSION_GAS_LIGHT).toBe(49)"
+          },
+          {
+            "line": 61,
+            "text": "expect(LightKind.CANDLE_LIGHT).toBe(53)"
+          },
+          {
+            "line": 62,
+            "text": "expect(LightKind.DESCENT_LIGHT).toBe(58)"
+          },
+          {
+            "line": 63,
+            "text": "expect(LightKind.DEMONIC_STATUE_LIGHT).toBe(59)"
+          },
+          {
+            "line": 67,
+            "text": "expect(LIGHT_CATALOG[idx], `LIGHT_CATALOG[${key}] 缺条目`).toBeDefined()"
+          }
+        ]
+      },
+      {
+        "name": "NO_LIGHT 是 CE {0} 原样（含 clumpFactor=0）",
+        "line": 71,
+        "assertions": [
+          {
+            "line": 73,
+            "text": "expect(e.color).toEqual({ red: 0, green: 0, blue: 0, redRand: 0, greenRand: 0, blueRand: 0, rand: 0 })"
+          },
+          {
+            "line": 74,
+            "text": "expect(e.radius).toEqual({ lowerBound: 0, upperBound: 0, clumpFactor: 0 })"
+          },
+          {
+            "line": 75,
+            "text": "expect(e.radialFadeToPercent).toBe(0)"
+          },
+          {
+            "line": 76,
+            "text": "expect(e.passThroughCreatures).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "对抗③：矿灯条目 passThroughCreatures = true（Globals.c:958 原列；写成 false 即红）",
+        "line": 79,
+        "assertions": [
+          {
+            "line": 80,
+            "text": "expect(LIGHT_CATALOG[LightKind.MINERS_LIGHT]!.passThroughCreatures).toBe(true)"
+          },
+          {
+            "line": 83,
+            "text": "expect(LIGHT_CATALOG[LightKind.IMP_LIGHT]!.passThroughCreatures).toBe(true)"
+          },
+          {
+            "line": 84,
+            "text": "expect(LIGHT_CATALOG[LightKind.EXPLOSIVE_BLOAT_LIGHT]!.passThroughCreatures).toBe(true)"
+          },
+          {
+            "line": 85,
+            "text": "expect(LIGHT_CATALOG[LightKind.TELEPATHY_LIGHT]!.passThroughCreatures).toBe(true)"
+          },
+          {
+            "line": 86,
+            "text": "expect(LIGHT_CATALOG[LightKind.SUN_LIGHT]!.passThroughCreatures).toBe(true)"
+          },
+          {
+            "line": 87,
+            "text": "expect(LIGHT_CATALOG[LightKind.TORCH_LIGHT]!.passThroughCreatures).toBe(false)"
+          },
+          {
+            "line": 88,
+            "text": "expect(LIGHT_CATALOG[LightKind.LAVA_LIGHT]!.passThroughCreatures).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "关键地形光条目逐字段等于 CE 原值（含 randomRange 型半径——抄成定值即红）",
+        "line": 91,
+        "assertions": [
+          {
+            "line": 96,
+            "text": "expect(c(LightKind.TORCH_LIGHT)).toEqual({ red: 75, green: 38, blue: 15, redRand: 0, greenRand: 15, blueRand: 7, rand: 0 })"
+          },
+          {
+            "line": 97,
+            "text": "expect(r(LightKind.TORCH_LIGHT)).toEqual({ lowerBound: 1000, upperBound: 1000, clumpFactor: 1 })"
+          },
+          {
+            "line": 98,
+            "text": "expect(LIGHT_CATALOG[LightKind.TORCH_LIGHT]!.radialFadeToPercent).toBe(50)"
+          },
+          {
+            "line": 101,
+            "text": "expect(c(LightKind.LAVA_LIGHT)).toEqual({ red: 47, green: 13, blue: 0, redRand: 10, greenRand: 7, blueRand: 0, rand: 0 })"
+          },
+          {
+            "line": 102,
+            "text": "expect(r(LightKind.LAVA_LIGHT).lowerBound).toBe(300)"
+          },
+          {
+            "line": 105,
+            "text": "expect(r(LightKind.FIRE_LIGHT)).toEqual({ lowerBound: 500, upperBound: 1000, clumpFactor: 1 })"
+          },
+          {
+            "line": 108,
+            "text": "expect(r(LightKind.EMBER_LIGHT).lowerBound).toBe(200)"
+          },
+          {
+            "line": 109,
+            "text": "expect(LIGHT_CATALOG[LightKind.EMBER_LIGHT]!.radialFadeToPercent).toBe(50)"
+          },
+          {
+            "line": 112,
+            "text": "expect(r(LightKind.EXPLOSION_LIGHT).lowerBound).toBe(CE_DCOLS * 100)"
+          },
+          {
+            "line": 113,
+            "text": "expect(LIGHT_CATALOG[LightKind.EXPLOSION_LIGHT]!.radialFadeToPercent).toBe(100)"
+          },
+          {
+            "line": 116,
+            "text": "expect(c(LightKind.CONFUSION_GAS_LIGHT)).toEqual({ red: 10, green: 10, blue: 10, redRand: 10, greenRand: 10, blueRand: 10, rand: 0 })"
+          },
+          {
+            "line": 117,
+            "text": "expect(LIGHT_CATALOG[LightKind.CONFUSION_GAS_LIGHT]!.radialFadeToPercent).toBe(100)"
+          },
+          {
+            "line": 120,
+            "text": "expect(r(LightKind.CANDLE_LIGHT)).toEqual({ lowerBound: 200, upperBound: 400, clumpFactor: 1 })"
+          },
+          {
+            "line": 123,
+            "text": "expect(c(LightKind.IMP_LIGHT)).toEqual({ red: 100, green: 60, blue: 66, redRand: 0, greenRand: 0, blueRand: 0, rand: 0 })"
+          },
+          {
+            "line": 126,
+            "text": "expect(c(LightKind.DARKNESS_PATCH_LIGHT)).toEqual({ red: -10, green: -10, blue: -10, redRand: 0, greenRand: 0, blueRand: 0, rand: 0 })"
+          },
+          {
+            "line": 129,
+            "text": "expect(r(LightKind.INCENDIARY_DART_LIGHT).lowerBound).toBe(1500)"
+          },
+          {
+            "line": 132,
+            "text": "expect(r(LightKind.PORTAL_ACTIVATE_LIGHT).lowerBound).toBe(7900)"
+          },
+          {
+            "line": 133,
+            "text": "expect(CE_DCOLS).toBe(79)"
+          }
+        ]
+      },
+      {
+        "name": "全 tile 的 glowLight 逐值等于 CE 原列（结构性穷尽）",
+        "line": 362,
+        "assertions": [
+          {
+            "line": 365,
+            "text": "expect(expected, `TerrainType.${t} 缺期望值（表没跟上新 tile？）`).toBeDefined()"
+          },
+          {
+            "line": 366,
+            "text": "expect(TERRAIN_FLAGS[t].glowLight, `TerrainType.${t} glowLight 不符`).toBe(expected)"
+          }
+        ]
+      },
+      {
+        "name": "非零恰 50 个（U19f 菌林、光池与藻光），且都指向有载体的目录条目",
+        "line": 370,
+        "assertions": [
+          {
+            "line": 375,
+            "text": "expect(nonzero).toEqual([ TerrainType.FUNGUS_FOREST, TerrainType.TRAMPLED_FUNGUS_FOREST, TerrainType.SUNLIGHT_POOL, TerrainType.DARKNESS_PATCH, TerrainType.DEEP_WATER_ALGAE_1, TerrainType.DEEP_WATER_ALGAE_2, TerrainType.PORTAL_LIGHT, TerrainType.ALTAR_CAGE_CLOSED, TerrainType.PIPE_GLOWING, TerrainType.SACRIFICE_ALTAR, TerrainType.SACRIFICE_LAVA, TerrainType.PILOT_LIGHT_DORMANT, TerrainType.PILOT_LIGHT, TerrainType.LAVA, TerrainType.ALTAR, TerrainType.EMBERS, TerrainType.CONFUSION_GAS, TerrainType.GAS_FIRE, TerrainType.GAS_EXPLOSION, TerrainType.PLAIN_FIRE, TerrainType.ITEM_FIRE, TerrainType.BRIMSTONE_FIRE, // B-3：三张卷轴的水晶/圣徽 tile（FORCEFIELD_MELT 与 FORCEFIELD // 共用 FORCEFIELD_LIGHT）。 TerrainType.FORCEFIELD, TerrainType.FORCEFIELD_MELT, TerrainType.CRYSTAL_WALL, TerrainType.SACRED_GLYPH, // V-2b-2b：PEDESTAL（CE Globals.c:369 原列 = CANDLE_LIGHT）。 TerrainType.PEDESTAL, // V-2b-4：两个铁笼祭坛与复活祭坛的烛光（CANDLE_LIGHT，CE 原列）， // 以及墙装火把的 TORCH_LIGHT（Globals.c:337）。 TerrainType.ALTAR_CAGE_OPEN, TerrainType.ALTAR_CAGE_RETRACTABLE, TerrainType.RESURRECTION_ALTAR, TerrainType.TORCH_WALL, // V-2b-5：ALTAR_SWITCH 的烛光（Globals.c:366 原列 CANDLE_LIGHT）。 TerrainType.ALTAR_SWITCH, // V-2b-7：七条新点亮的 tile（Globals.c:363/367/543/546/573/547/450 // 第 10 列）——四条祭坛族烛光 + 火盆 + 恶魔雕像 + 发光菌。 TerrainType.ALTAR_KEYHOLE, TerrainType.ALTAR_SWITCH_RETRACTING, TerrainType.SACRIFICE_ALTAR_DORMANT, TerrainType.SACRIFICE_CAGE_DORMANT, TerrainType.BRAZIER, TerrainType.DEMONIC_STATUE, TerrainType.LUMINESCENT_FUNGUS, TerrainType.LAVA_RETRACTABLE, TerrainType.HAUNTED_TORCH_DORMANT, // V-2b-9b：岩浆回缩活动态保留 LAVA_LIGHT。 TerrainType.LAVA_RETRACTING, TerrainType.DARK_FLOOR, TerrainType.ECTOPLASM, TerrainType.HAUNTED_TORCH_TRANSITIONING, TerrainType.HAUNTED_TORCH, TerrainType.MACHINE_GLYPH, TerrainType.MACHINE_GLYPH_INACTIVE, TerrainType.ELECTRIC_CRYSTAL_ON, TerrainType.DUNGEON_PORTAL, ].sort((a, b) => a - b))"
+          },
+          {
+            "line": 416,
+            "text": "expect(LIGHT_CATALOG[TERRAIN_FLAGS[t].glowLight]).toBeDefined()"
+          }
+        ]
+      },
+      {
+        "name": "深度衰减方向与精确值：随深度单调收缩（写反/改公式即红）",
+        "line": 426,
+        "assertions": [
+          {
+            "line": 441,
+            "text": "expect(st.radiusHundredths, `depth ${depth} 半径`).toBe(rad)"
+          },
+          {
+            "line": 442,
+            "text": "expect(st.radialFadeToPercent, `depth ${depth} 衰减`).toBe(fade)"
+          },
+          {
+            "line": 443,
+            "text": "expect(st.radiusHundredths).toBeLessThan(prev)"
+          },
+          {
+            "line": 448,
+            "text": "expect(minersLightBaseRadiusFixpt(0)).toBe(78 * FP_FACTOR + (FP_FACTOR * 225) / 100)"
+          },
+          {
+            "line": 449,
+            "text": "expect(minersLightBaseRadiusFixpt(1)).toBe(4492492)"
+          }
+        ]
+      },
+      {
+        "name": "光明戒指倍率分支（Light.c:125-131）：正倍率放大有下限、负倍率除法收缩",
+        "line": 452,
+        "assertions": [
+          {
+            "line": 454,
+            "text": "expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(1), { lightMultiplier: 3 })) .toEqual({ radiusHundredths: 20564, radialFadeToPercent: 50 })"
+          },
+          {
+            "line": 457,
+            "text": "expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(1), { lightMultiplier: -2 })) .toEqual({ radiusHundredths: 2284, radialFadeToPercent: 35 })"
+          },
+          {
+            "line": 460,
+            "text": "expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(1), { lightMultiplier: -1 })) .toEqual({ radiusHundredths: 3427, radialFadeToPercent: 35 })"
+          }
+        ]
+      },
+      {
+        "name": "黑暗状态立方衰减 + 1/20 下限 + 2*FP 退化托底（Light.c:134-148）",
+        "line": 464,
+        "assertions": [
+          {
+            "line": 466,
+            "text": "expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(1), { darknessStatus: 15, darknessMax: 15 })) .toEqual({ radiusHundredths: 342, radialFadeToPercent: 35 })"
+          },
+          {
+            "line": 469,
+            "text": "expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(1), { darknessStatus: 5, darknessMax: 15 })) .toEqual({ radiusHundredths: 2031, radialFadeToPercent: 36 })"
+          },
+          {
+            "line": 472,
+            "text": "expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(40), { darknessStatus: 15, darknessMax: 15 }).radiusHundredths) .toBe(11)"
+          },
+          {
+            "line": 476,
+            "text": "expect(updateMinersLightRadius(0).radiusHundredths).toBe(4)"
+          },
+          {
+            "line": 477,
+            "text": "expect(updateMinersLightRadius(0, { lightMultiplier: -10 }).radiusHundredths).toBe(2)"
+          }
+        ]
+      },
+      {
+        "name": "水中减半（Light.c:150-152，同量纲 3*FP 退化下限）",
+        "line": 480,
+        "assertions": [
+          {
+            "line": 481,
+            "text": "expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(1), { inWater: 1 })) .toEqual({ radiusHundredths: 3427, radialFadeToPercent: 40 })"
+          },
+          {
+            "line": 483,
+            "text": "expect(updateMinersLightRadius(minersLightBaseRadiusFixpt(40), { inWater: 1 }).radiusHundredths).toBe(118)"
+          },
+          {
+            "line": 485,
+            "text": "expect(updateMinersLightRadius(0, { inWater: 1 }).radiusHundredths).toBe(3)"
+          }
+        ]
+      },
+      {
+        "name": "矿灯颜色随深度插值（updateColors + applyColorAverage 的 C 整除口径）",
+        "line": 488,
+        "assertions": [
+          {
+            "line": 489,
+            "text": "expect(minersLightColorAtDepth(0)).toEqual({ red: 180, green: 180, blue: 180, redRand: 0, greenRand: 0, blueRand: 0, rand: 0 })"
+          },
+          {
+            "line": 491,
+            "text": "expect([d13.red, d13.green, d13.blue]).toEqual([135, 135, 150])"
+          },
+          {
+            "line": 492,
+            "text": "expect(minersLightColorAtDepth(26)).toMatchObject({ red: 90, green: 90, blue: 120 })"
+          },
+          {
+            "line": 493,
+            "text": "expect(minersLightColorAtDepth(40)).toMatchObject({ red: 90, green: 90, blue: 120 })"
+          },
+          {
+            "line": 494,
+            "text": "expect(minersLightColorAtDepth(1)).toMatchObject({ red: 177, green: 177, blue: 178 })"
+          }
+        ]
+      },
+      {
+        "name": "VISIBILITY_THRESHOLD = 50（Rogue.h:184）",
+        "line": 497,
+        "assertions": [
+          {
+            "line": 498,
+            "text": "expect(VISIBILITY_THRESHOLD).toBe(50)"
+          }
+        ]
+      },
+      {
+        "name": "对抗①：径向衰减方向——中心最亮、随距离单调变暗（写反即红）",
+        "line": 512,
+        "assertions": [
+          {
+            "line": 525,
+            "text": "expect(center).toBeGreaterThan(0)"
+          },
+          {
+            "line": 526,
+            "text": "expect(mid).toBeGreaterThan(0)"
+          },
+          {
+            "line": 527,
+            "text": "expect(edge).toBeGreaterThan(0)"
+          },
+          {
+            "line": 528,
+            "text": "expect(center).toBeGreaterThan(mid)"
+          },
+          {
+            "line": 529,
+            "text": "expect(mid).toBeGreaterThan(edge)"
+          },
+          {
+            "line": 532,
+            "text": "expect(center).toBe(360)"
+          },
+          {
+            "line": 533,
+            "text": "expect(mid).toBe(135)"
+          },
+          {
+            "line": 534,
+            "text": "expect(edge).toBe(105)"
+          }
+        ]
+      },
+      {
+        "name": "对抗②：区间半径 {500,1000} 的确定性取中点 750（取 lowerBound/upperBound 定值即红）",
+        "line": 537,
+        "assertions": [
+          {
+            "line": 542,
+            "text": "expect(lm.lightSumAt(16, 10)).toBeGreaterThan(0)"
+          },
+          {
+            "line": 543,
+            "text": "expect(lm.lightSumAt(19, 10)).toBe(0)"
+          }
+        ]
+      },
+      {
+        "name": "对抗③行为面：passThroughCreatures=false 时生物截断光路，=true 时穿透",
+        "line": 546,
+        "assertions": [
+          {
+            "line": 557,
+            "text": "expect(blocked.lightSumAt(12, 10)).toBeGreaterThan(0)"
+          },
+          {
+            "line": 558,
+            "text": "expect(blocked.lightSumAt(14, 10)).toBe(0)"
+          },
+          {
+            "line": 564,
+            "text": "expect(pass.lightSumAt(14, 10)).toBeGreaterThan(0)"
+          }
+        ]
+      },
+      {
+        "name": "IS_IN_SHADOW 语义：矿灯（maintainShadows）不驱散阴影，地形正色光驱散（Light.c:70-71/97-99）",
+        "line": 567,
+        "assertions": [
+          {
+            "line": 579,
+            "text": "expect(shadowed.lightSumAt(10, 10)).toBeGreaterThan(0)"
+          },
+          {
+            "line": 580,
+            "text": "expect(shadowed.inShadowAt(10, 10)).toBe(true)"
+          },
+          {
+            "line": 585,
+            "text": "expect(lit.inShadowAt(10, 10)).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "黑暗药水真实入口使 FOV 缩小，逐 tick 衰减后恢复",
+        "line": 609,
+        "assertions": [
+          {
+            "line": 619,
+            "text": "expect(target.isVisible).toBe(true)"
+          },
+          {
+            "line": 623,
+            "text": "expect(game.player.hasStatus('darkness')).toBe(true)"
+          },
+          {
+            "line": 624,
+            "text": "expect(radius()).toBeLessThan(normal)"
+          },
+          {
+            "line": 625,
+            "text": "expect(target.isVisible).toBe(false)"
+          },
+          {
+            "line": 628,
+            "text": "expect(game.player.hasStatus('darkness')).toBe(false)"
+          },
+          {
+            "line": 629,
+            "text": "expect(radius()).toBe(normal)"
+          },
+          {
+            "line": 630,
+            "text": "expect(target.isVisible).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "深水且未漂浮时半径减半，离水立即恢复",
+        "line": 633,
+        "assertions": [
+          {
+            "line": 644,
+            "text": "expect(radius()).toBeLessThan(normal)"
+          },
+          {
+            "line": 647,
+            "text": "expect(radius()).toBe(normal)"
+          }
+        ]
+      },
+      {
+        "name": "CE 固有光让深层矿灯以外的 wisp 可见",
+        "line": 650,
+        "assertions": [
+          {
+            "line": 659,
+            "text": "expect(MONSTER_INTRINSIC_LIGHT.wisp).toBe(LightKind.WISP_LIGHT)"
+          },
+          {
+            "line": 660,
+            "text": "expect(game.grid.getCell(46, 15)!.isVisible).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "对抗⑤消费面：深层岩浆自发光——glowLight 列没接上/不被消费即红",
+        "line": 662,
+        "assertions": [
+          {
+            "line": 676,
+            "text": "expect(sum).toBeGreaterThan(VISIBILITY_THRESHOLD)"
+          },
+          {
+            "line": 677,
+            "text": "expect(game.lightMap.lightSumAt(px + 12 * dir, py)).toBe(0)"
+          },
+          {
+            "line": 679,
+            "text": "expect(game.grid.getCell(px + 6 * dir, py)!.isVisible).toBe(true)"
+          },
+          {
+            "line": 681,
+            "text": "expect(game.grid.getCell(px + 6 * dir, py + 8 <= DROWS - 1 ? py + 8 : py - 8)!.isVisible).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "对抗④集成面：矿灯深度衰减在视野上可观测——深层可见格骤减",
+        "line": 684,
+        "assertions": [
+          {
+            "line": 708,
+            "text": "expect(visibleAtD1).toBeGreaterThan(1500)"
+          },
+          {
+            "line": 709,
+            "text": "expect(visibleAtD40).toBeLessThan(40)"
+          },
+          {
+            "line": 711,
+            "text": "expect(visibleAtD40).toBeLessThan(visibleAtD1)"
+          }
+        ]
+      },
+      {
+        "name": "VISIBLE = 掩码 ∧ 光强>50：玩家格恒可见，墙后格不因光而可见",
+        "line": 714,
+        "assertions": [
+          {
+            "line": 730,
+            "text": "expect(game.grid.getCell(px, py)!.isVisible).toBe(true)"
+          },
+          {
+            "line": 731,
+            "text": "expect(game.lightMap.lightSumAt(px + 5 * dir, py)).toBeGreaterThan(VISIBILITY_THRESHOLD)"
+          },
+          {
+            "line": 732,
+            "text": "expect(game.grid.getCell(px + 5 * dir, py)!.isVisible).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "渲染馈送：getLight 接口拿到矿灯光（UI-1 起渲染改走 lightAt 三通道，本接口保留为兼容面）",
+        "line": 735,
+        "assertions": [
+          {
+            "line": 741,
+            "text": "expect(feed.intensity).toBeGreaterThan(0)"
+          },
+          {
+            "line": 742,
+            "text": "expect(feed.color.r).toBeGreaterThan(0)"
+          }
+        ]
+      },
+      {
+        "name": "无地形光：矿灯不驱散阴影 → 减半一次；playerInDarkness 为 false（矿灯中心恒亮）",
+        "line": 759,
+        "assertions": [
+          {
+            "line": 767,
+            "text": "expect(darkness).toBe(false)"
+          },
+          {
+            "line": 768,
+            "text": "expect(range).toBe(Math.floor((14 + adj) / 2))"
+          }
+        ]
+      },
+      {
+        "name": "站进祭坛烛光（CANDLE_LIGHT 载体）：阴影被驱散 → 潜行范围恢复 14+adj",
+        "line": 771,
+        "assertions": [
+          {
+            "line": 783,
+            "text": "expect(game.lightMap.inShadowAt(px, py)).toBe(false)"
+          },
+          {
+            "line": 784,
+            "text": "expect(range).toBe(14 + adj)"
+          }
+        ]
+      },
+      {
+        "name": "playerInDarkness 判据：负色光压过矿灯时翻真（Light.c:283-287 的 −10 余量口径）",
+        "line": 787,
+        "assertions": [
+          {
+            "line": 807,
+            "text": "expect(ch.r + 10).toBeLessThan(90)"
+          },
+          {
+            "line": 808,
+            "text": "expect(ch.g + 10).toBeLessThan(90)"
+          },
+          {
+            "line": 809,
+            "text": "expect(ch.b + 10).toBeLessThan(120)"
+          },
+          {
+            "line": 811,
+            "text": "expect(lm.lightSumAt(10, 10)).toBe(0)"
+          }
+        ]
+      },
+      {
+        "name": "留痕（对抗⑥）：除载体清单外，任何 LightKind 名不得出现在生产代码（接了无载体条目=空转链）",
+        "line": 873,
+        "assertions": [
+          {
+            "line": 895,
+            "text": "expect(violations, violations.join('\\n')).toEqual([])"
+          }
+        ]
+      },
+      {
+        "name": "留痕（UI-1 第 7 条已反转，2026-09-18）：渲染层消费 lightAt 三通道做 CE 乘法，仍不得直接 import 光照目录/paintLight",
+        "line": 907,
+        "assertions": [
+          {
+            "line": 912,
+            "text": "expect(text).not.toMatch(/LightCatalog|LIGHT_CATALOG|paintLight/)"
+          },
+          {
+            "line": 918,
+            "text": "expect(canvas).toMatch(/lightMap\\.lightAt\\(/)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/ui_1_rendering.test.ts",
+    "cases": [
+      {
+        "name": "三态字形：PLAIN_FIRE（与 GAS_FIRE/GAS_EXPLOSION）= G_FIRE，ASH/EMBERS 同为 G_ASHES",
+        "line": 139,
+        "assertions": [
+          {
+            "line": 141,
+            "text": "expect(terrainOf(TerrainType.PLAIN_FIRE).char).toBe(G_FIRE_CHAR)"
+          },
+          {
+            "line": 142,
+            "text": "expect(terrainOf(TerrainType.GAS_FIRE).char).toBe(G_FIRE_CHAR)"
+          },
+          {
+            "line": 143,
+            "text": "expect(terrainOf(TerrainType.GAS_EXPLOSION).char).toBe(G_FIRE_CHAR)"
+          },
+          {
+            "line": 144,
+            "text": "expect(terrainOf(TerrainType.ASH).char).toBe(G_ASHES_CHAR)"
+          },
+          {
+            "line": 145,
+            "text": "expect(terrainOf(TerrainType.EMBERS).char).toBe(G_ASHES_CHAR)"
+          }
+        ]
+      },
+      {
+        "name": "对抗：ASH 与 EMBERS 同字形但**颜色不同**——ashForeColor ≠ fireForeColor（抄错/抄同即红）",
+        "line": 148,
+        "assertions": [
+          {
+            "line": 152,
+            "text": "expect(embers.char).toBe(ash.char)"
+          },
+          {
+            "line": 153,
+            "text": "expect(embers.color).toBe(FIRE_FORE_COLOR)"
+          },
+          {
+            "line": 154,
+            "text": "expect(ash.color).toBe(ASH_FORE_COLOR)"
+          },
+          {
+            "line": 155,
+            "text": "expect(embers.color).not.toBe(ash.color)"
+          },
+          {
+            "line": 157,
+            "text": "expect(embers.bgColor).toBeNull()"
+          },
+          {
+            "line": 158,
+            "text": "expect(ash.bgColor).toBeNull()"
+          },
+          {
+            "line": 159,
+            "text": "expect(terrainOf(TerrainType.PLAIN_FIRE).bgColor).toBeNull()"
+          }
+        ]
+      },
+      {
+        "name": "对抗：字形/颜色值逐字符等于 CE 原值（⧲ U+29F2 一族抄成 ASCII 替代品即红）",
+        "line": 162,
+        "assertions": [
+          {
+            "line": 163,
+            "text": "expect(G_FIRE_CHAR).toBe('\\u22CF')"
+          },
+          {
+            "line": 164,
+            "text": "expect(G_ASHES_CHAR).toBe(\"'\")"
+          },
+          {
+            "line": 165,
+            "text": "expect(FIRE_FORE_COLOR).toBe('#b23300')"
+          },
+          {
+            "line": 166,
+            "text": "expect(ASH_FORE_COLOR).toBe('#333333')"
+          }
+        ]
+      },
+      {
+        "name": "燃烧状态不改变怪物外观（谁在这里加\"燃烧染色\"谁红——CE 没有这种机制）",
+        "line": 177,
+        "assertions": [
+          {
+            "line": 194,
+            "text": "expect(monsterAppearance(burning, ctx)).toEqual(monsterAppearance(plain, ctx))"
+          }
+        ]
+      },
+      {
+        "name": "对抗（结构面）：monsterAppearance 的代码里没有燃烧分支（cellAppearance 的 !isBurning 气体守卫不算）",
+        "line": 197,
+        "assertions": [
+          {
+            "line": 201,
+            "text": "expect(start).toBeGreaterThan(0)"
+          },
+          {
+            "line": 205,
+            "text": "expect(codeOnly).not.toMatch(/burning|BURNING/)"
+          }
+        ]
+      },
+      {
+        "name": "左支：看不见的格上有已探测的善意物品 → G_GOOD_MAGIC + goodMessageColor",
+        "line": 212,
+        "assertions": [
+          {
+            "line": 218,
+            "text": "expect(visual.char).toBe(G_GOOD_MAGIC_CHAR)"
+          },
+          {
+            "line": 219,
+            "text": "expect(visual.color).toBe(GOOD_MAGIC_COLOR)"
+          }
+        ]
+      },
+      {
+        "name": "左支：恶意物品 → G_BAD_MAGIC + badMessageColor；不做记忆变暗（CE IO.c:1349-1359 \"do nothing\"）",
+        "line": 222,
+        "assertions": [
+          {
+            "line": 227,
+            "text": "expect(visual.char).toBe(G_BAD_MAGIC_CHAR)"
+          },
+          {
+            "line": 228,
+            "text": "expect(visual.color).toBe(BAD_MAGIC_COLOR)"
+          },
+          {
+            "line": 230,
+            "text": "expect(visual.color).not.toBe('#333333')"
+          }
+        ]
+      },
+      {
+        "name": "护符特例：已探测护符 → G_AMULET + white（优先于极性分支，CE IO.c:1229-1231）",
+        "line": 233,
+        "assertions": [
+          {
+            "line": 240,
+            "text": "expect(visual.char).toBe(G_AMULET_CHAR)"
+          },
+          {
+            "line": 241,
+            "text": "expect(visual.color).toBe(AMULET_MAGIC_COLOR)"
+          }
+        ]
+      },
+      {
+        "name": "对抗：左支守卫在【格子】——可见格上已探测物品不显示符号（守卫合并/漏写即红）",
+        "line": 244,
+        "assertions": [
+          {
+            "line": 251,
+            "text": "expect(visual.char).toBe(floor.char)"
+          },
+          {
+            "line": 252,
+            "text": "expect(visual.color).not.toBe(GOOD_MAGIC_COLOR)"
+          }
+        ]
+      },
+      {
+        "name": "无极性的已探测物品（enchantment 0）不显示符号（polarity 0 过不了 CE 的守卫）",
+        "line": 255,
+        "assertions": [
+          {
+            "line": 260,
+            "text": "expect(visual.char).not.toBe(G_GOOD_MAGIC_CHAR)"
+          },
+          {
+            "line": 261,
+            "text": "expect(visual.char).not.toBe(G_BAD_MAGIC_CHAR)"
+          }
+        ]
+      },
+      {
+        "name": "未探测的物品不显示符号（magicDetected 假时即使极性非零也不画）",
+        "line": 264,
+        "assertions": [
+          {
+            "line": 271,
+            "text": "expect(visual.char).not.toBe(G_GOOD_MAGIC_CHAR)"
+          }
+        ]
+      },
+      {
+        "name": "未探索格上的已探测物品照样亮符号——「未探索且不可见即不画」的门为探测让位",
+        "line": 274,
+        "assertions": [
+          {
+            "line": 279,
+            "text": "expect(visual).not.toBeNull()"
+          },
+          {
+            "line": 280,
+            "text": "expect(visual!.char).toBe(G_GOOD_MAGIC_CHAR)"
+          }
+        ]
+      },
+      {
+        "name": "右支：携带已探测物品的（不可见）怪物——生产者把 !canSeeMonster 折入 ctx；符号照画",
+        "line": 283,
+        "assertions": [
+          {
+            "line": 290,
+            "text": "expect(visual.char).toBe(G_BAD_MAGIC_CHAR)"
+          }
+        ]
+      },
+      {
+        "name": "对抗：分支顺序——右支（携带物）压过左支（地面物），CE IO.c:1123-1125",
+        "line": 293,
+        "assertions": [
+          {
+            "line": 302,
+            "text": "expect(visual.char).toBe(G_BAD_MAGIC_CHAR)"
+          },
+          {
+            "line": 303,
+            "text": "expect(visual.color).toBe(BAD_MAGIC_COLOR)"
+          }
+        ]
+      },
+      {
+        "name": "携带物未探测出魔法 → 右支不成立，退回左支判定（地面无物 → 无符号）",
+        "line": 306,
+        "assertions": [
+          {
+            "line": 313,
+            "text": "expect(visual.char).toBe(floor.char)"
+          }
+        ]
+      },
+      {
+        "name": "PARALYSIS：bg = CE pink 减半、字形 ~ + 淡粉前景；METHANE：bg = CE methaneColor 减半、~ + 草绿前景",
+        "line": 320,
+        "assertions": [
+          {
+            "line": 326,
+            "text": "expect(par.char).toBe(GAS_OVERLAY_CHAR)"
+          },
+          {
+            "line": 327,
+            "text": "expect(par.color).toBe(PARALYSIS_GAS_FG)"
+          },
+          {
+            "line": 328,
+            "text": "expect(par.bgColor).toBe(PARALYSIS_GAS_BG)"
+          },
+          {
+            "line": 334,
+            "text": "expect(met.char).toBe(GAS_OVERLAY_CHAR)"
+          },
+          {
+            "line": 335,
+            "text": "expect(met.color).toBe(METHANE_GAS_FG)"
+          },
+          {
+            "line": 336,
+            "text": "expect(met.bgColor).toBe(METHANE_GAS_BG)"
+          }
+        ]
+      },
+      {
+        "name": "对抗：bg 值锚定 CE 原色（pink {100,60,66} / methaneColor {45,60,15} 各减半，Globals.c:506-507）",
+        "line": 339,
+        "assertions": [
+          {
+            "line": 340,
+            "text": "expect(PARALYSIS_GAS_BG).toBe(0x7f4c54)"
+          },
+          {
+            "line": 341,
+            "text": "expect(METHANE_GAS_BG).toBe(0x394c13)"
+          },
+          {
+            "line": 343,
+            "text": "expect(PARALYSIS_GAS_BG).not.toBe(METHANE_GAS_BG)"
+          },
+          {
+            "line": 344,
+            "text": "expect(PARALYSIS_GAS_FG).not.toBe(METHANE_GAS_FG)"
+          }
+        ]
+      },
+      {
+        "name": "新气体的 bg 同样参与光照乘法（恒等光下为原值；弱光下线性变暗）",
+        "line": 347,
+        "assertions": [
+          {
+            "line": 352,
+            "text": "expect(dim.bgColor).toBe(0x1c2609)"
+          }
+        ]
+      },
+      {
+        "name": "density=0 的气体不渲染（既有门对两种新气体同样生效）",
+        "line": 355,
+        "assertions": [
+          {
+            "line": 360,
+            "text": "expect(visual.char).toBe(floor.char)"
+          },
+          {
+            "line": 361,
+            "text": "expect(visual.bgColor).toBe(floor.bgColor)"
+          }
+        ]
+      },
+      {
+        "name": "负向：explosion_immunity 不得出现在侧栏可见集合",
+        "line": 368,
+        "assertions": [
+          {
+            "line": 370,
+            "text": "expect(isSidebarVisibleStatus('explosion_immunity')).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "CE 空名集恰为 web 现有载体（explosion_immunity/enraged）；新增载体须同步扩入",
+        "line": 373,
+        "assertions": [
+          {
+            "line": 374,
+            "text": "expect([...CE_EMPTY_NAME_STATUSES].sort()).toEqual(['enraged', 'explosion_immunity'])"
+          }
+        ]
+      },
+      {
+        "name": "有名状态与未知键照常显示（CE name[0] 门只挡空名；未知键裸显是 web 既有调试可见性）",
+        "line": 377,
+        "assertions": [
+          {
+            "line": 378,
+            "text": "expect(isSidebarVisibleStatus('burning')).toBe(true)"
+          },
+          {
+            "line": 379,
+            "text": "expect(isSidebarVisibleStatus('paralyzed')).toBe(true)"
+          },
+          {
+            "line": 380,
+            "text": "expect(isSidebarVisibleStatus('some_future_escape_hatch_key')).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "结构守卫：Sidebar 的过滤必须走 isSidebarVisibleStatus（不许在组件里手写键名黑名单）",
+        "line": 383,
+        "assertions": [
+          {
+            "line": 387,
+            "text": "expect(src).toMatch(/isSidebarVisibleStatus/)"
+          }
+        ]
+      },
+      {
+        "name": "常规对局：问题原样转给模态框，答案映射为返回值（Enter=Yes/Esc=No 由原生 confirm 承载，≙ CE RETURN/ESCAPE_KEY）",
+        "line": 407,
+        "assertions": [
+          {
+            "line": 412,
+            "text": "expect(game.onConfirmRequest).not.toBeNull()"
+          },
+          {
+            "line": 413,
+            "text": "expect(game.onConfirmRequest!('潜入深渊？')).toBe(true)"
+          },
+          {
+            "line": 414,
+            "text": "expect(confirmSpy).toHaveBeenCalledWith('潜入深渊？')"
+          },
+          {
+            "line": 417,
+            "text": "expect(game.onConfirmRequest!('潜入深渊？')).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "回放期间直接放行且**不弹框**（CE IO.c:2941-2943 \"oh yes he did\"；弹框会卡死回放）",
+        "line": 420,
+        "assertions": [
+          {
+            "line": 425,
+            "text": "expect(game.onConfirmRequest!('潜入深渊？')).toBe(true)"
+          },
+          {
+            "line": 426,
+            "text": "expect(confirmSpy).not.toHaveBeenCalled()"
+          }
+        ]
+      },
+      {
+        "name": "自动寻路期间直接放行（CE rogue.autoPlayingLevel 的 web 等价 = isAutoTraveling）",
+        "line": 429,
+        "assertions": [
+          {
+            "line": 434,
+            "text": "expect(game.onConfirmRequest!('潜入深渊？')).toBe(true)"
+          },
+          {
+            "line": 435,
+            "text": "expect(confirmSpy).not.toHaveBeenCalled()"
+          }
+        ]
+      },
+      {
+        "name": "结构守卫：App.vue 挂载时真的接线（谁把 wireConfirmRequest(activeGame) 删了谁红）",
+        "line": 438,
+        "assertions": [
+          {
+            "line": 440,
+            "text": "expect(src).toMatch(/wireConfirmRequest\\(activeGame\\)/)"
+          }
+        ]
+      },
+      {
+        "name": "对抗：过亮通道平方根压回（adjustedLightValue，IO.c:1732-1737）——漏写压回/用旧混合即红",
+        "line": 447,
+        "assertions": [
+          {
+            "line": 453,
+            "text": "expect(visual.color).toBe(lightColor(floor.color, [180, 180, 180]))"
+          },
+          {
+            "line": 454,
+            "text": "expect(visual.bgColor).toBe(lightBg(floor.bgColor, [180, 180, 180]))"
+          }
+        ]
+      },
+      {
+        "name": "对抗：有色光是**逐通道**的——单色混合实现（旧 light: {color,intensity} 形态）给不出这个值",
+        "line": 457,
+        "assertions": [
+          {
+            "line": 464,
+            "text": "expect(visual.color).toBe(lightColor(floor.color, [100, 20, 0]))"
+          }
+        ]
+      },
+      {
+        "name": "负通道按 max(0,·) 钳位（黑暗类光是负分量，CE colorMultiplierFromDungeonLight）",
+        "line": 467,
+        "assertions": [
+          {
+            "line": 472,
+            "text": "expect(visual.color).toBe(lightColor(floor.color, [-50, 100, 100]))"
+          }
+        ]
+      },
+      {
+        "name": "背景与前景用同一乘数（CE 对两者各做一次 applyColorMultiplier）",
+        "line": 475,
+        "assertions": [
+          {
+            "line": 481,
+            "text": "expect(visual.bgColor).toBe(lightBg(water.bgColor, [50, 50, 50]))"
+          },
+          {
+            "line": 482,
+            "text": "expect(visual.color).toBe(lightColor(water.color, [50, 50, 50]))"
+          }
+        ]
+      },
+      {
+        "name": "全零通道与 null 光同走\"可见但无光\"近黑分支（不受乘法影响）",
+        "line": 485,
+        "assertions": [
+          {
+            "line": 491,
+            "text": "expect(visual).toEqual({ char: floor.char, color: '#222222', bgColor: 0x050505 })"
+          }
+        ]
+      }
+    ]
+  }
+]

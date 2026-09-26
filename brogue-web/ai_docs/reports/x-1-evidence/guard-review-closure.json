@@ -1,0 +1,363 @@
+[
+  {
+    "file": "src/test/b2_transcription.test.ts",
+    "cases": [
+      {
+        "name": "observes committed CE71 machines and their actual occupants on 34 seed × D1–D26",
+        "line": 58,
+        "assertions": [
+          {
+            "line": 85,
+            "text": "expect(call[0]).toBe(depth)"
+          },
+          {
+            "line": 98,
+            "text": "expect(machine.spawns).toHaveLength(3)"
+          },
+          {
+            "line": 99,
+            "text": "expect(new Set(machine.spawns.map(s=>`${s.pos.x},${s.pos.y}`)).size).toBe(3)"
+          },
+          {
+            "line": 101,
+            "text": "expect(spawn.isSentinel,'CE71 request exists but living sentinel grid occupant is missing').toBe(true)"
+          },
+          {
+            "line": 102,
+            "text": "expect(spawn.home).toBe(machine.number)"
+          },
+          {
+            "line": 105,
+            "text": "expect(torchOverwrites.get(game.grid)?.has(k), `seed${seed}/D${depth}: only a recorded stair-preparation write may replace the statue`).toBe(true)"
+          },
+          {
+            "line": 107,
+            "text": "expect(game.grid.getCell(spawn.pos.x,spawn.pos.y)!.machineNumber).toBe(0)"
+          },
+          {
+            "line": 108,
+            "text": "expect(game.grid.impregnableCells.has(k)).toBe(true)"
+          },
+          {
+            "line": 114,
+            "text": "expect(spawn.terrain).toBe(C.WALL_MONSTER_DORMANT)"
+          },
+          {
+            "line": 120,
+            "text": "expect(overwriter, `seed${seed}/D${depth}: no later CE70 feature explains the changed statue`).toBeDefined()"
+          },
+          {
+            "line": 121,
+            "text": "expect(game.grid.getCell(spawn.pos.x, spawn.pos.y)!.machineNumber).toBe(overwriter!.machineNumber)"
+          },
+          {
+            "line": 122,
+            "text": "expect(game.dormantMonsters.some(m => m.machineHome === overwriter!.machineNumber && m.loc.x === spawn.pos.x && m.loc.y === spawn.pos.y)).toBe(true)"
+          },
+          {
+            "line": 139,
+            "text": "expect(levels).toHaveLength(SEEDS.length*26)"
+          },
+          {
+            "line": 140,
+            "text": "expect(built,'natural CE71 construction coverage').toBeGreaterThan(0)"
+          },
+          {
+            "line": 141,
+            "text": "expect(realized).toBe(3*built)"
+          },
+          {
+            "line": 142,
+            "text": "expect(bad).toBe(0)"
+          }
+        ]
+      },
+      {
+        "name": "retains CE40 F5/F6=1 and fills CE31 hallway flag, CE10 weight, CE71 exact monster id",
+        "line": 151,
+        "assertions": [
+          {
+            "line": 152,
+            "text": "expect(bp(40).features.slice(5).map(f=>f.personalSpace)).toEqual([1,1])"
+          },
+          {
+            "line": 153,
+            "text": "expect(bp(31).features[1]!.flags).toEqual([ 'MF_ADOPT_ITEM','MF_FAR_FROM_ORIGIN','MF_TREAT_AS_BLOCKING','MF_NOT_IN_HALLWAY', ])"
+          },
+          {
+            "line": 156,
+            "text": "expect(bp(10).frequency).toBe(12)"
+          },
+          {
+            "line": 157,
+            "text": "expect(bp(71).features[0]!.monsterId).toBe('sentinel')"
+          }
+        ]
+      },
+      {
+        "name": "CE55 MAXIMIZE is present and U19f restores its closed tunnel consumer",
+        "line": 159,
+        "assertions": [
+          {
+            "line": 160,
+            "text": "expect(bp(55).flags).toContain('BP_MAXIMIZE_INTERIOR')"
+          },
+          {
+            "line": 161,
+            "text": "expect(bp(55).frequency).toBe(10)"
+          },
+          {
+            "line": 162,
+            "text": "expect(blueprintQualifies(bp(55),depth,['BP_ADOPT_ITEM'])).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "CE15 fungus follows tile, promote/fire, propagation and subsequentDF edges without deferred promotion",
+        "line": 180,
+        "assertions": [
+          {
+            "line": 181,
+            "text": "expect(bp(15).features[0]!.featureDF).toBe('DF_LUMINESCENT_FUNGUS')"
+          },
+          {
+            "line": 187,
+            "text": "expect(df,name).not.toBeNull()"
+          },
+          {
+            "line": 192,
+            "text": "expect(e,DF[df]).toBeDefined()"
+          },
+          {
+            "line": 193,
+            "text": "expect(DF_MISSING_TILES).not.toContain(df)"
+          },
+          {
+            "line": 194,
+            "text": "expect(()=>catalogFeature(df)).not.toThrow()"
+          },
+          {
+            "line": 195,
+            "text": "expect(e.tile).not.toBeNull()"
+          },
+          {
+            "line": 196,
+            "text": "expect(e.propagationTerrain).not.toBeNull()"
+          },
+          {
+            "line": 199,
+            "text": "expect(terrains.has(C.LUMINESCENT_FUNGUS)).toBe(true)"
+          },
+          {
+            "line": 204,
+            "text": "expect(promoteTile(grid,4,4,layer,fire).deferred,`${C[t]} fire=${fire}`).toBeNull()"
+          }
+        ]
+      },
+      {
+        "name": "the same CE71 machine realizes zero sentinels with the old id, and three living grid occupants with the real id",
+        "line": 266,
+        "assertions": [
+          {
+            "line": 274,
+            "text": "expect(machine,'CE71 construction coverage').not.toBeNull()"
+          },
+          {
+            "line": 275,
+            "text": "expect(machine!.monsterSpawns).toHaveLength(3)"
+          },
+          {
+            "line": 277,
+            "text": "expect((game as unknown as GameInternals).placeStairs([machine!])).toBe(true)"
+          },
+          {
+            "line": 284,
+            "text": "expect(grid.getCell(spawn.pos.x,spawn.pos.y)!.layers[L.DUNGEON]).toBe(C.STATUE_INERT)"
+          },
+          {
+            "line": 287,
+            "text": "expect(mon,'spawn directive without an actual grid occupant').toBeDefined()"
+          },
+          {
+            "line": 288,
+            "text": "expect(isSentinel(mon)).toBe(true)"
+          },
+          {
+            "line": 288,
+            "text": "expect(mon!.hp).toBeGreaterThan(0)"
+          },
+          {
+            "line": 289,
+            "text": "expect(mon!.machineHome).toBe(machine!.machineNumber)"
+          },
+          {
+            "line": 290,
+            "text": "expect(game.monsters).toContain(mon)"
+          },
+          {
+            "line": 290,
+            "text": "expect(game.dormantMonsters).not.toContain(mon)"
+          },
+          {
+            "line": 292,
+            "text": "expect(stairsConnected(game)).toBe(true)"
+          },
+          {
+            "line": 294,
+            "text": "expect(results).toEqual([0,3])"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/c_8_connectivity.test.ts",
+    "cases": [
+      {
+        "name": "T1 复现样本回归：seed12 逐层下潜到 D25，上/下行楼梯互相可达且非机器可走格单连通",
+        "line": 148,
+        "assertions": [
+          {
+            "line": 155,
+            "text": "expect(up, 'D25 缺上行楼梯').not.toBeNull()"
+          },
+          {
+            "line": 156,
+            "text": "expect(down, 'D25 缺下行楼梯').not.toBeNull()"
+          },
+          {
+            "line": 158,
+            "text": "expect(reach.has(down!.y * game.grid.width + down!.x), `seed12/D25 上行楼梯到不了下行楼梯（卡死局回归）：up=(${up!.x},${up!.y}) down=(${down!.x},${down!.y}) 可达=${reach.size}`).toBe(true)"
+          },
+          {
+            "line": 173,
+            "text": "expect(unreachable, `seed12/D25 存在机器格外的不可走达格：${unreachable.slice(0, 5).map(p => `(${p.x},${p.y})`).join('、')}`).toEqual([])"
+          }
+        ]
+      },
+      {
+        "name": "T2 广度断言（区间来自修复前后实测）：30 seed × D1-D25 坏层=0",
+        "line": 176,
+        "assertions": [
+          {
+            "line": 189,
+            "text": "expect( reach.has(down.y * W + down.x) && back.has(up.y * W + up.x), `seed${seed}/D${d} 上/下行楼梯不互相可达（卡死局）：up=(${up.x},${up.y})→${reach.has(down.y * W + down.x)} down=(${down.x},${down.y})→${back.has(up.y * W + up.x)}`, ).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "T3 机制断言（AD1）：壕沟夹具上 CE 判据放行、移动图判据判切断、spawnDungeonFeature 真实否决",
+        "line": 203,
+        "assertions": [
+          {
+            "line": 209,
+            "text": "expect(levelIsDisconnectedWithBlockingMap(g, band, false)).toBe(0)"
+          },
+          {
+            "line": 211,
+            "text": "expect(levelIsDisconnectedOnMovementGraph(g, band), '移动图判据未识别壕沟切断（8 向或 ∪SECRET 口径丢失的实现在此翻红）').toBe(true)"
+          },
+          {
+            "line": 218,
+            "text": "expect(res.succeeded, '切断壕沟的水晶墙必须被否决（否决只跑 CE 判据的实现在此翻红）').toBe(false)"
+          },
+          {
+            "line": 219,
+            "text": "expect(g.getCell(20, 10)!.layers).toEqual(before)"
+          }
+        ]
+      },
+      {
+        "name": "T4 零 RNG 消耗（AD5）：否决与放行两条路径的掷骰增量均为 0",
+        "line": 222,
+        "assertions": [
+          {
+            "line": 241,
+            "text": "expect(ok.succeeded).toBe(true)"
+          },
+          {
+            "line": 242,
+            "text": "expect(vetoedCost, '否决路径不得消耗 RNG').toBe(0)"
+          },
+          {
+            "line": 243,
+            "text": "expect(builtCost, '放行路径（未切断）不得消耗 RNG').toBe(0)"
+          }
+        ]
+      },
+      {
+        "name": "T-AD2 判据丢掉密门口径：水晶墙封死唯一通路上的密门必须被否决",
+        "line": 246,
+        "assertions": [
+          {
+            "line": 255,
+            "text": "expect(levelIsDisconnectedOnMovementGraph(g, band), '密门口径丢失（漏并 SECRET_DOOR 的实现在此翻红）').toBe(true)"
+          },
+          {
+            "line": 258,
+            "text": "expect(res.succeeded, '封死密门的水晶墙必须被否决').toBe(false)"
+          },
+          {
+            "line": 259,
+            "text": "expect(g.getCell(20, 10)!.terrain).toBe(TerrainType.SECRET_DOOR)"
+          }
+        ]
+      },
+      {
+        "name": "T-AD3 方向数退化成 4 向：对角咽喉夹具上 4 向判据盲、8 向判据真",
+        "line": 262,
+        "assertions": [
+          {
+            "line": 272,
+            "text": "expect(levelIsDisconnectedOnMovementGraph(g, band), '对角咽喉未被判切断（分区/相触退化成 4 向的实现在此翻红）').toBe(true)"
+          },
+          {
+            "line": 275,
+            "text": "expect(res.succeeded, '封死对角咽喉的水晶墙必须被否决').toBe(false)"
+          },
+          {
+            "line": 276,
+            "text": "expect(g.getCell(2, 2)!.terrain).toBe(TerrainType.FLOOR)"
+          }
+        ]
+      },
+      {
+        "name": "T-AD4 过度否决守卫：贴带但未切断的放置必须照常放行（隔墙双室夹具）",
+        "line": 279,
+        "assertions": [
+          {
+            "line": 291,
+            "text": "expect(levelIsDisconnectedOnMovementGraph(g, band), '无害放置被误判切断（把\"贴带\"当\"切断\"的实现在此翻红）').toBe(false)"
+          },
+          {
+            "line": 294,
+            "text": "expect(res.succeeded, '墙格上的水晶墙必须照常放行').toBe(true)"
+          },
+          {
+            "line": 295,
+            "text": "expect(g.getCell(5, 7)!.terrain).toBe(TerrainType.CRYSTAL_WALL)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/u_00_new_run.test.ts",
+    "cases": [
+      {
+        "name": "old grid cannot wake B; current grid wakes exactly once after repeated starts",
+        "line": 177,
+        "assertions": [
+          {
+            "line": 185,
+            "text": "expect(spy).not.toHaveBeenCalled()"
+          },
+          {
+            "line": 187,
+            "text": "expect(spy).toHaveBeenCalledTimes(1)"
+          }
+        ]
+      }
+    ]
+  }
+]

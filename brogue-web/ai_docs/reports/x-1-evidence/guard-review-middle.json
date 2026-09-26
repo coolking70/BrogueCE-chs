@@ -1,0 +1,3627 @@
+[
+  {
+    "file": "src/test/u_10_absorption_snapshot.test.ts",
+    "cases": [
+      {
+        "name": "fresh creature uses initializeMonster defaults; player clone copies the player memset position, with no absorption UI",
+        "line": 42,
+        "assertions": [
+          {
+            "line": 44,
+            "text": "expect(state(m)).toEqual({targetCorpseLoc:m.typeId==='player_clone'?{x:0,y:0}:null,targetCorpseName:'',corpseAbsorptionCounter:0,absorptionFlags:null, absorbBehavior:false,absorptionBolt:CEBoltType.NONE,isAbsorbing:false,newPowerCount:0,totalPowerCount:0})"
+          },
+          {
+            "line": 46,
+            "text": "expect(generateMonsterDetail(m,30,12,0,null,0,12).sections.flatMap(s=>s.lines).some(l=>l.progress)).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "current-layer active, dormant, cyclic carried/leader entities preserve their own pending task across real JSON load",
+        "line": 66,
+        "assertions": [
+          {
+            "line": 76,
+            "text": "expect(g.loadSnapshot(saved)).toBe(true)"
+          },
+          {
+            "line": 76,
+            "text": "expect(rng.randomNumbersGenerated).toBe(0)"
+          },
+          {
+            "line": 78,
+            "text": "expect([la,ld,lp].map(state)).toEqual(before)"
+          },
+          {
+            "line": 78,
+            "text": "expect(lp.leader).toBe(la)"
+          },
+          {
+            "line": 78,
+            "text": "expect(lp.carriedMonster).toBe(ld)"
+          },
+          {
+            "line": 78,
+            "text": "expect(ld.leader).toBe(lp)"
+          },
+          {
+            "line": 79,
+            "text": "expect(saved.monsters[0]!.targetCorpseLoc!.x).toBe(10)"
+          },
+          {
+            "line": 79,
+            "text": "expect(a.targetCorpseLoc!.x).toBe(10)"
+          }
+        ]
+      },
+      {
+        "name": "test-room baseline restore shares the same exact contract",
+        "line": 82,
+        "assertions": [
+          {
+            "line": 85,
+            "text": "expect(state(restored)).toEqual(state(m))"
+          },
+          {
+            "line": 85,
+            "text": "expect(restored.targetCorpseLoc).not.toBe(m.targetCorpseLoc)"
+          }
+        ]
+      },
+      {
+        "name": "cloneMonster copies all pending values even when placed away from the target; coordinates are values",
+        "line": 88,
+        "assertions": [
+          {
+            "line": 91,
+            "text": "expect(c).not.toBeNull()"
+          },
+          {
+            "line": 91,
+            "text": "expect(state(c)).toEqual(expected)"
+          },
+          {
+            "line": 91,
+            "text": "expect(c.loc).not.toEqual(m.loc)"
+          },
+          {
+            "line": 92,
+            "text": "expect(c.targetCorpseLoc).not.toBe(m.targetCorpseLoc)"
+          },
+          {
+            "line": 92,
+            "text": "expect(state(m)).toEqual(expected)"
+          },
+          {
+            "line": 93,
+            "text": "expect(state(restoreEntityGraph([json(saved)]).monsters.get(c.id)!)).toEqual(state(c))"
+          }
+        ]
+      },
+      {
+        "name": "polymorph preserves creature absorption state while replacing species info",
+        "line": 96,
+        "assertions": [
+          {
+            "line": 98,
+            "text": "expect(m.polymorph(()=>{})).toBe(true)"
+          },
+          {
+            "line": 98,
+            "text": "expect(m.typeId).not.toBe('rat')"
+          },
+          {
+            "line": 98,
+            "text": "expect(state(m)).toEqual(expected)"
+          }
+        ]
+      },
+      {
+        "name": "pre-shielded combat, bypassed poison and lethal damage all interrupt without clearing selection",
+        "line": 118,
+        "assertions": [
+          {
+            "line": 121,
+            "text": "expect(amount).toBe(0)"
+          },
+          {
+            "line": 121,
+            "text": "expect(m.isAbsorbing).toBe(false)"
+          },
+          {
+            "line": 124,
+            "text": "expect(state(m)).toEqual({...before,isAbsorbing:false})"
+          }
+        ]
+      },
+      {
+        "name": "immunity gates do not interrupt on fire/explosion/poison that never reaches inflictDamage",
+        "line": 139,
+        "assertions": [
+          {
+            "line": 142,
+            "text": "expect(state(m)).toEqual(before)"
+          }
+        ]
+      },
+      {
+        "name": "level-entry reset clears only target position, without RNG or resetting stale bookkeeping",
+        "line": 145,
+        "assertions": [
+          {
+            "line": 147,
+            "text": "expect(state(m)).toEqual({...before,targetCorpseLoc:null})"
+          },
+          {
+            "line": 147,
+            "text": "expect(JSON.stringify(rng)).toBe(random)"
+          }
+        ]
+      },
+      {
+        "name": "invulnerable falling survivor retains MB_ABSORBING: transfer itself only clears location",
+        "line": 159,
+        "assertions": [
+          {
+            "line": 161,
+            "text": "expect(state(m)).toEqual({...before,targetCorpseLoc:null})"
+          }
+        ]
+      },
+      {
+        "name": "revisited level restores active residents only; JSON loading the same entities does not run restoreMonster",
+        "line": 164,
+        "assertions": [
+          {
+            "line": 170,
+            "text": "expect(state(a)).toEqual({...expected[0],isAbsorbing:false,corpseAbsorptionCounter:0})"
+          },
+          {
+            "line": 170,
+            "text": "expect(state(d)).toEqual(expected[1])"
+          },
+          {
+            "line": 170,
+            "text": "expect(state(payload)).toEqual(expected[2])"
+          },
+          {
+            "line": 171,
+            "text": "expect(g.loadSnapshot(snapshot)).toBe(true)"
+          },
+          {
+            "line": 171,
+            "text": "expect(state(g.monsters[0]!)).toEqual(expected[0])"
+          }
+        ]
+      },
+      {
+        "name": "both actual inspect entry points suppress the bar under hallucination",
+        "line": 182,
+        "assertions": [
+          {
+            "line": 184,
+            "text": "expect(g.inspectTarget!.sections.flatMap(s=>s.lines).some(l=>l.progress)).toBe(false)"
+          },
+          {
+            "line": 185,
+            "text": "expect(g.inspectTarget!.sections.flatMap(s=>s.lines).some(l=>l.progress)).toBe(false)"
+          },
+          {
+            "line": 187,
+            "text": "expect(g.inspectTarget!.sections.flatMap(s=>s.lines).find(l=>l.progress)!.progress).toEqual({value:13,max:20})"
+          }
+        ]
+      },
+      {
+        "name": "U11: the outer scheduler withholds paralyzed actions; an unlearnable death does not assign a task",
+        "line": 190,
+        "assertions": [
+          {
+            "line": 192,
+            "text": "expect(state(m)).toEqual(before)"
+          },
+          {
+            "line": 192,
+            "text": "expect(m.hasBehavior('MONST_FLIES')).toBe(false)"
+          },
+          {
+            "line": 194,
+            "text": "expect(state(m)).toEqual(idle)"
+          }
+        ]
+      },
+      {
+        "name": "a queued survivor clears active absorption at real level entry while retaining its learning payload",
+        "line": 197,
+        "assertions": [
+          {
+            "line": 200,
+            "text": "expect(g.monsters).toContain(m)"
+          },
+          {
+            "line": 200,
+            "text": "expect(state(m)).toEqual({...before,targetCorpseLoc:null,corpseAbsorptionCounter:0,isAbsorbing:false})"
+          },
+          {
+            "line": 200,
+            "text": "expect(m.preplaced).toBe(false)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/u_11_corpse_learning.test.ts",
+    "cases": [
+      {
+        "name": "scratch only rebuilds for a qualified bolt branch; a busy last ally still overwrites the map",
+        "line": 76,
+        "assertions": [
+          {
+            "line": 78,
+            "text": "expect(canAbsorb(g,m,scratch,prey,map)).toBe(true)"
+          },
+          {
+            "line": 78,
+            "text": "expect([...scratch]).toEqual([B.FIRE])"
+          },
+          {
+            "line": 80,
+            "text": "expect(canAbsorb(g,m,scratch,prey,map)).toBe(true)"
+          },
+          {
+            "line": 80,
+            "text": "expect([...scratch]).toEqual([B.SPARK])"
+          },
+          {
+            "line": 81,
+            "text": "expect(canAbsorb(g,m,scratch,prey,map)).toBe(false)"
+          },
+          {
+            "line": 81,
+            "text": "expect([...scratch]).toEqual([B.SPARK])"
+          },
+          {
+            "line": 84,
+            "text": "expect(anyoneWantABite(g,prey,maps)).toBe(false)"
+          },
+          {
+            "line": 84,
+            "text": "expect(maps).toHaveBeenCalledTimes(2)"
+          }
+        ]
+      },
+      {
+        "name": "distance uses permanent flags, secret doors, diagonal obstructions and stationary immune occupants",
+        "line": 105,
+        "assertions": [
+          {
+            "line": 108,
+            "text": "expect(corpseDistanceMap(g,m,prey.loc)[m.x]![m.y]).toBe(30000)"
+          },
+          {
+            "line": 109,
+            "text": "expect(corpseDistanceMap(g,m,prey.loc)[m.x]![m.y]).toBe(30000)"
+          },
+          {
+            "line": 110,
+            "text": "expect(corpseDistanceMap(g,m,prey.loc)[m.x]![m.y]).toBe(2)"
+          },
+          {
+            "line": 112,
+            "text": "expect(corpseDistanceMap(g,m,prey.loc)[m.x]![m.y]).toBe(2)"
+          },
+          {
+            "line": 113,
+            "text": "expect(guard.isImmuneToWeapons()).toBe(true)"
+          },
+          {
+            "line": 114,
+            "text": "expect(corpseDistanceMap(g,m,prey.loc)[m.x]![m.y]).toBe(30000)"
+          }
+        ]
+      },
+      {
+        "name": "bolt lottery preserves corpse order, removes owned/nonlearnable entries and rebuilds ourBolts for the winner",
+        "line": 124,
+        "assertions": [
+          {
+            "line": 128,
+            "text": "expect(anyoneWantABite(g,prey)).toBe(true)"
+          },
+          {
+            "line": 128,
+            "text": "expect(m.absorptionBolt).toBe(B.BLINKING)"
+          },
+          {
+            "line": 128,
+            "text": "expect(spy.mock.calls).toEqual([[1,1],[1,2]])"
+          }
+        ]
+      },
+      {
+        "name": "a player clone retains MK_YOU, so an acquired power on its corpse is learnable",
+        "line": 136,
+        "assertions": [
+          {
+            "line": 138,
+            "text": "expect(m.absorptionBolt).toBe(B.FIRE)"
+          }
+        ]
+      },
+      {
+        "name": "real player strike and monster attack, poison and burning deaths all reach allocation exactly once",
+        "line": 184,
+        "assertions": [
+          {
+            "line": 191,
+            "text": "expect(prey.hp,cause).toBeLessThanOrEqual(0)"
+          },
+          {
+            "line": 191,
+            "text": "expect(prey.deathProcessed,cause).toBe(true)"
+          },
+          {
+            "line": 191,
+            "text": "expect(m.targetCorpseLoc,cause).toEqual({x:5,y:8})"
+          },
+          {
+            "line": 192,
+            "text": "expect(task(m)).toEqual(before)"
+          },
+          {
+            "line": 192,
+            "text": "expect(spy).not.toHaveBeenCalled()"
+          }
+        ]
+      },
+      {
+        "name": "DF executes before learning; two deaths at the same square are distinct; a saved processed corpse never reassigns",
+        "line": 195,
+        "assertions": [
+          {
+            "line": 197,
+            "text": "expect(prey.deathEffectTriggered).toBe(true)"
+          },
+          {
+            "line": 197,
+            "text": "expect(prey.deathProcessed).toBe(true)"
+          },
+          {
+            "line": 198,
+            "text": "expect([a.targetCorpseLoc,b.targetCorpseLoc]).toEqual([null,null])"
+          },
+          {
+            "line": 200,
+            "text": "expect(remaining.targetCorpseLoc).toEqual({x:10,y:8})"
+          },
+          {
+            "line": 202,
+            "text": "expect(spy).not.toHaveBeenCalled()"
+          }
+        ]
+      },
+      {
+        "name": "dormant / administrative detached removals give no task; release occurs before host allocation",
+        "line": 204,
+        "assertions": [
+          {
+            "line": 205,
+            "text": "expect(m.targetCorpseLoc).toBeNull()"
+          },
+          {
+            "line": 206,
+            "text": "expect(m.targetCorpseLoc).toBeNull()"
+          },
+          {
+            "line": 208,
+            "text": "expect(g.monsters).toContain(passenger)"
+          },
+          {
+            "line": 208,
+            "text": "expect(passenger.ticksUntilTurn).toBe(200)"
+          },
+          {
+            "line": 208,
+            "text": "expect(passenger.loc).toEqual({x:10,y:8})"
+          },
+          {
+            "line": 208,
+            "text": "expect(passenger.targetCorpseLoc).toEqual(host.loc)"
+          }
+        ]
+      },
+      {
+        "name": "a passenger killed by its landing resolves its own death before the host selects a learner",
+        "line": 210,
+        "assertions": [
+          {
+            "line": 213,
+            "text": "expect(passenger.hp).toBeLessThanOrEqual(0)"
+          },
+          {
+            "line": 213,
+            "text": "expect(passenger.deathProcessed).toBe(true)"
+          },
+          {
+            "line": 214,
+            "text": "expect(m.absorptionBolt).toBe(B.FIRE)"
+          },
+          {
+            "line": 214,
+            "text": "expect(m.absorptionFlags).toBeNull()"
+          },
+          {
+            "line": 214,
+            "text": "expect(host.carriedMonster).toBeNull()"
+          }
+        ]
+      },
+      {
+        "name": "damage fully blocked by shield interrupts; restarting resets20 without reroll/refund; zero/invulnerability do not interrupt",
+        "line": 230,
+        "assertions": [
+          {
+            "line": 232,
+            "text": "expect(m.hp).toBe(hp)"
+          },
+          {
+            "line": 232,
+            "text": "expect(m.isAbsorbing).toBe(false)"
+          },
+          {
+            "line": 233,
+            "text": "expect(m.corpseAbsorptionCounter).toBe(20)"
+          },
+          {
+            "line": 233,
+            "text": "expect(m.isAbsorbing).toBe(true)"
+          },
+          {
+            "line": 233,
+            "text": "expect(spy).not.toHaveBeenCalled()"
+          },
+          {
+            "line": 234,
+            "text": "expect(m.isAbsorbing).toBe(true)"
+          },
+          {
+            "line": 234,
+            "text": "expect(m.isAbsorbing).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "expiry clears only the CE task fields, leaves name/behavior/new and never rebroadcasts; null target with lingering absorption expires",
+        "line": 236,
+        "assertions": [
+          {
+            "line": 238,
+            "text": "expect(task(m)).toEqual({loc:null,name:'corpse',counter:0,flag:null,behavior:true,bolt:B.NONE,absorbing:false,new:1,total:1})"
+          },
+          {
+            "line": 239,
+            "text": "expect(m.corpseAbsorptionCounter).toBe(-1)"
+          },
+          {
+            "line": 239,
+            "text": "expect(m.corpseAbsorptionCounter).toBe(-1)"
+          }
+        ]
+      },
+      {
+        "name": "a blocked twenty-action approach times out without spending or redistributing the corpse",
+        "line": 241,
+        "assertions": [
+          {
+            "line": 245,
+            "text": "expect(m.targetCorpseLoc).toBeNull()"
+          },
+          {
+            "line": 245,
+            "text": "expect(m.newPowerCount).toBe(1)"
+          },
+          {
+            "line": 245,
+            "text": "expect(m.absorptionFlags).toBeNull()"
+          },
+          {
+            "line": 245,
+            "text": "expect(other.targetCorpseLoc).toBeNull()"
+          }
+        ]
+      },
+      {
+        "name": "bolt takes precedence over residual flag; completion synchronizes all current permanent traits and retains name/behavior",
+        "line": 247,
+        "assertions": [
+          {
+            "line": 250,
+            "text": "expect(m.bolts).toEqual(['FIRE'])"
+          },
+          {
+            "line": 250,
+            "text": "expect(m.hasBehavior('MONST_REFLECT_50')).toBe(false)"
+          },
+          {
+            "line": 250,
+            "text": "expect(m.hasBehavior('MONST_RESTRICTED_TO_LIQUID')).toBe(false)"
+          },
+          {
+            "line": 250,
+            "text": "expect(m.hasBehavior('MONST_SUBMERGES')).toBe(false)"
+          },
+          {
+            "line": 251,
+            "text": "expect(m.statusDurations).toMatchObject({burning:1000,levitating:1000,invisible:1000})"
+          },
+          {
+            "line": 251,
+            "text": "expect([m.targetCorpseName,m.absorbBehavior,m.absorptionFlags,m.absorptionBolt]).toEqual(['corpse',true,null,B.NONE])"
+          }
+        ]
+      },
+      {
+        "name": "save at13 reloads without reselect/reset; the next13 actions finish once",
+        "line": 253,
+        "assertions": [
+          {
+            "line": 255,
+            "text": "expect(g.loadSnapshot(snapshot)).toBe(true)"
+          },
+          {
+            "line": 255,
+            "text": "expect(spy).not.toHaveBeenCalled()"
+          },
+          {
+            "line": 256,
+            "text": "expect(task(loaded)).toEqual(before)"
+          },
+          {
+            "line": 257,
+            "text": "expect(loaded.newPowerCount).toBe(1)"
+          },
+          {
+            "line": 257,
+            "text": "expect(loaded.newPowerCount).toBe(0)"
+          },
+          {
+            "line": 257,
+            "text": "expect(loaded.hasBehavior('MONST_FLIES')).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "negation preserves a pending task and refunds total; completion can reinstall it; polymorph preserves task",
+        "line": 259,
+        "assertions": [
+          {
+            "line": 261,
+            "text": "expect(task(m)).toEqual({...before,new:3})"
+          },
+          {
+            "line": 261,
+            "text": "expect(m.newPowerCount).toBe(2)"
+          },
+          {
+            "line": 261,
+            "text": "expect(m.hasBehavior('MONST_FLIES')).toBe(true)"
+          },
+          {
+            "line": 262,
+            "text": "expect(task(m)).toEqual(pending)"
+          },
+          {
+            "line": 262,
+            "text": "expect(m.hasAbility('MA_TRANSFERENCE')).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "clone copies task by value; return before16 can duplicate learning as CE permits, without a global token",
+        "line": 264,
+        "assertions": [
+          {
+            "line": 266,
+            "text": "expect(clone.targetCorpseLoc).toEqual(m.targetCorpseLoc)"
+          },
+          {
+            "line": 266,
+            "text": "expect(clone.targetCorpseLoc).not.toBe(m.targetCorpseLoc)"
+          },
+          {
+            "line": 267,
+            "text": "expect(clone.isAbsorbing).toBe(false)"
+          },
+          {
+            "line": 267,
+            "text": "expect(clone.targetCorpseLoc).not.toBeNull()"
+          },
+          {
+            "line": 269,
+            "text": "expect(clone.corpseAbsorptionCounter).toBe(20)"
+          },
+          {
+            "line": 270,
+            "text": "expect(clone.newPowerCount).toBe(0)"
+          },
+          {
+            "line": 271,
+            "text": "expect(m.newPowerCount).toBe(0)"
+          }
+        ]
+      },
+      {
+        "name": "level change clears only location; next action clears ongoing bit then expires the residual task",
+        "line": 273,
+        "assertions": [
+          {
+            "line": 275,
+            "text": "expect(m.isAbsorbing).toBe(true)"
+          },
+          {
+            "line": 275,
+            "text": "expect(m.isAbsorbing).toBe(false)"
+          },
+          {
+            "line": 275,
+            "text": "expect(m.absorptionFlags).toBeNull()"
+          },
+          {
+            "line": 275,
+            "text": "expect(m.newPowerCount).toBe(1)"
+          }
+        ]
+      },
+      {
+        "name": "normal scheduler consumes exactly20 actions at100 ticks even for a fast learner; completion does not move",
+        "line": 281,
+        "assertions": [
+          {
+            "line": 283,
+            "text": "expect(m.corpseAbsorptionCounter).toBe(1)"
+          },
+          {
+            "line": 283,
+            "text": "expect(m.newPowerCount).toBe(1)"
+          },
+          {
+            "line": 284,
+            "text": "expect(m.newPowerCount).toBe(0)"
+          },
+          {
+            "line": 284,
+            "text": "expect(m.loc).toEqual({x:8,y:8})"
+          }
+        ]
+      },
+      {
+        "name": "poison acquired during absorption is not a second start gate; direct monstersTurn updates before inner paralysis",
+        "line": 286,
+        "assertions": [
+          {
+            "line": 288,
+            "text": "expect(m.newPowerCount).toBe(0)"
+          }
+        ]
+      },
+      {
+        "name": "corpse outranks following/blink-follow, but magic, nearby combat and escaping hazards outrank corpse",
+        "line": 290,
+        "assertions": [
+          {
+            "line": 292,
+            "text": "expect(m.loc).toEqual({x:9,y:8})"
+          },
+          {
+            "line": 294,
+            "text": "expect(enemy.hp).toBeLessThan(100)"
+          },
+          {
+            "line": 294,
+            "text": "expect(m.isAbsorbing).toBe(false)"
+          },
+          {
+            "line": 295,
+            "text": "expect(m.isAbsorbing).toBe(false)"
+          },
+          {
+            "line": 295,
+            "text": "expect(m.loc).toEqual({x:9,y:8})"
+          },
+          {
+            "line": 296,
+            "text": "expect(m.isAbsorbing).toBe(false)"
+          },
+          {
+            "line": 296,
+            "text": "expect(m.loc).not.toEqual({x:9,y:8})"
+          }
+        ]
+      },
+      {
+        "name": "absorbing friend blocks walking; no implicit corpse-item disappearance or rediscovery check",
+        "line": 298,
+        "assertions": [
+          {
+            "line": 300,
+            "text": "expect(blocker.loc).toEqual({x:9,y:8})"
+          },
+          {
+            "line": 300,
+            "text": "expect(m.loc).not.toEqual(blocker.loc)"
+          },
+          {
+            "line": 301,
+            "text": "expect(m.hasAbility('MA_CAUSES_WEAKNESS')).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "lottery boundary calls versus actual RNG advancement: singleton0, multiple2; absorption0",
+        "line": 311,
+        "assertions": [
+          {
+            "line": 313,
+            "text": "expect(rng.randomNumbersGenerated).toBe(before)"
+          },
+          {
+            "line": 314,
+            "text": "expect(rng.randomNumbersGenerated).toBe(started)"
+          },
+          {
+            "line": 317,
+            "text": "expect(rng.randomNumbersGenerated-count).toBe(2)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/u_12a_cast_eligibility.test.ts",
+    "cases": [
+      {
+        "name": "uses follower or allied relationships, discord, captive and domination in the two faction gates",
+        "line": 24,
+        "assertions": [
+          {
+            "line": 26,
+            "text": "expect(monstersAreTeammates(caster, target)).toBe(false)"
+          },
+          {
+            "line": 27,
+            "text": "expect(specificallyValidBoltTarget(caster, target, 'INVISIBILITY', g)).toBe(false)"
+          },
+          {
+            "line": 29,
+            "text": "expect(specificallyValidBoltTarget(caster, target, 'INVISIBILITY', g)).toBe(true)"
+          },
+          {
+            "line": 31,
+            "text": "expect(monstersAreTeammates(caster, target)).toBe(true)"
+          },
+          {
+            "line": 32,
+            "text": "expect(monstersAreEnemies(caster, target)).toBe(true)"
+          },
+          {
+            "line": 33,
+            "text": "expect(specificallyValidBoltTarget(caster, target, 'INVISIBILITY', g)).toBe(false)"
+          },
+          {
+            "line": 36,
+            "text": "expect(specificallyValidBoltTarget(caster, target, 'SLOW', g)).toBe(true)"
+          },
+          {
+            "line": 38,
+            "text": "expect(specificallyValidBoltTarget(caster, target, 'SLOW', g)).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "allows gas outlined invisibility and teammate invisibility, while dormant targets stay hidden",
+        "line": 41,
+        "assertions": [
+          {
+            "line": 44,
+            "text": "expect(generallyValidBoltTarget(caster, target, g)).toBe(false)"
+          },
+          {
+            "line": 46,
+            "text": "expect(generallyValidBoltTarget(caster, target, g)).toBe(true)"
+          },
+          {
+            "line": 49,
+            "text": "expect(generallyValidBoltTarget(caster, target, g)).toBe(true)"
+          },
+          {
+            "line": 51,
+            "text": "expect(generallyValidBoltTarget(caster, target, g)).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "applies common reflection and fiery gates before any ability roll",
+        "line": 54,
+        "assertions": [
+          {
+            "line": 58,
+            "text": "expect(specificallyValidBoltTarget(caster, target, 'FIRE', g)).toBe(false)"
+          },
+          {
+            "line": 61,
+            "text": "expect(specificallyValidBoltTarget(caster, target, 'FIRE', g)).toBe(false)"
+          },
+          {
+            "line": 64,
+            "text": "expect(specificallyValidBoltTarget(caster, target, 'FIRE', g)).toBe(false)"
+          },
+          {
+            "line": 67,
+            "text": "expect(caster.tryUseBolt(g)).toBe(false)"
+          },
+          {
+            "line": 68,
+            "text": "expect(roll).not.toHaveBeenCalled()"
+          },
+          {
+            "line": 70,
+            "text": "expect(specificallyValidBoltTarget(caster, target, 'FIRE', g)).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "tries the player first, then monster insertion order, and rolls only after qualification",
+        "line": 74,
+        "assertions": [
+          {
+            "line": 81,
+            "text": "expect(caster.tryUseBolt(g)).toBe(true)"
+          },
+          {
+            "line": 82,
+            "text": "expect(roll.mock.calls).toEqual([[30], [30]])"
+          },
+          {
+            "line": 83,
+            "text": "expect(cast).toHaveBeenCalledWith(caster, target, 'SLOW')"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/u_12b_ally_mode.test.ts",
+    "cases": [
+      {
+        "name": "selects a reachable enemy outside player FOV while inside its leash",
+        "line": 23,
+        "assertions": [
+          {
+            "line": 30,
+            "text": "expect(ally.x).toBe(9)"
+          }
+        ]
+      },
+      {
+        "name": "lets a wounded ally retreat before pursuing the same enemy",
+        "line": 33,
+        "assertions": [
+          {
+            "line": 40,
+            "text": "expect(Math.max(Math.abs(ally.x - enemy.x), Math.abs(ally.y - enemy.y))).toBeGreaterThan(2)"
+          }
+        ]
+      },
+      {
+        "name": "preserves permanent fleeing separately from current state across snapshots",
+        "line": 43,
+        "assertions": [
+          {
+            "line": 49,
+            "text": "expect(loaded.creatureMode).toBe(MonsterMode.PERM_FLEEING)"
+          },
+          {
+            "line": 53,
+            "text": "expect(loaded.state).toBe(MonsterState.FLEEING)"
+          }
+        ]
+      },
+      {
+        "name": "defaults old snapshots to normal mode and lets ordinary flight end",
+        "line": 56,
+        "assertions": [
+          {
+            "line": 62,
+            "text": "expect(loaded.creatureMode).toBe(MonsterMode.NORMAL)"
+          },
+          {
+            "line": 65,
+            "text": "expect(loaded.state).toBe(MonsterState.HUNTING)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/u_13_combat_math.test.ts",
+    "cases": [
+      {
+        "name": "1215 hit probabilities include zero/negative defense/short maxima and every integer enchant",
+        "line": 40,
+        "assertions": [
+          {
+            "line": 41,
+            "text": "expect(hitProbability(r.accuracy, r.defense, r.enchant ?? undefined), JSON.stringify(r)).toBe(r.hit)"
+          }
+        ]
+      },
+      {
+        "name": "all 281 enchant table entries and 711 defense boundary inputs match exactly",
+        "line": 43,
+        "assertions": [
+          {
+            "line": 45,
+            "text": "expect(accuracyFraction(r.enchant) * 65536).toBe(r.accuracy)"
+          },
+          {
+            "line": 46,
+            "text": "expect(damageFraction(r.enchant) * 65536).toBe(r.damage)"
+          },
+          {
+            "line": 48,
+            "text": "expect(defenseFraction(r.defense) * 65536).toBe(r.fraction)"
+          },
+          {
+            "line": 49,
+            "text": "expect(accuracyFraction(-100)).toBe(accuracyFraction(-20))"
+          },
+          {
+            "line": 50,
+            "text": "expect(damageFraction(100)).toBe(damageFraction(50))"
+          }
+        ]
+      },
+      {
+        "name": "168 original recalculateEquipmentBonuses cases reach actual player melee, including negative enchant and strength boundaries",
+        "line": 65,
+        "assertions": [
+          {
+            "line": 74,
+            "text": "expect(CombatSystem.attack(p, m).damage, JSON.stringify(r)).toBe(r.scaledLo)"
+          },
+          {
+            "line": 76,
+            "text": "expect(CombatSystem.attack(p, m).damage, JSON.stringify(r)).toBe(r.scaledHi)"
+          },
+          {
+            "line": 77,
+            "text": "expect(playerDefense(3, r.enchant, r.strength, 12)).toBe(r.defense)"
+          }
+        ]
+      },
+      {
+        "name": "javelin clump survives loading and melee; enchanted endpoints scale before rolling",
+        "line": 103,
+        "assertions": [
+          {
+            "line": 105,
+            "text": "expect(p.equippedWeapon!.clumping).toBe(3)"
+          },
+          {
+            "line": 108,
+            "text": "expect(CombatSystem.attack(p, m).damage).toBe(5)"
+          },
+          {
+            "line": 109,
+            "text": "expect(roll.mock.calls).toEqual([[0, 99], [0, 5], [0, 5], [0, 5]])"
+          },
+          {
+            "line": 113,
+            "text": "expect(CombatSystem.attack(p, m).damage).toBe(6)"
+          }
+        ]
+      },
+      {
+        "name": "unarmed is CE {1,2,1}; zero ranges have no minimum-one damage or random draw",
+        "line": 115,
+        "assertions": [
+          {
+            "line": 118,
+            "text": "expect(CombatSystem.attack(p, m).damage).toBe(2)"
+          },
+          {
+            "line": 119,
+            "text": "expect(roll.mock.calls).toEqual([[0, 99], [1, 2]])"
+          },
+          {
+            "line": 121,
+            "text": "expect(CombatSystem.attack(m, p).damage).toBe(0)"
+          },
+          {
+            "line": 122,
+            "text": "expect(roll.mock.calls).toEqual([[0, 99]])"
+          },
+          {
+            "line": 123,
+            "text": "expect(CombatSystem.parseDamageString('0').min).toBe(0)"
+          }
+        ]
+      },
+      {
+        "name": "all catalog clumps survive constructor/form/empower/clone/JSON restore without new draws",
+        "line": 125,
+        "assertions": [
+          {
+            "line": 127,
+            "text": "expect(m.damageClumping).toBe(row.clumping)"
+          },
+          {
+            "line": 129,
+            "text": "expect(m.damageClumping).toBe(row.clumping)"
+          },
+          {
+            "line": 129,
+            "text": "expect(m.snapshotForm().clumping).toBe(row.clumping)"
+          },
+          {
+            "line": 132,
+            "text": "expect(restored.damageClumping).toBe(row.clumping)"
+          },
+          {
+            "line": 133,
+            "text": "expect(rng.randomNumbersGenerated).toBe(before)"
+          },
+          {
+            "line": 134,
+            "text": "expect(m.copyForClone().damageClumping).toBe(row.clumping)"
+          },
+          {
+            "line": 138,
+            "text": "expect(w.clumping).toBe(row.clumping)"
+          },
+          {
+            "line": 139,
+            "text": "expect(deserializeItem(JSON.parse(JSON.stringify(serializeItem(w)))).clumping).toBe(row.clumping)"
+          }
+        ]
+      },
+      {
+        "name": "polymorph installs the new species clump",
+        "line": 142,
+        "assertions": [
+          {
+            "line": 144,
+            "text": "expect(m.damageClumping).toBe(data(m.typeId).clumping)"
+          }
+        ]
+      },
+      {
+        "name": "sleep/paralysis/lunge overlap multiplies only once; ally wandering and inanimate sleep have no bonus",
+        "line": 173,
+        "assertions": [
+          {
+            "line": 176,
+            "text": "expect(CombatSystem.attack(p, m, { lungeAttack: true }).damage).toBe(15)"
+          },
+          {
+            "line": 178,
+            "text": "expect(CombatSystem.attack(p, m).backstab).toBe(false)"
+          },
+          {
+            "line": 180,
+            "text": "expect(CombatSystem.attack(p, m).backstab).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "monster→sleeping monster / paralyzed player uses generic ×3 and no hit roll",
+        "line": 182,
+        "assertions": [
+          {
+            "line": 185,
+            "text": "expect(CombatSystem.attack(a, d).damage).toBe(27)"
+          },
+          {
+            "line": 185,
+            "text": "expect(CombatSystem.attack(a, p).damage).toBe(27)"
+          },
+          {
+            "line": 186,
+            "text": "expect(roll.mock.calls).toEqual([[0, 2], [0, 2], [0, 2], [0, 2]])"
+          }
+        ]
+      },
+      {
+        "name": "ordinary 100% and seized 100% still consume a hit die; first seizure/kamikaze/aquatic rejection consume none",
+        "line": 188,
+        "assertions": [
+          {
+            "line": 191,
+            "text": "expect(CombatSystem.attack(a, p).seized).toBe(true)"
+          },
+          {
+            "line": 191,
+            "text": "expect(roll).not.toHaveBeenCalled()"
+          },
+          {
+            "line": 192,
+            "text": "expect(CombatSystem.attack(a, p).hit).toBe(true)"
+          },
+          {
+            "line": 192,
+            "text": "expect(roll.mock.calls).toEqual([[0, 99], [3, 4]])"
+          },
+          {
+            "line": 193,
+            "text": "expect(rng.randomNumbersGenerated - before).toBe(2)"
+          },
+          {
+            "line": 194,
+            "text": "expect(roll).not.toHaveBeenCalled()"
+          },
+          {
+            "line": 195,
+            "text": "expect(roll).not.toHaveBeenCalled()"
+          }
+        ]
+      },
+      {
+        "name": "miss/immune skip damage dice; immune sneak still wakes and delays; zero damage never calls armor callback",
+        "line": 197,
+        "assertions": [
+          {
+            "line": 200,
+            "text": "expect(CombatSystem.attack(a, d).hit).toBe(false)"
+          },
+          {
+            "line": 200,
+            "text": "expect(roll.mock.calls).toEqual([[0, 99]])"
+          },
+          {
+            "line": 203,
+            "text": "expect(CombatSystem.attack(a, d, { beforeDamage: armor }).damage).toBe(0)"
+          },
+          {
+            "line": 204,
+            "text": "expect(roll).not.toHaveBeenCalled()"
+          },
+          {
+            "line": 204,
+            "text": "expect(armor).not.toHaveBeenCalled()"
+          },
+          {
+            "line": 204,
+            "text": "expect(d.ticksUntilTurn).toBe(ticks + 100)"
+          },
+          {
+            "line": 205,
+            "text": "expect(d.state).toBe(MonsterState.HUNTING)"
+          }
+        ]
+      },
+      {
+        "name": "invisibility has no extra multiplier and weakened duration cannot substitute for U14 weaknessAmount",
+        "line": 207,
+        "assertions": [
+          {
+            "line": 212,
+            "text": "expect(CombatSystem.attack(p, m).damage).toBe(normal)"
+          },
+          {
+            "line": 214,
+            "text": "expect(CombatSystem.attack(m, p).damage).toBe(monsterNormal)"
+          }
+        ]
+      },
+      {
+        "name": "real BE_ATTACK entry consumes full clump with its normal hit roll",
+        "line": 216,
+        "assertions": [
+          {
+            "line": 222,
+            "text": "expect(g.player.hp).toBe(9996)"
+          },
+          {
+            "line": 224,
+            "text": "expect(roll.mock.calls).toEqual([[0, 99], [0, 2], [0, 2], [1, 1000000], [0, 99]])"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/u_14a_status_gaps.test.ts",
+    "cases": [
+      {
+        "name": "repeat doses cap at ten, refresh both maxima, expiration clears layers",
+        "line": 52,
+        "assertions": [
+          {
+            "line": 54,
+            "text": "expect(p.weaknessAmount).toBe(10)"
+          },
+          {
+            "line": 55,
+            "text": "expect(p.statusDurations.weakened).toBe(29)"
+          },
+          {
+            "line": 55,
+            "text": "expect(p.maxStatus.weakened).toBe(30)"
+          },
+          {
+            "line": 56,
+            "text": "expect(p.statusDurations.weakened).toBe(80)"
+          },
+          {
+            "line": 56,
+            "text": "expect(p.maxStatus.weakened).toBe(80)"
+          },
+          {
+            "line": 57,
+            "text": "expect(p.weaknessAmount).toBe(0)"
+          },
+          {
+            "line": 57,
+            "text": "expect(p.effectiveStrength).toBe(12)"
+          }
+        ]
+      },
+      {
+        "name": "strength potion clears layers immediately, keeps countdown one until tick",
+        "line": 69,
+        "assertions": [
+          {
+            "line": 72,
+            "text": "expect(g.player.strength).toBe(13)"
+          },
+          {
+            "line": 72,
+            "text": "expect(g.player.weaknessAmount).toBe(0)"
+          },
+          {
+            "line": 72,
+            "text": "expect(g.player.getStatusDuration('weakened')).toBe(1)"
+          }
+        ]
+      },
+      {
+        "name": "refresh rules preserve darkness historical max and refresh nausea max to current",
+        "line": 88,
+        "assertions": [
+          {
+            "line": 90,
+            "text": "expect(p.maxStatus.darkness).toBe(20)"
+          },
+          {
+            "line": 90,
+            "text": "expect(p.getStatusDuration('darkness')).toBe(19)"
+          },
+          {
+            "line": 90,
+            "text": "expect(p.maxStatus.nauseous).toBe(29)"
+          },
+          {
+            "line": 91,
+            "text": "expect(p.maxStatus.darkness).toBe(40)"
+          }
+        ]
+      },
+      {
+        "name": "U21b consumes the U14a darkness carrier in miner light",
+        "line": 101,
+        "assertions": [
+          {
+            "line": 104,
+            "text": "expect((g as any).minersLight.radiusHundredths).toBeLessThan(before)"
+          },
+          {
+            "line": 106,
+            "text": "expect(g.player.hasStatus('darkness')).toBe(false)"
+          },
+          {
+            "line": 107,
+            "text": "expect((g as any).minersLight.radiusHundredths).toBe(before)"
+          }
+        ]
+      },
+      {
+        "name": "no vomit check for rest or failed wall move; failed nausea roll permits movement",
+        "line": 132,
+        "assertions": [
+          {
+            "line": 134,
+            "text": "expect(chance.mock.calls.some(([n])=>n===25)).toBe(false)"
+          },
+          {
+            "line": 135,
+            "text": "expect(g.player.x).toBe(9)"
+          },
+          {
+            "line": 135,
+            "text": "expect(chance.mock.calls.filter(([n])=>n===25)).toHaveLength(1)"
+          }
+        ]
+      },
+      {
+        "name": "monster physical intent vomits before melee and moving, not spell dispatch",
+        "line": 137,
+        "assertions": [
+          {
+            "line": 140,
+            "text": "expect(attack).not.toHaveBeenCalled()"
+          },
+          {
+            "line": 140,
+            "text": "expect(m.loc).toEqual({x:9,y:8})"
+          },
+          {
+            "line": 140,
+            "text": "expect(m.ticksUntilTurn).toBe(100)"
+          },
+          {
+            "line": 141,
+            "text": "expect(m.x).toBe(12)"
+          },
+          {
+            "line": 142,
+            "text": "expect(cast).toHaveBeenCalled()"
+          },
+          {
+            "line": 142,
+            "text": "expect(vomit).not.toHaveBeenCalled()"
+          }
+        ]
+      },
+      {
+        "name": "fear cannot recover from full HP or attack when cornered; ordinary fleeing can",
+        "line": 147,
+        "assertions": [
+          {
+            "line": 150,
+            "text": "expect(m.state).toBe(MonsterState.FLEEING)"
+          },
+          {
+            "line": 150,
+            "text": "expect(attack).not.toHaveBeenCalled()"
+          },
+          {
+            "line": 151,
+            "text": "expect(attack).toHaveBeenCalled()"
+          }
+        ]
+      },
+      {
+        "name": "fear refresh, expiry and ally restoration; ordinary fleeing is untouched by status ticks",
+        "line": 153,
+        "assertions": [
+          {
+            "line": 154,
+            "text": "expect(m.getStatusDuration('magical_fear')).toBe(2)"
+          },
+          {
+            "line": 155,
+            "text": "expect(m.state).toBe(MonsterState.FLEEING)"
+          },
+          {
+            "line": 155,
+            "text": "expect(m.state).toBe(MonsterState.HUNTING)"
+          },
+          {
+            "line": 155,
+            "text": "expect(m.isAlly).toBe(true)"
+          },
+          {
+            "line": 156,
+            "text": "expect(m.state).toBe(MonsterState.FLEEING)"
+          }
+        ]
+      },
+      {
+        "name": "melee misses shorten fear to one, environmental damage does not",
+        "line": 158,
+        "assertions": [
+          {
+            "line": 159,
+            "text": "expect(m.getStatusDuration('magical_fear')).toBe(20)"
+          },
+          {
+            "line": 160,
+            "text": "expect(m.getStatusDuration('magical_fear')).toBe(1)"
+          }
+        ]
+      },
+      {
+        "name": "thrown misses shorten fear and alert target; normal fleeing remains",
+        "line": 162,
+        "assertions": [
+          {
+            "line": 164,
+            "text": "expect(m.getStatusDuration('magical_fear')).toBe(1)"
+          },
+          {
+            "line": 164,
+            "text": "expect(m.state).toBe(MonsterState.HUNTING)"
+          },
+          {
+            "line": 165,
+            "text": "expect(m.state).toBe(MonsterState.FLEEING)"
+          }
+        ]
+      },
+      {
+        "name": "direct monster bolt clears magical fear but preserves ordinary fleeing; auto-negation sees fear",
+        "line": 167,
+        "assertions": [
+          {
+            "line": 169,
+            "text": "expect(negationWillAffectMonster(target)).toBe(true)"
+          },
+          {
+            "line": 169,
+            "text": "expect(target.hasStatus('magical_fear')).toBe(false)"
+          },
+          {
+            "line": 169,
+            "text": "expect(target.state).toBe(MonsterState.HUNTING)"
+          },
+          {
+            "line": 170,
+            "text": "expect(target.state).toBe(MonsterState.FLEEING)"
+          }
+        ]
+      },
+      {
+        "name": "player, active/dormant monsters and clones round-trip amounts and independent maxStatus",
+        "line": 172,
+        "assertions": [
+          {
+            "line": 174,
+            "text": "expect(clone.weaknessAmount).toBe(2)"
+          },
+          {
+            "line": 174,
+            "text": "expect(m.maxStatus.darkness).toBe(15)"
+          },
+          {
+            "line": 175,
+            "text": "expect(playerClone.weaknessAmount).toBe(2)"
+          },
+          {
+            "line": 175,
+            "text": "expect(g.player.maxStatus.nauseous).toBe(20)"
+          },
+          {
+            "line": 176,
+            "text": "expect(restored.loadSnapshot(saved)).toBe(true)"
+          },
+          {
+            "line": 177,
+            "text": "expect(restored.player.weaknessAmount).toBe(2)"
+          },
+          {
+            "line": 177,
+            "text": "expect(restored.player.maxStatus).toEqual(g.player.maxStatus)"
+          },
+          {
+            "line": 177,
+            "text": "expect(restored.player.statusDurations).toEqual(g.player.statusDurations)"
+          },
+          {
+            "line": 178,
+            "text": "expect(restored.monsters.find(c=>c.id===m.id)!.maxStatus).toEqual(m.maxStatus)"
+          },
+          {
+            "line": 178,
+            "text": "expect(restored.dormantMonsters[0]!.weaknessAmount).toBe(2)"
+          },
+          {
+            "line": 179,
+            "text": "expect(rows.map(r=>r.label)).toEqual(['虚弱 -2','恶心','黑暗','魔法恐惧'])"
+          },
+          {
+            "line": 179,
+            "text": "expect(rows[0]!.value).toBe('300/300')"
+          },
+          {
+            "line": 180,
+            "text": "expect(detail).toContain('虚弱 -2')"
+          },
+          {
+            "line": 180,
+            "text": "expect(detail).toContain('魔法恐惧')"
+          },
+          {
+            "line": 181,
+            "text": "expect(restored.player.effectiveStrength).toBe(12)"
+          }
+        ]
+      },
+      {
+        "name": "CE fear source is commented; fear scroll and incomplete darkness throw remain outside the pool",
+        "line": 183,
+        "assertions": [
+          {
+            "line": 184,
+            "text": "expect(ce).toContain('//void causeFear(')"
+          },
+          {
+            "line": 185,
+            "text": "expect(ItemLoader.genPotions.find(p=>p.id==='potion_of_darkness')).toBeUndefined()"
+          },
+          {
+            "line": 186,
+            "text": "expect(ItemLoader.scrolls.find(p=>p.id==='scroll_of_fear')).toBeUndefined()"
+          }
+        ]
+      },
+      {
+        "name": "weakness immediately feeds the reflection armor enchantment",
+        "line": 192,
+        "assertions": [
+          {
+            "line": 195,
+            "text": "expect(projectileReflects(p)).toBe(true)"
+          },
+          {
+            "line": 196,
+            "text": "expect(projectileReflects(p)).toBe(false)"
+          },
+          {
+            "line": 196,
+            "text": "expect(roll).not.toHaveBeenCalled()"
+          }
+        ]
+      },
+      {
+        "name": "objective stench contact is before monster decay and after player decay",
+        "line": 198,
+        "assertions": [
+          {
+            "line": 202,
+            "text": "expect(g.player.getStatusDuration('nauseous')).toBe(20)"
+          },
+          {
+            "line": 202,
+            "text": "expect(m.getStatusDuration('nauseous')).toBe(19)"
+          },
+          {
+            "line": 203,
+            "text": "expect(g.player.maxStatus.nauseous).toBe(20)"
+          },
+          {
+            "line": 203,
+            "text": "expect(m.maxStatus.nauseous).toBe(20)"
+          }
+        ]
+      },
+      {
+        "name": "magical fleeing permits summoning but cannot cast attack bolts",
+        "line": 205,
+        "assertions": [
+          {
+            "line": 208,
+            "text": "expect(summon).toHaveBeenCalled()"
+          },
+          {
+            "line": 208,
+            "text": "expect(bolt).not.toHaveBeenCalled()"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/u_14b_status_gaps.test.ts",
+    "cases": [
+      {
+        "name": "real entry, waits, 3 attempts, last attempt releases surface and moves",
+        "line": 47,
+        "assertions": [
+          {
+            "line": 49,
+            "text": "expect(g.player.x).toBe(9)"
+          },
+          {
+            "line": 49,
+            "text": "expect(g.player.getStatusDuration('stuck')).toBe(3)"
+          },
+          {
+            "line": 50,
+            "text": "expect(g.player.getStatusDuration('stuck')).toBe(3)"
+          },
+          {
+            "line": 51,
+            "text": "expect(g.player.x).toBe(9)"
+          },
+          {
+            "line": 51,
+            "text": "expect(g.player.getStatusDuration('stuck')).toBe(2)"
+          },
+          {
+            "line": 52,
+            "text": "expect(g.player.x).toBe(9)"
+          },
+          {
+            "line": 52,
+            "text": "expect(g.player.getStatusDuration('stuck')).toBe(1)"
+          },
+          {
+            "line": 53,
+            "text": "expect(g.player.x).toBe(10)"
+          },
+          {
+            "line": 53,
+            "text": "expect(g.player.hasStatus('stuck')).toBe(false)"
+          },
+          {
+            "line": 53,
+            "text": "expect(g.grid.getCell(9,8)!.layers[L.SURFACE]).toBe(T.NOTHING)"
+          }
+        ]
+      },
+      {
+        "name": "player attacks occupied destination before struggling; wall does not consume a count",
+        "line": 55,
+        "assertions": [
+          {
+            "line": 57,
+            "text": "expect(g.player.x).toBe(8)"
+          },
+          {
+            "line": 57,
+            "text": "expect(g.player.getStatusDuration('stuck')).toBe(4)"
+          },
+          {
+            "line": 58,
+            "text": "expect(g.player.getStatusDuration('stuck')).toBe(4)"
+          }
+        ]
+      },
+      {
+        "name": "monster melee on occupied target does not decrement STUCK",
+        "line": 66,
+        "assertions": [
+          {
+            "line": 68,
+            "text": "expect(m.getStatusDuration('stuck')).toBe(5)"
+          },
+          {
+            "line": 68,
+            "text": "expect(m.x).toBe(9)"
+          }
+        ]
+      },
+      {
+        "name": "all layers hold; final attempt clears only surface; terrain loss clears on tick",
+        "line": 70,
+        "assertions": [
+          {
+            "line": 72,
+            "text": "expect(g.grid.getCell(12,8)!.layers[L.LIQUID]).toBe(T.WEB)"
+          },
+          {
+            "line": 72,
+            "text": "expect(g.grid.getCell(12,8)!.layers[L.SURFACE]).toBe(T.NOTHING)"
+          },
+          {
+            "line": 73,
+            "text": "expect(m.hasStatus('stuck')).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "entranced forced follow gates on counter, including away from terrain",
+        "line": 80,
+        "assertions": [
+          {
+            "line": 81,
+            "text": "expect(m.x).toBe(12)"
+          },
+          {
+            "line": 82,
+            "text": "expect(m.x).toBe(13)"
+          }
+        ]
+      },
+      {
+        "name": "blink releases even when landing in another web; unsuccessful placement retains count",
+        "line": 84,
+        "assertions": [
+          {
+            "line": 87,
+            "text": "expect((g as any).finishBlink({caster:g.player,landingPos:{x:13,y:8}})).toBe(true)"
+          },
+          {
+            "line": 87,
+            "text": "expect(g.player.getStatusDuration('stuck')).toBe(3)"
+          },
+          {
+            "line": 87,
+            "text": "expect(g.grid.getCell(8,8)!.layers[L.SURFACE]).toBe(T.WEB)"
+          },
+          {
+            "line": 88,
+            "text": "expect((g as any).finishBlink({caster:g.player,landingPos:{x:14,y:8}})).toBe(false)"
+          },
+          {
+            "line": 88,
+            "text": "expect(g.player.getStatusDuration('stuck')).toBe(3)"
+          },
+          {
+            "line": 89,
+            "text": "expect((g as any).finishBlink({caster:g.player,landingPos:{x:15,y:8}})).toBe(true)"
+          },
+          {
+            "line": 89,
+            "text": "expect(g.player.hasStatus('stuck')).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "STUCK auto-hits without RNG or a sneak multiplier, even inanimate",
+        "line": 91,
+        "assertions": [
+          {
+            "line": 94,
+            "text": "expect(hit.hit).toBe(true)"
+          },
+          {
+            "line": 94,
+            "text": "expect(hit.backstab).toBe(false)"
+          },
+          {
+            "line": 94,
+            "text": "expect(hit.damage).toBe(1)"
+          },
+          {
+            "line": 94,
+            "text": "expect(r).not.toHaveBeenCalled()"
+          },
+          {
+            "line": 94,
+            "text": "expect(d).toHaveBeenCalled()"
+          },
+          {
+            "line": 95,
+            "text": "expect(r).not.toHaveBeenCalled()"
+          }
+        ]
+      },
+      {
+        "name": "ordinary equip starts armor/10, refresh replaces; forced starting equipment and unequip clear",
+        "line": 103,
+        "assertions": [
+          {
+            "line": 105,
+            "text": "expect(g.player.getStatusDuration('donning')).toBe(4)"
+          },
+          {
+            "line": 105,
+            "text": "expect(g.player.maxStatus.donning).toBe(4)"
+          },
+          {
+            "line": 106,
+            "text": "expect(g.player.getStatusDuration('donning')).toBe(4)"
+          },
+          {
+            "line": 106,
+            "text": "expect(g.player.hasStatus('donning')).toBe(false)"
+          },
+          {
+            "line": 107,
+            "text": "expect(g.player.hasStatus('donning')).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "actual armor hit chance and detail include donning, without a damage penalty",
+        "line": 109,
+        "assertions": [
+          {
+            "line": 112,
+            "text": "expect(CombatSystem.attack(m,g.player).damage).toBe(5)"
+          },
+          {
+            "line": 112,
+            "text": "expect(r).toHaveBeenLastCalledWith(hitProbability(100,20))"
+          },
+          {
+            "line": 113,
+            "text": "expect(detail).toContain(`${hitProbability(100,20)}%`)"
+          },
+          {
+            "line": 114,
+            "text": "expect(r).toHaveBeenLastCalledWith(hitProbability(100,30))"
+          }
+        ]
+      },
+      {
+        "name": "monster damage bolt and thrown weapon activate the same survivor source",
+        "line": 131,
+        "assertions": [
+          {
+            "line": 133,
+            "text": "expect(m.getStatusDuration('enraged')).toBe(4)"
+          },
+          {
+            "line": 134,
+            "text": "expect(m.getStatusDuration('enraged')).toBe(4)"
+          }
+        ]
+      },
+      {
+        "name": "only grouped hunters at <= half HP ignore safe-room to corridor avoidance while enraged",
+        "line": 136,
+        "assertions": [
+          {
+            "line": 139,
+            "text": "expect(monsterAvoidsCorridor(g,m,dest)).toBe(true)"
+          },
+          {
+            "line": 139,
+            "text": "expect(monsterAvoidsCorridor(g,m,dest)).toBe(true)"
+          },
+          {
+            "line": 140,
+            "text": "expect(monsterAvoidsCorridor(g,m,dest)).toBe(false)"
+          },
+          {
+            "line": 140,
+            "text": "expect(monsterBlinkAvoids(g,m,dest)).toBe(false)"
+          },
+          {
+            "line": 141,
+            "text": "expect(monsterBlinkAvoids(g,m,dest)).toBe(true)"
+          },
+          {
+            "line": 141,
+            "text": "expect(m.x).toBe(12)"
+          },
+          {
+            "line": 142,
+            "text": "expect(m.x).toBe(13)"
+          }
+        ]
+      },
+      {
+        "name": "earlier burning death does not also consume/announce lifespan expiry",
+        "line": 153,
+        "assertions": [
+          {
+            "line": 156,
+            "text": "expect(m.hp).toBe(0)"
+          },
+          {
+            "line": 156,
+            "text": "expect(m.getStatusDuration('lifespan_remaining')).toBe(1)"
+          }
+        ]
+      },
+      {
+        "name": "timed allies never flee; ordinary low HP allies retain their flee decision",
+        "line": 158,
+        "assertions": [
+          {
+            "line": 160,
+            "text": "expect(blinkAllyFlees(g,m,enemy)).toBe(true)"
+          },
+          {
+            "line": 160,
+            "text": "expect(blinkAllyFlees(g,m,enemy)).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "ordinary lifespan has no negation death, DIES_IF_NEGATED remains an independent flag",
+        "line": 166,
+        "assertions": [
+          {
+            "line": 167,
+            "text": "expect(m.hp).toBeGreaterThan(0)"
+          },
+          {
+            "line": 167,
+            "text": "expect(m.getStatusDuration('lifespan_remaining')).toBe(7)"
+          },
+          {
+            "line": 168,
+            "text": "expect(m.hp).toBe(0)"
+          }
+        ]
+      },
+      {
+        "name": "current/max persist for player, active and dormant monsters; clones own independent maps",
+        "line": 170,
+        "assertions": [
+          {
+            "line": 173,
+            "text": "expect(m.maxStatus.stuck).toBe(7)"
+          },
+          {
+            "line": 173,
+            "text": "expect(m.getStatusDuration('stuck')).toBe(7)"
+          },
+          {
+            "line": 174,
+            "text": "expect(g.loadSnapshot(save)).toBe(true)"
+          },
+          {
+            "line": 175,
+            "text": "expect(c.getStatusDuration(id)).toBe(7)"
+          },
+          {
+            "line": 175,
+            "text": "expect(c.maxStatus[id]).toBe(7)"
+          },
+          {
+            "line": 176,
+            "text": "expect(rows.map(r=>r.label)).toEqual(['缠绕','穿甲','寿命'])"
+          },
+          {
+            "line": 176,
+            "text": "expect(rows.map(r=>r.value)).toEqual(['7/7','7/7','7/7'])"
+          },
+          {
+            "line": 177,
+            "text": "expect(restored.hp).toBe(0)"
+          }
+        ]
+      },
+      {
+        "name": "conjuration blades still have 1 HP and no lifespan; no expansion of retired sources",
+        "line": 179,
+        "assertions": [
+          {
+            "line": 180,
+            "text": "expect(g.monsters.length).toBeGreaterThan(0)"
+          },
+          {
+            "line": 181,
+            "text": "expect(blade.hp).toBe(1)"
+          },
+          {
+            "line": 181,
+            "text": "expect(blade.hasStatus('lifespan_remaining')).toBe(false)"
+          },
+          {
+            "line": 181,
+            "text": "expect(blade.maxStatus.lifespan_remaining).toBeUndefined()"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/u_15a_shattering.test.ts",
+    "cases": [
+      {
+        "name": "DF awakens the unprotected dormant turret before lethal handling; protected one sleeps",
+        "line": 103,
+        "assertions": [
+          {
+            "line": 112,
+            "text": "expect(g.dormantMonsters).toEqual([asleep])"
+          },
+          {
+            "line": 112,
+            "text": "expect(asleep.hp).toBeGreaterThan(0)"
+          },
+          {
+            "line": 113,
+            "text": "expect(cell(g).hasDormantMonster).toBe(true)"
+          },
+          {
+            "line": 114,
+            "text": "expect(g.monsters).toContain(doomed)"
+          },
+          {
+            "line": 114,
+            "text": "expect(doomed.hp).toBe(0)"
+          },
+          {
+            "line": 115,
+            "text": "expect(cell(g, 8).hasDormantMonster).toBe(false)"
+          },
+          {
+            "line": 116,
+            "text": "expect(cell(g, 8).layers[L.SURFACE]).toBe(T.RUBBLE)"
+          }
+        ]
+      },
+      {
+        "name": "only DUNGEON obstruction within Euclidean radius qualifies, regardless of visibility",
+        "line": 141,
+        "assertions": [
+          {
+            "line": 150,
+            "text": "expect(cell(g).layers[L.DUNGEON]).toBe(T.FLOOR)"
+          },
+          {
+            "line": 151,
+            "text": "expect(cell(g).layers[L.SURFACE]).toBe(T.WALL)"
+          },
+          {
+            "line": 152,
+            "text": "expect(cell(g, 14, 5).layers[L.DUNGEON]).toBe(T.FORCEFIELD)"
+          },
+          {
+            "line": 153,
+            "text": "expect(cell(g, 14, 6).layers[L.DUNGEON]).toBe(T.WALL)"
+          },
+          {
+            "line": 154,
+            "text": "expect(cell(g, 10, 5).layers[L.DUNGEON]).toBe(T.FORCEFIELD)"
+          },
+          {
+            "line": 155,
+            "text": "expect(cell(g, 10, 5).layers[L.SURFACE]).toBe(T.SACRED_GLYPH)"
+          },
+          {
+            "line": 156,
+            "text": "expect(cell(g, 10, 5).isPassable).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "retained upper blocking layer continues to obstruct vision and movement",
+        "line": 159,
+        "assertions": [
+          {
+            "line": 163,
+            "text": "expect(cell(g).layers[L.DUNGEON]).toBe(T.FORCEFIELD)"
+          },
+          {
+            "line": 164,
+            "text": "expect(cell(g).layers[L.SURFACE]).toBe(T.WALL)"
+          },
+          {
+            "line": 165,
+            "text": "expect(cell(g).layers[L.LIQUID]).toBe(T.NOTHING)"
+          },
+          {
+            "line": 166,
+            "text": "expect(cell(g).layers[L.GAS]).toBe(T.NOTHING)"
+          },
+          {
+            "line": 167,
+            "text": "expect(cellTerrainFlags(g.grid, 7, 5) & (T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION)).toBeTruthy()"
+          },
+          {
+            "line": 168,
+            "text": "expect(cell(g).isPassable).toBe(false)"
+          },
+          {
+            "line": 168,
+            "text": "expect(cell(g).isOpaque).toBe(true)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/u_15b2_ring_birth.test.ts",
+    "cases": [
+      {
+        "name": "matches all eight CE ringTable names, order, frequency and unfiltered kind draw",
+        "line": 40,
+        "assertions": [
+          {
+            "line": 43,
+            "text": "expect(rows).toHaveLength(8)"
+          },
+          {
+            "line": 44,
+            "text": "expect(ItemLoader.rings.map(r=>[r.id,r.frequency])).toEqual(rows)"
+          },
+          {
+            "line": 45,
+            "text": "expect(ItemLoader.genRings.map(r=>[r.id,r.frequency])).toEqual(rows)"
+          },
+          {
+            "line": 47,
+            "text": "expect(ItemLoader.chooseKind(rows.map(r=>r[1] as number))).toBe(n-1)"
+          },
+          {
+            "line": 48,
+            "text": "expect(roll.mock.calls).toEqual(Array.from({length:8},()=>[1,8]))"
+          }
+        ]
+      },
+      {
+        "name": "ordinary birth draws 1..3 once, then 16% curse OR an uncapped 10% tail",
+        "line": 50,
+        "assertions": [
+          {
+            "line": 54,
+            "text": "expect([cursed.enchantment,cursed.isCursed,cursed.charges,cursed.timesEnchanted,cursed.identified]).toEqual([-3,true,1500,0,false])"
+          },
+          {
+            "line": 55,
+            "text": "expect(clump.mock.calls).toEqual([[1,3,1]])"
+          },
+          {
+            "line": 55,
+            "text": "expect(pct.mock.calls).toEqual([[16]])"
+          },
+          {
+            "line": 59,
+            "text": "expect([positive.enchantment,positive.isCursed]).toEqual([23,false])"
+          },
+          {
+            "line": 60,
+            "text": "expect(pct.mock.calls).toEqual([[16],...Array.from({length:21},()=>[10])])"
+          },
+          {
+            "line": 61,
+            "text": "expect(positive.loc).toEqual({x:7,y:8})"
+          }
+        ]
+      },
+      {
+        "name": "ordinary and machine paths give the same resource fields and exact RNG state for 80 seeds",
+        "line": 63,
+        "assertions": [
+          {
+            "line": 68,
+            "text": "expect(resource(b)).toEqual(resource(a))"
+          },
+          {
+            "line": 68,
+            "text": "expect(rng.getState()).toEqual(end)"
+          },
+          {
+            "line": 70,
+            "text": "expect(ItemLoader.spawnRing('missing',0,0)).toBeNull()"
+          },
+          {
+            "line": 70,
+            "text": "expect(rng.getState()).toEqual(before)"
+          }
+        ]
+      },
+      {
+        "name": "birth E, curse, familiarity and known state survive the U01 codec without rerolling",
+        "line": 72,
+        "assertions": [
+          {
+            "line": 77,
+            "text": "expect(serializeItem(b)).toEqual(snapshot)"
+          },
+          {
+            "line": 77,
+            "text": "expect(rng.getState()).toEqual(before)"
+          }
+        ]
+      },
+      {
+        "name": "sums effective E and skips zero, with independent unknown positive caps",
+        "line": 83,
+        "assertions": [
+          {
+            "line": 84,
+            "text": "expect(ringLightMultiplier([])).toBe(1)"
+          },
+          {
+            "line": 86,
+            "text": "expect(ringLightMultiplier([a])).toBe(2)"
+          },
+          {
+            "line": 86,
+            "text": "expect(ringLightMultiplier([a,b])).toBe(-1)"
+          },
+          {
+            "line": 87,
+            "text": "expect(ringLightMultiplier([a,b])).toBe(1)"
+          },
+          {
+            "line": 88,
+            "text": "expect(ringLightMultiplier([a,b])).toBe(3)"
+          },
+          {
+            "line": 89,
+            "text": "expect(ringLightMultiplier([ring('light',-3)])).toBe(-3)"
+          }
+        ]
+      },
+      {
+        "name": "matches 144 compiled original CE light cases including darkness and water truncation",
+        "line": 91,
+        "assertions": [
+          {
+            "line": 93,
+            "text": "expect(updateMinersLightRadius(base,{lightMultiplier:lm,darknessStatus:dark,darknessMax:20,inWater:water}),JSON.stringify([base,lm,dark,water])) .toEqual({radiusHundredths:radius,radialFadeToPercent:fade})"
+          }
+        ]
+      },
+      {
+        "name": "refreshes actual Game light on equip/unequip, kind-only identification and load",
+        "line": 97,
+        "assertions": [
+          {
+            "line": 102,
+            "text": "expect(ItemLoader.identifiedItems.has(a.identityId!)).toBe(true)"
+          },
+          {
+            "line": 102,
+            "text": "expect(a.identified).toBe(false)"
+          },
+          {
+            "line": 103,
+            "text": "expect(generateItemDetail(a,12).sections.flatMap(s=>s.lines.map(l=>l.text)).join(' ')).toContain('看得更远')"
+          },
+          {
+            "line": 104,
+            "text": "expect(api.minersLight).toEqual(updateMinersLightRadius(minersLightBaseRadiusFixpt(26),{lightMultiplier:2}))"
+          },
+          {
+            "line": 105,
+            "text": "expect(api.minersLight.radiusHundredths).toBeGreaterThan(before.radiusHundredths)"
+          },
+          {
+            "line": 107,
+            "text": "expect(api.calculateStealthRange()).toBe(stealth)"
+          },
+          {
+            "line": 108,
+            "text": "expect(api.minersLight).toEqual(before)"
+          },
+          {
+            "line": 109,
+            "text": "expect(g.loadSnapshot(snapshot)).toBe(true)"
+          },
+          {
+            "line": 110,
+            "text": "expect(g.player.ringLeft?.enchantment).toBe(3)"
+          },
+          {
+            "line": 110,
+            "text": "expect(api.minersLight.radiusHundredths).toBeGreaterThan(before.radiusHundredths)"
+          }
+        ]
+      },
+      {
+        "name": "matches 1944 original CE staff cases: negative/zero/positive, capacity and signed-short overflow",
+        "line": 115,
+        "assertions": [
+          {
+            "line": 120,
+            "text": "expect([a.charges,a.staffRechargeRemaining,roll.mock.calls.length],JSON.stringify([kind,wis,mul,charges,timer])).toEqual([after,remaining,calls])"
+          },
+          {
+            "line": 121,
+            "text": "expect(roll.mock.calls[roll.mock.calls.length - 1]).toEqual([lo,hi,3])"
+          }
+        ]
+      },
+      {
+        "name": "unknown positive E, both slots, zero roll and exact one substantive draw",
+        "line": 135,
+        "assertions": [
+          {
+            "line": 137,
+            "text": "expect(ringBonus(p.rings(),'ring_of_reaping')).toBe(3)"
+          },
+          {
+            "line": 140,
+            "text": "expect(roll.mock.calls).toEqual([[0,12]])"
+          },
+          {
+            "line": 141,
+            "text": "expect([s.staffRechargeRemaining,c.cooldownRemaining]).toEqual([500,20])"
+          }
+        ]
+      },
+      {
+        "name": "a miss, inanimate/invulnerable victim, no bonus or zero damage has no extra substantive draw",
+        "line": 143,
+        "assertions": [
+          {
+            "line": 152,
+            "text": "expect(rng.getState(),mode).toEqual(before)"
+          },
+          {
+            "line": 152,
+            "text": "expect([s.staffRechargeRemaining,c.cooldownRemaining]).toEqual([500,20])"
+          }
+        ]
+      },
+      {
+        "name": "throws and direct damage transference do not reap; landed melee does use one draw",
+        "line": 155,
+        "assertions": [
+          {
+            "line": 159,
+            "text": "expect([s.staffRechargeRemaining,c.cooldownRemaining]).toEqual([500,20])"
+          },
+          {
+            "line": 160,
+            "text": "expect(rng.randomNumbersGenerated-before).toBe(1)"
+          }
+        ]
+      },
+      {
+        "name": "drains charged/full staffs, clamps cooling charms, leaves ready charms and wands alone",
+        "line": 162,
+        "assertions": [
+          {
+            "line": 166,
+            "text": "expect(a.charges).toBe(0)"
+          },
+          {
+            "line": 166,
+            "text": "expect(a.staffRechargeRemaining).toBeGreaterThan(0)"
+          },
+          {
+            "line": 166,
+            "text": "expect(random.randClumpedRange).not.toHaveBeenCalled()"
+          },
+          {
+            "line": 167,
+            "text": "expect(c.cooldownRemaining).toBe(1020)"
+          },
+          {
+            "line": 167,
+            "text": "expect(ready.cooldownRemaining).toBe(0)"
+          },
+          {
+            "line": 167,
+            "text": "expect(wand.charges).toBe(2)"
+          },
+          {
+            "line": 168,
+            "text": "expect(c.cooldownRemaining).toBe(charmRechargeDelay('charm_of_health',1))"
+          },
+          {
+            "line": 169,
+            "text": "expect(rechargeItemsIncrementally([c],-10,random,9999)).toEqual([c])"
+          },
+          {
+            "line": 169,
+            "text": "expect(c.cooldownRemaining).toBe(0)"
+          }
+        ]
+      },
+      {
+        "name": "ready notification and known/unknown detail do not reveal unknown E",
+        "line": 171,
+        "assertions": [
+          {
+            "line": 174,
+            "text": "expect(c.cooldownRemaining).toBe(0)"
+          },
+          {
+            "line": 174,
+            "text": "expect(JSON.stringify(logger.getState())).toContain('recharged')"
+          },
+          {
+            "line": 177,
+            "text": "expect(text(r)).not.toContain('0–7')"
+          },
+          {
+            "line": 177,
+            "text": "expect(text(r)).toContain('1500')"
+          },
+          {
+            "line": 178,
+            "text": "expect(text(r)).toContain('0–7')"
+          },
+          {
+            "line": 178,
+            "text": "expect(text(r)).toContain('0–8')"
+          },
+          {
+            "line": 178,
+            "text": "expect(text(r)).toContain('附魔等级 +7')"
+          },
+          {
+            "line": 179,
+            "text": "expect(text(r)).toContain('消耗')"
+          },
+          {
+            "line": 179,
+            "text": "expect(text(r)).toContain('0–1')"
+          },
+          {
+            "line": 181,
+            "text": "expect(text(light)).toContain('附魔等级 +3')"
+          },
+          {
+            "line": 181,
+            "text": "expect(text(light)).not.toContain('附魔等级')"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/u_15b_rings.test.ts",
+    "cases": [
+      {
+        "name": "uses actual and effective E, with timesEnchanted only capping unknown positive rings",
+        "line": 18,
+        "assertions": [
+          {
+            "line": 20,
+            "text": "expect(equippedWisdomBonus([r])).toBe(1)"
+          },
+          {
+            "line": 21,
+            "text": "expect(ringWisdomRechargeIncrement(equippedWisdomBonus([r]))).toBe(12)"
+          },
+          {
+            "line": 23,
+            "text": "expect(equippedWisdomBonus([r])).toBe(3)"
+          },
+          {
+            "line": 25,
+            "text": "expect(equippedWisdomBonus([r])).toBe(4)"
+          },
+          {
+            "line": 28,
+            "text": "expect(equippedWisdomBonus([r])).toBe(-3)"
+          }
+        ]
+      },
+      {
+        "name": "applies both awareness rings to passive and manual search strength",
+        "line": 31,
+        "assertions": [
+          {
+            "line": 35,
+            "text": "expect((g as any).awarenessBonus()).toBe(40)"
+          },
+          {
+            "line": 36,
+            "text": "expect(Math.max(60, (g as any).awarenessBonus() + 30)).toBe(70)"
+          },
+          {
+            "line": 39,
+            "text": "expect((g as any).awarenessBonus()).toBe(-40)"
+          }
+        ]
+      },
+      {
+        "name": "feeds stealth E into the CE range with fourfold cursed penalty",
+        "line": 42,
+        "assertions": [
+          {
+            "line": 46,
+            "text": "expect((g as any).calculateStealthRange()).toBe(Math.max(2, baseline - 3))"
+          },
+          {
+            "line": 48,
+            "text": "expect((g as any).calculateStealthRange()).toBe(baseline + 8)"
+          }
+        ]
+      },
+      {
+        "name": "uses CE fixed point regeneration table at negative, zero and positive E",
+        "line": 51,
+        "assertions": [
+          {
+            "line": 52,
+            "text": "expect(turnsForFullRegenInThousandths(0)).toBe(302000)"
+          },
+          {
+            "line": 53,
+            "text": "expect(turnsForFullRegenInThousandths(2)).toBe(170750)"
+          },
+          {
+            "line": 54,
+            "text": "expect(turnsForFullRegenInThousandths(-2)).toBe(535331)"
+          },
+          {
+            "line": 60,
+            "text": "expect((p as any).regenRatePerTurn()).toBeGreaterThan(base)"
+          },
+          {
+            "line": 62,
+            "text": "expect((p as any).regenRatePerTurn()).toBeLessThan(base)"
+          }
+        ]
+      },
+      {
+        "name": "transfers 5% per E on direct damage, including minimum one and negative self harm",
+        "line": 65,
+        "assertions": [
+          {
+            "line": 74,
+            "text": "expect(p.hp).toBe(11)"
+          },
+          {
+            "line": 77,
+            "text": "expect(p.hp).toBe(10)"
+          },
+          {
+            "line": 80,
+            "text": "expect(p.hp).toBe(13)"
+          }
+        ]
+      },
+      {
+        "name": "reveals and darkens within CE clairvoyance radius without RNG",
+        "line": 83,
+        "assertions": [
+          {
+            "line": 94,
+            "text": "expect(cell.isVisible).toBe(false)"
+          },
+          {
+            "line": 95,
+            "text": "expect(nearby.isVisible).toBe(true)"
+          },
+          {
+            "line": 98,
+            "text": "expect(cell.isVisible).toBe(true)"
+          },
+          {
+            "line": 99,
+            "text": "expect(cell.isClairvoyantVisible).toBe(true)"
+          },
+          {
+            "line": 102,
+            "text": "expect(nearby.isVisible).toBe(false)"
+          }
+        ]
+      },
+      {
+        "name": "adds equipped bonuses for two rings and caps unknown positive E independently",
+        "line": 105,
+        "assertions": [
+          {
+            "line": 108,
+            "text": "expect(ringBonus([a, b], 'ring_of_clairvoyance')).toBe(-1)"
+          },
+          {
+            "line": 110,
+            "text": "expect(ringBonus([a, b], 'ring_of_clairvoyance')).toBe(1)"
+          }
+        ]
+      },
+      {
+        "name": "preserves timesEnchanted in the item snapshot and admits a carried ring for enchanting",
+        "line": 113,
+        "assertions": [
+          {
+            "line": 118,
+            "text": "expect(g.canEnchantTarget(r)).toBe(true)"
+          },
+          {
+            "line": 121,
+            "text": "expect(saved.timesEnchanted).toBe(2)"
+          },
+          {
+            "line": 122,
+            "text": "expect(ringBonus([bridge.deserializeItem(saved)], 'ring_of_regeneration')).toBe(3)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/u_15c_charms.test.ts",
+    "cases": [
+      {
+        "name": "uses CE fixed-point golden values at multiple enchantments",
+        "line": 10,
+        "assertions": [
+          {
+            "line": 11,
+            "text": "expect([1, 2, 5].map(e => charmRechargeDelay('charm_of_health', e))).toEqual([1377, 759, 128])"
+          },
+          {
+            "line": 12,
+            "text": "expect([1, 2, 5].map(e => charmRechargeDelay('charm_of_protection', e))).toEqual([619, 379, 97])"
+          },
+          {
+            "line": 13,
+            "text": "expect([1, 2, 5].map(e => charmRechargeDelay('charm_of_speed', e))).toEqual([527, 347, 109])"
+          },
+          {
+            "line": 14,
+            "text": "expect([1, 2, 5].map(e => charmRechargeDelay('charm_of_fire_immunity', e))).toEqual([491, 302, 92])"
+          },
+          {
+            "line": 15,
+            "text": "expect([1, 2, 5].map(e => charmRechargeDelay('charm_of_invisibility', e))).toEqual([524, 344, 104])"
+          },
+          {
+            "line": 16,
+            "text": "expect([1, 2, 5].map(e => charmRechargeDelay('charm_of_telepathy', e))).toEqual([550, 376, 168])"
+          },
+          {
+            "line": 17,
+            "text": "expect([1, 2, 5].map(e => charmEffectDuration('charm_of_speed', e))).toEqual([8, 10, 17])"
+          },
+          {
+            "line": 18,
+            "text": "expect([1, 2, 5].map(e => charmEffectDuration('charm_of_fire_immunity', e))).toEqual([12, 15, 30])"
+          },
+          {
+            "line": 19,
+            "text": "expect([1, 2, 5].map(charmHealing)).toEqual([20, 40, 100])"
+          },
+          {
+            "line": 20,
+            "text": "expect([1, 2, 5].map(charmProtection)).toEqual([150, 202, 498])"
+          }
+        ]
+      },
+      {
+        "name": "applies the six CE effects, charges even at full health, and rejects charging attempts",
+        "line": 23,
+        "assertions": [
+          {
+            "line": 33,
+            "text": "expect(charm.cooldownRemaining, id).toBe(charmRechargeDelay(id as Parameters<typeof charmRechargeDelay>[0], 2))"
+          },
+          {
+            "line": 34,
+            "text": "expect(game.player.getStatusDuration('shielded')).toBe(202)"
+          },
+          {
+            "line": 36,
+            "text": "expect(game.player.getStatusDuration('hasted')).toBe(10)"
+          },
+          {
+            "line": 37,
+            "text": "expect(game.player.getStatusDuration('levitating')).toBe(0)"
+          },
+          {
+            "line": 38,
+            "text": "expect(timeSystem.currentTick - beforeTick).toBe(50)"
+          },
+          {
+            "line": 40,
+            "text": "expect(game.player.getStatusDuration('telepathy')).toBe(39)"
+          },
+          {
+            "line": 41,
+            "text": "expect(game.player.getStatusDuration('immune_fire')).toBe(15)"
+          },
+          {
+            "line": 42,
+            "text": "expect(game.player.getStatusDuration('invisible')).toBe(7)"
+          },
+          {
+            "line": 44,
+            "text": "expect(charm.cooldownRemaining).toBe(charmRechargeDelay(id as Parameters<typeof charmRechargeDelay>[0], 2))"
+          }
+        ]
+      },
+      {
+        "name": "enchanting recharges an active charm and increases its CE curve",
+        "line": 49,
+        "assertions": [
+          {
+            "line": 53,
+            "text": "expect(enchantArcana(charm)).toBe(true)"
+          },
+          {
+            "line": 54,
+            "text": "expect([charm.enchantment, charm.cooldownRemaining]).toEqual([2, 0])"
+          }
+        ]
+      },
+      {
+        "name": "round trips the CE charm instance (no legacy-save migration, per project decision)",
+        "line": 57,
+        "assertions": [
+          {
+            "line": 61,
+            "text": "expect(deserializeItem(serializeItem(charm))).toMatchObject({ enchantment: 5, cooldownRemaining: 47, arcanaInstanceVersion: 2, })"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/u_15d2_armor_runic.test.ts",
+    "cases": [
+      {
+        "name": "armor image count follows PowerTables.c:108",
+        "line": 23,
+        "assertions": [
+          {
+            "line": 24,
+            "text": "expect([0, 3, 9, 30].map(armorImageCount)).toEqual([1, 1, 3, 5])"
+          }
+        ]
+      },
+      {
+        "name": "multiplicity consumes one 33% roll and makes three short lived spectral allies at enchant 9",
+        "line": 27,
+        "assertions": [
+          {
+            "line": 31,
+            "text": "expect(roll).toHaveBeenCalledExactlyOnceWith(33)"
+          },
+          {
+            "line": 33,
+            "text": "expect(images).toHaveLength(3)"
+          },
+          {
+            "line": 35,
+            "text": "expect([image.isAlly, image.boundToPlayer, image.hp, image.maxHp, image.getStatusDuration('lifespan_remaining'), image.ticksUntilTurn]).toEqual([true, true, 1, 1, 3, 100])"
+          },
+          {
+            "line": 37,
+            "text": "expect(image.diesIfNegated()).toBe(true)"
+          },
+          {
+            "line": 40,
+            "text": "expect(images[0]!.hp).toBe(0)"
+          },
+          {
+            "line": 41,
+            "text": "expect(armor.runicKnown).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "immunity only protects the selected class; vulnerability doubles damage without RNG",
+        "line": 45,
+        "assertions": [
+          {
+            "line": 49,
+            "text": "expect(game.tryTriggerArmorRunic(rat, 12, true)).toBe(12)"
+          },
+          {
+            "line": 50,
+            "text": "expect(armor.runicKnown).toBe(false)"
+          },
+          {
+            "line": 52,
+            "text": "expect(game.tryTriggerArmorRunic(rat, 12, true)).toBe(0)"
+          },
+          {
+            "line": 53,
+            "text": "expect(armor.runicKnown).toBe(true)"
+          },
+          {
+            "line": 55,
+            "text": "expect(game.tryTriggerArmorRunic(rat, 12, true)).toBe(24)"
+          },
+          {
+            "line": 56,
+            "text": "expect(roll).not.toHaveBeenCalled()"
+          }
+        ]
+      },
+      {
+        "name": "burden adds one permanent strength requirement only on its 10% roll",
+        "line": 60,
+        "assertions": [
+          {
+            "line": 65,
+            "text": "expect(armor.strengthRequired).toBe(original)"
+          },
+          {
+            "line": 67,
+            "text": "expect(armor.strengthRequired).toBe(original + 1)"
+          },
+          {
+            "line": 68,
+            "text": "expect(roll.mock.calls).toEqual([[10], [10]])"
+          }
+        ]
+      },
+      {
+        "name": "burden and target class survive the existing U01 snapshot contract",
+        "line": 72,
+        "assertions": [
+          {
+            "line": 79,
+            "text": "expect(game.loadSnapshot(saved)).toBe(true)"
+          },
+          {
+            "line": 80,
+            "text": "expect(game.player.equippedArmor?.runicType).toBe('burden')"
+          },
+          {
+            "line": 81,
+            "text": "expect(game.player.equippedArmor?.runicKnown).toBe(true)"
+          },
+          {
+            "line": 82,
+            "text": "expect(game.player.equippedArmor?.vorpalEnemy).toBe('animal')"
+          },
+          {
+            "line": 83,
+            "text": "expect(game.player.equippedArmor?.strengthRequired).toBe(armor.strengthRequired)"
+          }
+        ]
+      },
+      {
+        "name": "immolation uses one 10% roll per hit and identifies only on a fire burst",
+        "line": 86,
+        "assertions": [
+          {
+            "line": 89,
+            "text": "expect(game.tryTriggerArmorRunic(rat, 6, true)).toBe(6)"
+          },
+          {
+            "line": 90,
+            "text": "expect(armor.runicKnown).toBe(false)"
+          },
+          {
+            "line": 91,
+            "text": "expect(game.tryTriggerArmorRunic(rat, 6, true)).toBe(6)"
+          },
+          {
+            "line": 92,
+            "text": "expect(armor.runicKnown).toBe(true)"
+          },
+          {
+            "line": 94,
+            "text": "expect(roll.mock.calls.slice(0, 2)).toEqual([[10], [10]])"
+          }
+        ]
+      },
+      {
+        "name": "thrown attack skips melee only effects while absorption still rolls",
+        "line": 98,
+        "assertions": [
+          {
+            "line": 101,
+            "text": "expect(game.tryTriggerArmorRunic(rat, 7, true, false)).toBe(7)"
+          },
+          {
+            "line": 102,
+            "text": "expect(percent).not.toHaveBeenCalled()"
+          },
+          {
+            "line": 105,
+            "text": "expect(game.tryTriggerArmorRunic(rat, 7, true, false)).toBe(5)"
+          },
+          {
+            "line": 106,
+            "text": "expect(range).toHaveBeenCalledExactlyOnceWith(1, 3)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/u_15d3_runic_generation.test.ts",
+    "cases": [
+      {
+        "name": "maps every CE enum index, including all harmful runics, without holes or reordering",
+        "line": 27,
+        "assertions": [
+          {
+            "line": 28,
+            "text": "expect(ItemLoader.WEAPON_RUNIC_BY_CE_INDEX).toEqual(runics[0])"
+          },
+          {
+            "line": 29,
+            "text": "expect(ItemLoader.ARMOR_RUNIC_BY_CE_INDEX).toEqual(runics[1])"
+          },
+          {
+            "line": 30,
+            "text": "expect(runics.map(r => r.length)).toEqual([10, 11])"
+          }
+        ]
+      },
+      {
+        "name": "vorpalEnemy: every ticket at all maxDepth boundaries uses exactly one CE weighted draw",
+        "line": 58,
+        "assertions": [
+          {
+            "line": 61,
+            "text": "expect(ItemLoader.chooseVorpalEnemy(r.depth)).toBe(golden.classes[e.vorpalIndex][0])"
+          },
+          {
+            "line": 62,
+            "text": "expect(draw.mock.calls).toEqual([e.draws[0].slice(0, 2)])"
+          }
+        ]
+      },
+      {
+        "name": "bad pool implies negative enchant and curse; heavy weapons and plate cannot obtain a good runic",
+        "line": 67,
+        "assertions": [
+          {
+            "line": 74,
+            "text": "expect(runics[category]!.indexOf(item.runicType)).toBeGreaterThanOrEqual(8)"
+          },
+          {
+            "line": 75,
+            "text": "expect(item.enchantment).toBeLessThan(0)"
+          },
+          {
+            "line": 75,
+            "text": "expect(item.isCursed).toBe(true)"
+          },
+          {
+            "line": 79,
+            "text": "expect([...seen].sort()).toEqual(runics[category]!.slice(8).sort())"
+          }
+        ]
+      },
+      {
+        "name": "ordinary birth → U01 JSON → hidden detail → identification → JSON preserves every generated runic",
+        "line": 83,
+        "assertions": [
+          {
+            "line": 92,
+            "text": "expect(payload(restored)).toEqual(payload(item))"
+          },
+          {
+            "line": 94,
+            "text": "expect(detail()).toHaveLength(0)"
+          },
+          {
+            "line": 96,
+            "text": "expect(restored.runicKnown).toBe(true)"
+          },
+          {
+            "line": 96,
+            "text": "expect(detail(), item.runicType).toHaveLength(1)"
+          },
+          {
+            "line": 97,
+            "text": "expect(detail()[0]!.lines[0]!.text).toBeTruthy()"
+          },
+          {
+            "line": 98,
+            "text": "expect(detail()[0]!.lines[0]!.text).toContain('50%')"
+          },
+          {
+            "line": 99,
+            "text": "expect(payload(roundTrip(restored))).toEqual(payload(restored))"
+          },
+          {
+            "line": 101,
+            "text": "expect([...seen].sort()).toEqual([...runics[category]!].sort())"
+          }
+        ]
+      },
+      {
+        "name": "U05 Q requests retry the same complete birth; category draw, candidates, result and two RNG streams match",
+        "line": 105,
+        "assertions": [
+          {
+            "line": 123,
+            "text": "expect(calls).toBe(attempts)"
+          },
+          {
+            "line": 123,
+            "text": "expect(payload(actual)).toEqual(payload(expected))"
+          },
+          {
+            "line": 123,
+            "text": "expect(rng.getState()).toEqual(end)"
+          },
+          {
+            "line": 124,
+            "text": "expect(actual.isCursed).toBe(false)"
+          },
+          {
+            "line": 124,
+            "text": "expect(actual.enchantment).toBeGreaterThan(0)"
+          },
+          {
+            "line": 125,
+            "text": "expect(actual.flags).toContain('ITEM_RUNIC')"
+          },
+          {
+            "line": 126,
+            "text": "expect(payload(roundTrip(actual))).toEqual(payload(actual))"
+          },
+          {
+            "line": 127,
+            "text": "expect(actual.category).toBe(category === 'WEAPON' ? ItemCategory.WEAPON : ItemCategory.ARMOR)"
+          },
+          {
+            "line": 129,
+            "text": "expect([...seen].sort()).toEqual(runics[category === 'WEAPON' ? 0 : 1]!.slice(0, 8).sort())"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/u_15d_weapon_runic.test.ts",
+    "cases": [
+      {
+        "name": "slaying uses the target class; harmful runics use fixed 15%",
+        "line": 30,
+        "assertions": [
+          {
+            "line": 31,
+            "text": "expect(runicWeaponChance(6, 'slaying', { damageMin: 3, damageMax: 4 })).toBe(0)"
+          },
+          {
+            "line": 32,
+            "text": "expect(runicWeaponChance(1, 'mercy')).toBe(15)"
+          },
+          {
+            "line": 33,
+            "text": "expect(runicWeaponChance(6, 'plenty')).toBe(15)"
+          },
+          {
+            "line": 34,
+            "text": "expect(monsterIsInClass('rat', 'animal')).toBe(true)"
+          },
+          {
+            "line": 35,
+            "text": "expect(monsterIsInClass('rat', 'undead')).toBe(false)"
+          },
+          {
+            "line": 36,
+            "text": "expect(monsterIsInClass('revenant', 'undead')).toBe(true)"
+          },
+          {
+            "line": 37,
+            "text": "expect(monsterIsInClass('revenant', 'infernal')).toBe(true)"
+          },
+          {
+            "line": 38,
+            "text": "expect(monsterIsInClass('goblin_warlord', 'goblin')).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "counterfactual: CE table runics at E10 are not the legacy 15% fallback",
+        "line": 41,
+        "assertions": [
+          {
+            "line": 43,
+            "text": "expect(runicWeaponChance(10, 'multiplicity', dagger)).toBe(74)"
+          },
+          {
+            "line": 44,
+            "text": "expect(runicWeaponChance(10, 'slowing', dagger)).toBe(72)"
+          }
+        ]
+      },
+      {
+        "name": "effect magnitudes follow CE integer truncation",
+        "line": 47,
+        "assertions": [
+          {
+            "line": 48,
+            "text": "expect([1, 3, 6].map(weaponParalysisDuration)).toEqual([2, 3, 5])"
+          },
+          {
+            "line": 49,
+            "text": "expect([1, 3, 6].map(weaponConfusionDuration)).toEqual([3, 4, 9])"
+          },
+          {
+            "line": 50,
+            "text": "expect([1, 3, 6].map(weaponSlowDuration)).toEqual([3, 8, 21])"
+          },
+          {
+            "line": 51,
+            "text": "expect([1, 3, 6].map(weaponImageCount)).toEqual([1, 1, 2])"
+          },
+          {
+            "line": 52,
+            "text": "expect([1, 3, 6].map(weaponImageDuration)).toEqual([3, 3, 3])"
+          },
+          {
+            "line": 53,
+            "text": "expect([1, 3, 6].map(weaponForceDistance)).toEqual([4, 8, 14])"
+          }
+        ]
+      },
+      {
+        "name": "slaying misses other classes without consuming the runic RNG",
+        "line": 75,
+        "assertions": [
+          {
+            "line": 86,
+            "text": "expect(result.hit).toBe(true)"
+          },
+          {
+            "line": 87,
+            "text": "expect(result.triggeredRunic).toBeUndefined()"
+          },
+          {
+            "line": 88,
+            "text": "expect(percent).not.toHaveBeenCalled()"
+          }
+        ]
+      },
+      {
+        "name": "slaying always triggers on its class with one runic RNG draw",
+        "line": 92,
+        "assertions": [
+          {
+            "line": 102,
+            "text": "expect(CombatSystem.attack(player, rat).triggeredRunic).toBe('slaying')"
+          },
+          {
+            "line": 103,
+            "text": "expect(percent).toHaveBeenCalledOnce()"
+          },
+          {
+            "line": 104,
+            "text": "expect(percent).toHaveBeenCalledWith(100)"
+          }
+        ]
+      },
+      {
+        "name": "fatal contact only rolls speed or multiplicity",
+        "line": 108,
+        "assertions": [
+          {
+            "line": 119,
+            "text": "expect(rat.hp).toBe(0)"
+          },
+          {
+            "line": 120,
+            "text": "expect(result.triggeredRunic).toBe(kind === 'quietus' ? undefined : kind)"
+          },
+          {
+            "line": 121,
+            "text": "expect(percent).toHaveBeenCalledTimes(kind === 'quietus' ? 0 : 1)"
+          }
+        ]
+      },
+      {
+        "name": "speed grants a free action and mercy heals half maximum HP",
+        "line": 126,
+        "assertions": [
+          {
+            "line": 137,
+            "text": "expect(game.player.ticksUntilTurn).toBe(-1)"
+          },
+          {
+            "line": 138,
+            "text": "expect(target.hp).toBe(hp)"
+          },
+          {
+            "line": 141,
+            "text": "expect(target.hp).toBe(7)"
+          }
+        ]
+      },
+      {
+        "name": "multiplicity creates timed negatable allies; plenty clones the defender",
+        "line": 144,
+        "assertions": [
+          {
+            "line": 160,
+            "text": "expect(images).toHaveLength(2)"
+          },
+          {
+            "line": 162,
+            "text": "expect(image.isAlly).toBe(true)"
+          },
+          {
+            "line": 163,
+            "text": "expect(image.boundToPlayer).toBe(true)"
+          },
+          {
+            "line": 164,
+            "text": "expect(image.getStatusDuration('lifespan_remaining')).toBe(3)"
+          },
+          {
+            "line": 165,
+            "text": "expect(image.diesIfNegated()).toBe(true)"
+          },
+          {
+            "line": 170,
+            "text": "expect(quickImages).toHaveLength(2)"
+          },
+          {
+            "line": 172,
+            "text": "expect(quickImages[0]!.attackSpeed).toBe(50)"
+          },
+          {
+            "line": 174,
+            "text": "expect(game.monsters.filter(m => m.typeId === 'rat')).toHaveLength(2)"
+          },
+          {
+            "line": 177,
+            "text": "expect(restored.vorpalEnemy).toBe('animal')"
+          }
+        ]
+      },
+      {
+        "name": "paralysis, slowing, and confusion end at CE durations",
+        "line": 180,
+        "assertions": [
+          {
+            "line": 190,
+            "text": "expect(rat.getStatusDuration('paralyzed')).toBe(5)"
+          },
+          {
+            "line": 193,
+            "text": "expect(rat.getStatusDuration('slowed')).toBe(21)"
+          },
+          {
+            "line": 194,
+            "text": "expect(rat.getStatusDuration('hasted')).toBe(0)"
+          },
+          {
+            "line": 196,
+            "text": "expect(rat.getStatusDuration('confused')).toBe(9)"
+          }
+        ]
+      },
+      {
+        "name": "quietus and slaying kill; force travels up to CE distance",
+        "line": 199,
+        "assertions": [
+          {
+            "line": 214,
+            "text": "expect(first.x).toBe(13)"
+          },
+          {
+            "line": 217,
+            "text": "expect(second.hp).toBe(0)"
+          },
+          {
+            "line": 220,
+            "text": "expect(third.hp).toBe(0)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/u_15e_potions.test.ts",
+    "cases": [
+      {
+        "name": "life increases maximum HP, heals, and applies the CE panacea list",
+        "line": 20,
+        "assertions": [
+          {
+            "line": 32,
+            "text": "expect(game.player.maxHp).toBe(oldMax + 10)"
+          },
+          {
+            "line": 33,
+            "text": "expect(game.player.hp).toBe(game.player.maxHp)"
+          },
+          {
+            "line": 35,
+            "text": "expect(game.player.getStatusDuration(status)).toBeLessThanOrEqual(1)"
+          },
+          {
+            "line": 37,
+            "text": "expect(game.player.hasStatus('poisoned')).toBe(false)"
+          },
+          {
+            "line": 38,
+            "text": "expect(game.player.hasStatus('darkness')).toBe(false)"
+          },
+          {
+            "line": 39,
+            "text": "expect(game.player.weaknessAmount).toBe(0)"
+          }
+        ]
+      },
+      {
+        "name": "confusion uncorking creates gas without directly granting hallucination",
+        "line": 42,
+        "assertions": [
+          {
+            "line": 46,
+            "text": "expect(game.player.hasStatus('hallucinating')).toBe(false)"
+          },
+          {
+            "line": 47,
+            "text": "expect(game.grid.getCell(game.player.loc.x, game.player.loc.y)?.layers[DungeonLayer.GAS]).toBe(GasType.CONFUSION)"
+          }
+        ]
+      },
+      {
+        "name": "known darkness is confirmable and cancellation preserves item and RNG",
+        "line": 50,
+        "assertions": [
+          {
+            "line": 56,
+            "text": "expect(game.player.inventory.items).toContain(item)"
+          },
+          {
+            "line": 57,
+            "text": "expect(rng.getState()).toEqual(before)"
+          },
+          {
+            "line": 59,
+            "text": "expect(game.player.inventory.items).toContain(item)"
+          },
+          {
+            "line": 60,
+            "text": "expect(rng.getState()).toEqual(before)"
+          },
+          {
+            "line": 62,
+            "text": "expect(game.player.getStatusDuration('darkness')).toBeGreaterThan(0)"
+          },
+          {
+            "line": 63,
+            "text": "expect(game.player.maxStatus.darkness).toBe(400)"
+          }
+        ]
+      },
+      {
+        "name": "fixed CE durations and lichen retirement leave generation entries stable",
+        "line": 66,
+        "assertions": [
+          {
+            "line": 77,
+            "text": "expect(game.player.getStatusDuration(status)).toBeGreaterThan(0)"
+          },
+          {
+            "line": 78,
+            "text": "expect(game.player.maxStatus[status]).toBe(duration)"
+          },
+          {
+            "line": 80,
+            "text": "expect(ItemLoader.genPotions.some(p => p.id === 'potion_of_darkness')).toBe(false)"
+          },
+          {
+            "line": 81,
+            "text": "expect(ItemLoader.potions.find(p => p.id === 'potion_of_creeping_death')?.frequency).toBe(7)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/u_15f_food.test.ts",
+    "cases": [
+      {
+        "name": "asks before eating when capacity is insufficient; rejection changes no item, time, or RNG",
+        "line": 16,
+        "assertions": [
+          {
+            "line": 25,
+            "text": "expect(confirm).toHaveBeenCalledOnce()"
+          },
+          {
+            "line": 26,
+            "text": "expect(confirm.mock.calls[0]?.[0]).toContain('food')"
+          },
+          {
+            "line": 27,
+            "text": "expect(game.player.inventory.items).toContain(ration)"
+          },
+          {
+            "line": 28,
+            "text": "expect([game.player.nutrition, game.stats.turns, timeSystem.currentTick, rng.randomNumbersGenerated]).toEqual(before)"
+          },
+          {
+            "line": 32,
+            "text": "expect(game.player.inventory.items).not.toContain(ration)"
+          },
+          {
+            "line": 33,
+            "text": "expect(game.player.nutrition).toBe(2149)"
+          }
+        ]
+      },
+      {
+        "name": "eats without a prompt at exact capacity and uses mango power",
+        "line": 36,
+        "assertions": [
+          {
+            "line": 44,
+            "text": "expect(confirm).not.toHaveBeenCalled()"
+          },
+          {
+            "line": 45,
+            "text": "expect(game.player.inventory.items).not.toContain(mango)"
+          },
+          {
+            "line": 46,
+            "text": "expect(game.player.nutrition).toBe(2149)"
+          }
+        ]
+      },
+      {
+        "name": "automatically eats the first food in pack order before starvation damage",
+        "line": 49,
+        "assertions": [
+          {
+            "line": 60,
+            "text": "expect(confirm).not.toHaveBeenCalled()"
+          },
+          {
+            "line": 61,
+            "text": "expect(game.player.inventory.items).not.toContain(mango)"
+          },
+          {
+            "line": 62,
+            "text": "expect(game.player.inventory.items).toContain(ration)"
+          },
+          {
+            "line": 63,
+            "text": "expect(game.player.nutrition).toBeGreaterThan(1500)"
+          },
+          {
+            "line": 64,
+            "text": "expect(game.player.hp).toBe(hp)"
+          },
+          {
+            "line": 65,
+            "text": "expect(game.stats.turns).toBe(2)"
+          },
+          {
+            "line": 66,
+            "text": "expect(logger.messages.some(m => m.text.includes('Unable to control your hunger'))).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "with no food, reaches starvation and takes damage",
+        "line": 69,
+        "assertions": [
+          {
+            "line": 74,
+            "text": "expect(game.player.nutrition).toBe(0)"
+          },
+          {
+            "line": 75,
+            "text": "expect(game.player.hp).toBe(hp - 1)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "src/test/u_16_lifecycle.test.ts",
+    "cases": [
+      {
+        "name": "releases a carried monster before leadership election, once, at 200 ticks",
+        "line": 17,
+        "assertions": [
+          {
+            "line": 29,
+            "text": "expect(g.monsters).toContain(passenger)"
+          },
+          {
+            "line": 30,
+            "text": "expect(g.monsters).not.toContain(host)"
+          },
+          {
+            "line": 31,
+            "text": "expect(passenger.loc).toEqual({ x: 12, y: 8 })"
+          },
+          {
+            "line": 32,
+            "text": "expect(passenger.ticksUntilTurn).toBe(200)"
+          },
+          {
+            "line": 33,
+            "text": "expect(host.carriedMonster).toBeNull()"
+          },
+          {
+            "line": 34,
+            "text": "expect(follower.leader).toBeNull()"
+          },
+          {
+            "line": 36,
+            "text": "expect(g.monsters.filter(m => m === passenger)).toHaveLength(1)"
+          }
+        ]
+      },
+      {
+        "name": "stores an entering summoner in the final new host and elects followers across floors",
+        "line": 39,
+        "assertions": [
+          {
+            "line": 44,
+            "text": "expect(g.summonMinionsFor(summoner)).toBe(true)"
+          },
+          {
+            "line": 45,
+            "text": "expect(g.monsters).not.toContain(summoner)"
+          },
+          {
+            "line": 46,
+            "text": "expect(g.monsters.filter(m => m.carriedMonster === summoner)).toHaveLength(1)"
+          },
+          {
+            "line": 56,
+            "text": "expect(local.leader).toBeNull()"
+          },
+          {
+            "line": 57,
+            "text": "expect(local.leaderlessAfterDemotion).toBe(true)"
+          },
+          {
+            "line": 58,
+            "text": "expect(remote.leader).toBe(local)"
+          },
+          {
+            "line": 61,
+            "text": "expect(g.purgatory).toContain(leader)"
+          },
+          {
+            "line": 62,
+            "text": "expect(g.purgatory).not.toContain(local)"
+          }
+        ]
+      },
+      {
+        "name": "drops carried equipment once into an unoccupied item cell",
+        "line": 65,
+        "assertions": [
+          {
+            "line": 77,
+            "text": "expect(g.items.filter(i => i === carried)).toHaveLength(1)"
+          },
+          {
+            "line": 78,
+            "text": "expect(carried.loc).not.toEqual(existing.loc)"
+          },
+          {
+            "line": 79,
+            "text": "expect(host.carriedItem).toBeNull()"
+          }
+        ]
+      },
+      {
+        "name": "keeps eligible allies across a whole-run save and resurrects the strongest through the DF",
+        "line": 82,
+        "assertions": [
+          {
+            "line": 92,
+            "text": "expect(g.purgatory).toHaveLength(2)"
+          },
+          {
+            "line": 94,
+            "text": "expect(g.loadSnapshot(saved)).toBe(true)"
+          },
+          {
+            "line": 97,
+            "text": "expect(promoteTile(g.grid, 20, 10, DungeonLayer.DUNGEON, false).spawn?.succeeded).toBe(true)"
+          },
+          {
+            "line": 98,
+            "text": "expect(g.grid.getCell(20, 10)?.terrain).toBe(TerrainType.RESURRECTION_ALTAR_INERT)"
+          },
+          {
+            "line": 99,
+            "text": "expect(g.monsters).toContain(raised)"
+          },
+          {
+            "line": 100,
+            "text": "expect(raised.hp).toBe(raised.maxHp)"
+          },
+          {
+            "line": 101,
+            "text": "expect(g.purgatory).toHaveLength(1)"
+          },
+          {
+            "line": 102,
+            "text": "expect(g.purgatory[0]!.typeId).toBe('rat')"
+          },
+          {
+            "line": 103,
+            "text": "expect(g.loadSnapshot(JSON.parse(JSON.stringify(g.toSnapshot())))).toBe(true)"
+          }
+        ]
+      },
+      {
+        "name": "leaves the altar unchanged when purgatory is empty",
+        "line": 106,
+        "assertions": [
+          {
+            "line": 111,
+            "text": "expect(spawnDungeonFeature(g.grid, 20, 10, altarFeature(), false).succeeded).toBe(false)"
+          },
+          {
+            "line": 112,
+            "text": "expect(g.grid.getCell(20, 10)?.terrain).toBe(before)"
+          },
+          {
+            "line": 113,
+            "text": "expect(promoteTile(g.grid, 20, 10, DungeonLayer.DUNGEON, false).spawn?.succeeded).toBe(false)"
+          },
+          {
+            "line": 114,
+            "text": "expect(g.grid.getCell(20, 10)?.terrain).toBe(before)"
+          }
+        ]
+      }
+    ]
+  }
+]
