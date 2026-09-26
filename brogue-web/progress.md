@@ -1433,3 +1433,15 @@ U17f guard self-review: interrupted the second and short third freeze attempts t
 - U15b2 发现轮完整结束195文件：仅U24目录前提2项与UR4风味表trace1项红。U24原HEAD2绿后仅改8种/12%/14%前提；UR4四段证明只变30快照风味表（时间/RNG/实体均不变），按任务授权原捕获入口重录一次，20定向全绿。最终冻结build/全量npm test(4workers)/drift已启动，禁止再改输入。
 
 - 2026-09-26 22:53 CST：U15b2 最终冻结复跑全部通过。build、196文件完整默认回归（3758 passed / 0 failed / 8既有skipped / 5既有todo）、独立drift 1/1、diff-check全绿；R∪S189及点名守卫零遗漏，776冻结输入前后变化0。地图基线与UR4 trace各只重捕获一次，UR2/P2不变；全部前后SHA、旧守卫前提反事实及验收提案已记入ai_docs/reports/u-15b2.report.md。终验后仅补文档与派生证据，未暂存、未提交。
+
+## 2026-09-26 U15d-3
+
+- 用户任务：执行 ai_docs/tasks/u-15d3.prompt.md，完成报告，不提交。入场 HEAD 6172ed35；工作树干净。先记录 drift/哈希，再按武器好/坏、护甲好/坏、vorpalEnemy 五段核查归因，CE C oracle 后一次重捕获。
+- 初查：出生概率、阈值、诅咒、投掷先掷后剥、物种抽签均已实现；本轮补七处映射。U05/B-4a 存在未实现符文的旧前提，先反事实后仅修前提并交验收方裁决。
+
+- U15d3：七处 CE 映射与三条武器缺失详情已补齐，mercy/slaying 文案对齐已实现效果。7026 原 CE C 场景／34694 次有序逻辑抽签通过；17 个隔离故障变体全部检出；全21符文出生→鉴定→U01往返及U05真实Q候选/RNG验证通过。
+- 五段归因固定4 seed × D1–26：出生字段变化0/2/1/3/0，基线字段和双流RNG均0变化；UR2/UR4六阶段全等原黄金，不重录。唯一地图基线重捕获仅更新note：8ebde5e2…→a12bfd60…。
+- 浏览器10件自然生成装备通过真实鉴定卷轴目标选择和菜单保存→刷新→继续；错误0。标准客户端canvas黑图未当视觉通过，整页清晰截图已逐一打开检查。
+- U05/B-4a旧前提原HEAD2绿／补映射后2红，已留反事实与前提修正提案交验收方；原197测试仅此2文件改动。最终787输入已冻结，23:36 CST启动完整build/npm test(4workers)/drift；build绿，全量仍运行，终验结果待收口。
+
+- 2026-09-27 00:18 CST：U15d3最终冻结复跑全部通过：build、197文件完整npm test（3765 passed／0 failed／8既有skip／5既有todo，2475.45秒）、独立drift 1/1、diff-check。R∪S189及全部点名守卫零遗漏，787冻结输入前后变化0。地图仅note一次登记，UR2/UR4/P2未动；最终报告 ai_docs/reports/u-15d3.report.md 已收口。旧前提修正提案仍交验收方裁决；无其余待办，未暂存、未提交。

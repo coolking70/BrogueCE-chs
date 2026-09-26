@@ -122,10 +122,13 @@ describe('U05 CE rejection and failsafe boundaries',()=>{
         expect(spawn('WEAPON|ARMOR',undefined,[])).toBe(good);
         expect(roll.mock.calls).toEqual([['WEAPON|ARMOR',undefined,7,8,12],['WEAPON|ARMOR',undefined,7,8,12]]);
     });
-    it('unimplemented CE runic effects retain ITEM_RUNIC through generation',()=>{
+    it('ITEM_RUNIC alone satisfies machine quality independently of the effect mapping',()=>{
         vi.spyOn(rng,'randPercent').mockReturnValueOnce(true).mockReturnValueOnce(false);
         vi.spyOn(rng,'randRange').mockReturnValueOnce(1).mockReturnValueOnce(10).mockReturnValueOnce(3);
         const i=ItemLoader.spawnWeapon('dagger',0,0)!;
+        // U15d-3: mappings are complete; explicitly construct the bit-only premise.
+        // HEAD green / complete mappings red evidence is in u-15d3-evidence.
+        i.runicType=undefined;
         expect(i.flags).toContain('ITEM_RUNIC');expect(i.runicType).toBeUndefined();
         expect(machineItemRejections(i,['MF_REQUIRE_GOOD_RUNIC'],[])).toEqual([]);
     });

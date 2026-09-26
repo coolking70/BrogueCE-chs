@@ -1,0 +1,247 @@
+[
+  {
+    "stage": "s0",
+    "layers": 104,
+    "changedBirths": 0,
+    "differences": [],
+    "baselineFieldDifferences": 0,
+    "rngDifferences": 0,
+    "geometryAndMachineDifferences": 0
+  },
+  {
+    "stage": "weapon-good",
+    "layers": 104,
+    "changedBirths": 0,
+    "differences": [],
+    "baselineFieldDifferences": 0,
+    "rngDifferences": 0,
+    "geometryAndMachineDifferences": 0
+  },
+  {
+    "stage": "weapon-bad",
+    "layers": 104,
+    "changedBirths": 2,
+    "differences": [
+      {
+        "seed": 424242,
+        "depth": 8,
+        "index": 1,
+        "before": {
+          "kind": "dagger",
+          "depth": 8,
+          "runic": null,
+          "vorpal": null,
+          "e": -2,
+          "curse": true,
+          "flags": [
+            "ITEM_SNEAK_ATTACK_BONUS",
+            "ITEM_RUNIC"
+          ],
+          "quantity": 1,
+          "draws": 5
+        },
+        "after": {
+          "kind": "dagger",
+          "depth": 8,
+          "runic": "plenty",
+          "vorpal": null,
+          "e": -2,
+          "curse": true,
+          "flags": [
+            "ITEM_SNEAK_ATTACK_BONUS",
+            "ITEM_RUNIC"
+          ],
+          "quantity": 1,
+          "draws": 5
+        }
+      },
+      {
+        "seed": 777,
+        "depth": 7,
+        "index": 4,
+        "before": {
+          "kind": "broadsword",
+          "depth": 7,
+          "runic": null,
+          "vorpal": null,
+          "e": -2,
+          "curse": true,
+          "flags": [
+            "ITEM_RUNIC"
+          ],
+          "quantity": 1,
+          "draws": 5
+        },
+        "after": {
+          "kind": "broadsword",
+          "depth": 7,
+          "runic": "plenty",
+          "vorpal": null,
+          "e": -2,
+          "curse": true,
+          "flags": [
+            "ITEM_RUNIC"
+          ],
+          "quantity": 1,
+          "draws": 5
+        }
+      }
+    ],
+    "baselineFieldDifferences": 0,
+    "rngDifferences": 0,
+    "geometryAndMachineDifferences": 0
+  },
+  {
+    "stage": "armor-good",
+    "layers": 104,
+    "changedBirths": 1,
+    "differences": [
+      {
+        "seed": 424242,
+        "depth": 4,
+        "index": 0,
+        "before": {
+          "kind": "chain_mail",
+          "depth": 4,
+          "runic": null,
+          "vorpal": null,
+          "e": 3,
+          "curse": false,
+          "flags": [
+            "ITEM_RUNIC"
+          ],
+          "quantity": 1,
+          "draws": 5
+        },
+        "after": {
+          "kind": "chain_mail",
+          "depth": 4,
+          "runic": "multiplicity",
+          "vorpal": null,
+          "e": 3,
+          "curse": false,
+          "flags": [
+            "ITEM_RUNIC"
+          ],
+          "quantity": 1,
+          "draws": 5
+        }
+      }
+    ],
+    "baselineFieldDifferences": 0,
+    "rngDifferences": 0,
+    "geometryAndMachineDifferences": 0
+  },
+  {
+    "stage": "armor-bad",
+    "layers": 104,
+    "changedBirths": 3,
+    "differences": [
+      {
+        "seed": 424242,
+        "depth": 15,
+        "index": 0,
+        "before": {
+          "kind": "banded_mail",
+          "depth": 15,
+          "runic": null,
+          "vorpal": null,
+          "e": -2,
+          "curse": true,
+          "flags": [
+            "ITEM_RUNIC"
+          ],
+          "quantity": 1,
+          "draws": 5
+        },
+        "after": {
+          "kind": "banded_mail",
+          "depth": 15,
+          "runic": "burden",
+          "vorpal": null,
+          "e": -2,
+          "curse": true,
+          "flags": [
+            "ITEM_RUNIC"
+          ],
+          "quantity": 1,
+          "draws": 5
+        }
+      },
+      {
+        "seed": 20260913,
+        "depth": 25,
+        "index": 0,
+        "before": {
+          "kind": "splint_mail",
+          "depth": 25,
+          "runic": null,
+          "vorpal": null,
+          "e": -3,
+          "curse": true,
+          "flags": [
+            "ITEM_RUNIC"
+          ],
+          "quantity": 1,
+          "draws": 5
+        },
+        "after": {
+          "kind": "splint_mail",
+          "depth": 25,
+          "runic": "vulnerability",
+          "vorpal": null,
+          "e": -3,
+          "curse": true,
+          "flags": [
+            "ITEM_RUNIC"
+          ],
+          "quantity": 1,
+          "draws": 5
+        }
+      },
+      {
+        "seed": 31337,
+        "depth": 1,
+        "index": 2,
+        "before": {
+          "kind": "leather_armor",
+          "depth": 1,
+          "runic": null,
+          "vorpal": null,
+          "e": -1,
+          "curse": true,
+          "flags": [
+            "ITEM_RUNIC"
+          ],
+          "quantity": 1,
+          "draws": 5
+        },
+        "after": {
+          "kind": "leather_armor",
+          "depth": 1,
+          "runic": "burden",
+          "vorpal": null,
+          "e": -1,
+          "curse": true,
+          "flags": [
+            "ITEM_RUNIC"
+          ],
+          "quantity": 1,
+          "draws": 5
+        }
+      }
+    ],
+    "baselineFieldDifferences": 0,
+    "rngDifferences": 0,
+    "geometryAndMachineDifferences": 0
+  },
+  {
+    "stage": "vorpal",
+    "layers": 104,
+    "changedBirths": 0,
+    "differences": [],
+    "baselineFieldDifferences": 0,
+    "rngDifferences": 0,
+    "geometryAndMachineDifferences": 0
+  }
+]

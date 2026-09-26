@@ -340,29 +340,29 @@ export class ItemLoader {
     /**
      * CE 符文枚举 → web runicType 串的映射表（下标 = CE 枚举值）。
      * 武器（Rogue.h enum weaponEnchants）：0-7 好符文（NUMBER_GOOD=8），
-     * 8=W_MERCY（坏）、9=W_PLENTY（坏）。本轮效果已实现，但生成映射
-     * 另轮处理；以下 null 仍照原样消耗抽取，只是不落符文，避免移动生成流。
+     * 8=W_MERCY（坏）、9=W_PLENTY（坏）。完整映射保留 CE 抽签索引；
+     * 普通出生和机器品质重试共用 spawnWeapon，不额外抽取符文。
      */
-    public static readonly WEAPON_RUNIC_BY_CE_INDEX: readonly (string | null)[] = [
+    public static readonly WEAPON_RUNIC_BY_CE_INDEX: readonly string[] = [
         'speed',       // W_SPEED
         'quietus',     // W_QUIETUS
         'paralyzing',  // W_PARALYSIS（web 拼写差异）
-        null,          // W_MULTIPLICITY —— 生成映射留后续轮次
-        null,          // W_SLOWING —— 生成映射留后续轮次
+        'multiplicity', // W_MULTIPLICITY
+        'slowing',     // W_SLOWING
         'confusion',   // W_CONFUSION
         'force',       // W_FORCE
         'slaying',     // W_SLAYING
         'mercy',       // W_MERCY（CE 列入坏符文段 rand_range(8,9)）
-        null,          // W_PLENTY —— 生成映射留后续轮次
+        'plenty',      // W_PLENTY
     ];
 
     /**
      * 护甲（Rogue.h enum armorEnchants）：0-7 好（NUMBER_GOOD=A_BURDEN=8），
      * 8=A_BURDEN、9=A_VULNERABILITY、10=A_IMMOLATION（坏段 rand_range(8,10)）。
-     * web 未实现 multiplicity/burden/vulnerability/immolation → null。
+     * 效果由 U15d-2 实现，普通出生和机器品质重试共用此表。
      */
-    public static readonly ARMOR_RUNIC_BY_CE_INDEX: readonly (string | null)[] = [
-        null,          // A_MULTIPLICITY —— web 未实现
+    public static readonly ARMOR_RUNIC_BY_CE_INDEX: readonly string[] = [
+        'multiplicity', // A_MULTIPLICITY
         'mutuality',   // A_MUTUALITY
         'absorption',  // A_ABSORPTION
         'reprisal',    // A_REPRISAL
@@ -370,9 +370,9 @@ export class ItemLoader {
         'reflection',  // A_REFLECTION
         'respiration', // A_RESPIRATION
         'dampening',   // A_DAMPENING
-        null,          // A_BURDEN —— web 未实现
-        null,          // A_VULNERABILITY —— web 未实现
-        null,          // A_IMMOLATION —— web 未实现
+        'burden',      // A_BURDEN
+        'vulnerability', // A_VULNERABILITY
+        'immolation',  // A_IMMOLATION
     ];
 
     /** CE 武器坏符文段：rand_range(NUMBER_GOOD(=8), NUMBER_RUNIC-1(=9))。 */
@@ -384,9 +384,8 @@ export class ItemLoader {
 
     /**
      * CE monsterClassCatalog（Globals.c:1416-1432）的 (name, frequency, maxDepth)
-     * 全 15 类。成员表（MK_* 名册）web 尚无对应体系，战斗侧类别门
-     * （W_SLAYING 必杀 / A_IMMUNITY 免伤，Combat.c:133/402/669）未接线——
-     * 生成侧只复刻 chooseVorpalEnemy 的抽取行为与 RNG 消耗。
+     * 全 15 类。生成侧复刻 chooseVorpalEnemy 的抽取行为与 RNG 消耗；
+     * U15d-1/2 的战斗侧类别门读取 Combat/MonsterClass.ts 成员表。
      */
     private static readonly CE_MONSTER_CLASSES: readonly {
         name: string; frequency: number; maxDepth: number;
@@ -1315,8 +1314,7 @@ export class ItemLoader {
                         this.CE_NUMBER_WEAPON_RUNIC_KINDS - 1);
                     weapon.runicType = this.WEAPON_RUNIC_BY_CE_INDEX[ceIdx] ?? undefined;
                     weapon.flags = [...(weapon.flags ?? []), 'ITEM_RUNIC'];
-                    // CE 同步置 ITEM_RUNIC；web 的"有符文"由 runicType 承载——
-                    // 映射为空时效果尚未实现；ITEM_RUNIC 仍保留供机器 Q 筛选。
+                    // CE 同步置 ITEM_RUNIC，机器 Q 的品质筛选读取此位。
                 }
             } else {
                 // 好符文阈值：rand_range(3,10) * (STAGGER?2:1) / (QUICKLY?2:1) / (EXTEND?2:1)
@@ -1392,7 +1390,7 @@ export class ItemLoader {
                 }
             } else if (rng.randRange(0, 95) > (armor.armor ?? 0) * 10) {
                 // 好符文：rand_range(0,95) > armor（CE 内部 ×10 标度，30..110）。
-                // 护甲越重越容易出好符文——与武器的 damage 阈值机制不同源。
+                // 护甲越重越难出好符文；plate=110 超过抽签上界，不会出好符文。
                 const ceIdx = rng.randRange(0, this.CE_NUMBER_GOOD_ARMOR_ENCHANT_KINDS - 1);
                 armor.runicType = this.ARMOR_RUNIC_BY_CE_INDEX[ceIdx] ?? undefined;
                 armor.flags = [...(armor.flags ?? []), 'ITEM_RUNIC'];

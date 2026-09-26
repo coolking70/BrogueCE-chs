@@ -1,0 +1,5142 @@
+[
+  {
+    "kind": "potion",
+    "rows": [
+      {
+        "step": "initial",
+        "player": {
+          "loc": {
+            "x": 4,
+            "y": 3
+          },
+          "hp": 30,
+          "maxHp": 30,
+          "status": {},
+          "strength": 12
+        },
+        "resources": [
+          {
+            "id": 2,
+            "category": 4,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 3,
+            "category": 0,
+            "quantity": 1,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 4,
+            "category": 0,
+            "quantity": 15,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 5,
+            "category": 1,
+            "quantity": 1,
+            "charges": 1000,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 22,
+            "category": 2,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 6,
+            "loc": {
+              "x": 8,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 7,
+            "loc": {
+              "x": 14,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 8,
+            "loc": {
+              "x": 20,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 9,
+            "loc": {
+              "x": 26,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 10,
+            "loc": {
+              "x": 32,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 11,
+            "loc": {
+              "x": 38,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 12,
+            "loc": {
+              "x": 44,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 13,
+            "loc": {
+              "x": 50,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 14,
+            "loc": {
+              "x": 56,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 15,
+            "loc": {
+              "x": 62,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 16,
+            "loc": {
+              "x": 68,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 17,
+            "loc": {
+              "x": 74,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 18,
+            "loc": {
+              "x": 8,
+              "y": 11
+            },
+            "quantity": 11
+          },
+          {
+            "id": 19,
+            "loc": {
+              "x": 14,
+              "y": 11
+            },
+            "quantity": 1
+          },
+          {
+            "id": 20,
+            "loc": {
+              "x": 20,
+              "y": 11
+            },
+            "quantity": 6
+          },
+          {
+            "id": 21,
+            "loc": {
+              "x": 26,
+              "y": 11
+            },
+            "quantity": 8
+          }
+        ],
+        "monsters": [],
+        "log": {
+          "messages": [],
+          "nextId": 0
+        },
+        "tick": 0,
+        "turn": 0,
+        "pending": {
+          "confirm": null,
+          "identify": false,
+          "enchant": false,
+          "arcana": null
+        },
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2669741744,
+              "b": 1382298001,
+              "c": 1480096941,
+              "d": 3648027809
+            },
+            {
+              "a": 2688365957,
+              "b": 3836322330,
+              "c": 3779978262,
+              "d": 1504127940
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2597,
+          "cosmeticNumbersGenerated": 157
+        },
+        "commandLog": []
+      },
+      {
+        "step": "quaff",
+        "player": {
+          "loc": {
+            "x": 4,
+            "y": 3
+          },
+          "hp": 30,
+          "maxHp": 30,
+          "status": {},
+          "strength": 12
+        },
+        "resources": [
+          {
+            "id": 2,
+            "category": 4,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 3,
+            "category": 0,
+            "quantity": 1,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 4,
+            "category": 0,
+            "quantity": 15,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 5,
+            "category": 1,
+            "quantity": 1,
+            "charges": 1000,
+            "enchantment": 0,
+            "identified": true
+          }
+        ],
+        "floor": [
+          {
+            "id": 6,
+            "loc": {
+              "x": 8,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 7,
+            "loc": {
+              "x": 14,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 8,
+            "loc": {
+              "x": 20,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 9,
+            "loc": {
+              "x": 26,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 10,
+            "loc": {
+              "x": 32,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 11,
+            "loc": {
+              "x": 38,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 12,
+            "loc": {
+              "x": 44,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 13,
+            "loc": {
+              "x": 50,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 14,
+            "loc": {
+              "x": 56,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 15,
+            "loc": {
+              "x": 62,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 16,
+            "loc": {
+              "x": 68,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 17,
+            "loc": {
+              "x": 74,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 18,
+            "loc": {
+              "x": 8,
+              "y": 11
+            },
+            "quantity": 11
+          },
+          {
+            "id": 19,
+            "loc": {
+              "x": 14,
+              "y": 11
+            },
+            "quantity": 1
+          },
+          {
+            "id": 20,
+            "loc": {
+              "x": 20,
+              "y": 11
+            },
+            "quantity": 6
+          },
+          {
+            "id": 21,
+            "loc": {
+              "x": 26,
+              "y": 11
+            },
+            "quantity": 8
+          }
+        ],
+        "monsters": [],
+        "log": {
+          "messages": [
+            {
+              "id": 0,
+              "text": "You quaff the Smoky Potion.",
+              "color": "#cccccc",
+              "count": 1
+            },
+            {
+              "id": 1,
+              "text": "You feel slightly better.",
+              "color": "#44ff44",
+              "count": 1
+            },
+            {
+              "id": 2,
+              "text": "It was a Potion of Healing!",
+              "color": "#00ffff",
+              "count": 1
+            }
+          ],
+          "nextId": 3
+        },
+        "tick": 100,
+        "turn": 1,
+        "pending": {
+          "confirm": null,
+          "identify": false,
+          "enchant": false,
+          "arcana": null
+        },
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2669741744,
+              "b": 1382298001,
+              "c": 1480096941,
+              "d": 3648027809
+            },
+            {
+              "a": 2688365957,
+              "b": 3836322330,
+              "c": 3779978262,
+              "d": 1504127940
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2597,
+          "cosmeticNumbersGenerated": 157
+        },
+        "commandLog": [
+          {
+            "action": "item:command",
+            "data": "quaff|e|",
+            "decisions": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "scroll",
+    "rows": [
+      {
+        "step": "initial",
+        "player": {
+          "loc": {
+            "x": 4,
+            "y": 3
+          },
+          "hp": 30,
+          "maxHp": 30,
+          "status": {},
+          "strength": 12
+        },
+        "resources": [
+          {
+            "id": 2,
+            "category": 4,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 3,
+            "category": 0,
+            "quantity": 1,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 4,
+            "category": 0,
+            "quantity": 15,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 5,
+            "category": 1,
+            "quantity": 1,
+            "charges": 1000,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 22,
+            "category": 3,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 6,
+            "loc": {
+              "x": 8,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 7,
+            "loc": {
+              "x": 14,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 8,
+            "loc": {
+              "x": 20,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 9,
+            "loc": {
+              "x": 26,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 10,
+            "loc": {
+              "x": 32,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 11,
+            "loc": {
+              "x": 38,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 12,
+            "loc": {
+              "x": 44,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 13,
+            "loc": {
+              "x": 50,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 14,
+            "loc": {
+              "x": 56,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 15,
+            "loc": {
+              "x": 62,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 16,
+            "loc": {
+              "x": 68,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 17,
+            "loc": {
+              "x": 74,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 18,
+            "loc": {
+              "x": 8,
+              "y": 11
+            },
+            "quantity": 11
+          },
+          {
+            "id": 19,
+            "loc": {
+              "x": 14,
+              "y": 11
+            },
+            "quantity": 1
+          },
+          {
+            "id": 20,
+            "loc": {
+              "x": 20,
+              "y": 11
+            },
+            "quantity": 6
+          },
+          {
+            "id": 21,
+            "loc": {
+              "x": 26,
+              "y": 11
+            },
+            "quantity": 8
+          }
+        ],
+        "monsters": [],
+        "log": {
+          "messages": [],
+          "nextId": 0
+        },
+        "tick": 0,
+        "turn": 0,
+        "pending": {
+          "confirm": null,
+          "identify": false,
+          "enchant": false,
+          "arcana": null
+        },
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2669741744,
+              "b": 1382298001,
+              "c": 1480096941,
+              "d": 3648027809
+            },
+            {
+              "a": 2688365957,
+              "b": 3836322330,
+              "c": 3779978262,
+              "d": 1504127940
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2597,
+          "cosmeticNumbersGenerated": 157
+        },
+        "commandLog": []
+      },
+      {
+        "step": "read",
+        "player": {
+          "loc": {
+            "x": 4,
+            "y": 3
+          },
+          "hp": 30,
+          "maxHp": 30,
+          "status": {},
+          "strength": 12
+        },
+        "resources": [
+          {
+            "id": 2,
+            "category": 4,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 3,
+            "category": 0,
+            "quantity": 1,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 4,
+            "category": 0,
+            "quantity": 15,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 5,
+            "category": 1,
+            "quantity": 1,
+            "charges": 1000,
+            "enchantment": 0,
+            "identified": true
+          }
+        ],
+        "floor": [
+          {
+            "id": 6,
+            "loc": {
+              "x": 8,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 7,
+            "loc": {
+              "x": 14,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 8,
+            "loc": {
+              "x": 20,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 9,
+            "loc": {
+              "x": 26,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 10,
+            "loc": {
+              "x": 32,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 11,
+            "loc": {
+              "x": 38,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 12,
+            "loc": {
+              "x": 44,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 13,
+            "loc": {
+              "x": 50,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 14,
+            "loc": {
+              "x": 56,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 15,
+            "loc": {
+              "x": 62,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 16,
+            "loc": {
+              "x": 68,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 17,
+            "loc": {
+              "x": 74,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 18,
+            "loc": {
+              "x": 8,
+              "y": 11
+            },
+            "quantity": 11
+          },
+          {
+            "id": 19,
+            "loc": {
+              "x": 14,
+              "y": 11
+            },
+            "quantity": 1
+          },
+          {
+            "id": 20,
+            "loc": {
+              "x": 20,
+              "y": 11
+            },
+            "quantity": 6
+          },
+          {
+            "id": 21,
+            "loc": {
+              "x": 26,
+              "y": 11
+            },
+            "quantity": 8
+          }
+        ],
+        "monsters": [],
+        "log": {
+          "messages": [
+            {
+              "id": 0,
+              "text": "You read the 题为「金光苍穹冥力」的卷轴.",
+              "color": "#cccccc",
+              "count": 1
+            },
+            {
+              "id": 1,
+              "text": "This is a scroll of identify.",
+              "color": "#00ffff",
+              "count": 1
+            },
+            {
+              "id": 2,
+              "text": "Everything in your pack is already identified.",
+              "color": "#aaaaaa",
+              "count": 1
+            }
+          ],
+          "nextId": 3
+        },
+        "tick": 100,
+        "turn": 1,
+        "pending": {
+          "confirm": null,
+          "identify": false,
+          "enchant": false,
+          "arcana": null
+        },
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2669741744,
+              "b": 1382298001,
+              "c": 1480096941,
+              "d": 3648027809
+            },
+            {
+              "a": 2688365957,
+              "b": 3836322330,
+              "c": 3779978262,
+              "d": 1504127940
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2597,
+          "cosmeticNumbersGenerated": 157
+        },
+        "commandLog": [
+          {
+            "action": "item:command",
+            "data": "read|e|",
+            "decisions": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "wand-cancel-and-use",
+    "rows": [
+      {
+        "step": "initial",
+        "player": {
+          "loc": {
+            "x": 4,
+            "y": 3
+          },
+          "hp": 30,
+          "maxHp": 30,
+          "status": {},
+          "strength": 12
+        },
+        "resources": [
+          {
+            "id": 2,
+            "category": 4,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 3,
+            "category": 0,
+            "quantity": 1,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 4,
+            "category": 0,
+            "quantity": 15,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 5,
+            "category": 1,
+            "quantity": 1,
+            "charges": 1000,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 22,
+            "category": 6,
+            "quantity": 1,
+            "charges": 4,
+            "enchantment": 0,
+            "timesUsed": 0,
+            "identified": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 6,
+            "loc": {
+              "x": 8,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 7,
+            "loc": {
+              "x": 14,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 8,
+            "loc": {
+              "x": 20,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 9,
+            "loc": {
+              "x": 26,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 10,
+            "loc": {
+              "x": 32,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 11,
+            "loc": {
+              "x": 38,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 12,
+            "loc": {
+              "x": 44,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 13,
+            "loc": {
+              "x": 50,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 14,
+            "loc": {
+              "x": 56,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 15,
+            "loc": {
+              "x": 62,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 16,
+            "loc": {
+              "x": 68,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 17,
+            "loc": {
+              "x": 74,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 18,
+            "loc": {
+              "x": 8,
+              "y": 11
+            },
+            "quantity": 11
+          },
+          {
+            "id": 19,
+            "loc": {
+              "x": 14,
+              "y": 11
+            },
+            "quantity": 1
+          },
+          {
+            "id": 20,
+            "loc": {
+              "x": 20,
+              "y": 11
+            },
+            "quantity": 6
+          },
+          {
+            "id": 21,
+            "loc": {
+              "x": 26,
+              "y": 11
+            },
+            "quantity": 8
+          }
+        ],
+        "monsters": [],
+        "log": {
+          "messages": [],
+          "nextId": 0
+        },
+        "tick": 0,
+        "turn": 0,
+        "pending": {
+          "confirm": null,
+          "identify": false,
+          "enchant": false,
+          "arcana": null
+        },
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2873000417,
+              "b": 833157454,
+              "c": 3992871365,
+              "d": 3217843973
+            },
+            {
+              "a": 2688365957,
+              "b": 3836322330,
+              "c": 3779978262,
+              "d": 1504127940
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2598,
+          "cosmeticNumbersGenerated": 157
+        },
+        "commandLog": []
+      },
+      {
+        "step": "aim",
+        "player": {
+          "loc": {
+            "x": 4,
+            "y": 3
+          },
+          "hp": 30,
+          "maxHp": 30,
+          "status": {},
+          "strength": 12
+        },
+        "resources": [
+          {
+            "id": 2,
+            "category": 4,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 3,
+            "category": 0,
+            "quantity": 1,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 4,
+            "category": 0,
+            "quantity": 15,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 5,
+            "category": 1,
+            "quantity": 1,
+            "charges": 1000,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 22,
+            "category": 6,
+            "quantity": 1,
+            "charges": 4,
+            "enchantment": 0,
+            "timesUsed": 0,
+            "identified": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 6,
+            "loc": {
+              "x": 8,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 7,
+            "loc": {
+              "x": 14,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 8,
+            "loc": {
+              "x": 20,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 9,
+            "loc": {
+              "x": 26,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 10,
+            "loc": {
+              "x": 32,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 11,
+            "loc": {
+              "x": 38,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 12,
+            "loc": {
+              "x": 44,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 13,
+            "loc": {
+              "x": 50,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 14,
+            "loc": {
+              "x": 56,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 15,
+            "loc": {
+              "x": 62,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 16,
+            "loc": {
+              "x": 68,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 17,
+            "loc": {
+              "x": 74,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 18,
+            "loc": {
+              "x": 8,
+              "y": 11
+            },
+            "quantity": 11
+          },
+          {
+            "id": 19,
+            "loc": {
+              "x": 14,
+              "y": 11
+            },
+            "quantity": 1
+          },
+          {
+            "id": 20,
+            "loc": {
+              "x": 20,
+              "y": 11
+            },
+            "quantity": 6
+          },
+          {
+            "id": 21,
+            "loc": {
+              "x": 26,
+              "y": 11
+            },
+            "quantity": 8
+          }
+        ],
+        "monsters": [],
+        "log": {
+          "messages": [],
+          "nextId": 0
+        },
+        "tick": 0,
+        "turn": 0,
+        "pending": {
+          "confirm": null,
+          "identify": false,
+          "enchant": false,
+          "arcana": {
+            "x": 4,
+            "y": 3
+          }
+        },
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2873000417,
+              "b": 833157454,
+              "c": 3992871365,
+              "d": 3217843973
+            },
+            {
+              "a": 2688365957,
+              "b": 3836322330,
+              "c": 3779978262,
+              "d": 1504127940
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2598,
+          "cosmeticNumbersGenerated": 157
+        },
+        "commandLog": [
+          {
+            "action": "item:command",
+            "data": "use|e|",
+            "decisions": []
+          }
+        ]
+      },
+      {
+        "step": "cancel",
+        "player": {
+          "loc": {
+            "x": 4,
+            "y": 3
+          },
+          "hp": 30,
+          "maxHp": 30,
+          "status": {},
+          "strength": 12
+        },
+        "resources": [
+          {
+            "id": 2,
+            "category": 4,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 3,
+            "category": 0,
+            "quantity": 1,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 4,
+            "category": 0,
+            "quantity": 15,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 5,
+            "category": 1,
+            "quantity": 1,
+            "charges": 1000,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 22,
+            "category": 6,
+            "quantity": 1,
+            "charges": 4,
+            "enchantment": 0,
+            "timesUsed": 0,
+            "identified": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 6,
+            "loc": {
+              "x": 8,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 7,
+            "loc": {
+              "x": 14,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 8,
+            "loc": {
+              "x": 20,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 9,
+            "loc": {
+              "x": 26,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 10,
+            "loc": {
+              "x": 32,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 11,
+            "loc": {
+              "x": 38,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 12,
+            "loc": {
+              "x": 44,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 13,
+            "loc": {
+              "x": 50,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 14,
+            "loc": {
+              "x": 56,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 15,
+            "loc": {
+              "x": 62,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 16,
+            "loc": {
+              "x": 68,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 17,
+            "loc": {
+              "x": 74,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 18,
+            "loc": {
+              "x": 8,
+              "y": 11
+            },
+            "quantity": 11
+          },
+          {
+            "id": 19,
+            "loc": {
+              "x": 14,
+              "y": 11
+            },
+            "quantity": 1
+          },
+          {
+            "id": 20,
+            "loc": {
+              "x": 20,
+              "y": 11
+            },
+            "quantity": 6
+          },
+          {
+            "id": 21,
+            "loc": {
+              "x": 26,
+              "y": 11
+            },
+            "quantity": 8
+          }
+        ],
+        "monsters": [],
+        "log": {
+          "messages": [],
+          "nextId": 0
+        },
+        "tick": 0,
+        "turn": 0,
+        "pending": {
+          "confirm": null,
+          "identify": false,
+          "enchant": false,
+          "arcana": null
+        },
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2873000417,
+              "b": 833157454,
+              "c": 3992871365,
+              "d": 3217843973
+            },
+            {
+              "a": 2688365957,
+              "b": 3836322330,
+              "c": 3779978262,
+              "d": 1504127940
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2598,
+          "cosmeticNumbersGenerated": 157
+        },
+        "commandLog": [
+          {
+            "action": "item:command",
+            "data": "use|e|",
+            "decisions": []
+          },
+          {
+            "action": "cancel_target",
+            "data": null,
+            "decisions": []
+          }
+        ]
+      },
+      {
+        "step": "retarget",
+        "player": {
+          "loc": {
+            "x": 4,
+            "y": 3
+          },
+          "hp": 30,
+          "maxHp": 30,
+          "status": {},
+          "strength": 12
+        },
+        "resources": [
+          {
+            "id": 2,
+            "category": 4,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 3,
+            "category": 0,
+            "quantity": 1,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 4,
+            "category": 0,
+            "quantity": 15,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 5,
+            "category": 1,
+            "quantity": 1,
+            "charges": 1000,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 22,
+            "category": 6,
+            "quantity": 1,
+            "charges": 4,
+            "enchantment": 0,
+            "timesUsed": 0,
+            "identified": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 6,
+            "loc": {
+              "x": 8,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 7,
+            "loc": {
+              "x": 14,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 8,
+            "loc": {
+              "x": 20,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 9,
+            "loc": {
+              "x": 26,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 10,
+            "loc": {
+              "x": 32,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 11,
+            "loc": {
+              "x": 38,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 12,
+            "loc": {
+              "x": 44,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 13,
+            "loc": {
+              "x": 50,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 14,
+            "loc": {
+              "x": 56,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 15,
+            "loc": {
+              "x": 62,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 16,
+            "loc": {
+              "x": 68,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 17,
+            "loc": {
+              "x": 74,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 18,
+            "loc": {
+              "x": 8,
+              "y": 11
+            },
+            "quantity": 11
+          },
+          {
+            "id": 19,
+            "loc": {
+              "x": 14,
+              "y": 11
+            },
+            "quantity": 1
+          },
+          {
+            "id": 20,
+            "loc": {
+              "x": 20,
+              "y": 11
+            },
+            "quantity": 6
+          },
+          {
+            "id": 21,
+            "loc": {
+              "x": 26,
+              "y": 11
+            },
+            "quantity": 8
+          }
+        ],
+        "monsters": [],
+        "log": {
+          "messages": [],
+          "nextId": 0
+        },
+        "tick": 0,
+        "turn": 0,
+        "pending": {
+          "confirm": null,
+          "identify": false,
+          "enchant": false,
+          "arcana": {
+            "x": 5,
+            "y": 3
+          }
+        },
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2873000417,
+              "b": 833157454,
+              "c": 3992871365,
+              "d": 3217843973
+            },
+            {
+              "a": 2688365957,
+              "b": 3836322330,
+              "c": 3779978262,
+              "d": 1504127940
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2598,
+          "cosmeticNumbersGenerated": 157
+        },
+        "commandLog": [
+          {
+            "action": "item:command",
+            "data": "use|e|",
+            "decisions": []
+          },
+          {
+            "action": "cancel_target",
+            "data": null,
+            "decisions": []
+          },
+          {
+            "action": "item:command",
+            "data": "use|e|",
+            "decisions": []
+          },
+          {
+            "action": "move",
+            "data": 3,
+            "decisions": []
+          }
+        ]
+      },
+      {
+        "step": "confirm",
+        "player": {
+          "loc": {
+            "x": 4,
+            "y": 3
+          },
+          "hp": 30,
+          "maxHp": 30,
+          "status": {},
+          "strength": 12
+        },
+        "resources": [
+          {
+            "id": 2,
+            "category": 4,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 3,
+            "category": 0,
+            "quantity": 1,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 4,
+            "category": 0,
+            "quantity": 15,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 5,
+            "category": 1,
+            "quantity": 1,
+            "charges": 1000,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 22,
+            "category": 6,
+            "quantity": 1,
+            "charges": 3,
+            "enchantment": 0,
+            "timesUsed": 1,
+            "identified": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 6,
+            "loc": {
+              "x": 8,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 7,
+            "loc": {
+              "x": 14,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 8,
+            "loc": {
+              "x": 20,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 9,
+            "loc": {
+              "x": 26,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 10,
+            "loc": {
+              "x": 32,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 11,
+            "loc": {
+              "x": 38,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 12,
+            "loc": {
+              "x": 44,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 13,
+            "loc": {
+              "x": 50,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 14,
+            "loc": {
+              "x": 56,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 15,
+            "loc": {
+              "x": 62,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 16,
+            "loc": {
+              "x": 68,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 17,
+            "loc": {
+              "x": 74,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 18,
+            "loc": {
+              "x": 8,
+              "y": 11
+            },
+            "quantity": 11
+          },
+          {
+            "id": 19,
+            "loc": {
+              "x": 14,
+              "y": 11
+            },
+            "quantity": 1
+          },
+          {
+            "id": 20,
+            "loc": {
+              "x": 20,
+              "y": 11
+            },
+            "quantity": 6
+          },
+          {
+            "id": 21,
+            "loc": {
+              "x": 26,
+              "y": 11
+            },
+            "quantity": 8
+          }
+        ],
+        "monsters": [],
+        "log": {
+          "messages": [
+            {
+              "id": 0,
+              "text": "You zap 铬魔杖.",
+              "color": "#aaaaaa",
+              "count": 1
+            }
+          ],
+          "nextId": 1
+        },
+        "tick": 100,
+        "turn": 1,
+        "pending": {
+          "confirm": null,
+          "identify": false,
+          "enchant": false,
+          "arcana": null
+        },
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2873000417,
+              "b": 833157454,
+              "c": 3992871365,
+              "d": 3217843973
+            },
+            {
+              "a": 2688365957,
+              "b": 3836322330,
+              "c": 3779978262,
+              "d": 1504127940
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2598,
+          "cosmeticNumbersGenerated": 157
+        },
+        "commandLog": [
+          {
+            "action": "item:command",
+            "data": "use|e|",
+            "decisions": []
+          },
+          {
+            "action": "cancel_target",
+            "data": null,
+            "decisions": []
+          },
+          {
+            "action": "item:command",
+            "data": "use|e|",
+            "decisions": []
+          },
+          {
+            "action": "move",
+            "data": 3,
+            "decisions": []
+          },
+          {
+            "action": "confirm_target",
+            "data": null,
+            "decisions": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "charm",
+    "rows": [
+      {
+        "step": "initial",
+        "player": {
+          "loc": {
+            "x": 4,
+            "y": 3
+          },
+          "hp": 30,
+          "maxHp": 30,
+          "status": {},
+          "strength": 12
+        },
+        "resources": [
+          {
+            "id": 2,
+            "category": 4,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 3,
+            "category": 0,
+            "quantity": 1,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 4,
+            "category": 0,
+            "quantity": 15,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 5,
+            "category": 1,
+            "quantity": 1,
+            "charges": 1000,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 22,
+            "category": 9,
+            "quantity": 1,
+            "cooldown": 0,
+            "enchantment": 2,
+            "identified": true
+          }
+        ],
+        "floor": [
+          {
+            "id": 6,
+            "loc": {
+              "x": 8,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 7,
+            "loc": {
+              "x": 14,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 8,
+            "loc": {
+              "x": 20,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 9,
+            "loc": {
+              "x": 26,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 10,
+            "loc": {
+              "x": 32,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 11,
+            "loc": {
+              "x": 38,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 12,
+            "loc": {
+              "x": 44,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 13,
+            "loc": {
+              "x": 50,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 14,
+            "loc": {
+              "x": 56,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 15,
+            "loc": {
+              "x": 62,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 16,
+            "loc": {
+              "x": 68,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 17,
+            "loc": {
+              "x": 74,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 18,
+            "loc": {
+              "x": 8,
+              "y": 11
+            },
+            "quantity": 11
+          },
+          {
+            "id": 19,
+            "loc": {
+              "x": 14,
+              "y": 11
+            },
+            "quantity": 1
+          },
+          {
+            "id": 20,
+            "loc": {
+              "x": 20,
+              "y": 11
+            },
+            "quantity": 6
+          },
+          {
+            "id": 21,
+            "loc": {
+              "x": 26,
+              "y": 11
+            },
+            "quantity": 8
+          }
+        ],
+        "monsters": [],
+        "log": {
+          "messages": [],
+          "nextId": 0
+        },
+        "tick": 0,
+        "turn": 0,
+        "pending": {
+          "confirm": null,
+          "identify": false,
+          "enchant": false,
+          "arcana": null
+        },
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 4062388914,
+              "b": 2915748042,
+              "c": 4185760028,
+              "d": 735337673
+            },
+            {
+              "a": 2688365957,
+              "b": 3836322330,
+              "c": 3779978262,
+              "d": 1504127940
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2599,
+          "cosmeticNumbersGenerated": 157
+        },
+        "commandLog": []
+      },
+      {
+        "step": "use",
+        "player": {
+          "loc": {
+            "x": 4,
+            "y": 3
+          },
+          "hp": 30,
+          "maxHp": 30,
+          "status": {},
+          "strength": 12
+        },
+        "resources": [
+          {
+            "id": 2,
+            "category": 4,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 3,
+            "category": 0,
+            "quantity": 1,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 4,
+            "category": 0,
+            "quantity": 15,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 5,
+            "category": 1,
+            "quantity": 1,
+            "charges": 1000,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 22,
+            "category": 9,
+            "quantity": 1,
+            "cooldown": 758,
+            "enchantment": 2,
+            "identified": true
+          }
+        ],
+        "floor": [
+          {
+            "id": 6,
+            "loc": {
+              "x": 8,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 7,
+            "loc": {
+              "x": 14,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 8,
+            "loc": {
+              "x": 20,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 9,
+            "loc": {
+              "x": 26,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 10,
+            "loc": {
+              "x": 32,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 11,
+            "loc": {
+              "x": 38,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 12,
+            "loc": {
+              "x": 44,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 13,
+            "loc": {
+              "x": 50,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 14,
+            "loc": {
+              "x": 56,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 15,
+            "loc": {
+              "x": 62,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 16,
+            "loc": {
+              "x": 68,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 17,
+            "loc": {
+              "x": 74,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 18,
+            "loc": {
+              "x": 8,
+              "y": 11
+            },
+            "quantity": 11
+          },
+          {
+            "id": 19,
+            "loc": {
+              "x": 14,
+              "y": 11
+            },
+            "quantity": 1
+          },
+          {
+            "id": 20,
+            "loc": {
+              "x": 20,
+              "y": 11
+            },
+            "quantity": 6
+          },
+          {
+            "id": 21,
+            "loc": {
+              "x": 26,
+              "y": 11
+            },
+            "quantity": 8
+          }
+        ],
+        "monsters": [],
+        "log": {
+          "messages": [
+            {
+              "id": 0,
+              "text": "You invoke Charm of Health and recover 8 HP.",
+              "color": "#66ff88",
+              "count": 1
+            }
+          ],
+          "nextId": 1
+        },
+        "tick": 100,
+        "turn": 1,
+        "pending": {
+          "confirm": null,
+          "identify": false,
+          "enchant": false,
+          "arcana": null
+        },
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 4062388914,
+              "b": 2915748042,
+              "c": 4185760028,
+              "d": 735337673
+            },
+            {
+              "a": 2688365957,
+              "b": 3836322330,
+              "c": 3779978262,
+              "d": 1504127940
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2599,
+          "cosmeticNumbersGenerated": 157
+        },
+        "commandLog": [
+          {
+            "action": "item:command",
+            "data": "use|e|",
+            "decisions": []
+          }
+        ]
+      },
+      {
+        "step": "cooldown",
+        "player": {
+          "loc": {
+            "x": 4,
+            "y": 3
+          },
+          "hp": 30,
+          "maxHp": 30,
+          "status": {},
+          "strength": 12
+        },
+        "resources": [
+          {
+            "id": 2,
+            "category": 4,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 3,
+            "category": 0,
+            "quantity": 1,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 4,
+            "category": 0,
+            "quantity": 15,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 5,
+            "category": 1,
+            "quantity": 1,
+            "charges": 1000,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 22,
+            "category": 9,
+            "quantity": 1,
+            "cooldown": 758,
+            "enchantment": 2,
+            "identified": true
+          }
+        ],
+        "floor": [
+          {
+            "id": 6,
+            "loc": {
+              "x": 8,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 7,
+            "loc": {
+              "x": 14,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 8,
+            "loc": {
+              "x": 20,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 9,
+            "loc": {
+              "x": 26,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 10,
+            "loc": {
+              "x": 32,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 11,
+            "loc": {
+              "x": 38,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 12,
+            "loc": {
+              "x": 44,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 13,
+            "loc": {
+              "x": 50,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 14,
+            "loc": {
+              "x": 56,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 15,
+            "loc": {
+              "x": 62,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 16,
+            "loc": {
+              "x": 68,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 17,
+            "loc": {
+              "x": 74,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 18,
+            "loc": {
+              "x": 8,
+              "y": 11
+            },
+            "quantity": 11
+          },
+          {
+            "id": 19,
+            "loc": {
+              "x": 14,
+              "y": 11
+            },
+            "quantity": 1
+          },
+          {
+            "id": 20,
+            "loc": {
+              "x": 20,
+              "y": 11
+            },
+            "quantity": 6
+          },
+          {
+            "id": 21,
+            "loc": {
+              "x": 26,
+              "y": 11
+            },
+            "quantity": 8
+          }
+        ],
+        "monsters": [],
+        "log": {
+          "messages": [
+            {
+              "id": 0,
+              "text": "You invoke Charm of Health and recover 8 HP.",
+              "color": "#66ff88",
+              "count": 1
+            },
+            {
+              "id": 1,
+              "text": "Charm of Health is on cooldown (758 turns).",
+              "color": "#aaaaaa",
+              "count": 1
+            }
+          ],
+          "nextId": 2
+        },
+        "tick": 100,
+        "turn": 1,
+        "pending": {
+          "confirm": null,
+          "identify": false,
+          "enchant": false,
+          "arcana": null
+        },
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 4062388914,
+              "b": 2915748042,
+              "c": 4185760028,
+              "d": 735337673
+            },
+            {
+              "a": 2688365957,
+              "b": 3836322330,
+              "c": 3779978262,
+              "d": 1504127940
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2599,
+          "cosmeticNumbersGenerated": 157
+        },
+        "commandLog": [
+          {
+            "action": "item:command",
+            "data": "use|e|",
+            "decisions": []
+          },
+          {
+            "action": "item:command",
+            "data": "use|e|",
+            "decisions": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "throw-stack",
+    "rows": [
+      {
+        "step": "initial",
+        "player": {
+          "loc": {
+            "x": 4,
+            "y": 3
+          },
+          "hp": 30,
+          "maxHp": 30,
+          "status": {},
+          "strength": 12
+        },
+        "resources": [
+          {
+            "id": 2,
+            "category": 4,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 3,
+            "category": 0,
+            "quantity": 1,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 4,
+            "category": 0,
+            "quantity": 15,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 5,
+            "category": 1,
+            "quantity": 1,
+            "charges": 1000,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 22,
+            "category": 0,
+            "quantity": 7,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 6,
+            "loc": {
+              "x": 8,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 7,
+            "loc": {
+              "x": 14,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 8,
+            "loc": {
+              "x": 20,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 9,
+            "loc": {
+              "x": 26,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 10,
+            "loc": {
+              "x": 32,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 11,
+            "loc": {
+              "x": 38,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 12,
+            "loc": {
+              "x": 44,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 13,
+            "loc": {
+              "x": 50,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 14,
+            "loc": {
+              "x": 56,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 15,
+            "loc": {
+              "x": 62,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 16,
+            "loc": {
+              "x": 68,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 17,
+            "loc": {
+              "x": 74,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 18,
+            "loc": {
+              "x": 8,
+              "y": 11
+            },
+            "quantity": 11
+          },
+          {
+            "id": 19,
+            "loc": {
+              "x": 14,
+              "y": 11
+            },
+            "quantity": 1
+          },
+          {
+            "id": 20,
+            "loc": {
+              "x": 20,
+              "y": 11
+            },
+            "quantity": 6
+          },
+          {
+            "id": 21,
+            "loc": {
+              "x": 26,
+              "y": 11
+            },
+            "quantity": 8
+          }
+        ],
+        "monsters": [],
+        "log": {
+          "messages": [],
+          "nextId": 0
+        },
+        "tick": 0,
+        "turn": 0,
+        "pending": {
+          "confirm": null,
+          "identify": false,
+          "enchant": false,
+          "arcana": null
+        },
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 4025694769,
+              "b": 626130405,
+              "c": 3364432181,
+              "d": 2359821981
+            },
+            {
+              "a": 2688365957,
+              "b": 3836322330,
+              "c": 3779978262,
+              "d": 1504127940
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2600,
+          "cosmeticNumbersGenerated": 157
+        },
+        "commandLog": []
+      },
+      {
+        "step": "aim",
+        "player": {
+          "loc": {
+            "x": 4,
+            "y": 3
+          },
+          "hp": 30,
+          "maxHp": 30,
+          "status": {},
+          "strength": 12
+        },
+        "resources": [
+          {
+            "id": 2,
+            "category": 4,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 3,
+            "category": 0,
+            "quantity": 1,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 4,
+            "category": 0,
+            "quantity": 15,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 5,
+            "category": 1,
+            "quantity": 1,
+            "charges": 1000,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 22,
+            "category": 0,
+            "quantity": 3,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 6,
+            "loc": {
+              "x": 8,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 7,
+            "loc": {
+              "x": 14,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 8,
+            "loc": {
+              "x": 20,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 9,
+            "loc": {
+              "x": 26,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 10,
+            "loc": {
+              "x": 32,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 11,
+            "loc": {
+              "x": 38,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 12,
+            "loc": {
+              "x": 44,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 13,
+            "loc": {
+              "x": 50,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 14,
+            "loc": {
+              "x": 56,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 15,
+            "loc": {
+              "x": 62,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 16,
+            "loc": {
+              "x": 68,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 17,
+            "loc": {
+              "x": 74,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 18,
+            "loc": {
+              "x": 8,
+              "y": 11
+            },
+            "quantity": 11
+          },
+          {
+            "id": 19,
+            "loc": {
+              "x": 14,
+              "y": 11
+            },
+            "quantity": 1
+          },
+          {
+            "id": 20,
+            "loc": {
+              "x": 20,
+              "y": 11
+            },
+            "quantity": 6
+          },
+          {
+            "id": 21,
+            "loc": {
+              "x": 26,
+              "y": 11
+            },
+            "quantity": 8
+          }
+        ],
+        "monsters": [],
+        "log": {
+          "messages": [
+            {
+              "id": 0,
+              "text": "Select a target to throw the Dart.",
+              "color": "#ffffff",
+              "count": 1
+            }
+          ],
+          "nextId": 1
+        },
+        "tick": 0,
+        "turn": 0,
+        "pending": {
+          "confirm": null,
+          "identify": false,
+          "enchant": false,
+          "arcana": null
+        },
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 4025694769,
+              "b": 626130405,
+              "c": 3364432181,
+              "d": 2359821981
+            },
+            {
+              "a": 2688365957,
+              "b": 3836322330,
+              "c": 3779978262,
+              "d": 1504127940
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2600,
+          "cosmeticNumbersGenerated": 157
+        },
+        "commandLog": [
+          {
+            "action": "item:command",
+            "data": "throw|e|",
+            "decisions": []
+          }
+        ]
+      },
+      {
+        "step": "throw",
+        "player": {
+          "loc": {
+            "x": 4,
+            "y": 3
+          },
+          "hp": 30,
+          "maxHp": 30,
+          "status": {},
+          "strength": 12
+        },
+        "resources": [
+          {
+            "id": 2,
+            "category": 4,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 3,
+            "category": 0,
+            "quantity": 1,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 4,
+            "category": 0,
+            "quantity": 15,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 5,
+            "category": 1,
+            "quantity": 1,
+            "charges": 1000,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 22,
+            "category": 0,
+            "quantity": 2,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 6,
+            "loc": {
+              "x": 8,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 7,
+            "loc": {
+              "x": 14,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 8,
+            "loc": {
+              "x": 20,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 9,
+            "loc": {
+              "x": 26,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 10,
+            "loc": {
+              "x": 32,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 11,
+            "loc": {
+              "x": 38,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 12,
+            "loc": {
+              "x": 44,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 13,
+            "loc": {
+              "x": 50,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 14,
+            "loc": {
+              "x": 56,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 15,
+            "loc": {
+              "x": 62,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 16,
+            "loc": {
+              "x": 68,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 17,
+            "loc": {
+              "x": 74,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 18,
+            "loc": {
+              "x": 8,
+              "y": 11
+            },
+            "quantity": 11
+          },
+          {
+            "id": 19,
+            "loc": {
+              "x": 14,
+              "y": 11
+            },
+            "quantity": 1
+          },
+          {
+            "id": 20,
+            "loc": {
+              "x": 20,
+              "y": 11
+            },
+            "quantity": 6
+          },
+          {
+            "id": 21,
+            "loc": {
+              "x": 26,
+              "y": 11
+            },
+            "quantity": 8
+          },
+          {
+            "id": 24,
+            "loc": {
+              "x": 4,
+              "y": 3
+            },
+            "quantity": 1
+          }
+        ],
+        "monsters": [],
+        "log": {
+          "messages": [
+            {
+              "id": 0,
+              "text": "Select a target to throw the Dart.",
+              "color": "#ffffff",
+              "count": 1
+            },
+            {
+              "id": 1,
+              "text": "You throw the Dart.",
+              "color": "#aaaaaa",
+              "count": 1
+            }
+          ],
+          "nextId": 2
+        },
+        "tick": 100,
+        "turn": 1,
+        "pending": {
+          "confirm": null,
+          "identify": false,
+          "enchant": false,
+          "arcana": null
+        },
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2000317687,
+              "b": 1429286866,
+              "c": 1399894239,
+              "d": 1040389945
+            },
+            {
+              "a": 2688365957,
+              "b": 3836322330,
+              "c": 3779978262,
+              "d": 1504127940
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2601,
+          "cosmeticNumbersGenerated": 157
+        },
+        "commandLog": [
+          {
+            "action": "item:command",
+            "data": "throw|e|",
+            "decisions": []
+          },
+          {
+            "action": "throw-target",
+            "data": null,
+            "decisions": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "refused-potion",
+    "rows": [
+      {
+        "step": "initial",
+        "player": {
+          "loc": {
+            "x": 4,
+            "y": 3
+          },
+          "hp": 30,
+          "maxHp": 30,
+          "status": {},
+          "strength": 12
+        },
+        "resources": [
+          {
+            "id": 2,
+            "category": 4,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 3,
+            "category": 0,
+            "quantity": 1,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 4,
+            "category": 0,
+            "quantity": 15,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 5,
+            "category": 1,
+            "quantity": 1,
+            "charges": 1000,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 22,
+            "category": 2,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 6,
+            "loc": {
+              "x": 8,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 7,
+            "loc": {
+              "x": 14,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 8,
+            "loc": {
+              "x": 20,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 9,
+            "loc": {
+              "x": 26,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 10,
+            "loc": {
+              "x": 32,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 11,
+            "loc": {
+              "x": 38,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 12,
+            "loc": {
+              "x": 44,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 13,
+            "loc": {
+              "x": 50,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 14,
+            "loc": {
+              "x": 56,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 15,
+            "loc": {
+              "x": 62,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 16,
+            "loc": {
+              "x": 68,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 17,
+            "loc": {
+              "x": 74,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 18,
+            "loc": {
+              "x": 8,
+              "y": 11
+            },
+            "quantity": 11
+          },
+          {
+            "id": 19,
+            "loc": {
+              "x": 14,
+              "y": 11
+            },
+            "quantity": 1
+          },
+          {
+            "id": 20,
+            "loc": {
+              "x": 20,
+              "y": 11
+            },
+            "quantity": 6
+          },
+          {
+            "id": 21,
+            "loc": {
+              "x": 26,
+              "y": 11
+            },
+            "quantity": 8
+          }
+        ],
+        "monsters": [],
+        "log": {
+          "messages": [],
+          "nextId": 0
+        },
+        "tick": 0,
+        "turn": 0,
+        "pending": {
+          "confirm": null,
+          "identify": false,
+          "enchant": false,
+          "arcana": null
+        },
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2669741744,
+              "b": 1382298001,
+              "c": 1480096941,
+              "d": 3648027809
+            },
+            {
+              "a": 2688365957,
+              "b": 3836322330,
+              "c": 3779978262,
+              "d": 1504127940
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2597,
+          "cosmeticNumbersGenerated": 157
+        },
+        "commandLog": []
+      },
+      {
+        "step": "pending",
+        "player": {
+          "loc": {
+            "x": 4,
+            "y": 3
+          },
+          "hp": 30,
+          "maxHp": 30,
+          "status": {},
+          "strength": 12
+        },
+        "resources": [
+          {
+            "id": 2,
+            "category": 4,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 3,
+            "category": 0,
+            "quantity": 1,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 4,
+            "category": 0,
+            "quantity": 15,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 5,
+            "category": 1,
+            "quantity": 1,
+            "charges": 1000,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 22,
+            "category": 2,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 6,
+            "loc": {
+              "x": 8,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 7,
+            "loc": {
+              "x": 14,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 8,
+            "loc": {
+              "x": 20,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 9,
+            "loc": {
+              "x": 26,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 10,
+            "loc": {
+              "x": 32,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 11,
+            "loc": {
+              "x": 38,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 12,
+            "loc": {
+              "x": 44,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 13,
+            "loc": {
+              "x": 50,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 14,
+            "loc": {
+              "x": 56,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 15,
+            "loc": {
+              "x": 62,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 16,
+            "loc": {
+              "x": 68,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 17,
+            "loc": {
+              "x": 74,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 18,
+            "loc": {
+              "x": 8,
+              "y": 11
+            },
+            "quantity": 11
+          },
+          {
+            "id": 19,
+            "loc": {
+              "x": 14,
+              "y": 11
+            },
+            "quantity": 1
+          },
+          {
+            "id": 20,
+            "loc": {
+              "x": 20,
+              "y": 11
+            },
+            "quantity": 6
+          },
+          {
+            "id": 21,
+            "loc": {
+              "x": 26,
+              "y": 11
+            },
+            "quantity": 8
+          }
+        ],
+        "monsters": [],
+        "log": {
+          "messages": [
+            {
+              "id": 0,
+              "text": "Really drink a potion of Potion of Incineration?",
+              "color": "#ffcc44",
+              "count": 1
+            }
+          ],
+          "nextId": 1
+        },
+        "tick": 0,
+        "turn": 0,
+        "pending": {
+          "confirm": 22,
+          "identify": false,
+          "enchant": false,
+          "arcana": null
+        },
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2669741744,
+              "b": 1382298001,
+              "c": 1480096941,
+              "d": 3648027809
+            },
+            {
+              "a": 2688365957,
+              "b": 3836322330,
+              "c": 3779978262,
+              "d": 1504127940
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2597,
+          "cosmeticNumbersGenerated": 157
+        },
+        "commandLog": [
+          {
+            "action": "item:command",
+            "data": "quaff|e|",
+            "decisions": []
+          }
+        ]
+      },
+      {
+        "step": "refused",
+        "player": {
+          "loc": {
+            "x": 4,
+            "y": 3
+          },
+          "hp": 30,
+          "maxHp": 30,
+          "status": {},
+          "strength": 12
+        },
+        "resources": [
+          {
+            "id": 2,
+            "category": 4,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 3,
+            "category": 0,
+            "quantity": 1,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 4,
+            "category": 0,
+            "quantity": 15,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 5,
+            "category": 1,
+            "quantity": 1,
+            "charges": 1000,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 22,
+            "category": 2,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 6,
+            "loc": {
+              "x": 8,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 7,
+            "loc": {
+              "x": 14,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 8,
+            "loc": {
+              "x": 20,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 9,
+            "loc": {
+              "x": 26,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 10,
+            "loc": {
+              "x": 32,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 11,
+            "loc": {
+              "x": 38,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 12,
+            "loc": {
+              "x": 44,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 13,
+            "loc": {
+              "x": 50,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 14,
+            "loc": {
+              "x": 56,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 15,
+            "loc": {
+              "x": 62,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 16,
+            "loc": {
+              "x": 68,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 17,
+            "loc": {
+              "x": 74,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 18,
+            "loc": {
+              "x": 8,
+              "y": 11
+            },
+            "quantity": 11
+          },
+          {
+            "id": 19,
+            "loc": {
+              "x": 14,
+              "y": 11
+            },
+            "quantity": 1
+          },
+          {
+            "id": 20,
+            "loc": {
+              "x": 20,
+              "y": 11
+            },
+            "quantity": 6
+          },
+          {
+            "id": 21,
+            "loc": {
+              "x": 26,
+              "y": 11
+            },
+            "quantity": 8
+          }
+        ],
+        "monsters": [],
+        "log": {
+          "messages": [
+            {
+              "id": 0,
+              "text": "Really drink a potion of Potion of Incineration?",
+              "color": "#ffcc44",
+              "count": 1
+            }
+          ],
+          "nextId": 1
+        },
+        "tick": 0,
+        "turn": 0,
+        "pending": {
+          "confirm": null,
+          "identify": false,
+          "enchant": false,
+          "arcana": null
+        },
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2669741744,
+              "b": 1382298001,
+              "c": 1480096941,
+              "d": 3648027809
+            },
+            {
+              "a": 2688365957,
+              "b": 3836322330,
+              "c": 3779978262,
+              "d": 1504127940
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2597,
+          "cosmeticNumbersGenerated": 157
+        },
+        "commandLog": [
+          {
+            "action": "item:command",
+            "data": "quaff|e|",
+            "decisions": []
+          },
+          {
+            "action": "item:command",
+            "data": "cancel||",
+            "decisions": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "empty-wand",
+    "rows": [
+      {
+        "step": "initial",
+        "player": {
+          "loc": {
+            "x": 4,
+            "y": 3
+          },
+          "hp": 30,
+          "maxHp": 30,
+          "status": {},
+          "strength": 12
+        },
+        "resources": [
+          {
+            "id": 2,
+            "category": 4,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 3,
+            "category": 0,
+            "quantity": 1,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 4,
+            "category": 0,
+            "quantity": 15,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 5,
+            "category": 1,
+            "quantity": 1,
+            "charges": 1000,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 22,
+            "category": 6,
+            "quantity": 1,
+            "charges": 4,
+            "enchantment": 0,
+            "timesUsed": 0,
+            "identified": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 6,
+            "loc": {
+              "x": 8,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 7,
+            "loc": {
+              "x": 14,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 8,
+            "loc": {
+              "x": 20,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 9,
+            "loc": {
+              "x": 26,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 10,
+            "loc": {
+              "x": 32,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 11,
+            "loc": {
+              "x": 38,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 12,
+            "loc": {
+              "x": 44,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 13,
+            "loc": {
+              "x": 50,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 14,
+            "loc": {
+              "x": 56,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 15,
+            "loc": {
+              "x": 62,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 16,
+            "loc": {
+              "x": 68,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 17,
+            "loc": {
+              "x": 74,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 18,
+            "loc": {
+              "x": 8,
+              "y": 11
+            },
+            "quantity": 11
+          },
+          {
+            "id": 19,
+            "loc": {
+              "x": 14,
+              "y": 11
+            },
+            "quantity": 1
+          },
+          {
+            "id": 20,
+            "loc": {
+              "x": 20,
+              "y": 11
+            },
+            "quantity": 6
+          },
+          {
+            "id": 21,
+            "loc": {
+              "x": 26,
+              "y": 11
+            },
+            "quantity": 8
+          }
+        ],
+        "monsters": [],
+        "log": {
+          "messages": [],
+          "nextId": 0
+        },
+        "tick": 0,
+        "turn": 0,
+        "pending": {
+          "confirm": null,
+          "identify": false,
+          "enchant": false,
+          "arcana": null
+        },
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2873000417,
+              "b": 833157454,
+              "c": 3992871365,
+              "d": 3217843973
+            },
+            {
+              "a": 2688365957,
+              "b": 3836322330,
+              "c": 3779978262,
+              "d": 1504127940
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2598,
+          "cosmeticNumbersGenerated": 157
+        },
+        "commandLog": []
+      },
+      {
+        "step": "empty",
+        "player": {
+          "loc": {
+            "x": 4,
+            "y": 3
+          },
+          "hp": 30,
+          "maxHp": 30,
+          "status": {},
+          "strength": 12
+        },
+        "resources": [
+          {
+            "id": 2,
+            "category": 4,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 3,
+            "category": 0,
+            "quantity": 1,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 4,
+            "category": 0,
+            "quantity": 15,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 5,
+            "category": 1,
+            "quantity": 1,
+            "charges": 1000,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 22,
+            "category": 6,
+            "quantity": 1,
+            "charges": 0,
+            "enchantment": 0,
+            "timesUsed": 0,
+            "identified": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 6,
+            "loc": {
+              "x": 8,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 7,
+            "loc": {
+              "x": 14,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 8,
+            "loc": {
+              "x": 20,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 9,
+            "loc": {
+              "x": 26,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 10,
+            "loc": {
+              "x": 32,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 11,
+            "loc": {
+              "x": 38,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 12,
+            "loc": {
+              "x": 44,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 13,
+            "loc": {
+              "x": 50,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 14,
+            "loc": {
+              "x": 56,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 15,
+            "loc": {
+              "x": 62,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 16,
+            "loc": {
+              "x": 68,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 17,
+            "loc": {
+              "x": 74,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 18,
+            "loc": {
+              "x": 8,
+              "y": 11
+            },
+            "quantity": 11
+          },
+          {
+            "id": 19,
+            "loc": {
+              "x": 14,
+              "y": 11
+            },
+            "quantity": 1
+          },
+          {
+            "id": 20,
+            "loc": {
+              "x": 20,
+              "y": 11
+            },
+            "quantity": 6
+          },
+          {
+            "id": 21,
+            "loc": {
+              "x": 26,
+              "y": 11
+            },
+            "quantity": 8
+          }
+        ],
+        "monsters": [],
+        "log": {
+          "messages": [
+            {
+              "id": 0,
+              "text": "铬魔杖 [0] has no charges.",
+              "color": "#ff8888",
+              "count": 1
+            }
+          ],
+          "nextId": 1
+        },
+        "tick": 100,
+        "turn": 1,
+        "pending": {
+          "confirm": null,
+          "identify": false,
+          "enchant": false,
+          "arcana": null
+        },
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2873000417,
+              "b": 833157454,
+              "c": 3992871365,
+              "d": 3217843973
+            },
+            {
+              "a": 2688365957,
+              "b": 3836322330,
+              "c": 3779978262,
+              "d": 1504127940
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2598,
+          "cosmeticNumbersGenerated": 157
+        },
+        "commandLog": [
+          {
+            "action": "item:command",
+            "data": "use|e|",
+            "decisions": []
+          },
+          {
+            "action": "confirm_target",
+            "data": null,
+            "decisions": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "reflected-staff",
+    "rows": [
+      {
+        "step": "initial",
+        "player": {
+          "loc": {
+            "x": 4,
+            "y": 3
+          },
+          "hp": 30,
+          "maxHp": 30,
+          "status": {},
+          "strength": 12
+        },
+        "resources": [
+          {
+            "id": 2,
+            "category": 4,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 3,
+            "category": 0,
+            "quantity": 1,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 4,
+            "category": 0,
+            "quantity": 15,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 5,
+            "category": 1,
+            "quantity": 1,
+            "charges": 1000,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 22,
+            "category": 7,
+            "quantity": 1,
+            "charges": 2,
+            "enchantment": 2,
+            "identified": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 6,
+            "loc": {
+              "x": 8,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 7,
+            "loc": {
+              "x": 14,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 8,
+            "loc": {
+              "x": 20,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 9,
+            "loc": {
+              "x": 26,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 10,
+            "loc": {
+              "x": 32,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 11,
+            "loc": {
+              "x": 38,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 12,
+            "loc": {
+              "x": 44,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 13,
+            "loc": {
+              "x": 50,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 14,
+            "loc": {
+              "x": 56,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 15,
+            "loc": {
+              "x": 62,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 16,
+            "loc": {
+              "x": 68,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 17,
+            "loc": {
+              "x": 74,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 18,
+            "loc": {
+              "x": 8,
+              "y": 11
+            },
+            "quantity": 11
+          },
+          {
+            "id": 19,
+            "loc": {
+              "x": 14,
+              "y": 11
+            },
+            "quantity": 1
+          },
+          {
+            "id": 20,
+            "loc": {
+              "x": 20,
+              "y": 11
+            },
+            "quantity": 6
+          },
+          {
+            "id": 21,
+            "loc": {
+              "x": 26,
+              "y": 11
+            },
+            "quantity": 8
+          }
+        ],
+        "monsters": [],
+        "log": {
+          "messages": [],
+          "nextId": 0
+        },
+        "tick": 0,
+        "turn": 0,
+        "pending": {
+          "confirm": null,
+          "identify": false,
+          "enchant": false,
+          "arcana": null
+        },
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2873000417,
+              "b": 833157454,
+              "c": 3992871365,
+              "d": 3217843973
+            },
+            {
+              "a": 2688365957,
+              "b": 3836322330,
+              "c": 3779978262,
+              "d": 1504127940
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2598,
+          "cosmeticNumbersGenerated": 157
+        },
+        "commandLog": []
+      },
+      {
+        "step": "reflected",
+        "player": {
+          "loc": {
+            "x": 5,
+            "y": 5
+          },
+          "hp": 29,
+          "maxHp": 30,
+          "status": {
+            "poisoned": 4
+          },
+          "strength": 12
+        },
+        "resources": [
+          {
+            "id": 2,
+            "category": 4,
+            "quantity": 1,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 3,
+            "category": 0,
+            "quantity": 1,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 4,
+            "category": 0,
+            "quantity": 15,
+            "charges": 20,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 5,
+            "category": 1,
+            "quantity": 1,
+            "charges": 1000,
+            "enchantment": 0,
+            "identified": true
+          },
+          {
+            "id": 22,
+            "category": 7,
+            "quantity": 1,
+            "charges": 1,
+            "enchantment": 2,
+            "identified": false
+          }
+        ],
+        "floor": [
+          {
+            "id": 6,
+            "loc": {
+              "x": 8,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 7,
+            "loc": {
+              "x": 14,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 8,
+            "loc": {
+              "x": 20,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 9,
+            "loc": {
+              "x": 26,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 10,
+            "loc": {
+              "x": 32,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 11,
+            "loc": {
+              "x": 38,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 12,
+            "loc": {
+              "x": 44,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 13,
+            "loc": {
+              "x": 50,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 14,
+            "loc": {
+              "x": 56,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 15,
+            "loc": {
+              "x": 62,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 16,
+            "loc": {
+              "x": 68,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 17,
+            "loc": {
+              "x": 74,
+              "y": 3
+            },
+            "quantity": 1
+          },
+          {
+            "id": 18,
+            "loc": {
+              "x": 8,
+              "y": 11
+            },
+            "quantity": 11
+          },
+          {
+            "id": 19,
+            "loc": {
+              "x": 14,
+              "y": 11
+            },
+            "quantity": 1
+          },
+          {
+            "id": 20,
+            "loc": {
+              "x": 20,
+              "y": 11
+            },
+            "quantity": 6
+          },
+          {
+            "id": 21,
+            "loc": {
+              "x": 26,
+              "y": 11
+            },
+            "quantity": 8
+          }
+        ],
+        "monsters": [
+          {
+            "id": 23,
+            "loc": {
+              "x": 8,
+              "y": 5
+            },
+            "hp": 1000,
+            "status": {
+              "immune_fire": 1000
+            }
+          }
+        ],
+        "log": {
+          "messages": [
+            {
+              "id": 0,
+              "text": "桉木法杖 envenomates the Player!",
+              "color": "#55cc55",
+              "count": 1
+            },
+            {
+              "id": 1,
+              "text": "You identify Staff of Poison.",
+              "color": "#00ffff",
+              "count": 1
+            }
+          ],
+          "nextId": 2
+        },
+        "tick": 100,
+        "turn": 1,
+        "pending": {
+          "confirm": null,
+          "identify": false,
+          "enchant": false,
+          "arcana": null
+        },
+        "rng": {
+          "version": 2,
+          "algorithm": "brogue-web-ranval32-uint64-level-v2",
+          "streams": [
+            {
+              "a": 2873000417,
+              "b": 833157454,
+              "c": 3992871365,
+              "d": 3217843973
+            },
+            {
+              "a": 2688365957,
+              "b": 3836322330,
+              "c": 3779978262,
+              "d": 1504127940
+            }
+          ],
+          "currentRNG": 0,
+          "randomNumbersGenerated": 2598,
+          "cosmeticNumbersGenerated": 157
+        },
+        "commandLog": [
+          {
+            "action": "item:command",
+            "data": "use|e|",
+            "decisions": []
+          },
+          {
+            "action": "confirm_target",
+            "data": null,
+            "decisions": []
+          }
+        ]
+      }
+    ]
+  }
+]

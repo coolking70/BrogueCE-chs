@@ -139,9 +139,8 @@ export class Item implements Entity {
     public quiverNumber?: number;
     /**
      * B-4a：≙ CE item->vorpalEnemy（chooseVorpalEnemy 的类别名，Items.c:7667-7679）。
-     * 仅 W_SLAYING 武器与 A_IMMUNITY 护甲在生成时写入。战斗侧类别门
-     * （Combat.c:133/402/669）web 未接线（monsterClass 成员名册缺失）——
-     * 字段为激活留形，激活轮需接类别成员表并重核 CE。
+     * 仅 W_SLAYING 武器与 A_IMMUNITY 护甲在生成时写入；战斗侧类别门
+     * 由 U15d-1/2 接入 Combat/MonsterClass.ts 的 CE 成员名册。
      */
     public vorpalEnemy?: string;
 

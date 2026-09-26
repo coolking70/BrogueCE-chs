@@ -1,0 +1,529 @@
+{
+  "rows": [
+    {
+      "category": "weapon",
+      "wanted": "multiplicity",
+      "seed": 46,
+      "letter": "a",
+      "id": 67,
+      "e": 1,
+      "curse": false,
+      "unknown": ")\n匕首\n✕\n武器属性\n基础伤害: 1d2+2 (3~4)\n力量需求: 12 (你的力量: 12, 盈余)\n按 Esc 或 x 关闭",
+      "known": ")\n匕首 +1 {繁衍}\n✕\n武器属性\n基础伤害: 1d2+2 (3~4)\n实际伤害: 3~4 (附魔 +1)\n力量需求: 12 (你的力量: 12, 盈余)\n附魔: 繁衍\n命中时有概率生成短命的武器谱影，协助你攻击敌人。\n按 Esc 或 x 关闭",
+      "state": {
+        "runic": "multiplicity",
+        "known": true,
+        "e": 1,
+        "curse": false,
+        "flags": [
+          "ITEM_SNEAK_ATTACK_BONUS",
+          "ITEM_RUNIC"
+        ]
+      }
+    },
+    {
+      "category": "weapon",
+      "wanted": "slowing",
+      "seed": 7,
+      "letter": "b",
+      "id": 74,
+      "e": 2,
+      "curse": false,
+      "unknown": ")\n匕首\n✕\n武器属性\n基础伤害: 1d2+2 (3~4)\n力量需求: 12 (你的力量: 12, 盈余)\n按 Esc 或 x 关闭",
+      "known": ")\n匕首 +2 {减速}\n✕\n武器属性\n基础伤害: 1d2+2 (3~4)\n实际伤害: 3~4 (附魔 +2)\n力量需求: 12 (你的力量: 12, 盈余)\n附魔: 减速\n命中时有概率使目标减速数回合。\n按 Esc 或 x 关闭",
+      "state": {
+        "runic": "slowing",
+        "known": true,
+        "e": 2,
+        "curse": false,
+        "flags": [
+          "ITEM_SNEAK_ATTACK_BONUS",
+          "ITEM_RUNIC"
+        ]
+      }
+    },
+    {
+      "category": "weapon",
+      "wanted": "plenty",
+      "seed": 2,
+      "letter": "c",
+      "id": 76,
+      "e": -3,
+      "curse": true,
+      "unknown": ")\n匕首\n✕\n武器属性\n基础伤害: 1d2+2 (3~4)\n力量需求: 12 (你的力量: 12, 盈余)\n按 Esc 或 x 关闭",
+      "known": ")\n匕首 -3 {增殖}\n✕\n武器属性\n基础伤害: 1d2+2 (3~4)\n实际伤害: 2~3 (附魔 -3)\n力量需求: 12 (你的力量: 12, 盈余)\n附魔: 增殖\n命中时有概率复制仍存活的目标，制造另一个敌人。\n按 Esc 或 x 关闭",
+      "state": {
+        "runic": "plenty",
+        "known": true,
+        "e": -3,
+        "curse": true,
+        "flags": [
+          "ITEM_SNEAK_ATTACK_BONUS",
+          "ITEM_RUNIC"
+        ]
+      }
+    },
+    {
+      "category": "armor",
+      "wanted": "multiplicity",
+      "seed": 9,
+      "letter": "d",
+      "id": 85,
+      "e": 3,
+      "curse": false,
+      "unknown": "]\n皮甲\n✕\n护甲属性\n基础防御值: 3\n力量需求: 10 (你的力量: 12, 盈余)\n按 Esc 或 x 关闭",
+      "known": "]\n皮甲 +3 {繁衍}\n✕\n护甲属性\n基础防御值: 3\n实际防御值: 6.5 (净附魔 +3.5，含力量修正)\n力量需求: 10 (你的力量: 12, 盈余)\n附魔: 繁衍\n受到近战攻击时有概率生成攻击者的短命谱影。\n按 Esc 或 x 关闭",
+      "state": {
+        "runic": "multiplicity",
+        "known": true,
+        "e": 3,
+        "curse": false,
+        "flags": [
+          "ITEM_RUNIC"
+        ]
+      }
+    },
+    {
+      "category": "armor",
+      "wanted": "burden",
+      "seed": 79,
+      "letter": "e",
+      "id": 164,
+      "e": -3,
+      "curse": true,
+      "unknown": "]\n皮甲\n✕\n护甲属性\n基础防御值: 3\n力量需求: 10 (你的力量: 12, 盈余)\n按 Esc 或 x 关闭",
+      "known": "]\n皮甲 -3 {负担}\n✕\n护甲属性\n基础防御值: 3\n实际防御值: 0.5 (净附魔 -2.5，含力量修正)\n力量需求: 10 (你的力量: 12, 盈余)\n附魔: 负担\n受击时有概率增加护甲力量需求。\n按 Esc 或 x 关闭",
+      "state": {
+        "runic": "burden",
+        "known": true,
+        "e": -3,
+        "curse": true,
+        "flags": [
+          "ITEM_RUNIC"
+        ]
+      }
+    },
+    {
+      "category": "armor",
+      "wanted": "vulnerability",
+      "seed": 28,
+      "letter": "f",
+      "id": 192,
+      "e": -1,
+      "curse": true,
+      "unknown": "]\n皮甲\n✕\n护甲属性\n基础防御值: 3\n力量需求: 10 (你的力量: 12, 盈余)\n按 Esc 或 x 关闭",
+      "known": "]\n皮甲 -1 {脆弱}\n✕\n护甲属性\n基础防御值: 3\n实际防御值: 2.5 (净附魔 -0.5，含力量修正)\n力量需求: 10 (你的力量: 12, 盈余)\n附魔: 脆弱\n受到武器攻击时承受双倍伤害。\n按 Esc 或 x 关闭",
+      "state": {
+        "runic": "vulnerability",
+        "known": true,
+        "e": -1,
+        "curse": true,
+        "flags": [
+          "ITEM_RUNIC"
+        ]
+      }
+    },
+    {
+      "category": "armor",
+      "wanted": "immolation",
+      "seed": 2,
+      "letter": "g",
+      "id": 194,
+      "e": -3,
+      "curse": true,
+      "unknown": "]\n皮甲\n✕\n护甲属性\n基础防御值: 3\n力量需求: 10 (你的力量: 12, 盈余)\n按 Esc 或 x 关闭",
+      "known": "]\n皮甲 -3 {自燃}\n✕\n护甲属性\n基础防御值: 3\n实际防御值: 0.5 (净附魔 -2.5，含力量修正)\n力量需求: 10 (你的力量: 12, 盈余)\n附魔: 自燃\n受击时有概率在身边引发火焰。\n按 Esc 或 x 关闭",
+      "state": {
+        "runic": "immolation",
+        "known": true,
+        "e": -3,
+        "curse": true,
+        "flags": [
+          "ITEM_RUNIC"
+        ]
+      }
+    },
+    {
+      "category": "weapon",
+      "wanted": "slaying",
+      "seed": 6,
+      "letter": "h",
+      "id": 200,
+      "e": 1,
+      "curse": false,
+      "vorpal": "troll",
+      "unknown": ")\n匕首\n✕\n武器属性\n基础伤害: 1d2+2 (3~4)\n力量需求: 12 (你的力量: 12, 盈余)\n按 Esc 或 x 关闭",
+      "known": ")\n匕首 +1 {杀戮}\n✕\n武器属性\n基础伤害: 1d2+2 (3~4)\n实际伤害: 3~4 (附魔 +1)\n力量需求: 12 (你的力量: 12, 盈余)\n附魔: 杀戮\n命中指定怪物类别时立即击杀目标。\n按 Esc 或 x 关闭",
+      "state": {
+        "runic": "slaying",
+        "known": true,
+        "e": 1,
+        "curse": false,
+        "vorpal": "troll",
+        "flags": [
+          "ITEM_SNEAK_ATTACK_BONUS",
+          "ITEM_RUNIC"
+        ]
+      }
+    },
+    {
+      "category": "armor",
+      "wanted": "immunity",
+      "seed": 7,
+      "letter": "i",
+      "id": 207,
+      "e": 2,
+      "curse": false,
+      "vorpal": "fireborne",
+      "unknown": "]\n皮甲\n✕\n护甲属性\n基础防御值: 3\n力量需求: 10 (你的力量: 12, 盈余)\n按 Esc 或 x 关闭",
+      "known": "]\n皮甲 +2 {免疫}\n✕\n护甲属性\n基础防御值: 3\n实际防御值: 5.5 (净附魔 +2.5，含力量修正)\n力量需求: 10 (你的力量: 12, 盈余)\n附魔: 免疫\n免疫指定怪物类别的武器攻击。\n按 Esc 或 x 关闭",
+      "state": {
+        "runic": "immunity",
+        "known": true,
+        "e": 2,
+        "curse": false,
+        "vorpal": "fireborne",
+        "flags": [
+          "ITEM_RUNIC"
+        ]
+      }
+    },
+    {
+      "category": "weapon",
+      "wanted": "mercy",
+      "seed": 28,
+      "letter": "j",
+      "id": 235,
+      "e": -1,
+      "curse": true,
+      "unknown": ")\n匕首\n✕\n武器属性\n基础伤害: 1d2+2 (3~4)\n力量需求: 12 (你的力量: 12, 盈余)\n按 Esc 或 x 关闭",
+      "known": ")\n匕首 -1 {怜悯}\n✕\n武器属性\n基础伤害: 1d2+2 (3~4)\n实际伤害: 2~3 (附魔 -1)\n力量需求: 12 (你的力量: 12, 盈余)\n附魔: 怜悯\n命中时有概率为仍存活的目标恢复其最大生命值的 50%。\n按 Esc 或 x 关闭",
+      "state": {
+        "runic": "mercy",
+        "known": true,
+        "e": -1,
+        "curse": true,
+        "flags": [
+          "ITEM_SNEAK_ATTACK_BONUS",
+          "ITEM_RUNIC"
+        ]
+      }
+    },
+    {
+      "phase": "menu-save-reload-continue",
+      "before": [
+        {
+          "id": 67,
+          "kind": "dagger",
+          "runic": "multiplicity",
+          "known": true,
+          "e": 1,
+          "curse": false,
+          "flags": [
+            "ITEM_SNEAK_ATTACK_BONUS",
+            "ITEM_RUNIC"
+          ],
+          "charges": 20,
+          "strength": 12
+        },
+        {
+          "id": 74,
+          "kind": "dagger",
+          "runic": "slowing",
+          "known": true,
+          "e": 2,
+          "curse": false,
+          "flags": [
+            "ITEM_SNEAK_ATTACK_BONUS",
+            "ITEM_RUNIC"
+          ],
+          "charges": 20,
+          "strength": 12
+        },
+        {
+          "id": 76,
+          "kind": "dagger",
+          "runic": "plenty",
+          "known": true,
+          "e": -3,
+          "curse": true,
+          "flags": [
+            "ITEM_SNEAK_ATTACK_BONUS",
+            "ITEM_RUNIC"
+          ],
+          "charges": 20,
+          "strength": 12
+        },
+        {
+          "id": 85,
+          "kind": "leather_armor",
+          "runic": "multiplicity",
+          "known": true,
+          "e": 3,
+          "curse": false,
+          "flags": [
+            "ITEM_RUNIC"
+          ],
+          "charges": 1000,
+          "strength": 10
+        },
+        {
+          "id": 164,
+          "kind": "leather_armor",
+          "runic": "burden",
+          "known": true,
+          "e": -3,
+          "curse": true,
+          "flags": [
+            "ITEM_RUNIC"
+          ],
+          "charges": 1000,
+          "strength": 10
+        },
+        {
+          "id": 192,
+          "kind": "leather_armor",
+          "runic": "vulnerability",
+          "known": true,
+          "e": -1,
+          "curse": true,
+          "flags": [
+            "ITEM_RUNIC"
+          ],
+          "charges": 1000,
+          "strength": 10
+        },
+        {
+          "id": 194,
+          "kind": "leather_armor",
+          "runic": "immolation",
+          "known": true,
+          "e": -3,
+          "curse": true,
+          "flags": [
+            "ITEM_RUNIC"
+          ],
+          "charges": 1000,
+          "strength": 10
+        },
+        {
+          "id": 200,
+          "kind": "dagger",
+          "runic": "slaying",
+          "known": true,
+          "e": 1,
+          "curse": false,
+          "vorpal": "troll",
+          "flags": [
+            "ITEM_SNEAK_ATTACK_BONUS",
+            "ITEM_RUNIC"
+          ],
+          "charges": 20,
+          "strength": 12
+        },
+        {
+          "id": 207,
+          "kind": "leather_armor",
+          "runic": "immunity",
+          "known": true,
+          "e": 2,
+          "curse": false,
+          "vorpal": "fireborne",
+          "flags": [
+            "ITEM_RUNIC"
+          ],
+          "charges": 1000,
+          "strength": 10
+        },
+        {
+          "id": 235,
+          "kind": "dagger",
+          "runic": "mercy",
+          "known": true,
+          "e": -1,
+          "curse": true,
+          "flags": [
+            "ITEM_SNEAK_ATTACK_BONUS",
+            "ITEM_RUNIC"
+          ],
+          "charges": 20,
+          "strength": 12
+        }
+      ],
+      "after": [
+        {
+          "id": 67,
+          "kind": "dagger",
+          "runic": "multiplicity",
+          "known": true,
+          "e": 1,
+          "curse": false,
+          "flags": [
+            "ITEM_SNEAK_ATTACK_BONUS",
+            "ITEM_RUNIC"
+          ],
+          "charges": 20,
+          "strength": 12
+        },
+        {
+          "id": 74,
+          "kind": "dagger",
+          "runic": "slowing",
+          "known": true,
+          "e": 2,
+          "curse": false,
+          "flags": [
+            "ITEM_SNEAK_ATTACK_BONUS",
+            "ITEM_RUNIC"
+          ],
+          "charges": 20,
+          "strength": 12
+        },
+        {
+          "id": 76,
+          "kind": "dagger",
+          "runic": "plenty",
+          "known": true,
+          "e": -3,
+          "curse": true,
+          "flags": [
+            "ITEM_SNEAK_ATTACK_BONUS",
+            "ITEM_RUNIC"
+          ],
+          "charges": 20,
+          "strength": 12
+        },
+        {
+          "id": 85,
+          "kind": "leather_armor",
+          "runic": "multiplicity",
+          "known": true,
+          "e": 3,
+          "curse": false,
+          "flags": [
+            "ITEM_RUNIC"
+          ],
+          "charges": 1000,
+          "strength": 10
+        },
+        {
+          "id": 164,
+          "kind": "leather_armor",
+          "runic": "burden",
+          "known": true,
+          "e": -3,
+          "curse": true,
+          "flags": [
+            "ITEM_RUNIC"
+          ],
+          "charges": 1000,
+          "strength": 10
+        },
+        {
+          "id": 192,
+          "kind": "leather_armor",
+          "runic": "vulnerability",
+          "known": true,
+          "e": -1,
+          "curse": true,
+          "flags": [
+            "ITEM_RUNIC"
+          ],
+          "charges": 1000,
+          "strength": 10
+        },
+        {
+          "id": 194,
+          "kind": "leather_armor",
+          "runic": "immolation",
+          "known": true,
+          "e": -3,
+          "curse": true,
+          "flags": [
+            "ITEM_RUNIC"
+          ],
+          "charges": 1000,
+          "strength": 10
+        },
+        {
+          "id": 200,
+          "kind": "dagger",
+          "runic": "slaying",
+          "known": true,
+          "e": 1,
+          "curse": false,
+          "vorpal": "troll",
+          "flags": [
+            "ITEM_SNEAK_ATTACK_BONUS",
+            "ITEM_RUNIC"
+          ],
+          "charges": 20,
+          "strength": 12
+        },
+        {
+          "id": 207,
+          "kind": "leather_armor",
+          "runic": "immunity",
+          "known": true,
+          "e": 2,
+          "curse": false,
+          "vorpal": "fireborne",
+          "flags": [
+            "ITEM_RUNIC"
+          ],
+          "charges": 1000,
+          "strength": 10
+        },
+        {
+          "id": 235,
+          "kind": "dagger",
+          "runic": "mercy",
+          "known": true,
+          "e": -1,
+          "curse": true,
+          "flags": [
+            "ITEM_SNEAK_ATTACK_BONUS",
+            "ITEM_RUNIC"
+          ],
+          "charges": 20,
+          "strength": 12
+        }
+      ],
+      "text": {
+        "seed": "1533",
+        "mode": "inventory",
+        "enchantmentTargets": [],
+        "arcanaPreview": null,
+        "arcanaTarget": null,
+        "coordinateSystem": {
+          "origin": "top-left",
+          "xAxis": "right",
+          "yAxis": "down"
+        },
+        "player": {
+          "weaknessAmount": 0,
+          "effectiveStrength": 12,
+          "maxStatus": {},
+          "x": 25,
+          "y": 15,
+          "hp": 30,
+          "nutrition": 2140,
+          "poisonAmount": 0,
+          "maxShield": 0,
+          "statuses": {}
+        },
+        "replay": {
+          "status": "idle",
+          "cursor": 0,
+          "total": 0
+        },
+        "recordedInputEvents": 42,
+        "autoPathLength": 0,
+        "monsters": [],
+        "revealedLocations": [],
+        "items": []
+      }
+    }
+  ],
+  "errors": []
+}

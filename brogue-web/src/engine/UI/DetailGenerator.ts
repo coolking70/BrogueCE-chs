@@ -50,14 +50,17 @@ export interface DetailLine {
 
 const weaponRunicDescriptions: Record<string, string> = {
     paralyzing: '每次攻击有概率麻痹目标数回合。',
+    multiplicity: '命中时有概率生成短命的武器谱影，协助你攻击敌人。',
+    slowing: '命中时有概率使目标减速数回合。',
+    plenty: '命中时有概率复制仍存活的目标，制造另一个敌人。',
     venom: '触发时对目标追加毒性伤害或施加中毒效果。',
     quietus: '每次攻击有概率瞬间击杀目标。',
     vampirism: '攻击会吸取目标生命值来治愈自身。',
     speed: '攻击后有概率获得额外攻击机会。',
     confusion: '每次攻击有概率使目标陷入混乱。',
     force: '每次攻击有概率将目标击退数格。',
-    slaying: '触发时立即击杀目标。',
-    mercy: '触发时若本次攻击使目标生命值归零，则令其保留 1 点生命值。',
+    slaying: '命中指定怪物类别时立即击杀目标。',
+    mercy: '命中时有概率为仍存活的目标恢复其最大生命值的 50%。',
 };
 
 const armorRunicDescriptions: Record<string, string> = {

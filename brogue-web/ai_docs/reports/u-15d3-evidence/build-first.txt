@@ -1,0 +1,5 @@
+
+> brogue-web@0.0.0 build
+> vue-tsc -b && vite build
+
+src/test/u_15d3_runic_generation.test.ts(14,80): error TS2550: Property 'replaceAll' does not exist on type 'string'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2021' or later.

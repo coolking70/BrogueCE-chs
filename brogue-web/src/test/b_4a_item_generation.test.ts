@@ -388,7 +388,7 @@ describe('B-4a 附魔模型（CE 40% 分支 / 诅咒各半 / 长尾）', () => {
         expect(maxEnch, `9000 次生成的最大附魔 +${maxEnch}（CE 长尾应出现过 +4）`).toBeGreaterThanOrEqual(4);
     });
 
-    it('护甲：leather 符文率 ≈11.8%（0.4×0.5×65/96×7/8，CE rand_range(0,95)>armor×10）、plate 恒 0（110 恒失败且坏符文段全未实现）', () => {
+    it('护甲：leather 好符文率 ≈13.5%（0.4×0.5×65/96）、plate 好符文恒 0（110 超过抽签上界）', () => {
         rng.seedRandomGenerator(77_007);
         const byKind = new Map<string, { n: number; runic: number }>();
         for (let s = 0; s < 8; s++) {
@@ -398,7 +398,9 @@ describe('B-4a 附魔模型（CE 40% 分支 / 诅咒各半 / 长尾）', () => {
                 for (let i = 0; i < 50; i++) {
                     const it = ItemLoader.spawnArmor(a.id, 0, 0)!;
                     stat.n++;
-                    if (it.runicType) stat.runic++;
+                    // U15d-3: this threshold guard counts good runics explicitly.
+                    // Bad runics now exist and are covered by the independent C oracle.
+                    if (it.runicType && !it.isCursed) stat.runic++;
                 }
                 byKind.set(a.id, stat);
             }
@@ -408,9 +410,9 @@ describe('B-4a 附魔模型（CE 40% 分支 / 诅咒各半 / 长尾）', () => {
         const leatherRate = leather.runic / leather.n;
         const plateRate = plate.runic / plate.n;
         // CE：rand_range(0,95) > armor*10 → leather(30)≈68%、plate(110)=0%
-        // 但 plate 的诅咒坏符文段也全映射为 null（登记的目录缺口），故 plate 应接近 0
-        expect(leatherRate, `leather 符文率 ${(leatherRate * 100).toFixed(1)}%（理论 0.4×0.5×65/96×7/8 ≈ 11.8%）`).toBeGreaterThan(0.07);
-        expect(plateRate, `plate 符文率 ${(plateRate * 100).toFixed(1)}%（armor=110 时 rand_range(0,95) 恒失败，坏符文段全为未实现种类）`).toBeLessThan(0.05);
+        // 只统计非诅咒好符文，保留原好符文阈值断言；坏符文不受护甲阈值限制。
+        expect(leatherRate, `leather 符文率 ${(leatherRate * 100).toFixed(1)}%（理论 0.4×0.5×65/96 ≈ 13.5%）`).toBeGreaterThan(0.07);
+        expect(plateRate, `plate 符文率 ${(plateRate * 100).toFixed(1)}%（armor=110 时 rand_range(0,95) 恒失败，此处仅统计好符文）`).toBeLessThan(0.05);
         // 护甲的附魔率与武器同源（40% 分支）
         let n = 0, ench = 0;
         for (let s = 0; s < 8; s++) {

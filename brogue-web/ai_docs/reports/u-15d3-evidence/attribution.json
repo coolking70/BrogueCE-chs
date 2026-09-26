@@ -1,0 +1,93 @@
+[
+  {
+    "from": "s0",
+    "to": "weapon-good",
+    "layers": 0,
+    "fields": {},
+    "differences": []
+  },
+  {
+    "from": "weapon-good",
+    "to": "weapon-bad",
+    "layers": 2,
+    "fields": {
+      "births": 2
+    },
+    "differences": [
+      {
+        "seed": 424242,
+        "depth": 8,
+        "field": "births"
+      },
+      {
+        "seed": 777,
+        "depth": 7,
+        "field": "births"
+      }
+    ]
+  },
+  {
+    "from": "weapon-bad",
+    "to": "armor-good",
+    "layers": 1,
+    "fields": {
+      "itemsState": 1,
+      "births": 1
+    },
+    "differences": [
+      {
+        "seed": 424242,
+        "depth": 4,
+        "field": "itemsState"
+      },
+      {
+        "seed": 424242,
+        "depth": 4,
+        "field": "births"
+      }
+    ]
+  },
+  {
+    "from": "armor-good",
+    "to": "armor-bad",
+    "layers": 3,
+    "fields": {
+      "itemsState": 2,
+      "births": 3
+    },
+    "differences": [
+      {
+        "seed": 424242,
+        "depth": 15,
+        "field": "itemsState"
+      },
+      {
+        "seed": 424242,
+        "depth": 15,
+        "field": "births"
+      },
+      {
+        "seed": 20260913,
+        "depth": 25,
+        "field": "itemsState"
+      },
+      {
+        "seed": 20260913,
+        "depth": 25,
+        "field": "births"
+      },
+      {
+        "seed": 31337,
+        "depth": 1,
+        "field": "births"
+      }
+    ]
+  },
+  {
+    "from": "armor-bad",
+    "to": "vorpal",
+    "layers": 0,
+    "fields": {},
+    "differences": []
+  }
+]

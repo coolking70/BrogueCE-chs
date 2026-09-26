@@ -1,0 +1,82 @@
+{
+  "gates": [
+    {
+      "name": "build",
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "start": "2026-09-26T15:36:54.990Z",
+      "end": "2026-09-26T15:37:09.676Z",
+      "exit": 0
+    },
+    {
+      "name": "regression",
+      "command": [
+        "npm",
+        "test",
+        "--",
+        "--maxWorkers=4",
+        "--reporter=default",
+        "--reporter=json",
+        "--reporter=./scripts/u15d3-failure-reporter.mjs",
+        "--outputFile=ai_docs/reports/u-15d3-evidence/regression-final.json"
+      ],
+      "start": "2026-09-26T15:37:09.678Z",
+      "end": "2026-09-26T16:18:25.904Z",
+      "exit": 0
+    },
+    {
+      "name": "drift",
+      "command": [
+        "npm",
+        "run",
+        "test:drift"
+      ],
+      "start": "2026-09-26T16:18:25.904Z",
+      "end": "2026-09-26T16:18:47.787Z",
+      "exit": 0
+    },
+    {
+      "name": "diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "start": "2026-09-26T16:18:47.787Z",
+      "end": "2026-09-26T16:18:48.431Z",
+      "exit": 0
+    }
+  ],
+  "files": 197,
+  "passed": 3765,
+  "failed": 0,
+  "pending": 8,
+  "todo": 5,
+  "changedInputs": [],
+  "missing": [],
+  "missingNamed": [],
+  "unexpectedBaselineChanges": [],
+  "baselineBefore": "8ebde5e20d50e823867c5d8c43a10dc15dae05c89af94fec773a2926b8b94e0e",
+  "baselineAfter": "a12bfd60144e7df74d1c9e3ed3df045b51f480f0310e6ce8f32f486b21400a0a",
+  "traceCapture": [
+    {
+      "file": "ai_docs/reports/u-r2-trace.json",
+      "sha": "4d6b62462fc8962732dd39a58f1c1a714909c7e8e3d9b98200b7f4804ec17bb9",
+      "allSixStagesEqualOriginal": true,
+      "recaptureRequired": false,
+      "writes": 0
+    },
+    {
+      "file": "ai_docs/reports/u-r4-trace.json.gz",
+      "sha": "27d71a88ac3ae879cab8e83c26c10df6ea40b43a2efa932e54a4e2a482b3ece3",
+      "allSixStagesEqualOriginal": true,
+      "recaptureRequired": false,
+      "writes": 0
+    }
+  ],
+  "head": "6172ed35a241f4f2f7aa3b0d81b9d525f2c171bd",
+  "staged": ""
+}
