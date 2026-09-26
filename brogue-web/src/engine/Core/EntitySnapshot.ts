@@ -2,7 +2,7 @@
  * and live own properties in u_01_instance_snapshot.test.ts. No catalog inference
  * or legacy defaults: optional values retain their actual undefined semantics. */
 import { Item } from '../Items/Item';
-import { Creature, type StatusId } from '../../entities/Creature';
+import { Creature, ensureEntityIdAbove, type StatusId } from '../../entities/Creature';
 import { Monster, MonsterMode, type MonsterData, type MonsterAbility } from '../../entities/Monster';
 import { Player, type HungerState } from '../../entities/Player';
 
@@ -77,9 +77,23 @@ export type GameSnapshotPlayer = Pick<Player, typeof PLAYER_FIELDS[number]> & {
     ringRightId: number | null;
 };
 
+/** Construction is supplied at the boundary. The default keeps direct codec
+ * consumers compatible; Game supplies this port explicitly. No catalog lookup
+ * or RNG draw occurs during restore because the row contains its full form. */
+export interface EntityCodecDeps {
+    allocateItem: () => Item;
+    allocateMonster: (form: MonsterData) => Monster;
+    ensureIdAbove: (id: number) => void;
+}
+export const entityCodecDeps: EntityCodecDeps = {
+    allocateItem: () => Object.create(Item.prototype) as Item,
+    allocateMonster: form => Monster.allocateForSnapshot(form),
+    ensureIdAbove: ensureEntityIdAbove,
+};
+
 export function serializeItem(item: Item): GameSnapshotItem { return copyFields(item, ITEM_FIELDS); }
-export function deserializeItem(saved: GameSnapshotItem): Item {
-    return Object.assign(Object.create(Item.prototype) as Item, copyFields(saved, ITEM_FIELDS));
+export function deserializeItem(saved: GameSnapshotItem, deps: EntityCodecDeps = entityCodecDeps): Item {
+    return Object.assign(deps.allocateItem(), copyFields(saved, ITEM_FIELDS));
 }
 export function serializeMonsterRow(m: Monster): GameSnapshotMonster {
     return { ...copyFields(m, MONSTER_FIELDS), form: m.snapshotForm(),
@@ -115,21 +129,22 @@ export function serializeMonster(m: Monster): GameSnapshotMonster {
 
 /** Phase 1: allocate ALL entities. Phase 2: resolve ALL pointers by ID. */
 export function restoreEntityGraph(rows: readonly GameSnapshotMonster[], itemRows: readonly GameSnapshotItem[] = [],
-    existingMonsters: readonly Monster[] = [], existingItems: readonly Item[] = []): { monsters: Map<number, Monster>; items: Map<number, Item> } {
+    existingMonsters: readonly Monster[] = [], existingItems: readonly Item[] = [],
+    deps: EntityCodecDeps = entityCodecDeps): { monsters: Map<number, Monster>; items: Map<number, Item> } {
     const saved = new Map<number, GameSnapshotMonster>();
     const items = new Map(existingItems.map(i => [i.id, i]));
     const read = (row: GameSnapshotMonster): void => {
         if (saved.has(row.id)) return;
         saved.set(row.id, row);
-        row.graph?.items.forEach(i => { if (!items.has(i.id)) items.set(i.id, deserializeItem(i)); });
+        row.graph?.items.forEach(i => { if (!items.has(i.id)) items.set(i.id, deserializeItem(i, deps)); });
         row.graph?.monsters.forEach(read);
     };
-    itemRows.forEach(i => { if (!items.has(i.id)) items.set(i.id, deserializeItem(i)); });
+    itemRows.forEach(i => { if (!items.has(i.id)) items.set(i.id, deserializeItem(i, deps)); });
     rows.forEach(read);
     const monsters = new Map(existingMonsters.map(m => [m.id, m]));
     for (const s of saved.values()) {
         if (monsters.has(s.id)) continue;
-        const m = Object.assign(Monster.allocateForSnapshot(s.form), copyFields(s, MONSTER_FIELDS));
+        const m = Object.assign(deps.allocateMonster(s.form), copyFields(s, MONSTER_FIELDS));
         // Saves written before creatureMode existed contain only creatureState.
         if (m.creatureMode === undefined) m.creatureMode = MonsterMode.NORMAL;
         m.statusImmunities = new Set(s.statusImmunities);

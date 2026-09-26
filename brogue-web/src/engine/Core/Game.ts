@@ -3,10 +3,11 @@ import { generateQualifiedMachineItem } from '../Items/MachineItemGeneration';
 import { stairFallbackQualifies, stairCandidates, clearStairVicinity } from '../Generator/Stairs';
 import { minionPlacement, generationDistances, qualifyingNear, speciesForbiddenFlags } from '../Generator/GenerationPlacement';
 import { scheduleLevelFollowers, travelDistanceMap, travelPlacement, restoreTravelPosition, APPROACHING_DOWNSTAIRS, APPROACHING_UPSTAIRS, APPROACHING_PIT } from '../Movement/LevelTravel';
-import { snapshotGrid, restoreGrid, type CellSnapshot } from './LevelSnapshot';
+import { snapshotLevel as projectLevel, projectRunState, toWholeRunSnapshot,
+    decodeWholeRunWorld, decodePlayer, isWholeRunSnapshot, type LevelSnapshot, type GameSnapshot } from './WholeRunSnapshot';
 import { memoryTerrainAppearance } from '../UI/Appearance';
-import { collectMachineCells, machineCellsMatchGrid } from '../Map/MachineCells';
-import { initializeLevelSeeds, copyLevelSeeds, isLevelSeeds, type LevelSeed } from './LevelSeeds';
+import { collectMachineCells } from '../Map/MachineCells';
+import { initializeLevelSeeds, copyLevelSeeds, type LevelSeed } from './LevelSeeds';
 import { NEGATABLE_TRAITS, NON_NEGATABLE_ABILITIES, NEGATABLE_MUTATIONS, hasNegatableBolt, negateBolts, negateCreatureStatusEffects } from '../Combat/Negation';
 import { cloneLocation } from '../Combat/Cloning';
 import { anyoneWantABite } from '../Combat/MonsterAbsorption';
@@ -52,7 +53,7 @@ import { canEnchantArcana, enchantArcana } from '../Items/ArcanaEnchantment';
 import { charmEffectDuration, charmHealing, charmProtection, charmRechargeDelay, isCharmKind } from '../Items/CharmModel';
 import { equippedWisdomBonus, tickStaffRecharge, rechargeStaffFully } from '../Items/ArcanaRecharge';
 import { ringBonus } from '../Items/RingBonuses';
-import { rng, Random, RNGType, type RandomState } from '../Random';
+import { rng, Random, RNGType } from '../Random';
 import { normalizeSeed, isSeed, type SeedInput } from '../Seed';
 import monsterData from '../../data/monsters.json';
 import hordeData from '../../data/hordes.json';
@@ -194,67 +195,16 @@ export const HORDE_PERIODIC_FORBIDDEN_FLAGS: readonly string[] = [
 ];
 
 // One instance contract for ordinary, mutated, polymorphed and cloned entities.
-import { copyFields, PLAYER_FIELDS, collectEntityGraph, restoreEntityGraph,
+import { restoreEntityGraph, entityCodecDeps,
     serializeItem as encodeItem, deserializeItem as decodeItem,
-    serializeMonster as encodeMonster, serializeMonsterRow,
-    type GameSnapshotItem, type GameSnapshotMonster, type GameSnapshotPlayer,
-    type EntitySnapshotGraph } from './EntitySnapshot';
+    serializeMonster as encodeMonster,
+    type GameSnapshotItem, type GameSnapshotMonster } from './EntitySnapshot';
 export type { GameSnapshotItem, GameSnapshotMonster } from './EntitySnapshot';
 
-export const WHOLE_RUN_SCHEMA = 'brogue-web-whole-run-v2' as const;
+export { WHOLE_RUN_SCHEMA } from './WholeRunSnapshot';
 
-export interface LevelSnapshot {
-    depth: number;
-    width: number;
-    height: number;
-    grid: CellSnapshot[];
-    impregnableCells?: number[];
-    monsters: GameSnapshotMonster[];
-    dormantMonsters: GameSnapshotMonster[];
-    items: GameSnapshotItem[];
-    scent: ReturnType<ScentMap['getState']>;
-    waypoints: ReturnType<WaypointSystem['getState']>;
-    environmentState: ReturnType<EnvironmentManager['getState']>;
-    pendingCaughtFireCells: Pos[];
-    trapDepressions: number[];
-    machineCells: number[];
-    visibleMonsterIds: number[];
-    visibleItemIds: number[];
-    /** CE absoluteTurnNumber at departure. */
-    awaySince: number;
-    playerExitedVia: Pos;
-}
-
-export interface GameSnapshot extends LevelSnapshot {
-    /** U01 entity envelope version; schema discriminates whole-run saves. */
-    version: number;
-    schema: typeof WHOLE_RUN_SCHEMA;
-    savedAt: number;
-    seed: string;
-    rngState: RandomState;
-    levelSeeds: LevelSeed[];
-    currentLevelDepth: number;
-    /** Detached cached levels only. The active level is the top-level payload. */
-    levels: LevelSnapshot[];
-    pendingFallenItemsByDepth: Array<{ depth: number; items: GameSnapshotItem[] }>;
-    pendingFallenByDepth: Array<{ depth: number; monsters: GameSnapshotMonster[] }>;
-    purgatory: GameSnapshotMonster[];
-    mode: GameMode;
-    ticksTillUpdateEnvironment: number;
-    pendingEnchantment: boolean;
-    player: GameSnapshotPlayer;
-    /** One graph across every floor, pending fall and ownership list. */
-    entityGraph: EntitySnapshotGraph;
-    identifiedItems: string[];
-    wandFlavors?: Record<string, string>;
-    staffFlavors?: Record<string, string>;
-    flavors: ReturnType<typeof ItemLoader.snapshotFlavors>;
-    callTitles: Record<string, string>;
-    magicPolarityRevealed: string[];
-    rewardRoomsGenerated: number;
-    stats: Game['stats'];
-    run: ReturnType<Game['snapshotRunState']>;
-}
+export type { LevelSnapshot, GameSnapshot } from './WholeRunSnapshot';
+export type GameRunSnapshot = ReturnType<Game['snapshotRunState']>;
 
 export interface LevelState {
     grid: Grid;
@@ -9208,10 +9158,10 @@ export class Game {
     }
 
     private serializeItem(item: Item): GameSnapshotItem { return encodeItem(item); }
-    private deserializeItem(s: GameSnapshotItem): Item { return decodeItem(s); }
+    private deserializeItem(s: GameSnapshotItem): Item { return decodeItem(s, entityCodecDeps); }
 
     private snapshotRunState() {
-        const state = {
+        return projectRunState({
             meteredItems: this.meteredItems, foodSpawned: this.foodSpawned, goldGenerated: this.goldGenerated,
             monsterSpawnFuse: this.monsterSpawnFuse, absoluteTurnNumber: this.absoluteTurnNumber,
             currentTick: timeSystem.currentTick, nextEntityId: getNextEntityId(), nextMachineNumber: getNextMachineNumber(),
@@ -9231,9 +9181,7 @@ export class Game {
             signTexts: [...this.signTexts], resetPlateRoomByPos: [...this.resetPlateRoomByPos],
             testRooms: [...this.testRooms], currentTestCategory: this.currentTestCategory,
             logger: logger.getState(),
-        };
-        // Plain detached data; works with Vue proxies and nested test-room rows.
-        return JSON.parse(JSON.stringify(state)) as typeof state;
+        });
     }
 
     private activeLevelState(): LevelState {
@@ -9247,167 +9195,63 @@ export class Game {
     }
 
     private snapshotLevel(depth: number, level: LevelState): LevelSnapshot {
-        return {
-            depth, width: level.grid.width, height: level.grid.height,
-            grid: snapshotGrid(level.grid), impregnableCells: [...level.grid.impregnableCells],
-            monsters: level.monsters.map(serializeMonsterRow),
-            dormantMonsters: (level.dormantMonsters ?? []).map(serializeMonsterRow), items: level.items.map(encodeItem),
-            scent: (level.scent ?? new ScentMap(level.grid.width, level.grid.height)).getState(),
-            waypoints: (level.waypoints ?? new WaypointSystem()).getState(),
-            environmentState: level.environment.getState(),
-            pendingCaughtFireCells: (level.pendingCaughtFireCells ?? []).map(p => ({ ...p })),
-            trapDepressions: [...(this.displacementTrapDepressions?.get(level.grid) ?? [])],
-            machineCells: [...collectMachineCells(level.grid)],
-            visibleMonsterIds: [...level.visibleMonsters].map(m => m.id),
-            visibleItemIds: [...level.visibleItems].map(i => i.id),
-            awaySince: level.awaySince ?? 0,
-            playerExitedVia: { ...(level.playerExitedVia ?? { x: 0, y: 0 }) },
-        };
+        return projectLevel(depth, level, this.displacementTrapDepressions?.get(level.grid));
     }
 
     /** Saves are turn-boundary checkpoints. A suspended JS generator cannot be
      * encoded; callers may retry once its existing animation has completed. */
     public toSnapshot(): GameSnapshot {
         if (this.isAdvancing) throw new Error('Cannot save during turn advancement');
-        const levels = [...this.levels].filter(([depth]) => depth !== this.currentLevelDepth)
-            .sort(([a], [b]) => a - b);
-        const levelRoots = levels.flatMap(([, l]) => [...l.monsters, ...(l.dormantMonsters ?? [])]);
-        const pendingFallenByDepth = [...this.pendingFallenByDepth].sort(([a], [b]) => a - b)
-            .map(([depth, monsters]) => ({ depth, monsters: monsters.map(serializeMonsterRow) }));
-        const roots = [...this.monsters, ...this.dormantMonsters, ...this.purgatory, ...levelRoots, ...[...this.pendingFallenByDepth.values()].flat()];
-        const pendingFallenItemsByDepth = [...this.pendingFallenItemsByDepth].sort(([a], [b]) => a - b)
-            .map(([depth, items]) => ({ depth, items: items.map(encodeItem) }));
-        const ownedItems = [...[...this.pendingFallenItemsByDepth.values()].flat(), ...this.items, ...this.player.inventory.items, ...levels.flatMap(([, l]) => l.items)];
-        const graph = collectEntityGraph([...roots, ...this.everSeenMonsters,
-            ...this.visibleMonsters, ...levels.flatMap(([, l]) => [...l.visibleMonsters])], [...ownedItems, ...this.everSeenItems,
-            ...this.visibleItems, ...levels.flatMap(([, l]) => [...l.visibleItems]),
-            ...[this.player.equippedWeapon, this.player.equippedArmor, this.player.ringLeft, this.player.ringRight, this.travelTargetItem]
-                .filter((item): item is Item => item != null)]);
-        return {
-            ...this.snapshotLevel(this.depth, this.activeLevelState()),
-            version: 2, schema: WHOLE_RUN_SCHEMA, savedAt: Date.now(),
-            seed: this.currentSeed, rngState: rng.getState(), levelSeeds: copyLevelSeeds(this.levelSeeds),
-            currentLevelDepth: this.currentLevelDepth ?? this.depth,
-            levels: levels.map(([depth, level]) => this.snapshotLevel(depth, level)), pendingFallenByDepth, pendingFallenItemsByDepth,
-            purgatory: this.purgatory.map(serializeMonsterRow),
+        return toWholeRunSnapshot({
+            depth: this.depth, currentLevelDepth: this.currentLevelDepth,
+            active: this.activeLevelState(), levels: this.levels,
+            snapshotLevel: (depth, level) => this.snapshotLevel(depth, level),
+            pendingFallenByDepth: this.pendingFallenByDepth,
+            pendingFallenItemsByDepth: this.pendingFallenItemsByDepth,
+            purgatory: this.purgatory, monsters: this.monsters, dormantMonsters: this.dormantMonsters,
+            items: this.items, player: this.player, everSeenMonsters: this.everSeenMonsters,
+            everSeenItems: this.everSeenItems, visibleMonsters: this.visibleMonsters,
+            visibleItems: this.visibleItems, travelTargetItem: this.travelTargetItem,
+            isAdvancing: this.isAdvancing, currentSeed: this.currentSeed, levelSeeds: this.levelSeeds,
             mode: this.mode, ticksTillUpdateEnvironment: this.ticksTillUpdateEnvironment,
-            pendingEnchantment: this.pendingEnchantment,
-            player: {
-                ...copyFields(this.player, PLAYER_FIELDS),
-                statusImmunities: [...this.player.statusImmunities], hungerTransition: this.player.snapshotHungerTransition(),
-                inventoryCapacity: this.player.inventory.capacity, inventory: this.player.inventory.items.map(encodeItem),
-                equippedWeaponId: this.player.equippedWeapon?.id ?? null, equippedArmorId: this.player.equippedArmor?.id ?? null,
-                ringLeftId: this.player.ringLeft?.id ?? null, ringRightId: this.player.ringRight?.id ?? null,
+            pendingEnchantment: this.pendingEnchantment, stats: this.stats, run: this.snapshotRunState(),
+            services: {
+                rngState: () => rng.getState(),
+                identifiedItems: () => [...ItemLoader.identifiedItems],
+                callTitles: () => Object.fromEntries(ItemLoader.callTitles),
+                magicPolarityRevealed: () => [...ItemLoader.magicPolarityRevealed],
+                flavors: () => ItemLoader.snapshotFlavors(),
+                staffFlavors: () => Object.fromEntries(ItemLoader.staffs.map(s => [s.id, ItemLoader.arcanaFlavorMap.get(s.id)!])),
+                wandFlavors: () => Object.fromEntries(ItemLoader.wands.map(w => [w.id, ItemLoader.arcanaFlavorMap.get(w.id)!])),
+                rewardRoomsGenerated: () => getRewardRoomsGenerated(),
             },
-            entityGraph: {
-                monsters: graph.monsters.filter(m => !roots.includes(m)).map(serializeMonsterRow),
-                items: graph.items.filter(item => !ownedItems.includes(item)).map(encodeItem),
-            },
-            identifiedItems: [...ItemLoader.identifiedItems], callTitles: Object.fromEntries(ItemLoader.callTitles),
-            magicPolarityRevealed: [...ItemLoader.magicPolarityRevealed], flavors: ItemLoader.snapshotFlavors(),
-            staffFlavors: Object.fromEntries(ItemLoader.staffs.map(s => [s.id, ItemLoader.arcanaFlavorMap.get(s.id)!])),
-            wandFlavors: Object.fromEntries(ItemLoader.wands.map(w => [w.id, ItemLoader.arcanaFlavorMap.get(w.id)!])),
-            rewardRoomsGenerated: getRewardRoomsGenerated(), stats: { ...this.stats }, run: this.snapshotRunState(),
-        };
+        });
     }
 
     private serializeMonster(m: Monster): GameSnapshotMonster { return encodeMonster(m); }
 
     private deserializeMonster(m: GameSnapshotMonster): Monster {
-        const graph = restoreEntityGraph([m]);
-        ensureEntityIdAbove(Math.max(0, ...graph.monsters.keys(), ...graph.items.keys()));
+        const graph = restoreEntityGraph([m], [], [], [], entityCodecDeps);
+        entityCodecDeps.ensureIdAbove(Math.max(0, ...graph.monsters.keys(), ...graph.items.keys()));
         return graph.monsters.get(m.id)!;
     }
 
     private restoreMonsterLeaders(snapshots: readonly GameSnapshotMonster[], monsters: readonly Monster[]): void {
         // Test-room reset also resolves payload/leader cycles after all roots exist.
-        restoreEntityGraph(snapshots, [], monsters, [...this.items, ...this.player.inventory.items]);
+        restoreEntityGraph(snapshots, [], monsters, [...this.items, ...this.player.inventory.items], entityCodecDeps);
     }
 
     public static isSnapshot(value: unknown): value is GameSnapshot {
-        const s = value as GameSnapshot | null;
-        if (!s || s.version !== 2 || s.schema !== WHOLE_RUN_SCHEMA || !isSeed(s.seed)
-            || !Random.isState(s.rngState) || !isLevelSeeds(s.levelSeeds)
-            || s.currentLevelDepth !== s.depth || !s.run || !s.flavors || !s.player || !s.entityGraph
-            || !Number.isFinite(s.ticksTillUpdateEnvironment) || typeof s.pendingEnchantment !== 'boolean'
-            || !Array.isArray(s.identifiedItems) || !Array.isArray(s.magicPolarityRevealed)
-            || !s.callTitles || !s.stats || !Number.isFinite(s.rewardRoomsGenerated)
-            || !Array.isArray(s.run.meteredItems) || !Number.isFinite(s.run.foodSpawned)
-            || !Number.isFinite(s.run.goldGenerated) || !Number.isFinite(s.run.currentTick)
-            || !Number.isSafeInteger(s.run.nextEntityId) || s.run.nextEntityId < 1
-            || !Number.isFinite(s.run.monsterSpawnFuse) || !Number.isFinite(s.run.absoluteTurnNumber)
-            || typeof s.run.pendingIdentify !== 'boolean' || !s.run.logger
-            || !Array.isArray(s.levels) || !Array.isArray(s.pendingFallenByDepth) || !Array.isArray(s.pendingFallenItemsByDepth)
-            || (s.purgatory !== undefined && !Array.isArray(s.purgatory))) return false;
-        const depths = new Set<number>();
-        for (const level of [s, ...s.levels]) {
-            if (!level || !Number.isInteger(level.depth) || level.depth < 1 || level.depth > CE_DEEPEST_LEVEL
-                || depths.has(level.depth) || !s.levelSeeds[level.depth - 1]?.visited
-                || level.width !== DCOLS || level.height !== DROWS
-                || !Array.isArray(level.grid) || level.grid.length !== level.width * level.height
-                || !Array.isArray(level.impregnableCells)
-                || !level.grid.every(c => c && c.layers?.length === 4 && typeof c.machineNumber === 'number'
-                    && typeof c.rememberedTerrain === 'number' && Array.isArray(c.rememberedLayers)
-                    && (c.rememberedLayers.length === 0 || c.rememberedLayers.length === 4)
-                    && typeof c.isMagicMapped === 'boolean' && typeof c.knownTrapFree === 'boolean'
-                    && typeof c.rememberedTerrainFlags === 'number' && typeof c.rememberedTMFlags === 'number'
-                    && c.rememberedAppearance !== undefined && c.rememberedItem !== undefined
-                    && c.rememberedItemCategory !== undefined && c.rememberedFlags !== undefined)
-                || !machineCellsMatchGrid(level.machineCells, level.grid)
-                || !level.scent || level.scent.values.length !== level.width * level.height
-                || !level.waypoints || !level.environmentState || !Array.isArray(level.monsters)
-                || !Number.isFinite(level.awaySince) || !level.playerExitedVia
-                || !Number.isInteger(level.playerExitedVia.x) || !Number.isInteger(level.playerExitedVia.y)
-                || !Array.isArray(level.dormantMonsters) || !Array.isArray(level.items)) return false;
-            depths.add(level.depth);
-        }
-        if (!Array.isArray(s.entityGraph.monsters) || !Array.isArray(s.entityGraph.items)
-            || s.pendingFallenByDepth.some(level => !level || !Array.isArray(level.monsters))) return false;
-        if (s.pendingFallenItemsByDepth.some(q => !q || !Number.isInteger(q.depth) || q.depth < 1 || q.depth > CE_DEEPEST_LEVEL
-            || !Array.isArray(q.items) || q.items.some(item => !Number.isFinite(item.spawnTurnNumber)))) return false;
-        const rows = [...s.monsters, ...s.dormantMonsters, ...(s.purgatory ?? []), ...s.entityGraph.monsters,
-            ...s.levels.flatMap(l => [...l.monsters, ...l.dormantMonsters]), ...s.pendingFallenByDepth.flatMap(l => l.monsters)];
-        if (rows.some(m => !Number.isInteger(m.entersLevelIn) || m.entersLevelIn < 0 || m.entersLevelIn > 150
-            || !Number.isInteger(m.approaching) || m.approaching < 0 || m.approaching > 7)) return false;
-        // Test mode has one synthetic room map instead of a traversable dungeon.
-        if (s.mode !== 'test' && s.levelSeeds.some((level, i) => level.visited && !depths.has(i + 1))) return false;
-        return true;
+        return isWholeRunSnapshot(value);
     }
 
     public loadSnapshot(snapshot: GameSnapshot): boolean {
         if (!Game.isSnapshot(snapshot)) return false;
-        // Decode the entire world before retiring the live one. All entity edges
-        // resolve in a single pass, including leaders on other floors and cycles.
+        // Decode the entire world before retiring the live one.
+        let decoded: ReturnType<typeof decodeWholeRunWorld>;
+        try { decoded = decodeWholeRunWorld(snapshot, entityCodecDeps); } catch { return false; }
+        const { entityGraph, restored } = decoded;
         const levelRows = [snapshot, ...snapshot.levels];
-        let entityGraph: ReturnType<typeof restoreEntityGraph>;
-        let restored: Map<number, LevelState>;
-        try {
-            entityGraph = restoreEntityGraph(
-                [...levelRows.flatMap(l => [...l.monsters, ...l.dormantMonsters]),
-                     ...snapshot.pendingFallenByDepth.flatMap(q => q.monsters), ...(snapshot.purgatory ?? []), ...snapshot.entityGraph.monsters],
-                [...levelRows.flatMap(l => l.items), ...snapshot.pendingFallenItemsByDepth.flatMap(q => q.items), ...snapshot.player.inventory, ...snapshot.entityGraph.items]);
-            const resolve = <T>(map: Map<number, T>, id: number): T => {
-                const value = map.get(id);
-                if (!value) throw new Error(`Missing snapshot entity ${id}`);
-                return value;
-            };
-            restored = new Map(levelRows.map(saved => {
-                const grid = restoreGrid(saved.width, saved.height, saved.grid, saved.impregnableCells!);
-                const environment = new EnvironmentManager(grid);
-                environment.setState(saved.environmentState);
-                const waypoints = new WaypointSystem(); waypoints.setState(saved.waypoints);
-                return [saved.depth, {
-                    grid, environment, fov: new FOVSys(grid), lightMap: new LightMap(grid),
-                    monsters: saved.monsters.map(m => resolve(entityGraph.monsters, m.id)),
-                    dormantMonsters: saved.dormantMonsters.map(m => resolve(entityGraph.monsters, m.id)),
-                    items: saved.items.map(i => resolve(entityGraph.items, i.id)),
-                    visibleMonsters: new Set(saved.visibleMonsterIds.map(id => resolve(entityGraph.monsters, id))),
-                    visibleItems: new Set(saved.visibleItemIds.map(id => resolve(entityGraph.items, id))),
-                    machineCells: collectMachineCells(grid), scent: ScentMap.fromState(saved.scent), waypoints,
-                    awaySince: saved.awaySince, playerExitedVia: { ...saved.playerExitedVia }, pendingCaughtFireCells: saved.pendingCaughtFireCells.map(p => ({ ...p })),
-                }];
-            }));
-        } catch { return false; }
 
         this.discardInFlightAdvancement();
         if (this.grid) { setDormantAwakener(this.grid, null); setAllyResurrector(this.grid, null); setDungeonFeatureEffects(this.grid, null); }
@@ -9436,16 +9280,7 @@ export class Game {
         this.bindDormantAwakener();
         this.activeFlares = []; this.terrainFlashes = []; this.flareLightMap = null; this.flareElapsedMs = 0;
 
-        this.player = new Player(snapshot.player.loc.x, snapshot.player.loc.y);
-        Object.assign(this.player, copyFields(snapshot.player, PLAYER_FIELDS));
-        this.player.statusImmunities = new Set(snapshot.player.statusImmunities);
-        this.player.restoreHungerTransition(snapshot.player.hungerTransition);
-        this.player.inventory.capacity = snapshot.player.inventoryCapacity;
-        this.player.inventory.items = snapshot.player.inventory.map(it => entityGraph.items.get(it.id)!);
-        const equipment = (id: number | null): Item | null => id === null ? null : entityGraph.items.get(id)!;
-        this.player.equippedWeapon = equipment(snapshot.player.equippedWeaponId);
-        this.player.equippedArmor = equipment(snapshot.player.equippedArmorId);
-        this.player.ringLeft = equipment(snapshot.player.ringLeftId); this.player.ringRight = equipment(snapshot.player.ringRightId);
+        this.player = decodePlayer(snapshot.player, entityGraph.items);
 
         const run = JSON.parse(JSON.stringify(snapshot.run)) as GameSnapshot['run'];
         this.meteredItems = run.meteredItems; this.foodSpawned = run.foodSpawned; this.goldGenerated = run.goldGenerated;
