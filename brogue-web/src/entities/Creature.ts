@@ -61,6 +61,7 @@ export class Creature implements Entity {
     public char: string;
     public statusDurations: Partial<Record<StatusId, number>>;
     public statusImmunities: Set<StatusId>;
+    public hasStatusImmunity(id: StatusId): boolean { return this.statusImmunities.has(id); }
     /** CE creature.poisonAmount: damage per objective poison tick. */
     public poisonAmount = 0;
     /** CE creature.weaknessAmount, independent of the weakened countdown. */
@@ -165,7 +166,7 @@ export class Creature implements Entity {
         if (id === 'weakened') return this.weaken(duration);
         if (id === 'shielded') return this.applyShield(duration);
         if (id === 'poisoned') return this.addPoison(duration, 1);
-        if (duration <= 0 || this.statusImmunities.has(id)) return false;
+        if (duration <= 0 || this.hasStatusImmunity(id)) return false;
         // CE sources assign current/max together, not max(old, new).
         // STUCK is applied only when absent; contact never refreshes it.
         if (id === 'stuck' || id === 'donning' || id === 'enraged' || id === 'lifespan_remaining' || id === 'aggravating') {
@@ -187,7 +188,7 @@ export class Creature implements Entity {
 
     /** CE Items.c:4558: each dose adds a layer even when the timer is unchanged. */
     public weaken(duration: number): boolean {
-        if (duration <= 0 || this.statusImmunities.has('weakened')) return false;
+        if (duration <= 0 || this.hasStatusImmunity('weakened')) return false;
         const before = this.weaknessAmount;
         this.weaknessAmount = Math.min(10, before + 1);
         const current = this.getStatusDuration('weakened');
@@ -220,7 +221,7 @@ export class Creature implements Entity {
     }
 
     public canBePoisoned(): boolean {
-        return this.hp > 0 && !this.statusImmunities.has('poisoned');
+        return this.hp > 0 && !this.hasStatusImmunity('poisoned');
     }
 
     /** CE Combat.c:1905-1920: additive duration AND concentration; no instant damage.

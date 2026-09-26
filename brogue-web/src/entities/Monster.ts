@@ -18,6 +18,7 @@ import i18next from 'i18next';
 import { ItemLoader } from '../engine/Items/ItemLoader';
 import type { Item } from '../engine/Items/Item';
 import type { StatusId } from './Creature';
+import monsterCatalogData from '../data/monsters.json';
 import { PERMANENT_STATUS_DURATION } from './Creature';
 import { DungeonLayer, TerrainType } from '../engine/Map/Grid';
 import { breakEntanglingTerrain } from '../engine/Map/Promotion';
@@ -307,6 +308,15 @@ export class Monster extends Creature {
     public onHitStatus?: StatusId;
     public onHitChance: number = 0;
     public onHitDuration: number = 0;
+    public override hasStatusImmunity(id: StatusId): boolean {
+        const natural = (monsterCatalogData as MonsterData[]).find(row => row.id === this.typeId);
+        return this.statusImmunities.has(id) && !natural?.statusImmunities?.includes(id);
+    }
+    /** The three catalog on-hit statuses have no matching CE monster ability. */
+    public hasEffectiveOnHitStatus(): boolean {
+        return !!this.onHitStatus && this.onHitDuration > 0
+            && !['kobold', 'goblin', 'vampire'].includes(this.typeId);
+    }
     public statusResistTurns: Partial<Record<StatusId, number>> = {};
     public abilities: Set<MonsterAbility> = new Set();
     public behaviorFlags: Set<string> = new Set();
@@ -522,6 +532,8 @@ export class Monster extends Creature {
         this.onHitStatus = data.onHitStatus;
         this.onHitChance = data.onHitChance ?? 0;
         this.onHitDuration = data.onHitDuration ?? 0;
+        // Preserve legacy data projection for snapshots and polymorph. The status
+        // application boundary excludes these natural catalog defaults from CE play.
         if (Array.isArray(data.statusImmunities)) {
             this.statusImmunities = new Set<StatusId>(data.statusImmunities);
         }
@@ -1239,11 +1251,11 @@ export class Monster extends Creature {
                 }), '#ff6666');
                 game.spawnFloatingText(`-${result.damage}`, game.player.loc.x, game.player.loc.y, 0xff5555);
                 game.spawnBlood(game.player.loc.x, game.player.loc.y);
-                if (this.onHitStatus && this.onHitDuration > 0 && rng.randPercent(Math.floor(this.onHitChance * 100))) {
-                    game.applyMonsterOnHitStatus(game.monsterDisplayName(this), this.onHitStatus, this.onHitDuration);
+                if (this.hasEffectiveOnHitStatus() && rng.randPercent(Math.floor(this.onHitChance * 100))) {
+                    game.applyMonsterOnHitStatus(game.player, game.monsterDisplayName(this), this.onHitStatus!, this.onHitDuration);
                 }
                 if (this.hasAbility('MA_HIT_HALLUCINATE')) {
-                    game.applyMonsterOnHitStatus(game.monsterDisplayName(this), 'hallucinating', 15);
+                    game.applyMonsterOnHitStatus(game.player, game.monsterDisplayName(this), 'hallucinating', 15);
                 }
                 if (this.hasAbility('MA_HIT_DEGRADE_ARMOR')) {
                     // I-1：ITEM_PROTECTED 豁免（CE Combat.c:425-431——带保护则完全
@@ -1294,8 +1306,11 @@ export class Monster extends Creature {
                 game.spawnFloatingText(`-${result.damage}`, target.loc.x, target.loc.y, 0xff5555);
                 game.spawnBlood(target.loc.x, target.loc.y);
                 (game as any).trySplitMonster(target, this);
-                if (this.onHitStatus && this.onHitDuration > 0 && rng.randPercent(Math.floor(this.onHitChance * 100))) {
-                    (game as any).applyStatusToMonster(target, this.onHitStatus, this.onHitDuration, 'poison');
+                if (this.hasEffectiveOnHitStatus() && rng.randPercent(Math.floor(this.onHitChance * 100))) {
+                    game.applyMonsterOnHitStatus(target, game.monsterDisplayName(this), this.onHitStatus!, this.onHitDuration);
+                }
+                if (this.hasAbility('MA_HIT_HALLUCINATE')) {
+                    game.applyMonsterOnHitStatus(target, game.monsterDisplayName(this), 'hallucinating', 15);
                 }
             } else {
                 logger.log(i18next.t(missKey, {
@@ -1502,11 +1517,11 @@ export class Monster extends Creature {
                             defaultValue: `Your ${game.monsterDisplayName(this)} hits the ${game.monsterDisplayName(target)} for ${result.damage} damage.`
                         }), '#88ff88');
                         game.spawnFloatingText(`-${result.damage}`, target.loc.x, target.loc.y, 0xff5555);
-                        if (this.onHitStatus && this.onHitDuration > 0 && rng.randPercent(Math.floor(this.onHitChance * 100))) {
-                            game.applyMonsterOnHitStatus(game.monsterDisplayName(target), this.onHitStatus, this.onHitDuration); // Note: Game.ts applyMonsterOnHitStatus assumes player as target right now, we need to fix this if it handles player only, actually CombatSystem doesn't apply status, Game.ts does. Wait!
-                            // Instead of Game method, just use applyStatusToMonster from game directly if it was public. We will check it later.
-                            // Actually, Game's applyStatusToMonster exists!
-                            (game as any).applyStatusToMonster(target, this.onHitStatus, this.onHitDuration, 'poison');
+                        if (this.hasEffectiveOnHitStatus() && rng.randPercent(Math.floor(this.onHitChance * 100))) {
+                            game.applyMonsterOnHitStatus(target, game.monsterDisplayName(this), this.onHitStatus!, this.onHitDuration);
+                        }
+                        if (this.hasAbility('MA_HIT_HALLUCINATE')) {
+                            game.applyMonsterOnHitStatus(target, game.monsterDisplayName(this), 'hallucinating', 15);
                         }
                         // P4-4：CE splitMonster(defender, attacker)（Combat.c:1424）——
                         // 命中后，若目标带 MA_CLONE_SELF_ON_DEFEND 且仍存活，尝试分裂。
@@ -1785,6 +1800,12 @@ export class Monster extends Creature {
                             }), '#ff88aa');
                             game.spawnFloatingText(`-${result.damage}`, other.loc.x, other.loc.y, 0xff5555);
                             game.spawnBlood(other.loc.x, other.loc.y);
+                            if (this.hasEffectiveOnHitStatus() && rng.randPercent(Math.floor(this.onHitChance * 100))) {
+                                game.applyMonsterOnHitStatus(other, game.monsterDisplayName(this), this.onHitStatus!, this.onHitDuration);
+                            }
+                            if (this.hasAbility('MA_HIT_HALLUCINATE')) {
+                                game.applyMonsterOnHitStatus(other, game.monsterDisplayName(this), 'hallucinating', 15);
+                            }
                             (game as any).trySplitMonster(other, this);
                         } else {
                             logger.log(i18next.t('combat.discordant_misses', {
@@ -1854,11 +1875,11 @@ export class Monster extends Creature {
                     }), '#ff6666');
                     game.spawnFloatingText(`-${result.damage}`, game.player.loc.x, game.player.loc.y, 0xff5555);
                     game.spawnBlood(game.player.loc.x, game.player.loc.y);
-                    if (this.onHitStatus && this.onHitDuration > 0 && rng.randPercent(Math.floor(this.onHitChance * 100))) {
-                        game.applyMonsterOnHitStatus(game.monsterDisplayName(this), this.onHitStatus, this.onHitDuration);
+                    if (this.hasEffectiveOnHitStatus() && rng.randPercent(Math.floor(this.onHitChance * 100))) {
+                        game.applyMonsterOnHitStatus(game.player, game.monsterDisplayName(this), this.onHitStatus!, this.onHitDuration);
                     }
                     if (this.hasAbility('MA_HIT_HALLUCINATE')) {
-                        game.applyMonsterOnHitStatus(game.monsterDisplayName(this), 'hallucinating', 15);
+                        game.applyMonsterOnHitStatus(game.player, game.monsterDisplayName(this), 'hallucinating', 15);
                     }
                     if (this.hasAbility('MA_HIT_DEGRADE_ARMOR')) {
                         // I-1：ITEM_PROTECTED 豁免（CE Combat.c:425-431——带保护则

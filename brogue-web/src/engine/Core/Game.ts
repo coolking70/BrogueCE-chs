@@ -5035,15 +5035,15 @@ export class Game {
                         this.spawnBlood(target.loc.x, target.loc.y);
                     }
                     logCast('bolt.monster_cast_hit', `${casterLabel} hits ${targetName} with ${ceBoltName} for ${result.damage} damage!`, '#ff8866');
-                    if (isPlayer && caster.onHitStatus && caster.onHitDuration > 0 && rng.randPercent(Math.floor(caster.onHitChance * 100))) {
-                        this.applyMonsterOnHitStatus(caster.name, caster.onHitStatus, caster.onHitDuration);
+                    if (caster.hasEffectiveOnHitStatus() && rng.randPercent(Math.floor(caster.onHitChance * 100))) {
+                        this.applyMonsterOnHitStatus(target, caster.name, caster.onHitStatus!, caster.onHitDuration);
                     }
-                    if (isPlayer && caster.hasAbility('MA_POISONS')
+                    if (caster.hasAbility('MA_POISONS')
                         && BOLT_EFFECT_CE_EFFECT[meta.effect] !== CEBoltEffect.ATTACK) {
-                        this.applyMonsterOnHitStatus(caster.name, 'poisoned', result.damage * 2);
+                        this.applyMonsterOnHitStatus(target, caster.name, 'poisoned', result.damage * 2);
                     }
-                    if (isPlayer && caster.hasAbility('MA_HIT_HALLUCINATE')) {
-                        this.applyMonsterOnHitStatus(caster.name, 'hallucinating', 15);
+                    if (caster.hasAbility('MA_HIT_HALLUCINATE')) {
+                        this.applyMonsterOnHitStatus(target, caster.name, 'hallucinating', 15);
                     }
                     if (!isPlayer && (target as Monster).hp <= 0) {
                         // 怪物互殴致死：与既有 discordant 近战分支同口径，留给
@@ -6025,7 +6025,11 @@ export class Game {
     }
 
     private applyStatusToMonster(monster: Monster, status: StatusId, duration: number, source: 'magic' | 'gas' | 'runic' = 'magic'): boolean {
-        if (monster.statusImmunities.has(status)) {
+        // The natural JSON carries pre-CE generic immunity/resistance values.
+        // Keep them on the instance for the established polymorph/snapshot shape,
+        // but do not let those catalog defaults veto a CE status effect.
+        const natural = (monsterData as MonsterData[]).find(row => row.id === monster.typeId);
+        if (monster.hasStatusImmunity(status)) {
             if (source !== 'gas') {
                 logger.log(
                     i18next.t('status.monster.immune', {
@@ -6039,7 +6043,9 @@ export class Game {
             return false;
         }
 
-        const reduce = monster.statusResistTurns[status] ?? 0;
+        const configuredReduce = monster.statusResistTurns[status] ?? 0;
+        const reduce = configuredReduce === (natural?.statusResistTurns?.[status] ?? 0)
+            ? 0 : configuredReduce;
         const effectiveDuration = Math.max(1, duration - reduce);
         const applied = monster.applyStatus(status, effectiveDuration, 'refresh');
         if (!applied) return false;
@@ -6063,7 +6069,9 @@ export class Game {
         return { nullifyChance, durationReduction };
     }
 
-    public applyMonsterOnHitStatus(monsterName: string, status: StatusId, duration: number): boolean {
+    public applyMonsterOnHitStatus(target: Creature, monsterName: string, status: StatusId, duration: number): boolean {
+        if (target instanceof Monster) return this.applyStatusToMonster(target, status, duration);
+        if (target !== this.player) return false;
         // Preserve immunity granted by existing status sources.
         if ((this.player.temporaryImmunities[status] ?? 0) > 0) {
             logger.log(
